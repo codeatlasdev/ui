@@ -5,7 +5,7 @@
 	"scripts": {
 		"dev": "astro dev",
 		"build": "astro build",
-		"preview": "astro preview --port 4321",
+		"preview": "astro preview --port 4321 --force",
 		"check": "astro check --minimumFailingSeverity warning",
 		"test:e2e": "playwright test",
 		"test:a11y": "playwright test --project=a11y"

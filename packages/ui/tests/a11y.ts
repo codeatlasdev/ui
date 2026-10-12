@@ -1,11 +1,14 @@
 import axe, { type AxeResults, type ElementContext, type RunOptions } from "axe-core";
 import { expect } from "vitest";
+import { settled } from "./settled";
 
 /** Runs axe on `target`. Never call concurrently: axe.run is not reentrant. */
-export function checkA11y(
+/** Runs axe once every CSS animation/transition has finished, so it sees final colours. */
+export async function checkA11y(
 	target: ElementContext = document,
 	options: RunOptions = {}
 ): Promise<AxeResults> {
+	await settled();
 	return axe.run(target, { resultTypes: ["violations"], ...options }) as Promise<AxeResults>;
 }
 

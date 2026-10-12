@@ -4,6 +4,13 @@ import { expect } from "vitest";
 export async function settled(): Promise<void> {
 	await new Promise((r) => requestAnimationFrame(() => r(null)));
 	await expect
-		.poll(() => document.getAnimations().filter((a) => a.playState === "running").length)
+		.poll(
+			() =>
+				document
+					.getAnimations()
+					// Spinners, shimmers and indeterminate bars loop forever: they have no final state.
+					.filter((a) => a.playState === "running" && a.effect?.getTiming().iterations !== Infinity)
+					.length
+		)
 		.toBe(0);
 }
