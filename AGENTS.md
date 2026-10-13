@@ -1,4 +1,4 @@
-# AGENTES.md — Guia para Agentes de IA
+# AGENTS.md — Guia para Agentes de IA
 
 Este documento descreve tudo que um agente de IA precisa saber para trabalhar com este repositório.
 

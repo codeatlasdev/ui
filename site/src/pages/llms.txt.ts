@@ -26,8 +26,8 @@ export async function GET() {
 				heading: "Optional",
 				links: [
 					{
-						title: "Agent guide (AGENTES.md)",
-						href: "https://github.com/codeatlasdev/ui/blob/main/AGENTES.md",
+						title: "Agent guide (AGENTS.md)",
+						href: "https://github.com/codeatlasdev/ui/blob/main/AGENTS.md",
 						description: "critical rules, tokens, page template patterns.",
 					},
 					{

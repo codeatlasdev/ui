@@ -10,7 +10,7 @@ your AI agent already knows how to use it.
 [![svelte](https://img.shields.io/badge/svelte-5_runes-ff3e00?style=flat-square)](https://svelte.dev)
 [![skills](https://img.shields.io/badge/agent_skills-3-8b5cf6?style=flat-square)](https://github.com/codeatlasdev/ui/tree/main/.agents/skills)
 
-[docs + live demo](https://ui.codeatlas.com.br) · [llms.txt](https://github.com/codeatlasdev/ui/blob/main/llms.txt) · [agent guide](https://github.com/codeatlasdev/ui/blob/main/AGENTES.md)
+[docs + live demo](https://ui.codeatlas.com.br) · [llms.txt](https://github.com/codeatlasdev/ui/blob/main/llms.txt) · [agent guide](https://github.com/codeatlasdev/ui/blob/main/AGENTS.md)
 
 </div>
 
@@ -52,7 +52,7 @@ That installs three skills into Claude Code, Cursor, Codex and friends:
 | `codeatlas-dx` | file structure and size limits so the codebase stays clean |
 | `codeatlas-writing` | UI copy that doesn't read like a chatbot wrote it |
 
-Not using skills? Point the agent at [`llms.txt`](https://github.com/codeatlasdev/ui/blob/main/llms.txt) or [`AGENTES.md`](https://github.com/codeatlasdev/ui/blob/main/AGENTES.md). Same info, plain markdown.
+Not using skills? Point the agent at [`llms.txt`](https://github.com/codeatlasdev/ui/blob/main/llms.txt) or [`AGENTS.md`](https://github.com/codeatlasdev/ui/blob/main/AGENTS.md). Same info, plain markdown.
 
 ## install
 

@@ -5,7 +5,7 @@
 ## Overview
 
 - [README](README.md): installation, usage, component list, CSS architecture
-- [AI Agent guide](AGENTES.md): full guide for AI agents: component APIs, critical rules, token names, store interfaces, AppShell patterns
+- [AI Agent guide](AGENTS.md): full guide for AI agents: component APIs, critical rules, token names, store interfaces, AppShell patterns
 
 ## Source
 
