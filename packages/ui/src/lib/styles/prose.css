@@ -21,7 +21,7 @@
 .ca-prose > :first-child { margin-top: 0; }
 .ca-prose > :last-child { margin-bottom: 0; }
 
-.ca-prose :where(p, ul, ol, blockquote, .ca-table-wrap:not(:has(> .ca-table)), .ca-code, figure, details) {
+.ca-prose :where(p, ul, ol, blockquote, .ca-table-wrap, .ca-prose > table, .ca-code, figure, details) {
   margin: 1rem 0;
 }
 
@@ -142,10 +142,11 @@
 }
 
 /* ── Tables ─────────────────────────────────────────────────────────────── */
-/* Raw Markdown tables only. SimpleTable reuses the .ca-table-wrap class but styles itself;
- * stacking both drew a second frame and row rules over its cards. */
+/* Markdown tables: bare `.ca-prose > table` (what Markdown emits) or one wrapped in
+ * `.ca-table-wrap`. Components (SimpleTable, DataTable) use `.ca-table-root` and style themselves. */
 
-.ca-table-wrap:not(:has(> .ca-table)) {
+.ca-table-wrap,
+.ca-prose > table {
   overflow-x: auto;
   overscroll-behavior-x: contain;
   border: 1px solid var(--ca-outline-subtle);
@@ -155,7 +156,8 @@
 }
 
 /* Scroll affordance: edge shadows appear only while columns are hidden on that side (no JS). */
-.ca-table-wrap:not(:has(> .ca-table)) {
+.ca-table-wrap,
+.ca-prose > table {
   background:
     linear-gradient(to right, var(--ca-surface-base) 30%, transparent) left center / 2rem 100% no-repeat local,
     linear-gradient(to left, var(--ca-surface-base) 30%, transparent) right center / 2rem 100% no-repeat local,
@@ -163,19 +165,21 @@
     linear-gradient(to left, oklch(0 0 0 / 0.14), transparent) right center / 0.75rem 100% no-repeat scroll;
 }
 
-.ca-table-wrap:not(:has(> .ca-table)):focus-visible {
+.ca-table-wrap:focus-visible {
   outline: 2px solid var(--ca-brand-main);
   outline-offset: 2px;
 }
 
-.ca-table-wrap:not(:has(> .ca-table)) table {
+.ca-table-wrap table,
+.ca-prose > table {
   width: 100%;
   border-collapse: collapse;
   font-size: var(--ca-font-size-body2);
   line-height: 1.55;
 }
 
-.ca-table-wrap:not(:has(> .ca-table)) th {
+.ca-table-wrap th,
+.ca-prose > table th {
   padding: 0.625rem 1rem;
   background: var(--ca-surface-raised);
   text-align: left;
@@ -185,16 +189,23 @@
   white-space: nowrap;
 }
 
-.ca-table-wrap:not(:has(> .ca-table)) td {
+.ca-table-wrap td,
+.ca-prose > table td {
   padding: 0.625rem 1rem;
   border-top: 1px solid var(--ca-outline-subtle);
   vertical-align: top;
 }
 
-.ca-table-wrap:not(:has(> .ca-table)) td:first-child code { white-space: nowrap; }
+.ca-table-wrap td:first-child code,
+.ca-prose > table td:first-child code { white-space: nowrap; }
+
+/* A bare table is its own scroll box: block-level so overflow-x applies; columns take their
+ * content width and the table scrolls instead of crushing them or pushing the page sideways. */
+.ca-prose > table { display: block; width: max-content; min-width: 100%; max-width: 100%; }
 
 /* Wide tables keep a readable minimum so columns never collapse to one word per line. */
-.ca-table-wrap:not(:has(> .ca-table)) td { min-width: 7rem; }
+.ca-table-wrap td,
+.ca-prose > table td { min-width: 7rem; }
 
 /* ── Code blocks (shiki dual theme: --shiki-light / --shiki-dark) ───────── */
 
@@ -255,8 +266,10 @@
   .ca-prose { line-height: 1.7; }
   .ca-code pre,
   .ca-prose > pre { padding: var(--ca-space-3-5) var(--ca-space-4); }
-  .ca-table-wrap:not(:has(> .ca-table)) th,
-  .ca-table-wrap:not(:has(> .ca-table)) td { padding: 0.5rem 0.75rem; }
+  .ca-table-wrap th,
+  .ca-table-wrap td,
+  .ca-prose > table th,
+  .ca-prose > table td { padding: 0.5rem 0.75rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {

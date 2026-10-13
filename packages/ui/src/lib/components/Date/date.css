@@ -19,9 +19,13 @@
 
 .ca-date__req { color: var(--ca-semantic-error); }
 
+/* Segments are never squeezed under the trigger: when start + end do not fit one line
+   (range field in a narrow column) the end date wraps below, the icon stays last. */
 .ca-date__wrap {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
+  row-gap: 0;
   gap: var(--ca-space-2);
   min-height: var(--ca-control-height);
   padding: 0 var(--ca-space-2-5);
@@ -72,11 +76,13 @@
 .ca-date__hint--error { color: var(--ca-semantic-error); }
 
 /* ── Editable segments ────────────────────────────────────────── */
+/* Single fields fill the row; in a range each date keeps its natural width so the separator
+   sits right after the start date, and the end date wraps below it as a whole. */
 .ca-date__input {
   display: flex;
   align-items: center;
-  flex: 1;
-  min-width: 0;
+  flex: 1 0 auto;
+  min-width: max-content;
   gap: var(--ca-border-width);
   padding: var(--ca-space-1-5) 0;
 }
@@ -115,6 +121,7 @@
 
 /* ── Trigger button (picker) ──────────────────────────────────── */
 .ca-date__trigger {
+  margin-inline-start: auto;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -135,6 +142,8 @@
 .ca-date__trigger:disabled { cursor: not-allowed; }
 
 .ca-date__range-sep { color: var(--ca-text-hint); user-select: none; }
+.ca-date__wrap:has(.ca-date__range-sep) .ca-date__input { flex: 0 0 auto; }
+.ca-date__wrap:has(.ca-date__range-sep) { column-gap: var(--ca-space-2); }
 
 /* ── Popover content ──────────────────────────────────────────── */
 .ca-date__content {

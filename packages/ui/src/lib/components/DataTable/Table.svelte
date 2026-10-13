@@ -10,14 +10,14 @@
   The glass border + backdrop are applied on the outer div so they don't
   interfere with table layout.
 -->
-<div class="ca-table-wrap {className}">
+<div class="ca-table-root {className}">
   <div class="ca-table-container">
     <table class="ca-table" {...rest}>{@render children?.()}</table>
   </div>
 </div>
 
 <style>
-  .ca-table-wrap {
+  .ca-table-root {
     min-height: 0;
     flex: 1;
     overflow: auto;

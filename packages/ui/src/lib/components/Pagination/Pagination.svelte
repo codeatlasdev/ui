@@ -54,8 +54,10 @@
 <style>
   :global(.ca-pagination) {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     gap: var(--ca-space-1);
+    max-width: 100%;
   }
 
   :global(.ca-pagination__nav),

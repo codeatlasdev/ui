@@ -19,8 +19,8 @@
      A focusable scroll region is the WCAG-recommended pattern (axe scrollable-region-focusable). -->
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <div
-  class="ca-table-wrap {className}"
-  class:ca-table-wrap--cards={responsive === 'cards'}
+  class="ca-table-root {className}"
+  class:ca-table-root--cards={responsive === 'cards'}
   role="region"
   aria-label={t().table.scrollRegion}
   tabindex="0"
@@ -32,10 +32,13 @@
 </div>
 
 <style>
-  .ca-table-wrap {
+  .ca-table-root {
     width: 100%;
     container-type: inline-size;
-    /* no overflow here: the parent AppList body scrolls */
+    /* It is a focusable scroll region (role=region, tabindex=0): wide tables scroll here,
+       never the page. Vertical scrolling stays with the parent (AppList body). */
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
   }
 
   /* The table draws its own frame (separate borders so the radius clips); cards mode drops it
@@ -81,8 +84,13 @@
 
   .ca-table :global(tbody tr:last-child td) { border-bottom: none; }
 
-  /* Identifiers and types are tokens: never split mid-word; the table scrolls instead. */
-  .ca-table :global(td code) { white-space: nowrap; }
+  /* Column balance: short tokens (names, enums) stay on one line, long code (type signatures)
+     may wrap at spaces, and prose cells keep a readable measure instead of one word per line.
+     When the sum does not fit, the root scrolls; nothing is crushed. */
+  .ca-table :global(td code) { white-space: normal; overflow-wrap: normal; word-break: keep-all; }
+  .ca-table :global(td:first-child code) { white-space: nowrap; }
+  .ca-table :global(td) { min-width: 9ch; }
+  .ca-table :global(td:last-child) { min-width: min(28ch, 60vw); }
 
   .ca-table :global(tbody tr:hover td) {
     background: color-mix(in oklab, var(--ca-brand-main) 4%, transparent);
@@ -157,6 +165,8 @@
 
     /* Values keep their intrinsic width (a code chip must not stretch into a field). */
     .ca-table--cards :global(tbody td > *) { justify-self: start; max-width: 100%; }
+    /* In a card there is no column to scroll: long identifiers break instead of overflowing. */
+    .ca-table--cards :global(td code) { white-space: normal; overflow-wrap: anywhere; }
 
     /* The first column identifies the row (name, avatar, id): it heads the card full width,
        without its caption, above a divider; the remaining columns are label/value pairs. */
