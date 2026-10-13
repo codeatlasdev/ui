@@ -13,8 +13,9 @@ export function portal(target?: string | HTMLElement | false) {
 		parent?.insertBefore(marker, node);
 		(dest ?? document.body).appendChild(node);
 		return () => {
-			if (marker.parentNode) marker.parentNode.insertBefore(node, marker);
-			else node.remove();
+			// Svelte does not remove a portaled node when its host unmounts; re-inserting it at
+			// the marker would resurrect it, so cleanup always removes it.
+			node.remove();
 			marker.remove();
 		};
 	};
