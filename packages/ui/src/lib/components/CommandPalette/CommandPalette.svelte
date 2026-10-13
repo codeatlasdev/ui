@@ -83,8 +83,21 @@
       e.preventDefault();
       selectedIndex = Math.max(selectedIndex - 1, 0);
     } else if (e.key === 'Enter' && filtered[selectedIndex]) {
-      navigate(filtered[selectedIndex].path);
+      // bits-ui returns focus to the trigger the moment `open` flips. Closing inside this keydown
+      // would let the same Enter press (keypress/click) activate that trigger and reopen the
+      // palette, so navigate now and close on keyup, after the press has finished.
+      e.preventDefault();
+      pendingEnter = true;
+      onNavigate(filtered[selectedIndex].path);
     }
+  }
+
+  let pendingEnter = false;
+
+  function handleKeyup(e: KeyboardEvent) {
+    if (e.key !== 'Enter' || !pendingEnter) return;
+    pendingEnter = false;
+    open = false;
   }
 
   function navigate(path: string) {
@@ -115,6 +128,7 @@
           placeholder={t().commandPalette.placeholder}
           class="ca-cmd-search__input"
           onkeydown={handleKeydown}
+          onkeyup={handleKeyup}
           autocomplete="off"
           spellcheck={false}
         />

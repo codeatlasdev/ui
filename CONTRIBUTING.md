@@ -69,11 +69,11 @@ site/             # Astro site: landing, docs (MDX + Svelte demo islands), templ
 CI (`.github/workflows/test.yml`) runs the same gates. Locally, both must exit with code 0:
 
 ```bash
-bun run validate   # generated themes up to date, svelte-check + astro check, Biome, unit tests
-bun run test       # unit (Node) + component tests (Chromium) + site E2E/a11y (Playwright)
+bun run validate   # generated themes, bun --check + svelte-check + astro check, Biome, unit tests, size budget
+bun run test       # unit (bun test) + component tests (Chromium) + site E2E/a11y (Playwright)
 ```
 
-Always `bun run test`, never `bun test`: the latter runs Bun's own runner, which ignores Vitest and Playwright (`bunfig.toml` points it at a non-existent dir, so it exits with an error instead of running anything). Node >= 22.12 is required.
+Unit tests run on `bun test` (`bunfig.toml` points it at `packages/ui/tests`); component and visual tests need a real browser and stay on Vitest, so prefer `bun run test` for the full suite. Type checking is split by who understands the files: `bun --check` (the native checker, config in the root `tsconfig.json`) covers scripts, unit tests and Playwright specs, `svelte-check` covers `packages/ui` and `astro check` covers `site`. Bun >= 1.4.3 and Node >= 22.17 are required.
 
 Visual regression baselines are Linux-only and generated in Docker (`mcr.microsoft.com/playwright:v1.64.0-noble`): `bun run test:vrt` compares, `bun run test:vrt:update` regenerates. Commit the `__screenshots__/` changes.
 

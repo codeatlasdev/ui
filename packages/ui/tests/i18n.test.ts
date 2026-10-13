@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "bun:test";
 import { en } from "../src/lib/i18n/en.js";
 import { ptBR } from "../src/lib/i18n/pt-BR.js";
 

@@ -1,18 +1,29 @@
 {
+	// Project for `bun --check`, the native type checker. It covers the TypeScript that
+	// svelte-check (packages/ui Svelte files) and astro check (site .astro/.svelte files) skip:
+	// build scripts, unit tests and the Playwright specs. Those two checkers own everything else.
 	"compilerOptions": {
 		"target": "ES2022",
 		"lib": ["ES2022", "DOM", "DOM.Iterable"],
 		"module": "ESNext",
 		"moduleResolution": "bundler",
-		"jsx": "preserve",
+		"types": ["bun", "node"],
 		"strict": true,
-		"noUncheckedIndexedAccess": true,
 		"noImplicitOverride": true,
 		"skipLibCheck": true,
 		"isolatedModules": true,
-		"esModuleInterop": true,
+		"verbatimModuleSyntax": true,
+		"allowImportingTsExtensions": true,
 		"resolveJsonModule": true,
 		"noEmit": true
 	},
-	"exclude": ["node_modules", "**/dist", "**/build"]
+	"include": [
+		"scripts/**/*.js",
+		"packages/ui/scripts/**/*.ts",
+		"packages/ui/tests/setup.unit.ts",
+		"packages/ui/tests/stub-global.ts",
+		"packages/ui/tests/*.test.ts",
+		"site/tests/**/*.ts"
+	],
+	"exclude": ["**/node_modules", "**/dist", "**/build"]
 }

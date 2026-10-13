@@ -1,6 +1,6 @@
+import { describe, expect, it } from "bun:test";
 import { readFileSync } from "node:fs";
 import { createRequire } from "node:module";
-import { describe, expect, it } from "vitest";
 
 // Vite 8 minifies CSS with Lightning CSS. When `backdrop-filter` is declared BEFORE
 // `-webkit-backdrop-filter`, it drops the standard property and every glass surface

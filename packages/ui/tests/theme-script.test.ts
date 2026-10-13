@@ -1,7 +1,11 @@
-// @vitest-environment happy-dom
-import { beforeEach, describe, expect, it } from "vitest";
+import { afterAll, beforeEach, describe, expect, it } from "bun:test";
+import { GlobalRegistrator } from "@happy-dom/global-registrator";
 import { defineTheme, fontPreloads, themeCSS } from "../src/lib/theme/define.js";
 import { type ThemeOptions, themeHead, themeScript } from "../src/lib/theme-script.js";
+
+// DOM only for this file; `afterAll` removes it so other unit files keep seeing a bare Bun global.
+GlobalRegistrator.register();
+afterAll(() => GlobalRegistrator.unregister());
 
 const acme: ThemeOptions = { defaultPreset: "acme", presets: [{ id: "acme", color: "#2563EB" }] };
 const html = document.documentElement;

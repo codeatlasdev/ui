@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "bun:test";
 import { fold, searchDocs } from "../src/lib/components/Docs/search.js";
 import type { DocsSearchEntry } from "../src/lib/components/Docs/types.js";
 

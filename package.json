@@ -4,7 +4,14 @@
 	"packageManager": "bun@1.4.3",
 	"type": "module",
 	"engines": {
+<<<<<<< HEAD
 		"node": ">=22.12.0",
+||||||| parent of d0c8c15 (chore(toolchain): bun 1.4.3, latest deps, bun test for unit tests, bun --check)
+		"node": ">=22.12.0",
+		"bun": ">=1.0.0"
+=======
+		"node": ">=22.17.0",
+>>>>>>> d0c8c15 (chore(toolchain): bun 1.4.3, latest deps, bun test for unit tests, bun --check)
 		"bun": ">=1.4.3"
 	},
 	"workspaces": [
@@ -16,7 +23,10 @@
 		"build": "bun run --cwd packages/ui build && bun run --cwd site build",
 		"build:pkg": "bun run --cwd packages/ui build",
 		"preview": "bun run --cwd site preview",
-		"check": "bun run --cwd packages/ui check && bun run --cwd site check",
+		"check": "bun run check:native && bun run check:svelte && bun run check:astro",
+		"check:native": "bun --check",
+		"check:svelte": "bun run --cwd packages/ui check",
+		"check:astro": "bun run --cwd site check",
 		"lint": "biome check .",
 		"format": "biome format --write .",
 		"changeset": "changeset",
@@ -40,14 +50,16 @@
 		"ci:local": "act pull_request"
 	},
 	"dependencies": {
-		"@lucide/svelte": "1.48.0",
-		"bits-ui": "2.3.1",
-		"svelte": "5.57.0"
+		"@lucide/svelte": "1.55.0",
+		"bits-ui": "2.19.5",
+		"svelte": "5.57.2"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.5.13",
-		"@changesets/cli": "3.0.2",
+		"@biomejs/biome": "2.5.15",
+		"@changesets/cli": "3.0.3",
+		"@types/bun": "1.4.3",
+		"@types/node": "24.19.2",
 		"lefthook": "2.2.1",
-		"typescript": "5.9.3"
+		"typescript": "6.0.3"
 	}
 }

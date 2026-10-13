@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "bun:test";
 import { BUILTIN_PRESETS } from "../src/lib/theme/builtins.js";
 import { presetCSS } from "../src/lib/theme/define.js";
 import { oklchToHex } from "../src/lib/utils/palette-generator.js";

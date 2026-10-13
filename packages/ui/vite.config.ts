@@ -27,14 +27,6 @@ export default defineConfig({
 			: ["default"],
 		projects: [
 			{
-				test: {
-					name: "unit",
-					environment: "node",
-					include: ["src/**/*.test.ts", "tests/**/*.test.ts"],
-					exclude: [browserPattern, vrtPattern, ...defaultExclude],
-				},
-			},
-			{
 				// SvelteKit-only module used by kit/route-announcer.svelte; tests override it with vi.mock.
 				resolve: {
 					alias: {

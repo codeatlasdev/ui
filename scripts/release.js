@@ -62,12 +62,16 @@ function smokeTest() {
 	try {
 		const tgz = out("npm", ["pack", "--pack-destination", dir], pkgDir).split("\n").pop();
 		// A plain SvelteKit consumer: the most common way the package is used.
+		// Versions follow what the repo develops against, so the smoke app is always the latest
+		// Kit/Svelte/Vite combination. adapter-static 4 is the line that supports Kit 3.
+		const dev = readJson(path.join(pkgDir, "package.json")).devDependencies;
 		const devDependencies = {
-			"@sveltejs/kit": "2.70.3",
-			"@sveltejs/adapter-static": "3.0.10",
-			"@sveltejs/vite-plugin-svelte": "7.3.0",
-			svelte: "5.57.0",
-			vite: "8.3.0",
+			"@sveltejs/kit": dev["@sveltejs/kit"],
+			"@sveltejs/adapter-static": "4.0.0",
+			"@sveltejs/vite-plugin-svelte": dev["@sveltejs/vite-plugin-svelte"],
+			svelte: dev.svelte,
+			typescript: dev.typescript, // peer of Kit 3
+			vite: dev.vite,
 		};
 		const files = {
 			"package.json": JSON.stringify(
@@ -75,8 +79,8 @@ function smokeTest() {
 				null,
 				2
 			),
-			"svelte.config.js": `import adapter from '@sveltejs/adapter-static';\nexport default { kit: { adapter: adapter() } };\n`,
-			"vite.config.js": `import { sveltekit } from '@sveltejs/kit/vite';\nimport { caThemePlugin } from '@codeatlasdev/ui/vite';\nimport { defineConfig } from 'vite';\n\nexport default defineConfig({\n  plugins: [sveltekit(), caThemePlugin()]\n});\n`,
+			// Kit 3 reads its config from the Vite plugin (svelte.config.js is rejected); Kit >= 2.62 accepts the same.
+			"vite.config.js": `import adapter from '@sveltejs/adapter-static';\nimport { sveltekit } from '@sveltejs/kit/vite';\nimport { caThemePlugin } from '@codeatlasdev/ui/vite';\nimport { defineConfig } from 'vite';\n\nexport default defineConfig({\n  plugins: [sveltekit({ adapter: adapter() }), caThemePlugin()]\n});\n`,
 			"src/app.html": `<!doctype html>\n<html lang="en">\n<head><meta charset="utf-8" />%sveltekit.head%</head>\n<body><div>%sveltekit.body%</div></body>\n</html>\n`,
 			"src/hooks.server.js": `import { sequence } from '@sveltejs/kit/hooks';\nimport { caThemeHandle } from '@codeatlasdev/ui/kit';\n\nexport const handle = sequence(caThemeHandle());\n`,
 			"src/routes/+layout.js": "export const prerender = true;\n",

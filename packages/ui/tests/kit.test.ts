@@ -1,7 +1,7 @@
+import { afterEach, beforeEach, describe, expect, it, jest, mock, spyOn } from "bun:test";
 import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { createErrorHandler } from "../src/lib/kit/create-error-handler.js";
 import { caThemeHandle } from "../src/lib/kit/theme-handle.js";
 import {
@@ -12,6 +12,10 @@ import {
 	themeScript,
 } from "../src/lib/theme-script.js";
 import { CA_THEME_SCRIPT_TAG, caErrorPlugin, caThemePlugin } from "../src/lib/vite-plugin.js";
+
+/** A new instance of theme-handle.ts (its own once-per-process `warned` set); Bun keys modules by URL. */
+const freshThemeHandle = (n: number): Promise<{ caThemeHandle: typeof caThemeHandle }> =>
+	import(`../src/lib/kit/theme-handle.js?fresh=${n}`);
 
 // ── theme-script ─────────────────────────────────────────────────────────────
 
@@ -79,9 +83,9 @@ describe("caThemeHandle", () => {
 	});
 
 	it("warns once in dev when viewport-fit=cover or <html lang> is missing", async () => {
-		vi.resetModules();
-		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-		const { caThemeHandle: fresh } = await import("../src/lib/kit/theme-handle.js");
+		// A query string gives a fresh module instance, hence a fresh once-per-process `warned` set.
+		const warn = spyOn(console, "warn").mockImplementation(() => {});
+		const { caThemeHandle: fresh } = await freshThemeHandle(1);
 		const page = (html: string) =>
 			(fresh() as unknown as (a: unknown) => unknown)({
 				event: {},
@@ -101,8 +105,7 @@ describe("caThemeHandle", () => {
 		]);
 
 		warn.mockClear();
-		vi.resetModules();
-		const { caThemeHandle: clean } = await import("../src/lib/kit/theme-handle.js");
+		const { caThemeHandle: clean } = await freshThemeHandle(2);
 		await (clean() as unknown as (a: unknown) => unknown)({
 			event: {},
 			resolve: (
@@ -169,9 +172,9 @@ describe("createErrorHandler", () => {
 	});
 
 	it("reports the sanitized error and the event", () => {
-		const report = vi.fn();
+		const report = mock();
 		const r = createErrorHandler({ report })({ error: new Error("boom"), event, status: 500 });
-		expect(report).toHaveBeenCalledOnce();
+		expect(report).toHaveBeenCalledTimes(1);
 		expect(report).toHaveBeenCalledWith(r, event);
 	});
 });
@@ -196,7 +199,7 @@ describe("caThemePlugin", () => {
 	});
 	afterEach(() => {
 		rmSync(root, { recursive: true, force: true });
-		vi.restoreAllMocks();
+		jest.restoreAllMocks();
 	});
 
 	it("forces SSR bundling of the ESM-only deps", () => {
@@ -227,12 +230,12 @@ describe("caThemePlugin", () => {
 	});
 
 	it("warns on build when neither hooks.server nor app.html inject the theme", () => {
-		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		const warn = spyOn(console, "warn").mockImplementation(() => {});
 		writeFileSync(join(root, "src", "app.html"), "<html><head></head></html>");
 		const p = caThemePlugin();
 		call(p.configResolved, {}, { root, command: "build", plugins: [] });
 		call(p.buildStart, {});
-		expect(warn).toHaveBeenCalledOnce();
+		expect(warn).toHaveBeenCalledTimes(1);
 		expect(String(warn.mock.calls[0][0])).toContain("FOUC warning");
 	});
 
@@ -240,7 +243,7 @@ describe("caThemePlugin", () => {
 		["hooks.server.ts", "export const handle = sequence(caThemeHandle());"],
 		["app.html", `<head><script id="${CA_THEME_MARKER}"></script></head>`],
 	])("stays silent when %s already injects the theme", (file, body) => {
-		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		const warn = spyOn(console, "warn").mockImplementation(() => {});
 		writeFileSync(join(root, "src", file), body);
 		const p = caThemePlugin();
 		call(p.configResolved, {}, { root, command: "build", plugins: [] });
@@ -249,7 +252,7 @@ describe("caThemePlugin", () => {
 	});
 
 	it("does not warn in dev", () => {
-		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		const warn = spyOn(console, "warn").mockImplementation(() => {});
 		writeFileSync(join(root, "src", "app.html"), "<head></head>");
 		const p = caThemePlugin();
 		call(p.configResolved, {}, { root, command: "serve", plugins: [] });
@@ -266,18 +269,18 @@ describe("caErrorPlugin", () => {
 	let root: string;
 	beforeEach(() => {
 		root = mkdtempSync(join(tmpdir(), "ca-err-"));
-		vi.spyOn(console, "info").mockImplementation(() => {});
+		spyOn(console, "info").mockImplementation(() => {});
 	});
 	afterEach(() => {
 		rmSync(root, { recursive: true, force: true });
-		vi.restoreAllMocks();
+		jest.restoreAllMocks();
 	});
 
 	it("warns (without writing) when +error.svelte is missing", () => {
-		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		const warn = spyOn(console, "warn").mockImplementation(() => {});
 		const p = caErrorPlugin({ root });
 		call(p.buildStart, {});
-		expect(warn).toHaveBeenCalledOnce();
+		expect(warn).toHaveBeenCalledTimes(1);
 		expect(String(warn.mock.calls[0][0])).toContain("No +error.svelte");
 		expect(() => readFileSync(join(root, "src/routes/+error.svelte"))).toThrow();
 	});
@@ -291,7 +294,7 @@ describe("caErrorPlugin", () => {
 	it("never overwrites an existing +error.svelte", () => {
 		mkdirSync(join(root, "src/routes"), { recursive: true });
 		writeFileSync(join(root, "src/routes/+error.svelte"), "mine");
-		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		const warn = spyOn(console, "warn").mockImplementation(() => {});
 		call(caErrorPlugin({ root, scaffold: true }).buildStart, {});
 		expect(readFileSync(join(root, "src/routes/+error.svelte"), "utf8")).toBe("mine");
 		expect(warn).not.toHaveBeenCalled();

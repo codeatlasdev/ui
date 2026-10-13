@@ -1,7 +1,7 @@
+import { describe, expect, it } from "bun:test";
 import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
-import { describe, expect, it } from "vitest";
 import { init } from "../src/cli/init.ts";
 import { migrate } from "../src/cli/migrate.ts";
 

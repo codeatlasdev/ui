@@ -31,18 +31,18 @@ site/                 → site Astro (landing + docs MDX + templates) em ui.code
 
 ## Testes
 
-Sempre `bun run test` (nunca `bun test`, que roda o runner do Bun e ignora Vitest/Playwright).
+Testes unitários rodam no `bun test` (raiz do repo, `bunfig.toml`); componentes e visual precisam de Chromium real e ficam no Vitest. Use `bun run test` (tudo) ou os scripts abaixo. Um `bun test` na raiz roda só os unitários.
 
 | Comando | O que roda |
 |---|---|
 | `bun run test` | unit + browser + E2E |
-| `bun run test:unit` | Vitest projeto `unit` (Node) |
+| `bun run test:unit` | `bun test` em `packages/ui/tests/*.test.ts` (Node/Bun; falha o teste sem `expect`) |
 | `bun run test:browser` | Vitest projeto `browser` (Chromium real, axe) |
 | `bun run test:e2e` / `test:a11y` | Playwright no site estático (build + preview) |
 | `bun run test:vrt` / `test:vrt:update` | regressão visual via Docker (baselines só Linux) |
 
 Convenções de nome:
-- `*.test.ts` — Node (TS puro), em `packages/ui/src` ou `packages/ui/tests/`.
+- `*.test.ts` em `packages/ui/tests/` — unitário no `bun:test` (`mock`/`spyOn`/`jest.useFakeTimers`; DOM só com `GlobalRegistrator` do happy-dom no próprio arquivo; módulo novo por `import("…?fresh=n")`). Tipos checados por `bun --check`.
 - `*.svelte.test.ts` — componente em browser, ao lado do componente.
 - `*.vrt.test.ts` — screenshot por componente; harness de matriz `NomeMatrix.test.svelte`.
 - `*.test.svelte` — harness para snippets/`bind:` (não vai para `dist`).

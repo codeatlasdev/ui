@@ -14,5 +14,7 @@
 		"types": ["node", "@sveltejs/kit", "vitest/browser", "vitest-browser-svelte"],
 		"lib": ["ESNext", "DOM", "DOM.Iterable"]
 	},
-	"include": ["src/**/*.ts", "src/**/*.svelte", "tests/**/*.ts"]
+	"include": ["src/**/*.ts", "src/**/*.svelte", "tests/**/*.ts"],
+	// Unit tests run on `bun test` and are type-checked by `bun --check` (root tsconfig.json).
+	"exclude": ["tests/*.test.ts", "tests/setup.unit.ts", "tests/stub-global.ts"]
 }

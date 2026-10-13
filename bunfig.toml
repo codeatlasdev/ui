@@ -1,7 +1,9 @@
 [install]
 exact = true
 
-# `bun test` would run Bun's own runner and skip Vitest/Playwright. Point it at an
-# empty dir so an accidental `bun test` finds nothing; use `bun run test`.
+# Unit tests run on `bun test` (no browser needed). Browser components and visual tests need a
+# real Chromium, so they stay on Vitest: `bun run test:browser` / `bun run test:vrt`.
+# `*.svelte.test.ts` and `*.vrt.test.ts` live under src/ and are not matched by these roots.
 [test]
-root = "packages/ui/tests/__never__"
+root = "packages/ui/tests"
+preload = ["./packages/ui/tests/setup.unit.ts"]

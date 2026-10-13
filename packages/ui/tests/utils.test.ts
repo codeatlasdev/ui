@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, jest, mock } from "bun:test";
 import { cn } from "../src/lib/utils/cn.js";
 import { debounce } from "../src/lib/utils/debounce.js";
 import {
@@ -10,54 +10,55 @@ import {
 import { storageGet, storageRemove, storageSet } from "../src/lib/utils/local-storage.js";
 import { throttle } from "../src/lib/utils/throttle.js";
 import { uid } from "../src/lib/utils/uid.js";
+import { globalStubs } from "./stub-global.js";
 
 describe("debounce", () => {
-	beforeEach(() => vi.useFakeTimers());
-	afterEach(() => vi.useRealTimers());
+	beforeEach(() => jest.useFakeTimers());
+	afterEach(() => jest.useRealTimers());
 
 	it("fires once with the last arguments after the quiet period", () => {
-		const fn = vi.fn();
+		const fn = mock();
 		const d = debounce(fn, 100);
 		d("a");
-		vi.advanceTimersByTime(60);
+		jest.advanceTimersByTime(60);
 		d("b");
-		vi.advanceTimersByTime(60);
+		jest.advanceTimersByTime(60);
 		expect(fn).not.toHaveBeenCalled();
-		vi.advanceTimersByTime(40);
-		expect(fn).toHaveBeenCalledOnce();
+		jest.advanceTimersByTime(40);
+		expect(fn).toHaveBeenCalledTimes(1);
 		expect(fn).toHaveBeenCalledWith("b");
 	});
 
 	it("fires again for a later burst", () => {
-		const fn = vi.fn();
+		const fn = mock();
 		const d = debounce(fn, 50);
 		d(1);
-		vi.advanceTimersByTime(50);
+		jest.advanceTimersByTime(50);
 		d(2);
-		vi.advanceTimersByTime(50);
+		jest.advanceTimersByTime(50);
 		expect(fn.mock.calls).toEqual([[1], [2]]);
 	});
 });
 
 describe("throttle", () => {
-	beforeEach(() => vi.useFakeTimers());
-	afterEach(() => vi.useRealTimers());
+	beforeEach(() => jest.useFakeTimers());
+	afterEach(() => jest.useRealTimers());
 
 	it("runs the first call immediately and drops calls inside the window", () => {
-		const fn = vi.fn();
+		const fn = mock();
 		const t = throttle(fn, 100);
 		t("a");
 		t("b");
 		t("c");
-		expect(fn).toHaveBeenCalledOnce();
+		expect(fn).toHaveBeenCalledTimes(1);
 		expect(fn).toHaveBeenCalledWith("a");
 	});
 
 	it("accepts a call again once the window elapsed", () => {
-		const fn = vi.fn();
+		const fn = mock();
 		const t = throttle(fn, 100);
 		t("a");
-		vi.advanceTimersByTime(100);
+		jest.advanceTimersByTime(100);
 		t("b");
 		expect(fn.mock.calls).toEqual([["a"], ["b"]]);
 	});
@@ -105,10 +106,10 @@ describe("format", () => {
 	describe("formatRelativeTime", () => {
 		const NOW = Date.parse("2026-01-01T12:00:00Z");
 		beforeEach(() => {
-			vi.useFakeTimers();
-			vi.setSystemTime(NOW);
+			jest.useFakeTimers();
+			jest.setSystemTime(NOW);
 		});
-		afterEach(() => vi.useRealTimers());
+		afterEach(() => jest.useRealTimers());
 
 		it.each([
 			[-30_000, "30 seconds ago"],
@@ -158,16 +159,18 @@ describe("local-storage helpers", () => {
 		removeItem: (k: string) => void store.delete(k),
 	};
 
+	const globals = globalStubs();
+
 	beforeEach(() => {
 		store.clear();
-		vi.stubGlobal("localStorage", fake);
+		globals.stub("localStorage", fake);
 	});
-	afterEach(() => vi.unstubAllGlobals());
+	afterEach(() => globals.restore());
 
 	it("round-trips JSON values", () => {
 		storageSet("k", { a: [1, 2] });
 		expect(store.get("k")).toBe('{"a":[1,2]}');
-		expect(storageGet("k", null)).toEqual({ a: [1, 2] });
+		expect(storageGet<{ a: number[] } | null>("k", null)).toEqual({ a: [1, 2] });
 	});
 
 	it("returns the fallback for missing keys", () => {
@@ -186,7 +189,7 @@ describe("local-storage helpers", () => {
 	});
 
 	it("is a safe no-op without localStorage (SSR)", () => {
-		vi.stubGlobal("localStorage", undefined);
+		globals.stub("localStorage", undefined);
 		expect(storageGet("k", "fb")).toBe("fb");
 		expect(() => storageSet("k", 1)).not.toThrow();
 		expect(() => storageRemove("k")).not.toThrow();

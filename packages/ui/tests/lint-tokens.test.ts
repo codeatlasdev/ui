@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it } from "bun:test";
 import { lintSource } from "../scripts/lint-tokens.ts";
 
 const rules = (file: string, src: string) => lintSource(file, src).map((v) => v.rule);

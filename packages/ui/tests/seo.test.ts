@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, jest, mock, spyOn } from "bun:test";
 import {
 	AI_BOT_USER_AGENT,
 	appleMeta,
@@ -235,21 +235,21 @@ describe("markdownNegotiation", () => {
 
 describe("ogImageRoute", () => {
 	function fakeBrowser() {
-		const shot = vi.fn(async () => new Uint8Array([1, 2, 3]));
-		const close = vi.fn(async () => {});
+		const shot = mock(async () => new Uint8Array([1, 2, 3]));
+		const close = mock(async () => {});
 		const page = {
-			setContent: vi.fn(async () => {}),
-			evaluate: vi.fn(async () => {}),
+			setContent: mock(async () => {}),
+			evaluate: mock(async () => {}),
 			screenshot: shot,
 		};
-		const newContext = vi.fn(async () => ({ newPage: async () => page, close }));
+		const newContext = mock(async () => ({ newPage: async () => page, close }));
 		return { browser: { newContext }, shot, close, newContext };
 	}
 	type Ev = { slug: string };
 
 	it("renders at 1200x630, caches by key and closes the context", async () => {
 		const f = fakeBrowser();
-		const render = vi.fn((e: Ev) => (e.slug === "known" ? "<html>ok</html>" : undefined));
+		const render = mock((e: Ev) => (e.slug === "known" ? "<html>ok</html>" : undefined));
 		const GET = ogImageRoute<Ev>({ browser: () => f.browser, render, cacheKey: (e) => e.slug });
 
 		const first = await GET({ slug: "known" });
@@ -295,7 +295,7 @@ describe("manifest", () => {
 		{ src: "/i-maskable.png", sizes: "512x512", purpose: "maskable" as const },
 	];
 
-	afterEach(() => vi.restoreAllMocks());
+	afterEach(() => jest.restoreAllMocks());
 
 	it("derives theme and background colors from the theme's default scheme", () => {
 		const dark = manifest({ name: "Acme", icons, theme: { defaultScheme: "dark" } });
@@ -325,7 +325,7 @@ describe("manifest", () => {
 	});
 
 	it("warns when no maskable icon is given", () => {
-		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		const warn = spyOn(console, "warn").mockImplementation(() => {});
 		manifest({ name: "Acme", icons: [icons[0]] });
 		expect(warn).toHaveBeenCalledWith(expect.stringContaining("maskable"));
 	});
