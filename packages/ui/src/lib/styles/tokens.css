@@ -37,7 +37,6 @@
   /* ── Shape ───────────────────────────────────────────────────────────────
    * Radius scale times --ca-radius-scale (0 = square, Swiss/Brutalism; 2 = soft, Clay). */
   --ca-radius-scale: 1;
-  --ca-radius-pill: 999px;
   /* Controls (buttons, fields, chips) pick their radius from this role, not a step. */
 
   /* Border weight by role. Flat/brutalist styles raise these; glass keeps hairlines. */
@@ -173,8 +172,11 @@
   --ca-radius-sm:   calc(6px * var(--ca-radius-scale));
   --ca-radius-md:   calc(10px * var(--ca-radius-scale));
   --ca-radius-lg:   calc(14px * var(--ca-radius-scale));
+  --ca-radius-pill: 999px;
   --ca-radius-xl:   calc(20px * var(--ca-radius-scale));
   --ca-radius-control: var(--ca-radius-md);
+  /* Tags/chips: pill at any radius-scale > 0, square when a recipe sets radius 0. */
+  --ca-radius-chip: calc(999px * var(--ca-radius-scale));
   --ca-duration-press:  calc(80ms * var(--ca-motion-scale));
   --ca-duration-fast:   calc(150ms * var(--ca-motion-scale));
   --ca-duration-base:   calc(240ms * var(--ca-motion-scale));

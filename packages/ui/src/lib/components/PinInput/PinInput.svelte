@@ -100,8 +100,9 @@
     width: var(--ca-space-10);
     height: var(--ca-space-12);
     border-radius: var(--ca-radius-control);
-    background: var(--ca-surface-raised);
-    border: var(--ca-border-width) solid var(--ca-outline-subtle);
+    background: var(--ca-field-bg);
+    border: var(--ca-border-width) solid var(--ca-field-border-color);
+    box-shadow: var(--ca-field-shadow);
     color: var(--ca-text-primary);
     font-size: var(--ca-font-size-h5);
     font-weight: var(--ca-font-weight-semibold);

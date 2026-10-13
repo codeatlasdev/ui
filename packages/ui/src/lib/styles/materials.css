@@ -45,6 +45,15 @@
 [data-theme-scope],
 [data-preset],
 [data-style] {
+  /* Control roles: fields, chips and alerts read these, so surface styles restyle them too. */
+  --ca-field-bg:           var(--ca-surface-raised);
+  --ca-field-border-color: var(--ca-outline-subtle);
+  --ca-field-shadow:       0 0 #0000;
+  --ca-chip-bg:            var(--ca-glass-tint-thin);
+  --ca-chip-border-color:  var(--ca-glass-border);
+  --ca-chip-shadow:        0 0 #0000;
+  --ca-alert-border-color: transparent;
+  --ca-alert-shadow:       0 0 #0000;
   --ca-mat-edge:
     inset 0 0.5px 0 var(--ca-glass-rim),
     inset 0 -0.5px 0 var(--ca-mat-edge-low);
@@ -477,6 +486,11 @@
   --ca-shadow-md: none;
   --ca-shadow-lg: none;
   --ca-shadow-xl: none;
+  --ca-field-bg:           var(--ca-surface-base);
+  --ca-field-border-color: var(--ca-border-color);
+  --ca-chip-bg:            transparent;
+  --ca-chip-border-color:  var(--ca-border-color);
+  --ca-alert-border-color: var(--ca-border-color);
 }
 
 /* ── Neumorphic: one base color, extruded by paired light/dark shadows. Low contrast by
@@ -503,6 +517,23 @@
   --ca-panel-shadow:   var(--ca-mat-thick-shadow);
   --ca-overlay-border: transparent;
   --ca-panel-border:   transparent;
+  /* Fields are pressed in, chips and alerts raised. */
+  --ca-field-bg:           var(--ca-surface-base);
+  --ca-field-border-color: transparent;
+  --ca-field-shadow:
+    inset calc(var(--ca-neu-distance) * 0.5) calc(var(--ca-neu-distance) * 0.5) calc(var(--ca-neu-blur) * 0.5) var(--ca-neu-dark),
+    inset calc(var(--ca-neu-distance) * -0.5) calc(var(--ca-neu-distance) * -0.5) calc(var(--ca-neu-blur) * 0.5) var(--ca-neu-light);
+  --ca-chip-bg:            var(--ca-surface-base);
+  --ca-chip-border-color:  transparent;
+  --ca-chip-shadow:        var(--ca-mat-ultra-thin-shadow);
+  --ca-alert-shadow:       var(--ca-mat-ultra-thin-shadow);
+}
+
+.dark[data-style="neumorphic"],
+.dark [data-style="neumorphic"] {
+  /* A white-mixed highlight reads as a halo on dark bases; keep it a faint lift. */
+  --ca-neu-light: color-mix(in oklab, var(--ca-surface-base) 88%, white);
+  --ca-neu-dark:  color-mix(in oklab, var(--ca-surface-base) 45%, black);
 }
 
 /* ── Clay: soft, inflated surfaces (inner highlight + inner shade + colored drop). ── */
@@ -522,6 +553,12 @@
   --ca-mat-chrome-shadow:     0 6px 14px color-mix(in oklab, var(--ca-brand-main) 14%, transparent);
   --ca-overlay-shadow: var(--ca-mat-thick-shadow), var(--ca-mat-edge);
   --ca-panel-shadow:   var(--ca-mat-thick-shadow), var(--ca-mat-edge);
+  --ca-field-border-color: transparent;
+  --ca-field-shadow:       inset 0 2px 5px color-mix(in oklab, black 10%, transparent);
+  --ca-chip-bg:            var(--ca-surface-raised);
+  --ca-chip-border-color:  transparent;
+  --ca-chip-shadow:        var(--ca-mat-edge), var(--ca-mat-ultra-thin-shadow);
+  --ca-alert-shadow:       var(--ca-mat-edge), var(--ca-mat-ultra-thin-shadow);
 }
 
 /* ── Tonal (Material 3): surfaces tinted with the brand hue, soft elevation. ── */
@@ -541,6 +578,12 @@
   --ca-panel-bg:   var(--ca-mat-thick-fill);
   --ca-overlay-border: transparent;
   --ca-panel-border:   transparent;
+  /* M3 filled text field: tinted fill, bottom indicator. */
+  --ca-field-bg:           color-mix(in oklab, var(--ca-brand-main) 7%, var(--ca-surface-raised));
+  --ca-field-border-color: transparent;
+  --ca-field-shadow:       inset 0 calc(var(--ca-border-width) * -1) 0 var(--ca-outline-strong);
+  --ca-chip-bg:            color-mix(in oklab, var(--ca-brand-main) 12%, var(--ca-surface-raised));
+  --ca-chip-border-color:  transparent;
 }
 
 /* ── No backdrop-filter (old WebViews, some Android browsers): translucent tints would

@@ -8,7 +8,7 @@ import { colorScheme } from "../src/lib/stores/color-scheme.svelte";
 export const SCHEMES = ["dark", "light"] as const satisfies readonly ColorScheme[];
 export const STYLES = ["glass", "solid"] as const satisfies readonly SurfaceStyle[];
 
-type Theme = { scheme: (typeof SCHEMES)[number]; style: (typeof STYLES)[number] };
+type Theme = { scheme: (typeof SCHEMES)[number]; style: SurfaceStyle };
 
 /**
  * Resolves once the page is visually quiescent: fonts loaded, every <link rel=stylesheet>

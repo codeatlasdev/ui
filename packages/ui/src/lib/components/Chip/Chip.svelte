@@ -69,15 +69,16 @@
     align-items: center;
     gap: var(--ca-space-1);
     height: var(--ca-space-7);
-    border-radius: var(--ca-radius-pill);
+    border-radius: var(--ca-radius-chip);
     padding: 0 var(--ca-space-3);
     font-size: var(--ca-font-size-caption);
     font-weight: var(--ca-font-weight-medium);
     color: var(--ca-text-secondary);
-    background: var(--ca-glass-tint-thin);
+    background: var(--ca-chip-bg);
     -webkit-backdrop-filter: var(--ca-blur-thin);
     backdrop-filter: var(--ca-blur-thin);
-    border: var(--ca-border-width) solid var(--ca-glass-border);
+    border: var(--ca-border-width) solid var(--ca-chip-border-color);
+    box-shadow: var(--ca-chip-shadow);
     transition:
       background var(--ca-duration-fast) var(--ca-ease-standard),
       color var(--ca-duration-fast) var(--ca-ease-standard);

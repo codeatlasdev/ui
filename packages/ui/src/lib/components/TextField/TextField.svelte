@@ -126,8 +126,9 @@
     height: var(--ca-control-height);
     border-radius: var(--ca-radius-control);
     padding: 0 var(--ca-space-2-5);
-    background: var(--ca-surface-raised);
-    border: var(--ca-border-width) solid var(--ca-outline-subtle);
+    background: var(--ca-field-bg);
+    border: var(--ca-border-width) solid var(--ca-field-border-color);
+    box-shadow: var(--ca-field-shadow);
     transition:
       border-color var(--ca-duration-fast) var(--ca-ease-standard),
       box-shadow   var(--ca-duration-fast) var(--ca-ease-standard);
@@ -178,7 +179,7 @@
   /* Autofill override */
   .ca-tf__input:-webkit-autofill,
   .ca-tf__input:-webkit-autofill:focus {
-    -webkit-box-shadow: 0 0 0 1000px var(--ca-surface-raised) inset;
+    -webkit-box-shadow: 0 0 0 1000px var(--ca-field-bg) inset;
     -webkit-text-fill-color: var(--ca-text-primary);
     caret-color: var(--ca-text-primary);
   }

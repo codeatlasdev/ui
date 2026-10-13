@@ -145,8 +145,9 @@
     display: inline-flex;
     align-items: stretch;
     border-radius: var(--ca-radius-control);
-    background: var(--ca-surface-raised);
-    border: var(--ca-border-width) solid var(--ca-outline-subtle);
+    background: var(--ca-field-bg);
+    border: var(--ca-border-width) solid var(--ca-field-border-color);
+    box-shadow: var(--ca-field-shadow);
     overflow: hidden;
     height: var(--ca-control-height);
     transition:

@@ -59,7 +59,8 @@
     border-radius: var(--ca-radius-md);
     position: relative;
     overflow: hidden;
-    border: var(--ca-border-width) solid transparent;
+    border: var(--ca-border-width) solid var(--ca-alert-border-color);
+    box-shadow: var(--ca-alert-shadow);
   }
 
   .ca-alert__bar {

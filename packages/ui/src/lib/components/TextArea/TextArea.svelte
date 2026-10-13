@@ -114,8 +114,9 @@
   /* ── Textarea wrapper ──────────────────────────────────────── */
   .ca-ta__wrap {
     border-radius: var(--ca-radius-control);
-    background: var(--ca-surface-raised);
-    border: var(--ca-border-width) solid var(--ca-outline-subtle);
+    background: var(--ca-field-bg);
+    border: var(--ca-border-width) solid var(--ca-field-border-color);
+    box-shadow: var(--ca-field-shadow);
     transition:
       border-color var(--ca-duration-fast) var(--ca-ease-standard),
       box-shadow   var(--ca-duration-fast) var(--ca-ease-standard);

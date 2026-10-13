@@ -143,8 +143,9 @@
     height: var(--ca-control-height);
     padding: 0 var(--ca-space-2-5);
     border-radius: var(--ca-radius-control);
-    background: var(--ca-surface-raised);
-    border: var(--ca-border-width) solid var(--ca-outline-subtle);
+    background: var(--ca-field-bg);
+    border: var(--ca-border-width) solid var(--ca-field-border-color);
+    box-shadow: var(--ca-field-shadow);
     cursor: pointer;
     font-family: var(--ca-font-sans);
     font-size: var(--ca-input-font-size);
