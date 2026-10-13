@@ -1,8 +1,10 @@
 <script lang="ts">
   import { t } from '../../i18n/state.svelte.js';
-  import { Calendar } from 'bits-ui';
   import type { DateValue } from '@internationalized/date';
+  import { announce } from '../../utils/announce.js';
   import CalendarBody from './CalendarBody.svelte';
+  import { CalendarState } from './calendar-state.svelte.js';
+  import type { WeekStart } from './date-utils.js';
   import './date.css';
 
   interface Props {
@@ -16,7 +18,7 @@
     readonly?:      boolean;
     locale?:        string;
     /** 0 = Sunday … 6 = Saturday. Default 1 (Monday). */
-    weekStartsOn?:  0 | 1 | 2 | 3 | 4 | 5 | 6;
+    weekStartsOn?:  WeekStart;
     numberOfMonths?: number;
     fixedWeeks?:    boolean;
     isDateDisabled?:    (date: DateValue) => boolean;
@@ -44,29 +46,50 @@
     onchange,
     class: className = '',
   }: Props = $props();
+
+  const cal = new CalendarState({
+    mode: 'single',
+    getValue: () => value,
+    getRange: () => ({ start: undefined, end: undefined }),
+    getPlaceholder: () => placeholder,
+    setPlaceholder: (d) => (placeholder = d),
+    commit: (d) => {
+      value = d;
+      placeholder = d;
+      onchange?.(d);
+    },
+    getMin: () => minValue,
+    getMax: () => maxValue,
+    getDisabled: () => disabled,
+    getReadonly: () => readonly,
+    getLocale: () => locale,
+    getWeekStartsOn: () => weekStartsOn,
+    getNumberOfMonths: () => numberOfMonths,
+    getFixedWeeks: () => fixedWeeks,
+    getIsDateDisabled: () => isDateDisabled,
+    getIsDateUnavailable: () => isDateUnavailable,
+    getLabel: () => label ?? t().calendar.label,
+    announce,
+  });
+
+  // A selected date always drives the visible month.
+  $effect(() => {
+    if (value && placeholder !== value) placeholder = value;
+  });
 </script>
 
-<Calendar.Root
-  type="single"
-  bind:value
-  bind:placeholder
-  {minValue}
-  {maxValue}
-  {disabled}
-  {readonly}
-  {locale}
-  {weekStartsOn}
-  {numberOfMonths}
-  {fixedWeeks}
-  {isDateDisabled}
-  {isDateUnavailable}
-  calendarLabel={label ?? t().calendar.label}
-  weekdayFormat="short"
-  preventDeselect
-  onValueChange={(v) => onchange?.(v)}
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+<div
+  bind:this={cal.root}
   class="ca-cal ca-cal--standalone {className}"
+  role="application"
+  aria-label={cal.fullLabel}
+  data-disabled={disabled ? '' : undefined}
+  data-readonly={readonly ? '' : undefined}
+  onkeydown={cal.onkeydown}
 >
-  {#snippet children({ months, weekdays })}
-    <CalendarBody {months} {weekdays} />
-  {/snippet}
-</Calendar.Root>
+  <div
+    style="border:0;clip:rect(0,0,0,0);clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;white-space:nowrap;width:1px"
+  ><div role="heading" aria-level="2">{cal.fullLabel}</div></div>
+  <CalendarBody state={cal} {disabled} {readonly} />
+</div>

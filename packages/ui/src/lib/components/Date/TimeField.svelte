@@ -1,7 +1,9 @@
 <script lang="ts">
-  import { TimeField } from 'bits-ui';
-  import type { Time } from '@internationalized/date';
+  import { Time } from '@internationalized/date';
+  import { announce } from '../../utils/announce.js';
   import { uid } from '../../utils/index.js';
+  import DateSegments from './DateSegments.svelte';
+  import { FieldState } from './field-state.svelte.js';
   import type { TimeValue } from './types.js';
   import './date.css';
 
@@ -51,48 +53,76 @@
   }: Props = $props();
 
   const id = uid('tmf');
+
   const describedBy = $derived(error ? `${id}-err` : description ? `${id}-hint` : undefined);
+  let wrap = $state<HTMLElement | null>(null);
+
+  const basePlaceholder = $derived(placeholder ?? new Time(0, 0, 0));
+
+  const field = new FieldState({
+    mode: 'time',
+    getValue: () => value,
+    setValue: (v) => {
+      value = v as Time | undefined;
+      if (v) placeholder = v as Time;
+      onchange?.(value);
+    },
+    getPlaceholder: () => basePlaceholder,
+    getLocale: () => locale,
+    getGranularity: () => granularity,
+    getHourCycle: () => hourCycle,
+    getDisabled: () => disabled,
+    getReadonly: () => readonly,
+    getMin: () => minValue,
+    getMax: () => maxValue,
+    getRoot: () => wrap,
+    announce,
+  });
+
+  $effect(() => field.sync(value));
 </script>
 
-<TimeField.Root
-  bind:value
-  bind:placeholder
-  {disabled}
-  {required}
-  {readonly}
-  {minValue}
-  {maxValue}
-  {locale}
-  {granularity}
-  {hourCycle}
-  errorMessageId={error ? `${id}-err` : undefined}
-  onValueChange={(v) => onchange?.(v)}
->
-  <div class="ca-date {className}" class:ca-date--sm={size === 'sm'} class:ca-date--error={!!error} class:ca-date--disabled={disabled}>
-    {#if label}
-      <TimeField.Label class="ca-date__label">
-        {label}{#if required}<span class="ca-date__req" aria-hidden="true"> *</span>{/if}
-      </TimeField.Label>
-    {/if}
+<div class="ca-date {className}" class:ca-date--sm={size === 'sm'} class:ca-date--error={!!error} class:ca-date--disabled={disabled}>
+  {#if label}
+    <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
+    <div class="ca-date__label" id="{id}-label" onclick={() => !disabled && field.focusFirst()}>
+      {label}{#if required}<span class="ca-date__req" aria-hidden="true"> *</span>{/if}
+    </div>
+  {/if}
 
-    <TimeField.Input
-      {name}
-      class="ca-date__wrap"
-      aria-describedby={describedBy}
-    >
-      {#snippet children({ segments })}
-        <span class="ca-date__input">
-          {#each segments as { part, value: segValue }, i (i)}
-            <TimeField.Segment {part} class="ca-date__segment">{segValue}</TimeField.Segment>
-          {/each}
-        </span>
-      {/snippet}
-    </TimeField.Input>
-
-    {#if error}
-      <p id="{id}-err" class="ca-date__hint ca-date__hint--error" role="alert">{error}</p>
-    {:else if description}
-      <p id="{id}-hint" class="ca-date__hint">{description}</p>
-    {/if}
+  <div
+    class="ca-date__wrap"
+    role="group"
+    bind:this={wrap}
+    aria-labelledby={label ? `${id}-label` : undefined}
+    aria-describedby={describedBy}
+    aria-disabled={disabled}
+    data-invalid={error || field.invalid ? '' : undefined}
+    data-disabled={disabled ? '' : undefined}
+  >
+    <DateSegments
+      {field}
+      base={id}
+      labelId={label ? `${id}-label` : undefined}
+      {disabled}
+      {readonly}
+      invalid={!!error || field.invalid}
+    />
   </div>
-</TimeField.Root>
+  {#if name}
+    <input
+      {name}
+      value={value?.toString() ?? ''}
+      {required}
+      tabindex="-1"
+      aria-hidden="true"
+      style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0;transform:translateX(-100%)"
+    />
+  {/if}
+
+  {#if error}
+    <p id="{id}-err" class="ca-date__hint ca-date__hint--error" role="alert">{error}</p>
+  {:else if description}
+    <p id="{id}-hint" class="ca-date__hint">{description}</p>
+  {/if}
+</div>

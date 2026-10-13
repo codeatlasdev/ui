@@ -1,10 +1,15 @@
 <script lang="ts">
   import { t } from '../../i18n/state.svelte.js';
-  import { DatePicker } from 'bits-ui';
   import { CalendarDays } from '@lucide/svelte';
   import type { DateValue } from '@internationalized/date';
+  import { announce } from '../../utils/announce.js';
   import { uid } from '../../utils/index.js';
   import CalendarBody from './CalendarBody.svelte';
+  import { CalendarState } from './calendar-state.svelte.js';
+  import DateSegments from './DateSegments.svelte';
+  import { defaultDate, type WeekStart } from './date-utils.js';
+  import { FieldState } from './field-state.svelte.js';
+  import PickerPopover from './PickerPopover.svelte';
   import './date.css';
 
   interface Props {
@@ -24,7 +29,7 @@
     maxValue?:     DateValue;
     locale?:       string;
     /** 0 = Sunday … 6 = Saturday. Default 1 (Monday). */
-    weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+    weekStartsOn?: WeekStart;
     /** Adds hour/minute segments to the field. Default 'day'. */
     granularity?:  'day' | 'hour' | 'minute' | 'second';
     numberOfMonths?: number;
@@ -67,90 +72,164 @@
   }: Props = $props();
 
   const id = uid('dp');
-  /**
-   * bits-ui chains its own open-focus after ours; that one runs `document.querySelector(
-   * '[data-bits-day][data-focused]').focus()` and so pulls focus (and a page scroll) to any
-   * other calendar on the page. We can't stop it from running, so: remember the scroll
-   * position, let it run, then put focus back on this popover's own day without scrolling.
-   */
-  let content = $state<HTMLElement | null>(null);
+  const describedBy = $derived(error ? `${id}-err` : description ? `${id}-hint` : undefined);
 
-  function focusOwnDay(e: Event) {
-    const day =
-      content?.querySelector<HTMLElement>('[data-bits-day][data-focused]') ??
-      content?.querySelector<HTMLElement>('[data-bits-day]:not([data-disabled])');
-    if (!day) return;
-    e.preventDefault();
-    const { scrollX, scrollY } = window;
-    // Runs after the chained handler in the same task, before the next paint.
-    queueMicrotask(() => {
-      day.focus({ preventScroll: true });
-      window.scrollTo(scrollX, scrollY);
-    });
+  let wrap = $state<HTMLElement | null>(null);
+  let triggerEl = $state<HTMLElement | null>(null);
+
+  const basePlaceholder = $derived(
+    placeholder ?? defaultDate({ value, granularity, minValue, maxValue }),
+  );
+
+  function commit(v: DateValue | undefined) {
+    value = v;
+    if (v) placeholder = v;
+    onchange?.(v);
   }
 
-  const describedBy = $derived(error ? `${id}-err` : description ? `${id}-hint` : undefined);
+  const field = new FieldState({
+    mode: 'date',
+    getValue: () => value,
+    setValue: (v) => commit(v as DateValue | undefined),
+    getPlaceholder: () => basePlaceholder,
+    getLocale: () => locale,
+    getGranularity: () => granularity,
+    getHourCycle: () => undefined,
+    getDisabled: () => disabled,
+    getReadonly: () => readonly,
+    getMin: () => minValue,
+    getMax: () => maxValue,
+    getRoot: () => wrap,
+    announce,
+  });
+  $effect(() => field.sync(value));
+
+  const cal = new CalendarState({
+    mode: 'single',
+    getValue: () => value,
+    getRange: () => ({ start: undefined, end: undefined }),
+    getPlaceholder: () => placeholder ?? value,
+    setPlaceholder: (d) => (placeholder = d),
+    commit,
+    onSelect: () => {
+      if (closeOnDateSelect) close(true);
+    },
+    getMin: () => minValue,
+    getMax: () => maxValue,
+    getDisabled: () => disabled,
+    getReadonly: () => readonly,
+    getLocale: () => locale,
+    getWeekStartsOn: () => weekStartsOn,
+    getNumberOfMonths: () => numberOfMonths,
+    getFixedWeeks: () => false,
+    getIsDateDisabled: () => isDateDisabled,
+    getIsDateUnavailable: () => isDateUnavailable,
+    getLabel: () => label ?? t().calendar.label,
+    announce,
+  });
+
+  function close(restoreFocus = false) {
+    open = false;
+    if (restoreFocus) triggerEl?.focus();
+  }
+
+  /**
+   * Focus goes to this popover's own active day, without scrolling the page (other calendars may
+   * sit further down).
+   */
+  function focusOwnDay(content: HTMLElement) {
+    queueMicrotask(() => {
+      const day =
+        content.querySelector<HTMLElement>('[data-ca-day][data-focused]') ??
+        content.querySelector<HTMLElement>('[data-ca-day]:not([data-disabled])');
+      day?.focus({ preventScroll: true });
+    });
+  }
 </script>
 
-<DatePicker.Root
-  bind:value
-  bind:placeholder
-  bind:open
-  {disabled}
-  {required}
-  {readonly}
-  {minValue}
-  {maxValue}
-  {locale}
-  {weekStartsOn}
-  {granularity}
-  {numberOfMonths}
-  {isDateDisabled}
-  {isDateUnavailable}
-  {closeOnDateSelect}
-  calendarLabel={label ?? t().calendar.label}
-  weekdayFormat="short"
-  errorMessageId={error ? `${id}-err` : undefined}
-  onValueChange={(v) => onchange?.(v)}
->
-  <div class="ca-date {className}" class:ca-date--sm={size === 'sm'} class:ca-date--error={!!error} class:ca-date--disabled={disabled}>
-    {#if label}
-      <DatePicker.Label class="ca-date__label">
-        {label}{#if required}<span class="ca-date__req" aria-hidden="true"> *</span>{/if}
-      </DatePicker.Label>
-    {/if}
+<div class="ca-date {className}" class:ca-date--sm={size === 'sm'} class:ca-date--error={!!error} class:ca-date--disabled={disabled}>
+  {#if label}
+    <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
+    <div class="ca-date__label" id="{id}-label" onclick={() => !disabled && field.focusFirst()}>
+      {label}{#if required}<span class="ca-date__req" aria-hidden="true"> *</span>{/if}
+    </div>
+  {/if}
 
-    <DatePicker.Input
-      {name}
-      class="ca-date__wrap"
-      aria-describedby={describedBy}
+  <div
+    class="ca-date__wrap"
+    role="group"
+    bind:this={wrap}
+    aria-labelledby={label ? `${id}-label` : undefined}
+    aria-describedby={describedBy}
+    aria-disabled={disabled}
+    data-invalid={error || field.invalid ? '' : undefined}
+    data-disabled={disabled ? '' : undefined}
+    data-state={open ? 'open' : undefined}
+  >
+    <DateSegments
+      {field}
+      base={id}
+      labelId={label ? `${id}-label` : undefined}
+      {disabled}
+      {readonly}
+      invalid={!!error || field.invalid}
+    />
+    <button
+      type="button"
+      class="ca-date__trigger"
+      bind:this={triggerEl}
+      aria-label={triggerLabel ?? t().calendar.openCalendar}
+      aria-haspopup="dialog"
+      aria-expanded={open}
+      aria-controls={open ? `${id}-content` : undefined}
+      data-segment="trigger"
+      data-state={open ? 'open' : 'closed'}
+      {disabled}
+      onclick={() => {
+        if (!readonly) open = !open;
+      }}
     >
-      {#snippet children({ segments })}
-        <span class="ca-date__input">
-          {#each segments as { part, value: segValue }, i (i)}
-            <DatePicker.Segment {part} class="ca-date__segment">{segValue}</DatePicker.Segment>
-          {/each}
-        </span>
-        <DatePicker.Trigger class="ca-date__trigger" aria-label={triggerLabel ?? t().calendar.openCalendar}>
-          <CalendarDays size={16} strokeWidth={2} aria-hidden="true" />
-        </DatePicker.Trigger>
-      {/snippet}
-    </DatePicker.Input>
-
-    {#if error}
-      <p id="{id}-err" class="ca-date__hint ca-date__hint--error" role="alert">{error}</p>
-    {:else if description}
-      <p id="{id}-hint" class="ca-date__hint">{description}</p>
-    {/if}
+      <CalendarDays size={16} strokeWidth={2} aria-hidden="true" />
+    </button>
   </div>
+  {#if name}
+    <input
+      {name}
+      value={value?.toString() ?? ''}
+      {required}
+      tabindex="-1"
+      aria-hidden="true"
+      style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0;transform:translateX(-100%)"
+    />
+  {/if}
 
-  <DatePicker.Portal>
-    <DatePicker.Content class="ca-date__content glass-overlay" sideOffset={6} align="start" bind:ref={content} onOpenAutoFocus={focusOwnDay} role="dialog" aria-label={label ?? t().calendar.label}>
-      <DatePicker.Calendar class="ca-cal">
-        {#snippet children({ months, weekdays })}
-          <CalendarBody {months} {weekdays} />
-        {/snippet}
-      </DatePicker.Calendar>
-    </DatePicker.Content>
-  </DatePicker.Portal>
-</DatePicker.Root>
+  {#if error}
+    <p id="{id}-err" class="ca-date__hint ca-date__hint--error" role="alert">{error}</p>
+  {:else if description}
+    <p id="{id}-hint" class="ca-date__hint">{description}</p>
+  {/if}
+</div>
+
+<PickerPopover
+  {open}
+  anchor={triggerEl}
+  trigger={triggerEl}
+  id="{id}-content"
+  label={label ?? t().calendar.label}
+  onclose={() => close()}
+  onopen={focusOwnDay}
+>
+  <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+<div
+    bind:this={cal.root}
+    class="ca-cal"
+    role="application"
+    aria-label={cal.fullLabel}
+    onkeydown={cal.onkeydown}
+  >
+    <div
+      style="border:0;clip:rect(0,0,0,0);clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;white-space:nowrap;width:1px"
+    ><div role="heading" aria-level="2">{cal.fullLabel}</div></div>
+    <CalendarBody state={cal} {disabled} {readonly} />
+  </div>
+</PickerPopover>
