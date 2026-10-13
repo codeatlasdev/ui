@@ -10,7 +10,8 @@ export default defineConfig({
 	forbidOnly: !!process.env.CI,
 	failOnFlakyTests: !!process.env.CI,
 	retries: process.env.CI ? 1 : 0,
-	workers: process.env.CI ? 2 : undefined,
+	// Every core on CI runners (4 vCPU); shards split the suite across jobs.
+	workers: process.env.CI ? "100%" : undefined,
 	snapshotPathTemplate: "{testDir}/__screenshots__/{projectName}/{testFilePath}/{arg}{ext}",
 	expect: {
 		timeout: 5_000,
@@ -82,7 +83,8 @@ export default defineConfig({
 		},
 	],
 	webServer: {
-		command: "bun run build && bun run preview",
+		// CI builds the site once and hands dist/ to every shard (E2E_PREBUILT=1).
+		command: process.env.E2E_PREBUILT ? "bun run preview" : "bun run build && bun run preview",
 		url: baseURL,
 		reuseExistingServer: !process.env.CI,
 		timeout: 300_000,

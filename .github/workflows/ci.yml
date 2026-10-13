@@ -1,8 +1,11 @@
 name: CI
+# Fast path: one build shared through artifacts, browser suites sharded across jobs and
+# using every core, jobs skipped when the files they cover did not change. Branch rules
+# require only "CI ok", so shards can change without touching repository settings.
 on:
   pull_request:
   push:
-    branches: [main]
+    branches: [main, beta, alpha]
   workflow_dispatch:
     inputs:
       update-snapshots:
@@ -18,6 +21,33 @@ permissions:
   contents: read
 
 jobs:
+  changes:
+    name: Changed areas
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      package: ${{ steps.filter.outputs.package }}
+      site: ${{ steps.filter.outputs.site }}
+    steps:
+      - uses: actions/checkout@v7
+      - id: filter
+        uses: dorny/paths-filter@v4
+        with:
+          # Anything shared (lockfile, root config, CI) counts as a package change: run everything.
+          filters: |
+            package:
+              - 'packages/**'
+              - 'package.json'
+              - 'bun.lock'
+              - 'bunfig.toml'
+              - 'tsconfig.json'
+              - 'biome.json'
+              - 'scripts/**'
+              - '.github/workflows/**'
+            site:
+              - 'site/**'
+
   secrets:
     name: Secret scan
     runs-on: ubuntu-latest
@@ -31,44 +61,132 @@ jobs:
           ./gitleaks git --no-banner --redact --config .gitleaks.toml .
 
   validate:
-    name: Types, lint, unit
+    name: Types, lint, unit, size
     if: ${{ !inputs.update-snapshots }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - uses: oven-sh/setup-bun@v2
-      - uses: actions/setup-node@v7
         with:
-          node-version: 24
-      - run: bun install --frozen-lockfile
+          bun-version-file: package.json
+      - uses: actions/cache@v6
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-${{ runner.os }}-
+      # No postinstall in CI: it would download browsers and install git hooks. Only the
+      # TypeScript link svelte-package needs is required.
+      - run: bun install --frozen-lockfile --ignore-scripts && node scripts/fix-ts-symlink.js
       - run: bun run build:pkg
       - run: bun run validate
 
-  browser:
-    name: Component tests (Chromium)
-    if: ${{ !inputs.update-snapshots }}
+  build:
+    name: Build package + site
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - uses: oven-sh/setup-bun@v2
-      - uses: actions/setup-node@v7
         with:
-          node-version: 24
-      - run: bun install --frozen-lockfile
-      - run: bunx playwright install --with-deps chromium
+          bun-version-file: package.json
+      - uses: actions/cache@v6
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-${{ runner.os }}-
+      # No postinstall in CI: it would download browsers and install git hooks. Only the
+      # TypeScript link svelte-package needs is required.
+      - run: bun install --frozen-lockfile --ignore-scripts && node scripts/fix-ts-symlink.js
+      - run: bun run build
+      - uses: actions/upload-artifact@v7
+        with:
+          name: build
+          retention-days: 3
+          include-hidden-files: true
+          path: |
+            packages/ui/dist/
+            site/dist/
+
+  components:
+    name: Component tests (${{ matrix.shard }}/2)
+    needs: changes
+    if: ${{ !inputs.update-snapshots && needs.changes.outputs.package == 'true' }}
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.0-noble
+      options: --ipc=host --init
+    env:
+      HOME: /root
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2]
+    steps:
+      - uses: actions/checkout@v7
+      - run: npm i -g "$(node -p 'require("./package.json").packageManager')"
+      - uses: actions/cache@v6
+        with:
+          path: /root/.bun/install/cache
+          key: bun-container-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-container-
+      # No postinstall in CI: it would download browsers and install git hooks. Only the
+      # TypeScript link svelte-package needs is required.
+      - run: bun install --frozen-lockfile --ignore-scripts && node scripts/fix-ts-symlink.js
       - run: bun run build:pkg
-      - run: bun run test:browser
+      - run: bun run --cwd packages/ui test:browser --shard=${{ matrix.shard }}/2
       - uses: actions/upload-artifact@v7
         if: ${{ failure() }}
         with:
-          name: vitest-traces
+          name: vitest-traces-${{ matrix.shard }}
           include-hidden-files: true
           path: |
             packages/ui/.vitest/
             packages/ui/src/**/__traces__/
 
   e2e:
-    name: Site E2E, a11y, visual (Linux baselines)
+    name: Site e2e + a11y (${{ matrix.shard }}/4)
+    needs: build
+    if: ${{ !inputs.update-snapshots }}
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.0-noble
+      options: --ipc=host --init
+    env:
+      HOME: /root
+      E2E_PREBUILT: "1"
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4]
+    steps:
+      - uses: actions/checkout@v7
+      - run: npm i -g "$(node -p 'require("./package.json").packageManager')"
+      - uses: actions/cache@v6
+        with:
+          path: /root/.bun/install/cache
+          key: bun-container-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-container-
+      # No postinstall in CI: it would download browsers and install git hooks. Only the
+      # TypeScript link svelte-package needs is required.
+      - run: bun install --frozen-lockfile --ignore-scripts && node scripts/fix-ts-symlink.js
+      - uses: actions/download-artifact@v8
+        with:
+          name: build
+      - working-directory: site
+        run: bunx playwright test --project=desktop --project=mobile --project=a11y --project=iphone --shard=${{ matrix.shard }}/4
+      - uses: actions/upload-artifact@v7
+        if: ${{ failure() }}
+        with:
+          name: playwright-e2e-${{ matrix.shard }}
+          include-hidden-files: true
+          path: |
+            site/playwright-report/
+            site/test-results/
+
+  visual:
+    name: Visual regression (Linux baselines)
+    needs: [changes, build]
+    # Pixels only change when code, styles or the site change; always run when regenerating.
+    if: ${{ inputs.update-snapshots || needs.changes.outputs.package == 'true' || needs.changes.outputs.site == 'true' }}
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.64.0-noble
@@ -77,17 +195,28 @@ jobs:
       contents: write
     env:
       HOME: /root
+      E2E_PREBUILT: "1"
     steps:
       - uses: actions/checkout@v7
-      - run: npm i -g bun
-      - run: bun install --frozen-lockfile
-      - run: bun run build:pkg
-      - run: bun run --cwd packages/ui test:vrt ${{ inputs.update-snapshots && '--update' || '' }}
-      - run: bun run --cwd site test:e2e ${{ inputs.update-snapshots && '--project=visual-desktop --project=visual-mobile --update-snapshots' || '' }}
-      - uses: actions/upload-artifact@v7
-        if: ${{ !cancelled() }}
+      - run: npm i -g "$(node -p 'require("./package.json").packageManager')"
+      - uses: actions/cache@v6
         with:
-          name: playwright-report
+          path: /root/.bun/install/cache
+          key: bun-container-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-container-
+      # No postinstall in CI: it would download browsers and install git hooks. Only the
+      # TypeScript link svelte-package needs is required.
+      - run: bun install --frozen-lockfile --ignore-scripts && node scripts/fix-ts-symlink.js
+      - uses: actions/download-artifact@v8
+        with:
+          name: build
+      - run: bun run --cwd packages/ui test:vrt ${{ inputs.update-snapshots && '--update' || '' }}
+      - working-directory: site
+        run: bunx playwright test --project=visual-desktop --project=visual-mobile ${{ inputs.update-snapshots && '--update-snapshots' || '' }}
+      - uses: actions/upload-artifact@v7
+        if: ${{ failure() }}
+        with:
+          name: playwright-visual
           include-hidden-files: true
           path: |
             site/playwright-report/
@@ -106,21 +235,17 @@ jobs:
     name: Site preview
     # Fork PRs get no secrets; they still get the full test matrix above.
     if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
-    needs: [validate]
+    needs: build
     runs-on: ubuntu-latest
     permissions:
       contents: read
       pull-requests: write
     steps:
       - uses: actions/checkout@v7
-      - uses: oven-sh/setup-bun@v2
-      - uses: actions/setup-node@v7
+      - uses: actions/download-artifact@v8
         with:
-          node-version: 24
-      - run: bun install --frozen-lockfile
-      - run: bun run build
-      - id: deploy
-        uses: cloudflare/wrangler-action@v4
+          name: build
+      - uses: cloudflare/wrangler-action@v4
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
@@ -134,3 +259,14 @@ jobs:
           body="Site preview: $URL"
           gh pr comment ${{ github.event.pull_request.number }} --edit-last --body "$body" 2>/dev/null \
             || gh pr comment ${{ github.event.pull_request.number }} --body "$body"
+
+  ok:
+    name: CI ok
+    # The single required check. Skipped jobs (path filters) count as passing; failures don't.
+    if: ${{ always() }}
+    needs: [secrets, validate, build, components, e2e, visual]
+    runs-on: ubuntu-latest
+    steps:
+      - name: All required jobs passed or were skipped
+        run: |
+          echo '${{ toJSON(needs) }}' | jq -e 'to_entries | all(.value.result == "success" or .value.result == "skipped")'
