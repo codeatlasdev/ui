@@ -143,7 +143,7 @@ jobs:
             packages/ui/src/**/__traces__/
 
   e2e:
-    name: Site e2e + a11y (${{ matrix.shard }}/6)
+    name: Site ${{ matrix.suite }} (${{ matrix.shard }}/${{ matrix.total }})
     needs: build
     if: ${{ !inputs.update-snapshots }}
     runs-on: ubuntu-latest
@@ -156,7 +156,16 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2, 3, 4, 5, 6]
+        # Playwright splits shards by test count, not cost: the per-route a11y tests (3 axe
+        # passes each) get their own shards so no job collects all of them.
+        include:
+          - { suite: e2e, projects: "--project=desktop --project=mobile --project=iphone", shard: 1, total: 3 }
+          - { suite: e2e, projects: "--project=desktop --project=mobile --project=iphone", shard: 2, total: 3 }
+          - { suite: e2e, projects: "--project=desktop --project=mobile --project=iphone", shard: 3, total: 3 }
+          - { suite: a11y, projects: "--project=a11y", shard: 1, total: 4 }
+          - { suite: a11y, projects: "--project=a11y", shard: 2, total: 4 }
+          - { suite: a11y, projects: "--project=a11y", shard: 3, total: 4 }
+          - { suite: a11y, projects: "--project=a11y", shard: 4, total: 4 }
     steps:
       - uses: actions/checkout@v7
       - run: npm i -g --allow-scripts=bun "$(node -p 'require("./package.json").packageManager')"
@@ -172,11 +181,11 @@ jobs:
         with:
           name: build
       - working-directory: site
-        run: bunx playwright test --project=desktop --project=mobile --project=a11y --project=iphone --shard=${{ matrix.shard }}/6
+        run: bunx playwright test ${{ matrix.projects }} --shard=${{ matrix.shard }}/${{ matrix.total }}
       - uses: actions/upload-artifact@v7
         if: ${{ failure() }}
         with:
-          name: playwright-e2e-${{ matrix.shard }}
+          name: playwright-${{ matrix.suite }}-${{ matrix.shard }}
           include-hidden-files: true
           path: |
             site/playwright-report/
