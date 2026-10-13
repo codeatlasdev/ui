@@ -197,12 +197,12 @@
 
 <div class="te">
   <!-- ── Top bar ── -->
-  <header class="te__topbar">
-    <div class="te__topbar-left">
-      <span class="te__brand">Theme Editor</span>
-      <span class="te__brand-sub">Customize every token · changes auto-save</span>
+  <header class="ca-bar te__topbar">
+    <div class="ca-bar__lead">
+      <span class="ca-bar__title te__brand">Theme Editor</span>
+      <span class="ca-bar__sub">Customize every token · changes auto-save</span>
     </div>
-    <div class="te__topbar-right">
+    <div class="ca-bar__actions">
       <button type="button" class="te-btn te-btn--ghost te-btn--sm" onclick={reset}>
         <RotateCcw size={12} /> Reset
       </button>
@@ -217,7 +217,7 @@
     <!-- ── LEFT: controls ── -->
     <aside class="te__controls">
       <!-- Section tabs -->
-      <div class="te__tabs">
+      <div class="ca-bar te__tabs">
         {#each SECTIONS as s}
           <button
             type="button"
@@ -491,9 +491,9 @@
 
     <!-- ── CENTER: live preview ── -->
     <div class="te__preview">
-      <div class="te__preview-header">
-        <span class="te__preview-title">Live preview</span>
-        <div class="te__preview-actions">
+      <div class="ca-bar te__panel-head">
+        <span class="ca-bar__title te__panel-title">Live preview</span>
+        <div class="ca-bar__actions">
           <button
             type="button"
             class="te__scheme-pill"
@@ -584,11 +584,13 @@
 
     <!-- ── RIGHT: CSS output ── -->
     <aside class="te__output">
-      <div class="te__output-header">
-        <span class="te__output-title">CSS output</span>
+      <div class="ca-bar te__panel-head">
+        <span class="ca-bar__title te__panel-title">CSS output</span>
+        <span class="ca-bar__actions">
         <button type="button" class="te-btn te-btn--ghost te-btn--sm" onclick={copyCSS}>
           {#if copied}<Check size={11} />Copied{:else}<Copy size={11} />Copy{/if}
         </button>
+        </span>
       </div>
       <!-- Scrollable region: keyboard-focusable on purpose (axe scrollable-region-focusable). -->
       <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
@@ -609,19 +611,8 @@
   }
 
   /* ── Top bar ─────────────────────────────────────────────────────── */
-  .te__topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 16px;
-    padding: 0 20px;
-    height: 48px;
-    flex-shrink: 0;
-    border-bottom: 1px solid var(--ca-outline-subtle);
-    background: var(--ca-surface-raised);
-  }
+  .te__topbar { background: var(--ca-surface-raised); }
 
-  .te__topbar-left { display: flex; align-items: baseline; gap: 12px; }
 
   .te__brand {
     font-size: var(--ca-font-size-body1);
@@ -630,12 +621,7 @@
     color: var(--ca-text-primary);
   }
 
-  .te__brand-sub {
-    font-size: var(--ca-font-size-nano);
-    color: var(--ca-text-hint);
-  }
 
-  .te__topbar-right { display: flex; gap: 8px; align-items: center; }
 
   /* ── Body — 3 columns ────────────────────────────────────────────── */
   .te__body {
@@ -663,19 +649,21 @@
     overflow: hidden;
   }
 
+  /* Tab strip: same bar height as the panel heads beside it; tabs fill it edge to edge. */
   .te__tabs {
-    display: flex;
-    flex-shrink: 0;
+    align-items: stretch;
+    gap: 0;
+    padding-inline: var(--ca-space-1);
     overflow-x: auto;
-    border-bottom: 1px solid var(--ca-outline-subtle);
-    padding: 4px 4px 0;
-    gap: 1px;
     background: var(--ca-surface-sunken);
   }
   .te__tabs::-webkit-scrollbar { height: 0; }
 
   .te__tab {
-    padding: 5px 10px 7px;
+    display: inline-flex;
+    align-items: center;
+    flex-shrink: 0;
+    padding: 0 var(--ca-space-3);
     border: none;
     background: transparent;
     cursor: pointer;
@@ -1019,26 +1007,15 @@
     background: var(--ca-surface-base);
   }
 
-  .te__preview-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 10px 16px;
-    border-bottom: 1px solid var(--ca-outline-subtle);
-    flex-shrink: 0;
-    background: var(--ca-surface-sunken);
-  }
+  .te__panel-head { background: var(--ca-surface-sunken); }
 
-  .te__preview-title {
+  .te__panel-title {
     font-size: var(--ca-font-size-micro);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--ca-text-hint);
   }
-
-  .te__preview-actions { display: flex; gap: 4px; align-items: center; }
 
   .te__scheme-pill {
     width: 28px; height: 28px;
@@ -1088,23 +1065,7 @@
     background: var(--ca-surface-base);
   }
 
-  .te__output-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 14px;
-    border-bottom: 1px solid var(--ca-outline-subtle);
-    flex-shrink: 0;
-    background: var(--ca-surface-sunken);
-  }
 
-  .te__output-title {
-    font-size: var(--ca-font-size-micro);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--ca-text-hint);
-  }
 
   .te__code {
     flex: 1;

@@ -168,3 +168,11 @@ tr:focus-within .ca-row-actions {
 .ca-trend-up   { color: var(--ca-semantic-success); }
 .ca-trend-down { color: var(--ca-semantic-error); }
 
+
+/* Bar: one height per row; lead truncates, actions never wrap, subtitle drops first. */
+.ca-bar{display:flex;align-items:center;gap:var(--ca-space-3);min-height:var(--ca-bar-h);padding-inline:var(--ca-space-4);border-bottom:var(--ca-border-width) solid var(--ca-outline-subtle);flex-shrink:0;min-width:0;container-type:inline-size}
+.ca-bar__lead{display:flex;align-items:baseline;gap:var(--ca-space-2);flex:1;min-width:0}
+.ca-bar__title,.ca-bar__sub{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.ca-bar__sub{flex:1;font-size:var(--ca-font-size-caption);color:var(--ca-text-secondary)}
+.ca-bar__actions{display:flex;align-items:center;gap:var(--ca-space-2);flex-shrink:0;margin-inline-start:auto}
+@container (max-width:599.98px){.ca-bar__sub{display:none}}
