@@ -105,7 +105,7 @@
   /* ── Shell layout ────────────────────────────────────────────────────── */
   --ca-header-height: 52px;
   /* Every bar in a row (page header, panel header, tab strip, toolbar) shares this height. */
-  --ca-bar-h: 48px;
+  --ca-bar-h: var(--ca-space-12);
   --ca-rail-width:    52px;
   --ca-panel-width:   192px;
 
