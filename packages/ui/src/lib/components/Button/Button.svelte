@@ -110,13 +110,13 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
-    border-radius: var(--ca-radius-md);
+    gap: var(--ca-space-1-5);
+    border-radius: var(--ca-radius-control);
     border: none;
     cursor: pointer;
     font-family: var(--ca-font-sans);
-    font-weight: 500;
-    letter-spacing: 0.01em;
+    font-weight: var(--ca-font-weight-medium);
+    letter-spacing: var(--ca-label-tracking);
     text-decoration: none;
     white-space: nowrap;
     transition:
@@ -128,8 +128,8 @@
   }
 
   .ca-btn:focus-visible {
-    outline: 2px solid var(--ca-brand-main);
-    outline-offset: 2px;
+    outline: var(--ca-border-width-focus) solid var(--ca-brand-main);
+    outline-offset: var(--ca-focus-ring-offset);
   }
 
   .ca-btn:disabled,
@@ -139,20 +139,20 @@
     pointer-events: none;
   }
 
-  /* Sizes: md aligns with TextField/Select height (36px) */
+  /* Sizes: md aligns with TextField/Select height (--ca-control-height) */
   .ca-btn--sm {
-    height: 30px;
-    padding: 0 10px;
+    height: var(--ca-control-height-sm);
+    padding: 0 var(--ca-space-2-5);
     font-size: var(--ca-font-size-body2);
   }
   .ca-btn--md {
-    height: 36px;
-    padding: 0 14px;
+    height: var(--ca-control-height);
+    padding: 0 var(--ca-control-px);
     font-size: var(--ca-font-size-button);
   }
   .ca-btn--lg {
-    height: 44px;
-    padding: 0 20px;
+    height: var(--ca-control-height-lg);
+    padding: 0 var(--ca-space-5);
     font-size: var(--ca-font-size-dialog);
   }
 
@@ -165,7 +165,7 @@
   /* Native-feeling press on touch devices. */
   @media (hover: none) and (prefers-reduced-motion: no-preference) {
     .ca-btn { transition-property: background, color, border-color, box-shadow, opacity, scale; }
-    .ca-btn:active:not(:disabled) { scale: 0.97; transition-duration: 80ms; }
+    .ca-btn:active:not(:disabled) { scale: 0.97; transition-duration: var(--ca-duration-fast); }
   }
 
   /* Filled */
@@ -178,7 +178,7 @@
   }
   .ca-btn--filled:active:not(:disabled) {
     background: var(--ca-brand-fill-hover);
-    box-shadow: inset 0 1px 3px oklch(0 0 0 / 0.15);
+    box-shadow: inset 0 var(--ca-border-width) var(--ca-space-0-5) color-mix(in oklab, black 15%, transparent);
   }
   /* Disabled keeps the hue: the AA brand pair (fill + contrast text) at 0.45 opacity,
      never a desaturated grey. Hover/active are already gated by :not(:disabled). */
@@ -193,8 +193,9 @@
   /* Glass */
   .ca-btn--glass {
     background: var(--ca-glass-tint);
+    -webkit-backdrop-filter: var(--ca-blur-regular);
     backdrop-filter: var(--ca-blur-regular);
-    border: 1px solid var(--ca-glass-border);
+    border: var(--ca-border-width) solid var(--ca-glass-border);
     color: var(--ca-text-primary);
     box-shadow: var(--ca-glass-shadow);
   }
@@ -205,7 +206,7 @@
   /* Outlined */
   .ca-btn--outlined {
     background: transparent;
-    border: 1px solid var(--ca-brand-main);
+    border: var(--ca-border-width) solid var(--ca-brand-main);
     color: var(--ca-brand-text);
   }
   .ca-btn--outlined:hover:not(:disabled) {
@@ -215,7 +216,7 @@
   /* Ghost */
   .ca-btn--ghost {
     background: transparent;
-    border: 1px solid transparent;
+    border: var(--ca-border-width) solid transparent;
     color: var(--ca-brand-text);
   }
   .ca-btn--ghost:hover:not(:disabled) {

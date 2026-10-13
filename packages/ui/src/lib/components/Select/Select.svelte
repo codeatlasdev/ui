@@ -117,14 +117,14 @@
   .ca-sel {
     display: flex;
     flex-direction: column;
-    gap: var(--ca-space-1, 4px);
+    gap: var(--ca-space-1);
     width: 100%;
   }
 
   /* ── Label ─────────────────────────────────────────────────── */
   .ca-sel__label {
-    font-size: var(--ca-font-size-body2);
-    font-weight: 500;
+    font-size: var(--ca-font-size-label);
+    font-weight: var(--ca-font-weight-medium);
     color: var(--ca-text-primary);
     line-height: 1.4;
     user-select: none;
@@ -139,15 +139,15 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--ca-space-2, 8px);
-    height: 36px;
-    padding: 0 10px;
-    border-radius: var(--ca-radius-md);
+    gap: var(--ca-space-2);
+    height: var(--ca-control-height);
+    padding: 0 var(--ca-space-2-5);
+    border-radius: var(--ca-radius-control);
     background: var(--ca-surface-raised);
-    border: 1px solid var(--ca-outline-subtle);
+    border: var(--ca-border-width) solid var(--ca-outline-subtle);
     cursor: pointer;
     font-family: var(--ca-font-sans);
-    font-size: var(--ca-font-size-body2);
+    font-size: var(--ca-input-font-size);
     color: var(--ca-text-primary);
     width: 100%;
     outline: none;
@@ -170,12 +170,12 @@
   :global(.ca-sel__trigger:focus-visible),
   :global(.ca-sel__trigger[data-state='open']) {
     border-color: var(--ca-brand-main);
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ca-brand-main) 18%, transparent);
+    box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-brand-main) 18%, transparent);
   }
 
   :global(.ca-sel__trigger[aria-invalid='true']) {
     border-color: var(--ca-semantic-error);
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ca-semantic-error) 18%, transparent);
+    box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-semantic-error) 18%, transparent);
   }
 
   :global(.ca-sel__trigger:disabled) {
@@ -204,15 +204,15 @@
 
   /* ── Dropdown content ──────────────────────────────────────── */
   :global(.ca-sel__content) {
-    z-index: var(--ca-z-dropdown, 1000);
+    z-index: var(--ca-z-dropdown);
     min-width: var(--bits-select-anchor-width);
     max-height: 280px;
     overflow-y: auto;
     background: var(--ca-surface-overlay);
-    border: 1px solid var(--ca-outline-subtle);
-    border-radius: var(--ca-radius-md);
+    border: var(--ca-border-width) solid var(--ca-outline-subtle);
+    border-radius: var(--ca-radius-control);
     box-shadow: var(--ca-shadow-lg);
-    padding: 4px;
+    padding: var(--ca-space-1);
     outline: none;
   }
 
@@ -220,8 +220,8 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--ca-space-2, 8px);
-    padding: 6px 10px;
+    gap: var(--ca-space-2);
+    padding: var(--ca-space-1-5) var(--ca-space-2-5);
     border-radius: var(--ca-radius-sm);
     font-size: var(--ca-font-size-body2);
     color: var(--ca-text-primary);
@@ -241,7 +241,7 @@
 
   :global(.ca-sel__item[data-selected]) {
     color: var(--ca-brand-text);
-    font-weight: 500;
+    font-weight: var(--ca-font-weight-medium);
   }
 
   .ca-sel__item-label {
@@ -272,17 +272,9 @@
 
   /* ── Size: sm ──────────────────────────────────────────────── */
   .ca-sel--sm :global(.ca-sel__trigger) {
-    height: 30px;
-    padding: 0 8px;
-    font-size: var(--ca-font-size-caption);
-  }
-
-  /* iOS Safari zooms into focused fields under 16px: keep them at 16px on touch / small screens. */
-  @media (pointer: coarse), (max-width: 899.98px) {
-    :global(.ca-sel__trigger),
-    .ca-sel--sm :global(.ca-sel__trigger) {
-      font-size: max(16px, var(--ca-font-size-body2));
-    }
+    height: var(--ca-control-height-sm);
+    padding: 0 var(--ca-space-2);
+    font-size: var(--ca-input-font-size-sm);
   }
   .ca-sel__sr {
     position: absolute;

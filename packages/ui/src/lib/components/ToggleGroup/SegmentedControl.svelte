@@ -68,15 +68,15 @@
 
 <style>
   :global(.ca-seg) {
-    --seg-pad: 2px;
+    --seg-pad: var(--ca-space-0-5);
     position: relative;
     display: inline-grid;
     grid-auto-flow: column;
     grid-auto-columns: 1fr;
     padding: var(--seg-pad);
-    border-radius: var(--ca-radius-md);
+    border-radius: var(--ca-radius-control);
     background: var(--ca-surface-raised);
-    border: 1px solid var(--ca-outline-subtle);
+    border: var(--ca-border-width) solid var(--ca-outline-subtle);
     font-family: var(--ca-font-sans);
     isolation: isolate;
   }
@@ -94,11 +94,11 @@
     bottom: var(--seg-pad);
     left: var(--seg-pad);
     width: calc((100% - 2 * var(--seg-pad)) / var(--seg-count));
-    border-radius: calc(var(--ca-radius-md) - 2px);
+    border-radius: calc(var(--ca-radius-control) - var(--ca-space-0-5));
     background: var(--ca-surface-overlay);
     box-shadow:
       var(--ca-shadow-sm),
-      0 0 0 1px color-mix(in oklab, var(--ca-brand-main) 35%, transparent);
+      0 0 0 var(--ca-border-width) color-mix(in oklab, var(--ca-brand-main) 35%, transparent);
     transform: translateX(calc(var(--seg-index) * 100%));
     transition: transform var(--ca-duration-base) var(--ca-ease-spring);
     pointer-events: none;
@@ -120,27 +120,27 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: var(--ca-space-1-5);
     border: none;
-    border-radius: calc(var(--ca-radius-md) - 2px);
+    border-radius: calc(var(--ca-radius-control) - var(--ca-space-0-5));
     background: transparent;
     color: var(--ca-text-secondary);
     font-family: inherit;
-    font-weight: 500;
+    font-weight: var(--ca-font-weight-medium);
     white-space: nowrap;
     cursor: pointer;
     transition: color var(--ca-duration-fast) var(--ca-ease-standard);
   }
 
   :global(.ca-seg--sm .ca-seg__item) {
-    height: 26px;
-    padding: 0 12px;
+    height: calc(var(--ca-space-6) + var(--ca-space-0-5));
+    padding: 0 var(--ca-space-3);
     font-size: var(--ca-font-size-caption);
   }
 
   :global(.ca-seg--md .ca-seg__item) {
-    height: 30px;
-    padding: 0 16px;
+    height: var(--ca-control-height-sm);
+    padding: 0 var(--ca-space-4);
     font-size: var(--ca-font-size-body2);
   }
 
@@ -153,8 +153,8 @@
   }
 
   :global(.ca-seg__item:focus-visible) {
-    outline: 2px solid var(--ca-brand-main);
-    outline-offset: 2px;
+    outline: var(--ca-border-width-focus) solid var(--ca-brand-main);
+    outline-offset: var(--ca-focus-ring-offset);
   }
 
   :global(.ca-seg__item[disabled]) {
@@ -164,7 +164,7 @@
 
   @media (pointer: coarse) {
     :global(.ca-seg__item) {
-      min-height: var(--ca-touch-target, 44px);
+      min-height: var(--ca-touch-target);
     }
   }
 </style>

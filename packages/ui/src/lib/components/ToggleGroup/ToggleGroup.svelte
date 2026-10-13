@@ -102,7 +102,7 @@
   :global(.ca-toggle-group) {
     display: inline-flex;
     align-items: stretch;
-    gap: 2px;
+    gap: var(--ca-space-0-5);
     font-family: var(--ca-font-sans);
   }
 
@@ -111,9 +111,9 @@
   }
 
   :global(.ca-toggle-group--outlined) {
-    padding: 2px;
-    border-radius: var(--ca-radius-md);
-    border: 1px solid var(--ca-outline-subtle);
+    padding: var(--ca-space-0-5);
+    border-radius: var(--ca-radius-control);
+    border: var(--ca-border-width) solid var(--ca-outline-subtle);
     background: var(--ca-surface-raised);
   }
 
@@ -121,13 +121,13 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 6px;
+    gap: var(--ca-space-1-5);
     border: none;
-    border-radius: calc(var(--ca-radius-md) - 2px);
+    border-radius: calc(var(--ca-radius-control) - var(--ca-space-0-5));
     background: transparent;
     color: var(--ca-text-secondary);
     font-family: inherit;
-    font-weight: 500;
+    font-weight: var(--ca-font-weight-medium);
     white-space: nowrap;
     cursor: pointer;
     transition:
@@ -136,14 +136,14 @@
   }
 
   :global(.ca-toggle-group--sm .ca-toggle-group__item) {
-    height: 26px;
-    padding: 0 10px;
+    height: calc(var(--ca-space-6) + var(--ca-space-0-5));
+    padding: 0 var(--ca-space-2-5);
     font-size: var(--ca-font-size-caption);
   }
 
   :global(.ca-toggle-group--md .ca-toggle-group__item) {
-    height: 30px;
-    padding: 0 14px;
+    height: var(--ca-control-height-sm);
+    padding: 0 var(--ca-space-3-5);
     font-size: var(--ca-font-size-body2);
   }
 
@@ -159,8 +159,8 @@
   }
 
   :global(.ca-toggle-group__item:focus-visible) {
-    outline: 2px solid var(--ca-brand-main);
-    outline-offset: 2px;
+    outline: var(--ca-border-width-focus) solid var(--ca-brand-main);
+    outline-offset: var(--ca-focus-ring-offset);
   }
 
   :global(.ca-toggle-group__item[disabled]) {
@@ -170,7 +170,7 @@
 
   @media (pointer: coarse) {
     :global(.ca-toggle-group__item) {
-      min-height: var(--ca-touch-target, 44px);
+      min-height: var(--ca-touch-target);
     }
   }
 </style>

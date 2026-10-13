@@ -49,19 +49,24 @@
   .ca-switch-wrapper {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--ca-space-2-5);
   }
 
   :global(.ca-switch) {
+    /* Geometry from the spacing scale; thumb travel is derived so it stays flush at any density. */
+    --_track-w: calc(var(--ca-space-10) + var(--ca-space-1));
+    --_track-h: var(--ca-space-6);
+    --_pad: var(--ca-space-0-5);
+    --_thumb: calc(var(--_track-h) - 2 * var(--_pad));
     display: inline-flex;
     align-items: center;
-    width: 44px;
-    height: 24px;
+    width: var(--_track-w);
+    height: var(--_track-h);
     border-radius: var(--ca-radius-pill);
     background: var(--ca-outline-default);
     border: none;
     cursor: pointer;
-    padding: 2px;
+    padding: var(--_pad);
     flex-shrink: 0;
     transition: background var(--ca-duration-fast) var(--ca-ease-standard);
     position: relative;
@@ -77,14 +82,14 @@
   }
 
   :global(.ca-switch:focus-visible) {
-    outline: 2px solid var(--ca-brand-main);
-    outline-offset: 2px;
+    outline: var(--ca-border-width-focus) solid var(--ca-brand-main);
+    outline-offset: var(--ca-focus-ring-offset);
   }
 
   :global(.ca-switch__thumb) {
     display: block;
-    width: 20px;
-    height: 20px;
+    width: var(--_thumb);
+    height: var(--_thumb);
     border-radius: 50%;
     background: oklch(1 0 0);
     box-shadow: var(--ca-shadow-sm);
@@ -94,7 +99,7 @@
   }
 
   :global(.ca-switch[data-state='checked'] .ca-switch__thumb) {
-    transform: translateX(20px);
+    transform: translateX(calc(var(--_track-w) - var(--_track-h)));
   }
 
   .ca-switch__label {

@@ -62,14 +62,14 @@
 	.ca-checkbox-wrapper {
 		display: inline-flex;
 		align-items: center;
-		gap: 8px;
+		gap: var(--ca-space-2);
 	}
 
 	:global(.ca-checkbox) {
-		width: 18px;
-		height: 18px;
+		width: calc(var(--ca-space-4) + var(--ca-space-0-5));
+		height: calc(var(--ca-space-4) + var(--ca-space-0-5));
 		border-radius: var(--ca-radius-xs);
-		border: 1.5px solid var(--ca-outline-strong);
+		border: var(--ca-border-width-strong) solid var(--ca-outline-strong);
 		background: transparent;
 		display: flex;
 		align-items: center;
@@ -94,8 +94,8 @@
 	}
 
 	:global(.ca-checkbox:focus-visible) {
-		outline: 2px solid var(--ca-brand-main);
-		outline-offset: 2px;
+		outline: var(--ca-border-width-focus) solid var(--ca-brand-main);
+		outline-offset: var(--ca-focus-ring-offset);
 	}
 
 	:global(.ca-checkbox__indicator) {
