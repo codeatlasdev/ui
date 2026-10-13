@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { Tabs } from 'bits-ui';
+  import { rovingFocus } from '../../primitives/index.js';
+  import { getTabsContext } from './tabs-context.js';
 
   interface Props {
     class?: string;
@@ -8,11 +9,26 @@
   }
 
   let { class: className = '', children }: Props = $props();
+
+  const tabs = getTabsContext();
+
+  // Arrow keys / Home / End move focus among enabled tabs; focus selects (automatic activation,
+  // handled by each trigger's onfocus).
+  function roving(node: HTMLElement) {
+    return rovingFocus(node, { selector: '.ca-tabs-trigger', orientation: 'horizontal' });
+  }
 </script>
 
-<Tabs.List class="ca-tabs-list {className}">
+<div
+  role="tablist"
+  id={tabs.ids.part('list')}
+  aria-orientation="horizontal"
+  data-orientation="horizontal"
+  class="ca-tabs-list {className}"
+  {@attach roving}
+>
   {@render children?.()}
-</Tabs.List>
+</div>
 
 <style>
   :global(.ca-tabs-list) {

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { Tabs } from 'bits-ui';
+  import { getTabsContext, idKey } from './tabs-context.js';
 
   interface Props {
     value: string;
@@ -9,11 +9,24 @@
   }
 
   let { value, class: className = '', children }: Props = $props();
+
+  const tabs = getTabsContext();
+  const active = $derived(tabs.value === value);
 </script>
 
-<Tabs.Content {value} class="ca-tabs-content {className}">
+<div
+  role="tabpanel"
+  id={tabs.ids.item('panel', idKey(value))}
+  aria-labelledby={tabs.ids.item('tab', idKey(value))}
+  tabindex="0"
+  hidden={!active}
+  data-state={active ? 'active' : 'inactive'}
+  data-value={value}
+  data-orientation="horizontal"
+  class="ca-tabs-content {className}"
+>
   {@render children?.()}
-</Tabs.Content>
+</div>
 
 <style>
   :global(.ca-tabs-content) {

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { Tabs } from 'bits-ui';
+  import { createIds, setTabsContext } from './tabs-context.js';
 
   interface Props {
     value?:    string;
@@ -10,11 +10,26 @@
   }
 
   let { value = $bindable(), onchange, class: className = '', children }: Props = $props();
+
+  const base = $props.id();
+  const ids = createIds(base);
+
+  setTabsContext({
+    ids,
+    get value() {
+      return value;
+    },
+    select(next) {
+      if (value === next) return;
+      value = next;
+      onchange?.(next);
+    },
+  });
 </script>
 
-<Tabs.Root bind:value onValueChange={onchange} class="ca-tabs {className}">
+<div class="ca-tabs {className}" data-orientation="horizontal">
   {@render children?.()}
-</Tabs.Root>
+</div>
 
 <style>
   :global(.ca-tabs) {

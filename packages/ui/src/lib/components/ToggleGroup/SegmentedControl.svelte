@@ -1,6 +1,6 @@
 <script lang="ts">
   import { untrack } from 'svelte';
-  import { ToggleGroup } from 'bits-ui';
+  import { rovingFocus } from '../../primitives/index.js';
   import { reducedMotion } from '../../stores/reduced-motion.svelte.js';
   import type { ToggleGroupItem } from './ToggleGroup.svelte';
 
@@ -29,42 +29,54 @@
   if (value === undefined) value = untrack(() => items.find((i) => !i.disabled)?.value ?? '');
 
   const index = $derived(items.findIndex((i) => i.value === value));
+
+  // A segmented control always has a selection: pressing the active segment is a no-op.
+  function select(item: ToggleGroupItem) {
+    if (disabled || item.disabled || item.value === value) return;
+    value = item.value;
+    onchange?.(item.value);
+  }
+
+  function roving(node: HTMLElement) {
+    return rovingFocus(node, { selector: '.ca-seg__item', orientation: 'horizontal' });
+  }
 </script>
 
-<ToggleGroup.Root
-  type="single"
-  bind:value={
-    () => value ?? '',
-    // bits-ui emits '' when the active item is pressed again; a segmented control always has a selection.
-    (v) => {
-      if (!v) return;
-      value = v;
-      onchange?.(v);
-    }
-  }
-  {disabled}
+<div
+  role="group"
   aria-label={ariaLabel}
+  data-orientation="horizontal"
+  data-disabled={disabled ? '' : undefined}
   class="ca-seg ca-seg--{size} {className}"
   data-no-motion={reducedMotion.value ? '' : undefined}
   style="--seg-count:{items.length};--seg-index:{Math.max(index, 0)}"
   data-fullwidth={fullWidth ? '' : undefined}
+  {@attach roving}
 >
   {#if index >= 0}<span class="ca-seg__thumb" aria-hidden="true"></span>{/if}
   {#each items as item (item.value)}
-    <ToggleGroup.Item
-      value={item.value}
-      disabled={item.disabled}
+    {@const on = item.value === value}
+    {@const off = disabled || !!item.disabled}
+    <button
+      type="button"
+      role="radio"
+      aria-checked={on}
       aria-label={item['aria-label']}
+      disabled={off}
+      data-state={on ? 'on' : 'off'}
+      data-disabled={off ? '' : undefined}
+      data-orientation="horizontal"
       class="ca-seg__item"
+      onclick={() => select(item)}
     >
       {#if item.icon}
         {@const Icon = item.icon}
         <Icon size={size === 'sm' ? 14 : 16} stroke-width={2} />
       {/if}
       {#if item.label}<span>{item.label}</span>{/if}
-    </ToggleGroup.Item>
+    </button>
   {/each}
-</ToggleGroup.Root>
+</div>
 
 <style>
   :global(.ca-seg) {

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { Tabs } from 'bits-ui';
+  import { getTabsContext, idKey } from './tabs-context.js';
 
   interface Props {
     value: string;
@@ -10,11 +10,28 @@
   }
 
   let { value, disabled = false, class: className = '', children }: Props = $props();
+
+  const tabs = getTabsContext();
+  const active = $derived(tabs.value === value);
 </script>
 
-<Tabs.Trigger {value} {disabled} class="ca-tabs-trigger {className}">
+<button
+  type="button"
+  role="tab"
+  id={tabs.ids.item('tab', idKey(value))}
+  aria-selected={active}
+  aria-controls={tabs.ids.item('panel', idKey(value))}
+  {disabled}
+  data-state={active ? 'active' : 'inactive'}
+  data-value={value}
+  data-orientation="horizontal"
+  data-disabled={disabled ? '' : undefined}
+  class="ca-tabs-trigger {className}"
+  onclick={() => tabs.select(value)}
+  onfocus={() => tabs.select(value)}
+>
   {@render children?.()}
-</Tabs.Trigger>
+</button>
 
 <style>
   :global(.ca-tabs-trigger) {
