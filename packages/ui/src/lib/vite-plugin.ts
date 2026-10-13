@@ -33,7 +33,13 @@ import type { Plugin } from "vite";
 import { SSR_NO_EXTERNAL } from "./theme/define.js";
 import { CA_THEME_MARKER, THEME_SCRIPT, type ThemeOptions, themeHead } from "./theme-script.js";
 
-export type { PresetDefinition, ResolvedTheme, ThemeDefinition } from "./theme/define.js";
+export type {
+	FontDescriptor,
+	FontSpec,
+	PresetDefinition,
+	ResolvedTheme,
+	ThemeDefinition,
+} from "./theme/define.js";
 export type { ThemeOptions } from "./theme-script.js";
 export { CA_THEME_MARKER };
 /** Ready-to-paste script tag for src/app.html (default amber/dark theme). */

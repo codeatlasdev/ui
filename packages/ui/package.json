@@ -66,6 +66,8 @@
 			"default": "./dist/forms/index.js"
 		},
 		"./styles/global.css": "./dist/styles/global.css",
+		"./styles/core.css": "./dist/styles/core.css",
+		"./styles/presets/*.css": "./dist/styles/presets/*.css",
 		"./styles/materials.css": "./dist/styles/materials.css",
 		"./tokens": {
 			"types": "./dist/tokens/index.d.ts",
@@ -114,7 +116,10 @@
 		"test:vrt:update": "vitest run --project vrt --maxWorkers=2 --update",
 		"test:ui": "vitest --ui",
 		"themes": "bun scripts/build-themes.ts",
-		"themes:check": "bun scripts/build-themes.ts --check"
+		"themes:check": "bun scripts/build-themes.ts --check",
+		"lint:tokens": "bun scripts/lint-tokens.ts",
+		"size": "bun run build && bun scripts/size-limit.ts",
+		"size:update": "bun run build && bun scripts/size-limit.ts --update"
 	},
 	"dependencies": {
 		"@internationalized/date": "3.12.4",
@@ -136,6 +141,7 @@
 		"astro": "7.3.8",
 		"axe-core": "4.14.0",
 		"echarts": "6.1.0",
+		"esbuild": "0.28.2",
 		"happy-dom": "21.0.1",
 		"playwright": "1.64.0",
 		"shiki": "4.4.3",

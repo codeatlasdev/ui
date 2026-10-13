@@ -1,11 +1,11 @@
-// Renders src/lib/styles/themes/*.css from src/lib/theme/builtins.ts.
+// Renders src/lib/styles/presets/*.css from src/lib/theme/builtins.ts.
 // Run: bun scripts/build-themes.ts   (--check fails if any file is stale)
 import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { BUILTIN_PRESETS } from "../src/lib/theme/builtins.ts";
 import { presetCSS } from "../src/lib/theme/define.ts";
 
-const dir = join(import.meta.dir, "../src/lib/styles/themes");
+const dir = join(import.meta.dir, "../src/lib/styles/presets");
 const check = process.argv.includes("--check");
 let stale = 0;
 

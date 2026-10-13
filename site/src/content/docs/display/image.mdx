@@ -1,0 +1,47 @@
+---
+title: Image
+description: "A responsive image that reserves its space (no layout shift), loads lazily, and preloads the one above-the-fold image."
+group: Display
+order: 5
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Basic from "~/demos/display/image/Basic.svelte";
+import BasicSrc from "~/demos/display/image/Basic.svelte?raw";
+import Responsive from "~/demos/display/image/Responsive.svelte";
+import ResponsiveSrc from "~/demos/display/image/Responsive.svelte?raw";
+
+```svelte
+<script>
+  import { Image } from "@codeatlasdev/ui";
+</script>
+
+<Image src="/hero.avif" alt="Dashboard overview" width={1200} height={630} priority />
+```
+
+`width` and `height` are the intrinsic pixel size of the file. The browser derives the aspect ratio from them before the image arrives, so nothing jumps when it loads, and `max-width: 100%` with `height: auto` keeps that ratio on small screens. Images are `loading="lazy"` and `decoding="async"` by default.
+
+Use `priority` on the one image that is the largest thing visible on first paint (the LCP element). It loads eagerly, sets `fetchpriority="high"` and adds a `<link rel="preload" as="image">` to `<head>`. Never put it on more than one image per page.
+
+<Demo title="Fixed ratio" description={"The 800 by 600 file renders at 360px wide and keeps its 4:3 box."} src={BasicSrc}><Basic client:visible /></Demo>
+<Demo title="srcset and sizes" description={"The browser picks the smallest rendition that covers the rendered width."} src={ResponsiveSrc}><Responsive client:visible /></Demo>
+
+For AVIF and WebP generation at build time see [Performance](/docs/getting-started/performance/#images).
+
+## Alt text
+
+`alt` is required. An image that carries no meaning passes `decorative` instead of `alt=""`; it renders `alt=""` with `aria-hidden="true"`. In development the component warns when `alt=""` is passed without `decorative`, when `width` or `height` is missing, and when `decorative` is combined with a non-empty `alt`.
+
+<Props rows={[
+  { name: "src", type: "string", description: "Image URL." },
+  { name: "alt", type: "string", description: "Text alternative. Required; use `decorative` for decoration." },
+  { name: "width", type: "number", description: "Intrinsic width in pixels. Required, with `height` it reserves the space." },
+  { name: "height", type: "number", description: "Intrinsic height in pixels. Required." },
+  { name: "decorative", type: "boolean", default: "false", description: "Renders `alt=\"\"` and `aria-hidden=\"true\"`." },
+  { name: "priority", type: "boolean", default: "false", description: "Eager load, `fetchpriority=\"high\"` and a preload link in `<head>`. One per page, for the LCP image." },
+  { name: "srcset", type: "string", default: "undefined", description: "Candidate renditions. Also set on the preload link when `priority` is on." },
+  { name: "sizes", type: "string", default: "undefined", description: "Rendered width hint for `srcset`." },
+  { name: "loading", type: "'lazy' | 'eager'", default: "'lazy' ('eager' with priority)", description: "Overrides the default." },
+  { name: "decoding", type: "'async' | 'sync' | 'auto'", default: "'async'", description: "Decode hint." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+]} />

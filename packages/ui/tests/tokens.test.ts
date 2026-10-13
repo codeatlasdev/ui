@@ -134,7 +134,7 @@ describe("presets", () => {
 
 	it("each preset has a theme css file that declares its data-preset selector", () => {
 		for (const p of THEME_PRESETS) {
-			const file = new URL(`../src/lib/styles/themes/${p.id}.css`, import.meta.url);
+			const file = new URL(`../src/lib/styles/presets/${p.id}.css`, import.meta.url);
 			const text = readFileSync(file, "utf8");
 			if (p.id === "amber") expect(text).toContain(":root");
 			else expect(text).toContain(`[data-preset="${p.id}"]`);
@@ -144,5 +144,25 @@ describe("presets", () => {
 	it("getPreset resolves by id and falls back to amber", () => {
 		expect(getPreset("ocean").id).toBe("ocean");
 		expect(getPreset("does-not-exist").id).toBe("amber");
+	});
+});
+
+describe("css entry points", () => {
+	const read = (f: string) =>
+		readFileSync(new URL(`../src/lib/styles/${f}`, import.meta.url), "utf8");
+	const imports = (css: string) =>
+		[...css.matchAll(/@import url\('\.\/([^']+)'\)/g)].map((m) => m[1]);
+
+	it("core.css carries the default amber preset and no other", () => {
+		const files = imports(read("core.css"));
+		expect(files).toContain("presets/amber.css");
+		expect(files.filter((f) => f.startsWith("presets/") && f !== "presets/amber.css")).toEqual([]);
+	});
+
+	it("global.css is core plus every built-in preset (backwards compatible)", () => {
+		const files = imports(read("global.css"));
+		expect(files).toContain("core.css");
+		for (const p of THEME_PRESETS.filter((x) => x.id !== "amber"))
+			expect(files).toContain(`presets/${p.id}.css`);
 	});
 });

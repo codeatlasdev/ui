@@ -1,5 +1,6 @@
 import {
 	defineTheme,
+	fontPreloads,
 	presetCSS,
 	type ResolvedTheme,
 	type ThemeDefinition,
@@ -80,12 +81,12 @@ export function brandPresetCSS(preset: { id: string; color: string }): string {
 }
 
 /**
- * Markup to place right after `<head>`: theme CSS (brand presets, structural
- * tokens, overrides) followed by the init script. Used by caThemeHandle and caThemePlugin.
+ * Markup to place right after `<head>`: font preloads, theme CSS (brand presets,
+ * fonts, structural tokens, overrides) and the init script. Used by caThemeHandle and caThemePlugin.
  */
 export function themeHead(options: ThemeOptions = {}): string {
 	const t = defineTheme(options);
 	const css = themeCSS(t);
 	const style = css ? `<style id="ca-theme">${css}</style>` : "";
-	return `${style}<script id="${CA_THEME_MARKER}">${themeScript(t)}</script>`;
+	return `${fontPreloads(t)}${style}<script id="${CA_THEME_MARKER}">${themeScript(t)}</script>`;
 }

@@ -16,7 +16,7 @@ Este documento descreve tudo que um agente de IA precisa saber para trabalhar co
 packages/ui/          → biblioteca publicável (@codeatlasdev/ui)
   src/lib/
     components/       → componentes Svelte 5
-    styles/           → CSS: global.css, base.css, tokens.css, materials.css, themes/
+    styles/           → CSS: global.css (tudo), core.css (sem presets extras), presets/*.css, base.css, tokens.css, materials.css
     tokens/           → constantes TypeScript (cores, tipografia, sombras, etc.)
     stores/           → svelte $state reativos (colorScheme, responsive, reducedMotion)
     utils/            → debounce, clipboard, localStorage, palette-generator
@@ -394,7 +394,7 @@ import { DataTable, createCaTable, createCaColumnHelper, caTableFeatures } from 
 - Para listas simples use `SimpleTable` + `UserCell` + `StatusChip` — mais leve
 
 ### Display
-`Avatar` · `Badge` · `Alert` · `Chip` · `StatusChip` · `KpiCard` · `EmptyState` · `Timeline` · `Sparkline` · `SimpleTable`
+`Avatar` · `Image` · `Badge` · `Alert` · `Chip` · `StatusChip` · `KpiCard` · `EmptyState` · `Timeline` · `Sparkline` · `SimpleTable`
 
 - **`SimpleTable` `responsive`** — `"scroll"` (padrão) ou `"cards"`. Em `cards`, abaixo de `md` cada `<tr>` vira um card e cada `<td>` mostra seu rótulo via `::before { content: attr(data-label) }`. **Obrigatório: passe `data-label="Coluna"` em cada `<td>`** (célula sem `data-label` fica sem rótulo). Dispensa wrappers de scroll locais.
   ```svelte
@@ -602,7 +602,9 @@ plugins: [sveltekit(), caThemePlugin(theme)]
 
 `global.css` declara `@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.components, ca.materials, ca.utilities`. O CSS dos componentes e o do app ficam fora de camada e vencem sempre. Para sobrescrever tokens do pacote basta declarar `--ca-*` em `:root` no app, sem `!important`.
 
-Os presets embutidos são gerados: edite `packages/ui/src/lib/theme/builtins.ts` e rode `bun run --cwd packages/ui themes` (o `validate` falha se `styles/themes/*.css` estiver desatualizado).
+`global.css` = `core.css` (inclui só o preset `amber`) + os 7 presets restantes. Apps que usam um preset só importam `styles/core.css` + `styles/presets/<id>.css` (ver `site/.../getting-started/performance.mdx`).
+
+Os presets embutidos são gerados: edite `packages/ui/src/lib/theme/builtins.ts` e rode `bun run --cwd packages/ui themes` (o `validate` falha se `styles/presets/*.css` estiver desatualizado).
 
 ### Ilhas de tema
 
@@ -711,3 +713,11 @@ Todo app que consome o pacote deve:
 - Sem Tailwind — estilos via CSS vars e classes
 - Sem MUI neste pacote — é puro Svelte + Bits UI
 - Sem CSS inline exceto CSS custom properties dinâmicos (`style="--bar-w:{pct}%"`)
+
+
+## Performance (guardas do pacote)
+
+- `bun run --cwd packages/ui size` (parte do `validate`) empacota cada entry com esbuild e compara o gzip com `packages/ui/size-limit.json`. O limite só desce: `size:update` reduz limites com folga; subir um limite é decisão manual, explicada no PR. Para adicionar uma entry, edite `ENTRIES` em `scripts/size-limit.ts`.
+- `bun run --cwd packages/ui lint:tokens` (parte do `validate`) reprova: `will-change` em arquivo com `backdrop-filter`; `100vh|100dvh|100svh|100lvh` literal (use `var(--ca-vh)`); `backdrop-filter` declarado antes de `-webkit-backdrop-filter` (Lightning CSS descarta o padrão); `font-size` < 16px em regra de input (zoom no foco do iOS).
+- Imagens de conteúdo: `Image` (exige `width`/`height`; `alt=""` exige `decorative`; `priority` só na imagem do LCP).
+- Fontes: `defineTheme({ fonts: { body: { family, src, weight, preload, fallback, fallbackMetrics } } })` gera `@font-face`, o fallback com `size-adjust` e o `<link rel="preload">`. String continua valendo.

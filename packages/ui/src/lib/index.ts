@@ -113,6 +113,7 @@ export { default as GlassCard } from "./components/GlassCard/GlassCard.svelte";
 export { default as GlassSurface } from "./components/GlassSurface/GlassSurface.svelte";
 // ── LAYOUT PRIMITIVES ─────────────────────────────────────────────────────────
 export { default as Grid } from "./components/Grid/Grid.svelte";
+export { default as Image } from "./components/Image/Image.svelte";
 export { default as Kbd } from "./components/Kbd/Kbd.svelte";
 export { default as KpiCard } from "./components/KpiCard/KpiCard.svelte";
 export { default as Lightbox } from "./components/Lightbox/Lightbox.svelte";
@@ -173,7 +174,14 @@ export { responsive } from "./stores/responsive.svelte.js";
 export type { ToastItem, ToastVariant } from "./stores/toast.svelte.js";
 export { toast } from "./stores/toast.svelte.js";
 export { viewport } from "./stores/viewport.svelte.js";
-export type { PresetDefinition, ResolvedTheme, ThemeDefinition } from "./theme/define.js";
+export type {
+	FontDescriptor,
+	FontFallbackMetrics,
+	FontSpec,
+	PresetDefinition,
+	ResolvedTheme,
+	ThemeDefinition,
+} from "./theme/define.js";
 export { defineTheme, themeCSS } from "./theme/define.js";
 export type { ThemeOptions } from "./theme-script.js";
 // ── TOKENS & UTILS ────────────────────────────────────────────────────────────

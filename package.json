@@ -23,7 +23,7 @@
 		"release": "node scripts/release.js",
 		"clean": "rm -rf packages/ui/dist site/dist site/.astro",
 		"lint:fix": "biome check --write .",
-		"validate": "bun run --cwd packages/ui themes:check && bun run check && bun run lint && bun run test:unit",
+		"validate": "bun run --cwd packages/ui themes:check && bun run --cwd packages/ui lint:tokens && bun run check && bun run lint && bun run test:unit && bun run --cwd packages/ui size",
 		"predev": "bun run build:pkg",
 		"postinstall": "node scripts/fix-ts-symlink.js && bunx playwright install chromium",
 		"test": "bun run test:unit && bun run test:browser && bun run test:e2e",

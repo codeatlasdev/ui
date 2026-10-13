@@ -1,7 +1,7 @@
 // @vitest-environment happy-dom
 import { beforeEach, describe, expect, it } from "vitest";
-import { defineTheme, themeCSS } from "../src/lib/theme/define.js";
-import { type ThemeOptions, themeScript } from "../src/lib/theme-script.js";
+import { defineTheme, fontPreloads, themeCSS } from "../src/lib/theme/define.js";
+import { type ThemeOptions, themeHead, themeScript } from "../src/lib/theme-script.js";
 
 const acme: ThemeOptions = { defaultPreset: "acme", presets: [{ id: "acme", color: "#2563EB" }] };
 const html = document.documentElement;
@@ -84,5 +84,66 @@ describe("themeCSS", () => {
 		expect(themeCSS(defineTheme(t))).toBe(themeCSS(defineTheme(t)));
 		expect(themeCSS(defineTheme())).toBe("");
 		expect(themeCSS(defineTheme(t))).toContain("--ca-radius-md: 15px;");
+	});
+});
+
+describe("fonts", () => {
+	const inter = {
+		family: "Inter",
+		src: "/fonts/inter.woff2",
+		weight: "100 900",
+		preload: true,
+		fallback: "Arial",
+		fallbackMetrics: { sizeAdjust: 1.0447, ascent: "96.8%", descent: "24.1%", lineGap: "0%" },
+	};
+
+	it("keeps a plain string stack working", () => {
+		const css = themeCSS(defineTheme({ fonts: { body: "Geist, system-ui, sans-serif" } }));
+		expect(css).toContain("--ca-font-sans: Geist, system-ui, sans-serif;");
+		expect(css).not.toContain("@font-face");
+	});
+
+	it("emits @font-face plus a size-adjusted fallback face and a stack that uses it", () => {
+		const css = themeCSS(defineTheme({ fonts: { body: inter } }));
+		expect(css).toContain('font-family: "Inter";');
+		expect(css).toContain('src: url("/fonts/inter.woff2") format("woff2");');
+		expect(css).toContain("font-weight: 100 900;");
+		expect(css).toContain("font-display: swap;");
+		expect(css).toContain('font-family: "Inter Fallback";');
+		expect(css).toContain('src: local("Arial");');
+		expect(css).toContain("size-adjust: 104.47%;");
+		expect(css).toContain("ascent-override: 96.8%;");
+		expect(css).toContain('--ca-font-sans: "Inter", "Inter Fallback", sans-serif;');
+	});
+
+	it("omits the fallback face and chain without fallbackMetrics", () => {
+		const css = themeCSS(
+			defineTheme({
+				fonts: { mono: { family: "Fira Code", src: "/f.woff2", generic: "monospace" } },
+			})
+		);
+		expect(css).not.toContain("Fallback");
+		expect(css).toContain('--ca-font-mono: "Fira Code", monospace;');
+	});
+
+	it("preloads only preload:true fonts, once per URL, as crossorigin font links", () => {
+		const t = defineTheme({
+			fonts: { body: inter, display: inter, mono: { family: "M", src: "/m.woff2" } },
+		});
+		expect(fontPreloads(t)).toBe(
+			'<link rel="preload" as="font" type="font/woff2" href="/fonts/inter.woff2" crossorigin>'
+		);
+		expect(themeHead({ fonts: { body: inter } }).startsWith('<link rel="preload"')).toBe(true);
+		expect(themeHead({ fonts: { mono: { family: "M", src: "/m.woff2" } } })).not.toContain(
+			"preload"
+		);
+	});
+
+	it("cannot be broken out of the stylesheet or attribute by a hostile family or url", () => {
+		const t = defineTheme({
+			fonts: { body: { family: 'A"}body{x:y', src: '/a"><script>.woff2', preload: true } },
+		});
+		expect(themeCSS(t)).not.toMatch(/"}body\{/);
+		expect(fontPreloads(t)).not.toContain("<script>");
 	});
 });

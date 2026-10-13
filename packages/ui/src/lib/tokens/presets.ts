@@ -1,6 +1,6 @@
 // ─── Preset data (framework-agnostic) ────────────────────────────────────────
 // Metadata for pickers and charts, derived from theme/builtins.ts (the same
-// source scripts/build-themes.ts renders into styles/themes/*.css).
+// source scripts/build-themes.ts renders into styles/presets/*.css).
 
 import { BUILTIN_PRESETS } from "../theme/builtins.js";
 import { generatePreset } from "../utils/palette-generator.js";

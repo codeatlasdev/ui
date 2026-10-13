@@ -21,7 +21,7 @@
 - [base.css](packages/ui/src/lib/styles/base.css): reset, html/body mesh gradient, typography scale, focus, scrollbar
 - [tokens.css](packages/ui/src/lib/styles/tokens.css): static :root CSS custom properties + .dark overrides
 - [materials.css](packages/ui/src/lib/styles/materials.css): glass material utility classes (regular/thick/thin/ultrathin/ultrachick)
-- [themes/](packages/ui/src/lib/styles/themes/): amber, ocean, crimson, cyan, violet, emerald, rose, slate
+- [presets/](packages/ui/src/lib/styles/presets/): amber, ocean, crimson, cyan, violet, emerald, rose, slate
 
 ## Key components
 

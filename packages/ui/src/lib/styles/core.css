@@ -1,0 +1,14 @@
+/* @codeatlasdev/ui core — everything except the non-default presets.
+ * Layers: reset+tokens+base, the default amber preset (:root tokens), materials, utilities, prose.
+ * Pair it with only the presets your app uses:
+ *   import '@codeatlasdev/ui/styles/core.css';
+ *   import '@codeatlasdev/ui/styles/presets/ocean.css';
+ * `global.css` is core plus every built-in preset. Unlayered app CSS still wins:
+ * override a token by declaring --ca-* on :root, no !important. */
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.components, ca.materials, ca.utilities;
+@import url('./base.css') layer(ca.base);
+@import url('./tokens.css') layer(ca.tokens);
+@import url('./presets/amber.css') layer(ca.themes);
+@import url('./materials.css') layer(ca.materials);
+@import url('./utilities.css') layer(ca.utilities);
+@import url('./prose.css') layer(ca.utilities);

@@ -1,0 +1,148 @@
+---
+title: Performance
+description: Ship less CSS with per-preset imports, avoid layout shift with Image and metric-matched fonts, generate AVIF and WebP with enhanced-img, and animate without GSAP.
+group: Getting started
+order: 7
+---
+import { Callout } from "@codeatlasdev/ui";
+import CodeGroup from "~/components/docs/CodeGroup.astro";
+
+The package is tree-shakeable and its budgets are enforced in CI. This page covers what is yours to configure: which CSS you load, how images and fonts are delivered, and how to animate cheaply.
+
+## CSS: load only the presets you use
+
+`global.css` is the whole stylesheet: reset, tokens, base, materials, utilities, prose and all 8 built-in presets. Presets are generated and each one is a few kB of tokens, so an app that uses one preset can drop the rest.
+
+| Entry | Contains |
+|---|---|
+| `@codeatlasdev/ui/styles/global.css` | Everything below, plus every built-in preset. The default, always safe. |
+| `@codeatlasdev/ui/styles/core.css` | Reset, tokens, base, materials, utilities, prose and the default `amber` preset. |
+| `@codeatlasdev/ui/styles/presets/<id>.css` | One built-in preset: `ocean`, `crimson`, `cyan`, `violet`, `emerald`, `rose` or `slate`. |
+
+```ts
+// +layout.svelte or your Astro base layout
+import "@codeatlasdev/ui/styles/core.css";
+import "@codeatlasdev/ui/styles/presets/ocean.css"; // only if the app can pick or default to ocean
+```
+
+`core.css` always carries `amber`, because its tokens are also the `:root` defaults. Brand presets declared in `defineTheme({ presets })` are not files: they are compiled into the inline `<style id="ca-theme">` that `caThemeHandle` and `caUI` emit, so they never cost an extra request.
+
+<Callout type="caution" title="Match the stylesheet to your theme">
+  A preset id that has no stylesheet loaded (for example `defaultPreset: "ocean"` with only `core.css`) falls back to the amber tokens. Import every built-in preset your `defaultPreset` and your preset picker can reach.
+</Callout>
+
+Cascade order is the same in every entry (`@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.components, ca.materials, ca.utilities`), so splitting does not change which rule wins.
+
+## JavaScript budget
+
+`bun run size` in the package bundles each entry with esbuild (minified, ESM, tree-shaken) and fails when the gzip size passes the limit in `size-limit.json`. The limits are a ratchet: they only go down. Importing `Button` alone pulls the Svelte runtime, the button and its spinner, and the small i18n catalog; it does not pull the app shell, charts, tables or any other component. Heavy features stay behind subpath imports (`/charts`, `/table`, `/code`), so an app that does not use them never ships ECharts, TanStack Table or Shiki.
+
+Import from the package root and let the bundler tree-shake:
+
+```ts
+import { Button, TextField } from "@codeatlasdev/ui"; // fine
+import { LineChart } from "@codeatlasdev/ui/charts";   // loads ECharts only where used
+```
+
+## Images
+
+Use the [`Image`](/docs/display/image/) component for every content image. It requires `width` and `height` so the layout does not move, lazy-loads by default and preloads the one `priority` image.
+
+`Image` does not resize or re-encode files. For AVIF and WebP at build time use [`@sveltejs/enhanced-img`](https://svelte.dev/docs/kit/images#sveltejs-enhanced-img) in SvelteKit, and `astro:assets` in Astro:
+
+<CodeGroup sync="framework" tabs={[
+  { label: "SvelteKit", lang: "svelte", code: `<script>
+  import hero from "$lib/assets/hero.jpg?enhanced";
+</script>
+
+<!-- enhanced-img emits a <picture> with AVIF/WebP/JPEG, srcset and width/height -->
+<enhanced:img src={hero} alt="Dashboard overview" sizes="(min-width: 768px) 50vw, 100vw" />` },
+  { label: "Astro", lang: "astro", code: `---
+import { Image } from "astro:assets";
+import hero from "../assets/hero.jpg";
+---
+<Image src={hero} alt="Dashboard overview" widths={[480, 960, 1440]} sizes="(min-width: 768px) 50vw, 100vw" />` },
+]} />
+
+Rule of thumb: enhanced-img or `astro:assets` for photos and marketing art (they generate the formats), `Image` for images you already host in the right size (avatars from an API, user uploads behind a CDN that resizes) or when you want the package's dev warnings.
+
+## Fonts
+
+A web font causes two kinds of jank: the late swap that re-flows text, and the late request. `defineTheme({ fonts })` handles both. A font is either a plain stack string (as before) or a descriptor:
+
+```ts
+import { defineTheme } from "@codeatlasdev/ui";
+
+export const theme = defineTheme({
+  fonts: {
+    body: {
+      family: "Inter",
+      src: "/fonts/inter-var.woff2",
+      weight: "100 900",
+      preload: true,
+      // Metric-matched fallback: Arial resized to Inter's proportions
+      fallback: "Arial",
+      fallbackMetrics: { sizeAdjust: 1.0447, ascent: "96.8%", descent: "24.1%", lineGap: "0%" },
+    },
+    mono: "ui-monospace, SFMono-Regular, Menlo, monospace", // strings still work
+  },
+});
+```
+
+| Field | Effect |
+|---|---|
+| `family`, `src`, `weight`, `style` | The `@font-face` rule. `src` is a woff2 URL; `weight` may be a variable range such as `"100 900"`. |
+| `display` | `font-display`. Default `swap`: text shows at once in the fallback. |
+| `preload` | `themeHead` (and so `caThemeHandle`) emits `<link rel="preload" as="font" type="font/woff2" crossorigin>` before any stylesheet. Use it only for fonts used above the fold. |
+| `fallback`, `fallbackMetrics` | Declares `"<family> Fallback"` from a local system font with `size-adjust`, `ascent-override`, `descent-override` and `line-gap-override`, and puts it in the stack right after the web font. Text then takes the same space before and after the swap: no layout shift. |
+| `generic` | The generic family at the end of the stack. Default `sans-serif`; use `monospace` or `serif` as needed. |
+
+The resulting stack is `"Inter", "Inter Fallback", sans-serif`, assigned to `--ca-font-sans` (`body`), `--ca-font-mono` (`mono`) or `--ca-font-display` (`display`).
+
+Get the metrics from the font's own tables. [Capsize](https://seek-oss.github.io/capsize/) and `fontaine` compute `sizeAdjust`, `ascent`, `descent` and `lineGap` for a font and a fallback.
+
+<Callout type="note" title="Astro and preload">
+  `caUI` injects the theme from a head script, so its preload link is added after parsing starts. For the fastest start in Astro, also put the same `<link rel="preload">` in your layout `<head>`.
+</Callout>
+
+Self-host the files (same origin, long `Cache-Control`). The Google Fonts stylesheet is render-blocking and adds two connections; the [Fontsource](https://fontsource.org) packages give you the woff2 files without it.
+
+## Motion without GSAP
+
+Most UI motion needs neither GSAP nor a smooth-scroll library, and both cost more than the components they animate:
+
+| Need | Use | Why |
+|---|---|---|
+| Enter, exit, hover, press | CSS transitions and `@keyframes`, with the `--ca-duration-*` and `--ca-ease-*` tokens | Runs on the compositor, zero JavaScript. |
+| Sequenced or interrupted animation | The Web Animations API (`element.animate()`) | Native, cancellable, promise-based. |
+| Reveal on scroll | `IntersectionObserver` (or CSS `animation-timeline: view()` where supported) | No scroll listeners, no layout reads. |
+| Smooth scrolling | Native scrolling plus `scroll-behavior: smooth` for in-page anchors | A scroll-hijacking library fights the browser, adds input latency, and breaks `prefers-reduced-motion` and find-in-page. |
+| Route transitions | View Transitions (`document.startViewTransition`, SvelteKit `onNavigate`) | The browser cross-fades screenshots; no per-element code. |
+
+```ts
+// Reveal once, no library
+const io = new IntersectionObserver((entries) => {
+  for (const e of entries) {
+    if (!e.isIntersecting) continue;
+    e.target.animate([{ opacity: 0, transform: "translateY(12px)" }, { opacity: 1, transform: "none" }], {
+      duration: 320,
+      easing: "cubic-bezier(0.2, 0, 0, 1)",
+      fill: "both",
+    });
+    io.unobserve(e.target);
+  }
+}, { rootMargin: "0px 0px -10% 0px" });
+document.querySelectorAll("[data-reveal]").forEach((el) => io.observe(el));
+```
+
+Always gate non-essential motion on `reducedMotion` from the package (or `@media (prefers-reduced-motion: reduce)`). The package's own components already do.
+
+## Checklist
+
+| Check | Where |
+|---|---|
+| Only the presets you reach are imported | [CSS](#css-load-only-the-presets-you-use) |
+| One `priority` image, every image has `width` and `height` | [Images](#images) |
+| Fonts self-hosted, above-the-fold font preloaded, fallback metrics set | [Fonts](#fonts) |
+| No `will-change` on glass, no literal `100vh` | `bun run --cwd packages/ui lint:tokens` guards this in the package; follow the same rules in app CSS |
+| Heavy features imported from subpaths | [JavaScript budget](#javascript-budget) |

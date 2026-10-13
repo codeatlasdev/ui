@@ -32,6 +32,43 @@ export interface PresetDefinition {
 	label?: string;
 }
 
+/** Metrics of the fallback face, from the font's own tables, so the swap does not shift layout. */
+export interface FontFallbackMetrics {
+	/** `size-adjust`, e.g. `"104.6%"` or `1.046`. */
+	sizeAdjust?: string | number;
+	/** `ascent-override`, e.g. `"92%"`. */
+	ascent?: string;
+	/** `descent-override`, e.g. `"24%"`. */
+	descent?: string;
+	/** `line-gap-override`, e.g. `"0%"`. */
+	lineGap?: string;
+}
+
+/** A self-hosted web font. Emits `@font-face`, an optional preload and a metric-matched fallback face. */
+export interface FontDescriptor {
+	/** Family name used in `font-family`. */
+	family: string;
+	/** URL of the woff2 file. */
+	src: string;
+	/** A single weight or a variable range, e.g. `400` or `"100 900"`. @default 400 */
+	weight?: number | string;
+	/** @default "normal" */
+	style?: "normal" | "italic";
+	/** @default "swap" */
+	display?: "auto" | "block" | "swap" | "fallback" | "optional";
+	/** Emit `<link rel="preload" as="font" crossorigin>` in `themeHead`. Use for above-the-fold fonts only. @default false */
+	preload?: boolean;
+	/** System font the fallback face is built from, e.g. `"Arial"`. Needed for `fallbackMetrics`. */
+	fallback?: string;
+	/** With `fallback`: declares `"<family> Fallback"` with these metrics (zero layout shift on swap). */
+	fallbackMetrics?: FontFallbackMetrics;
+	/** Generic family appended last. @default "sans-serif" */
+	generic?: string;
+}
+
+/** A font stack string (existing behavior) or a self-hosted font descriptor. */
+export type FontSpec = string | FontDescriptor;
+
 export interface ThemeDefinition {
 	/** Brand presets, emitted inline so they paint with the first frame. Built-ins are always available. */
 	presets: PresetDefinition[];
@@ -41,8 +78,8 @@ export interface ThemeDefinition {
 	defaultScheme: ColorScheme;
 	/** Surface style applied until the user picks one. @default "glass" */
 	defaultStyle: SurfaceStyle;
-	/** Font stacks for --ca-font-sans / --ca-font-mono / --ca-font-display. */
-	fonts: { display?: string; body?: string; mono?: string };
+	/** Fonts for --ca-font-sans (body), --ca-font-mono and --ca-font-display. A string is a plain stack. */
+	fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec };
 	/** Radius multiplier. @default 1 */
 	radius: number;
 	/** @default "comfortable" */
@@ -155,19 +192,74 @@ export function defineTheme(def: Partial<ThemeDefinition> = {}): ResolvedTheme {
 	};
 }
 
+const quote = (family: string) => `"${family.replace(/["\\]/g, "")}"`;
+
+/** `font-family` value for a font spec: plain strings pass through, descriptors get a fallback chain. */
+function fontStack(f: FontSpec): string {
+	if (typeof f === "string") return f;
+	const parts = [quote(f.family)];
+	if (f.fallback && f.fallbackMetrics) parts.push(quote(`${f.family} Fallback`));
+	parts.push(f.generic ?? "sans-serif");
+	return parts.join(", ");
+}
+
+/** `@font-face` rules for a descriptor: the web font, plus the metric-matched fallback when configured. */
+function fontFaceCSS(f: FontDescriptor): string {
+	const weight = f.weight ?? 400;
+	const rules = [
+		cssBlock("@font-face", {
+			"font-family": quote(f.family),
+			src: `url("${f.src.replace(/["\\\n]/g, "")}") format("woff2")`,
+			"font-weight": String(weight),
+			"font-style": f.style ?? "normal",
+			"font-display": f.display ?? "swap",
+		}),
+	];
+	if (f.fallback && f.fallbackMetrics) {
+		const m = f.fallbackMetrics;
+		const face: Record<string, string> = {
+			"font-family": quote(`${f.family} Fallback`),
+			src: `local(${quote(f.fallback)})`,
+			"font-weight": String(weight),
+			"font-style": f.style ?? "normal",
+		};
+		if (m.sizeAdjust !== undefined)
+			face["size-adjust"] =
+				typeof m.sizeAdjust === "number" ? `${+(m.sizeAdjust * 100).toFixed(2)}%` : m.sizeAdjust;
+		if (m.ascent) face["ascent-override"] = m.ascent;
+		if (m.descent) face["descent-override"] = m.descent;
+		if (m.lineGap) face["line-gap-override"] = m.lineGap;
+		rules.push(cssBlock("@font-face", face));
+	}
+	return rules.join("\n");
+}
+
+/** `<link rel="preload" as="font">` tags for every descriptor with `preload: true` (deduplicated by URL). */
+export function fontPreloads(t: Pick<ResolvedTheme, "fonts">): string {
+	const urls = new Set<string>();
+	for (const f of Object.values(t.fonts))
+		if (typeof f === "object" && f.preload) urls.add(f.src.replace(/["<>\\]/g, ""));
+	return [...urls]
+		.map((u) => `<link rel="preload" as="font" type="font/woff2" href="${u}" crossorigin>`)
+		.join("");
+}
+
 const RADII = { xs: 4, sm: 6, md: 10, lg: 14, xl: 20 } as const;
 
 /**
  * Compile a resolved theme to CSS: brand presets, then structural tokens
  * (fonts, radius, density) and raw overrides. Deterministic: same theme → same string.
+ * Descriptor fonts add their `@font-face` rules (preload links come from `fontPreloads`).
  * Empty string when the theme only uses built-in defaults.
  */
 export function themeCSS(t: ResolvedTheme): string {
 	const out = t.presets.map((p) => presetCSS(p, "brand"));
 	const root: Record<string, string> = {};
-	if (t.fonts.body) root["--ca-font-sans"] = t.fonts.body;
-	if (t.fonts.mono) root["--ca-font-mono"] = t.fonts.mono;
-	if (t.fonts.display) root["--ca-font-display"] = t.fonts.display;
+	for (const f of [t.fonts.body, t.fonts.mono, t.fonts.display])
+		if (typeof f === "object") out.push(fontFaceCSS(f));
+	if (t.fonts.body) root["--ca-font-sans"] = fontStack(t.fonts.body);
+	if (t.fonts.mono) root["--ca-font-mono"] = fontStack(t.fonts.mono);
+	if (t.fonts.display) root["--ca-font-display"] = fontStack(t.fonts.display);
 	if (t.radius !== 1)
 		for (const [k, v] of Object.entries(RADII))
 			root[`--ca-radius-${k}`] = `${+(v * t.radius).toFixed(2)}px`;

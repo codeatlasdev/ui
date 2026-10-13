@@ -1,4 +1,4 @@
-// Source of the 8 built-in presets. scripts/build-themes.ts renders styles/themes/*.css from it.
+// Source of the 8 built-in presets. scripts/build-themes.ts renders styles/presets/*.css from it.
 // `overrides` pins tokens the generator does not reproduce within OKLab dE < 0.02.
 import type { TokenMap } from "../utils/palette-generator.js";
 

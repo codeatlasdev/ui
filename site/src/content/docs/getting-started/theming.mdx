@@ -34,7 +34,7 @@ Pass the same object to `caThemeHandle` and `caThemePlugin` (SvelteKit), `caUI` 
 | `defaultPreset` | `"amber"` | Preset used until the user picks one. Must be a built-in or one of `presets`. |
 | `defaultScheme` | `"dark"` | `"light"`, `"dark"` or `"system"`. |
 | `defaultStyle` | `"glass"` | `"glass"`, `"frosted"`, `"solid"` or `"flat"`. |
-| `fonts` | `{}` | `body`, `mono` and `display` font stacks. They set `--ca-font-sans`, `--ca-font-mono` and `--ca-font-display`. |
+| `fonts` | `{}` | `body`, `mono` and `display`. Each is a font stack string or a self-hosted font descriptor (`@font-face`, preload, metric-matched fallback), see [Performance](/docs/getting-started/performance/#fonts). They set `--ca-font-sans`, `--ca-font-mono` and `--ca-font-display`. |
 | `radius` | `1` | Multiplier applied to the `--ca-radius-xs` to `--ca-radius-xl` scale. |
 | `density` | `"comfortable"` | `"compact"` tightens card padding and page gaps. |
 | `overrides` | `{}` | Raw `--ca-*` token overrides, per scheme (`light`, `dark`). |
