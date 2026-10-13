@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
+  import { scrollFocusable } from '../../actions/scroll-focusable.js';
 
   interface Props {
     title?: string;
@@ -12,6 +13,7 @@
   }
 
   let { title, description, gap, maxWidth, actions, class: className = '', children }: Props = $props();
+  const titleId = $props.id();
 
   // Only caller-supplied values become inline vars; the defaults live in the stylesheet as tokens.
   const rootStyle = $derived(
@@ -19,12 +21,23 @@
   );
 </script>
 
-<div class="ca-page-shell {className}" style={rootStyle}>
+<!-- The shell is the page's scroll container, named by its title. Focusable in the server
+     HTML too (keyboard scrolling before or without hydration); scrollFocusable drops the tab
+     stop after hydration when nothing overflows (axe scrollable-region-focusable). -->
+<!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+<div
+  class="ca-page-shell {className}"
+  style={rootStyle}
+  role="region"
+  aria-labelledby={title ? titleId : undefined}
+  tabindex="0"
+  use:scrollFocusable
+>
   {#if title || description || actions}
     <div class="ca-page-shell__header">
       <div class="ca-page-shell__meta">
         {#if title}
-          <h1 class="ca-page-shell__title">{title}</h1>
+          <h1 class="ca-page-shell__title" id={titleId}>{title}</h1>
         {/if}
         {#if description}
           <p class="ca-page-shell__description">{description}</p>

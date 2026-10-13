@@ -14,8 +14,23 @@ export const scrollFocusable: Action<HTMLElement> = (node) => {
 		else node.removeAttribute("tabindex");
 	};
 	const ro = new ResizeObserver(update);
-	ro.observe(node);
-	for (const child of node.children) ro.observe(child);
+	const watch = () => {
+		ro.observe(node);
+		for (const child of node.children) ro.observe(child);
+	};
+	// Children rendered after mount (hydration, async data, route content) change the
+	// overflow too: watch them as they arrive.
+	const mo = new MutationObserver(() => {
+		watch();
+		update();
+	});
+	mo.observe(node, { childList: true });
+	watch();
 	update();
-	return { destroy: () => ro.disconnect() };
+	return {
+		destroy: () => {
+			ro.disconnect();
+			mo.disconnect();
+		},
+	};
 };
