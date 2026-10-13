@@ -19,12 +19,12 @@
   }
   .ca-divider--horizontal {
     width: 100%;
-    height: 1px;
-    margin-block: 8px;
+    height: var(--ca-border-width);
+    margin-block: var(--ca-space-2);
   }
   .ca-divider--vertical {
     height: 100%;
-    width: 1px;
-    margin-inline: 8px;
+    width: var(--ca-border-width);
+    margin-inline: var(--ca-space-2);
   }
 </style>

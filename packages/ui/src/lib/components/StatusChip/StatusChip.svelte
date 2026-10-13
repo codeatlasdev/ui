@@ -16,11 +16,11 @@
   .ca-status-chip {
     display: inline-flex;
     align-items: center;
-    height: 22px;
+    height: calc(var(--ca-space-5) + var(--ca-space-0-5));
     border-radius: var(--ca-radius-pill);
-    padding: 0 8px;
+    padding: 0 var(--ca-space-2);
     font-size: var(--ca-font-size-caption);
-    font-weight: 500;
+    font-weight: var(--ca-font-weight-medium);
     line-height: 1;
   }
 

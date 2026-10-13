@@ -78,18 +78,19 @@
 
 <style>
   .ca-dt-toolbar {
+    container-type: inline-size;
     display: flex;
     flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    gap: var(--ca-space-2);
     flex-shrink: 0;
   }
 
   .ca-dt-toolbar__left {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--ca-space-1-5);
     flex-wrap: wrap;
     flex: 1;
     min-width: 0;
@@ -103,17 +104,17 @@
 
   :global(.ca-dt-toolbar__search-icon) {
     position: absolute;
-    left: 9px;
+    left: var(--ca-space-2-5);
     pointer-events: none;
     color: var(--ca-text-hint);
   }
 
   .ca-dt-toolbar__input {
-    height: 32px;
-    padding: 0 10px 0 30px;
-    width: 200px;
-    border: 1px solid var(--ca-outline-default);
-    border-radius: var(--ca-radius-md);
+    height: var(--ca-control-height-sm);
+    padding: 0 var(--ca-space-2-5) 0 var(--ca-space-7);
+    width: calc(var(--ca-space-24) * 2 + var(--ca-space-2));
+    border: var(--ca-border-width) solid var(--ca-outline-default);
+    border-radius: var(--ca-radius-control);
     background: var(--ca-surface-raised);
     color: var(--ca-text-primary);
     font-size: var(--ca-input-font-size);
@@ -140,7 +141,7 @@
   .ca-dt-toolbar__right {
     display: flex;
     align-items: center;
-    gap: 6px;
+    gap: var(--ca-space-1-5);
     flex-shrink: 0;
   }
 
@@ -163,15 +164,15 @@
   .ca-dt-toolbar__export {
     display: inline-flex;
     align-items: center;
-    gap: 5px;
-    height: 32px;
-    padding: 0 10px;
-    border: 1px solid var(--ca-outline-default);
-    border-radius: var(--ca-radius-md);
+    gap: var(--ca-space-1-5);
+    height: var(--ca-control-height-sm);
+    padding: 0 var(--ca-space-2-5);
+    border: var(--ca-border-width) solid var(--ca-outline-default);
+    border-radius: var(--ca-radius-control);
     background: transparent;
     cursor: pointer;
     font-size: var(--ca-font-size-body2);
-    font-weight: 500;
+    font-weight: var(--ca-font-weight-medium);
     color: var(--ca-text-secondary);
     transition: background var(--ca-duration-fast) var(--ca-ease-standard);
   }
@@ -185,4 +186,10 @@
     cursor: default;
   }
 
+  /* Narrow slot: the search field takes the full row, actions wrap below it. */
+  @container (max-width: 599.98px) {
+    .ca-dt-toolbar__left,
+    .ca-dt-toolbar__search,
+    .ca-dt-toolbar__input { width: 100%; }
+  }
 </style>

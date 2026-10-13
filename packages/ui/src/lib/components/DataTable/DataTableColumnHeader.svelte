@@ -37,18 +37,18 @@
   .ca-col-header {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    height: 28px;
-    padding: 0 6px;
-    margin-left: -6px;
+    gap: var(--ca-space-1);
+    height: var(--ca-space-7);
+    padding: 0 var(--ca-space-1-5);
+    margin-left: calc(-1 * var(--ca-space-1-5));
     border: none;
     background: transparent;
     cursor: pointer;
     font-size: var(--ca-font-size-caption);
-    font-weight: 600;
+    font-weight: var(--ca-font-weight-semibold);
     color: var(--ca-text-secondary);
     text-transform: uppercase;
-    letter-spacing: 0.04em;
+    letter-spacing: var(--ca-overline-tracking);
     border-radius: var(--ca-radius-sm);
     transition: background var(--ca-duration-fast) var(--ca-ease-standard),
                 color var(--ca-duration-fast) var(--ca-ease-standard);
