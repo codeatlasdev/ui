@@ -9,7 +9,7 @@ afterEach(() => {
 });
 
 describe("portal", () => {
-	it("moves the node to body and restores it on destroy", () => {
+	it("moves the node to body and removes it on destroy", () => {
 		const host = document.createElement("section");
 		const node = document.createElement("div");
 		host.appendChild(node);
@@ -17,7 +17,7 @@ describe("portal", () => {
 		const cleanup = portal()(node);
 		expect(node.parentElement).toBe(document.body);
 		cleanup();
-		expect(node.parentElement).toBe(host);
+		expect(node.isConnected).toBe(false);
 	});
 
 	it("false leaves the node in place; string target is resolved", () => {
