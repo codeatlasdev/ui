@@ -25,7 +25,7 @@
 		"lint:fix": "biome check --write .",
 		"validate": "bun run --cwd packages/ui themes:check && bun run --cwd packages/ui lint:tokens && bun run check && bun run lint && bun run test:unit && bun run --cwd packages/ui size",
 		"predev": "bun run build:pkg",
-		"postinstall": "node scripts/fix-ts-symlink.js && lefthook install && bunx playwright install chromium",
+		"postinstall": "node scripts/fix-ts-symlink.js && node scripts/install-hooks.js && bunx playwright install chromium",
 		"test": "bun run test:unit && bun run test:browser && bun run test:e2e",
 		"test:unit": "bun run --cwd packages/ui test:unit",
 		"test:browser": "bun run --cwd packages/ui test:browser",
