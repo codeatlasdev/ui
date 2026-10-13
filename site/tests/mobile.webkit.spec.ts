@@ -63,10 +63,22 @@ test("theme-color follows the opaque chrome at the top edge", async ({ page }) =
 				html: hex(getComputedStyle(document.documentElement).backgroundColor),
 			};
 		});
-	await expect.poll(async () => (await read()).meta).toBe((await read()).header);
+	// Compare both values from the same read: the header color can still be settling.
+	await expect
+		.poll(async () => {
+			const r = await read();
+			return r.meta === r.header;
+		})
+		.toBe(true);
 	// Theme switch re-syncs.
 	await page.evaluate(() => document.documentElement.classList.toggle("dark"));
-	await expect.poll(async () => (await read()).meta).toBe((await read()).header);
+	// Compare both values from the same read: the header color can still be settling.
+	await expect
+		.poll(async () => {
+			const r = await read();
+			return r.meta === r.header;
+		})
+		.toBe(true);
 });
 
 test("html paints a solid canvas color (overscroll, Safari 26 sampling)", async ({ page }) => {
