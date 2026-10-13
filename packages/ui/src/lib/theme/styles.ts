@@ -203,7 +203,7 @@ export const DESIGN_STYLES: Record<DesignStyleId, DesignStyle> = {
 		description: "Glossy chrome, pill shapes, glow, wide-tracked bubbly type.",
 		taxonomy: ["DS024", "DS028"],
 		theme: {
-			defaultStyle: "glass",
+			defaultStyle: "chrome",
 			radius: 2,
 			controlRadius: "pill",
 			elevation: "glow",

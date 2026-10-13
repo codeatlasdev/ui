@@ -86,7 +86,7 @@
 .glass-ultra-thin {
   -webkit-backdrop-filter: var(--ca-mat-ultra-thin-filter);
   backdrop-filter: var(--ca-mat-ultra-thin-filter);
-  background-color: var(--ca-mat-ultra-thin-fill);
+  background: var(--ca-mat-ultra-thin-fill);
   box-shadow: var(--ca-mat-ultra-thin-shadow), var(--ca-mat-edge);
 }
 
@@ -94,7 +94,7 @@
 .glass-thin {
   -webkit-backdrop-filter: var(--ca-mat-thin-filter);
   backdrop-filter: var(--ca-mat-thin-filter);
-  background-color: var(--ca-mat-thin-fill);
+  background: var(--ca-mat-thin-fill);
   box-shadow: var(--ca-mat-thin-shadow), var(--ca-mat-edge);
 }
 
@@ -102,7 +102,7 @@
 .glass-regular {
   -webkit-backdrop-filter: var(--ca-mat-regular-filter);
   backdrop-filter: var(--ca-mat-regular-filter);
-  background-color: var(--ca-mat-regular-fill);
+  background: var(--ca-mat-regular-fill);
   box-shadow: var(--ca-mat-regular-shadow), var(--ca-mat-edge);
 }
 
@@ -110,7 +110,7 @@
 .glass-thick {
   -webkit-backdrop-filter: var(--ca-mat-thick-filter);
   backdrop-filter: var(--ca-mat-thick-filter);
-  background-color: var(--ca-mat-thick-fill);
+  background: var(--ca-mat-thick-fill);
   box-shadow: var(--ca-mat-thick-shadow), var(--ca-mat-edge);
 }
 
@@ -118,7 +118,7 @@
 .glass-chrome {
   -webkit-backdrop-filter: var(--ca-mat-chrome-filter);
   backdrop-filter: var(--ca-mat-chrome-filter);
-  background-color: var(--ca-mat-chrome-fill);
+  background: var(--ca-mat-chrome-fill);
   box-shadow: var(--ca-mat-chrome-shadow), var(--ca-mat-edge);
 }
 
@@ -559,6 +559,35 @@
   --ca-chip-border-color:  transparent;
   --ca-chip-shadow:        var(--ca-mat-edge), var(--ca-mat-ultra-thin-shadow);
   --ca-alert-shadow:       var(--ca-mat-edge), var(--ca-mat-ultra-thin-shadow);
+}
+
+/* ── Chrome (Y2K): glossy vertical gradient, metallic rim, brand glow. Blur stays on. ── */
+[data-style="chrome"] {
+  --ca-chrome-hi: color-mix(in oklab, white 70%, var(--ca-surface-raised));
+  --ca-chrome-lo: color-mix(in oklab, var(--ca-brand-main) 10%, var(--ca-surface-sunken, var(--ca-surface-base)));
+  --ca-mat-edge:
+    inset 0 1px 0 color-mix(in oklab, white 80%, transparent),
+    inset 0 -1px 0 color-mix(in oklab, black 18%, transparent),
+    inset 0 0 0 var(--ca-border-width) color-mix(in oklab, var(--ca-brand-main) 30%, var(--ca-outline-default));
+  --ca-mat-ultra-thin-fill: linear-gradient(180deg, var(--ca-chrome-hi), var(--ca-chrome-lo));
+  --ca-mat-thin-fill:       linear-gradient(180deg, var(--ca-chrome-hi), var(--ca-chrome-lo));
+  --ca-mat-regular-fill:    linear-gradient(180deg, var(--ca-chrome-hi) 0%, var(--ca-surface-raised) 48%, var(--ca-chrome-lo) 100%);
+  --ca-mat-thick-fill:      linear-gradient(180deg, var(--ca-chrome-hi) 0%, var(--ca-surface-overlay) 48%, var(--ca-chrome-lo) 100%);
+  --ca-mat-chrome-fill:     linear-gradient(180deg, var(--ca-chrome-hi), var(--ca-chrome-lo));
+  --ca-mat-regular-shadow:  0 0 24px color-mix(in oklab, var(--ca-brand-main) 28%, transparent);
+  --ca-mat-thick-shadow:    0 0 36px color-mix(in oklab, var(--ca-brand-main) 34%, transparent);
+  --ca-field-bg:           linear-gradient(180deg, var(--ca-surface-sunken, var(--ca-surface-base)), var(--ca-surface-raised));
+  --ca-field-border-color: color-mix(in oklab, var(--ca-brand-main) 35%, var(--ca-outline-default));
+  --ca-field-shadow:       inset 0 2px 4px color-mix(in oklab, black 14%, transparent);
+  --ca-chip-bg:            linear-gradient(180deg, var(--ca-chrome-hi), var(--ca-chrome-lo));
+  --ca-chip-border-color:  color-mix(in oklab, var(--ca-brand-main) 30%, var(--ca-outline-default));
+  --ca-chip-shadow:        inset 0 1px 0 color-mix(in oklab, white 80%, transparent);
+  --ca-alert-border-color: color-mix(in oklab, var(--ca-brand-main) 30%, var(--ca-outline-default));
+  --ca-alert-shadow:       inset 0 1px 0 color-mix(in oklab, white 60%, transparent), 0 0 16px color-mix(in oklab, var(--ca-brand-main) 18%, transparent);
+}
+.dark[data-style="chrome"],
+.dark [data-style="chrome"] {
+  --ca-chrome-hi: color-mix(in oklab, white 16%, var(--ca-surface-raised));
 }
 
 /* ── Tonal (Material 3): surfaces tinted with the brand hue, soft elevation. ── */

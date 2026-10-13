@@ -23,7 +23,8 @@ export type SurfaceStyle =
 	| "outlined"
 	| "neumorphic"
 	| "clay"
-	| "tonal";
+	| "tonal"
+	| "chrome";
 
 export const SCHEMES: readonly ColorScheme[] = ["light", "dark", "system"];
 export const STYLES: readonly SurfaceStyle[] = [
@@ -35,6 +36,7 @@ export const STYLES: readonly SurfaceStyle[] = [
 	"neumorphic",
 	"clay",
 	"tonal",
+	"chrome",
 ];
 /** Deps that must be bundled for SSR (extensionless .svelte imports, ESM-only). */
 export const SSR_NO_EXTERNAL = ["@tanstack/svelte-table", "@tanstack/table-core", "shiki"];
