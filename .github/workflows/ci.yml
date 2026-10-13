@@ -107,7 +107,7 @@ jobs:
             site/dist/
 
   components:
-    name: Component tests (${{ matrix.shard }}/2)
+    name: Component tests (${{ matrix.shard }}/4)
     needs: changes
     if: ${{ !inputs.update-snapshots && needs.changes.outputs.package == 'true' }}
     runs-on: ubuntu-latest
@@ -116,43 +116,6 @@ jobs:
       options: --ipc=host --init
     env:
       HOME: /root
-    strategy:
-      fail-fast: false
-      matrix:
-        shard: [1, 2]
-    steps:
-      - uses: actions/checkout@v7
-      - run: npm i -g "$(node -p 'require("./package.json").packageManager')"
-      - uses: actions/cache@v6
-        with:
-          path: /root/.bun/install/cache
-          key: bun-container-${{ hashFiles('bun.lock') }}
-          restore-keys: bun-container-
-      # No postinstall in CI: it would download browsers and install git hooks. Only the
-      # TypeScript link svelte-package needs is required.
-      - run: bun install --frozen-lockfile --ignore-scripts && node scripts/fix-ts-symlink.js
-      - run: bun run build:pkg
-      - run: bun run --cwd packages/ui test:browser --shard=${{ matrix.shard }}/2
-      - uses: actions/upload-artifact@v7
-        if: ${{ failure() }}
-        with:
-          name: vitest-traces-${{ matrix.shard }}
-          include-hidden-files: true
-          path: |
-            packages/ui/.vitest/
-            packages/ui/src/**/__traces__/
-
-  e2e:
-    name: Site e2e + a11y (${{ matrix.shard }}/4)
-    needs: build
-    if: ${{ !inputs.update-snapshots }}
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.64.0-noble
-      options: --ipc=host --init
-    env:
-      HOME: /root
-      E2E_PREBUILT: "1"
     strategy:
       fail-fast: false
       matrix:
@@ -168,34 +131,32 @@ jobs:
       # No postinstall in CI: it would download browsers and install git hooks. Only the
       # TypeScript link svelte-package needs is required.
       - run: bun install --frozen-lockfile --ignore-scripts && node scripts/fix-ts-symlink.js
-      - uses: actions/download-artifact@v8
-        with:
-          name: build
-      - working-directory: site
-        run: bunx playwright test --project=desktop --project=mobile --project=a11y --project=iphone --shard=${{ matrix.shard }}/4
+      - run: bun run build:pkg
+      - run: bun run --cwd packages/ui test:browser --shard=${{ matrix.shard }}/4
       - uses: actions/upload-artifact@v7
         if: ${{ failure() }}
         with:
-          name: playwright-e2e-${{ matrix.shard }}
+          name: vitest-traces-${{ matrix.shard }}
           include-hidden-files: true
           path: |
-            site/playwright-report/
-            site/test-results/
+            packages/ui/.vitest/
+            packages/ui/src/**/__traces__/
 
-  visual:
-    name: Visual regression (Linux baselines)
-    needs: [changes, build]
-    # Pixels only change when code, styles or the site change; always run when regenerating.
-    if: ${{ inputs.update-snapshots || needs.changes.outputs.package == 'true' || needs.changes.outputs.site == 'true' }}
+  e2e:
+    name: Site e2e + a11y (${{ matrix.shard }}/6)
+    needs: build
+    if: ${{ !inputs.update-snapshots }}
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.64.0-noble
       options: --ipc=host --init
-    permissions:
-      contents: write
     env:
       HOME: /root
       E2E_PREBUILT: "1"
+    strategy:
+      fail-fast: false
+      matrix:
+        shard: [1, 2, 3, 4, 5, 6]
     steps:
       - uses: actions/checkout@v7
       - run: npm i -g "$(node -p 'require("./package.json").packageManager')"
@@ -210,13 +171,58 @@ jobs:
       - uses: actions/download-artifact@v8
         with:
           name: build
-      - run: bun run --cwd packages/ui test:vrt ${{ inputs.update-snapshots && '--update' || '' }}
       - working-directory: site
+        run: bunx playwright test --project=desktop --project=mobile --project=a11y --project=iphone --shard=${{ matrix.shard }}/6
+      - uses: actions/upload-artifact@v7
+        if: ${{ failure() }}
+        with:
+          name: playwright-e2e-${{ matrix.shard }}
+          include-hidden-files: true
+          path: |
+            site/playwright-report/
+            site/test-results/
+
+  visual:
+    name: Visual regression (${{ matrix.suite }})
+    needs: [changes, build]
+    # Pixels only change when code, styles or the site change; always run when regenerating.
+    if: ${{ inputs.update-snapshots || needs.changes.outputs.package == 'true' || needs.changes.outputs.site == 'true' }}
+    runs-on: ubuntu-latest
+    container:
+      image: mcr.microsoft.com/playwright:v1.64.0-noble
+      options: --ipc=host --init
+    permissions:
+      contents: write
+    env:
+      HOME: /root
+      E2E_PREBUILT: "1"
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [components, site]
+    steps:
+      - uses: actions/checkout@v7
+      - run: npm i -g "$(node -p 'require("./package.json").packageManager')"
+      - uses: actions/cache@v6
+        with:
+          path: /root/.bun/install/cache
+          key: bun-container-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-container-
+      # No postinstall in CI: it would download browsers and install git hooks. Only the
+      # TypeScript link svelte-package needs is required.
+      - run: bun install --frozen-lockfile --ignore-scripts && node scripts/fix-ts-symlink.js
+      - uses: actions/download-artifact@v8
+        with:
+          name: build
+      - if: ${{ matrix.suite == 'components' }}
+        run: bun run --cwd packages/ui test:vrt ${{ inputs.update-snapshots && '--update' || '' }}
+      - if: ${{ matrix.suite == 'site' }}
+        working-directory: site
         run: bunx playwright test --project=visual-desktop --project=visual-mobile ${{ inputs.update-snapshots && '--update-snapshots' || '' }}
       - uses: actions/upload-artifact@v7
         if: ${{ failure() }}
         with:
-          name: playwright-visual
+          name: playwright-visual-${{ matrix.suite }}
           include-hidden-files: true
           path: |
             site/playwright-report/
@@ -229,7 +235,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A '**/__screenshots__/**'
-          git diff --cached --quiet || (git commit -m "test: update visual baselines" && git push)
+          git diff --cached --quiet || (git commit -m "test: update ${{ matrix.suite }} visual baselines" && git pull --rebase && git push)
 
   preview:
     name: Site preview

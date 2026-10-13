@@ -48,8 +48,8 @@ export function makeAxe(page: Page) {
 type AxeResults = Awaited<ReturnType<AxeBuilder["analyze"]>>;
 
 /** Attaches the raw axe JSON and fails with a compact `{id, impact, helpUrl, targets}` list. */
-export async function expectNoViolations(results: AxeResults, testInfo: TestInfo) {
-	await testInfo.attach("axe-results", {
+export async function expectNoViolations(results: AxeResults, testInfo: TestInfo, label = "") {
+	await testInfo.attach(label ? `axe-results-${label}` : "axe-results", {
 		body: JSON.stringify(results, null, 2),
 		contentType: "application/json",
 	});
@@ -59,7 +59,10 @@ export async function expectNoViolations(results: AxeResults, testInfo: TestInfo
 		helpUrl: v.helpUrl,
 		targets: v.nodes.map((n) => n.target.join(" ")),
 	}));
-	expect(summary, `axe violations:\n${JSON.stringify(summary, null, 2)}`).toEqual([]);
+	expect(
+		summary,
+		`axe violations${label ? ` (${label})` : ""}:\n${JSON.stringify(summary, null, 2)}`
+	).toEqual([]);
 }
 
 /**
