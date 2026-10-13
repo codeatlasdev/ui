@@ -63,11 +63,17 @@
         })()
   );
 
+  let openedByKeyboard = false;
+
   $effect(() => {
     if (open) {
       query = '';
       selectedIndex = 0;
-      requestAnimationFrame(() => focusTextField(inputRef));
+      const force = openedByKeyboard;
+      openedByKeyboard = false;
+      // A shortcut means "I'm about to type": focus the field even on touch devices with a
+      // keyboard (iPad + keyboard). A tap-open keeps the default (no surprise on-screen keyboard).
+      requestAnimationFrame(() => focusTextField(inputRef, force));
     }
   });
 
@@ -109,9 +115,11 @@
 
   const presence = createPresence(() => open);
 
+
   function handleGlobal(e: KeyboardEvent) {
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
       e.preventDefault();
+      openedByKeyboard = !open;
       open = !open;
     }
   }
