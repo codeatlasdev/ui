@@ -17,21 +17,24 @@
 <style>
   .ca-method {
     flex-shrink: 0;
-    font: 700 var(--ca-font-size-caption) / 1.5 var(--ca-font-mono);
-    letter-spacing: 0.02em;
+    font-family: var(--ca-font-mono);
+    font-size: var(--ca-font-size-caption);
+    font-weight: var(--ca-font-weight-bold);
+    line-height: 1.5;
+    letter-spacing: var(--ca-label-tracking);
     color: var(--ca-semantic-info);
   }
 
   .ca-method--pill {
-    padding: 0.125rem 0.5rem;
+    padding: var(--ca-space-0-5) var(--ca-space-2);
     border-radius: var(--ca-radius-xs);
     background: color-mix(in oklab, currentColor 6%, transparent);
   }
 
   .ca-method--plain {
     font-size: var(--ca-font-size-nano);
-    font-weight: 600;
-    line-height: 1.6;
+    font-weight: var(--ca-font-weight-semibold);
+    line-height: var(--ca-line-height-prose);
   }
 
   .ca-method[data-method='POST'] { color: var(--ca-semantic-success); }

@@ -47,21 +47,23 @@
   .ca-docs-nav {
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
+    gap: var(--ca-space-6);
   }
 
   .ca-docs-nav__label {
-    margin: 0 0 0.375rem;
-    padding: 0 0.625rem;
+    margin: 0 0 var(--ca-space-1-5);
+    padding: 0 var(--ca-space-2-5);
     font-size: var(--ca-font-size-caption);
-    font-weight: 600;
+    font-weight: var(--ca-font-weight-semibold);
+    letter-spacing: var(--ca-label-tracking);
+    text-transform: var(--ca-label-case);
     color: var(--ca-text-primary);
   }
 
   ul {
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    gap: var(--ca-border-width);
     margin: 0;
     padding: 0;
     list-style: none;
@@ -70,9 +72,9 @@
   .ca-docs-nav__link {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    min-height: 32px;
-    padding: 0.375rem 0.625rem;
+    gap: var(--ca-space-2);
+    min-height: var(--ca-space-8);
+    padding: var(--ca-space-1-5) var(--ca-space-2-5);
     border-radius: var(--ca-radius-sm);
     font-size: var(--ca-font-size-body2);
     line-height: 1.4;
@@ -89,14 +91,14 @@
   }
 
   .ca-docs-nav__link:focus-visible {
-    outline: 2px solid var(--ca-brand-main);
-    outline-offset: -2px;
+    outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
+    outline-offset: calc(var(--ca-border-width-focus) * -1);
   }
 
   .ca-docs-nav__link[aria-current='page'] {
     color: var(--ca-brand-text);
     background: color-mix(in oklab, var(--ca-brand-main) 10%, transparent);
-    font-weight: 500;
+    font-weight: var(--ca-font-weight-medium);
   }
 
   .ca-docs-nav__title {
@@ -106,7 +108,7 @@
 
   /* Touch: 44px rows (inside the Sheet, where the nav is the main control). */
   @media (pointer: coarse) {
-    .ca-docs-nav__link { min-height: 44px; }
+    .ca-docs-nav__link { min-height: var(--ca-touch-target); }
   }
 
   @media (prefers-reduced-motion: reduce) {

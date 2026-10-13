@@ -29,11 +29,11 @@
 
 <style>
   :global(.ca-callout) {
-    margin: 1.25rem 0;
+    margin: var(--ca-space-5) 0;
   }
 
   /* Prose inside a callout: tighter, and it must not inherit prose block margins. */
   :global(.ca-callout .ca-alert__content > :first-child) { margin-top: 0; }
   :global(.ca-callout .ca-alert__content > :last-child) { margin-bottom: 0; }
-  :global(.ca-callout .ca-alert__content p) { margin: 0.5rem 0; }
+  :global(.ca-callout .ca-alert__content p) { margin: var(--ca-space-2) 0; }
 </style>

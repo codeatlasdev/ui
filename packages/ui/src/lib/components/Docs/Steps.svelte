@@ -21,7 +21,7 @@
 
 <style>
   .ca-steps :global(> ol) {
-    margin: 1.5rem 0;
+    margin: var(--ca-space-6) 0;
     padding: 0;
     list-style: none;
     counter-reset: ca-step;
@@ -30,7 +30,7 @@
   .ca-steps :global(> ol > li) {
     position: relative;
     margin: 0;
-    padding: 0 0 2rem 2.75rem;
+    padding: 0 0 var(--ca-space-8) var(--ca-space-10);
     counter-increment: ca-step;
     min-width: 0;
   }
@@ -42,29 +42,28 @@
     left: 0;
     display: grid;
     place-items: center;
-    width: 1.75rem;
-    height: 1.75rem;
+    width: var(--ca-space-7);
+    height: var(--ca-space-7);
     border-radius: 50%;
     background: color-mix(in oklab, var(--ca-brand-main) 14%, var(--ca-surface-base));
     color: var(--ca-brand-text);
-    font: 700 var(--ca-font-size-caption) / 1 var(--ca-font-mono);
+    font-family: var(--ca-font-mono);
+    font-size: var(--ca-font-size-caption);
+    font-weight: var(--ca-font-weight-bold);
+    line-height: 1;
   }
 
   .ca-steps :global(> ol > li::after) {
     content: '';
     position: absolute;
-    top: 2.25rem;
-    bottom: 0.5rem;
-    left: calc(0.875rem - 0.5px);
-    width: 1px;
+    top: calc(var(--ca-space-7) + var(--ca-space-2));
+    bottom: var(--ca-space-2);
+    left: calc(var(--ca-space-3-5) - var(--ca-border-width) / 2);
+    width: var(--ca-border-width);
     background: var(--ca-outline-default);
   }
 
   .ca-steps :global(> ol > li:last-child) { padding-bottom: 0; }
   .ca-steps :global(> ol > li:last-child::after) { display: none; }
   .ca-steps :global(> ol > li > :first-child) { margin-top: 0; }
-
-  @media (max-width: 899.98px) {
-    .ca-steps :global(> ol > li) { padding-left: 2.5rem; }
-  }
 </style>

@@ -13,7 +13,7 @@
   .ca-card-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
-    gap: 0.75rem;
-    margin: 1.25rem 0;
+    gap: var(--ca-space-3);
+    margin: var(--ca-space-5) 0;
   }
 </style>

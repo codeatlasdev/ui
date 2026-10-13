@@ -20,10 +20,10 @@
   .ca-link-card {
     display: flex;
     flex-direction: column;
-    gap: 0.375rem;
-    min-height: 44px;
-    padding: 1.125rem 1.25rem;
-    border: 1px solid var(--ca-outline-subtle);
+    gap: var(--ca-space-1-5);
+    min-height: var(--ca-touch-target);
+    padding: var(--ca-space-4) var(--ca-space-5);
+    border: var(--ca-border-width) solid var(--ca-outline-subtle);
     border-radius: var(--ca-radius-lg);
     background: var(--ca-surface-raised);
     text-decoration: none;
@@ -36,16 +36,16 @@
   .ca-link-card:active { transform: scale(0.995); }
 
   .ca-link-card:focus-visible {
-    outline: 2px solid var(--ca-brand-main);
-    outline-offset: 2px;
+    outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
+    outline-offset: var(--ca-focus-ring-offset);
   }
 
   .ca-link-card__title {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.5rem;
-    font-weight: 600;
+    gap: var(--ca-space-2);
+    font-weight: var(--ca-font-weight-semibold);
     color: var(--ca-text-primary);
   }
 
@@ -59,13 +59,13 @@
 
   .ca-link-card:hover .ca-link-card__title :global(svg) {
     color: var(--ca-brand-text);
-    transform: translateX(2px);
+    transform: translateX(var(--ca-space-0-5));
   }
 
   .ca-link-card__desc {
     font-size: var(--ca-font-size-body2);
-    font-weight: 400;
-    line-height: 1.55;
+    font-weight: var(--ca-font-weight-regular);
+    line-height: var(--ca-line-height-body);
     color: var(--ca-text-secondary);
   }
 
