@@ -116,6 +116,20 @@ export const DESIGN_STYLES: Record<DesignStyleId, DesignStyle> = {
 			controlRadius: "lg",
 			elevation: "soft",
 			noise: 0.03,
+			overrides: {
+				light: {
+					"--ca-blur-thin": "blur(18px) saturate(180%)",
+					"--ca-blur-regular": "blur(28px) saturate(190%)",
+					"--ca-blur-thick": "blur(36px) saturate(200%)",
+					"--ca-glass-rim": "oklch(1 0 0 / 0.9)",
+				},
+				dark: {
+					"--ca-blur-thin": "blur(18px) saturate(180%)",
+					"--ca-blur-regular": "blur(28px) saturate(190%)",
+					"--ca-blur-thick": "blur(36px) saturate(200%)",
+					"--ca-glass-rim": "oklch(1 0 0 / 0.32)",
+				},
+			},
 			motion: { scale: 1, easing: "emphasized" },
 			iconStroke: 1.75,
 		},
@@ -139,10 +153,11 @@ export const DESIGN_STYLES: Record<DesignStyleId, DesignStyle> = {
 	fluent: {
 		id: "fluent",
 		label: "Fluent 2",
-		description: "Neutral surfaces, small radii, subtle depth, compact and fast.",
+		description: "Acrylic (frosted blur plus grain), small radii, subtle depth, compact and fast.",
 		taxonomy: ["DS198"],
 		theme: {
-			defaultStyle: "solid",
+			defaultStyle: "frosted",
+			noise: 0.035,
 			radius: 0.6,
 			controlRadius: "sm",
 			density: "compact",
@@ -171,7 +186,8 @@ export const DESIGN_STYLES: Record<DesignStyleId, DesignStyle> = {
 	bento: {
 		id: "bento",
 		label: "Bento",
-		description: "Modular cards with generous radius and gaps; pair with the BentoGrid layout.",
+		description:
+			"Modular cards with generous radius and gaps; pair with Grid for the modular layout.",
 		taxonomy: ["DS120"],
 		theme: {
 			defaultStyle: "solid",
