@@ -2,7 +2,8 @@
   import { focusTextField, primeKeyboard } from '../../actions/autofocus.js';
   import { t } from '../../i18n/state.svelte.js';
   import { uid } from '../../utils/index.js';
-  import { Combobox as BitsCombobox } from 'bits-ui';
+  import { createListbox } from '../../primitives/index.js';
+  import FloatingLayer from '../Popover/FloatingLayer.svelte';
   import { ChevronDown, Check } from '@lucide/svelte';
 
   export interface ComboboxOption {
@@ -48,10 +49,15 @@
 
   let query     = $state('');
   let searchInput = $state<HTMLInputElement | null>(null);
+  let open = $state(false);
+  let trigger = $state<HTMLElement | null>(null);
+  let popup = $state<HTMLElement | null>(null);
+
+  const triggerId = uid('cbx');
+  const listboxId = `${triggerId}-list`;
 
   // The popup input owns keyboard focus (aria-activedescendant lives on it), so focus it as soon as it mounts.
   $effect(() => { focusTextField(searchInput); });
-  const triggerId = uid('cbx');
 
   let selectedLabel = $derived(options.find(o => o.value === value)?.label ?? placeholder ?? t().combobox.placeholder);
 
@@ -65,15 +71,46 @@
     ['ca-combobox', size === 'sm' ? 'ca-combobox--sm' : '', !!error ? 'ca-combobox--error' : '', className]
       .filter(Boolean).join(' ')
   );
+
+  const listbox = createListbox({
+    mode: 'activedescendant',
+    spaceSelects: false,
+    items: () =>
+      filtered.map((o, i) => ({
+        id: `${triggerId}-opt-${i}`,
+        el: () => popup?.querySelector<HTMLElement>(`#${CSS.escape(`${triggerId}-opt-${i}`)}`),
+        text: o.label,
+        disabled: o.disabled,
+      })),
+    onSelect: (_item, i) => choose(filtered[i]),
+  });
+
+  // Typing changes the result set: restart the highlight on the first match.
+  $effect(() => {
+    void filtered;
+    if (open) listbox.first();
+  });
+
+  function choose(option: ComboboxOption | undefined) {
+    if (!option || option.disabled) return;
+    value = option.value;
+    onchange?.(option.value);
+    close();
+  }
+
+  function close(restoreFocus = true) {
+    open = false;
+    query = '';
+    listbox.clear();
+    if (restoreFocus) trigger?.focus({ preventScroll: true });
+  }
+
+  function onInputKeydown(e: KeyboardEvent) {
+    if (e.key === 'Tab') return close(false);
+    listbox.onkeydown(e);
+  }
 </script>
 
-<BitsCombobox.Root
-  type="single"
-  bind:value
-  onValueChange={(v) => { if (v !== undefined) { value = v; onchange?.(v); } }}
-  {disabled}
-  onOpenChange={(open) => { if (!open) query = ''; }}
->
 <div class={rootClass}>
   {#if label}
     <label for={triggerId} class="ca-combobox__label">
@@ -81,18 +118,36 @@
     </label>
   {/if}
 
-  <BitsCombobox.Trigger
-    onclick={primeKeyboard}
+  <!-- svelte-ignore a11y_role_supports_aria_props_implicit -->
+  <button
+    type="button"
+    bind:this={trigger}
     id={triggerId}
     class="ca-combobox__trigger"
+    {disabled}
+    aria-haspopup="listbox"
+    aria-expanded={open}
+    aria-controls={open ? `${triggerId}-popup` : undefined}
     aria-labelledby={!label && ariaLabel ? `${triggerId}-name ${triggerId}-value` : undefined}
     aria-describedby={error ? `${triggerId}-err` : description ? `${triggerId}-hint` : undefined}
     aria-invalid={error ? 'true' : undefined}
+    data-state={open ? 'open' : 'closed'}
+    onclick={() => {
+      if (open) return close();
+      primeKeyboard();
+      open = true;
+    }}
+    onkeydown={(e) => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault();
+        if (!open) open = true;
+      }
+    }}
   >
     {#if !label && ariaLabel}<span id="{triggerId}-name" hidden>{ariaLabel}</span>{/if}
     <span id="{triggerId}-value" class="ca-combobox__trigger-label">{selectedLabel}</span>
     <ChevronDown size={16} class="ca-combobox__chevron" />
-  </BitsCombobox.Trigger>
+  </button>
 
   {#if error}
     <p id="{triggerId}-err" class="ca-combobox__hint ca-combobox__hint--error" role="alert">{error}</p>
@@ -100,54 +155,64 @@
     <p id="{triggerId}-hint" class="ca-combobox__hint">{description}</p>
   {/if}
 
-  <BitsCombobox.Portal>
-    <BitsCombobox.Content
-      sideOffset={4}
-      customAnchor={`#${triggerId}`}
-    >
-      {#snippet child({ props, wrapperProps })}
-        <!-- The popup is a plain container: the search input (role=combobox) must not live inside role=listbox. -->
-        {@const { role: _role, 'aria-multiselectable': _multi, id, ...popupProps } = props}
-        {@const listboxId = String(id)}
-        <div {...wrapperProps}>
-          <div {...popupProps} class="ca-combobox__content">
-            <div class="ca-combobox__search-wrap">
-              <BitsCombobox.Input
-                oninput={(e) => (query = e.currentTarget.value)}
-                bind:ref={searchInput}
-                class="ca-combobox__input"
-                placeholder={searchPlaceholder ?? t().combobox.searchPlaceholder}
-                aria-label={searchPlaceholder ?? t().combobox.searchPlaceholder}
-                aria-controls={listboxId}
-              />
-            </div>
-            <div id={listboxId} role="listbox" aria-label={label ?? ariaLabel ?? placeholder ?? t().combobox.placeholder} class="ca-combobox__viewport">
-              {#each filtered as opt}
-                <BitsCombobox.Item
-                  value={opt.value}
-                  label={opt.label}
-                  disabled={opt.disabled}
-                  class="ca-combobox__item"
-                >
-                  {#snippet children({ selected })}
-                    <span class="ca-combobox__item-label">{opt.label}</span>
-                    {#if selected}
-                      <Check size={14} class="ca-combobox__item-check" />
-                    {/if}
-                  {/snippet}
-                </BitsCombobox.Item>
-              {/each}
-            </div>
-            {#if filtered.length === 0}
-              <div class="ca-combobox__empty">{emptyText ?? t().combobox.empty}</div>
-            {/if}
-          </div>
+  <!-- The popup is a plain container: the search input (role=combobox) must not live inside role=listbox. -->
+  <FloatingLayer
+    anchor={trigger}
+    {open}
+    side="bottom"
+    align="start"
+    sideOffset={4}
+    sameWidth
+    bind:ref={popup}
+    id="{triggerId}-popup"
+    class="ca-combobox__content"
+    onDismiss={(reason) => close(reason === 'escape')}
+  >
+    <div class="ca-combobox__search-wrap">
+      <input
+        bind:this={searchInput}
+        bind:value={query}
+        type="text"
+        role="combobox"
+        class="ca-combobox__input"
+        autocomplete="off"
+        placeholder={searchPlaceholder ?? t().combobox.searchPlaceholder}
+        aria-label={searchPlaceholder ?? t().combobox.searchPlaceholder}
+        aria-controls={listboxId}
+        aria-expanded="true"
+        aria-autocomplete="list"
+        aria-activedescendant={listbox.activeDescendant}
+        onkeydown={onInputKeydown}
+      />
+    </div>
+    <div id={listboxId} role="listbox" aria-label={label ?? ariaLabel ?? placeholder ?? t().combobox.placeholder} class="ca-combobox__viewport">
+      {#each filtered as opt, i (opt.value)}
+        <!-- Keyboard is handled by the search input (aria-activedescendant); options are not tab stops. -->
+        <!-- svelte-ignore a11y_interactive_supports_focus, a11y_click_events_have_key_events -->
+        <div
+          id="{triggerId}-opt-{i}"
+          role="option"
+          class="ca-combobox__item"
+          aria-selected={opt.value === value}
+          aria-disabled={opt.disabled ? 'true' : undefined}
+          data-disabled={opt.disabled ? '' : undefined}
+          data-highlighted={listbox.isHighlighted(i) ? '' : undefined}
+          data-selected={opt.value === value ? '' : undefined}
+          onclick={() => choose(opt)}
+          onpointermove={() => !opt.disabled && listbox.highlight(i)}
+        >
+          <span class="ca-combobox__item-label">{opt.label}</span>
+          {#if opt.value === value}
+            <Check size={14} class="ca-combobox__item-check" />
+          {/if}
         </div>
-      {/snippet}
-    </BitsCombobox.Content>
-  </BitsCombobox.Portal>
+      {/each}
+    </div>
+    {#if filtered.length === 0}
+      <div class="ca-combobox__empty">{emptyText ?? t().combobox.empty}</div>
+    {/if}
+  </FloatingLayer>
 </div>
-</BitsCombobox.Root>
 
 <style>
   :global(.ca-combobox) {
@@ -247,13 +312,12 @@
 
   /* ── Dropdown content ──────────────────────────────────────── */
   :global(.ca-combobox__content) {
-    z-index: var(--ca-z-dropdown);
     border-radius: var(--ca-radius-lg);
     background: var(--ca-surface-overlay);
     border: var(--ca-border-width) solid var(--ca-outline-subtle);
     box-shadow: var(--ca-shadow-lg);
     overflow: hidden;
-    min-width: var(--bits-combobox-trigger-width, 200px);
+    min-width: var(--ca-anchor-width, 200px);
     outline: none;
   }
 

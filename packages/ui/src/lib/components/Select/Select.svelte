@@ -1,7 +1,8 @@
 <script lang="ts">
   import { t } from '../../i18n/state.svelte.js';
   import { uid } from '../../utils/index.js';
-  import { Select } from 'bits-ui';
+  import { createListbox } from '../../primitives/index.js';
+  import FloatingLayer from '../Popover/FloatingLayer.svelte';
   import { ChevronDown, Check } from '@lucide/svelte';
 
   interface Option {
@@ -40,6 +41,59 @@
 
   const id       = uid('sel');
   const selected = $derived(options.find(o => o.value === value)?.label ?? '');
+
+  let open = $state(false);
+  let trigger = $state<HTMLElement | null>(null);
+  let list = $state<HTMLElement | null>(null);
+
+  const listbox = createListbox({
+    mode: 'activedescendant',
+    items: () =>
+      options.map((o, i) => ({
+        id: `${id}-opt-${i}`,
+        el: () => list?.querySelector<HTMLElement>(`#${CSS.escape(`${id}-opt-${i}`)}`),
+        text: o.label,
+        disabled: o.disabled,
+      })),
+    onSelect: (_item, i) => choose(options[i]),
+  });
+
+  function choose(option: Option | undefined) {
+    if (!option || option.disabled) return;
+    value = option.value;
+    onchange?.(option.value);
+    close();
+  }
+
+  function close(restoreFocus = true) {
+    open = false;
+    listbox.clear();
+    if (restoreFocus) trigger?.focus({ preventScroll: true });
+  }
+
+  function openList() {
+    if (disabled) return;
+    open = true;
+  }
+
+  function onMounted(el: HTMLElement) {
+    el.focus({ preventScroll: true });
+    const at = options.findIndex((o) => o.value === value && !o.disabled);
+    if (at >= 0) listbox.highlight(at);
+    else listbox.first();
+  }
+
+  function onTriggerKeydown(e: KeyboardEvent) {
+    if (e.key === 'ArrowDown' || e.key === 'ArrowUp' || e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      if (!open) openList();
+    }
+  }
+
+  function onListKeydown(e: KeyboardEvent) {
+    if (e.key === 'Tab') return close(false);
+    listbox.onkeydown(e);
+  }
 </script>
 
 <div class="ca-sel {className}" class:ca-sel--sm={size === 'sm'} class:ca-sel--error={!!error} class:ca-sel--disabled={disabled}>
@@ -49,61 +103,73 @@
     </label>
   {/if}
 
-  <Select.Root
-    type="single"
-    {required}
-    {value}
-    onValueChange={(v) => {
-      if (v !== undefined) {
-        value = v;
-        onchange?.(v);
-      }
-    }}
+  <!-- svelte-ignore a11y_role_supports_aria_props_implicit -->
+  <button
+    type="button"
+    {id}
+    bind:this={trigger}
+    class="ca-sel__trigger"
     {disabled}
+    aria-haspopup="listbox"
+    aria-expanded={open}
+    aria-controls={open ? `${id}-list` : undefined}
+    aria-label={label ? undefined : (placeholder ?? t().select.placeholder)}
+    aria-describedby={error ? `${id}-err` : description ? `${id}-hint` : undefined}
+    aria-invalid={error ? 'true' : undefined}
+    data-state={open ? 'open' : 'closed'}
+    data-placeholder={value ? undefined : ''}
+    onclick={() => (open ? close() : openList())}
+    onkeydown={onTriggerKeydown}
   >
-    <Select.Trigger
-      {id}
-      class="ca-sel__trigger"
-      aria-label={label ? undefined : (placeholder ?? t().select.placeholder)}
-      aria-describedby={error ? `${id}-err` : description ? `${id}-hint` : undefined}
-      aria-invalid={error ? 'true' : undefined}
-    >
-      {#snippet child({ props })}
-        <!-- `aria-activedescendant` is not allowed on role=button; the highlighted option is conveyed by the listbox itself. -->
-        {@const { 'aria-activedescendant': _omit, ...buttonProps } = props}
-        <button {...buttonProps}>
-          <span class="ca-sel__value" class:ca-sel__value--placeholder={!value}>
-            {value ? selected : (placeholder ?? t().select.placeholder)}
-          </span>
-          <span class="ca-sel__icon" aria-hidden="true">
-            <ChevronDown size={14} strokeWidth={2} />
-          </span>
-        </button>
-      {/snippet}
-    </Select.Trigger>
+    <span class="ca-sel__value" class:ca-sel__value--placeholder={!value}>
+      {value ? selected : (placeholder ?? t().select.placeholder)}
+    </span>
+    <span class="ca-sel__icon" aria-hidden="true">
+      <ChevronDown size={14} strokeWidth={2} />
+    </span>
+  </button>
 
-    <Select.Portal>
-      <Select.Content class="ca-sel__content" sideOffset={4} aria-label={label ?? placeholder ?? t().select.placeholder}>
-        {#each options as option}
-          <Select.Item
-            value={option.value}
-            label={option.label}
-            disabled={option.disabled}
-            class="ca-sel__item"
-          >
-            {#snippet children({ selected: isSel })}
-              <span class="ca-sel__item-label">{option.label}</span>
-              {#if isSel}
-                <span class="ca-sel__check" aria-hidden="true">
-                  <Check size={14} strokeWidth={2.4} />
-                </span>
-              {/if}
-            {/snippet}
-          </Select.Item>
-        {/each}
-      </Select.Content>
-    </Select.Portal>
-  </Select.Root>
+  <FloatingLayer
+    anchor={trigger}
+    {open}
+    side="bottom"
+    align="start"
+    sideOffset={4}
+    sameWidth
+    bind:ref={list}
+    id="{id}-list"
+    role="listbox"
+    tabindex={-1}
+    aria-label={label ?? placeholder ?? t().select.placeholder}
+    class="ca-sel__content"
+    onDismiss={(reason) => close(reason === 'escape')}
+    onkeydown={onListKeydown}
+    {onMounted}
+  >
+    {#each options as option, i (option.value)}
+      <!-- Keyboard is handled by the listbox container (aria-activedescendant); options are not tab stops. -->
+      <!-- svelte-ignore a11y_interactive_supports_focus, a11y_click_events_have_key_events -->
+      <div
+        id="{id}-opt-{i}"
+        role="option"
+        class="ca-sel__item"
+        aria-selected={option.value === value}
+        aria-disabled={option.disabled ? 'true' : undefined}
+        data-disabled={option.disabled ? '' : undefined}
+        data-highlighted={listbox.isHighlighted(i) ? '' : undefined}
+        data-selected={option.value === value ? '' : undefined}
+        onclick={() => choose(option)}
+        onpointermove={() => !option.disabled && listbox.highlight(i)}
+      >
+        <span class="ca-sel__item-label">{option.label}</span>
+        {#if option.value === value}
+          <span class="ca-sel__check" aria-hidden="true">
+            <Check size={14} strokeWidth={2.4} />
+          </span>
+        {/if}
+      </div>
+    {/each}
+  </FloatingLayer>
 
   {#if error}
     <p id="{id}-err" class="ca-sel__hint ca-sel__hint--error" role="alert">{error}</p>
@@ -205,8 +271,7 @@
 
   /* ── Dropdown content ──────────────────────────────────────── */
   :global(.ca-sel__content) {
-    z-index: var(--ca-z-dropdown);
-    min-width: var(--bits-select-anchor-width);
+    min-width: var(--ca-anchor-width);
     max-height: 280px;
     overflow-y: auto;
     background: var(--ca-surface-overlay);

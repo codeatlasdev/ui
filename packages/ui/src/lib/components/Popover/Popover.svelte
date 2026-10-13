@@ -1,6 +1,8 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { Popover } from 'bits-ui';
+  import { uid } from '../../utils/index.js';
+  import FloatingLayer from './FloatingLayer.svelte';
+  import { createTriggerProps, tabIntoPopup } from './trigger.js';
 
   interface Props {
     class?: string;
@@ -23,26 +25,48 @@
     align      = 'center',
     sideOffset = 8,
   }: Props = $props();
+
+  const id = uid('pop');
+  let open = $state(false);
+  let anchor = $state<HTMLElement | null>(null);
+  let content = $state<HTMLElement | null>(null);
+
+  const makeTrigger = createTriggerProps((el) => (anchor = el));
+  const triggerAttrs = $derived(
+    makeTrigger({ id: `${id}-trigger`, popup: 'dialog', open, controls: `${id}-content`, onToggle: () => (open = !open), onKeydown: (e) => open && tabIntoPopup(e, content) })
+  );
+
+  function close(restoreFocus: boolean) {
+    open = false;
+    if (restoreFocus) anchor?.focus({ preventScroll: true });
+  }
+
 </script>
 
-<Popover.Root>
-  {#if triggerChild}
-    <Popover.Trigger>
-      {#snippet child({ props })}
-        {@render triggerChild(props)}
-      {/snippet}
-    </Popover.Trigger>
-  {:else if trigger}
-    <Popover.Trigger class="ca-popover__trigger">
-      {@render trigger()}
-    </Popover.Trigger>
-  {/if}
-  <Popover.Portal>
-    <Popover.Content class="ca-popover-content glass-overlay {className}" {side} {align} sideOffset={sideOffset}>
-      {@render children?.()}
-    </Popover.Content>
-  </Popover.Portal>
-</Popover.Root>
+{#if triggerChild}
+  {@render triggerChild(triggerAttrs)}
+{:else if trigger}
+  <button type="button" class="ca-popover__trigger" {...triggerAttrs}>
+    {@render trigger()}
+  </button>
+{/if}
+
+<FloatingLayer
+  {anchor}
+  {open}
+  {side}
+  {align}
+  {sideOffset}
+  bind:ref={content}
+  id="{id}-content"
+  role="dialog"
+  tabindex={-1}
+  aria-labelledby="{id}-trigger"
+  class="ca-popover-content glass-overlay {className}"
+  onDismiss={(reason) => close(reason === 'escape')}
+>
+  {@render children?.()}
+</FloatingLayer>
 
 <style>
   :global(.ca-popover__trigger) {
@@ -57,7 +81,7 @@
     border-radius: var(--ca-radius-lg);
     padding: var(--ca-space-4);
     max-width: 320px;
-    z-index: var(--ca-z-dropdown);
+    outline: none;
     animation: ca-popover-in var(--ca-duration-fast) var(--ca-ease-decelerate);
   }
 

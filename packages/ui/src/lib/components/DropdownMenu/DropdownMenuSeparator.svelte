@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { DropdownMenu } from 'bits-ui';
+  /** Visual and semantic divider between menu item groups. */
 </script>
 
-<DropdownMenu.Separator class="ca-dropdown-sep" />
+<div role="separator" aria-orientation="horizontal" class="ca-dropdown-sep"></div>
 
 <style>
   :global(.ca-dropdown-sep) {

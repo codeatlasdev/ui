@@ -1,6 +1,14 @@
+<script lang="ts" module>
+  // Moving between tooltips within this window skips the open delay (as a toolbar sweep should).
+  const SKIP_WINDOW_MS = 300;
+  let lastClosedAt = 0;
+</script>
+
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { Tooltip } from 'bits-ui';
+  import { createAttachmentKey } from 'svelte/attachments';
+  import { uid } from '../../utils/index.js';
+  import FloatingLayer from '../Popover/FloatingLayer.svelte';
 
   interface Props {
     content: string;
@@ -14,28 +22,105 @@
   }
 
   let { content, side = 'top', delay = 500, class: className = '', children, triggerChild }: Props = $props();
+
+  const id = uid('tip');
+  let open = $state(false);
+  let anchor = $state<HTMLElement | null>(null);
+
+  function setOpen(next: boolean) {
+    if (open && !next) lastClosedAt = performance.now();
+    open = next;
+  }
+
+  let timer: ReturnType<typeof setTimeout> | undefined;
+  const cancel = () => clearTimeout(timer);
+  const openIntent = () => {
+    cancel();
+    // Sweeping between tooltips skips the delay.
+    const wait = performance.now() - lastClosedAt < SKIP_WINDOW_MS ? 0 : delay;
+    if (wait <= 0) setOpen(true);
+    else timer = setTimeout(() => setOpen(true), wait);
+  };
+  const closeIntent = () => {
+    cancel();
+    setOpen(false);
+  };
+
+  // Focus opens immediately (keyboard users get no hover delay); pointer respects the delay.
+  let pointerFocus = false;
+  const key = createAttachmentKey();
+  const attach = (node: HTMLElement) => {
+    anchor = node;
+    const onEnter = () => openIntent();
+    const onLeave = () => closeIntent();
+    const onPointerDown = () => {
+      pointerFocus = true;
+      closeIntent();
+    };
+    const onFocus = () => {
+      if (pointerFocus) return;
+      cancel();
+      setOpen(true);
+    };
+    const onBlur = () => {
+      pointerFocus = false;
+      closeIntent();
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape' && open) {
+        e.stopPropagation();
+        closeIntent();
+      }
+    };
+    node.addEventListener('pointerenter', onEnter);
+    node.addEventListener('pointerleave', onLeave);
+    node.addEventListener('pointerdown', onPointerDown);
+    node.addEventListener('focus', onFocus);
+    node.addEventListener('blur', onBlur);
+    node.addEventListener('keydown', onKey);
+    return () => {
+      cancel();
+      node.removeEventListener('pointerenter', onEnter);
+      node.removeEventListener('pointerleave', onLeave);
+      node.removeEventListener('pointerdown', onPointerDown);
+      node.removeEventListener('focus', onFocus);
+      node.removeEventListener('blur', onBlur);
+      node.removeEventListener('keydown', onKey);
+      anchor = null;
+    };
+  };
+
+  const triggerAttrs = $derived({
+    'aria-describedby': open ? id : undefined,
+    'data-state': open ? 'open' : 'closed',
+    [key]: attach,
+  });
 </script>
 
-<Tooltip.Provider delayDuration={delay}>
-  <Tooltip.Root>
-    {#if triggerChild}
-      <Tooltip.Trigger>
-        {#snippet child({ props })}
-          {@render triggerChild(props)}
-        {/snippet}
-      </Tooltip.Trigger>
-    {:else}
-      <Tooltip.Trigger class="ca-tooltip__trigger">
-        {@render children?.()}
-      </Tooltip.Trigger>
-    {/if}
-    <Tooltip.Portal>
-      <Tooltip.Content {side} sideOffset={6} role="tooltip" class="ca-tooltip-content {className}">
-        {content}
-      </Tooltip.Content>
-    </Tooltip.Portal>
-  </Tooltip.Root>
-</Tooltip.Provider>
+{#if triggerChild}
+  {@render triggerChild(triggerAttrs)}
+{:else}
+  <button type="button" class="ca-tooltip__trigger" {...triggerAttrs}>
+    {@render children?.()}
+  </button>
+{/if}
+
+<FloatingLayer
+  {anchor}
+  {open}
+  {side}
+  align="center"
+  sideOffset={6}
+  dismiss={false}
+  z="var(--ca-z-tooltip)"
+  {id}
+  role="tooltip"
+  class="ca-tooltip-content {className}"
+  onpointerenter={() => cancel()}
+  onpointerleave={closeIntent}
+>
+  {content}
+</FloatingLayer>
 
 <style>
   :global(.ca-tooltip__trigger) {
@@ -57,7 +142,6 @@
     font-size: var(--ca-font-size-caption);
     color: var(--ca-tooltip-fg);
     max-width: 240px;
-    z-index: var(--ca-z-tooltip);
     box-shadow: var(--ca-shadow-md);
     animation: ca-tooltip-in var(--ca-duration-fast) var(--ca-ease-decelerate);
     line-height: var(--ca-line-height-body);

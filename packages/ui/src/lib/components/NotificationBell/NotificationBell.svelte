@@ -1,7 +1,9 @@
 <script lang="ts">
   import { t } from '../../i18n/state.svelte.js';
   import { Bell } from '@lucide/svelte';
-  import { Popover as BitsPopover } from 'bits-ui';
+  import { uid } from '../../utils/index.js';
+  import FloatingLayer from '../Popover/FloatingLayer.svelte';
+  import { createTriggerProps, tabIntoPopup } from '../Popover/trigger.js';
   import Badge from '../Badge/Badge.svelte';
   import type { Snippet } from 'svelte';
 
@@ -41,28 +43,52 @@
   }: Props = $props();
 
   let unread = $derived(notifications.filter(n => !n.read).length);
+
+  const id = uid('notif');
+  let open = $state(false);
+  let anchor = $state<HTMLElement | null>(null);
+  let panel = $state<HTMLElement | null>(null);
+
+  const makeTrigger = createTriggerProps((el) => (anchor = el));
+  const triggerAttrs = $derived(
+    makeTrigger({ id: `${id}-trigger`, popup: 'dialog', open, controls: `${id}-panel`, onToggle: () => (open = !open), onKeydown: (e) => open && tabIntoPopup(e, panel) })
+  );
+
+  function close(restoreFocus: boolean) {
+    open = false;
+    if (restoreFocus) anchor?.focus({ preventScroll: true });
+  }
 </script>
 
-<BitsPopover.Root>
-  <BitsPopover.Trigger
-    class="ca-notif-trigger {children ? '' : 'ca-notif-bell'} {className}"
-    aria-label={t().notificationBell.label(unread)}
-  >
-    {#if children}
-      {@render children()}
-    {:else}
-      <Badge count={unread || undefined} color="error">
-        <Bell size={20} stroke-width={1.8} aria-hidden="true" />
-      </Badge>
-    {/if}
-  </BitsPopover.Trigger>
+<button
+  type="button"
+  class="ca-notif-trigger {children ? '' : 'ca-notif-bell'} {className}"
+  aria-label={t().notificationBell.label(unread)}
+  {...triggerAttrs}
+>
+  {#if children}
+    {@render children()}
+  {:else}
+    <Badge count={unread || undefined} color="error">
+      <Bell size={20} stroke-width={1.8} aria-hidden="true" />
+    </Badge>
+  {/if}
+</button>
 
-  <BitsPopover.Portal>
-    <BitsPopover.Content
-      class="ca-notif-panel glass-panel"
-      sideOffset={8}
-      align="end"
-    >
+<FloatingLayer
+  {anchor}
+  {open}
+  side="bottom"
+  align="end"
+  sideOffset={8}
+  bind:ref={panel}
+  id="{id}-panel"
+  role="dialog"
+  aria-label={labels.title ?? t().notificationBell.title}
+  tabindex={-1}
+  class="ca-notif-panel glass-panel"
+  onDismiss={(reason) => close(reason === 'escape')}
+>
       <div class="ca-notif-header">
         <span class="ca-notif-title">{labels.title ?? t().notificationBell.title}</span>
         <div class="ca-notif-actions">
@@ -105,9 +131,7 @@
           {/each}
         </ul>
       {/if}
-    </BitsPopover.Content>
-  </BitsPopover.Portal>
-</BitsPopover.Root>
+</FloatingLayer>
 
 <style>
   :global(.ca-notif-trigger) {
