@@ -44,7 +44,6 @@
 	},
 	"dependencies": {
 		"@lucide/svelte": "1.55.0",
-		"bits-ui": "2.19.5",
 		"svelte": "5.57.2"
 	},
 	"devDependencies": {

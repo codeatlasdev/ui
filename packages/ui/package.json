@@ -25,7 +25,6 @@
 		"sveltekit",
 		"oklch",
 		"liquid-glass",
-		"bits-ui",
 		"datatable",
 		"appshell"
 	],
@@ -132,7 +131,6 @@
 		"@floating-ui/dom": "1.8.0",
 		"@internationalized/date": "3.12.4",
 		"@lucide/svelte": "1.55.0",
-		"bits-ui": "2.19.5",
 		"clsx": "2.1.1",
 		"esm-env": "1.2.2"
 	},

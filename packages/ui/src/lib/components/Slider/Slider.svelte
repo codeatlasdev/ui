@@ -222,7 +222,7 @@
     user-select: none;
   }
 
-  :global(.ca-slider[disabled]) {
+  :global(.ca-slider[data-disabled]) {
     opacity: 0.45;
     cursor: not-allowed;
   }

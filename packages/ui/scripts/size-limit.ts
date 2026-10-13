@@ -4,7 +4,7 @@
 //   bun scripts/size-limit.ts --init     write limits as measured +5% (first run)
 //
 // Each entry is bundled the way a consumer's bundler would: esbuild, ESM, minified, tree-shaken,
-// with the Svelte runtime and bits-ui included (that is what ships). The metric is gzip bytes.
+// with the Svelte runtime and @floating-ui included (that is what ships). The metric is gzip bytes.
 // The ratchet only moves down: --update never raises a limit, raise one by hand in a PR that explains why.
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";

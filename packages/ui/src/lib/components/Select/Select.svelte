@@ -128,6 +128,18 @@
       <ChevronDown size={14} strokeWidth={2} />
     </span>
   </button>
+  {#if required}
+    <!-- Native constraint validation for <form required>: blocks submit while empty and moves focus to
+         the trigger. Not a form value carrier: there is no `name` prop. -->
+    <input
+      class="ca-validity-proxy"
+      tabindex="-1"
+      aria-hidden="true"
+      required
+      value={value ?? ''}
+      oninvalid={(e) => { e.preventDefault(); trigger?.focus(); }}
+    />
+  {/if}
 
   <FloatingLayer
     anchor={trigger}
@@ -349,5 +361,13 @@
     overflow: hidden;
     clip-path: inset(50%);
     white-space: nowrap;
+  }
+
+  .ca-validity-proxy {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
   }
 </style>

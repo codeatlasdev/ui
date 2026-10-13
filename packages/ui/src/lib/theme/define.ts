@@ -44,7 +44,6 @@ export const STYLES: readonly SurfaceStyle[] = [
  * a global store (bun's isolated linker), and Node then fails on `.svelte`.
  */
 export const SSR_NO_EXTERNAL = [
-	"bits-ui",
 	"@lucide/svelte",
 	"@tanstack/svelte-table",
 	"@tanstack/table-core",

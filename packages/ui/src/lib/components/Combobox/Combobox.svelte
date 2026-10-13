@@ -148,6 +148,18 @@
     <span id="{triggerId}-value" class="ca-combobox__trigger-label">{selectedLabel}</span>
     <ChevronDown size={16} class="ca-combobox__chevron" />
   </button>
+  {#if required}
+    <!-- Native constraint validation for <form required>: blocks submit while empty and moves focus to
+         the trigger. Not a form value carrier: there is no `name` prop. -->
+    <input
+      class="ca-validity-proxy"
+      tabindex="-1"
+      aria-hidden="true"
+      required
+      value={value ?? ''}
+      oninvalid={(e) => { e.preventDefault(); trigger?.focus(); }}
+    />
+  {/if}
 
   {#if error}
     <p id="{triggerId}-err" class="ca-combobox__hint ca-combobox__hint--error" role="alert">{error}</p>
@@ -383,4 +395,12 @@
     color: var(--ca-text-hint);
   }
 
+
+  .ca-validity-proxy {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    pointer-events: none;
+  }
 </style>

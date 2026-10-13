@@ -4,9 +4,8 @@ import "../src/lib/styles/global.css";
 import "./a11y";
 import { beforeEach, expect } from "vitest";
 
-// Overlays (bits-ui Dialog/Sheet/…) lock <body> with `pointer-events: none` while open and release
-// it asynchronously after unmount. A test that starts before the release can't click anything
-// ("<html> intercepts pointer events"). Wait for it; if it never clears, the previous test leaked.
+// Guard: an overlay that leaks a `pointer-events: none` lock on <body> would make the next test
+// unable to click anything ("<html> intercepts pointer events"). Fail with a clear message instead.
 beforeEach(async () => {
 	await expect
 		.poll(() => document.body.style.pointerEvents, {

@@ -207,7 +207,7 @@ describe("caThemePlugin", () => {
 		const { ssr } = call(p.config, {}) as { ssr: { noExternal: string[] } };
 		// Node cannot load .svelte: every dependency that ships raw components must be bundled,
 		// or SSR dies with "Unknown file extension .svelte" under bun's isolated linker.
-		for (const dep of ["bits-ui", "@lucide/svelte", "@tanstack/svelte-table"])
+		for (const dep of ["@lucide/svelte", "@tanstack/svelte-table"])
 			expect(ssr.noExternal).toContain(dep);
 		expect(p.enforce).toBe("pre");
 	});

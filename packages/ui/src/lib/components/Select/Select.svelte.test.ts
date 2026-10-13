@@ -3,6 +3,7 @@ import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
+import SelectForm from "./SelectForm.test.svelte";
 import SelectHarness from "./SelectHarness.test.svelte";
 
 // Page-level landmark rule does not apply to an isolated component rendered into <body>.
@@ -74,5 +75,17 @@ describe("Select", () => {
 		const screen = await render(SelectHarness, { placeholder: "Select a letter" });
 		await expect.element(screen.getByRole("button", { name: "Select a letter" })).toBeVisible();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("required blocks form submit while empty and focuses the trigger", async () => {
+		const onsubmit = vi.fn();
+		const screen = await render(SelectForm, { onsubmit });
+		await userEvent.click(screen.getByRole("button", { name: "Send" }));
+		expect(onsubmit).not.toHaveBeenCalled();
+		await expect.element(screen.getByRole("button", { name: /Plan/ })).toHaveFocus();
+		await userEvent.click(screen.getByRole("button", { name: /Plan/ }));
+		await userEvent.click(screen.getByRole("option", { name: "Pro" }));
+		await userEvent.click(screen.getByRole("button", { name: "Send" }));
+		expect(onsubmit).toHaveBeenCalledOnce();
 	});
 });
