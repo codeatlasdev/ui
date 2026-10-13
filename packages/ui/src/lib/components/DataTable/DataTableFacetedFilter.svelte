@@ -1,6 +1,8 @@
 <script lang="ts">
   import { t } from '../../i18n/state.svelte.js';
-  import { Popover } from 'bits-ui';
+  import { uid } from '../../utils/index.js';
+  import FloatingLayer from '../Popover/FloatingLayer.svelte';
+  import { createTriggerProps, tabIntoPopup } from '../Popover/trigger.js';
   import { PlusCircle, Check } from '@lucide/svelte';
   import Badge from '../Badge/Badge.svelte';
 
@@ -24,6 +26,21 @@
 
   const options = $derived(Object.entries(facets).sort((a, b) => b[1] - a[1]));
 
+  const id = uid('facet');
+  let open = $state(false);
+  let anchor = $state<HTMLElement | null>(null);
+  let panel = $state<HTMLElement | null>(null);
+
+  const makeTrigger = createTriggerProps((el) => (anchor = el));
+  const triggerAttrs = $derived(
+    makeTrigger({ id: `${id}-trigger`, popup: 'dialog', open, controls: `${id}-panel`, onToggle: () => (open = !open), onKeydown: (e) => open && tabIntoPopup(e, panel) })
+  );
+
+  function close(restoreFocus: boolean) {
+    open = false;
+    if (restoreFocus) anchor?.focus({ preventScroll: true });
+  }
+
   function toggle(value: string) {
     const next = selected.includes(value)
       ? selected.filter(v => v !== value)
@@ -32,8 +49,7 @@
   }
 </script>
 
-<Popover.Root>
-  <Popover.Trigger class="ca-facet__trigger">
+<button type="button" class="ca-facet__trigger" {...triggerAttrs}>
     <PlusCircle size={13} stroke-width={2} />
     {title}
     {#if selected.length > 0}
@@ -46,9 +62,22 @@
         {/each}
       {/if}
     {/if}
-  </Popover.Trigger>
-  <Popover.Portal>
-    <Popover.Content class="ca-facet__content" sideOffset={6} align="start">
+</button>
+
+<FloatingLayer
+  {anchor}
+  {open}
+  side="bottom"
+  align="start"
+  sideOffset={6}
+  bind:ref={panel}
+  id="{id}-panel"
+  role="dialog"
+  aria-label={title}
+  tabindex={-1}
+  class="ca-facet__content"
+  onDismiss={(reason) => close(reason === 'escape')}
+>
       <div class="ca-facet__list" role="listbox" aria-label={title} aria-multiselectable="true">
         {#each options as [value, count]}
           {@const label     = labelMap[value] ?? value}
@@ -79,9 +108,7 @@
           </button>
         </div>
       {/if}
-    </Popover.Content>
-  </Popover.Portal>
-</Popover.Root>
+</FloatingLayer>
 
 <style>
   :global(.ca-facet__trigger) {
@@ -135,8 +162,8 @@
     -webkit-backdrop-filter: var(--ca-overlay-blur);
     backdrop-filter: var(--ca-overlay-blur);
     box-shadow: var(--ca-shadow-lg);
-    z-index: var(--ca-z-dropdown);
     overflow: hidden;
+    outline: none;
   }
 
   :global(.ca-facet__list) {

@@ -1,5 +1,5 @@
 /**
- * Svelte attachment: moves the node to `document.body` (or `target`) and puts it back on destroy.
+ * Svelte attachment: moves the node to `document.body` (or `target`) and removes it on destroy.
  * `false` leaves it in place. No-op during SSR (attachments only run in the browser).
  *
  *   <div {@attach portal()}>…</div>
@@ -13,8 +13,9 @@ export function portal(target?: string | HTMLElement | false) {
 		parent?.insertBefore(marker, node);
 		(dest ?? document.body).appendChild(node);
 		return () => {
-			if (marker.parentNode) marker.parentNode.insertBefore(node, marker);
-			else node.remove();
+			// Svelte only removes the nodes it placed: a portaled node has left its range, so destroying
+			// the branch must remove it here (restoring it would resurrect the node in the old spot).
+			node.remove();
 			marker.remove();
 		};
 	};

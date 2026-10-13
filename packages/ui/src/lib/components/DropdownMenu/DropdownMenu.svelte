@@ -1,6 +1,11 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { DropdownMenu } from 'bits-ui';
+  import { setContext } from 'svelte';
+  import { createListbox } from '../../primitives/index.js';
+  import { uid } from '../../utils/index.js';
+  import FloatingLayer from '../Popover/FloatingLayer.svelte';
+  import { createTriggerProps } from '../Popover/trigger.js';
+  import { MENU_CONTEXT } from './menu-context.js';
 
   interface Props {
     class?: string;
@@ -23,26 +28,112 @@
     align      = 'start',
     sideOffset = 6,
   }: Props = $props();
+
+  const id = uid('menu');
+  let open = $state(false);
+  let anchor = $state<HTMLElement | null>(null);
+  let menu = $state<HTMLElement | null>(null);
+
+  const ALL_ITEMS = '[role="menuitem"], [role="menuitemcheckbox"]';
+
+  const listbox = createListbox({
+    mode: 'roving',
+    items: () =>
+      Array.from(menu?.querySelectorAll<HTMLElement>(ALL_ITEMS) ?? []).map((el, i) => ({
+        id: el.id || `${id}-item-${i}`,
+        el: () => el,
+        text: el.textContent ?? '',
+        disabled: el.hasAttribute('data-disabled'),
+      })),
+    onSelect: (item) => item.el()?.click(),
+  });
+
+  function close(restoreFocus = true) {
+    open = false;
+    listbox.clear();
+    if (restoreFocus) anchor?.focus({ preventScroll: true });
+  }
+
+  setContext(MENU_CONTEXT, { close });
+
+  /** Opens the menu; `focus` picks which item (or the container) receives focus. */
+  let pendingFocus: 'first' | 'last' | 'container' = 'container';
+  function openWith(focus: typeof pendingFocus) {
+    pendingFocus = focus;
+    open = true;
+  }
+
+  const makeTrigger = createTriggerProps((el) => (anchor = el));
+  const triggerAttrs = $derived(
+    makeTrigger({
+      id: `${id}-trigger`,
+      popup: 'menu',
+      open,
+      controls: `${id}-content`,
+      // Pointer clicks leave focus on the menu container; keyboard opens go to an item.
+      onToggle: () => (open ? close() : openWith('container')),
+      onKeydown: (e) => {
+        if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          if (!open) openWith('first');
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          if (!open) openWith('last');
+        }
+      },
+    })
+  );
+
+  function onMounted(el: HTMLElement) {
+    // Wait a frame so items are rendered/positioned before moving focus.
+    requestAnimationFrame(() => {
+      if (pendingFocus === 'first') listbox.first();
+      else if (pendingFocus === 'last') listbox.last();
+      else el.focus({ preventScroll: true });
+    });
+  }
+
+  function onkeydown(e: KeyboardEvent) {
+    if (e.key === 'Tab') {
+      // Tabbing out of a menu closes it (APG); focus continues from the trigger.
+      close();
+      return;
+    }
+    // Keep the highlight in step when the user focused an item with the pointer.
+    const items = listbox.items;
+    const active = items.findIndex((it) => it.el() === document.activeElement);
+    if (active >= 0 && active !== listbox.highlightedIndex) listbox.highlightedIndex = active;
+    listbox.onkeydown(e);
+  }
 </script>
 
-<DropdownMenu.Root>
-  {#if triggerChild}
-    <DropdownMenu.Trigger>
-      {#snippet child({ props })}
-        {@render triggerChild(props)}
-      {/snippet}
-    </DropdownMenu.Trigger>
-  {:else if trigger}
-    <DropdownMenu.Trigger class="ca-dropdown__trigger">
-      {@render trigger()}
-    </DropdownMenu.Trigger>
-  {/if}
-  <DropdownMenu.Portal>
-    <DropdownMenu.Content class="ca-dropdown-content glass-overlay {className}" {side} {align} sideOffset={sideOffset}>
-      {@render children?.()}
-    </DropdownMenu.Content>
-  </DropdownMenu.Portal>
-</DropdownMenu.Root>
+{#if triggerChild}
+  {@render triggerChild(triggerAttrs)}
+{:else if trigger}
+  <button type="button" class="ca-dropdown__trigger" {...triggerAttrs}>
+    {@render trigger()}
+  </button>
+{/if}
+
+<FloatingLayer
+  {anchor}
+  {open}
+  {side}
+  {align}
+  {sideOffset}
+  bind:ref={menu}
+  id="{id}-content"
+  role="menu"
+  aria-labelledby="{id}-trigger"
+  aria-orientation="vertical"
+  tabindex={-1}
+  class="ca-dropdown-content glass-overlay {className}"
+  onDismiss={(reason) => close(reason === 'escape')}
+  {onkeydown}
+  {onMounted}
+>
+  {@render children?.()}
+</FloatingLayer>
 
 <style>
   :global(.ca-dropdown__trigger) {
@@ -58,10 +149,14 @@
     border-radius: var(--ca-radius-lg);
     padding: var(--ca-space-1);
     min-width: 160px;
-    z-index: var(--ca-z-dropdown);
+    outline: none;
     animation: ca-dropdown-in var(--ca-duration-fast) var(--ca-ease-decelerate);
-    transform-origin: var(--bits-dropdown-menu-content-transform-origin, top left);
+    transform-origin: top left;
   }
+
+  :global(.ca-dropdown-content[data-side='top']) { transform-origin: bottom left; }
+  :global(.ca-dropdown-content[data-align='end']) { transform-origin: top right; }
+  :global(.ca-dropdown-content[data-side='top'][data-align='end']) { transform-origin: bottom right; }
 
   :global(.ca-dropdown-content[data-state='closed']) {
     animation: ca-dropdown-out var(--ca-duration-fast) var(--ca-ease-standard);

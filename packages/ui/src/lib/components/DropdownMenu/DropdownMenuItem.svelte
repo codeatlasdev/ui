@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { DropdownMenu } from 'bits-ui';
+  import { getContext } from 'svelte';
+  import { MENU_CONTEXT, type MenuContext } from './menu-context.js';
 
   interface Props {
     class?: string;
@@ -11,15 +12,35 @@
   }
 
   let { class: className = '', onclick, disabled = false, variant = 'default', children }: Props = $props();
+
+  const menu = getContext<MenuContext | undefined>(MENU_CONTEXT);
+  let highlighted = $state(false);
+
+  function select() {
+    if (disabled) return;
+    onclick?.();
+    menu?.close();
+  }
 </script>
 
-<DropdownMenu.Item
+<!-- Enter/Space are handled by the menu's keydown (roving focus), which clicks the focused item. -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<div
+  role="menuitem"
+  tabindex="-1"
   class="ca-dropdown-item ca-dropdown-item--{variant} {className}"
-  {disabled}
-  onSelect={onclick}
+  aria-disabled={disabled ? 'true' : undefined}
+  data-disabled={disabled ? '' : undefined}
+  data-highlighted={highlighted ? '' : undefined}
+  onclick={select}
+  onfocus={() => (highlighted = true)}
+  onblur={() => (highlighted = false)}
+  onpointermove={(e) => {
+    if (!disabled && e.currentTarget !== document.activeElement) e.currentTarget.focus({ preventScroll: true });
+  }}
 >
   {@render children?.()}
-</DropdownMenu.Item>
+</div>
 
 <style>
   :global(.ca-dropdown-item) {
