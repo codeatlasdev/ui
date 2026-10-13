@@ -22,7 +22,7 @@ import FormSrc from "~/demos/navigation/popover/Form.svelte?raw";
 </Popover>
 ```
 
-Built on the Bits UI Popover: Escape closes it, a click outside dismisses it and focus returns to the trigger. Pass an interactive trigger through `triggerChild` and spread the received `props` on it; use `trigger` only for non-interactive content. For a hint that appears on hover, use [Tooltip](/docs/display/tooltip/) instead.
+Escape closes the popover, a click outside dismisses it and focus returns to the trigger. Pass an interactive trigger through `triggerChild` and spread the received `props` on it; use `trigger` only for non-interactive content. For a hint that appears on hover, use [Tooltip](/docs/display/tooltip/) instead.
 
 <Demo title="Basic" description="Text and an action inside the popover." src={BasicSrc}><Basic client:visible /></Demo>
 <Demo title="Form" description="A small form anchored to its trigger, aligned to the start." src={FormSrc}><Form client:visible /></Demo>

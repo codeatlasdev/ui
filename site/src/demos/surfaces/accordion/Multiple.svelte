@@ -7,9 +7,8 @@
     <AccordionItem value="b1" title="Svelte 5 runes">
       Runes replace reactive declarations with explicit $state(), $derived() and $effect().
     </AccordionItem>
-    <AccordionItem value="b2" title="Bits UI">
-      Bits UI provides unstyled, accessible headless primitives for Svelte, with WAI-ARIA
-      patterns built in.
+    <AccordionItem value="b2" title="Headless primitives">
+      Unstyled, accessible primitives with the WAI-ARIA patterns built in.
     </AccordionItem>
     <AccordionItem value="b3" title="CSS custom properties">
       All --ca-* tokens are set in global.css and cascade into every component without runtime

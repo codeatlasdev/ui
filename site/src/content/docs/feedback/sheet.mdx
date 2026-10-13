@@ -23,7 +23,7 @@ import FooterSrc from "~/demos/feedback/sheet/Footer.svelte?raw";
 </Sheet>
 ```
 
-Below 768px the sheet rises from the bottom edge with a drag handle, safe-area padding and rounded top corners. From 768px up it renders as a centered dialog. Focus trap, focus restore, Escape, overlay dismissal and scroll lock come from the Bits UI Dialog.
+Below 768px the sheet rises from the bottom edge with a drag handle, safe-area padding and rounded top corners. From 768px up it renders as a centered dialog. Focus trap, focus restore, Escape, overlay dismissal and scroll lock come from the native modal `<dialog>` the sheet renders.
 
 **Swipe to dismiss.** Drag the handle or the header down. Releasing past 30% of the panel height, or faster than 0.5 px/ms, closes the sheet; otherwise it springs back. The gesture is off under `prefers-reduced-motion` and in the centered desktop layout. Keyboard users close it with Escape or the close button. Open the demos below on a phone or in a mobile viewport to try the gesture.
 

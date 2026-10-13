@@ -101,7 +101,7 @@ These come from the agent guide and prevent the most common mistakes:
 - No layout CSS and no hardcoded colors. Use `Grid`, `Row` and `Stack` with a numeric `gap`, and `--ca-*` tokens.
 - No inline `padding` or `margin`. Inline styles are only for dynamic custom properties such as `style="--bar-w:{pct}%"`.
 - Build pages with `AppList`, `AppForm`, `AppSettings` or `PageShell`, not hand-made wrappers. Put `AppShellLayout` only in authenticated route layouts.
-- Svelte 5 runes only (`$state`, `$derived`, `$props`). No stores from `svelte/store`, no `svelte:component`, no `class:` directive on bits-ui components.
+- Svelte 5 runes only (`$state`, `$derived`, `$props`). No stores from `svelte/store`, no `svelte:component`.
 - Never combine `will-change: transform` with `backdrop-filter`.
 - `ca-*` classes are public API: do not rename or remove them.
 

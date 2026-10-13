@@ -243,7 +243,7 @@ import SendPrompt from "~/components/landing/SendPrompt.svelte";
 		<Chapter
 			id="quality"
 			title="Accessible by construction."
-			lead="Primitives come from bits-ui, which handles focus traps, keyboard maps and ARIA. Components are tested with axe in a real browser, and the page you are reading uses the same components."
+			lead="Primitives are our own headless layer: focus traps, keyboard maps and ARIA follow the WAI-ARIA patterns. Components are tested with axe in a real browser, and the page you are reading uses the same components."
 			layout="wide"
 		>
 			<dl class="facts">
@@ -284,7 +284,10 @@ import SendPrompt from "~/components/landing/SendPrompt.svelte";
 	</main>
 
 	<footer class="foot">
-		<p>MIT licensed. Built with Svelte 5 and bits-ui.</p>
+		<p>
+			MIT licensed. Built with Svelte 5. Interaction patterns inspired by
+			<a href="https://bits-ui.com" rel="noopener">Bits UI</a>.
+		</p>
 		<nav aria-label="Footer">
 			<a href="/docs/">Docs</a>
 			<a href={REPO} rel="noopener">GitHub</a>

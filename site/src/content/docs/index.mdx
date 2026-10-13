@@ -7,7 +7,7 @@ order: 0
 import { CardGrid, LinkCard } from "@codeatlasdev/ui";
 import CodeGroup from "~/components/docs/CodeGroup.astro";
 
-CodeAtlas UI gives Svelte 5 apps full screens, not just bricks: page templates, an app shell, data tables, charts, forms and overlays, all built on [bits-ui](https://bits-ui.com) and themed through CSS custom properties.
+CodeAtlas UI gives Svelte 5 apps full screens, not just bricks: page templates, an app shell, data tables, charts, forms and overlays, all built on a headless layer of our own and themed through CSS custom properties.
 
 ```svelte
 <AppList title="Users" data={users} searchKeys={["name", "email"]}>
@@ -29,7 +29,7 @@ That is a whole users page: header, search, pagination, empty state and glass su
 - **Liquid Glass.** Five material tiers with real `backdrop-filter`, tuned for light and dark, with opaque fallbacks for reduced transparency.
 - **Theme engine.** Eight OKLCH presets, brand presets from one hex color, four surface styles, and no flash on load.
 - **Native on mobile.** Safe areas, keyboard handling, 44px touch targets, bottom sheets with swipe to dismiss, and browser chrome color that follows the page.
-- **Accessible.** bits-ui behavior, axe-tested components, reduced motion and reduced transparency support.
+- **Accessible.** WAI-ARIA keyboard and focus behavior, axe-tested components, reduced motion and reduced transparency support.
 - **Light.** Charts, DataTable and CodeSnippet are separate entry points with optional peers, so they stay out of your bundle unless imported.
 - **Built for AI agents.** Closed prop vocabularies, typed props, `llms.txt` and installable skills.
 

@@ -4,4 +4,4 @@
 
 <Chip label="Design System" />
 <Chip label="Svelte 5" />
-<Chip label="Bits UI" />
+<Chip label="Headless" />

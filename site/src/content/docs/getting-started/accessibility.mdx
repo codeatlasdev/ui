@@ -6,7 +6,9 @@ order: 4
 ---
 import { Callout } from "@codeatlasdev/ui";
 
-Interactive components are built on [bits-ui](https://bits-ui.com), which provides the ARIA roles, keyboard handling and focus management of each pattern. The package adds tokens, motion and touch rules on top, and every component is tested with axe in a real browser.
+Interactive components run on a headless layer of our own that implements the WAI-ARIA Authoring Practices patterns: roles, keyboard handling, focus management and dismissal, using native elements (`<dialog>`, `<input>`, `<details>`) wherever the platform provides the behavior. The package adds tokens, motion and touch rules on top, and every component is tested with axe in a real browser.
+
+*Credits: interaction patterns inspired by [Bits UI](https://bits-ui.com) and [Melt UI](https://melt-ui.com). See `NOTICE`.*
 
 ## What you get
 

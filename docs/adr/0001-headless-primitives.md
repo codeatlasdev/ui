@@ -1,6 +1,6 @@
 # ADR 0001: Headless primitives: platform first, bits-ui where behavior is hard
 
-Status: accepted (2026-10-13)
+Status: superseded by decision 2026-10-13 (owner): remove bits-ui completely. See "Revised decision" below; the original text is kept as history.
 
 ## Context
 
@@ -64,3 +64,24 @@ positioning).
 - Dialog family and the simple controls drop most of their JS (bits-ui + runed share above).
 - bits-ui stays a dependency for floating, list and date behavior; `ssr.noExternal` stays.
 - The WKWebView workaround in atlas desktop can be removed once the Dialog family lands.
+
+## Revised decision (2026-10-13, owner)
+
+The "keep bits-ui" rows above are withdrawn. bits-ui is removed completely.
+
+- All 26 primitives run on our own layer in `packages/ui/src/lib/primitives`, built from the
+  WAI-ARIA Authoring Practices patterns and platform-first: native `<dialog>`, `<details>`, native
+  `<input>` for checkbox, switch and radio, and plain elements where there is no behavior to own.
+- `@floating-ui/dom` (collision-aware positioning) and `@internationalized/date` (calendar math and
+  locale) are the only runtime dependencies for behavior. Roving focus, typeahead, dismissal, focus
+  management, listbox and the date segment model are ours.
+- The measurements above stay as the baseline: the bits-ui and runed share (49% to 68% of each
+  component) is the saving the rewrite targets.
+- Gates per family, unchanged: existing browser tests plus axe, component VRT with no baseline
+  changes, the site layout spec (all pages, 5 viewports) and a WebKit run for overlays. Each family
+  states its measured bundle delta and lowers the ratchet in `size-limit.json`.
+- The public API of every component (props, events, `ca-*` classes, `data-state` attributes) does
+  not change.
+- Credit: bits-ui (MIT, Hunter Johnston) and Melt UI informed the design. The root `NOTICE` carries
+  the bits-ui license text and states that the library used bits-ui up to 1.2.0.
+

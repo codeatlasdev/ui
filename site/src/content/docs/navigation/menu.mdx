@@ -1,6 +1,6 @@
 ---
 title: Dropdown Menu
-description: A floating action menu built on Bits UI with items, labels and separators.
+description: A floating action menu with items, labels and separators.
 group: Navigation
 order: 2
 ---
@@ -24,7 +24,7 @@ import IconTriggerSrc from "~/demos/navigation/menu/IconTrigger.svelte?raw";
 </DropdownMenu>
 ```
 
-Keyboard support comes from Bits UI: Enter or Space opens the menu, arrows move, Escape closes and focus returns to the trigger. Pass an interactive trigger (`Button`, `IconButton`) through `triggerChild` and spread the received `props` on it. Use `trigger` only for non-interactive content such as text or an icon.
+Keyboard support follows the WAI-ARIA menu pattern: Enter or Space opens the menu, arrows move, Escape closes and focus returns to the trigger. Pass an interactive trigger (`Button`, `IconButton`) through `triggerChild` and spread the received `props` on it. Use `trigger` only for non-interactive content such as text or an icon.
 
 <Demo title="Default" description="A button trigger with a label, items, a separator and a destructive item." src={DefaultSrc}><Default client:visible /></Demo>
 <Demo title="Icon trigger" description="An IconButton trigger. IconButton needs an aria-label." src={IconTriggerSrc}><IconTrigger client:visible /></Demo>

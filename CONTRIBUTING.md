@@ -12,7 +12,7 @@ By participating you agree to abide by our [Code of Conduct](./CODE_OF_CONDUCT.m
 |---|---|
 | [Bun](https://bun.sh) | Package manager + monorepo runner |
 | [Svelte 5](https://svelte.dev) | Component authoring (runes mode only) |
-| [Bits UI 2.x](https://bits-ui.com) | Headless primitives |
+| `src/lib/primitives` | Own headless layer (WAI-ARIA APG, native elements first); `@floating-ui/dom` and `@internationalized/date` are the only behavior deps |
 | [Biome](https://biomejs.dev) | Linting + formatting |
 | [Changesets](https://github.com/changesets/changesets) | Versioning + changelog |
 
@@ -87,7 +87,7 @@ This project uses [Conventional Commits](https://www.conventionalcommits.org):
 feat: add GlassChip component
 fix: correct backdrop-filter on Safari 17
 docs: update contributing guide
-chore: bump Bits UI to 2.4.0
+chore: bump @floating-ui/dom to 1.8.0
 refactor: extract chart palette helpers
 ```
 

@@ -90,25 +90,23 @@ Reading failures: locators fail with an ARIA snapshot; traces are in `__traces__
 
 6. **`svelte:component`**: deprecated in runes mode. Use `{@const Icon = X}<Icon />` or `<X />` directly.
 
-7. **`class:` on Bits UI**: invalid on Bits UI components (they are not native elements). Pass `class` as a string expression.
+7. **Sub-components**: `DropdownMenuItem` etc. are separate `.svelte` files exported by name; there are no dotted namespaces.
 
-8. **Bits UI sub-components**: `DropdownMenu.Item` etc. are not magic. Each sub-component is a separate `.svelte` file exported by name.
+8. **OKLCH**: the whole color palette uses OKLCH. MUI does not accept OKLCH directly; if you integrate with MUI, convert to hex.
 
-9. **OKLCH**: the whole color palette uses OKLCH. MUI does not accept OKLCH directly; if you integrate with MUI, convert to hex.
+9. **No inline CSS**: never `style="padding: 20px"` or `style="max-width: 480px"`. Use CSS classes with tokens (`var(--ca-space-5)`). The only exception is dynamic CSS custom properties: `style="--bar-w:{pct}%"`.
 
-10. **No inline CSS**: never `style="padding: 20px"` or `style="max-width: 480px"`. Use CSS classes with tokens (`var(--ca-space-5)`). The only exception is dynamic CSS custom properties: `style="--bar-w:{pct}%"`.
+10. **No `Stack`/`Row` for field layout inside `FormSection`**: `FormSection` already has `layout="grid"` (default), `layout="list"` and `layout="stack"`. Do not wrap fields in `Stack gap={N}` as a layout workaround.
 
-11. **No `Stack`/`Row` for field layout inside `FormSection`**: `FormSection` already has `layout="grid"` (default), `layout="list"` and `layout="stack"`. Do not wrap fields in `Stack gap={N}` as a layout workaround.
+11. **`ca-*` classes are a public contract**: consuming apps use the BEM classes (`.ca-btn`, `.ca-dialog__body`, …) as CSS targets. Renaming or removing a `ca-*` class listed in [`docs/css-api.md`](docs/css-api.md) is a **breaking change**. When you create or rename a component, update that file.
 
-12. **`ca-*` classes are a public contract**: consuming apps use the BEM classes (`.ca-btn`, `.ca-dialog__body`, …) as CSS targets. Renaming or removing a `ca-*` class listed in [`docs/css-api.md`](docs/css-api.md) is a **breaking change**. When you create or rename a component, update that file.
+12. **Mobile**: heights use `var(--ca-vh)` (never `100vh`/`100dvh`); `fixed` UI uses `var(--ca-safe-*)`; a form with a keyboard uses `use:keyboardAware` (`@codeatlasdev/ui/actions`); a full-screen mobile view is `MobilePane`, an action bar is `StickyActions`; the 44px touch target is global under `(pointer: coarse)`, so do not write an override in the app. App viewport: `width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content`.
 
-13. **Mobile**: heights use `var(--ca-vh)` (never `100vh`/`100dvh`); `fixed` UI uses `var(--ca-safe-*)`; a form with a keyboard uses `use:keyboardAware` (`@codeatlasdev/ui/actions`); a full-screen mobile view is `MobilePane`, an action bar is `StickyActions`; the 44px touch target is global under `(pointer: coarse)`, so do not write an override in the app. App viewport: `width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content`.
+13. **Theme**: a single `ThemeOptions` in `src/lib/theme.ts` (plain object, `import type` only: `vite.config`/`astro.config` load the file in Node, where the package root does not evaluate `.svelte`), passed to `caThemeHandle` + `caThemePlugin` (SvelteKit) or `caUI` (Astro). Override a token by declaring `--ca-*` on `:root` in the app, without `!important`. Local islands: `data-theme-scope="dark|light"`. Automatic setup: `bunx @codeatlasdev/ui init`.
 
-14. **Theme**: a single `ThemeOptions` in `src/lib/theme.ts` (plain object, `import type` only: `vite.config`/`astro.config` load the file in Node, where the package root does not evaluate `.svelte`), passed to `caThemeHandle` + `caThemePlugin` (SvelteKit) or `caUI` (Astro). Override a token by declaring `--ca-*` on `:root` in the app, without `!important`. Local islands: `data-theme-scope="dark|light"`. Automatic setup: `bunx @codeatlasdev/ui init`.
+14. **SEO**: a public page uses `<Seo>` from `@codeatlasdev/ui/seo` with a required `canonical`; a private page passes `noindex`.
 
-15. **SEO**: a public page uses `<Seo>` from `@codeatlasdev/ui/seo` with a required `canonical`; a private page passes `noindex`.
-
-16. **Discovering the API**: never guess a prop. Use the `ca-ui-mcp` MCP server (`get_component`, `list_components`, `search_tokens`, `get_guide`) or `.agents/skills/codeatlas-ui/API.md`; both are generated from the code by `packages/ui/scripts/build-manifest.ts` (runs on `build`). `[ca-ui]` dev warnings (via `devWarn`, `esm-env`) flag an `IconButton` without `aria-label` and a `Dialog` without `title`.
+15. **Discovering the API**: never guess a prop. Use the `ca-ui-mcp` MCP server (`get_component`, `list_components`, `search_tokens`, `get_guide`) or `.agents/skills/codeatlas-ui/API.md`; both are generated from the code by `packages/ui/scripts/build-manifest.ts` (runs on `build`). `[ca-ui]` dev warnings (via `devWarn`, `esm-env`) flag an `IconButton` without `aria-label` and a `Dialog` without `title`.
 
 ---
 
@@ -423,7 +421,7 @@ import { DataTable, createCaTable, createCaColumnHelper, caTableFeatures } from 
   ```
 - **Touch target**: `--ca-touch-target: 44px` (`tokens.css`). Under `@media (pointer: coarse)` it becomes `min-height`/`min-width` of `IconButton`, the `Select` trigger, `TabsTrigger`, `ToggleGroup`, `SegmentedControl`, `PinInput` and calendar cells. It is a media query, not a prop: do not write 44px overrides in the app.
 
-### Inputs (Bits UI wrappers with glass tokens)
+### Inputs (own primitives with glass tokens)
 `Button` · `IconButton` · `TextField` · `TextArea` · `Select` · `Combobox` · `Checkbox` · `Switch` · `Slider` · `NumberField` · `FileUpload` · `ToggleGroup` · `SegmentedControl` · `PinInput` · `CopyButton` · `DatePicker` · `DateRangePicker` · `DateField` · `TimeField` · `Calendar` · `RangeCalendar`
 
 - **`Button` / `IconButton` `loading`**: swaps `leading` (Button) or the icon (IconButton) for a `Spinner`, applies `aria-busy="true"`, disables the click (`onclick` does not fire) and keeps the label. Class: `ca-btn--loading`.
@@ -450,7 +448,7 @@ import { DataTable, createCaTable, createCaColumnHelper, caTableFeatures } from 
 `Dialog` · `AlertDialog` · `Drawer` · `DropdownMenu` · `Popover` · `Tooltip` · `CommandPalette` · `NotificationBell`
 
 - **`AlertDialog`**: confirmation that requires an answer (`role="alertdialog"`, no "X", clicking outside does not close). Props: `bind:open`, `title`, `description?`, `confirmLabel="Confirm"`, `cancelLabel="Cancel"`, `destructive?`, `pending?`, `onconfirm: () => void | Promise<void>`, `oncancel?`. With an async `onconfirm`: confirming shows a spinner, Cancel is disabled, and it closes on resolve (stays open if it throws). Replaces native `confirm()`.
-- **`Sheet`**: bottom sheet below 768px, centered dialog above. `swipeToDismiss = true` (bottom layout only): drag the handle or the header (`.ca-sheet__grab`, `touch-action: none`, pointer capture) downward; it closes past 30% of the height or a velocity above 0.5 px/ms, otherwise it springs back with `Spring`. Disabled under `reducedMotion`. The panel moves via `translate` (no `transform`, no backdrop-filter on the panel). The overlay and scrollable bodies of Sheet/Drawer/Dialog use `touch-action: none` / `overscroll-behavior: contain`; the bits-ui scroll lock is enough on WebKit (no `scroll-lock.ts`).
+- **`Sheet`**: bottom sheet below 768px, centered dialog above. `swipeToDismiss = true` (bottom layout only): drag the handle or the header (`.ca-sheet__grab`, `touch-action: none`, pointer capture) downward; it closes past 30% of the height or a velocity above 0.5 px/ms, otherwise it springs back with `Spring`. Disabled under `reducedMotion`. The panel moves via `translate` (no `transform`, no backdrop-filter on the panel). The overlay and scrollable bodies of Sheet/Drawer/Dialog use `touch-action: none` / `overscroll-behavior: contain`; the primitives' scroll lock (`primitives/scroll-lock.ts`) is enough on WebKit.
 - **`Dialog`**: `size="sm" | "md" | "lg" | "xl" | "split"`. `split` = 1100×720, 2-column grid at ≥`md`, 1 column below. `chromeless` omits header/description/actions and zeroes the body padding (pass `title` for the accessible name; it stays visually hidden).
 ```svelte
 <AlertDialog bind:open title="Delete lead?" description="This cannot be undone." confirmLabel="Delete" destructive onconfirm={() => api.remove(id)} />
@@ -729,7 +727,7 @@ Every app that consumes the package must:
 - Semicolons: always
 - `lineWidth`: 100
 - No Tailwind: styles via CSS vars and classes
-- No MUI in this package: it is pure Svelte + Bits UI
+- No MUI in this package: it is pure Svelte on its own primitives layer (`src/lib/primitives`)
 - No inline CSS except dynamic CSS custom properties (`style="--bar-w:{pct}%"`)
 
 

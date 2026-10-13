@@ -31,7 +31,7 @@ import SplitSrc from "~/demos/feedback/dialog/Split.svelte?raw";
 </Dialog>
 ```
 
-Built on the Bits UI Dialog: focus is trapped, Escape closes and the panel carries `aria-modal`. For decisions that need an explicit answer use [AlertDialog](/docs/feedback/alert-dialog/). On phones, prefer [Sheet](/docs/feedback/sheet/) for bottom-anchored content.
+The dialog renders a native modal `<dialog>`: focus is trapped, Escape closes and the panel carries `aria-modal`. For decisions that need an explicit answer use [AlertDialog](/docs/feedback/alert-dialog/). On phones, prefer [Sheet](/docs/feedback/sheet/) for bottom-anchored content.
 
 <Demo title="Confirmation" description="The destructive confirm and cancel pattern." src={ConfirmationSrc}><Confirmation client:visible /></Demo>
 <Demo title="Info" description="Informational content with a single action." src={InfoSrc}><Info client:visible /></Demo>

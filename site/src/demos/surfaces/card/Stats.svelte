@@ -2,7 +2,7 @@
   import { GlassCard } from '@codeatlasdev/ui';
 
   const stats = [
-    { label: 'Components', value: '70+', delta: 'Svelte 5 + Bits UI' },
+    { label: 'Components', value: '70+', delta: 'Svelte 5' },
     { label: 'Presets', value: '8', delta: 'Amber, Ocean, Crimson and more' },
     { label: 'Tokens', value: '80+', delta: 'CSS custom properties' },
   ];

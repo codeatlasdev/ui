@@ -12,7 +12,7 @@
 
 <Dialog bind:open title="About this component">
   <p class="body">
-    <strong>Dialog</strong> is built on the Bits UI <code>Dialog</code> primitive. It traps focus
+    <strong>Dialog</strong> renders a native modal <code>&lt;dialog&gt;</code>. It traps focus
     (Tab cycles inside), closes on Escape and exposes correct <code>aria-modal</code> semantics.
   </p>
   <p class="body">

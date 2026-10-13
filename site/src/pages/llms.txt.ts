@@ -9,7 +9,7 @@ export async function GET() {
 	const body = llmsTxt({
 		title: "CodeAtlas UI",
 		summary:
-			"Open-source Svelte 5 component library (`@codeatlasdev/ui`): page templates, app shell, data tables, charts, forms and overlays, with a Liquid Glass material system, an OKLCH theme engine and native-feeling mobile behavior. Built on bits-ui. Install with `bun add @codeatlasdev/ui`.",
+			"Open-source Svelte 5 component library (`@codeatlasdev/ui`): page templates, app shell, data tables, charts, forms and overlays, with a Liquid Glass material system, an OKLCH theme engine and native-feeling mobile behavior. Built on its own headless primitives layer. Install with `bun add @codeatlasdev/ui`.",
 		intro: [`Full documentation in one file: ${SITE}/llms-full.txt`],
 		sections: [
 			...GROUPS.map((heading) => ({

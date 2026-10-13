@@ -11,7 +11,7 @@
     </TabsList>
     <TabsContent value="overview">
       <div class="panel">
-        <p>The <strong>Tabs</strong> component uses Bits UI's accessible tab primitives. Arrow keys cycle through tabs, Home and End jump to the first and last.</p>
+        <p>The <strong>Tabs</strong> component implements the WAI-ARIA tabs pattern. Arrow keys cycle through tabs, Home and End jump to the first and last.</p>
       </div>
     </TabsContent>
     <TabsContent value="props">
