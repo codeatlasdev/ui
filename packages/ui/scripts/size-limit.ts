@@ -93,7 +93,9 @@ async function measure(e: Entry): Promise<{ gzip: number; modules: string[] }> {
 }
 
 /** Importing `Button` must not drag in other components, stores or the theme engine. */
-const BUTTON_ALLOWED = /^dist\/(index\.js|components\/(Button|Spinner)\/|i18n\/)/;
+// announce: Button announces when `loading` ends (screen readers).
+const BUTTON_ALLOWED =
+	/^dist\/(index\.js|components\/(Button|Spinner)\/|i18n\/|utils\/announce\.js$)/;
 
 if (!existsSync(join(dist, "index.js"))) {
 	console.error("dist/ not found: run `bun run build:pkg` first");
