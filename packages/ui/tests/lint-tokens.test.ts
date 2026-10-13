@@ -52,4 +52,25 @@ describe("lint-tokens", () => {
 		expect(rules("a.css", "input { font-size: 16px; }")).toEqual([]);
 		expect(rules("a.css", ".label { font-size: 12px; }")).toEqual([]);
 	});
+
+	it("flags prose inside svelte-ignore (Svelte reads it as codes and the warning returns)", () => {
+		const bad = lintSource(
+			"x.svelte",
+			"<!-- svelte-ignore a11y_no_noninteractive_tabindex (scroll region) -->\n<div></div>"
+		);
+		expect(bad.map((x) => [x.rule, x.line])).toEqual([["svelte-ignore", 1]]);
+		const ok = lintSource(
+			"x.svelte",
+			"<!-- why: scroll region -->\n<!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->\n<script>\n// svelte-ignore state_referenced_locally\n</script>"
+		);
+		expect(ok).toEqual([]);
+	});
+
+	it("flags width breakpoints outside the shared scale", () => {
+		const css =
+			"@media (max-width: 767px) {} @media (min-width: 768px) {} @media (max-width: 899.98px) {} @media (min-width: 1200px) {}";
+		const v = lintSource("x.css", css).filter((x) => x.rule === "breakpoint");
+		expect(v.map((x) => x.message.split(":")[0])).toEqual(["(max-width", "(min-width"]);
+		expect(lintSource("x.test.css", css).filter((x) => x.rule === "breakpoint")).toEqual([]);
+	});
 });

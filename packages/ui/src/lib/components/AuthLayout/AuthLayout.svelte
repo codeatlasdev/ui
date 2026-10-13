@@ -130,7 +130,7 @@
   }
 
   /* Same selector as the rule above: a :global() override loses to the scoped class. */
-  @media (max-width: 768px) {
+  @media (max-width: 899.98px) {
     .ca-auth__panel { display: none; }
   }
 
@@ -265,7 +265,7 @@
     letter-spacing: -0.02em;
   }
 
-  @media (max-width: 768px) {
+  @media (max-width: 899.98px) {
     .ca-auth__col {
       padding-top: calc(40px + var(--ca-safe-top));
       padding-bottom: calc(40px + var(--ca-safe-bottom));

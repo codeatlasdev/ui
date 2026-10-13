@@ -138,7 +138,7 @@
 .ca-dialog--split .ca-dialog__body {
   flex: 1 1 auto;
 }
-@media (min-width: 768px) {
+@media (min-width: 900px) {
   .ca-dialog--split .ca-dialog__body {
     display: grid;
     grid-template-columns: 1fr 1fr;

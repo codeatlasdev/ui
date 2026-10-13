@@ -4,34 +4,50 @@
  * ──────────────────────────────────────────────────── */
 
 :root {
-  /* ── Typography ──────────────────────────────────────────────────────── */
+  /* ── Typography ──────────────────────────────────────────────────────────
+   * Families, a size scale multiplied by --ca-font-scale, weights, tracking, case and
+   * measure. defineTheme({ typography }) sets the knobs; components only read roles. */
   --ca-font-sans: Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   --ca-font-mono: "JetBrains Mono", "Fira Code", Consolas, monospace;
+  --ca-font-display: var(--ca-font-sans);
+  --ca-font-scale: 1;
 
-  --ca-font-size-h1:      2.25rem;    /* 36px */
-  --ca-font-size-h2:      1.875rem;   /* 30px */
-  --ca-font-size-h3:      1.5rem;     /* 24px */
-  --ca-font-size-h4:      1.25rem;    /* 20px */
-  --ca-font-size-h5:      1.0625rem;  /* 17px */
-  --ca-font-size-h6:      0.9375rem;  /* 15px */
-  --ca-font-size-body1:   0.9375rem;  /* 15px */
-  --ca-font-size-body2:   0.8125rem;  /* 13px */
-  --ca-font-size-caption: 0.75rem;    /* 12px */
-  --ca-font-size-label:   0.8125rem;  /* 13px */
-  --ca-font-size-button:  0.875rem;   /* 14px */
-  --ca-font-size-micro:   0.6875rem;  /* 11px — badges, eyebrows, overlines */
-  --ca-font-size-nano:    0.625rem;   /* 10px — badge counts, tiny labels */
-  --ca-font-size-dialog:  1rem;       /* 16px — dialog/drawer titles */
-  --ca-font-size-lg:      1.125rem;   /* 18px — logo names, large UI labels */
-  --ca-font-size-xl:      1.375rem;   /* 22px — auth headings, quote text */
+  /* Fluid display tier for marketing/editorial headlines (viewport-scaled, rem-bounded). */
+  --ca-font-size-display-1: clamp(2.5rem, 1.6rem + 4.5vw, 5.5rem);
+  --ca-font-size-display-2: clamp(2rem, 1.4rem + 3vw, 4rem);
+  --ca-font-size-display-3: clamp(1.625rem, 1.25rem + 1.8vw, 2.75rem);
 
-  /* ── Border radius ───────────────────────────────────────────────────── */
-  --ca-radius-xs:   4px;
-  --ca-radius-sm:   6px;
-  --ca-radius-md:   10px;
-  --ca-radius-lg:   14px;
-  --ca-radius-xl:   20px;
+  --ca-font-weight-regular:  400;
+  --ca-font-weight-medium:   500;
+  --ca-font-weight-semibold: 600;
+  --ca-font-weight-bold:     700;
+  --ca-font-weight-heading:  700;
+  --ca-heading-tracking:     -0.02em;
+  --ca-heading-case:         none;
+  --ca-label-tracking:       0.01em;
+  --ca-label-case:           none;
+  --ca-overline-tracking:    0.08em;
+  --ca-line-height-tight:    1.2;
+  --ca-line-height-body:     1.55;
+  --ca-line-height-prose:    1.6;
+  --ca-measure:              68ch;
+
+  /* ── Shape ───────────────────────────────────────────────────────────────
+   * Radius scale times --ca-radius-scale (0 = square, Swiss/Brutalism; 2 = soft, Clay). */
+  --ca-radius-scale: 1;
   --ca-radius-pill: 999px;
+  /* Controls (buttons, fields, chips) pick their radius from this role, not a step. */
+
+  /* Border weight by role. Flat/brutalist styles raise these; glass keeps hairlines. */
+  --ca-border-width:        1px;
+  --ca-border-width-strong: 2px;
+  --ca-border-width-focus:  2px;
+
+  /* Icon stroke (Lucide reads it through .lucide / svg[stroke]). */
+  --ca-icon-stroke: 2;
+
+  /* Texture over the page background (0 = none). */
+  --ca-noise-opacity: 0;
 
   /* ── Z-index ─────────────────────────────────────────────────────────── */
   --ca-z-nav:      100;
@@ -43,14 +59,14 @@
   --ca-z-snackbar: 1400;
   --ca-z-tooltip:  1500;
 
-  /* ── Transitions ─────────────────────────────────────────────────────── */
+  /* ── Motion ──────────────────────────────────────────────────────────────
+   * Durations times --ca-motion-scale (0 under reduced motion). Easing by role. */
+  --ca-motion-scale: 1;
   --ca-ease-standard:   cubic-bezier(0.4, 0, 0.2, 1);
   --ca-ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
   --ca-ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
+  --ca-ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
   --ca-ease-spring:     cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  --ca-duration-fast:   150ms;
-  --ca-duration-base:   240ms;
-  --ca-duration-slow:   320ms;
 
   /* ── Focus, selection, scrollbars ────────────────────────────────────── */
   --ca-focus-ring:        var(--ca-brand-main);
@@ -83,32 +99,24 @@
   --ca-rail-width:    52px;
   --ca-panel-width:   192px;
 
-  /* ── Spacing scale (base 4 px, same as MUI) ──────────────────────────── */
-  --ca-space-1:  4px;
-  --ca-space-2:  8px;
-  --ca-space-3:  12px;
-  --ca-space-4:  16px;
-  --ca-space-5:  20px;
-  --ca-space-6:  24px;
-  --ca-space-7:  28px;
-  --ca-space-8:  32px;
-  --ca-space-10: 40px;
-  --ca-space-12: 48px;
-  --ca-space-16: 64px;
+  /* ── Spacing ─────────────────────────────────────────────────────────────
+   * One unit (4px, as MUI) times --ca-density (compact 0.75, comfortable 1, airy 1.25).
+   * Every padding, gap and margin in the package resolves to a step of this scale. */
+  --ca-space-unit: 4px;
+  --ca-density:    1;
 
-  /* ── Page layout tokens ──────────────────────────────────────────────── */
-  /* Default horizontal padding for every page: change it in one place    */
-  --ca-page-px:    24px;
-  --ca-page-px-sm: 16px;   /* mobile */
-  /* Top vertical padding of pages */
-  --ca-page-pt:    20px;
-  --ca-page-pt-sm: 14px;
-  /* Gap between sections within a page */
-  --ca-page-gap:   20px;
+  /* ── Layout ──────────────────────────────────────────────────────────────
+   * One breakpoint scale for CSS and JS (MUI): xs 0, sm 600, md 900, lg 1200, xl 1536.
+   * Media queries can't read custom properties, so components use these literal widths;
+   * scripts/lint-tokens.ts rejects any other breakpoint value. Fluid gutter and section
+   * rhythm are derived below. */
+  --ca-content-max: 76rem;
+  --ca-grid-columns: 12;
 
-  /* ── Card tokens ─────────────────────────────────────────────────────────── */
-  /* Default GlassCard padding: don't pass an explicit padding=, use this token */
-  --ca-card-padding: 20px;
+  /* ── Component roles ─────────────────────────────────────────────────── */
+  --ca-control-height:   36px;
+  --ca-control-height-sm: 30px;
+  --ca-control-height-lg: 44px;
 
   /* ── Preset swatches (for colour pickers) ────────────────────────────── */
   --ca-preset-swatch-amber:   oklch(0.54 0.21 55);
@@ -124,17 +132,78 @@
   color: var(--ca-text-primary);
   font-family: var(--ca-font-sans);
   font-size: var(--ca-font-size-body1);
-  line-height: 1.55;
+  line-height: var(--ca-line-height-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* ── Derived tokens ──────────────────────────────────────────────────────────
+ * Computed from the knobs above (--ca-font-scale, --ca-radius-scale, --ca-motion-scale,
+ * --ca-space-unit, --ca-density). Custom properties resolve where they are declared, so
+ * any element that changes a knob must re-derive them: add [data-ca-tokens] to it (the
+ * theme editor preview and density islands do). */
+:root,
+[data-ca-tokens] {
+  --ca-font-size-h1:      calc(2.25rem * var(--ca-font-scale));    /* 36px */
+  --ca-font-size-h2:      calc(1.875rem * var(--ca-font-scale));   /* 30px */
+  --ca-font-size-h3:      calc(1.5rem * var(--ca-font-scale));     /* 24px */
+  --ca-font-size-h4:      calc(1.25rem * var(--ca-font-scale));    /* 20px */
+  --ca-font-size-h5:      calc(1.0625rem * var(--ca-font-scale));  /* 17px */
+  --ca-font-size-h6:      calc(0.9375rem * var(--ca-font-scale));  /* 15px */
+  --ca-font-size-body1:   calc(0.9375rem * var(--ca-font-scale));  /* 15px */
+  --ca-font-size-body2:   calc(0.8125rem * var(--ca-font-scale));  /* 13px */
+  --ca-font-size-caption: calc(0.75rem * var(--ca-font-scale));    /* 12px */
+  --ca-font-size-label:   calc(0.8125rem * var(--ca-font-scale));  /* 13px */
+  --ca-font-size-button:  calc(0.875rem * var(--ca-font-scale));   /* 14px */
+  --ca-font-size-micro:   calc(0.6875rem * var(--ca-font-scale));  /* 11px: badges, eyebrows, overlines */
+  --ca-font-size-nano:    calc(0.625rem * var(--ca-font-scale));   /* 10px: badge counts, tiny labels */
+  --ca-font-size-dialog:  calc(1rem * var(--ca-font-scale));       /* 16px: dialog/drawer titles */
+  --ca-font-size-lg:      calc(1.125rem * var(--ca-font-scale));   /* 18px: logo names, large UI labels */
+  --ca-font-size-xl:      calc(1.375rem * var(--ca-font-scale));   /* 22px: auth headings, quote text */
+  --ca-radius-xs:   calc(4px * var(--ca-radius-scale));
+  --ca-radius-sm:   calc(6px * var(--ca-radius-scale));
+  --ca-radius-md:   calc(10px * var(--ca-radius-scale));
+  --ca-radius-lg:   calc(14px * var(--ca-radius-scale));
+  --ca-radius-xl:   calc(20px * var(--ca-radius-scale));
+  --ca-radius-control: var(--ca-radius-md);
+  --ca-duration-fast:   calc(150ms * var(--ca-motion-scale));
+  --ca-duration-base:   calc(240ms * var(--ca-motion-scale));
+  --ca-duration-slow:   calc(320ms * var(--ca-motion-scale));
+  --ca-space-0-5: calc(var(--ca-space-unit) * 0.5 * var(--ca-density));
+  --ca-space-1:   calc(var(--ca-space-unit) * 1 * var(--ca-density));
+  --ca-space-1-5: calc(var(--ca-space-unit) * 1.5 * var(--ca-density));
+  --ca-space-2:   calc(var(--ca-space-unit) * 2 * var(--ca-density));
+  --ca-space-2-5: calc(var(--ca-space-unit) * 2.5 * var(--ca-density));
+  --ca-space-3:   calc(var(--ca-space-unit) * 3 * var(--ca-density));
+  --ca-space-3-5: calc(var(--ca-space-unit) * 3.5 * var(--ca-density));
+  --ca-space-4:   calc(var(--ca-space-unit) * 4 * var(--ca-density));
+  --ca-space-5:   calc(var(--ca-space-unit) * 5 * var(--ca-density));
+  --ca-space-6:   calc(var(--ca-space-unit) * 6 * var(--ca-density));
+  --ca-space-7:   calc(var(--ca-space-unit) * 7 * var(--ca-density));
+  --ca-space-8:   calc(var(--ca-space-unit) * 8 * var(--ca-density));
+  --ca-space-10:  calc(var(--ca-space-unit) * 10 * var(--ca-density));
+  --ca-space-12:  calc(var(--ca-space-unit) * 12 * var(--ca-density));
+  --ca-space-16:  calc(var(--ca-space-unit) * 16 * var(--ca-density));
+  --ca-space-20:  calc(var(--ca-space-unit) * 20 * var(--ca-density));
+  --ca-space-24:  calc(var(--ca-space-unit) * 24 * var(--ca-density));
+  --ca-gutter:      clamp(var(--ca-space-4), 0.5rem + 3vw, var(--ca-space-12));
+  --ca-section-gap: clamp(var(--ca-space-10), 1.5rem + 5vw, var(--ca-space-24));
+  --ca-page-px:    var(--ca-gutter);
+  --ca-page-px-sm: var(--ca-space-4);
+  --ca-page-pt:    var(--ca-space-5);
+  --ca-page-pt-sm: var(--ca-space-3-5);
+  --ca-page-gap:   var(--ca-space-5);
+  --ca-card-padding:     var(--ca-space-5);
+  --ca-control-px:       var(--ca-space-3-5);
 }
 
 @supports (height: 100dvh) {
   :root { --ca-vh: 100dvh; }
 }
 
-@media (pointer: coarse), (max-width: 767px) {
-  :root {
+@media (pointer: coarse), (max-width: 899.98px) {
+  :root,
+  [data-ca-tokens] {
     --ca-input-font-size: max(16px, var(--ca-font-size-body2));
     --ca-input-font-size-sm: max(16px, var(--ca-font-size-caption));
   }
@@ -143,9 +212,7 @@
 /* Reduced motion: every token-driven transition becomes instant (no global * hammer). */
 @media (prefers-reduced-motion: reduce) {
   :root {
-    --ca-duration-fast: 0ms;
-    --ca-duration-base: 0ms;
-    --ca-duration-slow: 0ms;
+    --ca-motion-scale: 0;
   }
 }
 

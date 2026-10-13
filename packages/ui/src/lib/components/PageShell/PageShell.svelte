@@ -91,7 +91,7 @@
     width: 100%;
   }
 
-  @media (max-width: 599px) {
+  @media (max-width: 599.98px) {
     .ca-page-shell {
       padding: var(--ca-space-5, 20px) var(--ca-page-px-sm, 16px) var(--ca-space-10, 40px);
     }
@@ -99,7 +99,7 @@
 
   /* Inside AppShellLayout the mobile header (< 900px) already shows the page title:
      keep the h1 for assistive tech and the document outline, hide it visually. */
-  @media (max-width: 899px) {
+  @media (max-width: 899.98px) {
     :global(.ca-shell__content) .ca-page-shell__title {
       position: absolute;
       width: 1px;
@@ -114,7 +114,7 @@
   }
 
   /* Mobile: description leads, actions wrap below it full-width. */
-  @media (max-width: 767px) {
+  @media (max-width: 899.98px) {
     .ca-page-shell__header {
       flex-direction: column;
       align-items: stretch;

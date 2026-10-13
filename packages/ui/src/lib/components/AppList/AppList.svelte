@@ -170,7 +170,8 @@
   {/if}
 
   <!-- Body -->
-  <!-- svelte-ignore a11y_no_noninteractive_tabindex (scrollable region must be keyboard-focusable, axe scrollable-region-focusable) -->
+  <!-- Scrollable region: keyboard-focusable on purpose (axe scrollable-region-focusable). -->
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
   <div class="ca-app-list__body" tabindex="0" role="region" aria-label={t().appList.listContent}>
     {#if list}
       {#if list.rows.length === 0}
@@ -342,7 +343,7 @@
     border-top: 1px solid var(--ca-outline-subtle);
   }
 
-  @media (max-width: 599px) {
+  @media (max-width: 599.98px) {
     .ca-app-list__header {
       flex-direction: column;
       align-items: stretch;
@@ -360,7 +361,7 @@
 
   /* Inside AppShellLayout the mobile header (< 900px) already shows the page title:
      keep the h1 for assistive tech, hide it visually. */
-  @media (max-width: 899px) {
+  @media (max-width: 899.98px) {
     :global(.ca-shell__content) .ca-app-list__title {
       position: absolute;
       width: 1px;

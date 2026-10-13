@@ -234,7 +234,7 @@
     overflow: hidden;
   }
 
-  @media (max-width: 899px) {
+  @media (max-width: 899.98px) {
     .ca-sidebar {
       display: none;
     }

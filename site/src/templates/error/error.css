@@ -1,7 +1,7 @@
 /* Error template layout. Tokens only. */
 .error-root {
 	display: flex;
-	min-height: var(--ca-vh, 100vh);
+	min-height: var(--ca-vh);
 	align-items: center;
 	justify-content: center;
 	padding: calc(40px + var(--ca-safe-top)) 24px calc(40px + var(--ca-safe-bottom));

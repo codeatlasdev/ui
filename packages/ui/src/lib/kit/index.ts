@@ -1,5 +1,7 @@
 export type { PresetDefinition, ResolvedTheme, ThemeDefinition } from "../theme/define.js";
-export { defineTheme, themeCSS } from "../theme/define.js";
+export { defineTheme, designTokens, themeCSS } from "../theme/define.js";
+export type { DesignStyle, DesignStyleId } from "../theme/styles.js";
+export { DESIGN_STYLES, designStyle, mergeTheme } from "../theme/styles.js";
 export type { ThemeOptions } from "../theme-script.js";
 export type { CaError, CreateErrorHandlerOptions } from "./create-error-handler.js";
 export { createErrorHandler } from "./create-error-handler.js";

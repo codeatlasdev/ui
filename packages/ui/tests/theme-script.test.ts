@@ -87,7 +87,9 @@ describe("themeCSS", () => {
 		const t = { ...acme, radius: 1.5, density: "compact" as const, fonts: { body: "Geist" } };
 		expect(themeCSS(defineTheme(t))).toBe(themeCSS(defineTheme(t)));
 		expect(themeCSS(defineTheme())).toBe("");
-		expect(themeCSS(defineTheme(t))).toContain("--ca-radius-md: 15px;");
+		const css = themeCSS(defineTheme(t));
+		expect(css).toContain("--ca-radius-scale: 1.5;");
+		expect(css).toContain("--ca-density: 0.75;");
 	});
 });
 

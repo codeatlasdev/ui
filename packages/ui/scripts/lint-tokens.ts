@@ -9,6 +9,9 @@
 //                    Lightning CSS keeps only the prefixed one otherwise.
 //   input-font-size  a literal font-size under 16px on an input/textarea/select rule
 //                    makes iOS Safari zoom on focus.
+//   svelte-ignore    `svelte-ignore` takes warning codes only; any prose after them is read
+//                    as more codes and the real warning comes back (fails a11y builds).
+//   breakpoint       width media queries use the one scale (600/900/1200/1536, max = N-0.02).
 import { readdirSync, readFileSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -16,7 +19,13 @@ import { fileURLToPath } from "node:url";
 export interface Violation {
 	file: string;
 	line: number;
-	rule: "will-change" | "viewport-unit" | "backdrop-order" | "input-font-size";
+	rule:
+		| "will-change"
+		| "viewport-unit"
+		| "backdrop-order"
+		| "input-font-size"
+		| "svelte-ignore"
+		| "breakpoint";
 	message: string;
 }
 
@@ -35,11 +44,24 @@ function cssRegions(file: string, src: string): { text: string; offset: number }
 const INPUT_SELECTOR =
 	/(^|[\s,>+~(])(input|textarea|select)\b|\[contenteditable|-input\b|__input\b/;
 
-/** Pure: lint one file's source. `isHarness` files (tests) skip the viewport-unit rule. */
+/** Allowed width breakpoints (px) for min-width; max-width uses the same minus 0.02. */
+const BREAKPOINTS = [600, 900, 1200, 1536];
+
+/** Pure: lint one file's source. Test harnesses skip the viewport-unit and breakpoint rules. */
 export function lintSource(file: string, source: string): Violation[] {
+	const v: Violation[] = [];
+	for (const m of source.matchAll(/(?:<!--|\/\/)\s*svelte-ignore\s+([^\n]*?)(?:-->|$)/gm)) {
+		const codes = (m[1] ?? "").trim();
+		if (!/^[a-z0-9_]+(?:\s*,?\s*[a-z0-9_]+)*$/.test(codes))
+			v.push({
+				file,
+				line: lineOf(source, m.index ?? 0),
+				rule: "svelte-ignore",
+				message: `svelte-ignore must list only warning codes, got "${codes}": put the reason in its own comment`,
+			});
+	}
 	// Blank comments but keep newlines so reported line numbers stay right.
 	const src = source.replace(COMMENT, (m) => m.replace(/[^\n]/g, " "));
-	const v: Violation[] = [];
 	const isHarness = /\.test\.|\/tests?\//.test(file);
 	const regions = cssRegions(file, src);
 	const css = regions.map((r) => r.text).join("\n");
@@ -65,6 +87,18 @@ export function lintSource(file: string, source: string): Violation[] {
 					rule: "viewport-unit",
 					message: `literal ${m[0]}: use var(--ca-vh) (dynamic viewport with a 100vh fallback)`,
 				});
+		if (!isHarness)
+			for (const m of r.text.matchAll(/\((min|max)-width:\s*([\d.]+)(px|rem|em)\)/g)) {
+				const px = Number(m[2]) * (m[3] === "px" ? 1 : 16);
+				const ok = BREAKPOINTS.some((b) => (m[1] === "min" ? px === b : px === b - 0.02));
+				if (!ok)
+					v.push({
+						file,
+						line: lineOf(src, r.offset + (m.index ?? 0)),
+						rule: "breakpoint",
+						message: `${m[0]}: use the breakpoint scale (min-width ${BREAKPOINTS.join("/")}px, max-width N-0.02px) or a container query`,
+					});
+			}
 
 		for (const rule of r.text.matchAll(/([^{}]+)\{([^{}]*)\}/g)) {
 			const body = rule[2] ?? "";
@@ -105,10 +139,13 @@ function* walk(dir: string): Generator<string> {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-	const root = join(dirname(fileURLToPath(import.meta.url)), "../src/lib");
+	const here = dirname(fileURLToPath(import.meta.url));
+	// The package and the docs site share the contract.
+	const roots = [join(here, "../src/lib"), join(here, "../../../site/src")];
 	const all: Violation[] = [];
-	for (const f of walk(root))
-		all.push(...lintSource(relative(join(root, ".."), f), readFileSync(f, "utf8")));
+	for (const root of roots)
+		for (const f of walk(root))
+			all.push(...lintSource(relative(join(here, "../../.."), f), readFileSync(f, "utf8")));
 	for (const x of all) console.error(`${x.file}:${x.line}  [${x.rule}] ${x.message}`);
 	if (all.length) {
 		console.error(`\n${all.length} token lint violation(s)`);

@@ -17,7 +17,8 @@
     section.items.some((item) => isItemActive(item, pathname))
   );
 
-  // svelte-ignore state_referenced_locally: intentional: defaultOpen is init-only
+  // defaultOpen is init-only on purpose.
+  // svelte-ignore state_referenced_locally
   let open = $state(section.defaultOpen !== false || hasActiveChild);
 </script>
 

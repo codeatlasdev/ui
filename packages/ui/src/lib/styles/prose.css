@@ -237,7 +237,7 @@
 /* Inside CodeTabs the tab already names the language. */
 .ca-codetabs .ca-code[data-lang]::before { display: none; }
 
-@media (max-width: 767px) {
+@media (max-width: 899.98px) {
   .ca-prose { line-height: 1.7; }
   .ca-code pre { padding: 0.875rem 1rem; }
   .ca-table-wrap th,

@@ -19,7 +19,11 @@ const cssVar = (name: string) => css.match(new RegExp(`--ca-${name}:\\s*([^;]+);
 
 describe("tokens ↔ tokens.css parity", () => {
 	it.each(Object.entries(radius))("radius.%s", (k, v) => {
-		expect(cssVar(`radius-${k}`)).toBe(`${v}px`);
+		// Steps are scaled by --ca-radius-scale; the base px must match the TS scale.
+		const css = cssVar(`radius-${k}`);
+		expect(
+			k === "pill" ? css : css.replace(/calc\((\d+)px \* var\(--ca-radius-scale\)\)/, "$1px")
+		).toBe(`${v}px`);
 	});
 
 	it.each(Object.entries(zIndex).filter(([k]) => k !== "base" && k !== "raised"))(

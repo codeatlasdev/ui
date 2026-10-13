@@ -131,7 +131,7 @@
     margin-top: 16px;
   }
 
-  @media (max-width: 599px) {
+  @media (max-width: 599.98px) {
     .ca-empty--hero {
       width: 100%;
       padding-inline: 20px;

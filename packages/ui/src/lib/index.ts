@@ -176,14 +176,20 @@ export type { ToastItem, ToastVariant } from "./stores/toast.svelte.js";
 export { toast } from "./stores/toast.svelte.js";
 export { viewport } from "./stores/viewport.svelte.js";
 export type {
+	Density,
+	ElevationModel,
 	FontDescriptor,
 	FontFallbackMetrics,
 	FontSpec,
+	MotionOptions,
 	PresetDefinition,
 	ResolvedTheme,
 	ThemeDefinition,
+	TypographyOptions,
 } from "./theme/define.js";
-export { defineTheme, themeCSS } from "./theme/define.js";
+export { defineTheme, designTokens, themeCSS } from "./theme/define.js";
+export type { DesignStyle, DesignStyleId } from "./theme/styles.js";
+export { DESIGN_STYLES, designStyle, mergeTheme } from "./theme/styles.js";
 export type { ThemeOptions } from "./theme-script.js";
 // ── TOKENS & UTILS ────────────────────────────────────────────────────────────
 export * from "./tokens/index.js";

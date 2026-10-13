@@ -30,5 +30,5 @@
   .builder { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: var(--ca-space-6); align-items: start; }
   .dim-name { font-size: var(--ca-font-size-body2); }
   .dim-value { color: var(--ca-brand-text); font-weight: 600; font-size: var(--ca-font-size-body2); }
-  @media (max-width: 767px) { .builder { grid-template-columns: minmax(0, 1fr); } }
+  @media (max-width: 899.98px) { .builder { grid-template-columns: minmax(0, 1fr); } }
 </style>

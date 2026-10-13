@@ -317,7 +317,7 @@
   }
 
   /* Desktop: palette-style dialog. */
-  @media (min-width: 768px) {
+  @media (min-width: 900px) {
     :global(.ca-docs-search) {
       inset: auto;
       top: 14vh;

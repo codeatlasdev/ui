@@ -111,7 +111,7 @@
   }
 
   /* ── Mobile ─────────────────────────────────────────────────── */
-  @media (max-width: 599px) {
+  @media (max-width: 599.98px) {
     .ca-form-section { padding: var(--ca-space-4, 16px); }
     .ca-form-section--grid .ca-form-section__fields {
       grid-template-columns: 1fr;

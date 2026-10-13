@@ -89,7 +89,7 @@ html.lenis body {
 	margin-inline: auto;
 	padding: clamp(var(--ca-space-6), 6vh, var(--ca-space-12)) var(--lp-gutter) var(--lp-chapter-gap);
 }
-@media (min-width: 62rem) {
+@media (min-width: 1200px) {
 	.hero {
 		grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
 		min-block-size: min(44rem, calc(var(--ca-vh) - 6rem));
@@ -184,7 +184,7 @@ html.lenis body {
 	margin-block-end: var(--lp-chapter-gap);
 	align-items: start;
 }
-@media (min-width: 62rem) {
+@media (min-width: 1200px) {
 	.chapter--split {
 		grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
 		gap: clamp(var(--ca-space-8), 6vw, var(--ca-space-16));
@@ -287,7 +287,7 @@ html.lenis body {
 	gap: var(--ca-space-8);
 	align-items: start;
 }
-@media (min-width: 62rem) {
+@media (min-width: 1200px) {
 	.agents {
 		grid-template-columns: minmax(0, 1.25fr) minmax(0, 0.75fr);
 	}
@@ -426,7 +426,7 @@ html.lenis body {
 	pointer-events: none;
 	transition: opacity var(--ca-duration-base) var(--ca-ease-standard);
 }
-@media (min-width: 70rem) and (min-height: 34rem) {
+@media (min-width: 1200px) and (min-height: 34rem) {
 	.rail {
 		display: block;
 	}
@@ -444,8 +444,8 @@ html.lenis body {
 	gap: var(--ca-space-1);
 	border-radius: var(--ca-radius-pill);
 	background: var(--ca-glass-bg);
-	backdrop-filter: var(--ca-blur-chrome);
 	-webkit-backdrop-filter: var(--ca-blur-chrome);
+	backdrop-filter: var(--ca-blur-chrome);
 	box-shadow: 0 0 0 1px var(--ca-outline-subtle);
 }
 .rail__line {

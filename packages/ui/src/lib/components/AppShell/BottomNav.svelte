@@ -52,7 +52,7 @@
     box-shadow: inset 0 1px 0 var(--ca-outline-subtle);
   }
 
-  @media (max-width: 899px) {
+  @media (max-width: 899.98px) {
     .ca-bottom-nav {
       display: flex;
     }

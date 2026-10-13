@@ -210,7 +210,7 @@
   }
 
   /* ── Mobile ─────────────────────────────────────────────────── */
-  @media (max-width: 599px) {
+  @media (max-width: 599.98px) {
     .ca-app-form__header-inner {
       padding:
         var(--ca-space-4, 16px)
@@ -231,7 +231,7 @@
 
   /* Inside AppShellLayout the mobile header (< 900px) already shows the page title:
      keep the h1 for assistive tech, hide it visually. */
-  @media (max-width: 899px) {
+  @media (max-width: 899.98px) {
     :global(.ca-shell__content) .ca-app-form__title {
       position: absolute;
       width: 1px;

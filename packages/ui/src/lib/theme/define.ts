@@ -14,10 +14,28 @@ import {
 import { BUILTIN_PRESETS, type BuiltinPresetSource } from "./builtins.js";
 
 export type ColorScheme = "light" | "dark" | "system";
-export type SurfaceStyle = "glass" | "frosted" | "solid" | "flat";
+/** Surface material. glass/frosted blur the backdrop; the rest are opaque. */
+export type SurfaceStyle =
+	| "glass"
+	| "frosted"
+	| "solid"
+	| "flat"
+	| "outlined"
+	| "neumorphic"
+	| "clay"
+	| "tonal";
 
 export const SCHEMES: readonly ColorScheme[] = ["light", "dark", "system"];
-export const STYLES: readonly SurfaceStyle[] = ["glass", "frosted", "solid", "flat"];
+export const STYLES: readonly SurfaceStyle[] = [
+	"glass",
+	"frosted",
+	"solid",
+	"flat",
+	"outlined",
+	"neumorphic",
+	"clay",
+	"tonal",
+];
 /** Deps that must be bundled for SSR (extensionless .svelte imports, ESM-only). */
 export const SSR_NO_EXTERNAL = ["@tanstack/svelte-table", "@tanstack/table-core", "shiki"];
 
@@ -69,6 +87,34 @@ export interface FontDescriptor {
 /** A font stack string (existing behavior) or a self-hosted font descriptor. */
 export type FontSpec = string | FontDescriptor;
 
+/** Spacing density: a multiplier of the 4px unit, or a named step. */
+export type Density = "compact" | "comfortable" | "airy" | number;
+
+/** Shadow model: how elevation is drawn. */
+export type ElevationModel = "soft" | "none" | "hard" | "glow";
+
+export interface TypographyOptions {
+	/** Multiplier on the whole UI type scale. @default 1 */
+	scale?: number;
+	weights?: Partial<Record<"regular" | "medium" | "semibold" | "bold" | "heading", number>>;
+	/** Heading letter-spacing, e.g. "-0.02em" (tight) or "0.04em" (wide). */
+	headingTracking?: string;
+	headingCase?: "none" | "uppercase";
+	labelTracking?: string;
+	labelCase?: "none" | "uppercase";
+	/** Body line-height. @default 1.55 */
+	lineHeight?: number;
+	/** Max line length for prose, e.g. "65ch". */
+	measure?: string;
+}
+
+export interface MotionOptions {
+	/** Multiplier on every duration (0 = instant, 1.5 = slower). @default 1 */
+	scale?: number;
+	/** Default easing personality for --ca-ease-standard. */
+	easing?: "standard" | "emphasized" | "spring" | "linear" | "steps";
+}
+
 export interface ThemeDefinition {
 	/** Brand presets, emitted inline so they paint with the first frame. Built-ins are always available. */
 	presets: PresetDefinition[];
@@ -76,15 +122,27 @@ export interface ThemeDefinition {
 	defaultPreset: string;
 	/** Scheme applied until the user picks one. @default "dark" */
 	defaultScheme: ColorScheme;
-	/** Surface style applied until the user picks one. @default "glass" */
+	/** Surface material applied until the user picks one. @default "glass" */
 	defaultStyle: SurfaceStyle;
 	/** Fonts for --ca-font-sans (body), --ca-font-mono and --ca-font-display. A string is a plain stack. */
 	fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec };
-	/** Radius multiplier. @default 1 */
+	/** Radius multiplier (0 = square corners, 2 = very round). @default 1 */
 	radius: number;
-	/** @default "comfortable" */
-	density: "compact" | "comfortable";
-	/** Raw token overrides per scheme. */
+	/** Corner role used by buttons, fields and chips. @default "md" */
+	controlRadius: "xs" | "sm" | "md" | "lg" | "xl" | "pill";
+	/** Spacing density. compact = 0.75, comfortable = 1, airy = 1.25. @default "comfortable" */
+	density: Density;
+	/** Border weights in px. @default { width: 1, strong: 2 } */
+	border: { width?: number; strong?: number };
+	typography: TypographyOptions;
+	/** How elevation is drawn. hard = offset shadows with no blur (Neobrutalism). @default "soft" */
+	elevation: ElevationModel;
+	motion: MotionOptions;
+	/** Icon stroke width (Lucide). @default 2 */
+	iconStroke: number;
+	/** Film-grain texture over the page background, 0 to 0.12. @default 0 */
+	noise: number;
+	/** Raw token overrides per scheme. Applied last. */
 	overrides: { light?: TokenMap; dark?: TokenMap };
 }
 
@@ -213,7 +271,14 @@ export function defineTheme(def: Partial<ThemeDefinition> = {}): ResolvedTheme {
 		defaultStyle: def.defaultStyle ?? "glass",
 		fonts: def.fonts ?? {},
 		radius: def.radius ?? 1,
+		controlRadius: def.controlRadius ?? "md",
 		density: def.density ?? "comfortable",
+		border: def.border ?? {},
+		typography: def.typography ?? {},
+		elevation: def.elevation ?? "soft",
+		motion: def.motion ?? {},
+		iconStroke: def.iconStroke ?? 2,
+		noise: def.noise ?? 0,
 		overrides: def.overrides ?? {},
 		known,
 		themeColor,
@@ -272,13 +337,86 @@ export function fontPreloads(t: Pick<ResolvedTheme, "fonts">): string {
 		.join("");
 }
 
-const RADII = { xs: 4, sm: 6, md: 10, lg: 14, xl: 20 } as const;
+const DENSITY: Record<Exclude<Density, number>, number> = {
+	compact: 0.75,
+	comfortable: 1,
+	airy: 1.25,
+};
+
+const EASING: Record<NonNullable<MotionOptions["easing"]>, string> = {
+	standard: "cubic-bezier(0.4, 0, 0.2, 1)",
+	emphasized: "cubic-bezier(0.2, 0, 0, 1)",
+	spring: "cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+	linear: "linear",
+	steps: "steps(4, end)",
+};
+
+/** Shadow tokens for an elevation model (soft is the stylesheet default, so it emits nothing). */
+function elevationTokens(model: ElevationModel): Record<string, string> {
+	if (model === "soft") return {};
+	const steps = { xs: 1, sm: 2, md: 3, lg: 4, xl: 6 } as const;
+	const shadow = (n: number) =>
+		model === "none"
+			? "none"
+			: model === "hard"
+				? `${n * 2}px ${n * 2}px 0 0 var(--ca-border-color)`
+				: `0 0 ${n * 6}px color-mix(in oklab, var(--ca-brand-main) ${10 + n * 4}%, transparent)`;
+	const out: Record<string, string> = {};
+	for (const [k, n] of Object.entries(steps)) out[`--ca-shadow-${k}`] = shadow(n);
+	const mat = { "ultra-thin": 1, thin: 2, regular: 3, thick: 4, chrome: 1 } as const;
+	for (const [k, n] of Object.entries(mat))
+		out[`--ca-mat-${k}-shadow`] = model === "none" ? "0 0 #0000" : shadow(n);
+	return out;
+}
+
+/** Design knobs → root custom properties. Only values that differ from the stylesheet defaults. */
+export function designTokens(
+	t: Pick<
+		ResolvedTheme,
+		| "radius"
+		| "controlRadius"
+		| "density"
+		| "border"
+		| "typography"
+		| "elevation"
+		| "motion"
+		| "iconStroke"
+		| "noise"
+	>
+): Record<string, string> {
+	const root: Record<string, string> = {};
+	if (t.radius !== 1) root["--ca-radius-scale"] = String(t.radius);
+	if (t.controlRadius !== "md") root["--ca-radius-control"] = `var(--ca-radius-${t.controlRadius})`;
+	const density = typeof t.density === "number" ? t.density : DENSITY[t.density];
+	if (density !== 1) root["--ca-density"] = String(density);
+	if (t.border.width !== undefined) root["--ca-border-width"] = `${t.border.width}px`;
+	if (t.border.strong !== undefined) root["--ca-border-width-strong"] = `${t.border.strong}px`;
+	const ty = t.typography;
+	if (ty.scale !== undefined && ty.scale !== 1) root["--ca-font-scale"] = String(ty.scale);
+	for (const [k, v] of Object.entries(ty.weights ?? {})) root[`--ca-font-weight-${k}`] = String(v);
+	if (ty.headingTracking) root["--ca-heading-tracking"] = ty.headingTracking;
+	if (ty.headingCase) root["--ca-heading-case"] = ty.headingCase;
+	if (ty.labelTracking) root["--ca-label-tracking"] = ty.labelTracking;
+	if (ty.labelCase) root["--ca-label-case"] = ty.labelCase;
+	if (ty.lineHeight !== undefined) {
+		root["--ca-line-height-body"] = String(ty.lineHeight);
+		root["--ca-line-height-prose"] = String(ty.lineHeight);
+	}
+	if (ty.measure) root["--ca-measure"] = ty.measure;
+	Object.assign(root, elevationTokens(t.elevation));
+	if (t.motion.scale !== undefined && t.motion.scale !== 1)
+		root["--ca-motion-scale"] = String(t.motion.scale);
+	if (t.motion.easing && t.motion.easing !== "standard")
+		root["--ca-ease-standard"] = EASING[t.motion.easing];
+	if (t.iconStroke !== 2) root["--ca-icon-stroke"] = String(t.iconStroke);
+	if (t.noise) root["--ca-noise-opacity"] = String(Math.min(0.12, Math.max(0, t.noise)));
+	return root;
+}
 
 /**
- * Compile a resolved theme to CSS: brand presets, then structural tokens
- * (fonts, radius, density) and raw overrides. Deterministic: same theme → same string.
- * Descriptor fonts add their `@font-face` rules (preload links come from `fontPreloads`).
- * Empty string when the theme only uses built-in defaults.
+ * Compile a resolved theme to CSS: brand presets, @font-face rules, design knobs and raw
+ * overrides. Deterministic: same theme → same string. Empty when every value is a default.
+ * Preload links for descriptor fonts come from `fontPreloads`.
  */
 export function themeCSS(t: ResolvedTheme): string {
 	const out = t.presets.map((p) => presetCSS(p, "brand"));
@@ -288,15 +426,7 @@ export function themeCSS(t: ResolvedTheme): string {
 	if (t.fonts.body) root["--ca-font-sans"] = fontStack(t.fonts.body);
 	if (t.fonts.mono) root["--ca-font-mono"] = fontStack(t.fonts.mono);
 	if (t.fonts.display) root["--ca-font-display"] = fontStack(t.fonts.display);
-	if (t.radius !== 1)
-		for (const [k, v] of Object.entries(RADII))
-			root[`--ca-radius-${k}`] = `${+(v * t.radius).toFixed(2)}px`;
-	if (t.density === "compact") {
-		root["--ca-card-padding"] = "14px";
-		root["--ca-page-gap"] = "14px";
-		root["--ca-page-pt"] = "14px";
-		root["--ca-page-px"] = "16px";
-	}
+	Object.assign(root, designTokens(t));
 	Object.assign(root, t.overrides.light);
 	if (Object.keys(root).length) out.push(cssBlock(':root,\n[data-theme-scope="light"]', root));
 	if (t.overrides.dark && Object.keys(t.overrides.dark).length)

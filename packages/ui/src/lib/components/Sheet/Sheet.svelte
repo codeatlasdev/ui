@@ -194,7 +194,7 @@
 		-webkit-user-select: none;
 	}
 	/* Swiping only exists in the bottom-sheet layout (the handle is hidden on desktop). */
-	@media (min-width: 768px) {
+	@media (min-width: 900px) {
 		:global(.ca-sheet__grab--active) {
 			touch-action: auto;
 			user-select: auto;
@@ -268,7 +268,7 @@
 	}
 
 	/* Desktop: centered dialog */
-	@media (min-width: 768px) {
+	@media (min-width: 900px) {
 		:global(.ca-sheet) {
 			inset: 0;
 			margin: auto;

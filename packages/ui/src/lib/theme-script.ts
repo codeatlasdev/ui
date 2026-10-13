@@ -3,6 +3,7 @@ import {
 	fontPreloads,
 	presetCSS,
 	type ResolvedTheme,
+	STYLES,
 	type ThemeDefinition,
 	themeCSS,
 } from "./theme/define.js";
@@ -50,7 +51,7 @@ function g(k,ok,d){var r=ls.getItem(k),v;try{v=JSON.parse(r)}catch(e){}
   if(ok.indexOf(v)<0){if(r!==null)ls.removeItem(k);return d}return v}
 var scheme=g('ca-scheme',${JSON.stringify(["light", "dark", "system"])},${JSON.stringify(t.defaultScheme)});
 var preset=g('ca-preset',R.known,${JSON.stringify(t.defaultPreset)});
-var style=g('ca-style',${JSON.stringify(["glass", "frosted", "solid", "flat"])},${JSON.stringify(t.defaultStyle)});
+var style=g('ca-style',${JSON.stringify(STYLES)},${JSON.stringify(t.defaultStyle)});
 h.classList.add('ca-init');
 h.setAttribute('data-preset',preset);
 h.setAttribute('data-style',style);

@@ -590,7 +590,8 @@
           {#if copied}<Check size={11} />Copied{:else}<Copy size={11} />Copy{/if}
         </button>
       </div>
-      <!-- svelte-ignore a11y_no_noninteractive_tabindex (scrollable region must be keyboard-focusable, axe scrollable-region-focusable) -->
+      <!-- Scrollable region: keyboard-focusable on purpose (axe scrollable-region-focusable). -->
+      <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
       <pre class="te__code" tabindex="0" role="region" aria-label="Generated CSS"><code>{css}</code></pre>
     </aside>
 
@@ -602,7 +603,7 @@
   .te {
     display: flex;
     flex-direction: column;
-    height: 100dvh;
+    height: var(--ca-vh);
     overflow: hidden;
     background: var(--ca-surface-base);
   }
@@ -645,11 +646,11 @@
     overflow: hidden;
   }
 
-  @media (max-width: 1100px) {
+  @media (max-width: 1199.98px) {
     .te__body { grid-template-columns: 260px 1fr; }
     .te__output { display: none; }
   }
-  @media (max-width: 680px) {
+  @media (max-width: 899.98px) {
     .te__body { grid-template-columns: 1fr; }
     .te__controls { display: none; }
   }

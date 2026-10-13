@@ -325,7 +325,7 @@
   }
 
   /* ── Mobile (<= 768px) ───────────────────────────────────────── */
-  @media (max-width: 768px) {
+  @media (max-width: 899.98px) {
     .ca-app-settings__body { flex-direction: column; }
 
     /* Nav becomes a horizontal scrollable bar */
@@ -380,7 +380,7 @@
 
   /* Inside AppShellLayout the mobile header (< 900px) already shows the page title:
      keep the h1 for assistive tech, hide it visually. */
-  @media (max-width: 899px) {
+  @media (max-width: 899.98px) {
     :global(.ca-shell__content) .ca-app-settings__title {
       position: absolute;
       width: 1px;

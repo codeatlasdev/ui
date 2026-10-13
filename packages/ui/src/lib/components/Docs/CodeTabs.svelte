@@ -261,7 +261,7 @@
   }
 
   /* On phones the label collapses to the icon to leave room for the tab strip. */
-  @media (max-width: 479px) {
+  @media (max-width: 599.98px) {
     .ca-codetabs__copy span { display: none; }
     .ca-codetabs__copy { min-width: 44px; justify-content: center; padding: 0; }
   }

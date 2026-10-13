@@ -139,7 +139,7 @@
   }
 
   /* iOS Safari zooms into focused fields under 16px: keep them at 16px on touch / small screens. */
-  @media (pointer: coarse), (max-width: 767px) {
+  @media (pointer: coarse), (max-width: 899.98px) {
     .ca-dt-pagination__select {
       font-size: max(16px, var(--ca-font-size-body2));
     }

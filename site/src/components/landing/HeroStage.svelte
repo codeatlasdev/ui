@@ -222,7 +222,7 @@
 	.stage__grid > :global(.stage__controls) {
 		grid-column: 1 / -1;
 	}
-	@container (min-width: 28rem) {
+	@container (min-width: 600px) {
 		.stage__grid {
 			grid-template-columns: 1fr 1fr 1.2fr;
 		}

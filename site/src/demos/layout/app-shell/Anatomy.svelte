@@ -84,7 +84,7 @@
   .content-block { height: 48px; border-radius: var(--ca-radius-md); background: var(--ca-action-hover); }
   .content-block--short { height: 32px; width: 60%; }
 
-  @media (max-width: 599px) {
+  @media (max-width: 599.98px) {
     .shell-panel { display: none; }
   }
 </style>

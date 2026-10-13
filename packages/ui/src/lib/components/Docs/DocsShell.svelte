@@ -376,13 +376,13 @@
 
   /* ── Responsive ─────────────────────────────────────────────────────── */
 
-  @media (max-width: 1279px) {
+  @media (max-width: 1199.98px) {
     .ca-docs { grid-template-columns: var(--ca-docs-sidebar-w) minmax(0, 1fr); }
     .ca-docs-toc { display: none; }
     :global(.ca-docs-toc-inline) { display: block; }
   }
 
-  @media (max-width: 1023px) {
+  @media (max-width: 1199.98px) {
     .ca-docs { display: block; }
     .ca-docs-sidebar,
     .ca-docs-sections,

@@ -64,7 +64,7 @@
   .ca-steps :global(> ol > li:last-child::after) { display: none; }
   .ca-steps :global(> ol > li > :first-child) { margin-top: 0; }
 
-  @media (max-width: 767px) {
+  @media (max-width: 899.98px) {
     .ca-steps :global(> ol > li) { padding-left: 2.5rem; }
   }
 </style>
