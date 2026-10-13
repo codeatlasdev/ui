@@ -484,19 +484,16 @@
   /* Narrow screens: the pager becomes the page's action bar, pinned above the home indicator. */
   @media (max-width: 899.98px) {
     .ca-docs-main:has(.ca-docs-pager) {
-      padding-bottom: calc(var(--ca-space-16) + var(--ca-touch-target) + var(--ca-safe-bottom));
+      padding-bottom: calc(var(--ca-space-12) + var(--ca-touch-target) + var(--ca-safe-bottom));
     }
+    /* One bar, two halves: like a native toolbar, not two cards floating in a strip. */
     .ca-docs-pager {
       position: fixed;
       inset: auto 0 0 0;
       z-index: var(--ca-z-sticky);
       margin: 0;
-      gap: var(--ca-space-2);
-      padding:
-        var(--ca-space-2)
-        max(var(--ca-space-3), var(--ca-safe-right))
-        calc(var(--ca-space-2) + var(--ca-safe-bottom))
-        max(var(--ca-space-3), var(--ca-safe-left));
+      gap: 0;
+      padding: 0 var(--ca-safe-right) var(--ca-safe-bottom) var(--ca-safe-left);
       border-top: none;
       background: var(--ca-chrome-bg);
       -webkit-backdrop-filter: var(--ca-chrome-blur);
@@ -504,10 +501,26 @@
       box-shadow: inset 0 var(--ca-border-width) 0 var(--ca-glass-separator);
     }
     .ca-docs-pager__link {
-      min-height: var(--ca-touch-target);
-      padding: var(--ca-space-2) var(--ca-space-3);
+      min-height: calc(var(--ca-touch-target) + var(--ca-space-2));
+      padding: var(--ca-space-1-5) var(--ca-space-4);
       gap: var(--ca-space-2);
+      border: none;
+      border-radius: 0;
+      background: transparent;
     }
+    .ca-docs-pager__link:hover { background: var(--ca-action-hover); }
+    .ca-docs-pager__link:active { background: var(--ca-action-selected); }
+    /* Hairline between the halves (only when both exist). */
+    .ca-docs-pager__link + .ca-docs-pager__link {
+      box-shadow: inset var(--ca-border-width) 0 0 var(--ca-glass-separator);
+    }
+    .ca-docs-pager__link:focus-visible { outline-offset: calc(var(--ca-border-width-focus) * -1); }
+    .ca-docs-pager small {
+      font-size: var(--ca-font-size-micro);
+      letter-spacing: var(--ca-overline-tracking);
+      text-transform: uppercase;
+    }
+    .ca-docs-pager__title { font-size: var(--ca-font-size-body2); }
   }
 
   @media (prefers-reduced-motion: reduce) {

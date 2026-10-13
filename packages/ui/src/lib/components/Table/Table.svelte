@@ -109,8 +109,6 @@
      When the sum does not fit, the root scrolls; nothing is crushed. */
   .ca-table :global(td code) { white-space: normal; overflow-wrap: normal; word-break: keep-all; }
   .ca-table :global(td:first-child code) { white-space: nowrap; }
-  .ca-table :global(td) { min-width: 9ch; }
-  .ca-table :global(td:last-child) { min-width: min(28ch, 60vw); }
 
   .ca-table :global(tbody tr:hover td) {
     background: color-mix(in oklab, var(--ca-brand-main) 4%, transparent);
@@ -127,6 +125,12 @@
     padding: var(--ca-space-16) var(--ca-space-5);
     color: var(--ca-text-hint);
     font-size: var(--ca-font-size-button);
+  }
+
+  /* Narrow slot, scroll mode: tighter gutters so more columns fit before the region scrolls. */
+  @container (max-width: 599.98px) {
+    .ca-table:not(.ca-table--cards) :global(th),
+    .ca-table:not(.ca-table--cards) :global(td) { padding-inline: var(--ca-space-3); }
   }
 
   /* ── Cards mode (slot narrower than sm = 600px): a 4-column table still fits a
