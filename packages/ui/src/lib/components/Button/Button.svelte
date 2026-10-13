@@ -139,7 +139,7 @@
     pointer-events: none;
   }
 
-  /* Sizes — md aligns with TextField/Select height (36px) */
+  /* Sizes: md aligns with TextField/Select height (36px) */
   .ca-btn--sm {
     height: 30px;
     padding: 0 10px;

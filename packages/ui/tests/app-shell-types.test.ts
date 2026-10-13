@@ -19,35 +19,35 @@ const modules: NavModule[] = [
 		id: "home",
 		label: "Home",
 		icon,
-		basePath: "/painel",
+		basePath: "/dashboard",
 		items: [
-			item("/painel/inicio"),
-			{ label: "Gestão", items: [item("/painel/clientes"), item("/painel/pedidos")] },
+			item("/dashboard/home"),
+			{ label: "Management", items: [item("/dashboard/customers"), item("/dashboard/orders")] },
 		],
 	},
 	{
 		id: "cfg",
 		label: "Config",
 		icon,
-		basePath: "/config",
-		pathPrefixes: ["/conta", "/billing"],
-		items: [{ label: "Vazio", items: [] }, item("/config/geral")],
+		basePath: "/settings",
+		pathPrefixes: ["/account", "/billing"],
+		items: [{ label: "Empty section", items: [] }, item("/settings/general")],
 	},
-	{ id: "empty", label: "Empty", icon, basePath: "/vazio", items: [] },
+	{ id: "empty", label: "Empty", icon, basePath: "/empty", items: [] },
 ];
 
 describe("isItemActive", () => {
 	it("matches the exact path and nested children", () => {
-		expect(isItemActive(item("/painel/clientes"), "/painel/clientes")).toBe(true);
-		expect(isItemActive(item("/painel/clientes"), "/painel/clientes/42/editar")).toBe(true);
+		expect(isItemActive(item("/dashboard/customers"), "/dashboard/customers")).toBe(true);
+		expect(isItemActive(item("/dashboard/customers"), "/dashboard/customers/42/edit")).toBe(true);
 	});
 
 	it("does not match a sibling that merely shares the prefix", () => {
-		expect(isItemActive(item("/painel/cli"), "/painel/clientes")).toBe(false);
+		expect(isItemActive(item("/dashboard/cus"), "/dashboard/customers")).toBe(false);
 	});
 
 	it("does not match a parent of the item", () => {
-		expect(isItemActive(item("/painel/clientes"), "/painel")).toBe(false);
+		expect(isItemActive(item("/dashboard/customers"), "/dashboard")).toBe(false);
 	});
 
 	it("ignores trailing slashes (trailingSlash: always sites)", () => {
@@ -67,54 +67,56 @@ describe("isNavSection", () => {
 describe("collectPaths", () => {
 	it("flattens items and section items in order", () => {
 		expect(collectPaths(modules)).toEqual([
-			"/painel/inicio",
-			"/painel/clientes",
-			"/painel/pedidos",
-			"/config/geral",
+			"/dashboard/home",
+			"/dashboard/customers",
+			"/dashboard/orders",
+			"/settings/general",
 		]);
 	});
 });
 
 describe("findActiveModuleIndex", () => {
 	it("matches basePath", () => {
-		expect(findActiveModuleIndex(modules, "/config/geral")).toBe(1);
+		expect(findActiveModuleIndex(modules, "/settings/general")).toBe(1);
 	});
 
 	it("matches pathPrefixes", () => {
-		expect(findActiveModuleIndex(modules, "/billing/faturas")).toBe(1);
+		expect(findActiveModuleIndex(modules, "/billing/invoices")).toBe(1);
 	});
 
 	it("falls back to 0 when nothing matches", () => {
-		expect(findActiveModuleIndex(modules, "/outra")).toBe(0);
+		expect(findActiveModuleIndex(modules, "/other")).toBe(0);
 	});
 });
 
 describe("findActiveItemPath", () => {
 	it("finds a top-level item", () => {
-		expect(findActiveItemPath(modules, "/painel/inicio")).toBe("/painel/inicio");
+		expect(findActiveItemPath(modules, "/dashboard/home")).toBe("/dashboard/home");
 	});
 
 	it("finds an item inside a section, including nested routes", () => {
-		expect(findActiveItemPath(modules, "/painel/pedidos/9")).toBe("/painel/pedidos");
+		expect(findActiveItemPath(modules, "/dashboard/orders/9")).toBe("/dashboard/orders");
 	});
 
 	it("returns the first matching item when an earlier item is a path prefix (order matters)", () => {
-		const m: NavModule[] = [{ ...modules[0], items: [item("/painel"), item("/painel/pedidos")] }];
-		expect(findActiveItemPath(m, "/painel/pedidos")).toBe("/painel");
+		const m: NavModule[] = [
+			{ ...modules[0], items: [item("/dashboard"), item("/dashboard/orders")] },
+		];
+		expect(findActiveItemPath(m, "/dashboard/orders")).toBe("/dashboard");
 	});
 
 	it("returns null when no item is active", () => {
-		expect(findActiveItemPath(modules, "/nada")).toBeNull();
+		expect(findActiveItemPath(modules, "/nothing")).toBeNull();
 	});
 });
 
 describe("firstModulePath", () => {
 	it("returns the first top-level item", () => {
-		expect(firstModulePath(modules[0])).toBe("/painel/inicio");
+		expect(firstModulePath(modules[0])).toBe("/dashboard/home");
 	});
 
 	it("skips empty sections and returns the next navigable item", () => {
-		expect(firstModulePath(modules[1])).toBe("/config/geral");
+		expect(firstModulePath(modules[1])).toBe("/settings/general");
 	});
 
 	it("returns the first item of a leading section", () => {
@@ -123,6 +125,6 @@ describe("firstModulePath", () => {
 	});
 
 	it("falls back to basePath for a module without items", () => {
-		expect(firstModulePath(modules[2])).toBe("/vazio");
+		expect(firstModulePath(modules[2])).toBe("/empty");
 	});
 });

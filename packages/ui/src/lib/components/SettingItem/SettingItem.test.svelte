@@ -3,7 +3,7 @@
   import SettingItem from './SettingItem.svelte';
 
   let {
-    label = 'Notificações',
+    label = 'Notifications',
     description,
     checked = $bindable(false),
   }: { label?: string; description?: string; checked?: boolean } = $props();

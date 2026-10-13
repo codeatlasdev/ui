@@ -8,28 +8,29 @@ import type { DocsSearchEntry } from "./types";
 
 const entries: DocsSearchEntry[] = [
 	{
-		href: "/guia/inicio",
-		title: "Primeiros passos",
-		section: "Guia",
-		description: "Comece aqui",
-		headings: [{ text: "Instalação", id: "instalacao" }],
-		text: "instale o pacote",
+		href: "/guide/start",
+		title: "Getting started",
+		section: "Guide",
+		description: "Start here",
+		headings: [{ text: "Installation", id: "installation" }],
+		text: "install the package",
 	},
 	{
-		href: "/api/mensagens",
-		title: "Enviar mensagem",
+		href: "/api/messages",
+		title: "Send message",
 		section: "API",
-		description: "Endpoint de envio",
+		description: "Sending endpoint",
 		headings: [],
-		text: "webhook e QR code",
+		text: "webhook and QR code",
 	},
 	{
 		href: "/api/webhooks",
 		title: "Webhooks",
 		section: "API",
-		description: "Eventos",
+		description: "Events",
 		headings: [],
-		text: "configuração de callbacks",
+		// Accented on purpose: the "configuracao" query must match it (diacritic folding).
+		text: "configuração of callbacks",
 	},
 ];
 
@@ -75,13 +76,13 @@ describe("DocsSearch", () => {
 	it("heading hits link to the anchor", async () => {
 		const onselect = vi.fn();
 		await render(DocsSearchHarness, { index: entries, open: true, onselect });
-		await userEvent.keyboard("instalacao");
-		const heading = page.getByRole("option", { name: /Instalação/ });
+		await userEvent.keyboard("installation");
+		const heading = page.getByRole("option", { name: /Installation/ });
 		await expect.element(heading).toBeVisible();
 		// A real link: middle-click / open in new tab / copy link keep working.
-		await expect.element(heading).toHaveAttribute("href", "/guia/inicio#instalacao");
+		await expect.element(heading).toHaveAttribute("href", "/guide/start#installation");
 		await heading.click();
-		expect(onselect).toHaveBeenCalledWith("/guia/inicio#instalacao");
+		expect(onselect).toHaveBeenCalledWith("/guide/start#installation");
 	});
 
 	it("ArrowDown/ArrowUp move aria-activedescendant/aria-selected; Enter selects it", async () => {

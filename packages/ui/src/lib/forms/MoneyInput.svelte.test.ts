@@ -15,7 +15,7 @@ async function typeOver(input: { element(): Element }, text: string) {
 describe("MoneyInput", () => {
 	it("starts at R$ 0,00 and binds integer cents", async () => {
 		const screen = await render(Harness);
-		await expect.element(screen.getByLabelText("Valor")).toHaveValue("R$ 0,00");
+		await expect.element(screen.getByLabelText("Amount")).toHaveValue("R$ 0,00");
 		await expect.element(screen.getByTestId("bound")).toHaveTextContent("0");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
@@ -23,7 +23,7 @@ describe("MoneyInput", () => {
 	it("fill 123456 → R$ 1.234,56 with bound value 123456", async () => {
 		const onchange = vi.fn();
 		const screen = await render(Harness, { onchange });
-		const input = screen.getByLabelText("Valor");
+		const input = screen.getByLabelText("Amount");
 		await typeOver(input, "123456");
 		await expect.element(input).toHaveValue("R$ 1.234,56");
 		await expect.element(screen.getByTestId("bound")).toHaveTextContent("123456");
@@ -32,7 +32,7 @@ describe("MoneyInput", () => {
 
 	it("typing digits shifts them in from the right (type-to-fill)", async () => {
 		const screen = await render(Harness);
-		const input = screen.getByLabelText("Valor");
+		const input = screen.getByLabelText("Amount");
 		await input.click();
 		await userEvent.keyboard("1");
 		await expect.element(input).toHaveValue("R$ 0,01");
@@ -43,7 +43,7 @@ describe("MoneyInput", () => {
 
 	it("backspace removes the last digit", async () => {
 		const screen = await render(Harness, { initial: 123456 });
-		const input = screen.getByLabelText("Valor");
+		const input = screen.getByLabelText("Amount");
 		await expect.element(input).toHaveValue("R$ 1.234,56");
 		await input.click();
 		await userEvent.keyboard("{End}{Backspace}");
@@ -53,14 +53,14 @@ describe("MoneyInput", () => {
 
 	it("ignores letters", async () => {
 		const screen = await render(Harness);
-		const input = screen.getByLabelText("Valor");
+		const input = screen.getByLabelText("Amount");
 		await typeOver(input, "ab12cd");
 		await expect.element(input).toHaveValue("R$ 0,12");
 	});
 
 	it("clamps to max", async () => {
 		const screen = await render(Harness, { max: 100000 });
-		const input = screen.getByLabelText("Valor");
+		const input = screen.getByLabelText("Amount");
 		await typeOver(input, "999999");
 		await expect.element(input).toHaveValue("R$ 1.000,00");
 		await expect.element(screen.getByTestId("bound")).toHaveTextContent("100000");
@@ -68,7 +68,7 @@ describe("MoneyInput", () => {
 
 	it("clamps to min", async () => {
 		const screen = await render(Harness, { min: 1000, initial: 2000 });
-		const input = screen.getByLabelText("Valor");
+		const input = screen.getByLabelText("Amount");
 		await typeOver(input, "5");
 		await expect.element(input).toHaveValue("R$ 10,00");
 		await expect.element(screen.getByTestId("bound")).toHaveTextContent("1000");
@@ -76,7 +76,7 @@ describe("MoneyInput", () => {
 
 	it("without allowNegative a '-' is ignored", async () => {
 		const screen = await render(Harness);
-		const input = screen.getByLabelText("Valor");
+		const input = screen.getByLabelText("Amount");
 		await typeOver(input, "-500");
 		await expect.element(input).toHaveValue("R$ 5,00");
 		await expect.element(screen.getByTestId("bound")).toHaveTextContent("500");
@@ -84,7 +84,7 @@ describe("MoneyInput", () => {
 
 	it("allowNegative: '-' makes the amount negative", async () => {
 		const screen = await render(Harness, { allowNegative: true });
-		const input = screen.getByLabelText("Valor");
+		const input = screen.getByLabelText("Amount");
 		await typeOver(input, "-500");
 		await expect.element(input).toHaveValue("-R$ 5,00");
 		await expect.element(screen.getByTestId("bound")).toHaveTextContent("-500");
@@ -92,7 +92,7 @@ describe("MoneyInput", () => {
 
 	it("allowNegative respects min below zero", async () => {
 		const screen = await render(Harness, { allowNegative: true, min: -1000 });
-		const input = screen.getByLabelText("Valor");
+		const input = screen.getByLabelText("Amount");
 		await typeOver(input, "-99999");
 		await expect.element(input).toHaveValue("-R$ 10,00");
 		await expect.element(screen.getByTestId("bound")).toHaveTextContent("-1000");
@@ -100,13 +100,13 @@ describe("MoneyInput", () => {
 
 	it("external value changes refresh the display", async () => {
 		const screen = await render(Harness);
-		await screen.getByRole("button", { name: "definir 50" }).click();
-		await expect.element(screen.getByLabelText("Valor")).toHaveValue("R$ 50,00");
+		await screen.getByRole("button", { name: "set 50" }).click();
+		await expect.element(screen.getByLabelText("Amount")).toHaveValue("R$ 50,00");
 	});
 
 	it("blur normalises a cleared field back to R$ 0,00", async () => {
 		const screen = await render(Harness, { initial: 500 });
-		const input = screen.getByLabelText("Valor");
+		const input = screen.getByLabelText("Amount");
 		await input.fill("");
 		await expect.element(input).toHaveValue("");
 		await expect.element(screen.getByTestId("bound")).toHaveTextContent("0");
@@ -116,6 +116,6 @@ describe("MoneyInput", () => {
 
 	it("initial value outside bounds is displayed clamped", async () => {
 		const screen = await render(Harness, { initial: 999999, max: 5000 });
-		await expect.element(screen.getByLabelText("Valor")).toHaveValue("R$ 50,00");
+		await expect.element(screen.getByLabelText("Amount")).toHaveValue("R$ 50,00");
 	});
 });

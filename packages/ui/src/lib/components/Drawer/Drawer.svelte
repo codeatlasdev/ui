@@ -6,15 +6,15 @@
   import '../Dialog/dialog.css';
 
   /**
-   * Drawer — painel lateral de segunda camada.
+   * Drawer: side panel, second layer.
    *
-   * Mesma arquitetura do Dialog:
-   *   overlay  → blur(4px) + scrim escuro sobre a página
-   *   painel   → superfície sólida, desliza da lateral
+   * Same architecture as Dialog:
+   *   overlay  → blur(4px) + dark scrim over the page
+   *   panel    → solid surface, slides in from the side
    *
-   * Uso:
-   *   <Drawer bind:open title="Filtros" side="right">
-   *     …conteúdo…
+   * Usage:
+   *   <Drawer bind:open title="Filters" side="right">
+   *     …content…
    *   </Drawer>
    */
 
@@ -22,7 +22,7 @@
     open?:         boolean;
     side?:         'left' | 'right' | 'bottom';
     title?:        string;
-    /** Largura (left/right). Default: 360px */
+    /** Width (left/right). Default: 360px */
     width?:        string;
     class?:        string;
     children?:     Snippet;
@@ -118,7 +118,7 @@
     border-bottom: none;
   }
 
-  /* ── Animations — right ─────────────────────────────────────── */
+  /* ── Animations: right ─────────────────────────────────────── */
   :global(.ca-drawer--right[data-state='open']) {
     animation: ca-drawer-right-in 240ms var(--ca-ease-decelerate, cubic-bezier(0.05,0.7,0.1,1)) both;
   }
@@ -126,7 +126,7 @@
     animation: ca-drawer-right-out 180ms var(--ca-ease-standard, ease) both;
   }
 
-  /* ── Animations — left ──────────────────────────────────────── */
+  /* ── Animations: left ──────────────────────────────────────── */
   :global(.ca-drawer--left[data-state='open']) {
     animation: ca-drawer-left-in 240ms var(--ca-ease-decelerate, cubic-bezier(0.05,0.7,0.1,1)) both;
   }
@@ -134,7 +134,7 @@
     animation: ca-drawer-left-out 180ms var(--ca-ease-standard, ease) both;
   }
 
-  /* ── Animations — bottom ────────────────────────────────────── */
+  /* ── Animations: bottom ────────────────────────────────────── */
   :global(.ca-drawer--bottom[data-state='open']) {
     animation: ca-drawer-bottom-in 240ms var(--ca-ease-decelerate, cubic-bezier(0.05,0.7,0.1,1)) both;
   }

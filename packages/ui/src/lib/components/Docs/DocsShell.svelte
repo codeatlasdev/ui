@@ -14,10 +14,10 @@
   import type { DocsHeading, DocsNavGroup, DocsSearchEntry, DocsSection } from './types.js';
 
   /**
-   * DocsShell — page frame for developer docs.
+   * DocsShell: page frame for developer docs.
    *
    * Desktop (≥1024px): sticky glass header (brand, section tabs, search, theme) over a
-   * 3-column grid: sidebar | content | "Nesta página" rail (≥1280px).
+   * 3-column grid: sidebar | content | "On this page" rail (≥1280px).
    * Below 1024px: ONE compact header (menu, brand, search, theme) with safe-area insets;
    * the menu opens a bottom Sheet holding the section switcher and the sidebar tree; the
    * page index becomes an inline disclosure above the content. Search opens full-height.
@@ -41,7 +41,7 @@
     groups?: DocsNavGroup[];
     /** Current pathname, to mark the current page in the sidebar. */
     pathname: string;
-    /** Headings of the current page for the "Nesta página" index. */
+    /** Headings of the current page for the "On this page" index. */
     headings?: DocsHeading[];
     searchIndex: DocsSearchEntry[] | (() => Promise<DocsSearchEntry[]>);
     onnavigate: (href: string) => void;

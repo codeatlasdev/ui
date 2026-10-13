@@ -1,9 +1,9 @@
 <script lang="ts">
   import { t } from '../../i18n/state.svelte.js';
   /**
-   * AppList — fullscreen CRUD/list layout.
+   * AppList: fullscreen CRUD/list layout.
    *
-   * ── Modo simples (data prop — recomendado): ──────────────────────
+   * ── Simple mode (data prop, recommended): ──────────────────────
    *
    *   <AppList title="Users" data={ALL} searchKeys={['name','email']} perPage={8}>
    *     {#snippet actions()}<Button href="/users/new">+ New</Button>{/snippet}
@@ -25,7 +25,7 @@
    *     {/snippet}
    *   </AppList>
    *
-   * ── Modo manual (sem data prop — compatibilidade): ───────────────
+   * ── Manual mode (no data prop, compatibility): ───────────────
    *
    *   <AppList title="Users" description="24 of 240">
    *     {#snippet toolbar()}<TextField bind:value={search} />{/snippet}
@@ -63,7 +63,7 @@
     /** Word between the numbers in the auto count and page info ("8 of 24"). Default: 'of'; use 'de' in pt-BR. */
     ofLabel?: string;
 
-    // ── Snippets (data mode — receive list context) ───────────────
+    // ── Snippets (data mode, receive list context) ───────────────
     /** Extra filter controls rendered after the search input. Receives list context. */
     filters?:     Snippet<[ListCtx<T>]>;
     /** Table/grid content. Receives list context when `data` is provided. */
@@ -72,11 +72,11 @@
     // ── Snippets (always available) ───────────────────────────────
     /** Top-right: primary CTA, export, etc. */
     actions?:     Snippet;
-    /** Manual toolbar — only used when `data` is NOT provided. */
+    /** Manual toolbar, only used when `data` is NOT provided. */
     toolbar?:     Snippet;
     /** Empty state shown when filtered rows = 0. Receives list context. */
     empty?:       Snippet<[ListCtx<T>]> | Snippet;
-    /** Manual footer — only used when `data` is NOT provided. */
+    /** Manual footer, only used when `data` is NOT provided. */
     footer?:      Snippet;
 
     maxWidth?:    string;
@@ -102,7 +102,7 @@
     class: className = '',
   }: Props = $props();
 
-  // Internal list state — only active when `data` prop is provided
+  // Internal list state, only active when `data` prop is provided
   const list = $derived(
     data
       ? useListState({ data, perPage, searchKeys, idKey, ofLabel })

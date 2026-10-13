@@ -2,10 +2,10 @@
 	import Stepper from "./Stepper.svelte";
 
 	const steps = [
-		{ label: "Conta", description: "Dados básicos" },
-		{ label: "Endereço", description: "Onde entregar" },
-		{ label: "Pagamento", description: "Forma de pagamento" },
-		{ label: "Revisão" },
+		{ label: "Account", description: "Basic details" },
+		{ label: "Address", description: "Where to deliver" },
+		{ label: "Payment", description: "Payment method" },
+		{ label: "Review" },
 	];
 </script>
 
@@ -13,5 +13,5 @@
 	<Stepper {steps} current={0} />
 	<Stepper {steps} current={2} />
 	<Stepper {steps} current={3} />
-	<Stepper steps={[{ label: "Um" }, { label: "Dois" }]} current={1} />
+	<Stepper steps={[{ label: "One" }, { label: "Two" }]} current={1} />
 </div>

@@ -11,7 +11,7 @@ overlayVrt(
 	"Sheet",
 	Matrix,
 	async () => {
-		await page.getByRole("button", { name: "Abrir" }).click();
+		await page.getByRole("button", { name: "Open" }).click();
 	},
 	"dialog"
 );
@@ -27,7 +27,7 @@ describe("Sheet-mobile (vrt)", () => {
 			await page.viewport(...VIEWPORTS.mobile);
 			applyTheme({ scheme, style: "glass" });
 			await render(Matrix);
-			await page.getByRole("button", { name: "Abrir" }).click();
+			await page.getByRole("button", { name: "Open" }).click();
 			const target = page.getByRole("dialog");
 			await expect.element(target).toBeVisible();
 			await settled();

@@ -3,7 +3,7 @@ import { overlayVrt } from "../../../../tests/vrt";
 import Matrix from "./AlertDialogMatrix.test.svelte";
 
 const open = async () => {
-	await page.getByRole("button", { name: "Abrir" }).click();
+	await page.getByRole("button", { name: "Open" }).click();
 };
 
 overlayVrt("AlertDialog", Matrix, open, "alertdialog");

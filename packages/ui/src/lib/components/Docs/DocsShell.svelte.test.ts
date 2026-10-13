@@ -19,7 +19,7 @@ describe("DocsShell", () => {
 			.element(screen.getByRole("link", { name: "Atlas Docs" }))
 			.toHaveAttribute("href", "/");
 		await expect.element(screen.getByRole("navigation", { name: "Seções" })).toBeVisible();
-		await expect.element(screen.getByRole("navigation", { name: "Guia" })).toBeVisible();
+		await expect.element(screen.getByRole("navigation", { name: "Guide" })).toBeVisible();
 		await expect.element(screen.getByRole("complementary", { name: "Nesta página" })).toBeVisible();
 		await expect
 			.element(screen.getByRole("link", { name: "Ir para o conteúdo" }))
@@ -34,16 +34,16 @@ describe("DocsShell", () => {
 		await page.viewport(...VIEWPORTS.desktop);
 		const screen = await render(DocsHarness, { kind: "shell" });
 		await expect
-			.element(screen.getByRole("link", { name: "Guia", exact: true }))
+			.element(screen.getByRole("link", { name: "Guide", exact: true }))
 			.toHaveAttribute("aria-current", "page");
 		await expect
 			.element(screen.getByRole("link", { name: "API", exact: true }))
 			.not.toHaveAttribute("aria-current");
 		await expect
-			.element(screen.getByRole("link", { name: "Primeiros passos" }))
+			.element(screen.getByRole("link", { name: "Getting started" }))
 			.toHaveAttribute("aria-current", "page");
 		await expect
-			.element(screen.getByRole("link", { name: "Configuração" }))
+			.element(screen.getByRole("link", { name: "Configuration" }))
 			.not.toHaveAttribute("aria-current");
 	});
 
@@ -89,7 +89,7 @@ describe("DocsShell", () => {
 		await screen.getByRole("button", { name: /Buscar na documentação/ }).click();
 		await userEvent.keyboard("webhook");
 		await userEvent.keyboard("{Enter}");
-		expect(onnavigate).toHaveBeenCalledWith("/api/mensagens");
+		expect(onnavigate).toHaveBeenCalledWith("/api/messages");
 		await expect.element(page.getByRole("dialog")).not.toBeInTheDocument();
 	});
 
@@ -105,7 +105,7 @@ describe("DocsShell", () => {
 		expect(
 			await checkA11y(document.querySelector('[role="dialog"]') as HTMLElement)
 		).toHaveNoViolations();
-		const link = sheet.getByRole("link", { name: "Configuração" });
+		const link = sheet.getByRole("link", { name: "Configuration" });
 		await expect.element(link).toBeVisible();
 		(link.element() as HTMLElement).addEventListener("click", (e) => e.preventDefault());
 		await link.click();
@@ -114,9 +114,9 @@ describe("DocsShell", () => {
 
 	it("brandLabel overrides the brand link's accessible name", async () => {
 		await page.viewport(...VIEWPORTS.desktop);
-		const screen = await render(DocsHarness, { kind: "shell", brandLabel: "Atlas Docs — início" });
+		const screen = await render(DocsHarness, { kind: "shell", brandLabel: "Atlas Docs home" });
 		await expect
-			.element(screen.getByRole("link", { name: "Atlas Docs — início" }))
+			.element(screen.getByRole("link", { name: "Atlas Docs home" }))
 			.toHaveAttribute("href", "/");
 	});
 });

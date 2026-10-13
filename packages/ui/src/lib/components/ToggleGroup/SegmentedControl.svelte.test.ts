@@ -9,9 +9,9 @@ const segIndex = (el: Element) => (el as HTMLElement).style.getPropertyValue("--
 
 describe("SegmentedControl", () => {
 	it("first enabled item is selected by default and axe passes", async () => {
-		const screen = await render(SegmentedControlHarness, { "aria-label": "Período" });
+		const screen = await render(SegmentedControlHarness, { "aria-label": "Period" });
 		await expect
-			.element(screen.getByRole("radio", { name: "Dia" }))
+			.element(screen.getByRole("radio", { name: "Day" }))
 			.toHaveAttribute("aria-checked", "true");
 		await expect.element(screen.getByTestId("bound")).toHaveTextContent("day");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
@@ -19,24 +19,24 @@ describe("SegmentedControl", () => {
 
 	it("click selects, moves --seg-index and calls onchange", async () => {
 		const onchange = vi.fn();
-		const screen = await render(SegmentedControlHarness, { "aria-label": "Período", onchange });
-		const root = screen.getByRole("group", { name: "Período" }).element();
+		const screen = await render(SegmentedControlHarness, { "aria-label": "Period", onchange });
+		const root = screen.getByRole("group", { name: "Period" }).element();
 		expect(segIndex(root)).toBe("0");
-		await screen.getByRole("radio", { name: "Mês" }).click();
+		await screen.getByRole("radio", { name: "Month" }).click();
 		expect(segIndex(root)).toBe("2");
 		expect(onchange).toHaveBeenLastCalledWith("month");
 		await expect.element(screen.getByTestId("bound")).toHaveTextContent("month");
 	});
 
 	it("keyboard: arrows move focus and Space/Enter commit; --seg-index follows", async () => {
-		const screen = await render(SegmentedControlHarness, { "aria-label": "Período" });
-		const root = screen.getByRole("group", { name: "Período" }).element();
-		screen.getByRole("radio", { name: "Dia" }).element().focus();
+		const screen = await render(SegmentedControlHarness, { "aria-label": "Period" });
+		const root = screen.getByRole("group", { name: "Period" }).element();
+		screen.getByRole("radio", { name: "Day" }).element().focus();
 		await userEvent.keyboard("{ArrowRight}");
-		expect(document.activeElement).toBe(screen.getByRole("radio", { name: "Semana" }).element());
+		expect(document.activeElement).toBe(screen.getByRole("radio", { name: "Week" }).element());
 		await userEvent.keyboard(" ");
 		await expect
-			.element(screen.getByRole("radio", { name: "Semana" }))
+			.element(screen.getByRole("radio", { name: "Week" }))
 			.toHaveAttribute("aria-checked", "true");
 		expect(segIndex(root)).toBe("1");
 		await userEvent.keyboard("{ArrowRight}{Enter}");
@@ -47,12 +47,12 @@ describe("SegmentedControl", () => {
 
 	it("pressing the active item again keeps the selection", async () => {
 		const screen = await render(SegmentedControlHarness, {
-			"aria-label": "Período",
+			"aria-label": "Period",
 			initial: "week",
 		});
-		await screen.getByRole("radio", { name: "Semana" }).click();
+		await screen.getByRole("radio", { name: "Week" }).click();
 		await expect
-			.element(screen.getByRole("radio", { name: "Semana" }))
+			.element(screen.getByRole("radio", { name: "Week" }))
 			.toHaveAttribute("aria-checked", "true");
 		await expect.element(screen.getByTestId("bound")).toHaveTextContent("week");
 	});
@@ -63,8 +63,8 @@ describe("SegmentedControl", () => {
 		});
 		try {
 			reducedMotion.init();
-			const screen = await render(SegmentedControlHarness, { "aria-label": "Período" });
-			const root = screen.getByRole("group", { name: "Período" }).element();
+			const screen = await render(SegmentedControlHarness, { "aria-label": "Period" });
+			const root = screen.getByRole("group", { name: "Period" }).element();
 			expect(root.hasAttribute("data-no-motion")).toBe(true);
 			const thumb = root.querySelector(".ca-seg__thumb") as HTMLElement;
 			expect(getComputedStyle(thumb).transitionDuration).toBe("0s");

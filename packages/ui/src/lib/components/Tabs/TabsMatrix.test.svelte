@@ -8,22 +8,22 @@
 <div data-testid="matrix" style="display:grid;gap:24px;padding:16px;width:520px">
 	<Tabs value="a">
 		<TabsList>
-			<TabsTrigger value="a">Conta</TabsTrigger>
-			<TabsTrigger value="b">Senha</TabsTrigger>
-			<TabsTrigger value="c" disabled>Faturas</TabsTrigger>
-			<TabsTrigger value="d">Equipe</TabsTrigger>
+			<TabsTrigger value="a">Account</TabsTrigger>
+			<TabsTrigger value="b">Password</TabsTrigger>
+			<TabsTrigger value="c" disabled>Billing</TabsTrigger>
+			<TabsTrigger value="d">Team</TabsTrigger>
 		</TabsList>
-		<TabsContent value="a">Painel conta</TabsContent>
-		<TabsContent value="b">Painel senha</TabsContent>
-		<TabsContent value="c">Painel faturas</TabsContent>
-		<TabsContent value="d">Painel equipe</TabsContent>
+		<TabsContent value="a">Account panel</TabsContent>
+		<TabsContent value="b">Password panel</TabsContent>
+		<TabsContent value="c">Billing panel</TabsContent>
+		<TabsContent value="d">Team panel</TabsContent>
 	</Tabs>
 	<Tabs value="b">
 		<TabsList>
-			<TabsTrigger value="a">Visão geral</TabsTrigger>
-			<TabsTrigger value="b">Configurações avançadas</TabsTrigger>
+			<TabsTrigger value="a">Overview</TabsTrigger>
+			<TabsTrigger value="b">Advanced settings</TabsTrigger>
 		</TabsList>
-		<TabsContent value="a">Painel visão geral</TabsContent>
-		<TabsContent value="b">Painel avançadas</TabsContent>
+		<TabsContent value="a">Overview panel</TabsContent>
+		<TabsContent value="b">Advanced panel</TabsContent>
 	</Tabs>
 </div>

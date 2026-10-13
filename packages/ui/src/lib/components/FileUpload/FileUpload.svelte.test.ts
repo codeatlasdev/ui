@@ -26,15 +26,15 @@ describe("FileUpload", () => {
 	});
 
 	it("custom label becomes the accessible name", async () => {
-		const screen = await render(FileUpload, { label: "Enviar anexo" });
-		await expect.element(screen.getByRole("button", { name: "Enviar anexo" })).toBeVisible();
+		const screen = await render(FileUpload, { label: "Upload attachment" });
+		await expect.element(screen.getByRole("button", { name: "Upload attachment" })).toBeVisible();
 	});
 
 	it("shows hint, falling back to accept", async () => {
 		const a = await render(FileUpload, { accept: "image/*" });
 		await expect.element(a.getByText("image/*")).toBeVisible();
-		const b = await render(FileUpload, { accept: "image/*", hint: "Até 2 MB" });
-		await expect.element(b.getByText("Até 2 MB")).toBeVisible();
+		const b = await render(FileUpload, { accept: "image/*", hint: "Up to 2 MB" });
+		await expect.element(b.getByText("Up to 2 MB")).toBeVisible();
 		expect(b.container.textContent).not.toContain("image/*");
 	});
 

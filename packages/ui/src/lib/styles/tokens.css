@@ -83,7 +83,7 @@
   --ca-rail-width:    52px;
   --ca-panel-width:   192px;
 
-  /* ── Spacing scale (base 4 px — igual MUI) ──────────────────────────── */
+  /* ── Spacing scale (base 4 px, same as MUI) ──────────────────────────── */
   --ca-space-1:  4px;
   --ca-space-2:  8px;
   --ca-space-3:  12px;
@@ -97,17 +97,17 @@
   --ca-space-16: 64px;
 
   /* ── Page layout tokens ──────────────────────────────────────────────── */
-  /* Padding horizontal padrão de todas as páginas — muda só em 1 lugar   */
+  /* Default horizontal padding for every page: change it in one place    */
   --ca-page-px:    24px;
   --ca-page-px-sm: 16px;   /* mobile */
-  /* Padding vertical do topo das páginas */
+  /* Top vertical padding of pages */
   --ca-page-pt:    20px;
   --ca-page-pt-sm: 14px;
-  /* Gap entre seções dentro de uma página */
+  /* Gap between sections within a page */
   --ca-page-gap:   20px;
 
   /* ── Card tokens ─────────────────────────────────────────────────────────── */
-  /* Padding padrão de GlassCard — não passe padding= explícito, use este token */
+  /* Default GlassCard padding: don't pass an explicit padding=, use this token */
   --ca-card-padding: 20px;
 
   /* ── Preset swatches (for colour pickers) ────────────────────────────── */

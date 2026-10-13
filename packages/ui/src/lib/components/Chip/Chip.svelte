@@ -160,7 +160,7 @@
   .ca-chip--info    { background: color-mix(in oklab, var(--ca-semantic-info)    14%, transparent); color: color-mix(in oklab, var(--ca-semantic-info)    65%, black); border-color: color-mix(in oklab, var(--ca-semantic-info)    30%, transparent); }
   .ca-chip--brand   { background: color-mix(in oklab, var(--ca-brand-main) 14%, transparent); color: var(--ca-brand-text);  border-color: color-mix(in oklab, var(--ca-brand-main) 30%, transparent); }
 
-  /* Dark mode variants — raise L for legibility */
+  /* Dark mode variants: raise L for legibility */
   :global(.dark) .ca-chip--success { color: var(--ca-semantic-success); border-color: color-mix(in oklab, var(--ca-semantic-success) 35%, transparent); }
   :global(.dark) .ca-chip--error   { color: var(--ca-semantic-error);   border-color: color-mix(in oklab, var(--ca-semantic-error)   35%, transparent); }
   :global(.dark) .ca-chip--warning { color: var(--ca-semantic-warning); border-color: color-mix(in oklab, var(--ca-semantic-warning) 35%, transparent); }

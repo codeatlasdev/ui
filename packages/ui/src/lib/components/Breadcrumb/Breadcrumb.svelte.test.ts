@@ -4,9 +4,9 @@ import { checkA11y } from "../../../../tests/a11y";
 import Breadcrumb from "./Breadcrumb.svelte";
 
 const items = [
-	{ label: "Início", href: "/" },
-	{ label: "Projetos", href: "/projetos" },
-	{ label: "Atlas", href: "/projetos/atlas" },
+	{ label: "Home", href: "/" },
+	{ label: "Projects", href: "/projects" },
+	{ label: "Atlas", href: "/projects/atlas" },
 ];
 
 describe("Breadcrumb", () => {
@@ -21,10 +21,10 @@ describe("Breadcrumb", () => {
 
 	it("links ancestors but renders the last item as the current page", async () => {
 		const screen = await render(Breadcrumb, { items });
-		await expect.element(screen.getByRole("link", { name: "Início" })).toHaveAttribute("href", "/");
+		await expect.element(screen.getByRole("link", { name: "Home" })).toHaveAttribute("href", "/");
 		await expect
-			.element(screen.getByRole("link", { name: "Projetos" }))
-			.toHaveAttribute("href", "/projetos");
+			.element(screen.getByRole("link", { name: "Projects" }))
+			.toHaveAttribute("href", "/projects");
 		await expect.element(screen.getByRole("link", { name: "Atlas" })).not.toBeInTheDocument();
 		await expect.element(screen.getByText("Atlas")).toHaveAttribute("aria-current", "page");
 	});
@@ -40,9 +40,9 @@ describe("Breadcrumb", () => {
 	});
 
 	it("an item without href is plain text", async () => {
-		const screen = await render(Breadcrumb, { items: [{ label: "Raiz" }, { label: "Folha" }] });
+		const screen = await render(Breadcrumb, { items: [{ label: "Root" }, { label: "Leaf" }] });
 		await expect.element(screen.getByRole("link")).not.toBeInTheDocument();
-		await expect.element(screen.getByText("Raiz")).not.toHaveAttribute("aria-current");
-		await expect.element(screen.getByText("Folha")).toHaveAttribute("aria-current", "page");
+		await expect.element(screen.getByText("Root")).not.toHaveAttribute("aria-current");
+		await expect.element(screen.getByText("Leaf")).toHaveAttribute("aria-current", "page");
 	});
 });

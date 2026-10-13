@@ -12,8 +12,8 @@ describe("Popover (vrt)", () => {
 			it(`${scheme} / ${style}`, async () => {
 				applyTheme({ scheme, style });
 				await render(Matrix);
-				await page.getByRole("button", { name: "Detalhes" }).click();
-				await expect.element(page.getByText("Resumo do pedido")).toBeVisible();
+				await page.getByRole("button", { name: "Details" }).click();
+				await expect.element(page.getByText("Order summary")).toBeVisible();
 				const content = page.elementLocator(
 					document.querySelector(".ca-popover-content") as HTMLElement
 				);

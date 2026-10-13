@@ -9,15 +9,15 @@
 
 <Tabs bind:value {onchange}>
   <TabsList>
-    <TabsTrigger value="a">Conta</TabsTrigger>
-    <TabsTrigger value="b">Senha</TabsTrigger>
-    <TabsTrigger value="c" disabled>Faturas</TabsTrigger>
-    <TabsTrigger value="d">Equipe</TabsTrigger>
+    <TabsTrigger value="a">Account</TabsTrigger>
+    <TabsTrigger value="b">Password</TabsTrigger>
+    <TabsTrigger value="c" disabled>Billing</TabsTrigger>
+    <TabsTrigger value="d">Team</TabsTrigger>
   </TabsList>
-  <TabsContent value="a">Painel conta</TabsContent>
-  <TabsContent value="b">Painel senha</TabsContent>
-  <TabsContent value="c">Painel faturas</TabsContent>
-  <TabsContent value="d">Painel equipe</TabsContent>
+  <TabsContent value="a">Account panel</TabsContent>
+  <TabsContent value="b">Password panel</TabsContent>
+  <TabsContent value="c">Billing panel</TabsContent>
+  <TabsContent value="d">Team panel</TabsContent>
 </Tabs>
 
 <output data-testid="value">{value}</output>

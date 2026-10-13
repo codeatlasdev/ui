@@ -9,23 +9,23 @@ import Harness from "./Sheet.test.svelte";
 
 const open = async (props = {}) => {
 	const screen = await render(Harness, props);
-	const trigger = screen.getByRole("button", { name: "Abrir sheet" });
+	const trigger = screen.getByRole("button", { name: "Open sheet" });
 	await trigger.click();
-	const dialog = page.getByRole("dialog", { name: "Trocar sessão" });
+	const dialog = page.getByRole("dialog", { name: "Switch session" });
 	await expect.element(dialog).toBeVisible();
 	return { screen, trigger, dialog };
 };
 
-// These tests assert the Portuguese wording of the catalog.
+// The close button label comes from the pt-BR catalog, so these tests run in that locale.
 beforeAll(() => setLocale("pt-BR"));
 afterAll(() => setLocale("en"));
 
 describe("Sheet", () => {
 	it("opens with title, description, body and footer; no axe violations", async () => {
 		const { dialog } = await open();
-		await expect.element(dialog).toHaveAccessibleDescription("Escolha a conta ativa");
-		await expect.element(page.getByRole("button", { name: "Conta A" })).toBeVisible();
-		await expect.element(page.getByRole("button", { name: "Nova sessão" })).toBeVisible();
+		await expect.element(dialog).toHaveAccessibleDescription("Choose the active account");
+		await expect.element(page.getByRole("button", { name: "Account A" })).toBeVisible();
+		await expect.element(page.getByRole("button", { name: "New session" })).toBeVisible();
 		await settled();
 		expect(await checkA11y(document.body)).toHaveNoViolations();
 	});
@@ -183,8 +183,8 @@ describe("Sheet", () => {
 		document.body.append(filler);
 		const before = 0;
 		try {
-			await page.getByRole("button", { name: "Abrir sheet" }).click();
-			await expect.element(page.getByRole("dialog", { name: "Trocar sessão" })).toBeVisible();
+			await page.getByRole("button", { name: "Open sheet" }).click();
+			await expect.element(page.getByRole("dialog", { name: "Switch session" })).toBeVisible();
 			await settled();
 			const overlay = document.querySelector(".ca-sheet__overlay") as HTMLElement;
 			expect(getComputedStyle(overlay).touchAction).toBe("none");

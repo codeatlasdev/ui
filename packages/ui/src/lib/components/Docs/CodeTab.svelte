@@ -2,7 +2,7 @@
   import type { Snippet } from 'svelte';
   import { getCodeTabsContext } from './CodeTabs.svelte';
 
-  /** CodeTab — one language panel inside CodeTabs. `label` is the tab text and the sync key ("Node.js", "cURL"). */
+  /** CodeTab: one language panel inside CodeTabs. `label` is the tab text and the sync key ("Node.js", "cURL"). */
   let { label, children }: { label: string; children?: Snippet } = $props();
 
   const ctx = getCodeTabsContext();

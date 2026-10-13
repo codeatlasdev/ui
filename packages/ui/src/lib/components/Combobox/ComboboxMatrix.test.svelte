@@ -13,16 +13,16 @@
 	data-testid="matrix"
 	style="display:grid;gap:16px;padding:16px;width:720px;grid-template-columns:repeat(2,1fr)"
 >
-	<Combobox label="Placeholder" {options} placeholder="Escolha uma opção" />
-	<Combobox label="Selecionado" {options} value="b" />
-	<Combobox label="Pequeno" size="sm" {options} value="a" />
-	<Combobox label="Descrição" description="Texto de ajuda" {options} value="a" />
-	<Combobox label="Erro" error="Seleção inválida" {options} />
-	<Combobox label="Obrigatório" required {options} placeholder="Escolha uma opção" />
-	<Combobox label="Desabilitado" disabled {options} value="a" />
+	<Combobox label="Placeholder" {options} placeholder="Choose an option" />
+	<Combobox label="Selected" {options} value="b" />
+	<Combobox label="Small" size="sm" {options} value="a" />
+	<Combobox label="Description" description="Help text" {options} value="a" />
+	<Combobox label="Error" error="Invalid selection" {options} />
+	<Combobox label="Required" required {options} placeholder="Choose an option" />
+	<Combobox label="Disabled" disabled {options} value="a" />
 	<Combobox
-		label="Rótulo longo"
-		options={[{ value: "x", label: "Uma opção com um rótulo extremamente longo para testar truncamento" }]}
+		label="Long label"
+		options={[{ value: "x", label: "An option with an extremely long label to test truncation" }]}
 		value="x"
 	/>
 </div>

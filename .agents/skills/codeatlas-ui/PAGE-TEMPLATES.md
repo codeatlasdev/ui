@@ -138,7 +138,7 @@ Page-level form: sticky header with back button, scrollable body, sticky footer.
 | `description` | `string` | |
 | `backHref` | `string` | Renders back-arrow link |
 
-### Snippets: `footer` (required — action buttons)
+### Snippets: `footer` (required, action buttons)
 
 ```svelte
 <AppForm title="New user" description="Fill in the details." backHref="/users">
@@ -165,9 +165,9 @@ Page-level form: sticky header with back button, scrollable body, sticky footer.
 
 | `layout` | Use for |
 |---|---|
-| `"grid"` (default) | Text fields, selects, number fields — auto 2-col |
-| `"list"` | Switches, SettingItem, Dividers — single col, flush |
-| `"stack"` | Avatar + fields, composite blocks — single col |
+| `"grid"` (default) | Text fields, selects, number fields: auto 2-col |
+| `"list"` | Switches, SettingItem, Dividers: single col, flush |
+| `"stack"` | Avatar + fields, composite blocks: single col |
 
 Never wrap fields in `<Stack>` inside a `FormSection`. The `layout` prop handles spacing.
 
@@ -218,7 +218,7 @@ Settings page with left-side section nav. GitHub/Vercel style.
 
 ## PageShell
 
-Dashboard layout — normal scroll, free content.
+Dashboard layout: normal scroll, free content.
 
 ```svelte
 <PageShell title="Dashboard" description="Overview" maxWidth="1200px" gap={24}>

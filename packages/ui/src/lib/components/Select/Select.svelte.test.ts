@@ -10,16 +10,16 @@ const PORTAL_RULES = { rules: { region: { enabled: false } } };
 
 describe("Select", () => {
 	it("label names the trigger button and axe passes closed", async () => {
-		const screen = await render(SelectHarness, { label: "Letra", placeholder: "Escolha" });
-		const trigger = screen.getByRole("button", { name: "Letra" });
+		const screen = await render(SelectHarness, { label: "Letter", placeholder: "Choose" });
+		const trigger = screen.getByRole("button", { name: "Letter" });
 		await expect.element(trigger).toHaveAttribute("aria-expanded", "false");
-		await expect.element(trigger).toHaveTextContent("Escolha");
+		await expect.element(trigger).toHaveTextContent("Choose");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
 	it("opens by keyboard, arrows + Enter select, bound value reflects", async () => {
-		const screen = await render(SelectHarness, { label: "Letra" });
-		const trigger = screen.getByRole("button", { name: "Letra" });
+		const screen = await render(SelectHarness, { label: "Letter" });
+		const trigger = screen.getByRole("button", { name: "Letter" });
 		trigger.element().focus();
 		await userEvent.keyboard("{Enter}");
 		await expect.element(screen.getByRole("listbox")).toBeVisible();
@@ -34,8 +34,8 @@ describe("Select", () => {
 	});
 
 	it("Escape closes without changing the value", async () => {
-		const screen = await render(SelectHarness, { label: "Letra", initial: "a" });
-		const trigger = screen.getByRole("button", { name: "Letra" });
+		const screen = await render(SelectHarness, { label: "Letter", initial: "a" });
+		const trigger = screen.getByRole("button", { name: "Letter" });
 		await trigger.click();
 		await expect.element(screen.getByRole("listbox")).toBeVisible();
 		await userEvent.keyboard("{Escape}");
@@ -45,11 +45,11 @@ describe("Select", () => {
 
 	it("selecting an option by click calls onchange and marks it selected", async () => {
 		const onchange = vi.fn();
-		const screen = await render(SelectHarness, { label: "Letra", onchange });
-		await screen.getByRole("button", { name: "Letra" }).click();
+		const screen = await render(SelectHarness, { label: "Letter", onchange });
+		await screen.getByRole("button", { name: "Letter" }).click();
 		await screen.getByRole("option", { name: "Gamma" }).click();
 		expect(onchange).toHaveBeenCalledWith("c");
-		await screen.getByRole("button", { name: "Letra" }).click();
+		await screen.getByRole("button", { name: "Letter" }).click();
 		await expect
 			.element(screen.getByRole("option", { name: "Gamma" }))
 			.toHaveAttribute("aria-selected", "true");
@@ -57,13 +57,13 @@ describe("Select", () => {
 
 	it("error sets aria-invalid, role=alert and describes the trigger", async () => {
 		const screen = await render(SelectHarness, {
-			label: "Letra",
-			error: "Escolha uma opção",
-			description: "Dica",
+			label: "Letter",
+			error: "Choose an option",
+			description: "Hint",
 		});
-		const trigger = screen.getByRole("button", { name: "Letra" });
+		const trigger = screen.getByRole("button", { name: "Letter" });
 		await expect.element(trigger).toHaveAttribute("aria-invalid", "true");
-		await expect.element(screen.getByRole("alert")).toHaveTextContent("Escolha uma opção");
+		await expect.element(screen.getByRole("alert")).toHaveTextContent("Choose an option");
 		expect(trigger.element().getAttribute("aria-describedby")).toBe(
 			screen.getByRole("alert").element().id
 		);
@@ -71,8 +71,8 @@ describe("Select", () => {
 	});
 
 	it("without label the placeholder names the trigger", async () => {
-		const screen = await render(SelectHarness, { placeholder: "Selecione uma letra" });
-		await expect.element(screen.getByRole("button", { name: "Selecione uma letra" })).toBeVisible();
+		const screen = await render(SelectHarness, { placeholder: "Select a letter" });
+		await expect.element(screen.getByRole("button", { name: "Select a letter" })).toBeVisible();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 });

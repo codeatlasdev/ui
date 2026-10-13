@@ -20,26 +20,26 @@
 	const modules: NavModule[] = [
 		{
 			id: "app",
-			label: "Aplicativo",
+			label: "Application",
 			icon: Home,
 			basePath: "/app",
 			items: [
-				{ id: "dash", label: "Painel", icon: Home, path: "/app/dashboard" },
-				{ id: "docs", label: "Documentos", icon: FileText, path: "/app/docs", badge: 3 },
+				{ id: "dash", label: "Dashboard", icon: Home, path: "/app/dashboard" },
+				{ id: "docs", label: "Documents", icon: FileText, path: "/app/docs", badge: 3 },
 				{
 					label: "Admin",
-					items: [{ id: "usr", label: "Usuários", icon: Users, path: "/app/users" }],
+					items: [{ id: "usr", label: "Users", icon: Users, path: "/app/users" }],
 				},
 			],
 		},
 		{
 			id: "cfg",
-			label: "Ajustes",
+			label: "Settings",
 			icon: Settings,
 			basePath: "/settings",
 			items: [
-				{ id: "gen", label: "Geral", icon: Settings, path: "/settings/general" },
-				{ id: "sec", label: "Segurança", icon: Settings, path: "/settings/security" },
+				{ id: "gen", label: "General", icon: Settings, path: "/settings/general" },
+				{ id: "sec", label: "Security", icon: Settings, path: "/settings/security" },
 			],
 		},
 	];
@@ -54,27 +54,27 @@
 			<SiteHeader />
 		{/snippet}
 		{#snippet brand()}
-			<span>Marca</span>
+			<span>Brand</span>
 		{/snippet}
 		{#snippet railBottom()}
-			<button type="button">Conta</button>
+			<button type="button">Account</button>
 		{/snippet}
 		{#snippet mobileHeaderActions()}
-			<button type="button">Ações</button>
+			<button type="button">Actions</button>
 		{/snippet}
 		<main>
-			<h1>Conteúdo da página</h1>
+			<h1>Page content</h1>
 		</main>
 	</AppShellLayout>
 {:else}
 	<AppShellLayout modules={mods} {pathname} {onNavigate} persistPanel={false} mainId={ownMain ? null : "main"}>
 		{#if ownMain}
 			<main id="main" tabindex="-1">
-				<h1>Conteúdo da página</h1>
+				<h1>Page content</h1>
 			</main>
 		{:else}
 			<main>
-				<h1>Conteúdo da página</h1>
+				<h1>Page content</h1>
 			</main>
 		{/if}
 	</AppShellLayout>

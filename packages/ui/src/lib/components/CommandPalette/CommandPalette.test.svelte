@@ -13,24 +13,24 @@
 
 	const modules: NavModule[] = [
 		{
-			id: "geral",
-			label: "Geral",
+			id: "general",
+			label: "General",
 			icon: Home,
 			basePath: "/",
 			items: [
-				{ id: "inicio", label: "Início", icon: Home, path: "/" },
-				{ id: "relatorios", label: "Relatórios", icon: FileText, path: "/relatorios" },
+				{ id: "home", label: "Home", icon: Home, path: "/" },
+				{ id: "reports", label: "Reports", icon: FileText, path: "/reports" },
 			],
 		},
 		{
-			id: "conta",
-			label: "Conta",
+			id: "account",
+			label: "Account",
 			icon: Settings,
-			basePath: "/conta",
-			items: [{ id: "perfil", label: "Perfil", icon: Settings, path: "/conta/perfil" }],
+			basePath: "/account",
+			items: [{ id: "profile", label: "Profile", icon: Settings, path: "/account/profile" }],
 		},
 	];
 </script>
 
-<Button onclick={() => (open = true)}>Abrir paleta</Button>
+<Button onclick={() => (open = true)}>Open palette</Button>
 <CommandPalette bind:open {modules} {onNavigate} {minQueryLength} />

@@ -20,7 +20,7 @@
 
   let Icon = $derived(icons[item.variant]);
 
-  // Entrada/saída via CSS animation — sem will-change: transform
+  // Enter/exit via CSS animation, no will-change: transform
   let visible = $state(false);
   $effect(() => { requestAnimationFrame(() => { visible = true; }); });
 </script>

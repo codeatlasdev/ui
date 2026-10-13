@@ -3,11 +3,11 @@
   import GlassCard from './GlassCard.svelte';
 
   let {
-    actionLabel = 'Ação',
+    actionLabel = 'Action',
     ...rest
   }: { actionLabel?: string; [key: string]: unknown } = $props();
 
-  const body = createRawSnippet(() => ({ render: () => `<p>Conteúdo</p>` }));
+  const body = createRawSnippet(() => ({ render: () => `<p>Content</p>` }));
   const actions = $derived(
     createRawSnippet(() => ({ render: () => `<button type="button">${actionLabel}</button>` }))
   );

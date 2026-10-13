@@ -1,7 +1,7 @@
 <script lang="ts">
   import { t } from '../../i18n/state.svelte.js';
   /**
-   * AppSettings — settings/preferences page layout.
+   * AppSettings: settings/preferences page layout.
    *
    * ┌──────────────────────────────────────────────────────────────┐
    * │  Settings                                  [Save changes]    │  header
@@ -16,14 +16,14 @@
    * │            │  └──────────────────────────────────────────┘    │
    * └────────────┴─────────────────────────────────────────────────┘
    *
-   * Comportamento:
-   * - O conteúdo direito ocupa TODA a largura disponível — sem max-width no container.
-   *   Quem controla a largura máxima dos campos é o FormSection, não o AppSettings.
-   * - Nav esquerda: fixa, não rola.
-   * - Conteúdo direito: único bloco que rola.
-   * - Header: fixo no topo.
+   * Behavior:
+   * - The right-hand content takes ALL the available width, with no max-width on the container.
+   *   FormSection, not AppSettings, controls the maximum width of fields.
+   * - Left nav: fixed, does not scroll.
+   * - Right-hand content: the only block that scrolls.
+   * - Header: pinned to the top.
    *
-   * Uso mínimo — estado gerenciado internamente:
+   * Minimal usage, with internally managed state:
    *
    *   <AppSettings title="Settings" tabs={TABS}>
    *     {#snippet actions()}<Button onclick={save}>Save</Button>{/snippet}
@@ -36,7 +36,7 @@
    *     {/snippet}
    *   </AppSettings>
    *
-   * Com controle externo (bind:activeTab):
+   * With external control (bind:activeTab):
    *
    *   <AppSettings tabs={TABS} bind:activeTab={tab} onTabChange={handleChange}>
    *     {#snippet children(tab)}…{/snippet}
@@ -105,7 +105,7 @@
   <!-- ── Body ───────────────────────────────────────────────────── -->
   <div class="ca-app-settings__body">
 
-    <!-- Nav esquerda — não rola -->
+    <!-- Left nav: does not scroll -->
     <div class="ca-app-settings__nav" aria-label={t().appSettings.navigation} role="tablist">
       {#each tabs as t}
         {@const active = t.value === activeTab}
@@ -134,7 +134,7 @@
       {/each}
     </div>
 
-    <!-- Conteúdo direito — único bloco que rola -->
+    <!-- Right-hand content: the only block that scrolls -->
     <div class="ca-app-settings__content" role="tabpanel" aria-label={t().appSettings.content}>
       {@render children?.(activeTab)}
     </div>
@@ -144,7 +144,7 @@
 
 <style>
   /* ── Root ──────────────────────────────────────────────────────
-     Ocupa todo o ca-shell__content (display:flex flex-col overflow:hidden).
+     Fills the whole ca-shell__content (display:flex flex-col overflow:hidden).
   ─────────────────────────────────────────────────────────────── */
   .ca-app-settings {
     display: flex;
@@ -156,7 +156,7 @@
   }
 
   /* ── Header ────────────────────────────────────────────────────
-     Consistente com AppList e AppForm: usa --ca-page-px e --ca-page-pt.
+     Consistent with AppList and AppForm: uses --ca-page-px and --ca-page-pt.
   ─────────────────────────────────────────────────────────────── */
   .ca-app-settings__header {
     display: flex;
@@ -197,7 +197,7 @@
   }
 
   /* ── Body ───────────────────────────────────────────────────────
-     Flex row: nav fixa + conteúdo scrollável lado a lado.
+     Flex row: fixed nav + scrollable content side by side.
   ─────────────────────────────────────────────────────────────── */
   .ca-app-settings__body {
     display: flex;
@@ -206,9 +206,9 @@
     overflow: hidden;
   }
 
-  /* ── Nav esquerda ───────────────────────────────────────────────
-     Largura: 220px. Não rola (a menos que tenha muitos itens).
-     Padding usa os tokens globais.
+  /* ── Left nav ───────────────────────────────────────────────
+     Width: 220px. Does not scroll (unless it has many items).
+     Padding uses the global tokens.
   ─────────────────────────────────────────────────────────────── */
   .ca-app-settings__nav {
     width: 220px;
@@ -252,7 +252,7 @@
     color: var(--ca-text-primary);
   }
 
-  /* Active — bg tinted + pill indicador à esquerda */
+  /* Active: tinted bg + indicator pill on the left */
   .ca-app-settings__nav-item.active {
     background: color-mix(in oklab, var(--ca-brand-main) 10%, transparent);
     color: var(--ca-brand-text);
@@ -301,10 +301,10 @@
     line-height: 1.6;
   }
 
-  /* ── Conteúdo direito ───────────────────────────────────────────
-     Ocupa TODA a largura restante — sem max-width aqui.
-     O max-width de leitura confortável fica no FormSection.
-     Padding usa os tokens globais.
+  /* ── Right-hand content ───────────────────────────────────────────
+     Takes ALL the remaining width, with no max-width here.
+     The comfortable reading max-width lives in FormSection.
+     Padding uses the global tokens.
   ─────────────────────────────────────────────────────────────── */
   .ca-app-settings__content {
     flex: 1;
@@ -328,7 +328,7 @@
   @media (max-width: 768px) {
     .ca-app-settings__body { flex-direction: column; }
 
-    /* Nav vira barra horizontal scrollável */
+    /* Nav becomes a horizontal scrollable bar */
     .ca-app-settings__nav {
       width: 100%;
       flex-direction: row;
@@ -359,7 +359,7 @@
       padding: 5px 12px;
     }
 
-    /* Esconde o pill indicador na horizontal — usa apenas bg */
+    /* Hide the indicator pill in horizontal mode: use only the bg */
     .ca-app-settings__nav-item.active::before { display: none; }
 
     .ca-app-settings__content {

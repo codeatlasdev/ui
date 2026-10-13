@@ -8,7 +8,7 @@
 	const iconVariants = ["glass", "filled", "text"] as const;
 </script>
 
-{#snippet label()}Salvar{/snippet}
+{#snippet label()}Save{/snippet}
 {#snippet icon()}<Plus size={16} />{/snippet}
 {#snippet iconLg()}<Plus size={20} />{/snippet}
 
@@ -24,16 +24,16 @@
 		<Button {variant} loading>{@render label()}</Button>
 		<Button {variant} leading={icon} trailing={icon}>{@render label()}</Button>
 	{/each}
-	<Button fullWidth>Largura total</Button>
+	<Button fullWidth>Full width</Button>
 	<Button href="/x">Link</Button>
 	<Button disabled href="/x">Link off</Button>
 
 	{#each iconVariants as variant}
 		{#each sizes as size}
-			<IconButton {variant} {size} aria-label="Adicionar">{@render iconLg()}</IconButton>
+			<IconButton {variant} {size} aria-label="Add">{@render iconLg()}</IconButton>
 		{/each}
-		<IconButton {variant} disabled aria-label="Adicionar">{@render icon()}</IconButton>
-		<IconButton {variant} loading aria-label="Adicionar">{@render icon()}</IconButton>
+		<IconButton {variant} disabled aria-label="Add">{@render icon()}</IconButton>
+		<IconButton {variant} loading aria-label="Add">{@render icon()}</IconButton>
 		<span></span>
 	{/each}
 </div>

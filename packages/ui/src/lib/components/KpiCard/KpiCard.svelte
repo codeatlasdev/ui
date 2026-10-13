@@ -8,7 +8,7 @@
     value:   string | number;
     unit?:   string;
     trend?:  number;
-    /** Lucide icon component — tamanho e cor gerenciados pelo KpiCard */
+    /** Lucide icon component; size and color are managed by KpiCard */
     icon?:   IconComponent;
     class?:  string;
   }

@@ -6,9 +6,9 @@ import { setLocale } from "../../i18n/index.js";
 import TableOfContents from "./TableOfContents.svelte";
 
 const headings = [
-	{ id: "intro", text: "Introdução", depth: 2 as const },
-	{ id: "instalacao", text: "Instalação", depth: 2 as const },
-	{ id: "npm", text: "Com npm", depth: 3 as const },
+	{ id: "intro", text: "Introduction", depth: 2 as const },
+	{ id: "installation", text: "Installation", depth: 2 as const },
+	{ id: "npm", text: "With npm", depth: 3 as const },
 ];
 
 // These tests assert the Portuguese wording of the catalog.
@@ -20,18 +20,18 @@ describe("TableOfContents", () => {
 		const screen = await render(TableOfContents, { headings });
 		await expect.element(screen.getByRole("navigation", { name: "Nesta página" })).toBeVisible();
 		await expect
-			.element(screen.getByRole("link", { name: "Introdução" }))
+			.element(screen.getByRole("link", { name: "Introduction" }))
 			.toHaveAttribute("href", "#intro");
 		await expect
-			.element(screen.getByRole("link", { name: "Com npm" }))
+			.element(screen.getByRole("link", { name: "With npm" }))
 			.toHaveAttribute("href", "#npm");
 		expect(screen.getByRole("link").elements()).toHaveLength(3);
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
 	it("honours a custom label", async () => {
-		const screen = await render(TableOfContents, { headings, label: "Índice" });
-		await expect.element(screen.getByRole("navigation", { name: "Índice" })).toBeVisible();
+		const screen = await render(TableOfContents, { headings, label: "Index" });
+		await expect.element(screen.getByRole("navigation", { name: "Index" })).toBeVisible();
 	});
 
 	it("renders nothing for fewer than two headings", async () => {
@@ -41,11 +41,11 @@ describe("TableOfContents", () => {
 
 	it("scrollspy marks the first heading as the current location", async () => {
 		const target = document.createElement("div");
-		target.innerHTML = '<h2 id="intro">Introdução</h2><h2 id="instalacao">Instalação</h2>';
+		target.innerHTML = '<h2 id="intro">Introduction</h2><h2 id="installation">Installation</h2>';
 		document.body.appendChild(target);
 		const screen = await render(TableOfContents, { headings });
 		await expect
-			.element(screen.getByRole("link", { name: "Introdução" }))
+			.element(screen.getByRole("link", { name: "Introduction" }))
 			.toHaveAttribute("aria-current", "location");
 		target.remove();
 	});
@@ -55,10 +55,10 @@ describe("TableOfContents", () => {
 		const summary = screen.getByText("Nesta página", { exact: true });
 		await expect.element(summary).toBeVisible();
 		expect(screen.container.querySelector("details")?.open).toBe(false);
-		await expect.element(screen.getByText("Introdução").first()).toBeVisible();
+		await expect.element(screen.getByText("Introduction").first()).toBeVisible();
 		await summary.click();
 		expect(screen.container.querySelector("details")?.open).toBe(true);
-		await expect.element(screen.getByRole("link", { name: "Instalação" })).toBeVisible();
+		await expect.element(screen.getByRole("link", { name: "Installation" })).toBeVisible();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
@@ -66,7 +66,7 @@ describe("TableOfContents", () => {
 		const screen = await render(TableOfContents, { headings, variant: "inline" });
 		await screen.getByText("Nesta página", { exact: true }).click();
 		screen.container.addEventListener("click", (e) => e.preventDefault());
-		await screen.getByRole("link", { name: "Instalação" }).click();
+		await screen.getByRole("link", { name: "Installation" }).click();
 		expect(screen.container.querySelector("details")?.open).toBe(false);
 	});
 

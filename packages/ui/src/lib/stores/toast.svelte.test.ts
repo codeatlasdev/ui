@@ -8,8 +8,8 @@ afterEach(() => {
 
 describe("toast store", () => {
 	it("show adds an item with defaults", () => {
-		const id = toast.show("Olá");
-		expect(toast.items).toEqual([{ id, message: "Olá", variant: "default", duration: 4000 }]);
+		const id = toast.show("Hello");
+		expect(toast.items).toEqual([{ id, message: "Hello", variant: "default", duration: 4000 }]);
 	});
 
 	it.each(["success", "error", "warning", "info"] as const)("%s sets the variant", (variant) => {

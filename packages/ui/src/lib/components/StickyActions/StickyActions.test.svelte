@@ -10,9 +10,9 @@
 </script>
 
 <div style="height: 200px; overflow: auto;" data-testid="scroller">
-	<div style="height: 600px;">conteúdo</div>
+	<div style="height: 600px;">content</div>
 	<StickyActions {align} {show}>
-		<Button variant="ghost">Cancelar</Button>
-		<Button variant="filled">Salvar</Button>
+		<Button variant="ghost">Cancel</Button>
+		<Button variant="filled">Save</Button>
 	</StickyActions>
 </div>

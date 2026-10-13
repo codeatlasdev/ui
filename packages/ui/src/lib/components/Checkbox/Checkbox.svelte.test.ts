@@ -6,8 +6,8 @@ import CheckboxHarness from "./CheckboxHarness.test.svelte";
 
 describe("Checkbox", () => {
 	it("label names the checkbox; Space toggles aria-checked and the bound value", async () => {
-		const screen = await render(CheckboxHarness, { label: "Aceito os termos" });
-		const box = screen.getByRole("checkbox", { name: "Aceito os termos" });
+		const screen = await render(CheckboxHarness, { label: "I accept the terms" });
+		const box = screen.getByRole("checkbox", { name: "I accept the terms" });
 		await expect.element(box).toHaveAttribute("aria-checked", "false");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 
@@ -31,17 +31,17 @@ describe("Checkbox", () => {
 	});
 
 	it("indeterminate is exposed as aria-checked=mixed", async () => {
-		const screen = await render(CheckboxHarness, { label: "Todos", indeterminate: true });
+		const screen = await render(CheckboxHarness, { label: "All", indeterminate: true });
 		await expect
-			.element(screen.getByRole("checkbox", { name: "Todos" }))
+			.element(screen.getByRole("checkbox", { name: "All" }))
 			.toHaveAttribute("aria-checked", "mixed");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
 	it("disabled does not toggle", async () => {
 		const onchange = vi.fn();
-		const screen = await render(CheckboxHarness, { label: "Bloqueado", disabled: true, onchange });
-		const box = screen.getByRole("checkbox", { name: "Bloqueado" });
+		const screen = await render(CheckboxHarness, { label: "Locked", disabled: true, onchange });
+		const box = screen.getByRole("checkbox", { name: "Locked" });
 		await expect.element(box).toBeDisabled();
 		await box.click({ force: true });
 		expect(onchange).not.toHaveBeenCalled();

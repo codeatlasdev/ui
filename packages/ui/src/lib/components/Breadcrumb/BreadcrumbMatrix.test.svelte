@@ -3,28 +3,28 @@
 </script>
 
 <div data-testid="matrix" style="display:grid;gap:16px;padding:16px;width:520px">
-	<Breadcrumb items={[{ label: "Início", href: "/" }]} />
+	<Breadcrumb items={[{ label: "Home", href: "/" }]} />
 	<Breadcrumb
 		items={[
-			{ label: "Início", href: "/" },
-			{ label: "Projetos", href: "/projetos" },
-			{ label: "Detalhes" },
+			{ label: "Home", href: "/" },
+			{ label: "Projects", href: "/projects" },
+			{ label: "Details" },
 		]}
 	/>
 	<Breadcrumb
 		separator=">"
 		items={[
-			{ label: "Início", href: "/" },
-			{ label: "Configurações", href: "/config" },
-			{ label: "Perfil", href: "/config/perfil" },
-			{ label: "Segurança" },
+			{ label: "Home", href: "/" },
+			{ label: "Settings", href: "/settings" },
+			{ label: "Profile", href: "/settings/profile" },
+			{ label: "Security" },
 		]}
 	/>
 	<Breadcrumb
 		items={[
-			{ label: "Sem link" },
-			{ label: "Também sem link" },
-			{ label: "Atual" },
+			{ label: "No link" },
+			{ label: "Also no link" },
+			{ label: "Current" },
 		]}
 	/>
 </div>

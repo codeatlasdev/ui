@@ -7,20 +7,20 @@
   import { devWarn } from '../../utils/dev-warn.js';
 
   /**
-   * Dialog — modal de segunda camada.
+   * Dialog: second-layer modal.
    *
-   * Arquitetura:
-   *   overlay  → backdrop-filter blur(8px) + scrim escuro sobre a página
-   *   painel   → superfície sólida (--ca-surface-overlay) + sombra forte
+   * Architecture:
+   *   overlay  → backdrop-filter blur(8px) + dark scrim over the page
+   *   panel    → solid surface (--ca-surface-overlay) + strong shadow
    *
-   * O painel NÃO usa glass/blur — ele está em cima do overlay já escurecido.
-   * Blur no painel capturaria o scrim e ficaria cinza sem graça.
+   * The panel does NOT use glass/blur: it sits on top of the already darkened overlay.
+   * Blurring there would capture the scrim and look flat grey.
    *
-   * Uso:
-   *   <Dialog bind:open title="Confirmar" description="Isso não pode ser desfeito.">
+   * Usage:
+   *   <Dialog bind:open title="Confirm" description="This cannot be undone.">
    *     {#snippet actions()}
-   *       <Button variant="outlined" onclick={() => open = false}>Cancelar</Button>
-   *       <Button variant="destructive" onclick={confirm}>Excluir</Button>
+   *       <Button variant="outlined" onclick={() => open = false}>Cancel</Button>
+   *       <Button variant="destructive" onclick={confirm}>Delete</Button>
    *     {/snippet}
    *   </Dialog>
    */

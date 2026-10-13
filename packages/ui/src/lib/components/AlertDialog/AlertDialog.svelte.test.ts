@@ -8,9 +8,9 @@ import Harness from "./AlertDialog.test.svelte";
 
 const open = async (props = {}) => {
 	const screen = await render(Harness, props);
-	const trigger = screen.getByRole("button", { name: "Excluir item" });
+	const trigger = screen.getByRole("button", { name: "Delete item" });
 	await trigger.click();
-	const dialog = page.getByRole("alertdialog", { name: "Excluir item?" });
+	const dialog = page.getByRole("alertdialog", { name: "Delete item?" });
 	await expect.element(dialog).toBeVisible();
 	return { screen, trigger, dialog };
 };
@@ -22,7 +22,7 @@ afterAll(() => setLocale("en"));
 describe("AlertDialog", () => {
 	it("opens as alertdialog with description and no axe violations", async () => {
 		const { dialog } = await open();
-		await expect.element(dialog).toHaveAccessibleDescription("Esta ação não pode ser desfeita.");
+		await expect.element(dialog).toHaveAccessibleDescription("This action cannot be undone.");
 		await settled();
 		expect(await checkA11y(document.body)).toHaveNoViolations();
 	});
@@ -35,18 +35,18 @@ describe("AlertDialog", () => {
 	it("destructive applies ca-btn--destructive to the confirm button, otherwise filled", async () => {
 		await open({ destructive: true });
 		await expect
-			.element(page.getByRole("button", { name: "Excluir", exact: true }))
+			.element(page.getByRole("button", { name: "Delete", exact: true }))
 			.toHaveClass("ca-btn--destructive");
 	});
 
 	it("non-destructive confirm uses the filled variant", async () => {
 		await open();
 		await expect
-			.element(page.getByRole("button", { name: "Excluir", exact: true }))
+			.element(page.getByRole("button", { name: "Delete", exact: true }))
 			.toHaveClass("ca-btn--filled");
 	});
 
-	it("Cancelar closes, calls oncancel and returns focus to the trigger", async () => {
+	it("Cancel closes, calls oncancel and returns focus to the trigger", async () => {
 		const oncancel = vi.fn();
 		const { trigger } = await open({ oncancel });
 		await page.getByRole("button", { name: "Cancelar" }).click();
@@ -66,12 +66,12 @@ describe("AlertDialog", () => {
 	it("confirm runs onconfirm and closes", async () => {
 		const onconfirm = vi.fn();
 		await open({ onconfirm });
-		await page.getByRole("button", { name: "Excluir", exact: true }).click();
+		await page.getByRole("button", { name: "Delete", exact: true }).click();
 		expect(onconfirm).toHaveBeenCalledOnce();
 		await expect.element(page.getByRole("alertdialog")).not.toBeInTheDocument();
 	});
 
-	it("pending disables Cancelar, marks aria-busy and keeps the dialog open on Escape", async () => {
+	it("pending disables Cancel, marks aria-busy and keeps the dialog open on Escape", async () => {
 		const oncancel = vi.fn();
 		const { dialog } = await open({ pending: true, oncancel });
 		await expect.element(page.getByRole("button", { name: "Cancelar" })).toBeDisabled();
@@ -81,11 +81,11 @@ describe("AlertDialog", () => {
 		expect(oncancel).not.toHaveBeenCalled();
 	});
 
-	it("async onconfirm keeps the dialog open and Cancelar disabled until it resolves", async () => {
+	it("async onconfirm keeps the dialog open and Cancel disabled until it resolves", async () => {
 		let resolve!: () => void;
 		const onconfirm = vi.fn(() => new Promise<void>((r) => (resolve = r)));
 		const { dialog } = await open({ onconfirm });
-		await page.getByRole("button", { name: "Excluir", exact: true }).click();
+		await page.getByRole("button", { name: "Delete", exact: true }).click();
 		await expect.element(page.getByRole("button", { name: "Cancelar" })).toBeDisabled();
 		await expect.element(dialog).toBeVisible();
 		resolve();

@@ -33,13 +33,13 @@
 {:else if kind === 'range'}
   <RangeCalendar bind:value={range} {placeholder} {minValue} numberOfMonths={1} {...rest} />
 {:else if kind === 'picker'}
-  <DatePicker label="Data" bind:value={date} {placeholder} {minValue} {...rest} />
+  <DatePicker label="Date" bind:value={date} {placeholder} {minValue} {...rest} />
 {:else if kind === 'rangepicker'}
-  <DateRangePicker label="Período" bind:value={range} {placeholder} {minValue} {...rest} />
+  <DateRangePicker label="Period" bind:value={range} {placeholder} {minValue} {...rest} />
 {:else if kind === 'field'}
-  <DateField label="Nascimento" bind:value={date} {placeholder} {minValue} {...rest} />
+  <DateField label="Birth date" bind:value={date} {placeholder} {minValue} {...rest} />
 {:else}
-  <TimeField label="Horário" bind:value={time} {...rest} />
+  <TimeField label="Time" bind:value={time} {...rest} />
 {/if}
 
 <output data-testid="date">{date?.toString() ?? ''}</output>

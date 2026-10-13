@@ -7,8 +7,8 @@
 </script>
 
 <RadioGroup bind:value {...rest} items={[
-  { value: 'free', label: 'Grátis' },
+  { value: 'free', label: 'Free' },
   { value: 'pro', label: 'Pro' },
-  { value: 'team', label: 'Equipe' },
+  { value: 'team', label: 'Team' },
 ]} />
 <output data-testid="bound">{value}</output>

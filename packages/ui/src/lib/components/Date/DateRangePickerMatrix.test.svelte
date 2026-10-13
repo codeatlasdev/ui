@@ -10,12 +10,12 @@
 	data-testid="matrix"
 	style="display:grid;gap:16px;padding:16px;width:960px;grid-template-columns:repeat(2,1fr)"
 >
-	<DateRangePicker label="Vazio" placeholder={date} />
-	<DateRangePicker label="Preenchido" value={range} />
-	<DateRangePicker label="Pequeno" size="sm" value={range} />
-	<DateRangePicker label="Descrição" description="Período do relatório" value={range} />
-	<DateRangePicker label="Erro" error="Período inválido" value={range} />
-	<DateRangePicker label="Obrigatório" required placeholder={date} />
-	<DateRangePicker label="Desabilitado" disabled value={range} />
-	<DateRangePicker label="Somente leitura" readonly value={range} />
+	<DateRangePicker label="Empty" placeholder={date} />
+	<DateRangePicker label="Filled" value={range} />
+	<DateRangePicker label="Small" size="sm" value={range} />
+	<DateRangePicker label="Description" description="Report period" value={range} />
+	<DateRangePicker label="Error" error="Invalid period" value={range} />
+	<DateRangePicker label="Required" required placeholder={date} />
+	<DateRangePicker label="Disabled" disabled value={range} />
+	<DateRangePicker label="Read only" readonly value={range} />
 </div>

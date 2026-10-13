@@ -6,12 +6,12 @@
 <div data-testid="matrix" style="padding:16px;width:900px">
 	<CardGrid>
 		{#snippet children()}
-			<LinkCard title="Começando" description="Instale e configure em minutos." href="#a" />
-			<LinkCard title="Autenticação" description="Tokens, escopos e boas práticas de segurança." href="#b" />
-			<LinkCard title="Sem descrição" href="#c" />
+			<LinkCard title="Getting started" description="Install and configure in minutes." href="#a" />
+			<LinkCard title="Authentication" description="Tokens, scopes and security best practices." href="#b" />
+			<LinkCard title="No description" href="#c" />
 			<LinkCard
-				title="Título bem longo para validar quebra de linha no card"
-				description="Descrição também longa para verificar a altura mínima e o alinhamento da seta ao final do título."
+				title="A very long title to check line wrapping inside the card"
+				description="A long description too, to check the minimum height and the arrow alignment at the end of the title."
 				href="#d"
 			/>
 		{/snippet}

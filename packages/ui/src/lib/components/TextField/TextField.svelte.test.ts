@@ -14,29 +14,32 @@ describe("TextField", () => {
 	});
 
 	it("required keeps the accessible name free of the decorative asterisk", async () => {
-		const screen = await render(TextField, { label: "Nome", required: true });
-		await expect.element(screen.getByRole("textbox", { name: "Nome" })).toBeRequired();
+		const screen = await render(TextField, { label: "Name", required: true });
+		await expect.element(screen.getByRole("textbox", { name: "Name" })).toBeRequired();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
 	it("description is linked through aria-describedby", async () => {
-		const screen = await render(TextField, { label: "Usuário", description: "Mínimo 3 letras" });
-		const input = screen.getByLabelText("Usuário");
-		await expect.element(input).toHaveAccessibleDescription("Mínimo 3 letras");
+		const screen = await render(TextField, {
+			label: "Username",
+			description: "At least 3 letters",
+		});
+		const input = screen.getByLabelText("Username");
+		await expect.element(input).toHaveAccessibleDescription("At least 3 letters");
 		await expect.element(input).not.toHaveAttribute("aria-invalid");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
 	it("error sets aria-invalid, role=alert and becomes the accessible description", async () => {
 		const screen = await render(TextField, {
-			label: "Senha",
-			description: "Dica",
-			error: "Muito curta",
+			label: "Password",
+			description: "Hint",
+			error: "Too short",
 		});
-		const input = screen.getByLabelText("Senha");
+		const input = screen.getByLabelText("Password");
 		await expect.element(input).toHaveAttribute("aria-invalid", "true");
-		await expect.element(screen.getByRole("alert")).toHaveTextContent("Muito curta");
-		await expect.element(input).toHaveAccessibleDescription("Muito curta");
+		await expect.element(screen.getByRole("alert")).toHaveTextContent("Too short");
+		await expect.element(input).toHaveAccessibleDescription("Too short");
 		const describedBy = input.element().getAttribute("aria-describedby");
 		expect(describedBy).toBe(screen.getByRole("alert").element().id);
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
@@ -45,8 +48,8 @@ describe("TextField", () => {
 	it("fires oninput on every keystroke and onchange on commit", async () => {
 		const oninput = vi.fn();
 		const onchange = vi.fn();
-		const screen = await render(TextField, { label: "Campo", oninput, onchange });
-		const input = screen.getByLabelText("Campo");
+		const screen = await render(TextField, { label: "Field", oninput, onchange });
+		const input = screen.getByLabelText("Field");
 		await input.fill("abc");
 		expect(oninput).toHaveBeenLastCalledWith("abc");
 		await input.element().blur();
@@ -54,7 +57,7 @@ describe("TextField", () => {
 	});
 
 	it("disabled input is not editable", async () => {
-		const screen = await render(TextField, { label: "Bloqueado", disabled: true });
-		await expect.element(screen.getByLabelText("Bloqueado")).toBeDisabled();
+		const screen = await render(TextField, { label: "Locked", disabled: true });
+		await expect.element(screen.getByLabelText("Locked")).toBeDisabled();
 	});
 });

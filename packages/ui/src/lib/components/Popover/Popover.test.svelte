@@ -3,7 +3,7 @@
 </script>
 
 <Popover>
-	{#snippet trigger()}Detalhes{/snippet}
-	<p>Conteúdo do popover</p>
-	<button type="button">Ação interna</button>
+	{#snippet trigger()}Details{/snippet}
+	<p>Popover content</p>
+	<button type="button">Inner action</button>
 </Popover>

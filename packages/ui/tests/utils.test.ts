@@ -124,6 +124,7 @@ describe("format", () => {
 		});
 
 		it("honours locale", () => {
+			// Deliberate pt-BR output: checks the locale argument is honoured.
 			expect(formatRelativeTime(NOW - 3_600_000, "pt-BR")).toBe("há 1 hora");
 		});
 	});

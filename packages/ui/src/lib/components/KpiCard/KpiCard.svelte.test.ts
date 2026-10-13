@@ -7,19 +7,19 @@ import KpiCard from "./KpiCard.svelte";
 
 describe("KpiCard", () => {
 	it("renders title and value", async () => {
-		const screen = await render(KpiCard, { title: "Receita", value: "R$ 12.400" });
-		await expect.element(screen.getByText("Receita")).toBeVisible();
+		const screen = await render(KpiCard, { title: "Revenue", value: "R$ 12.400" });
+		await expect.element(screen.getByText("Revenue")).toBeVisible();
 		await expect.element(screen.getByText("R$ 12.400")).toBeVisible();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
 	it("accepts a numeric value", async () => {
-		const screen = await render(KpiCard, { title: "Usuários", value: 1280 });
+		const screen = await render(KpiCard, { title: "Users", value: 1280 });
 		await expect.element(screen.getByText("1280", { exact: true })).toBeVisible();
 	});
 
 	it("renders the unit next to the value", async () => {
-		const screen = await render(KpiCard, { title: "Latência", value: 42, unit: "ms" });
+		const screen = await render(KpiCard, { title: "Latency", value: 42, unit: "ms" });
 		await expect.element(screen.getByText("ms", { exact: true })).toBeVisible();
 	});
 
@@ -31,7 +31,7 @@ describe("KpiCard", () => {
 	});
 
 	it("positive trend shows an up arrow with a plus sign and a label", async () => {
-		const screen = await render(KpiCard, { title: "Receita", value: 1, trend: 12.34 });
+		const screen = await render(KpiCard, { title: "Revenue", value: 1, trend: 12.34 });
 		const trend = q(screen.container, ".ca-kpi__trend");
 		expect(trend.textContent?.trim()).toBe("↑+12.3%");
 		expect(trend.getAttribute("aria-label")).toBe("Trend: +12.3%");
@@ -41,7 +41,7 @@ describe("KpiCard", () => {
 	});
 
 	it("negative trend shows a down arrow", async () => {
-		const screen = await render(KpiCard, { title: "Receita", value: 1, trend: -4 });
+		const screen = await render(KpiCard, { title: "Revenue", value: 1, trend: -4 });
 		const trend = q(screen.container, ".ca-kpi__trend");
 		expect(trend.textContent?.trim()).toBe("↓-4.0%");
 		expect(trend.getAttribute("aria-label")).toBe("Trend: -4.0%");
@@ -50,7 +50,7 @@ describe("KpiCard", () => {
 	});
 
 	it("zero trend renders neutral without arrow", async () => {
-		const screen = await render(KpiCard, { title: "Receita", value: 1, trend: 0 });
+		const screen = await render(KpiCard, { title: "Revenue", value: 1, trend: 0 });
 		const trend = q(screen.container, ".ca-kpi__trend");
 		expect(trend.textContent?.trim()).toBe("0.0%");
 		expect(trend.classList.contains("ca-kpi__trend--up")).toBe(false);
@@ -58,7 +58,7 @@ describe("KpiCard", () => {
 	});
 
 	it("icon is decorative", async () => {
-		const screen = await render(KpiCard, { title: "Receita", value: 1, icon: TrendingUp });
+		const screen = await render(KpiCard, { title: "Revenue", value: 1, icon: TrendingUp });
 		const icon = q(screen.container, ".ca-kpi__icon");
 		expect(icon.getAttribute("aria-hidden")).toBe("true");
 		expect(icon.querySelector("svg")).not.toBeNull();

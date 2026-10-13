@@ -11,8 +11,8 @@ const icon = createRawSnippet(() => ({
 describe("IconButton", () => {
 	it("is named by aria-label and calls onclick", async () => {
 		const onclick = vi.fn();
-		const screen = await render(IconButton, { "aria-label": "Fechar", children: icon, onclick });
-		await screen.getByRole("button", { name: "Fechar" }).click();
+		const screen = await render(IconButton, { "aria-label": "Close", children: icon, onclick });
+		await screen.getByRole("button", { name: "Close" }).click();
 		expect(onclick).toHaveBeenCalledOnce();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
@@ -20,12 +20,12 @@ describe("IconButton", () => {
 	it("loading sets aria-busy, disables and blocks onclick", async () => {
 		const onclick = vi.fn();
 		const screen = await render(IconButton, {
-			"aria-label": "Salvar",
+			"aria-label": "Save",
 			children: icon,
 			loading: true,
 			onclick,
 		});
-		const btn = screen.getByRole("button", { name: "Salvar" });
+		const btn = screen.getByRole("button", { name: "Save" });
 		await expect.element(btn).toHaveAttribute("aria-busy", "true");
 		await expect.element(btn).toBeDisabled();
 		await btn.click({ force: true });
@@ -36,12 +36,12 @@ describe("IconButton", () => {
 	it("disabled blocks onclick without aria-busy", async () => {
 		const onclick = vi.fn();
 		const screen = await render(IconButton, {
-			"aria-label": "Editar",
+			"aria-label": "Edit",
 			children: icon,
 			disabled: true,
 			onclick,
 		});
-		const btn = screen.getByRole("button", { name: "Editar" });
+		const btn = screen.getByRole("button", { name: "Edit" });
 		await expect.element(btn).toBeDisabled();
 		await expect.element(btn).not.toHaveAttribute("aria-busy");
 		await btn.click({ force: true });
@@ -52,12 +52,12 @@ describe("IconButton", () => {
 		"variant %s keeps the button accessible",
 		async (variant) => {
 			const screen = await render(IconButton, {
-				"aria-label": "Ação",
+				"aria-label": "Action",
 				children: icon,
 				variant,
 				size: "lg",
 			});
-			await expect.element(screen.getByRole("button", { name: "Ação" })).toBeVisible();
+			await expect.element(screen.getByRole("button", { name: "Action" })).toBeVisible();
 			expect(await checkA11y(screen.container)).toHaveNoViolations();
 		}
 	);

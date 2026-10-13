@@ -7,15 +7,15 @@
 		{#snippet children()}
 			<ol>
 				<li>
-					<strong>Crie uma sessão</strong>
-					<p>Acesse o painel e crie uma nova sessão.</p>
+					<strong>Create a session</strong>
+					<p>Open the dashboard and create a new session.</p>
 				</li>
 				<li>
-					<strong>Conecte via QR Code</strong>
-					<p>Escaneie o código com o aplicativo.</p>
+					<strong>Connect via QR code</strong>
+					<p>Scan the code with the app.</p>
 				</li>
 				<li>
-					<strong>Envie a primeira mensagem</strong>
+					<strong>Send the first message</strong>
 				</li>
 			</ol>
 		{/snippet}

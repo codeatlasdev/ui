@@ -15,7 +15,7 @@ afterAll(() => setLocale("en"));
 describe("DatePicker", () => {
 	it("closed: labelled group with pt-BR segments and a calendar trigger; passes axe", async () => {
 		const screen = await render(DateHarness, { kind: "picker" });
-		await expect.element(screen.getByRole("group", { name: "Data" })).toBeVisible();
+		await expect.element(screen.getByRole("group", { name: "Date" })).toBeVisible();
 		expect(
 			screen
 				.getByRole("spinbutton")
@@ -99,11 +99,11 @@ describe("DatePicker", () => {
 	});
 
 	it("error is a role=alert referenced by the group; disabled blocks the trigger", async () => {
-		const err = await render(DateHarness, { kind: "picker", error: "Obrigatório" });
+		const err = await render(DateHarness, { kind: "picker", error: "Required" });
 		const alert = err.getByRole("alert");
-		await expect.element(alert).toMatchTextContent("Obrigatório");
+		await expect.element(alert).toMatchTextContent("Required");
 		expect(
-			err.getByRole("group", { name: "Data" }).element().getAttribute("aria-describedby")
+			err.getByRole("group", { name: "Date" }).element().getAttribute("aria-describedby")
 		).toBe(alert.element().id);
 		expect(await checkA11y(err.container)).toHaveNoViolations();
 		err.unmount();
@@ -113,8 +113,8 @@ describe("DatePicker", () => {
 	});
 
 	it("custom triggerLabel is the button name", async () => {
-		const screen = await render(DateHarness, { kind: "picker", triggerLabel: "Escolher data" });
-		await expect.element(screen.getByRole("button", { name: "Escolher data" })).toBeVisible();
+		const screen = await render(DateHarness, { kind: "picker", triggerLabel: "Pick a date" });
+		await expect.element(screen.getByRole("button", { name: "Pick a date" })).toBeVisible();
 	});
 });
 

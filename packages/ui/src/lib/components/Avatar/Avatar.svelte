@@ -3,7 +3,7 @@
   import { Avatar } from 'bits-ui';
 
   /**
-   * Avatar — user identity display component.
+   * Avatar: user identity display component.
    *
    * Sizes:   xs=20  sm=28  md=36  lg=48  xl=64  or any number (px)
    * Shapes:  circle (default) | rounded

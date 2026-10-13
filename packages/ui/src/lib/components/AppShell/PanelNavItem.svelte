@@ -76,7 +76,7 @@
     outline-offset: -2px;
   }
 
-  /* Left pip — only on active */
+  /* Left pip, only on active */
   .ca-nav-item__pip {
     position: absolute;
     left: 2px;

@@ -8,17 +8,17 @@
 		onclose?: () => void;
 		swipeToDismiss?: boolean;
 	}
-	let { title = "Trocar sessão", description = "Escolha a conta ativa", onclose, swipeToDismiss = true }: Props = $props();
+	let { title = "Switch session", description = "Choose the active account", onclose, swipeToDismiss = true }: Props = $props();
 	let open = $state(false);
 </script>
 
-<Button onclick={() => (open = true)}>Abrir sheet</Button>
+<Button onclick={() => (open = true)}>Open sheet</Button>
 <Sheet bind:open {title} {description} {onclose} {swipeToDismiss}>
 	<ul>
-		<li><button type="button">Conta A</button></li>
-		<li><button type="button">Conta B</button></li>
+		<li><button type="button">Account A</button></li>
+		<li><button type="button">Account B</button></li>
 	</ul>
 	{#snippet footer()}
-		<Button>Nova sessão</Button>
+		<Button>New session</Button>
 	{/snippet}
 </Sheet>

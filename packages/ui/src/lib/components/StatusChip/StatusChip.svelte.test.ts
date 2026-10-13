@@ -7,10 +7,10 @@ describe("StatusChip", () => {
 	it.each(["success", "warning", "error", "info", "neutral"] as const)(
 		"status %s exposes its label as a status and passes axe",
 		async (status) => {
-			const screen = await render(StatusChip, { status, label: `Estado ${status}` });
+			const screen = await render(StatusChip, { status, label: `Status ${status}` });
 			const chip = screen.getByRole("status");
 			await expect.element(chip).toBeVisible();
-			await expect.element(chip).toHaveTextContent(`Estado ${status}`);
+			await expect.element(chip).toHaveTextContent(`Status ${status}`);
 			await expect.element(chip).toHaveClass(`ca-status-chip--${status}`);
 			expect(await checkA11y(screen.container)).toHaveNoViolations();
 		}

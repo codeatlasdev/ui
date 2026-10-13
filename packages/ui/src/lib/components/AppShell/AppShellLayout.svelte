@@ -78,7 +78,7 @@
   let activeModuleIndex = $derived(findActiveModuleIndex(modules, pathname));
   $effect(() => { selectedIndex = activeModuleIndex; });
 
-  // Current page title for MobileHeader — active item label, fallback to module label
+  // Current page title for MobileHeader: active item label, fallback to module label
   let pageTitle = $derived.by(() => {
     const mod = modules[activeModuleIndex];
     if (!mod) return '';
@@ -111,7 +111,7 @@
   });
   let panelVisible = $derived(panelOpen && selectedHasChoices);
 
-  // Spring for smooth panel slide — mirrors the width the panel animates to
+  // Spring for smooth panel slide, mirrors the width the panel animates to
   const panelW = spring(0, { stiffness: 0.22, damping: 0.88 });
   $effect(() => { panelW.set(panelVisible ? PANEL_WIDTH : 0); });
 
@@ -162,7 +162,7 @@
     class="ca-main"
     style="--ca-main-ml: calc({RAIL_WIDTH}px + {$panelW}px)"
   >
-    <!-- Desktop header — only rendered when header snippet is provided -->
+    <!-- Desktop header, only rendered when header snippet is provided -->
     {#if header}
       <div class="ca-shell__desktop-header">
         {@render header()}
@@ -228,7 +228,7 @@
   .ca-shell__content {
     flex: 1;
     min-height: 0;
-    /* AppList/AppForm usam flex:1 aqui — overflow:hidden para conter o scroll deles */
+    /* AppList/AppForm use flex:1 here: overflow:hidden to contain their scroll */
     display: flex;
     flex-direction: column;
     overflow: hidden;

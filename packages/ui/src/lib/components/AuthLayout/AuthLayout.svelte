@@ -3,14 +3,14 @@
   import SkipLink from '../SkipLink/SkipLink.svelte';
 
   /**
-   * AuthLayout — layout de duas colunas para páginas de autenticação.
+   * AuthLayout: two-column layout for authentication pages.
    *
-   * Coluna esquerda: fundo escuro com gradiente da brand, blobs animados,
-   * logo e slot `panel` para conteúdo decorativo (quote, steps, etc.).
+   * Left column: dark background with a brand gradient, animated blobs,
+   * logo and a `panel` slot for decorative content (quote, steps, etc.).
    *
-   * Coluna direita: fundo claro, centraliza `children` (o formulário).
+   * Right column: light background, centers `children` (the form).
    *
-   * Dentro do slot `panel`, use as CSS vars definidas aqui:
+   * Inside the `panel` slot, use the CSS vars defined here:
    *   --panel-text-primary   → oklch(1 0 0 / 0.95)
    *   --panel-text-secondary → oklch(1 0 0 / 0.60)
    *   --panel-text-tertiary  → oklch(1 0 0 / 0.35)
@@ -18,7 +18,7 @@
    *   --panel-surface-active → oklch(1 0 0 / 0.18)
    *   --panel-border         → oklch(1 0 0 / 0.14)
    *
-   * Uso:
+   * Usage:
    *   <AuthLayout logoMark="CA" logoName="My App">   (or {#snippet brand()} for an SVG logo)
    *     {#snippet panel()}
    *       <blockquote class="quote">…</blockquote>
@@ -34,13 +34,13 @@
     logoName?: string;
     logoHref?: string;
     /**
-     * Abaixo de 768px o painel lateral some; `true` mostra uma faixa compacta
-     * com a marca acima do formulário.
+     * Below 768px the side panel is hidden; `true` shows a compact strip
+     * with the brand above the form.
      */
     mobileBrand?: boolean;
-    /** Conteúdo decorativo da coluna esquerda */
+    /** Decorative content for the left column */
     panel?:    Snippet;
-    /** Formulário — coluna direita */
+    /** Form, right column */
     children?: Snippet;
   }
 
@@ -114,7 +114,7 @@
     background: var(--ca-surface-base);
   }
 
-  /* ── Coluna esquerda — sempre escura ──────────────────────── */
+  /* ── Left column, always dark ──────────────────────── */
   .ca-auth__panel {
     flex: 0 0 44%;
     position: relative;
@@ -174,7 +174,7 @@
     color: oklch(1 0 0 / 0.90);
   }
 
-  /* ── Slot — vars disponíveis pro conteúdo decorativo ──────── */
+  /* ── Slot: vars available to the decorative content ──────── */
   .ca-auth__slot {
     --panel-text-primary:   oklch(1 0 0 / 0.95);
     --panel-text-secondary: oklch(1 0 0 / 0.60);
@@ -184,7 +184,7 @@
     --panel-border:         oklch(1 0 0 / 0.14);
   }
 
-  /* ── Blobs animados ───────────────────────────────────────── */
+  /* ── Animated blobs ───────────────────────────────────────── */
   .ca-auth__blobs {
     position: absolute;
     inset: 0;
@@ -223,7 +223,7 @@
     66%       { transform: translate(-8px, 10px) scale(0.97); }
   }
 
-  /* ── Coluna direita ───────────────────────────────────────── */
+  /* ── Right column ───────────────────────────────────────── */
   .ca-auth__col {
     flex: 1;
     display: flex;
@@ -234,7 +234,7 @@
     background: var(--ca-surface-base);
   }
 
-  /* ── Faixa de marca mobile (o painel lateral está oculto) ─── */
+  /* ── Mobile brand strip (the side panel is hidden) ─── */
   .ca-auth__mobile-brand {
     display: none;
     align-items: center;
@@ -275,7 +275,7 @@
     .ca-auth__mobile-brand { display: flex; }
   }
 
-  /* ── Shared auth utility classes — available inside any AuthLayout slot ── */
+  /* ── Shared auth utility classes, available inside any AuthLayout slot ── */
   :global(.auth-quote) { margin: 0; max-width: 380px; }
   :global(.auth-quote__text) {
     font-size: var(--ca-font-size-xl); line-height: 1.4; font-weight: 500;

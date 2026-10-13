@@ -1,6 +1,6 @@
 <script lang="ts">
   /**
-   * MethodBadge — HTTP method label (GET/POST/PUT/PATCH/DELETE), mono, semantic colour.
+   * MethodBadge: HTTP method label (GET/POST/PUT/PATCH/DELETE), mono, semantic colour.
    * `variant="plain"` drops the tinted pill (for tight lists like a sidebar).
    */
   interface Props {

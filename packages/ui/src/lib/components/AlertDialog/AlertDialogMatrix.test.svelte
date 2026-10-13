@@ -7,14 +7,14 @@
 </script>
 
 <div data-testid="matrix" style="padding:24px">
-	<Button onclick={() => (open = true)}>Abrir</Button>
+	<Button onclick={() => (open = true)}>Open</Button>
 </div>
 
 <AlertDialog
 	bind:open
 	{destructive}
-	title="Excluir item?"
-	description="Esta ação não pode ser desfeita."
-	confirmLabel={destructive ? "Excluir" : "Confirmar"}
+	title="Delete item?"
+	description="This action cannot be undone."
+	confirmLabel={destructive ? "Delete" : "Confirm"}
 	onconfirm={() => {}}
 />

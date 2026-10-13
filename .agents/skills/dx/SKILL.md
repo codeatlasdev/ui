@@ -1,6 +1,6 @@
 ---
 name: codeatlas-dx
-description: Use when creating files, components, or feature modules — DX-first clean code, file size limits, no god files.
+description: Use when creating files, components, or feature modules: DX-first clean code, file size limits, no god files.
 alwaysApply: false
 ---
 
@@ -44,7 +44,7 @@ src/
 2. Logic used in 2+ places → extract to `utils/` or a composable. First use: inline.
 3. Types live next to what they describe. No monolithic `types.ts`.
 4. `$derived` for computed values. `$effect` only for side effects that can't be derived.
-5. No `export let` in Svelte 5 — use `$props()`.
+5. No `export let` in Svelte 5. Use `$props()`.
 6. API calls belong in `*.api.ts`, not in components or stores.
 7. Constants belong in `*.constants.ts` or top of the file that uses them. Not scattered.
 

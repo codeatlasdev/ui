@@ -3,9 +3,9 @@
 	import GlassCard from "./GlassCard.svelte";
 
 	const thicknesses = ["ultra-thin", "thin", "regular", "thick", "chrome"] as const;
-	const body = createRawSnippet(() => ({ render: () => `<span>Conteúdo do card</span>` }));
+	const body = createRawSnippet(() => ({ render: () => `<span>Card content</span>` }));
 	const actions = createRawSnippet(() => ({
-		render: () => `<span style="font-size:12px">Ação</span>`,
+		render: () => `<span style="font-size:12px">Action</span>`,
 	}));
 </script>
 
@@ -19,7 +19,7 @@
 	<GlassCard tinted children={body} />
 	<GlassCard glowing children={body} />
 	<GlassCard tinted glowing children={body} />
-	<GlassCard title="Com título" headerActions={actions} children={body} />
+	<GlassCard title="With title" headerActions={actions} children={body} />
 	<GlassCard padding={4} children={body} />
 	<GlassCard padding="40px" children={body} />
 	<GlassCard flush>
@@ -27,5 +27,5 @@
 			<div style="background:#888;color:#fff;padding:8px">Flush</div>
 		{/snippet}
 	</GlassCard>
-	<GlassCard href="#alvo" children={body} />
+	<GlassCard href="#target" children={body} />
 </div>

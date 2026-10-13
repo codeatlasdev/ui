@@ -11,12 +11,12 @@
 	let open = $state(false);
 </script>
 
-<Button onclick={() => (open = true)}>Abrir</Button>
-<Dialog bind:open title="Editar perfil" description="Atualize seus dados." {size} {chromeless} {onOpenChange}>
-	<div data-testid="col-a"><input aria-label="Nome" /></div>
+<Button onclick={() => (open = true)}>Open</Button>
+<Dialog bind:open title="Edit profile" description="Update your details." {size} {chromeless} {onOpenChange}>
+	<div data-testid="col-a"><input aria-label="Name" /></div>
 	<div data-testid="col-b"><input aria-label="Email" /></div>
 	{#snippet actions()}
-		<Button variant="outlined" onclick={() => (open = false)}>Cancelar</Button>
-		<Button>Salvar</Button>
+		<Button variant="outlined" onclick={() => (open = false)}>Cancel</Button>
+		<Button>Save</Button>
 	{/snippet}
 </Dialog>

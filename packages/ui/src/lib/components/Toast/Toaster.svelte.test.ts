@@ -20,9 +20,9 @@ describe("Toaster", () => {
 
 	it("toast.success renders a role=status item and passes axe", async () => {
 		const screen = await render(Toaster, {});
-		toast.success("Salvo com sucesso", 0);
+		toast.success("Saved successfully", 0);
 		const item = screen.getByRole("status");
-		await expect.element(item).toMatchTextContent("Salvo com sucesso");
+		await expect.element(item).toMatchTextContent("Saved successfully");
 		await expect.element(item).toHaveClass("ca-toast--success");
 		await settled();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
@@ -30,21 +30,21 @@ describe("Toaster", () => {
 
 	it.each(["error", "warning", "info"] as const)("toast.%s uses its variant", async (variant) => {
 		const screen = await render(Toaster, {});
-		toast[variant]("Mensagem", 0);
+		toast[variant]("Message", 0);
 		await expect.element(screen.getByRole("status")).toHaveClass(`ca-toast--${variant}`);
 	});
 
 	it("stacks several toasts", async () => {
 		const screen = await render(Toaster, {});
-		toast.show("Um", { duration: 0 });
-		toast.show("Dois", { duration: 0 });
+		toast.show("One", { duration: 0 });
+		toast.show("Two", { duration: 0 });
 		await expect.poll(() => screen.getByRole("status").elements().length).toBe(2);
 	});
 
 	it("auto-removes after its duration", async () => {
 		vi.useFakeTimers({ toFake: ["setTimeout"] });
 		const screen = await render(Toaster, {});
-		toast.info("Efêmero", 3000);
+		toast.info("Ephemeral", 3000);
 		await expect.element(screen.getByRole("status")).toBeVisible();
 		vi.advanceTimersByTime(2999);
 		expect(toast.items).toHaveLength(1);
@@ -56,14 +56,14 @@ describe("Toaster", () => {
 	it("duration 0 is persistent", async () => {
 		vi.useFakeTimers({ toFake: ["setTimeout"] });
 		const screen = await render(Toaster, {});
-		toast.warning("Fica", 0);
+		toast.warning("Stays", 0);
 		vi.advanceTimersByTime(60_000);
 		await expect.element(screen.getByRole("status")).toBeVisible();
 	});
 
 	it("the dismiss button removes the toast", async () => {
 		const screen = await render(Toaster, {});
-		toast.error("Falhou", 0);
+		toast.error("Failed", 0);
 		await screen.getByRole("button", { name: "Dismiss" }).click();
 		await expect.element(screen.getByRole("status")).not.toBeInTheDocument();
 		expect(toast.items).toHaveLength(0);

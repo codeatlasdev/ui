@@ -13,10 +13,10 @@ import RadarChart from "./RadarChart.svelte";
 import ScatterChart from "./ScatterChart.svelte";
 import Sparkline from "./Sparkline.svelte";
 
-const categories = ["Jan", "Fev", "Mar", "Abr", "Mai"];
+const categories = ["Jan", "Feb", "Mar", "Apr", "May"];
 const series = [
-	{ name: "Receita", data: [12, 18, 9, 24, 30] },
-	{ name: "Custo", data: [8, 10, 7, 14, 16] },
+	{ name: "Revenue", data: [12, 18, 9, 24, 30] },
+	{ name: "Cost", data: [8, 10, 7, 14, 16] },
 ];
 
 // biome-ignore lint/suspicious/noExplicitAny: heterogeneous chart prop shapes
@@ -101,9 +101,9 @@ const cases: Array<[string, Component<any>, Record<string, unknown>]> = [
 		RadarChart,
 		{
 			indicators: [
-				{ name: "Vel", max: 10 },
-				{ name: "Força", max: 10 },
-				{ name: "Técnica", max: 10 },
+				{ name: "Speed", max: 10 },
+				{ name: "Strength", max: 10 },
+				{ name: "Technique", max: 10 },
 			],
 			series: [
 				{ name: "A", values: [7, 5, 8] },
@@ -111,8 +111,8 @@ const cases: Array<[string, Component<any>, Record<string, unknown>]> = [
 			],
 		},
 	],
-	["GaugeChart", GaugeChart, { value: 72, label: "Uso", animated: false }],
-	["GaugeChart (ring)", GaugeChart, { value: 40, variant: "ring", label: "Meta" }],
+	["GaugeChart", GaugeChart, { value: 72, label: "Usage", animated: false }],
+	["GaugeChart (ring)", GaugeChart, { value: 40, variant: "ring", label: "Goal" }],
 	[
 		"HeatmapChart (calendar)",
 		HeatmapChart,
@@ -131,8 +131,8 @@ const cases: Array<[string, Component<any>, Record<string, unknown>]> = [
 		HeatmapChart,
 		{
 			variant: "matrix",
-			xCategories: ["Seg", "Ter", "Qua"],
-			yCategories: ["09h", "10h"],
+			xCategories: ["Mon", "Tue", "Wed"],
+			yCategories: ["9am", "10am"],
 			matrixData: [
 				[0, 0, 3],
 				[1, 0, 7],
@@ -227,10 +227,10 @@ describe("charts", () => {
 		const screen = await render(PieChart, {
 			data: [{ name: "A", value: 1 }],
 			donut: true,
-			centerLabel: { value: "1.234", label: "Pedidos" },
+			centerLabel: { value: "1.234", label: "Orders" },
 		});
 		await expect.element(screen.getByText("1.234")).toBeInTheDocument();
-		await expect.element(screen.getByText("Pedidos")).toBeInTheDocument();
+		await expect.element(screen.getByText("Orders")).toBeInTheDocument();
 	});
 
 	it("repaints with new data without remounting the canvas", async () => {
@@ -238,7 +238,7 @@ describe("charts", () => {
 		const canvas = await mountedCanvas(screen.container);
 		const before = await stablePixels(canvas);
 
-		await screen.rerender({ series: [{ name: "Receita", data: [30, 2, 40, 1, 50] }], categories });
+		await screen.rerender({ series: [{ name: "Revenue", data: [30, 2, 40, 1, 50] }], categories });
 		await vi.waitFor(async () => expect(await stablePixels(canvas)).not.toBe(before), {
 			timeout: 10_000,
 		});

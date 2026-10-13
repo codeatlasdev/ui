@@ -17,13 +17,13 @@
 <!-- Mirrors the showcase page: pickers first, long page, inline calendars at the bottom. -->
 <div style="height: 200px"></div>
 {#if range}
-  <DateRangePicker label="Período" {placeholder} bind:value={rangeValue} />
+  <DateRangePicker label="Period" {placeholder} bind:value={rangeValue} />
 {:else}
-  <DatePicker label="Data" {placeholder} bind:value={pickerValue} />
+  <DatePicker label="Date" {placeholder} bind:value={pickerValue} />
 {/if}
 <div style="height: 1500px"></div>
-<Calendar label="Evento" bind:value={calValue} />
-<RangeCalendar label="Janela" bind:value={calRange} />
+<Calendar label="Event" bind:value={calValue} />
+<RangeCalendar label="Window" bind:value={calRange} />
 
 <output data-testid="picker">{pickerValue?.toString() ?? ''}</output>
 <output data-testid="rstart">{rangeValue.start?.toString() ?? ''}</output>

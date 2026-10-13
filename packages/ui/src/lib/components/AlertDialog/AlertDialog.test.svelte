@@ -12,12 +12,12 @@
 	let open = $state(false);
 </script>
 
-<Button onclick={() => (open = true)}>Excluir item</Button>
+<Button onclick={() => (open = true)}>Delete item</Button>
 <AlertDialog
 	bind:open
-	title="Excluir item?"
-	description="Esta ação não pode ser desfeita."
-	confirmLabel="Excluir"
+	title="Delete item?"
+	description="This action cannot be undone."
+	confirmLabel="Delete"
 	{destructive}
 	{pending}
 	{onconfirm}

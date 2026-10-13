@@ -8,18 +8,18 @@
 <SimpleTable {responsive}>
 	<thead>
 		<tr>
-			<th scope="col">Usuário</th>
-			<th scope="col">Função</th>
+			<th scope="col">User</th>
+			<th scope="col">Role</th>
 		</tr>
 	</thead>
 	<tbody>
 		<tr>
-			<td data-label="Usuário"><UserCell name="Ana Souza" email="ana@example.com" /></td>
-			<td data-label="Função">Admin</td>
+			<td data-label="User"><UserCell name="Ana Souza" email="ana@example.com" /></td>
+			<td data-label="Role">Admin</td>
 		</tr>
 		<tr>
-			<td data-label="Usuário"><UserCell name="Bruno Lima" /></td>
-			<td data-label="Função">Developer</td>
+			<td data-label="User"><UserCell name="Bruno Lima" /></td>
+			<td data-label="Role">Developer</td>
 		</tr>
 	</tbody>
 </SimpleTable>

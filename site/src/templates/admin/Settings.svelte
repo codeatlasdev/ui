@@ -161,7 +161,7 @@
                     size="sm"
                   />
                 </td>
-                <td><Button variant="ghost" size="sm">Remover</Button></td>
+                <td><Button variant="ghost" size="sm">Remove</Button></td>
               </tr>
             {/each}
           </tbody>

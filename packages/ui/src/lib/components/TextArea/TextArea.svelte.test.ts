@@ -5,31 +5,31 @@ import TextArea from "./TextArea.svelte";
 
 describe("TextArea", () => {
 	it("associates the label with the textarea", async () => {
-		const screen = await render(TextArea, { label: "Mensagem" });
-		const field = screen.getByLabelText("Mensagem");
-		await field.fill("Olá\nmundo");
-		await expect.element(field).toHaveValue("Olá\nmundo");
+		const screen = await render(TextArea, { label: "Message" });
+		const field = screen.getByLabelText("Message");
+		await field.fill("Hello\nworld");
+		await expect.element(field).toHaveValue("Hello\nworld");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
 	it("description is the accessible description", async () => {
-		const screen = await render(TextArea, { label: "Bio", description: "Até 200 caracteres" });
+		const screen = await render(TextArea, { label: "Bio", description: "Up to 200 characters" });
 		await expect
 			.element(screen.getByLabelText("Bio"))
-			.toHaveAccessibleDescription("Até 200 caracteres");
+			.toHaveAccessibleDescription("Up to 200 characters");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
 	it("error sets aria-invalid, role=alert and describes the field", async () => {
 		const screen = await render(TextArea, {
 			label: "Bio",
-			description: "Dica",
-			error: "Obrigatório",
+			description: "Hint",
+			error: "Required",
 		});
 		const field = screen.getByLabelText("Bio");
 		await expect.element(field).toHaveAttribute("aria-invalid", "true");
-		await expect.element(screen.getByRole("alert")).toHaveTextContent("Obrigatório");
-		await expect.element(field).toHaveAccessibleDescription("Obrigatório");
+		await expect.element(screen.getByRole("alert")).toHaveTextContent("Required");
+		await expect.element(field).toHaveAccessibleDescription("Required");
 		expect(field.element().getAttribute("aria-describedby")).toBe(
 			screen.getByRole("alert").element().id
 		);
@@ -38,14 +38,14 @@ describe("TextArea", () => {
 
 	it("reports typed value through oninput", async () => {
 		const oninput = vi.fn();
-		const screen = await render(TextArea, { label: "Nota", oninput });
-		await screen.getByLabelText("Nota").fill("abc");
+		const screen = await render(TextArea, { label: "Note", oninput });
+		await screen.getByLabelText("Note").fill("abc");
 		expect(oninput).toHaveBeenLastCalledWith("abc");
 	});
 
 	it("readonly and disabled states are exposed", async () => {
-		const ro = await render(TextArea, { label: "Leitura", readonly: true, value: "x" });
-		await expect.element(ro.getByLabelText("Leitura")).toHaveAttribute("readonly");
+		const ro = await render(TextArea, { label: "Read only", readonly: true, value: "x" });
+		await expect.element(ro.getByLabelText("Read only")).toHaveAttribute("readonly");
 		const dis = await render(TextArea, { label: "Off", disabled: true });
 		await expect.element(dis.getByLabelText("Off")).toBeDisabled();
 	});

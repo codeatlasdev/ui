@@ -15,7 +15,7 @@ afterAll(() => setLocale("en"));
 describe("DateRangePicker", () => {
 	it("closed: labelled group with start and end segments and a trigger; passes axe", async () => {
 		const screen = await render(DateHarness, { kind: "rangepicker" });
-		await expect.element(screen.getByRole("group", { name: "Período" })).toBeVisible();
+		await expect.element(screen.getByRole("group", { name: "Period" })).toBeVisible();
 		expect(screen.getByRole("spinbutton").elements()).toHaveLength(6);
 		await expect.element(screen.getByRole("button", { name: "Abrir calendário" })).toBeVisible();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
@@ -89,11 +89,11 @@ describe("DateRangePicker", () => {
 	});
 
 	it("error is a role=alert referenced by the group", async () => {
-		const screen = await render(DateHarness, { kind: "rangepicker", error: "Período inválido" });
+		const screen = await render(DateHarness, { kind: "rangepicker", error: "Invalid period" });
 		const alert = screen.getByRole("alert");
-		await expect.element(alert).toMatchTextContent("Período inválido");
+		await expect.element(alert).toMatchTextContent("Invalid period");
 		expect(
-			screen.getByRole("group", { name: "Período" }).element().getAttribute("aria-describedby")
+			screen.getByRole("group", { name: "Period" }).element().getAttribute("aria-describedby")
 		).toBe(alert.element().id);
 	});
 });

@@ -8,7 +8,7 @@
 	import "../Dialog/dialog.css";
 
 	/**
-	 * Sheet — mobile-first bottom sheet.
+	 * Sheet: mobile-first bottom sheet.
 	 *
 	 * Below 768px it slides up from the bottom edge (drag handle, safe-area padding, rounded top);
 	 * from 768px up it renders as a centered dialog. bits-ui Dialog supplies the focus trap, focus
@@ -19,9 +19,9 @@
 	 * Disabled under reduced-motion and in the centered desktop layout (tap/close button still work).
 	 *
 	 * Usage:
-	 *   <Sheet bind:open title="Trocar sessão" description="Escolha a conta ativa">
+	 *   <Sheet bind:open title="Switch session" description="Choose the active account">
 	 *     …list…
-	 *     {#snippet footer()}<Button fullWidth>Nova sessão</Button>{/snippet}
+	 *     {#snippet footer()}<Button fullWidth>New session</Button>{/snippet}
 	 *   </Sheet>
 	 */
 	interface Props {

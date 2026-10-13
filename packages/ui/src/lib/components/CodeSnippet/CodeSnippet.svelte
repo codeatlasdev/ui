@@ -108,7 +108,7 @@
     line-height: 1.7;
   }
 
-  /* Shiki renders a <pre> with inline background — neutralise it so glass shows through */
+  /* Shiki renders a <pre> with inline background, neutralise it so glass shows through */
   .ca-code-snippet__pre :global(pre.shiki) {
     margin: 0;
     padding: 16px;

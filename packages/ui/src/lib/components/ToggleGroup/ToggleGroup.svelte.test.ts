@@ -10,11 +10,11 @@ describe("ToggleGroup", () => {
 		const screen = await render(ToggleGroupHarness, {
 			type: "single",
 			onchange,
-			"aria-label": "Alinhamento",
+			"aria-label": "Alignment",
 		});
-		await expect.element(screen.getByRole("group", { name: "Alinhamento" })).toBeVisible();
-		const left = screen.getByRole("radio", { name: "Esquerda" });
-		const center = screen.getByRole("radio", { name: "Centro" });
+		await expect.element(screen.getByRole("group", { name: "Alignment" })).toBeVisible();
+		const left = screen.getByRole("radio", { name: "Left" });
+		const center = screen.getByRole("radio", { name: "Center" });
 		await left.click();
 		await expect.element(left).toHaveAttribute("aria-checked", "true");
 		await center.click();
@@ -29,12 +29,12 @@ describe("ToggleGroup", () => {
 		const screen = await render(ToggleGroupHarness, {
 			type: "single",
 			initial: "left",
-			"aria-label": "Alinhamento",
+			"aria-label": "Alignment",
 		});
-		const left = screen.getByRole("radio", { name: "Esquerda" });
+		const left = screen.getByRole("radio", { name: "Left" });
 		left.element().focus();
 		await userEvent.keyboard("{ArrowRight}");
-		const center = screen.getByRole("radio", { name: "Centro" });
+		const center = screen.getByRole("radio", { name: "Center" });
 		expect(document.activeElement).toBe(center.element());
 		await userEvent.keyboard(" ");
 		await expect.element(center).toHaveAttribute("aria-checked", "true");
@@ -46,10 +46,10 @@ describe("ToggleGroup", () => {
 		const screen = await render(ToggleGroupHarness, {
 			type: "multiple",
 			onchange,
-			"aria-label": "Formatação",
+			"aria-label": "Formatting",
 		});
-		const bold = screen.getByRole("button", { name: "Negrito" });
-		const italic = screen.getByRole("button", { name: "Itálico" });
+		const bold = screen.getByRole("button", { name: "Bold" });
+		const italic = screen.getByRole("button", { name: "Italic" });
 		await bold.click();
 		await italic.click();
 		await expect.element(bold).toHaveAttribute("aria-pressed", "true");
@@ -66,9 +66,9 @@ describe("ToggleGroup", () => {
 		const screen = await render(ToggleGroupHarness, {
 			type: "single",
 			onchange,
-			"aria-label": "Alinhamento",
+			"aria-label": "Alignment",
 		});
-		const right = screen.getByRole("radio", { name: "Direita" });
+		const right = screen.getByRole("radio", { name: "Right" });
 		await expect.element(right).toBeDisabled();
 		await right.click({ force: true });
 		expect(onchange).not.toHaveBeenCalled();

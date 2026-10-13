@@ -8,5 +8,5 @@
 	{#each statuses as status (status)}
 		<StatusChip {status} label={status} />
 	{/each}
-	<StatusChip status="info" label="Rótulo bem mais longo de status" />
+	<StatusChip status="info" label="A much longer status label" />
 </div>

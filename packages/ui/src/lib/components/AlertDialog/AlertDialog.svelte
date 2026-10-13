@@ -5,22 +5,22 @@
   import '../Dialog/dialog.css';
 
   /**
-   * AlertDialog — confirmação que exige resposta explícita (role="alertdialog").
+   * AlertDialog: confirmation that requires an explicit answer (role="alertdialog").
    *
-   * Diferente do Dialog: sem botão "X", clique fora não fecha, foco inicial no
-   * conteúdo. Escape e Cancelar fecham (e disparam `oncancel`) (exceto enquanto `pending`).
+   * Unlike Dialog: no "X" button, clicking outside does not close it, and initial focus lands on
+   * the content. Escape and Cancel close it (and fire `oncancel`), except while `pending`.
    *
-   * `onconfirm` pode ser async: enquanto a promise está pendente o botão de
-   * confirmar mostra spinner, Cancelar fica desabilitado e o diálogo não fecha.
-   * Se resolver, fecha; se lançar, permanece aberto (o erro é relançado).
-   * Passe `pending` para controlar o estado externamente.
+   * `onconfirm` may be async: while the promise is pending the confirm button shows a spinner,
+   * Cancel is disabled and the dialog stays open. If it resolves, the dialog closes; if it
+   * throws, it stays open (the error is rethrown).
+   * Pass `pending` to control the state externally.
    *
-   * Uso:
+   * Usage:
    *   <AlertDialog
    *     bind:open
-   *     title="Excluir item?"
-   *     description="Esta ação não pode ser desfeita."
-   *     confirmLabel="Excluir"
+   *     title="Delete item?"
+   *     description="This action cannot be undone."
+   *     confirmLabel="Delete"
    *     destructive
    *     onconfirm={() => api.remove(id)}
    *   />

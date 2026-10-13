@@ -6,6 +6,6 @@
   let value = $state(untrack(() => initial));
 </script>
 
-<PhoneField label="Telefone" bind:value />
+<PhoneField label="Phone" bind:value />
 <output data-testid="bound">{value}</output>
-<button type="button" onclick={() => (value = '+5521987654321')}>definir externo</button>
+<button type="button" onclick={() => (value = '+5521987654321')}>set external</button>

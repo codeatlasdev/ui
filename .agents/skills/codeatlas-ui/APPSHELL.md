@@ -6,7 +6,7 @@ Full navigation shell: side rail (icon dock) + collapsible panel + main area.
 
 - Put `AppShellLayout` only in authenticated-area route layouts (e.g. `src/routes/painel/+layout.svelte`).
 - Never in the root `+layout.svelte`.
-- Never import `$app/stores` inside the package — pass `pathname` and `onNavigate` from the app.
+- Never import `$app/stores` inside the package. Pass `pathname` and `onNavigate` from the app.
 
 ## NavModule shape
 

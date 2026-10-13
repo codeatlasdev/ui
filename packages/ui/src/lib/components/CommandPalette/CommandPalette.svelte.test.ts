@@ -10,7 +10,7 @@ const input = () => page.getByPlaceholder("Search…");
 
 const open = async (props = {}) => {
 	const screen = await render(Harness, props);
-	const trigger = screen.getByRole("button", { name: "Abrir paleta" });
+	const trigger = screen.getByRole("button", { name: "Open palette" });
 	await trigger.click();
 	await expect.element(palette()).toBeVisible();
 	await expect.element(input()).toHaveFocus();
@@ -21,8 +21,8 @@ describe("CommandPalette", () => {
 	it("opens, focuses the search input and lists every item grouped by module", async () => {
 		await open();
 		await expect.element(page.getByRole("option")).toHaveLength(3);
-		await expect.element(page.getByText("Geral", { exact: true })).toBeVisible();
-		await expect.element(page.getByText("Conta", { exact: true })).toBeVisible();
+		await expect.element(page.getByText("General", { exact: true })).toBeVisible();
+		await expect.element(page.getByText("Account", { exact: true })).toBeVisible();
 		await settled();
 		expect(await checkA11y(document.body)).toHaveNoViolations();
 	});
@@ -38,13 +38,13 @@ describe("CommandPalette", () => {
 
 	it("filters by item label and by module label, case-insensitively", async () => {
 		await open();
-		await input().fill("rel");
+		await input().fill("rep");
 		await expect.element(page.getByRole("option")).toHaveLength(1);
-		await expect.element(page.getByRole("option", { name: /Relatórios/ })).toBeVisible();
+		await expect.element(page.getByRole("option", { name: /Reports/ })).toBeVisible();
 
-		await input().fill("CONTA");
+		await input().fill("ACCOUNT");
 		await expect.element(page.getByRole("option")).toHaveLength(1);
-		await expect.element(page.getByRole("option", { name: /Perfil/ })).toBeVisible();
+		await expect.element(page.getByRole("option", { name: /Profile/ })).toBeVisible();
 	});
 
 	it("empty state on no match; blank query shows all", async () => {
@@ -61,14 +61,14 @@ describe("CommandPalette", () => {
 		await open({ minQueryLength: 3 });
 		await input().fill("re");
 		await expect.element(page.getByRole("option")).toHaveLength(3);
-		await expect.element(page.getByText("Geral", { exact: true })).toBeVisible();
+		await expect.element(page.getByText("General", { exact: true })).toBeVisible();
 
 		await input().fill("  re  ");
 		await expect.element(page.getByRole("option")).toHaveLength(3);
 
-		await input().fill(" rel ");
+		await input().fill(" rep ");
 		await expect.element(page.getByRole("option")).toHaveLength(1);
-		await expect.element(page.getByRole("option", { name: /Relatórios/ })).toBeVisible();
+		await expect.element(page.getByRole("option", { name: /Reports/ })).toBeVisible();
 	});
 
 	it("ArrowDown/ArrowUp move aria-selected and clamp at the ends", async () => {
@@ -88,28 +88,28 @@ describe("CommandPalette", () => {
 		const onNavigate = vi.fn();
 		await open({ onNavigate });
 		await userEvent.keyboard("{ArrowDown}{Enter}");
-		expect(onNavigate).toHaveBeenCalledExactlyOnceWith("/relatorios");
+		expect(onNavigate).toHaveBeenCalledExactlyOnceWith("/reports");
 		await expect.element(palette()).not.toBeInTheDocument();
 	});
 
 	it("typing then Enter navigates to the first match", async () => {
 		const onNavigate = vi.fn();
 		await open({ onNavigate });
-		await input().fill("perfil");
+		await input().fill("profile");
 		await userEvent.keyboard("{Enter}");
-		expect(onNavigate).toHaveBeenCalledExactlyOnceWith("/conta/perfil");
+		expect(onNavigate).toHaveBeenCalledExactlyOnceWith("/account/profile");
 	});
 
 	it("clicking an option navigates", async () => {
 		const onNavigate = vi.fn();
 		await open({ onNavigate });
-		await page.getByRole("option", { name: /Início/ }).click();
+		await page.getByRole("option", { name: /Home/ }).click();
 		expect(onNavigate).toHaveBeenCalledExactlyOnceWith("/");
 	});
 
 	it("Escape closes, returns focus to the trigger and the query resets on reopen", async () => {
 		const { trigger } = await open();
-		await input().fill("rel");
+		await input().fill("rep");
 		await userEvent.keyboard("{Escape}");
 		await expect.element(palette()).not.toBeInTheDocument();
 		await expect.element(trigger).toHaveFocus();

@@ -150,10 +150,10 @@ describe("createErrorHandler", () => {
 
 	it("exposes 4xx messages as CLIENT_ERROR with a unique id", () => {
 		const h = createErrorHandler();
-		const a = h({ error: new Error("Não encontrado"), event, status: 404 });
-		const b = h({ error: "texto", event, status: 400 });
-		expect(a).toMatchObject({ message: "Não encontrado", code: "CLIENT_ERROR" });
-		expect(b.message).toBe("texto");
+		const a = h({ error: new Error("Not found"), event, status: 404 });
+		const b = h({ error: "plain text", event, status: 400 });
+		expect(a).toMatchObject({ message: "Not found", code: "CLIENT_ERROR" });
+		expect(b.message).toBe("plain text");
 		expect(a.id).toMatch(/^[0-9a-f-]{36}$/);
 		expect(a.id).not.toBe(b.id);
 	});
@@ -166,9 +166,9 @@ describe("createErrorHandler", () => {
 	});
 
 	it("uses defaultMessage for unknown thrown values", () => {
-		const h = createErrorHandler({ defaultMessage: "Algo deu errado" });
-		expect(h({ error: { weird: true }, event, status: 400 }).message).toBe("Algo deu errado");
-		expect(h({ error: new Error("x"), event, status: 503 }).message).toBe("Algo deu errado");
+		const h = createErrorHandler({ defaultMessage: "Something went wrong" });
+		expect(h({ error: { weird: true }, event, status: 400 }).message).toBe("Something went wrong");
+		expect(h({ error: new Error("x"), event, status: 503 }).message).toBe("Something went wrong");
 	});
 
 	it("reports the sanitized error and the event", () => {

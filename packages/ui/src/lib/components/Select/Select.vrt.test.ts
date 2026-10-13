@@ -9,7 +9,7 @@ overlayVrt(
 	"Select-open",
 	SelectOverlay,
 	async () => {
-		await page.getByRole("button", { name: "Aberto" }).click();
+		await page.getByRole("button", { name: "Open" }).click();
 	},
 	"listbox"
 );

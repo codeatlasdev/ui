@@ -1,7 +1,7 @@
 // ─── AppShell navigation types ────────────────────────────────────────────────
 
-export const RAIL_WIDTH = 52; // px — icon dock
-export const PANEL_WIDTH = 200; // px — side panel
+export const RAIL_WIDTH = 52; // px, icon dock
+export const PANEL_WIDTH = 200; // px, side panel
 
 import type { IconComponent } from "../../types.js";
 

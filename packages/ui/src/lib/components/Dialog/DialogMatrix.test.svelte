@@ -13,34 +13,34 @@
 </script>
 
 <div data-testid="matrix" style="padding:24px">
-	<Button onclick={() => (open = true)}>Abrir</Button>
+	<Button onclick={() => (open = true)}>Open</Button>
 </div>
 
 <Dialog
 	bind:open
 	{size}
 	{chromeless}
-	title="Convidar membro"
-	description="Envie um convite por e-mail para o workspace."
+	title="Invite member"
+	description="Send an email invitation to the workspace."
 >
 	{#if size === "split"}
 		<div style="padding:24px">
-			<h3 style="margin:0 0 8px">Detalhes</h3>
-			<p style="margin:0">Coluna da esquerda com informações do convite.</p>
+			<h3 style="margin:0 0 8px">Details</h3>
+			<p style="margin:0">Left column with the invitation details.</p>
 		</div>
 		<div style="padding:24px;background:var(--ca-surface-base)">
-			<h3 style="margin:0 0 8px">Pré-visualização</h3>
-			<p style="margin:0">Coluna da direita com o resumo.</p>
+			<h3 style="margin:0 0 8px">Preview</h3>
+			<p style="margin:0">Right column with the summary.</p>
 		</div>
 	{:else if chromeless}
 		<div style="padding:24px">
-			<p style="margin:0">Conteúdo sem cabeçalho nem ações.</p>
+			<p style="margin:0">Content without header or actions.</p>
 		</div>
 	{:else}
-		<p style="margin:0">Conteúdo do diálogo com texto de exemplo para medir o espaçamento.</p>
+		<p style="margin:0">Dialog content with sample text to measure spacing.</p>
 	{/if}
 	{#snippet actions()}
-		<Button variant="ghost" onclick={() => (open = false)}>Cancelar</Button>
-		<Button onclick={() => (open = false)}>Convidar</Button>
+		<Button variant="ghost" onclick={() => (open = false)}>Cancel</Button>
+		<Button onclick={() => (open = false)}>Invite</Button>
 	{/snippet}
 </Dialog>

@@ -1,70 +1,70 @@
-# AGENTS.md — Guia para Agentes de IA
+# AGENTS.md: Guide for AI Agents
 
-Este documento descreve tudo que um agente de IA precisa saber para trabalhar com este repositório.
-
----
-
-## O que é este projeto
-
-`@codeatlasdev/ui` é o pacote de UI da CodeAtlas. É uma biblioteca Svelte 5 publicada publicamente no npm. Todo frontend da empresa importa componentes, tokens e estilos a partir daqui.
+This document covers everything an AI agent needs to know to work in this repository.
 
 ---
 
-## Estrutura do monorepo
+## What this project is
+
+`@codeatlasdev/ui` is CodeAtlas's UI package. It is a Svelte 5 library published publicly on npm. Every company frontend imports components, tokens and styles from here.
+
+---
+
+## Monorepo structure
 
 ```
-packages/ui/          → biblioteca publicável (@codeatlasdev/ui)
-  bin/                → CLIs: codeatlas-ui (init, migrate) e ca-ui-mcp (servidor MCP)
+packages/ui/          → publishable library (@codeatlasdev/ui)
+  bin/                → CLIs: codeatlas-ui (init, migrate) and ca-ui-mcp (MCP server)
   scripts/            → build-manifest.ts (components/tokens/guides.json), build-bin.ts, build-themes.ts
-  src/cli/            → lógica do init e do migrate (testada em tests/cli.test.ts)
+  src/cli/            → init and migrate logic (tested in tests/cli.test.ts)
   src/lib/
-    components/       → componentes Svelte 5
-    styles/           → CSS: global.css (tudo), core.css (sem presets extras), presets/*.css, base.css, tokens.css, materials.css
-    tokens/           → constantes TypeScript (cores, tipografia, sombras, etc.)
-    stores/           → svelte $state reativos (colorScheme, responsive, reducedMotion)
+    components/       → Svelte 5 components
+    styles/           → CSS: global.css (everything), core.css (no extra presets), presets/*.css, base.css, tokens.css, materials.css
+    tokens/           → TypeScript constants (colors, typography, shadows, etc.)
+    stores/           → reactive svelte $state (colorScheme, responsive, reducedMotion)
     utils/            → debounce, clipboard, localStorage, palette-generator
-    index.ts          → barrel export principal
-site/                 → site Astro (landing + docs MDX + templates) em ui.codeatlas.com.br
+    index.ts          → main barrel export
+site/                 → Astro site (landing + MDX docs + templates) at ui.codeatlas.com.br
 ```
 
 ---
 
-## Testes
+## Tests
 
-Testes unitários rodam no `bun test` (raiz do repo, `bunfig.toml`); componentes e visual precisam de Chromium real e ficam no Vitest. Use `bun run test` (tudo) ou os scripts abaixo. Um `bun test` na raiz roda só os unitários.
+Unit tests run on `bun test` (repo root, `bunfig.toml`); component and visual tests need a real Chromium and stay on Vitest. Use `bun run test` (everything) or the scripts below. A bare `bun test` at the root runs only the unit tests.
 
-| Comando | O que roda |
+| Command | What it runs |
 |---|---|
 | `bun run test` | unit + browser + E2E |
-| `bun run test:unit` | `bun test` em `packages/ui/tests/*.test.ts` (Node/Bun; falha o teste sem `expect`) |
-| `bun run test:browser` | Vitest projeto `browser` (Chromium real, axe) |
-| `bun run test:e2e` / `test:a11y` | Playwright no site estático (build + preview) |
-| `bun run test:vrt` / `test:vrt:update` | regressão visual via Docker (baselines só Linux) |
+| `bun run test:unit` | `bun test` on `packages/ui/tests/*.test.ts` (fails any test without an `expect`) |
+| `bun run test:browser` | Vitest `browser` project (real Chromium, axe) |
+| `bun run test:e2e` / `test:a11y` | Playwright against the static site (build + preview) |
+| `bun run test:vrt` / `test:vrt:update` | visual regression via Docker (Linux-only baselines) |
 
-Convenções de nome:
-- `*.test.ts` em `packages/ui/tests/` — unitário no `bun:test` (`mock`/`spyOn`/`jest.useFakeTimers`; DOM só com `GlobalRegistrator` do happy-dom no próprio arquivo; módulo novo por `import("…?fresh=n")`). Tipos checados por `bun --check`.
-- `*.svelte.test.ts` — componente em browser, ao lado do componente.
-- `*.vrt.test.ts` — screenshot por componente; harness de matriz `NomeMatrix.test.svelte`.
-- `*.test.svelte` — harness para snippets/`bind:` (não vai para `dist`).
+Naming conventions:
+- `*.test.ts` in `packages/ui/tests/`: unit test on `bun:test` (`mock`/`spyOn`/`jest.useFakeTimers`; DOM only through happy-dom's `GlobalRegistrator` inside that file; fresh module via `import("…?fresh=n")`). Types checked by `bun --check`.
+- `*.svelte.test.ts`: component in the browser, next to the component.
+- `*.vrt.test.ts`: per-component screenshot; matrix harness `NameMatrix.test.svelte`.
+- `*.test.svelte`: harness for snippets/`bind:` (not shipped in `dist`).
 - `site/tests/*.spec.ts` (desktop+mobile+iphone), `*.a11y.spec.ts`, `*.visual.spec.ts`.
-- Títulos de teste curtos: `describe` + `it` somados em até ~80 caracteres. O Vitest nomeia o anexo de trace com caminho + título + hash, e nomes acima de 255 bytes falham com `ENAMETOOLONG`, perdendo o trace justamente quando o teste falha.
+- Keep test titles short: `describe` + `it` combined at most ~80 characters. Vitest names the trace attachment with path + title + hash, and names over 255 bytes fail with `ENAMETOOLONG`, losing the trace exactly when the test fails.
 
-Regra: todo componente novo exige `.svelte.test.ts` com `expect(await checkA11y(screen.container)).toHaveNoViolations()` em cada estado (aberto/fechado). `render` de `vitest-browser-svelte` é async. Avisos `a11y_*` são erro: `bun run check` usa `--fail-on-warnings` e o build do site falha via `onwarn` (`site/svelte.config.js`) (o `svelte-package` não compila `.svelte`, então no pacote quem barra é o `check`).
+Rule: every new component needs a `.svelte.test.ts` with `expect(await checkA11y(screen.container)).toHaveNoViolations()` in each state (open/closed). `render` from `vitest-browser-svelte` is async. `a11y_*` warnings are errors: `bun run check` uses `--fail-on-warnings` and the site build fails via `onwarn` (`site/svelte.config.js`). (`svelte-package` does not compile `.svelte`, so in the package it is `check` that blocks.)
 
-Regras de acessibilidade (pacote e apps):
-- Uma página tem exatamente um `<main>` e um `id="main"`. `DocsShell` e `AuthLayout` já os trazem; `AppShellLayout` usa um `div.ca-shell__content` como alvo do `SkipLink` (passe `mainId={null}` se a página renderiza o próprio `<main id="main" tabindex="-1">`, e `skipLink={false}` ao embutir o shell numa página que já tem skip link). `PageShell` nunca emite `<main>`.
-- Anúncios para leitor de tela passam por `announce(msg, politeness)` (uma live region compartilhada); não crie `role="status"` local novo. No SvelteKit monte `RouteAnnouncer` (`@codeatlasdev/ui/kit`) uma vez no layout raiz.
-- `aria-label` num botão precisa conter o texto visível (WCAG 2.5.3); componha com `aria-labelledby` como o `Combobox` faz com `ariaLabel`.
-- CSS novo de superfície com glass/sombra/`border: none` precisa de entrada no bloco `@media (forced-colors: active)` de `materials.css` (borda `CanvasText`). Tokens de contraste (`prefers-contrast: more`) vêm de `themeCSS`/`presetCSS`; `tests/contrast.test.ts` mede 7:1 para texto e 3:1 para contornos em todo preset.
-- `site/tests/routes.a11y.spec.ts` roda axe em dark, light e `forcedColors: "active"` em cada rota, e garante no máximo um `#main`, um `<main>` e um skip link por página.
+Accessibility rules (package and apps):
+- A page has exactly one `<main>` and one `id="main"`. `DocsShell` and `AuthLayout` already provide them; `AppShellLayout` uses a `div.ca-shell__content` as the `SkipLink` target (pass `mainId={null}` if the page renders its own `<main id="main" tabindex="-1">`, and `skipLink={false}` when embedding the shell in a page that already has a skip link). `PageShell` never emits `<main>`.
+- Screen reader announcements go through `announce(msg, politeness)` (one shared live region); do not create a new local `role="status"`. In SvelteKit, mount `RouteAnnouncer` (`@codeatlasdev/ui/kit`) once in the root layout.
+- An `aria-label` on a button must contain the visible text (WCAG 2.5.3); compose with `aria-labelledby` as `Combobox` does with `ariaLabel`.
+- New surface CSS with glass/shadow/`border: none` needs an entry in the `@media (forced-colors: active)` block of `materials.css` (`CanvasText` border). Contrast tokens (`prefers-contrast: more`) come from `themeCSS`/`presetCSS`; `tests/contrast.test.ts` measures 7:1 for text and 3:1 for outlines in every preset.
+- `site/tests/routes.a11y.spec.ts` runs axe in dark, light and `forcedColors: "active"` on every route, and ensures at most one `#main`, one `<main>` and one skip link per page.
 
-Lendo falhas: locators falham com ARIA snapshot; traces em `__traces__/` (Vitest) e `site/test-results/<id>/trace.zip` (`bunx playwright trace open <zip>`); diffs visuais em `packages/ui/.vitest/attachments` e `site/playwright-report`. Para saída enxuta: `bunx vitest run --reporter=minimal`. Opcional: `npx @playwright/mcp` para inspecionar o site.
+Reading failures: locators fail with an ARIA snapshot; traces are in `__traces__/` (Vitest) and `site/test-results/<id>/trace.zip` (`bunx playwright trace open <zip>`); visual diffs are in `packages/ui/.vitest/attachments` and `site/playwright-report`. For lean output: `bunx vitest run --reporter=minimal`. Optional: `npx @playwright/mcp` to inspect the site.
 
 ---
 
-## Regras críticas
+## Critical rules
 
-1. **Setup obrigatório** — consumidores importam o CSS uma vez (já inclui `materials.css`, temas e utilitários) e registram o plugin Vite (script anti-FOUC + `ssr.noExternal` para TanStack Table e Shiki):
+1. **Required setup**: consumers import the CSS once (it already includes `materials.css`, themes and utilities) and register the Vite plugin (anti-FOUC script + `ssr.noExternal` for TanStack Table and Shiki):
    ```ts
    import "@codeatlasdev/ui/styles/global.css";
    ```
@@ -74,47 +74,47 @@ Lendo falhas: locators falham com ARIA snapshot; traces em `__traces__/` (Vitest
    export default defineConfig({ plugins: [sveltekit(), caThemePlugin()] });
    ```
    ```ts
-   // src/hooks.server.ts: injeta o script de tema em páginas SSR/prerenderizadas
+   // src/hooks.server.ts: injects the theme script into SSR/prerendered pages
    import { sequence } from "@sveltejs/kit/hooks";
    import { caThemeHandle } from "@codeatlasdev/ui/kit";
    export const handle = sequence(caThemeHandle());
    ```
 
-2. **`backdrop-filter` + `will-change: transform`** — nunca combine os dois no mesmo elemento ou ancestral. Mata o blur do glass.
+2. **`backdrop-filter` + `will-change: transform`**: never combine the two on the same element or an ancestor. It kills the glass blur.
 
-3. **`isolation: isolate`** — `backdrop-filter` dentro de um pai `isolation: isolate` captura o contexto isolado, não o backdrop real.
+3. **`isolation: isolate`**: `backdrop-filter` inside an `isolation: isolate` parent captures the isolated context, not the real backdrop.
 
-4. **Svelte 5 runes** — todo o código usa runes (`$state`, `$derived`, `$effect`, `$props`). Nunca use `writable`/`readable` legados.
+4. **Svelte 5 runes**: all code uses runes (`$state`, `$derived`, `$effect`, `$props`). Never use legacy `writable`/`readable`.
 
-5. **`{@const}`** — válido apenas como filho imediato de `{#each}`, `{#if}`, `{#snippet}`, `{:else}`, ou `Component`. Nunca dentro de `<div>` ou outro elemento.
+5. **`{@const}`**: valid only as an immediate child of `{#each}`, `{#if}`, `{#snippet}`, `{:else}`, or `Component`. Never inside `<div>` or another element.
 
-6. **`svelte:component`** — deprecated em runes mode. Use `{@const Icon = X}<Icon />` ou `<X />` diretamente.
+6. **`svelte:component`**: deprecated in runes mode. Use `{@const Icon = X}<Icon />` or `<X />` directly.
 
-7. **`class:` em Bits UI** — inválido em componentes Bits UI (não são elementos nativos). Passe `class` como string expression.
+7. **`class:` on Bits UI**: invalid on Bits UI components (they are not native elements). Pass `class` as a string expression.
 
-8. **Bits UI sub-components** — `DropdownMenu.Item` etc. não são mágicos. Cada sub-componente é um arquivo `.svelte` separado exportado com nome.
+8. **Bits UI sub-components**: `DropdownMenu.Item` etc. are not magic. Each sub-component is a separate `.svelte` file exported by name.
 
-9. **OKLCH** — toda a paleta de cores usa OKLCH. MUI não aceita OKLCH direto — se integrar com MUI, converta para hex.
+9. **OKLCH**: the whole color palette uses OKLCH. MUI does not accept OKLCH directly; if you integrate with MUI, convert to hex.
 
-10. **Sem CSS inline** — nunca `style="padding: 20px"` ou `style="max-width: 480px"`. Use classes CSS com tokens (`var(--ca-space-5)`). A única exceção é CSS custom properties dinâmicos: `style="--bar-w:{pct}%"`.
+10. **No inline CSS**: never `style="padding: 20px"` or `style="max-width: 480px"`. Use CSS classes with tokens (`var(--ca-space-5)`). The only exception is dynamic CSS custom properties: `style="--bar-w:{pct}%"`.
 
-11. **Sem `Stack`/`Row` para layout de campos dentro de `FormSection`** — `FormSection` já tem `layout="grid"` (padrão), `layout="list"` e `layout="stack"`. Não envolva campos em `Stack gap={N}` como workaround de layout.
+11. **No `Stack`/`Row` for field layout inside `FormSection`**: `FormSection` already has `layout="grid"` (default), `layout="list"` and `layout="stack"`. Do not wrap fields in `Stack gap={N}` as a layout workaround.
 
-12. **Classes `ca-*` são contrato público** — apps consumidores usam as classes BEM (`.ca-btn`, `.ca-dialog__body`, …) como alvo de CSS. Renomear ou remover classe `ca-*` listada em [`docs/css-api.md`](docs/css-api.md) = **breaking change**. Ao criar/renomear componente, atualize esse arquivo.
+12. **`ca-*` classes are a public contract**: consuming apps use the BEM classes (`.ca-btn`, `.ca-dialog__body`, …) as CSS targets. Renaming or removing a `ca-*` class listed in [`docs/css-api.md`](docs/css-api.md) is a **breaking change**. When you create or rename a component, update that file.
 
-13. **Mobile** — alturas com `var(--ca-vh)` (nunca `100vh`/`100dvh`); UI `fixed` usa `var(--ca-safe-*)`; formulário com teclado usa `use:keyboardAware` (`@codeatlasdev/ui/actions`); tela cheia no mobile é `MobilePane`, barra de ações é `StickyActions`; alvo de toque de 44px é global em `(pointer: coarse)`, não escreva override no app. Viewport do app: `width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content`.
+13. **Mobile**: heights use `var(--ca-vh)` (never `100vh`/`100dvh`); `fixed` UI uses `var(--ca-safe-*)`; a form with a keyboard uses `use:keyboardAware` (`@codeatlasdev/ui/actions`); a full-screen mobile view is `MobilePane`, an action bar is `StickyActions`; the 44px touch target is global under `(pointer: coarse)`, so do not write an override in the app. App viewport: `width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content`.
 
-14. **Tema** — um único `ThemeOptions` em `src/lib/theme.ts` (objeto simples, `import type` apenas: `vite.config`/`astro.config` carregam o arquivo em Node, onde a raiz do pacote não avalia `.svelte`), passado a `caThemeHandle` + `caThemePlugin` (SvelteKit) ou `caUI` (Astro). Sobrescreva token declarando `--ca-*` em `:root` no app, sem `!important`. Ilhas locais: `data-theme-scope="dark|light"`. Setup automático: `bunx @codeatlasdev/ui init`.
+14. **Theme**: a single `ThemeOptions` in `src/lib/theme.ts` (plain object, `import type` only: `vite.config`/`astro.config` load the file in Node, where the package root does not evaluate `.svelte`), passed to `caThemeHandle` + `caThemePlugin` (SvelteKit) or `caUI` (Astro). Override a token by declaring `--ca-*` on `:root` in the app, without `!important`. Local islands: `data-theme-scope="dark|light"`. Automatic setup: `bunx @codeatlasdev/ui init`.
 
-15. **SEO** — página pública usa `<Seo>` de `@codeatlasdev/ui/seo` com `canonical` obrigatório; página privada passa `noindex`.
+15. **SEO**: a public page uses `<Seo>` from `@codeatlasdev/ui/seo` with a required `canonical`; a private page passes `noindex`.
 
-16. **Descobrir a API** — nunca adivinhe prop. Use o servidor MCP `ca-ui-mcp` (`get_component`, `list_components`, `search_tokens`, `get_guide`) ou `.agents/skills/codeatlas-ui/API.md`; ambos são gerados do código por `packages/ui/scripts/build-manifest.ts` (roda no `build`). Dev warnings `[ca-ui]` (via `devWarn`, `esm-env`) avisam de `IconButton` sem `aria-label` e `Dialog` sem `title`.
+16. **Discovering the API**: never guess a prop. Use the `ca-ui-mcp` MCP server (`get_component`, `list_components`, `search_tokens`, `get_guide`) or `.agents/skills/codeatlas-ui/API.md`; both are generated from the code by `packages/ui/scripts/build-manifest.ts` (runs on `build`). `[ca-ui]` dev warnings (via `devWarn`, `esm-env`) flag an `IconButton` without `aria-label` and a `Dialog` without `title`.
 
 ---
 
-## Sistema de spacing (tokens globais)
+## Spacing system (global tokens)
 
-**Todos os componentes usam variáveis CSS, nunca valores px hardcoded.**
+**Every component uses CSS variables, never hardcoded px values.**
 
 ```css
 /* Spacing scale: base 4px */
@@ -130,41 +130,41 @@ Lendo falhas: locators falham com ARIA snapshot; traces em `__traces__/` (Vitest
 --ca-space-12: 48px
 --ca-space-16: 64px
 
-/* Page layout: padding consistente entre TODOS os layouts de página */
---ca-page-px:    24px   /* padding horizontal padrão */
---ca-page-px-sm: 16px   /* padding horizontal mobile */
---ca-page-pt:    20px   /* padding top padrão */
---ca-page-pt-sm: 14px   /* padding top mobile */
---ca-page-gap:   20px   /* gap entre seções */
+/* Page layout: consistent padding across ALL page layouts */
+--ca-page-px:    24px   /* default horizontal padding */
+--ca-page-px-sm: 16px   /* mobile horizontal padding */
+--ca-page-pt:    20px   /* default top padding */
+--ca-page-pt-sm: 14px   /* mobile top padding */
+--ca-page-gap:   20px   /* gap between sections */
 ```
 
 ---
 
-## Classes utilitárias (`global.css` → disponíveis em todo app)
+## Utility classes (`global.css` → available in every app)
 
-Importadas automaticamente via `global.css`. Não precisam de nenhuma configuração extra.
+Imported automatically via `global.css`. No extra configuration needed.
 
-| Classe | Uso |
+| Class | Use |
 |---|---|
-| `ca-search-field` | Campo de busca no toolbar — `flex:1`, `min-width:180px`, `max-width:320px` |
-| `ca-toolbar-spacer` | `flex:1` — empurra itens pro lado direito do toolbar |
-| `ca-page-info` | Texto "1–8 of 240" no footer de paginação |
-| `ca-row-actions` | Ações de linha — invisíveis por padrão, visíveis no hover |
-| `ca-btn-danger` | Outlined button vermelho |
-| `ca-btn-danger-ghost` | Ghost/text button vermelho |
-| `ca-bar-fill` | Barra de progresso dinâmica — usa `--bar-w` CSS var |
-| `ca-bar-fill--warn` | Variante warning da barra |
-| `ca-pricing-cta` | Botão de CTA no fundo de pricing card (`width:100%; margin-top:auto`) |
+| `ca-search-field` | Toolbar search field: `flex:1`, `min-width:180px`, `max-width:320px` |
+| `ca-toolbar-spacer` | `flex:1`: pushes items to the right side of the toolbar |
+| `ca-page-info` | "1–8 of 240" text in the pagination footer |
+| `ca-row-actions` | Row actions: hidden by default, visible on hover |
+| `ca-btn-danger` | Red outlined button |
+| `ca-btn-danger-ghost` | Red ghost/text button |
+| `ca-bar-fill` | Dynamic progress bar: uses the `--bar-w` CSS var |
+| `ca-bar-fill--warn` | Warning variant of the bar |
+| `ca-pricing-cta` | CTA button at the bottom of a pricing card (`width:100%; margin-top:auto`) |
 
 ---
 
-Esta é a regra mais importante para manter consistência no site e em apps reais.
+This is the most important rule for staying consistent across the site and real apps.
 
-### `AppList` — listagem/CRUD fullscreen
+### `AppList`: fullscreen list/CRUD
 
-**Quando usar:** página de listagem de entidades (usuários, pedidos, faturas, etc.)
+**When to use:** an entity list page (users, orders, invoices, etc.)
 
-Comportamento: a página NÃO rola. Só a tabela rola. Header, toolbar e footer de paginação ficam fixos.
+Behavior: the page does NOT scroll. Only the table scrolls. Header, toolbar and pagination footer stay fixed.
 
 ```svelte
 <AppList title="Users" data={users} searchKeys={['name', 'email']} perPage={8}>
@@ -194,33 +194,33 @@ Comportamento: a página NÃO rola. Só a tabela rola. Header, toolbar e footer 
 </AppList>
 ```
 
-Com `data`, o `AppList` renderiza busca, contagem, paginação e empty state sozinho. Use `toolbar`/`footer` manuais apenas quando a paginação é feita no servidor.
+With `data`, `AppList` renders search, count, pagination and empty state on its own. Use manual `toolbar`/`footer` only when pagination happens on the server.
 
 ---
 
-### `AppForm` — formulário de criação/edição
+### `AppForm`: create/edit form
 
-**Quando usar:** página de criação ou edição de uma entidade (New User, Edit Post, etc.)
+**When to use:** a page to create or edit an entity (New User, Edit Post, etc.)
 
-Comportamento: header e footer ficam fixos. Só o corpo do form rola.
+Behavior: header and footer stay fixed. Only the form body scrolls.
 
 ```svelte
 <AppForm title="New User" description="Fill in the details to create a new user.">
   {#snippet leading()}
-    <!-- botão de voltar fica aqui -->
+    <!-- back button goes here -->
     <Button variant="ghost" size="sm" href="/users">
       {#snippet leading()}<ArrowLeft size={15} />{/snippet}
     </Button>
   {/snippet}
 
-  <!-- FormSection layout="grid" é o padrão: campos de texto ficam em 2 colunas -->
+  <!-- FormSection layout="grid" is the default: text fields sit in 2 columns -->
   <FormSection title="Account details" description="Basic information.">
     <TextField label="Full name" bind:value={name} />
     <TextField label="Email" type="email" bind:value={email} />
     <Select label="Role" bind:value={role} options={roleOpts} />
   </FormSection>
 
-  <!-- layout="list" para Switch, SettingItem, Divider -->
+  <!-- layout="list" for Switch, SettingItem, Divider -->
   <FormSection title="Notifications" layout="list">
     <Switch label="Send welcome email" bind:checked={notify} />
   </FormSection>
@@ -234,21 +234,21 @@ Comportamento: header e footer ficam fixos. Só o corpo do form rola.
 </AppForm>
 ```
 
-**Regras do `AppForm`:**
-- Botão de voltar vai no `{#snippet leading()}`, não como primeiro filho do form
-- Ações de cancelar/salvar vão no `{#snippet footer()}`, nunca no body
-- Não passe `maxWidth` — o conteúdo ocupa todo o espaço disponível
-- `FormSection` default `layout="grid"` funciona para campos de texto
-- `FormSection layout="list"` para Switch/SettingItem (sem gap, flush)
-- `FormSection layout="stack"` para blocos compostos (Avatar + campos)
+**`AppForm` rules:**
+- The back button goes in `{#snippet leading()}`, not as the first child of the form
+- Cancel/save actions go in `{#snippet footer()}`, never in the body
+- Do not pass `maxWidth`: the content takes all available space
+- `FormSection` default `layout="grid"` works for text fields
+- `FormSection layout="list"` for Switch/SettingItem (no gap, flush)
+- `FormSection layout="stack"` for composite blocks (Avatar + fields)
 
 ---
 
-### `AppSettings` — configurações com navegação lateral
+### `AppSettings`: settings with side navigation
 
-**Quando usar:** página de configurações com múltiplas seções (Workspace, Notifications, Security, etc.)
+**When to use:** a settings page with multiple sections (Workspace, Notifications, Security, etc.)
 
-Comportamento: nav lateral fixa à esquerda. Conteúdo direito rola.
+Behavior: fixed side nav on the left. The right content scrolls.
 
 ```svelte
 <script lang="ts">
@@ -301,36 +301,36 @@ Comportamento: nav lateral fixa à esquerda. Conteúdo direito rola.
 </AppSettings>
 ```
 
-**Regras do `AppSettings`:**
-- Não passe `maxWidth` — o conteúdo ocupa toda a área disponível
-- Cada tab renderiza com `{#if tab === 'x'}` no body
-- `FormSection layout="list"` para `SettingItem` + `Switch` (o padrão mais comum em settings)
-- `FormSection layout="grid"` para campos de texto (nome, email, etc.)
-- Ações globais (Save/Cancel) ficam no `{#snippet actions()}`
+**`AppSettings` rules:**
+- Do not pass `maxWidth`: the content takes the whole available area
+- Each tab renders with `{#if tab === 'x'}` in the body
+- `FormSection layout="list"` for `SettingItem` + `Switch` (the most common pattern in settings)
+- `FormSection layout="grid"` for text fields (name, email, etc.)
+- Global actions (Save/Cancel) go in `{#snippet actions()}`
 
 ---
 
-### `MobilePane` e `StickyActions` — mobile nativo
+### `MobilePane` and `StickyActions`: native-feeling mobile
 
 ```svelte
 <MobilePane bind:open={chatOpen} title="Maria" onback={() => (chatId = null)}>
-  {#snippet actions()}<IconButton aria-label="Mais">…</IconButton>{/snippet}
+  {#snippet actions()}<IconButton aria-label="More">…</IconButton>{/snippet}
   <Messages />
 </MobilePane>
 
 <StickyActions align="stretch" show={dirty}>
-  <Button variant="ghost">Cancelar</Button>
-  <Button variant="filled">Salvar</Button>
+  <Button variant="ghost">Cancel</Button>
+  <Button variant="filled">Save</Button>
 </StickyActions>
 ```
 
-`MobilePane`: `bind:open`, `title`, `onback?`, `actions?`, `headerTitle?` (substitui o texto do título), `scroll=true` (`false` quando o corpo tem rolagem e compositor próprios). Nunca monte `position: fixed` à mão para telas cheias no mobile. `AuthLayout` mostra uma faixa de marca abaixo de 768px (`mobileBrand`, padrão `true`); não crie um `AuthBrand` local.
+`MobilePane`: `bind:open`, `title`, `onback?`, `actions?`, `headerTitle?` (replaces the title text), `scroll=true` (`false` when the body has its own scroll and composer). Never hand-roll `position: fixed` for full-screen mobile views. `AuthLayout` shows a brand strip below 768px (`mobileBrand`, default `true`); do not create a local `AuthBrand`.
 
 ---
 
-### `PageShell` — dashboard e páginas de conteúdo livre
+### `PageShell`: dashboards and free-form content pages
 
-**Quando usar:** dashboard, relatórios, analytics. Qualquer página que não é lista, form ou settings.
+**When to use:** dashboards, reports, analytics. Any page that is not a list, form or settings page.
 
 ```svelte
 <PageShell title="Dashboard" description="Monday, Sep 22, 2026" maxWidth="1200px" gap={24}>
@@ -351,117 +351,117 @@ Comportamento: nav lateral fixa à esquerda. Conteúdo direito rola.
 
 ---
 
-## `FormSection` — referência rápida
+## `FormSection`: quick reference
 
-| `layout` | Usar quando | Comportamento |
+| `layout` | Use when | Behavior |
 |---|---|---|
-| `"grid"` (padrão) | `TextField`, `Select`, `NumberField` | Auto-fill 2 colunas, `minmax(260px, 1fr)` |
-| `"list"` | `Switch`, `SettingItem`, `Divider` | Coluna única, sem gap entre itens |
-| `"stack"` | Blocos compostos (Avatar + campos, grupos) | Coluna única, `gap: 16px` |
+| `"grid"` (default) | `TextField`, `Select`, `NumberField` | Auto-fill 2 columns, `minmax(260px, 1fr)` |
+| `"list"` | `Switch`, `SettingItem`, `Divider` | Single column, no gap between items |
+| `"stack"` | Composite blocks (Avatar + fields, groups) | Single column, `gap: 16px` |
 
-**Nunca** envolva campos em `<Stack gap={N}>` dentro de `FormSection`. Deixe o `layout` trabalhar.
+**Never** wrap fields in `<Stack gap={N}>` inside `FormSection`. Let `layout` do the work.
 
 ---
 
-## Componentes disponíveis
+## Available components
 
-### Layout de página (App-level)
-| Componente | Uso |
+### Page layout (App-level)
+| Component | Use |
 |---|---|
-| `AppList` | Listagem fullscreen — tabela com scroll interno, paginação fixa |
-| `AppForm` | Formulário — header + scroll body + footer sticky |
-| `AppSettings` | Configurações — nav lateral + conteúdo scrollável |
-| `PageShell` | Dashboard/conteúdo — scroll normal, max-width, gap configurável |
-| `MobilePane` | Tela cheia acima do shell no mobile (thread de chat, histórico, detalhe) — header com voltar, Escape fecha, foco entra/volta, safe-area e teclado virtual |
-| `StickyActions` | Barra de ações de formulário colada ao fim do scroll (`align="end" \| "stretch"`, `show`) — vidro, safe-area e teclado virtual |
+| `AppList` | Fullscreen list: table with internal scroll, fixed pagination |
+| `AppForm` | Form: header + scrolling body + sticky footer |
+| `AppSettings` | Settings: side nav + scrollable content |
+| `PageShell` | Dashboard/content: normal scroll, max-width, configurable gap |
+| `MobilePane` | Full screen above the shell on mobile (chat thread, history, detail): header with back, Escape closes, focus enters/returns, safe-area and virtual keyboard |
+| `StickyActions` | Form action bar stuck to the end of the scroll (`align="end" \| "stretch"`, `show`): glass, safe-area and virtual keyboard |
 
-### Layout de conteúdo
-| Componente | Uso |
+### Content layout
+| Component | Use |
 |---|---|
-| `FormSection` | Seção de form — título, descrição, grid/list/stack de campos |
-| `SettingItem` | Row de configuração — label + descrição + controle (Switch, Button) |
-| `GlassCard` | Container glass genérico |
-| `KpiCard` | Card de métrica — valor, trend, ícone |
-| `Grid` | Grid CSS com `cols` e `gap` configuráveis |
-| `Row` | Flex row com `gap`, `align`, `justify` |
-| `Stack` | Flex column com `gap` |
-| `EmptyState` | Estado vazio com ícone, título, ação |
+| `FormSection` | Form section: title, description, grid/list/stack of fields |
+| `SettingItem` | Settings row: label + description + control (Switch, Button) |
+| `GlassCard` | Generic glass container |
+| `KpiCard` | Metric card: value, trend, icon |
+| `Grid` | CSS grid with configurable `cols` and `gap` |
+| `Row` | Flex row with `gap`, `align`, `justify` |
+| `Stack` | Flex column with `gap` |
+| `EmptyState` | Empty state with icon, title, action |
 
-### AppShell (shell de app)
-| Componente | Descrição |
+### AppShell (app shell)
+| Component | Description |
 |---|---|
-| `AppShellLayout` | Layout raiz — Rail + Panel + conteúdo |
-| `Rail` | Dock lateral 52px. Logo via `{#snippet brand()}`, ações via `{#snippet railBottom()}` |
-| `Panel` | Painel de navegação 200px com spring animation |
-| `BottomNav` | Navegação inferior para mobile |
-| `MobileHeader` | Header mobile |
+| `AppShellLayout` | Root layout: Rail + Panel + content |
+| `Rail` | 52px side dock. Logo via `{#snippet brand()}`, actions via `{#snippet railBottom()}` |
+| `Panel` | 200px navigation panel with spring animation |
+| `BottomNav` | Bottom navigation for mobile |
+| `MobileHeader` | Mobile header |
 
-### Superfícies glass
-| Componente | Uso |
+### Glass surfaces
+| Component | Use |
 |---|---|
-| `GlassSurface` | Container glass genérico com material e espessura configuráveis |
-| `GlassCard` | Card glass com padding padrão, título opcional, `flush`, `full` |
-| `LiquidGlass` | Efeito Liquid Glass com distorção de fundo |
+| `GlassSurface` | Generic glass container with configurable material and thickness |
+| `GlassCard` | Glass card with default padding, optional title, `flush`, `full` |
+| `LiquidGlass` | Liquid Glass effect with background distortion |
 
 ### DataTable (TanStack Table v9)
 ```ts
 import { DataTable, createCaTable, createCaColumnHelper, caTableFeatures } from "@codeatlasdev/ui/table";
 ```
-- Server-side: `createCaTable` + `caTableFeatures` para sorting/filtering/pagination server-side
-- `CaColumnDef<T>` — tipo para colunas com metadados (`meta.label`, `meta.filterVariant`)
-- Para listas simples use `SimpleTable` + `UserCell` + `StatusChip` — mais leve
+- Server-side: `createCaTable` + `caTableFeatures` for server-side sorting/filtering/pagination
+- `CaColumnDef<T>`: column type with metadata (`meta.label`, `meta.filterVariant`)
+- For simple lists use `SimpleTable` + `UserCell` + `StatusChip`, which is lighter
 
 ### Display
 `Avatar` · `Image` · `Badge` · `Alert` · `Chip` · `StatusChip` · `KpiCard` · `EmptyState` · `Timeline` · `Sparkline` · `SimpleTable`
 
-- **`SimpleTable` `responsive`** — `"scroll"` (padrão) ou `"cards"`. Em `cards`, abaixo de `md` cada `<tr>` vira um card e cada `<td>` mostra seu rótulo via `::before { content: attr(data-label) }`. **Obrigatório: passe `data-label="Coluna"` em cada `<td>`** (célula sem `data-label` fica sem rótulo). Dispensa wrappers de scroll locais.
+- **`SimpleTable` `responsive`**: `"scroll"` (default) or `"cards"`. With `cards`, below `md` each `<tr>` becomes a card and each `<td>` shows its label via `::before { content: attr(data-label) }`. **Required: pass `data-label="Column"` on every `<td>`** (a cell without `data-label` has no label). No local scroll wrappers needed.
   ```svelte
   <SimpleTable responsive="cards">
-    <thead><tr><th>Nome</th><th>Status</th></tr></thead>
-    <tbody>{#each rows as r}<tr><td data-label="Nome">{r.nome}</td><td data-label="Status">{r.status}</td></tr>{/each}</tbody>
+    <thead><tr><th>Name</th><th>Status</th></tr></thead>
+    <tbody>{#each rows as r}<tr><td data-label="Name">{r.name}</td><td data-label="Status">{r.status}</td></tr>{/each}</tbody>
   </SimpleTable>
   ```
-- **Alvo de toque** — `--ca-touch-target: 44px` (`tokens.css`). Sob `@media (pointer: coarse)` vira `min-height`/`min-width` de `IconButton`, trigger de `Select`, `TabsTrigger`, `ToggleGroup`, `SegmentedControl`, `PinInput` e células do calendário. É media query, não prop: não escreva overrides de 44px no app.
+- **Touch target**: `--ca-touch-target: 44px` (`tokens.css`). Under `@media (pointer: coarse)` it becomes `min-height`/`min-width` of `IconButton`, the `Select` trigger, `TabsTrigger`, `ToggleGroup`, `SegmentedControl`, `PinInput` and calendar cells. It is a media query, not a prop: do not write 44px overrides in the app.
 
-### Inputs (wrappers Bits UI com glass tokens)
+### Inputs (Bits UI wrappers with glass tokens)
 `Button` · `IconButton` · `TextField` · `TextArea` · `Select` · `Combobox` · `Checkbox` · `Switch` · `Slider` · `NumberField` · `FileUpload` · `ToggleGroup` · `SegmentedControl` · `PinInput` · `CopyButton` · `DatePicker` · `DateRangePicker` · `DateField` · `TimeField` · `Calendar` · `RangeCalendar`
 
-- **`Button` / `IconButton` `loading`** — troca `leading` (Button) ou o ícone (IconButton) por `Spinner`, aplica `aria-busy="true"`, desabilita o clique (`onclick` não dispara) e mantém o label. Classe: `ca-btn--loading`.
-- **`ToggleGroup`** — `type="single" | "multiple"`, `bind:value` (`string` ou `string[]`), `items: { value, label?, icon?, disabled?, 'aria-label'? }[]` (item só com ícone exige `aria-label`), `size="sm" | "md"`, `variant="outlined" | "ghost"`, `orientation`, `onchange`.
-- **`SegmentedControl`** — `ToggleGroup` single com pílula deslizante (`.ca-seg__thumb`, sem animação em `reducedMotion`). Props: `bind:value`, `items`, `size="sm" | "md"`, `fullWidth`, `disabled`, `onchange`.
-- **`PinInput`** — OTP. `length=6`, `bind:value`, `type="numeric" | "text"`, `label`, `description`, `error`, `mask`, `oncomplete(value)`.
-- **`CopyButton`** — `value`, `label="Copiar"` (`''` = só ícone), `size`, `variant="ghost"`, `toast?: string` (mensagem de sucesso), `oncopy`. Ícone vira `Check` por 2s.
-- **Datas** (valores `DateValue` de `@internationalized/date`, re-exportados pela raiz: `CalendarDate`, `Time`, `today`, `parseDate`…): `locale="pt-BR"`, `weekStartsOn=1`, `minValue`, `maxValue`, `label`, `description`, `error`, `disabled`, `required`, `bind:value`.
-  - `DatePicker` — campo + popover com calendário (`bind:open`, `granularity`, `numberOfMonths`, `closeOnDateSelect`, `name`, `triggerLabel`)
-  - `DateRangePicker` — `value: DateRange` (`{ start, end }`), `closeOnRangeSelect`
-  - `DateField` — só os segmentos digitáveis, sem popover
-  - `TimeField` — `value: Time`, `granularity="hour" | "minute" | "second"`, `hourCycle`
-  - `Calendar` / `RangeCalendar` — grade inline (`fixedWeeks`, `isDateDisabled`, `isDateUnavailable`)
+- **`Button` / `IconButton` `loading`**: swaps `leading` (Button) or the icon (IconButton) for a `Spinner`, applies `aria-busy="true"`, disables the click (`onclick` does not fire) and keeps the label. Class: `ca-btn--loading`.
+- **`ToggleGroup`**: `type="single" | "multiple"`, `bind:value` (`string` or `string[]`), `items: { value, label?, icon?, disabled?, 'aria-label'? }[]` (an icon-only item requires `aria-label`), `size="sm" | "md"`, `variant="outlined" | "ghost"`, `orientation`, `onchange`.
+- **`SegmentedControl`**: single `ToggleGroup` with a sliding pill (`.ca-seg__thumb`, no animation under `reducedMotion`). Props: `bind:value`, `items`, `size="sm" | "md"`, `fullWidth`, `disabled`, `onchange`.
+- **`PinInput`**: OTP. `length=6`, `bind:value`, `type="numeric" | "text"`, `label`, `description`, `error`, `mask`, `oncomplete(value)`.
+- **`CopyButton`**: `value`, `label="Copy"` (`''` = icon only), `size`, `variant="ghost"`, `toast?: string` (success message), `oncopy`. The icon becomes `Check` for 2s.
+- **Dates** (`DateValue` values from `@internationalized/date`, re-exported by the root: `CalendarDate`, `Time`, `today`, `parseDate`…): `locale="pt-BR"`, `weekStartsOn=1`, `minValue`, `maxValue`, `label`, `description`, `error`, `disabled`, `required`, `bind:value`.
+  - `DatePicker`: field + popover with a calendar (`bind:open`, `granularity`, `numberOfMonths`, `closeOnDateSelect`, `name`, `triggerLabel`)
+  - `DateRangePicker`: `value: DateRange` (`{ start, end }`), `closeOnRangeSelect`
+  - `DateField`: only the typeable segments, no popover
+  - `TimeField`: `value: Time`, `granularity="hour" | "minute" | "second"`, `hourCycle`
+  - `Calendar` / `RangeCalendar`: inline grid (`fixedWeeks`, `isDateDisabled`, `isDateUnavailable`)
 
 ```svelte
-<Button loading={saving} onclick={save}>Salvar</Button>
-<SegmentedControl bind:value={view} items={[{ value: "list", label: "Lista" }, { value: "grid", label: "Grade" }]} />
-<DatePicker label="Entrega" bind:value={date} minValue={today(getLocalTimeZone())} />
-<TimeField label="Horário" bind:value={time} />
+<Button loading={saving} onclick={save}>Save</Button>
+<SegmentedControl bind:value={view} items={[{ value: "list", label: "List" }, { value: "grid", label: "Grid" }]} />
+<DatePicker label="Delivery" bind:value={date} minValue={today(getLocalTimeZone())} />
+<TimeField label="Time" bind:value={time} />
 <PinInput length={6} oncomplete={verify} />
 ```
 
 ### Overlays
 `Dialog` · `AlertDialog` · `Drawer` · `DropdownMenu` · `Popover` · `Tooltip` · `CommandPalette` · `NotificationBell`
 
-- **`AlertDialog`** — confirmação que exige resposta (`role="alertdialog"`, sem "X", clique fora não fecha). Props: `bind:open`, `title`, `description?`, `confirmLabel="Confirmar"`, `cancelLabel="Cancelar"`, `destructive?`, `pending?`, `onconfirm: () => void | Promise<void>`, `oncancel?`. `onconfirm` async: confirmar mostra spinner, Cancelar desabilita e fecha ao resolver (permanece aberto se lançar). Substitui `confirm()` nativo.
-- **`Sheet`** — bottom sheet abaixo de 768px, diálogo centralizado acima. `swipeToDismiss = true` (só no layout bottom): arraste a alça ou o cabeçalho (`.ca-sheet__grab`, `touch-action: none`, pointer capture) para baixo; fecha com mais de 30% da altura ou velocidade acima de 0.5 px/ms, senão volta com `Spring`. Desligado sob `reducedMotion`. O painel move por `translate` (sem `transform`, sem backdrop-filter no painel). Overlay e corpos roláveis de Sheet/Drawer/Dialog usam `touch-action: none` / `overscroll-behavior: contain`; o scroll lock do bits-ui basta no WebKit (sem `scroll-lock.ts`).
-- **`Dialog`** — `size="sm" | "md" | "lg" | "xl" | "split"`. `split` = 1100×720, grid de 2 colunas em ≥`md`, 1 coluna abaixo. `chromeless` omite header/description/actions e zera o padding do body (passe `title` para o nome acessível, fica oculto visualmente).
+- **`AlertDialog`**: confirmation that requires an answer (`role="alertdialog"`, no "X", clicking outside does not close). Props: `bind:open`, `title`, `description?`, `confirmLabel="Confirm"`, `cancelLabel="Cancel"`, `destructive?`, `pending?`, `onconfirm: () => void | Promise<void>`, `oncancel?`. With an async `onconfirm`: confirming shows a spinner, Cancel is disabled, and it closes on resolve (stays open if it throws). Replaces native `confirm()`.
+- **`Sheet`**: bottom sheet below 768px, centered dialog above. `swipeToDismiss = true` (bottom layout only): drag the handle or the header (`.ca-sheet__grab`, `touch-action: none`, pointer capture) downward; it closes past 30% of the height or a velocity above 0.5 px/ms, otherwise it springs back with `Spring`. Disabled under `reducedMotion`. The panel moves via `translate` (no `transform`, no backdrop-filter on the panel). The overlay and scrollable bodies of Sheet/Drawer/Dialog use `touch-action: none` / `overscroll-behavior: contain`; the bits-ui scroll lock is enough on WebKit (no `scroll-lock.ts`).
+- **`Dialog`**: `size="sm" | "md" | "lg" | "xl" | "split"`. `split` = 1100×720, 2-column grid at ≥`md`, 1 column below. `chromeless` omits header/description/actions and zeroes the body padding (pass `title` for the accessible name; it stays visually hidden).
 ```svelte
-<AlertDialog bind:open title="Excluir lead?" description="Não pode ser desfeito." confirmLabel="Excluir" destructive onconfirm={() => api.remove(id)} />
+<AlertDialog bind:open title="Delete lead?" description="This cannot be undone." confirmLabel="Delete" destructive onconfirm={() => api.remove(id)} />
 <Dialog bind:open size="split" chromeless title="Lead">…</Dialog>
 ```
 
-### Navegação
+### Navigation
 `Tabs` · `TabsList` · `TabsTrigger` · `TabsContent` · `Breadcrumb` · `Pagination` · `Stepper`
 
-### Docs (sites de documentação)
-`DocsShell` (header + sidebar + índice da página; no mobile um header compacto e menu em `Sheet`) · `DocsNav` · `TableOfContents` (`variant="rail" | "inline"`) · `DocsSearch` + `searchDocs` · `CodeTabs`/`CodeTab` (copy, `sync` entre grupos) · `Callout` · `Steps` · `LinkCard` · `CardGrid` · `MethodBadge`. Tipografia de markdown: envolva o HTML em `<div class="ca-prose">`; tabelas em `.ca-table-wrap`, código em `.ca-code` (shiki dual theme). O destaque de sintaxe fica com o consumidor (shiki em build).
+### Docs (documentation sites)
+`DocsShell` (header + sidebar + page index; on mobile a compact header and menu in a `Sheet`) · `DocsNav` · `TableOfContents` (`variant="rail" | "inline"`) · `DocsSearch` + `searchDocs` · `CodeTabs`/`CodeTab` (copy, `sync` across groups) · `Callout` · `Steps` · `LinkCard` · `CardGrid` · `MethodBadge`. Markdown typography: wrap the HTML in `<div class="ca-prose">`; tables in `.ca-table-wrap`, code in `.ca-code` (shiki dual theme). Syntax highlighting is up to the consumer (shiki at build).
 
 ```svelte
 <DocsShell {sections} active="api" {groups} {pathname} {headings}
@@ -474,81 +474,81 @@ import { DataTable, createCaTable, createCaColumnHelper, caTableFeatures } from 
 ### Feedback
 `Spinner` · `Skeleton` · `Progress` · `Toast` · `Toaster`
 
-### Charts (ECharts): `@codeatlasdev/ui/charts`, requer `echarts` instalado
+### Charts (ECharts): `@codeatlasdev/ui/charts`, requires `echarts` installed
 `LineChart` · `BarChart` · `PieChart` · `ScatterChart` · `HeatmapChart` · `GaugeChart` · `RadarChart` · `Sparkline`
 
-### Subpaths com peer opcional
-Charts, DataTable e CodeSnippet NÃO saem do import raiz. Cada subpath exige seu peer:
+### Subpaths with an optional peer
+Charts, DataTable and CodeSnippet are NOT in the root import. Each subpath requires its peer:
 
 | import | peer |
 |---|---|
 | `@codeatlasdev/ui/charts` | `echarts` |
 | `@codeatlasdev/ui/table` | `@tanstack/svelte-table` |
 | `@codeatlasdev/ui/code` | `shiki` |
-| `@codeatlasdev/ui/forms` | nenhum (máscaras BR, `MoneyInput`, campos prontos) |
+| `@codeatlasdev/ui/forms` | none (Brazilian masks, `MoneyInput`, ready-made fields) |
 
-### `@codeatlasdev/ui/forms` — campos brasileiros
+### `@codeatlasdev/ui/forms`: Brazilian fields
 ```ts
 import { MaskedField, MoneyInput, PhoneField, CepField, mask,
   maskCPF, maskCNPJ, maskCPFCNPJ, maskCEP, maskPhoneBR, maskDateBR, maskRG,
   isValidCPF, isValidCNPJ, isValidDateBR, centsToDisplay, parseInputToCents } from "@codeatlasdev/ui/forms";
 ```
-| Símbolo | Uso |
+| Symbol | Use |
 |---|---|
-| `MaskedField` | `TextField` + `mask: (raw) => string` + `validate?: (v) => string \| undefined` (roda no blur). `inputmode` automático (`numeric` para CPF/CEP/telefone/data) |
-| `MoneyInput` | `value` em **centavos** (inteiro, bindable). `123456` exibe `R$ 1.234,56`. Props: `min`, `max`, `allowNegative` (padrão `false`), `onchange(cents)` |
-| `PhoneField` | `value` bindable em **E.164** (`+5511987654321`; `''` se incompleto). `country="BR"` |
-| `CepField` | `bind:value` mascarado + `onlookup?: (cep) => Promise<CepAddress \| null>` (o pacote não faz fetch: injete ViaCEP), `onresolve(address)`, `bind:lookupPending` para desabilitar campos dependentes |
-| `maskCPF` `maskCNPJ` `maskCPFCNPJ` `maskCEP` `maskPhoneBR` `maskDateBR` `maskRG` | Funções puras `(raw: string) => string` |
-| `isValidCPF` `isValidCNPJ` `isValidDateBR` | Validação (dígitos verificadores / data real) |
+| `MaskedField` | `TextField` + `mask: (raw) => string` + `validate?: (v) => string \| undefined` (runs on blur). Automatic `inputmode` (`numeric` for CPF/CEP/phone/date) |
+| `MoneyInput` | `value` in **cents** (integer, bindable). `123456` displays `R$ 1.234,56`. Props: `min`, `max`, `allowNegative` (default `false`), `onchange(cents)` |
+| `PhoneField` | bindable `value` in **E.164** (`+5511987654321`; `''` if incomplete). `country="BR"` |
+| `CepField` | masked `bind:value` + `onlookup?: (cep) => Promise<CepAddress \| null>` (the package does no fetching: inject ViaCEP), `onresolve(address)`, `bind:lookupPending` to disable dependent fields |
+| `maskCPF` `maskCNPJ` `maskCPFCNPJ` `maskCEP` `maskPhoneBR` `maskDateBR` `maskRG` | Pure functions `(raw: string) => string` |
+| `isValidCPF` `isValidCNPJ` `isValidDateBR` | Validation (check digits / real date) |
 | `centsToDisplay(cents)` · `parseInputToCents(text)` | `123456` ⇄ `"R$ 1.234,56"` |
-| `use:mask={maskCPF}` | Action para `<input>` nativo; preserva o cursor (conta dígitos antes do caret) |
+| `use:mask={maskCPF}` | Action for a native `<input>`; preserves the cursor (counts digits before the caret) |
 
 ```svelte
-<MaskedField label="CPF" mask={maskCPF} validate={(v) => (isValidCPF(v) ? undefined : "CPF inválido")} bind:value={cpf} />
-<MoneyInput label="Valor" bind:value={cents} min={0} />
+<MaskedField label="CPF" mask={maskCPF} validate={(v) => (isValidCPF(v) ? undefined : "Invalid CPF")} bind:value={cpf} />
+<MoneyInput label="Amount" bind:value={cents} min={0} />
 <PhoneField label="WhatsApp" bind:value={e164} />
-<CepField label="CEP" bind:value={cep} bind:lookupPending onlookup={viaCep} onresolve={(a) => (rua = a.logradouro)} />
+<CepField label="CEP" bind:value={cep} bind:lookupPending onlookup={viaCep} onresolve={(a) => (street = a.logradouro)} />
 ```
 
-`useForm` (raiz) aceita `arrays` para linhas repetíveis. Cada array é um `FieldArrayState<T>` com `items`, `add(item)`, `remove(index)` e `move(from, to)`:
+`useForm` (root) accepts `arrays` for repeatable rows. Each array is a `FieldArrayState<T>` with `items`, `add(item)`, `remove(index)` and `move(from, to)`:
 ```ts
-const form = useForm({ nome: "" }, { arrays: { telefones: [{ numero: "" }] } });
-form.arrays.telefones.add({ numero: "" });
-form.arrays.telefones.move(0, 1);
+const form = useForm({ name: "" }, { arrays: { phones: [{ number: "" }] } });
+form.arrays.phones.add({ number: "" });
+form.arrays.phones.move(0, 1);
 ```
 
 ---
 
-## Tokens TypeScript
+## TypeScript tokens
 
 ```ts
 import {
-  caColors,      // paleta OKLCH completa por preset
-  caTypography,  // escala de tipografia (h1..h6, body1, body2, caption, label, button)
-  caShape,       // raios de borda (xs, sm, md, lg, xl, pill)
-  caTransitions, // easing e duração (fast, base, slow, spring)
+  caColors,      // full OKLCH palette per preset
+  caTypography,  // type scale (h1..h6, body1, body2, caption, label, button)
+  caShape,       // border radii (xs, sm, md, lg, xl, pill)
+  caTransitions, // easing and duration (fast, base, slow, spring)
   caZIndex,      // z-index scale (nav, dropdown, sticky, fixed, drawer, modal, snackbar, tooltip)
-  caShadows,     // sombras
-  caMaterials,   // tokens de material (regular, thick, thin, ultrathin, ultrachick)
+  caShadows,     // shadows
+  caMaterials,   // material tokens (regular, thick, thin, ultrathin, ultrachick)
 } from "@codeatlasdev/ui";
 ```
 
 ---
 
-## CSS tokens (variáveis CSS)
+## CSS tokens (CSS variables)
 
 ```
-/* Tipografia */
+/* Typography */
 --ca-font-size-h1..h6 / body1 / body2 / caption / label / button
 
-/* Raio */
+/* Radius */
 --ca-radius-xs / sm / md / lg / xl / pill
 
 /* Z-index */
 --ca-z-nav / dropdown / sticky / fixed / drawer / modal / snackbar / tooltip
 
-/* Animação */
+/* Animation */
 --ca-ease-standard / decelerate / accelerate / spring
 --ca-duration-fast / base / slow
 
@@ -556,7 +556,7 @@ import {
 --ca-glass-bg / --ca-glass-separator / --ca-glass-tint-* / --ca-glass-border
 --ca-blur-ultra-thin / thin / regular / thick / chrome
 
-/* Cores semânticas */
+/* Semantic colors */
 --ca-brand-main / --ca-brand-light / --ca-brand-dark / --ca-brand-contrast / --ca-brand-h
 --ca-semantic-success / warning / error / info
 --ca-text-primary / secondary / disabled
@@ -567,16 +567,16 @@ import {
 /* Spacing (base 4px) */
 --ca-space-1 (4px) .. --ca-space-16 (64px)
 
-/* Layout de página */
---ca-page-px    (24px)  ← padding horizontal de todas as páginas
+/* Page layout */
+--ca-page-px    (24px)  ← horizontal padding on every page
 --ca-page-px-sm (16px)  ← mobile
---ca-page-pt    (20px)  ← padding top
---ca-page-gap   (20px)  ← gap entre seções
+--ca-page-pt    (20px)  ← top padding
+--ca-page-gap   (20px)  ← gap between sections
 ```
 
 ---
 
-## Temas
+## Themes
 
 ```html
 <html data-preset="ocean">
@@ -584,22 +584,22 @@ import {
 <html class="dark">
 ```
 
-### Tema da marca
+### Brand theme
 
-O produto tem cor própria? Gere um preset a partir do hex da logo. A lib deriva matiz, croma e luminosidade (OKLCH) e emite o conjunto completo de tokens, claro e escuro, inline no `<head>`. Sem flash.
+Does the product have its own color? Generate a preset from the logo hex. The library derives hue, chroma and lightness (OKLCH) and emits the full token set, light and dark, inline in the `<head>`. No flash.
 
 ```ts
-// src/lib/theme.ts: um só lugar, usado pelo hook e pelo plugin
+// src/lib/theme.ts: one place, used by the hook and the plugin
 import type { ThemeOptions } from "@codeatlasdev/ui"; // = Partial<ThemeDefinition>
 
 export const theme: ThemeOptions = {
   presets: [{ id: "acme", color: "#2563eb" }],
-  defaultPreset: "acme",   // usado até o usuário escolher outro
+  defaultPreset: "acme",   // used until the user picks another
   defaultScheme: "system", // "light" | "dark" | "system"
   defaultStyle: "glass",   // "glass" | "frosted" | "solid" | "flat"
   fonts: { body: "Geist, system-ui, sans-serif" },
-  radius: 1,               // multiplicador da escala de raio
-  density: "comfortable",  // ou "compact"
+  radius: 1,               // multiplier of the radius scale
+  density: "comfortable",  // or "compact"
   overrides: { light: { "--ca-card-padding": "16px" } },
 };
 
@@ -610,29 +610,29 @@ export const handle = sequence(caThemeHandle(theme));
 plugins: [sveltekit(), caThemePlugin(theme)]
 ```
 
-- `id` não pode colidir com um preset embutido; `defaultPreset` precisa existir (erro no build).
-- O script de init descarta valores salvos que o app não conhece (preset antigo, scheme/style inválido) e cai no default.
-- Define `<meta name="theme-color">` com a superfície do preset e segue o SO em `system` antes do JS carregar.
-- Gráficos usam o hex da marca como primeira série.
-- `colorScheme` herda os defaults: `colorScheme.preset` começa em `"acme"`.
+- `id` must not collide with a built-in preset; `defaultPreset` must exist (build error).
+- The init script discards saved values the app does not know (old preset, invalid scheme/style) and falls back to the default.
+- Sets `<meta name="theme-color">` to the preset surface and follows the OS in `system` before JS loads.
+- Charts use the brand hex as the first series.
+- `colorScheme` inherits the defaults: `colorScheme.preset` starts at `"acme"`.
 
-### Cascata e sobrescrita de tokens
+### Cascade and overriding tokens
 
-`global.css` declara `@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.components, ca.materials, ca.utilities`. O CSS dos componentes e o do app ficam fora de camada e vencem sempre. Para sobrescrever tokens do pacote basta declarar `--ca-*` em `:root` no app, sem `!important`.
+`global.css` declares `@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.components, ca.materials, ca.utilities`. Component CSS and app CSS stay outside any layer and always win. To override package tokens, just declare `--ca-*` on `:root` in the app, without `!important`.
 
-`global.css` = `core.css` (inclui só o preset `amber`) + os 7 presets restantes. Apps que usam um preset só importam `styles/core.css` + `styles/presets/<id>.css` (ver `site/.../getting-started/performance.mdx`).
+`global.css` = `core.css` (includes only the `amber` preset) + the other 7 presets. Apps that use a single preset import only `styles/core.css` + `styles/presets/<id>.css` (see `site/.../getting-started/performance.mdx`).
 
-Os presets embutidos são gerados: edite `packages/ui/src/lib/theme/builtins.ts` e rode `bun run --cwd packages/ui themes` (o `validate` falha se `styles/presets/*.css` estiver desatualizado).
+The built-in presets are generated: edit `packages/ui/src/lib/theme/builtins.ts` and run `bun run --cwd packages/ui themes` (`validate` fails if `styles/presets/*.css` is out of date).
 
-### Ilhas de tema
+### Theme islands
 
 ```svelte
-<section data-theme-scope="dark">…tokens do modo escuro aqui dentro, em qualquer página…</section>
+<section data-theme-scope="dark">…dark mode tokens in here, on any page…</section>
 ```
 
-### Tokens em runtime
+### Runtime tokens
 
-`colorScheme.setTokens({ "--ca-brand-main": "#ff5500" })` grava um único `<style id="ca-runtime-tokens">`, persiste e é reaplicado pelo script de init antes do primeiro paint. `setTokens({})` limpa.
+`colorScheme.setTokens({ "--ca-brand-main": "#ff5500" })` writes a single `<style id="ca-runtime-tokens">`, persists it, and the init script reapplies it before the first paint. `setTokens({})` clears it.
 
 ---
 
@@ -641,43 +641,43 @@ Os presets embutidos são gerados: edite `packages/ui/src/lib/theme/builtins.ts`
 ```ts
 import { colorScheme, reducedMotion, responsive } from "@codeatlasdev/ui";
 
-colorScheme.init()          // no layout raiz (onMount); retorna cleanup
-colorScheme.toggle()        // alternar dark/light
-colorScheme.setPreset(id)   // trocar preset de cor (colorScheme.presets lista os válidos)
-colorScheme.isDark          // boolean reativo
+colorScheme.init()          // in the root layout (onMount); returns cleanup
+colorScheme.toggle()        // switch dark/light
+colorScheme.setPreset(id)   // change the color preset (colorScheme.presets lists the valid ones)
+colorScheme.isDark          // reactive boolean
 
-responsive.init()           // mede e passa a seguir resize; retorna cleanup
-responsive.current          // 'xs' | 'sm' | 'md' | 'lg' | 'xl'; antes do init vale desktop
+responsive.init()           // measures and starts following resize; returns cleanup
+responsive.current          // 'xs' | 'sm' | 'md' | 'lg' | 'xl'; before init it is desktop
 ```
 
 ---
 
-## Idioma (i18n)
+## Language (i18n)
 
-Todo texto visível que o pacote gera (aria-label, placeholder, estados vazios, toasts, "Copiar", "Nesta página"…) vem de um catálogo. O padrão é **inglês**. Apps em português chamam `setLocale('pt-BR')` uma vez, no layout raiz.
+Every piece of visible text the package generates (aria-label, placeholder, empty states, toasts, "Copy", "On this page"…) comes from a catalog. The default is **English**. Portuguese apps call `setLocale('pt-BR')` once, in the root layout.
 
 ```svelte
 <!-- src/routes/+layout.svelte -->
 <script>
   import { setLocale } from "@codeatlasdev/ui";
-  setLocale("pt-BR");   // "en" | "pt-BR"; roda no SSR também, antes do primeiro render
+  setLocale("pt-BR");   // "en" | "pt-BR"; runs on SSR too, before the first render
 </script>
 ```
 
-- O estado é um `$state` de módulo: todas as ilhas/apps da mesma página compartilham o idioma, e os componentes re-renderizam ao trocar. `locale.value` lê o atual.
-- **Prop explícita sempre vence** o catálogo: `<TableOfContents label="Neste artigo" />`. Props de texto (`label`, `placeholder`, `confirmLabel`, `emptyText`, `ofLabel`…) não têm mais default; sem a prop, o componente usa o catálogo.
-- **Sobrescrever frases** sem criar locale: `setLocale("pt-BR", { docs: { toc: "Neste artigo" } })`. O objeto é mesclado em profundidade sobre o catálogo; uma nova chamada a `setLocale` substitui os overrides anteriores.
-- Catálogo: `packages/ui/src/lib/i18n/en.ts` (fonte da verdade, agrupado por componente, ex.: `docs.search.placeholder`) e `pt-BR.ts` (tipado como `Messages`: chave faltando é erro de tipo). Strings com valor são funções: `notificationBell.label(unread)`.
-- Texto novo em componente: adicione a chave em `en.ts` **e** `pt-BR.ts`, leia com `t().grupo.chave` no markup/`$derived` (nunca em `const` de módulo, senão não reage à troca) e use `label ?? t().grupo.chave` quando houver prop.
-- Em testes, chame `setLocale("pt-BR")` onde o teste confere texto em português e `setLocale("en")` no `afterEach`; o padrão é inglês.
-- `locale` de data/número (`DatePicker locale="pt-BR"`, máscaras) é independente do idioma da UI.
+- The state is a module-level `$state`: all islands/apps on the same page share the language, and components re-render on change. `locale.value` reads the current one.
+- **An explicit prop always wins** over the catalog: `<TableOfContents label="In this article" />`. Text props (`label`, `placeholder`, `confirmLabel`, `emptyText`, `ofLabel`…) no longer have a default; without the prop, the component uses the catalog.
+- **Override phrases** without creating a locale: `setLocale("pt-BR", { docs: { toc: "In this article" } })`. The object is deep-merged over the catalog; a new `setLocale` call replaces the previous overrides.
+- Catalog: `packages/ui/src/lib/i18n/en.ts` (source of truth, grouped by component, e.g. `docs.search.placeholder`) and `pt-BR.ts` (typed as `Messages`: a missing key is a type error). Strings with a value are functions: `notificationBell.label(unread)`.
+- New text in a component: add the key to `en.ts` **and** `pt-BR.ts`, read it with `t().group.key` in markup/`$derived` (never in a module-level `const`, or it will not react to the switch) and use `label ?? t().group.key` when there is a prop.
+- In tests, call `setLocale("pt-BR")` where the test checks Portuguese text and `setLocale("en")` in `afterEach`; the default is English.
+- The date/number `locale` (`DatePicker locale="pt-BR"`, masks) is independent of the UI language.
 
 ---
 
-## AppShell — padrão de uso
+## AppShell: usage pattern
 
 ```svelte
-<!-- Em qualquer layout de app autenticado -->
+<!-- In any authenticated app layout -->
 <AppShellLayout
   modules={MODULES}
   pathname={$page.url.pathname}
@@ -685,12 +685,12 @@ Todo texto visível que o pacote gera (aria-label, placeholder, estados vazios, 
   onNavigate={(path) => goto(path)}
 >
   {#snippet brand()}
-    <!-- Logo no topo da Rail e no header mobile. Sem isso: "CA" -->
+    <!-- Logo at the top of the Rail and in the mobile header. Without it: "CA" -->
     <a href="/" aria-label="Acme"><AcmeLogo size={28} /></a>
   {/snippet}
 
   {#snippet railBottom()}
-    <!-- Items fixos no bottom da rail: notificações, avatar, busca -->
+    <!-- Fixed items at the bottom of the rail: notifications, avatar, search -->
     <button class="ca-rail-btn" onclick={() => (cmdOpen = true)}>
       <Search size={16} />
     </button>
@@ -700,42 +700,42 @@ Todo texto visível que o pacote gera (aria-label, placeholder, estados vazios, 
     </a>
   {/snippet}
 
-  <!-- Sem {#snippet header()}. Header global foi removido -->
-  <!-- Cada página define seu próprio "header" via AppList/AppForm/AppSettings/PageShell -->
+  <!-- No {#snippet header()}. The global header was removed -->
+  <!-- Each page defines its own "header" via AppList/AppForm/AppSettings/PageShell -->
 
   {@render children?.()}
 </AppShellLayout>
 ```
 
-**Regra:** `AppShellLayout` não tem header global. Cada página define seu próprio topo via `AppList` (header+toolbar), `AppForm` (header), `AppSettings` (header), ou `PageShell` (header+body).
+**Rule:** `AppShellLayout` has no global header. Each page defines its own top via `AppList` (header+toolbar), `AppForm` (header), `AppSettings` (header), or `PageShell` (header+body).
 
 ---
 
-## Relação com projetos consumidores
+## Relationship with consuming projects
 
-Todo app que consome o pacote deve:
-1. Instalar `@codeatlasdev/ui` do npm público (sem `.npmrc`/auth)
-2. Importar `@codeatlasdev/ui/styles/global.css` no layout raiz e registrar `caThemePlugin()` no `vite.config.ts`
-3. Definir o tema da marca (`ThemeOptions`) e passar para `caThemeHandle` e `caThemePlugin`
-4. Usar `AppShellLayout` como wrapper de layout raiz, com `brand` para a logo e `railBottom` para ações do usuário
-5. Criar páginas usando `AppList`, `AppForm`, `AppSettings`, ou `PageShell` — nunca wrappers manuais
+Every app that consumes the package must:
+1. Install `@codeatlasdev/ui` from public npm (no `.npmrc`/auth)
+2. Import `@codeatlasdev/ui/styles/global.css` in the root layout and register `caThemePlugin()` in `vite.config.ts`
+3. Define the brand theme (`ThemeOptions`) and pass it to `caThemeHandle` and `caThemePlugin`
+4. Use `AppShellLayout` as the root layout wrapper, with `brand` for the logo and `railBottom` for user actions
+5. Build pages with `AppList`, `AppForm`, `AppSettings`, or `PageShell`, never manual wrappers
 
 ---
 
-## Convenções de código
+## Code conventions
 
-- Indentação: tabs (Biome)
-- Aspas: duplas (Biome)
-- Ponto-e-vírgula: sempre
+- Indentation: tabs (Biome)
+- Quotes: double (Biome)
+- Semicolons: always
 - `lineWidth`: 100
-- Sem Tailwind — estilos via CSS vars e classes
-- Sem MUI neste pacote — é puro Svelte + Bits UI
-- Sem CSS inline exceto CSS custom properties dinâmicos (`style="--bar-w:{pct}%"`)
+- No Tailwind: styles via CSS vars and classes
+- No MUI in this package: it is pure Svelte + Bits UI
+- No inline CSS except dynamic CSS custom properties (`style="--bar-w:{pct}%"`)
 
 
-## Performance (guardas do pacote)
+## Performance (package guards)
 
-- `bun run --cwd packages/ui size` (parte do `validate`) empacota cada entry com esbuild e compara o gzip com `packages/ui/size-limit.json`. O limite só desce: `size:update` reduz limites com folga; subir um limite é decisão manual, explicada no PR. Para adicionar uma entry, edite `ENTRIES` em `scripts/size-limit.ts`.
-- `bun run --cwd packages/ui lint:tokens` (parte do `validate`) reprova: `will-change` em arquivo com `backdrop-filter`; `100vh|100dvh|100svh|100lvh` literal (use `var(--ca-vh)`); `backdrop-filter` declarado antes de `-webkit-backdrop-filter` (Lightning CSS descarta o padrão); `font-size` < 16px em regra de input (zoom no foco do iOS).
-- Imagens de conteúdo: `Image` (exige `width`/`height`; `alt=""` exige `decorative`; `priority` só na imagem do LCP).
-- Fontes: `defineTheme({ fonts: { body: { family, src, weight, preload, fallback, fallbackMetrics } } })` gera `@font-face`, o fallback com `size-adjust` e o `<link rel="preload">`. String continua valendo.
+- `bun run --cwd packages/ui size` (part of `validate`) bundles each entry with esbuild and compares the gzip size with `packages/ui/size-limit.json`. The limit only goes down: `size:update` lowers limits with some headroom; raising a limit is a manual decision, explained in the PR. To add an entry, edit `ENTRIES` in `scripts/size-limit.ts`.
+- `bun run --cwd packages/ui lint:tokens` (part of `validate`) rejects: `will-change` in a file with `backdrop-filter`; a literal `100vh|100dvh|100svh|100lvh` (use `var(--ca-vh)`); `backdrop-filter` declared before `-webkit-backdrop-filter` (Lightning CSS drops the standard one); `font-size` < 16px in an input rule (iOS focus zoom).
+- Content images: `Image` (requires `width`/`height`; `alt=""` requires `decorative`; `priority` only on the LCP image).
+- Fonts: `defineTheme({ fonts: { body: { family, src, weight, preload, fallback, fallbackMetrics } } })` generates `@font-face`, the fallback with `size-adjust` and the `<link rel="preload">`. A plain string still works.

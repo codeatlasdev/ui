@@ -19,6 +19,6 @@
 		{/each}
 	{/each}
 	<div style="width:160px">
-		<Chip label="Rótulo muito longo para quebrar ou truncar" />
+		<Chip label="A very long label that should wrap or truncate" />
 	</div>
 </div>

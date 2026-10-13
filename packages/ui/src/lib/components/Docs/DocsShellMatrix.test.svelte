@@ -3,23 +3,23 @@
 	import type { DocsHeading, DocsNavGroup, DocsSearchEntry, DocsSection } from "./types.js";
 
 	const sections: DocsSection[] = [
-		{ id: "guia", label: "Guia", href: "/guia" },
+		{ id: "guide", label: "Guide", href: "/guide" },
 		{ id: "api", label: "API", href: "/api" },
 	];
 	const groups: DocsNavGroup[] = [
 		{
-			label: "Começando",
+			label: "Getting started",
 			items: [
-				{ href: "/guia/intro", title: "Introdução" },
-				{ href: "/guia/instalacao", title: "Instalação" },
+				{ href: "/guide/intro", title: "Introduction" },
+				{ href: "/guide/installation", title: "Installation" },
 			],
 		},
-		{ label: "API", items: [{ href: "/api/sessoes", title: "Listar sessões", badge: "GET" }] },
+		{ label: "API", items: [{ href: "/api/sessions", title: "List sessions", badge: "GET" }] },
 	];
 	const headings: DocsHeading[] = [
-		{ id: "intro", text: "Introdução", depth: 2 },
-		{ id: "requisitos", text: "Requisitos", depth: 3 },
-		{ id: "uso", text: "Uso básico", depth: 2 },
+		{ id: "intro", text: "Introduction", depth: 2 },
+		{ id: "requirements", text: "Requirements", depth: 3 },
+		{ id: "usage", text: "Basic usage", depth: 2 },
 	];
 	const searchIndex: DocsSearchEntry[] = [];
 </script>
@@ -31,9 +31,9 @@
 >
 	<DocsShell
 		{sections}
-		active="guia"
+		active="guide"
 		{groups}
-		pathname="/guia/intro"
+		pathname="/guide/intro"
 		{headings}
 		{searchIndex}
 		onnavigate={() => {}}
@@ -41,10 +41,10 @@
 		{#snippet brand()}<strong>Acme API</strong> <span>Docs</span>{/snippet}
 		{#snippet children()}
 			<article>
-				<h1>Introdução</h1>
-				<p>Conteúdo fixo da página de documentação para o teste visual.</p>
-				<h2 id="intro">Visão geral</h2>
-				<p>Segundo parágrafo com texto determinístico.</p>
+				<h1>Introduction</h1>
+				<p>Fixed documentation page content for the visual test.</p>
+				<h2 id="intro">Overview</h2>
+				<p>Second paragraph with deterministic text.</p>
 			</article>
 		{/snippet}
 	</DocsShell>

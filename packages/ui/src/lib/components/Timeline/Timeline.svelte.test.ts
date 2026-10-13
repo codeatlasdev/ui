@@ -5,13 +5,13 @@ import Timeline from "./Timeline.svelte";
 
 const items = [
 	{
-		label: "Pedido criado",
+		label: "Order created",
 		date: "2026-10-01",
-		description: "Pelo cliente",
+		description: "By the customer",
 		variant: "success" as const,
 	},
-	{ label: "Pagamento", date: "2026-10-02", variant: "warning" as const },
-	{ label: "Enviado" },
+	{ label: "Payment", date: "2026-10-02", variant: "warning" as const },
+	{ label: "Shipped" },
 ];
 
 describe("Timeline", () => {
@@ -23,7 +23,7 @@ describe("Timeline", () => {
 		const labels = [...screen.container.querySelectorAll(".ca-timeline__label")].map(
 			(e) => e.textContent
 		);
-		expect(labels).toEqual(["Pedido criado", "Pagamento", "Enviado"]);
+		expect(labels).toEqual(["Order created", "Payment", "Shipped"]);
 		expect(screen.getByRole("list").element().tagName).toBe("OL");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
@@ -32,7 +32,7 @@ describe("Timeline", () => {
 		const screen = await render(Timeline, { items });
 		const times = [...screen.container.querySelectorAll("time")].map((t) => t.textContent);
 		expect(times).toEqual(["2026-10-01", "2026-10-02"]);
-		await expect.element(screen.getByText("Pelo cliente")).toBeVisible();
+		await expect.element(screen.getByText("By the customer")).toBeVisible();
 		expect(screen.container.querySelectorAll(".ca-timeline__desc")).toHaveLength(1);
 	});
 
@@ -57,7 +57,7 @@ describe("Timeline", () => {
 	});
 
 	it("single item has no connector", async () => {
-		const screen = await render(Timeline, { items: [{ label: "Único" }] });
+		const screen = await render(Timeline, { items: [{ label: "Single" }] });
 		expect(screen.container.querySelector(".ca-timeline__connector")).toBeNull();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});

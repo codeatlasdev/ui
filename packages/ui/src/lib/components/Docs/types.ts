@@ -1,4 +1,4 @@
-/** A top-level docs section shown in the header (e.g. Guia, API, Compat). */
+/** A top-level docs section shown in the header (e.g. Guide, API, Compat). */
 export interface DocsSection {
 	id: string;
 	label: string;
@@ -20,7 +20,7 @@ export interface DocsNavGroup {
 	items: DocsNavItem[];
 }
 
-/** A heading in the "Nesta página" index. */
+/** A heading in the "On this page" index. */
 export interface DocsHeading {
 	id: string;
 	text: string;

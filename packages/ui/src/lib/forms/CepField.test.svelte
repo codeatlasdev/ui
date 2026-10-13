@@ -24,4 +24,4 @@
 />
 <output data-testid="bound">{value}</output>
 <output data-testid="pending">{pending}</output>
-<input aria-label="Rua" bind:value={street} disabled={pending} />
+<input aria-label="Street" bind:value={street} disabled={pending} />

@@ -65,14 +65,14 @@
               class="ca-row-check"
               checked={list.allPageSelected}
               onchange={() => list.toggleAll()}
-              aria-label="Selecionar todos"
+              aria-label="Select all"
             />
           </th>
           <th>User</th>
           <th>Role</th>
           <th>Plan</th>
           <th>Status</th>
-          <th>Entrou</th>
+          <th>Joined</th>
           <th class="ca-col-actions"></th>
         </tr>
       </thead>
@@ -85,7 +85,7 @@
                 class="ca-row-check"
                 checked={list.selected.has(u.id)}
                 onchange={() => list.toggleRow(u.id)}
-                aria-label="Selecionar {u.name}"
+                aria-label="Select {u.name}"
               />
             </td>
             <td class="primary"><UserCell name={u.name} email={u.email} /></td>
@@ -100,7 +100,7 @@
             <td>{u.joined}</td>
             <td class="ca-col-actions">
               <Row gap={4} class="ca-row-actions">
-                <Button variant="ghost" size="sm" aria-label="Editar"><Edit2 size={13} /></Button>
+                <Button variant="ghost" size="sm" aria-label="Edit"><Edit2 size={13} /></Button>
                 <Button variant="ghost" size="sm" aria-label="Delete"><Trash2 size={13} /></Button>
               </Row>
             </td>

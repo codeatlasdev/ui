@@ -39,8 +39,8 @@ describe("Progress", () => {
 	});
 
 	it("indeterminate omits aria-valuenow and sets no explicit width", async () => {
-		const screen = await render(Progress, { indeterminate: true, value: 60, label: "Carregando" });
-		const bar = screen.getByRole("progressbar", { name: "Carregando" });
+		const screen = await render(Progress, { indeterminate: true, value: 60, label: "Loading" });
+		const bar = screen.getByRole("progressbar", { name: "Loading" });
 		expect(bar.element().hasAttribute("aria-valuenow")).toBe(false);
 		const ind = indicator(screen.container);
 		expect(ind.classList.contains("ca-progress__indicator--indeterminate")).toBe(true);

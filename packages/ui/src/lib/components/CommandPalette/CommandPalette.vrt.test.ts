@@ -7,7 +7,7 @@ overlayVrt(
 	"CommandPalette",
 	Matrix,
 	async () => {
-		await page.getByRole("button", { name: "Abrir" }).click();
+		await page.getByRole("button", { name: "Open" }).click();
 		// Input focus happens in a rAF after open; settle so the focus state is deterministic.
 		await settled();
 	},

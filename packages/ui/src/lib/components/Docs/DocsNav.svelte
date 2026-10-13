@@ -4,7 +4,7 @@
   import type { DocsNavGroup } from './types.js';
 
   /**
-   * DocsNav — sidebar tree: labelled groups of page links, current page marked with
+   * DocsNav: sidebar tree: labelled groups of page links, current page marked with
    * aria-current. Used by DocsShell in the desktop rail and in the mobile Sheet.
    */
   interface Props {

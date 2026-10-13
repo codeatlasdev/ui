@@ -1,15 +1,15 @@
 <script lang="ts">
   /**
-   * FilterGroup — filter chips inline para toolbars de listagem.
+   * FilterGroup: inline filter chips for list toolbars.
    *
-   * Uso:
+   * Usage:
    *   <FilterGroup
    *     label="Role"
    *     options={[{ value: 'Admin', label: 'Admin' }, { value: 'Editor', label: 'Editor' }]}
    *     bind:value={roleFilter}
    *   />
    *
-   * Com 'all' incluso automaticamente. Clique no item ativo deseleciona (volta pra 'all').
+   * 'all' is included automatically. Clicking the active item deselects it (back to 'all').
    */
   interface Option {
     value: string;

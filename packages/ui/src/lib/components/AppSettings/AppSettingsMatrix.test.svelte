@@ -6,10 +6,10 @@
 	import AppSettings from "./AppSettings.svelte";
 
 	const tabs = [
-		{ value: "general", label: "Geral", icon: Settings },
-		{ value: "notifications", label: "Notificações", icon: Bell, badge: 2 },
-		{ value: "security", label: "Segurança", icon: Shield },
-		{ value: "danger", label: "Zona de perigo", icon: Trash2, danger: true },
+		{ value: "general", label: "General", icon: Settings },
+		{ value: "notifications", label: "Notifications", icon: Bell, badge: 2 },
+		{ value: "security", label: "Security", icon: Shield },
+		{ value: "danger", label: "Danger zone", icon: Trash2, danger: true },
 	];
 </script>
 
@@ -17,13 +17,13 @@
 	data-testid="matrix"
 	style="display:flex;flex-direction:column;width:100vw;height:100vh;overflow:hidden"
 >
-	<AppSettings title="Configurações" description="Gerencie o workspace." {tabs} defaultTab="general">
+	<AppSettings title="Settings" description="Manage the workspace." {tabs} defaultTab="general">
 		{#snippet actions()}
-			<Button>Salvar</Button>
+			<Button>Save</Button>
 		{/snippet}
 		{#snippet children()}
-			<FormSection title="Workspace" description="Nome e identificador.">
-				<TextField label="Nome" value="CodeAtlas" />
+			<FormSection title="Workspace" description="Name and identifier.">
+				<TextField label="Name" value="CodeAtlas" />
 				<TextField label="Slug" value="codeatlas" />
 			</FormSection>
 		{/snippet}

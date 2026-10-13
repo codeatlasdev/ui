@@ -6,23 +6,23 @@ import PinInput from "./PinInput.svelte";
 
 describe("PinInput", () => {
 	it("label names the input and axe passes", async () => {
-		const screen = await render(PinInput, { label: "Código", description: "Enviado por SMS" });
-		const input = screen.getByLabelText("Código");
+		const screen = await render(PinInput, { label: "Code", description: "Sent by SMS" });
+		const input = screen.getByLabelText("Code");
 		await expect.element(input).toBeInTheDocument();
-		await expect.element(input).toHaveAccessibleDescription("Enviado por SMS");
+		await expect.element(input).toHaveAccessibleDescription("Sent by SMS");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
 	it("typing 6 digits calls oncomplete exactly once with the code", async () => {
 		const oncomplete = vi.fn();
-		const screen = await render(PinInput, { label: "Código", oncomplete });
-		screen.getByLabelText("Código").element().focus();
+		const screen = await render(PinInput, { label: "Code", oncomplete });
+		screen.getByLabelText("Code").element().focus();
 		await userEvent.keyboard("12345");
 		expect(oncomplete).not.toHaveBeenCalled();
 		await userEvent.keyboard("6");
 		await vi.waitFor(() => expect(oncomplete).toHaveBeenCalledOnce());
 		expect(oncomplete).toHaveBeenCalledWith("123456");
-		await expect.element(screen.getByLabelText("Código")).toHaveValue("123456");
+		await expect.element(screen.getByLabelText("Code")).toHaveValue("123456");
 	});
 
 	it("honours a custom length", async () => {
@@ -34,8 +34,8 @@ describe("PinInput", () => {
 	});
 
 	it("numeric type rejects letters", async () => {
-		const screen = await render(PinInput, { label: "Código" });
-		const input = screen.getByLabelText("Código");
+		const screen = await render(PinInput, { label: "Code" });
+		const input = screen.getByLabelText("Code");
 		input.element().focus();
 		await userEvent.keyboard("a1b2");
 		await expect.element(input).toHaveValue("12");
@@ -43,8 +43,8 @@ describe("PinInput", () => {
 
 	it("paste fills every cell and completes", async () => {
 		const oncomplete = vi.fn();
-		const screen = await render(PinInput, { label: "Código", oncomplete });
-		const input = screen.getByLabelText("Código");
+		const screen = await render(PinInput, { label: "Code", oncomplete });
+		const input = screen.getByLabelText("Code");
 		// Real clipboard round-trip: type the code, select it, copy, clear, paste.
 		input.element().focus();
 		await userEvent.keyboard("654321");
@@ -61,13 +61,13 @@ describe("PinInput", () => {
 
 	it("error sets aria-invalid, role=alert and describes the input", async () => {
 		const screen = await render(PinInput, {
-			label: "Código",
-			error: "Código inválido",
-			description: "Dica",
+			label: "Code",
+			error: "Invalid code",
+			description: "Hint",
 		});
-		const input = screen.getByLabelText("Código");
+		const input = screen.getByLabelText("Code");
 		await expect.element(input).toHaveAttribute("aria-invalid", "true");
-		await expect.element(screen.getByRole("alert")).toHaveTextContent("Código inválido");
+		await expect.element(screen.getByRole("alert")).toHaveTextContent("Invalid code");
 		expect(input.element().getAttribute("aria-describedby")).toBe(
 			screen.getByRole("alert").element().id
 		);
@@ -75,7 +75,7 @@ describe("PinInput", () => {
 	});
 
 	it("disabled input cannot be focused for typing", async () => {
-		const screen = await render(PinInput, { label: "Código", disabled: true });
-		await expect.element(screen.getByLabelText("Código")).toBeDisabled();
+		const screen = await render(PinInput, { label: "Code", disabled: true });
+		await expect.element(screen.getByLabelText("Code")).toBeDisabled();
 	});
 });

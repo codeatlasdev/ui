@@ -12,7 +12,7 @@ describe("RadioGroup", () => {
 			.element(screen.getByRole("radio", { name: "Pro" }))
 			.toHaveAttribute("aria-checked", "true");
 		await expect
-			.element(screen.getByRole("radio", { name: "Grátis" }))
+			.element(screen.getByRole("radio", { name: "Free" }))
 			.toHaveAttribute("aria-checked", "false");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
@@ -20,7 +20,7 @@ describe("RadioGroup", () => {
 	it("arrow keys move selection and update the bound value", async () => {
 		const onchange = vi.fn();
 		const screen = await render(RadioGroupHarness, { initial: "free", onchange });
-		screen.getByRole("radio", { name: "Grátis" }).element().focus();
+		screen.getByRole("radio", { name: "Free" }).element().focus();
 		await userEvent.keyboard("{ArrowDown}");
 		await expect
 			.element(screen.getByRole("radio", { name: "Pro" }))
@@ -29,7 +29,7 @@ describe("RadioGroup", () => {
 		expect(onchange).toHaveBeenLastCalledWith("pro");
 		await userEvent.keyboard("{ArrowDown}");
 		await expect
-			.element(screen.getByRole("radio", { name: "Equipe" }))
+			.element(screen.getByRole("radio", { name: "Team" }))
 			.toHaveAttribute("aria-checked", "true");
 		await userEvent.keyboard("{ArrowUp}");
 		await expect.element(screen.getByTestId("bound")).toHaveTextContent("pro");
@@ -38,7 +38,7 @@ describe("RadioGroup", () => {
 
 	it("horizontal orientation uses ArrowRight/ArrowLeft", async () => {
 		const screen = await render(RadioGroupHarness, { initial: "free", orientation: "horizontal" });
-		screen.getByRole("radio", { name: "Grátis" }).element().focus();
+		screen.getByRole("radio", { name: "Free" }).element().focus();
 		await userEvent.keyboard("{ArrowRight}");
 		await expect.element(screen.getByTestId("bound")).toHaveTextContent("pro");
 		await userEvent.keyboard("{ArrowLeft}");
@@ -47,8 +47,8 @@ describe("RadioGroup", () => {
 
 	it("clicking the label selects the radio", async () => {
 		const screen = await render(RadioGroupHarness);
-		await screen.getByText("Equipe").click();
-		await expect.element(screen.getByRole("radio", { name: "Equipe" })).toBeChecked();
+		await screen.getByText("Team").click();
+		await expect.element(screen.getByRole("radio", { name: "Team" })).toBeChecked();
 		await expect.element(screen.getByTestId("bound")).toHaveTextContent("team");
 	});
 

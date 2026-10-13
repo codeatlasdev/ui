@@ -10,11 +10,11 @@
 	let open = $state(false);
 </script>
 
-<Button onclick={() => (open = true)}>Abrir filtros</Button>
-<Drawer bind:open title="Filtros" {side} {onOpenChange}>
+<Button onclick={() => (open = true)}>Open filters</Button>
+<Drawer bind:open title="Filters" {side} {onOpenChange}>
 	<label>Status <input /></label>
 	{#snippet actions()}
-		<Button variant="outlined" onclick={() => (open = false)}>Limpar</Button>
-		<Button>Aplicar</Button>
+		<Button variant="outlined" onclick={() => (open = false)}>Clear</Button>
+		<Button>Apply</Button>
 	{/snippet}
 </Drawer>

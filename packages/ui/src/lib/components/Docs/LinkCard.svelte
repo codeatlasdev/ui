@@ -1,7 +1,7 @@
 <script lang="ts">
   import { ArrowRight } from '@lucide/svelte';
 
-  /** LinkCard — whole-card link with title, optional description and arrow. Min height 44px. */
+  /** LinkCard: whole-card link with title, optional description and arrow. Min height 44px. */
   interface Props {
     title: string;
     description?: string;

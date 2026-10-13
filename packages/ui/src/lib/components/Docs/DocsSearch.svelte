@@ -9,7 +9,7 @@
   import type { DocsSearchEntry } from './types.js';
 
   /**
-   * DocsSearch — full-text search dialog for docs.
+   * DocsSearch: full-text search dialog for docs.
    *
    * Desktop: command-palette style dialog near the top. Phones: full-height sheet with the
    * input pinned at the top (16px, no iOS zoom), 48px result rows and safe-area padding.

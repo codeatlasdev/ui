@@ -1,13 +1,13 @@
 ---
 name: codeatlas-ui
-description: Use when building any UI with @codeatlasdev/ui — components, layouts, pages, navigation.
+description: Use when building any UI with @codeatlasdev/ui: components, layouts, pages, navigation.
 globs: ["**/*.svelte", "**/routes/**/*.svelte", "**/components/**/*.svelte"]
 alwaysApply: false
 ---
 
 # @codeatlasdev/ui
 
-Svelte 5 UI framework. Components are self-contained and prop-driven. Compose them like Lego — don't fight them with CSS.
+Svelte 5 UI framework. Components are self-contained and prop-driven. Compose them like Lego, don't fight them with CSS.
 
 ## When to use
 - Building any Svelte page or component that imports from `@codeatlasdev/ui`
@@ -22,7 +22,7 @@ Svelte 5 UI framework. Components are self-contained and prop-driven. Compose th
 3. **Never add `padding:` or `margin:` inline.** Use component props or `--ca-space-N` tokens.
 4. **Never put AppShellLayout in a shared layout.** Only in authenticated route layouts (e.g. `painel/+layout.svelte`).
 5. **CSS imports go once, in the root layout only.**
-6. **Import from `@codeatlasdev/ui`** — never from internal paths like `../../../components/Button`.
+6. **Import from `@codeatlasdev/ui`**, never from internal paths like `../../../components/Button`.
 7. **Never combine `will-change: transform` with `backdrop-filter`.** Kills glass blur.
 
 ## Setup (root layout, once)
@@ -72,7 +72,7 @@ Charts, DataTable and CodeSnippet are NOT in the root import. Each needs its own
 Never guess a prop name. Two sources, both generated from the source types:
 
 1. **MCP server (preferred).** `ca-ui-mcp` answers `get_component("Button")` (props, defaults, snippets, `ca-*` classes), `list_components`, `search_tokens("safe-bottom")` and `get_guide("theming")`. Setup: `claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp`.
-2. **[API.md](./API.md)** — the same data as one markdown file (offline fallback; large, search it instead of reading it whole). Regenerate with `bun run --cwd packages/ui manifest -- --skill` after changing a component.
+2. **[API.md](./API.md)**: the same data as one markdown file (offline fallback; large, search it instead of reading it whole). Regenerate with `bun run --cwd packages/ui manifest -- --skill` after changing a component.
 
 ## Mobile, theme, SEO
 
@@ -83,9 +83,9 @@ Never guess a prop name. Two sources, both generated from the source types:
 
 ## Companion files
 
-- [LAYOUT.md](./LAYOUT.md) — Grid, Row, Stack — all props and composition patterns
-- [PAGE-TEMPLATES.md](./PAGE-TEMPLATES.md) — AppList, AppForm, AppSettings, PageShell
-- [APPSHELL.md](./APPSHELL.md) — navigation shell setup
-- [COMPONENTS.md](./COMPONENTS.md) — Button, inputs, display, overlays — curated usage examples
-- [API.md](./API.md) — generated props, defaults and classes for every component
-- [ANTIPATTERNS.md](./ANTIPATTERNS.md) — explicit don'ts with corrected alternatives
+- [LAYOUT.md](./LAYOUT.md): Grid, Row, Stack, all props and composition patterns
+- [PAGE-TEMPLATES.md](./PAGE-TEMPLATES.md): AppList, AppForm, AppSettings, PageShell
+- [APPSHELL.md](./APPSHELL.md): navigation shell setup
+- [COMPONENTS.md](./COMPONENTS.md): Button, inputs, display, overlays, curated usage examples
+- [API.md](./API.md): generated props, defaults and classes for every component
+- [ANTIPATTERNS.md](./ANTIPATTERNS.md): explicit don'ts with corrected alternatives

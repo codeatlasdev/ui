@@ -7,8 +7,8 @@
 </script>
 
 <SegmentedControl bind:value {...rest} items={[
-  { value: 'day', label: 'Dia' },
-  { value: 'week', label: 'Semana' },
-  { value: 'month', label: 'Mês' },
+  { value: 'day', label: 'Day' },
+  { value: 'week', label: 'Week' },
+  { value: 'month', label: 'Month' },
 ]} />
 <output data-testid="bound">{value ?? ''}</output>

@@ -4,7 +4,7 @@
   import Alert from '../Alert/Alert.svelte';
 
   /**
-   * Callout — aside block for docs prose. Thin vocabulary layer over `Alert`:
+   * Callout: aside block for docs prose. Thin vocabulary layer over `Alert`:
    * note (info), tip (success), caution (warning), danger (error).
    * Keep to two per page.
    */
@@ -12,7 +12,7 @@
 
   interface Props {
     type?: CalloutType;
-    /** Overrides the default title ("Nota", "Dica", "Atenção", "Perigo"). */
+    /** Overrides the default title ("Note", "Tip", "Caution", "Danger"). */
     title?: string;
     class?: string;
     children?: Snippet;

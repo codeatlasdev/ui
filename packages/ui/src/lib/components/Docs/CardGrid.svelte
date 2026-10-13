@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
 
-  /** CardGrid — responsive auto-fill grid for LinkCard (min 16rem, 1 column on phones). */
+  /** CardGrid: responsive auto-fill grid for LinkCard (min 16rem, 1 column on phones). */
   let { children }: { children?: Snippet } = $props();
 </script>
 

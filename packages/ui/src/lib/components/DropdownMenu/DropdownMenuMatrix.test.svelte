@@ -7,11 +7,11 @@
 
 <div data-testid="matrix" style="padding:24px">
 	<DropdownMenu>
-		{#snippet trigger()}Opções{/snippet}
-		<DropdownMenuLabel>Conta</DropdownMenuLabel>
-		<DropdownMenuItem>Perfil</DropdownMenuItem>
-		<DropdownMenuItem disabled>Faturamento</DropdownMenuItem>
+		{#snippet trigger()}Options{/snippet}
+		<DropdownMenuLabel>Account</DropdownMenuLabel>
+		<DropdownMenuItem>Profile</DropdownMenuItem>
+		<DropdownMenuItem disabled>Billing</DropdownMenuItem>
 		<DropdownMenuSeparator />
-		<DropdownMenuItem variant="destructive">Sair</DropdownMenuItem>
+		<DropdownMenuItem variant="destructive">Sign out</DropdownMenuItem>
 	</DropdownMenu>
 </div>

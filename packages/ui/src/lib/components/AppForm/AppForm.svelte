@@ -1,7 +1,7 @@
 <script lang="ts">
   import { t } from '../../i18n/state.svelte.js';
   /**
-   * AppForm — page-level form layout.
+   * AppForm: page-level form layout.
    *
    * ┌──────────────────────────────────────────────────────────────┐
    * │  [←]  New User                                               │  header
@@ -16,7 +16,7 @@
    * │  [Cancel]                              [Save changes]        │  footer (sticky)
    * └──────────────────────────────────────────────────────────────┘
    *
-   * Uso mínimo:
+   * Minimal usage:
    *
    *   <AppForm title="New User">
    *     <FormSection title="Account">
@@ -72,7 +72,7 @@
 
 <div class="ca-app-form {className}">
 
-  <!-- Header: full-width bg, conteúdo centrado por --af-max -->
+  <!-- Header: full-width bg, content centered by --af-max -->
   {#if showHeader}
     <div class="ca-app-form__header">
       <div class="ca-app-form__header-inner">
@@ -96,14 +96,14 @@
     </div>
   {/if}
 
-  <!-- Body — único bloco scrollável -->
+  <!-- Body: the only scrollable block -->
   <div class="ca-app-form__body">
     <div class="ca-app-form__inner">
       {@render children?.()}
     </div>
   </div>
 
-  <!-- Footer sticky com glass blur -->
+  <!-- Sticky footer with glass blur -->
   {#if footer}
     <div class="ca-app-form__footer" role="toolbar" aria-label={t().appForm.actions}>
       <div class="ca-app-form__footer-inner">
@@ -126,8 +126,8 @@
   }
 
   /* ── Header ─────────────────────────────────────────────────────
-     Full-width border-bottom. Conteúdo centrado por --af-max.
-     Tokens globais de padding para consistência com AppList/AppSettings.
+     Full-width border-bottom. Content centered by --af-max.
+     Global padding tokens, for consistency with AppList/AppSettings.
   ────────────────────────────────────────────────────────────────── */
   .ca-app-form__header {
     flex-shrink: 0;
@@ -166,7 +166,7 @@
     line-height: 1.4;
   }
 
-  /* ── Body scrollável ─────────────────────────────────────────── */
+  /* ── Scrollable body ─────────────────────────────────────────── */
   .ca-app-form__body {
     flex: 1;
     min-height: 0;

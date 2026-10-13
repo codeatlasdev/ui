@@ -9,9 +9,9 @@ import Harness from "./MobilePane.test.svelte";
 const open = async (props = {}) => {
 	await page.viewport(VIEWPORTS.mobile[0], VIEWPORTS.mobile[1]);
 	const screen = await render(Harness, props);
-	const trigger = screen.getByRole("button", { name: "Abrir pane" });
+	const trigger = screen.getByRole("button", { name: "Open pane" });
 	await trigger.click();
-	const pane = page.getByRole("dialog", { name: "Conversa" });
+	const pane = page.getByRole("dialog", { name: "Conversation" });
 	await expect.element(pane).toBeVisible();
 	return { screen, trigger, pane };
 };
@@ -24,9 +24,9 @@ describe("MobilePane", () => {
 	it("is closed by default and renders title, actions and body when open", async () => {
 		const { screen } = await open();
 		expect(screen.container.querySelector(".ca-mobile-pane")).not.toBeNull();
-		await expect.element(page.getByText("Conversa", { exact: true }).first()).toBeVisible();
-		await expect.element(page.getByRole("button", { name: "Ação" })).toBeVisible();
-		await expect.element(page.getByRole("textbox", { name: "Mensagem" })).toBeVisible();
+		await expect.element(page.getByText("Conversation", { exact: true }).first()).toBeVisible();
+		await expect.element(page.getByRole("button", { name: "Action" })).toBeVisible();
+		await expect.element(page.getByRole("textbox", { name: "Message" })).toBeVisible();
 	});
 
 	it("fills the screen above the shell with a contained scroller", async () => {
@@ -51,7 +51,7 @@ describe("MobilePane", () => {
 	it("Escape closes, calls onback and returns focus to the trigger", async () => {
 		const onback = vi.fn();
 		const { trigger } = await open({ onback });
-		await expect.element(page.getByRole("dialog", { name: "Conversa" })).toHaveFocus();
+		await expect.element(page.getByRole("dialog", { name: "Conversation" })).toHaveFocus();
 		await userEvent.keyboard("{Escape}");
 		await expect.element(page.getByRole("dialog")).not.toBeInTheDocument();
 		expect(onback).toHaveBeenCalledOnce();

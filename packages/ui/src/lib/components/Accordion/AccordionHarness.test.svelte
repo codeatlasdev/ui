@@ -9,9 +9,9 @@
 </script>
 
 <Accordion {type} bind:value>
-  <AccordionItem value="one" title="Primeiro">Conteúdo um</AccordionItem>
-  <AccordionItem value="two" title="Segundo">Conteúdo dois</AccordionItem>
-  <AccordionItem value="three" title="Terceiro">Conteúdo três</AccordionItem>
+  <AccordionItem value="one" title="First">Content one</AccordionItem>
+  <AccordionItem value="two" title="Second">Content two</AccordionItem>
+  <AccordionItem value="three" title="Third">Content three</AccordionItem>
 </Accordion>
 
 <output data-testid="value">{JSON.stringify(value ?? null)}</output>

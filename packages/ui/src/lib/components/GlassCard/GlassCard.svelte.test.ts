@@ -5,14 +5,14 @@ import { checkA11y } from "../../../../tests/a11y";
 import GlassCard from "./GlassCard.svelte";
 import Harness from "./GlassCard.test.svelte";
 
-const body = createRawSnippet(() => ({ render: () => `<p data-testid="body">Conteúdo</p>` }));
+const body = createRawSnippet(() => ({ render: () => `<p data-testid="body">Content</p>` }));
 const card = (c: HTMLElement) => c.querySelector(".ca-glass-card") as HTMLElement;
 const padTop = (el: HTMLElement) => getComputedStyle(el).paddingTop;
 
 describe("GlassCard", () => {
 	it("renders children inside a glass surface", async () => {
 		const screen = await render(GlassCard, { children: body });
-		await expect.element(screen.getByTestId("body")).toHaveTextContent("Conteúdo");
+		await expect.element(screen.getByTestId("body")).toHaveTextContent("Content");
 		expect(card(screen.container).tagName).toBe("DIV");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
@@ -60,10 +60,10 @@ describe("GlassCard", () => {
 
 	it("href renders a link with target", async () => {
 		const screen = await render(GlassCard, {
-			props: { children: body, href: "/destino", target: "_blank" },
+			props: { children: body, href: "/destination", target: "_blank" },
 		});
 		const link = screen.getByRole("link");
-		await expect.element(link).toHaveAttribute("href", "/destino");
+		await expect.element(link).toHaveAttribute("href", "/destination");
 		await expect.element(link).toHaveAttribute("target", "_blank");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
@@ -89,9 +89,9 @@ describe("GlassCard", () => {
 	});
 
 	it("title and headerActions render in the header", async () => {
-		const screen = await render(Harness, { title: "Resumo", actionLabel: "Editar" });
-		await expect.element(screen.getByText("Resumo")).toBeVisible();
-		await expect.element(screen.getByRole("button", { name: "Editar" })).toBeVisible();
+		const screen = await render(Harness, { title: "Summary", actionLabel: "Edit" });
+		await expect.element(screen.getByText("Summary")).toBeVisible();
+		await expect.element(screen.getByRole("button", { name: "Edit" })).toBeVisible();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 

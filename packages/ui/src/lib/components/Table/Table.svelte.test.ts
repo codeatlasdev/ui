@@ -10,8 +10,8 @@ describe("SimpleTable", () => {
 		await page.viewport(...VIEWPORTS.desktop);
 		const screen = await render(Harness);
 		await expect.element(screen.getByRole("table")).toBeInTheDocument();
-		await expect.element(screen.getByRole("columnheader", { name: "Usuário" })).toBeInTheDocument();
-		await expect.element(screen.getByRole("columnheader", { name: "Função" })).toBeInTheDocument();
+		await expect.element(screen.getByRole("columnheader", { name: "User" })).toBeInTheDocument();
+		await expect.element(screen.getByRole("columnheader", { name: "Role" })).toBeInTheDocument();
 		// header row + 2 body rows
 		expect(screen.getByRole("row").elements()).toHaveLength(3);
 		await expect.element(screen.getByRole("cell", { name: "Admin" })).toBeInTheDocument();
@@ -44,13 +44,13 @@ describe("SimpleTable", () => {
 		expect(getComputedStyle(tr).display).toBe("grid");
 
 		const tds = Array.from(tr.querySelectorAll("td"));
-		expect(tds.map((td) => td.dataset.label)).toEqual(["Usuário", "Função"]);
+		expect(tds.map((td) => td.dataset.label)).toEqual(["User", "Role"]);
 		for (const td of tds) {
 			expect(getComputedStyle(td, "::before").content).toBe(`"${td.dataset.label}"`);
 		}
 
 		// the header row stays in the DOM for assistive tech
-		await expect.element(screen.getByRole("columnheader", { name: "Usuário" })).toBeInTheDocument();
+		await expect.element(screen.getByRole("columnheader", { name: "User" })).toBeInTheDocument();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 });

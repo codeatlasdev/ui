@@ -11,16 +11,16 @@ const snip = (html: string) => createRawSnippet(() => ({ render: () => html }));
 
 describe("AuthLayout", () => {
 	it("renders the logo link (default name/href), an aside and the form column", async () => {
-		const screen = await render(AuthLayout, { children: snip("<h1>Entrar</h1>") });
+		const screen = await render(AuthLayout, { children: snip("<h1>Sign in</h1>") });
 		await expect.element(screen.getByRole("main")).toBeVisible();
 		const logo = screen.getByRole("link", { name: "CodeAtlas UI" });
 		await expect.element(logo).toHaveAttribute("href", "/");
 		await expect.element(screen.getByRole("complementary")).toBeVisible();
-		await expect.element(screen.getByRole("heading", { level: 1, name: "Entrar" })).toBeVisible();
+		await expect.element(screen.getByRole("heading", { level: 1, name: "Sign in" })).toBeVisible();
 	});
 
 	it("skip link jumps to the form column, the only <main id=main>", async () => {
-		const screen = await render(AuthLayout, { children: snip("<h1>Entrar</h1>") });
+		const screen = await render(AuthLayout, { children: snip("<h1>Sign in</h1>") });
 		await userEvent.tab();
 		await expect.element(screen.getByRole("link", { name: "Skip to content" })).toHaveFocus();
 		await userEvent.keyboard("{Enter}");
@@ -31,11 +31,11 @@ describe("AuthLayout", () => {
 
 	it("honours logoName and logoHref; the mark is decorative", async () => {
 		const screen = await render(AuthLayout, {
-			logoName: "Minha App",
+			logoName: "My App",
 			logoMark: "MA",
 			logoHref: "/home",
 		});
-		const logo = screen.getByRole("link", { name: "Minha App" });
+		const logo = screen.getByRole("link", { name: "My App" });
 		await expect.element(logo).toHaveAttribute("href", "/home");
 		const mark = screen.container.querySelector(".ca-auth__mark");
 		expect(mark?.textContent).toBe("MA");
@@ -51,8 +51,8 @@ describe("AuthLayout", () => {
 	});
 
 	it("renders the decorative panel slot with its CSS variables", async () => {
-		const screen = await render(AuthLayout, { panel: snip("<blockquote>Frase</blockquote>") });
-		await expect.element(screen.getByText("Frase")).toBeVisible();
+		const screen = await render(AuthLayout, { panel: snip("<blockquote>Quote</blockquote>") });
+		await expect.element(screen.getByText("Quote")).toBeVisible();
 		const slot = screen.container.querySelector(".ca-auth__slot") as HTMLElement;
 		expect(slot.style.getPropertyValue("--panel-text-primary").trim()).toBe("oklch(1 0 0 / 0.95)");
 	});
@@ -66,15 +66,15 @@ describe("AuthLayout", () => {
 
 	it("shows the compact brand strip at 375px and hides it at 1280px", async () => {
 		const screen = await render(AuthLayout, {
-			logoName: "Minha App",
+			logoName: "My App",
 			logoMark: "MA",
-			children: snip("<h1>Entrar</h1>"),
+			children: snip("<h1>Sign in</h1>"),
 		});
 		const strip = screen.container.querySelector(".ca-auth__mobile-brand") as HTMLElement;
 		await page.viewport(375, 800);
 		expect(getComputedStyle(strip).display).toBe("flex");
 		expect(strip.getAttribute("href")).toBe("/");
-		expect(strip.textContent).toContain("Minha App");
+		expect(strip.textContent).toContain("My App");
 		await page.viewport(1280, 720);
 		expect(getComputedStyle(strip).display).toBe("none");
 	});
@@ -90,8 +90,8 @@ describe("AuthLayout", () => {
 	] as const)("has no axe violations on %s", async (_name, vp) => {
 		await page.viewport(vp[0], vp[1]);
 		const screen = await render(AuthLayout, {
-			panel: snip("<blockquote>Frase</blockquote>"),
-			children: snip("<h1>Entrar</h1>"),
+			panel: snip("<blockquote>Quote</blockquote>"),
+			children: snip("<h1>Sign in</h1>"),
 		});
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
@@ -100,32 +100,30 @@ describe("AuthLayout", () => {
 describe("AuthCard", () => {
 	it("renders title (h1), subtitle, body and footer", async () => {
 		const screen = await render(AuthCard, {
-			title: "Bem-vindo",
-			subtitle: "Entre para continuar",
+			title: "Welcome",
+			subtitle: "Sign in to continue",
 			children: snip("<label>Email <input type='email' /></label>"),
-			footer: snip("<a href='/cadastro'>Criar conta</a>"),
+			footer: snip("<a href='/sign-up'>Create account</a>"),
 		});
-		await expect
-			.element(screen.getByRole("heading", { level: 1, name: "Bem-vindo" }))
-			.toBeVisible();
-		await expect.element(screen.getByText("Entre para continuar")).toBeVisible();
+		await expect.element(screen.getByRole("heading", { level: 1, name: "Welcome" })).toBeVisible();
+		await expect.element(screen.getByText("Sign in to continue")).toBeVisible();
 		await expect.element(screen.getByRole("textbox", { name: "Email" })).toBeVisible();
 		await expect
-			.element(screen.getByRole("link", { name: "Criar conta" }))
-			.toHaveAttribute("href", "/cadastro");
+			.element(screen.getByRole("link", { name: "Create account" }))
+			.toHaveAttribute("href", "/sign-up");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
 	it("omits header and footer when not provided", async () => {
-		const screen = await render(AuthCard, { children: snip("<p>corpo</p>") });
+		const screen = await render(AuthCard, { children: snip("<p>body</p>") });
 		expect(screen.getByRole("heading").elements()).toHaveLength(0);
 		expect(screen.container.querySelector(".ca-auth-card__header")).toBeNull();
 		expect(screen.container.querySelector(".ca-auth-card__footer")).toBeNull();
 	});
 
 	it("subtitle alone still renders a header", async () => {
-		const screen = await render(AuthCard, { subtitle: "Só subtítulo" });
-		await expect.element(screen.getByText("Só subtítulo")).toBeVisible();
+		const screen = await render(AuthCard, { subtitle: "Subtitle only" });
+		await expect.element(screen.getByText("Subtitle only")).toBeVisible();
 		expect(screen.getByRole("heading").elements()).toHaveLength(0);
 	});
 });

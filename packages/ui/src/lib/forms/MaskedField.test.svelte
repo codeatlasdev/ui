@@ -15,7 +15,7 @@
 <MaskedField
   label="CPF"
   mask={maskCPF}
-  validate={(v) => (isValidCPF(v) ? undefined : 'CPF inválido')}
+  validate={(v) => (isValidCPF(v) ? undefined : 'Invalid CPF')}
   bind:value
 />
 <output data-testid="bound">{value}</output>

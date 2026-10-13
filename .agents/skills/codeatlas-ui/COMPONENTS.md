@@ -113,7 +113,7 @@ type Option = { label: string; value: string | number; disabled?: boolean };
 
 Props: `title?: string`, `flush?: boolean` (removes card padding).
 
-**Never** apply `padding:` directly to a GlassCard — use the `padding` prop.
+**Never** apply `padding:` directly to a GlassCard. Use the `padding` prop.
 
 ---
 
@@ -152,9 +152,9 @@ Props: `title?: string`, `flush?: boolean` (removes card padding).
 <AuthLayout logoName="Acme">
   {#snippet brand()}<AcmeLogo size={32} />{/snippet}  <!-- or logoMark="AC" -->
   {#snippet panel()}<blockquote>…</blockquote>{/snippet}
-  <AuthCard title="Entrar" subtitle="Acesse sua conta">
-    <TextField label="E-mail" type="email" bind:value={email} />
-    {#snippet footer()}Sem conta? <a href="/register">Criar</a>{/snippet}
+  <AuthCard title="Sign in" subtitle="Access your account">
+    <TextField label="Email" type="email" bind:value={email} />
+    {#snippet footer()}No account? <a href="/register">Create one</a>{/snippet}
   </AuthCard>
 </AuthLayout>
 ```
@@ -228,7 +228,7 @@ Props: `title?: string`, `flush?: boolean` (removes card padding).
 
 ## Charts
 
-All charts are data-only — pass data, get a chart. No ECharts options, no color config.
+All charts are data-only: pass data, get a chart. No ECharts options, no color config.
 
 ```svelte
 import { LineChart, BarChart, PieChart, ScatterChart, HeatmapChart, GaugeChart, RadarChart, Sparkline } from '@codeatlasdev/ui/charts';

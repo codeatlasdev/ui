@@ -52,7 +52,7 @@ describe("CepField", () => {
 		await vi.waitFor(() => expect(onresolve).toHaveBeenCalledWith(address));
 		expect(onlookup).toHaveBeenCalledOnce();
 		expect(onlookup).toHaveBeenCalledWith("01310100");
-		await expect.element(screen.getByLabelText("Rua")).toHaveValue("Avenida Paulista");
+		await expect.element(screen.getByLabelText("Street")).toHaveValue("Avenida Paulista");
 	});
 
 	it("lookupPending is bindable: true while in flight, false after", async () => {
@@ -62,10 +62,10 @@ describe("CepField", () => {
 		await expect.element(screen.getByTestId("pending")).toHaveTextContent("false");
 		await screen.getByLabelText("CEP").fill("01310100");
 		await expect.element(screen.getByTestId("pending")).toHaveTextContent("true");
-		await expect.element(screen.getByLabelText("Rua")).toBeDisabled();
+		await expect.element(screen.getByLabelText("Street")).toBeDisabled();
 		d.resolve(address);
 		await expect.element(screen.getByTestId("pending")).toHaveTextContent("false");
-		await expect.element(screen.getByLabelText("Rua")).toBeEnabled();
+		await expect.element(screen.getByLabelText("Street")).toBeEnabled();
 	});
 
 	it("unknown CEP (null) shows an alert and does not resolve", async () => {
@@ -110,11 +110,11 @@ describe("CepField", () => {
 		await input.fill("20040020");
 		await vi.waitFor(() => expect(onlookup).toHaveBeenCalledTimes(2));
 
-		second.resolve({ ...address, logradouro: "Rua Nova" });
-		await expect.element(screen.getByLabelText("Rua")).toHaveValue("Rua Nova");
-		first.resolve({ ...address, logradouro: "Rua Velha" });
+		second.resolve({ ...address, logradouro: "New Street" });
+		await expect.element(screen.getByLabelText("Street")).toHaveValue("New Street");
+		first.resolve({ ...address, logradouro: "Old Street" });
 		await Promise.resolve();
-		await expect.element(screen.getByLabelText("Rua")).toHaveValue("Rua Nova");
+		await expect.element(screen.getByLabelText("Street")).toHaveValue("New Street");
 		expect(onresolve).toHaveBeenCalledOnce();
 		await expect.element(screen.getByTestId("pending")).toHaveTextContent("false");
 	});

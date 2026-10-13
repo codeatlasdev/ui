@@ -3,7 +3,7 @@ import { overlayVrt } from "../../../../tests/vrt";
 import Matrix from "./DrawerMatrix.test.svelte";
 
 const open = async () => {
-	await page.getByRole("button", { name: "Abrir" }).click();
+	await page.getByRole("button", { name: "Open" }).click();
 };
 
 overlayVrt("Drawer-right", Matrix, open, "dialog", { side: "right" });

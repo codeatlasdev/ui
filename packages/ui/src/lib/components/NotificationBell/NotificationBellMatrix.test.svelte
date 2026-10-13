@@ -4,12 +4,12 @@
 	import type { NotificationItem } from "./NotificationBell.svelte";
 
 	const notifications: NotificationItem[] = [
-		{ id: "1", title: "Deploy concluído", body: "Versão 1.2.0 publicada.", time: "há 5 min", variant: "success" },
-		{ id: "2", title: "Falha no build", body: "Verifique os logs.", time: "há 1 h", variant: "error" },
-		{ id: "3", title: "Comentário novo", time: "ontem", read: true },
+		{ id: "1", title: "Deploy completed", body: "Version 1.2.0 published.", time: "5 min ago", variant: "success" },
+		{ id: "2", title: "Build failure", body: "Check the logs.", time: "1 h ago", variant: "error" },
+		{ id: "3", title: "New comment", time: "yesterday", read: true },
 	];
 	const custom = createRawSnippet(() => ({
-		render: () => `<span style="padding:6px 12px">Trigger custom</span>`,
+		render: () => `<span style="padding:6px 12px">Custom trigger</span>`,
 	}));
 </script>
 

@@ -13,7 +13,7 @@ describe("Steps", () => {
 		const screen = await render(DocsHarness, { kind: "steps" });
 		await expect.element(screen.getByRole("list")).toBeVisible();
 		expect(screen.getByRole("listitem").elements()).toHaveLength(2);
-		await expect.element(screen.getByText("Crie uma sessão")).toBeVisible();
+		await expect.element(screen.getByText("Create a session")).toBeVisible();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 });
@@ -27,13 +27,13 @@ describe("Callout", () => {
 	] as const)("type %s shows the default title %s and its content", async (type, title) => {
 		const screen = await render(DocsHarness, { kind: "callout", type });
 		await expect.element(screen.getByText(title, { exact: true })).toBeVisible();
-		await expect.element(screen.getByText("Conteúdo do aviso")).toBeVisible();
+		await expect.element(screen.getByText("Callout content")).toBeVisible();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
 	it("custom title overrides the default", async () => {
-		const screen = await render(DocsHarness, { kind: "callout", title: "Cuidado!" });
-		await expect.element(screen.getByText("Cuidado!", { exact: true })).toBeVisible();
+		const screen = await render(DocsHarness, { kind: "callout", title: "Careful!" });
+		await expect.element(screen.getByText("Careful!", { exact: true })).toBeVisible();
 		await expect.element(screen.getByText("Nota", { exact: true })).not.toBeInTheDocument();
 	});
 });
@@ -41,9 +41,9 @@ describe("Callout", () => {
 describe("CardGrid / LinkCard", () => {
 	it("renders each card as a whole-card link with title and description; passes axe", async () => {
 		const screen = await render(DocsHarness, { kind: "cardgrid" });
-		const guia = screen.getByRole("link", { name: /Guia/ });
-		await expect.element(guia).toHaveAttribute("href", "/guia");
-		await expect.element(guia).toMatchTextContent("Comece aqui");
+		const guide = screen.getByRole("link", { name: /Guide/ });
+		await expect.element(guide).toHaveAttribute("href", "/guide");
+		await expect.element(guide).toMatchTextContent("Start here");
 		await expect.element(screen.getByRole("link", { name: /API/ })).toHaveAttribute("href", "/api");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});

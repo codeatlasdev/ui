@@ -53,7 +53,7 @@ Classes: `ca-alert` `ca-alert--error` `ca-alert--info` `ca-alert--success` `ca-a
 
 `import { AlertDialog } from "@codeatlasdev/ui"`
 
-AlertDialog — confirmação que exige resposta explícita (role="alertdialog").
+AlertDialog: confirmation that requires an explicit response (role="alertdialog").
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -153,7 +153,7 @@ Classes: `ca-main` `ca-shell` `ca-shell__content` `ca-shell__desktop-header` `ca
 
 `import { AuthCard } from "@codeatlasdev/ui"`
 
-AuthCard — card de formulário de autenticação.
+AuthCard: authentication form card.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -168,14 +168,14 @@ Classes: `ca-auth-card` `ca-auth-card__body` `ca-auth-card__footer` `ca-auth-car
 
 `import { AuthLayout } from "@codeatlasdev/ui"`
 
-AuthLayout — layout de duas colunas para páginas de autenticação.
+AuthLayout: two-column layout for authentication pages.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `logoMark?` | `string` | `'CA'` |  |
 | `logoName?` | `string` | `'CodeAtlas UI'` |  |
 | `logoHref?` | `string` | `'/'` |  |
-| `mobileBrand?` | `boolean` | `true` | Abaixo de 768px o painel lateral some; `true` mostra uma faixa compacta com a marca acima do formulário. |
+| `mobileBrand?` | `boolean` | `true` | Below 768px the side panel is hidden; `true` shows a compact brand strip above the form. |
 
 Snippets: `brand`, `panel`, `children`
 
@@ -316,7 +316,7 @@ Callout — aside block for docs prose. Thin vocabulary layer over `Alert`: note
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `type?` | `CalloutType` | `'note'` |  |
-| `title?` | `string` |  | Overrides the default title ("Nota", "Dica", "Atenção", "Perigo"). |
+| `title?` | `string` |  | Overrides the default title ("Note", "Tip", "Caution", "Danger"). |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
@@ -703,7 +703,7 @@ Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__gri
 
 `import { Dialog } from "@codeatlasdev/ui"`
 
-Dialog — modal de segunda camada.
+Dialog: second-layer modal.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -774,7 +774,7 @@ DocsShell — page frame for developer docs.
 | `active?` | `string` |  | `id` of the current section. |
 | `groups?` | `DocsNavGroup[]` | `[]` | Sidebar tree of the current section. |
 | `pathname` | `string` |  | Current pathname, to mark the current page in the sidebar. |
-| `headings?` | `DocsHeading[]` | `[]` | Headings of the current page for the "Nesta página" index. |
+| `headings?` | `DocsHeading[]` | `[]` | Headings of the current page for the "On this page" index. |
 | `searchIndex` | `DocsSearchEntry[] \| (() => Promise<DocsSearchEntry[]>)` |  |  |
 | `onnavigate` | `(href: string) => void` |  |  |
 | `brandHref?` | `string` | `'/'` | Link target of the brand (default "/"). |
@@ -788,7 +788,7 @@ Classes: `ca-docs` `ca-docs--bare` `ca-docs-brand` `ca-docs-header` `ca-docs-hea
 
 `import { Drawer } from "@codeatlasdev/ui"`
 
-Drawer — painel lateral de segunda camada.
+Drawer: second-layer side panel.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -911,7 +911,7 @@ Classes: `ca-file-upload` `ca-file-upload--disabled` `ca-file-upload__errors` `c
 
 `import { FilterGroup } from "@codeatlasdev/ui"`
 
-FilterGroup — filter chips inline para toolbars de listagem.
+FilterGroup: inline filter chips for list toolbars.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -927,7 +927,7 @@ Classes: `ca-filter-group` `ca-filter-group__item` `ca-filter-group__label`
 
 `import { FormSection } from "@codeatlasdev/ui"`
 
-FormSection — seção de formulário com título, descrição e layout dos campos.
+FormSection: form section with title, description and field layout.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -974,7 +974,7 @@ Classes: `ca-app-bar` `ca-app-bar__content` `ca-app-bar__leading` `ca-app-bar__t
 
 `import { GlassCard } from "@codeatlasdev/ui"`
 
-Padding override. Omit to use `--ca-card-padding` (default 20px). Passa como CSS custom property — não gera inline style de valor fixo.
+Padding override. Omit to use `--ca-card-padding` (default 20px). Passed as a CSS custom property, so it emits no fixed-value inline style.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -983,8 +983,8 @@ Padding override. Omit to use `--ca-card-padding` (default 20px). Passa como CSS
 | `glowing?` | `boolean` | `false` |  |
 | `href?` | `string` |  |  |
 | `target?` | `string` |  |  |
-| `padding?` | `string \| number` |  | Padding override. Omit to use `--ca-card-padding` (default 20px). Passa como CSS custom property — não gera inline style de valor fixo. |
-| `flush?` | `boolean` | `false` | Remove todo padding — para tabelas, imagens, código que tocam as bordas. |
+| `padding?` | `string \| number` |  | Padding override. Omit to use `--ca-card-padding` (default 20px). Passed as a CSS custom property, so it emits no fixed-value inline style. |
+| `flush?` | `boolean` | `false` | Removes all padding, for tables, images and code that touch the edges. |
 | `full?` | `boolean` | `false` | width: 100% |
 | `title?` | `string` |  |  |
 | `class?` | `string` | `''` |  |
@@ -1084,7 +1084,7 @@ Classes: `ca-kbd`
 
 `import { KpiCard } from "@codeatlasdev/ui"`
 
-Lucide icon component — tamanho e cor gerenciados pelo KpiCard
+Lucide icon component: size and color are managed by KpiCard
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -1092,7 +1092,7 @@ Lucide icon component — tamanho e cor gerenciados pelo KpiCard
 | `value` | `string \| number` |  |  |
 | `unit?` | `string` |  |  |
 | `trend?` | `number` |  |  |
-| `icon?` | `IconComponent` |  | Lucide icon component — tamanho e cor gerenciados pelo KpiCard |
+| `icon?` | `IconComponent` |  | Lucide icon component: size and color are managed by KpiCard |
 | `class?` | `string` | `''` |  |
 
 Classes: `ca-kpi` `ca-kpi__icon` `ca-kpi__inner` `ca-kpi__title` `ca-kpi__top` `ca-kpi__trend` `ca-kpi__trend--down` `ca-kpi__trend--up` `ca-kpi__unit` `ca-kpi__value` `ca-kpi__value-row`
@@ -1214,14 +1214,14 @@ Classes: `ca-mobile-header` `ca-mobile-header__inner` `ca-mobile-header__leading
 
 `import { MobilePane } from "@codeatlasdev/ui"`
 
-MobilePane — tela cheia acima do shell para drill-down no mobile (thread de chat, histórico, detalhe). Substitui `position: fixed` feito à mão.
+MobilePane: full screen above the shell for mobile drill-down (chat thread, history, detail). Replaces hand-rolled `position: fixed`.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `open?` | `boolean` | `false` | `bind:` Visibilidade (bindable). O botão voltar e Escape colocam em `false`. |
-| `title` | `string` |  | Título do header e nome acessível do painel. |
-| `onback?` | `() => void` |  | Chamado depois que o botão voltar ou Escape fecham o painel. |
-| `scroll?` | `boolean` | `true` | `true` (padrão): o corpo rola. `false`: o corpo é um flex column sem scroll, para layouts com área rolável própria e compositor fixo (chat). |
+| `open?` | `boolean` | `false` | `bind:` Visibility (bindable). The back button and Escape set it to `false`. |
+| `title` | `string` |  | Header title and accessible name of the pane. |
+| `onback?` | `() => void` |  | Called after the back button or Escape closes the pane. |
+| `scroll?` | `boolean` | `true` | `true` (default): the body scrolls. `false`: the body is a flex column without scroll, for layouts with their own scrollable area and a fixed composer (chat). |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`, `actions`, `headerTitle`
@@ -1787,12 +1787,12 @@ Classes: `ca-steps`
 
 `import { StickyActions } from "@codeatlasdev/ui"`
 
-StickyActions — barra de ações primárias de um formulário.
+StickyActions: primary action bar for a form.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `align?` | `'end' \| 'stretch'` | `'end'` | `'end'` junta os botões à direita; `'stretch'` os estica (largura total) em telas de toque. |
-| `show?` | `boolean` | `true` | Renderiza a barra só enquanto há algo a confirmar (ex.: formulário alterado). |
+| `align?` | `'end' \| 'stretch'` | `'end'` | `'end'` groups the buttons on the right; `'stretch'` stretches them (full width) on touch screens. |
+| `show?` | `boolean` | `true` | Renders the bar only while there is something to confirm (e.g. the form is dirty). |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`

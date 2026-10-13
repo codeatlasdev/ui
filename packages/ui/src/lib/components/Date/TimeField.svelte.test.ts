@@ -8,7 +8,7 @@ import DateHarness from "./DateHarness.test.svelte";
 describe("TimeField", () => {
 	it("labels the group and shows hour/minute placeholders; passes axe", async () => {
 		const screen = await render(DateHarness, { kind: "time" });
-		await expect.element(screen.getByRole("group", { name: "Horário" })).toBeVisible();
+		await expect.element(screen.getByRole("group", { name: "Time" })).toBeVisible();
 		expect(
 			screen
 				.getByRole("spinbutton")
@@ -57,11 +57,11 @@ describe("TimeField", () => {
 	});
 
 	it("error is announced and referenced by the group", async () => {
-		const screen = await render(DateHarness, { kind: "time", error: "Horário indisponível" });
+		const screen = await render(DateHarness, { kind: "time", error: "Time unavailable" });
 		const alert = screen.getByRole("alert");
-		await expect.element(alert).toMatchTextContent("Horário indisponível");
+		await expect.element(alert).toMatchTextContent("Time unavailable");
 		expect(
-			screen.getByRole("group", { name: "Horário" }).element().getAttribute("aria-describedby")
+			screen.getByRole("group", { name: "Time" }).element().getAttribute("aria-describedby")
 		).toBe(alert.element().id);
 	});
 });

@@ -17,26 +17,26 @@ const snip = (html: string) => createRawSnippet(() => ({ render: () => html }));
 const modules: NavModule[] = [
 	{
 		id: "app",
-		label: "Aplicativo",
+		label: "Application",
 		icon: Home,
 		basePath: "/app",
 		items: [
-			{ id: "dash", label: "Painel", icon: Home, path: "/app/dashboard" },
-			{ id: "novo", label: "Novidades", icon: Home, path: "/app/news", isNew: true },
-			{ id: "docs", label: "Mensagens", icon: Home, path: "/app/msgs", badge: 120 },
+			{ id: "dash", label: "Dashboard", icon: Home, path: "/app/dashboard" },
+			{ id: "novo", label: "What's new", icon: Home, path: "/app/news", isNew: true },
+			{ id: "docs", label: "Messages", icon: Home, path: "/app/msgs", badge: 120 },
 			{
 				label: "Admin",
 				collapsible: false,
-				items: [{ id: "usr", label: "Usuários", icon: Users, path: "/app/users" }],
+				items: [{ id: "usr", label: "Users", icon: Users, path: "/app/users" }],
 			},
 		],
 	},
 	{
 		id: "cfg",
-		label: "Ajustes",
+		label: "Settings",
 		icon: Settings,
 		basePath: "/settings",
-		items: [{ id: "gen", label: "Geral", icon: Settings, path: "/settings/general" }],
+		items: [{ id: "gen", label: "General", icon: Settings, path: "/settings/general" }],
 	},
 ];
 
@@ -47,10 +47,10 @@ describe("Rail", () => {
 			.element(screen.getByRole("navigation", { name: "Module navigation" }))
 			.toBeVisible();
 		await expect
-			.element(screen.getByRole("button", { name: "Ajustes" }))
+			.element(screen.getByRole("button", { name: "Settings" }))
 			.toHaveAttribute("aria-current", "page");
 		await expect
-			.element(screen.getByRole("button", { name: "Aplicativo" }))
+			.element(screen.getByRole("button", { name: "Application" }))
 			.not.toHaveAttribute("aria-current");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
@@ -58,14 +58,14 @@ describe("Rail", () => {
 	it("calls onSelect with the module index", async () => {
 		const onSelect = vi.fn();
 		const screen = await render(Rail, { modules, activeIndex: 0, onSelect });
-		await screen.getByRole("button", { name: "Ajustes" }).click();
+		await screen.getByRole("button", { name: "Settings" }).click();
 		expect(onSelect).toHaveBeenCalledExactlyOnceWith(1);
 	});
 
 	it("is operable with the keyboard", async () => {
 		const onSelect = vi.fn();
 		const screen = await render(Rail, { modules, activeIndex: 0, onSelect });
-		screen.getByRole("button", { name: "Aplicativo" }).element().focus();
+		screen.getByRole("button", { name: "Application" }).element().focus();
 		await userEvent.keyboard("{Tab}");
 		await userEvent.keyboard("{Enter}");
 		expect(onSelect).toHaveBeenCalledExactlyOnceWith(1);
@@ -77,10 +77,10 @@ describe("Rail", () => {
 			activeIndex: 0,
 			onSelect: vi.fn(),
 			brand: snip("<span>Logo</span>"),
-			bottom: snip("<button type='button'>Perfil</button>"),
+			bottom: snip("<button type='button'>Profile</button>"),
 		});
 		await expect.element(screen.getByText("Logo")).toBeVisible();
-		await expect.element(screen.getByRole("button", { name: "Perfil" })).toBeVisible();
+		await expect.element(screen.getByRole("button", { name: "Profile" })).toBeVisible();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
@@ -104,12 +104,12 @@ describe("Panel", () => {
 		await expect
 			.element(screen.getByRole("complementary", { name: "Section navigation" }))
 			.toBeVisible();
-		await expect.element(screen.getByText("Aplicativo")).toBeVisible();
+		await expect.element(screen.getByText("Application")).toBeVisible();
 		await expect
-			.element(screen.getByRole("link", { name: "Painel" }))
+			.element(screen.getByRole("link", { name: "Dashboard" }))
 			.toHaveAttribute("href", "/app/dashboard");
 		await expect
-			.element(screen.getByRole("link", { name: "Usuários" }))
+			.element(screen.getByRole("link", { name: "Users" }))
 			.toHaveAttribute("href", "/app/users");
 		await expect.element(screen.getByText("Admin")).toBeVisible();
 	});
@@ -123,10 +123,10 @@ describe("Panel", () => {
 			panelW: 200,
 		});
 		await expect
-			.element(screen.getByRole("link", { name: "Usuários" }))
+			.element(screen.getByRole("link", { name: "Users" }))
 			.toHaveAttribute("aria-current", "page");
 		await expect
-			.element(screen.getByRole("link", { name: "Painel" }))
+			.element(screen.getByRole("link", { name: "Dashboard" }))
 			.not.toHaveAttribute("aria-current");
 	});
 
@@ -186,10 +186,10 @@ describe("BottomNav", () => {
 		const nav = screen.getByRole("navigation", { name: "Module navigation" });
 		await expect.element(nav).toBeVisible();
 		await expect
-			.element(nav.getByRole("button", { name: "Aplicativo" }))
+			.element(nav.getByRole("button", { name: "Application" }))
 			.toHaveAttribute("aria-current", "page");
 		await expect
-			.element(nav.getByRole("button", { name: "Ajustes" }))
+			.element(nav.getByRole("button", { name: "Settings" }))
 			.not.toHaveAttribute("aria-current");
 		await settled();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
@@ -205,7 +205,7 @@ describe("BottomNav", () => {
 		await page.viewport(...VIEWPORTS.mobile);
 		const onSelect = vi.fn();
 		const screen = await render(BottomNav, { modules, activeIndex: 0, onSelect });
-		await screen.getByRole("button", { name: "Ajustes" }).click();
+		await screen.getByRole("button", { name: "Settings" }).click();
 		expect(onSelect).toHaveBeenCalledExactlyOnceWith(1);
 	});
 
@@ -224,7 +224,7 @@ describe("BottomNav", () => {
 		await page.viewport(...VIEWPORTS.mobile);
 		const screen = await render(BottomNav, { modules, activeIndex: 0, onSelect: vi.fn() });
 		const rect = screen
-			.getByRole("button", { name: "Aplicativo" })
+			.getByRole("button", { name: "Application" })
 			.element()
 			.getBoundingClientRect();
 		expect(rect.height).toBeGreaterThanOrEqual(44);
@@ -233,28 +233,28 @@ describe("BottomNav", () => {
 
 describe("MobileHeader", () => {
 	it("renders the title inside a banner landmark", async () => {
-		const screen = await render(MobileHeader, { title: "Documentos" });
+		const screen = await render(MobileHeader, { title: "Documents" });
 		await expect.element(screen.getByRole("banner")).toBeVisible();
-		await expect.element(screen.getByText("Documentos")).toBeVisible();
+		await expect.element(screen.getByText("Documents")).toBeVisible();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
 	it("renders leading and trailing slots", async () => {
 		const screen = await render(MobileHeader, {
-			title: "Documentos",
-			leading: snip("<span>Marca</span>"),
+			title: "Documents",
+			leading: snip("<span>Brand</span>"),
 			trailing: snip("<button type='button'>Menu</button>"),
 		});
-		await expect.element(screen.getByText("Marca")).toBeVisible();
+		await expect.element(screen.getByText("Brand")).toBeVisible();
 		await expect.element(screen.getByRole("button", { name: "Menu" })).toBeVisible();
 	});
 
 	it("titleSlot replaces the plain title text", async () => {
 		const screen = await render(MobileHeader, {
-			title: "Ignorado",
-			titleSlot: snip("<button type='button'>Sessão 1</button>"),
+			title: "Ignored",
+			titleSlot: snip("<button type='button'>Session 1</button>"),
 		});
-		await expect.element(screen.getByRole("button", { name: "Sessão 1" })).toBeVisible();
-		expect(screen.getByText("Ignorado").elements()).toHaveLength(0);
+		await expect.element(screen.getByRole("button", { name: "Session 1" })).toBeVisible();
+		expect(screen.getByText("Ignored").elements()).toHaveLength(0);
 	});
 });

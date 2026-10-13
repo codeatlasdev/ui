@@ -139,7 +139,7 @@ Comment the why, not the what.
 users.forEach(u => u.active = false);
 
 // good: explains the decision
-// Deactivate all before reassigning — avoids a window where a user
+// Deactivate all before reassigning: avoids a window where a user
 // temporarily holds both old and new permissions.
 users.forEach(u => u.active = false);
 ```

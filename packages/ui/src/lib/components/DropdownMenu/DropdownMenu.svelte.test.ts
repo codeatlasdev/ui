@@ -7,7 +7,7 @@ import Harness from "./DropdownMenu.test.svelte";
 
 const openByKeyboard = async (props = {}, key = "{Enter}") => {
 	const screen = await render(Harness, props);
-	const trigger = screen.getByRole("button", { name: "Ações" });
+	const trigger = screen.getByRole("button", { name: "Actions" });
 	await expect.element(trigger).toHaveAttribute("aria-expanded", "false");
 	(trigger.element() as HTMLElement).focus();
 	await userEvent.keyboard(key);
@@ -22,8 +22,8 @@ describe("DropdownMenu", () => {
 		async (key) => {
 			const { trigger } = await openByKeyboard({}, key);
 			await expect.element(trigger).toHaveAttribute("aria-expanded", "true");
-			await expect.element(page.getByRole("menuitem", { name: "Editar" })).toBeVisible();
-			await expect.element(page.getByRole("menuitem", { name: "Excluir" })).toBeVisible();
+			await expect.element(page.getByRole("menuitem", { name: "Edit" })).toBeVisible();
+			await expect.element(page.getByRole("menuitem", { name: "Delete" })).toBeVisible();
 		}
 	);
 
@@ -37,8 +37,8 @@ describe("DropdownMenu", () => {
 
 	it("keyboard open focuses first item; arrows skip disabled", async () => {
 		await openByKeyboard();
-		const edit = page.getByRole("menuitem", { name: "Editar" });
-		const del = page.getByRole("menuitem", { name: "Excluir" });
+		const edit = page.getByRole("menuitem", { name: "Edit" });
+		const del = page.getByRole("menuitem", { name: "Delete" });
 		await expect.element(edit).toHaveFocus();
 		await userEvent.keyboard("{ArrowDown}");
 		await expect.element(del).toHaveFocus();
@@ -49,7 +49,7 @@ describe("DropdownMenu", () => {
 	it("Enter on an item fires its onclick and closes the menu", async () => {
 		const onedit = vi.fn();
 		const { trigger } = await openByKeyboard({ onedit });
-		await expect.element(page.getByRole("menuitem", { name: "Editar" })).toHaveFocus();
+		await expect.element(page.getByRole("menuitem", { name: "Edit" })).toHaveFocus();
 		await userEvent.keyboard("{Enter}");
 		expect(onedit).toHaveBeenCalledOnce();
 		await expect.element(page.getByRole("menu")).not.toBeInTheDocument();
@@ -59,7 +59,7 @@ describe("DropdownMenu", () => {
 	it("disabled item is aria-disabled and does not fire", async () => {
 		await openByKeyboard();
 		await expect
-			.element(page.getByRole("menuitem", { name: "Duplicar" }))
+			.element(page.getByRole("menuitem", { name: "Duplicate" }))
 			.toHaveAttribute("aria-disabled", "true");
 	});
 
@@ -74,8 +74,8 @@ describe("DropdownMenu", () => {
 	it("click opens and clicking an item runs it", async () => {
 		const ondelete = vi.fn();
 		const screen = await render(Harness, { ondelete });
-		await screen.getByRole("button", { name: "Ações" }).click();
-		await page.getByRole("menuitem", { name: "Excluir" }).click();
+		await screen.getByRole("button", { name: "Actions" }).click();
+		await page.getByRole("menuitem", { name: "Delete" }).click();
 		expect(ondelete).toHaveBeenCalledOnce();
 	});
 });

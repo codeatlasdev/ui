@@ -10,9 +10,9 @@ import Harness from "./Drawer.test.svelte";
 const open = async (props = {}) => {
 	await page.viewport(...VIEWPORTS.desktop);
 	const screen = await render(Harness, props);
-	const trigger = screen.getByRole("button", { name: "Abrir filtros" });
+	const trigger = screen.getByRole("button", { name: "Open filters" });
 	await trigger.click();
-	const dialog = page.getByRole("dialog", { name: "Filtros" });
+	const dialog = page.getByRole("dialog", { name: "Filters" });
 	await expect.element(dialog).toBeVisible();
 	await settled();
 	return { screen, trigger, dialog };
@@ -25,7 +25,7 @@ afterAll(() => setLocale("en"));
 describe("Drawer", () => {
 	it("opens with title, body and actions; no axe violations", async () => {
 		await open();
-		await expect.element(page.getByRole("button", { name: "Aplicar" })).toBeVisible();
+		await expect.element(page.getByRole("button", { name: "Apply" })).toBeVisible();
 		expect(await checkA11y(document.body)).toHaveNoViolations();
 	});
 

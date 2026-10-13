@@ -10,37 +10,37 @@ const snip = (html: string) => createRawSnippet(() => ({ render: () => html }));
 
 describe("EmptyState", () => {
 	it("is a status named by its title, with a heading", async () => {
-		const screen = await render(EmptyState, { title: "Sem resultados" });
-		await expect.element(screen.getByRole("status", { name: "Sem resultados" })).toBeVisible();
-		await expect.element(screen.getByRole("heading", { name: "Sem resultados" })).toBeVisible();
+		const screen = await render(EmptyState, { title: "No results" });
+		await expect.element(screen.getByRole("status", { name: "No results" })).toBeVisible();
+		await expect.element(screen.getByRole("heading", { name: "No results" })).toBeVisible();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
 	it("renders description text", async () => {
-		const screen = await render(EmptyState, { title: "Vazio", description: "Tente outro filtro" });
-		await expect.element(screen.getByText("Tente outro filtro")).toBeVisible();
+		const screen = await render(EmptyState, { title: "Empty", description: "Try another filter" });
+		await expect.element(screen.getByText("Try another filter")).toBeVisible();
 	});
 
 	it("description prop wins over children", async () => {
 		const screen = await render(EmptyState, {
-			title: "Vazio",
-			description: "Da prop",
-			children: snip("<span>Do filho</span>"),
+			title: "Empty",
+			description: "From prop",
+			children: snip("<span>From child</span>"),
 		});
-		await expect.element(screen.getByText("Da prop")).toBeVisible();
-		await expect.element(screen.getByText("Do filho")).not.toBeInTheDocument();
+		await expect.element(screen.getByText("From prop")).toBeVisible();
+		await expect.element(screen.getByText("From child")).not.toBeInTheDocument();
 	});
 
 	it("children render as the description when no description prop", async () => {
 		const screen = await render(EmptyState, {
-			title: "Vazio",
-			children: snip("<span>Do filho</span>"),
+			title: "Empty",
+			children: snip("<span>From child</span>"),
 		});
-		await expect.element(screen.getByText("Do filho")).toBeVisible();
+		await expect.element(screen.getByText("From child")).toBeVisible();
 	});
 
 	it("renders no description/actions containers when absent", async () => {
-		const screen = await render(EmptyState, { title: "Vazio" });
+		const screen = await render(EmptyState, { title: "Empty" });
 		expect(screen.container.querySelector(".ca-empty__description")).toBeNull();
 		expect(screen.container.querySelector(".ca-empty__actions")).toBeNull();
 		expect(screen.container.querySelector(".ca-empty__icon")).toBeNull();
@@ -48,16 +48,16 @@ describe("EmptyState", () => {
 
 	it("renders the actions snippet with interactive content", async () => {
 		const screen = await render(EmptyState, {
-			title: "Vazio",
-			description: "Nada aqui",
-			actions: snip(`<button type="button">Criar item</button>`),
+			title: "Empty",
+			description: "Nothing here",
+			actions: snip(`<button type="button">Create item</button>`),
 		});
-		await expect.element(screen.getByRole("button", { name: "Criar item" })).toBeVisible();
+		await expect.element(screen.getByRole("button", { name: "Create item" })).toBeVisible();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
 	it("icon is decorative (aria-hidden) and rendered as svg", async () => {
-		const screen = await render(EmptyState, { title: "Vazio", icon: Inbox });
+		const screen = await render(EmptyState, { title: "Empty", icon: Inbox });
 		const tile = q(screen.container, ".ca-empty__icon");
 		expect(tile.getAttribute("aria-hidden")).toBe("true");
 		expect(tile.querySelector("svg")).not.toBeNull();
@@ -66,11 +66,11 @@ describe("EmptyState", () => {
 
 	it("hero variant uses the larger icon and passes axe with all parts", async () => {
 		const screen = await render(EmptyState, {
-			title: "Bem-vindo",
+			title: "Welcome",
 			variant: "hero",
 			icon: Inbox,
-			description: "Comece criando algo",
-			actions: snip(`<button type="button">Começar</button>`),
+			description: "Start by creating something",
+			actions: snip(`<button type="button">Get started</button>`),
 		});
 		const root = screen.getByRole("status");
 		await expect.element(root).toHaveClass("ca-empty--hero");

@@ -6,13 +6,13 @@
 	data-testid="matrix"
 	style="display:grid;gap:24px;padding:16px;width:max-content;grid-template-columns:repeat(2,max-content)"
 >
-	<PinInput label="Vazio" />
-	<PinInput label="Parcial" value="123" />
-	<PinInput label="Completo" value="123456" />
-	<PinInput label="Mascarado" value="1234" mask />
-	<PinInput label="Quatro dígitos" length={4} value="12" />
-	<PinInput label="Texto" type="text" length={5} value="AB1" />
-	<PinInput label="Descrição" description="Código enviado por SMS" value="12" />
-	<PinInput label="Erro" error="Código inválido" value="123456" />
-	<PinInput label="Desabilitado" disabled value="123" />
+	<PinInput label="Empty" />
+	<PinInput label="Partial" value="123" />
+	<PinInput label="Complete" value="123456" />
+	<PinInput label="Masked" value="1234" mask />
+	<PinInput label="Four digits" length={4} value="12" />
+	<PinInput label="Text" type="text" length={5} value="AB1" />
+	<PinInput label="Description" description="Code sent by SMS" value="12" />
+	<PinInput label="Error" error="Invalid code" value="123456" />
+	<PinInput label="Disabled" disabled value="123" />
 </div>

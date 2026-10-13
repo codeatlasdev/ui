@@ -9,16 +9,16 @@ const label = (text: string) => createRawSnippet(() => ({ render: () => `<span>$
 describe("Button", () => {
 	it("calls onclick when enabled", async () => {
 		const onclick = vi.fn();
-		const screen = await render(Button, { children: label("Salvar"), onclick });
-		await screen.getByRole("button", { name: "Salvar" }).click();
+		const screen = await render(Button, { children: label("Save"), onclick });
+		await screen.getByRole("button", { name: "Save" }).click();
 		expect(onclick).toHaveBeenCalledOnce();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
 	it("loading sets aria-busy, disables and blocks onclick", async () => {
 		const onclick = vi.fn();
-		const screen = await render(Button, { children: label("Salvar"), loading: true, onclick });
-		const btn = screen.getByRole("button", { name: "Salvar" });
+		const screen = await render(Button, { children: label("Save"), loading: true, onclick });
+		const btn = screen.getByRole("button", { name: "Save" });
 		await expect.element(btn).toHaveAttribute("aria-busy", "true");
 		await expect.element(btn).toBeDisabled();
 		await btn.click({ force: true });
@@ -28,7 +28,7 @@ describe("Button", () => {
 
 	it("announces when loading finishes, but not on mount or while loading", async () => {
 		const polite = () => document.querySelector('[data-ca-announcer="polite"]')?.textContent ?? "";
-		const screen = await render(Button, { children: label("Salvar"), loading: true });
+		const screen = await render(Button, { children: label("Save"), loading: true });
 		await new Promise((r) => setTimeout(r, 100));
 		expect(polite()).toBe("");
 		await screen.rerender({ loading: false });
@@ -46,8 +46,8 @@ describe("Button", () => {
 	);
 
 	it("href with loading renders a disabled link", async () => {
-		const screen = await render(Button, { children: label("Ir"), href: "/x", loading: true });
-		const link = screen.getByRole("link", { name: "Ir" });
+		const screen = await render(Button, { children: label("Go"), href: "/x", loading: true });
+		const link = screen.getByRole("link", { name: "Go" });
 		await expect.element(link).toHaveAttribute("aria-disabled", "true");
 		await expect.element(link).toHaveAttribute("tabindex", "-1");
 	});

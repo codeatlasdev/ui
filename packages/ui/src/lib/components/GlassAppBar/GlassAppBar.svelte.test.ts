@@ -9,14 +9,14 @@ const snip = (html: string) => createRawSnippet(() => ({ render: () => html }));
 describe("GlassAppBar", () => {
 	it("renders a banner with leading, content and trailing slots", async () => {
 		const screen = await render(GlassAppBar, {
-			leading: snip("<button type='button'>Voltar</button>"),
-			children: snip("<span>Título</span>"),
-			trailing: snip("<button type='button'>Ação</button>"),
+			leading: snip("<button type='button'>Back</button>"),
+			children: snip("<span>Title</span>"),
+			trailing: snip("<button type='button'>Action</button>"),
 		});
 		await expect.element(screen.getByRole("banner")).toBeVisible();
-		await expect.element(screen.getByRole("button", { name: "Voltar" })).toBeVisible();
-		await expect.element(screen.getByText("Título")).toBeVisible();
-		await expect.element(screen.getByRole("button", { name: "Ação" })).toBeVisible();
+		await expect.element(screen.getByRole("button", { name: "Back" })).toBeVisible();
+		await expect.element(screen.getByText("Title")).toBeVisible();
+		await expect.element(screen.getByRole("button", { name: "Action" })).toBeVisible();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
@@ -41,7 +41,7 @@ describe("GlassAppBar", () => {
 	});
 
 	it("forwards a custom class", async () => {
-		const screen = await render(GlassAppBar, { class: "minha-classe" });
-		await expect.element(screen.getByRole("banner")).toHaveClass("minha-classe");
+		const screen = await render(GlassAppBar, { class: "my-class" });
+		await expect.element(screen.getByRole("banner")).toHaveClass("my-class");
 	});
 });

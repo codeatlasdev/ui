@@ -16,7 +16,7 @@
 
   let { modules, activeIndex, onSelect, brand, bottom, class: className = '' }: Props = $props();
 
-  // Dock magnification — track mouseY, scale icons near cursor
+  // Dock magnification: track mouseY, scale icons near cursor
   let mouseY  = $state(Infinity);
   let iconEls = $state<(HTMLElement | null)[]>([]);
 
@@ -48,7 +48,7 @@
 
   <div class="ca-rail__sep" aria-hidden="true"></div>
 
-  <!-- Module icons — flex:1 so they push bottom items down -->
+  <!-- Module icons: flex:1 so they push bottom items down -->
   <ul class="ca-rail__dock" role="list">
     {#each modules as mod, i}
       {@const Icon   = mod.icon}

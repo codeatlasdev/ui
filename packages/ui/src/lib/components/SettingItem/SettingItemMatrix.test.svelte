@@ -6,16 +6,16 @@
 
 {#snippet toggle()}<Switch checked />{/snippet}
 {#snippet toggleOff()}<Switch />{/snippet}
-{#snippet action()}<Button variant="outlined" size="sm">Alterar</Button>{/snippet}
+{#snippet action()}<Button variant="outlined" size="sm">Change</Button>{/snippet}
 
 <div data-testid="matrix" style="display:grid;gap:8px;padding:16px;width:560px">
-	<SettingItem label="Somente rótulo" />
-	<SettingItem label="Notificações" description="Receber avisos por e-mail" children={toggle} />
-	<SettingItem label="Modo compacto" description="Reduz o espaçamento das listas" children={toggleOff} />
-	<SettingItem label="Senha" description="Última alteração há 3 meses" children={action} />
+	<SettingItem label="Label only" />
+	<SettingItem label="Notifications" description="Receive alerts by email" children={toggle} />
+	<SettingItem label="Compact mode" description="Reduces list spacing" children={toggleOff} />
+	<SettingItem label="Password" description="Last changed 3 months ago" children={action} />
 	<SettingItem
-		label="Rótulo muito longo para testar a quebra de linha dentro do item de configuração"
-		description="Uma descrição igualmente longa que precisa quebrar em múltiplas linhas para validar o alinhamento do controle à direita do texto."
+		label="Very long label to test line wrapping inside the setting item"
+		description="An equally long description that needs to wrap across multiple lines to verify the control stays aligned to the right of the text."
 		children={toggle}
 	/>
 </div>

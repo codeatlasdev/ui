@@ -6,7 +6,7 @@ overlayVrt(
 	"DropdownMenu",
 	Matrix,
 	async () => {
-		await page.getByRole("button", { name: "Opções" }).click();
+		await page.getByRole("button", { name: "Options" }).click();
 	},
 	"menu"
 );

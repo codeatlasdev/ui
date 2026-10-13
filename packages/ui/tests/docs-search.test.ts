@@ -2,31 +2,32 @@ import { describe, expect, it } from "bun:test";
 import { fold, searchDocs } from "../src/lib/components/Docs/search.js";
 import type { DocsSearchEntry } from "../src/lib/components/Docs/types.js";
 
+// "Configuração" / "configuracao" are deliberate accented fixtures for the diacritic-folding tests.
 const index: DocsSearchEntry[] = [
 	{
-		href: "/guia/configuracao",
+		href: "/guide/configuracao",
 		title: "Configuração",
-		section: "Guia",
-		description: "Como configurar o projeto",
+		section: "Guide",
+		description: "How to configure the project",
 		headings: [
-			{ text: "Variáveis de ambiente", id: "env" },
-			{ text: "Arquivo de configuração", id: "arquivo" },
+			{ text: "Environment variables", id: "env" },
+			{ text: "Configuração file", id: "file" },
 		],
-		text: "Defina as variáveis antes de iniciar.",
+		text: "Set the variables before starting.",
 	},
 	{
-		href: "/api/pedidos",
-		title: "Pedidos",
+		href: "/api/orders",
+		title: "Orders",
 		section: "API",
-		description: "Endpoints de pedidos",
-		headings: [{ text: "Criar pedido", id: "criar" }],
-		text: "Use POST para criar. A configuração padrão serve na maioria dos casos.",
+		description: "Order endpoints",
+		headings: [{ text: "Create order", id: "create" }],
+		text: "Use POST to create. The default configuração works in most cases.",
 	},
 	{
-		href: "/guia/instalacao",
-		title: "Instalação",
-		section: "Guia",
-		description: "Instale o pacote",
+		href: "/guide/installation",
+		title: "Installation",
+		section: "Guide",
+		description: "Install the package",
 		headings: [],
 		text: "bun add @codeatlasdev/ui",
 	},
@@ -46,32 +47,32 @@ describe("searchDocs", () => {
 
 	it("matches accent-insensitively", () => {
 		const hits = searchDocs(index, "configuracao");
-		expect(hits[0]).toMatchObject({ href: "/guia/configuracao", kind: "page", context: "Guia" });
+		expect(hits[0]).toMatchObject({ href: "/guide/configuracao", kind: "page", context: "Guide" });
 	});
 
 	it("ranks a title hit above a body-only hit", () => {
 		const pages = searchDocs(index, "configuracao").filter((r) => r.kind === "page");
-		expect(pages.map((p) => p.href)).toEqual(["/guia/configuracao", "/api/pedidos"]);
+		expect(pages.map((p) => p.href)).toEqual(["/guide/configuracao", "/api/orders"]);
 	});
 
 	it("requires every term to match", () => {
-		expect(searchDocs(index, "pedido inexistente")).toEqual([]);
-		expect(searchDocs(index, "criar pedido").map((r) => r.href)).toContain("/api/pedidos#criar");
+		expect(searchDocs(index, "order nonexistent")).toEqual([]);
+		expect(searchDocs(index, "create order").map((r) => r.href)).toContain("/api/orders#create");
 	});
 
 	it("emits heading hits with an anchor href and the page title as context", () => {
-		const heading = searchDocs(index, "variaveis").find((r) => r.kind === "heading");
+		const heading = searchDocs(index, "environment").find((r) => r.kind === "heading");
 		expect(heading).toEqual({
-			href: "/guia/configuracao#env",
-			title: "Variáveis de ambiente",
+			href: "/guide/configuracao#env",
+			title: "Environment variables",
 			context: "Configuração",
 			kind: "heading",
 		});
 	});
 
 	it("matches body text and description", () => {
-		expect(searchDocs(index, "bun add")[0].href).toBe("/guia/instalacao");
-		expect(searchDocs(index, "endpoints")[0].href).toBe("/api/pedidos");
+		expect(searchDocs(index, "bun add")[0].href).toBe("/guide/installation");
+		expect(searchDocs(index, "endpoints")[0].href).toBe("/api/orders");
 	});
 
 	it("honours the limit", () => {
@@ -80,9 +81,16 @@ describe("searchDocs", () => {
 
 	it("ranks a title prefix above a mid-title match", () => {
 		const idx: DocsSearchEntry[] = [
-			{ href: "/b", title: "Guia de Botão", section: "S", description: "", headings: [], text: "" },
-			{ href: "/a", title: "Botão", section: "S", description: "", headings: [], text: "" },
+			{
+				href: "/b",
+				title: "Guide to Button",
+				section: "S",
+				description: "",
+				headings: [],
+				text: "",
+			},
+			{ href: "/a", title: "Button", section: "S", description: "", headings: [], text: "" },
 		];
-		expect(searchDocs(idx, "botao").map((r) => r.href)).toEqual(["/a", "/b"]);
+		expect(searchDocs(idx, "button").map((r) => r.href)).toEqual(["/a", "/b"]);
 	});
 });

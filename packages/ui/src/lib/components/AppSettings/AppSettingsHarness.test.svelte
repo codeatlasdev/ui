@@ -15,24 +15,24 @@
 	let external = $state(untrack(() => controlled ?? ""));
 
 	const tabs = [
-		{ value: "general", label: "Geral", icon: Settings },
-		{ value: "members", label: "Membros", badge: 4 },
-		{ value: "danger", label: "Zona de perigo", danger: true },
+		{ value: "general", label: "General", icon: Settings },
+		{ value: "members", label: "Members", badge: 4 },
+		{ value: "danger", label: "Danger zone", danger: true },
 	];
 </script>
 
 {#snippet actions()}
-	<button type="button">Salvar</button>
+	<button type="button">Save</button>
 {/snippet}
 {#snippet content(tab: string)}
-	<p>Conteúdo: {tab}</p>
+	<p>Content: {tab}</p>
 {/snippet}
 
 <main>
 	{#if controlled !== undefined}
 		<AppSettings
-			title="Configurações"
-			description="Gerencie o workspace"
+			title="Settings"
+			description="Manage the workspace"
 			{tabs}
 			bind:activeTab={external}
 			{onTabChange}
@@ -42,8 +42,8 @@
 		<output data-testid="external">{external}</output>
 	{:else}
 		<AppSettings
-			title="Configurações"
-			description="Gerencie o workspace"
+			title="Settings"
+			description="Manage the workspace"
 			{tabs}
 			{defaultTab}
 			{onTabChange}

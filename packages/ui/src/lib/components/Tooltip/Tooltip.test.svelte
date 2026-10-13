@@ -7,5 +7,5 @@
 	let { delay = 0 }: Props = $props();
 </script>
 
-<Tooltip content="Salvar alterações" {delay}>Salvar</Tooltip>
-<button type="button">Depois</button>
+<Tooltip content="Save changes" {delay}>Save</Tooltip>
+<button type="button">After</button>

@@ -7,26 +7,26 @@
 	const modules: NavModule[] = [
 		{
 			id: "app",
-			label: "Aplicativo",
+			label: "Application",
 			icon: Home,
 			basePath: "/app",
 			items: [
-				{ id: "dash", label: "Painel", icon: Home, path: "/app/dashboard" },
-				{ id: "docs", label: "Documentos", icon: FileText, path: "/app/docs", badge: 3 },
+				{ id: "dash", label: "Dashboard", icon: Home, path: "/app/dashboard" },
+				{ id: "docs", label: "Documents", icon: FileText, path: "/app/docs", badge: 3 },
 				{
 					label: "Admin",
-					items: [{ id: "usr", label: "Usuários", icon: Users, path: "/app/users", isNew: true }],
+					items: [{ id: "usr", label: "Users", icon: Users, path: "/app/users", isNew: true }],
 				},
 			],
 		},
 		{
 			id: "cfg",
-			label: "Ajustes",
+			label: "Settings",
 			icon: Settings,
 			basePath: "/settings",
 			items: [
-				{ id: "gen", label: "Geral", icon: Settings, path: "/settings/general" },
-				{ id: "sec", label: "Segurança", icon: Settings, path: "/settings/security" },
+				{ id: "gen", label: "General", icon: Settings, path: "/settings/general" },
+				{ id: "sec", label: "Security", icon: Settings, path: "/settings/security" },
 			],
 		},
 	];
@@ -45,8 +45,8 @@
 			<span style="font-weight:700">CA</span>
 		{/snippet}
 		<main style="padding:24px">
-			<h1 style="margin:0 0 8px">Painel</h1>
-			<p style="margin:0">Conteúdo da página.</p>
+			<h1 style="margin:0 0 8px">Dashboard</h1>
+			<p style="margin:0">Page content.</p>
 		</main>
 	</AppShellLayout>
 </div>

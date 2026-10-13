@@ -8,34 +8,34 @@
   import MobileHeader from '../AppShell/MobileHeader.svelte';
 
   /**
-   * MobilePane — tela cheia acima do shell para drill-down no mobile
-   * (thread de chat, histórico, detalhe). Substitui `position: fixed` feito à mão.
+   * MobilePane: a full-screen layer above the shell for mobile drill-down
+   * (chat thread, history, detail). Replaces a hand-rolled `position: fixed`.
    *
-   * Header com botão voltar, conteúdo com scroll próprio (`overscroll-behavior: contain`),
-   * safe-area em todos os lados e respeito ao teclado virtual. Escape fecha; o foco
-   * entra no painel ao abrir e volta ao elemento anterior ao fechar.
+   * Header with a back button, a body with its own scroll (`overscroll-behavior: contain`),
+   * safe-area insets on every side and virtual keyboard awareness. Escape closes; focus
+   * moves into the pane on open and returns to the previous element on close.
    *
-   * Uso:
+   * Usage:
    *   <MobilePane bind:open title="Maria" onback={() => (chatId = null)}>
    *     <Messages />
    *   </MobilePane>
    */
   interface Props {
-    /** Visibilidade (bindable). O botão voltar e Escape colocam em `false`. */
+    /** Visibility (bindable). The back button and Escape set it to `false`. */
     open?: boolean;
-    /** Título do header e nome acessível do painel. */
+    /** Header title and accessible name of the pane. */
     title: string;
-    /** Chamado depois que o botão voltar ou Escape fecham o painel. */
+    /** Called after the back button or Escape closes the pane. */
     onback?: () => void;
-    /** Corpo rolável. */
+    /** Scrollable body. */
     children: Snippet;
-    /** Lado direito do header. */
+    /** Right side of the header. */
     actions?: Snippet;
-    /** Substitui o texto do título no header (ex.: avatar + nome), `title` segue como nome acessível. */
+    /** Replaces the title text in the header (e.g. avatar + name); `title` remains the accessible name. */
     headerTitle?: Snippet;
     /**
-     * `true` (padrão): o corpo rola. `false`: o corpo é um flex column sem scroll, para
-     * layouts com área rolável própria e compositor fixo (chat).
+     * `true` (default): the body scrolls. `false`: the body is a non-scrolling flex column,
+     * for layouts with their own scrollable area and a fixed composer (chat).
      */
     scroll?: boolean;
     class?: string;
@@ -66,7 +66,7 @@
     close();
   }
 
-  // Foco entra ao abrir e volta ao elemento anterior ao fechar/desmontar.
+  // Focus moves in on open and returns to the previous element on close/unmount.
   $effect(() => {
     if (!open) return;
     previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
@@ -117,7 +117,7 @@
     outline: none;
   }
 
-  /* O header já soma --ca-safe-top/left/right. Dentro de um flex column ele não deve crescer. */
+  /* The header already adds --ca-safe-top/left/right. Inside a flex column it must not grow. */
   .ca-mobile-pane :global(.ca-mobile-pane__header) {
     flex: 0 0 auto;
   }

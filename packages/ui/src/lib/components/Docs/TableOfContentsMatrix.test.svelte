@@ -3,11 +3,11 @@
 	import type { DocsHeading } from "./types.js";
 
 	const headings: DocsHeading[] = [
-		{ id: "intro", text: "Introdução", depth: 2 },
-		{ id: "instalacao", text: "Instalação", depth: 2 },
-		{ id: "requisitos", text: "Requisitos", depth: 3 },
-		{ id: "uso", text: "Uso básico", depth: 2 },
-		{ id: "avancado", text: "Configuração avançada de ambientes", depth: 3 },
+		{ id: "intro", text: "Introduction", depth: 2 },
+		{ id: "installation", text: "Installation", depth: 2 },
+		{ id: "requirements", text: "Requirements", depth: 3 },
+		{ id: "usage", text: "Basic usage", depth: 2 },
+		{ id: "advanced", text: "Advanced environment configuration", depth: 3 },
 	];
 </script>
 

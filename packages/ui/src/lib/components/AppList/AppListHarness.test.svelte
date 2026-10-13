@@ -18,18 +18,18 @@
 </script>
 
 <main>
-	<AppList title="Usuários" {data} {perPage} searchKeys={["name"]} ofLabel="de" searchPlaceholder="Buscar…">
+	<AppList title="Users" {data} {perPage} searchKeys={["name"]} searchPlaceholder="Search…">
 		{#snippet actions()}
-			<button type="button">Novo</button>
+			<button type="button">New</button>
 		{/snippet}
 		{#snippet filters(list)}
-			<button type="button" onclick={() => list.setFilter("role", "Admin")}>Só admins</button>
+			<button type="button" onclick={() => list.setFilter("role", "Admin")}>Admins only</button>
 		{/snippet}
 		{#snippet empty()}
-			{#if withEmpty}<p>Nada por aqui</p>{/if}
+			{#if withEmpty}<p>Nothing here</p>{/if}
 		{/snippet}
 		{#snippet children(list)}
-			<ul aria-label="Resultados">
+			<ul aria-label="Results">
 				{#each list.rows as u (u.id)}
 					<li>{u.name}</li>
 				{/each}

@@ -6,7 +6,7 @@
 </script>
 
 <!--
-  Wraps <table> in the glass container — all DataTable rows/cells render inside here.
+  Wraps <table> in the glass container: all DataTable rows/cells render inside here.
   The glass border + backdrop are applied on the outer div so they don't
   interfere with table layout.
 -->

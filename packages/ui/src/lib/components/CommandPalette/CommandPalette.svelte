@@ -47,7 +47,7 @@
       : allItems
   );
 
-  // Map<moduleLabel, items> — only computed when not filtering
+  // Map<moduleLabel, items>, only computed when not filtering
   let grouped = $derived(
     filtering
       ? null

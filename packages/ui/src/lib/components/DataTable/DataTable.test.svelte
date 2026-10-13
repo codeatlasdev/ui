@@ -33,4 +33,4 @@
 	]);
 </script>
 
-<DataTable {columns} {data} {onRowClick} searchPlaceholder="Buscar usuários" />
+<DataTable {columns} {data} {onRowClick} searchPlaceholder="Search users" />

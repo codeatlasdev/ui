@@ -3,24 +3,24 @@
   import { keyboardAware } from '../../actions/keyboard-aware.js';
 
   /**
-   * StickyActions — barra de ações primárias de um formulário.
+   * StickyActions: primary action bar for a form.
    *
-   * Fica colada ao fim do container que rola (`position: sticky; bottom: 0`), com
-   * chrome de vidro, respeitando `--ca-safe-bottom` e o teclado virtual
-   * (`keyboardAware`). Em telas largas vira uma linha inline, sem chrome.
+   * Sticks to the bottom of the scrolling container (`position: sticky; bottom: 0`) with
+   * glass chrome, honoring `--ca-safe-bottom` and the virtual keyboard
+   * (`keyboardAware`). On wide screens it becomes an inline row with no chrome.
    *
-   * Uso:
+   * Usage:
    *   <StickyActions show={dirty}>
-   *     <Button variant="ghost">Cancelar</Button>
-   *     <Button variant="filled">Salvar</Button>
+   *     <Button variant="ghost">Cancel</Button>
+   *     <Button variant="filled">Save</Button>
    *   </StickyActions>
    */
   interface Props {
-    /** Botões da barra. */
+    /** Bar buttons. */
     children: Snippet;
-    /** `'end'` junta os botões à direita; `'stretch'` os estica (largura total) em telas de toque. */
+    /** `'end'` packs the buttons to the right; `'stretch'` stretches them (full width) on touch screens. */
     align?: 'end' | 'stretch';
-    /** Renderiza a barra só enquanto há algo a confirmar (ex.: formulário alterado). */
+    /** Renders the bar only while there is something to confirm (e.g. a dirty form). */
     show?: boolean;
     class?: string;
   }
@@ -39,7 +39,7 @@
     position: sticky;
     bottom: 0;
     z-index: var(--ca-z-sticky);
-    /* Sangra até as bordas do painel para o blur cobrir o conteúdo que rola por baixo. */
+    /* Bleeds to the panel edges so the blur covers the content scrolling underneath. */
     margin: 0.5rem calc(var(--ca-page-px-sm) * -1) 0;
     padding: 0.75rem max(var(--ca-page-px-sm), var(--ca-safe-right)) calc(0.75rem + var(--ca-safe-bottom)) max(var(--ca-page-px-sm), var(--ca-safe-left));
     background: var(--ca-glass-bg);
@@ -63,7 +63,7 @@
     min-height: var(--ca-touch-target);
   }
 
-  /* Telas de toque: botões esticados; ghost fica compactos ao lado do primário. */
+  /* Touch screens: stretched buttons; ghost stays compact next to the primary. */
   @media (pointer: coarse) {
     .ca-sticky-actions--stretch .ca-sticky-actions__inner {
       flex-wrap: nowrap;
@@ -78,7 +78,7 @@
     }
   }
 
-  /* Desktop: linha inline, sem chrome. */
+  /* Desktop: inline row, no chrome. */
   @media (min-width: 900px) {
     .ca-sticky-actions {
       position: static;

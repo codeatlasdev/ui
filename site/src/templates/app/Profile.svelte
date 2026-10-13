@@ -37,7 +37,7 @@
       </div>
     </div>
 
-    <!-- FormSection grid aninhado: auto-fill 260px → campos ficam em 2 colunas -->
+    <!-- Nested FormSection grid: auto-fill 260px, so fields sit in 2 columns -->
     <FormSection layout="grid">
       <TextField label="Full name" bind:value={name} />
       <TextField label="Email"     bind:value={email} type="email" />

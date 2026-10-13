@@ -8,7 +8,7 @@ import DateHarness from "./DateHarness.test.svelte";
 describe("DateField", () => {
 	it("labels the group and exposes pt-BR dd/mm/aaaa segments; passes axe", async () => {
 		const screen = await render(DateHarness, { kind: "field" });
-		await expect.element(screen.getByRole("group", { name: "Nascimento" })).toBeVisible();
+		await expect.element(screen.getByRole("group", { name: "Birth date" })).toBeVisible();
 		const segs = screen.getByRole("spinbutton").elements();
 		expect(segs.map((s) => s.textContent)).toEqual(["dd", "mm", "aaaa"]);
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
@@ -44,13 +44,13 @@ describe("DateField", () => {
 	it("shows description, and error with role=alert described by the group", async () => {
 		const withHint = await render(DateHarness, {
 			kind: "field",
-			description: "Use o formato dd/mm/aaaa",
+			description: "Use the dd/mm/aaaa format",
 		});
-		await expect.element(withHint.getByText("Use o formato dd/mm/aaaa")).toBeVisible();
+		await expect.element(withHint.getByText("Use the dd/mm/aaaa format")).toBeVisible();
 		withHint.unmount();
-		const withError = await render(DateHarness, { kind: "field", error: "Data inválida" });
-		await expect.element(withError.getByRole("alert")).toMatchTextContent("Data inválida");
-		const group = withError.getByRole("group", { name: "Nascimento" }).element();
+		const withError = await render(DateHarness, { kind: "field", error: "Invalid date" });
+		await expect.element(withError.getByRole("alert")).toMatchTextContent("Invalid date");
+		const group = withError.getByRole("group", { name: "Birth date" }).element();
 		const errId = withError.getByRole("alert").element().id;
 		expect(group.getAttribute("aria-describedby")).toBe(errId);
 		expect(await checkA11y(withError.container)).toHaveNoViolations();

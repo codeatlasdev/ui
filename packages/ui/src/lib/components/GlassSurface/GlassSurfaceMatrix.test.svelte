@@ -3,7 +3,7 @@
 	import GlassSurface from "./GlassSurface.svelte";
 
 	const thicknesses = ["ultra-thin", "thin", "regular", "thick", "chrome"] as const;
-	const body = createRawSnippet(() => ({ render: () => `<span>Superfície</span>` }));
+	const body = createRawSnippet(() => ({ render: () => `<span>Surface</span>` }));
 	const box = "padding:20px;border-radius:16px;min-width:140px";
 </script>
 

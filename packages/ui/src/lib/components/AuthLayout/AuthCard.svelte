@@ -2,9 +2,9 @@
   import type { Snippet } from 'svelte';
 
   /**
-   * AuthCard — card de formulário de autenticação.
+   * AuthCard: authentication form card.
    *
-   * Uso:
+   * Usage:
    *   <AuthCard title="Welcome back" subtitle="Sign in to continue">
    *     <TextField … />
    *     {#snippet footer()}
@@ -16,7 +16,7 @@
   interface Props {
     title?:    string;
     subtitle?: string;
-    /** Conteúdo abaixo do form — links, termos, etc. */
+    /** Content below the form: links, terms, etc. */
     footer?:   Snippet;
     children?: Snippet;
   }
@@ -97,7 +97,7 @@
     text-underline-offset: 2px;
   }
 
-  /* ── Shared auth utility classes — available inside any AuthCard ── */
+  /* ── Shared auth utility classes, available inside any AuthCard ── */
   :global(.pass-btn) {
     display: flex; align-items: center;
     background: transparent; border: none; padding: 0;

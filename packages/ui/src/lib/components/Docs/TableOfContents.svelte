@@ -4,7 +4,7 @@
   import type { DocsHeading } from './types.js';
 
   /**
-   * TableOfContents — "On this page" index with scrollspy.
+   * TableOfContents: "On this page" index with scrollspy.
    *
    * `variant="rail"` (desktop, sticky column) lists every heading.
    * `variant="inline"` (phones/tablets) is a collapsible disclosure that shows the current

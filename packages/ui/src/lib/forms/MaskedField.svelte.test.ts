@@ -42,8 +42,8 @@ describe("MaskedField", () => {
 		expect(el.selectionStart).toBe(3);
 	});
 	it("caret hops over a literal separator that the mask inserts", async () => {
-		const screen = await render(MaskedField, { label: "Data", mask: maskDateBR });
-		const input = screen.getByLabelText("Data");
+		const screen = await render(MaskedField, { label: "Date", mask: maskDateBR });
+		const input = screen.getByLabelText("Date");
 		const el = input.element() as HTMLInputElement;
 		await input.fill("2512");
 		await expect.element(input).toHaveValue("25/12");
@@ -77,7 +77,7 @@ describe("MaskedField", () => {
 		await input.fill("11111111111");
 		await userEvent.tab();
 		const alert = screen.getByRole("alert");
-		await expect.element(alert).toHaveTextContent("CPF inválido");
+		await expect.element(alert).toHaveTextContent("Invalid CPF");
 		await expect.element(input).toHaveAttribute("aria-invalid", "true");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 
@@ -88,8 +88,8 @@ describe("MaskedField", () => {
 	});
 
 	it("external `error` wins over validation", async () => {
-		const screen = await render(MaskedField, { label: "CEP", mask: maskCEP, error: "Obrigatório" });
-		await expect.element(screen.getByRole("alert")).toHaveTextContent("Obrigatório");
+		const screen = await render(MaskedField, { label: "CEP", mask: maskCEP, error: "Required" });
+		await expect.element(screen.getByRole("alert")).toHaveTextContent("Required");
 	});
 
 	it("digit-only masks use numeric inputmode; overridable", async () => {
@@ -102,8 +102,8 @@ describe("MaskedField", () => {
 
 	it("letter-capable masks fall back to text inputmode", async () => {
 		const alnum = (raw: string) => raw.toUpperCase().replace(/[^A-Z0-9]/g, "");
-		const screen = await render(MaskedField, { label: "Placa", mask: alnum });
-		await expect.element(screen.getByLabelText("Placa")).toHaveAttribute("inputmode", "text");
+		const screen = await render(MaskedField, { label: "Plate", mask: alnum });
+		await expect.element(screen.getByLabelText("Plate")).toHaveAttribute("inputmode", "text");
 	});
 
 	it("oninput receives the masked value", async () => {

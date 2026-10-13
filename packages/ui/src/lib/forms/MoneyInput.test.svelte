@@ -13,6 +13,6 @@
   let value = $state(untrack(() => initial));
 </script>
 
-<MoneyInput label="Valor" bind:value {min} {max} {allowNegative} {onchange} />
+<MoneyInput label="Amount" bind:value {min} {max} {allowNegative} {onchange} />
 <output data-testid="bound">{value}</output>
-<button type="button" onclick={() => (value = 5000)}>definir 50</button>
+<button type="button" onclick={() => (value = 5000)}>set 50</button>

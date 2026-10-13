@@ -3,7 +3,7 @@
 </script>
 
 <Select
-	label="Aberto"
+	label="Open"
 	value="b"
 	options={[
 		{ value: "a", label: "Alpha" },

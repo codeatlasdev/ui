@@ -1,8 +1,8 @@
 /**
  * @codeatlasdev/ui — utility classes
  *
- * Disponível para todo app que importa global.css.
- * Zero configuração necessária.
+ * Available to every app that imports global.css.
+ * Zero configuration needed.
  */
 
 /* ─── AppList toolbar ────────────────────────────────────────────── */
@@ -15,7 +15,7 @@
 
 .ca-toolbar-spacer { flex: 1; }
 
-/* Separador vertical entre grupos no toolbar */
+/* Vertical separator between toolbar groups */
 .ca-toolbar-sep {
   width: 1px;
   height: 20px;
@@ -23,7 +23,7 @@
   flex-shrink: 0;
 }
 
-/* Botão "Clear filters" */
+/* "Clear filters" button */
 .ca-clear-btn {
   font-size: 12px;
   font-weight: 500;
@@ -58,17 +58,17 @@ tr:focus-within .ca-row-actions {
   opacity: 1;
 }
 
-/* Coluna de checkbox — largura fixa + padding compacto */
+/* Checkbox column: fixed width + compact padding */
 .ca-col-check {
   width: 44px;
   padding-left: 20px !important;
   padding-right: 4px !important;
 }
 
-/* Coluna de ações inline (edit/delete buttons) */
+/* Inline actions column (edit/delete buttons) */
 .ca-col-actions { width: 80px; }
 
-/* Checkbox de linha */
+/* Row checkbox */
 .ca-row-check {
   width: 15px;
   height: 15px;
@@ -76,7 +76,7 @@ tr:focus-within .ca-row-actions {
   cursor: pointer;
 }
 
-/* Linha selecionada */
+/* Selected row */
 .ca-row--selected td {
   background: color-mix(in oklab, var(--ca-brand-main) 6%, transparent) !important;
 }
@@ -147,7 +147,7 @@ tr:focus-within .ca-row-actions {
 .ca-btn-danger      { color: var(--ca-semantic-error) !important; border-color: var(--ca-semantic-error) !important; }
 .ca-btn-danger-ghost{ color: var(--ca-semantic-error) !important; }
 
-/* ─── Progress bar (dinâmica via --bar-w) ───────────────────────── */
+/* ─── Progress bar (dynamic via --bar-w) ───────────────────────── */
 
 .ca-bar-fill {
   height: 100%;

@@ -34,7 +34,7 @@
 <style>
   .ca-table-wrap {
     width: 100%;
-    /* no overflow here — parent AppList body scrolls */
+    /* no overflow here: the parent AppList body scrolls */
   }
 
   .ca-table {
@@ -44,7 +44,7 @@
     color: var(--ca-text-primary);
   }
 
-  /* Sticky thead — stays visible while body rows scroll */
+  /* Sticky thead: stays visible while body rows scroll */
   .ca-table :global(thead) {
     position: sticky;
     top: 0;

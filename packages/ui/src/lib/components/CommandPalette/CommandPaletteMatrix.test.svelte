@@ -7,23 +7,23 @@
 	const modules: NavModule[] = [
 		{
 			id: "app",
-			label: "Aplicativo",
+			label: "Application",
 			icon: Home,
 			basePath: "/app",
 			items: [
-				{ id: "dash", label: "Painel", icon: Home, path: "/app/dashboard" },
-				{ id: "docs", label: "Documentos", icon: FileText, path: "/app/docs" },
-				{ id: "usr", label: "Usuários", icon: Users, path: "/app/users" },
+				{ id: "dash", label: "Dashboard", icon: Home, path: "/app/dashboard" },
+				{ id: "docs", label: "Documents", icon: FileText, path: "/app/docs" },
+				{ id: "usr", label: "Users", icon: Users, path: "/app/users" },
 			],
 		},
 		{
 			id: "cfg",
-			label: "Ajustes",
+			label: "Settings",
 			icon: Settings,
 			basePath: "/settings",
 			items: [
-				{ id: "gen", label: "Geral", icon: Settings, path: "/settings/general" },
-				{ id: "sec", label: "Segurança", icon: Settings, path: "/settings/security" },
+				{ id: "gen", label: "General", icon: Settings, path: "/settings/general" },
+				{ id: "sec", label: "Security", icon: Settings, path: "/settings/security" },
 			],
 		},
 	];
@@ -32,7 +32,7 @@
 </script>
 
 <div data-testid="matrix" style="padding:24px">
-	<Button onclick={() => (open = true)}>Abrir</Button>
+	<Button onclick={() => (open = true)}>Open</Button>
 </div>
 
 <CommandPalette {modules} bind:open onNavigate={() => {}} />

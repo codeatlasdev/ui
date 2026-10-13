@@ -6,7 +6,7 @@ import { applyTheme, overlayVrt, SCHEMES, STYLES, vrtReady } from "../../../../t
 import Matrix from "./DialogMatrix.test.svelte";
 
 const open = async () => {
-	await page.getByRole("button", { name: "Abrir" }).click();
+	await page.getByRole("button", { name: "Open" }).click();
 };
 
 overlayVrt("Dialog-sm", Matrix, open, "dialog", { size: "sm" });

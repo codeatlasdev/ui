@@ -76,7 +76,7 @@ describe("DataTable", () => {
 	it("global search filters rows and resets to an empty state with clear button", async () => {
 		await page.viewport(...VIEWPORTS.desktop);
 		const screen = await render(Harness);
-		const search = screen.getByRole("searchbox", { name: "Buscar usuários" });
+		const search = screen.getByRole("searchbox", { name: "Search users" });
 		await search.fill("lucas");
 		await expect.element(screen.getByText("1 result", { exact: true })).toBeInTheDocument();
 		expect(firstColumn(screen.container)).toEqual(["Lucas"]);

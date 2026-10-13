@@ -22,8 +22,8 @@
   } = $props();
 
   const index: DocsSearchEntry[] = [
-    { href: '/guia/inicio', title: 'Primeiros passos', section: 'Guia', description: 'Comece aqui', headings: [{ text: 'Instalação', id: 'instalacao' }], text: 'instale o pacote' },
-    { href: '/api/mensagens', title: 'Enviar mensagem', section: 'API', description: 'Endpoint de envio', headings: [], text: 'webhook e QR code' },
+    { href: '/guide/start', title: 'Getting started', section: 'Guide', description: 'Start here', headings: [{ text: 'Installation', id: 'installation' }], text: 'install the package' },
+    { href: '/api/messages', title: 'Send message', section: 'API', description: 'Sending endpoint', headings: [], text: 'webhook and QR code' },
   ];
 
   const brand = createRawSnippet(() => ({ render: () => `<span>Atlas Docs</span>` }));
@@ -31,19 +31,19 @@
 
 {#if kind === 'shell'}
   <DocsShell
-    sections={[{ id: 'guia', label: 'Guia', href: '/guia' }, { id: 'api', label: 'API', href: '/api' }]}
-    active="guia"
-    groups={[{ label: 'Começando', items: [{ href: '/guia/inicio', title: 'Primeiros passos' }, { href: '/guia/config', title: 'Configuração' }] }]}
-    pathname="/guia/inicio"
-    headings={[{ id: 'a', text: 'Introdução', depth: 2 }, { id: 'b', text: 'Instalação', depth: 2 }]}
+    sections={[{ id: 'guide', label: 'Guide', href: '/guide' }, { id: 'api', label: 'API', href: '/api' }]}
+    active="guide"
+    groups={[{ label: 'Overview', items: [{ href: '/guide/start', title: 'Getting started' }, { href: '/guide/config', title: 'Configuration' }] }]}
+    pathname="/guide/start"
+    headings={[{ id: 'a', text: 'Introduction', depth: 2 }, { id: 'b', text: 'Installation', depth: 2 }]}
     searchIndex={searchIndex ?? index}
     {onnavigate}
     {brand}
     {...rest}
   >
     <article>
-      <h2 id="a">Introdução</h2>
-      <h2 id="b">Instalação</h2>
+      <h2 id="a">Introduction</h2>
+      <h2 id="b">Installation</h2>
     </article>
   </DocsShell>
 {:else if kind === 'codetabs'}
@@ -64,15 +64,15 @@
 {:else if kind === 'steps'}
   <Steps>
     <ol>
-      <li><strong>Crie uma sessão</strong></li>
-      <li><strong>Conecte via QR Code</strong></li>
+      <li><strong>Create a session</strong></li>
+      <li><strong>Connect via QR code</strong></li>
     </ol>
   </Steps>
 {:else if kind === 'callout'}
-  <Callout {...rest}>Conteúdo do aviso</Callout>
+  <Callout {...rest}>Callout content</Callout>
 {:else}
   <CardGrid>
-    <LinkCard title="Guia" description="Comece aqui" href="/guia" />
+    <LinkCard title="Guide" description="Start here" href="/guide" />
     <LinkCard title="API" href="/api" />
   </CardGrid>
 {/if}

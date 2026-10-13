@@ -39,16 +39,16 @@ describe("ErrorPage", () => {
 	});
 
 	it("custom message replaces the preset hint", async () => {
-		const screen = await render(ErrorPage, { status: 404, message: "Projeto não encontrado" });
-		await expect.element(screen.getByText("Projeto não encontrado")).toBeVisible();
+		const screen = await render(ErrorPage, { status: 404, message: "Project not found" });
+		await expect.element(screen.getByText("Project not found")).toBeVisible();
 		await expect
 			.element(screen.getByText("The page you're looking for doesn't exist or was moved."))
 			.not.toBeInTheDocument();
 	});
 
 	it("title prop overrides the preset title", async () => {
-		const screen = await render(ErrorPage, { status: 404, title: "Ops" });
-		await expect.element(screen.getByRole("heading", { level: 1, name: "Ops" })).toBeVisible();
+		const screen = await render(ErrorPage, { status: 404, title: "Oops" });
+		await expect.element(screen.getByRole("heading", { level: 1, name: "Oops" })).toBeVisible();
 	});
 
 	it("renders Go back and Home actions as buttons", async () => {

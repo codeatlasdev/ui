@@ -18,7 +18,7 @@
     columns:               ColumnDef<typeof caTableFeatures, TData>[];
     data:                  TData[];
 
-    // ── Server mode (all optional — if omitted, state is managed internally) ──
+    // ── Server mode (all optional; if omitted, state is managed internally) ──
     total?:                number;
     globalFilter?:         string;
     onGlobalFilterChange?: (v: string) => void;
@@ -30,7 +30,7 @@
     // ── Common ───────────────────────────────────────────────────────────────
     /** Shown when truly empty (no active filter) */
     emptyState?:           Snippet;
-    /** Filter chips — DataTableFacetedFilter components */
+    /** Filter chips: DataTableFacetedFilter components */
     children?:             Snippet;
     onRowClick?:           (row: TData) => void;
     searchPlaceholder?:    string;
@@ -79,7 +79,7 @@
   let _pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
   let _sorting    = $state<SortingState>([]);
 
-  // Resolved values — use internal or external
+  // Resolved values: use internal or external
   const resolvedFilter     = $derived(isSimple ? _filter     : (globalFilter ?? ''));
   const resolvedPagination = $derived(isSimple ? _pagination : (pagination ?? { pageIndex: 0, pageSize: 10 }));
   const resolvedSorting    = $derived(isSimple ? _sorting    : (sorting ?? []));
@@ -179,7 +179,7 @@
   </DataTableToolbar>
 
   {#if isEmpty && !isFiltered && emptyState}
-    <!-- Virgin empty — surface panel, no header row -->
+    <!-- Virgin empty: surface panel, no header row -->
     <div class="ca-datatable__empty-panel">
       {@render emptyState()}
     </div>

@@ -7,9 +7,9 @@ import type { NotificationItem } from "./NotificationBell.svelte";
 import Harness from "./NotificationBell.test.svelte";
 
 const items: NotificationItem[] = [
-	{ id: "1", title: "Pagamento aprovado", body: "R$ 120,00", time: "há 2 min", variant: "success" },
-	{ id: "2", title: "Backup concluído", read: true },
-	{ id: "3", title: "Falha no webhook", variant: "error" },
+	{ id: "1", title: "Payment approved", body: "R$ 120,00", time: "2 min ago", variant: "success" },
+	{ id: "2", title: "Backup completed", read: true },
+	{ id: "3", title: "Webhook failure", variant: "error" },
 ];
 
 const openByKeyboard = async (props = {}) => {
@@ -31,8 +31,8 @@ describe("NotificationBell", () => {
 	it("opens from the keyboard listing notifications; no axe violations", async () => {
 		const { trigger } = await openByKeyboard({ items });
 		await expect.element(trigger).toHaveAttribute("aria-expanded", "true");
-		await expect.element(page.getByRole("button", { name: /Pagamento aprovado/ })).toBeVisible();
-		await expect.element(page.getByRole("button", { name: /Backup concluído/ })).toBeVisible();
+		await expect.element(page.getByRole("button", { name: /Payment approved/ })).toBeVisible();
+		await expect.element(page.getByRole("button", { name: /Backup completed/ })).toBeVisible();
 		await settled();
 		expect(
 			await checkA11y(document.querySelector(".ca-notif-panel") as HTMLElement)
@@ -51,9 +51,9 @@ describe("NotificationBell", () => {
 	it("clicking an unread item calls onRead; a read item does not", async () => {
 		const onRead = vi.fn();
 		await openByKeyboard({ items, onRead });
-		await page.getByRole("button", { name: /Backup concluído/ }).click();
+		await page.getByRole("button", { name: /Backup completed/ }).click();
 		expect(onRead).not.toHaveBeenCalled();
-		await page.getByRole("button", { name: /Pagamento aprovado/ }).click();
+		await page.getByRole("button", { name: /Payment approved/ }).click();
 		expect(onRead).toHaveBeenCalledExactlyOnceWith("1");
 	});
 
@@ -68,7 +68,7 @@ describe("NotificationBell", () => {
 	});
 
 	it("hides 'Mark all read' when everything is read", async () => {
-		await openByKeyboard({ items: [{ id: "2", title: "Backup concluído", read: true }] });
+		await openByKeyboard({ items: [{ id: "2", title: "Backup completed", read: true }] });
 		await expect.element(page.getByRole("button", { name: "Clear" })).toBeVisible();
 		await expect
 			.element(page.getByRole("button", { name: "Mark all read" }))

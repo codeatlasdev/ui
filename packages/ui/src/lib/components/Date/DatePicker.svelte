@@ -145,7 +145,7 @@
   </div>
 
   <DatePicker.Portal>
-    <DatePicker.Content class="ca-date__content glass-overlay" sideOffset={6} align="start" bind:ref={content} onOpenAutoFocus={focusOwnDay} role="dialog" aria-label={label ?? 'Data'}>
+    <DatePicker.Content class="ca-date__content glass-overlay" sideOffset={6} align="start" bind:ref={content} onOpenAutoFocus={focusOwnDay} role="dialog" aria-label={label ?? t().calendar.label}>
       <DatePicker.Calendar class="ca-cal">
         {#snippet children({ months, weekdays })}
           <CalendarBody {months} {weekdays} />

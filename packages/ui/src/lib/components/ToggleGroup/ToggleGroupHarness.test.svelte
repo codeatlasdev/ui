@@ -9,14 +9,14 @@
   }: { type?: 'single' | 'multiple'; initial?: string | string[]; [key: string]: unknown } = $props();
   let value = $state<string | string[] | undefined>(untrack(() => initial));
   const single = [
-    { value: 'left', label: 'Esquerda' },
-    { value: 'center', label: 'Centro' },
-    { value: 'right', label: 'Direita', disabled: true },
+    { value: 'left', label: 'Left' },
+    { value: 'center', label: 'Center' },
+    { value: 'right', label: 'Right', disabled: true },
   ];
   const multi = [
-    { value: 'bold', label: 'Negrito' },
-    { value: 'italic', label: 'Itálico' },
-    { value: 'underline', label: 'Sublinhado' },
+    { value: 'bold', label: 'Bold' },
+    { value: 'italic', label: 'Italic' },
+    { value: 'underline', label: 'Underline' },
   ];
 </script>
 

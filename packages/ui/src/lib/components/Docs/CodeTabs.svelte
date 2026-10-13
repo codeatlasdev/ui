@@ -33,7 +33,7 @@
   import CodeTab from './CodeTab.svelte';
 
   /**
-   * CodeTabs — language tabs around highlighted code, with copy.
+   * CodeTabs: language tabs around highlighted code, with copy.
    *
    *   <CodeTabs sync="lang">
    *     <CodeTab label="cURL">…```bash block…</CodeTab>

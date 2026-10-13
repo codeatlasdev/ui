@@ -11,9 +11,9 @@
 >
 	{#each variants as variant}
 		{#each sizes as size}
-			<CopyButton value="texto" {variant} {size} />
+			<CopyButton value="text" {variant} {size} />
 		{/each}
-		<CopyButton value="texto" {variant} label="" />
+		<CopyButton value="text" {variant} label="" />
 	{/each}
-	<CopyButton value="texto" label="Copiar código" />
+	<CopyButton value="text" label="Copy code" />
 </div>

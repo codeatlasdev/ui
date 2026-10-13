@@ -1,13 +1,13 @@
 <script lang="ts">
   /**
-   * FormSection — seção de formulário com título, descrição e layout dos campos.
+   * FormSection: form section with a title, description and field layout.
    *
-   * Layout automático por conteúdo:
-   *   layout="grid"  → campos de texto, selects (2 colunas, auto-fill 260px) — padrão
-   *   layout="list"  → Switch, SettingItem, Divider (coluna única, sem gap)
-   *   layout="stack" → blocos compostos (Avatar row, grupos) (coluna única, gap 16px)
+   * Layout picked automatically from the content:
+   *   layout="grid"  → text fields, selects (2 columns, auto-fill 260px), the default
+   *   layout="list"  → Switch, SettingItem, Divider (single column, no gap)
+   *   layout="stack" → composite blocks (Avatar row, groups) (single column, 16px gap)
    *
-   * Uso:
+   * Usage:
    *   <FormSection title="Account" description="Basic info.">
    *     <TextField label="Name" />
    *     <TextField label="Email" type="email" />
@@ -23,7 +23,7 @@
 
   interface Props {
     label?:       string;
-    title?:       string;   // alias de label
+    title?:       string;   // alias for label
     description?: string;
     layout?:      'grid' | 'list' | 'stack';
     class?:       string;
@@ -89,21 +89,21 @@
     line-height: 1.5;
   }
 
-  /* ── grid — padrão: 2 colunas para campos de texto ───────────── */
+  /* ── grid: default, 2 columns for text fields ────────────────── */
   .ca-form-section--grid .ca-form-section__fields {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
     gap: var(--ca-space-3, 12px);
   }
 
-  /* ── list — coluna única flush: Switch, SettingItem, Divider ─── */
+  /* ── list: single flush column: Switch, SettingItem, Divider ─── */
   .ca-form-section--list .ca-form-section__fields {
     display: flex;
     flex-direction: column;
     gap: 0;
   }
 
-  /* ── stack — coluna única com gap: Avatar row, grupos ──────────  */
+  /* ── stack: single column with gap: Avatar row, groups ─────────  */
   .ca-form-section--stack .ca-form-section__fields {
     display: flex;
     flex-direction: column;

@@ -1,12 +1,12 @@
-# API CSS pública — classes `ca-*`
+# Public CSS API: `ca-*` classes
 
-> **Renomear ou remover qualquer classe listada aqui é uma breaking change** (exige major/minor com nota no changelog). Apps consumidores usam estas classes como alvo de CSS (`:global(.ca-*)`), então elas são contrato público junto com as props dos componentes.
+> **Renaming or removing any class listed here is a breaking change** (requires a major/minor release with a changelog note). Consuming apps use these classes as CSS targets (`:global(.ca-*)`), so they are a public contract alongside component props.
 
-Convenções: BEM (`ca-bloco__elemento`, `ca-bloco--modificador`). Variáveis CSS (`--ca-*`) NÃO estão aqui — ver `packages/ui/src/lib/styles/tokens.css`.
+Conventions: BEM (`ca-block__element`, `ca-block--modifier`). CSS variables (`--ca-*`) are NOT listed here; see `packages/ui/src/lib/styles/tokens.css`.
 
-Gerado a partir de `grep -o 'ca-[a-z0-9_-]*'` em `packages/ui/src/lib/components/<Componente>/` (`.svelte`, `.css`, `.ts`), sem custom properties e sem duplicatas. Ao adicionar ou renomear componentes, repita o comando e atualize este arquivo. Alguns nomes listados podem ser `@keyframes` ou identificadores internos (ex.: `ca-accordion-down`), não apenas classes; trate-os como estáveis por segurança.
+Generated from `grep -o 'ca-[a-z0-9_-]*'` over `packages/ui/src/lib/components/<Component>/` (`.svelte`, `.css`, `.ts`), excluding custom properties and duplicates. When you add or rename components, rerun the command and update this file. Some listed names may be `@keyframes` or internal identifiers (e.g. `ca-accordion-down`) rather than classes; treat them as stable to be safe.
 
-Total: 752 classes únicas em 68 componentes.
+Total: 752 unique classes across 68 components.
 
 ---
 

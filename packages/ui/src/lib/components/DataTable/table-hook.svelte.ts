@@ -1,5 +1,5 @@
 /**
- * @codeatlas/ui — DataTable shared table hook
+ * @codeatlas/ui: DataTable shared table hook
  *
  * Usage in every column file:
  *   import type { CaColumnDef } from '@codeatlas/ui'
@@ -28,7 +28,7 @@ export interface CaColumnMeta {
 }
 
 // ── Shared feature set ─────────────────────────────────────────────────────────
-// Declared once, stable reference — never recreate inside a component.
+// Declared once, stable reference, never recreate inside a component.
 export const caTableFeatures = tableFeatures({
 	columnFilteringFeature,
 	columnMeta: {} as CaColumnMeta,

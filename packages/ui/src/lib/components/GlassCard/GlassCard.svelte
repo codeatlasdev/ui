@@ -12,10 +12,10 @@
     target?:        string;
     /**
      * Padding override. Omit to use `--ca-card-padding` (default 20px).
-     * Passa como CSS custom property — não gera inline style de valor fixo.
+     * Passed as a CSS custom property, not as a fixed inline value.
      */
     padding?:       string | number;
-    /** Remove todo padding — para tabelas, imagens, código que tocam as bordas. */
+    /** Removes all padding, for tables, images and code that touch the edges. */
     flush?:         boolean;
     /** width: 100% */
     full?:          boolean;
@@ -39,8 +39,8 @@
     children,
   }: Props = $props();
 
-  // Passa padding como CSS custom property, não como valor inline fixo.
-  // flush sobreescrita via classe, full via classe também.
+  // Passes padding as a CSS custom property, not as a fixed inline value.
+  // flush and full are applied via classes.
   const paddingVar = $derived(
     flush ? undefined
     : padding !== undefined

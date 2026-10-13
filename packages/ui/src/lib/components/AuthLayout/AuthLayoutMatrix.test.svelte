@@ -9,15 +9,15 @@
 	<AuthLayout logoMark="CA" logoName="CodeAtlas UI">
 		{#snippet panel()}
 			<blockquote style="margin:0;color:var(--panel-text-primary)">
-				Construa interfaces consistentes em minutos.
+				Build consistent interfaces in minutes.
 			</blockquote>
 		{/snippet}
-		<AuthCard title="Bem-vindo de volta" subtitle="Entre para continuar">
-			<TextField label="E-mail" type="email" value="ana@example.com" />
-			<TextField label="Senha" type="password" value="segredo123" />
-			<Button fullWidth>Entrar</Button>
+		<AuthCard title="Welcome back" subtitle="Sign in to continue">
+			<TextField label="Email" type="email" value="ana@example.com" />
+			<TextField label="Password" type="password" value="secret123" />
+			<Button fullWidth>Sign in</Button>
 			{#snippet footer()}
-				Não tem conta? <a href="/sign-up">Cadastre-se</a>
+				Don't have an account? <a href="/sign-up">Sign up</a>
 			{/snippet}
 		</AuthCard>
 	</AuthLayout>

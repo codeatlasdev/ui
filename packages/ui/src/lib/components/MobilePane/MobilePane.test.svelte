@@ -10,11 +10,11 @@
 </script>
 
 <main>
-<Button onclick={() => (open = true)}>Abrir pane</Button>
+<Button onclick={() => (open = true)}>Open pane</Button>
 </main>
-<MobilePane bind:open title="Conversa" {onback}>
-	<input aria-label="Mensagem" />
+<MobilePane bind:open title="Conversation" {onback}>
+	<input aria-label="Message" />
 	{#snippet actions()}
-		<Button size="sm">Ação</Button>
+		<Button size="sm">Action</Button>
 	{/snippet}
 </MobilePane>

@@ -2,13 +2,13 @@
   import type { Snippet } from 'svelte';
 
   /**
-   * Steps — wraps a markdown ordered list; each top-level item becomes a numbered
+   * Steps: wraps a markdown ordered list; each top-level item becomes a numbered
    * step on a vertical rail.
    *
    *   <Steps>
    *
-   *   1. **Crie uma sessão**
-   *   2. **Conecte via QR Code**
+   *   1. **Create a session**
+   *   2. **Connect via QR code**
    *
    *   </Steps>
    */

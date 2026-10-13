@@ -5,7 +5,7 @@
     label: string;
     description?: string;
     class?: string;
-    children?: Snippet; // o controle (Switch, Button, etc.)
+    children?: Snippet; // the control (Switch, Button, etc.)
   }
 
   let { label, description, class: className = '', children }: Props = $props();

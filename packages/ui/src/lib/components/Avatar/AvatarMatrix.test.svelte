@@ -3,7 +3,7 @@
 
 	const sizes = ["xs", "sm", "md", "lg", "xl", 80] as const;
 	const statuses = ["online", "offline", "busy", "away"] as const;
-	const names = ["Ana Lima", "Bruno Souza", "Carla", "Diego Alves Pereira", "Eva Rocha", "Fábio Dias"];
+	const names = ["Ana Lima", "Bruno Souza", "Carla", "Diego Alves Pereira", "Eva Rocha", "Fabio Dias"];
 </script>
 
 <div data-testid="matrix" style="display:grid;gap:16px;padding:16px;width:max-content">
@@ -30,6 +30,6 @@
 			<Avatar alt={name} size="lg" />
 		{/each}
 		<Avatar size="lg" />
-		<Avatar alt="Ignorado" fallback="XY" size="lg" />
+		<Avatar alt="Ignored" fallback="XY" size="lg" />
 	</div>
 </div>

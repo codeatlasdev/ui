@@ -9,7 +9,7 @@ describe("StickyActions", () => {
 	it("renders the actions and is sticky to the bottom of its scroller", async () => {
 		await page.viewport(VIEWPORTS.mobile[0], VIEWPORTS.mobile[1]);
 		const screen = await render(Harness, {});
-		await expect.element(screen.getByRole("button", { name: "Salvar" })).toBeVisible();
+		await expect.element(screen.getByRole("button", { name: "Save" })).toBeVisible();
 		const bar = screen.container.querySelector(".ca-sticky-actions") as HTMLElement;
 		expect(getComputedStyle(bar).position).toBe("sticky");
 		expect(getComputedStyle(bar).bottom).toBe("0px");

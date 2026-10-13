@@ -7,8 +7,8 @@
 </script>
 
 <Combobox bind:value {...rest} options={[
-  { value: 'sp', label: 'São Paulo' },
-  { value: 'rj', label: 'Rio de Janeiro' },
-  { value: 'mg', label: 'Minas Gerais' },
+  { value: 'ny', label: 'New York' },
+  { value: 'la', label: 'Los Angeles' },
+  { value: 'chi', label: 'Chicago' },
 ]} />
 <output data-testid="bound">{value}</output>

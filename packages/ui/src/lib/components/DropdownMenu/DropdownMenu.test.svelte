@@ -12,10 +12,10 @@
 </script>
 
 <DropdownMenu>
-	{#snippet trigger()}Ações{/snippet}
+	{#snippet trigger()}Actions{/snippet}
 	<DropdownMenuLabel>Item</DropdownMenuLabel>
-	<DropdownMenuItem onclick={onedit}>Editar</DropdownMenuItem>
-	<DropdownMenuItem disabled>Duplicar</DropdownMenuItem>
+	<DropdownMenuItem onclick={onedit}>Edit</DropdownMenuItem>
+	<DropdownMenuItem disabled>Duplicate</DropdownMenuItem>
 	<DropdownMenuSeparator />
-	<DropdownMenuItem variant="destructive" onclick={ondelete}>Excluir</DropdownMenuItem>
+	<DropdownMenuItem variant="destructive" onclick={ondelete}>Delete</DropdownMenuItem>
 </DropdownMenu>
