@@ -1,12 +1,13 @@
 <script lang="ts">
   import { t } from '../../i18n/state.svelte.js';
 	import { X } from "@lucide/svelte";
-	import { Dialog } from "bits-ui";
+	import { createIds, createPresence } from "../../primitives/index.js";
+	import { modalLayer } from "../Dialog/modal-layer.js";
 
 	/**
 	 * Lightbox — full-screen image viewer.
 	 *
-	 * bits-ui Dialog supplies the focus trap, focus restore, Escape and scroll lock.
+	 * A native modal <dialog> supplies the top layer, inert page, focus restore, Escape and scroll lock.
 	 * The image is contained in the viewport (object-fit: contain); backdrop click and the
 	 * close button dismiss. Insets honour the device safe areas.
 	 *
@@ -22,49 +23,55 @@
 
 	let { open = $bindable(false), src, alt, onclose }: Props = $props();
 
-	function onOpenChange(next: boolean) {
-		if (!next) onclose?.();
+	function dismiss() {
+		if (!open) return;
+		open = false;
+		onclose?.();
 	}
+
+	const uid = $props.id();
+	const ids = createIds(uid);
+	const presence = createPresence(() => open);
 </script>
 
-<Dialog.Root bind:open {onOpenChange}>
-	<Dialog.Portal>
-		<Dialog.Overlay class="ca-lightbox__overlay" />
-		<Dialog.Content
-			class="ca-lightbox"
-			aria-label={alt}
-			aria-describedby={undefined}
-			onclick={(e: MouseEvent) => {
-				// Anything except the image itself (and the close button, which closes on its own) dismisses.
-				if (!(e.target as HTMLElement).closest(".ca-lightbox__img, .ca-lightbox__close")) {
-					open = false;
-					onclose?.();
-				}
-			}}
-		>
-			<Dialog.Title class="ca-lightbox__sr">{alt}</Dialog.Title>
-			<div class="ca-lightbox__stage">
-				<img class="ca-lightbox__img" {src} {alt} draggable="false" />
-			</div>
-			<Dialog.Close class="ca-lightbox__close" aria-label={t().lightbox.close}>
-				<X size={20} stroke-width={2} />
-			</Dialog.Close>
-		</Dialog.Content>
-	</Dialog.Portal>
-</Dialog.Root>
+{#if presence.present}
+	<!-- An explicit role keeps `[role="dialog"]` selectors (and every engine) seeing the dialog. -->
+	<!-- svelte-ignore a11y_no_redundant_roles -->
+	<dialog
+		class="ca-lightbox"
+		role="dialog"
+		aria-labelledby={ids.part("title")}
+		data-state={open ? "open" : "closed"}
+		{@attach presence.ref}
+		{@attach modalLayer(() => ({ onDismiss: dismiss, outside: false, initial: "container" }))}
+		onclick={(e) => {
+			// Anything except the image itself (and the close button, which closes on its own) dismisses.
+			if (!(e.target as HTMLElement).closest(".ca-lightbox__img, .ca-lightbox__close")) dismiss();
+		}}
+	>
+		<h2 id={ids.part("title")} class="ca-lightbox__sr">{alt}</h2>
+		<div class="ca-lightbox__stage">
+			<img class="ca-lightbox__img" {src} {alt} draggable="false" />
+		</div>
+		<button type="button" class="ca-lightbox__close" aria-label={t().lightbox.close} onclick={dismiss}>
+			<X size={20} stroke-width={2} />
+		</button>
+	</dialog>
+{/if}
 
 <style>
-	:global(.ca-lightbox__overlay) {
+	/* The dialog is the full-screen stage and carries the scrim colour itself. */
+	:global(dialog.ca-lightbox) {
 		position: fixed;
 		inset: 0;
-		z-index: var(--ca-z-modal);
+		width: 100%;
+		height: 100%;
+		max-width: none;
+		max-height: none;
+		margin: 0;
+		border: 0;
 		background: oklch(0 0 0 / 0.88);
-	}
-
-	:global(.ca-lightbox) {
-		position: fixed;
-		inset: 0;
-		z-index: calc(var(--ca-z-modal) + 1);
+		color: inherit;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -75,6 +82,15 @@
 			max(var(--ca-space-4), var(--ca-safe-bottom))
 			max(var(--ca-space-4), var(--ca-safe-left));
 		outline: none;
+		overflow: hidden;
+	}
+
+	:global(dialog.ca-lightbox:not([open])) {
+		display: none;
+	}
+
+	:global(dialog.ca-lightbox::backdrop) {
+		background: transparent;
 	}
 
 	:global(.ca-lightbox__stage) {
@@ -134,12 +150,10 @@
 		border: 0;
 	}
 
-	:global(.ca-lightbox__overlay[data-state="open"]),
 	:global(.ca-lightbox[data-state="open"]) {
 		animation: ca-lightbox-in var(--ca-duration-fast) var(--ca-ease-decelerate) both;
 	}
 
-	:global(.ca-lightbox__overlay[data-state="closed"]),
 	:global(.ca-lightbox[data-state="closed"]) {
 		animation: ca-lightbox-out var(--ca-duration-fast) var(--ca-ease-standard) both;
 	}
@@ -157,7 +171,6 @@
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		:global(.ca-lightbox__overlay),
 		:global(.ca-lightbox) {
 			animation: none !important;
 		}

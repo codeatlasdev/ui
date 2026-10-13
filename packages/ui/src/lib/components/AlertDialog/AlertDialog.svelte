@@ -1,6 +1,7 @@
 <script lang="ts">
   import { t } from '../../i18n/state.svelte.js';
-  import { AlertDialog } from 'bits-ui';
+  import { createIds, createPresence } from '../../primitives/index.js';
+  import { modalLayer } from '../Dialog/modal-layer.js';
   import Button from '../Button/Button.svelte';
   import '../Dialog/dialog.css';
 
@@ -75,43 +76,48 @@
     oncancel?.();
   }
 
-  function handleOpenChange(next: boolean) {
+  const uid = $props.id();
+  const ids = createIds(uid);
+  const presence = createPresence(() => open);
+
+  /** Escape counts as a cancel; a click on the scrim never dismisses an alert dialog. */
+  function onDismiss() {
     // Escape while a request is in flight must not dismiss the dialog.
-    if (!next && isPending) {
-      open = true;
-      return;
-    }
-    // Escape is a cancel (Cancel button and confirm close `open` directly).
-    if (!next) oncancel?.();
+    if (isPending) return;
+    open = false;
+    oncancel?.();
   }
 </script>
 
-<AlertDialog.Root bind:open onOpenChange={handleOpenChange}>
-  <AlertDialog.Portal>
-    <AlertDialog.Overlay class="ca-overlay" />
-    <AlertDialog.Content
-      class="ca-dialog ca-dialog--sm ca-alert-dialog {className}"
-      style="--dialog-max-w:400px"
-      aria-busy={isPending}
-    >
-      <div class="ca-dialog__header">
-        <AlertDialog.Title class="ca-dialog__title">{title}</AlertDialog.Title>
-      </div>
+{#if presence.present}
+  <dialog
+    class="ca-overlay ca-dialog ca-dialog--sm ca-alert-dialog {className}"
+    role="alertdialog"
+    aria-labelledby={ids.part('title')}
+    aria-describedby={description ? ids.part('description') : undefined}
+    aria-busy={isPending}
+    data-state={open ? 'open' : 'closed'}
+    style="--dialog-max-w:400px"
+    {@attach presence.ref}
+    {@attach modalLayer(() => ({ onDismiss, outside: false, initial: 'container' }))}
+  >
+    <div class="ca-dialog__header">
+      <h2 id={ids.part('title')} class="ca-dialog__title">{title}</h2>
+    </div>
 
-      {#if description}
-        <AlertDialog.Description class="ca-dialog__description">{description}</AlertDialog.Description>
-      {/if}
+    {#if description}
+      <p id={ids.part('description')} class="ca-dialog__description">{description}</p>
+    {/if}
 
-      <div class="ca-dialog__actions ca-alert-dialog__actions">
-        <Button variant="ghost" disabled={isPending} onclick={cancel}>{cancelLabel ?? t().alertDialog.cancel}</Button>
-        <Button
-          variant={destructive ? 'destructive' : 'filled'}
-          loading={isPending}
-          onclick={confirm}
-        >
-          {confirmLabel ?? t().alertDialog.confirm}
-        </Button>
-      </div>
-    </AlertDialog.Content>
-  </AlertDialog.Portal>
-</AlertDialog.Root>
+    <div class="ca-dialog__actions ca-alert-dialog__actions">
+      <Button variant="ghost" disabled={isPending} onclick={cancel}>{cancelLabel ?? t().alertDialog.cancel}</Button>
+      <Button
+        variant={destructive ? 'destructive' : 'filled'}
+        loading={isPending}
+        onclick={confirm}
+      >
+        {confirmLabel ?? t().alertDialog.confirm}
+      </Button>
+    </div>
+  </dialog>
+{/if}

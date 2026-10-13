@@ -1,7 +1,8 @@
 <script lang="ts">
   import { focusTextField } from '../../actions/autofocus.js';
   import { t } from '../../i18n/state.svelte.js';
-  import { Dialog } from 'bits-ui';
+  import { createIds, createPresence } from '../../primitives/index.js';
+  import { modalLayer } from '../Dialog/modal-layer.js';
   import { CornerDownLeft, FileText, Hash, Search } from '@lucide/svelte';
   import Kbd from '../Kbd/Kbd.svelte';
   import '../Dialog/dialog.css';
@@ -76,24 +77,28 @@
     }
   }
 
+  const uid = $props.id();
+  const ids = createIds(uid);
+  const presence = createPresence(() => open);
+
   // Keep the highlighted row in view while arrowing through a long list.
   $effect(() => {
     document.getElementById(`ca-docs-search-opt-${selected}`)?.scrollIntoView({ block: 'nearest' });
   });
 </script>
 
-<Dialog.Root bind:open>
-  <Dialog.Portal>
-    <Dialog.Overlay class="ca-overlay ca-docs-search__overlay" />
-    <Dialog.Content
-      class="ca-docs-search"
-      aria-label={t().docs.search.label}
-      onOpenAutoFocus={(e) => {
-        e.preventDefault();
-        focusTextField(input);
-      }}
-    >
-      <Dialog.Title class="ca-docs-search__sr">{t().docs.search.label}</Dialog.Title>
+{#if presence.present}
+  <!-- An explicit role keeps `[role="dialog"]` selectors (and every engine) seeing the dialog. -->
+  <!-- svelte-ignore a11y_no_redundant_roles -->
+  <dialog
+    class="ca-overlay ca-docs-search__overlay ca-docs-search"
+    role="dialog"
+    aria-labelledby={ids.part('title')}
+    data-state={open ? 'open' : 'closed'}
+    {@attach presence.ref}
+    {@attach modalLayer(() => ({ onDismiss: () => (open = false), initial: false, onOpen: () => focusTextField(input) }))}
+  >
+      <h2 id={ids.part('title')} class="ca-docs-search__sr">{t().docs.search.label}</h2>
       <div class="ca-docs-search__bar">
         <Search size={18} aria-hidden="true" />
         <input
@@ -114,7 +119,7 @@
           autocapitalize="off"
           spellcheck="false"
         />
-        <Dialog.Close class="ca-docs-search__cancel">{t().docs.search.close}</Dialog.Close>
+        <button type="button" class="ca-docs-search__cancel" onclick={() => (open = false)}>{t().docs.search.close}</button>
         <span class="ca-docs-search__esc"><Kbd>Esc</Kbd></span>
       </div>
 
@@ -164,15 +169,10 @@
           <p class="ca-docs-search__empty">{hint ?? t().docs.search.hint}</p>
         {/if}
       </div>
-    </Dialog.Content>
-  </Dialog.Portal>
-</Dialog.Root>
+  </dialog>
+{/if}
 
 <style>
-  :global(.ca-overlay.ca-docs-search__overlay) {
-    z-index: var(--ca-z-modal);
-  }
-
   :global(.ca-docs-search__sr) {
     position: absolute;
     width: 1px;
@@ -183,14 +183,16 @@
   }
 
   /* Phones: full-height sheet, input pinned on top. */
-  :global(.ca-docs-search) {
-    position: fixed;
+  :global(dialog.ca-docs-search) {
     inset: 0;
-    z-index: calc(var(--ca-z-modal) + 1);
-    display: flex;
+    width: 100%;
+    height: 100%;
     flex-direction: column;
-    background: var(--ca-surface-overlay);
     outline: none;
+  }
+
+  :global(dialog.ca-docs-search[open]) {
+    display: flex;
   }
 
   :global(.ca-docs-search[data-state='open']) {
@@ -318,10 +320,11 @@
 
   /* Desktop: palette-style dialog. */
   @media (min-width: 900px) {
-    :global(.ca-docs-search) {
+    :global(dialog.ca-docs-search) {
       inset: auto;
       top: 14vh;
       left: 50%;
+      height: auto;
       width: min(40rem, calc(100vw - var(--ca-space-8)));
       max-height: min(calc(var(--ca-vh) * 0.7), 32rem);
       border: var(--ca-border-width) solid var(--ca-outline-subtle);

@@ -1,7 +1,9 @@
 <script lang="ts">
   import { focusTextField } from '../../actions/autofocus.js';
   import { t } from '../../i18n/state.svelte.js';
-  import { Dialog } from 'bits-ui';
+  import { createPresence } from '../../primitives/index.js';
+  import { modalLayer } from '../Dialog/modal-layer.js';
+  import '../Dialog/dialog.css';
   import { Search } from '@lucide/svelte';
   import type { NavModule, NavItem } from '../AppShell/types.js';
   import { isNavSection } from '../AppShell/types.js';
@@ -83,7 +85,7 @@
       e.preventDefault();
       selectedIndex = Math.max(selectedIndex - 1, 0);
     } else if (e.key === 'Enter' && filtered[selectedIndex]) {
-      // bits-ui returns focus to the trigger the moment `open` flips. Closing inside this keydown
+      // Focus returns to the trigger the moment the layer unmounts. Closing inside this keydown
       // would let the same Enter press (keypress/click) activate that trigger and reopen the
       // palette, so navigate now and close on keyup, after the press has finished.
       e.preventDefault();
@@ -105,6 +107,8 @@
     onNavigate(path);
   }
 
+  const presence = createPresence(() => open);
+
   function handleGlobal(e: KeyboardEvent) {
     if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
       e.preventDefault();
@@ -115,10 +119,17 @@
 
 <svelte:window onkeydown={handleGlobal} />
 
-<Dialog.Root bind:open>
-  <Dialog.Portal>
-    <Dialog.Overlay class="ca-cmd-overlay" />
-    <Dialog.Content class="ca-cmd-dialog glass-panel" aria-label={t().commandPalette.dialog}>
+{#if presence.present}
+  <!-- An explicit role keeps `[role="dialog"]` selectors (and every engine) seeing the dialog. -->
+  <!-- svelte-ignore a11y_no_redundant_roles -->
+  <dialog
+    class="ca-overlay ca-cmd-overlay ca-cmd-dialog glass-panel"
+    role="dialog"
+    aria-label={t().commandPalette.dialog}
+    data-state={open ? 'open' : 'closed'}
+    {@attach presence.ref}
+    {@attach modalLayer(() => ({ onDismiss: () => (open = false), initial: false }))}
+  >
       <div class="ca-cmd-search">
         <Search size={16} class="ca-cmd-search__icon" />
         <input
@@ -175,39 +186,35 @@
           {/each}
         {/if}
       </div>
-    </Dialog.Content>
-  </Dialog.Portal>
-</Dialog.Root>
+  </dialog>
+{/if}
 
 <style>
-  :global(.ca-cmd-overlay) {
-    position: fixed;
-    inset: 0;
-    background: var(--ca-scrim-color);
-    z-index: var(--ca-z-modal);
+  /* Palette scrim: plain blur(4px) (no saturate boost) and a slower fade than the shared overlay. */
+  :global(dialog.ca-cmd-overlay::backdrop) {
     -webkit-backdrop-filter: blur(4px);
     backdrop-filter: blur(4px);
-    animation: ca-cmd-fade-in var(--ca-duration-base) var(--ca-ease-decelerate);
+  }
+  :global(dialog.ca-cmd-overlay[data-state='open']::backdrop) {
+    animation-duration: var(--ca-duration-base);
   }
 
-  :global(.ca-cmd-overlay[data-state='closed']) {
-    animation: ca-cmd-fade-out var(--ca-duration-fast) var(--ca-ease-standard);
-  }
-
-  :global(.ca-cmd-dialog) {
-    position: fixed;
+  :global(dialog.ca-cmd-dialog) {
+    inset: auto;
     top: 20%;
     left: 50%;
     transform: translateX(-50%);
     width: min(560px, calc(100vw - 2 * var(--ca-space-4)));
     max-height: calc(var(--ca-vh) * 0.6);
-    display: flex;
     flex-direction: column;
+    border: 1px solid var(--ca-panel-border);
     border-radius: var(--ca-radius-xl);
-    z-index: calc(var(--ca-z-modal) + 1);
     overflow: hidden;
     outline: none;
     padding: 0;
+  }
+  :global(dialog.ca-cmd-dialog[open]) {
+    display: flex;
   }
 
   :global(.ca-cmd-dialog[data-state='open']) {
@@ -310,16 +317,6 @@
     text-align: center;
     font-size: var(--ca-font-size-body2);
     color: var(--ca-text-hint);
-  }
-
-  @keyframes ca-cmd-fade-in {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-  }
-
-  @keyframes ca-cmd-fade-out {
-    from { opacity: 1; }
-    to   { opacity: 0; }
   }
 
   @keyframes ca-cmd-slide-in {

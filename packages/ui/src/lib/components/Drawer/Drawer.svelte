@@ -1,7 +1,8 @@
 <script lang="ts">
   import { t } from '../../i18n/state.svelte.js';
   import type { Snippet } from 'svelte';
-  import { Dialog } from 'bits-ui';
+  import { createIds, createPresence } from '../../primitives/index.js';
+  import { modalLayer } from '../Dialog/modal-layer.js';
   import { X } from '@lucide/svelte';
   import '../Dialog/dialog.css';
 
@@ -40,75 +41,91 @@
     actions,
     onOpenChange,
   }: Props = $props();
+
+  const uid = $props.id();
+  const ids = createIds(uid);
+  const presence = createPresence(() => open);
+
+  function change(next: boolean) {
+    if (next === open) return;
+    open = next;
+    onOpenChange?.(next);
+  }
 </script>
 
-<Dialog.Root bind:open onOpenChange={onOpenChange}>
-  <Dialog.Portal>
-    <Dialog.Overlay class="ca-overlay ca-overlay--drawer" />
-    <Dialog.Content
-      class="ca-drawer ca-drawer--{side} {className}"
-      aria-modal="true"
-      style="--drawer-w:{width}"
-    >
-      <div class="ca-drawer__header">
-        {#if title}
-          <Dialog.Title class="ca-drawer__title">{title}</Dialog.Title>
-        {/if}
-        <Dialog.Close class="ca-layer-close" aria-label={t().drawer.close}>
-          <X size={16} stroke-width={2} />
-        </Dialog.Close>
-      </div>
-
-      <div class="ca-drawer__body">
-        {@render children?.()}
-      </div>
-
-      {#if actions}
-        <div class="ca-drawer__actions">
-          {@render actions()}
-        </div>
+{#if presence.present}
+  <!-- An explicit role keeps `[role="dialog"]` selectors (and every engine) seeing the dialog. -->
+  <!-- svelte-ignore a11y_no_redundant_roles -->
+  <dialog
+    class="ca-overlay ca-overlay--drawer ca-drawer ca-drawer--{side} {className}"
+    role="dialog"
+    aria-labelledby={title ? ids.part('title') : undefined}
+    data-state={open ? 'open' : 'closed'}
+    style="--drawer-w:{width}"
+    {@attach presence.ref}
+    {@attach modalLayer(() => ({ onDismiss: () => change(false) }))}
+  >
+    <div class="ca-drawer__header">
+      {#if title}
+        <h2 id={ids.part('title')} class="ca-drawer__title">{title}</h2>
       {/if}
-    </Dialog.Content>
-  </Dialog.Portal>
-</Dialog.Root>
+      <button type="button" class="ca-layer-close" aria-label={t().drawer.close} onclick={() => change(false)}>
+        <X size={16} stroke-width={2} />
+      </button>
+    </div>
+
+    <div class="ca-drawer__body">
+      {@render children?.()}
+    </div>
+
+    {#if actions}
+      <div class="ca-drawer__actions">
+        {@render actions()}
+      </div>
+    {/if}
+  </dialog>
+{/if}
 
 <style>
-  /* ca-overlay base lives in Dialog.svelte. Drawer sits below modals; the
-     doubled class beats the base .ca-overlay rule regardless of CSS order
-     (otherwise the overlay lands above the panel and blurs it). */
-  :global(.ca-overlay.ca-overlay--drawer) {
-    z-index: var(--ca-z-drawer);
-  }
+  /* The panel is a native <dialog> in the top layer: no z-index needed. */
 
   /* ── Drawer panel ───────────────────────────────────────────── */
-  :global(.ca-drawer) {
+  :global(dialog.ca-drawer) {
     position: fixed;
-    z-index: calc(var(--ca-z-drawer) + 1);
+    inset: auto;
+    margin: 0;
     background: var(--ca-surface-overlay);
     border: var(--ca-border-width) solid var(--ca-outline-subtle);
     display: flex;
     flex-direction: column;
     overflow: hidden;
     box-shadow: var(--ca-shadow-xl);
+    outline: none;
+  }
+  :global(dialog.ca-drawer:not([open])) {
+    display: none;
   }
 
   /* ── Side variants ──────────────────────────────────────────── */
-  :global(.ca-drawer--right) {
+  :global(dialog.ca-drawer--right) {
     top: 0; bottom: 0; right: 0;
+    height: auto;
     width: var(--drawer-w, 360px);
     max-width: calc(100vw - var(--ca-space-12));
     border-radius: var(--ca-radius-xl) 0 0 var(--ca-radius-xl);
     border-right: none;
   }
-  :global(.ca-drawer--left) {
+  :global(dialog.ca-drawer--left) {
     top: 0; bottom: 0; left: 0;
+    height: auto;
     width: var(--drawer-w, 360px);
     max-width: calc(100vw - var(--ca-space-12));
     border-radius: 0 var(--ca-radius-xl) var(--ca-radius-xl) 0;
     border-left: none;
   }
-  :global(.ca-drawer--bottom) {
+  :global(dialog.ca-drawer--bottom) {
     bottom: 0; left: 0; right: 0;
+    width: 100%;
     height: auto;
     max-height: calc(var(--ca-vh) * 0.85);
     border-radius: var(--ca-radius-xl) var(--ca-radius-xl) 0 0;
@@ -116,26 +133,26 @@
   }
 
   /* ── Animations: right ─────────────────────────────────────── */
-  :global(.ca-drawer--right[data-state='open']) {
+  :global(dialog.ca-drawer--right[data-state='open']) {
     animation: ca-drawer-right-in var(--ca-duration-base) var(--ca-ease-decelerate) both;
   }
-  :global(.ca-drawer--right[data-state='closed']) {
+  :global(dialog.ca-drawer--right[data-state='closed']) {
     animation: ca-drawer-right-out var(--ca-duration-fast) var(--ca-ease-standard) both;
   }
 
   /* ── Animations: left ──────────────────────────────────────── */
-  :global(.ca-drawer--left[data-state='open']) {
+  :global(dialog.ca-drawer--left[data-state='open']) {
     animation: ca-drawer-left-in var(--ca-duration-base) var(--ca-ease-decelerate) both;
   }
-  :global(.ca-drawer--left[data-state='closed']) {
+  :global(dialog.ca-drawer--left[data-state='closed']) {
     animation: ca-drawer-left-out var(--ca-duration-fast) var(--ca-ease-standard) both;
   }
 
   /* ── Animations: bottom ────────────────────────────────────── */
-  :global(.ca-drawer--bottom[data-state='open']) {
+  :global(dialog.ca-drawer--bottom[data-state='open']) {
     animation: ca-drawer-bottom-in var(--ca-duration-base) var(--ca-ease-decelerate) both;
   }
-  :global(.ca-drawer--bottom[data-state='closed']) {
+  :global(dialog.ca-drawer--bottom[data-state='closed']) {
     animation: ca-drawer-bottom-out var(--ca-duration-fast) var(--ca-ease-standard) both;
   }
 

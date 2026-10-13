@@ -1,7 +1,8 @@
 <script lang="ts">
   import { t } from '../../i18n/state.svelte.js';
 	import { X } from "@lucide/svelte";
-	import { Dialog } from "bits-ui";
+	import { createIds, createPresence } from "../../primitives/index.js";
+	import { modalLayer } from "../Dialog/modal-layer.js";
 	import type { Snippet } from "svelte";
 	import { Spring } from "svelte/motion";
 	import { reducedMotion } from "../../stores/reduced-motion.svelte";
@@ -11,8 +12,8 @@
 	 * Sheet: mobile-first bottom sheet.
 	 *
 	 * Below 768px it slides up from the bottom edge (drag handle, safe-area padding, rounded top);
-	 * from 768px up it renders as a centered dialog. bits-ui Dialog supplies the focus trap, focus
-	 * restore, Escape, backdrop dismissal and scroll lock. Motion is off under reduced-motion.
+	 * from 900px up it renders as a centered dialog. A native modal <dialog> supplies the top layer, inert
+	 * page, focus restore, Escape, backdrop dismissal and scroll lock. Motion is off under reduced-motion.
 	 *
 	 * Swipe to dismiss: drag the handle or header down on the bottom sheet. Past 30% of the panel
 	 * height, or a release faster than 0.5 px/ms, closes it; otherwise it springs back.
@@ -58,8 +59,9 @@
 
 	const canSwipe = $derived(swipeToDismiss && !reducedMotion.value);
 
-	/** Same path as the close button: flips `open` and fires bits-ui's `onOpenChange`. */
+	/** Single close path (Escape, scrim, close button, swipe): flips `open` and fires `onclose`. */
 	function dismiss() {
+		if (!open) return;
 		open = false;
 		onclose?.();
 	}
@@ -99,70 +101,68 @@
 		offset.target = 0;
 	}
 
-	function onOpenChange(next: boolean) {
-		if (!next) onclose?.();
-	}
+	const uid = $props.id();
+	const ids = createIds(uid);
+	const presence = createPresence(() => open);
 </script>
 
-<Dialog.Root bind:open {onOpenChange}>
-	<Dialog.Portal>
-		<Dialog.Overlay class="ca-overlay ca-sheet__overlay" />
-		<Dialog.Content
-			bind:ref={panel}
-			class="ca-sheet"
-			aria-label={title ? undefined : t().sheet.panel}
-			aria-describedby={description ? undefined : null}
-			style={offset.current > 0 ? `translate: 0 ${offset.current}px` : undefined}
+{#if presence.present}
+	<!-- An explicit role keeps `[role="dialog"]` selectors (and every engine) seeing the dialog. -->
+	<!-- svelte-ignore a11y_no_redundant_roles -->
+	<dialog
+		bind:this={panel}
+		class="ca-overlay ca-sheet__overlay ca-sheet"
+		role="dialog"
+		aria-label={title ? undefined : t().sheet.panel}
+		aria-labelledby={title ? ids.part("title") : undefined}
+		aria-describedby={description ? ids.part("description") : undefined}
+		data-state={open ? "open" : "closed"}
+		style={offset.current > 0 ? `translate: 0 ${offset.current}px` : undefined}
+		{@attach presence.ref}
+		{@attach modalLayer(() => ({ onDismiss: dismiss }))}
+	>
+		<!-- Pointer-only gesture surface; keyboard users dismiss with Escape or the close button. -->
+		<div
+			role="presentation"
+			class="ca-sheet__grab"
+			class:ca-sheet__grab--active={canSwipe}
+			onpointerdown={onDragStart}
+			onpointermove={onDragMove}
+			onpointerup={onDragEnd}
+			onpointercancel={onDragEnd}
 		>
-			<!-- Pointer-only gesture surface; keyboard users dismiss with Escape or the close button. -->
-			<div
-				role="presentation"
-				class="ca-sheet__grab"
-				class:ca-sheet__grab--active={canSwipe}
-				onpointerdown={onDragStart}
-				onpointermove={onDragMove}
-				onpointerup={onDragEnd}
-				onpointercancel={onDragEnd}
-			>
-				<div class="ca-sheet__handle" aria-hidden="true"></div>
-				{#if title || description}
-					<div class="ca-sheet__header">
-						<div class="ca-sheet__meta">
-							{#if title}
-								<Dialog.Title class="ca-sheet__title">{title}</Dialog.Title>
-							{/if}
-							{#if description}
-								<Dialog.Description class="ca-sheet__description">{description}</Dialog.Description>
-							{/if}
-						</div>
-						<Dialog.Close class="ca-layer-close ca-sheet__close" aria-label={t().sheet.close}>
-							<X size={16} stroke-width={2} />
-						</Dialog.Close>
+			<div class="ca-sheet__handle" aria-hidden="true"></div>
+			{#if title || description}
+				<div class="ca-sheet__header">
+					<div class="ca-sheet__meta">
+						{#if title}
+							<h2 id={ids.part("title")} class="ca-sheet__title">{title}</h2>
+						{/if}
+						{#if description}
+							<p id={ids.part("description")} class="ca-sheet__description">{description}</p>
+						{/if}
 					</div>
-				{/if}
-			</div>
-			<div class="ca-sheet__body">
-				{@render children()}
-			</div>
-			{#if footer}
-				<div class="ca-sheet__footer">{@render footer()}</div>
+					<button type="button" class="ca-layer-close ca-sheet__close" aria-label={t().sheet.close} onclick={dismiss}>
+						<X size={16} stroke-width={2} />
+					</button>
+				</div>
 			{/if}
-		</Dialog.Content>
-	</Dialog.Portal>
-</Dialog.Root>
+		</div>
+		<div class="ca-sheet__body">
+			{@render children()}
+		</div>
+		{#if footer}
+			<div class="ca-sheet__footer">{@render footer()}</div>
+		{/if}
+	</dialog>
+{/if}
 
 <style>
-	:global(.ca-overlay.ca-sheet__overlay) {
-		z-index: var(--ca-z-modal);
-	}
-
 	/* Mobile: bottom sheet */
-	:global(.ca-sheet) {
-		position: fixed;
-		left: 0;
-		right: 0;
-		bottom: 0;
-		z-index: calc(var(--ca-z-modal) + 1);
+	:global(dialog.ca-sheet) {
+		inset: auto 0 0 0;
+		margin: 0;
+		width: 100%;
 		display: flex;
 		flex-direction: column;
 		max-height: min(calc(var(--ca-vh) * 0.88), 720px);
@@ -172,6 +172,11 @@
 		border-radius: var(--ca-radius-xl) var(--ca-radius-xl) 0 0;
 		box-shadow: var(--ca-shadow-xl);
 		overflow: hidden;
+		outline: none;
+	}
+
+	:global(dialog.ca-sheet:not([open])) {
+		display: none;
 	}
 
 	:global(.ca-sheet[data-state="open"]) {
@@ -268,7 +273,7 @@
 
 	/* Desktop: centered dialog */
 	@media (min-width: 900px) {
-		:global(.ca-sheet) {
+		:global(dialog.ca-sheet) {
 			inset: 0;
 			margin: auto;
 			width: min(480px, calc(100vw - 2 * var(--ca-space-4)));
