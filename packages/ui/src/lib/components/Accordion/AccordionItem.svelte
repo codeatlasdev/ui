@@ -1,7 +1,9 @@
 <script lang="ts">
+  import { getContext } from 'svelte';
   import type { Snippet } from 'svelte';
-  import { Accordion } from 'bits-ui';
   import { ChevronDown } from '@lucide/svelte';
+  import { createIds, createPresence } from '../../primitives/index.js';
+  import { ACCORDION_KEY, type AccordionContext } from './Accordion.svelte';
 
   interface Props {
     value: string;
@@ -11,23 +13,60 @@
   }
 
   let { value, title, class: className = '', children }: Props = $props();
+
+  const accordion = getContext<AccordionContext | undefined>(ACCORDION_KEY);
+  if (!accordion) throw new Error('AccordionItem must be used inside <Accordion>');
+
+  const uid = $props.id();
+  const ids = createIds(uid);
+  const open = $derived(accordion.isOpen(value));
+  const presence = createPresence(() => open);
+  const dataState = $derived(open ? 'open' : 'closed');
+
+  let content = $state<HTMLElement>();
+
+  // Natural height drives the open/close height animation (CSS reads --ca-accordion-height).
+  $effect(() => {
+    if (content && presence.present) {
+      content.style.setProperty('--ca-accordion-height', `${content.scrollHeight}px`);
+    }
+  });
 </script>
 
-<Accordion.Item {value} class="ca-accordion-item {className}">
-  <Accordion.Header class="ca-accordion-item__header">
-    <Accordion.Trigger class="ca-accordion-item__trigger">
+<div class="ca-accordion-item {className}" data-state={dataState} data-orientation="vertical">
+  <h2 class="ca-accordion-item__header" data-state={dataState} data-orientation="vertical">
+    <button
+      type="button"
+      id={ids.part('trigger')}
+      class="ca-accordion-item__trigger"
+      aria-expanded={open}
+      aria-controls={ids.part('content')}
+      data-state={dataState}
+      data-orientation="vertical"
+      onclick={() => accordion.toggle(value)}
+    >
       <span class="ca-accordion-item__title">{title}</span>
       <span class="ca-accordion-item__chevron" aria-hidden="true">
         <ChevronDown size={16} stroke-width={2} />
       </span>
-    </Accordion.Trigger>
-  </Accordion.Header>
-  <Accordion.Content class="ca-accordion-item__content">
-    <div class="ca-accordion-item__body">
-      {@render children?.()}
+    </button>
+  </h2>
+  <div
+      bind:this={content}
+      {@attach presence.ref}
+      id={ids.part('content')}
+      class="ca-accordion-item__content"
+      role="region"
+      aria-labelledby={ids.part('trigger')}
+      data-state={dataState}
+      data-orientation="vertical"
+      hidden={!presence.present}
+    >
+      <div class="ca-accordion-item__body">
+        {@render children?.()}
+      </div>
     </div>
-  </Accordion.Content>
-</Accordion.Item>
+</div>
 
 <style>
   :global(.ca-accordion-item) {
@@ -113,11 +152,11 @@
 
   @keyframes ca-accordion-down {
     from { height: 0; opacity: 0; }
-    to { height: var(--bits-accordion-content-height); opacity: 1; }
+    to { height: var(--ca-accordion-height); opacity: 1; }
   }
 
   @keyframes ca-accordion-up {
-    from { height: var(--bits-accordion-content-height); opacity: 1; }
+    from { height: var(--ca-accordion-height); opacity: 1; }
     to { height: 0; opacity: 0; }
   }
 </style>
