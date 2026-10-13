@@ -122,7 +122,7 @@ jobs:
         shard: [1, 2, 3, 4]
     steps:
       - uses: actions/checkout@v7
-      - run: npm i -g "$(node -p 'require("./package.json").packageManager')"
+      - run: npm i -g --allow-scripts=bun "$(node -p 'require("./package.json").packageManager')"
       - uses: actions/cache@v6
         with:
           path: /root/.bun/install/cache
@@ -159,7 +159,7 @@ jobs:
         shard: [1, 2, 3, 4, 5, 6]
     steps:
       - uses: actions/checkout@v7
-      - run: npm i -g "$(node -p 'require("./package.json").packageManager')"
+      - run: npm i -g --allow-scripts=bun "$(node -p 'require("./package.json").packageManager')"
       - uses: actions/cache@v6
         with:
           path: /root/.bun/install/cache
@@ -202,7 +202,7 @@ jobs:
         suite: [components, site]
     steps:
       - uses: actions/checkout@v7
-      - run: npm i -g "$(node -p 'require("./package.json").packageManager')"
+      - run: npm i -g --allow-scripts=bun "$(node -p 'require("./package.json").packageManager')"
       - uses: actions/cache@v6
         with:
           path: /root/.bun/install/cache
