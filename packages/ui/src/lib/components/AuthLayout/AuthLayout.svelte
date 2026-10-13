@@ -283,7 +283,7 @@
   /* ── Shared auth utility classes, available inside any AuthLayout slot ── */
   :global(.auth-quote) { margin: 0; max-width: calc(var(--ca-space-unit) * 95); }
   :global(.auth-quote__text) {
-    font-size: var(--ca-font-size-xl); line-height: 1.4; font-weight: var(--ca-font-weight-medium);
+    font-size: var(--ca-font-size-xl); line-height: var(--ca-line-height-snug); font-weight: var(--ca-font-weight-medium);
     letter-spacing: var(--ca-heading-tracking); margin: 0;
     color: var(--panel-text-primary, oklch(1 0 0 / 0.95));
   }

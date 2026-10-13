@@ -147,7 +147,7 @@
 
   :global(.ca-dt-toolbar__spinner) {
     color: var(--ca-text-hint);
-    animation: ca-spin 0.8s linear infinite;
+    animation: ca-spin var(--ca-duration-spin) linear infinite;
   }
 
   @keyframes ca-spin {

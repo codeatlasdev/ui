@@ -81,7 +81,7 @@
     font-size: var(--ca-font-size-body2);
     color: var(--ca-text-secondary);
     margin: 0;
-    line-height: 1.5;
+    line-height: var(--ca-line-height-relaxed);
   }
 
   .ca-page-shell__actions {

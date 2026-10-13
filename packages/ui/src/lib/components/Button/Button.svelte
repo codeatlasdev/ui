@@ -165,7 +165,7 @@
   /* Native-feeling press on touch devices. */
   @media (hover: none) and (prefers-reduced-motion: no-preference) {
     .ca-btn { transition-property: background, color, border-color, box-shadow, opacity, scale; }
-    .ca-btn:active:not(:disabled) { scale: 0.97; transition-duration: var(--ca-duration-fast); }
+    .ca-btn:active:not(:disabled) { scale: 0.97; transition-duration: var(--ca-duration-press); }
   }
 
   /* Filled */
@@ -226,7 +226,7 @@
   /* Destructive */
   .ca-btn--destructive {
     background: var(--ca-semantic-error-fill);
-    color: oklch(1 0 0);
+    color: var(--ca-on-semantic);
   }
   .ca-btn--destructive:hover:not(:disabled) {
     background: color-mix(in oklab, var(--ca-semantic-error-fill) 85%, black);

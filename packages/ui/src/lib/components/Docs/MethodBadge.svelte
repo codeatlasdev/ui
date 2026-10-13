@@ -20,7 +20,7 @@
     font-family: var(--ca-font-mono);
     font-size: var(--ca-font-size-caption);
     font-weight: var(--ca-font-weight-bold);
-    line-height: 1.5;
+    line-height: var(--ca-line-height-relaxed);
     letter-spacing: var(--ca-label-tracking);
     color: var(--ca-semantic-info);
   }

@@ -73,7 +73,7 @@
     font-size: var(--ca-font-size-button);
     color: var(--ca-text-secondary);
     margin: 0;
-    line-height: 1.5;
+    line-height: var(--ca-line-height-relaxed);
   }
 
   .ca-auth-card__body {

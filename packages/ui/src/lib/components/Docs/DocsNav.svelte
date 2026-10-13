@@ -77,7 +77,7 @@
     padding: var(--ca-space-1-5) var(--ca-space-2-5);
     border-radius: var(--ca-radius-sm);
     font-size: var(--ca-font-size-body2);
-    line-height: 1.4;
+    line-height: var(--ca-line-height-snug);
     color: var(--ca-text-secondary);
     text-decoration: none;
     transition:

@@ -91,7 +91,7 @@
 
   .ca-alert__content {
     font-size: var(--ca-font-size-body2);
-    line-height: var(--ca-line-height-body);
+    line-height: var(--ca-line-height-relaxed);
   }
 
   .ca-alert__close {

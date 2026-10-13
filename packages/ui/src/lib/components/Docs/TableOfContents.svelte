@@ -93,7 +93,7 @@
     display: block;
     padding: var(--ca-space-1) 0 var(--ca-space-1) var(--ca-space-3-5);
     font-size: var(--ca-font-size-caption);
-    line-height: 1.5;
+    line-height: var(--ca-line-height-relaxed);
     color: var(--ca-text-secondary);
     text-decoration: none;
     transition: color var(--ca-duration-fast) var(--ca-ease-standard);

@@ -252,7 +252,7 @@
     font-size: var(--ca-font-size-body2);
     color: var(--ca-text-secondary);
     margin: 0;
-    line-height: 1.4;
+    line-height: var(--ca-line-height-snug);
   }
 
   .ca-app-list__actions {

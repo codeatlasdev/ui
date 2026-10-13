@@ -59,7 +59,7 @@
 
   .ca-progress__indicator--indeterminate {
     width: 40% !important;
-    animation: ca-progress-shimmer 1.4s var(--ca-ease-standard) infinite;
+    animation: ca-progress-shimmer var(--ca-duration-loop) var(--ca-ease-standard) infinite;
   }
 
   @keyframes ca-progress-shimmer {

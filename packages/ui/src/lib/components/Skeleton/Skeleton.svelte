@@ -53,7 +53,7 @@
       var(--ca-action-hover) 75%
     );
     background-size: 200% 100%;
-    animation: ca-shimmer 1.5s var(--ca-ease-standard) infinite;
+    animation: ca-shimmer var(--ca-duration-loop) var(--ca-ease-standard) infinite;
   }
   .ca-skeleton--text {
     height: 1em;

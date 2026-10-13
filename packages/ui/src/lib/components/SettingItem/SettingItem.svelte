@@ -52,7 +52,7 @@
   .ca-setting-item__desc {
     font-size: var(--ca-font-size-caption);
     color: var(--ca-text-secondary);
-    line-height: var(--ca-line-height-body);
+    line-height: var(--ca-line-height-snug);
   }
   .ca-setting-item__control {
     flex-shrink: 0;

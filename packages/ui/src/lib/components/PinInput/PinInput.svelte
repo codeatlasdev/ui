@@ -85,7 +85,7 @@
     font-size: var(--ca-font-size-label);
     font-weight: var(--ca-font-weight-medium);
     color: var(--ca-text-primary);
-    line-height: 1.4;
+    line-height: var(--ca-line-height-snug);
   }
 
   .ca-pin__cells {

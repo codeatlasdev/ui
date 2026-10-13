@@ -69,16 +69,16 @@
 
   .ca-badge--success {
     background: var(--ca-semantic-success);
-    color: oklch(1 0 0);
+    color: var(--ca-on-semantic);
   }
 
   .ca-badge--error {
     background: var(--ca-semantic-error);
-    color: oklch(1 0 0);
+    color: var(--ca-on-semantic);
   }
 
   .ca-badge--warning {
     background: var(--ca-semantic-warning);
-    color: oklch(1 0 0);
+    color: var(--ca-on-semantic);
   }
 </style>

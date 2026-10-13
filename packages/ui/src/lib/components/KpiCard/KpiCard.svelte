@@ -75,7 +75,7 @@
     margin: 0;
     text-transform: uppercase;
     letter-spacing: var(--ca-overline-tracking);
-    line-height: 1.4;
+    line-height: var(--ca-line-height-snug);
   }
 
   .ca-kpi__icon {

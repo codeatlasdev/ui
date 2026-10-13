@@ -30,6 +30,8 @@
   --ca-line-height-tight:    1.2;
   --ca-line-height-body:     1.55;
   --ca-line-height-prose:    1.6;
+  --ca-line-height-snug:     1.4;
+  --ca-line-height-relaxed:  1.5;
   --ca-measure:              68ch;
 
   /* ── Shape ───────────────────────────────────────────────────────────────
@@ -39,7 +41,9 @@
   /* Controls (buttons, fields, chips) pick their radius from this role, not a step. */
 
   /* Border weight by role. Flat/brutalist styles raise these; glass keeps hairlines. */
+  --ca-border-width-thin:   0.5px;
   --ca-border-width:        1px;
+  --ca-border-width-medium: 1.5px;
   --ca-border-width-strong: 2px;
   --ca-border-width-focus:  2px;
 
@@ -62,6 +66,11 @@
   /* ── Motion ──────────────────────────────────────────────────────────────
    * Durations times --ca-motion-scale (0 under reduced motion). Easing by role. */
   --ca-motion-scale: 1;
+  /* Looping indicators (spinner, shimmer) keep their period under motion-scale;
+   * reduced-motion stops them in the components themselves. */
+  --ca-duration-loop: 1.4s;
+  --ca-duration-spin: 0.8s;
+  --ca-on-semantic: oklch(1 0 0);
   --ca-ease-standard:   cubic-bezier(0.4, 0, 0.2, 1);
   --ca-ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
   --ca-ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
@@ -166,6 +175,7 @@
   --ca-radius-lg:   calc(14px * var(--ca-radius-scale));
   --ca-radius-xl:   calc(20px * var(--ca-radius-scale));
   --ca-radius-control: var(--ca-radius-md);
+  --ca-duration-press:  calc(80ms * var(--ca-motion-scale));
   --ca-duration-fast:   calc(150ms * var(--ca-motion-scale));
   --ca-duration-base:   calc(240ms * var(--ca-motion-scale));
   --ca-duration-slow:   calc(320ms * var(--ca-motion-scale));
@@ -177,11 +187,13 @@
   --ca-space-3:   calc(var(--ca-space-unit) * 3 * var(--ca-density));
   --ca-space-3-5: calc(var(--ca-space-unit) * 3.5 * var(--ca-density));
   --ca-space-4:   calc(var(--ca-space-unit) * 4 * var(--ca-density));
+  --ca-space-4-5: calc(var(--ca-space-unit) * 4.5 * var(--ca-density));
   --ca-space-5:   calc(var(--ca-space-unit) * 5 * var(--ca-density));
   --ca-space-6:   calc(var(--ca-space-unit) * 6 * var(--ca-density));
   --ca-space-7:   calc(var(--ca-space-unit) * 7 * var(--ca-density));
   --ca-space-8:   calc(var(--ca-space-unit) * 8 * var(--ca-density));
   --ca-space-10:  calc(var(--ca-space-unit) * 10 * var(--ca-density));
+  --ca-space-11:  calc(var(--ca-space-unit) * 11 * var(--ca-density));
   --ca-space-12:  calc(var(--ca-space-unit) * 12 * var(--ca-density));
   --ca-space-16:  calc(var(--ca-space-unit) * 16 * var(--ca-density));
   --ca-space-20:  calc(var(--ca-space-unit) * 20 * var(--ca-density));

@@ -24,7 +24,7 @@
     font-family: var(--ca-font-mono);
     font-size: var(--ca-font-size-micro);
     color: var(--ca-text-secondary);
-    line-height: 1.4;
+    line-height: var(--ca-line-height-snug);
     white-space: nowrap;
     user-select: none;
   }

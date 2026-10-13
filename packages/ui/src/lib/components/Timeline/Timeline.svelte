@@ -113,6 +113,6 @@
     margin: var(--ca-space-1) 0 0;
     font-size: var(--ca-font-size-body2);
     color: var(--ca-text-secondary);
-    line-height: 1.5;
+    line-height: var(--ca-line-height-relaxed);
   }
 </style>

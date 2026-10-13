@@ -188,7 +188,7 @@
     font-size: var(--ca-font-size-body2);
     color: var(--ca-text-secondary);
     margin: 0;
-    line-height: 1.4;
+    line-height: var(--ca-line-height-snug);
   }
 
   .ca-app-settings__actions {
@@ -246,7 +246,7 @@
       background var(--ca-duration-fast) var(--ca-ease-standard),
       color      var(--ca-duration-fast) var(--ca-ease-standard);
     position: relative;
-    line-height: 1.4;
+    line-height: var(--ca-line-height-snug);
   }
 
   .ca-app-settings__nav-item:hover {
