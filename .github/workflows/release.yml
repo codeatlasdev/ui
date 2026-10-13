@@ -8,7 +8,9 @@ name: Release
 # - pending changesets → opens/updates the "Version Packages (<channel>)" PR;
 # - that PR merged → publishes to npm under the channel's dist-tag, with provenance via
 #   Trusted Publishing (OIDC, no token), tags, creates the GitHub Release;
-# - always → deploys that channel's docs.
+# - always, in parallel → deploys that channel's docs.
+# Only commits that passed CI reach these branches (ruleset requires "CI ok"), so nothing
+# here re-runs lint/types/tests. The tarball smoke test runs only right before a publish.
 on:
   push:
     branches: [main, beta, alpha]
@@ -29,18 +31,23 @@ jobs:
       contents: write
       pull-requests: write
       id-token: write # npm Trusted Publishing + provenance
-    outputs:
-      published: ${{ steps.changesets.outputs.published }}
     steps:
       - uses: actions/checkout@v7
       - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: package.json
       - uses: actions/setup-node@v7
         with:
           node-version: 24
           registry-url: https://registry.npmjs.org
       # Trusted Publishing needs npm >= 11.5.1.
       - run: npm i -g npm@latest
-      - run: bun install --frozen-lockfile
+      - uses: actions/cache@v6
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-${{ runner.os }}-
+      - run: bun install --frozen-lockfile --ignore-scripts && node scripts/fix-ts-symlink.js
       # A prerelease must never reach `latest`, and a channel branch must be in its pre mode.
       - name: Channel guard
         run: |
@@ -52,10 +59,6 @@ jobs:
           if [ "$channel" != "main" ] && [ "$tag" != "$channel" ]; then
             echo "::error::Branch $channel must be in prerelease mode: bunx changeset pre enter $channel"; exit 1
           fi
-      - run: bun run build:pkg
-      - run: bun run validate
-      # Packs the tarball into a fresh SvelteKit app and builds it: the release gate.
-      - run: bun run release
       - id: changesets
         uses: changesets/action@v2
         with:
@@ -68,7 +71,6 @@ jobs:
           NPM_CONFIG_PROVENANCE: "true"
 
   site:
-    needs: release
     runs-on: ubuntu-latest
     environment:
       name: ${{ github.ref_name == 'main' && 'production' || github.ref_name }}
@@ -76,10 +78,14 @@ jobs:
     steps:
       - uses: actions/checkout@v7
       - uses: oven-sh/setup-bun@v2
-      - uses: actions/setup-node@v7
         with:
-          node-version: 24
-      - run: bun install --frozen-lockfile
+          bun-version-file: package.json
+      - uses: actions/cache@v6
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-${{ runner.os }}-
+      - run: bun install --frozen-lockfile --ignore-scripts && node scripts/fix-ts-symlink.js
       - run: bun run build
       - uses: cloudflare/wrangler-action@v4
         with:

@@ -5,6 +5,7 @@
  *
  *   bun run release          lint + type check + build + tarball smoke test + pending changesets
  *   bun run release --keep   keep the smoke-test temp dir
+ *   node scripts/release.js --smoke   tarball smoke test only (CI, right before publishing)
  *
  * The smoke test packs the library, installs the tarball into a fresh SvelteKit app with npm
  * and builds it: it catches broken `exports`, missing files and SSR import errors before CI.
@@ -36,19 +37,24 @@ function tryRun(label, cmd, argv, cwd) {
 	}
 }
 
-step("Lint");
-tryRun("bun run lint", "bun", ["run", "lint"]);
-step("Type check packages/ui");
-tryRun("svelte-check", "bun", ["run", "--cwd", "packages/ui", "check"]);
-step("Build package");
-tryRun("bun run build:pkg", "bun", ["run", "build:pkg"]);
-step("Tarball smoke test");
-smokeTest();
-step("Pending changesets");
-tryRun("changeset status", "bunx", ["changeset", "status", "--verbose"]);
-console.log(
-	"\n✔ ready: push to main; the Release workflow opens the version PR, merging it publishes."
-);
+if (args.has("--smoke")) {
+	step("Tarball smoke test");
+	smokeTest();
+} else {
+	step("Lint");
+	tryRun("bun run lint", "bun", ["run", "lint"]);
+	step("Type check packages/ui");
+	tryRun("svelte-check", "bun", ["run", "--cwd", "packages/ui", "check"]);
+	step("Build package");
+	tryRun("bun run build:pkg", "bun", ["run", "build:pkg"]);
+	step("Tarball smoke test");
+	smokeTest();
+	step("Pending changesets");
+	tryRun("changeset status", "bunx", ["changeset", "status", "--verbose"]);
+	console.log(
+		"\n✔ ready: push to main; the Release workflow opens the version PR, merging it publishes."
+	);
+}
 
 /** Packs the library, installs the tarball into a fresh SvelteKit app with npm and prerenders it. */
 function smokeTest() {
