@@ -67,16 +67,17 @@
   .ca-chip {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
-    height: 28px;
+    gap: var(--ca-space-1);
+    height: var(--ca-space-7);
     border-radius: var(--ca-radius-pill);
-    padding: 0 12px;
+    padding: 0 var(--ca-space-3);
     font-size: var(--ca-font-size-caption);
-    font-weight: 500;
+    font-weight: var(--ca-font-weight-medium);
     color: var(--ca-text-secondary);
     background: var(--ca-glass-tint-thin);
+    -webkit-backdrop-filter: var(--ca-blur-thin);
     backdrop-filter: var(--ca-blur-thin);
-    border: 1px solid var(--ca-glass-border);
+    border: var(--ca-border-width) solid var(--ca-glass-border);
     transition:
       background var(--ca-duration-fast) var(--ca-ease-standard),
       color var(--ca-duration-fast) var(--ca-ease-standard);
@@ -111,14 +112,14 @@
   }
 
   .ca-chip:focus-visible {
-    outline: 2px solid var(--ca-brand-main);
-    outline-offset: 2px;
+    outline: var(--ca-border-width-focus) solid var(--ca-brand-main);
+    outline-offset: var(--ca-border-width-focus);
   }
 
   .ca-chip__icon {
     display: flex;
     align-items: center;
-    margin-left: -4px;
+    margin-left: calc(-1 * var(--ca-space-1));
   }
 
   .ca-chip__label {
@@ -129,15 +130,15 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 16px;
-    height: 16px;
+    width: var(--ca-space-4);
+    height: var(--ca-space-4);
     border-radius: 50%;
     border: none;
     background: transparent;
     cursor: pointer;
     color: inherit;
     opacity: 0.7;
-    margin-right: -6px;
+    margin-right: calc(-1 * var(--ca-space-1-5));
     padding: 0;
     transition: opacity var(--ca-duration-fast) var(--ca-ease-standard),
                 background var(--ca-duration-fast) var(--ca-ease-standard);
@@ -149,8 +150,8 @@
   }
 
   .ca-chip__delete:focus-visible {
-    outline: 2px solid var(--ca-brand-main);
-    outline-offset: 1px;
+    outline: var(--ca-border-width-focus) solid var(--ca-brand-main);
+    outline-offset: var(--ca-border-width);
   }
 
   /* Variant colours */
@@ -167,5 +168,5 @@
   :global(.dark) .ca-chip--info    { color: var(--ca-semantic-info);    border-color: color-mix(in oklab, var(--ca-semantic-info)    35%, transparent); }
 
   /* Size */
-  .ca-chip--sm { font-size: var(--ca-font-size-micro); height: 20px; padding: 0 8px; }
+  .ca-chip--sm { font-size: var(--ca-font-size-micro); height: var(--ca-space-5); padding: 0 var(--ca-space-2); }
 </style>

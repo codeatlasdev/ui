@@ -83,7 +83,7 @@
   .ca-glass-card {
     border-radius: var(--ca-radius-lg);
     overflow: hidden;
-    padding: var(--ca-card-padding, 20px);
+    padding: var(--ca-card-padding);
     position: relative;
   }
 
@@ -94,23 +94,26 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: var(--ca-space-4, 16px) var(--ca-space-5, 20px) 0;
-    gap: var(--ca-space-3, 12px);
+    padding: var(--ca-space-4) var(--ca-space-5) 0;
+    gap: var(--ca-space-3);
   }
 
   .ca-glass-card__title {
-    margin: 0 0 var(--ca-space-4, 16px);
+    margin: 0 0 var(--ca-space-4);
+    font-family: var(--ca-font-display);
     font-size: var(--ca-font-size-body1);
-    font-weight: 600;
+    font-weight: var(--ca-font-weight-heading);
+    letter-spacing: var(--ca-heading-tracking);
+    text-transform: var(--ca-heading-case);
     color: var(--ca-text-primary);
-    line-height: 1.3;
+    line-height: var(--ca-line-height-tight);
   }
 
   .ca-glass-card__header-actions {
     display: flex;
     align-items: center;
-    gap: var(--ca-space-2, 8px);
+    gap: var(--ca-space-2);
     flex-shrink: 0;
-    margin-bottom: var(--ca-space-4, 16px);
+    margin-bottom: var(--ca-space-4);
   }
 </style>

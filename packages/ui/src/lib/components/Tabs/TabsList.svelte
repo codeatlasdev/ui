@@ -19,11 +19,12 @@
     display: inline-flex;
     flex-direction: row;
     align-items: center;
-    gap: 2px;
-    padding: 4px;
+    gap: var(--ca-space-0-5);
+    padding: var(--ca-space-1);
     border-radius: var(--ca-radius-pill);
     background: var(--ca-glass-tint-ultra-thin);
+    -webkit-backdrop-filter: var(--ca-blur-ultra-thin);
     backdrop-filter: var(--ca-blur-ultra-thin);
-    border: 1px solid var(--ca-glass-border);
+    border: var(--ca-border-width) solid var(--ca-glass-border);
   }
 </style>
