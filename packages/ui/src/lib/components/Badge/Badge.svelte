@@ -46,18 +46,18 @@
     justify-content: center;
     border-radius: var(--ca-radius-pill);
     font-size: var(--ca-font-size-caption);
-    font-weight: 700;
+    font-weight: var(--ca-font-weight-bold);
     line-height: 1;
-    padding: 0 4px;
-    min-width: 18px;
-    height: 18px;
-    border: 2px solid var(--ca-surface-base);
+    padding: 0 var(--ca-space-1);
+    min-width: calc(var(--ca-space-4) + var(--ca-space-0-5));
+    height: calc(var(--ca-space-4) + var(--ca-space-0-5));
+    border: var(--ca-border-width-strong) solid var(--ca-surface-base);
   }
 
   .ca-badge--dot {
-    width: 8px;
-    min-width: 8px;
-    height: 8px;
+    width: var(--ca-space-2);
+    min-width: var(--ca-space-2);
+    height: var(--ca-space-2);
     padding: 0;
     border-radius: 50%;
   }

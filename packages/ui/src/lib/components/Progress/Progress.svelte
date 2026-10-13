@@ -43,7 +43,7 @@
 
   .ca-progress__track {
     width: 100%;
-    height: 8px;
+    height: var(--ca-space-2);
     background: var(--ca-outline-default);
     border-radius: var(--ca-radius-pill);
     overflow: hidden;
@@ -59,7 +59,7 @@
 
   .ca-progress__indicator--indeterminate {
     width: 40% !important;
-    animation: ca-progress-shimmer 1.4s ease-in-out infinite;
+    animation: ca-progress-shimmer 1.4s var(--ca-ease-standard) infinite;
   }
 
   @keyframes ca-progress-shimmer {

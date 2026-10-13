@@ -16,10 +16,10 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    padding: 2px 6px;
+    padding: var(--ca-space-0-5) var(--ca-space-1-5);
     border-radius: var(--ca-radius-xs);
-    border: 0.5px solid var(--ca-outline-subtle);
-    border-bottom-width: 1.5px;
+    border: var(--ca-border-width) solid var(--ca-outline-subtle);
+    border-bottom-width: var(--ca-border-width-strong);
     background: color-mix(in oklab, var(--ca-text-primary) 6%, transparent);
     font-family: var(--ca-font-mono);
     font-size: var(--ca-font-size-micro);

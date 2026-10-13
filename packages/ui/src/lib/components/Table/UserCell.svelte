@@ -21,16 +21,16 @@
   .ca-user-cell {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--ca-space-2-5);
   }
   .ca-user-cell__info {
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    gap: var(--ca-border-width);
     min-width: 0;
   }
   .ca-user-cell__name {
-    font-weight: 500;
+    font-weight: var(--ca-font-weight-medium);
     color: var(--ca-text-primary);
     font-size: var(--ca-font-size-body2);
     white-space: nowrap;

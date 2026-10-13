@@ -35,8 +35,8 @@
   .ca-spinner {
     display: inline-block;
     flex-shrink: 0;
-    width: var(--spinner-size, 24px);
-    height: var(--spinner-size, 24px);
+    width: var(--spinner-size, var(--ca-space-6));
+    height: var(--spinner-size, var(--ca-space-6));
     animation: ca-spin 0.8s linear infinite;
   }
   .ca-spinner__track {

@@ -34,6 +34,7 @@
 <style>
   .ca-table-wrap {
     width: 100%;
+    container-type: inline-size;
     /* no overflow here: the parent AppList body scrolls */
   }
 
@@ -53,24 +54,24 @@
   }
 
   .ca-table :global(thead tr) {
-    border-bottom: 1px solid var(--ca-outline-subtle);
+    border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
   }
 
   .ca-table :global(th) {
-    padding: 10px 20px;
+    padding: var(--ca-space-2-5) var(--ca-space-5);
     text-align: left;
     font-size: var(--ca-font-size-micro);
-    font-weight: 600;
+    font-weight: var(--ca-font-weight-semibold);
     color: var(--ca-text-secondary);
     text-transform: uppercase;
-    letter-spacing: .06em;
+    letter-spacing: var(--ca-overline-tracking);
     white-space: nowrap;
     background: var(--ca-surface-base);
   }
 
   .ca-table :global(td) {
-    padding: 13px 20px;
-    border-bottom: 1px solid var(--ca-outline-subtle);
+    padding: calc(var(--ca-space-3) + var(--ca-border-width)) var(--ca-space-5);
+    border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
     color: var(--ca-text-secondary);
   }
 
@@ -88,13 +89,13 @@
 
   .ca-table :global(.ca-table-empty) {
     text-align: center;
-    padding: 64px 20px;
+    padding: var(--ca-space-16) var(--ca-space-5);
     color: var(--ca-text-hint);
     font-size: var(--ca-font-size-button);
   }
 
-  /* ── Cards mode (below md = 900px) ─────────────────────────── */
-  @media (max-width: 899.98px) {
+  /* ── Cards mode (slot narrower than md = 900px) ─────────────── */
+  @container (max-width: 899.98px) {
     .ca-table--cards,
     .ca-table--cards :global(tbody),
     .ca-table--cards :global(tr),
@@ -105,8 +106,8 @@
     /* header row hidden visually, kept for assistive tech */
     .ca-table--cards :global(thead) {
       position: absolute;
-      width: 1px;
-      height: 1px;
+      width: var(--ca-border-width);
+      height: var(--ca-border-width);
       overflow: hidden;
       clip-path: inset(50%);
       white-space: nowrap;
@@ -114,30 +115,30 @@
 
     .ca-table--cards :global(tbody tr) {
       display: grid;
-      gap: 4px;
-      padding: 12px 16px;
-      margin-bottom: 8px;
-      border: 1px solid var(--ca-outline-subtle);
+      gap: var(--ca-space-1);
+      padding: var(--ca-space-3) var(--ca-space-4);
+      margin-bottom: var(--ca-space-2);
+      border: var(--ca-border-width) solid var(--ca-outline-subtle);
       border-radius: var(--ca-radius-md);
       background: var(--ca-surface-base);
     }
 
     .ca-table--cards :global(tbody td) {
       display: grid;
-      grid-template-columns: minmax(80px, 40%) 1fr;
-      gap: 12px;
+      grid-template-columns: minmax(var(--ca-space-20), 40%) 1fr;
+      gap: var(--ca-space-3);
       align-items: baseline;
-      padding: 4px 0;
+      padding: var(--ca-space-1) 0;
       border-bottom: none;
     }
 
     .ca-table--cards :global(tbody td[data-label])::before {
       content: attr(data-label);
       font-size: var(--ca-font-size-micro);
-      font-weight: 600;
+      font-weight: var(--ca-font-weight-semibold);
       color: var(--ca-text-hint);
       text-transform: uppercase;
-      letter-spacing: .06em;
+      letter-spacing: var(--ca-overline-tracking);
     }
 
     .ca-table--cards :global(tbody td:not([data-label])) {
@@ -152,7 +153,7 @@
 
     .ca-table--cards :global(.ca-table-empty) {
       display: block;
-      padding: 48px 16px;
+      padding: var(--ca-space-12) var(--ca-space-4);
     }
   }
 </style>
