@@ -8,21 +8,21 @@
 .ca-overlay {
   position: fixed;
   inset: 0;
-  z-index: var(--ca-z-modal, 1300);
+  z-index: var(--ca-z-modal);
   /* Blur the page content, then darken */
   -webkit-backdrop-filter: blur(4px) saturate(180%);
   backdrop-filter: blur(4px) saturate(180%);
-  background: oklch(0 0 0 / 0.45);
+  background: var(--ca-scrim-color);
   /* iOS: touches on the scrim must not scroll/rubber-band the page behind. */
   touch-action: none;
   overscroll-behavior: contain;
 }
 
 .ca-overlay[data-state='open'] {
-  animation: ca-overlay-in 180ms var(--ca-ease-decelerate, ease-out) both;
+  animation: ca-overlay-in var(--ca-duration-fast) var(--ca-ease-decelerate) both;
 }
 .ca-overlay[data-state='closed'] {
-  animation: ca-overlay-out 140ms var(--ca-ease-standard, ease) both;
+  animation: ca-overlay-out var(--ca-duration-fast) var(--ca-ease-standard) both;
 }
 
 /* ── Dialog panel ───────────────────────────────────────────── */
@@ -30,20 +30,17 @@
   position: fixed;
   inset: 0;
   margin: auto;
-  width: calc(100vw - 32px);
+  width: calc(100vw - 2 * var(--ca-space-4));
   max-width: var(--dialog-max-w, 480px);
   max-height: calc(var(--ca-vh) * 0.85);
   height: fit-content;
-  z-index: calc(var(--ca-z-modal, 1300) + 1);
+  z-index: calc(var(--ca-z-modal) + 1);
 
   /* Solid surface, NOT glass. Overlay already separates from page. */
   background: var(--ca-surface-overlay);
-  border: 1px solid var(--ca-outline-subtle);
+  border: var(--ca-border-width) solid var(--ca-outline-subtle);
   border-radius: var(--ca-radius-xl);
-  box-shadow:
-    0 0 0 1px oklch(0 0 0 / 0.04),
-    0 8px 24px oklch(0 0 0 / 0.12),
-    0 24px 64px oklch(0 0 0 / 0.18);
+  box-shadow: var(--ca-shadow-xl);
 
   display: flex;
   flex-direction: column;
@@ -51,10 +48,10 @@
 }
 
 .ca-dialog[data-state='open'] {
-  animation: ca-dialog-in 220ms var(--ca-ease-decelerate, ease-out) both;
+  animation: ca-dialog-in var(--ca-duration-base) var(--ca-ease-decelerate) both;
 }
 .ca-dialog[data-state='closed'] {
-  animation: ca-dialog-out 160ms var(--ca-ease-standard, ease) both;
+  animation: ca-dialog-out var(--ca-duration-fast) var(--ca-ease-standard) both;
 }
 
 /* ── Header ─────────────────────────────────────────────────── */
@@ -62,18 +59,21 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 8px;
-  padding: 20px 20px 0;
+  gap: var(--ca-space-2);
+  padding: var(--ca-space-5) var(--ca-space-5) 0;
   flex-shrink: 0;
 }
 
 .ca-dialog__title {
   font-size: var(--ca-font-size-dialog);
-  font-weight: 600;
+  font-family: var(--ca-font-display);
+  font-weight: var(--ca-font-weight-heading);
+  letter-spacing: var(--ca-heading-tracking);
+  text-transform: var(--ca-heading-case);
   color: var(--ca-text-primary);
   margin: 0;
   flex: 1;
-  line-height: 1.3;
+  line-height: var(--ca-line-height-tight);
 }
 
 /* ── Description ────────────────────────────────────────────── */
@@ -81,8 +81,8 @@
   font-size: var(--ca-font-size-body2);
   color: var(--ca-text-secondary);
   margin: 0;
-  padding: 8px 20px 0;
-  line-height: 1.55;
+  padding: var(--ca-space-2) var(--ca-space-5) 0;
+  line-height: var(--ca-line-height-body);
   flex-shrink: 0;
 }
 
@@ -96,17 +96,17 @@
   min-height: auto;
   overflow-y: auto;
   overscroll-behavior: contain;
-  padding: 16px 20px;
+  padding: var(--ca-space-4) var(--ca-space-5);
 }
 
 /* ── Actions footer ─────────────────────────────────────────── */
 .ca-dialog__actions {
   display: flex;
   justify-content: flex-end;
-  gap: 8px;
-  padding: 12px 20px 20px;
+  gap: var(--ca-space-2);
+  padding: var(--ca-space-3) var(--ca-space-5) var(--ca-space-5);
   flex-shrink: 0;
-  border-top: 1px solid var(--ca-outline-subtle);
+  border-top: var(--ca-border-width) solid var(--ca-outline-subtle);
 }
 
 /* ── Chromeless: no header/description/actions, edge-to-edge body ── */
@@ -130,9 +130,9 @@
 /* ── Split: two-column modal (e.g. media + form) ───────────── */
 .ca-dialog--split {
   --dialog-max-w: 1100px;
-  width: min(1100px, calc(100vw - 32px));
-  height: min(720px, calc(var(--ca-vh) - 32px));
-  max-height: calc(var(--ca-vh) - 32px);
+  width: min(1100px, calc(100vw - 2 * var(--ca-space-4)));
+  height: min(720px, calc(var(--ca-vh) - 2 * var(--ca-space-4)));
+  max-height: calc(var(--ca-vh) - 2 * var(--ca-space-4));
 }
 /* Fixed height, so the body can safely fill the panel. */
 .ca-dialog--split .ca-dialog__body {
@@ -151,8 +151,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: var(--ca-space-7);
+  height: var(--ca-space-7);
   border-radius: var(--ca-radius-sm);
   border: none;
   background: transparent;
@@ -168,8 +168,8 @@
   color: var(--ca-text-primary);
 }
 .ca-layer-close:focus-visible {
-  outline: 2px solid var(--ca-brand-main);
-  outline-offset: 2px;
+  outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
+  outline-offset: var(--ca-focus-ring-offset);
 }
 
 /* ── Keyframes ──────────────────────────────────────────────── */

@@ -153,7 +153,7 @@
 
 <style>
 	:global(.ca-overlay.ca-sheet__overlay) {
-		z-index: var(--ca-z-modal, 1300);
+		z-index: var(--ca-z-modal);
 	}
 
 	/* Mobile: bottom sheet */
@@ -162,26 +162,23 @@
 		left: 0;
 		right: 0;
 		bottom: 0;
-		z-index: calc(var(--ca-z-modal, 1300) + 1);
+		z-index: calc(var(--ca-z-modal) + 1);
 		display: flex;
 		flex-direction: column;
 		max-height: min(calc(var(--ca-vh) * 0.88), 720px);
 		background: var(--ca-surface-overlay);
-		border: 1px solid var(--ca-outline-subtle);
+		border: var(--ca-border-width) solid var(--ca-outline-subtle);
 		border-bottom: none;
 		border-radius: var(--ca-radius-xl) var(--ca-radius-xl) 0 0;
-		box-shadow:
-			0 0 0 1px oklch(0 0 0 / 0.04),
-			0 -8px 32px oklch(0 0 0 / 0.14),
-			0 -32px 80px oklch(0 0 0 / 0.2);
+		box-shadow: var(--ca-shadow-xl);
 		overflow: hidden;
 	}
 
 	:global(.ca-sheet[data-state="open"]) {
-		animation: ca-sheet-in 280ms var(--ca-ease-decelerate, cubic-bezier(0.05, 0.7, 0.1, 1)) both;
+		animation: ca-sheet-in var(--ca-duration-slow) var(--ca-ease-decelerate) both;
 	}
 	:global(.ca-sheet[data-state="closed"]) {
-		animation: ca-sheet-out 200ms var(--ca-ease-standard, ease) both;
+		animation: ca-sheet-out var(--ca-duration-base) var(--ca-ease-standard) both;
 	}
 
 	/* Handle + header: the swipe-to-dismiss grab region. */
@@ -206,17 +203,17 @@
 		flex-shrink: 0;
 		width: 36px;
 		height: 4px;
-		margin: 8px auto 4px;
-		border-radius: var(--ca-radius-pill, 999px);
-		background: var(--ca-outline-default, oklch(0.5 0 0 / 0.3));
+		margin: var(--ca-space-2) auto var(--ca-space-1);
+		border-radius: var(--ca-radius-pill);
+		background: var(--ca-outline-default);
 	}
 
 	:global(.ca-sheet__header) {
 		display: flex;
 		align-items: flex-start;
 		justify-content: space-between;
-		gap: 12px;
-		padding: 8px 20px 12px;
+		gap: var(--ca-space-3);
+		padding: var(--ca-space-2) var(--ca-space-5) var(--ca-space-3);
 		flex-shrink: 0;
 	}
 
@@ -228,21 +225,23 @@
 	:global(.ca-sheet__title) {
 		margin: 0;
 		font-size: var(--ca-font-size-h6);
-		font-weight: 600;
-		line-height: 1.3;
-		letter-spacing: -0.01em;
+		font-family: var(--ca-font-display);
+		font-weight: var(--ca-font-weight-heading);
+		line-height: var(--ca-line-height-tight);
+		letter-spacing: var(--ca-heading-tracking);
+		text-transform: var(--ca-heading-case);
 		color: var(--ca-text-primary);
 	}
 
 	:global(.ca-sheet__description) {
-		margin: 2px 0 0;
+		margin: var(--ca-space-0-5) 0 0;
 		font-size: var(--ca-font-size-body2);
-		line-height: 1.45;
+		line-height: var(--ca-line-height-body);
 		color: var(--ca-text-secondary);
 	}
 
 	:global(.ca-sheet__close) {
-		margin-top: 2px;
+		margin-top: var(--ca-space-0-5);
 	}
 
 	:global(.ca-sheet__body) {
@@ -250,21 +249,21 @@
 		min-height: 0;
 		overflow-y: auto;
 		overscroll-behavior: contain;
-		padding: 4px 20px 16px;
+		padding: var(--ca-space-1) var(--ca-space-5) var(--ca-space-4);
 	}
 
 	:global(.ca-sheet__footer) {
 		flex-shrink: 0;
 		display: flex;
 		flex-direction: column;
-		gap: 8px;
-		padding: 12px 20px calc(12px + var(--ca-safe-bottom));
-		border-top: 1px solid var(--ca-outline-subtle);
+		gap: var(--ca-space-2);
+		padding: var(--ca-space-3) var(--ca-space-5) calc(var(--ca-space-3) + var(--ca-safe-bottom));
+		border-top: var(--ca-border-width) solid var(--ca-outline-subtle);
 	}
 
 	/* Without a footer the body itself pads for the home indicator. */
 	:global(.ca-sheet__body:last-child) {
-		padding-bottom: calc(20px + var(--ca-safe-bottom));
+		padding-bottom: calc(var(--ca-space-5) + var(--ca-safe-bottom));
 	}
 
 	/* Desktop: centered dialog */
@@ -272,31 +271,31 @@
 		:global(.ca-sheet) {
 			inset: 0;
 			margin: auto;
-			width: min(480px, calc(100vw - 32px));
+			width: min(480px, calc(100vw - 2 * var(--ca-space-4)));
 			height: fit-content;
 			max-height: calc(var(--ca-vh) * 0.85);
-			border: 1px solid var(--ca-outline-subtle);
+			border: var(--ca-border-width) solid var(--ca-outline-subtle);
 			border-radius: var(--ca-radius-xl);
 		}
 		:global(.ca-sheet[data-state="open"]) {
-			animation: ca-sheet-fade-in 180ms var(--ca-ease-decelerate, ease-out) both;
+			animation: ca-sheet-fade-in var(--ca-duration-fast) var(--ca-ease-decelerate) both;
 		}
 		:global(.ca-sheet[data-state="closed"]) {
-			animation: ca-sheet-fade-out 140ms var(--ca-ease-standard, ease) both;
+			animation: ca-sheet-fade-out var(--ca-duration-fast) var(--ca-ease-standard) both;
 		}
 		:global(.ca-sheet__handle) {
 			display: none;
 		}
 		:global(.ca-sheet__header) {
-			padding-top: 18px;
+			padding-top: var(--ca-space-4);
 		}
 		:global(.ca-sheet__footer) {
 			flex-direction: row;
 			justify-content: flex-end;
-			padding-bottom: 12px;
+			padding-bottom: var(--ca-space-3);
 		}
 		:global(.ca-sheet__body:last-child) {
-			padding-bottom: 20px;
+			padding-bottom: var(--ca-space-5);
 		}
 	}
 

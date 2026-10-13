@@ -199,7 +199,7 @@
     top: 20%;
     left: 50%;
     transform: translateX(-50%);
-    width: min(560px, calc(100vw - 32px));
+    width: min(560px, calc(100vw - 2 * var(--ca-space-4)));
     max-height: calc(var(--ca-vh) * 0.6);
     display: flex;
     flex-direction: column;
@@ -221,9 +221,9 @@
   .ca-cmd-search {
     display: flex;
     align-items: center;
-    gap: 10px;
-    padding: 14px 16px;
-    border-bottom: 1px solid var(--ca-outline-subtle);
+    gap: var(--ca-space-2-5);
+    padding: var(--ca-space-3-5) var(--ca-space-4);
+    border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
     flex-shrink: 0;
   }
 
@@ -248,34 +248,34 @@
 
   .ca-cmd-search__hint {
     font-size: var(--ca-font-size-micro);
-    padding: 2px 5px;
+    padding: var(--ca-space-0-5) var(--ca-space-1);
     border-radius: var(--ca-radius-xs);
-    border: 1px solid var(--ca-outline-subtle);
+    border: var(--ca-border-width) solid var(--ca-outline-subtle);
     color: var(--ca-text-hint);
-    font-family: ui-monospace, SFMono-Regular, 'SF Mono', Menlo, Consolas, monospace;
-    line-height: 1.4;
+    font-family: var(--ca-font-mono);
+    line-height: var(--ca-line-height-body);
   }
 
   .ca-cmd-list {
     overflow-y: auto;
-    padding: 6px;
+    padding: var(--ca-space-1-5);
   }
 
   .ca-cmd-group__label {
     font-size: var(--ca-font-size-caption);
-    font-weight: 600;
+    font-weight: var(--ca-font-weight-semibold);
     color: var(--ca-text-hint);
     text-transform: uppercase;
-    letter-spacing: 0.06em;
-    padding: 8px 10px 4px;
+    letter-spacing: var(--ca-overline-tracking);
+    padding: var(--ca-space-2) var(--ca-space-2-5) var(--ca-space-1);
   }
 
   .ca-cmd-item {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--ca-space-2-5);
     width: 100%;
-    padding: 8px 10px;
+    padding: var(--ca-space-2) var(--ca-space-2-5);
     border-radius: var(--ca-radius-sm);
     border: none;
     background: none;
@@ -306,7 +306,7 @@
   }
 
   .ca-cmd-empty {
-    padding: 32px 16px;
+    padding: var(--ca-space-8) var(--ca-space-4);
     text-align: center;
     font-size: var(--ca-font-size-body2);
     color: var(--ca-text-hint);
@@ -323,13 +323,13 @@
   }
 
   @keyframes ca-cmd-slide-in {
-    from { opacity: 0; transform: translateX(-50%) translateY(-12px); }
+    from { opacity: 0; transform: translateX(-50%) translateY(calc(-1 * var(--ca-space-3))); }
     to   { opacity: 1; transform: translateX(-50%) translateY(0); }
   }
 
   @keyframes ca-cmd-slide-out {
     from { opacity: 1; transform: translateX(-50%) translateY(0); }
-    to   { opacity: 0; transform: translateX(-50%) translateY(-8px); }
+    to   { opacity: 0; transform: translateX(-50%) translateY(calc(-1 * var(--ca-space-2))); }
   }
 
 </style>

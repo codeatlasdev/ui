@@ -40,19 +40,19 @@
     bottom: 0;
     z-index: var(--ca-z-sticky);
     /* Bleeds to the panel edges so the blur covers the content scrolling underneath. */
-    margin: 0.5rem calc(var(--ca-page-px-sm) * -1) 0;
-    padding: 0.75rem max(var(--ca-page-px-sm), var(--ca-safe-right)) calc(0.75rem + var(--ca-safe-bottom)) max(var(--ca-page-px-sm), var(--ca-safe-left));
+    margin: var(--ca-space-2) calc(var(--ca-page-px-sm) * -1) 0;
+    padding: var(--ca-space-3) max(var(--ca-page-px-sm), var(--ca-safe-right)) calc(var(--ca-space-3) + var(--ca-safe-bottom)) max(var(--ca-page-px-sm), var(--ca-safe-left));
     background: var(--ca-glass-bg);
-    -webkit-backdrop-filter: blur(20px) saturate(1.4);
-    backdrop-filter: blur(20px) saturate(1.4);
-    box-shadow: inset 0 1px 0 var(--ca-outline-subtle);
+    -webkit-backdrop-filter: var(--ca-blur-regular);
+    backdrop-filter: var(--ca-blur-regular);
+    box-shadow: inset 0 var(--ca-border-width) 0 var(--ca-outline-subtle);
   }
 
   .ca-sticky-actions__inner {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    gap: 0.5rem;
+    gap: var(--ca-space-2);
   }
 
   .ca-sticky-actions--end .ca-sticky-actions__inner {

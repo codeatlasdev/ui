@@ -25,9 +25,9 @@
   :global(.ca-dropdown-item) {
     display: flex;
     align-items: center;
-    gap: 8px;
-    height: 36px;
-    padding: 0 12px;
+    gap: var(--ca-space-2);
+    height: var(--ca-control-height);
+    padding: 0 var(--ca-space-3);
     border-radius: var(--ca-radius-sm);
     font-size: var(--ca-font-size-body2);
     color: var(--ca-text-primary);

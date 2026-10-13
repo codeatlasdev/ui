@@ -56,7 +56,7 @@
 
   :global(.ca-dropdown-content) {
     border-radius: var(--ca-radius-lg);
-    padding: 4px;
+    padding: var(--ca-space-1);
     min-width: 160px;
     z-index: var(--ca-z-dropdown);
     animation: ca-dropdown-in var(--ca-duration-fast) var(--ca-ease-decelerate);

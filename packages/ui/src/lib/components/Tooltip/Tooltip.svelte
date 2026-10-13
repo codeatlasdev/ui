@@ -49,17 +49,18 @@
   :global(.ca-tooltip-content) {
     /* Inverse, near-opaque surface: --ca-tooltip-fg needs it to reach AA in both schemes. */
     background: var(--ca-tooltip-bg);
+    -webkit-backdrop-filter: var(--ca-blur-ultra-thin);
     backdrop-filter: var(--ca-blur-ultra-thin);
-    border: 1px solid var(--ca-glass-border);
+    border: var(--ca-border-width) solid var(--ca-glass-border);
     border-radius: var(--ca-radius-sm);
-    padding: 6px 10px;
+    padding: var(--ca-space-1-5) var(--ca-space-2-5);
     font-size: var(--ca-font-size-caption);
     color: var(--ca-tooltip-fg);
     max-width: 240px;
     z-index: var(--ca-z-tooltip);
     box-shadow: var(--ca-shadow-md);
     animation: ca-tooltip-in var(--ca-duration-fast) var(--ca-ease-decelerate);
-    line-height: 1.4;
+    line-height: var(--ca-line-height-body);
   }
 
   :global(.ca-tooltip-content[data-state='closed']) {
