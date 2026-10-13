@@ -73,7 +73,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    border-radius: var(--ca-radius-md);
+    border-radius: var(--ca-radius-control);
     border: none;
     cursor: pointer;
     flex-shrink: 0;
@@ -84,8 +84,8 @@
   }
 
   .ca-icon-btn:focus-visible {
-    outline: 2px solid var(--ca-brand-main);
-    outline-offset: 2px;
+    outline: var(--ca-border-width-focus) solid var(--ca-brand-main);
+    outline-offset: var(--ca-focus-ring-offset);
   }
 
   .ca-icon-btn:disabled,
@@ -108,9 +108,9 @@
   }
 
   /* Sizes */
-  .ca-icon-btn--sm { width: 32px; height: 32px; }
-  .ca-icon-btn--md { width: 40px; height: 40px; }
-  .ca-icon-btn--lg { width: 48px; height: 48px; }
+  .ca-icon-btn--sm { width: var(--ca-space-8); height: var(--ca-space-8); }
+  .ca-icon-btn--md { width: var(--ca-space-10); height: var(--ca-space-10); }
+  .ca-icon-btn--lg { width: var(--ca-space-12); height: var(--ca-space-12); }
 
   @media (pointer: coarse) {
     .ca-icon-btn {
@@ -122,8 +122,9 @@
   /* Glass */
   .ca-icon-btn--glass {
     background: var(--ca-glass-tint);
+    -webkit-backdrop-filter: var(--ca-blur-regular);
     backdrop-filter: var(--ca-blur-regular);
-    border: 1px solid var(--ca-glass-border);
+    border: var(--ca-border-width) solid var(--ca-glass-border);
     color: var(--ca-text-primary);
     box-shadow: var(--ca-glass-shadow);
   }

@@ -53,7 +53,7 @@
 <style>
 	:global(.ca-radio-group) {
 		display: flex;
-		gap: 8px;
+		gap: var(--ca-space-2);
 	}
 
 	:global(.ca-radio-group--vertical) {
@@ -68,15 +68,15 @@
 	.ca-radio-item {
 		display: flex;
 		align-items: center;
-		gap: 10px;
+		gap: var(--ca-space-2-5);
 		cursor: pointer;
 	}
 
 	:global(.ca-radio-input) {
-		width: 18px;
-		height: 18px;
+		width: var(--ca-space-5);
+		height: var(--ca-space-5);
 		border-radius: 50%;
-		border: 2px solid var(--ca-outline-default);
+		border: var(--ca-border-width-strong) solid var(--ca-outline-default);
 		background: transparent;
 		cursor: pointer;
 		display: flex;
@@ -91,8 +91,8 @@
 	}
 
 	:global(.ca-radio-indicator) {
-		width: 8px;
-		height: 8px;
+		width: var(--ca-space-2);
+		height: var(--ca-space-2);
 		border-radius: 50%;
 		background: var(--ca-brand-main);
 		display: block;

@@ -81,7 +81,7 @@
     display: flex;
     align-items: center;
     width: 100%;
-    height: 20px;
+    height: var(--ca-space-5);
     cursor: pointer;
     touch-action: none;
     user-select: none;
@@ -95,7 +95,7 @@
   .ca-slider__track {
     position: relative;
     flex: 1;
-    height: 4px;
+    height: var(--ca-space-1);
     background: var(--ca-outline-default);
     border-radius: var(--ca-radius-pill);
     overflow: visible;
@@ -110,11 +110,11 @@
 
   :global(.ca-slider__thumb) {
     display: block;
-    width: 20px;
-    height: 20px;
+    width: var(--ca-space-5);
+    height: var(--ca-space-5);
     border-radius: 50%;
     background: var(--ca-surface-overlay);
-    border: 2px solid var(--ca-brand-main);
+    border: var(--ca-border-width-strong) solid var(--ca-brand-main);
     box-shadow: var(--ca-shadow-sm);
     cursor: grab;
     transition:
@@ -123,7 +123,7 @@
   }
 
   :global(.ca-slider__thumb:hover) {
-    box-shadow: var(--ca-shadow-md), 0 0 0 4px color-mix(in oklab, var(--ca-brand-main) 16%, transparent);
+    box-shadow: var(--ca-shadow-md), 0 0 0 var(--ca-space-1) color-mix(in oklab, var(--ca-brand-main) 16%, transparent);
     transform: scale(1.1);
   }
 
@@ -136,7 +136,7 @@
     outline: none;
     box-shadow:
       var(--ca-shadow-sm),
-      0 0 0 3px var(--ca-surface-base),
-      0 0 0 5px var(--ca-brand-main);
+      0 0 0 var(--ca-space-0-5) var(--ca-surface-base),
+      0 0 0 calc(var(--ca-space-0-5) + var(--ca-border-width-focus)) var(--ca-brand-main);
   }
 </style>

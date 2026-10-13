@@ -77,34 +77,34 @@
   .ca-pin {
     display: inline-flex;
     flex-direction: column;
-    gap: var(--ca-space-1, 4px);
+    gap: var(--ca-space-1);
     font-family: var(--ca-font-sans);
   }
 
   .ca-pin__label {
-    font-size: var(--ca-font-size-body2);
-    font-weight: 500;
+    font-size: var(--ca-font-size-label);
+    font-weight: var(--ca-font-weight-medium);
     color: var(--ca-text-primary);
-    line-height: 1.4;
+    line-height: var(--ca-line-height-body);
   }
 
   .ca-pin__cells {
     display: flex;
-    gap: var(--ca-space-2, 8px);
+    gap: var(--ca-space-2);
   }
 
   :global(.ca-pin__cell) {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 48px;
-    border-radius: var(--ca-radius-md);
+    width: var(--ca-space-10);
+    height: var(--ca-space-12);
+    border-radius: var(--ca-radius-control);
     background: var(--ca-surface-raised);
-    border: 1px solid var(--ca-outline-subtle);
+    border: var(--ca-border-width) solid var(--ca-outline-subtle);
     color: var(--ca-text-primary);
     font-size: var(--ca-font-size-h5);
-    font-weight: 600;
+    font-weight: var(--ca-font-weight-semibold);
     font-variant-numeric: tabular-nums;
     transition:
       border-color var(--ca-duration-fast) var(--ca-ease-standard),
@@ -113,7 +113,7 @@
 
   :global(.ca-pin__cell[data-active]) {
     border-color: var(--ca-brand-main);
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ca-brand-main) 18%, transparent);
+    box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-brand-main) 18%, transparent);
   }
 
   .ca-pin--error :global(.ca-pin__cell) {
@@ -121,7 +121,7 @@
   }
 
   .ca-pin--error :global(.ca-pin__cell[data-active]) {
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ca-semantic-error) 18%, transparent);
+    box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-semantic-error) 18%, transparent);
   }
 
   .ca-pin--disabled {
@@ -130,8 +130,8 @@
   }
 
   .ca-pin__caret {
-    width: 1px;
-    height: 20px;
+    width: var(--ca-border-width);
+    height: var(--ca-space-5);
     background: var(--ca-text-primary);
     animation: ca-pin-blink 1s steps(1) infinite;
   }
@@ -160,7 +160,7 @@
 
   @media (pointer: coarse) {
     :global(.ca-pin__cell) {
-      height: var(--ca-touch-target, 44px);
+      height: var(--ca-touch-target);
     }
   }
 </style>

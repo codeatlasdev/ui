@@ -124,15 +124,15 @@
   .ca-nf {
     display: flex;
     flex-direction: column;
-    gap: var(--ca-space-1, 4px);
+    gap: var(--ca-space-1);
   }
 
   /* ── Label ─────────────────────────────────────────────────── */
   .ca-nf__label {
-    font-size: var(--ca-font-size-body2);
-    font-weight: 500;
+    font-size: var(--ca-font-size-label);
+    font-weight: var(--ca-font-weight-medium);
     color: var(--ca-text-primary);
-    line-height: 1.4;
+    line-height: var(--ca-line-height-body);
     user-select: none;
   }
 
@@ -144,11 +144,11 @@
   .ca-nf__wrap {
     display: inline-flex;
     align-items: stretch;
-    border-radius: var(--ca-radius-md);
+    border-radius: var(--ca-radius-control);
     background: var(--ca-surface-raised);
-    border: 1px solid var(--ca-outline-subtle);
+    border: var(--ca-border-width) solid var(--ca-outline-subtle);
     overflow: hidden;
-    height: 36px;
+    height: var(--ca-control-height);
     transition:
       border-color var(--ca-duration-fast) var(--ca-ease-standard),
       box-shadow   var(--ca-duration-fast) var(--ca-ease-standard);
@@ -156,12 +156,12 @@
 
   .ca-nf__wrap--focused {
     border-color: var(--ca-brand-main);
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ca-brand-main) 18%, transparent);
+    box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-brand-main) 18%, transparent);
   }
 
   .ca-nf__wrap--error {
     border-color: var(--ca-semantic-error) !important;
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ca-semantic-error) 18%, transparent) !important;
+    box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-semantic-error) 18%, transparent) !important;
   }
 
   .ca-nf--disabled .ca-nf__wrap {
@@ -174,7 +174,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
+    width: var(--ca-space-8);
     background: none;
     border: none;
     cursor: pointer;
@@ -196,11 +196,11 @@
   }
 
   .ca-nf__btn:first-child {
-    border-right: 1px solid var(--ca-outline-subtle);
+    border-right: var(--ca-border-width) solid var(--ca-outline-subtle);
   }
 
   .ca-nf__btn:last-child {
-    border-left: 1px solid var(--ca-outline-subtle);
+    border-left: var(--ca-border-width) solid var(--ca-outline-subtle);
   }
 
   /* ── Input ─────────────────────────────────────────────────── */
@@ -229,7 +229,7 @@
     font-size: var(--ca-font-size-caption);
     color: var(--ca-text-secondary);
     margin: 0;
-    line-height: 1.4;
+    line-height: var(--ca-line-height-body);
   }
 
   .ca-nf__hint--error {
@@ -238,11 +238,11 @@
 
   /* ── Size: sm ──────────────────────────────────────────────── */
   .ca-nf--sm .ca-nf__wrap {
-    height: 30px;
+    height: var(--ca-control-height-sm);
   }
 
   .ca-nf--sm .ca-nf__btn {
-    width: 28px;
+    width: var(--ca-space-7);
   }
 
   .ca-nf--sm .ca-nf__input {

@@ -46,9 +46,8 @@
   const id    = uid('ta');
   const hint  = $derived(description ?? helperText);
 
-  // min-height based on rows: ~24px per row + 16px vertical padding
-  const effectiveMinRows = $derived(minRows ?? rows);
-  const minHeight        = $derived(`${effectiveMinRows * 24 + 16}px`);
+  // min-height is computed in CSS from the row count so it follows density and font scale
+  const minRows_ = $derived(minRows ?? rows);
 </script>
 
 <div
@@ -73,7 +72,7 @@
       {readonly}
       bind:value
       class="ca-ta__input"
-      style="--ta-resize:{resize}; --ta-min-height:{minHeight}"
+      style="--ta-resize:{resize}; --ta-min-rows:{minRows_}"
       aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined}
       aria-invalid={error ? 'true' : undefined}
       onfocus={() => (focused = true)}
@@ -95,16 +94,16 @@
   .ca-ta {
     display: flex;
     flex-direction: column;
-    gap: var(--ca-space-1, 4px);
+    gap: var(--ca-space-1);
     width: 100%;
   }
 
   /* ── Label ─────────────────────────────────────────────────── */
   .ca-ta__label {
-    font-size: var(--ca-font-size-body2);
-    font-weight: 500;
+    font-size: var(--ca-font-size-label);
+    font-weight: var(--ca-font-weight-medium);
     color: var(--ca-text-primary);
-    line-height: 1.4;
+    line-height: var(--ca-line-height-body);
     user-select: none;
   }
 
@@ -114,9 +113,9 @@
 
   /* ── Textarea wrapper ──────────────────────────────────────── */
   .ca-ta__wrap {
-    border-radius: var(--ca-radius-md);
+    border-radius: var(--ca-radius-control);
     background: var(--ca-surface-raised);
-    border: 1px solid var(--ca-outline-subtle);
+    border: var(--ca-border-width) solid var(--ca-outline-subtle);
     transition:
       border-color var(--ca-duration-fast) var(--ca-ease-standard),
       box-shadow   var(--ca-duration-fast) var(--ca-ease-standard);
@@ -125,12 +124,12 @@
 
   .ca-ta__wrap--focused {
     border-color: var(--ca-brand-main);
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ca-brand-main) 18%, transparent);
+    box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-brand-main) 18%, transparent);
   }
 
   .ca-ta__wrap--error {
     border-color: var(--ca-semantic-error) !important;
-    box-shadow: 0 0 0 2px color-mix(in oklab, var(--ca-semantic-error) 18%, transparent) !important;
+    box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-semantic-error) 18%, transparent) !important;
   }
 
   .ca-ta--disabled .ca-ta__wrap {
@@ -142,7 +141,7 @@
   .ca-ta__input {
     display: block;
     width: 100%;
-    padding: 8px 10px;
+    padding: var(--ca-space-2) var(--ca-space-2-5);
     background: transparent;
     border: none;
     outline: none;
@@ -150,10 +149,10 @@
     font-size: var(--ca-input-font-size);
     color: var(--ca-text-primary);
     box-sizing: border-box;
-    line-height: 1.5;
+    line-height: var(--ca-line-height-body);
     -webkit-text-fill-color: var(--ca-text-primary);
     resize: var(--ta-resize, vertical);
-    min-height: var(--ta-min-height, auto);
+    min-height: calc(var(--ta-min-rows) * var(--ca-space-6) + 2 * var(--ca-space-2));
   }
 
   .ca-ta__input::placeholder {
@@ -172,7 +171,7 @@
     font-size: var(--ca-font-size-caption);
     color: var(--ca-text-secondary);
     margin: 0;
-    line-height: 1.4;
+    line-height: var(--ca-line-height-body);
   }
 
   .ca-ta__hint--error {
