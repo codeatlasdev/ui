@@ -164,6 +164,7 @@
 
 /* ── Calendar ─────────────────────────────────────────────────── */
 .ca-cal {
+  max-width: 100%;
   display: inline-flex;
   flex-direction: column;
   gap: var(--ca-space-2);
@@ -212,7 +213,7 @@
 .ca-cal__nav:focus-visible { box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-brand-main) 40%, transparent); }
 .ca-cal__nav[data-disabled] { opacity: 0.4; cursor: not-allowed; }
 
-.ca-cal__months { display: flex; gap: var(--ca-space-4); flex-wrap: wrap; }
+.ca-cal__months { display: flex; gap: var(--ca-space-4); flex-wrap: wrap; max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; }
 
 .ca-cal__grid { border-collapse: collapse; }
 
@@ -243,18 +244,13 @@
   transition: background var(--ca-duration-fast) var(--ca-ease-standard);
 }
 
-/* Touch: 44px cells when they fit; when seven do not, each takes 1/7 of the grid
-   (min 36px at 320px) and stays square. */
+/* Touch: day cells never shrink below the 44px target. When seven do not fit the
+   available width, the month grid scrolls inside the calendar; the page never does. */
 @media (pointer: coarse) {
-  .ca-cal__day {
-    /* 44px when seven fit; on a narrow phone each takes a share of the viewport so the week
-       never runs off the edge (gutters + calendar padding ≈ 26% of a 360px screen). Sized from
-       the viewport, not the table, so there is no cell <-> column sizing loop. */
-    --ca-cal-cell: min(var(--ca-touch-target), calc((100vw - 2 * var(--ca-gutter) - 2 * var(--ca-space-3) - 14 * var(--ca-border-width)) / 7));
-    width: var(--ca-cal-cell);
-    height: var(--ca-cal-cell);
-  }
+  .ca-cal__day { width: var(--ca-touch-target); height: var(--ca-touch-target); }
+  .ca-cal__head-cell { width: var(--ca-touch-target); }
 }
+
 
 .ca-cal__day:hover:not([data-selected]):not([data-disabled]) { background: var(--ca-action-hover); }
 .ca-cal__day:focus-visible { box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-brand-main) 50%, transparent); }

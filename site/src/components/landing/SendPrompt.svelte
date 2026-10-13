@@ -63,6 +63,7 @@
   }
   .sp__body:focus-visible { outline: 2px solid var(--ca-focus-ring); outline-offset: 2px; }
   .sp__more {
+    min-height: var(--ca-touch-target);
     justify-self: start;
     padding: 0;
     border: 0;
@@ -73,7 +74,6 @@
     text-decoration: underline;
     text-underline-offset: 3px;
     cursor: pointer;
-    min-height: 24px;
   }
   .sp__alt { margin: 0; font-size: var(--ca-font-size-caption); color: var(--ca-text-secondary); }
   .sp__alt code { font-family: var(--ca-font-mono); color: var(--ca-text-primary); }

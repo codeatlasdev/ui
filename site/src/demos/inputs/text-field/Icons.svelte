@@ -29,6 +29,12 @@
   }
 
   .reveal {
+    min-width: var(--ca-touch-target);
+    min-height: var(--ca-touch-target);
+    margin-block: calc((var(--ca-touch-target) - 1lh) / -2);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     display: inline-flex;
     padding: 0;
     border: 0;

@@ -95,9 +95,11 @@
     .ca-chip--interactive::after {
       content: "";
       position: absolute;
-      inset: 50% 0 auto;
-      height: var(--ca-touch-target);
-      translate: 0 -50%;
+      top: 50%;
+      left: 50%;
+      width: max(100%, var(--ca-touch-target));
+      height: max(100%, var(--ca-touch-target));
+      translate: -50% -50%;
     }
   }
 

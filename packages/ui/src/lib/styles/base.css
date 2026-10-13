@@ -237,3 +237,37 @@ html[data-ca-native] .ca-selectable * {
     outline-width: 3px;
   }
 }
+
+/* ── Touch hit area ─────────────────────────────────────────────────────────
+ * Controls that are visually smaller than 44px (switch, checkbox, radio, icon
+ * buttons, pagers, chip delete…) keep their look but get an invisible 44×44 hit
+ * area centred on them under coarse pointers. Layered, so a component's own
+ * `position` still wins; any non-static position anchors the overlay. */
+@media (pointer: coarse) {
+  :where(
+    .ca-switch, .ca-checkbox, .ca-radio-input, .ca-pagination__page, .ca-pagination__nav,
+    .ca-nf__btn, .ca-filter-group__item, .ca-date__trigger, .ca-cal__nav, .ca-stepper__bubble,
+    .ca-chip__delete, .ca-code-snippet__copy, .ca-notif-trigger, .ca-app-settings__nav-item,
+    .ca-alert__close, .ca-btn, .ca-icon-btn, .ca-combobox__trigger, .ca-collapsible__trigger,
+    .ca-tooltip__trigger, .ca-rail-btn, .ca-toggle-group__item, .ca-dt-pagination__btn,
+    .pass-btn, .glass-btn, .glass-btn-prominent, .glass-btn-clear
+  ) {
+    position: relative;
+  }
+  :where(
+    .ca-switch, .ca-checkbox, .ca-radio-input, .ca-pagination__page, .ca-pagination__nav,
+    .ca-nf__btn, .ca-filter-group__item, .ca-date__trigger, .ca-cal__nav, .ca-stepper__bubble,
+    .ca-chip__delete, .ca-code-snippet__copy, .ca-notif-trigger, .ca-app-settings__nav-item,
+    .ca-alert__close, .ca-btn, .ca-icon-btn, .ca-combobox__trigger, .ca-collapsible__trigger,
+    .ca-tooltip__trigger, .ca-rail-btn, .ca-toggle-group__item, .ca-dt-pagination__btn,
+    .pass-btn, .glass-btn, .glass-btn-prominent, .glass-btn-clear
+  )::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, var(--ca-touch-target));
+    height: max(100%, var(--ca-touch-target));
+    translate: -50% -50%;
+  }
+}

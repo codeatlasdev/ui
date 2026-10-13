@@ -12,6 +12,7 @@
 
 <style>
   .input {
+    min-height: var(--ca-control-height);
     flex-basis: 100%;
     padding: 8px 12px;
     border-radius: var(--ca-radius-md);

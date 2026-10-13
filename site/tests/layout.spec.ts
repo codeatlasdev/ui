@@ -116,6 +116,52 @@ for (const route of PAGES) {
 				}
 			return out.slice(0, 10);
 		}, INTENTIONAL);
+		if (isMobile) {
+			// Touch targets: every visible control in the content is at least 44×44 (WCAG 2.5.5 / HIG).
+			const small = await page.evaluate(() => {
+				// Effective hit area: the element, its expanded ::after overlay, or (for a bare text
+				// input) the field box that receives the tap.
+				const hitArea = (e: Element): [number, number] => {
+					const host = e.matches("input, select")
+						? (e.closest("[class*='__wrap'], label") ?? e)
+						: e;
+					const r = host.getBoundingClientRect();
+					const a = getComputedStyle(e, "::after");
+					const aw =
+						a.content !== "none" && a.position === "absolute" ? Number.parseFloat(a.width) || 0 : 0;
+					const ah =
+						a.content !== "none" && a.position === "absolute"
+							? Number.parseFloat(a.height) || 0
+							: 0;
+					return [Math.max(r.width, aw), Math.max(r.height, ah)];
+				};
+				return [
+					...document.querySelectorAll(
+						"main button, main [role='button'], main input:not([type=hidden]), main select, .ca-cal__day"
+					),
+				]
+					.filter((e) => {
+						const r = e.getBoundingClientRect();
+						if (
+							r.width < 2 ||
+							r.height < 2 ||
+							e.closest("details:not([open]), [aria-hidden='true'], .ca-sr-only, .sr-only")
+						)
+							return false;
+						const s = getComputedStyle(e);
+						if (s.visibility === "hidden" || s.display === "none" || Number(s.opacity) < 0.05)
+							return false;
+						const [w, h] = hitArea(e);
+						return Math.min(w, h) < 43.5;
+					})
+					.slice(0, 8)
+					.map((e) => {
+						const [w, h] = hitArea(e);
+						return `${e.tagName.toLowerCase()}.${e.classList[0] ?? ""} ${Math.round(w)}×${Math.round(h)}`;
+					});
+			});
+			issues.push(...small.map((x) => `touch target < 44px: ${x}`));
+		}
 		expect(issues).toEqual([]);
 	});
 }

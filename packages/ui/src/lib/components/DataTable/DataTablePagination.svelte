@@ -90,7 +90,7 @@
   }
 
   .ca-dt-pagination__select {
-    height: var(--ca-space-7);
+    height: var(--ca-control-height-sm);
     padding: 0 var(--ca-space-1-5);
     border: var(--ca-border-width) solid var(--ca-outline-default);
     border-radius: var(--ca-radius-sm);

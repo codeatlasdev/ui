@@ -72,7 +72,10 @@
     position: relative;
     display: inline-grid;
     grid-auto-flow: column;
-    grid-auto-columns: 1fr;
+    /* Equal columns that may shrink: in a narrow slot labels truncate instead of the
+       control pushing past its container. */
+    grid-auto-columns: minmax(0, 1fr);
+    max-width: 100%;
     padding: var(--seg-pad);
     border-radius: var(--ca-radius-control);
     background: var(--ca-surface-raised);
@@ -128,6 +131,9 @@
     font-family: inherit;
     font-weight: var(--ca-font-weight-medium);
     white-space: nowrap;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
     cursor: pointer;
     transition: color var(--ca-duration-fast) var(--ca-ease-standard);
   }

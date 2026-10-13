@@ -1,6 +1,6 @@
 <script lang="ts">
   import {
-    AppList, SimpleTable, UserCell, StatusChip,
+    AppList, SimpleTable, UserCell, StatusChip, Checkbox,
     Button, Row, FilterGroup, Chip,
   } from '@codeatlasdev/ui';
   import { Plus, Trash2, Edit2, Download } from '@lucide/svelte';
@@ -62,10 +62,7 @@
       <thead>
         <tr>
           <th class="ca-col-check">
-            <input type="checkbox" class="ca-row-check"
-              checked={list.allPageSelected}
-              onchange={() => list.toggleAll()}
-              aria-label="Select all" />
+            <Checkbox checked={list.allPageSelected} onchange={() => list.toggleAll()} aria-label="Select all" />
           </th>
           <th>User</th><th>Role</th><th>Plan</th><th>Status</th><th>Joined</th>
           <th class="ca-col-actions"></th>
@@ -75,10 +72,7 @@
         {#each list.rows as u (u.id)}
           <tr class:ca-row--selected={list.selected.has(u.id)}>
             <td class="ca-col-check">
-              <input type="checkbox" class="ca-row-check"
-                checked={list.selected.has(u.id)}
-                onchange={() => list.toggleRow(u.id)}
-                aria-label="Select {u.name}" />
+              <Checkbox checked={list.selected.has(u.id)} onchange={() => list.toggleRow(u.id)} aria-label="Select {u.name}" />
             </td>
             <td class="primary"><UserCell name={u.name} email={u.email} /></td>
             <td>{u.role}</td>

@@ -126,7 +126,16 @@ export const theme: ThemeOptions = {
 		color: var(--ca-brand-contrast);
 		cursor: pointer;
 		box-shadow: 0 0 0 1px var(--ca-outline-default);
+	}	/* 26px swatch, 44px tap area. */
+	.dot::after {
+		content: "";
+		position: absolute;
+		inset: 50% auto auto 50%;
+		width: var(--ca-touch-target);
+		height: var(--ca-touch-target);
+		translate: -50% -50%;
 	}
+
 	.dot::after {
 		content: "";
 		position: absolute;

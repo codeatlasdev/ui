@@ -317,3 +317,12 @@
   --ca-blur-chrome:       blur(44px) saturate(210%) brightness(1.01);
   --ca-glass-separator:   inset -1px 0 0 rgba(255,255,255,0.05), inset 0 1px 0 rgba(255,255,255,0.14), 0 8px 40px rgba(0,0,0,0.50);
 }
+
+/* Touch: every control row is at least the 44px target (fields, selects, segmented, pagers).
+ * Fine pointers keep the compact heights above. */
+@media (pointer: coarse) {
+  :root, [data-ca-tokens] {
+    --ca-control-height:    var(--ca-touch-target);
+    --ca-control-height-sm: var(--ca-touch-target);
+  }
+}

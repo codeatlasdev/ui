@@ -14,6 +14,7 @@
 
 <style>
   .btn {
+    min-height: var(--ca-control-height);
     padding: 8px 20px;
     border-radius: var(--ca-radius-md);
     border: 1px solid var(--ca-outline-subtle);
