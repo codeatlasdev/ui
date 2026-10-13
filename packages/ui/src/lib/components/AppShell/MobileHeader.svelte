@@ -43,15 +43,15 @@
        samples sticky/fixed edge elements; a translucent color there never matches). */
     padding-top: var(--ca-safe-top);
     background-color: var(--ca-chrome-surface);
-    box-shadow: inset 0 -1px 0 var(--ca-outline-subtle);
+    box-shadow: inset 0 calc(var(--ca-border-width) * -1) 0 var(--ca-outline-subtle);
   }
 
   .ca-mobile-header__inner {
     display: flex;
     align-items: center;
-    gap: 8px;
-    height: 48px;
-    padding: 0 max(16px, var(--ca-safe-left)) 0 max(16px, var(--ca-safe-right));
+    gap: var(--ca-space-2);
+    height: var(--ca-space-12);
+    padding: 0 max(var(--ca-space-4), var(--ca-safe-left)) 0 max(var(--ca-space-4), var(--ca-safe-right));
   }
 
   .ca-mobile-header__leading {
@@ -62,9 +62,11 @@
 
   .ca-mobile-header__title {
     font-size: var(--ca-font-size-h6);
-    font-weight: 600;
+    font-family: var(--ca-font-display);
+    font-weight: var(--ca-font-weight-semibold);
+    letter-spacing: var(--ca-heading-tracking);
+    text-transform: var(--ca-heading-case);
     color: var(--ca-text-primary);
-    letter-spacing: -0.01em;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -81,7 +83,7 @@
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: 8px;
+    gap: var(--ca-space-2);
     flex: 0 1 auto;
     min-width: 0;
     /* Keep the title readable: actions may shrink to at most ~60% of the row. */

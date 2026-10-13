@@ -71,7 +71,7 @@
 
 <style>
   .ca-section {
-    margin-top: 4px;
+    margin-top: var(--ca-space-1);
   }
   .ca-section:first-child {
     margin-top: 0;
@@ -83,7 +83,7 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 10px 12px 4px;
+    padding: var(--ca-space-2-5) var(--ca-space-3) var(--ca-space-1);
     background: transparent;
     border: none;
     cursor: pointer;
@@ -91,8 +91,8 @@
 
   .ca-section__label {
     font-size: var(--ca-font-size-micro);
-    font-weight: 600;
-    letter-spacing: 0.05em;
+    font-weight: var(--ca-font-weight-semibold);
+    letter-spacing: var(--ca-overline-tracking);
     text-transform: uppercase;
     color: var(--ca-text-hint);
   }

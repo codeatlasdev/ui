@@ -137,40 +137,43 @@
   .ca-auth__panel-inner {
     position: relative;
     z-index: 1;
-    padding: 48px;
+    padding: var(--ca-space-12);
     display: flex;
     flex-direction: column;
-    gap: 40px;
+    gap: var(--ca-space-10);
     width: 100%;
-    max-width: 420px;
+    max-width: calc(var(--ca-space-unit) * 105);
   }
 
   /* ── Logo ─────────────────────────────────────────────────── */
   .ca-auth__logo {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: var(--ca-space-2-5);
     text-decoration: none;
   }
 
   .ca-auth__mark {
-    width: 36px;
-    height: 36px;
-    border-radius: 9px;
+    width: var(--ca-control-height);
+    height: var(--ca-control-height);
+    border-radius: var(--ca-radius-md);
     background: oklch(1 0 0 / 0.14);
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 800;
+    font-weight: var(--ca-font-weight-bold);
     font-size: var(--ca-font-size-body2);
     color: oklch(1 0 0 / 0.95);
-    letter-spacing: -0.03em;
+    letter-spacing: var(--ca-heading-tracking);
     flex-shrink: 0;
   }
 
   .ca-auth__name {
+    font-family: var(--ca-font-display);
     font-size: var(--ca-font-size-lg);
-    font-weight: 700;
+    font-weight: var(--ca-font-weight-heading);
+    letter-spacing: var(--ca-heading-tracking);
+    text-transform: var(--ca-heading-case);
     color: oklch(1 0 0 / 0.90);
   }
 
@@ -194,33 +197,33 @@
   .ca-auth__blob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(64px);
+    filter: blur(var(--ca-space-16));
     opacity: 0.18;
   }
 
   .ca-auth__blob--a {
-    width: 320px; height: 320px;
+    width: calc(var(--ca-space-unit) * 80); height: calc(var(--ca-space-unit) * 80);
     background: color-mix(in oklab, var(--ca-brand-main) 70%, oklch(0.90 0 0));
-    top: -80px; right: -80px;
-    animation: ca-auth-float 9s ease-in-out infinite;
+    top: calc(var(--ca-space-20) * -1); right: calc(var(--ca-space-20) * -1);
+    animation: ca-auth-float calc(9s * var(--ca-motion-scale)) ease-in-out infinite;
   }
   .ca-auth__blob--b {
-    width: 240px; height: 240px;
+    width: calc(var(--ca-space-unit) * 60); height: calc(var(--ca-space-unit) * 60);
     background: color-mix(in oklch, var(--ca-brand-main) 50%, oklch(0.60 0.18 235));
-    bottom: 60px; left: -60px;
-    animation: ca-auth-float 12s ease-in-out infinite reverse;
+    bottom: calc(var(--ca-space-unit) * 15); left: calc(var(--ca-space-unit) * -15);
+    animation: ca-auth-float calc(12s * var(--ca-motion-scale)) ease-in-out infinite reverse;
   }
   .ca-auth__blob--c {
-    width: 180px; height: 180px;
+    width: calc(var(--ca-space-unit) * 45); height: calc(var(--ca-space-unit) * 45);
     background: color-mix(in oklch, var(--ca-brand-main) 40%, oklch(0.85 0.12 150));
-    bottom: -40px; right: 60px;
-    animation: ca-auth-float 15s ease-in-out infinite 3s;
+    bottom: calc(var(--ca-space-10) * -1); right: calc(var(--ca-space-unit) * 15);
+    animation: ca-auth-float calc(15s * var(--ca-motion-scale)) ease-in-out infinite 3s;
   }
 
   @keyframes ca-auth-float {
     0%, 100% { transform: translate(0, 0) scale(1); }
-    33%       { transform: translate(12px, -18px) scale(1.04); }
-    66%       { transform: translate(-8px, 10px) scale(0.97); }
+    33%       { transform: translate(var(--ca-space-3), calc(var(--ca-space-5) * -1)) scale(1.04); }
+    66%       { transform: translate(calc(var(--ca-space-2) * -1), var(--ca-space-2-5)) scale(0.97); }
   }
 
   /* ── Right column ───────────────────────────────────────── */
@@ -230,7 +233,7 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    padding: 40px 24px;
+    padding: var(--ca-space-10) var(--ca-space-6);
     background: var(--ca-surface-base);
   }
 
@@ -238,52 +241,54 @@
   .ca-auth__mobile-brand {
     display: none;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 24px;
+    gap: var(--ca-space-2);
+    margin-bottom: var(--ca-space-6);
     text-decoration: none;
     color: var(--ca-text-primary);
   }
 
   .ca-auth__mobile-mark {
-    width: 32px;
-    height: 32px;
-    border-radius: 8px;
+    width: var(--ca-space-8);
+    height: var(--ca-space-8);
+    border-radius: var(--ca-radius-sm);
     background: var(--ca-brand-main);
     color: var(--ca-brand-contrast, oklch(1 0 0));
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 800;
+    font-weight: var(--ca-font-weight-bold);
     font-size: var(--ca-font-size-caption);
-    letter-spacing: -0.03em;
+    letter-spacing: var(--ca-heading-tracking);
     flex-shrink: 0;
   }
 
   .ca-auth__mobile-name {
+    font-family: var(--ca-font-display);
     font-size: var(--ca-font-size-body1);
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-weight: var(--ca-font-weight-heading);
+    letter-spacing: var(--ca-heading-tracking);
+    text-transform: var(--ca-heading-case);
   }
 
   @media (max-width: 899.98px) {
     .ca-auth__col {
-      padding-top: calc(40px + var(--ca-safe-top));
-      padding-bottom: calc(40px + var(--ca-safe-bottom));
-      padding-left: max(24px, var(--ca-safe-left));
-      padding-right: max(24px, var(--ca-safe-right));
+      padding-top: calc(var(--ca-space-10) + var(--ca-safe-top));
+      padding-bottom: calc(var(--ca-space-10) + var(--ca-safe-bottom));
+      padding-left: max(var(--ca-space-6), var(--ca-safe-left));
+      padding-right: max(var(--ca-space-6), var(--ca-safe-right));
     }
     .ca-auth__mobile-brand { display: flex; }
   }
 
   /* ── Shared auth utility classes, available inside any AuthLayout slot ── */
-  :global(.auth-quote) { margin: 0; max-width: 380px; }
+  :global(.auth-quote) { margin: 0; max-width: calc(var(--ca-space-unit) * 95); }
   :global(.auth-quote__text) {
-    font-size: var(--ca-font-size-xl); line-height: 1.4; font-weight: 500;
-    letter-spacing: -0.01em; margin: 0;
+    font-size: var(--ca-font-size-xl); line-height: 1.4; font-weight: var(--ca-font-weight-medium);
+    letter-spacing: var(--ca-heading-tracking); margin: 0;
     color: var(--panel-text-primary, oklch(1 0 0 / 0.95));
   }
   :global(.auth-quote__attr) {
-    font-size: var(--ca-font-size-body2); margin-top: 16px;
+    font-size: var(--ca-font-size-body2); margin-top: var(--ca-space-4);
     color: var(--panel-text-secondary, oklch(1 0 0 / 0.60));
   }
 </style>
