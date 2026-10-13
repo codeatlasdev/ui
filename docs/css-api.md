@@ -6,7 +6,7 @@ Convenções: BEM (`ca-bloco__elemento`, `ca-bloco--modificador`). Variáveis CS
 
 Gerado a partir de `grep -o 'ca-[a-z0-9_-]*'` em `packages/ui/src/lib/components/<Componente>/` (`.svelte`, `.css`, `.ts`), sem custom properties e sem duplicatas. Ao adicionar ou renomear componentes, repita o comando e atualize este arquivo. Alguns nomes listados podem ser `@keyframes` ou identificadores internos (ex.: `ca-accordion-down`), não apenas classes; trate-os como estáveis por segurança.
 
-Total: 752 classes únicas em 67 componentes.
+Total: 752 classes únicas em 68 componentes.
 
 ---
 
@@ -84,7 +84,7 @@ Total: 752 classes únicas em 67 componentes.
 
 ## CopyButton
 
-`.ca-copy` `.ca-copy__status`
+`.ca-copy`
 
 ## DataTable
 
@@ -213,6 +213,10 @@ Total: 752 classes únicas em 67 componentes.
 ## SiteHeader
 
 `.ca-site-header` `.ca-site-header__bc-sep` `.ca-site-header__breadcrumb` `.ca-site-header__inner` `.ca-site-header__left` `.ca-site-header__sep` `.ca-site-header__toggle` `.ca-site-header__trailing`
+
+## SkipLink
+
+`.ca-skip-link`
 
 ## Skeleton
 
