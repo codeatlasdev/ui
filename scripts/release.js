@@ -27,6 +27,7 @@ const step = (msg) => console.log(`\n▸ ${msg}`);
 const run = (cmd, argv, cwd = root) => execFileSync(cmd, argv, { cwd, stdio: "inherit" });
 const out = (cmd, argv, cwd = root) =>
 	execFileSync(cmd, argv, { cwd, encoding: "utf8", stdio: ["ignore", "pipe", "pipe"] }).trim();
+const readJson = (file) => JSON.parse(fs.readFileSync(file, "utf8"));
 function tryRun(label, cmd, argv, cwd) {
 	try {
 		run(cmd, argv, cwd);

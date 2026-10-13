@@ -55,7 +55,8 @@ describe("CodeSnippet", () => {
 			timeout: 15_000,
 		});
 		const pre = screen.container.querySelector("pre.shiki") as HTMLElement;
-		const token = pre.querySelector<HTMLElement>("span[style*='--shiki-dark']")!;
+		const token = pre.querySelector<HTMLElement>("span[style*='--shiki-dark']");
+		if (!token) throw new Error("no dual-theme token rendered");
 		const colorIn = (scheme: "light" | "dark") => {
 			screen.container.setAttribute("data-theme-scope", scheme);
 			return getComputedStyle(token).color;

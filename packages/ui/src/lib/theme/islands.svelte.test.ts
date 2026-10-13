@@ -11,9 +11,15 @@ afterEach(() => {
 	document.getElementById("brand-css")?.remove();
 });
 
+function byId(id: string): HTMLElement {
+	const el = document.getElementById(id);
+	if (!el) throw new Error(`#${id} not mounted`);
+	return el;
+}
+
 function mount(markup: string) {
 	document.body.insertAdjacentHTML("beforeend", markup);
-	return (id: string) => getComputedStyle(document.getElementById(id)!).colorScheme;
+	return (id: string) => getComputedStyle(byId(id)).colorScheme;
 }
 
 describe("preset islands", () => {
@@ -57,8 +63,6 @@ describe("preset islands", () => {
 		);
 		expect(scheme("p")).toBe("dark");
 		expect(scheme("q")).toBe("light");
-		expect(
-			getComputedStyle(document.getElementById("p")!).getPropertyValue("--ca-chart-brand").trim()
-		).toBe("#2563eb");
+		expect(getComputedStyle(byId("p")).getPropertyValue("--ca-chart-brand").trim()).toBe("#2563eb");
 	});
 });

@@ -48,14 +48,15 @@ test("theme-color follows the opaque chrome at the top edge", async ({ page }) =
 	await gotoReady(page, "/templates/app/dashboard/");
 	const read = () =>
 		page.evaluate(() => {
-			const c = document.createElement("canvas").getContext("2d")!;
+			const c = document.createElement("canvas").getContext("2d");
+			const header = document.querySelector(".ca-mobile-header");
+			if (!c || !header) throw new Error("canvas 2d or .ca-mobile-header missing");
 			const hex = (v: string) => {
 				c.fillStyle = v;
 				c.fillRect(0, 0, 1, 1);
 				const [r, g, b] = c.getImageData(0, 0, 1, 1).data;
 				return `#${[r, g, b].map((n) => n.toString(16).padStart(2, "0")).join("")}`;
 			};
-			const header = document.querySelector(".ca-mobile-header")!;
 			return {
 				meta: document.querySelector<HTMLMetaElement>('meta[name="theme-color"]')?.content,
 				header: hex(getComputedStyle(header).backgroundColor),
