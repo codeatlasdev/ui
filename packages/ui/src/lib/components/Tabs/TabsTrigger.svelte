@@ -21,15 +21,15 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    height: 30px;
-    padding: 0 14px;
+    height: var(--ca-control-height-sm);
+    padding: 0 var(--ca-space-3-5);
     border-radius: var(--ca-radius-pill);
     border: none;
     background: transparent;
     color: var(--ca-text-secondary);
     font-family: var(--ca-font-sans);
     font-size: var(--ca-font-size-body2);
-    font-weight: 500;
+    font-weight: var(--ca-font-weight-medium);
     cursor: pointer;
     white-space: nowrap;
     transition:
@@ -53,8 +53,8 @@
   }
 
   :global(.ca-tabs-trigger:focus-visible) {
-    outline: 2px solid var(--ca-brand-main);
-    outline-offset: 2px;
+    outline: var(--ca-border-width-focus) solid var(--ca-brand-main);
+    outline-offset: var(--ca-border-width-focus);
   }
 
   @media (pointer: coarse) {

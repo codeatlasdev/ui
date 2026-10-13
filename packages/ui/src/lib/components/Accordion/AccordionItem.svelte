@@ -32,8 +32,9 @@
 <style>
   :global(.ca-accordion-item) {
     background: var(--ca-glass-tint-ultra-thin);
+    -webkit-backdrop-filter: var(--ca-blur-ultra-thin);
     backdrop-filter: var(--ca-blur-ultra-thin);
-    border: 1px solid var(--ca-glass-border);
+    border: var(--ca-border-width) solid var(--ca-glass-border);
     border-radius: var(--ca-radius-lg);
     overflow: hidden;
   }
@@ -49,14 +50,14 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    height: 48px;
-    padding: 0 16px;
+    height: var(--ca-space-12);
+    padding: 0 var(--ca-space-4);
     background: transparent;
     border: none;
     cursor: pointer;
     font-family: var(--ca-font-sans);
     font-size: var(--ca-font-size-body1);
-    font-weight: 500;
+    font-weight: var(--ca-font-weight-medium);
     color: var(--ca-text-primary);
     text-align: left;
     transition: background var(--ca-duration-fast) var(--ca-ease-standard);
@@ -67,8 +68,8 @@
   }
 
   :global(.ca-accordion-item__trigger:focus-visible) {
-    outline: 2px solid var(--ca-brand-main);
-    outline-offset: -2px;
+    outline: var(--ca-border-width-focus) solid var(--ca-brand-main);
+    outline-offset: calc(-1 * var(--ca-border-width-focus));
   }
 
   :global(.ca-accordion-item__trigger[data-state='open'] .ca-accordion-item__chevron) {
@@ -104,10 +105,10 @@
   }
 
   :global(.ca-accordion-item__body) {
-    padding: 0 16px 16px;
+    padding: 0 var(--ca-space-4) var(--ca-space-4);
     font-size: var(--ca-font-size-body2);
     color: var(--ca-text-secondary);
-    line-height: 1.6;
+    line-height: var(--ca-line-height-prose);
   }
 
   @keyframes ca-accordion-down {

@@ -35,7 +35,7 @@
 	.ca-breadcrumb__list {
 		display: flex;
 		align-items: center;
-		gap: 4px;
+		gap: var(--ca-space-1);
 		list-style: none;
 		margin: 0;
 		padding: 0;
@@ -45,7 +45,7 @@
 	.ca-breadcrumb__item {
 		display: flex;
 		align-items: center;
-		gap: 4px;
+		gap: var(--ca-space-1);
 	}
 
 	.ca-breadcrumb__sep {

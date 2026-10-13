@@ -22,8 +22,8 @@
   }
 
   :global(.ca-tabs-content:focus-visible) {
-    outline: 2px solid var(--ca-brand-main);
-    outline-offset: 2px;
+    outline: var(--ca-border-width-focus) solid var(--ca-brand-main);
+    outline-offset: var(--ca-border-width-focus);
     border-radius: var(--ca-radius-sm);
   }
 </style>

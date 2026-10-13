@@ -65,16 +65,16 @@
   .ca-code-snippet {
     border-radius: var(--ca-radius-lg);
     overflow: hidden;
-    border: 1px solid var(--ca-outline-subtle);
-    margin-top: 16px;
+    border: var(--ca-border-width) solid var(--ca-outline-subtle);
+    margin-top: var(--ca-space-4);
   }
 
   .ca-code-snippet__toolbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 8px 16px;
-    border-bottom: 1px solid var(--ca-outline-subtle);
+    padding: var(--ca-space-2) var(--ca-space-4);
+    border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
   }
 
   .ca-code-snippet__lang {
@@ -86,13 +86,13 @@
   .ca-code-snippet__copy {
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: var(--ca-space-1);
     font-size: var(--ca-font-size-caption);
     color: var(--ca-text-secondary);
     background: none;
     border: none;
     cursor: pointer;
-    padding: 2px 6px;
+    padding: var(--ca-space-0-5) var(--ca-space-1-5);
     border-radius: var(--ca-radius-xs);
     transition: color var(--ca-duration-fast) var(--ca-ease-standard);
   }
@@ -105,13 +105,13 @@
     margin: 0;
     overflow-x: auto;
     font-size: var(--ca-font-size-caption);
-    line-height: 1.7;
+    line-height: var(--ca-line-height-prose);
   }
 
   /* Shiki renders a <pre> with inline background, neutralise it so glass shows through */
   .ca-code-snippet__pre :global(pre.shiki) {
     margin: 0;
-    padding: 16px;
+    padding: var(--ca-space-4);
     background: transparent !important;
     font-family: var(--ca-font-mono);
     font-size: inherit;
@@ -129,7 +129,7 @@
 
   /* Fallback raw pre */
   .ca-code-snippet__pre--raw {
-    padding: 16px;
+    padding: var(--ca-space-4);
     font-family: var(--ca-font-mono);
     color: var(--ca-text-primary);
     background: transparent;

@@ -37,7 +37,7 @@
   :global(.ca-accordion) {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: var(--ca-space-1);
     width: 100%;
   }
 </style>

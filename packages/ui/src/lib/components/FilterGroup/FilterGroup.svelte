@@ -61,33 +61,33 @@
   .ca-filter-group {
     display: inline-flex;
     align-items: center;
-    gap: 2px;
-    padding: 3px;
+    gap: var(--ca-space-0-5);
+    padding: var(--ca-space-1);
     border-radius: var(--ca-radius-pill);
     background: var(--ca-action-hover);
-    border: 1px solid var(--ca-outline-subtle);
+    border: var(--ca-border-width) solid var(--ca-outline-subtle);
     flex-shrink: 0;
   }
 
   .ca-filter-group__label {
     font-size: var(--ca-font-size-micro);
-    font-weight: 600;
+    font-weight: var(--ca-font-weight-semibold);
     color: var(--ca-text-hint);
     text-transform: uppercase;
-    letter-spacing: 0.05em;
-    padding: 0 6px 0 4px;
+    letter-spacing: var(--ca-overline-tracking);
+    padding: 0 var(--ca-space-1-5) 0 var(--ca-space-1);
     user-select: none;
   }
 
   .ca-filter-group__item {
-    height: 24px;
-    padding: 0 10px;
+    height: var(--ca-space-6);
+    padding: 0 var(--ca-space-2-5);
     border-radius: var(--ca-radius-pill);
     border: none;
     background: transparent;
     cursor: pointer;
     font-size: var(--ca-font-size-caption);
-    font-weight: 500;
+    font-weight: var(--ca-font-weight-medium);
     font-family: inherit;
     color: var(--ca-text-secondary);
     white-space: nowrap;
@@ -109,7 +109,7 @@
   }
 
   .ca-filter-group__item:focus-visible {
-    outline: 2px solid var(--ca-brand-main);
-    outline-offset: -2px;
+    outline: var(--ca-border-width-focus) solid var(--ca-brand-main);
+    outline-offset: calc(-1 * var(--ca-border-width-focus));
   }
 </style>

@@ -76,18 +76,18 @@
     display: flex;
     user-select: none;
     touch-action: none;
-    padding: 2px;
+    padding: var(--ca-space-0-5);
     background: transparent;
-    transition: background 160ms ease-out;
+    transition: background var(--ca-duration-fast) var(--ca-ease-decelerate);
   }
 
   :global(.ca-scroll-area__scrollbar--v) {
-    width: 8px;
+    width: var(--ca-space-2);
     flex-direction: column;
   }
 
   :global(.ca-scroll-area__scrollbar--h) {
-    height: 8px;
+    height: var(--ca-space-2);
     flex-direction: row;
   }
 
