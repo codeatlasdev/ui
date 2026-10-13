@@ -78,11 +78,14 @@ export function startChromeSync(): () => void {
 		attributes: true,
 		attributeFilter: ["class", "data-theme-scope"],
 	});
-	const events = ["scroll", "resize", "pageshow"] as const;
-	for (const e of events) window.addEventListener(e, scheduleChromeSync, { passive: true });
+	// transitionend: a theme switch animates backgrounds; a sample taken mid-transition must be
+	// redone once the color settles, or the bar keeps an in-between color.
+	const events = ["scroll", "resize", "pageshow", "transitionend"] as const;
+	for (const e of events)
+		window.addEventListener(e, scheduleChromeSync, { passive: true, capture: true });
 	teardown = () => {
 		observer.disconnect();
-		for (const e of events) window.removeEventListener(e, scheduleChromeSync);
+		for (const e of events) window.removeEventListener(e, scheduleChromeSync, { capture: true });
 		cancelAnimationFrame(frame);
 		frame = 0;
 		teardown = undefined;
