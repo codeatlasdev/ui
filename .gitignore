@@ -29,3 +29,4 @@ site/.astro/
 # Internal planning notes (consumer migration guides, roadmap) stay local.
 /docs/*
 !/docs/css-api.md
+!/docs/adr/
