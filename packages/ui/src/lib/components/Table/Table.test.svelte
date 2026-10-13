@@ -2,7 +2,8 @@
 	import SimpleTable from "./Table.svelte";
 	import UserCell from "./UserCell.svelte";
 
-	let { responsive = "scroll" }: { responsive?: "scroll" | "cards" } = $props();
+	let { responsive = "scroll", labels = true }: { responsive?: "scroll" | "cards"; labels?: boolean } = $props();
+	const l = (name: string) => (labels ? name : undefined);
 </script>
 
 <SimpleTable {responsive}>
@@ -15,14 +16,14 @@
 	</thead>
 	<tbody>
 		<tr>
-			<td data-label="User"><UserCell name="Ana Souza" email="ana@example.com" /></td>
-			<td data-label="Role">Admin</td>
-			<td data-label="Status">Active</td>
+			<td data-label={l("User")}><UserCell name="Ana Souza" email="ana@example.com" /></td>
+			<td data-label={l("Role")}>Admin</td>
+			<td data-label={l("Status")}>Active</td>
 		</tr>
 		<tr>
-			<td data-label="User"><UserCell name="Bruno Lima" /></td>
-			<td data-label="Role">Developer</td>
-			<td data-label="Status">Invited</td>
+			<td data-label={l("User")}><UserCell name="Bruno Lima" /></td>
+			<td data-label={l("Role")}>Developer</td>
+			<td data-label={l("Status")}>Invited</td>
 		</tr>
 	</tbody>
 </SimpleTable>

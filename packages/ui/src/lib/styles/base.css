@@ -271,3 +271,13 @@ html[data-ca-native] .ca-selectable * {
     translate: -50% -50%;
   }
 }
+
+/* ── Focus not obscured (WCAG 2.4.11) ─────────────────────────────────────
+ * Keyboard focus and in-page links must not land under sticky chrome: the
+ * mobile header on top, the bottom nav / sticky actions / home indicator below.
+ * Apps with taller chrome set --ca-sticky-top / --ca-sticky-bottom. */
+:root {
+  scroll-padding-block:
+    calc(var(--ca-sticky-top, var(--ca-header-height)) + var(--ca-safe-top) + var(--ca-space-2))
+    calc(var(--ca-sticky-bottom, 0px) + var(--ca-safe-bottom) + var(--ca-space-2));
+}

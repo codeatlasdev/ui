@@ -67,6 +67,17 @@ describe("SimpleTable", () => {
 		await expect.element(screen.getByRole("columnheader", { name: "User" })).toBeInTheDocument();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
+
+	it("cards mode captions cells with their column header when no data-label is given", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		await render(Harness, { responsive: "cards", labels: false });
+		const row = document.querySelectorAll("tbody tr")[1];
+		await expect
+			.poll(() => [...row.querySelectorAll("td")].map((td) => td.dataset.label))
+			.toEqual(["User", "Role", "Status"]);
+		const role = row.querySelectorAll("td")[1];
+		expect(getComputedStyle(role, "::before").content).toBe('"Role"');
+	});
 });
 
 describe("UserCell", () => {

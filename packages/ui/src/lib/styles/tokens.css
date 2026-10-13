@@ -95,6 +95,9 @@
   --ca-safe-bottom: env(safe-area-inset-bottom, 0px);
   --ca-safe-left:   env(safe-area-inset-left, 0px);
   --ca-vh: 100vh;
+  /* Minimum height for full-screen sections: the SMALL viewport (URL bar shown), so a hero
+     never hides its call to action behind the browser UI. Falls back to vh. */
+  --ca-vh-min: 100vh;
   /* Written by the viewport store while a virtual keyboard covers the page. */
   --ca-kb-inset: 0px;
   --ca-bottom-nav-h: 56px;
@@ -215,6 +218,9 @@
 
 @supports (height: 100dvh) {
   :root { --ca-vh: 100dvh; }
+}
+@supports (height: 100svh) {
+  :root { --ca-vh-min: 100svh; }
 }
 
 @media (pointer: coarse), (max-width: 899.98px) {

@@ -31,6 +31,14 @@ const HEAD_CHECKS = [
 			'the viewport meta has no "viewport-fit=cover", so the --ca-safe-* tokens stay 0 and content sits under the notch and home indicator. Use <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">.',
 	},
 	{
+		missing: (html: string) =>
+			/<meta[^>]+name=["']viewport["'][^>]*(user-scalable\s*=\s*(no|0)|maximum-scale\s*=\s*1(\.0)?\b)/i.test(
+				html
+			),
+		message:
+			"the viewport meta blocks zoom (user-scalable=no or maximum-scale=1). Low-vision users must be able to zoom to 200% (WCAG 1.4.4); iOS input zoom is already prevented by the 16px input floor.",
+	},
+	{
 		missing: (html: string) => !/<html(\s[^>]*)?\slang\s*=/i.test(html),
 		message:
 			'<html> has no lang attribute. Screen readers and search engines need it (WCAG 3.1.1). Set it in app.html, e.g. <html lang="en">.',

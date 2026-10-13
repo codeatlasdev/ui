@@ -7,11 +7,31 @@
     class?:      string;
     /**
      * `scroll` (default): regular table. `cards`: when its own width is below the `sm` breakpoint (600px)
-     * each row becomes a card; give each `<td>` a `data-label` to show its column name.
+     * each row becomes a card. Each cell's caption is its column header; set `data-label` on a
+     * `<td>` only to override it.
      */
     responsive?: 'scroll' | 'cards';
   }
   let { children, class: className = '', responsive = 'scroll' }: Props = $props();
+
+  /** Cards mode: caption every cell with its column header unless the author set one. Re-runs
+      when rows change (sorting, paging, filtering), so new rows are captioned too. */
+  function headerLabels(table: HTMLTableElement) {
+    if (responsive !== 'cards') return;
+    const label = () => {
+      const heads = [...table.querySelectorAll('thead tr:last-child th')].map((th) => th.textContent?.trim() ?? '');
+      for (const row of table.querySelectorAll('tbody tr')) {
+        [...row.children].forEach((cell, i) => {
+          if (cell instanceof HTMLTableCellElement && !cell.hasAttribute('data-label') && heads[i])
+            cell.dataset.label = heads[i];
+        });
+      }
+    };
+    label();
+    const mo = new MutationObserver(label);
+    mo.observe(table, { childList: true, subtree: true });
+    return () => mo.disconnect();
+  }
 </script>
 
 <!-- Focusable scroll region in the server HTML too (keyboard scrolling works without JS);
@@ -26,7 +46,7 @@
   tabindex="0"
   use:scrollFocusable
 >
-  <table class="ca-table" class:ca-table--cards={responsive === 'cards'}>
+  <table class="ca-table" class:ca-table--cards={responsive === 'cards'} {@attach headerLabels}>
     {@render children?.()}
   </table>
 </div>

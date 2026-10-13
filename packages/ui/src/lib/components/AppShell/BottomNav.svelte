@@ -95,7 +95,8 @@
   .ca-bottom-nav__label {
     display: block;
     max-width: 100%;
-    font-size: var(--ca-font-size-nano);
+    /* 11px floor: tab labels are read at arm length, never shrunk "to fit". */
+    font-size: var(--ca-font-size-micro);
     font-weight: var(--ca-font-weight-medium);
     line-height: var(--ca-line-height-tight);
     white-space: nowrap;

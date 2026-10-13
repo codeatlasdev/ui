@@ -155,14 +155,18 @@ async function audit(page: Page, isMobile: boolean): Promise<string[]> {
 	return issues;
 }
 
+/** Sign-in pages bounce a signed-in user to the dashboard: measure them signed out. */
+async function open(page: Page, route: string) {
+	if (route.endsWith("/sign-in/"))
+		await page.addInitScript(() => localStorage.removeItem("ca_auth"));
+	await gotoReady(page, route);
+}
+
 for (const route of PAGES) {
 	test(`layout ${route}`, async ({ page, isMobile }) => {
 		// Narrowest common phone width: anything that fits at 360px fits on larger phones.
 		if (isMobile) await page.setViewportSize({ width: 360, height: 780 });
-		// Sign-in pages bounce a signed-in user to the dashboard: measure them signed out.
-		if (route.endsWith("/sign-in/"))
-			await page.addInitScript(() => localStorage.removeItem("ca_auth"));
-		await gotoReady(page, route);
+		await open(page, route);
 		expect(await audit(page, isMobile)).toEqual([]);
 	});
 }
@@ -176,4 +180,23 @@ for (const panel of ["Controls", "Code"]) {
 		await page.getByRole("tab", { name: panel }).click();
 		expect(await audit(page, isMobile)).toEqual([]);
 	});
+}
+
+// Viewport sweep (viewport_complete §15.2): the in-between widths and a short landscape
+// phone, where fixed heights and two-column breakpoints break first. Desktop project only:
+// the device emulation stays fine-pointer, so this checks geometry, not touch targets.
+const SWEEP = [
+	{ name: "tablet 768", width: 768, height: 1024 },
+	{ name: "laptop 1024", width: 1024, height: 768 },
+	{ name: "landscape 844x390", width: 844, height: 390 },
+] as const;
+for (const vp of SWEEP) {
+	for (const route of PAGES) {
+		test(`layout ${route} @ ${vp.name}`, async ({ page, isMobile }) => {
+			test.skip(isMobile, "sweep runs once, on the desktop project");
+			await page.setViewportSize({ width: vp.width, height: vp.height });
+			await open(page, route);
+			expect(await audit(page, false)).toEqual([]);
+		});
+	}
 }
