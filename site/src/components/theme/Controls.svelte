@@ -1,6 +1,6 @@
 <script lang="ts">
   import {
-    Button, Chip, DESIGN_STYLES, GlassCard, SegmentedControl, Select, Slider,
+    Button, Chip, DESIGN_STYLES, RadioGroup, SegmentedControl, Select, Slider,
     TextField, THEME_PRESETS,
   } from '@codeatlasdev/ui';
   import type { DesignStyleId, ThemeDefinition } from '@codeatlasdev/ui';
@@ -64,21 +64,13 @@
 <div class="te-controls">
   <section class="te-sec" aria-labelledby="te-s-style">
     <h3 id="te-s-style" class="te-h">Design style</h3>
-    <div class="te-styles">
-      {#each Object.values(DESIGN_STYLES) as s (s.id)}
-        <GlassCard class="te-style" padding="var(--ca-space-2)">
-          <div class="te-style__body">
-            <Button
-              fullWidth
-              variant={editor.style === s.id ? 'filled' : 'outlined'}
-              aria-pressed={editor.style === s.id}
-              onclick={() => selectStyle(s.id)}
-            >{s.label}</Button>
-            <p class="te-style__desc">{s.description}</p>
-          </div>
-        </GlassCard>
-      {/each}
-    </div>
+    <RadioGroup
+      variant="cards"
+      aria-label="Design style"
+      value={editor.style}
+      items={Object.values(DESIGN_STYLES).map((s) => ({ value: s.id, label: s.label, description: s.description }))}
+      onchange={(v) => selectStyle(v as DesignStyleId)}
+    />
   </section>
 
   <section class="te-sec" aria-labelledby="te-s-color">
@@ -190,7 +182,4 @@
   .te-label { display: flex; justify-content: space-between; gap: var(--ca-space-2); font-size: var(--ca-font-size-body2); }
   .te-val { color: var(--ca-text-secondary); font-variant-numeric: tabular-nums; }
   .te-chips { display: flex; flex-wrap: wrap; gap: var(--ca-space-3); }
-  .te-styles { display: grid; grid-template-columns: repeat(auto-fill, minmax(9.5rem, 1fr)); gap: var(--ca-space-2); }
-  .te-style__body { display: grid; gap: var(--ca-space-2); min-width: 0; }
-  .te-style__desc { margin: 0; color: var(--ca-text-secondary); font-size: var(--ca-font-size-caption); overflow-wrap: anywhere; }
 </style>

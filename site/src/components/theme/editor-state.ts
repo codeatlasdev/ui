@@ -99,11 +99,20 @@ function literal(v: unknown, depth: number): string {
 	return `{\n${rows.join("\n")}\n${end}}`;
 }
 
-/** The exact code a user pastes into `src/lib/theme.ts`. Only non-default keys. */
+/**
+ * The exact code a user pastes into `src/lib/theme.ts`. A chosen design style is referenced
+ * through `designStyle(id, …)`, so the app keeps following the package recipe; only the
+ * user's own edits are written out.
+ */
 export function themeSource(state: EditorState): string {
-	const def = prune(resolveDefinition(state)) as Record<string, unknown> | undefined;
-	const body = def ? literal(def, 0) : "{}";
-	return `import { defineTheme } from "@codeatlasdev/ui";\n\nexport const theme = defineTheme(${body});\n`;
+	if (state.style === "default") {
+		const def = prune(state.edits) as Record<string, unknown> | undefined;
+		const body = def ? literal(def, 0) : "{}";
+		return `import { defineTheme } from "@codeatlasdev/ui";\n\nexport const theme = defineTheme(${body});\n`;
+	}
+	const edits = prune(state.edits) as Record<string, unknown> | undefined;
+	const args = edits ? `"${state.style}", ${literal(edits, 0)}` : `"${state.style}"`;
+	return `import { defineTheme, designStyle } from "@codeatlasdev/ui";\n\nexport const theme = defineTheme(designStyle(${args}));\n`;
 }
 
 // ── Preview scoping ──────────────────────────────────────────────────────

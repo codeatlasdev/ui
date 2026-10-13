@@ -4,6 +4,8 @@
 	export interface RadioItem {
 		value: string;
 		label: string;
+		/** Secondary line, shown in `variant="cards"`. */
+		description?: string;
 		disabled?: boolean;
 	}
 
@@ -11,8 +13,15 @@
 		value?: string;
 		items: RadioItem[];
 		orientation?: 'vertical' | 'horizontal';
+		/**
+		 * `list` (default): radio + label rows. `cards`: each option is a selectable card
+		 * (label + description) in a responsive grid; the whole card is the hit area and only
+		 * the selected one is emphasized.
+		 */
+		variant?: 'list' | 'cards';
 		disabled?: boolean;
 		class?: string;
+		'aria-label'?: string;
 		onchange?: (value: string) => void;
 	}
 
@@ -20,33 +29,56 @@
 		value = $bindable(''),
 		items,
 		orientation = 'vertical',
+		variant = 'list',
 		disabled = false,
 		class: className = '',
+		'aria-label': ariaLabel,
 		onchange,
 	}: Props = $props();
+
+	// Per-instance ids: two groups with the same values on one page must not share label targets.
+	const uid = $props.id();
 </script>
 
 <BitsRadioGroup.Root
 	bind:value
 	{orientation}
 	{disabled}
+	aria-label={ariaLabel}
 	onValueChange={onchange}
-	class="ca-radio-group ca-radio-group--{orientation} {className}"
+	class="ca-radio-group ca-radio-group--{orientation} ca-radio-group--{variant} {className}"
 >
-	{#each items as item}
-		<div class="ca-radio-item">
+	{#each items as item (item.value)}
+		{#if variant === 'cards'}
 			<BitsRadioGroup.Item
 				value={item.value}
 				disabled={item.disabled}
-				class="ca-radio-input"
-				id="radio-{item.value}"
+				class="ca-radio-card"
+				aria-describedby={item.description ? `${uid}-${item.value}-d` : undefined}
 			>
-				<div class="ca-radio-indicator" aria-hidden="true"></div>
+				<span class="ca-radio-card__head">
+					<span class="ca-radio-input" aria-hidden="true"><span class="ca-radio-indicator"></span></span>
+					<span class="ca-radio-card__label">{item.label}</span>
+				</span>
+				{#if item.description}
+					<span id="{uid}-{item.value}-d" class="ca-radio-card__desc">{item.description}</span>
+				{/if}
 			</BitsRadioGroup.Item>
-			<label for="radio-{item.value}" class="ca-radio-label"
-				class:ca-radio-label--disabled={item.disabled || disabled}
-			>{item.label}</label>
-		</div>
+		{:else}
+			<div class="ca-radio-item">
+				<BitsRadioGroup.Item
+					value={item.value}
+					disabled={item.disabled}
+					class="ca-radio-input"
+					id="{uid}-{item.value}"
+				>
+					<div class="ca-radio-indicator" aria-hidden="true"></div>
+				</BitsRadioGroup.Item>
+				<label for="{uid}-{item.value}" class="ca-radio-label"
+					class:ca-radio-label--disabled={item.disabled || disabled}
+				>{item.label}</label>
+			</div>
+		{/if}
 	{/each}
 </BitsRadioGroup.Root>
 
@@ -113,5 +145,56 @@
 	.ca-radio-label--disabled {
 		color: var(--ca-text-hint);
 		cursor: not-allowed;
+	}
+
+	/* ── Cards ─────────────────────────────────────────────────────────── */
+	:global(.ca-radio-group--cards) {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--ca-space-24) * 1.75)), 1fr));
+		gap: var(--ca-space-2);
+	}
+
+	:global(.ca-radio-card) {
+		display: grid;
+		align-content: start;
+		gap: var(--ca-space-1);
+		min-height: var(--ca-touch-target);
+		padding: var(--ca-space-3);
+		border: var(--ca-border-width) solid var(--ca-outline-subtle);
+		border-radius: var(--ca-radius-md);
+		background: var(--ca-field-bg);
+		color: var(--ca-text-primary);
+		font: inherit;
+		text-align: start;
+		cursor: pointer;
+		transition:
+			border-color var(--ca-duration-fast) var(--ca-ease-standard),
+			background var(--ca-duration-fast) var(--ca-ease-standard);
+	}
+	:global(.ca-radio-card:hover:not([data-disabled])) { border-color: var(--ca-outline-default); }
+	:global(.ca-radio-card[data-state='checked']) {
+		border-color: var(--ca-brand-main);
+		background: color-mix(in oklab, var(--ca-brand-main) 8%, var(--ca-field-bg));
+		box-shadow: inset 0 0 0 var(--ca-border-width) var(--ca-brand-main);
+	}
+	:global(.ca-radio-card:focus-visible) {
+		outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
+		outline-offset: var(--ca-focus-ring-offset);
+	}
+	:global(.ca-radio-card[data-disabled]) { opacity: 0.5; cursor: not-allowed; }
+
+	.ca-radio-card__head { display: flex; align-items: center; gap: var(--ca-space-2); min-width: 0; }
+	:global(.ca-radio-card .ca-radio-input) { display: inline-flex; }
+	:global(.ca-radio-card[data-state='checked'] .ca-radio-input) { border-color: var(--ca-brand-main); }
+	:global(.ca-radio-card:not([data-state='checked']) .ca-radio-indicator) { visibility: hidden; }
+	.ca-radio-card__label {
+		font-weight: var(--ca-font-weight-semibold);
+		font-size: var(--ca-font-size-body2);
+		overflow-wrap: anywhere;
+	}
+	.ca-radio-card__desc {
+		font-size: var(--ca-font-size-caption);
+		line-height: var(--ca-line-height-snug);
+		color: var(--ca-text-secondary);
 	}
 </style>

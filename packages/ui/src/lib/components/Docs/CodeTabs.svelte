@@ -125,7 +125,11 @@
     {#if tabs}
       {#each tabs as tab, i (i)}
         <CodeTab label={tab.label}>
-          {#if tab.html}{@html tab.html}{:else}<pre class="ca-code"><code>{tab.code ?? ''}</code></pre>{/if}
+          {#if tab.html}{@html tab.html}{:else}
+            <!-- Scrollable code must be keyboard-focusable (axe scrollable-region-focusable). -->
+            <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+            <div class="ca-code"><pre tabindex="0" role="region" aria-label={tab.label}><code>{tab.code ?? ''}</code></pre></div>
+          {/if}
         </CodeTab>
       {/each}
     {:else}
