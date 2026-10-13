@@ -44,14 +44,15 @@ function heroIntro(): void {
 	const next = document.querySelector<HTMLElement>("[data-new]");
 	if (!old || !next) return;
 	const tl = gsap.timeline({ delay: 0.25, defaults: { ease: "power3.out" } });
-	tl.fromTo(old, { "--strike": 0 }, { "--strike": 1, duration: 0.7, ease: "power2.inOut" })
-		.fromTo(
-			next,
-			{ clipPath: "inset(0 100% 0 0)" },
-			{ clipPath: "inset(0 0% 0 0)", duration: 0.9, ease: "power2.inOut" },
-			"+=0.1"
-		)
-		.from("[data-hero-in]", { opacity: 0, y: 14, duration: 0.6, stagger: 0.08 }, "-=0.5");
+	// Only the headline gesture animates. The lead, the actions and the stage are content:
+	// they are painted by the server and never hidden again (hiding them on idle boot made
+	// them blink out and return seconds later).
+	tl.fromTo(old, { "--strike": 0 }, { "--strike": 1, duration: 0.7, ease: "power2.inOut" }).fromTo(
+		next,
+		{ clipPath: "inset(0 100% 0 0)" },
+		{ clipPath: "inset(0 0% 0 0)", duration: 0.9, ease: "power2.inOut" },
+		"+=0.1"
+	);
 }
 
 /**

@@ -69,6 +69,8 @@ export function splitWords(el: HTMLElement): HTMLElement[] {
 /** Word-by-word lift for every `[data-rise]` heading once it enters the viewport. */
 export function riseHeadings(): void {
 	document.querySelectorAll<HTMLElement>("[data-rise]").forEach((h) => {
+		// Already painted on screen: leave it (see reveals()).
+		if (h.getBoundingClientRect().top < innerHeight) return;
 		const words = splitWords(h);
 		if (!words.length) return;
 		gsap.set(words, { yPercent: 110 });
@@ -85,6 +87,9 @@ export function riseHeadings(): void {
 /** Fade/lift for supporting blocks. Opacity and inner transform only. */
 export function reveals(): void {
 	gsap.utils.toArray<HTMLElement>("[data-reveal]").forEach((el) => {
+		// Boot runs on idle, after first paint: anything already on screen (or scrolled past)
+		// stays as painted. Only content still below the fold rises in.
+		if (el.getBoundingClientRect().top < innerHeight) return;
 		gsap.set(el, { opacity: 0, y: 18 });
 		ScrollTrigger.create({
 			trigger: el,

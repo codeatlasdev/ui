@@ -67,14 +67,28 @@ test.describe("theme", () => {
 		});
 	});
 
-	test("/theme editor changes data-preset", async ({ page }) => {
+	test("/theme editor restyles only its preview, never the page", async ({ page, isMobile }) => {
 		await gotoReady(page, "/theme/");
-		const before = await page.locator("html").getAttribute("data-preset");
-		const option = page
-			.getByRole("button", { name: /ocean|crimson|violet|emerald|rose|cyan|slate/i })
-			.first();
-		await option.click();
-		await expect.poll(() => page.locator("html").getAttribute("data-preset")).not.toBe(before);
+		if (isMobile) await page.getByRole("tab", { name: "Controls" }).click();
+		const island = page.getByTestId("te-island");
+		const brand = () =>
+			island.evaluate((e) => getComputedStyle(e).getPropertyValue("--ca-brand-main").trim());
+		const pageBefore = await page.locator("html").getAttribute("data-preset");
+		const pageBrand = await page.evaluate(() =>
+			getComputedStyle(document.documentElement).getPropertyValue("--ca-brand-main").trim()
+		);
+		const before = await brand();
+		await page
+			.getByRole("button", { name: /^(Ocean|Crimson|Violet|Emerald)$/ })
+			.first()
+			.click();
+		await expect.poll(brand).not.toBe(before);
+		expect(await page.locator("html").getAttribute("data-preset")).toBe(pageBefore);
+		expect(
+			await page.evaluate(() =>
+				getComputedStyle(document.documentElement).getPropertyValue("--ca-brand-main").trim()
+			)
+		).toBe(pageBrand);
 	});
 
 	test("reducedMotion disables SegmentedControl thumb transition", async ({ page }) => {

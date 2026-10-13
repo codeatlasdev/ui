@@ -17,6 +17,41 @@ test.describe("landing", () => {
 		await expect(page.locator("#main")).toBeFocused();
 	});
 
+	test("content painted on the first screen never disappears while motion boots", async ({
+		page,
+	}) => {
+		// Motion boots on idle, after first paint. It may animate what is still below the fold,
+		// but must never hide text or actions the reader already sees (blink-out, return later).
+		// The suite defaults to reduced motion; this check is about the motion path.
+		await page.emulateMedia({ reducedMotion: "no-preference" });
+		await page.goto("/", { waitUntil: "commit" });
+		const mins: Record<string, number> = {};
+		const until = Date.now() + 3000;
+		while (Date.now() < until) {
+			const sample = await page
+				.evaluate(() =>
+					Object.fromEntries(
+						[...document.querySelectorAll("main h1, main h2, main p, main a, main button")]
+							.filter((e) => {
+								const r = e.getBoundingClientRect();
+								return r.width > 0 && r.top < innerHeight && r.bottom > 0;
+							})
+							.map((e, i) => {
+								let op = 1;
+								for (let a: Element | null = e; a; a = a.parentElement)
+									op *= Number(getComputedStyle(a).opacity);
+								return [`${e.tagName}${i}«${(e.textContent ?? "").trim().slice(0, 24)}»`, op];
+							})
+					)
+				)
+				.catch(() => ({}) as Record<string, number>);
+			for (const [k, v] of Object.entries(sample)) mins[k] = Math.min(mins[k] ?? 1, v);
+			await page.waitForTimeout(40);
+		}
+		expect(Object.keys(mins).length).toBeGreaterThan(3);
+		expect(Object.entries(mins).filter(([, v]) => v < 0.95)).toEqual([]);
+	});
+
 	test("reduced motion renders the final headline state", async ({ page }) => {
 		await page.emulateMedia({ reducedMotion: "reduce" });
 		await page.goto("/");

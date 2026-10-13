@@ -134,20 +134,20 @@ import SendPrompt from "~/components/landing/SendPrompt.svelte";
 						<span class="rewrite__new" data-new>UI your agent already knows.</span>
 					</span>
 				</h1>
-				<p class="hero__lead" data-hero-in>
+				<p class="hero__lead">
 					CodeAtlas UI is a Svelte 5 library of full screens, not loose bricks. Component names say what the screen is,
 					props are data, and every color comes from a token. An agent writes it right the first time, and it looks
 					native on a phone.
 				</p>
-				<div class="hero__actions" data-hero-in>
+				<div class="hero__actions">
 					<Button size="lg" href="/docs/">Read the docs</Button>
 					<Button size="lg" variant="glass" href={REPO}>Star on GitHub</Button>
 				</div>
-				<div class="hero__prompt" data-hero-in>
+				<div class="hero__prompt">
 					<SendPrompt client:visible />
 				</div>
 			</div>
-			<div class="hero__stage" data-hero-in>
+			<div class="hero__stage">
 				<HeroStage client:load />
 				<p class="hero__caption">
 					This is not a screenshot. It is a live composition of package components, retheming itself with
