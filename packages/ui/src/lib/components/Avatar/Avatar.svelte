@@ -1,6 +1,5 @@
 <script lang="ts">
   import { t } from '../../i18n/state.svelte.js';
-  import { Avatar } from 'bits-ui';
 
   /**
    * Avatar: user identity display component.
@@ -74,18 +73,39 @@
   const fontSize = $derived(Math.round(px * (initials.length > 1 ? 0.36 : 0.42)));
   const radius   = $derived(shape === 'rounded' ? `${Math.round(px * 0.22)}px` : '50%');
   const dotSize  = $derived(Math.max(6, Math.round(px * 0.26)));
+
+  // The <img> is only rendered once it has loaded; until then (and on error) the initials show.
+  let imgState = $state<'idle' | 'loading' | 'loaded' | 'error'>('idle');
+
+  $effect(() => {
+    if (!src) {
+      imgState = 'error';
+      return;
+    }
+    const probe = new Image();
+    imgState = 'loading';
+    probe.onload = () => (imgState = 'loaded');
+    probe.onerror = () => (imgState = 'error');
+    probe.src = src;
+    return () => {
+      probe.onload = null;
+      probe.onerror = null;
+    };
+  });
 </script>
 
-<Avatar.Root
+<span
   class="ca-avatar {className}"
+  data-status={imgState}
   style="--av-size:{px}px;--av-radius:{radius};--av-bg:{palette.bg};--av-fg:{palette.fg};--av-fs:{fontSize}px;--av-dot:{dotSize}px;"
 >
-  {#if src}
-    <Avatar.Image {src} {alt} class="ca-avatar__img" />
+  {#if src && imgState === 'loaded'}
+    <img {src} {alt} class="ca-avatar__img" />
+  {:else}
+    <span class="ca-avatar__fallback">
+      {initials}
+    </span>
   {/if}
-  <Avatar.Fallback class="ca-avatar__fallback">
-    {initials}
-  </Avatar.Fallback>
 
   {#if status}
     <span
@@ -94,7 +114,7 @@
       role="img"
     ></span>
   {/if}
-</Avatar.Root>
+</span>
 
 <style>
   :global(.ca-avatar) {

@@ -1,7 +1,7 @@
 <script lang="ts">
-  import { Collapsible as BitsCollapsible } from 'bits-ui';
   import { ChevronDown } from '@lucide/svelte';
   import type { Snippet } from 'svelte';
+  import { createIds, createPresence } from '../../primitives/index.js';
 
   interface Props {
     title: string;
@@ -20,24 +20,63 @@
     class: className = '',
     children,
   }: Props = $props();
+
+  const uid = $props.id();
+  const ids = createIds(uid);
+  const presence = createPresence(() => open);
+  const dataState = $derived(open ? 'open' : 'closed');
+
+  let content = $state<HTMLElement>();
+
+  function toggle() {
+    if (disabled) return;
+    open = !open;
+    onOpenChange?.(open);
+  }
+
+  // Natural height drives the open/close height animation (CSS reads --ca-collapsible-height).
+  function measure(node: HTMLElement) {
+    node.style.setProperty('--ca-collapsible-height', `${node.scrollHeight}px`);
+  }
+
+  $effect(() => {
+    if (content && presence.present) measure(content);
+  });
 </script>
 
-<BitsCollapsible.Root
-  bind:open
-  {disabled}
-  {onOpenChange}
+<div
   class="ca-collapsible {className}"
+  data-state={dataState}
+  data-disabled={disabled ? '' : undefined}
 >
-  <BitsCollapsible.Trigger class="ca-collapsible__trigger">
+  <button
+    type="button"
+    id={ids.part('trigger')}
+    class="ca-collapsible__trigger"
+    aria-expanded={open}
+    aria-controls={ids.part('content')}
+    data-state={dataState}
+    data-disabled={disabled ? '' : undefined}
+    {disabled}
+    onclick={toggle}
+  >
     <span class="ca-collapsible__title">{title}</span>
     <ChevronDown size={16} class="ca-collapsible__chevron" />
-  </BitsCollapsible.Trigger>
-  <BitsCollapsible.Content class="ca-collapsible__content">
-    <div class="ca-collapsible__body">
-      {@render children?.()}
+  </button>
+  <div
+      bind:this={content}
+      {@attach presence.ref}
+      id={ids.part('content')}
+      class="ca-collapsible__content"
+      data-state={dataState}
+      data-disabled={disabled ? '' : undefined}
+      hidden={!presence.present}
+    >
+      <div class="ca-collapsible__body">
+        {@render children?.()}
+      </div>
     </div>
-  </BitsCollapsible.Content>
-</BitsCollapsible.Root>
+</div>
 
 <style>
   :global(.ca-collapsible) {
@@ -109,11 +148,11 @@
 
   @keyframes ca-slide-down {
     from { height: 0; opacity: 0; }
-    to { height: var(--bits-collapsible-content-height); opacity: 1; }
+    to { height: var(--ca-collapsible-height); opacity: 1; }
   }
 
   @keyframes ca-slide-up {
-    from { height: var(--bits-collapsible-content-height); opacity: 1; }
+    from { height: var(--ca-collapsible-height); opacity: 1; }
     to { height: 0; opacity: 0; }
   }
 

@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { Collapsible } from 'bits-ui';
   import type { NavSection } from './types.js';
   import { isItemActive } from './types.js';
   import PanelNavItem from './PanelNavItem.svelte';
   import { ChevronRight } from '@lucide/svelte';
+  import { createIds, createPresence } from '../../primitives/index.js';
 
   interface Props {
     section: NavSection;
@@ -20,13 +20,25 @@
   // defaultOpen is init-only on purpose.
   // svelte-ignore state_referenced_locally
   let open = $state(section.defaultOpen !== false || hasActiveChild);
+
+  const uid = $props.id();
+  const ids = createIds(uid);
+  const presence = createPresence(() => open);
+  const dataState = $derived(open ? 'open' : 'closed');
 </script>
 
 <div class="ca-section {className}">
   {#if section.label}
     {#if section.collapsible !== false}
-      <Collapsible.Root bind:open>
-        <Collapsible.Trigger class="ca-section__trigger">
+      <div data-state={dataState}>
+        <button
+          type="button"
+          class="ca-section__trigger"
+          aria-expanded={open}
+          aria-controls={ids.part('content')}
+          data-state={dataState}
+          onclick={() => (open = !open)}
+        >
           <span class="ca-section__label">{section.label}</span>
           <span
             class="ca-section__chevron"
@@ -35,8 +47,8 @@
           >
             <ChevronRight size={12} stroke-width={2} />
           </span>
-        </Collapsible.Trigger>
-        <Collapsible.Content>
+        </button>
+        <div id={ids.part('content')} data-state={dataState} hidden={!presence.present} {@attach presence.ref}>
           {#each section.items as item}
             <PanelNavItem
               {item}
@@ -44,8 +56,8 @@
               href={item.path}
             />
           {/each}
-        </Collapsible.Content>
-      </Collapsible.Root>
+        </div>
+      </div>
     {:else}
       <div class="ca-section__header">
         <span class="ca-section__label">{section.label}</span>
