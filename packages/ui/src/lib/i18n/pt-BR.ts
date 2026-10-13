@@ -51,6 +51,13 @@ export const ptBR: Messages = {
 	avatar: {
 		status: { online: "Online", offline: "Offline", away: "Ausente", busy: "Ocupado" },
 	},
+	button: {
+		/** Announced when a `loading` button stops loading. */
+		loaded: "Carregamento concluído",
+	},
+	skipLink: {
+		label: "Ir para o conteúdo",
+	},
 	badge: {
 		new: "Novo",
 		notifications: (count) => `${count} ${count === 1 ? "notificação" : "notificações"}`,
@@ -113,8 +120,8 @@ export const ptBR: Messages = {
 		nav: "Páginas",
 		navigation: "Navegação",
 		sections: "Seções",
-		sectionNavigation: "Navegação da seção",
 		skipToContent: "Ir para o conteúdo",
+		sectionNavigation: "Navegação da seção",
 		openNavigation: "Abrir navegação",
 		search: {
 			label: "Buscar na documentação",

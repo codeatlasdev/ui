@@ -42,5 +42,7 @@ The shell never imports a router. You pass the current `pathname` and handle `on
   { name: "railBottom", type: "Snippet", description: "Items pinned to the bottom of the rail, such as an avatar or notifications." },
   { name: "mobileHeaderActions", type: "Snippet", description: "Controls at the trailing edge of the mobile header. Use it for anything that must stay reachable below 900px." },
   { name: "mobileTitle", type: "Snippet", description: "Replaces the plain page title in the mobile header, for example a tappable title that opens a sheet." },
+  { name: "mainId", type: "string | null", default: "'main'", description: "`id` of the content region, the skip link target. Pass `null` when your page renders its own `<main id=\"main\" tabindex=\"-1\">`." },
+  { name: "skipLink", type: "boolean", default: "true", description: "Renders the SkipLink. Turn it off when the shell is embedded in a page that already has one." },
   { name: "children", type: "Snippet", description: "Page content." },
 ]} />

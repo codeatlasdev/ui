@@ -2,6 +2,8 @@
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
   import Spinner from '../Spinner/Spinner.svelte';
+  import { t } from '../../i18n/state.svelte.js';
+  import { announce } from '../../utils/announce.js';
 
   type Variant = 'filled' | 'glass' | 'outlined' | 'ghost' | 'destructive';
   type Size = 'sm' | 'md' | 'lg';
@@ -43,6 +45,13 @@
   }: Props = $props();
 
   const isDisabled = $derived(disabled || loading);
+
+  // Tell assistive tech when the busy state ends (aria-busy alone is not announced on change).
+  let wasLoading = false;
+  $effect(() => {
+    if (wasLoading && !loading) announce(t().button.loaded);
+    wasLoading = loading;
+  });
   const spinnerSize = $derived(size === 'lg' ? 18 : size === 'md' ? 16 : 14);
 </script>
 

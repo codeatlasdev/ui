@@ -424,3 +424,69 @@
     --ca-glass-bg:              var(--ca-surface-overlay);
   }
 }
+
+/* ── Forced colors (Windows High Contrast, contrast themes) ─────────────────
+ * The UA already swaps color / background / border-color for system colors and
+ * drops box-shadow, but glass tints, blur and `border: none` still leave surfaces
+ * without an edge. Remap the material tokens to system colors (every component
+ * reads them) and give each floating or raised surface a CanvasText border.
+ * This layer comes last, so it wins over the preset tints in ca.themes. */
+@media (forced-colors: active) {
+  :root,
+  [data-theme-scope] {
+    --ca-blur-ultra-thin: none;
+    --ca-blur-thin:       none;
+    --ca-blur-regular:    none;
+    --ca-blur-thick:      none;
+    --ca-blur-chrome:     none;
+    --ca-overlay-blur:    none;
+    --ca-panel-blur:      none;
+    --ca-chrome-blur:     none;
+    --ca-upload-blur:     none;
+    --ca-glass-tint-ultra-thin: Canvas;
+    --ca-glass-tint-thin:       Canvas;
+    --ca-glass-tint:            Canvas;
+    --ca-glass-tint-thick:      Canvas;
+    --ca-glass-tint-chrome:     Canvas;
+    --ca-glass-tint-solid:      Canvas;
+    --ca-glass-bg:              Canvas;
+    --ca-glass-border:          CanvasText;
+    --ca-glass-shadow:          none;
+    --ca-overlay-shadow:        none;
+    --ca-panel-shadow:          none;
+    --ca-shadow-xs: none;
+    --ca-shadow-sm: none;
+    --ca-shadow-md: none;
+    --ca-shadow-lg: none;
+    --ca-shadow-xl: none;
+    --ca-outline-subtle:  CanvasText;
+    --ca-outline-default: CanvasText;
+    --ca-outline-strong:  CanvasText;
+    --ca-scrim-color:     transparent;
+  }
+
+  .glass, .glass-ultra-thin, .glass-thin, .glass-regular, .glass-thick, .glass-chrome,
+  .glass-nav-layer, .glass-bg-extend, .glass-btn, .glass-btn-prominent, .glass-btn-clear,
+  .glass-overlay, .glass-panel, .glass-chrome-layer, .glass-upload-zone {
+    -webkit-backdrop-filter: none !important;
+    backdrop-filter: none !important;
+    background-color: Canvas !important;
+    box-shadow: none !important;
+  }
+
+  /* Surfaces: a real border replaces the glass edge and the inset-shadow separators. */
+  .glass, .glass-ultra-thin, .glass-thin, .glass-regular, .glass-thick, .glass-chrome,
+  .glass-overlay, .glass-panel, .glass-upload-zone,
+  .ca-glass-card, .ca-auth-card, .ca-popover-content, .ca-dropdown-content, .ca-sel__content,
+  .ca-combobox__content, .ca-tooltip-content, .ca-cmd-dialog, .ca-notif-panel, .ca-toast,
+  .ca-dialog, .ca-sheet, .ca-drawer, .ca-alert, .ca-link-card, .ca-form-section,
+  .ca-accordion-item, .ca-tabs-list, .ca-col-toggle__content, .ca-facet__content {
+    border: 1px solid CanvasText;
+  }
+
+  /* Edge chrome: separator on the one side that touches content. */
+  .ca-sidebar, .ca-rail, .ca-panel { border-inline-end: 1px solid CanvasText; }
+  .ca-site-header, .ca-docs-header, .ca-mobile-header, .ca-shell__desktop-header,
+  .ca-mobile-pane__header { border-bottom: 1px solid CanvasText; }
+  .ca-bottom-nav, .ca-sticky-actions, .ca-app-form__footer { border-top: 1px solid CanvasText; }
+}

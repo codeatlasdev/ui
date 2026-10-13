@@ -48,6 +48,13 @@ Convenções de nome:
 
 Regra: todo componente novo exige `.svelte.test.ts` com `expect(await checkA11y(screen.container)).toHaveNoViolations()` em cada estado (aberto/fechado). `render` de `vitest-browser-svelte` é async. Avisos `a11y_*` são erro: `bun run check` usa `--fail-on-warnings` e o build do site falha via `onwarn` (`site/svelte.config.js`) (o `svelte-package` não compila `.svelte`, então no pacote quem barra é o `check`).
 
+Regras de acessibilidade (pacote e apps):
+- Uma página tem exatamente um `<main>` e um `id="main"`. `DocsShell` e `AuthLayout` já os trazem; `AppShellLayout` usa um `div.ca-shell__content` como alvo do `SkipLink` (passe `mainId={null}` se a página renderiza o próprio `<main id="main" tabindex="-1">`, e `skipLink={false}` ao embutir o shell numa página que já tem skip link). `PageShell` nunca emite `<main>`.
+- Anúncios para leitor de tela passam por `announce(msg, politeness)` (uma live region compartilhada); não crie `role="status"` local novo. No SvelteKit monte `RouteAnnouncer` (`@codeatlasdev/ui/kit`) uma vez no layout raiz.
+- `aria-label` num botão precisa conter o texto visível (WCAG 2.5.3); componha com `aria-labelledby` como o `Combobox` faz com `ariaLabel`.
+- CSS novo de superfície com glass/sombra/`border: none` precisa de entrada no bloco `@media (forced-colors: active)` de `materials.css` (borda `CanvasText`). Tokens de contraste (`prefers-contrast: more`) vêm de `themeCSS`/`presetCSS`; `tests/contrast.test.ts` mede 7:1 para texto e 3:1 para contornos em todo preset.
+- `site/tests/routes.a11y.spec.ts` roda axe em dark, light e `forcedColors: "active"` em cada rota, e garante no máximo um `#main`, um `<main>` e um skip link por página.
+
 Lendo falhas: locators falham com ARIA snapshot; traces em `__traces__/` (Vitest) e `site/test-results/<id>/trace.zip` (`bunx playwright trace open <zip>`); diffs visuais em `packages/ui/.vitest/attachments` e `site/playwright-report`. Para saída enxuta: `bunx vitest run --reporter=minimal`. Opcional: `npx @playwright/mcp` para inspecionar o site.
 
 ---

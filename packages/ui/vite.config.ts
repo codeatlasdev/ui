@@ -1,3 +1,4 @@
+import { fileURLToPath } from "node:url";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { playwright } from "@vitest/browser-playwright";
 import { defaultExclude, defineConfig } from "vitest/config";
@@ -34,6 +35,14 @@ export default defineConfig({
 				},
 			},
 			{
+				// SvelteKit-only module used by kit/route-announcer.svelte; tests override it with vi.mock.
+				resolve: {
+					alias: {
+						"$app/navigation": fileURLToPath(
+							new URL("./tests/app-navigation.stub.ts", import.meta.url)
+						),
+					},
+				},
 				test: {
 					name: "browser",
 					include: [browserPattern],

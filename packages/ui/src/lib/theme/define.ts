@@ -119,6 +119,32 @@ function presetTokens(src: BuiltinPresetSource | PresetDefinition) {
 }
 
 /**
+ * Neutral tokens for `prefers-contrast: more`, tinted with the preset hue like the
+ * base set. Text L is picked so text-secondary/hint reach >= 7:1 (WCAG AAA) on the
+ * darkest light surface (L .930) and the lightest dark surface (L .235) at any hue;
+ * outlines are opaque enough to clear 3:1 (strong >= 7:1) against those surfaces.
+ * tests/theme-script.test.ts measures both.
+ */
+function contrastTokens(src: BuiltinPresetSource | PresetDefinition, scheme: "light" | "dark") {
+	const h = "hue" in src ? src.hue : hexToOklch(src.color).h;
+	return scheme === "light"
+		? {
+				"--ca-text-secondary": `oklch(0.340 0.010 ${h})`,
+				"--ca-text-hint": `oklch(0.340 0.010 ${h})`,
+				"--ca-outline-subtle": `oklch(0.200 0.010 ${h} / 0.60)`,
+				"--ca-outline-default": `oklch(0.200 0.010 ${h} / 0.70)`,
+				"--ca-outline-strong": `oklch(0.200 0.010 ${h} / 0.85)`,
+			}
+		: {
+				"--ca-text-secondary": `oklch(0.820 0.007 ${h})`,
+				"--ca-text-hint": `oklch(0.820 0.007 ${h})`,
+				"--ca-outline-subtle": "oklch(1 0 0 / 0.45)",
+				"--ca-outline-default": "oklch(1 0 0 / 0.60)",
+				"--ca-outline-strong": "oklch(1 0 0 / 0.75)",
+			};
+}
+
+/**
  * CSS for one preset. A preset applies on `<html>` or on any element (`data-preset`
  * islands), and `[data-theme-scope="light"|"dark"]` re-applies a scheme inside it.
  * Covered contexts, nearest wins:
@@ -154,7 +180,9 @@ export function presetCSS(
 		`${P}${D}${D}`,
 		`${D} ${P}`,
 	];
-	return `${cssBlock(lightSel.join(",\n"), light)}\n${cssBlock(darkSel.join(",\n"), dark)}`;
+	// prefers-contrast: more — same selectors, after the base blocks, so it wins at equal specificity.
+	const more = `@media (prefers-contrast: more) {\n${cssBlock(lightSel.join(",\n"), contrastTokens(src, "light"))}\n${cssBlock(darkSel.join(",\n"), contrastTokens(src, "dark"))}\n}`;
+	return `${cssBlock(lightSel.join(",\n"), light)}\n${cssBlock(darkSel.join(",\n"), dark)}\n${more}`;
 }
 
 /** Resolve a partial definition: fills defaults, validates ids, precomputes theme-color hexes. */

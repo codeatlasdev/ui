@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { page } from "vitest/browser";
+import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
@@ -183,5 +183,29 @@ describe("AppShellLayout — breakpoint", () => {
 		await render(Harness);
 		expect(visible(q(".ca-rail"))).toBe(true);
 		expect(visible(q(".ca-bottom-nav"))).toBe(false);
+	});
+});
+
+describe("AppShellLayout — skip link", () => {
+	it("is the first tab stop and moves focus to the content region (#main)", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		const screen = await render(Harness, { pathname: "/app/dashboard" });
+		await userEvent.tab();
+		const link = screen.getByRole("link", { name: "Skip to content" });
+		expect(document.activeElement).toBe(link.element());
+		await userEvent.keyboard("{Enter}");
+		expect(document.activeElement).toBe(q(".ca-shell__content"));
+		expect(document.querySelectorAll("#main")).toHaveLength(1);
+	});
+
+	it("mainId={null} targets the page's own <main id=main>: one id, one main landmark", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		const screen = await render(Harness, { pathname: "/app/dashboard", ownMain: true });
+		await userEvent.tab();
+		await userEvent.keyboard("{Enter}");
+		expect(document.activeElement?.tagName).toBe("MAIN");
+		expect(document.querySelectorAll("#main")).toHaveLength(1);
+		expect(document.querySelectorAll("main")).toHaveLength(1);
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 });

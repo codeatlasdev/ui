@@ -53,6 +53,13 @@ export const en = {
 	avatar: {
 		status: { online: "Online", offline: "Offline", away: "Away", busy: "Busy" },
 	},
+	button: {
+		/** Announced when a `loading` button stops loading. */
+		loaded: "Finished loading",
+	},
+	skipLink: {
+		label: "Skip to content",
+	},
 	badge: {
 		new: "New",
 		notifications: (count: number) => `${count} notifications`,
@@ -115,8 +122,8 @@ export const en = {
 		nav: "Pages",
 		navigation: "Navigation",
 		sections: "Sections",
-		sectionNavigation: "Section navigation",
 		skipToContent: "Skip to content",
+		sectionNavigation: "Section navigation",
 		openNavigation: "Open navigation",
 		search: {
 			label: "Search the documentation",

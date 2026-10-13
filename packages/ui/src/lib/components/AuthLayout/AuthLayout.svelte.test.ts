@@ -1,6 +1,6 @@
 import { createRawSnippet } from "svelte";
 import { describe, expect, it } from "vitest";
-import { page } from "vitest/browser";
+import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { VIEWPORTS } from "../../../../tests/viewports";
@@ -17,6 +17,16 @@ describe("AuthLayout", () => {
 		await expect.element(logo).toHaveAttribute("href", "/");
 		await expect.element(screen.getByRole("complementary")).toBeVisible();
 		await expect.element(screen.getByRole("heading", { level: 1, name: "Entrar" })).toBeVisible();
+	});
+
+	it("skip link jumps to the form column, the only <main id=main>", async () => {
+		const screen = await render(AuthLayout, { children: snip("<h1>Entrar</h1>") });
+		await userEvent.tab();
+		await expect.element(screen.getByRole("link", { name: "Skip to content" })).toHaveFocus();
+		await userEvent.keyboard("{Enter}");
+		expect(document.activeElement?.id).toBe("main");
+		expect(document.activeElement?.tagName).toBe("MAIN");
+		expect(document.querySelectorAll("#main")).toHaveLength(1);
 	});
 
 	it("honours logoName and logoHref; the mark is decorative", async () => {

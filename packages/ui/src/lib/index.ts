@@ -136,6 +136,7 @@ export { default as SettingItem } from "./components/SettingItem/SettingItem.sve
 export { default as Sheet } from "./components/Sheet/Sheet.svelte";
 export { default as SiteHeader } from "./components/SiteHeader/SiteHeader.svelte";
 export { default as Skeleton } from "./components/Skeleton/Skeleton.svelte";
+export { default as SkipLink } from "./components/SkipLink/SkipLink.svelte";
 export { default as Slider } from "./components/Slider/Slider.svelte";
 export { default as Spinner } from "./components/Spinner/Spinner.svelte";
 export { default as Stack } from "./components/Stack/Stack.svelte";
@@ -190,6 +191,8 @@ export * from "./tokens/index.js";
 export type { BuiltinPresetId, PresetId } from "./tokens/presets.js";
 export { THEME_PRESETS } from "./tokens/presets.js";
 export type { IconComponent, IconProps } from "./types.js";
+export type { Politeness } from "./utils/announce.js";
+export { announce } from "./utils/announce.js";
 export type {
 	ClassValue,
 	FieldState,

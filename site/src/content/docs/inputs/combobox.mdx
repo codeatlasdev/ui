@@ -28,6 +28,7 @@ Typing in the popup filters options by label, and opening the list moves focus t
   { name: "value", type: "string", default: "''", description: "Bindable selected value." },
   { name: "options", type: "ComboboxOption[]", description: "Options: { value, label, disabled? }." },
   { name: "label", type: "string", description: "Visible label above the trigger." },
+  { name: "ariaLabel", type: "string", description: "Accessible name when there is no visible `label`. The trigger is named `ariaLabel` followed by its current value. Without either, it is named only by its current value." },
   { name: "placeholder", type: "string", default: "'Select…' (localized)", description: "Trigger text when nothing is selected. Default comes from the active i18n catalog." },
   { name: "searchPlaceholder", type: "string", default: "'Search…' (localized)", description: "Placeholder and accessible name of the search input." },
   { name: "emptyText", type: "string", default: "'No results' (localized)", description: "Message shown when the filter matches nothing." },

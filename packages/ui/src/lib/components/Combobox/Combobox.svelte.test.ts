@@ -16,6 +16,17 @@ describe("Combobox", () => {
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
+	it("ariaLabel names the trigger and the list when there is no visible label", async () => {
+		const screen = await render(ComboboxHarness, { ariaLabel: "Estado", placeholder: "Escolha" });
+		// Name = ariaLabel + visible text, so it always contains the visible label (WCAG 2.5.3).
+		const trigger = screen.getByRole("button", { name: "Estado Escolha" });
+		await expect.element(trigger.getByText("Escolha")).toBeVisible();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+		trigger.element().focus();
+		await userEvent.keyboard("{Enter}");
+		await expect.element(screen.getByRole("listbox", { name: "Estado" })).toBeVisible();
+	});
+
 	it("opens by keyboard, arrows + Enter select, bound value reflects", async () => {
 		const screen = await render(ComboboxHarness, { label: "Estado" });
 		const trigger = screen.getByRole("button", { name: "Estado" });

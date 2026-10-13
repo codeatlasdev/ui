@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
+  import SkipLink from '../SkipLink/SkipLink.svelte';
 
   /**
    * AuthLayout — layout de duas colunas para páginas de autenticação.
@@ -54,6 +55,7 @@
   }: Props = $props();
 </script>
 
+<SkipLink />
 <div class="ca-auth">
   <aside class="ca-auth__panel">
     <div class="ca-auth__panel-inner">
@@ -90,7 +92,7 @@
     </div>
   </aside>
 
-  <main class="ca-auth__col">
+  <main class="ca-auth__col" id="main" tabindex="-1">
     {#if mobileBrand}
       <a href={logoHref} class="ca-auth__mobile-brand">
         {#if brand}

@@ -136,6 +136,12 @@ p {
   border-radius: var(--ca-radius-sm);
 }
 
+/* Skip-link and route-announcer targets (<main id="main" tabindex="-1">) take focus only
+   programmatically; a ring around the whole page body is noise, not a cue. */
+:where(main, [role="main"], .ca-shell__content)[tabindex="-1"]:focus {
+  outline: none;
+}
+
 /* ── Scrollbar ───────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar {
   width: 6px;
@@ -194,4 +200,33 @@ html[data-ca-native] .ca-selectable * {
   -webkit-user-select: text;
   user-select: text;
   -webkit-touch-callout: default;
+}
+
+/* ── Forced colors ───────────────────────────────────────────────────────── */
+/* The UA replaces author colors with system colors. Keep the focus ring on the
+   system Highlight color and make sure it is never an author transparent value. */
+@media (forced-colors: active) {
+  :root {
+    --ca-focus-ring: Highlight;
+    --ca-focus-ring-offset: 2px;
+  }
+  :focus-visible {
+    outline: 2px solid Highlight;
+  }
+  ::selection {
+    background: Highlight;
+    color: HighlightText;
+  }
+}
+
+/* ── Increased contrast ──────────────────────────────────────────────────── */
+/* Text and outline tokens are raised per preset by themeCSS (>= 7:1). Here only
+   structure that tokens cannot express: a thicker, brand-independent focus ring. */
+@media (prefers-contrast: more) {
+  :root {
+    --ca-focus-ring: var(--ca-text-primary);
+  }
+  :focus-visible {
+    outline-width: 3px;
+  }
 }

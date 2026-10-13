@@ -5,6 +5,7 @@
   import { onMount } from 'svelte';
   import { Menu, Search } from '@lucide/svelte';
   import Kbd from '../Kbd/Kbd.svelte';
+  import SkipLink from '../SkipLink/SkipLink.svelte';
   import Sheet from '../Sheet/Sheet.svelte';
   import ThemeToggle from '../ThemeToggle/ThemeToggle.svelte';
   import DocsNav from './DocsNav.svelte';
@@ -95,7 +96,7 @@
 
 <svelte:window {onkeydown} />
 
-<a class="ca-docs-skip" href="#ca-docs-content">{t().docs.skipToContent}</a>
+<SkipLink class="ca-docs-skip">{t().docs.skipToContent}</SkipLink>
 
 <header class="ca-docs-header">
   <div class="ca-docs-header__inner">
@@ -134,7 +135,7 @@
     </aside>
   {/if}
 
-  <main class="ca-docs-main" id="ca-docs-content" tabindex="-1">
+  <main class="ca-docs-main" id="main" tabindex="-1">
     {#if headings.length > 1}
       <TableOfContents {headings} variant="inline" class="ca-docs-toc-inline" />
     {/if}
@@ -181,23 +182,6 @@
   :global(html) {
     scroll-padding-top: calc(var(--ca-docs-header-h) + var(--ca-safe-top) + 1.5rem);
   }
-
-  .ca-docs-skip {
-    position: fixed;
-    top: 0.5rem;
-    left: 0.5rem;
-    z-index: calc(var(--ca-z-modal, 1300) + 10);
-    padding: 0.625rem 1rem;
-    border-radius: var(--ca-radius-md);
-    background: var(--ca-brand-fill);
-    color: var(--ca-brand-contrast);
-    font-size: var(--ca-font-size-body2);
-    font-weight: 600;
-    text-decoration: none;
-    transform: translateY(-200%);
-  }
-
-  .ca-docs-skip:focus-visible { transform: none; }
 
   /* ── Header ─────────────────────────────────────────────────────────── */
 

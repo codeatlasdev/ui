@@ -16,12 +16,14 @@ Interactive components are built on [bits-ui](https://bits-ui.com), which provid
 | Overlays | `Dialog`, `AlertDialog`, `Drawer`, `Sheet`, `Popover` and menus trap focus, restore it on close, close on Escape and lock page scroll. |
 | Keyboard | Tabs, menus, selects, comboboxes, the command palette, date pickers, toggle groups and segmented controls follow their WAI-ARIA keyboard patterns. |
 | Names | `IconButton` requires `aria-label` at the type level. Built-in strings (close, dismiss, copy, loading) come from the [i18n catalog](/docs/getting-started/i18n/), so they are announced in the active language. |
-| Status | `Alert` uses `role="alert"`. `Toast` items use `role="status"` inside a polite live region. `Spinner` has `role="status"` with a label, `Progress` has `role="progressbar"` with `aria-valuenow`. `CopyButton` announces "Copied" through a polite live region. |
-| Loading buttons | `Button` and `IconButton` with `loading` set `aria-busy`, keep their label and ignore clicks. |
+| Status | `Alert` uses `role="alert"`. `Toast` items use `role="status"` inside a polite live region. `Spinner` has `role="status"` with a label, `Progress` has `role="progressbar"` with `aria-valuenow`. `CopyButton` announces "Copied" through the shared [live region](#announcements). |
+| Loading buttons | `Button` and `IconButton` with `loading` set `aria-busy`, keep their label and ignore clicks. When loading ends they announce "Finished loading". |
 | Forms | `TextField` and the other fields link hint and error text with `aria-describedby` and set `aria-invalid` on error. Errors render with `role="alert"`. |
 | Touch targets | Controls grow to 44px (`--ca-touch-target`) under `(pointer: coarse)`. |
 | Zoom | The package never disables zoom. Fields are 16px on touch so iOS does not zoom on focus, see [Mobile](/docs/getting-started/mobile/#input-font-size). |
-| Skip link | `DocsShell` renders a "Skip to content" link as the first focusable element. |
+| Skip link | `AppShellLayout`, `DocsShell` and `AuthLayout` render a [`SkipLink`](#skip-link) as the first focusable element and own the `#main` target. |
+| Forced colors | Under `forced-colors: active` glass, blur and shadows are removed, surfaces get a `CanvasText` border and focus uses `Highlight`. |
+| Increased contrast | Under `prefers-contrast: more`, `--ca-text-secondary`, `--ca-text-hint` and `--ca-outline-*` reach at least 7:1 (outlines 3:1 or more) in every built-in and brand preset. |
 
 ## Motion
 
@@ -42,6 +44,52 @@ Use the duration tokens in your own CSS and your animations respect the setting 
   transition: transform var(--ca-duration-base) var(--ca-ease-standard);
 }
 ```
+
+## Skip link and landmarks
+
+`SkipLink` is the first tab stop of every page shell. It is hidden until focused, then jumps to `#main` and moves focus there (`tabindex="-1"`, no focus ring on the container).
+
+| Shell | Who owns `#main` |
+|---|---|
+| `DocsShell`, `AuthLayout` | The shell: its own `<main id="main" tabindex="-1">`. |
+| `AppShellLayout` | A plain `div.ca-shell__content` (not a landmark), so a `<main>` you render inside never nests another. Pass `mainId={null}` when your page renders `<main id="main" tabindex="-1">` yourself. |
+| `PageShell` | Nobody: it always sits inside a shell or a page that already has a `<main>`. |
+
+Never put a second `id="main"` or a second `<main>` on a page. When a shell is embedded in a page that already has a skip link (a framed demo, a preview), pass `skipLink={false}` to `AppShellLayout`.
+
+```svelte
+<AppShellLayout {modules} {pathname}>
+  <!-- content region is the skip target; use <main> only with mainId={null} -->
+  <PageShell title="Users">…</PageShell>
+</AppShellLayout>
+```
+
+## Announcements
+
+`announce(message, politeness)` speaks a message through one shared, lazily created live region (a polite `role="status"` and an assertive `role="alert"` pair appended to `<body>`). Several components talking through separate regions step on each other; one region keeps messages ordered.
+
+```ts
+import { announce } from "@codeatlasdev/ui";
+
+announce("3 results");                 // polite (default)
+announce("Payment failed", "assertive");
+```
+
+In SvelteKit, mount `RouteAnnouncer` once in the root layout to announce client-side navigations (the new `document.title`, or the page `<h1>`):
+
+```svelte
+<script>
+  import { RouteAnnouncer } from "@codeatlasdev/ui/kit";
+</script>
+
+<RouteAnnouncer />
+```
+
+## Forced colors and increased contrast
+
+Windows High Contrast and other forced-color modes replace author colors with system colors. The package removes `backdrop-filter`, translucent tints and shadows there, draws surfaces with a 1px `CanvasText` border and uses `Highlight` for the focus ring, so nothing depends on a glass blur to be visible.
+
+`prefers-contrast: more` raises the neutral tokens instead: text-secondary and text-hint to at least 7:1 and outlines to at least 3:1 on every surface, with a thicker focus ring. The values are generated per preset (built-in and brand presets from `defineTheme`), tinted with the preset hue.
 
 ## Reduced transparency
 
@@ -65,9 +113,9 @@ Brand presets generated from a hex color use the same generator, so they keep th
 ## Writing accessible pages
 
 - Give every page one `<h1>` and keep heading levels in order.
-- Provide a skip link and a `<main id="main" tabindex="-1">` landmark. `DocsShell` already has both (`#ca-docs-content`); add them to shells you build.
+- Provide a skip link and a single `<main id="main" tabindex="-1">` landmark. `AppShellLayout`, `DocsShell` and `AuthLayout` already do (see [Skip link and landmarks](#skip-link-and-landmarks)); use `SkipLink` in shells you build.
 - Label icon-only controls (`IconButton` enforces it) and give `Dialog`, `Sheet` and `Drawer` a `title`. Use `chromeless` dialogs with a `title` so the accessible name remains.
-- Give `Select`, `Combobox` and the other fields a `label` prop. Without one, the control has no visible or programmatic name.
+- Give `Select`, `Combobox` and the other fields a `label` prop. Without one, the control has no visible or programmatic name. For a `Combobox` with no visible label, pass `ariaLabel`.
 - Do not put `will-change: transform` on glass surfaces. It breaks blur rendering, which also removes the contrast the tint was tuned for.
 - Make clickable non-button elements real `<button>` or `<a>` elements.
 

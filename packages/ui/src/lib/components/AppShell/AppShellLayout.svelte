@@ -8,6 +8,7 @@
   import Panel from './Panel.svelte';
   import MobileHeader from './MobileHeader.svelte';
   import BottomNav from './BottomNav.svelte';
+  import SkipLink from '../SkipLink/SkipLink.svelte';
 
   interface Props {
     modules:        NavModule[];
@@ -31,6 +32,17 @@
      * title that opens a Sheet. It fills the space between the brand and `mobileHeaderActions`.
      */
     mobileTitle?: Snippet;
+    /**
+     * `id` given to the content region, the target of the skip link. The region is a plain
+     * `div` (not a landmark) so a `<main>` you render inside never nests another one.
+     * Pass `null` when your own `<main id="main" tabindex="-1">` is the target.
+     */
+    mainId?:        string | null;
+    /**
+     * Render the "Skip to content" link. Turn it off when the shell is embedded in a page
+     * that already has one (a framed demo, a preview), so the page does not get two.
+     */
+    skipLink?:      boolean;
     children?:      Snippet;
   }
 
@@ -45,6 +57,8 @@
     railBottom,
     mobileHeaderActions,
     mobileTitle,
+    mainId = 'main',
+    skipLink = true,
     children,
   }: Props = $props();
 
@@ -115,6 +129,9 @@
   Panel spring drives both the panel width and the main margin so they
   stay in sync without layout shifts.
 -->
+{#if skipLink}
+  <SkipLink href="#{mainId ?? 'main'}" />
+{/if}
 <div class="ca-shell">
   <!-- Desktop only sidebar -->
   <div class="ca-sidebar">
@@ -155,8 +172,9 @@
     <div class="ca-shell__mobile-header">
       <MobileHeader leading={brand} title={pageTitle} titleSlot={mobileTitle} trailing={mobileHeaderActions} />
     </div>
-    <!-- Page content -->
-    <div class="ca-shell__content">
+    <!-- Page content. A tabindex=-1 div (not a landmark) is the skip target: focus is programmatic only. -->
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+    <div class="ca-shell__content" id={mainId ?? undefined} tabindex={mainId ? -1 : undefined}>
       {@render children?.()}
     </div>
   </div>

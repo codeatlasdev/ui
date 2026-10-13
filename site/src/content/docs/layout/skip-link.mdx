@@ -1,0 +1,29 @@
+---
+title: SkipLink
+description: A "Skip to content" link that appears on keyboard focus and moves focus to the main landmark. Built into the page shells.
+group: Layout
+order: 11
+---
+import Props from "~/components/docs/Props.astro";
+
+```svelte
+<script>
+  import { SkipLink } from "@codeatlasdev/ui";
+</script>
+
+<SkipLink />
+<header>…</header>
+<main id="main" tabindex="-1">…</main>
+```
+
+`AppShellLayout`, `DocsShell` and `AuthLayout` already render it, so you only need `SkipLink` in shells you build yourself. Press Tab on any docs page to see it: it is the first focusable element and stays off-screen until focused.
+
+The link scrolls to the target and moves focus to it, so the next Tab continues inside the content. The target needs `tabindex="-1"`; the package hides the focus ring on `main[tabindex="-1"]` because that focus is only programmatic.
+
+Keep exactly one `id="main"` and one `<main>` per page. See [Skip link and landmarks](/docs/getting-started/accessibility/#skip-link-and-landmarks) for who owns `#main` in each shell.
+
+<Props rows={[
+  { name: "href", type: "string", default: "'#main'", description: "Fragment of the target landmark. It must match the `id` of the element." },
+  { name: "children", type: "Snippet", description: "Replaces the localized label (`skipLink.label` in the i18n catalog)." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+]} />

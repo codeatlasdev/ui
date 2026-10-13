@@ -23,7 +23,7 @@ describe("DocsShell", () => {
 		await expect.element(screen.getByRole("complementary", { name: "Nesta página" })).toBeVisible();
 		await expect
 			.element(screen.getByRole("link", { name: "Ir para o conteúdo" }))
-			.toHaveAttribute("href", "#ca-docs-content");
+			.toHaveAttribute("href", "#main");
 		await expect
 			.poll(() => document.getAnimations().filter((a) => a.playState === "running").length)
 			.toBe(0);

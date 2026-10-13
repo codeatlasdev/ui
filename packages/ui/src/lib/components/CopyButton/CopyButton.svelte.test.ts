@@ -15,6 +15,9 @@ afterEach(() => {
 beforeAll(() => setLocale("pt-BR"));
 afterAll(() => setLocale("en"));
 
+/** Text currently spoken by the shared polite live region. */
+const announced = () => document.querySelector('[data-ca-announcer="polite"]')?.textContent;
+
 describe("CopyButton", () => {
 	it("writes value to the clipboard, calls oncopy and announces 'Copiado'", async () => {
 		const writeText = vi.spyOn(navigator.clipboard, "writeText").mockResolvedValue();
@@ -23,7 +26,7 @@ describe("CopyButton", () => {
 		await screen.getByRole("button", { name: "Copiar" }).click();
 		expect(writeText).toHaveBeenCalledWith("npm i @codeatlasdev/ui");
 		expect(oncopy).toHaveBeenCalledWith("npm i @codeatlasdev/ui");
-		await expect.element(screen.getByRole("status")).toHaveTextContent("Copiado");
+		await expect.poll(() => announced()).toBe("Copiado");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
@@ -37,13 +40,11 @@ describe("CopyButton", () => {
 		vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
 		(btn.element() as HTMLElement).click();
 		await vi.waitFor(() => expect(iconName(btn.element())).toContain("lucide-check"));
-		await expect.element(screen.getByRole("status")).toHaveTextContent("Copiado");
 
 		await vi.advanceTimersByTimeAsync(1900);
 		expect(iconName(btn.element())).toContain("lucide-check");
 		await vi.advanceTimersByTimeAsync(200);
 		await vi.waitFor(() => expect(iconName(btn.element())).toBe(before));
-		expect(screen.getByRole("status").element().textContent).toBe("");
 	});
 
 	it("icon-only mode exposes an accessible name", async () => {

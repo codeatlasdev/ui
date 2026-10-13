@@ -11,9 +11,11 @@
 		full?: boolean;
 		/** Second module has a single destination (no panel). */
 		single?: boolean;
+		/** The page renders its own <main id="main">: the shell must not add a second target. */
+		ownMain?: boolean;
 	}
 
-	let { pathname = "/app/dashboard", onNavigate, full = false, single = false }: Props = $props();
+	let { pathname = "/app/dashboard", onNavigate, full = false, single = false, ownMain = false }: Props = $props();
 
 	const modules: NavModule[] = [
 		{
@@ -65,9 +67,15 @@
 		</main>
 	</AppShellLayout>
 {:else}
-	<AppShellLayout modules={mods} {pathname} {onNavigate} persistPanel={false}>
-		<main>
-			<h1>Conteúdo da página</h1>
-		</main>
+	<AppShellLayout modules={mods} {pathname} {onNavigate} persistPanel={false} mainId={ownMain ? null : "main"}>
+		{#if ownMain}
+			<main id="main" tabindex="-1">
+				<h1>Conteúdo da página</h1>
+			</main>
+		{:else}
+			<main>
+				<h1>Conteúdo da página</h1>
+			</main>
+		{/if}
 	</AppShellLayout>
 {/if}

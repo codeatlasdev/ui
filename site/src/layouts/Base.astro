@@ -12,8 +12,10 @@ interface Props {
 	image?: string;
 	noindex?: boolean;
 	jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+	/** Off when the page hosts a package shell (DocsShell, AppShellLayout, AuthLayout): it renders its own skip link and `#main`. */
+	skipLink?: boolean;
 }
-const { title, description, image = "/og.png", noindex = false, jsonLd } = Astro.props;
+const { title, description, image = "/og.png", noindex = false, jsonLd, skipLink = true } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImage = new URL(image, Astro.site).href;
 const fullTitle = title === "CodeAtlas UI" ? title : `${title} · CodeAtlas UI`;
@@ -44,7 +46,7 @@ const ld = jsonLd && serializeJsonLd(jsonLd);
 		<slot name="head" />
 	</head>
 	<body>
-		<a class="skip-link" href="#main">Skip to content</a>
+		{skipLink && <a class="skip-link" href="#main">Skip to content</a>}
 		<slot />
 		<script>
 			// One store instance for every island on the page: theme switches, OS scheme changes

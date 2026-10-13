@@ -83,3 +83,26 @@
   --ca-glass-shadow: 0 8px 40px oklch(0 0 0 / 0.50);
   --ca-scrim-color: oklch(0 0 0 / 0.50);
 }
+@media (prefers-contrast: more) {
+[data-preset="slate"],
+[data-preset="slate"] [data-theme-scope="light"],
+[data-preset="slate"][data-theme-scope="light"][data-theme-scope="light"],
+[data-theme-scope="light"][data-theme-scope="light"] [data-preset="slate"] {
+  --ca-text-secondary: oklch(0.340 0.010 220);
+  --ca-text-hint: oklch(0.340 0.010 220);
+  --ca-outline-subtle: oklch(0.200 0.010 220 / 0.60);
+  --ca-outline-default: oklch(0.200 0.010 220 / 0.70);
+  --ca-outline-strong: oklch(0.200 0.010 220 / 0.85);
+}
+.dark[data-preset="slate"],
+.dark [data-preset="slate"],
+[data-preset="slate"] [data-theme-scope="dark"],
+[data-preset="slate"][data-theme-scope="dark"][data-theme-scope="dark"],
+[data-theme-scope="dark"] [data-preset="slate"] {
+  --ca-text-secondary: oklch(0.820 0.007 220);
+  --ca-text-hint: oklch(0.820 0.007 220);
+  --ca-outline-subtle: oklch(1 0 0 / 0.45);
+  --ca-outline-default: oklch(1 0 0 / 0.60);
+  --ca-outline-strong: oklch(1 0 0 / 0.75);
+}
+}

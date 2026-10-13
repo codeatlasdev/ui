@@ -18,6 +18,8 @@
     searchPlaceholder?: string;
     disabled?:          boolean;
     label?:             string;
+    /** Accessible name when there is no visible `label`. The trigger's name becomes `ariaLabel` followed by its current value (so it still contains the visible text). */
+    ariaLabel?:         string;
     class?:             string;
     error?:             string;
     description?:       string;
@@ -34,6 +36,7 @@
     searchPlaceholder,
     disabled          = false,
     label,
+    ariaLabel,
     class: className  = '',
     error,
     description,
@@ -82,10 +85,12 @@
     onclick={primeKeyboard}
     id={triggerId}
     class="ca-combobox__trigger"
+    aria-labelledby={!label && ariaLabel ? `${triggerId}-name ${triggerId}-value` : undefined}
     aria-describedby={error ? `${triggerId}-err` : description ? `${triggerId}-hint` : undefined}
     aria-invalid={error ? 'true' : undefined}
   >
-    <span class="ca-combobox__trigger-label">{selectedLabel}</span>
+    {#if !label && ariaLabel}<span id="{triggerId}-name" hidden>{ariaLabel}</span>{/if}
+    <span id="{triggerId}-value" class="ca-combobox__trigger-label">{selectedLabel}</span>
     <ChevronDown size={16} class="ca-combobox__chevron" />
   </BitsCombobox.Trigger>
 
@@ -116,7 +121,7 @@
                 aria-controls={listboxId}
               />
             </div>
-            <div id={listboxId} role="listbox" aria-label={label ?? placeholder ?? t().combobox.placeholder} class="ca-combobox__viewport">
+            <div id={listboxId} role="listbox" aria-label={label ?? ariaLabel ?? placeholder ?? t().combobox.placeholder} class="ca-combobox__viewport">
               {#each filtered as opt}
                 <BitsCombobox.Item
                   value={opt.value}

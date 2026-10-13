@@ -9,6 +9,6 @@ interface Props {
 }
 const { title, description, noindex = false } = Astro.props;
 ---
-<Base title={title} description={description} noindex={noindex}>
+<Base title={title} description={description} noindex={noindex} skipLink={false}>
 	<slot />
 </Base>

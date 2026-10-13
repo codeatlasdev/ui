@@ -6,6 +6,7 @@
   import IconButton from '../Button/IconButton.svelte';
   import { copyToClipboard } from '../../utils/clipboard.js';
   import { toast } from '../../stores/toast.svelte.js';
+  import { announce } from '../../utils/announce.js';
 
   interface Props {
     value: string;
@@ -38,6 +39,7 @@
       return;
     }
     copied = true;
+    announce(t().copyButton.copied);
     clearTimeout(timer);
     timer = setTimeout(() => (copied = false), 2000);
     if (toastMessage) toast.success(toastMessage);
@@ -67,17 +69,3 @@
     {@render icon()}
   </IconButton>
 {/if}
-
-<span class="ca-copy__status" role="status" aria-live="polite">{copied ? t().copyButton.copied : ''}</span>
-
-<style>
-  /* Screen-reader-only live region */
-  .ca-copy__status {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-</style>

@@ -7,10 +7,9 @@ import { SECTIONS } from "~/lib/nav";
 <Base
 	title="Theme editor"
 	description="Pick a brand color, tune radius, blur and surface style, preview every component live, and export the CSS tokens for @codeatlasdev/ui."
+	skipLink={false}
 >
 	<SiteDocsShell client:load sections={SECTIONS} active="theme" pathname={Astro.url.pathname}>
-		<div id="main" tabindex="-1">
-			<ThemeEditor client:load />
-		</div>
+		<ThemeEditor client:load />
 	</SiteDocsShell>
 </Base>

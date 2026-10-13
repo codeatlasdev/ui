@@ -26,6 +26,15 @@ describe("Button", () => {
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
+	it("announces when loading finishes, but not on mount or while loading", async () => {
+		const polite = () => document.querySelector('[data-ca-announcer="polite"]')?.textContent ?? "";
+		const screen = await render(Button, { children: label("Salvar"), loading: true });
+		await new Promise((r) => setTimeout(r, 100));
+		expect(polite()).toBe("");
+		await screen.rerender({ loading: false });
+		await expect.poll(polite).toBe("Finished loading");
+	});
+
 	it.each(["filled", "glass", "outlined", "ghost", "destructive"] as const)(
 		"variant %s renders its class",
 		async (variant) => {

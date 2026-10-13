@@ -52,7 +52,7 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions, a11y_click_events_have_key_events -->
 <div class="stage" onclick={intercept}>
-  <AppShellLayout {modules} {pathname} onNavigate={(path) => (pathname = path)} persistPanel={false}>
+  <AppShellLayout {modules} {pathname} onNavigate={(path) => (pathname = path)} persistPanel={false} mainId={null} skipLink={false}>
     <PageShell title={titles[pathname] ?? 'Page'} description={pathname}>
       <Grid cols="repeat(auto-fill,minmax(150px,1fr))" gap={12}>
         <KpiCard title="Revenue" value="$118k" trend={23.4} />
