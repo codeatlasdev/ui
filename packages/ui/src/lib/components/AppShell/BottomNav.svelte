@@ -40,7 +40,7 @@
     right: 0;
     /* The bar's own background runs through the home-indicator inset: no dark band below it. */
     box-sizing: border-box;
-    height: calc(var(--ca-bottom-nav-h, 56px) + var(--ca-safe-bottom));
+    height: calc(var(--ca-bottom-nav-h) + var(--ca-safe-bottom));
     padding: 0 var(--ca-safe-right) var(--ca-safe-bottom) var(--ca-safe-left);
     display: none;
     flex-direction: row;
@@ -49,7 +49,7 @@
     /* Opaque so the safe-area strip matches the bar and Safari 26 tints its toolbar
        from it (it samples background-color of fixed edge elements, not images). */
     background-color: var(--ca-chrome-surface);
-    box-shadow: inset 0 1px 0 var(--ca-outline-subtle);
+    box-shadow: inset 0 var(--ca-border-width) 0 var(--ca-outline-subtle);
   }
 
   @media (max-width: 899.98px) {
@@ -62,18 +62,18 @@
     /* Equal columns that may shrink below content width, so 5 items fit at 320px. */
     flex: 1 1 0;
     min-width: 0;
-    min-height: 44px;
+    min-height: var(--ca-touch-target);
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 3px;
+    gap: var(--ca-space-1);
     background: transparent;
     border: none;
     cursor: pointer;
     color: var(--ca-text-secondary);
     transition: color var(--ca-duration-fast) var(--ca-ease-standard);
-    padding: 0 2px;
+    padding: 0 var(--ca-space-0-5);
     -webkit-tap-highlight-color: transparent;
   }
 
@@ -82,8 +82,8 @@
   }
 
   .ca-bottom-nav__btn:focus-visible {
-    outline: 2px solid var(--ca-brand-main);
-    outline-offset: -2px;
+    outline: var(--ca-border-width-focus) solid var(--ca-brand-main);
+    outline-offset: calc(var(--ca-border-width-focus) * -1);
   }
 
   .ca-bottom-nav__icon {
@@ -96,8 +96,8 @@
     display: block;
     max-width: 100%;
     font-size: var(--ca-font-size-nano);
-    font-weight: 500;
-    line-height: 1.1;
+    font-weight: var(--ca-font-weight-medium);
+    line-height: var(--ca-line-height-tight);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

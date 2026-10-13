@@ -56,28 +56,29 @@
     overflow: hidden; /* clip while animating */
     display: flex;
     flex-direction: column;
-    width: var(--panel-w, 192px);
+    width: var(--panel-w, var(--ca-panel-width));
     opacity: var(--panel-opacity, 1);
-    background: var(--ca-glass-bg, oklch(0.14 0 0 / 0.80));
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    backdrop-filter: blur(24px) saturate(180%);
-    box-shadow: var(--ca-glass-separator, inset -1px 0 0 oklch(1 0 0 / 0.05),
-      inset 0 1px 0 oklch(1 0 0 / 0.14), 0 8px 40px oklch(0 0 0 / 0.50));
+    background: var(--ca-glass-bg);
+    -webkit-backdrop-filter: var(--ca-mat-regular-filter);
+    backdrop-filter: var(--ca-mat-regular-filter);
+    box-shadow: var(--ca-glass-separator);
   }
 
   .ca-panel__header {
-    height: 52px;
+    height: var(--ca-header-height);
     flex-shrink: 0;
     display: flex;
     align-items: center;
-    padding: 0 12px;
-    box-shadow: inset 0 -1px 0 var(--ca-outline-subtle);
+    padding: 0 var(--ca-space-3);
+    box-shadow: inset 0 calc(var(--ca-border-width) * -1) 0 var(--ca-outline-subtle);
   }
 
   .ca-panel__title {
     font-size: var(--ca-font-size-label);
-    font-weight: 600;
-    letter-spacing: -0.008em;
+    font-family: var(--ca-font-display);
+    font-weight: var(--ca-font-weight-semibold);
+    letter-spacing: var(--ca-heading-tracking);
+    text-transform: var(--ca-heading-case);
     color: var(--ca-text-primary);
     white-space: nowrap;
     overflow: hidden;
@@ -88,19 +89,19 @@
     flex: 1;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: 6px 8px 16px;
+    padding: var(--ca-space-1-5) var(--ca-space-2) var(--ca-space-4);
     -webkit-mask-image: linear-gradient(
       to bottom,
       transparent 0%,
-      black 8px,
-      black calc(100% - 16px),
+      black var(--ca-space-2),
+      black calc(100% - var(--ca-space-4)),
       transparent 100%
     );
     mask-image: linear-gradient(
       to bottom,
       transparent 0%,
-      black 8px,
-      black calc(100% - 16px),
+      black var(--ca-space-2),
+      black calc(100% - var(--ca-space-4)),
       transparent 100%
     );
   }

@@ -40,21 +40,25 @@
 
 <style>
   .ca-empty {
+    /* Inline-size containment drops the intrinsic width, so the root must fill its slot. */
+    container-type: inline-size;
+    width: 100%;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     text-align: center;
-    gap: 12px;
-    padding: 48px 24px;
+    gap: var(--ca-space-3);
+    padding: var(--ca-space-12) var(--ca-space-6);
   }
 
   .ca-empty__icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 48px;
-    height: 48px;
+    width: var(--ca-space-12);
+    height: var(--ca-space-12);
     border-radius: var(--ca-radius-lg);
     background: var(--ca-action-hover);
     color: var(--ca-text-secondary);
@@ -62,46 +66,48 @@
   }
 
   .ca-empty__title {
+    font-family: var(--ca-font-display);
     font-size: var(--ca-font-size-body1);
-    font-weight: 600;
+    font-weight: var(--ca-font-weight-semibold);
     color: var(--ca-text-primary);
     margin: 0;
-    letter-spacing: -0.01em;
+    letter-spacing: var(--ca-heading-tracking);
+    text-transform: var(--ca-heading-case);
   }
 
   .ca-empty__description {
     font-size: var(--ca-font-size-body2);
     color: var(--ca-text-secondary);
     margin: 0;
-    max-width: 340px;
-    line-height: 1.55;
+    max-width: calc(var(--ca-space-unit) * 85);
+    line-height: var(--ca-line-height-body);
   }
 
   .ca-empty__actions {
     display: flex;
     flex-direction: row;
-    gap: 8px;
+    gap: var(--ca-space-2);
     align-items: center;
     flex-wrap: wrap;
     justify-content: center;
-    margin-top: 4px;
+    margin-top: var(--ca-space-1);
   }
 
   /* ── Hero ──────────────────────────────────────────────────── */
   .ca-empty--hero {
-    gap: 8px;
-    padding: 56px 24px;
+    gap: var(--ca-space-2);
+    padding: calc(var(--ca-space-12) + var(--ca-space-2)) var(--ca-space-6);
   }
 
   .ca-empty--hero .ca-empty__icon {
     position: relative;
     isolation: isolate;
-    width: 72px;
-    height: 72px;
-    margin-bottom: 12px;
+    width: calc(var(--ca-space-unit) * 18);
+    height: calc(var(--ca-space-unit) * 18);
+    margin-bottom: var(--ca-space-3);
     border-radius: var(--ca-radius-xl);
     background: color-mix(in oklab, var(--ca-brand-main) 14%, var(--ca-surface-raised));
-    border: 1px solid color-mix(in oklab, var(--ca-brand-main) 28%, transparent);
+    border: var(--ca-border-width) solid color-mix(in oklab, var(--ca-brand-main) 28%, transparent);
     color: var(--ca-brand-text);
   }
 
@@ -109,38 +115,36 @@
   .ca-empty--hero .ca-empty__icon::before {
     content: '';
     position: absolute;
-    inset: -28px;
+    inset: calc(var(--ca-space-7) * -1);
     z-index: -1;
     border-radius: 50%;
     background: radial-gradient(closest-side, color-mix(in oklab, var(--ca-brand-main) 34%, transparent), transparent);
-    filter: blur(8px);
+    filter: blur(var(--ca-space-2));
     pointer-events: none;
   }
 
   .ca-empty--hero .ca-empty__title {
     font-size: var(--ca-font-size-h6);
-    font-weight: 700;
-    letter-spacing: -0.015em;
+    font-weight: var(--ca-font-weight-heading);
   }
 
   .ca-empty--hero .ca-empty__description {
-    max-width: 360px;
+    max-width: calc(var(--ca-space-unit) * 90);
   }
 
   .ca-empty--hero .ca-empty__actions {
-    margin-top: 16px;
+    margin-top: var(--ca-space-4);
   }
 
-  @media (max-width: 599.98px) {
-    .ca-empty--hero {
-      width: 100%;
-      padding-inline: 20px;
-    }
+  /* Narrow slot (not narrow viewport): the empty state sits in cards and panes too.
+     A container query cannot restyle its own container, so only descendants change here;
+     the root already fills its slot (width: 100%). */
+  @container (max-width: 599.98px) {
     .ca-empty--hero .ca-empty__actions {
       flex-direction: column;
       align-items: stretch;
       width: 100%;
-      max-width: 360px;
+      max-width: calc(var(--ca-space-unit) * 90);
     }
     .ca-empty--hero .ca-empty__actions > :global(*) {
       width: 100%;

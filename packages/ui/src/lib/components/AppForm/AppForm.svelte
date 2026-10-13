@@ -131,17 +131,17 @@
   ────────────────────────────────────────────────────────────────── */
   .ca-app-form__header {
     flex-shrink: 0;
-    border-bottom: 1px solid var(--ca-outline-subtle);
+    border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
   }
 
   .ca-app-form__header-inner {
     display: flex;
     align-items: center;
-    gap: var(--ca-space-3, 12px);
+    gap: var(--ca-space-3);
     padding:
-      var(--ca-page-pt, 20px)
-      var(--ca-page-px, 24px)
-      var(--ca-space-4, 16px);
+      var(--ca-page-pt)
+      var(--ca-page-px)
+      var(--ca-space-4);
     width: 100%;
     box-sizing: border-box;
   }
@@ -151,12 +151,14 @@
   .ca-app-form__trailing { flex-shrink: 0; }
 
   .ca-app-form__title {
+    font-family: var(--ca-font-display);
     font-size: var(--ca-font-size-h5);
-    font-weight: 700;
-    letter-spacing: -0.01em;
+    font-weight: var(--ca-font-weight-heading);
+    letter-spacing: var(--ca-heading-tracking);
+    text-transform: var(--ca-heading-case);
     color: var(--ca-text-primary);
-    margin: 0 0 2px;
-    line-height: 1.2;
+    margin: 0 0 var(--ca-space-0-5);
+    line-height: var(--ca-line-height-tight);
   }
 
   .ca-app-form__desc {
@@ -174,18 +176,18 @@
     overflow-x: hidden;
   }
 
-  .ca-app-form__body::-webkit-scrollbar      { width: 5px; }
+  .ca-app-form__body::-webkit-scrollbar      { width: var(--ca-space-1-5); }
   .ca-app-form__body::-webkit-scrollbar-track { background: transparent; }
   .ca-app-form__body::-webkit-scrollbar-thumb {
     background: var(--ca-outline-default);
-    border-radius: 999px;
+    border-radius: var(--ca-radius-pill);
   }
 
   .ca-app-form__inner {
-    padding: var(--ca-space-6, 24px) var(--ca-page-px, 24px) var(--ca-space-10, 40px);
+    padding: var(--ca-space-6) var(--ca-page-px) var(--ca-space-10);
     display: flex;
     flex-direction: column;
-    gap: var(--ca-page-gap, 20px);
+    gap: var(--ca-page-gap);
     box-sizing: border-box;
     width: 100%;
   }
@@ -193,18 +195,18 @@
   /* ── Footer sticky ─────────────────────────────────────────────── */
   .ca-app-form__footer {
     flex-shrink: 0;
-    border-top: 1px solid var(--ca-outline-subtle);
-    background: var(--ca-chrome-bg, var(--ca-glass-tint-chrome));
-    -webkit-backdrop-filter: var(--ca-chrome-blur, blur(20px) saturate(1.5));
-    backdrop-filter: var(--ca-chrome-blur, blur(20px) saturate(1.5));
+    border-top: var(--ca-border-width) solid var(--ca-outline-subtle);
+    background: var(--ca-chrome-bg);
+    -webkit-backdrop-filter: var(--ca-chrome-blur);
+    backdrop-filter: var(--ca-chrome-blur);
   }
 
   .ca-app-form__footer-inner {
-    padding: var(--ca-space-3, 12px) var(--ca-page-px, 24px);
+    padding: var(--ca-space-3) var(--ca-page-px);
     display: flex;
     align-items: center;
     justify-content: flex-end;
-    gap: var(--ca-space-2, 8px);
+    gap: var(--ca-space-2);
     box-sizing: border-box;
     width: 100%;
   }
@@ -213,19 +215,19 @@
   @media (max-width: 599.98px) {
     .ca-app-form__header-inner {
       padding:
-        var(--ca-space-4, 16px)
-        var(--ca-page-px-sm, 16px)
-        var(--ca-space-3, 12px);
+        var(--ca-space-4)
+        var(--ca-page-px-sm)
+        var(--ca-space-3);
     }
     .ca-app-form__inner {
       padding:
-        var(--ca-space-4, 16px)
-        var(--ca-page-px-sm, 16px)
-        var(--ca-space-8, 32px);
+        var(--ca-space-4)
+        var(--ca-page-px-sm)
+        var(--ca-space-8);
     }
     .ca-app-form__footer-inner {
-      padding: var(--ca-space-3, 10px) var(--ca-page-px-sm, 16px);
-      padding-bottom: calc(10px + var(--ca-safe-bottom));
+      padding: var(--ca-space-3) var(--ca-page-px-sm);
+      padding-bottom: calc(var(--ca-space-2-5) + var(--ca-safe-bottom));
     }
   }
 

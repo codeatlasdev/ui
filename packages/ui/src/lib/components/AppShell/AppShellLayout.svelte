@@ -214,6 +214,7 @@
     display: flex;
     flex-direction: column;
     margin-left: var(--ca-main-ml, 0);
+    /* Follows the JS spring frame by frame: a smoothing tick, not a design duration. */
     transition: margin-left 20ms linear;
   }
 
@@ -242,7 +243,7 @@
     .ca-main {
       margin-left: 0 !important;
       /* Bottom nav is fixed: reserve its height plus the home-indicator inset. */
-      padding-bottom: calc(var(--ca-bottom-nav-h, 56px) + var(--ca-safe-bottom));
+      padding-bottom: calc(var(--ca-bottom-nav-h) + var(--ca-safe-bottom));
     }
 
     .ca-shell__desktop-header {

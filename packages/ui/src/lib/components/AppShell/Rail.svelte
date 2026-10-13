@@ -85,7 +85,7 @@
 
 <style>
   .ca-rail {
-    width: 52px;
+    width: var(--ca-rail-width);
     flex-shrink: 0;
     height: 100%;
     display: flex;
@@ -93,19 +93,16 @@
     align-items: center;
     padding: 0;
     z-index: 1;
-    background: var(--ca-glass-bg, oklch(0.14 0 0 / 0.80));
-    -webkit-backdrop-filter: blur(24px) saturate(180%);
-    backdrop-filter: blur(24px) saturate(180%);
-    box-shadow: var(--ca-glass-separator,
-      inset -1px 0 0 oklch(1 0 0 / 0.05),
-      inset 0 1px 0 oklch(1 0 0 / 0.14),
-      0 8px 40px oklch(0 0 0 / 0.50));
+    background: var(--ca-glass-bg);
+    -webkit-backdrop-filter: var(--ca-mat-regular-filter);
+    backdrop-filter: var(--ca-mat-regular-filter);
+    box-shadow: var(--ca-glass-separator);
   }
 
   /* ── Logo ─────────────────────────────────────────────────────── */
   .ca-rail__logo {
-    width: 52px;
-    height: 52px;
+    width: var(--ca-rail-width);
+    height: var(--ca-header-height);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -114,16 +111,16 @@
 
   .ca-rail__logo-mark {
     font-size: var(--ca-font-size-body2);
-    font-weight: 700;
-    letter-spacing: -0.04em;
+    font-weight: var(--ca-font-weight-bold);
+    letter-spacing: var(--ca-heading-tracking);
     color: var(--ca-brand-text);
   }
 
   .ca-rail__sep {
-    width: 28px;
-    height: 1px;
+    width: var(--ca-space-7);
+    height: var(--ca-border-width);
     background: var(--ca-outline-subtle);
-    margin-bottom: 8px;
+    margin-bottom: var(--ca-space-2);
     flex-shrink: 0;
   }
 
@@ -131,11 +128,11 @@
   .ca-rail__dock {
     list-style: none;
     margin: 0;
-    padding: 0 6px;
+    padding: 0 var(--ca-space-1-5);
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 2px;
+    gap: var(--ca-space-0-5);
     /* flex:1 pushes the bottom slot to the bottom of the rail */
     flex: 1;
     width: 100%;
@@ -147,7 +144,7 @@
   .ca-rail__icon {
     position: relative;
     width: 100%;
-    height: 40px;
+    height: var(--ca-space-10);
     border-radius: var(--ca-radius-md);
     border: none;
     background: transparent;
@@ -174,21 +171,21 @@
   }
 
   .ca-rail__icon:focus-visible {
-    outline: 2px solid var(--ca-brand-main);
-    outline-offset: -2px;
+    outline: var(--ca-border-width-focus) solid var(--ca-brand-main);
+    outline-offset: calc(var(--ca-border-width-focus) * -1);
   }
 
   /* Active left-side pip */
   .ca-rail__pip {
     position: absolute;
-    left: 1px;
+    left: var(--ca-border-width);
     top: 50%;
     transform: translateY(-50%);
-    width: 3px;
-    height: 18px;
-    border-radius: 999px;
+    width: var(--ca-space-1);
+    height: var(--ca-space-4);
+    border-radius: var(--ca-radius-pill);
     background: var(--ca-brand-main);
-    box-shadow: 0 0 8px var(--ca-glow-primary-strong);
+    box-shadow: 0 0 var(--ca-space-2) var(--ca-glow-primary-strong);
   }
 
   /* ── Bottom slot ─────────────────────────────────────────────── */
@@ -196,16 +193,16 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0 6px 8px;
+    padding: 0 var(--ca-space-1-5) var(--ca-space-2);
     flex-shrink: 0;
     width: 100%;
-    gap: 2px;
+    gap: var(--ca-space-0-5);
   }
 
   .ca-rail__bottom-sep {
-    width: 28px;
-    height: 1px;
+    width: var(--ca-space-7);
+    height: var(--ca-border-width);
     background: var(--ca-outline-subtle);
-    margin-bottom: 6px;
+    margin-bottom: var(--ca-space-1-5);
   }
 </style>

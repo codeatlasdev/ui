@@ -162,24 +162,26 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: var(--ca-space-4, 16px);
+    gap: var(--ca-space-4);
     padding:
-      var(--ca-page-pt, 20px)
-      var(--ca-page-px, 24px)
-      var(--ca-space-4, 16px);
+      var(--ca-page-pt)
+      var(--ca-page-px)
+      var(--ca-space-4);
     flex-shrink: 0;
-    border-bottom: 1px solid var(--ca-outline-subtle);
+    border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
   }
 
   .ca-app-settings__meta { flex: 1; min-width: 0; }
 
   .ca-app-settings__title {
+    font-family: var(--ca-font-display);
     font-size: var(--ca-font-size-h5);
-    font-weight: 700;
-    letter-spacing: -0.01em;
+    font-weight: var(--ca-font-weight-heading);
+    letter-spacing: var(--ca-heading-tracking);
+    text-transform: var(--ca-heading-case);
     color: var(--ca-text-primary);
-    margin: 0 0 2px;
-    line-height: 1.2;
+    margin: 0 0 var(--ca-space-0-5);
+    line-height: var(--ca-line-height-tight);
   }
 
   .ca-app-settings__desc {
@@ -192,7 +194,7 @@
   .ca-app-settings__actions {
     display: flex;
     align-items: center;
-    gap: var(--ca-space-2, 8px);
+    gap: var(--ca-space-2);
     flex-shrink: 0;
   }
 
@@ -207,17 +209,17 @@
   }
 
   /* ── Left nav ───────────────────────────────────────────────
-     Width: 220px. Does not scroll (unless it has many items).
+     Width: 55 space units. Does not scroll (unless it has many items).
      Padding uses the global tokens.
   ─────────────────────────────────────────────────────────────── */
   .ca-app-settings__nav {
-    width: 220px;
+    width: calc(var(--ca-space-unit) * 55);
     flex-shrink: 0;
-    padding: var(--ca-space-4, 16px) var(--ca-space-3, 12px);
-    border-right: 1px solid var(--ca-outline-subtle);
+    padding: var(--ca-space-4) var(--ca-space-3);
+    border-right: var(--ca-border-width) solid var(--ca-outline-subtle);
     display: flex;
     flex-direction: column;
-    gap: 2px;
+    gap: var(--ca-space-0-5);
     overflow-y: auto;
     overflow-x: hidden;
   }
@@ -228,14 +230,14 @@
   .ca-app-settings__nav-item {
     display: flex;
     align-items: center;
-    gap: var(--ca-space-2, 8px);
-    padding: 7px 10px;
+    gap: var(--ca-space-2);
+    padding: var(--ca-space-2) var(--ca-space-2-5);
     border-radius: var(--ca-radius-md);
     border: none;
     background: transparent;
     cursor: pointer;
     font-size: var(--ca-font-size-body2);
-    font-weight: 500;
+    font-weight: var(--ca-font-weight-medium);
     font-family: inherit;
     color: var(--ca-text-secondary);
     text-align: left;
@@ -264,9 +266,9 @@
     left: 0;
     top: 50%;
     transform: translateY(-50%);
-    width: 3px;
-    height: 16px;
-    border-radius: 999px;
+    width: var(--ca-space-1);
+    height: var(--ca-space-4);
+    border-radius: var(--ca-radius-pill);
     background: var(--ca-brand-main);
   }
 
@@ -292,10 +294,10 @@
 
   .ca-app-settings__nav-badge {
     font-size: var(--ca-font-size-micro);
-    font-weight: 600;
+    font-weight: var(--ca-font-weight-semibold);
     background: color-mix(in oklab, var(--ca-brand-main) 14%, transparent);
     color: var(--ca-brand-text);
-    padding: 1px 6px;
+    padding: var(--ca-border-width) var(--ca-space-1-5);
     border-radius: var(--ca-radius-pill);
     flex-shrink: 0;
     line-height: 1.6;
@@ -311,17 +313,17 @@
     min-width: 0;
     overflow-y: auto;
     overflow-x: hidden;
-    padding: var(--ca-space-6, 24px) var(--ca-page-px, 24px) var(--ca-space-12, 48px);
+    padding: var(--ca-space-6) var(--ca-page-px) var(--ca-space-12);
     display: flex;
     flex-direction: column;
-    gap: var(--ca-page-gap, 20px);
+    gap: var(--ca-page-gap);
   }
 
-  .ca-app-settings__content::-webkit-scrollbar      { width: 5px; }
+  .ca-app-settings__content::-webkit-scrollbar      { width: var(--ca-space-1-5); }
   .ca-app-settings__content::-webkit-scrollbar-track { background: transparent; }
   .ca-app-settings__content::-webkit-scrollbar-thumb {
     background: var(--ca-outline-default);
-    border-radius: 999px;
+    border-radius: var(--ca-radius-pill);
   }
 
   /* ── Mobile (<= 768px) ───────────────────────────────────────── */
@@ -335,16 +337,16 @@
       flex-wrap: nowrap;
       overflow-x: auto;
       overflow-y: hidden;
-      padding: var(--ca-space-2, 8px) var(--ca-page-px-sm, 16px);
+      padding: var(--ca-space-2) var(--ca-page-px-sm);
       border-right: none;
-      border-bottom: 1px solid var(--ca-outline-subtle);
-      gap: 4px;
+      border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
+      gap: var(--ca-space-1);
       scroll-snap-type: x proximity;
-      scroll-padding-inline: var(--ca-page-px-sm, 16px);
+      scroll-padding-inline: var(--ca-page-px-sm);
       -webkit-overflow-scrolling: touch;
       /* Fade the trailing edge so it reads as scrollable. */
-      mask-image: linear-gradient(to right, #000 calc(100% - var(--ca-page-px-sm, 16px)), transparent);
-      -webkit-mask-image: linear-gradient(to right, #000 calc(100% - var(--ca-page-px-sm, 16px)), transparent);
+      mask-image: linear-gradient(to right, #000 calc(100% - var(--ca-page-px-sm)), transparent);
+      -webkit-mask-image: linear-gradient(to right, #000 calc(100% - var(--ca-page-px-sm)), transparent);
     }
 
     .ca-app-settings__nav::-webkit-scrollbar { height: 0; }
@@ -352,11 +354,11 @@
     .ca-app-settings__nav-item {
       /* The base rule is width:100% (vertical list): size to content in the strip. */
       width: auto;
-      min-height: 36px;
+      min-height: var(--ca-control-height);
       white-space: nowrap;
       flex-shrink: 0;
       scroll-snap-align: start;
-      padding: 5px 12px;
+      padding: var(--ca-space-1-5) var(--ca-space-3);
     }
 
     /* Hide the indicator pill in horizontal mode: use only the bg */
@@ -364,16 +366,16 @@
 
     .ca-app-settings__content {
       padding:
-        var(--ca-space-4, 16px)
-        var(--ca-page-px-sm, 16px)
-        var(--ca-space-10, 40px);
+        var(--ca-space-4)
+        var(--ca-page-px-sm)
+        var(--ca-space-10);
     }
 
     .ca-app-settings__header {
       padding:
-        var(--ca-space-4, 16px)
-        var(--ca-page-px-sm, 16px)
-        var(--ca-space-3, 12px);
+        var(--ca-space-4)
+        var(--ca-page-px-sm)
+        var(--ca-space-3);
       flex-wrap: wrap;
     }
   }
