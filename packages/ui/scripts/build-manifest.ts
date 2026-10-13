@@ -326,7 +326,7 @@ export interface ManifestToken {
 	value: string;
 	/** Value under `.dark`, when it differs. */
 	dark?: string;
-	/** Where it is defined: `tokens.css` or `themes/<id>.css`. */
+	/** Where it is defined: `tokens.css` or `presets/<id>.css`. */
 	source: string;
 	/** Nearest preceding section comment, e.g. "Spacing scale". */
 	group?: string;
@@ -370,8 +370,8 @@ function buildTokens(): ManifestToken[] {
 	const styles = join(LIB, "styles");
 	extractTokens(readFileSync(join(styles, "tokens.css"), "utf8"), "tokens.css", out);
 	// Built-ins repeat the same names per preset; the amber file (`:root` default) is the canonical value.
-	const themes = join(styles, "themes");
-	extractTokens(readFileSync(join(themes, "amber.css"), "utf8"), "themes/amber.css", out);
+	const presets = join(styles, "presets");
+	extractTokens(readFileSync(join(presets, "amber.css"), "utf8"), "presets/amber.css", out);
 	return [...out.values()].sort((a, b) => a.name.localeCompare(b.name));
 }
 
