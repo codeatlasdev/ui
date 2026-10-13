@@ -80,9 +80,10 @@
    sits right after the start date, and the end date wraps below it as a whole. */
 .ca-date__input {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
-  flex: 1 0 auto;
-  min-width: max-content;
+  flex: 1 1 0;
+  min-width: 0;
   gap: var(--ca-border-width);
   padding: var(--ca-space-1-5) 0;
 }
@@ -142,7 +143,7 @@
 .ca-date__trigger:disabled { cursor: not-allowed; }
 
 .ca-date__range-sep { color: var(--ca-text-hint); user-select: none; }
-.ca-date__wrap:has(.ca-date__range-sep) .ca-date__input { flex: 0 0 auto; }
+.ca-date__wrap:has(.ca-date__range-sep) .ca-date__input { flex: 0 0 auto; flex-wrap: nowrap; min-width: max-content; }
 .ca-date__wrap:has(.ca-date__range-sep) { column-gap: var(--ca-space-2); }
 
 /* ── Popover content ──────────────────────────────────────────── */
@@ -242,9 +243,17 @@
   transition: background var(--ca-duration-fast) var(--ca-ease-standard);
 }
 
+/* Touch: 44px cells when they fit; when seven do not, each takes 1/7 of the grid
+   (min 36px at 320px) and stays square. */
 @media (pointer: coarse) {
-  .ca-cal__day { width: var(--ca-touch-target); height: var(--ca-touch-target); }
-  .ca-cal__head-cell { width: var(--ca-touch-target); }
+  .ca-cal__day {
+    /* 44px when seven fit; on a narrow phone each takes a share of the viewport so the week
+       never runs off the edge (gutters + calendar padding ≈ 26% of a 360px screen). Sized from
+       the viewport, not the table, so there is no cell <-> column sizing loop. */
+    --ca-cal-cell: min(var(--ca-touch-target), calc((100vw - 2 * var(--ca-gutter) - 2 * var(--ca-space-3) - 14 * var(--ca-border-width)) / 7));
+    width: var(--ca-cal-cell);
+    height: var(--ca-cal-cell);
+  }
 }
 
 .ca-cal__day:hover:not([data-selected]):not([data-disabled]) { background: var(--ca-action-hover); }

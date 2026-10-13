@@ -2,7 +2,8 @@ import { existsSync, readdirSync, statSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 
-const DIST = process.env.E2E_DIST ?? join(dirname(fileURLToPath(import.meta.url)), "../dist");
+export const DIST =
+	process.env.E2E_DIST ?? join(dirname(fileURLToPath(import.meta.url)), "../dist");
 
 if (!existsSync(DIST))
 	throw new Error("site/dist is missing: run `bun run build` before the e2e suite.");
