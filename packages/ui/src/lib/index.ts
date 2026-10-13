@@ -224,5 +224,3 @@ export {
 	useForm,
 	useListState,
 } from "./utils/index.js";
-export type { ThemeConfig } from "./utils/theme-editor.js";
-export { DEFAULT_CONFIG, editorPreviewCSS, editorTokensToCSS } from "./utils/theme-editor.js";
