@@ -6,8 +6,15 @@
  * segment is filled; emptying any segment emits `undefined`. Segment order and literals come
  * from `Intl.DateTimeFormat` so every locale lays the field out natively.
  */
+
+import {
+	CalendarDateTime,
+	DateFormatter,
+	type DateValue,
+	Time,
+	type ZonedDateTime,
+} from "@internationalized/date";
 import { untrack } from "svelte";
-import { CalendarDateTime, DateFormatter, type DateValue, Time, ZonedDateTime } from "@internationalized/date";
 import {
 	daysInMonth,
 	defaultHourCycle,
@@ -96,7 +103,9 @@ export class FieldState {
 
 	readonly locale = $derived.by(() => this.o.getLocale());
 
-	readonly hourCycle = $derived.by<12 | 24>(() => this.o.getHourCycle() ?? defaultHourCycle(this.locale));
+	readonly hourCycle = $derived.by<12 | 24>(
+		() => this.o.getHourCycle() ?? defaultHourCycle(this.locale)
+	);
 
 	/** Which editable parts exist for the current granularity. */
 	readonly parts = $derived.by<EditablePart[]>(() => {
@@ -214,7 +223,8 @@ export class FieldState {
 		if (part === "dayPeriod") return this.texts.dayPeriod === "PM" ? 12 : 0;
 		const t = this.texts[part];
 		const ref = asDateTime(this.ref) as CalendarDateTime;
-		const n = t === null ? (ref as unknown as Record<string, number>)[part] : Number.parseInt(t, 10);
+		const n =
+			t === null ? (ref as unknown as Record<string, number>)[part] : Number.parseInt(t, 10);
 		if (part === "hour" && this.hourCycle === 12 && typeof n === "number") {
 			return n === 0 ? 12 : n > 12 ? n - 12 : n;
 		}
@@ -459,7 +469,8 @@ export class FieldState {
 
 	#keyDayPeriod(key: string) {
 		let next: "AM" | "PM" | undefined;
-		if (key === "ArrowUp" || key === "ArrowDown") next = this.texts.dayPeriod === "PM" ? "AM" : "PM";
+		if (key === "ArrowUp" || key === "ArrowDown")
+			next = this.texts.dayPeriod === "PM" ? "AM" : "PM";
 		else if (key === "a" || key === "A") next = "AM";
 		else if (key === "p" || key === "P") next = "PM";
 		else if (key === "Backspace") next = "AM";

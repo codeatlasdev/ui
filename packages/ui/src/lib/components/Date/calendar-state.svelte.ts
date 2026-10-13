@@ -201,7 +201,9 @@ export class CalendarState {
 		const to = this.#clamp(target);
 		this.setAnchor(to);
 		await tick();
-		const el = this.root?.querySelector<HTMLElement>(`[data-ca-day][data-value="${to.toString()}"]`);
+		const el = this.root?.querySelector<HTMLElement>(
+			`[data-ca-day][data-value="${to.toString()}"]`
+		);
 		el?.focus();
 	}
 

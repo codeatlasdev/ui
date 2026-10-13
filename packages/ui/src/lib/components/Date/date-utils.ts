@@ -85,11 +85,7 @@ export interface Month {
 	weeks: DateValue[][];
 }
 
-function createMonth(
-	date: DateValue,
-	weekStartsOn: WeekStart,
-	fixedWeeks: boolean
-): Month {
+function createMonth(date: DateValue, weekStartsOn: WeekStart, fixedWeeks: boolean): Month {
 	const first = startOfMonth(date);
 	// day index with the week starting on `weekStartsOn`
 	const lead = (getDayOfWeek(first, "en-US") - weekStartsOn + 7) % 7;
