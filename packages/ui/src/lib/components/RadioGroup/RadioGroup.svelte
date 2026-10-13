@@ -73,8 +73,8 @@
 	}
 
 	:global(.ca-radio-input) {
-		width: var(--ca-space-5);
-		height: var(--ca-space-5);
+		width: calc(var(--ca-space-4) + var(--ca-space-0-5));
+		height: calc(var(--ca-space-4) + var(--ca-space-0-5));
 		border-radius: 50%;
 		border: var(--ca-border-width-strong) solid var(--ca-outline-default);
 		background: transparent;

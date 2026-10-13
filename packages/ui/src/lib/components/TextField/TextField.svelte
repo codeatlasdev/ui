@@ -110,7 +110,7 @@
     font-size: var(--ca-font-size-label);
     font-weight: var(--ca-font-weight-medium);
     color: var(--ca-text-primary);
-    line-height: var(--ca-line-height-body);
+    line-height: 1.4;
     user-select: none;
   }
 
@@ -197,7 +197,7 @@
     font-size: var(--ca-font-size-caption);
     color: var(--ca-text-secondary);
     margin: 0;
-    line-height: var(--ca-line-height-body);
+    line-height: 1.4;
   }
 
   .ca-tf__hint--error {

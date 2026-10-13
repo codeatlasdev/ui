@@ -103,7 +103,7 @@
     font-size: var(--ca-font-size-label);
     font-weight: var(--ca-font-weight-medium);
     color: var(--ca-text-primary);
-    line-height: var(--ca-line-height-body);
+    line-height: 1.4;
     user-select: none;
   }
 
@@ -149,7 +149,7 @@
     font-size: var(--ca-input-font-size);
     color: var(--ca-text-primary);
     box-sizing: border-box;
-    line-height: var(--ca-line-height-body);
+    line-height: 1.5;
     -webkit-text-fill-color: var(--ca-text-primary);
     resize: var(--ta-resize, vertical);
     min-height: calc(var(--ta-min-rows) * var(--ca-space-6) + 2 * var(--ca-space-2));
@@ -171,7 +171,7 @@
     font-size: var(--ca-font-size-caption);
     color: var(--ca-text-secondary);
     margin: 0;
-    line-height: var(--ca-line-height-body);
+    line-height: 1.4;
   }
 
   .ca-ta__hint--error {

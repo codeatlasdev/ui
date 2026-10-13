@@ -66,8 +66,8 @@
 	}
 
 	:global(.ca-checkbox) {
-		width: var(--ca-space-5);
-		height: var(--ca-space-5);
+		width: calc(var(--ca-space-4) + var(--ca-space-0-5));
+		height: calc(var(--ca-space-4) + var(--ca-space-0-5));
 		border-radius: var(--ca-radius-xs);
 		border: var(--ca-border-width-strong) solid var(--ca-outline-strong);
 		background: transparent;

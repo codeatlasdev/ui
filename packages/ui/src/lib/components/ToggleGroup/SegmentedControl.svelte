@@ -133,7 +133,7 @@
   }
 
   :global(.ca-seg--sm .ca-seg__item) {
-    height: var(--ca-space-7);
+    height: calc(var(--ca-space-6) + var(--ca-space-0-5));
     padding: 0 var(--ca-space-3);
     font-size: var(--ca-font-size-caption);
   }
