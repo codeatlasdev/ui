@@ -17,32 +17,20 @@
 .doc__eyebrow {
 	margin: 0 0 var(--ca-space-2);
 	font-size: var(--ca-font-size-caption);
-	font-weight: 600;
-	letter-spacing: 0.06em;
+	font-weight: var(--ca-font-weight-semibold);
+	letter-spacing: var(--ca-overline-tracking);
 	text-transform: uppercase;
 	color: var(--ca-brand-text);
 }
-.doc__lead { font-size: var(--ca-font-size-lg); color: var(--ca-text-secondary); }
+.doc__lead { font-size: var(--ca-font-size-lg); color: var(--ca-text-body); }
 .doc__footer {
 	display: grid;
 	gap: var(--ca-space-6);
 	margin-top: var(--ca-space-16);
 	padding-top: var(--ca-space-6);
-	border-top: 1px solid var(--ca-outline-subtle);
+	border-top: var(--ca-border-width) solid var(--ca-outline-subtle);
 	font-size: var(--ca-font-size-body2);
 }
-.doc__pager { display: flex; justify-content: space-between; gap: var(--ca-space-4); }
-.doc__pager a {
-	display: grid;
-	gap: 2px;
-	padding: var(--ca-space-3) var(--ca-space-4);
-	border: 1px solid var(--ca-outline-subtle);
-	border-radius: var(--ca-radius-md);
-	text-decoration: none;
-	color: var(--ca-text-primary);
-}
-.doc__pager a[rel="next"] { margin-left: auto; text-align: right; }
-.doc__pager small { color: var(--ca-text-secondary); }
 
 /* ── Demo block ───────────────────────────────────────────────────────── */
 .demo { margin-top: var(--ca-space-10); }

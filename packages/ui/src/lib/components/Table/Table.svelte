@@ -6,7 +6,7 @@
     children?:   Snippet;
     class?:      string;
     /**
-     * `scroll` (default): regular table. `cards`: below the `md` breakpoint (900px)
+     * `scroll` (default): regular table. `cards`: when its own width is below the `sm` breakpoint (600px)
      * each row becomes a card; give each `<td>` a `data-label` to show its column name.
      */
     responsive?: 'scroll' | 'cards';
@@ -38,9 +38,15 @@
     /* no overflow here: the parent AppList body scrolls */
   }
 
+  /* The table draws its own frame (separate borders so the radius clips); cards mode drops it
+     because each card is framed instead. */
   .ca-table {
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: var(--ca-border-width) solid var(--ca-outline-subtle);
+    border-radius: var(--ca-radius-lg);
+    overflow: clip; /* clip, not hidden: hidden would make the table the sticky thead's scroller */
     font-size: var(--ca-font-size-body2);
     color: var(--ca-text-primary);
   }
@@ -53,9 +59,7 @@
     background: var(--ca-surface-base);
   }
 
-  .ca-table :global(thead tr) {
-    border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
-  }
+  .ca-table :global(th) { border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle); }
 
   .ca-table :global(th) {
     padding: var(--ca-space-2-5) var(--ca-space-5);
@@ -77,6 +81,9 @@
 
   .ca-table :global(tbody tr:last-child td) { border-bottom: none; }
 
+  /* Identifiers and types are tokens: never split mid-word; the table scrolls instead. */
+  .ca-table :global(td code) { white-space: nowrap; }
+
   .ca-table :global(tbody tr:hover td) {
     background: color-mix(in oklab, var(--ca-brand-main) 4%, transparent);
     cursor: pointer;
@@ -94,8 +101,11 @@
     font-size: var(--ca-font-size-button);
   }
 
-  /* ── Cards mode (slot narrower than md = 900px) ─────────────── */
-  @container (max-width: 899.98px) {
+  /* ── Cards mode (slot narrower than sm = 600px): a 4-column table still fits a
+     reading column (~840px), so cards only take over where columns would crush. ── */
+  @container (max-width: 599.98px) {
+    .ca-table--cards { border: none; border-radius: 0; overflow: visible; }
+
     .ca-table--cards,
     .ca-table--cards :global(tbody),
     .ca-table--cards :global(tr),
@@ -113,9 +123,12 @@
       white-space: nowrap;
     }
 
+    /* One label track shared by every row of the card (subgrid): labels take the width of the
+       longest one, values start on the same line, and nothing leaves a 40% hole. */
     .ca-table--cards :global(tbody tr) {
       display: grid;
-      gap: var(--ca-space-1);
+      grid-template-columns: max-content minmax(0, 1fr);
+      gap: var(--ca-space-1) var(--ca-space-6);
       padding: var(--ca-space-3) var(--ca-space-4);
       margin-bottom: var(--ca-space-2);
       border: var(--ca-border-width) solid var(--ca-outline-subtle);
@@ -125,9 +138,10 @@
 
     .ca-table--cards :global(tbody td) {
       display: grid;
-      grid-template-columns: minmax(var(--ca-space-20), 40%) 1fr;
-      gap: var(--ca-space-3);
-      align-items: baseline;
+      grid-column: 1 / -1;
+      grid-template-columns: subgrid;
+      /* Center: a label beside a two-line value (avatar + name + email) sits on its middle. */
+      align-items: center;
       padding: var(--ca-space-1) 0;
       border-bottom: none;
     }
@@ -141,8 +155,23 @@
       letter-spacing: var(--ca-overline-tracking);
     }
 
+    /* Values keep their intrinsic width (a code chip must not stretch into a field). */
+    .ca-table--cards :global(tbody td > *) { justify-self: start; max-width: 100%; }
+
+    /* The first column identifies the row (name, avatar, id): it heads the card full width,
+       without its caption, above a divider; the remaining columns are label/value pairs. */
+    .ca-table--cards :global(tbody td:first-child) {
+      grid-template-columns: 1fr;
+      padding-bottom: var(--ca-space-3);
+      margin-bottom: var(--ca-space-2);
+      border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
+      color: var(--ca-text-primary);
+    }
+    .ca-table--cards :global(tbody td:first-child)::before { display: none; }
+
     .ca-table--cards :global(tbody td:not([data-label])) {
       grid-template-columns: 1fr;
+      grid-column: 1 / -1;
     }
 
     .ca-table--cards :global(tbody tr:hover td) { background: transparent; }

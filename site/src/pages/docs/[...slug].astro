@@ -22,7 +22,7 @@ const next = flat[i + 1];
 const edit = `https://github.com/codeatlasdev/ui/edit/main/site/src/content/docs/${entry.filePath?.split("content/docs/")[1] ?? ""}`;
 ---
 <Base title={entry.data.title} description={entry.data.description} skipLink={false}>
-	<SiteDocsShell client:load sections={SECTIONS} active="docs" {groups} pathname={Astro.url.pathname} headings={toc}>
+	<SiteDocsShell client:load sections={SECTIONS} active="docs" {groups} pathname={Astro.url.pathname} headings={toc} pager={{ prev: prev && { href: docHref(prev.slug), title: prev.title }, next: next && { href: docHref(next.slug), title: next.title } }}>
 		<article class="ca-prose doc">
 			<p class="doc__eyebrow">{entry.data.group}</p>
 			<h1>{entry.data.title}</h1>
@@ -30,10 +30,6 @@ const edit = `https://github.com/codeatlasdev/ui/edit/main/site/src/content/docs
 			<Content />
 			<footer class="doc__footer">
 				<a href={edit} rel="noopener">Edit this page on GitHub</a>
-				<nav aria-label="Pagination" class="doc__pager">
-					{prev && <a href={docHref(prev.slug)} rel="prev"><small>Previous</small>{prev.title}</a>}
-					{next && <a href={docHref(next.slug)} rel="next"><small>Next</small>{next.title}</a>}
-				</nav>
 			</footer>
 		</article>
 	</SiteDocsShell>

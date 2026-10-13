@@ -125,6 +125,9 @@ export const en = {
 		skipToContent: "Skip to content",
 		sectionNavigation: "Section navigation",
 		openNavigation: "Open navigation",
+		pager: "Pagination",
+		previous: "Previous",
+		next: "Next",
 		search: {
 			label: "Search the documentation",
 			short: "Search",

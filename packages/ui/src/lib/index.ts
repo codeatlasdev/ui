@@ -95,6 +95,7 @@ export type {
 	DocsHeading,
 	DocsNavGroup,
 	DocsNavItem,
+	DocsPagerLink,
 	DocsSearchEntry,
 	DocsSection,
 } from "./components/Docs/types.js";

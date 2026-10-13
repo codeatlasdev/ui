@@ -123,6 +123,9 @@ export const ptBR: Messages = {
 		skipToContent: "Ir para o conteúdo",
 		sectionNavigation: "Navegação da seção",
 		openNavigation: "Abrir navegação",
+		pager: "Paginação",
+		previous: "Anterior",
+		next: "Próxima",
 		search: {
 			label: "Buscar na documentação",
 			short: "Buscar",

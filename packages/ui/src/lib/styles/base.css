@@ -105,6 +105,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Links without a component class never show the UA blue/visited purple. */
+:where(a) { color: inherit; }
+
 /* ── Theme islands: text color is inherited as a computed value, re-resolve it ── */
 [data-theme-scope] {
   color: var(--ca-text-primary);
@@ -112,6 +115,8 @@ body {
 
 /* ── Typography (roles from the theme: display family, heading weight/tracking/case) ── */
 :where(h1, h2, h3, h4, h5, h6) {
+  /* Headings never inherit a dimmed parent color (prose, captions, cards). */
+  color: var(--ca-text-primary);
   font-family: var(--ca-font-display);
   font-weight: var(--ca-font-weight-heading);
   letter-spacing: var(--ca-heading-tracking);

@@ -38,8 +38,18 @@ export const STYLES: readonly SurfaceStyle[] = [
 	"tonal",
 	"chrome",
 ];
-/** Deps that must be bundled for SSR (extensionless .svelte imports, ESM-only). */
-export const SSR_NO_EXTERNAL = ["@tanstack/svelte-table", "@tanstack/table-core", "shiki"];
+/**
+ * Deps that must be bundled for SSR: they ship raw .svelte files or extensionless ESM.
+ * Vite's own Svelte-library detection misses them when the package manager links them from
+ * a global store (bun's isolated linker), and Node then fails on `.svelte`.
+ */
+export const SSR_NO_EXTERNAL = [
+	"bits-ui",
+	"@lucide/svelte",
+	"@tanstack/svelte-table",
+	"@tanstack/table-core",
+	"shiki",
+];
 
 export const BUILTIN_IDS: readonly string[] = BUILTIN_PRESETS.map((p) => p.id);
 

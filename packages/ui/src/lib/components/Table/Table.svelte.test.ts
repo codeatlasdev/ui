@@ -43,11 +43,25 @@ describe("SimpleTable", () => {
 		const tr = row.element();
 		expect(getComputedStyle(tr).display).toBe("grid");
 
-		const tds = Array.from(tr.querySelectorAll("td"));
-		expect(tds.map((td) => td.dataset.label)).toEqual(["User", "Role"]);
-		for (const td of tds) {
+		const [head, ...pairs] = Array.from(tr.querySelectorAll("td"));
+		// The first column heads the card: full width, no caption.
+		expect(getComputedStyle(head, "::before").display).toBe("none");
+		for (const td of pairs) {
 			expect(getComputedStyle(td, "::before").content).toBe(`"${td.dataset.label}"`);
 		}
+
+		// Values start on one vertical line in every card, and labels never overlap them.
+		const valueX = Array.from(document.querySelectorAll("tbody tr")).flatMap((r) =>
+			Array.from(r.querySelectorAll("td:not(:first-child)")).map((td) => {
+				const v = td.firstElementChild ?? td;
+				const range = document.createRange();
+				range.selectNodeContents(td.firstElementChild ? v : td);
+				return Math.round(
+					(td.firstElementChild ? v.getBoundingClientRect() : range.getBoundingClientRect()).left
+				);
+			})
+		);
+		expect(new Set(valueX).size).toBe(1);
 
 		// the header row stays in the DOM for assistive tech
 		await expect.element(screen.getByRole("columnheader", { name: "User" })).toBeInTheDocument();

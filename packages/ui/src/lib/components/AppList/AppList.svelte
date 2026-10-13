@@ -346,18 +346,21 @@
   }
 
   @media (max-width: 599.98px) {
+    /* Title and actions share one row (actions never float alone on a line); they only wrap
+       when the title genuinely cannot fit, and then the actions start the new line. */
     .ca-app-list__header {
-      flex-direction: column;
-      align-items: stretch;
+      flex-wrap: wrap;
+      row-gap: var(--ca-space-3);
       padding:
         var(--ca-space-4)
         var(--ca-page-px-sm)
         var(--ca-space-3);
     }
-    .ca-app-list__actions { justify-content: flex-end; }
     .ca-app-list__toolbar { padding: var(--ca-space-2) var(--ca-page-px-sm); }
+    /* Cards align with the header and toolbar edges instead of touching the screen. */
+    .ca-app-list__body { padding: var(--ca-space-1) var(--ca-page-px-sm) var(--ca-space-3); }
     /* The search field takes the free width instead of its fixed min-width. */
-    .ca-app-list__toolbar :global(.ca-search-field) { min-width: 0; max-width: none; }
+    .ca-app-list__toolbar :global(.ca-search-field) { flex: 1 1 auto; min-width: 0; max-width: none; }
     .ca-app-list__footer  { padding: var(--ca-space-2) var(--ca-page-px-sm); flex-wrap: wrap; }
   }
 

@@ -21,6 +21,12 @@ export interface DocsNavGroup {
 }
 
 /** A heading in the "On this page" index. */
+/** One side of the previous/next pager. */
+export interface DocsPagerLink {
+	href: string;
+	title: string;
+}
+
 export interface DocsHeading {
 	id: string;
 	text: string;

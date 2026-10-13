@@ -95,10 +95,17 @@ describe("generatePreset", () => {
 		expect(contrast(t.dark.brandFillHover, t.dark.brandContrast)).toBeGreaterThanOrEqual(4.5);
 	});
 
-	it("text is readable on surfaces in light and dark", () => {
-		const t = generatePreset(55);
-		expect(contrast(t.surfaceBase, t.textPrimary)).toBeGreaterThan(7);
-		expect(contrast(t.dark.surfaceBase, t.dark.textPrimary)).toBeGreaterThan(7);
+	// Any brand hue, any surface, both schemes: headings/body (primary) reach AAA and
+	// secondary text reaches AA, so no generated theme can ship washed-out text.
+	const HUES = Array.from({ length: 12 }, (_, i) => i * 30);
+	it.each(HUES)("hue %i: text roles keep contrast on every surface in light and dark", (h) => {
+		const t = generatePreset(h);
+		for (const m of [t, t.dark]) {
+			for (const surface of [m.surfaceSunken, m.surfaceBase, m.surfaceRaised, m.surfaceOverlay]) {
+				expect(contrast(surface, m.textPrimary)).toBeGreaterThanOrEqual(7);
+				expect(contrast(surface, m.textSecondary)).toBeGreaterThanOrEqual(4.5);
+			}
+		}
 	});
 });
 

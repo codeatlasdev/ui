@@ -45,6 +45,9 @@
 [data-theme-scope],
 [data-preset],
 [data-style] {
+  /* Long-form reading text: between primary and secondary, so paragraphs keep life without
+   * competing with headings. Lightness gap to primary stays small at every preset. */
+  --ca-text-body: color-mix(in oklab, var(--ca-text-primary) 78%, var(--ca-text-secondary));
   /* Control roles: fields, chips and alerts read these, so surface styles restyle them too. */
   --ca-field-bg:           var(--ca-surface-raised);
   --ca-field-border-color: var(--ca-outline-subtle);

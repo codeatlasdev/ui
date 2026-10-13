@@ -13,7 +13,7 @@
 .ca-prose {
   font-size: var(--ca-font-size-body1);
   line-height: 1.75;
-  color: var(--ca-text-secondary);
+  color: var(--ca-text-body);
   overflow-wrap: break-word;
   min-width: 0;
 }
@@ -21,13 +21,13 @@
 .ca-prose > :first-child { margin-top: 0; }
 .ca-prose > :last-child { margin-bottom: 0; }
 
-.ca-prose :where(p, ul, ol, blockquote, .ca-table-wrap, .ca-code, figure, details) {
+.ca-prose :where(p, ul, ol, blockquote, .ca-table-wrap:not(:has(> .ca-table)), .ca-code, figure, details) {
   margin: 1rem 0;
 }
 
 /* ── Headings ───────────────────────────────────────────────────────────── */
 
-.ca-prose :where(h2, h3, h4) {
+.ca-prose :where(h1, h2, h3, h4, h5, h6) {
   position: relative;
   color: var(--ca-text-primary);
   font-weight: 650;
@@ -142,8 +142,10 @@
 }
 
 /* ── Tables ─────────────────────────────────────────────────────────────── */
+/* Raw Markdown tables only. SimpleTable reuses the .ca-table-wrap class but styles itself;
+ * stacking both drew a second frame and row rules over its cards. */
 
-.ca-table-wrap {
+.ca-table-wrap:not(:has(> .ca-table)) {
   overflow-x: auto;
   overscroll-behavior-x: contain;
   border: 1px solid var(--ca-outline-subtle);
@@ -153,7 +155,7 @@
 }
 
 /* Scroll affordance: edge shadows appear only while columns are hidden on that side (no JS). */
-.ca-table-wrap {
+.ca-table-wrap:not(:has(> .ca-table)) {
   background:
     linear-gradient(to right, var(--ca-surface-base) 30%, transparent) left center / 2rem 100% no-repeat local,
     linear-gradient(to left, var(--ca-surface-base) 30%, transparent) right center / 2rem 100% no-repeat local,
@@ -161,19 +163,19 @@
     linear-gradient(to left, oklch(0 0 0 / 0.14), transparent) right center / 0.75rem 100% no-repeat scroll;
 }
 
-.ca-table-wrap:focus-visible {
+.ca-table-wrap:not(:has(> .ca-table)):focus-visible {
   outline: 2px solid var(--ca-brand-main);
   outline-offset: 2px;
 }
 
-.ca-table-wrap table {
+.ca-table-wrap:not(:has(> .ca-table)) table {
   width: 100%;
   border-collapse: collapse;
   font-size: var(--ca-font-size-body2);
   line-height: 1.55;
 }
 
-.ca-table-wrap th {
+.ca-table-wrap:not(:has(> .ca-table)) th {
   padding: 0.625rem 1rem;
   background: var(--ca-surface-raised);
   text-align: left;
@@ -183,16 +185,16 @@
   white-space: nowrap;
 }
 
-.ca-table-wrap td {
+.ca-table-wrap:not(:has(> .ca-table)) td {
   padding: 0.625rem 1rem;
   border-top: 1px solid var(--ca-outline-subtle);
   vertical-align: top;
 }
 
-.ca-table-wrap td:first-child code { white-space: nowrap; }
+.ca-table-wrap:not(:has(> .ca-table)) td:first-child code { white-space: nowrap; }
 
 /* Wide tables keep a readable minimum so columns never collapse to one word per line. */
-.ca-table-wrap td { min-width: 7rem; }
+.ca-table-wrap:not(:has(> .ca-table)) td { min-width: 7rem; }
 
 /* ── Code blocks (shiki dual theme: --shiki-light / --shiki-dark) ───────── */
 
@@ -204,6 +206,18 @@
   border-radius: var(--ca-radius-lg);
   background: var(--ca-surface-raised);
   overflow: hidden;
+}
+
+/* Bare Markdown fences (Astro/mdsvex emit a lone <pre>) get the same frame as .ca-code. */
+.ca-prose > pre {
+  margin: var(--ca-space-5) 0;
+  padding: var(--ca-space-4) var(--ca-space-5);
+  overflow-x: auto;
+  border: var(--ca-border-width) solid var(--ca-outline-subtle);
+  border-radius: var(--ca-radius-lg);
+  background: var(--ca-surface-raised) !important;
+  font: var(--ca-font-size-body2) / var(--ca-line-height-prose) var(--ca-font-mono);
+  tab-size: 2;
 }
 
 .ca-code pre {
@@ -239,9 +253,10 @@
 
 @media (max-width: 899.98px) {
   .ca-prose { line-height: 1.7; }
-  .ca-code pre { padding: 0.875rem 1rem; }
-  .ca-table-wrap th,
-  .ca-table-wrap td { padding: 0.5rem 0.75rem; }
+  .ca-code pre,
+  .ca-prose > pre { padding: var(--ca-space-3-5) var(--ca-space-4); }
+  .ca-table-wrap:not(:has(> .ca-table)) th,
+  .ca-table-wrap:not(:has(> .ca-table)) td { padding: 0.5rem 0.75rem; }
 }
 
 @media (prefers-reduced-motion: reduce) {
