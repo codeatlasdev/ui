@@ -144,8 +144,9 @@ jobs:
 
   e2e:
     name: Site ${{ matrix.suite }} (${{ matrix.shard }}/${{ matrix.total }})
-    needs: build
-    if: ${{ !inputs.update-snapshots }}
+    needs: [changes, build]
+    # Docs-only or repo-meta changes (AGENTS.md, skills, issue templates) skip the browser suites.
+    if: ${{ !inputs.update-snapshots && (needs.changes.outputs.package == 'true' || needs.changes.outputs.site == 'true') }}
     runs-on: ubuntu-latest
     container:
       image: mcr.microsoft.com/playwright:v1.64.0-noble
