@@ -20,7 +20,7 @@
     },
     "packages/ui": {
       "name": "@codeatlasdev/ui",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "bin": {
         "codeatlas-ui": "./dist/bin/codeatlas-ui.js",
         "ca-ui-mcp": "./dist/bin/ca-ui-mcp.js",

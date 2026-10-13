@@ -1,5 +1,36 @@
 # Changelog
 
+## 1.1.0
+
+### Minor Changes
+
+- f7d9a25: Accessibility foundations.
+  
+  - New `SkipLink` component (`ca-skip-link`). `AppShellLayout`, `DocsShell` and `AuthLayout` render it as the first tab stop and own the `#main` target. `DocsShell` keeps its `ca-docs-skip` class and `docs.skipToContent` label, but its `<main>` id is now `main` (was `ca-docs-content`): update any CSS or links that targeted `#ca-docs-content`. `AppShellLayout` gets `mainId` (default `"main"`; pass `null` when your page renders its own `<main id="main" tabindex="-1">`) and `skipLink` (set `false` when the shell is embedded in a page that already has one).
+  - New `announce(message, politeness)` backed by one shared live region. `CopyButton` now announces through it (its local `ca-copy__status` element is gone), and `Button`/`IconButton` announce "Finished loading" when `loading` ends. New `RouteAnnouncer` in `@codeatlasdev/ui/kit` announces SvelteKit navigations (document title, or the page `<h1>`).
+  - `forced-colors: active` support: glass, blur and shadows are removed, surfaces get a `CanvasText` border and focus uses `Highlight`.
+  - `prefers-contrast: more` tokens (text-secondary and text-hint at 7:1 or more, outlines at 3:1 or more) are emitted per preset by the theme generator, so built-in and brand presets from `defineTheme` both get them. Built-in theme CSS is regenerated.
+  - `Combobox` gets an `ariaLabel` prop to name the control when there is no visible `label`.
+- fa63ddd: Developer and agent tooling.
+  
+  - `ca-ui-mcp`: a local MCP server (stdio) with `list_components`, `get_component`, `search_tokens` and `get_guide`, backed by manifests generated from the component source. Works offline.
+  - `components.json` and `tokens.json` are generated on every build and exported as `@codeatlasdev/ui/components.json` and `@codeatlasdev/ui/tokens.json` (props, types, defaults, snippets, public `ca-*` classes, `--ca-*` tokens).
+  - `codeatlas-ui` CLI. `init` wires the theme, hook or integration, `global.css`, `colorScheme.init()` and the mobile viewport into a SvelteKit or Astro app without overwriting existing files (it prints a diff; `--write` applies it). `migrate` is a codemod that renames `BrandPreset` to `PresetDefinition`.
+  - Dev-only `[ca-ui]` warnings for `IconButton` without an accessible name and `Dialog` without a `title`.
+- 0128aee: Performance foundations.
+  
+  - New `Image` component: required `width`/`height` (no layout shift), lazy by default, `priority` for the LCP image (eager, `fetchpriority="high"`, preload link), `decorative` for presentational images, dev warnings for missing dimensions and `alt=""` without `decorative`.
+  - `defineTheme({ fonts })` accepts font descriptors (`family`, `src`, `weight`, `display`, `preload`, `fallback`, `fallbackMetrics`): the theme CSS emits `@font-face` plus a `size-adjust` fallback face, and `themeHead`/`caThemeHandle` emit `<link rel="preload" as="font" crossorigin>`. Plain stack strings keep working. New exported types `FontDescriptor`, `FontFallbackMetrics`, `FontSpec`.
+  - New stylesheet entries `styles/core.css` (everything plus the default amber preset) and `styles/presets/<id>.css` (one built-in preset each). `styles/global.css` still imports everything.
+  - Internal: bundle-size budget (`bun run size`), token lint (`lint:tokens`), both part of `validate`. Built-in preset sources moved from `styles/themes/` to `styles/presets/` (not a published path).
+- 7abc0f9: Add the `@codeatlasdev/ui/seo` entry point: a `Seo` head component (title template, canonical, robots, hreflang, Open Graph, Twitter, JSON-LD with `<` escaped), typed JSON-LD builders (`organization`, `website` with `SearchAction`, `softwareApplication`, `product`, `faqPage`, `breadcrumbList`, `article`, `graph`), `sitemapXml` and `robotsTxt`, `llmsTxt` and a `markdownNegotiation` SvelteKit handle for AI crawlers, `ogImageRoute` for 1200x630 social images through an injected headless browser, and PWA helpers `manifest()` and `appleMeta()`. `caThemeHandle` now warns in development when the final HTML has no `viewport-fit=cover` or no `lang` on `<html>`. `esm-env` is now a direct dependency (dev-only warnings).
+
+### Patch Changes
+
+- 7bcfd57: Browser chrome color sync no longer gets stuck when the page starts in the background (or WebKit pauses its frames): a timeout backs up `requestAnimationFrame`, and the color re-syncs when the tab becomes visible.
+- cd94a19: Browser chrome color sync re-samples after CSS transitions end, so the status bar no longer keeps an in-between color when a theme switch animates the header background.
+- c9099ba: `CommandPalette`: pressing Enter on a result closes the palette again with bits-ui 2.19. Closing returns focus to the element that opened it while the Enter key is still down, and the browser then activated that element and reopened the palette; the palette now closes on `keyup`. Also builds with `@sveltejs/package` 3 and TypeScript 6.
+
 ## 1.0.0
 
 ### Major Changes
