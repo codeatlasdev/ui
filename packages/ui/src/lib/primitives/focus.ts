@@ -1,0 +1,101 @@
+const FOCUSABLE = [
+	"a[href]",
+	"area[href]",
+	"button:not([disabled])",
+	"input:not([disabled]):not([type=hidden])",
+	"select:not([disabled])",
+	"textarea:not([disabled])",
+	"summary",
+	"audio[controls]",
+	"video[controls]",
+	'[contenteditable]:not([contenteditable="false"])',
+	"[tabindex]",
+].join(",");
+
+function isVisible(el: HTMLElement) {
+	if (el.hidden || el.closest("[inert]")) return false;
+	// checkVisibility handles display:none / visibility:hidden / content-visibility.
+	return el.checkVisibility({ visibilityProperty: true });
+}
+
+/** Tabbable descendants of `node` (tabindex ≥ 0, enabled, rendered), in DOM order. */
+export function focusables(node: HTMLElement): HTMLElement[] {
+	return Array.from(node.querySelectorAll<HTMLElement>(FOCUSABLE)).filter(
+		(el) => el.tabIndex >= 0 && isVisible(el)
+	);
+}
+
+/** Focuses the first tabbable descendant; returns it (or null when there is none). */
+export function focusFirst(node: HTMLElement): HTMLElement | null {
+	const el = focusables(node)[0] ?? null;
+	el?.focus({ preventScroll: true });
+	return el;
+}
+
+export interface TrapFocusOptions {
+	/** Where focus goes on activation. Default 'first'. `false` leaves focus alone. */
+	initial?: HTMLElement | "first" | "container" | false;
+	/** Restore focus on cleanup: `true` → the element focused before the trap, or an explicit element. Default true. */
+	restore?: boolean | HTMLElement;
+}
+
+/**
+ * Keeps Tab / Shift+Tab inside `node` and, on cleanup, hands focus back to where it was.
+ * Returns cleanup.
+ */
+export function trapFocus(node: HTMLElement, options: TrapFocusOptions = {}): () => void {
+	if (typeof document === "undefined") return () => {};
+	const { initial = "first", restore = true } = options;
+	const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+
+	if (initial === "first") {
+		if (!focusFirst(node)) focusContainer(node);
+	} else if (initial === "container") {
+		focusContainer(node);
+	} else if (initial instanceof HTMLElement) {
+		initial.focus({ preventScroll: true });
+	}
+
+	function onKeydown(e: KeyboardEvent) {
+		if (e.key !== "Tab" || e.defaultPrevented) return;
+		const items = focusables(node);
+		if (items.length === 0) {
+			e.preventDefault();
+			focusContainer(node);
+			return;
+		}
+		const first = items[0];
+		const last = items[items.length - 1];
+		const active = document.activeElement;
+		if (e.shiftKey && (active === first || active === node || !node.contains(active))) {
+			e.preventDefault();
+			last.focus();
+		} else if (!e.shiftKey && (active === last || !node.contains(active))) {
+			e.preventDefault();
+			first.focus();
+		}
+	}
+
+	// Focus that escapes (programmatic or via a non-Tab path) is pulled back in.
+	function onFocusin(e: FocusEvent) {
+		if (e.target instanceof Node && !node.contains(e.target)) {
+			if (!focusFirst(node)) focusContainer(node);
+		}
+	}
+
+	node.addEventListener("keydown", onKeydown);
+	document.addEventListener("focusin", onFocusin);
+
+	return () => {
+		node.removeEventListener("keydown", onKeydown);
+		document.removeEventListener("focusin", onFocusin);
+		if (restore === false) return;
+		const target = restore instanceof HTMLElement ? restore : previous;
+		if (target?.isConnected) target.focus({ preventScroll: true });
+	};
+}
+
+function focusContainer(node: HTMLElement) {
+	if (node.tabIndex < 0 && !node.hasAttribute("tabindex")) node.tabIndex = -1;
+	node.focus({ preventScroll: true });
+}

@@ -129,6 +129,7 @@
 		"manifest": "bun scripts/build-manifest.ts"
 	},
 	"dependencies": {
+		"@floating-ui/dom": "1.8.0",
 		"@internationalized/date": "3.12.4",
 		"@lucide/svelte": "1.55.0",
 		"bits-ui": "2.19.5",
