@@ -1,0 +1,49 @@
+// `bun run validate`: every gate CI's validate job runs, in parallel where they don't depend
+// on each other. Output of each step is buffered and printed only if it fails.
+//
+//   phase 1 (parallel): generated themes, token lint, Biome, unit tests, package type check, package build
+//   phase 2 (parallel, needs dist/): site type check, size budget
+
+type Step = { name: string; cmd: string[]; cwd?: string };
+
+const phase1: Step[] = [
+	{ name: "themes up to date", cmd: ["bun", "run", "themes:check"], cwd: "packages/ui" },
+	{ name: "token lint", cmd: ["bun", "run", "lint:tokens"], cwd: "packages/ui" },
+	{ name: "biome", cmd: ["bun", "run", "lint"] },
+	{ name: "unit tests", cmd: ["bun", "run", "test:unit"] },
+	{ name: "types (package)", cmd: ["bun", "run", "check"], cwd: "packages/ui" },
+	{ name: "build package", cmd: ["bun", "run", "build"], cwd: "packages/ui" },
+];
+const phase2: Step[] = [
+	{ name: "types (site)", cmd: ["bun", "run", "check"], cwd: "site" },
+	{ name: "size budget", cmd: ["bun", "run", "size"], cwd: "packages/ui" },
+];
+
+async function run(step: Step): Promise<boolean> {
+	const start = performance.now();
+	const proc = Bun.spawn(step.cmd, {
+		cwd: step.cwd,
+		stdout: "pipe",
+		stderr: "pipe",
+		env: { ...process.env, FORCE_COLOR: "1" },
+	});
+	const [out, err, code] = await Promise.all([
+		new Response(proc.stdout).text(),
+		new Response(proc.stderr).text(),
+		proc.exited,
+	]);
+	const secs = ((performance.now() - start) / 1000).toFixed(1);
+	if (code === 0) {
+		console.log(`  ✓ ${step.name} (${secs}s)`);
+		return true;
+	}
+	console.log(`  ✗ ${step.name} (${secs}s)\n${out}${err}`);
+	return false;
+}
+
+const start = performance.now();
+for (const phase of [phase1, phase2]) {
+	const results = await Promise.all(phase.map(run));
+	if (results.includes(false)) process.exit(1);
+}
+console.log(`validate ok in ${((performance.now() - start) / 1000).toFixed(1)}s`);

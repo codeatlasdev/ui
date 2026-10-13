@@ -124,8 +124,8 @@
 		"themes": "bun scripts/build-themes.ts",
 		"themes:check": "bun scripts/build-themes.ts --check",
 		"lint:tokens": "bun scripts/lint-tokens.ts",
-		"size": "bun run build && bun scripts/size-limit.ts",
-		"size:update": "bun run build && bun scripts/size-limit.ts --update",
+		"size": "bun scripts/size-limit.ts",
+		"size:update": "bun scripts/size-limit.ts --update",
 		"manifest": "bun scripts/build-manifest.ts"
 	},
 	"dependencies": {

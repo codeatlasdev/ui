@@ -42,9 +42,13 @@ function isTranslucent(color: string): boolean {
 
 let teardown: (() => void) | undefined;
 let frame = 0;
+let fallback: ReturnType<typeof setTimeout> | undefined;
 
 function sync() {
+	cancelAnimationFrame(frame);
+	clearTimeout(fallback);
 	frame = 0;
+	fallback = undefined;
 	const top = document.elementFromPoint(window.innerWidth / 2, 1);
 	const color = toHex(opaqueBackground(top));
 	let meta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
@@ -56,9 +60,15 @@ function sync() {
 	if (meta.content !== color) meta.content = color;
 }
 
-/** Re-sample on the next frame (coalesced). */
+/**
+ * Re-sample on the next frame (coalesced). Browsers pause rAF for pages they treat as hidden
+ * (background tabs, WebKit with several pages open), so a timeout runs it too; whichever
+ * fires first wins. Without it one paused frame would block every later sync.
+ */
 export function scheduleChromeSync(): void {
-	if (teardown && !frame) frame = requestAnimationFrame(sync);
+	if (!teardown || frame || fallback) return;
+	frame = requestAnimationFrame(sync);
+	fallback = setTimeout(sync, 100);
 }
 
 /**
@@ -80,14 +90,17 @@ export function startChromeSync(): () => void {
 	});
 	// transitionend: a theme switch animates backgrounds; a sample taken mid-transition must be
 	// redone once the color settles, or the bar keeps an in-between color.
-	const events = ["scroll", "resize", "pageshow", "transitionend"] as const;
+	// visibilitychange: a tab coming back to the foreground re-samples (rAF was paused).
+	const events = ["scroll", "resize", "pageshow", "transitionend", "visibilitychange"] as const;
 	for (const e of events)
 		window.addEventListener(e, scheduleChromeSync, { passive: true, capture: true });
 	teardown = () => {
 		observer.disconnect();
 		for (const e of events) window.removeEventListener(e, scheduleChromeSync, { capture: true });
 		cancelAnimationFrame(frame);
+		clearTimeout(fallback);
 		frame = 0;
+		fallback = undefined;
 		teardown = undefined;
 	};
 	scheduleChromeSync();
