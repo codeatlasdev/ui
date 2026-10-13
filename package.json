@@ -25,7 +25,7 @@
 		"lint:fix": "biome check --write .",
 		"validate": "bun run --cwd packages/ui themes:check && bun run check && bun run lint && bun run test:unit",
 		"predev": "bun run build:pkg",
-		"postinstall": "node scripts/fix-ts-symlink.js && bunx playwright install chromium",
+		"postinstall": "node scripts/fix-ts-symlink.js && lefthook install && bunx playwright install chromium",
 		"test": "bun run test:unit && bun run test:browser && bun run test:e2e",
 		"test:unit": "bun run --cwd packages/ui test:unit",
 		"test:browser": "bun run --cwd packages/ui test:browser",
@@ -45,6 +45,7 @@
 	"devDependencies": {
 		"@biomejs/biome": "2.5.13",
 		"@changesets/cli": "3.0.2",
+		"lefthook": "2.2.1",
 		"typescript": "5.9.3"
 	}
 }

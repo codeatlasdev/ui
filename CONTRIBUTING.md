@@ -66,6 +66,8 @@ site/             # Astro site: landing, docs (MDX + Svelte demo islands), templ
 
 ## Before submitting a PR
 
+`bun install` installs a [lefthook](https://lefthook.dev) pre-push hook (`lefthook.yml`): commits are never blocked, but `git push` runs `build:pkg`, `validate` and the component tests first and aborts on failure. In an emergency `LEFTHOOK=0 git push` skips it; CI still blocks the merge.
+
 CI (`.github/workflows/test.yml`) runs the same gates. Locally, both must exit with code 0:
 
 ```bash

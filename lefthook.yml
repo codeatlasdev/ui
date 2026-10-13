@@ -1,0 +1,9 @@
+# Commits are free. Pushes must pass the same gates as CI's "Types, lint, unit" and
+# "Component tests" jobs. Emergency skip: LEFTHOOK=0 git push (CI still blocks the merge).
+pre-push:
+  parallel: false
+  commands:
+    validate:
+      run: bun run build:pkg && bun run validate
+    browser:
+      run: bun run test:browser
