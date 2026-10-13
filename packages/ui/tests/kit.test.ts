@@ -78,6 +78,48 @@ describe("caThemeHandle", () => {
 		expect(out).toContain("<title>x</title>");
 	});
 
+	it("warns once in dev when viewport-fit=cover or <html lang> is missing", async () => {
+		vi.resetModules();
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		const { caThemeHandle: fresh } = await import("../src/lib/kit/theme-handle.js");
+		const page = (html: string) =>
+			(fresh() as unknown as (a: unknown) => unknown)({
+				event: {},
+				resolve: (
+					_e: unknown,
+					o: { transformPageChunk: (c: { html: string; done: boolean }) => string }
+				) => {
+					o.transformPageChunk({ html, done: true });
+					return new Response();
+				},
+			});
+		await page('<html><head><meta name="viewport" content="width=device-width"></head></html>');
+		await page('<html><head><meta name="viewport" content="width=device-width"></head></html>');
+		expect(warn.mock.calls.map((c) => String(c[0]))).toEqual([
+			expect.stringContaining("viewport-fit=cover"),
+			expect.stringContaining("lang"),
+		]);
+
+		warn.mockClear();
+		vi.resetModules();
+		const { caThemeHandle: clean } = await import("../src/lib/kit/theme-handle.js");
+		await (clean() as unknown as (a: unknown) => unknown)({
+			event: {},
+			resolve: (
+				_e: unknown,
+				o: { transformPageChunk: (c: { html: string; done: boolean }) => string }
+			) => {
+				o.transformPageChunk({
+					html: '<html lang="en"><head><meta name="viewport" content="width=device-width, viewport-fit=cover"></head></html>',
+					done: true,
+				});
+				return new Response();
+			},
+		});
+		expect(warn).not.toHaveBeenCalled();
+		warn.mockRestore();
+	});
+
 	it("is idempotent when the marker is already present", async () => {
 		const html = `<head><script id="${CA_THEME_MARKER}"></script></head>`;
 		expect(await run(html)).toBe(html);

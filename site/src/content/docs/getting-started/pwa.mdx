@@ -1,0 +1,148 @@
+---
+title: PWA
+description: Make a SvelteKit app installable with a themed web app manifest, iOS home screen tags and a service worker that keeps navigations on the network and falls back to an offline page.
+group: Getting started
+order: 8
+---
+import { Callout } from "@codeatlasdev/ui";
+
+A progressive web app needs three pieces: a manifest (name, icons, colors), the iOS tags that Safari still reads instead of the manifest, and a service worker. `@codeatlasdev/ui/seo` generates the first two. The service worker stays in your app on purpose: its cache rules depend on your routes and release flow.
+
+## Manifest
+
+`manifest()` returns the manifest object. `theme_color` and `background_color` come from the same theme definition you give `caThemeHandle`, so the splash screen and the browser chrome match the first paint.
+
+```ts
+// src/routes/manifest.webmanifest/+server.ts
+import { manifest } from "@codeatlasdev/ui/seo";
+import { theme } from "$lib/theme";
+
+export const prerender = true;
+
+export const GET = () =>
+  new Response(
+    JSON.stringify(
+      manifest({
+        name: "Acme Seller",
+        shortName: "Seller",
+        description: "Orders and customers on the go.",
+        theme,
+        icons: [
+          { src: "/icons/192.png", sizes: "192x192" },
+          { src: "/icons/512.png", sizes: "512x512" },
+          { src: "/icons/maskable-512.png", sizes: "512x512", purpose: "maskable" },
+        ],
+        shortcuts: [{ name: "New order", url: "/orders/new" }],
+      }),
+    ),
+    { headers: { "content-type": "application/manifest+json" } },
+  );
+```
+
+Defaults are `display: "standalone"`, `start_url: "/"` and `scope: "/"`. Pass `themeColor` or `backgroundColor` to override the derived colors.
+
+<Callout type="caution" title="Provide a maskable icon">
+  Android crops other icons into a white tile. Keep the artwork of the `maskable` icon inside the central 80% of the canvas. `manifest()` warns when none is present.
+</Callout>
+
+Link it from the page head with `<Seo manifest="/manifest.webmanifest" ... />`.
+
+## iOS home screen
+
+Safari ignores most manifest fields. `appleMeta()` returns the tags it does read, as an HTML string:
+
+```svelte
+<script>
+  import { appleMeta } from "@codeatlasdev/ui/seo";
+</script>
+
+<svelte:head>
+  {@html appleMeta({ touchIcon: "/icons/apple-touch-180.png", title: "Seller" })}
+</svelte:head>
+```
+
+| Tag | Effect |
+|---|---|
+| `apple-mobile-web-app-capable` | Opens without Safari chrome. |
+| `apple-mobile-web-app-status-bar-style` | `black-translucent` (default) draws the page under the status bar. Needs `viewport-fit=cover`; pad with `var(--ca-safe-top)`. |
+| `apple-touch-icon` | 180x180 PNG. Use an opaque image: iOS fills transparency with black. |
+
+## Service worker
+
+SvelteKit builds the worker when `src/service-worker.ts` exists and registers it for you. The `$service-worker` module lists the hashed build files, static files and the app version, so the cache never serves stale assets after a deploy.
+
+The pattern below mirrors what works in production apps:
+
+| Request | Strategy | Why |
+|---|---|---|
+| Build files (`/_app/immutable/*`) and static assets | Cache first | Content-hashed, safe forever. |
+| Page navigations | Network first, then the cached offline page | Users always see fresh data; offline shows a real page instead of the browser error. |
+| Everything else (API, auth, form actions) | Untouched | Never cache authenticated data. |
+
+```ts
+// src/service-worker.ts
+/// <reference types="@sveltejs/kit" />
+/// <reference no-default-lib="true"/>
+/// <reference lib="esnext" />
+/// <reference lib="webworker" />
+import { build, files, version } from "$service-worker";
+
+const sw = self as unknown as ServiceWorkerGlobalScope;
+const CACHE = `app-${version}`;
+const ASSETS = [...build, ...files, "/offline"];
+
+sw.addEventListener("install", (event) => {
+  event.waitUntil(
+    caches
+      .open(CACHE)
+      .then((cache) => cache.addAll(ASSETS))
+      .then(() => sw.skipWaiting()),
+  );
+});
+
+sw.addEventListener("activate", (event) => {
+  event.waitUntil(
+    caches
+      .keys()
+      .then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
+      .then(() => sw.clients.claim()),
+  );
+});
+
+sw.addEventListener("fetch", (event) => {
+  const { request } = event;
+  if (request.method !== "GET") return;
+  const url = new URL(request.url);
+  if (url.origin !== sw.location.origin) return;
+
+  // Network first for pages, offline page when the network fails.
+  if (request.mode === "navigate") {
+    event.respondWith(
+      fetch(request).catch(async () => (await caches.match("/offline")) ?? Response.error()),
+    );
+    return;
+  }
+
+  // Cache first for hashed build output and static files.
+  if (ASSETS.includes(url.pathname)) {
+    event.respondWith(caches.match(request).then((hit) => hit ?? fetch(request)));
+  }
+});
+```
+
+Create `src/routes/offline/+page.svelte` with a short message and a retry button, and set `export const prerender = true;` in a sibling `+page.ts` so it exists as static HTML when the worker installs. Using `version` in the cache name replaces old caches on every release.
+
+<Callout type="info" title="Test it like a user">
+  Service workers only run on HTTPS or `localhost`, and only in a production build: run `bun run build && bun run preview`, open DevTools, Application, Service Workers, then tick Offline and reload.
+</Callout>
+
+## Checklist
+
+| Check | Where |
+|---|---|
+| Manifest linked and valid in DevTools, Application, Manifest | `Seo manifest` |
+| Maskable icon and 512px icon present | `manifest()` |
+| `viewport-fit=cover` in the viewport meta | `app.html` |
+| iOS tags present | `appleMeta()` |
+| Offline page prerendered and cached on install | `src/service-worker.ts` |
+| No authenticated responses cached | fetch handler |

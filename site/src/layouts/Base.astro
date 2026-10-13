@@ -1,6 +1,7 @@
 ---
 import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
+import { serializeJsonLd } from "@codeatlasdev/ui/seo";
 import "@codeatlasdev/ui/styles/global.css";
 import "~/styles/site.css";
 
@@ -16,7 +17,7 @@ const { title, description, image = "/og.png", noindex = false, jsonLd } = Astro
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 const ogImage = new URL(image, Astro.site).href;
 const fullTitle = title === "CodeAtlas UI" ? title : `${title} · CodeAtlas UI`;
-const ld = jsonLd && JSON.stringify(jsonLd).replace(/</g, "\\u003c");
+const ld = jsonLd && serializeJsonLd(jsonLd);
 ---
 <!doctype html>
 <html lang="en">

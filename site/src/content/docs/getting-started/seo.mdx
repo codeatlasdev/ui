@@ -1,0 +1,212 @@
+---
+title: SEO
+description: Head tags, structured data, sitemap, robots.txt, llms.txt, Markdown for AI crawlers and social images with the @codeatlasdev/ui/seo entry point.
+group: Getting started
+order: 7
+---
+import { Callout } from "@codeatlasdev/ui";
+import Props from "~/components/docs/Props.astro";
+
+`@codeatlasdev/ui/seo` covers what a public page needs to be found, shared and read by crawlers and AI assistants. It has no peer dependency beyond Svelte: the `Seo` component renders into `<svelte:head>` during SSR or prerender, and everything else is plain TypeScript that returns strings or objects. Nothing runs in the browser.
+
+```ts
+import {
+  Seo, // component
+  organization, website, softwareApplication, product, faqPage, breadcrumbList, article, graph, // JSON-LD
+  sitemapXml, robotsTxt, // crawler files
+  llmsTxt, markdownNegotiation, // AI readers
+  ogImageRoute, // social images
+  manifest, appleMeta, // PWA (see the PWA page)
+} from "@codeatlasdev/ui/seo";
+```
+
+## The Seo component
+
+Place one `Seo` per page, in the route or layout that knows the page's data.
+
+```svelte
+<script>
+  import { Seo, graph, organization, website } from "@codeatlasdev/ui/seo";
+  import { page } from "$app/state";
+
+  const origin = "https://acme.com";
+</script>
+
+<Seo
+  title="Pricing"
+  titleTemplate="%s · Acme"
+  description="Plans for teams of any size."
+  canonical={origin + page.url.pathname}
+  og={{ image: `${origin}/og/pricing.jpg`, imageAlt: "Acme pricing", siteName: "Acme", locale: "en_US" }}
+  twitter={{ site: "@acme" }}
+  alternates={[
+    { hreflang: "en", href: `${origin}/pricing` },
+    { hreflang: "pt-BR", href: `${origin}/pt/pricing` },
+    { hreflang: "x-default", href: `${origin}/pricing` },
+  ]}
+  jsonLd={graph(
+    organization({ id: `${origin}/#org`, name: "Acme", url: origin }),
+    website({ name: "Acme", url: origin, publisher: { "@id": `${origin}/#org` } }),
+  )}
+/>
+```
+
+<Props rows={[
+  { name: "title", type: "string", default: "required", description: "Page title, also used for og:title." },
+  { name: "titleTemplate", type: "string", default: "'%s'", description: "Wrapper for the title; %s is replaced." },
+  { name: "description", type: "string", default: "-", description: "Meta description and og:description." },
+  { name: "canonical", type: "string", default: "-", description: "Absolute URL of this page. Required on indexable pages; a dev warning fires without it." },
+  { name: "robots", type: "string", default: "'index,follow'", description: "Content of the robots meta." },
+  { name: "noindex", type: "boolean", default: "false", description: "Shorthand for 'noindex,nofollow'. Use on admin, auth and app pages." },
+  { name: "alternates", type: "{ hreflang: string; href: string }[]", default: "-", description: "Translations, including the page itself and an x-default entry." },
+  { name: "og", type: "{ type?, image?, imageAlt?, imageWidth?, imageHeight?, locale?, localeAlternates?, siteName? }", default: "-", description: "Open Graph. Image size defaults to 1200x630." },
+  { name: "twitter", type: "{ card?, site? }", default: "-", description: "Card is summary_large_image when an og image is set." },
+  { name: "jsonLd", type: "object | object[]", default: "-", description: "Structured data. Serialized with '<' escaped, so values cannot close the script tag." },
+  { name: "manifest", type: "string", default: "-", description: "URL of the web app manifest." },
+]} />
+
+<Callout type="info" title="Where the dev warnings come from">
+  In development `Seo` warns when an indexable page has no `canonical`, and `caThemeHandle` warns once when the final HTML has no `viewport-fit=cover` or no `lang` on `<html>`. Production builds stay silent.
+</Callout>
+
+## Structured data
+
+The builders return plain objects with `undefined` fields removed. Give a node an `id` and reference it from others with `{ "@id": ... }`, then join everything with `graph()`.
+
+| Builder | Use it for |
+|---|---|
+| `organization` | Company identity, logo, `sameAs` profiles. |
+| `website` | Site root. `searchUrlTemplate: "https://acme.com/s?q={query}"` adds the sitelinks `SearchAction`. |
+| `softwareApplication` | SaaS and app landing pages, with optional `offer` and `rating`. |
+| `product` | Store pages: one or several `offers`, price, currency and availability. |
+| `faqPage` | Question and answer lists that are visible on the page. |
+| `breadcrumbList` | Trail from the root; omit `href` on the current page. |
+| `article` | Blog posts and docs (`type: "BlogPosting" | "NewsArticle" | "TechArticle"`). |
+
+```ts
+import { product } from "@codeatlasdev/ui/seo";
+
+product({
+  name: "Ceramic mug",
+  image: ["https://shop.example/mug.jpg"],
+  brand: "Acme",
+  offers: { price: 49.9, priceCurrency: "BRL", availability: "InStock" },
+});
+```
+
+## Sitemap and robots.txt
+
+Both are plain strings, meant for prerendered `+server.ts` routes.
+
+```ts
+// src/routes/sitemap.xml/+server.ts
+import { sitemapXml } from "@codeatlasdev/ui/seo";
+
+export const prerender = true;
+
+export function GET() {
+  const body = sitemapXml(
+    ["/", "/pricing", "/docs"].map((path) => ({
+      loc: `https://acme.com${path}`,
+      lastmod: new Date(),
+      alternates: [
+        { hreflang: "en", href: `https://acme.com${path}` },
+        { hreflang: "pt-BR", href: `https://acme.com/pt${path}` },
+        { hreflang: "x-default", href: `https://acme.com${path}` },
+      ],
+    })),
+  );
+  return new Response(body, { headers: { "content-type": "application/xml" } });
+}
+```
+
+```ts
+// src/routes/robots.txt/+server.ts
+import { robotsTxt } from "@codeatlasdev/ui/seo";
+
+export const prerender = true;
+
+export const GET = () =>
+  new Response(robotsTxt({ sitemap: "https://acme.com/sitemap.xml", disallow: ["/app", "/admin"] }), {
+    headers: { "content-type": "text/plain" },
+  });
+```
+
+`sitemapXml` throws above 50,000 URLs, the protocol limit: split larger sites into a sitemap index.
+
+## llms.txt and Markdown for AI
+
+`llmsTxt` builds the [llms.txt](https://llmstxt.org) index: a title, a one-paragraph summary and link lists.
+
+```ts
+// src/routes/llms.txt/+server.ts
+import { llmsTxt } from "@codeatlasdev/ui/seo";
+
+export const prerender = true;
+
+export const GET = () =>
+  new Response(
+    llmsTxt({
+      title: "Acme",
+      summary: "Invoicing for freelancers.",
+      sections: [{ heading: "Docs", links: [{ title: "Quick start", href: "https://acme.com/docs/start", description: "Five minutes to the first invoice." }] }],
+    }),
+    { headers: { "content-type": "text/plain; charset=utf-8" } },
+  );
+```
+
+`markdownNegotiation` is a SvelteKit `handle` that answers with `text/markdown` when a client sends `Accept: text/markdown` or identifies as an AI crawler (GPTBot, ClaudeBot, ChatGPT-User, PerplexityBot, Google-Extended, Applebot-Extended, ora-agent, DeepSeekBot). You decide which pages have a Markdown twin; everything else falls through to HTML. API, OAuth and `.well-known` paths are never negotiated.
+
+```ts
+// src/hooks.server.ts
+import { sequence } from "@sveltejs/kit/hooks";
+import { caThemeHandle } from "@codeatlasdev/ui/kit";
+import { markdownNegotiation } from "@codeatlasdev/ui/seo";
+import { markdownPages } from "$lib/markdown"; // Record<pathname, string>
+
+export const handle = sequence(
+  markdownNegotiation({ markdown: (pathname) => markdownPages[pathname] }),
+  caThemeHandle({ defaultPreset: "ocean" }),
+);
+```
+
+Responses carry `Vary: Accept, Accept-Encoding, User-Agent`, so a CDN keeps the HTML and Markdown variants apart.
+
+## Social images
+
+`ogImageRoute` renders an HTML template at 1200x630 through a headless browser and caches the result. HTML and CSS are the template language, so fonts, gradients and `<img>` work as in any page. The browser is passed in, so the package depends on neither Playwright nor Puppeteer: install `playwright` yourself and keep one browser alive per process.
+
+```ts
+// src/routes/og/[slug].jpg/+server.ts
+import { ogImageRoute } from "@codeatlasdev/ui/seo";
+import { chromium, type Browser } from "playwright";
+import { posts } from "$lib/posts";
+
+let browser: Promise<Browser> | undefined;
+
+export const GET = ogImageRoute({
+  browser: () => (browser ??= chromium.launch()),
+  render: ({ params }) => {
+    const post = posts[params.slug];
+    return post && `<html><body style="margin:0;font:700 64px system-ui;padding:80px">${post.title}</body></html>`;
+  },
+  cacheKey: ({ params }) => params.slug,
+});
+```
+
+Unknown slugs answer `404` without starting a browser. Renders run two at a time by default (`concurrency`) and the last 100 images stay in memory (`cacheSize`). Escape any user-provided text before putting it in the template, and inline remote images as `data:` URLs so rendering needs no network.
+
+<Callout type="caution" title="Needs a Chromium on the server">
+  Browser rendering suits Node servers and containers. On serverless or edge targets with no Chromium, generate images at build time instead, or render in a separate service and point `og.image` at it.
+</Callout>
+
+## Checklist
+
+| Check | Where |
+|---|---|
+| `<html lang>` set | `app.html` |
+| Viewport has `viewport-fit=cover` | `app.html`, see [Mobile](/docs/getting-started/mobile/) |
+| One `canonical` per indexable page, absolute | `Seo` |
+| `noindex` on private routes | `Seo` |
+| `sitemap.xml`, `robots.txt` and `llms.txt` prerendered | `+server.ts` routes |
+| Social image 1200x630 with `imageAlt` | `ogImageRoute` or a static file |

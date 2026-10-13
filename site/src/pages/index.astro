@@ -1,6 +1,7 @@
 ---
 import { codeToHtml } from "shiki";
 import { Button } from "@codeatlasdev/ui";
+import { graph, website } from "@codeatlasdev/ui/seo";
 import FinaleActions from "~/components/landing/FinaleActions.svelte";
 import Chapter from "~/components/landing/Chapter.astro";
 import DataShowcase from "~/components/landing/DataShowcase.svelte";
@@ -81,31 +82,21 @@ const title = "CodeAtlas UI";
 const description =
 	"Svelte 5 UI library with a glass material system, an OKLCH theme engine, native-feeling mobile components and typed props that AI agents get right the first time.";
 
-const jsonLd = {
-	"@context": "https://schema.org",
-	"@graph": [
-		{
-			"@type": "WebSite",
-			"@id": `${SITE}/#website`,
-			url: `${SITE}/`,
-			name: "CodeAtlas UI",
-			description,
-			inLanguage: "en",
-		},
-		{
-			"@type": "SoftwareSourceCode",
-			"@id": `${SITE}/#code`,
-			name: "@codeatlasdev/ui",
-			description,
-			codeRepository: REPO,
-			programmingLanguage: ["Svelte", "TypeScript", "CSS"],
-			runtimePlatform: "Svelte 5",
-			license: "https://opensource.org/licenses/MIT",
-			url: NPM,
-			isPartOf: { "@id": `${SITE}/#website` },
-		},
-	],
-};
+const jsonLd = graph(
+	website({ id: `${SITE}/#website`, name: "CodeAtlas UI", url: `${SITE}/`, description, inLanguage: "en" }),
+	{
+		"@type": "SoftwareSourceCode",
+		"@id": `${SITE}/#code`,
+		name: "@codeatlasdev/ui",
+		description,
+		codeRepository: REPO,
+		programmingLanguage: ["Svelte", "TypeScript", "CSS"],
+		runtimePlatform: "Svelte 5",
+		license: "https://opensource.org/licenses/MIT",
+		url: NPM,
+		isPartOf: { "@id": `${SITE}/#website` },
+	},
+);
 import SendPrompt from "~/components/landing/SendPrompt.svelte";
 ---
 <Base title={title} description={description} jsonLd={jsonLd}>
