@@ -1,7 +1,4 @@
 <script lang="ts">
-  import { Switch } from 'bits-ui';
-  import { uid } from '../../utils/index.js';
-
   interface Props {
     checked?: boolean;
     disabled?: boolean;
@@ -23,21 +20,37 @@
     onchange,
   }: Props = $props();
 
-  const switchId = uid('sw');
+  const switchId = $props.id();
 </script>
 
 <div class="ca-switch-wrapper {className}">
-  <Switch.Root
-    bind:checked
-    {disabled}
-    id={switchId}
-    aria-label={label ? undefined : ariaLabel}
-    aria-labelledby={label ? undefined : ariaLabelledby}
-    class="ca-switch"
-    onCheckedChange={onchange}
-  >
-    <Switch.Thumb class="ca-switch__thumb" />
-  </Switch.Root>
+  <!-- Native checkbox with role="switch" is the control (keyboard, form, label association);
+       the track and thumb around it only paint. -->
+  <span class="ca-switch" data-state={checked ? 'checked' : 'unchecked'} data-disabled={disabled ? '' : undefined}>
+    <input
+      id={switchId}
+      type="checkbox"
+      role="switch"
+      class="ca-switch__input"
+      {checked}
+      {disabled}
+      aria-checked={checked}
+      aria-label={label ? undefined : ariaLabel}
+      aria-labelledby={label ? undefined : ariaLabelledby}
+      onchange={(e) => {
+        checked = e.currentTarget.checked;
+        onchange?.(checked);
+      }}
+      onkeydown={(e) => {
+        // APG switch: Space (native) and Enter both toggle.
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          e.currentTarget.click();
+        }
+      }}
+    />
+    <span class="ca-switch__thumb" aria-hidden="true"></span>
+  </span>
   {#if label}
     <label for={switchId} class="ca-switch__label" class:ca-switch__label--disabled={disabled}>
       {label}
@@ -76,14 +89,24 @@
     background: var(--ca-brand-main);
   }
 
-  :global(.ca-switch[disabled]) {
+  :global(.ca-switch[data-disabled]) {
     cursor: not-allowed;
     opacity: 0.45;
   }
 
-  :global(.ca-switch:focus-visible) {
+  :global(.ca-switch:has(.ca-switch__input:focus-visible)) {
     outline: var(--ca-border-width-focus) solid var(--ca-brand-main);
     outline-offset: var(--ca-focus-ring-offset);
+  }
+
+  :global(.ca-switch__input) {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: inherit;
   }
 
   :global(.ca-switch__thumb) {
@@ -96,6 +119,7 @@
     transition: transform var(--ca-duration-fast) var(--ca-ease-spring);
     transform: translateX(0);
     flex-shrink: 0;
+    pointer-events: none;
   }
 
   :global(.ca-switch[data-state='checked'] .ca-switch__thumb) {

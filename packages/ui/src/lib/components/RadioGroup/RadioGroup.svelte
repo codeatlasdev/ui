@@ -1,6 +1,4 @@
 <script lang="ts">
-	import { RadioGroup as BitsRadioGroup } from 'bits-ui';
-
 	export interface RadioItem {
 		value: string;
 		label: string;
@@ -37,25 +35,44 @@
 	}: Props = $props();
 
 	// Per-instance ids: two groups with the same values on one page must not share label targets.
+	// The same id doubles as the native radios' `name`, which is what makes them one group.
 	const uid = $props.id();
+
+	function select(v: string) {
+		value = v;
+		onchange?.(v);
+	}
 </script>
 
-<BitsRadioGroup.Root
-	bind:value
-	{orientation}
-	{disabled}
+<div
+	role="radiogroup"
 	aria-label={ariaLabel}
-	onValueChange={onchange}
+	aria-orientation={orientation}
+	aria-disabled={disabled ? 'true' : undefined}
+	data-orientation={orientation}
+	data-disabled={disabled ? '' : undefined}
 	class="ca-radio-group ca-radio-group--{orientation} ca-radio-group--{variant} {className}"
 >
 	{#each items as item (item.value)}
+		{@const checked = value === item.value}
+		{@const off = disabled || !!item.disabled}
 		{#if variant === 'cards'}
-			<BitsRadioGroup.Item
-				value={item.value}
-				disabled={item.disabled}
+			<label
 				class="ca-radio-card"
-				aria-describedby={item.description ? `${uid}-${item.value}-d` : undefined}
+				data-state={checked ? 'checked' : 'unchecked'}
+				data-disabled={off ? '' : undefined}
 			>
+				<input
+					type="radio"
+					name={uid}
+					value={item.value}
+					class="ca-radio-card__input"
+					{checked}
+					aria-checked={checked}
+					disabled={off}
+					aria-describedby={item.description ? `${uid}-${item.value}-d` : undefined}
+					onchange={() => select(item.value)}
+				/>
 				<span class="ca-radio-card__head">
 					<span class="ca-radio-input" aria-hidden="true"><span class="ca-radio-indicator"></span></span>
 					<span class="ca-radio-card__label">{item.label}</span>
@@ -63,24 +80,34 @@
 				{#if item.description}
 					<span id="{uid}-{item.value}-d" class="ca-radio-card__desc">{item.description}</span>
 				{/if}
-			</BitsRadioGroup.Item>
+			</label>
 		{:else}
 			<div class="ca-radio-item">
-				<BitsRadioGroup.Item
-					value={item.value}
-					disabled={item.disabled}
+				<span
 					class="ca-radio-input"
-					id="{uid}-{item.value}"
+					data-state={checked ? 'checked' : 'unchecked'}
+					data-disabled={off ? '' : undefined}
 				>
-					<div class="ca-radio-indicator" aria-hidden="true"></div>
-				</BitsRadioGroup.Item>
+					<input
+						type="radio"
+						name={uid}
+						value={item.value}
+						id="{uid}-{item.value}"
+						class="ca-radio-input__native"
+						{checked}
+						aria-checked={checked}
+						disabled={off}
+						onchange={() => select(item.value)}
+					/>
+					<span class="ca-radio-indicator" aria-hidden="true"></span>
+				</span>
 				<label for="{uid}-{item.value}" class="ca-radio-label"
-					class:ca-radio-label--disabled={item.disabled || disabled}
+					class:ca-radio-label--disabled={off}
 				>{item.label}</label>
 			</div>
 		{/if}
 	{/each}
-</BitsRadioGroup.Root>
+</div>
 
 <style>
 	:global(.ca-radio-group) {
@@ -105,6 +132,7 @@
 	}
 
 	:global(.ca-radio-input) {
+		position: relative;
 		width: calc(var(--ca-space-4) + var(--ca-space-0-5));
 		height: calc(var(--ca-space-4) + var(--ca-space-0-5));
 		border-radius: 50%;
@@ -130,9 +158,30 @@
 		display: block;
 	}
 
+	/* The dot only exists while checked (the control used to render it only then). */
+	:global(.ca-radio-input[data-state="unchecked"] .ca-radio-indicator) {
+		visibility: hidden;
+	}
+
 	:global(.ca-radio-input[data-disabled]) {
 		opacity: 0.5;
 		cursor: not-allowed;
+	}
+
+	/* The native radio is the control; it covers its painted circle and stays invisible. */
+	:global(.ca-radio-input__native) {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		opacity: 0;
+		cursor: inherit;
+	}
+
+	:global(.ca-radio-input:has(.ca-radio-input__native:focus-visible)) {
+		outline: var(--ca-border-width-focus) solid var(--ca-brand-main);
+		outline-offset: var(--ca-focus-ring-offset);
 	}
 
 	.ca-radio-label {
@@ -155,6 +204,7 @@
 	}
 
 	:global(.ca-radio-card) {
+		position: relative;
 		display: grid;
 		align-content: start;
 		gap: var(--ca-space-1);
@@ -177,11 +227,22 @@
 		background: color-mix(in oklab, var(--ca-brand-main) 8%, var(--ca-field-bg));
 		box-shadow: inset 0 0 0 var(--ca-border-width) var(--ca-brand-main);
 	}
-	:global(.ca-radio-card:focus-visible) {
+	:global(.ca-radio-card:has(.ca-radio-card__input:focus-visible)) {
 		outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
 		outline-offset: var(--ca-focus-ring-offset);
 	}
 	:global(.ca-radio-card[data-disabled]) { opacity: 0.5; cursor: not-allowed; }
+
+	/* Visually hidden but focusable/clickable: the card (a <label>) is the hit area. */
+	:global(.ca-radio-card__input) {
+		position: absolute;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		opacity: 0;
+		cursor: inherit;
+	}
 
 	.ca-radio-card__head { display: flex; align-items: center; gap: var(--ca-space-2); min-width: 0; }
 	:global(.ca-radio-card .ca-radio-input) { display: inline-flex; }

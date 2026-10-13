@@ -13,7 +13,7 @@
 
 <script lang="ts">
   import { untrack } from 'svelte';
-  import { ToggleGroup } from 'bits-ui';
+  import { rovingFocus } from '../../primitives/index.js';
 
   interface Props {
     type?: 'single' | 'multiple';
@@ -42,8 +42,35 @@
     onchange,
   }: Props = $props();
 
-  // Normalise bindable value so bits-ui always receives the shape matching `type`.
+  // Normalise bindable value so it always has the shape matching `type`.
   if (value === undefined) value = untrack(() => (type === 'multiple' ? [] : ''));
+
+  const multiple = $derived(type === 'multiple');
+  const selected = $derived(Array.isArray(value) ? value : value ? [value] : []);
+
+  function toggle(item: ToggleGroupItem) {
+    if (disabled || item.disabled) return;
+    if (multiple) {
+      const next = selected.includes(item.value)
+        ? selected.filter((v) => v !== item.value)
+        : // keep the order of `items`, not click order
+          items.map((i) => i.value).filter((v) => v === item.value || selected.includes(v));
+      value = next;
+      onchange?.(next);
+    } else {
+      // Pressing the active item again clears a single group.
+      const next = selected[0] === item.value ? '' : item.value;
+      value = next;
+      onchange?.(next);
+    }
+  }
+
+  // Single groups are radios (one tab stop, arrows move focus); multiple are independent
+  // toggle buttons that each stay in the tab order.
+  function roving(node: HTMLElement) {
+    if (multiple) return;
+    return rovingFocus(node, { selector: '.ca-toggle-group__item', orientation });
+  }
 </script>
 
 {#snippet content(item: ToggleGroupItem)}
@@ -54,49 +81,34 @@
   {#if item.label}<span>{item.label}</span>{/if}
 {/snippet}
 
-{#if type === 'multiple'}
-  <ToggleGroup.Root
-    type="multiple"
-    bind:value={value as string[]}
-    {disabled}
-    {orientation}
-    aria-label={ariaLabel}
-    onValueChange={(v) => onchange?.(v)}
-    class="ca-toggle-group ca-toggle-group--{variant} ca-toggle-group--{size} {className}"
-  >
-    {#each items as item (item.value)}
-      <ToggleGroup.Item
-        value={item.value}
-        disabled={item.disabled}
-        aria-label={item['aria-label']}
-        class="ca-toggle-group__item"
-      >
-        {@render content(item)}
-      </ToggleGroup.Item>
-    {/each}
-  </ToggleGroup.Root>
-{:else}
-  <ToggleGroup.Root
-    type="single"
-    bind:value={value as string}
-    {disabled}
-    {orientation}
-    aria-label={ariaLabel}
-    onValueChange={(v) => onchange?.(v)}
-    class="ca-toggle-group ca-toggle-group--{variant} ca-toggle-group--{size} {className}"
-  >
-    {#each items as item (item.value)}
-      <ToggleGroup.Item
-        value={item.value}
-        disabled={item.disabled}
-        aria-label={item['aria-label']}
-        class="ca-toggle-group__item"
-      >
-        {@render content(item)}
-      </ToggleGroup.Item>
-    {/each}
-  </ToggleGroup.Root>
-{/if}
+<div
+  role="group"
+  aria-label={ariaLabel}
+  data-orientation={orientation}
+  data-disabled={disabled ? '' : undefined}
+  class="ca-toggle-group ca-toggle-group--{variant} ca-toggle-group--{size} {className}"
+  {@attach roving}
+>
+  {#each items as item (item.value)}
+    {@const on = selected.includes(item.value)}
+    {@const off = disabled || !!item.disabled}
+    <button
+      type="button"
+      role={multiple ? undefined : 'radio'}
+      aria-checked={multiple ? undefined : on}
+      aria-pressed={multiple ? on : undefined}
+      aria-label={item['aria-label']}
+      disabled={off}
+      data-state={on ? 'on' : 'off'}
+      data-disabled={off ? '' : undefined}
+      data-orientation={orientation}
+      class="ca-toggle-group__item"
+      onclick={() => toggle(item)}
+    >
+      {@render content(item)}
+    </button>
+  {/each}
+</div>
 
 <style>
   :global(.ca-toggle-group) {
