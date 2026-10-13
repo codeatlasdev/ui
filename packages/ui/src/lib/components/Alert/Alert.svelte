@@ -124,7 +124,7 @@
 
   /* Success */
   .ca-alert--success {
-    background: color-mix(in oklab, var(--ca-semantic-success) 8%, transparent);
+    background: color-mix(in oklab, var(--ca-semantic-success) 8%, var(--ca-alert-surface));
     border-color: color-mix(in oklab, var(--ca-semantic-success) 20%, transparent);
     color: var(--ca-text-primary);
   }
@@ -133,7 +133,7 @@
 
   /* Warning */
   .ca-alert--warning {
-    background: color-mix(in oklab, var(--ca-semantic-warning) 8%, transparent);
+    background: color-mix(in oklab, var(--ca-semantic-warning) 8%, var(--ca-alert-surface));
     border-color: color-mix(in oklab, var(--ca-semantic-warning) 20%, transparent);
     color: var(--ca-text-primary);
   }
@@ -142,7 +142,7 @@
 
   /* Error */
   .ca-alert--error {
-    background: color-mix(in oklab, var(--ca-semantic-error) 8%, transparent);
+    background: color-mix(in oklab, var(--ca-semantic-error) 8%, var(--ca-alert-surface));
     border-color: color-mix(in oklab, var(--ca-semantic-error) 20%, transparent);
     color: var(--ca-text-primary);
   }
@@ -151,7 +151,7 @@
 
   /* Info */
   .ca-alert--info {
-    background: color-mix(in oklab, var(--ca-semantic-info) 8%, transparent);
+    background: color-mix(in oklab, var(--ca-semantic-info) 8%, var(--ca-alert-surface));
     border-color: color-mix(in oklab, var(--ca-semantic-info) 20%, transparent);
     color: var(--ca-text-primary);
   }

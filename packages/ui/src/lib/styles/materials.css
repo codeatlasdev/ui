@@ -54,6 +54,8 @@
   --ca-chip-shadow:        0 0 #0000;
   --ca-alert-border-color: transparent;
   --ca-alert-shadow:       0 0 #0000;
+  /* Translucent over glass; opaque styles set a real surface below the tint. */
+  --ca-alert-surface:      transparent;
   --ca-mat-edge:
     inset 0 0.5px 0 var(--ca-glass-rim),
     inset 0 -0.5px 0 var(--ca-mat-edge-low);
@@ -447,6 +449,7 @@
 [data-style="neumorphic"],
 [data-style="clay"],
 [data-style="tonal"] {
+  --ca-alert-surface:   var(--ca-surface-raised);
   --ca-blur-ultra-thin: none;
   --ca-blur-thin:       none;
   --ca-blur-regular:    none;
