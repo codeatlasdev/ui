@@ -15,11 +15,11 @@
 
 <style>
   .ca-dropdown-label {
-    padding: 4px 12px 2px;
+    padding: var(--ca-space-1) var(--ca-space-3) var(--ca-space-0-5);
     font-size: var(--ca-font-size-caption);
-    font-weight: 600;
+    font-weight: var(--ca-font-weight-semibold);
     color: var(--ca-text-hint);
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: var(--ca-overline-tracking);
   }
 </style>

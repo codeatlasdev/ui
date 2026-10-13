@@ -57,23 +57,23 @@
 	:global(.ca-lightbox__overlay) {
 		position: fixed;
 		inset: 0;
-		z-index: var(--ca-z-modal, 1300);
+		z-index: var(--ca-z-modal);
 		background: oklch(0 0 0 / 0.88);
 	}
 
 	:global(.ca-lightbox) {
 		position: fixed;
 		inset: 0;
-		z-index: calc(var(--ca-z-modal, 1300) + 1);
+		z-index: calc(var(--ca-z-modal) + 1);
 		display: flex;
 		align-items: center;
 		justify-content: center;
 		box-sizing: border-box;
 		padding:
-			max(16px, var(--ca-safe-top))
-			max(16px, var(--ca-safe-right))
-			max(16px, var(--ca-safe-bottom))
-			max(16px, var(--ca-safe-left));
+			max(var(--ca-space-4), var(--ca-safe-top))
+			max(var(--ca-space-4), var(--ca-safe-right))
+			max(var(--ca-space-4), var(--ca-safe-bottom))
+			max(var(--ca-space-4), var(--ca-safe-left));
 		outline: none;
 	}
 
@@ -91,22 +91,22 @@
 		max-width: 100%;
 		max-height: 100%;
 		object-fit: contain;
-		border-radius: var(--ca-radius-md, 10px);
+		border-radius: var(--ca-radius-md);
 		user-select: none;
 		-webkit-user-drag: none;
 	}
 
 	:global(.ca-lightbox__close) {
 		position: absolute;
-		top: max(12px, var(--ca-safe-top));
-		right: max(12px, var(--ca-safe-right));
+		top: max(var(--ca-space-3), var(--ca-safe-top));
+		right: max(var(--ca-space-3), var(--ca-safe-right));
 		display: inline-flex;
 		align-items: center;
 		justify-content: center;
-		width: 44px;
-		height: 44px;
+		width: var(--ca-touch-target);
+		height: var(--ca-touch-target);
 		border: none;
-		border-radius: var(--ca-radius-pill, 999px);
+		border-radius: var(--ca-radius-pill);
 		background: oklch(0 0 0 / 0.55);
 		color: oklch(1 0 0);
 		cursor: pointer;
@@ -118,8 +118,8 @@
 	}
 
 	:global(.ca-lightbox__close:focus-visible) {
-		outline: 2px solid oklch(1 0 0);
-		outline-offset: 2px;
+		outline: var(--ca-border-width-focus) solid oklch(1 0 0);
+		outline-offset: var(--ca-focus-ring-offset);
 	}
 
 	:global(.ca-lightbox__sr) {
@@ -136,12 +136,12 @@
 
 	:global(.ca-lightbox__overlay[data-state="open"]),
 	:global(.ca-lightbox[data-state="open"]) {
-		animation: ca-lightbox-in 160ms var(--ca-ease-decelerate, ease-out) both;
+		animation: ca-lightbox-in var(--ca-duration-fast) var(--ca-ease-decelerate) both;
 	}
 
 	:global(.ca-lightbox__overlay[data-state="closed"]),
 	:global(.ca-lightbox[data-state="closed"]) {
-		animation: ca-lightbox-out 120ms var(--ca-ease-standard, ease) both;
+		animation: ca-lightbox-out var(--ca-duration-fast) var(--ca-ease-standard) both;
 	}
 
 	@keyframes ca-lightbox-in {

@@ -13,14 +13,14 @@
 <style>
   .ca-toaster {
     position: fixed;
-    bottom: 24px;
-    right: 24px;
+    bottom: var(--ca-space-6);
+    right: var(--ca-space-6);
     z-index: var(--ca-z-snackbar);
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: var(--ca-space-2);
     pointer-events: none;
     max-width: 380px;
-    width: calc(100vw - 48px);
+    width: calc(100vw - 2 * var(--ca-space-6));
   }
 </style>

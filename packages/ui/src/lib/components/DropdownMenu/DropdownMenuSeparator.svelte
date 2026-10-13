@@ -6,8 +6,8 @@
 
 <style>
   :global(.ca-dropdown-sep) {
-    height: 1px;
+    height: var(--ca-border-width);
     background: var(--ca-outline-subtle);
-    margin: 4px 8px;
+    margin: var(--ca-space-1) var(--ca-space-2);
   }
 </style>

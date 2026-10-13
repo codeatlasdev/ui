@@ -77,36 +77,33 @@
      doubled class beats the base .ca-overlay rule regardless of CSS order
      (otherwise the overlay lands above the panel and blurs it). */
   :global(.ca-overlay.ca-overlay--drawer) {
-    z-index: var(--ca-z-drawer, 1200);
+    z-index: var(--ca-z-drawer);
   }
 
   /* ── Drawer panel ───────────────────────────────────────────── */
   :global(.ca-drawer) {
     position: fixed;
-    z-index: calc(var(--ca-z-drawer, 1200) + 1);
+    z-index: calc(var(--ca-z-drawer) + 1);
     background: var(--ca-surface-overlay);
-    border: 1px solid var(--ca-outline-subtle);
+    border: var(--ca-border-width) solid var(--ca-outline-subtle);
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    box-shadow:
-      0 0 0 1px oklch(0 0 0 / 0.04),
-      0 8px 32px oklch(0 0 0 / 0.14),
-      0 32px 80px oklch(0 0 0 / 0.20);
+    box-shadow: var(--ca-shadow-xl);
   }
 
   /* ── Side variants ──────────────────────────────────────────── */
   :global(.ca-drawer--right) {
     top: 0; bottom: 0; right: 0;
     width: var(--drawer-w, 360px);
-    max-width: calc(100vw - 48px);
+    max-width: calc(100vw - var(--ca-space-12));
     border-radius: var(--ca-radius-xl) 0 0 var(--ca-radius-xl);
     border-right: none;
   }
   :global(.ca-drawer--left) {
     top: 0; bottom: 0; left: 0;
     width: var(--drawer-w, 360px);
-    max-width: calc(100vw - 48px);
+    max-width: calc(100vw - var(--ca-space-12));
     border-radius: 0 var(--ca-radius-xl) var(--ca-radius-xl) 0;
     border-left: none;
   }
@@ -120,26 +117,26 @@
 
   /* ── Animations: right ─────────────────────────────────────── */
   :global(.ca-drawer--right[data-state='open']) {
-    animation: ca-drawer-right-in 240ms var(--ca-ease-decelerate, cubic-bezier(0.05,0.7,0.1,1)) both;
+    animation: ca-drawer-right-in var(--ca-duration-base) var(--ca-ease-decelerate) both;
   }
   :global(.ca-drawer--right[data-state='closed']) {
-    animation: ca-drawer-right-out 180ms var(--ca-ease-standard, ease) both;
+    animation: ca-drawer-right-out var(--ca-duration-fast) var(--ca-ease-standard) both;
   }
 
   /* ── Animations: left ──────────────────────────────────────── */
   :global(.ca-drawer--left[data-state='open']) {
-    animation: ca-drawer-left-in 240ms var(--ca-ease-decelerate, cubic-bezier(0.05,0.7,0.1,1)) both;
+    animation: ca-drawer-left-in var(--ca-duration-base) var(--ca-ease-decelerate) both;
   }
   :global(.ca-drawer--left[data-state='closed']) {
-    animation: ca-drawer-left-out 180ms var(--ca-ease-standard, ease) both;
+    animation: ca-drawer-left-out var(--ca-duration-fast) var(--ca-ease-standard) both;
   }
 
   /* ── Animations: bottom ────────────────────────────────────── */
   :global(.ca-drawer--bottom[data-state='open']) {
-    animation: ca-drawer-bottom-in 240ms var(--ca-ease-decelerate, cubic-bezier(0.05,0.7,0.1,1)) both;
+    animation: ca-drawer-bottom-in var(--ca-duration-base) var(--ca-ease-decelerate) both;
   }
   :global(.ca-drawer--bottom[data-state='closed']) {
-    animation: ca-drawer-bottom-out 180ms var(--ca-ease-standard, ease) both;
+    animation: ca-drawer-bottom-out var(--ca-duration-fast) var(--ca-ease-standard) both;
   }
 
   /* ── Header ─────────────────────────────────────────────────── */
@@ -147,19 +144,22 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
-    padding: 18px 20px;
+    gap: var(--ca-space-2);
+    padding: var(--ca-space-4) var(--ca-space-5);
     flex-shrink: 0;
-    border-bottom: 1px solid var(--ca-outline-subtle);
+    border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
   }
 
   :global(.ca-drawer__title) {
     font-size: var(--ca-font-size-body1);
-    font-weight: 600;
+    font-family: var(--ca-font-display);
+    font-weight: var(--ca-font-weight-heading);
+    letter-spacing: var(--ca-heading-tracking);
+    text-transform: var(--ca-heading-case);
     color: var(--ca-text-primary);
     margin: 0;
     flex: 1;
-    line-height: 1.3;
+    line-height: var(--ca-line-height-body);
   }
 
   /* ── Body ───────────────────────────────────────────────────── */
@@ -167,7 +167,7 @@
     flex: 1;
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: 20px;
+    padding: var(--ca-space-5);
     min-height: 0;
   }
 
@@ -175,10 +175,10 @@
   :global(.ca-drawer__actions) {
     display: flex;
     justify-content: flex-end;
-    gap: 8px;
-    padding: 12px 20px;
+    gap: var(--ca-space-2);
+    padding: var(--ca-space-3) var(--ca-space-5);
     flex-shrink: 0;
-    border-top: 1px solid var(--ca-outline-subtle);
+    border-top: var(--ca-border-width) solid var(--ca-outline-subtle);
   }
 
   /* ── Keyframes ──────────────────────────────────────────────── */

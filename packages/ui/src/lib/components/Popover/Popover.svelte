@@ -55,7 +55,7 @@
 
   :global(.ca-popover-content) {
     border-radius: var(--ca-radius-lg);
-    padding: 16px;
+    padding: var(--ca-space-4);
     max-width: 320px;
     z-index: var(--ca-z-dropdown);
     animation: ca-popover-in var(--ca-duration-fast) var(--ca-ease-decelerate);
