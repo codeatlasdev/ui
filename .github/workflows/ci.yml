@@ -242,6 +242,16 @@ jobs:
       pull-requests: write
     steps:
       - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: package.json
+      - uses: actions/cache@v6
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-${{ runner.os }}-
+      # Puts the pinned wrangler (site devDependency) on the path; the action would try npm.
+      - run: bun install --frozen-lockfile --ignore-scripts
       - uses: actions/download-artifact@v8
         with:
           name: build
