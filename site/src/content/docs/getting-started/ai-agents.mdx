@@ -5,6 +5,7 @@ group: Getting started
 order: 6
 ---
 import { Callout, Steps } from "@codeatlasdev/ui";
+import CodeGroup from "~/components/docs/CodeGroup.astro";
 
 The API is designed so a language model gets it right on the first try. A component name says what the screen is (`AppList`, `AppForm`, `AppSettings`, `PageShell`), props are data, and snippets are the holes you fill. There are no styling decisions to guess: colors, spacing and radius come from `--ca-*` tokens.
 
@@ -21,6 +22,44 @@ This site publishes its documentation in plain text for tools that cannot render
 | [Agent guide](https://github.com/codeatlasdev/ui/blob/main/AGENTES.md) | `AGENTES.md` in the repository: critical rules, spacing and token reference, page template patterns, store and theme setup. Written in Portuguese. |
 
 Every page is also linked with `<link rel="alternate" type="text/plain" href="/llms.txt">` in its head.
+
+## MCP server
+
+`ca-ui-mcp` is a local [Model Context Protocol](https://modelcontextprotocol.io) server that ships with the package. It reads the manifests generated from the component source at build time, so it works offline and always matches the installed version.
+
+| Tool | Returns |
+|---|---|
+| `list_components` | Every component with its import path and a one-line description. Optional `query` filter. |
+| `get_component` | One component's props (type, default, `bind:` or not, docs), snippets and public `ca-*` classes. The name is case-insensitive: `get_component("app list")` finds `AppList`. |
+| `search_tokens` | `--ca-*` design tokens matching a name, value or section, with light and dark values. |
+| `get_guide` | A documentation page as markdown, by slug (`getting-started/theming`) or title. Without a name it lists every guide. |
+
+Prop names are never guessed: an agent asks the server and gets the types the compiler sees.
+
+<CodeGroup tabs={[
+  { label: "Claude Code", lang: "sh", code: "claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp" },
+  { label: "Claude Code (.mcp.json)", lang: "json", code: "{\n  \"mcpServers\": {\n    \"codeatlas-ui\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"-p\", \"@codeatlasdev/ui\", \"ca-ui-mcp\"]\n    }\n  }\n}" },
+  { label: "Cursor (.cursor/mcp.json)", lang: "json", code: "{\n  \"mcpServers\": {\n    \"codeatlas-ui\": {\n      \"command\": \"npx\",\n      \"args\": [\"-y\", \"-p\", \"@codeatlasdev/ui\", \"ca-ui-mcp\"]\n    }\n  }\n}" },
+]} />
+
+If the package is already a dependency of your app, point the command at the local binary instead (`node_modules/.bin/ca-ui-mcp`) to skip the download and pin the version your code compiles against.
+
+The same data is available as files: `@codeatlasdev/ui/components.json` (components) and `@codeatlasdev/ui/tokens.json` (tokens).
+
+## Set up and migrate with the CLI
+
+```sh
+bunx @codeatlasdev/ui init
+```
+
+`init` detects SvelteKit or Astro and wires up what the [installation](/docs/getting-started/installation/) page describes: `src/lib/theme.ts`, the theme hook or integration, the `global.css` import, `colorScheme.init()` in the root layout and a mobile-ready viewport meta. It creates files that are missing and **never overwrites** one that exists: it prints a diff instead, and `--write` applies it. Running it twice changes nothing.
+
+```sh
+bunx @codeatlasdev/ui migrate          # print the diff
+bunx @codeatlasdev/ui migrate --write  # apply it
+```
+
+`migrate` rewrites code for renamed APIs by parsing `.svelte`, `.ts` and `.astro` files, so only real references change (not strings or same-named identifiers from other packages). Today it renames the `BrandPreset` type to `PresetDefinition`.
 
 ## Install the skills
 

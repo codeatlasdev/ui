@@ -39,6 +39,10 @@
 	"sideEffects": [
 		"**/*.css"
 	],
+	"bin": {
+		"codeatlas-ui": "./dist/bin/codeatlas-ui.js",
+		"ca-ui-mcp": "./dist/bin/ca-ui-mcp.js"
+	},
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
@@ -97,7 +101,9 @@
 			"types": "./dist/seo/index.d.ts",
 			"svelte": "./dist/seo/index.js",
 			"default": "./dist/seo/index.js"
-		}
+		},
+		"./components.json": "./dist/components.json",
+		"./tokens.json": "./dist/tokens.json"
 	},
 	"files": [
 		"dist",
@@ -105,7 +111,7 @@
 		"!dist/**/*.spec.*"
 	],
 	"scripts": {
-		"build": "svelte-package -i src/lib && node ../../scripts/prune-dist.js dist",
+		"build": "svelte-package -i src/lib && node ../../scripts/prune-dist.js dist && bun scripts/build-manifest.ts && bun scripts/build-bin.ts",
 		"check": "svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
 		"build:watch": "svelte-package -i src/lib --watch",
 		"test": "vitest run",
@@ -119,7 +125,8 @@
 		"themes:check": "bun scripts/build-themes.ts --check",
 		"lint:tokens": "bun scripts/lint-tokens.ts",
 		"size": "bun run build && bun scripts/size-limit.ts",
-		"size:update": "bun run build && bun scripts/size-limit.ts --update"
+		"size:update": "bun run build && bun scripts/size-limit.ts --update",
+		"manifest": "bun scripts/build-manifest.ts"
 	},
 	"dependencies": {
 		"@internationalized/date": "3.12.4",
@@ -131,6 +138,7 @@
 	"devDependencies": {
 		"@fontsource-variable/inter": "5.3.0",
 		"@fontsource-variable/jetbrains-mono": "5.3.0",
+		"@modelcontextprotocol/sdk": "1.32.1",
 		"@sveltejs/kit": "2.70.3",
 		"@sveltejs/package": "2.5.8",
 		"@sveltejs/vite-plugin-svelte": "7.3.0",
@@ -143,14 +151,17 @@
 		"echarts": "6.1.0",
 		"esbuild": "0.28.2",
 		"happy-dom": "21.0.1",
+		"magic-string": "1.4.3",
 		"playwright": "1.64.0",
 		"shiki": "4.4.3",
 		"svelte": "5.57.0",
 		"svelte-check": "4.7.6",
+		"svelte2tsx": "0.7.61",
 		"typescript": "5.9.3",
 		"vite": "8.3.0",
 		"vitest": "5.0.3",
-		"vitest-browser-svelte": "3.1.0"
+		"vitest-browser-svelte": "3.1.0",
+		"zod": "4.6.7"
 	},
 	"peerDependencies": {
 		"svelte": "^5.33.0",
@@ -158,7 +169,8 @@
 		"echarts": "^6.0.0",
 		"@tanstack/svelte-table": "^9.2.4",
 		"shiki": "^4.0.0",
-		"astro": "^5.0.0 || ^6.0.0 || ^7.0.0"
+		"astro": "^5.0.0 || ^6.0.0 || ^7.0.0",
+		"typescript": ">=5.0.0"
 	},
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org",
@@ -178,6 +190,9 @@
 			"optional": true
 		},
 		"astro": {
+			"optional": true
+		},
+		"typescript": {
 			"optional": true
 		}
 	}

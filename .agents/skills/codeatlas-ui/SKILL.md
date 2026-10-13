@@ -67,10 +67,25 @@ Charts, DataTable and CodeSnippet are NOT in the root import. Each needs its own
 
 `SimpleTable` and `UserCell` stay in the root import and need nothing extra.
 
+## Look up the real API before writing a prop
+
+Never guess a prop name. Two sources, both generated from the source types:
+
+1. **MCP server (preferred).** `ca-ui-mcp` answers `get_component("Button")` (props, defaults, snippets, `ca-*` classes), `list_components`, `search_tokens("safe-bottom")` and `get_guide("theming")`. Setup: `claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp`.
+2. **[API.md](./API.md)** — the same data as one markdown file (offline fallback; large, search it instead of reading it whole). Regenerate with `bun run --cwd packages/ui manifest -- --skill` after changing a component.
+
+## Mobile, theme, SEO
+
+- **Mobile.** Heights use `var(--ca-vh)`, never `100vh`/`100dvh`. Fixed UI pads with `var(--ca-safe-*)`. Keyboard-aware forms use `use:keyboardAware` (`@codeatlasdev/ui/actions`). Full-screen mobile screens are `MobilePane`, sticky form bars are `StickyActions`. Never write a 44px touch override: it is global under `(pointer: coarse)`.
+- **Theme.** One `ThemeOptions` object in `src/lib/theme.ts`, passed to `caThemeHandle`/`caThemePlugin` (SvelteKit) or `caUI` (Astro). Keep it a plain object with a type-only import so config files can load it in Node. Override tokens by declaring `--ca-*` on `:root`, no `!important`. Local dark/light islands: `data-theme-scope="dark|light"`.
+- **Setup.** `bunx @codeatlasdev/ui init` wires all of the above into a fresh SvelteKit or Astro app and never overwrites a file (it prints a diff; `--write` applies it).
+- **SEO.** Public pages use `<Seo>` from `@codeatlasdev/ui/seo` with `canonical`; private pages pass `noindex`.
+
 ## Companion files
 
 - [LAYOUT.md](./LAYOUT.md) — Grid, Row, Stack — all props and composition patterns
 - [PAGE-TEMPLATES.md](./PAGE-TEMPLATES.md) — AppList, AppForm, AppSettings, PageShell
 - [APPSHELL.md](./APPSHELL.md) — navigation shell setup
-- [COMPONENTS.md](./COMPONENTS.md) — Button, inputs, display, overlays — props and variants
+- [COMPONENTS.md](./COMPONENTS.md) — Button, inputs, display, overlays — curated usage examples
+- [API.md](./API.md) — generated props, defaults and classes for every component
 - [ANTIPATTERNS.md](./ANTIPATTERNS.md) — explicit don'ts with corrected alternatives

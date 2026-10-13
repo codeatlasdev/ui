@@ -4,6 +4,7 @@
   import { Dialog } from 'bits-ui';
   import { X } from '@lucide/svelte';
   import './dialog.css';
+  import { devWarn } from '../../utils/dev-warn.js';
 
   /**
    * Dialog — modal de segunda camada.
@@ -49,6 +50,12 @@
     actions,
     onOpenChange,
   }: Props = $props();
+
+  // bits-ui labels the dialog from Dialog.Title; without `title` it has no accessible name.
+  $effect(() => {
+    if (open && !title?.trim())
+      devWarn('dialog-title', '<Dialog> has no `title`, so the dialog has no accessible name. Pass title (use chromeless to hide the header and keep the label).');
+  });
 
   const maxW = { sm: '400px', md: '480px', lg: '600px', xl: '820px', split: '1100px' } as const;
 </script>

@@ -14,6 +14,9 @@ Este documento descreve tudo que um agente de IA precisa saber para trabalhar co
 
 ```
 packages/ui/          → biblioteca publicável (@codeatlasdev/ui)
+  bin/                → CLIs: codeatlas-ui (init, migrate) e ca-ui-mcp (servidor MCP)
+  scripts/            → build-manifest.ts (components/tokens/guides.json), build-bin.ts, build-themes.ts
+  src/cli/            → lógica do init e do migrate (testada em tests/cli.test.ts)
   src/lib/
     components/       → componentes Svelte 5
     styles/           → CSS: global.css (tudo), core.css (sem presets extras), presets/*.css, base.css, tokens.css, materials.css
@@ -98,6 +101,14 @@ Lendo falhas: locators falham com ARIA snapshot; traces em `__traces__/` (Vitest
 11. **Sem `Stack`/`Row` para layout de campos dentro de `FormSection`** — `FormSection` já tem `layout="grid"` (padrão), `layout="list"` e `layout="stack"`. Não envolva campos em `Stack gap={N}` como workaround de layout.
 
 12. **Classes `ca-*` são contrato público** — apps consumidores usam as classes BEM (`.ca-btn`, `.ca-dialog__body`, …) como alvo de CSS. Renomear ou remover classe `ca-*` listada em [`docs/css-api.md`](docs/css-api.md) = **breaking change**. Ao criar/renomear componente, atualize esse arquivo.
+
+13. **Mobile** — alturas com `var(--ca-vh)` (nunca `100vh`/`100dvh`); UI `fixed` usa `var(--ca-safe-*)`; formulário com teclado usa `use:keyboardAware` (`@codeatlasdev/ui/actions`); tela cheia no mobile é `MobilePane`, barra de ações é `StickyActions`; alvo de toque de 44px é global em `(pointer: coarse)`, não escreva override no app. Viewport do app: `width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content`.
+
+14. **Tema** — um único `ThemeOptions` em `src/lib/theme.ts` (objeto simples, `import type` apenas: `vite.config`/`astro.config` carregam o arquivo em Node, onde a raiz do pacote não avalia `.svelte`), passado a `caThemeHandle` + `caThemePlugin` (SvelteKit) ou `caUI` (Astro). Sobrescreva token declarando `--ca-*` em `:root` no app, sem `!important`. Ilhas locais: `data-theme-scope="dark|light"`. Setup automático: `bunx @codeatlasdev/ui init`.
+
+15. **SEO** — página pública usa `<Seo>` de `@codeatlasdev/ui/seo` com `canonical` obrigatório; página privada passa `noindex`.
+
+16. **Descobrir a API** — nunca adivinhe prop. Use o servidor MCP `ca-ui-mcp` (`get_component`, `list_components`, `search_tokens`, `get_guide`) ou `.agents/skills/codeatlas-ui/API.md`; ambos são gerados do código por `packages/ui/scripts/build-manifest.ts` (roda no `build`). Dev warnings `[ca-ui]` (via `devWarn`, `esm-env`) avisam de `IconButton` sem `aria-label` e `Dialog` sem `title`.
 
 ---
 

@@ -61,4 +61,22 @@ describe("IconButton", () => {
 			expect(await checkA11y(screen.container)).toHaveNoViolations();
 		}
 	);
+
+	it("warns in dev when no accessible name is given", async () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		// Bypasses the required `aria-label` type, as a JS caller or spread would.
+		const props = { children: icon } as unknown as Parameters<typeof render<typeof IconButton>>[1];
+		await render(IconButton, props);
+		expect(warn).toHaveBeenCalledWith(
+			expect.stringMatching(/^\[ca-ui\] <IconButton> has no accessible name/)
+		);
+		warn.mockRestore();
+	});
+
+	it("stays quiet when aria-label names it", async () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		await render(IconButton, { "aria-label": "Ok", children: icon });
+		expect(warn).not.toHaveBeenCalled();
+		warn.mockRestore();
+	});
 });

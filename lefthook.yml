@@ -1,0 +1,10 @@
+# Git hooks. Commits are never blocked; only `git push` runs the gate.
+# Same checks as CI (.github/workflows/ci.yml) so a red pipeline is caught before it leaves the machine.
+# Skip once with `LEFTHOOK=0 git push` or `git push --no-verify`.
+pre-push:
+  parallel: false
+  jobs:
+    - name: validate (themes, types, lint, unit)
+      run: bun run validate
+    - name: component tests (Chromium)
+      run: bun run test:browser

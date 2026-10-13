@@ -4,6 +4,7 @@
   import Spinner from '../Spinner/Spinner.svelte';
   import { t } from '../../i18n/state.svelte.js';
   import { announce } from '../../utils/announce.js';
+  import { devWarn } from '../../utils/dev-warn.js';
 
   type Variant = 'glass' | 'filled' | 'text';
   type Size = 'sm' | 'md' | 'lg';
@@ -31,6 +32,12 @@
     onclick,
     ...rest
   }: Props = $props();
+
+  // Typed as required, but JS callers, spreads and MDX bypass the type: an icon-only button needs a name.
+  $effect(() => {
+    if (!ariaLabel?.trim() && !rest['aria-labelledby'])
+      devWarn('icon-button-label', '<IconButton> has no accessible name. Pass aria-label (or aria-labelledby).');
+  });
 
   const isDisabled = $derived(disabled || loading);
 

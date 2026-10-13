@@ -7,7 +7,7 @@ order: 1
 import { Callout, Steps } from "@codeatlasdev/ui";
 import CodeGroup from "~/components/docs/CodeGroup.astro";
 
-CodeAtlas UI needs Svelte 5 (runes mode). Setup is three things: import the stylesheet once, inject the theme script before first paint, and start the `colorScheme` store in your root layout.
+CodeAtlas UI needs Svelte 5 (runes mode). In a SvelteKit or Astro app, `bunx @codeatlasdev/ui init` does the whole setup below for you, and prints a diff instead of overwriting any file that already exists. Setup is three things: import the stylesheet once, inject the theme script before first paint, and start the `colorScheme` store in your root layout.
 
 <CodeGroup sync="pm" tabs={[
   { label: "bun", code: "bun add @codeatlasdev/ui" },

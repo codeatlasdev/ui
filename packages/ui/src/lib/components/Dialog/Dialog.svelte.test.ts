@@ -1,9 +1,11 @@
+import { createRawSnippet } from "svelte";
 import { describe, expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
 import { VIEWPORTS } from "../../../../tests/viewports";
+import Dialog from "./Dialog.svelte";
 import Harness from "./Dialog.test.svelte";
 
 describe("Dialog", () => {
@@ -95,5 +97,16 @@ describe("Dialog", () => {
 		const cs = getComputedStyle(body as HTMLElement);
 		expect(cs.display).not.toBe("grid");
 		expect(cs.display).toBe("block");
+	});
+
+	it("warns in dev when an open dialog has no title", async () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		await render(Dialog, {
+			open: true,
+			children: createRawSnippet(() => ({ render: () => "<p>Body</p>" })),
+		});
+		await expect.element(page.getByRole("dialog")).toBeVisible();
+		expect(warn).toHaveBeenCalledWith(expect.stringMatching(/^\[ca-ui\] <Dialog> has no `title`/));
+		warn.mockRestore();
 	});
 });
