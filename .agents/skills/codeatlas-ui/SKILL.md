@@ -41,19 +41,29 @@ Svelte 5 UI framework. Components are self-contained and prop-driven. Compose th
 ```
 
 ```ts
-// vite.config.ts
+// src/lib/theme.ts: the one ThemeOptions object shared by the plugin and the hook
+import type { ThemeOptions } from '@codeatlasdev/ui';
+export const theme: ThemeOptions = {
+  presets: [{ id: 'acme', color: '#2563eb' }],
+  defaultPreset: 'acme',
+  defaultScheme: 'system',
+};
+
+// vite.config.ts (import with the .ts extension: Vite's native config loader needs it)
 import { sveltekit } from '@sveltejs/kit/vite';
 import { caThemePlugin } from '@codeatlasdev/ui/vite';
+import { theme } from './src/lib/theme.ts';
 // caThemePlugin: anti-FOUC script + ssr.noExternal for @tanstack/svelte-table and shiki
-export default defineConfig({ plugins: [sveltekit(), caThemePlugin()] });
+export default defineConfig({ plugins: [sveltekit(), caThemePlugin(theme)] });
 
 // src/hooks.server.ts: injects the theme script into SSR/prerendered pages
 import { sequence } from '@sveltejs/kit/hooks';
 import { caThemeHandle } from '@codeatlasdev/ui/kit';
-export const handle = sequence(caThemeHandle());
+import { theme } from './lib/theme.ts';
+export const handle = sequence(caThemeHandle(theme));
 ```
 
-Product with its own brand color? Pass the same `ThemeOptions` to both: `caThemeHandle(theme)` and `caThemePlugin(theme)`, with `theme = { presets: [{ id: "acme", color: "#2563eb" }], defaultPreset: "acme", defaultScheme: "system" }`. The full light/dark token set is generated from the hex. Put the logo in `AppShellLayout` with `{#snippet brand()}`.
+Always pass the same `theme` to `caThemeHandle(theme)` and `caThemePlugin(theme)`: called with no argument they fall back to the default brand and ignore your presets. The full light/dark token set is generated from each preset's hex. Put the logo in `AppShellLayout` with `{#snippet brand()}`.
 
 ### SvelteKit 3 (peer allows `^2.12.0 || ^3.0.0`)
 
@@ -87,10 +97,27 @@ Never guess a prop name. Two sources, both generated from the source types:
 
 ## Mobile, theme, SEO
 
-- **Mobile.** Heights use `var(--ca-vh)`, never `100vh`/`100dvh`. Fixed UI pads with `var(--ca-safe-*)`. Keyboard-aware forms use `use:keyboardAware` (`@codeatlasdev/ui/actions`). Full-screen mobile screens are `MobilePane`, sticky form bars are `StickyActions`. Never write a 44px touch override: it is global under `(pointer: coarse)`.
+- **Mobile.** Heights use `var(--ca-vh)`, never `100vh`/`100dvh`. Fixed UI pads with `var(--ca-safe-*)`. Keyboard-aware forms use `use:keyboardAware`. Full-screen mobile screens are `MobilePane`, sticky form bars are `StickyActions`. Never write a 44px touch override: it is global under `(pointer: coarse)`.
+- **Opening a view with a text field (dialog, sheet, search).** iOS only opens the keyboard for `focus()` called synchronously inside the tap. In the tap handler call `primeKeyboard()` first, then open the view, and mark the real field `use:autofocus`: `<Button onclick={() => { primeKeyboard(); open = true; }}>`. On touch, `autofocus` and `focusTextField` only focus after `primeKeyboard()` (no half-focused field without a keyboard); pass `{ touch: true }` to force it. No-op with a mouse. Never hand-roll `setTimeout(() => input.focus())`.
 - **Theme.** One `ThemeOptions` object in `src/lib/theme.ts`, passed to `caThemeHandle`/`caThemePlugin` (SvelteKit) or `caUI` (Astro). Keep it a plain object with a type-only import so config files can load it in Node. Override tokens by declaring `--ca-*` on `:root`, no `!important`. Local dark/light islands: `data-theme-scope="dark|light"`.
 - **Setup.** `bunx @codeatlasdev/ui init` wires all of the above into a fresh SvelteKit or Astro app and never overwrites a file (it prints a diff; `--write` applies it).
 - **SEO.** Public pages use `<Seo>` from `@codeatlasdev/ui/seo` with `canonical`; private pages pass `noindex`.
+
+## Actions (`@codeatlasdev/ui/actions`)
+
+Import from the subpath, never copy the logic. Every export:
+
+| export | use |
+|---|---|
+| `autofocus` | `use:autofocus` on the field of a view that just opened; touch-safe (see Mobile above) |
+| `primeKeyboard` | helper, not an action: call in the tap handler that opens a view with an autofocused field |
+| `focusTextField` | `focusTextField(el, force?)`: the focus logic behind `autofocus`, for imperative focus |
+| `keyboardAware` | `use:keyboardAware` on forms and composers: keeps the focused field above the on-screen keyboard |
+| `focusTrap` | `use:focusTrap={open}` on custom overlays (Dialog and Sheet already trap focus) |
+| `clickOutside` | `use:clickOutside={() => close()}` for custom popovers |
+| `clipboard` | `use:clipboard={text}` copies on click and fires `copy` (prefer `CopyButton`) |
+| `longpress` | `use:longpress={500}` fires `longpress` after the pointer is held for that many ms |
+| `scrollFocusable` | `use:scrollFocusable` on a scroll container: tab stop only while it overflows |
 
 ## Companion files
 

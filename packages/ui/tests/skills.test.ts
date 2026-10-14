@@ -51,6 +51,35 @@ describe("agent skills layout (npx skills add codeatlasdev/ui)", () => {
 	});
 });
 
+/** Type-check `source` as a virtual file inside packages/ui (strict, so imports resolve like the repo's). */
+function typeErrors(name: string, source: string): string[] {
+	const file = join(resolve(import.meta.dir, ".."), name);
+	const host = ts.createCompilerHost({});
+	const read = host.readFile.bind(host);
+	host.readFile = (f) => (f === file ? source : read(f));
+	const fileExists = host.fileExists.bind(host);
+	host.fileExists = (f) => f === file || fileExists(f);
+	const getSource = host.getSourceFile.bind(host);
+	host.getSourceFile = (f, lang, ...rest) =>
+		f === file ? ts.createSourceFile(f, source, lang, true) : getSource(f, lang, ...rest);
+	const program = ts.createProgram(
+		[file],
+		{
+			strict: true,
+			noEmit: true,
+			skipLibCheck: true,
+			allowImportingTsExtensions: true,
+			moduleResolution: ts.ModuleResolutionKind.Bundler,
+			module: ts.ModuleKind.ESNext,
+			target: ts.ScriptTarget.ESNext,
+		},
+		host
+	);
+	return ts
+		.getPreEmitDiagnostics(program, program.getSourceFile(file))
+		.map((d) => ts.flattenDiagnosticMessageText(d.messageText, "\n"));
+}
+
 describe("codeatlas-ui APPSHELL.md", () => {
 	const doc = readFileSync(join(SKILLS, "codeatlas-ui/APPSHELL.md"), "utf8");
 	const block = doc.match(/```ts\n([\s\S]*?)```/)?.[1] ?? "";
@@ -69,36 +98,59 @@ describe("codeatlas-ui APPSHELL.md", () => {
 			.concat(
 				`\ndeclare const ${icons.map((i) => `${i}: NavModule['icon']`).join(", ")};\nexport {};\n`
 			);
-		const file = join(root, "__appshell_doc__.ts");
-		const host = ts.createCompilerHost({});
-		const read = host.readFile.bind(host);
-		host.readFile = (f) => (f === file ? source : read(f));
-		const fileExists = host.fileExists.bind(host);
-		host.fileExists = (f) => f === file || fileExists(f);
-		const getSource = host.getSourceFile.bind(host);
-		host.getSourceFile = (f, lang, ...rest) =>
-			f === file ? ts.createSourceFile(f, source, lang, true) : getSource(f, lang, ...rest);
-		const program = ts.createProgram(
-			[file],
-			{
-				strict: true,
-				noEmit: true,
-				skipLibCheck: true,
-				allowImportingTsExtensions: true,
-				moduleResolution: ts.ModuleResolutionKind.Bundler,
-				module: ts.ModuleKind.ESNext,
-				target: ts.ScriptTarget.ESNext,
-			},
-			host
-		);
-		const errors = ts
-			.getPreEmitDiagnostics(program, program.getSourceFile(file))
-			.map((d) => ts.flattenDiagnosticMessageText(d.messageText, "\n"));
-		expect(errors).toEqual([]);
+		expect(typeErrors("__appshell_doc__.ts", source)).toEqual([]);
 	});
 
 	it("uses basePath/items, never path/sections, on a module", () => {
 		expect(block).toContain("basePath:");
 		expect(block).not.toMatch(/sections\s*:/);
+	});
+});
+
+describe("codeatlas-ui SKILL.md", () => {
+	const doc = readFileSync(join(SKILLS, "codeatlas-ui/SKILL.md"), "utf8");
+	const blocks = [...doc.matchAll(/```(\w+)\n([\s\S]*?)```/g)].map((m) => ({
+		lang: m[1],
+		code: m[2],
+	}));
+	const viteBlock =
+		blocks.find((b) => b.lang === "ts" && b.code.includes("caThemePlugin"))?.code ?? "";
+
+	it("passes the shared theme to caThemePlugin and caThemeHandle in the setup block", () => {
+		// Agents copy this block, so a bare caThemePlugin()/caThemeHandle() ships the default brand.
+		expect(viteBlock).toMatch(/caThemePlugin\(theme\)/);
+		expect(viteBlock).toMatch(/caThemeHandle\(theme\)/);
+		expect(viteBlock).not.toMatch(/caTheme(?:Plugin|Handle)\(\s*\)/);
+	});
+
+	it("type-checks the theme object against ThemeOptions and the plugin/handle signatures", () => {
+		const themeFile = viteBlock.match(/\/\/ src\/lib\/theme\.ts[\s\S]*?\n\};\n/)?.[0] ?? "";
+		expect(themeFile).toContain("ThemeOptions");
+		const lib = join(resolve(import.meta.dir, ".."), "src/lib");
+		const source = `${themeFile.replace("'@codeatlasdev/ui'", `'${lib}/index.ts'`)}
+import { caThemePlugin } from '${lib}/vite-plugin.ts';
+import { caThemeHandle } from '${lib}/kit/index.ts';
+caThemePlugin(theme);
+caThemeHandle(theme);
+`;
+		expect(typeErrors("__skill_setup__.ts", source)).toEqual([]);
+		// The check bites: a typo'd option must be reported.
+		const bad = source.replace("defaultScheme:", "defaultSchemeX:");
+		expect(typeErrors("__skill_setup__.ts", bad)).not.toEqual([]);
+	});
+
+	it("imports the theme with the .ts extension (Vite native config loader)", () => {
+		expect(viteBlock).toMatch(/import \{ theme \} from ['"]\.\/src\/lib\/theme\.ts['"]/);
+	});
+
+	it("mentions every export of @codeatlasdev/ui/actions", () => {
+		const barrel = readFileSync(resolve(import.meta.dir, "../src/lib/actions/index.ts"), "utf8");
+		const exports = [...barrel.matchAll(/export \{([^}]*)\}/g)]
+			.flatMap((m) => m[1].split(","))
+			.map((s) => s.trim())
+			.filter(Boolean);
+		expect(exports).toContain("primeKeyboard");
+		const missing = exports.filter((name) => !new RegExp(`\\b${name}\\b`).test(doc));
+		expect(missing).toEqual([]);
 	});
 });
