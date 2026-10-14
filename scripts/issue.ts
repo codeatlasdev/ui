@@ -159,7 +159,9 @@ async function done(n: string) {
 	if (state === "OPEN") die(`PR for #${n} is still open: merge or close it first`);
 	await $`git worktree remove ${path}`.cwd(ROOT);
 	await $`git branch -D ${branch}`.cwd(ROOT).quiet().nothrow();
-	console.log(`#${n}: removed ${path} and ${branch}`);
+	// The issue is closed (merged) or back in the pool (PR closed): either way nobody is on it.
+	await $`gh issue edit ${n} --remove-label ${LABEL}`.cwd(ROOT).quiet().nothrow();
+	console.log(`#${n}: removed ${path} and ${branch}, cleared "${LABEL}"`);
 }
 
 const [cmd, arg] = process.argv.slice(2);
