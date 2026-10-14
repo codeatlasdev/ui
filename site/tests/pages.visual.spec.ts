@@ -45,7 +45,9 @@ for (const scheme of ["dark", "light"] as const) {
 				await expect(page).toHaveScreenshot(`${slug(route)}-${scheme}.webp`, {
 					fullPage: true,
 					clip: { x: 0, y: 0, width, height },
-					mask: [page.locator("canvas")],
+					// The chart box, not the canvas: ECharts re-creates its canvas when the full-page capture
+					// resizes the viewport, so the canvas box moves between the two compared shots.
+					mask: [page.locator(".ca-chart-wrap, canvas")],
 				});
 			});
 		}

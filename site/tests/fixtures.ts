@@ -123,11 +123,22 @@ export async function settle(page: Page) {
 				(el) => !el.closest("details:not([open])")
 			)
 	);
+	// Page height AND chart canvas boxes must hold for 500ms: canvases are masked in visual
+	// snapshots, and a chart that mounts late moves its canvas between the two compared shots.
 	await page.waitForFunction(
 		() =>
 			new Promise<boolean>((resolve) => {
-				const h = document.documentElement.scrollHeight;
-				setTimeout(() => resolve(document.documentElement.scrollHeight === h), 500);
+				const snap = () =>
+					[document.documentElement.scrollHeight]
+						.concat(
+							[...document.querySelectorAll("canvas")].flatMap((c) => {
+								const r = c.getBoundingClientRect();
+								return [r.top + scrollY, r.left, r.width, r.height];
+							})
+						)
+						.join();
+				const before = snap();
+				setTimeout(() => resolve(snap() === before), 500);
 			})
 	);
 	await page.evaluate(() => document.fonts.ready);
