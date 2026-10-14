@@ -6,7 +6,7 @@ Conventions: BEM (`ca-block__element`, `ca-block--modifier`). CSS variables (`--
 
 Generated from `grep -o 'ca-[a-z0-9_-]*'` over `packages/ui/src/lib/components/<Component>/` (`.svelte`, `.css`, `.ts`), excluding custom properties and duplicates. When you add or rename components, rerun the command and update this file. Some listed names may be `@keyframes` or internal identifiers (e.g. `ca-accordion-down`) rather than classes; treat them as stable to be safe.
 
-Total: 754 unique classes across 69 components.
+Total: 765 unique classes across 70 components.
 
 ---
 
@@ -122,6 +122,10 @@ Total: 754 unique classes across 69 components.
 
 `.ca-error-page` `.ca-error-page__actions` `.ca-error-page__bubble` `.ca-error-page__hint` `.ca-error-page__inner` `.ca-error-page__status` `.ca-error-page__title`
 
+## ExternalLink
+
+`.ca-external-link` `.ca-external-link__icon` `.ca-external-link__sr`
+
 ## FileUpload
 
 `.ca-file-upload` `.ca-file-upload--disabled` `.ca-file-upload__errors` `.ca-file-upload__file` `.ca-file-upload__file-icon` `.ca-file-upload__file-name` `.ca-file-upload__file-size` `.ca-file-upload__hint` `.ca-file-upload__icon` `.ca-file-upload__input` `.ca-file-upload__label` `.ca-file-upload__list` `.ca-file-upload__remove` `.ca-file-upload__zone` `.ca-file-upload__zone--dragging`
@@ -150,10 +154,6 @@ Total: 754 unique classes across 69 components.
 
 `.ca-kpi` `.ca-kpi__icon` `.ca-kpi__inner` `.ca-kpi__title` `.ca-kpi__top` `.ca-kpi__trend` `.ca-kpi__trend--down` `.ca-kpi__trend--up` `.ca-kpi__unit` `.ca-kpi__value` `.ca-kpi__value-row`
 
-## KpiGrid
-
-`.ca-kpi-grid` `.ca-kpi-grid__grid`
-
 ## Lightbox
 
 `.ca-lightbox` `.ca-lightbox-in` `.ca-lightbox-out` `.ca-lightbox__close` `.ca-lightbox__img` `.ca-lightbox__overlay` `.ca-lightbox__sr` `.ca-lightbox__stage`
@@ -161,6 +161,10 @@ Total: 754 unique classes across 69 components.
 ## NotificationBell
 
 `.ca-notif-action` `.ca-notif-actions` `.ca-notif-bell` `.ca-notif-empty` `.ca-notif-header` `.ca-notif-item` `.ca-notif-item--unread` `.ca-notif-item__body` `.ca-notif-item__btn` `.ca-notif-item__dot` `.ca-notif-item__dot--default` `.ca-notif-item__dot--error` `.ca-notif-item__dot--info` `.ca-notif-item__dot--success` `.ca-notif-item__dot--warning` `.ca-notif-item__text` `.ca-notif-item__time` `.ca-notif-item__title` `.ca-notif-list` `.ca-notif-panel` `.ca-notif-title` `.ca-notif-trigger`
+
+## LiveList
+
+`.ca-live-list` `.ca-live-list__bar` `.ca-live-list__count` `.ca-live-list__empty` `.ca-live-list__frame` `.ca-live-list__head` `.ca-live-list__item` `.ca-live-list__jump` `.ca-live-list__list` `.ca-live-list__scroller`
 
 ## MobilePane
 

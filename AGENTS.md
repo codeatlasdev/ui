@@ -444,7 +444,11 @@ import { DataTable, createCaTable, createCaColumnHelper, caTableFeatures } from 
 - For simple lists use `SimpleTable` + `UserCell` + `StatusChip`, which is lighter
 
 ### Display
-`Avatar` · `Image` · `Badge` · `Alert` · `Chip` · `StatusChip` · `KpiCard` · `KpiGrid` · `EmptyState` · `Timeline` · `Sparkline` · `SimpleTable`
+`Avatar` · `Image` · `Badge` · `Alert` · `Chip` · `StatusChip` · `KpiCard` · `KpiGrid` · `EmptyState` · `Timeline` · `Sparkline` · `SimpleTable` · `LiveList` · `ExternalLink`
+
+- **Streaming rows (SSE/WebSocket/bulk job)**: `LiveList` (`items`, `item` snippet, `total`, `status`, `label`). It is a `role="log"` with `aria-live="off"`: rows are summarised as one polite announcement per batch, auto-scroll follows only while the user is at the bottom (scrolling up pauses it and shows a "N new" button) and nothing ever calls `focus()`. Do not put `StatusChip` (it has `role="status"`) or any live region inside a row; use `Chip` or text.
+- **External links**: `ExternalLink` (never hand-write `target="_blank"`): sets `rel="noopener noreferrer"`, an `aria-hidden` icon and a localised "(opens in a new tab)" for screen readers (`externalLink.newTab`). `Button href target="_blank"` already sets `rel`.
+- **Export (CSV/JSON)**: `ExportMenu` (`data`, `filename`, `columns`, `formats`, `onexport`) or the helpers `toCsv` / `toJson` / `downloadFile` from the package root. CSV is RFC 4180 and neutralises spreadsheet formulas.
 
 - **`SimpleTable` `responsive`**: `"scroll"` (default) or `"cards"`. With `cards`, below `md` each `<tr>` becomes a card and each `<td>` shows its label via `::before { content: attr(data-label) }`. **Required: pass `data-label="Column"` on every `<td>`** (a cell without `data-label` has no label). No local scroll wrappers needed.
   ```svelte

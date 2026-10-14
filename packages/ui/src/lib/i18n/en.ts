@@ -99,6 +99,27 @@ export const en = {
 		copied: "Copied",
 		failed: "Could not copy",
 	},
+	externalLink: {
+		/** Appended (visually hidden) to every link that opens in a new tab. */
+		newTab: "opens in a new tab",
+	},
+	exportMenu: {
+		label: "Export",
+		csv: "CSV",
+		json: "JSON",
+		exported: (format: string, count: number) =>
+			`Exported ${count} ${count === 1 ? "row" : "rows"} as ${format}`,
+	},
+	liveList: {
+		progress: (done: number, total: number) => `${done} of ${total}`,
+		count: (done: number) => `${done} ${done === 1 ? "item" : "items"}`,
+		newItems: (count: number) => `${count} new`,
+		jumpToLatest: "Jump to latest",
+		received: (count: number) => `${count} new ${count === 1 ? "item" : "items"}`,
+		complete: (count: number) => `Complete: ${count} ${count === 1 ? "item" : "items"}`,
+		failed: "Stopped with an error",
+		empty: "Waiting for results…",
+	},
 	dataTable: {
 		export: "Export CSV",
 		exportShort: "CSV",

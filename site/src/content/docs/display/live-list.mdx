@@ -1,0 +1,64 @@
+---
+title: Live List
+description: A list that fills while rows stream in over SSE, WebSocket or a bulk job, with progress, batched screen reader announcements and auto-scroll that never steals focus.
+group: Display
+order: 12
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Stream from "~/demos/display/live-list/Stream.svelte";
+import StreamSrc from "~/demos/display/live-list/Stream.svelte?raw";
+
+```svelte
+<script>
+  import { LiveList } from "@codeatlasdev/ui";
+
+  let items = $state([]);
+  let status = $state("running");
+
+  const source = new EventSource("/api/check");
+  source.onmessage = (e) => items.push(JSON.parse(e.data));
+  source.addEventListener("done", () => { status = "done"; source.close(); });
+</script>
+
+<LiveList {items} total={domains.length} {status} label="Domain checks">
+  {#snippet item(row)}
+    <span>{row.domain}</span>
+    <span>{row.available ? "Available" : "Taken"}</span>
+  {/snippet}
+</LiveList>
+```
+
+`AppList` and `DataTable` assume data that is already there. `LiveList` is for rows that arrive over time: a bulk checker, an import, a log viewer. Append to `items` as messages arrive; the component does the rest.
+
+## What it handles for you
+
+|Concern|Behaviour|
+|---|---|
+|Screen readers|The list is a named `role="log"` with `aria-live="off"`, so a screen reader is **not** flooded with one announcement per row. New rows are summarised as a single polite message per batch ("12 new items"), and completion is announced once. Errors are announced assertively.|
+|Auto-scroll|Follows the newest row only while the user is at the bottom. Scrolling up pauses it and shows a "N new" button; pressing it jumps to the latest row and resumes. Turn it off with `follow={false}`.|
+|Focus|Nothing in `LiveList` calls `focus()`. A row action or a field outside the list keeps focus while rows stream in.|
+|Progress|Determinate ("3 of 12" and a bar) when you pass `total`; a plain count and an indeterminate bar while `status="running"` otherwise.|
+|Keyboard|The scrolling area becomes focusable only while it overflows, so it can be scrolled with the arrow keys.|
+
+<Demo title="Streaming rows" description="Start the check, then scroll up while it runs: following pauses and a New button appears." src={StreamSrc}><Stream client:visible /></Demo>
+
+## Rules for the row snippet
+
+- Do not put `role="status"` or `aria-live` inside a row. `StatusChip` has `role="status"` on purpose (it is a live region), so inside a `LiveList` use `Chip` or plain text, or every row would announce itself.
+- Rows are append-only. Keep a stable `getKey` if you ever replace the array with a reordered copy.
+- A row can hold interactive content (buttons, links). Focus is never moved, so those controls stay usable while the list grows.
+
+<Props rows={[
+  { name: "items", type: "readonly T[]", description: "Rows received so far, oldest first. Append to it as messages arrive." },
+  { name: "item", type: "Snippet<[T, number]>", description: "Renders one row (inside an `li`). Receives the row and its index." },
+  { name: "label", type: "string", description: "Accessible name of the log region and of the progress bar." },
+  { name: "total", type: "number", description: "Expected number of rows. Enables determinate progress." },
+  { name: "status", type: "'idle' | 'running' | 'done' | 'error'", default: "'idle'", description: "`running` shows progress; `done` and `error` are announced once." },
+  { name: "follow", type: "boolean", default: "true", description: "Follow the newest row while the user is at the bottom." },
+  { name: "height", type: "string", default: "'24rem'", description: "Height of the scrolling area (any CSS length)." },
+  { name: "getKey", type: "(item: T, index: number) => string | number", default: "index", description: "Stable key per row." },
+  { name: "announceDelay", type: "number", default: "600", description: "Quiet period in ms before a batch of new rows is announced." },
+  { name: "empty", type: "Snippet", description: "Content shown while there are no rows." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+]} />

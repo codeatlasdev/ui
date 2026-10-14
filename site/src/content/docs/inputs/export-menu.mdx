@@ -1,0 +1,47 @@
+---
+title: Export Menu
+description: An Export button with a CSV and JSON menu that builds and downloads the file in the browser.
+group: Inputs
+order: 21
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Default from "~/demos/inputs/export-menu/Default.svelte";
+import DefaultSrc from "~/demos/inputs/export-menu/Default.svelte?raw";
+
+```svelte
+<script>
+  import { ExportMenu } from "@codeatlasdev/ui";
+</script>
+
+<ExportMenu data={rows} filename="domains" />
+```
+
+`ExportMenu` is a `DropdownMenu` with CSV and JSON items. Choosing one builds the file from `data`, downloads it and announces "Exported 3 rows as CSV" politely. It is disabled while `data` is empty. Pass **all** rows, not only the visible page.
+
+CSV is RFC 4180 (CRLF, quoted fields) with a UTF-8 BOM in the downloaded file so Excel reads accents correctly. Text cells that start with `=`, `+`, `-` or `@` get a leading `'` so a spreadsheet never runs them as a formula (CSV injection). Numbers are left as they are.
+
+<Demo title="Default" description="Custom column order and headers. onexport receives the generated text, handy for tests or uploads." src={DefaultSrc}><Default client:visible /></Demo>
+
+## Helpers
+
+The same logic is exported for custom UI:
+
+```ts
+import { toCsv, toJson, downloadFile } from "@codeatlasdev/ui";
+
+downloadFile("domains.csv", toCsv(rows, columns), "text/csv;charset=utf-8");
+```
+
+<Props rows={[
+  { name: "data", type: "readonly T[]", description: "Rows to export." },
+  { name: "filename", type: "string", default: "'export'", description: "File name without extension." },
+  { name: "columns", type: "ExportColumn<T>[]", description: "`{ key, header?, value? }` per column. Defaults to the keys of the first row." },
+  { name: "formats", type: "('csv' | 'json')[]", default: "['csv', 'json']", description: "Formats offered, in menu order." },
+  { name: "label", type: "string", description: "Button label. Defaults to the localised “Export”." },
+  { name: "variant", type: "'filled' | 'glass' | 'outlined' | 'ghost'", default: "'outlined'", description: "Button variant." },
+  { name: "size", type: "'sm' | 'md' | 'lg'", default: "'md'", description: "Button size." },
+  { name: "disabled", type: "boolean", default: "false", description: "Disables the button." },
+  { name: "onexport", type: "(e: { format, filename, content, rows }) => void", description: "Called after each export with the generated text." },
+  { name: "class", type: "string", default: "''", description: "Extra class on the menu content." },
+]} />

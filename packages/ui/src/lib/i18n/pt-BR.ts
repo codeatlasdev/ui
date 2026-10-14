@@ -97,6 +97,26 @@ export const ptBR: Messages = {
 		copied: "Copiado",
 		failed: "Não foi possível copiar",
 	},
+	externalLink: {
+		newTab: "abre em uma nova aba",
+	},
+	exportMenu: {
+		label: "Exportar",
+		csv: "CSV",
+		json: "JSON",
+		exported: (format: string, count: number) =>
+			`${count} ${count === 1 ? "linha exportada" : "linhas exportadas"} em ${format}`,
+	},
+	liveList: {
+		progress: (done: number, total: number) => `${done} de ${total}`,
+		count: (done: number) => `${done} ${done === 1 ? "item" : "itens"}`,
+		newItems: (count: number) => `${count} novos`,
+		jumpToLatest: "Ir para o mais recente",
+		received: (count: number) => `${count} ${count === 1 ? "novo item" : "novos itens"}`,
+		complete: (count: number) => `Concluído: ${count} ${count === 1 ? "item" : "itens"}`,
+		failed: "Interrompido por um erro",
+		empty: "Aguardando resultados…",
+	},
 	dataTable: {
 		export: "Exportar CSV",
 		exportShort: "CSV",

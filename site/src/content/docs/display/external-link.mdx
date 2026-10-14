@@ -1,0 +1,33 @@
+---
+title: External Link
+description: A link that opens in a new tab with the right rel, an icon and a screen reader hint, ready for table cells.
+group: Display
+order: 13
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import InTable from "~/demos/display/external-link/InTable.svelte";
+import InTableSrc from "~/demos/display/external-link/InTable.svelte?raw";
+
+```svelte
+<script>
+  import { ExternalLink } from "@codeatlasdev/ui";
+</script>
+
+<ExternalLink href="https://registrar.example/buy?d=atlas.dev">Buy at registrar</ExternalLink>
+```
+
+`ExternalLink` always sets `target="_blank"` with `rel="noopener noreferrer"`, draws a trailing arrow icon (hidden from assistive technology) and appends a visually hidden "(opens in a new tab)" to the accessible name. The hint comes from the i18n catalog (`externalLink.newTab`), so it follows `setLocale`. Without it a screen reader user gets no warning that the link leaves the page.
+
+A results table with a per-row external link needs nothing more than putting it in a cell. For links that look like buttons, use `Button` with `href` and `target="_blank"`; it already sets `rel`.
+
+<Demo title="In a results table" description="One link per row. The accessible name of each link is for example “Buy at registrar (opens in a new tab)”." src={InTableSrc}><InTable client:visible /></Demo>
+
+<Props rows={[
+  { name: "href", type: "string", description: "Destination URL." },
+  { name: "children", type: "Snippet", description: "Link text." },
+  { name: "showIcon", type: "boolean", default: "true", description: "Trailing arrow icon. The screen reader hint stays either way." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+]} />
+
+Other anchor attributes (`aria-label`, `data-*`, `onclick`) are passed through. `target` and `rel` are fixed on purpose.
