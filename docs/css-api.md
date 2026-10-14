@@ -1,6 +1,6 @@
 # Public CSS API: `ca-*` classes
 
-> **Renaming or removing any class listed here is a breaking change** (requires a major/minor release with a changelog note). Consuming apps use these classes as CSS targets (`:global(.ca-*)`), so they are a public contract alongside component props.
+> **Renaming or removing any class listed here is a breaking change** (requires a major/minor release with a changelog note). Consuming apps use these classes as CSS targets, so they are a public contract alongside component props. Component CSS lives in `@layer ca.components`, so a plain unlayered app rule with the same single-class selector (`.ca-btn:disabled { ... }`) overrides the kit: no doubled classes, no `!important` (see `getting-started/theming`).
 
 Conventions: BEM (`ca-block__element`, `ca-block--modifier`). CSS variables (`--ca-*`) are NOT listed here; see `packages/ui/src/lib/styles/tokens.css`.
 

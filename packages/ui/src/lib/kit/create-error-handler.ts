@@ -7,12 +7,15 @@
 //   import { createErrorHandler } from '@codeatlasdev/ui/kit';
 //   export const handleError = createErrorHandler();
 //
+//   // Localised fallback message (per request):
+//   export const handleError = createErrorHandler({ locale: (e) => e.locals?.locale as string });
+//
 //   // With reporting:
 //   export const handleError = createErrorHandler({
 //     report: (error, event) => console.error(error, event.url.pathname),
 //   });
 
-import { t } from "../i18n/state.svelte.js";
+import { getMessages, type Locale } from "../i18n/state.svelte.js";
 
 export interface CaError {
 	message: string;
@@ -20,22 +23,36 @@ export interface CaError {
 	id?: string;
 }
 
+export interface ErrorEvent {
+	url: URL;
+	route: { id: string | null };
+	locals?: Record<string, unknown>;
+}
+
 export interface CreateErrorHandlerOptions {
 	/**
 	 * Called for every unexpected error. Use to send to Sentry, LogRocket, etc.
 	 * The error has already been sanitized — stack traces are not included.
 	 */
-	report?: (error: CaError, event: { url: URL; route: { id: string | null } }) => void;
+	report?: (error: CaError, event: ErrorEvent) => void;
 
 	/**
 	 * Override the default "Internal Error" message shown to users.
 	 * @default 'An unexpected error occurred.'
 	 */
 	defaultMessage?: string;
+
+	/**
+	 * Language of the built-in fallback message, or a function resolving it per request (e.g. from
+	 * `event.locals`). The handler never reads global locale state: on the server that state would be
+	 * shared by concurrent requests. Ignored when `defaultMessage` is set.
+	 * @default 'en'
+	 */
+	locale?: Locale | ((event: ErrorEvent) => Locale | undefined);
 }
 
 export function createErrorHandler(options: CreateErrorHandlerOptions = {}) {
-	const { report, defaultMessage } = options;
+	const { report, defaultMessage, locale } = options;
 
 	return function handleError({
 		error,
@@ -43,18 +60,18 @@ export function createErrorHandler(options: CreateErrorHandlerOptions = {}) {
 		status,
 	}: {
 		error: unknown;
-		event: { url: URL; route: { id: string | null } };
+		event: ErrorEvent;
 		status: number;
 	}): CaError {
+		const fallback =
+			defaultMessage ??
+			getMessages((typeof locale === "function" ? locale(event) : locale) ?? "en").kit.defaultError;
+
 		const message =
-			error instanceof Error
-				? error.message
-				: typeof error === "string"
-					? error
-					: (defaultMessage ?? t().kit.defaultError);
+			error instanceof Error ? error.message : typeof error === "string" ? error : fallback;
 
 		// Don't expose internal messages for 5xx errors
-		const safeMessage = status >= 500 ? (defaultMessage ?? t().kit.defaultError) : message;
+		const safeMessage = status >= 500 ? fallback : message;
 
 		const enriched: CaError = {
 			message: safeMessage,

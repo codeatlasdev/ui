@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   import { Minus, Plus } from '@lucide/svelte';
   import { uid } from '../../utils/index.js';
+  const t = useT();
 
   interface Props {
     value?:       number;
@@ -120,134 +121,139 @@
 </div>
 
 <style>
-  /* ── Root ──────────────────────────────────────────────────── */
-  .ca-nf {
-    display: flex;
-    flex-direction: column;
-    gap: var(--ca-space-1);
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    /* ── Root ──────────────────────────────────────────────────── */
+    .ca-nf {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ca-space-1);
+    }
 
-  /* ── Label ─────────────────────────────────────────────────── */
-  .ca-nf__label {
-    font-size: var(--ca-font-size-label);
-    font-weight: var(--ca-font-weight-medium);
-    color: var(--ca-text-primary);
-    line-height: var(--ca-line-height-snug);
-    user-select: none;
-  }
+    /* ── Label ─────────────────────────────────────────────────── */
+    .ca-nf__label {
+      font-size: var(--ca-font-size-label);
+      font-weight: var(--ca-font-weight-medium);
+      color: var(--ca-text-primary);
+      line-height: var(--ca-line-height-snug);
+      user-select: none;
+    }
 
-  .ca-nf__req {
-    color: var(--ca-semantic-error);
-  }
+    .ca-nf__req {
+      color: var(--ca-semantic-error);
+    }
 
-  /* ── Wrap ──────────────────────────────────────────────────── */
-  .ca-nf__wrap {
-    display: inline-flex;
-    align-items: stretch;
-    border-radius: var(--ca-radius-control);
-    background: var(--ca-field-bg);
-    border: var(--ca-border-width) solid var(--ca-field-border-color);
-    box-shadow: var(--ca-field-shadow);
-    overflow: hidden;
-    height: var(--ca-control-height);
-    transition:
-      border-color var(--ca-duration-fast) var(--ca-ease-standard),
-      box-shadow   var(--ca-duration-fast) var(--ca-ease-standard);
-  }
+    /* ── Wrap ──────────────────────────────────────────────────── */
+    .ca-nf__wrap {
+      display: inline-flex;
+      align-items: stretch;
+      border-radius: var(--ca-radius-control);
+      background: var(--ca-field-bg);
+      border: var(--ca-border-width) solid var(--ca-field-border-color);
+      box-shadow: var(--ca-field-shadow);
+      overflow: hidden;
+      height: var(--ca-control-height);
+      transition:
+        border-color var(--ca-duration-fast) var(--ca-ease-standard),
+        box-shadow   var(--ca-duration-fast) var(--ca-ease-standard);
+    }
 
-  .ca-nf__wrap--focused {
-    border-color: var(--ca-brand-main);
-    box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-brand-main) 18%, transparent);
-  }
+    .ca-nf__wrap--focused {
+      border-color: var(--ca-focus-ring);
+      box-shadow: 0 0 0 var(--ca-border-width-focus) var(--ca-focus-ring);
+    }
 
-  .ca-nf__wrap--error {
-    border-color: var(--ca-semantic-error) !important;
-    box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-semantic-error) 18%, transparent) !important;
-  }
+    .ca-nf__wrap--error {
+      border-color: var(--ca-semantic-error);
+      box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-semantic-error) 18%, transparent);
+    }
 
-  .ca-nf--disabled .ca-nf__wrap {
-    opacity: 0.5;
-    pointer-events: none;
-  }
+    .ca-nf--disabled .ca-nf__wrap {
+      background: var(--ca-action-disabled-bg);
+      border-color: var(--ca-outline-default);
+      color: var(--ca-text-disabled);
+      pointer-events: none;
+    }
 
-  /* ── Buttons ───────────────────────────────────────────────── */
-  .ca-nf__btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--ca-space-8);
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--ca-text-secondary);
-    transition:
-      background var(--ca-duration-fast) var(--ca-ease-standard),
-      color      var(--ca-duration-fast) var(--ca-ease-standard);
-    flex-shrink: 0;
-  }
+    /* ── Buttons ───────────────────────────────────────────────── */
+    .ca-nf__btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--ca-space-8);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--ca-text-secondary);
+      transition:
+        background var(--ca-duration-fast) var(--ca-ease-standard),
+        color      var(--ca-duration-fast) var(--ca-ease-standard);
+      flex-shrink: 0;
+    }
 
-  .ca-nf__btn:hover:not(:disabled) {
-    background: var(--ca-action-hover);
-    color: var(--ca-text-primary);
-  }
+    .ca-nf__btn:hover:not(:disabled) {
+      background: var(--ca-action-hover);
+      color: var(--ca-text-primary);
+    }
 
-  .ca-nf__btn:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-  }
+    .ca-nf__btn:disabled {
+      color: var(--ca-text-disabled);
+      cursor: not-allowed;
+    }
 
-  .ca-nf__btn:first-child {
-    border-right: var(--ca-border-width) solid var(--ca-outline-subtle);
-  }
+    .ca-nf__btn:first-child {
+      border-right: var(--ca-border-width) solid var(--ca-outline-subtle);
+    }
 
-  .ca-nf__btn:last-child {
-    border-left: var(--ca-border-width) solid var(--ca-outline-subtle);
-  }
+    .ca-nf__btn:last-child {
+      border-left: var(--ca-border-width) solid var(--ca-outline-subtle);
+    }
 
-  /* ── Input ─────────────────────────────────────────────────── */
-  .ca-nf__input {
-    flex: 1;
-    min-width: 0;
-    background: none;
-    border: none;
-    outline: none;
-    text-align: center;
-    font-size: var(--ca-input-font-size);
-    color: var(--ca-text-primary);
-    font-family: inherit;
-    /* Hide native number spinners */
-    -moz-appearance: textfield;
-    appearance: textfield;
-  }
+    /* ── Input ─────────────────────────────────────────────────── */
+    .ca-nf__input {
+      flex: 1;
+      min-width: 0;
+      background: none;
+      border: none;
+      outline: none;
+      text-align: center;
+      font-size: var(--ca-input-font-size);
+      color: var(--ca-text-primary);
+      font-family: inherit;
+      /* Hide native number spinners */
+      -moz-appearance: textfield;
+      appearance: textfield;
+    }
 
-  .ca-nf__input::-webkit-inner-spin-button,
-  .ca-nf__input::-webkit-outer-spin-button {
-    -webkit-appearance: none;
-  }
+    .ca-nf__input::-webkit-inner-spin-button,
+    .ca-nf__input::-webkit-outer-spin-button {
+      -webkit-appearance: none;
+    }
 
-  /* ── Helper / error text ───────────────────────────────────── */
-  .ca-nf__hint {
-    font-size: var(--ca-font-size-caption);
-    color: var(--ca-text-secondary);
-    margin: 0;
-    line-height: var(--ca-line-height-snug);
-  }
+    /* ── Helper / error text ───────────────────────────────────── */
+    .ca-nf__hint {
+      font-size: var(--ca-font-size-caption);
+      color: var(--ca-text-secondary);
+      margin: 0;
+      line-height: var(--ca-line-height-snug);
+    }
 
-  .ca-nf__hint--error {
-    color: var(--ca-semantic-error);
-  }
+    .ca-nf__hint--error {
+      color: var(--ca-semantic-error);
+    }
 
-  /* ── Size: sm ──────────────────────────────────────────────── */
-  .ca-nf--sm .ca-nf__wrap {
-    height: var(--ca-control-height-sm);
-  }
+    /* ── Size: sm ──────────────────────────────────────────────── */
+    .ca-nf--sm .ca-nf__wrap {
+      height: var(--ca-control-height-sm);
+    }
 
-  .ca-nf--sm .ca-nf__btn {
-    width: var(--ca-space-7);
-  }
+    .ca-nf--sm .ca-nf__btn {
+      width: var(--ca-space-7);
+    }
 
-  .ca-nf--sm .ca-nf__input {
-    font-size: var(--ca-input-font-size-sm);
-  }
+    .ca-nf--sm .ca-nf__input {
+      font-size: var(--ca-input-font-size-sm);
+    }
 
+}
 </style>

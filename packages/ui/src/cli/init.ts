@@ -55,15 +55,35 @@ export function detectFramework(root: string): Framework | null {
 }
 
 /**
- * Import specifier for `src/lib/theme` from inside the app. Kit 3 removed `$lib` in favor of the
- * `#lib` package import that `sv create` writes into package.json; Kit 2 apps keep `$lib`.
+ * Major version of `@sveltejs/kit`. The installed package is authoritative; the declared range is
+ * the fallback before `install` ran. Ranges like `^3.0.1`, `~2.20.0`, `>=3`, `3.0.1`, `next` all
+ * resolve to the first number; anything unparseable counts as 2 (the long-standing shape).
+ */
+export function kitMajor(root: string): number {
+	const installed = join(root, "node_modules/@sveltejs/kit/package.json");
+	let version: string | undefined = readDeps(root)?.["@sveltejs/kit"];
+	if (existsSync(installed)) {
+		const pkg: unknown = JSON.parse(readFileSync(installed, "utf8"));
+		if (pkg && typeof pkg === "object" && "version" in pkg && typeof pkg.version === "string")
+			version = pkg.version;
+	}
+	const major = Number(version?.match(/\d+/)?.[0]);
+	return Number.isInteger(major) && major > 0 ? major : 2;
+}
+
+/**
+ * Import specifier for `src/lib/theme` from `src/hooks.server.ts`. Kit 3 removed `$lib` (using it
+ * fails with `module_removed_lib`) in favor of the `#lib` package import that `sv create` writes
+ * into package.json; Kit 2 apps keep `$lib`. A Kit 3 app without the `#lib` map gets a relative
+ * path, which works everywhere. The `.ts` extension is explicit because neither the `#lib/*` map
+ * nor Node's native config loader add one.
  */
 function themeImport(root: string): string {
 	const pkg: { imports?: Record<string, unknown> } = JSON.parse(
 		readFileSync(join(root, "package.json"), "utf8")
 	);
-	// The `#lib/*` map has no extension rule, so TypeScript needs the explicit `.ts`.
-	return pkg.imports && "#lib/*" in pkg.imports ? "#lib/theme.ts" : "$lib/theme";
+	if (pkg.imports && "#lib/*" in pkg.imports) return "#lib/theme.ts";
+	return kitMajor(root) >= 3 ? "./lib/theme.ts" : "$lib/theme";
 }
 
 /** Insert `line` after the last top-level import (or at the top when there is none). */
@@ -173,6 +193,27 @@ function appHtmlPatch(src: string): string | null {
 	const m = src.match(/<meta\s+name="viewport"\s+content="[^"]*"\s*\/?>/);
 	if (!m) return null;
 	return src.replace(m[0], `<meta name="viewport" content="${VIEWPORT}" />`);
+}
+
+/**
+ * Kit 3 moved configuration into the `sveltekit(...)` Vite plugin and generates its tsconfig base
+ * under `$app/tsconfig`. Both live in files the user owns, so init reports instead of rewriting.
+ */
+function kit3Notes(root: string): string[] {
+	const notes: string[] = [];
+	const config = ["svelte.config.js", "svelte.config.ts", "svelte.config.mjs"].find((f) =>
+		existsSync(join(root, f))
+	);
+	if (config)
+		notes.push(
+			`SvelteKit 3 ignores ${config} (config_file_unsupported). Move its options out of the \`kit\` namespace and into the plugin in vite.config: \`sveltekit({ adapter, ... })\`, then delete ${config}.`
+		);
+	const tsconfig = join(root, "tsconfig.json");
+	if (existsSync(tsconfig) && !readFileSync(tsconfig, "utf8").includes("$app/tsconfig"))
+		notes.push(
+			'SvelteKit 3 no longer generates .svelte-kit/tsconfig.json. Set `"extends": "$app/tsconfig"` in tsconfig.json (tsconfig_extends_missing); it already allows `.ts` import extensions, which vite.config needs.'
+		);
+	return notes;
 }
 
 function sveltekitSteps(root: string): Step[] {
@@ -345,6 +386,9 @@ export function init(
 		log(
 			`\n${pending} existing file(s) left untouched. Re-run with --write to apply the diffs above.`
 		);
-	if (ok && !pending) log("\nDone. Run your dev server: the theme paints on the first frame.");
+	const notes = fw === "sveltekit" && kitMajor(root) >= 3 ? kit3Notes(root) : [];
+	for (const n of notes) log(`\n  note    ${n}`);
+	if (ok && !pending && !notes.length)
+		log("\nDone. Run your dev server: the theme paints on the first frame.");
 	return ok;
 }

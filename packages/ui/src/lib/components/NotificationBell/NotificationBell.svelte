@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   import { Bell } from '@lucide/svelte';
   import { uid } from '../../utils/index.js';
   import FloatingLayer from '../Popover/FloatingLayer.svelte';
   import { createTriggerProps, tabIntoPopup } from '../Popover/trigger.js';
   import Badge from '../Badge/Badge.svelte';
   import type { Snippet } from 'svelte';
+  const t = useT();
 
   export interface NotificationItem {
     id: string;
@@ -134,172 +135,175 @@
 </FloatingLayer>
 
 <style>
-  :global(.ca-notif-trigger) {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    :global(.ca-notif-trigger) {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+    }
 
-  :global(.ca-notif-bell) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--ca-control-height);
-    height: var(--ca-control-height);
-    border-radius: var(--ca-radius-control);
-    border: none;
-    background: none;
-    cursor: pointer;
-    color: var(--ca-text-secondary);
-    transition: background var(--ca-duration-fast) var(--ca-ease-standard),
-                color var(--ca-duration-fast) var(--ca-ease-standard);
-  }
+    :global(.ca-notif-bell) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--ca-control-height);
+      height: var(--ca-control-height);
+      border-radius: var(--ca-radius-control);
+      border: none;
+      background: none;
+      cursor: pointer;
+      color: var(--ca-text-secondary);
+      transition: background var(--ca-duration-fast) var(--ca-ease-standard),
+                  color var(--ca-duration-fast) var(--ca-ease-standard);
+    }
 
-  :global(.ca-notif-bell:hover) {
-    background: var(--ca-action-hover);
-    color: var(--ca-text-primary);
-  }
+    :global(.ca-notif-bell:hover) {
+      background: var(--ca-action-hover);
+      color: var(--ca-text-primary);
+    }
 
-  :global(.ca-notif-panel) {
-    width: 340px;
-    max-height: 480px;
-    border-radius: var(--ca-radius-xl);
-    z-index: var(--ca-z-dropdown);
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    outline: none;
-  }
+    :global(.ca-notif-panel) {
+      width: 340px;
+      max-height: 480px;
+      border-radius: var(--ca-radius-xl);
+      z-index: var(--ca-z-dropdown);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      outline: none;
+    }
 
-  .ca-notif-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--ca-space-3-5) var(--ca-space-4) var(--ca-space-2-5);
-    border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
-    flex-shrink: 0;
-  }
+    .ca-notif-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--ca-space-3-5) var(--ca-space-4) var(--ca-space-2-5);
+      border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
+      flex-shrink: 0;
+    }
 
-  .ca-notif-title {
-    font-size: var(--ca-font-size-body2);
-    font-family: var(--ca-font-display);
-    font-weight: var(--ca-font-weight-heading);
-    letter-spacing: var(--ca-heading-tracking);
-    text-transform: var(--ca-heading-case);
-    color: var(--ca-text-primary);
-  }
+    .ca-notif-title {
+      font-size: var(--ca-font-size-body2);
+      font-family: var(--ca-font-display);
+      font-weight: var(--ca-font-weight-heading);
+      letter-spacing: var(--ca-heading-tracking);
+      text-transform: var(--ca-heading-case);
+      color: var(--ca-text-primary);
+    }
 
-  .ca-notif-actions {
-    display: flex;
-    gap: var(--ca-space-2);
-  }
+    .ca-notif-actions {
+      display: flex;
+      gap: var(--ca-space-2);
+    }
 
-  .ca-notif-action {
-    font-size: var(--ca-font-size-caption);
-    color: var(--ca-brand-text);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: var(--ca-space-0-5) var(--ca-space-1);
-    border-radius: var(--ca-radius-xs);
-  }
+    .ca-notif-action {
+      font-size: var(--ca-font-size-caption);
+      color: var(--ca-brand-text);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: var(--ca-space-0-5) var(--ca-space-1);
+      border-radius: var(--ca-radius-xs);
+    }
 
-  .ca-notif-action:hover {
-    background: var(--ca-action-hover);
-  }
+    .ca-notif-action:hover {
+      background: var(--ca-action-hover);
+    }
 
-  .ca-notif-empty {
-    padding: var(--ca-space-8) var(--ca-space-4);
-    text-align: center;
-    font-size: var(--ca-font-size-body2);
-    color: var(--ca-text-hint);
-  }
+    .ca-notif-empty {
+      padding: var(--ca-space-8) var(--ca-space-4);
+      text-align: center;
+      font-size: var(--ca-font-size-body2);
+      color: var(--ca-text-hint);
+    }
 
-  .ca-notif-list {
-    list-style: none;
-    margin: 0;
-    padding: var(--ca-space-1-5);
-    overflow-y: auto;
-    flex: 1;
-  }
+    .ca-notif-list {
+      list-style: none;
+      margin: 0;
+      padding: var(--ca-space-1-5);
+      overflow-y: auto;
+      flex: 1;
+    }
 
-  .ca-notif-item {
-    border-radius: var(--ca-radius-sm);
-    overflow: hidden;
-  }
+    .ca-notif-item {
+      border-radius: var(--ca-radius-sm);
+      overflow: hidden;
+    }
 
-  .ca-notif-item__btn {
-    display: flex;
-    align-items: flex-start;
-    gap: var(--ca-space-2-5);
-    width: 100%;
-    padding: var(--ca-space-2-5);
-    background: none;
-    border: none;
-    cursor: pointer;
-    text-align: left;
-    font-family: inherit;
-    transition: background var(--ca-duration-fast) var(--ca-ease-standard);
-    border-radius: var(--ca-radius-sm);
-    outline: none;
-  }
+    .ca-notif-item__btn {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--ca-space-2-5);
+      width: 100%;
+      padding: var(--ca-space-2-5);
+      background: none;
+      border: none;
+      cursor: pointer;
+      text-align: left;
+      font-family: inherit;
+      transition: background var(--ca-duration-fast) var(--ca-ease-standard);
+      border-radius: var(--ca-radius-sm);
+      outline: none;
+    }
 
-  .ca-notif-item__btn:hover,
-  .ca-notif-item__btn:focus-visible {
-    background: var(--ca-action-hover);
-  }
+    .ca-notif-item__btn:hover,
+    .ca-notif-item__btn:focus-visible {
+      background: var(--ca-action-hover);
+    }
 
-  .ca-notif-item__dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    flex-shrink: 0;
-    margin-top: var(--ca-space-1-5);
-  }
+    .ca-notif-item__dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: var(--ca-space-1-5);
+    }
 
-  .ca-notif-item--unread .ca-notif-item__dot { opacity: 1; }
-  .ca-notif-item:not(.ca-notif-item--unread) .ca-notif-item__dot { opacity: 0; }
+    .ca-notif-item--unread .ca-notif-item__dot { opacity: 1; }
+    .ca-notif-item:not(.ca-notif-item--unread) .ca-notif-item__dot { opacity: 0; }
 
-  .ca-notif-item__dot--default { background: var(--ca-brand-main); }
-  .ca-notif-item__dot--info    { background: var(--ca-semantic-info); }
-  .ca-notif-item__dot--success { background: var(--ca-semantic-success); }
-  .ca-notif-item__dot--warning { background: var(--ca-semantic-warning); }
-  .ca-notif-item__dot--error   { background: var(--ca-semantic-error); }
+    .ca-notif-item__dot--default { background: var(--ca-brand-main); }
+    .ca-notif-item__dot--info    { background: var(--ca-semantic-info); }
+    .ca-notif-item__dot--success { background: var(--ca-semantic-success); }
+    .ca-notif-item__dot--warning { background: var(--ca-semantic-warning); }
+    .ca-notif-item__dot--error   { background: var(--ca-semantic-error); }
 
-  .ca-notif-item__body {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--ca-space-0-5);
-  }
+    .ca-notif-item__body {
+      flex: 1;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--ca-space-0-5);
+    }
 
-  .ca-notif-item__title {
-    font-size: var(--ca-font-size-body2);
-    font-weight: var(--ca-font-weight-medium);
-    color: var(--ca-text-primary);
-  }
+    .ca-notif-item__title {
+      font-size: var(--ca-font-size-body2);
+      font-weight: var(--ca-font-weight-medium);
+      color: var(--ca-text-primary);
+    }
 
-  .ca-notif-item--unread .ca-notif-item__title {
-    font-weight: var(--ca-font-weight-semibold);
-  }
+    .ca-notif-item--unread .ca-notif-item__title {
+      font-weight: var(--ca-font-weight-semibold);
+    }
 
-  .ca-notif-item__text {
-    margin: 0;
-    font-size: var(--ca-font-size-caption);
-    color: var(--ca-text-secondary);
-    line-height: var(--ca-line-height-body);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+    .ca-notif-item__text {
+      margin: 0;
+      font-size: var(--ca-font-size-caption);
+      color: var(--ca-text-secondary);
+      line-height: var(--ca-line-height-body);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-  .ca-notif-item__time {
-    font-size: var(--ca-font-size-micro);
-    color: var(--ca-text-hint);
-  }
+    .ca-notif-item__time {
+      font-size: var(--ca-font-size-micro);
+      color: var(--ca-text-hint);
+    }
+}
 </style>

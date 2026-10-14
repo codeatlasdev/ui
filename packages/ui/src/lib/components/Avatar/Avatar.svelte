@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
+  const t = useT();
 
   /**
    * Avatar: user identity display component.
@@ -117,57 +118,60 @@
 </span>
 
 <style>
-  :global(.ca-avatar) {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width:      var(--av-size);
-    height:     var(--av-size);
-    min-width:  var(--av-size);
-    min-height: var(--av-size);
-    border-radius: var(--av-radius);
-    overflow: hidden;
-    flex-shrink: 0;
-    position: relative;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    :global(.ca-avatar) {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width:      var(--av-size);
+      height:     var(--av-size);
+      min-width:  var(--av-size);
+      min-height: var(--av-size);
+      border-radius: var(--av-radius);
+      overflow: hidden;
+      flex-shrink: 0;
+      position: relative;
+    }
 
-  :global(.ca-avatar__img) {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: inherit;
-  }
+    :global(.ca-avatar__img) {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: inherit;
+    }
 
-  :global(.ca-avatar__fallback) {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    border-radius: inherit;
-    background: var(--av-bg);
-    color: var(--av-fg);
-    font-size: var(--av-fs);
-    font-weight: var(--ca-font-weight-semibold);
-    letter-spacing: var(--ca-heading-tracking);
-    line-height: 1;
-    user-select: none;
-  }
+    :global(.ca-avatar__fallback) {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--av-bg);
+      color: var(--av-fg);
+      font-size: var(--av-fs);
+      font-weight: var(--ca-font-weight-semibold);
+      letter-spacing: var(--ca-heading-tracking);
+      line-height: 1;
+      user-select: none;
+    }
 
-  /* ── Status dot ─────────────────────────────────────────────── */
-  :global(.ca-avatar__status) {
-    position: absolute;
-    bottom: 0;
-    right: 0;
-    width:  var(--av-dot);
-    height: var(--av-dot);
-    border-radius: 50%;
-    border: var(--ca-border-width-strong) solid var(--ca-bg-body);
-    box-sizing: content-box;
-  }
+    /* ── Status dot ─────────────────────────────────────────────── */
+    :global(.ca-avatar__status) {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      width:  var(--av-dot);
+      height: var(--av-dot);
+      border-radius: 50%;
+      border: var(--ca-border-width-strong) solid var(--ca-bg-body);
+      box-sizing: content-box;
+    }
 
-  :global(.ca-avatar__status--online)  { background: var(--ca-semantic-success); }
-  :global(.ca-avatar__status--offline) { background: var(--ca-outline-default); }
-  :global(.ca-avatar__status--busy)    { background: var(--ca-semantic-error); }
-  :global(.ca-avatar__status--away)    { background: var(--ca-semantic-warning); }
+    :global(.ca-avatar__status--online)  { background: var(--ca-semantic-success); }
+    :global(.ca-avatar__status--offline) { background: var(--ca-outline-default); }
+    :global(.ca-avatar__status--busy)    { background: var(--ca-semantic-error); }
+    :global(.ca-avatar__status--away)    { background: var(--ca-semantic-warning); }
+}
 </style>

@@ -133,10 +133,13 @@
 {/if}
 
 <style>
-  :global(.ca-floating) {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: max-content;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    :global(.ca-floating) {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: max-content;
+    }
+}
 </style>

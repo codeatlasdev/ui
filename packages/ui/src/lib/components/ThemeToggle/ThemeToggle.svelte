@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   import { Moon, Sun } from '@lucide/svelte';
   import { colorScheme } from '../../stores/color-scheme.svelte.js';
+  const t = useT();
 
   interface Props {
     /** Accessible name and tooltip. */
@@ -27,16 +28,19 @@
 </button>
 
 <style>
-  .ca-theme-toggle__icon {
-    display: flex;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-theme-toggle__icon {
+      display: flex;
+    }
 
-  .ca-theme-toggle__icon--dark,
-  :global(.dark) .ca-theme-toggle__icon--light {
-    display: none;
-  }
+    .ca-theme-toggle__icon--dark,
+    :global(.dark) .ca-theme-toggle__icon--light {
+      display: none;
+    }
 
-  :global(.dark) .ca-theme-toggle__icon--dark {
-    display: flex;
-  }
+    :global(.dark) .ca-theme-toggle__icon--dark {
+      display: flex;
+    }
+}
 </style>

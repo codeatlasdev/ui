@@ -1,6 +1,6 @@
 ---
 name: codeatlas-ui
-description: Use when building any UI with @codeatlasdev/ui: components, layouts, pages, navigation.
+description: "Use when building any UI with @codeatlasdev/ui: components, layouts, pages, navigation."
 globs: ["**/*.svelte", "**/routes/**/*.svelte", "**/components/**/*.svelte"]
 alwaysApply: false
 ---
@@ -54,6 +54,17 @@ export const handle = sequence(caThemeHandle());
 ```
 
 Product with its own brand color? Pass the same `ThemeOptions` to both: `caThemeHandle(theme)` and `caThemePlugin(theme)`, with `theme = { presets: [{ id: "acme", color: "#2563eb" }], defaultPreset: "acme", defaultScheme: "system" }`. The full light/dark token set is generated from the hex. Put the logo in `AppShellLayout` with `{#snippet brand()}`.
+
+### SvelteKit 3 (peer allows `^2.12.0 || ^3.0.0`)
+
+Check `@sveltejs/kit` in `package.json` before writing setup code. On Kit 3:
+
+- `svelte.config.js` is ignored and has no `kit` namespace: pass `adapter` and the rest straight to `sveltekit({ adapter: adapter() })` in `vite.config.ts`.
+- `tsconfig.json` must be `{ "extends": "$app/tsconfig" }` (`.svelte-kit/tsconfig.json` is gone).
+- `$lib` is removed: import app code as `#lib/...` with the extension (`#lib/theme.ts`; needs `"imports": { "#lib/*": "./src/lib/*" }` in `package.json`, which `sv create` writes), or use a relative path.
+- Import the theme in `vite.config.ts` **with the `.ts` extension** (`./src/lib/theme.ts`), on Kit 2 and 3: Vite's native config loader rejects extensionless imports.
+
+`bunx @codeatlasdev/ui init` reads the installed Kit version and does the `#lib` part; it only reports the `svelte.config.js` and tsconfig changes.
 
 ## Heavy components live in subpaths
 

@@ -89,7 +89,10 @@ export default defineConfig({
 	],
 	webServer: {
 		// CI builds the site once and hands dist/ to every shard (E2E_PREBUILT=1).
-		command: process.env.E2E_PREBUILT ? "bun run preview" : "bun run build && bun run preview",
+		// `--ignore-lock`: always a foreground, one-off server. Astro 7 backgrounds `preview` when it
+		// detects an AI agent (CLAUDECODE, AGENT, ...) and keeps a lock file; Playwright then sees the
+		// command exit and a stale lock blocks the next run.
+		command: `${process.env.E2E_PREBUILT ? "" : "bun run build && "}bunx astro preview --port 4321 --ignore-lock`,
 		url: baseURL,
 		reuseExistingServer: !process.env.CI,
 		timeout: 300_000,

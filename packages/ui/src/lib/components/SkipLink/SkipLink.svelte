@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
+  const t = useT();
 
   interface Props {
     /** Fragment id of the main landmark to jump to. Must match the `id` of the `<main>`. */
@@ -27,29 +28,32 @@
 </a>
 
 <style>
-  .ca-skip-link {
-    position: fixed;
-    top: calc(var(--ca-space-2) + var(--ca-safe-top));
-    left: calc(var(--ca-space-2) + var(--ca-safe-left));
-    z-index: calc(var(--ca-z-modal) + 10);
-    padding: var(--ca-space-2-5) var(--ca-space-4);
-    border-radius: var(--ca-radius-md);
-    background: var(--ca-brand-fill);
-    color: var(--ca-brand-contrast);
-    font-size: var(--ca-font-size-body2);
-    font-weight: var(--ca-font-weight-semibold);
-    text-decoration: none;
-    /* Off-screen until focused; stays in the tab order and the accessibility tree. */
-    transform: translateY(calc(-100% - var(--ca-space-8)));
-  }
-
-  .ca-skip-link:focus-visible {
-    transform: none;
-  }
-
-  @media (forced-colors: active) {
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
     .ca-skip-link {
-      border: var(--ca-border-width) solid CanvasText;
+      position: fixed;
+      top: calc(var(--ca-space-2) + var(--ca-safe-top));
+      left: calc(var(--ca-space-2) + var(--ca-safe-left));
+      z-index: calc(var(--ca-z-modal) + 10);
+      padding: var(--ca-space-2-5) var(--ca-space-4);
+      border-radius: var(--ca-radius-md);
+      background: var(--ca-brand-fill);
+      color: var(--ca-brand-contrast);
+      font-size: var(--ca-font-size-body2);
+      font-weight: var(--ca-font-weight-semibold);
+      text-decoration: none;
+      /* Off-screen until focused; stays in the tab order and the accessibility tree. */
+      transform: translateY(calc(-100% - var(--ca-space-8)));
     }
-  }
+
+    .ca-skip-link:focus-visible {
+      transform: none;
+    }
+
+    @media (forced-colors: active) {
+      .ca-skip-link {
+        border: var(--ca-border-width) solid CanvasText;
+      }
+    }
+}
 </style>

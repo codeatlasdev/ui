@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   import { Upload, X, File as FileIcon, Image as ImageIcon } from '@lucide/svelte';
   import type { Snippet } from 'svelte';
+  const t = useT();
 
   interface Props {
     accept?: string;
@@ -143,143 +144,151 @@
 </div>
 
 <style>
-  .ca-file-upload {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    gap: var(--ca-space-2);
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-file-upload {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: var(--ca-space-2);
+    }
 
-  .ca-file-upload__zone {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--ca-space-2);
-    padding: var(--ca-space-8) var(--ca-space-6);
-    border-radius: var(--ca-radius-lg);
-    border: var(--ca-border-width-strong) dashed var(--ca-outline-subtle);
-    cursor: pointer;
-    text-align: center;
-    transition:
-      border-color var(--ca-duration-fast) var(--ca-ease-standard),
-      background var(--ca-duration-fast) var(--ca-ease-standard);
-    outline: none;
-  }
+    .ca-file-upload__zone {
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: var(--ca-space-2);
+      padding: var(--ca-space-8) var(--ca-space-6);
+      border-radius: var(--ca-radius-lg);
+      border: var(--ca-border-width-strong) dashed var(--ca-outline-subtle);
+      cursor: pointer;
+      text-align: center;
+      transition:
+        border-color var(--ca-duration-fast) var(--ca-ease-standard),
+        background var(--ca-duration-fast) var(--ca-ease-standard);
+      outline: none;
+    }
 
-  .ca-file-upload__zone:hover,
-  .ca-file-upload__zone:focus-visible {
-    border-color: var(--ca-brand-main);
-    background: color-mix(in oklab, var(--ca-brand-main) 5%, transparent);
-  }
+    .ca-file-upload__zone:hover {
+      border-color: var(--ca-brand-main);
+      background: color-mix(in oklab, var(--ca-brand-main) 5%, transparent);
+    }
+    .ca-file-upload__zone:focus-visible {
+      border-color: var(--ca-focus-ring);
+      background: color-mix(in oklab, var(--ca-brand-main) 5%, transparent);
+      outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
+      outline-offset: var(--ca-focus-ring-offset);
+    }
 
-  .ca-file-upload__zone--dragging {
-    border-color: var(--ca-brand-main);
-    background: color-mix(in oklab, var(--ca-brand-main) 8%, transparent);
-  }
+    .ca-file-upload__zone--dragging {
+      border-color: var(--ca-brand-main);
+      background: color-mix(in oklab, var(--ca-brand-main) 8%, transparent);
+    }
 
-  .ca-file-upload__input {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    width: 0;
-    height: 0;
-    pointer-events: none;
-  }
+    .ca-file-upload__input {
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      width: 0;
+      height: 0;
+      pointer-events: none;
+    }
 
-  :global(.ca-file-upload__icon) {
-    color: var(--ca-text-hint);
-  }
+    :global(.ca-file-upload__icon) {
+      color: var(--ca-text-hint);
+    }
 
-  .ca-file-upload__label {
-    font-size: var(--ca-font-size-label);
-    font-weight: var(--ca-font-weight-medium);
-    color: var(--ca-text-primary);
-  }
-  .ca-file-upload--disabled .ca-file-upload__label { color: var(--ca-text-secondary); }
+    .ca-file-upload__label {
+      font-size: var(--ca-font-size-label);
+      font-weight: var(--ca-font-weight-medium);
+      color: var(--ca-text-primary);
+    }
+    .ca-file-upload--disabled .ca-file-upload__label { color: var(--ca-text-secondary); }
 
-  .ca-file-upload__hint {
-    font-size: var(--ca-font-size-caption);
-    color: var(--ca-text-hint);
-  }
+    .ca-file-upload__hint {
+      font-size: var(--ca-font-size-caption);
+      color: var(--ca-text-hint);
+    }
 
-  .ca-file-upload--disabled .ca-file-upload__zone {
-    /* No opacity: it would drop the label below 4.5:1. Muted text + border convey the state. */
-    border-style: dashed;
-    background: var(--ca-action-disabled-bg);
-    cursor: not-allowed;
-    pointer-events: none;
-  }
+    .ca-file-upload--disabled .ca-file-upload__zone {
+      /* No opacity: it would drop the label below 4.5:1. Muted text + border convey the state. */
+      border-style: dashed;
+      background: var(--ca-action-disabled-bg);
+      cursor: not-allowed;
+      pointer-events: none;
+    }
 
-  .ca-file-upload__errors {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--ca-space-1);
-  }
+    .ca-file-upload__errors {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--ca-space-1);
+    }
 
-  .ca-file-upload__errors li {
-    font-size: var(--ca-font-size-caption);
-    color: var(--ca-semantic-error);
-  }
+    .ca-file-upload__errors li {
+      font-size: var(--ca-font-size-caption);
+      color: var(--ca-semantic-error);
+    }
 
-  .ca-file-upload__list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: var(--ca-space-1);
-  }
+    .ca-file-upload__list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--ca-space-1);
+    }
 
-  .ca-file-upload__file {
-    display: flex;
-    align-items: center;
-    gap: var(--ca-space-2);
-    padding: var(--ca-space-2) var(--ca-space-3);
-    border-radius: var(--ca-radius-sm);
-    border: var(--ca-border-width) solid var(--ca-outline-subtle);
-    background: var(--ca-action-hover);
-  }
+    .ca-file-upload__file {
+      display: flex;
+      align-items: center;
+      gap: var(--ca-space-2);
+      padding: var(--ca-space-2) var(--ca-space-3);
+      border-radius: var(--ca-radius-sm);
+      border: var(--ca-border-width) solid var(--ca-outline-subtle);
+      background: var(--ca-action-hover);
+    }
 
-  :global(.ca-file-upload__file-icon) {
-    color: var(--ca-text-hint);
-    flex-shrink: 0;
-  }
+    :global(.ca-file-upload__file-icon) {
+      color: var(--ca-text-hint);
+      flex-shrink: 0;
+    }
 
-  .ca-file-upload__file-name {
-    flex: 1;
-    font-size: var(--ca-font-size-body2);
-    color: var(--ca-text-primary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+    .ca-file-upload__file-name {
+      flex: 1;
+      font-size: var(--ca-font-size-body2);
+      color: var(--ca-text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-  .ca-file-upload__file-size {
-    font-size: var(--ca-font-size-caption);
-    color: var(--ca-text-hint);
-    flex-shrink: 0;
-  }
+    .ca-file-upload__file-size {
+      font-size: var(--ca-font-size-caption);
+      color: var(--ca-text-hint);
+      flex-shrink: 0;
+    }
 
-  .ca-file-upload__remove {
-    flex-shrink: 0;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: var(--ca-text-hint);
-    padding: var(--ca-space-0-5);
-    border-radius: var(--ca-radius-xs);
-    transition: color var(--ca-duration-fast) var(--ca-ease-standard);
-  }
+    .ca-file-upload__remove {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--ca-text-hint);
+      padding: var(--ca-space-0-5);
+      border-radius: var(--ca-radius-xs);
+      transition: color var(--ca-duration-fast) var(--ca-ease-standard);
+    }
 
-  .ca-file-upload__remove:hover {
-    color: var(--ca-semantic-error);
-  }
+    .ca-file-upload__remove:hover {
+      color: var(--ca-semantic-error);
+    }
+}
 </style>

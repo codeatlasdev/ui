@@ -77,8 +77,12 @@
   --ca-ease-spring:     cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
   /* ── Focus, selection, scrollbars ────────────────────────────────────── */
-  --ca-focus-ring:        var(--ca-brand-main);
+  /* The ring colour is solved per preset and scheme (>= 3:1 on every surface, hover/selected fill
+   * and the brand fill): presets/*.css and themeCSS emit --ca-focus-ring. Components read only this. */
   --ca-focus-ring-offset: 2px;
+  /* Marker that shows a selected/on state by itself (switch track, slider range, segmented thumb edge).
+   * Same colour and guarantee as the ring: >= 3:1 on every surface and on the hover/selected fills. */
+  --ca-state-indicator:   var(--ca-focus-ring);
   --ca-selection-bg:      color-mix(in oklab, var(--ca-brand-main) 28%, transparent);
   --ca-scrollbar-thumb:       oklch(0.50 0 0 / 0.25);
   --ca-scrollbar-thumb-hover: oklch(0.50 0 0 / 0.40);
@@ -262,6 +266,8 @@
   --ca-semantic-error:     oklch(0.52 0.200 22);
   /* Solid fill that carries white text (error itself is lightened in dark mode for use as text). */
   --ca-semantic-error-fill: oklch(0.52 0.200 22);
+  /* Text on --ca-semantic-error-fill (>= 4.5:1), like --ca-brand-contrast on --ca-brand-fill. Emitted by
+   * presets; if you re-theme the fill, set this alongside it (defineTheme derives it from colors.*.error). */
 
   /* ── Action states (light) ───────────────────────────────────────────── */
   --ca-action-hover:       oklch(0.2 0 0 / 0.055);

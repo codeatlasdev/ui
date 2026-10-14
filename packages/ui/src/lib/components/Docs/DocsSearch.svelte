@@ -1,6 +1,6 @@
 <script lang="ts">
   import { focusTextField } from '../../actions/autofocus.js';
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   import { createIds, createPresence } from '../../primitives/index.js';
   import { modalLayer } from '../Dialog/modal-layer.js';
   import { CornerDownLeft, FileText, Hash, Search } from '@lucide/svelte';
@@ -8,6 +8,7 @@
   import '../Dialog/dialog.css';
   import { searchDocs, type DocsSearchResult } from './search.js';
   import type { DocsSearchEntry } from './types.js';
+  const t = useT();
 
   /**
    * DocsSearch: full-text search dialog for docs.
@@ -173,202 +174,205 @@
 {/if}
 
 <style>
-  :global(.ca-docs-search__sr) {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-    clip-path: inset(50%);
-    white-space: nowrap;
-  }
-
-  /* Phones: full-height sheet, input pinned on top. */
-  :global(dialog.ca-docs-search) {
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    flex-direction: column;
-    outline: none;
-  }
-
-  :global(dialog.ca-docs-search[open]) {
-    display: flex;
-  }
-
-  :global(.ca-docs-search[data-state='open']) {
-    animation: ca-docs-search-in var(--ca-duration-fast) var(--ca-ease-decelerate) both;
-  }
-
-  :global(.ca-docs-search[data-state='closed']) {
-    animation: ca-docs-search-out var(--ca-duration-fast) var(--ca-ease-standard) both;
-  }
-
-  .ca-docs-search__bar {
-    display: flex;
-    align-items: center;
-    gap: var(--ca-space-2-5);
-    flex-shrink: 0;
-    padding: calc(var(--ca-space-2) + var(--ca-safe-top)) max(var(--ca-space-3), var(--ca-safe-right)) var(--ca-space-2)
-      max(var(--ca-space-4), var(--ca-safe-left));
-    border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
-    color: var(--ca-text-hint);
-  }
-
-  .ca-docs-search__input {
-    flex: 1;
-    min-width: 0;
-    height: var(--ca-touch-target);
-    border: none;
-    background: transparent;
-    color: var(--ca-text-primary);
-    font: inherit;
-    /* 16px floor: iOS Safari zooms into focused fields below it. */
-    font-size: max(16px, var(--ca-input-font-size));
-    outline: none;
-    appearance: none;
-    -webkit-appearance: none;
-  }
-
-  .ca-docs-search__input::placeholder { color: var(--ca-text-hint); }
-  .ca-docs-search__input::-webkit-search-cancel-button { display: none; }
-
-  :global(.ca-docs-search__cancel) {
-    flex-shrink: 0;
-    min-height: var(--ca-touch-target);
-    padding: 0 var(--ca-space-2);
-    border: none;
-    background: none;
-    color: var(--ca-brand-text);
-    font: inherit;
-    font-size: var(--ca-font-size-body2);
-    font-weight: var(--ca-font-weight-medium);
-    cursor: pointer;
-  }
-
-  :global(.ca-docs-search__cancel:focus-visible) {
-    outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
-    outline-offset: calc(var(--ca-border-width-focus) * -1);
-    border-radius: var(--ca-radius-sm);
-  }
-
-  .ca-docs-search__esc { display: none; }
-
-  .ca-docs-search__body {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    padding: var(--ca-space-2) max(var(--ca-space-2), var(--ca-safe-right)) calc(var(--ca-space-2) + var(--ca-safe-bottom))
-      max(var(--ca-space-2), var(--ca-safe-left));
-  }
-
-  .ca-docs-search__results {
-    display: flex;
-    flex-direction: column;
-    gap: var(--ca-space-0-5);
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  .ca-docs-search__result {
-    display: flex;
-    align-items: center;
-    gap: var(--ca-space-3);
-    min-height: var(--ca-space-12);
-    padding: var(--ca-space-2) var(--ca-space-3);
-    border-radius: var(--ca-radius-md);
-    color: var(--ca-text-primary);
-    text-decoration: none;
-    cursor: pointer;
-  }
-
-  .ca-docs-search__result--on {
-    background: color-mix(in oklab, var(--ca-brand-main) 12%, transparent);
-  }
-
-  .ca-docs-search__icon { display: flex; color: var(--ca-text-hint); }
-  .ca-docs-search__result--on .ca-docs-search__icon,
-  .ca-docs-search__enter { color: var(--ca-brand-text); }
-  .ca-docs-search__enter { display: none; }
-
-  .ca-docs-search__text {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    min-width: 0;
-  }
-
-  .ca-docs-search__title {
-    font-size: var(--ca-font-size-body2);
-    font-weight: var(--ca-font-weight-medium);
-    overflow-wrap: anywhere;
-  }
-
-  .ca-docs-search__context {
-    font-size: var(--ca-font-size-caption);
-    color: var(--ca-text-secondary);
-  }
-
-  .ca-docs-search__empty {
-    margin: 0;
-    padding: var(--ca-space-8) var(--ca-space-4);
-    text-align: center;
-    font-size: var(--ca-font-size-body2);
-    color: var(--ca-text-secondary);
-  }
-
-  /* Desktop: palette-style dialog. */
-  @media (min-width: 900px) {
-    :global(dialog.ca-docs-search) {
-      inset: auto;
-      top: 14vh;
-      left: 50%;
-      height: auto;
-      width: min(40rem, calc(100vw - var(--ca-space-8)));
-      max-height: min(calc(var(--ca-vh) * 0.7), 32rem);
-      border: var(--ca-border-width) solid var(--ca-outline-subtle);
-      border-radius: var(--ca-radius-xl);
-      box-shadow: var(--ca-shadow-xl);
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    :global(.ca-docs-search__sr) {
+      position: absolute;
+      width: 1px;
+      height: 1px;
       overflow: hidden;
-      transform: translateX(-50%);
+      clip-path: inset(50%);
+      white-space: nowrap;
+    }
+
+    /* Phones: full-height sheet, input pinned on top. */
+    :global(dialog.ca-docs-search) {
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      flex-direction: column;
+      outline: none;
+    }
+
+    :global(dialog.ca-docs-search[open]) {
+      display: flex;
     }
 
     :global(.ca-docs-search[data-state='open']) {
-      animation-name: ca-docs-search-pop-in;
+      animation: ca-docs-search-in var(--ca-duration-fast) var(--ca-ease-decelerate) both;
     }
 
     :global(.ca-docs-search[data-state='closed']) {
-      animation-name: ca-docs-search-pop-out;
+      animation: ca-docs-search-out var(--ca-duration-fast) var(--ca-ease-standard) both;
     }
 
-    .ca-docs-search__bar { padding: var(--ca-space-1-5) var(--ca-space-3) var(--ca-space-1-5) var(--ca-space-4); }
-    :global(.ca-docs-search__cancel) { display: none; }
-    .ca-docs-search__esc { display: block; }
-    .ca-docs-search__result { min-height: var(--ca-touch-target); }
-    .ca-docs-search__enter { display: flex; }
-    .ca-docs-search__body { padding-bottom: var(--ca-space-2); }
-  }
+    .ca-docs-search__bar {
+      display: flex;
+      align-items: center;
+      gap: var(--ca-space-2-5);
+      flex-shrink: 0;
+      padding: calc(var(--ca-space-2) + var(--ca-safe-top)) max(var(--ca-space-3), var(--ca-safe-right)) var(--ca-space-2)
+        max(var(--ca-space-4), var(--ca-safe-left));
+      border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
+      color: var(--ca-text-hint);
+    }
 
-  @keyframes ca-docs-search-in {
-    from { opacity: 0; transform: translateY(var(--ca-space-2)); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes ca-docs-search-out {
-    from { opacity: 1; }
-    to { opacity: 0; }
-  }
-  @keyframes ca-docs-search-pop-in {
-    from { opacity: 0; transform: translateX(-50%) translateY(calc(var(--ca-space-2) * -1)) scale(0.98); }
-    to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
-  }
-  @keyframes ca-docs-search-pop-out {
-    from { opacity: 1; transform: translateX(-50%); }
-    to { opacity: 0; transform: translateX(-50%); }
-  }
+    .ca-docs-search__input {
+      flex: 1;
+      min-width: 0;
+      height: var(--ca-touch-target);
+      border: none;
+      background: transparent;
+      color: var(--ca-text-primary);
+      font: inherit;
+      /* 16px floor: iOS Safari zooms into focused fields below it. */
+      font-size: max(16px, var(--ca-input-font-size));
+      outline: none;
+      appearance: none;
+      -webkit-appearance: none;
+    }
 
-  @media (prefers-reduced-motion: reduce) {
-    :global(.ca-docs-search[data-state='open']),
-    :global(.ca-docs-search[data-state='closed']) { animation: none; }
-  }
+    .ca-docs-search__input::placeholder { color: var(--ca-text-hint); }
+    .ca-docs-search__input::-webkit-search-cancel-button { display: none; }
+
+    :global(.ca-docs-search__cancel) {
+      flex-shrink: 0;
+      min-height: var(--ca-touch-target);
+      padding: 0 var(--ca-space-2);
+      border: none;
+      background: none;
+      color: var(--ca-brand-text);
+      font: inherit;
+      font-size: var(--ca-font-size-body2);
+      font-weight: var(--ca-font-weight-medium);
+      cursor: pointer;
+    }
+
+    :global(.ca-docs-search__cancel:focus-visible) {
+      outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
+      outline-offset: calc(var(--ca-border-width-focus) * -1);
+      border-radius: var(--ca-radius-sm);
+    }
+
+    .ca-docs-search__esc { display: none; }
+
+    .ca-docs-search__body {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding: var(--ca-space-2) max(var(--ca-space-2), var(--ca-safe-right)) calc(var(--ca-space-2) + var(--ca-safe-bottom))
+        max(var(--ca-space-2), var(--ca-safe-left));
+    }
+
+    .ca-docs-search__results {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ca-space-0-5);
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .ca-docs-search__result {
+      display: flex;
+      align-items: center;
+      gap: var(--ca-space-3);
+      min-height: var(--ca-space-12);
+      padding: var(--ca-space-2) var(--ca-space-3);
+      border-radius: var(--ca-radius-md);
+      color: var(--ca-text-primary);
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .ca-docs-search__result--on {
+      background: color-mix(in oklab, var(--ca-brand-main) 12%, transparent);
+    }
+
+    .ca-docs-search__icon { display: flex; color: var(--ca-text-hint); }
+    .ca-docs-search__result--on .ca-docs-search__icon,
+    .ca-docs-search__enter { color: var(--ca-brand-text); }
+    .ca-docs-search__enter { display: none; }
+
+    .ca-docs-search__text {
+      display: flex;
+      flex: 1;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    .ca-docs-search__title {
+      font-size: var(--ca-font-size-body2);
+      font-weight: var(--ca-font-weight-medium);
+      overflow-wrap: anywhere;
+    }
+
+    .ca-docs-search__context {
+      font-size: var(--ca-font-size-caption);
+      color: var(--ca-text-secondary);
+    }
+
+    .ca-docs-search__empty {
+      margin: 0;
+      padding: var(--ca-space-8) var(--ca-space-4);
+      text-align: center;
+      font-size: var(--ca-font-size-body2);
+      color: var(--ca-text-secondary);
+    }
+
+    /* Desktop: palette-style dialog. */
+    @media (min-width: 900px) {
+      :global(dialog.ca-docs-search) {
+        inset: auto;
+        top: 14vh;
+        left: 50%;
+        height: auto;
+        width: min(40rem, calc(100vw - var(--ca-space-8)));
+        max-height: min(calc(var(--ca-vh) * 0.7), 32rem);
+        border: var(--ca-border-width) solid var(--ca-outline-subtle);
+        border-radius: var(--ca-radius-xl);
+        box-shadow: var(--ca-shadow-xl);
+        overflow: hidden;
+        transform: translateX(-50%);
+      }
+
+      :global(.ca-docs-search[data-state='open']) {
+        animation-name: ca-docs-search-pop-in;
+      }
+
+      :global(.ca-docs-search[data-state='closed']) {
+        animation-name: ca-docs-search-pop-out;
+      }
+
+      .ca-docs-search__bar { padding: var(--ca-space-1-5) var(--ca-space-3) var(--ca-space-1-5) var(--ca-space-4); }
+      :global(.ca-docs-search__cancel) { display: none; }
+      .ca-docs-search__esc { display: block; }
+      .ca-docs-search__result { min-height: var(--ca-touch-target); }
+      .ca-docs-search__enter { display: flex; }
+      .ca-docs-search__body { padding-bottom: var(--ca-space-2); }
+    }
+
+    @keyframes ca-docs-search-in {
+      from { opacity: 0; transform: translateY(var(--ca-space-2)); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes ca-docs-search-out {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    @keyframes ca-docs-search-pop-in {
+      from { opacity: 0; transform: translateX(-50%) translateY(calc(var(--ca-space-2) * -1)) scale(0.98); }
+      to { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+    }
+    @keyframes ca-docs-search-pop-out {
+      from { opacity: 1; transform: translateX(-50%); }
+      to { opacity: 0; transform: translateX(-50%); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      :global(.ca-docs-search[data-state='open']),
+      :global(.ca-docs-search[data-state='closed']) { animation: none; }
+    }
+}
 </style>

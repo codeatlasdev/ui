@@ -39,115 +39,118 @@
 </div>
 
 <style>
-  .ca-empty {
-    /* Inline-size containment drops the intrinsic width, so the root must fill its slot. */
-    container-type: inline-size;
-    width: 100%;
-    box-sizing: border-box;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: var(--ca-space-3);
-    padding: var(--ca-space-12) var(--ca-space-6);
-  }
-
-  .ca-empty__icon {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--ca-space-12);
-    height: var(--ca-space-12);
-    border-radius: var(--ca-radius-lg);
-    background: var(--ca-action-hover);
-    color: var(--ca-text-secondary);
-    flex-shrink: 0;
-  }
-
-  .ca-empty__title {
-    font-family: var(--ca-font-display);
-    font-size: var(--ca-font-size-body1);
-    font-weight: var(--ca-font-weight-semibold);
-    color: var(--ca-text-primary);
-    margin: 0;
-    letter-spacing: var(--ca-heading-tracking);
-    text-transform: var(--ca-heading-case);
-  }
-
-  .ca-empty__description {
-    font-size: var(--ca-font-size-body2);
-    color: var(--ca-text-secondary);
-    margin: 0;
-    max-width: calc(var(--ca-space-unit) * 85);
-    line-height: var(--ca-line-height-body);
-  }
-
-  .ca-empty__actions {
-    display: flex;
-    flex-direction: row;
-    gap: var(--ca-space-2);
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin-top: var(--ca-space-1);
-  }
-
-  /* ── Hero ──────────────────────────────────────────────────── */
-  .ca-empty--hero {
-    gap: var(--ca-space-2);
-    padding: calc(var(--ca-space-12) + var(--ca-space-2)) var(--ca-space-6);
-  }
-
-  .ca-empty--hero .ca-empty__icon {
-    position: relative;
-    isolation: isolate;
-    width: calc(var(--ca-space-unit) * 18);
-    height: calc(var(--ca-space-unit) * 18);
-    margin-bottom: var(--ca-space-3);
-    border-radius: var(--ca-radius-xl);
-    background: color-mix(in oklab, var(--ca-brand-main) 14%, var(--ca-surface-raised));
-    border: var(--ca-border-width) solid color-mix(in oklab, var(--ca-brand-main) 28%, transparent);
-    color: var(--ca-brand-text);
-  }
-
-  /* Soft brand glow behind the tile. */
-  .ca-empty--hero .ca-empty__icon::before {
-    content: '';
-    position: absolute;
-    inset: calc(var(--ca-space-7) * -1);
-    z-index: -1;
-    border-radius: 50%;
-    background: radial-gradient(closest-side, color-mix(in oklab, var(--ca-brand-main) 34%, transparent), transparent);
-    filter: blur(var(--ca-space-2));
-    pointer-events: none;
-  }
-
-  .ca-empty--hero .ca-empty__title {
-    font-size: var(--ca-font-size-h6);
-    font-weight: var(--ca-font-weight-heading);
-  }
-
-  .ca-empty--hero .ca-empty__description {
-    max-width: calc(var(--ca-space-unit) * 90);
-  }
-
-  .ca-empty--hero .ca-empty__actions {
-    margin-top: var(--ca-space-4);
-  }
-
-  /* Narrow slot (not narrow viewport): the empty state sits in cards and panes too.
-     A container query cannot restyle its own container, so only descendants change here;
-     the root already fills its slot (width: 100%). */
-  @container (max-width: 599.98px) {
-    .ca-empty--hero .ca-empty__actions {
-      flex-direction: column;
-      align-items: stretch;
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-empty {
+      /* Inline-size containment drops the intrinsic width, so the root must fill its slot. */
+      container-type: inline-size;
       width: 100%;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      gap: var(--ca-space-3);
+      padding: var(--ca-space-12) var(--ca-space-6);
+    }
+
+    .ca-empty__icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--ca-space-12);
+      height: var(--ca-space-12);
+      border-radius: var(--ca-radius-lg);
+      background: var(--ca-action-hover);
+      color: var(--ca-text-secondary);
+      flex-shrink: 0;
+    }
+
+    .ca-empty__title {
+      font-family: var(--ca-font-display);
+      font-size: var(--ca-font-size-body1);
+      font-weight: var(--ca-font-weight-semibold);
+      color: var(--ca-text-primary);
+      margin: 0;
+      letter-spacing: var(--ca-heading-tracking);
+      text-transform: var(--ca-heading-case);
+    }
+
+    .ca-empty__description {
+      font-size: var(--ca-font-size-body2);
+      color: var(--ca-text-secondary);
+      margin: 0;
+      max-width: calc(var(--ca-space-unit) * 85);
+      line-height: var(--ca-line-height-body);
+    }
+
+    .ca-empty__actions {
+      display: flex;
+      flex-direction: row;
+      gap: var(--ca-space-2);
+      align-items: center;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-top: var(--ca-space-1);
+    }
+
+    /* ── Hero ──────────────────────────────────────────────────── */
+    .ca-empty--hero {
+      gap: var(--ca-space-2);
+      padding: calc(var(--ca-space-12) + var(--ca-space-2)) var(--ca-space-6);
+    }
+
+    .ca-empty--hero .ca-empty__icon {
+      position: relative;
+      isolation: isolate;
+      width: calc(var(--ca-space-unit) * 18);
+      height: calc(var(--ca-space-unit) * 18);
+      margin-bottom: var(--ca-space-3);
+      border-radius: var(--ca-radius-xl);
+      background: color-mix(in oklab, var(--ca-brand-main) 14%, var(--ca-surface-raised));
+      border: var(--ca-border-width) solid color-mix(in oklab, var(--ca-brand-main) 28%, transparent);
+      color: var(--ca-brand-text);
+    }
+
+    /* Soft brand glow behind the tile. */
+    .ca-empty--hero .ca-empty__icon::before {
+      content: '';
+      position: absolute;
+      inset: calc(var(--ca-space-7) * -1);
+      z-index: -1;
+      border-radius: 50%;
+      background: radial-gradient(closest-side, color-mix(in oklab, var(--ca-brand-main) 34%, transparent), transparent);
+      filter: blur(var(--ca-space-2));
+      pointer-events: none;
+    }
+
+    .ca-empty--hero .ca-empty__title {
+      font-size: var(--ca-font-size-h6);
+      font-weight: var(--ca-font-weight-heading);
+    }
+
+    .ca-empty--hero .ca-empty__description {
       max-width: calc(var(--ca-space-unit) * 90);
     }
-    .ca-empty--hero .ca-empty__actions > :global(*) {
-      width: 100%;
+
+    .ca-empty--hero .ca-empty__actions {
+      margin-top: var(--ca-space-4);
     }
-  }
+
+    /* Narrow slot (not narrow viewport): the empty state sits in cards and panes too.
+       A container query cannot restyle its own container, so only descendants change here;
+       the root already fills its slot (width: 100%). */
+    @container (max-width: 599.98px) {
+      .ca-empty--hero .ca-empty__actions {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+        max-width: calc(var(--ca-space-unit) * 90);
+      }
+      .ca-empty--hero .ca-empty__actions > :global(*) {
+        width: 100%;
+      }
+    }
+}
 </style>

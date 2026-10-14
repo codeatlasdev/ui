@@ -32,9 +32,12 @@
 </div>
 
 <style>
-  :global(.ca-tabs) {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    :global(.ca-tabs) {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+}
 </style>

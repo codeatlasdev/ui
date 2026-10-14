@@ -175,18 +175,27 @@ Islands also feed the browser chrome color when they touch the top edge, see [Mo
 `global.css` declares its layers up front:
 
 ```css
-@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.components, ca.materials, ca.utilities;
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
 ```
 
-Component styles and your app CSS are **unlayered**, so they always win over the package layers, regardless of specificity or import order. That makes overriding predictable:
+Every component stylesheet is wrapped in `@layer ca.components`, the last kit layer. Your app CSS is **unlayered**, and unlayered rules beat every layer regardless of specificity or import order. Overriding therefore never needs `!important` or a doubled class, for tokens and for component rules alike:
 
 ```css
-/* app.css: no !important needed */
+/* app.css: no !important, no .ca-btn.ca-btn */
 :root {
   --ca-card-padding: 16px;
   --ca-radius-lg: 18px;
 }
+.ca-btn:disabled { opacity: 0.3; }
+.ca-tf__wrap { border-radius: 4px; }
+.ca-dialog__body { padding: 0; }
 ```
+
+If your own CSS lives in a layer (for example Tailwind's `@layer components`), declare it after the kit's order statement so it ranks higher: `@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components, app;`.
+
+<Callout type="caution" title="Important beats layers, in reverse">
+  A declaration marked `!important` inside a layer outranks an unlayered normal one. The kit therefore avoids `!important` in component CSS; the few left only beat inline styles the component sets itself (the indeterminate Progress width, the AppShell content margin while the sidebar animates), `prefers-reduced-motion`, and the focus ring in `base.css`. To override one of those, use `!important` in your own unlayered rule.
+</Callout>
 
 For per-scheme overrides prefer `overrides` in the theme object, which is emitted for both `:root` and theme islands.
 

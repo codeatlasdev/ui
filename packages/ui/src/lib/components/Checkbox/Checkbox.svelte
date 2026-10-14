@@ -64,75 +64,86 @@
 </div>
 
 <style>
-	.ca-checkbox-wrapper {
-		display: inline-flex;
-		align-items: center;
-		gap: var(--ca-space-2);
-	}
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+  	.ca-checkbox-wrapper {
+  		display: inline-flex;
+  		align-items: center;
+  		gap: var(--ca-space-2);
+  	}
 
-	:global(.ca-checkbox) {
-		position: relative;
-		width: calc(var(--ca-space-4) + var(--ca-space-0-5));
-		height: calc(var(--ca-space-4) + var(--ca-space-0-5));
-		border-radius: var(--ca-radius-xs);
-		border: var(--ca-border-width-strong) solid var(--ca-outline-strong);
-		background: transparent;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		cursor: pointer;
-		flex-shrink: 0;
-		padding: 0;
-		transition:
-			background var(--ca-duration-fast) var(--ca-ease-standard),
-			border-color var(--ca-duration-fast) var(--ca-ease-standard);
-	}
+  	:global(.ca-checkbox) {
+  		position: relative;
+  		width: calc(var(--ca-space-4) + var(--ca-space-0-5));
+  		height: calc(var(--ca-space-4) + var(--ca-space-0-5));
+  		border-radius: var(--ca-radius-xs);
+  		border: var(--ca-border-width-strong) solid var(--ca-outline-control);
+  		background: transparent;
+  		display: flex;
+  		align-items: center;
+  		justify-content: center;
+  		cursor: pointer;
+  		flex-shrink: 0;
+  		padding: 0;
+  		transition:
+  			background var(--ca-duration-fast) var(--ca-ease-standard),
+  			border-color var(--ca-duration-fast) var(--ca-ease-standard);
+  	}
 
-	:global(.ca-checkbox[data-state="checked"]),
-	:global(.ca-checkbox[data-state="indeterminate"]) {
-		background: var(--ca-brand-fill);
-		border-color: var(--ca-brand-fill);
-	}
+  	:global(.ca-checkbox[data-state="checked"]),
+  	:global(.ca-checkbox[data-state="indeterminate"]) {
+  		background: var(--ca-brand-fill);
+  		border-color: var(--ca-brand-fill);
+  	}
 
-	:global(.ca-checkbox[data-disabled]) {
-		cursor: not-allowed;
-		opacity: 0.45;
-	}
+  	/* Disabled from tokens, not opacity: the box edge and mark keep a defined contrast. */
+  	:global(.ca-checkbox[data-disabled]) {
+  		cursor: not-allowed;
+  		border-color: var(--ca-outline-default);
+  		color: var(--ca-text-disabled);
+  	}
+  	:global(.ca-checkbox[data-disabled][data-state="checked"]),
+  	:global(.ca-checkbox[data-disabled][data-state="indeterminate"]) {
+  		background: var(--ca-text-disabled);
+  		border-color: var(--ca-text-disabled);
+  		color: var(--ca-surface-raised);
+  	}
 
-	:global(.ca-checkbox:has(.ca-checkbox__input:focus-visible)) {
-		outline: var(--ca-border-width-focus) solid var(--ca-brand-main);
-		outline-offset: var(--ca-focus-ring-offset);
-	}
+  	:global(.ca-checkbox:has(.ca-checkbox__input:focus-visible)) {
+  		outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
+  		outline-offset: var(--ca-focus-ring-offset);
+  	}
 
-	:global(.ca-checkbox__input) {
-		position: absolute;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-		margin: 0;
-		opacity: 0;
-		cursor: inherit;
-	}
+  	:global(.ca-checkbox__input) {
+  		position: absolute;
+  		inset: 0;
+  		width: 100%;
+  		height: 100%;
+  		margin: 0;
+  		opacity: 0;
+  		cursor: inherit;
+  	}
 
-	:global(.ca-checkbox__indicator) {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		color: var(--ca-brand-contrast);
-		width: 100%;
-		height: 100%;
-		pointer-events: none;
-	}
+  	:global(.ca-checkbox__indicator) {
+  		display: flex;
+  		align-items: center;
+  		justify-content: center;
+  		color: var(--ca-brand-contrast);
+  		width: 100%;
+  		height: 100%;
+  		pointer-events: none;
+  	}
 
-	.ca-checkbox__label {
-		font-size: var(--ca-font-size-body2);
-		color: var(--ca-text-primary);
-		cursor: pointer;
-		user-select: none;
-	}
+  	.ca-checkbox__label {
+  		font-size: var(--ca-font-size-body2);
+  		color: var(--ca-text-primary);
+  		cursor: pointer;
+  		user-select: none;
+  	}
 
-	.ca-checkbox__label--disabled {
-		color: var(--ca-text-disabled);
-		cursor: not-allowed;
-	}
+  	.ca-checkbox__label--disabled {
+  		color: var(--ca-text-disabled);
+  		cursor: not-allowed;
+  	}
+}
 </style>

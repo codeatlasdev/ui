@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
 	import { X } from "@lucide/svelte";
 	import { createIds, createPresence } from "../../primitives/index.js";
 	import { modalLayer } from "../Dialog/modal-layer.js";
@@ -7,6 +7,7 @@
 	import { Spring } from "svelte/motion";
 	import { reducedMotion } from "../../stores/reduced-motion.svelte";
 	import "../Dialog/dialog.css";
+  const t = useT();
 
 	/**
 	 * Sheet: mobile-first bottom sheet.
@@ -158,191 +159,194 @@
 {/if}
 
 <style>
-	/* Mobile: bottom sheet */
-	:global(dialog.ca-sheet) {
-		inset: auto 0 0 0;
-		margin: 0;
-		width: 100%;
-		display: flex;
-		flex-direction: column;
-		max-height: min(calc(var(--ca-vh) * 0.88), 720px);
-		background: var(--ca-surface-overlay);
-		border: var(--ca-border-width) solid var(--ca-outline-subtle);
-		border-bottom: none;
-		border-radius: var(--ca-radius-xl) var(--ca-radius-xl) 0 0;
-		box-shadow: var(--ca-shadow-xl);
-		overflow: hidden;
-		outline: none;
-	}
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+  	/* Mobile: bottom sheet */
+  	:global(dialog.ca-sheet) {
+  		inset: auto 0 0 0;
+  		margin: 0;
+  		width: 100%;
+  		display: flex;
+  		flex-direction: column;
+  		max-height: min(calc(var(--ca-vh) * 0.88), 720px);
+  		background: var(--ca-surface-overlay);
+  		border: var(--ca-border-width) solid var(--ca-outline-subtle);
+  		border-bottom: none;
+  		border-radius: var(--ca-radius-xl) var(--ca-radius-xl) 0 0;
+  		box-shadow: var(--ca-shadow-xl);
+  		overflow: hidden;
+  		outline: none;
+  	}
 
-	:global(dialog.ca-sheet:not([open])) {
-		display: none;
-	}
+  	:global(dialog.ca-sheet:not([open])) {
+  		display: none;
+  	}
 
-	:global(.ca-sheet[data-state="open"]) {
-		animation: ca-sheet-in var(--ca-duration-slow) var(--ca-ease-decelerate) both;
-	}
-	:global(.ca-sheet[data-state="closed"]) {
-		animation: ca-sheet-out var(--ca-duration-base) var(--ca-ease-standard) both;
-	}
+  	:global(.ca-sheet[data-state="open"]) {
+  		animation: ca-sheet-in var(--ca-duration-slow) var(--ca-ease-decelerate) both;
+  	}
+  	:global(.ca-sheet[data-state="closed"]) {
+  		animation: ca-sheet-out var(--ca-duration-base) var(--ca-ease-standard) both;
+  	}
 
-	/* Handle + header: the swipe-to-dismiss grab region. */
-	:global(.ca-sheet__grab) {
-		flex-shrink: 0;
-	}
-	:global(.ca-sheet__grab--active) {
-		touch-action: none;
-		user-select: none;
-		-webkit-user-select: none;
-	}
-	/* Swiping only exists in the bottom-sheet layout (the handle is hidden on desktop). */
-	@media (min-width: 900px) {
-		:global(.ca-sheet__grab--active) {
-			touch-action: auto;
-			user-select: auto;
-			-webkit-user-select: auto;
-		}
-	}
+  	/* Handle + header: the swipe-to-dismiss grab region. */
+  	:global(.ca-sheet__grab) {
+  		flex-shrink: 0;
+  	}
+  	:global(.ca-sheet__grab--active) {
+  		touch-action: none;
+  		user-select: none;
+  		-webkit-user-select: none;
+  	}
+  	/* Swiping only exists in the bottom-sheet layout (the handle is hidden on desktop). */
+  	@media (min-width: 900px) {
+  		:global(.ca-sheet__grab--active) {
+  			touch-action: auto;
+  			user-select: auto;
+  			-webkit-user-select: auto;
+  		}
+  	}
 
-	:global(.ca-sheet__handle) {
-		flex-shrink: 0;
-		width: 36px;
-		height: 4px;
-		margin: var(--ca-space-2) auto var(--ca-space-1);
-		border-radius: var(--ca-radius-pill);
-		background: var(--ca-outline-default);
-	}
+  	:global(.ca-sheet__handle) {
+  		flex-shrink: 0;
+  		width: 36px;
+  		height: 4px;
+  		margin: var(--ca-space-2) auto var(--ca-space-1);
+  		border-radius: var(--ca-radius-pill);
+  		background: var(--ca-outline-default);
+  	}
 
-	:global(.ca-sheet__header) {
-		display: flex;
-		align-items: flex-start;
-		justify-content: space-between;
-		gap: var(--ca-space-3);
-		padding: var(--ca-space-2) var(--ca-space-5) var(--ca-space-3);
-		flex-shrink: 0;
-	}
+  	:global(.ca-sheet__header) {
+  		display: flex;
+  		align-items: flex-start;
+  		justify-content: space-between;
+  		gap: var(--ca-space-3);
+  		padding: var(--ca-space-2) var(--ca-space-5) var(--ca-space-3);
+  		flex-shrink: 0;
+  	}
 
-	:global(.ca-sheet__meta) {
-		flex: 1;
-		min-width: 0;
-	}
+  	:global(.ca-sheet__meta) {
+  		flex: 1;
+  		min-width: 0;
+  	}
 
-	:global(.ca-sheet__title) {
-		margin: 0;
-		font-size: var(--ca-font-size-h6);
-		font-family: var(--ca-font-display);
-		font-weight: var(--ca-font-weight-heading);
-		line-height: var(--ca-line-height-tight);
-		letter-spacing: var(--ca-heading-tracking);
-		text-transform: var(--ca-heading-case);
-		color: var(--ca-text-primary);
-	}
+  	:global(.ca-sheet__title) {
+  		margin: 0;
+  		font-size: var(--ca-font-size-h6);
+  		font-family: var(--ca-font-display);
+  		font-weight: var(--ca-font-weight-heading);
+  		line-height: var(--ca-line-height-tight);
+  		letter-spacing: var(--ca-heading-tracking);
+  		text-transform: var(--ca-heading-case);
+  		color: var(--ca-text-primary);
+  	}
 
-	:global(.ca-sheet__description) {
-		margin: var(--ca-space-0-5) 0 0;
-		font-size: var(--ca-font-size-body2);
-		line-height: var(--ca-line-height-body);
-		color: var(--ca-text-secondary);
-	}
+  	:global(.ca-sheet__description) {
+  		margin: var(--ca-space-0-5) 0 0;
+  		font-size: var(--ca-font-size-body2);
+  		line-height: var(--ca-line-height-body);
+  		color: var(--ca-text-secondary);
+  	}
 
-	:global(.ca-sheet__close) {
-		margin-top: var(--ca-space-0-5);
-	}
+  	:global(.ca-sheet__close) {
+  		margin-top: var(--ca-space-0-5);
+  	}
 
-	:global(.ca-sheet__body) {
-		flex: 1;
-		min-height: 0;
-		overflow-y: auto;
-		overscroll-behavior: contain;
-		padding: var(--ca-space-1) var(--ca-space-5) var(--ca-space-4);
-	}
+  	:global(.ca-sheet__body) {
+  		flex: 1;
+  		min-height: 0;
+  		overflow-y: auto;
+  		overscroll-behavior: contain;
+  		padding: var(--ca-space-1) var(--ca-space-5) var(--ca-space-4);
+  	}
 
-	:global(.ca-sheet__footer) {
-		flex-shrink: 0;
-		display: flex;
-		flex-direction: column;
-		gap: var(--ca-space-2);
-		padding: var(--ca-space-3) var(--ca-space-5) calc(var(--ca-space-3) + var(--ca-safe-bottom));
-		border-top: var(--ca-border-width) solid var(--ca-outline-subtle);
-	}
+  	:global(.ca-sheet__footer) {
+  		flex-shrink: 0;
+  		display: flex;
+  		flex-direction: column;
+  		gap: var(--ca-space-2);
+  		padding: var(--ca-space-3) var(--ca-space-5) calc(var(--ca-space-3) + var(--ca-safe-bottom));
+  		border-top: var(--ca-border-width) solid var(--ca-outline-subtle);
+  	}
 
-	/* Without a footer the body itself pads for the home indicator. */
-	:global(.ca-sheet__body:last-child) {
-		padding-bottom: calc(var(--ca-space-5) + var(--ca-safe-bottom));
-	}
+  	/* Without a footer the body itself pads for the home indicator. */
+  	:global(.ca-sheet__body:last-child) {
+  		padding-bottom: calc(var(--ca-space-5) + var(--ca-safe-bottom));
+  	}
 
-	/* Desktop: centered dialog */
-	@media (min-width: 900px) {
-		:global(dialog.ca-sheet) {
-			inset: 0;
-			margin: auto;
-			width: min(480px, calc(100vw - 2 * var(--ca-space-4)));
-			height: fit-content;
-			max-height: calc(var(--ca-vh) * 0.85);
-			border: var(--ca-border-width) solid var(--ca-outline-subtle);
-			border-radius: var(--ca-radius-xl);
-		}
-		:global(.ca-sheet[data-state="open"]) {
-			animation: ca-sheet-fade-in var(--ca-duration-fast) var(--ca-ease-decelerate) both;
-		}
-		:global(.ca-sheet[data-state="closed"]) {
-			animation: ca-sheet-fade-out var(--ca-duration-fast) var(--ca-ease-standard) both;
-		}
-		:global(.ca-sheet__handle) {
-			display: none;
-		}
-		:global(.ca-sheet__header) {
-			padding-top: var(--ca-space-4);
-		}
-		:global(.ca-sheet__footer) {
-			flex-direction: row;
-			justify-content: flex-end;
-			padding-bottom: var(--ca-space-3);
-		}
-		:global(.ca-sheet__body:last-child) {
-			padding-bottom: var(--ca-space-5);
-		}
-	}
+  	/* Desktop: centered dialog */
+  	@media (min-width: 900px) {
+  		:global(dialog.ca-sheet) {
+  			inset: 0;
+  			margin: auto;
+  			width: min(480px, calc(100vw - 2 * var(--ca-space-4)));
+  			height: fit-content;
+  			max-height: calc(var(--ca-vh) * 0.85);
+  			border: var(--ca-border-width) solid var(--ca-outline-subtle);
+  			border-radius: var(--ca-radius-xl);
+  		}
+  		:global(.ca-sheet[data-state="open"]) {
+  			animation: ca-sheet-fade-in var(--ca-duration-fast) var(--ca-ease-decelerate) both;
+  		}
+  		:global(.ca-sheet[data-state="closed"]) {
+  			animation: ca-sheet-fade-out var(--ca-duration-fast) var(--ca-ease-standard) both;
+  		}
+  		:global(.ca-sheet__handle) {
+  			display: none;
+  		}
+  		:global(.ca-sheet__header) {
+  			padding-top: var(--ca-space-4);
+  		}
+  		:global(.ca-sheet__footer) {
+  			flex-direction: row;
+  			justify-content: flex-end;
+  			padding-bottom: var(--ca-space-3);
+  		}
+  		:global(.ca-sheet__body:last-child) {
+  			padding-bottom: var(--ca-space-5);
+  		}
+  	}
 
-	@keyframes ca-sheet-in {
-		from {
-			transform: translateY(100%);
-		}
-		to {
-			transform: translateY(0);
-		}
-	}
-	@keyframes ca-sheet-out {
-		from {
-			transform: translateY(0);
-		}
-		to {
-			transform: translateY(100%);
-		}
-	}
-	@keyframes ca-sheet-fade-in {
-		from {
-			opacity: 0;
-			transform: scale(0.97);
-		}
-		to {
-			opacity: 1;
-			transform: scale(1);
-		}
-	}
-	@keyframes ca-sheet-fade-out {
-		from {
-			opacity: 1;
-		}
-		to {
-			opacity: 0;
-		}
-	}
+  	@keyframes ca-sheet-in {
+  		from {
+  			transform: translateY(100%);
+  		}
+  		to {
+  			transform: translateY(0);
+  		}
+  	}
+  	@keyframes ca-sheet-out {
+  		from {
+  			transform: translateY(0);
+  		}
+  		to {
+  			transform: translateY(100%);
+  		}
+  	}
+  	@keyframes ca-sheet-fade-in {
+  		from {
+  			opacity: 0;
+  			transform: scale(0.97);
+  		}
+  		to {
+  			opacity: 1;
+  			transform: scale(1);
+  		}
+  	}
+  	@keyframes ca-sheet-fade-out {
+  		from {
+  			opacity: 1;
+  		}
+  		to {
+  			opacity: 0;
+  		}
+  	}
 
-	@media (prefers-reduced-motion: reduce) {
-		:global(.ca-sheet[data-state="open"]),
-		:global(.ca-sheet[data-state="closed"]) {
-			animation: none;
-		}
-	}
+  	@media (prefers-reduced-motion: reduce) {
+  		:global(.ca-sheet[data-state="open"]),
+  		:global(.ca-sheet[data-state="closed"]) {
+  			animation: none;
+  		}
+  	}
+}
 </style>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   import type { Snippet } from 'svelte';
   import { X } from '@lucide/svelte';
   import './dialog.css';
@@ -7,6 +7,7 @@
   import { createPresence } from '../../primitives/index.js';
   import { createIds } from '../../primitives/index.js';
   import { modalLayer } from './modal-layer.js';
+  const t = useT();
 
   /**
    * Dialog: second-layer modal.

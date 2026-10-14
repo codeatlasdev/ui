@@ -136,39 +136,42 @@
 </FloatingLayer>
 
 <style>
-  :global(.ca-dropdown__trigger) {
-    display: inline-flex;
-    align-items: center;
-    cursor: pointer;
-    background: transparent;
-    border: none;
-    padding: 0;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    :global(.ca-dropdown__trigger) {
+      display: inline-flex;
+      align-items: center;
+      cursor: pointer;
+      background: transparent;
+      border: none;
+      padding: 0;
+    }
 
-  :global(.ca-dropdown-content) {
-    border-radius: var(--ca-radius-lg);
-    padding: var(--ca-space-1);
-    min-width: 160px;
-    outline: none;
-    animation: ca-dropdown-in var(--ca-duration-fast) var(--ca-ease-decelerate);
-    transform-origin: top left;
-  }
+    :global(.ca-dropdown-content) {
+      border-radius: var(--ca-radius-lg);
+      padding: var(--ca-space-1);
+      min-width: 160px;
+      outline: none;
+      animation: ca-dropdown-in var(--ca-duration-fast) var(--ca-ease-decelerate);
+      transform-origin: top left;
+    }
 
-  :global(.ca-dropdown-content[data-side='top']) { transform-origin: bottom left; }
-  :global(.ca-dropdown-content[data-align='end']) { transform-origin: top right; }
-  :global(.ca-dropdown-content[data-side='top'][data-align='end']) { transform-origin: bottom right; }
+    :global(.ca-dropdown-content[data-side='top']) { transform-origin: bottom left; }
+    :global(.ca-dropdown-content[data-align='end']) { transform-origin: top right; }
+    :global(.ca-dropdown-content[data-side='top'][data-align='end']) { transform-origin: bottom right; }
 
-  :global(.ca-dropdown-content[data-state='closed']) {
-    animation: ca-dropdown-out var(--ca-duration-fast) var(--ca-ease-standard);
-  }
+    :global(.ca-dropdown-content[data-state='closed']) {
+      animation: ca-dropdown-out var(--ca-duration-fast) var(--ca-ease-standard);
+    }
 
-  @keyframes ca-dropdown-in {
-    from { opacity: 0; transform: scale(0.96); }
-    to { opacity: 1; transform: scale(1); }
-  }
+    @keyframes ca-dropdown-in {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
 
-  @keyframes ca-dropdown-out {
-    from { opacity: 1; transform: scale(1); }
-    to { opacity: 0; transform: scale(0.96); }
-  }
+    @keyframes ca-dropdown-out {
+      from { opacity: 1; transform: scale(1); }
+      to { opacity: 0; transform: scale(0.96); }
+    }
+}
 </style>

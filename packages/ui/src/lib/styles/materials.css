@@ -50,7 +50,8 @@
   --ca-text-body: color-mix(in oklab, var(--ca-text-primary) 78%, var(--ca-text-secondary));
   /* Control roles: fields, chips and alerts read these, so surface styles restyle them too. */
   --ca-field-bg:           var(--ca-surface-raised);
-  --ca-field-border-color: var(--ca-outline-subtle);
+  /* >= 3:1 on every surface and on the 5% field tint (WCAG 1.4.11); --ca-outline-subtle is for dividers. */
+  --ca-field-border-color: var(--ca-outline-control);
   --ca-field-shadow:       0 0 #0000;
   --ca-chip-bg:            var(--ca-glass-tint-thin);
   --ca-chip-border-color:  var(--ca-glass-border);
@@ -281,15 +282,20 @@
  *   }
  * ─────────────────────────────────────────────────────────────────────────── */
 :root {
-  /* ── Overlay (Popover, DropdownMenu) — thin glass ── */
-  --ca-overlay-bg:          var(--ca-glass-tint-thin);
+  /* ── Overlay (Popover, DropdownMenu, pickers) ──
+   * Carries primary text, so it is near-opaque by construction: the contrast of its labels must not
+   * depend on the page behind. The blur stays for the glass look. --ca-overlay-bg-glass is the old
+   * see-through tint, for demos and decorative layers only. */
+  --ca-overlay-bg:          color-mix(in oklab, var(--ca-surface-overlay) 94%, transparent);
+  --ca-overlay-bg-glass:    var(--ca-glass-tint-thin);
   --ca-overlay-blur:        var(--ca-blur-thin);
   --ca-overlay-border:      var(--ca-glass-border);
   --ca-overlay-shadow:      0 4px 16px oklch(0.25 0.008 70 / 0.10),
                             inset 0 0.5px 0 var(--ca-glass-rim);
 
-  /* ── Panel (NotificationBell, CommandPalette) — thick glass ── */
-  --ca-panel-bg:            var(--ca-glass-tint-thick);
+  /* ── Panel (NotificationBell, CommandPalette) — near-opaque, same rule as the overlay ── */
+  --ca-panel-bg:            color-mix(in oklab, var(--ca-surface-overlay) 94%, transparent);
+  --ca-panel-bg-glass:      var(--ca-glass-tint-thick);
   --ca-panel-blur:          var(--ca-blur-thick);
   --ca-panel-border:        var(--ca-glass-border);
   --ca-panel-shadow:        0 16px 48px oklch(0.25 0.008 70 / 0.16),
@@ -366,9 +372,8 @@
   --ca-blur-thick:      blur(18px) saturate(175%);
   --ca-blur-chrome:     blur(24px) saturate(185%);
 
-  --ca-overlay-bg:      var(--ca-glass-tint);
+  /* overlay/panel keep the near-opaque :root default: they carry text. Only the blur changes. */
   --ca-overlay-blur:    blur(8px) saturate(155%);
-  --ca-panel-bg:        var(--ca-glass-tint-thick);
   --ca-panel-blur:      blur(18px) saturate(175%);
   --ca-chrome-bg:       var(--ca-glass-tint-chrome);
   --ca-chrome-blur:     blur(24px) saturate(185%);

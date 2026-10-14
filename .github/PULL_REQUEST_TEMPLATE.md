@@ -1,22 +1,25 @@
-## Summary
+Closes #
 
-<!-- What does this PR do? Why is it needed? -->
+<!-- Started with `bun run issue:start <n>`? This PR was created for you; fill in the sections below. -->
 
-## Type of change
+## Regression test (written first)
 
-- [ ] Bug fix (non-breaking change that fixes an issue)
-- [ ] New feature (non-breaking change that adds functionality)
-- [ ] Breaking change (fix or feature that changes existing behavior)
-- [ ] Documentation update
-- [ ] Chore (dependency bump, refactor, tooling)
+- [ ] The test reproduces the problem and **fails** on `main`:
+
+```
+<paste the failing output>
+```
+
+- [ ] The same test **passes** with this change.
+
+<!-- Already fixed or obsolete? Show a test that passes on main and explain. -->
+
+## Root cause and fix
+
+<!-- What was wrong, and why this fixes it at the root. -->
 
 ## Checklist
 
 - [ ] `bun run validate` passes locally
-- [ ] Docs page added or updated in `site/` and checked with `bun dev` (desktop and phone width)
-- [ ] Docs updated if behavior changed
-- [ ] CHANGELOG entry added via `bun changeset` (required for features and fixes)
-
-## Related issues
-
-Closes #
+- [ ] Changeset added (`bun changeset`) if the published package changes
+- [ ] Docs updated (`site/`, AGENTS.md) if behavior or API changed, checked at desktop and phone width

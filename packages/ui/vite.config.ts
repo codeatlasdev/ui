@@ -6,6 +6,7 @@ import { defaultExclude, defineConfig } from "vitest/config";
 
 const browserPattern = "src/**/*.svelte.test.ts";
 const vrtPattern = "src/**/*.vrt.test.ts";
+const ssrPattern = "src/**/*.ssr.test.ts";
 // Factory, not a shared object: Vitest mutates `instances` (it writes the project name into
 // each entry), so sharing one array between projects mislabels and cross-wires them.
 // Every browser carries the run id from scripts/test-run.ts, so an interrupted run can be cleaned
@@ -48,6 +49,14 @@ export default defineConfig({
 					include: [browserPattern],
 					setupFiles: ["./tests/setup.browser.ts"],
 					browser: browserBase(),
+				},
+			},
+			{
+				// Server render through `svelte/server` in Node: proves nothing leaks between requests.
+				test: {
+					name: "ssr",
+					environment: "node",
+					include: [ssrPattern],
 				},
 			},
 			{

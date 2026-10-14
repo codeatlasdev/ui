@@ -29,6 +29,15 @@ site/                 → Astro site (landing + MDX docs + templates) at ui.code
 
 ---
 
+## Issue workflow (agents and humans)
+
+- **Claim before coding:** `bun run issue:start <n>` creates `../ui-worktrees/<n>-<slug>` on `fix|feat/<n>-<slug>`, opens a draft PR (`Closes #<n>`), labels `in progress`, assigns and comments on the issue. Work only inside that worktree. Parallel agents each take their own issue and worktree; never share a checkout.
+- **Check first:** `bun run issue:status`. Skip issues labeled `in progress` by someone else. Re-read the issue against current `main`: if it is already fixed, prove it with a passing test, comment the evidence and close it.
+- **Test first** (critical rule 0): failing regression test, then the fix, then the passing run. Both outputs go in the PR body.
+- **Done:** `bun run validate`, changeset when the package changes, docs when behavior changes, `gh pr ready`. After merge, `bun run issue:done <n>`.
+
+---
+
 ## Tests
 
 Unit tests run on `bun test` (repo root, `bunfig.toml`); component and visual tests need a real Chromium and stay on Vitest. Use `bun run test` (everything) or the scripts below. A bare `bun test` at the root runs only the unit tests.
@@ -74,6 +83,8 @@ Reading failures: locators fail with an ARIA snapshot; traces are in `__traces__
 
 ## Critical rules
 
+0. **Test first, always.** Every bug fix and issue starts with a regression test that reproduces the problem. Run it and confirm it fails on the current code, then fix, then confirm it passes. A PR reports that fail-before/pass-after evidence. Tests exist to prove a behavior or a fix, never to pad coverage: no tests of wiring, copies, mock echoes or incidental defaults. If a test cannot fail for a plausible bug, delete it.
+
 1. **Required setup**: consumers import the CSS once (it already includes `materials.css`, themes and utilities) and register the Vite plugin (anti-FOUC script + `ssr.noExternal` for TanStack Table and Shiki):
    ```ts
    import "@codeatlasdev/ui/styles/global.css";
@@ -89,6 +100,7 @@ Reading failures: locators fail with an ARIA snapshot; traces are in `__traces__
    import { caThemeHandle } from "@codeatlasdev/ui/kit";
    export const handle = sequence(caThemeHandle());
    ```
+   SvelteKit 3 (`@sveltejs/kit ^3`): config goes into `sveltekit({ adapter, ... })` (no `svelte.config.js`, no `kit` namespace), `tsconfig.json` extends `$app/tsconfig`, `$lib` is removed in favor of `#lib/*` (with the `.ts` extension), and `vite.config.ts` imports the theme with its `.ts` extension. `bunx @codeatlasdev/ui init` detects the Kit version. Details: the SvelteKit 3 section of `.agents/skills/codeatlas-ui/SKILL.md`.
 
 2. **`backdrop-filter` + `will-change: transform`**: never combine the two on the same element or an ancestor. It kills the glass blur.
 
@@ -117,6 +129,8 @@ Reading failures: locators fail with an ARIA snapshot; traces are in `__traces__
 14. **SEO**: a public page uses `<Seo>` from `@codeatlasdev/ui/seo` with a required `canonical`; a private page passes `noindex`.
 
 15. **Discovering the API**: never guess a prop. Use the `ca-ui-mcp` MCP server (`get_component`, `list_components`, `search_tokens`, `get_guide`) or `.agents/skills/codeatlas-ui/API.md`; both are generated from the code by `packages/ui/scripts/build-manifest.ts` (runs on `build`). `[ca-ui]` dev warnings (via `devWarn`, `esm-env`) flag an `IconButton` without `aria-label` and a `Dialog` without `title`.
+
+16. **Agent skills layout** (`npx skills add codeatlasdev/ui`): one folder per skill under `.agents/skills/`, named exactly like the `name:` in its `SKILL.md` (`codeatlas-ui`, `codeatlas-dx`, `codeatlas-writing`). Never put a `SKILL.md` directly in `.agents/skills/` (the CLI then treats the directory as a single skill and lists nothing else), and quote any `description:` that contains `: ` (an unquoted one is a YAML error and the CLI silently skips the skill). `packages/ui/tests/skills.test.ts` enforces this.
 
 ---
 
@@ -567,10 +581,13 @@ import {
 /* Semantic colors */
 --ca-brand-main / --ca-brand-light / --ca-brand-dark / --ca-brand-contrast / --ca-brand-h
 --ca-semantic-success / warning / error / info
---ca-text-primary / secondary / disabled
+--ca-text-primary / secondary / disabled   (disabled = label of disabled controls only, >= 3:1; de-emphasised information uses --ca-text-hint)
 --ca-surface-base / raised / sunken / overlay
---ca-outline-subtle / default / strong
---ca-action-hover / selected / disabled
+--ca-outline-subtle / default / strong / control   (control = field and control edge, >= 3:1; subtle = dividers only)
+--ca-focus-ring / --ca-state-indicator   (>= 3:1 on every surface and on hover/selected fills; components read these, never --ca-brand-main)
+--ca-semantic-error-fill / --ca-semantic-error-contrast   (pair, like brand-fill / brand-contrast)
+--ca-action-hover / selected / disabled / disabled-bg   (disabled controls use tokens, never opacity)
+--ca-overlay-bg / --ca-panel-bg   (near-opaque by default; --ca-overlay-bg-glass / --ca-panel-bg-glass are the see-through tints)
 
 /* Spacing (base 4px) */
 --ca-space-1 (4px) .. --ca-space-16 (64px)
@@ -626,7 +643,9 @@ plugins: [sveltekit(), caThemePlugin(theme)]
 
 ### Cascade and overriding tokens
 
-`global.css` declares `@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.components, ca.materials, ca.utilities`. Component CSS and app CSS stay outside any layer and always win. To override package tokens, just declare `--ca-*` on `:root` in the app, without `!important`.
+`core.css` declares `@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components`. **Every component `<style>` block (and `Dialog/dialog.css`, `Date/date.css`) is wrapped in `@layer ca.components { ... }`**, the last kit layer; app CSS is unlayered. Unlayered beats any layer regardless of specificity or source order, so an app overrides a kit rule with the same single-class selector (`.ca-btn:disabled`, `.ca-tf__wrap`, `.ca-dialog__body`), no `!important`, no doubled classes. To override package tokens, declare `--ca-*` on `:root`.
+
+Rules when editing components: (1) new component CSS goes inside `@layer ca.components { ... }` and the `<style>` starts with the full order statement (`@layer ca.reset, ..., ca.components;`), because the first mention of a layer name fixes its priority and a bundler can emit a component chunk before `core.css`; `tests/component-layer.test.ts` fails otherwise. (2) Inside the layer, `:global(...)` and scoped selectors both work (Svelte keeps the hash class; app rules still win by layer). (3) Avoid `!important` in component CSS: a layered `!important` beats unlayered app CSS (the reverse of normal declarations), so apps could not override it. Same-layer conflicts (error vs focus) are settled by selector order/specificity. Allowed only to beat an inline `style=` the component itself sets (Progress indeterminate width, `.ca-main` spring margin, Shiki inline background) and for `prefers-reduced-motion`; `base.css` focus rules use it on purpose. (4) Unlayered kit CSS is not allowed except `marks.css` and inline brand `<style id="ca-theme">`, which are intentionally app-level.
 
 `global.css` = `core.css` (includes only the `amber` preset) + the other 7 presets. Apps that use a single preset import only `styles/core.css` + `styles/presets/<id>.css` (see `site/.../getting-started/performance.mdx`).
 
@@ -662,22 +681,32 @@ responsive.current          // 'xs' | 'sm' | 'md' | 'lg' | 'xl'; before init it 
 
 ## Language (i18n)
 
-Every piece of visible text the package generates (aria-label, placeholder, empty states, toasts, "Copy", "On this page"…) comes from a catalog. The default is **English**. Portuguese apps call `setLocale('pt-BR')` once, in the root layout.
+Every piece of visible text the package generates (aria-label, placeholder, empty states, toasts, "Copy", "On this page"…) comes from a catalog. The default is **English**. `Locale` is any BCP 47 string; `en` and `pt-BR` are built in, others are added with `registerLocale`.
 
 ```svelte
-<!-- src/routes/+layout.svelte -->
+<!-- SSR apps: src/routes/+layout.svelte. Request-scoped, never shared between requests. -->
 <script>
-  import { setLocale } from "@codeatlasdev/ui";
-  setLocale("pt-BR");   // "en" | "pt-BR"; runs on SSR too, before the first render
+  import { I18nProvider } from "@codeatlasdev/ui";
+  let { data, children } = $props();
 </script>
+<I18nProvider locale={data.locale}>{@render children()}</I18nProvider>
 ```
 
-- The state is a module-level `$state`: all islands/apps on the same page share the language, and components re-render on change. `locale.value` reads the current one.
+```ts
+// Client-only apps (SPA, Astro islands): one module-level locale.
+import { registerLocale, setLocale } from "@codeatlasdev/ui";
+registerLocale("es", { common: { close: "Cerrar" } }); // partial; missing keys fall back to en
+setLocale("es");
+```
+
+- **Never call `setLocale` on the server**: it is a no-op there (dev warning), because module state would leak between concurrent requests. Use `I18nProvider`. A provider always wins over `setLocale`.
+- `createErrorHandler({ locale })` takes the fallback-message language explicitly (string or `(event) => locale`); it reads no global state.
+- The client `$state` behind `setLocale` is module-level: all islands on the same page share the language and re-render on change. `locale.value` reads it; inside a provider use `useLocale()`.
 - **An explicit prop always wins** over the catalog: `<TableOfContents label="In this article" />`. Text props (`label`, `placeholder`, `confirmLabel`, `emptyText`, `ofLabel`…) no longer have a default; without the prop, the component uses the catalog.
-- **Override phrases** without creating a locale: `setLocale("pt-BR", { docs: { toc: "In this article" } })`. The object is deep-merged over the catalog; a new `setLocale` call replaces the previous overrides.
-- Catalog: `packages/ui/src/lib/i18n/en.ts` (source of truth, grouped by component, e.g. `docs.search.placeholder`) and `pt-BR.ts` (typed as `Messages`: a missing key is a type error). Strings with a value are functions: `notificationBell.label(unread)`.
-- New text in a component: add the key to `en.ts` **and** `pt-BR.ts`, read it with `t().group.key` in markup/`$derived` (never in a module-level `const`, or it will not react to the switch) and use `label ?? t().group.key` when there is a prop.
-- In tests, call `setLocale("pt-BR")` where the test checks Portuguese text and `setLocale("en")` in `afterEach`; the default is English.
+- **Override phrases** without creating a locale: `<I18nProvider locale="pt-BR" messages={{ docs: { toc: "In this article" } }}>` or `setLocale("pt-BR", { … })`. Deep-merged over the catalog; a new `setLocale` call replaces the previous overrides.
+- Catalog: `packages/ui/src/lib/i18n/en.ts` (source of truth, grouped by component, e.g. `docs.search.placeholder`) and `pt-BR.ts` (typed as `Messages`: a missing key is a type error). Strings with a value are functions: `notificationBell.label(unread)`. Registry and `getMessages(locale, override?)` live in the rune-free `catalog.ts`.
+- New text in a component: add the key to `en.ts` **and** `pt-BR.ts`, call `const t = useT();` at the top level of `<script>` (or of a `.svelte.ts` helper called at component init; `useT` reads Svelte context, so it cannot run in event handlers or module scope), read `t().group.key` in markup/`$derived`, and use `label ?? t().group.key` when there is a prop. Never import a global `t`.
+- In browser tests, call `setLocale("pt-BR")` where the test checks Portuguese text and `setLocale("en")` in `afterEach`; the default is English. SSR tests (`*.ssr.test.ts`, `bun run test:ssr`) wrap the tree in `I18nProvider`.
 - The date/number `locale` (`DatePicker locale="pt-BR"`, masks) is independent of the UI language.
 
 ---

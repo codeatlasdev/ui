@@ -142,7 +142,7 @@ export const theme: ThemeOptions = {
 		inset: -9px -3px;
 	}
 	.dot:focus-visible {
-		outline: 2px solid var(--ca-brand-main);
+		outline: 2px solid var(--ca-focus-ring);
 		outline-offset: 3px;
 	}
 	.lab__hex {
@@ -167,7 +167,7 @@ export const theme: ThemeOptions = {
 		border-color: var(--ca-error-main, currentColor);
 	}
 	.lab__hex input:focus-visible {
-		outline: 2px solid var(--ca-brand-main);
+		outline: 2px solid var(--ca-focus-ring);
 		outline-offset: 2px;
 	}
 	.lab__preview {

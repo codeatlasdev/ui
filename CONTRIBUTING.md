@@ -49,6 +49,27 @@ site/             # Astro site: landing, docs (MDX + Svelte demo islands), templ
 └── src/templates/                        # full-app templates (/templates/)
 ```
 
+## Working on an issue
+
+One issue, one worktree, one branch, one draft PR. Claim the issue before you write code, so nobody duplicates it:
+
+```bash
+bun run issue:status        # open issues, who is on them, linked PRs
+bun run issue:start 47      # claim #47 and set everything up
+cd ../ui-worktrees/47-...   # work there; your main checkout stays untouched
+```
+
+`issue:start` creates the worktree in `../ui-worktrees/<n>-<slug>` on `fix/<n>-<slug>` (or `feat/` for enhancements) from `origin/main`, installs dependencies, opens a **draft PR** with `Closes #<n>`, labels the issue `in progress`, assigns you and comments the PR link on the issue. If someone else is assigned, it stops: talk on the issue first.
+
+Then, in the worktree:
+
+1. **Understand and reproduce.** Write the regression test first and run it: it must fail on the current code. Paste that output in the PR.
+2. **Fix** the root cause until the test passes. No workarounds for a symptom.
+3. **Before review:** `bun run validate`, a changeset if the package changes, docs if behavior changed. Mark the PR ready (`gh pr ready`).
+4. **After merge:** `bun run issue:done 47` removes the worktree and the local branch. GitHub closes the issue through `Closes #47`.
+
+If you find the issue is already fixed or obsolete, prove it with a test that passes on `main`, comment that evidence on the issue and close it.
+
 ## Adding a component
 
 1. Create `packages/ui/src/lib/components/<ComponentName>/<ComponentName>.svelte` using Svelte 5 runes mode.
@@ -66,7 +87,9 @@ site/             # Astro site: landing, docs (MDX + Svelte demo islands), templ
 
 ## Before submitting a PR
 
-CI (`.github/workflows/test.yml`) runs the same gates. Locally, both must exit with code 0:
+**Test first.** A bug fix starts with a regression test that reproduces the problem: run it, watch it fail on the current code, then fix until it passes, and put that fail-before/pass-after evidence in the PR. Tests prove behavior; tests that only pad coverage (wiring, copies, mock echoes, incidental defaults) are rejected.
+
+CI (`.github/workflows/ci.yml`) runs the same gates. Locally, both must exit with code 0:
 
 ```bash
 bun run validate   # generated themes, bun --check + svelte-check + astro check, Biome, unit tests, size budget

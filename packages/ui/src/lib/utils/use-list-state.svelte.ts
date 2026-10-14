@@ -1,4 +1,4 @@
-import { t } from "../i18n/state.svelte.js";
+import { useT } from "../i18n/state.svelte.js";
 /**
  * useListState — eliminates boilerplate state management in list/CRUD pages.
  *
@@ -77,6 +77,8 @@ export function useListState<T extends object>(
 	options: UseListStateOptions<T>
 ): UseListStateReturn<T> {
 	const { data, perPage = 20, searchKeys = [], idKey = "id" as keyof T, ofLabel } = options;
+
+	const t = useT();
 
 	// ── Mutable state ───────────────────────────────────────────────────
 	let _search = $state("");

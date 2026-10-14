@@ -223,83 +223,86 @@
 </div>
 
 <style>
-  :global(.ca-scroll-area) {
-    position: relative;
-    overflow: hidden;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    :global(.ca-scroll-area) {
+      position: relative;
+      overflow: hidden;
+    }
 
-  /* max-height/-width inherit from the root: height:100% against an auto-height
-     root resolves to auto, which would clip the content instead of scrolling it. */
-  :global(.ca-scroll-area__viewport) {
-    width: 100%;
-    height: 100%;
-    max-height: inherit;
-    max-width: inherit;
-    overflow: scroll;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-  }
+    /* max-height/-width inherit from the root: height:100% against an auto-height
+       root resolves to auto, which would clip the content instead of scrolling it. */
+    :global(.ca-scroll-area__viewport) {
+      width: 100%;
+      height: 100%;
+      max-height: inherit;
+      max-width: inherit;
+      overflow: scroll;
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+      scrollbar-width: none;
+      -webkit-overflow-scrolling: touch;
+    }
 
-  :global(.ca-scroll-area__viewport > [data-scroll-area-content]) {
-    flex-grow: 1;
-  }
+    :global(.ca-scroll-area__viewport > [data-scroll-area-content]) {
+      flex-grow: 1;
+    }
 
-  :global(.ca-scroll-area__viewport::-webkit-scrollbar) {
-    display: none;
-  }
+    :global(.ca-scroll-area__viewport::-webkit-scrollbar) {
+      display: none;
+    }
 
-  :global(.ca-scroll-area__scrollbar) {
-    position: absolute;
-    display: flex;
-    user-select: none;
-    touch-action: none;
-    padding: var(--ca-space-0-5);
-    background: transparent;
-    transition: background var(--ca-duration-fast) var(--ca-ease-decelerate);
-  }
+    :global(.ca-scroll-area__scrollbar) {
+      position: absolute;
+      display: flex;
+      user-select: none;
+      touch-action: none;
+      padding: var(--ca-space-0-5);
+      background: transparent;
+      transition: background var(--ca-duration-fast) var(--ca-ease-decelerate);
+    }
 
-  :global(.ca-scroll-area__scrollbar[data-state='hidden']) {
-    display: none;
-  }
+    :global(.ca-scroll-area__scrollbar[data-state='hidden']) {
+      display: none;
+    }
 
-  :global(.ca-scroll-area__scrollbar--v) {
-    top: 0;
-    right: 0;
-    width: var(--ca-space-2);
-    flex-direction: column;
-  }
+    :global(.ca-scroll-area__scrollbar--v) {
+      top: 0;
+      right: 0;
+      width: var(--ca-space-2);
+      flex-direction: column;
+    }
 
-  :global(.ca-scroll-area__scrollbar--h) {
-    bottom: 0;
-    left: 0;
-    height: var(--ca-space-2);
-    flex-direction: row;
-  }
+    :global(.ca-scroll-area__scrollbar--h) {
+      bottom: 0;
+      left: 0;
+      height: var(--ca-space-2);
+      flex-direction: row;
+    }
 
-  :global(.ca-scroll-area__scrollbar:hover) {
-    background: var(--ca-glass-tint-regular);
-  }
+    :global(.ca-scroll-area__scrollbar:hover) {
+      background: var(--ca-glass-tint-regular);
+    }
 
-  :global(.ca-scroll-area__thumb) {
-    flex: none;
-    border-radius: var(--ca-radius-pill);
-    background: var(--ca-outline-default);
-    position: relative;
-    cursor: pointer;
-  }
+    :global(.ca-scroll-area__thumb) {
+      flex: none;
+      border-radius: var(--ca-radius-pill);
+      background: var(--ca-outline-default);
+      position: relative;
+      cursor: pointer;
+    }
 
-  :global(.ca-scroll-area__scrollbar--v .ca-scroll-area__thumb) {
-    width: 100%;
-  }
+    :global(.ca-scroll-area__scrollbar--v .ca-scroll-area__thumb) {
+      width: 100%;
+    }
 
-  :global(.ca-scroll-area__scrollbar--h .ca-scroll-area__thumb) {
-    height: 100%;
-  }
+    :global(.ca-scroll-area__scrollbar--h .ca-scroll-area__thumb) {
+      height: 100%;
+    }
 
-  :global(.ca-scroll-area__thumb:hover) {
-    background: var(--ca-text-hint);
-  }
+    :global(.ca-scroll-area__thumb:hover) {
+      background: var(--ca-text-hint);
+    }
+}
 </style>

@@ -69,33 +69,36 @@
 </FloatingLayer>
 
 <style>
-  :global(.ca-popover__trigger) {
-    display: inline-flex;
-    background: transparent;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    :global(.ca-popover__trigger) {
+      display: inline-flex;
+      background: transparent;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+    }
 
-  :global(.ca-popover-content) {
-    border-radius: var(--ca-radius-lg);
-    padding: var(--ca-space-4);
-    max-width: 320px;
-    outline: none;
-    animation: ca-popover-in var(--ca-duration-fast) var(--ca-ease-decelerate);
-  }
+    :global(.ca-popover-content) {
+      border-radius: var(--ca-radius-lg);
+      padding: var(--ca-space-4);
+      max-width: 320px;
+      outline: none;
+      animation: ca-popover-in var(--ca-duration-fast) var(--ca-ease-decelerate);
+    }
 
-  :global(.ca-popover-content[data-state='closed']) {
-    animation: ca-popover-out var(--ca-duration-fast) var(--ca-ease-standard);
-  }
+    :global(.ca-popover-content[data-state='closed']) {
+      animation: ca-popover-out var(--ca-duration-fast) var(--ca-ease-standard);
+    }
 
-  @keyframes ca-popover-in {
-    from { opacity: 0; transform: scale(0.96); }
-    to { opacity: 1; transform: scale(1); }
-  }
+    @keyframes ca-popover-in {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
 
-  @keyframes ca-popover-out {
-    from { opacity: 1; transform: scale(1); }
-    to { opacity: 0; transform: scale(0.96); }
-  }
+    @keyframes ca-popover-out {
+      from { opacity: 1; transform: scale(1); }
+      to { opacity: 0; transform: scale(0.96); }
+    }
+}
 </style>

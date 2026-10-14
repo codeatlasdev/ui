@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   import type { Snippet } from 'svelte';
+  const t = useT();
 
   interface Props {
     count?: number;
@@ -31,54 +32,57 @@
 </span>
 
 <style>
-  .ca-badge-wrapper {
-    position: relative;
-    display: inline-flex;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-badge-wrapper {
+      position: relative;
+      display: inline-flex;
+    }
 
-  .ca-badge {
-    position: absolute;
-    top: 0;
-    right: 0;
-    transform: translate(25%, -25%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: var(--ca-radius-pill);
-    font-size: var(--ca-font-size-caption);
-    font-weight: var(--ca-font-weight-bold);
-    line-height: 1;
-    padding: 0 var(--ca-space-1);
-    min-width: calc(var(--ca-space-4) + var(--ca-space-0-5));
-    height: calc(var(--ca-space-4) + var(--ca-space-0-5));
-    border: var(--ca-border-width-strong) solid var(--ca-surface-base);
-  }
+    .ca-badge {
+      position: absolute;
+      top: 0;
+      right: 0;
+      transform: translate(25%, -25%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: var(--ca-radius-pill);
+      font-size: var(--ca-font-size-caption);
+      font-weight: var(--ca-font-weight-bold);
+      line-height: 1;
+      padding: 0 var(--ca-space-1);
+      min-width: calc(var(--ca-space-4) + var(--ca-space-0-5));
+      height: calc(var(--ca-space-4) + var(--ca-space-0-5));
+      border: var(--ca-border-width-strong) solid var(--ca-surface-base);
+    }
 
-  .ca-badge--dot {
-    width: var(--ca-space-2);
-    min-width: var(--ca-space-2);
-    height: var(--ca-space-2);
-    padding: 0;
-    border-radius: 50%;
-  }
+    .ca-badge--dot {
+      width: var(--ca-space-2);
+      min-width: var(--ca-space-2);
+      height: var(--ca-space-2);
+      padding: 0;
+      border-radius: 50%;
+    }
 
-  .ca-badge--brand {
-    background: var(--ca-brand-fill);
-    color: var(--ca-brand-contrast);
-  }
+    .ca-badge--brand {
+      background: var(--ca-brand-fill);
+      color: var(--ca-brand-contrast);
+    }
 
-  .ca-badge--success {
-    background: var(--ca-semantic-success);
-    color: var(--ca-on-semantic);
-  }
+    .ca-badge--success {
+      background: var(--ca-semantic-success);
+      color: var(--ca-on-semantic);
+    }
 
-  .ca-badge--error {
-    background: var(--ca-semantic-error);
-    color: var(--ca-on-semantic);
-  }
+    .ca-badge--error {
+      background: var(--ca-semantic-error);
+      color: var(--ca-on-semantic);
+    }
 
-  .ca-badge--warning {
-    background: var(--ca-semantic-warning);
-    color: var(--ca-on-semantic);
-  }
+    .ca-badge--warning {
+      background: var(--ca-semantic-warning);
+      color: var(--ca-on-semantic);
+    }
+}
 </style>

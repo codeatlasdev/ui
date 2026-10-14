@@ -1,4 +1,4 @@
-import type { Messages } from "./state.svelte.js";
+import type { Messages } from "./catalog.js";
 
 /** Português (Brasil). Mesma forma de `en.ts`; chave faltando é erro de tipo. */
 export const ptBR: Messages = {

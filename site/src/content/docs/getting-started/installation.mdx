@@ -38,16 +38,18 @@ Every version is published from CI with an npm provenance statement, so you can 
 
 ## SvelteKit
 
+`@codeatlasdev/ui` supports SvelteKit 2 (`^2.12`) and SvelteKit 3. The steps below are the same on both; the differences are in [SvelteKit 3](#sveltekit-3). `bunx @codeatlasdev/ui init` reads the installed Kit version and writes the right imports.
+
 <Steps>
 
-1. **Register the Vite plugin.** It bundles the ESM-only dependencies for SSR (`@tanstack/svelte-table`, `shiki`) and warns at build time if the theme script is not injected.
+1. **Register the Vite plugin.** It bundles the ESM-only dependencies for SSR (`@tanstack/svelte-table`, `shiki`) and warns at build time if the theme script is not injected. Import the theme **with its `.ts` extension**: Vite loads the config with Node's native loader, which does not resolve extensionless imports (Vite 8 warns about it). That needs `"allowImportingTsExtensions": true` in `tsconfig.json`; SvelteKit's generated base config already sets it.
 
    ```ts
    // vite.config.ts
    import { sveltekit } from "@sveltejs/kit/vite";
    import { caThemePlugin } from "@codeatlasdev/ui/vite";
    import { defineConfig } from "vite";
-   import { theme } from "./src/lib/theme";
+   import { theme } from "./src/lib/theme.ts";
 
    export default defineConfig({ plugins: [sveltekit(), caThemePlugin(theme)] });
    ```
@@ -67,7 +69,7 @@ Every version is published from CI with an npm provenance statement, so you can 
 
    ```ts
    // src/lib/theme.ts
-   import type { ThemeOptions } from "@codeatlasdev/ui";
+   import type { ThemeOptions } from "@codeatlasdev/ui/vite";
 
    export const theme: ThemeOptions = {
      defaultScheme: "system",
@@ -101,6 +103,38 @@ Every version is published from CI with an npm provenance statement, so you can 
 <Callout type="tip" title="Prefer app.html?">
   If you cannot use a hook, paste the script into `src/app.html` instead. `CA_THEME_SCRIPT_TAG` from `@codeatlasdev/ui/vite` is a ready-to-paste tag for the default theme; for a custom theme, use the hook.
 </Callout>
+
+### SvelteKit 3
+
+Kit 3 changed three things this setup touches. `init` handles the first and reports the other two (it never rewrites `svelte.config.js` or `tsconfig.json`).
+
+1. **Configuration moves into the Vite plugin.** `svelte.config.js` is ignored (`config_file_unsupported`) and the `kit` namespace is gone (`config_kit_namespace`). Pass the options directly to `sveltekit()`, next to `caThemePlugin`:
+
+   ```ts
+   // vite.config.ts
+   import adapter from "@sveltejs/adapter-auto";
+   import { sveltekit } from "@sveltejs/kit/vite";
+   import { caThemePlugin } from "@codeatlasdev/ui/vite";
+   import { defineConfig } from "vite";
+   import { theme } from "./src/lib/theme.ts";
+
+   export default defineConfig({ plugins: [sveltekit({ adapter: adapter() }), caThemePlugin(theme)] });
+   ```
+
+2. **`tsconfig.json` extends `$app/tsconfig`.** `.svelte-kit/tsconfig.json` is no longer generated (`tsconfig_extends_missing`):
+
+   ```json
+   { "extends": "$app/tsconfig" }
+   ```
+
+3. **`$lib` is removed** (`module_removed_lib`). Use the `#lib/*` import that `sv create` adds to `package.json` (`"imports": { "#lib/*": "./src/lib/*" }`), written with the extension. In the hook, import the theme as `#lib/theme.ts`:
+
+   ```ts
+   // src/hooks.server.ts
+   import { theme } from "#lib/theme.ts";
+   ```
+
+   Without a `#lib` map, use a relative path (`./lib/theme.ts` from `src/hooks.server.ts`). Everything else (the layout, the stylesheet import, `colorScheme.init()` and the viewport meta) is identical to Kit 2.
 
 ## Astro
 

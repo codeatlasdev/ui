@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
+  const t = useT();
 	export interface BreadcrumbItem {
 		label: string;
 		href?: string;
@@ -32,38 +33,41 @@
 </nav>
 
 <style>
-	.ca-breadcrumb__list {
-		display: flex;
-		align-items: center;
-		gap: var(--ca-space-1);
-		list-style: none;
-		margin: 0;
-		padding: 0;
-		font-size: var(--ca-font-size-caption);
-	}
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+  	.ca-breadcrumb__list {
+  		display: flex;
+  		align-items: center;
+  		gap: var(--ca-space-1);
+  		list-style: none;
+  		margin: 0;
+  		padding: 0;
+  		font-size: var(--ca-font-size-caption);
+  	}
 
-	.ca-breadcrumb__item {
-		display: flex;
-		align-items: center;
-		gap: var(--ca-space-1);
-	}
+  	.ca-breadcrumb__item {
+  		display: flex;
+  		align-items: center;
+  		gap: var(--ca-space-1);
+  	}
 
-	.ca-breadcrumb__sep {
-		color: var(--ca-outline-default);
-		user-select: none;
-	}
+  	.ca-breadcrumb__sep {
+  		color: var(--ca-outline-default);
+  		user-select: none;
+  	}
 
-	.ca-breadcrumb__link {
-		color: var(--ca-text-secondary);
-		text-decoration: none;
-	}
+  	.ca-breadcrumb__link {
+  		color: var(--ca-text-secondary);
+  		text-decoration: none;
+  	}
 
-	.ca-breadcrumb__link:hover {
-		color: var(--ca-text-primary);
-		text-decoration: underline;
-	}
+  	.ca-breadcrumb__link:hover {
+  		color: var(--ca-text-primary);
+  		text-decoration: underline;
+  	}
 
-	.ca-breadcrumb__current {
-		color: var(--ca-text-primary);
-	}
+  	.ca-breadcrumb__current {
+  		color: var(--ca-text-primary);
+  	}
+}
 </style>

@@ -10,10 +10,13 @@
 </div>
 
 <style>
-  .ca-card-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
-    gap: var(--ca-space-3);
-    margin: var(--ca-space-5) 0;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 16rem), 1fr));
+      gap: var(--ca-space-3);
+      margin: var(--ca-space-5) 0;
+    }
+}
 </style>

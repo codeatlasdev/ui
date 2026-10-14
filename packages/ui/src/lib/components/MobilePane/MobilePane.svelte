@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   import type { Snippet } from 'svelte';
   import { ArrowLeft } from '@lucide/svelte';
   import { tick } from 'svelte';
   import { keyboardAware } from '../../actions/keyboard-aware.js';
   import IconButton from '../Button/IconButton.svelte';
   import MobileHeader from '../AppShell/MobileHeader.svelte';
+  const t = useT();
 
   /**
    * MobilePane: a full-screen layer above the shell for mobile drill-down
@@ -106,35 +107,38 @@
 {/if}
 
 <style>
-  .ca-mobile-pane {
-    position: fixed;
-    inset: 0;
-    z-index: var(--ca-z-fixed);
-    height: var(--ca-vh);
-    display: flex;
-    flex-direction: column;
-    background: var(--ca-surface-base);
-    outline: none;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-mobile-pane {
+      position: fixed;
+      inset: 0;
+      z-index: var(--ca-z-fixed);
+      height: var(--ca-vh);
+      display: flex;
+      flex-direction: column;
+      background: var(--ca-surface-base);
+      outline: none;
+    }
 
-  /* The header already adds --ca-safe-top/left/right. Inside a flex column it must not grow. */
-  .ca-mobile-pane :global(.ca-mobile-pane__header) {
-    flex: 0 0 auto;
-  }
+    /* The header already adds --ca-safe-top/left/right. Inside a flex column it must not grow. */
+    .ca-mobile-pane :global(.ca-mobile-pane__header) {
+      flex: 0 0 auto;
+    }
 
-  .ca-mobile-pane__body {
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    flex-direction: column;
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    padding-bottom: var(--ca-safe-bottom);
-    padding-left: var(--ca-safe-left);
-    padding-right: var(--ca-safe-right);
-  }
+    .ca-mobile-pane__body {
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      overscroll-behavior: contain;
+      padding-bottom: var(--ca-safe-bottom);
+      padding-left: var(--ca-safe-left);
+      padding-right: var(--ca-safe-right);
+    }
 
-  .ca-mobile-pane__body--fixed {
-    overflow: hidden;
-  }
+    .ca-mobile-pane__body--fixed {
+      overflow: hidden;
+    }
+}
 </style>

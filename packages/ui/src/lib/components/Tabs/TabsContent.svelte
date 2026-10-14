@@ -29,14 +29,17 @@
 </div>
 
 <style>
-  :global(.ca-tabs-content) {
-    flex: 1;
-    outline: none;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    :global(.ca-tabs-content) {
+      flex: 1;
+      outline: none;
+    }
 
-  :global(.ca-tabs-content:focus-visible) {
-    outline: var(--ca-border-width-focus) solid var(--ca-brand-main);
-    outline-offset: var(--ca-border-width-focus);
-    border-radius: var(--ca-radius-sm);
-  }
+    :global(.ca-tabs-content:focus-visible) {
+      outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
+      outline-offset: var(--ca-border-width-focus);
+      border-radius: var(--ca-radius-sm);
+    }
+}
 </style>

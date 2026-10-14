@@ -1,6 +1,7 @@
 import { describe, expect, it } from "bun:test";
 import {
 	buildManifest,
+	buildTokens,
 	extractClasses,
 	extractTokens,
 	type ManifestToken,
@@ -26,6 +27,22 @@ describe("components manifest", () => {
 		const classes = byName("Button")?.classes;
 		expect(classes).toContain("ca-btn--loading");
 		expect(classes).not.toContain("ca-spinner__arc");
+	});
+
+	it("takes the component description from the component-level doc, never from a prop", () => {
+		// TextField has no component doc: the first JSDoc in its script belongs to a prop.
+		expect(byName("TextField")?.description).toBeUndefined();
+		expect(byName("Button")?.description ?? "").not.toContain("aria-busy");
+		expect(byName("AppShellLayout")?.description ?? "").not.toMatch(/Brand mark/);
+		expect(byName("KpiCard")?.description ?? "").not.toMatch(/size and color are managed/);
+	});
+
+	it("never describes a component with a tag-only or prop-owned comment", () => {
+		for (const c of manifest.components) {
+			expect(c.description ?? "", c.name).not.toMatch(/^@\w+/);
+			const propDocs = [...c.props, ...c.snippets].map((p) => p.description);
+			if (c.description) expect(propDocs, c.name).not.toContain(c.description);
+		}
 	});
 
 	it("reads classes from a component's imported CSS file", () => {
@@ -75,5 +92,26 @@ describe("extractTokens", () => {
 		expect(out.get("--ca-space-1")).toMatchObject({ value: "4px", group: "Spacing scale" });
 		expect(out.get("--ca-bg")).toMatchObject({ value: "white", dark: "black" });
 		expect(out.get("--ca-only-dark")).toMatchObject({ value: "", dark: "red" });
+	});
+});
+
+describe("token descriptions (#21, #22)", () => {
+	it("extractTokens reads the comment that precedes a declaration as its description", () => {
+		const out = new Map<string, ManifestToken>();
+		extractTokens(
+			`:root {\n  /* Disabled controls only. Use --ca-text-hint for de-emphasised information. */\n  --ca-text-disabled: grey;\n  --ca-plain: 1;\n}`,
+			"x.css",
+			out
+		);
+		expect(out.get("--ca-text-disabled")?.description).toMatch(/disabled controls/i);
+		expect(out.get("--ca-plain")?.description).toBeUndefined();
+	});
+
+	it("the shipped tokens carry the disabled-only description and the error pair", () => {
+		const tokens = buildTokens();
+		const byName = (n: string) => tokens.find((t) => t.name === n);
+		expect(byName("--ca-text-disabled")?.description).toMatch(/disabled controls/i);
+		expect(byName("--ca-outline-control")?.description).toMatch(/3:1/);
+		expect(byName("--ca-semantic-error-contrast")?.description).toMatch(/semantic-error-fill/);
 	});
 });

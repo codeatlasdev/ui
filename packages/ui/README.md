@@ -66,14 +66,14 @@ bunx @codeatlasdev/ui init          # shows what it would write
 bunx @codeatlasdev/ui init --write  # writes the missing files, never overwrites yours
 ```
 
-Prefer doing it by hand? SvelteKit is three files:
+Prefer doing it by hand? SvelteKit is three files (SvelteKit 3: pass `adapter` and friends to `sveltekit({ ... })` instead of `svelte.config.js`, and extend `$app/tsconfig`; see the [installation guide](https://ui.codeatlas.com.br/docs/getting-started/installation/#sveltekit-3)):
 
 ```ts
 // vite.config.ts: theme script in dev + SSR deps sorted
 import { sveltekit } from '@sveltejs/kit/vite';
 import { caThemePlugin } from '@codeatlasdev/ui/vite';
 import { defineConfig } from 'vite';
-import { theme } from './src/lib/theme';
+import { theme } from './src/lib/theme.ts'; // with the extension: Vite's native config loader needs it
 
 export default defineConfig({ plugins: [sveltekit(), caThemePlugin(theme)] });
 ```
@@ -82,7 +82,7 @@ export default defineConfig({ plugins: [sveltekit(), caThemePlugin(theme)] });
 // src/hooks.server.ts: same script for SSR and prerendered pages
 import { sequence } from '@sveltejs/kit/hooks';
 import { caThemeHandle } from '@codeatlasdev/ui/kit';
-import { theme } from '$lib/theme';
+import { theme } from '$lib/theme'; // SvelteKit 3: '#lib/theme.ts' ($lib was removed)
 
 export const handle = sequence(caThemeHandle(theme));
 ```

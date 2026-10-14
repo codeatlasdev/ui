@@ -75,7 +75,7 @@ html.lenis body {
 .bar a:focus-visible,
 .foot a:focus-visible,
 .landing a:focus-visible {
-	outline: 2px solid var(--ca-brand-main);
+	outline: 2px solid var(--ca-focus-ring);
 	outline-offset: 3px;
 	border-radius: var(--ca-radius-sm);
 }
@@ -482,7 +482,7 @@ html.lenis body {
 	background: color-mix(in oklab, var(--ca-brand-main) 16%, transparent);
 }
 .rail a:focus-visible {
-	outline: 2px solid var(--ca-brand-main);
+	outline: 2px solid var(--ca-focus-ring);
 	outline-offset: 2px;
 }
 .rail__tip {

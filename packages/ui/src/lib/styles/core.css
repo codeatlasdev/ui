@@ -3,9 +3,11 @@
  * Pair it with only the presets your app uses:
  *   import '@codeatlasdev/ui/styles/core.css';
  *   import '@codeatlasdev/ui/styles/presets/ocean.css';
- * `global.css` is core plus every built-in preset. Unlayered app CSS still wins:
- * override a token by declaring --ca-* on :root, no !important. */
-@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.components, ca.materials, ca.utilities;
+ * `global.css` is core plus every built-in preset. Every component <style> block is wrapped in
+ * `@layer ca.components`, declared last, so kit rules never outrank unlayered app CSS: override
+ * a token with --ca-* on :root, or a component rule with the same single-class selector, no
+ * !important and no doubled classes. */
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
 @import url('./base.css') layer(ca.base);
 @import url('./tokens.css') layer(ca.tokens);
 @import url('./presets/amber.css') layer(ca.themes);

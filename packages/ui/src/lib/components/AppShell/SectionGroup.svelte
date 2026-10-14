@@ -82,48 +82,51 @@
 </div>
 
 <style>
-  .ca-section {
-    margin-top: var(--ca-space-1);
-  }
-  .ca-section:first-child {
-    margin-top: 0;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-section {
+      margin-top: var(--ca-space-1);
+    }
+    .ca-section:first-child {
+      margin-top: 0;
+    }
 
-  .ca-section__header,
-  :global(.ca-section__trigger) {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding: var(--ca-space-2-5) var(--ca-space-3) var(--ca-space-1);
-    background: transparent;
-    border: none;
-    cursor: pointer;
-  }
+    .ca-section__header,
+    :global(.ca-section__trigger) {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      padding: var(--ca-space-2-5) var(--ca-space-3) var(--ca-space-1);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+    }
 
-  .ca-section__label {
-    font-size: var(--ca-font-size-micro);
-    font-weight: var(--ca-font-weight-semibold);
-    letter-spacing: var(--ca-overline-tracking);
-    text-transform: uppercase;
-    color: var(--ca-text-hint);
-  }
+    .ca-section__label {
+      font-size: var(--ca-font-size-micro);
+      font-weight: var(--ca-font-weight-semibold);
+      letter-spacing: var(--ca-overline-tracking);
+      text-transform: uppercase;
+      color: var(--ca-text-hint);
+    }
 
-  .ca-section__chevron {
-    color: var(--ca-text-hint);
-    display: flex;
-    align-items: center;
-    opacity: 0;
-    transition:
-      transform var(--ca-duration-fast) var(--ca-ease-standard),
-      opacity var(--ca-duration-fast) var(--ca-ease-standard);
-  }
+    .ca-section__chevron {
+      color: var(--ca-text-hint);
+      display: flex;
+      align-items: center;
+      opacity: 0;
+      transition:
+        transform var(--ca-duration-fast) var(--ca-ease-standard),
+        opacity var(--ca-duration-fast) var(--ca-ease-standard);
+    }
 
-  :global(.ca-section__trigger:hover) .ca-section__chevron {
-    opacity: 1;
-  }
+    :global(.ca-section__trigger:hover) .ca-section__chevron {
+      opacity: 1;
+    }
 
-  .ca-section__chevron--open {
-    transform: rotate(90deg);
-  }
+    .ca-section__chevron--open {
+      transform: rotate(90deg);
+    }
+}
 </style>

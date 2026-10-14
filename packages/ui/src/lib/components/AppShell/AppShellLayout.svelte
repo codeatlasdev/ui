@@ -191,67 +191,70 @@
 </div>
 
 <style>
-  .ca-shell {
-    display: block;
-    height: var(--ca-vh);
-    overflow: hidden;
-    background: transparent;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-shell {
+      display: block;
+      height: var(--ca-vh);
+      overflow: hidden;
+      background: transparent;
+    }
 
-  .ca-sidebar {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    z-index: var(--ca-z-nav);
-    display: flex;
-    flex-direction: row;
-  }
-
-  .ca-main {
-    height: var(--ca-vh);
-    overflow: hidden;
-    display: flex;
-    flex-direction: column;
-    margin-left: var(--ca-main-ml, 0);
-    /* Follows the JS spring frame by frame: a smoothing tick, not a design duration. */
-    transition: margin-left 20ms linear;
-  }
-
-  .ca-shell__desktop-header {
-    display: block;
-  }
-
-  .ca-shell__mobile-header {
-    display: none !important;
-  }
-
-  .ca-shell__content {
-    flex: 1;
-    min-height: 0;
-    /* AppList/AppForm use flex:1 here: overflow:hidden to contain their scroll */
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-
-  @media (max-width: 899.98px) {
     .ca-sidebar {
-      display: none;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: var(--ca-z-nav);
+      display: flex;
+      flex-direction: row;
     }
 
     .ca-main {
-      margin-left: 0 !important;
-      /* Bottom nav is fixed: reserve its height plus the home-indicator inset. */
-      padding-bottom: calc(var(--ca-bottom-nav-h) + var(--ca-safe-bottom));
+      height: var(--ca-vh);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      margin-left: var(--ca-main-ml, 0);
+      /* Follows the JS spring frame by frame: a smoothing tick, not a design duration. */
+      transition: margin-left 20ms linear;
     }
 
     .ca-shell__desktop-header {
-      display: none !important;
+      display: block;
     }
 
     .ca-shell__mobile-header {
-      display: flex !important;
+      display: none !important;
     }
-  }
+
+    .ca-shell__content {
+      flex: 1;
+      min-height: 0;
+      /* AppList/AppForm use flex:1 here: overflow:hidden to contain their scroll */
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    @media (max-width: 899.98px) {
+      .ca-sidebar {
+        display: none;
+      }
+
+      .ca-main {
+        margin-left: 0 !important;
+        /* Bottom nav is fixed: reserve its height plus the home-indicator inset. */
+        padding-bottom: calc(var(--ca-bottom-nav-h) + var(--ca-safe-bottom));
+      }
+
+      .ca-shell__desktop-header {
+        display: none !important;
+      }
+
+      .ca-shell__mobile-header {
+        display: flex !important;
+      }
+    }
+}
 </style>

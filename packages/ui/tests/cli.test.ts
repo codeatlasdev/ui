@@ -41,6 +41,56 @@ describe("init on SvelteKit", () => {
 		expect(read(root, "src/hooks.server.ts")).toContain('from "#lib/theme.ts"');
 	});
 
+	it("never emits $lib on Kit 3 without a #lib map: Kit 3 removed it (module_removed_lib)", () => {
+		const root = project({
+			"package.json": JSON.stringify({ devDependencies: { "@sveltejs/kit": "^3.0.1" } }),
+		});
+		init(root, quiet);
+		const hooks = read(root, "src/hooks.server.ts");
+		expect(hooks).not.toContain("$lib");
+		expect(hooks).toContain('from "./lib/theme.ts"');
+	});
+
+	it("keeps $lib on Kit 2, with a caret, tilde or exact pin", () => {
+		for (const range of ["^2.12.0", "2.50.1", "~2.20.0"]) {
+			const root = project({
+				"package.json": JSON.stringify({ devDependencies: { "@sveltejs/kit": range } }),
+			});
+			init(root, quiet);
+			expect(read(root, "src/hooks.server.ts")).toContain('from "$lib/theme"');
+		}
+	});
+
+	it("tells a Kit 3 app to move kit config out of svelte.config.js and extend $app/tsconfig", () => {
+		const root = project({
+			"package.json": JSON.stringify({ devDependencies: { "@sveltejs/kit": "^3.0.0" } }),
+			"svelte.config.js": `export default { kit: { adapter: null } };\n`,
+			"tsconfig.json": `{ "extends": "./.svelte-kit/tsconfig.json" }\n`,
+		});
+		const lines: string[] = [];
+		init(root, { log: (l) => lines.push(l) });
+		const out = lines.join("\n");
+		expect(out).toContain("sveltekit({");
+		expect(out).toContain("$app/tsconfig");
+		// Never rewrites the user's tsconfig or svelte config on its own.
+		expect(read(root, "svelte.config.js")).toBe(`export default { kit: { adapter: null } };\n`);
+		expect(read(root, "tsconfig.json")).toBe(`{ "extends": "./.svelte-kit/tsconfig.json" }\n`);
+	});
+
+	it("stays quiet about Kit 3 migration on a healthy Kit 3 setup", () => {
+		const root = project({
+			"package.json": JSON.stringify({
+				devDependencies: { "@sveltejs/kit": "^3.0.0" },
+				imports: { "#lib/*": "./src/lib/*" },
+			}),
+			"tsconfig.json": `{ "extends": "$app/tsconfig" }\n`,
+		});
+		const lines: string[] = [];
+		init(root, { log: (l) => lines.push(l) });
+		expect(lines.join("\n")).not.toContain("svelte.config.js");
+		expect(lines.join("\n")).not.toContain("$app/tsconfig");
+	});
+
 	it("never overwrites existing files without --write, and leaves them byte-identical", () => {
 		const root = project({
 			"package.json": KIT_PKG,

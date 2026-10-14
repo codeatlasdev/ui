@@ -58,58 +58,61 @@
 </div>
 
 <style>
-  .ca-filter-group {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--ca-space-0-5);
-    padding: var(--ca-space-1);
-    border-radius: var(--ca-radius-pill);
-    background: var(--ca-action-hover);
-    border: var(--ca-border-width) solid var(--ca-outline-subtle);
-    flex-shrink: 0;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-filter-group {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--ca-space-0-5);
+      padding: var(--ca-space-1);
+      border-radius: var(--ca-radius-pill);
+      background: var(--ca-action-hover);
+      border: var(--ca-border-width) solid var(--ca-outline-subtle);
+      flex-shrink: 0;
+    }
 
-  .ca-filter-group__label {
-    font-size: var(--ca-font-size-micro);
-    font-weight: var(--ca-font-weight-semibold);
-    color: var(--ca-text-hint);
-    text-transform: uppercase;
-    letter-spacing: var(--ca-overline-tracking);
-    padding: 0 var(--ca-space-1-5) 0 var(--ca-space-1);
-    user-select: none;
-  }
+    .ca-filter-group__label {
+      font-size: var(--ca-font-size-micro);
+      font-weight: var(--ca-font-weight-semibold);
+      color: var(--ca-text-hint);
+      text-transform: uppercase;
+      letter-spacing: var(--ca-overline-tracking);
+      padding: 0 var(--ca-space-1-5) 0 var(--ca-space-1);
+      user-select: none;
+    }
 
-  .ca-filter-group__item {
-    height: var(--ca-space-6);
-    padding: 0 var(--ca-space-2-5);
-    border-radius: var(--ca-radius-pill);
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-size: var(--ca-font-size-caption);
-    font-weight: var(--ca-font-weight-medium);
-    font-family: inherit;
-    color: var(--ca-text-secondary);
-    white-space: nowrap;
-    transition:
-      background var(--ca-duration-fast) var(--ca-ease-standard),
-      color      var(--ca-duration-fast) var(--ca-ease-standard);
-    line-height: 1;
-  }
+    .ca-filter-group__item {
+      height: var(--ca-space-6);
+      padding: 0 var(--ca-space-2-5);
+      border-radius: var(--ca-radius-pill);
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: var(--ca-font-size-caption);
+      font-weight: var(--ca-font-weight-medium);
+      font-family: inherit;
+      color: var(--ca-text-secondary);
+      white-space: nowrap;
+      transition:
+        background var(--ca-duration-fast) var(--ca-ease-standard),
+        color      var(--ca-duration-fast) var(--ca-ease-standard);
+      line-height: 1;
+    }
 
-  .ca-filter-group__item:hover {
-    color: var(--ca-text-primary);
-    background: color-mix(in oklab, var(--ca-text-primary) 8%, transparent);
-  }
+    .ca-filter-group__item:hover {
+      color: var(--ca-text-primary);
+      background: color-mix(in oklab, var(--ca-text-primary) 8%, transparent);
+    }
 
-  .ca-filter-group__item.active {
-    background: var(--ca-surface-overlay);
-    color: var(--ca-text-primary);
-    box-shadow: var(--ca-shadow-xs);
-  }
+    .ca-filter-group__item.active {
+      background: var(--ca-surface-overlay);
+      color: var(--ca-text-primary);
+      box-shadow: var(--ca-shadow-xs);
+    }
 
-  .ca-filter-group__item:focus-visible {
-    outline: var(--ca-border-width-focus) solid var(--ca-brand-main);
-    outline-offset: calc(-1 * var(--ca-border-width-focus));
-  }
+    .ca-filter-group__item:focus-visible {
+      outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
+      outline-offset: calc(-1 * var(--ca-border-width-focus));
+    }
+}
 </style>

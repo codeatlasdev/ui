@@ -37,15 +37,18 @@
 </div>
 
 <style>
-  .ca-row {
-    display: flex;
-    flex-direction: row;
-    gap:             var(--r-gap, 0);
-    align-items:     var(--r-align, flex-start);
-    justify-content: var(--r-justify, flex-start);
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-row {
+      display: flex;
+      flex-direction: row;
+      gap:             var(--r-gap, 0);
+      align-items:     var(--r-align, flex-start);
+      justify-content: var(--r-justify, flex-start);
+    }
 
-  .ca-row--wrap {
-    flex-wrap: wrap;
-  }
+    .ca-row--wrap {
+      flex-wrap: wrap;
+    }
+}
 </style>

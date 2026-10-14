@@ -6,28 +6,67 @@ order: 5
 ---
 import { Callout } from "@codeatlasdev/ui";
 
-Every visible string the package generates (aria-labels, placeholders, empty states, "Copy", "On this page", toast and dialog buttons) comes from a message catalog. The default language is **English**. Call `setLocale` once, in your root layout, to change it:
+Every visible string the package generates (aria-labels, placeholders, empty states, "Copy", "On this page", toast and dialog buttons) comes from a message catalog. The default language is **English**; Brazilian Portuguese ships built in and any other language can be registered. There are two ways to choose the language.
+
+## SSR apps: `I18nProvider`
+
+On the server, wrap the tree in `I18nProvider`. The locale lives in Svelte context, so each request renders in its own language and concurrent requests never share state:
 
 ```svelte
 <!-- src/routes/+layout.svelte -->
 <script>
+  import { I18nProvider } from "@codeatlasdev/ui";
+  let { data, children } = $props();
+</script>
+
+<I18nProvider locale={data.locale}>
+  {@render children()}
+</I18nProvider>
+```
+
+`locale` is reactive: change the prop and every component inside re-renders. Pass `messages` to override phrases for that subtree (see below).
+
+## Client-only apps: `setLocale`
+
+SPAs and Astro islands have no per-request concern, so one module-level locale shared by every island is enough:
+
+```svelte
+<script>
   import { setLocale } from "@codeatlasdev/ui";
 
-  setLocale("pt-BR"); // "en" | "pt-BR"
+  setLocale("pt-BR");
 </script>
 ```
 
-It runs on the server too, before the first render, so server-rendered HTML is already in the right language.
+<Callout type="warning">
+  On the server `setLocale` does nothing (and warns in dev), because module state would be shared by every concurrent request. Use `I18nProvider` in SSR layouts. An `I18nProvider` always wins over `setLocale`.
+</Callout>
+
+## Add a language
+
+Locales are any BCP 47 tag. Register a dictionary once, at module load. You only translate the keys you need; the rest fall back to English:
+
+```ts
+// src/lib/i18n.ts
+import { registerLocale } from "@codeatlasdev/ui";
+
+registerLocale("es", {
+  common: { close: "Cerrar", back: "Atrás" },
+  docs: { toc: "En esta página" },
+});
+```
+
+Then use it with `<I18nProvider locale="es">` or `setLocale("es")`. Region tags resolve to the base language (`es-MX` uses `es`), and unknown tags fall back to English. The exported `Messages` type describes the full shape and `MessagesOverride` the partial one.
 
 ## Override phrases
 
-The second argument is a deep partial of the catalog. It is merged over the chosen locale, so you only write the strings you want to change:
+`I18nProvider`'s `messages` prop and `setLocale`'s second argument are a deep partial of the catalog, merged over the chosen locale:
 
-```ts
-setLocale("en", { docs: { toc: "In this article" }, common: { copy: "Copy link" } });
+```svelte
+<I18nProvider locale="en" messages={{ docs: { toc: "In this article" }, common: { copy: "Copy link" } }}>
 ```
 
-A later call to `setLocale` replaces the previous overrides. Message functions (strings with runtime values) keep their signature:
+A later `setLocale` call replaces the previous overrides. Message functions (strings with runtime values) keep their signature:
 
 ```ts
 setLocale("en", {
@@ -45,7 +84,7 @@ A text prop always beats the catalog. Components that take text (`label`, `place
 
 ## Reactive locale
 
-The locale is shared module state, so every component and every island on the page re-renders when it changes. Read it with `locale.value`:
+With `setLocale`, the locale is shared module state, so every component and every island on the page re-renders when it changes. Read it with `locale.value`:
 
 ```svelte
 <script>
@@ -57,6 +96,18 @@ The locale is shared module state, so every component and every island on the pa
 </button>
 ```
 
+Inside an `I18nProvider`, read the active locale and messages from context with `useLocale()` and `useT()`, called at the top level of a component `<script>`:
+
+```svelte
+<script>
+  import { useLocale, useT } from "@codeatlasdev/ui";
+  const locale = useLocale();
+  const t = useT();
+</script>
+
+<p lang={locale()}>{t().common.close}</p>
+```
+
 <Callout type="note">
   With Astro, each island is a separate Svelte app but they share the module, so one `setLocale` call in the first island that runs is enough. Call it before the islands that render text.
 </Callout>
@@ -65,13 +116,16 @@ The locale is shared module state, so every component and every island on the pa
 
 The catalog is grouped by component, for example `docs.search.placeholder`, `dialog.close`, `pagination.nextPage`, `fileUpload`, `dataTable` and `toast`. English (`en.ts`) is the source of truth; `pt-BR.ts` is typed against it, so a missing key is a type error. Both locales are tested to have identical keys.
 
-Unknown locale codes throw:
+## Server errors
 
-```
-[codeatlasdev/ui] unknown locale "fr" (expected en | pt-BR)
-```
+`createErrorHandler` never reads global locale state. Give it the language of the fallback message, fixed or per request:
 
-To ship another language today, use `setLocale("en", translatedOverrides)` with your full translation as the override object. The exported `Messages` type describes its shape.
+```ts
+// src/hooks.server.ts
+import { createErrorHandler } from "@codeatlasdev/ui/kit";
+
+export const handleError = createErrorHandler({ locale: (event) => event.locals.locale as string });
+```
 
 ## Dates, numbers and masks are separate
 
@@ -85,4 +139,4 @@ Formatting helpers such as `formatCurrency`, `formatDate` and `formatNumber` tak
 
 ## In tests
 
-The default is English. When a test asserts Portuguese text, call `setLocale("pt-BR")` and reset with `setLocale("en")` in `afterEach`, so the module state does not leak between tests.
+The default is English. In browser tests, call `setLocale("pt-BR")` where a test asserts Portuguese text and reset with `setLocale("en")` in `afterEach`, so the module state does not leak between tests. In server-render tests, wrap the component in `I18nProvider` instead.

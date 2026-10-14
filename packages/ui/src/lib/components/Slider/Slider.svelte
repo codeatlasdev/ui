@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
+  const t = useT();
 
   /**
    * Slider — single or range value input.
@@ -211,67 +212,78 @@
 </div>
 
 <style>
-  :global(.ca-slider) {
-    position: relative;
-    display: flex;
-    align-items: center;
-    width: 100%;
-    height: var(--ca-space-5);
-    cursor: pointer;
-    touch-action: none;
-    user-select: none;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    :global(.ca-slider) {
+      position: relative;
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: var(--ca-space-5);
+      cursor: pointer;
+      touch-action: none;
+      user-select: none;
+    }
 
-  :global(.ca-slider[data-disabled]) {
-    opacity: 0.45;
-    cursor: not-allowed;
-  }
+    /* Disabled from tokens, not opacity: track, range and thumb keep a defined contrast. */
+    :global(.ca-slider[data-disabled]) {
+      cursor: not-allowed;
+    }
+    :global(.ca-slider[data-disabled] .ca-slider__range) {
+      background: var(--ca-text-disabled);
+    }
+    :global(.ca-slider[data-disabled] .ca-slider__thumb) {
+      border-color: var(--ca-text-disabled);
+      box-shadow: none;
+      cursor: not-allowed;
+    }
 
-  .ca-slider__track {
-    position: relative;
-    flex: 1;
-    height: var(--ca-space-1);
-    background: var(--ca-outline-default);
-    border-radius: var(--ca-radius-pill);
-    overflow: visible;
-  }
+    .ca-slider__track {
+      position: relative;
+      flex: 1;
+      height: var(--ca-space-1);
+      background: var(--ca-outline-default);
+      border-radius: var(--ca-radius-pill);
+      overflow: visible;
+    }
 
-  :global(.ca-slider__range) {
-    position: absolute;
-    height: 100%;
-    background: var(--ca-brand-main);
-    border-radius: var(--ca-radius-pill);
-  }
+    :global(.ca-slider__range) {
+      position: absolute;
+      height: 100%;
+      background: var(--ca-state-indicator);
+      border-radius: var(--ca-radius-pill);
+    }
 
-  :global(.ca-slider__thumb) {
-    display: block;
-    width: var(--ca-space-5);
-    height: var(--ca-space-5);
-    border-radius: 50%;
-    background: var(--ca-surface-overlay);
-    border: var(--ca-border-width-strong) solid var(--ca-brand-main);
-    box-shadow: var(--ca-shadow-sm);
-    cursor: grab;
-    transition:
-      box-shadow var(--ca-duration-fast) var(--ca-ease-standard),
-      transform  var(--ca-duration-fast) var(--ca-ease-standard);
-  }
+    :global(.ca-slider__thumb) {
+      display: block;
+      width: var(--ca-space-5);
+      height: var(--ca-space-5);
+      border-radius: 50%;
+      background: var(--ca-surface-overlay);
+      border: var(--ca-border-width-strong) solid var(--ca-state-indicator);
+      box-shadow: var(--ca-shadow-sm);
+      cursor: grab;
+      transition:
+        box-shadow var(--ca-duration-fast) var(--ca-ease-standard),
+        transform  var(--ca-duration-fast) var(--ca-ease-standard);
+    }
 
-  :global(.ca-slider__thumb:hover) {
-    box-shadow: var(--ca-shadow-md), 0 0 0 var(--ca-space-1) color-mix(in oklab, var(--ca-brand-main) 16%, transparent);
-    transform: scale(1.1);
-  }
+    :global(.ca-slider__thumb:hover) {
+      box-shadow: var(--ca-shadow-md), 0 0 0 var(--ca-space-1) color-mix(in oklab, var(--ca-brand-main) 16%, transparent);
+      transform: scale(1.1);
+    }
 
-  :global(.ca-slider__thumb:active) {
-    cursor: grabbing;
-    transform: scale(1.15);
-  }
+    :global(.ca-slider__thumb:active) {
+      cursor: grabbing;
+      transform: scale(1.15);
+    }
 
-  :global(.ca-slider__thumb:focus-visible) {
-    outline: none;
-    box-shadow:
-      var(--ca-shadow-sm),
-      0 0 0 var(--ca-space-0-5) var(--ca-surface-base),
-      0 0 0 calc(var(--ca-space-0-5) + var(--ca-border-width-focus)) var(--ca-brand-main);
-  }
+    :global(.ca-slider__thumb:focus-visible) {
+      outline: none;
+      box-shadow:
+        var(--ca-shadow-sm),
+        0 0 0 var(--ca-space-0-5) var(--ca-surface-base),
+        0 0 0 calc(var(--ca-space-0-5) + var(--ca-border-width-focus)) var(--ca-focus-ring);
+    }
+}
 </style>

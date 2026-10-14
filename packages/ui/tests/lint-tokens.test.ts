@@ -73,4 +73,31 @@ describe("lint-tokens", () => {
 		expect(v.map((x) => x.message.split(":")[0])).toEqual(["(max-width", "(min-width"]);
 		expect(lintSource("x.test.css", css).filter((x) => x.rule === "breakpoint")).toEqual([]);
 	});
+
+	it("flags --ca-text-disabled used as color outside a disabled selector (#21)", () => {
+		const bad = ".a { color: var(--ca-text-disabled); }";
+		expect(rules("Foo.svelte", `<style>${bad}</style>`)).toEqual(["text-disabled"]);
+		expect(rules("a.css", ".x:disabled { color: var(--ca-text-disabled); }")).toEqual([]);
+		expect(rules("a.css", ".x[aria-disabled='true'] { color: var(--ca-text-disabled); }")).toEqual(
+			[]
+		);
+		expect(rules("a.css", ".x[data-disabled] { color: var(--ca-text-disabled); }")).toEqual([]);
+		expect(rules("a.css", ".x--disabled .y { color: var(--ca-text-disabled); }")).toEqual([]);
+		// decorative markers are allowed explicitly
+		expect(
+			rules("styles/prose.css", ".prose li::marker { color: var(--ca-text-disabled); }")
+		).toEqual([]);
+		// de-emphasised information must use --ca-text-hint
+		expect(rules("a.css", ".x { color: var(--ca-text-hint); }")).toEqual([]);
+	});
+
+	it("flags a literal --ca-brand-main in a focus rule (#24)", () => {
+		expect(rules("a.css", ".a:focus-visible { outline: 2px solid var(--ca-brand-main); }")).toEqual(
+			["focus-ring"]
+		);
+		expect(rules("a.css", ".a:focus-visible { outline: 2px solid var(--ca-focus-ring); }")).toEqual(
+			[]
+		);
+		expect(rules("a.css", ".a:hover { border-color: var(--ca-brand-main); }")).toEqual([]);
+	});
 });

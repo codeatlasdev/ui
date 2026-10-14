@@ -92,23 +92,26 @@
 </div>
 
 <style>
-	.ca-chart-wrap {
-		position: relative;
-		height: var(--chart-h, 300px);
-		border-radius: var(--ca-radius-lg);
-		overflow: hidden;
-	}
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+  	.ca-chart-wrap {
+  		position: relative;
+  		height: var(--chart-h, 300px);
+  		border-radius: var(--ca-radius-lg);
+  		overflow: hidden;
+  	}
 
-	.ca-chart-container {
-		width: 100%;
-		height: 100%;
-	}
-	.ca-chart-overlay {
-		position: absolute;
-		inset: 0;
-		pointer-events: none;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
+  	.ca-chart-container {
+  		width: 100%;
+  		height: 100%;
+  	}
+  	.ca-chart-overlay {
+  		position: absolute;
+  		inset: 0;
+  		pointer-events: none;
+  		display: flex;
+  		align-items: center;
+  		justify-content: center;
+  	}
+}
 </style>

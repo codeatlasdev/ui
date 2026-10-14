@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   import { createIds, createPresence } from '../../primitives/index.js';
   import { modalLayer } from '../Dialog/modal-layer.js';
   import Button from '../Button/Button.svelte';
   import '../Dialog/dialog.css';
+  const t = useT();
 
   /**
    * AlertDialog: confirmation that requires an explicit answer (role="alertdialog").

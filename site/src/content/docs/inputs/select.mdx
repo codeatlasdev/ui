@@ -9,6 +9,8 @@ import Basic from "~/demos/inputs/select/Basic.svelte";
 import BasicSrc from "~/demos/inputs/select/Basic.svelte?raw";
 import Placeholder from "~/demos/inputs/select/Placeholder.svelte";
 import PlaceholderSrc from "~/demos/inputs/select/Placeholder.svelte?raw";
+import EmptyOption from "~/demos/inputs/select/EmptyOption.svelte";
+import EmptyOptionSrc from "~/demos/inputs/select/EmptyOption.svelte?raw";
 import States from "~/demos/inputs/select/States.svelte";
 import StatesSrc from "~/demos/inputs/select/States.svelte?raw";
 
@@ -25,12 +27,13 @@ For long lists that need filtering, use [Combobox](/docs/inputs/combobox/). With
 
 <Demo title="Basic" description="Controlled select with a pre-selected value." src={BasicSrc}><Basic client:visible /></Demo>
 <Demo title="Placeholder" description="No initial value: the placeholder shows until the user picks an option." src={PlaceholderSrc}><Placeholder client:visible /></Demo>
+<Demo title="Empty-value option" description="An option with value '' (such as 'All projects') is a real selection: the trigger shows its label, not the placeholder. Use it for filters instead of a sentinel value." src={EmptyOptionSrc}><EmptyOption client:visible /></Demo>
 <Demo title="States" description="Disabled options, description, error and a disabled select." src={StatesSrc}><States client:visible /></Demo>
 
 <Props rows={[
-  { name: "value", type: "string", description: "Bindable selected value." },
+  { name: "value", type: "string", description: "Bindable selected value. `undefined` means no selection and shows the placeholder; `\"\"` is a valid value when an option declares it." },
   { name: "options", type: "Array<{ value: string; label: string; disabled?: boolean }>", description: "Option items." },
-  { name: "placeholder", type: "string", default: "'Select…' (localized)", description: "Text shown when no value is selected. The default comes from the active i18n catalog." },
+  { name: "placeholder", type: "string", default: "'Select…' (localized)", description: "Text shown when `value` is `undefined` or matches no option. The default comes from the active i18n catalog." },
   { name: "label", type: "string", description: "Visible label above the trigger." },
   { name: "description", type: "string", description: "Hint shown below the trigger." },
   { name: "error", type: "string", description: "Error message. Puts the select in the error state." },

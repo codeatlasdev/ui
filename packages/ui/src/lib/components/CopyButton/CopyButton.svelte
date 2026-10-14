@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   import { Copy, Check } from '@lucide/svelte';
   import { onDestroy } from 'svelte';
   import Button from '../Button/Button.svelte';
@@ -7,6 +7,7 @@
   import { copyToClipboard } from '../../utils/clipboard.js';
   import { toast } from '../../stores/toast.svelte.js';
   import { announce } from '../../utils/announce.js';
+  const t = useT();
 
   interface Props {
     value: string;

@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   import { ChevronLeft, ChevronRight } from '@lucide/svelte';
+  const t = useT();
 
   interface Props {
     count: number;
@@ -128,61 +129,66 @@
 </div>
 
 <style>
-  :global(.ca-pagination) {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--ca-space-1);
-    max-width: 100%;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    :global(.ca-pagination) {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: var(--ca-space-1);
+      max-width: 100%;
+    }
 
-  :global(.ca-pagination__nav),
-  :global(.ca-pagination__page) {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--ca-control-height);
-    height: var(--ca-control-height);
-    border-radius: var(--ca-radius-control);
-    border: var(--ca-border-width) solid var(--ca-outline-subtle);
-    background: var(--ca-glass-bg);
-    -webkit-backdrop-filter: var(--ca-blur-ultra-thin);
-    backdrop-filter: var(--ca-blur-ultra-thin);
-    cursor: pointer;
-    font-size: var(--ca-font-size-body2);
-    color: var(--ca-text-primary);
-    transition:
-      background var(--ca-duration-fast) var(--ca-ease-standard),
-      border-color var(--ca-duration-fast) var(--ca-ease-standard);
-  }
+    :global(.ca-pagination__nav),
+    :global(.ca-pagination__page) {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--ca-control-height);
+      height: var(--ca-control-height);
+      border-radius: var(--ca-radius-control);
+      border: var(--ca-border-width) solid var(--ca-outline-subtle);
+      background: var(--ca-glass-bg);
+      -webkit-backdrop-filter: var(--ca-blur-ultra-thin);
+      backdrop-filter: var(--ca-blur-ultra-thin);
+      cursor: pointer;
+      font-size: var(--ca-font-size-body2);
+      color: var(--ca-text-primary);
+      transition:
+        background var(--ca-duration-fast) var(--ca-ease-standard),
+        border-color var(--ca-duration-fast) var(--ca-ease-standard);
+    }
 
-  :global(.ca-pagination__nav:hover),
-  :global(.ca-pagination__page:hover) {
-    background: var(--ca-action-hover);
-    border-color: var(--ca-outline-default);
-  }
+    :global(.ca-pagination__nav:hover),
+    :global(.ca-pagination__page:hover) {
+      background: var(--ca-action-hover);
+      border-color: var(--ca-outline-default);
+    }
 
-  :global(.ca-pagination__page[aria-current="page"]) {
-    background: var(--ca-brand-fill);
-    border-color: var(--ca-brand-fill);
-    color: var(--ca-brand-contrast);
-    font-weight: var(--ca-font-weight-semibold);
-  }
+    :global(.ca-pagination__page[aria-current="page"]) {
+      background: var(--ca-brand-fill);
+      border-color: var(--ca-brand-fill);
+      color: var(--ca-brand-contrast);
+      font-weight: var(--ca-font-weight-semibold);
+    }
 
-  :global(.ca-pagination__nav[disabled]),
-  :global(.ca-pagination__nav:disabled) {
-    opacity: 0.4;
-    pointer-events: none;
-  }
+    :global(.ca-pagination__nav[disabled]),
+    :global(.ca-pagination__nav:disabled) {
+      color: var(--ca-text-disabled);
+      background: var(--ca-action-disabled-bg);
+      border-color: var(--ca-outline-default);
+      pointer-events: none;
+    }
 
-  .ca-pagination__ellipsis {
-    width: var(--ca-control-height);
-    height: var(--ca-control-height);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    font-size: var(--ca-font-size-body2);
-    color: var(--ca-text-hint);
-    user-select: none;
-  }
+    .ca-pagination__ellipsis {
+      width: var(--ca-control-height);
+      height: var(--ca-control-height);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: var(--ca-font-size-body2);
+      color: var(--ca-text-hint);
+      user-select: none;
+    }
+}
 </style>

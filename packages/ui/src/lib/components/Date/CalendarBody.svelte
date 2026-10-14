@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   /**
    * Internal: header + month grids shared by Calendar, RangeCalendar, DatePicker and
    * DateRangePicker. The parent owns the `role="application"` root and the CalendarState.
@@ -8,6 +8,7 @@
   import { ChevronLeft, ChevronRight } from '@lucide/svelte';
   import type { CalendarState } from './calendar-state.svelte.js';
   import { sameDay } from './date-utils.js';
+  const t = useT();
 
   interface Props {
     state: CalendarState;

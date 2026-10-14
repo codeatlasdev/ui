@@ -31,6 +31,12 @@ export interface PresetTokens {
 	outlineSubtle: string;
 	outlineDefault: string;
 	outlineStrong: string;
+	/** Boundary of a field/control: >= 3:1 on every surface and on the 5% text tint of a field (WCAG 1.4.11). */
+	outlineControl: string;
+	/** Keyboard focus ring: >= 3:1 on every surface and on hover/selected fills (it floats 2px off a brand fill). */
+	focusRing: string;
+	/** Text on `--ca-semantic-error-fill` (>= 4.5:1), the pair of `brandContrast`/`brandFill`. */
+	semanticErrorContrast: string;
 
 	glassBg: string;
 	glassTintUltraThin: string;
@@ -71,6 +77,10 @@ export interface PresetTokens {
 		textSecondary: string;
 		textDisabled: string;
 		textHint: string;
+
+		outlineControl: string;
+		focusRing: string;
+		semanticErrorContrast: string;
 
 		glassBg: string;
 
@@ -165,6 +175,119 @@ function brandFillPair(
 	return { fillL, hoverL, contrast: useInk ? INK : WHITE };
 }
 
+// ── Role solvers (WCAG 1.4.3 / 1.4.11) ───────────────────────────────────────
+// Tokens that must hold a ratio against known neighbours are solved, not guessed: the lightness
+// is walked until the real gamut-clipped sRGB ratio clears the target on every background.
+
+type RGB = [number, number, number];
+
+/** OKLCH → encoded sRGB 0..1 (gamut-clipped), the space browsers blend alpha in. */
+function encoded(L: number, C: number, H: number): RGB {
+	const hex = oklchToHex(`oklch(${L} ${C} ${H})`);
+	return [1, 3, 5].map((i) => Number.parseInt(hex.slice(i, i + 2), 16) / 255) as RGB;
+}
+const toLinear = (v: number) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4);
+const lumOf = (c: RGB) =>
+	0.2126 * toLinear(c[0]) + 0.7152 * toLinear(c[1]) + 0.0722 * toLinear(c[2]);
+const ratioOf = (a: RGB, b: RGB) => {
+	const [hi, lo] = [lumOf(a), lumOf(b)].sort((x, y) => y - x);
+	return (hi + 0.05) / (lo + 0.05);
+};
+const blend = (fg: RGB, a: number, bg: RGB): RGB =>
+	fg.map((v, i) => v * a + bg[i] * (1 - a)) as RGB;
+
+/** Static action fills (tokens.css): the neighbours a control is drawn next to. */
+const ACTION = {
+	light: { ink: [0.2, 0.2, 0.2] as RGB, hover: 0.055, selected: 0.09, disabledBg: 0.08 },
+	dark: { ink: [1, 1, 1] as RGB, hover: 0.075, selected: 0.13, disabledBg: 0.1 },
+};
+
+/** Safety margin over the WCAG floor, so rounding to 3 decimals never lands under it. */
+const MARGIN = 0.15;
+
+/**
+ * Walk lightness from `from` toward `dir` (+1 lighter, -1 darker) until `pass(L)` holds.
+ * Returns the first passing step; the search range ends at pure black/white.
+ */
+function lift(from: number, dir: 1 | -1, pass: (L: number) => boolean): number {
+	let L = from;
+	while (!pass(L) && L > 0 && L < 1) L = r(cl(L + dir * 0.005));
+	return L;
+}
+
+interface Neighbours {
+	surfaces: RGB[];
+	/** Hover/selected/disabled fills composited over each surface. */
+	fills: RGB[];
+}
+
+function neighbours(scheme: "light" | "dark", surfaces: RGB[]): Neighbours {
+	const a = ACTION[scheme];
+	const fills = surfaces.flatMap((s) => [
+		blend(a.ink, a.hover, s),
+		blend(a.ink, a.selected, s),
+		blend(a.ink, a.disabledBg, s),
+	]);
+	return { surfaces, fills };
+}
+
+/**
+ * Disabled label: >= 3:1 on every surface and on the disabled fill over it (so a disabled
+ * control stays legible without opacity). Same hue/chroma family as the text ramp.
+ */
+function solveTextDisabled(scheme: "light" | "dark", h: number, n: Neighbours): string {
+	const c = scheme === "light" ? 0.008 : 0.007;
+	const bgs = [...n.surfaces, ...n.fills];
+	const L = lift(scheme === "light" ? 0.62 : 0.5, scheme === "light" ? -1 : 1, (l) =>
+		bgs.every((b) => ratioOf(encoded(l, c, h), b) >= 3 + MARGIN)
+	);
+	return `oklch(${L.toFixed(3)} ${c} ${h})`;
+}
+
+/**
+ * Field/control boundary: opaque ink >= 3:1 on every surface and on the 5% text tint a field
+ * is filled with. Opaque (not alpha) so it does not depend on what is behind.
+ */
+function solveOutlineControl(scheme: "light" | "dark", h: number, n: Neighbours): string {
+	const a = ACTION[scheme];
+	const bgs = [...n.surfaces, ...n.surfaces.map((s) => blend(a.ink, 0.05, s))];
+	const c = 0.008;
+	const L = lift(scheme === "light" ? 0.62 : 0.5, scheme === "light" ? -1 : 1, (l) =>
+		bgs.every((b) => ratioOf(encoded(l, c, h), b) >= 3 + MARGIN)
+	);
+	return `oklch(${L.toFixed(3)} ${c} ${h})`;
+}
+
+/**
+ * Focus ring: brand hue, >= 3:1 on every surface and on the hover/selected fills it is drawn
+ * next to. Starts at brand-main and moves toward the surface-contrast direction until it clears.
+ * On a filled control the ring floats `--ca-focus-ring-offset` (2px) off the fill, so the page
+ * shows between them and the fill is not an adjacent colour (WCAG 2.4.11 measures the ring
+ * against the pixels next to it).
+ */
+function solveFocusRing(
+	scheme: "light" | "dark",
+	brandL: number,
+	c: number,
+	h: number,
+	n: Neighbours
+): string {
+	const bgs = [...n.surfaces, ...n.fills];
+	const ok = (l: number) => bgs.every((b) => ratioOf(encoded(l, c, h), b) >= 3 + MARGIN);
+	const L = lift(brandL, scheme === "light" ? -1 : 1, ok);
+	return `oklch(${L.toFixed(3)} ${c} ${h})`;
+}
+
+/** White or ink text on the error fill, whichever reads better (>= 4.5:1). */
+export function onFill(fillL: number, fillC: number, fillH: number): string {
+	return contrastOn(fillL, fillC, fillH, "white") >= contrastOn(fillL, fillC, fillH, "ink")
+		? WHITE
+		: INK;
+}
+
+/** Static error fills (tokens.css): the same in both schemes. */
+const ERROR_FILL = { l: 0.52, c: 0.2, h: 22 };
+
 /**
  * Convert `#rrggbb` (sRGB) to OKLCH via OKLab (Björn Ottosson's matrices).
  * Hue is 0 for achromatic colors.
@@ -232,6 +355,25 @@ export function generatePreset(hue: number, chroma = 0.21, lightL = 0.54): Prese
 	// Fill chroma matches brand-main; text on the fill is chosen by real WCAG contrast.
 	const darkFill = brandFillPair(darkL, darkC, h);
 
+	// Role colours solved against the surfaces they sit on (see "Role solvers").
+	const surfacesL = [
+		encoded(0.93, 0.006, h),
+		encoded(0.955, 0.005, h),
+		encoded(0.98, 0.003, h),
+		encoded(0.995, 0.001, h),
+	];
+	const surfacesD = [
+		encoded(0.115, 0.006, h),
+		encoded(0.15, 0.006, h),
+		encoded(0.19, 0.006, h),
+		encoded(0.235, 0.006, h),
+	];
+	const nL = neighbours("light", surfacesL);
+	const nD = neighbours("dark", surfacesD);
+	const lightRing = solveFocusRing("light", L, c, h, nL);
+	const darkRing = solveFocusRing("dark", darkL, darkC, h, nD);
+	const errorContrast = onFill(ERROR_FILL.l, ERROR_FILL.c, ERROR_FILL.h);
+
 	// Glass bg uses hue for light, neutral for dark
 	const glassBg = `oklch(${r(cl(0.97))} 0.003 ${h} / 0.82)`;
 
@@ -253,13 +395,16 @@ export function generatePreset(hue: number, chroma = 0.21, lightL = 0.54): Prese
 		// ── Light text ────────────────────────────────────────────
 		textPrimary: `oklch(0.200 0.012 ${h})`,
 		textSecondary: `oklch(0.420 0.010 ${h})`,
-		textDisabled: `oklch(0.620 0.008 ${h})`,
+		textDisabled: solveTextDisabled("light", h, nL),
 		textHint: `oklch(0.420 0.010 ${h})`,
 
 		// ── Outlines ─────────────────────────────────────────────
 		outlineSubtle: `oklch(0.200 0.010 ${h} / 0.08)`,
 		outlineDefault: `oklch(0.200 0.010 ${h} / 0.16)`,
 		outlineStrong: `oklch(0.200 0.010 ${h} / 0.30)`,
+		outlineControl: solveOutlineControl("light", h, nL),
+		focusRing: lightRing,
+		semanticErrorContrast: errorContrast,
 
 		// ── Glass (light) ─────────────────────────────────────────
 		glassBg,
@@ -301,8 +446,12 @@ export function generatePreset(hue: number, chroma = 0.21, lightL = 0.54): Prese
 
 			textPrimary: `oklch(0.940 0.005 ${h})`,
 			textSecondary: `oklch(0.730 0.007 ${h})`,
-			textDisabled: `oklch(0.500 0.007 ${h})`,
+			textDisabled: solveTextDisabled("dark", h, nD),
 			textHint: `oklch(0.700 0.008 ${h})`,
+
+			outlineControl: solveOutlineControl("dark", h, nD),
+			focusRing: darkRing,
+			semanticErrorContrast: errorContrast,
 
 			glassBg: "oklch(0.14 0 0 / 0.80)",
 
@@ -352,10 +501,31 @@ export function presetVars(tokens: PresetTokens): { light: TokenMap; dark: Token
 	return { light, dark: { ...dark, ...NEUTRAL_DARK } };
 }
 
+/**
+ * What the role tokens are for, in the words tooling should show. The built-in preset files carry these
+ * as comments in `presets/amber.css` only (scripts/build-themes.ts): that is the canonical file the token
+ * manifest reads as `description`. The other presets and the inline brand presets stay comment-free to
+ * keep the shipped CSS and the `<head>` small.
+ */
+export const TOKEN_DOCS: Record<string, string> = {
+	"--ca-text-disabled":
+		"Label of disabled controls only; never information (use --ca-text-hint to de-emphasise). >= 3:1 on every surface and on the disabled fill.",
+	"--ca-outline-control":
+		"Boundary of a field or control (text field, select, checkbox box): >= 3:1 on every surface and on the 5% field tint (WCAG 1.4.11). --ca-outline-subtle is for dividers.",
+	"--ca-focus-ring":
+		"Keyboard focus ring and focus border: >= 3:1 on every surface and on the hover/selected fills. Components read this, never --ca-brand-main.",
+	"--ca-semantic-error-contrast":
+		"Text colour for --ca-semantic-error-fill (>= 4.5:1), the way --ca-brand-contrast pairs with --ca-brand-fill. Re-theming the fill means re-setting this.",
+};
+
 /** Render one CSS rule from a declaration map. */
-export function cssBlock(selector: string, vars: Record<string, string>): string {
+export function cssBlock(
+	selector: string,
+	vars: Record<string, string>,
+	docs?: Record<string, string>
+): string {
 	const body = Object.entries(vars)
-		.map(([k, v]) => `  ${k}: ${v};`)
+		.map(([k, v]) => (docs?.[k] ? `  /* ${docs[k]} */\n  ${k}: ${v};` : `  ${k}: ${v};`))
 		.join("\n");
 	return `${selector} {\n${body}\n}`;
 }

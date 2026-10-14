@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   /**
    * AppList: fullscreen CRUD/list layout.
    *
@@ -42,6 +42,7 @@
   import TextField from '../TextField/TextField.svelte';
   import Pagination from '../Pagination/Pagination.svelte';
   import { Search } from '@lucide/svelte';
+  const t = useT();
 
   type ListCtx<T> = UseListStateReturn<T>;
 
@@ -212,171 +213,174 @@
 </div>
 
 <style>
-  .ca-app-list {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-height: 0;
-    overflow: hidden;
-    width: 100%;
-    max-width: var(--al-max, none);
-    margin: 0 auto;
-  }
-
-  .ca-app-list__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--ca-space-4);
-    padding:
-      var(--ca-page-pt)
-      var(--ca-page-px)
-      var(--ca-space-3);
-    flex-shrink: 0;
-  }
-
-  .ca-app-list__meta { flex: 1; min-width: 0; }
-
-  .ca-app-list__title {
-    font-family: var(--ca-font-display);
-    font-size: var(--ca-font-size-h5);
-    font-weight: var(--ca-font-weight-heading);
-    letter-spacing: var(--ca-heading-tracking);
-    text-transform: var(--ca-heading-case);
-    color: var(--ca-text-primary);
-    margin: 0 0 var(--ca-space-0-5);
-    line-height: var(--ca-line-height-tight);
-  }
-
-  .ca-app-list__desc {
-    font-size: var(--ca-font-size-body2);
-    color: var(--ca-text-secondary);
-    margin: 0;
-    line-height: var(--ca-line-height-snug);
-  }
-
-  .ca-app-list__actions {
-    display: flex;
-    align-items: center;
-    gap: var(--ca-space-2);
-    flex-shrink: 0;
-  }
-
-  .ca-app-list__toolbar {
-    display: flex;
-    align-items: center;
-    gap: var(--ca-space-2);
-    padding: var(--ca-space-2) var(--ca-page-px);
-    flex-shrink: 0;
-    border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
-    overflow-x: auto;
-    overflow-y: hidden;
-  }
-
-  .ca-app-list__toolbar::-webkit-scrollbar { height: 0; }
-
-  .ca-app-list__toolbar-sep {
-    width: var(--ca-border-width);
-    height: var(--ca-space-5);
-    background: var(--ca-outline-subtle);
-    flex-shrink: 0;
-  }
-
-  .ca-app-list__spacer { flex: 1; }
-
-  .ca-app-list__clear {
-    font-size: var(--ca-font-size-caption);
-    font-weight: var(--ca-font-weight-medium);
-    color: var(--ca-text-hint);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: var(--ca-space-0-5) var(--ca-space-1);
-    border-radius: var(--ca-radius-sm);
-    font-family: inherit;
-    transition: color var(--ca-duration-fast) var(--ca-ease-standard);
-    flex-shrink: 0;
-  }
-  .ca-app-list__clear:hover { color: var(--ca-text-primary); }
-
-  .ca-app-list__sel-label {
-    font-size: var(--ca-font-size-caption);
-    font-weight: var(--ca-font-weight-medium);
-    color: var(--ca-brand-text);
-    white-space: nowrap;
-    flex-shrink: 0;
-  }
-
-  .ca-app-list__body {
-    flex: 1;
-    min-height: 0;
-    overflow-y: auto;
-    overflow-x: auto;
-  }
-
-  .ca-app-list__body::-webkit-scrollbar      { width: var(--ca-space-1-5); height: var(--ca-space-1-5); }
-  .ca-app-list__body::-webkit-scrollbar-track { background: transparent; }
-  .ca-app-list__body::-webkit-scrollbar-thumb {
-    background: var(--ca-outline-default);
-    border-radius: var(--ca-radius-pill);
-  }
-
-  .ca-app-list__empty {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 100%;
-    min-height: calc(var(--ca-space-unit) * 70);
-  }
-
-  .ca-app-list__empty-msg {
-    font-size: var(--ca-font-size-body2);
-    color: var(--ca-text-hint);
-    margin: 0;
-  }
-
-  .ca-app-list__footer {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--ca-space-3);
-    padding: var(--ca-space-3) var(--ca-page-px);
-    flex-shrink: 0;
-    border-top: var(--ca-border-width) solid var(--ca-outline-subtle);
-  }
-
-  @media (max-width: 599.98px) {
-    /* Title and actions share one row (actions never float alone on a line); they only wrap
-       when the title genuinely cannot fit, and then the actions start the new line. */
-    .ca-app-list__header {
-      flex-wrap: wrap;
-      row-gap: var(--ca-space-3);
-      padding:
-        var(--ca-space-4)
-        var(--ca-page-px-sm)
-        var(--ca-space-3);
-    }
-    .ca-app-list__toolbar { padding: var(--ca-space-2) var(--ca-page-px-sm); }
-    /* Cards align with the header and toolbar edges instead of touching the screen. */
-    .ca-app-list__body { padding: var(--ca-space-1) var(--ca-page-px-sm) var(--ca-space-3); }
-    /* The search field takes the free width instead of its fixed min-width. */
-    .ca-app-list__toolbar :global(.ca-search-field) { flex: 1 1 auto; min-width: 0; max-width: none; }
-    .ca-app-list__footer  { padding: var(--ca-space-2) var(--ca-page-px-sm); flex-wrap: wrap; }
-  }
-
-  /* Inside AppShellLayout the mobile header (< 900px) already shows the page title:
-     keep the h1 for assistive tech, hide it visually. */
-  @media (max-width: 899.98px) {
-    :global(.ca-shell__content) .ca-app-list__title {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      margin: -1px;
-      padding: 0;
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-app-list {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
       overflow: hidden;
-      clip-path: inset(50%);
-      white-space: nowrap;
-      border: 0;
+      width: 100%;
+      max-width: var(--al-max, none);
+      margin: 0 auto;
     }
-  }
+
+    .ca-app-list__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--ca-space-4);
+      padding:
+        var(--ca-page-pt)
+        var(--ca-page-px)
+        var(--ca-space-3);
+      flex-shrink: 0;
+    }
+
+    .ca-app-list__meta { flex: 1; min-width: 0; }
+
+    .ca-app-list__title {
+      font-family: var(--ca-font-display);
+      font-size: var(--ca-font-size-h5);
+      font-weight: var(--ca-font-weight-heading);
+      letter-spacing: var(--ca-heading-tracking);
+      text-transform: var(--ca-heading-case);
+      color: var(--ca-text-primary);
+      margin: 0 0 var(--ca-space-0-5);
+      line-height: var(--ca-line-height-tight);
+    }
+
+    .ca-app-list__desc {
+      font-size: var(--ca-font-size-body2);
+      color: var(--ca-text-secondary);
+      margin: 0;
+      line-height: var(--ca-line-height-snug);
+    }
+
+    .ca-app-list__actions {
+      display: flex;
+      align-items: center;
+      gap: var(--ca-space-2);
+      flex-shrink: 0;
+    }
+
+    .ca-app-list__toolbar {
+      display: flex;
+      align-items: center;
+      gap: var(--ca-space-2);
+      padding: var(--ca-space-2) var(--ca-page-px);
+      flex-shrink: 0;
+      border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
+      overflow-x: auto;
+      overflow-y: hidden;
+    }
+
+    .ca-app-list__toolbar::-webkit-scrollbar { height: 0; }
+
+    .ca-app-list__toolbar-sep {
+      width: var(--ca-border-width);
+      height: var(--ca-space-5);
+      background: var(--ca-outline-subtle);
+      flex-shrink: 0;
+    }
+
+    .ca-app-list__spacer { flex: 1; }
+
+    .ca-app-list__clear {
+      font-size: var(--ca-font-size-caption);
+      font-weight: var(--ca-font-weight-medium);
+      color: var(--ca-text-hint);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: var(--ca-space-0-5) var(--ca-space-1);
+      border-radius: var(--ca-radius-sm);
+      font-family: inherit;
+      transition: color var(--ca-duration-fast) var(--ca-ease-standard);
+      flex-shrink: 0;
+    }
+    .ca-app-list__clear:hover { color: var(--ca-text-primary); }
+
+    .ca-app-list__sel-label {
+      font-size: var(--ca-font-size-caption);
+      font-weight: var(--ca-font-weight-medium);
+      color: var(--ca-brand-text);
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .ca-app-list__body {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      overflow-x: auto;
+    }
+
+    .ca-app-list__body::-webkit-scrollbar      { width: var(--ca-space-1-5); height: var(--ca-space-1-5); }
+    .ca-app-list__body::-webkit-scrollbar-track { background: transparent; }
+    .ca-app-list__body::-webkit-scrollbar-thumb {
+      background: var(--ca-outline-default);
+      border-radius: var(--ca-radius-pill);
+    }
+
+    .ca-app-list__empty {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100%;
+      min-height: calc(var(--ca-space-unit) * 70);
+    }
+
+    .ca-app-list__empty-msg {
+      font-size: var(--ca-font-size-body2);
+      color: var(--ca-text-hint);
+      margin: 0;
+    }
+
+    .ca-app-list__footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--ca-space-3);
+      padding: var(--ca-space-3) var(--ca-page-px);
+      flex-shrink: 0;
+      border-top: var(--ca-border-width) solid var(--ca-outline-subtle);
+    }
+
+    @media (max-width: 599.98px) {
+      /* Title and actions share one row (actions never float alone on a line); they only wrap
+         when the title genuinely cannot fit, and then the actions start the new line. */
+      .ca-app-list__header {
+        flex-wrap: wrap;
+        row-gap: var(--ca-space-3);
+        padding:
+          var(--ca-space-4)
+          var(--ca-page-px-sm)
+          var(--ca-space-3);
+      }
+      .ca-app-list__toolbar { padding: var(--ca-space-2) var(--ca-page-px-sm); }
+      /* Cards align with the header and toolbar edges instead of touching the screen. */
+      .ca-app-list__body { padding: var(--ca-space-1) var(--ca-page-px-sm) var(--ca-space-3); }
+      /* The search field takes the free width instead of its fixed min-width. */
+      .ca-app-list__toolbar :global(.ca-search-field) { flex: 1 1 auto; min-width: 0; max-width: none; }
+      .ca-app-list__footer  { padding: var(--ca-space-2) var(--ca-page-px-sm); flex-wrap: wrap; }
+    }
+
+    /* Inside AppShellLayout the mobile header (< 900px) already shows the page title:
+       keep the h1 for assistive tech, hide it visually. */
+    @media (max-width: 899.98px) {
+      :global(.ca-shell__content) .ca-app-list__title {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+        border: 0;
+      }
+    }
+}
 </style>

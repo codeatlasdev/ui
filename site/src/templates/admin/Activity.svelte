@@ -6,9 +6,9 @@
   import type { TimelineItem } from '@codeatlasdev/ui';
   import { RefreshCw, Filter } from '@lucide/svelte';
 
-  let filter = $state('all');
+  let filter = $state('');
   const filterOpts = [
-    { value: 'all',    label: 'All events'   },
+    { value: '',        label: 'All events'   },
     { value: 'user',   label: 'Users'        },
     { value: 'system', label: 'System'       },
     { value: 'billing',label: 'Billing'      },
@@ -43,7 +43,7 @@
   ];
 
   const filtered = $derived(
-    filter === 'all' ? allEvents : allEvents.filter(e => e.category === filter)
+    filter === '' ? allEvents : allEvents.filter(e => e.category === filter)
   );
 
   const timelineItems = $derived<TimelineItem[]>(

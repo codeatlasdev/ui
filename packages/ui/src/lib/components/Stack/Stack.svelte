@@ -32,11 +32,14 @@
 </div>
 
 <style>
-  .ca-stack {
-    display: flex;
-    flex-direction: column;
-    gap:             var(--s-gap, 0);
-    align-items:     var(--s-align, stretch);
-    justify-content: var(--s-justify, flex-start);
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-stack {
+      display: flex;
+      flex-direction: column;
+      gap:             var(--s-gap, 0);
+      align-items:     var(--s-align, stretch);
+      justify-content: var(--s-justify, flex-start);
+    }
+}
 </style>

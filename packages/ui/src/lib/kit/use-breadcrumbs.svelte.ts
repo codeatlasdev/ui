@@ -4,7 +4,7 @@ import { toStore } from "svelte/store";
 // $app/state works on Kit >=2.12 and Kit 3 ($app/stores was removed in Kit 3).
 import { page } from "$app/state";
 import type { BreadcrumbItem } from "../components/Breadcrumb/Breadcrumb.svelte";
-import { t } from "../i18n/state.svelte.js";
+import { useT } from "../i18n/state.svelte.js";
 
 /**
  * Returns a reactive `BreadcrumbItem[]` derived from the current SvelteKit
@@ -21,6 +21,7 @@ import { t } from "../i18n/state.svelte.js";
  * ```
  */
 export function useBreadcrumbs() {
+	const t = useT();
 	return toStore(() => {
 		const segments = page.url.pathname.split("/").filter(Boolean);
 		const items: BreadcrumbItem[] = [

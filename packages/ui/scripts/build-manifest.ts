@@ -212,6 +212,45 @@ function findDeclDeep(sf: ts.SourceFile, name: string) {
 	return hit;
 }
 
+/** Prose of a `/** ... *\/` block before its first `@tag`, flattened to one paragraph. */
+function docProse(block: string): string | undefined {
+	const lines = block
+		.replace(/^\/\*\*|\*\/$/g, "")
+		.split("\n")
+		.map((l) => l.replace(/^\s*\*?\s?/, "").trimEnd());
+	const tag = lines.findIndex((l) => /^@\w+/.test(l.trim()));
+	const prose = (tag < 0 ? lines : lines.slice(0, tag)).join("\n").split(/\n\s*\n/)[0];
+	return prose.replace(/\n/g, " ").trim() || undefined;
+}
+
+/**
+ * Component-level description: a top-level `/** ... *\/` block of a `<script>` that is detached from
+ * the declaration below it (blank line between) or that opens the script right before an import.
+ * JSDoc on a declaration (`/** doc *\/ interface Props`, a member of `Props`, a `let` destructure)
+ * describes that declaration, never the component. Blocks with no prose (`@deprecated ...`) are skipped.
+ */
+export function componentDoc(src: string): string | undefined {
+	for (const script of src.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)) {
+		const body = script[1];
+		const sf = ts.createSourceFile("c.ts", body, ts.ScriptTarget.ESNext, true);
+		const stops = [...sf.statements.map((s) => s.getFullStart()), sf.endOfFileToken.getFullStart()];
+		for (const [i, full] of stops.entries()) {
+			const next = sf.statements[i];
+			for (const c of ts.getLeadingCommentRanges(body, full) ?? []) {
+				const text = body.slice(c.pos, c.end);
+				if (!text.startsWith("/**")) continue;
+				const gap = body.slice(c.end, next ? next.getStart(sf) : body.length);
+				const attached =
+					next !== undefined && !/\n[ \t]*\n/.test(gap) && !ts.isImportDeclaration(next);
+				if (attached) continue;
+				const prose = docProse(text);
+				if (prose) return prose;
+			}
+		}
+	}
+	return undefined;
+}
+
 function extractComponent(name: string, file: string, entry: string): ManifestComponent {
 	const abs = join(LIB, file);
 	const src = readFileSync(abs, "utf8");
@@ -263,17 +302,8 @@ function extractComponent(name: string, file: string, entry: string): ManifestCo
 		(/^\(?\s*Snippet\b/.test(type) ? out.snippets : out.props).push(prop);
 	}
 
-	const lead = src.match(/<script[^>]*>[\s\S]*?\/\*\*([\s\S]*?)\*\//)?.[1];
-	if (lead) {
-		const first = lead
-			.split("\n")
-			.map((l) => l.replace(/^\s*\*?\s?/, "").trimEnd())
-			.join("\n")
-			.split(/\n\s*\n/)[0]
-			.replace(/\n/g, " ")
-			.trim();
-		if (first) out.description = first;
-	}
+	const description = componentDoc(src);
+	if (description) out.description = description;
 	return out;
 }
 
@@ -330,6 +360,8 @@ export interface ManifestToken {
 	source: string;
 	/** Nearest preceding section comment, e.g. "Spacing scale". */
 	group?: string;
+	/** Comment immediately above the declaration: what the token is for and its guarantees. */
+	description?: string;
 }
 
 /** `── Spacing scale (base 4 px) ──` section dividers inside CSS comments. */
@@ -343,29 +375,39 @@ export function extractTokens(css: string, source: string, out: Map<string, Mani
 		// `.dark` rules (also `.dark[data-preset=..]`, `.dark [data-preset=..]`) fill the dark value.
 		const isDark = /\.dark\b|data-theme-scope="dark"/.test(selector);
 		// Walk the body so section comments between declarations update `group` in order.
+		let note: string | undefined;
 		for (const t of rule[2].matchAll(/\/\*([\s\S]*?)\*\/|(--ca-[\w-]+)\s*:\s*([^;]+);/g)) {
 			if (t[1] !== undefined) {
-				group = t[1].match(SECTION)?.[1] ?? group;
+				const section = t[1].match(SECTION)?.[1];
+				if (section) group = section;
+				// A prose comment (not a `── Section ──` divider) documents the declaration right below it.
+				else note = t[1].replace(/\s*\n\s*\*?\s*/g, " ").trim() || undefined;
 				continue;
 			}
+			const description = note;
+			note = undefined;
 			const name = t[2];
 			const value = t[3]
 				.trim()
 				.replace(/\s+/g, " ")
 				.replace(/\s*\/\*[\s\S]*?\*\//g, "");
 			const prev = out.get(name);
-			if (!prev)
-				out.set(
-					name,
-					isDark ? { name, value: "", dark: value, source, group } : { name, value, source, group }
-				);
-			else if (isDark) prev.dark ??= value;
-			else if (prev.value === "") prev.value = value;
+			if (!prev) {
+				const t0: ManifestToken = isDark
+					? { name, value: "", dark: value, source, group }
+					: { name, value, source, group };
+				if (description) t0.description = description;
+				out.set(name, t0);
+			} else {
+				if (isDark) prev.dark ??= value;
+				else if (prev.value === "") prev.value = value;
+				if (description) prev.description ??= description;
+			}
 		}
 	}
 }
 
-function buildTokens(): ManifestToken[] {
+export function buildTokens(): ManifestToken[] {
 	const out = new Map<string, ManifestToken>();
 	const styles = join(LIB, "styles");
 	extractTokens(readFileSync(join(styles, "tokens.css"), "utf8"), "tokens.css", out);

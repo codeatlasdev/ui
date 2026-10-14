@@ -14,7 +14,7 @@ Interactive components run on a headless layer of our own that implements the WA
 
 | Area | Behavior |
 |---|---|
-| Focus ring | A global `:focus-visible` outline in `--ca-focus-ring` (the brand color) with a 2px offset. Never remove it; change the token instead. |
+| Focus ring | Every focusable component draws a 2px outline in `--ca-focus-ring` with a 2px offset. The generator solves the token per preset and scheme to keep 3:1 against every surface and the hover/selected fills; override the one token (never `--ca-brand-main`) to recolor all rings. Never remove it. |
 | Overlays | `Dialog`, `AlertDialog`, `Drawer`, `Sheet`, `Popover` and menus trap focus, restore it on close, close on Escape and lock page scroll. |
 | Keyboard | Tabs, menus, selects, comboboxes, the command palette, date pickers, toggle groups and segmented controls follow their WAI-ARIA keyboard patterns. |
 | Names | `IconButton` requires `aria-label` at the type level. Built-in strings (close, dismiss, copy, loading) come from the [i18n catalog](/docs/getting-started/i18n/), so they are announced in the active language. |
@@ -103,7 +103,11 @@ Text tokens are tuned per preset and scheme:
 
 - `--ca-text-primary` and `--ca-text-secondary` for body text.
 - `--ca-text-hint` is the lowest readable tier and keeps 4.5:1. Use it for captions and helper text.
-- `--ca-text-disabled` is for inactive controls only, never for information.
+- `--ca-text-disabled` is for the label of disabled controls only, never for information (use `--ca-text-hint` to de-emphasise). It keeps 3:1 on every surface and on the disabled fill, so a disabled label stays legible. Disabled controls are drawn from tokens (`--ca-text-disabled`, `--ca-action-disabled-bg`, `--ca-outline-default`), never from `opacity`.
+- `--ca-outline-control` is the edge of fields and controls (text field, select, checkbox box) and keeps 3:1 on every surface and on the 5% field tint (WCAG 1.4.11). `--ca-outline-subtle` is for dividers only.
+- `--ca-focus-ring` and `--ca-state-indicator` (switch track, slider range, segmented thumb edge) keep 3:1 against every surface and the hover/selected fills.
+- `--ca-semantic-error-contrast` is the text colour for `--ca-semantic-error-fill`, like `--ca-brand-contrast` for `--ca-brand-fill`. `defineTheme` derives it from a custom `colors.*.error`; if you set the fill yourself, set the contrast beside it.
+- Menus, popovers and pickers (`--ca-overlay-bg`) and panels (`--ca-panel-bg`) are near-opaque (94% of `--ca-surface-overlay`) so their text contrast never depends on the page behind. The old see-through tint stays available as `--ca-overlay-bg-glass` / `--ca-panel-bg-glass` for decoration only.
 - `--ca-brand-text` is brand-colored text that keeps contrast on the surface. Use `--ca-brand-fill` with `--ca-brand-contrast` for filled brand elements.
 
 Brand presets generated from a hex color use the same generator, so they keep these relationships. Semantic colors (success, warning, error, info) are separated from the brand by luminance, not only hue, and should always be paired with an icon or text: color alone is never the only signal. `Alert` and `Toast` already include an icon.

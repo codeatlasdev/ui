@@ -166,8 +166,17 @@ export { default as Tooltip } from "./components/Tooltip/Tooltip.svelte";
 // Form sections and items
 export { default as FormSection } from "./components/templates/FormSection.svelte";
 // ── STORES ────────────────────────────────────────────────────────────────────
-export type { Locale, Messages } from "./i18n/index.js";
-export { locale, setLocale } from "./i18n/index.js";
+export type { DeepPartial, Locale, Messages, MessagesOverride } from "./i18n/index.js";
+export {
+	getLocales,
+	getMessages,
+	I18nProvider,
+	locale,
+	registerLocale,
+	setLocale,
+	useLocale,
+	useT,
+} from "./i18n/index.js";
 export type { ColorScheme, SurfaceStyle } from "./stores/color-scheme.svelte.js";
 export { colorScheme } from "./stores/color-scheme.svelte.js";
 export { reducedMotion, reducedTransparency } from "./stores/reduced-motion.svelte.js";

@@ -1,6 +1,6 @@
 ---
 name: codeatlas-dx
-description: Use when creating files, components, or feature modules: DX-first clean code, file size limits, no god files.
+description: "Use when creating files, components, or feature modules: DX-first clean code, file size limits, no god files."
 alwaysApply: false
 ---
 

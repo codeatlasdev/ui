@@ -1,7 +1,8 @@
 /* @codeatlasdev/ui — import this once at your app root: core plus every built-in preset.
- * Cascade order is fixed by @layer (declared in core.css). Component <style> blocks and
- * app CSS stay unlayered, so they always win over these layers: override a token by
- * declaring --ca-* on :root in the app, no !important needed.
+ * Cascade order is fixed by @layer (declared in core.css). Component <style> blocks live in
+ * `@layer ca.components` (last), app CSS stays unlayered, so app CSS always wins over the
+ * kit: override a token by declaring --ca-* on :root, or a component rule with the same
+ * selector, no !important and no doubled classes.
  * Want a smaller stylesheet? Import core.css plus only the presets you use. */
 @import url('./core.css');
 @import url('./presets/ocean.css') layer(ca.themes);

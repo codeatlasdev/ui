@@ -76,10 +76,13 @@
 </div>
 
 <style>
-  :global(.ca-accordion) {
-    display: flex;
-    flex-direction: column;
-    gap: var(--ca-space-1);
-    width: 100%;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    :global(.ca-accordion) {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ca-space-1);
+      width: 100%;
+    }
+}
 </style>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { t as msg } from '../i18n/state.svelte.js';
+  import { useT } from '../i18n/state.svelte.js';
 	// ─── HeatmapChart — calendar or matrix heatmap ───────────────────────────────
 	import type { EChartsOption } from "echarts";
 	import ChartCanvas from "./ChartCanvas.svelte";
@@ -7,6 +7,7 @@
 	import { chartPalette, withAlpha } from "./palette.js";
 	import { chartTokens } from "./tokens.js";
 	import type { CalendarHeatmapPoint, MatrixHeatmapPoint } from "./types.js";
+  const msg = useT();
 
 	interface Props {
 		variant: "calendar" | "matrix";

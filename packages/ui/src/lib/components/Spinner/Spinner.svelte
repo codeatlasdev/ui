@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
+  const t = useT();
   interface Props {
     size?: number | string;
     class?: string;
@@ -32,26 +33,29 @@
 </svg>
 
 <style>
-  .ca-spinner {
-    display: inline-block;
-    flex-shrink: 0;
-    width: var(--spinner-size, var(--ca-space-6));
-    height: var(--spinner-size, var(--ca-space-6));
-    animation: ca-spin var(--ca-duration-spin) linear infinite;
-  }
-  .ca-spinner__track {
-    stroke: var(--ca-outline-subtle);
-  }
-  .ca-spinner__arc {
-    stroke: var(--ca-brand-main);
-    fill: none;
-  }
-  @keyframes ca-spin {
-    to { transform: rotate(360deg); }
-  }
-  @media (prefers-reduced-motion: reduce) {
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
     .ca-spinner {
-      animation-duration: 2s;
+      display: inline-block;
+      flex-shrink: 0;
+      width: var(--spinner-size, var(--ca-space-6));
+      height: var(--spinner-size, var(--ca-space-6));
+      animation: ca-spin var(--ca-duration-spin) linear infinite;
     }
-  }
+    .ca-spinner__track {
+      stroke: var(--ca-outline-subtle);
+    }
+    .ca-spinner__arc {
+      stroke: var(--ca-brand-main);
+      fill: none;
+    }
+    @keyframes ca-spin {
+      to { transform: rotate(360deg); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ca-spinner {
+        animation-duration: 2s;
+      }
+    }
+}
 </style>

@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   import type { NavModule } from './types.js';
   import { isNavSection } from './types.js';
   import PanelNavItem from './PanelNavItem.svelte';
   import SectionGroup from './SectionGroup.svelte';
+  const t = useT();
 
   interface Props {
     modules:           NavModule[];
@@ -50,60 +51,63 @@
 {/if}
 
 <style>
-  .ca-panel {
-    height: 100%;
-    flex-shrink: 0;
-    overflow: hidden; /* clip while animating */
-    display: flex;
-    flex-direction: column;
-    width: var(--panel-w, var(--ca-panel-width));
-    opacity: var(--panel-opacity, 1);
-    background: var(--ca-glass-bg);
-    -webkit-backdrop-filter: var(--ca-mat-regular-filter);
-    backdrop-filter: var(--ca-mat-regular-filter);
-    box-shadow: var(--ca-glass-separator);
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-panel {
+      height: 100%;
+      flex-shrink: 0;
+      overflow: hidden; /* clip while animating */
+      display: flex;
+      flex-direction: column;
+      width: var(--panel-w, var(--ca-panel-width));
+      opacity: var(--panel-opacity, 1);
+      background: var(--ca-glass-bg);
+      -webkit-backdrop-filter: var(--ca-mat-regular-filter);
+      backdrop-filter: var(--ca-mat-regular-filter);
+      box-shadow: var(--ca-glass-separator);
+    }
 
-  .ca-panel__header {
-    height: var(--ca-header-height);
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    padding: 0 var(--ca-space-3);
-    box-shadow: inset 0 calc(var(--ca-border-width) * -1) 0 var(--ca-outline-subtle);
-  }
+    .ca-panel__header {
+      height: var(--ca-header-height);
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      padding: 0 var(--ca-space-3);
+      box-shadow: inset 0 calc(var(--ca-border-width) * -1) 0 var(--ca-outline-subtle);
+    }
 
-  .ca-panel__title {
-    font-size: var(--ca-font-size-label);
-    font-family: var(--ca-font-display);
-    font-weight: var(--ca-font-weight-semibold);
-    letter-spacing: var(--ca-heading-tracking);
-    text-transform: var(--ca-heading-case);
-    color: var(--ca-text-primary);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+    .ca-panel__title {
+      font-size: var(--ca-font-size-label);
+      font-family: var(--ca-font-display);
+      font-weight: var(--ca-font-weight-semibold);
+      letter-spacing: var(--ca-heading-tracking);
+      text-transform: var(--ca-heading-case);
+      color: var(--ca-text-primary);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
 
-  .ca-panel__nav {
-    flex: 1;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: var(--ca-space-1-5) var(--ca-space-2) var(--ca-space-4);
-    -webkit-mask-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      black var(--ca-space-2),
-      black calc(100% - var(--ca-space-4)),
-      transparent 100%
-    );
-    mask-image: linear-gradient(
-      to bottom,
-      transparent 0%,
-      black var(--ca-space-2),
-      black calc(100% - var(--ca-space-4)),
-      transparent 100%
-    );
-  }
-  .ca-panel__nav::-webkit-scrollbar { display: none; }
+    .ca-panel__nav {
+      flex: 1;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: var(--ca-space-1-5) var(--ca-space-2) var(--ca-space-4);
+      -webkit-mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black var(--ca-space-2),
+        black calc(100% - var(--ca-space-4)),
+        transparent 100%
+      );
+      mask-image: linear-gradient(
+        to bottom,
+        transparent 0%,
+        black var(--ca-space-2),
+        black calc(100% - var(--ca-space-4)),
+        transparent 100%
+      );
+    }
+    .ca-panel__nav::-webkit-scrollbar { display: none; }
+}
 </style>

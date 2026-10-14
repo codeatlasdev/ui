@@ -29,7 +29,7 @@ describe("Select", () => {
 		expect(await checkA11y(document.body, PORTAL_RULES)).toHaveNoViolations();
 
 		await userEvent.keyboard("{ArrowDown}{Enter}");
-		await expect.element(screen.getByTestId("bound")).toHaveTextContent("b");
+		await expect.element(screen.getByTestId("bound")).toHaveTextContent("[b]");
 		await expect.element(trigger).toHaveTextContent("Beta");
 		await expect.element(trigger).toHaveAttribute("aria-expanded", "false");
 	});
@@ -41,7 +41,7 @@ describe("Select", () => {
 		await expect.element(screen.getByRole("listbox")).toBeVisible();
 		await userEvent.keyboard("{Escape}");
 		await expect.element(trigger).toHaveAttribute("aria-expanded", "false");
-		await expect.element(screen.getByTestId("bound")).toHaveTextContent("a");
+		await expect.element(screen.getByTestId("bound")).toHaveTextContent("[a]");
 	});
 
 	it("selecting an option by click calls onchange and marks it selected", async () => {
@@ -87,5 +87,78 @@ describe("Select", () => {
 		await userEvent.click(screen.getByRole("option", { name: "Pro" }));
 		await userEvent.click(screen.getByRole("button", { name: "Send" }));
 		expect(onsubmit).toHaveBeenCalledOnce();
+	});
+
+	describe("empty-string option", () => {
+		const options = [
+			{ value: "", label: "All" },
+			{ value: "a", label: "A" },
+		];
+
+		it("value='' with an '' option shows its label, not the placeholder", async () => {
+			const screen = await render(SelectHarness, {
+				label: "Filter",
+				placeholder: "Choose",
+				options,
+				initial: "",
+			});
+			const trigger = screen.getByRole("button", { name: "Filter" });
+			await expect.element(trigger).toHaveTextContent("All");
+			await expect.element(trigger).not.toHaveTextContent("Choose");
+			expect(trigger.element().hasAttribute("data-placeholder")).toBe(false);
+			expect(trigger.element().querySelector(".ca-sel__value--placeholder")).toBeNull();
+		});
+
+		it("placeholder shows only when value is undefined", async () => {
+			const screen = await render(SelectHarness, {
+				label: "Filter",
+				placeholder: "Choose",
+				options,
+			});
+			const trigger = screen.getByRole("button", { name: "Filter" });
+			await expect.element(trigger).toHaveTextContent("Choose");
+			expect(trigger.element().hasAttribute("data-placeholder")).toBe(true);
+			expect(trigger.element().querySelector(".ca-sel__value--placeholder")).not.toBeNull();
+		});
+
+		it("value='' without a matching option still shows the placeholder", async () => {
+			const screen = await render(SelectHarness, {
+				label: "Plan",
+				placeholder: "Choose",
+				initial: "",
+			});
+			await expect
+				.element(screen.getByRole("button", { name: "Plan" }))
+				.toHaveTextContent("Choose");
+		});
+
+		it("selecting A then All calls onchange('') and shows All again", async () => {
+			const onchange = vi.fn();
+			const screen = await render(SelectHarness, {
+				label: "Filter",
+				placeholder: "Choose",
+				options,
+				initial: "",
+				onchange,
+			});
+			const trigger = screen.getByRole("button", { name: "Filter" });
+			await trigger.click();
+			await screen.getByRole("option", { name: "A" }).click();
+			expect(onchange).toHaveBeenLastCalledWith("a");
+			await expect.element(trigger).toHaveTextContent("A");
+			await trigger.click();
+			await screen.getByRole("option", { name: "All" }).click();
+			expect(onchange).toHaveBeenLastCalledWith("");
+			await expect.element(trigger).toHaveTextContent("All");
+			await expect.element(screen.getByTestId("bound")).toHaveTextContent("[]");
+		});
+
+		it("the '' option is marked selected in the list", async () => {
+			const screen = await render(SelectHarness, { label: "Filter", options, initial: "" });
+			await screen.getByRole("button", { name: "Filter" }).click();
+			await expect
+				.element(screen.getByRole("option", { name: "All" }))
+				.toHaveAttribute("aria-selected", "true");
+		});
 	});
 });

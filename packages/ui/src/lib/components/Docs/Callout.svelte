@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   import type { Snippet } from 'svelte';
   import Alert from '../Alert/Alert.svelte';
+  const t = useT();
 
   /**
    * Callout: aside block for docs prose. Thin vocabulary layer over `Alert`:
@@ -28,12 +29,15 @@
 </Alert>
 
 <style>
-  :global(.ca-callout) {
-    margin: var(--ca-space-5) 0;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    :global(.ca-callout) {
+      margin: var(--ca-space-5) 0;
+    }
 
-  /* Prose inside a callout: tighter, and it must not inherit prose block margins. */
-  :global(.ca-callout .ca-alert__content > :first-child) { margin-top: 0; }
-  :global(.ca-callout .ca-alert__content > :last-child) { margin-bottom: 0; }
-  :global(.ca-callout .ca-alert__content p) { margin: var(--ca-space-2) 0; }
+    /* Prose inside a callout: tighter, and it must not inherit prose block margins. */
+    :global(.ca-callout .ca-alert__content > :first-child) { margin-top: 0; }
+    :global(.ca-callout .ca-alert__content > :last-child) { margin-bottom: 0; }
+    :global(.ca-callout .ca-alert__content p) { margin: var(--ca-space-2) 0; }
+}
 </style>

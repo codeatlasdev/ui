@@ -55,74 +55,77 @@
 </section>
 
 <style>
-  .ca-form-section {
-    container-type: inline-size;
-    background: var(--ca-mat-thin-fill);
-    -webkit-backdrop-filter: var(--ca-mat-thin-filter);
-    backdrop-filter: var(--ca-mat-thin-filter);
-    border-radius: var(--ca-radius-lg);
-    border: var(--ca-border-width) solid var(--ca-outline-subtle);
-    padding: var(--ca-card-padding);
-    display: flex;
-    flex-direction: column;
-    gap: var(--ca-space-4);
-  }
-
-  /* ── Header ──────────────────────────────────────────────────── */
-  .ca-form-section__header {
-    display: flex;
-    flex-direction: column;
-    gap: var(--ca-space-1);
-  }
-
-  .ca-form-section__title {
-    font-family: var(--ca-font-display);
-    font-size: var(--ca-font-size-h6);
-    font-weight: var(--ca-font-weight-semibold);
-    letter-spacing: var(--ca-heading-tracking);
-    text-transform: var(--ca-heading-case);
-    color: var(--ca-text-primary);
-    margin: 0;
-    line-height: 1.3;
-  }
-
-  .ca-form-section__desc {
-    font-size: var(--ca-font-size-body2);
-    color: var(--ca-text-secondary);
-    margin: 0;
-    line-height: var(--ca-line-height-relaxed);
-  }
-
-  /* ── grid: default, 2 columns for text fields ────────────────── */
-  .ca-form-section--grid .ca-form-section__fields {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(calc(var(--ca-space-unit) * 65), 1fr));
-    gap: var(--ca-space-3);
-  }
-
-  /* ── list: single flush column: Switch, SettingItem, Divider ─── */
-  .ca-form-section--list .ca-form-section__fields {
-    display: flex;
-    flex-direction: column;
-    gap: 0;
-  }
-
-  /* ── stack: single column with gap: Avatar row, groups ─────────  */
-  .ca-form-section--stack .ca-form-section__fields {
-    display: flex;
-    flex-direction: column;
-    gap: var(--ca-space-4);
-  }
-
-  /* ── Narrow slot ─────────────────────────────────────────────────
-     auto-fill already drops to one column when two 65-unit tracks do not fit; below the
-     track minimum itself (a phone-width card) the single track must be allowed to shrink. */
-  @container (max-width: 599.98px) {
-    .ca-form-section--grid .ca-form-section__fields {
-      grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--ca-space-unit) * 65)), 1fr));
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-form-section {
+      container-type: inline-size;
+      background: var(--ca-mat-thin-fill);
+      -webkit-backdrop-filter: var(--ca-mat-thin-filter);
+      backdrop-filter: var(--ca-mat-thin-filter);
+      border-radius: var(--ca-radius-lg);
+      border: var(--ca-border-width) solid var(--ca-outline-subtle);
+      padding: var(--ca-card-padding);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ca-space-4);
     }
-  }
-  @media (max-width: 599.98px) {
-    .ca-form-section { padding: var(--ca-space-4); }
-  }
+
+    /* ── Header ──────────────────────────────────────────────────── */
+    .ca-form-section__header {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ca-space-1);
+    }
+
+    .ca-form-section__title {
+      font-family: var(--ca-font-display);
+      font-size: var(--ca-font-size-h6);
+      font-weight: var(--ca-font-weight-semibold);
+      letter-spacing: var(--ca-heading-tracking);
+      text-transform: var(--ca-heading-case);
+      color: var(--ca-text-primary);
+      margin: 0;
+      line-height: 1.3;
+    }
+
+    .ca-form-section__desc {
+      font-size: var(--ca-font-size-body2);
+      color: var(--ca-text-secondary);
+      margin: 0;
+      line-height: var(--ca-line-height-relaxed);
+    }
+
+    /* ── grid: default, 2 columns for text fields ────────────────── */
+    .ca-form-section--grid .ca-form-section__fields {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(calc(var(--ca-space-unit) * 65), 1fr));
+      gap: var(--ca-space-3);
+    }
+
+    /* ── list: single flush column: Switch, SettingItem, Divider ─── */
+    .ca-form-section--list .ca-form-section__fields {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+
+    /* ── stack: single column with gap: Avatar row, groups ─────────  */
+    .ca-form-section--stack .ca-form-section__fields {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ca-space-4);
+    }
+
+    /* ── Narrow slot ─────────────────────────────────────────────────
+       auto-fill already drops to one column when two 65-unit tracks do not fit; below the
+       track minimum itself (a phone-width card) the single track must be allowed to shrink. */
+    @container (max-width: 599.98px) {
+      .ca-form-section--grid .ca-form-section__fields {
+        grid-template-columns: repeat(auto-fill, minmax(min(100%, calc(var(--ca-space-unit) * 65)), 1fr));
+      }
+    }
+    @media (max-width: 599.98px) {
+      .ca-form-section { padding: var(--ca-space-4); }
+    }
+}
 </style>

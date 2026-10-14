@@ -1,12 +1,13 @@
 <script lang="ts">
   import { focusTextField } from '../../actions/autofocus.js';
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   import { createPresence } from '../../primitives/index.js';
   import { modalLayer } from '../Dialog/modal-layer.js';
   import '../Dialog/dialog.css';
   import { Search } from '@lucide/svelte';
   import type { NavModule, NavItem } from '../AppShell/types.js';
   import { isNavSection } from '../AppShell/types.js';
+  const t = useT();
 
   interface Props {
     modules: NavModule[];
@@ -198,143 +199,146 @@
 {/if}
 
 <style>
-  /* Palette scrim: plain blur(4px) (no saturate boost) and a slower fade than the shared overlay. */
-  :global(dialog.ca-cmd-overlay::backdrop) {
-    -webkit-backdrop-filter: blur(4px);
-    backdrop-filter: blur(4px);
-  }
-  :global(dialog.ca-cmd-overlay[data-state='open']::backdrop) {
-    animation-duration: var(--ca-duration-base);
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    /* Palette scrim: plain blur(4px) (no saturate boost) and a slower fade than the shared overlay. */
+    :global(dialog.ca-cmd-overlay::backdrop) {
+      -webkit-backdrop-filter: blur(4px);
+      backdrop-filter: blur(4px);
+    }
+    :global(dialog.ca-cmd-overlay[data-state='open']::backdrop) {
+      animation-duration: var(--ca-duration-base);
+    }
 
-  :global(dialog.ca-cmd-dialog) {
-    inset: auto;
-    top: 20%;
-    left: 50%;
-    transform: translateX(-50%);
-    width: min(560px, calc(100vw - 2 * var(--ca-space-4)));
-    max-height: calc(var(--ca-vh) * 0.6);
-    flex-direction: column;
-    border: 1px solid var(--ca-panel-border);
-    border-radius: var(--ca-radius-xl);
-    overflow: hidden;
-    outline: none;
-    padding: 0;
-  }
-  :global(dialog.ca-cmd-dialog[open]) {
-    display: flex;
-  }
+    :global(dialog.ca-cmd-dialog) {
+      inset: auto;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      width: min(560px, calc(100vw - 2 * var(--ca-space-4)));
+      max-height: calc(var(--ca-vh) * 0.6);
+      flex-direction: column;
+      border: 1px solid var(--ca-panel-border);
+      border-radius: var(--ca-radius-xl);
+      overflow: hidden;
+      outline: none;
+      padding: 0;
+    }
+    :global(dialog.ca-cmd-dialog[open]) {
+      display: flex;
+    }
 
-  :global(.ca-cmd-dialog[data-state='open']) {
-    animation: ca-cmd-slide-in var(--ca-duration-base) var(--ca-ease-decelerate);
-  }
+    :global(.ca-cmd-dialog[data-state='open']) {
+      animation: ca-cmd-slide-in var(--ca-duration-base) var(--ca-ease-decelerate);
+    }
 
-  :global(.ca-cmd-dialog[data-state='closed']) {
-    animation: ca-cmd-slide-out var(--ca-duration-fast) var(--ca-ease-standard);
-  }
+    :global(.ca-cmd-dialog[data-state='closed']) {
+      animation: ca-cmd-slide-out var(--ca-duration-fast) var(--ca-ease-standard);
+    }
 
-  .ca-cmd-search {
-    display: flex;
-    align-items: center;
-    gap: var(--ca-space-2-5);
-    padding: var(--ca-space-3-5) var(--ca-space-4);
-    border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
-    flex-shrink: 0;
-  }
+    .ca-cmd-search {
+      display: flex;
+      align-items: center;
+      gap: var(--ca-space-2-5);
+      padding: var(--ca-space-3-5) var(--ca-space-4);
+      border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
+      flex-shrink: 0;
+    }
 
-  :global(.ca-cmd-search__icon) {
-    color: var(--ca-text-hint);
-    flex-shrink: 0;
-  }
+    :global(.ca-cmd-search__icon) {
+      color: var(--ca-text-hint);
+      flex-shrink: 0;
+    }
 
-  .ca-cmd-search__input {
-    flex: 1;
-    background: none;
-    border: none;
-    outline: none;
-    font-size: max(var(--ca-input-font-size), var(--ca-font-size-body1));
-    color: var(--ca-text-primary);
-    font-family: inherit;
-  }
+    .ca-cmd-search__input {
+      flex: 1;
+      background: none;
+      border: none;
+      outline: none;
+      font-size: max(var(--ca-input-font-size), var(--ca-font-size-body1));
+      color: var(--ca-text-primary);
+      font-family: inherit;
+    }
 
-  .ca-cmd-search__input::placeholder {
-    color: var(--ca-text-hint);
-  }
+    .ca-cmd-search__input::placeholder {
+      color: var(--ca-text-hint);
+    }
 
-  .ca-cmd-search__hint {
-    font-size: var(--ca-font-size-micro);
-    padding: var(--ca-space-0-5) var(--ca-space-1);
-    border-radius: var(--ca-radius-xs);
-    border: var(--ca-border-width) solid var(--ca-outline-subtle);
-    color: var(--ca-text-hint);
-    font-family: var(--ca-font-mono);
-    line-height: var(--ca-line-height-body);
-  }
+    .ca-cmd-search__hint {
+      font-size: var(--ca-font-size-micro);
+      padding: var(--ca-space-0-5) var(--ca-space-1);
+      border-radius: var(--ca-radius-xs);
+      border: var(--ca-border-width) solid var(--ca-outline-subtle);
+      color: var(--ca-text-hint);
+      font-family: var(--ca-font-mono);
+      line-height: var(--ca-line-height-body);
+    }
 
-  .ca-cmd-list {
-    overflow-y: auto;
-    padding: var(--ca-space-1-5);
-  }
+    .ca-cmd-list {
+      overflow-y: auto;
+      padding: var(--ca-space-1-5);
+    }
 
-  .ca-cmd-group__label {
-    font-size: var(--ca-font-size-caption);
-    font-weight: var(--ca-font-weight-semibold);
-    color: var(--ca-text-hint);
-    text-transform: uppercase;
-    letter-spacing: var(--ca-overline-tracking);
-    padding: var(--ca-space-2) var(--ca-space-2-5) var(--ca-space-1);
-  }
+    .ca-cmd-group__label {
+      font-size: var(--ca-font-size-caption);
+      font-weight: var(--ca-font-weight-semibold);
+      color: var(--ca-text-hint);
+      text-transform: uppercase;
+      letter-spacing: var(--ca-overline-tracking);
+      padding: var(--ca-space-2) var(--ca-space-2-5) var(--ca-space-1);
+    }
 
-  .ca-cmd-item {
-    display: flex;
-    align-items: center;
-    gap: var(--ca-space-2-5);
-    width: 100%;
-    padding: var(--ca-space-2) var(--ca-space-2-5);
-    border-radius: var(--ca-radius-sm);
-    border: none;
-    background: none;
-    cursor: pointer;
-    font-size: var(--ca-font-size-body2);
-    color: var(--ca-text-primary);
-    text-align: left;
-    transition: background var(--ca-duration-fast) var(--ca-ease-standard);
-  }
+    .ca-cmd-item {
+      display: flex;
+      align-items: center;
+      gap: var(--ca-space-2-5);
+      width: 100%;
+      padding: var(--ca-space-2) var(--ca-space-2-5);
+      border-radius: var(--ca-radius-sm);
+      border: none;
+      background: none;
+      cursor: pointer;
+      font-size: var(--ca-font-size-body2);
+      color: var(--ca-text-primary);
+      text-align: left;
+      transition: background var(--ca-duration-fast) var(--ca-ease-standard);
+    }
 
-  .ca-cmd-item--active,
-  .ca-cmd-item:hover {
-    background: var(--ca-action-hover);
-  }
+    .ca-cmd-item--active,
+    .ca-cmd-item:hover {
+      background: var(--ca-action-hover);
+    }
 
-  :global(.ca-cmd-item__icon) {
-    color: var(--ca-text-secondary);
-    flex-shrink: 0;
-  }
+    :global(.ca-cmd-item__icon) {
+      color: var(--ca-text-secondary);
+      flex-shrink: 0;
+    }
 
-  .ca-cmd-item__label {
-    flex: 1;
-  }
+    .ca-cmd-item__label {
+      flex: 1;
+    }
 
-  .ca-cmd-item__module {
-    font-size: var(--ca-font-size-caption);
-    color: var(--ca-text-hint);
-  }
+    .ca-cmd-item__module {
+      font-size: var(--ca-font-size-caption);
+      color: var(--ca-text-hint);
+    }
 
-  .ca-cmd-empty {
-    padding: var(--ca-space-8) var(--ca-space-4);
-    text-align: center;
-    font-size: var(--ca-font-size-body2);
-    color: var(--ca-text-hint);
-  }
+    .ca-cmd-empty {
+      padding: var(--ca-space-8) var(--ca-space-4);
+      text-align: center;
+      font-size: var(--ca-font-size-body2);
+      color: var(--ca-text-hint);
+    }
 
-  @keyframes ca-cmd-slide-in {
-    from { opacity: 0; transform: translateX(-50%) translateY(calc(-1 * var(--ca-space-3))); }
-    to   { opacity: 1; transform: translateX(-50%) translateY(0); }
-  }
+    @keyframes ca-cmd-slide-in {
+      from { opacity: 0; transform: translateX(-50%) translateY(calc(-1 * var(--ca-space-3))); }
+      to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+    }
 
-  @keyframes ca-cmd-slide-out {
-    from { opacity: 1; transform: translateX(-50%) translateY(0); }
-    to   { opacity: 0; transform: translateX(-50%) translateY(calc(-1 * var(--ca-space-2))); }
-  }
+    @keyframes ca-cmd-slide-out {
+      from { opacity: 1; transform: translateX(-50%) translateY(0); }
+      to   { opacity: 0; transform: translateX(-50%) translateY(calc(-1 * var(--ca-space-2))); }
+    }
 
+}
 </style>

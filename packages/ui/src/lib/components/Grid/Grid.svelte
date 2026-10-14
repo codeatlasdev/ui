@@ -62,14 +62,17 @@
 </div>
 
 <style>
-  .ca-grid {
-    display: grid;
-    grid-template-columns: var(--g-cols, none);
-    gap:             var(--g-gap, 0);
-    row-gap:         var(--g-row-gap, var(--g-gap, 0));
-    column-gap:      var(--g-col-gap, var(--g-gap, 0));
-    align-items:     var(--g-align, stretch);
-    justify-items:   var(--g-justify, stretch);
-    width: 100%;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-grid {
+      display: grid;
+      grid-template-columns: var(--g-cols, none);
+      gap:             var(--g-gap, 0);
+      row-gap:         var(--g-row-gap, var(--g-gap, 0));
+      column-gap:      var(--g-col-gap, var(--g-gap, 0));
+      align-items:     var(--g-align, stretch);
+      justify-items:   var(--g-justify, stretch);
+      width: 100%;
+    }
+}
 </style>

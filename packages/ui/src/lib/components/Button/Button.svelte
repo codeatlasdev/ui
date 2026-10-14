@@ -2,8 +2,9 @@
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
   import Spinner from '../Spinner/Spinner.svelte';
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   import { announce } from '../../utils/announce.js';
+  const t = useT();
 
   type Variant = 'filled' | 'glass' | 'outlined' | 'ghost' | 'destructive';
   type Size = 'sm' | 'md' | 'lg';
@@ -106,154 +107,177 @@
 {/if}
 
 <style>
-  .ca-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: var(--ca-space-1-5);
-    border-radius: var(--ca-radius-control);
-    border: none;
-    cursor: pointer;
-    font-family: var(--ca-font-sans);
-    font-weight: var(--ca-font-weight-medium);
-    letter-spacing: var(--ca-label-tracking);
-    text-decoration: none;
-    white-space: nowrap;
-    transition:
-      background var(--ca-duration-fast) var(--ca-ease-standard),
-      color var(--ca-duration-fast) var(--ca-ease-standard),
-      border-color var(--ca-duration-fast) var(--ca-ease-standard),
-      box-shadow var(--ca-duration-fast) var(--ca-ease-standard),
-      opacity var(--ca-duration-fast) var(--ca-ease-standard);
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--ca-space-1-5);
+      border-radius: var(--ca-radius-control);
+      border: none;
+      cursor: pointer;
+      font-family: var(--ca-font-sans);
+      font-weight: var(--ca-font-weight-medium);
+      letter-spacing: var(--ca-label-tracking);
+      text-decoration: none;
+      white-space: nowrap;
+      transition:
+        background var(--ca-duration-fast) var(--ca-ease-standard),
+        color var(--ca-duration-fast) var(--ca-ease-standard),
+        border-color var(--ca-duration-fast) var(--ca-ease-standard),
+        box-shadow var(--ca-duration-fast) var(--ca-ease-standard),
+        opacity var(--ca-duration-fast) var(--ca-ease-standard);
+    }
 
-  .ca-btn:focus-visible {
-    outline: var(--ca-border-width-focus) solid var(--ca-brand-main);
-    outline-offset: var(--ca-focus-ring-offset);
-  }
+    .ca-btn:focus-visible {
+      outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
+      outline-offset: var(--ca-focus-ring-offset);
+    }
 
-  .ca-btn:disabled,
-  .ca-btn[aria-disabled='true'] {
-    cursor: not-allowed;
-    opacity: 0.45;
-    pointer-events: none;
-  }
+    /* Disabled is drawn from tokens, never from opacity: the label keeps a defined contrast
+       (--ca-text-disabled is >= 3:1 on every surface and on the disabled fill). Each variant
+       below restates it, so none keeps its enabled fill under a dimmed label. A loading button
+       is busy, not unavailable: it keeps its enabled look (see the loading rule). */
+    .ca-btn:disabled,
+    .ca-btn[aria-disabled='true'] {
+      cursor: not-allowed;
+      pointer-events: none;
+    }
 
-  /* Sizes: md aligns with TextField/Select height (--ca-control-height) */
-  .ca-btn--sm {
-    height: var(--ca-control-height-sm);
-    padding: 0 var(--ca-space-2-5);
-    font-size: var(--ca-font-size-body2);
-  }
-  .ca-btn--md {
-    height: var(--ca-control-height);
-    padding: 0 var(--ca-control-px);
-    font-size: var(--ca-font-size-button);
-  }
-  .ca-btn--lg {
-    height: var(--ca-control-height-lg);
-    padding: 0 var(--ca-space-5);
-    font-size: var(--ca-font-size-dialog);
-  }
+    /* Sizes: md aligns with TextField/Select height (--ca-control-height) */
+    .ca-btn--sm {
+      height: var(--ca-control-height-sm);
+      padding: 0 var(--ca-space-2-5);
+      font-size: var(--ca-font-size-body2);
+    }
+    .ca-btn--md {
+      height: var(--ca-control-height);
+      padding: 0 var(--ca-control-px);
+      font-size: var(--ca-font-size-button);
+    }
+    .ca-btn--lg {
+      height: var(--ca-control-height-lg);
+      padding: 0 var(--ca-space-5);
+      font-size: var(--ca-font-size-dialog);
+    }
 
-  /* Touch: every size reaches the 44px target (min-height wins over height). */
-  @media (pointer: coarse) {
-    .ca-btn { min-height: var(--ca-touch-target); }
-    .ca-btn--lg { height: auto; }
-  }
+    /* Touch: every size reaches the 44px target (min-height wins over height). */
+    @media (pointer: coarse) {
+      .ca-btn { min-height: var(--ca-touch-target); }
+      .ca-btn--lg { height: auto; }
+    }
 
-  /* Native-feeling press on touch devices. */
-  @media (hover: none) and (prefers-reduced-motion: no-preference) {
-    .ca-btn { transition-property: background, color, border-color, box-shadow, opacity, scale; }
-    .ca-btn:active:not(:disabled) { scale: 0.97; transition-duration: var(--ca-duration-press); }
-  }
+    /* Native-feeling press on touch devices. */
+    @media (hover: none) and (prefers-reduced-motion: no-preference) {
+      .ca-btn { transition-property: background, color, border-color, box-shadow, opacity, scale; }
+      .ca-btn:active:not(:disabled) { scale: 0.97; transition-duration: var(--ca-duration-press); }
+    }
 
-  /* Filled */
-  .ca-btn--filled {
-    background: var(--ca-brand-fill);
-    color: var(--ca-brand-contrast);
-  }
-  .ca-btn--filled:hover:not(:disabled) {
-    background: var(--ca-brand-fill-hover);
-  }
-  .ca-btn--filled:active:not(:disabled) {
-    background: var(--ca-brand-fill-hover);
-    box-shadow: inset 0 var(--ca-border-width) var(--ca-space-0-5) color-mix(in oklab, black 15%, transparent);
-  }
-  /* Disabled keeps the hue: the AA brand pair (fill + contrast text) at 0.45 opacity,
-     never a desaturated grey. Hover/active are already gated by :not(:disabled). */
-  .ca-btn--filled:disabled,
-  .ca-btn--filled[aria-disabled='true'] {
-    opacity: 0.45;
-    background: var(--ca-brand-fill);
-    color: var(--ca-brand-contrast);
-    box-shadow: none;
-  }
+    /* Filled */
+    .ca-btn--filled {
+      background: var(--ca-brand-fill);
+      color: var(--ca-brand-contrast);
+    }
+    .ca-btn--filled:hover:not(:disabled) {
+      background: var(--ca-brand-fill-hover);
+    }
+    .ca-btn--filled:active:not(:disabled) {
+      background: var(--ca-brand-fill-hover);
+      box-shadow: inset 0 var(--ca-border-width) var(--ca-space-0-5) color-mix(in oklab, black 15%, transparent);
+    }
 
-  /* Glass */
-  .ca-btn--glass {
-    background: var(--ca-glass-tint);
-    -webkit-backdrop-filter: var(--ca-blur-regular);
-    backdrop-filter: var(--ca-blur-regular);
-    border: var(--ca-border-width) solid var(--ca-glass-border);
-    color: var(--ca-text-primary);
-    box-shadow: var(--ca-glass-shadow);
-  }
-  .ca-btn--glass:hover:not(:disabled) {
-    background: var(--ca-glass-tint-thick);
-  }
+    /* Glass */
+    .ca-btn--glass {
+      background: var(--ca-glass-tint);
+      -webkit-backdrop-filter: var(--ca-blur-regular);
+      backdrop-filter: var(--ca-blur-regular);
+      border: var(--ca-border-width) solid var(--ca-glass-border);
+      color: var(--ca-text-primary);
+      box-shadow: var(--ca-glass-shadow);
+    }
+    .ca-btn--glass:hover:not(:disabled) {
+      background: var(--ca-glass-tint-thick);
+    }
 
-  /* Outlined */
-  .ca-btn--outlined {
-    background: transparent;
-    border: var(--ca-border-width) solid var(--ca-brand-main);
-    color: var(--ca-brand-text);
-  }
-  .ca-btn--outlined:hover:not(:disabled) {
-    background: color-mix(in oklab, var(--ca-brand-main) 8%, transparent);
-  }
+    /* Outlined */
+    .ca-btn--outlined {
+      background: transparent;
+      border: var(--ca-border-width) solid var(--ca-brand-main);
+      color: var(--ca-brand-text);
+    }
+    .ca-btn--outlined:hover:not(:disabled) {
+      background: color-mix(in oklab, var(--ca-brand-main) 8%, transparent);
+    }
 
-  /* Ghost */
-  .ca-btn--ghost {
-    background: transparent;
-    border: var(--ca-border-width) solid transparent;
-    color: var(--ca-brand-text);
-  }
-  .ca-btn--ghost:hover:not(:disabled) {
-    background: color-mix(in oklab, var(--ca-brand-main) 8%, transparent);
-  }
+    /* Ghost */
+    .ca-btn--ghost {
+      background: transparent;
+      border: var(--ca-border-width) solid transparent;
+      color: var(--ca-brand-text);
+    }
+    .ca-btn--ghost:hover:not(:disabled) {
+      background: color-mix(in oklab, var(--ca-brand-main) 8%, transparent);
+    }
 
-  /* Destructive */
-  .ca-btn--destructive {
-    background: var(--ca-semantic-error-fill);
-    color: var(--ca-on-semantic);
-  }
-  .ca-btn--destructive:hover:not(:disabled) {
-    background: color-mix(in oklab, var(--ca-semantic-error-fill) 85%, black);
-  }
+    /* Destructive */
+    .ca-btn--destructive {
+      background: var(--ca-semantic-error-fill);
+      color: var(--ca-semantic-error-contrast);
+    }
+    .ca-btn--destructive:hover:not(:disabled) {
+      background: color-mix(in oklab, var(--ca-semantic-error-fill) 85%, black);
+    }
 
-  .ca-btn__leading,
-  .ca-btn__trailing {
-    display: flex;
-    align-items: center;
-  }
+    .ca-btn__leading,
+    .ca-btn__trailing {
+      display: flex;
+      align-items: center;
+    }
 
-  /* Loading: keep full opacity (it is busy, not unavailable) and tint the spinner
-     to the button's text color so it stays legible on every variant. */
-  .ca-btn.ca-btn--loading:disabled,
-  .ca-btn.ca-btn--loading[aria-disabled='true'] {
-    opacity: 1;
-    cursor: progress;
-  }
-  .ca-btn--loading :global(.ca-spinner__track) {
-    stroke: color-mix(in oklab, currentColor 25%, transparent);
-  }
-  .ca-btn--loading :global(.ca-spinner__arc) {
-    stroke: currentColor;
-  }
+    /* Disabled look, per variant. Declared after the variants so it wins at equal specificity;
+       loading is excluded (busy, not unavailable). */
+    .ca-btn:disabled:not(.ca-btn--loading),
+    .ca-btn[aria-disabled='true']:not(.ca-btn--loading) {
+      color: var(--ca-text-disabled);
+      background: var(--ca-action-disabled-bg);
+      border-color: var(--ca-outline-default);
+      box-shadow: none;
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+    .ca-btn--filled:disabled:not(.ca-btn--loading),
+    .ca-btn--filled[aria-disabled='true']:not(.ca-btn--loading),
+    .ca-btn--destructive:disabled:not(.ca-btn--loading),
+    .ca-btn--destructive[aria-disabled='true']:not(.ca-btn--loading),
+    .ca-btn--glass:disabled:not(.ca-btn--loading),
+    .ca-btn--glass[aria-disabled='true']:not(.ca-btn--loading),
+    .ca-btn--outlined:disabled:not(.ca-btn--loading),
+    .ca-btn--outlined[aria-disabled='true']:not(.ca-btn--loading) {
+      border: var(--ca-border-width) solid var(--ca-outline-default);
+    }
+    .ca-btn--ghost:disabled:not(.ca-btn--loading),
+    .ca-btn--ghost[aria-disabled='true']:not(.ca-btn--loading) {
+      background: transparent;
+      border-color: transparent;
+    }
 
-  .ca-btn--full-width {
-    width: 100%;
-    justify-content: center;
-  }
+    /* Loading: keeps the enabled look (it is busy, not unavailable); only the cursor changes.
+       The spinner is tinted to the button's text color so it stays legible on every variant. */
+    .ca-btn.ca-btn--loading:disabled,
+    .ca-btn.ca-btn--loading[aria-disabled='true'] {
+      cursor: progress;
+    }
+    .ca-btn--loading :global(.ca-spinner__track) {
+      stroke: color-mix(in oklab, currentColor 25%, transparent);
+    }
+    .ca-btn--loading :global(.ca-spinner__arc) {
+      stroke: currentColor;
+    }
+
+    .ca-btn--full-width {
+      width: 100%;
+      justify-content: center;
+    }
+}
 </style>

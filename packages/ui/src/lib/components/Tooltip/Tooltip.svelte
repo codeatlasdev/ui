@@ -133,41 +133,44 @@
 </FloatingLayer>
 
 <style>
-  :global(.ca-tooltip__trigger) {
-    display: inline-flex;
-    background: transparent;
-    border: none;
-    padding: 0;
-    cursor: inherit;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    :global(.ca-tooltip__trigger) {
+      display: inline-flex;
+      background: transparent;
+      border: none;
+      padding: 0;
+      cursor: inherit;
+    }
 
-  :global(.ca-tooltip-content) {
-    /* Inverse, near-opaque surface: --ca-tooltip-fg needs it to reach AA in both schemes. */
-    background: var(--ca-tooltip-bg);
-    -webkit-backdrop-filter: var(--ca-blur-ultra-thin);
-    backdrop-filter: var(--ca-blur-ultra-thin);
-    border: var(--ca-border-width) solid var(--ca-glass-border);
-    border-radius: var(--ca-radius-sm);
-    padding: var(--ca-space-1-5) var(--ca-space-2-5);
-    font-size: var(--ca-font-size-caption);
-    color: var(--ca-tooltip-fg);
-    max-width: 240px;
-    box-shadow: var(--ca-shadow-md);
-    animation: ca-tooltip-in var(--ca-duration-fast) var(--ca-ease-decelerate);
-    line-height: var(--ca-line-height-body);
-  }
+    :global(.ca-tooltip-content) {
+      /* Inverse, near-opaque surface: --ca-tooltip-fg needs it to reach AA in both schemes. */
+      background: var(--ca-tooltip-bg);
+      -webkit-backdrop-filter: var(--ca-blur-ultra-thin);
+      backdrop-filter: var(--ca-blur-ultra-thin);
+      border: var(--ca-border-width) solid var(--ca-glass-border);
+      border-radius: var(--ca-radius-sm);
+      padding: var(--ca-space-1-5) var(--ca-space-2-5);
+      font-size: var(--ca-font-size-caption);
+      color: var(--ca-tooltip-fg);
+      max-width: 240px;
+      box-shadow: var(--ca-shadow-md);
+      animation: ca-tooltip-in var(--ca-duration-fast) var(--ca-ease-decelerate);
+      line-height: var(--ca-line-height-body);
+    }
 
-  :global(.ca-tooltip-content[data-state='closed']) {
-    animation: ca-tooltip-out var(--ca-duration-fast) var(--ca-ease-standard);
-  }
+    :global(.ca-tooltip-content[data-state='closed']) {
+      animation: ca-tooltip-out var(--ca-duration-fast) var(--ca-ease-standard);
+    }
 
-  @keyframes ca-tooltip-in {
-    from { opacity: 0; transform: scale(0.94); }
-    to { opacity: 1; transform: scale(1); }
-  }
+    @keyframes ca-tooltip-in {
+      from { opacity: 0; transform: scale(0.94); }
+      to { opacity: 1; transform: scale(1); }
+    }
 
-  @keyframes ca-tooltip-out {
-    from { opacity: 1; transform: scale(1); }
-    to { opacity: 0; transform: scale(0.94); }
-  }
+    @keyframes ca-tooltip-out {
+      from { opacity: 1; transform: scale(1); }
+      to { opacity: 0; transform: scale(0.94); }
+    }
+}
 </style>

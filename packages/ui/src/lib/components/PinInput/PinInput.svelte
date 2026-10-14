@@ -149,131 +149,138 @@
 </div>
 
 <style>
-  .ca-pin {
-    display: inline-flex;
-    flex-direction: column;
-    gap: var(--ca-space-1);
-    font-family: var(--ca-font-sans);
-  }
-
-  .ca-pin__label {
-    font-size: var(--ca-font-size-label);
-    font-weight: var(--ca-font-weight-medium);
-    color: var(--ca-text-primary);
-    line-height: var(--ca-line-height-snug);
-  }
-
-  .ca-pin__root {
-    position: relative;
-    cursor: text;
-    user-select: none;
-  }
-
-  .ca-pin--disabled .ca-pin__root {
-    cursor: default;
-  }
-
-  .ca-pin__cells {
-    display: flex;
-    gap: var(--ca-space-2);
-  }
-
-  /* Transparent input stacked over the cells: it receives every pointer/keyboard/paste event
-     and the cells underneath only paint. */
-  .ca-pin__input {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    border: 0;
-    outline: 0;
-    background: transparent;
-    box-shadow: none;
-    color: transparent;
-    caret-color: transparent;
-    opacity: 1;
-    font: inherit;
-    /* Glyphs are transparent; 16px+ keeps iOS from zooming the page on focus. */
-    letter-spacing: -0.5em;
-    font-size: max(16px, 1em);
-  }
-
-  .ca-pin__input::selection {
-    background: transparent;
-    color: transparent;
-  }
-
-  :global(.ca-pin__cell) {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: var(--ca-space-10);
-    height: var(--ca-space-12);
-    border-radius: var(--ca-radius-control);
-    background: var(--ca-field-bg);
-    border: var(--ca-border-width) solid var(--ca-field-border-color);
-    box-shadow: var(--ca-field-shadow);
-    color: var(--ca-text-primary);
-    font-size: var(--ca-font-size-h5);
-    font-weight: var(--ca-font-weight-semibold);
-    font-variant-numeric: tabular-nums;
-    transition:
-      border-color var(--ca-duration-fast) var(--ca-ease-standard),
-      box-shadow var(--ca-duration-fast) var(--ca-ease-standard);
-  }
-
-  :global(.ca-pin__cell[data-active]) {
-    border-color: var(--ca-brand-main);
-    box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-brand-main) 18%, transparent);
-  }
-
-  .ca-pin--error :global(.ca-pin__cell) {
-    border-color: var(--ca-semantic-error);
-  }
-
-  .ca-pin--error :global(.ca-pin__cell[data-active]) {
-    box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-semantic-error) 18%, transparent);
-  }
-
-  .ca-pin--disabled {
-    opacity: 0.45;
-    cursor: not-allowed;
-  }
-
-  .ca-pin__caret {
-    width: var(--ca-border-width);
-    height: var(--ca-space-5);
-    background: var(--ca-text-primary);
-    animation: ca-pin-blink 1s steps(1) infinite;
-  }
-
-  @keyframes ca-pin-blink {
-    50% {
-      opacity: 0;
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-pin {
+      display: inline-flex;
+      flex-direction: column;
+      gap: var(--ca-space-1);
+      font-family: var(--ca-font-sans);
     }
-  }
 
-  @media (prefers-reduced-motion: reduce) {
-    .ca-pin__caret {
-      animation: none;
+    .ca-pin__label {
+      font-size: var(--ca-font-size-label);
+      font-weight: var(--ca-font-weight-medium);
+      color: var(--ca-text-primary);
+      line-height: var(--ca-line-height-snug);
     }
-  }
 
-  .ca-pin__hint {
-    margin: 0;
-    font-size: var(--ca-font-size-caption);
-    color: var(--ca-text-secondary);
-  }
+    .ca-pin__root {
+      position: relative;
+      cursor: text;
+      user-select: none;
+    }
 
-  .ca-pin__hint--error {
-    color: var(--ca-semantic-error);
-  }
+    .ca-pin--disabled .ca-pin__root {
+      cursor: default;
+    }
 
-  @media (pointer: coarse) {
+    .ca-pin__cells {
+      display: flex;
+      gap: var(--ca-space-2);
+    }
+
+    /* Transparent input stacked over the cells: it receives every pointer/keyboard/paste event
+       and the cells underneath only paint. */
+    .ca-pin__input {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      outline: 0;
+      background: transparent;
+      box-shadow: none;
+      color: transparent;
+      caret-color: transparent;
+      opacity: 1;
+      font: inherit;
+      /* Glyphs are transparent; 16px+ keeps iOS from zooming the page on focus. */
+      letter-spacing: -0.5em;
+      font-size: max(16px, 1em);
+    }
+
+    .ca-pin__input::selection {
+      background: transparent;
+      color: transparent;
+    }
+
     :global(.ca-pin__cell) {
-      height: var(--ca-touch-target);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: var(--ca-space-10);
+      height: var(--ca-space-12);
+      border-radius: var(--ca-radius-control);
+      background: var(--ca-field-bg);
+      border: var(--ca-border-width) solid var(--ca-field-border-color);
+      box-shadow: var(--ca-field-shadow);
+      color: var(--ca-text-primary);
+      font-size: var(--ca-font-size-h5);
+      font-weight: var(--ca-font-weight-semibold);
+      font-variant-numeric: tabular-nums;
+      transition:
+        border-color var(--ca-duration-fast) var(--ca-ease-standard),
+        box-shadow var(--ca-duration-fast) var(--ca-ease-standard);
     }
-  }
+
+    :global(.ca-pin__cell[data-active]) {
+      border-color: var(--ca-focus-ring);
+      box-shadow: 0 0 0 var(--ca-border-width-focus) var(--ca-focus-ring);
+    }
+
+    .ca-pin--error :global(.ca-pin__cell) {
+      border-color: var(--ca-semantic-error);
+    }
+
+    .ca-pin--error :global(.ca-pin__cell[data-active]) {
+      box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-semantic-error) 18%, transparent);
+    }
+
+    .ca-pin--disabled {
+      cursor: not-allowed;
+    }
+    .ca-pin--disabled :global(.ca-pin__cell) {
+      background: var(--ca-action-disabled-bg);
+      border-color: var(--ca-outline-default);
+      color: var(--ca-text-disabled);
+    }
+
+    .ca-pin__caret {
+      width: var(--ca-border-width);
+      height: var(--ca-space-5);
+      background: var(--ca-text-primary);
+      animation: ca-pin-blink 1s steps(1) infinite;
+    }
+
+    @keyframes ca-pin-blink {
+      50% {
+        opacity: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .ca-pin__caret {
+        animation: none;
+      }
+    }
+
+    .ca-pin__hint {
+      margin: 0;
+      font-size: var(--ca-font-size-caption);
+      color: var(--ca-text-secondary);
+    }
+
+    .ca-pin__hint--error {
+      color: var(--ca-semantic-error);
+    }
+
+    @media (pointer: coarse) {
+      :global(.ca-pin__cell) {
+        height: var(--ca-touch-target);
+      }
+    }
+}
 </style>

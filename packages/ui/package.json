@@ -118,6 +118,7 @@
 		"test:watch": "bun ../../scripts/test-run.ts vitest",
 		"test:unit": "bun test --cwd ../..",
 		"test:browser": "bun ../../scripts/test-run.ts vitest run --project browser",
+		"test:ssr": "bun ../../scripts/test-run.ts vitest run --project ssr",
 		"test:vrt": "bun ../../scripts/test-run.ts vitest run --project vrt --maxWorkers=2",
 		"test:vrt:update": "bun ../../scripts/test-run.ts vitest run --project vrt --maxWorkers=2 --update",
 		"test:ui": "bun ../../scripts/test-run.ts vitest --ui",

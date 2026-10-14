@@ -17,64 +17,67 @@
 </div>
 
 <style>
-  .ca-table-root {
-    min-height: 0;
-    flex: 1;
-    overflow: auto;
-    border-radius: var(--ca-radius-lg);
-    border: var(--ca-border-width) solid var(--ca-outline-subtle);
-    background: var(--ca-surface-raised);
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-table-root {
+      min-height: 0;
+      flex: 1;
+      overflow: auto;
+      border-radius: var(--ca-radius-lg);
+      border: var(--ca-border-width) solid var(--ca-outline-subtle);
+      background: var(--ca-surface-raised);
+    }
 
-  .ca-table-container {
-    width: 100%;
-    overflow-x: auto;
-  }
+    .ca-table-container {
+      width: 100%;
+      overflow-x: auto;
+    }
 
-  .ca-table {
-    width: 100%;
-    border-collapse: collapse;
-    caption-side: bottom;
-    font-size: var(--ca-font-size-body2);
-  }
+    .ca-table {
+      width: 100%;
+      border-collapse: collapse;
+      caption-side: bottom;
+      font-size: var(--ca-font-size-body2);
+    }
 
-  /* thead / tbody / tr / th / td are styled globally so DataTable
-     sub-components can use plain HTML elements without extra classes */
-  :global(.ca-table thead) {
-    border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
-  }
+    /* thead / tbody / tr / th / td are styled globally so DataTable
+       sub-components can use plain HTML elements without extra classes */
+    :global(.ca-table thead) {
+      border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
+    }
 
-  :global(.ca-table tbody tr:last-child) {
-    border-bottom: none;
-  }
+    :global(.ca-table tbody tr:last-child) {
+      border-bottom: none;
+    }
 
-  :global(.ca-table tbody tr) {
-    border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
-    transition: background var(--ca-duration-fast) var(--ca-ease-standard);
-  }
+    :global(.ca-table tbody tr) {
+      border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
+      transition: background var(--ca-duration-fast) var(--ca-ease-standard);
+    }
 
-  :global(.ca-table tbody tr:hover) {
-    background: var(--ca-action-hover);
-  }
+    :global(.ca-table tbody tr:hover) {
+      background: var(--ca-action-hover);
+    }
 
-  :global(.ca-table th) {
-    height: var(--ca-control-height);
-    padding: 0 var(--ca-space-3);
-    text-align: left;
-    vertical-align: middle;
-    font-size: var(--ca-font-size-caption);
-    font-weight: var(--ca-font-weight-semibold);
-    color: var(--ca-text-hint);
-    text-transform: uppercase;
-    letter-spacing: var(--ca-overline-tracking);
-    white-space: nowrap;
-  }
+    :global(.ca-table th) {
+      height: var(--ca-control-height);
+      padding: 0 var(--ca-space-3);
+      text-align: left;
+      vertical-align: middle;
+      font-size: var(--ca-font-size-caption);
+      font-weight: var(--ca-font-weight-semibold);
+      color: var(--ca-text-hint);
+      text-transform: uppercase;
+      letter-spacing: var(--ca-overline-tracking);
+      white-space: nowrap;
+    }
 
-  :global(.ca-table td) {
-    padding: var(--ca-space-2-5) var(--ca-space-3);
-    vertical-align: middle;
-    white-space: nowrap;
-    font-size: var(--ca-font-size-body2);
-    color: var(--ca-text-primary);
-  }
+    :global(.ca-table td) {
+      padding: var(--ca-space-2-5) var(--ca-space-3);
+      vertical-align: middle;
+      white-space: nowrap;
+      font-size: var(--ca-font-size-body2);
+      color: var(--ca-text-primary);
+    }
+}
 </style>

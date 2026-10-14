@@ -152,7 +152,7 @@
 		scale: 0.98;
 	}
 	.app__row:focus-visible {
-		outline: 2px solid var(--ca-brand-main);
+		outline: 2px solid var(--ca-focus-ring);
 		outline-offset: 2px;
 	}
 	.app__meta {

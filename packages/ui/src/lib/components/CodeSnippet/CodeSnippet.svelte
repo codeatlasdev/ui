@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   import { Copy, Check } from '@lucide/svelte';
   import { copyToClipboard } from '../../utils/index.js';
   import { getHighlighter } from '../../utils/highlighter.js';
+  const t = useT();
 
   interface Props {
     code: string;
@@ -62,76 +63,79 @@
 </div>
 
 <style>
-  .ca-code-snippet {
-    border-radius: var(--ca-radius-lg);
-    overflow: hidden;
-    border: var(--ca-border-width) solid var(--ca-outline-subtle);
-    margin-top: var(--ca-space-4);
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-code-snippet {
+      border-radius: var(--ca-radius-lg);
+      overflow: hidden;
+      border: var(--ca-border-width) solid var(--ca-outline-subtle);
+      margin-top: var(--ca-space-4);
+    }
 
-  .ca-code-snippet__toolbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: var(--ca-space-2) var(--ca-space-4);
-    border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
-  }
+    .ca-code-snippet__toolbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: var(--ca-space-2) var(--ca-space-4);
+      border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
+    }
 
-  .ca-code-snippet__lang {
-    font-size: var(--ca-font-size-caption);
-    color: var(--ca-text-hint);
-    font-family: var(--ca-font-mono);
-  }
+    .ca-code-snippet__lang {
+      font-size: var(--ca-font-size-caption);
+      color: var(--ca-text-hint);
+      font-family: var(--ca-font-mono);
+    }
 
-  .ca-code-snippet__copy {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--ca-space-1);
-    font-size: var(--ca-font-size-caption);
-    color: var(--ca-text-secondary);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: var(--ca-space-0-5) var(--ca-space-1-5);
-    border-radius: var(--ca-radius-xs);
-    transition: color var(--ca-duration-fast) var(--ca-ease-standard);
-  }
+    .ca-code-snippet__copy {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--ca-space-1);
+      font-size: var(--ca-font-size-caption);
+      color: var(--ca-text-secondary);
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: var(--ca-space-0-5) var(--ca-space-1-5);
+      border-radius: var(--ca-radius-xs);
+      transition: color var(--ca-duration-fast) var(--ca-ease-standard);
+    }
 
-  .ca-code-snippet__copy:hover {
-    color: var(--ca-text-primary);
-  }
+    .ca-code-snippet__copy:hover {
+      color: var(--ca-text-primary);
+    }
 
-  .ca-code-snippet__pre {
-    margin: 0;
-    overflow-x: auto;
-    font-size: var(--ca-font-size-caption);
-    line-height: var(--ca-line-height-prose);
-  }
+    .ca-code-snippet__pre {
+      margin: 0;
+      overflow-x: auto;
+      font-size: var(--ca-font-size-caption);
+      line-height: var(--ca-line-height-prose);
+    }
 
-  /* Shiki renders a <pre> with inline background, neutralise it so glass shows through */
-  .ca-code-snippet__pre :global(pre.shiki) {
-    margin: 0;
-    padding: var(--ca-space-4);
-    background: transparent !important;
-    font-family: var(--ca-font-mono);
-    font-size: inherit;
-    line-height: inherit;
-  }
+    /* Shiki renders a <pre> with inline background, neutralise it so glass shows through */
+    .ca-code-snippet__pre :global(pre.shiki) {
+      margin: 0;
+      padding: var(--ca-space-4);
+      background: transparent !important;
+      font-family: var(--ca-font-mono);
+      font-size: inherit;
+      line-height: inherit;
+    }
 
-  .ca-code-snippet__pre :global(.shiki span) {
-    color: light-dark(var(--shiki-light), var(--shiki-dark));
-  }
+    .ca-code-snippet__pre :global(.shiki span) {
+      color: light-dark(var(--shiki-light), var(--shiki-dark));
+    }
 
-  /* github-light-high-contrast comments (#66707B) sit at 4.48:1 on the glass surface; nudge to AA. */
-  .ca-code-snippet__pre :global(.shiki span[style*='--shiki-light:#66707B']) {
-    color: light-dark(#5a636d, var(--shiki-dark));
-  }
+    /* github-light-high-contrast comments (#66707B) sit at 4.48:1 on the glass surface; nudge to AA. */
+    .ca-code-snippet__pre :global(.shiki span[style*='--shiki-light:#66707B']) {
+      color: light-dark(#5a636d, var(--shiki-dark));
+    }
 
-  /* Fallback raw pre */
-  .ca-code-snippet__pre--raw {
-    padding: var(--ca-space-4);
-    font-family: var(--ca-font-mono);
-    color: var(--ca-text-primary);
-    background: transparent;
-  }
+    /* Fallback raw pre */
+    .ca-code-snippet__pre--raw {
+      padding: var(--ca-space-4);
+      font-family: var(--ca-font-mono);
+      color: var(--ca-text-primary);
+      background: transparent;
+    }
+}
 </style>

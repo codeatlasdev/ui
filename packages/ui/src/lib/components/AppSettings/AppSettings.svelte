@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   /**
    * AppSettings: settings/preferences page layout.
    *
@@ -44,6 +44,7 @@
    */
   import type { IconComponent } from '../../types.js';
   import type { Snippet } from 'svelte';
+  const t = useT();
 
   interface SettingsTab {
     value:   string;
@@ -107,28 +108,28 @@
 
     <!-- Left nav: does not scroll -->
     <div class="ca-app-settings__nav" aria-label={t().appSettings.navigation} role="tablist">
-      {#each tabs as t}
-        {@const active = t.value === activeTab}
+      {#each tabs as tab}
+        {@const active = tab.value === activeTab}
         <button
           type="button"
           class="ca-app-settings__nav-item"
           class:active
-          class:danger={t.danger}
+          class:danger={tab.danger}
           role="tab"
           aria-selected={active}
-          onclick={() => selectTab(t.value)}
+          onclick={() => selectTab(tab.value)}
         >
-          {#if t.icon}
-            {@const Icon = t.icon}
+          {#if tab.icon}
+            {@const Icon = tab.icon}
             <Icon
               size={15}
               stroke-width={active ? 2.2 : 1.6}
               class="ca-app-settings__nav-icon"
             />
           {/if}
-          <span class="ca-app-settings__nav-label">{t.label}</span>
-          {#if t.badge != null}
-            <span class="ca-app-settings__nav-badge">{t.badge}</span>
+          <span class="ca-app-settings__nav-label">{tab.label}</span>
+          {#if tab.badge != null}
+            <span class="ca-app-settings__nav-badge">{tab.badge}</span>
           {/if}
         </button>
       {/each}
@@ -143,256 +144,259 @@
 </div>
 
 <style>
-  /* ── Root ──────────────────────────────────────────────────────
-     Fills the whole ca-shell__content (display:flex flex-col overflow:hidden).
-  ─────────────────────────────────────────────────────────────── */
-  .ca-app-settings {
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    min-height: 0;
-    overflow: hidden;
-    width: 100%;
-  }
-
-  /* ── Header ────────────────────────────────────────────────────
-     Consistent with AppList and AppForm: uses --ca-page-px and --ca-page-pt.
-  ─────────────────────────────────────────────────────────────── */
-  .ca-app-settings__header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--ca-space-4);
-    padding:
-      var(--ca-page-pt)
-      var(--ca-page-px)
-      var(--ca-space-4);
-    flex-shrink: 0;
-    border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
-  }
-
-  .ca-app-settings__meta { flex: 1; min-width: 0; }
-
-  .ca-app-settings__title {
-    font-family: var(--ca-font-display);
-    font-size: var(--ca-font-size-h5);
-    font-weight: var(--ca-font-weight-heading);
-    letter-spacing: var(--ca-heading-tracking);
-    text-transform: var(--ca-heading-case);
-    color: var(--ca-text-primary);
-    margin: 0 0 var(--ca-space-0-5);
-    line-height: var(--ca-line-height-tight);
-  }
-
-  .ca-app-settings__desc {
-    font-size: var(--ca-font-size-body2);
-    color: var(--ca-text-secondary);
-    margin: 0;
-    line-height: var(--ca-line-height-snug);
-  }
-
-  .ca-app-settings__actions {
-    display: flex;
-    align-items: center;
-    gap: var(--ca-space-2);
-    flex-shrink: 0;
-  }
-
-  /* ── Body ───────────────────────────────────────────────────────
-     Flex row: fixed nav + scrollable content side by side.
-  ─────────────────────────────────────────────────────────────── */
-  .ca-app-settings__body {
-    display: flex;
-    flex: 1;
-    min-height: 0;
-    overflow: hidden;
-  }
-
-  /* ── Left nav ───────────────────────────────────────────────
-     Width: 55 space units. Does not scroll (unless it has many items).
-     Padding uses the global tokens.
-  ─────────────────────────────────────────────────────────────── */
-  .ca-app-settings__nav {
-    width: calc(var(--ca-space-unit) * 55);
-    flex-shrink: 0;
-    padding: var(--ca-space-4) var(--ca-space-3);
-    border-right: var(--ca-border-width) solid var(--ca-outline-subtle);
-    display: flex;
-    flex-direction: column;
-    gap: var(--ca-space-0-5);
-    overflow-y: auto;
-    overflow-x: hidden;
-  }
-
-  .ca-app-settings__nav::-webkit-scrollbar { width: 0; }
-
-  /* Item da nav */
-  .ca-app-settings__nav-item {
-    display: flex;
-    align-items: center;
-    gap: var(--ca-space-2);
-    padding: var(--ca-space-2) var(--ca-space-2-5);
-    border-radius: var(--ca-radius-md);
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-size: var(--ca-font-size-body2);
-    font-weight: var(--ca-font-weight-medium);
-    font-family: inherit;
-    color: var(--ca-text-secondary);
-    text-align: left;
-    width: 100%;
-    transition:
-      background var(--ca-duration-fast) var(--ca-ease-standard),
-      color      var(--ca-duration-fast) var(--ca-ease-standard);
-    position: relative;
-    line-height: var(--ca-line-height-snug);
-  }
-
-  .ca-app-settings__nav-item:hover {
-    background: var(--ca-action-hover);
-    color: var(--ca-text-primary);
-  }
-
-  /* Active: tinted bg + indicator pill on the left */
-  .ca-app-settings__nav-item.active {
-    background: color-mix(in oklab, var(--ca-brand-main) 10%, transparent);
-    color: var(--ca-brand-text);
-  }
-
-  .ca-app-settings__nav-item.active::before {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: var(--ca-space-1);
-    height: var(--ca-space-4);
-    border-radius: var(--ca-radius-pill);
-    background: var(--ca-brand-main);
-  }
-
-  /* Danger variant */
-  .ca-app-settings__nav-item.danger       { color: var(--ca-semantic-error); }
-  .ca-app-settings__nav-item.danger:hover {
-    background: color-mix(in oklab, var(--ca-semantic-error) 8%, transparent);
-    color: var(--ca-semantic-error);
-  }
-
-  :global(.ca-app-settings__nav-icon) {
-    flex-shrink: 0;
-    color: currentColor;
-    opacity: 0.75;
-  }
-
-  .ca-app-settings__nav-label {
-    flex: 1;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .ca-app-settings__nav-badge {
-    font-size: var(--ca-font-size-micro);
-    font-weight: var(--ca-font-weight-semibold);
-    background: color-mix(in oklab, var(--ca-brand-main) 14%, transparent);
-    color: var(--ca-brand-text);
-    padding: var(--ca-border-width) var(--ca-space-1-5);
-    border-radius: var(--ca-radius-pill);
-    flex-shrink: 0;
-    line-height: 1.6;
-  }
-
-  /* ── Right-hand content ───────────────────────────────────────────
-     Takes ALL the remaining width, with no max-width here.
-     The comfortable reading max-width lives in FormSection.
-     Padding uses the global tokens.
-  ─────────────────────────────────────────────────────────────── */
-  .ca-app-settings__content {
-    flex: 1;
-    min-width: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-    padding: var(--ca-space-6) var(--ca-page-px) var(--ca-space-12);
-    display: flex;
-    flex-direction: column;
-    gap: var(--ca-page-gap);
-  }
-
-  .ca-app-settings__content::-webkit-scrollbar      { width: var(--ca-space-1-5); }
-  .ca-app-settings__content::-webkit-scrollbar-track { background: transparent; }
-  .ca-app-settings__content::-webkit-scrollbar-thumb {
-    background: var(--ca-outline-default);
-    border-radius: var(--ca-radius-pill);
-  }
-
-  /* ── Mobile (<= 768px) ───────────────────────────────────────── */
-  @media (max-width: 899.98px) {
-    .ca-app-settings__body { flex-direction: column; }
-
-    /* Nav becomes a horizontal scrollable bar */
-    .ca-app-settings__nav {
-      width: 100%;
-      flex-direction: row;
-      flex-wrap: nowrap;
-      overflow-x: auto;
-      overflow-y: hidden;
-      padding: var(--ca-space-2) var(--ca-page-px-sm);
-      border-right: none;
-      border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
-      gap: var(--ca-space-1);
-      scroll-snap-type: x proximity;
-      scroll-padding-inline: var(--ca-page-px-sm);
-      -webkit-overflow-scrolling: touch;
-      /* Fade the trailing edge so it reads as scrollable. */
-      mask-image: linear-gradient(to right, #000 calc(100% - var(--ca-page-px-sm)), transparent);
-      -webkit-mask-image: linear-gradient(to right, #000 calc(100% - var(--ca-page-px-sm)), transparent);
-    }
-
-    .ca-app-settings__nav::-webkit-scrollbar { height: 0; }
-
-    .ca-app-settings__nav-item {
-      /* The base rule is width:100% (vertical list): size to content in the strip. */
-      width: auto;
-      min-height: var(--ca-control-height);
-      white-space: nowrap;
-      flex-shrink: 0;
-      scroll-snap-align: start;
-      padding: var(--ca-space-1-5) var(--ca-space-3);
-    }
-
-    /* Hide the indicator pill in horizontal mode: use only the bg */
-    .ca-app-settings__nav-item.active::before { display: none; }
-
-    .ca-app-settings__content {
-      padding:
-        var(--ca-space-4)
-        var(--ca-page-px-sm)
-        var(--ca-space-10);
-    }
-
-    .ca-app-settings__header {
-      padding:
-        var(--ca-space-4)
-        var(--ca-page-px-sm)
-        var(--ca-space-3);
-      flex-wrap: wrap;
-    }
-  }
-
-  /* Inside AppShellLayout the mobile header (< 900px) already shows the page title:
-     keep the h1 for assistive tech, hide it visually. */
-  @media (max-width: 899.98px) {
-    :global(.ca-shell__content) .ca-app-settings__title {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      margin: -1px;
-      padding: 0;
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    /* ── Root ──────────────────────────────────────────────────────
+       Fills the whole ca-shell__content (display:flex flex-col overflow:hidden).
+    ─────────────────────────────────────────────────────────────── */
+    .ca-app-settings {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
       overflow: hidden;
-      clip-path: inset(50%);
-      white-space: nowrap;
-      border: 0;
+      width: 100%;
     }
-  }
+
+    /* ── Header ────────────────────────────────────────────────────
+       Consistent with AppList and AppForm: uses --ca-page-px and --ca-page-pt.
+    ─────────────────────────────────────────────────────────────── */
+    .ca-app-settings__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--ca-space-4);
+      padding:
+        var(--ca-page-pt)
+        var(--ca-page-px)
+        var(--ca-space-4);
+      flex-shrink: 0;
+      border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
+    }
+
+    .ca-app-settings__meta { flex: 1; min-width: 0; }
+
+    .ca-app-settings__title {
+      font-family: var(--ca-font-display);
+      font-size: var(--ca-font-size-h5);
+      font-weight: var(--ca-font-weight-heading);
+      letter-spacing: var(--ca-heading-tracking);
+      text-transform: var(--ca-heading-case);
+      color: var(--ca-text-primary);
+      margin: 0 0 var(--ca-space-0-5);
+      line-height: var(--ca-line-height-tight);
+    }
+
+    .ca-app-settings__desc {
+      font-size: var(--ca-font-size-body2);
+      color: var(--ca-text-secondary);
+      margin: 0;
+      line-height: var(--ca-line-height-snug);
+    }
+
+    .ca-app-settings__actions {
+      display: flex;
+      align-items: center;
+      gap: var(--ca-space-2);
+      flex-shrink: 0;
+    }
+
+    /* ── Body ───────────────────────────────────────────────────────
+       Flex row: fixed nav + scrollable content side by side.
+    ─────────────────────────────────────────────────────────────── */
+    .ca-app-settings__body {
+      display: flex;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    /* ── Left nav ───────────────────────────────────────────────
+       Width: 55 space units. Does not scroll (unless it has many items).
+       Padding uses the global tokens.
+    ─────────────────────────────────────────────────────────────── */
+    .ca-app-settings__nav {
+      width: calc(var(--ca-space-unit) * 55);
+      flex-shrink: 0;
+      padding: var(--ca-space-4) var(--ca-space-3);
+      border-right: var(--ca-border-width) solid var(--ca-outline-subtle);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ca-space-0-5);
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .ca-app-settings__nav::-webkit-scrollbar { width: 0; }
+
+    /* Item da nav */
+    .ca-app-settings__nav-item {
+      display: flex;
+      align-items: center;
+      gap: var(--ca-space-2);
+      padding: var(--ca-space-2) var(--ca-space-2-5);
+      border-radius: var(--ca-radius-md);
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: var(--ca-font-size-body2);
+      font-weight: var(--ca-font-weight-medium);
+      font-family: inherit;
+      color: var(--ca-text-secondary);
+      text-align: left;
+      width: 100%;
+      transition:
+        background var(--ca-duration-fast) var(--ca-ease-standard),
+        color      var(--ca-duration-fast) var(--ca-ease-standard);
+      position: relative;
+      line-height: var(--ca-line-height-snug);
+    }
+
+    .ca-app-settings__nav-item:hover {
+      background: var(--ca-action-hover);
+      color: var(--ca-text-primary);
+    }
+
+    /* Active: tinted bg + indicator pill on the left */
+    .ca-app-settings__nav-item.active {
+      background: color-mix(in oklab, var(--ca-brand-main) 10%, transparent);
+      color: var(--ca-brand-text);
+    }
+
+    .ca-app-settings__nav-item.active::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      width: var(--ca-space-1);
+      height: var(--ca-space-4);
+      border-radius: var(--ca-radius-pill);
+      background: var(--ca-brand-main);
+    }
+
+    /* Danger variant */
+    .ca-app-settings__nav-item.danger       { color: var(--ca-semantic-error); }
+    .ca-app-settings__nav-item.danger:hover {
+      background: color-mix(in oklab, var(--ca-semantic-error) 8%, transparent);
+      color: var(--ca-semantic-error);
+    }
+
+    :global(.ca-app-settings__nav-icon) {
+      flex-shrink: 0;
+      color: currentColor;
+      opacity: 0.75;
+    }
+
+    .ca-app-settings__nav-label {
+      flex: 1;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .ca-app-settings__nav-badge {
+      font-size: var(--ca-font-size-micro);
+      font-weight: var(--ca-font-weight-semibold);
+      background: color-mix(in oklab, var(--ca-brand-main) 14%, transparent);
+      color: var(--ca-brand-text);
+      padding: var(--ca-border-width) var(--ca-space-1-5);
+      border-radius: var(--ca-radius-pill);
+      flex-shrink: 0;
+      line-height: 1.6;
+    }
+
+    /* ── Right-hand content ───────────────────────────────────────────
+       Takes ALL the remaining width, with no max-width here.
+       The comfortable reading max-width lives in FormSection.
+       Padding uses the global tokens.
+    ─────────────────────────────────────────────────────────────── */
+    .ca-app-settings__content {
+      flex: 1;
+      min-width: 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      padding: var(--ca-space-6) var(--ca-page-px) var(--ca-space-12);
+      display: flex;
+      flex-direction: column;
+      gap: var(--ca-page-gap);
+    }
+
+    .ca-app-settings__content::-webkit-scrollbar      { width: var(--ca-space-1-5); }
+    .ca-app-settings__content::-webkit-scrollbar-track { background: transparent; }
+    .ca-app-settings__content::-webkit-scrollbar-thumb {
+      background: var(--ca-outline-default);
+      border-radius: var(--ca-radius-pill);
+    }
+
+    /* ── Mobile (<= 768px) ───────────────────────────────────────── */
+    @media (max-width: 899.98px) {
+      .ca-app-settings__body { flex-direction: column; }
+
+      /* Nav becomes a horizontal scrollable bar */
+      .ca-app-settings__nav {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        overflow-y: hidden;
+        padding: var(--ca-space-2) var(--ca-page-px-sm);
+        border-right: none;
+        border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
+        gap: var(--ca-space-1);
+        scroll-snap-type: x proximity;
+        scroll-padding-inline: var(--ca-page-px-sm);
+        -webkit-overflow-scrolling: touch;
+        /* Fade the trailing edge so it reads as scrollable. */
+        mask-image: linear-gradient(to right, #000 calc(100% - var(--ca-page-px-sm)), transparent);
+        -webkit-mask-image: linear-gradient(to right, #000 calc(100% - var(--ca-page-px-sm)), transparent);
+      }
+
+      .ca-app-settings__nav::-webkit-scrollbar { height: 0; }
+
+      .ca-app-settings__nav-item {
+        /* The base rule is width:100% (vertical list): size to content in the strip. */
+        width: auto;
+        min-height: var(--ca-control-height);
+        white-space: nowrap;
+        flex-shrink: 0;
+        scroll-snap-align: start;
+        padding: var(--ca-space-1-5) var(--ca-space-3);
+      }
+
+      /* Hide the indicator pill in horizontal mode: use only the bg */
+      .ca-app-settings__nav-item.active::before { display: none; }
+
+      .ca-app-settings__content {
+        padding:
+          var(--ca-space-4)
+          var(--ca-page-px-sm)
+          var(--ca-space-10);
+      }
+
+      .ca-app-settings__header {
+        padding:
+          var(--ca-space-4)
+          var(--ca-page-px-sm)
+          var(--ca-space-3);
+        flex-wrap: wrap;
+      }
+    }
+
+    /* Inside AppShellLayout the mobile header (< 900px) already shows the page title:
+       keep the h1 for assistive tech, hide it visually. */
+    @media (max-width: 899.98px) {
+      :global(.ca-shell__content) .ca-app-settings__title {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden;
+        clip-path: inset(50%);
+        white-space: nowrap;
+        border: 0;
+      }
+    }
+}
 </style>

@@ -21,25 +21,25 @@
   const PER_PAGE = 6;
 
   let search   = $state('');
-  let categoryF = $state('all');
-  let statusF  = $state('all');
+  let categoryF = $state('');
+  let statusF  = $state('');
   let page     = $state(1);
 
   const categoryOpts = [
-    { value: 'all',          label: 'All categories' },
+    { value: '',             label: 'All categories' },
     { value: 'Subscription', label: 'Subscription'   },
     { value: 'Add-on',       label: 'Add-on'         },
     { value: 'Service',      label: 'Service'        },
   ];
   const statusOpts = [
-    { value: 'all',      label: 'All statuses' },
+    { value: '',         label: 'All statuses' },
     { value: 'active',   label: 'Active'       },
     { value: 'inactive', label: 'Inactive'     },
   ];
 
   const filtered = $derived(ALL.filter(p =>
-    (categoryF === 'all' || p.category === categoryF) &&
-    (statusF   === 'all' || p.status   === statusF)   &&
+    (categoryF === '' || p.category === categoryF) &&
+    (statusF   === '' || p.status   === statusF)   &&
     p.name.toLowerCase().includes(search.toLowerCase())
   ));
 
@@ -66,8 +66,8 @@
     </TextField>
     <Select bind:value={categoryF} options={categoryOpts} />
     <Select bind:value={statusF}   options={statusOpts}   />
-    {#if categoryF !== 'all' || statusF !== 'all'}
-      <Button variant="ghost" size="sm" onclick={() => { categoryF = 'all'; statusF = 'all'; }}>
+    {#if categoryF !== '' || statusF !== ''}
+      <Button variant="ghost" size="sm" onclick={() => { categoryF = ''; statusF = ''; }}>
         Clear
       </Button>
     {/if}

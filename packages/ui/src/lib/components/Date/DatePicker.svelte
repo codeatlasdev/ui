@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   import { CalendarDays } from '@lucide/svelte';
   import type { DateValue } from '@internationalized/date';
   import { announce } from '../../utils/announce.js';
@@ -11,6 +11,7 @@
   import { FieldState } from './field-state.svelte.js';
   import PickerPopover from './PickerPopover.svelte';
   import './date.css';
+  const t = useT();
 
   interface Props {
     label?:        string;

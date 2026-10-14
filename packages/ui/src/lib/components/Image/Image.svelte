@@ -88,10 +88,13 @@
 />
 
 <style>
-  :global(.ca-image) {
-    display: block;
-    max-width: 100%;
-    /* width/height attributes give the aspect ratio; height:auto keeps it when max-width shrinks the box. */
-    height: auto;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    :global(.ca-image) {
+      display: block;
+      max-width: 100%;
+      /* width/height attributes give the aspect ratio; height:auto keeps it when max-width shrinks the box. */
+      height: auto;
+    }
+}
 </style>

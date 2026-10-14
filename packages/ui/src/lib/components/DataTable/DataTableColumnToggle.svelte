@@ -1,5 +1,5 @@
 <script lang="ts" generics="TData extends RowData">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   import { createListbox } from '../../primitives/index.js';
   import { uid } from '../../utils/index.js';
   import FloatingLayer from '../Popover/FloatingLayer.svelte';
@@ -7,6 +7,7 @@
   import { SlidersHorizontal, Check } from '@lucide/svelte';
   import type { CaTable } from './table-hook.svelte.js';
   import type { RowData } from '@tanstack/svelte-table';
+  const t = useT();
 
   interface Props {
     table: CaTable<TData>;
@@ -125,68 +126,71 @@
 </FloatingLayer>
 
 <style>
-  :global(.ca-col-toggle__trigger) {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--ca-space-1-5);
-    height: var(--ca-control-height-sm);
-    padding: 0 var(--ca-space-2-5);
-    border: var(--ca-border-width) solid var(--ca-outline-default);
-    border-radius: var(--ca-radius-control);
-    background: transparent;
-    cursor: pointer;
-    font-size: var(--ca-font-size-body2);
-    font-weight: var(--ca-font-weight-medium);
-    color: var(--ca-text-secondary);
-    transition: background var(--ca-duration-fast) var(--ca-ease-standard),
-                border-color var(--ca-duration-fast) var(--ca-ease-standard);
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    :global(.ca-col-toggle__trigger) {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--ca-space-1-5);
+      height: var(--ca-control-height-sm);
+      padding: 0 var(--ca-space-2-5);
+      border: var(--ca-border-width) solid var(--ca-outline-default);
+      border-radius: var(--ca-radius-control);
+      background: transparent;
+      cursor: pointer;
+      font-size: var(--ca-font-size-body2);
+      font-weight: var(--ca-font-weight-medium);
+      color: var(--ca-text-secondary);
+      transition: background var(--ca-duration-fast) var(--ca-ease-standard),
+                  border-color var(--ca-duration-fast) var(--ca-ease-standard);
+    }
 
-  :global(.ca-col-toggle__trigger:hover) {
-    background: var(--ca-action-hover);
-    border-color: var(--ca-outline-strong);
-  }
+    :global(.ca-col-toggle__trigger:hover) {
+      background: var(--ca-action-hover);
+      border-color: var(--ca-outline-strong);
+    }
 
-  :global(.ca-col-toggle__content) {
-    min-width: calc(var(--ca-space-20) * 2);
-    padding: var(--ca-space-1);
-    border-radius: var(--ca-radius-lg);
-    border: var(--ca-border-width) solid var(--ca-overlay-border);
-    background-color: var(--ca-overlay-bg);
-    -webkit-backdrop-filter: var(--ca-overlay-blur);
-    backdrop-filter: var(--ca-overlay-blur);
-    box-shadow: var(--ca-shadow-lg);
-  }
+    :global(.ca-col-toggle__content) {
+      min-width: calc(var(--ca-space-20) * 2);
+      padding: var(--ca-space-1);
+      border-radius: var(--ca-radius-lg);
+      border: var(--ca-border-width) solid var(--ca-overlay-border);
+      background-color: var(--ca-overlay-bg);
+      -webkit-backdrop-filter: var(--ca-overlay-blur);
+      backdrop-filter: var(--ca-overlay-blur);
+      box-shadow: var(--ca-shadow-lg);
+    }
 
-  :global(.ca-col-toggle__item) {
-    display: flex;
-    align-items: center;
-    gap: var(--ca-space-2);
-    width: 100%;
-    padding: var(--ca-space-1-5) var(--ca-space-2-5);
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-size: var(--ca-font-size-body2);
-    color: var(--ca-text-primary);
-    border-radius: var(--ca-radius-sm);
-    transition: background var(--ca-duration-fast) var(--ca-ease-standard);
-    text-align: left;
-    outline: none;
-  }
+    :global(.ca-col-toggle__item) {
+      display: flex;
+      align-items: center;
+      gap: var(--ca-space-2);
+      width: 100%;
+      padding: var(--ca-space-1-5) var(--ca-space-2-5);
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: var(--ca-font-size-body2);
+      color: var(--ca-text-primary);
+      border-radius: var(--ca-radius-sm);
+      transition: background var(--ca-duration-fast) var(--ca-ease-standard);
+      text-align: left;
+      outline: none;
+    }
 
-  :global(.ca-col-toggle__item:hover),
-  :global(.ca-col-toggle__item:focus) {
-    background: var(--ca-action-hover);
-  }
+    :global(.ca-col-toggle__item:hover),
+    :global(.ca-col-toggle__item:focus) {
+      background: var(--ca-action-hover);
+    }
 
-  :global(.ca-col-toggle__check) {
-    width: var(--ca-space-3-5);
-    height: var(--ca-space-3-5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--ca-brand-text);
-    flex-shrink: 0;
-  }
+    :global(.ca-col-toggle__check) {
+      width: var(--ca-space-3-5);
+      height: var(--ca-space-3-5);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--ca-brand-text);
+      flex-shrink: 0;
+    }
+}
 </style>

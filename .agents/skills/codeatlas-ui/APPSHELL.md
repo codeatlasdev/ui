@@ -6,35 +6,36 @@ Full navigation shell: side rail (icon dock) + collapsible panel + main area.
 
 - Put `AppShellLayout` only in authenticated-area route layouts (e.g. `src/routes/painel/+layout.svelte`).
 - Never in the root `+layout.svelte`.
-- Never import `$app/stores` inside the package. Pass `pathname` and `onNavigate` from the app.
+- Never import `$app/state` or `$app/navigation` inside the package. Pass `pathname` and `onNavigate` from the app.
 
 ## NavModule shape
 
+A module is one icon in the Rail. `basePath` (plus optional `pathPrefixes`) decides which module is active for the current URL; `items` fills the Panel and is a mix of `NavItem` (a link) and `NavSection` (a labelled, optionally collapsible group of links). Every `NavItem` needs an `icon` and a `path`. A module with `items: []` has no panel: the Rail click goes to `basePath`.
+
 ```ts
 import type { NavModule } from '@codeatlasdev/ui';
-import { LayoutDashboard, Users, Settings } from '@lucide/svelte';
+import { LayoutDashboard, Users, Shield, Settings } from '@lucide/svelte';
 
 const MODULES: NavModule[] = [
   {
     id: 'dashboard',
     label: 'Dashboard',
     icon: LayoutDashboard,
-    path: '/painel',
-    sections: [], // no sub-nav
+    basePath: '/painel',
+    items: [], // no sub-nav
   },
   {
     id: 'users',
     label: 'Users',
     icon: Users,
-    path: '/painel/users',
-    sections: [
+    basePath: '/painel/users',
+    pathPrefixes: ['/painel/invites'], // extra URLs that also activate this module
+    items: [
+      { id: 'all-users', label: 'All users', icon: Users, path: '/painel/users' },
       {
-        id: 'users-main',
-        label: '',
-        items: [
-          { id: 'all-users', label: 'All users', path: '/painel/users' },
-          { id: 'roles', label: 'Roles', path: '/painel/users/roles' },
-        ],
+        label: 'Access', // NavSection: label and collapsible are optional
+        collapsible: true,
+        items: [{ id: 'roles', label: 'Roles', icon: Shield, path: '/painel/users/roles' }],
       },
     ],
   },
@@ -42,11 +43,13 @@ const MODULES: NavModule[] = [
     id: 'settings',
     label: 'Settings',
     icon: Settings,
-    path: '/painel/settings',
-    sections: [],
+    basePath: '/painel/settings',
+    items: [],
   },
 ];
 ```
+
+Item extras: `badge` (number), `isNew`, `shortcut`, `description`.
 
 ## Layout file
 
@@ -54,9 +57,9 @@ const MODULES: NavModule[] = [
 <!-- src/routes/painel/+layout.svelte -->
 <script>
   import { AppShellLayout, NotificationBell, Avatar } from '@codeatlasdev/ui';
-  import { page } from '$app/stores';
+  import { page } from '$app/state';
   import { goto } from '$app/navigation';
-  import { MODULES } from '$lib/nav';
+  import { MODULES } from '$lib/nav'; // Kit 3: '#lib/nav.ts' (see SKILL.md, SvelteKit 3)
 
   let { children } = $props();
   let notifications = $state([]);
@@ -64,7 +67,7 @@ const MODULES: NavModule[] = [
 
 <AppShellLayout
   modules={MODULES}
-  pathname={$page.url.pathname}
+  pathname={page.url.pathname}
   onNavigate={path => goto(path)}
   persistPanel={true}
 >

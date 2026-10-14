@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { t } from '../i18n/state.svelte.js';
+  import { useT } from '../i18n/state.svelte.js';
   import type { Snippet } from 'svelte';
   import MaskedField from './MaskedField.svelte';
   import { maskCEP } from './masks.js';
   import type { CepAddress } from './types.js';
+  const t = useT();
 
   interface Props {
     label?:         string;

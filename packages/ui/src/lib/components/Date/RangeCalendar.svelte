@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
   import type { DateValue } from '@internationalized/date';
   import { announce } from '../../utils/announce.js';
   import CalendarBody from './CalendarBody.svelte';
@@ -7,6 +7,7 @@
   import type { WeekStart } from './date-utils.js';
   import type { DateRange } from './types.js';
   import './date.css';
+  const t = useT();
 
   interface Props {
     /** Selected range. Bindable. `start`/`end` are undefined until chosen. */

@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { t } from '../../i18n/state.svelte.js';
+  import { useT } from '../../i18n/state.svelte.js';
 	import { X } from "@lucide/svelte";
 	import { createIds, createPresence } from "../../primitives/index.js";
 	import { modalLayer } from "../Dialog/modal-layer.js";
+  const t = useT();
 
 	/**
 	 * Lightbox — full-screen image viewer.
@@ -60,124 +61,127 @@
 {/if}
 
 <style>
-	/* The dialog is the full-screen stage and carries the scrim colour itself. */
-	:global(dialog.ca-lightbox) {
-		position: fixed;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-		max-width: none;
-		max-height: none;
-		margin: 0;
-		border: 0;
-		background: oklch(0 0 0 / 0.88);
-		/* Native <dialog> inherits from where it is declared: start from the base text roles. */
-		color: var(--ca-text-primary);
-		font: var(--ca-font-size-body1) / var(--ca-line-height-body) var(--ca-font-sans);
-		letter-spacing: normal;
-		text-transform: none;
-		text-align: start;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		box-sizing: border-box;
-		padding:
-			max(var(--ca-space-4), var(--ca-safe-top))
-			max(var(--ca-space-4), var(--ca-safe-right))
-			max(var(--ca-space-4), var(--ca-safe-bottom))
-			max(var(--ca-space-4), var(--ca-safe-left));
-		outline: none;
-		overflow: hidden;
-	}
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+  	/* The dialog is the full-screen stage and carries the scrim colour itself. */
+  	:global(dialog.ca-lightbox) {
+  		position: fixed;
+  		inset: 0;
+  		width: 100%;
+  		height: 100%;
+  		max-width: none;
+  		max-height: none;
+  		margin: 0;
+  		border: 0;
+  		background: oklch(0 0 0 / 0.88);
+  		/* Native <dialog> inherits from where it is declared: start from the base text roles. */
+  		color: var(--ca-text-primary);
+  		font: var(--ca-font-size-body1) / var(--ca-line-height-body) var(--ca-font-sans);
+  		letter-spacing: normal;
+  		text-transform: none;
+  		text-align: start;
+  		display: flex;
+  		align-items: center;
+  		justify-content: center;
+  		box-sizing: border-box;
+  		padding:
+  			max(var(--ca-space-4), var(--ca-safe-top))
+  			max(var(--ca-space-4), var(--ca-safe-right))
+  			max(var(--ca-space-4), var(--ca-safe-bottom))
+  			max(var(--ca-space-4), var(--ca-safe-left));
+  		outline: none;
+  		overflow: hidden;
+  	}
 
-	:global(dialog.ca-lightbox:not([open])) {
-		display: none;
-	}
+  	:global(dialog.ca-lightbox:not([open])) {
+  		display: none;
+  	}
 
-	:global(dialog.ca-lightbox::backdrop) {
-		background: transparent;
-	}
+  	:global(dialog.ca-lightbox::backdrop) {
+  		background: transparent;
+  	}
 
-	:global(.ca-lightbox__stage) {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		width: 100%;
-		height: 100%;
-		min-width: 0;
-		min-height: 0;
-	}
+  	:global(.ca-lightbox__stage) {
+  		display: flex;
+  		align-items: center;
+  		justify-content: center;
+  		width: 100%;
+  		height: 100%;
+  		min-width: 0;
+  		min-height: 0;
+  	}
 
-	:global(.ca-lightbox__img) {
-		max-width: 100%;
-		max-height: 100%;
-		object-fit: contain;
-		border-radius: var(--ca-radius-md);
-		user-select: none;
-		-webkit-user-drag: none;
-	}
+  	:global(.ca-lightbox__img) {
+  		max-width: 100%;
+  		max-height: 100%;
+  		object-fit: contain;
+  		border-radius: var(--ca-radius-md);
+  		user-select: none;
+  		-webkit-user-drag: none;
+  	}
 
-	:global(.ca-lightbox__close) {
-		position: absolute;
-		top: max(var(--ca-space-3), var(--ca-safe-top));
-		right: max(var(--ca-space-3), var(--ca-safe-right));
-		display: inline-flex;
-		align-items: center;
-		justify-content: center;
-		width: var(--ca-touch-target);
-		height: var(--ca-touch-target);
-		border: none;
-		border-radius: var(--ca-radius-pill);
-		background: oklch(0 0 0 / 0.55);
-		color: oklch(1 0 0);
-		cursor: pointer;
-		-webkit-tap-highlight-color: transparent;
-	}
+  	:global(.ca-lightbox__close) {
+  		position: absolute;
+  		top: max(var(--ca-space-3), var(--ca-safe-top));
+  		right: max(var(--ca-space-3), var(--ca-safe-right));
+  		display: inline-flex;
+  		align-items: center;
+  		justify-content: center;
+  		width: var(--ca-touch-target);
+  		height: var(--ca-touch-target);
+  		border: none;
+  		border-radius: var(--ca-radius-pill);
+  		background: oklch(0 0 0 / 0.55);
+  		color: oklch(1 0 0);
+  		cursor: pointer;
+  		-webkit-tap-highlight-color: transparent;
+  	}
 
-	:global(.ca-lightbox__close:hover) {
-		background: oklch(0 0 0 / 0.75);
-	}
+  	:global(.ca-lightbox__close:hover) {
+  		background: oklch(0 0 0 / 0.75);
+  	}
 
-	:global(.ca-lightbox__close:focus-visible) {
-		outline: var(--ca-border-width-focus) solid oklch(1 0 0);
-		outline-offset: var(--ca-focus-ring-offset);
-	}
+  	:global(.ca-lightbox__close:focus-visible) {
+  		outline: var(--ca-border-width-focus) solid oklch(1 0 0);
+  		outline-offset: var(--ca-focus-ring-offset);
+  	}
 
-	:global(.ca-lightbox__sr) {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		margin: -1px;
-		padding: 0;
-		overflow: hidden;
-		clip: rect(0 0 0 0);
-		white-space: nowrap;
-		border: 0;
-	}
+  	:global(.ca-lightbox__sr) {
+  		position: absolute;
+  		width: 1px;
+  		height: 1px;
+  		margin: -1px;
+  		padding: 0;
+  		overflow: hidden;
+  		clip: rect(0 0 0 0);
+  		white-space: nowrap;
+  		border: 0;
+  	}
 
-	:global(.ca-lightbox[data-state="open"]) {
-		animation: ca-lightbox-in var(--ca-duration-fast) var(--ca-ease-decelerate) both;
-	}
+  	:global(.ca-lightbox[data-state="open"]) {
+  		animation: ca-lightbox-in var(--ca-duration-fast) var(--ca-ease-decelerate) both;
+  	}
 
-	:global(.ca-lightbox[data-state="closed"]) {
-		animation: ca-lightbox-out var(--ca-duration-fast) var(--ca-ease-standard) both;
-	}
+  	:global(.ca-lightbox[data-state="closed"]) {
+  		animation: ca-lightbox-out var(--ca-duration-fast) var(--ca-ease-standard) both;
+  	}
 
-	@keyframes ca-lightbox-in {
-		from {
-			opacity: 0;
-		}
-	}
+  	@keyframes ca-lightbox-in {
+  		from {
+  			opacity: 0;
+  		}
+  	}
 
-	@keyframes ca-lightbox-out {
-		to {
-			opacity: 0;
-		}
-	}
+  	@keyframes ca-lightbox-out {
+  		to {
+  			opacity: 0;
+  		}
+  	}
 
-	@media (prefers-reduced-motion: reduce) {
-		:global(.ca-lightbox) {
-			animation: none !important;
-		}
-	}
+  	@media (prefers-reduced-motion: reduce) {
+  		:global(.ca-lightbox) {
+  			animation: none !important;
+  		}
+  	}
+}
 </style>

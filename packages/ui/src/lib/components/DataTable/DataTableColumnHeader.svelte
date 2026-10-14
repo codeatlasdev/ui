@@ -34,32 +34,35 @@
 {/if}
 
 <style>
-  .ca-col-header {
-    display: inline-flex;
-    align-items: center;
-    gap: var(--ca-space-1);
-    height: var(--ca-space-7);
-    padding: 0 var(--ca-space-1-5);
-    margin-left: calc(-1 * var(--ca-space-1-5));
-    border: none;
-    background: transparent;
-    cursor: pointer;
-    font-size: var(--ca-font-size-caption);
-    font-weight: var(--ca-font-weight-semibold);
-    color: var(--ca-text-secondary);
-    text-transform: uppercase;
-    letter-spacing: var(--ca-overline-tracking);
-    border-radius: var(--ca-radius-sm);
-    transition: background var(--ca-duration-fast) var(--ca-ease-standard),
-                color var(--ca-duration-fast) var(--ca-ease-standard);
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-col-header {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--ca-space-1);
+      height: var(--ca-space-7);
+      padding: 0 var(--ca-space-1-5);
+      margin-left: calc(-1 * var(--ca-space-1-5));
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: var(--ca-font-size-caption);
+      font-weight: var(--ca-font-weight-semibold);
+      color: var(--ca-text-secondary);
+      text-transform: uppercase;
+      letter-spacing: var(--ca-overline-tracking);
+      border-radius: var(--ca-radius-sm);
+      transition: background var(--ca-duration-fast) var(--ca-ease-standard),
+                  color var(--ca-duration-fast) var(--ca-ease-standard);
+    }
 
-  .ca-col-header:hover {
-    background: var(--ca-action-hover);
-    color: var(--ca-text-secondary);
-  }
+    .ca-col-header:hover {
+      background: var(--ca-action-hover);
+      color: var(--ca-text-secondary);
+    }
 
-  :global(.ca-col-header__idle) {
-    opacity: 0.4;
-  }
+    :global(.ca-col-header__idle) {
+      opacity: 0.4;
+    }
+}
 </style>

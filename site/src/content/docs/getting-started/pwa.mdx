@@ -15,7 +15,7 @@ A progressive web app needs three pieces: a manifest (name, icons, colors), the 
 ```ts
 // src/routes/manifest.webmanifest/+server.ts
 import { manifest } from "@codeatlasdev/ui/seo";
-import { theme } from "$lib/theme";
+import { theme } from "$lib/theme"; // SvelteKit 3: "#lib/theme.ts"
 
 export const prerender = true;
 

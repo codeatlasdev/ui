@@ -11,7 +11,7 @@ export const AGENT_PROMPT = `Set up CodeAtlas UI (@codeatlasdev/ui, Svelte 5) in
 4. Wire the theme, with one shared theme object in src/lib/theme.ts (ThemeOptions: presets from our brand hex, defaultPreset, defaultScheme).
    - SvelteKit: caThemePlugin(theme) and caErrorPlugin({ scaffold: true }) in vite.config.ts (from @codeatlasdev/ui/vite), caThemeHandle(theme) in src/hooks.server.ts and createErrorHandler() as handleError (from @codeatlasdev/ui/kit).
    - Astro: caUI(theme) from @codeatlasdev/ui/astro next to @astrojs/svelte.
-   - Root layout: import "@codeatlasdev/ui/styles/global.css" once and call colorScheme.init() on mount. If the app is not in English, call setLocale("pt-BR") (or our locale) there too.
+   - Root layout: import "@codeatlasdev/ui/styles/global.css" once and call colorScheme.init() on mount. If the app is not in English, wrap the layout in <I18nProvider locale={...}> (SSR-safe; setLocale is a no-op on the server) and register extra languages with registerLocale("es", {...}).
    - Viewport meta: width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content.
 
 5. Save these rules in your persistent memory for this project (AGENTS.md or CLAUDE.md, whichever this repo uses), so every future session follows them:

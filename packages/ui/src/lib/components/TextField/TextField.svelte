@@ -97,122 +97,126 @@
 </div>
 
 <style>
-  /* ── Root ──────────────────────────────────────────────────── */
-  .ca-tf {
-    display: flex;
-    flex-direction: column;
-    gap: var(--ca-space-1);
-    width: 100%;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    /* ── Root ──────────────────────────────────────────────────── */
+    .ca-tf {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ca-space-1);
+      width: 100%;
+    }
 
-  /* ── Label ─────────────────────────────────────────────────── */
-  .ca-tf__label {
-    font-size: var(--ca-font-size-label);
-    font-weight: var(--ca-font-weight-medium);
-    color: var(--ca-text-primary);
-    line-height: var(--ca-line-height-snug);
-    user-select: none;
-  }
+    /* ── Label ─────────────────────────────────────────────────── */
+    .ca-tf__label {
+      font-size: var(--ca-font-size-label);
+      font-weight: var(--ca-font-weight-medium);
+      color: var(--ca-text-primary);
+      line-height: var(--ca-line-height-snug);
+      user-select: none;
+    }
 
-  .ca-tf__req {
-    color: var(--ca-semantic-error);
-  }
+    .ca-tf__req {
+      color: var(--ca-semantic-error);
+    }
 
-  /* ── Input wrapper ─────────────────────────────────────────── */
-  .ca-tf__wrap {
-    display: flex;
-    align-items: center;
-    gap: var(--ca-space-2);
-    height: var(--ca-control-height);
-    border-radius: var(--ca-radius-control);
-    padding: 0 var(--ca-space-2-5);
-    background: var(--ca-field-bg);
-    border: var(--ca-border-width) solid var(--ca-field-border-color);
-    box-shadow: var(--ca-field-shadow);
-    transition:
-      border-color var(--ca-duration-fast) var(--ca-ease-standard),
-      box-shadow   var(--ca-duration-fast) var(--ca-ease-standard);
-  }
+    /* ── Input wrapper ─────────────────────────────────────────── */
+    .ca-tf__wrap {
+      display: flex;
+      align-items: center;
+      gap: var(--ca-space-2);
+      height: var(--ca-control-height);
+      border-radius: var(--ca-radius-control);
+      padding: 0 var(--ca-space-2-5);
+      background: var(--ca-field-bg);
+      border: var(--ca-border-width) solid var(--ca-field-border-color);
+      box-shadow: var(--ca-field-shadow);
+      transition:
+        border-color var(--ca-duration-fast) var(--ca-ease-standard),
+        box-shadow   var(--ca-duration-fast) var(--ca-ease-standard);
+    }
 
-  .ca-tf__wrap--focused {
-    border-color: var(--ca-brand-main);
-    box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-brand-main) 18%, transparent);
-  }
+    .ca-tf__wrap--focused {
+      border-color: var(--ca-focus-ring);
+      box-shadow: 0 0 0 var(--ca-border-width-focus) var(--ca-focus-ring);
+    }
 
-  .ca-tf__wrap--error {
-    border-color: var(--ca-semantic-error) !important;
-    box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-semantic-error) 18%, transparent) !important;
-  }
+    .ca-tf__wrap--error {
+      border-color: var(--ca-semantic-error);
+      box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-semantic-error) 18%, transparent);
+    }
 
-  .ca-tf--disabled .ca-tf__wrap {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
+    .ca-tf--disabled .ca-tf__wrap {
+      background: var(--ca-action-disabled-bg);
+      border-color: var(--ca-outline-default);
+      cursor: not-allowed;
+    }
 
-  /* ── Input ─────────────────────────────────────────────────── */
-  .ca-tf__input {
-    flex: 1;
-    min-width: 0;
-    background: transparent;
-    border: none;
-    outline: none;
-    font-family: var(--ca-font-sans);
-    font-size: var(--ca-input-font-size);
-    color: var(--ca-text-primary);
-    padding: 0;
-    line-height: 1;
-    /* Remove browser autofill background */
-    -webkit-text-fill-color: var(--ca-text-primary);
-  }
+    /* ── Input ─────────────────────────────────────────────────── */
+    .ca-tf__input {
+      flex: 1;
+      min-width: 0;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: var(--ca-font-sans);
+      font-size: var(--ca-input-font-size);
+      color: var(--ca-text-primary);
+      padding: 0;
+      line-height: 1;
+      /* Remove browser autofill background */
+      -webkit-text-fill-color: var(--ca-text-primary);
+    }
 
-  .ca-tf__input::placeholder {
-    color: var(--ca-text-hint);
-    -webkit-text-fill-color: var(--ca-text-hint);
-  }
+    .ca-tf__input::placeholder {
+      color: var(--ca-text-hint);
+      -webkit-text-fill-color: var(--ca-text-hint);
+    }
 
-  .ca-tf__input:disabled {
-    cursor: not-allowed;
-    color: var(--ca-text-disabled);
-    -webkit-text-fill-color: var(--ca-text-disabled);
-  }
+    .ca-tf__input:disabled {
+      cursor: not-allowed;
+      color: var(--ca-text-disabled);
+      -webkit-text-fill-color: var(--ca-text-disabled);
+    }
 
-  /* Autofill override */
-  .ca-tf__input:-webkit-autofill,
-  .ca-tf__input:-webkit-autofill:focus {
-    -webkit-box-shadow: 0 0 0 1000px var(--ca-field-bg) inset;
-    -webkit-text-fill-color: var(--ca-text-primary);
-    caret-color: var(--ca-text-primary);
-  }
+    /* Autofill override */
+    .ca-tf__input:-webkit-autofill,
+    .ca-tf__input:-webkit-autofill:focus {
+      -webkit-box-shadow: 0 0 0 1000px var(--ca-field-bg) inset;
+      -webkit-text-fill-color: var(--ca-text-primary);
+      caret-color: var(--ca-text-primary);
+    }
 
-  /* ── Adornments ────────────────────────────────────────────── */
-  .ca-tf__adorn {
-    display: flex;
-    align-items: center;
-    color: var(--ca-text-hint);
-    flex-shrink: 0;
-    line-height: 0;
-  }
+    /* ── Adornments ────────────────────────────────────────────── */
+    .ca-tf__adorn {
+      display: flex;
+      align-items: center;
+      color: var(--ca-text-hint);
+      flex-shrink: 0;
+      line-height: 0;
+    }
 
-  /* ── Helper / error text ───────────────────────────────────── */
-  .ca-tf__hint {
-    font-size: var(--ca-font-size-caption);
-    color: var(--ca-text-secondary);
-    margin: 0;
-    line-height: var(--ca-line-height-snug);
-  }
+    /* ── Helper / error text ───────────────────────────────────── */
+    .ca-tf__hint {
+      font-size: var(--ca-font-size-caption);
+      color: var(--ca-text-secondary);
+      margin: 0;
+      line-height: var(--ca-line-height-snug);
+    }
 
-  .ca-tf__hint--error {
-    color: var(--ca-semantic-error);
-  }
+    .ca-tf__hint--error {
+      color: var(--ca-semantic-error);
+    }
 
-  /* ── Size: sm ──────────────────────────────────────────────── */
-  .ca-tf--sm .ca-tf__wrap {
-    height: var(--ca-control-height-sm);
-    padding: 0 var(--ca-space-2);
-  }
+    /* ── Size: sm ──────────────────────────────────────────────── */
+    .ca-tf--sm .ca-tf__wrap {
+      height: var(--ca-control-height-sm);
+      padding: 0 var(--ca-space-2);
+    }
 
-  .ca-tf--sm .ca-tf__input {
-    font-size: var(--ca-input-font-size-sm);
-  }
+    .ca-tf--sm .ca-tf__input {
+      font-size: var(--ca-input-font-size-sm);
+    }
 
+}
 </style>

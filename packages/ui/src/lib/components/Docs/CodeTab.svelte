@@ -23,5 +23,8 @@
 </div>
 
 <style>
-  .ca-codetab[hidden] { display: none; }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-codetab[hidden] { display: none; }
+}
 </style>

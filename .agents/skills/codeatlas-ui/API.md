@@ -53,7 +53,7 @@ Classes: `ca-alert` `ca-alert--error` `ca-alert--info` `ca-alert--success` `ca-a
 
 `import { AlertDialog } from "@codeatlasdev/ui"`
 
-AlertDialog: confirmation that requires an explicit response (role="alertdialog").
+AlertDialog: confirmation that requires an explicit answer (role="alertdialog").
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -74,7 +74,7 @@ Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__acti
 
 `import { AppForm } from "@codeatlasdev/ui"`
 
-AppForm — page-level form layout.
+AppForm: page-level form layout.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -92,7 +92,7 @@ Classes: `ca-app-form` `ca-app-form__body` `ca-app-form__desc` `ca-app-form__foo
 
 `import { AppList } from "@codeatlasdev/ui"`
 
-AppList — fullscreen CRUD/list layout.
+AppList: fullscreen CRUD/list layout.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -115,7 +115,7 @@ Classes: `ca-app-list` `ca-app-list__actions` `ca-app-list__body` `ca-app-list__
 
 `import { AppSettings } from "@codeatlasdev/ui"`
 
-AppSettings — settings/preferences page layout.
+AppSettings: settings/preferences page layout.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -135,8 +135,6 @@ Classes: `ca-app-settings` `ca-app-settings__actions` `ca-app-settings__body` `c
 
 `import { AppShellLayout } from "@codeatlasdev/ui"`
 
-Brand mark (logo) shown at the top of the Rail and in the mobile header.
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `modules` | `NavModule[]` |  |  |
@@ -144,6 +142,8 @@ Brand mark (logo) shown at the top of the Rail and in the mobile header.
 | `onNavigate?` | `(path: string) => void` |  |  |
 | `defaultModule?` | `number` | `0` |  |
 | `persistPanel?` | `boolean` | `true` |  |
+| `mainId?` | `string \| null` | `'main'` | `id` given to the content region, the target of the skip link. The region is a plain `div` (not a landmark) so a `<main>` you render inside never nests another one. Pass `null` when your own `<main id="main" tabindex="-1">` is the target. |
+| `skipLink?` | `boolean` | `true` | Render the "Skip to content" link. Turn it off when the shell is embedded in a page that already has one (a framed demo, a preview), so the page does not get two. |
 
 Snippets: `header`, `brand`, `railBottom`, `mobileHeaderActions`, `mobileTitle`, `children`
 
@@ -175,7 +175,7 @@ AuthLayout: two-column layout for authentication pages.
 | `logoMark?` | `string` | `'CA'` |  |
 | `logoName?` | `string` | `'CodeAtlas UI'` |  |
 | `logoHref?` | `string` | `'/'` |  |
-| `mobileBrand?` | `boolean` | `true` | Below 768px the side panel is hidden; `true` shows a compact brand strip above the form. |
+| `mobileBrand?` | `boolean` | `true` | Below 768px the side panel is hidden; `true` shows a compact strip with the brand above the form. |
 
 Snippets: `brand`, `panel`, `children`
 
@@ -185,7 +185,7 @@ Classes: `ca-auth` `ca-auth__blob` `ca-auth__blob--a` `ca-auth__blob--b` `ca-aut
 
 `import { Avatar } from "@codeatlasdev/ui"`
 
-Avatar — user identity display component.
+Avatar: user identity display component.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -217,8 +217,6 @@ Classes: `ca-badge` `ca-badge--brand` `ca-badge--dot` `ca-badge--error` `ca-badg
 ## BarChart
 
 `import { BarChart } from "@codeatlasdev/ui/charts"`
-
-Render bars horizontally instead of vertically.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -259,8 +257,6 @@ Classes: `ca-breadcrumb__current` `ca-breadcrumb__item` `ca-breadcrumb__link` `c
 
 `import { Button } from "@codeatlasdev/ui"`
 
-Shows a spinner in place of `leading`, sets `aria-busy` and blocks interaction. Label is kept.
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `variant?` | `Variant` | `'filled'` |  |
@@ -285,8 +281,6 @@ Classes: `ca-btn` `ca-btn--destructive` `ca-btn--filled` `ca-btn--full-width` `c
 
 `import { Calendar } from "@codeatlasdev/ui"`
 
-Selected date. Bindable.
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `value?` | `DateValue` |  | `bind:` Selected date. Bindable. |
@@ -296,7 +290,7 @@ Selected date. Bindable.
 | `disabled?` | `boolean` | `false` |  |
 | `readonly?` | `boolean` | `false` |  |
 | `locale?` | `string` | `'pt-BR'` |  |
-| `weekStartsOn?` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `1` | 0 = Sunday … 6 = Saturday. Default 1 (Monday). |
+| `weekStartsOn?` | `WeekStart` | `1` | 0 = Sunday … 6 = Saturday. Default 1 (Monday). |
 | `numberOfMonths?` | `number` | `1` |  |
 | `fixedWeeks?` | `boolean` | `false` |  |
 | `isDateDisabled?` | `(date: DateValue) => boolean` |  |  |
@@ -305,13 +299,11 @@ Selected date. Bindable.
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
+Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__float` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
 
 ## Callout
 
 `import { Callout } from "@codeatlasdev/ui"`
-
-Callout — aside block for docs prose. Thin vocabulary layer over `Alert`: note (info), tip (success), caution (warning), danger (error). Keep to two per page.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -327,8 +319,6 @@ Classes: `ca-alert__content` `ca-callout`
 
 `import { CardGrid } from "@codeatlasdev/ui"`
 
-CardGrid — responsive auto-fill grid for LinkCard (min 16rem, 1 column on phones).
-
 Snippets: `children`
 
 Classes: `ca-card-grid`
@@ -336,8 +326,6 @@ Classes: `ca-card-grid`
 ## CepField
 
 `import { CepField } from "@codeatlasdev/ui/forms"`
-
-Masked CEP (`01310-100`).
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -361,8 +349,6 @@ Masked CEP (`01310-100`).
 
 `import { Checkbox } from "@codeatlasdev/ui"`
 
-Accessible name when no visible `label` is rendered.
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `checked?` | `boolean` | `false` | `bind:` |
@@ -374,7 +360,7 @@ Accessible name when no visible `label` is rendered.
 | `class?` | `string` | `""` |  |
 | `onchange?` | `(checked: boolean) => void` |  |  |
 
-Classes: `ca-checkbox` `ca-checkbox-wrapper` `ca-checkbox__indicator` `ca-checkbox__label` `ca-checkbox__label--disabled`
+Classes: `ca-checkbox` `ca-checkbox-wrapper` `ca-checkbox__indicator` `ca-checkbox__input` `ca-checkbox__label` `ca-checkbox__label--disabled`
 
 ## Chip
 
@@ -410,8 +396,6 @@ Classes: `ca-code-snippet` `ca-code-snippet__copy` `ca-code-snippet__lang` `ca-c
 
 `import { CodeTab } from "@codeatlasdev/ui"`
 
-CodeTab — one language panel inside CodeTabs. `label` is the tab text and the sync key ("Node.js", "cURL").
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `label` | `string` |  |  |
@@ -423,8 +407,6 @@ Classes: `ca-codetab`
 ## CodeTabs
 
 `import { CodeTabs } from "@codeatlasdev/ui"`
-
-A tab given as data: plain `code`, or pre-highlighted `html` (e.g. shiki output at build time).
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -464,6 +446,7 @@ Classes: `ca-collapsible` `ca-collapsible__body` `ca-collapsible__chevron` `ca-c
 | `searchPlaceholder?` | `string` |  |  |
 | `disabled?` | `boolean` | `false` |  |
 | `label?` | `string` |  |  |
+| `ariaLabel?` | `string` |  | Accessible name when there is no visible `label`. The trigger's name becomes `ariaLabel` followed by its current value (so it still contains the visible text). |
 | `class?` | `string` | `''` |  |
 | `error?` | `string` |  |  |
 | `description?` | `string` |  |  |
@@ -472,13 +455,11 @@ Classes: `ca-collapsible` `ca-collapsible__body` `ca-collapsible__chevron` `ca-c
 | `emptyText?` | `string` |  |  |
 | `onchange?` | `(value: string) => void` |  |  |
 
-Classes: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chevron` `ca-combobox__content` `ca-combobox__empty` `ca-combobox__hint` `ca-combobox__hint--error` `ca-combobox__input` `ca-combobox__item` `ca-combobox__item-check` `ca-combobox__label` `ca-combobox__req` `ca-combobox__search-wrap` `ca-combobox__trigger` `ca-combobox__trigger-label` `ca-combobox__viewport`
+Classes: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chevron` `ca-combobox__content` `ca-combobox__empty` `ca-combobox__hint` `ca-combobox__hint--error` `ca-combobox__input` `ca-combobox__item` `ca-combobox__item-check` `ca-combobox__label` `ca-combobox__req` `ca-combobox__search-wrap` `ca-combobox__trigger` `ca-combobox__trigger-label` `ca-combobox__viewport` `ca-validity-proxy`
 
 ## CommandPalette
 
 `import { CommandPalette } from "@codeatlasdev/ui"`
-
-Characters (after trimming) needed before the list is filtered; shorter queries show every item grouped.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -487,13 +468,11 @@ Characters (after trimming) needed before the list is filtered; shorter queries 
 | `open?` | `boolean` | `false` | `bind:` |
 | `minQueryLength?` | `number` | `1` | Characters (after trimming) needed before the list is filtered; shorter queries show every item grouped. |
 
-Classes: `ca-cmd-dialog` `ca-cmd-empty` `ca-cmd-group__label` `ca-cmd-item` `ca-cmd-item--active` `ca-cmd-item__icon` `ca-cmd-item__label` `ca-cmd-item__module` `ca-cmd-list` `ca-cmd-overlay` `ca-cmd-search` `ca-cmd-search__hint` `ca-cmd-search__icon` `ca-cmd-search__input`
+Classes: `ca-cmd-dialog` `ca-cmd-empty` `ca-cmd-group__label` `ca-cmd-item` `ca-cmd-item--active` `ca-cmd-item__icon` `ca-cmd-item__label` `ca-cmd-item__module` `ca-cmd-list` `ca-cmd-overlay` `ca-cmd-search` `ca-cmd-search__hint` `ca-cmd-search__icon` `ca-cmd-search__input` `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__sr-only` `ca-dialog__title` `ca-layer-close` `ca-overlay`
 
 ## CopyButton
 
 `import { CopyButton } from "@codeatlasdev/ui"`
-
-Visible label. Pass `''` for an icon-only button.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -505,13 +484,9 @@ Visible label. Pass `''` for an icon-only button.
 | `class?` | `string` | `''` |  |
 | `oncopy?` | `(value: string) => void` |  |  |
 
-Classes: `ca-copy__status`
-
 ## DataTable
 
 `import { DataTable } from "@codeatlasdev/ui/table"` (generic: `TData extends RowData`)
-
-Shown when truly empty (no active filter)
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -563,8 +538,6 @@ Classes: `ca-col-toggle__check` `ca-col-toggle__content` `ca-col-toggle__item` `
 
 `import { DataTableFacetedFilter } from "@codeatlasdev/ui/table"`
 
-facets: raw key → count, from server
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `title` | `string` |  |  |
@@ -609,8 +582,6 @@ Classes: `ca-dt-toolbar` `ca-dt-toolbar__count` `ca-dt-toolbar__export` `ca-dt-t
 
 `import { DateField } from "@codeatlasdev/ui"`
 
-Selected date. Bindable.
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `label?` | `string` |  |  |
@@ -631,13 +602,11 @@ Selected date. Bindable.
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
+Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__float` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
 
 ## DatePicker
 
 `import { DatePicker } from "@codeatlasdev/ui"`
-
-Selected date. Bindable.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -653,7 +622,7 @@ Selected date. Bindable.
 | `minValue?` | `DateValue` |  |  |
 | `maxValue?` | `DateValue` |  |  |
 | `locale?` | `string` | `'pt-BR'` |  |
-| `weekStartsOn?` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `1` | 0 = Sunday … 6 = Saturday. Default 1 (Monday). |
+| `weekStartsOn?` | `WeekStart` | `1` | 0 = Sunday … 6 = Saturday. Default 1 (Monday). |
 | `granularity?` | `'day' \| 'hour' \| 'minute' \| 'second'` | `'day'` | Adds hour/minute segments to the field. Default 'day'. |
 | `numberOfMonths?` | `number` | `1` |  |
 | `isDateDisabled?` | `(date: DateValue) => boolean` |  |  |
@@ -665,13 +634,11 @@ Selected date. Bindable.
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
+Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__float` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
 
 ## DateRangePicker
 
 `import { DateRangePicker } from "@codeatlasdev/ui"`
-
-Selected range. Bindable.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -687,7 +654,7 @@ Selected range. Bindable.
 | `minValue?` | `DateValue` |  |  |
 | `maxValue?` | `DateValue` |  |  |
 | `locale?` | `string` | `'pt-BR'` |  |
-| `weekStartsOn?` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `1` | 0 = Sunday … 6 = Saturday. Default 1 (Monday). |
+| `weekStartsOn?` | `WeekStart` | `1` | 0 = Sunday … 6 = Saturday. Default 1 (Monday). |
 | `numberOfMonths?` | `number` | `2` |  |
 | `isDateDisabled?` | `(date: DateValue) => boolean` |  |  |
 | `isDateUnavailable?` | `(date: DateValue) => boolean` |  |  |
@@ -697,7 +664,7 @@ Selected range. Bindable.
 | `onchange?` | `(value: DateRange) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
+Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__float` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
 
 ## Dialog
 
@@ -734,8 +701,6 @@ Classes: `ca-divider` `ca-divider--horizontal` `ca-divider--vertical`
 
 `import { DocsNav } from "@codeatlasdev/ui"`
 
-DocsNav — sidebar tree: labelled groups of page links, current page marked with aria-current. Used by DocsShell in the desktop rail and in the mobile Sheet.
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `groups` | `DocsNavGroup[]` |  |  |
@@ -749,8 +714,6 @@ Classes: `ca-docs-nav` `ca-docs-nav__label` `ca-docs-nav__link` `ca-docs-nav__ti
 
 `import { DocsSearch } from "@codeatlasdev/ui"`
 
-DocsSearch — full-text search dialog for docs.
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `open?` | `boolean` | `false` | `bind:` |
@@ -760,13 +723,11 @@ DocsSearch — full-text search dialog for docs.
 | `hint?` | `string` |  |  |
 | `class?` | `string` |  |  |
 
-Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__sr-only` `ca-dialog__title` `ca-docs-search` `ca-docs-search__bar` `ca-docs-search__body` `ca-docs-search__cancel` `ca-docs-search__context` `ca-docs-search__empty` `ca-docs-search__enter` `ca-docs-search__esc` `ca-docs-search__icon` `ca-docs-search__input` `ca-docs-search__overlay` `ca-docs-search__result` `ca-docs-search__result--on` `ca-docs-search__results` `ca-docs-search__sr` `ca-docs-search__text` `ca-docs-search__title` `ca-layer-close` `ca-overlay`
+Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__sr-only` `ca-dialog__title` `ca-docs-search` `ca-docs-search__bar` `ca-docs-search__body` `ca-docs-search__cancel` `ca-docs-search__context` `ca-docs-search__empty` `ca-docs-search__enter` `ca-docs-search__esc` `ca-docs-search__icon` `ca-docs-search__input` `ca-docs-search__result` `ca-docs-search__result--on` `ca-docs-search__results` `ca-docs-search__sr` `ca-docs-search__text` `ca-docs-search__title` `ca-layer-close` `ca-overlay`
 
 ## DocsShell
 
 `import { DocsShell } from "@codeatlasdev/ui"`
-
-DocsShell — page frame for developer docs.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -779,35 +740,34 @@ DocsShell — page frame for developer docs.
 | `onnavigate` | `(href: string) => void` |  |  |
 | `brandHref?` | `string` | `'/'` | Link target of the brand (default "/"). |
 | `brandLabel?` | `string` |  |  |
+| `pager?` | `{ prev?: DocsPagerLink; next?: DocsPagerLink }` |  | Previous/next pages. Cards at the end of the article on wide screens; a fixed bottom action bar on narrow ones, so reading flows header → content → actions like an e-book. |
 
 Snippets: `brand`, `actions`, `menuFooter`, `children`
 
-Classes: `ca-docs` `ca-docs--bare` `ca-docs-brand` `ca-docs-header` `ca-docs-header__inner` `ca-docs-icon` `ca-docs-main` `ca-docs-search-btn` `ca-docs-search-btn__label` `ca-docs-section` `ca-docs-sections` `ca-docs-sheet-sections` `ca-docs-sidebar` `ca-docs-skip` `ca-docs-spacer` `ca-docs-theme` `ca-docs-toc` `ca-docs-toc-inline` `ca-rail-btn`
+Classes: `ca-docs` `ca-docs--bare` `ca-docs-actions` `ca-docs-brand` `ca-docs-header` `ca-docs-header__inner` `ca-docs-icon` `ca-docs-main` `ca-docs-pager` `ca-docs-pager__link` `ca-docs-pager__link--next` `ca-docs-pager__text` `ca-docs-pager__title` `ca-docs-search-btn` `ca-docs-search-btn__label` `ca-docs-section` `ca-docs-sections` `ca-docs-sheet-sections` `ca-docs-sidebar` `ca-docs-spacer` `ca-docs-theme` `ca-docs-toc` `ca-docs-toc-inline` `ca-rail-btn`
 
 ## Drawer
 
 `import { Drawer } from "@codeatlasdev/ui"`
 
-Drawer: second-layer side panel.
+Drawer: side panel, second layer.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `open?` | `boolean` | `false` | `bind:` |
 | `side?` | `'left' \| 'right' \| 'bottom'` | `'right'` |  |
 | `title?` | `string` |  |  |
-| `width?` | `string` | `'360px'` | Largura (left/right). Default: 360px |
+| `width?` | `string` | `'360px'` | Width (left/right). Default: 360px |
 | `class?` | `string` | `''` |  |
 | `onOpenChange?` | `(open: boolean) => void` |  |  |
 
 Snippets: `children`, `actions`
 
-Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__sr-only` `ca-dialog__title` `ca-drawer` `ca-drawer--bottom` `ca-drawer--left` `ca-drawer--right` `ca-drawer__actions` `ca-drawer__body` `ca-drawer__header` `ca-drawer__title` `ca-layer-close` `ca-overlay` `ca-overlay--drawer`
+Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__sr-only` `ca-dialog__title` `ca-drawer` `ca-drawer--bottom` `ca-drawer--left` `ca-drawer--right` `ca-drawer__actions` `ca-drawer__body` `ca-drawer__header` `ca-drawer__title` `ca-layer-close` `ca-overlay`
 
 ## DropdownMenu
 
 `import { DropdownMenu } from "@codeatlasdev/ui"`
-
-Non-interactive trigger content (text, icon). Wrapped in the menu's own button.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -857,8 +817,6 @@ Classes: `ca-dropdown-sep`
 
 `import { EmptyState } from "@codeatlasdev/ui"`
 
-Lucide icon component
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `icon?` | `IconComponent` |  | Lucide icon component |
@@ -874,8 +832,6 @@ Classes: `ca-empty` `ca-empty--hero` `ca-empty__actions` `ca-empty__description`
 ## ErrorPage
 
 `import { ErrorPage } from "@codeatlasdev/ui"`
-
-Override the title shown above the message
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -911,8 +867,6 @@ Classes: `ca-file-upload` `ca-file-upload--disabled` `ca-file-upload__errors` `c
 
 `import { FilterGroup } from "@codeatlasdev/ui"`
 
-FilterGroup: inline filter chips for list toolbars.
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `label?` | `string` |  |  |
@@ -927,7 +881,7 @@ Classes: `ca-filter-group` `ca-filter-group__item` `ca-filter-group__label`
 
 `import { FormSection } from "@codeatlasdev/ui"`
 
-FormSection: form section with title, description and field layout.
+FormSection: form section with a title, description and field layout.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -974,8 +928,6 @@ Classes: `ca-app-bar` `ca-app-bar__content` `ca-app-bar__leading` `ca-app-bar__t
 
 `import { GlassCard } from "@codeatlasdev/ui"`
 
-Padding override. Omit to use `--ca-card-padding` (default 20px). Passed as a CSS custom property, so it emits no fixed-value inline style.
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `thickness?` | `Thickness` | `'regular'` |  |
@@ -983,7 +935,7 @@ Padding override. Omit to use `--ca-card-padding` (default 20px). Passed as a CS
 | `glowing?` | `boolean` | `false` |  |
 | `href?` | `string` |  |  |
 | `target?` | `string` |  |  |
-| `padding?` | `string \| number` |  | Padding override. Omit to use `--ca-card-padding` (default 20px). Passed as a CSS custom property, so it emits no fixed-value inline style. |
+| `padding?` | `string \| number` |  | Padding override. Omit to use `--ca-card-padding` (default 20px). Passed as a CSS custom property, not as a fixed inline value. |
 | `flush?` | `boolean` | `false` | Removes all padding, for tables, images and code that touch the edges. |
 | `full?` | `boolean` | `false` | width: 100% |
 | `title?` | `string` |  |  |
@@ -1046,11 +998,22 @@ Classes: `ca-grid`
 | `height?` | `string` | `"240px"` |  |
 | `class?` | `string` | `""` |  |
 
+## I18nProvider
+
+`import { I18nProvider } from "@codeatlasdev/ui"`
+
+I18nProvider: request/tree-scoped UI language. SSR-safe (no module state), reactive to prop changes. Everything rendered inside reads its strings from `locale`.
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `locale` | `Locale` |  | BCP 47 tag. `en` and `pt-BR` are built in; add others with `registerLocale`. |
+| `messages?` | `MessagesOverride` |  | Deep override merged over the locale's catalog. |
+
+Snippets: `children`
+
 ## IconButton
 
 `import { IconButton } from "@codeatlasdev/ui"`
-
-Replaces the icon with a spinner, sets `aria-busy` and blocks interaction.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -1068,6 +1031,26 @@ Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class' \| 'children' \| 'oncli
 
 Classes: `ca-icon-btn` `ca-icon-btn--filled` `ca-icon-btn--glass` `ca-icon-btn--lg` `ca-icon-btn--loading` `ca-icon-btn--md` `ca-icon-btn--sm` `ca-icon-btn--text`
 
+## Image
+
+`import { Image } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `src` | `string` |  |  |
+| `alt` | `string` |  | Describes the image. Use `decorative` instead of an empty string. |
+| `width` | `number` |  | Intrinsic width in pixels. Together with `height` it fixes the aspect ratio (zero CLS). |
+| `height` | `number` |  | Intrinsic height in pixels. |
+| `decorative?` | `boolean` | `false` | Marks the image as decoration: renders `alt=""` and hides it from assistive tech. |
+| `priority?` | `boolean` | `false` | Above-the-fold (LCP) image: eager, `fetchpriority="high"` and a preload link in <head>. |
+| `loading?` | `'lazy' \| 'eager'` |  | Overrides the default (`lazy`, or `eager` with `priority`). |
+| `decoding?` | `'async' \| 'sync' \| 'auto'` | `'async'` |  |
+| `class?` | `string` | `''` |  |
+
+Also accepts: `Omit<HTMLImgAttributes, 'src' \| 'alt' \| 'width' \| 'height' \| 'class' \| 'loading' \| 'decoding' \| 'fetchpriority'>`
+
+Classes: `ca-image`
+
 ## Kbd
 
 `import { Kbd } from "@codeatlasdev/ui"`
@@ -1084,15 +1067,13 @@ Classes: `ca-kbd`
 
 `import { KpiCard } from "@codeatlasdev/ui"`
 
-Lucide icon component: size and color are managed by KpiCard
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `title` | `string` |  |  |
 | `value` | `string \| number` |  |  |
 | `unit?` | `string` |  |  |
 | `trend?` | `number` |  |  |
-| `icon?` | `IconComponent` |  | Lucide icon component: size and color are managed by KpiCard |
+| `icon?` | `IconComponent` |  | Lucide icon component; size and color are managed by KpiCard |
 | `class?` | `string` | `''` |  |
 
 Classes: `ca-kpi` `ca-kpi__icon` `ca-kpi__inner` `ca-kpi__title` `ca-kpi__top` `ca-kpi__trend` `ca-kpi__trend--down` `ca-kpi__trend--up` `ca-kpi__unit` `ca-kpi__value` `ca-kpi__value-row`
@@ -1101,8 +1082,6 @@ Classes: `ca-kpi` `ca-kpi__icon` `ca-kpi__inner` `ca-kpi__title` `ca-kpi__top` `
 
 `import { Lightbox } from "@codeatlasdev/ui"`
 
-Lightbox — full-screen image viewer.
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `open?` | `boolean` | `false` | `bind:` |
@@ -1110,13 +1089,11 @@ Lightbox — full-screen image viewer.
 | `alt` | `string` |  |  |
 | `onclose?` | `() => void` |  |  |
 
-Classes: `ca-lightbox` `ca-lightbox__close` `ca-lightbox__img` `ca-lightbox__overlay` `ca-lightbox__sr` `ca-lightbox__stage`
+Classes: `ca-lightbox` `ca-lightbox__close` `ca-lightbox__img` `ca-lightbox__sr` `ca-lightbox__stage`
 
 ## LineChart
 
 `import { LineChart } from "@codeatlasdev/ui/charts"`
-
-One or more named series sharing the same category axis.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -1130,8 +1107,6 @@ One or more named series sharing the same category axis.
 ## LinkCard
 
 `import { LinkCard } from "@codeatlasdev/ui"`
-
-LinkCard — whole-card link with title, optional description and arrow. Min height 44px.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -1153,8 +1128,6 @@ Classes: `ca-link-card` `ca-link-card__desc` `ca-link-card__title`
 ## MaskedField
 
 `import { MaskedField } from "@codeatlasdev/ui/forms"`
-
-Masked value (what the user sees).
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -1185,8 +1158,6 @@ Classes: `ca-masked`
 
 `import { MethodBadge } from "@codeatlasdev/ui"`
 
-MethodBadge — HTTP method label (GET/POST/PUT/PATCH/DELETE), mono, semantic colour. `variant="plain"` drops the tinted pill (for tight lists like a sidebar).
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `method` | `string` |  |  |
@@ -1198,8 +1169,6 @@ Classes: `ca-method` `ca-method--pill` `ca-method--plain`
 ## MobileHeader
 
 `import { MobileHeader } from "@codeatlasdev/ui"`
-
-Brand mark before the title.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -1214,14 +1183,12 @@ Classes: `ca-mobile-header` `ca-mobile-header__inner` `ca-mobile-header__leading
 
 `import { MobilePane } from "@codeatlasdev/ui"`
 
-MobilePane: full screen above the shell for mobile drill-down (chat thread, history, detail). Replaces hand-rolled `position: fixed`.
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `open?` | `boolean` | `false` | `bind:` Visibility (bindable). The back button and Escape set it to `false`. |
 | `title` | `string` |  | Header title and accessible name of the pane. |
 | `onback?` | `() => void` |  | Called after the back button or Escape closes the pane. |
-| `scroll?` | `boolean` | `true` | `true` (default): the body scrolls. `false`: the body is a flex column without scroll, for layouts with their own scrollable area and a fixed composer (chat). |
+| `scroll?` | `boolean` | `true` | `true` (default): the body scrolls. `false`: the body is a non-scrolling flex column, for layouts with their own scrollable area and a fixed composer (chat). |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`, `actions`, `headerTitle`
@@ -1231,8 +1198,6 @@ Classes: `ca-mobile-pane` `ca-mobile-pane__body` `ca-mobile-pane__body--fixed`
 ## MoneyInput
 
 `import { MoneyInput } from "@codeatlasdev/ui/forms"`
-
-Amount in integer cents (BRL). `123456` = R$ 1.234,56.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -1258,8 +1223,6 @@ Snippets: `leading`, `trailing`
 ## NotificationBell
 
 `import { NotificationBell } from "@codeatlasdev/ui"`
-
-Label overrides for i18n. Defaults to English strings.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -1304,8 +1267,8 @@ Classes: `ca-nf` `ca-nf--disabled` `ca-nf--sm` `ca-nf__btn` `ca-nf__hint` `ca-nf
 |---|---|---|---|
 | `title?` | `string` |  |  |
 | `description?` | `string` |  |  |
-| `gap?` | `number` | `28` |  |
-| `maxWidth?` | `string` | `'1280px'` |  |
+| `gap?` | `number` |  |  |
+| `maxWidth?` | `string` |  |  |
 | `class?` | `string` | `''` |  |
 
 Snippets: `actions`, `children`
@@ -1359,8 +1322,6 @@ Classes: `ca-nav-item` `ca-nav-item--active` `ca-nav-item__badge` `ca-nav-item__
 
 `import { PhoneField } from "@codeatlasdev/ui/forms"`
 
-E.164 value, e.g. `+5511987654321`. Empty string when incomplete or empty.
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `label?` | `string` |  |  |
@@ -1383,8 +1344,6 @@ Snippets: `leading`, `trailing`
 
 `import { PieChart } from "@codeatlasdev/ui/charts"`
 
-Renders as a donut (ring) instead of a solid pie.
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `data` | `ChartSlice[]` |  |  |
@@ -1400,8 +1359,6 @@ Classes: `ca-pie-center` `ca-pie-center__label` `ca-pie-center__value`
 
 `import { PinInput } from "@codeatlasdev/ui"`
 
-Mask entered characters (one-time codes are usually fine unmasked).
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `length?` | `number` | `6` |  |
@@ -1415,13 +1372,11 @@ Mask entered characters (one-time codes are usually fine unmasked).
 | `class?` | `string` | `''` |  |
 | `oncomplete?` | `(value: string) => void` |  |  |
 
-Classes: `ca-pin` `ca-pin--disabled` `ca-pin--error` `ca-pin__caret` `ca-pin__cell` `ca-pin__cells` `ca-pin__hint` `ca-pin__hint--error` `ca-pin__label`
+Classes: `ca-pin` `ca-pin--disabled` `ca-pin--error` `ca-pin__caret` `ca-pin__cell` `ca-pin__cells` `ca-pin__hint` `ca-pin__hint--error` `ca-pin__input` `ca-pin__label` `ca-pin__root`
 
 ## Popover
 
 `import { Popover } from "@codeatlasdev/ui"`
-
-Non-interactive trigger content (text, icon). Wrapped in the popover's own button.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -1468,17 +1423,17 @@ Classes: `ca-progress` `ca-progress__indicator` `ca-progress__indicator--indeter
 | `value?` | `string` | `''` | `bind:` |
 | `items` | `RadioItem[]` |  |  |
 | `orientation?` | `'vertical' \| 'horizontal'` | `'vertical'` |  |
+| `variant?` | `'list' \| 'cards'` | `'list'` | `list` (default): radio + label rows. `cards`: each option is a selectable card (label + description) in a responsive grid; the whole card is the hit area and only the selected one is emphasized. |
 | `disabled?` | `boolean` | `false` |  |
 | `class?` | `string` | `''` |  |
+| `aria-label?` | `string` |  |  |
 | `onchange?` | `(value: string) => void` |  |  |
 
-Classes: `ca-radio-group` `ca-radio-group--horizontal` `ca-radio-group--vertical` `ca-radio-indicator` `ca-radio-input` `ca-radio-item` `ca-radio-label` `ca-radio-label--disabled`
+Classes: `ca-radio-card` `ca-radio-card__desc` `ca-radio-card__head` `ca-radio-card__input` `ca-radio-card__label` `ca-radio-group` `ca-radio-group--cards` `ca-radio-group--horizontal` `ca-radio-group--vertical` `ca-radio-indicator` `ca-radio-input` `ca-radio-input__native` `ca-radio-item` `ca-radio-label` `ca-radio-label--disabled`
 
 ## Rail
 
 `import { Rail } from "@codeatlasdev/ui"`
-
-Brand mark at the top of the rail. Defaults to the "CA" wordmark.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -1495,8 +1450,6 @@ Classes: `ca-rail` `ca-rail__bottom` `ca-rail__bottom-sep` `ca-rail__dock` `ca-r
 
 `import { RangeCalendar } from "@codeatlasdev/ui"`
 
-Selected range. Bindable. `start`/`end` are undefined until chosen.
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `value?` | `DateRange` | `{ start: undefined, end: undefined }` | `bind:` Selected range. Bindable. `start`/`end` are undefined until chosen. |
@@ -1506,7 +1459,7 @@ Selected range. Bindable. `start`/`end` are undefined until chosen.
 | `disabled?` | `boolean` | `false` |  |
 | `readonly?` | `boolean` | `false` |  |
 | `locale?` | `string` | `'pt-BR'` |  |
-| `weekStartsOn?` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `1` | 0 = Sunday … 6 = Saturday. Default 1 (Monday). |
+| `weekStartsOn?` | `WeekStart` | `1` | 0 = Sunday … 6 = Saturday. Default 1 (Monday). |
 | `numberOfMonths?` | `number` | `2` |  |
 | `fixedWeeks?` | `boolean` | `false` |  |
 | `isDateDisabled?` | `(date: DateValue) => boolean` |  |  |
@@ -1515,7 +1468,7 @@ Selected range. Bindable. `start`/`end` are undefined until chosen.
 | `onchange?` | `(value: DateRange) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
+Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__float` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
 
 ## Row
 
@@ -1613,7 +1566,7 @@ Classes: `ca-seg` `ca-seg--md` `ca-seg--sm` `ca-seg__item` `ca-seg__thumb`
 | `class?` | `string` | `''` |  |
 | `onchange?` | `(value: string) => void` |  |  |
 
-Classes: `ca-sel` `ca-sel--sm` `ca-sel__check` `ca-sel__content` `ca-sel__hint` `ca-sel__hint--error` `ca-sel__icon` `ca-sel__item` `ca-sel__item-label` `ca-sel__label` `ca-sel__req` `ca-sel__sr` `ca-sel__trigger` `ca-sel__value` `ca-sel__value--placeholder`
+Classes: `ca-sel` `ca-sel--sm` `ca-sel__check` `ca-sel__content` `ca-sel__hint` `ca-sel__hint--error` `ca-sel__icon` `ca-sel__item` `ca-sel__item-label` `ca-sel__label` `ca-sel__req` `ca-sel__sr` `ca-sel__trigger` `ca-sel__value` `ca-sel__value--placeholder` `ca-validity-proxy`
 
 ## SettingItem
 
@@ -1633,8 +1586,6 @@ Classes: `ca-setting-item` `ca-setting-item__control` `ca-setting-item__desc` `c
 
 `import { Sheet } from "@codeatlasdev/ui"`
 
-Sheet — mobile-first bottom sheet.
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `open?` | `boolean` | `false` | `bind:` |
@@ -1645,22 +1596,20 @@ Sheet — mobile-first bottom sheet.
 
 Snippets: `children`, `footer`
 
-Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__sr-only` `ca-dialog__title` `ca-layer-close` `ca-overlay` `ca-sheet` `ca-sheet__body` `ca-sheet__close` `ca-sheet__description` `ca-sheet__footer` `ca-sheet__grab` `ca-sheet__grab--active` `ca-sheet__handle` `ca-sheet__header` `ca-sheet__meta` `ca-sheet__overlay` `ca-sheet__title`
+Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__sr-only` `ca-dialog__title` `ca-layer-close` `ca-overlay` `ca-sheet` `ca-sheet__body` `ca-sheet__close` `ca-sheet__description` `ca-sheet__footer` `ca-sheet__grab` `ca-sheet__grab--active` `ca-sheet__handle` `ca-sheet__header` `ca-sheet__meta` `ca-sheet__title`
 
 ## SimpleTable
 
 `import { SimpleTable } from "@codeatlasdev/ui"`
 
-`scroll` (default): regular table. `cards`: below the `md` breakpoint (900px) each row becomes a card; give each `<td>` a `data-label` to show its column name.
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `class?` | `string` | `''` |  |
-| `responsive?` | `'scroll' \| 'cards'` | `'scroll'` | `scroll` (default): regular table. `cards`: below the `md` breakpoint (900px) each row becomes a card; give each `<td>` a `data-label` to show its column name. |
+| `responsive?` | `'scroll' \| 'cards'` | `'scroll'` | `scroll` (default): regular table. `cards`: when its own width is below the `sm` breakpoint (600px) each row becomes a card. Each cell's caption is its column header; set `data-label` on a `<td>` only to override it. |
 
 Snippets: `children`
 
-Classes: `ca-table` `ca-table--cards` `ca-table-wrap`
+Classes: `ca-table` `ca-table--cards` `ca-table-root`
 
 ## SiteHeader
 
@@ -1687,6 +1636,19 @@ Classes: `ca-site-header` `ca-site-header__bc-sep` `ca-site-header__breadcrumb` 
 | `class?` | `string` | `''` |  |
 
 Classes: `ca-skeleton` `ca-skeleton--circular` `ca-skeleton--rectangular` `ca-skeleton--rounded` `ca-skeleton--text` `ca-skeleton-rows`
+
+## SkipLink
+
+`import { SkipLink } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `href?` | `string` | `'#main'` | Fragment id of the main landmark to jump to. Must match the `id` of the `<main>`. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Classes: `ca-skip-link`
 
 ## Slider
 
@@ -1777,8 +1739,6 @@ Classes: `ca-stepper` `ca-stepper__bubble` `ca-stepper__desc` `ca-stepper__label
 
 `import { Steps } from "@codeatlasdev/ui"`
 
-Steps — wraps a markdown ordered list; each top-level item becomes a numbered step on a vertical rail.
-
 Snippets: `children`
 
 Classes: `ca-steps`
@@ -1787,12 +1747,10 @@ Classes: `ca-steps`
 
 `import { StickyActions } from "@codeatlasdev/ui"`
 
-StickyActions: primary action bar for a form.
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `align?` | `'end' \| 'stretch'` | `'end'` | `'end'` groups the buttons on the right; `'stretch'` stretches them (full width) on touch screens. |
-| `show?` | `boolean` | `true` | Renders the bar only while there is something to confirm (e.g. the form is dirty). |
+| `align?` | `'end' \| 'stretch'` | `'end'` | `'end'` packs the buttons to the right; `'stretch'` stretches them (full width) on touch screens. |
+| `show?` | `boolean` | `true` | Renders the bar only while there is something to confirm (e.g. a dirty form). |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
@@ -1802,8 +1760,6 @@ Classes: `ca-sticky-actions` `ca-sticky-actions--end` `ca-sticky-actions--stretc
 ## Switch
 
 `import { Switch } from "@codeatlasdev/ui"`
-
-Accessible name when no visible `label` is rendered.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -1815,7 +1771,7 @@ Accessible name when no visible `label` is rendered.
 | `class?` | `string` | `''` |  |
 | `onchange?` | `(checked: boolean) => void` |  |  |
 
-Classes: `ca-switch` `ca-switch-wrapper` `ca-switch__label` `ca-switch__label--disabled` `ca-switch__thumb`
+Classes: `ca-switch` `ca-switch-wrapper` `ca-switch__input` `ca-switch__label` `ca-switch__label--disabled` `ca-switch__thumb`
 
 ## Table
 
@@ -1825,13 +1781,11 @@ Snippets: `children`
 
 Also accepts: `HTMLTableAttributes`
 
-Classes: `ca-table` `ca-table-container` `ca-table-wrap`
+Classes: `ca-table` `ca-table-container` `ca-table-root`
 
 ## TableOfContents
 
 `import { TableOfContents } from "@codeatlasdev/ui"`
-
-TableOfContents — "On this page" index with scrollspy.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -1899,8 +1853,6 @@ Classes: `ca-tabs-trigger`
 
 `import { TextArea } from "@codeatlasdev/ui"`
 
-@deprecated Use `description` instead
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `label?` | `string` |  |  |
@@ -1926,8 +1878,6 @@ Classes: `ca-ta` `ca-ta--disabled` `ca-ta__hint` `ca-ta__hint--error` `ca-ta__in
 ## TextField
 
 `import { TextField } from "@codeatlasdev/ui"`
-
-@deprecated Use `description` instead
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -1957,8 +1907,6 @@ Classes: `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__adorn` `ca-tf__hint` `ca-
 
 `import { ThemeToggle } from "@codeatlasdev/ui"`
 
-Accessible name and tooltip.
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `label?` | `string` |  | Accessible name and tooltip. |
@@ -1970,8 +1918,6 @@ Classes: `ca-theme-toggle__icon` `ca-theme-toggle__icon--dark` `ca-theme-toggle_
 ## TimeField
 
 `import { TimeField } from "@codeatlasdev/ui"`
-
-Selected time. Bindable. Use `new Time(h, m)` from `@internationalized/date`.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -1993,7 +1939,7 @@ Selected time. Bindable. Use `new Time(h, m)` from `@internationalized/date`.
 | `onchange?` | `(value: Time \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
+Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__float` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
 
 ## Timeline
 
@@ -2016,8 +1962,6 @@ Classes: `ca-toaster`
 
 `import { ToggleGroup } from "@codeatlasdev/ui"`
 
-Required for icon-only items (no `label`).
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `type?` | `'single' \| 'multiple'` | `'single'` |  |
@@ -2036,8 +1980,6 @@ Classes: `ca-toggle-group` `ca-toggle-group--md` `ca-toggle-group--outlined` `ca
 ## Tooltip
 
 `import { Tooltip } from "@codeatlasdev/ui"`
-
-Non-interactive content (text, icon). Wrapped in the tooltip's own button.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|

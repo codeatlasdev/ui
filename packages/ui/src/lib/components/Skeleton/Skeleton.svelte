@@ -45,50 +45,53 @@
 {/if}
 
 <style>
-  .ca-skeleton {
-    background: linear-gradient(
-      90deg,
-      var(--ca-action-hover) 25%,
-      var(--ca-outline-subtle) 50%,
-      var(--ca-action-hover) 75%
-    );
-    background-size: 200% 100%;
-    animation: ca-shimmer var(--ca-duration-loop) var(--ca-ease-standard) infinite;
-  }
-  .ca-skeleton--text {
-    height: 1em;
-    border-radius: var(--ca-radius-sm);
-    width: 100%;
-    margin-block: 0.25em;
-  }
-  .ca-skeleton--circular {
-    border-radius: 50%;
-    width: var(--ca-space-10);
-    height: var(--ca-space-10);
-  }
-  .ca-skeleton--rectangular {
-    border-radius: 0;
-    width: 100%;
-    height: calc(var(--ca-space-24) + var(--ca-space-6));
-  }
-  .ca-skeleton--rounded {
-    border-radius: var(--ca-radius-md);
-    width: 100%;
-    height: calc(var(--ca-space-24) + var(--ca-space-6));
-  }
-  .ca-skeleton-rows {
-    display: flex;
-    flex-direction: column;
-    gap: var(--ca-space-1);
-  }
-  @keyframes ca-shimmer {
-    0% { background-position: 200% 0; }
-    100% { background-position: -200% 0; }
-  }
-  @media (prefers-reduced-motion: reduce) {
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
     .ca-skeleton {
-      animation: none;
-      opacity: 0.5;
+      background: linear-gradient(
+        90deg,
+        var(--ca-action-hover) 25%,
+        var(--ca-outline-subtle) 50%,
+        var(--ca-action-hover) 75%
+      );
+      background-size: 200% 100%;
+      animation: ca-shimmer var(--ca-duration-loop) var(--ca-ease-standard) infinite;
     }
-  }
+    .ca-skeleton--text {
+      height: 1em;
+      border-radius: var(--ca-radius-sm);
+      width: 100%;
+      margin-block: 0.25em;
+    }
+    .ca-skeleton--circular {
+      border-radius: 50%;
+      width: var(--ca-space-10);
+      height: var(--ca-space-10);
+    }
+    .ca-skeleton--rectangular {
+      border-radius: 0;
+      width: 100%;
+      height: calc(var(--ca-space-24) + var(--ca-space-6));
+    }
+    .ca-skeleton--rounded {
+      border-radius: var(--ca-radius-md);
+      width: 100%;
+      height: calc(var(--ca-space-24) + var(--ca-space-6));
+    }
+    .ca-skeleton-rows {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ca-space-1);
+    }
+    @keyframes ca-shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .ca-skeleton {
+        animation: none;
+        opacity: 0.5;
+      }
+    }
+}
 </style>

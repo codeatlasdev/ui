@@ -1,287 +1,293 @@
 /* Shared styles for Calendar, RangeCalendar, DatePicker, DateRangePicker, DateField, TimeField.
    Imported by each component; public BEM classes are `ca-date*`, `ca-cal*`. */
 
-/* ── Field chrome (matches ca-tf) ─────────────────────────────── */
-.ca-date {
-  display: flex;
-  flex-direction: column;
-  gap: var(--ca-space-1);
-  width: 100%;
-}
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
 
-.ca-date__label {
-  font-size: var(--ca-font-size-label);
-  font-weight: var(--ca-font-weight-medium);
-  color: var(--ca-text-primary);
-  line-height: var(--ca-line-height-snug);
-  user-select: none;
-}
+  /* ── Field chrome (matches ca-tf) ─────────────────────────────── */
+  .ca-date {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-1);
+    width: 100%;
+  }
 
-.ca-date__req { color: var(--ca-semantic-error); }
+  .ca-date__label {
+    font-size: var(--ca-font-size-label);
+    font-weight: var(--ca-font-weight-medium);
+    color: var(--ca-text-primary);
+    line-height: var(--ca-line-height-snug);
+    user-select: none;
+  }
 
-/* Segments are never squeezed under the trigger: when start + end do not fit one line
-   (range field in a narrow column) the end date wraps below, the icon stays last. */
-.ca-date__wrap {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  row-gap: 0;
-  gap: var(--ca-space-2);
-  min-height: var(--ca-control-height);
-  padding: 0 var(--ca-space-2-5);
-  border-radius: var(--ca-radius-control);
-  background: var(--ca-field-bg);
-  border: var(--ca-border-width) solid var(--ca-field-border-color);
-  box-shadow: var(--ca-field-shadow);
-  font-family: var(--ca-font-sans);
-  font-size: var(--ca-input-font-size);
-  color: var(--ca-text-primary);
-  transition:
-    border-color var(--ca-duration-fast) var(--ca-ease-standard),
-    box-shadow   var(--ca-duration-fast) var(--ca-ease-standard);
-}
+  .ca-date__req { color: var(--ca-semantic-error); }
 
-.ca-date__wrap:hover { border-color: var(--ca-outline-default); }
+  /* Segments are never squeezed under the trigger: when start + end do not fit one line
+     (range field in a narrow column) the end date wraps below, the icon stays last. */
+  .ca-date__wrap {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    row-gap: 0;
+    gap: var(--ca-space-2);
+    min-height: var(--ca-control-height);
+    padding: 0 var(--ca-space-2-5);
+    border-radius: var(--ca-radius-control);
+    background: var(--ca-field-bg);
+    border: var(--ca-border-width) solid var(--ca-field-border-color);
+    box-shadow: var(--ca-field-shadow);
+    font-family: var(--ca-font-sans);
+    font-size: var(--ca-input-font-size);
+    color: var(--ca-text-primary);
+    transition:
+      border-color var(--ca-duration-fast) var(--ca-ease-standard),
+      box-shadow   var(--ca-duration-fast) var(--ca-ease-standard);
+  }
 
-.ca-date__wrap:focus-within,
-.ca-date__wrap[data-state='open'] {
-  border-color: var(--ca-brand-main);
-  box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-brand-main) 18%, transparent);
-}
+  .ca-date__wrap:hover { border-color: var(--ca-outline-strong); }
 
-.ca-date--error .ca-date__wrap,
-.ca-date--error .ca-date__wrap:focus-within {
-  border-color: var(--ca-semantic-error);
-  box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-semantic-error) 18%, transparent);
-}
+  .ca-date__wrap:focus-within,
+  .ca-date__wrap[data-state='open'] {
+    border-color: var(--ca-focus-ring);
+    box-shadow: 0 0 0 var(--ca-border-width-focus) var(--ca-focus-ring);
+  }
 
-.ca-date--disabled .ca-date__wrap {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
+  .ca-date--error .ca-date__wrap,
+  .ca-date--error .ca-date__wrap:focus-within {
+    border-color: var(--ca-semantic-error);
+    box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-semantic-error) 18%, transparent);
+  }
 
-.ca-date--sm .ca-date__wrap { min-height: var(--ca-control-height-sm); padding: 0 var(--ca-space-2); font-size: var(--ca-input-font-size-sm); }
+  .ca-date--disabled .ca-date__wrap {
+    background: var(--ca-action-disabled-bg);
+    border-color: var(--ca-outline-default);
+    color: var(--ca-text-disabled);
+    cursor: not-allowed;
+  }
 
-@media (pointer: coarse) {
-  .ca-date__wrap { min-height: var(--ca-touch-target); }
-}
+  .ca-date--sm .ca-date__wrap { min-height: var(--ca-control-height-sm); padding: 0 var(--ca-space-2); font-size: var(--ca-input-font-size-sm); }
 
-.ca-date__hint {
-  font-size: var(--ca-font-size-caption);
-  color: var(--ca-text-secondary);
-  margin: 0;
-  line-height: var(--ca-line-height-snug);
-}
+  @media (pointer: coarse) {
+    .ca-date__wrap { min-height: var(--ca-touch-target); }
+  }
 
-.ca-date__hint--error { color: var(--ca-semantic-error); }
+  .ca-date__hint {
+    font-size: var(--ca-font-size-caption);
+    color: var(--ca-text-secondary);
+    margin: 0;
+    line-height: var(--ca-line-height-snug);
+  }
 
-/* ── Editable segments ────────────────────────────────────────── */
-/* Single fields fill the row; in a range each date keeps its natural width so the separator
-   sits right after the start date, and the end date wraps below it as a whole. */
-.ca-date__input {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  flex: 1 1 0;
-  min-width: 0;
-  gap: var(--ca-border-width);
-  padding: var(--ca-space-1-5) 0;
-}
+  .ca-date__hint--error { color: var(--ca-semantic-error); }
 
-.ca-date__sep {
-  color: var(--ca-text-hint);
-  padding: 0 var(--ca-space-1);
-  user-select: none;
-}
+  /* ── Editable segments ────────────────────────────────────────── */
+  /* Single fields fill the row; in a range each date keeps its natural width so the separator
+     sits right after the start date, and the end date wraps below it as a whole. */
+  .ca-date__input {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    flex: 1 1 0;
+    min-width: 0;
+    gap: var(--ca-border-width);
+    padding: var(--ca-space-1-5) 0;
+  }
 
-.ca-date__segment {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: var(--ca-space-6);
-  min-height: var(--ca-space-6);
-  padding: var(--ca-border-width) var(--ca-space-0-5);
-  border-radius: var(--ca-radius-xs);
-  font-variant-numeric: tabular-nums;
-  outline: none;
-  caret-color: transparent;
-}
+  .ca-date__sep {
+    color: var(--ca-text-hint);
+    padding: 0 var(--ca-space-1);
+    user-select: none;
+  }
 
-.ca-date__segment:focus {
-  background: var(--ca-brand-fill);
-  color: var(--ca-brand-contrast);
-}
+  .ca-date__segment {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: var(--ca-space-6);
+    min-height: var(--ca-space-6);
+    padding: var(--ca-border-width) var(--ca-space-0-5);
+    border-radius: var(--ca-radius-xs);
+    font-variant-numeric: tabular-nums;
+    outline: none;
+    caret-color: transparent;
+  }
 
-.ca-date__segment[data-segment='literal'] {
-  padding: 0;
-  color: var(--ca-text-hint);
-}
+  .ca-date__segment:focus {
+    background: var(--ca-brand-fill);
+    color: var(--ca-brand-contrast);
+  }
 
-.ca-date__segment[data-placeholder] { color: var(--ca-text-hint); }
-.ca-date__segment[data-placeholder]:focus { color: var(--ca-brand-contrast); }
+  .ca-date__segment[data-segment='literal'] {
+    padding: 0;
+    color: var(--ca-text-hint);
+  }
 
-/* ── Trigger button (picker) ──────────────────────────────────── */
-.ca-date__trigger {
-  margin-inline-start: auto;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--ca-space-6);
-  height: var(--ca-space-6);
-  flex-shrink: 0;
-  padding: 0;
-  border: none;
-  border-radius: var(--ca-radius-sm);
-  background: transparent;
-  color: var(--ca-text-secondary);
-  cursor: pointer;
-  outline: none;
-}
+  .ca-date__segment[data-placeholder] { color: var(--ca-text-hint); }
+  .ca-date__segment[data-placeholder]:focus { color: var(--ca-brand-contrast); }
 
-.ca-date__trigger:hover:not(:disabled) { background: var(--ca-action-hover); color: var(--ca-text-primary); }
-.ca-date__trigger:focus-visible { box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-brand-main) 40%, transparent); }
-.ca-date__trigger:disabled { cursor: not-allowed; }
+  /* ── Trigger button (picker) ──────────────────────────────────── */
+  .ca-date__trigger {
+    margin-inline-start: auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--ca-space-6);
+    height: var(--ca-space-6);
+    flex-shrink: 0;
+    padding: 0;
+    border: none;
+    border-radius: var(--ca-radius-sm);
+    background: transparent;
+    color: var(--ca-text-secondary);
+    cursor: pointer;
+    outline: none;
+  }
 
-.ca-date__range-sep { color: var(--ca-text-hint); user-select: none; }
-.ca-date__wrap:has(.ca-date__range-sep) .ca-date__input { flex: 0 0 auto; flex-wrap: nowrap; min-width: max-content; }
-.ca-date__wrap:has(.ca-date__range-sep) { column-gap: var(--ca-space-2); }
+  .ca-date__trigger:hover:not(:disabled) { background: var(--ca-action-hover); color: var(--ca-text-primary); }
+  .ca-date__trigger:focus-visible { outline: var(--ca-border-width-focus) solid var(--ca-focus-ring); outline-offset: var(--ca-focus-ring-offset); }
+  .ca-date__trigger:disabled { cursor: not-allowed; }
 
-/* ── Popover content ──────────────────────────────────────────── */
-/* The wrapper is positioned (core `float` writes `transform` on it); the inner content animates. */
-.ca-date__float { z-index: var(--ca-z-dropdown); }
+  .ca-date__range-sep { color: var(--ca-text-hint); user-select: none; }
+  .ca-date__wrap:has(.ca-date__range-sep) .ca-date__input { flex: 0 0 auto; flex-wrap: nowrap; min-width: max-content; }
+  .ca-date__wrap:has(.ca-date__range-sep) { column-gap: var(--ca-space-2); }
 
-.ca-date__content {
-  border-radius: var(--ca-radius-lg);
-  padding: var(--ca-space-3);
-  outline: none;
-  animation: ca-date-in var(--ca-duration-fast) var(--ca-ease-decelerate);
-}
+  /* ── Popover content ──────────────────────────────────────────── */
+  /* The wrapper is positioned (core `float` writes `transform` on it); the inner content animates. */
+  .ca-date__float { z-index: var(--ca-z-dropdown); }
 
-.ca-date__content[data-state='closed'] {
-  animation: ca-date-out var(--ca-duration-fast) var(--ca-ease-standard);
-}
+  .ca-date__content {
+    border-radius: var(--ca-radius-lg);
+    padding: var(--ca-space-3);
+    outline: none;
+    animation: ca-date-in var(--ca-duration-fast) var(--ca-ease-decelerate);
+  }
 
-@keyframes ca-date-in  { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
-@keyframes ca-date-out { from { opacity: 1; transform: scale(1); }    to { opacity: 0; transform: scale(0.96); } }
+  .ca-date__content[data-state='closed'] {
+    animation: ca-date-out var(--ca-duration-fast) var(--ca-ease-standard);
+  }
 
-/* ── Calendar ─────────────────────────────────────────────────── */
-.ca-cal {
-  max-width: 100%;
-  display: inline-flex;
-  flex-direction: column;
-  gap: var(--ca-space-2);
-  font-family: var(--ca-font-sans);
-  color: var(--ca-text-primary);
-  user-select: none;
-}
+  @keyframes ca-date-in  { from { opacity: 0; transform: scale(0.96); } to { opacity: 1; transform: scale(1); } }
+  @keyframes ca-date-out { from { opacity: 1; transform: scale(1); }    to { opacity: 0; transform: scale(0.96); } }
 
-.ca-cal--standalone {
-  padding: var(--ca-space-3);
-  border-radius: var(--ca-radius-lg);
-  background: var(--ca-field-bg);
-  border: var(--ca-border-width) solid var(--ca-field-border-color);
-  box-shadow: var(--ca-field-shadow);
-}
+  /* ── Calendar ─────────────────────────────────────────────────── */
+  .ca-cal {
+    max-width: 100%;
+    display: inline-flex;
+    flex-direction: column;
+    gap: var(--ca-space-2);
+    font-family: var(--ca-font-sans);
+    color: var(--ca-text-primary);
+    user-select: none;
+  }
 
-.ca-cal__header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: var(--ca-space-2);
-}
+  .ca-cal--standalone {
+    padding: var(--ca-space-3);
+    border-radius: var(--ca-radius-lg);
+    background: var(--ca-field-bg);
+    border: var(--ca-border-width) solid var(--ca-field-border-color);
+    box-shadow: var(--ca-field-shadow);
+  }
 
-.ca-cal__heading {
-  font-size: var(--ca-font-size-body2);
-  font-weight: var(--ca-font-weight-semibold);
-  text-transform: capitalize;
-}
+  .ca-cal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ca-space-2);
+  }
 
-.ca-cal__nav {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: var(--ca-space-7);
-  height: var(--ca-space-7);
-  padding: 0;
-  border: none;
-  border-radius: var(--ca-radius-sm);
-  background: transparent;
-  color: var(--ca-text-secondary);
-  cursor: pointer;
-  outline: none;
-}
+  .ca-cal__heading {
+    font-size: var(--ca-font-size-body2);
+    font-weight: var(--ca-font-weight-semibold);
+    text-transform: capitalize;
+  }
 
-.ca-cal__nav:hover:not([data-disabled]) { background: var(--ca-action-hover); color: var(--ca-text-primary); }
-.ca-cal__nav:focus-visible { box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-brand-main) 40%, transparent); }
-.ca-cal__nav[data-disabled] { opacity: 0.4; cursor: not-allowed; }
+  .ca-cal__nav {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: var(--ca-space-7);
+    height: var(--ca-space-7);
+    padding: 0;
+    border: none;
+    border-radius: var(--ca-radius-sm);
+    background: transparent;
+    color: var(--ca-text-secondary);
+    cursor: pointer;
+    outline: none;
+  }
 
-.ca-cal__months { display: flex; gap: var(--ca-space-4); flex-wrap: wrap; max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; }
+  .ca-cal__nav:hover:not([data-disabled]) { background: var(--ca-action-hover); color: var(--ca-text-primary); }
+  .ca-cal__nav:focus-visible { outline: var(--ca-border-width-focus) solid var(--ca-focus-ring); outline-offset: var(--ca-focus-ring-offset); }
+  .ca-cal__nav[data-disabled] { color: var(--ca-text-disabled); cursor: not-allowed; }
 
-.ca-cal__grid { border-collapse: collapse; }
+  .ca-cal__months { display: flex; gap: var(--ca-space-4); flex-wrap: wrap; max-width: 100%; overflow-x: auto; overscroll-behavior-x: contain; }
 
-.ca-cal__head-cell {
-  width: var(--ca-control-height);
-  padding-bottom: var(--ca-space-1);
-  font-size: var(--ca-font-size-caption);
-  font-weight: var(--ca-font-weight-medium);
-  color: var(--ca-text-secondary);
-  text-align: center;
-  text-transform: capitalize;
-}
+  .ca-cal__grid { border-collapse: collapse; }
 
-.ca-cal__cell { padding: var(--ca-border-width); text-align: center; }
+  .ca-cal__head-cell {
+    width: var(--ca-control-height);
+    padding-bottom: var(--ca-space-1);
+    font-size: var(--ca-font-size-caption);
+    font-weight: var(--ca-font-weight-medium);
+    color: var(--ca-text-secondary);
+    text-align: center;
+    text-transform: capitalize;
+  }
 
-.ca-cal__day {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: calc(var(--ca-control-height) - 2 * var(--ca-border-width));
-  height: calc(var(--ca-control-height) - 2 * var(--ca-border-width));
-  border-radius: var(--ca-radius-md);
-  font-size: var(--ca-font-size-body2);
-  font-variant-numeric: tabular-nums;
-  cursor: pointer;
-  outline: none;
-  border: var(--ca-border-width) solid transparent;
-  transition: background var(--ca-duration-fast) var(--ca-ease-standard);
-}
+  .ca-cal__cell { padding: var(--ca-border-width); text-align: center; }
 
-/* Touch: day cells never shrink below the 44px target. When seven do not fit the
-   available width, the month grid scrolls inside the calendar; the page never does. */
-@media (pointer: coarse) {
-  .ca-cal__day { width: var(--ca-touch-target); height: var(--ca-touch-target); }
-  .ca-cal__head-cell { width: var(--ca-touch-target); }
-}
+  .ca-cal__day {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(var(--ca-control-height) - 2 * var(--ca-border-width));
+    height: calc(var(--ca-control-height) - 2 * var(--ca-border-width));
+    border-radius: var(--ca-radius-md);
+    font-size: var(--ca-font-size-body2);
+    font-variant-numeric: tabular-nums;
+    cursor: pointer;
+    outline: none;
+    border: var(--ca-border-width) solid transparent;
+    transition: background var(--ca-duration-fast) var(--ca-ease-standard);
+  }
+
+  /* Touch: day cells never shrink below the 44px target. When seven do not fit the
+     available width, the month grid scrolls inside the calendar; the page never does. */
+  @media (pointer: coarse) {
+    .ca-cal__day { width: var(--ca-touch-target); height: var(--ca-touch-target); }
+    .ca-cal__head-cell { width: var(--ca-touch-target); }
+  }
 
 
-.ca-cal__day:hover:not([data-selected]):not([data-disabled]) { background: var(--ca-action-hover); }
-.ca-cal__day:focus-visible { box-shadow: 0 0 0 var(--ca-border-width-focus) color-mix(in oklab, var(--ca-brand-main) 50%, transparent); }
-.ca-cal__day[data-today]:not([data-selected]) { border-color: var(--ca-brand-main); color: var(--ca-brand-text); font-weight: var(--ca-font-weight-semibold); }
-.ca-cal__day[data-outside-month] { color: var(--ca-text-hint); }
-.ca-cal__day[data-disabled],
-.ca-cal__day[data-unavailable] { color: var(--ca-text-disabled); cursor: not-allowed; }
-.ca-cal__day[data-unavailable] { text-decoration: line-through; }
+  .ca-cal__day:hover:not([data-selected]):not([data-disabled]) { background: var(--ca-action-hover); }
+  .ca-cal__day:focus-visible { outline: var(--ca-border-width-focus) solid var(--ca-focus-ring); outline-offset: var(--ca-focus-ring-offset); }
+  .ca-cal__day[data-today]:not([data-selected]) { border-color: var(--ca-brand-main); color: var(--ca-brand-text); font-weight: var(--ca-font-weight-semibold); }
+  .ca-cal__day[data-outside-month] { color: var(--ca-text-hint); }
+  .ca-cal__day[data-disabled],
+  .ca-cal__day[data-unavailable] { color: var(--ca-text-disabled); cursor: not-allowed; }
+  .ca-cal__day[data-unavailable] { text-decoration: line-through; }
 
-.ca-cal__day[data-selected] {
-  background: var(--ca-brand-fill);
-  color: var(--ca-brand-contrast);
-  font-weight: var(--ca-font-weight-semibold);
-}
+  .ca-cal__day[data-selected] {
+    background: var(--ca-brand-fill);
+    color: var(--ca-brand-contrast);
+    font-weight: var(--ca-font-weight-semibold);
+  }
 
-/* Range: in-between days get a soft band; edges keep the solid pill */
-.ca-cal__day[data-highlighted]:not([data-selection-start]):not([data-selection-end]) {
-  background: color-mix(in oklab, var(--ca-brand-main) 16%, transparent);
-  color: var(--ca-text-primary);
-  border-radius: 0;
-}
+  /* Range: in-between days get a soft band; edges keep the solid pill */
+  .ca-cal__day[data-highlighted]:not([data-selection-start]):not([data-selection-end]) {
+    background: color-mix(in oklab, var(--ca-brand-main) 16%, transparent);
+    color: var(--ca-text-primary);
+    border-radius: 0;
+  }
 
-.ca-cal__day[data-selection-start]:not([data-selection-end]) { border-start-end-radius: 0; border-end-end-radius: 0; }
-.ca-cal__day[data-selection-end]:not([data-selection-start])   { border-start-start-radius: 0; border-end-start-radius: 0; }
-.ca-cal__day[data-selection-start],
-.ca-cal__day[data-selection-end] { background: var(--ca-brand-fill); color: var(--ca-brand-contrast); }
+  .ca-cal__day[data-selection-start]:not([data-selection-end]) { border-start-end-radius: 0; border-end-end-radius: 0; }
+  .ca-cal__day[data-selection-end]:not([data-selection-start])   { border-start-start-radius: 0; border-end-start-radius: 0; }
+  .ca-cal__day[data-selection-start],
+  .ca-cal__day[data-selection-end] { background: var(--ca-brand-fill); color: var(--ca-brand-contrast); }
 
-@media (prefers-reduced-motion: reduce) {
-  .ca-date__content,
-  .ca-date__content[data-state='closed'] { animation: none; }
-  .ca-cal__day, .ca-date__wrap { transition: none; }
+  @media (prefers-reduced-motion: reduce) {
+    .ca-date__content,
+    .ca-date__content[data-state='closed'] { animation: none; }
+    .ca-cal__day, .ca-date__wrap { transition: none; }
+  }
 }

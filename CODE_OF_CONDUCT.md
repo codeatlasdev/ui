@@ -24,6 +24,13 @@ Examples of unacceptable behavior:
 - Publishing others' private information without their explicit permission
 - Other conduct which could reasonably be considered inappropriate in a professional setting
 
+## Engineering Standards
+
+Quality is part of how we treat each other: shipping a "fix" that does not fix anything costs everyone time. In this project:
+
+- Every bug fix starts with a regression test that reproduces the problem and fails on the current code. The fix is done when that test passes.
+- Tests prove behavior. We do not write tests to pad coverage, and we remove tests that cannot fail for a plausible bug.
+
 ## Enforcement Responsibilities
 
 Community leaders are responsible for clarifying and enforcing our standards of acceptable behavior and will take appropriate and fair corrective action in response to any behavior that they deem inappropriate, threatening, offensive, or harmful.

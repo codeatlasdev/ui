@@ -8,6 +8,7 @@ import {
 	generatePreset,
 	hexToOklch,
 	oklchToHex,
+	onFill,
 	presetVars,
 	type TokenMap,
 } from "../utils/palette-generator.js";
@@ -220,14 +221,27 @@ export interface ResolvedTheme extends ThemeDefinition {
 
 const HEX = /^#[0-9a-f]{6}$/i;
 
+/**
+ * `--ca-semantic-error-contrast` for a map that sets `--ca-semantic-error-fill` to a colour of its
+ * own: white or ink, whichever reads better on it, like `--ca-brand-contrast` for the brand fill.
+ * Maps that leave the fill alone keep the preset's pair.
+ */
+function withErrorContrast<T extends Record<string, string>>(vars: T): T {
+	const fill = vars["--ca-semantic-error-fill"];
+	if (!fill || "--ca-semantic-error-contrast" in vars) return vars;
+	const m = fill.match(/oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)/);
+	if (!m) return vars;
+	return { ...vars, "--ca-semantic-error-contrast": onFill(+m[1], +m[2], +m[3]) };
+}
+
 /** Light/dark token maps (with `color-scheme`) for a built-in or brand preset. */
 function presetTokens(src: BuiltinPresetSource | PresetDefinition) {
 	let vars: { light: TokenMap; dark: TokenMap };
 	if ("hue" in src) {
 		const g = presetVars(generatePreset(src.hue, src.chroma, src.lightL));
 		vars = {
-			light: { ...g.light, ...src.overrides.light },
-			dark: { ...g.dark, ...src.overrides.dark },
+			light: { ...g.light, ...withErrorContrast({ ...src.overrides.light }) },
+			dark: { ...g.dark, ...withErrorContrast({ ...src.overrides.dark }) },
 		};
 	} else {
 		if (!HEX.test(src.color))
@@ -235,8 +249,12 @@ function presetTokens(src: BuiltinPresetSource | PresetDefinition) {
 		const { l, c, h } = hexToOklch(src.color);
 		const g = presetVars(generatePreset(h, c, l));
 		vars = {
-			light: { "--ca-chart-brand": src.color, ...g.light, ...roleTokens(src, "light") },
-			dark: { ...g.dark, ...roleTokens(src, "dark") },
+			light: {
+				"--ca-chart-brand": src.color,
+				...g.light,
+				...withErrorContrast(roleTokens(src, "light")),
+			},
+			dark: { ...g.dark, ...withErrorContrast(roleTokens(src, "dark")) },
 		};
 	}
 	const light: Record<string, string> = { "color-scheme": "light", ...vars.light };
@@ -268,6 +286,8 @@ function roleTokens(src: PresetDefinition, scheme: "light" | "dark"): TokenMap {
 		const v = colors[role];
 		if (v) out[token] = v;
 	}
+	// A hand-picked error colour also owns the destructive fill, so its label is derived with it.
+	if (colors.error && /^oklch\(/.test(colors.error)) out["--ca-semantic-error-fill"] = colors.error;
 	return out;
 }
 
@@ -287,6 +307,8 @@ function contrastTokens(src: BuiltinPresetSource | PresetDefinition, scheme: "li
 				"--ca-outline-subtle": `oklch(0.200 0.010 ${h} / 0.60)`,
 				"--ca-outline-default": `oklch(0.200 0.010 ${h} / 0.70)`,
 				"--ca-outline-strong": `oklch(0.200 0.010 ${h} / 0.85)`,
+				"--ca-outline-control": `oklch(0.200 0.010 ${h} / 0.85)`,
+				"--ca-text-disabled": `oklch(0.420 0.010 ${h})`,
 			}
 		: {
 				"--ca-text-secondary": `oklch(0.820 0.007 ${h})`,
@@ -294,6 +316,8 @@ function contrastTokens(src: BuiltinPresetSource | PresetDefinition, scheme: "li
 				"--ca-outline-subtle": "oklch(1 0 0 / 0.45)",
 				"--ca-outline-default": "oklch(1 0 0 / 0.60)",
 				"--ca-outline-strong": "oklch(1 0 0 / 0.75)",
+				"--ca-outline-control": "oklch(1 0 0 / 0.75)",
+				"--ca-text-disabled": `oklch(0.700 0.008 ${h})`,
 			};
 }
 
@@ -311,7 +335,8 @@ function contrastTokens(src: BuiltinPresetSource | PresetDefinition, scheme: "li
  */
 export function presetCSS(
 	src: BuiltinPresetSource | PresetDefinition,
-	kind: "root" | "builtin" | "brand"
+	kind: "root" | "builtin" | "brand",
+	docs?: Record<string, string>
 ): string {
 	const { light, dark } = presetTokens(src);
 	const P = `[data-preset="${src.id}"]`;
@@ -337,7 +362,7 @@ export function presetCSS(
 	];
 	// prefers-contrast: more — same selectors, after the base blocks, so it wins at equal specificity.
 	const more = `@media (prefers-contrast: more) {\n${cssBlock(lightSel.join(",\n"), contrastTokens(src, "light"))}\n${cssBlock(darkSel.join(",\n"), contrastTokens(src, "dark"))}\n}`;
-	return `${cssBlock(lightSel.join(",\n"), light)}\n${cssBlock(darkSel.join(",\n"), dark)}\n${more}`;
+	return `${cssBlock(lightSel.join(",\n"), light, docs)}\n${cssBlock(darkSel.join(",\n"), dark)}\n${more}`;
 }
 
 /** Resolve a partial definition: fills defaults, validates ids, precomputes theme-color hexes. */
@@ -537,9 +562,14 @@ export function themeCSS(t: ResolvedTheme): string {
 	if (t.fonts.mono) root["--ca-font-mono"] = fontStack(t.fonts.mono);
 	if (t.fonts.display) root["--ca-font-display"] = fontStack(t.fonts.display);
 	Object.assign(root, designTokens(t));
-	Object.assign(root, t.overrides.light);
+	Object.assign(root, withErrorContrast({ ...t.overrides.light }));
 	if (Object.keys(root).length) out.push(cssBlock(':root,\n[data-theme-scope="light"]', root));
 	if (t.overrides.dark && Object.keys(t.overrides.dark).length)
-		out.push(cssBlock(':root.dark,\n:root [data-theme-scope="dark"]', t.overrides.dark));
+		out.push(
+			cssBlock(
+				':root.dark,\n:root [data-theme-scope="dark"]',
+				withErrorContrast({ ...t.overrides.dark })
+			)
+		);
 	return out.join("\n");
 }

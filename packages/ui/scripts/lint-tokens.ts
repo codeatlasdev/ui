@@ -12,6 +12,9 @@
 //   svelte-ignore    `svelte-ignore` takes warning codes only; any prose after them is read
 //                    as more codes and the real warning comes back (fails a11y builds).
 //   breakpoint       width media queries use the one scale (600/900/1200/1536, max = N-0.02).
+//   text-disabled    `color: var(--ca-text-disabled)` belongs to disabled controls only; de-emphasised
+//                    information uses --ca-text-hint (prose.css list markers are decorative and allowed).
+//   focus-ring       a focus rule must read var(--ca-focus-ring), not a literal --ca-brand-main.
 import { readdirSync, readFileSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -25,7 +28,9 @@ export interface Violation {
 		| "backdrop-order"
 		| "input-font-size"
 		| "svelte-ignore"
-		| "breakpoint";
+		| "breakpoint"
+		| "text-disabled"
+		| "focus-ring";
 	message: string;
 }
 
@@ -113,6 +118,32 @@ export function lintSource(file: string, source: string): Violation[] {
 					message:
 						"backdrop-filter is declared before -webkit-backdrop-filter: Lightning CSS drops the standard one",
 				});
+
+			const sel = rule[1] ?? "";
+			const disabledSel =
+				/:disabled|\[disabled|\[aria-disabled|\[data-disabled|--disabled|__disabled|:global\([^)]*disabled/.test(
+					sel
+				);
+			const td = /(^|[^-\w])color\s*:\s*var\(--ca-text-disabled\)/.exec(body);
+			if (td && !disabledSel && !/prose\.css$/.test(file))
+				v.push({
+					file,
+					line: lineOf(src, bodyAt + td.index + td[1].length),
+					rule: "text-disabled",
+					message:
+						"--ca-text-disabled is for disabled controls only: use --ca-text-hint for de-emphasised information",
+				});
+			if (/:focus(-visible|-within)?\b/.test(sel)) {
+				const fr = /--ca-brand-main/.exec(body);
+				if (fr && /outline[\w-]*\s*:[^;]*--ca-brand-main/.test(body))
+					v.push({
+						file,
+						line: lineOf(src, bodyAt + fr.index),
+						rule: "focus-ring",
+						message:
+							"focus rule reads --ca-brand-main: use var(--ca-focus-ring) so the ring token themes it",
+					});
+			}
 
 			if (INPUT_SELECTOR.test(rule[1] ?? "")) {
 				const fs = /(^|[^-\w])font-size\s*:\s*([\d.]+)px/.exec(body);

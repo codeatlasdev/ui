@@ -78,7 +78,10 @@
 </div>
 
 <style>
-  .ca-masked {
-    width: 100%;
-  }
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+    .ca-masked {
+      width: 100%;
+    }
+}
 </style>
