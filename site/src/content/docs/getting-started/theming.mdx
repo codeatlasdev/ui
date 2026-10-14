@@ -37,7 +37,8 @@ Pass the same object to `caThemeHandle` and `caThemePlugin` (SvelteKit), `caUI` 
 | `fonts` | `{}` | `body`, `mono` and `display`. Each is a font stack string or a self-hosted font descriptor (`@font-face`, preload, metric-matched fallback), see [Performance](/docs/getting-started/performance/#fonts). They set `--ca-font-sans`, `--ca-font-mono` and `--ca-font-display`. |
 | `radius` | `1` | Multiplier applied to the `--ca-radius-xs` to `--ca-radius-xl` scale. |
 | `density` | `"comfortable"` | `"compact"` tightens card padding and page gaps. |
-| `overrides` | `{}` | Raw `--ca-*` token overrides, per scheme (`light`, `dark`). |
+| `paper` | `"mesh"` | Page background: `"mesh"` (brand glow), `"plain"`, `"grid"`, `"dots"` or `"lines"`. Flat patterns are drawn in `--ca-outline-subtle`, so they follow the preset and scheme. |
+| `overrides` | `{}` | Raw `--ca-*` token overrides, per scheme (`light`, `dark`). Prefer preset role colors (below) for palettes. |
 
 `defineTheme(options)` resolves the options (defaults, validation) and `themeCSS(resolved)` returns the CSS string. You rarely call them yourself; the integrations do. Invalid input fails the build: a preset `id` that clashes with a built-in, a color that is not `#rrggbb`, or a `defaultPreset` that does not exist.
 
@@ -72,6 +73,38 @@ export const theme: ThemeOptions = {
 <Callout type="caution">
   Values stored by the user that your theme does not know are discarded and removed from storage. If you rename or delete a brand preset, returning users fall back to `defaultPreset` instead of seeing a broken theme.
 </Callout>
+
+### Porting a palette by role
+
+To bring an existing palette (a terminal or editor theme) into a preset, set role colors per scheme. Unset roles keep the generated value; a per-scheme `brand` regenerates that scheme's brand ramp, and `background` also drives `<meta name="theme-color">`. Roles are scoped to the preset, so switching presets and theme islands keep working.
+
+```ts
+presets: [{
+  id: "tokyo",
+  color: "#7aa2f7",
+  colors: {
+    light: { brand: "#34548a" },
+    dark: { background: "#1a1b26", surface: "#232430", text: "#c0caf5", border: "#565f89", error: "#f7768e" },
+  },
+}],
+```
+
+Roles: `brand`, `background`, `sunken`, `surface`, `overlay`, `text`, `textSecondary`, `textHint`, `textDisabled`, `borderSubtle`, `border`, `borderStrong`, `success`, `warning`, `info`, `error`. Check contrast after overriding text or surfaces: the generated palette guarantees AA, hand-picked colors are yours to verify.
+
+### Sketchbook style and hand-drawn marks
+
+`designStyle("sketchbook", { ... })` is a journal look: grid paper, serif display, square outlined cards with hard shadows. It pairs with the opt-in marks stylesheet:
+
+```ts
+import "@codeatlasdev/ui/styles/marks.css";
+```
+
+```html
+<span class="ca-mark-underline">already knows.</span>
+<p class="ca-mark-note">A margin note with a sketched arrow.</p>
+```
+
+Marks are SVG masks painted with `--ca-mark-color` (brand by default); swap the shapes with `--ca-mark-scribble` and `--ca-mark-arrow`. In forced-colors mode they paint in `CanvasText`.
 
 ## Schemes
 
