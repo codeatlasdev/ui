@@ -63,6 +63,7 @@ test.describe("docs", () => {
 	const endpoints: [string, RegExp, RegExp][] = [
 		["/llms.txt", /^text\/plain/, /CodeAtlas UI/i],
 		["/llms-full.txt", /^text\/plain/, /CodeAtlas UI/i],
+		["/llms-full.txt", /^text\/plain/, /^# AGENTS\.md: Guide for AI Agents$/m],
 		["/robots.txt", /^text\/plain/, /Sitemap: .*sitemap-index\.xml/],
 		["/sitemap-index.xml", /^(application|text)\/xml/, /<sitemapindex/],
 		["/search-index.json", /^application\/json/, /"href":"\/docs\//],

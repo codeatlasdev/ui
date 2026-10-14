@@ -1,37 +1,33 @@
 import { loadDocs } from "~/lib/docs";
 import { docHref, GROUPS } from "~/lib/nav";
-import { mdxToMarkdown } from "../../../packages/ui/scripts/mdx-to-markdown";
+// Repo AGENTS.md, inlined at build time (Vite `?raw`), so one fetch covers docs and agent rules.
+import agentsMd from "../../../AGENTS.md?raw";
+import { buildLlmsFull } from "../../../packages/ui/scripts/llms-full";
 
 const SITE = "https://ui.codeatlas.com.br";
 
 export async function GET() {
 	const { entries, flat } = await loadDocs();
 	const byId = new Map(entries.map((e) => [e.id, e]));
-	const parts = [
-		"# CodeAtlas UI: full documentation",
-		"",
-		`> Open-source Svelte 5 component library (\`@codeatlasdev/ui\`). Index: ${SITE}/llms.txt`,
-		"",
-	];
-	for (const group of GROUPS) {
-		for (const d of flat.filter((x) => x.group === group)) {
-			const entry = byId.get(d.slug);
-			if (!entry) continue;
-			parts.push(
-				"---",
-				"",
-				`# ${d.title}`,
-				"",
-				`Group: ${group}. URL: ${SITE}${docHref(d.slug)}`,
-				"",
-				d.description,
-				"",
-				mdxToMarkdown(entry.body ?? ""),
-				""
-			);
-		}
-	}
-	return new Response(parts.join("\n"), {
+	const docs = GROUPS.flatMap((group) =>
+		flat
+			.filter((d) => d.group === group)
+			.flatMap((d) => {
+				const entry = byId.get(d.slug);
+				return entry
+					? [
+							{
+								group,
+								title: d.title,
+								url: docHref(d.slug),
+								description: d.description,
+								body: entry.body ?? "",
+							},
+						]
+					: [];
+			})
+	);
+	return new Response(buildLlmsFull({ site: SITE, docs, agentsMd }), {
 		headers: { "content-type": "text/plain; charset=utf-8" },
 	});
 }
