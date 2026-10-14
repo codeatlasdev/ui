@@ -29,7 +29,7 @@
 
 <a {...rest} {href} target="_blank" rel="noopener noreferrer" class="ca-external-link {className}">
   {@render children()}
-  <span class="ca-external-link__sr"> ({t().externalLink.newTab})</span>
+  <span class="ca-sr-only"> ({t().externalLink.newTab})</span>
   {#if showIcon}<ExternalIcon class="ca-external-link__icon" size={14} stroke-width={2} aria-hidden="true" />{/if}
 </a>
 
@@ -50,18 +50,6 @@
 
     .ca-external-link :global(.ca-external-link__icon) { flex: none; }
 
-    /* Visually hidden, still in the accessible name. */
-    .ca-external-link__sr {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      margin: -1px;
-      padding: 0;
-      overflow: hidden;
-      clip-path: inset(50%);
-      white-space: nowrap;
-      border: 0;
-    }
 
     /* Touch: a 44px target without growing the text. */
     @media (pointer: coarse) {
