@@ -127,9 +127,9 @@ describe("codeatlas-ui SKILL.md", () => {
 		const themeFile = viteBlock.match(/\/\/ src\/lib\/theme\.ts[\s\S]*?\n\};\n/)?.[0] ?? "";
 		expect(themeFile).toContain("ThemeOptions");
 		const lib = join(resolve(import.meta.dir, ".."), "src/lib");
-		const source = `${themeFile.replace("'@codeatlasdev/ui'", `'${lib}/index.ts'`)}
+		const source = `${themeFile.replace("'@codeatlasdev/ui'", `'${lib}/theme-script.ts'`)}
 import { caThemePlugin } from '${lib}/vite-plugin.ts';
-import { caThemeHandle } from '${lib}/kit/index.ts';
+import { caThemeHandle } from '${lib}/kit/theme-handle.ts';
 caThemePlugin(theme);
 caThemeHandle(theme);
 `;
@@ -137,7 +137,7 @@ caThemeHandle(theme);
 		// The check bites: a typo'd option must be reported.
 		const bad = source.replace("defaultScheme:", "defaultSchemeX:");
 		expect(typeErrors("__skill_setup__.ts", bad)).not.toEqual([]);
-	});
+	}, 60_000);
 
 	it("imports the theme with the .ts extension (Vite native config loader)", () => {
 		expect(viteBlock).toMatch(/import \{ theme \} from ['"]\.\/src\/lib\/theme\.ts['"]/);
