@@ -68,11 +68,12 @@
   );
 
   function onMounted(el: HTMLElement) {
-    requestAnimationFrame(() => {
+    const frame = requestAnimationFrame(() => {
       if (pendingFocus === 'first') listbox.first();
       else if (pendingFocus === 'last') listbox.last();
       else el.focus({ preventScroll: true });
     });
+    return () => cancelAnimationFrame(frame);
   }
 
   function onkeydown(e: KeyboardEvent) {

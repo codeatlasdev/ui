@@ -29,8 +29,8 @@
     onpointerenter?: (e: PointerEvent) => void;
     onpointerleave?: (e: PointerEvent) => void;
     children?: import('svelte').Snippet;
-    /** Runs once the layer is mounted and positioned (focus management). */
-    onMounted?: (el: HTMLElement) => void;
+    /** Runs once the layer is mounted and positioned (focus management). May return a cleanup, run when the layer closes or unmounts (cancel deferred focus moves here). */
+    onMounted?: (el: HTMLElement) => void | (() => void);
     /** Set false for layers that never dismiss themselves (tooltips are closed by their trigger). */
     dismiss?: boolean;
     /** z-index CSS value for the floated wrapper. Default `var(--ca-z-dropdown)`. */
@@ -84,9 +84,11 @@
     return () => mo.disconnect();
   });
 
+  // The returned cleanup runs when the layer closes or unmounts, so work deferred from `onMounted`
+  // (a frame-delayed focus move) can never outlive the open state and steal focus back from the trigger.
   $effect(() => {
     const el = ref;
-    if (el && open) onMounted?.(el);
+    if (el && open) return onMounted?.(el);
   });
 
   function layer(node: HTMLElement) {

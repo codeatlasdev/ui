@@ -71,6 +71,31 @@ describe("DropdownMenu", () => {
 		await expect.element(trigger).toHaveAttribute("aria-expanded", "false");
 	});
 
+	// #81: opening queues a focus move for the next frame. When the close lands before that frame
+	// (a slow machine, CPU-bound suite) the queued move must not pull focus back into the closing menu.
+	it("Escape before the open frame has run still leaves focus on the trigger", async () => {
+		const screen = await render(Harness);
+		const trigger = screen.getByRole("button", { name: "Actions" });
+		const el = trigger.element() as HTMLElement;
+		el.focus();
+		el.dispatchEvent(
+			new KeyboardEvent("keydown", { key: "Enter", bubbles: true, cancelable: true })
+		);
+		await expect.element(page.getByRole("menu")).toBeInTheDocument();
+		// Same task as the open: no animation frame has run yet.
+		document.dispatchEvent(
+			new KeyboardEvent("keydown", { key: "Escape", bubbles: true, cancelable: true })
+		);
+		for (let i = 0; i < 5; i++) {
+			const { promise, resolve } = Promise.withResolvers<void>();
+			requestAnimationFrame(() => resolve());
+			await promise;
+		}
+		await expect.element(page.getByRole("menu")).not.toBeInTheDocument();
+		expect(document.activeElement).toBe(el);
+		await expect.element(trigger).toHaveAttribute("aria-expanded", "false");
+	});
+
 	it("click opens and clicking an item runs it", async () => {
 		const ondelete = vi.fn();
 		const screen = await render(Harness, { ondelete });
