@@ -320,7 +320,9 @@ export function presetCSS(
 	const lightSel = [
 		...(kind === "root" ? [":root", L] : []),
 		P,
-		`${P} ${L}`,
+		// A scope inside this preset re-applies it, unless the scope carries its own preset
+		// (that element's preset wins; brand rules are unlayered and would beat a built-in one).
+		`${P} ${L}:not([data-preset])`,
 		// Doubled attributes: beat `.dark ${P}` (0,2,0) when the light scope is closer.
 		`${P}${L}${L}`,
 		`${L}${L} ${P}`,
@@ -329,7 +331,7 @@ export function presetCSS(
 		...(kind === "root" ? [".dark", D] : []),
 		`.dark${P}`,
 		`.dark ${P}`,
-		`${P} ${D}`,
+		`${P} ${D}:not([data-preset])`,
 		`${P}${D}${D}`,
 		`${D} ${P}`,
 	];

@@ -1,3 +1,4 @@
+import { theme } from "../src/theme";
 import { expect, gotoReady, test } from "./fixtures";
 
 test.describe("theme", () => {
@@ -46,7 +47,10 @@ test.describe("theme", () => {
 				}
 			});
 			await page.goto("/");
-			await expect(page.locator("html")).toHaveAttribute("data-preset", "amber");
+			await expect(page.locator("html")).toHaveAttribute(
+				"data-preset",
+				theme.defaultPreset ?? "amber"
+			);
 			expect(await page.evaluate(() => localStorage.getItem("ca-preset"))).toBeNull();
 		});
 
