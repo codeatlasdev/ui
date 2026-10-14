@@ -90,3 +90,25 @@ test("html paints a solid canvas color (overscroll, Safari 26 sampling)", async 
 	expect(image).toBe("none");
 	expect(color).not.toMatch(/rgba\(0, 0, 0, 0\)|transparent/);
 });
+
+// Touch opens and closes the native-<dialog> overlays (top layer, inert page, focus restore).
+for (const [path, name] of [
+	["/docs/feedback/sheet/", "Open sheet"],
+	["/docs/feedback/dialog/", "Delete item"],
+] as const) {
+	test(`tap opens and closes the overlay on ${path}`, async ({ page }) => {
+		await gotoReady(page, path);
+		const trigger = page.getByRole("button", { name }).first();
+		await trigger.scrollIntoViewIfNeeded();
+		await trigger.tap();
+		const dialog = page.locator("dialog[open]");
+		await expect(dialog).toBeVisible();
+		expect(
+			await dialog.evaluate((d) => d.matches(":modal") && d.parentElement === document.body)
+		).toBe(true);
+		await page.keyboard.press("Escape");
+		// Safari never focuses a tapped button, so there is no opener to restore focus to here;
+		// focus restore is covered by the keyboard specs.
+		await expect(page.locator("dialog")).toHaveCount(0);
+	});
+}
