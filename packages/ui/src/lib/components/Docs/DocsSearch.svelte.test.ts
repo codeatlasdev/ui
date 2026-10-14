@@ -103,6 +103,39 @@ describe("DocsSearch", () => {
 		expect(onselect).toHaveBeenCalledOnce();
 	});
 
+	// #76: a row that appears or slides under a parked pointer fires mouseenter without any movement
+	// (results render, dialog animates in). That must not steal the keyboard selection; only a real
+	// pointer move does. Deterministic stand-in for the CI timing: dispatch the synthetic enter.
+	it("a row entering under a still pointer does not steal the selection", async () => {
+		await render(DocsSearchHarness, { index: entries, open: true });
+		await userEvent.keyboard("webhook");
+		const options = page.getByRole("option");
+		await expect.poll(() => options.elements().length).toBeGreaterThan(1);
+		const second = options.nth(1).element();
+		second.dispatchEvent(new MouseEvent("mouseenter", { bubbles: false }));
+		second.dispatchEvent(new MouseEvent("mouseover", { bubbles: true }));
+		await userEvent.keyboard("{ArrowDown}");
+		await expect.element(options.nth(1)).toHaveAttribute("aria-selected", "true");
+		await userEvent.keyboard("{ArrowUp}");
+		await expect.element(options.first()).toHaveAttribute("aria-selected", "true");
+		second.dispatchEvent(new MouseEvent("mousemove", { bubbles: true }));
+		await expect.element(options.nth(1)).toHaveAttribute("aria-selected", "true");
+	});
+
+	// #76: the lazy loader resolving while the dialog is open must not reset the typed query.
+	it("typing before the lazy index resolves keeps the query and results", async () => {
+		let resolve!: (e: DocsSearchEntry[]) => void;
+		const index = () => new Promise<DocsSearchEntry[]>((r) => (resolve = r));
+		await render(DocsSearchHarness, { index, open: true });
+		await userEvent.keyboard("webhook");
+		await expect.element(page.getByRole("status")).toMatchTextContent("Carregando");
+		resolve(entries);
+		const options = page.getByRole("option");
+		await expect.poll(() => options.elements().length).toBeGreaterThan(1);
+		await expect.element(input()).toHaveValue("webhook");
+		await expect.element(options.first()).toHaveAttribute("aria-selected", "true");
+	});
+
 	it("selection is clamped at both ends", async () => {
 		await render(DocsSearchHarness, { index: entries, open: true });
 		await userEvent.keyboard("webhook");

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte';
   import { focusTextField } from '../../actions/autofocus.js';
   import { useT } from '../../i18n/state.svelte.js';
   import { createIds, createPresence } from '../../primitives/index.js';
@@ -43,13 +44,16 @@
   let selected = $state(0);
   let input = $state<HTMLInputElement | null>(null);
 
+  // `index` as an array is tracked (a new array refreshes the entries). The lazy loader path reads
+  // `entries` untracked: when it resolves while the dialog is open it must not re-run this effect and
+  // wipe the query and selection the user already typed (#76).
   $effect(() => {
     if (!open) return;
     query = '';
     selected = 0;
     if (Array.isArray(index)) {
       entries = index;
-    } else if (!entries) {
+    } else if (!untrack(() => entries)) {
       failed = false;
       index()
         .then((data) => (entries = data))
@@ -68,7 +72,8 @@
   function onkeydown(e: KeyboardEvent) {
     if (e.key === 'ArrowDown') {
       e.preventDefault();
-      selected = Math.min(selected + 1, results.length - 1);
+      // Empty list: stay on 0, never -1 (the next results render would have nothing selected).
+      selected = Math.max(0, Math.min(selected + 1, results.length - 1));
     } else if (e.key === 'ArrowUp') {
       e.preventDefault();
       selected = Math.max(selected - 1, 0);
@@ -130,7 +135,10 @@
             <ul id="ca-docs-search-results" class="ca-docs-search__results" role="listbox" aria-label={t().docs.search.results}>
               {#each results as r, i (r.href)}
                 <!-- The combobox input drives the list (aria-activedescendant). The option is a real link,
-                     so middle-click / Ctrl-click / copy link work; plain clicks route through `onselect`. -->
+                     so middle-click / Ctrl-click / copy link work; plain clicks route through `onselect`.
+                     Hover follows the pointer on `mousemove`, not `mouseenter`: a row that merely appears or
+                     slides under a stationary pointer (results render, dialog animates in) fires mouseenter
+                     and would steal the keyboard selection. -->
                 <li role="none">
                   <a
                     href={r.href}
@@ -140,7 +148,7 @@
                     aria-selected={i === selected}
                     class="ca-docs-search__result"
                     class:ca-docs-search__result--on={i === selected}
-                    onmouseenter={() => (selected = i)}
+                    onmousemove={() => (selected = i)}
                     onclick={(e) => {
                       if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
                       e.preventDefault();
