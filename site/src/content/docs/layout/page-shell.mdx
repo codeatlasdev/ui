@@ -20,6 +20,8 @@ import DashboardSrc from "~/demos/layout/page-shell/Dashboard.svelte?raw";
 </PageShell>
 ```
 
+Below 900px the header stacks: the description leads and `actions` wrap onto their own row. Labeled buttons share that row full-width (large tap targets); icon-only controls (`IconButton`, `ThemeToggle`) keep their natural size and stay at the end of the row.
+
 <Demo title="Dashboard page" description="KPI cards and a content card inside a PageShell." src={DashboardSrc}><Dashboard /></Demo>
 
 <Props rows={[

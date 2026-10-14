@@ -135,7 +135,9 @@
       }
     }
 
-    /* Mobile: description leads, actions wrap below it full-width. */
+    /* Mobile: description leads, actions wrap below it. Labeled controls share the row
+       full-width (big tap targets); icon-only controls keep their natural size and stay
+       at the end, so a lone ThemeToggle/IconButton never stretches or centres. */
     @media (max-width: 899.98px) {
       .ca-page-shell__header {
         flex-direction: column;
@@ -145,10 +147,16 @@
       .ca-page-shell__actions {
         flex-shrink: 1;
         flex-wrap: wrap;
+        justify-content: flex-end;
         width: 100%;
       }
       .ca-page-shell__actions > :global(*) {
         flex: 1 1 auto;
+      }
+      .ca-page-shell__actions > :global(.ca-icon-btn),
+      .ca-page-shell__actions > :global(.ca-rail-btn) {
+        flex: 0 0 auto;
+        width: auto;
       }
     }
 }
