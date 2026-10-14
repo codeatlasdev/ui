@@ -1,7 +1,8 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import { setContext } from 'svelte';
-  import { spring } from 'svelte/motion';
+  import { Spring } from 'svelte/motion';
+  import { reducedMotion } from '../../stores/reduced-motion.svelte.js';
   import type { NavModule } from './types.js';
   import { findActiveModuleIndex, findActiveItemPath, firstModulePath, isNavSection, RAIL_WIDTH, PANEL_WIDTH } from './types.js';
   import Rail from './Rail.svelte';
@@ -111,9 +112,14 @@
   });
   let panelVisible = $derived(panelOpen && selectedHasChoices);
 
-  // Spring for smooth panel slide, mirrors the width the panel animates to
-  const panelW = spring(0, { stiffness: 0.22, damping: 0.88 });
-  $effect(() => { panelW.set(panelVisible ? PANEL_WIDTH : 0); });
+  // One spring drives the panel width and the main margin so they stay in lock-step.
+  // precision 0.5px: a layout pixel is the smallest visible step, and the Spring snaps to
+  // the exact target once within it, so the offset settles on an integer (252, not 251.984).
+  const panelW = new Spring(0, { stiffness: 0.22, damping: 0.88, precision: 0.5 });
+  $effect(() => {
+    // Reduced motion: jump straight to the target, no frames in between.
+    panelW.set(panelVisible ? PANEL_WIDTH : 0, { instant: reducedMotion.value });
+  });
 
   setContext('appshell', {
     get panelOpen()  { return panelVisible; },
@@ -153,14 +159,14 @@
       {pathname}
       activeModuleIndex={selectedIndex}
       show={panelVisible}
-      panelW={$panelW}
+      panelW={panelW.current}
     />
   </div>
 
   <!-- Main area -->
   <div
     class="ca-main"
-    style="--ca-main-ml: calc({RAIL_WIDTH}px + {$panelW}px)"
+    style="--ca-main-ml: calc({RAIL_WIDTH}px + {panelW.current}px)"
   >
     <!-- Desktop header, only rendered when header snippet is provided -->
     {#if header}
@@ -216,8 +222,6 @@
       display: flex;
       flex-direction: column;
       margin-left: var(--ca-main-ml, 0);
-      /* Follows the JS spring frame by frame: a smoothing tick, not a design duration. */
-      transition: margin-left 20ms linear;
     }
 
     .ca-shell__desktop-header {

@@ -1,13 +1,28 @@
 import { describe, expect, it, vi } from "vitest";
-import { page, userEvent } from "vitest/browser";
+import { cdp, page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
 import { VIEWPORTS } from "../../../../tests/viewports";
+import { reducedMotion } from "../../stores/reduced-motion.svelte";
 import Harness from "./AppShellHarness.test.svelte";
 
 const visible = (el: Element | null) => !!el?.checkVisibility();
 const q = (sel: string) => document.querySelector(sel);
+
+/** Resolves once the shell offset (inline var + painted left edge) is unchanged for `frames` frames in a row. */
+async function settledOffset(main: () => HTMLElement, frames = 30): Promise<void> {
+	const read = () =>
+		`${main().style.getPropertyValue("--ca-main-ml")}|${main().getBoundingClientRect().left}`;
+	let last = read();
+	let still = 0;
+	while (still < frames) {
+		await new Promise((r) => requestAnimationFrame(() => r(null)));
+		const now = read();
+		still = now === last ? still + 1 : 0;
+		last = now;
+	}
+}
 
 describe("AppShellLayout: desktop", () => {
 	it("shows rail + panel, hides bottom nav and mobile header", async () => {
@@ -100,6 +115,76 @@ describe("AppShellLayout: desktop", () => {
 		await expect
 			.poll(() => (q(".ca-main") as HTMLElement).getBoundingClientRect().left)
 			.toBe(52 + 200);
+	});
+
+	it("settles on the exact integer offset (never a sub-pixel like 251.984)", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(Harness, { pathname: "/app/dashboard" });
+		const main = () => q(".ca-main") as HTMLElement;
+		const panelWidth = () => (q(".ca-panel") as HTMLElement | null)?.getBoundingClientRect().width;
+
+		await settledOffset(main);
+		// The spring must land on the target, not within `precision` of it.
+		expect(main().style.getPropertyValue("--ca-main-ml")).toBe("calc(52px + 200px)");
+		expect(main().getBoundingClientRect().left).toBe(252);
+		expect(panelWidth()).toBe(200);
+	});
+
+	it("settles on the exact integer offset after closing and reopening the panel", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		const screen = await render(Harness, { pathname: "/app/dashboard", full: true });
+		const main = () => q(".ca-main") as HTMLElement;
+
+		await screen.getByRole("button", { name: "Close navigation" }).click();
+		await settledOffset(main);
+		expect(main().style.getPropertyValue("--ca-main-ml")).toBe("calc(52px + 0px)");
+		expect(main().getBoundingClientRect().left).toBe(52);
+
+		await screen.getByRole("button", { name: "Open navigation" }).click();
+		await settledOffset(main);
+		expect(main().style.getPropertyValue("--ca-main-ml")).toBe("calc(52px + 200px)");
+		expect(main().getBoundingClientRect().left).toBe(252);
+		expect((q(".ca-panel") as HTMLElement).getBoundingClientRect().width).toBe(200);
+	});
+
+	it("paints the offset the spring computed, frame by frame (no extra CSS smoothing)", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		const screen = await render(Harness, { pathname: "/app/dashboard", full: true });
+		const main = () => q(".ca-main") as HTMLElement;
+		await settledOffset(main);
+
+		await screen.getByRole("button", { name: "Close navigation" }).click();
+		let mismatched = 0;
+		for (let i = 0; i < 90; i++) {
+			await new Promise((r) => requestAnimationFrame(() => r(null)));
+			const m = /calc\(52px \+ ([\d.e-]+)px\)/.exec(main().style.getPropertyValue("--ca-main-ml"));
+			// Layout snaps to 1/64px: compare at that resolution.
+			if (Math.abs(52 + Number(m?.[1]) - main().getBoundingClientRect().left) > 1 / 64)
+				mismatched++;
+		}
+		expect(mismatched).toBe(0);
+	});
+
+	it("with reduced motion the offset is the exact target immediately", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await cdp().send("Emulation.setEmulatedMedia", {
+			features: [{ name: "prefers-reduced-motion", value: "reduce" }],
+		});
+		try {
+			reducedMotion.init();
+			const screen = await render(Harness, { pathname: "/app/dashboard", full: true });
+			const main = () => q(".ca-main") as HTMLElement;
+			await settledOffset(main);
+
+			await screen.getByRole("button", { name: "Close navigation" }).click();
+			// No spring frames: one frame after the click the offset is already the exact target.
+			await new Promise((r) => requestAnimationFrame(() => r(null)));
+			await new Promise((r) => requestAnimationFrame(() => r(null)));
+			expect(main().style.getPropertyValue("--ca-main-ml")).toBe("calc(52px + 0px)");
+			expect(main().getBoundingClientRect().left).toBe(52);
+		} finally {
+			await cdp().send("Emulation.setEmulatedMedia", { features: [] });
+		}
 	});
 
 	it("renders brand, railBottom and a panel toggle", async () => {
