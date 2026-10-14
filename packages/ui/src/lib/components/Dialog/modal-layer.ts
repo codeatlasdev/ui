@@ -1,4 +1,4 @@
-import { lockScroll, trapFocus } from "../../primitives/index.js";
+import { lockScroll, portal, trapFocus } from "../../primitives/index.js";
 
 export interface ModalLayerOptions {
 	/** Called for Escape (`cancel`) and, unless `outside` is false, for a click on the scrim. */
@@ -26,6 +26,10 @@ export function modalLayer(options: () => ModalLayerOptions) {
 	return (dialog: HTMLElement): (() => void) => {
 		if (!(dialog instanceof HTMLDialogElement)) return () => {};
 		const { initial = "first", onOpen } = options();
+		// Move to <body> first: the top layer fixes stacking, but a native <dialog> would still inherit
+		// text styles and match descendant selectors (prose margins, table cells, uppercase labels)
+		// from wherever it is declared. At <body> it starts from the base theme, like any portal.
+		const unportal = portal()(dialog);
 		const release = lockScroll();
 
 		// Capture the opener before showModal() moves focus.
@@ -71,6 +75,7 @@ export function modalLayer(options: () => ModalLayerOptions) {
 			if (dialog.open) dialog.close();
 			releaseFocus();
 			release();
+			unportal();
 		};
 	};
 }

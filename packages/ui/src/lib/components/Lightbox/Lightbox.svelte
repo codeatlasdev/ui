@@ -71,7 +71,12 @@
 		margin: 0;
 		border: 0;
 		background: oklch(0 0 0 / 0.88);
-		color: inherit;
+		/* Native <dialog> inherits from where it is declared: start from the base text roles. */
+		color: var(--ca-text-primary);
+		font: var(--ca-font-size-body1) / var(--ca-line-height-body) var(--ca-font-sans);
+		letter-spacing: normal;
+		text-transform: none;
+		text-align: start;
 		display: flex;
 		align-items: center;
 		justify-content: center;

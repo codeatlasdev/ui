@@ -17,7 +17,17 @@ dialog.ca-overlay {
   border: 0;
   max-width: none;
   max-height: none;
-  color: inherit;
+  /* A native <dialog> stays where it is declared, so it would inherit typography from its
+     parent (a prose article, a table cell, an uppercase label). Overlays always start from
+     the base text roles, like the portaled panels before them. */
+  color: var(--ca-text-primary);
+  font: var(--ca-font-size-body1) / var(--ca-line-height-body) var(--ca-font-sans);
+  font-weight: var(--ca-font-weight-regular);
+  letter-spacing: normal;
+  text-transform: none;
+  text-align: start;
+  white-space: normal;
+  overflow-wrap: normal;
   /* iOS: touches on the scrim (or the dialog box itself) must not scroll/rubber-band the page
      behind. Scrollable regions inside opt back in with `touch-action: auto`. */
   touch-action: none;
