@@ -31,6 +31,7 @@ Every page is also linked with `<link rel="alternate" type="text/plain" href="/l
 |---|---|
 | `list_components` | Every component with its import path and a one-line description. Optional `query` filter. |
 | `get_component` | One component's props (type, default, `bind:` or not, docs), snippets and public `ca-*` classes. The name is case-insensitive: `get_component("app list")` finds `AppList`. |
+| `get_export` | Signature and summary of any non-component export: functions, stores, constants and types of every entry point (`setLocale`, `toast`, `caErrorPlugin` from `/vite`, `createErrorHandler` and `nativeFeel` from `/kit`, `primeKeyboard` from `/actions`). Without a name it lists them all with their import path. |
 | `search_tokens` | `--ca-*` design tokens matching a name, value or section, with light and dark values. |
 | `get_guide` | A documentation page as markdown, by slug (`getting-started/theming`) or title. Without a name it lists every guide. |
 
@@ -44,7 +45,7 @@ Prop names are never guessed: an agent asks the server and gets the types the co
 
 If the package is already a dependency of your app, point the command at the local binary instead (`node_modules/.bin/ca-ui-mcp`) to skip the download and pin the version your code compiles against.
 
-The same data is available as files: `@codeatlasdev/ui/components.json` (components) and `@codeatlasdev/ui/tokens.json` (tokens).
+The same data is available as files: `@codeatlasdev/ui/components.json` (components under `components`, every other export under `exports`) and `@codeatlasdev/ui/tokens.json` (tokens).
 
 ## Set up and migrate with the CLI
 

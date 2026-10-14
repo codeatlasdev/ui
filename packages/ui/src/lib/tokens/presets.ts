@@ -73,6 +73,7 @@ function makeBrand(
 	};
 }
 
+/** The built-in brand presets with their generated brand ramps, neutral ramp and semantic palettes. */
 export const THEME_PRESETS: ThemePreset[] = BUILTIN_PRESETS.map((p) => ({
 	id: p.id,
 	label: p.label,
@@ -84,6 +85,7 @@ export const THEME_PRESETS: ThemePreset[] = BUILTIN_PRESETS.map((p) => ({
 	semanticDark,
 }));
 
+/** The built-in preset with this id; the first preset when the id is unknown. */
 export function getPreset(id: PresetId): ThemePreset {
 	return THEME_PRESETS.find((p) => p.id === id) ?? THEME_PRESETS[0];
 }

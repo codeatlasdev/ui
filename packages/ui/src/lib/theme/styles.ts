@@ -39,6 +39,7 @@ const SERIF = 'ui-serif, Georgia, Cambria, "Times New Roman", serif';
 const MONO = 'ui-monospace, "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace';
 const ROUNDED = 'ui-rounded, "SF Pro Rounded", "Nunito", system-ui, sans-serif';
 
+/** Design-style recipes by id (glass, solid, flat, ... editorial, terminal): each is a `Partial<ThemeDefinition>` to pass to `defineTheme` or `mergeTheme`. */
 export const DESIGN_STYLES: Record<DesignStyleId, DesignStyle> = {
 	default: {
 		id: "default",

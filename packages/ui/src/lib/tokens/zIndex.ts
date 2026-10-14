@@ -1,5 +1,6 @@
 // ─── Z-index scale ────────────────────────────────────────────────────────────
 
+/** Stacking scale (`base` 0 up to `tooltip`). Mirrors `--ca-z-*`; use it instead of literal z-index values. */
 export const zIndex = {
 	base: 0,
 	raised: 10,

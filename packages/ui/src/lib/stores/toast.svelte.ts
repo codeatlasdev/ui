@@ -37,4 +37,5 @@ function createToastStore() {
 	};
 }
 
+/** Toast queue: `toast.show(message, opts)` and the `success`/`error`/`warning`/`info` shortcuts push an item, `toast.remove(id)` drops it. Render the queue with `<Toaster />` once in the root layout. */
 export const toast = createToastStore();

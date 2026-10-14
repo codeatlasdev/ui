@@ -83,4 +83,5 @@ function createResponsiveStore() {
 	};
 }
 
+/** Reactive breakpoint store (`current`, `up`, `down`, `only`, `isMobile`, `isTablet`, `isDesktop`, `BREAKPOINTS`). SSR-safe: reads as desktop until `responsive.init()` measures the window. */
 export const responsive = createResponsiveStore();

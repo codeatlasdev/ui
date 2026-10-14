@@ -5,6 +5,7 @@ import {
 	extractClasses,
 	extractTokens,
 	type ManifestToken,
+	skillMarkdown,
 } from "../scripts/build-manifest.ts";
 
 const manifest = buildManifest();
@@ -71,6 +72,84 @@ describe("components manifest", () => {
 			"DatePicker",
 		])
 			expect(byName(name), name).toBeDefined();
+	});
+});
+
+describe("non-component exports (#57)", () => {
+	const exp = (name: string, entry = "") =>
+		manifest.exports.find((e) => e.name === name && (!entry || e.import === entry));
+
+	it("documents the exports the issue names, with import path, kind and signature", () => {
+		const expected: Array<[string, string, string, RegExp]> = [
+			["setLocale", "@codeatlasdev/ui", "function", /^function setLocale\(next: Locale/],
+			["registerLocale", "@codeatlasdev/ui", "function", /^function registerLocale\(id: Locale/],
+			["caErrorPlugin", "@codeatlasdev/ui/vite", "function", /^function caErrorPlugin\(/],
+			["createErrorHandler", "@codeatlasdev/ui/kit", "function", /^function createErrorHandler\(/],
+			["nativeFeel", "@codeatlasdev/ui/kit", "function", /^function nativeFeel\(/],
+			["usePageTitle", "@codeatlasdev/ui/kit", "function", /^function usePageTitle\(/],
+			[
+				"primeKeyboard",
+				"@codeatlasdev/ui/actions",
+				"function",
+				/^function primeKeyboard\(\): void/,
+			],
+		];
+		for (const [name, entry, kind, signature] of expected) {
+			const e = exp(name, entry);
+			expect(e, `${entry} ${name}`).toBeDefined();
+			expect(e?.kind).toBe(kind);
+			expect(e?.signature).toMatch(signature);
+		}
+	});
+
+	it("documents RouteAnnouncer (a Svelte component of ./kit) with its props", () => {
+		const c = byName("RouteAnnouncer");
+		expect(c?.import).toBe("@codeatlasdev/ui/kit");
+		expect(c?.props.map((p) => p.name)).toContain("prefix");
+		expect(exp("RouteAnnouncer")).toBeUndefined();
+	});
+
+	it("takes the description from the JSDoc of the declaration", () => {
+		expect(exp("setLocale")?.description).toMatch(/Sets the UI language/);
+		expect(exp("primeKeyboard")?.description).toMatch(/opens the keyboard on iOS/i);
+		expect(exp("nativeFeel")?.description).toMatch(/behave like a native app/);
+	});
+
+	it("gives every function a description, and tags types and stores by kind", () => {
+		expect(exp("caErrorPlugin")?.description).toMatch(/\+error\.svelte/);
+		expect(exp("createErrorHandler")?.description).toMatch(/handleError/);
+		expect(exp("toast")?.kind).toBe("store");
+		expect(exp("CreateErrorHandlerOptions")?.kind).toBe("type");
+		expect(exp("CreateErrorHandlerOptions")?.signature).toContain("report?:");
+	});
+
+	it("never lists a component as a plain export", () => {
+		expect(manifest.exports.find((e) => e.name === "Button")).toBeUndefined();
+		expect(manifest.exports.find((e) => e.name === "DataTable")).toBeUndefined();
+	});
+
+	it("covers every JS entry point declared in package.json#exports", () => {
+		const imports = new Set(manifest.exports.map((e) => e.import));
+		for (const entry of [
+			"@codeatlasdev/ui",
+			"@codeatlasdev/ui/kit",
+			"@codeatlasdev/ui/vite",
+			"@codeatlasdev/ui/astro",
+			"@codeatlasdev/ui/actions",
+			"@codeatlasdev/ui/seo",
+			"@codeatlasdev/ui/forms",
+			"@codeatlasdev/ui/tokens",
+			"@codeatlasdev/ui/table",
+		])
+			expect(imports.has(entry), entry).toBe(true);
+	});
+
+	it("renders them in API.md under their import path", () => {
+		const md = skillMarkdown(manifest);
+		expect(md).toContain("# Non-component exports");
+		expect(md).toContain('`import { setLocale } from "@codeatlasdev/ui"`');
+		expect(md).toContain('`import { caErrorPlugin } from "@codeatlasdev/ui/vite"`');
+		expect(md).toContain("function primeKeyboard(): void");
 	});
 });
 

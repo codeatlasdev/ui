@@ -51,6 +51,7 @@ export interface CreateErrorHandlerOptions {
 	locale?: Locale | ((event: ErrorEvent) => Locale | undefined);
 }
 
+/** Builds the SvelteKit `handleError` hook: returns a sanitized `CaError` (`message`, `code`, random `id`), hides the real message of 5xx errors behind a localized fallback, and calls `report` with the sanitized error. */
 export function createErrorHandler(options: CreateErrorHandlerOptions = {}) {
 	const { report, defaultMessage, locale } = options;
 

@@ -3,6 +3,7 @@
 // the JS objects are exposed for tooling, docs, and preset-picker UIs.
 
 // ── Brand identity (default: CodeAtlas amber, H 31°) ─────────────────────────
+/** Default brand ramp (CodeAtlas amber) in OKLCH: `main`, `light`, `dark`, `contrast`. */
 export const defaultBrand = {
 	main: "oklch(0.64 0.247 31.4)",
 	light: "oklch(0.72 0.200 31.4)",
@@ -12,6 +13,7 @@ export const defaultBrand = {
 
 // ── Shared semantic palette (same across all presets / modes) ─────────────────
 // Canvas-measured WCAG AA/AAA values — see presets.ts comments for rationale.
+/** Semantic status colors (secondary, success, warning, info, error) for light mode, in OKLCH. */
 export const semanticLight = {
 	secondary: "oklch(0.910 0.005 75)",
 	success: "oklch(0.46 0.145 150)",
@@ -20,6 +22,7 @@ export const semanticLight = {
 	error: "oklch(0.55 0.190 25)",
 } as const;
 
+/** Semantic status colors (secondary, success, warning, info, error) for dark mode, in OKLCH. */
 export const semanticDark = {
 	secondary: "oklch(0.250 0.005 70)",
 	success: "oklch(0.71 0.160 150)",
@@ -74,6 +77,7 @@ export interface NeutralRamp {
 	outlineDark: OutlineColors;
 }
 
+/** Neutral surface/text/outline ramp tinted with the given brand hue (OKLCH degrees). */
 export function neutralRamp(hue: number): NeutralRamp {
 	const dh = hue + 5;
 	return {
@@ -113,6 +117,7 @@ export function neutralRamp(hue: number): NeutralRamp {
 }
 
 // ── Action tokens (light / dark) ──────────────────────────────────────────────
+/** Interaction overlays for light mode (`active`, `hover`, `selected`, `disabled`, `disabledBg`, `focus`), in OKLCH. */
 export const actionLight = {
 	active: "oklch(0.2 0 0 / 0.62)",
 	hover: "oklch(0.2 0 0 / 0.055)",
@@ -122,6 +127,7 @@ export const actionLight = {
 	focus: "oklch(0.2 0 0 / 0.12)",
 } as const;
 
+/** Interaction overlays for dark mode (`active`, `hover`, `selected`, `disabled`, `disabledBg`, `focus`), in OKLCH. */
 export const actionDark = {
 	active: "oklch(1 0 0 / 0.68)",
 	hover: "oklch(1 0 0 / 0.075)",

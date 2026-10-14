@@ -16,6 +16,7 @@ import type { AstroIntegration } from "astro";
 import { defineTheme, fontPreloads, SSR_NO_EXTERNAL, themeCSS } from "./theme/define.js";
 import { type ThemeOptions, themeScript } from "./theme-script.js";
 
+/** Astro integration: injects the theme (preset CSS, fonts, init script) into every page `<head>` before first paint and bundles the ESM-only dependencies for SSR. Pass the same `ThemeOptions` as `defineTheme`. */
 export function caUI(options: ThemeOptions = {}): AstroIntegration {
 	const t = defineTheme(options);
 	const css = themeCSS(t);

@@ -5,6 +5,7 @@
 // is injected structurally, so this package depends on neither Playwright nor Puppeteer.
 // Pass a Playwright `Browser` (from `chromium.launch()`); keep one alive per process.
 
+/** Open Graph image size, 1200x630. */
 export const OG_SIZE = { width: 1200, height: 630 } as const;
 
 interface PageLike {

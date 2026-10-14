@@ -85,6 +85,7 @@ function runSchema<K extends string>(
 	return {};
 }
 
+/** Reactive form state: per-field value, error and touched flag, optional field arrays, and validation through a Zod- or Valibot-style `schema`. Returns `FormState`. */
 export function useForm<K extends string, A extends Record<string, unknown> = Record<never, never>>(
 	initialValues: Record<K, string>,
 	options?: {

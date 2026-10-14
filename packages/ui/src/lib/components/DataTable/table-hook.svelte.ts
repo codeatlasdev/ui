@@ -29,6 +29,7 @@ export interface CaColumnMeta {
 
 // ── Shared feature set ─────────────────────────────────────────────────────────
 // Declared once, stable reference, never recreate inside a component.
+/** The table feature set shared by every `createCaTable`: column filtering, column visibility, global filtering, row pagination and row sorting. Declared once; never recreate it inside a component. */
 export const caTableFeatures = tableFeatures({
 	columnFilteringFeature,
 	columnMeta: {} as CaColumnMeta,
@@ -39,6 +40,10 @@ export const caTableFeatures = tableFeatures({
 });
 
 // ── App table hook ─────────────────────────────────────────────────────────────
+/**
+ * TanStack table factory (`createCaTable`) and typed column-definition helper
+ * (`createCaColumnHelper`), both pre-bound to `caTableFeatures`.
+ */
 export const { createAppTable: createCaTable, createAppColumnHelper: createCaColumnHelper } =
 	createTableHook({ features: caTableFeatures });
 

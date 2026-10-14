@@ -1,4 +1,5 @@
 // ─── Debounce utility ─────────────────────────────────────────────────────────
+/** Returns a function that calls `fn` once `delay` ms after its last invocation; earlier pending calls are dropped. */
 export function debounce<T extends (...args: unknown[]) => unknown>(
 	fn: T,
 	delay: number

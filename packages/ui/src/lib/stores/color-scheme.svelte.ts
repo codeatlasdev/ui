@@ -171,4 +171,5 @@ function createColorSchemeStore() {
 	};
 }
 
+/** Theme store: `preference` (light/dark/system), `resolved`, `preset`, `style`, `isDark`, with `setPreference`, `toggle`, `setPreset`, `setStyle`, `setTokens`. Persisted in localStorage and mirrored to `<html>`; call `colorScheme.init()` once in the root layout. */
 export const colorScheme = createColorSchemeStore();

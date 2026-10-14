@@ -5,7 +5,7 @@
  *
  *   claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp
  *
- * Tools: list_components, get_component, search_tokens, get_guide.
+ * Tools: list_components, get_component, get_export, search_tokens, get_guide.
  */
 import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -65,6 +65,29 @@ server.registerTool(
 				.map((c) => c.name);
 			return fail(
 				`No component "${name}".${near.length ? ` Did you mean: ${near.join(", ")}?` : ""}`
+			);
+		}
+		return text(JSON.stringify(hits.length === 1 ? hits[0] : hits, null, 2));
+	}
+);
+
+server.registerTool(
+	"get_export",
+	{
+		description:
+			"Signature and summary of a non-component export: function, store, constant or type (setLocale, toast, caErrorPlugin from /vite, createErrorHandler and nativeFeel from /kit, primeKeyboard from /actions, defineTheme, useForm...). Name is case-insensitive. Without `name`, lists every export with its import path.",
+		inputSchema: { name: z.string().optional() },
+	},
+	({ name }) => {
+		if (!name)
+			return text(manifest.exports.map((e) => `- ${e.name} (${e.import}, ${e.kind})`).join("\n"));
+		const hits = manifest.exports.filter((e) => squash(e.name) === squash(name));
+		if (!hits.length) {
+			const near = manifest.exports
+				.filter((e) => squash(e.name).includes(squash(name)))
+				.map((e) => `${e.name} (${e.import})`);
+			return fail(
+				`No export "${name}".${near.length ? ` Did you mean: ${near.join(", ")}?` : ""} For components use get_component.`
 			);
 		}
 		return text(JSON.stringify(hits.length === 1 ? hits[0] : hits, null, 2));

@@ -1542,6 +1542,14 @@ Classes: `ca-rail` `ca-rail__bottom` `ca-rail__bottom-sep` `ca-rail__dock` `ca-r
 
 Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__float` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
 
+## RouteAnnouncer
+
+`import { RouteAnnouncer } from "@codeatlasdev/ui/kit"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `prefix?` | `string` |  | Prefix spoken before the title, e.g. "Navigated to". Omit to speak the title alone. |
+
 ## Row
 
 `import { Row } from "@codeatlasdev/ui"`
@@ -1639,6 +1647,24 @@ Classes: `ca-seg` `ca-seg--md` `ca-seg--sm` `ca-seg__item` `ca-seg__thumb`
 | `onchange?` | `(value: string) => void` |  |  |
 
 Classes: `ca-sel` `ca-sel--sm` `ca-sel__check` `ca-sel__content` `ca-sel__hint` `ca-sel__hint--error` `ca-sel__icon` `ca-sel__item` `ca-sel__item-label` `ca-sel__label` `ca-sel__req` `ca-sel__trigger` `ca-sel__value` `ca-sel__value--placeholder` `ca-validity-proxy`
+
+## Seo
+
+`import { Seo } from "@codeatlasdev/ui/seo"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `title` | `string` |  |  |
+| `titleTemplate?` | `string` | `'%s'` | `%s` is replaced by `title`. Skipped when the title already equals the site name. |
+| `description?` | `string` |  |  |
+| `canonical?` | `string` |  | Absolute URL of this page. Required on indexable pages. |
+| `robots?` | `string` | `'index,follow'` |  |
+| `noindex?` | `boolean` | `false` | Shorthand for `robots="noindex,nofollow"`. |
+| `alternates?` | `{ hreflang: string; href: string }[]` |  | Translations of this page, including itself and an `x-default` entry. |
+| `og?` | `OpenGraph` |  |  |
+| `twitter?` | `Twitter` |  |  |
+| `jsonLd?` | `object \| object[]` |  | One node, an array, or a `graph()` document. |
+| `manifest?` | `string` |  | Link to the web app manifest, e.g. `"/manifest.webmanifest"`. |
 
 ## SettingItem
 
@@ -2076,3 +2102,2198 @@ Classes: `ca-tooltip-content` `ca-tooltip__trigger`
 | `size?` | `'sm' \| 'md'` | `'sm'` |  |
 
 Classes: `ca-user-cell` `ca-user-cell__email` `ca-user-cell__info` `ca-user-cell__name`
+
+# Non-component exports
+
+Functions, stores, constants and types every entry point exports besides components. Import from the path in each heading; types use `import type`.
+
+## @codeatlasdev/ui
+
+### actionDark
+
+`import { actionDark } from "@codeatlasdev/ui"`
+
+Interaction overlays for dark mode (`active`, `hover`, `selected`, `disabled`, `disabledBg`, `focus`), in OKLCH.
+
+```ts
+const actionDark: {
+  active: "oklch(1 0 0 / 0.68)";
+  hover: "oklch(1 0 0 / 0.075)";
+  selected: "oklch(1 0 0 / 0.13)";
+  disabled: "oklch(1 0 0 / 0.30)";
+  disabledBg: "oklch(1 0 0 / 0.10)";
+  focus: "oklch(1 0 0 / 0.14)";
+}
+```
+
+### actionLight
+
+`import { actionLight } from "@codeatlasdev/ui"`
+
+Interaction overlays for light mode (`active`, `hover`, `selected`, `disabled`, `disabledBg`, `focus`), in OKLCH.
+
+```ts
+const actionLight: {
+  active: "oklch(0.2 0 0 / 0.62)";
+  hover: "oklch(0.2 0 0 / 0.055)";
+  selected: "oklch(0.2 0 0 / 0.09)";
+  disabled: "oklch(0.2 0 0 / 0.30)";
+  disabledBg: "oklch(0.2 0 0 / 0.08)";
+  focus: "oklch(0.2 0 0 / 0.12)";
+}
+```
+
+### announce
+
+`import { announce } from "@codeatlasdev/ui"`
+
+Speak `message` to assistive technology without moving focus or showing anything. No-op on the server. Announcing the same text twice in a row still re-triggers (the region is emptied first, then filled on the next frame).
+
+```ts
+function announce(message: string, politeness?: Politeness): void
+```
+
+### collectPaths
+
+`import { collectPaths } from "@codeatlasdev/ui"`
+
+Every navigable path of the given modules, in order, flattening sections.
+
+```ts
+function collectPaths(modules: NavModule[]): string[]
+```
+
+### colorScheme
+
+`import { colorScheme } from "@codeatlasdev/ui"`
+
+Theme store: `preference` (light/dark/system), `resolved`, `preset`, `style`, `isDark`, with `setPreference`, `toggle`, `setPreset`, `setStyle`, `setTokens`. Persisted in localStorage and mirrored to `<html>`; call `colorScheme.init()` once in the root layout.
+
+```ts
+const colorScheme: {
+  readonly preference: ColorScheme;
+  readonly resolved: "light" | "dark";
+  readonly preset: PresetId;
+  readonly style: SurfaceStyle;
+  readonly isDark: boolean;
+  readonly presets: string[];
+  setPreference: (pref: ColorScheme) => void;
+  toggle: () => void;
+  setPreset: (p: PresetId) => void;
+  setStyle: (s: SurfaceStyle) => void;
+  setTokens: (vars: Record<string, string>) => void;
+  init: () => () => void;
+}
+```
+
+### copyToClipboard
+
+`import { copyToClipboard } from "@codeatlasdev/ui"`
+
+Copies `text` with the Clipboard API, falling back to `execCommand("copy")`. Resolves `true` on success.
+
+```ts
+function copyToClipboard(text: string): Promise<boolean>
+```
+
+### darkMaterialTokens
+
+`import { darkMaterialTokens } from "@codeatlasdev/ui"`
+
+Dark-mode `--ca-glass-*` token values, as the CSS emits them.
+
+```ts
+const darkMaterialTokens: {
+  --ca-glass-tint-ultra-thin: "oklch(0.20 0 0 / 0.28)";
+  --ca-glass-tint-thin: "oklch(0.22 0 0 / 0.42)";
+  --ca-glass-tint: "oklch(0.24 0 0 / 0.52)";
+  --ca-glass-tint-thick: "oklch(0.20 0 0 / 0.72)";
+  --ca-glass-tint-chrome: "oklch(0.16 0 0 / 0.88)";
+  --ca-glass-tint-solid: "oklch(0.18 0 0)";
+  --ca-glass-rim: "oklch(1 0 0 / 0.16)";
+  --ca-glass-rim-opacity: "0.16";
+  --ca-glass-shadow: "0 8px 40px oklch(0 0 0 / 0.50)";
+  --ca-glass-border: "oklch(1 0 0 / 0.14)";
+  --ca-glow-primary: "oklch(0.63 0.20 55 / 0.16)";
+  --ca-glow-primary-strong: "oklch(0.63 0.20 55 / 0.32)";
+  --ca-vibrancy-label: "oklch(0.93 0.005 55 / 0.85)";
+  --ca-vibrancy-secondary: "oklch(0.93 0.005 55 / 0.50)";
+  --ca-vibrancy-tertiary: "oklch(0.93 0.005 55 / 0.25)";
+  --ca-vibrancy-fill: "oklch(0.93 0.005 55 / 0.10)";
+  --ca-vibrancy-separator: "oklch(0.93 0.005 55 / 0.05)";
+  --ca-blur-ultra-thin: "blur(8px) saturate(150%) brightness(1.02)";
+  --ca-blur-thin: "blur(14px) saturate(165%) brightness(1.02)";
+  --ca-blur-regular: "blur(22px) saturate(180%) brightness(1.02)";
+  --ca-blur-thick: "blur(32px) saturate(200%) brightness(1.01)";
+  --ca-blur-chrome: "blur(44px) saturate(210%) brightness(1.01)";
+  --ca-glass-frost: "18";
+  --ca-tooltip-fg: "oklch(0.93 0.005 55)";
+  --ca-glass-highlight: "oklch(1 0 0 / 0.06)";
+  --ca-scrim-color: "oklch(0 0 0 / 0.50)";
+  --ca-scrim-blur: "none";
+}
+```
+
+### debounce
+
+`import { debounce } from "@codeatlasdev/ui"`
+
+Returns a function that calls `fn` once `delay` ms after its last invocation; earlier pending calls are dropped.
+
+```ts
+function debounce<T extends (...args: unknown[]) => unknown>(fn: T, delay: number): (...args: Parameters<T>) => void
+```
+
+### defaultBrand
+
+`import { defaultBrand } from "@codeatlasdev/ui"`
+
+Default brand ramp (CodeAtlas amber) in OKLCH: `main`, `light`, `dark`, `contrast`.
+
+```ts
+const defaultBrand: {
+  main: "oklch(0.64 0.247 31.4)";
+  light: "oklch(0.72 0.200 31.4)";
+  dark: "oklch(0.52 0.230 31.4)";
+  contrast: "oklch(1 0 0)";
+}
+```
+
+### defineTheme
+
+`import { defineTheme } from "@codeatlasdev/ui"`
+
+Resolve a partial definition: fills defaults, validates ids, precomputes theme-color hexes.
+
+```ts
+function defineTheme(def?: Partial<ThemeDefinition>): ResolvedTheme
+```
+
+### DESIGN_STYLES
+
+`import { DESIGN_STYLES } from "@codeatlasdev/ui"`
+
+Design-style recipes by id (glass, solid, flat, ... editorial, terminal): each is a `Partial<ThemeDefinition>` to pass to `defineTheme` or `mergeTheme`.
+
+```ts
+const DESIGN_STYLES: Record<DesignStyleId, DesignStyle>
+```
+
+### designStyle
+
+`import { designStyle } from "@codeatlasdev/ui"`
+
+A design style recipe with your overrides on top, ready for `defineTheme`/`caThemeHandle`.
+
+```ts
+function designStyle(id: DesignStyleId, overrides?: Partial<ThemeDefinition>): Partial<ThemeDefinition>
+```
+
+### designTokens
+
+`import { designTokens } from "@codeatlasdev/ui"`
+
+Design knobs → root custom properties. Only values that differ from the stylesheet defaults.
+
+```ts
+function designTokens(t: Pick< ResolvedTheme, | "radius" | "controlRadius" | "density" | "border" | "typography" | "elevation" | "motion" | "iconStroke" | "noise" | "paper" >): Record<string, string>
+```
+
+### duration
+
+`import { duration } from "@codeatlasdev/ui"`
+
+Transition durations in ms (`shortest` 120 to `complex` 320, plus `enteringScreen` and `leavingScreen`). Mirrors `--ca-duration-*`.
+
+```ts
+const duration: {
+  shortest: 120;
+  shorter: 160;
+  short: 200;
+  standard: 240;
+  complex: 320;
+  enteringScreen: 220;
+  leavingScreen: 180;
+}
+```
+
+### easing
+
+`import { easing } from "@codeatlasdev/ui"`
+
+Cubic-bezier easing strings (`standard`, `decelerate`, `accelerate`, `spring`). Mirrors `--ca-ease-*`.
+
+```ts
+const easing: {
+  standard: "cubic-bezier(0.4, 0, 0.2, 1)";
+  decelerate: "cubic-bezier(0, 0, 0.2, 1)";
+  accelerate: "cubic-bezier(0.4, 0, 1, 1)";
+  sharp: "cubic-bezier(0.4, 0, 0.6, 1)";
+  spring: "cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+}
+```
+
+### elevation
+
+`import { elevation } from "@codeatlasdev/ui"`
+
+Elevation depth in px per material thickness (`flat` 0 to `chrome` 20).
+
+```ts
+const elevation: {
+  flat: 0;
+  ultraThin: 2;
+  thin: 4;
+  regular: 8;
+  thick: 12;
+  chrome: 20;
+}
+```
+
+### findActiveItemPath
+
+`import { findActiveItemPath } from "@codeatlasdev/ui"`
+
+Path of the nav item that is active for `pathname`, or `null` when none matches.
+
+```ts
+function findActiveItemPath(modules: NavModule[], pathname: string): string | null
+```
+
+### findActiveModuleIndex
+
+`import { findActiveModuleIndex } from "@codeatlasdev/ui"`
+
+Index of the module whose `basePath` or `pathPrefixes` match `pathname`; `0` when none does.
+
+```ts
+function findActiveModuleIndex(modules: NavModule[], pathname: string): number
+```
+
+### firstModulePath
+
+`import { firstModulePath } from "@codeatlasdev/ui"`
+
+First navigable path inside a module (used by Rail/BottomNav on tap).
+
+```ts
+function firstModulePath(mod: NavModule): string
+```
+
+### fontFamily
+
+`import { fontFamily } from "@codeatlasdev/ui"`
+
+Font stacks: `sans` (Inter) and `mono` (JetBrains Mono).
+
+```ts
+const fontFamily: {
+  sans: "Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif";
+  mono: "\"JetBrains Mono\", \"Fira Code\", Consolas, monospace";
+}
+```
+
+### fontSize
+
+`import { fontSize } from "@codeatlasdev/ui"`
+
+Type scale in rem (base 16px): h1..h6, body1, body2, caption, label, button. Mirrors `--ca-font-size-*`.
+
+```ts
+const fontSize: {
+  h1: "2.25rem";
+  h2: "1.875rem";
+  h3: "1.5rem";
+  h4: "1.25rem";
+  h5: "1.0625rem";
+  h6: "0.9375rem";
+  body1: "0.9375rem";
+  body2: "0.8125rem";
+  subtitle1: "0.9375rem";
+  subtitle2: "0.8125rem";
+  caption: "0.75rem";
+  overline: "0.6875rem";
+  button: "0.875rem";
+  label: "0.8125rem";
+}
+```
+
+### fontWeight
+
+`import { fontWeight } from "@codeatlasdev/ui"`
+
+Font weights: light 300, regular 400, medium 500, bold 600.
+
+```ts
+const fontWeight: { readonly light: 300; readonly regular: 400; readonly medium: 500; readonly bold: 600; }
+```
+
+### formatCurrency
+
+`import { formatCurrency } from "@codeatlasdev/ui"`
+
+Format a number as currency.
+
+```ts
+function formatCurrency(value: number, currency?: string, locale?: string, options?: Omit<Intl.NumberFormatOptions, "style" | "currency">): string
+```
+
+### formatDate
+
+`import { formatDate } from "@codeatlasdev/ui"`
+
+Format a Date or timestamp as a localized date string.
+
+```ts
+function formatDate(value: Date | number | string, locale?: string, options?: Intl.DateTimeFormatOptions): string
+```
+
+### formatNumber
+
+`import { formatNumber } from "@codeatlasdev/ui"`
+
+Format a number with locale-aware thousands separator.
+
+```ts
+function formatNumber(value: number, locale?: string, options?: Intl.NumberFormatOptions): string
+```
+
+### formatRelativeTime
+
+`import { formatRelativeTime } from "@codeatlasdev/ui"`
+
+Format a Date or timestamp as a relative time string.
+
+```ts
+function formatRelativeTime(value: Date | number | string, locale?: string): string
+```
+
+### getLocales
+
+`import { getLocales } from "@codeatlasdev/ui"`
+
+Registered locale ids.
+
+```ts
+function getLocales(): Locale[]
+```
+
+### getMessages
+
+`import { getMessages } from "@codeatlasdev/ui"`
+
+Messages for a locale, with optional deep overrides. Pure: no global state read or written, so it is safe on the server. Region subtags fall back to the base language, then to English.
+
+```ts
+function getMessages(id: Locale, override?: MessagesOverride): Messages
+```
+
+### getPreset
+
+`import { getPreset } from "@codeatlasdev/ui"`
+
+The built-in preset with this id; the first preset when the id is unknown.
+
+```ts
+function getPreset(id: PresetId): ThemePreset
+```
+
+### GLASS_OPTICS
+
+`import { GLASS_OPTICS } from "@codeatlasdev/ui"`
+
+Optical parameters (frost, bend, depth, curvature, sheen, dispersion) of the SVG refraction layer per material thickness; used by `LiquidGlass`.
+
+```ts
+const GLASS_OPTICS: {
+  chrome: { frost: number; bend: number; depth: number; curvature: number; sheen: number; dispersion: number;…;
+  ultra-thin: { frost: number; bend: number; depth: number; curvature: number; sheen: number; dispersion: number;…;
+  thin: { frost: number; bend: number; depth: number; curvature: number; sheen: number; dispersion: number;…;
+  regular: { frost: number; bend: number; depth: number; curvature: number; sheen: number; dispersion: number;…;
+  thick: { frost: number; bend: number; depth: number; curvature: number; sheen: number; dispersion: number;…;
+}
+```
+
+### isItemActive
+
+`import { isItemActive } from "@codeatlasdev/ui"`
+
+True when `pathname` is the item's path or sits below it; trailing slashes are ignored on both sides.
+
+```ts
+function isItemActive(item: NavItem, pathname: string): boolean
+```
+
+### isNavSection
+
+`import { isNavSection } from "@codeatlasdev/ui"`
+
+Type guard: true for a `NavSection` (a titled group of items), false for a plain `NavItem`.
+
+```ts
+function isNavSection(item: NavItem | NavSection): item is NavSection
+```
+
+### letterSpacing
+
+`import { letterSpacing } from "@codeatlasdev/ui"`
+
+Letter-spacing scale: `tight`, `snug`, `normal`, `relaxed`, `wide`.
+
+```ts
+const letterSpacing: {
+  tight: "-0.03em";
+  snug: "-0.02em";
+  normal: "-0.011em";
+  relaxed: "0em";
+  wide: "0.08em";
+}
+```
+
+### lightMaterialTokens
+
+`import { lightMaterialTokens } from "@codeatlasdev/ui"`
+
+Light-mode `--ca-glass-*` token values, as the CSS emits them.
+
+```ts
+const lightMaterialTokens: {
+  --ca-glass-tint-ultra-thin: "oklch(0.97 0.003 55 / 0.15)";
+  --ca-glass-tint-thin: "oklch(0.97 0.003 55 / 0.22)";
+  --ca-glass-tint: "oklch(0.97 0.003 55 / 0.32)";
+  --ca-glass-tint-thick: "oklch(0.975 0.003 55 / 0.52)";
+  --ca-glass-tint-chrome: "oklch(0.980 0.002 55 / 0.72)";
+  --ca-glass-tint-solid: "oklch(0.96 0.004 55)";
+  --ca-glass-rim: "oklch(1 0 0 / 0.70)";
+  --ca-glass-rim-opacity: "0.70";
+  --ca-glass-shadow: "0 4px 24px oklch(0.20 0.012 55 / 0.12), 0 1px 4px oklch(0.20 0.012 55 / 0.08)";
+  --ca-glass-border: "oklch(0.70 0.008 55 / 0.28)";
+  --ca-glow-primary: "oklch(0.54 0.21 55 / 0.12)";
+  --ca-glow-primary-strong: "oklch(0.54 0.21 55 / 0.22)";
+  --ca-vibrancy-label: "oklch(0.18 0.010 55 / 0.85)";
+  --ca-vibrancy-secondary: "oklch(0.18 0.010 55 / 0.50)";
+  --ca-vibrancy-tertiary: "oklch(0.18 0.010 55 / 0.25)";
+  --ca-vibrancy-fill: "oklch(0.18 0.010 55 / 0.10)";
+  --ca-vibrancy-separator: "oklch(0.18 0.010 55 / 0.05)";
+  --ca-blur-ultra-thin: "blur(8px) saturate(160%)";
+  --ca-blur-thin: "blur(14px) saturate(175%)";
+  --ca-blur-regular: "blur(22px) saturate(190%)";
+  --ca-blur-thick: "blur(32px) saturate(200%)";
+  --ca-blur-chrome: "blur(44px) saturate(210%)";
+  --ca-glass-frost: "18";
+  --ca-tooltip-fg: "oklch(0.97 0.003 55)";
+  --ca-glass-highlight: "oklch(1 0 0 / 0.60)";
+  --ca-scrim-color: "oklch(0.12 0.010 55 / 0.38)";
+  --ca-scrim-blur: "none";
+}
+```
+
+### lineHeight
+
+`import { lineHeight } from "@codeatlasdev/ui"`
+
+Unitless line-heights for headings h1..h6, `body1`, `body2` and `ui` (controls).
+
+```ts
+const lineHeight: {
+  h1: 1.1;
+  h2: 1.15;
+  h3: 1.2;
+  h4: 1.25;
+  h5: 1.3;
+  h6: 1.35;
+  body1: 1.55;
+  body2: 1.5;
+  ui: 1.4;
+}
+```
+
+### locale
+
+`import { locale } from "@codeatlasdev/ui"`
+
+Reactive client locale (see `setLocale`). Inside an `I18nProvider` use `useLocale()`.
+
+```ts
+const locale: { readonly value: Locale; }
+```
+
+### MATERIAL_BLUR_VARS
+
+`import { MATERIAL_BLUR_VARS } from "@codeatlasdev/ui"`
+
+`--ca-glass-blur-*` variable name per material thickness.
+
+```ts
+const MATERIAL_BLUR_VARS: Record<Thickness, string>
+```
+
+### MATERIAL_CSS_VARS
+
+`import { MATERIAL_CSS_VARS } from "@codeatlasdev/ui"`
+
+`--ca-glass-*` tint variable name per material thickness.
+
+```ts
+const MATERIAL_CSS_VARS: Record<Thickness, string>
+```
+
+### mergeTheme
+
+`import { mergeTheme } from "@codeatlasdev/ui"`
+
+Merge partial themes: `b` wins; the nested option groups merge key by key.
+
+```ts
+function mergeTheme(a: Partial<ThemeDefinition>, b: Partial<ThemeDefinition>): Partial<ThemeDefinition>
+```
+
+### neutralRamp
+
+`import { neutralRamp } from "@codeatlasdev/ui"`
+
+Neutral surface/text/outline ramp tinted with the given brand hue (OKLCH degrees).
+
+```ts
+function neutralRamp(hue: number): NeutralRamp
+```
+
+### radius
+
+`import { radius } from "@codeatlasdev/ui"`
+
+Border-radius scale in px (xs 4, sm 6, md 10, lg 14, xl 20, pill 999). Mirrors `--ca-radius-*`.
+
+```ts
+const radius: {
+  xs: 4;
+  sm: 6;
+  md: 10;
+  lg: 14;
+  xl: 20;
+  pill: 999;
+}
+```
+
+### reducedMotion
+
+`import { reducedMotion } from "@codeatlasdev/ui"`
+
+Reactive `prefers-reduced-motion: reduce` (`.value`). Call `reducedMotion.init()` once in the root layout; it returns a cleanup.
+
+```ts
+const reducedMotion: { readonly value: boolean; init: () => () => void; }
+```
+
+### reducedTransparency
+
+`import { reducedTransparency } from "@codeatlasdev/ui"`
+
+Reactive `prefers-reduced-transparency: reduce` (`.value`). Call `reducedTransparency.init()` once in the root layout; it returns a cleanup.
+
+```ts
+const reducedTransparency: { readonly value: boolean; init: () => () => void; }
+```
+
+### registerLocale
+
+`import { registerLocale } from "@codeatlasdev/ui"`
+
+Registers (or replaces) a locale. `messages` is deep-merged over English, so a partial dictionary is enough: missing keys render in English. Call it at module load, before rendering.
+
+```ts
+function registerLocale(id: Locale, messages: MessagesOverride): void
+```
+
+### responsive
+
+`import { responsive } from "@codeatlasdev/ui"`
+
+Reactive breakpoint store (`current`, `up`, `down`, `only`, `isMobile`, `isTablet`, `isDesktop`, `BREAKPOINTS`). SSR-safe: reads as desktop until `responsive.init()` measures the window.
+
+```ts
+const responsive: {
+  readonly width: number | undefined;
+  readonly current: Breakpoint;
+  readonly up: (bp: Breakpoint) => boolean;
+  readonly down: (bp: Breakpoint) => boolean;
+  readonly only: (bp: Breakpoint) => boolean;
+  readonly isMobile: boolean;
+  readonly isTablet: boolean;
+  readonly isDesktop: boolean;
+  init: () => () => void;
+  BREAKPOINTS: Record<Breakpoint, number>;
+}
+```
+
+### searchDocs
+
+`import { searchDocs } from "@codeatlasdev/ui"`
+
+Every term must match. Title hits rank above heading hits above body hits. Returns at most `limit` results (pages and their matching headings interleaved by score).
+
+```ts
+function searchDocs(index: DocsSearchEntry[], query: string, limit?: number): DocsSearchResult[]
+```
+
+### semanticDark
+
+`import { semanticDark } from "@codeatlasdev/ui"`
+
+Semantic status colors (secondary, success, warning, info, error) for dark mode, in OKLCH.
+
+```ts
+const semanticDark: {
+  secondary: "oklch(0.250 0.005 70)";
+  success: "oklch(0.71 0.160 150)";
+  warning: "oklch(0.84 0.140 88)";
+  info: "oklch(0.72 0.140 235)";
+  error: "oklch(0.76 0.185 16)";
+}
+```
+
+### semanticLight
+
+`import { semanticLight } from "@codeatlasdev/ui"`
+
+Semantic status colors (secondary, success, warning, info, error) for light mode, in OKLCH.
+
+```ts
+const semanticLight: {
+  secondary: "oklch(0.910 0.005 75)";
+  success: "oklch(0.46 0.145 150)";
+  warning: "oklch(0.53 0.130 75)";
+  info: "oklch(0.50 0.125 235)";
+  error: "oklch(0.55 0.190 25)";
+}
+```
+
+### setLocale
+
+`import { setLocale } from "@codeatlasdev/ui"`
+
+Sets the UI language for client-only apps. `override` is deep-merged over the locale's catalog; calling `setLocale` again replaces any previous overrides.
+
+```ts
+function setLocale(next: Locale, override?: MessagesOverride): void
+```
+
+### shadows
+
+`import { shadows } from "@codeatlasdev/ui"`
+
+Box-shadow strings per material thickness (`none` to `chrome`), tinted with warm stone.
+
+```ts
+const shadows: {
+  none: "none";
+  ultraThin: string;
+  thin: string;
+  regular: "0 4px 16px oklch(0.25 0.008 70 / 0.12)";
+  thick: "0 6px 24px oklch(0.25 0.008 70 / 0.14)";
+  chrome: "0 12px 40px oklch(0.25 0.008 70 / 0.19)";
+}
+```
+
+### storageGet
+
+`import { storageGet } from "@codeatlasdev/ui"`
+
+Reads and JSON-parses `key`; returns `fallback` on the server, when missing or when parsing fails.
+
+```ts
+function storageGet<T>(key: string, fallback: T): T
+```
+
+### storageRemove
+
+`import { storageRemove } from "@codeatlasdev/ui"`
+
+Removes `key` from `localStorage`; no-op on the server.
+
+```ts
+function storageRemove(key: string): void
+```
+
+### storageSet
+
+`import { storageSet } from "@codeatlasdev/ui"`
+
+JSON-stringifies `value` into `localStorage[key]`; no-op on the server.
+
+```ts
+function storageSet<T>(key: string, value: T): void
+```
+
+### THEME_PRESETS
+
+`import { THEME_PRESETS } from "@codeatlasdev/ui"`
+
+The built-in brand presets with their generated brand ramps, neutral ramp and semantic palettes.
+
+```ts
+const THEME_PRESETS: ThemePreset[]
+```
+
+### themeCSS
+
+`import { themeCSS } from "@codeatlasdev/ui"`
+
+Compile a resolved theme to CSS: brand presets, @font-face rules, design knobs and raw overrides. Deterministic: same theme → same string. Empty when every value is a default. Preload links for descriptor fonts come from `fontPreloads`.
+
+```ts
+function themeCSS(t: ResolvedTheme): string
+```
+
+### throttle
+
+`import { throttle } from "@codeatlasdev/ui"`
+
+Returns a function that calls `fn` at most once per `limit` ms; calls inside the window are ignored.
+
+```ts
+function throttle<T extends (...args: unknown[]) => unknown>(fn: T, limit: number): (...args: Parameters<T>) => void
+```
+
+### toast
+
+`import { toast } from "@codeatlasdev/ui"`
+
+Toast queue: `toast.show(message, opts)` and the `success`/`error`/`warning`/`info` shortcuts push an item, `toast.remove(id)` drops it. Render the queue with `<Toaster />` once in the root layout.
+
+```ts
+const toast: {
+  readonly items: ToastItem[];
+  remove: (id: string) => void;
+  show: (message: string, opts?: { variant?: ToastVariant; duration?: number; }) => string;
+  success: (message: string, duration?: number) => string;
+  error: (message: string, duration?: number) => string;
+  warning: (message: string, duration?: number) => string;
+  info: (message: string, duration?: number) => string;
+}
+```
+
+### uid
+
+`import { uid } from "@codeatlasdev/ui"`
+
+Short random id `"<prefix>-xxxxxxx"` for DOM ids and keys. Not cryptographically secure.
+
+```ts
+function uid(prefix?: string): string
+```
+
+### useForm
+
+`import { useForm } from "@codeatlasdev/ui"`
+
+Reactive form state: per-field value, error and touched flag, optional field arrays, and validation through a Zod- or Valibot-style `schema`. Returns `FormState`.
+
+```ts
+function useForm<K extends string, A extends Record<string, unknown> = Record<never, never>>(initialValues: Record<K, string>, options?: { schema?: ValidationSchema<K>; /** Initial rows per field array, e.g. `{ phones: [{ number: "" }] }`. */ arrays?: { [N in keyof A]: A[N][] }; }): FormState<K, A>
+```
+
+### useListState
+
+`import { useListState } from "@codeatlasdev/ui"`
+
+Reactive list controller for client-side tables: search over `searchKeys`, filters, pagination and row selection. Returns `UseListStateReturn`.
+
+```ts
+function useListState<T extends object>(options: UseListStateOptions<T>): UseListStateReturn<T>
+```
+
+### useLocale
+
+`import { useLocale } from "@codeatlasdev/ui"`
+
+Active locale for the component being initialised (provider first, client-global otherwise).
+
+```ts
+function useLocale(): () => Locale
+```
+
+### useT
+
+`import { useT } from "@codeatlasdev/ui"`
+
+Message accessor for the component being initialised. Call it at the top level of `<script>` (it reads Svelte context), then use `t().group.key` anywhere, including `$derived` and markup.
+
+```ts
+function useT(): () => Messages
+```
+
+### viewport
+
+`import { viewport } from "@codeatlasdev/ui"`
+
+On-screen keyboard tracker: `viewport.keyboardInset` is the layout-viewport height the virtual keyboard covers, mirrored to `--ca-kb-inset` on `<html>`. Call `viewport.init()` once; it returns a cleanup.
+
+```ts
+const viewport: { readonly keyboardInset: number; init: () => () => void; }
+```
+
+### zIndex
+
+`import { zIndex } from "@codeatlasdev/ui"`
+
+Stacking scale (`base` 0 up to `tooltip`). Mirrors `--ca-z-*`; use it instead of literal z-index values.
+
+```ts
+const zIndex: {
+  base: 0;
+  raised: 10;
+  nav: 100;
+  dropdown: 1000;
+  sticky: 1020;
+  fixed: 1030;
+  drawer: 1200;
+  modal: 1300;
+  snackbar: 1400;
+  tooltip: 1500;
+}
+```
+
+Types:
+
+| Type | Declaration | Notes |
+|---|---|---|
+| `BrandColors` | `interface BrandColors { main: string; light: string; dark: string; contrast: string; }` |  |
+| `Breakpoint` | `type Breakpoint = "xs" \| "sm" \| "md" \| "lg" \| "xl";` |  |
+| `BuiltinPresetId` | `type BuiltinPresetId = \| "amber" \| "ocean" \| "crimson" \| "cyan" \| "violet" \| "emerald" \| "rose" \| "slate";` | Presets shipped in global.css. |
+| `ColorScheme` | `type ColorScheme = "light" \| "dark" \| "system";` |  |
+| `DateRange` | `interface DateRange { start: DateValue \| undefined; end: DateValue \| undefined; }` | Value of RangeCalendar / DateRangePicker. Both ends are undefined until picked. |
+| `DeepPartial` | `type DeepPartial<T> = T extends (...args: never[]) => unknown ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;` |  |
+| `Density` | `type Density = "compact" \| "comfortable" \| "airy" \| number;` | Spacing density: a multiplier of the 4px unit, or a named step. |
+| `DesignStyle` | `interface DesignStyle { id: DesignStyleId; label: string; description: string; taxonomy: string[]; theme: Partial<ThemeDefinition>; }` |  |
+| `DesignStyleId` | `type DesignStyleId = \| "default" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
+| `DocsHeading` | `interface DocsHeading { id: string; text: string; depth: 2 \| 3; }` |  |
+| `DocsNavGroup` | `interface DocsNavGroup { label?: string; items: DocsNavItem[]; }` | A labelled group of page links in the sidebar. |
+| `DocsNavItem` | `interface DocsNavItem { href: string; title: string; badge?: string; }` | A page link in the sidebar. |
+| `DocsPagerLink` | `interface DocsPagerLink { href: string; title: string; }` | One side of the previous/next pager. |
+| `DocsSearchEntry` | `interface DocsSearchEntry { href: string; title: string; section: string; description: string; headings: { text: string; id: string }[]; text: string; }` | One entry of the search index consumed by DocsSearch. |
+| `DocsSearchResult` | `interface DocsSearchResult { href: string; title: string; context: string; kind: "page" \| "heading"; }` |  |
+| `DocsSection` | `interface DocsSection { id: string; label: string; href: string; }` | A top-level docs section shown in the header (e.g. Guide, API, Compat). |
+| `ElevationLevel` | `type ElevationLevel = keyof typeof elevation;` |  |
+| `ElevationModel` | `type ElevationModel = "soft" \| "none" \| "hard" \| "glow";` | Shadow model: how elevation is drawn. |
+| `FieldState` | `interface FieldState { value: string; error: string \| undefined; touched: boolean; }` |  |
+| `FontDescriptor` | `interface FontDescriptor { family: string; src: string; weight?: number \| string; style?: "normal" \| "italic"; display?: "auto" \| "block" \| "swap" \| "fallback" \| "optional"; preload?: boolean; fallback?: string; fallbackMetrics?: FontFallbackMetrics; generic?: string; }` | A self-hosted web font. Emits `@font-face`, an optional preload and a metric-matched fallback face. |
+| `FontFallbackMetrics` | `interface FontFallbackMetrics { sizeAdjust?: string \| number; ascent?: string; descent?: string; lineGap?: string; }` | Metrics of the fallback face, from the font's own tables, so the swap does not shift layout. |
+| `FontSpec` | `type FontSpec = string \| FontDescriptor;` | A font stack string (existing behavior) or a self-hosted font descriptor. |
+| `FormState` | `interface FormState< K extends string, A extends Record<string, unknown> = Record<never, never>, > { fields: Record<K, FieldState>; arrays: { [N in keyof A]: FieldArrayState<A[N]> }; dirty: boolean; valid: boolean; submitting: boolean; touch(field: K): void; set(field: K, value: string): void; validate(): boolean; reset(): void; }` |  |
+| `IconComponent` | `type IconComponent = Component<IconProps>;` | Any Svelte 5 icon component accepting {@link IconProps}. Structural, so `@lucide/svelte` icons (and compatible libraries) fit. |
+| `IconProps` | `type IconProps = { size?: number \| string; class?: string; "stroke-width"?: number \| string; };` | Props the library passes to icon components. |
+| `Locale` | `type Locale = string;` | BCP 47 language tag. `en` and `pt-BR` are built in; add others with `registerLocale`. |
+| `Messages` | `type Messages = Widen<typeof en>;` | Full message shape (string literals widened so other locales can translate). |
+| `MessagesOverride` | `type MessagesOverride = DeepPartial<Messages>;` | Partial, deep override accepted by `setLocale`, `registerLocale` and `I18nProvider`. |
+| `MotionOptions` | `interface MotionOptions { scale?: number; easing?: "standard" \| "emphasized" \| "spring" \| "linear" \| "steps"; }` |  |
+| `NavItem` | `interface NavItem { id: string; label: string; icon: IconComponent; path: string; badge?: number; isNew?: boolean; shortcut?: string; description?: string; }` |  |
+| `NavModule` | `interface NavModule { id: string; label: string; icon: IconComponent; basePath: string; pathPrefixes?: string[]; items: (NavItem \| NavSection)[]; }` |  |
+| `NavSection` | `interface NavSection { label?: string; collapsible?: boolean; defaultOpen?: boolean; items: NavItem[]; }` |  |
+| `NeutralRamp` | `interface NeutralRamp { surfaceLight: SurfaceColors; surfaceDark: SurfaceColors; textLight: TextColors; textDark: TextColors; outlineLight: OutlineColors; outlineDark: OutlineColors; }` |  |
+| `OutlineColors` | `interface OutlineColors { subtle: string; default: string; strong: string; }` |  |
+| `Paper` | `type Paper = "mesh" \| "plain" \| "grid" \| "dots" \| "lines";` | Page background pattern. mesh = brand glow gradients; the rest are flat paper. |
+| `Politeness` | `type Politeness = "polite" \| "assertive";` |  |
+| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
+| `PresetId` | `type PresetId = BuiltinPresetId \| (string & {});` | A built-in preset or a brand preset registered via `ThemeOptions.presets`. |
+| `RadiusKey` | `type RadiusKey = keyof typeof radius;` |  |
+| `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
+| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; background?: string; sunken?: string; surface?: string; overlay?: string; text?: string; textSecondary?: string; textHint?: string; textDisabled?: string; borderSubtle?: string; border?: string; borderStrong?: string; success?: string; warning?: string; info?: string; error?: string; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. |
+| `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
+| `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
+| `SurfaceColors` | `interface SurfaceColors { sunken: string; base: string; raised: string; overlay: string; }` |  |
+| `SurfaceStyle` | `type SurfaceStyle = \| "glass" \| "frosted" \| "solid" \| "flat" \| "outlined" \| "neumorphic" \| "clay" \| "tonal" \| "chrome";` | Surface material. glass/frosted blur the backdrop; the rest are opaque. |
+| `TextColors` | `interface TextColors { primary: string; secondary: string; disabled: string; }` |  |
+| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
+| `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
+| `ThemePreset` | `interface ThemePreset { id: BuiltinPresetId; label: string; swatchColor: string; hue: number; brandLight: BrandColors; brandDark: BrandColors; ramp: NeutralRamp; semanticLight: SemanticColors; semanticDark: SemanticColors; }` |  |
+| `Thickness` | `type Thickness = "ultra-thin" \| "thin" \| "regular" \| "thick" \| "chrome";` |  |
+| `TimeValue` | `type TimeValue = Time \| CalendarDateTime \| ZonedDateTime;` | Accepted by TimeField `placeholder` / `minValue` / `maxValue`. |
+| `ToastItem` | `interface ToastItem { id: string; message: string; variant: ToastVariant; duration: number; }` |  |
+| `ToastVariant` | `type ToastVariant = "default" \| "success" \| "error" \| "warning" \| "info";` |  |
+| `TypographyOptions` | `interface TypographyOptions { scale?: number; weights?: Partial<Record<"regular" \| "medium" \| "semibold" \| "bold" \| "heading", number>>; headingTracking?: string; headingCase?: "none" \| "uppercase"; labelTracking?: string; labelCase?: "none" \| "uppercase"; lineHeight?: number; measure?: string; }` |  |
+| `UseListStateOptions` | `interface UseListStateOptions<T extends object> { data: T[]; perPage?: number; searchKeys?: (keyof T)[]; idKey?: keyof T; ofLabel?: string; }` | useListState — eliminates boilerplate state management in list/CRUD pages. |
+| `UseListStateReturn` | `interface UseListStateReturn<T> { get search(): string; set search(v: string); readonly filters: Record<string, string>; setFilter(key: string, value: string \| undefined): void; clearFilters(): void; readonly hasFilters: boolean; readonly filtered: T[]; readonly count: string; readonly rows: T[]; get page(): number; set page(v: number); readonly pageCount: number; readonly pageInfo: string; readonly selected: Set<T[keyof T]>; readonly allPageSelected: boolean; toggleAll(): void; toggleRow(id: T[keyof T]): void; clearSelection(): void; }` |  |
+| `ValidationSchema` | `type ValidationSchema<K extends string> = \| { parse?: (data: Record<K, string>) => unknown; safeParse?: (data: Record<K, string>) => { success: boolean; error?: { flatten?: () => { fieldErrors: Partial<Record<K, string[]>> } }; }; _run?: ( data: Record<K, string>, config: unknown ) => { output: unknown; issues?: Array<{ path: (string \| number)[]; message: string }>; }; } \| ((data: Record<K, string>) => Partial<Record<K, string>>);` |  |
+| `VibrancyLevel` | `type VibrancyLevel = "label" \| "secondary" \| "tertiary" \| "fill" \| "separator";` |  |
+| `ZIndexKey` | `type ZIndexKey = keyof typeof zIndex;` |  |
+
+## @codeatlasdev/ui/actions
+
+### autofocus
+
+`import { autofocus } from "@codeatlasdev/ui/actions"`
+
+Svelte action: focuses the element on mount without scrolling. On touch it only focuses when `primeKeyboard()` ran in the opening gesture (`{ touch: true }` forces it). Usage: `<input use:autofocus>`.
+
+```ts
+const autofocus: Action<HTMLElement, { touch?: boolean; } | undefined, Record<never, any>>
+```
+
+### clickOutside
+
+`import { clickOutside } from "@codeatlasdev/ui/actions"`
+
+Dispatches 'clickoutside' when user clicks outside the element.
+
+```ts
+const clickOutside: Action<HTMLElement, () => void, Record<never, any>>
+```
+
+### clipboard
+
+`import { clipboard } from "@codeatlasdev/ui/actions"`
+
+Copies `text` to clipboard on click; fires 'copy' custom event.
+
+```ts
+const clipboard: Action<HTMLElement, string, { oncopy: (e: CustomEvent<string>) => void; }>
+```
+
+### focusTextField
+
+`import { focusTextField } from "@codeatlasdev/ui/actions"`
+
+Focus a text field the way autofocus does: always with a fine pointer, on touch only when the keyboard was primed in the opening gesture. Returns whether it focused.
+
+```ts
+function focusTextField(el: HTMLElement | null | undefined, force?: boolean): boolean
+```
+
+### focusTrap
+
+`import { focusTrap } from "@codeatlasdev/ui/actions"`
+
+Traps keyboard focus inside the element when `enabled` is true.
+
+```ts
+const focusTrap: Action<HTMLElement, boolean, Record<never, any>>
+```
+
+### keyboardAware
+
+`import { keyboardAware } from "@codeatlasdev/ui/actions"`
+
+Keeps an element (composer, sticky action bar, full-screen pane) above the on-screen keyboard: pads its bottom by `--ca-kb-inset` and, when the keyboard resizes the viewport, scrolls the focused field inside it back into view. Starts the viewport store if nobody did.
+
+```ts
+function keyboardAware(node: HTMLElement): { destroy(): void; }
+```
+
+### longpress
+
+`import { longpress } from "@codeatlasdev/ui/actions"`
+
+Fires 'longpress' custom event after `duration` ms of pointer held.
+
+```ts
+const longpress: Action<HTMLElement, number, { onlongpress?: (e: CustomEvent) => void; }>
+```
+
+### primeKeyboard
+
+`import { primeKeyboard } from "@codeatlasdev/ui/actions"`
+
+Call synchronously in the click/tap handler that opens a view with an autofocused field (dialog, sheet, search). Opens the keyboard on iOS/Android; no-op on desktop.
+
+```ts
+function primeKeyboard(): void
+```
+
+### scrollFocusable
+
+`import { scrollFocusable } from "@codeatlasdev/ui/actions"`
+
+Makes a scroll container keyboard-reachable only while it actually overflows (WCAG 2.1.1, axe `scrollable-region-focusable`): `tabindex="0"` when content is wider/taller than the box, removed otherwise so non-scrolling tables add no tab stop.
+
+```ts
+const scrollFocusable: Action<HTMLElement, undefined, Record<never, any>>
+```
+
+## @codeatlasdev/ui/astro
+
+### caUI
+
+`import { caUI } from "@codeatlasdev/ui/astro"`
+
+Astro integration: injects the theme (preset CSS, fonts, init script) into every page `<head>` before first paint and bundles the ESM-only dependencies for SSR. Pass the same `ThemeOptions` as `defineTheme`.
+
+```ts
+function caUI(options?: ThemeOptions): AstroIntegration
+```
+
+### DESIGN_STYLES
+
+`import { DESIGN_STYLES } from "@codeatlasdev/ui/astro"`
+
+Design-style recipes by id (glass, solid, flat, ... editorial, terminal): each is a `Partial<ThemeDefinition>` to pass to `defineTheme` or `mergeTheme`.
+
+```ts
+const DESIGN_STYLES: Record<DesignStyleId, DesignStyle>
+```
+
+### designStyle
+
+`import { designStyle } from "@codeatlasdev/ui/astro"`
+
+A design style recipe with your overrides on top, ready for `defineTheme`/`caThemeHandle`.
+
+```ts
+function designStyle(id: DesignStyleId, overrides?: Partial<ThemeDefinition>): Partial<ThemeDefinition>
+```
+
+### mergeTheme
+
+`import { mergeTheme } from "@codeatlasdev/ui/astro"`
+
+Merge partial themes: `b` wins; the nested option groups merge key by key.
+
+```ts
+function mergeTheme(a: Partial<ThemeDefinition>, b: Partial<ThemeDefinition>): Partial<ThemeDefinition>
+```
+
+Types:
+
+| Type | Declaration | Notes |
+|---|---|---|
+| `DesignStyleId` | `type DesignStyleId = \| "default" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
+| `Paper` | `type Paper = "mesh" \| "plain" \| "grid" \| "dots" \| "lines";` | Page background pattern. mesh = brand glow gradients; the rest are flat paper. |
+| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
+| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; background?: string; sunken?: string; surface?: string; overlay?: string; text?: string; textSecondary?: string; textHint?: string; textDisabled?: string; borderSubtle?: string; border?: string; borderStrong?: string; success?: string; warning?: string; info?: string; error?: string; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. |
+| `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
+
+## @codeatlasdev/ui/charts
+
+Types:
+
+| Type | Declaration | Notes |
+|---|---|---|
+| `CalendarHeatmapPoint` | `type CalendarHeatmapPoint = [date: string, value: number];` | [date (YYYY-MM-DD), value] — calendar heatmap. |
+| `ChartSeries` | `interface ChartSeries { name: string; data: number[]; color?: string; }` | One named series of numeric values, aligned to a shared `categories` axis. |
+| `ChartSlice` | `interface ChartSlice { name: string; value: number; }` | name/value pair — pie, donut, and rose charts. |
+| `GaugeZone` | `interface GaugeZone { until: number; color: GaugeZoneColor; }` |  |
+| `GaugeZoneColor` | `type GaugeZoneColor = "success" \| "warning" \| "error" \| "info" \| "brand" \| (string & {});` |  |
+| `MatrixHeatmapPoint` | `type MatrixHeatmapPoint = [x: number, y: number, value: number];` | [xIndex, yIndex, value] — matrix heatmap. |
+| `RadarIndicator` | `interface RadarIndicator { name: string; max: number; }` |  |
+| `RadarSeries` | `interface RadarSeries { name: string; values: number[]; color?: string; }` |  |
+| `ScatterPoint` | `type ScatterPoint = [x: number, y: number] \| [x: number, y: number, size: number];` | x/y point, optionally with a third dimension for bubble sizing. |
+| `ScatterSeries` | `interface ScatterSeries { name: string; data: ScatterPoint[]; color?: string; }` |  |
+| `SparklineTrend` | `type SparklineTrend = "up" \| "down" \| "neutral";` |  |
+
+## @codeatlasdev/ui/forms
+
+### centsToDisplay
+
+`import { centsToDisplay } from "@codeatlasdev/ui/forms"`
+
+`123456` → `"R$ 1.234,56"` (NBSP normalised to a regular space).
+
+```ts
+function centsToDisplay(cents: number): string
+```
+
+### isValidCNPJ
+
+`import { isValidCNPJ } from "@codeatlasdev/ui/forms"`
+
+True when `raw` (formatted or not) is a CNPJ with valid check digits.
+
+```ts
+function isValidCNPJ(raw: string): boolean
+```
+
+### isValidCPF
+
+`import { isValidCPF } from "@codeatlasdev/ui/forms"`
+
+True when `raw` (formatted or not) is a CPF with valid check digits; repeated-digit sequences are rejected.
+
+```ts
+function isValidCPF(raw: string): boolean
+```
+
+### isValidDateBR
+
+`import { isValidDateBR } from "@codeatlasdev/ui/forms"`
+
+Validates a complete `dd/mm/aaaa` calendar date (leap years included).
+
+```ts
+function isValidDateBR(raw: string): boolean
+```
+
+### mask
+
+`import { mask } from "@codeatlasdev/ui/forms"`
+
+Formats an `<input>` live with a pure mask function, keeping the caret at the same digit position. When the masked text differs from what the browser produced, the original `input` event is swallowed and a fresh one is dispatched, so `bind:value` / `oninput` listeners see the masked value exactly once (never the raw text).
+
+```ts
+const mask: Action<HTMLInputElement, (raw: string) => string, Record<never, any>>
+```
+
+### maskCEP
+
+`import { maskCEP } from "@codeatlasdev/ui/forms"`
+
+`01310-100`
+
+```ts
+function maskCEP(raw: string): string
+```
+
+### maskCNPJ
+
+`import { maskCNPJ } from "@codeatlasdev/ui/forms"`
+
+`12.345.678/0001-95`
+
+```ts
+function maskCNPJ(raw: string): string
+```
+
+### maskCPF
+
+`import { maskCPF } from "@codeatlasdev/ui/forms"`
+
+`123.456.789-09`
+
+```ts
+function maskCPF(raw: string): string
+```
+
+### maskCPFCNPJ
+
+`import { maskCPFCNPJ } from "@codeatlasdev/ui/forms"`
+
+CPF up to 11 digits, CNPJ beyond.
+
+```ts
+function maskCPFCNPJ(raw: string): string
+```
+
+### maskDateBR
+
+`import { maskDateBR } from "@codeatlasdev/ui/forms"`
+
+`dd/mm/aaaa`
+
+```ts
+function maskDateBR(raw: string): string
+```
+
+### maskPhoneBR
+
+`import { maskPhoneBR } from "@codeatlasdev/ui/forms"`
+
+`(11) 98765-4321` (11 digits) or `(11) 8765-4321` (10 digits).
+
+```ts
+function maskPhoneBR(raw: string): string
+```
+
+### maskRG
+
+`import { maskRG } from "@codeatlasdev/ui/forms"`
+
+RG has no national format; most states use `12.345.678-9` (8 digits + check digit, check digit may be `X`). Letters other than a trailing X are stripped.
+
+```ts
+function maskRG(raw: string): string
+```
+
+### parseInputToCents
+
+`import { parseInputToCents } from "@codeatlasdev/ui/forms"`
+
+Parse user text into integer cents. - Text with a `,` is read as a pt-BR decimal (`"R$ 1.234,56"` → 123456, `"10,5"` → 1050). - Text without `,` is read as a plain digit stream where the last two digits are cents (`"123456"` → 123456), which is what a type-to-fill money input produces. A leading `-` yields a negative value.
+
+```ts
+function parseInputToCents(text: string): number
+```
+
+Types:
+
+| Type | Declaration | Notes |
+|---|---|---|
+| `CepAddress` | `interface CepAddress { logradouro: string; bairro: string; localidade: string; uf: string; }` | Address shape returned by a CEP lookup (ViaCEP field names). |
+
+## @codeatlasdev/ui/kit
+
+### caThemeHandle
+
+`import { caThemeHandle } from "@codeatlasdev/ui/kit"`
+
+SvelteKit `Handle` that puts the theme head (brand presets + init script) right after `<head>`, before any stylesheet or script, so the first paint already has the right preset and scheme.
+
+```ts
+function caThemeHandle(options?: ThemeOptions): Handle
+```
+
+### createErrorHandler
+
+`import { createErrorHandler } from "@codeatlasdev/ui/kit"`
+
+Builds the SvelteKit `handleError` hook: returns a sanitized `CaError` (`message`, `code`, random `id`), hides the real message of 5xx errors behind a localized fallback, and calls `report` with the sanitized error.
+
+```ts
+function createErrorHandler(options?: CreateErrorHandlerOptions): ({ error, event, status, }: { error: unknown; event: ErrorEvent; status: number; }) => CaError
+```
+
+### defineTheme
+
+`import { defineTheme } from "@codeatlasdev/ui/kit"`
+
+Resolve a partial definition: fills defaults, validates ids, precomputes theme-color hexes.
+
+```ts
+function defineTheme(def?: Partial<ThemeDefinition>): ResolvedTheme
+```
+
+### DESIGN_STYLES
+
+`import { DESIGN_STYLES } from "@codeatlasdev/ui/kit"`
+
+Design-style recipes by id (glass, solid, flat, ... editorial, terminal): each is a `Partial<ThemeDefinition>` to pass to `defineTheme` or `mergeTheme`.
+
+```ts
+const DESIGN_STYLES: Record<DesignStyleId, DesignStyle>
+```
+
+### designStyle
+
+`import { designStyle } from "@codeatlasdev/ui/kit"`
+
+A design style recipe with your overrides on top, ready for `defineTheme`/`caThemeHandle`.
+
+```ts
+function designStyle(id: DesignStyleId, overrides?: Partial<ThemeDefinition>): Partial<ThemeDefinition>
+```
+
+### designTokens
+
+`import { designTokens } from "@codeatlasdev/ui/kit"`
+
+Design knobs → root custom properties. Only values that differ from the stylesheet defaults.
+
+```ts
+function designTokens(t: Pick< ResolvedTheme, | "radius" | "controlRadius" | "density" | "border" | "typography" | "elevation" | "motion" | "iconStroke" | "noise" | "paper" >): Record<string, string>
+```
+
+### mergeTheme
+
+`import { mergeTheme } from "@codeatlasdev/ui/kit"`
+
+Merge partial themes: `b` wins; the nested option groups merge key by key.
+
+```ts
+function mergeTheme(a: Partial<ThemeDefinition>, b: Partial<ThemeDefinition>): Partial<ThemeDefinition>
+```
+
+### nativeFeel
+
+`import { nativeFeel } from "@codeatlasdev/ui/kit"`
+
+Make an app shell behave like a native app instead of a web page: - focus rings only while navigating with the keyboard (`html[data-kbd]`); WebKit treats programmatic focus (a dialog focusing its close button) as `:focus-visible`; - no browser context menu and no text selection on chrome (buttons, nav, tabs), editable fields and `.selectable` keep both; - no dragging of links or images; optional zoom lock. Sets `html[data-ca-native]`. Returns a cleanup function.
+
+```ts
+function nativeFeel(options?: NativeFeelOptions): () => void
+```
+
+### themeCSS
+
+`import { themeCSS } from "@codeatlasdev/ui/kit"`
+
+Compile a resolved theme to CSS: brand presets, @font-face rules, design knobs and raw overrides. Deterministic: same theme → same string. Empty when every value is a default. Preload links for descriptor fonts come from `fontPreloads`.
+
+```ts
+function themeCSS(t: ResolvedTheme): string
+```
+
+### useBreadcrumbs
+
+`import { useBreadcrumbs } from "@codeatlasdev/ui/kit"`
+
+Returns a reactive `BreadcrumbItem[]` derived from the current SvelteKit route path. Mount `<Breadcrumb items={breadcrumbs} />` in your layout.
+
+```ts
+function useBreadcrumbs(): Readable<BreadcrumbItem[]>
+```
+
+### usePageTitle
+
+`import { usePageTitle } from "@codeatlasdev/ui/kit"`
+
+Returns a reactive string with the current page title resolved from a NavModule[] config. Falls back to the last URL segment capitalized.
+
+```ts
+function usePageTitle(modules: NavModule[]): Readable<string>
+```
+
+Types:
+
+| Type | Declaration | Notes |
+|---|---|---|
+| `CaError` | `interface CaError { message: string; code?: string; id?: string; }` |  |
+| `CreateErrorHandlerOptions` | `interface CreateErrorHandlerOptions { report?: (error: CaError, event: ErrorEvent) => void; defaultMessage?: string; locale?: Locale \| ((event: ErrorEvent) => Locale \| undefined); }` |  |
+| `DesignStyle` | `interface DesignStyle { id: DesignStyleId; label: string; description: string; taxonomy: string[]; theme: Partial<ThemeDefinition>; }` |  |
+| `DesignStyleId` | `type DesignStyleId = \| "default" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
+| `NativeFeelOptions` | `interface NativeFeelOptions { blockZoom?: boolean; allowContextMenu?: (e: MouseEvent) => boolean; }` |  |
+| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
+| `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
+| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
+| `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
+
+## @codeatlasdev/ui/seo
+
+### AI_BOT_USER_AGENT
+
+`import { AI_BOT_USER_AGENT } from "@codeatlasdev/ui/seo"`
+
+AI crawlers and assistants that should get Markdown instead of HTML.
+
+```ts
+const AI_BOT_USER_AGENT: RegExp
+```
+
+### appleMeta
+
+`import { appleMeta } from "@codeatlasdev/ui/seo"`
+
+Markup for iOS home-screen apps, as an HTML string for `themeHead`-style injection or `{@html}` inside `<svelte:head>`. Android and desktop read the manifest instead.
+
+```ts
+function appleMeta(o: AppleMetaOptions): string
+```
+
+### article
+
+`import { article } from "@codeatlasdev/ui/seo"`
+
+schema.org `Article` node (headline, dates, author, image).
+
+```ts
+function article(i: ArticleInput): JsonLdNode
+```
+
+### breadcrumbList
+
+`import { breadcrumbList } from "@codeatlasdev/ui/seo"`
+
+`items` in order, root first. `href` is absolute; omit it on the current (last) page.
+
+```ts
+function breadcrumbList(items: { name: string; href?: string }[]): JsonLdNode
+```
+
+### faqPage
+
+`import { faqPage } from "@codeatlasdev/ui/seo"`
+
+schema.org `FAQPage` node from `{ question, answer }` pairs.
+
+```ts
+function faqPage(items: { question: string; answer: string }[]): JsonLdNode
+```
+
+### graph
+
+`import { graph } from "@codeatlasdev/ui/seo"`
+
+Wraps nodes in a single `@graph` document. Cross-reference them with `{ "@id": ... }`.
+
+```ts
+function graph(...nodes: JsonLdNode[]): { "@context": "https://schema.org"; "@graph": JsonLdNode[]; }
+```
+
+### llmsTxt
+
+`import { llmsTxt } from "@codeatlasdev/ui/seo"`
+
+Builds an `llms.txt` (https://llmstxt.org): title, summary, then link lists per section.
+
+```ts
+function llmsTxt(i: LlmsTxtInput): string
+```
+
+### manifest
+
+`import { manifest } from "@codeatlasdev/ui/seo"`
+
+Builds the web app manifest as an object. Serve it from a prerendered `src/routes/manifest.webmanifest/+server.ts` with `JSON.stringify` and `content-type: application/manifest+json`, and link it with `<Seo manifest>` or `<link rel="manifest" href="/manifest.webmanifest">`.
+
+```ts
+function manifest(o: ManifestOptions): Record<string, unknown>
+```
+
+### markdownNegotiation
+
+`import { markdownNegotiation } from "@codeatlasdev/ui/seo"`
+
+SvelteKit `Handle` that answers with `text/markdown` when the client sends `Accept: text/markdown` or is a known AI bot. Other requests fall through. Responses carry `Vary: Accept, User-Agent` so caches keep both variants apart.
+
+```ts
+function markdownNegotiation(options: MarkdownNegotiationOptions): Handle
+```
+
+### OG_SIZE
+
+`import { OG_SIZE } from "@codeatlasdev/ui/seo"`
+
+Open Graph image size, 1200x630.
+
+```ts
+const OG_SIZE: { readonly width: 1200; readonly height: 630; }
+```
+
+### ogImageRoute
+
+`import { ogImageRoute } from "@codeatlasdev/ui/seo"`
+
+Builds a SvelteKit `GET` handler for `src/routes/og/[slug].jpg/+server.ts`. Renders are limited to `concurrency` at a time and cached by `cacheKey`.
+
+```ts
+function ogImageRoute<E = { params: Record<string, string>; url: URL }>(o: OgImageRouteOptions<E>): (event: E) => Promise<Response>
+```
+
+### organization
+
+`import { organization } from "@codeatlasdev/ui/seo"`
+
+schema.org `Organization` node (name, url, logo, sameAs, description).
+
+```ts
+function organization(i: OrganizationInput): JsonLdNode
+```
+
+### product
+
+`import { product } from "@codeatlasdev/ui/seo"`
+
+schema.org `Product` node with offers, for e-commerce pages.
+
+```ts
+function product(i: ProductInput): JsonLdNode
+```
+
+### renderOgImage
+
+`import { renderOgImage } from "@codeatlasdev/ui/seo"`
+
+Renders a complete HTML document at 1200x630 and returns the image bytes.
+
+```ts
+function renderOgImage(browser: BrowserLike, html: string, options?: RenderOgOptions): Promise<Uint8Array>
+```
+
+### robotsTxt
+
+`import { robotsTxt } from "@codeatlasdev/ui/seo"`
+
+Builds a `robots.txt` that allows everything except `disallow`.
+
+```ts
+function robotsTxt(o?: RobotsOptions): string
+```
+
+### serializeJsonLd
+
+`import { serializeJsonLd } from "@codeatlasdev/ui/seo"`
+
+Serializes JSON-LD for an inline `<script type="application/ld+json">`. `<` is escaped so a value containing `</script>` cannot close the tag; U+2028/2029 are escaped for older parsers.
+
+```ts
+function serializeJsonLd(data: object | object[]): string
+```
+
+### sitemapXml
+
+`import { sitemapXml } from "@codeatlasdev/ui/seo"`
+
+Builds a `sitemap.xml` document. Adds the `xhtml` namespace only when some entry has `alternates`, so plain sitemaps stay minimal. Google rejects more than 50,000 URLs per file: split larger sites into a sitemap index.
+
+```ts
+function sitemapXml(entries: SitemapEntry[]): string
+```
+
+### softwareApplication
+
+`import { softwareApplication } from "@codeatlasdev/ui/seo"`
+
+schema.org `SoftwareApplication` node with optional offer and aggregate rating.
+
+```ts
+function softwareApplication(i: SoftwareApplicationInput): JsonLdNode
+```
+
+### website
+
+`import { website } from "@codeatlasdev/ui/seo"`
+
+schema.org `WebSite` node, with a `SearchAction` when a search URL template is given.
+
+```ts
+function website(i: WebsiteInput): JsonLdNode
+```
+
+Types:
+
+| Type | Declaration | Notes |
+|---|---|---|
+| `AppleMetaOptions` | `interface AppleMetaOptions { touchIcon: string; title?: string; statusBarStyle?: "default" \| "black" \| "black-translucent"; }` |  |
+| `ArticleInput` | `interface ArticleInput { headline: string; description?: string; url?: string; image?: string \| string[]; datePublished: string; dateModified?: string; author: { name: string; url?: string } \| { name: string; url?: string }[]; publisher?: JsonLdRef; inLanguage?: string; type?: "Article" \| "BlogPosting" \| "NewsArticle" \| "TechArticle"; extra?: Extra; }` |  |
+| `BrowserLike` | `interface BrowserLike { newContext: (options: { deviceScaleFactor: number; viewport: { width: number; height: number }; }) => Promise<{ newPage: () => Promise<PageLike>; close: () => Promise<void> }>; }` | The subset of Playwright's `Browser` this module uses. |
+| `JsonLdNode` | `type JsonLdNode = { "@type": string } & Record<string, unknown>;` | A schema.org node. Open on purpose: builders cover the common fields only. |
+| `JsonLdRef` | `interface JsonLdRef { "@id": string; }` | `{ "@id": ... }` reference to a node declared elsewhere in the same graph. |
+| `LlmsSection` | `interface LlmsSection { heading: string; links: { title: string; href: string; description?: string }[]; }` |  |
+| `LlmsTxtInput` | `interface LlmsTxtInput { title: string; summary: string; intro?: string[]; sections: LlmsSection[]; }` |  |
+| `ManifestIcon` | `interface ManifestIcon { src: string; sizes: string; type?: string; purpose?: "any" \| "maskable" \| "monochrome"; }` |  |
+| `ManifestOptions` | `interface ManifestOptions { name: string; shortName?: string; description?: string; startUrl?: string; scope?: string; display?: "standalone" \| "fullscreen" \| "minimal-ui" \| "browser"; orientation?: "any" \| "portrait" \| "landscape"; lang?: string; icons: ManifestIcon[]; shortcuts?: ManifestShortcut[]; theme?: Partial<ThemeDefinition>; themeColor?: string; backgroundColor?: string; extra?: Record<string, unknown>; }` |  |
+| `ManifestShortcut` | `interface ManifestShortcut { name: string; url: string; short_name?: string; description?: string; icons?: ManifestIcon[]; }` |  |
+| `MarkdownNegotiationOptions` | `interface MarkdownNegotiationOptions { markdown: ( pathname: string, event: HandleEvent ) => string \| undefined \| Promise<string \| undefined>; userAgents?: RegExp; }` |  |
+| `OgImageRouteOptions` | `interface OgImageRouteOptions<E> extends RenderOgOptions { browser: () => BrowserLike \| Promise<BrowserLike>; render: (event: E) => string \| undefined \| Promise<string \| undefined>; cacheKey?: (event: E) => string; cacheSize?: number; concurrency?: number; cacheControl?: string; }` |  |
+| `OrganizationInput` | `interface OrganizationInput { name: string; url: string; logo?: string; sameAs?: string[]; description?: string; id?: string; extra?: Extra; }` |  |
+| `ProductInput` | `interface ProductInput { name: string; description?: string; image?: string \| string[]; sku?: string; brand?: string; offers: ProductOffer \| ProductOffer[]; rating?: { value: number; count: number }; id?: string; extra?: Extra; }` |  |
+| `ProductOffer` | `interface ProductOffer { price: number \| string; priceCurrency: string; availability?: \| "InStock" \| "OutOfStock" \| "PreOrder" \| "BackOrder" \| "SoldOut" \| "Discontinued" \| "LimitedAvailability"; url?: string; priceValidUntil?: string; itemCondition?: "NewCondition" \| "UsedCondition" \| "RefurbishedCondition"; }` |  |
+| `RenderOgOptions` | `interface RenderOgOptions { format?: "jpeg" \| "png"; quality?: number; }` |  |
+| `RobotsOptions` | `interface RobotsOptions { sitemap?: string \| string[]; disallow?: string[]; allow?: string[]; }` |  |
+| `SitemapEntry` | `interface SitemapEntry { loc: string; lastmod?: string \| Date; alternates?: { hreflang: string; href: string }[]; }` |  |
+| `SoftwareApplicationInput` | `interface SoftwareApplicationInput { name: string; description?: string; url?: string; applicationCategory: string; operatingSystem?: string; offer?: { price: string; priceCurrency: string }; rating?: { value: number; count: number }; id?: string; extra?: Extra; }` |  |
+| `WebsiteInput` | `interface WebsiteInput { name: string; url: string; description?: string; inLanguage?: string; id?: string; publisher?: JsonLdRef; searchUrlTemplate?: string; extra?: Extra; }` |  |
+
+## @codeatlasdev/ui/table
+
+### caTableFeatures
+
+`import { caTableFeatures } from "@codeatlasdev/ui/table"`
+
+The table feature set shared by every `createCaTable`: column filtering, column visibility, global filtering, row pagination and row sorting. Declared once; never recreate it inside a component.
+
+```ts
+const caTableFeatures: {
+  columnFilteringFeature: TableFeature;
+  columnMeta: CaColumnMeta;
+  columnVisibilityFeature: TableFeature;
+  globalFilteringFeature: TableFeature;
+  rowPaginationFeature: TableFeature;
+  rowSortingFeature: TableFeature;
+}
+```
+
+### createCaColumnHelper
+
+`import { createCaColumnHelper } from "@codeatlasdev/ui/table"`
+
+TanStack table factory (`createCaTable`) and typed column-definition helper (`createCaColumnHelper`), both pre-bound to `caTableFeatures`.
+
+```ts
+const createCaColumnHelper: <TData extends RowData>() => AppColumnHelper<{ columnFilteringFeature: TableFeature; columnMeta: CaColumnMeta; columnVisibilityFeature: TableFeature; globalFilteringFeature: TableFeature; rowPaginationFeature: TableFeature; rowSortingFeature: TableFeature; }, TData, Record<string, ComponentType<any>>, Record<string, ComponentType<any>>>
+```
+
+### createCaTable
+
+`import { createCaTable } from "@codeatlasdev/ui/table"`
+
+TanStack table factory (`createCaTable`) and typed column-definition helper (`createCaColumnHelper`), both pre-bound to `caTableFeatures`.
+
+```ts
+const createCaTable: <TData extends RowData>(tableOptions: Omit<TableOptions<{ columnFilteringFeature: TableFeature; columnMeta: CaColumnMeta; columnVisibilityFeature: TableFeature; globalFilteringFeature: TableFeature; rowPaginationFeature: TableFeature; rowSortingFeature: TableFeature; }, TData>, "features">) => AppSvelteTable<{ columnFilteringFeature: TableFeature; columnMeta: CaColumnMeta; columnVisibilityFeature: TableFeature; globalFilteringFeature: TableFeature; rowPaginationFeature: TableFeature; rowSortingFeature: TableFeature; }, TData, Record<string, ComponentType<any>>, Record<string, ComponentType<any>>, Record<string, ComponentType<any>>>
+```
+
+Types:
+
+| Type | Declaration | Notes |
+|---|---|---|
+| `CaColumn` | `type CaColumn<TData extends RowData, TValue = unknown> = Column< CaTableFeatures, TData, TValue >;` | Use in column-header components. |
+| `CaColumnDef` | `type CaColumnDef<TData extends RowData, TValue = unknown> = ColumnDef< CaTableFeatures, TData, TValue >;` | Use instead of raw `ColumnDef` in every `-columns.ts` file. |
+| `CaColumnMeta` | `interface CaColumnMeta { label?: string; }` |  |
+| `CaTable` | `type CaTable<TData extends RowData> = SvelteTable<CaTableFeatures, TData>;` | Use when a component receives a table instance. |
+| `CaTableFeatures` | `type CaTableFeatures = typeof caTableFeatures;` |  |
+
+## @codeatlasdev/ui/tokens
+
+### actionDark
+
+`import { actionDark } from "@codeatlasdev/ui/tokens"`
+
+Interaction overlays for dark mode (`active`, `hover`, `selected`, `disabled`, `disabledBg`, `focus`), in OKLCH.
+
+```ts
+const actionDark: {
+  active: "oklch(1 0 0 / 0.68)";
+  hover: "oklch(1 0 0 / 0.075)";
+  selected: "oklch(1 0 0 / 0.13)";
+  disabled: "oklch(1 0 0 / 0.30)";
+  disabledBg: "oklch(1 0 0 / 0.10)";
+  focus: "oklch(1 0 0 / 0.14)";
+}
+```
+
+### actionLight
+
+`import { actionLight } from "@codeatlasdev/ui/tokens"`
+
+Interaction overlays for light mode (`active`, `hover`, `selected`, `disabled`, `disabledBg`, `focus`), in OKLCH.
+
+```ts
+const actionLight: {
+  active: "oklch(0.2 0 0 / 0.62)";
+  hover: "oklch(0.2 0 0 / 0.055)";
+  selected: "oklch(0.2 0 0 / 0.09)";
+  disabled: "oklch(0.2 0 0 / 0.30)";
+  disabledBg: "oklch(0.2 0 0 / 0.08)";
+  focus: "oklch(0.2 0 0 / 0.12)";
+}
+```
+
+### darkMaterialTokens
+
+`import { darkMaterialTokens } from "@codeatlasdev/ui/tokens"`
+
+Dark-mode `--ca-glass-*` token values, as the CSS emits them.
+
+```ts
+const darkMaterialTokens: {
+  --ca-glass-tint-ultra-thin: "oklch(0.20 0 0 / 0.28)";
+  --ca-glass-tint-thin: "oklch(0.22 0 0 / 0.42)";
+  --ca-glass-tint: "oklch(0.24 0 0 / 0.52)";
+  --ca-glass-tint-thick: "oklch(0.20 0 0 / 0.72)";
+  --ca-glass-tint-chrome: "oklch(0.16 0 0 / 0.88)";
+  --ca-glass-tint-solid: "oklch(0.18 0 0)";
+  --ca-glass-rim: "oklch(1 0 0 / 0.16)";
+  --ca-glass-rim-opacity: "0.16";
+  --ca-glass-shadow: "0 8px 40px oklch(0 0 0 / 0.50)";
+  --ca-glass-border: "oklch(1 0 0 / 0.14)";
+  --ca-glow-primary: "oklch(0.63 0.20 55 / 0.16)";
+  --ca-glow-primary-strong: "oklch(0.63 0.20 55 / 0.32)";
+  --ca-vibrancy-label: "oklch(0.93 0.005 55 / 0.85)";
+  --ca-vibrancy-secondary: "oklch(0.93 0.005 55 / 0.50)";
+  --ca-vibrancy-tertiary: "oklch(0.93 0.005 55 / 0.25)";
+  --ca-vibrancy-fill: "oklch(0.93 0.005 55 / 0.10)";
+  --ca-vibrancy-separator: "oklch(0.93 0.005 55 / 0.05)";
+  --ca-blur-ultra-thin: "blur(8px) saturate(150%) brightness(1.02)";
+  --ca-blur-thin: "blur(14px) saturate(165%) brightness(1.02)";
+  --ca-blur-regular: "blur(22px) saturate(180%) brightness(1.02)";
+  --ca-blur-thick: "blur(32px) saturate(200%) brightness(1.01)";
+  --ca-blur-chrome: "blur(44px) saturate(210%) brightness(1.01)";
+  --ca-glass-frost: "18";
+  --ca-tooltip-fg: "oklch(0.93 0.005 55)";
+  --ca-glass-highlight: "oklch(1 0 0 / 0.06)";
+  --ca-scrim-color: "oklch(0 0 0 / 0.50)";
+  --ca-scrim-blur: "none";
+}
+```
+
+### defaultBrand
+
+`import { defaultBrand } from "@codeatlasdev/ui/tokens"`
+
+Default brand ramp (CodeAtlas amber) in OKLCH: `main`, `light`, `dark`, `contrast`.
+
+```ts
+const defaultBrand: {
+  main: "oklch(0.64 0.247 31.4)";
+  light: "oklch(0.72 0.200 31.4)";
+  dark: "oklch(0.52 0.230 31.4)";
+  contrast: "oklch(1 0 0)";
+}
+```
+
+### duration
+
+`import { duration } from "@codeatlasdev/ui/tokens"`
+
+Transition durations in ms (`shortest` 120 to `complex` 320, plus `enteringScreen` and `leavingScreen`). Mirrors `--ca-duration-*`.
+
+```ts
+const duration: {
+  shortest: 120;
+  shorter: 160;
+  short: 200;
+  standard: 240;
+  complex: 320;
+  enteringScreen: 220;
+  leavingScreen: 180;
+}
+```
+
+### easing
+
+`import { easing } from "@codeatlasdev/ui/tokens"`
+
+Cubic-bezier easing strings (`standard`, `decelerate`, `accelerate`, `spring`). Mirrors `--ca-ease-*`.
+
+```ts
+const easing: {
+  standard: "cubic-bezier(0.4, 0, 0.2, 1)";
+  decelerate: "cubic-bezier(0, 0, 0.2, 1)";
+  accelerate: "cubic-bezier(0.4, 0, 1, 1)";
+  sharp: "cubic-bezier(0.4, 0, 0.6, 1)";
+  spring: "cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+}
+```
+
+### elevation
+
+`import { elevation } from "@codeatlasdev/ui/tokens"`
+
+Elevation depth in px per material thickness (`flat` 0 to `chrome` 20).
+
+```ts
+const elevation: {
+  flat: 0;
+  ultraThin: 2;
+  thin: 4;
+  regular: 8;
+  thick: 12;
+  chrome: 20;
+}
+```
+
+### fontFamily
+
+`import { fontFamily } from "@codeatlasdev/ui/tokens"`
+
+Font stacks: `sans` (Inter) and `mono` (JetBrains Mono).
+
+```ts
+const fontFamily: {
+  sans: "Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif";
+  mono: "\"JetBrains Mono\", \"Fira Code\", Consolas, monospace";
+}
+```
+
+### fontSize
+
+`import { fontSize } from "@codeatlasdev/ui/tokens"`
+
+Type scale in rem (base 16px): h1..h6, body1, body2, caption, label, button. Mirrors `--ca-font-size-*`.
+
+```ts
+const fontSize: {
+  h1: "2.25rem";
+  h2: "1.875rem";
+  h3: "1.5rem";
+  h4: "1.25rem";
+  h5: "1.0625rem";
+  h6: "0.9375rem";
+  body1: "0.9375rem";
+  body2: "0.8125rem";
+  subtitle1: "0.9375rem";
+  subtitle2: "0.8125rem";
+  caption: "0.75rem";
+  overline: "0.6875rem";
+  button: "0.875rem";
+  label: "0.8125rem";
+}
+```
+
+### fontWeight
+
+`import { fontWeight } from "@codeatlasdev/ui/tokens"`
+
+Font weights: light 300, regular 400, medium 500, bold 600.
+
+```ts
+const fontWeight: { readonly light: 300; readonly regular: 400; readonly medium: 500; readonly bold: 600; }
+```
+
+### getPreset
+
+`import { getPreset } from "@codeatlasdev/ui/tokens"`
+
+The built-in preset with this id; the first preset when the id is unknown.
+
+```ts
+function getPreset(id: PresetId): ThemePreset
+```
+
+### GLASS_OPTICS
+
+`import { GLASS_OPTICS } from "@codeatlasdev/ui/tokens"`
+
+Optical parameters (frost, bend, depth, curvature, sheen, dispersion) of the SVG refraction layer per material thickness; used by `LiquidGlass`.
+
+```ts
+const GLASS_OPTICS: {
+  chrome: { frost: number; bend: number; depth: number; curvature: number; sheen: number; dispersion: number;…;
+  ultra-thin: { frost: number; bend: number; depth: number; curvature: number; sheen: number; dispersion: number;…;
+  thin: { frost: number; bend: number; depth: number; curvature: number; sheen: number; dispersion: number;…;
+  regular: { frost: number; bend: number; depth: number; curvature: number; sheen: number; dispersion: number;…;
+  thick: { frost: number; bend: number; depth: number; curvature: number; sheen: number; dispersion: number;…;
+}
+```
+
+### letterSpacing
+
+`import { letterSpacing } from "@codeatlasdev/ui/tokens"`
+
+Letter-spacing scale: `tight`, `snug`, `normal`, `relaxed`, `wide`.
+
+```ts
+const letterSpacing: {
+  tight: "-0.03em";
+  snug: "-0.02em";
+  normal: "-0.011em";
+  relaxed: "0em";
+  wide: "0.08em";
+}
+```
+
+### lightMaterialTokens
+
+`import { lightMaterialTokens } from "@codeatlasdev/ui/tokens"`
+
+Light-mode `--ca-glass-*` token values, as the CSS emits them.
+
+```ts
+const lightMaterialTokens: {
+  --ca-glass-tint-ultra-thin: "oklch(0.97 0.003 55 / 0.15)";
+  --ca-glass-tint-thin: "oklch(0.97 0.003 55 / 0.22)";
+  --ca-glass-tint: "oklch(0.97 0.003 55 / 0.32)";
+  --ca-glass-tint-thick: "oklch(0.975 0.003 55 / 0.52)";
+  --ca-glass-tint-chrome: "oklch(0.980 0.002 55 / 0.72)";
+  --ca-glass-tint-solid: "oklch(0.96 0.004 55)";
+  --ca-glass-rim: "oklch(1 0 0 / 0.70)";
+  --ca-glass-rim-opacity: "0.70";
+  --ca-glass-shadow: "0 4px 24px oklch(0.20 0.012 55 / 0.12), 0 1px 4px oklch(0.20 0.012 55 / 0.08)";
+  --ca-glass-border: "oklch(0.70 0.008 55 / 0.28)";
+  --ca-glow-primary: "oklch(0.54 0.21 55 / 0.12)";
+  --ca-glow-primary-strong: "oklch(0.54 0.21 55 / 0.22)";
+  --ca-vibrancy-label: "oklch(0.18 0.010 55 / 0.85)";
+  --ca-vibrancy-secondary: "oklch(0.18 0.010 55 / 0.50)";
+  --ca-vibrancy-tertiary: "oklch(0.18 0.010 55 / 0.25)";
+  --ca-vibrancy-fill: "oklch(0.18 0.010 55 / 0.10)";
+  --ca-vibrancy-separator: "oklch(0.18 0.010 55 / 0.05)";
+  --ca-blur-ultra-thin: "blur(8px) saturate(160%)";
+  --ca-blur-thin: "blur(14px) saturate(175%)";
+  --ca-blur-regular: "blur(22px) saturate(190%)";
+  --ca-blur-thick: "blur(32px) saturate(200%)";
+  --ca-blur-chrome: "blur(44px) saturate(210%)";
+  --ca-glass-frost: "18";
+  --ca-tooltip-fg: "oklch(0.97 0.003 55)";
+  --ca-glass-highlight: "oklch(1 0 0 / 0.60)";
+  --ca-scrim-color: "oklch(0.12 0.010 55 / 0.38)";
+  --ca-scrim-blur: "none";
+}
+```
+
+### lineHeight
+
+`import { lineHeight } from "@codeatlasdev/ui/tokens"`
+
+Unitless line-heights for headings h1..h6, `body1`, `body2` and `ui` (controls).
+
+```ts
+const lineHeight: {
+  h1: 1.1;
+  h2: 1.15;
+  h3: 1.2;
+  h4: 1.25;
+  h5: 1.3;
+  h6: 1.35;
+  body1: 1.55;
+  body2: 1.5;
+  ui: 1.4;
+}
+```
+
+### MATERIAL_BLUR_VARS
+
+`import { MATERIAL_BLUR_VARS } from "@codeatlasdev/ui/tokens"`
+
+`--ca-glass-blur-*` variable name per material thickness.
+
+```ts
+const MATERIAL_BLUR_VARS: Record<Thickness, string>
+```
+
+### MATERIAL_CSS_VARS
+
+`import { MATERIAL_CSS_VARS } from "@codeatlasdev/ui/tokens"`
+
+`--ca-glass-*` tint variable name per material thickness.
+
+```ts
+const MATERIAL_CSS_VARS: Record<Thickness, string>
+```
+
+### neutralRamp
+
+`import { neutralRamp } from "@codeatlasdev/ui/tokens"`
+
+Neutral surface/text/outline ramp tinted with the given brand hue (OKLCH degrees).
+
+```ts
+function neutralRamp(hue: number): NeutralRamp
+```
+
+### radius
+
+`import { radius } from "@codeatlasdev/ui/tokens"`
+
+Border-radius scale in px (xs 4, sm 6, md 10, lg 14, xl 20, pill 999). Mirrors `--ca-radius-*`.
+
+```ts
+const radius: {
+  xs: 4;
+  sm: 6;
+  md: 10;
+  lg: 14;
+  xl: 20;
+  pill: 999;
+}
+```
+
+### semanticDark
+
+`import { semanticDark } from "@codeatlasdev/ui/tokens"`
+
+Semantic status colors (secondary, success, warning, info, error) for dark mode, in OKLCH.
+
+```ts
+const semanticDark: {
+  secondary: "oklch(0.250 0.005 70)";
+  success: "oklch(0.71 0.160 150)";
+  warning: "oklch(0.84 0.140 88)";
+  info: "oklch(0.72 0.140 235)";
+  error: "oklch(0.76 0.185 16)";
+}
+```
+
+### semanticLight
+
+`import { semanticLight } from "@codeatlasdev/ui/tokens"`
+
+Semantic status colors (secondary, success, warning, info, error) for light mode, in OKLCH.
+
+```ts
+const semanticLight: {
+  secondary: "oklch(0.910 0.005 75)";
+  success: "oklch(0.46 0.145 150)";
+  warning: "oklch(0.53 0.130 75)";
+  info: "oklch(0.50 0.125 235)";
+  error: "oklch(0.55 0.190 25)";
+}
+```
+
+### shadows
+
+`import { shadows } from "@codeatlasdev/ui/tokens"`
+
+Box-shadow strings per material thickness (`none` to `chrome`), tinted with warm stone.
+
+```ts
+const shadows: {
+  none: "none";
+  ultraThin: string;
+  thin: string;
+  regular: "0 4px 16px oklch(0.25 0.008 70 / 0.12)";
+  thick: "0 6px 24px oklch(0.25 0.008 70 / 0.14)";
+  chrome: "0 12px 40px oklch(0.25 0.008 70 / 0.19)";
+}
+```
+
+### THEME_PRESETS
+
+`import { THEME_PRESETS } from "@codeatlasdev/ui/tokens"`
+
+The built-in brand presets with their generated brand ramps, neutral ramp and semantic palettes.
+
+```ts
+const THEME_PRESETS: ThemePreset[]
+```
+
+### zIndex
+
+`import { zIndex } from "@codeatlasdev/ui/tokens"`
+
+Stacking scale (`base` 0 up to `tooltip`). Mirrors `--ca-z-*`; use it instead of literal z-index values.
+
+```ts
+const zIndex: {
+  base: 0;
+  raised: 10;
+  nav: 100;
+  dropdown: 1000;
+  sticky: 1020;
+  fixed: 1030;
+  drawer: 1200;
+  modal: 1300;
+  snackbar: 1400;
+  tooltip: 1500;
+}
+```
+
+Types:
+
+| Type | Declaration | Notes |
+|---|---|---|
+| `BrandColors` | `interface BrandColors { main: string; light: string; dark: string; contrast: string; }` |  |
+| `BuiltinPresetId` | `type BuiltinPresetId = \| "amber" \| "ocean" \| "crimson" \| "cyan" \| "violet" \| "emerald" \| "rose" \| "slate";` | Presets shipped in global.css. |
+| `ElevationLevel` | `type ElevationLevel = keyof typeof elevation;` |  |
+| `NeutralRamp` | `interface NeutralRamp { surfaceLight: SurfaceColors; surfaceDark: SurfaceColors; textLight: TextColors; textDark: TextColors; outlineLight: OutlineColors; outlineDark: OutlineColors; }` |  |
+| `OutlineColors` | `interface OutlineColors { subtle: string; default: string; strong: string; }` |  |
+| `PresetId` | `type PresetId = BuiltinPresetId \| (string & {});` | A built-in preset or a brand preset registered via `ThemeOptions.presets`. |
+| `RadiusKey` | `type RadiusKey = keyof typeof radius;` |  |
+| `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
+| `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
+| `SurfaceColors` | `interface SurfaceColors { sunken: string; base: string; raised: string; overlay: string; }` |  |
+| `TextColors` | `interface TextColors { primary: string; secondary: string; disabled: string; }` |  |
+| `ThemePreset` | `interface ThemePreset { id: BuiltinPresetId; label: string; swatchColor: string; hue: number; brandLight: BrandColors; brandDark: BrandColors; ramp: NeutralRamp; semanticLight: SemanticColors; semanticDark: SemanticColors; }` |  |
+| `Thickness` | `type Thickness = "ultra-thin" \| "thin" \| "regular" \| "thick" \| "chrome";` |  |
+| `VibrancyLevel` | `type VibrancyLevel = "label" \| "secondary" \| "tertiary" \| "fill" \| "separator";` |  |
+| `ZIndexKey` | `type ZIndexKey = keyof typeof zIndex;` |  |
+
+## @codeatlasdev/ui/utils/palette-generator
+
+### cssBlock
+
+`import { cssBlock } from "@codeatlasdev/ui/utils/palette-generator"`
+
+Render one CSS rule from a declaration map.
+
+```ts
+function cssBlock(selector: string, vars: Record<string, string>, docs?: Record<string, string>): string
+```
+
+### generatePreset
+
+`import { generatePreset } from "@codeatlasdev/ui/utils/palette-generator"`
+
+Generate a complete @codeatlas/ui preset from a single primary colour.
+
+```ts
+function generatePreset(hue: number, chroma?: number, lightL?: number): PresetTokens
+```
+
+### hexToOklch
+
+`import { hexToOklch } from "@codeatlasdev/ui/utils/palette-generator"`
+
+Convert `#rrggbb` (sRGB) to OKLCH via OKLab (Björn Ottosson's matrices). Hue is 0 for achromatic colors.
+
+```ts
+function hexToOklch(hex: string): { l: number; c: number; h: number }
+```
+
+### NEUTRAL_DARK
+
+`import { NEUTRAL_DARK } from "@codeatlasdev/ui/utils/palette-generator"`
+
+Neutral dark tokens re-declared in every dark block so light preset values never cascade in.
+
+```ts
+const NEUTRAL_DARK: TokenMap
+```
+
+### oklchToHex
+
+`import { oklchToHex } from "@codeatlasdev/ui/utils/palette-generator"`
+
+Convert an opaque `oklch(L C H)` string to `#rrggbb` (gamut-clipped). For browser chrome/canvas.
+
+```ts
+function oklchToHex(color: string): string
+```
+
+### onFill
+
+`import { onFill } from "@codeatlasdev/ui/utils/palette-generator"`
+
+White or ink text on the error fill, whichever reads better (>= 4.5:1).
+
+```ts
+function onFill(fillL: number, fillC: number, fillH: number): string
+```
+
+### presetVars
+
+`import { presetVars } from "@codeatlasdev/ui/utils/palette-generator"`
+
+Flatten generated tokens into `--ca-*` maps for the light and dark blocks.
+
+```ts
+function presetVars(tokens: PresetTokens): { light: TokenMap; dark: TokenMap }
+```
+
+### TOKEN_DOCS
+
+`import { TOKEN_DOCS } from "@codeatlasdev/ui/utils/palette-generator"`
+
+What the role tokens are for, in the words tooling should show. The built-in preset files carry these as comments in `presets/amber.css` only (scripts/build-themes.ts): that is the canonical file the token manifest reads as `description`. The other presets and the inline brand presets stay comment-free to keep the shipped CSS and the `<head>` small.
+
+```ts
+const TOKEN_DOCS: Record<string, string>
+```
+
+### tokensToCSS
+
+`import { tokensToCSS } from "@codeatlasdev/ui/utils/palette-generator"`
+
+Emit the CSS block for a named preset (or null for inline injection). Pass rootSel/darkSel to use custom selectors (e.g. for scoped preview).
+
+```ts
+function tokensToCSS(tokens: PresetTokens, name: string | null, rootSel?: string, darkSel?: string): string
+```
+
+Types:
+
+| Type | Declaration | Notes |
+|---|---|---|
+| `PresetTokens` | `interface PresetTokens { brandMain: string; brandLight: string; brandDark: string; brandContrast: string; brandFill: string; brandFillHover: string; surfaceSunken: string; surfaceBase: string; surfaceRaised: string; surfaceOverlay: string; textPrimary: string; textSecondary: string; textDisabled: string; textHint: string; outlineSubtle: string; outlineDefault: string; outlineStrong: string; outlineControl: string; focusRing: string; semanticErrorContrast: string; glassBg: string; glassTintUltraThin: string; glassTintThin: string; glassTint: string; glassTintThick: string; glassTintChrome: string; glassTintSolid: string; glassBorder: string; glowPrimary: string; glowPrimaryStrong: string; vibrancyLabel: string; vibrancySecondary: string; vibrancyTertiary: string; vibrancyFill: string; vibrancySeparator: string; scrimColor: string; tooltipFg: string; dark: { brandMain: string; brandLight: string; brandDark: string; brandContrast: string; brandFill: string; brandFillHover: string; surfaceSunken: string; surfaceBase: string; surfaceRaised: string; surfaceOverlay: string; textPrimary: string; textSecondary: string; textDisabled: string; textHint: string; outlineControl: string; focusRing: string; semanticErrorContrast: string; glassBg: string; glowPrimary: string; glowPrimaryStrong: string; vibrancyLabel: string; vibrancySecondary: string; vibrancyTertiary: string; vibrancyFill: string; vibrancySeparator: string; tooltipFg: string; }; }` |  |
+| `TokenMap` | `type TokenMap = Record<`--ca-${string}`, string>;` | CSS custom properties of one preset, per scheme. |
+
+## @codeatlasdev/ui/vite
+
+### CA_THEME_MARKER
+
+`import { CA_THEME_MARKER } from "@codeatlasdev/ui/vite"`
+
+`id` of the inline theme-init `<script>`; used to detect that the theme is already injected.
+
+```ts
+const CA_THEME_MARKER: "ca-theme-init"
+```
+
+### CA_THEME_SCRIPT_TAG
+
+`import { CA_THEME_SCRIPT_TAG } from "@codeatlasdev/ui/vite"`
+
+Ready-to-paste script tag for src/app.html (default amber/dark theme).
+
+```ts
+const CA_THEME_SCRIPT_TAG: string
+```
+
+### caErrorPlugin
+
+`import { caErrorPlugin } from "@codeatlasdev/ui/vite"`
+
+Vite plugin: at build start, warns when `+error.svelte` (and `src/error.html`) are missing from the app; with `scaffold: true` it writes default ones once and never overwrites existing files.
+
+```ts
+function caErrorPlugin(options?: CaErrorPluginOptions): Plugin
+```
+
+### caThemePlugin
+
+`import { caThemePlugin } from "@codeatlasdev/ui/vite"`
+
+Pass the same options as caThemeHandle so the dev HTML (transformIndexHtml) matches the SSR/prerendered HTML.
+
+```ts
+function caThemePlugin(options?: ThemeOptions): Plugin
+```
+
+Types:
+
+| Type | Declaration | Notes |
+|---|---|---|
+| `CaErrorPluginOptions` | `interface CaErrorPluginOptions { root?: string; routesDir?: string; scaffold?: boolean; scaffoldErrorHtml?: boolean; }` |  |
+| `FontDescriptor` | `interface FontDescriptor { family: string; src: string; weight?: number \| string; style?: "normal" \| "italic"; display?: "auto" \| "block" \| "swap" \| "fallback" \| "optional"; preload?: boolean; fallback?: string; fallbackMetrics?: FontFallbackMetrics; generic?: string; }` | A self-hosted web font. Emits `@font-face`, an optional preload and a metric-matched fallback face. |
+| `FontSpec` | `type FontSpec = string \| FontDescriptor;` | A font stack string (existing behavior) or a self-hosted font descriptor. |
+| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
+| `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
+| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
+| `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |

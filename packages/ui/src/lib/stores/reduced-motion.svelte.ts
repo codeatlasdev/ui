@@ -29,5 +29,7 @@ function createMediaStore(query: string) {
 	};
 }
 
+/** Reactive `prefers-reduced-motion: reduce` (`.value`). Call `reducedMotion.init()` once in the root layout; it returns a cleanup. */
 export const reducedMotion = createMediaStore("(prefers-reduced-motion: reduce)");
+/** Reactive `prefers-reduced-transparency: reduce` (`.value`). Call `reducedTransparency.init()` once in the root layout; it returns a cleanup. */
 export const reducedTransparency = createMediaStore("(prefers-reduced-transparency: reduce)");

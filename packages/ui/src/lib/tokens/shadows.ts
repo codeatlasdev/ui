@@ -5,6 +5,7 @@
 const warm = (blur: number, spread: number, opacity: number): string =>
 	`0 ${blur}px ${spread}px oklch(0.25 0.008 70 / ${opacity})`;
 
+/** Box-shadow strings per material thickness (`none` to `chrome`), tinted with warm stone. */
 export const shadows = {
 	none: "none",
 	ultraThin: warm(2, 4, 0.07),
@@ -14,6 +15,7 @@ export const shadows = {
 	chrome: "0 12px 40px oklch(0.25 0.008 70 / 0.19)",
 } as const;
 
+/** Elevation depth in px per material thickness (`flat` 0 to `chrome` 20). */
 export const elevation = {
 	flat: 0,
 	ultraThin: 2,

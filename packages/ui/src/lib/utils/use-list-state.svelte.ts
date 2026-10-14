@@ -73,6 +73,7 @@ export interface UseListStateReturn<T> {
 	clearSelection(): void;
 }
 
+/** Reactive list controller for client-side tables: search over `searchKeys`, filters, pagination and row selection. Returns `UseListStateReturn`. */
 export function useListState<T extends object>(
 	options: UseListStateOptions<T>
 ): UseListStateReturn<T> {

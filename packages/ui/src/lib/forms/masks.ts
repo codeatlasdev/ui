@@ -73,6 +73,7 @@ function cpfDigit(base: string): number {
 	return r === 10 ? 0 : r;
 }
 
+/** True when `raw` (formatted or not) is a CPF with valid check digits; repeated-digit sequences are rejected. */
 export function isValidCPF(raw: string): boolean {
 	const d = digits(raw);
 	if (d.length !== 11 || /^(\d)\1+$/.test(d)) return false;
@@ -92,6 +93,7 @@ function cnpjDigit(base: string): number {
 	return r < 2 ? 0 : 11 - r;
 }
 
+/** True when `raw` (formatted or not) is a CNPJ with valid check digits. */
 export function isValidCNPJ(raw: string): boolean {
 	const d = digits(raw);
 	if (d.length !== 14 || /^(\d)\1+$/.test(d)) return false;

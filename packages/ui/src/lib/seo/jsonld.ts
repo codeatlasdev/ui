@@ -31,6 +31,7 @@ export interface OrganizationInput {
 	extra?: Extra;
 }
 
+/** schema.org `Organization` node (name, url, logo, sameAs, description). */
 export function organization(i: OrganizationInput): JsonLdNode {
 	return clean({
 		"@type": "Organization",
@@ -59,6 +60,7 @@ export interface WebsiteInput {
 	extra?: Extra;
 }
 
+/** schema.org `WebSite` node, with a `SearchAction` when a search URL template is given. */
 export function website(i: WebsiteInput): JsonLdNode {
 	return clean({
 		"@type": "WebSite",
@@ -96,6 +98,7 @@ export interface SoftwareApplicationInput {
 	extra?: Extra;
 }
 
+/** schema.org `SoftwareApplication` node with optional offer and aggregate rating. */
 export function softwareApplication(i: SoftwareApplicationInput): JsonLdNode {
 	return clean({
 		"@type": "SoftwareApplication",
@@ -145,6 +148,7 @@ export interface ProductInput {
 	extra?: Extra;
 }
 
+/** schema.org `Product` node with offers, for e-commerce pages. */
 export function product(i: ProductInput): JsonLdNode {
 	const offer = (o: ProductOffer) =>
 		clean({
@@ -172,6 +176,7 @@ export function product(i: ProductInput): JsonLdNode {
 	});
 }
 
+/** schema.org `FAQPage` node from `{ question, answer }` pairs. */
 export function faqPage(items: { question: string; answer: string }[]): JsonLdNode {
 	return {
 		"@type": "FAQPage",
@@ -209,6 +214,7 @@ export interface ArticleInput {
 	extra?: Extra;
 }
 
+/** schema.org `Article` node (headline, dates, author, image). */
 export function article(i: ArticleInput): JsonLdNode {
 	const person = (a: { name: string; url?: string }) =>
 		clean({ "@type": "Person", name: a.name, url: a.url });

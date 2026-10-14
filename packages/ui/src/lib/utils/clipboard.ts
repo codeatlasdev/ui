@@ -1,5 +1,6 @@
 // ─── Clipboard utility ────────────────────────────────────────────────────────
 
+/** Copies `text` with the Clipboard API, falling back to `execCommand("copy")`. Resolves `true` on success. */
 export async function copyToClipboard(text: string): Promise<boolean> {
 	try {
 		if (navigator?.clipboard?.writeText) {

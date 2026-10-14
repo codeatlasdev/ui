@@ -53,4 +53,5 @@ function createViewportStore() {
 	};
 }
 
+/** On-screen keyboard tracker: `viewport.keyboardInset` is the layout-viewport height the virtual keyboard covers, mirrored to `--ca-kb-inset` on `<html>`. Call `viewport.init()` once; it returns a cleanup. */
 export const viewport = createViewportStore();

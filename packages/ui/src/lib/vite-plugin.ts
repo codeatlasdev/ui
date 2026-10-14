@@ -139,6 +139,7 @@ export interface CaErrorPluginOptions {
 	scaffoldErrorHtml?: boolean;
 }
 
+/** Vite plugin: at build start, warns when `+error.svelte` (and `src/error.html`) are missing from the app; with `scaffold: true` it writes default ones once and never overwrites existing files. */
 export function caErrorPlugin(options: CaErrorPluginOptions = {}): Plugin {
 	const { routesDir = "src/routes", scaffold = false, scaffoldErrorHtml = true } = options;
 

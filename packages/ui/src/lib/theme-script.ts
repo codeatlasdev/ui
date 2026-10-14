@@ -18,6 +18,7 @@ declare global {
 /** Options for themeHead / caThemeHandle / caThemePlugin. */
 export type ThemeOptions = Partial<ThemeDefinition>;
 
+/** `id` of the inline theme-init `<script>`; used to detect that the theme is already injected. */
 export const CA_THEME_MARKER = "ca-theme-init";
 
 /** Shape of `window.__caTheme`, published by the init script for the colorScheme store. */

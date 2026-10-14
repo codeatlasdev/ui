@@ -53,6 +53,7 @@ export function focusTextField(el: HTMLElement | null | undefined, force = false
 	return true;
 }
 
+/** Svelte action: focuses the element on mount without scrolling. On touch it only focuses when `primeKeyboard()` ran in the opening gesture (`{ touch: true }` forces it). Usage: `<input use:autofocus>`. */
 export const autofocus: Action<HTMLElement, { touch?: boolean } | undefined> = (node, opts) => {
 	// Defer so parent mount (and portals/transitions) finish first.
 	const id = requestAnimationFrame(() => focusTextField(node, opts?.touch));

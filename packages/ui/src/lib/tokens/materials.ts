@@ -5,6 +5,7 @@
 export type Thickness = "ultra-thin" | "thin" | "regular" | "thick" | "chrome";
 
 // SVG optical parameters for LiquidGlass.svelte refraction layer
+/** Optical parameters (frost, bend, depth, curvature, sheen, dispersion) of the SVG refraction layer per material thickness; used by `LiquidGlass`. */
 export const GLASS_OPTICS: Record<
 	Thickness,
 	{
@@ -27,6 +28,7 @@ export const GLASS_OPTICS: Record<
 export type VibrancyLevel = "label" | "secondary" | "tertiary" | "fill" | "separator";
 
 // CSS var names per thickness tier — for programmatic use in components
+/** `--ca-glass-*` tint variable name per material thickness. */
 export const MATERIAL_CSS_VARS: Record<Thickness, string> = {
 	"ultra-thin": "var(--ca-glass-tint-ultra-thin)",
 	thin: "var(--ca-glass-tint-thin)",
@@ -35,6 +37,7 @@ export const MATERIAL_CSS_VARS: Record<Thickness, string> = {
 	chrome: "var(--ca-glass-tint-chrome)",
 } as const;
 
+/** `--ca-glass-blur-*` variable name per material thickness. */
 export const MATERIAL_BLUR_VARS: Record<Thickness, string> = {
 	"ultra-thin": "var(--ca-blur-ultra-thin)",
 	thin: "var(--ca-blur-thin)",
@@ -44,6 +47,7 @@ export const MATERIAL_BLUR_VARS: Record<Thickness, string> = {
 } as const;
 
 // Light-mode glass token values
+/** Light-mode `--ca-glass-*` token values, as the CSS emits them. */
 export const lightMaterialTokens = {
 	"--ca-glass-tint-ultra-thin": "oklch(0.97 0.003 55 / 0.15)",
 	"--ca-glass-tint-thin": "oklch(0.97 0.003 55 / 0.22)",
@@ -76,6 +80,7 @@ export const lightMaterialTokens = {
 } as const;
 
 // Dark-mode glass token values
+/** Dark-mode `--ca-glass-*` token values, as the CSS emits them. */
 export const darkMaterialTokens = {
 	"--ca-glass-tint-ultra-thin": "oklch(0.20 0 0 / 0.28)",
 	"--ca-glass-tint-thin": "oklch(0.22 0 0 / 0.42)",

@@ -1,10 +1,12 @@
 // ─── Typography tokens (framework-agnostic) ───────────────────────────────────
 
+/** Font stacks: `sans` (Inter) and `mono` (JetBrains Mono). */
 export const fontFamily = {
 	sans: "Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
 	mono: '"JetBrains Mono", "Fira Code", Consolas, monospace',
 } as const;
 
+/** Font weights: light 300, regular 400, medium 500, bold 600. */
 export const fontWeight = {
 	light: 300,
 	regular: 400,
@@ -13,6 +15,7 @@ export const fontWeight = {
 } as const;
 
 // All sizes in rem (base = 16px)
+/** Type scale in rem (base 16px): h1..h6, body1, body2, caption, label, button. Mirrors `--ca-font-size-*`. */
 export const fontSize = {
 	h1: "2.25rem", // 36px
 	h2: "1.875rem", // 30px
@@ -30,6 +33,7 @@ export const fontSize = {
 	label: "0.8125rem", // 13px
 } as const;
 
+/** Unitless line-heights for headings h1..h6, `body1`, `body2` and `ui` (controls). */
 export const lineHeight = {
 	h1: 1.1,
 	h2: 1.15,
@@ -42,6 +46,7 @@ export const lineHeight = {
 	ui: 1.4,
 } as const;
 
+/** Letter-spacing scale: `tight`, `snug`, `normal`, `relaxed`, `wide`. */
 export const letterSpacing = {
 	tight: "-0.03em",
 	snug: "-0.02em",

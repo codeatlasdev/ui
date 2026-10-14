@@ -1,5 +1,6 @@
 // ─── Transition / easing tokens ───────────────────────────────────────────────
 
+/** Transition durations in ms (`shortest` 120 to `complex` 320, plus `enteringScreen` and `leavingScreen`). Mirrors `--ca-duration-*`. */
 export const duration = {
 	shortest: 120,
 	shorter: 160,
@@ -10,6 +11,7 @@ export const duration = {
 	leavingScreen: 180,
 } as const;
 
+/** Cubic-bezier easing strings (`standard`, `decelerate`, `accelerate`, `spring`). Mirrors `--ca-ease-*`. */
 export const easing = {
 	// Apple-aligned curves
 	standard: "cubic-bezier(0.4, 0, 0.2, 1)", // ease-in-out
