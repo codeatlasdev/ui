@@ -31,10 +31,12 @@ site/                 → Astro site (landing + MDX docs + templates) at ui.code
 
 ## Issue workflow (agents and humans)
 
-- **Claim before coding:** `bun run issue:start <n>` creates `../ui-worktrees/<n>-<slug>` on `fix|feat/<n>-<slug>`, opens a draft PR (`Closes #<n>`), labels `in progress`, assigns and comments on the issue. Work only inside that worktree. Parallel agents each take their own issue and worktree; never share a checkout.
+- **Claim before coding:** `bun run issue:start <n>` creates `../ui-worktrees/<n>-<slug>` on `fix|feat/<n>-<slug>`, opens a draft PR (`Closes #<n>`), labels `in progress`, assigns and comments on the issue. Parallel agents each take their own issue and worktree; never share a checkout.
+- **Stay in the worktree:** use absolute paths under `../ui-worktrees/<n>-<slug>/` for every read, edit and command (`cwd`). A relative path resolves against the main checkout and silently edits `main`. Never `git stash` (the stash is shared by all worktrees).
 - **Check first:** `bun run issue:status`. Skip issues labeled `in progress` by someone else. Re-read the issue against current `main`: if it is already fixed, prove it with a passing test, comment the evidence and close it.
-- **Test first** (critical rule 0): failing regression test, then the fix, then the passing run. Both outputs go in the PR body.
-- **Done:** `bun run validate`, changeset when the package changes, docs when behavior changes, `gh pr ready`. After merge, `bun run issue:done <n>`.
+- **Test first** (critical rule 0): failing regression test, then the fix, then the passing run. Both outputs go in the PR body. A test you did not run proves nothing: run every test you add or change (Playwright included) before pushing.
+- **Gates are real:** never push with `--no-verify` or `LEFTHOOK=0`. A gate that fails only under load is a bug to fix (#73 was exponential regex backtracking; #75, #76, #81 were real races), not to bypass. Open an issue for it.
+- **Done:** `bun run validate`, changeset when the package changes, docs when behavior changes; leave the PR as draft. A maintainer lands it with `sh scripts/issue-land.sh <n>`: rebase on `main` (generated files are rebuilt, real conflicts stop it), validate, regenerate visual baselines on CI, wait until every check on the final head passed (`scripts/pr-gate.ts`), squash-merge, `issue:done`.
 
 ---
 

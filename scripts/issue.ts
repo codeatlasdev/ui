@@ -152,16 +152,18 @@ async function done(n: string) {
 		.find((w) => w.branch && new RegExp(`^(fix|feat)/${n}-`).test(w.branch));
 	const path = wt?.path;
 	const branch = wt?.branch;
-	if (!path || !branch) return die(`no worktree for #${n}`);
-	const state = (
-		await $`gh pr list --head ${branch} --state all --json state -q .[0].state`.cwd(ROOT).text()
-	).trim();
-	if (state === "OPEN") die(`PR for #${n} is still open: merge or close it first`);
-	await $`git worktree remove ${path}`.cwd(ROOT);
-	await $`git branch -D ${branch}`.cwd(ROOT).quiet().nothrow();
+	if (path && branch) {
+		const state = (
+			await $`gh pr list --head ${branch} --state all --json state -q .[0].state`.cwd(ROOT).text()
+		).trim();
+		if (state === "OPEN") die(`PR for #${n} is still open: merge or close it first`);
+		await $`git worktree remove ${path}`.cwd(ROOT);
+		await $`git branch -D ${branch}`.cwd(ROOT).quiet().nothrow();
+	}
+	// `gh pr merge --delete-branch` may already have removed the worktree; the label still goes.
 	// The issue is closed (merged) or back in the pool (PR closed): either way nobody is on it.
 	await $`gh issue edit ${n} --remove-label ${LABEL}`.cwd(ROOT).quiet().nothrow();
-	console.log(`#${n}: removed ${path} and ${branch}, cleared "${LABEL}"`);
+	console.log(`#${n}: ${path ? `removed ${path} and ${branch}, ` : ""}cleared "${LABEL}"`);
 }
 
 const [cmd, arg] = process.argv.slice(2);

@@ -61,12 +61,12 @@ cd ../ui-worktrees/47-...   # work there; your main checkout stays untouched
 
 `issue:start` creates the worktree in `../ui-worktrees/<n>-<slug>` on `fix/<n>-<slug>` (or `feat/` for enhancements) from `origin/main`, installs dependencies, opens a **draft PR** with `Closes #<n>`, labels the issue `in progress`, assigns you and comments the PR link on the issue. If someone else is assigned, it stops: talk on the issue first.
 
-Then, in the worktree:
+Then, in the worktree (use paths inside it; your editor or agent must not edit the main checkout):
 
 1. **Understand and reproduce.** Write the regression test first and run it: it must fail on the current code. Paste that output in the PR.
-2. **Fix** the root cause until the test passes. No workarounds for a symptom.
-3. **Before review:** `bun run validate`, a changeset if the package changes, docs if behavior changed. Mark the PR ready (`gh pr ready`).
-4. **After merge:** `bun run issue:done 47` removes the worktree and the local branch. GitHub closes the issue through `Closes #47`.
+2. **Fix** the root cause until the test passes. No workarounds for a symptom. Run every test you added or changed, Playwright included.
+3. **Before review:** `bun run validate`, a changeset if the package changes, docs if behavior changed. Never bypass the pre-push hook (`--no-verify`, `LEFTHOOK=0`): a gate that fails only under load is a bug; open an issue for it.
+4. **Landing (maintainers):** `sh scripts/issue-land.sh 47` rebases on `main`, rebuilds generated files (lockfile, API.md, components.json, css-api), validates, regenerates visual baselines on CI, waits until every check on the final head passed and squash-merges. GitHub closes the issue through `Closes #47`; the script then runs `issue:done` (worktree, branch and `in progress` label cleanup).
 
 If you find the issue is already fixed or obsolete, prove it with a test that passes on `main`, comment that evidence on the issue and close it.
 
