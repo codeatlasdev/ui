@@ -11,7 +11,7 @@ export default defineConfig({
 	failOnFlakyTests: !!process.env.CI,
 	retries: process.env.CI ? 1 : 0,
 	// Every core on CI runners (4 vCPU); shards split the suite across jobs.
-	workers: process.env.CI ? "100%" : undefined,
+	workers: process.env.CI ? "100%" : "50%",
 	snapshotPathTemplate: "{testDir}/__screenshots__/{projectName}/{testFilePath}/{arg}{ext}",
 	expect: {
 		timeout: 5_000,
@@ -44,6 +44,11 @@ export default defineConfig({
 		timezoneId: "America/Sao_Paulo",
 		reducedMotion: "reduce",
 		serviceWorkers: "block",
+		// Run id from scripts/test-run.ts: lets an interrupted run be cleaned up without touching
+		// other projects' Playwright browsers.
+		launchOptions: process.env.CA_TEST_RUN
+			? { args: [`--ca-test-run=${process.env.CA_TEST_RUN}`] }
+			: {},
 	},
 	projects: [
 		{

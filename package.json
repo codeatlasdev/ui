@@ -40,7 +40,9 @@
 		"test:vrt:update": "sh scripts/vrt.sh --update",
 		"site:deploy": "sh scripts/deploy-site.sh",
 		"release:ci": "bun run build:pkg && node scripts/release.js --smoke && changeset publish",
-		"ci:local": "act pull_request"
+		"ci:local": "act pull_request",
+		"test:reap": "bun scripts/test-run.ts --reap",
+		"test:status": "bun scripts/test-run.ts --status"
 	},
 	"dependencies": {
 		"@lucide/svelte": "1.55.0",

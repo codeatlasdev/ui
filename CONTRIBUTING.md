@@ -75,6 +75,8 @@ bun run test       # unit (bun test) + component tests (Chromium) + site E2E/a11
 
 Unit tests run on `bun test` (`bunfig.toml` points it at `packages/ui/tests`); component and visual tests need a real browser and stay on Vitest, so prefer `bun run test` for the full suite. Type checking is split by who understands the files: `bun --check` (the native checker, config in the root `tsconfig.json`) covers scripts, unit tests and Playwright specs, `svelte-check` covers `packages/ui` and `astro check` covers `site`. Bun >= 1.4.3 and Node >= 22.17 are required.
 
+Browser tests always run through the package scripts (`bun run test:browser`, `test:e2e`, …), never a bare `vitest` or `playwright test`. The scripts go through `scripts/test-run.ts`, which tags this repo's browsers, tears them down on exit or Ctrl+C, and cleans up after runs that were killed hard. `bun run test:status` shows runs, `bun run test:reap` cleans dead ones. It never touches other projects' Playwright browsers.
+
 Visual regression baselines are Linux-only and generated in Docker (`mcr.microsoft.com/playwright:v1.64.0-noble`): `bun run test:vrt` compares, `bun run test:vrt:update` regenerates. Commit the `__screenshots__/` changes.
 
 Fix any errors before opening a pull request. PRs with failing checks will not be merged.

@@ -40,6 +40,15 @@ Unit tests run on `bun test` (repo root, `bunfig.toml`); component and visual te
 | `bun run test:browser` | Vitest `browser` project (real Chromium, axe) |
 | `bun run test:e2e` / `test:a11y` | Playwright against the static site (build + preview) |
 | `bun run test:vrt` / `test:vrt:update` | visual regression via Docker (Linux-only baselines) |
+| `bun run test:status` | live and dead test runs of this repo, with their browser count |
+| `bun run test:reap` | kill the browsers of runs whose runner died (this repo only) |
+
+**Never call `vitest` / `playwright test` directly for browser tests: always go through the scripts above.** They run under `scripts/test-run.ts`, which:
+- records each run in `.cache/test-runs/<id>.json` and tags every browser it starts with `--ca-test-run=<id>`;
+- tears down the whole test process group on exit, Ctrl+C, SIGTERM or SIGHUP;
+- at the start of every run, kills browsers left by runs whose runner died (SIGKILL, closed terminal, killed agent job).
+
+Ownership is explicit: only processes carrying the tag of a dead run of this repo are touched. Other projects on the machine (`../ac`, …) share `~/Library/Caches/ms-playwright`; never kill Playwright browsers by name or path. To pass extra args: `bun run test:browser -- src/lib/components/Button`. Local runs use half the cores (`maxWorkers`, Playwright `workers: "50%"`); behavior tests use the headless shell, VRT uses full Chromium so pixels match the Docker baselines.
 
 Naming conventions:
 - `*.test.ts` in `packages/ui/tests/`: unit test on `bun:test` (`mock`/`spyOn`/`jest.useFakeTimers`; DOM only through happy-dom's `GlobalRegistrator` inside that file; fresh module via `import("…?fresh=n")`). Types checked by `bun --check`.

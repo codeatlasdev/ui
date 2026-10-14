@@ -30,3 +30,6 @@ site/.astro/
 /docs/*
 !/docs/css-api.md
 !/docs/adr/
+
+# Test run records (scripts/test-run.ts)
+/.cache/
