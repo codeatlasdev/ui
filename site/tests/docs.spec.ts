@@ -60,20 +60,21 @@ test.describe("docs", () => {
 		await expect(pager.locator('a[rel="next"]')).toHaveCount(1);
 	});
 
-	const endpoints: [string, RegExp, RegExp][] = [
-		["/llms.txt", /^text\/plain/, /CodeAtlas UI/i],
-		["/llms-full.txt", /^text\/plain/, /CodeAtlas UI/i],
-		["/llms-full.txt", /^text\/plain/, /^# AGENTS\.md: Guide for AI Agents$/m],
-		["/robots.txt", /^text\/plain/, /Sitemap: .*sitemap-index\.xml/],
-		["/sitemap-index.xml", /^(application|text)\/xml/, /<sitemapindex/],
-		["/search-index.json", /^application\/json/, /"href":"\/docs\//],
+	const endpoints: [string, RegExp, RegExp[]][] = [
+		["/llms.txt", /^text\/plain/, [/CodeAtlas UI/i]],
+		// One fetch covers everything: the docs plus the agent guide (AGENTS.md) at the end.
+		["/llms-full.txt", /^text\/plain/, [/CodeAtlas UI/i, /^# AGENTS\.md: Guide for AI Agents$/m]],
+		["/robots.txt", /^text\/plain/, [/Sitemap: .*sitemap-index\.xml/]],
+		["/sitemap-index.xml", /^(application|text)\/xml/, [/<sitemapindex/]],
+		["/search-index.json", /^application\/json/, [/"href":"\/docs\//]],
 	];
-	for (const [path, type, body] of endpoints) {
+	for (const [path, type, bodies] of endpoints) {
 		test(`${path} is served`, async ({ request }) => {
 			const res = await request.get(path);
 			expect(res.status()).toBe(200);
 			expect(res.headers()["content-type"]).toMatch(type);
-			expect(await res.text()).toMatch(body);
+			const text = await res.text();
+			for (const body of bodies) expect(text).toMatch(body);
 		});
 	}
 });
