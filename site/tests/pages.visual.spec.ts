@@ -45,9 +45,9 @@ for (const scheme of ["dark", "light"] as const) {
 				await expect(page).toHaveScreenshot(`${slug(route)}-${scheme}.webp`, {
 					fullPage: true,
 					clip: { x: 0, y: 0, width, height },
-					// The chart box, not the canvas: ECharts re-creates its canvas when the full-page capture
-					// resizes the viewport, so the canvas box moves between the two compared shots.
-					mask: [page.locator(".ca-chart-wrap, canvas")],
+					// No `mask`: Playwright places mask boxes from a layout read during the full-page
+					// capture, and they drift between the two compared shots (seen as a 23px shift on
+					// `/`). Canvases are hidden in-layout by tests/screenshot.css (stylePath) instead.
 				});
 			});
 		}
