@@ -49,4 +49,16 @@ describe("Tooltip", () => {
 		await screen.getByRole("button", { name: "Save" }).hover();
 		await expect.element(page.getByRole("tooltip")).toBeVisible();
 	});
+
+	it("does not open from pointerenter alone or from touch, only from real mouse movement", async () => {
+		const screen = await render(Harness);
+		const trigger = screen.getByRole("button", { name: "Save" }).element();
+		// A cursor resting where the trigger mounts (or layout moving it under the cursor) fires enter only.
+		trigger.dispatchEvent(new PointerEvent("pointerenter", { pointerType: "mouse" }));
+		trigger.dispatchEvent(new PointerEvent("pointermove", { pointerType: "touch", bubbles: true }));
+		await new Promise((r) => setTimeout(r, 50));
+		expect(document.querySelector('[role="tooltip"]')).toBeNull();
+		trigger.dispatchEvent(new PointerEvent("pointermove", { pointerType: "mouse", bubbles: true }));
+		await expect.element(page.getByRole("tooltip")).toBeVisible();
+	});
 });

@@ -51,8 +51,18 @@
   const key = createAttachmentKey();
   const attach = (node: HTMLElement) => {
     anchor = node;
-    const onEnter = () => openIntent();
-    const onLeave = () => closeIntent();
+    // Open on real pointer movement, not on pointerenter: content that mounts or moves under a resting
+    // cursor fires enter without the user doing anything. Touch never opens a hover tooltip.
+    let armed = true;
+    const onMove = (e: PointerEvent) => {
+      if (e.pointerType === 'touch' || !armed) return;
+      armed = false;
+      openIntent();
+    };
+    const onLeave = () => {
+      armed = true;
+      closeIntent();
+    };
     const onPointerDown = () => {
       pointerFocus = true;
       closeIntent();
@@ -72,7 +82,7 @@
         closeIntent();
       }
     };
-    node.addEventListener('pointerenter', onEnter);
+    node.addEventListener('pointermove', onMove);
     node.addEventListener('pointerleave', onLeave);
     node.addEventListener('pointerdown', onPointerDown);
     node.addEventListener('focus', onFocus);
@@ -80,7 +90,7 @@
     node.addEventListener('keydown', onKey);
     return () => {
       cancel();
-      node.removeEventListener('pointerenter', onEnter);
+      node.removeEventListener('pointermove', onMove);
       node.removeEventListener('pointerleave', onLeave);
       node.removeEventListener('pointerdown', onPointerDown);
       node.removeEventListener('focus', onFocus);
