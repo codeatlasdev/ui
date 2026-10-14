@@ -844,6 +844,39 @@ Classes: `ca-empty` `ca-empty--hero` `ca-empty__actions` `ca-empty__description`
 
 Classes: `ca-error-page` `ca-error-page__actions` `ca-error-page__bubble` `ca-error-page__hint` `ca-error-page__inner` `ca-error-page__status` `ca-error-page__title`
 
+## ExportMenu
+
+`import { ExportMenu } from "@codeatlasdev/ui"` (generic: `T extends Record<string, unknown>`)
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `data` | `readonly T[]` |  | Rows to export (all of them, not just the visible page). |
+| `filename?` | `string` | `'export'` | Base file name without extension. |
+| `columns?` | `readonly ExportColumn<T>[]` |  | Columns, order and headers. Defaults to the keys of the first row. |
+| `formats?` | `Format[]` | `['csv', 'json']` | Formats offered, in menu order. |
+| `label?` | `string` |  | Visible button label. |
+| `size?` | `'sm' \| 'md' \| 'lg'` | `'md'` |  |
+| `variant?` | `'filled' \| 'glass' \| 'outlined' \| 'ghost'` | `'outlined'` |  |
+| `disabled?` | `boolean` | `false` |  |
+| `class?` | `string` | `''` |  |
+| `onexport?` | `(e: ExportEvent) => void` |  | Called after each export with the generated content. |
+
+## ExternalLink
+
+`import { ExternalLink } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `href` | `string` |  |  |
+| `showIcon?` | `boolean` | `true` | Trailing arrow icon. The screen-reader hint stays either way. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLAnchorAttributes, 'class' \| 'children' \| 'target' \| 'rel' \| 'href'>`
+
+Classes: `ca-external-link` `ca-external-link__sr`
+
 ## FileUpload
 
 `import { FileUpload } from "@codeatlasdev/ui"`
@@ -1141,6 +1174,26 @@ Classes: `ca-link-card` `ca-link-card__desc` `ca-link-card__title`
 |---|---|---|---|
 | `optics` | `{ frost: number; bend: number; depth: number; curvature: number; sheen: number; dispersion: number; }` |  |  |
 | `style?` | `string` | `''` |  |
+
+## LiveList
+
+`import { LiveList } from "@codeatlasdev/ui"` (generic: `T`)
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `items` | `readonly T[]` |  | Rows received so far, oldest first. Append to it (or replace it with a longer copy). |
+| `getKey?` | `(item: T, index: number) => string \| number` | `(_item: T, i: number) => i` | Stable key per row. Defaults to the index (rows are append-only). |
+| `total?` | `number` |  | Expected number of rows. Enables determinate progress. |
+| `status?` | `Status` | `'idle'` | `running` shows progress and keeps following; `done` / `error` are announced once. |
+| `label` | `string` |  | Accessible name of the log region (required: it is a landmark-like region). |
+| `follow?` | `boolean` | `true` | Follow the newest row while the user is at the bottom. Turn off to never auto-scroll. |
+| `height?` | `string` | `'24rem'` | Height of the scrolling area (any CSS length). |
+| `announceDelay?` | `number` | `600` | Quiet period before a batch of new rows is announced, in ms. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `item` (`Snippet<[T, number]>`), `empty`
+
+Classes: `ca-live-list` `ca-live-list__count` `ca-live-list__empty` `ca-live-list__frame` `ca-live-list__head` `ca-live-list__item` `ca-live-list__jump` `ca-live-list__list` `ca-live-list__scroller`
 
 ## MaskedField
 
