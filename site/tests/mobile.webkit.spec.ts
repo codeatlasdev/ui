@@ -107,8 +107,8 @@ for (const [path, name] of [
 			await dialog.evaluate((d) => d.matches(":modal") && d.parentElement === document.body)
 		).toBe(true);
 		await page.keyboard.press("Escape");
-		// Safari never focuses a tapped button, so there is no opener to restore focus to here;
-		// focus restore is covered by the keyboard specs.
 		await expect(page.locator("dialog")).toHaveCount(0);
+		// Safari never focuses a tapped button; focus must still return to the opener (VoiceOver).
+		await expect(trigger).toBeFocused();
 	});
 }

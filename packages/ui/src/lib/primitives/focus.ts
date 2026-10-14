@@ -43,13 +43,53 @@ export interface TrapFocusOptions {
 }
 
 /**
- * Keeps Tab / Shift+Tab inside `node` and, on cleanup, hands focus back to where it was.
+ * The control the user last pressed. Safari (macOS and iOS) does not focus a button on click or
+ * tap, so `document.activeElement` is `<body>` when an overlay opens from one. Restore needs the
+ * opener anyway (WAI-ARIA dialog pattern; VoiceOver users would otherwise lose their place).
+ */
+let lastPressed: { el: HTMLElement; at: number } | null = null;
+if (typeof document !== "undefined") {
+	document.addEventListener(
+		"pointerdown",
+		(e) => {
+			const el =
+				e.target instanceof Element
+					? e.target.closest<HTMLElement>(
+							"button, a[href], [role='button'], input, select, summary, [tabindex]"
+						)
+					: null;
+			lastPressed = el ? { el, at: performance.now() } : null;
+		},
+		true
+	);
+}
+
+/** Element to hand focus back to: the control pressed in the last second when the browser did not focus it, else the focused element. */
+function opener(): HTMLElement | null {
+	const active = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+	const pressed =
+		lastPressed && performance.now() - lastPressed.at < 1000 && lastPressed.el.isConnected
+			? lastPressed.el
+			: null;
+	// WebKit focuses the nearest focusable ANCESTOR of a tapped button (e.g. <main tabindex="-1">),
+	// or nothing at all: in both cases the pressed control is the real opener.
+	if (
+		pressed &&
+		(!active || active === document.body || (active !== pressed && active.contains(pressed)))
+	)
+		return pressed;
+	return active && active !== document.body ? active : null;
+}
+
+/**
+ * Keeps Tab / Shift+Tab inside `node` and, on cleanup, hands focus back to where it was
+ * (or to the control that opened it, when the browser did not focus it).
  * Returns cleanup.
  */
 export function trapFocus(node: HTMLElement, options: TrapFocusOptions = {}): () => void {
 	if (typeof document === "undefined") return () => {};
 	const { initial = "first", restore = true } = options;
-	const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+	const previous = opener();
 
 	// Pushed before the initial focus, or the trap below would pull that focus back.
 	traps.push(node);

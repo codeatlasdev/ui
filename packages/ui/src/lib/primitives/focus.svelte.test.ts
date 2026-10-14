@@ -68,6 +68,42 @@ describe("focus", () => {
 		expect(document.activeElement).toBe(a);
 		release();
 	});
+
+	it("restores focus to the pressed opener even when the browser never focused it (Safari)", () => {
+		const opener = document.createElement("button");
+		opener.textContent = "Open";
+		const panel = document.createElement("div");
+		panel.innerHTML = "<button>Inside</button>";
+		document.body.append(opener, panel);
+		(document.activeElement as HTMLElement | null)?.blur();
+		// Safari: pointerdown on a button does not move focus.
+		opener.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
+		expect(document.activeElement).toBe(document.body);
+		const release = trapFocus(panel);
+		expect(document.activeElement?.textContent).toBe("Inside");
+		release();
+		expect(document.activeElement).toBe(opener);
+		opener.remove();
+		panel.remove();
+	});
+
+	it("prefers the pressed control over a focused ancestor (WebKit focuses <main tabindex=-1> on tap)", () => {
+		const main = document.createElement("main");
+		main.tabIndex = -1;
+		const opener = document.createElement("button");
+		opener.textContent = "Open";
+		main.append(opener);
+		const panel = document.createElement("div");
+		panel.innerHTML = "<button>Inside</button>";
+		document.body.append(main, panel);
+		opener.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true }));
+		main.focus();
+		const release = trapFocus(panel);
+		release();
+		expect(document.activeElement).toBe(opener);
+		main.remove();
+		panel.remove();
+	});
 });
 
 describe("nested traps (#138)", () => {

@@ -118,6 +118,23 @@ describe("CommandPalette", () => {
 		await expect.element(input()).toHaveValue("");
 		await expect.element(page.getByRole("option")).toHaveLength(3);
 	});
+
+	it("Mod+K focuses the search field even on a touch device (iPad with keyboard)", async () => {
+		const real = window.matchMedia.bind(window);
+		const spy = vi
+			.spyOn(window, "matchMedia")
+			.mockImplementation((q: string) =>
+				q.includes("pointer: coarse") ? ({ ...real(q), matches: true } as MediaQueryList) : real(q)
+			);
+		try {
+			await render(Harness);
+			await userEvent.keyboard("{Control>}k{/Control}");
+			await expect.element(page.getByRole("dialog")).toBeVisible();
+			await expect.poll(() => document.activeElement?.tagName).toBe("INPUT");
+		} finally {
+			spy.mockRestore();
+		}
+	});
 });
 
 describe("CommandPalette pointer vs keyboard (#80)", () => {
