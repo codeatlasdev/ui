@@ -52,6 +52,53 @@ export const SSR_NO_EXTERNAL = [
 
 export const BUILTIN_IDS: readonly string[] = BUILTIN_PRESETS.map((p) => p.id);
 
+/**
+ * Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles
+ * keep the generated value. Use it to port an existing palette (a terminal or editor theme)
+ * without touching raw `--ca-*` tokens.
+ */
+export interface SchemeColors {
+	/** Brand for this scheme as `#rrggbb`; brand fills, text and glows are regenerated from it. */
+	brand?: `#${string}`;
+	/** Page background (--ca-surface-base, also the browser chrome color): `#rrggbb` or `oklch()`. */
+	background?: string;
+	/** Wells, inputs, code blocks (--ca-surface-sunken). */
+	sunken?: string;
+	/** Cards and panels (--ca-surface-raised). */
+	surface?: string;
+	/** Menus, dialogs, popovers (--ca-surface-overlay). */
+	overlay?: string;
+	text?: string;
+	textSecondary?: string;
+	textHint?: string;
+	textDisabled?: string;
+	borderSubtle?: string;
+	border?: string;
+	borderStrong?: string;
+	success?: string;
+	warning?: string;
+	info?: string;
+	error?: string;
+}
+
+const ROLE_TOKENS: Record<Exclude<keyof SchemeColors, "brand">, string> = {
+	background: "--ca-surface-base",
+	sunken: "--ca-surface-sunken",
+	surface: "--ca-surface-raised",
+	overlay: "--ca-surface-overlay",
+	text: "--ca-text-primary",
+	textSecondary: "--ca-text-secondary",
+	textHint: "--ca-text-hint",
+	textDisabled: "--ca-text-disabled",
+	borderSubtle: "--ca-outline-subtle",
+	border: "--ca-outline-default",
+	borderStrong: "--ca-outline-strong",
+	success: "--ca-semantic-success",
+	warning: "--ca-semantic-warning",
+	info: "--ca-semantic-info",
+	error: "--ca-semantic-error",
+};
+
 /** A preset generated from one sRGB hex color (e.g. the logo color). */
 export interface PresetDefinition {
 	/** Value for `data-preset`. Must not clash with a built-in preset id. */
@@ -59,7 +106,12 @@ export interface PresetDefinition {
 	/** Brand color as `#rrggbb`. Hue, chroma and lightness are derived from it. */
 	color: `#${string}`;
 	label?: string;
+	/** Per-scheme role colors on top of the generated palette. */
+	colors?: { light?: SchemeColors; dark?: SchemeColors };
 }
+
+/** Page background pattern. mesh = brand glow gradients; the rest are flat paper. */
+export type Paper = "mesh" | "plain" | "grid" | "dots" | "lines";
 
 /** Metrics of the fallback face, from the font's own tables, so the swap does not shift layout. */
 export interface FontFallbackMetrics {
@@ -153,6 +205,8 @@ export interface ThemeDefinition {
 	iconStroke: number;
 	/** Film-grain texture over the page background, 0 to 0.12. @default 0 */
 	noise: number;
+	/** Page background pattern. Flat patterns use --ca-outline-subtle, so they follow the preset. @default "mesh" */
+	paper: Paper;
 	/** Raw token overrides per scheme. Applied last. */
 	overrides: { light?: TokenMap; dark?: TokenMap };
 }
@@ -180,11 +234,41 @@ function presetTokens(src: BuiltinPresetSource | PresetDefinition) {
 			throw new Error(`[codeatlasdev/ui] preset "${src.id}": color must be #rrggbb`);
 		const { l, c, h } = hexToOklch(src.color);
 		const g = presetVars(generatePreset(h, c, l));
-		vars = { light: { "--ca-chart-brand": src.color, ...g.light }, dark: g.dark };
+		vars = {
+			light: { "--ca-chart-brand": src.color, ...g.light, ...roleTokens(src, "light") },
+			dark: { ...g.dark, ...roleTokens(src, "dark") },
+		};
 	}
 	const light: Record<string, string> = { "color-scheme": "light", ...vars.light };
 	const dark: Record<string, string> = { "color-scheme": "dark", ...vars.dark };
 	return { light, dark };
+}
+
+/** Tokens for a preset's hand-picked role colors in one scheme (see SchemeColors). */
+function roleTokens(src: PresetDefinition, scheme: "light" | "dark"): TokenMap {
+	const colors = src.colors?.[scheme];
+	if (!colors) return {};
+	const out: TokenMap = {};
+	if (colors.brand) {
+		if (!HEX.test(colors.brand))
+			throw new Error(
+				`[codeatlasdev/ui] preset "${src.id}": colors.${scheme}.brand must be #rrggbb`
+			);
+		const { l, c, h } = hexToOklch(colors.brand);
+		// Generated with the brand as the light anchor: take that side's brand/glow ramp.
+		const g = presetVars(generatePreset(h, c, l)).light;
+		for (const [k, v] of Object.entries(g) as [keyof TokenMap, string][])
+			if (k.startsWith("--ca-brand-") || k.startsWith("--ca-glow-")) out[k] = v;
+		if (scheme === "light") out["--ca-chart-brand"] = colors.brand;
+	}
+	for (const [role, token] of Object.entries(ROLE_TOKENS) as [
+		keyof typeof ROLE_TOKENS,
+		keyof TokenMap,
+	][]) {
+		const v = colors[role];
+		if (v) out[token] = v;
+	}
+	return out;
 }
 
 /**
@@ -270,9 +354,11 @@ export function defineTheme(def: Partial<ThemeDefinition> = {}): ResolvedTheme {
 	const themeColor: ResolvedTheme["themeColor"] = {};
 	for (const src of [...BUILTIN_PRESETS, ...presets]) {
 		const { light, dark } = presetTokens(src);
+		// Role colors may already be hex (SchemeColors.background); generated ones are oklch().
+		const hex = (c: string) => (HEX.test(c) ? c : oklchToHex(c));
 		themeColor[src.id] = {
-			light: oklchToHex(light["--ca-surface-base"]),
-			dark: oklchToHex(dark["--ca-surface-base"]),
+			light: hex(light["--ca-surface-base"]),
+			dark: hex(dark["--ca-surface-base"]),
 		};
 	}
 	return {
@@ -290,6 +376,7 @@ export function defineTheme(def: Partial<ThemeDefinition> = {}): ResolvedTheme {
 		motion: def.motion ?? {},
 		iconStroke: def.iconStroke ?? 2,
 		noise: def.noise ?? 0,
+		paper: def.paper ?? "mesh",
 		overrides: def.overrides ?? {},
 		known,
 		themeColor,
@@ -354,6 +441,14 @@ const DENSITY: Record<Exclude<Density, number>, number> = {
 	airy: 1.25,
 };
 
+const PAPER_INK = "var(--ca-outline-subtle)";
+const PAPER: Record<Exclude<Paper, "mesh">, string> = {
+	plain: "none",
+	grid: `linear-gradient(${PAPER_INK} 1px, transparent 1px) 0 0 / 100% 28px, linear-gradient(90deg, ${PAPER_INK} 1px, transparent 1px) 0 0 / 28px 100%`,
+	dots: `radial-gradient(${PAPER_INK} 1.2px, transparent 1.4px) 0 0 / 20px 20px`,
+	lines: `linear-gradient(${PAPER_INK} 1px, transparent 1px) 0 0 / 100% 28px`,
+};
+
 const EASING: Record<NonNullable<MotionOptions["easing"]>, string> = {
 	standard: "cubic-bezier(0.4, 0, 0.2, 1)",
 	emphasized: "cubic-bezier(0.2, 0, 0, 1)",
@@ -393,6 +488,7 @@ export function designTokens(
 		| "motion"
 		| "iconStroke"
 		| "noise"
+		| "paper"
 	>
 ): Record<string, string> {
 	const root: Record<string, string> = {};
@@ -421,6 +517,7 @@ export function designTokens(
 		root["--ca-ease-standard"] = EASING[t.motion.easing];
 	if (t.iconStroke !== 2) root["--ca-icon-stroke"] = String(t.iconStroke);
 	if (t.noise) root["--ca-noise-opacity"] = String(Math.min(0.12, Math.max(0, t.noise)));
+	if (t.paper !== "mesh") root["--ca-page-mesh"] = PAPER[t.paper];
 	return root;
 }
 

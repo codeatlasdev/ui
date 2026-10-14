@@ -7,15 +7,14 @@
 		"build": "astro build",
 		"preview": "astro preview --port 4321 --force",
 		"check": "astro check --minimumFailingSeverity warning",
-		"test:e2e": "playwright test",
-		"test:a11y": "playwright test --project=a11y"
+		"test:e2e": "bun ../scripts/test-run.ts playwright test",
+		"test:a11y": "bun ../scripts/test-run.ts playwright test --project=a11y"
 	},
 	"dependencies": {
 		"@astrojs/mdx": "8.0.3",
 		"@astrojs/sitemap": "3.7.4",
 		"@astrojs/svelte": "9.0.1",
 		"@codeatlasdev/ui": "workspace:*",
-		"@fontsource-variable/funnel-display": "5.3.0",
 		"@fontsource-variable/inter": "5.3.0",
 		"@fontsource-variable/jetbrains-mono": "5.3.0",
 		"@lucide/svelte": "1.55.0",

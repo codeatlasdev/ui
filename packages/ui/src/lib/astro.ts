@@ -41,4 +41,8 @@ export function caUI(options: ThemeOptions = {}): AstroIntegration {
 	};
 }
 
+export type { Paper, PresetDefinition, SchemeColors } from "./theme/define.js";
+export type { DesignStyleId } from "./theme/styles.js";
+// Recipes are plain data: safe to import from astro.config (no Svelte runes on this path).
+export { DESIGN_STYLES, designStyle, mergeTheme } from "./theme/styles.js";
 export type { ThemeOptions };

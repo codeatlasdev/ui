@@ -183,8 +183,10 @@ export type {
 	FontFallbackMetrics,
 	FontSpec,
 	MotionOptions,
+	Paper,
 	PresetDefinition,
 	ResolvedTheme,
+	SchemeColors,
 	ThemeDefinition,
 	TypographyOptions,
 } from "./theme/define.js";

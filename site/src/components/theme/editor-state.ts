@@ -4,6 +4,7 @@ import {
 	defineTheme,
 	designStyle,
 	type ElevationModel,
+	type Paper,
 	type SurfaceStyle,
 	type ThemeDefinition,
 	themeCSS,
@@ -32,6 +33,7 @@ export const SURFACES: SurfaceStyle[] = [
 	"chrome",
 ];
 export const ELEVATIONS: ElevationModel[] = ["soft", "none", "hard", "glow"];
+export const PAPERS: Paper[] = ["mesh", "plain", "grid", "dots", "lines"];
 export const RADII = ["xs", "sm", "md", "lg", "xl", "pill"] as const;
 export const DENSITIES = ["compact", "comfortable", "airy"] as const;
 export const EASINGS = ["standard", "emphasized", "spring", "linear", "steps"] as const;

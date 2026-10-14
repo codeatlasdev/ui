@@ -6,7 +6,7 @@
   import type { DesignStyleId, ThemeDefinition } from '@codeatlasdev/ui';
   import { Moon, RotateCcw, Sun } from '@lucide/svelte';
   import {
-    CASES, DENSITIES, EASINGS, ELEVATIONS, RADII, SURFACES, type EditorState,
+    CASES, DENSITIES, EASINGS, ELEVATIONS, PAPERS, RADII, SURFACES, type EditorState,
   } from './editor-state';
 
   interface Props {
@@ -168,6 +168,8 @@
     <Select label="Easing" options={opts(EASINGS)} value={motion.easing ?? 'standard'} onchange={(v) => patch({ motion: { ...motion, easing: v as never } })} />
     {@render label('Icon stroke', def.iconStroke ?? 2)}
     <Slider min={1} max={3} step={0.25} value={def.iconStroke ?? 2} onchange={([v]) => patch({ iconStroke: v })} />
+    {@render label('Paper')}
+    <SegmentedControl aria-label="Paper" fullWidth value={def.paper ?? 'mesh'} onchange={(v) => patch({ paper: v as never })} items={opts(PAPERS)} />
     {@render label('Noise', def.noise ?? 0)}
     <Slider min={0} max={0.12} step={0.01} value={def.noise ?? 0} onchange={([v]) => patch({ noise: v })} />
   </section>

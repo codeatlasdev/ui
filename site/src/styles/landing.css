@@ -3,7 +3,8 @@
  * Motion targets (data-rise, data-reveal, .rewrite) are animated on inner wrappers or via opacity/clip-path. */
 
 :root {
-	--lp-display: "Funnel Display Variable", "Funnel Display", var(--ca-font-sans);
+	/* Journal display: the theme's serif (site/src/theme.ts), no extra web font to download. */
+	--lp-display: var(--ca-font-display);
 	--lp-max: 76rem;
 	--lp-gutter: clamp(var(--ca-space-4), 4vw, var(--ca-space-12));
 	--lp-chapter-gap: clamp(5rem, 14vh, 9rem);
@@ -97,10 +98,10 @@ html.lenis body {
 }
 .hero__title {
 	font-family: var(--lp-display);
-	font-weight: 700;
+	font-weight: 600;
 	font-size: clamp(2.4rem, 5vw, 4.4rem);
 	line-height: 1;
-	letter-spacing: -0.035em;
+	letter-spacing: -0.025em;
 	text-wrap: balance;
 	margin: 0;
 }
@@ -136,7 +137,9 @@ html.lenis body {
 }
 .rewrite__new {
 	display: block;
+	inline-size: fit-content;
 	color: var(--ca-text-primary);
+	font-style: italic;
 }
 .hero__lead {
 	margin: var(--ca-space-6) 0 0;
@@ -169,7 +172,7 @@ html.lenis body {
 .hero__caption {
 	margin: var(--ca-space-4) 0 0;
 	max-inline-size: 36rem;
-	font-size: var(--ca-font-size-body2);
+	font-size: var(--ca-font-size-body1);
 	color: var(--ca-text-secondary);
 }
 
@@ -199,7 +202,7 @@ html.lenis body {
 }
 .display {
 	font-family: var(--lp-display);
-	font-weight: 700;
+	font-weight: 600;
 	font-size: clamp(2rem, 4.6vw, 3.6rem);
 	line-height: 1.02;
 	letter-spacing: -0.03em;

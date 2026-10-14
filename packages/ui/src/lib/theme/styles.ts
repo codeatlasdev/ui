@@ -20,7 +20,8 @@ export type DesignStyleId =
 	| "claymorphism"
 	| "y2k"
 	| "editorial"
-	| "terminal";
+	| "terminal"
+	| "sketchbook";
 
 export interface DesignStyle {
 	id: DesignStyleId;
@@ -274,6 +275,29 @@ export const DESIGN_STYLES: Record<DesignStyleId, DesignStyle> = {
 			},
 			motion: { scale: 0, easing: "steps" },
 			iconStroke: 1.5,
+		},
+	},
+	sketchbook: {
+		id: "sketchbook",
+		label: "Sketchbook",
+		description:
+			"Journal on grid paper: serif display, square outlined cards with hard shadows, hand-drawn marks (.ca-mark-*).",
+		taxonomy: ["DS015", "DS042"],
+		theme: {
+			defaultStyle: "outlined",
+			radius: 0,
+			elevation: "hard",
+			border: { width: 2, strong: 3 },
+			fonts: { display: SERIF },
+			typography: {
+				weights: { heading: 600, semibold: 600 },
+				headingTracking: "-0.015em",
+				labelCase: "uppercase",
+				labelTracking: "0.08em",
+				lineHeight: 1.65,
+			},
+			motion: { scale: 0.6, easing: "standard" },
+			paper: "grid",
 		},
 	},
 };

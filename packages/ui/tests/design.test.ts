@@ -59,6 +59,53 @@ describe("design knobs → tokens", () => {
 		expect(css).toContain("--ca-shadow-xl: none;");
 		expect(css).toContain("--ca-mat-thick-shadow: 0 0 #0000;");
 	});
+
+	it("paper: mesh keeps the package gradients, flat patterns replace them with outline ink", () => {
+		expect(themeCSS(defineTheme({ paper: "mesh" }))).toBe("");
+		expect(themeCSS(defineTheme({ paper: "plain" }))).toContain("--ca-page-mesh: none;");
+		const grid = themeCSS(defineTheme({ paper: "grid" }));
+		expect(grid).toMatch(/--ca-page-mesh: linear-gradient\(var\(--ca-outline-subtle\)/);
+	});
+});
+
+describe("preset role colors", () => {
+	const preset = (colors: object) =>
+		themeCSS(
+			defineTheme({ presets: [{ id: "tn", color: "#7aa2f7", colors }], defaultPreset: "tn" })
+		);
+	const block = (css: string, scheme: "light" | "dark") =>
+		css.split("\n}")[scheme === "light" ? 0 : 1] ?? "";
+
+	it("maps roles to tokens in their scheme only", () => {
+		const css = preset({ dark: { background: "#1a1b26", text: "#c0caf5", error: "#f7768e" } });
+		const dark = block(css, "dark");
+		expect(dark).toContain("--ca-surface-base: #1a1b26;");
+		expect(dark).toContain("--ca-text-primary: #c0caf5;");
+		expect(dark).toContain("--ca-semantic-error: #f7768e;");
+		expect(block(css, "light")).not.toContain("#1a1b26");
+	});
+
+	it("a per-scheme brand regenerates that scheme's brand ramp", () => {
+		const base = block(preset({}), "light");
+		const light = block(preset({ light: { brand: "#34548a" } }), "light");
+		const main = (s: string) => s.match(/--ca-brand-main: ([^;]+);/)?.[1];
+		expect(main(light)).not.toBe(main(base));
+		expect(light).toContain("--ca-chart-brand: #34548a;");
+	});
+
+	it("the background role drives the browser theme-color", () => {
+		const t = defineTheme({
+			presets: [{ id: "tn", color: "#7aa2f7", colors: { dark: { background: "#1a1b26" } } }],
+			defaultPreset: "tn",
+		});
+		expect(t.themeColor.tn.dark).toBe("#1a1b26");
+	});
+
+	it("rejects a non-hex brand", () => {
+		expect(() => preset({ light: { brand: "blue" } })).toThrow(
+			/colors\.light\.brand must be #rrggbb/
+		);
+	});
 });
 
 describe("design styles", () => {

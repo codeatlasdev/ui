@@ -12,8 +12,6 @@ import ThemeLab from "~/components/landing/ThemeLab.svelte";
 import Logo from "~/components/Logo.svelte";
 import Base from "~/layouts/Base.astro";
 import "~/styles/landing.css";
-import "@fontsource-variable/funnel-display";
-import displayFont from "@fontsource-variable/funnel-display/files/funnel-display-latin-wght-normal.woff2?url";
 
 const REPO = "https://github.com/codeatlasdev/ui";
 const NPM = "https://www.npmjs.com/package/@codeatlasdev/ui";
@@ -108,7 +106,6 @@ import SendPrompt from "~/components/landing/SendPrompt.svelte";
 				if (matchMedia("(pointer: coarse)").matches || matchMedia("(max-width: 900px)").matches) d.classList.add("touch");
 			})();
 		</script>
-		<link rel="preload" as="font" type="font/woff2" crossorigin href={displayFont} />
 	</Fragment>
 
 	<header class="bar">
@@ -131,7 +128,7 @@ import SendPrompt from "~/components/landing/SendPrompt.svelte";
 				<h1 id="hero-h" class="hero__title">
 					<span class="rewrite">
 						<s class="rewrite__old" data-old>Prompt a UI kit.</s>
-						<span class="rewrite__new" data-new>UI your agent already knows.</span>
+						<span class="rewrite__new ca-mark-underline" data-new>UI your agent already knows.</span>
 					</span>
 				</h1>
 				<p class="hero__lead">
@@ -149,7 +146,7 @@ import SendPrompt from "~/components/landing/SendPrompt.svelte";
 			</div>
 			<div class="hero__stage">
 				<HeroStage client:load />
-				<p class="hero__caption">
+				<p class="hero__caption ca-mark-note">
 					This is not a screenshot. It is a live composition of package components, retheming itself with
 					&#32;<code>data-preset</code>, <code>data-style</code> and <code>data-theme-scope</code>.
 				</p>

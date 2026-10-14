@@ -1,0 +1,41 @@
+/* @codeatlasdev/ui — hand-drawn marks. Opt-in (not in global.css):
+ *   import "@codeatlasdev/ui/styles/marks.css";
+ * Strokes are SVG masks painted with --ca-mark-color (default: brand), so they follow the preset
+ * and scheme. Swap a shape by redefining --ca-mark-scribble / --ca-mark-arrow. Pairs with the
+ * `sketchbook` design style; works with any theme.
+ *   <span class="ca-mark-underline">already knows.</span>
+ *   <p class="ca-mark-note">Margin note with a sketched arrow.</p> */
+:root {
+  --ca-mark-color: var(--ca-brand-main);
+  --ca-mark-scribble: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 300 20' preserveAspectRatio='none'%3E%3Cpath d='M3 13 C60 5 120 4 180 8 S270 12 297 6 M30 16 C110 10 200 11 280 13' fill='none' stroke='black' stroke-width='3.2' stroke-linecap='round'/%3E%3C/svg%3E");
+  --ca-mark-arrow: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 40'%3E%3Cpath d='M6 36 C8 20 20 9 40 6 M31 2 L41 6 L34 14' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.ca-mark-underline { display: inline-block; }
+.ca-mark-underline::after {
+  content: "";
+  display: block;
+  block-size: 0.22em;
+  margin-block-start: 0.06em;
+  background: var(--ca-mark-color);
+  mask: var(--ca-mark-scribble) center / 100% 100% no-repeat;
+}
+.ca-mark-note {
+  position: relative;
+  padding-inline-start: 3.25rem;
+  font-family: var(--ca-font-display);
+  font-style: italic;
+}
+.ca-mark-note :where(code) { font-style: normal; }
+.ca-mark-note::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  inset-block-start: -0.4rem;
+  inline-size: 2.6rem;
+  block-size: 2.2rem;
+  background: var(--ca-mark-color);
+  mask: var(--ca-mark-arrow) center / contain no-repeat;
+}
+@media (forced-colors: active) {
+  .ca-mark-underline::after, .ca-mark-note::before { background: CanvasText; }
+}
