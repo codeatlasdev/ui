@@ -2299,6 +2299,16 @@ Design knobs → root custom properties. Only values that differ from the styles
 function designTokens(t: Pick< ResolvedTheme, | "radius" | "controlRadius" | "density" | "border" | "typography" | "elevation" | "motion" | "iconStroke" | "noise" | "paper" >): Record<string, string>
 ```
 
+### downloadFile
+
+`import { downloadFile } from "@codeatlasdev/ui"`
+
+Saves `content` as a file through a temporary object URL. Browser only.
+
+```ts
+function downloadFile(filename: string, content: string, mime: string): void
+```
+
 ### duration
 
 `import { duration } from "@codeatlasdev/ui"`
@@ -2873,6 +2883,26 @@ const toast: {
 }
 ```
 
+### toCsv
+
+`import { toCsv } from "@codeatlasdev/ui"`
+
+RFC 4180 CSV (CRLF line ends, trailing newline). Columns default to the first row's keys.
+
+```ts
+function toCsv<T extends Record<string, unknown>>(rows: readonly T[], columns?: readonly ExportColumn<T>[]): string
+```
+
+### toJson
+
+`import { toJson } from "@codeatlasdev/ui"`
+
+Pretty-printed JSON array. With `columns`, each object keeps only those fields (by `key`).
+
+```ts
+function toJson<T extends Record<string, unknown>>(rows: readonly T[], columns?: readonly ExportColumn<T>[]): string
+```
+
 ### uid
 
 `import { uid } from "@codeatlasdev/ui"`
@@ -2976,11 +3006,13 @@ Types:
 | `DocsSection` | `interface DocsSection { id: string; label: string; href: string; }` | A top-level docs section shown in the header (e.g. Guide, API, Compat). |
 | `ElevationLevel` | `type ElevationLevel = keyof typeof elevation;` |  |
 | `ElevationModel` | `type ElevationModel = "soft" \| "none" \| "hard" \| "glow";` | Shadow model: how elevation is drawn. |
+| `ExportColumn` | `interface ExportColumn<T = Record<string, unknown>> { key: keyof T & string; header?: string; value?: (row: T) => unknown; }` |  |
 | `FieldState` | `interface FieldState { value: string; error: string \| undefined; touched: boolean; }` |  |
 | `FontDescriptor` | `interface FontDescriptor { family: string; src: string; weight?: number \| string; style?: "normal" \| "italic"; display?: "auto" \| "block" \| "swap" \| "fallback" \| "optional"; preload?: boolean; fallback?: string; fallbackMetrics?: FontFallbackMetrics; generic?: string; }` | A self-hosted web font. Emits `@font-face`, an optional preload and a metric-matched fallback face. |
 | `FontFallbackMetrics` | `interface FontFallbackMetrics { sizeAdjust?: string \| number; ascent?: string; descent?: string; lineGap?: string; }` | Metrics of the fallback face, from the font's own tables, so the swap does not shift layout. |
 | `FontSpec` | `type FontSpec = string \| FontDescriptor;` | A font stack string (existing behavior) or a self-hosted font descriptor. |
 | `FormState` | `interface FormState< K extends string, A extends Record<string, unknown> = Record<never, never>, > { fields: Record<K, FieldState>; arrays: { [N in keyof A]: FieldArrayState<A[N]> }; dirty: boolean; valid: boolean; submitting: boolean; touch(field: K): void; set(field: K, value: string): void; validate(): boolean; reset(): void; }` |  |
+| `HeadingLevel` | `type HeadingLevel = 2 \| 3 \| 4 \| 5 \| 6;` | Level of a rendered `<h2>`–`<h6>`. `<h1>` is reserved for the page title (`PageShell`). |
 | `IconComponent` | `type IconComponent = Component<IconProps>;` | Any Svelte 5 icon component accepting {@link IconProps}. Structural, so `@lucide/svelte` icons (and compatible libraries) fit. |
 | `IconProps` | `type IconProps = { size?: number \| string; class?: string; "stroke-width"?: number \| string; };` | Props the library passes to icon components. |
 | `Locale` | `type Locale = string;` | BCP 47 language tag. `en` and `pt-BR` are built in; add others with `registerLocale`. |
@@ -3186,10 +3218,20 @@ Types:
 
 `import { centsToDisplay } from "@codeatlasdev/ui/forms"`
 
-`123456` → `"R$ 1.234,56"` (NBSP normalised to a regular space).
+`123456` → `"R$ 1.234,56"` (BRL, pt-BR). NBSP / narrow NBSP are normalised to a regular space.
 
 ```ts
-function centsToDisplay(cents: number): string
+function centsToDisplay(cents: number, options?: MoneyOptions): string
+```
+
+### currencyDecimals
+
+`import { currencyDecimals } from "@codeatlasdev/ui/forms"`
+
+Fraction digits of a currency per `Intl` (`USD` 2, `JPY` 0, `BHD` 3).
+
+```ts
+function currencyDecimals(currency: string, locale?: string): number
 ```
 
 ### isValidCNPJ
@@ -3306,10 +3348,10 @@ function maskRG(raw: string): string
 
 `import { parseInputToCents } from "@codeatlasdev/ui/forms"`
 
-Parse user text into integer cents. - Text with a `,` is read as a pt-BR decimal (`"R$ 1.234,56"` → 123456, `"10,5"` → 1050). - Text without `,` is read as a plain digit stream where the last two digits are cents (`"123456"` → 123456), which is what a type-to-fill money input produces. A leading `-` yields a negative value.
+Parse user text into integer minor units. - Text containing the locale's decimal separator is read as a decimal (`"R$ 1.234,56"` → 123456 in pt-BR, `"$10.5"` → 1050 in en-US). Extra fraction digits are truncated. - Text without it is read as a plain digit stream whose last `decimals` digits are the fraction (`"123456"` → 123456), which is what a type-to-fill money input produces. - Currencies with 0 decimals drop any fraction (`"12.9"` → 12 in en-US). A leading `-` yields a negative value.
 
 ```ts
-function parseInputToCents(text: string): number
+function parseInputToCents(text: string, options?: MoneyOptions): number
 ```
 
 Types:
@@ -3317,6 +3359,7 @@ Types:
 | Type | Declaration | Notes |
 |---|---|---|
 | `CepAddress` | `interface CepAddress { logradouro: string; bairro: string; localidade: string; uf: string; }` | Address shape returned by a CEP lookup (ViaCEP field names). |
+| `MoneyOptions` | `interface MoneyOptions { currency?: string; locale?: string; }` |  |
 
 ## @codeatlasdev/ui/kit
 
