@@ -59,7 +59,7 @@ bun run issue:start 47      # claim #47 and set everything up
 cd ../ui-worktrees/47-...   # work there; your main checkout stays untouched
 ```
 
-`issue:start` creates the worktree in `../ui-worktrees/<n>-<slug>` on `fix/<n>-<slug>` (or `feat/` for enhancements) from `origin/main`, installs dependencies, opens a **draft PR** with `Closes #<n>`, labels the issue `in progress`, assigns you and comments the PR link on the issue. If someone else is assigned, it stops: talk on the issue first.
+`issue:start` creates the worktree in `../ui-worktrees/<n>-<slug>` on `fix/<n>-<slug>` (or `feat/` for enhancements) from `origin/main`, installs dependencies, opens a **draft PR** with `Closes #<n>`, labels the issue `in progress`, assigns you and comments the PR link on the issue. If someone else is assigned, or the issue already has an open PR, it stops and names it: talk on the issue or the PR first.
 
 Then, in the worktree (use paths inside it; your editor or agent must not edit the main checkout):
 

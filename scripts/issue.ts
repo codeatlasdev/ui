@@ -13,6 +13,7 @@
 import { existsSync } from "node:fs";
 import { basename, join, resolve } from "node:path";
 import { $ } from "bun";
+import { blockingPrs, ownPr, type PrRef } from "./issue-lib.ts";
 
 const ROOT = resolve(import.meta.dir, "..");
 const WORKTREES = resolve(ROOT, "..", `${basename(ROOT)}-worktrees`);
@@ -50,12 +51,30 @@ async function issue(n: string): Promise<Issue> {
 	return JSON.parse(raw.stdout.toString());
 }
 
+const PR_FIELDS = "number,url,state,headRefName,headRepositoryOwner,author";
+
+/** Our PR for the branch: a fork can open a PR from a branch with the same name. */
 async function prFor(branch: string): Promise<string> {
-	const r = await $`gh pr list --head ${branch} --state all --json url -q .[0].url`
+	const raw = await $`gh pr list --head ${branch} --state all --json ${PR_FIELDS}`
 		.cwd(ROOT)
 		.quiet()
 		.nothrow();
-	return r.stdout.toString().trim();
+	const prs: PrRef[] = raw.exitCode === 0 ? JSON.parse(raw.stdout.toString() || "[]") : [];
+	return ownPr(prs, branch)?.url ?? "";
+}
+
+/** PRs that close the issue (from anyone, forks included), as GitHub links them. */
+async function linkedPrs(n: string): Promise<PrRef[]> {
+	const raw =
+		await $`gh issue view ${n} --json closedByPullRequestsReferences -q ${".closedByPullRequestsReferences[].number"}`
+			.cwd(ROOT)
+			.quiet()
+			.nothrow();
+	const numbers = raw.stdout.toString().split(/\s+/).filter(Boolean);
+	const out: PrRef[] = [];
+	for (const pr of numbers)
+		out.push(JSON.parse(await $`gh pr view ${pr} --json ${PR_FIELDS}`.cwd(ROOT).quiet().text()));
+	return out;
 }
 
 async function ensureLabel() {
@@ -76,6 +95,13 @@ async function start(n: string) {
 	const type = is.labels.some((l) => l.name === "enhancement") ? "feat" : "fix";
 	const branch = `${type}/${n}-${slug(is.title)}`;
 	const dir = join(WORKTREES, `${n}-${slug(is.title)}`);
+
+	// Someone already has a PR for this issue: review and land theirs instead of duplicating it.
+	const taken = blockingPrs(await linkedPrs(n), branch);
+	if (taken.length)
+		die(
+			`#${n} already has an open PR: ${taken.map((p) => `${p.url} (@${p.author?.login ?? p.headRepositoryOwner.login})`).join(", ")}. Review it instead of starting a new one.`
+		);
 
 	await $`git fetch -q origin main`.cwd(ROOT);
 	if (!existsSync(dir)) {
