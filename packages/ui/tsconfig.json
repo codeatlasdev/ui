@@ -12,7 +12,11 @@
 		"noEmit": true,
 		"skipLibCheck": true,
 		"types": ["node", "@sveltejs/kit", "vitest/browser", "vitest-browser-svelte"],
-		"lib": ["ESNext", "DOM", "DOM.Iterable"]
+		"lib": ["ESNext", "DOM", "DOM.Iterable"],
+		// Scaffold templates (kit/templates) import the package by name, as the app they are copied
+		// into will. Resolve that to the source: through `exports` it would read dist/, which the
+		// parallel `build` step of `validate` is rewriting at the same time.
+		"paths": { "@codeatlasdev/ui": ["./src/lib/index.ts"] }
 	},
 	"include": ["src/**/*.ts", "src/**/*.svelte", "tests/**/*.ts"],
 	// Unit tests run on `bun test` and are type-checked by `bun --check` (root tsconfig.json).
