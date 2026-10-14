@@ -8,6 +8,23 @@ test.describe("landing", () => {
 		expect(consoleErrors).toEqual([]);
 	});
 
+	test("hero demo repaints with the picked preset, not the page brand", async ({ page }) => {
+		await page.goto("/");
+		await page.waitForLoadState("networkidle");
+		await waitIslands(page, "astro-island[client='visible']");
+		const brand = (sel: string) =>
+			page
+				.locator(sel)
+				.first()
+				.evaluate((el) => getComputedStyle(el).getPropertyValue("--ca-brand-main").trim());
+		for (const preset of ["violet", "ocean", "emerald"]) {
+			await page.getByRole("button", { name: `Preset ${preset}` }).click();
+			await expect(page.locator(".stage")).toHaveAttribute("data-preset", preset);
+			// The surface is a scope inside the preset island: it must resolve to the island's preset.
+			expect(await brand(".stage__surface")).toBe(await brand(".stage"));
+		}
+	});
+
 	test("skip link is the first tab stop and focuses #main", async ({ page }) => {
 		await page.goto("/");
 		await page.keyboard.press("Tab");

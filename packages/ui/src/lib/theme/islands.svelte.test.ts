@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it } from "vitest";
 import { brandPresetCSS } from "../theme-script.js";
+import { BUILTIN_IDS } from "./define.js";
 
 // Theme islands: the scheme a preset resolves to must follow the nearest context.
 const html = document.documentElement;
@@ -93,5 +94,45 @@ describe("preset islands", () => {
 		expect(scheme("p")).toBe("dark");
 		expect(scheme("q")).toBe("light");
 		expect(getComputedStyle(byId("p")).getPropertyValue("--ca-chart-brand").trim()).toBe("#2563eb");
+	});
+});
+
+// Nearest preset for any nesting, compared with the preset applied directly on a bare element.
+describe("nearest preset matrix", () => {
+	/** Reference value: `preset` (with an optional scope) on its own element, nothing around it. */
+	function reference(preset: string, scope?: "dark" | "light") {
+		const id = `ref-${preset}-${scope ?? "none"}`;
+		document.body.insertAdjacentHTML(
+			"beforeend",
+			`<div id="${id}" data-preset="${preset}"${scope ? ` data-theme-scope="${scope}"` : ""}></div>`
+		);
+		return brandMain(id);
+	}
+
+	it("every built-in island beats a brand page, with and without a scope", () => {
+		addBrand();
+		html.setAttribute("data-preset", "acme");
+		for (const id of BUILTIN_IDS) {
+			mount(
+				`<div data-preset="${id}"><div id="n-${id}"></div><div id="d-${id}" data-theme-scope="dark"></div><div id="l-${id}" data-theme-scope="light"></div></div>`
+			);
+			expect(brandMain(`n-${id}`)).toBe(reference(id));
+			expect(brandMain(`d-${id}`)).toBe(reference(id, "dark"));
+			expect(brandMain(`l-${id}`)).toBe(reference(id, "light"));
+		}
+	});
+
+	it("a brand island inside a built-in page owns its scope", () => {
+		addBrand();
+		html.setAttribute("data-preset", "ocean");
+		mount('<div data-preset="acme"><div id="s" data-theme-scope="dark"></div></div>');
+		expect(brandMain("s")).toBe(reference("acme", "dark"));
+	});
+
+	it("a scope with no preset island follows the page preset", () => {
+		addBrand();
+		html.setAttribute("data-preset", "acme");
+		mount('<div id="s" data-theme-scope="dark"></div>');
+		expect(brandMain("s")).toBe(reference("acme", "dark"));
 	});
 });
