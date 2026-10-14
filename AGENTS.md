@@ -85,20 +85,25 @@ Reading failures: locators fail with an ARIA snapshot; traces are in `__traces__
 
 0. **Test first, always.** Every bug fix and issue starts with a regression test that reproduces the problem. Run it and confirm it fails on the current code, then fix, then confirm it passes. A PR reports that fail-before/pass-after evidence. Tests exist to prove a behavior or a fix, never to pad coverage: no tests of wiring, copies, mock echoes or incidental defaults. If a test cannot fail for a plausible bug, delete it.
 
-1. **Required setup**: consumers import the CSS once (it already includes `materials.css`, themes and utilities) and register the Vite plugin (anti-FOUC script + `ssr.noExternal` for TanStack Table and Shiki):
+1. **Required setup**: consumers import the CSS once (it already includes `materials.css`, themes and utilities), register both Vite plugins (`caThemePlugin`: anti-FOUC script + `ssr.noExternal` for TanStack Table and Shiki; `caErrorPlugin`: scaffolds `+error.svelte`/`error.html`) and export `handle` + `handleError` from the server hook. Plugin order in `plugins` does not matter (built with every order on Kit 3.0.1 / Vite 8.3); `init` writes them after `sveltekit()`:
    ```ts
    import "@codeatlasdev/ui/styles/global.css";
    ```
    ```ts
    // vite.config.ts
-   import { caThemePlugin } from "@codeatlasdev/ui/vite";
-   export default defineConfig({ plugins: [sveltekit(), caThemePlugin()] });
+   import { caErrorPlugin, caThemePlugin } from "@codeatlasdev/ui/vite";
+   import { theme } from "./src/lib/theme.ts";
+   export default defineConfig({
+     plugins: [sveltekit(), caThemePlugin(theme), caErrorPlugin({ scaffold: true })],
+   });
    ```
    ```ts
-   // src/hooks.server.ts: injects the theme script into SSR/prerendered pages
+   // src/hooks.server.ts: injects the theme script into SSR/prerendered pages, sanitizes server errors
    import { sequence } from "@sveltejs/kit/hooks";
-   import { caThemeHandle } from "@codeatlasdev/ui/kit";
-   export const handle = sequence(caThemeHandle());
+   import { caThemeHandle, createErrorHandler } from "@codeatlasdev/ui/kit";
+   import { theme } from "$lib/theme"; // Kit 3: "#lib/theme.ts"
+   export const handle = sequence(caThemeHandle(theme));
+   export const handleError = createErrorHandler();
    ```
    SvelteKit 3 (`@sveltejs/kit ^3`): config goes into `sveltekit({ adapter, ... })` (no `svelte.config.js`, no `kit` namespace), `tsconfig.json` extends `$app/tsconfig`, `$lib` is removed in favor of `#lib/*` (with the `.ts` extension), and `vite.config.ts` imports the theme with its `.ts` extension. `bunx @codeatlasdev/ui init` detects the Kit version. Details: the SvelteKit 3 section of `.agents/skills/codeatlas-ui/SKILL.md`.
 

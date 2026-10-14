@@ -51,19 +51,23 @@ export const theme: ThemeOptions = {
 
 // vite.config.ts (import with the .ts extension: Vite's native config loader needs it)
 import { sveltekit } from '@sveltejs/kit/vite';
-import { caThemePlugin } from '@codeatlasdev/ui/vite';
-import { theme } from './src/lib/theme.ts';
+import { caErrorPlugin, caThemePlugin } from '@codeatlasdev/ui/vite';
+import { theme } from './src/lib/theme.ts'; // keep the .ts extension: Vite 8's native config loader needs it
 // caThemePlugin: anti-FOUC script + ssr.noExternal for @tanstack/svelte-table and shiki
-export default defineConfig({ plugins: [sveltekit(), caThemePlugin(theme)] });
+// caErrorPlugin: scaffolds +error.svelte and error.html once, never overwrites. Order in `plugins` does not matter.
+export default defineConfig({
+  plugins: [sveltekit(), caThemePlugin(theme), caErrorPlugin({ scaffold: true })],
+});
 
-// src/hooks.server.ts: injects the theme script into SSR/prerendered pages
+// src/hooks.server.ts: theme script in SSR/prerendered pages + sanitized server errors
 import { sequence } from '@sveltejs/kit/hooks';
-import { caThemeHandle } from '@codeatlasdev/ui/kit';
+import { caThemeHandle, createErrorHandler } from '@codeatlasdev/ui/kit';
 import { theme } from './lib/theme.ts';
 export const handle = sequence(caThemeHandle(theme));
+export const handleError = createErrorHandler();
 ```
 
-Always pass the same `theme` to `caThemeHandle(theme)` and `caThemePlugin(theme)`: called with no argument they fall back to the default brand and ignore your presets. The full light/dark token set is generated from each preset's hex. Put the logo in `AppShellLayout` with `{#snippet brand()}`.
+Always pass the same `theme` to `caThemeHandle(theme)` and `caThemePlugin(theme)`: called with no argument they fall back to the default brand and ignore your presets. `bunx @codeatlasdev/ui init` writes exactly this (plus `src/lib/theme.ts`, the layout and the viewport meta). Product with its own brand color? Put it in the shared `theme`: `{ presets: [{ id: "acme", color: "#2563eb" }], defaultPreset: "acme", defaultScheme: "system" }`. The full light/dark token set is generated from each preset's hex. Put the logo in `AppShellLayout` with `{#snippet brand()}`.
 
 ### SvelteKit 3 (peer allows `^2.12.0 || ^3.0.0`)
 

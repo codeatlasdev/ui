@@ -30,6 +30,67 @@ describe("init on SvelteKit", () => {
 		expect(read(root, "src/routes/+layout.svelte")).toContain("colorScheme.init()");
 	});
 
+	it("scaffolds the full setup: caErrorPlugin in vite config and createErrorHandler as handleError", () => {
+		const root = project({ "package.json": KIT_PKG, "vite.config.ts": VITE });
+		init(root, { ...quiet, write: true });
+		const hooks = read(root, "src/hooks.server.ts");
+		expect(hooks).toContain(
+			'import { caThemeHandle, createErrorHandler } from "@codeatlasdev/ui/kit";'
+		);
+		expect(hooks).toContain("export const handle = sequence(caThemeHandle(theme));");
+		expect(hooks).toContain("export const handleError = createErrorHandler();");
+		const vite = read(root, "vite.config.ts");
+		expect(vite).toContain("caThemePlugin(theme)");
+		expect(vite).toContain("caErrorPlugin({ scaffold: true })");
+		expect(vite).toContain('import { caErrorPlugin, caThemePlugin } from "@codeatlasdev/ui/vite";');
+		// Both plugins come after sveltekit(), theme first.
+		expect(vite.indexOf("sveltekit()")).toBeLessThan(vite.indexOf("caThemePlugin(theme)"));
+		expect(vite.indexOf("caThemePlugin(theme)")).toBeLessThan(vite.indexOf("caErrorPlugin("));
+	});
+
+	it("writes the same hooks on Kit 3, with the #lib import", () => {
+		const root = project({
+			"package.json": JSON.stringify({
+				devDependencies: { "@sveltejs/kit": "^3.0.0" },
+				imports: { "#lib/*": "./src/lib/*" },
+			}),
+		});
+		init(root, quiet);
+		const hooks = read(root, "src/hooks.server.ts");
+		expect(hooks).toContain('from "#lib/theme.ts"');
+		expect(hooks).toContain("export const handleError = createErrorHandler();");
+	});
+
+	it("adds handleError to an existing hooks file that only has the theme handle", () => {
+		const hooks = `import { sequence } from "@sveltejs/kit/hooks";\nimport { caThemeHandle } from "@codeatlasdev/ui/kit";\nimport { theme } from "$lib/theme";\n\nexport const handle = sequence(caThemeHandle(theme));\n`;
+		const root = project({ "package.json": KIT_PKG, "src/hooks.server.ts": hooks });
+		init(root, { ...quiet, write: true });
+		const out = read(root, "src/hooks.server.ts");
+		expect(out).toContain(
+			'import { caThemeHandle, createErrorHandler } from "@codeatlasdev/ui/kit";'
+		);
+		expect(out).toContain("export const handleError = createErrorHandler();");
+		expect(out.match(/caThemeHandle\(theme\)/g)).toHaveLength(1);
+	});
+
+	it("never replaces a handleError the app already defines, and still reports success", () => {
+		const hooks = `export const handleError = ({ error }) => console.error(error);\n`;
+		const root = project({ "package.json": KIT_PKG, "src/hooks.server.ts": hooks });
+		const lines: string[] = [];
+		init(root, { log: (l) => lines.push(l), write: true });
+		const out = read(root, "src/hooks.server.ts");
+		expect(out.match(/handleError/g)).toHaveLength(1);
+		expect(out).toContain("caThemeHandle(theme)");
+		expect(out).not.toContain("createErrorHandler");
+	});
+
+	it("does not duplicate caErrorPlugin when the vite config already has it", () => {
+		const vite = VITE.replace("sveltekit()", "sveltekit(), caErrorPlugin()");
+		const root = project({ "package.json": KIT_PKG, "vite.config.ts": vite });
+		init(root, { ...quiet, write: true });
+		expect(read(root, "vite.config.ts").match(/caErrorPlugin\(/g)).toHaveLength(1);
+	});
+
 	it("uses the #lib import when the app declares it (Kit 3)", () => {
 		const root = project({
 			"package.json": JSON.stringify({
@@ -112,8 +173,10 @@ describe("init on SvelteKit", () => {
 		});
 		init(root, { ...quiet, write: true });
 		const vite = read(root, "vite.config.ts");
-		expect(vite).toContain("plugins: [sveltekit(),\n\t\tcaThemePlugin(theme)\n\t]");
-		expect(vite).toContain('import { caThemePlugin } from "@codeatlasdev/ui/vite";');
+		expect(vite).toContain(
+			"plugins: [sveltekit(),\n\t\tcaThemePlugin(theme),\n\t\tcaErrorPlugin({ scaffold: true })\n\t]"
+		);
+		expect(vite).toContain('import { caErrorPlugin, caThemePlugin } from "@codeatlasdev/ui/vite";');
 		expect(read(root, "src/app.html")).toContain("viewport-fit=cover");
 		init(root, { ...quiet, write: true });
 		expect(read(root, "vite.config.ts")).toBe(vite);

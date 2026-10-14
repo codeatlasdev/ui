@@ -98,8 +98,33 @@ function addImport(src: string, line: string): string {
 
 // ── SvelteKit ─────────────────────────────────────────────────────────────────
 
+/** Plugins init adds to `plugins`, in this order, each only when absent. Both go after `sveltekit()`. */
+const VITE_PLUGINS = [
+	{ name: "caThemePlugin", call: "caThemePlugin(theme)" },
+	{ name: "caErrorPlugin", call: "caErrorPlugin({ scaffold: true })" },
+] as const;
+
+const VITE_IMPORT = /import\s*\{([^}]*)\}\s*from\s*["']@codeatlasdev\/ui\/vite["'];?/;
+
+/** Add `names` to an existing `@codeatlasdev/ui/vite` import, or insert one. Sorted, so the output is stable. */
+function mergeViteImport(src: string, names: string[]): string {
+	const m = src.match(VITE_IMPORT);
+	if (!m)
+		return addImport(
+			src,
+			`import { ${[...names].sort().join(", ")} } from "@codeatlasdev/ui/vite";`
+		);
+	const have = m[1]
+		.split(",")
+		.map((n) => n.trim())
+		.filter(Boolean);
+	const all = [...new Set([...have, ...names])].sort();
+	return src.replace(m[0], `import { ${all.join(", ")} } from "@codeatlasdev/ui/vite";`);
+}
+
 function viteConfigPatch(src: string): string | null {
-	if (src.includes("caThemePlugin")) return src;
+	const missing = VITE_PLUGINS.filter((p) => !src.includes(`${p.name}(`));
+	if (!missing.length) return src;
 	// `plugins: [ sveltekit(...) ]`: append after the last element of the array.
 	const m = src.match(/plugins:\s*\[/);
 	if (!m || m.index === undefined) return null;
@@ -123,28 +148,70 @@ function viteConfigPatch(src: string): string | null {
 	if (end < 0) return null;
 	const before = src.slice(0, end).replace(/\s*$/, "");
 	const comma = before.endsWith(",") || before.endsWith("[") ? "" : ",";
-	const next = `${before}${comma}\n\t\tcaThemePlugin(theme)\n\t${src.slice(end)}`;
-	return addImport(
-		addImport(next, 'import { caThemePlugin } from "@codeatlasdev/ui/vite";'),
-		'import { theme } from "./src/lib/theme.ts";'
+	const added = missing.map((p) => `\n\t\t${p.call}`).join(",");
+	const next = `${before}${comma}${added}\n\t${src.slice(end)}`;
+	// An app that already has caThemePlugin has its own `theme` import; only add ours with the plugin.
+	const withImports = mergeViteImport(
+		next,
+		VITE_PLUGINS.filter((p) => next.includes(`${p.name}(`)).map((p) => p.name)
 	);
+	return missing.some((p) => p.name === "caThemePlugin")
+		? addImport(withImports, 'import { theme } from "./src/lib/theme.ts";')
+		: withImports;
 }
 
+const HOOKS_KIT_IMPORT = /import\s*\{([^}]*)\}\s*from\s*["']@codeatlasdev\/ui\/kit["'];?/;
+
+/** Add `names` to an existing `@codeatlasdev/ui/kit` import, or insert one. */
+function mergeKitImport(src: string, names: string[]): string {
+	const m = src.match(HOOKS_KIT_IMPORT);
+	if (!m) return addImport(src, `import { ${names.join(", ")} } from "@codeatlasdev/ui/kit";`);
+	const have = m[1]
+		.split(",")
+		.map((n) => n.trim())
+		.filter(Boolean);
+	const all = [...have, ...names.filter((n) => !have.includes(n))];
+	return src.replace(m[0], `import { ${all.join(", ")} } from "@codeatlasdev/ui/kit";`);
+}
+
+const HANDLE_DEF = /export\s+(const|function|async function)\s+handle\b/;
+const HANDLE_ERROR_DEF = /export\s+(const|function|async function)\s+handleError\b/;
+
+/**
+ * Adds what is missing, independently: the theme `handle` and the `handleError`. An app that already
+ * defines either owns it: init never rewrites it (a missing `handle` next to an existing one is
+ * reported as manual, since composing two pipelines is the app's call).
+ */
 function hooksPatch(themeSpec: string) {
 	return (src: string): string | null => {
-		if (src.includes("caThemeHandle")) return src;
-		// An app that already defines `handle` owns its pipeline: do not guess how to compose.
-		if (/export\s+(const|function|async function)\s+handle\b/.test(src)) return null;
-		return `${addImport(addImport(src, 'import { sequence } from "@sveltejs/kit/hooks";'), 'import { caThemeHandle } from "@codeatlasdev/ui/kit";').replace(/\s*$/, "\n")}import { theme } from "${themeSpec}";\n\nexport const handle = sequence(caThemeHandle(theme));\n`;
+		const needHandle = !src.includes("caThemeHandle");
+		const needError = !HANDLE_ERROR_DEF.test(src) && !src.includes("createErrorHandler");
+		if (needHandle && HANDLE_DEF.test(src)) return null;
+		if (!needHandle && !needError) return src;
+		const kitNames = [
+			...(needHandle ? ["caThemeHandle"] : []),
+			...(needError ? ["createErrorHandler"] : []),
+		];
+		let out = src;
+		if (needHandle) out = addImport(out, 'import { sequence } from "@sveltejs/kit/hooks";');
+		out = mergeKitImport(out, kitNames);
+		if (needHandle) out = addImport(out, `import { theme } from "${themeSpec}";`);
+		out = out.replace(/\s*$/, "\n");
+		if (needHandle) out += "\nexport const handle = sequence(caThemeHandle(theme));\n";
+		if (needError) out += "\nexport const handleError = createErrorHandler();\n";
+		return out;
 	};
 }
 
 const hooksNew = (themeSpec: string) => `import { sequence } from "@sveltejs/kit/hooks";
-import { caThemeHandle } from "@codeatlasdev/ui/kit";
+import { caThemeHandle, createErrorHandler } from "@codeatlasdev/ui/kit";
 import { theme } from "${themeSpec}";
 
 // Puts the theme init script in every SSR/prerendered page so the first paint is already correct.
 export const handle = sequence(caThemeHandle(theme));
+
+// Sanitizes unexpected server errors (no stack or 5xx message reaches the user) and gives each an id.
+export const handleError = createErrorHandler();
 `;
 
 const LAYOUT_NEW = `<script lang="ts">

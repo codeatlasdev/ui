@@ -40,29 +40,48 @@ Every version is published from CI with an npm provenance statement, so you can 
 
 `@codeatlasdev/ui` supports SvelteKit 2 (`^2.12`) and SvelteKit 3. The steps below are the same on both; the differences are in [SvelteKit 3](#sveltekit-3). `bunx @codeatlasdev/ui init` reads the installed Kit version and writes the right imports.
 
+### What `init` writes
+
+`bunx @codeatlasdev/ui init` creates the files below when they are missing. A file that already exists is never overwritten: `init` prints a diff and applies it only with `--write`. Re-running it changes nothing once the setup is complete.
+
+| File | What `init` puts there | If the file exists |
+|---|---|---|
+| `src/lib/theme.ts` | the shared `theme` object | left alone |
+| `vite.config.ts` | `caThemePlugin(theme)` and `caErrorPlugin({ scaffold: true })`, after `sveltekit()`, in one `@codeatlasdev/ui/vite` import | adds only the plugin that is missing |
+| `src/hooks.server.ts` | `handle = sequence(caThemeHandle(theme))` and `handleError = createErrorHandler()` | adds only what is missing; reports `manual` if you already define a `handle` of your own; never touches your `handleError` |
+| `src/routes/+layout.svelte` | the stylesheet import and `colorScheme.init()` in `onMount` | adds only the missing import or call |
+| `src/app.html` | the viewport meta with `viewport-fit=cover, interactive-widget=resizes-content` | rewrites only the viewport meta |
+
+`caErrorPlugin({ scaffold: true })` then creates `src/routes/+error.svelte` and `src/error.html` the first time Vite runs (dev or build), and never overwrites them. The result is the setup below, which you can also write by hand.
+
+### Full setup
+
 <Steps>
 
-1. **Register the Vite plugin.** It bundles the ESM-only dependencies for SSR (`@tanstack/svelte-table`, `shiki`) and warns at build time if the theme script is not injected. Import the theme **with its `.ts` extension**: Vite loads the config with Node's native loader, which does not resolve extensionless imports (Vite 8 warns about it). That needs `"allowImportingTsExtensions": true` in `tsconfig.json`; SvelteKit's generated base config already sets it.
+1. **Register both Vite plugins.** `caThemePlugin` bundles the ESM-only dependencies for SSR (`@tanstack/svelte-table`, `shiki`) and warns at build time if the theme script is not injected. `caErrorPlugin` creates the error pages when they are missing (`scaffold: true`), or only warns without it. Import the theme **with its `.ts` extension**: Vite loads the config with Node's native loader, which does not resolve extensionless imports (Vite 8 warns about it). That needs `"allowImportingTsExtensions": true` in `tsconfig.json`; SvelteKit's generated base config already sets it.
 
    ```ts
    // vite.config.ts
    import { sveltekit } from "@sveltejs/kit/vite";
-   import { caThemePlugin } from "@codeatlasdev/ui/vite";
+   import { caErrorPlugin, caThemePlugin } from "@codeatlasdev/ui/vite";
    import { defineConfig } from "vite";
    import { theme } from "./src/lib/theme.ts";
 
-   export default defineConfig({ plugins: [sveltekit(), caThemePlugin(theme)] });
+   export default defineConfig({
+     plugins: [sveltekit(), caThemePlugin(theme), caErrorPlugin({ scaffold: true })],
+   });
    ```
 
-2. **Inject the theme script in the server hook.** `caThemeHandle` puts the brand presets and the init script right after `<head>` of every SSR and prerendered page, so the first paint already has the right scheme and preset.
+2. **Inject the theme script and sanitize server errors in the server hook.** `caThemeHandle` puts the brand presets and the init script right after `<head>` of every SSR and prerendered page, so the first paint already has the right scheme and preset. `createErrorHandler` turns every unexpected server error into `{ message, code, id }` without leaking the message of a 5xx; [pass a `locale` or a `report` callback](/docs/getting-started/i18n/#server-errors) when you need them.
 
    ```ts
    // src/hooks.server.ts
    import { sequence } from "@sveltejs/kit/hooks";
-   import { caThemeHandle } from "@codeatlasdev/ui/kit";
+   import { caThemeHandle, createErrorHandler } from "@codeatlasdev/ui/kit";
    import { theme } from "$lib/theme";
 
    export const handle = sequence(caThemeHandle(theme));
+   export const handleError = createErrorHandler();
    ```
 
 3. **Define the theme once.** Both the hook and the plugin take the same object. An empty object is valid and gives you the built-in amber preset in dark mode.
@@ -100,6 +119,10 @@ Every version is published from CI with an npm provenance statement, so you can 
 
 </Steps>
 
+<Callout type="note" title="Plugin order does not matter">
+  Neither plugin depends on where it sits in `plugins`. `caThemePlugin` is `enforce: "pre"`, so Vite runs it first wherever you put it, and it looks for SvelteKit in the resolved plugin list, not in the array you wrote. `caErrorPlugin` only reacts to `configResolved`, `buildStart` and the dev server start. Checked with SvelteKit 3.0.1 and Vite 8.3: building with `caThemePlugin` and `caErrorPlugin` before, after and around `sveltekit()` gives the same result (theme script injected, error pages scaffolded, `ssr.noExternal` set), and in plain Vite `caThemePlugin()` before or after `svelte()` injects the script once, in build and in dev. The examples differ (after `sveltekit()`, before `svelte()`) only by convention; `init` follows the SvelteKit one.
+</Callout>
+
 <Callout type="tip" title="Prefer app.html?">
   If you cannot use a hook, paste the script into `src/app.html` instead. `CA_THEME_SCRIPT_TAG` from `@codeatlasdev/ui/vite` is a ready-to-paste tag for the default theme; for a custom theme, use the hook.
 </Callout>
@@ -108,17 +131,19 @@ Every version is published from CI with an npm provenance statement, so you can 
 
 Kit 3 changed three things this setup touches. `init` handles the first and reports the other two (it never rewrites `svelte.config.js` or `tsconfig.json`).
 
-1. **Configuration moves into the Vite plugin.** `svelte.config.js` is ignored (`config_file_unsupported`) and the `kit` namespace is gone (`config_kit_namespace`). Pass the options directly to `sveltekit()`, next to `caThemePlugin`:
+1. **Configuration moves into the Vite plugin.** `svelte.config.js` is ignored (`config_file_unsupported`) and the `kit` namespace is gone (`config_kit_namespace`). Pass the options directly to `sveltekit()`, next to the two plugins:
 
    ```ts
    // vite.config.ts
    import adapter from "@sveltejs/adapter-auto";
    import { sveltekit } from "@sveltejs/kit/vite";
-   import { caThemePlugin } from "@codeatlasdev/ui/vite";
+   import { caErrorPlugin, caThemePlugin } from "@codeatlasdev/ui/vite";
    import { defineConfig } from "vite";
    import { theme } from "./src/lib/theme.ts";
 
-   export default defineConfig({ plugins: [sveltekit({ adapter: adapter() }), caThemePlugin(theme)] });
+   export default defineConfig({
+     plugins: [sveltekit({ adapter: adapter() }), caThemePlugin(theme), caErrorPlugin({ scaffold: true })],
+   });
    ```
 
 2. **`tsconfig.json` extends `$app/tsconfig`.** `.svelte-kit/tsconfig.json` is no longer generated (`tsconfig_extends_missing`):
