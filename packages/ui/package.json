@@ -1,6 +1,6 @@
 {
 	"name": "@codeatlasdev/ui",
-	"version": "2.1.0",
+	"version": "2.1.1",
 	"description": "Svelte 5 UI framework. DX-first, AI-ready. Build complete interfaces with zero CSS decisions.",
 	"license": "MIT",
 	"author": "codeatlasdev",
