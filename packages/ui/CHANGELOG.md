@@ -1,5 +1,45 @@
 # Changelog
 
+## 2.2.0
+
+### Minor Changes
+
+- d9087e8: Accessible tokens and states, solved per preset and scheme by the generator (every built-in and brand preset, light and dark):
+  
+  - **Disabled controls no longer fade with `opacity`.** Button (all variants, including the new `destructive` and `glass` disabled looks), IconButton, Checkbox, Switch, Slider, Tabs, ToggleGroup, SegmentedControl, Pagination, PinInput, NumberField, RadioGroup, Select, Combobox, TextField, TextArea, date fields and the data-table controls draw the disabled state from `--ca-text-disabled`, `--ca-action-disabled-bg` and `--ca-outline-default`. A loading button keeps its enabled look.
+  - **`--ca-text-disabled`** is now guaranteed >= 3:1 on every surface and on the disabled fill, and documented (comment, `tokens.json` description, docs) as the label of disabled controls only. `lint:tokens` flags `color: var(--ca-text-disabled)` outside a disabled selector.
+  - **New `--ca-outline-control`** (>= 3:1 on every surface and on the 5% field tint, WCAG 1.4.11). `--ca-field-border-color` defaults to it, so TextField, TextArea, Select, Combobox, NumberField, PinInput and the date fields, plus the Checkbox and Radio boxes, reach 3:1. `--ca-outline-subtle` stays for dividers. Overridable like any `--ca-*` token.
+  - **New `--ca-semantic-error-contrast`**, the pair of `--ca-semantic-error-fill`. `Button variant="destructive"` reads it instead of a literal white. `defineTheme` derives it from a custom `colors.*.error`.
+  - **Menus, popovers, pickers and panels are near-opaque by default** (`--ca-overlay-bg` / `--ca-panel-bg` are 94% of `--ca-surface-overlay`, the blur is kept), so label contrast no longer depends on the page behind. The old tints are `--ca-overlay-bg-glass` and `--ca-panel-bg-glass`. The `frosted` style keeps the opaque default.
+  - **`--ca-focus-ring` is solved per preset and scheme** (>= 3:1 on every surface and on the hover/selected fills) and every focusable component reads it (it was a literal `--ca-brand-main` in about 20 components; the date fields now draw a real 2px ring instead of a 40% tint). New `--ca-state-indicator` (same guarantee) for the switch track, slider range and segmented thumb edge. `lint:tokens` rejects a literal `--ca-brand-main` in a focus rule.
+  - `prefers-contrast: more` and `forced-colors` keep working: the contrast block also lifts `--ca-outline-control` and `--ca-text-disabled`.
+  - `tokens.json` entries now carry a `description` taken from the comment above the declaration.
+  
+  Migration: apps that doubled the class to patch these (`.ca-btn.ca-btn:disabled`, `.ca-tf__wrap.ca-tf__wrap`, `.glass-overlay.glass-overlay`, `.ca-btn--destructive.ca-btn--destructive`, a global `:focus-visible` redraw) can delete those overrides.
+  
+  Bundle budget: `styles/core.css` +61 B gzip and `styles/global.css` +277 B gzip (limits raised to the measured 9639 / 12594 B). The cost is the three solved tokens (`--ca-focus-ring`, `--ca-outline-control`, `--ca-semantic-error-contrast`) and the two `prefers-contrast: more` lifts in 16 preset blocks, which carry the guarantees above.
+- d9087e8: Component CSS now lives in `@layer ca.components`, declared last in the kit's layer order, so the documented contract is true: an unlayered app rule with the same single-class selector (`.ca-btn:disabled`, `.ca-tf__wrap`, `.ca-tooltip-content`, `.ca-dialog__body`) overrides the kit, with no doubled classes and no `!important`. Every component `<style>` block, `Dialog/dialog.css` and `Date/date.css` are wrapped, and each starts with the full `@layer` order statement so bundler chunk order cannot demote the layer. The order in `core.css` changed to `ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components`. The redundant `!important` on the error state of TextField, TextArea, NumberField and Combobox was removed (it would have beaten app CSS now that it sits in a layer). Behavior change: app rules that previously lost to a kit rule of equal or higher specificity now win; apps can delete their `.ca-btn.ca-btn` / `!important` workarounds. Layered app CSS (for example Tailwind `@layer components`) must be declared after the kit order statement to outrank it.
+- d9087e8: i18n: open locales and request-scoped language (fixes #46).
+  
+  - `Locale` is now `string` (BCP 47). `registerLocale(id, messages)` adds any language with a partial dictionary; missing keys fall back to English, and region tags resolve to the base language (`es-MX` → `es`). `getLocales()` and `getMessages(locale, override?)` are exported.
+  - New `<I18nProvider locale messages?>`: the language lives in Svelte context, so concurrent SSR requests never share it, and it stays reactive to prop changes. `useLocale()` and `useT()` read it from components.
+  - `setLocale` is now a no-op on the server (with a dev warning), because the module state it wrote was shared across every concurrent request. SSR apps must use `I18nProvider`; client-only apps keep `setLocale`. A provider always wins over `setLocale`.
+  - `createErrorHandler` no longer reads global locale state. It takes `locale` (a tag or `(event) => tag`) for the fallback message.
+  
+  Migration:
+  
+  - **SSR (SvelteKit) apps:** replace `setLocale(x)` in the root layout with `<I18nProvider locale={x}>…</I18nProvider>`. Before, the server-rendered HTML used the locale of whichever request called `setLocale` last.
+  - **Custom language via `setLocale("en", fullOverride)`:** call `registerLocale("es", dictionary)` and use `locale="es"` / `setLocale("es")`. Date and number formatting can now follow the real locale.
+  - **`createErrorHandler()`:** add `locale` if the fallback message must not be English.
+  - **Removed export:** the internal global `t()` is gone (it was never exported from the package root). Library code uses `const t = useT()` at component init.
+
+### Patch Changes
+
+- d9087e8: Fix the component descriptions in `components.json`, the `ca-ui-mcp` server and the skill's `API.md`: the manifest no longer takes the first JSDoc found in a component (usually a prop's, e.g. `TextField` read "@deprecated Use `description` instead"). Only a detached component-level doc comment counts, and tag-only comments are skipped.
+  
+  `bunx @codeatlasdev/ui init` now supports SvelteKit 3: it reads the installed Kit version, never writes the removed `$lib` import (uses `#lib/theme.ts` or a relative path), and reports the changes it does not make for you (`svelte.config.js` moved into `sveltekit({ ... })`, `tsconfig.json` extending `$app/tsconfig`). The installation guide and the agent skill gain a SvelteKit 3 section and import the theme in `vite.config.ts` with its `.ts` extension.
+- d9087e8: `Select`: an option whose `value` is `""` (e.g. "All projects") is now a real selection. The trigger shows that option's label instead of the placeholder and drops the placeholder styling, so filters no longer need a sentinel value. The placeholder shows only when `value` is `undefined` or matches no option. `onchange("")` was already delivered and is now covered by a test. With `required`, a selected `""` option counts as a selection.
+
 ## 2.1.1
 
 ### Patch Changes

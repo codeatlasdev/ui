@@ -1,5 +1,0 @@
----
-"@codeatlasdev/ui": minor
----
-
-Component CSS now lives in `@layer ca.components`, declared last in the kit's layer order, so the documented contract is true: an unlayered app rule with the same single-class selector (`.ca-btn:disabled`, `.ca-tf__wrap`, `.ca-tooltip-content`, `.ca-dialog__body`) overrides the kit, with no doubled classes and no `!important`. Every component `<style>` block, `Dialog/dialog.css` and `Date/date.css` are wrapped, and each starts with the full `@layer` order statement so bundler chunk order cannot demote the layer. The order in `core.css` changed to `ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components`. The redundant `!important` on the error state of TextField, TextArea, NumberField and Combobox was removed (it would have beaten app CSS now that it sits in a layer). Behavior change: app rules that previously lost to a kit rule of equal or higher specificity now win; apps can delete their `.ca-btn.ca-btn` / `!important` workarounds. Layered app CSS (for example Tailwind `@layer components`) must be declared after the kit order statement to outrank it.
