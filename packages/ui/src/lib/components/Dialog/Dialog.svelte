@@ -88,10 +88,10 @@
   >
     {#if chromeless}
       {#if title}
-        <h2 id={ids.part('title')} class="ca-dialog__sr-only">{title}</h2>
+        <h2 id={ids.part('title')} class="ca-sr-only">{title}</h2>
       {/if}
       {#if description}
-        <p id={ids.part('description')} class="ca-dialog__sr-only">{description}</p>
+        <p id={ids.part('description')} class="ca-sr-only">{description}</p>
       {/if}
       <div class="ca-dialog__body">{@render children?.()}</div>
     {:else}

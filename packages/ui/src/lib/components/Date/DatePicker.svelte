@@ -200,7 +200,8 @@
       {required}
       tabindex="-1"
       aria-hidden="true"
-      style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0;transform:translateX(-100%)"
+      class="ca-sr-only"
+      style="transform:translateX(-100%)"
     />
   {/if}
 
@@ -228,9 +229,7 @@
     aria-label={cal.fullLabel}
     onkeydown={cal.onkeydown}
   >
-    <div
-      style="border:0;clip:rect(0,0,0,0);clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;white-space:nowrap;width:1px"
-    ><div role="heading" aria-level="2">{cal.fullLabel}</div></div>
+    <div class="ca-sr-only"><div role="heading" aria-level="2">{cal.fullLabel}</div></div>
     <CalendarBody state={cal} {disabled} {readonly} />
   </div>
 </PickerPopover>

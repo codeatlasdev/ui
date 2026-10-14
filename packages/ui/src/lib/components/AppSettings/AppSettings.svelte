@@ -95,7 +95,7 @@
   <!-- ── Header ─────────────────────────────────────────────────── -->
   <div class="ca-app-settings__header">
     <div class="ca-app-settings__meta">
-      {#if title}<h1 class="ca-app-settings__title">{title}</h1>{/if}
+      {#if title}<h1 class="ca-app-settings__title ca-sr-only--shell">{title}</h1>{/if}
       {#if description}<p class="ca-app-settings__desc">{description}</p>{/if}
     </div>
     {#if actions}
@@ -380,22 +380,6 @@
           var(--ca-page-px-sm)
           var(--ca-space-3);
         flex-wrap: wrap;
-      }
-    }
-
-    /* Inside AppShellLayout the mobile header (< 900px) already shows the page title:
-       keep the h1 for assistive tech, hide it visually. */
-    @media (max-width: 899.98px) {
-      :global(.ca-shell__content) .ca-app-settings__title {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        margin: -1px;
-        padding: 0;
-        overflow: hidden;
-        clip-path: inset(50%);
-        white-space: nowrap;
-        border: 0;
       }
     }
 }

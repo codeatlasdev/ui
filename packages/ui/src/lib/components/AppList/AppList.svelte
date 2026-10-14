@@ -122,7 +122,7 @@
   {#if title || desc || actions}
     <div class="ca-app-list__header">
       <div class="ca-app-list__meta">
-        {#if title}<h1 class="ca-app-list__title">{title}</h1>{/if}
+        {#if title}<h1 class="ca-app-list__title ca-sr-only--shell">{title}</h1>{/if}
         {#if desc}<p class="ca-app-list__desc">{desc}</p>{/if}
       </div>
       {#if actions}
@@ -365,22 +365,6 @@
       /* The search field takes the free width instead of its fixed min-width. */
       .ca-app-list__toolbar :global(.ca-search-field) { flex: 1 1 auto; min-width: 0; max-width: none; }
       .ca-app-list__footer  { padding: var(--ca-space-2) var(--ca-page-px-sm); flex-wrap: wrap; }
-    }
-
-    /* Inside AppShellLayout the mobile header (< 900px) already shows the page title:
-       keep the h1 for assistive tech, hide it visually. */
-    @media (max-width: 899.98px) {
-      :global(.ca-shell__content) .ca-app-list__title {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        margin: -1px;
-        padding: 0;
-        overflow: hidden;
-        clip-path: inset(50%);
-        white-space: nowrap;
-        border: 0;
-      }
     }
 }
 </style>

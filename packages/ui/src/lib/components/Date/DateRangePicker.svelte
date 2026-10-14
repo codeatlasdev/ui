@@ -238,9 +238,7 @@
     aria-label={cal.fullLabel}
     onkeydown={cal.onkeydown}
   >
-    <div
-      style="border:0;clip:rect(0,0,0,0);clip-path:inset(50%);height:1px;margin:-1px;overflow:hidden;padding:0;position:absolute;white-space:nowrap;width:1px"
-    ><div role="heading" aria-level="2">{cal.fullLabel}</div></div>
+    <div class="ca-sr-only"><div role="heading" aria-level="2">{cal.fullLabel}</div></div>
     <CalendarBody state={cal} {disabled} {readonly} range />
   </div>
 </PickerPopover>

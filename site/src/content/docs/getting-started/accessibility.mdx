@@ -47,6 +47,27 @@ Use the duration tokens in your own CSS and your animations respect the setting 
 }
 ```
 
+## Visually hidden text
+
+`.ca-sr-only` hides an element visually and keeps it in the accessibility tree: a 1px clipped box, absolutely positioned so it never affects layout. Use it for text only assistive tech needs: a table `<caption>`, a label for a control the design leaves unlabeled, an extra "(required)" cue.
+
+```svelte
+<table>
+  <caption class="ca-sr-only">Invoices, newest first</caption>
+  …
+</table>
+```
+
+Do not use `display: none`, `visibility: hidden`, `hidden` or `aria-hidden` for this: they remove the element from the accessibility tree.
+
+`.ca-sr-only--focusable` is for elements that must appear when they receive focus (skip links, a "jump to results" shortcut). It stays hidden until the element, or something inside it, is focused, then it returns to normal flow and your own styles decide how it looks.
+
+```svelte
+<a class="ca-sr-only ca-sr-only--focusable" href="#results">Skip to results</a>
+```
+
+Both live in the `ca.utilities` layer, so they are available wherever `global.css` or `core.css` is imported. The kit itself uses the class for the dialog and search titles, the required cue on `Select` and the month heading of the date pickers.
+
 ## Skip link and landmarks
 
 `SkipLink` is the first tab stop of every page shell. It is hidden until focused, then jumps to `#main` and moves focus there (`tabindex="-1"`, no focus ring on the container).

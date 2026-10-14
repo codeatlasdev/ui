@@ -50,7 +50,7 @@
 			if (!(e.target as HTMLElement).closest(".ca-lightbox__img, .ca-lightbox__close")) dismiss();
 		}}
 	>
-		<h2 id={ids.part("title")} class="ca-lightbox__sr">{alt}</h2>
+		<h2 id={ids.part("title")} class="ca-sr-only">{alt}</h2>
 		<div class="ca-lightbox__stage">
 			<img class="ca-lightbox__img" {src} {alt} draggable="false" />
 		</div>
@@ -144,18 +144,6 @@
   	:global(.ca-lightbox__close:focus-visible) {
   		outline: var(--ca-border-width-focus) solid oklch(1 0 0);
   		outline-offset: var(--ca-focus-ring-offset);
-  	}
-
-  	:global(.ca-lightbox__sr) {
-  		position: absolute;
-  		width: 1px;
-  		height: 1px;
-  		margin: -1px;
-  		padding: 0;
-  		overflow: hidden;
-  		clip: rect(0 0 0 0);
-  		white-space: nowrap;
-  		border: 0;
   	}
 
   	:global(.ca-lightbox[data-state="open"]) {

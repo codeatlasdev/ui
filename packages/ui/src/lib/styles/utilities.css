@@ -5,6 +5,71 @@
  * Zero configuration needed.
  */
 
+/* ─── Visually hidden (screen-reader only) ───────────────────────── */
+
+/* No visible box, still read by assistive tech and kept in the document outline. Use it for a
+   table <caption>, a form-control label the design omits, or any text only AT users need.
+   Not display:none / visibility:hidden / aria-hidden: those remove it from the a11y tree.
+   `.ca-sr-only--focusable` (skip links) shows the element again while it, or a descendant,
+   has focus. */
+.ca-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.ca-sr-only--focusable:focus,
+.ca-sr-only--focusable:focus-within {
+  position: static;
+  width: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  clip-path: none;
+  white-space: normal;
+}
+
+/* Conditional variants (a class cannot switch on a media or container query, so each carries
+   its own copy of the box; the components add the class and declare nothing themselves).
+   `.ca-sr-only--shell`: the page <h1> of PageShell/AppForm/AppList/AppSettings inside
+   AppShellLayout; the mobile header (< 900px) already shows the title, so keep it for assistive
+   tech and the document outline and hide it visually. */
+@media (max-width: 899.98px) {
+  .ca-shell__content .ca-sr-only--shell {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
+/* Table `responsive="cards"`: the header row turns into per-cell captions (data-label), so the
+   <thead> is hidden visually but stays in the a11y tree. */
+@container (max-width: 599.98px) {
+  .ca-table--cards thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
 /* ─── AppList toolbar ────────────────────────────────────────────── */
 
 .ca-search-field {

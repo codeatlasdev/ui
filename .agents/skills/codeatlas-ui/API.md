@@ -68,7 +68,7 @@ AlertDialog: confirmation that requires an explicit answer (role="alertdialog").
 | `oncancel?` | `() => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__sr-only` `ca-dialog__title` `ca-layer-close` `ca-overlay`
+Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
 
 ## AppForm
 
@@ -86,7 +86,7 @@ AppForm: page-level form layout.
 
 Snippets: `leading`, `trailing`, `footer`, `children`
 
-Classes: `ca-app-form` `ca-app-form__body` `ca-app-form__desc` `ca-app-form__footer` `ca-app-form__footer-inner` `ca-app-form__header` `ca-app-form__header-inner` `ca-app-form__inner` `ca-app-form__leading` `ca-app-form__meta` `ca-app-form__title` `ca-app-form__trailing` `ca-shell__content`
+Classes: `ca-app-form` `ca-app-form__body` `ca-app-form__desc` `ca-app-form__footer` `ca-app-form__footer-inner` `ca-app-form__header` `ca-app-form__header-inner` `ca-app-form__inner` `ca-app-form__leading` `ca-app-form__meta` `ca-app-form__title` `ca-app-form__trailing`
 
 ## AppList
 
@@ -109,7 +109,7 @@ AppList: fullscreen CRUD/list layout.
 
 Snippets: `filters` (`Snippet<[ListCtx<T>]>`), `children` (`Snippet<[ListCtx<T>]> \| Snippet`), `actions`, `toolbar`, `empty` (`Snippet<[ListCtx<T>]> \| Snippet`), `footer`
 
-Classes: `ca-app-list` `ca-app-list__actions` `ca-app-list__body` `ca-app-list__clear` `ca-app-list__desc` `ca-app-list__empty` `ca-app-list__empty-msg` `ca-app-list__footer` `ca-app-list__header` `ca-app-list__meta` `ca-app-list__sel-label` `ca-app-list__spacer` `ca-app-list__title` `ca-app-list__toolbar` `ca-app-list__toolbar-sep` `ca-shell__content`
+Classes: `ca-app-list` `ca-app-list__actions` `ca-app-list__body` `ca-app-list__clear` `ca-app-list__desc` `ca-app-list__empty` `ca-app-list__empty-msg` `ca-app-list__footer` `ca-app-list__header` `ca-app-list__meta` `ca-app-list__sel-label` `ca-app-list__spacer` `ca-app-list__title` `ca-app-list__toolbar` `ca-app-list__toolbar-sep`
 
 ## AppSettings
 
@@ -129,7 +129,7 @@ AppSettings: settings/preferences page layout.
 
 Snippets: `actions`, `children` (`Snippet<[string]>`)
 
-Classes: `ca-app-settings` `ca-app-settings__actions` `ca-app-settings__body` `ca-app-settings__content` `ca-app-settings__desc` `ca-app-settings__header` `ca-app-settings__meta` `ca-app-settings__nav` `ca-app-settings__nav-badge` `ca-app-settings__nav-icon` `ca-app-settings__nav-item` `ca-app-settings__nav-label` `ca-app-settings__title` `ca-shell__content`
+Classes: `ca-app-settings` `ca-app-settings__actions` `ca-app-settings__body` `ca-app-settings__content` `ca-app-settings__desc` `ca-app-settings__header` `ca-app-settings__meta` `ca-app-settings__nav` `ca-app-settings__nav-badge` `ca-app-settings__nav-icon` `ca-app-settings__nav-item` `ca-app-settings__nav-label` `ca-app-settings__title`
 
 ## AppShellLayout
 
@@ -468,7 +468,7 @@ Classes: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chev
 | `open?` | `boolean` | `false` | `bind:` |
 | `minQueryLength?` | `number` | `1` | Characters (after trimming) needed before the list is filtered; shorter queries show every item grouped. |
 
-Classes: `ca-cmd-dialog` `ca-cmd-empty` `ca-cmd-group__label` `ca-cmd-item` `ca-cmd-item--active` `ca-cmd-item__icon` `ca-cmd-item__label` `ca-cmd-item__module` `ca-cmd-list` `ca-cmd-overlay` `ca-cmd-search` `ca-cmd-search__hint` `ca-cmd-search__icon` `ca-cmd-search__input` `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__sr-only` `ca-dialog__title` `ca-layer-close` `ca-overlay`
+Classes: `ca-cmd-dialog` `ca-cmd-empty` `ca-cmd-group__label` `ca-cmd-item` `ca-cmd-item--active` `ca-cmd-item__icon` `ca-cmd-item__label` `ca-cmd-item__module` `ca-cmd-list` `ca-cmd-overlay` `ca-cmd-search` `ca-cmd-search__hint` `ca-cmd-search__icon` `ca-cmd-search__input` `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
 
 ## CopyButton
 
@@ -684,7 +684,7 @@ Dialog: second-layer modal.
 
 Snippets: `children`, `actions`
 
-Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__sr-only` `ca-dialog__title` `ca-layer-close` `ca-overlay`
+Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
 
 ## Divider
 
@@ -723,7 +723,7 @@ Classes: `ca-docs-nav` `ca-docs-nav__label` `ca-docs-nav__link` `ca-docs-nav__ti
 | `hint?` | `string` |  |  |
 | `class?` | `string` |  |  |
 
-Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__sr-only` `ca-dialog__title` `ca-docs-search` `ca-docs-search__bar` `ca-docs-search__body` `ca-docs-search__cancel` `ca-docs-search__context` `ca-docs-search__empty` `ca-docs-search__enter` `ca-docs-search__esc` `ca-docs-search__icon` `ca-docs-search__input` `ca-docs-search__result` `ca-docs-search__result--on` `ca-docs-search__results` `ca-docs-search__sr` `ca-docs-search__text` `ca-docs-search__title` `ca-layer-close` `ca-overlay`
+Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-docs-search` `ca-docs-search__bar` `ca-docs-search__body` `ca-docs-search__cancel` `ca-docs-search__context` `ca-docs-search__empty` `ca-docs-search__enter` `ca-docs-search__esc` `ca-docs-search__icon` `ca-docs-search__input` `ca-docs-search__result` `ca-docs-search__result--on` `ca-docs-search__results` `ca-docs-search__text` `ca-docs-search__title` `ca-layer-close` `ca-overlay`
 
 ## DocsShell
 
@@ -763,7 +763,7 @@ Drawer: side panel, second layer.
 
 Snippets: `children`, `actions`
 
-Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__sr-only` `ca-dialog__title` `ca-drawer` `ca-drawer--bottom` `ca-drawer--left` `ca-drawer--right` `ca-drawer__actions` `ca-drawer__body` `ca-drawer__header` `ca-drawer__title` `ca-layer-close` `ca-overlay`
+Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-drawer` `ca-drawer--bottom` `ca-drawer--left` `ca-drawer--right` `ca-drawer__actions` `ca-drawer__body` `ca-drawer__header` `ca-drawer__title` `ca-layer-close` `ca-overlay`
 
 ## DropdownMenu
 
@@ -1091,7 +1091,7 @@ Classes: `ca-kpi` `ca-kpi__icon` `ca-kpi__inner` `ca-kpi__title` `ca-kpi__top` `
 | `alt` | `string` |  |  |
 | `onclose?` | `() => void` |  |  |
 
-Classes: `ca-lightbox` `ca-lightbox__close` `ca-lightbox__img` `ca-lightbox__sr` `ca-lightbox__stage`
+Classes: `ca-lightbox` `ca-lightbox__close` `ca-lightbox__img` `ca-lightbox__stage`
 
 ## LineChart
 
@@ -1275,7 +1275,7 @@ Classes: `ca-nf` `ca-nf--disabled` `ca-nf--sm` `ca-nf__btn` `ca-nf__hint` `ca-nf
 
 Snippets: `actions`, `children`
 
-Classes: `ca-page-shell` `ca-page-shell__actions` `ca-page-shell__body` `ca-page-shell__description` `ca-page-shell__header` `ca-page-shell__meta` `ca-page-shell__title` `ca-shell__content`
+Classes: `ca-page-shell` `ca-page-shell__actions` `ca-page-shell__body` `ca-page-shell__description` `ca-page-shell__header` `ca-page-shell__meta` `ca-page-shell__title`
 
 ## Pagination
 
@@ -1568,7 +1568,7 @@ Classes: `ca-seg` `ca-seg--md` `ca-seg--sm` `ca-seg__item` `ca-seg__thumb`
 | `class?` | `string` | `''` |  |
 | `onchange?` | `(value: string) => void` |  |  |
 
-Classes: `ca-sel` `ca-sel--sm` `ca-sel__check` `ca-sel__content` `ca-sel__hint` `ca-sel__hint--error` `ca-sel__icon` `ca-sel__item` `ca-sel__item-label` `ca-sel__label` `ca-sel__req` `ca-sel__sr` `ca-sel__trigger` `ca-sel__value` `ca-sel__value--placeholder` `ca-validity-proxy`
+Classes: `ca-sel` `ca-sel--sm` `ca-sel__check` `ca-sel__content` `ca-sel__hint` `ca-sel__hint--error` `ca-sel__icon` `ca-sel__item` `ca-sel__item-label` `ca-sel__label` `ca-sel__req` `ca-sel__trigger` `ca-sel__value` `ca-sel__value--placeholder` `ca-validity-proxy`
 
 ## SettingItem
 
@@ -1598,7 +1598,7 @@ Classes: `ca-setting-item` `ca-setting-item__control` `ca-setting-item__desc` `c
 
 Snippets: `children`, `footer`
 
-Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__sr-only` `ca-dialog__title` `ca-layer-close` `ca-overlay` `ca-sheet` `ca-sheet__body` `ca-sheet__close` `ca-sheet__description` `ca-sheet__footer` `ca-sheet__grab` `ca-sheet__grab--active` `ca-sheet__handle` `ca-sheet__header` `ca-sheet__meta` `ca-sheet__title`
+Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay` `ca-sheet` `ca-sheet__body` `ca-sheet__close` `ca-sheet__description` `ca-sheet__footer` `ca-sheet__grab` `ca-sheet__grab--active` `ca-sheet__handle` `ca-sheet__header` `ca-sheet__meta` `ca-sheet__title`
 
 ## SimpleTable
 

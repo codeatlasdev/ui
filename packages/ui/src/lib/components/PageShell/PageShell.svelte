@@ -40,7 +40,7 @@
     <div class="ca-page-shell__header">
       <div class="ca-page-shell__meta">
         {#if title}
-          <h1 class="ca-page-shell__title" id={titleId}>{title}</h1>
+          <h1 class="ca-page-shell__title ca-sr-only--shell" id={titleId}>{title}</h1>
         {/if}
         {#if description}
           <p class="ca-page-shell__description">{description}</p>
@@ -119,22 +119,6 @@
     @media (max-width: 599.98px) {
       .ca-page-shell {
         padding: var(--ca-space-5) var(--ca-page-px-sm) var(--ca-space-10);
-      }
-    }
-
-    /* Inside AppShellLayout the mobile header (< 900px) already shows the page title:
-       keep the h1 for assistive tech and the document outline, hide it visually. */
-    @media (max-width: 899.98px) {
-      :global(.ca-shell__content) .ca-page-shell__title {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        margin: -1px;
-        padding: 0;
-        overflow: hidden;
-        clip-path: inset(50%);
-        white-space: nowrap;
-        border: 0;
       }
     }
 

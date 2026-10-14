@@ -104,7 +104,7 @@
     {@attach presence.ref}
     {@attach modalLayer(() => ({ onDismiss: () => (open = false), initial: false, onOpen: () => focusTextField(input) }))}
   >
-      <h2 id={ids.part('title')} class="ca-docs-search__sr">{t().docs.search.label}</h2>
+      <h2 id={ids.part('title')} class="ca-sr-only">{t().docs.search.label}</h2>
       <div class="ca-docs-search__bar">
         <Search size={18} aria-hidden="true" />
         <input
@@ -184,15 +184,6 @@
 <style>
 @layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
 @layer ca.components {
-    :global(.ca-docs-search__sr) {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      clip-path: inset(50%);
-      white-space: nowrap;
-    }
-
     /* Phones: full-height sheet, input pinned on top. */
     :global(dialog.ca-docs-search) {
       inset: 0;

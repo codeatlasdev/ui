@@ -6,7 +6,7 @@ Conventions: BEM (`ca-block__element`, `ca-block--modifier`). CSS variables (`--
 
 Generated from `grep -o 'ca-[a-z0-9_-]*'` over `packages/ui/src/lib/components/<Component>/` (`.svelte`, `.css`, `.ts`), excluding custom properties and duplicates. When you add or rename components, rerun the command and update this file. Some listed names may be `@keyframes` or internal identifiers (e.g. `ca-accordion-down`) rather than classes; treat them as stable to be safe.
 
-Total: 752 unique classes across 68 components.
+Total: 749 unique classes across 68 components, plus the utility classes below.
 
 ---
 
@@ -96,7 +96,7 @@ Total: 752 unique classes across 68 components.
 
 ## Dialog
 
-`.ca-dialog` `.ca-dialog--chromeless` `.ca-dialog--split` `.ca-dialog-in` `.ca-dialog-out` `.ca-dialog__actions` `.ca-dialog__body` `.ca-dialog__description` `.ca-dialog__header` `.ca-dialog__sr-only` `.ca-dialog__title` `.ca-layer-close` `.ca-overlay` `.ca-overlay-in` `.ca-overlay-out`
+`.ca-dialog` `.ca-dialog--chromeless` `.ca-dialog--split` `.ca-dialog-in` `.ca-dialog-out` `.ca-dialog__actions` `.ca-dialog__body` `.ca-dialog__description` `.ca-dialog__header` `.ca-dialog__title` `.ca-layer-close` `.ca-overlay` `.ca-overlay-in` `.ca-overlay-out`
 
 ## Divider
 
@@ -104,7 +104,7 @@ Total: 752 unique classes across 68 components.
 
 ## Docs
 
-`.ca-alert__content` `.ca-callout` `.ca-card-grid` `.ca-code` `.ca-codetab` `.ca-codetabs` `.ca-codetabs__bar` `.ca-codetabs__copy` `.ca-codetabs__panels` `.ca-codetabs__tab` `.ca-codetabs__tabs` `.ca-docs` `.ca-docs--bare` `.ca-docs-brand` `.ca-docs-content` `.ca-docs-header` `.ca-docs-header__inner` `.ca-docs-icon` `.ca-docs-main` `.ca-docs-menu` `.ca-docs-nav` `.ca-docs-nav__group` `.ca-docs-nav__label` `.ca-docs-nav__link` `.ca-docs-nav__title` `.ca-docs-search` `.ca-docs-search-btn` `.ca-docs-search-btn__label` `.ca-docs-search-icon` `.ca-docs-search-in` `.ca-docs-search-opt` `.ca-docs-search-out` `.ca-docs-search-pop-in` `.ca-docs-search-pop-out` `.ca-docs-search-results` `.ca-docs-search__bar` `.ca-docs-search__body` `.ca-docs-search__cancel` `.ca-docs-search__context` `.ca-docs-search__empty` `.ca-docs-search__enter` `.ca-docs-search__esc` `.ca-docs-search__icon` `.ca-docs-search__input` `.ca-docs-search__overlay` `.ca-docs-search__result` `.ca-docs-search__result--on` `.ca-docs-search__results` `.ca-docs-search__sr` `.ca-docs-search__text` `.ca-docs-search__title` `.ca-docs-section` `.ca-docs-sections` `.ca-docs-sheet-sections` `.ca-docs-sidebar` `.ca-docs-skip` `.ca-docs-spacer` `.ca-docs-theme` `.ca-docs-toc` `.ca-docs-toc-inline` `.ca-kbd` `.ca-link-card` `.ca-link-card__desc` `.ca-link-card__title` `.ca-method` `.ca-method--pill` `.ca-method--plain` `.ca-overlay` `.ca-prose` `.ca-rail-btn` `.ca-step` `.ca-steps` `.ca-toc` `.ca-toc--inline` `.ca-toc--rail` `.ca-toc__current` `.ca-toc__label` `.ca-toc__list` `.ca-toc__sub` `.ca-toc__summary-label`
+`.ca-alert__content` `.ca-callout` `.ca-card-grid` `.ca-code` `.ca-codetab` `.ca-codetabs` `.ca-codetabs__bar` `.ca-codetabs__copy` `.ca-codetabs__panels` `.ca-codetabs__tab` `.ca-codetabs__tabs` `.ca-docs` `.ca-docs--bare` `.ca-docs-brand` `.ca-docs-content` `.ca-docs-header` `.ca-docs-header__inner` `.ca-docs-icon` `.ca-docs-main` `.ca-docs-menu` `.ca-docs-nav` `.ca-docs-nav__group` `.ca-docs-nav__label` `.ca-docs-nav__link` `.ca-docs-nav__title` `.ca-docs-search` `.ca-docs-search-btn` `.ca-docs-search-btn__label` `.ca-docs-search-icon` `.ca-docs-search-in` `.ca-docs-search-opt` `.ca-docs-search-out` `.ca-docs-search-pop-in` `.ca-docs-search-pop-out` `.ca-docs-search-results` `.ca-docs-search__bar` `.ca-docs-search__body` `.ca-docs-search__cancel` `.ca-docs-search__context` `.ca-docs-search__empty` `.ca-docs-search__enter` `.ca-docs-search__esc` `.ca-docs-search__icon` `.ca-docs-search__input` `.ca-docs-search__overlay` `.ca-docs-search__result` `.ca-docs-search__result--on` `.ca-docs-search__results` `.ca-docs-search__text` `.ca-docs-search__title` `.ca-docs-section` `.ca-docs-sections` `.ca-docs-sheet-sections` `.ca-docs-sidebar` `.ca-docs-skip` `.ca-docs-spacer` `.ca-docs-theme` `.ca-docs-toc` `.ca-docs-toc-inline` `.ca-kbd` `.ca-link-card` `.ca-link-card__desc` `.ca-link-card__title` `.ca-method` `.ca-method--pill` `.ca-method--plain` `.ca-overlay` `.ca-prose` `.ca-rail-btn` `.ca-step` `.ca-steps` `.ca-toc` `.ca-toc--inline` `.ca-toc--rail` `.ca-toc__current` `.ca-toc__label` `.ca-toc__list` `.ca-toc__sub` `.ca-toc__summary-label`
 
 ## Drawer
 
@@ -152,7 +152,7 @@ Total: 752 unique classes across 68 components.
 
 ## Lightbox
 
-`.ca-lightbox` `.ca-lightbox-in` `.ca-lightbox-out` `.ca-lightbox__close` `.ca-lightbox__img` `.ca-lightbox__overlay` `.ca-lightbox__sr` `.ca-lightbox__stage`
+`.ca-lightbox` `.ca-lightbox-in` `.ca-lightbox-out` `.ca-lightbox__close` `.ca-lightbox__img` `.ca-lightbox__overlay` `.ca-lightbox__stage`
 
 ## NotificationBell
 
@@ -289,3 +289,15 @@ Total: 752 unique classes across 68 components.
 ## templates
 
 `.ca-form-section` `.ca-form-section--grid` `.ca-form-section--list` `.ca-form-section--stack` `.ca-form-section__desc` `.ca-form-section__fields` `.ca-form-section__header` `.ca-form-section__title`
+
+## Utilities
+
+Defined in `styles/utilities.css` (layer `ca.utilities`), available wherever `global.css` or `core.css` is imported. Components reference them from markup; they carry no component CSS of their own.
+
+`.ca-sr-only` `.ca-sr-only--focusable` `.ca-sr-only--shell`
+
+- `.ca-sr-only`: visually hidden, still in the accessibility tree (table `<caption>`, AT-only text). Used by `Dialog`, `DocsSearch`, `Lightbox`, `Select` and the date components.
+- `.ca-sr-only--focusable`: combine with `.ca-sr-only`; shown again while the element or a descendant has focus (skip links).
+- `.ca-sr-only--shell`: kit-internal. Hides a page `<h1>` below 900px inside `.ca-shell__content` (`PageShell`, `AppForm`, `AppList`, `AppSettings`).
+
+Removed in favor of `.ca-sr-only`: `.ca-dialog__sr-only`, `.ca-sel__sr`, `.ca-docs-search__sr`, `.ca-lightbox__sr`.

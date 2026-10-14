@@ -182,6 +182,8 @@ Imported automatically via `global.css`. No extra configuration needed.
 | `ca-bar-fill` | Dynamic progress bar: uses the `--bar-w` CSS var |
 | `ca-bar-fill--warn` | Warning variant of the bar |
 | `ca-pricing-cta` | CTA button at the bottom of a pricing card (`width:100%; margin-top:auto`) |
+| `ca-sr-only` | Visually hidden, still in the a11y tree (table `<caption>`, unlabeled control, extra AT-only text). Never `display:none`/`aria-hidden` for this |
+| `ca-sr-only ca-sr-only--focusable` | Same, but shown again while it or a descendant has focus (skip links) |
 
 ---
 

@@ -101,7 +101,7 @@
 <div class="ca-sel {className}" class:ca-sel--sm={size === 'sm'} class:ca-sel--error={!!error} class:ca-sel--disabled={disabled}>
   {#if label}
     <label for={id} class="ca-sel__label">
-      {label}{#if required}<span class="ca-sel__req" aria-hidden="true"> *</span><span class="ca-sel__sr"> ({t().select.required})</span>{/if}
+      {label}{#if required}<span class="ca-sel__req" aria-hidden="true"> *</span><span class="ca-sr-only"> ({t().select.required})</span>{/if}
     </label>
   {/if}
 
@@ -360,14 +360,6 @@
       height: var(--ca-control-height-sm);
       padding: 0 var(--ca-space-2);
       font-size: var(--ca-input-font-size-sm);
-    }
-    .ca-sel__sr {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      overflow: hidden;
-      clip-path: inset(50%);
-      white-space: nowrap;
     }
 
     .ca-validity-proxy {

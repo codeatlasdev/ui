@@ -284,6 +284,7 @@ Use these instead of writing equivalent CSS:
 | `ca-toolbar-spacer` | Push remaining items right |
 | `ca-row-actions` | Row action buttons (hidden until row hover) |
 | `ca-page-info` | Pagination label text |
+| `ca-sr-only` | Visually hidden but still read by screen readers (table `<caption>`, AT-only text); add `ca-sr-only--focusable` to reveal on focus (skip links) |
 | `ca-btn-danger` | Outlined button in error color |
 | `ca-btn-danger-ghost` | Ghost button in error color |
 | `ca-bar-fill` | Progress bar width (set `--bar-w` CSS var) |

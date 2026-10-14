@@ -148,16 +148,6 @@
         display: block;
       }
 
-      /* header row hidden visually, kept for assistive tech */
-      .ca-table--cards :global(thead) {
-        position: absolute;
-        width: var(--ca-border-width);
-        height: var(--ca-border-width);
-        overflow: hidden;
-        clip-path: inset(50%);
-        white-space: nowrap;
-      }
-
       /* One label track shared by every row of the card (subgrid): labels take the width of the
          longest one, values start on the same line, and nothing leaves a 40% hole. */
       .ca-table--cards :global(tbody tr) {
