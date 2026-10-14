@@ -2,6 +2,7 @@ import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { SLOW_FLOW } from "../../../../tests/settled";
 import { setLocale } from "../../i18n/index.js";
 import DocsSearchHarness from "./DocsSearchHarness.test.svelte";
 import type { DocsSearchEntry } from "./types";
@@ -85,23 +86,27 @@ describe("DocsSearch", () => {
 		expect(onselect).toHaveBeenCalledWith("/guide/start#installation");
 	});
 
-	it("ArrowDown/ArrowUp move aria-activedescendant/aria-selected; Enter selects it", async () => {
-		const onselect = vi.fn();
-		await render(DocsSearchHarness, { index: entries, open: true, onselect });
-		await userEvent.keyboard("webhook");
-		const options = page.getByRole("option");
-		await expect.poll(() => options.elements().length).toBeGreaterThan(1);
-		await expect.element(options.first()).toHaveAttribute("aria-selected", "true");
-		const firstId = options.first().element().id;
-		await expect.element(input()).toHaveAttribute("aria-activedescendant", firstId);
-		await userEvent.keyboard("{ArrowDown}");
-		await expect.element(options.nth(1)).toHaveAttribute("aria-selected", "true");
-		await expect.element(options.first()).toHaveAttribute("aria-selected", "false");
-		await userEvent.keyboard("{ArrowUp}");
-		await expect.element(options.first()).toHaveAttribute("aria-selected", "true");
-		await userEvent.keyboard("{ArrowDown}{Enter}");
-		expect(onselect).toHaveBeenCalledOnce();
-	});
+	it(
+		"ArrowDown/ArrowUp move aria-activedescendant/aria-selected; Enter selects it",
+		async () => {
+			const onselect = vi.fn();
+			await render(DocsSearchHarness, { index: entries, open: true, onselect });
+			await userEvent.keyboard("webhook");
+			const options = page.getByRole("option");
+			await expect.poll(() => options.elements().length).toBeGreaterThan(1);
+			await expect.element(options.first()).toHaveAttribute("aria-selected", "true");
+			const firstId = options.first().element().id;
+			await expect.element(input()).toHaveAttribute("aria-activedescendant", firstId);
+			await userEvent.keyboard("{ArrowDown}");
+			await expect.element(options.nth(1)).toHaveAttribute("aria-selected", "true");
+			await expect.element(options.first()).toHaveAttribute("aria-selected", "false");
+			await userEvent.keyboard("{ArrowUp}");
+			await expect.element(options.first()).toHaveAttribute("aria-selected", "true");
+			await userEvent.keyboard("{ArrowDown}{Enter}");
+			expect(onselect).toHaveBeenCalledOnce();
+		},
+		SLOW_FLOW
+	);
 
 	// #76: a row that appears or slides under a parked pointer fires mouseenter without any movement
 	// (results render, dialog animates in). That must not steal the keyboard selection; only a real

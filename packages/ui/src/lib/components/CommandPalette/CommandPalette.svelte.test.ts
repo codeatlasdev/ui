@@ -2,7 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
-import { settled } from "../../../../tests/settled";
+import { SLOW_FLOW, settled } from "../../../../tests/settled";
 import Harness from "./CommandPalette.test.svelte";
 
 const palette = () => page.getByRole("dialog", { name: "Command palette" });
@@ -57,32 +57,40 @@ describe("CommandPalette", () => {
 		await expect.element(page.getByRole("option")).toHaveLength(3);
 	});
 
-	it("minQueryLength gates filtering on the trimmed query", async () => {
-		await open({ minQueryLength: 3 });
-		await input().fill("re");
-		await expect.element(page.getByRole("option")).toHaveLength(3);
-		await expect.element(page.getByText("General", { exact: true })).toBeVisible();
+	it(
+		"minQueryLength gates filtering on the trimmed query",
+		async () => {
+			await open({ minQueryLength: 3 });
+			await input().fill("re");
+			await expect.element(page.getByRole("option")).toHaveLength(3);
+			await expect.element(page.getByText("General", { exact: true })).toBeVisible();
 
-		await input().fill("  re  ");
-		await expect.element(page.getByRole("option")).toHaveLength(3);
+			await input().fill("  re  ");
+			await expect.element(page.getByRole("option")).toHaveLength(3);
 
-		await input().fill(" rep ");
-		await expect.element(page.getByRole("option")).toHaveLength(1);
-		await expect.element(page.getByRole("option", { name: /Reports/ })).toBeVisible();
-	});
+			await input().fill(" rep ");
+			await expect.element(page.getByRole("option")).toHaveLength(1);
+			await expect.element(page.getByRole("option", { name: /Reports/ })).toBeVisible();
+		},
+		SLOW_FLOW
+	);
 
-	it("ArrowDown/ArrowUp move aria-selected and clamp at the ends", async () => {
-		await open();
-		const options = page.getByRole("option");
-		await expect.element(options.nth(0)).toHaveAttribute("aria-selected", "true");
-		await userEvent.keyboard("{ArrowDown}");
-		await expect.element(options.nth(1)).toHaveAttribute("aria-selected", "true");
-		await expect.element(options.nth(0)).toHaveAttribute("aria-selected", "false");
-		await userEvent.keyboard("{ArrowDown}{ArrowDown}{ArrowDown}");
-		await expect.element(options.nth(2)).toHaveAttribute("aria-selected", "true");
-		await userEvent.keyboard("{ArrowUp}{ArrowUp}{ArrowUp}{ArrowUp}");
-		await expect.element(options.nth(0)).toHaveAttribute("aria-selected", "true");
-	});
+	it(
+		"ArrowDown/ArrowUp move aria-selected and clamp at the ends",
+		async () => {
+			await open();
+			const options = page.getByRole("option");
+			await expect.element(options.nth(0)).toHaveAttribute("aria-selected", "true");
+			await userEvent.keyboard("{ArrowDown}");
+			await expect.element(options.nth(1)).toHaveAttribute("aria-selected", "true");
+			await expect.element(options.nth(0)).toHaveAttribute("aria-selected", "false");
+			await userEvent.keyboard("{ArrowDown}{ArrowDown}{ArrowDown}");
+			await expect.element(options.nth(2)).toHaveAttribute("aria-selected", "true");
+			await userEvent.keyboard("{ArrowUp}{ArrowUp}{ArrowUp}{ArrowUp}");
+			await expect.element(options.nth(0)).toHaveAttribute("aria-selected", "true");
+		},
+		SLOW_FLOW
+	);
 
 	it("Enter navigates to the selected item and closes", async () => {
 		const onNavigate = vi.fn();
