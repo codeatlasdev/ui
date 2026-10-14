@@ -1,4 +1,4 @@
-import { afterAll, beforeAll, describe, expect, it, vi } from "vitest";
+import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
@@ -118,5 +118,46 @@ describe("DocsShell", () => {
 		await expect
 			.element(screen.getByRole("link", { name: "Atlas Docs home" }))
 			.toHaveAttribute("href", "/");
+	});
+});
+
+// A docs site that reloads on every page (static MPA) must not throw the reader back to the top
+// of the sidebar: the position survives the load and the current page is always in view.
+describe("DocsShell sidebar position", () => {
+	const groups = [
+		{
+			label: "Reference",
+			items: Array.from({ length: 60 }, (_, i) => ({ href: `/guide/p${i}`, title: `Page ${i}` })),
+		},
+	];
+	const sidebar = () => document.querySelector(".ca-docs-sidebar") as HTMLElement;
+	const inSidebarView = (el: Element) => {
+		const s = sidebar().getBoundingClientRect();
+		const r = el.getBoundingClientRect();
+		return r.top >= s.top && r.bottom <= s.bottom;
+	};
+
+	afterEach(() => sessionStorage.clear());
+
+	it("brings the current page into view without scrolling the window", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		const screen = await render(DocsHarness, { kind: "shell", groups, pathname: "/guide/p59" });
+		const link = screen.getByRole("link", { name: "Page 59" }).element();
+		expect(sidebar().scrollHeight).toBeGreaterThan(sidebar().clientHeight);
+		await expect.poll(() => inSidebarView(link)).toBe(true);
+		expect(window.scrollY).toBe(0);
+	});
+
+	it("restores the sidebar scroll after following a sidebar link", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		const first = await render(DocsHarness, { kind: "shell", groups, pathname: "/guide/p0" });
+		sidebar().scrollTop = 900;
+		const link = first.getByRole("link", { name: "Page 30" });
+		(link.element() as HTMLElement).addEventListener("click", (e) => e.preventDefault());
+		await link.click();
+		first.unmount();
+		const next = await render(DocsHarness, { kind: "shell", groups, pathname: "/guide/p30" });
+		await expect.poll(() => sidebar().scrollTop).toBe(900);
+		expect(inSidebarView(next.getByRole("link", { name: "Page 30" }).element())).toBe(true);
 	});
 });

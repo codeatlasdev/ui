@@ -1,6 +1,37 @@
 import { expect, gotoReady, test } from "./fixtures";
 
 test.describe("docs", () => {
+	test("the sidebar keeps its place across page loads", async ({ page, isMobile }) => {
+		test.skip(isMobile, "the sidebar lives in a Sheet on phones");
+		// Sidebar scroll as soon as the parser reaches the content after it, before the island
+		// hydrates: what the reader sees on the first frame, not after a visible jump.
+		await page.addInitScript(() => {
+			new MutationObserver((_, observer) => {
+				const aside = document.querySelector(".ca-docs-sidebar");
+				if (!aside || !document.querySelector(".ca-docs-main")) return;
+				observer.disconnect();
+				(window as unknown as { parsedScroll: number }).parsedScroll = aside.scrollTop;
+			}).observe(document, { childList: true, subtree: true });
+		});
+		await gotoReady(page, "/docs/getting-started/theming/");
+		const sidebar = page.locator(".ca-docs-sidebar");
+		await sidebar.evaluate((el) => {
+			el.scrollTop = el.scrollHeight;
+		});
+		const link = sidebar.locator("a.ca-docs-nav__link").last();
+		const href = (await link.getAttribute("href")) as string;
+		const scrolled = await sidebar.evaluate((el) => el.scrollTop);
+		expect(scrolled).toBeGreaterThan(0);
+		await link.click();
+		await expect(page).toHaveURL(new RegExp(`${href}$`));
+		const current = sidebar.locator(`a[href="${href}"]`);
+		await expect(current).toHaveAttribute("aria-current", "page");
+		await expect(current).toBeInViewport();
+		expect(
+			await page.evaluate(() => (window as unknown as { parsedScroll: number }).parsedScroll)
+		).toBe(scrolled);
+	});
+
 	test("every sidebar link resolves with 200", async ({ page, request }) => {
 		await gotoReady(page, "/docs/inputs/button/");
 		const hrefs = await page

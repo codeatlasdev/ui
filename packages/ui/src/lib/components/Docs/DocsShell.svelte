@@ -11,6 +11,7 @@
   import DocsNav from './DocsNav.svelte';
   import DocsSearch from './DocsSearch.svelte';
   import TableOfContents from './TableOfContents.svelte';
+  import { restoreSidebar, saveSidebar, sidebarScript } from './sidebar-scroll.js';
   import type { DocsHeading, DocsNavGroup, DocsPagerLink, DocsSearchEntry, DocsSection } from './types.js';
   const t = useT();
 
@@ -92,6 +93,18 @@
   const hasSidebar = $derived(groups.some((g) => g.items.length));
   const activeSection = $derived(sections.find((s) => s.id === active));
 
+  // Sidebar position per section, kept across full page loads (static docs sites). The inline
+  // script after the sidebar restores it before the first paint; this effect covers client-only
+  // mounts (or a CSP without inline scripts) and keeps the current page in view on navigation.
+  let sidebar = $state<HTMLElement>();
+  const sidebarKey = $derived(`ca-docs-sidebar:${active ?? ''}`);
+  const save = () => sidebar && saveSidebar(sidebar, sidebarKey);
+
+  $effect(() => {
+    void pathname;
+    if (sidebar) restoreSidebar(sidebar, sidebarKey);
+  });
+
   function onkeydown(e: KeyboardEvent) {
     const typing = e.target instanceof HTMLElement && e.target.closest('input, textarea, select, [contenteditable]');
     if ((e.key === 'k' && (e.metaKey || e.ctrlKey)) || (e.key === '/' && !typing)) {
@@ -101,7 +114,7 @@
   }
 </script>
 
-<svelte:window {onkeydown} />
+<svelte:window {onkeydown} onpagehide={save} />
 
 <SkipLink class="ca-docs-skip">{t().docs.skipToContent}</SkipLink>
 
@@ -137,9 +150,15 @@
 
 <div class="ca-docs" class:ca-docs--bare={!hasSidebar}>
   {#if hasSidebar}
-    <aside class="ca-docs-sidebar" aria-label={t().docs.sectionNavigation}>
+    <aside
+      class="ca-docs-sidebar"
+      aria-label={t().docs.sectionNavigation}
+      bind:this={sidebar}
+      onclickcapture={save}
+    >
       <DocsNav {groups} {pathname} label={activeSection?.label ?? t().docs.nav} />
     </aside>
+    {@html `<script>${sidebarScript(sidebarKey)}</script>`}
   {/if}
 
   <main class="ca-docs-main" id="main" tabindex="-1">

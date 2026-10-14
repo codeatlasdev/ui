@@ -36,6 +36,8 @@ This site is built with these primitives. The kit covers `DocsShell` (header, si
 
 `DocsShell` is a full-page frame, so it is not embedded here. The page you are reading is the reference integration: see `SiteDocsShell.svelte` in the `site/` workspace. On desktop (1024px and up) it is a sticky glass header over a three-column grid: sidebar, content and a "On this page" rail from 1280px. Below 1024px it becomes one compact header, the menu opens a bottom Sheet and the page index turns into an inline disclosure. `Cmd+K`, `Ctrl+K` and `/` open the search.
 
+The sidebar keeps its place between pages, also on a static site where every link loads a new document. Its scroll position is saved per section in `sessionStorage` and restored by a small inline script right after the sidebar, before the first paint. The current page is scrolled into the sidebar's view when it is outside it; the window scroll and focus are never touched. Under a Content Security Policy that blocks inline scripts, the position is restored on hydration instead.
+
 <Demo title="ca-prose, Callout and Steps" description="Wrap rendered markdown in .ca-prose. Callout is an Alert vocabulary (note, tip, caution, danger); keep two per page. Steps turns an ordered list into a numbered rail." src={ProseSrc}><Prose /></Demo>
 <Demo title="CodeTabs" description="Language tabs with a copy button. Groups that share a sync key follow each other and persist the choice in localStorage. Highlighting stays with you: wrap each block in .ca-code." src={CodeTabsSrc}><CodeTabsDemo client:visible /></Demo>
 <Demo title="LinkCard, CardGrid and MethodBadge" src={CardsSrc}><Cards /></Demo>
