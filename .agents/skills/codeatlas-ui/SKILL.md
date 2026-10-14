@@ -106,6 +106,7 @@ Never guess a prop name. Two sources, both generated from the source types:
 - **Theme.** One `ThemeOptions` object in `src/lib/theme.ts`, passed to `caThemeHandle`/`caThemePlugin` (SvelteKit) or `caUI` (Astro). Keep it a plain object with a type-only import so config files can load it in Node. Override tokens by declaring `--ca-*` on `:root`, no `!important`. Local dark/light islands: `data-theme-scope="dark|light"`.
 - **Setup.** `bunx @codeatlasdev/ui init` wires all of the above into a fresh SvelteKit or Astro app and never overwrites a file (it prints a diff; `--write` applies it).
 - **SEO.** Public pages use `<Seo>` from `@codeatlasdev/ui/seo` with `canonical`; private pages pass `noindex`.
+- **A11y tests.** `await expectNoA11yViolations(container)` from `@codeatlasdev/ui/testing` in every state (open, error, empty, light, dark); needs the optional peer `axe-core`.
 
 ## Actions (`@codeatlasdev/ui/actions`)
 

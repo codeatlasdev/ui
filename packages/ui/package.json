@@ -102,6 +102,10 @@
 			"svelte": "./dist/seo/index.js",
 			"default": "./dist/seo/index.js"
 		},
+		"./testing": {
+			"types": "./dist/testing/index.d.ts",
+			"default": "./dist/testing/index.js"
+		},
 		"./components.json": "./dist/components.json",
 		"./tokens.json": "./dist/tokens.json"
 	},
@@ -171,6 +175,7 @@
 		"echarts": "^6.0.0",
 		"@tanstack/svelte-table": "^9.2.4",
 		"shiki": "^4.0.0",
+		"axe-core": "^4.0.0",
 		"astro": "^5.0.0 || ^6.0.0 || ^7.0.0",
 		"typescript": ">=5.0.0"
 	},
@@ -189,6 +194,9 @@
 			"optional": true
 		},
 		"shiki": {
+			"optional": true
+		},
+		"axe-core": {
 			"optional": true
 		},
 		"astro": {

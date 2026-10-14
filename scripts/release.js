@@ -24,6 +24,9 @@ process.on("uncaughtException", (e) => {
 	console.error(`\n✖ ${e.message}`);
 	process.exit(1);
 });
+const fail = (msg) => {
+	throw new Error(msg);
+};
 const step = (msg) => console.log(`\n▸ ${msg}`);
 const run = (cmd, argv, cwd = root) => execFileSync(cmd, argv, { cwd, stdio: "inherit" });
 const out = (cmd, argv, cwd = root) =>
@@ -105,6 +108,20 @@ function smokeTest() {
 			dir
 		);
 		tryRun("vite build (smoke app)", "npx", ["vite", "build"], dir);
+		// `./testing` is a test-only subpath (not part of the app bundle): prove it resolves through
+		// `exports` and that its optional `axe-core` peer fails with an actionable message when absent.
+		const testing = out(
+			"node",
+			[
+				"--input-type=module",
+				"-e",
+				`const t = await import("@codeatlasdev/ui/testing");
+console.log(["checkA11y","expectNoA11yViolations","formatViolations","settled","A11Y_EXCEPTIONS"].filter((k) => !(k in t)).join(",") || "ok");`,
+			],
+			dir
+		);
+		if (testing !== "ok")
+			fail(`smoke test: @codeatlasdev/ui/testing is missing exports: ${testing}`);
 		const html = path.join(dir, "build/index.html");
 		if (!fs.existsSync(html)) fail("smoke test: build/index.html was not generated");
 		const built = fs.readFileSync(html, "utf8");
@@ -113,7 +130,7 @@ function smokeTest() {
 		if (!built.includes('id="ca-theme-init"'))
 			fail("smoke test: caThemeHandle did not inject ca-theme-init into build/index.html");
 		console.log(
-			"  smoke app prerendered with AppList, SimpleTable, Button, GlassCard, /charts LineChart + ca-theme-init, without @tanstack or shiki"
+			"  smoke app prerendered with AppList, SimpleTable, Button, GlassCard, /charts LineChart + ca-theme-init, /testing exports, without @tanstack or shiki"
 		);
 	} finally {
 		if (args.has("--keep")) console.log(`  kept ${dir}`);

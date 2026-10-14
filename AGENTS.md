@@ -133,6 +133,8 @@ Reading failures: locators fail with an ARIA snapshot; traces are in `__traces__
 
 14. **SEO**: a public page uses `<Seo>` from `@codeatlasdev/ui/seo` with a required `canonical`; a private page passes `noindex`.
 
+    **A11y tests**: test every state (open, error, empty, light, dark) with `await expectNoA11yViolations(container)` from `@codeatlasdev/ui/testing` (needs the optional peer `axe-core`). Inside this repo `packages/ui/tests/a11y.ts` re-exports the same `checkA11y`; never fork the axe options.
+
 15. **Discovering the API**: never guess a prop. Use the `ca-ui-mcp` MCP server (`get_component`, `list_components`, `search_tokens`, `get_guide`) or `.agents/skills/codeatlas-ui/API.md`; both are generated from the code by `packages/ui/scripts/build-manifest.ts` (runs on `build`). `[ca-ui]` dev warnings (via `devWarn`, `esm-env`) flag an `IconButton` without `aria-label` and a `Dialog` without `title`.
 
 16. **Agent skills layout** (`npx skills add codeatlasdev/ui`): one folder per skill under `.agents/skills/`, named exactly like the `name:` in its `SKILL.md` (`codeatlas-ui`, `codeatlas-dx`, `codeatlas-writing`). Never put a `SKILL.md` directly in `.agents/skills/` (the CLI then treats the directory as a single skill and lists nothing else), and quote any `description:` that contains `: ` (an unquoted one is a YAML error and the CLI silently skips the skill). `packages/ui/tests/skills.test.ts` enforces this.
@@ -516,6 +518,7 @@ Charts, DataTable and CodeSnippet are NOT in the root import. Each subpath requi
 | `@codeatlasdev/ui/table` | `@tanstack/svelte-table` |
 | `@codeatlasdev/ui/code` | `shiki` |
 | `@codeatlasdev/ui/forms` | none (Brazilian masks, `MoneyInput`, ready-made fields) |
+| `@codeatlasdev/ui/testing` | `axe-core` (test-only: `expectNoA11yViolations`, `checkA11y`) |
 
 ### `@codeatlasdev/ui/forms`: Brazilian fields
 ```ts

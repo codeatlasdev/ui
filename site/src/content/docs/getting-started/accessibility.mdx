@@ -148,16 +148,32 @@ Brand presets generated from a hex color use the same generator, so they keep th
 
 ## Testing
 
-Components are tested with `vitest-browser-svelte` and axe-core. The helper in `packages/ui/tests/a11y.ts` provides `checkA11y` and a `toHaveNoViolations` matcher (this is the pattern used inside the repo):
+`@codeatlasdev/ui/testing` is the helper the library uses on its own components: axe-core run after animations settle, with the library's known exceptions. It takes any `Element` or `Document`, so it works in Vitest browser mode, Playwright component tests or any DOM test environment. `axe-core` is an optional peer dependency: install it where you import the helper.
+
+```bash
+bun add -d axe-core
+```
 
 ```ts
 import { render } from "vitest-browser-svelte";
-import { checkA11y } from "../../../tests/a11y";
+import { expectNoA11yViolations } from "@codeatlasdev/ui/testing";
 
 it("has no axe violations", async () => {
   const screen = await render(MyComponent);
-  expect(await checkA11y(screen.container)).toHaveNoViolations();
+  await expectNoA11yViolations(screen.container);
 });
 ```
 
-In your app, run axe on your routes in light and dark, and with an overlay open, using Playwright with `@axe-core/playwright`. Also test with a keyboard only and with a screen reader on at least one platform.
+A violation rejects with the rule id, impact, help URL and every offending node. Run it in each state worth testing: open, error, empty, light and dark.
+
+| Export | Returns | Description |
+|---|---|---|
+| `expectNoA11yViolations(target?, options?)` | `Promise<void>` | Rejects with a formatted report when axe finds violations. `target` defaults to `document`. |
+| `checkA11y(target?, options?)` | `Promise<AxeResults>` | Runs axe and returns the raw results (violations only), for custom assertions. |
+| `formatViolations(violations)` | `string` | The readable report used by `expectNoA11yViolations`. |
+| `settled(timeout?)` | `Promise<void>` | Resolves once no finite CSS animation or transition is running. |
+| `A11Y_EXCEPTIONS` | `RunOptions["rules"]` | The exceptions applied to every run: `region` is off, because a component rendered into an empty body is not a page. |
+
+`options` is the axe `RunOptions`; its `rules` are merged over the exceptions, so `{ rules: { region: { enabled: true } } }` re-enables one. `axe.run` is not reentrant: never run two checks concurrently. Contrast needs real layout and styles, so run in a browser rather than jsdom.
+
+To test whole pages (landmarks, heading order, `region`), run axe on your routes in light, dark and `forcedColors: "active"` with Playwright and `@axe-core/playwright`. Also test with a keyboard only and with a screen reader on at least one platform.
