@@ -3,7 +3,7 @@
 :root,
 [data-theme-scope="light"],
 [data-preset="amber"],
-[data-preset="amber"] [data-theme-scope="light"]:not([data-preset]),
+[data-preset="amber"] [data-theme-scope="light"]:not([data-preset],[data-preset="amber"] [data-preset]:not([data-preset="amber"]) *),
 [data-preset="amber"][data-theme-scope="light"][data-theme-scope="light"],
 [data-theme-scope="light"][data-theme-scope="light"] [data-preset="amber"] {
   color-scheme: light;
@@ -54,7 +54,7 @@
 [data-theme-scope="dark"],
 .dark[data-preset="amber"],
 .dark [data-preset="amber"],
-[data-preset="amber"] [data-theme-scope="dark"]:not([data-preset]),
+[data-preset="amber"] [data-theme-scope="dark"]:not([data-preset],[data-preset="amber"] [data-preset]:not([data-preset="amber"]) *),
 [data-preset="amber"][data-theme-scope="dark"][data-theme-scope="dark"],
 [data-theme-scope="dark"] [data-preset="amber"] {
   color-scheme: dark;
@@ -101,7 +101,7 @@
 :root,
 [data-theme-scope="light"],
 [data-preset="amber"],
-[data-preset="amber"] [data-theme-scope="light"]:not([data-preset]),
+[data-preset="amber"] [data-theme-scope="light"]:not([data-preset],[data-preset="amber"] [data-preset]:not([data-preset="amber"]) *),
 [data-preset="amber"][data-theme-scope="light"][data-theme-scope="light"],
 [data-theme-scope="light"][data-theme-scope="light"] [data-preset="amber"] {
   --ca-text-secondary: oklch(0.340 0.010 55);
@@ -116,7 +116,7 @@
 [data-theme-scope="dark"],
 .dark[data-preset="amber"],
 .dark [data-preset="amber"],
-[data-preset="amber"] [data-theme-scope="dark"]:not([data-preset]),
+[data-preset="amber"] [data-theme-scope="dark"]:not([data-preset],[data-preset="amber"] [data-preset]:not([data-preset="amber"]) *),
 [data-preset="amber"][data-theme-scope="dark"][data-theme-scope="dark"],
 [data-theme-scope="dark"] [data-preset="amber"] {
   --ca-text-secondary: oklch(0.820 0.007 55);

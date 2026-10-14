@@ -168,6 +168,14 @@ Put `data-theme-scope="light"` or `"dark"` on any element to re-apply that schem
 </section>
 ```
 
+Add `data-preset` to switch the palette as well, on the same element or on a wrapper. The nearest preset wins, even when the page uses your brand preset:
+
+```svelte
+<div data-preset="violet">
+  <section data-theme-scope="dark"><!-- violet, dark --></section>
+</div>
+```
+
 Islands also feed the browser chrome color when they touch the top edge, see [Mobile](/docs/getting-started/mobile/#browser-chrome-color).
 
 ## Cascade and overriding tokens

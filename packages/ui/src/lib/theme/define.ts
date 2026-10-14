@@ -327,9 +327,11 @@ function contrastTokens(src: BuiltinPresetSource | PresetDefinition, scheme: "li
  * Covered contexts, nearest wins:
  * - `html.dark` around a preset island → dark;
  * - scope on the same element as the preset, or a scope inside the preset;
- * - a preset island inside a scope island.
+ * - a preset island inside a scope island;
+ * - a scope inside a preset island nested in another preset (the page or an outer island).
  * Selectors cannot express proximity, so three or more alternating scope levels
- * around one preset are not supported.
+ * around one preset, or one preset at two nesting levels with another one between them,
+ * are not supported.
  * - root: also the default (amber) tokens for `:root`, `.dark` and bare scopes.
  * - brand: emitted unlayered by themeHead, so it wins over the layered built-ins.
  */
@@ -342,12 +344,15 @@ export function presetCSS(
 	const P = `[data-preset="${src.id}"]`;
 	const L = '[data-theme-scope="light"]';
 	const D = '[data-theme-scope="dark"]';
+	// A scope inside this preset re-applies it, unless the scope carries its own preset or sits
+	// inside a nearer island of another preset (that preset wins; brand rules are unlayered and
+	// would beat a built-in one, and between built-ins file order would decide).
+	const inside = (scope: string) =>
+		`${P} ${scope}:not([data-preset],${P} [data-preset]:not(${P}) *)`;
 	const lightSel = [
 		...(kind === "root" ? [":root", L] : []),
 		P,
-		// A scope inside this preset re-applies it, unless the scope carries its own preset
-		// (that element's preset wins; brand rules are unlayered and would beat a built-in one).
-		`${P} ${L}:not([data-preset])`,
+		inside(L),
 		// Doubled attributes: beat `.dark ${P}` (0,2,0) when the light scope is closer.
 		`${P}${L}${L}`,
 		`${L}${L} ${P}`,
@@ -356,7 +361,7 @@ export function presetCSS(
 		...(kind === "root" ? [".dark", D] : []),
 		`.dark${P}`,
 		`.dark ${P}`,
-		`${P} ${D}:not([data-preset])`,
+		inside(D),
 		`${P}${D}${D}`,
 		`${D} ${P}`,
 	];

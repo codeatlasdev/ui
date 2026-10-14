@@ -22,6 +22,18 @@ function mount(markup: string) {
 	return (id: string) => getComputedStyle(byId(id)).colorScheme;
 }
 
+function brandMain(id: string) {
+	return getComputedStyle(byId(id)).getPropertyValue("--ca-brand-main");
+}
+
+/** Brand presets ship unlayered (themeHead), like the site's own preset. */
+function addBrand() {
+	const style = document.createElement("style");
+	style.id = "brand-css";
+	style.textContent = brandPresetCSS({ id: "acme", color: "#2563eb" });
+	document.head.appendChild(style);
+}
+
 describe("preset islands", () => {
 	it("a preset island inside a dark page is dark", () => {
 		html.classList.add("dark");
@@ -52,11 +64,28 @@ describe("preset islands", () => {
 		expect(scheme2("c")).toBe("light");
 	});
 
+	it("a scope inside a nested island takes the nearest preset", () => {
+		// violet is emitted after ocean, so file order alone would pick the page preset.
+		html.setAttribute("data-preset", "violet");
+		mount(
+			'<div data-preset="ocean"><div id="d" data-theme-scope="dark"></div><div id="l" data-theme-scope="light"></div></div>' +
+				'<div id="rd" data-preset="ocean" data-theme-scope="dark"></div><div id="rl" data-preset="ocean" data-theme-scope="light"></div>'
+		);
+		expect(brandMain("d")).toBe(brandMain("rd"));
+		expect(brandMain("l")).toBe(brandMain("rl"));
+	});
+
+	it("a scope inside a built-in island beats a brand page preset", () => {
+		addBrand();
+		html.setAttribute("data-preset", "acme");
+		mount(
+			'<div data-preset="ocean"><div id="d" data-theme-scope="dark"></div></div><div id="rd" data-preset="ocean" data-theme-scope="dark"></div>'
+		);
+		expect(brandMain("d")).toBe(brandMain("rd"));
+	});
+
 	it("brand presets behave the same", () => {
-		const style = document.createElement("style");
-		style.id = "brand-css";
-		style.textContent = brandPresetCSS({ id: "acme", color: "#2563eb" });
-		document.head.appendChild(style);
+		addBrand();
 		html.classList.add("dark");
 		const scheme = mount(
 			'<div id="p" data-preset="acme"></div><div id="q" data-preset="acme" data-theme-scope="light"></div>'
