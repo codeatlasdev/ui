@@ -1,13 +1,14 @@
 import { describe, expect, it } from "bun:test";
 import { readdirSync, readFileSync, statSync } from "node:fs";
-import { join } from "node:path";
+import { join, sep } from "node:path";
+import { fileURLToPath } from "node:url";
 
 // Component CSS lives in `@layer ca.components` (declared last) so unlayered app CSS wins with a
 // single class. Each sheet also repeats the full layer order: a bundler may emit a component
 // chunk BEFORE core.css, and the first mention of a layer name fixes its priority, which would
 // otherwise rank ca.components lowest. Lightning CSS (Vite 8) hoists the order correctly only when
 // the first sheet carries it.
-const lib = new URL("../src/lib/", import.meta.url).pathname;
+const lib = fileURLToPath(new URL("../src/lib/", import.meta.url));
 const order = readFileSync(join(lib, "styles/core.css"), "utf8").match(/^@layer [^;]+;/m)?.[0];
 
 function* sheets(dir: string): Generator<string> {
@@ -15,7 +16,7 @@ function* sheets(dir: string): Generator<string> {
 		const path = join(dir, name);
 		if (statSync(path).isDirectory()) yield* sheets(path);
 		else if (name.endsWith(".svelte") && !name.endsWith(".test.svelte")) yield path;
-		else if (name.endsWith(".css") && path.includes("/components/")) yield path;
+		else if (name.endsWith(".css") && path.includes(`${sep}components${sep}`)) yield path;
 	}
 }
 

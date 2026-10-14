@@ -1,0 +1,3 @@
+# LF everywhere, whatever core.autocrlf says: Biome and the frontmatter/regex tests expect it,
+# so a Windows checkout behaves like CI.
+* text=auto eol=lf

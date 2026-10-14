@@ -57,6 +57,10 @@ describe("surface styles", () => {
 
 	it("glass (default) keeps the backdrop blur", () => {
 		const style = mount(`<div id="s" class="glass-regular"></div>`);
-		expect(style("s").backdropFilter).toContain("blur");
+		// Chromium follows the OS (Windows "Transparency effects" off → reduce), where the
+		// materials.css fallback drops the blur on purpose.
+		if (matchMedia("(prefers-reduced-transparency: reduce)").matches)
+			expect(style("s").backdropFilter).toBe("none");
+		else expect(style("s").backdropFilter).toContain("blur");
 	});
 });

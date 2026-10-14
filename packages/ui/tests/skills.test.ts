@@ -51,9 +51,12 @@ describe("agent skills layout (npx skills add codeatlasdev/ui)", () => {
 	});
 });
 
+/** Forward slashes: the compiler host sees them on every OS, and `\` would escape in a TS string. */
+const posix = (path: string) => path.replaceAll("\\", "/");
+
 /** Type-check `source` as a virtual file inside packages/ui (strict, so imports resolve like the repo's). */
 function typeErrors(name: string, source: string): string[] {
-	const file = join(resolve(import.meta.dir, ".."), name);
+	const file = posix(join(resolve(import.meta.dir, ".."), name));
 	const host = ts.createCompilerHost({});
 	const read = host.readFile.bind(host);
 	host.readFile = (f) => (f === file ? source : read(f));
@@ -86,7 +89,7 @@ describe("codeatlas-ui APPSHELL.md", () => {
 
 	it("type-checks its NavModule example against the published types", () => {
 		const root = resolve(import.meta.dir, "..");
-		const types = join(root, "src/lib/components/AppShell/types.ts");
+		const types = posix(join(root, "src/lib/components/AppShell/types.ts"));
 		// `@codeatlasdev/ui` resolves to the AppShell types; the icon package stays a stub.
 		const icons = (block.match(/import \{([^}]*)\} from '@lucide\/svelte';/)?.[1] ?? "")
 			.split(",")
@@ -126,7 +129,7 @@ describe("codeatlas-ui SKILL.md", () => {
 	it("type-checks the theme object against ThemeOptions and the plugin/handle signatures", () => {
 		const themeFile = viteBlock.match(/\/\/ src\/lib\/theme\.ts[\s\S]*?\n\};\n/)?.[0] ?? "";
 		expect(themeFile).toContain("ThemeOptions");
-		const lib = join(resolve(import.meta.dir, ".."), "src/lib");
+		const lib = posix(join(resolve(import.meta.dir, ".."), "src/lib"));
 		const source = `${themeFile.replace("'@codeatlasdev/ui'", `'${lib}/theme-script.ts'`)}
 import { caThemePlugin } from '${lib}/vite-plugin.ts';
 import { caThemeHandle } from '${lib}/kit/theme-handle.ts';

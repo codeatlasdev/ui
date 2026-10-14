@@ -8,7 +8,7 @@ pre-push:
       run: bun run validate
     - name: component tests (Chromium)
       # Only when the pushed commits touch the package or shared tooling.
-      files: git diff --name-only @{push}..HEAD 2>/dev/null || git diff --name-only origin/main...HEAD
+      files: bun scripts/push-files.ts
       glob:
         - "packages/**"
         - "package.json"
