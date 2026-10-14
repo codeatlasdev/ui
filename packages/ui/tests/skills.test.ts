@@ -2,6 +2,7 @@ import { describe, expect, it } from "bun:test";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import ts from "typescript";
+import { samePath, toPosix } from "./paths";
 
 /**
  * Mirrors the discovery rules of the `skills` CLI (vercel-labs/skills, src/skills.ts):
@@ -53,15 +54,15 @@ describe("agent skills layout (npx skills add codeatlasdev/ui)", () => {
 
 /** Type-check `source` as a virtual file inside packages/ui (strict, so imports resolve like the repo's). */
 function typeErrors(name: string, source: string): string[] {
-	const file = join(resolve(import.meta.dir, ".."), name);
+	const file = toPosix(join(resolve(import.meta.dir, ".."), name));
 	const host = ts.createCompilerHost({});
 	const read = host.readFile.bind(host);
-	host.readFile = (f) => (f === file ? source : read(f));
+	host.readFile = (f) => (samePath(f, file) ? source : read(f));
 	const fileExists = host.fileExists.bind(host);
-	host.fileExists = (f) => f === file || fileExists(f);
+	host.fileExists = (f) => samePath(f, file) || fileExists(f);
 	const getSource = host.getSourceFile.bind(host);
 	host.getSourceFile = (f, lang, ...rest) =>
-		f === file ? ts.createSourceFile(f, source, lang, true) : getSource(f, lang, ...rest);
+		samePath(f, file) ? ts.createSourceFile(f, source, lang, true) : getSource(f, lang, ...rest);
 	const program = ts.createProgram(
 		[file],
 		{
@@ -86,7 +87,7 @@ describe("codeatlas-ui APPSHELL.md", () => {
 
 	it("type-checks its NavModule example against the published types", () => {
 		const root = resolve(import.meta.dir, "..");
-		const types = join(root, "src/lib/components/AppShell/types.ts");
+		const types = toPosix(join(root, "src/lib/components/AppShell/types.ts"));
 		// `@codeatlasdev/ui` resolves to the AppShell types; the icon package stays a stub.
 		const icons = (block.match(/import \{([^}]*)\} from '@lucide\/svelte';/)?.[1] ?? "")
 			.split(",")
@@ -126,7 +127,7 @@ describe("codeatlas-ui SKILL.md", () => {
 	it("type-checks the theme object against ThemeOptions and the plugin/handle signatures", () => {
 		const themeFile = viteBlock.match(/\/\/ src\/lib\/theme\.ts[\s\S]*?\n\};\n/)?.[0] ?? "";
 		expect(themeFile).toContain("ThemeOptions");
-		const lib = join(resolve(import.meta.dir, ".."), "src/lib");
+		const lib = toPosix(join(resolve(import.meta.dir, ".."), "src/lib"));
 		const source = `${themeFile.replace("'@codeatlasdev/ui'", `'${lib}/theme-script.ts'`)}
 import { caThemePlugin } from '${lib}/vite-plugin.ts';
 import { caThemeHandle } from '${lib}/kit/theme-handle.ts';

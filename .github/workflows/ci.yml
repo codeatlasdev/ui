@@ -80,6 +80,25 @@ jobs:
       - run: bun run build:pkg
       - run: bun run validate
 
+  unit-windows:
+    name: Unit tests (Windows)
+    needs: changes
+    if: ${{ !inputs.update-snapshots && needs.changes.outputs.package == 'true' }}
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: oven-sh/setup-bun@v2
+        with:
+          bun-version-file: package.json
+      - uses: actions/cache@v6
+        with:
+          path: ~/.bun/install/cache
+          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+          restore-keys: bun-${{ runner.os }}-
+      # Contributors on Windows run the pre-push gate locally: keep the unit suite portable.
+      - run: bun install --frozen-lockfile --ignore-scripts
+      - run: bun run test:unit
+
   build:
     name: Build package + site
     runs-on: ubuntu-latest
@@ -290,7 +309,7 @@ jobs:
     name: CI ok
     # The single required check. Skipped jobs (path filters) count as passing; failures don't.
     if: ${{ always() }}
-    needs: [secrets, validate, build, components, e2e, visual]
+    needs: [secrets, validate, unit-windows, build, components, e2e, visual]
     runs-on: ubuntu-latest
     steps:
       - name: All required jobs passed or were skipped

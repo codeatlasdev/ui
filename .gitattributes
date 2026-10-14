@@ -1,0 +1,10 @@
+# Keep checkouts identical to CI: Windows core.autocrlf=true would turn sources into CRLF and break
+# Biome and the frontmatter/code-fence regexes in packages/ui/tests/skills.test.ts.
+* text=auto eol=lf
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.webp binary
+*.avif binary
+*.woff2 binary
+*.ico binary
