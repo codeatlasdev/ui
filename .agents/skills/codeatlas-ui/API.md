@@ -875,7 +875,7 @@ Snippets: `children`
 
 Also accepts: `Omit<HTMLAnchorAttributes, 'class' \| 'children' \| 'target' \| 'rel' \| 'href'>`
 
-Classes: `ca-external-link` `ca-external-link__sr`
+Classes: `ca-external-link`
 
 ## FileUpload
 
