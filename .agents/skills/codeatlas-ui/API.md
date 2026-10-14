@@ -1080,6 +1080,21 @@ Classes: `ca-kbd`
 
 Classes: `ca-kpi` `ca-kpi__icon` `ca-kpi__inner` `ca-kpi__title` `ca-kpi__top` `ca-kpi__trend` `ca-kpi__trend--down` `ca-kpi__trend--up` `ca-kpi__unit` `ca-kpi__value` `ca-kpi__value-row`
 
+## KpiGrid
+
+`import { KpiGrid } from "@codeatlasdev/ui"`
+
+KpiGrid: a row of KpiCards (or any equal-weight tiles) that never ends on a partial row.
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `gap?` | `number \| string` |  |  |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Classes: `ca-kpi-grid` `ca-kpi-grid__grid`
+
 ## Lightbox
 
 `import { Lightbox } from "@codeatlasdev/ui"`

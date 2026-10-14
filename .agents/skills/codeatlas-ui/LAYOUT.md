@@ -25,9 +25,9 @@ import { Grid } from '@codeatlasdev/ui';
 ```svelte
 <!-- Equal columns -->
 <Grid cols={3} gap={16}>
-  <KpiCard title="Revenue" value="$112k" />
-  <KpiCard title="Users" value="24.8k" />
-  <KpiCard title="Orders" value="1.4k" />
+  <GlassCard title="Plan">…</GlassCard>
+  <GlassCard title="Usage">…</GlassCard>
+  <GlassCard title="Billing">…</GlassCard>
 </Grid>
 
 <!-- Custom column widths -->
@@ -36,12 +36,20 @@ import { Grid } from '@codeatlasdev/ui';
   <GlassCard title="Summary">…</GlassCard>
 </Grid>
 
-<!-- Responsive auto-fill -->
+<!-- Responsive auto-fill (many similar cards; a partial last row is fine here) -->
 <Grid cols="repeat(auto-fill, minmax(240px, 1fr))" gap={20}>
   {#each cards as card}
     <GlassCard title={card.title}>{card.content}</GlassCard>
   {/each}
 </Grid>
+
+<!-- KPI row: use KpiGrid, never Grid auto-fill. It counts the children, so 3 cards are
+     3 across or 1 column (never 2 + 1 with an empty cell) and 4 are 4, 2x2, then 1. -->
+<KpiGrid>
+  <KpiCard title="Revenue" value="$112k" />
+  <KpiCard title="Users" value="24.8k" />
+  <KpiCard title="Orders" value="1.4k" />
+</KpiGrid>
 ```
 
 ---
@@ -124,11 +132,11 @@ import { Stack } from '@codeatlasdev/ui';
 ```svelte
 <!-- Dashboard layout: KPIs + chart + side panel -->
 <PageShell title="Dashboard">
-  <Grid cols="repeat(auto-fill, minmax(200px, 1fr))" gap={16}>
+  <KpiGrid>
     <KpiCard title="Revenue" value="$112k" trend={18.4} />
     <KpiCard title="Users" value="24.8k" trend={12.1} />
     <KpiCard title="Conversion" value="3.2%" trend={-1.8} />
-  </Grid>
+  </KpiGrid>
 
   <Grid cols="2fr 1fr" gap={20}>
     <GlassCard title="Revenue over time">

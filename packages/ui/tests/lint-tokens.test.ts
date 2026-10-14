@@ -82,6 +82,15 @@ describe("lint-tokens", () => {
 		expect(lintSource("x.test.css", css).filter((x) => x.rule === "breakpoint")).toEqual([]);
 	});
 
+	it("allows any width in a container query: it measures a box, not the viewport scale", () => {
+		const cq =
+			"@container (min-width: 21.5rem) { .a { gap: 0; } } @container card (max-width: 33rem) {}";
+		expect(lintSource("x.css", cq).filter((x) => x.rule === "breakpoint")).toEqual([]);
+		const mixed = "@media (min-width: 21.5rem) {} @container (min-width: 21.5rem) {}";
+		const v = lintSource("x.css", mixed).filter((x) => x.rule === "breakpoint");
+		expect(v.map((x) => x.line)).toEqual([1]);
+	});
+
 	it("flags --ca-text-disabled used as color outside a disabled selector (#21)", () => {
 		const bad = ".a { color: var(--ca-text-disabled); }";
 		expect(rules("Foo.svelte", `<style>${bad}</style>`)).toEqual(["text-disabled"]);

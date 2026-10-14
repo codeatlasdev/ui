@@ -11,7 +11,8 @@
 //                    makes iOS Safari zoom on focus.
 //   svelte-ignore    `svelte-ignore` takes warning codes only; any prose after them is read
 //                    as more codes and the real warning comes back (fails a11y builds).
-//   breakpoint       width media queries use the one scale (600/900/1200/1536, max = N-0.02).
+//   breakpoint       width media queries use the one scale (600/900/1200/1536, max = N-0.02);
+//                    container queries are exempt (they size against a box, not the viewport).
 //   text-disabled    `color: var(--ca-text-disabled)` belongs to disabled controls only; de-emphasised
 //                    information uses --ca-text-hint (prose.css list markers are decorative and allowed).
 //   focus-ring       a focus rule must read var(--ca-focus-ring), not a literal --ca-brand-main.
@@ -94,7 +95,10 @@ export function lintSource(file: string, source: string): Violation[] {
 					message: `literal ${m[0]}: use var(--ca-vh) (dynamic viewport with a 100vh fallback)`,
 				});
 		if (!isHarness)
-			for (const m of r.text.matchAll(/\((min|max)-width:\s*([\d.]+)(px|rem|em)\)/g)) {
+			// Only `@media` preludes: `@container` measures a box (its width is content-derived), not the viewport scale.
+			for (const m of r.text.matchAll(
+				/(?<=@media[^{;]*)\((min|max)-width:\s*([\d.]+)(px|rem|em)\)/g
+			)) {
 				const px = Number(m[2]) * (m[3] === "px" ? 1 : 16);
 				const ok = BREAKPOINTS.some((b) => (m[1] === "min" ? px === b : px === b - 0.02));
 				if (!ok)

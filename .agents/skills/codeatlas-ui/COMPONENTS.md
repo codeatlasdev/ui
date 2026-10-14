@@ -272,6 +272,20 @@ import { LineChart, BarChart, PieChart, ScatterChart, HeatmapChart, GaugeChart, 
 <!-- trend: positive = green up, negative = red down -->
 ```
 
+## KpiGrid
+
+A row of KpiCards. It reads its child count in CSS and only uses column counts that divide it, so a row never ends on an empty cell. Use it instead of `Grid cols="repeat(auto-fill, minmax(…))"` for KPIs: that recipe turns 3 cards at 390px into 2 + 1.
+
+```svelte
+<KpiGrid>
+  <KpiCard title="Revenue" value="$112k" />
+  <KpiCard title="Users" value="24.8k" />
+  <KpiCard title="Orders" value="1.4k" />
+</KpiGrid>
+<!-- 3 cards: 3 across, or 1 column when narrow. 4 cards: 4, then 2x2, then 1. Tiles are 10rem minimum. -->
+<!-- Above 12 children it falls back to auto-fill. Responds to its own width (container query). -->
+```
+
 ---
 
 ## Utility CSS classes

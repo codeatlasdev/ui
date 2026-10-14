@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { AppShellLayout, PageShell, KpiCard, GlassCard, Grid, type NavModule } from '@codeatlasdev/ui';
+  import { AppShellLayout, PageShell, KpiCard, KpiGrid, GlassCard, type NavModule } from '@codeatlasdev/ui';
   import { LayoutDashboard, Users, BarChart3, Settings, CreditCard, Activity } from '@lucide/svelte';
 
   const modules: NavModule[] = [
@@ -54,10 +54,10 @@
 <div class="stage" onclick={intercept}>
   <AppShellLayout {modules} {pathname} onNavigate={(path) => (pathname = path)} persistPanel={false} mainId={null} skipLink={false}>
     <PageShell title={titles[pathname] ?? 'Page'} description={pathname}>
-      <Grid cols="repeat(auto-fill,minmax(150px,1fr))" gap={12}>
+      <KpiGrid>
         <KpiCard title="Revenue" value="$118k" trend={23.4} />
         <KpiCard title="Users" value="24.8k" trend={8.1} />
-      </Grid>
+      </KpiGrid>
       <GlassCard full>
         <p class="hint">Click a rail icon or a panel item. The demo keeps the pathname in local state.</p>
       </GlassCard>

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GlassCard, Grid, KpiCard, Stack } from '@codeatlasdev/ui';
+  import { GlassCard, Grid, KpiCard, KpiGrid, Stack } from '@codeatlasdev/ui';
   import { LineChart, BarChart, PieChart, ScatterChart, HeatmapChart, GaugeChart, RadarChart, type CalendarHeatmapPoint } from '@codeatlasdev/ui/charts';
   import { TrendingUp, Users, DollarSign, Activity } from '@lucide/svelte';
 
@@ -20,12 +20,12 @@
 </script>
 
 <Stack gap={16}>
-  <Grid cols="repeat(auto-fill,minmax(180px,1fr))" gap={12}>
+  <KpiGrid>
     <KpiCard title="Revenue" value="$118k" trend={23.4} icon={DollarSign} />
     <KpiCard title="Users" value="94.2k" trend={8.1} icon={Users} />
     <KpiCard title="Growth" value="34%" trend={5.6} icon={TrendingUp} />
     <KpiCard title="Uptime" value="99.9%" trend={0.1} icon={Activity} />
-  </Grid>
+  </KpiGrid>
 
   <GlassCard full>
     <LineChart series={[{ name: 'Revenue', data: revenue }, { name: 'Expenses', data: expenses }]} categories={months} valueFormatter={fmt} area height="280px" />

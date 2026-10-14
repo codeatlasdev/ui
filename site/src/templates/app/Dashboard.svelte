@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { KpiCard, GlassCard, StatusChip, PageShell, Grid, SimpleTable, UserCell, Button, Row } from '@codeatlasdev/ui';
+  import { KpiCard, KpiGrid, GlassCard, StatusChip, PageShell, Grid, SimpleTable, UserCell, Button, Row } from '@codeatlasdev/ui';
   import { LineChart, PieChart } from '@codeatlasdev/ui/charts';
   import { TrendingUp, Users, DollarSign, Activity, ArrowUpRight } from '@lucide/svelte';
 
@@ -30,12 +30,12 @@
     </Button>
   {/snippet}
 
-  <Grid cols="repeat(auto-fill,minmax(200px,1fr))" gap={16}>
+  <KpiGrid>
     <KpiCard title="Total Revenue"  value="$112k" trend={18.4} icon={DollarSign} />
     <KpiCard title="Active Users"   value="24.8k" trend={12.1} icon={Users}      />
     <KpiCard title="Growth Rate"    value="34%"   trend={5.6}  icon={TrendingUp} />
     <KpiCard title="System Uptime"  value="99.9%" trend={0.1}  icon={Activity}   />
-  </Grid>
+  </KpiGrid>
 
   <Grid cols="2fr 1fr" gap={20}>
     <GlassCard title="Revenue vs Expenses">

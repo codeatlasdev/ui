@@ -1,0 +1,48 @@
+---
+title: KpiGrid
+description: A responsive row of KpiCards that never leaves an empty cell, whatever the count.
+group: Layout
+order: 61
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Odd from "~/demos/layout/kpi-grid/Odd.svelte";
+import OddSrc from "~/demos/layout/kpi-grid/Odd.svelte?raw";
+import Four from "~/demos/layout/kpi-grid/Four.svelte";
+import FourSrc from "~/demos/layout/kpi-grid/Four.svelte?raw";
+
+```svelte
+<script>
+  import { KpiCard, KpiGrid } from "@codeatlasdev/ui";
+</script>
+
+<KpiGrid>
+  <KpiCard title="Revenue" value="$112k" />
+  <KpiCard title="Users" value="24.8k" />
+  <KpiCard title="Orders" value="1.4k" />
+</KpiGrid>
+```
+
+`Grid cols="repeat(auto-fill, minmax(160px, 1fr))"` does not know how many cards it holds, so three cards on a 390px phone become two plus one with an empty cell. `KpiGrid` counts its children in CSS and only picks a column count that divides that number: three cards are three across when they fit and a single column when they do not, four cards are four across, then 2 x 2, then one column. It reacts to its own width, not the viewport, so it behaves the same in a sidebar layout or a narrow card, and it needs no JavaScript, so server-rendered pages are correct from the first paint.
+
+| Cards | 344px | 528px | 712px | 896px | 1080px |
+|---|---|---|---|---|---|
+| 1 | 1 | 1 | 1 | 1 | 1 |
+| 2 | 2 | 2 | 2 | 2 | 2 |
+| 3 | 1 + 1 + 1 | 3 | 3 | 3 | 3 |
+| 4 | 2 + 2 | 2 + 2 | 4 | 4 | 4 |
+| 5 | 1 per row | 1 per row | 1 per row | 5 | 5 |
+| 6 | 2 + 2 + 2 | 3 + 3 | 3 + 3 | 3 + 3 | 6 |
+
+Widths are the grid's own width (it uses a container query), which is smaller than the viewport inside a shell with a sidebar. A 390px phone with the usual page padding is the 344px column.
+
+Tiles are at least 10rem wide. Above 12 children there is no useful even split, so the grid falls back to `auto-fill` and may end on a partial row: use several `KpiGrid`s in that case. Odd prime counts (5, 7, 11) stack to one column below the width that fits them all, because no smaller column count divides them evenly.
+
+<Demo title="Three cards" description="One row when it fits, one column on a phone, never 2 + 1." src={OddSrc}><Odd /></Demo>
+<Demo title="Four cards" description="Four across, then 2 x 2, then one column." src={FourSrc}><Four /></Demo>
+
+<Props rows={[
+  { name: "gap", type: "number | string", default: "var(--ca-space-3)", description: "Gap between cards. A number is pixels." },
+  { name: "class", type: "string", default: "''", description: "Extra class names on the wrapper." },
+  { name: "children", type: "Snippet", description: "The KpiCards (or any equal-weight tiles)." },
+]} />

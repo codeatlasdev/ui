@@ -117,6 +117,7 @@ export { default as Grid } from "./components/Grid/Grid.svelte";
 export { default as Image } from "./components/Image/Image.svelte";
 export { default as Kbd } from "./components/Kbd/Kbd.svelte";
 export { default as KpiCard } from "./components/KpiCard/KpiCard.svelte";
+export { default as KpiGrid } from "./components/KpiGrid/KpiGrid.svelte";
 export { default as Lightbox } from "./components/Lightbox/Lightbox.svelte";
 export { default as LiquidGlass } from "./components/LiquidGlass/LiquidGlass.svelte";
 export { default as MobilePane } from "./components/MobilePane/MobilePane.svelte";

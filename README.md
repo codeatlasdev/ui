@@ -202,7 +202,7 @@ The package also ships a local MCP server, `ca-ui-mcp`, with `list_components`, 
 | page templates | `AppList` `AppForm` `AppSettings` `PageShell` `FormSection` `StickyActions` |
 | shells | `AppShellLayout` `Rail` `Panel` `SiteHeader` `BottomNav` `MobileHeader` `MobilePane` `AuthLayout` `DocsShell` |
 | layout | `Grid` `Row` `Stack` `Divider` |
-| data | `DataTable` `SimpleTable` `Pagination` `KpiCard` `EmptyState` `FilterGroup` `Timeline` |
+| data | `DataTable` `SimpleTable` `Pagination` `KpiCard` `KpiGrid` `EmptyState` `FilterGroup` `Timeline` |
 | charts | `LineChart` `BarChart` `PieChart` `ScatterChart` `HeatmapChart` `GaugeChart` `RadarChart` `Sparkline` |
 | forms | `Button` `TextField` `TextArea` `NumberField` `MaskedField` `Select` `Combobox` `Checkbox` `RadioGroup` `Switch` `Slider` `PinInput` `SegmentedControl` `ToggleGroup` `FileUpload` `useForm` |
 | dates | `Calendar` `RangeCalendar` `DateField` `TimeField` `DatePicker` `DateRangePicker` |

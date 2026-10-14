@@ -367,10 +367,10 @@ Behavior: fixed side nav on the left. The right content scrolls.
     <Button variant="ghost" size="sm">Export</Button>
   {/snippet}
 
-  <Grid cols="repeat(auto-fill, minmax(200px, 1fr))" gap={16}>
+  <KpiGrid>
     <KpiCard title="Revenue" value="$112k" trend={18.4} icon={DollarSign} />
     <KpiCard title="Users"   value="24.8k" trend={12.1} icon={Users}      />
-  </Grid>
+  </KpiGrid>
 
   <GlassCard title="Revenue vs Expenses">
     <LineChart series={[...]} categories={months} area height="260px" />
@@ -411,6 +411,7 @@ Behavior: fixed side nav on the left. The right content scrolls.
 | `SettingItem` | Settings row: label + description + control (Switch, Button) |
 | `GlassCard` | Generic glass container |
 | `KpiCard` | Metric card: value, trend, icon |
+| `KpiGrid` | Row of KpiCards that never ends on an empty cell (counts the children; never use `Grid` auto-fill for KPIs) |
 | `Grid` | CSS grid with configurable `cols` and `gap` |
 | `Row` | Flex row with `gap`, `align`, `justify` |
 | `Stack` | Flex column with `gap` |
@@ -441,7 +442,7 @@ import { DataTable, createCaTable, createCaColumnHelper, caTableFeatures } from 
 - For simple lists use `SimpleTable` + `UserCell` + `StatusChip`, which is lighter
 
 ### Display
-`Avatar` · `Image` · `Badge` · `Alert` · `Chip` · `StatusChip` · `KpiCard` · `EmptyState` · `Timeline` · `Sparkline` · `SimpleTable`
+`Avatar` · `Image` · `Badge` · `Alert` · `Chip` · `StatusChip` · `KpiCard` · `KpiGrid` · `EmptyState` · `Timeline` · `Sparkline` · `SimpleTable`
 
 - **`SimpleTable` `responsive`**: `"scroll"` (default) or `"cards"`. With `cards`, below `md` each `<tr>` becomes a card and each `<td>` shows its label via `::before { content: attr(data-label) }`. **Required: pass `data-label="Column"` on every `<td>`** (a cell without `data-label` has no label). No local scroll wrappers needed.
   ```svelte

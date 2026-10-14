@@ -227,10 +227,10 @@ Dashboard layout: normal scroll, free content.
     <Select bind:value={period} options={periodOpts} />
   {/snippet}
 
-  <Grid cols="repeat(auto-fill, minmax(200px, 1fr))" gap={16}>
+  <KpiGrid>
     <KpiCard title="Revenue" value="$112k" trend={18.4} />
     <KpiCard title="Users" value="24.8k" trend={12.1} />
-  </Grid>
+  </KpiGrid>
 
   <GlassCard title="Revenue vs Expenses">
     <LineChart {series} {categories} area height="260px" />
