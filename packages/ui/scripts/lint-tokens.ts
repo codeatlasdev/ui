@@ -57,7 +57,8 @@ export function lintSource(file: string, source: string): Violation[] {
 	const v: Violation[] = [];
 	for (const m of source.matchAll(/(?:<!--|\/\/)\s*svelte-ignore\s+([^\n]*?)(?:-->|$)/gm)) {
 		const codes = (m[1] ?? "").trim();
-		if (!/^[a-z0-9_]+(?:\s*,?\s*[a-z0-9_]+)*$/.test(codes))
+		// Each repetition must consume a separator, so a code can be split only one way (linear time).
+		if (!/^[a-z0-9_]+(?:(?:\s*,\s*|\s+)[a-z0-9_]+)*$/.test(codes))
 			v.push({
 				file,
 				line: lineOf(source, m.index ?? 0),

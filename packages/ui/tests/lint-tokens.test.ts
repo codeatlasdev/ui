@@ -66,6 +66,14 @@ describe("lint-tokens", () => {
 		expect(ok).toEqual([]);
 	});
 
+	it("checks svelte-ignore codes in linear time (a long code before prose must not backtrack)", () => {
+		const code = "a11y_no_noninteractive_element_interactions_and_more_words";
+		const t0 = performance.now();
+		const v = lintSource("x.svelte", `<!-- svelte-ignore ${code} (why) -->\n<div></div>`);
+		expect(v.map((x) => x.rule)).toEqual(["svelte-ignore"]);
+		expect(performance.now() - t0).toBeLessThan(50);
+	});
+
 	it("flags width breakpoints outside the shared scale", () => {
 		const css =
 			"@media (max-width: 767px) {} @media (min-width: 768px) {} @media (max-width: 899.98px) {} @media (min-width: 1200px) {}";
