@@ -39,7 +39,8 @@ Unit tests run on `bun test` (repo root, `bunfig.toml`); component and visual te
 | `bun run test:unit` | `bun test` on `packages/ui/tests/*.test.ts` (fails any test without an `expect`) |
 | `bun run test:browser` | Vitest `browser` project (real Chromium, axe) |
 | `bun run test:e2e` / `test:a11y` | Playwright against the static site (build + preview) |
-| `bun run test:vrt` / `test:vrt:update` | visual regression via Docker (Linux-only baselines) |
+| `bun run test:vrt` | visual regression via Docker (Linux-only baselines, compare only) |
+| `bun run test:vrt:update` | regenerate baselines on CI (native amd64) for the pushed branch and pull the bot commit; `test:vrt:update:local` does it in Docker (slow on Apple Silicon) |
 | `bun run test:status` | live and dead test runs of this repo, with their browser count |
 | `bun run test:reap` | kill the browsers of runs whose runner died (this repo only) |
 

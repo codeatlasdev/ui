@@ -77,7 +77,7 @@ Unit tests run on `bun test` (`bunfig.toml` points it at `packages/ui/tests`); c
 
 Browser tests always run through the package scripts (`bun run test:browser`, `test:e2e`, …), never a bare `vitest` or `playwright test`. The scripts go through `scripts/test-run.ts`, which tags this repo's browsers, tears them down on exit or Ctrl+C, and cleans up after runs that were killed hard. `bun run test:status` shows runs, `bun run test:reap` cleans dead ones. It never touches other projects' Playwright browsers.
 
-Visual regression baselines are Linux-only and generated in Docker (`mcr.microsoft.com/playwright:v1.64.0-noble`): `bun run test:vrt` compares, `bun run test:vrt:update` regenerates. Commit the `__screenshots__/` changes.
+Visual regression baselines are Linux-only, rendered in `mcr.microsoft.com/playwright:v1.64.0-noble` on amd64. `bun run test:vrt` compares locally in Docker. To regenerate, push your branch and run `bun run test:vrt:update`: it dispatches the CI job with `update-snapshots`, which renders on native amd64, commits the `__screenshots__/` changes to your branch and pulls them back (a few minutes, nothing runs locally). `bun run test:vrt:update:local` does the same in local Docker, much slower on Apple Silicon (amd64 emulation). Review the changed images before merging.
 
 Fix any errors before opening a pull request. PRs with failing checks will not be merged.
 
