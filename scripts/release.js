@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * Release check for @codeatlasdev/ui. Publishing happens in CI (.github/workflows/release.yml):
- * merge the "Version Packages" PR and Actions publishes to npm with provenance.
+ * merge the Version PR, then `bun run release:tag` pushes the tag that publishes with provenance.
  *
  *   bun run release          lint + type check + build + tarball smoke test + pending changesets
  *   bun run release --keep   keep the smoke-test temp dir
@@ -54,9 +54,7 @@ if (args.has("--smoke")) {
 	smokeTest();
 	step("Pending changesets");
 	tryRun("changeset status", "bunx", ["changeset", "status", "--verbose"]);
-	console.log(
-		"\n✔ ready: push to main; the Release workflow opens the version PR, merging it publishes."
-	);
+	console.log("\n✔ ready: merge the Version PR, then bun run release:tag");
 }
 
 /** Packs the library, installs the tarball into a fresh SvelteKit app with npm and prerenders it. */

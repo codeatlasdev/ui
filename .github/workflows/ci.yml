@@ -1,11 +1,11 @@
 name: CI
-# Fast path: one build shared through artifacts, browser suites sharded across jobs and
-# using every core, jobs skipped when the files they cover did not change. Branch rules
-# require only "CI ok", so shards can change without touching repository settings.
+# Runner-native (ubuntu-24.04, no containers): one build shared through artifacts, browser suites
+# sharded, jobs skipped when the files they cover did not change. Branch rules require only
+# "CI ok", so shards can change without touching repository settings. Runs on fork PRs too.
 on:
   pull_request:
   push:
-    branches: [main, beta, alpha]
+    branches: [main]
   workflow_dispatch:
     inputs:
       update-snapshots:
@@ -23,7 +23,8 @@ permissions:
 jobs:
   changes:
     name: Changed areas
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     permissions:
       pull-requests: read
     outputs:
@@ -48,9 +49,38 @@ jobs:
             site:
               - 'site/**'
 
-  secrets:
-    name: Secret scan
-    runs-on: ubuntu-latest
+  pr-title:
+    name: PR title
+    # Squash merges use the PR title as the commit subject on main.
+    if: ${{ github.event_name == 'pull_request' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      pull-requests: read
+    steps:
+      - uses: amannn/action-semantic-pull-request@v6
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          types: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            perf
+            test
+            build
+            ci
+            chore
+            revert
+          requireScope: false
+          subjectPattern: ^(?![A-Z]).+$
+
+  build:
+    name: Validate + build
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     steps:
       - uses: actions/checkout@v7
         with:
@@ -59,44 +89,10 @@ jobs:
         run: |
           curl -sSfL https://github.com/gitleaks/gitleaks/releases/download/v8.30.1/gitleaks_8.30.1_linux_x64.tar.gz | tar -xz gitleaks
           ./gitleaks git --no-banner --redact --config .gitleaks.toml .
-
-  validate:
-    name: Types, lint, unit, size
-    if: ${{ !inputs.update-snapshots }}
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version-file: package.json
-      - uses: actions/cache@v6
-        with:
-          path: ~/.bun/install/cache
-          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
-          restore-keys: bun-${{ runner.os }}-
-      # No postinstall in CI: it would download browsers and install git hooks. Only the
-      # TypeScript link svelte-package needs is required.
-      - run: bun install --frozen-lockfile --ignore-scripts && node scripts/fix-ts-symlink.js
-      - run: bun run build:pkg
+      - uses: ./.github/actions/setup
+      # Builds the package first (phase 0), then types, lint, unit, size.
       - run: bun run validate
-
-  build:
-    name: Build package + site
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v7
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version-file: package.json
-      - uses: actions/cache@v6
-        with:
-          path: ~/.bun/install/cache
-          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
-          restore-keys: bun-${{ runner.os }}-
-      # No postinstall in CI: it would download browsers and install git hooks. Only the
-      # TypeScript link svelte-package needs is required.
-      - run: bun install --frozen-lockfile --ignore-scripts && node scripts/fix-ts-symlink.js
-      - run: bun run build
+      - run: bun run --cwd site build
       - uses: actions/upload-artifact@v7
         with:
           name: build
@@ -107,32 +103,22 @@ jobs:
             site/dist/
 
   components:
-    name: Component tests (${{ matrix.shard }}/4)
+    name: Component tests (${{ matrix.shard }}/2)
     needs: changes
     if: ${{ !inputs.update-snapshots && needs.changes.outputs.package == 'true' }}
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.64.0-noble
-      options: --ipc=host --init
-    env:
-      HOME: /root
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2, 3, 4]
+        shard: [1, 2]
     steps:
       - uses: actions/checkout@v7
-      - run: npm i -g --allow-scripts=bun "$(node -p 'require("./package.json").packageManager')"
-      - uses: actions/cache@v6
+      - uses: ./.github/actions/setup
         with:
-          path: /root/.bun/install/cache
-          key: bun-container-${{ hashFiles('bun.lock') }}
-          restore-keys: bun-container-
-      # No postinstall in CI: it would download browsers and install git hooks. Only the
-      # TypeScript link svelte-package needs is required.
-      - run: bun install --frozen-lockfile --ignore-scripts && node scripts/fix-ts-symlink.js
+          browsers: chromium
       - run: bun run build:pkg
-      - run: bun run --cwd packages/ui test:browser --shard=${{ matrix.shard }}/4
+      - run: bun run --cwd packages/ui test:browser --shard=${{ matrix.shard }}/2
       - uses: actions/upload-artifact@v7
         if: ${{ failure() }}
         with:
@@ -142,51 +128,34 @@ jobs:
             packages/ui/.vitest/
             packages/ui/src/**/__traces__/
 
-  e2e:
-    name: Site ${{ matrix.suite }} (${{ matrix.shard }}/${{ matrix.total }})
+  site:
+    name: Site e2e + a11y (${{ matrix.shard }}/4)
     needs: [changes, build]
     # Docs-only or repo-meta changes (AGENTS.md, skills, issue templates) skip the browser suites.
     if: ${{ !inputs.update-snapshots && (needs.changes.outputs.package == 'true' || needs.changes.outputs.site == 'true') }}
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.64.0-noble
-      options: --ipc=host --init
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     env:
-      HOME: /root
       E2E_PREBUILT: "1"
     strategy:
       fail-fast: false
       matrix:
-        # Playwright splits shards by test count, not cost: the per-route a11y tests (3 axe
-        # passes each) get their own shards so no job collects all of them.
-        include:
-          - { suite: e2e, projects: "--project=desktop --project=mobile --project=iphone", shard: 1, total: 3 }
-          - { suite: e2e, projects: "--project=desktop --project=mobile --project=iphone", shard: 2, total: 3 }
-          - { suite: e2e, projects: "--project=desktop --project=mobile --project=iphone", shard: 3, total: 3 }
-          - { suite: a11y, projects: "--project=a11y", shard: 1, total: 4 }
-          - { suite: a11y, projects: "--project=a11y", shard: 2, total: 4 }
-          - { suite: a11y, projects: "--project=a11y", shard: 3, total: 4 }
-          - { suite: a11y, projects: "--project=a11y", shard: 4, total: 4 }
+        shard: [1, 2, 3, 4]
     steps:
       - uses: actions/checkout@v7
-      - run: npm i -g --allow-scripts=bun "$(node -p 'require("./package.json").packageManager')"
-      - uses: actions/cache@v6
+      # The iphone project runs on WebKit.
+      - uses: ./.github/actions/setup
         with:
-          path: /root/.bun/install/cache
-          key: bun-container-${{ hashFiles('bun.lock') }}
-          restore-keys: bun-container-
-      # No postinstall in CI: it would download browsers and install git hooks. Only the
-      # TypeScript link svelte-package needs is required.
-      - run: bun install --frozen-lockfile --ignore-scripts && node scripts/fix-ts-symlink.js
+          browsers: chromium webkit
       - uses: actions/download-artifact@v8
         with:
           name: build
       - working-directory: site
-        run: bunx playwright test ${{ matrix.projects }} --shard=${{ matrix.shard }}/${{ matrix.total }}
+        run: bunx playwright test --project=desktop --project=mobile --project=iphone --project=a11y --shard=${{ matrix.shard }}/4
       - uses: actions/upload-artifact@v7
         if: ${{ failure() }}
         with:
-          name: playwright-${{ matrix.suite }}-${{ matrix.shard }}
+          name: playwright-site-${{ matrix.shard }}
           include-hidden-files: true
           path: |
             site/playwright-report/
@@ -196,15 +165,13 @@ jobs:
     name: Visual regression (${{ matrix.suite }})
     needs: [changes, build]
     # Pixels only change when code, styles or the site change; always run when regenerating.
+    # Baselines are rendered only here (ubuntu-24.04 pinned: fonts/libs come from the image).
     if: ${{ inputs.update-snapshots || needs.changes.outputs.package == 'true' || needs.changes.outputs.site == 'true' }}
-    runs-on: ubuntu-latest
-    container:
-      image: mcr.microsoft.com/playwright:v1.64.0-noble
-      options: --ipc=host --init
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     permissions:
       contents: write
     env:
-      HOME: /root
       E2E_PREBUILT: "1"
     strategy:
       fail-fast: false
@@ -212,15 +179,9 @@ jobs:
         suite: [components, site]
     steps:
       - uses: actions/checkout@v7
-      - run: npm i -g --allow-scripts=bun "$(node -p 'require("./package.json").packageManager')"
-      - uses: actions/cache@v6
+      - uses: ./.github/actions/setup
         with:
-          path: /root/.bun/install/cache
-          key: bun-container-${{ hashFiles('bun.lock') }}
-          restore-keys: bun-container-
-      # No postinstall in CI: it would download browsers and install git hooks. Only the
-      # TypeScript link svelte-package needs is required.
-      - run: bun install --frozen-lockfile --ignore-scripts && node scripts/fix-ts-symlink.js
+          browsers: chromium
       - uses: actions/download-artifact@v8
         with:
           name: build
@@ -241,7 +202,6 @@ jobs:
       - name: Commit updated baselines
         if: ${{ inputs.update-snapshots }}
         run: |
-          git config --global --add safe.directory "$GITHUB_WORKSPACE"
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add -A '**/__screenshots__/**'
@@ -252,22 +212,15 @@ jobs:
     # Fork PRs get no secrets; they still get the full test matrix above.
     if: ${{ github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository }}
     needs: build
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     permissions:
       contents: read
       pull-requests: write
     steps:
       - uses: actions/checkout@v7
-      - uses: oven-sh/setup-bun@v2
-        with:
-          bun-version-file: package.json
-      - uses: actions/cache@v6
-        with:
-          path: ~/.bun/install/cache
-          key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
-          restore-keys: bun-${{ runner.os }}-
       # Puts the pinned wrangler (site devDependency) on the path; the action would try npm.
-      - run: bun install --frozen-lockfile --ignore-scripts
+      - uses: ./.github/actions/setup
       - uses: actions/download-artifact@v8
         with:
           name: build
@@ -290,8 +243,9 @@ jobs:
     name: CI ok
     # The single required check. Skipped jobs (path filters) count as passing; failures don't.
     if: ${{ always() }}
-    needs: [secrets, validate, build, components, e2e, visual]
-    runs-on: ubuntu-latest
+    needs: [pr-title, build, components, site, visual]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
     steps:
       - name: All required jobs passed or were skipped
         run: |

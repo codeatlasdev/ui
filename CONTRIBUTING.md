@@ -23,11 +23,11 @@ git clone https://github.com/codeatlasdev/ui.git
 cd ui
 bun install
 
-# Start the docs site (predev builds the package dist first)
+# Package watcher + docs site in one command (builds dist/ once if missing)
 bun dev
 ```
 
-> The site consumes `@codeatlasdev/ui` from `packages/ui/dist`, so `build:pkg` is required at least once. `predev` runs it automatically on every `bun dev`. To pick up library edits while the dev server runs, keep `bun run --cwd packages/ui build:watch` open in a second terminal.
+> The site consumes `@codeatlasdev/ui` from `packages/ui/dist`; `bun dev` keeps it current with `svelte-package --watch`, so library edits reach the running site.
 
 ## Project structure
 
@@ -100,13 +100,15 @@ Unit tests run on `bun test` (`bunfig.toml` points it at `packages/ui/tests`); c
 
 Browser tests always run through the package scripts (`bun run test:browser`, `test:e2e`, …), never a bare `vitest` or `playwright test`. The scripts go through `scripts/test-run.ts`, which tags this repo's browsers, tears them down on exit or Ctrl+C, and cleans up after runs that were killed hard. `bun run test:status` shows runs, `bun run test:reap` cleans dead ones. It never touches other projects' Playwright browsers.
 
-Visual regression baselines are Linux-only, rendered in `mcr.microsoft.com/playwright:v1.64.0-noble` on amd64. `bun run test:vrt` compares locally in Docker. To regenerate, push your branch and run `bun run test:vrt:update`: it dispatches the CI job with `update-snapshots`, which renders on native amd64, commits the `__screenshots__/` changes to your branch and pulls them back (a few minutes, nothing runs locally). `bun run test:vrt:update:local` does the same in local Docker, much slower on Apple Silicon (amd64 emulation). Review the changed images before merging.
+Git hooks (lefthook, installed by `bun install`): pre-commit formats staged files with Biome, commit-msg checks the message, pre-push runs `bun run validate`. Browser suites (`bun run test:browser`, `test:e2e`) run on CI and on demand.
+
+Visual regression baselines are rendered only on CI (`ubuntu-24.04`); no Docker. To regenerate, push your branch and run `bun run test:vrt:update`: it dispatches the CI job with `update-snapshots`, which commits the `__screenshots__/` changes to your branch and pulls them back. Review the changed images before merging.
 
 Fix any errors before opening a pull request. PRs with failing checks will not be merged.
 
 ## Commit style
 
-This project uses [Conventional Commits](https://www.conventionalcommits.org):
+This project uses [Conventional Commits v1.0.0](https://www.conventionalcommits.org/en/v1.0.0/), checked by the commit-msg hook. Allowed types: `feat` `fix` `docs` `style` `refactor` `perf` `test` `build` `ci` `chore` `revert`, optional `(scope)`, `!` for breaking changes. PRs are squash-merged and the PR title becomes the commit on `main`, so CI checks PR titles with the same rules.
 
 ```
 feat: add GlassChip component
@@ -120,38 +122,18 @@ Use the imperative mood in the subject line. Keep it under 72 characters.
 
 ## Release flow
 
-Releases are fully automated with Changesets and GitHub Actions (`.github/workflows/release.yml`). Nobody publishes from a laptop.
+Publishing happens only in CI (`.github/workflows/release.yml`), triggered by a version tag. Nobody publishes from a laptop.
 
 1. Every PR that changes the published package adds a changeset: `bun changeset`, pick the bump, write the user-facing note.
-2. Merging to a channel branch makes the Release workflow open (or update) a **Version Packages** PR with the bumped version and CHANGELOG.
-3. Merging that PR publishes to npm with [provenance](https://docs.npmjs.com/generating-provenance-statements) through Trusted Publishing (OIDC, no npm token stored anywhere), pushes the git tag, creates the GitHub Release and deploys the docs.
+2. On `main`, the Version workflow opens (or updates) a **chore: version packages** PR with the bumped version and CHANGELOG.
+3. Merge it.
+4. On an up-to-date, clean `main`, run `bun run release:tag`: it pushes the tag `@codeatlasdev/ui@X.Y.Z`.
+5. The Release workflow publishes to npm with [provenance](https://docs.npmjs.com/generating-provenance-statements) through Trusted Publishing (OIDC, no npm token), creates the GitHub Release from the CHANGELOG and deploys the docs to ui.codeatlas.com.br.
 
-`bun run release` runs the same gate locally: lint, type check, build, tarball smoke test (packs the library into a fresh SvelteKit app and builds it) and `changeset status`.
+Prereleases: on a branch run `bunx changeset pre enter beta`, `bun run version`, commit, push and tag `@codeatlasdev/ui@X.Y.Z-beta.N`. It publishes under the `beta` dist-tag (never `latest`) and deploys the docs to beta.codeatlas-ui.pages.dev.
 
-### Release channels
-
-| Branch | npm dist-tag | Example | Install | Docs |
-|---|---|---|---|---|
-| `main` | `latest` | `1.2.0` | `bun add @codeatlasdev/ui` | ui.codeatlas.com.br |
-| `beta` | `beta` | `1.3.0-beta.2` | `bun add @codeatlasdev/ui@beta` | beta.codeatlas-ui.pages.dev |
-| `alpha` | `alpha` | `2.0.0-alpha.0` | `bun add @codeatlasdev/ui@alpha` | alpha.codeatlas-ui.pages.dev |
-
-- **alpha:** breaking or experimental work for the next major. **beta:** feature-complete, API frozen, hunting bugs. **latest:** stable.
-- Open a channel by branching from `main` and entering prerelease mode once: `git switch -c beta && bunx changeset pre enter beta`, commit `.changeset/pre.json`, push.
-- Promote a channel by exiting prerelease mode on it (`bunx changeset pre exit`), then merging it into `main`. The workflow refuses to run on `main` while `.changeset/pre.json` exists, so a prerelease can never become `latest` by accident.
-- Fixes land on `main` first and are merged forward into `beta`/`alpha`.
+`bun run release` runs the local gate: lint, type check, build, tarball smoke test (packs the library into a fresh SvelteKit app and builds it) and `changeset status`.
 
 ## Thank you
 
 Every contribution matters, whether it's a typo fix, a new component, or a performance improvement. We appreciate it.
-
-## Docs site deploy
-
-The site is static and hosted on Cloudflare Pages (project `codeatlas-ui`, domain `ui.codeatlas.com.br`). Maintainers deploy from their machine:
-
-```bash
-bun run site:deploy                  # production
-bun run site:deploy --branch my-pr   # preview at https://my-pr.codeatlas-ui.pages.dev
-```
-
-It needs `CLOUDFLARE_API_TOKEN` (Pages: Edit) and `CLOUDFLARE_ACCOUNT_ID` in your environment. Never commit them.

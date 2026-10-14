@@ -1,16 +1,16 @@
-# Git hooks. Commits are never blocked; only `git push` runs the gate.
-# Same checks as CI (.github/workflows/ci.yml), scoped to what the push changes.
-# Skip once with `LEFTHOOK=0 git push` or `git push --no-verify`.
+# Git hooks. pre-commit formats staged files, commit-msg enforces Conventional Commits,
+# pre-push runs `bun run validate` (types, lint, unit, build, size). Browser suites run on CI.
+pre-commit:
+  jobs:
+    - name: biome (staged)
+      glob: "*.{ts,js,json}"
+      run: bunx biome check --write --no-errors-on-unmatched {staged_files}
+      stage_fixed: true
+commit-msg:
+  jobs:
+    - name: conventional commit
+      run: bun scripts/commit-msg.ts {1}
 pre-push:
-  parallel: false
   jobs:
     - name: validate (themes, types, lint, unit, build, size)
       run: bun run validate
-    - name: component tests (Chromium)
-      # Only when the pushed commits touch the package or shared tooling.
-      files: bun scripts/push-files.ts
-      glob:
-        - "packages/**"
-        - "package.json"
-        - "bun.lock"
-      run: bun run test:browser

@@ -1,0 +1,29 @@
+name: Setup
+description: Bun + dependencies (cached), optionally Playwright browsers.
+inputs:
+  browsers:
+    description: "Playwright browsers to install (empty = none)"
+    default: ""
+runs:
+  using: composite
+  steps:
+    - uses: oven-sh/setup-bun@v2
+      with:
+        bun-version-file: package.json
+    - uses: actions/cache@v6
+      with:
+        path: ~/.bun/install/cache
+        key: bun-${{ runner.os }}-${{ hashFiles('bun.lock') }}
+        restore-keys: bun-${{ runner.os }}-
+    # No postinstall: it would download browsers and install git hooks.
+    - run: bun install --frozen-lockfile --ignore-scripts && node scripts/fix-ts-symlink.js
+      shell: bash
+    # site/package.json pins @playwright/test: the only place the version lives.
+    - if: inputs.browsers != ''
+      uses: actions/cache@v6
+      with:
+        path: ~/.cache/ms-playwright
+        key: pw-${{ runner.os }}-${{ hashFiles('site/package.json') }}-${{ inputs.browsers }}
+    - if: inputs.browsers != ''
+      run: cd site && bunx playwright install --with-deps ${{ inputs.browsers }}
+      shell: bash

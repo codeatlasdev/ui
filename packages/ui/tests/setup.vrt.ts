@@ -3,7 +3,7 @@ import "@fontsource-variable/jetbrains-mono";
 import { beforeEach } from "vitest";
 
 // Same typefaces the docs site self-hosts (site/src/layouts/Base.astro), so baselines don't depend on
-// whatever fallback fonts the Docker image ships.
+// whatever fallback fonts the CI runner ships.
 const style = document.createElement("style");
 style.textContent = `
 :root{--ca-font-sans:"Inter Variable",Inter,system-ui,sans-serif;--ca-font-mono:"JetBrains Mono Variable","JetBrains Mono",monospace}

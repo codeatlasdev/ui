@@ -1,6 +1,5 @@
 #!/usr/bin/env sh
-# Regenerate visual baselines on CI (native linux/amd64, same image as the check) and pull them.
-# Local Docker on Apple Silicon emulates amd64 and takes 10x longer; use test:vrt:update:local offline.
+# Regenerate visual baselines on CI (ubuntu-24.04, the only place they are rendered) and pull them.
 # Needs: gh (authenticated), the current branch pushed with no unpushed commits.
 set -e
 command -v gh >/dev/null 2>&1 || { echo "gh CLI is required (https://cli.github.com)." >&2; exit 1; }

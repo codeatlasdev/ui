@@ -1,0 +1,37 @@
+name: Version
+# Pending changesets on main → "chore: version packages" PR. Merging it only bumps
+# packages/ui/package.json + CHANGELOG.md; publishing happens when a maintainer pushes the tag
+# (bun run release:tag). The PR is opened with GITHUB_TOKEN, which starts no CI run, so CI is
+# dispatched explicitly on its branch; the check attaches to the head commit and satisfies "CI ok".
+on:
+  push:
+    branches: [main]
+
+concurrency:
+  group: version-main
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  version:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: write
+      pull-requests: write
+      actions: write
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+      - id: changesets
+        uses: changesets/action@v2
+        with:
+          pr-title: "chore: version packages"
+          commit-message: "chore: version packages"
+          version-script: bun run version
+      - if: steps.changesets.outputs.pr-number != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh workflow run ci.yml --ref changeset-release/main

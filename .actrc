@@ -1,4 +1,0 @@
-# nektos/act: run .github/workflows locally (bun run ci:local [-j <job>]).
-# Same Ubuntu toolchain image GitHub uses; browser jobs use their own Playwright container.
--P ubuntu-latest=catthehacker/ubuntu:act-latest
---artifact-server-path=/tmp/act-artifacts

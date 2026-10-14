@@ -10,8 +10,8 @@ export default defineConfig({
 	forbidOnly: !!process.env.CI,
 	failOnFlakyTests: !!process.env.CI,
 	retries: process.env.CI ? 1 : 0,
-	// Every core on CI runners (4 vCPU); shards split the suite across jobs.
-	workers: process.env.CI ? "100%" : "50%",
+	// Every core on CI runners (4 vCPU); shards split the suite across jobs. Locally a quarter.
+	workers: process.env.CI ? "100%" : "25%",
 	snapshotPathTemplate: "{testDir}/__screenshots__/{projectName}/{testFilePath}/{arg}{ext}",
 	expect: {
 		timeout: 5_000,

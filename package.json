@@ -12,7 +12,7 @@
 		"site"
 	],
 	"scripts": {
-		"dev": "bun run --cwd site dev",
+		"dev": "bun scripts/dev.ts",
 		"build": "bun run --cwd packages/ui build && bun run --cwd site build",
 		"build:pkg": "bun run --cwd packages/ui build",
 		"preview": "bun run --cwd site preview",
@@ -25,10 +25,10 @@
 		"changeset": "changeset",
 		"version": "changeset version && bun install --lockfile-only",
 		"release": "node scripts/release.js",
+		"release:tag": "bun scripts/release-tag.ts",
 		"clean": "rm -rf packages/ui/dist site/dist site/.astro",
 		"lint:fix": "biome check --write .",
 		"validate": "bun scripts/validate.ts",
-		"predev": "bun run build:pkg",
 		"postinstall": "node scripts/fix-ts-symlink.js && node scripts/install-hooks.js && bunx playwright install chromium",
 		"test": "bun run test:unit && bun run test:browser && bun run test:e2e",
 		"test:unit": "bun run --cwd packages/ui test:unit",
@@ -39,12 +39,7 @@
 		"issue:start": "bun scripts/issue.ts start",
 		"issue:status": "bun scripts/issue.ts status",
 		"issue:done": "bun scripts/issue.ts done",
-		"test:vrt": "sh scripts/vrt.sh",
 		"test:vrt:update": "sh scripts/vrt-update-ci.sh",
-		"test:vrt:update:local": "sh scripts/vrt.sh --update",
-		"site:deploy": "sh scripts/deploy-site.sh",
-		"release:ci": "bun run build:pkg && node scripts/release.js --smoke && changeset publish",
-		"ci:local": "act pull_request",
 		"test:reap": "bun scripts/test-run.ts --reap",
 		"test:status": "bun scripts/test-run.ts --status"
 	},

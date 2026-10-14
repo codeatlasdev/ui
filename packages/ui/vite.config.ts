@@ -29,8 +29,8 @@ export default defineConfig({
 	optimizeDeps: { include: ["echarts", "@tanstack/svelte-table", "shiki", "axe-core"] },
 	test: {
 		expect: { requireAssertions: true },
-		// Locally: half the cores (each worker is a browser tab in one Chromium). CI keeps the default.
-		maxWorkers: process.env.CI ? undefined : Math.max(2, Math.floor(availableParallelism() / 2)),
+		// Locally: a quarter of the cores (each worker is a browser tab in one Chromium). CI keeps the default.
+		maxWorkers: process.env.CI ? undefined : Math.max(2, Math.floor(availableParallelism() / 4)),
 		reporters: process.env.CI
 			? ["default", "github-actions", ["html", { singleFile: true }]]
 			: ["default"],
@@ -63,7 +63,7 @@ export default defineConfig({
 				test: {
 					name: "vrt",
 					include: [vrtPattern],
-					// Baselines are Linux-only (scripts/vrt.sh runs Docker). An empty `include` would fall
+					// Baselines are rendered only on CI (ubuntu-24.04). An empty `include` would fall
 					// back to Vitest's defaults, so exclude everything elsewhere instead.
 					exclude: process.platform === "linux" ? defaultExclude : ["**/*"],
 					passWithNoTests: true,
