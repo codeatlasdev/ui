@@ -16,6 +16,7 @@ export {
 	maskPhoneBR,
 	maskRG,
 } from "./masks.js";
-export { centsToDisplay, parseInputToCents } from "./money.js";
+export type { MoneyOptions } from "./money.js";
+export { centsToDisplay, currencyDecimals, parseInputToCents } from "./money.js";
 export { default as PhoneField } from "./PhoneField.svelte";
 export type { CepAddress } from "./types.js";

@@ -520,22 +520,23 @@ Charts, DataTable and CodeSnippet are NOT in the root import. Each subpath requi
 ```ts
 import { MaskedField, MoneyInput, PhoneField, CepField, mask,
   maskCPF, maskCNPJ, maskCPFCNPJ, maskCEP, maskPhoneBR, maskDateBR, maskRG,
-  isValidCPF, isValidCNPJ, isValidDateBR, centsToDisplay, parseInputToCents } from "@codeatlasdev/ui/forms";
+  isValidCPF, isValidCNPJ, isValidDateBR, centsToDisplay, parseInputToCents, currencyDecimals } from "@codeatlasdev/ui/forms";
 ```
 | Symbol | Use |
 |---|---|
 | `MaskedField` | `TextField` + `mask: (raw) => string` + `validate?: (v) => string \| undefined` (runs on blur). Automatic `inputmode` (`numeric` for CPF/CEP/phone/date) |
-| `MoneyInput` | `value` in **cents** (integer, bindable). `123456` displays `R$ 1.234,56`. Props: `min`, `max`, `allowNegative` (default `false`), `onchange(cents)` |
+| `MoneyInput` | `value` in the currency's **minor unit** (integer, bindable). `123456` displays `R$ 1.234,56` (BRL default). Props: `currency` (ISO 4217, decimals from `Intl`: USD 2, JPY 0, BHD 3), `locale` (BCP 47; defaults to the active i18n locale when `currency` is set, `pt-BR` when it is not), `min`, `max`, `allowNegative` (default `false`), `onchange(minorUnits)` |
 | `PhoneField` | bindable `value` in **E.164** (`+5511987654321`; `''` if incomplete). `country="BR"` |
 | `CepField` | masked `bind:value` + `onlookup?: (cep) => Promise<CepAddress \| null>` (the package does no fetching: inject ViaCEP), `onresolve(address)`, `bind:lookupPending` to disable dependent fields |
 | `maskCPF` `maskCNPJ` `maskCPFCNPJ` `maskCEP` `maskPhoneBR` `maskDateBR` `maskRG` | Pure functions `(raw: string) => string` |
 | `isValidCPF` `isValidCNPJ` `isValidDateBR` | Validation (check digits / real date) |
-| `centsToDisplay(cents)` · `parseInputToCents(text)` | `123456` ⇄ `"R$ 1.234,56"` |
+| `centsToDisplay(n, {currency, locale}?)` · `parseInputToCents(text, {currency, locale}?)` · `currencyDecimals(currency)` | `123456` ⇄ `"R$ 1.234,56"` (BRL / pt-BR default); `centsToDisplay(123456, {currency:"USD", locale:"en-US"})` → `"$1,234.56"` |
 | `use:mask={maskCPF}` | Action for a native `<input>`; preserves the cursor (counts digits before the caret) |
 
 ```svelte
 <MaskedField label="CPF" mask={maskCPF} validate={(v) => (isValidCPF(v) ? undefined : "Invalid CPF")} bind:value={cpf} />
 <MoneyInput label="Amount" bind:value={cents} min={0} />
+<MoneyInput label="Price" currency="USD" locale="en-US" bind:value={usdCents} />
 <PhoneField label="WhatsApp" bind:value={e164} />
 <CepField label="CEP" bind:value={cep} bind:lookupPending onlookup={viaCep} onresolve={(a) => (street = a.logradouro)} />
 ```

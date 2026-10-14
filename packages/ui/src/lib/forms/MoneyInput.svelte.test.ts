@@ -1,7 +1,8 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../tests/a11y";
+import { setLocale } from "../i18n/index.js";
 import Harness from "./MoneyInput.test.svelte";
 
 /** Select the whole text and type over it (what a user does to enter a fresh amount). */
@@ -117,5 +118,47 @@ describe("MoneyInput", () => {
 	it("initial value outside bounds is displayed clamped", async () => {
 		const screen = await render(Harness, { initial: 999999, max: 5000 });
 		await expect.element(screen.getByLabelText("Amount")).toHaveValue("R$ 50,00");
+	});
+
+	describe("currency and locale", () => {
+		afterEach(() => setLocale("en"));
+
+		it("keeps the BRL format by default even when the UI language is English", async () => {
+			setLocale("en");
+			const screen = await render(Harness, { initial: 123456 });
+			await expect.element(screen.getByLabelText("Amount")).toHaveValue("R$ 1.234,56");
+		});
+
+		it("USD / en-US: digits shift in as cents", async () => {
+			const onchange = vi.fn();
+			const screen = await render(Harness, { currency: "USD", locale: "en-US", onchange });
+			const input = screen.getByLabelText("Amount");
+			await expect.element(input).toHaveValue("$0.00");
+			await typeOver(input, "123456");
+			await expect.element(input).toHaveValue("$1,234.56");
+			await expect.element(screen.getByTestId("bound")).toHaveTextContent("123456");
+			expect(onchange).toHaveBeenLastCalledWith(123456);
+		});
+
+		it("JPY has no decimals: typed digits are whole yen", async () => {
+			const screen = await render(Harness, { currency: "JPY", locale: "en-US" });
+			const input = screen.getByLabelText("Amount");
+			await expect.element(input).toHaveValue("¥0");
+			await typeOver(input, "1234");
+			await expect.element(input).toHaveValue("¥1,234");
+			await expect.element(screen.getByTestId("bound")).toHaveTextContent("1234");
+		});
+
+		it("a set currency takes its locale from the active UI language", async () => {
+			setLocale("en");
+			const screen = await render(Harness, { currency: "EUR", initial: 123456 });
+			await expect.element(screen.getByLabelText("Amount")).toHaveValue("€1,234.56");
+		});
+
+		it("an explicit locale wins over the UI language", async () => {
+			setLocale("en");
+			const screen = await render(Harness, { currency: "EUR", locale: "de-DE", initial: 123456 });
+			await expect.element(screen.getByLabelText("Amount")).toHaveValue("1.234,56 €");
+		});
 	});
 });

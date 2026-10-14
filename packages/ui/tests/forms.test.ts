@@ -11,7 +11,7 @@ import {
 	maskPhoneBR,
 	maskRG,
 } from "../src/lib/forms/masks.js";
-import { centsToDisplay, parseInputToCents } from "../src/lib/forms/money.js";
+import { centsToDisplay, currencyDecimals, parseInputToCents } from "../src/lib/forms/money.js";
 
 describe("masks", () => {
 	test("maskCPF", () => {
@@ -78,5 +78,38 @@ describe("money", () => {
 		expect(parseInputToCents("10,5")).toBe(1050);
 		expect(parseInputToCents("")).toBe(0);
 		expect(parseInputToCents("-R$ 5,00")).toBe(-500);
+	});
+
+	test("BRL stays the default currency and pt-BR format is explicit-able", () => {
+		expect(centsToDisplay(123456, { currency: "BRL", locale: "pt-BR" })).toBe("R$ 1.234,56");
+		expect(parseInputToCents("R$ 1.234,56", { currency: "BRL", locale: "pt-BR" })).toBe(123456);
+	});
+
+	test("USD / en-US", () => {
+		const o = { currency: "USD", locale: "en-US" };
+		expect(centsToDisplay(123456, o)).toBe("$1,234.56");
+		expect(centsToDisplay(0, o)).toBe("$0.00");
+		expect(centsToDisplay(-500, o)).toBe("-$5.00");
+		expect(parseInputToCents("$1,234.56", o)).toBe(123456);
+		expect(parseInputToCents("10.5", o)).toBe(1050);
+		expect(parseInputToCents("123456", o)).toBe(123456);
+		expect(parseInputToCents("-$5.00", o)).toBe(-500);
+	});
+
+	test("JPY has 0 decimals: minor unit is the yen", () => {
+		const o = { currency: "JPY", locale: "en-US" };
+		expect(centsToDisplay(1234, o)).toBe("¥1,234");
+		expect(parseInputToCents("¥1,234", o)).toBe(1234);
+		expect(parseInputToCents("1234", o)).toBe(1234);
+		expect(parseInputToCents("12.9", { currency: "JPY", locale: "en-US" })).toBe(12);
+		expect(currencyDecimals("JPY")).toBe(0);
+		expect(currencyDecimals("USD")).toBe(2);
+		expect(currencyDecimals("BHD")).toBe(3);
+	});
+
+	test("3-decimal currency (BHD) and de-DE separators", () => {
+		expect(parseInputToCents("1.234,567", { currency: "BHD", locale: "de-DE" })).toBe(1234567);
+		expect(centsToDisplay(1234567, { currency: "BHD", locale: "en-US" })).toBe("BHD 1,234.567");
+		expect(parseInputToCents("1.234,5", { currency: "EUR", locale: "de-DE" })).toBe(123450);
 	});
 });

@@ -37,7 +37,7 @@
 - `Button`/`IconButton` take `loading` (spinner, `aria-busy`, blocks click). `CopyButton`, `PinInput` (OTP), `ToggleGroup`, `SegmentedControl` are in the root import
 - [Date components](packages/ui/src/lib/components/Date/): DatePicker, DateRangePicker, DateField, TimeField, Calendar, RangeCalendar (`@internationalized/date` values, pt-BR default; `CalendarDate`, `Time`, `today` re-exported)
 - `SimpleTable responsive="cards"`: rows become cards below `md`; every `<td>` needs `data-label`. `--ca-touch-target` (44px) applies under `pointer: coarse`
-- [Forms subpath](packages/ui/src/lib/forms/): `@codeatlasdev/ui/forms` (no peer): MaskedField, MoneyInput (value in cents), PhoneField (E.164), CepField (`onlookup` injected, no fetch), `use:mask`, maskCPF/maskCNPJ/maskCPFCNPJ/maskCEP/maskPhoneBR/maskDateBR/maskRG, isValidCPF/isValidCNPJ/isValidDateBR, centsToDisplay, parseInputToCents. `useForm` supports `arrays` (`FieldArrayState`: add/remove/move)
+- [Forms subpath](packages/ui/src/lib/forms/): `@codeatlasdev/ui/forms` (no peer): MaskedField, MoneyInput (value in minor units; `currency`, `locale`; BRL default), PhoneField (E.164), CepField (`onlookup` injected, no fetch), `use:mask`, maskCPF/maskCNPJ/maskCPFCNPJ/maskCEP/maskPhoneBR/maskDateBR/maskRG, isValidCPF/isValidCNPJ/isValidDateBR, centsToDisplay, parseInputToCents, currencyDecimals. `useForm` supports `arrays` (`FieldArrayState`: add/remove/move)
 - [CSS API](docs/css-api.md): public `ca-*` classes per component; renaming a listed class is a breaking change
 
 ## Showcase

@@ -1,6 +1,6 @@
 ---
 title: MoneyInput
-description: BRL currency field. The bound value is integer cents and the display is formatted as you type.
+description: Currency field. The bound value is an integer in the currency's minor unit and the display is formatted as you type. BRL by default.
 group: Inputs
 ---
 import Demo from "~/components/docs/Demo.astro";
@@ -9,6 +9,8 @@ import Default from "~/demos/inputs/money-input/Default.svelte";
 import DefaultSrc from "~/demos/inputs/money-input/Default.svelte?raw";
 import Constraints from "~/demos/inputs/money-input/Constraints.svelte";
 import ConstraintsSrc from "~/demos/inputs/money-input/Constraints.svelte?raw";
+import Currency from "~/demos/inputs/money-input/Currency.svelte";
+import CurrencySrc from "~/demos/inputs/money-input/Currency.svelte?raw";
 import Helpers from "~/demos/inputs/money-input/Helpers.svelte";
 import HelpersSrc from "~/demos/inputs/money-input/Helpers.svelte?raw";
 
@@ -21,19 +23,22 @@ import HelpersSrc from "~/demos/inputs/money-input/Helpers.svelte?raw";
 <MoneyInput label="Price" bind:value={price} />
 ```
 
-Import from the `@codeatlasdev/ui/forms` subpath. The value is always an integer number of cents, so there is no floating-point rounding. Digits shift in from the right: typing `123456` gives `R$ 1.234,56`. `min` and `max` clamp the value, and an out-of-range value set from outside is clamped back into `value`.
+Import from the `@codeatlasdev/ui/forms` subpath. The value is always an integer in the currency's minor unit (cents for BRL and USD, whole yen for JPY), so there is no floating-point rounding. Digits shift in from the right: typing `123456` gives `R$ 1.234,56`. `min` and `max` clamp the value, and an out-of-range value set from outside is clamped back into `value`.
 
 <Demo title="Default" description="Type 123456 to get R$ 1.234,56." src={DefaultSrc}><Default client:visible /></Demo>
 <Demo title="Min, max, negative, error and disabled" description="Deposit is clamped between R$ 10,00 and R$ 100,00. Include a minus sign to toggle the sign when allowNegative is set." src={ConstraintsSrc}><Constraints client:visible /></Demo>
+<Demo title="Currency and locale" description="currency picks the minor unit (USD 2 decimals, JPY none); locale picks separators and symbol placement." src={CurrencySrc}><Currency client:visible /></Demo>
 <Demo title="Helpers" description="Pure functions exported from @codeatlasdev/ui/forms." src={HelpersSrc}><Helpers /></Demo>
 
 <Props rows={[
-  { name: "value", type: "number", default: "0", description: "Bindable amount in integer cents." },
+  { name: "value", type: "number", default: "0", description: "Bindable amount in the currency's minor unit (integer)." },
+  { name: "currency", type: "string", default: "'BRL'", description: "ISO 4217 code. Decimals come from Intl: USD 2, JPY 0, BHD 3." },
+  { name: "locale", type: "string", description: "BCP 47 tag for separators and symbol placement. Defaults to the active i18n locale when currency is set, and to 'pt-BR' when it is not, so the BRL default keeps its format." },
   { name: "min", type: "number", description: "Minimum value in cents." },
   { name: "max", type: "number", description: "Maximum value in cents." },
   { name: "allowNegative", type: "boolean", default: "false", description: "Accepts negative amounts. Type a minus sign to toggle." },
   { name: "label", type: "string", description: "Label text." },
-  { name: "placeholder", type: "string", default: "centsToDisplay(0)", description: "Input placeholder." },
+  { name: "placeholder", type: "string", default: "the formatted zero amount", description: "Input placeholder." },
   { name: "error", type: "string", description: "Error message. Puts the field in the error state." },
   { name: "description", type: "string", description: "Hint shown below the field." },
   { name: "disabled", type: "boolean", default: "false", description: "Disables the input." },

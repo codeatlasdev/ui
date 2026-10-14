@@ -1204,8 +1204,10 @@ Classes: `ca-mobile-pane` `ca-mobile-pane__body` `ca-mobile-pane__body--fixed`
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `label?` | `string` |  |  |
-| `placeholder?` | `string` | `centsToDisplay(0)` |  |
-| `value?` | `number` | `0` | `bind:` Amount in integer cents (BRL). `123456` = R$ 1.234,56. |
+| `placeholder?` | `string` |  |  |
+| `value?` | `number` | `0` | `bind:` Amount in the currency's minor unit (integer). BRL: `123456` = R$ 1.234,56; JPY: `1234` = ¥1,234. |
+| `currency?` | `string` |  | ISO 4217 code. Decimals (USD 2, JPY 0, BHD 3) come from `Intl`. Default `"BRL"`. |
+| `locale?` | `string` |  | BCP 47 tag for separators and symbol placement. Default: the active i18n locale when `currency` is set; `"pt-BR"` when it is not (so the BRL default keeps its format). |
 | `min?` | `number` |  |  |
 | `max?` | `number` |  |  |
 | `allowNegative?` | `boolean` | `false` |  |
