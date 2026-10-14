@@ -66,4 +66,8 @@
   .ca-steps :global(> ol > li:last-child) { padding-bottom: 0; }
   .ca-steps :global(> ol > li:last-child::after) { display: none; }
   .ca-steps :global(> ol > li > :first-child) { margin-top: 0; }
+  /* A leading inline title (<strong>, <b>) shares its line with the li's own strut (regular
+     face + whitespace), and that mixed line rounds to 23.2 or 24.2px between loads, shifting
+     everything below by 1px per step. As a block, the title's line measures one font only. */
+  .ca-steps :global(> ol > li > :is(strong, b):first-child) { display: block; }
 </style>
