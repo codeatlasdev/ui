@@ -1,4 +1,12 @@
-import { expect, expectNoViolations, makeAxe, settle, test, waitIslands } from "./fixtures";
+import {
+	expect,
+	expectNoViolations,
+	makeAxe,
+	networkIdle,
+	settle,
+	test,
+	waitIslands,
+} from "./fixtures";
 import { ROUTES } from "./routes";
 
 // One navigation per route, every accessibility check on it. The page follows the OS scheme
@@ -14,7 +22,7 @@ for (const route of ROUTES) {
 
 		await page.emulateMedia({ colorScheme: "dark" });
 		await page.goto(route);
-		await page.waitForLoadState("networkidle");
+		await networkIdle(page);
 		await waitIslands(page);
 
 		// Pages that put a package shell in an island must still expose exactly one skip target.
