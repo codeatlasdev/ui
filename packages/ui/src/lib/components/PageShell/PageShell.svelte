@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import { scrollFocusable } from '../../actions/scroll-focusable.js';
+  import { provideSectionHeadingLevel } from './heading-context.js';
 
   interface Props {
     title?: string;
@@ -14,6 +15,8 @@
 
   let { title, description, gap, maxWidth, actions, class: className = '', children }: Props = $props();
   const titleId = $props.id();
+  // The page <h1> is rendered above; titles inside the shell default to <h2>.
+  provideSectionHeadingLevel();
 
   // Only caller-supplied values become inline vars; the defaults live in the stylesheet as tokens.
   const rootStyle = $derived(

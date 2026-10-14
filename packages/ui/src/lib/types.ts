@@ -12,3 +12,6 @@ export type IconProps = {
  * Structural, so `@lucide/svelte` icons (and compatible libraries) fit.
  */
 export type IconComponent = Component<IconProps>;
+
+/** Level of a rendered `<h2>`–`<h6>`. `<h1>` is reserved for the page title (`PageShell`). */
+export type HeadingLevel = 2 | 3 | 4 | 5 | 6;

@@ -821,6 +821,7 @@ Classes: `ca-dropdown-sep`
 |---|---|---|---|
 | `icon?` | `IconComponent` |  | Lucide icon component |
 | `title` | `string` |  |  |
+| `headingLevel?` | `HeadingLevel` |  | Heading level of the title (2–6). Only the tag changes, never the look. Defaults to 2 inside a `PageShell` (under its `<h1>`), 5 elsewhere. |
 | `variant?` | `'default' \| 'hero'` | `'default'` | 'default' = compact inline empty state. 'hero'    = larger brand-tinted icon tile with glow, bigger title; `actions` stack full-width on mobile (put the primary action first). |
 | `description?` | `string` |  |  |
 | `class?` | `string` | `''` |  |
@@ -939,6 +940,7 @@ Classes: `ca-app-bar` `ca-app-bar__content` `ca-app-bar__leading` `ca-app-bar__t
 | `flush?` | `boolean` | `false` | Removes all padding, for tables, images and code that touch the edges. |
 | `full?` | `boolean` | `false` | width: 100% |
 | `title?` | `string` |  |  |
+| `headingLevel?` | `HeadingLevel` |  | Renders `title` as an `<h2>`–`<h6>` so the card is a section in the page outline. Omit for a plain paragraph. Only the tag changes, never the look. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `headerActions`, `children`

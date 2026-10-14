@@ -40,6 +40,7 @@ GlassCard is the primary surface of the library. Padding comes from `--ca-card-p
   { name: "flush", type: "boolean", default: "false", description: "Removes all padding." },
   { name: "full", type: "boolean", default: "false", description: "Sets `width: 100%`." },
   { name: "title", type: "string", default: "undefined", description: "Header title." },
+  { name: "headingLevel", type: "2 | 3 | 4 | 5 | 6", default: "undefined", description: "Renders `title` as `<h2>`–`<h6>` so the card is a section in the page outline. Omit for a plain paragraph. The look does not change." },
   { name: "headerActions", type: "Snippet", default: "undefined", description: "Actions aligned to the end of the header." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
   { name: "children", type: "Snippet", default: "undefined", description: "Card content." },

@@ -111,7 +111,9 @@ type Option = { label: string; value: string | number; disabled?: boolean };
 </GlassCard>
 ```
 
-Props: `title?: string`, `flush?: boolean` (removes card padding).
+Props: `title?: string`, `flush?: boolean` (removes card padding), `headingLevel?: 2-6` (renders `title` as a real heading; omit for a `<p>`).
+
+Under a page `<h1>`, give card titles and `EmptyState` titles a valid level (`EmptyState` inside `PageShell` defaults to `<h2>`) so axe `heading-order` passes.
 
 **Never** apply `padding:` directly to a GlassCard. Use the `padding` prop.
 

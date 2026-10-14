@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { Thickness } from '../../tokens/materials.js';
+  import type { HeadingLevel } from '../../types.js';
   import LiquidGlass from '../LiquidGlass/LiquidGlass.svelte';
   import { GLASS_OPTICS } from '../../tokens/materials.js';
 
@@ -20,6 +21,11 @@
     /** width: 100% */
     full?:          boolean;
     title?:         string;
+    /**
+     * Renders `title` as an `<h2>`–`<h6>` so the card is a section in the page outline.
+     * Omit for a plain paragraph. Only the tag changes, never the look.
+     */
+    headingLevel?:  HeadingLevel;
     headerActions?: Snippet;
     class?:         string;
     children?:      Snippet;
@@ -34,6 +40,7 @@
     flush = false,
     full  = false,
     title,
+    headingLevel,
     headerActions,
     class: className = '',
     children,
@@ -64,7 +71,9 @@
   <LiquidGlass optics={GLASS_OPTICS[thickness]} />
   {#if title || headerActions}
     <div class="ca-glass-card__header">
-      {#if title}<p class="ca-glass-card__title">{title}</p>{/if}
+      {#if title}
+        <svelte:element this={headingLevel ? `h${headingLevel}` : 'p'} class="ca-glass-card__title">{title}</svelte:element>
+      {/if}
       {#if headerActions}
         <div class="ca-glass-card__header-actions">{@render headerActions()}</div>
       {/if}

@@ -1,11 +1,17 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import type { IconComponent } from '../../types.js';
+  import type { HeadingLevel, IconComponent } from '../../types.js';
+  import { sectionHeadingLevel } from '../PageShell/heading-context.js';
 
   interface Props {
     /** Lucide icon component */
     icon?:        IconComponent;
     title:        string;
+    /**
+     * Heading level of the title (2–6). Only the tag changes, never the look.
+     * Defaults to 2 inside a `PageShell` (under its `<h1>`), 5 elsewhere.
+     */
+    headingLevel?: HeadingLevel;
     /**
      * 'default' = compact inline empty state.
      * 'hero'    = larger brand-tinted icon tile with glow, bigger title; `actions` stack
@@ -18,7 +24,11 @@
     children?:    Snippet;
   }
 
-  let { icon: Icon, title, variant = 'default', description, actions, children, class: className = '' }: Props = $props();
+  let { icon: Icon, title, headingLevel, variant = 'default', description, actions, children, class: className = '' }: Props = $props();
+
+  // Read once at init: context lookups are only valid during component initialisation.
+  const inheritedLevel = sectionHeadingLevel(5);
+  const level = $derived(headingLevel ?? inheritedLevel);
 </script>
 
 <div class="ca-empty ca-empty--{variant} {className}" role="status" aria-label={title}>
@@ -27,7 +37,7 @@
       <Icon size={variant === 'hero' ? 32 : 24} stroke-width={1.5} />
     </div>
   {/if}
-  <h5 class="ca-empty__title">{title}</h5>
+  <svelte:element this={`h${level}`} class="ca-empty__title">{title}</svelte:element>
   {#if description}
     <p class="ca-empty__description">{description}</p>
   {:else if children}

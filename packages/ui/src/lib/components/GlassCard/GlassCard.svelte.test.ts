@@ -2,6 +2,7 @@ import { createRawSnippet } from "svelte";
 import { describe, expect, it } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import InShell from "../EmptyState/EmptyStateInShell.test.svelte";
 import GlassCard from "./GlassCard.svelte";
 import Harness from "./GlassCard.test.svelte";
 
@@ -103,5 +104,43 @@ describe("GlassCard", () => {
 	it("custom class is merged", async () => {
 		const screen = await render(GlassCard, { children: body, class: "extra" });
 		await expect.element(card(screen.container)).toHaveClass("extra");
+	});
+	describe("title heading level", () => {
+		const titleEl = (c: HTMLElement) => c.querySelector(".ca-glass-card__title") as HTMLElement;
+
+		it("title is a plain paragraph by default, so existing outlines do not change", async () => {
+			const screen = await render(GlassCard, { title: "Summary", children: body });
+			expect(titleEl(screen.container).tagName).toBe("P");
+			expect(screen.getByRole("heading").elements()).toHaveLength(0);
+		});
+
+		it.each([2, 3, 4, 5, 6] as const)(
+			"headingLevel %i renders a real heading",
+			async (headingLevel) => {
+				const screen = await render(GlassCard, { title: "Summary", headingLevel, children: body });
+				expect(titleEl(screen.container).tagName).toBe(`H${headingLevel}`);
+				await expect
+					.element(screen.getByRole("heading", { level: headingLevel, name: "Summary" }))
+					.toBeVisible();
+			}
+		);
+
+		it("the heading looks the same as the paragraph", async () => {
+			const style = async (props: Record<string, unknown>) => {
+				const screen = await render(GlassCard, { title: "Summary", children: body, ...props });
+				const cs = getComputedStyle(titleEl(screen.container));
+				const out = `${cs.fontSize}|${cs.fontWeight}|${cs.marginTop}|${cs.marginBottom}|${cs.lineHeight}`;
+				screen.unmount();
+				return out;
+			};
+			expect(await style({ headingLevel: 2 })).toBe(await style({}));
+		});
+
+		it("inside a PageShell a card heading at level 2 keeps heading order", async () => {
+			const screen = await render(InShell, { headingLevel: 2, cardLevel: 2 });
+			expect(
+				await checkA11y(screen.container, { runOnly: ["heading-order"] })
+			).toHaveNoViolations();
+		});
 	});
 });

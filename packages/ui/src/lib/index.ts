@@ -208,7 +208,7 @@ export * from "./tokens/index.js";
 // ── THEME ─────────────────────────────────────────────────────────────────────
 export type { BuiltinPresetId, PresetId } from "./tokens/presets.js";
 export { THEME_PRESETS } from "./tokens/presets.js";
-export type { IconComponent, IconProps } from "./types.js";
+export type { HeadingLevel, IconComponent, IconProps } from "./types.js";
 export type { Politeness } from "./utils/announce.js";
 export { announce } from "./utils/announce.js";
 export type {
