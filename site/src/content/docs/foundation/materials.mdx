@@ -25,6 +25,8 @@ Materials are CSS classes (`glass-ultra-thin`, `glass-thin`, `glass-regular`, `g
 
 The surface style on `<html data-style>` rewrites the `--ca-mat-*` tokens, so every material changes at once. `solid` is the default: no blur, opaque fills, no glow, hairline edges, so the tiers below differ only by fill and shadow. `flat` also drops the shadows, `frosted` keeps a lighter blur, and `glass` (the opt-in `liquid` look) has the full blur, mesh and glow. The demos on this page use `material="glass"`, so they look the same under any style. Switch the style with `colorScheme.setStyle()`, see [Theming](/docs/getting-started/theming/#surface-styles). Browsers with `prefers-reduced-transparency: reduce` get opaque surfaces.
 
+The modal scrim (the `::backdrop` of Dialog, AlertDialog, Sheet, Drawer, CommandPalette and DocsSearch) reads `--ca-scrim-blur`, which defaults to `blur(4px) saturate(180%)` under every style. Set `--ca-scrim-blur: none` on `:root` to drop the blur on all of them at once, for example in a WKWebView window that is transparent over a native view.
+
 <Demo title="Glass tiers" description="All five thickness levels on a gradient backdrop." src={TiersSrc}><Tiers /></Demo>
 <Demo title="Button glass variants" description="glass-btn, glass-btn-prominent and glass-btn-clear for custom controls. They follow `data-style`, so the halo and blur disappear under `solid`." src={GlassButtonsSrc}><GlassButtons /></Demo>
 <Demo title="Tinted and glowing" description={"`tone=\"brand\"` tints the fill, `glow` adds a halo that only shows under styles that keep one."} src={TintedSrc}><Tinted /></Demo>

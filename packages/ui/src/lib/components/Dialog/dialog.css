@@ -40,9 +40,9 @@
     touch-action: auto;
   }
   dialog.ca-overlay::backdrop {
-    /* Blur the page content, then darken */
-    -webkit-backdrop-filter: blur(4px) saturate(180%);
-    backdrop-filter: blur(4px) saturate(180%);
+    /* Blur the page content (--ca-scrim-blur; `none` drops it), then darken */
+    -webkit-backdrop-filter: var(--ca-scrim-blur);
+    backdrop-filter: var(--ca-scrim-blur);
     background: var(--ca-scrim-color);
     touch-action: none;
     overscroll-behavior: contain;

@@ -205,11 +205,7 @@
 <style>
 @layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
 @layer ca.components {
-    /* Palette scrim: plain blur(4px) (no saturate boost) and a slower fade than the shared overlay. */
-    :global(dialog.ca-cmd-overlay::backdrop) {
-      -webkit-backdrop-filter: blur(4px);
-      backdrop-filter: blur(4px);
-    }
+    /* Palette scrim: same --ca-scrim-blur as the shared overlay (inherited), a slower fade. */
     :global(dialog.ca-cmd-overlay[data-state='open']::backdrop) {
       animation-duration: var(--ca-duration-base);
     }
