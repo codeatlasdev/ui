@@ -110,6 +110,18 @@ export interface GenerateBrandOptions {
 const SIZES = [16, 32, 48] as const;
 
 /**
+ * Render options for one PNG. resvg loads every system font on each construction by default
+ * (~450 ms per render on Windows); a mark drawn with paths needs none, so fonts load only when the
+ * SVG has text (#120).
+ */
+export function resvgOptions(svg: string, size: number) {
+	return {
+		fitTo: { mode: "width" as const, value: size },
+		font: { loadSystemFonts: /<text\b/.test(svg) },
+	};
+}
+
+/**
  * Writes `favicon.<h>.svg`, `favicon.<h>.ico` (16/32/48), `favicon-32.<h>.png`, `apple-touch-icon.<h>.png`
  * (180, opaque), `icon-192/512.<h>.png`, `maskable-512.<h>.png` and `manifest.<h>.webmanifest`.
  * Needs the optional peers `@resvg/resvg-js` and `png-to-ico`.
@@ -146,7 +158,7 @@ export async function generateBrand(o: GenerateBrandOptions): Promise<BrandAsset
 		);
 	};
 	const png = (svg: string, size: number) =>
-		new Resvg(svg, { fitTo: { mode: "width", value: size } }).render().asPng();
+		new Resvg(svg, resvgOptions(svg, size)).render().asPng();
 	/** Transparent PNG of the mark alone (favicon sizes). */
 	const bare = (size: number) =>
 		png(light.replace(/<svg\b/, `<svg width="${size}" height="${size}"`), size);

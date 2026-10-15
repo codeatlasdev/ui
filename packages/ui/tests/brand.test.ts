@@ -2,7 +2,7 @@ import { describe, expect, it } from "bun:test";
 import { mkdtempSync, readdirSync, readFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { generateBrand, renderMark, resolveBrand } from "../src/lib/brand.js";
+import { generateBrand, renderMark, resolveBrand, resvgOptions } from "../src/lib/brand.js";
 import { iconLinks, ogCard } from "../src/lib/seo/index.js";
 
 const MARK =
@@ -97,5 +97,16 @@ describe("iconLinks / ogCard", () => {
 		expect(html).not.toContain("<script>");
 		expect(html).toContain("&lt;script&gt;");
 		expect(html).toContain("1200px");
+	});
+});
+
+describe("resvgOptions", () => {
+	// resvg loads every system font per render by default: ~450 ms each on Windows, so one icon set
+	// took ~2.7 s and the generateBrand test timed out there (#120). A mark without text needs none.
+	it("loads system fonts only for an SVG with text (#120)", () => {
+		expect(resvgOptions(MARK, 32).font?.loadSystemFonts).toBe(false);
+		const withText = MARK.replace("</svg>", '<text x="4" y="20">A</text></svg>');
+		expect(resvgOptions(withText, 32).font?.loadSystemFonts).toBe(true);
+		expect(resvgOptions(MARK, 180).fitTo).toEqual({ mode: "width", value: 180 });
 	});
 });
