@@ -98,6 +98,18 @@ describe("iconLinks / ogCard", () => {
 		expect(html).toContain("&lt;script&gt;");
 		expect(html).toContain("1200px");
 	});
+
+	it("sets the document language from `lang`, default en, escaped (#144)", () => {
+		const base = {
+			title: "Manda. Chega.",
+			siteName: "S",
+			mark: "<svg/>",
+			colors: { ink: "#111111", spark: "#222222", surface: "#333333" },
+		};
+		expect(ogCard(base)).toContain('<html lang="en">');
+		expect(ogCard({ ...base, lang: "pt-BR" })).toContain('<html lang="pt-BR">');
+		expect(ogCard({ ...base, lang: 'x"><script>' })).not.toContain("<script>");
+	});
 });
 
 describe("resvgOptions", () => {
