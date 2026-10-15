@@ -996,6 +996,7 @@ FormSection: form section with a title, description and field layout.
 |---|---|---|---|
 | `label?` | `string` |  |  |
 | `title?` | `string` |  |  |
+| `headingLevel?` | `HeadingLevel` |  | Heading level of the title (2–6). Only the tag changes, never the look. Defaults to 2 inside `PageShell`/`AppSettings`/`AppForm` (under their `<h1>`), 5 elsewhere. |
 | `description?` | `string` |  |  |
 | `layout?` | `'grid' \| 'list' \| 'stack'` | `'grid'` |  |
 | `class?` | `string` | `''` |  |
