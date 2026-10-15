@@ -31,7 +31,7 @@
 		"validate": "bun scripts/validate.ts",
 		"postinstall": "node scripts/fix-ts-symlink.js && node scripts/install-hooks.js && bunx playwright install chromium",
 		"test": "bun run test:unit && bun run test:browser && bun run test:e2e",
-		"test:unit": "bun run --cwd packages/ui test:unit",
+		"test:unit": "bun run --cwd packages/ui test:unit && bun run --cwd site test:unit",
 		"test:browser": "bun run --cwd packages/ui test:browser",
 		"test:watch": "bun run --cwd packages/ui test:watch",
 		"test:e2e": "bun run --cwd site test:e2e",

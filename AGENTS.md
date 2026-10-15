@@ -25,6 +25,7 @@ packages/ui/          → publishable library (@codeatlasdev/ui)
     utils/            → debounce, clipboard, localStorage, palette-generator
     index.ts          → main barrel export
 site/                 → Astro site (landing + MDX docs + templates) at ui.codeatlas.com.br
+  functions/          → Cloudflare Pages Functions: /changelog/ (live GitHub Releases), /changelog.json, /changelog/feed.xml; tested with `bun run test:unit`
 ```
 
 ---

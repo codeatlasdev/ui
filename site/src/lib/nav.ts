@@ -19,6 +19,7 @@ export const SECTIONS: DocsSection[] = [
 	{ id: "docs", label: "Docs", href: "/docs/" },
 	{ id: "templates", label: "Templates", href: "/templates/" },
 	{ id: "theme", label: "Theme editor", href: "/theme/" },
+	{ id: "changelog", label: "Changelog", href: "/changelog/" },
 ];
 
 export interface DocMeta {

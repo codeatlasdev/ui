@@ -1,0 +1,39 @@
+---
+import { readFileSync } from "node:fs";
+import { breadcrumbList, graph } from "@codeatlasdev/ui/seo";
+import SiteDocsShell from "~/components/docs/SiteDocsShell.svelte";
+import Base from "~/layouts/Base.astro";
+import { SECTIONS } from "~/lib/nav";
+import { THANKS } from "../../../../scripts/release-meta";
+import { parseChangelogMd, renderRelease } from "../../../functions/_lib/changelog";
+import { changelogBody } from "../../../functions/_lib/page";
+
+// Offline fallback: the same renderer the edge function uses, over the checkout's packages/ui/CHANGELOG.md. The edge
+// function (functions/changelog/index.ts) swaps everything between the CHANGELOG markers for the releases GitHub lists
+// right now. What is built here is correct as of the last deploy and never relied on.
+// Release bodies on GitHub close with the Special thanks section (scripts/release-meta.ts); the repo CHANGELOG does not, so it is added here.
+const releases = parseChangelogMd(readFileSync("../packages/ui/CHANGELOG.md", "utf8")).map((r) => ({ ...r, body: `${r.body}\n\n${THANKS}` }));
+const body = changelogBody(releases.map(renderRelease), { stale: false, fallback: true });
+
+const SITE = "https://ui.codeatlas.com.br";
+const jsonLd = graph(breadcrumbList([{ name: "CodeAtlas UI", href: `${SITE}/` }, { name: "Changelog", href: `${SITE}/changelog/` }]));
+---
+<Base
+	title="Changelog"
+	description="Every release of @codeatlasdev/ui: what changed, when, and how to migrate. Updated within a minute of each release."
+	skipLink={false}
+	{jsonLd}
+>
+	<link slot="head" rel="alternate" type="application/atom+xml" title="CodeAtlas UI changelog" href="/changelog/feed.xml" />
+	<SiteDocsShell client:load sections={SECTIONS} active="changelog" pathname={Astro.url.pathname}>
+		<article class="ca-prose doc" data-changelog>
+			<p class="doc__eyebrow">Releases</p>
+			<h1>Changelog</h1>
+			<p class="doc__lead">
+				Every published version of <code>@codeatlasdev/ui</code>, newest first.
+				Follow it as <a href="/changelog/feed.xml">an Atom feed</a> or <a href="/changelog.json">JSON</a>.
+			</p>
+			<Fragment set:html="<!--CHANGELOG-->" /><Fragment set:html={body} /><Fragment set:html="<!--/CHANGELOG-->" />
+		</article>
+	</SiteDocsShell>
+</Base>

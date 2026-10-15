@@ -266,6 +266,83 @@
 /* Inside CodeTabs the tab already names the language. */
 .ca-codetabs .ca-code[data-lang]::before { display: none; }
 
+/* ── Release list (changelogs) ───────────────────────────────────────────── */
+/* One `<section class="ca-release">` per version inside `.ca-prose`: heading (version + a `.ca-chip`
+ * for its channel), a `.ca-release__meta` row (date, links), then the rendered notes. `.ca-release-jump`
+ * is the version index (pills); `.ca-release-thanks` closes the page. */
+
+.ca-prose .ca-release {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: var(--ca-border-width) solid var(--ca-outline-subtle);
+  scroll-margin-top: calc(var(--ca-docs-header-h, 56px) + var(--ca-safe-top) + var(--ca-space-6));
+}
+
+.ca-prose .ca-release > h2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--ca-space-2);
+  margin: 0 0 var(--ca-space-1);
+  padding: 0;
+}
+
+.ca-prose .ca-release > h2 > a {
+  color: inherit;
+  text-decoration: none;
+  font-weight: inherit;
+}
+
+.ca-prose .ca-release > h2 > a:hover { text-decoration: underline; }
+
+.ca-prose .ca-release__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0 var(--ca-space-4);
+  margin: 0 0 var(--ca-space-2);
+  font-size: var(--ca-font-size-body2);
+  color: var(--ca-text-secondary);
+}
+
+.ca-prose .ca-release__meta a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--ca-touch-target);
+}
+
+.ca-prose .ca-release-jump ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ca-space-1-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.ca-prose .ca-release-jump li { margin: 0; padding: 0; }
+
+.ca-prose .ca-release-jump a {
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--ca-touch-target);
+  padding: 0 var(--ca-space-3);
+  border: var(--ca-border-width) solid var(--ca-outline-subtle);
+  border-radius: var(--ca-radius-pill);
+  font-size: var(--ca-font-size-body2);
+  text-decoration: none;
+}
+
+.ca-prose .ca-release-jump a:hover { border-color: var(--ca-outline-default); }
+
+.ca-prose .ca-release-thanks {
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: var(--ca-border-width) solid var(--ca-outline-subtle);
+}
+
+.ca-prose .ca-release-thanks > h2 { margin-top: 0; }
+
 @media (max-width: 899.98px) {
   .ca-prose { line-height: 1.7; }
   .ca-code pre,

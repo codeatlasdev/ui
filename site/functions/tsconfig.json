@@ -1,0 +1,14 @@
+{
+	"compilerOptions": {
+		"target": "ES2023",
+		"module": "ESNext",
+		"moduleResolution": "bundler",
+		"strict": true,
+		"noEmit": true,
+		"skipLibCheck": true,
+		"lib": ["ES2023"],
+		"types": ["@cloudflare/workers-types"]
+	},
+	"include": ["./**/*"],
+	"exclude": ["./**/*.test.ts"]
+}

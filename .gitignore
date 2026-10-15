@@ -37,3 +37,6 @@ site/.astro/
 # Generated brand assets (site/scripts/brand.ts, caBrandPlugin): hashed icons, social cards, URL module
 site/public/brand/
 site/src/generated/
+
+# wrangler local state
+.wrangler/

@@ -10,7 +10,8 @@
 		"precheck": "bun run brand",
 		"build": "astro build",
 		"preview": "astro preview --port 4321 --force",
-		"check": "astro check --minimumFailingSeverity warning",
+		"check": "astro check --minimumFailingSeverity warning && tsc -p functions/tsconfig.json && tsc -p functions/tsconfig.test.json",
+		"test:unit": "bun test ./functions",
 		"test:e2e": "bun ../scripts/test-run.ts playwright test",
 		"test:a11y": "bun ../scripts/test-run.ts playwright test --project=a11y"
 	},
@@ -18,6 +19,7 @@
 		"@astrojs/mdx": "8.0.3",
 		"@astrojs/sitemap": "3.7.4",
 		"@astrojs/svelte": "9.0.1",
+		"@cloudflare/workers-types": "5.20261015.1",
 		"@codeatlasdev/ui": "workspace:*",
 		"@fontsource-variable/inter": "5.3.0",
 		"@fontsource-variable/jetbrains-mono": "5.3.0",
@@ -28,6 +30,7 @@
 		"echarts": "6.1.0",
 		"gsap": "3.15.0",
 		"lenis": "1.3.26",
+		"marked": "18.1.1",
 		"png-to-ico": "3.0.2",
 		"shiki": "4.5.0",
 		"svelte": "5.57.2"
