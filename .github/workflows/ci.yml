@@ -129,7 +129,7 @@ jobs:
             packages/ui/src/**/__traces__/
 
   site:
-    name: Site e2e + a11y (${{ matrix.shard }}/5)
+    name: Site ${{ matrix.suite }} (${{ matrix.shard }}/${{ matrix.total }})
     needs: [changes, build]
     # Docs-only or repo-meta changes (AGENTS.md, skills, issue templates) skip the browser suites.
     if: ${{ !inputs.update-snapshots && (needs.changes.outputs.package == 'true' || needs.changes.outputs.site == 'true') }}
@@ -140,22 +140,29 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2, 3, 4, 5]
+        # Playwright splits shards by test count, not cost: the per-route a11y tests (3 axe
+        # passes each) get their own shards so no job collects all of them.
+        include:
+          - { suite: e2e, projects: "--project=desktop --project=mobile --project=iphone", browsers: chromium webkit, shard: 1, total: 2 }
+          - { suite: e2e, projects: "--project=desktop --project=mobile --project=iphone", browsers: chromium webkit, shard: 2, total: 2 }
+          - { suite: a11y, projects: "--project=a11y", browsers: chromium, shard: 1, total: 3 }
+          - { suite: a11y, projects: "--project=a11y", browsers: chromium, shard: 2, total: 3 }
+          - { suite: a11y, projects: "--project=a11y", browsers: chromium, shard: 3, total: 3 }
     steps:
       - uses: actions/checkout@v7
       # The iphone project runs on WebKit.
       - uses: ./.github/actions/setup
         with:
-          browsers: chromium webkit
+          browsers: ${{ matrix.browsers }}
       - uses: actions/download-artifact@v8
         with:
           name: build
       - working-directory: site
-        run: bunx playwright test --project=desktop --project=mobile --project=iphone --project=a11y --shard=${{ matrix.shard }}/5
+        run: bunx playwright test ${{ matrix.projects }} --shard=${{ matrix.shard }}/${{ matrix.total }}
       - uses: actions/upload-artifact@v7
         if: ${{ failure() }}
         with:
-          name: playwright-site-${{ matrix.shard }}
+          name: playwright-${{ matrix.suite }}-${{ matrix.shard }}
           include-hidden-files: true
           path: |
             site/playwright-report/
