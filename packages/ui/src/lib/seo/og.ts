@@ -150,6 +150,8 @@ export interface OgCardOptions {
 	css?: string;
 	/** `font-family` stack. @default system sans-serif */
 	fontFamily?: string;
+	/** BCP 47 tag for `<html lang>`: drives hyphenation and CJK/locale font selection. @default "en" */
+	lang?: string;
 }
 
 const esc = (s: string) =>
@@ -161,7 +163,7 @@ const esc = (s: string) =>
  */
 export function ogCard(o: OgCardOptions): string {
 	const font = o.fontFamily ?? "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
-	return `<!doctype html><html lang="en"><head><meta charset="utf-8"><style>${o.css ?? ""}
+	return `<!doctype html><html lang="${esc(o.lang ?? "en")}"><head><meta charset="utf-8"><style>${o.css ?? ""}
 *{box-sizing:border-box;margin:0}
 body{width:${OG_SIZE.width}px;height:${OG_SIZE.height}px;overflow:hidden;background:radial-gradient(900px 520px at 100% 0%,color-mix(in srgb,${o.colors.spark} 22%,transparent),transparent 70%),${o.colors.surface};color:${o.colors.ink};font-family:${font};display:flex;flex-direction:column;justify-content:space-between;padding:72px 80px;border-left:16px solid ${o.colors.spark}}
 .brand{display:flex;align-items:center;gap:24px;font-size:36px;font-weight:600}

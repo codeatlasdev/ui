@@ -287,6 +287,8 @@ const html = ogCard({
 const png = await renderOgImage(browser, html, { format: "png" });
 ```
 
+Pass `lang: "pt-BR"` (default `"en"`) when the card is not English: it sets `<html lang>`, which drives hyphenation and the locale font choice.
+
 `@codeatlasdev/ui/vite` re-exports `ogCard`, `renderOgImage` and `OG_SIZE` for build scripts: Node cannot load the `seo` entry because it also exports the `Seo` component. This site does exactly that: `site/scripts/og-integration.ts` renders every page's card after `astro build`, and `site/tests/brand.spec.ts` fails when a page has no card of its own, when the favicon colors differ from the theme, or when `/brand/*` is not immutable.
 
 ## Checklist
