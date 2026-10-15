@@ -43,8 +43,6 @@ brand options (same as caBrandPlugin): --theme <file exporting theme> --mark <sv
 
 if (cmd === "init") {
 	const root = resolve(flag("dir") ?? process.cwd());
-	// Lazy: only `brand` needs the renderer (native resvg); init/migrate start without it.
-	const { runBrandCommand } = await import("../src/cli/brand.ts");
 	process.exit(init(root, { write }) ? 0 : 1);
 } else if (cmd === "migrate") {
 	const targets = args.length ? args : ["src"];

@@ -4501,7 +4501,7 @@ const CA_THEME_SCRIPT_TAG: string
 
 `import { caBrandPlugin } from "@codeatlasdev/ui/vite"`
 
-Vite plugin: at build start (and dev server start) renders the favicon set from the mark and the theme, and writes `src/generated/brand.ts` exporting `brand: BrandAssets`. Add `outDir` and the generated module to `.gitignore`: nothing it writes is meant to be committed. Warns and does nothing when the mark file is missing.
+Vite plugin. As soon as the config resolves (dev server, build, and any tool that loads the Vite config) it writes `src/generated/brand.ts` exporting `brand: BrandAssets`: the URLs depend only on a hash of the inputs, so no rendering is needed and the module type-checks before the first build. At build start (and dev server start) it renders the favicon set. `svelte-kit sync` and `svelte-check` do not load Vite plugins: run `bunx @codeatlasdev/ui brand` first in a job that only type-checks. Add `outDir` and the generated module to `.gitignore`: nothing it writes is meant to be committed. Warns and does nothing when the mark file is missing.
 
 ```ts
 function caBrandPlugin(options?: CaBrandPluginOptions): Plugin
