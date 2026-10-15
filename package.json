@@ -38,6 +38,7 @@
 		"test:a11y": "bun run --cwd site test:a11y",
 		"issue:start": "bun scripts/issue.ts start",
 		"issue:status": "bun scripts/issue.ts status",
+		"issue:triage": "bun scripts/issue.ts triage",
 		"issue:done": "bun scripts/issue.ts done",
 		"test:vrt:update": "sh scripts/vrt-update-ci.sh",
 		"test:reap": "bun scripts/test-run.ts --reap",

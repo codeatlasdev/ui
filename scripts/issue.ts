@@ -6,6 +6,8 @@
  *   bun run issue:start <n>    claim issue n: worktree ../ui-worktrees/<n>-<slug> on <type>/<n>-<slug>,
  *                              draft PR "Closes #n", label "in progress", assign you, comment on the issue
  *   bun run issue:status       open issues with their owner and PR
+ *   bun run issue:triage       before any batch: ensure labels, dump every open issue (body, comments,
+ *                              linked PRs, commits on main naming it) to .cache/triage.md
  *   bun run issue:done <n>     after the PR merged (or closed): remove the worktree and local branch
  *
  * Needs an authenticated `gh`. Never touches other worktrees or branches.
@@ -13,7 +15,7 @@
 import { existsSync } from "node:fs";
 import { basename, join, resolve } from "node:path";
 import { $ } from "bun";
-import { blockingPrs, ownPr, type PrRef, removeWorktree, worktrees } from "./issue-lib.ts";
+import { blockingPrs, ownPr, type PrRef } from "./issue-lib.ts";
 
 const ROOT = resolve(import.meta.dir, "..");
 const WORKTREES = resolve(ROOT, "..", `${basename(ROOT)}-worktrees`);
@@ -168,10 +170,58 @@ async function status() {
 	}
 }
 
+/** Label taxonomy: one type + one or more areas per issue. Created idempotently. */
+const LABELS: [string, string, string][] = [
+	["area:cli", "C5DEF5", "init / migrate / bin"],
+	["area:vite", "C5DEF5", "Vite/Kit/Astro plugins, ogCard, brand"],
+	["area:theme", "C5DEF5", "tokens, presets, CSS, materials"],
+	["area:components", "C5DEF5", "Svelte components and primitives"],
+	["area:a11y", "C5DEF5", "landmarks, headings, focus, axe"],
+	["area:forms", "C5DEF5", "forms subpath, masks, money"],
+	["area:docs", "C5DEF5", "site, guides, skills, API.md"],
+	["area:tests", "C5DEF5", "test infra, flakes, CI"],
+	["blocked", "B60205", "waits on another issue (see 'Blocked by')"],
+];
+
+async function triage() {
+	for (const [name, color, desc] of LABELS)
+		await $`gh label create ${name} --color ${color} --description ${desc}`.cwd(ROOT).quiet().nothrow();
+	await $`git fetch -q origin main`.cwd(ROOT).quiet().nothrow();
+	// One record per commit: "<hash>\t<subject>\n<body>". A bare "(#n)" is usually the PR number,
+	// so only closing keywords and the landing convention "subject (#issue) (#pr)" count.
+	const log = (await $`git log origin/main --format=%h%x09%B%x1e -300`.cwd(ROOT).text())
+		.split("\x1e")
+		.map((c) => c.trim())
+		.filter(Boolean);
+	const list: (Issue & { body: string; comments: { author: { login: string }; body: string }[] })[] =
+		JSON.parse(
+			await $`gh issue list --state open --limit 200 --json number,title,state,labels,assignees,body,comments`
+				.cwd(ROOT)
+				.text()
+		);
+	let out = `# Open issues (${list.length})\n\nLabels: ${LABELS.map((l) => l[0]).join(", ")}\n`;
+	for (const is of list.sort((a, b) => a.number - b.number)) {
+		const n = is.number;
+		const ref = new RegExp(`\\b(close[sd]?|fix(es|ed)?|resolve[sd]?)\\s+#${n}\\b|\\(#${n}\\) \\(#\\d+\\)$`, "im");
+		const commits = log.filter((c) => ref.test(c)).map((c) => c.split("\n")[0]);
+		const prs = (await linkedPrs(String(is.number))).map((p) => `#${p.number} ${p.state}`);
+		out += `\n---\n## #${is.number} ${is.title}\nlabels: ${is.labels.map((l) => l.name).join(", ") || "none"}`;
+		out += `\nlinked PRs: ${prs.join(", ") || "none"}\ncommits on main: ${commits.join(" | ") || "none"}\n\n${is.body}\n`;
+		for (const c of is.comments) out += `\n> @${c.author.login}: ${c.body.replace(/\n/g, "\n> ")}\n`;
+	}
+	const file = join(ROOT, ".cache", "triage.md");
+	await Bun.write(file, out);
+	console.log(`${list.length} open issues → ${file}`);
+}
+
 async function done(n: string) {
-	const wt = (await worktrees(ROOT)).find(
-		(w) => w.branch && new RegExp(`^(fix|feat)/${n}-`).test(w.branch)
-	);
+	const wt = (await $`git worktree list --porcelain`.cwd(ROOT).text())
+		.split("\n\n")
+		.map((b) => ({
+			path: b.match(/^worktree (.+)$/m)?.[1],
+			branch: b.match(/^branch refs\/heads\/(.+)$/m)?.[1],
+		}))
+		.find((w) => w.branch && new RegExp(`^(fix|feat)/${n}-`).test(w.branch));
 	const path = wt?.path;
 	const branch = wt?.branch;
 	if (path && branch) {
@@ -179,21 +229,18 @@ async function done(n: string) {
 			await $`gh pr list --head ${branch} --state all --json state -q .[0].state`.cwd(ROOT).text()
 		).trim();
 		if (state === "OPEN") die(`PR for #${n} is still open: merge or close it first`);
-	}
-	// The issue is closed (merged) or back in the pool (PR closed): either way nobody is on it.
-	// Cleared first, so a worktree that cannot be removed never leaves the label behind (#103).
-	await $`gh issue edit ${n} --remove-label ${LABEL}`.cwd(ROOT).quiet().nothrow();
-	if (path && branch) {
-		await removeWorktree(ROOT, path).catch((e: Error) =>
-			die(`cleared "${LABEL}" but kept ${path}: ${e.message}`)
-		);
+		await $`git worktree remove ${path}`.cwd(ROOT);
 		await $`git branch -D ${branch}`.cwd(ROOT).quiet().nothrow();
 	}
+	// `gh pr merge --delete-branch` may already have removed the worktree; the label still goes.
+	// The issue is closed (merged) or back in the pool (PR closed): either way nobody is on it.
+	await $`gh issue edit ${n} --remove-label ${LABEL}`.cwd(ROOT).quiet().nothrow();
 	console.log(`#${n}: ${path ? `removed ${path} and ${branch}, ` : ""}cleared "${LABEL}"`);
 }
 
 const [cmd, arg] = process.argv.slice(2);
 if (cmd === "start" && arg) await start(arg);
 else if (cmd === "status") await status();
+else if (cmd === "triage") await triage();
 else if (cmd === "done" && arg) await done(arg);
-else die("usage: issue start <n> | issue status | issue done <n>");
+else die("usage: issue start <n> | issue status | issue triage | issue done <n>");
