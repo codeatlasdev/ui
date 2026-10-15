@@ -40,7 +40,8 @@
 			"!**/__screenshots__",
 			"!**/.vitest",
 			"!**/test-results",
-			"!**/playwright-report"
+			"!**/playwright-report",
+			"!site/src/generated"
 		]
 	}
 }
