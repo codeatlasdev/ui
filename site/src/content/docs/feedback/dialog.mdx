@@ -50,3 +50,23 @@ The dialog renders a native modal `<dialog>`: focus is trapped, Escape closes an
   { name: "onOpenChange", type: "(open: boolean) => void", description: "Called whenever the open state changes." },
   { name: "class", type: "string", default: "''", description: "Extra classes on the panel." },
 ]} />
+
+## Layers
+
+Dialogs, sheets, drawers, menus, popovers and tooltips share one layer stack. Modals are native `<dialog>` elements opened with `showModal()`; menus, popovers and tooltips are `popover` elements. Both live in the browser's top layer, so a layer opened later is always on top: there is no `z-index` to manage, and a menu inside a dialog just works. Anchored layers use CSS anchor positioning where the browser supports it and fall back to Floating UI elsewhere.
+
+Escape and outside presses go to the topmost layer only, so a menu inside a dialog closes first and the dialog on the next press. Focus returns to the trigger when a layer closes.
+
+A host that draws outside the DOM (a native view over a webview) can follow the stack with `onLayerChange`. It fires on every open and close with the open layers, bottom to top, and their rectangles:
+
+```ts
+import { onLayerChange } from "@codeatlasdev/ui";
+
+const stop = onLayerChange(({ count, modal, layers }) => {
+  nativeView.setParked(count > 0);
+  // layers: [{ kind: "modal" | "popover" | "hint", rect: DOMRect }]
+});
+```
+
+The same signal is a `layerchange` `CustomEvent` on `document`, with the detail as `event.detail`.
+

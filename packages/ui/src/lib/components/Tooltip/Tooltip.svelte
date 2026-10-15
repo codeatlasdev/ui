@@ -122,7 +122,6 @@
   align="center"
   sideOffset={6}
   dismiss={false}
-  z="var(--ca-z-tooltip)"
   {id}
   role="tooltip"
   class="ca-tooltip-content {className}"

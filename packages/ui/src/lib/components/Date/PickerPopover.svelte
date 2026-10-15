@@ -1,12 +1,12 @@
 <script lang="ts">
   /**
-   * Internal: the floating dialog shared by DatePicker and DateRangePicker. Portals to body,
-   * positions with `float` (a wrapper is floated so the inner element can animate `transform`),
-   * closes on Escape / outside press and keeps mounted through the exit animation.
-   * Not exported from the package.
+   * Internal: the floating dialog shared by DatePicker and DateRangePicker. A layer-engine popover
+   * (top layer, anchored to the field), closes on Escape / outside press and stays mounted through
+   * the exit animation. Not exported from the package.
    */
   import type { Snippet } from 'svelte';
-  import { createPresence, dismissable, float, portal } from '../../primitives/index.js';
+  import { createPresence, openLayer } from '../../primitives/index.js';
+  import '../Popover/floating-layer.css';
 
   interface Props {
     open: boolean;
@@ -26,46 +26,38 @@
 
   const presence = createPresence(() => open);
 
-  function mount(wrapper: HTMLElement) {
+  function layer(node: HTMLElement) {
     if (!anchor) return;
-    return float(anchor, wrapper, { side: 'bottom', align: 'start', sideOffset: 6 });
-  }
-
-  function dismiss(node: HTMLElement) {
-    return dismissable(node, {
+    const handle = openLayer(node, {
+      kind: 'popover',
+      anchor,
+      side: 'bottom',
+      align: 'start',
+      sideOffset: 6,
       exclude: () => (trigger ? [trigger] : []),
+      // pressing Escape returns focus to the trigger; an outside press leaves it where it went
+      restoreFocus: false,
       onDismiss: (reason) => {
         onclose();
-        // pressing Escape returns focus to the trigger; an outside press leaves it where it went
         if (reason === 'escape') trigger?.focus();
       },
     });
-  }
-
-  function opened(node: HTMLElement) {
     onopen?.(node);
+    return () => handle.close();
   }
 </script>
 
 {#if presence.present}
   <div
-    class="ca-date__float"
-    style="z-index: var(--ca-z-dropdown)"
-    {@attach portal()}
-    {@attach mount}
+    {id}
+    class="ca-floating ca-date__content glass-overlay"
+    role="dialog"
+    aria-label={label}
+    tabindex="-1"
+    data-state={open ? 'open' : 'closed'}
+    {@attach presence.ref}
+    {@attach layer}
   >
-    <div
-      {id}
-      class="ca-date__content glass-overlay"
-      role="dialog"
-      aria-label={label}
-      tabindex="-1"
-      data-state={open ? 'open' : 'closed'}
-      {@attach presence.ref}
-      {@attach dismiss}
-      {@attach opened}
-    >
-      {@render children()}
-    </div>
+    {@render children()}
   </div>
 {/if}

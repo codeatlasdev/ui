@@ -171,7 +171,6 @@
       width: 340px;
       max-height: 480px;
       border-radius: var(--ca-radius-xl);
-      z-index: var(--ca-z-dropdown);
       display: flex;
       flex-direction: column;
       overflow: hidden;

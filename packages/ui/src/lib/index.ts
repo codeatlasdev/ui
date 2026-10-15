@@ -181,6 +181,8 @@ export {
 	useLocale,
 	useT,
 } from "./i18n/index.js";
+export type { LayerChange, LayerInfo, LayerKind } from "./primitives/layer.js";
+export { onLayerChange } from "./primitives/layer.js";
 export type { ColorScheme, SurfaceStyle } from "./stores/color-scheme.svelte.js";
 export { colorScheme } from "./stores/color-scheme.svelte.js";
 export { reducedMotion, reducedTransparency } from "./stores/reduced-motion.svelte.js";

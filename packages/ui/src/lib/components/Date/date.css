@@ -152,9 +152,6 @@
   .ca-date__wrap:has(.ca-date__range-sep) { column-gap: var(--ca-space-2); }
 
   /* ── Popover content ──────────────────────────────────────────── */
-  /* The wrapper is positioned (core `float` writes `transform` on it); the inner content animates. */
-  .ca-date__float { z-index: var(--ca-z-dropdown); }
-
   .ca-date__content {
     border-radius: var(--ca-radius-lg);
     padding: var(--ca-space-3);

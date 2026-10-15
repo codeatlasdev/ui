@@ -26,16 +26,20 @@ export interface FloatOptions {
 	arrow?: HTMLElement;
 }
 
+/** Cleanup function with a way to force a re-position (content size changed). */
+export type FloatHandle = (() => void) & { update(): void };
+
 /**
- * Positions `floating` against `anchor` and keeps it positioned (scroll, resize, layout change).
- * Writes `data-side` / `data-align` (the *resolved* placement after flipping) and the
- * `--ca-anchor-width` / `--ca-available-height` custom properties. Returns cleanup.
+ * floating-ui fallback for browsers without CSS anchor positioning. Positions the top-layer
+ * (`position: fixed`) box `floating` against `anchor` and keeps it positioned (scroll, resize,
+ * layout change). Writes `data-side` / `data-align` (the *resolved* placement after flipping) and
+ * the `--ca-anchor-width` / `--ca-available-height` custom properties. Returns cleanup.
  */
 export function float(
 	anchor: Element,
 	floating: HTMLElement,
 	options: FloatOptions = {}
-): () => void {
+): FloatHandle {
 	const {
 		side = "bottom",
 		align = "start",
@@ -50,9 +54,10 @@ export function float(
 
 	const placement: Placement = align === "center" ? side : `${side}-${align}`;
 
-	floating.style.position = "absolute";
-	floating.style.top = "0";
-	floating.style.left = "0";
+	// A top-layer box is positioned from the viewport; the UA popover/dialog styles add `inset: 0` and `margin: auto`.
+	floating.style.position = "fixed";
+	floating.style.inset = "0 auto auto 0";
+	floating.style.margin = "0";
 
 	const middleware: Middleware[] = [offset({ mainAxis: sideOffset, alignmentAxis: alignOffset })];
 	if (flip) middleware.push(flipMiddleware({ padding: collisionPadding }));
@@ -74,10 +79,11 @@ export function float(
 
 	let cancelled = false;
 	const update = () => {
-		void computePosition(anchor, floating, { placement, middleware, strategy: "absolute" }).then(
+		void computePosition(anchor, floating, { placement, middleware, strategy: "fixed" }).then(
 			({ x, y, placement: resolved, middlewareData }) => {
 				if (cancelled) return;
-				floating.style.transform = `translate(${Math.round(x)}px, ${Math.round(y)}px)`;
+				// `translate` (not `transform`) so an enter animation on `transform: scale()` composes with it.
+				floating.style.translate = `${Math.round(x)}px ${Math.round(y)}px`;
 				const [s, a = "center"] = resolved.split("-");
 				floating.dataset.side = s;
 				floating.dataset.align = a;
@@ -91,8 +97,11 @@ export function float(
 	};
 
 	const stop = autoUpdate(anchor, floating, update);
-	return () => {
-		cancelled = true;
-		stop();
-	};
+	return Object.assign(
+		() => {
+			cancelled = true;
+			stop();
+		},
+		{ update }
+	);
 }

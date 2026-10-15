@@ -1,0 +1,17 @@
+/*
+ * Reset for a top-layer box opened by the layer engine (`popover`). The UA gives it `inset: 0`,
+ * `margin: auto`, a border, padding and `overflow: auto`; the engine positions it, so only the UA
+ * box is neutralised here and each surface class (.ca-popover-content, .ca-dropdown-content, …)
+ * owns its look. `.ca-floating` is the public marker class of every anchored layer.
+ */
+
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+  .ca-floating {
+    width: max-content;
+    max-width: calc(100vw - 2 * var(--ca-space-2));
+    border: 0;
+    color: inherit;
+    overflow: visible;
+  }
+}
