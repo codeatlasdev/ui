@@ -45,7 +45,7 @@ git push -q --force-with-lease
 gh pr ready "$PR" >/dev/null 2>&1 || true
 # CI paused (ci.yml disabled, see AGENTS.md): the validate above is the gate, and baselines can only
 # be rendered on CI, so both CI steps are skipped until `gh workflow enable ci.yml`.
-if [ "$(gh workflow view ci.yml --json state -q .state 2>/dev/null)" = "active" ]; then
+if [ "$(gh api "repos/{owner}/{repo}/actions/workflows/ci.yml" -q .state 2>/dev/null)" = "active" ]; then
 	sh "$ROOT/scripts/vrt-update-ci.sh"
 	# The bot's baseline commit does not trigger CI: push an empty commit to run checks on the final head.
 	git commit -q --allow-empty -m "ci: run checks on final head" && git push -q
