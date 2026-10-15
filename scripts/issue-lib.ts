@@ -1,4 +1,7 @@
-/** Pure decisions of scripts/issue.ts, unit-tested in packages/ui/tests/issue-workflow.test.ts. */
+/** Decisions and git helpers of scripts/issue.ts (tests: packages/ui/tests/issue-workflow.test.ts). */
+import { existsSync, realpathSync, rmSync } from "node:fs";
+import { resolve } from "node:path";
+import { $ } from "bun";
 
 export const REPO_OWNER = "codeatlasdev";
 
@@ -23,4 +26,43 @@ export function blockingPrs(linked: PrRef[], branch: string): PrRef[] {
 			p.state === "OPEN" &&
 			!(p.headRefName === branch && p.headRepositoryOwner.login === REPO_OWNER)
 	);
+}
+
+export interface Worktree {
+	path: string;
+	branch?: string;
+}
+
+/** `git worktree list --porcelain`, one entry per worktree (paths as git prints them). */
+export async function worktrees(root: string): Promise<Worktree[]> {
+	return (await $`git worktree list --porcelain`.cwd(root).text())
+		.split(/\r?\n\r?\n/)
+		.map((b) => ({
+			path: b.match(/^worktree (.+)$/m)?.[1] ?? "",
+			branch: b.match(/^branch refs\/heads\/(.+)$/m)?.[1],
+		}))
+		.filter((w) => w.path);
+}
+
+const samePath = (a: string, b: string) => {
+	const real = (p: string) => (existsSync(p) ? realpathSync(p) : resolve(p));
+	return real(a) === real(b);
+};
+
+/**
+ * Remove an issue worktree after its PR merged or closed. Git for Windows defaults to
+ * core.longpaths=false, so node_modules paths over MAX_PATH fail with "Filename too long" after git
+ * has already deregistered the worktree, leaving it half deleted on disk (#103).
+ */
+export async function removeWorktree(root: string, path: string): Promise<void> {
+	const rm = await $`git -c core.longpaths=true worktree remove ${path}`
+		.cwd(root)
+		.quiet()
+		.nothrow();
+	if (rm.exitCode === 0) return;
+	// Still registered: git refused (uncommitted changes, locked). Never delete someone's work.
+	if ((await worktrees(root)).some((w) => samePath(w.path, path)))
+		throw new Error(rm.stderr.toString().trim());
+	// Deregistered, so git found it clean: finish the delete (node:fs handles long paths).
+	rmSync(path, { recursive: true, force: true });
 }

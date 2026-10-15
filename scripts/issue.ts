@@ -13,7 +13,7 @@
 import { existsSync } from "node:fs";
 import { basename, join, resolve } from "node:path";
 import { $ } from "bun";
-import { blockingPrs, ownPr, type PrRef } from "./issue-lib.ts";
+import { blockingPrs, ownPr, type PrRef, removeWorktree, worktrees } from "./issue-lib.ts";
 
 const ROOT = resolve(import.meta.dir, "..");
 const WORKTREES = resolve(ROOT, "..", `${basename(ROOT)}-worktrees`);
@@ -169,13 +169,9 @@ async function status() {
 }
 
 async function done(n: string) {
-	const wt = (await $`git worktree list --porcelain`.cwd(ROOT).text())
-		.split("\n\n")
-		.map((b) => ({
-			path: b.match(/^worktree (.+)$/m)?.[1],
-			branch: b.match(/^branch refs\/heads\/(.+)$/m)?.[1],
-		}))
-		.find((w) => w.branch && new RegExp(`^(fix|feat)/${n}-`).test(w.branch));
+	const wt = (await worktrees(ROOT)).find(
+		(w) => w.branch && new RegExp(`^(fix|feat)/${n}-`).test(w.branch)
+	);
 	const path = wt?.path;
 	const branch = wt?.branch;
 	if (path && branch) {
@@ -183,12 +179,16 @@ async function done(n: string) {
 			await $`gh pr list --head ${branch} --state all --json state -q .[0].state`.cwd(ROOT).text()
 		).trim();
 		if (state === "OPEN") die(`PR for #${n} is still open: merge or close it first`);
-		await $`git worktree remove ${path}`.cwd(ROOT);
+	}
+	// The issue is closed (merged) or back in the pool (PR closed): either way nobody is on it.
+	// Cleared first, so a worktree that cannot be removed never leaves the label behind (#103).
+	await $`gh issue edit ${n} --remove-label ${LABEL}`.cwd(ROOT).quiet().nothrow();
+	if (path && branch) {
+		await removeWorktree(ROOT, path).catch((e: Error) =>
+			die(`cleared "${LABEL}" but kept ${path}: ${e.message}`)
+		);
 		await $`git branch -D ${branch}`.cwd(ROOT).quiet().nothrow();
 	}
-	// `gh pr merge --delete-branch` may already have removed the worktree; the label still goes.
-	// The issue is closed (merged) or back in the pool (PR closed): either way nobody is on it.
-	await $`gh issue edit ${n} --remove-label ${LABEL}`.cwd(ROOT).quiet().nothrow();
 	console.log(`#${n}: ${path ? `removed ${path} and ${branch}, ` : ""}cleared "${LABEL}"`);
 }
 

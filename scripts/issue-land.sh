@@ -48,6 +48,10 @@ gh pr ready "$PR" >/dev/null 2>&1 || true
 git commit -q --allow-empty -m "ci: run checks on final head" && git push -q
 # Merge gate: checks reported for this exact head, none pending, all passed (scripts/pr-gate.ts).
 bun "$ROOT/scripts/pr-gate.ts" "$PR" "$(git rev-parse HEAD)"
-gh pr merge "$PR" --squash --delete-branch >/dev/null
+# No --delete-branch: gh would switch this worktree to main (checked out in $ROOT) and delete the
+# local branch (checked out here), failing after the merge (#103). `issue.ts done` removes both.
+# GitHub deletes the remote branch on merge (repo setting); the API call covers it being turned off.
+gh pr merge "$PR" --squash >/dev/null
+gh api -X DELETE "repos/{owner}/{repo}/git/refs/heads/$BRANCH" >/dev/null 2>&1 || true
 cd "$ROOT" && git fetch -q origin main && bun scripts/issue.ts done "$N"
 echo "#$N landed"
