@@ -1,4 +1,6 @@
 name: CI
+# PAUSED while the project is pre-stable: disabled in GitHub (gh workflow enable ci.yml to resume,
+# then re-add "CI ok" as a required check in the main ruleset). See CONTRIBUTING.md.
 # Runner-native (ubuntu-24.04, no containers): one build shared through artifacts, browser suites
 # sharded, jobs skipped when the files they cover did not change. Branch rules require only
 # "CI ok", so shards can change without touching repository settings. Runs on fork PRs too.

@@ -89,7 +89,9 @@ If you find the issue is already fixed or obsolete, prove it with a test that pa
 
 **Test first.** A bug fix starts with a regression test that reproduces the problem: run it, watch it fail on the current code, then fix until it passes, and put that fail-before/pass-after evidence in the PR. Tests prove behavior; tests that only pad coverage (wiring, copies, mock echoes, incidental defaults) are rejected.
 
-CI (`.github/workflows/ci.yml`) runs the same gates. Locally, both must exit with code 0:
+> **CI is paused** while the project is pre-stable: the `CI` workflow is disabled (`gh workflow disable ci.yml`) and `CI ok` is no longer a required check on `main`. The local gates are the gate: the pre-push hook runs `bun run validate`; run the browser suites (`bun run test:browser`, `test:e2e`) yourself when a change touches them. PR titles are still checked (`pr-title.yml`), and releases still run on tags. To turn CI back on: `gh workflow enable ci.yml` and add `CI ok` back as a required status check in the `main` ruleset.
+
+CI (`.github/workflows/ci.yml`, when enabled) runs the same gates. Locally, both must exit with code 0:
 
 ```bash
 bun run validate   # generated themes, bun --check + svelte-check + astro check, Biome, unit tests, size budget
