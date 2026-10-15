@@ -100,7 +100,8 @@ export function extractSamples(): Sample[] {
 	const samples: Sample[] = [];
 	for (const mdx of walk(DOCS)) {
 		const src = readFileSync(mdx, "utf8");
-		const page = relative(DOCS, mdx);
+		// Forward slashes on every OS: the sample file name flattens them (#131).
+		const page = relative(DOCS, mdx).replaceAll("\\", "/");
 		let index = 0;
 		for (const m of src.matchAll(/^([ \t]*)```svelte[^\n]*\n([\s\S]*?)^[ \t]*```/gm)) {
 			const indent = m[1].length;

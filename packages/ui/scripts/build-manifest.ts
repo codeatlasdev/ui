@@ -643,7 +643,9 @@ function buildGuides(): ManifestGuide[] {
 			const field = (k: string) =>
 				fm?.[1].match(new RegExp(`^${k}:\\s*(.+)$`, "m"))?.[1].replace(/^["']|["']$/g, "") ?? "";
 			return {
-				slug: relative(DOCS_DIR, file).replace(/\.mdx$/, ""),
+				slug: relative(DOCS_DIR, file)
+					.replaceAll("\\", "/")
+					.replace(/\.mdx$/, ""),
 				title: field("title"),
 				group: field("group"),
 				description: field("description"),

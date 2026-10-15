@@ -25,7 +25,8 @@ const walk = (dir: string): string[] =>
 	});
 const pages = walk(DOCS).map((file) => ({
 	file,
-	rel: relative(DOCS, file),
+	// Forward slashes on every OS: page slugs and <Props> titles are derived from it (#131).
+	rel: relative(DOCS, file).replaceAll("\\", "/"),
 	src: readFileSync(file, "utf8"),
 }));
 
