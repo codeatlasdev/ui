@@ -1,4 +1,5 @@
 import { describe, expect, it } from "bun:test";
+import { readFileSync } from "node:fs";
 import { defineTheme, STYLES, themeCSS } from "../src/lib/theme/define.js";
 import { DESIGN_STYLES, designStyle, mergeTheme } from "../src/lib/theme/styles.js";
 
@@ -60,9 +61,13 @@ describe("design knobs → tokens", () => {
 		expect(css).toContain("--ca-mat-thick-shadow: 0 0 #0000;");
 	});
 
-	it("paper: mesh keeps the package gradients, flat patterns replace them with outline ink", () => {
-		expect(themeCSS(defineTheme({ paper: "mesh" }))).toBe("");
-		expect(themeCSS(defineTheme({ paper: "plain" }))).toContain("--ca-page-mesh: none;");
+	it("paper: mesh keeps the glass gradients, plain switches them off there, flat patterns use outline ink", () => {
+		expect(themeCSS(defineTheme({ paper: "mesh", defaultStyle: "glass" }))).toBe("");
+		// plain is already the stylesheet default under solid; under glass it must say so
+		expect(themeCSS(defineTheme({ paper: "plain" }))).toBe("");
+		expect(themeCSS(defineTheme({ paper: "plain", defaultStyle: "glass" }))).toContain(
+			"--ca-page-mesh: none;"
+		);
 		const grid = themeCSS(defineTheme({ paper: "grid" }));
 		expect(grid).toMatch(/--ca-page-mesh: linear-gradient\(var\(--ca-outline-subtle\)/);
 	});
@@ -135,5 +140,72 @@ describe("design styles", () => {
 			radius: 2,
 			density: "compact",
 		});
+	});
+});
+
+// The package default is a sober, solid UI; the liquid-glass look is an opt-in recipe (#111).
+describe("default theme", () => {
+	const LIB = new URL("../src/lib/", import.meta.url);
+	const css = (f: string) =>
+		readFileSync(new URL(`styles/${f}`, LIB), "utf8").replace(/\/\*[\s\S]*?\*\//g, "");
+	/** Declarations of the first rule whose selector list contains `selector` exactly. */
+	const rule = (source: string, selector: string) => {
+		for (const m of source.matchAll(/([^{}@]+)\{([^{}]*)\}/g))
+			if (m[1].split(",").some((s) => s.trim() === selector)) return m[2].replace(/:[ \t]+/g, ": ");
+		throw new Error(`rule ${selector} missing`);
+	};
+
+	it("resolves to solid, plain paper, 8px controls, thin icons and 600 headings", () => {
+		const t = defineTheme();
+		expect(t.defaultStyle).toBe("solid");
+		expect(t.paper).toBe("plain");
+		expect(t.radius).toBe(0.8);
+		expect(t.iconStroke).toBe(1.75);
+		expect(t.typography.weights?.heading).toBe(600);
+	});
+
+	it("the stylesheet defaults match the resolved defaults, so a default theme emits nothing", () => {
+		const tokens = css("tokens.css");
+		expect(rule(tokens, ":root")).toContain("--ca-radius-scale: 0.8;");
+		expect(rule(tokens, ":root")).toContain("--ca-icon-stroke: 1.75;");
+		expect(rule(tokens, ":root")).toContain("--ca-font-weight-heading: 600;");
+		expect(rule(css("base.css"), "html")).toContain("--ca-page-mesh: none;");
+	});
+
+	it("solid draws no glow and no white rim", () => {
+		const solid = rule(css("materials.css"), '[data-style="solid"]');
+		expect(solid).toContain("--ca-glow-primary: transparent;");
+		expect(solid).toContain("--ca-glow-primary-strong: transparent;");
+		expect(solid).toMatch(
+			/--ca-mat-edge:\s*inset 0 0 0 var\(--ca-border-width\) var\(--ca-outline-subtle\)/
+		);
+	});
+
+	it("shadows are neutral: no warm hue in light, soft neutral black in dark", () => {
+		const tokens = css("tokens.css");
+		for (const sel of [':root,\n[data-theme-scope="light"]', '.dark,\n[data-theme-scope="dark"]']) {
+			const block = tokens.slice(tokens.indexOf(sel));
+			const shadows = block.slice(0, block.indexOf("}")).match(/--ca-shadow-[a-z]+:[^;]+;/g) ?? [];
+			expect(shadows).toHaveLength(5);
+			for (const s of shadows) expect(s).toContain("oklch(0 0 0 /");
+		}
+	});
+
+	it("liquid restores the former default: glass, mesh, round corners, bold headings", () => {
+		const t = defineTheme(designStyle("liquid"));
+		expect(t.defaultStyle).toBe("glass");
+		expect(t.paper).toBe("mesh");
+		expect(t.radius).toBe(1);
+		expect(t.iconStroke).toBe(2);
+		expect(t.typography.weights?.heading).toBe(700);
+		const out = themeCSS(t);
+		expect(out).toContain("--ca-radius-scale: 1;");
+		expect(out).toContain("--ca-glass-shadow: 0 4px 24px");
+		expect(out).toContain("--ca-shadow-md: 0 4px 16px oklch(0.25 0.008 70 / 0.12);");
+	});
+
+	it("a default theme and a liquid theme differ only by the recipe", () => {
+		expect(themeCSS(defineTheme())).toBe("");
+		expect(themeCSS(defineTheme(designStyle("liquid")))).not.toBe("");
 	});
 });

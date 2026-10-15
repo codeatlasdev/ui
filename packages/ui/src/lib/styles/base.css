@@ -17,18 +17,23 @@ a, button, input, select, textarea, label, summary, [role="button"], [role="tab"
  * background, and every engine shows it in the overscroll/rubber-band area.
  * body stays transparent so the canvas color comes from html.
  * The decorative mesh lives in body::before (pseudo-elements are never sampled and
- * position:fixed replaces background-attachment:fixed, which iOS does not support). */
+ * position:fixed replaces background-attachment:fixed, which iOS does not support).
+ * Plain by default: only the glass and frosted materials (the `liquid` recipe) draw the
+ * brand mesh, because blur needs something colorful behind it to read. */
 html {
   background-color: var(--ca-surface-base);
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
+  --ca-page-mesh: none;
+}
+html[data-style="glass"] {
   --ca-page-mesh:
     radial-gradient(ellipse 80% 60% at 0% 0%,
       color-mix(in oklab, var(--ca-brand-main) 22%, transparent) 0%, transparent 60%),
     radial-gradient(ellipse 60% 50% at 100% 100%, oklch(0.68 0.14 235 / 0.18) 0%, transparent 55%),
     radial-gradient(ellipse 50% 40% at 50% 50%, oklch(0.60 0.13 150 / 0.12) 0%, transparent 50%);
 }
-html.dark {
+html.dark[data-style="glass"] {
   --ca-page-mesh:
     radial-gradient(ellipse 80% 60% at 0% 0%,
       color-mix(in oklab, var(--ca-brand-main) 42%, transparent) 0%, transparent 60%),
@@ -46,11 +51,7 @@ html.dark[data-style="frosted"] {
     radial-gradient(ellipse 60% 40% at 0% 0%,
       color-mix(in oklab, var(--ca-brand-main) 25%, transparent) 0%, transparent 55%);
 }
-/* Solid / flat: no decoration. Transparent windows (Tauri/Electron vibrancy): nothing at all. */
-html[data-style="solid"],
-html[data-style="flat"] {
-  --ca-page-mesh: none;
-}
+/* Transparent windows (Tauri/Electron vibrancy): nothing at all. */
 html[data-ca-surface="transparent"] {
   background-color: transparent;
   --ca-page-mesh: none;
@@ -124,7 +125,7 @@ body {
   line-height: var(--ca-line-height-tight);
   text-wrap: balance;
 }
-h1 { font-size: var(--ca-font-size-h1); line-height: 1.1; letter-spacing: calc(var(--ca-heading-tracking) - 0.01em); }
+h1 { font-size: var(--ca-font-size-h1); line-height: 1.1; }
 h2 { font-size: var(--ca-font-size-h2); line-height: 1.15; }
 h3 { font-size: var(--ca-font-size-h3); }
 h4 { font-size: var(--ca-font-size-h4); font-weight: var(--ca-font-weight-semibold); }

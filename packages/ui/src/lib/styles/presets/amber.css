@@ -13,18 +13,18 @@
   --ca-brand-contrast: oklch(1 0 0);
   --ca-brand-fill: oklch(0.54 0.21 55);
   --ca-brand-fill-hover: oklch(0.48 0.199 55);
-  --ca-surface-sunken: oklch(0.930 0.006 55);
-  --ca-surface-base: oklch(0.955 0.005 55);
-  --ca-surface-raised: oklch(0.980 0.003 55);
+  --ca-surface-sunken: oklch(0.930 0.003 55);
+  --ca-surface-base: oklch(0.955 0.002 55);
+  --ca-surface-raised: oklch(0.980 0.001 55);
   --ca-surface-overlay: oklch(0.995 0.001 55);
-  --ca-text-primary: oklch(0.200 0.012 55);
+  --ca-text-primary: oklch(0.200 0.004 55);
   --ca-text-secondary: oklch(0.420 0.010 55);
   /* Label of disabled controls only; never information (use --ca-text-hint to de-emphasise). >= 3:1 on every surface and on the disabled fill. */
   --ca-text-disabled: oklch(0.565 0.008 55);
   --ca-text-hint: oklch(0.420 0.010 55);
-  --ca-outline-subtle: oklch(0.200 0.010 55 / 0.08);
-  --ca-outline-default: oklch(0.200 0.010 55 / 0.16);
-  --ca-outline-strong: oklch(0.200 0.010 55 / 0.30);
+  --ca-outline-subtle: oklch(0 0 0 / 0.08);
+  --ca-outline-default: oklch(0 0 0 / 0.16);
+  --ca-outline-strong: oklch(0 0 0 / 0.30);
   /* Boundary of a field or control (text field, select, checkbox box): >= 3:1 on every surface and on the 5% field tint (WCAG 1.4.11). --ca-outline-subtle is for dividers. */
   --ca-outline-control: oklch(0.580 0.008 55);
   /* Keyboard focus ring and focus border: >= 3:1 on every surface and on the hover/selected fills. Components read this, never --ca-brand-main. */
@@ -38,7 +38,8 @@
   --ca-glass-tint-thick: oklch(0.975 0.003 55 / 0.52);
   --ca-glass-tint-chrome: oklch(0.980 0.002 55 / 0.72);
   --ca-glass-tint-solid: oklch(0.960 0.004 55);
-  --ca-glass-border: oklch(0.700 0.008 55 / 0.28);
+  --ca-glass-border: oklch(0.700 0 0 / 0.28);
+  --ca-glass-shadow: 0 2px 8px oklch(0 0 0 / 0.06);
   --ca-glow-primary: oklch(0.54 0.21 55 / 0.12);
   --ca-glow-primary-strong: oklch(0.54 0.21 55 / 0.22);
   --ca-vibrancy-label: oklch(0.18 0.010 55 / 0.85);
@@ -48,7 +49,6 @@
   --ca-vibrancy-separator: oklch(0.18 0.010 55 / 0.05);
   --ca-scrim-color: oklch(0.12 0.010 55 / 0.38);
   --ca-tooltip-fg: oklch(0.970 0.003 55);
-  --ca-glass-shadow: 0 4px 24px oklch(0.20 0.012 55 / 0.12), 0 1px 4px oklch(0.20 0.012 55 / 0.08);
 }
 .dark,
 [data-theme-scope="dark"],
@@ -64,16 +64,16 @@
   --ca-brand-contrast: oklch(1 0 0);
   --ca-brand-fill: oklch(0.58 0.206 55);
   --ca-brand-fill-hover: oklch(0.52 0.204 55);
-  --ca-surface-sunken: oklch(0.115 0.006 55);
-  --ca-surface-base: oklch(0.150 0.006 55);
-  --ca-surface-raised: oklch(0.190 0.006 55);
-  --ca-surface-overlay: oklch(0.235 0.006 55);
-  --ca-text-primary: oklch(0.940 0.005 55);
+  --ca-surface-sunken: oklch(0.115 0.002 55);
+  --ca-surface-base: oklch(0.150 0.002 55);
+  --ca-surface-raised: oklch(0.190 0.002 55);
+  --ca-surface-overlay: oklch(0.235 0.002 55);
+  --ca-text-primary: oklch(0.940 0.003 55);
   --ca-text-secondary: oklch(0.730 0.007 55);
-  --ca-text-disabled: oklch(0.625 0.007 55);
+  --ca-text-disabled: oklch(0.630 0.007 55);
   --ca-text-hint: oklch(0.700 0.008 55);
   --ca-outline-control: oklch(0.565 0.008 55);
-  --ca-focus-ring: oklch(0.640 0.206 55);
+  --ca-focus-ring: oklch(0.645 0.206 55);
   --ca-semantic-error-contrast: oklch(1 0 0);
   --ca-glass-bg: oklch(0.14 0 0 / 0.80);
   --ca-glow-primary: oklch(0.63 0.21 55 / 0.16);
@@ -94,7 +94,7 @@
   --ca-glass-tint-chrome: oklch(0.16 0 0 / 0.85);
   --ca-glass-tint-solid: oklch(0.18 0 0);
   --ca-glass-border: oklch(1 0 0 / 0.18);
-  --ca-glass-shadow: 0 8px 40px oklch(0 0 0 / 0.50);
+  --ca-glass-shadow: 0 4px 16px oklch(0 0 0 / 0.35);
   --ca-scrim-color: oklch(0 0 0 / 0.50);
 }
 @media (prefers-contrast: more) {

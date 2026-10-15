@@ -111,11 +111,11 @@
     <Select
       label="Surface"
       options={opts(SURFACES)}
-      value={def.defaultStyle ?? 'glass'}
+      value={def.defaultStyle ?? 'solid'}
       onchange={(v) => patch({ defaultStyle: v as never })}
     />
-    {@render label('Radius scale', def.radius ?? 1)}
-    <Slider min={0} max={2} step={0.05} value={def.radius ?? 1} onchange={([v]) => patch({ radius: v })} />
+    {@render label('Radius scale', def.radius ?? 0.8)}
+    <Slider min={0} max={2} step={0.05} value={def.radius ?? 0.8} onchange={([v]) => patch({ radius: v })} />
     {@render label('Control radius')}
     <SegmentedControl
       aria-label="Control radius"
@@ -166,10 +166,10 @@
     {@render label('Motion speed', motion.scale ?? 1)}
     <Slider min={0} max={2} step={0.1} value={motion.scale ?? 1} onchange={([v]) => patch({ motion: { ...motion, scale: v } })} />
     <Select label="Easing" options={opts(EASINGS)} value={motion.easing ?? 'standard'} onchange={(v) => patch({ motion: { ...motion, easing: v as never } })} />
-    {@render label('Icon stroke', def.iconStroke ?? 2)}
-    <Slider min={1} max={3} step={0.25} value={def.iconStroke ?? 2} onchange={([v]) => patch({ iconStroke: v })} />
+    {@render label('Icon stroke', def.iconStroke ?? 1.75)}
+    <Slider min={1} max={3} step={0.25} value={def.iconStroke ?? 1.75} onchange={([v]) => patch({ iconStroke: v })} />
     {@render label('Paper')}
-    <SegmentedControl aria-label="Paper" fullWidth value={def.paper ?? 'mesh'} onchange={(v) => patch({ paper: v as never })} items={opts(PAPERS)} />
+    <SegmentedControl aria-label="Paper" fullWidth value={def.paper ?? 'plain'} onchange={(v) => patch({ paper: v as never })} items={opts(PAPERS)} />
     {@render label('Noise', def.noise ?? 0)}
     <Slider min={0} max={0.12} step={0.01} value={def.noise ?? 0} onchange={([v]) => patch({ noise: v })} />
   </section>

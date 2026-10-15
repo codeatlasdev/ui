@@ -82,31 +82,31 @@ export function neutralRamp(hue: number): NeutralRamp {
 	const dh = hue + 5;
 	return {
 		surfaceLight: {
-			sunken: `oklch(0.930 0.006 ${hue})`,
-			base: `oklch(0.955 0.005 ${hue})`,
-			raised: `oklch(0.980 0.003 ${hue})`,
+			sunken: `oklch(0.930 0.003 ${hue})`,
+			base: `oklch(0.955 0.002 ${hue})`,
+			raised: `oklch(0.980 0.001 ${hue})`,
 			overlay: `oklch(0.995 0.001 ${hue})`,
 		},
 		surfaceDark: {
-			sunken: `oklch(0.115 0.006 ${hue})`,
-			base: `oklch(0.150 0.006 ${hue})`,
-			raised: `oklch(0.190 0.006 ${hue})`,
-			overlay: `oklch(0.235 0.006 ${hue})`,
+			sunken: `oklch(0.115 0.002 ${hue})`,
+			base: `oklch(0.150 0.002 ${hue})`,
+			raised: `oklch(0.190 0.002 ${hue})`,
+			overlay: `oklch(0.235 0.002 ${hue})`,
 		},
 		textLight: {
-			primary: `oklch(0.200 0.012 ${hue})`,
+			primary: `oklch(0.200 0.004 ${hue})`,
 			secondary: `oklch(0.420 0.010 ${hue})`,
 			disabled: `oklch(0.620 0.008 ${hue})`,
 		},
 		textDark: {
-			primary: `oklch(0.940 0.005 ${dh})`,
+			primary: `oklch(0.940 0.003 ${dh})`,
 			secondary: `oklch(0.730 0.007 ${dh})`,
 			disabled: `oklch(0.500 0.007 ${dh})`,
 		},
 		outlineLight: {
-			subtle: `oklch(0.200 0.010 ${hue} / 0.08)`,
-			default: `oklch(0.200 0.010 ${hue} / 0.16)`,
-			strong: `oklch(0.200 0.010 ${hue} / 0.30)`,
+			subtle: "oklch(0 0 0 / 0.08)",
+			default: "oklch(0 0 0 / 0.16)",
+			strong: "oklch(0 0 0 / 0.30)",
 		},
 		outlineDark: {
 			subtle: "oklch(1 0 0 / 0.08)",

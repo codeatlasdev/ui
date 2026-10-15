@@ -21,7 +21,7 @@
   --ca-font-weight-medium:   500;
   --ca-font-weight-semibold: 600;
   --ca-font-weight-bold:     700;
-  --ca-font-weight-heading:  700;
+  --ca-font-weight-heading:  600;
   --ca-heading-tracking:     -0.02em;
   --ca-heading-case:         none;
   --ca-label-tracking:       0.01em;
@@ -36,7 +36,7 @@
 
   /* ── Shape ───────────────────────────────────────────────────────────────
    * Radius scale times --ca-radius-scale (0 = square, Swiss/Brutalism; 2 = soft, Clay). */
-  --ca-radius-scale: 1;
+  --ca-radius-scale: 0.8;
   /* Controls (buttons, fields, chips) pick their radius from this role, not a step. */
 
   /* Border weight by role. Flat/brutalist styles raise these; glass keeps hairlines. */
@@ -47,7 +47,7 @@
   --ca-border-width-focus:  2px;
 
   /* Icon stroke (Lucide reads it through .lucide / svg[stroke]). */
-  --ca-icon-stroke: 2;
+  --ca-icon-stroke: 1.75;
 
   /* Texture over the page background (0 = none). */
   --ca-noise-opacity: 0;
@@ -252,11 +252,11 @@
   --ca-brand-text: var(--ca-brand-dark);
 
   /* ── Shadows (light) ─────────────────────────────────────────────────── */
-  --ca-shadow-xs: 0 1px 2px oklch(0.25 0.008 70 / 0.07);
-  --ca-shadow-sm: 0 2px 4px oklch(0.25 0.008 70 / 0.09);
-  --ca-shadow-md: 0 4px 16px oklch(0.25 0.008 70 / 0.12);
-  --ca-shadow-lg: 0 8px 32px oklch(0.25 0.008 70 / 0.15);
-  --ca-shadow-xl: 0 16px 48px oklch(0.25 0.008 70 / 0.19);
+  --ca-shadow-xs: 0 1px 2px oklch(0 0 0 / 0.05);
+  --ca-shadow-sm: 0 1px 3px oklch(0 0 0 / 0.08), 0 1px 2px oklch(0 0 0 / 0.04);
+  --ca-shadow-md: 0 4px 12px oklch(0 0 0 / 0.08);
+  --ca-shadow-lg: 0 12px 32px -8px oklch(0 0 0 / 0.14);
+  --ca-shadow-xl: 0 24px 56px -12px oklch(0 0 0 / 0.18);
 
   /* ── Semantic colours (light) ────────────────────────────────────────── */
   --ca-semantic-secondary: oklch(0.910 0.005 88);
@@ -298,10 +298,10 @@
   --ca-tooltip-bg: color-mix(in oklab, var(--ca-surface-overlay) 96%, transparent);
   /* Shadows */
   --ca-shadow-xs: 0 1px 3px oklch(0 0 0 / 0.30);
-  --ca-shadow-sm: 0 2px 6px oklch(0 0 0 / 0.35);
-  --ca-shadow-md: 0 4px 20px oklch(0 0 0 / 0.40);
-  --ca-shadow-lg: 0 8px 36px oklch(0 0 0 / 0.45);
-  --ca-shadow-xl: 0 16px 56px oklch(0 0 0 / 0.50);
+  --ca-shadow-sm: 0 2px 6px oklch(0 0 0 / 0.30);
+  --ca-shadow-md: 0 4px 12px oklch(0 0 0 / 0.30);
+  --ca-shadow-lg: 0 8px 24px oklch(0 0 0 / 0.35);
+  --ca-shadow-xl: 0 16px 40px oklch(0 0 0 / 0.40);
 
   /* Semantic */
   --ca-semantic-secondary: oklch(0.250 0.005 88);

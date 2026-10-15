@@ -61,7 +61,7 @@
   <Controls editor={state} {def} {patch} {selectStyle} {setScheme} {reset} />
 {/snippet}
 {#snippet preview()}
-  <Preview css={island} style={def.defaultStyle ?? 'glass'} preset={def.defaultPreset ?? 'amber'} scheme={state.scheme} />
+  <Preview css={island} style={def.defaultStyle ?? 'solid'} preset={def.defaultPreset ?? 'amber'} scheme={state.scheme} />
 {/snippet}
 {#snippet code()}
   <div class="te-code"><CodeTabs tabs={codeTabs} sync="" /></div>

@@ -9,6 +9,7 @@ import type { ThemeDefinition } from "./define.js";
 
 export type DesignStyleId =
 	| "default"
+	| "liquid"
 	| "swiss"
 	| "brutalism"
 	| "neumorphism"
@@ -39,14 +40,50 @@ const SERIF = 'ui-serif, Georgia, Cambria, "Times New Roman", serif';
 const MONO = 'ui-monospace, "JetBrains Mono", "SFMono-Regular", Menlo, Consolas, monospace';
 const ROUNDED = 'ui-rounded, "SF Pro Rounded", "Nunito", system-ui, sans-serif';
 
-/** Design-style recipes by id (glass, solid, flat, ... editorial, terminal): each is a `Partial<ThemeDefinition>` to pass to `defineTheme` or `mergeTheme`. */
+/** Design-style recipes by id (default, liquid, swiss, ... editorial, terminal): each is a `Partial<ThemeDefinition>` to pass to `defineTheme` or `mergeTheme`. */
 export const DESIGN_STYLES: Record<DesignStyleId, DesignStyle> = {
 	default: {
 		id: "default",
 		label: "CodeAtlas",
-		description: "Liquid glass surfaces, soft elevation, Inter. The package default.",
+		description: "Solid surfaces, plain paper, neutral shadows, 8px corners. The package default.",
 		taxonomy: ["DS062", "DS063"],
 		theme: {},
+	},
+	liquid: {
+		id: "liquid",
+		label: "CodeAtlas Liquid",
+		description:
+			"Liquid glass surfaces, brand mesh, glow and hue-tinted shadows. The former default.",
+		taxonomy: ["DS062", "DS063"],
+		theme: {
+			defaultStyle: "glass",
+			paper: "mesh",
+			radius: 1,
+			iconStroke: 2,
+			typography: { weights: { heading: 700 } },
+			overrides: {
+				light: {
+					"--ca-shadow-xs": "0 1px 2px oklch(0.25 0.008 70 / 0.07)",
+					"--ca-shadow-sm": "0 2px 4px oklch(0.25 0.008 70 / 0.09)",
+					"--ca-shadow-md": "0 4px 16px oklch(0.25 0.008 70 / 0.12)",
+					"--ca-shadow-lg": "0 8px 32px oklch(0.25 0.008 70 / 0.15)",
+					"--ca-shadow-xl": "0 16px 48px oklch(0.25 0.008 70 / 0.19)",
+					"--ca-glass-shadow":
+						"0 4px 24px oklch(0.20 0.012 55 / 0.12), 0 1px 4px oklch(0.20 0.012 55 / 0.08)",
+					"--ca-glass-border": "oklch(0.700 0.008 55 / 0.28)",
+					"--ca-mat-ultra-thin-shadow": "0 2px 8px oklch(0.25 0.008 70 / 0.06)",
+					"--ca-mat-thin-shadow": "0 4px 16px oklch(0.25 0.008 70 / 0.10)",
+					"--ca-mat-thick-shadow": "0 16px 48px oklch(0.25 0.008 70 / 0.16)",
+				},
+				dark: {
+					"--ca-shadow-sm": "0 2px 6px oklch(0 0 0 / 0.35)",
+					"--ca-shadow-md": "0 4px 20px oklch(0 0 0 / 0.40)",
+					"--ca-shadow-lg": "0 8px 36px oklch(0 0 0 / 0.45)",
+					"--ca-shadow-xl": "0 16px 56px oklch(0 0 0 / 0.50)",
+					"--ca-glass-shadow": "0 8px 40px oklch(0 0 0 / 0.50)",
+				},
+			},
+		},
 	},
 	swiss: {
 		id: "swiss",

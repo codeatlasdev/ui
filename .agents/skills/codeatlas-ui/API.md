@@ -2273,7 +2273,7 @@ function defineTheme(def?: Partial<ThemeDefinition>): ResolvedTheme
 
 `import { DESIGN_STYLES } from "@codeatlasdev/ui"`
 
-Design-style recipes by id (glass, solid, flat, ... editorial, terminal): each is a `Partial<ThemeDefinition>` to pass to `defineTheme` or `mergeTheme`.
+Design-style recipes by id (default, liquid, swiss, ... editorial, terminal): each is a `Partial<ThemeDefinition>` to pass to `defineTheme` or `mergeTheme`.
 
 ```ts
 const DESIGN_STYLES: Record<DesignStyleId, DesignStyle>
@@ -2296,7 +2296,7 @@ function designStyle(id: DesignStyleId, overrides?: Partial<ThemeDefinition>): P
 Design knobs → root custom properties. Only values that differ from the stylesheet defaults.
 
 ```ts
-function designTokens(t: Pick< ResolvedTheme, | "radius" | "controlRadius" | "density" | "border" | "typography" | "elevation" | "motion" | "iconStroke" | "noise" | "paper" >): Record<string, string>
+function designTokens(t: Pick< ResolvedTheme, | "radius" | "controlRadius" | "density" | "border" | "typography" | "elevation" | "motion" | "iconStroke" | "noise" | "paper" | "defaultStyle" >): Record<string, string>
 ```
 
 ### downloadFile
@@ -2996,7 +2996,7 @@ Types:
 | `DeepPartial` | `type DeepPartial<T> = T extends (...args: never[]) => unknown ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;` |  |
 | `Density` | `type Density = "compact" \| "comfortable" \| "airy" \| number;` | Spacing density: a multiplier of the 4px unit, or a named step. |
 | `DesignStyle` | `interface DesignStyle { id: DesignStyleId; label: string; description: string; taxonomy: string[]; theme: Partial<ThemeDefinition>; }` |  |
-| `DesignStyleId` | `type DesignStyleId = \| "default" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
+| `DesignStyleId` | `type DesignStyleId = \| "default" \| "liquid" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
 | `DocsHeading` | `interface DocsHeading { id: string; text: string; depth: 2 \| 3; }` |  |
 | `DocsNavGroup` | `interface DocsNavGroup { label?: string; items: DocsNavItem[]; }` | A labelled group of page links in the sidebar. |
 | `DocsNavItem` | `interface DocsNavItem { href: string; title: string; badge?: string; }` | A page link in the sidebar. |
@@ -3024,7 +3024,7 @@ Types:
 | `NavSection` | `interface NavSection { label?: string; collapsible?: boolean; defaultOpen?: boolean; items: NavItem[]; }` |  |
 | `NeutralRamp` | `interface NeutralRamp { surfaceLight: SurfaceColors; surfaceDark: SurfaceColors; textLight: TextColors; textDark: TextColors; outlineLight: OutlineColors; outlineDark: OutlineColors; }` |  |
 | `OutlineColors` | `interface OutlineColors { subtle: string; default: string; strong: string; }` |  |
-| `Paper` | `type Paper = "mesh" \| "plain" \| "grid" \| "dots" \| "lines";` | Page background pattern. mesh = brand glow gradients; the rest are flat paper. |
+| `Paper` | `type Paper = "mesh" \| "plain" \| "grid" \| "dots" \| "lines";` | Page background pattern. mesh = brand glow gradients (drawn by the glass and frosted materials); the rest are flat paper. |
 | `Politeness` | `type Politeness = "polite" \| "assertive";` |  |
 | `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `PresetId` | `type PresetId = BuiltinPresetId \| (string & {});` | A built-in preset or a brand preset registered via `ThemeOptions.presets`. |
@@ -3158,7 +3158,7 @@ function caUI(options?: ThemeOptions): AstroIntegration
 
 `import { DESIGN_STYLES } from "@codeatlasdev/ui/astro"`
 
-Design-style recipes by id (glass, solid, flat, ... editorial, terminal): each is a `Partial<ThemeDefinition>` to pass to `defineTheme` or `mergeTheme`.
+Design-style recipes by id (default, liquid, swiss, ... editorial, terminal): each is a `Partial<ThemeDefinition>` to pass to `defineTheme` or `mergeTheme`.
 
 ```ts
 const DESIGN_STYLES: Record<DesignStyleId, DesignStyle>
@@ -3188,8 +3188,8 @@ Types:
 
 | Type | Declaration | Notes |
 |---|---|---|
-| `DesignStyleId` | `type DesignStyleId = \| "default" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
-| `Paper` | `type Paper = "mesh" \| "plain" \| "grid" \| "dots" \| "lines";` | Page background pattern. mesh = brand glow gradients; the rest are flat paper. |
+| `DesignStyleId` | `type DesignStyleId = \| "default" \| "liquid" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
+| `Paper` | `type Paper = "mesh" \| "plain" \| "grid" \| "dots" \| "lines";` | Page background pattern. mesh = brand glow gradients (drawn by the glass and frosted materials); the rest are flat paper. |
 | `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; background?: string; sunken?: string; surface?: string; overlay?: string; text?: string; textSecondary?: string; textHint?: string; textDisabled?: string; borderSubtle?: string; border?: string; borderStrong?: string; success?: string; warning?: string; info?: string; error?: string; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
@@ -3397,7 +3397,7 @@ function defineTheme(def?: Partial<ThemeDefinition>): ResolvedTheme
 
 `import { DESIGN_STYLES } from "@codeatlasdev/ui/kit"`
 
-Design-style recipes by id (glass, solid, flat, ... editorial, terminal): each is a `Partial<ThemeDefinition>` to pass to `defineTheme` or `mergeTheme`.
+Design-style recipes by id (default, liquid, swiss, ... editorial, terminal): each is a `Partial<ThemeDefinition>` to pass to `defineTheme` or `mergeTheme`.
 
 ```ts
 const DESIGN_STYLES: Record<DesignStyleId, DesignStyle>
@@ -3420,7 +3420,7 @@ function designStyle(id: DesignStyleId, overrides?: Partial<ThemeDefinition>): P
 Design knobs → root custom properties. Only values that differ from the stylesheet defaults.
 
 ```ts
-function designTokens(t: Pick< ResolvedTheme, | "radius" | "controlRadius" | "density" | "border" | "typography" | "elevation" | "motion" | "iconStroke" | "noise" | "paper" >): Record<string, string>
+function designTokens(t: Pick< ResolvedTheme, | "radius" | "controlRadius" | "density" | "border" | "typography" | "elevation" | "motion" | "iconStroke" | "noise" | "paper" | "defaultStyle" >): Record<string, string>
 ```
 
 ### mergeTheme
@@ -3480,7 +3480,7 @@ Types:
 | `CaError` | `interface CaError { message: string; code?: string; id?: string; }` |  |
 | `CreateErrorHandlerOptions` | `interface CreateErrorHandlerOptions { report?: (error: CaError, event: ErrorEvent) => void; defaultMessage?: string; locale?: Locale \| ((event: ErrorEvent) => Locale \| undefined); }` |  |
 | `DesignStyle` | `interface DesignStyle { id: DesignStyleId; label: string; description: string; taxonomy: string[]; theme: Partial<ThemeDefinition>; }` |  |
-| `DesignStyleId` | `type DesignStyleId = \| "default" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
+| `DesignStyleId` | `type DesignStyleId = \| "default" \| "liquid" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
 | `NativeFeelOptions` | `interface NativeFeelOptions { blockZoom?: boolean; allowContextMenu?: (e: MouseEvent) => boolean; }` |  |
 | `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
@@ -4284,7 +4284,7 @@ Types:
 
 | Type | Declaration | Notes |
 |---|---|---|
-| `PresetTokens` | `interface PresetTokens { brandMain: string; brandLight: string; brandDark: string; brandContrast: string; brandFill: string; brandFillHover: string; surfaceSunken: string; surfaceBase: string; surfaceRaised: string; surfaceOverlay: string; textPrimary: string; textSecondary: string; textDisabled: string; textHint: string; outlineSubtle: string; outlineDefault: string; outlineStrong: string; outlineControl: string; focusRing: string; semanticErrorContrast: string; glassBg: string; glassTintUltraThin: string; glassTintThin: string; glassTint: string; glassTintThick: string; glassTintChrome: string; glassTintSolid: string; glassBorder: string; glowPrimary: string; glowPrimaryStrong: string; vibrancyLabel: string; vibrancySecondary: string; vibrancyTertiary: string; vibrancyFill: string; vibrancySeparator: string; scrimColor: string; tooltipFg: string; dark: { brandMain: string; brandLight: string; brandDark: string; brandContrast: string; brandFill: string; brandFillHover: string; surfaceSunken: string; surfaceBase: string; surfaceRaised: string; surfaceOverlay: string; textPrimary: string; textSecondary: string; textDisabled: string; textHint: string; outlineControl: string; focusRing: string; semanticErrorContrast: string; glassBg: string; glowPrimary: string; glowPrimaryStrong: string; vibrancyLabel: string; vibrancySecondary: string; vibrancyTertiary: string; vibrancyFill: string; vibrancySeparator: string; tooltipFg: string; }; }` |  |
+| `PresetTokens` | `interface PresetTokens { brandMain: string; brandLight: string; brandDark: string; brandContrast: string; brandFill: string; brandFillHover: string; surfaceSunken: string; surfaceBase: string; surfaceRaised: string; surfaceOverlay: string; textPrimary: string; textSecondary: string; textDisabled: string; textHint: string; outlineSubtle: string; outlineDefault: string; outlineStrong: string; outlineControl: string; focusRing: string; semanticErrorContrast: string; glassBg: string; glassTintUltraThin: string; glassTintThin: string; glassTint: string; glassTintThick: string; glassTintChrome: string; glassTintSolid: string; glassBorder: string; glassShadow: string; glowPrimary: string; glowPrimaryStrong: string; vibrancyLabel: string; vibrancySecondary: string; vibrancyTertiary: string; vibrancyFill: string; vibrancySeparator: string; scrimColor: string; tooltipFg: string; dark: { brandMain: string; brandLight: string; brandDark: string; brandContrast: string; brandFill: string; brandFillHover: string; surfaceSunken: string; surfaceBase: string; surfaceRaised: string; surfaceOverlay: string; textPrimary: string; textSecondary: string; textDisabled: string; textHint: string; outlineControl: string; focusRing: string; semanticErrorContrast: string; glassBg: string; glowPrimary: string; glowPrimaryStrong: string; vibrancyLabel: string; vibrancySecondary: string; vibrancyTertiary: string; vibrancyFill: string; vibrancySeparator: string; tooltipFg: string; }; }` |  |
 | `TokenMap` | `type TokenMap = Record<`--ca-${string}`, string>;` | CSS custom properties of one preset, per scheme. |
 
 ## @codeatlasdev/ui/vite

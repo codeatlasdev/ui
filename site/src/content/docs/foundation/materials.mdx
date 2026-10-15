@@ -23,7 +23,7 @@ Materials are CSS classes (`glass-ultra-thin`, `glass-thin`, `glass-regular`, `g
 <GlassSurface thickness="thick" tinted>Content</GlassSurface>
 ```
 
-The surface style on `<html data-style>` changes every material at once: `glass` (default), `frosted` (less blur), `solid` and `flat` (no blur, no mesh). Switch it with `colorScheme.setStyle()`, see [Theming](/docs/getting-started/theming/#surface-styles). Browsers with `prefers-reduced-transparency: reduce` automatically get opaque surfaces.
+The surface style on `<html data-style>` changes every material at once: `solid` (default: no blur, no glow, hairline edges), `flat` (no blur, no shadows), `frosted` (less blur) and `glass` (the opt-in `liquid` look: blur, mesh, glow). Switch it with `colorScheme.setStyle()`, see [Theming](/docs/getting-started/theming/#surface-styles). Browsers with `prefers-reduced-transparency: reduce` automatically get opaque surfaces.
 
 <Demo title="Glass tiers" description="All five thickness levels on a gradient backdrop." src={TiersSrc}><Tiers /></Demo>
 <Demo title="Button glass variants" description="glass-btn, glass-btn-prominent and glass-btn-clear for custom controls." src={GlassButtonsSrc}><GlassButtons /></Demo>

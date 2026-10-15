@@ -46,6 +46,7 @@ export interface PresetTokens {
 	glassTintChrome: string;
 	glassTintSolid: string;
 	glassBorder: string;
+	glassShadow: string;
 
 	glowPrimary: string;
 	glowPrimaryStrong: string;
@@ -357,16 +358,16 @@ export function generatePreset(hue: number, chroma = 0.21, lightL = 0.54): Prese
 
 	// Role colours solved against the surfaces they sit on (see "Role solvers").
 	const surfacesL = [
-		encoded(0.93, 0.006, h),
-		encoded(0.955, 0.005, h),
-		encoded(0.98, 0.003, h),
+		encoded(0.93, 0.003, h),
+		encoded(0.955, 0.002, h),
+		encoded(0.98, 0.001, h),
 		encoded(0.995, 0.001, h),
 	];
 	const surfacesD = [
-		encoded(0.115, 0.006, h),
-		encoded(0.15, 0.006, h),
-		encoded(0.19, 0.006, h),
-		encoded(0.235, 0.006, h),
+		encoded(0.115, 0.002, h),
+		encoded(0.15, 0.002, h),
+		encoded(0.19, 0.002, h),
+		encoded(0.235, 0.002, h),
 	];
 	const nL = neighbours("light", surfacesL);
 	const nD = neighbours("dark", surfacesD);
@@ -387,21 +388,21 @@ export function generatePreset(hue: number, chroma = 0.21, lightL = 0.54): Prese
 		brandFillHover: `oklch(${lightFill.hoverL} ${r(c * 0.95)} ${h})`,
 
 		// ── Light surfaces (very low chroma tint) ─────────────────
-		surfaceSunken: `oklch(0.930 0.006 ${h})`,
-		surfaceBase: `oklch(0.955 0.005 ${h})`,
-		surfaceRaised: `oklch(0.980 0.003 ${h})`,
+		surfaceSunken: `oklch(0.930 0.003 ${h})`,
+		surfaceBase: `oklch(0.955 0.002 ${h})`,
+		surfaceRaised: `oklch(0.980 0.001 ${h})`,
 		surfaceOverlay: `oklch(0.995 0.001 ${h})`,
 
 		// ── Light text ────────────────────────────────────────────
-		textPrimary: `oklch(0.200 0.012 ${h})`,
+		textPrimary: `oklch(0.200 0.004 ${h})`,
 		textSecondary: `oklch(0.420 0.010 ${h})`,
 		textDisabled: solveTextDisabled("light", h, nL),
 		textHint: `oklch(0.420 0.010 ${h})`,
 
 		// ── Outlines ─────────────────────────────────────────────
-		outlineSubtle: `oklch(0.200 0.010 ${h} / 0.08)`,
-		outlineDefault: `oklch(0.200 0.010 ${h} / 0.16)`,
-		outlineStrong: `oklch(0.200 0.010 ${h} / 0.30)`,
+		outlineSubtle: "oklch(0 0 0 / 0.08)",
+		outlineDefault: "oklch(0 0 0 / 0.16)",
+		outlineStrong: "oklch(0 0 0 / 0.30)",
 		outlineControl: solveOutlineControl("light", h, nL),
 		focusRing: lightRing,
 		semanticErrorContrast: errorContrast,
@@ -414,7 +415,8 @@ export function generatePreset(hue: number, chroma = 0.21, lightL = 0.54): Prese
 		glassTintThick: `oklch(0.975 0.003 ${h} / 0.52)`,
 		glassTintChrome: `oklch(0.980 0.002 ${h} / 0.72)`,
 		glassTintSolid: `oklch(0.960 0.004 ${h})`,
-		glassBorder: `oklch(0.700 0.008 ${h} / 0.28)`,
+		glassBorder: "oklch(0.700 0 0 / 0.28)",
+		glassShadow: "0 2px 8px oklch(0 0 0 / 0.06)",
 
 		// ── Glow (light) ──────────────────────────────────────────
 		glowPrimary: `oklch(${L} ${c} ${h} / 0.12)`,
@@ -439,12 +441,12 @@ export function generatePreset(hue: number, chroma = 0.21, lightL = 0.54): Prese
 			brandFill: `oklch(${darkFill.fillL} ${darkC} ${h})`,
 			brandFillHover: `oklch(${darkFill.hoverL} ${r(c * 0.97)} ${h})`,
 
-			surfaceSunken: `oklch(0.115 0.006 ${h})`,
-			surfaceBase: `oklch(0.150 0.006 ${h})`,
-			surfaceRaised: `oklch(0.190 0.006 ${h})`,
-			surfaceOverlay: `oklch(0.235 0.006 ${h})`,
+			surfaceSunken: `oklch(0.115 0.002 ${h})`,
+			surfaceBase: `oklch(0.150 0.002 ${h})`,
+			surfaceRaised: `oklch(0.190 0.002 ${h})`,
+			surfaceOverlay: `oklch(0.235 0.002 ${h})`,
 
-			textPrimary: `oklch(0.940 0.005 ${h})`,
+			textPrimary: `oklch(0.940 0.003 ${h})`,
 			textSecondary: `oklch(0.730 0.007 ${h})`,
 			textDisabled: solveTextDisabled("dark", h, nD),
 			textHint: `oklch(0.700 0.008 ${h})`,
@@ -487,7 +489,7 @@ export const NEUTRAL_DARK: TokenMap = {
 	"--ca-glass-tint-chrome": "oklch(0.16 0 0 / 0.85)",
 	"--ca-glass-tint-solid": "oklch(0.18 0 0)",
 	"--ca-glass-border": "oklch(1 0 0 / 0.18)",
-	"--ca-glass-shadow": "0 8px 40px oklch(0 0 0 / 0.50)",
+	"--ca-glass-shadow": "0 4px 16px oklch(0 0 0 / 0.35)",
 	"--ca-scrim-color": "oklch(0 0 0 / 0.50)",
 };
 

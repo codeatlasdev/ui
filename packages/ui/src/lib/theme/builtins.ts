@@ -24,8 +24,6 @@ export const BUILTIN_PRESETS: BuiltinPresetSource[] = [
 		overrides: {
 			light: {
 				"--ca-brand-light": "oklch(0.63 0.21 55)",
-				"--ca-glass-shadow":
-					"0 4px 24px oklch(0.20 0.012 55 / 0.12), 0 1px 4px oklch(0.20 0.012 55 / 0.08)",
 			},
 			dark: {},
 		},
@@ -40,8 +38,6 @@ export const BUILTIN_PRESETS: BuiltinPresetSource[] = [
 		overrides: {
 			light: {
 				"--ca-brand-light": "oklch(0.59 0.22 260)",
-				"--ca-glass-shadow":
-					"0 4px 24px oklch(0.20 0.012 260 / 0.12), 0 1px 4px oklch(0.20 0.012 260 / 0.08)",
 			},
 			dark: {
 				"--ca-brand-main": "oklch(0.63 0.22 260)",
@@ -62,8 +58,6 @@ export const BUILTIN_PRESETS: BuiltinPresetSource[] = [
 		overrides: {
 			light: {
 				"--ca-brand-light": "oklch(0.53 0.23 26)",
-				"--ca-glass-shadow":
-					"0 4px 24px oklch(0.20 0.012 26 / 0.12), 0 1px 4px oklch(0.20 0.012 26 / 0.08)",
 			},
 			dark: {
 				"--ca-brand-main": "oklch(0.63 0.21 26)",
@@ -86,8 +80,6 @@ export const BUILTIN_PRESETS: BuiltinPresetSource[] = [
 		overrides: {
 			light: {
 				"--ca-brand-light": "oklch(0.57 0.22 193)",
-				"--ca-glass-shadow":
-					"0 4px 24px oklch(0.20 0.012 193 / 0.12), 0 1px 4px oklch(0.20 0.012 193 / 0.08)",
 			},
 			dark: {
 				"--ca-brand-light": "oklch(0.66 0.22 193)",
@@ -104,8 +96,6 @@ export const BUILTIN_PRESETS: BuiltinPresetSource[] = [
 		overrides: {
 			light: {
 				"--ca-brand-light": "oklch(0.56 0.24 295)",
-				"--ca-glass-shadow":
-					"0 4px 24px oklch(0.20 0.012 295 / 0.12), 0 1px 4px oklch(0.20 0.012 295 / 0.08)",
 			},
 			dark: {
 				"--ca-brand-light": "oklch(0.65 0.24 295)",
@@ -122,8 +112,6 @@ export const BUILTIN_PRESETS: BuiltinPresetSource[] = [
 		overrides: {
 			light: {
 				"--ca-brand-light": "oklch(0.55 0.20 152)",
-				"--ca-glass-shadow":
-					"0 4px 24px oklch(0.20 0.012 152 / 0.12), 0 1px 4px oklch(0.20 0.012 152 / 0.08)",
 			},
 			dark: {
 				"--ca-brand-light": "oklch(0.64 0.20 152)",
@@ -140,8 +128,6 @@ export const BUILTIN_PRESETS: BuiltinPresetSource[] = [
 		overrides: {
 			light: {
 				"--ca-brand-light": "oklch(0.59 0.22 350)",
-				"--ca-glass-shadow":
-					"0 4px 24px oklch(0.20 0.012 350 / 0.12), 0 1px 4px oklch(0.20 0.012 350 / 0.08)",
 			},
 			dark: {
 				"--ca-brand-light": "oklch(0.68 0.22 350)",
@@ -156,10 +142,7 @@ export const BUILTIN_PRESETS: BuiltinPresetSource[] = [
 		chroma: 0.1,
 		lightL: 0.48,
 		overrides: {
-			light: {
-				"--ca-glass-shadow":
-					"0 4px 24px oklch(0.20 0.012 220 / 0.12), 0 1px 4px oklch(0.20 0.012 220 / 0.08)",
-			},
+			light: {},
 			dark: {},
 		},
 	},

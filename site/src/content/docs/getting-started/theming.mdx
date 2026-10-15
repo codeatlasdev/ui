@@ -16,9 +16,9 @@ export const theme: ThemeOptions = {
   presets: [{ id: "acme", color: "#2563eb" }],
   defaultPreset: "acme",
   defaultScheme: "system",
-  defaultStyle: "glass",
+  defaultStyle: "solid",
   fonts: { body: "Geist, system-ui, sans-serif" },
-  radius: 1,
+  radius: 0.8,
   density: "comfortable",
   overrides: { light: { "--ca-card-padding": "16px" } },
 };
@@ -32,12 +32,14 @@ Pass the same object to `caThemeHandle` and `caThemePlugin` (SvelteKit), `caUI` 
 |---|---|---|
 | `presets` | `[]` | Brand presets generated from a hex color. Built-in presets are always available. |
 | `defaultPreset` | `"amber"` | Preset used until the user picks one. Must be a built-in or one of `presets`. |
-| `defaultScheme` | `"dark"` | `"light"`, `"dark"` or `"system"`. |
-| `defaultStyle` | `"glass"` | `"glass"`, `"frosted"`, `"solid"` or `"flat"`. |
+| `defaultScheme` | `"dark"` | `"light"`, `"dark"` or `"system"`. `bunx @codeatlasdev/ui init` scaffolds `"system"`. |
+| `defaultStyle` | `"solid"` | `"solid"`, `"flat"`, `"frosted"` or `"glass"`. Solid is the sober default; glass is the opt-in [`liquid`](#the-liquid-recipe) look. |
 | `fonts` | `{}` | `body`, `mono` and `display`. Each is a font stack string or a self-hosted font descriptor (`@font-face`, preload, metric-matched fallback), see [Performance](/docs/getting-started/performance/#fonts). They set `--ca-font-sans`, `--ca-font-mono` and `--ca-font-display`. |
-| `radius` | `1` | Multiplier applied to the `--ca-radius-xs` to `--ca-radius-xl` scale. |
+| `radius` | `0.8` | Multiplier applied to the `--ca-radius-xs` to `--ca-radius-xl` scale (`0.8` makes `--ca-radius-md` 8px). |
 | `density` | `"comfortable"` | `"compact"` tightens card padding and page gaps. |
-| `paper` | `"mesh"` | Page background: `"mesh"` (brand glow), `"plain"`, `"grid"`, `"dots"` or `"lines"`. Flat patterns are drawn in `--ca-outline-subtle`, so they follow the preset and scheme. |
+| `paper` | `"plain"` | Page background: `"plain"`, `"mesh"` (brand glow, drawn by the `glass` and `frosted` styles), `"grid"`, `"dots"` or `"lines"`. Flat patterns are drawn in `--ca-outline-subtle`, so they follow the preset and scheme. |
+| `iconStroke` | `1.75` | Lucide stroke width. |
+| `typography.weights.heading` | `600` | Heading weight. |
 | `overrides` | `{}` | Raw `--ca-*` token overrides, per scheme (`light`, `dark`). Prefer preset role colors (below) for palettes. |
 
 `defineTheme(options)` resolves the options (defaults, validation) and `themeCSS(resolved)` returns the CSS string. You rarely call them yourself; the integrations do. Invalid input fails the build: a preset `id` that clashes with a built-in, a color that is not `#rrggbb`, or a `defaultPreset` that does not exist.
@@ -124,14 +126,30 @@ colorScheme.toggle();   // flips resolved light and dark
 
 | Style | Look |
 |---|---|
-| `glass` | Liquid Glass: strong blur and saturation, translucent tints. Default. |
+| `solid` | Default. No blur, opaque surfaces, plain page, hairline edges, no glow. Keeps soft neutral shadows. |
+| `flat` | No blur, no mesh, no glow, no drop shadows: separation comes from borders. |
 | `frosted` | Less blur, calmer mesh background. |
-| `solid` | No blur, opaque surfaces, no mesh background. Keeps soft shadows. |
-| `flat` | No blur, no mesh, no drop shadows: separation comes from borders. |
+| `glass` | Liquid Glass: strong blur and saturation, translucent tints, brand mesh, glow and rim light. Opt-in. |
 
 ```ts
-colorScheme.setStyle("solid");
+colorScheme.setStyle("glass");
 ```
+
+### The liquid recipe
+
+Earlier versions looked like Liquid Glass: glass surfaces over a three-hue mesh, glow on selected states, round corners (10px controls), 2px icons, bold headings and hue-tinted shadows. That look is now the opt-in `liquid` recipe:
+
+```ts
+import { designStyle, type ThemeOptions } from "@codeatlasdev/ui";
+
+export const theme: ThemeOptions = designStyle("liquid", {
+  presets: [{ id: "acme", color: "#2563eb" }],
+  defaultPreset: "acme",
+  defaultScheme: "dark",
+});
+```
+
+Migrating an app that relied on the old defaults: use `designStyle("liquid", { ... })`, or set `defaultStyle: "glass"` yourself. `designStyle("default")` now means the sober default.
 
 Users on `prefers-reduced-transparency: reduce` get opaque surfaces regardless of the style.
 

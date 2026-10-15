@@ -141,7 +141,8 @@ export const theme = defineTheme(designStyle('editorial', { radius: 0.4 }));
 
 | style | vibe |
 |---|---|
-| `default` | liquid glass, soft depth, Inter |
+| `default` | solid surfaces, plain page, neutral shadows, 8px corners |
+| `liquid` | the former default: liquid glass, brand mesh, glow |
 | `swiss` | grid, hairlines, no shadows, Helvetica energy |
 | `brutalism` | thick borders, hard offset shadows, uppercase |
 | `neumorphism` | one base color, extruded and pressed surfaces |

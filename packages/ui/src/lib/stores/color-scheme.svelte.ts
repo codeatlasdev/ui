@@ -67,7 +67,7 @@ function createColorSchemeStore() {
 	);
 	let preset = $state<PresetId>(readStorage("ca-preset", known, attr("data-preset", "amber")));
 	let style = $state<SurfaceStyle>(
-		readStorage("ca-style", STYLES, attr("data-ca-style", "glass") as SurfaceStyle)
+		readStorage("ca-style", STYLES, attr("data-ca-style", "solid") as SurfaceStyle)
 	);
 
 	// Bumped whenever the OS scheme may have changed so `resolved` re-reads matchMedia.

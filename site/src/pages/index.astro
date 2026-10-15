@@ -78,7 +78,7 @@ export default defineConfig({
 
 const title = "CodeAtlas UI";
 const description =
-	"Svelte 5 UI library with a glass material system, an OKLCH theme engine, native-feeling mobile components and typed props that AI agents get right the first time.";
+	"Svelte 5 UI library with a sober solid default, opt-in glass materials, an OKLCH theme engine, native-feeling mobile components and typed props that AI agents get right the first time.";
 
 const jsonLd = graph(
 	website({ id: `${SITE}/#website`, name: "CodeAtlas UI", url: `${SITE}/`, description, inLanguage: "en" }),
@@ -162,7 +162,7 @@ import SendPrompt from "~/components/landing/SendPrompt.svelte";
 			<div slot="copy" class="chapter__facts" data-reveal>
 				<ul>
 					<li><code>defineTheme()</code> resolves one typed object, same input always yields the same CSS.</li>
-					<li><code>data-style</code> switches glass, frosted, solid and flat without touching a component.</li>
+					<li><code>data-style</code> switches solid (the default), flat, frosted and glass without touching a component.</li>
 					<li><code>data-theme-scope="dark"</code> turns any subtree into a dark island.</li>
 				</ul>
 			</div>

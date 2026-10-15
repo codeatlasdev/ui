@@ -111,7 +111,7 @@ export interface PresetDefinition {
 	colors?: { light?: SchemeColors; dark?: SchemeColors };
 }
 
-/** Page background pattern. mesh = brand glow gradients; the rest are flat paper. */
+/** Page background pattern. mesh = brand glow gradients (drawn by the glass and frosted materials); the rest are flat paper. */
 export type Paper = "mesh" | "plain" | "grid" | "dots" | "lines";
 
 /** Metrics of the fallback face, from the font's own tables, so the swap does not shift layout. */
@@ -186,11 +186,11 @@ export interface ThemeDefinition {
 	defaultPreset: string;
 	/** Scheme applied until the user picks one. @default "dark" */
 	defaultScheme: ColorScheme;
-	/** Surface material applied until the user picks one. @default "glass" */
+	/** Surface material applied until the user picks one. @default "solid" */
 	defaultStyle: SurfaceStyle;
 	/** Fonts for --ca-font-sans (body), --ca-font-mono and --ca-font-display. A string is a plain stack. */
 	fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec };
-	/** Radius multiplier (0 = square corners, 2 = very round). @default 1 */
+	/** Radius multiplier (0 = square corners, 2 = very round). 0.8 makes `--ca-radius-md` 8px. @default 0.8 */
 	radius: number;
 	/** Corner role used by buttons, fields and chips. @default "md" */
 	controlRadius: "xs" | "sm" | "md" | "lg" | "xl" | "pill";
@@ -202,11 +202,11 @@ export interface ThemeDefinition {
 	/** How elevation is drawn. hard = offset shadows with no blur (Neobrutalism). @default "soft" */
 	elevation: ElevationModel;
 	motion: MotionOptions;
-	/** Icon stroke width (Lucide). @default 2 */
+	/** Icon stroke width (Lucide). @default 1.75 */
 	iconStroke: number;
 	/** Film-grain texture over the page background, 0 to 0.12. @default 0 */
 	noise: number;
-	/** Page background pattern. Flat patterns use --ca-outline-subtle, so they follow the preset. @default "mesh" */
+	/** Page background pattern. Flat patterns use --ca-outline-subtle, so they follow the preset. @default "plain" */
 	paper: Paper;
 	/** Raw token overrides per scheme. Applied last. */
 	overrides: { light?: TokenMap; dark?: TokenMap };
@@ -220,6 +220,13 @@ export interface ResolvedTheme extends ThemeDefinition {
 }
 
 const HEX = /^#[0-9a-f]{6}$/i;
+
+/** Stylesheet defaults of the knobs below (tokens.css): a theme that keeps them emits no CSS for them. */
+const DEFAULT_RADIUS = 0.8;
+const DEFAULT_ICON_STROKE = 1.75;
+const DEFAULT_HEADING_WEIGHT = 600;
+/** Materials whose stylesheet draws the page mesh (base.css); `paper: "plain"` must switch it off there. */
+const MESH_STYLES: readonly SurfaceStyle[] = ["glass", "frosted"];
 
 /**
  * `--ca-semantic-error-contrast` for a map that sets `--ca-semantic-error-fill` to a colour of its
@@ -397,18 +404,21 @@ export function defineTheme(def: Partial<ThemeDefinition> = {}): ResolvedTheme {
 		presets,
 		defaultPreset,
 		defaultScheme: def.defaultScheme ?? "dark",
-		defaultStyle: def.defaultStyle ?? "glass",
+		defaultStyle: def.defaultStyle ?? "solid",
 		fonts: def.fonts ?? {},
-		radius: def.radius ?? 1,
+		radius: def.radius ?? DEFAULT_RADIUS,
 		controlRadius: def.controlRadius ?? "md",
 		density: def.density ?? "comfortable",
 		border: def.border ?? {},
-		typography: def.typography ?? {},
+		typography: {
+			...def.typography,
+			weights: { heading: DEFAULT_HEADING_WEIGHT, ...def.typography?.weights },
+		},
 		elevation: def.elevation ?? "soft",
 		motion: def.motion ?? {},
-		iconStroke: def.iconStroke ?? 2,
+		iconStroke: def.iconStroke ?? DEFAULT_ICON_STROKE,
 		noise: def.noise ?? 0,
-		paper: def.paper ?? "mesh",
+		paper: def.paper ?? "plain",
 		overrides: def.overrides ?? {},
 		known,
 		themeColor,
@@ -532,10 +542,11 @@ export function designTokens(
 		| "iconStroke"
 		| "noise"
 		| "paper"
+		| "defaultStyle"
 	>
 ): Record<string, string> {
 	const root: Record<string, string> = {};
-	if (t.radius !== 1) root["--ca-radius-scale"] = String(t.radius);
+	if (t.radius !== DEFAULT_RADIUS) root["--ca-radius-scale"] = String(t.radius);
 	if (t.controlRadius !== "md") root["--ca-radius-control"] = `var(--ca-radius-${t.controlRadius})`;
 	const density = typeof t.density === "number" ? t.density : DENSITY[t.density];
 	if (density !== 1) root["--ca-density"] = String(density);
@@ -543,7 +554,8 @@ export function designTokens(
 	if (t.border.strong !== undefined) root["--ca-border-width-strong"] = `${t.border.strong}px`;
 	const ty = t.typography;
 	if (ty.scale !== undefined && ty.scale !== 1) root["--ca-font-scale"] = String(ty.scale);
-	for (const [k, v] of Object.entries(ty.weights ?? {})) root[`--ca-font-weight-${k}`] = String(v);
+	for (const [k, v] of Object.entries(ty.weights ?? {}))
+		if (k !== "heading" || v !== DEFAULT_HEADING_WEIGHT) root[`--ca-font-weight-${k}`] = String(v);
 	if (ty.headingTracking) root["--ca-heading-tracking"] = ty.headingTracking;
 	if (ty.headingCase) root["--ca-heading-case"] = ty.headingCase;
 	if (ty.labelTracking) root["--ca-label-tracking"] = ty.labelTracking;
@@ -558,9 +570,11 @@ export function designTokens(
 		root["--ca-motion-scale"] = String(t.motion.scale);
 	if (t.motion.easing && t.motion.easing !== "standard")
 		root["--ca-ease-standard"] = EASING[t.motion.easing];
-	if (t.iconStroke !== 2) root["--ca-icon-stroke"] = String(t.iconStroke);
+	if (t.iconStroke !== DEFAULT_ICON_STROKE) root["--ca-icon-stroke"] = String(t.iconStroke);
 	if (t.noise) root["--ca-noise-opacity"] = String(Math.min(0.12, Math.max(0, t.noise)));
-	if (t.paper !== "mesh") root["--ca-page-mesh"] = PAPER[t.paper];
+	// `mesh` leaves the page to the material (base.css); `plain` only needs saying where the material draws one.
+	if (t.paper !== "mesh" && (t.paper !== "plain" || MESH_STYLES.includes(t.defaultStyle)))
+		root["--ca-page-mesh"] = PAPER[t.paper];
 	return root;
 }
 

@@ -34,7 +34,7 @@ const brand = { id: "acme", color: "#0f766e" as const };
 const sources = [...BUILTIN_PRESETS, brand];
 // Darkest light surface and lightest dark surface a text token can sit on (generator constants).
 const surface = (scheme: "light" | "dark", hue: number) =>
-	rgb(oklchToHex(scheme === "light" ? `oklch(0.930 0.006 ${hue})` : `oklch(0.235 0.006 ${hue})`));
+	rgb(oklchToHex(scheme === "light" ? `oklch(0.930 0.003 ${hue})` : `oklch(0.235 0.002 ${hue})`));
 
 describe("prefers-contrast: more tokens", () => {
 	for (const src of sources) {

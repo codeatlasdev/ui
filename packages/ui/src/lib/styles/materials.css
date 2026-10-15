@@ -69,11 +69,11 @@
 
   --ca-mat-ultra-thin-filter: var(--ca-blur-ultra-thin);
   --ca-mat-ultra-thin-fill:   var(--ca-glass-tint-ultra-thin);
-  --ca-mat-ultra-thin-shadow: 0 2px 8px oklch(0.25 0.008 70 / 0.06);
+  --ca-mat-ultra-thin-shadow: 0 2px 8px oklch(0 0 0 / 0.06);
 
   --ca-mat-thin-filter: var(--ca-blur-thin);
   --ca-mat-thin-fill:   var(--ca-glass-tint-thin);
-  --ca-mat-thin-shadow: 0 4px 16px oklch(0.25 0.008 70 / 0.10);
+  --ca-mat-thin-shadow: 0 4px 12px oklch(0 0 0 / 0.08);
 
   --ca-mat-regular-filter: var(--ca-blur-regular);
   --ca-mat-regular-fill:   var(--ca-glass-tint);
@@ -81,7 +81,7 @@
 
   --ca-mat-thick-filter: var(--ca-blur-thick);
   --ca-mat-thick-fill:   var(--ca-glass-tint-thick);
-  --ca-mat-thick-shadow: 0 16px 48px oklch(0.25 0.008 70 / 0.16);
+  --ca-mat-thick-shadow: 0 12px 32px -8px oklch(0 0 0 / 0.16);
 
   --ca-mat-chrome-filter: var(--ca-blur-chrome);
   --ca-mat-chrome-fill:   var(--ca-glass-tint-chrome);
@@ -354,7 +354,7 @@
 /* ── Surface styles — data-style attribute on <html> ──────────────────────
  *
  * Controls the entire visual feel from glass to flat.
- * Default (no attribute or data-style="glass") = Liquid Glass (current).
+ * Default (the theme's `defaultStyle`) = solid. Glass is the opt-in `liquid` recipe.
  *
  * Usage:
  *   document.documentElement.setAttribute('data-style', 'solid');
@@ -379,8 +379,16 @@
   --ca-chrome-blur:     blur(24px) saturate(185%);
 }
 
-/* ── Solid — no blur, opaque surfaces, pastel-friendly ── */
+/* ── Solid — no blur, opaque surfaces, no glow, hairline edge (the package default) ──
+ *    Glow and rim are glass decoration: with them transparent, .glass-tinted, .glass-prominent,
+ *    .glass-glow, .glass-active, .glass-btn-prominent and the nav pills lose their halo without a
+ *    component edit. Selected states keep their brand bar. ── */
 [data-style="solid"] {
+  --ca-glow-primary:        transparent;
+  --ca-glow-primary-strong: transparent;
+  --ca-glass-rim:           transparent;
+  --ca-mat-edge: inset 0 0 0 var(--ca-border-width) var(--ca-outline-subtle);
+
   --ca-blur-ultra-thin: none;
   --ca-blur-thin:       none;
   --ca-blur-regular:    none;
@@ -414,6 +422,10 @@
 
 /* ── Flat — no blur, no elevation, border-based separation ── */
 [data-style="flat"] {
+  --ca-glow-primary:        transparent;
+  --ca-glow-primary-strong: transparent;
+  --ca-glass-rim:           transparent;
+  --ca-mat-edge: inset 0 0 0 var(--ca-border-width) var(--ca-outline-subtle);
   --ca-blur-ultra-thin: none;
   --ca-blur-thin:       none;
   --ca-blur-regular:    none;

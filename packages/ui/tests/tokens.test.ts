@@ -97,13 +97,13 @@ describe("neutralRamp", () => {
 	it("shifts only hue between presets", () => {
 		const a = neutralRamp(55);
 		const b = neutralRamp(260);
-		expect(a.surfaceLight.base).toBe("oklch(0.955 0.005 55)");
-		expect(b.surfaceLight.base).toBe("oklch(0.955 0.005 260)");
+		expect(a.surfaceLight.base).toBe("oklch(0.955 0.002 55)");
+		expect(b.surfaceLight.base).toBe("oklch(0.955 0.002 260)");
 		expect(a.outlineDark).toEqual(b.outlineDark);
 	});
 
 	it("dark text hue is offset +5", () => {
-		expect(neutralRamp(100).textDark.primary).toBe("oklch(0.940 0.005 105)");
+		expect(neutralRamp(100).textDark.primary).toBe("oklch(0.940 0.003 105)");
 	});
 });
 

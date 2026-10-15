@@ -23,7 +23,7 @@ describe("derived tokens", () => {
 				<div id="island" style="padding: var(--ca-space-4); border-radius: var(--ca-radius-md)"></div>
 			</div>`);
 		expect(style("base").paddingTop).toBe("16px");
-		expect(style("base").borderTopLeftRadius).toBe("10px");
+		expect(style("base").borderTopLeftRadius).toBe("8px");
 		expect(style("island").paddingTop).toBe("12px");
 		expect(style("island").borderTopLeftRadius).toBe("0px");
 	});
@@ -38,6 +38,16 @@ describe("derived tokens", () => {
 });
 
 describe("surface styles", () => {
+	it("solid (the default) draws no glow and a hairline edge instead of the rim", () => {
+		const style = mount(
+			`<div data-style="solid"><div id="s" class="glass-regular glass-active"></div></div>`
+		);
+		const shadow = style("s").boxShadow;
+		// .glass-active paints its ring and halo with --ca-glow-primary*: transparent under solid
+		expect(shadow).not.toMatch(/oklch|color\(srgb [\d. ]+\/ 0\.(1|2|3)/);
+		expect(style("s").backdropFilter).toBe("none");
+	});
+
 	it("outlined draws the tier edge as a border-width stroke and drops the blur", () => {
 		const style = mount(
 			`<div data-style="outlined" style="--ca-border-width: 3px"><div id="s" class="glass-regular"></div></div>`
@@ -55,8 +65,8 @@ describe("surface styles", () => {
 		expect(shadow).toContain(" 6px 6px");
 	});
 
-	it("glass (default) keeps the backdrop blur", () => {
-		const style = mount(`<div id="s" class="glass-regular"></div>`);
+	it("glass keeps the backdrop blur", () => {
+		const style = mount(`<div data-style="glass"><div id="s" class="glass-regular"></div></div>`);
 		// Chromium follows the OS (Windows "Transparency effects" off → reduce), where the
 		// materials.css fallback drops the blur on purpose.
 		if (matchMedia("(prefers-reduced-transparency: reduce)").matches)
