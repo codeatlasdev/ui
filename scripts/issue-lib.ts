@@ -52,17 +52,21 @@ const samePath = (a: string, b: string) => {
 /**
  * Remove an issue worktree after its PR merged or closed. Git for Windows defaults to
  * core.longpaths=false, so node_modules paths over MAX_PATH fail with "Filename too long" after git
- * has already deregistered the worktree, leaving it half deleted on disk (#103).
+ * has already deregistered the worktree, leaving it half deleted on disk (#103). It also exits 0
+ * while leaving Bun's node_modules junctions (and their parent directories) behind (#133).
  */
 export async function removeWorktree(root: string, path: string): Promise<void> {
 	const rm = await $`git -c core.longpaths=true worktree remove ${path}`
 		.cwd(root)
 		.quiet()
 		.nothrow();
-	if (rm.exitCode === 0) return;
 	// Still registered: git refused (uncommitted changes, locked). Never delete someone's work.
-	if ((await worktrees(root)).some((w) => samePath(w.path, path)))
+	if (rm.exitCode !== 0 && (await worktrees(root)).some((w) => samePath(w.path, path)))
 		throw new Error(rm.stderr.toString().trim());
-	// Deregistered, so git found it clean: finish the delete (node:fs handles long paths).
+	// Deregistered, so git found it clean: finish the delete. node:fs handles long paths and unlinks
+	// links without following them; `rmdir /s` does the same on Windows if anything is left.
 	rmSync(path, { recursive: true, force: true });
+	if (existsSync(path) && process.platform === "win32")
+		Bun.spawnSync(["cmd", "/d", "/c", "rmdir", "/s", "/q", `\\\\?\\${resolve(path)}`]);
+	if (existsSync(path)) throw new Error(`${path} is still on disk after git deregistered it`);
 }

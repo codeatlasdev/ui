@@ -6,6 +6,7 @@ import {
 	readFileSync,
 	realpathSync,
 	rmSync,
+	symlinkSync,
 	writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
@@ -54,8 +55,9 @@ describe("issue:start", () => {
 	});
 });
 
-// A repo with an issue worktree whose node_modules goes past Windows' MAX_PATH (260), like a real
-// `bun install` does. Git for Windows ships with core.longpaths=false.
+// A repo with an issue worktree whose node_modules goes past Windows' MAX_PATH (260) and links
+// packages from its store, like a real `bun install` does: Git for Windows ships with
+// core.longpaths=false, and Bun links with directory junctions there (#133).
 // The pre-push hook runs these tests with GIT_DIR (and friends) pointing at this repository: every
 // git call here would then commit to and reconfigure it instead of the temp repo.
 for (const k of Object.keys(process.env)) if (k.startsWith("GIT_")) delete process.env[k];
@@ -78,7 +80,18 @@ async function repoWithWorktree() {
 	while (deep.length < 300) deep = join(deep, "@scope-with-a-long-name");
 	mkdirSync(deep, { recursive: true });
 	writeFileSync(join(deep, "index.js"), "");
+	const pkg = join(wt, "node_modules", ".bun", "pkg@1.0.0", "node_modules", "pkg");
+	mkdirSync(pkg, { recursive: true });
+	writeFileSync(join(pkg, "index.js"), "");
+	link(pkg, join(wt, "node_modules", "pkg"));
+	link(pkg, join(wt, "packages", "ui", "node_modules", "pkg"));
 	return { root, wt };
+}
+
+/** A directory link: a junction on Windows (what Bun creates), a symlink elsewhere. */
+function link(target: string, path: string) {
+	mkdirSync(join(path, ".."), { recursive: true });
+	symlinkSync(target, path, process.platform === "win32" ? "junction" : "dir");
 }
 
 const listed = async (root: string, wt: string) =>
@@ -98,6 +111,17 @@ describe("issue:done", () => {
 		rmSync(join(root, ".git", "worktrees", "1-fix"), { recursive: true });
 		await removeWorktree(root, wt);
 		expect(existsSync(wt)).toBe(false);
+	});
+
+	it("deletes node_modules junctions and never follows one out (#133)", async () => {
+		const { root, wt } = await repoWithWorktree();
+		const outside = join(root, "..", "shared");
+		mkdirSync(outside);
+		writeFileSync(join(outside, "keep.txt"), "kept");
+		link(outside, join(wt, "node_modules", "shared"));
+		await removeWorktree(root, wt);
+		expect(existsSync(wt)).toBe(false);
+		expect(readFileSync(join(outside, "keep.txt"), "utf8")).toBe("kept");
 	});
 
 	it("keeps a worktree with uncommitted work", async () => {
