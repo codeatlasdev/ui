@@ -293,6 +293,9 @@
   --ca-overlay-shadow:      0 4px 16px oklch(0.25 0.008 70 / 0.10),
                             inset 0 0.5px 0 var(--ca-glass-rim);
 
+  /* Tooltip: its own knob, so an opaque tooltip does not have to re-tier every ultra-thin surface. */
+  --ca-tooltip-blur:        var(--ca-blur-ultra-thin);
+
   /* ── Panel (NotificationBell, CommandPalette) — near-opaque, same rule as the overlay ── */
   --ca-panel-bg:            color-mix(in oklab, var(--ca-surface-overlay) 94%, transparent);
   --ca-panel-bg-glass:      var(--ca-glass-tint-thick);

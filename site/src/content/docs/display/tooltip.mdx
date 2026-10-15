@@ -29,6 +29,8 @@ import ChildrenSrc from "~/demos/display/tooltip/Children.svelte?raw";
 
 When the trigger is an interactive control, use `triggerChild` and spread the received `props` onto it so no extra wrapper button is created. `children` is for non-interactive content such as text, which the tooltip wraps in its own button. Tooltips open on keyboard focus without the delay and close on Escape. Pointer hover waits for `delay`, touch never opens them, and moving between tooltips within 300ms skips the delay. Never put essential information only in a tooltip.
 
+The blur behind the tooltip is `--ca-tooltip-blur` (default `var(--ca-blur-ultra-thin)`). Set `--ca-tooltip-blur: none` to get an opaque tooltip without touching the shared ultra-thin tier that `.glass-ultra-thin` and `.glass-btn-clear` also use.
+
 <Demo title="All sides" description={"top, right, bottom and left placement."} src={SidesSrc}><Sides client:visible /></Demo>
 <Demo title="On icon buttons" description={"Gives icon-only buttons a visible label."} src={OnIconsSrc}><OnIcons client:visible /></Demo>
 <Demo title="Custom delay" description={"`delay={0}` opens immediately. The default is 500ms."} src={DelaySrc}><Delay client:visible /></Demo>
