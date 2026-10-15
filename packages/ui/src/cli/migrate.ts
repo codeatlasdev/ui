@@ -268,6 +268,8 @@ function layoutProps(
 	return left ? { attrs: out, left } : { attrs: out };
 }
 
+type Rewrite = (attrs: Attr[], src: string) => Rewritten | Left;
+
 /** Left element: the deprecated component keeps working, so the whole tag stays for a human. */
 const left = (reason: string, recipe: string): Left => ({ reason, recipe });
 const SPREAD = left("spread or directive props", "map the props by hand");
