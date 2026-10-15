@@ -129,7 +129,7 @@ jobs:
             packages/ui/src/**/__traces__/
 
   site:
-    name: Site e2e + a11y (${{ matrix.shard }}/4)
+    name: Site e2e + a11y (${{ matrix.shard }}/5)
     needs: [changes, build]
     # Docs-only or repo-meta changes (AGENTS.md, skills, issue templates) skip the browser suites.
     if: ${{ !inputs.update-snapshots && (needs.changes.outputs.package == 'true' || needs.changes.outputs.site == 'true') }}
@@ -140,7 +140,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        shard: [1, 2, 3, 4]
+        shard: [1, 2, 3, 4, 5]
     steps:
       - uses: actions/checkout@v7
       # The iphone project runs on WebKit.
@@ -151,7 +151,7 @@ jobs:
         with:
           name: build
       - working-directory: site
-        run: bunx playwright test --project=desktop --project=mobile --project=iphone --project=a11y --shard=${{ matrix.shard }}/4
+        run: bunx playwright test --project=desktop --project=mobile --project=iphone --project=a11y --shard=${{ matrix.shard }}/5
       - uses: actions/upload-artifact@v7
         if: ${{ failure() }}
         with:
