@@ -243,18 +243,18 @@ Classes: `ca-bottom-nav` `ca-bottom-nav__btn` `ca-bottom-nav__btn--active` `ca-b
 
 ## Box
 
-`import { Box } from "@codeatlasdev/ui"`
+`import { Box } from "@codeatlasdev/ui"` (generic: `T extends ElementTag = 'div'`)
 
 Box — the base layout element. Renders any element (`as`) with the token props (`p`, `px`, `py`) as `data-*` attributes: no inline style. Everything else is forwarded.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `as?` | `string` | `'div'` | Element to render. |
+| `as?` | `T` | `'div' as T` | Element to render (default `div`). Its own attributes and event types become valid props. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
 
-Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>, Pick<LayoutProps, 'p' \| 'px' \| 'py'>`
+Also accepts: `PolymorphicAttributes<T, Pick<LayoutProps, 'p' \| 'px' \| 'py'>>`
 
 Classes: `ca-box`
 
@@ -971,18 +971,18 @@ Classes: `ca-filter-group` `ca-filter-group__item` `ca-filter-group__label`
 
 ## Flex
 
-`import { Flex } from "@codeatlasdev/ui"`
+`import { Flex } from "@codeatlasdev/ui"` (generic: `T extends ElementTag = 'div'`)
 
 Flex — flex container. Token props become `data-*` attributes (no inline style); a responsive object like `{ base: 'column', md: 'row' }` switches at the shared breakpoints.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `as?` | `string` | `'div'` | Element to render. |
+| `as?` | `T` | `'div' as T` | Element to render (default `div`). Its own attributes and event types become valid props. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
 
-Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>, Pick<LayoutProps, 'gap' \| 'p' \| 'px' \| 'py' \| 'align' \| 'justify' \| 'direction' \| 'wrap'>`
+Also accepts: `PolymorphicAttributes<T, Pick<LayoutProps, 'gap' \| 'p' \| 'px' \| 'py' \| 'align' \| 'justify' \| 'direction' \| 'wrap'>>`
 
 Classes: `ca-flex`
 
@@ -1073,18 +1073,18 @@ Snippets: `children`
 
 ## Grid
 
-`import { Grid } from "@codeatlasdev/ui"`
+`import { Grid } from "@codeatlasdev/ui"` (generic: `T extends ElementTag = 'div'`)
 
 Grid — CSS grid with equal tracks. `columns` is 1–12 or a responsive object; gap, padding and alignment are token props. All render as `data-*` attributes (no inline style). For an arbitrary `grid-template-columns` (`2fr 1fr`, `repeat(auto-fill, minmax(200px, 1fr))`) add a class and write the template there.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `as?` | `string` | `'div'` | Element to render. |
+| `as?` | `T` | `'div' as T` | Element to render (default `div`). Its own attributes and event types become valid props. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
 
-Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>, Pick<LayoutProps, 'columns' \| 'gap' \| 'p' \| 'px' \| 'py' \| 'align'>`
+Also accepts: `PolymorphicAttributes<T, Pick<LayoutProps, 'columns' \| 'gap' \| 'p' \| 'px' \| 'py' \| 'align'>>`
 
 Classes: `ca-grid`
 
@@ -1883,18 +1883,18 @@ Classes: `ca-spinner` `ca-spinner__arc` `ca-spinner__track`
 
 ## Stack
 
-`import { Stack } from "@codeatlasdev/ui"`
+`import { Stack } from "@codeatlasdev/ui"` (generic: `T extends ElementTag = 'div'`)
 
 Stack — vertical flex layout (a Flex column). Token props are `data-*` attributes, no inline style.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `as?` | `string` | `'div'` | Element to render. |
+| `as?` | `T` | `'div' as T` | Element to render (default `div`). Its own attributes and event types become valid props. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
 
-Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>, Pick<LayoutProps, 'gap' \| 'p' \| 'px' \| 'py' \| 'align' \| 'justify'>`
+Also accepts: `PolymorphicAttributes<T, Pick<LayoutProps, 'gap' \| 'p' \| 'px' \| 'py' \| 'align' \| 'justify'>>`
 
 Classes: `ca-stack`
 
@@ -3153,6 +3153,7 @@ Types:
 | `DocsSearchEntry` | `interface DocsSearchEntry { href: string; title: string; section: string; description: string; headings: { text: string; id: string }[]; text: string; }` | One entry of the search index consumed by DocsSearch. |
 | `DocsSearchResult` | `interface DocsSearchResult { href: string; title: string; context: string; kind: "page" \| "heading"; }` |  |
 | `DocsSection` | `interface DocsSection { id: string; label: string; href: string; }` | A top-level docs section shown in the header (e.g. Guide, API, Compat). |
+| `ElementTag` | `type ElementTag = keyof SvelteHTMLElements;` | Tags `as` can render: the HTML and SVG elements Svelte knows (`svelte:element`). |
 | `ElevationLevel` | `type ElevationLevel = keyof typeof elevation;` |  |
 | `ElevationModel` | `type ElevationModel = "soft" \| "none" \| "hard" \| "glow";` | Shadow model: how elevation is drawn. |
 | `ExportColumn` | `interface ExportColumn<T extends object = Record<string, unknown>> { key: keyof T & string; header?: string; value?: (row: T) => unknown; }` |  |
@@ -3180,6 +3181,8 @@ Types:
 | `OutlineColors` | `interface OutlineColors { subtle: string; default: string; strong: string; }` |  |
 | `Paper` | `type Paper = "mesh" \| "plain" \| "grid" \| "dots" \| "lines";` | Page background pattern. mesh = brand glow gradients (drawn by the glass and frosted materials); the rest are flat paper. |
 | `Politeness` | `type Politeness = "polite" \| "assertive";` |  |
+| `PolymorphicAttributes` | `type PolymorphicAttributes<T extends ElementTag, Own = object> = Omit< SvelteHTMLElements[T], "class" \| "children" \| "as" \| keyof Own > & Own;` | The tag's own attributes and event handlers, minus what the primitive declares itself (`Own`, `class`, `children`, `as`). |
+| `PolymorphicProps` | `type PolymorphicProps<T extends ElementTag, Own = object> = { as?: T; class?: string; children?: Snippet; } & PolymorphicAttributes<T, Own>;` | Props of a primitive that renders `as` an element: the tag's own attributes and event handlers (`as="form"` takes `novalidate`, `onsubmit` with `currentTarget: HTMLFormElement`), its token props, `class` and `children`. |
 | `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `PresetId` | `type PresetId = BuiltinPresetId \| (string & {});` | A built-in preset or a brand preset registered via `ThemeOptions.presets`. |
 | `RadiusKey` | `type RadiusKey = keyof typeof radius;` |  |
