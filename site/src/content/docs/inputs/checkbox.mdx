@@ -31,6 +31,7 @@ A checkbox rendered without `label` (for example in a table row) needs an `aria-
   { name: "checked", type: "boolean", default: "false", description: "Bindable checked state." },
   { name: "indeterminate", type: "boolean", default: "false", description: "Renders the mixed state." },
   { name: "disabled", type: "boolean", default: "false", description: "Disables interaction." },
+  { name: "name", type: "string", description: "Native name, so the checkbox is in FormData on a plain form submit (value `on` when checked, absent when not)." },
   { name: "label", type: "string", description: "Visible label rendered beside the checkbox." },
   { name: "aria-label", type: "string", description: "Accessible name used when no visible label is rendered." },
   { name: "aria-labelledby", type: "string", description: "Id of an element that names the checkbox. Ignored when label is set." },

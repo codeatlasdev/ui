@@ -34,6 +34,7 @@ The options are native radio inputs that share one `name`, so arrow keys move fo
   { name: "value", type: "string", default: "''", description: "Bindable selected value." },
   { name: "items", type: "RadioItem[]", description: "Options: { value, label, description?, disabled? }. description is shown in the cards variant." },
   { name: "variant", type: "'list' | 'cards'", default: "'list'", description: "list renders radio and label rows. cards renders each option as a card in a responsive grid, and the whole card is the hit area." },
+  { name: "name", type: "string", description: "Native name of the radios, so the value is in FormData on a plain form submit (works without JS and with use:enhance). Unset: an internal id groups them and the value is not submitted by name." },
   { name: "orientation", type: "'vertical' | 'horizontal'", default: "'vertical'", description: "Layout direction and arrow-key axis." },
   { name: "disabled", type: "boolean", default: "false", description: "Disables the entire group." },
   { name: "aria-label", type: "string", description: "Accessible name of the group." },

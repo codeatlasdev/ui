@@ -6,6 +6,8 @@
 		indeterminate?: boolean;
 		disabled?: boolean;
 		label?: string;
+		/** Native `name`, so the checkbox is part of `FormData` on a plain form submit (value `on`). */
+		name?: string;
 		/** Accessible name when no visible `label` is rendered. */
 		"aria-label"?: string;
 		"aria-labelledby"?: string;
@@ -18,6 +20,7 @@
 		indeterminate = false,
 		disabled = false,
 		label,
+		name,
 		"aria-label": ariaLabel,
 		"aria-labelledby": ariaLabelledby,
 		class: className = "",
@@ -35,6 +38,7 @@
 	<span class="ca-checkbox" data-state={dataState} data-disabled={disabled ? "" : undefined}>
 		<input
 			id={checkId}
+			{name}
 			type="checkbox"
 			class="ca-checkbox__input"
 			{checked}

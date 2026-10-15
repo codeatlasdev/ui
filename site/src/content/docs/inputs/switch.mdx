@@ -33,6 +33,7 @@ Without a visible `label`, always pass `aria-label` (or `aria-labelledby`) so th
 <Props rows={[
   { name: "checked", type: "boolean", default: "false", description: "Bindable on/off state." },
   { name: "disabled", type: "boolean", default: "false", description: "Disables interaction." },
+  { name: "name", type: "string", description: "Native name, so the switch is in FormData on a plain form submit (value `on` when checked, absent when not)." },
   { name: "label", type: "string", description: "Visible label rendered beside the switch." },
   { name: "aria-label", type: "string", description: "Accessible name used when no visible label is rendered." },
   { name: "aria-labelledby", type: "string", description: "Id of an element that names the switch. Ignored when label is set." },

@@ -19,7 +19,7 @@ import StatesSrc from "~/demos/inputs/combobox/States.svelte?raw";
 <Combobox label="Framework" options={[{ value: "svelte", label: "Svelte" }]} bind:value />
 ```
 
-Typing in the popup filters options by label, and opening the list moves focus to the search input. Pass a `label` (or `ariaLabel`) so the trigger and listbox have an accessible name. Like `Select`, it has no `name` prop and does not submit with a native form: read `value` instead.
+Typing in the popup filters options by label, and opening the list moves focus to the search input. Pass a `label` (or `ariaLabel`) so the trigger and listbox have an accessible name. It has no `name` prop and does not submit with a native form (unlike `Select`): read `value` instead.
 
 <Demo title="Basic" description="Search a list of options and bind the selected value." src={BasicSrc}><Basic client:visible /></Demo>
 <Demo title="States" description="Description, custom search placeholder and empty text, disabled option, error and disabled." src={StatesSrc}><States client:visible /></Demo>

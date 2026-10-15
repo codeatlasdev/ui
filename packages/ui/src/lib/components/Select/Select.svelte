@@ -21,6 +21,8 @@
     description?:  string;
     error?:        string;
     required?:     boolean;
+    /** Native `name`: the selected value is part of `FormData` on a plain form submit. Nothing is sent while no option is selected. */
+    name?:         string;
     size?:         'sm' | 'md';
     class?:        string;
     onchange?:     (value: string) => void;
@@ -35,6 +37,7 @@
     description,
     error,
     required    = false,
+    name,
     size        = 'md',
     class: className = '',
     onchange,
@@ -130,10 +133,13 @@
       <ChevronDown size={14} strokeWidth={2} />
     </span>
   </button>
+  {#if name && selected && !disabled}
+    <input type="hidden" {name} value={selected.value} />
+  {/if}
   {#if required}
     <!-- Native constraint validation for <form required>: blocks submit while nothing is selected and moves
          focus to the trigger. A selected `''` option ("All") counts as a selection, so the proxy is filled
-         from `selected`, not from the raw value. Not a form value carrier: there is no `name` prop. -->
+         from `selected`, not from the raw value. The value itself goes through the hidden input above when `name` is set. -->
     <input
       class="ca-validity-proxy"
       tabindex="-1"

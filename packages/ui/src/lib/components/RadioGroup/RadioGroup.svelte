@@ -10,6 +10,8 @@
 	interface Props {
 		value?: string;
 		items: RadioItem[];
+		/** Native `name` of the radios, so the value is part of `FormData` on a plain form submit. */
+		name?: string;
 		orientation?: 'vertical' | 'horizontal';
 		/**
 		 * `list` (default): radio + label rows. `cards`: each option is a selectable card
@@ -26,6 +28,7 @@
 	let {
 		value = $bindable(''),
 		items,
+		name,
 		orientation = 'vertical',
 		variant = 'list',
 		disabled = false,
@@ -35,8 +38,9 @@
 	}: Props = $props();
 
 	// Per-instance ids: two groups with the same values on one page must not share label targets.
-	// The same id doubles as the native radios' `name`, which is what makes them one group.
+	// Without `name` the same id is the native radios' name: that is what makes them one group.
 	const uid = $props.id();
+	const groupName = $derived(name ?? uid);
 
 	function select(v: string) {
 		value = v;
@@ -64,7 +68,7 @@
 			>
 				<input
 					type="radio"
-					name={uid}
+					name={groupName}
 					value={item.value}
 					class="ca-radio-card__input"
 					{checked}
@@ -90,7 +94,7 @@
 				>
 					<input
 						type="radio"
-						name={uid}
+						name={groupName}
 						value={item.value}
 						id="{uid}-{item.value}"
 						class="ca-radio-input__native"
