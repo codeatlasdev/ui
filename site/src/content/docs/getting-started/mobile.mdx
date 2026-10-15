@@ -181,6 +181,6 @@ import { nativeFeel } from "@codeatlasdev/ui/kit";
 onMount(() => nativeFeel());
 ```
 
-It shows focus rings only while the user navigates with the keyboard (`html[data-kbd]`), removes the context menu and text selection on chrome (buttons, links, nav, header, tabs, menu items, options) while keeping them in fields and in `.ca-selectable` content, and blocks dragging links and images. `blockZoom: true` also blocks page zoom, meant for desktop shells such as Tauri only: on the web, zoom is an accessibility feature.
+It shows focus rings only while the user navigates with the keyboard (`html[data-kbd]`), removes the context menu and text selection on chrome (buttons, links, nav, header, tabs, menu items, options) while keeping them in fields and in `.ca-selectable` content (one class opts a region back into both the context menu and text selection; the old unprefixed `.selectable` is no longer recognized), and blocks dragging links and images. `blockZoom: true` also blocks page zoom, meant for desktop shells such as Tauri only: on the web, zoom is an accessibility feature.
 
 Every element gets `touch-action: manipulation` and a transparent tap highlight from `base.css`. Under `(pointer: coarse)` the control heights (`--ca-control-height`) grow to 44px, and `Button` scales slightly on press under `(hover: none)` unless the user prefers reduced motion.

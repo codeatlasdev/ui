@@ -13,7 +13,7 @@ export interface NativeFeelOptions {
  * - focus rings only while navigating with the keyboard (`html[data-kbd]`); WebKit
  *   treats programmatic focus (a dialog focusing its close button) as `:focus-visible`;
  * - no browser context menu and no text selection on chrome (buttons, nav, tabs),
- *   editable fields and `.selectable` keep both;
+ *   editable fields and `.ca-selectable` keep both;
  * - no dragging of links or images; optional zoom lock.
  * Sets `html[data-ca-native]`. Returns a cleanup function.
  */
@@ -29,7 +29,7 @@ export function nativeFeel({ blockZoom = false, allowContextMenu }: NativeFeelOp
 	const menu = (e: MouseEvent) => {
 		if (allowContextMenu?.(e)) return;
 		const t = e.target instanceof Element ? e.target : null;
-		if (!t?.closest("input, textarea, [contenteditable], .selectable")) e.preventDefault();
+		if (!t?.closest("input, textarea, [contenteditable], .ca-selectable")) e.preventDefault();
 	};
 	const pinch = (e: WheelEvent) => {
 		if (e.ctrlKey) e.preventDefault();
