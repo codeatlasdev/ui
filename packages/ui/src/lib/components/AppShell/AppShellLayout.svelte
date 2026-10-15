@@ -4,7 +4,8 @@
   import { Spring } from 'svelte/motion';
   import { reducedMotion } from '../../stores/reduced-motion.svelte.js';
   import type { NavModule } from './types.js';
-  import { findActiveModuleIndex, findActiveItemPath, firstModulePath, isNavSection, RAIL_WIDTH, PANEL_WIDTH } from './types.js';
+  import { firstModulePath, isNavSection, matchModuleIndex, RAIL_WIDTH, PANEL_WIDTH } from './types.js';
+  import { readShellState, shellScript, writeShellState } from './shell-state.js';
   import Rail from './Rail.svelte';
   import Panel from './Panel.svelte';
   import MobileHeader from './MobileHeader.svelte';
@@ -16,6 +17,11 @@
     pathname:       string;
     onNavigate?:    (path: string) => void;
     defaultModule?: number;
+    /**
+     * Keeps the shell across page loads: panel open/closed, selected module, expanded sections
+     * (localStorage) and the panel scroll (sessionStorage), restored before first paint. Turn it
+     * off for demos and embeds that must always start from the defaults.
+     */
     persistPanel?:  boolean;
     header?:        Snippet;
     /** Brand mark (logo) shown at the top of the Rail and in the mobile header. */
@@ -63,20 +69,30 @@
     children,
   }: Props = $props();
 
-  const STORAGE_KEY = 'ca-panel-open';
+  // `persistPanel` reads on the client only. The server renders the defaults and `shellScript`
+  // sets `data-ca-panel` / `data-ca-module` on <html> before paint, so the stored layout shows
+  // without waiting for hydration.
+  // svelte-ignore state_referenced_locally
+  const stored = persistPanel ? readShellState() : null;
 
-  function readStorage(): boolean {
-    if (!persistPanel) return true;
-    try {
-      const v = localStorage.getItem(STORAGE_KEY);
-      return v === null ? true : v === 'true';
-    } catch { return true; }
+  // Lets Panel and SectionGroup know they should keep their scroll / open state.
+  setContext('appshell-persist', {
+    get enabled() { return persistPanel; },
+  });
+
+  // The URL decides the module when it matches one; otherwise the last stored module, then `defaultModule`.
+  function resolveModule(path: string): number {
+    const hit = matchModuleIndex(modules, path);
+    if (hit >= 0) return hit;
+    const saved = modules.findIndex((m) => m.id === stored?.module);
+    return saved >= 0 ? saved : Math.min(Math.max(0, defaultModule), modules.length - 1);
   }
 
-  let panelOpen    = $state(readStorage());
-  let selectedIndex = $state(0);
+  let panelOpen = $state(stored?.panel ?? true);
+  // svelte-ignore state_referenced_locally
+  let selectedIndex = $state(resolveModule(pathname));
 
-  let activeModuleIndex = $derived(findActiveModuleIndex(modules, pathname));
+  let activeModuleIndex = $derived(resolveModule(pathname));
   $effect(() => { selectedIndex = activeModuleIndex; });
 
   // Current page title for MobileHeader: active item label, fallback to module label
@@ -96,9 +112,7 @@
 
   function setPanelOpen(v: boolean) {
     panelOpen = v;
-    if (persistPanel) {
-      try { localStorage.setItem(STORAGE_KEY, String(v)); } catch {}
-    }
+    if (persistPanel) writeShellState({ panel: v });
   }
 
   // A panel listing a single destination only repeats the rail icon and the
@@ -115,10 +129,29 @@
   // One spring drives the panel width and the main margin so they stay in lock-step.
   // precision 0.5px: a layout pixel is the smallest visible step, and the Spring snaps to
   // the exact target once within it, so the offset settles on an integer (252, not 251.984).
-  const panelW = new Spring(0, { stiffness: 0.22, damping: 0.88, precision: 0.5 });
+  // It starts AT the target (no open animation on load): a reload must not replay the slide.
+  // svelte-ignore state_referenced_locally
+  const panelW = new Spring(panelVisible ? PANEL_WIDTH : 0, { stiffness: 0.22, damping: 0.88, precision: 0.5 });
   $effect(() => {
     // Reduced motion: jump straight to the target, no frames in between.
     panelW.set(panelVisible ? PANEL_WIDTH : 0, { instant: reducedMotion.value });
+  });
+
+  // Keep <html data-ca-*> in step with the live state so CSS and the next page load agree.
+  $effect(() => {
+    if (!persistPanel) return;
+    const root = document.documentElement;
+    root.setAttribute('data-ca-panel', panelOpen ? 'open' : 'closed');
+    const id = modules[selectedIndex]?.id;
+    if (id) root.setAttribute('data-ca-module', id);
+    root.setAttribute('data-ca-hydrated', '');
+  });
+  $effect(() => () => document.documentElement.removeAttribute('data-ca-hydrated'));
+
+  // Persist the selected module whenever the URL moves it (a link, back/forward), not only Rail clicks.
+  $effect(() => {
+    const id = modules[selectedIndex]?.id;
+    if (persistPanel && id) writeShellState({ module: id });
   });
 
   setContext('appshell', {
@@ -149,6 +182,7 @@
       onSelect={(i) => {
         if (i !== selectedIndex) {
           selectedIndex = i;
+          if (persistPanel) writeShellState({ module: modules[i].id });
           onNavigate?.(firstModulePath(modules[i]));
         }
         if (!panelOpen) setPanelOpen(true);
@@ -162,6 +196,7 @@
       panelW={panelW.current}
     />
   </div>
+  {#if persistPanel}{@html shellScript(modules.map((m) => m.id))}{/if}
 
   <!-- Main area -->
   <div
@@ -189,10 +224,10 @@
   <BottomNav
     {modules}
     activeIndex={selectedIndex}
-      onSelect={(i) => {
-        selectedIndex = i;
-        onNavigate?.(firstModulePath(modules[i]));
-      }}
+    onSelect={(i) => {
+      selectedIndex = i;
+      onNavigate?.(firstModulePath(modules[i]));
+    }}
   />
 </div>
 
@@ -222,6 +257,19 @@
       display: flex;
       flex-direction: column;
       margin-left: var(--ca-main-ml, 0);
+    }
+
+    /*
+     * Before hydration the server markup is the default (panel open). `shellScript` sets
+     * data-ca-panel on <html> from the stored state, so a stored-closed panel is laid out closed
+     * from the first paint. `data-ca-hydrated` (set once the shell is live) hands control back
+     * to the spring.
+     */
+    :global(html[data-ca-panel='closed']:not([data-ca-hydrated])) .ca-main {
+      margin-left: var(--ca-rail-width) !important;
+    }
+    :global(html[data-ca-panel='closed']:not([data-ca-hydrated])) :global(.ca-panel) {
+      display: none;
     }
 
     .ca-shell__desktop-header {

@@ -1,9 +1,11 @@
 <script lang="ts">
+  import { getContext } from 'svelte';
   import { useT } from '../../i18n/state.svelte.js';
   import type { NavModule } from './types.js';
   import { isNavSection } from './types.js';
   import PanelNavItem from './PanelNavItem.svelte';
   import SectionGroup from './SectionGroup.svelte';
+  import { readShellScroll, saveShellScroll } from './shell-state.js';
   const t = useT();
 
   interface Props {
@@ -18,6 +20,37 @@
   let { modules, activeModuleIndex, pathname, show, panelW, class: className = '' }: Props = $props();
 
   let activeModule = $derived(modules[activeModuleIndex]);
+
+  // Only inside an AppShellLayout with persistPanel (a bare Panel keeps nothing).
+  const persist = getContext<{ readonly enabled: boolean } | undefined>('appshell-persist');
+
+  let nav = $state<HTMLElement | null>(null);
+
+  // Scroll is saved per module, so switching module in the rail never lands mid-list of another one.
+  // The inline `shellScript` already restored the first one before paint; this covers module
+  // switches and client-side navigation. Saved on scroll (debounced) and on pagehide.
+  $effect(() => {
+    const el = nav;
+    const id = activeModule?.id;
+    if (!el || !id || !persist?.enabled) return;
+    el.scrollTop = readShellScroll()[id] ?? 0;
+    let timer: ReturnType<typeof setTimeout>;
+    // A hidden nav (below 900px the sidebar is display:none) reads scrollTop 0: keep the saved value.
+    const save = () => {
+      if (el.clientHeight > 0) saveShellScroll(id, el.scrollTop);
+    };
+    const onScroll = () => {
+      clearTimeout(timer);
+      timer = setTimeout(save, 100);
+    };
+    el.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('pagehide', save);
+    return () => {
+      clearTimeout(timer);
+      el.removeEventListener('scroll', onScroll);
+      window.removeEventListener('pagehide', save);
+    };
+  });
 </script>
 
 {#if show || panelW > 1}
@@ -32,7 +65,7 @@
     </div>
 
     <!-- Nav items with top/bottom fade mask -->
-    <nav class="ca-panel__nav">
+    <nav class="ca-panel__nav" bind:this={nav}>
       {#if activeModule}
         {#each activeModule.items as item}
           {#if isNavSection(item)}

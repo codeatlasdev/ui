@@ -13,9 +13,11 @@
 		single?: boolean;
 		/** The page renders its own <main id="main">: the shell must not add a second target. */
 		ownMain?: boolean;
+		/** Keep panel, module, sections and scroll in storage (off by default: tests start clean). */
+		persist?: boolean;
 	}
 
-	let { pathname = "/app/dashboard", onNavigate, full = false, single = false, ownMain = false }: Props = $props();
+	let { pathname = "/app/dashboard", onNavigate, full = false, single = false, ownMain = false, persist = false }: Props = $props();
 
 	const modules: NavModule[] = [
 		{
@@ -29,6 +31,10 @@
 				{
 					label: "Admin",
 					items: [{ id: "usr", label: "Users", icon: Users, path: "/app/users" }],
+				},
+				{
+					label: "Reports",
+					items: [{ id: "rep", label: "Weekly", icon: FileText, path: "/app/reports/weekly" }],
 				},
 			],
 		},
@@ -49,7 +55,7 @@
 </script>
 
 {#if full}
-	<AppShellLayout modules={mods} {pathname} {onNavigate} persistPanel={false}>
+	<AppShellLayout modules={mods} {pathname} {onNavigate} persistPanel={persist}>
 		{#snippet header()}
 			<SiteHeader />
 		{/snippet}
@@ -67,7 +73,7 @@
 		</main>
 	</AppShellLayout>
 {:else}
-	<AppShellLayout modules={mods} {pathname} {onNavigate} persistPanel={false} mainId={ownMain ? null : "main"}>
+	<AppShellLayout modules={mods} {pathname} {onNavigate} persistPanel={persist} mainId={ownMain ? null : "main"}>
 		{#if ownMain}
 			<main id="main" tabindex="-1">
 				<h1>Page content</h1>

@@ -38,7 +38,7 @@
   const handleClear   = () => (notifications = notifications.filter((n) => n.read));
 </script>
 
-<AppShellLayout {modules} {pathname} persistPanel={false} onNavigate={go} mainId={null}>
+<AppShellLayout {modules} {pathname} onNavigate={go} mainId={null}>
   {#snippet railBottom()}
     <a href="/templates/" class="ca-rail-btn" aria-label="Back to templates" title="Back to templates">
       <ArrowLeft size={16} stroke-width={1.6} />

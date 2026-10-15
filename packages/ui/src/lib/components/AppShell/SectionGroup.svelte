@@ -1,7 +1,9 @@
 <script lang="ts">
+  import { getContext } from 'svelte';
   import type { NavSection } from './types.js';
   import { isItemActive } from './types.js';
   import PanelNavItem from './PanelNavItem.svelte';
+  import { readShellState, writeShellState } from './shell-state.js';
   import { ChevronRight } from '@lucide/svelte';
   import { createIds, createPresence } from '../../primitives/index.js';
 
@@ -17,9 +19,20 @@
     section.items.some((item) => isItemActive(item, pathname))
   );
 
+  // Only inside an AppShellLayout with persistPanel (a bare SectionGroup keeps nothing).
+  const persist = getContext<{ readonly enabled: boolean } | undefined>('appshell-persist');
+
+  // The user's last choice wins over `defaultOpen`; the active section is never hidden on load.
   // defaultOpen is init-only on purpose.
   // svelte-ignore state_referenced_locally
-  let open = $state(section.defaultOpen !== false || hasActiveChild);
+  const saved = persist?.enabled && section.label ? readShellState().sections[section.label] : undefined;
+  // svelte-ignore state_referenced_locally
+  let open = $state(hasActiveChild || (saved ?? section.defaultOpen !== false));
+
+  function toggle() {
+    open = !open;
+    if (persist?.enabled && section.label) writeShellState({ sections: { [section.label]: open } });
+  }
 
   const uid = $props.id();
   const ids = createIds(uid);
@@ -37,7 +50,7 @@
           aria-expanded={open}
           aria-controls={ids.part('content')}
           data-state={dataState}
-          onclick={() => (open = !open)}
+          onclick={toggle}
         >
           <span class="ca-section__label">{section.label}</span>
           <span

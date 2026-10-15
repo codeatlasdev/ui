@@ -1,0 +1,5 @@
+---
+"@codeatlasdev/ui": minor
+---
+
+AppShellLayout: the shell keeps its state across page loads (#109). On an MPA (Astro, a full reload) every navigation is a new document, and the panel, the selected module, the expanded sections and the panel scroll all reset. `persistPanel` (default `true`) now keeps the panel open/closed, the selected module and the section open map in `localStorage["ca-shell"]` (the old `ca-panel-open` key is migrated), and the panel scroll per module in `sessionStorage`. An inline script emitted right after the sidebar restores them before the first paint and sets `data-ca-panel` / `data-ca-module` on `<html>`, so a stored-closed panel is laid out closed with no flash, on the same model as the theme script. Stored values are validated and discarded when malformed. The user's last choice for a section wins over `defaultOpen`; the section holding the current page always opens. The shell now starts at its target width instead of animating open on load. `persistPanel={false}` keeps the old always-default behavior for demos and embeds.

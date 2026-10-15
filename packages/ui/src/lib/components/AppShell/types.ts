@@ -61,14 +61,18 @@ export function collectPaths(modules: NavModule[]): string[] {
 	);
 }
 
-/** Index of the module whose `basePath` or `pathPrefixes` match `pathname`; `0` when none does. */
-export function findActiveModuleIndex(modules: NavModule[], pathname: string): number {
-	const idx = modules.findIndex(
+/** Index of the module whose `basePath` or `pathPrefixes` match `pathname`; `-1` when none does. */
+export function matchModuleIndex(modules: NavModule[], pathname: string): number {
+	return modules.findIndex(
 		(mod) =>
 			pathname.startsWith(mod.basePath) ||
 			(mod.pathPrefixes?.some((p) => pathname.startsWith(p)) ?? false)
 	);
-	return idx === -1 ? 0 : idx;
+}
+
+/** Index of the module whose `basePath` or `pathPrefixes` match `pathname`; `0` when none does. */
+export function findActiveModuleIndex(modules: NavModule[], pathname: string): number {
+	return Math.max(0, matchModuleIndex(modules, pathname));
 }
 
 /** Path of the nav item that is active for `pathname`, or `null` when none matches. */

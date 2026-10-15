@@ -36,7 +36,7 @@ The shell never imports a router. You pass the current `pathname` and handle `on
   { name: "pathname", type: "string", description: "Current location. Decides the active module and item." },
   { name: "onNavigate", type: "(path: string) => void", description: "Called with the destination path when the rail, panel or bottom navigation is used." },
   { name: "defaultModule", type: "number", default: "0", description: "Module index used before any navigation matches." },
-  { name: "persistPanel", type: "boolean", default: "true", description: "Persists the open or closed state of the panel in localStorage." },
+  { name: "persistPanel", type: "boolean", default: "true", description: "Keeps the shell across page loads: panel open or closed, selected module and expanded sections (localStorage), panel scroll (sessionStorage). Restored before the first paint. Turn it off for demos and embeds that must always start from the defaults." },
   { name: "header", type: "Snippet", description: "Desktop header rendered above the page content. Hidden below 900px." },
   { name: "brand", type: "Snippet", description: "Logo shown at the top of the rail and in the mobile header." },
   { name: "railBottom", type: "Snippet", description: "Items pinned to the bottom of the rail, such as an avatar or notifications." },
@@ -46,3 +46,16 @@ The shell never imports a router. You pass the current `pathname` and handle `on
   { name: "skipLink", type: "boolean", default: "true", description: "Renders the SkipLink. Turn it off when the shell is embedded in a page that already has one." },
   { name: "children", type: "Snippet", description: "Page content." },
 ]} />
+
+## State across page loads
+
+On a multi-page site (Astro, a full reload) every link loads a new document, so a shell that only keeps state in memory reopens at its defaults: the panel, the module, the expanded groups and the panel scroll are all lost. With `persistPanel` (the default) the shell keeps them and puts them back before the first paint, the same way the theme script does.
+
+| What | Where | Key |
+|---|---|---|
+| Panel open or closed, selected module, section open map | `localStorage` | `ca-shell` |
+| Panel scroll, per module | `sessionStorage` | `ca-shell-scroll` |
+
+An inline script emitted right after the sidebar reads those keys and sets `data-ca-panel="open|closed"` and `data-ca-module="<id>"` on `<html>` before anything paints, so a panel the user closed is laid out closed from the first frame instead of flashing open. Stored values are validated and discarded when malformed. A section's last open or closed choice wins over `defaultOpen`, but the section that holds the current page always opens. The module comes from the URL when `modules` matches it, and from the stored choice otherwise.
+
+Render the shell on the server so the first paint is not blank: the inline script and the markup travel together. A client-only mount gets the same restore on hydration, and a page whose CSP blocks inline scripts too. Keep `id` stable on each `NavModule` (it is the stored module key) and each section `label` unique within a module (it is the stored section key).

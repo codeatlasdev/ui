@@ -25,8 +25,13 @@ export function appModules(base: string, opts: { products?: boolean } = {}): Nav
 				...(opts.products
 					? [{ id: "products", label: "Products", icon: Package, path: `${base}/products/` }]
 					: []),
-				{ id: "reports", label: "Reports", icon: BarChart2, path: `${base}/reports/` },
-				{ id: "activity", label: "Activity", icon: Activity, path: `${base}/activity/` },
+				{
+					label: "Insights",
+					items: [
+						{ id: "reports", label: "Reports", icon: BarChart2, path: `${base}/reports/` },
+						{ id: "activity", label: "Activity", icon: Activity, path: `${base}/activity/` },
+					],
+				},
 			],
 		},
 		{

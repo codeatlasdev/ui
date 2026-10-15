@@ -92,7 +92,7 @@ export default defineConfig({
 		// `--ignore-lock`: always a foreground, one-off server. Astro 7 backgrounds `preview` when it
 		// detects an AI agent (CLAUDECODE, AGENT, ...) and keeps a lock file; Playwright then sees the
 		// command exit and a stale lock blocks the next run.
-		command: `${process.env.E2E_PREBUILT ? "" : "bun run build && "}bunx astro preview --port 4321 --ignore-lock`,
+		command: `${process.env.E2E_PREBUILT ? "" : "bun run build && "}bunx astro preview --port ${port} --ignore-lock`,
 		url: baseURL,
 		reuseExistingServer: !process.env.CI,
 		timeout: 300_000,

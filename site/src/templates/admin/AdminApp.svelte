@@ -25,6 +25,9 @@
 
   const SIGN_IN = '/templates/admin/sign-in/';
 
+  // The shell chrome does not depend on the session, so it is server-rendered and painted at once.
+  // Only the page body waits for the guard (demo auth lives in localStorage, client-only).
+  const PENDING: AuthUser = { name: 'Account', email: '', role: 'Admin' };
   let user = $state<AuthUser | null>(null);
 
   onMount(() => {
@@ -42,8 +45,8 @@
   }
 </script>
 
-{#if user}
-  <TemplateShell base="/templates/admin" {pathname} {user} onSignOut={signOut}>
+<TemplateShell base="/templates/admin" {pathname} user={user ?? PENDING} onSignOut={user ? signOut : undefined}>
+  {#if user}
     {#if page === 'dashboard'}<Dashboard {user} />
     {:else if page === 'users'}<Users />
     {:else if page === 'users-new'}<NewUser />
@@ -53,5 +56,5 @@
     {:else if page === 'billing'}<Billing />
     {:else if page === 'profile'}<Profile {user} />
     {/if}
-  </TemplateShell>
-{/if}
+  {/if}
+</TemplateShell>
