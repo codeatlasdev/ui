@@ -5,8 +5,9 @@
  *   bunx @codeatlasdev/ui init [--write] [--dir <path>]
  *   bunx @codeatlasdev/ui migrate [--write] [paths...]
  *
- * `init` creates missing files. Files that already exist are never overwritten:
- * the CLI prints a unified diff of the change it proposes, and `--write` applies it.
+ * `init` is a dry run unless `--write` is passed: it reports the files it would create and prints a
+ * unified diff of the change it proposes to existing ones. Files that already exist are never
+ * overwritten wholesale.
  */
 import { existsSync, readdirSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
@@ -24,7 +25,7 @@ const HELP = `codeatlas-ui <command>
   migrate  Rewrite code for renamed APIs (see the changelog)
 
 Options:
-  --write      apply proposed changes to existing files (new files are always created)
+  --write      create the missing files and apply the proposed changes (without it init only reports)
   --dir <p>    project directory (init, default: cwd)
 `;
 

@@ -1,5 +1,12 @@
 import { describe, expect, it } from "bun:test";
-import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
+import {
+	existsSync,
+	mkdirSync,
+	mkdtempSync,
+	readdirSync,
+	readFileSync,
+	writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { init } from "../src/cli/init.ts";
@@ -19,11 +26,13 @@ const quiet = { log: () => {} };
 const KIT_PKG = JSON.stringify({ devDependencies: { "@sveltejs/kit": "^2.0.0" } });
 const VITE = `import { sveltekit } from '@sveltejs/kit/vite';\nimport { defineConfig } from 'vite';\n\nexport default defineConfig({\n\tplugins: [sveltekit()]\n});\n`;
 const APP_HTML = `<head>\n<meta name="viewport" content="width=device-width, initial-scale=1" />\n</head>`;
+const EXT_VITE = `import { sveltekit } from '@sveltejs/kit/vite';\nimport { caErrorPlugin, caThemePlugin } from "@codeatlasdev/ui/vite";\nimport { theme } from "@acme/config/theme";\n\nexport default {\n\tplugins: [sveltekit(), caThemePlugin(theme), caErrorPlugin({ scaffold: true })]\n};\n`;
+const EXT_HOOKS = `import { sequence } from "@sveltejs/kit/hooks";\nimport { caThemeHandle, createErrorHandler } from "@codeatlasdev/ui/kit";\nimport { theme } from "@acme/config/theme";\n\nexport const handle = sequence(caThemeHandle(theme));\nexport const handleError = createErrorHandler();\n`;
 
 describe("init on SvelteKit", () => {
 	it("creates the theme, hook and layout in an empty project", () => {
 		const root = project({ "package.json": KIT_PKG });
-		expect(init(root, quiet)).toBe(true);
+		expect(init(root, { ...quiet, write: true })).toBe(true);
 		expect(read(root, "src/lib/theme.ts")).toContain("export const theme: ThemeOptions");
 		expect(read(root, "src/hooks.server.ts")).toContain("caThemeHandle(theme)");
 		expect(read(root, "src/hooks.server.ts")).toContain('from "$lib/theme"');
@@ -55,7 +64,7 @@ describe("init on SvelteKit", () => {
 				imports: { "#lib/*": "./src/lib/*" },
 			}),
 		});
-		init(root, quiet);
+		init(root, { ...quiet, write: true });
 		const hooks = read(root, "src/hooks.server.ts");
 		expect(hooks).toContain('from "#lib/theme.ts"');
 		expect(hooks).toContain("export const handleError = createErrorHandler();");
@@ -98,7 +107,7 @@ describe("init on SvelteKit", () => {
 				imports: { "#lib/*": "./src/lib/*" },
 			}),
 		});
-		init(root, quiet);
+		init(root, { ...quiet, write: true });
 		expect(read(root, "src/hooks.server.ts")).toContain('from "#lib/theme.ts"');
 	});
 
@@ -106,7 +115,7 @@ describe("init on SvelteKit", () => {
 		const root = project({
 			"package.json": JSON.stringify({ devDependencies: { "@sveltejs/kit": "^3.0.1" } }),
 		});
-		init(root, quiet);
+		init(root, { ...quiet, write: true });
 		const hooks = read(root, "src/hooks.server.ts");
 		expect(hooks).not.toContain("$lib");
 		expect(hooks).toContain('from "./lib/theme.ts"');
@@ -117,7 +126,7 @@ describe("init on SvelteKit", () => {
 			const root = project({
 				"package.json": JSON.stringify({ devDependencies: { "@sveltejs/kit": range } }),
 			});
-			init(root, quiet);
+			init(root, { ...quiet, write: true });
 			expect(read(root, "src/hooks.server.ts")).toContain('from "$lib/theme"');
 		}
 	});
@@ -163,6 +172,54 @@ describe("init on SvelteKit", () => {
 		expect(read(root, "vite.config.ts")).toBe(VITE);
 		expect(read(root, "src/app.html")).toBe(APP_HTML);
 		expect(lines.join("\n")).toMatch(/\+\s*caThemePlugin\(theme\)/);
+	});
+
+	it("without --write nothing is created: new files are only announced (true dry run)", () => {
+		const root = project({ "package.json": KIT_PKG });
+		const lines: string[] = [];
+		init(root, { log: (l) => lines.push(l) });
+		expect(readdirSync(root)).toEqual(["package.json"]);
+		const out = lines.join("\n");
+		expect(out).toContain("would create  src/lib/theme.ts");
+		expect(out).toContain("would create  src/hooks.server.ts");
+		expect(out).toContain("Re-run with --write");
+		expect(out).not.toContain("Done.");
+	});
+
+	it("does not create src/lib/theme.ts when vite and hooks already use a theme from elsewhere", () => {
+		const root = project({
+			"package.json": KIT_PKG,
+			"vite.config.ts": EXT_VITE,
+			"src/hooks.server.ts": EXT_HOOKS,
+		});
+		const lines: string[] = [];
+		init(root, { log: (l) => lines.push(l), write: true });
+		expect(existsSync(join(root, "src/lib/theme.ts"))).toBe(false);
+		expect(read(root, "vite.config.ts")).toBe(EXT_VITE);
+		expect(read(root, "src/hooks.server.ts")).toBe(EXT_HOOKS);
+		expect(lines.join("\n")).toContain("existing theme");
+	});
+
+	it("wires a missing hooks file to the theme vite already imports from elsewhere", () => {
+		const root = project({ "package.json": KIT_PKG, "vite.config.ts": EXT_VITE });
+		init(root, { ...quiet, write: true });
+		expect(existsSync(join(root, "src/lib/theme.ts"))).toBe(false);
+		const hooks = read(root, "src/hooks.server.ts");
+		expect(hooks).toContain('import { theme } from "@acme/config/theme";');
+		expect(hooks).not.toContain("$lib/theme");
+	});
+
+	it("wires a missing vite plugin to the theme hooks already imports from elsewhere", () => {
+		const root = project({
+			"package.json": KIT_PKG,
+			"vite.config.ts": VITE,
+			"src/hooks.server.ts": EXT_HOOKS,
+		});
+		init(root, { ...quiet, write: true });
+		expect(existsSync(join(root, "src/lib/theme.ts"))).toBe(false);
+		const vite = read(root, "vite.config.ts");
+		expect(vite).toContain('import { theme } from "@acme/config/theme";');
+		expect(vite).not.toContain("./src/lib/theme.ts");
 	});
 
 	it("patches existing files with --write and is idempotent", () => {
@@ -226,7 +283,7 @@ describe("init on Astro", () => {
 
 	it("creates a base layout when the project has none", () => {
 		const root = project({ "package.json": ASTRO_PKG });
-		init(root, quiet);
+		init(root, { ...quiet, write: true });
 		expect(read(root, "src/layouts/Base.astro")).toContain("colorScheme.init()");
 	});
 });

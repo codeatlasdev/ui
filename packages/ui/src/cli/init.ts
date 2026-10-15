@@ -18,6 +18,8 @@ interface Step {
 	patch?: (current: string) => string | null;
 	/** Shown when `patch` returns `null`. */
 	manual?: string;
+	/** The step is intentionally skipped: why. Nothing is created or patched. */
+	note?: string;
 }
 
 const THEME_BODY = `/**
@@ -96,6 +98,24 @@ function addImport(src: string, line: string): string {
 	return `${src.slice(0, at)}\n${line}${src.slice(at)}`;
 }
 
+/**
+ * Module specifier of a `theme` the app already imports in one of `files` (the config or hook that
+ * hands it to the theme plugin/handle), or `null`. The app then keeps its theme elsewhere (a shared
+ * workspace package, say): init must not create a second, disagreeing one, and wires the files it
+ * does touch to this one.
+ */
+function existingThemeSpec(root: string, files: string[]): string | null {
+	for (const file of files) {
+		const abs = join(root, file);
+		if (!existsSync(abs)) continue;
+		const m = readFileSync(abs, "utf8").match(
+			/import\s*\{[^}]*\btheme\b[^}]*\}\s*from\s*["']([^"']+)["']/
+		);
+		if (m) return m[1];
+	}
+	return null;
+}
+
 // ── SvelteKit ─────────────────────────────────────────────────────────────────
 
 /** Plugins init adds to `plugins`, in this order, each only when absent. Both go after `sveltekit()`. */
@@ -122,7 +142,7 @@ function mergeViteImport(src: string, names: string[]): string {
 	return src.replace(m[0], `import { ${all.join(", ")} } from "@codeatlasdev/ui/vite";`);
 }
 
-function viteConfigPatch(src: string): string | null {
+function viteConfigPatch(src: string, themeSpec: string): string | null {
 	const missing = VITE_PLUGINS.filter((p) => !src.includes(`${p.name}(`));
 	if (!missing.length) return src;
 	// `plugins: [ sveltekit(...) ]`: append after the last element of the array.
@@ -156,7 +176,7 @@ function viteConfigPatch(src: string): string | null {
 		VITE_PLUGINS.filter((p) => next.includes(`${p.name}(`)).map((p) => p.name)
 	);
 	return missing.some((p) => p.name === "caThemePlugin")
-		? addImport(withImports, 'import { theme } from "./src/lib/theme.ts";')
+		? addImport(withImports, `import { theme } from "${themeSpec}";`)
 		: withImports;
 }
 
@@ -283,10 +303,21 @@ function kit3Notes(root: string): string[] {
 	return notes;
 }
 
+/** The step that would create the app's theme file, or the explanation that init keeps the app's own. */
+function themeStep(path: string, create: string, existing: string | null): Step {
+	return existing
+		? {
+				path,
+				note: `the app already imports its theme from "${existing}"; init keeps that existing theme.`,
+			}
+		: { path, create };
+}
+
 function sveltekitSteps(root: string): Step[] {
-	const lib = themeImport(root);
+	const existing = existingThemeSpec(root, ["vite.config.ts", "src/hooks.server.ts"]);
+	const lib = existing ?? themeImport(root);
 	return [
-		{ path: "src/lib/theme.ts", create: THEME_TS },
+		themeStep("src/lib/theme.ts", THEME_TS, existing),
 		{
 			path: "src/hooks.server.ts",
 			create: hooksNew(lib),
@@ -296,7 +327,7 @@ function sveltekitSteps(root: string): Step[] {
 		},
 		{
 			path: "vite.config.ts",
-			patch: viteConfigPatch,
+			patch: (src) => viteConfigPatch(src, existing ?? "./src/lib/theme.ts"),
 			manual: 'Add caThemePlugin(theme) from "@codeatlasdev/ui/vite" to `plugins`.',
 		},
 		{ path: "src/routes/+layout.svelte", create: LAYOUT_NEW, patch: layoutPatch },
@@ -306,7 +337,7 @@ function sveltekitSteps(root: string): Step[] {
 
 // ── Astro ─────────────────────────────────────────────────────────────────────
 
-function astroConfigPatch(src: string): string | null {
+function astroConfigPatch(src: string, themeSpec: string): string | null {
 	if (src.includes("caUI(")) return src;
 	const m = src.match(/integrations:\s*\[/);
 	if (!m || m.index === undefined) return null;
@@ -316,7 +347,7 @@ function astroConfigPatch(src: string): string | null {
 	const next = `${src.slice(0, at)}caUI(theme)${empty ? "" : ", "}${rest}`;
 	return addImport(
 		addImport(next, 'import { caUI } from "@codeatlasdev/ui/astro";'),
-		'import { theme } from "./src/theme.ts";'
+		`import { theme } from "${themeSpec}";`
 	);
 }
 
@@ -378,11 +409,12 @@ function astroSteps(root: string): Step[] {
 			existsSync(join(root, f))
 		) ?? "astro.config.mjs";
 	const layout = findAstroLayout(root);
+	const existing = existingThemeSpec(root, [configName]);
 	return [
-		{ path: "src/theme.ts", create: ASTRO_THEME_TS },
+		themeStep("src/theme.ts", ASTRO_THEME_TS, existing),
 		{
 			path: configName,
-			patch: astroConfigPatch,
+			patch: (src) => astroConfigPatch(src, existing ?? "./src/theme.ts"),
 			manual: 'Add caUI(theme) from "@codeatlasdev/ui/astro" to `integrations`.',
 		},
 		layout
@@ -398,7 +430,7 @@ function astroSteps(root: string): Step[] {
 // ── runner ────────────────────────────────────────────────────────────────────
 
 export interface InitOptions {
-	/** Apply patches to existing files. Without it, only the diff is printed. */
+	/** Apply the setup. Without it nothing touches the disk: new files and diffs are only reported. */
 	write?: boolean;
 	log?: (line: string) => void;
 }
@@ -420,6 +452,10 @@ export function init(
 	let ok = true;
 	let pending = 0;
 	for (const step of fw === "sveltekit" ? sveltekitSteps(root) : astroSteps(root)) {
+		if (step.note) {
+			log(`  skip    ${step.path}: ${step.note}`);
+			continue;
+		}
 		const abs = join(root, step.path);
 		if (!existsSync(abs)) {
 			if (step.create === undefined) {
@@ -427,9 +463,14 @@ export function init(
 				if (step.manual) log(`          ${step.manual}`);
 				continue;
 			}
-			mkdirSync(dirname(abs), { recursive: true });
-			writeFileSync(abs, step.create);
-			log(`  create  ${step.path}`);
+			if (write) {
+				mkdirSync(dirname(abs), { recursive: true });
+				writeFileSync(abs, step.create);
+				log(`  create  ${step.path}`);
+			} else {
+				pending++;
+				log(`  would create  ${step.path}`);
+			}
 			continue;
 		}
 		const current = readFileSync(abs, "utf8");
@@ -451,7 +492,7 @@ export function init(
 	}
 	if (pending)
 		log(
-			`\n${pending} existing file(s) left untouched. Re-run with --write to apply the diffs above.`
+			`\n${pending} change(s) not applied. Re-run with --write to create the files and apply the diffs above.`
 		);
 	const notes = fw === "sveltekit" && kitMajor(root) >= 3 ? kit3Notes(root) : [];
 	for (const n of notes) log(`\n  note    ${n}`);

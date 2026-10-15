@@ -52,19 +52,21 @@ bunx @codeatlasdev/ui init [--write] [--dir <path>]
 
 | Line | Meaning |
 |---|---|
-| `create  <file>` | The file was missing and is now written. |
+| `create  <file>` | The file was missing and is now written (`--write`). |
+| `would create  <file>` | The file is missing. Nothing is written until you re-run with `--write`. |
 | `ok      <file> (already set up)` | Nothing to change. Running `init` again on a finished setup prints only `ok` lines. |
 | `diff    <file> (exists, not modified)` | The file exists and needs a change. A unified diff follows; nothing is written until you re-run with `--write`. |
 | `patch   <file>` | The change was applied (`--write`). |
 | `manual  <file>: could not patch safely.` | `init` could not edit the file safely (no `plugins: [...]` array, an existing `handle` of your own, no `</body>`). It says what to add by hand and exits with code 1. |
 | `skip    <file> (not found)` | The file does not exist and `init` does not create it (`vite.config.ts`, `src/app.html` and the Astro config). |
+| `skip    <file>: the app already imports its theme from "<module>"` | `vite.config.ts`, `hooks.server.ts` (or the Astro config) already import `theme` from somewhere else, for example a shared workspace package. `init` does not create `src/lib/theme.ts` (`src/theme.ts` on Astro) and wires the files it adds to that import. |
 
 | Flag | Effect |
 |---|---|
-| `--write` | Apply the proposed changes to existing files. Files that do not exist yet are always created. |
+| `--write` | Create the missing files and apply the proposed changes. Without it `init` is a dry run: nothing touches the disk. |
 | `--dir <path>` | Project directory. Defaults to the current directory. |
 
-When diffs are pending it ends with `N existing file(s) left untouched. Re-run with --write to apply the diffs above.` A clean run ends with `Done. Run your dev server: the theme paints on the first frame.`
+When anything is pending it ends with `N change(s) not applied. Re-run with --write to create the files and apply the diffs above.` A clean run ends with `Done. Run your dev server: the theme paints on the first frame.`
 
 ## SvelteKit
 
@@ -72,7 +74,7 @@ When diffs are pending it ends with `N existing file(s) left untouched. Re-run w
 
 ### What `init` writes
 
-For each file below, `init` creates it when it is missing, except `vite.config.ts` and `src/app.html`, which it only patches (it prints `skip` when they are not there). A file that already exists is never overwritten: `init` prints a diff and applies it only with `--write`. Re-running it changes nothing once the setup is complete.
+For each file below, `init` creates it when it is missing, except `vite.config.ts` and `src/app.html`, which it only patches (it prints `skip` when they are not there). Without `--write` nothing is written: `init` prints `would create` for a missing file and a diff for an existing one. A file that already exists is never overwritten: its diff is applied only with `--write`. Re-running it changes nothing once the setup is complete.
 
 | File | What `init` puts there | If the file exists |
 |---|---|---|
