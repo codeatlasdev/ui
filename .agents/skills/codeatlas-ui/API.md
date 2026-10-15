@@ -2361,7 +2361,7 @@ const darkMaterialTokens: {
   --ca-tooltip-fg: "oklch(0.93 0.005 55)";
   --ca-glass-highlight: "oklch(1 0 0 / 0.06)";
   --ca-scrim-color: "oklch(0 0 0 / 0.50)";
-  --ca-scrim-blur: "none";
+  --ca-scrim-blur: "blur(4px) saturate(180%)";
 }
 ```
 
@@ -2725,7 +2725,7 @@ const lightMaterialTokens: {
   --ca-tooltip-fg: "oklch(0.97 0.003 55)";
   --ca-glass-highlight: "oklch(1 0 0 / 0.60)";
   --ca-scrim-color: "oklch(0.12 0.010 55 / 0.38)";
-  --ca-scrim-blur: "none";
+  --ca-scrim-blur: "blur(4px) saturate(180%)";
 }
 ```
 
@@ -3996,7 +3996,7 @@ const darkMaterialTokens: {
   --ca-tooltip-fg: "oklch(0.93 0.005 55)";
   --ca-glass-highlight: "oklch(1 0 0 / 0.06)";
   --ca-scrim-color: "oklch(0 0 0 / 0.50)";
-  --ca-scrim-blur: "none";
+  --ca-scrim-blur: "blur(4px) saturate(180%)";
 }
 ```
 
@@ -4190,7 +4190,7 @@ const lightMaterialTokens: {
   --ca-tooltip-fg: "oklch(0.97 0.003 55)";
   --ca-glass-highlight: "oklch(1 0 0 / 0.60)";
   --ca-scrim-color: "oklch(0.12 0.010 55 / 0.38)";
-  --ca-scrim-blur: "none";
+  --ca-scrim-blur: "blur(4px) saturate(180%)";
 }
 ```
 
