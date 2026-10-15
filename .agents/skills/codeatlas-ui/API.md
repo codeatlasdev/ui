@@ -394,6 +394,7 @@ Classes: `ca-card-grid`
 | `indeterminate?` | `boolean` | `false` |  |
 | `disabled?` | `boolean` | `false` |  |
 | `label?` | `string` |  |  |
+| `name?` | `string` |  | Native `name`, so the checkbox is part of `FormData` on a plain form submit (value `on`). |
 | `aria-label?` | `string` |  | Accessible name when no visible `label` is rendered. |
 | `aria-labelledby?` | `string` |  |  |
 | `class?` | `string` | `""` |  |
@@ -1565,6 +1566,7 @@ Classes: `ca-progress` `ca-progress__indicator` `ca-progress__indicator--indeter
 |---|---|---|---|
 | `value?` | `string` | `''` | `bind:` |
 | `items` | `RadioItem[]` |  |  |
+| `name?` | `string` |  | Native `name` of the radios, so the value is part of `FormData` on a plain form submit. |
 | `orientation?` | `'vertical' \| 'horizontal'` | `'vertical'` |  |
 | `variant?` | `'list' \| 'cards'` | `'list'` | `list` (default): radio + label rows. `cards`: each option is a selectable card (label + description) in a responsive grid; the whole card is the hit area and only the selected one is emphasized. |
 | `disabled?` | `boolean` | `false` |  |
@@ -1727,6 +1729,7 @@ Classes: `ca-seg` `ca-seg--md` `ca-seg--sm` `ca-seg__item` `ca-seg__thumb`
 | `description?` | `string` |  |  |
 | `error?` | `string` |  |  |
 | `required?` | `boolean` | `false` |  |
+| `name?` | `string` |  | Native `name`: the selected value is part of `FormData` on a plain form submit. Nothing is sent while no option is selected. |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
 | `class?` | `string` | `''` |  |
 | `onchange?` | `(value: string) => void` |  |  |
@@ -1995,6 +1998,7 @@ Classes: `ca-swatch` `ca-swatch-group` `ca-swatch-group--sm`
 | `checked?` | `boolean` | `false` | `bind:` |
 | `disabled?` | `boolean` | `false` |  |
 | `label?` | `string` |  |  |
+| `name?` | `string` |  | Native `name`, so the switch is part of `FormData` on a plain form submit (value `on` when checked). |
 | `aria-label?` | `string` |  | Accessible name when no visible `label` is rendered. |
 | `aria-labelledby?` | `string` |  |  |
 | `class?` | `string` | `''` |  |
