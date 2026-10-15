@@ -63,6 +63,10 @@ export type {
 	ResolvedTheme,
 	ThemeDefinition,
 } from "./theme/define.js";
+export type { DesignStyleId } from "./theme/styles.js";
+// Recipes are plain data: a shared theme.ts can use them from vite.config, which Node loads without
+// Svelte (the package root and `/kit` cannot be evaluated there).
+export { DESIGN_STYLES, designStyle, mergeTheme } from "./theme/styles.js";
 export type { ThemeOptions } from "./theme-script.js";
 export { CA_THEME_MARKER };
 /** Ready-to-paste script tag for src/app.html (default amber/dark theme). */

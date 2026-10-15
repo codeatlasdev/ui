@@ -150,7 +150,7 @@ colorScheme.setStyle("glass");
 Earlier versions looked like Liquid Glass: glass surfaces over a three-hue mesh, glow on selected states, round corners (10px controls), 2px icons, bold headings and hue-tinted shadows. That look is now the opt-in `liquid` recipe:
 
 ```ts
-import { designStyle } from "@codeatlasdev/ui/astro";
+import { designStyle } from "@codeatlasdev/ui/vite";
 import type { ThemeOptions } from "@codeatlasdev/ui/vite";
 
 export const theme: ThemeOptions = designStyle("liquid", {
@@ -160,7 +160,7 @@ export const theme: ThemeOptions = designStyle("liquid", {
 });
 ```
 
-`designStyle("default")` is the sober default. `designStyle` is plain data, so `theme.ts` can import it in Node from `@codeatlasdev/ui/astro` (it is also exported from the root and from `@codeatlasdev/ui/kit`, which pull in Svelte files that `vite.config` cannot load). To migrate an app that relied on the old defaults, use `designStyle("liquid", { ... })`, or set `defaultStyle: "glass"` yourself.
+`designStyle("default")` is the sober default. `designStyle`, `DESIGN_STYLES` and `mergeTheme` are plain data, so a `theme.ts` shared with `vite.config` imports them in Node from `@codeatlasdev/ui/vite` (`@codeatlasdev/ui/astro` exports them too). The root and `@codeatlasdev/ui/kit` also export them, but they pull in Svelte files that `vite.config` cannot load. To migrate an app that relied on the old defaults, use `designStyle("liquid", { ... })`, or set `defaultStyle: "glass"` yourself.
 
 ### Other design styles
 

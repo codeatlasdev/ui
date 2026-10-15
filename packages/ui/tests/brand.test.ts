@@ -122,3 +122,25 @@ describe("resvgOptions", () => {
 		expect(resvgOptions(MARK, 180).fitTo).toEqual({ mode: "width", value: 180 });
 	});
 });
+
+describe("recipes from the Node-safe vite entry (#148)", () => {
+	it("exports designStyle, DESIGN_STYLES and mergeTheme", async () => {
+		const vite = await import("../src/lib/vite-plugin.js");
+		expect(typeof vite.designStyle).toBe("function");
+		expect(Object.keys(vite.DESIGN_STYLES)).toContain("liquid");
+		expect(vite.designStyle("liquid", { defaultPreset: "x" }).defaultPreset).toBe("x");
+		expect(typeof vite.mergeTheme).toBe("function");
+	});
+
+	it("is the entry the theming guide and init tell users to import from", () => {
+		const theming = readFileSync(
+			join(import.meta.dir, "../../../site/src/content/docs/getting-started/theming.mdx"),
+			"utf8"
+		);
+		expect(theming).toContain('import { designStyle } from "@codeatlasdev/ui/vite";');
+		expect(theming).not.toContain('import { designStyle } from "@codeatlasdev/ui/astro";');
+		const init = readFileSync(join(import.meta.dir, "../src/cli/init.ts"), "utf8");
+		expect(init).toContain("designStyle");
+		expect(init).toContain("@codeatlasdev/ui/vite");
+	});
+});

@@ -28,8 +28,9 @@ const THEME_BODY = `/**
  * Add a brand color with \`presets: [{ id: "brand", color: "#2563eb" }]\` and
  * \`defaultPreset: "brand"\`.
  *
- * Keep this a plain object and a type-only import: vite.config / astro.config load it in Node,
- * where the package root (which imports .svelte files) cannot be evaluated.
+ * Keep this a plain object and import only from \`@codeatlasdev/ui/vite\` (or \`/astro\`): vite.config
+ * loads it in Node, where the package root (which imports .svelte files) cannot be evaluated. That
+ * entry also exports \`designStyle("liquid", { ... })\` for a design recipe.
  */
 export const theme: ThemeOptions = {
 	defaultPreset: "amber",
