@@ -15,7 +15,8 @@ interface Env {
 
 export const onRequestGet: PagesFunction<Env> = async ({ request, next, env }) => {
 	// `next()` serves the static asset for this path: the shell, and the offline fallback body between the markers.
-	const html = await (await next()).text();
+	// Always the GET body: a HEAD request would get an empty asset and look like a missing build.
+	const html = await (await next(new Request(request.url))).text();
 	const a = html.indexOf(OPEN);
 	const b = html.indexOf(CLOSE);
 	if (a < 0 || b < a) return new Response(html, { headers: edgeHeaders(HTML, true) });

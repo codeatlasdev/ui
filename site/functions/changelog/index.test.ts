@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { onRequestGet } from "./index";
+import { onRequestGet, onRequestHead } from "./index";
 
 const SHELL = "<html><body><!--CHANGELOG--><p>BUILD COPY</p><!--/CHANGELOG--></body></html>";
 const store = new Map<string, Response>();
@@ -59,5 +59,16 @@ describe("GET /changelog/", () => {
 	});
 	test("a shell without the markers is served as is", async () => {
 		expect(await (await run(undefined, "<p>x</p>")).text()).toBe("<p>x</p>");
+	});
+});
+
+describe("HEAD /changelog/", () => {
+	test("reports the live source like GET (the asset is read as GET, not as an empty HEAD body)", async () => {
+		const res = await onRequestHead({
+			request: new Request("https://ui.codeatlas.com.br/changelog/", { method: "HEAD" }),
+			next: async (input?: Request) => new Response(input?.method === "GET" ? SHELL : ""),
+			env: {},
+		} as unknown as Parameters<typeof onRequestHead>[0]);
+		expect(res.headers.get("x-changelog-source")).toBe("github-releases");
 	});
 });
