@@ -4527,6 +4527,26 @@ Pass the same options as caThemeHandle so the dev HTML (transformIndexHtml) matc
 function caThemePlugin(options?: ThemeOptions): Plugin
 ```
 
+### DESIGN_STYLES
+
+`import { DESIGN_STYLES } from "@codeatlasdev/ui/vite"`
+
+Design-style recipes by id (default, liquid, swiss, ... editorial, terminal): each is a `Partial<ThemeDefinition>` to pass to `defineTheme` or `mergeTheme`.
+
+```ts
+const DESIGN_STYLES: Record<DesignStyleId, DesignStyle>
+```
+
+### designStyle
+
+`import { designStyle } from "@codeatlasdev/ui/vite"`
+
+A design style recipe with your overrides on top, ready for `defineTheme`/`caThemeHandle`.
+
+```ts
+function designStyle(id: DesignStyleId, overrides?: Partial<ThemeDefinition>): Partial<ThemeDefinition>
+```
+
 ### faviconSvg
 
 `import { faviconSvg } from "@codeatlasdev/ui/vite"`
@@ -4545,6 +4565,16 @@ Writes `favicon.<h>.svg`, `favicon.<h>.ico` (16/32/48), `favicon-32.<h>.png`, `a
 
 ```ts
 function generateBrand(o: GenerateBrandOptions): Promise<BrandAssets>
+```
+
+### mergeTheme
+
+`import { mergeTheme } from "@codeatlasdev/ui/vite"`
+
+Merge partial themes: `b` wins; the nested option groups merge key by key.
+
+```ts
+function mergeTheme(a: Partial<ThemeDefinition>, b: Partial<ThemeDefinition>): Partial<ThemeDefinition>
 ```
 
 ### OG_SIZE
@@ -4606,6 +4636,7 @@ Types:
 | `BrowserLike` | `interface BrowserLike { newContext: (options: { deviceScaleFactor: number; viewport: { width: number; height: number }; }) => Promise<{ newPage: () => Promise<PageLike>; close: () => Promise<void> }>; }` | The subset of Playwright's `Browser` this module uses. |
 | `CaBrandPluginOptions` | `interface CaBrandPluginOptions { mark?: string; theme?: ThemeOptions; outDir?: string; base?: string; manifestFile?: string; name?: string; shortName?: string; }` |  |
 | `CaErrorPluginOptions` | `interface CaErrorPluginOptions extends ErrorHtmlOptions { root?: string; routesDir?: string; scaffold?: boolean; scaffoldErrorHtml?: boolean; }` |  |
+| `DesignStyleId` | `type DesignStyleId = \| "default" \| "liquid" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
 | `FontDescriptor` | `interface FontDescriptor { family: string; src: string; weight?: number \| string; style?: "normal" \| "italic"; display?: "auto" \| "block" \| "swap" \| "fallback" \| "optional"; preload?: boolean; fallback?: string; fallbackMetrics?: FontFallbackMetrics; generic?: string; }` | A self-hosted web font. Emits `@font-face`, an optional preload and a metric-matched fallback face. |
 | `FontSpec` | `type FontSpec = string \| FontDescriptor;` | A font stack string (existing behavior) or a self-hosted font descriptor. |
 | `GenerateBrandOptions` | `interface GenerateBrandOptions { mark: string; theme: ThemeOptions; outDir: string; base?: string; name?: string; shortName?: string; }` |  |
