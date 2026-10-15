@@ -7,7 +7,8 @@ const pkgRoot = join(import.meta.dir, "..");
 
 /**
  * Runs the CLI the way `bunx` does: from a directory that holds a copy of the sources and no
- * `typescript` anywhere up its tree (the repo's node_modules is not copied).
+ * `typescript` anywhere up its tree (the repo's node_modules is not copied). `--no-install`: without it
+ * Bun auto-installs the missing package on CI and the test never sees it missing.
  */
 function runCli(args: string[], project: Record<string, string> = {}) {
 	const root = mkdtempSync(join(tmpdir(), "ca-nots-"));
@@ -25,7 +26,7 @@ function runCli(args: string[], project: Record<string, string> = {}) {
 		writeFileSync(join(app, path), content);
 	}
 	mkdirSync(app, { recursive: true });
-	const r = Bun.spawnSync(["bun", join(cli, "bin/codeatlas-ui.ts"), ...args], {
+	const r = Bun.spawnSync(["bun", "--no-install", join(cli, "bin/codeatlas-ui.ts"), ...args], {
 		cwd: app,
 		env: { ...process.env, NODE_PATH: "" },
 	});
