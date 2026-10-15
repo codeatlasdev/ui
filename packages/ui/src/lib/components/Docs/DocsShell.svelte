@@ -158,7 +158,7 @@
     >
       <DocsNav {groups} {pathname} label={activeSection?.label ?? t().docs.nav} />
     </aside>
-    {@html `<script>${sidebarScript(sidebarKey)}</script>`}
+    {@html sidebarScript(sidebarKey)}
   {/if}
 
   <main class="ca-docs-main" id="main" tabindex="-1">

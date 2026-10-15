@@ -28,8 +28,13 @@ export function saveSidebar(aside: HTMLElement, key: string): void {
 	} catch {}
 }
 
-/** Inline `<script>` body placed right after the sidebar element in the server markup. */
+/**
+ * Inline script tag placed right after the sidebar element in the server markup. Built here, not
+ * in DocsShell's markup: Vite's dependency scan would read a `<script>` there as a script block
+ * (tests/svelte-script-tags.test.ts).
+ */
 export function sidebarScript(key: string): string {
 	const arg = JSON.stringify(key).replace(/</g, "\\u003c");
-	return `(${restoreSidebar})(document.currentScript.previousElementSibling,${arg})`;
+	const body = `(${restoreSidebar})(document.currentScript.previousElementSibling,${arg})`;
+	return `<script>${body}</script>`;
 }
