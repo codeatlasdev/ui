@@ -76,11 +76,6 @@
   .ca-prose .ca-prose-anchor { opacity: 1; }
 }
 
-/* Touch devices have no hover: keep the anchor visible but quiet, and out of the text column. */
-@media (hover: none) {
-  .ca-prose .ca-prose-anchor { display: none; }
-}
-
 /* ── Inline ─────────────────────────────────────────────────────────────── */
 
 .ca-prose :where(strong) {
