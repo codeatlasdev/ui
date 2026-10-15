@@ -903,7 +903,7 @@ Classes: `ca-error-page` `ca-error-page__actions` `ca-error-page__bubble` `ca-er
 
 ## ExportMenu
 
-`import { ExportMenu } from "@codeatlasdev/ui"` (generic: `T extends Record<string, unknown>`)
+`import { ExportMenu } from "@codeatlasdev/ui"` (generic: `T extends object`)
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -3031,7 +3031,7 @@ const toast: {
 RFC 4180 CSV (CRLF line ends, trailing newline). Columns default to the first row's keys.
 
 ```ts
-function toCsv<T extends Record<string, unknown>>(rows: readonly T[], columns?: readonly ExportColumn<T>[]): string
+function toCsv<T extends object>(rows: readonly T[], columns?: readonly ExportColumn<T>[]): string
 ```
 
 ### toJson
@@ -3041,7 +3041,7 @@ function toCsv<T extends Record<string, unknown>>(rows: readonly T[], columns?: 
 Pretty-printed JSON array. With `columns`, each object keeps only those fields (by `key`).
 
 ```ts
-function toJson<T extends Record<string, unknown>>(rows: readonly T[], columns?: readonly ExportColumn<T>[]): string
+function toJson<T extends object>(rows: readonly T[], columns?: readonly ExportColumn<T>[]): string
 ```
 
 ### uid
@@ -3150,7 +3150,7 @@ Types:
 | `DocsSection` | `interface DocsSection { id: string; label: string; href: string; }` | A top-level docs section shown in the header (e.g. Guide, API, Compat). |
 | `ElevationLevel` | `type ElevationLevel = keyof typeof elevation;` |  |
 | `ElevationModel` | `type ElevationModel = "soft" \| "none" \| "hard" \| "glow";` | Shadow model: how elevation is drawn. |
-| `ExportColumn` | `interface ExportColumn<T = Record<string, unknown>> { key: keyof T & string; header?: string; value?: (row: T) => unknown; }` |  |
+| `ExportColumn` | `interface ExportColumn<T extends object = Record<string, unknown>> { key: keyof T & string; header?: string; value?: (row: T) => unknown; }` |  |
 | `FieldState` | `interface FieldState { value: string; error: string \| undefined; touched: boolean; }` |  |
 | `FontDescriptor` | `interface FontDescriptor { family: string; src: string; weight?: number \| string; style?: "normal" \| "italic"; display?: "auto" \| "block" \| "swap" \| "fallback" \| "optional"; preload?: boolean; fallback?: string; fallbackMetrics?: FontFallbackMetrics; generic?: string; }` | A self-hosted web font. Emits `@font-face`, an optional preload and a metric-matched fallback face. |
 | `FontFallbackMetrics` | `interface FontFallbackMetrics { sizeAdjust?: string \| number; ascent?: string; descent?: string; lineGap?: string; }` | Metrics of the fallback face, from the font's own tables, so the swap does not shift layout. |
