@@ -185,7 +185,10 @@ const LABELS: [string, string, string][] = [
 
 async function triage() {
 	for (const [name, color, desc] of LABELS)
-		await $`gh label create ${name} --color ${color} --description ${desc}`.cwd(ROOT).quiet().nothrow();
+		await $`gh label create ${name} --color ${color} --description ${desc}`
+			.cwd(ROOT)
+			.quiet()
+			.nothrow();
 	await $`git fetch -q origin main`.cwd(ROOT).quiet().nothrow();
 	// One record per commit: "<hash>\t<subject>\n<body>". A bare "(#n)" is usually the PR number,
 	// so only closing keywords and the landing convention "subject (#issue) (#pr)" count.
@@ -193,21 +196,27 @@ async function triage() {
 		.split("\x1e")
 		.map((c) => c.trim())
 		.filter(Boolean);
-	const list: (Issue & { body: string; comments: { author: { login: string }; body: string }[] })[] =
-		JSON.parse(
-			await $`gh issue list --state open --limit 200 --json number,title,state,labels,assignees,body,comments`
-				.cwd(ROOT)
-				.text()
-		);
+	const list: (Issue & {
+		body: string;
+		comments: { author: { login: string }; body: string }[];
+	})[] = JSON.parse(
+		await $`gh issue list --state open --limit 200 --json number,title,state,labels,assignees,body,comments`
+			.cwd(ROOT)
+			.text()
+	);
 	let out = `# Open issues (${list.length})\n\nLabels: ${LABELS.map((l) => l[0]).join(", ")}\n`;
 	for (const is of list.sort((a, b) => a.number - b.number)) {
 		const n = is.number;
-		const ref = new RegExp(`\\b(close[sd]?|fix(es|ed)?|resolve[sd]?)\\s+#${n}\\b|\\(#${n}\\) \\(#\\d+\\)$`, "im");
+		const ref = new RegExp(
+			`\\b(close[sd]?|fix(es|ed)?|resolve[sd]?)\\s+#${n}\\b|\\(#${n}\\) \\(#\\d+\\)$`,
+			"im"
+		);
 		const commits = log.filter((c) => ref.test(c)).map((c) => c.split("\n")[0]);
 		const prs = (await linkedPrs(String(is.number))).map((p) => `#${p.number} ${p.state}`);
 		out += `\n---\n## #${is.number} ${is.title}\nlabels: ${is.labels.map((l) => l.name).join(", ") || "none"}`;
 		out += `\nlinked PRs: ${prs.join(", ") || "none"}\ncommits on main: ${commits.join(" | ") || "none"}\n\n${is.body}\n`;
-		for (const c of is.comments) out += `\n> @${c.author.login}: ${c.body.replace(/\n/g, "\n> ")}\n`;
+		for (const c of is.comments)
+			out += `\n> @${c.author.login}: ${c.body.replace(/\n/g, "\n> ")}\n`;
 	}
 	const file = join(ROOT, ".cache", "triage.md");
 	await Bun.write(file, out);
