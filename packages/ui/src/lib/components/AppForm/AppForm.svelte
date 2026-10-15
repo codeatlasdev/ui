@@ -31,6 +31,7 @@
    */
   import type { Snippet } from 'svelte';
   import Button from '../Button/Button.svelte';
+  import { provideSectionHeadingLevel } from '../PageShell/heading-context.js';
   import { ArrowLeft } from '@lucide/svelte';
   const t = useT();
 
@@ -52,6 +53,9 @@
     class?:       string;
     children?:    Snippet;
   }
+
+  // The page <h1> is rendered above; titles inside the form default to <h2>.
+  provideSectionHeadingLevel();
 
   let {
     title,

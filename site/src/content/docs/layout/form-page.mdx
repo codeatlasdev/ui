@@ -27,6 +27,8 @@ import NoHeaderSrc from "~/demos/layout/form-page/NoHeader.svelte?raw";
 </AppForm>
 ```
 
+`FormSection` titles inside an AppForm are `<h2>` under the page `<h1>` (pass `headingLevel` on the section to override).
+
 AppForm fills its parent, so give the parent a height. It replaces the removed FormPage. For a floating action bar inside your own scroll container, use [StickyActions](/docs/layout/sticky-actions/).
 
 <Demo title="Basic form" description="Header with a back button, a grid of fields, a list of switches and a sticky footer." src={BasicSrc}><Basic client:visible /></Demo>

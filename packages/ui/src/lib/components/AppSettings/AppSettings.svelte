@@ -44,7 +44,10 @@
    */
   import type { IconComponent } from '../../types.js';
   import type { Snippet } from 'svelte';
+  import { provideSectionHeadingLevel } from '../PageShell/heading-context.js';
   const t = useT();
+  // The page <h1> is rendered above; titles inside the page default to <h2>.
+  provideSectionHeadingLevel();
 
   interface SettingsTab {
     value:   string;

@@ -20,10 +20,17 @@
    *   </FormSection>
    */
   import type { Snippet } from 'svelte';
+  import type { HeadingLevel } from '../../types.js';
+  import { sectionHeadingLevel } from '../PageShell/heading-context.js';
 
   interface Props {
     label?:       string;
     title?:       string;   // alias for label
+    /**
+     * Heading level of the title (2–6). Only the tag changes, never the look.
+     * Defaults to 2 inside `PageShell`/`AppSettings`/`AppForm` (under their `<h1>`), 5 elsewhere.
+     */
+    headingLevel?: HeadingLevel;
     description?: string;
     layout?:      'grid' | 'list' | 'stack';
     class?:       string;
@@ -33,6 +40,7 @@
   let {
     label,
     title,
+    headingLevel,
     description,
     layout = 'grid',
     class: className = '',
@@ -40,12 +48,15 @@
   }: Props = $props();
 
   const heading = $derived(label ?? title);
+  // Read once at init: context lookups are only valid during component initialisation.
+  const inheritedLevel = sectionHeadingLevel(5);
+  const level = $derived(headingLevel ?? inheritedLevel);
 </script>
 
 <section class="ca-form-section ca-form-section--{layout} {className}">
   {#if heading || description}
     <div class="ca-form-section__header">
-      {#if heading}<h5 class="ca-form-section__title">{heading}</h5>{/if}
+      {#if heading}<svelte:element this={`h${level}`} class="ca-form-section__title">{heading}</svelte:element>{/if}
       {#if description}<p class="ca-form-section__desc">{description}</p>{/if}
     </div>
   {/if}

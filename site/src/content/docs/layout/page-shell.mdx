@@ -22,7 +22,7 @@ import DashboardSrc from "~/demos/layout/page-shell/Dashboard.svelte?raw";
 
 Below 900px the header stacks: the description leads and `actions` wrap onto their own row. Labeled buttons share that row full-width (large tap targets); icon-only controls (`IconButton`, `ThemeToggle`) keep their natural size and stay at the end of the row.
 
-The shell renders `title` as the page `<h1>`; below 900px inside an `AppShellLayout` it is hidden visually because the mobile header already shows it. Inside a `PageShell`, `EmptyState` titles default to `<h2>` (under the page `<h1>`). Pass `headingLevel` to `EmptyState` or `Card` to pick the level explicitly.
+The shell renders `title` as the page `<h1>`; below 900px inside an `AppShellLayout` it is hidden visually because the mobile header already shows it. Inside a `PageShell`, `AppSettings` or `AppForm`, `EmptyState` and `FormSection` titles default to `<h2>` (under the page `<h1>`). Pass `headingLevel` to `EmptyState`, `FormSection` or `Card` to pick the level explicitly.
 
 <Demo title="Dashboard page" description="KPI cards and a content card inside a PageShell." src={DashboardSrc}><Dashboard /></Demo>
 
