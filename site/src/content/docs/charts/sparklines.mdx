@@ -30,7 +30,7 @@ A sparkline has no axes, legend or tooltip. `trend` picks the color: success for
 <Demo title="Bar sparklines" description="variant bar draws narrow columns instead of a line." src={BarsSrc}><Bars client:visible /></Demo>
 <Demo title="Live streaming micro charts" src={LiveSrc}><Live client:visible /></Demo>
 
-<Props rows={[
+<Props for="Sparkline" rows={[
   { name: "data", type: "number[]", description: "Values to plot." },
   { name: "variant", type: "'line' | 'bar'", default: "'line'", description: "Line with a soft area, or narrow bars." },
   { name: "trend", type: "'up' | 'down' | 'neutral'", description: "Colors the series: success, error or neutral." },

@@ -32,7 +32,7 @@ AppForm fills its parent, so give the parent a height. It replaces the removed F
 <Demo title="Basic form" description="Header with a back button, a grid of fields, a list of switches and a sticky footer." src={BasicSrc}><Basic client:visible /></Demo>
 <Demo title="Without header" description="Omit title, description, leading, trailing and backHref to drop the header." src={NoHeaderSrc}><NoHeader client:visible /></Demo>
 
-<Props rows={[
+<Props for="AppForm" rows={[
   { name: "title", type: "string", description: "Page title in the header." },
   { name: "description", type: "string", description: "Subtitle under the title." },
   { name: "backHref", type: "string", description: "Renders a back-arrow button linking here. Ignored when leading is provided." },

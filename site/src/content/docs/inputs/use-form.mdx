@@ -39,13 +39,13 @@ Pass `arrays` for repeatable row groups, for example `useForm({ name: "" }, { ar
 <Demo title="With schema" description="A plain-function schema runs on every keystroke once a field is touched." src={WithSchemaSrc}><WithSchema client:visible /></Demo>
 <Demo title="Submit state" description="validate() gates submission, submitting drives the button loading state, and reset() clears everything after success." src={SubmitSrc}><Submit client:visible /></Demo>
 
-<Props title="useForm(initialValues, options?)" rows={[
+<Props for="none" title="useForm(initialValues, options?)" rows={[
   { name: "initialValues", type: "Record<K, string>", description: "Field names and their initial string values." },
   { name: "options.schema", type: "ValidationSchema<K>", description: "A function (data) => Partial<Record<K, string>>, or a Zod or Valibot schema." },
   { name: "options.arrays", type: "{ [name]: Item[] }", description: "Initial rows for repeatable field groups, exposed as form.arrays." },
 ]} />
 
-<Props title="Returned form state" rows={[
+<Props for="none" title="Returned form state" rows={[
   { name: "fields", type: "Record<K, { value: string; error: string | undefined; touched: boolean }>", description: "Reactive state of every field." },
   { name: "arrays", type: "{ [name]: { items; add(item); remove(index); move(from, to) } }", description: "Repeatable row groups declared with options.arrays." },
   { name: "dirty", type: "boolean", description: "True when any value differs from its initial value." },

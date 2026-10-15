@@ -27,7 +27,7 @@ Points are `[x, y]` or `[x, y, size]`. When any point has a third value the char
 <Demo title="Bubble chart" description="The third value of each point sets the bubble size." src={BubbleSrc}><Bubble client:visible /></Demo>
 <Demo title="Clustered by tier" description="One series per group, each with its own palette color." src={ClustersSrc}><Clusters client:visible /></Demo>
 
-<Props rows={[
+<Props for="ScatterChart" rows={[
   { name: "series", type: "ScatterSeries[]", description: "Named series as { name, data: [x, y] | [x, y, size][], color? }." },
   { name: "xName", type: "string", description: "Label of the x axis." },
   { name: "yName", type: "string", description: "Label of the y axis." },

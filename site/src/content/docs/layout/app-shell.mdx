@@ -31,7 +31,7 @@ The shell never imports a router. You pass the current `pathname` and handle `on
 <Demo title="Anatomy" description="Rail (52px), panel (200px) and the main content area." src={AnatomySrc}><Anatomy /></Demo>
 <Demo title="Live shell" description="The real component inside a fixed-height frame. The pathname lives in local state; click the rail and panel to navigate." src={ShellSrc} stage><Shell client:visible /></Demo>
 
-<Props rows={[
+<Props for="AppShellLayout" rows={[
   { name: "modules", type: "NavModule[]", description: "Navigation modules. Each has id, label, icon, basePath, optional pathPrefixes and items (NavItem or NavSection)." },
   { name: "pathname", type: "string", description: "Current location. Decides the active module and item." },
   { name: "onNavigate", type: "(path: string) => void", description: "Called with the destination path when the rail, panel or bottom navigation is used." },

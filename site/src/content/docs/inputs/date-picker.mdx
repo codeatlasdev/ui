@@ -36,7 +36,7 @@ An `error` is rendered with `role="alert"` and sets `aria-invalid` and `aria-des
 <Demo title="Calendar and RangeCalendar" description="Inline calendars. Click a start date, then an end date for the range." src={CalendarsSrc}><Calendars client:visible /></Demo>
 <Demo title="Min, max, error and disabled" description="Only the next 30 days are selectable. Out-of-range days are disabled and typed values become invalid." src={ConstraintsSrc}><Constraints client:visible /></Demo>
 
-<Props title="Shared props" rows={[
+<Props for="DatePicker, DateRangePicker, DateField, TimeField, Calendar, RangeCalendar" title="Shared props" rows={[
   { name: "label", type: "string", description: "Field label. On Calendar and RangeCalendar it is the screen-reader label." },
   { name: "description", type: "string", description: "Hint below the field (aria-describedby). Pickers and fields only." },
   { name: "error", type: "string", description: "Error message (role=\"alert\"). Sets aria-invalid and the error style. Pickers and fields only." },

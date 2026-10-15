@@ -32,7 +32,7 @@ import StreamSrc from "~/demos/charts/line/Stream.svelte?raw";
 <Demo title="Area with gradient fill" description="area fills under each line with a gradient that fades to transparent." src={AreaSrc}><Area client:visible /></Demo>
 <Demo title="Real-time stream" description="Replace the data array and the chart updates in place." src={StreamSrc}><Stream client:visible /></Demo>
 
-<Props rows={[
+<Props for="LineChart" rows={[
   { name: "series", type: "ChartSeries[]", description: "Named series sharing one category axis. Each is { name, data: number[], color? }." },
   { name: "categories", type: "string[]", description: "X-axis labels, one per data point." },
   { name: "valueFormatter", type: "(value: number) => string", description: "Formats y-axis ticks and tooltip values." },

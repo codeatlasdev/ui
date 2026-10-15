@@ -33,7 +33,7 @@ Actions attach behavior to a plain element with `use:`. They are exported from `
 <Demo title="clipboard" description="Copies the given text on click and dispatches a copy event." src={ClipboardSrc}><Clipboard client:visible /></Demo>
 <Demo title="longpress" description="Dispatches a longpress event after the pointer is held for the given duration." src={LongpressSrc}><Longpress client:visible /></Demo>
 
-<Props title="Actions" rows={[
+<Props for="none" title="Actions" rows={[
   { name: "clickOutside", type: "Action<HTMLElement, () => void>", description: "Calls the handler when a click lands outside the element." },
   { name: "focusTrap", type: "Action<HTMLElement, boolean>", description: "Traps Tab focus inside the element while the parameter is true." },
   { name: "autofocus", type: "Action<HTMLElement, { touch?: boolean } | undefined>", description: "Focuses the element on mount without scrolling. On touch devices it only focuses when primeKeyboard() ran in the opening gesture; pass { touch: true } to focus anyway." },

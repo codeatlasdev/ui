@@ -34,7 +34,7 @@ All chart components also accept `height` (CSS length, each chart has its own de
 
 <Demo title="Dashboard" description="Every chart type together inside glass cards." src={DashboardSrc}><Dashboard client:visible /></Demo>
 
-<Props title="Shared props" rows={[
+<Props for="LineChart, BarChart, PieChart, ScatterChart, RadarChart, GaugeChart, HeatmapChart, Sparkline" title="Shared props" rows={[
   { name: "height", type: "string", description: "CSS height of the chart. Defaults differ per chart (320px for line, bar and scatter; 300px for pie; 340px for radar; 280px for gauge; 240px for heatmap; 48px for sparkline)." },
   { name: "class", type: "string", default: "''", description: "Extra class names on the chart container." },
 ]} />

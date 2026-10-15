@@ -30,7 +30,7 @@ import InteractiveSrc from "~/demos/charts/radar/Interactive.svelte?raw";
 <Demo title="Comparison" description="Two series with a legend and focus on hover." src={CompareSrc}><Compare client:visible /></Demo>
 <Demo title="Interactive team builder" description="Drag the sliders and the radar updates live." src={InteractiveSrc}><Interactive client:visible /></Demo>
 
-<Props rows={[
+<Props for="RadarChart" rows={[
   { name: "indicators", type: "RadarIndicator[]", description: "Axes as { name, max }." },
   { name: "series", type: "RadarSeries[]", description: "Named series as { name, values: number[], color? }, aligned to indicators." },
   { name: "height", type: "string", default: "'340px'", description: "CSS height of the chart." },

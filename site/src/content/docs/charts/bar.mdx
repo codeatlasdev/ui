@@ -30,7 +30,7 @@ Multiple series render grouped by default. Set `stacked` to stack them into one 
 <Demo title="Stacked bars" src={StackedSrc}><Stacked client:visible /></Demo>
 <Demo title="Grouped and stacked" description="Toggling stacked animates between both layouts." src={ToggleSrc}><Toggle client:visible /></Demo>
 
-<Props rows={[
+<Props for="BarChart" rows={[
   { name: "series", type: "ChartSeries[]", description: "Named series sharing one category axis. Each is { name, data: number[], color? }." },
   { name: "categories", type: "string[]", description: "Category labels, one per bar group." },
   { name: "valueFormatter", type: "(value: number) => string", description: "Formats value-axis ticks and tooltip values." },

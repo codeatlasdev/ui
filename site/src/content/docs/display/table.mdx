@@ -27,7 +27,7 @@ SimpleTable styles plain `thead` and `tbody` markup. For search, sorting and pag
 <Demo title="Default (scroll)" description={"A regular table at every width."} src={ScrollSrc}><Scroll /></Demo>
 <Demo title="Cards on mobile" description={"Below 900px each row becomes a card. Put `data-label` on every `td`; it is rendered as the field name. Resize the window to see it."} src={CardsSrc}><Cards /></Demo>
 
-<Props rows={[
+<Props for="SimpleTable" rows={[
   { name: "responsive", type: "'scroll' | 'cards'", default: "'scroll'", description: "`cards` turns each row into a card below the md breakpoint (900px). Requires `data-label` on each `td`." },
   { name: "class", type: "string", default: "''", description: "Extra class on the wrapper." },
   { name: "children", type: "Snippet", default: "undefined", description: "`thead` and `tbody` markup." },

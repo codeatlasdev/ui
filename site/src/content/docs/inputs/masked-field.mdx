@@ -36,7 +36,7 @@ Documents try these values: CPF `123.456.789-09` is valid and `111.111.111-11` i
 <Demo title="Phone and CEP" description="PhoneField binds E.164 (+55...) while showing the masked form. CepField resolves an address through onlookup. Try 01310-100." src={PhoneCepSrc}><PhoneCep client:visible /></Demo>
 <Demo title="use:mask action" description="Apply any pure mask to a plain input. The caret stays on the same digit." src={MaskActionSrc}><MaskAction client:visible /></Demo>
 
-<Props title="MaskedField props" rows={[
+<Props for="MaskedField" title="MaskedField props" rows={[
   { name: "mask", type: "(raw: string) => string", description: "Required. Pure formatter applied while typing, for example maskCPF." },
   { name: "validate", type: "(value: string) => string | undefined", description: "Returns an error message on blur for non-empty values, or undefined when valid." },
   { name: "inputmode", type: "HTMLInputAttributes['inputmode']", default: "auto", description: "Defaults to 'numeric' for digit-only masks and 'text' otherwise." },
@@ -56,7 +56,7 @@ Documents try these values: CPF `123.456.789-09` is valid and `111.111.111-11` i
   { name: "onblur", type: "(e: FocusEvent) => void", description: "Called when the input loses focus." },
 ]} />
 
-<Props title="PhoneField and CepField props" rows={[
+<Props for="PhoneField, CepField" title="PhoneField and CepField props" rows={[
   { name: "PhoneField.value", type: "string", default: "''", description: "Bindable E.164 value (+5511987654321). Empty while the number is incomplete or empty." },
   { name: "PhoneField.country", type: "'BR'", default: "'BR'", description: "Only BR is supported today." },
   { name: "PhoneField.placeholder", type: "string", default: "'(11) 98765-4321'", description: "Input placeholder." },
@@ -67,7 +67,7 @@ Documents try these values: CPF `123.456.789-09` is valid and `111.111.111-11` i
   { name: "CepField.placeholder", type: "string", default: "'00000-000'", description: "Input placeholder." },
 ]} />
 
-<Props title="Exports" rows={[
+<Props for="none" title="Exports" rows={[
   { name: "maskCPF / maskCNPJ / maskCPFCNPJ", type: "(raw: string) => string", description: "Document masks. maskCPFCNPJ switches after 11 digits." },
   { name: "maskDateBR / maskRG / maskCEP / maskPhoneBR", type: "(raw: string) => string", description: "Date (dd/mm/yyyy), RG, CEP and Brazilian phone masks." },
   { name: "isValidCPF / isValidCNPJ / isValidDateBR", type: "(value: string) => boolean", description: "Validators for use in validate." },

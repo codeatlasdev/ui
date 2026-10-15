@@ -27,7 +27,7 @@ Arrow keys move focus and selection inside the group, Tab leaves it. The group h
 <Demo title="Horizontal" description="orientation=&quot;horizontal&quot; lays the options out in a row." src={HorizontalSrc}><Horizontal client:visible /></Demo>
 <Demo title="Disabled" description="Disable a single item, or the whole group." src={DisabledSrc}><Disabled client:visible /></Demo>
 
-<Props rows={[
+<Props for="RadioGroup" rows={[
   { name: "value", type: "string", default: "''", description: "Bindable selected value." },
   { name: "items", type: "RadioItem[]", description: "Options: { value, label, disabled? }." },
   { name: "orientation", type: "'vertical' | 'horizontal'", default: "'vertical'", description: "Layout direction and arrow-key axis." },

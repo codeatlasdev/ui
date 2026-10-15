@@ -28,7 +28,7 @@ import AnimatedSrc from "~/demos/charts/pie/Animated.svelte?raw";
 <Demo title="Rose chart" description="Nightingale rose: the radius of each slice scales with its value." src={RoseSrc}><Rose client:visible /></Demo>
 <Demo title="Animated proportions" description="Swap the data and the slices animate to the new proportions." src={AnimatedSrc}><Animated client:visible /></Demo>
 
-<Props rows={[
+<Props for="PieChart" rows={[
   { name: "data", type: "ChartSlice[]", description: "Slices as { name, value }." },
   { name: "donut", type: "boolean", default: "false", description: "Renders a ring instead of a solid pie." },
   { name: "rose", type: "boolean", default: "false", description: "Nightingale rose, where the slice radius scales with the value." },

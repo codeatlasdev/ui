@@ -28,7 +28,7 @@ import YearToggleSrc from "~/demos/charts/heatmap/YearToggle.svelte?raw";
 <Demo title="Hour by day matrix" description="Points are [xIndex, yIndex, value] into xCategories and yCategories." src={MatrixSrc}><Matrix client:visible /></Demo>
 <Demo title="Year toggle" description="Swap data and range to move between years." src={YearToggleSrc}><YearToggle client:visible /></Demo>
 
-<Props rows={[
+<Props for="HeatmapChart" rows={[
   { name: "variant", type: "'calendar' | 'matrix'", description: "Which layout to render. Required." },
   { name: "data", type: "CalendarHeatmapPoint[]", default: "[]", description: "Calendar variant: [date as YYYY-MM-DD, value] per day." },
   { name: "range", type: "[string, string]", description: "Calendar variant: first and last date shown." },

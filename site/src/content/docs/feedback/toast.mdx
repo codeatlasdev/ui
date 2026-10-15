@@ -27,7 +27,7 @@ import ToastsSrc from "~/demos/feedback/toast/Toasts.svelte?raw";
 
 <Demo title="Variants and duration" description="Five variants, plus persistent (duration 0) and custom durations. The default auto-dismiss is 4 seconds." src={ToastsSrc}><Toasts client:visible /></Demo>
 
-<Props title="API" rows={[
+<Props for="none" title="API" rows={[
   { name: "toast.show(message, opts?)", type: "(message: string, opts?: { variant?: ToastVariant; duration?: number }) => string", description: "Shows a toast and returns its id. Variant defaults to 'default'." },
   { name: "toast.success(message, duration?)", type: "(message: string, duration?: number) => string", description: "Success toast." },
   { name: "toast.error(message, duration?)", type: "(message: string, duration?: number) => string", description: "Error toast." },

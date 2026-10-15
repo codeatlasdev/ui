@@ -31,7 +31,7 @@ The default gauge colors its arc in three zones (error, warning, success). Overr
 <Demo title="Custom zones" description="Reverse the default zones when a high value is bad, such as CPU load." src={ZonesSrc}><Zones client:visible /></Demo>
 <Demo title="Animated counter" description="Updating value animates the ring and the number." src={CounterSrc}><Counter client:visible /></Demo>
 
-<Props rows={[
+<Props for="GaugeChart" rows={[
   { name: "value", type: "number", description: "Current value." },
   { name: "min", type: "number", default: "0", description: "Lower bound of the scale." },
   { name: "max", type: "number", default: "100", description: "Upper bound of the scale." },
