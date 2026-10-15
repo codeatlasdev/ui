@@ -74,4 +74,6 @@ bunx @codeatlasdev/ui migrate --write src
 | `<Stack align="flex-end" justify="space-between">` | `<Stack align="end" justify="between">` |
 | `<Row gap={8} wrap>` | `<Flex gap="2" wrap>` |
 | `<Grid cols={3} gap={8}>` | `<Grid columns={3} gap="2">` |
-| `<Grid cols="2fr 1fr">` | a class with `grid-template-columns: 2fr 1fr` (not migrated) |
+| `<Grid cols="2fr 1fr" gap={20}>` | `<Grid cols="2fr 1fr" gap="5">` and a class with `grid-template-columns: 2fr 1fr` (`cols` is reported, the gap is still converted) |
+
+What the codemod cannot map is left as it was and listed at the end with file, line, reason and recipe, for example `src/T.svelte:5 Grid: cols is a template string (write grid-template-columns in a class)` or `src/T.svelte:6 Stack: dynamic gap (use a step string: px / 4, e.g. gap={16} is gap="4")`. A `gap={gap}` left untouched is not harmless: it is now a step, so `16` means 64px. Add `--strict` to exit with code 1 when anything was left (CI, scripts).

@@ -417,7 +417,8 @@ describe("migrate: GlassCard, GlassSurface and Row to Card, Surface and Flex", (
 		expect(out).toContain('<Stack gap="4" align="end" justify="between">a</Stack>');
 		expect(out).toContain('<Stack gap="1.5rem">b</Stack>');
 		expect(out).toContain('<Grid columns={3} gap="2">c</Grid>');
-		expect(out).toContain('<Grid cols="2fr 1fr" gap={20}>d</Grid>');
+		// The gap does not depend on `cols`: a px gap left untouched would become a 4x step.
+		expect(out).toContain('<Grid cols="2fr 1fr" gap="5">d</Grid>');
 		expect(out).toContain("import { Stack, Grid } from '@codeatlasdev/ui';");
 	});
 
@@ -441,5 +442,62 @@ describe("migrate: GlassCard, GlassSurface and Row to Card, Surface and Flex", (
 		})("f.ts");
 		expect(out).toContain('import { Card } from "@codeatlasdev/ui";');
 		expect(out).toContain("export const C = Card;");
+	});
+});
+
+describe("migrate: report of usages left for a human", () => {
+	const SRC = `<script lang="ts">
+	import { Grid, Row, Stack } from "@codeatlasdev/ui";
+	let gap = 12;
+</script>
+<Grid cols="repeat(auto-fill, minmax(300px, 1fr))" gap={16}><p>a</p></Grid>
+<Stack gap={gap}><p>b</p></Stack>
+<Row gap={10} wrap><p>c</p></Row>
+<Stack gap={20} align="flex-start"><p>d</p></Stack>
+`;
+	const go = (src: string, opts: { write?: boolean; strict?: boolean } = {}) => {
+		const root = project({ "src/T.svelte": src });
+		const lines: string[] = [];
+		const ok = migrate([join(root, "src/T.svelte")], {
+			write: true,
+			...opts,
+			cwd: root,
+			log: (l) => lines.push(l),
+		});
+		return { ok, out: lines.join("\n"), file: read(root, "src/T.svelte") };
+	};
+
+	it("lists each left usage with file:line, the reason and the recipe", () => {
+		const { out } = go(SRC);
+		expect(out).toContain("left 2 usages:");
+		expect(out).toContain("src/T.svelte:5 Grid: cols is a template string");
+		expect(out).toContain("write grid-template-columns in a class");
+		expect(out).toContain("src/T.svelte:6 Stack: dynamic gap");
+		expect(out).toContain("use a step string");
+	});
+
+	it("still converts the gap of a Grid whose cols template is left", () => {
+		const { file } = go(SRC);
+		expect(file).toContain('<Grid cols="repeat(auto-fill, minmax(300px, 1fr))" gap="4">');
+		expect(file).toContain("<Stack gap={gap}>");
+		expect(file).toContain('<Flex gap="2.5" wrap>');
+	});
+
+	it("keeps exit 0 by default and fails with strict", () => {
+		expect(go(SRC).ok).toBe(true);
+		expect(go(SRC, { strict: true }).ok).toBe(false);
+		expect(
+			go(`<script>import { Stack } from "@codeatlasdev/ui";</script>\n<Stack gap={8}>x</Stack>\n`, {
+				strict: true,
+			}).ok
+		).toBe(true);
+	});
+
+	it("reports without --write too, and says nothing when everything migrated", () => {
+		expect(go(SRC, { write: false }).out).toContain("src/T.svelte:6 Stack: dynamic gap");
+		const clean = go(
+			`<script>import { Stack } from "@codeatlasdev/ui";</script>\n<Stack gap={8}>x</Stack>\n`
+		);
+		expect(clean.out).not.toContain("left ");
 	});
 });

@@ -195,43 +195,85 @@ function gapStep(a: Attr): string | undefined {
 	return SPACE_STEPS.includes(step) ? String(step) : undefined;
 }
 
+/** Why an element (or one of its props) was left as it was, and what to do by hand. */
+interface Left {
+	reason: string;
+	recipe: string;
+}
+
+/** Rewritten attribute text; `left` is set when a prop could not be mapped and was kept verbatim. */
+type Rewritten = { attrs: string[]; left?: Left };
+
+/** Layout props keep a step meaning for `gap`: an untouched numeric one would silently become 4x. */
+const GAP_RECIPE = 'use a step string: px / 4, e.g. gap={16} is gap="4"';
+
+/** Reason a `gap` attribute has no step, for the report. */
+function gapLeft(a: Attr): Left {
+	const t = staticText(a);
+	const n = staticNumber(a);
+	const off = n !== undefined || t !== undefined;
+	return {
+		reason: off ? `gap ${n ?? JSON.stringify(t)} is off the spacing scale` : "dynamic gap",
+		recipe: GAP_RECIPE,
+	};
+}
+
 /**
  * Rewrites the props Row, Stack and Grid share (gap, align, justify) and passes the rest through.
- * `extra` handles a component-specific prop; return undefined to pass it through, null to give up.
+ * `extra` handles a component-specific prop: return a string to replace it, undefined to pass it
+ * through, a `Left` to keep it verbatim. A prop that cannot be mapped is kept as it was and reported,
+ * but the others (notably `gap`, whose meaning changed from px to a step) are still converted.
  */
 function layoutProps(
 	attrs: Attr[],
 	src: string,
-	extra: (a: Attr) => string | null | undefined = () => undefined
-): string[] | null {
+	extra: (a: Attr) => string | Left | undefined = () => undefined
+): Rewritten | Left {
 	const out: string[] = [];
+	let left: Left | undefined;
+	const keep = (a: Attr, why: Left) => {
+		left ??= why;
+		out.push(src.slice(a.start, a.end));
+	};
 	for (const a of attrs) {
-		if (a.type !== "Attribute") return null;
+		if (a.type !== "Attribute")
+			return { reason: "spread or directive props", recipe: "map the props by hand" };
 		const text = src.slice(a.start, a.end);
 		if (a.name === "gap") {
 			const step = gapStep(a);
-			if (!step) return null;
-			out.push(`gap="${step}"`);
+			if (step) out.push(`gap="${step}"`);
+			else keep(a, gapLeft(a));
 		} else if (a.name === "align") {
 			const v = staticText(a);
-			if (v === undefined || !(v in ALIGN_MAP)) return null;
-			out.push(`align="${ALIGN_MAP[v]}"`);
+			if (v !== undefined && v in ALIGN_MAP) out.push(`align="${ALIGN_MAP[v]}"`);
+			else
+				keep(a, {
+					reason: "dynamic or unknown align",
+					recipe: "use start | center | end | stretch | baseline",
+				});
 		} else if (a.name === "justify") {
 			const v = staticText(a);
-			if (v === undefined || !(v in JUSTIFY_MAP)) return null;
-			out.push(`justify="${JUSTIFY_MAP[v]}"`);
+			if (v !== undefined && v in JUSTIFY_MAP) out.push(`justify="${JUSTIFY_MAP[v]}"`);
+			else
+				keep(a, {
+					reason: "dynamic or unknown justify",
+					recipe: "use start | center | end | between | around | evenly",
+				});
 		} else {
 			const mapped = extra(a);
-			if (mapped === null) return null;
-			out.push(mapped ?? text);
+			if (typeof mapped === "object") keep(a, mapped);
+			else out.push(mapped ?? text);
 		}
 	}
-	return out;
+	return left ? { attrs: out, left } : { attrs: out };
 }
 
-type Rewrite = (attrs: Attr[], src: string) => string[] | null;
+/** Left element: the deprecated component keeps working, so the whole tag stays for a human. */
+const left = (reason: string, recipe: string): Left => ({ reason, recipe });
+const SPREAD = left("spread or directive props", "map the props by hand");
+const THICKNESS = left("dynamic thickness", "pick elevation 1-5 (thin 2, regular 3, thick 4)");
 
-/** Props are rewritten to the text of the new attributes; `null` leaves the element alone. */
+/** Props are rewritten to the text of the new attributes; a `Left` leaves the element alone. */
 const COMPONENT_REWRITES: Record<string, { to: string; rewrite: Rewrite }> = {
 	GlassCard: {
 		to: "Card",
@@ -243,27 +285,28 @@ const COMPONENT_REWRITES: Record<string, { to: string; rewrite: Rewrite }> = {
 			let glow = false;
 			const rest: string[] = [];
 			for (const a of attrs) {
-				if (a.type !== "Attribute") return null;
+				if (a.type !== "Attribute") return SPREAD;
 				const text = src.slice(a.start, a.end);
 				if (a.name === "thickness") {
 					const t = staticText(a);
-					if (t === undefined || !(t in ELEVATION)) return null;
+					if (t === undefined || !(t in ELEVATION)) return THICKNESS;
 					elevation = ELEVATION[t];
 				} else if (a.name === "tinted") {
 					const b = staticBool(a);
 					if (b !== undefined) tone = b;
 					else {
 						const e = exprText(a, src);
-						if (!e) return null;
+						if (!e) return left("dynamic tinted", 'use tone="brand" | "neutral"');
 						dynamicTone = `tone={${e} ? "brand" : "neutral"}`;
 					}
 				} else if (a.name === "glowing") {
 					const b = staticBool(a);
-					if (b === undefined) return null;
+					if (b === undefined) return left("dynamic glowing", "use the glow prop");
 					glow = b;
 				} else if (a.name === "padding") {
 					const step = paddingStep(a);
-					if (!step) return null;
+					if (!step)
+						return left("padding is dynamic or off the spacing scale", "use p with a step");
 					rest.push(`p="${step}"`);
 				} else rest.push(text);
 			}
@@ -272,7 +315,7 @@ const COMPONENT_REWRITES: Record<string, { to: string; rewrite: Rewrite }> = {
 			if (elevation !== undefined && elevation !== 3) out.push(`elevation={${elevation}}`);
 			if (tone) out.push('tone="brand"');
 			if (glow) out.push("glow");
-			return [...out, ...rest];
+			return { attrs: [...out, ...rest] };
 		},
 	},
 	GlassSurface: {
@@ -284,23 +327,23 @@ const COMPONENT_REWRITES: Record<string, { to: string; rewrite: Rewrite }> = {
 			let glow = false;
 			const rest: string[] = [];
 			for (const a of attrs) {
-				if (a.type !== "Attribute") return null;
+				if (a.type !== "Attribute") return SPREAD;
 				const text = src.slice(a.start, a.end);
 				if (a.name === "thickness") {
 					const t = staticText(a);
-					if (t === undefined || !(t in ELEVATION)) return null;
+					if (t === undefined || !(t in ELEVATION)) return THICKNESS;
 					elevation = ELEVATION[t];
 				} else if (a.name === "refraction") {
 					const b = staticBool(a);
-					if (b === undefined) return null;
+					if (b === undefined) return left("dynamic refraction", 'use material="liquid" | "glass"');
 					liquid = b;
 				} else if (a.name === "tinted") {
 					const b = staticBool(a);
-					if (b === undefined) return null;
+					if (b === undefined) return left("dynamic tinted", 'use tone="brand" | "neutral"');
 					tone = b;
 				} else if (a.name === "glowing") {
 					const b = staticBool(a);
-					if (b === undefined) return null;
+					if (b === undefined) return left("dynamic glowing", "use the glow prop");
 					glow = b;
 				} else rest.push(text);
 			}
@@ -308,12 +351,16 @@ const COMPONENT_REWRITES: Record<string, { to: string; rewrite: Rewrite }> = {
 			if (elevation !== undefined && elevation !== 3) out.push(`elevation={${elevation}}`);
 			if (tone) out.push('tone="brand"');
 			if (glow) out.push("glow");
-			return [...out, ...rest];
+			return { attrs: [...out, ...rest] };
 		},
 	},
 	Row: {
 		to: "Flex",
-		rewrite: (attrs, src) => layoutProps(attrs, src),
+		// `Row` still maps px gaps itself, so an element with a prop left over stays a `Row` as a whole.
+		rewrite(attrs, src) {
+			const r = layoutProps(attrs, src);
+			return "left" in r && r.left ? r.left : r;
+		},
 	},
 	Stack: {
 		to: "Stack",
@@ -324,10 +371,14 @@ const COMPONENT_REWRITES: Record<string, { to: string; rewrite: Rewrite }> = {
 		// `cols={3}` is `columns={3}`; a template string ("2fr 1fr") needs a class, so it stays for a human.
 		rewrite: (attrs, src) =>
 			layoutProps(attrs, src, (a) => {
-				if (a.name === "rowGap" || a.name === "colGap") return null;
+				if (a.name === "rowGap" || a.name === "colGap")
+					return left(`${a.name} was removed`, "write row-gap / column-gap in a class");
 				if (a.name !== "cols") return undefined;
 				const n = staticNumber(a);
-				return n !== undefined && n >= 1 && n <= 12 ? `columns={${n}}` : null;
+				if (n !== undefined && n >= 1 && n <= 12) return `columns={${n}}`;
+				return staticText(a) !== undefined
+					? left("cols is a template string", "write grid-template-columns in a class")
+					: left("dynamic cols", "use columns={1-12}, or grid-template-columns in a class");
 			}),
 	},
 };
@@ -357,6 +408,13 @@ function components(node: unknown, out: ComponentNode[] = []): ComponentNode[] {
 		if (v && typeof v === "object") components(v, out);
 	}
 	return out;
+}
+
+/** A usage the codemod left as it was (or partly), for the end-of-run report. */
+interface Skipped extends Left {
+	file: string;
+	line: number;
+	component: string;
 }
 
 /** Local name → { imported, specifier } for `import { X as Y } from "@codeatlasdev/ui"` of a rewritable component. */
@@ -434,8 +492,9 @@ function renameScriptReferences(
 /**
  * Component migrations for one file. Svelte files rewrite markup and the `<script>` imports;
  * ts/js files rewrite imports and references. Returns the new source, or the input when unchanged.
+ * Elements (or props) that could not be mapped are pushed to `skipped`.
  */
-function migrateComponents(path: string, src: string): string {
+function migrateComponents(path: string, src: string, skipped: Skipped[]): string {
 	const out = new MagicString(src);
 	if (path.endsWith(".svelte")) {
 		const ast = parse(src, { modern: true });
@@ -457,11 +516,20 @@ function migrateComponents(path: string, src: string): string {
 			const imported = bindings.get(node.name);
 			if (!imported) continue;
 			const rule = COMPONENT_REWRITES[imported];
-			const attrs = rule.rewrite(node.attributes, src);
-			if (!attrs) {
+			const result = rule.rewrite(node.attributes, src);
+			const why = "reason" in result ? result : result.left;
+			if (why)
+				skipped.push({
+					file: path,
+					line: src.slice(0, node.start).split("\n").length,
+					component: node.name,
+					...why,
+				});
+			if ("reason" in result) {
 				keep.add(node.name);
 				continue;
 			}
+			const { attrs } = result;
 			const rename = node.name === imported ? rule.to : node.name;
 			rewritten.add(node.name);
 			// Opening tag: `<Name attr attr>` or `<Name attr />`; the attributes are replaced wholesale.
@@ -546,14 +614,19 @@ function scripts(path: string, src: string): Script[] {
 
 export interface MigrateOptions {
 	write?: boolean;
+	/** Return false (exit 1) when a usage was left for a human. */
+	strict?: boolean;
 	cwd?: string;
 	log?: (line: string) => void;
 }
 
-/** Apply every rule to `files`. Returns true when the run finished (changes found are not an error); false when `typescript` cannot be found. */
+/**
+ * Apply every rule to `files`. Returns true when the run finished (changes found are not an error);
+ * false when `typescript` cannot be found, or with `strict` when a usage was left for a human.
+ */
 export function migrate(
 	files: string[],
-	{ write = false, cwd = process.cwd(), log = console.log }: MigrateOptions = {}
+	{ write = false, strict = false, cwd = process.cwd(), log = console.log }: MigrateOptions = {}
 ): boolean {
 	const loaded = loadTypescript(cwd);
 	if (!loaded) {
@@ -562,12 +635,13 @@ export function migrate(
 	}
 	ts = loaded;
 	let changed = 0;
+	const skipped: Skipped[] = [];
 	for (const file of files) {
 		const src = readFileSync(file, "utf8");
 		if (!src.includes("@codeatlasdev/ui")) continue;
 		let current = src;
 		try {
-			current = migrateComponents(file, src);
+			current = migrateComponents(file, src, skipped);
 		} catch (e) {
 			log(`  skip    ${relative(cwd, file)}: ${(e as Error).message}`);
 			continue;
@@ -597,5 +671,11 @@ export function migrate(
 	}
 	if (!changed) log("Nothing to migrate.");
 	else if (!write) log(`${changed} file(s) would change. Re-run with --write to apply.`);
+	if (skipped.length) {
+		log(`\nleft ${skipped.length} usage${skipped.length === 1 ? "" : "s"}:`);
+		for (const u of skipped)
+			log(`  ${relative(cwd, u.file)}:${u.line} ${u.component}: ${u.reason} (${u.recipe})`);
+		if (strict) return false;
+	}
 	return true;
 }

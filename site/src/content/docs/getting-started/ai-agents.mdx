@@ -60,7 +60,7 @@ bunx @codeatlasdev/ui migrate          # print the diff
 bunx @codeatlasdev/ui migrate --write  # apply it
 ```
 
-`migrate` rewrites code for renamed APIs by parsing `.svelte`, `.ts`, `.js` and `.astro` files (it walks `src` by default, or the paths you pass), so only real references change (not strings or same-named identifiers from other packages). It renames the `BrandPreset` type to `PresetDefinition` and moves the deprecated `GlassCard`, `GlassSurface` and `Row` to `Card`, `Surface` and `Flex`; an element with a dynamic prop it cannot map is left as it was.
+`migrate` rewrites code for renamed APIs by parsing `.svelte`, `.ts`, `.js` and `.astro` files (it walks `src` by default, or the paths you pass), so only real references change (not strings or same-named identifiers from other packages). It renames the `BrandPreset` type to `PresetDefinition` and moves the deprecated `GlassCard`, `GlassSurface` and `Row` to `Card`, `Surface` and `Flex`; an element with a prop it cannot map is left as it was and listed at the end (file:line, reason, recipe). `--strict` exits with code 1 when anything was left.
 
 ## Install the skills
 
