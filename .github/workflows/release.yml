@@ -1,8 +1,8 @@
 name: Release
 run-name: Release ${{ inputs.tag || github.ref_name }}
-# CD only. A tag @codeatlasdev/ui@X.Y.Z (pushed by `bun run release:tag`) publishes that exact
-# version, or dispatch by hand for an existing tag (re-run after a failure):
-#   gh workflow run release.yml -f tag=@codeatlasdev/ui@X.Y.Z
+# CD only. A tag @codeatlasdev/ui@X.Y.Z (pushed by `bun run release`, scripts/release.ts) publishes that exact
+# version, or dispatch for an existing tag (re-run after a failure): bun run release --publish <tag>.
+# scripts/release-meta.ts validates the tag and writes the release notes.
 # verify → publish (npm, provenance via Trusted Publishing/OIDC) → GitHub Release + docs deploy.
 # Stable → dist-tag latest + ui.codeatlas.com.br (tag must be on main); X.Y.Z-beta.N → dist-tag beta
 # + beta.codeatlas-ui.pages.dev (any prerelease id). Every step is idempotent: re-running a
@@ -46,14 +46,10 @@ jobs:
       - id: meta
         name: Version and channel
         run: |
-          v=$(node -p 'require("./packages/ui/package.json").version')
-          [ "$TAG" = "@codeatlasdev/ui@$v" ] || { echo "::error::tag $TAG != package version $v"; exit 1; }
-          case "$v" in *-*) channel=$(echo "$v" | sed -E 's/^[^-]+-([A-Za-z]+).*$/\1/');; *) channel=latest;; esac
-          if [ "$channel" = latest ]; then
-            git merge-base --is-ancestor HEAD origin/main || { echo "::error::stable tag must point to a commit on main"; exit 1; }
-          fi
-          echo "version=$v" >> "$GITHUB_OUTPUT"
-          echo "channel=$channel" >> "$GITHUB_OUTPUT"
+          bun scripts/release-meta.ts check "$TAG" | tee -a "$GITHUB_OUTPUT"
+      - if: steps.meta.outputs.channel == 'latest'
+        name: Stable tags must be on main
+        run: git merge-base --is-ancestor HEAD origin/main || { echo "::error::stable tag must point to a commit on main"; exit 1; }
       - run: bun run validate
       - run: node scripts/release.js --smoke
       - name: Pack
@@ -117,10 +113,7 @@ jobs:
           V: ${{ needs.verify.outputs.version }}
           CHANNEL: ${{ needs.verify.outputs.channel }}
         run: |
-          {
-            bun scripts/changelog-notes.ts "$V"
-            printf '\n## Install\n\n```bash\nbun add @codeatlasdev/ui@%s\n```\n' "$V"
-          } > notes.md
+          bun scripts/release-meta.ts notes "$V" > notes.md
           if gh release view "$TAG" >/dev/null 2>&1; then
             gh release edit "$TAG" --notes-file notes.md
             gh release upload "$TAG" pack/*.tgz --clobber

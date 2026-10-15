@@ -46,4 +46,4 @@
 
 ## Release
 
-- [Release script](scripts/release.js): the only way to release. One command does npm publish, git tag and GitHub Release, and resumes if interrupted. Flow in CONTRIBUTING.md#release-flow
+- [Release script](scripts/release.ts): `bun run release` applies changesets, commits, tags and pushes; the tag runs `.github/workflows/release.yml` (npm with provenance, GitHub Release, docs).

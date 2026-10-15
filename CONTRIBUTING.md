@@ -127,16 +127,14 @@ Use the imperative mood in the subject line. Keep it under 72 characters.
 Publishing happens only in CI (`.github/workflows/release.yml`), triggered by a version tag. Nobody publishes from a laptop.
 
 1. Every PR that changes the published package adds a changeset: `bun changeset`, pick the bump, write the user-facing note.
-2. On `main`, the Version workflow opens (or updates) a **chore: version packages** PR with the bumped version and CHANGELOG.
-3. Merge it.
-4. On an up-to-date, clean `main`, run `bun run release:tag`: it pushes the tag `@codeatlasdev/ui@X.Y.Z`.
-5. The Release workflow re-runs `bun run validate` and the tarball smoke test on the tagged commit (it does not depend on CI), then publishes to npm with [provenance](https://docs.npmjs.com/generating-provenance-statements) through Trusted Publishing (OIDC, no npm token), creates the GitHub Release from the CHANGELOG and deploys the docs to ui.codeatlas.com.br.
+2. When it's time to ship, a maintainer runs `bun run release` on an up-to-date, clean `main` (`--dry-run` first to see what goes out). It applies the pending changesets (version + CHANGELOG), commits `chore(release): @codeatlasdev/ui@X.Y.Z`, tags it, pushes `main` and the tag atomically and watches the run.
+3. The tag starts the Release workflow: `scripts/release-meta.ts` checks the tag against the package version, `bun run validate` and the tarball smoke test run on the tagged commit (it does not depend on CI), then it publishes to npm with [provenance](https://docs.npmjs.com/generating-provenance-statements) through Trusted Publishing (OIDC, no npm token), creates the GitHub Release from the CHANGELOG and deploys the docs to ui.codeatlas.com.br.
 
-Prereleases: on a branch run `bunx changeset pre enter beta`, `bun run version`, commit, push and tag `@codeatlasdev/ui@X.Y.Z-beta.N`. It publishes under the `beta` dist-tag (never `latest`) and deploys the docs to beta.codeatlas-ui.pages.dev.
+Prereleases: `bunx changeset pre enter beta`, commit `.changeset/pre.json`, then `bun run release` → `X.Y.Z-beta.N` on the `beta` dist-tag (never `latest`), docs at beta.codeatlas-ui.pages.dev. `bunx changeset pre exit` before the next stable.
 
-A failed or half-finished release is re-run for the same tag with `gh workflow run release.yml -f tag=@codeatlasdev/ui@X.Y.Z`; steps already done (npm version, GitHub Release) are skipped.
+A failed or half-finished release is re-run for the same tag with `bun run release --publish @codeatlasdev/ui@X.Y.Z`; steps already done (npm version, GitHub Release) are skipped.
 
-`bun run release` runs the local gate: lint, type check, build, tarball smoke test (packs the library into a fresh SvelteKit app and builds it) and `changeset status`.
+`bun run release:check` runs the local gate: lint, type check, build, tarball smoke test (packs the library into a fresh SvelteKit app and builds it) and `changeset status`.
 
 ## Thank you
 
