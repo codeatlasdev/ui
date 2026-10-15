@@ -26,7 +26,8 @@ The codemod rewrites each static usage and leaves dynamic ones (`thickness={t}`)
 
 | GlassCard | Card |
 |---|---|
-| `thickness="ultra-thin"` `"thin"` `"regular"` `"thick"` `"chrome"` | `elevation={1}` `{2}` `{3}` (default) `{4}` `{5}` |
+| `thickness="ultra-thin"` `"thin"` `"regular"` `"thick"` `"chrome"` | `elevation={1}` `{2}` `{3}` `{4}` `{5}` |
+| no `thickness` (default `"regular"`) | `elevation={3}`, always written: `Card` itself defaults to `elevation={1}` |
 | `tinted` | `tone="brand"` |
 | `glowing` | `glow` |
 | `padding="24px"` | `p="6"` (a spacing step) |

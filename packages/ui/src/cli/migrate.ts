@@ -87,6 +87,8 @@ const ELEVATION: Record<string, number> = {
 	thick: 4,
 	chrome: 5,
 };
+/** `GlassCard`/`GlassSurface` defaulted to `thickness="regular"`; `Card`/`Surface` default to elevation 1, so it is always written. */
+const DEFAULT_ELEVATION = ELEVATION.regular;
 const SPACE_STEPS = [0, 0.5, 1, 1.5, 2, 2.5, 3, 3.5, 4, 4.5, 5, 6, 7, 8, 10, 11, 12, 16, 20, 24];
 const ALIGN_MAP: Record<string, string> = {
 	"flex-start": "start",
@@ -280,7 +282,7 @@ const COMPONENT_REWRITES: Record<string, { to: string; rewrite: Rewrite }> = {
 	GlassCard: {
 		to: "Card",
 		rewrite(attrs, src) {
-			let elevation: number | undefined;
+			let elevation = DEFAULT_ELEVATION;
 			const out: string[] = [];
 			let tone = false;
 			let dynamicTone: string | undefined;
@@ -314,7 +316,7 @@ const COMPONENT_REWRITES: Record<string, { to: string; rewrite: Rewrite }> = {
 			}
 			out.push('material="glass"');
 			if (dynamicTone) out.push(dynamicTone);
-			if (elevation !== undefined && elevation !== 3) out.push(`elevation={${elevation}}`);
+			out.push(`elevation={${elevation}}`);
 			if (tone) out.push('tone="brand"');
 			if (glow) out.push("glow");
 			return { attrs: [...out, ...rest] };
@@ -323,7 +325,7 @@ const COMPONENT_REWRITES: Record<string, { to: string; rewrite: Rewrite }> = {
 	GlassSurface: {
 		to: "Surface",
 		rewrite(attrs, src) {
-			let elevation: number | undefined;
+			let elevation = DEFAULT_ELEVATION;
 			let liquid = true;
 			let tone = false;
 			let glow = false;
@@ -350,7 +352,7 @@ const COMPONENT_REWRITES: Record<string, { to: string; rewrite: Rewrite }> = {
 				} else rest.push(text);
 			}
 			const out = [`material="${liquid ? "liquid" : "glass"}"`];
-			if (elevation !== undefined && elevation !== 3) out.push(`elevation={${elevation}}`);
+			out.push(`elevation={${elevation}}`);
 			if (tone) out.push('tone="brand"');
 			if (glow) out.push("glow");
 			return { attrs: [...out, ...rest] };

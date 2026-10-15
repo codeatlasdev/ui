@@ -366,16 +366,16 @@ describe("migrate: GlassCard, GlassSurface and Row to Card, Surface and Flex", (
 			'<Card material="glass" elevation={4} tone="brand" glow title="Team" class="x">'
 		);
 		expect(out).toContain("</Card>");
-		expect(out).toContain('<Card material="glass" />');
+		expect(out).toContain('<Card material="glass" elevation={3} />');
 		expect(out).not.toContain("GlassCard");
 	});
 
-	it("maps thickness to elevation and drops the default regular", () => {
+	it("maps thickness to elevation and keeps the old default regular (3)", () => {
 		const out = run({
 			"b.svelte": `<script>\n  import { GlassCard } from '@codeatlasdev/ui';\n</script>\n<GlassCard thickness="ultra-thin" /><GlassCard thickness="regular" /><GlassCard thickness={t} />\n`,
 		})("b.svelte");
 		expect(out).toContain('<Card material="glass" elevation={1} />');
-		expect(out).toContain('<Card material="glass" />');
+		expect(out).toContain('<Card material="glass" elevation={3} />');
 		// Dynamic thickness has no static mapping: left for a human, with a marker.
 		expect(out).toContain("<GlassCard thickness={t} />");
 	});
@@ -385,7 +385,7 @@ describe("migrate: GlassCard, GlassSurface and Row to Card, Surface and Flex", (
 			"g.svelte": `<script>\n  import { GlassCard } from '@codeatlasdev/ui';\n</script>\n<GlassCard padding="24px" tinted={current}>x</GlassCard>\n<GlassCard padding="13px">y</GlassCard>\n`,
 		})("g.svelte");
 		expect(out).toContain(
-			'<Card material="glass" tone={current ? "brand" : "neutral"} p="6">x</Card>'
+			'<Card material="glass" tone={current ? "brand" : "neutral"} elevation={3} p="6">x</Card>'
 		);
 		// 13px is not a step of the scale: left for a human.
 		expect(out).toContain('<GlassCard padding="13px">y</GlassCard>');
@@ -394,10 +394,11 @@ describe("migrate: GlassCard, GlassSurface and Row to Card, Surface and Flex", (
 
 	it("GlassSurface: refraction (default) becomes liquid, refraction={false} glass", () => {
 		const out = run({
-			"c.svelte": `<script>\n  import { GlassSurface } from '@codeatlasdev/ui';\n</script>\n<GlassSurface thickness="thin">x</GlassSurface>\n<GlassSurface refraction={false}>y</GlassSurface>\n`,
+			"c.svelte": `<script>\n  import { GlassSurface } from '@codeatlasdev/ui';\n</script>\n<GlassSurface thickness="thin">x</GlassSurface>\n<GlassSurface refraction={false}>y</GlassSurface>\n<GlassSurface>z</GlassSurface>\n`,
 		})("c.svelte");
 		expect(out).toContain('<Surface material="liquid" elevation={2}>x</Surface>');
-		expect(out).toContain('<Surface material="glass">y</Surface>');
+		expect(out).toContain('<Surface material="glass" elevation={3}>y</Surface>');
+		expect(out).toContain('<Surface material="liquid" elevation={3}>z</Surface>');
 		expect(out).toContain("import { Surface } from '@codeatlasdev/ui';");
 	});
 
@@ -432,7 +433,7 @@ describe("migrate: GlassCard, GlassSurface and Row to Card, Surface and Flex", (
 			"e.svelte": `<script>\n  import { GlassCard as Panel } from '@codeatlasdev/ui';\n  import { GlassCard } from 'other-lib';\n</script>\n<Panel>a</Panel><GlassCard>b</GlassCard>\n`,
 		})("e.svelte");
 		expect(out).toContain("import { Card as Panel } from '@codeatlasdev/ui';");
-		expect(out).toContain('<Panel material="glass">a</Panel>');
+		expect(out).toContain('<Panel material="glass" elevation={3}>a</Panel>');
 		expect(out).toContain("<GlassCard>b</GlassCard>");
 	});
 
