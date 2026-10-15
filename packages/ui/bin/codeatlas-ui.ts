@@ -12,7 +12,6 @@
  */
 import { existsSync, readdirSync, statSync } from "node:fs";
 import { join, resolve } from "node:path";
-import { runBrandCommand } from "../src/cli/brand.ts";
 import { init } from "../src/cli/init.ts";
 import { migrate } from "../src/cli/migrate.ts";
 
@@ -44,6 +43,8 @@ brand options (same as caBrandPlugin): --theme <file exporting theme> --mark <sv
 
 if (cmd === "init") {
 	const root = resolve(flag("dir") ?? process.cwd());
+	// Lazy: only `brand` needs the renderer (native resvg); init/migrate start without it.
+	const { runBrandCommand } = await import("../src/cli/brand.ts");
 	process.exit(init(root, { write }) ? 0 : 1);
 } else if (cmd === "migrate") {
 	const targets = args.length ? args : ["src"];
@@ -51,6 +52,8 @@ if (cmd === "init") {
 	process.exit(migrate(files, { write, strict, cwd: process.cwd() }) ? 0 : 1);
 } else if (cmd === "brand") {
 	const root = resolve(flag("dir") ?? process.cwd());
+	// Lazy: only `brand` needs the renderer (native resvg); init/migrate start without it.
+	const { runBrandCommand } = await import("../src/cli/brand.ts");
 	process.exit(
 		await runBrandCommand(root, {
 			theme: flag("theme"),

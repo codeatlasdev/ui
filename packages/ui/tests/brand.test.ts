@@ -157,6 +157,9 @@ describe("recipes from the Node-safe vite entry (#148)", () => {
 		const init = readFileSync(join(import.meta.dir, "../src/cli/init.ts"), "utf8");
 		expect(init).toContain("designStyle");
 		expect(init).toContain("@codeatlasdev/ui/vite");
+	});
+});
+
 describe("brand module on a fresh clone (#141)", () => {
 	const project = (files: Record<string, string>) => {
 		const root = mkdtempSync(join(tmpdir(), "brand-proj-"));
