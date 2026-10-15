@@ -26,6 +26,10 @@ export function changelogSection(changelog: string, version: string): string {
 	return (end === -1 ? rest : rest.slice(0, end)).join("\n").trim();
 }
 
+/** Closes every GitHub Release body. */
+export const THANKS =
+	"## Special thanks\n\nTo our main supporters and special contributors, Fábio Henrique Araújo (@FabioHAraujo) and Richardson Douglas (@Richards0nd). 💛";
+
 if (import.meta.main) {
 	const [cmd, arg = ""] = process.argv.slice(2);
 	try {
@@ -36,7 +40,7 @@ if (import.meta.main) {
 		} else if (cmd === "notes") {
 			const section = changelogSection(readFileSync("packages/ui/CHANGELOG.md", "utf8"), arg);
 			console.log(
-				`${section}\n\n## Install\n\n\`\`\`bash\nbun add @codeatlasdev/ui@${arg}\n\`\`\``
+				`${section}\n\n## Install\n\n\`\`\`bash\nbun add @codeatlasdev/ui@${arg}\n\`\`\`\n\n${THANKS}`
 			);
 		} else {
 			throw new Error("usage: release-meta.ts check <tag> | notes <version>");
