@@ -1,25 +1,16 @@
-<script lang="ts">
+<script lang="ts" generics="T extends ElementTag = 'div'">
   /**
    * Flex — flex container. Token props become `data-*` attributes (no inline style); a
    * responsive object like `{ base: 'column', md: 'row' }` switches at the shared breakpoints.
    *
    *   <Flex gap="3" align="center" justify="between" wrap>…</Flex>
    */
-  import type { Snippet } from 'svelte';
-  import type { HTMLAttributes } from 'svelte/elements';
-  import { layoutAttrs, type LayoutProps } from '../Layout/layout.js';
+  import { layoutAttrs, type ElementTag, type LayoutProps, type PolymorphicProps } from '../Layout/layout.js';
 
-  interface Props
-    extends Omit<HTMLAttributes<HTMLElement>, 'class'>,
-      Pick<LayoutProps, 'gap' | 'p' | 'px' | 'py' | 'align' | 'justify' | 'direction' | 'wrap'> {
-    /** Element to render. */
-    as?: string;
-    class?: string;
-    children?: Snippet;
-  }
+  type Props = PolymorphicProps<T, Pick<LayoutProps, 'gap' | 'p' | 'px' | 'py' | 'align' | 'justify' | 'direction' | 'wrap'>>;
 
   let {
-    as = 'div',
+    as = 'div' as T,
     gap, p, px, py, align, justify, direction, wrap,
     class: className = '',
     children,

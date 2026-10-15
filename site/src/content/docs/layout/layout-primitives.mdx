@@ -26,7 +26,7 @@ import PageSrc from "~/demos/layout/layout-primitives/Page.svelte?raw";
 </Container>
 ```
 
-Every primitive renders any element (`as`) and forwards `class` and other attributes. A token prop never becomes inline CSS: it is a `data-*` attribute (`<div data-gap="4">`) styled by one stylesheet in `@layer ca.utilities`, so the markup is cache-friendly, passes a strict CSP, and an app can override any step with a plain class.
+Every primitive renders any element (`as`) and forwards `class` and other attributes. `Box`, `Flex`, `Stack` and `Grid` are typed on the tag: `as="form"` takes the form's own attributes and handlers (`novalidate`, `action`, `onsubmit` with `currentTarget: HTMLFormElement`), `as="a"` takes `href`, `as="label"` takes `for`, and an attribute of another tag is a type error. A token prop never becomes inline CSS: it is a `data-*` attribute (`<div data-gap="4">`) styled by one stylesheet in `@layer ca.utilities`, so the markup is cache-friendly, passes a strict CSP, and an app can override any step with a plain class.
 
 | Primitive | Renders | Props |
 |---|---|---|
@@ -50,7 +50,7 @@ Pass an object instead of a value. `base` applies everywhere, and each breakpoin
 <Demo title="Container and Section" src={PageSrc}><Page /></Demo>
 
 <Props for="Box, Flex, Stack, Grid, Container, Section" title="Shared props" rows={[
-  { name: "as", type: "string", default: "per component", description: "Element to render (`div`, `section`, `ul`, `nav`...)." },
+  { name: "as", type: "keyof SvelteHTMLElements", default: "per component", description: "Element to render (`div`, `section`, `ul`, `form`...). Box, Flex, Stack and Grid also accept that element's own attributes and event types." },
   { name: "gap", type: "Space | responsive", default: "undefined", description: "Gap between children." },
   { name: "p, px, py", type: "Space | responsive", default: "undefined", description: "Padding on every side, horizontal, vertical." },
   { name: "align", type: "'start' | 'center' | 'end' | 'stretch' | 'baseline' | responsive", default: "undefined", description: "`align-items`." },

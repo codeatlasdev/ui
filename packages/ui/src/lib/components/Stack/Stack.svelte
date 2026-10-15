@@ -1,24 +1,15 @@
-<script lang="ts">
+<script lang="ts" generics="T extends ElementTag = 'div'">
   /**
    * Stack — vertical flex layout (a Flex column). Token props are `data-*` attributes, no inline style.
    *
    *   <Stack gap="4">…</Stack>
    *   <Stack as="ul" gap={{ base: '2', md: '4' }} align="center">…</Stack>
    */
-  import type { Snippet } from 'svelte';
-  import type { HTMLAttributes } from 'svelte/elements';
-  import { layoutAttrs, type LayoutProps } from '../Layout/layout.js';
+  import { layoutAttrs, type ElementTag, type LayoutProps, type PolymorphicProps } from '../Layout/layout.js';
 
-  interface Props
-    extends Omit<HTMLAttributes<HTMLElement>, 'class'>,
-      Pick<LayoutProps, 'gap' | 'p' | 'px' | 'py' | 'align' | 'justify'> {
-    /** Element to render. */
-    as?: string;
-    class?: string;
-    children?: Snippet;
-  }
+  type Props = PolymorphicProps<T, Pick<LayoutProps, 'gap' | 'p' | 'px' | 'py' | 'align' | 'justify'>>;
 
-  let { as = 'div', gap, p, px, py, align, justify, class: className = '', children, ...rest }: Props = $props();
+  let { as = 'div' as T, gap, p, px, py, align, justify, class: className = '', children, ...rest }: Props = $props();
 </script>
 
 <svelte:element

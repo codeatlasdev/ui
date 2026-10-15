@@ -33,6 +33,23 @@ describe("layout primitives render data-* and never a style attribute", () => {
 	});
 });
 
+describe("`as` forwards the element's own attributes", () => {
+	it("Stack as=form keeps novalidate, action and the token props", async () => {
+		const screen = await render(Stack, {
+			as: "form",
+			gap: "3",
+			novalidate: true,
+			action: "/save",
+			children: kids,
+		});
+		const form = root(screen.container) as HTMLFormElement;
+		expect(form.tagName).toBe("FORM");
+		expect(form.noValidate).toBe(true);
+		expect(form.getAttribute("action")).toBe("/save");
+		expect(form.dataset.gap).toBe("3");
+	});
+});
+
 describe("token props resolve to the spacing scale", () => {
 	it("Stack gap=4 is a column with a 16px gap", async () => {
 		const screen = await render(Stack, { gap: "4", children: kids });
