@@ -1,6 +1,6 @@
 ---
 title: Sheet
-description: A mobile-first bottom sheet with swipe to dismiss that becomes a centered dialog from 768px.
+description: A mobile-first bottom sheet with swipe to dismiss that becomes a centered dialog from 900px.
 group: Feedback
 order: 4
 ---
@@ -23,14 +23,14 @@ import FooterSrc from "~/demos/feedback/sheet/Footer.svelte?raw";
 </Sheet>
 ```
 
-Below 768px the sheet rises from the bottom edge with a drag handle, safe-area padding and rounded top corners. From 768px up it renders as a centered dialog. Focus trap, focus restore, Escape, overlay dismissal and scroll lock come from the native modal `<dialog>` the sheet renders.
+Below 900px the sheet rises from the bottom edge with a drag handle, safe-area padding and rounded top corners. From 900px up it renders as a centered dialog. Focus trap, focus restore, Escape, overlay dismissal and scroll lock come from the native modal `<dialog>` the sheet renders.
 
 **Swipe to dismiss.** Drag the handle or the header down. Releasing past 30% of the panel height, or faster than 0.5 px/ms, closes the sheet; otherwise it springs back. The gesture is off under `prefers-reduced-motion` and in the centered desktop layout. Keyboard users close it with Escape or the close button. Open the demos below on a phone or in a mobile viewport to try the gesture.
 
-<Demo title="Swipe to dismiss" description="Drag the handle or header down on a viewport below 768px. Above that, it is a centered dialog." src={SwipeSrc}><Swipe client:visible /></Demo>
+<Demo title="Swipe to dismiss" description="Drag the handle or header down on a viewport below 900px. Above that, it is a centered dialog." src={SwipeSrc}><Swipe client:visible /></Demo>
 <Demo title="Footer and swipeToDismiss" description="A pinned footer, and swipeToDismiss set to false so only the close button, Escape and the overlay dismiss it." src={FooterSrc}><Footer client:visible /></Demo>
 
-<Props rows={[
+<Props for="Sheet" rows={[
   { name: "open", type: "boolean", default: "false", description: "Bindable open state." },
   { name: "title", type: "string", description: "Header title. Without it the panel falls back to a localized generic aria-label." },
   { name: "description", type: "string", description: "Supporting text under the title." },

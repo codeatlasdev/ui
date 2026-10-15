@@ -14,6 +14,14 @@ import { Callout } from "@codeatlasdev/ui";
 bunx @codeatlasdev/ui migrate --write src
 ```
 
+```svelte
+<!-- before -->
+<GlassSurface thickness="thick" tinted glowing>…</GlassSurface>
+
+<!-- after -->
+<Surface material="liquid" elevation={4} tone="brand" glow>…</Surface>
+```
+
 | GlassSurface | Surface |
 |---|---|
 | `thickness="ultra-thin"` `"thin"` `"regular"` `"thick"` `"chrome"` | `elevation={1}` `{2}` `{3}` (default) `{4}` `{5}` |
@@ -21,5 +29,7 @@ bunx @codeatlasdev/ui migrate --write src
 | `glowing` | `glow` |
 | `refraction` (default `true`) | `material="liquid"`; `refraction={false}` is `material="glass"` |
 | `class`, `style`, other attributes | unchanged (use `p` / `as` instead of a padding style) |
+
+`GlassSurface` followed the theme (`<html data-style>`) through its `glass*` classes, and drew the refraction layer when `refraction` was on. The codemod writes `material="liquid"` (or `"glass"`), so the result is glass in every theme, as the name promised.
 
 Dynamic props (`thickness={t}`) are not rewritten by the codemod: map them by hand with the table above.

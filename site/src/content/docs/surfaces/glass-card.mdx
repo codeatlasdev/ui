@@ -16,6 +16,14 @@ bunx @codeatlasdev/ui migrate --write src
 
 The codemod rewrites each static usage and leaves dynamic ones (`thickness={t}`) for you. `GlassCard` followed the theme (`<html data-style>`), so the replacement for an unchanged look is `<Card>` with `material="auto"`, which is the default; the codemod writes `material="glass"` so the result is glass in every theme, as the name promised.
 
+```svelte
+<!-- before -->
+<GlassCard thickness="thick" tinted glowing padding="24px" title="Team">…</GlassCard>
+
+<!-- after -->
+<Card material="glass" elevation={4} tone="brand" glow p="6" title="Team">…</Card>
+```
+
 | GlassCard | Card |
 |---|---|
 | `thickness="ultra-thin"` `"thin"` `"regular"` `"thick"` `"chrome"` | `elevation={1}` `{2}` `{3}` (default) `{4}` `{5}` |

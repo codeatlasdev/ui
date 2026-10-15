@@ -26,12 +26,12 @@ import InteractiveSrc from "~/demos/surfaces/surface/Interactive.svelte?raw";
 
 A Surface is one element painted by one CSS rule (`.ca-surface`). Each prop is a `data-*` attribute, and each attribute writes different `--ca-surface-*` variables, so the axes never fight: `elevation` is depth (shadow and the blur/fill tier), `material` is what the surface is made of, `tone` tints it, `variant` removes the fill or draws an outline, `radius` rounds it. Nothing is written to `style`.
 
-`material="auto"` follows the theme: it reads the tokens that `<html data-style>` already rewrites, so an app on the solid style gets opaque surfaces and one on the `liquid` recipe gets glass, with no change to the component. The explicit materials ignore `data-style`: use `glass` for one blurred surface in a solid app, or `solid` to keep one opaque in a glass app. Glass needs something behind it to blur, which is why the demos sit on a gradient.
+`material="auto"` follows the theme: it reads the tokens that `<html data-style>` already rewrites, so an app on the default solid style gets opaque surfaces and one on the [`liquid` recipe](/docs/getting-started/theming/#surface-styles) gets glass, with no change to the component. The explicit materials ignore `data-style`: use `glass` for one blurred surface in a solid app, or `solid` to keep one opaque in a glass app. `liquid` is `glass` plus the SVG refraction layer, see [LiquidGlass](/docs/surfaces/liquid-glass/). Glass needs something behind it to blur, which is why the demos sit on a gradient.
 
-Rules the CSS follows, and you should too when you wrap a Surface: never `will-change: transform` on it or an ancestor, and never `isolation: isolate` on a parent of a glass or frosted surface. Both silently remove the backdrop blur. Under `prefers-reduced-transparency` translucent fills become opaque, and under `forced-colors` every surface gets a real `CanvasText` border.
+Rules the CSS follows, and you should too when you wrap a Surface: never `will-change: transform` on it or an ancestor, and never `isolation: isolate` on a parent of a glass or frosted surface. Both silently remove the backdrop blur. Under `prefers-reduced-transparency` translucent fills become opaque, and under `forced-colors` every surface gets a real `CanvasText` border, except `variant="ghost"`.
 
 <Demo title="Materials" description={"`auto` follows the theme; the others look the same under every style."} src={MaterialsSrc}><Materials /></Demo>
-<Demo title="Elevation" description={"Steps 0 to 5: shadow and, for `auto`, `glass` and `frosted`, the blur tier (0 flat, 3 regular, 5 chrome)."} src={ElevationSrc}><Elevation /></Demo>
+<Demo title="Elevation" description={"Steps 0 to 5: shadow and, for every material but `solid`, the blur and fill tier (0 flat, 3 regular, 5 chrome)."} src={ElevationSrc}><Elevation /></Demo>
 <Demo title="Tone and variant" description={"Tone tints the fill, or colors the outline of `variant=\"outlined\"`."} src={ToneVariantSrc}><ToneVariant /></Demo>
 <Demo title="Interactive" description={"`interactive` adds hover, press and a focus-visible ring. Render a real `button` or `a` (`as`), so it is focusable and named."} src={InteractiveSrc}><Interactive client:visible /></Demo>
 
@@ -41,9 +41,9 @@ Rules the CSS follows, and you should too when you wrap a Surface: never `will-c
   { name: "material", type: "'auto' | 'solid' | 'frosted' | 'glass' | 'liquid'", default: "'auto'", description: "`auto` follows `<html data-style>`; the others are absolute. `liquid` adds the SVG refraction layer." },
   { name: "tone", type: "'neutral' | 'brand' | 'success' | 'warning' | 'error' | 'info'", default: "'neutral'", description: "Semantic tint over the fill; the outline color of `variant=\"outlined\"`." },
   { name: "variant", type: "'filled' | 'outlined' | 'ghost'", default: "'filled'", description: "`outlined` has an edge and no fill, `ghost` neither." },
-  { name: "radius", type: "'none' | 'sm' | 'md' | 'lg' | 'xl' | 'pill'", default: "'lg'", description: "Corner radius from the radius scale." },
-  { name: "interactive", type: "boolean", default: "false", description: "Hover, press and focus-visible states and a pointer cursor." },
-  { name: "glow", type: "boolean", default: "false", description: "Brand halo behind the surface (a shadow, so it needs no isolation)." },
+  { name: "radius", type: "'none' | 'sm' | 'md' | 'lg' | 'xl' | 'pill'", default: "undefined", description: "Corner radius from the radius scale. Omit for the large radius (`--ca-radius-lg`)." },
+  { name: "interactive", type: "boolean", default: "false", description: "Hover, press and focus-visible states and a pointer cursor. Render a link or button, or give it a role and a name." },
+  { name: "glow", type: "boolean", default: "false", description: "Brand halo behind the surface (a shadow, so it needs no isolation). It uses `--ca-glow-primary`, which is transparent under the `solid` and `flat` styles, so it only shows under styles that keep a glow, such as `glass`." },
   { name: "p, px, py", type: "Space | responsive", default: "undefined", description: "Padding as a spacing step (`\"4\"` = 16px). See [Layout primitives](/docs/layout/layout-primitives/)." },
   { name: "class", type: "string", default: "''", description: "Extra class names. Other attributes are forwarded to the element." },
   { name: "children", type: "Snippet", default: "undefined", description: "Content." },

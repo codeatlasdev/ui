@@ -5,14 +5,14 @@
 <div class="wrap">
   <Accordion type="single">
     <AccordionItem value="a1" title="What is Liquid Glass?">
-      Liquid Glass is a design language that applies real-time backdrop blur, refraction and
-      tinting to UI surfaces, creating depth without heavy visual weight.
+      Liquid Glass is the opt-in look of the kit: backdrop blur, refraction and tinting on
+      surfaces. The default theme is solid.
     </AccordionItem>
     <AccordionItem value="a2" title="Which browsers support backdrop-filter?">
       All modern evergreen browsers. Older environments receive a fallback without the blur effect.
     </AccordionItem>
-    <AccordionItem value="a3" title="Can I nest GlassSurface inside GlassCard?">
-      Yes. Both components use isolation: isolate to keep stacking contexts correct.
+    <AccordionItem value="a3" title="Can I nest a Surface inside a Card?">
+      Yes. A Card is a Surface, so any Surface can sit inside it.
     </AccordionItem>
   </Accordion>
 </div>

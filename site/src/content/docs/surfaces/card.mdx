@@ -25,7 +25,7 @@ import LinkSrc from "~/demos/surfaces/card/Link.svelte?raw";
 <Card title="Team" headingLevel={2} tone="brand">…</Card>
 ```
 
-Card is a [Surface](/docs/surfaces/surface/) with a header (`title`, `headerActions`), padding from `--ca-card-padding` and an optional link. Every Surface prop passes through (`elevation`, `material`, `tone`, `variant`, `radius`, `glow`), and `material="auto"` follows the theme. Use `flush` for content that touches the edges, such as tables, images and code.
+Card is a [Surface](/docs/surfaces/surface/) with a header (`title`, `headerActions`), padding from `--ca-card-padding` and an optional link. Every Surface prop passes through (`elevation`, `material`, `tone`, `variant`, `radius`, `glow`, `interactive`), and `material="auto"` follows the theme: opaque under the default solid style, glass under `liquid`. The demos below set `material="glass"` so they look the same under any style. Use `flush` for content that touches the edges, such as tables, images and code.
 
 `title` is a paragraph unless you pass `headingLevel`, so adding a Card never changes a page outline by accident. Pass `headingLevel` to make the card a section under the page heading (a `PageShell` title is the `<h1>`, so cards start at `2`). Only the tag changes, never the look.
 
@@ -33,7 +33,7 @@ With `href` the card is a single `<a>` and is interactive. The link name comes f
 
 <Demo title="Content card" description={"Text-heavy card with eyebrow, title, body and a link."} src={ContentCardSrc}><ContentCard /></Demo>
 <Demo title="Stat cards" description={"Compact metric display."} src={StatsSrc}><Stats /></Demo>
-<Demo title="Tone and glow" description={"Accent treatments."} src={AccentsSrc}><Accents /></Demo>
+<Demo title="Tone and glow" description={"`tone=\"brand\"` tints the fill. `glow` adds a halo that only shows under styles that keep one, such as `glass`."} src={AccentsSrc}><Accents /></Demo>
 <Demo title="Header and actions" description={"`title` and `headerActions` render a built-in header row."} src={HeaderActionsSrc}><HeaderActions /></Demo>
 <Demo title="Link card" description={"`href` renders the whole card as a link."} src={LinkSrc}><Link /></Demo>
 

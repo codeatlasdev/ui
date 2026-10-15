@@ -17,7 +17,7 @@ import DashboardSrc from "~/demos/charts/overview/Dashboard.svelte?raw";
 <LineChart series={[{ name: "Revenue", data: [42, 58, 51, 74] }]} categories={["Jan", "Feb", "Mar", "Apr"]} />
 ```
 
-Charts live in the `@codeatlasdev/ui/charts` subpath and need the optional peer dependency `echarts` (`bun add echarts`). Every chart takes data and a few semantic props. There are no color, font or style props on purpose: the palette follows the active preset, tooltips use the glass material, and charts re-theme when the color scheme, preset or surface style changes. Chart components render on the client, so hydrate them with `client:visible` in Astro.
+Charts live in the `@codeatlasdev/ui/charts` subpath and need the optional peer dependency `echarts` (`bun add echarts`, version 6). Every chart takes data and a few semantic props. There is no style or font prop on purpose: the palette follows the active preset, axes, legend and tooltips read the `--ca-*` tokens, and charts re-theme when the color scheme, preset or surface style changes. Series can take an explicit `color`; use hex or rgb, because ECharts paints on a canvas and cannot parse `oklch()`. Charts render on the client, so hydrate them with `client:visible` in Astro.
 
 |Component|Use for|
 |---|---|

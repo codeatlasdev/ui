@@ -1,0 +1,27 @@
+---
+title: Kbd
+description: A keycap for keyboard shortcuts in prose, menus and tooltips.
+group: Display
+order: 10
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Basic from "~/demos/display/kbd/Basic.svelte";
+import BasicSrc from "~/demos/display/kbd/Basic.svelte?raw";
+
+```svelte
+<script>
+  import { Kbd } from "@codeatlasdev/ui";
+</script>
+
+<Kbd>Esc</Kbd>
+```
+
+`Kbd` renders a native `<kbd>` element. Use one per key and join combinations with a plain `+`. The keycap is not selectable, so double clicks on a shortcut do not select it.
+
+<Demo title="Shortcuts in text" src={BasicSrc}><Basic /></Demo>
+
+<Props rows={[
+  { name: "children", type: "Snippet", description: "The key label, for example Ctrl or K." },
+  { name: "class", type: "string", default: "''", description: "Extra classes on the `<kbd>` element." },
+]} />

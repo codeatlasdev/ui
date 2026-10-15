@@ -52,7 +52,7 @@ Place one `Seo` per page, in the route or layout that knows the page's data.
 />
 ```
 
-<Props rows={[
+<Props for="Seo" rows={[
   { name: "title", type: "string", default: "required", description: "Page title, also used for og:title." },
   { name: "titleTemplate", type: "string", default: "'%s'", description: "Wrapper for the title; %s is replaced." },
   { name: "description", type: "string", default: "-", description: "Meta description and og:description." },
@@ -60,14 +60,14 @@ Place one `Seo` per page, in the route or layout that knows the page's data.
   { name: "robots", type: "string", default: "'index,follow'", description: "Content of the robots meta." },
   { name: "noindex", type: "boolean", default: "false", description: "Shorthand for 'noindex,nofollow'. Use on admin, auth and app pages." },
   { name: "alternates", type: "{ hreflang: string; href: string }[]", default: "-", description: "Translations, including the page itself and an x-default entry." },
-  { name: "og", type: "{ type?, image?, imageAlt?, imageWidth?, imageHeight?, locale?, localeAlternates?, siteName? }", default: "-", description: "Open Graph. Image size defaults to 1200x630." },
-  { name: "twitter", type: "{ card?, site? }", default: "-", description: "Card is summary_large_image when an og image is set." },
+  { name: "og", type: "{ type?, image?, imageAlt?, imageType?, imageWidth?, imageHeight?, locale?, localeAlternates?, siteName? }", default: "-", description: "Open Graph. `type` defaults to 'website', image size to 1200x630 and `imageType` to 'image/png' (set it to 'image/jpeg' for `ogImageRoute`, which renders JPEG by default)." },
+  { name: "twitter", type: "{ card?, site? }", default: "-", description: "`card` is summary_large_image when an og image is set, otherwise summary. `site` is the @handle." },
   { name: "jsonLd", type: "object | object[]", default: "-", description: "Structured data. Serialized with '<' escaped, so values cannot close the script tag." },
   { name: "manifest", type: "string", default: "-", description: "URL of the web app manifest." },
 ]} />
 
 <Callout type="info" title="Where the dev warnings come from">
-  In development `Seo` warns when an indexable page has no `canonical`, and `caThemeHandle` warns once when the final HTML has no `viewport-fit=cover` or no `lang` on `<html>`. Production builds stay silent.
+  In development `Seo` warns when an indexable page has no `canonical`, and `caThemeHandle` warns once per problem when the final HTML has no `viewport-fit=cover`, a viewport meta that blocks zoom (`user-scalable=no`, `maximum-scale=1`) or no `lang` on `<html>`. Production builds stay silent.
 </Callout>
 
 ## Structured data
@@ -219,7 +219,9 @@ Register the plugin next to `caThemePlugin`, with the same theme object:
 
 ```ts
 // vite.config.ts
+import { sveltekit } from "@sveltejs/kit/vite";
 import { caBrandPlugin, caThemePlugin } from "@codeatlasdev/ui/vite";
+import { defineConfig } from "vite";
 import { theme } from "./src/lib/theme.ts";
 
 export default defineConfig({
@@ -231,7 +233,16 @@ export default defineConfig({
 });
 ```
 
-At build start it writes `favicon.<hash>.svg` (follows `prefers-color-scheme`), `favicon.<hash>.ico` (16, 32, 48), `favicon-32`, `apple-touch-icon` (180, opaque), `icon-192`, `icon-512`, `maskable-512` and `manifest.<hash>.webmanifest`, then `src/generated/brand.ts` with their URLs. Colors are `--ca-text-primary`, `--ca-brand-main` and `--ca-surface-base` of the theme's default preset, converted to `#rrggbb`. Add `static/brand/` and `src/generated/` to `.gitignore`: nothing it writes is meant to be committed.
+At build start it writes `favicon.<hash>.svg` (follows `prefers-color-scheme`), `favicon.<hash>.ico` (16, 32, 48), `favicon-32`, `apple-touch-icon` (180, opaque), `icon-192`, `icon-512`, `maskable-512` and `manifest.<hash>.webmanifest`, then `src/generated/brand.ts` with their URLs. `outDir` is emptied first. Colors are `--ca-text-primary`, `--ca-brand-main` and `--ca-surface-base` of the theme's default preset, converted to `#rrggbb`. Add `static/brand/` and `src/generated/` to `.gitignore`: nothing it writes is meant to be committed.
+
+| `caBrandPlugin` option | Default | Description |
+|---|---|---|
+| `mark` | `"src/brand/mark.svg"` | Path of the mark SVG, relative to the project root. The plugin warns and does nothing when it is missing. |
+| `theme` | `{}` | The same `ThemeOptions` you pass to `caThemePlugin`. |
+| `outDir` | `"static/brand"` | Directory served as `/brand`. Use `"public/brand"` with plain Vite and Astro. |
+| `base` | `"/brand"` | URL prefix of `outDir`. |
+| `manifestFile` | `"src/generated/brand.ts"` | Where the asset URLs are written, as a module exporting `brand`. |
+| `name`, `shortName` | none | Fields of the generated web app manifest. |
 
 `@resvg/resvg-js` and `png-to-ico` are optional peer dependencies. Install them where you register the plugin:
 

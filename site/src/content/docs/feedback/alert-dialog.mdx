@@ -29,13 +29,13 @@ import ControlledSrc from "~/demos/feedback/alert-dialog/Controlled.svelte?raw";
 />
 ```
 
-Unlike [Dialog](/docs/feedback/dialog/), there is no close button and a click outside does not dismiss it. Escape and Cancel close it and fire `oncancel`. Both are ignored while a request is pending.
+Unlike [Dialog](/docs/feedback/dialog/), there is no close button and a click outside does not dismiss it, and initial focus lands on the dialog itself instead of the first control. Escape and Cancel close it and fire `oncancel`. Both are ignored while a request is pending.
 
 <Demo title="Basic and destructive" description="Confirm and cancel, with the destructive variant for irreversible actions." src={BasicSrc}><Basic client:visible /></Demo>
 <Demo title="Async onconfirm" description="While the promise is pending the confirm button shows a spinner, Cancel is disabled and Escape is ignored. The dialog closes when it resolves and stays open if it throws." src={AsyncSrc}><Async client:visible /></Demo>
 <Demo title="Controlled pending" description="Pass pending when the loading state lives outside, for example a mutation from your query client." src={ControlledSrc}><Controlled client:visible /></Demo>
 
-<Props rows={[
+<Props for="AlertDialog" rows={[
   { name: "open", type: "boolean", default: "false", description: "Bindable open state." },
   { name: "title", type: "string", description: "Required. Dialog title and accessible name." },
   { name: "description", type: "string", description: "Supporting text below the title." },
@@ -43,7 +43,7 @@ Unlike [Dialog](/docs/feedback/dialog/), there is no close button and a click ou
   { name: "cancelLabel", type: "string", default: "'Cancel' (localized)", description: "Label of the cancel button. Defaults to the active locale's string." },
   { name: "destructive", type: "boolean", default: "false", description: "Confirm button uses the destructive variant." },
   { name: "pending", type: "boolean", default: "false", description: "Controls the loading state externally. Without it, pending is automatic while onconfirm is awaited." },
-  { name: "onconfirm", type: "() => void | Promise<void>", description: "Required. Closes the dialog when it resolves; if it throws, the dialog stays open and the error is rethrown." },
+  { name: "onconfirm", type: "() => void | Promise<void>", description: "Required. Closes the dialog when it resolves; if it throws, the dialog stays open and the error propagates." },
   { name: "oncancel", type: "() => void", description: "Fires on Cancel or Escape. Never fires while pending." },
   { name: "class", type: "string", default: "''", description: "Extra classes on the panel." },
 ]} />

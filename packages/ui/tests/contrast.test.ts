@@ -331,3 +331,29 @@ describe("--ca-state-indicator: selected markers (#24)", () => {
 		}
 	});
 });
+
+// FilterGroup draws its caption on a `--ca-action-hover` pill that sits on any surface. The caption
+// is readable content, and `--ca-text-hint` is the role for placeholders and disabled-adjacent hints
+// that an app may set low (a custom preset gave it 4.1:1 on the raised surface and failed axe), so the
+// caption must use the role that holds AA in every preset: `--ca-text-secondary`.
+describe("FilterGroup label on its pill", () => {
+	const css = readFileSync(new URL("components/FilterGroup/FilterGroup.svelte", LIB), "utf8");
+	const token = css.match(/\.ca-filter-group__label\s*\{[^}]*?color:\s*var\((--ca-[\w-]+)\)/)?.[1];
+
+	it("is drawn with a text role that is not the hint role", () => {
+		expect(token).toBe("--ca-text-secondary");
+	});
+
+	for (const src of sources)
+		for (const scheme of ["light", "dark"] as const)
+			it(`${src.id} ${scheme}: its role is >= 4.5:1 on the pill over every surface`, () => {
+				const t = resolved(src, scheme);
+				const fill = resolve(t, "--ca-action-hover");
+				for (const s of SURFACES) {
+					const pill = over(fill, surfaceRgb(t, s));
+					expect(ratio(over(resolve(t, token as string), pill), pill), s).toBeGreaterThanOrEqual(
+						4.5
+					);
+				}
+			});
+});

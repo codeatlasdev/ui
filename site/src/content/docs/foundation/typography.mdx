@@ -12,7 +12,7 @@ import HeadingsSrc from "~/demos/foundation/typography/Headings.svelte?raw";
 import Body from "~/demos/foundation/typography/Body.svelte";
 import BodySrc from "~/demos/foundation/typography/Body.svelte?raw";
 
-Type sizes are `rem` tokens, so they follow the user's browser font size. Fonts are stacks: load Inter and JetBrains Mono yourself (for example with `@fontsource-variable`) or replace them in your theme.
+Type sizes are `rem` tokens multiplied by `--ca-font-scale`, so they follow the user's browser font size. Fonts are stacks: the defaults name Inter and JetBrains Mono but the kit does not load them, so load them yourself (for example with `@fontsource-variable`) or replace them in your theme. `--ca-font-display` defaults to `--ca-font-sans`.
 
 ```ts
 import { defineTheme } from "@codeatlasdev/ui";
@@ -24,7 +24,7 @@ export const theme = defineTheme({
 
 `fonts.body`, `fonts.mono` and `fonts.display` set `--ca-font-sans`, `--ca-font-mono` and `--ca-font-display`. See [Theming](/docs/getting-started/theming/).
 
-Text-entry controls use `--ca-input-font-size`, which is raised to at least 16px on touch and small screens so iOS Safari does not zoom into focused fields. See [Mobile](/docs/getting-started/mobile/).
+Text-entry controls use `--ca-input-font-size`, which is raised to at least 16px on touch devices and below 900px so iOS Safari does not zoom into focused fields. See [Mobile](/docs/getting-started/mobile/).
 
 <Demo title="Font families" src={FamiliesSrc}><Families /></Demo>
 <Demo title="Heading scale" description="--ca-font-size-h1 to h6." src={HeadingsSrc}><Headings /></Demo>

@@ -10,7 +10,7 @@ A theme is a plain object. The library compiles it to CSS once at build time (th
 
 ```ts
 // src/lib/theme.ts
-import type { ThemeOptions } from "@codeatlasdev/ui";
+import type { ThemeOptions } from "@codeatlasdev/ui/vite";
 
 export const theme: ThemeOptions = {
   presets: [{ id: "acme", color: "#2563eb" }],
@@ -33,13 +33,18 @@ Pass the same object to `caThemeHandle` and `caThemePlugin` (SvelteKit), `caUI` 
 | `presets` | `[]` | Brand presets generated from a hex color. Built-in presets are always available. |
 | `defaultPreset` | `"amber"` | Preset used until the user picks one. Must be a built-in or one of `presets`. |
 | `defaultScheme` | `"dark"` | `"light"`, `"dark"` or `"system"`. `bunx @codeatlasdev/ui init` scaffolds `"system"`. |
-| `defaultStyle` | `"solid"` | `"solid"`, `"flat"`, `"frosted"` or `"glass"`. Solid is the sober default; glass is the opt-in [`liquid`](#the-liquid-recipe) look. |
+| `defaultStyle` | `"solid"` | Surface material: `"solid"`, `"flat"`, `"frosted"`, `"glass"`, `"outlined"`, `"neumorphic"`, `"clay"`, `"tonal"` or `"chrome"`. Solid is the sober default; glass is the opt-in [`liquid`](#the-liquid-recipe) look. |
 | `fonts` | `{}` | `body`, `mono` and `display`. Each is a font stack string or a self-hosted font descriptor (`@font-face`, preload, metric-matched fallback), see [Performance](/docs/getting-started/performance/#fonts). They set `--ca-font-sans`, `--ca-font-mono` and `--ca-font-display`. |
 | `radius` | `0.8` | Multiplier applied to the `--ca-radius-xs` to `--ca-radius-xl` scale (`0.8` makes `--ca-radius-md` 8px). |
-| `density` | `"comfortable"` | `"compact"` tightens card padding and page gaps. |
+| `density` | `"comfortable"` | `"compact"` (0.75), `"comfortable"` (1), `"airy"` (1.25) or a number. Scales the `--ca-space-*` tokens, so padding, gaps and page spacing follow. |
 | `paper` | `"plain"` | Page background: `"plain"`, `"mesh"` (brand glow, drawn by the `glass` and `frosted` styles), `"grid"`, `"dots"` or `"lines"`. Flat patterns are drawn in `--ca-outline-subtle`, so they follow the preset and scheme. |
 | `iconStroke` | `1.75` | Lucide stroke width. |
-| `typography.weights.heading` | `600` | Heading weight. |
+| `controlRadius` | `"md"` | Corner role of buttons, fields and chips: `"xs"`, `"sm"`, `"md"`, `"lg"`, `"xl"` or `"pill"`. |
+| `border` | `{ width: 1, strong: 2 }` | Border weights in px (`--ca-border-width`, `--ca-border-width-strong`). |
+| `elevation` | `"soft"` | How shadows are drawn: `"soft"`, `"none"`, `"hard"` (offset, no blur) or `"glow"`. |
+| `typography` | `{}` | `scale`, `weights` (`heading` defaults to `600`), `headingTracking`, `headingCase`, `labelTracking`, `labelCase`, `lineHeight` and `measure`. |
+| `motion` | `{}` | `scale` (multiplier on every duration) and `easing`: `"standard"`, `"emphasized"`, `"spring"`, `"linear"` or `"steps"`. |
+| `noise` | `0` | Film-grain over the page background, from `0` to `0.12`. |
 | `overrides` | `{}` | Raw `--ca-*` token overrides, per scheme (`light`, `dark`). Prefer preset role colors (below) for palettes. |
 
 `defineTheme(options)` resolves the options (defaults, validation) and `themeCSS(resolved)` returns the CSS string. You rarely call them yourself; the integrations do. Invalid input fails the build: a preset `id` that clashes with a built-in, a color that is not `#rrggbb`, or a `defaultPreset` that does not exist.
@@ -130,6 +135,11 @@ colorScheme.toggle();   // flips resolved light and dark
 | `flat` | No blur, no mesh, no glow, no drop shadows: separation comes from borders. |
 | `frosted` | Less blur, calmer mesh background. |
 | `glass` | Liquid Glass: strong blur and saturation, translucent tints, brand mesh, glow and rim light. Opt-in. |
+| `outlined` | Border-defined opaque surfaces with no elevation. Used by the `swiss`, `brutalism`, `terminal` and `sketchbook` recipes. |
+| `neumorphic` | One base color extruded by paired light and dark shadows. Low contrast: use it for showcases, not dense data UIs. |
+| `clay` | Soft, inflated opaque surfaces. |
+| `tonal` | Surfaces tinted with the brand hue and soft elevation (Material 3 style). |
+| `chrome` | Glossy gradient with a metallic rim and brand glow. Blur stays on. |
 
 ```ts
 colorScheme.setStyle("glass");
@@ -140,7 +150,8 @@ colorScheme.setStyle("glass");
 Earlier versions looked like Liquid Glass: glass surfaces over a three-hue mesh, glow on selected states, round corners (10px controls), 2px icons, bold headings and hue-tinted shadows. That look is now the opt-in `liquid` recipe:
 
 ```ts
-import { designStyle, type ThemeOptions } from "@codeatlasdev/ui";
+import { designStyle } from "@codeatlasdev/ui/astro";
+import type { ThemeOptions } from "@codeatlasdev/ui/vite";
 
 export const theme: ThemeOptions = designStyle("liquid", {
   presets: [{ id: "acme", color: "#2563eb" }],
@@ -149,7 +160,11 @@ export const theme: ThemeOptions = designStyle("liquid", {
 });
 ```
 
-Migrating an app that relied on the old defaults: use `designStyle("liquid", { ... })`, or set `defaultStyle: "glass"` yourself. `designStyle("default")` now means the sober default.
+`designStyle("default")` is the sober default. `designStyle` is plain data, so `theme.ts` can import it in Node from `@codeatlasdev/ui/astro` (it is also exported from the root and from `@codeatlasdev/ui/kit`, which pull in Svelte files that `vite.config` cannot load). To migrate an app that relied on the old defaults, use `designStyle("liquid", { ... })`, or set `defaultStyle: "glass"` yourself.
+
+### Other design styles
+
+`DESIGN_STYLES` maps each id to `{ id, label, description, taxonomy, theme }`. `designStyle(id, overrides)` returns that recipe's `theme` with your overrides merged on top, and `mergeTheme(a, b)` merges two partial themes (`b` wins). The ids are `default`, `liquid`, `swiss`, `brutalism`, `neumorphism`, `glassmorphism`, `material`, `fluent`, `apple`, `bento`, `claymorphism`, `y2k`, `editorial`, `terminal` and `sketchbook`. Each recipe only sets the design knobs from the options table (material, radius, border, elevation, typography, motion, icon stroke, paper).
 
 Users on `prefers-reduced-transparency: reduce` get opaque surfaces regardless of the style.
 

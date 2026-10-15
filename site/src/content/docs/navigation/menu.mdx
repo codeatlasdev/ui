@@ -13,23 +13,30 @@ import IconTriggerSrc from "~/demos/navigation/menu/IconTrigger.svelte?raw";
 
 ```svelte
 <script>
-  import { DropdownMenu, DropdownMenuItem, DropdownMenuSeparator, Button } from "@codeatlasdev/ui";
+  import {
+    DropdownMenu,
+    DropdownMenuItem,
+    DropdownMenuLabel,
+    DropdownMenuSeparator,
+    Button,
+  } from "@codeatlasdev/ui";
 </script>
 
 <DropdownMenu>
   {#snippet triggerChild(props)}<Button {...props}>Open menu</Button>{/snippet}
+  <DropdownMenuLabel>File actions</DropdownMenuLabel>
   <DropdownMenuItem onclick={edit}>{#snippet children()}Edit{/snippet}</DropdownMenuItem>
   <DropdownMenuSeparator />
   <DropdownMenuItem variant="destructive" onclick={remove}>{#snippet children()}Delete{/snippet}</DropdownMenuItem>
 </DropdownMenu>
 ```
 
-Keyboard support follows the WAI-ARIA menu pattern: Enter or Space opens the menu, arrows move, Escape closes and focus returns to the trigger. Pass an interactive trigger (`Button`, `IconButton`) through `triggerChild` and spread the received `props` on it. Use `trigger` only for non-interactive content such as text or an icon.
+Keyboard support follows the WAI-ARIA menu pattern: Enter, Space or ArrowDown opens the menu on the first item, ArrowUp opens it on the last, arrows then move, Enter or Space selects, Escape closes and focus returns to the trigger. Tab closes the menu. Selecting an item closes it. The menu is a popover layer in the browser top layer, positioned with CSS anchor positioning where supported, so it stays on top of a dialog it is opened from. Pass an interactive trigger (`Button`, `IconButton`) through `triggerChild` and spread the received `props` on it. Use `trigger` only for non-interactive content such as text or an icon. Use `DropdownMenuLabel` for a non-interactive group heading and `DropdownMenuSeparator` for a divider.
 
 <Demo title="Default" description="A button trigger with a label, items, a separator and a destructive item." src={DefaultSrc}><Default client:visible /></Demo>
 <Demo title="Icon trigger" description="An IconButton trigger. IconButton needs an aria-label." src={IconTriggerSrc}><IconTrigger client:visible /></Demo>
 
-<Props title="DropdownMenu" rows={[
+<Props for="DropdownMenu" title="DropdownMenu" rows={[
   { name: "triggerChild", type: "Snippet<[Record<string, unknown>]>", description: "Interactive trigger. Receives the trigger props to spread onto your Button or IconButton." },
   { name: "trigger", type: "Snippet", description: "Non-interactive trigger content (text, icon), wrapped in the menu's own button." },
   { name: "children", type: "Snippet", description: "Menu content: items, labels and separators." },
@@ -39,10 +46,17 @@ Keyboard support follows the WAI-ARIA menu pattern: Enter or Space opens the men
   { name: "class", type: "string", default: "''", description: "Extra CSS classes on the content." },
 ]} />
 
-<Props title="DropdownMenuItem" rows={[
+<Props for="DropdownMenuItem" title="DropdownMenuItem" rows={[
   { name: "onclick", type: "() => void", description: "Called when the item is selected." },
   { name: "variant", type: "'default' | 'destructive'", default: "'default'", description: "destructive colors the item with the error token." },
   { name: "disabled", type: "boolean", default: "false", description: "Prevents selection." },
   { name: "children", type: "Snippet", description: "Item content, usually an icon and a label." },
   { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
 ]} />
+
+<Props for="DropdownMenuLabel" title="DropdownMenuLabel" rows={[
+  { name: "children", type: "Snippet", description: "Heading text." },
+  { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
+]} />
+
+`DropdownMenuSeparator` takes no props.

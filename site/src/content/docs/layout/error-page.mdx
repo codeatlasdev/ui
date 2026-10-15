@@ -1,0 +1,32 @@
+---
+title: ErrorPage
+description: A full-page error state for 404, 403, 500 and 503 with localized copy and home and back actions.
+group: Layout
+order: 90
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Statuses from "~/demos/layout/error-page/Statuses.svelte";
+import StatusesSrc from "~/demos/layout/error-page/Statuses.svelte?raw";
+
+```svelte
+<!-- src/routes/+error.svelte -->
+<script>
+  import { page } from "$app/state";
+  import { ErrorPage } from "@codeatlasdev/ui";
+</script>
+
+<ErrorPage status={page.status} message={page.error?.message} />
+```
+
+Known statuses (404, 403, 500, 503) get an icon, a title and a hint in the active locale. Any other status falls back to a generic title. An explicit `message` replaces the hint and `title` replaces the title. The actions go back in history and to `/`. `caErrorPlugin({ scaffold: true })` writes a `+error.svelte` like this one for you (see [Installation](/docs/getting-started/installation/)).
+
+<Demo title="404 without actions" description="hideActions removes the back and home buttons." src={StatusesSrc}><Statuses client:visible /></Demo>
+
+<Props rows={[
+  { name: "status", type: "number", default: "500", description: "HTTP status shown as the large number. Picks the icon, title and hint for 404, 403, 500 and 503." },
+  { name: "message", type: "string", description: "Replaces the preset hint under the title." },
+  { name: "title", type: "string", description: "Replaces the preset title." },
+  { name: "hideActions", type: "boolean", default: "false", description: "Hides the back and home buttons." },
+  { name: "class", type: "string", default: "''", description: "Extra classes on the root." },
+]} />

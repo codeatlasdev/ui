@@ -29,7 +29,7 @@ The default gauge colors its arc in three zones (error, warning, success). Overr
 <Demo title="Simple gauge" src={SimpleSrc}><Simple client:visible /></Demo>
 <Demo title="Progress ring" description="variant ring draws a single brand-colored arc with the value in the center." src={RingSrc}><Ring client:visible /></Demo>
 <Demo title="Custom zones" description="Reverse the default zones when a high value is bad, such as CPU load." src={ZonesSrc}><Zones client:visible /></Demo>
-<Demo title="Animated counter" description="Updating value animates the ring and the number." src={CounterSrc}><Counter client:visible /></Demo>
+<Demo title="Animated counter" description="Updating value animates the ring and counts the number." src={CounterSrc}><Counter client:visible /></Demo>
 
 <Props for="GaugeChart" rows={[
   { name: "value", type: "number", description: "Current value." },
@@ -39,7 +39,7 @@ The default gauge colors its arc in three zones (error, warning, success). Overr
   { name: "zones", type: "GaugeZone[]", default: "error to 0.3, warning to 0.7, success to 1", description: "Colored arc zones as { until, color }. until is a fraction of min to max; color is success, warning, error, info, brand or any CSS color." },
   { name: "label", type: "string", description: "Caption shown above the value in the default variant." },
   { name: "formatter", type: "(value: number) => string", default: "v => `${v}%`", description: "Formats the displayed value." },
-  { name: "animated", type: "boolean", default: "true", description: "Animates the displayed value between updates." },
+  { name: "animated", type: "boolean", default: "true", description: "Counts the displayed number up or down when value changes. The arc always animates." },
   { name: "height", type: "string", default: "'280px'", description: "CSS height of the chart." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />

@@ -2,7 +2,7 @@
 title: Pagination
 description: "Navigation between pages of a data set, with a bindable current page."
 group: Display
-order: 9
+order: 11
 ---
 import Demo from "~/components/docs/Demo.astro";
 import Props from "~/components/docs/Props.astro";
@@ -21,7 +21,7 @@ import FewItemsSrc from "~/demos/display/pagination/FewItems.svelte?raw";
 <Pagination count={100} perPage={10} bind:page />
 ```
 
-`count` is the total number of items, not the number of pages. Pages are numbered from 1.
+`count` is the total number of items, not the number of pages. Pages are numbered from 1, and the first and last page always show. The nav buttons and page buttons form one keyboard group: arrow keys move between them (wrapping at the ends, mirrored in right-to-left layouts), Home and End jump to the first and last enabled control. The current page has `aria-current="page"`.
 
 <Demo title="Basic" src={BasicSrc}><Basic client:visible /></Demo>
 <Demo title="More siblings" description={"`siblingCount` controls how many pages show around the current one."} src={SiblingsSrc}><Siblings client:visible /></Demo>
@@ -32,6 +32,6 @@ import FewItemsSrc from "~/demos/display/pagination/FewItems.svelte?raw";
   { name: "perPage", type: "number", default: "10", description: "Items per page." },
   { name: "page", type: "number", default: "1", description: "Current page, 1-based. Bindable." },
   { name: "siblingCount", type: "number", default: "1", description: "Pages shown on each side of the current page." },
-  { name: "onPageChange", type: "(page: number) => void", default: "undefined", description: "Called when the page changes." },
+  { name: "onPageChange", type: "(page: number) => void", default: "undefined", description: "Called with the new page when the user changes it. It does not fire when you set `page` yourself." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />

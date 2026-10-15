@@ -21,7 +21,7 @@ import ClosableSrc from "~/demos/display/alert/Closable.svelte?raw";
 <Alert severity="success" title="Saved">Your changes were saved.</Alert>
 ```
 
-The parent owns visibility: render the alert conditionally and hide it from `onclose`. Alerts are announced by assistive technology as status messages.
+The parent owns visibility: render the alert conditionally and hide it from `onclose`. The root has `role="alert"` with `aria-live="polite"`, so assistive technology announces it.
 
 <Demo title="Severities" description={"All four semantic variants."} src={SeveritiesSrc}><Severities /></Demo>
 <Demo title="With title" description={"An optional title adds a bold heading above the message."} src={WithTitleSrc}><WithTitle /></Demo>

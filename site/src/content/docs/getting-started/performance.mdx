@@ -68,12 +68,12 @@ Rule of thumb: enhanced-img or `astro:assets` for photos and marketing art (they
 
 ## Fonts
 
-A web font causes two kinds of jank: the late swap that re-flows text, and the late request. `defineTheme({ fonts })` handles both. A font is either a plain stack string (as before) or a descriptor:
+A web font causes two kinds of jank: the late swap that re-flows text, and the late request. The `fonts` option of the theme handles both. A font is either a plain stack string or a descriptor:
 
 ```ts
-import { defineTheme } from "@codeatlasdev/ui";
+import type { ThemeOptions } from "@codeatlasdev/ui/vite";
 
-export const theme = defineTheme({
+export const theme: ThemeOptions = {
   fonts: {
     body: {
       family: "Inter",
@@ -86,7 +86,7 @@ export const theme = defineTheme({
     },
     mono: "ui-monospace, SFMono-Regular, Menlo, monospace", // strings still work
   },
-});
+};
 ```
 
 | Field | Effect |

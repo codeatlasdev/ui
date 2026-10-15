@@ -12,10 +12,12 @@ import Shell from "~/demos/layout/app-shell/Shell.svelte";
 import ShellSrc from "~/demos/layout/app-shell/Shell.svelte?raw";
 
 ```svelte
-<script>
-  import { AppShellLayout, type NavModule } from "@codeatlasdev/ui";
+<script lang="ts">
+  import { AppShellLayout, SiteHeader, type NavModule } from "@codeatlasdev/ui";
   import { goto } from "$app/navigation"; // or any router
   import { page } from "$app/state";
+
+  let { children } = $props();
 
   const modules: NavModule[] = [/* id, label, icon, basePath, items */];
 </script>
@@ -26,7 +28,7 @@ import ShellSrc from "~/demos/layout/app-shell/Shell.svelte?raw";
 </AppShellLayout>
 ```
 
-The shell never imports a router. You pass the current `pathname` and handle `onNavigate`, so it works with SvelteKit, Astro, or plain state. `onNavigate` fires when the user switches module from the rail or the bottom navigation. Panel items are plain `<a href>` links, so a client-side router takes them over like any other link. Put it only on application routes, never on marketing pages. Below 900px the rail and panel disappear and the mobile header plus bottom navigation take over. See the [templates](/templates/) for complete applications built on it.
+The shell never imports a router. You pass the current `pathname` and handle `onNavigate`, so it works with SvelteKit, Astro, or plain state. `onNavigate` fires when the user switches module from the rail or the bottom navigation. Panel items are plain `<a href>` links, so a client-side router takes them over like any other link. Put it only on application routes, never on marketing pages. The panel is skipped for a module with fewer than two destinations, since it would only repeat the rail icon and the page title. Below 900px the rail and panel disappear and the mobile header plus bottom navigation take over. See the [templates](/templates/) for complete applications built on it.
 
 <Demo title="Anatomy" description="Rail (52px), panel (200px) and the main content area." src={AnatomySrc}><Anatomy /></Demo>
 <Demo title="Live shell" description="The real component inside a fixed-height frame. The pathname lives in local state; click the rail and panel to navigate." src={ShellSrc} stage><Shell client:visible /></Demo>
@@ -34,8 +36,8 @@ The shell never imports a router. You pass the current `pathname` and handle `on
 <Props for="AppShellLayout" rows={[
   { name: "modules", type: "NavModule[]", description: "Navigation modules. Each has id, label, icon, basePath, optional pathPrefixes and items (NavItem or NavSection)." },
   { name: "pathname", type: "string", description: "Current location. Decides the active module and item." },
-  { name: "onNavigate", type: "(path: string) => void", description: "Called with the destination path when the rail, panel or bottom navigation is used." },
-  { name: "defaultModule", type: "number", default: "0", description: "Module index used before any navigation matches." },
+  { name: "onNavigate", type: "(path: string) => void", description: "Called with the first path of the module when the rail or the bottom navigation switches module. Panel items are links and do not call it." },
+  { name: "defaultModule", type: "number", default: "0", description: "Module index used when the URL matches no module and none was stored." },
   { name: "persistPanel", type: "boolean", default: "true", description: "Keeps the shell across page loads: panel open or closed, selected module and expanded sections (localStorage), panel scroll (sessionStorage). Restored before the first paint. Turn it off for demos and embeds that must always start from the defaults." },
   { name: "header", type: "Snippet", description: "Desktop header rendered above the page content. Hidden below 900px." },
   { name: "brand", type: "Snippet", description: "Logo shown at the top of the rail and in the mobile header." },
@@ -59,3 +61,33 @@ On a multi-page site (Astro, a full reload) every link loads a new document, so 
 An inline script emitted right after the sidebar reads those keys and sets `data-ca-panel="open|closed"` and `data-ca-module="<id>"` on `<html>` before anything paints, so a panel the user closed is laid out closed from the first frame instead of flashing open. Stored values are validated and discarded when malformed. A section's last open or closed choice wins over `defaultOpen`, but the section that holds the current page always opens. The module comes from the URL when `modules` matches it, and from the stored choice otherwise.
 
 Render the shell on the server so the first paint is not blank: the inline script and the markup travel together. A client-only mount gets the same restore on hydration, and a page whose CSP blocks inline scripts too. Keep `id` stable on each `NavModule` (it is the stored module key) and each section `label` unique within a module (it is the stored section key).
+
+## Building blocks for a custom panel
+
+`AppShellLayout` renders the panel for you. `Rail`, `Panel`, `BottomNav` and `MobileHeader` are exported too, and two of them are the pieces to reuse when you lay out your own navigation: `PanelNavItem` is the row the panel draws for one `NavItem` (icon, label, unread badge, new dot and the active pip), and `SectionGroup` is a titled group of items that collapses.
+
+```svelte
+<script lang="ts">
+  import { PanelNavItem, SectionGroup, type NavSection } from "@codeatlasdev/ui";
+
+  const section: NavSection = { label: "Reports", collapsible: true, items };
+</script>
+
+<SectionGroup {section} {pathname} />
+<PanelNavItem item={items[0]} isActive={pathname === items[0].path} href={items[0].path} />
+```
+
+`PanelNavItem` renders a plain `<a>` with `aria-current="page"` when active. `SectionGroup` opens itself when it holds the current page, and inside an `AppShellLayout` with `persistPanel` it stores its open state under the section `label`; a bare `SectionGroup` keeps nothing.
+
+<Props for="PanelNavItem" title="PanelNavItem props" rows={[
+  { name: "item", type: "NavItem", description: "The destination: `id`, `label`, `icon`, `path`, and optional `badge`, `isNew`, `shortcut`, `description`. Required." },
+  { name: "isActive", type: "boolean", description: "Marks the row as the current page (`aria-current=\"page\"`, active pip). Required." },
+  { name: "href", type: "string", description: "Link target. Required." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+]} />
+
+<Props for="SectionGroup" title="SectionGroup props" rows={[
+  { name: "section", type: "NavSection", description: "`label`, `items`, and optional `collapsible` (default `true`) and `defaultOpen` (default `true`). Required." },
+  { name: "pathname", type: "string", description: "Current location, used to mark the active item and to keep the group holding it open. Required." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+]} />

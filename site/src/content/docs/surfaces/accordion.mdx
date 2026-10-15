@@ -23,7 +23,7 @@ import ControlledSrc from "~/demos/surfaces/accordion/Controlled.svelte?raw";
 </Accordion>
 ```
 
-Triggers are buttons with `aria-expanded`, and Arrow, Home and End keys move between them. With `type="single"` the bound `value` is a string, with `type="multiple"` it is a string array.
+Triggers are buttons with `aria-expanded`. Arrow Up, Arrow Down, Home and End move focus between the enabled triggers, and every trigger stays in the tab order. With `type="single"` the bound `value` is a string, with `type="multiple"` it is a string array.
 
 <Demo title="Single" description={"Only one item is open at a time. Clicking the open item collapses it."} src={SingleSrc}><Single client:visible /></Demo>
 <Demo title="Multiple" description={"Several items can be open at once."} src={MultipleSrc}><Multiple client:visible /></Demo>
@@ -32,7 +32,7 @@ Triggers are buttons with `aria-expanded`, and Arrow, Home and End keys move bet
 
 <Props title="Accordion props" rows={[
   { name: "type", type: "'single' | 'multiple'", default: "'single'", description: "Whether one or many items can be open." },
-  { name: "value", type: "string | string[]", default: "undefined", description: "Open item value(s). Bindable." },
+  { name: "value", type: "string | string[]", default: "undefined", description: "Open item value(s): a string for `single` (`''` when none is open), an array for `multiple`. Bindable." },
   { name: "onValueChange", type: "(value: string | string[]) => void", default: "undefined", description: "Called when the open items change." },
   { name: "class", type: "string", default: "''", description: "Extra class names on the root." },
   { name: "children", type: "Snippet", default: "undefined", description: "`AccordionItem` children." },

@@ -19,26 +19,27 @@ import LongpressSrc from "~/demos/navigation/actions/Longpress.svelte?raw";
 
 ```svelte
 <script>
-  import { clickOutside, focusTrap, autofocus, clipboard, longpress, keyboardAware, primeKeyboard } from "@codeatlasdev/ui/actions";
+  import { clickOutside, focusTrap, autofocus, clipboard, longpress, scrollFocusable, keyboardAware, primeKeyboard, focusTextField } from "@codeatlasdev/ui/actions";
 </script>
 
 <div use:clickOutside={() => (open = false)}>...</div>
 ```
 
-Actions attach behavior to a plain element with `use:`. They are exported from `@codeatlasdev/ui/actions`, which keeps them out of the main bundle.
+Actions attach behavior to a plain element with `use:`. They are exported from `@codeatlasdev/ui/actions`, which keeps them out of the main bundle. Dialog, Sheet, Drawer and Popover already handle focus, Escape and outside presses through the layer engine, so reach for these actions on your own elements.
 
-<Demo title="clickOutside" description="Calls the handler for every click that lands outside the element." src={ClickOutsideSrc}><ClickOutside client:visible /></Demo>
+<Demo title="clickOutside" description="Calls the handler for every click that lands outside the element. It listens on the capture phase of `document`." src={ClickOutsideSrc}><ClickOutside client:visible /></Demo>
 <Demo title="focusTrap" description="Keeps Tab and Shift+Tab inside the element while enabled." src={FocusTrapSrc}><FocusTrap client:visible /></Demo>
 <Demo title="autofocus" description="Focuses the element when it mounts." src={AutofocusSrc}><Autofocus client:visible /></Demo>
-<Demo title="clipboard" description="Copies the given text on click and dispatches a copy event." src={ClipboardSrc}><Clipboard client:visible /></Demo>
-<Demo title="longpress" description="Dispatches a longpress event after the pointer is held for the given duration." src={LongpressSrc}><Longpress client:visible /></Demo>
+<Demo title="clipboard" description="Copies the given text on click and dispatches a copy event (listen with `oncopy`) once the copy succeeded." src={ClipboardSrc}><Clipboard client:visible /></Demo>
+<Demo title="longpress" description="Dispatches a longpress event (listen with `onlongpress`) after the pointer is held for the given duration." src={LongpressSrc}><Longpress client:visible /></Demo>
 
 <Props for="none" title="Actions" rows={[
   { name: "clickOutside", type: "Action<HTMLElement, () => void>", description: "Calls the handler when a click lands outside the element." },
   { name: "focusTrap", type: "Action<HTMLElement, boolean>", description: "Traps Tab focus inside the element while the parameter is true." },
   { name: "autofocus", type: "Action<HTMLElement, { touch?: boolean } | undefined>", description: "Focuses the element on mount without scrolling. On touch devices it only focuses when primeKeyboard() ran in the opening gesture; pass { touch: true } to focus anyway." },
-  { name: "clipboard", type: "Action<HTMLElement, string>", description: "Copies the text to the clipboard on click and dispatches a copy CustomEvent with the text as detail." },
-  { name: "longpress", type: "Action<HTMLElement, number>", description: "Dispatches a longpress CustomEvent after the pointer is held for the given milliseconds (default 500)." },
+  { name: "clipboard", type: "Action<HTMLElement, string>", description: "Copies the text to the clipboard on click and, once the copy succeeded, dispatches a copy CustomEvent with the text as detail. Nothing is dispatched when the Clipboard API is unavailable, for example on a non-HTTPS page." },
+  { name: "longpress", type: "Action<HTMLElement, number>", description: "Dispatches a longpress CustomEvent after the pointer is held for the given milliseconds (default 500). Releasing or leaving the element cancels it." },
+  { name: "scrollFocusable", type: "Action<HTMLElement>", description: "Makes a scroll container keyboard-reachable only while it overflows: sets tabindex=\"0\" when the content is wider or taller than the box and removes it otherwise. SimpleTable and ScrollArea use it." },
   { name: "keyboardAware", type: "Action<HTMLElement>", description: "Pads the element's bottom by --ca-kb-inset and scrolls the focused field into view when the on-screen keyboard opens. Use on composers and sticky action bars." },
   { name: "primeKeyboard", type: "() => void", description: "Helper, not an action. Call synchronously in the tap handler that opens a view with an autofocused field so iOS and Android open the on-screen keyboard. No-op with a fine pointer." },
   { name: "focusTextField", type: "(el: HTMLElement | null | undefined, force?: boolean) => boolean", description: "Helper used by autofocus. Focuses the element with a fine pointer, or on touch only after primeKeyboard(). Returns whether it focused." },

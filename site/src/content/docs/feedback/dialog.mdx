@@ -31,19 +31,19 @@ import SplitSrc from "~/demos/feedback/dialog/Split.svelte?raw";
 </Dialog>
 ```
 
-The dialog renders a native modal `<dialog>`: focus is trapped, Escape closes and the panel carries `aria-modal`. For decisions that need an explicit answer use [AlertDialog](/docs/feedback/alert-dialog/). On phones, prefer [Sheet](/docs/feedback/sheet/) for bottom-anchored content.
+The dialog renders a native modal `<dialog>` opened with `showModal()`: the page behind is inert, focus is trapped, scrolling is locked and Escape closes it. Clicking the overlay closes it too. For decisions that need an explicit answer use [AlertDialog](/docs/feedback/alert-dialog/). On phones, prefer [Sheet](/docs/feedback/sheet/) for bottom-anchored content.
 
 <Demo title="Confirmation" description="The destructive confirm and cancel pattern." src={ConfirmationSrc}><Confirmation client:visible /></Demo>
 <Demo title="Info" description="Informational content with a single action." src={InfoSrc}><Info client:visible /></Demo>
 <Demo title="Form" description="A dialog holding a form, at the md size." src={FormSrc}><Form client:visible /></Demo>
 <Demo title="Chromeless" description="No header, description or actions, and the body has no padding. The title becomes the visually hidden accessible name." src={ChromelessSrc}><Chromeless client:visible /></Demo>
-<Demo title="Split" description='size="split" is 1100 by 720 with two columns from the md breakpoint and a single column below it. Combine it with chromeless.' src={SplitSrc}><Split client:visible /></Demo>
+<Demo title="Split" description='size="split" is 1100 by 720 with two columns from the md breakpoint (900px) and a single column below it. Combine it with chromeless.' src={SplitSrc}><Split client:visible /></Demo>
 
-<Props rows={[
+<Props for="Dialog" rows={[
   { name: "open", type: "boolean", default: "false", description: "Bindable open state." },
   { name: "title", type: "string", description: "Header title. With chromeless it is the hidden accessible name." },
   { name: "description", type: "string", description: "Subtitle below the title." },
-  { name: "size", type: "'sm' | 'md' | 'lg' | 'xl' | 'split'", default: "'md'", description: "Width: 400, 480, 600 or 820px. split is 1100 by 720 in two columns from md." },
+  { name: "size", type: "'sm' | 'md' | 'lg' | 'xl' | 'split'", default: "'md'", description: "Width: 400, 480, 600 or 820px. split is 1100 by 720 in two columns from 900px." },
   { name: "chromeless", type: "boolean", default: "false", description: "Omits header, description and actions; the body has no padding. title and description stay available to screen readers." },
   { name: "children", type: "Snippet", description: "Dialog body." },
   { name: "actions", type: "Snippet", description: "Footer buttons." },
@@ -57,16 +57,17 @@ Dialogs, sheets, drawers, menus, popovers and tooltips share one layer stack. Mo
 
 Escape and outside presses go to the topmost layer only, so a menu inside a dialog closes first and the dialog on the next press. Focus returns to the trigger when a layer closes.
 
-A host that draws outside the DOM (a native view over a webview) can follow the stack with `onLayerChange`. It fires on every open and close with the open layers, bottom to top, and their rectangles:
+A host that draws outside the DOM (a native view over a webview) can follow the stack with `onLayerChange`. It fires on every open and close with the open layers, bottom to top, and their rectangles, and returns the function that unsubscribes:
 
 ```ts
-import { onLayerChange } from "@codeatlasdev/ui";
+import { onLayerChange, type LayerChange } from "@codeatlasdev/ui";
 
-const stop = onLayerChange(({ count, modal, layers }) => {
-  nativeView.setParked(count > 0);
-  // layers: [{ kind: "modal" | "popover" | "hint", rect: DOMRect }]
+const stop = onLayerChange((change: LayerChange) => {
+  nativeView.setParked(change.count > 0);
+  // change.layers: LayerInfo[], bottom to top
+  // each LayerInfo is { kind: LayerKind, rect: DOMRect }
 });
 ```
 
-The same signal is a `layerchange` `CustomEvent` on `document`, with the detail as `event.detail`.
+The same signal is a `layerchange` `CustomEvent` on `document`, with the detail as `event.detail`. `LayerChange` is `{ layers: LayerInfo[]; count: number; modal: boolean }`, where `modal` is true while at least one modal layer is open. `LayerKind` is `"modal"` for Dialog, AlertDialog, Drawer and Sheet, `"popover"` for menus and popovers, and `"hint"` for tooltips. All three types are exported from `@codeatlasdev/ui`.
 

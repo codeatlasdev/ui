@@ -2,7 +2,7 @@
 title: NotificationBell
 description: "Bell button with an unread badge that opens a notification center, designed for app shell headers."
 group: Display
-order: 8
+order: 9
 ---
 import Demo from "~/components/docs/Demo.astro";
 import Props from "~/components/docs/Props.astro";
@@ -19,14 +19,14 @@ import ControlledSrc from "~/demos/display/notification-bell/Controlled.svelte?r
 <NotificationBell notifications={items} onRead={markRead} onReadAll={markAll} onClear={clear} />
 ```
 
-The unread count is derived from `notifications` where `read` is falsy. The component is controlled: update your list in `onRead`, `onReadAll` and `onClear`. Every visible string can be replaced through `labels`.
+The unread count is derived from `notifications` where `read` is falsy. The component is controlled: update your list in `onRead`, `onReadAll` and `onClear`. Every visible string can be replaced through `labels`. The panel is a popover layer anchored below the bell, aligned to its end edge, and closes on Escape or an outside press.
 
 <Demo title="Default" description={"With notifications and with an empty list."} src={DefaultSrc}><Default client:visible /></Demo>
 <Demo title="Controlled" description={"Mark items as read, mark all as read and clear the list."} src={ControlledSrc}><Controlled client:visible /></Demo>
 
 <Props rows={[
   { name: "notifications", type: "NotificationItem[]", default: "[]", description: "Items shown in the panel: `{ id, title, body?, time?, read?, variant? }`. `variant` is `'default' | 'info' | 'success' | 'warning' | 'error'`." },
-  { name: "onRead", type: "(id: string) => void", default: "undefined", description: "Called when an item is clicked." },
+  { name: "onRead", type: "(id: string) => void", default: "undefined", description: "Called when an unread item is clicked. Items already read do not call it." },
   { name: "onReadAll", type: "() => void", default: "undefined", description: "Called by the mark all as read action." },
   { name: "onClear", type: "() => void", default: "undefined", description: "Called by the clear action." },
   { name: "labels", type: "{ title?, markAll?, clear?, empty? }", default: "{}", description: "String overrides for i18n." },

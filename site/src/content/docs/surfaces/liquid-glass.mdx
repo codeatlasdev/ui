@@ -1,0 +1,32 @@
+---
+title: LiquidGlass
+description: The SVG refraction layer that Surface paints when material is "liquid". Use it directly only for a custom glass container.
+group: Surfaces
+order: 7
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Basic from "~/demos/surfaces/liquid-glass/Basic.svelte";
+import BasicSrc from "~/demos/surfaces/liquid-glass/Basic.svelte?raw";
+
+```svelte
+<script>
+  import { LiquidGlass, GLASS_OPTICS } from "@codeatlasdev/ui";
+</script>
+
+<div class="my-glass">
+  <LiquidGlass optics={GLASS_OPTICS.regular} />
+  <slot />
+</div>
+```
+
+You rarely need this. [Surface](/docs/surfaces/surface/) with `material="liquid"` renders `LiquidGlass` for you and picks the optics from its `elevation`. The component is an absolutely positioned, `aria-hidden` SVG that fills its parent and inherits the parent's border radius, so the parent needs `position: relative` and `overflow: hidden`. It only adds the refraction; the blur, tint and border come from the glass material classes on the parent.
+
+`GLASS_OPTICS` maps each material thickness (`ultra-thin`, `thin`, `regular`, `thick`, `chrome`) to a ready-made `optics` object.
+
+<Demo title="Refraction layer" src={BasicSrc}><Basic /></Demo>
+
+<Props rows={[
+  { name: "optics", type: "{ frost, bend, depth, curvature, sheen, dispersion: number }", description: "Optical parameters of the refraction filter. Required. Take one from `GLASS_OPTICS`." },
+  { name: "style", type: "string", default: "''", description: "Extra inline style for the SVG." },
+]} />

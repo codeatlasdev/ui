@@ -2,7 +2,7 @@
 title: Image
 description: "A responsive image that reserves its space (no layout shift), loads lazily, and preloads the one above-the-fold image."
 group: Display
-order: 5
+order: 6
 ---
 import Demo from "~/components/docs/Demo.astro";
 import Props from "~/components/docs/Props.astro";
@@ -32,16 +32,16 @@ For AVIF and WebP generation at build time see [Performance](/docs/getting-start
 
 `alt` is required. An image that carries no meaning passes `decorative` instead of `alt=""`; it renders `alt=""` with `aria-hidden="true"`. In development the component warns when `alt=""` is passed without `decorative`, when `width` or `height` is missing, and when `decorative` is combined with a non-empty `alt`.
 
-<Props rows={[
+<Props for="Image" rows={[
   { name: "src", type: "string", description: "Image URL." },
   { name: "alt", type: "string", description: "Text alternative. Required; use `decorative` for decoration." },
   { name: "width", type: "number", description: "Intrinsic width in pixels. Required, with `height` it reserves the space." },
   { name: "height", type: "number", description: "Intrinsic height in pixels. Required." },
   { name: "decorative", type: "boolean", default: "false", description: "Renders `alt=\"\"` and `aria-hidden=\"true\"`." },
   { name: "priority", type: "boolean", default: "false", description: "Eager load, `fetchpriority=\"high\"` and a preload link in `<head>`. One per page, for the LCP image." },
-  { name: "srcset", type: "string", default: "undefined", description: "Candidate renditions. Also set on the preload link when `priority` is on." },
-  { name: "sizes", type: "string", default: "undefined", description: "Rendered width hint for `srcset`." },
   { name: "loading", type: "'lazy' | 'eager'", default: "'lazy' ('eager' with priority)", description: "Overrides the default." },
   { name: "decoding", type: "'async' | 'sync' | 'auto'", default: "'async'", description: "Decode hint." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />
+
+Other `<img>` attributes are forwarded as they are. `srcset` and `sizes` are the ones you will use most: `srcset` lists the candidate renditions and `sizes` tells the browser the rendered width. With `priority`, both are copied onto the preload link in `<head>`. `fetchpriority` is controlled by `priority`.

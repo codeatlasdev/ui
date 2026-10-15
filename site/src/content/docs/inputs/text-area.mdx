@@ -1,6 +1,6 @@
 ---
 title: TextArea
-description: Multi-line text input with label, glass styling and configurable resize behavior.
+description: Multi-line text input with label, helper text, error state and configurable resize behavior.
 group: Inputs
 ---
 import Demo from "~/components/docs/Demo.astro";
@@ -19,7 +19,7 @@ import StatesSrc from "~/demos/inputs/text-area/States.svelte?raw";
 <TextArea label="Message" bind:value={message} rows={4} />
 ```
 
-The label floats when the field has a value or a placeholder. `description` is hidden while an `error` is shown. Text stays at 16px or more on touch devices so iOS Safari does not zoom on focus.
+The label sits above the field. `description` is hidden while an `error` is shown, and the error is announced with `role="alert"`. Text stays at 16px or more on touch devices so iOS Safari does not zoom on focus.
 
 <Demo title="Basic" description="Empty, with a placeholder, and pre-filled." src={BasicSrc}><Basic client:visible /></Demo>
 <Demo title="States" description="Helper text, error, required, read-only, disabled and resize=&quot;none&quot;." src={StatesSrc}><States client:visible /></Demo>
@@ -27,19 +27,19 @@ The label floats when the field has a value or a placeholder. `description` is h
 <Props rows={[
   { name: "value", type: "string", default: "''", description: "Bindable text value." },
   { name: "label", type: "string", description: "Label text." },
-  { name: "placeholder", type: "string", default: "''", description: "Native placeholder. Also floats the label." },
-  { name: "rows", type: "number", default: "4", description: "Initial visible row count." },
-  { name: "minRows", type: "number", description: "Minimum rows for the min-height. Defaults to rows." },
+  { name: "placeholder", type: "string", default: "''", description: "Native placeholder." },
+  { name: "rows", type: "number", default: "4", description: "Visible row count." },
+  { name: "minRows", type: "number", description: "Row count used for the minimum height. Defaults to rows." },
   { name: "resize", type: "'none' | 'vertical' | 'horizontal' | 'both'", default: "'vertical'", description: "CSS resize behavior." },
   { name: "error", type: "string", description: "Error message. Sets the error styling." },
   { name: "description", type: "string", description: "Helper text shown below. Hidden when error is set." },
-  { name: "helperText", type: "string", description: "Deprecated alias of description." },
+  { name: "helperText", type: "string", description: "Deprecated alias of description. Use description." },
   { name: "disabled", type: "boolean", default: "false", description: "Disables the textarea." },
   { name: "required", type: "boolean", default: "false", description: "Marks the field as required, with a visual asterisk." },
   { name: "readonly", type: "boolean", default: "false", description: "Makes the textarea read-only." },
   { name: "name", type: "string", description: "Native name, for form submission." },
   { name: "class", type: "string", description: "Extra classes on the root." },
   { name: "oninput", type: "(value: string) => void", description: "Called on every keystroke with the new value." },
-  { name: "onchange", type: "(value: string) => void", description: "Called when the value is committed (blur)." },
+  { name: "onchange", type: "(value: string) => void", description: "Called when the value is committed (on blur, after an edit)." },
   { name: "onblur", type: "(e: FocusEvent) => void", description: "Called when the textarea loses focus." },
 ]} />

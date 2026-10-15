@@ -1,0 +1,32 @@
+---
+title: Lightbox
+description: A full-screen image viewer on a native modal dialog.
+group: Feedback
+order: 9
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Basic from "~/demos/feedback/lightbox/Basic.svelte";
+import BasicSrc from "~/demos/feedback/lightbox/Basic.svelte?raw";
+
+```svelte
+<script>
+  import { Lightbox } from "@codeatlasdev/ui";
+
+  let open = $state(false);
+</script>
+
+<button onclick={() => (open = true)}>View photo</button>
+<Lightbox bind:open src={url} alt="Photo sent by Maria" />
+```
+
+The image is contained in the viewport and respects the device safe areas. Escape, the close button and a click on the backdrop close it. Because it is a native modal `<dialog>`, the page behind is inert, focus returns to the trigger and scrolling is locked while it is open. `alt` is required.
+
+<Demo title="Open from a button" src={BasicSrc}><Basic client:visible /></Demo>
+
+<Props rows={[
+  { name: "open", type: "boolean", default: "false", description: "Bindable open state." },
+  { name: "src", type: "string", description: "Image URL. Required." },
+  { name: "alt", type: "string", description: "Image description. Required." },
+  { name: "onclose", type: "() => void", description: "Called after the viewer closes." },
+]} />

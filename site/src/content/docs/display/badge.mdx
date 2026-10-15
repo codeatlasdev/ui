@@ -15,13 +15,13 @@ import ColorsSrc from "~/demos/display/badge/Colors.svelte?raw";
 
 ```svelte
 <script>
-  import { Badge } from "@codeatlasdev/ui";
+  import { Badge, IconButton } from "@codeatlasdev/ui";
 </script>
 
 <Badge count={3}><IconButton aria-label="Messages">…</IconButton></Badge>
 ```
 
-Badge wraps its child and positions the indicator on the corner. Pass `count` for a number (hidden at 0, capped at `99+`) or `dot` for a plain status dot. Add an accessible label to the wrapped control, since the indicator itself is visual.
+Badge wraps its child and positions the indicator on the corner. Pass `count` for a number (hidden at 0, capped at `99+`) or `dot` for a plain status dot. The indicator is a `role="status"` element labelled "New" (dot) or "N notifications" (count) from the i18n catalog; still give the wrapped control its own accessible name.
 
 <Demo title="Dot and counts" description={"`dot` shows a plain indicator, `count` shows a number capped at `99+`."} src={CountsSrc}><Counts /></Demo>
 <Demo title="On avatars" description={"Status dots on avatars."} src={OnAvatarsSrc}><OnAvatars /></Demo>

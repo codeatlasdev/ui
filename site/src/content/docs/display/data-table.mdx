@@ -2,7 +2,7 @@
 title: DataTable
 description: "Table with global search, column sorting, pagination and a column visibility toggle, built on TanStack Table."
 group: Display
-order: 6
+order: 7
 ---
 import Demo from "~/components/docs/Demo.astro";
 import CodeGroup from "~/components/docs/CodeGroup.astro";
@@ -19,6 +19,8 @@ DataTable lives in its own entry point so that TanStack Table stays out of bundl
 ```svelte
 <script lang="ts">
   import { DataTable, createCaColumnHelper } from "@codeatlasdev/ui/table";
+  type User = { name: string };
+  const users: User[] = [{ name: "Ana Souza" }, { name: "Bruno Lima" }];
 
   const col = createCaColumnHelper<User>();
   const columns = col.columns([
@@ -34,7 +36,7 @@ There are two modes. In simple mode you pass `columns` and `data` and the table 
 <Demo title="Simple mode" description={"Pass `columns` and `data`. Search, sort and pagination are managed automatically."} src={SimpleSrc}><Simple client:visible /></Demo>
 <Demo title="Controlled mode" description={"Own the state to drive server-side filtering, sorting and pagination."} src={ControlledSrc}><Controlled client:visible /></Demo>
 
-<Props rows={[
+<Props for="DataTable" rows={[
   { name: "columns", type: "ColumnDef[]", description: "Column definitions created with `createCaColumnHelper`. Required." },
   { name: "data", type: "TData[]", description: "Row data. In simple mode pass all rows; in controlled mode pass the current page. Required." },
   { name: "total", type: "number", default: "data.length", description: "Total row count after filtering, used to compute the page count. Ignored in simple mode." },
@@ -54,4 +56,70 @@ There are two modes. In simple mode you pass `columns` and `data` and the table 
   { name: "emptyState", type: "Snippet", default: "undefined", description: "Custom content shown when there is no data and no active filter." },
   { name: "children", type: "Snippet", default: "undefined", description: "Filter chips such as `DataTableFacetedFilter`, rendered in the toolbar." },
   { name: "class", type: "string", default: "''", description: "Extra class names on the wrapper." },
+]} />
+
+## Building blocks
+
+`DataTable` is assembled from the parts below, all exported from `@codeatlasdev/ui/table`. You rarely need them: use them standalone when you render your own `<table>` markup around a table instance made with `createCaTable`, for example a layout `DataTable` does not offer. Inside `DataTable` the toolbar, pagination and column toggle are already wired. Use `DataTableColumnHeader` as a column `header` to get a sortable header, and pass `DataTableFacetedFilter` as `children` of `DataTable`.
+
+```svelte
+<script lang="ts">
+  import { renderComponent } from "@tanstack/svelte-table";
+  import { createCaColumnHelper, DataTableColumnHeader } from "@codeatlasdev/ui/table";
+  type User = { name: string };
+
+  const col = createCaColumnHelper<User>();
+  const columns = col.columns([
+    col.accessor("name", {
+      header: ({ column }) =>
+        renderComponent(DataTableColumnHeader<User, string>, { column, title: "Name" }),
+      meta: { label: "Name" },
+    }),
+  ]);
+</script>
+```
+
+`createCaColumnHelper`, `createCaTable`, `caTableFeatures` and the `CaColumn`, `CaColumnDef`, `CaColumnMeta`, `CaTable` and `CaTableFeatures` types are exported from the same entry point. `meta.label` is the name shown in the column visibility menu.
+
+<Props for="DataTableToolbar" title="DataTableToolbar props" rows={[
+  { name: "table", type: "CaTable<TData>", description: "Table instance from `createCaTable`. Required." },
+  { name: "total", type: "number", description: "Result count shown in the toolbar. Required." },
+  { name: "globalFilter", type: "string", description: "Current search value. Required." },
+  { name: "onGlobalFilterChange", type: "(v: string) => void", description: "Called when the user types in the search box. Required." },
+  { name: "searchPlaceholder", type: "string", default: "undefined", description: "Placeholder and accessible name of the search input." },
+  { name: "isLoading", type: "boolean", default: "undefined", description: "Shows a spinner." },
+  { name: "isExporting", type: "boolean", default: "undefined", description: "Disables the export button and shows a spinner in it." },
+  { name: "onExport", type: "() => void", default: "undefined", description: "Renders the export button. It is disabled while `total` is 0." },
+  { name: "children", type: "Snippet", default: "undefined", description: "Filter controls rendered next to the search box." },
+]} />
+
+The toolbar always includes `DataTableColumnToggle` on its right side.
+
+<Props for="DataTablePagination" title="DataTablePagination props" rows={[
+  { name: "table", type: "CaTable<TData>", description: "Table instance from `createCaTable`. Required." },
+  { name: "total", type: "number", description: "Total row count shown next to the page indicator. Required." },
+]} />
+
+It renders a page size select (10, 20, 50 or 100 rows), a `page / pages` indicator and previous and next buttons.
+
+<Props for="DataTableColumnHeader" title="DataTableColumnHeader props" rows={[
+  { name: "column", type: "CaColumn<TData, TValue>", description: "Column the header belongs to. Required." },
+  { name: "title", type: "string", description: "Header text. Required." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+]} />
+
+A sortable column renders a button that toggles sorting and shows the direction icon. A column that cannot sort renders the plain title.
+
+<Props for="DataTableColumnToggle" title="DataTableColumnToggle props" rows={[
+  { name: "table", type: "CaTable<TData>", description: "Table instance from `createCaTable`. Required." },
+]} />
+
+A menu of checkboxes, one per column that can be hidden. It follows the menu keyboard pattern: arrow keys move, Space and Enter toggle, Escape closes.
+
+<Props for="DataTableFacetedFilter" title="DataTableFacetedFilter props" rows={[
+  { name: "title", type: "string", description: "Label of the filter button. Required." },
+  { name: "facets", type: "Record<string, number>", default: "{}", description: "Option key to result count. Options are sorted by count, highest first." },
+  { name: "labelMap", type: "Record<string, string>", default: "{}", description: "Maps option keys to display labels." },
+  { name: "selected", type: "string[]", default: "[]", description: "Selected option keys." },
+  { name: "onSelectionChange", type: "(values: string[]) => void", description: "Called with the new selection. Required." },
 ]} />

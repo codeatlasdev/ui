@@ -13,7 +13,7 @@
 <Dialog bind:open title="About this component">
   <p class="body">
     <strong>Dialog</strong> renders a native modal <code>&lt;dialog&gt;</code>. It traps focus
-    (Tab cycles inside), closes on Escape and exposes correct <code>aria-modal</code> semantics.
+    (Tab cycles inside), closes on Escape and makes the page behind inert.
   </p>
   <p class="body">
     The overlay blurs the page while the panel uses a solid <code>--ca-surface-overlay</code>,

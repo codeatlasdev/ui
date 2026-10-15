@@ -1,6 +1,6 @@
 ---
 title: RadioGroup
-description: Single-selection radio group with roving focus and arrow-key navigation.
+description: Single-selection radio group as a list of rows or a grid of selectable cards.
 group: Inputs
 ---
 import Demo from "~/components/docs/Demo.astro";
@@ -9,6 +9,8 @@ import Vertical from "~/demos/inputs/radio/Vertical.svelte";
 import VerticalSrc from "~/demos/inputs/radio/Vertical.svelte?raw";
 import Horizontal from "~/demos/inputs/radio/Horizontal.svelte";
 import HorizontalSrc from "~/demos/inputs/radio/Horizontal.svelte?raw";
+import Cards from "~/demos/inputs/radio/Cards.svelte";
+import CardsSrc from "~/demos/inputs/radio/Cards.svelte?raw";
 import Disabled from "~/demos/inputs/radio/Disabled.svelte";
 import DisabledSrc from "~/demos/inputs/radio/Disabled.svelte?raw";
 
@@ -21,17 +23,20 @@ import DisabledSrc from "~/demos/inputs/radio/Disabled.svelte?raw";
 <RadioGroup items={[{ value: "free", label: "Free" }, { value: "pro", label: "Pro" }]} bind:value={plan} />
 ```
 
-Arrow keys move focus and selection inside the group, Tab leaves it. The group has no visible title of its own, so wrap it in a `fieldset` with a `legend` when the choice needs a heading.
+The options are native radio inputs that share one `name`, so arrow keys move focus and selection inside the group and Tab leaves it. The group has no visible title of its own: pass `aria-label`, or wrap it in a `fieldset` with a `legend` when the choice needs a visible heading.
 
 <Demo title="Vertical" description="The default layout." src={VerticalSrc}><Vertical client:visible /></Demo>
 <Demo title="Horizontal" description="orientation=&quot;horizontal&quot; lays the options out in a row." src={HorizontalSrc}><Horizontal client:visible /></Demo>
+<Demo title="Cards" description="variant=&quot;cards&quot; renders each option as a selectable card with an optional description." src={CardsSrc}><Cards client:visible /></Demo>
 <Demo title="Disabled" description="Disable a single item, or the whole group." src={DisabledSrc}><Disabled client:visible /></Demo>
 
 <Props for="RadioGroup" rows={[
   { name: "value", type: "string", default: "''", description: "Bindable selected value." },
-  { name: "items", type: "RadioItem[]", description: "Options: { value, label, disabled? }." },
+  { name: "items", type: "RadioItem[]", description: "Options: { value, label, description?, disabled? }. description is shown in the cards variant." },
+  { name: "variant", type: "'list' | 'cards'", default: "'list'", description: "list renders radio and label rows. cards renders each option as a card in a responsive grid, and the whole card is the hit area." },
   { name: "orientation", type: "'vertical' | 'horizontal'", default: "'vertical'", description: "Layout direction and arrow-key axis." },
   { name: "disabled", type: "boolean", default: "false", description: "Disables the entire group." },
+  { name: "aria-label", type: "string", description: "Accessible name of the group." },
   { name: "class", type: "string", description: "Extra classes on the group." },
   { name: "onchange", type: "(value: string) => void", description: "Called when the selection changes." },
 ]} />

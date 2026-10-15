@@ -37,6 +37,7 @@
 			"!**/.turbo",
 			"!**/.svelte-kit",
 			"!**/.astro",
+			"!**/.cache",
 			"!**/__screenshots__",
 			"!**/.vitest",
 			"!**/test-results",

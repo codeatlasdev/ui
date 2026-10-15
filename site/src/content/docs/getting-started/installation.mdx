@@ -7,7 +7,7 @@ order: 1
 import { Callout, Steps } from "@codeatlasdev/ui";
 import CodeGroup from "~/components/docs/CodeGroup.astro";
 
-CodeAtlas UI needs Svelte 5 (runes mode). In a SvelteKit or Astro app, `bunx @codeatlasdev/ui init` does the whole setup below for you, and prints a diff instead of overwriting any file that already exists. Setup is three things: import the stylesheet once, inject the theme script before first paint, and start the `colorScheme` store in your root layout.
+CodeAtlas UI needs Svelte 5 (runes mode). In a SvelteKit or Astro app, `bunx @codeatlasdev/ui init` does the whole setup below for you (see [The `init` command](#the-init-command)). Setup is three things: import the stylesheet once, inject the theme script before first paint, and start the `colorScheme` store in your root layout.
 
 <CodeGroup sync="pm" tabs={[
   { label: "bun", code: "bun add @codeatlasdev/ui" },
@@ -23,34 +23,64 @@ The core bundle stays small. Heavy features are separate entry points with optio
 | DataTable | `@codeatlasdev/ui/table` | `@tanstack/svelte-table` |
 | CodeSnippet | `@codeatlasdev/ui/code` | `shiki` |
 | Masked and money fields | `@codeatlasdev/ui/forms` | nothing |
+| Accessibility test helpers | `@codeatlasdev/ui/testing` | `axe-core` |
+| Brand icons (`caBrandPlugin`) | `@codeatlasdev/ui/vite` | `@resvg/resvg-js` and `png-to-ico` |
+| `migrate` command | `bunx @codeatlasdev/ui migrate` | `typescript` |
 
-Icons come from `@lucide/svelte`, which the package already depends on.
+`@sveltejs/kit` and `astro` are optional peers too: install the one your app uses. Icons come from `@lucide/svelte`, which the package already depends on.
 
 ### Release channels
 
-| Channel | Install | When to use it |
+Releases are published by version tag (`@codeatlasdev/ui@X.Y.Z`), not from branches. The prerelease id in the version is the npm dist-tag.
+
+| Version | Install | When to use it |
 |---|---|---|
-| `latest` | `bun add @codeatlasdev/ui` | Production. Semver: breaking changes only in a major. |
-| `beta` | `bun add @codeatlasdev/ui@beta` | The next minor, feature-complete. Try it before it ships. |
-| `alpha` | `bun add @codeatlasdev/ui@alpha` | The next major while it is still moving. Expect breaking changes between alphas. |
+| `X.Y.Z` | `bun add @codeatlasdev/ui` (dist-tag `latest`) | Production. Semver: breaking changes only in a major. |
+| `X.Y.Z-beta.N` | `bun add @codeatlasdev/ui@beta` | A prerelease of the next version. It never moves `latest`. Try it before it ships. |
+
+A prerelease with another id (`X.Y.Z-alpha.N`, for example) is published under a dist-tag with that id. Pin an exact version (`bun add @codeatlasdev/ui@3.1.0-beta.2`) to keep a prerelease stable.
 
 Every version is published from CI with an npm provenance statement, so you can check which commit and workflow built it (`npm audit signatures`).
 
+## The `init` command
+
+```sh
+bunx @codeatlasdev/ui init [--write] [--dir <path>]
+```
+
+`init` detects the framework from `package.json` (`@sveltejs/kit` means SvelteKit, otherwise `astro` means Astro) and prints `Detected SvelteKit.` or `Detected Astro.`. With neither it prints an error and exits with code 1. Then it goes through the files of that framework, one line each:
+
+| Line | Meaning |
+|---|---|
+| `create  <file>` | The file was missing and is now written. |
+| `ok      <file> (already set up)` | Nothing to change. Running `init` again on a finished setup prints only `ok` lines. |
+| `diff    <file> (exists, not modified)` | The file exists and needs a change. A unified diff follows; nothing is written until you re-run with `--write`. |
+| `patch   <file>` | The change was applied (`--write`). |
+| `manual  <file>: could not patch safely.` | `init` could not edit the file safely (no `plugins: [...]` array, an existing `handle` of your own, no `</body>`). It says what to add by hand and exits with code 1. |
+| `skip    <file> (not found)` | The file does not exist and `init` does not create it (`vite.config.ts`, `src/app.html` and the Astro config). |
+
+| Flag | Effect |
+|---|---|
+| `--write` | Apply the proposed changes to existing files. Files that do not exist yet are always created. |
+| `--dir <path>` | Project directory. Defaults to the current directory. |
+
+When diffs are pending it ends with `N existing file(s) left untouched. Re-run with --write to apply the diffs above.` A clean run ends with `Done. Run your dev server: the theme paints on the first frame.`
+
 ## SvelteKit
 
-`@codeatlasdev/ui` supports SvelteKit 2 (`^2.12`) and SvelteKit 3. The steps below are the same on both; the differences are in [SvelteKit 3](#sveltekit-3). `bunx @codeatlasdev/ui init` reads the installed Kit version and writes the right imports.
+`@codeatlasdev/ui` supports SvelteKit 2 (`^2.12`) and SvelteKit 3. The steps below are the same on both; the differences are in [SvelteKit 3](#sveltekit-3). `init` reads the installed Kit major (`node_modules/@sveltejs/kit`, or the range in `package.json` before `install` ran; anything it cannot parse counts as 2) and writes the right theme import.
 
 ### What `init` writes
 
-`bunx @codeatlasdev/ui init` creates the files below when they are missing. A file that already exists is never overwritten: `init` prints a diff and applies it only with `--write`. Re-running it changes nothing once the setup is complete.
+For each file below, `init` creates it when it is missing, except `vite.config.ts` and `src/app.html`, which it only patches (it prints `skip` when they are not there). A file that already exists is never overwritten: `init` prints a diff and applies it only with `--write`. Re-running it changes nothing once the setup is complete.
 
 | File | What `init` puts there | If the file exists |
 |---|---|---|
-| `src/lib/theme.ts` | the shared `theme` object | left alone |
-| `vite.config.ts` | `caThemePlugin(theme)` and `caErrorPlugin({ scaffold: true })`, after `sveltekit()`, in one `@codeatlasdev/ui/vite` import | adds only the plugin that is missing |
+| `src/lib/theme.ts` | the shared `theme` object (`defaultPreset: "amber"`, `defaultScheme: "system"`) | left alone |
+| `vite.config.ts` | `caThemePlugin(theme)` and `caErrorPlugin({ scaffold: true })`, appended to `plugins`, in one `@codeatlasdev/ui/vite` import (plus `import { theme } from "./src/lib/theme.ts"`) | adds only the plugin that is missing |
 | `src/hooks.server.ts` | `handle = sequence(caThemeHandle(theme))` and `handleError = createErrorHandler()` | adds only what is missing; reports `manual` if you already define a `handle` of your own; never touches your `handleError` |
 | `src/routes/+layout.svelte` | the stylesheet import and `colorScheme.init()` in `onMount` | adds only the missing import or call |
-| `src/app.html` | the viewport meta with `viewport-fit=cover, interactive-widget=resizes-content` | rewrites only the viewport meta |
+| `src/app.html` | the viewport meta with `viewport-fit=cover, interactive-widget=resizes-content` | rewrites only the viewport meta; reports `manual` when there is none |
 
 `caErrorPlugin({ scaffold: true })` then creates `src/routes/+error.svelte` and `src/error.html` the first time Vite runs (dev or build), and never overwrites them. The result is the setup below, which you can also write by hand.
 
@@ -129,7 +159,7 @@ Every version is published from CI with an npm provenance statement, so you can 
 
 ### SvelteKit 3
 
-Kit 3 changed three things this setup touches. `init` handles the first and reports the other two (it never rewrites `svelte.config.js` or `tsconfig.json`).
+Kit 3 changed three things this setup touches. `init` handles the third (the theme import in the hook) and, for the other two, prints a `note` line instead of rewriting `svelte.config.js` or `tsconfig.json`: it reports `svelte.config.js`/`.ts`/`.mjs` when one exists, and a `tsconfig.json` that does not mention `$app/tsconfig`. On a clean Kit 3 run you get no `Done.` line while a note is pending.
 
 1. **Configuration moves into the Vite plugin.** `svelte.config.js` is ignored (`config_file_unsupported`) and the `kit` namespace is gone (`config_kit_namespace`). Pass the options directly to `sveltekit()`, next to the two plugins:
 
@@ -163,7 +193,14 @@ Kit 3 changed three things this setup touches. `init` handles the first and repo
 
 ## Astro
 
-Use the integration together with `@astrojs/svelte`. `caUI` injects the theme into the `<head>` of every page and handles the SSR bundling.
+Use the integration together with `@astrojs/svelte`. `caUI` injects the theme into the `<head>` of every page and handles the SSR bundling. `bunx @codeatlasdev/ui init` sets this up for an Astro project:
+
+| File | What `init` puts there | If the file exists |
+|---|---|---|
+| `src/theme.ts` | the shared `theme` object (`defaultPreset: "amber"`, `defaultScheme: "system"`) | left alone |
+| `astro.config.mjs` (or `.ts`, `.js`, `.mts`) | `caUI(theme)` first in `integrations`, with its two imports | adds `caUI(theme)` unless `caUI(` is already there; reports `manual` when there is no `integrations: [` array |
+| the first `.astro` file in `src/layouts` that renders `<html>` | the stylesheet import, the viewport meta and a client `<script>` that calls `colorScheme.init()` | adds only what is missing; reports `manual` when there is no `</body>` for the script |
+| `src/layouts/Base.astro` | created only when `src/layouts` has no layout that renders `<html>` | not applicable |
 
 ```sh
 bun add @codeatlasdev/ui @astrojs/svelte svelte
@@ -183,26 +220,34 @@ export default defineConfig({ integrations: [svelte(), caUI(theme)] });
 // src/theme.ts
 import type { ThemeOptions } from "@codeatlasdev/ui/astro";
 
-export const theme: ThemeOptions = { defaultPreset: "amber", defaultScheme: "dark" };
+export const theme: ThemeOptions = { defaultPreset: "amber", defaultScheme: "system" };
 ```
 
-Import the stylesheet once in your base layout and add the viewport meta:
+Import the stylesheet once in your base layout, add the viewport meta and start the store from a client script, so theme switches and OS scheme changes stay in sync on the page:
 
 ```astro
 ---
 // src/layouts/Base.astro
 import "@codeatlasdev/ui/styles/global.css";
 ---
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
+    <title>My app</title>
   </head>
-  <body><slot /></body>
+  <body>
+    <slot />
+    <script>
+      import { colorScheme } from "@codeatlasdev/ui";
+      colorScheme.init();
+    </script>
+  </body>
 </html>
 ```
 
-Components are Svelte islands. Add a client directive to anything interactive (`client:visible` or `client:load`); purely visual components render on the server with no JavaScript. In islands, call `colorScheme.init()` from one island that is always on the page, such as your header, or from a small script.
+Components are Svelte islands. Add a client directive to anything interactive (`client:visible` or `client:load`); purely visual components render on the server with no JavaScript. Call `colorScheme.init()` once per page, from that layout script or from one island that is always present.
 
 <Callout type="note">
   Astro needs `astro` 5, 6 or 7 as a peer. Components that read `colorScheme` render correctly on the server because the init script sets `class="dark"` and `data-preset` before the stylesheet applies.

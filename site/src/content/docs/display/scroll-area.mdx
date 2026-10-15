@@ -2,7 +2,7 @@
 title: ScrollArea
 description: "Scrollable container with overlay scrollbars styled by the theme."
 group: Display
-order: 10
+order: 12
 ---
 import Demo from "~/components/docs/Demo.astro";
 import Props from "~/components/docs/Props.astro";
@@ -19,7 +19,7 @@ import HorizontalSrc from "~/demos/display/scroll-area/Horizontal.svelte?raw";
 <ScrollArea maxHeight="240px">…</ScrollArea>
 ```
 
-The area scrolls once its content exceeds `maxHeight` or `maxWidth`, so set one of them (or a height through `class`). Native scrolling, touch momentum and keyboard scrolling are preserved.
+The area scrolls once its content exceeds `maxHeight` or `maxWidth`, so set one of them (or a height through `class`). Native scrolling and touch momentum are preserved. The viewport is focusable (`tabindex="0"`), so keyboard users can scroll it with the arrow keys.
 
 <Demo title="Vertical scroll" description={"Capped with `maxHeight`."} src={VerticalSrc}><Vertical client:visible /></Demo>
 <Demo title="Horizontal scroll" description={"`orientation=\"horizontal\"` with always-visible scrollbars."} src={HorizontalSrc}><Horizontal client:visible /></Demo>

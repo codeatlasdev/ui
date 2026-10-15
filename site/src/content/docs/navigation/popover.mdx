@@ -22,12 +22,12 @@ import FormSrc from "~/demos/navigation/popover/Form.svelte?raw";
 </Popover>
 ```
 
-Escape closes the popover, a click outside dismisses it and focus returns to the trigger. Pass an interactive trigger through `triggerChild` and spread the received `props` on it; use `trigger` only for non-interactive content. For a hint that appears on hover, use [Tooltip](/docs/display/tooltip/) instead.
+Escape closes the popover and returns focus to the trigger, and a press outside dismisses it. It is a popover layer in the browser top layer, positioned with CSS anchor positioning where supported, so it stays above a dialog it opens from. Pass an interactive trigger through `triggerChild` and spread the received `props` on it; use `trigger` only for non-interactive content. For a hint that appears on hover, use [Tooltip](/docs/display/tooltip/) instead.
 
 <Demo title="Basic" description="Text and an action inside the popover." src={BasicSrc}><Basic client:visible /></Demo>
 <Demo title="Form" description="A small form anchored to its trigger, aligned to the start." src={FormSrc}><Form client:visible /></Demo>
 
-<Props rows={[
+<Props for="Popover" rows={[
   { name: "triggerChild", type: "Snippet<[Record<string, unknown>]>", description: "Interactive trigger. Receives the trigger props to spread onto your Button or IconButton." },
   { name: "trigger", type: "Snippet", description: "Non-interactive trigger content (text, icon), wrapped in the popover's own button." },
   { name: "children", type: "Snippet", description: "Popover content." },

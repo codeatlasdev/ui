@@ -1,8 +1,8 @@
 ---
 title: Table
-description: "SimpleTable adds a sticky header, hover rows and an optional card layout on small screens."
+description: "SimpleTable styles plain table markup with a sticky header, hover rows and an optional card layout in narrow containers."
 group: Display
-order: 11
+order: 13
 ---
 import Demo from "~/components/docs/Demo.astro";
 import Props from "~/components/docs/Props.astro";
@@ -22,13 +22,13 @@ import CardsSrc from "~/demos/display/table/Cards.svelte?raw";
 </SimpleTable>
 ```
 
-SimpleTable styles plain `thead` and `tbody` markup. For search, sorting and pagination use [DataTable](/docs/display/data-table/). In `cards` mode the header row stays available to screen readers.
+SimpleTable styles plain `thead` and `tbody` markup inside a focusable, horizontally scrolling region. For search, sorting and pagination use [DataTable](/docs/display/data-table/). It is exported from `@codeatlasdev/ui`. `@codeatlasdev/ui/table` also exports a `Table`, a bordered wrapper around a plain `<table>` that forwards native table attributes.
 
 <Demo title="Default (scroll)" description={"A regular table at every width."} src={ScrollSrc}><Scroll /></Demo>
-<Demo title="Cards on mobile" description={"Below 900px each row becomes a card. Put `data-label` on every `td`; it is rendered as the field name. Resize the window to see it."} src={CardsSrc}><Cards /></Demo>
+<Demo title="Cards on narrow containers" description={"When the table's own container is narrower than 600px each row becomes a card. Every cell is captioned with its column header; `data-label` only overrides that. Resize the window to see it."} src={CardsSrc}><Cards /></Demo>
 
 <Props for="SimpleTable" rows={[
-  { name: "responsive", type: "'scroll' | 'cards'", default: "'scroll'", description: "`cards` turns each row into a card below the md breakpoint (900px). Requires `data-label` on each `td`." },
+  { name: "responsive", type: "'scroll' | 'cards'", default: "'scroll'", description: "`scroll` keeps a regular table. `cards` turns each row into a card when the table's own width is below the `sm` breakpoint (600px). Cell captions come from the `thead` headers automatically." },
   { name: "class", type: "string", default: "''", description: "Extra class on the wrapper." },
   { name: "children", type: "Snippet", default: "undefined", description: "`thead` and `tbody` markup." },
 ]} />

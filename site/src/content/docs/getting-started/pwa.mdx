@@ -14,7 +14,7 @@ A progressive web app needs three pieces: a manifest (name, icons, colors), the 
 
 ## Manifest
 
-`manifest()` returns the manifest object. `theme_color` and `background_color` come from the same theme definition you give `caThemeHandle`, so the splash screen and the browser chrome match the first paint.
+`manifest()` returns the manifest object. `theme_color` and `background_color` come from the same theme definition you give `caThemeHandle`: they are the surface color of the default preset in the default scheme (the dark one unless `defaultScheme` is `"light"`), the value the init script puts in `<meta name="theme-color">`. The splash screen and the browser chrome therefore match the first paint.
 
 ```ts
 // src/routes/manifest.webmanifest/+server.ts
@@ -43,10 +43,10 @@ export const GET = () =>
   );
 ```
 
-Defaults are `display: "standalone"`, `start_url: "/"` and `scope: "/"`. Pass `themeColor` or `backgroundColor` to override the derived colors.
+Defaults are `display: "standalone"`, `start_url: "/"`, `scope: "/"` and `short_name` equal to `name`. Each icon gets `type: "image/png"` unless you set one. Pass `themeColor` or `backgroundColor` (as `#rrggbb`) to override the derived colors, and `extra` for members the builder does not cover (`categories`, `screenshots`, `id`).
 
 <Callout type="caution" title="Provide a maskable icon">
-  Android crops other icons into a white tile. Keep the artwork of the `maskable` icon inside the central 80% of the canvas. `manifest()` warns when none is present.
+  Android crops other icons into a white tile. Keep the artwork of the `maskable` icon inside the central 80% of the canvas. `manifest()` logs a warning when no icon has `purpose: "maskable"`.
 </Callout>
 
 Link it from the page head with `<Seo manifest="/manifest.webmanifest" ... />`.
@@ -67,9 +67,10 @@ Safari ignores most manifest fields. `appleMeta()` returns the tags it does read
 
 | Tag | Effect |
 |---|---|
-| `apple-mobile-web-app-capable` | Opens without Safari chrome. |
-| `apple-mobile-web-app-status-bar-style` | `black-translucent` (default) draws the page under the status bar. Needs `viewport-fit=cover`; pad with `var(--ca-safe-top)`. |
-| `apple-touch-icon` | 180x180 PNG. Use an opaque image: iOS fills transparency with black. |
+| `mobile-web-app-capable` and `apple-mobile-web-app-capable` | Opens without browser chrome. |
+| `apple-mobile-web-app-status-bar-style` | `black-translucent` (default), `default` or `black`. The default draws the page under the status bar: it needs `viewport-fit=cover`; pad with `var(--ca-safe-top)`. |
+| `apple-mobile-web-app-title` | The label under the icon, emitted when you pass `title`. |
+| `apple-touch-icon` | 180x180 PNG, from `touchIcon`. Use an opaque image: iOS fills transparency with black. |
 
 ## Service worker
 

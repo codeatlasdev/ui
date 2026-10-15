@@ -21,17 +21,17 @@ CodeAtlas UI gives Svelte 5 apps full screens, not just bricks: page templates, 
 </AppList>
 ```
 
-That is a whole users page: header, search, pagination, empty state and glass surface, with no CSS written.
+That is a whole users page: header, search, pagination and empty state, with no CSS written.
 
 ## What you get
 
-- **Pages, not primitives.** `AppList`, `AppForm`, `AppSettings`, `PageShell` and `AppShellLayout` bring layout, spacing and empty states.
-- **Liquid Glass.** Five material tiers with real `backdrop-filter`, tuned for light and dark, with opaque fallbacks for reduced transparency.
-- **Theme engine.** Eight OKLCH presets, brand presets from one hex color, four surface styles, and no flash on load.
-- **Native on mobile.** Safe areas, keyboard handling, 44px touch targets, bottom sheets with swipe to dismiss, and browser chrome color that follows the page.
-- **Accessible.** WAI-ARIA keyboard and focus behavior, axe-tested components, reduced motion and reduced transparency support.
-- **Light.** Charts, DataTable and CodeSnippet are separate entry points with optional peers, so they stay out of your bundle unless imported.
-- **Built for AI agents.** Closed prop vocabularies, typed props, `llms.txt` and installable skills.
+- Page templates instead of primitives: `AppList`, `AppForm`, `AppSettings`, `PageShell` and `AppShellLayout` bring layout, spacing and empty states.
+- Sober by default, glass on request: surfaces are solid and opaque out of the box. The `liquid` recipe (or `defaultStyle: "glass"`) brings back Liquid Glass, with five material tiers over a real `backdrop-filter` and opaque fallbacks for reduced transparency.
+- A theme engine with eight OKLCH presets, brand presets from one hex color, nine surface styles, fifteen design-style recipes and no flash on load.
+- Native feel on mobile: safe areas, keyboard handling, 44px touch targets, bottom sheets with swipe to dismiss and a browser chrome color that follows the page.
+- Accessibility: WAI-ARIA keyboard and focus behavior, axe-tested components, reduced motion and reduced transparency support.
+- Small bundles: Charts, DataTable and CodeSnippet are separate entry points with optional peers, so they stay out of your bundle unless imported.
+- Agent-ready: closed prop vocabularies, typed props, an MCP server, `llms.txt` and installable skills.
 
 ## Install
 
@@ -45,7 +45,7 @@ That is a whole users page: header, search, pagination, empty state and glass su
 
 <CardGrid>
   <LinkCard title="Installation" href="/docs/getting-started/installation/" description="SvelteKit, Astro and plain Vite setup." />
-  <LinkCard title="Theming" href="/docs/getting-started/theming/" description="defineTheme, presets, schemes and token overrides." />
+  <LinkCard title="Theming" href="/docs/getting-started/theming/" description="Theme options, presets, schemes, surface styles and token overrides." />
   <LinkCard title="Mobile" href="/docs/getting-started/mobile/" description="Safe areas, keyboard, browser chrome and layout components." />
   <LinkCard title="Accessibility" href="/docs/getting-started/accessibility/" description="What is handled for you and what is not." />
   <LinkCard title="Internationalization" href="/docs/getting-started/i18n/" description="English by default, pt-BR built in, overridable." />

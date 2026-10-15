@@ -1,0 +1,33 @@
+---
+title: SettingItem
+description: A settings row with a label, a description and one control on the right.
+group: Inputs
+order: 23
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Basic from "~/demos/inputs/setting-item/Basic.svelte";
+import BasicSrc from "~/demos/inputs/setting-item/Basic.svelte?raw";
+
+```svelte
+<script>
+  import { SettingItem, Switch } from "@codeatlasdev/ui";
+
+  let email = $state(true);
+</script>
+
+<SettingItem label="Email notifications" description="Receive an email for every mention.">
+  <Switch bind:checked={email} />
+</SettingItem>
+```
+
+The row is a `<label>`, so clicking the text activates the first control inside it (a `Switch`, an input, a select or a button) and names it for assistive technology. Use it inside [AppSettings](/docs/layout/list-page/) tabs.
+
+<Demo title="Switch rows" src={BasicSrc}><Basic client:visible /></Demo>
+
+<Props rows={[
+  { name: "label", type: "string", description: "Setting name. Required." },
+  { name: "description", type: "string", description: "Help text under the label." },
+  { name: "children", type: "Snippet", description: "The control, placed on the right." },
+  { name: "class", type: "string", default: "''", description: "Extra classes on the root." },
+]} />

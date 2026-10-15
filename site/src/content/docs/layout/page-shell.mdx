@@ -22,15 +22,15 @@ import DashboardSrc from "~/demos/layout/page-shell/Dashboard.svelte?raw";
 
 Below 900px the header stacks: the description leads and `actions` wrap onto their own row. Labeled buttons share that row full-width (large tap targets); icon-only controls (`IconButton`, `ThemeToggle`) keep their natural size and stay at the end of the row.
 
-Inside a `PageShell`, `EmptyState` titles default to `<h2>` (under the page `<h1>`). Pass `headingLevel` to `EmptyState` or `Card` to pick the level explicitly.
+The shell renders `title` as the page `<h1>`; below 900px inside an `AppShellLayout` it is hidden visually because the mobile header already shows it. Inside a `PageShell`, `EmptyState` titles default to `<h2>` (under the page `<h1>`). Pass `headingLevel` to `EmptyState` or `Card` to pick the level explicitly.
 
 <Demo title="Dashboard page" description="KPI cards and a content card inside a PageShell." src={DashboardSrc}><Dashboard /></Demo>
 
 <Props rows={[
   { name: "title", type: "string", description: "Page title." },
   { name: "description", type: "string", description: "Supporting text under the title." },
-  { name: "gap", type: "number", default: "28", description: "Vertical gap between the header and the content, in px." },
-  { name: "maxWidth", type: "string", default: "'1280px'", description: "Maximum width of the content column." },
+  { name: "gap", type: "number", default: "undefined", description: "Vertical gap between the header and the content, in px. Omit for `--ca-space-7` (28px at the default density)." },
+  { name: "maxWidth", type: "string", default: "undefined", description: "Maximum width of the content column, any CSS length. Omit for 80rem (1280px at the default 4px spacing unit)." },
   { name: "actions", type: "Snippet", description: "Right side of the page header." },
   { name: "children", type: "Snippet", description: "Page content." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },

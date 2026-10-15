@@ -5,11 +5,11 @@
 <div class="row">
   <Card material="glass" tone="brand" class="accent">
     <p class="title">Tinted</p>
-    <p class="text">Brand gradient overlay on the surface.</p>
+    <p class="text">Brand tint over the fill.</p>
   </Card>
   <Card material="glass" glow class="accent">
     <p class="title">Glowing</p>
-    <p class="text">Backlit halo behind the surface.</p>
+    <p class="text">Brand halo behind the surface.</p>
   </Card>
 </div>
 

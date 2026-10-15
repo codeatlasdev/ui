@@ -98,7 +98,7 @@ On a touch device, `autofocus` and `focusTextField` only focus when the keyboard
 
 ## Input font size
 
-Safari zooms the page when a focused field computes under 16px. `base.css` raises every text-entry control (`input`, `textarea`, `select`, `[contenteditable]`) to `max(16px, 1em)` under `(pointer: coarse), (max-width: 767px)`, with zero specificity (`:where()`) so an app can still opt a field out. Package controls read `--ca-input-font-size`, which does the same. In your own fields, use the token:
+Safari zooms the page when a focused field computes under 16px. `base.css` raises every text-entry control (`input` except checkbox, radio, range, file, color and hidden, plus `textarea`, `select` and `[contenteditable]`) to `max(16px, 1em)` under `(pointer: coarse), (max-width: 899.98px)`, with zero specificity (`:where()`) so an app can still opt a field out. Package controls read `--ca-input-font-size`, which does the same under that query. In your own fields, use the token:
 
 ```css
 .my-field input {
@@ -110,10 +110,10 @@ Safari zooms the page when a focused field computes under 16px. `base.css` raise
 
 Mobile browsers tint their status bar and toolbar from the page. The package feeds each engine what it reads:
 
-- **`<html>` has a solid background.** `base.css` sets `html { background-color: var(--ca-surface-base) }` and keeps `body` transparent. The decorative mesh lives in `body::before`, because browsers sample the real background and never pseudo-elements. The same color shows in the overscroll area.
-- **`--ca-chrome-surface` is opaque.** `MobileHeader` and `BottomNav` use it as `background-color`, so the strip under the notch and the home indicator matches the bar.
-- **`<meta name="theme-color">` follows what is painted.** The init script sets it from the preset before first paint. After `colorScheme.init()`, a small sync keeps it equal to the opaque color under the top edge of the screen: an opaque header, a [theme island](/docs/getting-started/theming/#theme-islands) or the page itself. It updates on theme changes, route changes and scroll. This is what Chrome and Samsung Internet on Android, Safari 18 and earlier, and installed PWAs use.
-- **Safari 26** ignores `theme-color` and instead samples the background of the root and of fixed or sticky elements at the screen edges. Because those are solid colors, both paths show the same result.
+- `<html>` has a solid background. `base.css` sets `html { background-color: var(--ca-surface-base) }` and keeps `body` transparent. The decorative mesh (drawn only by the `glass` and `frosted` styles, or by `paper: "mesh"`) lives in `body::before`, because browsers sample the real background and never pseudo-elements. The same color shows in the overscroll area.
+- `--ca-chrome-surface` is opaque. `MobileHeader` and `BottomNav` use it as `background-color`, so the strip under the notch and the home indicator matches the bar.
+- `<meta name="theme-color">` follows what is painted. The init script sets it from the preset before first paint. After `colorScheme.init()`, a small sync keeps it equal to the opaque color under the top edge of the screen: an opaque header, a [theme island](/docs/getting-started/theming/#theme-islands) or the page itself. It re-samples on theme and DOM changes, scroll, resize and when the tab returns to the foreground. This is what Chrome and Samsung Internet on Android, Safari 18 and earlier, and installed PWAs use.
+- Safari 26 ignores `theme-color` and instead samples the background of the root and of fixed or sticky elements at the screen edges. Because those are solid colors, both paths show the same result.
 
 <Callout type="caution" title="Keep edge elements opaque">
   A translucent glass header at the top edge cannot be sampled correctly. Use `--ca-chrome-surface` (or any opaque color) for fixed bars on the top and bottom edges, and keep `backdrop-filter` for surfaces inside the page.
@@ -127,7 +127,7 @@ Below 900px `AppShellLayout` swaps the Rail and Panel for a `MobileHeader` and a
 
 ### MobilePane
 
-A full-screen layer above the shell for drill-down views (chat thread, history, detail), instead of a hand-written `position: fixed`. It has a header with a back button, its own scroll with `overscroll-behavior: contain`, safe areas on every side and keyboard awareness. Escape closes it, focus moves in on open and returns on close.
+A full-screen layer above the shell for drill-down views (chat thread, history, detail), instead of a hand-written `position: fixed`. It has a header with a back button, its own scroll with `overscroll-behavior: contain`, safe areas on every side and keyboard awareness. The back button and Escape set `open` to `false` and then call `onback`. Focus moves in on open and returns on close.
 
 ```svelte
 <script>
@@ -135,7 +135,7 @@ A full-screen layer above the shell for drill-down views (chat thread, history, 
   let open = $state(false);
 </script>
 
-<MobilePane bind:open title="Maria" onback={() => (chatId = null)}>
+<MobilePane bind:open title="Maria" onback={() => console.log("closed")}>
   {#snippet actions()}<IconButton aria-label="More">…</IconButton>{/snippet}
   <Messages />
 </MobilePane>
@@ -145,7 +145,7 @@ Use `scroll={false}` when the body has its own scroll area and a fixed composer 
 
 ### StickyActions
 
-A bar for form actions that sticks to the bottom of the scroll container, with glass chrome, safe-area padding and keyboard awareness. On wide screens it becomes an inline row.
+A bar for form actions that sticks to the bottom of the scroll container, with glass chrome, safe-area padding and keyboard awareness. From 900px up it becomes an inline row with no chrome.
 
 ```svelte
 <StickyActions align="stretch" show={dirty}>
@@ -158,7 +158,7 @@ A bar for form actions that sticks to the bottom of the scroll container, with g
 
 ### Sheet
 
-A bottom sheet below 768px and a centered dialog from 768px up. It keeps the focus trap, Escape, backdrop dismissal and scroll lock of the underlying dialog. In the bottom layout, dragging the handle or header down dismisses it (`swipeToDismiss`, default `true`). It closes past 30% of the sheet height or a fast fling, animates with a spring, and is disabled when the user prefers reduced motion.
+A bottom sheet below 900px and a centered dialog from 900px up. It keeps the focus trap, Escape, backdrop dismissal and scroll lock of the underlying dialog. In the bottom layout, dragging the handle or header down dismisses it (`swipeToDismiss`, default `true`). It closes past 30% of the sheet height or a release faster than 0.5 px/ms, otherwise it springs back, and the swipe is disabled when the user prefers reduced motion.
 
 ```svelte
 <Sheet bind:open title="Switch account" description="Choose the active session">
@@ -169,7 +169,7 @@ A bottom sheet below 768px and a centered dialog from 768px up. It keeps the foc
 
 ### AuthLayout
 
-Shows a brand strip below 768px (`mobileBrand`, default `true`). Do not build a local brand header for small screens.
+Shows a brand strip when the side panel is hidden, below 900px (`mobileBrand`, default `true`). Do not build a local brand header for small screens.
 
 ## Native feel
 
@@ -181,6 +181,6 @@ import { nativeFeel } from "@codeatlasdev/ui/kit";
 onMount(() => nativeFeel());
 ```
 
-It shows focus rings only while the user navigates with the keyboard (`html[data-kbd]`), removes the context menu and text selection on chrome (buttons, nav, tabs) while keeping them in fields and in `.ca-selectable` content, and blocks dragging links and images. `blockZoom: true` also blocks page zoom, meant for desktop shells such as Tauri only: on the web, zoom is an accessibility feature.
+It shows focus rings only while the user navigates with the keyboard (`html[data-kbd]`), removes the context menu and text selection on chrome (buttons, links, nav, header, tabs, menu items, options) while keeping them in fields and in `.ca-selectable` content, and blocks dragging links and images. `blockZoom: true` also blocks page zoom, meant for desktop shells such as Tauri only: on the web, zoom is an accessibility feature.
 
-Controls already apply `touch-action: manipulation` and a transparent tap highlight, grow to 44px under `(pointer: coarse)`, and scale slightly on press under `(hover: none)` unless the user prefers reduced motion.
+Every element gets `touch-action: manipulation` and a transparent tap highlight from `base.css`. Under `(pointer: coarse)` the control heights (`--ca-control-height`) grow to 44px, and `Button` scales slightly on press under `(hover: none)` unless the user prefers reduced motion.

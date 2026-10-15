@@ -4,9 +4,9 @@
 	const tiers: { elevation: 1 | 2 | 3 | 4 | 5; label: string; desc: string }[] = [
 		{ elevation: 1, label: "Ultra thin", desc: "Subtle background hint" },
 		{ elevation: 2, label: "Thin", desc: "Light translucency" },
-		{ elevation: 3, label: "Regular", desc: "Standard glass surface" },
-		{ elevation: 4, label: "Thick", desc: "Strong frosted effect" },
-		{ elevation: 5, label: "Chrome", desc: "Opaque chrome bar" },
+		{ elevation: 3, label: "Regular", desc: "Default blur" },
+		{ elevation: 4, label: "Thick", desc: "Strong blur" },
+		{ elevation: 5, label: "Chrome", desc: "Heaviest blur and fill" },
 	];
 </script>
 

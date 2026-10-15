@@ -9,21 +9,30 @@ import Props from "~/components/docs/Props.astro";
 import Toasts from "~/demos/feedback/toast/Toasts.svelte";
 import ToastsSrc from "~/demos/feedback/toast/Toasts.svelte?raw";
 
+Mount `Toaster` once in the root layout:
+
 ```svelte
-<!-- +layout.svelte: mount once -->
+<!-- +layout.svelte -->
 <script>
   import { Toaster } from "@codeatlasdev/ui";
+  let { children } = $props();
 </script>
-<Toaster />
 
-<!-- anywhere -->
+{@render children()}
+<Toaster />
+```
+
+Then call `toast` from anywhere:
+
+```svelte
 <script>
   import { toast } from "@codeatlasdev/ui";
 </script>
+
 <button onclick={() => toast.success("Changes saved.")}>Save</button>
 ```
 
-`toast` is a global store, so the calls need no component context. The Toaster is a polite live region (`role="region"`, `aria-live="polite"`) and each toast is a `role="status"`. Toasts stack in the bottom right corner. The demo below mounts its own `Toaster` because every demo is an independent island.
+`toast` is a global store, so the calls need no component context. The Toaster is a polite live region (`role="region"`, `aria-live="polite"`) and each toast is a `role="status"` with a dismiss button. Toasts stack in the bottom right corner, up to 380px wide, in a fixed container layered with `--ca-z-snackbar` (they are not in the browser top layer, unlike dialogs and popovers). `toast.show` accepts `variant` and `duration` in its options; the shortcut methods take the duration as a second argument. The demo below mounts its own `Toaster` because every demo is an independent island.
 
 <Demo title="Variants and duration" description="Five variants, plus persistent (duration 0) and custom durations. The default auto-dismiss is 4 seconds." src={ToastsSrc}><Toasts client:visible /></Demo>
 

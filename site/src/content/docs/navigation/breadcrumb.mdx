@@ -19,12 +19,12 @@ import SeparatorSrc from "~/demos/navigation/breadcrumb/Separator.svelte?raw";
 <Breadcrumb items={[{ label: "Home", href: "/" }, { label: "Components" }]} />
 ```
 
-Rendered as a `nav` landmark with an ordered list. The last item is the current page and is not a link.
+Rendered as a `nav` landmark with an ordered list. The last item is the current page: it has `aria-current="page"` and is never a link. Items without `href` render as plain text.
 
 <Demo title="Levels" description="Two, three and five levels, and a single root item." src={LevelsSrc}><Levels /></Demo>
 <Demo title="Custom separator" description="Using › instead of /." src={SeparatorSrc}><Separator /></Demo>
 
-<Props rows={[
+<Props for="Breadcrumb" rows={[
   { name: "items", type: "BreadcrumbItem[]", description: "Array of { label, href? }. The last item is always rendered as the current page, without a link." },
   { name: "separator", type: "string", default: "'/'", description: "Character rendered between crumbs." },
   { name: "class", type: "string", default: "''", description: "Extra CSS classes." },

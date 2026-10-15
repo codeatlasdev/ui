@@ -64,6 +64,8 @@ Then use it with `<I18nProvider locale="es">` or `setLocale("es")`. Region tags 
 
 ```svelte
 <I18nProvider locale="en" messages={{ docs: { toc: "In this article" }, common: { copy: "Copy link" } }}>
+  {@render children()}
+</I18nProvider>
 ```
 
 A later `setLocale` call replaces the previous overrides. Message functions (strings with runtime values) keep their signature:
@@ -114,7 +116,7 @@ Inside an `I18nProvider`, read the active locale and messages from context with 
 
 ## Catalog
 
-The catalog is grouped by component, for example `docs.search.placeholder`, `dialog.close`, `pagination.nextPage`, `fileUpload`, `dataTable` and `toast`. English (`en.ts`) is the source of truth; `pt-BR.ts` is typed against it, so a missing key is a type error. Both locales are tested to have identical keys.
+The catalog is grouped by component, for example `docs.search.placeholder`, `dialog.close`, `pagination.next`, `fileUpload`, `dataTable` and `toast`. English (`en.ts`) is the source of truth; `pt-BR.ts` is typed as `Messages`, so a missing key is a type error. A test checks that both locales have identical keys.
 
 ## Server errors
 

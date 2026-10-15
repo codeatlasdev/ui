@@ -40,3 +40,6 @@ site/src/generated/
 
 # wrangler local state
 .wrangler/
+
+# docs sample type-check output
+/site/.cache/

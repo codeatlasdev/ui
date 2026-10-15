@@ -12,7 +12,7 @@
 	/**
 	 * Sheet: mobile-first bottom sheet.
 	 *
-	 * Below 768px it slides up from the bottom edge (drag handle, safe-area padding, rounded top);
+	 * Below 900px it slides up from the bottom edge (drag handle, safe-area padding, rounded top);
 	 * from 900px up it renders as a centered dialog. A native modal <dialog> supplies the top layer, inert
 	 * page, focus restore, Escape, backdrop dismissal and scroll lock. Motion is off under reduced-motion.
 	 *

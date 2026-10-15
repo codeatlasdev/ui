@@ -21,12 +21,12 @@ import KeysSrc from "~/demos/navigation/command-palette/Keys.svelte?raw";
 <CommandPalette modules={NAV} onNavigate={(path) => goto(path)} bind:open />
 ```
 
-The palette searches the same `NavModule[]` you pass to [AppShellLayout](/docs/layout/app-shell/). It registers `Cmd+K` and `Ctrl+K` itself, so mount it once near the root. Results are a listbox: arrow keys move the selection, Enter confirms and Escape closes.
+The palette searches the same `NavModule[]` you pass to [AppShellLayout](/docs/layout/app-shell/), matching on item label and module label. It registers `Cmd+K` and `Ctrl+K` itself on `window`, so mount it once near the root. It opens as a modal dialog layer. Arrow keys move the selection, Enter navigates and Escape closes.
 
 <Demo title="Open the palette" description="Click the button or press Cmd+K / Ctrl+K while this page is focused. Picking an item shows its path instead of navigating." src={PaletteSrc}><Palette client:visible /></Demo>
 <Demo title="Keyboard" description="Type to filter across every module. Queries shorter than minQueryLength keep the full grouped list." src={KeysSrc}><Keys /></Demo>
 
-<Props rows={[
+<Props for="CommandPalette" rows={[
   { name: "modules", type: "NavModule[]", description: "Navigation tree to search. Same format as AppShellLayout." },
   { name: "onNavigate", type: "(path: string) => void", description: "Called with the selected item's path. Use goto() in SvelteKit or location in static sites." },
   { name: "open", type: "boolean", default: "false", description: "Bindable. Controls visibility. Cmd+K and Ctrl+K also toggle it." },

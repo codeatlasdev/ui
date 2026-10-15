@@ -44,7 +44,7 @@ The sidebar keeps its place between pages, also on a static site where every lin
 <Demo title="DocsNav and TableOfContents" description="The sidebar tree and the page index. The inline variant is shown; DocsShell uses the rail variant on desktop." src={NavTocSrc}><NavToc client:visible /></Demo>
 <Demo title="DocsSearch" description="Full-text search. A dialog on desktop and a full-height sheet with a 16px input on phones. Pass entries or an async loader." src={SearchSrc}><Search client:visible /></Demo>
 
-<Props title="DocsShell" rows={[
+<Props for="DocsShell" title="DocsShell" rows={[
   { name: "sections", type: "DocsSection[]", description: "{ id, label, href } entries shown as header tabs and in the mobile Sheet." },
   { name: "active", type: "string", description: "id of the current section." },
   { name: "groups", type: "DocsNavGroup[]", default: "[]", description: "Sidebar tree of the current section. Empty hides the sidebar and the page index." },
@@ -57,24 +57,25 @@ The sidebar keeps its place between pages, also on a static site where every lin
   { name: "brand", type: "Snippet", description: "Required. Brand mark and name inside the header link." },
   { name: "actions", type: "Snippet", description: "Extra header actions on the right. Keep to one or two icon buttons." },
   { name: "menuFooter", type: "Snippet", description: "Content below the sidebar tree in the mobile Sheet, such as external links." },
+  { name: "pager", type: "{ prev?: DocsPagerLink; next?: DocsPagerLink }", description: "Previous and next pages, as { href, title }. Cards at the end of the article on wide screens, a fixed bottom action bar on narrow ones." },
   { name: "children", type: "Snippet", description: "Required. Page content." },
 ]} />
 
-<Props title="DocsNav" rows={[
-  { name: "groups", type: "DocsNavGroup[]", description: "Labelled groups of { href, title, badge? } links." },
+<Props for="DocsNav" title="DocsNav" rows={[
+  { name: "groups", type: "DocsNavGroup[]", description: "Groups of { label?, items } where an item is { href, title, badge? }. A badge is an HTTP method shown as a MethodBadge." },
   { name: "pathname", type: "string", description: "Current path, marks the current page with aria-current." },
   { name: "label", type: "string", description: "Accessible label of the nav landmark." },
   { name: "onNavigate", type: "() => void", description: "Called after a link is followed, to close the mobile Sheet." },
 ]} />
 
-<Props title="TableOfContents" rows={[
+<Props for="TableOfContents" title="TableOfContents" rows={[
   { name: "headings", type: "DocsHeading[]", description: "{ id, text, depth: 2 | 3 } entries. Renders nothing for fewer than 2 headings." },
   { name: "variant", type: "'rail' | 'inline'", default: "'rail'", description: "A sticky list, or a collapsible disclosure that shows the current section." },
   { name: "label", type: "string", description: "Accessible label of the nav landmark." },
   { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
 ]} />
 
-<Props title="DocsSearch" rows={[
+<Props for="DocsSearch" title="DocsSearch" rows={[
   { name: "open", type: "boolean", default: "false", description: "Bindable open state." },
   { name: "index", type: "DocsSearchEntry[] | () => Promise<DocsSearchEntry[]>", description: "Required. Entries, or a loader called once on first open." },
   { name: "onselect", type: "(href: string) => void", description: "Required. Called with the picked result's href." },
@@ -84,6 +85,7 @@ The sidebar keeps its place between pages, also on a static site where every lin
 
 <Props for="none" title="Prose blocks" rows={[
   { name: "CodeTabs.sync", type: "string", default: "'lang'", description: "Groups with the same key follow the chosen label. An empty string disables sync." },
+  { name: "CodeTabs.tabs", type: "{ label: string; code?: string; html?: string }[]", description: "Tabs as data instead of CodeTab children, for Astro and MDX pages where each island is its own Svelte tree. `html` is pre-highlighted markup." },
   { name: "CodeTab.label", type: "string", description: "Tab text and sync key, for example 'cURL' or 'Node.js'." },
   { name: "Callout.type", type: "'note' | 'tip' | 'caution' | 'danger'", default: "'note'", description: "Maps to Alert severity (info, success, warning, error)." },
   { name: "Callout.title", type: "string", description: "Overrides the default localized title." },

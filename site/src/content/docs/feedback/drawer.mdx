@@ -15,7 +15,7 @@ import NotificationsSrc from "~/demos/feedback/drawer/Notifications.svelte?raw";
 
 ```svelte
 <script>
-  import { Drawer } from "@codeatlasdev/ui";
+  import { Drawer, Button } from "@codeatlasdev/ui";
   let open = $state(false);
 </script>
 
@@ -31,7 +31,7 @@ Same architecture as [Dialog](/docs/feedback/dialog/): the overlay blurs the pag
 <Demo title="Left and bottom" description="Left suits mobile navigation. Bottom is a simple bottom panel without gestures." src={SidesSrc}><Sides client:visible /></Demo>
 <Demo title="Notification panel" description="A real-world use: a 400px wide panel on the right." src={NotificationsSrc}><Notifications client:visible /></Demo>
 
-<Props rows={[
+<Props for="Drawer" rows={[
   { name: "open", type: "boolean", default: "false", description: "Bindable open state." },
   { name: "side", type: "'left' | 'right' | 'bottom'", default: "'right'", description: "Edge the panel slides from." },
   { name: "title", type: "string", description: "Header title." },

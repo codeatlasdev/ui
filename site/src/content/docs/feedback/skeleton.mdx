@@ -23,13 +23,13 @@ import ImageSrc from "~/demos/feedback/skeleton/Image.svelte?raw";
 <Skeleton rows={3} />
 ```
 
-Skeletons are `aria-hidden`. Announce the loading state on the container (for example `aria-busy="true"`) rather than on each placeholder.
+Skeletons are `aria-hidden`. Announce the loading state on the container, for example with `aria-busy="true"`, and leave the placeholders silent.
 
 <Demo title="Text lines" description="With rows, the last line is shortened to 60% for a natural paragraph." src={TextLinesSrc}><TextLines /></Demo>
 <Demo title="Card layout" src={CardLayoutSrc}><CardLayout /></Demo>
 <Demo title="Image placeholder" src={ImageSrc}><Image /></Demo>
 
-<Props rows={[
+<Props for="Skeleton" rows={[
   { name: "variant", type: "'text' | 'circular' | 'rectangular' | 'rounded'", default: "'text'", description: "Shape of the placeholder." },
   { name: "width", type: "string | number", description: "CSS width. Numbers are treated as pixels." },
   { name: "height", type: "string | number", description: "CSS height. Numbers are treated as pixels." },

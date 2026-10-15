@@ -19,11 +19,11 @@ import HorizontalSrc from "~/demos/navigation/stepper/Horizontal.svelte?raw";
 <Stepper {steps} bind:current={step} />
 ```
 
-The Stepper shows progress; it does not render the step content or the Back and Next buttons. Drive `current` from your own form state, as in the demo.
+The Stepper shows progress and each step bubble is a button that sets `current` when clicked. It does not render the step content or the Back and Next buttons. Drive `current` from your own form state, as in the demo.
 
 <Demo title="Horizontal stepper" description="Four steps with Back and Next controls." src={HorizontalSrc}><Horizontal client:visible /></Demo>
 
-<Props rows={[
+<Props for="Stepper" rows={[
   { name: "steps", type: "StepItem[]", description: "Array of { label, description? }." },
   { name: "current", type: "number", default: "0", description: "Bindable, zero-indexed active step. Earlier steps render as completed." },
   { name: "class", type: "string", default: "''", description: "Extra CSS classes." },

@@ -74,7 +74,7 @@
     .ca-filter-group__label {
       font-size: var(--ca-font-size-micro);
       font-weight: var(--ca-font-weight-semibold);
-      color: var(--ca-text-hint);
+      color: var(--ca-text-secondary);
       text-transform: uppercase;
       letter-spacing: var(--ca-overline-tracking);
       padding: 0 var(--ca-space-1-5) 0 var(--ca-space-1);

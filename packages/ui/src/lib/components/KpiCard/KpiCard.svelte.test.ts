@@ -1,5 +1,5 @@
 import { TrendingUp } from "@lucide/svelte";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { q } from "../../../../tests/dom";
@@ -63,5 +63,19 @@ describe("KpiCard", () => {
 		expect(icon.getAttribute("aria-hidden")).toBe("true");
 		expect(icon.querySelector("svg")).not.toBeNull();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("is built on Card, so it never triggers a deprecation warning", async () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		try {
+			const screen = await render(KpiCard, { title: "Revenue", value: 1 });
+			expect(screen.container.querySelector(".ca-glass-card")).toBeNull();
+			expect(screen.container.querySelector(".ca-card.ca-kpi")).not.toBeNull();
+			expect(
+				warn.mock.calls.map((c) => String(c[0])).filter((m) => m.includes("deprecated"))
+			).toEqual([]);
+		} finally {
+			warn.mockRestore();
+		}
 	});
 });

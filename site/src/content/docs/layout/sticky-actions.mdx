@@ -1,6 +1,6 @@
 ---
 title: StickyActions
-description: A form action bar pinned to the bottom of a scrolling container, with glass, safe-area and virtual keyboard support.
+description: A form action bar pinned to the bottom of a scrolling container, with safe-area and virtual keyboard support.
 group: Layout
 order: 10
 ---
@@ -22,7 +22,7 @@ import StretchSrc from "~/demos/layout/sticky-actions/Stretch.svelte?raw";
 </StickyActions>
 ```
 
-Place it as the last child of the element that scrolls. On screens narrower than 900px it sticks to the bottom edge with a glass background, respects the home-indicator inset (`--ca-safe-bottom`) and rises with the virtual keyboard. From 900px up it becomes a plain inline row without chrome.
+Place it as the last child of the element that scrolls. On screens narrower than 900px it sticks to the bottom edge with the `--ca-glass-bg` fill (blurred only under the `glass` and `frosted` styles), respects the home-indicator inset (`--ca-safe-bottom`) and rises with the virtual keyboard. From 900px up it becomes a plain inline row without chrome.
 
 <Demo title="End aligned" description="Buttons sit on the right. The bar only renders while the form is dirty (show)." src={DirtySrc}><Dirty client:visible /></Demo>
 <Demo title="Stretch" description="On touch screens the primary button fills the width and the ghost button stays compact." src={StretchSrc}><Stretch client:visible /></Demo>

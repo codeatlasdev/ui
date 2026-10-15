@@ -1,0 +1,36 @@
+---
+title: FilterGroup
+description: Inline filter chips for list toolbars, with an automatic "All" option.
+group: Inputs
+order: 22
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Basic from "~/demos/inputs/filter-group/Basic.svelte";
+import BasicSrc from "~/demos/inputs/filter-group/Basic.svelte?raw";
+
+```svelte
+<script>
+  import { FilterGroup } from "@codeatlasdev/ui";
+
+  let role = $state("all");
+</script>
+
+<FilterGroup
+  label="Role"
+  options={[{ value: "admin", label: "Admin" }, { value: "editor", label: "Editor" }]}
+  bind:value={role}
+/>
+```
+
+An "All" option is added in front of `options` and the value is `'all'` when nothing is filtered. Clicking the active option clears the filter and goes back to `'all'`. Inside [AppList](/docs/layout/list-page/), render it in the `filters` snippet and connect it to `list.setFilter`.
+
+<Demo title="Role filter" src={BasicSrc}><Basic client:visible /></Demo>
+
+<Props rows={[
+  { name: "options", type: "{ value: string; label: string }[]", description: "Filter choices. Required." },
+  { name: "value", type: "string", default: "'all'", description: "Bindable selected value." },
+  { name: "label", type: "string", description: "Text shown before the chips." },
+  { name: "onchange", type: "(value: string) => void", description: "Called when the selection changes." },
+  { name: "class", type: "string", default: "''", description: "Extra classes on the root." },
+]} />

@@ -1,7 +1,7 @@
 <script lang="ts">
   import { useT } from '../../i18n/state.svelte.js';
   import type { IconComponent } from '../../types.js';
-  import GlassCard from '../GlassCard/GlassCard.svelte';
+  import Card from '../Card/Card.svelte';
   const t = useT();
 
   interface Props {
@@ -23,7 +23,7 @@
   );
 </script>
 
-<GlassCard class="ca-kpi {className}">
+<Card elevation={3} class="ca-kpi {className}">
   <div class="ca-kpi__inner">
     <div class="ca-kpi__top">
       <p class="ca-kpi__title">{title}</p>
@@ -50,7 +50,7 @@
       </span>
     {/if}
   </div>
-</GlassCard>
+</Card>
 
 <style>
 @layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;

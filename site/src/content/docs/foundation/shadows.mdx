@@ -14,6 +14,6 @@ import ScaleSrc from "~/demos/foundation/shadows/Scale.svelte?raw";
 }
 ```
 
-Light mode uses soft warm shadows, dark mode uses deeper black ones, so one token works in both. Glass surfaces rely on inset highlights and borders instead of drop shadows, see [Materials](/docs/foundation/materials/).
+The default shadows are neutral black with no hue: soft in light mode, deeper in dark mode, so one token works in both. The `flat`, `outlined` and similar styles replace them with none or a hairline ring, and the `liquid` recipe uses hue-tinted ones. [Surface](/docs/surfaces/surface/) takes its drop shadow from `elevation` (`--ca-elevation-0` to `--ca-elevation-5`), not from these tokens, see [Materials](/docs/foundation/materials/).
 
 <Demo title="Shadow scale" description="xs for hairline lift up to xl for modal depth." src={ScaleSrc}><Scale /></Demo>

@@ -1,0 +1,50 @@
+---
+title: AuthLayout
+description: A two-column page for sign in, sign up and password reset, with AuthCard for the form.
+group: Layout
+order: 100
+---
+import Props from "~/components/docs/Props.astro";
+
+```svelte
+<script>
+  import { AuthLayout, AuthCard, TextField, Button, Stack } from "@codeatlasdev/ui";
+</script>
+
+<AuthLayout logoName="Acme">
+  {#snippet panel()}
+    <blockquote>Ship the boring parts in a day.</blockquote>
+  {/snippet}
+
+  <AuthCard title="Welcome back" subtitle="Sign in to continue">
+    <form>
+      <Stack gap="3">
+        <TextField label="Email" type="email" />
+        <Button type="submit" fullWidth>Sign in</Button>
+      </Stack>
+    </form>
+    {#snippet footer()}
+      <a href="/sign-up">Create an account</a>
+    {/snippet}
+  </AuthCard>
+</AuthLayout>
+```
+
+`AuthLayout` renders the page `<main id="main">`, so a route that uses it must not add another one. The `panel` snippet fills the side column; below 768px it is hidden and `mobileBrand` shows a compact brand strip above the form. The full pages live in the [sign in, sign up and forgot password templates](/templates/).
+
+<Props for="AuthLayout" title="AuthLayout props" rows={[
+  { name: "logoMark", type: "string", default: "'CA'", description: "Text inside the logo square." },
+  { name: "logoName", type: "string", default: "'CodeAtlas UI'", description: "Product name next to the mark." },
+  { name: "logoHref", type: "string", default: "'/'", description: "Where the logo links to." },
+  { name: "mobileBrand", type: "boolean", default: "true", description: "Shows the compact brand strip below 768px, where the side panel is hidden." },
+  { name: "brand", type: "Snippet", description: "Replaces the default logo." },
+  { name: "panel", type: "Snippet", description: "Content of the side column." },
+  { name: "children", type: "Snippet", description: "The form column, usually an AuthCard." },
+]} />
+
+<Props for="AuthCard" title="AuthCard props" rows={[
+  { name: "title", type: "string", description: "Heading of the card." },
+  { name: "subtitle", type: "string", description: "Text under the heading." },
+  { name: "footer", type: "Snippet", description: "Links under the form, such as sign up." },
+  { name: "children", type: "Snippet", description: "The form." },
+]} />

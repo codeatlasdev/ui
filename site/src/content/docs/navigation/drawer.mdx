@@ -1,6 +1,6 @@
 ---
 title: Drawer (navigation)
-description: A sliding panel anchored to the left or right edge, used for navigation and settings.
+description: The Drawer used for navigation and settings panels that slide in from the left or right edge.
 group: Navigation
 order: 8
 ---
@@ -17,6 +17,6 @@ import SidesSrc from "~/demos/navigation/drawer/Sides.svelte?raw";
 <Drawer bind:open side="left" title="Navigation">...</Drawer>
 ```
 
-This is the same component as the [Drawer in Feedback](/docs/feedback/drawer/), shown here with the two navigation patterns: a left menu and a right settings panel. See that page for the full props table, the bottom side and the footer `actions` snippet.
+This is the same component as the [Drawer in Feedback](/docs/feedback/drawer/), shown here with the two navigation patterns: a left menu and a right settings panel. It is a native modal `<dialog>` in the top layer: focus is trapped, Escape and a press on the overlay close it, and focus returns to the trigger. See that page for the full props table, the bottom side and the footer `actions` snippet.
 
 <Demo title="Left and right" description="Left for navigation, right for settings or details." src={SidesSrc}><Sides client:visible /></Demo>

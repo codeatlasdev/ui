@@ -2,7 +2,7 @@
 title: Divider
 description: "Horizontal and vertical separators drawn with outline tokens."
 group: Display
-order: 7
+order: 8
 ---
 import Demo from "~/components/docs/Demo.astro";
 import Props from "~/components/docs/Props.astro";
@@ -20,7 +20,7 @@ import VerticalSrc from "~/demos/display/divider/Vertical.svelte?raw";
 <Divider orientation="vertical" />
 ```
 
-A vertical divider stretches to the height of its flex container, so place it inside a `Row` with `align="center"` or a fixed height.
+A vertical divider stretches to the height of its flex container, so place it inside a `Flex` with `align="center"` or give it a fixed height.
 
 <Demo title="Horizontal" src={HorizontalSrc}><Horizontal /></Demo>
 <Demo title="Vertical" src={VerticalSrc}><Vertical /></Demo>

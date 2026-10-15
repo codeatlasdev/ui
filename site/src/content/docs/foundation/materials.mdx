@@ -1,6 +1,6 @@
 ---
 title: Materials
-description: Liquid Glass material tiers from ultra-thin translucency to opaque chrome, plus tint, glow and button variants.
+description: The five material tiers behind every surface, from ultra-thin translucency to chrome, and how the surface style changes them.
 group: Foundation
 order: 4
 ---
@@ -13,7 +13,7 @@ import GlassButtonsSrc from "~/demos/foundation/materials/GlassButtons.svelte?ra
 import Tinted from "~/demos/foundation/materials/Tinted.svelte";
 import TintedSrc from "~/demos/foundation/materials/Tinted.svelte?raw";
 
-Materials are CSS classes (`glass-ultra-thin`, `glass-thin`, `glass-regular`, `glass-thick`, `glass-chrome`) backed by `backdrop-filter`. [Surface](/docs/surfaces/surface/) applies a material for you from its `material` and `elevation` props, and adds the refraction layer for `material="liquid"`.
+Materials are CSS classes (`glass-ultra-thin`, `glass-thin`, `glass-regular`, `glass-thick`, `glass-chrome`) that read `--ca-mat-<tier>-*` tokens (blur, fill and shadow). [Surface](/docs/surfaces/surface/) paints the same five tiers for you from its `material` and `elevation` props (elevation 1 to 5 maps to ultra-thin to chrome), and adds the refraction layer for `material="liquid"`. Use the classes only for markup that is not a Surface.
 
 ```svelte
 <script>
@@ -23,8 +23,8 @@ Materials are CSS classes (`glass-ultra-thin`, `glass-thin`, `glass-regular`, `g
 <Surface material="glass" elevation={4} tone="brand">Content</Surface>
 ```
 
-The surface style on `<html data-style>` changes every material at once: `solid` (default: no blur, no glow, hairline edges), `flat` (no blur, no shadows), `frosted` (less blur) and `glass` (the opt-in `liquid` look: blur, mesh, glow). Switch it with `colorScheme.setStyle()`, see [Theming](/docs/getting-started/theming/#surface-styles). Browsers with `prefers-reduced-transparency: reduce` automatically get opaque surfaces.
+The surface style on `<html data-style>` rewrites the `--ca-mat-*` tokens, so every material changes at once. `solid` is the default: no blur, opaque fills, no glow, hairline edges, so the tiers below differ only by fill and shadow. `flat` also drops the shadows, `frosted` keeps a lighter blur, and `glass` (the opt-in `liquid` look) has the full blur, mesh and glow. The demos on this page use `material="glass"`, so they look the same under any style. Switch the style with `colorScheme.setStyle()`, see [Theming](/docs/getting-started/theming/#surface-styles). Browsers with `prefers-reduced-transparency: reduce` get opaque surfaces.
 
 <Demo title="Glass tiers" description="All five thickness levels on a gradient backdrop." src={TiersSrc}><Tiers /></Demo>
-<Demo title="Button glass variants" description="glass-btn, glass-btn-prominent and glass-btn-clear for custom controls." src={GlassButtonsSrc}><GlassButtons /></Demo>
-<Demo title="Tinted and glowing" description={"`tone=\"brand\"` tints the fill, `glow` adds a backlit halo."} src={TintedSrc}><Tinted /></Demo>
+<Demo title="Button glass variants" description="glass-btn, glass-btn-prominent and glass-btn-clear for custom controls. They follow `data-style`, so the halo and blur disappear under `solid`." src={GlassButtonsSrc}><GlassButtons /></Demo>
+<Demo title="Tinted and glowing" description={"`tone=\"brand\"` tints the fill, `glow` adds a halo that only shows under styles that keep one."} src={TintedSrc}><Tinted /></Demo>

@@ -22,16 +22,16 @@ import AnimatedSrc from "~/demos/feedback/progress/Animated.svelte?raw";
 <Progress indeterminate label="Loading" />
 ```
 
-Renders `role="progressbar"` with `aria-valuenow`, `aria-valuemin` and `aria-valuemax`. Always pass `label` so screen readers know what is progressing. The indeterminate state omits `aria-valuenow`.
+Renders `role="progressbar"` with `aria-valuenow`, `aria-valuemin` (always 0) and `aria-valuemax` (from `max`). Always pass `label` so screen readers know what is progressing. The indeterminate state omits `aria-valuenow`.
 
 <Demo title="Determinate" description="An explicit value from 0 to max (100 by default)." src={DeterminateSrc}><Determinate /></Demo>
 <Demo title="Indeterminate" description="Use when progress cannot be determined." src={IndeterminateSrc}><Indeterminate /></Demo>
 <Demo title="Animated" description="Start a simulated upload." src={AnimatedSrc}><Animated client:visible /></Demo>
 
-<Props rows={[
+<Props for="Progress" rows={[
   { name: "value", type: "number", default: "0", description: "Current progress value." },
-  { name: "max", type: "number", default: "100", description: "Maximum value. The fill is clamped between 0 and 100%." },
+  { name: "max", type: "number", default: "100", description: "Maximum value, also exposed as `aria-valuemax`. The fill width is clamped between 0 and 100%." },
   { name: "indeterminate", type: "boolean", default: "false", description: "Plays the shimmer animation when progress is unknown." },
-  { name: "label", type: "string", description: "Accessible aria-label for screen readers." },
+  { name: "label", type: "string", default: "undefined", description: "Accessible name, set as `aria-label`." },
   { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
 ]} />

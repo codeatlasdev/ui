@@ -101,6 +101,20 @@ describe("docs <Props> tables", () => {
 		expect(blocks.length).toBeGreaterThan(40);
 	});
 
+	it("has rows that are valid JavaScript (an unescaped quote breaks the MDX build)", () => {
+		const bad: string[] = [];
+		for (const p of pages)
+			for (const m of p.src.matchAll(/<Props\b[\s\S]*?rows=\{(\[[\s\S]*?\])\}\s*\/>/g)) {
+				// The rows are plain object literals, so evaluating them is the strictest parse there is.
+				try {
+					new Function(`return ${m[1]};`)();
+				} catch (e) {
+					bad.push(`${p.rel}: ${(e as Error).message}`);
+				}
+			}
+		expect(bad).toEqual([]);
+	});
+
 	it('targets only exported components (use for="A, B" or for="none" when the title does not name one)', () => {
 		const bad: string[] = [];
 		for (const b of blocks)
@@ -326,5 +340,55 @@ describe("docs coverage", () => {
 	it("has no stale allowlist entries", () => {
 		const names = new Set(manifest.components.map((c) => c.name));
 		expect([...UNDOCUMENTED_OK].filter((n) => !names.has(n))).toEqual([]);
+	});
+});
+
+// ── internal links ───────────────────────────────────────────────────────────
+
+/** GitHub-style slug used by Astro for heading ids. */
+const slug = (h: string) =>
+	h
+		.toLowerCase()
+		.replace(/`/g, "")
+		.replace(/[^\p{L}\p{N}\s-]/gu, "")
+		.trim()
+		.replace(/\s+/g, "-");
+
+describe("docs links", () => {
+	const slugs = new Set(
+		pages.map((p) =>
+			`/docs/${p.rel.replace(/\.mdx$/, "").replace(/(^|\/)index$/, "")}/`.replace("//", "/")
+		)
+	);
+	slugs.add("/docs/");
+	const anchors = new Map(
+		pages.map((p) => {
+			const path = `/docs/${p.rel.replace(/\.mdx$/, "")}/`
+				.replace(/\/index\/$/, "/")
+				.replace("//", "/");
+			const body = p.src.replace(/^[ \t]*```[\s\S]*?^[ \t]*```/gm, "");
+			const heads = [...body.matchAll(/^#{2,4}\s+(.+)$/gm)].map((m) => slug(m[1]));
+			// <Demo title="…"> renders an <h2 id="slug">.
+			for (const d of body.matchAll(/<(?:Demo|Props)\b[^>]*?title="([^"]+)"/g))
+				heads.push(slug(d[1]));
+			return [path, new Set(heads)];
+		})
+	);
+
+	it("resolves every /docs/ link and #anchor in the prose", () => {
+		const bad: string[] = [];
+		for (const p of pages) {
+			const here = `/docs/${p.rel.replace(/\.mdx$/, "")}/`
+				.replace(/\/index\/$/, "/")
+				.replace("//", "/");
+			const prose = p.src.replace(/^[ \t]*```[\s\S]*?^[ \t]*```/gm, "");
+			for (const m of prose.matchAll(/\]\((\/docs\/[^)\s]*|#[^)\s]+)\)/g)) {
+				const [path, hash] = m[1].startsWith("#") ? [here, m[1].slice(1)] : m[1].split("#");
+				if (!anchors.has(path)) bad.push(`${p.rel}: ${m[1]} (no such page)`);
+				else if (hash && !anchors.get(path)?.has(hash))
+					bad.push(`${p.rel}: ${m[1]} (no such heading)`);
+			}
+		}
+		expect(bad).toEqual([]);
 	});
 });

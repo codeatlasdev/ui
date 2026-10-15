@@ -1,6 +1,6 @@
 ---
 title: ToggleGroup
-description: A set of toggle buttons with single or multiple selection, roving focus and arrow-key navigation.
+description: A set of toggle buttons with single or multiple selection. Single groups use arrow-key navigation.
 group: Inputs
 ---
 import Demo from "~/components/docs/Demo.astro";
@@ -14,12 +14,16 @@ import VariantsSrc from "~/demos/inputs/toggle-group/Variants.svelte?raw";
 <script>
   import { ToggleGroup } from "@codeatlasdev/ui";
   let format = $state(["bold"]);
+  const items = [
+    { value: "bold", label: "Bold" },
+    { value: "italic", label: "Italic" },
+  ];
 </script>
 
-<ToggleGroup type="multiple" aria-label="Text formatting" bind:value={format} items={items} />
+<ToggleGroup type="multiple" aria-label="Text formatting" bind:value={format} {items} />
 ```
 
-In `single` mode the user can press the active item again to clear the selection, so `value` can be an empty string. Use [SegmentedControl](/docs/inputs/segmented-control/) when a choice is required. Icon-only items need an `aria-label`.
+In `single` mode the user can press the active item again to clear the selection, so `value` can be an empty string. Use [SegmentedControl](/docs/inputs/segmented-control/) when a choice is required. In `single` mode the group is one tab stop and arrow keys move focus (Home and End jump to the ends); in `multiple` mode each item stays in the tab order. Icon-only items need an `aria-label`.
 
 <Demo title="Single and multiple" description="type=&quot;single&quot; binds a string. type=&quot;multiple&quot; binds a string array." src={SelectionSrc}><Selection client:visible /></Demo>
 <Demo title="Variants and orientation" description="outlined and ghost variants, sizes, a disabled item and a vertical layout." src={VariantsSrc}><Variants client:visible /></Demo>

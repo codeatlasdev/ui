@@ -19,20 +19,20 @@ This site publishes its documentation in plain text for tools that cannot render
 |---|---|
 | [`/llms.txt`](/llms.txt) | Index: one line per documentation page with title, link and description. |
 | [`/llms-full.txt`](/llms-full.txt) | Every page concatenated as markdown, with code fences intact, followed by the full `AGENTS.md`. Paste it, or let a tool fetch it, when you want everything in one context. |
-| [Agent guide](https://github.com/codeatlasdev/ui/blob/main/AGENTS.md) | `AGENTS.md` in the repository: critical rules, spacing and token reference, page template patterns, store and theme setup. Written in Portuguese. |
+| [Agent guide](https://github.com/codeatlasdev/ui/blob/main/AGENTS.md) | `AGENTS.md` in the repository: critical rules, spacing and token reference, page template patterns, store and theme setup. |
 
 Every page is also linked with `<link rel="alternate" type="text/plain" href="/llms.txt">` in its head.
 
 ## MCP server
 
-`ca-ui-mcp` is a local [Model Context Protocol](https://modelcontextprotocol.io) server that ships with the package. It reads the manifests generated from the component source at build time, so it works offline and always matches the installed version.
+`ca-ui-mcp` is a local [Model Context Protocol](https://modelcontextprotocol.io) stdio server that ships with the package. It reads the manifests generated from the component source at build time (`components.json`, `tokens.json` and `guides.json`), so it works offline and always matches the installed version.
 
 | Tool | Returns |
 |---|---|
 | `list_components` | Every component with its import path and a one-line description. Optional `query` filter. |
-| `get_component` | One component's props (type, default, `bind:` or not, docs), snippets and public `ca-*` classes. The name is case-insensitive: `get_component("app list")` finds `AppList`. |
+| `get_component` | One component's import path, props (type, default, `bind:` or not, docs), snippets and public `ca-*` classes. The name is case-insensitive and forgives spaces, `-` and `_`: `get_component("app list")` finds `AppList`. |
 | `get_export` | Signature and summary of any non-component export: functions, stores, constants and types of every entry point (`setLocale`, `toast`, `caErrorPlugin` from `/vite`, `createErrorHandler` and `nativeFeel` from `/kit`, `primeKeyboard` from `/actions`). Without a name it lists them all with their import path. |
-| `search_tokens` | `--ca-*` design tokens matching a name, value or section, with light and dark values. |
+| `search_tokens` | `--ca-*` design tokens matching a name, value or section, with light and dark values (the first 60 matches). |
 | `get_guide` | A documentation page as markdown, by slug (`getting-started/theming`) or title. Without a name it lists every guide. |
 
 Prop names are never guessed: an agent asks the server and gets the types the compiler sees.
@@ -53,14 +53,14 @@ The same data is available as files: `@codeatlasdev/ui/components.json` (compone
 bunx @codeatlasdev/ui init
 ```
 
-`init` detects SvelteKit or Astro and wires up what the [installation](/docs/getting-started/installation/) page describes: `src/lib/theme.ts`, the theme hook or integration, the `global.css` import, `colorScheme.init()` in the root layout and a mobile-ready viewport meta. It creates files that are missing and **never overwrites** one that exists: it prints a diff instead, and `--write` applies it. Running it twice changes nothing.
+`init` detects SvelteKit or Astro and wires up what the [installation](/docs/getting-started/installation/) page describes: the theme file, the theme hook or integration, the `global.css` import, `colorScheme.init()` and a mobile-ready viewport meta. It creates files that are missing and never overwrites one that exists: it prints a diff instead, and `--write` applies it. `--dir <path>` runs it on another project directory. Running it twice changes nothing.
 
 ```sh
 bunx @codeatlasdev/ui migrate          # print the diff
 bunx @codeatlasdev/ui migrate --write  # apply it
 ```
 
-`migrate` rewrites code for renamed APIs by parsing `.svelte`, `.ts` and `.astro` files, so only real references change (not strings or same-named identifiers from other packages). Today it renames the `BrandPreset` type to `PresetDefinition`.
+`migrate` rewrites code for renamed APIs by parsing `.svelte`, `.ts`, `.js` and `.astro` files (it walks `src` by default, or the paths you pass), so only real references change (not strings or same-named identifiers from other packages). It renames the `BrandPreset` type to `PresetDefinition` and moves the deprecated `GlassCard`, `GlassSurface` and `Row` to `Card`, `Surface` and `Flex`; an element with a dynamic prop it cannot map is left as it was.
 
 ## Install the skills
 
@@ -84,7 +84,7 @@ npx skills add codeatlasdev/ui
 
    ```md
    This project uses @codeatlasdev/ui (Svelte 5). Docs for agents: https://ui.codeatlas.com.br/llms.txt
-   Read https://ui.codeatlas.com.br/llms-full.txt before writing UI. Never write layout CSS; use Grid, Row, Stack and --ca-* tokens.
+   Read https://ui.codeatlas.com.br/llms-full.txt before writing UI. Never write layout CSS; use Grid, Flex, Stack and --ca-* tokens.
    ```
 
 2. **Cursor.** Add `https://ui.codeatlas.com.br/llms-full.txt` as a custom doc source in Cursor's settings, or put the same instructions in a project rule so every chat starts with them.
@@ -99,7 +99,7 @@ These come from the agent guide and prevent the most common mistakes:
 
 - Import everything from `@codeatlasdev/ui`, never from internal paths. Charts, DataTable and CodeSnippet come from the `/charts`, `/table` and `/code` subpaths.
 - Import `global.css` once, in the root layout, and call `colorScheme.init()` there.
-- No layout CSS and no hardcoded colors. Use `Grid`, `Row` and `Stack` with a numeric `gap`, and `--ca-*` tokens.
+- No layout CSS and no hardcoded colors. Use `Grid`, `Flex` and `Stack` with a numeric `gap`, and `--ca-*` tokens.
 - No inline `padding` or `margin`. Inline styles are only for dynamic custom properties such as `style="--bar-w:{pct}%"`.
 - Build pages with `AppList`, `AppForm`, `AppSettings` or `PageShell`, not hand-made wrappers. Put `AppShellLayout` only in authenticated route layouts.
 - Svelte 5 runes only (`$state`, `$derived`, `$props`). No stores from `svelte/store`, no `svelte:component`.
@@ -112,7 +112,7 @@ These come from the agent guide and prevent the most common mistakes:
 
 ## Why it works
 
-- **Page-level components.** The agent chooses a template, not forty primitives.
-- **Closed prop vocabularies.** `variant`, `size` and `severity` are string unions, not free-form classes.
-- **One token system.** There is one place for color, radius, spacing and type, so output stays consistent across generations.
-- **Tested for accessibility.** Components are checked with axe, so generated pages start from an accessible baseline, see [Accessibility](/docs/getting-started/accessibility/).
+- Page-level components: the agent chooses a template, not forty primitives.
+- Closed prop vocabularies: `variant`, `size` and `severity` are string unions, not free-form classes.
+- One token system: there is one place for color, radius, spacing and type, so output stays consistent across generations.
+- Tested for accessibility: components are checked with axe, so generated pages start from an accessible baseline, see [Accessibility](/docs/getting-started/accessibility/).

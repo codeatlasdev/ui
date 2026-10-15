@@ -2,7 +2,7 @@
 title: Tooltip
 description: "Floating label shown on hover and focus, with four placements and a configurable delay."
 group: Display
-order: 13
+order: 16
 ---
 import Demo from "~/components/docs/Demo.astro";
 import Props from "~/components/docs/Props.astro";
@@ -27,7 +27,7 @@ import ChildrenSrc from "~/demos/display/tooltip/Children.svelte?raw";
 </Tooltip>
 ```
 
-When the trigger is an interactive control, use `triggerChild` and spread the received `props` onto it so no extra wrapper button is created. `children` is for non-interactive content such as text, which the tooltip wraps in its own button. Tooltips open on keyboard focus too, but never put essential information only in a tooltip, because touch devices have no hover.
+When the trigger is an interactive control, use `triggerChild` and spread the received `props` onto it so no extra wrapper button is created. `children` is for non-interactive content such as text, which the tooltip wraps in its own button. Tooltips open on keyboard focus without the delay and close on Escape. Pointer hover waits for `delay`, touch never opens them, and moving between tooltips within 300ms skips the delay. Never put essential information only in a tooltip.
 
 <Demo title="All sides" description={"top, right, bottom and left placement."} src={SidesSrc}><Sides client:visible /></Demo>
 <Demo title="On icon buttons" description={"Gives icon-only buttons a visible label."} src={OnIconsSrc}><OnIcons client:visible /></Demo>
