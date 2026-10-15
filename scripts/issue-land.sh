@@ -42,12 +42,18 @@ git diff --cached --quiet || git commit -qm "chore: regenerate lockfile and mani
 [ -z "$(git status --porcelain --untracked-files=no)" ] || { git status --short; echo "uncommitted changes in $WT" >&2; exit 1; }
 bun run validate
 git push -q --force-with-lease
-sh "$ROOT/scripts/vrt-update-ci.sh"
 gh pr ready "$PR" >/dev/null 2>&1 || true
-# The bot's baseline commit does not trigger CI: push an empty commit to run checks on the final head.
-git commit -q --allow-empty -m "ci: run checks on final head" && git push -q
-# Merge gate: checks reported for this exact head, none pending, all passed (scripts/pr-gate.ts).
-bun "$ROOT/scripts/pr-gate.ts" "$PR" "$(git rev-parse HEAD)"
+# CI paused (ci.yml disabled, see AGENTS.md): the validate above is the gate, and baselines can only
+# be rendered on CI, so both CI steps are skipped until `gh workflow enable ci.yml`.
+if [ "$(gh workflow view ci.yml --json state -q .state 2>/dev/null)" = "active" ]; then
+	sh "$ROOT/scripts/vrt-update-ci.sh"
+	# The bot's baseline commit does not trigger CI: push an empty commit to run checks on the final head.
+	git commit -q --allow-empty -m "ci: run checks on final head" && git push -q
+	# Merge gate: checks reported for this exact head, none pending, all passed (scripts/pr-gate.ts).
+	bun "$ROOT/scripts/pr-gate.ts" "$PR" "$(git rev-parse HEAD)"
+else
+	echo "CI paused: validate is the gate; visual baselines not regenerated"
+fi
 # No --delete-branch: gh would switch this worktree to main (checked out in $ROOT) and delete the
 # local branch (checked out here), failing after the merge (#103). `issue.ts done` removes both.
 # GitHub deletes the remote branch on merge (repo setting); the API call covers it being turned off.
