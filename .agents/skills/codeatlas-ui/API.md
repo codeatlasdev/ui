@@ -142,7 +142,7 @@ Classes: `ca-app-settings` `ca-app-settings__actions` `ca-app-settings__body` `c
 | `onNavigate?` | `(path: string) => void` |  |  |
 | `defaultModule?` | `number` | `0` |  |
 | `persistPanel?` | `boolean` | `true` | Keeps the shell across page loads: panel open/closed, selected module, expanded sections (localStorage) and the panel scroll (sessionStorage), restored before first paint. Turn it off for demos and embeds that must always start from the defaults. |
-| `mainId?` | `string \| null` | `'main'` | `id` given to the content region, the target of the skip link. The region is a plain `div` (not a landmark) so a `<main>` you render inside never nests another one. Pass `null` when your own `<main id="main" tabindex="-1">` is the target. |
+| `mainId?` | `string \| null` | `'main'` | `id` given to the content region, the target of the skip link. By default the region is the page's `<main id tabindex="-1">` landmark. Pass `null` when your own `<main id="main" tabindex="-1">` is the target: the region then renders as a plain `div` so the page never gets two landmarks. |
 | `skipLink?` | `boolean` | `true` | Render the "Skip to content" link. Turn it off when the shell is embedded in a page that already has one (a framed demo, a preview), so the page does not get two. |
 
 Snippets: `header`, `brand`, `railBottom`, `mobileHeaderActions`, `mobileTitle`, `children`
