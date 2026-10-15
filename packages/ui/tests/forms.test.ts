@@ -68,9 +68,9 @@ describe("validators", () => {
 
 describe("money", () => {
 	test("centsToDisplay", () => {
-		expect(centsToDisplay(123456)).toBe("R$ 1.234,56");
-		expect(centsToDisplay(0)).toBe("R$ 0,00");
-		expect(centsToDisplay(-500)).toBe("-R$ 5,00");
+		expect(centsToDisplay(123456)).toBe("R$\u00a01.234,56");
+		expect(centsToDisplay(0)).toBe("R$\u00a00,00");
+		expect(centsToDisplay(-500)).toBe("-R$\u00a05,00");
 	});
 	test("parseInputToCents", () => {
 		expect(parseInputToCents("R$ 1.234,56")).toBe(123456);
@@ -81,8 +81,15 @@ describe("money", () => {
 	});
 
 	test("BRL stays the default currency and pt-BR format is explicit-able", () => {
-		expect(centsToDisplay(123456, { currency: "BRL", locale: "pt-BR" })).toBe("R$ 1.234,56");
+		expect(centsToDisplay(123456, { currency: "BRL", locale: "pt-BR" })).toBe("R$\u00a01.234,56");
 		expect(parseInputToCents("R$ 1.234,56", { currency: "BRL", locale: "pt-BR" })).toBe(123456);
+	});
+
+	test("centsToDisplay keeps the no-break space Intl puts after the symbol", () => {
+		const o = { currency: "BRL", locale: "pt-BR" };
+		const intl = new Intl.NumberFormat("pt-BR", { style: "currency", currency: "BRL" });
+		expect(centsToDisplay(12345, o)).toBe(intl.format(123.45));
+		expect(centsToDisplay(12345, o)).toBe("R$\u00a0123,45");
 	});
 
 	test("USD / en-US", () => {
@@ -109,7 +116,9 @@ describe("money", () => {
 
 	test("3-decimal currency (BHD) and de-DE separators", () => {
 		expect(parseInputToCents("1.234,567", { currency: "BHD", locale: "de-DE" })).toBe(1234567);
-		expect(centsToDisplay(1234567, { currency: "BHD", locale: "en-US" })).toBe("BHD 1,234.567");
+		expect(centsToDisplay(1234567, { currency: "BHD", locale: "en-US" })).toBe(
+			"BHD\u00a01,234.567"
+		);
 		expect(parseInputToCents("1.234,5", { currency: "EUR", locale: "de-DE" })).toBe(123450);
 	});
 });

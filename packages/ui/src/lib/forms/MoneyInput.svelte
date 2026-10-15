@@ -2,7 +2,7 @@
   import { untrack, type Snippet } from 'svelte';
   import TextField from '../components/TextField/TextField.svelte';
   import { useLocale } from '../i18n/index.js';
-  import { centsToDisplay, parseInputToCents } from './money.js';
+  import { parseInputToCents, toFieldText } from './money.js';
 
   interface Props {
     label?:         string;
@@ -52,7 +52,7 @@
     currency: currency ?? 'BRL',
     locale: locale ?? (currency ? activeLocale() : 'pt-BR'),
   });
-  const shownPlaceholder = $derived(placeholder ?? centsToDisplay(0, opts));
+  const shownPlaceholder = $derived(placeholder ?? toFieldText(0, opts));
 
   function clamp(cents: number): number {
     let v = allowNegative ? cents : Math.abs(cents);
@@ -61,7 +61,7 @@
     return v;
   }
 
-  let text = $state(centsToDisplay(clamp(value), untrack(() => opts)));
+  let text = $state(toFieldText(clamp(value), untrack(() => opts)));
 
   // External value changes (reset, programmatic set) refresh the display; an out-of-bounds
   // value is clamped back into `value`. `text` is read untracked: bind:value overwrites it
@@ -76,7 +76,7 @@
     const changed = key !== formatKey;
     formatKey = key;
     if (changed || untrack(() => parseInputToCents(text, opts)) !== v) {
-      text = centsToDisplay(v, opts);
+      text = toFieldText(v, opts);
     }
   });
 
@@ -86,12 +86,12 @@
     const negative = allowNegative && raw.includes('-');
     const cents = clamp((negative ? -1 : 1) * Number(digits || 0));
     value = cents;
-    text = digits === '' && !negative ? '' : centsToDisplay(cents, opts);
+    text = digits === '' && !negative ? '' : toFieldText(cents, opts);
     onchange?.(cents);
   }
 
   function onBlur(e: FocusEvent) {
-    text = centsToDisplay(value, opts);
+    text = toFieldText(value, opts);
     rest.onblur?.(e);
   }
 </script>

@@ -25,6 +25,8 @@ import HelpersSrc from "~/demos/inputs/money-input/Helpers.svelte?raw";
 
 Import from the `@codeatlasdev/ui/forms` subpath. The value is always an integer in the currency's minor unit (cents for BRL and USD, whole yen for JPY), so there is no floating-point rounding. Digits shift in from the right: typing `123456` gives `R$ 1.234,56`. `min` and `max` clamp the value, and an out-of-range value set from outside is clamped back into `value`.
 
+`centsToDisplay` returns the text exactly as `Intl` formats it, including the no-break space (U+00A0) between the symbol and the number, so a price in a narrow slot never wraps between `R$` and the amount. The input's own text uses a plain space instead, which is what `parseInputToCents` and the user type, so compare with `centsToDisplay(v).replace(/\u00a0/g, " ")` when you need that form.
+
 <Demo title="Default" description="Type 123456 to get R$ 1.234,56." src={DefaultSrc}><Default client:visible /></Demo>
 <Demo title="Min, max, negative, error and disabled" description="Deposit is clamped between R$ 10,00 and R$ 100,00. Include a minus sign to toggle the sign when allowNegative is set." src={ConstraintsSrc}><Constraints client:visible /></Demo>
 <Demo title="Currency and locale" description="currency picks the minor unit (USD 2 decimals, JPY none); locale picks separators and symbol placement." src={CurrencySrc}><Currency client:visible /></Demo>
