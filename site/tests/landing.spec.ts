@@ -1,16 +1,14 @@
-import { expect, networkIdle, test, waitIslands } from "./fixtures";
+import { expect, test, waitIslands } from "./fixtures";
 
 test.describe("landing", () => {
 	test("loads without console or page errors", async ({ page, consoleErrors }) => {
 		await page.goto("/");
-		await networkIdle(page);
 		await waitIslands(page, "astro-island[client='load']");
 		expect(consoleErrors).toEqual([]);
 	});
 
 	test("hero demo repaints with the picked preset, not the page brand", async ({ page }) => {
 		await page.goto("/");
-		await page.waitForLoadState("networkidle");
 		await waitIslands(page, "astro-island[client='visible']");
 		const brand = (sel: string) =>
 			page
@@ -75,7 +73,6 @@ test.describe("landing", () => {
 	test("reduced motion renders the final headline state", async ({ page }) => {
 		await page.emulateMedia({ reducedMotion: "reduce" });
 		await page.goto("/");
-		await networkIdle(page);
 		await expect(page.locator("html")).toHaveClass(/calm/);
 		const old = page.locator("[data-old]");
 		const next = page.locator("[data-new]");
@@ -96,15 +93,8 @@ test.describe("landing", () => {
 		test(`no horizontal overflow at ${width}px`, async ({ page }) => {
 			await page.setViewportSize({ width, height: 900 });
 			await page.goto("/");
-			await networkIdle(page);
-			// Scroll through so `client:visible` islands (charts, theme lab) mount before measuring.
-			await page.evaluate(async () => {
-				for (let y = 0; y < document.documentElement.scrollHeight; y += 700) {
-					scrollTo(0, y);
-					await new Promise((r) => setTimeout(r, 60));
-				}
-				scrollTo(0, 0);
-			});
+			// Hydrates every island (`client:visible` ones are scrolled into view) before measuring.
+			await waitIslands(page);
 			const { scrollWidth, clientWidth } = await page.evaluate(() => ({
 				scrollWidth: document.documentElement.scrollWidth,
 				clientWidth: document.documentElement.clientWidth,

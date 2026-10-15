@@ -1,4 +1,4 @@
-import { expect, networkIdle, settle, test, waitIslands } from "./fixtures";
+import { expect, settle, test, waitIslands } from "./fixtures";
 
 const PAGES = [
 	"/",
@@ -23,7 +23,6 @@ const slug = (p: string) => (p === "/" ? "home" : p.replace(/^\/|\/$/g, "").repl
 async function prepare(page: import("@playwright/test").Page, route: string) {
 	await page.clock.install({ time: new Date("2026-01-01T12:00:00Z") });
 	await page.goto(route);
-	await networkIdle(page);
 	await waitIslands(page);
 	await page.mouse.move(-1, -1);
 	await settle(page);

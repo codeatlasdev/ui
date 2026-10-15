@@ -1,5 +1,5 @@
 import AxeBuilder from "@axe-core/playwright";
-import { test as base, expect, type Page, type Request, type TestInfo } from "@playwright/test";
+import { test as base, expect, type Page, type TestInfo } from "@playwright/test";
 
 export interface ThemeOptions {
 	scheme: "dark" | "light" | "system";
@@ -12,12 +12,6 @@ export const DEMO_USER = { name: "Ana Lima", email: "demo@codeatlas.dev", role: 
 
 export const test = base.extend<{ theme: ThemeOptions; consoleErrors: string[] }>({
 	theme: [{ scheme: "dark" }, { option: true }],
-
-	// Records requests from the first navigation so `networkIdle` can name the pending ones.
-	page: async ({ page }, use) => {
-		trackRequests(page);
-		await use(page);
-	},
 
 	// Seeds the same localStorage keys the inline theme script reads before first paint.
 	context: async ({ context, theme }, use) => {
@@ -44,59 +38,6 @@ export const test = base.extend<{ theme: ThemeOptions; consoleErrors: string[] }
 });
 
 export { expect };
-
-/** Requests in flight per page, with the time each started. Filled by `trackRequests`. */
-const inflight = new WeakMap<Page, Map<Request, number>>();
-
-/**
- * Starts recording in-flight requests for `page` (idempotent). Called by the `page` fixture before
- * any navigation, so requests fired during `goto` are known when `networkIdle` runs.
- */
-export function trackRequests(page: Page): Map<Request, number> {
-	const pending = inflight.get(page);
-	if (pending) return pending;
-	const map = new Map<Request, number>();
-	inflight.set(page, map);
-	page.on("request", (r) => map.set(r, Date.now()));
-	page.on("requestfinished", (r) => map.delete(r));
-	page.on("requestfailed", (r) => map.delete(r));
-	return map;
-}
-
-/**
- * Explicit, diagnosable replacement for `waitForLoadState("networkidle")`: resolves once no
- * request has been in flight for `idleMs`; on timeout throws an error listing each pending request
- * (method, URL, resource type, age). Playwright's own wait only says "Timeout exceeded", and
- * traces record finished responses only, so a hang named no culprit.
- *
- * Nothing is excluded: the site has no EventSource, WebSocket or long-poll, so every request is
- * expected to finish.
- */
-export async function networkIdle(
-	page: Page,
-	{ idleMs = 500, timeout = 30_000 }: { idleMs?: number; timeout?: number } = {}
-) {
-	const pending = trackRequests(page);
-	const start = Date.now();
-	let idleSince = pending.size === 0 ? start : 0;
-	while (Date.now() - start < timeout) {
-		if (pending.size === 0) {
-			idleSince ||= Date.now();
-			if (Date.now() - idleSince >= idleMs) return;
-		} else {
-			idleSince = 0;
-		}
-		// Node timer, not `page.waitForTimeout`: stays real when a test installs `page.clock`.
-		await new Promise((r) => setTimeout(r, 50));
-	}
-	const now = Date.now();
-	const list = [...pending].map(
-		([r, t]) => `  ${r.method()} ${r.url()} (${r.resourceType()}, ${now - t}ms)`
-	);
-	throw new Error(
-		`networkIdle: ${list.length} request(s) still pending after ${timeout}ms:\n${list.join("\n")}`
-	);
-}
 
 export function makeAxe(page: Page) {
 	return new AxeBuilder({ page })

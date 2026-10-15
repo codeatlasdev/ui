@@ -1,5 +1,5 @@
 import type { Page } from "@playwright/test";
-import { expect, networkIdle, test, waitIslands } from "./fixtures";
+import { expect, test, waitIslands } from "./fixtures";
 
 /**
  * Theme chapter ("One hex in, a whole theme out"): changing the preview must never move the page.
@@ -13,7 +13,6 @@ test.describe("theme lab stays put", () => {
 
 	async function openLab(page: Page) {
 		await page.goto("/");
-		await networkIdle(page);
 		await waitIslands(page);
 		await page.evaluate(() => {
 			const top = document.querySelector(".lab")?.getBoundingClientRect().top ?? 0;
