@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { Skeleton, GlassCard, Stack } from '@codeatlasdev/ui';
+  import { Skeleton, Card, Stack } from '@codeatlasdev/ui';
 </script>
 
-<GlassCard flush full>
+<Card material="glass" flush full>
   <Skeleton variant="rectangular" height="180px" />
   <div class="caption">
-    <Stack gap={8}>
+    <Stack gap="2">
       <Skeleton height="16px" width="50%" />
       <Skeleton height="13px" width="80%" />
     </Stack>
   </div>
-</GlassCard>
+</Card>
 
 <style>
   .caption { padding: 16px; }

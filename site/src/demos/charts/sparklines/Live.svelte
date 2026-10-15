@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GlassCard, Grid, Stack, Row } from '@codeatlasdev/ui';
+  import { Card, Grid, Stack, Flex } from '@codeatlasdev/ui';
   import { Sparkline } from '@codeatlasdev/ui/charts';
   import { onMount } from 'svelte';
 
@@ -26,21 +26,22 @@
   ]);
 </script>
 
-<Grid cols="repeat(auto-fit,minmax(200px,1fr))" gap={16}>
+<Grid class="grid-auto-200" gap="4">
   {#each metrics as m}
-    <GlassCard>
-      <Stack gap={4}>
-        <Row justify="space-between">
+    <Card material="glass">
+      <Stack gap="1">
+        <Flex justify="between">
           <span class="label">{m.label}</span>
           <span class="value">{m.data[m.data.length - 1].toFixed(0)}%</span>
-        </Row>
+        </Flex>
         <Sparkline data={m.data} height="40px" />
       </Stack>
-    </GlassCard>
+    </Card>
   {/each}
 </Grid>
 
 <style>
+  :global(.grid-auto-200) { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
   .label { font-size: var(--ca-font-size-caption); color: var(--ca-text-secondary); }
   .value { color: var(--ca-brand-text); font-weight: 600; }
 </style>

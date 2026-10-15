@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { PageShell, KpiCard, KpiGrid, GlassCard } from '@codeatlasdev/ui';
+  import { PageShell, KpiCard, KpiGrid, Card } from '@codeatlasdev/ui';
   import { Users, DollarSign, TrendingUp, Activity } from '@lucide/svelte';
 </script>
 
@@ -11,9 +11,9 @@
       <KpiCard title="Growth" value="34%" trend={5.6} icon={TrendingUp} />
       <KpiCard title="Uptime" value="99.9%" trend={0.1} icon={Activity} />
     </KpiGrid>
-    <GlassCard full>
+    <Card material="glass" full>
       <p class="placeholder">Chart or data table goes here</p>
-    </GlassCard>
+    </Card>
   </PageShell>
 </div>
 

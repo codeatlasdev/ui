@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { NotificationBell, Row } from '@codeatlasdev/ui';
+  import { NotificationBell, Flex } from '@codeatlasdev/ui';
 
   const items = [
     { id: '1', title: 'Deploy succeeded', body: 'prod-api-v2.4 is live', time: '2m ago', read: false },
@@ -8,7 +8,7 @@
   ];
 </script>
 
-<Row gap={24} align="center">
+<Flex gap="6" align="center">
   <NotificationBell notifications={items} />
   <NotificationBell notifications={[]} />
-</Row>
+</Flex>

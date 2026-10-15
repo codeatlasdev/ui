@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ExternalLink, SimpleTable, GlassCard } from '@codeatlasdev/ui';
+  import { ExternalLink, SimpleTable, Card } from '@codeatlasdev/ui';
 
   const rows = [
     { domain: 'atlas.dev', price: '$12.00', url: 'https://registrar.example/buy?d=atlas.dev' },
@@ -8,7 +8,7 @@
   ];
 </script>
 
-<GlassCard flush full>
+<Card material="glass" flush full>
   <SimpleTable responsive="cards">
     <thead>
       <tr><th>Domain</th><th>Price</th><th>Registrar</th></tr>
@@ -23,4 +23,4 @@
       {/each}
     </tbody>
   </SimpleTable>
-</GlassCard>
+</Card>

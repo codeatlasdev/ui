@@ -1,6 +1,6 @@
 <script lang="ts">
   import {
-    PageShell, GlassCard, Grid, Row, Button, Chip, Avatar,
+    PageShell, Card, Grid, Flex, Button, Chip, Avatar,
     Timeline, Select, StatusChip, SimpleTable,
   } from '@codeatlasdev/ui';
   import type { TimelineItem } from '@codeatlasdev/ui';
@@ -73,33 +73,33 @@
 
 <PageShell title="Activity" description="Real-time event feed" maxWidth="1200px" gap={24}>
   {#snippet actions()}
-    <Row gap={8}>
+    <Flex gap="2">
       <Select bind:value={filter} options={filterOpts} />
       <Button variant="ghost" size="sm">
         {#snippet leading()}<RefreshCw size={14} />{/snippet}
         Refresh
       </Button>
-    </Row>
+    </Flex>
   {/snippet}
 
   <!-- Stats row -->
-  <Grid cols="repeat(4, 1fr)" gap={16}>
+  <Grid columns={{ base: 2, md: 4 }} gap="4">
     {#each stats as s}
-      <GlassCard>
+      <Card material="glass">
         <p class="stat-label">{s.label}</p>
         <p class="stat-value">{s.value}</p>
-      </GlassCard>
+      </Card>
     {/each}
   </Grid>
 
-  <Grid cols="1fr 360px" gap={20}>
+  <Grid class="grid-main-side" gap="5">
     <!-- Timeline -->
-    <GlassCard title="Event Timeline">
+    <Card material="glass" title="Event Timeline">
       <Timeline items={timelineItems} />
-    </GlassCard>
+    </Card>
 
     <!-- Login audit -->
-    <GlassCard title="Recent Logins" flush>
+    <Card material="glass" title="Recent Logins" flush>
       <SimpleTable>
         <thead>
           <tr>
@@ -134,11 +134,12 @@
           {/each}
         </tbody>
       </SimpleTable>
-    </GlassCard>
+    </Card>
   </Grid>
 </PageShell>
 
 <style>
+  :global(.grid-main-side) { grid-template-columns: 1fr 360px; }
   .stat-label {
     margin: 0 0 4px;
     font-size: 11px;

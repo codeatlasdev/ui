@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GlassCard } from '@codeatlasdev/ui';
+  import { Card } from '@codeatlasdev/ui';
   import { Sparkline } from '@codeatlasdev/ui/charts';
 
   const rows = [
@@ -11,7 +11,7 @@
   const labels = { up: '▲ Growing', down: '▼ Declining', neutral: '→ Stable' };
 </script>
 
-<GlassCard flush full>
+<Card material="glass" flush full>
   <table>
     <thead>
       <tr><th>Product</th><th>Last 6 months</th><th class="right">Trend</th></tr>
@@ -26,7 +26,7 @@
       {/each}
     </tbody>
   </table>
-</GlassCard>
+</Card>
 
 <style>
   table { width: 100%; border-collapse: collapse; font-size: var(--ca-font-size-body2); }

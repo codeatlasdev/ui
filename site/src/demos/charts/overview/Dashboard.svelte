@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GlassCard, Grid, KpiCard, KpiGrid, Stack } from '@codeatlasdev/ui';
+  import { Card, Grid, KpiCard, KpiGrid, Stack } from '@codeatlasdev/ui';
   import { LineChart, BarChart, PieChart, ScatterChart, HeatmapChart, GaugeChart, RadarChart, type CalendarHeatmapPoint } from '@codeatlasdev/ui/charts';
   import { TrendingUp, Users, DollarSign, Activity } from '@lucide/svelte';
 
@@ -19,7 +19,7 @@
   ]);
 </script>
 
-<Stack gap={16}>
+<Stack gap="4">
   <KpiGrid>
     <KpiCard title="Revenue" value="$118k" trend={23.4} icon={DollarSign} />
     <KpiCard title="Users" value="94.2k" trend={8.1} icon={Users} />
@@ -27,12 +27,12 @@
     <KpiCard title="Uptime" value="99.9%" trend={0.1} icon={Activity} />
   </KpiGrid>
 
-  <GlassCard full>
+  <Card material="glass" full>
     <LineChart series={[{ name: 'Revenue', data: revenue }, { name: 'Expenses', data: expenses }]} categories={months} valueFormatter={fmt} area height="280px" />
-  </GlassCard>
+  </Card>
 
-  <Grid cols="repeat(auto-fit,minmax(280px,1fr))" gap={16}>
-    <GlassCard>
+  <Grid class="grid-auto-280" gap="4">
+    <Card material="glass">
       <BarChart
         series={[
           { name: 'Organic', data: [12400, 18200, 22600, 28800] },
@@ -45,8 +45,8 @@
         stacked
         height="260px"
       />
-    </GlassCard>
-    <GlassCard>
+    </Card>
+    <Card material="glass">
       <PieChart
         data={[
           { value: 38, name: 'Product A' },
@@ -58,23 +58,23 @@
         donut
         height="260px"
       />
-    </GlassCard>
+    </Card>
   </Grid>
 
-  <GlassCard full>
+  <Card material="glass" full>
     <ScatterChart series={[{ name: 'Accounts', data: scatter }]} yName="Conversion %" yFormatter={(v) => `${v.toFixed(1)}%`} height="260px" />
-  </GlassCard>
+  </Card>
 
-  <Grid cols="repeat(auto-fit,minmax(280px,1fr))" gap={16}>
-    <GlassCard>
+  <Grid class="grid-auto-280" gap="4">
+    <Card material="glass">
       <HeatmapChart variant="calendar" data={calDays} range={['2026-03-01', '2026-09-18']} height="140px" />
-    </GlassCard>
-    <GlassCard>
+    </Card>
+    <Card material="glass">
       <GaugeChart value={84} label="Score" height="220px" />
-    </GlassCard>
+    </Card>
   </Grid>
 
-  <GlassCard full>
+  <Card material="glass" full>
     <RadarChart
       indicators={['Speed', 'Quality', 'Reliability', 'Innovation', 'Support'].map((name) => ({ name, max: 100 }))}
       series={[
@@ -83,5 +83,9 @@
       ]}
       height="280px"
     />
-  </GlassCard>
+  </Card>
 </Stack>
+
+<style>
+  :global(.grid-auto-280) { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+</style>

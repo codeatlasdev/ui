@@ -33,7 +33,7 @@
 
   <AuthCard title="Create your account" subtitle="Start building in minutes. No credit card required.">
     <form onsubmit={submit}>
-      <Stack gap={14}>
+      <Stack gap="3.5">
         <TextField label="Full name" bind:value={name}
           placeholder="Ada Lovelace" autocomplete="name" />
         <TextField label="Work email" type="email" bind:value={email}

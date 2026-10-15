@@ -1,0 +1,233 @@
+/*
+ * CodeAtlas UI — Surface
+ * ───────────────────────
+ * One rule (.ca-surface) paints every surface from --ca-surface-* variables. The axes are
+ * orthogonal because each one writes different variables:
+ *
+ *   material   → --ca-surface-filter, --ca-surface-fill, --ca-surface-edge
+ *   elevation  → --ca-surface-shadow (+ which fill/blur tier the material reads)
+ *   tone       → --ca-surface-tint     (semantic color layered over the fill)
+ *   variant    → drops the fill and/or draws an outline
+ *   radius     → --ca-surface-radius
+ *
+ * material="auto" reads the --ca-mat-<tier>-* tokens, which `html[data-style]` already rewrites
+ * (solid / flat / outlined / neumorphic / clay / ... recipes), so it follows the theme. The explicit
+ * materials ignore data-style: solid, frosted, glass and liquid look the same under every style.
+ *
+ * Rules that kill backdrop-filter must never appear here: no will-change, no isolation, and the
+ * prefixed property comes first (Lightning CSS drops the standard one otherwise).
+ */
+
+/* ── Style-independent material values ──────────────────────────────────────
+ * Declared on the same selectors the theme tokens use, so a scheme/preset island re-resolves
+ * them. They are literals: data-style never touches them. */
+:root,
+[data-ca-tokens],
+[data-theme-scope] {
+  --ca-surface-glass-blur-1: blur(8px) saturate(160%);
+  --ca-surface-glass-blur-2: blur(14px) saturate(175%);
+  --ca-surface-glass-blur-3: blur(22px) saturate(190%);
+  --ca-surface-glass-blur-4: blur(32px) saturate(200%);
+  --ca-surface-glass-blur-5: blur(44px) saturate(210%);
+  --ca-surface-glass-fill-1: oklch(0.97 0.003 55 / 0.15);
+  --ca-surface-glass-fill-2: oklch(0.97 0.003 55 / 0.22);
+  --ca-surface-glass-fill-3: oklch(0.97 0.003 55 / 0.32);
+  --ca-surface-glass-fill-4: oklch(0.975 0.003 55 / 0.52);
+  --ca-surface-glass-fill-5: oklch(0.98 0.002 55 / 0.72);
+  --ca-surface-glass-edge: inset 0 0.5px 0 oklch(1 0 0 / 0.7), inset 0 -0.5px 0 rgba(0, 0, 0, 0.08);
+  --ca-surface-frost-blur-1: blur(5px) saturate(140%);
+  --ca-surface-frost-blur-2: blur(8px) saturate(155%);
+  --ca-surface-frost-blur-3: blur(12px) saturate(165%);
+  --ca-surface-frost-blur-4: blur(18px) saturate(175%);
+  --ca-surface-frost-blur-5: blur(24px) saturate(185%);
+  /* Drop shadows by elevation step (0 = none). Neutral, no hue. */
+  --ca-elevation-0: 0 0 #0000;
+  --ca-elevation-1: 0 1px 2px oklch(0 0 0 / 0.06);
+  --ca-elevation-2: 0 2px 8px oklch(0 0 0 / 0.08);
+  --ca-elevation-3: 0 4px 16px oklch(0 0 0 / 0.1);
+  --ca-elevation-4: 0 12px 32px -8px oklch(0 0 0 / 0.16);
+  --ca-elevation-5: 0 24px 56px -12px oklch(0 0 0 / 0.2);
+}
+
+.dark,
+[data-theme-scope="dark"] {
+  --ca-surface-glass-blur-1: blur(8px) saturate(150%) brightness(1.02);
+  --ca-surface-glass-blur-2: blur(14px) saturate(165%) brightness(1.02);
+  --ca-surface-glass-blur-3: blur(22px) saturate(180%) brightness(1.02);
+  --ca-surface-glass-blur-4: blur(32px) saturate(200%) brightness(1.01);
+  --ca-surface-glass-blur-5: blur(44px) saturate(210%) brightness(1.01);
+  --ca-surface-glass-fill-1: oklch(0.2 0 0 / 0.22);
+  --ca-surface-glass-fill-2: oklch(0.22 0 0 / 0.34);
+  --ca-surface-glass-fill-3: oklch(0.24 0 0 / 0.44);
+  --ca-surface-glass-fill-4: oklch(0.2 0 0 / 0.65);
+  --ca-surface-glass-fill-5: oklch(0.16 0 0 / 0.85);
+  --ca-surface-glass-edge: inset 0 0.5px 0 oklch(1 0 0 / 0.22), inset 0 -0.5px 0 rgba(0, 0, 0, 0.08);
+  --ca-elevation-1: 0 1px 3px oklch(0 0 0 / 0.3);
+  --ca-elevation-2: 0 2px 8px oklch(0 0 0 / 0.32);
+  --ca-elevation-3: 0 4px 16px oklch(0 0 0 / 0.35);
+  --ca-elevation-4: 0 12px 32px -8px oklch(0 0 0 / 0.45);
+  --ca-elevation-5: 0 24px 56px -12px oklch(0 0 0 / 0.5);
+}
+
+/* ── The rule ─────────────────────────────────────────────────────────────── */
+.ca-surface {
+  --ca-surface-radius: var(--ca-radius-lg);
+  /* The variables below are filled in by the [data-material] / [data-elevation] / [data-tone]
+   * blocks; these are the values of data-material="auto", elevation 1. */
+  --ca-surface-filter: var(--ca-mat-ultra-thin-filter);
+  --ca-surface-fill: var(--ca-mat-ultra-thin-fill);
+  --ca-surface-shadow: var(--ca-mat-ultra-thin-shadow);
+  --ca-surface-edge: var(--ca-mat-edge);
+  --ca-surface-tint: none;
+  --ca-surface-glow: 0 0 #0000;
+  position: relative;
+  box-sizing: border-box;
+  /* Tint over fill; the fill may be a color or a gradient (the chrome recipe). */
+  background: var(--ca-surface-tint), var(--ca-surface-fill);
+  -webkit-backdrop-filter: var(--ca-surface-filter);
+  backdrop-filter: var(--ca-surface-filter);
+  box-shadow: var(--ca-surface-shadow), var(--ca-surface-edge), var(--ca-surface-glow);
+  border-radius: var(--ca-surface-radius);
+  color: var(--ca-text-primary);
+}
+
+/* ── Elevation 0-5 → drop shadow. Each material below also reads its blur/fill tier from it ── */
+.ca-surface[data-elevation="0"] { --ca-surface-shadow: var(--ca-elevation-0); }
+.ca-surface[data-elevation="1"] { --ca-surface-shadow: var(--ca-elevation-1); }
+.ca-surface[data-elevation="2"] { --ca-surface-shadow: var(--ca-elevation-2); }
+.ca-surface[data-elevation="3"] { --ca-surface-shadow: var(--ca-elevation-3); }
+.ca-surface[data-elevation="4"] { --ca-surface-shadow: var(--ca-elevation-4); }
+.ca-surface[data-elevation="5"] { --ca-surface-shadow: var(--ca-elevation-5); }
+
+/* ── material="auto": the theme decides (data-style rewrites --ca-mat-*) ───── */
+.ca-surface[data-material="auto"][data-elevation="0"] { --ca-surface-filter: var(--ca-mat-ultra-thin-filter); --ca-surface-fill: var(--ca-mat-ultra-thin-fill); --ca-surface-shadow: 0 0 #0000; }
+.ca-surface[data-material="auto"][data-elevation="1"] { --ca-surface-filter: var(--ca-mat-ultra-thin-filter); --ca-surface-fill: var(--ca-mat-ultra-thin-fill); --ca-surface-shadow: var(--ca-mat-ultra-thin-shadow); }
+.ca-surface[data-material="auto"][data-elevation="2"] { --ca-surface-filter: var(--ca-mat-thin-filter); --ca-surface-fill: var(--ca-mat-thin-fill); --ca-surface-shadow: var(--ca-mat-thin-shadow); }
+.ca-surface[data-material="auto"][data-elevation="3"] { --ca-surface-filter: var(--ca-mat-regular-filter); --ca-surface-fill: var(--ca-mat-regular-fill); --ca-surface-shadow: var(--ca-mat-regular-shadow); }
+.ca-surface[data-material="auto"][data-elevation="4"] { --ca-surface-filter: var(--ca-mat-thick-filter); --ca-surface-fill: var(--ca-mat-thick-fill); --ca-surface-shadow: var(--ca-mat-thick-shadow); }
+.ca-surface[data-material="auto"][data-elevation="5"] { --ca-surface-filter: var(--ca-mat-chrome-filter); --ca-surface-fill: var(--ca-mat-chrome-fill); --ca-surface-shadow: var(--ca-mat-chrome-shadow); }
+
+/* ── material="solid": opaque, tonal step per tier (Material 3 idea), never blurs ── */
+.ca-surface[data-material="solid"] {
+  --ca-surface-filter: none;
+  --ca-surface-edge: inset 0 0 0 var(--ca-border-width) var(--ca-outline-subtle);
+  --ca-surface-fill: var(--ca-surface-raised);
+}
+.ca-surface[data-material="solid"][data-elevation="4"],
+.ca-surface[data-material="solid"][data-elevation="5"] { --ca-surface-fill: var(--ca-surface-overlay); }
+
+/* ── material="frosted": lighter blur over a translucent raised surface ──────── */
+.ca-surface[data-material="frosted"] {
+  --ca-surface-edge: inset 0 0 0 var(--ca-border-width) var(--ca-outline-subtle);
+  --ca-surface-filter: var(--ca-surface-frost-blur-1);
+  --ca-surface-fill: color-mix(in oklab, var(--ca-surface-raised) 55%, transparent);
+}
+.ca-surface[data-material="frosted"][data-elevation="2"] { --ca-surface-filter: var(--ca-surface-frost-blur-2); --ca-surface-fill: color-mix(in oklab, var(--ca-surface-raised) 62%, transparent); }
+.ca-surface[data-material="frosted"][data-elevation="3"] { --ca-surface-filter: var(--ca-surface-frost-blur-3); --ca-surface-fill: color-mix(in oklab, var(--ca-surface-raised) 70%, transparent); }
+.ca-surface[data-material="frosted"][data-elevation="4"] { --ca-surface-filter: var(--ca-surface-frost-blur-4); --ca-surface-fill: color-mix(in oklab, var(--ca-surface-overlay) 78%, transparent); }
+.ca-surface[data-material="frosted"][data-elevation="5"] { --ca-surface-filter: var(--ca-surface-frost-blur-5); --ca-surface-fill: color-mix(in oklab, var(--ca-surface-overlay) 86%, transparent); }
+
+/* ── material="glass" / "liquid": the Liquid Glass tiers, whatever the theme ──── */
+.ca-surface[data-material="glass"],
+.ca-surface[data-material="liquid"] { --ca-surface-edge: var(--ca-surface-glass-edge); }
+.ca-surface[data-material="glass"][data-elevation="0"],
+.ca-surface[data-material="glass"][data-elevation="1"],
+.ca-surface[data-material="liquid"][data-elevation="0"],
+.ca-surface[data-material="liquid"][data-elevation="1"] { --ca-surface-filter: var(--ca-surface-glass-blur-1); --ca-surface-fill: var(--ca-surface-glass-fill-1); }
+.ca-surface[data-material="glass"][data-elevation="2"],
+.ca-surface[data-material="liquid"][data-elevation="2"] { --ca-surface-filter: var(--ca-surface-glass-blur-2); --ca-surface-fill: var(--ca-surface-glass-fill-2); }
+.ca-surface[data-material="glass"][data-elevation="3"],
+.ca-surface[data-material="liquid"][data-elevation="3"] { --ca-surface-filter: var(--ca-surface-glass-blur-3); --ca-surface-fill: var(--ca-surface-glass-fill-3); }
+.ca-surface[data-material="glass"][data-elevation="4"],
+.ca-surface[data-material="liquid"][data-elevation="4"] { --ca-surface-filter: var(--ca-surface-glass-blur-4); --ca-surface-fill: var(--ca-surface-glass-fill-4); }
+.ca-surface[data-material="glass"][data-elevation="5"],
+.ca-surface[data-material="liquid"][data-elevation="5"] { --ca-surface-filter: var(--ca-surface-glass-blur-5); --ca-surface-fill: var(--ca-surface-glass-fill-5); }
+
+/* ── tone: a semantic tint over the fill, plus the matching accent for outlines ── */
+.ca-surface[data-tone="brand"] { --ca-surface-tone: var(--ca-brand-main); }
+.ca-surface[data-tone="success"] { --ca-surface-tone: var(--ca-semantic-success); }
+.ca-surface[data-tone="warning"] { --ca-surface-tone: var(--ca-semantic-warning); }
+.ca-surface[data-tone="error"] { --ca-surface-tone: var(--ca-semantic-error); }
+.ca-surface[data-tone="info"] { --ca-surface-tone: var(--ca-semantic-info); }
+.ca-surface[data-tone]:not([data-tone="neutral"]) {
+  --ca-surface-wash: color-mix(in oklab, var(--ca-surface-tone) 10%, transparent);
+  --ca-surface-tint: linear-gradient(var(--ca-surface-wash), var(--ca-surface-wash));
+}
+
+/* ── variant ─────────────────────────────────────────────────────────────────── */
+/* [data-variant] sits after the material blocks and doubles the attribute so it outranks them. */
+.ca-surface[data-variant="outlined"][data-material] {
+  --ca-surface-fill: transparent;
+  --ca-surface-filter: none;
+  --ca-surface-shadow: 0 0 #0000;
+  --ca-surface-edge: inset 0 0 0 var(--ca-border-width) var(--ca-surface-tone, var(--ca-border-color));
+  --ca-surface-tint: none;
+}
+.ca-surface[data-variant="ghost"][data-material] {
+  --ca-surface-fill: transparent;
+  --ca-surface-filter: none;
+  --ca-surface-shadow: 0 0 #0000;
+  --ca-surface-edge: 0 0 #0000;
+  --ca-surface-glow: 0 0 #0000;
+}
+
+/* ── glow (brand halo; a shadow, so it needs no pseudo-element and no isolation) ── */
+.ca-surface[data-glow] { --ca-surface-glow: 0 0 24px var(--ca-glow-primary); }
+
+/* ── radius ───────────────────────────────────────────────────────────────────── */
+.ca-surface[data-radius="none"] { --ca-surface-radius: 0; }
+.ca-surface[data-radius="sm"] { --ca-surface-radius: var(--ca-radius-sm); }
+.ca-surface[data-radius="md"] { --ca-surface-radius: var(--ca-radius-md); }
+.ca-surface[data-radius="lg"] { --ca-surface-radius: var(--ca-radius-lg); }
+.ca-surface[data-radius="xl"] { --ca-surface-radius: var(--ca-radius-xl); }
+.ca-surface[data-radius="pill"] { --ca-surface-radius: var(--ca-radius-pill); }
+
+/* ── interactive: hover / press / focus-visible ───────────────────────────────── */
+.ca-surface[data-interactive] {
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  transition:
+    box-shadow var(--ca-duration-fast) var(--ca-ease-standard),
+    background-color var(--ca-duration-fast) var(--ca-ease-standard);
+}
+.ca-surface[data-interactive]:hover {
+  box-shadow: var(--ca-surface-shadow), var(--ca-surface-edge), var(--ca-surface-glow), inset 0 0 0 999px var(--ca-action-hover);
+}
+.ca-surface[data-interactive]:active {
+  box-shadow: var(--ca-surface-shadow), var(--ca-surface-edge), var(--ca-surface-glow), inset 0 0 0 999px var(--ca-action-selected);
+}
+.ca-surface[data-interactive]:focus-visible {
+  outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
+  outline-offset: var(--ca-focus-ring-offset);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ca-surface[data-interactive] { transition: none; }
+}
+
+/* ── Reduced transparency: translucent fills become opaque ────────────────────── */
+@media (prefers-reduced-transparency: reduce) {
+  .ca-surface[data-material="frosted"],
+  .ca-surface[data-material="glass"],
+  .ca-surface[data-material="liquid"],
+  .ca-surface[data-material="auto"] {
+    --ca-surface-filter: none;
+    --ca-surface-fill: var(--ca-glass-tint-solid);
+  }
+}
+
+/* ── Forced colors: no blur, no shadow, a real border ─────────────────────────── */
+@media (forced-colors: active) {
+  .ca-surface {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+    background-color: Canvas;
+    background-image: none;
+    box-shadow: none;
+    border: 1px solid CanvasText;
+    color: CanvasText;
+  }
+  .ca-surface[data-variant="ghost"] { border-color: transparent; }
+  .ca-surface[data-interactive]:focus-visible { outline-color: Highlight; }
+}

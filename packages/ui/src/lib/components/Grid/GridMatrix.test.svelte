@@ -12,18 +12,18 @@
 
 <div data-testid="matrix" style="display:grid;gap:16px;padding:16px;width:max-content">
 	<div style={frame}><Grid>{#snippet children()}{@render cells()}{/snippet}</Grid></div>
-	<div style={frame}><Grid cols={3} gap={8}>{#snippet children()}{@render cells()}{/snippet}</Grid></div>
-	<div style={frame}><Grid cols="2fr 1fr" gap={12}>{#snippet children()}{@render cells()}{/snippet}</Grid></div>
+	<div style={frame}><Grid columns={3} gap="2">{#snippet children()}{@render cells()}{/snippet}</Grid></div>
+	<div style={frame}><Grid columns={{ base: 1, md: 2 }} gap="3">{#snippet children()}{@render cells()}{/snippet}</Grid></div>
 	<div style={frame}>
-		<Grid cols="repeat(auto-fill, minmax(100px, 1fr))" gap="1rem">
+		<Grid columns={4} gap="4">
 			{#snippet children()}{@render cells()}{/snippet}
 		</Grid>
 	</div>
 	<div style={frame}>
-		<Grid cols={3} rowGap={4} colGap={24}>{#snippet children()}{@render cells()}{/snippet}</Grid>
+		<Grid columns={3} gap="1">{#snippet children()}{@render cells()}{/snippet}</Grid>
 	</div>
 	<div style={frame}>
-		<Grid cols={3} gap={8} align="center" justify="center">
+		<Grid columns={3} gap="2" align="center">
 			{#snippet children()}
 				<div style="height:16px;width:40px;background:#e11d48"></div>
 				<div style="height:40px;width:40px;background:#2563eb"></div>

@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { GlassCard } from '@codeatlasdev/ui';
+  import { Card } from '@codeatlasdev/ui';
   import { BarChart } from '@codeatlasdev/ui/charts';
 
   const products = ['Atlas Pro', 'Nova Suite', 'Relay SDK', 'Mesh API', 'Drift UI', 'Pulse DB', 'Forge CI', 'Orbit ML'];
 </script>
 
-<GlassCard full>
+<Card material="glass" full>
   <BarChart
     series={[{ name: 'Sales', data: [9840, 8720, 7650, 6430, 5980, 4810, 3920, 3140] }]}
     categories={products}
@@ -13,4 +13,4 @@
     horizontal
     height="300px"
   />
-</GlassCard>
+</Card>

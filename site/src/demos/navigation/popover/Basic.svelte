@@ -4,7 +4,7 @@
 
 <Popover>
   {#snippet triggerChild(props)}<Button {...props}>Open popover</Button>{/snippet}
-  <Stack gap={12}>
+  <Stack gap="3">
     <p class="text">This is a basic popover with some content inside.</p>
     <Button size="sm" variant="filled">Confirm</Button>
   </Stack>

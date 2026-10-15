@@ -1,9 +1,9 @@
 <script lang="ts">
-  import { GlassAppBar, IconButton, Avatar, GlassCard } from '@codeatlasdev/ui';
+  import { GlassAppBar, IconButton, Avatar, Card } from '@codeatlasdev/ui';
   import { Search, Bell } from '@lucide/svelte';
 </script>
 
-<GlassCard full flush>
+<Card material="glass" full flush>
   <GlassAppBar>
     <span class="title">My Application</span>
     {#snippet trailing()}
@@ -12,7 +12,7 @@
       <Avatar alt="Ada L" size="sm" />
     {/snippet}
   </GlassAppBar>
-</GlassCard>
+</Card>
 
 <style>
   .title { font-weight: 600; color: var(--ca-text-primary); }

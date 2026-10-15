@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GlassCard, Row, Chip } from '@codeatlasdev/ui';
+  import { Card, Flex, Chip } from '@codeatlasdev/ui';
   import { PieChart } from '@codeatlasdev/ui/charts';
 
   type Quarter = 'Q1' | 'Q2' | 'Q3';
@@ -15,12 +15,12 @@
 </script>
 
 <div class="wrap">
-  <Row gap={8}>
+  <Flex gap="2">
     {#each quarters as q}
       <Chip label={q} selected={selected === q} onclick={() => (selected = q)} variant="brand" size="sm" />
     {/each}
-  </Row>
-  <GlassCard full><PieChart {data} donut height="300px" /></GlassCard>
+  </Flex>
+  <Card material="glass" full><PieChart {data} donut height="300px" /></Card>
 </div>
 
 <style>

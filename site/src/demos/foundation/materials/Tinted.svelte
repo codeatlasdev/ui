@@ -1,17 +1,17 @@
 <script lang="ts">
-	import { GlassSurface } from "@codeatlasdev/ui";
+	import { Surface } from "@codeatlasdev/ui";
 </script>
 
 <div class="backdrop">
-	<GlassSurface thickness="regular" tinted refraction={false} class="chip">
+	<Surface material="glass" tone="brand" class="chip">
 		<p>Tinted</p>
-	</GlassSurface>
-	<GlassSurface thickness="regular" glowing refraction={false} class="chip">
+	</Surface>
+	<Surface material="glass" glow class="chip">
 		<p>Glowing</p>
-	</GlassSurface>
-	<GlassSurface thickness="regular" tinted glowing refraction={false} class="chip">
+	</Surface>
+	<Surface material="glass" tone="brand" glow class="chip">
 		<p>Tinted + glowing</p>
-	</GlassSurface>
+	</Surface>
 </div>
 
 <style>

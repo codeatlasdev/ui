@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { GlassCard } from '@codeatlasdev/ui';
+  import { Card } from '@codeatlasdev/ui';
   import { RadarChart } from '@codeatlasdev/ui/charts';
 
   const indicators = ['Speed', 'Quality', 'Reliability', 'Innovation', 'Support', 'Coverage'].map((name) => ({ name, max: 100 }));
 </script>
 
-<GlassCard full>
+<Card material="glass" full>
   <RadarChart
     {indicators}
     series={[
@@ -14,4 +14,4 @@
     ]}
     height="340px"
   />
-</GlassCard>
+</Card>

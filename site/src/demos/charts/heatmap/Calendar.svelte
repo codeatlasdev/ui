@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GlassCard } from '@codeatlasdev/ui';
+  import { Card } from '@codeatlasdev/ui';
   import { HeatmapChart, type CalendarHeatmapPoint } from '@codeatlasdev/ui/charts';
 
   // [ 'YYYY-MM-DD', value ] per day.
@@ -13,6 +13,6 @@
   });
 </script>
 
-<GlassCard full>
+<Card material="glass" full>
   <HeatmapChart variant="calendar" {data} range={['2026-01-01', '2026-09-15']} tooltipFormatter={(v) => `${v} commits`} height="160px" />
-</GlassCard>
+</Card>

@@ -15,7 +15,7 @@
 </Button>
 
 <Drawer bind:open title="Filters">
-  <Stack gap={16}>
+  <Stack gap="4">
     <div>
       <p class="label">Status</p>
       <FilterGroup options={statusOpts} value={statusF} onchange={(v) => (statusF = v)} />

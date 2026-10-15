@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GlassCard } from '@codeatlasdev/ui';
+  import { Card } from '@codeatlasdev/ui';
   import { ScatterChart, type ScatterSeries } from '@codeatlasdev/ui/charts';
 
   const cluster = (n: number, x0: number, xr: number, y0: number, yr: number, a: number, b: number, c: number, d: number) =>
@@ -16,6 +16,6 @@
   ];
 </script>
 
-<GlassCard full>
+<Card material="glass" full>
   <ScatterChart {series} yName="Conversion %" yFormatter={(v) => `${v.toFixed(1)}%`} height="340px" />
-</GlassCard>
+</Card>

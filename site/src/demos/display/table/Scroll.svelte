@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { SimpleTable, GlassCard } from '@codeatlasdev/ui';
+  import { SimpleTable, Card } from '@codeatlasdev/ui';
 
   const rows = [
     { name: 'Ana Souza', email: 'ana@example.com', role: 'Admin', status: 'Active' },
@@ -8,7 +8,7 @@
   ];
 </script>
 
-<GlassCard flush full>
+<Card material="glass" flush full>
   <SimpleTable>
     <thead>
       <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr>
@@ -24,4 +24,4 @@
       {/each}
     </tbody>
   </SimpleTable>
-</GlassCard>
+</Card>

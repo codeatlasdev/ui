@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GlassCard, Row, Button } from '@codeatlasdev/ui';
+  import { Card, Flex, Button } from '@codeatlasdev/ui';
   import { HeatmapChart, type CalendarHeatmapPoint } from '@codeatlasdev/ui/charts';
 
   function gen(year: number, count: number, seed: number): CalendarHeatmapPoint[] {
@@ -23,13 +23,13 @@
 </script>
 
 <div class="wrap">
-  <Row gap={8}>
+  <Flex gap="2">
     <Button variant={year === 2026 ? 'filled' : 'glass'} size="sm" onclick={() => (year = 2026)}>2026</Button>
     <Button variant={year === 2025 ? 'filled' : 'glass'} size="sm" onclick={() => (year = 2025)}>2025</Button>
-  </Row>
-  <GlassCard full>
+  </Flex>
+  <Card material="glass" full>
     <HeatmapChart variant="calendar" data={data[year]} range={ranges[year]} tooltipFormatter={(v) => `${v} commits`} height="160px" />
-  </GlassCard>
+  </Card>
 </div>
 
 <style>

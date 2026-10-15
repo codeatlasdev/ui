@@ -1,6 +1,6 @@
 <script lang="ts">
   import {
-    Alert, Avatar, Button, Chip, GlassCard, IconButton, KpiCard, SimpleTable,
+    Alert, Avatar, Button, Chip, Card, IconButton, KpiCard, SimpleTable,
     StatusChip, Switch, TextField,
   } from '@codeatlasdev/ui';
   import { Bell, DollarSign, Plus } from '@lucide/svelte';
@@ -39,7 +39,7 @@
   data-style={style}
   data-testid="te-island"
 >
-  <GlassCard title="Team settings">
+  <Card material="glass" title="Team settings">
     {#snippet headerActions()}
       <IconButton aria-label="Notifications" variant="glass" size="sm"><Bell size={16} /></IconButton>
     {/snippet}
@@ -64,13 +64,13 @@
         <Button variant="ghost">{#snippet leading()}<Plus size={16} />{/snippet}Add member</Button>
       </div>
     </div>
-  </GlassCard>
+  </Card>
 
   <KpiCard title="Monthly revenue" value="R$ 48,2k" trend={12.4} icon={DollarSign} />
 
   <Alert severity="info" title="Heads up">Changes apply to this preview only.</Alert>
 
-  <GlassCard flush>
+  <Card material="glass" flush>
     <SimpleTable>
       <thead>
         <tr><th>Member</th><th>Role</th><th>Status</th></tr>
@@ -85,7 +85,7 @@
         {/each}
       </tbody>
     </SimpleTable>
-  </GlassCard>
+  </Card>
 </div>
 
 <style>

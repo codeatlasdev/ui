@@ -1,11 +1,11 @@
 <script lang="ts">
-  import { GlassCard, Button } from '@codeatlasdev/ui';
+  import { Card, Button } from '@codeatlasdev/ui';
 </script>
 
-<GlassCard title="Team members" class="titled">
+<Card material="glass" title="Team members" class="titled">
   {#snippet headerActions()}<Button size="sm" variant="outlined">Invite</Button>{/snippet}
   <p>Use <code>title</code> and <code>headerActions</code> for a built-in card header.</p>
-</GlassCard>
+</Card>
 
 <style>
   :global(.titled) { max-width: 420px; width: 100%; }

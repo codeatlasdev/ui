@@ -1,7 +1,7 @@
 <script lang="ts">
   import {
     AppList, SimpleTable, UserCell, StatusChip, Checkbox,
-    Button, Row, FilterGroup, Chip,
+    Button, Flex, FilterGroup, Chip,
   } from '@codeatlasdev/ui';
   import { Plus, Trash2, Edit2, Download } from '@lucide/svelte';
 
@@ -87,10 +87,10 @@
             </td>
             <td>{u.joined}</td>
             <td class="ca-col-actions">
-              <Row gap={4} class="ca-row-actions">
+              <Flex gap="1" class="ca-row-actions">
                 <Button variant="ghost" size="sm" aria-label="Edit"><Edit2 size={13} /></Button>
                 <Button variant="ghost" size="sm" aria-label="Delete"><Trash2 size={13} /></Button>
-              </Row>
+              </Flex>
             </td>
           </tr>
         {/each}

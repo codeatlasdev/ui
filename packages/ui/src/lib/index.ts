@@ -44,17 +44,21 @@ export { default as AuthLayout } from "./components/AuthLayout/AuthLayout.svelte
 // ── DISPLAY ───────────────────────────────────────────────────────────────────
 export { default as Avatar } from "./components/Avatar/Avatar.svelte";
 export { default as Badge } from "./components/Badge/Badge.svelte";
+// ── GLASS SURFACES ────────────────────────────────────────────────────────────
+export { default as Box } from "./components/Box/Box.svelte";
 export type { BreadcrumbItem } from "./components/Breadcrumb/Breadcrumb.svelte";
 export { default as Breadcrumb } from "./components/Breadcrumb/Breadcrumb.svelte";
 // ── INPUTS ────────────────────────────────────────────────────────────────────
 export { default as Button } from "./components/Button/Button.svelte";
 export { default as IconButton } from "./components/Button/IconButton.svelte";
+export { default as Card } from "./components/Card/Card.svelte";
 export { default as Checkbox } from "./components/Checkbox/Checkbox.svelte";
 export { default as Chip } from "./components/Chip/Chip.svelte";
 export { default as Collapsible } from "./components/Collapsible/Collapsible.svelte";
 export type { ComboboxOption } from "./components/Combobox/Combobox.svelte";
 export { default as Combobox } from "./components/Combobox/Combobox.svelte";
 export { default as CommandPalette } from "./components/CommandPalette/CommandPalette.svelte";
+export { default as Container } from "./components/Container/Container.svelte";
 export { default as CopyButton } from "./components/CopyButton/CopyButton.svelte";
 export type { DateRange, DateValue, TimeValue } from "./components/Date/index.js";
 export {
@@ -110,8 +114,8 @@ export { default as ExportMenu } from "./components/ExportMenu/ExportMenu.svelte
 export { default as ExternalLink } from "./components/ExternalLink/ExternalLink.svelte";
 export { default as FileUpload } from "./components/FileUpload/FileUpload.svelte";
 export { default as FilterGroup } from "./components/FilterGroup/FilterGroup.svelte";
+export { default as Flex } from "./components/Flex/Flex.svelte";
 export { default as GlassAppBar } from "./components/GlassAppBar/GlassAppBar.svelte";
-// ── GLASS SURFACES ────────────────────────────────────────────────────────────
 export { default as GlassCard } from "./components/GlassCard/GlassCard.svelte";
 export { default as GlassSurface } from "./components/GlassSurface/GlassSurface.svelte";
 // ── LAYOUT PRIMITIVES ─────────────────────────────────────────────────────────
@@ -120,6 +124,15 @@ export { default as Image } from "./components/Image/Image.svelte";
 export { default as Kbd } from "./components/Kbd/Kbd.svelte";
 export { default as KpiCard } from "./components/KpiCard/KpiCard.svelte";
 export { default as KpiGrid } from "./components/KpiGrid/KpiGrid.svelte";
+export type {
+	Align,
+	Columns,
+	Direction,
+	Justify,
+	LayoutProps,
+	Responsive,
+	Space,
+} from "./components/Layout/layout.js";
 export { default as Lightbox } from "./components/Lightbox/Lightbox.svelte";
 export { default as LiquidGlass } from "./components/LiquidGlass/LiquidGlass.svelte";
 export { default as LiveList } from "./components/LiveList/LiveList.svelte";
@@ -136,6 +149,7 @@ export type { RadioItem } from "./components/RadioGroup/RadioGroup.svelte";
 export { default as RadioGroup } from "./components/RadioGroup/RadioGroup.svelte";
 export { default as Row } from "./components/Row/Row.svelte";
 export { default as ScrollArea } from "./components/ScrollArea/ScrollArea.svelte";
+export { default as Section } from "./components/Section/Section.svelte";
 export { default as Select } from "./components/Select/Select.svelte";
 export { default as SettingItem } from "./components/SettingItem/SettingItem.svelte";
 export { default as Sheet } from "./components/Sheet/Sheet.svelte";
@@ -149,6 +163,8 @@ export { default as StatusChip } from "./components/StatusChip/StatusChip.svelte
 export type { StepItem } from "./components/Stepper/Stepper.svelte";
 export { default as Stepper } from "./components/Stepper/Stepper.svelte";
 export { default as StickyActions } from "./components/StickyActions/StickyActions.svelte";
+export { default as Surface } from "./components/Surface/Surface.svelte";
+export { default as SurfacePanel } from "./components/SurfacePanel/SurfacePanel.svelte";
 export { default as Switch } from "./components/Switch/Switch.svelte";
 // ── TABLE (listagens simples) ─────────────────────────────────────────────────
 export { SimpleTable, UserCell } from "./components/Table/index.js";

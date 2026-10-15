@@ -15,7 +15,7 @@
 <Button variant="filled" onclick={() => (open = true)}>Invite member</Button>
 
 <Dialog bind:open title="Invite team member" size="md">
-  <Stack gap={14}>
+  <Stack gap="3.5">
     <TextField label="Full name" bind:value={name} placeholder="Ada Lovelace" />
     <TextField label="Email" type="email" bind:value={email} placeholder="ada@company.com" />
     <Select label="Role" bind:value={role} options={roleOpts} />

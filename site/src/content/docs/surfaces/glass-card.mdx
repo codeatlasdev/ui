@@ -1,47 +1,30 @@
 ---
 title: Glass Card
-description: "A card built on GlassSurface with rounded corners and overflow clipping, the default container for content sections."
+description: "Deprecated: use Card. GlassCard is kept until the next major version."
 group: Surfaces
-order: 4
+order: 5
 ---
-import Demo from "~/components/docs/Demo.astro";
-import Props from "~/components/docs/Props.astro";
-import Default from "~/demos/surfaces/glass-card/Default.svelte";
-import DefaultSrc from "~/demos/surfaces/glass-card/Default.svelte?raw";
-import Accents from "~/demos/surfaces/glass-card/Accents.svelte";
-import AccentsSrc from "~/demos/surfaces/glass-card/Accents.svelte?raw";
-import Thickness from "~/demos/surfaces/glass-card/Thickness.svelte";
-import ThicknessSrc from "~/demos/surfaces/glass-card/Thickness.svelte?raw";
-import Flush from "~/demos/surfaces/glass-card/Flush.svelte";
-import FlushSrc from "~/demos/surfaces/glass-card/Flush.svelte?raw";
+import { Callout } from "@codeatlasdev/ui";
 
-```svelte
-<script>
-  import { GlassCard } from "@codeatlasdev/ui";
-</script>
+<Callout type="caution" title="Deprecated">
+`GlassCard` is replaced by [Card](/docs/surfaces/card/) and removed in the next major version. It still works and looks the same: it renders a Card, keeps its `ca-glass-card*` and `glass*` classes, and logs a `[ca-ui]` warning in development.
+</Callout>
 
-<GlassCard title="Overview" headerActions={actions}>…</GlassCard>
+```sh
+bunx @codeatlasdev/ui migrate --write src
 ```
 
-GlassCard is the primary surface of the library. Padding comes from `--ca-card-padding`; use `flush` for content that touches the edges, such as tables, images and code. Backdrop blur needs something behind the card, which is why the demos sit on a gradient.
+The codemod rewrites each static usage and leaves dynamic ones (`thickness={t}`) for you. `GlassCard` followed the theme (`<html data-style>`), so the replacement for an unchanged look is `<Card>` with `material="auto"`, which is the default; the codemod writes `material="glass"` so the result is glass in every theme, as the name promised.
 
-<Demo title="Default" description={"Regular thickness, no tint."} src={DefaultSrc}><Default /></Demo>
-<Demo title="Tinted and glowing" description={"Brand gradient overlay and backlit halo."} src={AccentsSrc}><Accents /></Demo>
-<Demo title="Thickness tiers" description={"All five tiers in a row."} src={ThicknessSrc}><Thickness /></Demo>
-<Demo title="Flush" description={"Drops the padding for edge-to-edge content."} src={FlushSrc}><Flush /></Demo>
+| GlassCard | Card |
+|---|---|
+| `thickness="ultra-thin"` `"thin"` `"regular"` `"thick"` `"chrome"` | `elevation={1}` `{2}` `{3}` (default) `{4}` `{5}` |
+| `tinted` | `tone="brand"` |
+| `glowing` | `glow` |
+| `padding="24px"` | `p="6"` (a spacing step) |
+| `title`, `headingLevel`, `headerActions`, `href`, `target`, `flush`, `full`, `class` | unchanged |
 
-<Props rows={[
-  { name: "thickness", type: "'ultra-thin' | 'thin' | 'regular' | 'thick' | 'chrome'", default: "'regular'", description: "Glass material tier." },
-  { name: "tinted", type: "boolean", default: "false", description: "Adds the brand accent gradient overlay." },
-  { name: "glowing", type: "boolean", default: "false", description: "Adds a backlit glow halo." },
-  { name: "href", type: "string", default: "undefined", description: "Renders the card as a link." },
-  { name: "target", type: "string", default: "undefined", description: "Link target when `href` is set." },
-  { name: "padding", type: "string | number", default: "undefined", description: "Overrides `--ca-card-padding`. Numbers are pixels." },
-  { name: "flush", type: "boolean", default: "false", description: "Removes all padding." },
-  { name: "full", type: "boolean", default: "false", description: "Sets `width: 100%`." },
-  { name: "title", type: "string", default: "undefined", description: "Header title." },
-  { name: "headingLevel", type: "2 | 3 | 4 | 5 | 6", default: "undefined", description: "Renders `title` as `<h2>`–`<h6>` so the card is a section in the page outline. Omit for a plain paragraph. The look does not change." },
-  { name: "headerActions", type: "Snippet", default: "undefined", description: "Actions aligned to the end of the header." },
-  { name: "class", type: "string", default: "''", description: "Extra class names." },
-  { name: "children", type: "Snippet", default: "undefined", description: "Card content." },
-]} />
+| Class | Replacement |
+|---|---|
+| `.ca-glass-card`, `.ca-glass-card--flush`, `.ca-glass-card--full` | `.ca-card`, `.ca-card--flush`, `.ca-card--full` |
+| `.ca-glass-card__header`, `__title`, `__header-actions` | `.ca-card__header`, `__title`, `__header-actions` |

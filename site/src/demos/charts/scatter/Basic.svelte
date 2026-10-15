@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GlassCard } from '@codeatlasdev/ui';
+  import { Card } from '@codeatlasdev/ui';
   import { ScatterChart } from '@codeatlasdev/ui/charts';
 
   const data = Array.from({ length: 80 }, (_, i): [number, number] => [
@@ -8,6 +8,6 @@
   ]);
 </script>
 
-<GlassCard full>
+<Card material="glass" full>
   <ScatterChart series={[{ name: 'Data points', data }]} yName="Conversion %" yFormatter={(v) => `${v.toFixed(1)}%`} height="320px" />
-</GlassCard>
+</Card>

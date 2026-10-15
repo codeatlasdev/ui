@@ -4,7 +4,7 @@
 </script>
 
 <main id="main" class="error-root" tabindex="-1">
-  <Stack gap={32} align="center" class="error-inner">
+  <Stack gap="8" align="center" class="error-inner">
     <div class="error-visual" aria-hidden="true">
       <span class="error-code error-code--brand">404</span>
       <svg
@@ -24,12 +24,12 @@
       </svg>
     </div>
 
-    <Stack gap={12} align="center">
+    <Stack gap="3" align="center">
       <h1 class="error-title">Page not found</h1>
       <p class="error-body">Sorry, the page you're looking for doesn't exist or has been moved.</p>
     </Stack>
 
-    <Stack gap={12} align="center" class="error-actions">
+    <Stack gap="3" align="center" class="error-actions">
       <Button href="/templates/" variant="filled">Back to templates</Button>
       <Button onclick={() => history.back()} variant="outlined">Go back</Button>
     </Stack>

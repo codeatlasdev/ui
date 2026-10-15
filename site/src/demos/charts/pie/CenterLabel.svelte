@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GlassCard } from '@codeatlasdev/ui';
+  import { Card } from '@codeatlasdev/ui';
   import { PieChart } from '@codeatlasdev/ui/charts';
 
   const marketData = [
@@ -11,6 +11,6 @@
   ];
 </script>
 
-<GlassCard full>
+<Card material="glass" full>
   <PieChart data={marketData} donut centerLabel={{ value: '$2.4M', label: 'Total Revenue' }} height="300px" />
-</GlassCard>
+</Card>

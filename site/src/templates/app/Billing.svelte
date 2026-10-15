@@ -1,6 +1,6 @@
 <script lang="ts">
   import {
-    AppSettings, FormSection, GlassCard, Grid, Row, Button, KpiCard,
+    AppSettings, FormSection, Card, Grid, Flex, Button, KpiCard,
     StatusChip, Chip, SimpleTable,
   } from '@codeatlasdev/ui';
   import { CreditCard, Download, TrendingUp, DollarSign, Users, Zap, Layers, FileText } from '@lucide/svelte';
@@ -69,7 +69,7 @@
 
   <!-- OVERVIEW -->
   {#if tab === 'overview'}
-    <Grid cols="repeat(auto-fill, minmax(180px, 1fr))" gap={16}>
+    <Grid class="grid-auto-180" gap="4">
       <KpiCard title="Monthly spend" value="$79"   trend={0}    icon={DollarSign} />
       <KpiCard title="Active users"  value="12"    trend={20.0} icon={Users}      />
       <KpiCard title="Storage used"  value="82 GB" trend={8.5}  icon={Zap}        />
@@ -96,17 +96,17 @@
           </li>
         {/each}
       </ul>
-      <Row gap={8}>
+      <Flex gap="2">
         <Button variant="outlined" size="sm">Change plan</Button>
         <Button variant="ghost" size="sm" class="ca-btn-danger-ghost">Cancel plan</Button>
-      </Row>
+      </Flex>
     </FormSection>
 
     <FormSection title="Payment method" description="Card on file for billing charges." layout="stack">
       <div class="card-display">
         <div class="card-chip"></div>
         <p class="card-number">•••• •••• •••• 4242</p>
-        <Row justify="space-between">
+        <Flex justify="between">
           <div>
             <p class="card-meta-label">Cardholder</p>
             <p class="card-meta-value">Ana Lima</p>
@@ -115,18 +115,18 @@
             <p class="card-meta-label">Expires</p>
             <p class="card-meta-value">12 / 27</p>
           </div>
-        </Row>
+        </Flex>
       </div>
-      <Row gap={8}>
+      <Flex gap="2">
         <Button variant="outlined" size="sm">
           {#snippet leading()}<CreditCard size={14} />{/snippet}
           Update card
         </Button>
-      </Row>
+      </Flex>
     </FormSection>
 
     <FormSection title="Usage this cycle" description="Current period consumption." layout="stack">
-      <Grid cols="1fr 1fr" gap={20}>
+      <Grid columns={{ base: 1, md: 2 }} gap="5">
         {#each usage as u}
           <div class="usage-item">
             <div class="usage-header">
@@ -157,9 +157,9 @@
   <!-- PLANS -->
   {#if tab === 'plans'}
     <FormSection title="Choose a plan" description="Upgrade or downgrade at any time." layout="stack">
-      <Grid cols="repeat(3, 1fr)" gap={16}>
+      <Grid columns={{ base: 1, md: 3 }} gap="4">
         {#each plans as p}
-          <GlassCard padding="24px" tinted={p.current}>
+          <Card material="glass" tone={p.current ? "brand" : "neutral"} p="6">
             <div class="pricing-card">
               <div class="pricing-name">
                 {p.name}
@@ -184,7 +184,7 @@
                 {p.current ? 'Current plan' : `Upgrade to ${p.name}`}
               </Button>
             </div>
-          </GlassCard>
+          </Card>
         {/each}
       </Grid>
     </FormSection>
@@ -192,7 +192,7 @@
 
   <!-- INVOICES -->
   {#if tab === 'invoices'}
-    <GlassCard flush full>
+    <Card material="glass" flush full>
       <SimpleTable>
         <thead>
           <tr><th>Invoice</th><th>Date</th><th>Amount</th><th>Status</th><th></th></tr>
@@ -219,11 +219,12 @@
           {/each}
         </tbody>
       </SimpleTable>
-    </GlassCard>
+    </Card>
   {/if}
 </AppSettings>
 
 <style>
+  :global(.grid-auto-180) { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
   /* Current plan */
   .plan-hero        { display: flex; flex-direction: column; gap: var(--ca-space-1, 4px); }
   .plan-hero__name  { display: flex; align-items: center; gap: var(--ca-space-2, 8px); font-size: 18px; font-weight: 700; color: var(--ca-text-primary); }

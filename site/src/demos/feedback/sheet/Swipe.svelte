@@ -8,7 +8,7 @@
 <Button variant="outlined" onclick={() => (open = true)}>Open sheet</Button>
 
 <Sheet bind:open title="Switch session" description="Choose the active account">
-  <Stack gap={4}>
+  <Stack gap="1">
     {#each accounts as acc}
       <button class="item" onclick={() => (open = false)}>{acc}</button>
     {/each}

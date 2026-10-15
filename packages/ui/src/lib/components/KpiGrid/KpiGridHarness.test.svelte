@@ -11,7 +11,7 @@
 
 <div style:width data-testid="host">
 	{#if recipe}
-		<Grid cols="repeat(auto-fill,minmax(160px,1fr))" gap={12}>
+		<Grid gap="3" class="recipe">
 			{#each cards as i (i)}<KpiCard title={`Metric ${i + 1}`} value={i + 1} />{/each}
 		</Grid>
 	{:else}
@@ -20,3 +20,7 @@
 		</KpiGrid>
 	{/if}
 </div>
+
+<style>
+	:global(.recipe) { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); }
+</style>

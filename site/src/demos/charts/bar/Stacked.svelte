@@ -1,12 +1,12 @@
 <script lang="ts">
-  import { GlassCard } from '@codeatlasdev/ui';
+  import { Card } from '@codeatlasdev/ui';
   import { BarChart } from '@codeatlasdev/ui/charts';
 
   const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
   const fmt = (v: number) => `$${(v / 1000).toFixed(0)}k`;
 </script>
 
-<GlassCard full>
+<Card material="glass" full>
   <BarChart
     series={[
       { name: 'Organic', data: [12400, 14800, 18200, 16600, 21200, 24800] },
@@ -19,4 +19,4 @@
     stacked
     height="300px"
   />
-</GlassCard>
+</Card>

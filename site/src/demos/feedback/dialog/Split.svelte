@@ -11,7 +11,7 @@
 <Dialog bind:open title="Lead details" size="split" chromeless>
   <div class="media">Media / summary</div>
   <div class="form">
-    <Stack gap={14}>
+    <Stack gap="3.5">
       <TextField label="Full name" bind:value={name} placeholder="Ada Lovelace" />
       <TextField label="Email" type="email" bind:value={email} placeholder="ada@company.com" />
       <Button variant="filled" onclick={() => (open = false)}>Save</Button>

@@ -18,7 +18,7 @@
 		</Row>
 	</div>
 	<div style={frame}>
-		<Row gap="2rem" justify="space-between">
+		<Row gap="8" justify="space-between">
 			{#snippet children()}<i style={box("#e11d48")}></i><i style={box("#2563eb")}></i><i style={box("#16a34a")}></i>{/snippet}
 		</Row>
 	</div>

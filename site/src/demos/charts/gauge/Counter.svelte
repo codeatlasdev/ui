@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GlassCard, Stack } from '@codeatlasdev/ui';
+  import { Card, Stack } from '@codeatlasdev/ui';
   import { GaugeChart } from '@codeatlasdev/ui/charts';
   import { onMount } from 'svelte';
 
@@ -15,12 +15,12 @@
   });
 </script>
 
-<GlassCard full>
-  <Stack gap={12}>
+<Card material="glass" full>
+  <Stack gap="3">
     <GaugeChart {value} variant="ring" formatter={(v) => String(Math.round(v))} height="260px" />
     <p class="label">{label}</p>
   </Stack>
-</GlassCard>
+</Card>
 
 <style>
   .label { text-align: center; font-size: var(--ca-font-size-h6); font-weight: 700; color: var(--ca-semantic-success); margin: 0; }

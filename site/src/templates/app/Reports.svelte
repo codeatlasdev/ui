@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { PageShell, GlassCard, Grid, KpiCard, KpiGrid, Row, Button, Tabs, TabsList, TabsTrigger, TabsContent, Select, Chip, SimpleTable } from '@codeatlasdev/ui';
+  import { PageShell, Card, Grid, KpiCard, KpiGrid, Flex, Button, Tabs, TabsList, TabsTrigger, TabsContent, Select, Chip, SimpleTable } from '@codeatlasdev/ui';
   import { BarChart, LineChart } from '@codeatlasdev/ui/charts';
   import { DollarSign, TrendingUp, Users, ShoppingCart, Download } from '@lucide/svelte';
 
@@ -47,13 +47,13 @@
 
 <PageShell title="Reports" description="Performance overview · Sep 2026" maxWidth="1200px" gap={24}>
   {#snippet actions()}
-    <Row gap={8} align="center">
+    <Flex gap="2" align="center">
       <Select bind:value={period} options={periodOpts} />
       <Button variant="outlined" size="sm">
         {#snippet leading()}<Download size={14} />{/snippet}
         Export
       </Button>
-    </Row>
+    </Flex>
   {/snippet}
 
   <KpiGrid>
@@ -63,7 +63,7 @@
     <KpiCard title="Avg Order Value" value="$87.20" trend={4.3}  icon={ShoppingCart} />
   </KpiGrid>
 
-  <GlassCard full>
+  <Card material="glass" full>
     <Tabs value="revenue">
       <div class="chart-header">
         <TabsList>
@@ -97,25 +97,25 @@
         </div>
       </TabsContent>
     </Tabs>
-  </GlassCard>
+  </Card>
 
-  <Grid cols="1fr 1fr" gap={20}>
-    <GlassCard title="Revenue by Channel">
+  <Grid columns={{ base: 1, md: 2 }} gap="5">
+    <Card material="glass" title="Revenue by Channel">
       <BarChart
         series={[{ name:'Revenue', data:channelData.map(d=>d.value) }]}
         categories={channelData.map(d=>d.name)}
         valueFormatter={fmt} horizontal height="260px"
       />
-    </GlassCard>
+    </Card>
 
-    <GlassCard title="Plan Distribution">
+    <Card material="glass" title="Plan Distribution">
       <div class="plan-bars">
         {#each planData as p}
           <div class="plan-row">
-            <Row justify="space-between" class="plan-row__header">
+            <Flex justify="between" class="plan-row__header">
               <span class="plan-name">{p.name}</span>
               <span class="plan-pct">{p.value}%</span>
-            </Row>
+            </Flex>
             <div class="plan-track">
               <div class="ca-bar-fill" style="--bar-w:{p.value}%"></div>
             </div>
@@ -126,10 +126,10 @@
         <span class="plan-total__label">Total MRR</span>
         <span class="plan-total__value">$48,200</span>
       </div>
-    </GlassCard>
+    </Card>
   </Grid>
 
-  <GlassCard title="Top Pages" flush full>
+  <Card material="glass" title="Top Pages" flush full>
     {#snippet headerActions()}
       <Chip label="By conversions" size="sm" variant="brand" />
     {/snippet}
@@ -148,7 +148,7 @@
         {/each}
       </tbody>
     </SimpleTable>
-  </GlassCard>
+  </Card>
 </PageShell>
 
 <style>

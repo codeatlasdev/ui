@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { PageShell, KpiCard, KpiGrid, GlassCard, Stack, Button } from '@codeatlasdev/ui';
+  import { PageShell, KpiCard, KpiGrid, Card, Stack, Button } from '@codeatlasdev/ui';
   import { TrendingUp, Users, DollarSign, Activity } from '@lucide/svelte';
 </script>
 
-<GlassCard flush full>
+<Card material="glass" flush full>
   <PageShell title="Dashboard" description="Overview of this month">
     {#snippet actions()}<Button variant="filled" size="sm">New report</Button>{/snippet}
 
-    <Stack gap={24}>
+    <Stack gap="6">
       <KpiGrid>
         <KpiCard title="Revenue" value="$118k" trend={23.4} icon={DollarSign} />
         <KpiCard title="Users" value="24.8k" trend={8.1} icon={Users} />
@@ -15,12 +15,12 @@
         <KpiCard title="Uptime" value="99.9%" trend={0.1} icon={Activity} />
       </KpiGrid>
 
-      <GlassCard full>
+      <Card material="glass" full>
         <p class="placeholder">Chart or data table goes here</p>
-      </GlassCard>
+      </Card>
     </Stack>
   </PageShell>
-</GlassCard>
+</Card>
 
 <style>
   .placeholder {

@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { GlassCard } from '@codeatlasdev/ui';
+  import { Card } from '@codeatlasdev/ui';
 </script>
 
 <div class="row">
-  <GlassCard tinted class="accent">
+  <Card material="glass" tone="brand" class="accent">
     <p class="title">Tinted</p>
     <p class="text">Brand gradient overlay on the surface.</p>
-  </GlassCard>
-  <GlassCard glowing class="accent">
+  </Card>
+  <Card material="glass" glow class="accent">
     <p class="title">Glowing</p>
     <p class="text">Backlit halo behind the surface.</p>
-  </GlassCard>
+  </Card>
 </div>
 
 <style>

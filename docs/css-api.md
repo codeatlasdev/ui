@@ -6,7 +6,7 @@ Conventions: BEM (`ca-block__element`, `ca-block--modifier`). CSS variables (`--
 
 Generated from `grep -o 'ca-[a-z0-9_-]*'` over `packages/ui/src/lib/components/<Component>/` (`.svelte`, `.css`, `.ts`), excluding custom properties and duplicates. When you add or rename components, rerun the command and update this file. Some listed names may be `@keyframes` or internal identifiers (e.g. `ca-accordion-down`) rather than classes; treat them as stable to be safe.
 
-Total: 765 unique classes across 70 components.
+Total: 791 unique classes across 80 components.
 
 ---
 
@@ -50,6 +50,11 @@ Total: 765 unique classes across 70 components.
 
 `.ca-badge` `.ca-badge--brand` `.ca-badge--dot` `.ca-badge--error` `.ca-badge--success` `.ca-badge--warning` `.ca-badge-wrapper`
 
+## Box
+
+
+`.ca-box`
+
 ## Breadcrumb
 
 `.ca-breadcrumb` `.ca-breadcrumb__current` `.ca-breadcrumb__item` `.ca-breadcrumb__link` `.ca-breadcrumb__list` `.ca-breadcrumb__sep`
@@ -57,6 +62,11 @@ Total: 765 unique classes across 70 components.
 ## Button
 
 `.ca-btn` `.ca-btn--destructive` `.ca-btn--filled` `.ca-btn--full-width` `.ca-btn--ghost` `.ca-btn--glass` `.ca-btn--lg` `.ca-btn--loading` `.ca-btn--md` `.ca-btn--outlined` `.ca-btn--sm` `.ca-btn__leading` `.ca-btn__trailing` `.ca-icon-btn` `.ca-icon-btn--filled` `.ca-icon-btn--glass` `.ca-icon-btn--lg` `.ca-icon-btn--loading` `.ca-icon-btn--md` `.ca-icon-btn--sm` `.ca-icon-btn--text` `.ca-spinner__arc` `.ca-spinner__track`
+
+## Card
+
+
+`.ca-card` `.ca-card--flush` `.ca-card--full` `.ca-card__header` `.ca-card__header-actions` `.ca-card__title`
 
 ## Checkbox
 
@@ -81,6 +91,11 @@ Total: 765 unique classes across 70 components.
 ## CommandPalette
 
 `.ca-cmd-dialog` `.ca-cmd-empty` `.ca-cmd-fade-in` `.ca-cmd-fade-out` `.ca-cmd-group` `.ca-cmd-group__label` `.ca-cmd-item` `.ca-cmd-item--active` `.ca-cmd-item__icon` `.ca-cmd-item__label` `.ca-cmd-item__module` `.ca-cmd-list` `.ca-cmd-overlay` `.ca-cmd-search` `.ca-cmd-search__hint` `.ca-cmd-search__icon` `.ca-cmd-search__input` `.ca-cmd-slide-in` `.ca-cmd-slide-out`
+
+## Container
+
+
+`.ca-container`
 
 ## CopyButton
 
@@ -134,13 +149,26 @@ Total: 765 unique classes across 70 components.
 
 `.ca-filter-group` `.ca-filter-group__item` `.ca-filter-group__label`
 
+## Flex
+
+
+`.ca-flex`
+
 ## GlassAppBar
 
 `.ca-app-bar` `.ca-app-bar__content` `.ca-app-bar__leading` `.ca-app-bar__trailing`
 
 ## GlassCard
 
+
+> Deprecated, removed in the next major: use `Card` (`.ca-card*`).
 `.ca-glass-card` `.ca-glass-card--flush` `.ca-glass-card--full` `.ca-glass-card__header` `.ca-glass-card__header-actions` `.ca-glass-card__title`
+
+## GlassSurface
+
+
+> Deprecated, removed in the next major: use `Surface` (`.ca-surface`). Its `glass`, `glass-*` classes are materials utilities.
+
 
 ## Grid
 
@@ -158,10 +186,6 @@ Total: 765 unique classes across 70 components.
 
 `.ca-lightbox` `.ca-lightbox-in` `.ca-lightbox-out` `.ca-lightbox__close` `.ca-lightbox__img` `.ca-lightbox__overlay` `.ca-lightbox__sr` `.ca-lightbox__stage`
 
-## NotificationBell
-
-`.ca-notif-action` `.ca-notif-actions` `.ca-notif-bell` `.ca-notif-empty` `.ca-notif-header` `.ca-notif-item` `.ca-notif-item--unread` `.ca-notif-item__body` `.ca-notif-item__btn` `.ca-notif-item__dot` `.ca-notif-item__dot--default` `.ca-notif-item__dot--error` `.ca-notif-item__dot--info` `.ca-notif-item__dot--success` `.ca-notif-item__dot--warning` `.ca-notif-item__text` `.ca-notif-item__time` `.ca-notif-item__title` `.ca-notif-list` `.ca-notif-panel` `.ca-notif-title` `.ca-notif-trigger`
-
 ## LiveList
 
 `.ca-live-list` `.ca-live-list__bar` `.ca-live-list__count` `.ca-live-list__empty` `.ca-live-list__frame` `.ca-live-list__head` `.ca-live-list__item` `.ca-live-list__jump` `.ca-live-list__list` `.ca-live-list__scroller`
@@ -169,6 +193,10 @@ Total: 765 unique classes across 70 components.
 ## MobilePane
 
 `.ca-mobile-pane` `.ca-mobile-pane__body` `.ca-mobile-pane__body--fixed` `.ca-mobile-pane__header`
+
+## NotificationBell
+
+`.ca-notif-action` `.ca-notif-actions` `.ca-notif-bell` `.ca-notif-empty` `.ca-notif-header` `.ca-notif-item` `.ca-notif-item--unread` `.ca-notif-item__body` `.ca-notif-item__btn` `.ca-notif-item__dot` `.ca-notif-item__dot--default` `.ca-notif-item__dot--error` `.ca-notif-item__dot--info` `.ca-notif-item__dot--success` `.ca-notif-item__dot--warning` `.ca-notif-item__text` `.ca-notif-item__time` `.ca-notif-item__title` `.ca-notif-list` `.ca-notif-panel` `.ca-notif-title` `.ca-notif-trigger`
 
 ## NumberField
 
@@ -200,11 +228,18 @@ Total: 765 unique classes across 70 components.
 
 ## Row
 
+
+> Deprecated, removed in the next major: use `Flex` (`.ca-flex`).
 `.ca-row` `.ca-row--wrap`
 
 ## ScrollArea
 
 `.ca-scroll-area` `.ca-scroll-area__scrollbar` `.ca-scroll-area__scrollbar--h` `.ca-scroll-area__scrollbar--v` `.ca-scroll-area__thumb` `.ca-scroll-area__viewport`
+
+## Section (layout)
+
+
+`.ca-layout-section`
 
 ## Select
 
@@ -222,13 +257,13 @@ Total: 765 unique classes across 70 components.
 
 `.ca-site-header` `.ca-site-header__bc-sep` `.ca-site-header__breadcrumb` `.ca-site-header__inner` `.ca-site-header__left` `.ca-site-header__sep` `.ca-site-header__toggle` `.ca-site-header__trailing`
 
-## SkipLink
-
-`.ca-skip-link`
-
 ## Skeleton
 
 `.ca-shimmer` `.ca-skeleton` `.ca-skeleton--circular` `.ca-skeleton--rectangular` `.ca-skeleton--rounded` `.ca-skeleton--text` `.ca-skeleton-rows`
+
+## SkipLink
+
+`.ca-skip-link`
 
 ## Slider
 
@@ -254,6 +289,16 @@ Total: 765 unique classes across 70 components.
 
 `.ca-sticky-actions` `.ca-sticky-actions--end` `.ca-sticky-actions--stretch` `.ca-sticky-actions__inner`
 
+## Surface
+
+
+`.ca-surface`
+
+## SurfacePanel
+
+
+`.ca-surface-panel`
+
 ## Switch
 
 `.ca-switch` `.ca-switch-wrapper` `.ca-switch__label` `.ca-switch__label--disabled` `.ca-switch__thumb`
@@ -265,6 +310,10 @@ Total: 765 unique classes across 70 components.
 ## Tabs
 
 `.ca-tabs` `.ca-tabs-content` `.ca-tabs-list` `.ca-tabs-trigger`
+
+## templates
+
+`.ca-form-section` `.ca-form-section--grid` `.ca-form-section--list` `.ca-form-section--stack` `.ca-form-section__desc` `.ca-form-section__fields` `.ca-form-section__header` `.ca-form-section__title`
 
 ## TextArea
 
@@ -294,6 +343,23 @@ Total: 765 unique classes across 70 components.
 
 `.ca-tooltip-content` `.ca-tooltip-in` `.ca-tooltip-out` `.ca-tooltip__trigger`
 
-## templates
+---
 
-`.ca-form-section` `.ca-form-section--grid` `.ca-form-section--list` `.ca-form-section--stack` `.ca-form-section__desc` `.ca-form-section__fields` `.ca-form-section__header` `.ca-form-section__title`
+## Data attributes
+
+These attributes are part of the public contract too (an app can restyle one axis with an attribute selector). They are set by `Surface`/`Card`/`SurfacePanel` and the layout primitives; their rules live in `@layer ca.materials` (Surface) and `@layer ca.utilities` (layout).
+
+| Attribute | Values | On |
+|---|---|---|
+| `data-elevation` | `0` `1` `2` `3` `4` `5` | `.ca-surface` |
+| `data-material` | `auto` `solid` `frosted` `glass` `liquid` | `.ca-surface` |
+| `data-tone` | `neutral` `brand` `success` `warning` `error` `info` | `.ca-surface` |
+| `data-variant` | `filled` `outlined` `ghost` | `.ca-surface` |
+| `data-radius` | `none` `sm` `md` `lg` `xl` `pill` | `.ca-surface` |
+| `data-interactive`, `data-glow` | present or absent | `.ca-surface` |
+| `data-gap`, `data-p`, `data-px`, `data-py` | spacing steps `0` `0.5` ... `24` (`--ca-space-<step>`) | layout primitives |
+| `data-align`, `data-justify`, `data-direction`, `data-wrap`, `data-columns` | see Layout primitives docs | layout primitives |
+| `data-<bp>-<prop>` | the same, from `sm` (600) `md` (900) `lg` (1200) `xl` (1536) px up | layout primitives |
+| `data-size` | `sm` `md` `lg` `xl` (Container), `1` `2` `3` (Section) | `.ca-container`, `.ca-layout-section` |
+
+Surface and layout CSS variables (`--ca-surface-*`, `--ca-elevation-*`) are tokens, not listed here.

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GlassCard, Stack, Row, Slider } from '@codeatlasdev/ui';
+  import { Card, Stack, Flex, Slider } from '@codeatlasdev/ui';
   import { RadarChart } from '@codeatlasdev/ui/charts';
 
   const DIMS = ['Speed', 'Quality', 'Reliability', 'Innovation', 'Support', 'Coverage'];
@@ -9,22 +9,22 @@
   const series = $derived([{ name: 'My team', values: [...dims] }]);
 </script>
 
-<GlassCard full>
+<Card material="glass" full>
   <div class="builder">
     <RadarChart {indicators} {series} height="320px" />
-    <Stack gap={12}>
+    <Stack gap="3">
       {#each DIMS as dim, i}
-        <Stack gap={4}>
-          <Row justify="space-between">
+        <Stack gap="1">
+          <Flex justify="between">
             <span class="dim-name">{dim}</span>
             <span class="dim-value">{dims[i]}</span>
-          </Row>
+          </Flex>
           <Slider value={dims[i]} min={0} max={100} step={1} onchange={(v) => { dims[i] = v[0]; }} />
         </Stack>
       {/each}
     </Stack>
   </div>
-</GlassCard>
+</Card>
 
 <style>
   .builder { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: var(--ca-space-6); align-items: start; }

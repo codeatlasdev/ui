@@ -45,7 +45,7 @@
 
   <AuthCard title="Welcome back" subtitle="Sign in to the admin demo">
     <form onsubmit={submit}>
-      <Stack gap={14}>
+      <Stack gap="3.5">
         <TextField label="Email" type="email" bind:value={email} autocomplete="email" />
         <TextField label="Password" type={showPass ? 'text' : 'password'}
           bind:value={password} placeholder={DEMO_PASSWORD} autocomplete="current-password">

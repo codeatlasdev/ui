@@ -289,3 +289,100 @@ describe("migrate", () => {
 		expect(out("d.ts")).toBe("export const a = 1;\n");
 	});
 });
+
+describe("migrate: GlassCard, GlassSurface and Row to Card, Surface and Flex", () => {
+	const run = (files: Record<string, string>) => {
+		const root = project(files);
+		migrate(
+			Object.keys(files).map((f) => join(root, f)),
+			{ write: true, cwd: root, log: () => {} }
+		);
+		return (f: string) => read(root, f);
+	};
+
+	it("rewrites GlassCard to Card material=glass, import, closing tag and props", () => {
+		const out = run({
+			"a.svelte": `<script lang="ts">\n  import { GlassCard, Button } from '@codeatlasdev/ui';\n</script>\n<GlassCard thickness="thick" tinted glowing title="Team" class="x">\n  <p>Body</p>\n</GlassCard>\n<GlassCard />\n`,
+		})("a.svelte");
+		expect(out).toContain("import { Card, Button } from '@codeatlasdev/ui';");
+		expect(out).toContain(
+			'<Card material="glass" elevation={4} tone="brand" glow title="Team" class="x">'
+		);
+		expect(out).toContain("</Card>");
+		expect(out).toContain('<Card material="glass" />');
+		expect(out).not.toContain("GlassCard");
+	});
+
+	it("maps thickness to elevation and drops the default regular", () => {
+		const out = run({
+			"b.svelte": `<script>\n  import { GlassCard } from '@codeatlasdev/ui';\n</script>\n<GlassCard thickness="ultra-thin" /><GlassCard thickness="regular" /><GlassCard thickness={t} />\n`,
+		})("b.svelte");
+		expect(out).toContain('<Card material="glass" elevation={1} />');
+		expect(out).toContain('<Card material="glass" />');
+		// Dynamic thickness has no static mapping: left for a human, with a marker.
+		expect(out).toContain("<GlassCard thickness={t} />");
+	});
+
+	it("maps static padding to a spacing token and dynamic tinted to a tone expression", () => {
+		const out = run({
+			"g.svelte": `<script>\n  import { GlassCard } from '@codeatlasdev/ui';\n</script>\n<GlassCard padding="24px" tinted={current}>x</GlassCard>\n<GlassCard padding="13px">y</GlassCard>\n`,
+		})("g.svelte");
+		expect(out).toContain(
+			'<Card material="glass" tone={current ? "brand" : "neutral"} p="6">x</Card>'
+		);
+		// 13px is not a step of the scale: left for a human.
+		expect(out).toContain('<GlassCard padding="13px">y</GlassCard>');
+		expect(out).toContain("import { Card, GlassCard } from '@codeatlasdev/ui';");
+	});
+
+	it("GlassSurface: refraction (default) becomes liquid, refraction={false} glass", () => {
+		const out = run({
+			"c.svelte": `<script>\n  import { GlassSurface } from '@codeatlasdev/ui';\n</script>\n<GlassSurface thickness="thin">x</GlassSurface>\n<GlassSurface refraction={false}>y</GlassSurface>\n`,
+		})("c.svelte");
+		expect(out).toContain('<Surface material="liquid" elevation={2}>x</Surface>');
+		expect(out).toContain('<Surface material="glass">y</Surface>');
+		expect(out).toContain("import { Surface } from '@codeatlasdev/ui';");
+	});
+
+	it("Row becomes Flex direction=row with token gap; off-scale gaps stay for a human", () => {
+		const out = run({
+			"d.svelte": `<script>\n  import { Row } from '@codeatlasdev/ui';\n</script>\n<Row gap={8} align="center" wrap>a</Row>\n<Row gap={7}>b</Row>\n`,
+		})("d.svelte");
+		expect(out).toContain('<Flex gap="2" align="center" wrap>a</Flex>');
+		expect(out).toContain("<Row gap={7}>b</Row>");
+		expect(out).toContain("import { Flex, Row } from '@codeatlasdev/ui';");
+	});
+
+	it("Stack and Grid: px gaps become steps, cols becomes columns, templates stay", () => {
+		const out = run({
+			"h.svelte": `<script>\n  import { Stack, Grid } from '@codeatlasdev/ui';\n</script>\n<Stack gap={16} align="flex-end" justify="space-between">a</Stack>\n<Stack gap="1.5rem">b</Stack>\n<Grid cols={3} gap={8}>c</Grid>\n<Grid cols="2fr 1fr" gap={20}>d</Grid>\n`,
+		})("h.svelte");
+		expect(out).toContain('<Stack gap="4" align="end" justify="between">a</Stack>');
+		expect(out).toContain('<Stack gap="1.5rem">b</Stack>');
+		expect(out).toContain('<Grid columns={3} gap="2">c</Grid>');
+		expect(out).toContain('<Grid cols="2fr 1fr" gap={20}>d</Grid>');
+		expect(out).toContain("import { Stack, Grid } from '@codeatlasdev/ui';");
+	});
+
+	it("is idempotent: migrated markup is not rewritten again", () => {
+		const src = `<script>\n  import { Stack, Card } from '@codeatlasdev/ui';\n</script>\n<Stack gap="4"><Card material="glass" /></Stack>\n`;
+		expect(run({ "i.svelte": src })("i.svelte")).toBe(src);
+	});
+
+	it("respects an alias and ignores a same-named component from another package", () => {
+		const out = run({
+			"e.svelte": `<script>\n  import { GlassCard as Panel } from '@codeatlasdev/ui';\n  import { GlassCard } from 'other-lib';\n</script>\n<Panel>a</Panel><GlassCard>b</GlassCard>\n`,
+		})("e.svelte");
+		expect(out).toContain("import { Card as Panel } from '@codeatlasdev/ui';");
+		expect(out).toContain('<Panel material="glass">a</Panel>');
+		expect(out).toContain("<GlassCard>b</GlassCard>");
+	});
+
+	it("rewrites a ts import and leaves the file without markup alone", () => {
+		const out = run({
+			"f.ts": `import { GlassCard } from "@codeatlasdev/ui";\nexport const C = GlassCard;\n`,
+		})("f.ts");
+		expect(out).toContain('import { Card } from "@codeatlasdev/ui";');
+		expect(out).toContain("export const C = Card;");
+	});
+});

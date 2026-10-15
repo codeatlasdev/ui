@@ -4,7 +4,7 @@
 </script>
 
 <main id="main" class="error-root" tabindex="-1">
-  <Stack gap={32} align="center" class="error-inner">
+  <Stack gap="8" align="center" class="error-inner">
     <div class="error-visual" aria-hidden="true">
       <span class="error-code error-code--danger">500</span>
       <svg
@@ -25,12 +25,12 @@
       </svg>
     </div>
 
-    <Stack gap={12} align="center">
+    <Stack gap="3" align="center">
       <h1 class="error-title">Internal server error</h1>
       <p class="error-body">Something went wrong on our end. We're already on it, so please try again shortly.</p>
     </Stack>
 
-    <Stack gap={12} align="center" class="error-actions">
+    <Stack gap="3" align="center" class="error-actions">
       <Button onclick={() => location.reload()} variant="filled">Try again</Button>
       <Button href="/templates/" variant="outlined">Back to templates</Button>
     </Stack>

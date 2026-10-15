@@ -23,9 +23,9 @@
 
   {#if sent}
     <AuthCard>
-      <Stack gap={16} align="center">
+      <Stack gap="4" align="center">
         <div class="success-icon" aria-hidden="true"><Mail size={24} /></div>
-        <Stack gap={6} align="center">
+        <Stack gap="1.5" align="center">
           <h1 class="sent-title">Check your email</h1>
           <p class="sent-sub">We sent a reset link to <strong>{email}</strong></p>
         </Stack>
@@ -35,7 +35,7 @@
   {:else}
     <AuthCard title="Forgot your password?" subtitle="Enter your email and we'll send a reset link.">
       <form onsubmit={submit}>
-        <Stack gap={14}>
+        <Stack gap="3.5">
           <TextField label="Email address" type="email" bind:value={email}
             placeholder="you@example.com" autocomplete="email" />
           <Button type="submit" variant="filled" fullWidth disabled={loading || !email}>

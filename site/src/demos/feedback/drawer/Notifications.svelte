@@ -17,7 +17,7 @@
 </Button>
 
 <Drawer bind:open title="Notifications" side="right" width="400px">
-  <Stack gap={0}>
+  <Stack gap="0">
     {#each items as n}
       <div class="notif" class:notif--unread={n.unread}>
         {#if n.unread}<span class="dot"></span>{/if}

@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { Skeleton, GlassCard, Stack } from '@codeatlasdev/ui';
+  import { Skeleton, Card, Stack } from '@codeatlasdev/ui';
 </script>
 
-<GlassCard padding="20px" full>
-  <Stack gap={12}>
+<Card material="glass" p="5" full>
+  <Stack gap="3">
     <Skeleton height="20px" width="60%" />
     <Skeleton rows={3} height="14px" />
   </Stack>
-</GlassCard>
+</Card>

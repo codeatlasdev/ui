@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GlassCard } from '@codeatlasdev/ui';
+  import { Card } from '@codeatlasdev/ui';
   import { LineChart } from '@codeatlasdev/ui/charts';
   import { onMount } from 'svelte';
 
@@ -20,11 +20,11 @@
   });
 </script>
 
-<GlassCard full>
+<Card material="glass" full>
   <LineChart
     series={[{ name: 'Live revenue', data: streamData }]}
     categories={streamData.map((_, i) => String(i))}
     valueFormatter={fmt}
     height="300px"
   />
-</GlassCard>
+</Card>

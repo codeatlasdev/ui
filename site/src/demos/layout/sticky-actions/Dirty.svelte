@@ -6,7 +6,7 @@
 </script>
 
 <div class="scroller">
-  <Stack gap={16}>
+  <Stack gap="4">
     <TextField label="Name" bind:value={name} placeholder="Type to reveal the bar" />
     <div class="filler">Long content…</div>
   </Stack>

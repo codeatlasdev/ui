@@ -16,27 +16,27 @@
 		</Stack>
 	</div>
 	<div style={frame}>
-		<Stack gap={16}>
+		<Stack gap="4">
 			{#snippet children()}<i style={box("#e11d48")}></i><i style={box("#2563eb")}></i><i style={box("#16a34a")}></i>{/snippet}
 		</Stack>
 	</div>
 	<div style={frame}>
-		<Stack gap="1.5rem" align="center">
+		<Stack gap="6" align="center">
 			{#snippet children()}<i style={box("#e11d48", 40)}></i><i style={box("#2563eb", 80)}></i><i style={box("#16a34a", 60)}></i>{/snippet}
 		</Stack>
 	</div>
 	<div style={frame}>
-		<Stack gap={8} align="flex-end">
+		<Stack gap="2" align="end">
 			{#snippet children()}<i style={box("#e11d48", 40)}></i><i style={box("#2563eb", 80)}></i>{/snippet}
 		</Stack>
 	</div>
 	<div style={frame}>
-		<Stack gap={8} justify="center" align="center">
+		<Stack gap="2" justify="center" align="center">
 			{#snippet children()}<i style={box("#e11d48")}></i><i style={box("#2563eb")}></i>{/snippet}
 		</Stack>
 	</div>
 	<div style={frame}>
-		<Stack gap={8} justify="space-between">
+		<Stack gap="2" justify="between">
 			{#snippet children()}<i style={box("#e11d48")}></i><i style={box("#2563eb")}></i><i style={box("#16a34a")}></i>{/snippet}
 		</Stack>
 	</div>

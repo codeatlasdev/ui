@@ -10,7 +10,7 @@
 <Button variant="outlined" onclick={() => ((swipe = false), (open = true))}>Swipe disabled</Button>
 
 <Sheet bind:open title="Sessions" swipeToDismiss={swipe} onclose={() => (open = false)}>
-  <Stack gap={8}>
+  <Stack gap="2">
     <p class="text">
       {swipe
         ? 'Drag the handle or the header down to dismiss.'

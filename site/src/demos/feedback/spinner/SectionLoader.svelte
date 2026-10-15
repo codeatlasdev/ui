@@ -1,13 +1,13 @@
 <script lang="ts">
-  import { Spinner, GlassCard, Stack } from '@codeatlasdev/ui';
+  import { Spinner, Card, Stack } from '@codeatlasdev/ui';
 </script>
 
-<GlassCard padding="40px" full>
-  <Stack align="center" gap={12}>
+<Card material="glass" p="10" full>
+  <Stack align="center" gap="3">
     <Spinner size={40} />
     <span class="text">Loading data…</span>
   </Stack>
-</GlassCard>
+</Card>
 
 <style>
   .text { font-size: var(--ca-font-size-body2); color: var(--ca-text-secondary); }

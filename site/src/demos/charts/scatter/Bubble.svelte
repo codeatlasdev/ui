@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GlassCard } from '@codeatlasdev/ui';
+  import { Card } from '@codeatlasdev/ui';
   import { ScatterChart } from '@codeatlasdev/ui/charts';
 
   // The third value of each point is the bubble size.
@@ -10,6 +10,6 @@
   ]);
 </script>
 
-<GlassCard full>
+<Card material="glass" full>
   <ScatterChart series={[{ name: 'Accounts', data }]} yName="Conversion %" yFormatter={(v) => `${v.toFixed(1)}%`} height="340px" />
-</GlassCard>
+</Card>

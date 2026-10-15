@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GlassCard, Row, Button } from '@codeatlasdev/ui';
+  import { Card, Flex, Button } from '@codeatlasdev/ui';
   import { BarChart } from '@codeatlasdev/ui/charts';
 
   const fmt = (v: number) => `$${(v / 1000).toFixed(0)}k`;
@@ -7,11 +7,11 @@
 </script>
 
 <div class="wrap">
-  <Row gap={8}>
+  <Flex gap="2">
     <Button variant={mode === 'grouped' ? 'filled' : 'glass'} size="sm" onclick={() => (mode = 'grouped')}>Grouped</Button>
     <Button variant={mode === 'stacked' ? 'filled' : 'glass'} size="sm" onclick={() => (mode = 'stacked')}>Stacked</Button>
-  </Row>
-  <GlassCard full>
+  </Flex>
+  <Card material="glass" full>
     <BarChart
       series={[
         { name: '2025', data: [44200, 58600, 67400, 81200] },
@@ -22,7 +22,7 @@
       stacked={mode === 'stacked'}
       height="300px"
     />
-  </GlassCard>
+  </Card>
 </div>
 
 <style>

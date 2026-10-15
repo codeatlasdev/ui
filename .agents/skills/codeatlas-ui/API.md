@@ -141,13 +141,13 @@ Classes: `ca-app-settings` `ca-app-settings__actions` `ca-app-settings__body` `c
 | `pathname` | `string` |  |  |
 | `onNavigate?` | `(path: string) => void` |  |  |
 | `defaultModule?` | `number` | `0` |  |
-| `persistPanel?` | `boolean` | `true` |  |
+| `persistPanel?` | `boolean` | `true` | Keeps the shell across page loads: panel open/closed, selected module, expanded sections (localStorage) and the panel scroll (sessionStorage), restored before first paint. Turn it off for demos and embeds that must always start from the defaults. |
 | `mainId?` | `string \| null` | `'main'` | `id` given to the content region, the target of the skip link. The region is a plain `div` (not a landmark) so a `<main>` you render inside never nests another one. Pass `null` when your own `<main id="main" tabindex="-1">` is the target. |
 | `skipLink?` | `boolean` | `true` | Render the "Skip to content" link. Turn it off when the shell is embedded in a page that already has one (a framed demo, a preview), so the page does not get two. |
 
 Snippets: `header`, `brand`, `railBottom`, `mobileHeaderActions`, `mobileTitle`, `children`
 
-Classes: `ca-main` `ca-shell` `ca-shell__content` `ca-shell__desktop-header` `ca-shell__mobile-header` `ca-sidebar`
+Classes: `ca-main` `ca-panel` `ca-shell` `ca-shell__content` `ca-shell__desktop-header` `ca-shell__mobile-header` `ca-sidebar`
 
 ## AuthCard
 
@@ -241,6 +241,23 @@ Classes: `ca-badge` `ca-badge--brand` `ca-badge--dot` `ca-badge--error` `ca-badg
 
 Classes: `ca-bottom-nav` `ca-bottom-nav__btn` `ca-bottom-nav__btn--active` `ca-bottom-nav__icon` `ca-bottom-nav__label`
 
+## Box
+
+`import { Box } from "@codeatlasdev/ui"`
+
+Box — the base layout element. Renders any element (`as`) with the token props (`p`, `px`, `py`) as `data-*` attributes: no inline style. Everything else is forwarded.
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `as?` | `string` | `'div'` | Element to render. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>, Pick<LayoutProps, 'p' \| 'px' \| 'py'>`
+
+Classes: `ca-box`
+
 ## Breadcrumb
 
 `import { Breadcrumb } from "@codeatlasdev/ui"`
@@ -299,7 +316,7 @@ Classes: `ca-btn` `ca-btn--destructive` `ca-btn--filled` `ca-btn--full-width` `c
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__float` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
+Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
 
 ## Callout
 
@@ -314,6 +331,28 @@ Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__gri
 Snippets: `children`
 
 Classes: `ca-alert__content` `ca-callout`
+
+## Card
+
+`import { Card } from "@codeatlasdev/ui"`
+
+Card — a Surface with a header (`title`, `headerActions`), padding and an optional link. Every Surface prop (`elevation`, `material`, `tone`, `variant`, `radius`, `glow`) passes through.
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `href?` | `string` |  | Renders the card as a link (an `<a>`, interactive). |
+| `target?` | `string` |  | Link target. `_blank` also sets `rel="noopener noreferrer"`. |
+| `title?` | `string` |  | Header title. |
+| `headingLevel?` | `HeadingLevel` |  | Renders `title` as `<h2>`–`<h6>` so the card is a section in the page outline. Omit for a plain paragraph. Only the tag changes, never the look. |
+| `flush?` | `boolean` | `false` | Removes all padding, for tables, images and code that touch the edges. |
+| `full?` | `boolean` | `false` | `width: 100%`. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `headerActions`, `children`
+
+Also accepts: `Omit<ComponentProps<typeof Surface>, 'as' \| 'children'>`
+
+Classes: `ca-card` `ca-card--flush` `ca-card--full` `ca-card__header` `ca-card__header-actions` `ca-card__title`
 
 ## CardGrid
 
@@ -470,6 +509,24 @@ Classes: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chev
 
 Classes: `ca-cmd-dialog` `ca-cmd-empty` `ca-cmd-group__label` `ca-cmd-item` `ca-cmd-item--active` `ca-cmd-item__icon` `ca-cmd-item__label` `ca-cmd-item__module` `ca-cmd-list` `ca-cmd-overlay` `ca-cmd-search` `ca-cmd-search__hint` `ca-cmd-search__icon` `ca-cmd-search__input` `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
 
+## Container
+
+`import { Container } from "@codeatlasdev/ui"`
+
+Container — centered, width-capped column with the fluid page gutter.
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `size?` | `'sm' \| 'md' \| 'lg' \| 'xl'` | `'lg'` | Max width: sm 40rem, md 56rem, lg 76rem (the content width), xl 90rem. |
+| `as?` | `string` | `'div'` | Element to render. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>, Pick<LayoutProps, 'px' \| 'py'>`
+
+Classes: `ca-container`
+
 ## CopyButton
 
 `import { CopyButton } from "@codeatlasdev/ui"`
@@ -602,7 +659,7 @@ Classes: `ca-dt-toolbar` `ca-dt-toolbar__count` `ca-dt-toolbar__export` `ca-dt-t
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__float` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
+Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
 
 ## DatePicker
 
@@ -634,7 +691,7 @@ Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__gri
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__float` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
+Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
 
 ## DateRangePicker
 
@@ -664,7 +721,7 @@ Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__gri
 | `onchange?` | `(value: DateRange) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__float` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
+Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
 
 ## Dialog
 
@@ -911,6 +968,23 @@ Classes: `ca-file-upload` `ca-file-upload--disabled` `ca-file-upload__errors` `c
 
 Classes: `ca-filter-group` `ca-filter-group__item` `ca-filter-group__label`
 
+## Flex
+
+`import { Flex } from "@codeatlasdev/ui"`
+
+Flex — flex container. Token props become `data-*` attributes (no inline style); a responsive object like `{ base: 'column', md: 'row' }` switches at the shared breakpoints.
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `as?` | `string` | `'div'` | Element to render. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>, Pick<LayoutProps, 'gap' \| 'p' \| 'px' \| 'py' \| 'align' \| 'justify' \| 'direction' \| 'wrap'>`
+
+Classes: `ca-flex`
+
 ## FormSection
 
 `import { FormSection } from "@codeatlasdev/ui"`
@@ -999,19 +1073,16 @@ Snippets: `children`
 
 `import { Grid } from "@codeatlasdev/ui"`
 
-Grid — CSS grid layout primitive.
+Grid — CSS grid with equal tracks. `columns` is 1–12 or a responsive object; gap, padding and alignment are token props. All render as `data-*` attributes (no inline style). For an arbitrary `grid-template-columns` (`2fr 1fr`, `repeat(auto-fill, minmax(200px, 1fr))`) add a class and write the template there.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `cols?` | `number \| string` |  |  |
-| `gap?` | `number \| string` | `0` |  |
-| `rowGap?` | `number \| string` |  |  |
-| `colGap?` | `number \| string` |  |  |
-| `align?` | `string` |  |  |
-| `justify?` | `string` |  |  |
+| `as?` | `string` | `'div'` | Element to render. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>, Pick<LayoutProps, 'columns' \| 'gap' \| 'p' \| 'px' \| 'py' \| 'align'>`
 
 Classes: `ca-grid`
 
@@ -1540,7 +1611,7 @@ Classes: `ca-rail` `ca-rail__bottom` `ca-rail__bottom-sep` `ca-rail__dock` `ca-r
 | `onchange?` | `(value: DateRange) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__float` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
+Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
 
 ## RouteAnnouncer
 
@@ -1554,19 +1625,15 @@ Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__gri
 
 `import { Row } from "@codeatlasdev/ui"`
 
-Row — horizontal flex layout primitive.
-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `gap?` | `number \| string` | `0` |  |
+| `gap?` | `number \| Space` |  | Pixels (a multiple of 2px on the spacing scale: 8 → step 2) or a spacing step string. |
 | `align?` | `string` |  |  |
 | `justify?` | `string` |  |  |
 | `wrap?` | `boolean` | `false` |  |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
-
-Classes: `ca-row` `ca-row--wrap`
 
 ## ScatterChart
 
@@ -1598,6 +1665,24 @@ Classes: `ca-row` `ca-row--wrap`
 Snippets: `children`
 
 Classes: `ca-scroll-area` `ca-scroll-area__scrollbar` `ca-scroll-area__scrollbar--h` `ca-scroll-area__scrollbar--v` `ca-scroll-area__thumb` `ca-scroll-area__viewport`
+
+## Section
+
+`import { Section } from "@codeatlasdev/ui"`
+
+Section — a page band with the fluid vertical rhythm (`--ca-section-gap`). A real `<section>`: give it an accessible name (`aria-labelledby`) when it is a landmark worth navigating to.
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `size?` | `'1' \| '2' \| '3'` | `'2'` | Vertical padding: 1 compact, 2 default (the section rhythm), 3 airy. A `py` token overrides it. |
+| `as?` | `string` | `'section'` | Element to render. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>, Pick<LayoutProps, 'px' \| 'py'>`
+
+Classes: `ca-layout-section`
 
 ## SectionGroup
 
@@ -1796,16 +1881,16 @@ Classes: `ca-spinner` `ca-spinner__arc` `ca-spinner__track`
 
 `import { Stack } from "@codeatlasdev/ui"`
 
-Stack — vertical flex layout primitive.
+Stack — vertical flex layout (a Flex column). Token props are `data-*` attributes, no inline style.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `gap?` | `number \| string` | `0` |  |
-| `align?` | `string` |  |  |
-| `justify?` | `string` |  |  |
+| `as?` | `string` | `'div'` | Element to render. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>, Pick<LayoutProps, 'gap' \| 'p' \| 'px' \| 'py' \| 'align' \| 'justify'>`
 
 Classes: `ca-stack`
 
@@ -1854,6 +1939,36 @@ Classes: `ca-steps`
 Snippets: `children`
 
 Classes: `ca-sticky-actions` `ca-sticky-actions--end` `ca-sticky-actions--stretch` `ca-sticky-actions__inner`
+
+## Surface
+
+`import { Surface } from "@codeatlasdev/ui"`
+
+Surface — the one painted container every card, panel and sheet is built on. Its axes are orthogonal: `elevation` (shadow + depth), `material` (what it is made of), `tone`, `variant`, `radius`. Each one is a `data-*` attribute read by a single `.ca-surface` rule (no inline style).
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `as?` | `string` | `'div'` | Element to render. Cards with an `href` render `a` through `Card`. |
+| `elevation?` | `0 \| 1 \| 2 \| 3 \| 4 \| 5` | `1` | Depth 0–5: drop shadow, and the blur/fill tier of the material (0 flat, 3 regular, 5 chrome). |
+| `material?` | `'auto' \| 'solid' \| 'frosted' \| 'glass' \| 'liquid'` | `'auto'` | `auto` follows `<html data-style>`; the others are absolute. `liquid` adds the SVG refraction layer. |
+| `tone?` | `'neutral' \| 'brand' \| 'success' \| 'warning' \| 'error' \| 'info'` | `'neutral'` | Semantic tint over the fill (and the outline color of `variant="outlined"`). |
+| `variant?` | `'filled' \| 'outlined' \| 'ghost'` | `'filled'` | `filled` (default), `outlined` (edge, no fill) or `ghost` (no fill, no edge). |
+| `radius?` | `'none' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'pill'` |  | Corner radius; omit for the large radius. |
+| `interactive?` | `boolean` | `false` | Hover, press and focus-visible states and a pointer cursor. Give it a role and a name if it is not a link or button. |
+| `glow?` | `boolean` | `false` | Brand halo behind the surface. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>, Pick<LayoutProps, 'p' \| 'px' \| 'py'>`
+
+## SurfacePanel
+
+`import { SurfacePanel } from "@codeatlasdev/ui"`
+
+SurfacePanel — a raised `<section>` (elevation 2; with an accessible name it is a region landmark) for a labelled block of a page: a filter bar, a settings group, a side summary. Give it an accessible name.
+
+Also accepts: `Omit<ComponentProps<typeof Surface>, 'as'>`
 
 ## Switch
 
@@ -2037,7 +2152,7 @@ Classes: `ca-theme-toggle__icon` `ca-theme-toggle__icon--dark` `ca-theme-toggle_
 | `onchange?` | `(value: Time \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__float` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
+Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
 
 ## Timeline
 
@@ -2668,6 +2783,16 @@ Neutral surface/text/outline ramp tinted with the given brand hue (OKLCH degrees
 function neutralRamp(hue: number): NeutralRamp
 ```
 
+### onLayerChange
+
+`import { onLayerChange } from "@codeatlasdev/ui"`
+
+Subscribes to `layerchange`: fired on `document` whenever a layer opens or closes, with the open layers and their rects. Hosts that draw outside the DOM (native views over a webview) park or snapshot them from here. Returns the unsubscribe function.
+
+```ts
+function onLayerChange(listener: (change: LayerChange) => void): () => void
+```
+
 ### radius
 
 `import { radius } from "@codeatlasdev/ui"`
@@ -2988,15 +3113,18 @@ Types:
 
 | Type | Declaration | Notes |
 |---|---|---|
+| `Align` | `type Align = (typeof ALIGN)[number];` |  |
 | `BrandColors` | `interface BrandColors { main: string; light: string; dark: string; contrast: string; }` |  |
 | `Breakpoint` | `type Breakpoint = "xs" \| "sm" \| "md" \| "lg" \| "xl";` |  |
 | `BuiltinPresetId` | `type BuiltinPresetId = \| "amber" \| "ocean" \| "crimson" \| "cyan" \| "violet" \| "emerald" \| "rose" \| "slate";` | Presets shipped in global.css. |
 | `ColorScheme` | `type ColorScheme = "light" \| "dark" \| "system";` |  |
+| `Columns` | `type Columns = (typeof COLUMNS)[number] \| `${(typeof COLUMNS)[number]}`;` |  |
 | `DateRange` | `interface DateRange { start: DateValue \| undefined; end: DateValue \| undefined; }` | Value of RangeCalendar / DateRangePicker. Both ends are undefined until picked. |
 | `DeepPartial` | `type DeepPartial<T> = T extends (...args: never[]) => unknown ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;` |  |
 | `Density` | `type Density = "compact" \| "comfortable" \| "airy" \| number;` | Spacing density: a multiplier of the 4px unit, or a named step. |
 | `DesignStyle` | `interface DesignStyle { id: DesignStyleId; label: string; description: string; taxonomy: string[]; theme: Partial<ThemeDefinition>; }` |  |
 | `DesignStyleId` | `type DesignStyleId = \| "default" \| "liquid" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
+| `Direction` | `type Direction = (typeof DIRECTION)[number];` |  |
 | `DocsHeading` | `interface DocsHeading { id: string; text: string; depth: 2 \| 3; }` |  |
 | `DocsNavGroup` | `interface DocsNavGroup { label?: string; items: DocsNavItem[]; }` | A labelled group of page links in the sidebar. |
 | `DocsNavItem` | `interface DocsNavItem { href: string; title: string; badge?: string; }` | A page link in the sidebar. |
@@ -3015,6 +3143,11 @@ Types:
 | `HeadingLevel` | `type HeadingLevel = 2 \| 3 \| 4 \| 5 \| 6;` | Level of a rendered `<h2>`–`<h6>`. `<h1>` is reserved for the page title (`PageShell`). |
 | `IconComponent` | `type IconComponent = Component<IconProps>;` | Any Svelte 5 icon component accepting {@link IconProps}. Structural, so `@lucide/svelte` icons (and compatible libraries) fit. |
 | `IconProps` | `type IconProps = { size?: number \| string; class?: string; "stroke-width"?: number \| string; };` | Props the library passes to icon components. |
+| `Justify` | `type Justify = (typeof JUSTIFY)[number];` |  |
+| `LayerChange` | `interface LayerChange { layers: LayerInfo[]; count: number; modal: boolean; }` | Detail of the `layerchange` event on `document`. |
+| `LayerInfo` | `interface LayerInfo { kind: LayerKind; rect: DOMRect; }` |  |
+| `LayerKind` | `type LayerKind = "modal" \| "popover" \| "hint";` | The single layer stack. Every overlay (dialog, sheet, menu, popover, tooltip) goes through `openLayer`, so there is one place for the top layer, Escape / outside press / focus-out, focus restoration, scroll lock and the `layerchange` event hosts listen to. |
+| `LayoutProps` | `interface LayoutProps { gap?: Responsive<Space>; p?: Responsive<Space>; px?: Responsive<Space>; py?: Responsive<Space>; align?: Responsive<Align>; justify?: Responsive<Justify>; direction?: Responsive<Direction>; columns?: Responsive<Columns>; wrap?: Responsive<boolean>; }` | Props shared by every layout primitive. Each one also takes a responsive object. |
 | `Locale` | `type Locale = string;` | BCP 47 language tag. `en` and `pt-BR` are built in; add others with `registerLocale`. |
 | `Messages` | `type Messages = Widen<typeof en>;` | Full message shape (string literals widened so other locales can translate). |
 | `MessagesOverride` | `type MessagesOverride = DeepPartial<Messages>;` | Partial, deep override accepted by `setLocale`, `registerLocale` and `I18nProvider`. |
@@ -3030,9 +3163,11 @@ Types:
 | `PresetId` | `type PresetId = BuiltinPresetId \| (string & {});` | A built-in preset or a brand preset registered via `ThemeOptions.presets`. |
 | `RadiusKey` | `type RadiusKey = keyof typeof radius;` |  |
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
+| `Responsive` | `type Responsive<T> = T \| ({ base?: T } & { [B in Breakpoint]?: T });` | A value, or one value per breakpoint: `{ base: "2", md: "6" }`. A breakpoint applies from its width up. |
 | `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; background?: string; sunken?: string; surface?: string; overlay?: string; text?: string; textSecondary?: string; textHint?: string; textDisabled?: string; borderSubtle?: string; border?: string; borderStrong?: string; success?: string; warning?: string; info?: string; error?: string; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. |
 | `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
 | `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
+| `Space` | `type Space = (typeof SPACE)[number] \| `${(typeof SPACE)[number]}`;` |  |
 | `SurfaceColors` | `interface SurfaceColors { sunken: string; base: string; raised: string; overlay: string; }` |  |
 | `SurfaceStyle` | `type SurfaceStyle = \| "glass" \| "frosted" \| "solid" \| "flat" \| "outlined" \| "neumorphic" \| "clay" \| "tonal" \| "chrome";` | Surface material. glass/frosted blur the backdrop; the rest are opaque. |
 | `TextColors` | `interface TextColors { primary: string; secondary: string; disabled: string; }` |  |
@@ -3549,6 +3684,16 @@ Wraps nodes in a single `@graph` document. Cross-reference them with `{ "@id": .
 function graph(...nodes: JsonLdNode[]): { "@context": "https://schema.org"; "@graph": JsonLdNode[]; }
 ```
 
+### iconLinks
+
+`import { iconLinks } from "@codeatlasdev/ui/seo"`
+
+Head markup for the icon set, as an HTML string for `{@html}` in `<svelte:head>` or `set:html` in Astro. Pair it with `generateBrand` / `caBrandPlugin` from `@codeatlasdev/ui/vite`: `iconLinks(brand)`.
+
+```ts
+function iconLinks(a: IconLinksInput): string
+```
+
 ### llmsTxt
 
 `import { llmsTxt } from "@codeatlasdev/ui/seo"`
@@ -3587,6 +3732,16 @@ Open Graph image size, 1200x630.
 
 ```ts
 const OG_SIZE: { readonly width: 1200; readonly height: 630; }
+```
+
+### ogCard
+
+`import { ogCard } from "@codeatlasdev/ui/seo"`
+
+Complete 1200x630 HTML document for a social card. Feed it to `renderOgImage` (or return it from `ogImageRoute({ render })`). Colors are literal hex, so the card renders without the app's CSS.
+
+```ts
+function ogCard(o: OgCardOptions): string
 ```
 
 ### ogImageRoute
@@ -3686,6 +3841,7 @@ Types:
 | `AppleMetaOptions` | `interface AppleMetaOptions { touchIcon: string; title?: string; statusBarStyle?: "default" \| "black" \| "black-translucent"; }` |  |
 | `ArticleInput` | `interface ArticleInput { headline: string; description?: string; url?: string; image?: string \| string[]; datePublished: string; dateModified?: string; author: { name: string; url?: string } \| { name: string; url?: string }[]; publisher?: JsonLdRef; inLanguage?: string; type?: "Article" \| "BlogPosting" \| "NewsArticle" \| "TechArticle"; extra?: Extra; }` |  |
 | `BrowserLike` | `interface BrowserLike { newContext: (options: { deviceScaleFactor: number; viewport: { width: number; height: number }; }) => Promise<{ newPage: () => Promise<PageLike>; close: () => Promise<void> }>; }` | The subset of Playwright's `Browser` this module uses. |
+| `IconLinksInput` | `interface IconLinksInput { favicon: string; ico?: string; appleTouch?: string; manifest?: string; }` | Asset URLs `iconLinks` links to. A subset of what `generateBrand` returns (`BrandAssets`). |
 | `JsonLdNode` | `type JsonLdNode = { "@type": string } & Record<string, unknown>;` | A schema.org node. Open on purpose: builders cover the common fields only. |
 | `JsonLdRef` | `interface JsonLdRef { "@id": string; }` | `{ "@id": ... }` reference to a node declared elsewhere in the same graph. |
 | `LlmsSection` | `interface LlmsSection { heading: string; links: { title: string; href: string; description?: string }[]; }` |  |
@@ -3694,6 +3850,7 @@ Types:
 | `ManifestOptions` | `interface ManifestOptions { name: string; shortName?: string; description?: string; startUrl?: string; scope?: string; display?: "standalone" \| "fullscreen" \| "minimal-ui" \| "browser"; orientation?: "any" \| "portrait" \| "landscape"; lang?: string; icons: ManifestIcon[]; shortcuts?: ManifestShortcut[]; theme?: Partial<ThemeDefinition>; themeColor?: string; backgroundColor?: string; extra?: Record<string, unknown>; }` |  |
 | `ManifestShortcut` | `interface ManifestShortcut { name: string; url: string; short_name?: string; description?: string; icons?: ManifestIcon[]; }` |  |
 | `MarkdownNegotiationOptions` | `interface MarkdownNegotiationOptions { markdown: ( pathname: string, event: HandleEvent ) => string \| undefined \| Promise<string \| undefined>; userAgents?: RegExp; }` |  |
+| `OgCardOptions` | `interface OgCardOptions { title: string; description?: string; eyebrow?: string; siteName: string; mark: string; colors: { ink: string; spark: string; surface: string }; css?: string; fontFamily?: string; }` |  |
 | `OgImageRouteOptions` | `interface OgImageRouteOptions<E> extends RenderOgOptions { browser: () => BrowserLike \| Promise<BrowserLike>; render: (event: E) => string \| undefined \| Promise<string \| undefined>; cacheKey?: (event: E) => string; cacheSize?: number; concurrency?: number; cacheControl?: string; }` |  |
 | `OrganizationInput` | `interface OrganizationInput { name: string; url: string; logo?: string; sameAs?: string[]; description?: string; id?: string; extra?: Extra; }` |  |
 | `ProductInput` | `interface ProductInput { name: string; description?: string; image?: string \| string[]; sku?: string; brand?: string; offers: ProductOffer \| ProductOffer[]; rating?: { value: number; count: number }; id?: string; extra?: Extra; }` |  |
@@ -4289,6 +4446,16 @@ Types:
 
 ## @codeatlasdev/ui/vite
 
+### brandHash
+
+`import { brandHash } from "@codeatlasdev/ui/vite"`
+
+First 10 hex chars of the sha256 of the parts.
+
+```ts
+function brandHash(...parts: string[]): string
+```
+
 ### CA_THEME_MARKER
 
 `import { CA_THEME_MARKER } from "@codeatlasdev/ui/vite"`
@@ -4307,6 +4474,16 @@ Ready-to-paste script tag for src/app.html (default amber/dark theme).
 
 ```ts
 const CA_THEME_SCRIPT_TAG: string
+```
+
+### caBrandPlugin
+
+`import { caBrandPlugin } from "@codeatlasdev/ui/vite"`
+
+Vite plugin: at build start (and dev server start) renders the favicon set from the mark and the theme, and writes `src/generated/brand.ts` exporting `brand: BrandAssets`. Add `outDir` and the generated module to `.gitignore`: nothing it writes is meant to be committed. Warns and does nothing when the mark file is missing.
+
+```ts
+function caBrandPlugin(options?: CaBrandPluginOptions): Plugin
 ```
 
 ### caErrorPlugin
@@ -4329,14 +4506,91 @@ Pass the same options as caThemeHandle so the dev HTML (transformIndexHtml) matc
 function caThemePlugin(options?: ThemeOptions): Plugin
 ```
 
+### faviconSvg
+
+`import { faviconSvg } from "@codeatlasdev/ui/vite"`
+
+The mark as a standalone SVG favicon that follows `prefers-color-scheme`.
+
+```ts
+function faviconSvg(mark: string, brand: ResolvedBrand): string
+```
+
+### generateBrand
+
+`import { generateBrand } from "@codeatlasdev/ui/vite"`
+
+Writes `favicon.<h>.svg`, `favicon.<h>.ico` (16/32/48), `favicon-32.<h>.png`, `apple-touch-icon.<h>.png` (180, opaque), `icon-192/512.<h>.png`, `maskable-512.<h>.png` and `manifest.<h>.webmanifest`. Needs the optional peers `@resvg/resvg-js` and `png-to-ico`.
+
+```ts
+function generateBrand(o: GenerateBrandOptions): Promise<BrandAssets>
+```
+
+### OG_SIZE
+
+`import { OG_SIZE } from "@codeatlasdev/ui/vite"`
+
+Open Graph image size, 1200x630.
+
+```ts
+const OG_SIZE: { readonly width: 1200; readonly height: 630; }
+```
+
+### ogCard
+
+`import { ogCard } from "@codeatlasdev/ui/vite"`
+
+Complete 1200x630 HTML document for a social card. Feed it to `renderOgImage` (or return it from `ogImageRoute({ render })`). Colors are literal hex, so the card renders without the app's CSS.
+
+```ts
+function ogCard(o: OgCardOptions): string
+```
+
+### renderMark
+
+`import { renderMark } from "@codeatlasdev/ui/vite"`
+
+Fills the `{{ink}}` / `{{spark}}` placeholders of a mark and drops its comments. Throws on a mark with a literal color or a missing placeholder.
+
+```ts
+function renderMark(mark: string, colors: { ink: string; spark: string }): string
+```
+
+### renderOgImage
+
+`import { renderOgImage } from "@codeatlasdev/ui/vite"`
+
+Renders a complete HTML document at 1200x630 and returns the image bytes.
+
+```ts
+function renderOgImage(browser: BrowserLike, html: string, options?: RenderOgOptions): Promise<Uint8Array>
+```
+
+### resolveBrand
+
+`import { resolveBrand } from "@codeatlasdev/ui/vite"`
+
+Colors of the theme's default preset in both schemes, as `#rrggbb`. Pure: same theme, same result.
+
+```ts
+function resolveBrand(theme?: ThemeOptions): ResolvedBrand
+```
+
 Types:
 
 | Type | Declaration | Notes |
 |---|---|---|
+| `BrandAssets` | `interface BrandAssets { favicon: string; ico: string; favicon32: string; appleTouch: string; icon192: string; icon512: string; maskable512: string; manifest: string; hash: string; }` | Public URLs of the generated assets. `og` is keyed by whatever the caller passed in `ogPages`. |
+| `BrandColors` | `interface BrandColors { ink: string; spark: string; surface: string; }` | Literal sRGB colors of one scheme. |
+| `BrowserLike` | `interface BrowserLike { newContext: (options: { deviceScaleFactor: number; viewport: { width: number; height: number }; }) => Promise<{ newPage: () => Promise<PageLike>; close: () => Promise<void> }>; }` | The subset of Playwright's `Browser` this module uses. |
+| `CaBrandPluginOptions` | `interface CaBrandPluginOptions { mark?: string; theme?: ThemeOptions; outDir?: string; base?: string; manifestFile?: string; name?: string; shortName?: string; }` |  |
 | `CaErrorPluginOptions` | `interface CaErrorPluginOptions { root?: string; routesDir?: string; scaffold?: boolean; scaffoldErrorHtml?: boolean; }` |  |
 | `FontDescriptor` | `interface FontDescriptor { family: string; src: string; weight?: number \| string; style?: "normal" \| "italic"; display?: "auto" \| "block" \| "swap" \| "fallback" \| "optional"; preload?: boolean; fallback?: string; fallbackMetrics?: FontFallbackMetrics; generic?: string; }` | A self-hosted web font. Emits `@font-face`, an optional preload and a metric-matched fallback face. |
 | `FontSpec` | `type FontSpec = string \| FontDescriptor;` | A font stack string (existing behavior) or a self-hosted font descriptor. |
+| `GenerateBrandOptions` | `interface GenerateBrandOptions { mark: string; theme: ThemeOptions; outDir: string; base?: string; name?: string; shortName?: string; }` |  |
+| `OgCardOptions` | `interface OgCardOptions { title: string; description?: string; eyebrow?: string; siteName: string; mark: string; colors: { ink: string; spark: string; surface: string }; css?: string; fontFamily?: string; }` |  |
 | `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
+| `ResolvedBrand` | `interface ResolvedBrand { light: BrandColors; dark: BrandColors; }` |  |
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
 | `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |

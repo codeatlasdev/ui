@@ -6,7 +6,7 @@
 		BottomNav,
 		Button,
 		Chip,
-		GlassCard,
+		Card,
 		MobileHeader,
 		MobilePane,
 		Sheet,
@@ -68,15 +68,15 @@
 				{/each}
 			</ul>
 		{:else if active === 2}
-			<GlassCard title="This week">
+			<Card material="glass" title="This week">
 				<div class="app__chips">
 					<Chip label="Mon" size="sm" selected />
 					<Chip label="Tue" size="sm" />
 					<Chip label="Wed" size="sm" />
 				</div>
-			</GlassCard>
+			</Card>
 		{:else}
-			<GlassCard title="Profile">
+			<Card material="glass" title="Profile">
 				<TextField
 					label="Display name"
 					bind:value={name}
@@ -85,10 +85,10 @@
 				<div class="app__switch">
 					<Switch label="Push notifications" onchange={() => (dirty = true)} />
 				</div>
-			</GlassCard>
-			<GlassCard title="Workspace">
+			</Card>
+			<Card material="glass" title="Workspace">
 				<p class="app__sheet">Edit the name: the save bar pins above the tab bar and follows the keyboard.</p>
-			</GlassCard>
+			</Card>
 			<div class="app__spacer" aria-hidden="true"></div>
 		{/if}
 	</main>

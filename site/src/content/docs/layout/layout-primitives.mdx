@@ -1,0 +1,77 @@
+---
+title: Layout primitives
+description: "Box, Flex, Stack, Grid, Container and Section: spacing and alignment as token props, rendered as data attributes with no inline style."
+group: Layout
+order: 12
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Stack from "~/demos/layout/layout-primitives/Stack.svelte";
+import StackSrc from "~/demos/layout/layout-primitives/Stack.svelte?raw";
+import Responsive from "~/demos/layout/layout-primitives/Responsive.svelte";
+import ResponsiveSrc from "~/demos/layout/layout-primitives/Responsive.svelte?raw";
+import Page from "~/demos/layout/layout-primitives/Page.svelte";
+import PageSrc from "~/demos/layout/layout-primitives/Page.svelte?raw";
+
+```svelte
+<script>
+  import { Stack, Flex, Grid, Box, Container, Section } from "@codeatlasdev/ui";
+</script>
+
+<Container size="md">
+  <Section>
+    <Stack as="ul" gap="4">…</Stack>
+    <Grid columns={{ base: 1, md: 3 }} gap="4">…</Grid>
+  </Section>
+</Container>
+```
+
+Every primitive renders any element (`as`) and forwards `class` and other attributes. A token prop never becomes inline CSS: it is a `data-*` attribute (`<div data-gap="4">`) styled by one stylesheet in `@layer ca.utilities`, so the markup is cache-friendly, passes a strict CSP, and an app can override any step with a plain class.
+
+| Primitive | Renders | Props |
+|---|---|---|
+| `Box` | `div`, padding | `p`, `px`, `py` |
+| `Flex` | `display: flex` | `gap`, `p`, `px`, `py`, `align`, `justify`, `direction`, `wrap` |
+| `Stack` | a Flex column | `gap`, `p`, `px`, `py`, `align`, `justify` |
+| `Grid` | `display: grid`, equal tracks | `columns`, `gap`, `p`, `px`, `py`, `align` |
+| `Container` | centered, width-capped, fluid gutter | `size` (`sm` `md` `lg` `xl`), `px`, `py` |
+| `Section` | a `<section>` with the page rhythm | `size` (`1` `2` `3`), `px`, `py` |
+
+Spacing values are steps of the spacing scale as strings (`"4"` is `--ca-space-4`, 16px at the default density; `"0.5"` is 2px). The scale is `0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 6 7 8 10 11 12 16 20 24`. A value off the scale logs a `[ca-ui]` warning in development and renders unstyled: for a one-off value add a class.
+
+`align` is `start | center | end | stretch | baseline`, `justify` is `start | center | end | between | around | evenly`, `direction` is `row | column | row-reverse | column-reverse`, and `columns` is 1 to 12 equal tracks. For a template like `2fr 1fr` or `repeat(auto-fill, minmax(200px, 1fr))` write `grid-template-columns` in a class.
+
+## Responsive values
+
+Pass an object instead of a value. `base` applies everywhere, and each breakpoint applies from its width up, on the shared scale: `sm` 600, `md` 900, `lg` 1200, `xl` 1536 px. The object becomes `data-gap="2" data-md-gap="4"`.
+
+<Demo title="Flex, Stack and Box" src={StackSrc}><Stack /></Demo>
+<Demo title="Responsive Grid" description={"Resize the window: 1, 2, then 4 columns, and the gap grows at `md`."} src={ResponsiveSrc}><Responsive /></Demo>
+<Demo title="Container and Section" src={PageSrc}><Page /></Demo>
+
+<Props title="Shared props" rows={[
+  { name: "as", type: "string", default: "per component", description: "Element to render (`div`, `section`, `ul`, `nav`...)." },
+  { name: "gap", type: "Space | responsive", default: "undefined", description: "Gap between children." },
+  { name: "p, px, py", type: "Space | responsive", default: "undefined", description: "Padding on every side, horizontal, vertical." },
+  { name: "align", type: "'start' | 'center' | 'end' | 'stretch' | 'baseline' | responsive", default: "undefined", description: "`align-items`." },
+  { name: "justify", type: "'start' | 'center' | 'end' | 'between' | 'around' | 'evenly' | responsive", default: "undefined", description: "`justify-content`." },
+  { name: "direction", type: "'row' | 'column' | 'row-reverse' | 'column-reverse' | responsive", default: "'row'", description: "Flex only." },
+  { name: "wrap", type: "boolean | responsive", default: "false", description: "Flex only: `flex-wrap: wrap`." },
+  { name: "columns", type: "1–12 | responsive", default: "undefined", description: "Grid only: equal tracks." },
+]} />
+
+## Migrating from Stack, Grid and Row
+
+`Stack`'s `gap` used to be pixels (`gap={16}`) and `Grid` took `cols`. They now take spacing steps (`gap="4"`) and `columns`, and `Row` is deprecated in favor of `Flex`. Run the codemod, which converts every static usage and leaves the rest for you:
+
+```sh
+bunx @codeatlasdev/ui migrate --write src
+```
+
+| Before | After |
+|---|---|
+| `<Stack gap={16}>` | `<Stack gap="4">` |
+| `<Stack align="flex-end" justify="space-between">` | `<Stack align="end" justify="between">` |
+| `<Row gap={8} wrap>` | `<Flex gap="2" wrap>` |
+| `<Grid cols={3} gap={8}>` | `<Grid columns={3} gap="2">` |
+| `<Grid cols="2fr 1fr">` | a class with `grid-template-columns: 2fr 1fr` (not migrated) |

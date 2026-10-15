@@ -1,8 +1,8 @@
 <script lang="ts">
-  import { GlassCard } from '@codeatlasdev/ui';
+  import { Card } from '@codeatlasdev/ui';
 </script>
 
-<GlassCard class="content-card">
+<Card material="glass" class="content-card">
   <div class="body">
     <p class="eyebrow">Featured</p>
     <h3>Liquid Glass materials</h3>
@@ -11,7 +11,7 @@
     </p>
     <a href="/docs/foundation/materials/">Explore materials →</a>
   </div>
-</GlassCard>
+</Card>
 
 <style>
   :global(.content-card) { max-width: 360px; width: 100%; }

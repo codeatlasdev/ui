@@ -31,7 +31,7 @@
 </script>
 
 <main id="main" class="error-root" tabindex="-1">
-  <Stack gap={40} align="center" class="error-inner">
+  <Stack gap="10" align="center" class="error-inner">
     <div class="maint-icon" aria-hidden="true">
       <svg viewBox="0 0 80 80" fill="none" width="80" height="80">
         <circle cx="40" cy="40" r="38"
@@ -43,7 +43,7 @@
       </svg>
     </div>
 
-    <Stack gap={12} align="center">
+    <Stack gap="3" align="center">
       <h1 class="error-title">Under maintenance</h1>
       <p class="error-body">We're making improvements. Back in a few hours.</p>
     </Stack>

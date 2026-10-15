@@ -1,0 +1,16 @@
+<script lang="ts">
+  import { Stack, Flex, Box } from '@codeatlasdev/ui';
+</script>
+
+<Stack gap="4" p="4">
+  <Flex gap="3" align="center" justify="between" wrap>
+    <Box class="chip" px="3" py="1">Flex, space between</Box>
+    <Box class="chip" px="3" py="1">gap 3</Box>
+    <Box class="chip" px="3" py="1">wraps</Box>
+  </Flex>
+  <Box class="chip" p="4">Stack gap 4, Box padding 4</Box>
+</Stack>
+
+<style>
+  :global(.chip) { background: var(--ca-surface-raised); border-radius: var(--ca-radius-md); box-shadow: inset 0 0 0 1px var(--ca-outline-subtle); font-size: var(--ca-font-size-body2); }
+</style>

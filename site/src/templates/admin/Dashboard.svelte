@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { KpiCard, KpiGrid, GlassCard, StatusChip, PageShell, Grid, SimpleTable, UserCell, Button, Row } from '@codeatlasdev/ui';
+  import { KpiCard, KpiGrid, Card, StatusChip, PageShell, Grid, SimpleTable, UserCell, Button, Flex } from '@codeatlasdev/ui';
   import { LineChart, PieChart } from '@codeatlasdev/ui/charts';
   import { TrendingUp, Users, DollarSign, Activity, ArrowUpRight } from '@lucide/svelte';
 
@@ -47,8 +47,8 @@
     <KpiCard title="Uptime"          value="99.9%" trend={0.1}  icon={Activity}   />
   </KpiGrid>
 
-  <Grid cols="2fr 1fr" gap={20}>
-    <GlassCard title="Revenue vs Expenses">
+  <Grid class="grid-wide-narrow" gap="5">
+    <Card material="glass" title="Revenue vs Expenses">
       <LineChart
         series={[{ name: 'Revenue', data: revenue }, { name: 'Expenses', data: expenses }]}
         categories={months}
@@ -56,13 +56,13 @@
         area
         height="260px"
       />
-    </GlassCard>
-    <GlassCard title="Traffic Sources">
+    </Card>
+    <Card material="glass" title="Traffic Sources">
       <PieChart data={pieData} donut centerLabel={{ value: '100%', label: 'Channels' }} height="260px" />
-    </GlassCard>
+    </Card>
   </Grid>
 
-  <GlassCard title="Recent Signups" full>
+  <Card material="glass" title="Recent Signups" full>
     {#snippet headerActions()}
       <Button variant="ghost" size="sm" href="/templates/admin/users/">View all →</Button>
     {/snippet}
@@ -81,5 +81,9 @@
         {/each}
       </tbody>
     </SimpleTable>
-  </GlassCard>
+  </Card>
 </PageShell>
+
+<style>
+  :global(.grid-wide-narrow) { grid-template-columns: 2fr 1fr; }
+</style>

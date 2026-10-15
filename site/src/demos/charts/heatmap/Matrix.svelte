@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GlassCard } from '@codeatlasdev/ui';
+  import { Card } from '@codeatlasdev/ui';
   import { HeatmapChart, type MatrixHeatmapPoint } from '@codeatlasdev/ui/charts';
 
   const hours = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, '0') + ':00');
@@ -17,6 +17,6 @@
   }
 </script>
 
-<GlassCard full>
+<Card material="glass" full>
   <HeatmapChart variant="matrix" {matrixData} xCategories={hours} yCategories={days} tooltipFormatter={(v) => `${v} tasks`} height="320px" />
-</GlassCard>
+</Card>

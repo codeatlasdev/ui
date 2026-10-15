@@ -1,6 +1,6 @@
 ---
 title: Card
-description: "GlassCard content patterns: text card, stat cards, accent treatments and a built-in header."
+description: "A Surface with a header, padding and an optional link: the default container for content sections."
 group: Surfaces
 order: 2
 ---
@@ -14,28 +14,38 @@ import Accents from "~/demos/surfaces/card/Accents.svelte";
 import AccentsSrc from "~/demos/surfaces/card/Accents.svelte?raw";
 import HeaderActions from "~/demos/surfaces/card/HeaderActions.svelte";
 import HeaderActionsSrc from "~/demos/surfaces/card/HeaderActions.svelte?raw";
+import Link from "~/demos/surfaces/card/Link.svelte";
+import LinkSrc from "~/demos/surfaces/card/Link.svelte?raw";
 
 ```svelte
 <script>
-  import { GlassCard } from "@codeatlasdev/ui";
+  import { Card } from "@codeatlasdev/ui";
 </script>
 
-<GlassCard title="Team" tinted>…</GlassCard>
+<Card title="Team" headingLevel={2} tone="brand">…</Card>
 ```
 
-These are composition patterns built on [Glass Card](/docs/surfaces/glass-card/), which owns the full prop list. Cards render as a link when `href` is set.
+Card is a [Surface](/docs/surfaces/surface/) with a header (`title`, `headerActions`), padding from `--ca-card-padding` and an optional link. Every Surface prop passes through (`elevation`, `material`, `tone`, `variant`, `radius`, `glow`), and `material="auto"` follows the theme. Use `flush` for content that touches the edges, such as tables, images and code.
+
+`title` is a paragraph unless you pass `headingLevel`, so adding a Card never changes a page outline by accident. Pass `headingLevel` to make the card a section under the page heading (a `PageShell` title is the `<h1>`, so cards start at `2`). Only the tag changes, never the look.
+
+With `href` the card is a single `<a>` and is interactive. The link name comes from the content, so give the card a `title`.
 
 <Demo title="Content card" description={"Text-heavy card with eyebrow, title, body and a link."} src={ContentCardSrc}><ContentCard /></Demo>
 <Demo title="Stat cards" description={"Compact metric display."} src={StatsSrc}><Stats /></Demo>
-<Demo title="Tinted and glowing" description={"Cards with accent treatments."} src={AccentsSrc}><Accents /></Demo>
+<Demo title="Tone and glow" description={"Accent treatments."} src={AccentsSrc}><Accents /></Demo>
 <Demo title="Header and actions" description={"`title` and `headerActions` render a built-in header row."} src={HeaderActionsSrc}><HeaderActions /></Demo>
+<Demo title="Link card" description={"`href` renders the whole card as a link."} src={LinkSrc}><Link /></Demo>
 
 <Props rows={[
-  { name: "thickness", type: "'ultra-thin' | 'thin' | 'regular' | 'thick' | 'chrome'", default: "'regular'", description: "Glass thickness tier." },
-  { name: "tinted", type: "boolean", default: "false", description: "Adds the brand accent gradient." },
-  { name: "glowing", type: "boolean", default: "false", description: "Adds a backlit glow halo." },
   { name: "title", type: "string", default: "undefined", description: "Header title." },
+  { name: "headingLevel", type: "2 | 3 | 4 | 5 | 6", default: "undefined", description: "Renders `title` as `<h2>`–`<h6>` so the card is a section in the page outline. Omit for a plain paragraph." },
   { name: "headerActions", type: "Snippet", default: "undefined", description: "Actions aligned to the end of the header." },
+  { name: "href", type: "string", default: "undefined", description: "Renders the card as a link (`<a>`, interactive)." },
+  { name: "target", type: "string", default: "undefined", description: "Link target. `_blank` also sets `rel=\"noopener noreferrer\"`." },
+  { name: "flush", type: "boolean", default: "false", description: "Removes all padding." },
+  { name: "full", type: "boolean", default: "false", description: "Sets `width: 100%`." },
+  { name: "elevation, material, tone, variant, radius, glow, interactive", type: "Surface props", default: "see Surface", description: "Passed to the underlying [Surface](/docs/surfaces/surface/)." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
   { name: "children", type: "Snippet", default: "undefined", description: "Card content." },
 ]} />

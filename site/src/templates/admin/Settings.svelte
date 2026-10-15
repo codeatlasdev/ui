@@ -1,7 +1,7 @@
 <script lang="ts">
   import {
     AppSettings, FormSection, TextField, Select, Switch,
-    Button, SettingItem, Divider, Avatar, Row, Chip, GlassCard, SimpleTable,
+    Button, SettingItem, Divider, Avatar, Flex, Chip, Card, SimpleTable,
   } from '@codeatlasdev/ui';
   import { Settings, Bell, Users, Shield, AlertTriangle, Save } from '@lucide/svelte';
 
@@ -133,7 +133,7 @@
 
     <!-- MEMBROS -->
     {#if tab === 'members'}
-      <GlassCard flush full>
+      <Card material="glass" flush full>
         {#snippet headerActions()}
           <Button variant="filled" size="sm">Convidar membro</Button>
         {/snippet}
@@ -145,13 +145,13 @@
             {#each members as m}
               <tr>
                 <td>
-                  <Row gap={10} align="center">
+                  <Flex gap="2.5" align="center">
                     <Avatar alt={m.name} size="sm" />
                     <div>
                       <p class="member-name">{m.name}</p>
                       <p class="member-email">{m.email}</p>
                     </div>
-                  </Row>
+                  </Flex>
                 </td>
                 <td><Select value={m.role} options={roleOpts} /></td>
                 <td>
@@ -166,7 +166,7 @@
             {/each}
           </tbody>
         </SimpleTable>
-      </GlassCard>
+      </Card>
     {/if}
 
     <!-- SECURITY -->
@@ -198,7 +198,7 @@
         {/if}
       </FormSection>
 
-      <GlassCard title="Active sessions" flush full>
+      <Card material="glass" title="Active sessions" flush full>
         {#each [
           { device: 'Chrome no macOS',  ip: '192.168.1.42',  last: 'Agora',         current: true  },
           { device: 'Safari on iPhone', ip: '192.168.1.100', last: '2 hr ago',    current: false },
@@ -217,7 +217,7 @@
             {/if}
           </div>
         {/each}
-      </GlassCard>
+      </Card>
     {/if}
   {/snippet}
 </AppSettings>

@@ -1,21 +1,21 @@
 <script lang="ts">
-	import { GlassSurface, type Thickness } from "@codeatlasdev/ui";
+	import { Surface } from "@codeatlasdev/ui";
 
-	const tiers: { thickness: Thickness; label: string; desc: string }[] = [
-		{ thickness: "ultra-thin", label: "Ultra thin", desc: "Subtle background hint" },
-		{ thickness: "thin", label: "Thin", desc: "Light translucency" },
-		{ thickness: "regular", label: "Regular", desc: "Standard glass surface" },
-		{ thickness: "thick", label: "Thick", desc: "Strong frosted effect" },
-		{ thickness: "chrome", label: "Chrome", desc: "Opaque chrome bar" },
+	const tiers: { elevation: 1 | 2 | 3 | 4 | 5; label: string; desc: string }[] = [
+		{ elevation: 1, label: "Ultra thin", desc: "Subtle background hint" },
+		{ elevation: 2, label: "Thin", desc: "Light translucency" },
+		{ elevation: 3, label: "Regular", desc: "Standard glass surface" },
+		{ elevation: 4, label: "Thick", desc: "Strong frosted effect" },
+		{ elevation: 5, label: "Chrome", desc: "Opaque chrome bar" },
 	];
 </script>
 
 <div class="backdrop">
-	{#each tiers as tier (tier.thickness)}
-		<GlassSurface thickness={tier.thickness} class="tier" refraction={false}>
+	{#each tiers as tier (tier.elevation)}
+		<Surface material="glass" elevation={tier.elevation} class="tier">
 			<p class="label">{tier.label}</p>
 			<p class="desc">{tier.desc}</p>
-		</GlassSurface>
+		</Surface>
 	{/each}
 </div>
 

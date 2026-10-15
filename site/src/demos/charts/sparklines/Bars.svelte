@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { Row, Stack } from '@codeatlasdev/ui';
+  import { Flex, Stack } from '@codeatlasdev/ui';
   import { Sparkline } from '@codeatlasdev/ui/charts';
 
   const items = [
@@ -9,16 +9,16 @@
   ];
 </script>
 
-<Row gap={24} wrap align="center">
+<Flex gap="6" wrap align="center">
   {#each items as s}
     <div class="item">
-      <Stack gap={6}>
+      <Stack gap="1.5">
         <span class="label">{s.label}</span>
         <Sparkline data={s.data} variant="bar" trend={s.trend} height="40px" />
       </Stack>
     </div>
   {/each}
-</Row>
+</Flex>
 
 <style>
   .item { width: 160px; }

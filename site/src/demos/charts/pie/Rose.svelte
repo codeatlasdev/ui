@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GlassCard } from '@codeatlasdev/ui';
+  import { Card } from '@codeatlasdev/ui';
   import { PieChart } from '@codeatlasdev/ui/charts';
 
   const roseData = [
@@ -12,4 +12,4 @@
   ];
 </script>
 
-<GlassCard full><PieChart data={roseData} rose height="340px" /></GlassCard>
+<Card material="glass" full><PieChart data={roseData} rose height="340px" /></Card>

@@ -1,9 +1,16 @@
 <script lang="ts">
+  /**
+   * @deprecated Use `<Card>`. `thickness` is `elevation` (ultra-thin 1, thin 2, regular 3, thick 4,
+   * chrome 5), `tinted` is `tone="brand"`, `glowing` is `glow`. Removed in the next major;
+   * `bunx @codeatlasdev/ui migrate --write` rewrites usages.
+   */
   import type { Snippet } from 'svelte';
   import type { Thickness } from '../../tokens/materials.js';
   import type { HeadingLevel } from '../../types.js';
+  import Card from '../Card/Card.svelte';
   import LiquidGlass from '../LiquidGlass/LiquidGlass.svelte';
   import { GLASS_OPTICS } from '../../tokens/materials.js';
+  import { devWarn } from '../../utils/dev-warn.js';
 
   interface Props {
     thickness?:     Thickness;
@@ -46,6 +53,12 @@
     children,
   }: Props = $props();
 
+  $effect.pre(() => {
+    devWarn('glass-card', '<GlassCard> is deprecated and removed in the next major. Use <Card> (thickness → elevation, tinted → tone="brand", glowing → glow); `bunx @codeatlasdev/ui migrate --write` rewrites usages.');
+  });
+
+  const ELEVATION = { 'ultra-thin': 1, thin: 2, regular: 3, thick: 4, chrome: 5 } as const;
+
   // Passes padding as a CSS custom property, not as a fixed inline value.
   // flush and full are applied via classes.
   const paddingVar = $derived(
@@ -55,6 +68,7 @@
       : undefined
   );
 
+  // The legacy classes stay on the element: apps target them until the major.
   const cls = $derived([
     'glass',
     `glass-${thickness}`,
@@ -67,7 +81,8 @@
   ].filter(Boolean).join(' '));
 </script>
 
-{#snippet inner()}
+<!-- Same look as GlassCard had: material follows the theme, elevation is the old thickness tier. -->
+<Card {href} {target} elevation={ELEVATION[thickness]} class={cls} style={paddingVar}>
   <LiquidGlass optics={GLASS_OPTICS[thickness]} />
   {#if title || headerActions}
     <div class="ca-glass-card__header">
@@ -80,26 +95,20 @@
     </div>
   {/if}
   {@render children?.()}
-{/snippet}
-
-{#if href}
-  <a {href} {target} class={cls} style={paddingVar}>{@render inner()}</a>
-{:else}
-  <div class={cls} style={paddingVar}>{@render inner()}</div>
-{/if}
+</Card>
 
 <style>
 @layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
 @layer ca.components {
-    .ca-glass-card {
+    :global(.ca-glass-card) {
       border-radius: var(--ca-radius-lg);
       overflow: hidden;
       padding: var(--ca-card-padding);
       position: relative;
     }
 
-    .ca-glass-card--flush { padding: 0; }
-    .ca-glass-card--full  { width: 100%; }
+    :global(.ca-glass-card--flush) { padding: 0; }
+    :global(.ca-glass-card--full)  { width: 100%; }
 
     .ca-glass-card__header {
       display: flex;

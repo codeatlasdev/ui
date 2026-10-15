@@ -2,7 +2,7 @@
   import { Collapsible, Stack } from '@codeatlasdev/ui';
 </script>
 
-<Stack gap={8} class="stack">
+<Stack gap="2" class="stack">
   <Collapsible title="What is a glass surface?">
     <p>A glass surface uses backdrop-filter blur and a translucent tint to create a layered depth effect that reacts to the content behind it.</p>
   </Collapsible>

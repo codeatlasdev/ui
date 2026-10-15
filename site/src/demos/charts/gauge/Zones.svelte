@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GlassCard, Grid } from '@codeatlasdev/ui';
+  import { Card, Grid } from '@codeatlasdev/ui';
   import { GaugeChart, type GaugeZone } from '@codeatlasdev/ui/charts';
 
   // `until` is a fraction of min..max; `color` is a semantic name or any CSS color.
@@ -15,16 +15,17 @@
   ];
 </script>
 
-<Grid cols="repeat(auto-fit,minmax(200px,1fr))" gap={16}>
+<Grid class="grid-auto-200" gap="4">
   {#each metrics as m}
-    <GlassCard>
+    <Card material="glass">
       <p class="label">{m.label}</p>
       <GaugeChart value={m.value} {zones} height="200px" />
-    </GlassCard>
+    </Card>
   {/each}
 </Grid>
 
 <style>
+  :global(.grid-auto-200) { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
   .label {
     text-align: center;
     font-size: var(--ca-font-size-caption);

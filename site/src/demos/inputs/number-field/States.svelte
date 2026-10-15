@@ -5,7 +5,7 @@
   let seats = $state(60);
 </script>
 
-<Stack gap={16}>
+<Stack gap="4">
   <NumberField label="Seats" value={3} min={1} max={50} description="Max 50 seats per plan." />
   <NumberField label="Seats" bind:value={seats} min={1} max={50} error="Plans support up to 50 seats." required />
   <NumberField label="Fixed amount" bind:value={fixed} disabled />

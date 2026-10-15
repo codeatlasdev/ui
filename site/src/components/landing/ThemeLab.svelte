@@ -2,7 +2,7 @@
 	// Theme chapter: pick any built-in preset or paste a hex; the preview below is a real set of
 	// package components re-themed on its own wrapper. Brand presets are generated in the browser
 	// with the package's own palette generator, the same function defineTheme() uses at build time.
-	import { Button, Chip, GlassCard, Progress, SegmentedControl, Switch } from "@codeatlasdev/ui";
+	import { Button, Chip, Card, Progress, SegmentedControl, Switch } from "@codeatlasdev/ui";
 	import { generatePreset, hexToOklch, presetVars } from "@codeatlasdev/ui/utils/palette-generator";
 	import { Check } from "@lucide/svelte";
 
@@ -82,7 +82,7 @@ export const theme: ThemeOptions = {
 
 	<div class="lab__island" data-preset={custom ? undefined : preset} data-style={style}>
 		<div class="lab__preview" data-theme-scope={dark ? "dark" : "light"} style={brandStyle}>
-		<GlassCard title="Storage" thickness="thick">
+		<Card material="glass" elevation={4} title="Storage">
 			<p class="lab__copy">Plan usage resets in 9 days.</p>
 			<Progress value={progress} label="Storage used" />
 			<div class="lab__row">
@@ -91,7 +91,7 @@ export const theme: ThemeOptions = {
 				<Button size="sm" onclick={() => (progress = (progress + 11) % 100)}>Add 11%</Button>
 				<Button size="sm" variant="outlined">Manage</Button>
 			</div>
-		</GlassCard>
+		</Card>
 		</div>
 	</div>
 

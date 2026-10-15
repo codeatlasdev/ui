@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { ScrollArea, GlassCard } from '@codeatlasdev/ui';
+  import { ScrollArea, Card } from '@codeatlasdev/ui';
 
   const items = Array.from({ length: 20 }, (_, i) => `Item ${i + 1}: Lorem ipsum dolor sit amet`);
 </script>
 
-<GlassCard full>
+<Card material="glass" full>
   <ScrollArea maxHeight="220px">
     {#each items as item}
       <div class="item">{item}</div>
     {/each}
   </ScrollArea>
-</GlassCard>
+</Card>
 
 <style>
   .item {

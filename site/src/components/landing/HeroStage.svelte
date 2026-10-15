@@ -5,7 +5,7 @@
 	import {
 		Button,
 		Chip,
-		GlassCard,
+		Card,
 		KpiCard,
 		SegmentedControl,
 		StatusChip,
@@ -97,7 +97,7 @@
 			<KpiCard title="Revenue" value="41.2" unit="k" trend={12.4} icon={Gauge} />
 			<KpiCard title="Active teams" value="1,284" trend={4.1} icon={Users} />
 
-			<GlassCard class="stage__chart" thickness="thick">
+			<Card material="glass" elevation={4} class="stage__chart">
 				<p class="stage__chart-title">Weekly growth</p>
 				<svg class="stage__spark" viewBox="0 0 320 64" preserveAspectRatio="none" role="img" aria-label="Revenue rising from 14 to 41 over 12 weeks">
 					<path d={lineA.area} class="stage__area" />
@@ -108,9 +108,9 @@
 						<rect x={b.x} y={40 - b.h} width="16" height={b.h} rx="2" class="stage__bar-rect" />
 					{/each}
 				</svg>
-			</GlassCard>
+			</Card>
 
-			<GlassCard class="stage__controls" title="Release" thickness="regular">
+			<Card material="glass" class="stage__controls" title="Release">
 				<div class="stage__row">
 					<Chip label="v2 rollout" icon={Rocket} variant="brand" size="sm" />
 					<Chip label="Beta" icon={Boxes} size="sm" />
@@ -123,7 +123,7 @@
 					<Button size="sm">Ship it</Button>
 					<Button size="sm" variant="glass">Preview</Button>
 				</div>
-			</GlassCard>
+			</Card>
 		</div>
 	</div>
 

@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { AuthLayout, AuthCard, TextField, Button, Stack, Row } from '@codeatlasdev/ui';
+  import { AuthLayout, AuthCard, TextField, Button, Stack, Flex } from '@codeatlasdev/ui';
   import { Eye, EyeOff } from '@lucide/svelte';
 
   let email    = $state('');
@@ -24,7 +24,7 @@
 
   <AuthCard title="Welcome back" subtitle="Sign in to your account to continue">
     <form onsubmit={submit}>
-      <Stack gap={14}>
+      <Stack gap="3.5">
         <TextField label="Email address" type="email" bind:value={email}
           placeholder="you@example.com" autocomplete="email" />
         <TextField label="Password" type={showPass ? 'text' : 'password'}
@@ -37,9 +37,9 @@
             </button>
           {/snippet}
         </TextField>
-        <Row justify="flex-end">
+        <Flex justify="end">
           <a href="/templates/auth/forgot-password/" class="auth-link auth-link--sm">Forgot password?</a>
-        </Row>
+        </Flex>
         <Button type="submit" variant="filled" fullWidth disabled={loading}>
           {loading ? 'Signing in…' : 'Sign in'}
         </Button>
@@ -48,7 +48,7 @@
 
     <div class="auth-or"><span>OR</span></div>
 
-    <Stack gap={8}>
+    <Stack gap="2">
       <Button variant="outlined" fullWidth>
         {#snippet leading()}
           <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">

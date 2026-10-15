@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { Divider, GlassCard, Row } from '@codeatlasdev/ui';
+  import { Divider, Card, Flex } from '@codeatlasdev/ui';
 </script>
 
-<GlassCard padding="24px" full>
-  <Row gap={24} align="center">
+<Card material="glass" p="6" full>
+  <Flex gap="6" align="center">
     <p>Left</p>
     <Divider orientation="vertical" />
     <p>Center</p>
     <Divider orientation="vertical" />
     <p>Right</p>
-  </Row>
-</GlassCard>
+  </Flex>
+</Card>
 
 <style>
   p { margin: 0; font-size: var(--ca-font-size-body1); color: var(--ca-text-secondary); }

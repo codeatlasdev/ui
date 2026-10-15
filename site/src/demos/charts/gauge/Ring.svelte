@@ -1,16 +1,16 @@
 <script lang="ts">
-  import { GlassCard, Stack, Slider } from '@codeatlasdev/ui';
+  import { Card, Stack, Slider } from '@codeatlasdev/ui';
   import { GaugeChart } from '@codeatlasdev/ui/charts';
 
   let value = $state(65);
 </script>
 
-<GlassCard full>
-  <Stack gap={20}>
+<Card material="glass" full>
+  <Stack gap="5">
     <GaugeChart {value} variant="ring" height="260px" />
     <div class="slider"><Slider bind:value min={0} max={100} step={1} /></div>
   </Stack>
-</GlassCard>
+</Card>
 
 <style>
   .slider { padding: 0 var(--ca-space-3); }

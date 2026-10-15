@@ -1,35 +1,25 @@
 ---
 title: Glass Surface
-description: "The foundational glass material component with configurable thickness, tint, glow and optional refraction."
+description: "Deprecated: use Surface. GlassSurface is kept until the next major version."
 group: Surfaces
-order: 5
+order: 6
 ---
-import Demo from "~/components/docs/Demo.astro";
-import Props from "~/components/docs/Props.astro";
-import Interactive from "~/demos/surfaces/glass-surface/Interactive.svelte";
-import InteractiveSrc from "~/demos/surfaces/glass-surface/Interactive.svelte?raw";
-import Tiers from "~/demos/surfaces/glass-surface/Tiers.svelte";
-import TiersSrc from "~/demos/surfaces/glass-surface/Tiers.svelte?raw";
+import { Callout } from "@codeatlasdev/ui";
 
-```svelte
-<script>
-  import { GlassSurface } from "@codeatlasdev/ui";
-</script>
+<Callout type="caution" title="Deprecated">
+`GlassSurface` is replaced by [Surface](/docs/surfaces/surface/) and removed in the next major version. It still works and looks the same: it renders a Surface, keeps its `glass*` classes, and logs a `[ca-ui]` warning in development.
+</Callout>
 
-<GlassSurface thickness="thin" tinted>…</GlassSurface>
+```sh
+bunx @codeatlasdev/ui migrate --write src
 ```
 
-GlassSurface is the low-level material. Prefer [Glass Card](/docs/surfaces/glass-card/) for content containers. Extra attributes are forwarded to the root element. Do not add `will-change: transform` to a glass element or its ancestors, since it breaks `backdrop-filter`.
+| GlassSurface | Surface |
+|---|---|
+| `thickness="ultra-thin"` `"thin"` `"regular"` `"thick"` `"chrome"` | `elevation={1}` `{2}` `{3}` (default) `{4}` `{5}` |
+| `tinted` | `tone="brand"` |
+| `glowing` | `glow` |
+| `refraction` (default `true`) | `material="liquid"`; `refraction={false}` is `material="glass"` |
+| `class`, `style`, other attributes | unchanged (use `p` / `as` instead of a padding style) |
 
-<Demo title="Interactive" description={"Adjust the controls to preview each variant."} src={InteractiveSrc}><Interactive client:visible /></Demo>
-<Demo title="All tiers side by side" src={TiersSrc}><Tiers /></Demo>
-
-<Props rows={[
-  { name: "thickness", type: "'ultra-thin' | 'thin' | 'regular' | 'thick' | 'chrome'", default: "'regular'", description: "Material tier controlling blur and opacity." },
-  { name: "tinted", type: "boolean", default: "false", description: "Adds the brand accent gradient overlay." },
-  { name: "glowing", type: "boolean", default: "false", description: "Adds a backlit glow halo." },
-  { name: "refraction", type: "boolean", default: "true", description: "Renders the LiquidGlass SVG refraction overlay." },
-  { name: "class", type: "string", default: "''", description: "Extra class names." },
-  { name: "style", type: "string", default: "''", description: "Inline style string." },
-  { name: "children", type: "Snippet", default: "undefined", description: "Slot content." },
-]} />
+Dynamic props (`thickness={t}`) are not rewritten by the codemod: map them by hand with the table above.

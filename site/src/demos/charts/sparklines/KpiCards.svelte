@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GlassCard, Grid, Stack, Row } from '@codeatlasdev/ui';
+  import { Card, Grid, Stack, Flex } from '@codeatlasdev/ui';
   import { Sparkline } from '@codeatlasdev/ui/charts';
 
   const kpis = [
@@ -10,22 +10,23 @@
   ];
 </script>
 
-<Grid cols="repeat(auto-fill,minmax(220px,1fr))" gap={16}>
+<Grid class="grid-auto-220" gap="4">
   {#each kpis as k}
-    <GlassCard>
-      <Stack gap={8}>
+    <Card material="glass">
+      <Stack gap="2">
         <span class="meta">{k.label}</span>
         <span class="value">{k.value}</span>
-        <Row justify="space-between" align="center" gap={8}>
+        <Flex justify="between" align="center" gap="2">
           <span class="change" class:up={k.trend === 'up'} class:down={k.trend === 'down'}>{k.change}</span>
           <div class="spark"><Sparkline data={k.data} trend={k.trend} height="32px" /></div>
-        </Row>
+        </Flex>
       </Stack>
-    </GlassCard>
+    </Card>
   {/each}
 </Grid>
 
 <style>
+  :global(.grid-auto-220) { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
   .meta { font-size: var(--ca-font-size-caption); color: var(--ca-text-secondary); }
   .value { font-size: var(--ca-font-size-h5); font-weight: 700; color: var(--ca-text-primary); }
   .change { font-size: var(--ca-font-size-caption); }

@@ -1,5 +1,6 @@
 /* @codeatlasdev/ui core — everything except the non-default presets.
- * Layers: reset+tokens+base, the default amber preset (:root tokens), materials, utilities, prose.
+ * Layers: reset+tokens+base, the default amber preset (:root tokens), materials (+ Surface), utilities
+ * (+ the layout token props), prose.
  * Pair it with only the presets your app uses:
  *   import '@codeatlasdev/ui/styles/core.css';
  *   import '@codeatlasdev/ui/styles/presets/ocean.css';
@@ -12,5 +13,7 @@
 @import url('./tokens.css') layer(ca.tokens);
 @import url('./presets/amber.css') layer(ca.themes);
 @import url('./materials.css') layer(ca.materials);
+@import url('./surface.css') layer(ca.materials);
 @import url('./utilities.css') layer(ca.utilities);
+@import url('./layout.css') layer(ca.utilities);
 @import url('./prose.css') layer(ca.utilities);

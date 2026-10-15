@@ -9,7 +9,7 @@
 <Button variant="outlined" onclick={() => (bottomOpen = true)}>Open bottom</Button>
 
 <Drawer bind:open={leftOpen} title="Navigation" side="left" width="280px">
-  <Stack gap={4}>
+  <Stack gap="1">
     {#each ['Dashboard', 'Users', 'Products', 'Reports', 'Settings'] as item}
       <button class="item" onclick={() => (leftOpen = false)}>{item}</button>
     {/each}
@@ -17,7 +17,7 @@
 </Drawer>
 
 <Drawer bind:open={bottomOpen} title="Sort by" side="bottom">
-  <Stack gap={4}>
+  <Stack gap="1">
     {#each ['Name (A-Z)', 'Name (Z-A)', 'Date joined', 'Last active', 'Role'] as opt}
       <button class="item" onclick={() => (bottomOpen = false)}>{opt}</button>
     {/each}

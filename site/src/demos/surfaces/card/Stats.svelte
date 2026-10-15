@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { GlassCard } from '@codeatlasdev/ui';
+  import { Card } from '@codeatlasdev/ui';
 
   const stats = [
     { label: 'Components', value: '70+', delta: 'Svelte 5' },
@@ -10,11 +10,11 @@
 
 <div class="grid">
   {#each stats as s}
-    <GlassCard class="stat">
+    <Card material="glass" class="stat">
       <p class="label">{s.label}</p>
       <p class="value">{s.value}</p>
       <p class="delta">{s.delta}</p>
-    </GlassCard>
+    </Card>
   {/each}
 </div>
 
