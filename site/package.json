@@ -7,6 +7,7 @@
 		"predev": "bun run brand",
 		"dev": "astro dev",
 		"prebuild": "bun run brand",
+		"precheck": "bun run brand",
 		"build": "astro build",
 		"preview": "astro preview --port 4321 --force",
 		"check": "astro check --minimumFailingSeverity warning",
