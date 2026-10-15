@@ -48,3 +48,20 @@ describe("toJson", () => {
 		expect(JSON.parse(toJson([{ a: 1, b: 2 }]))).toEqual([{ a: 1, b: 2 }]);
 	});
 });
+
+// Row types declared with `interface` have no implicit index signature; they must still be accepted.
+describe("interface row types", () => {
+	interface ApiKey {
+		id: string;
+		name: string;
+		createdAt: string;
+	}
+	const keys: ApiKey[] = [{ id: "k1", name: "CI", createdAt: "2026-01-02" }];
+
+	it("toCsv and toJson accept them, with `key` checked against keyof T", () => {
+		expect(toCsv(keys, [{ key: "name", header: "Nome" }])).toBe("Nome\r\nCI\r\n");
+		expect(JSON.parse(toJson(keys, [{ key: "id" }]))).toEqual([{ id: "k1" }]);
+		// @ts-expect-error "nope" is not a field of ApiKey
+		toCsv(keys, [{ key: "nope" }]);
+	});
+});

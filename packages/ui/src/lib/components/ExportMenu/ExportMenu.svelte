@@ -1,4 +1,4 @@
-<script lang="ts" generics="T extends Record<string, unknown>">
+<script lang="ts" generics="T extends object">
   import { Download } from '@lucide/svelte';
   import { useT } from '../../i18n/state.svelte.js';
   import { announce } from '../../utils/announce.js';

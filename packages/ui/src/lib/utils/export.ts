@@ -1,7 +1,7 @@
 // ─── Export helpers: rows → CSV / JSON text, and a browser download ──────────
 // Pure string builders (unit-tested) plus one DOM call, `downloadFile`.
 
-export interface ExportColumn<T = Record<string, unknown>> {
+export interface ExportColumn<T extends object = Record<string, unknown>> {
 	/** Field of the row; also the header when `header` is omitted. */
 	key: keyof T & string;
 	/** Column header in the CSV. Defaults to `key`. */
@@ -10,7 +10,7 @@ export interface ExportColumn<T = Record<string, unknown>> {
 	value?: (row: T) => unknown;
 }
 
-function resolveColumns<T extends Record<string, unknown>>(
+function resolveColumns<T extends object>(
 	rows: readonly T[],
 	columns?: readonly ExportColumn<T>[]
 ): readonly ExportColumn<T>[] {
@@ -36,7 +36,7 @@ function csvField(v: unknown): string {
 }
 
 /** RFC 4180 CSV (CRLF line ends, trailing newline). Columns default to the first row's keys. */
-export function toCsv<T extends Record<string, unknown>>(
+export function toCsv<T extends object>(
 	rows: readonly T[],
 	columns?: readonly ExportColumn<T>[]
 ): string {
@@ -49,7 +49,7 @@ export function toCsv<T extends Record<string, unknown>>(
 }
 
 /** Pretty-printed JSON array. With `columns`, each object keeps only those fields (by `key`). */
-export function toJson<T extends Record<string, unknown>>(
+export function toJson<T extends object>(
 	rows: readonly T[],
 	columns?: readonly ExportColumn<T>[]
 ): string {
