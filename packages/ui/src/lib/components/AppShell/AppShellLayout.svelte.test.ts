@@ -280,6 +280,7 @@ describe("AppShellLayout: skip link", () => {
 		expect(document.activeElement).toBe(link.element());
 		await userEvent.keyboard("{Enter}");
 		expect(document.activeElement).toBe(q(".ca-shell__content"));
+		expect(document.activeElement?.tagName).toBe("MAIN");
 		expect(document.querySelectorAll("#main")).toHaveLength(1);
 	});
 
@@ -289,8 +290,47 @@ describe("AppShellLayout: skip link", () => {
 		await userEvent.tab();
 		await userEvent.keyboard("{Enter}");
 		expect(document.activeElement?.tagName).toBe("MAIN");
+		expect(document.activeElement).not.toBe(q(".ca-shell__content"));
 		expect(document.querySelectorAll("#main")).toHaveLength(1);
 		expect(document.querySelectorAll("main")).toHaveLength(1);
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});
+
+describe("AppShellLayout: main landmark", () => {
+	it("the content area is the one <main> by default (axe landmark rules pass)", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		const screen = await render(Harness, { pathname: "/app/dashboard", full: true });
+		await settled();
+		expect(document.querySelectorAll("main")).toHaveLength(1);
+		expect(q(".ca-shell__content")?.tagName).toBe("MAIN");
+		expect(q(".ca-shell__content")?.contains(q("h1"))).toBe(true);
+		expect(
+			await checkA11y(screen.container, { runOnly: ["landmark-one-main", "region"] })
+		).toHaveNoViolations();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("mainId={null} leaves the landmark to the page: the shell renders a plain div", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(Harness, { pathname: "/app/dashboard", ownMain: true });
+		expect(q(".ca-shell__content")?.tagName).toBe("DIV");
+		expect(q(".ca-shell__content")?.id).toBe("");
+	});
+
+	it("mainId={null} with the page <main> has exactly one landmark and passes axe", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		const screen = await render(Harness, { pathname: "/app/dashboard", ownMain: true, full: true });
+		await settled();
+		expect(document.querySelectorAll("main")).toHaveLength(1);
+		expect(q("main")?.closest(".ca-shell__content")?.tagName).toBe("DIV");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("a custom mainId lands on the <main>", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(Harness, { pathname: "/app/dashboard", mainId: "content" });
+		expect(q(".ca-shell__content")?.tagName).toBe("MAIN");
+		expect(q(".ca-shell__content")?.id).toBe("content");
 	});
 });

@@ -44,9 +44,9 @@
 		{#snippet brand()}
 			<span style="font-weight:700">CA</span>
 		{/snippet}
-		<main style="padding:24px">
+		<div style="padding:24px">
 			<h1 style="margin:0 0 8px">Dashboard</h1>
 			<p style="margin:0">Page content.</p>
-		</main>
+		</div>
 	</AppShellLayout>
 </div>

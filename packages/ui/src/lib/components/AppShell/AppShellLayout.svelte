@@ -40,9 +40,10 @@
      */
     mobileTitle?: Snippet;
     /**
-     * `id` given to the content region, the target of the skip link. The region is a plain
-     * `div` (not a landmark) so a `<main>` you render inside never nests another one.
-     * Pass `null` when your own `<main id="main" tabindex="-1">` is the target.
+     * `id` given to the content region, the target of the skip link. By default the region is the
+     * page's `<main id tabindex="-1">` landmark. Pass `null` when your own
+     * `<main id="main" tabindex="-1">` is the target: the region then renders as a plain `div`
+     * so the page never gets two landmarks.
      */
     mainId?:        string | null;
     /**
@@ -213,11 +214,17 @@
     <div class="ca-shell__mobile-header">
       <MobileHeader leading={brand} title={pageTitle} titleSlot={mobileTitle} trailing={mobileHeaderActions} />
     </div>
-    <!-- Page content. A tabindex=-1 div (not a landmark) is the skip target: focus is programmatic only. -->
-    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-    <div class="ca-shell__content" id={mainId ?? undefined} tabindex={mainId ? -1 : undefined}>
-      {@render children?.()}
-    </div>
+    <!-- Page content. Default: the <main> landmark and skip target (focus is programmatic only).
+         mainId={null}: a plain div, the page owns <main>. -->
+    {#if mainId}
+      <main class="ca-shell__content" id={mainId} tabindex="-1">
+        {@render children?.()}
+      </main>
+    {:else}
+      <div class="ca-shell__content">
+        {@render children?.()}
+      </div>
+    {/if}
   </div>
 
   <!-- Mobile bottom nav -->

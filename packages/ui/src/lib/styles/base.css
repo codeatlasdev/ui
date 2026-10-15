@@ -146,7 +146,7 @@ p {
 
 /* Skip-link and route-announcer targets (<main id="main" tabindex="-1">) take focus only
    programmatically; a ring around the whole page body is noise, not a cue. */
-:where(main, [role="main"], .ca-shell__content)[tabindex="-1"]:focus {
+:where(main, [role="main"])[tabindex="-1"]:focus {
   outline: none;
 }
 

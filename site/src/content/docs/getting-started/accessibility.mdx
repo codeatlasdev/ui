@@ -75,14 +75,14 @@ Both live in the `ca.utilities` layer, so they are available wherever `global.cs
 | Shell | Who owns `#main` |
 |---|---|
 | `DocsShell`, `AuthLayout` | The shell: its own `<main id="main" tabindex="-1">`. |
-| `AppShellLayout` | A plain `div.ca-shell__content` (not a landmark), so a `<main>` you render inside never nests another. Pass `mainId={null}` when your page renders `<main id="main" tabindex="-1">` yourself. |
+| `AppShellLayout` | `<main id="main" tabindex="-1" class="ca-shell__content">`, the page landmark, so there is nothing to add. Pass `mainId={null}` when your page renders `<main id="main" tabindex="-1">` yourself: the content region becomes a plain `div`, never a second landmark. |
 | `PageShell` | Nobody: it always sits inside a shell or a page that already has a `<main>`. |
 
 Never put a second `id="main"` or a second `<main>` on a page. When a shell is embedded in a page that already has a skip link (a framed demo, a preview), pass `skipLink={false}` to `AppShellLayout`.
 
 ```svelte
 <AppShellLayout {modules} {pathname}>
-  <!-- content region is the skip target; use <main> only with mainId={null} -->
+  <!-- the shell renders <main id="main">; render your own <main> only with mainId={null} -->
   <PageShell title="Users">…</PageShell>
 </AppShellLayout>
 ```

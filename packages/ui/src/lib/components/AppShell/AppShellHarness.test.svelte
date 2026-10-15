@@ -13,11 +13,13 @@
 		single?: boolean;
 		/** The page renders its own <main id="main">: the shell must not add a second target. */
 		ownMain?: boolean;
+		/** `id` of the shell's own <main> (default "main"). Ignored when `ownMain`. */
+		mainId?: string;
 		/** Keep panel, module, sections and scroll in storage (off by default: tests start clean). */
 		persist?: boolean;
 	}
 
-	let { pathname = "/app/dashboard", onNavigate, full = false, single = false, ownMain = false, persist = false }: Props = $props();
+	let { pathname = "/app/dashboard", onNavigate, full = false, single = false, ownMain = false, mainId = "main", persist = false }: Props = $props();
 
 	const modules: NavModule[] = [
 		{
@@ -55,7 +57,7 @@
 </script>
 
 {#if full}
-	<AppShellLayout modules={mods} {pathname} {onNavigate} persistPanel={persist}>
+	<AppShellLayout modules={mods} {pathname} {onNavigate} persistPanel={persist} mainId={ownMain ? null : mainId}>
 		{#snippet header()}
 			<SiteHeader />
 		{/snippet}
@@ -68,20 +70,22 @@
 		{#snippet mobileHeaderActions()}
 			<button type="button">Actions</button>
 		{/snippet}
-		<main>
-			<h1>Page content</h1>
-		</main>
-	</AppShellLayout>
-{:else}
-	<AppShellLayout modules={mods} {pathname} {onNavigate} persistPanel={persist} mainId={ownMain ? null : "main"}>
 		{#if ownMain}
 			<main id="main" tabindex="-1">
 				<h1>Page content</h1>
 			</main>
 		{:else}
-			<main>
+			<h1>Page content</h1>
+		{/if}
+	</AppShellLayout>
+{:else}
+	<AppShellLayout modules={mods} {pathname} {onNavigate} persistPanel={persist} mainId={ownMain ? null : mainId}>
+		{#if ownMain}
+			<main id="main" tabindex="-1">
 				<h1>Page content</h1>
 			</main>
+		{:else}
+			<h1>Page content</h1>
 		{/if}
 	</AppShellLayout>
 {/if}
