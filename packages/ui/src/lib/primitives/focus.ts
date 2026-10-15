@@ -32,6 +32,9 @@ export function focusFirst(node: HTMLElement): HTMLElement | null {
 	return el;
 }
 
+/** Active traps, oldest first: only the newest owns focus, so nested modals never fight (#138). */
+const traps: HTMLElement[] = [];
+
 export interface TrapFocusOptions {
 	/** Where focus goes on activation. Default 'first'. `false` leaves focus alone. */
 	initial?: HTMLElement | "first" | "container" | false;
@@ -48,6 +51,10 @@ export function trapFocus(node: HTMLElement, options: TrapFocusOptions = {}): ()
 	const { initial = "first", restore = true } = options;
 	const previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
 
+	// Pushed before the initial focus, or the trap below would pull that focus back.
+	traps.push(node);
+	const isTop = () => traps[traps.length - 1] === node;
+
 	if (initial === "first") {
 		if (!focusFirst(node)) focusContainer(node);
 	} else if (initial === "container") {
@@ -57,7 +64,7 @@ export function trapFocus(node: HTMLElement, options: TrapFocusOptions = {}): ()
 	}
 
 	function onKeydown(e: KeyboardEvent) {
-		if (e.key !== "Tab" || e.defaultPrevented) return;
+		if (e.key !== "Tab" || e.defaultPrevented || !isTop()) return;
 		const items = focusables(node);
 		if (items.length === 0) {
 			e.preventDefault();
@@ -78,7 +85,7 @@ export function trapFocus(node: HTMLElement, options: TrapFocusOptions = {}): ()
 
 	// Focus that escapes (programmatic or via a non-Tab path) is pulled back in.
 	function onFocusin(e: FocusEvent) {
-		if (e.target instanceof Node && !node.contains(e.target)) {
+		if (isTop() && e.target instanceof Node && !node.contains(e.target)) {
 			if (!focusFirst(node)) focusContainer(node);
 		}
 	}
@@ -89,6 +96,8 @@ export function trapFocus(node: HTMLElement, options: TrapFocusOptions = {}): ()
 	return () => {
 		node.removeEventListener("keydown", onKeydown);
 		document.removeEventListener("focusin", onFocusin);
+		const i = traps.lastIndexOf(node);
+		if (i >= 0) traps.splice(i, 1);
 		if (restore === false) return;
 		const target = restore instanceof HTMLElement ? restore : previous;
 		if (target?.isConnected) target.focus({ preventScroll: true });

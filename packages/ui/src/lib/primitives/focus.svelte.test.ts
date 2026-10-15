@@ -69,3 +69,21 @@ describe("focus", () => {
 		release();
 	});
 });
+
+describe("nested traps (#138)", () => {
+	it("only the newest trap owns focus; the older one resumes after it closes", () => {
+		document.body.innerHTML = `
+			<div id="outer"><button id="o">o</button></div>
+			<div id="inner"><button id="i">i</button></div>`;
+		const outer = document.getElementById("outer") as HTMLElement;
+		const inner = document.getElementById("inner") as HTMLElement;
+		const releaseOuter = trapFocus(outer);
+		const releaseInner = trapFocus(inner);
+		expect(document.activeElement?.id).toBe("i");
+		(document.getElementById("o") as HTMLElement).focus();
+		expect(document.activeElement?.id).toBe("i");
+		releaseInner();
+		expect(document.activeElement?.id).toBe("o");
+		releaseOuter();
+	});
+});
