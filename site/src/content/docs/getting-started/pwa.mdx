@@ -8,6 +8,10 @@ import { Callout } from "@codeatlasdev/ui";
 
 A progressive web app needs three pieces: a manifest (name, icons, colors), the iOS tags that Safari still reads instead of the manifest, and a service worker. `@codeatlasdev/ui/seo` generates the first two. The service worker stays in your app on purpose: its cache rules depend on your routes and release flow.
 
+<Callout type="info" title="Icons come from one mark">
+  `caBrandPlugin` renders the 192, 512 and maskable icons, the 180 `apple-touch-icon` and a ready `manifest.<hash>.webmanifest` from your mark SVG and theme. See [Brand assets](/docs/getting-started/seo/#brand-assets).
+</Callout>
+
 ## Manifest
 
 `manifest()` returns the manifest object. `theme_color` and `background_color` come from the same theme definition you give `caThemeHandle`, so the splash screen and the browser chrome match the first paint.

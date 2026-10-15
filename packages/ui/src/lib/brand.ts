@@ -1,0 +1,262 @@
+/**
+ * Brand assets from one mark: `@codeatlasdev/ui/vite` (`caBrandPlugin`, `generateBrand`).
+ *
+ * A mark is an SVG with two placeholders, `{{ink}}` (outline color) and `{{spark}}` (accent), and no
+ * literal color. Every consumer substitutes them: the in-page logo with `var(--ca-*)`, the favicon
+ * and icons with sRGB hex resolved from the theme. A color change in the theme therefore reaches
+ * the browser tab, the home-screen icon and the social card without anyone redrawing anything.
+ *
+ * Output names carry a hash of the *inputs* (mark, resolved colors, sizes), never of the rendered
+ * bytes: rasterizers differ between machines, inputs do not. A changed input renames the file, so
+ * `/brand/*` can be served `immutable`.
+ *
+ * `@resvg/resvg-js` (PNG) and `png-to-ico` (ICO) are optional peers, imported only when
+ * `generateBrand` runs.
+ */
+import { createHash } from "node:crypto";
+import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { dirname, join, resolve } from "node:path";
+import type { Plugin } from "vite";
+import { defaultPresetTokens, defineTheme } from "./theme/define.js";
+import type { ThemeOptions } from "./theme-script.js";
+import { oklchToHex } from "./utils/palette-generator.js";
+
+/** Literal sRGB colors of one scheme. */
+export interface BrandColors {
+	/** Outline color (`--ca-text-primary`). */
+	ink: string;
+	/** Accent color (`--ca-brand-main`). */
+	spark: string;
+	/** Page background (`--ca-surface-base`); fills opaque icons. */
+	surface: string;
+}
+
+export interface ResolvedBrand {
+	light: BrandColors;
+	dark: BrandColors;
+}
+
+const HEX = /^#[0-9a-f]{6}$/i;
+const toHex = (c: string) => (HEX.test(c) ? c.toLowerCase() : oklchToHex(c));
+
+/** Colors of the theme's default preset in both schemes, as `#rrggbb`. Pure: same theme, same result. */
+export function resolveBrand(theme: ThemeOptions = {}): ResolvedBrand {
+	const t = defaultPresetTokens(defineTheme(theme));
+	const pick = (m: Record<string, string>): BrandColors => ({
+		ink: toHex(m["--ca-text-primary"]),
+		spark: toHex(m["--ca-brand-main"]),
+		surface: toHex(m["--ca-surface-base"]),
+	});
+	return { light: pick(t.light), dark: pick(t.dark) };
+}
+
+/** Fills the `{{ink}}` / `{{spark}}` placeholders of a mark and drops its comments. Throws on a mark with a literal color or a missing placeholder. */
+export function renderMark(mark: string, colors: { ink: string; spark: string }): string {
+	if (!mark.includes("{{ink}}") || !mark.includes("{{spark}}"))
+		throw new Error("[codeatlasdev/ui] brand mark must contain {{ink}} and {{spark}} placeholders");
+	if (/#[0-9a-f]{3,8}\b|oklch\(|rgba?\(|hsla?\(/i.test(mark.replace(/<!--[\s\S]*?-->/g, "")))
+		throw new Error(
+			"[codeatlasdev/ui] brand mark must not contain literal colors, use {{ink}} / {{spark}}"
+		);
+	return mark
+		.replace(/<!--[\s\S]*?-->\s*/g, "")
+		.replaceAll("{{ink}}", colors.ink)
+		.replaceAll("{{spark}}", colors.spark);
+}
+
+/** The mark as a standalone SVG favicon that follows `prefers-color-scheme`. */
+export function faviconSvg(mark: string, brand: ResolvedBrand): string {
+	const inner = renderMark(mark, { ink: "var(--ink)", spark: "var(--spark)" });
+	const style =
+		`<style>:root{--ink:${brand.light.ink};--spark:${brand.light.spark}}` +
+		`@media (prefers-color-scheme:dark){:root{--ink:${brand.dark.ink};--spark:${brand.dark.spark}}}</style>`;
+	return inner.replace(/(<svg\b[^>]*>)/, `$1${style}`);
+}
+
+/** First 10 hex chars of the sha256 of the parts. */
+export function brandHash(...parts: string[]): string {
+	const h = createHash("sha256");
+	for (const p of parts) h.update(p).update("\0");
+	return h.digest("hex").slice(0, 10);
+}
+
+/** Public URLs of the generated assets. `og` is keyed by whatever the caller passed in `ogPages`. */
+export interface BrandAssets {
+	favicon: string;
+	ico: string;
+	favicon32: string;
+	appleTouch: string;
+	icon192: string;
+	icon512: string;
+	maskable512: string;
+	manifest: string;
+	/** Input hash shared by every icon; changes when the mark, the colors or the sizes change. */
+	hash: string;
+}
+
+export interface GenerateBrandOptions {
+	/** Mark SVG source (placeholders, see module docs). */
+	mark: string;
+	theme: ThemeOptions;
+	/** Directory that is served as `/brand` (e.g. `public/brand`). Emptied first. */
+	outDir: string;
+	/** URL prefix of `outDir`. @default "/brand" */
+	base?: string;
+	/** Web app manifest fields. */
+	name?: string;
+	shortName?: string;
+}
+
+const SIZES = [16, 32, 48] as const;
+
+/**
+ * Writes `favicon.<h>.svg`, `favicon.<h>.ico` (16/32/48), `favicon-32.<h>.png`, `apple-touch-icon.<h>.png`
+ * (180, opaque), `icon-192/512.<h>.png`, `maskable-512.<h>.png` and `manifest.<h>.webmanifest`.
+ * Needs the optional peers `@resvg/resvg-js` and `png-to-ico`.
+ */
+export async function generateBrand(o: GenerateBrandOptions): Promise<BrandAssets> {
+	const [{ Resvg }, { default: pngToIco }] = await Promise.all([
+		import("@resvg/resvg-js").catch((e) => missing("@resvg/resvg-js", e)),
+		import("png-to-ico").catch((e) => missing("png-to-ico", e)),
+	]);
+	const base = (o.base ?? "/brand").replace(/\/$/, "");
+	const brand = resolveBrand(o.theme);
+	// resvg and standalone SVG files need the namespace; inline use in HTML does not.
+	const mark = /<svg\b[^>]*\bxmlns=/.test(o.mark)
+		? o.mark
+		: o.mark.replace("<svg", '<svg xmlns="http://www.w3.org/2000/svg"');
+	const light = renderMark(mark, brand.light);
+	const hash = brandHash(
+		mark,
+		JSON.stringify(brand),
+		JSON.stringify(SIZES),
+		o.name ?? "",
+		o.shortName ?? ""
+	);
+
+	/** Mark centered on an opaque square. `inset` is the fraction of the canvas left empty on each side. */
+	const tile = (size: number, inset: number) => {
+		const inner = size * (1 - inset * 2);
+		const body = light.replace(/^[\s\S]*?<svg\b[^>]*>|<\/svg>\s*$/g, "");
+		const vb = (light.match(/viewBox="([^"]+)"/)?.[1] ?? "0 0 32 32").split(/\s+/).map(Number);
+		return (
+			`<svg xmlns="http://www.w3.org/2000/svg" width="${size}" height="${size}" viewBox="0 0 ${size} ${size}">` +
+			`<rect width="${size}" height="${size}" fill="${brand.light.surface}"/>` +
+			`<svg x="${size * inset}" y="${size * inset}" width="${inner}" height="${inner}" viewBox="${vb.join(" ")}">${body}</svg></svg>`
+		);
+	};
+	const png = (svg: string, size: number) =>
+		new Resvg(svg, { fitTo: { mode: "width", value: size } }).render().asPng();
+	/** Transparent PNG of the mark alone (favicon sizes). */
+	const bare = (size: number) =>
+		png(light.replace(/<svg\b/, `<svg width="${size}" height="${size}"`), size);
+
+	const outDir = resolve(o.outDir);
+	rmSync(outDir, { recursive: true, force: true });
+	mkdirSync(outDir, { recursive: true });
+	const files: Record<string, Uint8Array | string> = {
+		[`favicon.${hash}.svg`]: faviconSvg(mark, brand),
+		[`favicon.${hash}.ico`]: await pngToIco(SIZES.map((s) => Buffer.from(bare(s)))),
+		[`favicon-32.${hash}.png`]: bare(32),
+		[`apple-touch-icon.${hash}.png`]: png(tile(180, 0.14), 180),
+		[`icon-192.${hash}.png`]: png(tile(192, 0.14), 192),
+		[`icon-512.${hash}.png`]: png(tile(512, 0.14), 512),
+		// Maskable: content inside the central 80% safe zone (W3C maskable icon spec).
+		[`maskable-512.${hash}.png`]: png(tile(512, 0.2), 512),
+	};
+	const url = (name: string) => `${base}/${name}`;
+	const manifest = {
+		name: o.name,
+		short_name: o.shortName ?? o.name,
+		start_url: "/",
+		display: "browser",
+		background_color: brand.light.surface,
+		theme_color: brand.light.surface,
+		icons: [
+			{ src: url(`icon-192.${hash}.png`), sizes: "192x192", type: "image/png" },
+			{ src: url(`icon-512.${hash}.png`), sizes: "512x512", type: "image/png" },
+			{
+				src: url(`maskable-512.${hash}.png`),
+				sizes: "512x512",
+				type: "image/png",
+				purpose: "maskable",
+			},
+		],
+	};
+	files[`manifest.${hash}.webmanifest`] = JSON.stringify(manifest, null, "\t");
+	for (const [name, data] of Object.entries(files)) writeFileSync(join(outDir, name), data);
+
+	return {
+		favicon: url(`favicon.${hash}.svg`),
+		ico: url(`favicon.${hash}.ico`),
+		favicon32: url(`favicon-32.${hash}.png`),
+		appleTouch: url(`apple-touch-icon.${hash}.png`),
+		icon192: url(`icon-192.${hash}.png`),
+		icon512: url(`icon-512.${hash}.png`),
+		maskable512: url(`maskable-512.${hash}.png`),
+		manifest: url(`manifest.${hash}.webmanifest`),
+		hash,
+	};
+}
+
+function missing(pkg: string, cause: unknown): never {
+	throw new Error(
+		`[codeatlasdev/ui] caBrandPlugin needs the optional peer dependency "${pkg}": bun add -d ${pkg}`,
+		{
+			cause,
+		}
+	);
+}
+
+export interface CaBrandPluginOptions {
+	/** Path to the mark SVG, relative to the project root. @default "src/brand/mark.svg" */
+	mark?: string;
+	/** The same `ThemeOptions` passed to `caThemePlugin`. */
+	theme?: ThemeOptions;
+	/** Directory served as `/brand`. @default "static/brand" (SvelteKit); use "public/brand" for Vite and Astro. */
+	outDir?: string;
+	/** URL prefix. @default "/brand" */
+	base?: string;
+	/** Where the asset URLs are written as a TypeScript module. @default "src/generated/brand.ts" */
+	manifestFile?: string;
+	name?: string;
+	shortName?: string;
+}
+
+/**
+ * Vite plugin: at build start (and dev server start) renders the favicon set from the mark and the
+ * theme, and writes `src/generated/brand.ts` exporting `brand: BrandAssets`. Add `outDir` and the
+ * generated module to `.gitignore`: nothing it writes is meant to be committed.
+ * Warns and does nothing when the mark file is missing.
+ */
+export function caBrandPlugin(options: CaBrandPluginOptions = {}): Plugin {
+	let root = "";
+	const run = async () => {
+		const markFile = resolve(root, options.mark ?? "src/brand/mark.svg");
+		if (!existsSync(markFile)) {
+			console.warn(`\n[codeatlasdev/ui] caBrandPlugin: no mark at ${markFile}; skipped.\n`);
+			return;
+		}
+		const assets = await generateBrand({
+			mark: readFileSync(markFile, "utf8"),
+			theme: options.theme ?? {},
+			outDir: resolve(root, options.outDir ?? "static/brand"),
+			base: options.base,
+			name: options.name,
+			shortName: options.shortName,
+		});
+		const out = resolve(root, options.manifestFile ?? "src/generated/brand.ts");
+		mkdirSync(dirname(out), { recursive: true });
+		writeFileSync(
+			out,
+			`// Generated by caBrandPlugin. Do not edit or commit.\nexport const brand = ${JSON.stringify(assets, null, "\t")} as const;\n`
+		);
+	};
+	return {
+		name: "codeatlasdev-ui:brand",
+		configResolved(config) {
+			root = config.root;
+		},
+		buildStart: run,
+	};
+}

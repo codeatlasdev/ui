@@ -1,24 +1,26 @@
 ---
 import "@fontsource-variable/inter";
 import "@fontsource-variable/jetbrains-mono";
-import { serializeJsonLd } from "@codeatlasdev/ui/seo";
+import { iconLinks, serializeJsonLd } from "@codeatlasdev/ui/seo";
 import "@codeatlasdev/ui/styles/global.css";
 import "@codeatlasdev/ui/styles/marks.css";
+import { brand } from "~/generated/brand";
 import "~/styles/site.css";
 
 interface Props {
 	title: string;
 	description: string;
-	/** Absolute or site-relative OG image. */
-	image?: string;
 	noindex?: boolean;
 	jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 	/** Off when the page hosts a package shell (DocsShell, AppShellLayout, AuthLayout): it renders its own skip link and `#main`. */
 	skipLink?: boolean;
 }
-const { title, description, image = "/og.png", noindex = false, jsonLd, skipLink = true } = Astro.props;
+const { title, description, noindex = false, jsonLd, skipLink = true } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
-const ogImage = new URL(image, Astro.site).href;
+// Placeholder: the og-cards integration renders this page's card after the build and rewrites the
+// URL to its hashed name (scripts/og-integration.ts).
+const slug = Astro.url.pathname.replace(/^\/|\/$/g, "").replace(/\//g, "-") || "home";
+const ogImage = new URL(`/brand/og/${slug}.png`, Astro.site).href;
 const fullTitle = title === "CodeAtlas UI" ? title : `${title} · CodeAtlas UI`;
 const ld = jsonLd && serializeJsonLd(jsonLd);
 ---
@@ -37,10 +39,13 @@ const ld = jsonLd && serializeJsonLd(jsonLd);
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonical} />
 		<meta property="og:image" content={ogImage} />
+		<meta property="og:image:type" content="image/png" />
 		<meta property="og:image:width" content="1200" />
 		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content={fullTitle} />
 		<meta name="twitter:card" content="summary_large_image" />
-		<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+		<meta name="twitter:image" content={ogImage} />
+		<Fragment set:html={iconLinks(brand)} />
 		<link rel="sitemap" href="/sitemap-index.xml" />
 		<link rel="alternate" type="text/plain" href="/llms.txt" title="LLM-readable docs" />
 		{ld && <script type="application/ld+json" set:html={ld} />}

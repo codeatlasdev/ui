@@ -10,6 +10,9 @@
  * caErrorPlugin  — Warns when +error.svelte / error.html are missing.
  *                  Pass `scaffold: true` to auto-create them once.
  *
+ * caBrandPlugin  — Renders hashed favicon / apple-touch / manifest icons from one mark SVG and
+ *                  the theme (optional peers: @resvg/resvg-js, png-to-ico). See brand.ts.
+ *
  * Recommended setup for SvelteKit projects:
  *
  *   // vite.config.ts
@@ -33,6 +36,25 @@ import type { Plugin } from "vite";
 import { SSR_NO_EXTERNAL } from "./theme/define.js";
 import { CA_THEME_MARKER, THEME_SCRIPT, type ThemeOptions, themeHead } from "./theme-script.js";
 
+export type {
+	BrandAssets,
+	BrandColors,
+	CaBrandPluginOptions,
+	GenerateBrandOptions,
+	ResolvedBrand,
+} from "./brand.js";
+export {
+	brandHash,
+	caBrandPlugin,
+	faviconSvg,
+	generateBrand,
+	renderMark,
+	resolveBrand,
+} from "./brand.js";
+// Node-side build tooling (astro.config, prebuild scripts) cannot import the `seo` barrel: it re-exports
+// `Seo.svelte`, which Node does not load. The social-card renderers are plain TypeScript, so re-export them here.
+export type { BrowserLike, OgCardOptions } from "./seo/og.js";
+export { OG_SIZE, ogCard, renderOgImage } from "./seo/og.js";
 export type {
 	FontDescriptor,
 	FontSpec,

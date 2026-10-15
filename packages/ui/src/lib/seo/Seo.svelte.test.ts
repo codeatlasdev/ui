@@ -47,6 +47,10 @@ describe("Seo", () => {
 		expect(meta('meta[property="og:image:height"]')?.content).toBe("630");
 		expect(meta('meta[property="og:image:alt"]')?.content).toBe("Logo");
 		expect(meta('meta[property="og:locale:alternate"]')?.content).toBe("pt_BR");
+		expect(meta('meta[property="og:image:type"]')?.content).toBe("image/png");
+		expect(meta('meta[name="twitter:image"]')?.content).toBe(
+			meta('meta[property="og:image"]')?.content
+		);
 		expect(meta('meta[name="twitter:card"]')?.content).toBe("summary_large_image");
 		expect(meta('meta[name="twitter:site"]')?.content).toBe("@acme");
 		expect(link('link[rel="alternate"][hreflang="pt-BR"]')?.getAttribute("href")).toBe(

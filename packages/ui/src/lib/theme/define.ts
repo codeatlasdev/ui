@@ -457,6 +457,17 @@ function fontFaceCSS(f: FontDescriptor): string {
 	return rules.join("\n");
 }
 
+/**
+ * Resolved `--ca-*` token maps of the theme's default preset, light and dark, as the stylesheet
+ * declares them. For tools that need literal colors outside CSS (favicons, social cards).
+ */
+export function defaultPresetTokens(t: ResolvedTheme): { light: TokenMap; dark: TokenMap } {
+	const src = [...BUILTIN_PRESETS, ...t.presets].find((p) => p.id === t.defaultPreset);
+	if (!src)
+		throw new Error(`[codeatlasdev/ui] defaultPreset "${t.defaultPreset}" is not a known preset`);
+	return presetTokens(src);
+}
+
 /** `<link rel="preload" as="font">` tags for every descriptor with `preload: true` (deduplicated by URL). */
 export function fontPreloads(t: Pick<ResolvedTheme, "fonts">): string {
 	const urls = new Set<string>();

@@ -15,7 +15,8 @@ import {
   organization, website, softwareApplication, product, faqPage, breadcrumbList, article, graph, // JSON-LD
   sitemapXml, robotsTxt, // crawler files
   llmsTxt, markdownNegotiation, // AI readers
-  ogImageRoute, // social images
+  ogImageRoute, ogCard, // social images
+  iconLinks, // favicon, apple-touch-icon and manifest links
   manifest, appleMeta, // PWA (see the PWA page)
 } from "@codeatlasdev/ui/seo";
 ```
@@ -200,6 +201,83 @@ Unknown slugs answer `404` without starting a browser. Renders run two at a time
   Browser rendering suits Node servers and containers. On serverless or edge targets with no Chromium, generate images at build time instead, or render in a separate service and point `og.image` at it.
 </Callout>
 
+## Brand assets
+
+A favicon, a home-screen icon and a social card are three renderings of one thing: the mark. Drawing them by hand means the brand moves and the tab icon stays behind. `@codeatlasdev/ui/vite` renders them all from one SVG and your theme, with content-hashed names.
+
+Write the mark once, with `{{ink}}` (outline) and `{{spark}}` (accent) in place of colors. A literal color in the mark is an error.
+
+```svg
+<!-- src/brand/mark.svg -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <path d="M6 5h20v22H6z" fill="none" stroke="{{ink}}" stroke-width="2" />
+  <path d="M16 9l2 5 5 2-5 2-2 5-2-5-5-2 5-2z" fill="{{spark}}" />
+</svg>
+```
+
+Register the plugin next to `caThemePlugin`, with the same theme object:
+
+```ts
+// vite.config.ts
+import { caBrandPlugin, caThemePlugin } from "@codeatlasdev/ui/vite";
+import { theme } from "./src/lib/theme.ts";
+
+export default defineConfig({
+  plugins: [
+    sveltekit(),
+    caThemePlugin(theme),
+    caBrandPlugin({ theme, name: "Acme", outDir: "static/brand" }),
+  ],
+});
+```
+
+At build start it writes `favicon.<hash>.svg` (follows `prefers-color-scheme`), `favicon.<hash>.ico` (16, 32, 48), `favicon-32`, `apple-touch-icon` (180, opaque), `icon-192`, `icon-512`, `maskable-512` and `manifest.<hash>.webmanifest`, then `src/generated/brand.ts` with their URLs. Colors are `--ca-text-primary`, `--ca-brand-main` and `--ca-surface-base` of the theme's default preset, converted to `#rrggbb`. Add `static/brand/` and `src/generated/` to `.gitignore`: nothing it writes is meant to be committed.
+
+`@resvg/resvg-js` and `png-to-ico` are optional peer dependencies. Install them where you register the plugin:
+
+```sh
+bun add -d @resvg/resvg-js png-to-ico
+```
+
+Outside Vite (an Astro prebuild script, a CI step), call `generateBrand({ mark, theme, outDir })`, which the plugin wraps. It returns the same URLs.
+
+The hash covers the inputs (mark, resolved colors, sizes), not the rendered bytes, so it is the same on every machine. A changed color renames every file, which makes `/brand/*` safe to serve with `Cache-Control: public, max-age=31536000, immutable`; no `?v=` query is needed and scrapers see a new URL.
+
+Link the icons with `iconLinks`, and keep the logo in the page on the same file by importing it with `?raw` and replacing the placeholders with `var(--ca-text-primary)` and `var(--ca-brand-main)`:
+
+```svelte
+<script>
+  import { iconLinks } from "@codeatlasdev/ui/seo";
+  import { brand } from "../generated/brand";
+</script>
+
+<svelte:head>{@html iconLinks(brand)}</svelte:head>
+```
+
+`iconLinks` emits the SVG icon, the ICO fallback, `apple-touch-icon` and the manifest link; it skips what you leave out.
+
+### One card per page
+
+`ogCard` returns the complete 1200x630 HTML for a social card: mark, site name, an optional eyebrow, title and description, in literal colors from `resolveBrand(theme)`. Pair it with `renderOgImage` at build time, or with `ogImageRoute` on a server. Name each card after a hash of what it shows (title, description, template version) and write that URL in `og:image` and `twitter:image`.
+
+```ts
+import { ogCard, renderOgImage } from "@codeatlasdev/ui/seo";
+import { renderMark, resolveBrand } from "@codeatlasdev/ui/vite";
+
+const colors = resolveBrand(theme).dark;
+const html = ogCard({
+  title: "Button",
+  description: "Five variants, three sizes.",
+  eyebrow: "Documentation",
+  siteName: "Acme",
+  mark: renderMark(markSource, colors),
+  colors,
+});
+const png = await renderOgImage(browser, html, { format: "png" });
+```
+
+`@codeatlasdev/ui/vite` re-exports `ogCard`, `renderOgImage` and `OG_SIZE` for build scripts: Node cannot load the `seo` entry because it also exports the `Seo` component. This site does exactly that: `site/scripts/og-integration.ts` renders every page's card after `astro build`, and `site/tests/brand.spec.ts` fails when a page has no card of its own, when the favicon colors differ from the theme, or when `/brand/*` is not immutable.
+
 ## Checklist
 
 | Check | Where |
@@ -209,4 +287,5 @@ Unknown slugs answer `404` without starting a browser. Renders run two at a time
 | One `canonical` per indexable page, absolute | `Seo` |
 | `noindex` on private routes | `Seo` |
 | `sitemap.xml`, `robots.txt` and `llms.txt` prerendered | `+server.ts` routes |
-| Social image 1200x630 with `imageAlt` | `ogImageRoute` or a static file |
+| Social image 1200x630 with `imageAlt`, one per page | `ogCard` + `renderOgImage` or `ogImageRoute` |
+| Favicon, `apple-touch-icon` (180) and manifest icons from one mark | `caBrandPlugin` |

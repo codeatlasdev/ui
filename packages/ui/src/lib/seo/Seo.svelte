@@ -8,6 +8,8 @@
     /** Absolute image URL, 1200x630. */
     image?: string;
     imageAlt?: string;
+    /** @default "image/png" */
+    imageType?: string;
     imageWidth?: number;
     imageHeight?: number;
     /** e.g. `"pt_BR"`. */
@@ -91,12 +93,14 @@
   {/each}
   {#if og?.image}
     <meta property="og:image" content={og.image} />
+    <meta property="og:image:type" content={og.imageType ?? 'image/png'} />
     {#if og.imageAlt}<meta property="og:image:alt" content={og.imageAlt} />{/if}
     <meta property="og:image:width" content={String(og.imageWidth ?? 1200)} />
     <meta property="og:image:height" content={String(og.imageHeight ?? 630)} />
   {/if}
 
   <meta name="twitter:card" content={og?.image ? (twitter?.card ?? 'summary_large_image') : 'summary'} />
+  {#if og?.image}<meta name="twitter:image" content={og.image} />{/if}
   {#if twitter?.site}<meta name="twitter:site" content={twitter.site} />{/if}
 
   {#if manifest}<link rel="manifest" href={manifest} />{/if}

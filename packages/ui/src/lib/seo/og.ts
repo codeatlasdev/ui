@@ -129,3 +129,48 @@ export function ogImageRoute<E = { params: Record<string, string>; url: URL }>(
 		});
 	};
 }
+
+// ─── Social card template ────────────────────────────────────────────────────
+
+export interface OgCardOptions {
+	title: string;
+	description?: string;
+	/** Small label above the title, e.g. the docs group. */
+	eyebrow?: string;
+	/** Site name next to the mark. */
+	siteName: string;
+	/** Mark SVG with colors already filled (`renderMark` from `@codeatlasdev/ui/vite`). */
+	mark: string;
+	/** Literal `#rrggbb` colors, usually `resolveBrand(theme).dark` (`ink`, `spark`, `surface`). */
+	colors: { ink: string; spark: string; surface: string };
+	/**
+	 * Extra CSS for the document, typically `@font-face` rules or the app's stylesheet text.
+	 * Fonts must be embedded (`data:` URLs) for renders to match across machines.
+	 */
+	css?: string;
+	/** `font-family` stack. @default system sans-serif */
+	fontFamily?: string;
+}
+
+const esc = (s: string) =>
+	s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+
+/**
+ * Complete 1200x630 HTML document for a social card. Feed it to `renderOgImage` (or return it from
+ * `ogImageRoute({ render })`). Colors are literal hex, so the card renders without the app's CSS.
+ */
+export function ogCard(o: OgCardOptions): string {
+	const font = o.fontFamily ?? "system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif";
+	return `<!doctype html><html lang="en"><head><meta charset="utf-8"><style>${o.css ?? ""}
+*{box-sizing:border-box;margin:0}
+body{width:${OG_SIZE.width}px;height:${OG_SIZE.height}px;overflow:hidden;background:radial-gradient(900px 520px at 100% 0%,color-mix(in srgb,${o.colors.spark} 22%,transparent),transparent 70%),${o.colors.surface};color:${o.colors.ink};font-family:${font};display:flex;flex-direction:column;justify-content:space-between;padding:72px 80px;border-left:16px solid ${o.colors.spark}}
+.brand{display:flex;align-items:center;gap:24px;font-size:36px;font-weight:600}
+.brand svg{width:88px;height:88px}
+.eyebrow{font-size:28px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:${o.colors.spark};margin-bottom:20px}
+h1{font-size:76px;line-height:1.08;font-weight:700;letter-spacing:-.02em;max-width:1000px;overflow-wrap:anywhere}
+p{font-size:34px;line-height:1.35;margin-top:24px;max-width:960px;opacity:.78;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+</style></head><body>
+<div class="brand">${o.mark}<span>${esc(o.siteName)}</span></div>
+<div>${o.eyebrow ? `<div class="eyebrow">${esc(o.eyebrow)}</div>` : ""}<h1>${esc(o.title)}</h1>${o.description ? `<p>${esc(o.description)}</p>` : ""}</div>
+</body></html>`;
+}
