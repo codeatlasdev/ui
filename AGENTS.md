@@ -464,11 +464,12 @@ import { DataTable, createCaTable, createCaColumnHelper, caTableFeatures } from 
 - **Touch target**: `--ca-touch-target: 44px` (`tokens.css`). Under `@media (pointer: coarse)` it becomes `min-height`/`min-width` of `IconButton`, the `Select` trigger, `TabsTrigger`, `ToggleGroup`, `SegmentedControl`, `PinInput` and calendar cells. It is a media query, not a prop: do not write 44px overrides in the app.
 
 ### Inputs (own primitives with glass tokens)
-`Button` · `IconButton` · `TextField` · `TextArea` · `Select` · `Combobox` · `Checkbox` · `Switch` · `Slider` · `NumberField` · `FileUpload` · `ToggleGroup` · `SegmentedControl` · `PinInput` · `CopyButton` · `DatePicker` · `DateRangePicker` · `DateField` · `TimeField` · `Calendar` · `RangeCalendar`
+`Button` · `IconButton` · `TextField` · `TextArea` · `Select` · `Combobox` · `Checkbox` · `Switch` · `Slider` · `NumberField` · `FileUpload` · `ToggleGroup` · `SegmentedControl` · `SwatchGroup` · `PinInput` · `CopyButton` · `DatePicker` · `DateRangePicker` · `DateField` · `TimeField` · `Calendar` · `RangeCalendar`
 
 - **`Button` / `IconButton` `loading`**: swaps `leading` (Button) or the icon (IconButton) for a `Spinner`, applies `aria-busy="true"`, disables the click (`onclick` does not fire) and keeps the label. Class: `ca-btn--loading`.
 - **`ToggleGroup`**: `type="single" | "multiple"`, `bind:value` (`string` or `string[]`), `items: { value, label?, icon?, disabled?, 'aria-label'? }[]` (an icon-only item requires `aria-label`), `size="sm" | "md"`, `variant="outlined" | "ghost"`, `orientation`, `onchange`.
 - **`SegmentedControl`**: single `ToggleGroup` with a sliding pill (`.ca-seg__thumb`, no animation under `reducedMotion`). Props: `bind:value`, `items`, `size="sm" | "md"`, `fullWidth`, `disabled`, `onchange`.
+- **`SwatchGroup`**: single-choice color picker (`role="radiogroup"`). `bind:value`, `items: { value, label?, color?, disabled? }[]` (without `color` the swatch paints from `data-preset={value}`; `value=""` means none selected), `size="sm" | "md"`, `disabled`, `onchange`. Under `pointer: coarse` the swatch itself is the 44px target.
 - **`PinInput`**: OTP. `length=6`, `bind:value`, `type="numeric" | "text"`, `label`, `description`, `error`, `mask`, `oncomplete(value)`.
 - **`CopyButton`**: `value`, `label="Copy"` (`''` = icon only), `size`, `variant="ghost"`, `toast?: string` (success message), `oncopy`. The icon becomes `Check` for 2s.
 - **Dates** (`DateValue` values from `@internationalized/date`, re-exported by the root: `CalendarDate`, `Time`, `today`, `parseDate`…): `locale="pt-BR"`, `weekStartsOn=1`, `minValue`, `maxValue`, `label`, `description`, `error`, `disabled`, `required`, `bind:value`.

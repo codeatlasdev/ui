@@ -14,11 +14,11 @@
 	{#snippet leading()}<BookOpen size={18} aria-hidden="true" />{/snippet}
 	Read the docs
 </Button>
-<Button size="lg" variant="glass" href={repo}>
-	Star on GitHub
+<Button size="lg" variant="outlined" href={repo}>
+	See it on GitHub
 	{#snippet trailing()}<ArrowUpRight size={18} aria-hidden="true" />{/snippet}
 </Button>
-<Button size="lg" variant="outlined" href={npm}>
+<Button size="lg" variant="ghost" href={npm}>
 	{#snippet leading()}<Package size={18} aria-hidden="true" />{/snippet}
 	npm
 </Button>

@@ -165,6 +165,8 @@ export { default as Stepper } from "./components/Stepper/Stepper.svelte";
 export { default as StickyActions } from "./components/StickyActions/StickyActions.svelte";
 export { default as Surface } from "./components/Surface/Surface.svelte";
 export { default as SurfacePanel } from "./components/SurfacePanel/SurfacePanel.svelte";
+export type { SwatchItem } from "./components/SwatchGroup/SwatchGroup.svelte";
+export { default as SwatchGroup } from "./components/SwatchGroup/SwatchGroup.svelte";
 export { default as Switch } from "./components/Switch/Switch.svelte";
 // ── TABLE (listagens simples) ─────────────────────────────────────────────────
 export { SimpleTable, UserCell } from "./components/Table/index.js";

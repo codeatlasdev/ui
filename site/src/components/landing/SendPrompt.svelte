@@ -9,18 +9,18 @@
 <div class="sp glass-thin">
   <div class="sp__head">
     <div class="sp__label">
-      <span class="sp__eyebrow">Send this prompt to your agent</span>
-      <span class="sp__hint">Claude Code, Cursor, Codex: it installs the skills, wires the theme and error pages, and saves your DX, QA and test-first rules to its memory.</span>
+      <span class="sp__eyebrow">Let your AI assistant set it up</span>
+      <span class="sp__hint">Copy this message into Claude Code, Cursor or Codex. It installs the library, sets up the theme and remembers your project rules.</span>
     </div>
-    <CopyButton value={AGENT_PROMPT} label="Copy prompt" variant="filled" />
+    <CopyButton value={AGENT_PROMPT} label="Copy message" variant="filled" />
   </div>
   <!-- Scrollable when expanded: it must be keyboard-focusable (axe scrollable-region-focusable). -->
   <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-  <pre class="sp__body" class:sp__body--open={open} tabindex={open ? 0 : -1} aria-label="Agent setup prompt">{AGENT_PROMPT}</pre>
+  <pre class="sp__body" class:sp__body--open={open} tabindex={open ? 0 : -1} aria-label="Setup message for your AI assistant">{AGENT_PROMPT}</pre>
   <button type="button" class="sp__more" aria-expanded={open} onclick={() => (open = !open)}>
-    {open ? 'Show less' : 'Read the full prompt'}
+    {open ? 'Show less' : 'Read the full message'}
   </button>
-  <p class="sp__alt">Or tell it: <code>follow https://ui.codeatlas.com.br/prompt.txt</code></p>
+  <p class="sp__alt">Or just tell it: <code>follow https://ui.codeatlas.com.br/prompt.txt</code></p>
 </div>
 
 <style>

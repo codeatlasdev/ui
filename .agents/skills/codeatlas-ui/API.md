@@ -1970,6 +1970,22 @@ SurfacePanel — a raised `<section>` (elevation 2; with an accessible name it i
 
 Also accepts: `Omit<ComponentProps<typeof Surface>, 'as'>`
 
+## SwatchGroup
+
+`import { SwatchGroup } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `value?` | `string` | `''` | `bind:` Selected `value`; leave unset or empty for "none" (for example while a custom color is active). |
+| `items` | `SwatchItem[]` |  |  |
+| `size?` | `'sm' \| 'md'` | `'md'` |  |
+| `disabled?` | `boolean` | `false` |  |
+| `class?` | `string` | `''` |  |
+| `aria-label?` | `string` |  |  |
+| `onchange?` | `(value: string) => void` |  |  |
+
+Classes: `ca-swatch` `ca-swatch-group` `ca-swatch-group--sm`
+
 ## Switch
 
 `import { Switch } from "@codeatlasdev/ui"`

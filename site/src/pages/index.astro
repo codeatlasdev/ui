@@ -78,7 +78,7 @@ export default defineConfig({
 
 const title = "CodeAtlas UI";
 const description =
-	"Svelte 5 UI library with a sober solid default, opt-in glass materials, an OKLCH theme engine, native-feeling mobile components and typed props that AI agents get right the first time.";
+	"Ready-made screens for Svelte apps: dashboards, lists, forms and mobile layouts that look right out of the box, restyle from one color, and that AI assistants write correctly the first time.";
 
 const jsonLd = graph(
 	website({ id: `${SITE}/#website`, name: "CodeAtlas UI", url: `${SITE}/`, description, inLanguage: "en" }),
@@ -127,51 +127,47 @@ import SendPrompt from "~/components/landing/SendPrompt.svelte";
 			<div class="hero__copy">
 				<h1 id="hero-h" class="hero__title">
 					<span class="rewrite">
-						<s class="rewrite__old" data-old>Prompt a UI kit.</s>
-						<span class="rewrite__new ca-mark-underline" data-new>UI your agent already knows.</span>
+						<s class="rewrite__old" data-old>Describing a UI to an AI.</s>
+						<span class="rewrite__new ca-mark-underline" data-new>Screens it builds right the first time.</span>
 					</span>
 				</h1>
 				<p class="hero__lead">
-					CodeAtlas UI is a Svelte 5 library of full screens, not loose bricks. Component names say what the screen is,
-					props are data, and every color comes from a token. An agent writes it right the first time, and it looks
-					native on a phone.
+					CodeAtlas UI gives your Svelte app finished screens: dashboards, lists, forms and a phone layout that
+					feels native. Pick one brand color and the whole app follows. Names are plain, so people and AI
+					assistants both get it right.
 				</p>
 				<div class="hero__actions">
 					<Button size="lg" href="/docs/">Read the docs</Button>
-					<Button size="lg" variant="glass" href={REPO}>Star on GitHub</Button>
-				</div>
-				<div class="hero__prompt">
-					<SendPrompt client:visible />
+					<Button size="lg" variant="outlined" href={REPO}>See it on GitHub</Button>
 				</div>
 			</div>
 			<div class="hero__stage">
 				<HeroStage client:load />
 				<p class="hero__caption ca-mark-note">
-					This is not a screenshot. It is a live composition of package components, retheming itself with
-					&#32;<code>data-preset</code>, <code>data-style</code> and <code>data-theme-scope</code>.
+					This is a real, working screen, not a picture. Try the buttons, then change its colors below.
 				</p>
 			</div>
 		</section>
 
 		<Chapter
 			id="theme"
-			title="One hex in, a whole theme out."
-			lead="Themes are typed objects compiled once to CSS. Eight presets ship built in, and a brand preset is generated from a single hex color in OKLCH. Light, dark and system modes paint before first frame with no flash, and any element can become a theme island."
+			title="One color in, a whole look out."
+			lead="Choose a brand color and every button, chart and card follows. Eight ready-made palettes come built in. Light and dark modes switch with no flash, and any part of a page can have its own look."
 		>
 			<ThemeLab client:visible />
 			<div slot="copy" class="chapter__facts" data-reveal>
 				<ul>
-					<li><code>defineTheme()</code> resolves one typed object, same input always yields the same CSS.</li>
-					<li><code>data-style</code> switches solid (the default), flat, frosted and glass without touching a component.</li>
-					<li><code>data-theme-scope="dark"</code> turns any subtree into a dark island.</li>
+					<li>The same settings always give the same result, so design stays predictable.</li>
+					<li>Switch between solid, flat, frosted and glass surfaces without touching a component.</li>
+					<li>Make any section dark while the rest of the page stays light.</li>
 				</ul>
 			</div>
 		</Chapter>
 
 		<Chapter
 			id="mobile"
-			title="Feels installed, not responsive."
-			lead="Safe areas, the on-screen keyboard and 44px touch targets are handled inside the components. This phone is a real document at 390 pixels: tap the tabs, open the bell for a swipe-to-dismiss sheet, open a thread for a full-screen pane."
+			title="Feels like an app on a phone."
+			lead="Notches, the on-screen keyboard and finger-sized buttons are handled for you. This phone is real: tap the tabs, open the bell for a sheet you can swipe away, open a thread for a full-screen view."
 			flip
 		>
 			<div class="phone" data-reveal="0.1">
@@ -188,39 +184,42 @@ import SendPrompt from "~/components/landing/SendPrompt.svelte";
 			</div>
 			<div slot="copy" class="chapter__facts" data-reveal>
 				<ul>
-					<li><code>BottomNav</code>, <code>Sheet</code> with swipe to dismiss, <code>MobilePane</code> and <code>StickyActions</code>.</li>
-					<li>A <code>viewport</code> store reads the visual viewport, so the keyboard never fakes the layout.</li>
-					<li>Form controls stay at 16px on touch, so iOS never zooms on focus.</li>
+					<li>Bottom tabs, swipe-away sheets, full-screen views and sticky action bars.</li>
+					<li>The layout adapts when the keyboard opens instead of jumping.</li>
+					<li>Form fields never trigger the iPhone zoom.</li>
 				</ul>
 			</div>
 		</Chapter>
 
 		<Chapter
 			id="agents"
-			title="An agent gets it right on the first try."
-			lead="Component names say what the screen is. Props are data. Snippets are the holes you fill. There are no styling decisions left for a model to hallucinate."
+			title="AI assistants get it right on the first try."
+			lead="Component names say what a screen is, and props are just your data. There are no styling choices left for an assistant to guess."
 			layout="wide"
 		>
+			<div class="agents__prompt" data-reveal>
+				<SendPrompt client:visible />
+			</div>
 			<div class="agents">
 				<div class="agents__code" set:html={agentSnippet} />
 				<ul class="agents__list">
 					<li>
 						<strong>Typed props</strong>
-						<span>Every component ships its prop types, so an editor or a model sees the contract.</span>
+						<span>Every component describes what it accepts, so editors and AI assistants know the rules.</span>
 					</li>
 					<li>
 						<strong>llms.txt</strong>
-						<span><a href="/llms.txt">A plain index</a> of the library for any model to read.</span>
+						<span><a href="/llms.txt">A plain-text index</a> of the whole library for any AI to read.</span>
 					</li>
 					<li>
 						<strong>AGENTS.md</strong>
 						<span>
-							<a href={`${REPO}/blob/main/AGENTS.md`} rel="noopener">The rules file</a>: layouts, tokens and the mistakes to avoid.
+							<a href={`${REPO}/blob/main/AGENTS.md`} rel="noopener">A rules file</a> with layouts, colors and the mistakes to avoid.
 						</span>
 					</li>
 					<li>
-						<strong>Agent skills</strong>
-						<span>Three skills install with <code>npx skills add codeatlasdev/ui</code>.</span>
+						<strong>Ready-made skills</strong>
+						<span>Teach your assistant the library with <code>npx skills add codeatlasdev/ui</code>.</span>
 					</li>
 				</ul>
 			</div>
@@ -229,7 +228,7 @@ import SendPrompt from "~/components/landing/SendPrompt.svelte";
 		<Chapter
 			id="data"
 			title="Charts and tables that already match."
-			lead="Pass data, not options. Charts read the active theme and re-theme when the preset, scheme or surface style changes. Both ship as opt-in subpaths, so the core stays light."
+			lead="Hand over your data and get a chart that fits your colors. When the theme changes, the charts change with it. Charts and tables are optional add-ons, so apps that skip them stay small."
 			layout="wide"
 		>
 			<div class="data">
@@ -239,41 +238,41 @@ import SendPrompt from "~/components/landing/SendPrompt.svelte";
 
 		<Chapter
 			id="quality"
-			title="Accessible by construction."
-			lead="Primitives are our own headless layer: focus traps, keyboard maps and ARIA follow the WAI-ARIA patterns. Components are tested with axe in a real browser, and the page you are reading uses the same components."
+			title="Works for everyone."
+			lead="Keyboard, screen readers and high-contrast modes are built in, following the WAI-ARIA patterns. Every component is tested in a real browser, and this page is built with the same components."
 			layout="wide"
 		>
 			<dl class="facts">
 				<div>
-					<dt>Browser tests with axe</dt>
-					<dd>80 component suites</dd>
+					<dt>Accessibility checks</dt>
+					<dd>80 component test suites</dd>
 				</div>
 				<div>
-					<dt>Visual regression</dt>
-					<dd>77 component screenshot suites</dd>
+					<dt>Looks the same everywhere</dt>
+					<dd>77 screenshot test suites</dd>
 				</div>
 				<div>
-					<dt>Built-in presets</dt>
-					<dd>8, plus a brand preset from one hex</dd>
+					<dt>Ready-made palettes</dt>
+					<dd>8, plus your own from one color</dd>
 				</div>
 				<div>
-					<dt>Charts, table, code</dt>
-					<dd>Subpath imports, so unused ones are never bundled</dd>
+					<dt>Optional add-ons</dt>
+					<dd>Charts, tables and code blocks load only if you use them</dd>
 				</div>
 			</dl>
 		</Chapter>
 
 		<Chapter
 			id="start"
-			title="Three files and you are live."
-			lead="Works in SvelteKit and Astro. Add the theme hook, import the stylesheet once, and start with a layout."
+			title="Up and running in three steps."
+			lead="Works with SvelteKit and Astro. Install it, add the theme, and start from a ready-made layout."
 			layout="wide"
 		>
 			<QuickStart client:visible {install} {setup} />
 		</Chapter>
 
 		<section class="finale" aria-labelledby="finale-h">
-			<h2 id="finale-h" class="display" data-rise>Build the screen, skip the CSS.</h2>
+			<h2 id="finale-h" class="display" data-rise>Build the screen. Skip the styling.</h2>
 			<div class="finale__actions" data-reveal>
 				<FinaleActions repo={REPO} npm={NPM} />
 			</div>
@@ -282,7 +281,7 @@ import SendPrompt from "~/components/landing/SendPrompt.svelte";
 
 	<footer class="foot">
 		<p>
-			MIT licensed. Built with Svelte 5. Interaction patterns inspired by
+			Free and open source (MIT). Built with Svelte 5. Interaction patterns inspired by
 			<a href="https://bits-ui.com" rel="noopener">Bits UI</a>.
 		</p>
 		<nav aria-label="Footer">

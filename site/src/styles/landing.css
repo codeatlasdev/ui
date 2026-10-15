@@ -93,7 +93,10 @@ html.lenis body {
 @media (min-width: 1200px) {
 	.hero {
 		grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-		min-block-size: min(44rem, calc(var(--ca-vh) - 6rem));
+		align-items: start;
+	}
+	.hero__copy {
+		padding-block-start: var(--ca-space-8);
 	}
 }
 .hero__title {
@@ -154,8 +157,9 @@ html.lenis body {
 	gap: var(--ca-space-3);
 	margin-top: var(--ca-space-8);
 }
-.hero__prompt {
-	margin-top: var(--ca-space-6);
+.agents__prompt {
+	margin-block-end: var(--ca-space-8);
+	max-inline-size: 48rem;
 }
 .hero__caption code,
 .chapter__facts code,

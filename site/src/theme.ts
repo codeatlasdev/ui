@@ -4,7 +4,13 @@ import { designStyle, type ThemeOptions } from "@codeatlasdev/ui/astro";
  * Showcase theme: the `sketchbook` recipe (journal on grid paper, serif display, hard shadows)
  * with a Tokyo Night preset ported from the Ghostty theme by role. Light mode uses the
  * Tokyo Night Day blue so brand text keeps AA on light surfaces.
+ *
+ * The paper is calmer than the recipe's default: a wider 32px pitch and about half the ink, so
+ * the grid reads as texture behind the content instead of a pattern competing with it.
  */
+const PAPER_INK = "color-mix(in oklab, var(--ca-outline-subtle) 55%, transparent)";
+const CALM_GRID = `linear-gradient(${PAPER_INK} 1px, transparent 1px) 0 0 / 100% 32px, linear-gradient(90deg, ${PAPER_INK} 1px, transparent 1px) 0 0 / 32px 100%`;
+
 export const theme: ThemeOptions = designStyle("sketchbook", {
 	presets: [
 		{
@@ -35,4 +41,5 @@ export const theme: ThemeOptions = designStyle("sketchbook", {
 	],
 	defaultPreset: "tokyo",
 	defaultScheme: "dark",
+	overrides: { light: { "--ca-page-mesh": CALM_GRID }, dark: { "--ca-page-mesh": CALM_GRID } },
 });

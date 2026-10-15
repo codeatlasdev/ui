@@ -18,7 +18,10 @@ test.describe("landing", () => {
 				.first()
 				.evaluate((el) => getComputedStyle(el).getPropertyValue("--ca-brand-main").trim());
 		for (const preset of ["violet", "ocean", "emerald"]) {
-			await page.getByRole("button", { name: `Preset ${preset}` }).click();
+			await page
+				.getByRole("radiogroup", { name: "Color" })
+				.getByRole("radio", { name: preset, exact: true })
+				.click();
 			await expect(page.locator(".stage")).toHaveAttribute("data-preset", preset);
 			// The surface is a scope inside the preset island: it must resolve to the island's preset.
 			expect(await brand(".stage__surface")).toBe(await brand(".stage"));

@@ -2,9 +2,8 @@
 	// Theme chapter: pick any built-in preset or paste a hex; the preview below is a real set of
 	// package components re-themed on its own wrapper. Brand presets are generated in the browser
 	// with the package's own palette generator, the same function defineTheme() uses at build time.
-	import { Button, Chip, Card, Progress, SegmentedControl, Switch } from "@codeatlasdev/ui";
+	import { Button, Chip, Card, Progress, SegmentedControl, SwatchGroup, Switch } from "@codeatlasdev/ui";
 	import { generatePreset, hexToOklch, presetVars } from "@codeatlasdev/ui/utils/palette-generator";
-	import { Check } from "@lucide/svelte";
 
 	const BUILTIN = ["amber", "ocean", "crimson", "cyan", "violet", "emerald", "rose", "slate"] as const;
 	const STYLES = ["glass", "frosted", "solid", "flat"] as const;
@@ -28,35 +27,30 @@
 			.join(";");
 	});
 
+	// Same number of lines in every mode: the chapter's copy column is centered against this block,
+	// so a line that appears on "brand" would move the whole section under the reader's scroll.
 	const code = $derived(`// src/theme.ts
 import type { ThemeOptions } from "@codeatlasdev/ui/astro";
 
 export const theme: ThemeOptions = {
   defaultPreset: "${custom && validHex ? "brand" : preset}",
   defaultScheme: "${dark ? "dark" : "light"}",
-  defaultStyle: "${style}",${custom && validHex ? `\n  presets: [{ id: "brand", color: "${hex.toLowerCase()}" }],` : ""}
+  defaultStyle: "${style}",
+  presets: ${custom && validHex ? `[{ id: "brand", color: "${hex.toLowerCase()}" }]` : "[]"},
 };`);
 </script>
 
 <div class="lab">
 	<div class="lab__controls">
-		<div class="lab__group" role="group" aria-label="Built-in presets">
-			{#each BUILTIN as p}
-				<button
-					type="button"
-					class="dot"
-					data-preset={p}
-					aria-pressed={!custom && preset === p}
-					aria-label={p}
-					onclick={() => {
-						preset = p;
-						custom = false;
-					}}
-				>
-					{#if !custom && preset === p}<Check size={12} aria-hidden="true" />{/if}
-				</button>
-			{/each}
-		</div>
+		<SwatchGroup
+			aria-label="Built-in presets"
+			value={custom ? "" : preset}
+			items={BUILTIN.map((p) => ({ value: p }))}
+			onchange={(v) => {
+				preset = v;
+				custom = false;
+			}}
+		/>
 		<label class="lab__hex">
 			<span>Brand color</span>
 			<input
@@ -66,8 +60,7 @@ export const theme: ThemeOptions = {
 				maxlength="7"
 				bind:value={hex}
 				aria-invalid={!validHex}
-				onfocus={() => (custom = true)}
-				oninput={() => (custom = true)}
+				oninput={() => (custom = validHex)}
 			/>
 		</label>
 		<SegmentedControl
@@ -109,41 +102,6 @@ export const theme: ThemeOptions = {
 		flex-wrap: wrap;
 		gap: var(--ca-space-4);
 		align-items: center;
-	}
-	.lab__group {
-		display: flex;
-		gap: var(--ca-space-2);
-	}
-	.dot {
-		position: relative;
-		display: grid;
-		place-items: center;
-		inline-size: 26px;
-		block-size: 26px;
-		border: 0;
-		border-radius: var(--ca-radius-pill);
-		background: var(--ca-brand-main);
-		color: var(--ca-brand-contrast);
-		cursor: pointer;
-		box-shadow: 0 0 0 1px var(--ca-outline-default);
-	}	/* 26px swatch, 44px tap area. */
-	.dot::after {
-		content: "";
-		position: absolute;
-		inset: 50% auto auto 50%;
-		width: var(--ca-touch-target);
-		height: var(--ca-touch-target);
-		translate: -50% -50%;
-	}
-
-	.dot::after {
-		content: "";
-		position: absolute;
-		inset: -9px -3px;
-	}
-	.dot:focus-visible {
-		outline: 2px solid var(--ca-focus-ring);
-		outline-offset: 3px;
 	}
 	.lab__hex {
 		display: inline-flex;

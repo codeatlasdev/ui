@@ -2,6 +2,9 @@
 	// The hero focal point: a compact product surface made only of real @codeatlasdev/ui components.
 	// It cycles presets, surface styles and the dark scope by setting attributes on its own wrapper
 	// (theme islands), which is the same mechanism apps use. Nothing here is imagery.
+	// Alive, but calm: numbers tick, the chart draws in, "Ship it" runs a release and toasts. Every
+	// timer is skipped under prefers-reduced-motion (the e2e and visual suites run with it), so the
+	// first paint and the screenshots are the static final state.
 	import {
 		Button,
 		Chip,
@@ -9,13 +12,17 @@
 		KpiCard,
 		SegmentedControl,
 		StatusChip,
+		SwatchGroup,
 		Switch,
+		Toaster,
+		colorScheme,
+		toast,
 		type SurfaceStyle,
 	} from "@codeatlasdev/ui";
 	import { Activity, Boxes, Gauge, Layers, Rocket, Users } from "@lucide/svelte";
 	import { onMount } from "svelte";
 
-	const PRESETS = ["amber", "ocean", "violet", "emerald", "rose", "cyan"] as const;
+	const PRESETS = ["ocean", "violet", "emerald", "rose", "cyan", "amber"] as const;
 	const STYLES: SurfaceStyle[] = ["glass", "frosted", "solid", "flat"];
 
 	let presetIdx = $state(0);
@@ -29,10 +36,31 @@
 	const style = $derived(STYLES[styleIdx]);
 	const scope = $derived(dark ? "dark" : "light");
 
-	const revenue = [14, 18, 15, 22, 19, 27, 24, 31, 29, 36, 33, 41];
-	const traffic = [9, 12, 8, 14, 11, 16, 13, 12, 18, 15, 20, 19];
+	// ── Product state ────────────────────────────────────────────────────
+	let revenue = $state(41.2);
+	let teams = $state(1284);
+	let autoDeploy = $state(true);
+	let releasing = $state(false);
+	let shipped = $state(false);
+	let range = $state<"12w" | "4w">("12w");
+	let drawn = $state(false);
 
-	// Data graphic, drawn from the numbers above. Paints on the server and without JS, and takes its
+	const series = [14, 18, 15, 22, 19, 27, 24, 31, 29, 36, 33, 41];
+	const traffic = [9, 12, 8, 14, 11, 16, 13, 12, 18, 15, 20, 19];
+	const shown = $derived(range === "12w" ? series : series.slice(-4));
+	const shownTraffic = $derived(range === "12w" ? traffic : traffic.slice(-4));
+
+	const status = $derived(
+		releasing
+			? { kind: "info" as const, label: "Releasing v2…" }
+			: shipped
+				? { kind: "success" as const, label: "v2 is live" }
+				: autoDeploy
+					? { kind: "success" as const, label: "All systems normal" }
+					: { kind: "warning" as const, label: "Auto deploy paused" },
+	);
+
+	// Data graphic, drawn from the numbers. Paints on the server and without JS, and takes its
 	// color from the active preset (currentColor), unlike a canvas chart that needs the client.
 	function spark(data: number[], w: number, h: number) {
 		const max = Math.max(...data);
@@ -41,8 +69,17 @@
 		const line = pts.map(([x, y], i) => `${i ? "L" : "M"}${x.toFixed(1)} ${y.toFixed(1)}`).join(" ");
 		return { line, area: `${line} L${w} ${h} L0 ${h} Z` };
 	}
-	const lineA = spark(revenue, 320, 64);
-	const bars = traffic.map((v, i) => ({ x: i * 26.6 + 2, h: 4 + ((v - 8) / 12) * 32 }));
+	const line = $derived(spark(shown, 320, 64));
+	const bars = $derived.by(() => {
+		const slot = 320 / shownTraffic.length;
+		const w = Math.min(16, slot * 0.6);
+		return shownTraffic.map((v, i) => ({ x: i * slot + (slot - w) / 2, w, h: 4 + ((v - 8) / 12) * 32 }));
+	});
+	const summary = $derived(
+		`Revenue rising from ${shown[0]} to ${shown[shown.length - 1]} over ${shown.length} weeks`,
+	);
+
+	const fmt = new Intl.NumberFormat("en-US");
 
 	// One beat every 2.6s: preset moves each beat, surface style every second beat, scheme every fourth.
 	let beat = 0;
@@ -53,36 +90,69 @@
 		if (beat % 4 === 0) dark = !dark;
 	}
 
+	// Small, believable drift: revenue creeps up, teams wobble by one or two.
+	function tick() {
+		if (!autoDeploy || releasing) return;
+		revenue = Math.round((revenue + 0.1) * 10) / 10;
+		teams += Math.random() < 0.7 ? 1 : 2;
+	}
+
+	let releaseTimer: ReturnType<typeof setTimeout> | undefined;
+	function ship() {
+		if (releasing) return;
+		releasing = true;
+		shipped = false;
+		const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+		const done = () => {
+			releasing = false;
+			shipped = true;
+			toast.success("v2 is live for every Northwind team.");
+		};
+		// Reduced motion: no staged wait, the outcome is immediate.
+		if (reduce) done();
+		else releaseTimer = setTimeout(done, 1400);
+	}
+
 	onMount(() => {
 		live = true;
+		dark = colorScheme.isDark;
 		const reduce = matchMedia("(prefers-reduced-motion: reduce)");
 		let timer: ReturnType<typeof setInterval> | undefined;
+		let ticker: ReturnType<typeof setInterval> | undefined;
 		const sync = () => {
 			if (timer) clearInterval(timer);
-			timer = undefined;
-			if (auto && !reduce.matches && !document.hidden) timer = setInterval(step, 2600);
+			if (ticker) clearInterval(ticker);
+			timer = ticker = undefined;
+			const play = !reduce.matches && !document.hidden;
+			if (auto && play) timer = setInterval(step, 2600);
+			if (play) ticker = setInterval(tick, 1800);
 		};
 		stopTimer = () => {
 			auto = false;
 			sync();
 		};
+		// The chart draws in once, only when motion is welcome; otherwise it is already complete.
+		if (!reduce.matches) requestAnimationFrame(() => (drawn = true));
+		else drawn = true;
 		sync();
 		document.addEventListener("visibilitychange", sync);
 		reduce.addEventListener("change", sync);
 		return () => {
 			if (timer) clearInterval(timer);
+			if (ticker) clearInterval(ticker);
+			if (releaseTimer) clearTimeout(releaseTimer);
 			document.removeEventListener("visibilitychange", sync);
 			reduce.removeEventListener("change", sync);
 		};
 	});
 
-	function pick(i: number) {
+	function pick(v: string) {
 		stopTimer();
-		presetIdx = i;
+		presetIdx = PRESETS.indexOf(v as (typeof PRESETS)[number]);
 	}
 </script>
 
-<div class="stage" data-preset={preset} data-style={style} data-live={live ? "" : undefined}>
+<div class="stage" data-preset={preset} data-style={style} data-live={live ? "" : undefined} data-drawn={drawn ? "" : undefined}>
 	<!-- Theme island: [data-preset] on the wrapper, [data-theme-scope] on the descendant that repaints. -->
 	<div class="stage__surface" data-theme-scope={scope}>
 		<header class="stage__bar">
@@ -90,22 +160,33 @@
 				<Layers size={16} aria-hidden="true" />
 				<strong>Northwind</strong>
 			</div>
-			<StatusChip status="success" label="All systems normal" />
+			<StatusChip status={status.kind} label={status.label} />
 		</header>
 
 		<div class="stage__grid">
-			<KpiCard title="Revenue" value="41.2" unit="k" trend={12.4} icon={Gauge} />
-			<KpiCard title="Active teams" value="1,284" trend={4.1} icon={Users} />
+			<KpiCard title="Revenue" value={revenue.toFixed(1)} unit="k" trend={12.4} icon={Gauge} />
+			<KpiCard title="Active teams" value={fmt.format(teams)} trend={4.1} icon={Users} />
 
 			<Card material="glass" elevation={4} class="stage__chart">
-				<p class="stage__chart-title">Weekly growth</p>
-				<svg class="stage__spark" viewBox="0 0 320 64" preserveAspectRatio="none" role="img" aria-label="Revenue rising from 14 to 41 over 12 weeks">
-					<path d={lineA.area} class="stage__area" />
-					<path d={lineA.line} class="stage__line" vector-effect="non-scaling-stroke" />
+				<div class="stage__chart-head">
+					<p class="stage__chart-title">Weekly growth</p>
+					<SegmentedControl
+						size="sm"
+						aria-label="Chart range"
+						bind:value={range}
+						items={[
+							{ value: "12w", label: "12 weeks" },
+							{ value: "4w", label: "4 weeks" },
+						]}
+					/>
+				</div>
+				<svg class="stage__spark" viewBox="0 0 320 64" preserveAspectRatio="none" role="img" aria-label={summary}>
+					<path d={line.area} class="stage__area" />
+					<path d={line.line} class="stage__line" pathLength="1" vector-effect="non-scaling-stroke" />
 				</svg>
-				<svg class="stage__spark stage__spark--bars" viewBox="0 0 320 40" preserveAspectRatio="none" role="img" aria-label="Weekly traffic, 12 bars">
-					{#each bars as b}
-						<rect x={b.x} y={40 - b.h} width="16" height={b.h} rx="2" class="stage__bar-rect" />
+				<svg class="stage__spark stage__spark--bars" viewBox="0 0 320 40" preserveAspectRatio="none" role="img" aria-label={`Weekly traffic, ${bars.length} bars`}>
+					{#each bars as b, i}
+						<rect x={b.x} y={40 - b.h} width={b.w} height={b.h} rx="2" class="stage__bar-rect" style:--i={i} />
 					{/each}
 				</svg>
 			</Card>
@@ -114,32 +195,21 @@
 				<div class="stage__row">
 					<Chip label="v2 rollout" icon={Rocket} variant="brand" size="sm" />
 					<Chip label="Beta" icon={Boxes} size="sm" />
-					<Chip label="Live" icon={Activity} variant="success" size="sm" />
+					<Chip label={shipped ? "Live" : "Staging"} icon={Activity} variant={shipped ? "success" : "default"} size="sm" />
 				</div>
 				<div class="stage__row stage__row--between">
-					<Switch checked label="Auto deploy" aria-label="Auto deploy" />
+					<Switch bind:checked={autoDeploy} label="Auto deploy" />
 				</div>
 				<div class="stage__row">
-					<Button size="sm">Ship it</Button>
-					<Button size="sm" variant="glass">Preview</Button>
+					<Button size="sm" disabled={releasing} onclick={ship}>{releasing ? "Shipping…" : shipped ? "Ship again" : "Ship it"}</Button>
+					<Button size="sm" variant="outlined" onclick={() => (range = range === "12w" ? "4w" : "12w")}>Preview</Button>
 				</div>
 			</Card>
 		</div>
 	</div>
 
-	<div class="stage__dock" aria-label="Theme controls for the live preview">
-		<div class="stage__swatches" role="group" aria-label="Preset">
-			{#each PRESETS as p, i}
-				<button
-					type="button"
-					class="swatch"
-					data-preset={p}
-					aria-pressed={presetIdx === i}
-					aria-label={`Preset ${p}`}
-					onclick={() => pick(i)}
-				></button>
-			{/each}
-		</div>
+	<div class="stage__dock" role="group" aria-label="Restyle the preview">
+		<SwatchGroup aria-label="Color" size="sm" value={preset} items={PRESETS.map((p) => ({ value: p }))} onchange={pick} />
 		<SegmentedControl
 			size="sm"
 			aria-label="Surface style"
@@ -150,17 +220,18 @@
 				styleIdx = STYLES.indexOf(v as SurfaceStyle);
 			}}
 		/>
-		<Button
-			size="sm"
-			variant="ghost"
-			aria-pressed={dark}
-			onclick={() => {
+		<Switch
+			label="Dark"
+			checked={dark}
+			onchange={(v) => {
 				stopTimer();
-				dark = !dark;
-			}}>{dark ? "Dark" : "Light"}</Button
-		>
+				dark = v;
+			}}
+		/>
 	</div>
 </div>
+
+<Toaster />
 
 <style>
 	.stage {
@@ -168,34 +239,39 @@
 		gap: var(--ca-space-4);
 		min-width: 0;
 	}
-	/* The island repaints its own ground: surface tokens re-resolve through data-theme-scope. */
+	/* The island repaints its own ground: surface tokens re-resolve through data-theme-scope.
+	   No glow: the corner is penciled in, a diagonal hatch in the active preset's brand color that
+	   fades toward the middle, like shading on grid paper. */
 	.stage__surface {
 		position: relative;
 		padding: var(--ca-space-5);
 		border-radius: var(--ca-radius-xl);
-		background:
-			radial-gradient(
-				ellipse 70% 60% at 0% 0%,
-				color-mix(in oklab, var(--ca-brand-main) 38%, transparent),
-				transparent 62%
-			),
-			radial-gradient(
-				ellipse 60% 55% at 100% 100%,
-				color-mix(in oklab, var(--ca-brand-light) 26%, transparent),
-				transparent 60%
-			),
-			var(--ca-surface-base);
+		background: var(--ca-surface-base);
 		color: var(--ca-text-primary);
 		box-shadow: 0 0 0 1px var(--ca-outline-subtle);
 		transition:
 			background var(--ca-duration-slow) var(--ca-ease-standard),
 			color var(--ca-duration-slow) var(--ca-ease-standard);
 	}
-	.stage[data-style="solid"] .stage__surface,
-	.stage[data-style="flat"] .stage__surface {
-		background: var(--ca-surface-base);
+	.stage__surface::before {
+		content: "";
+		position: absolute;
+		inset-block-end: 0;
+		inset-inline-start: 0;
+		inline-size: min(44%, 13rem);
+		block-size: 5rem;
+		border-end-start-radius: inherit;
+		background: repeating-linear-gradient(
+			135deg,
+			color-mix(in oklab, var(--ca-brand-main) 55%, transparent) 0 1.5px,
+			transparent 1.5px 7px
+		);
+		mask: linear-gradient(to top right, #000, transparent 72%);
+		opacity: 0.5;
+		pointer-events: none;
 	}
 	.stage__bar {
+		position: relative;
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
@@ -214,6 +290,7 @@
 		font-weight: 650;
 	}
 	.stage__grid {
+		position: relative;
 		display: grid;
 		grid-template-columns: 1fr 1fr;
 		gap: var(--ca-space-3);
@@ -234,8 +311,16 @@
 			grid-row: 1 / 3;
 		}
 	}
-	.stage__chart-title {
+	.stage__chart-head {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: space-between;
+		gap: var(--ca-space-2);
 		margin: 0 0 var(--ca-space-3);
+	}
+	.stage__chart-title {
+		margin: 0;
 		font-size: var(--ca-font-size-body2);
 		font-weight: 600;
 	}
@@ -266,6 +351,33 @@
 		fill: currentColor;
 		opacity: 0.8;
 	}
+	/* Draw-in: the line is traced and the bars rise once the island is live. The static markup is the
+	   final state, so nothing here is needed to read the chart (no JS, reduced motion, screenshots). */
+	@media (prefers-reduced-motion: no-preference) {
+		.stage:not([data-drawn]) .stage__line {
+			stroke-dasharray: 1;
+			stroke-dashoffset: 1;
+		}
+		.stage:not([data-drawn]) .stage__area {
+			opacity: 0;
+		}
+		.stage:not([data-drawn]) .stage__bar-rect {
+			transform: scaleY(0);
+		}
+		.stage__line {
+			stroke-dasharray: 1;
+			stroke-dashoffset: 0;
+			transition: stroke-dashoffset 1.1s var(--ca-ease-decelerate);
+		}
+		.stage__area {
+			transition: opacity 0.9s var(--ca-ease-standard) 0.5s;
+		}
+		.stage__bar-rect {
+			transform-box: fill-box;
+			transform-origin: bottom;
+			transition: transform 0.6s var(--ca-ease-decelerate) calc(var(--i, 0) * 45ms);
+		}
+	}
 	.stage__row {
 		display: flex;
 		flex-wrap: wrap;
@@ -283,36 +395,6 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
-		justify-content: space-between;
-		gap: var(--ca-space-3) var(--ca-space-4);
-	}
-	.stage__swatches {
-		display: flex;
-		gap: var(--ca-space-2);
-	}
-	/* 44px hit area on touch, painted dot stays small. */
-	.swatch {
-		position: relative;
-		inline-size: 22px;
-		block-size: 22px;
-		border-radius: var(--ca-radius-pill);
-		border: 0;
-		background: var(--ca-brand-main);
-		cursor: pointer;
-		box-shadow: 0 0 0 2px var(--ca-surface-base);
-	}
-	.swatch::after {
-		content: "";
-		position: absolute;
-		inset: -11px;
-	}
-	.swatch[aria-pressed="true"] {
-		box-shadow:
-			0 0 0 2px var(--ca-surface-base),
-			0 0 0 4px var(--ca-brand-main);
-	}
-	.swatch:focus-visible {
-		outline: 2px solid var(--ca-text-primary);
-		outline-offset: 3px;
+		gap: var(--ca-space-3) var(--ca-space-5);
 	}
 </style>
