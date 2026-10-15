@@ -1,0 +1,43 @@
+---
+title: SwatchGroup
+description: Single-choice color picker made of round swatches. Preset swatches follow the theme; custom ones take any CSS color.
+group: Inputs
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Presets from "~/demos/inputs/swatch-group/Presets.svelte";
+import PresetsSrc from "~/demos/inputs/swatch-group/Presets.svelte?raw";
+import Custom from "~/demos/inputs/swatch-group/Custom.svelte";
+import CustomSrc from "~/demos/inputs/swatch-group/Custom.svelte?raw";
+
+```svelte
+<script>
+  import { SwatchGroup } from "@codeatlasdev/ui";
+  let preset = $state("ocean");
+</script>
+
+<SwatchGroup
+  aria-label="Accent"
+  bind:value={preset}
+  items={[{ value: "ocean" }, { value: "violet" }, { value: "emerald" }]}
+/>
+```
+
+Each item paints from the theme preset named by its `value`, so the swatch always matches the palette. Give an item a `color` to paint it with any CSS color instead; its `value` is then free-form. Leave `value` empty for "none selected", for example while a custom color is active. The selected swatch shows a check mark.
+
+On touch screens (`pointer: coarse`) each swatch grows to the 44px touch target, so neighbouring hit areas never overlap.
+
+**Accessibility.** The group is a `radiogroup` and every swatch a `radio` with `aria-checked`. The group has no visible heading, so pass `aria-label`; each swatch is named by its `label`, falling back to `value`, so give custom colors a readable `label` ("Blue", not "#2563eb"). Arrow keys move focus between enabled swatches and Tab leaves the group. The selected state does not rely on color alone: it adds a check mark and a ring, and both survive forced-colors mode.
+
+<Demo title="Theme presets" description="Swatches without a color paint from the preset named by their value." src={PresetsSrc}><Presets client:visible /></Demo>
+<Demo title="Custom colors" description="Any CSS color, a small size and a disabled swatch." src={CustomSrc}><Custom client:visible /></Demo>
+
+<Props for="SwatchGroup" rows={[
+  { name: "value", type: "string", default: "''", description: "Bindable selected item value. Empty means none selected." },
+  { name: "items", type: "SwatchItem[]", description: "{ value, label?, color?, disabled? }. Without `color` the swatch paints from the theme preset named by `value`; `label` is the accessible name and falls back to `value`." },
+  { name: "size", type: "'sm' | 'md'", default: "'md'", description: "Swatch diameter." },
+  { name: "disabled", type: "boolean", default: "false", description: "Disables every swatch." },
+  { name: "aria-label", type: "string", description: "Accessible name of the group." },
+  { name: "class", type: "string", description: "Extra classes on the root." },
+  { name: "onchange", type: "(value: string) => void", description: "Called when the user picks a different swatch." },
+]} />
