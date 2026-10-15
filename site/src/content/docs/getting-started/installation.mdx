@@ -24,10 +24,11 @@ The core bundle stays small. Heavy features are separate entry points with optio
 | CodeSnippet | `@codeatlasdev/ui/code` | `shiki` |
 | Masked and money fields | `@codeatlasdev/ui/forms` | nothing |
 | Accessibility test helpers | `@codeatlasdev/ui/testing` | `axe-core` |
+| Icons in your own code (`KpiCard`, `Chip`, `Button` and nav items take icon components) | `@lucide/svelte` | `@lucide/svelte` |
 | Brand icons (`caBrandPlugin`) | `@codeatlasdev/ui/vite` | `@resvg/resvg-js` and `png-to-ico` |
 | `migrate` command | `bunx @codeatlasdev/ui migrate` | `typescript` |
 
-`@sveltejs/kit` and `astro` are optional peers too: install the one your app uses. Icons come from `@lucide/svelte`, which the package already depends on.
+`@sveltejs/kit` and `astro` are optional peers too: install the one your app uses. Icons are `@lucide/svelte` components. The package depends on it for its own icons, but Bun's isolated linker (and pnpm) do not expose a dependency's dependency to your app, so `import { ArrowRight } from "@lucide/svelte"` fails until you run `bun add @lucide/svelte` yourself.
 
 ### Release channels
 

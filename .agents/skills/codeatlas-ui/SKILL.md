@@ -92,6 +92,8 @@ Charts, DataTable and CodeSnippet are NOT in the root import. Each needs its own
 
 `SimpleTable` and `UserCell` stay in the root import and need nothing extra.
 
+Icons passed to components (`icon: Settings`) are `@lucide/svelte` components. The package uses it internally, but Bun's isolated linker does not expose it to the app: run `bun add @lucide/svelte` in the app before importing icons.
+
 ## Look up the real API before writing a prop
 
 Never guess a prop name. Two sources, both generated from the source types:
