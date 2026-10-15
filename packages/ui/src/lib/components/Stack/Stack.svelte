@@ -5,9 +5,15 @@
    *   <Stack gap="4">…</Stack>
    *   <Stack as="ul" gap={{ base: '2', md: '4' }} align="center">…</Stack>
    */
-  import { layoutAttrs, type ElementTag, type LayoutProps, type PolymorphicProps } from '../Layout/layout.js';
+  import type { Snippet } from 'svelte';
+  import { layoutAttrs, type ElementTag, type LayoutProps, type PolymorphicAttributes } from '../Layout/layout.js';
 
-  type Props = PolymorphicProps<T, Pick<LayoutProps, 'gap' | 'p' | 'px' | 'py' | 'align' | 'justify'>>;
+  type Props = {
+    /** Element to render (default `div`). Its own attributes and event types become valid props. */
+    as?: T;
+    class?: string;
+    children?: Snippet;
+  } & PolymorphicAttributes<T, Pick<LayoutProps, 'gap' | 'p' | 'px' | 'py' | 'align' | 'justify'>>;
 
   let { as = 'div' as T, gap, p, px, py, align, justify, class: className = '', children, ...rest }: Props = $props();
 </script>

@@ -131,6 +131,7 @@ export type {
 	ElementTag,
 	Justify,
 	LayoutProps,
+	PolymorphicAttributes,
 	PolymorphicProps,
 	Responsive,
 	Space,

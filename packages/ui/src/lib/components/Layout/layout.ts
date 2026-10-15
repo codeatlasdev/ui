@@ -53,21 +53,24 @@ export interface LayoutProps {
 /** Tags `as` can render: the HTML and SVG elements Svelte knows (`svelte:element`). */
 export type ElementTag = keyof SvelteHTMLElements;
 
+/** The tag's own attributes and event handlers, minus what the primitive declares itself (`Own`, `class`, `children`, `as`). */
+export type PolymorphicAttributes<T extends ElementTag, Own = object> = Omit<
+	SvelteHTMLElements[T],
+	"class" | "children" | "as" | keyof Own
+> &
+	Own;
+
 /**
  * Props of a primitive that renders `as` an element: the tag's own attributes and event
  * handlers (`as="form"` takes `novalidate`, `onsubmit` with `currentTarget: HTMLFormElement`),
  * its token props, `class` and `children`.
  */
-export type PolymorphicProps<T extends ElementTag, Own = object> = Omit<
-	SvelteHTMLElements[T],
-	"class" | "children" | keyof Own
-> &
-	Own & {
-		/** Element to render (default `div`). Its own attributes become valid props. */
-		as?: T;
-		class?: string;
-		children?: Snippet;
-	};
+export type PolymorphicProps<T extends ElementTag, Own = object> = {
+	/** Element to render (default `div`). Its own attributes become valid props. */
+	as?: T;
+	class?: string;
+	children?: Snippet;
+} & PolymorphicAttributes<T, Own>;
 
 type Entry = Responsive<string | number | boolean | undefined>;
 const KEYS = ["gap", "p", "px", "py", "align", "justify", "direction", "columns", "wrap"] as const;

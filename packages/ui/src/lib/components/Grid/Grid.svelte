@@ -7,9 +7,15 @@
    *
    *   <Grid columns={{ base: 1, md: 3 }} gap="4">…</Grid>
    */
-  import { layoutAttrs, type ElementTag, type LayoutProps, type PolymorphicProps } from '../Layout/layout.js';
+  import type { Snippet } from 'svelte';
+  import { layoutAttrs, type ElementTag, type LayoutProps, type PolymorphicAttributes } from '../Layout/layout.js';
 
-  type Props = PolymorphicProps<T, Pick<LayoutProps, 'columns' | 'gap' | 'p' | 'px' | 'py' | 'align'>>;
+  type Props = {
+    /** Element to render (default `div`). Its own attributes and event types become valid props. */
+    as?: T;
+    class?: string;
+    children?: Snippet;
+  } & PolymorphicAttributes<T, Pick<LayoutProps, 'columns' | 'gap' | 'p' | 'px' | 'py' | 'align'>>;
 
   let { as = 'div' as T, columns, gap, p, px, py, align, class: className = '', children, ...rest }: Props = $props();
 </script>

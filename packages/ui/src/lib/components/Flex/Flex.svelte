@@ -5,9 +5,15 @@
    *
    *   <Flex gap="3" align="center" justify="between" wrap>…</Flex>
    */
-  import { layoutAttrs, type ElementTag, type LayoutProps, type PolymorphicProps } from '../Layout/layout.js';
+  import type { Snippet } from 'svelte';
+  import { layoutAttrs, type ElementTag, type LayoutProps, type PolymorphicAttributes } from '../Layout/layout.js';
 
-  type Props = PolymorphicProps<T, Pick<LayoutProps, 'gap' | 'p' | 'px' | 'py' | 'align' | 'justify' | 'direction' | 'wrap'>>;
+  type Props = {
+    /** Element to render (default `div`). Its own attributes and event types become valid props. */
+    as?: T;
+    class?: string;
+    children?: Snippet;
+  } & PolymorphicAttributes<T, Pick<LayoutProps, 'gap' | 'p' | 'px' | 'py' | 'align' | 'justify' | 'direction' | 'wrap'>>;
 
   let {
     as = 'div' as T,
