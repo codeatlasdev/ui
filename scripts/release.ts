@@ -107,7 +107,9 @@ if (pending.length === 0) {
 } else {
 	console.log(`▶ ${pending.length} pending changeset(s): ${pending.join(", ")}`);
 	if (dry) {
-		act(["bunx", "changeset", "status", "--verbose"]);
+		Bun.spawnSync(["bunx", "changeset", "status", "--verbose"], {
+			stdio: ["inherit", "inherit", "inherit"],
+		});
 		process.exit(0);
 	}
 	act(["bun", "run", "version"]);
