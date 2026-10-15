@@ -3369,7 +3369,7 @@ Types:
 
 `import { centsToDisplay } from "@codeatlasdev/ui/forms"`
 
-`123456` → `"R$ 1.234,56"` (BRL, pt-BR). NBSP / narrow NBSP are normalised to a regular space.
+`123456` → `"R$\u00a01.234,56"` (BRL, pt-BR), exactly as `Intl` formats it: the no-break space after the symbol is kept so a price never wraps between "R$" and the number. `MoneyInput` turns it into a plain space for its editable text; use `toFieldText` there, not here.
 
 ```ts
 function centsToDisplay(cents: number, options?: MoneyOptions): string
