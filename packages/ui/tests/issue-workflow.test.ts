@@ -56,6 +56,9 @@ describe("issue:start", () => {
 
 // A repo with an issue worktree whose node_modules goes past Windows' MAX_PATH (260), like a real
 // `bun install` does. Git for Windows ships with core.longpaths=false.
+// The pre-push hook runs these tests with GIT_DIR (and friends) pointing at this repository: every
+// git call here would then commit to and reconfigure it instead of the temp repo.
+for (const k of Object.keys(process.env)) if (k.startsWith("GIT_")) delete process.env[k];
 const tmp: string[] = [];
 afterEach(() => {
 	for (const d of tmp.splice(0)) rmSync(d, { recursive: true, force: true });
