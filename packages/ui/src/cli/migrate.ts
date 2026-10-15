@@ -2,8 +2,13 @@ import { readFileSync, writeFileSync } from "node:fs";
 import { relative } from "node:path";
 import MagicString from "magic-string";
 import { parse } from "svelte/compiler";
-import ts from "typescript";
+// `typescript` is an optional peer: only its types are imported here and the runtime module is
+// loaded by `migrate()` (from the project first), so loading this file never needs it.
+import type * as TS from "typescript";
 import { unifiedDiff } from "./diff.ts";
+import { loadTypescript, MISSING_TYPESCRIPT, type TypeScript } from "./typescript.ts";
+
+let ts: TypeScript;
 
 /**
  * A rule receives the TypeScript source of one script (offset-free) and records edits
@@ -12,7 +17,7 @@ import { unifiedDiff } from "./diff.ts";
 interface Rule {
 	id: string;
 	description: string;
-	apply(sf: ts.SourceFile, s: MagicString): void;
+	apply(sf: TS.SourceFile, s: MagicString): void;
 }
 
 const PACKAGE = /^@codeatlasdev\/ui(\/.*)?$/;
@@ -39,7 +44,7 @@ function renameImport(from: string, to: string): Rule["apply"] {
 			}
 		}
 		if (!locals.length) return;
-		const visit = (n: ts.Node) => {
+		const visit = (n: TS.Node) => {
 			// Skip the import specifiers themselves (already rewritten) and property/member names.
 			if (ts.isImportDeclaration(n)) return;
 			if (ts.isIdentifier(n) && n.text === from && !isMemberName(n))
@@ -51,7 +56,7 @@ function renameImport(from: string, to: string): Rule["apply"] {
 }
 
 /** `obj.Name`, `{ Name: 1 }` and `interface { Name: T }` are not references to the imported binding. */
-function isMemberName(n: ts.Identifier): boolean {
+function isMemberName(n: TS.Identifier): boolean {
 	const p = n.parent;
 	return (
 		(ts.isPropertyAccessExpression(p) && p.name === n) ||
@@ -355,7 +360,7 @@ function components(node: unknown, out: ComponentNode[] = []): ComponentNode[] {
 }
 
 /** Local name → { imported, specifier } for `import { X as Y } from "@codeatlasdev/ui"` of a rewritable component. */
-function importedComponents(script: ts.SourceFile): Map<string, string> {
+function importedComponents(script: TS.SourceFile): Map<string, string> {
 	const map = new Map<string, string>();
 	for (const st of script.statements) {
 		if (!ts.isImportDeclaration(st) || !ts.isStringLiteral(st.moduleSpecifier)) continue;
@@ -375,7 +380,7 @@ function importedComponents(script: ts.SourceFile): Map<string, string> {
  * be rewritten: their import stays. Returns the new local name for each renamed binding.
  */
 function rewriteComponentImports(
-	sf: ts.SourceFile,
+	sf: TS.SourceFile,
 	s: MagicString,
 	keep: Set<string>,
 	rewritten: Set<string>,
@@ -412,12 +417,12 @@ function rewriteComponentImports(
 
 /** Rename plain references (not markup) in script code to the new binding. */
 function renameScriptReferences(
-	sf: ts.SourceFile,
+	sf: TS.SourceFile,
 	s: MagicString,
 	renames: Map<string, string>,
 	keep: Set<string>
 ): void {
-	const visit = (n: ts.Node) => {
+	const visit = (n: TS.Node) => {
 		if (ts.isImportDeclaration(n)) return;
 		if (ts.isIdentifier(n) && renames.has(n.text) && !keep.has(n.text) && !isMemberName(n))
 			s.overwrite(n.getStart(sf), n.getEnd(), renames.get(n.text) as string);
@@ -436,7 +441,7 @@ function migrateComponents(path: string, src: string): string {
 		const ast = parse(src, { modern: true });
 		const scripts = [ast.instance, ast.module].filter(Boolean) as { start: number; end: number }[];
 		const bindings = new Map<string, string>();
-		const sfs: { sf: ts.SourceFile; start: number; text: string }[] = [];
+		const sfs: { sf: TS.SourceFile; start: number; text: string }[] = [];
 		for (const sc of scripts) {
 			const tag = src.slice(sc.start, sc.end);
 			const open = tag.indexOf(">") + 1;
@@ -512,7 +517,7 @@ interface Script {
 	/** Offset of the script text inside the file. */
 	start: number;
 	text: string;
-	kind: ts.ScriptKind;
+	kind: TS.ScriptKind;
 }
 
 /** Script blocks of a file: whole file for ts/js, `<script>` bodies for .svelte (parsed by svelte/compiler). */
@@ -545,11 +550,17 @@ export interface MigrateOptions {
 	log?: (line: string) => void;
 }
 
-/** Apply every rule to `files`. Returns true when the run finished (changes found are not an error). */
+/** Apply every rule to `files`. Returns true when the run finished (changes found are not an error); false when `typescript` cannot be found. */
 export function migrate(
 	files: string[],
 	{ write = false, cwd = process.cwd(), log = console.log }: MigrateOptions = {}
 ): boolean {
+	const loaded = loadTypescript(cwd);
+	if (!loaded) {
+		log(MISSING_TYPESCRIPT);
+		return false;
+	}
+	ts = loaded;
 	let changed = 0;
 	for (const file of files) {
 		const src = readFileSync(file, "utf8");
