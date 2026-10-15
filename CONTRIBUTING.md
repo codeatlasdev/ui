@@ -130,9 +130,11 @@ Publishing happens only in CI (`.github/workflows/release.yml`), triggered by a 
 2. On `main`, the Version workflow opens (or updates) a **chore: version packages** PR with the bumped version and CHANGELOG.
 3. Merge it.
 4. On an up-to-date, clean `main`, run `bun run release:tag`: it pushes the tag `@codeatlasdev/ui@X.Y.Z`.
-5. The Release workflow publishes to npm with [provenance](https://docs.npmjs.com/generating-provenance-statements) through Trusted Publishing (OIDC, no npm token), creates the GitHub Release from the CHANGELOG and deploys the docs to ui.codeatlas.com.br.
+5. The Release workflow re-runs `bun run validate` and the tarball smoke test on the tagged commit (it does not depend on CI), then publishes to npm with [provenance](https://docs.npmjs.com/generating-provenance-statements) through Trusted Publishing (OIDC, no npm token), creates the GitHub Release from the CHANGELOG and deploys the docs to ui.codeatlas.com.br.
 
 Prereleases: on a branch run `bunx changeset pre enter beta`, `bun run version`, commit, push and tag `@codeatlasdev/ui@X.Y.Z-beta.N`. It publishes under the `beta` dist-tag (never `latest`) and deploys the docs to beta.codeatlas-ui.pages.dev.
+
+A failed or half-finished release is re-run for the same tag with `gh workflow run release.yml -f tag=@codeatlasdev/ui@X.Y.Z`; steps already done (npm version, GitHub Release) are skipped.
 
 `bun run release` runs the local gate: lint, type check, build, tarball smoke test (packs the library into a fresh SvelteKit app and builds it) and `changeset status`.
 
