@@ -4600,7 +4600,7 @@ Types:
 | `BrandColors` | `interface BrandColors { ink: string; spark: string; surface: string; }` | Literal sRGB colors of one scheme. |
 | `BrowserLike` | `interface BrowserLike { newContext: (options: { deviceScaleFactor: number; viewport: { width: number; height: number }; }) => Promise<{ newPage: () => Promise<PageLike>; close: () => Promise<void> }>; }` | The subset of Playwright's `Browser` this module uses. |
 | `CaBrandPluginOptions` | `interface CaBrandPluginOptions { mark?: string; theme?: ThemeOptions; outDir?: string; base?: string; manifestFile?: string; name?: string; shortName?: string; }` |  |
-| `CaErrorPluginOptions` | `interface CaErrorPluginOptions { root?: string; routesDir?: string; scaffold?: boolean; scaffoldErrorHtml?: boolean; }` |  |
+| `CaErrorPluginOptions` | `interface CaErrorPluginOptions extends ErrorHtmlOptions { root?: string; routesDir?: string; scaffold?: boolean; scaffoldErrorHtml?: boolean; }` |  |
 | `FontDescriptor` | `interface FontDescriptor { family: string; src: string; weight?: number \| string; style?: "normal" \| "italic"; display?: "auto" \| "block" \| "swap" \| "fallback" \| "optional"; preload?: boolean; fallback?: string; fallbackMetrics?: FontFallbackMetrics; generic?: string; }` | A self-hosted web font. Emits `@font-face`, an optional preload and a metric-matched fallback face. |
 | `FontSpec` | `type FontSpec = string \| FontDescriptor;` | A font stack string (existing behavior) or a self-hosted font descriptor. |
 | `GenerateBrandOptions` | `interface GenerateBrandOptions { mark: string; theme: ThemeOptions; outDir: string; base?: string; name?: string; shortName?: string; }` |  |
