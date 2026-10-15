@@ -637,7 +637,7 @@ Does the product have its own color? Generate a preset from the logo hex. The li
 
 ```ts
 // src/lib/theme.ts: one place, used by the hook and the plugin
-import type { ThemeOptions } from "@codeatlasdev/ui"; // = Partial<ThemeDefinition>
+import type { ThemeOptions } from "@codeatlasdev/ui/vite"; // = Partial<ThemeDefinition>; "/astro" in Astro. Never the package root: Node cannot load its .svelte files
 
 export const theme: ThemeOptions = {
   presets: [{ id: "acme", color: "#2563eb" }],

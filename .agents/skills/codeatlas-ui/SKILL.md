@@ -41,8 +41,10 @@ Svelte 5 UI framework. Components are self-contained and prop-driven. Compose th
 ```
 
 ```ts
-// src/lib/theme.ts: the one ThemeOptions object shared by the plugin and the hook
-import type { ThemeOptions } from '@codeatlasdev/ui';
+// src/lib/theme.ts: the one ThemeOptions object shared by the plugin and the hook.
+// Type-only import from '@codeatlasdev/ui/vite' ('/astro' in Astro): vite.config loads this file in Node,
+// which cannot evaluate the .svelte files behind the package root.
+import type { ThemeOptions } from '@codeatlasdev/ui/vite';
 export const theme: ThemeOptions = {
   presets: [{ id: 'acme', color: '#2563eb' }],
   defaultPreset: 'acme',
