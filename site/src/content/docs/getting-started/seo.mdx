@@ -233,7 +233,7 @@ export default defineConfig({
 });
 ```
 
-At build start it writes `favicon.<hash>.svg` (follows `prefers-color-scheme`), `favicon.<hash>.ico` (16, 32, 48), `favicon-32`, `apple-touch-icon` (180, opaque), `icon-192`, `icon-512`, `maskable-512` and `manifest.<hash>.webmanifest`, then `src/generated/brand.ts` with their URLs. `outDir` is emptied first. Colors are `--ca-text-primary`, `--ca-brand-main` and `--ca-surface-base` of the theme's default preset, converted to `#rrggbb`. Add `static/brand/` and `src/generated/` to `.gitignore`: nothing it writes is meant to be committed.
+As soon as Vite resolves its config (dev server, build) it writes `src/generated/brand.ts` with the asset URLs, so the module exists before the first build. At build start it writes `favicon.<hash>.svg` (follows `prefers-color-scheme`), `favicon.<hash>.ico` (16, 32, 48), `favicon-32`, `apple-touch-icon` (180, opaque), `icon-192`, `icon-512`, `maskable-512` and `manifest.<hash>.webmanifest`. `outDir` is emptied first. Colors are `--ca-text-primary`, `--ca-brand-main` and `--ca-surface-base` of the theme's default preset, converted to `#rrggbb`. Add `static/brand/` and `src/generated/` to `.gitignore`: nothing it writes is meant to be committed.
 
 | `caBrandPlugin` option | Default | Description |
 |---|---|---|
@@ -249,6 +249,17 @@ At build start it writes `favicon.<hash>.svg` (follows `prefers-color-scheme`), 
 ```sh
 bun add -d @resvg/resvg-js png-to-ico
 ```
+
+### Type-check on a fresh clone
+
+`svelte-kit sync` and `svelte-check` never load Vite plugins, so a CI job that only type-checks would not find `src/generated/brand.ts`. Generate it first with the CLI, which takes the plugin's options and renders the same output:
+
+```sh
+bunx @codeatlasdev/ui brand --theme src/lib/theme.ts --name Acme
+bunx svelte-check
+```
+
+`--theme` is a module exporting `theme` (or a default export); a `.ts` file needs Bun or Node 22.18+. The other flags are `--mark`, `--out`, `--base`, `--manifest`, `--short-name` and `--dir`, with the plugin's defaults. It exits 1 when the mark file is missing. A `package.json` script such as `"prepare:brand": "codeatlas-ui brand --theme src/lib/theme.ts"` run before `check-types` keeps the order explicit.
 
 Outside Vite (an Astro prebuild script, a CI step), call `generateBrand({ mark, theme, outDir })`, which the plugin wraps. It returns the same URLs.
 

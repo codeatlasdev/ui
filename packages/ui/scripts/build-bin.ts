@@ -1,6 +1,7 @@
 // Bundles bin/*.ts into dist/bin/*.js. `svelte` (a peer) and `typescript` (present in every
 // SvelteKit/Astro project; the codemod parses with it) stay external; the rest is inlined so
-// `npx @codeatlasdev/ui init` / `ca-ui-mcp` need no extra installs.
+// `npx @codeatlasdev/ui init` / `ca-ui-mcp` need no extra installs. The optional peers of
+// `codeatlas-ui brand` (resvg ships a native .node binary) are resolved from the user's project.
 
 import { chmodSync } from "node:fs";
 import { join } from "node:path";
@@ -16,7 +17,7 @@ await build({
 	platform: "node",
 	format: "esm",
 	target: "node22",
-	external: ["svelte", "svelte/*", "typescript"],
+	external: ["svelte", "svelte/*", "typescript", "@resvg/resvg-js", "png-to-ico", "vite"],
 	// Bundled CJS deps (typescript, zod internals) call require(); give them one in ESM output.
 	banner: {
 		js: 'import { createRequire as __cr } from "node:module"; const require = __cr(import.meta.url);',

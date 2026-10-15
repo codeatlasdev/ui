@@ -1,8 +1,23 @@
-import { describe, expect, it } from "bun:test";
-import { mkdtempSync, readdirSync, readFileSync } from "node:fs";
+import { describe, expect, it, spyOn } from "bun:test";
+import {
+	existsSync,
+	mkdirSync,
+	mkdtempSync,
+	readdirSync,
+	readFileSync,
+	writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
-import { generateBrand, renderMark, resolveBrand, resvgOptions } from "../src/lib/brand.js";
+import { dirname, join } from "node:path";
+import { runBrandCommand } from "../src/cli/brand.ts";
+import {
+	brandUrls,
+	caBrandPlugin,
+	generateBrand,
+	renderMark,
+	resolveBrand,
+	resvgOptions,
+} from "../src/lib/brand.js";
 import { iconLinks, ogCard } from "../src/lib/seo/index.js";
 
 const MARK =
@@ -142,5 +157,60 @@ describe("recipes from the Node-safe vite entry (#148)", () => {
 		const init = readFileSync(join(import.meta.dir, "../src/cli/init.ts"), "utf8");
 		expect(init).toContain("designStyle");
 		expect(init).toContain("@codeatlasdev/ui/vite");
+describe("brand module on a fresh clone (#141)", () => {
+	const project = (files: Record<string, string>) => {
+		const root = mkdtempSync(join(tmpdir(), "brand-proj-"));
+		for (const [path, content] of Object.entries(files)) {
+			mkdirSync(dirname(join(root, path)), { recursive: true });
+			writeFileSync(join(root, path), content);
+		}
+		return root;
+	};
+
+	it("brandUrls returns the URLs generateBrand writes, without rendering", async () => {
+		const o = { mark: MARK, theme, name: "T" };
+		const urls = brandUrls(o);
+		const assets = await generateBrand({ ...o, outDir: mkdtempSync(join(tmpdir(), "brand-")) });
+		expect(urls).toEqual(assets);
+	});
+
+	it("caBrandPlugin writes src/generated/brand.ts at configResolved, before any build", () => {
+		const root = project({ "src/brand/mark.svg": MARK });
+		const plugin = caBrandPlugin({ theme, name: "T" });
+		(plugin.configResolved as (c: { root: string }) => void)({ root });
+		const mod = readFileSync(join(root, "src/generated/brand.ts"), "utf8");
+		expect(mod).toContain("export const brand =");
+		expect(mod).toContain(brandUrls({ mark: MARK, theme, name: "T" }).favicon);
+		expect(existsSync(join(root, "static/brand"))).toBe(false);
+	});
+
+	it("caBrandPlugin leaves the module alone when there is no mark", () => {
+		const root = project({});
+		const warn = spyOn(console, "warn").mockImplementation(() => {});
+		(caBrandPlugin().configResolved as (c: { root: string }) => void)({ root });
+		warn.mockRestore();
+		expect(existsSync(join(root, "src/generated/brand.ts"))).toBe(false);
+	});
+
+	it("the brand CLI renders the icons and the module from a theme file", async () => {
+		const root = project({
+			"src/brand/mark.svg": MARK,
+			"src/lib/theme.js": `export const theme = ${JSON.stringify(theme)};`,
+		});
+		const code = await runBrandCommand(root, {
+			theme: "src/lib/theme.js",
+			name: "T",
+			log: () => {},
+		});
+		expect(code).toBe(0);
+		const mod = readFileSync(join(root, "src/generated/brand.ts"), "utf8");
+		const { hash } = brandUrls({ mark: MARK, theme, name: "T" });
+		expect(mod).toContain(hash);
+		expect(readdirSync(join(root, "static/brand"))).toContain(`favicon.${hash}.svg`);
+	});
+
+	it("the brand CLI fails clearly when the mark is missing", async () => {
+		const root = project({});
+		expect(await runBrandCommand(root, { log: () => {} })).toBe(1);
 	});
 });
