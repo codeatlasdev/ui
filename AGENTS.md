@@ -99,7 +99,7 @@ Reading failures: locators fail with an ARIA snapshot; traces are in `__traces__
    import { caErrorPlugin, caThemePlugin } from "@codeatlasdev/ui/vite";
    import { theme } from "./src/lib/theme.ts";
    export default defineConfig({
-     plugins: [sveltekit(), caThemePlugin(theme), caErrorPlugin({ scaffold: true })],
+     plugins: [sveltekit(), caThemePlugin(theme), caErrorPlugin({ scaffold: true, theme })],
    });
    ```
    ```ts

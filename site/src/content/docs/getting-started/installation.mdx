@@ -77,12 +77,12 @@ For each file below, `init` creates it when it is missing, except `vite.config.t
 | File | What `init` puts there | If the file exists |
 |---|---|---|
 | `src/lib/theme.ts` | the shared `theme` object (`defaultPreset: "amber"`, `defaultScheme: "system"`) | left alone |
-| `vite.config.ts` | `caThemePlugin(theme)` and `caErrorPlugin({ scaffold: true })`, appended to `plugins`, in one `@codeatlasdev/ui/vite` import (plus `import { theme } from "./src/lib/theme.ts"`) | adds only the plugin that is missing |
+| `vite.config.ts` | `caThemePlugin(theme)` and `caErrorPlugin({ scaffold: true, theme })`, appended to `plugins`, in one `@codeatlasdev/ui/vite` import (plus `import { theme } from "./src/lib/theme.ts"`) | adds only the plugin that is missing |
 | `src/hooks.server.ts` | `handle = sequence(caThemeHandle(theme))` and `handleError = createErrorHandler()` | adds only what is missing; reports `manual` if you already define a `handle` of your own; never touches your `handleError` |
 | `src/routes/+layout.svelte` | the stylesheet import and `colorScheme.init()` in `onMount` | adds only the missing import or call |
 | `src/app.html` | the viewport meta with `viewport-fit=cover, interactive-widget=resizes-content` | rewrites only the viewport meta; reports `manual` when there is none |
 
-`caErrorPlugin({ scaffold: true })` then creates `src/routes/+error.svelte` and `src/error.html` the first time Vite runs (dev or build), and never overwrites them. The result is the setup below, which you can also write by hand.
+`caErrorPlugin({ scaffold: true, theme })` then creates `src/routes/+error.svelte` and `src/error.html` the first time Vite runs (dev or build), and never overwrites them. `src/error.html` takes its colors, default scheme and preset from the `theme` you pass (the same object as `caThemePlugin`), carries the theme init script in `<head>`, and has no inline handler or `javascript:` URL, so it works under a strict CSP. Its copy and `lang` follow `locale` (`caErrorPlugin({ scaffold: true, theme, locale: "pt-BR" })`; default `en`, with a build warning until you set it). The result is the setup below, which you can also write by hand.
 
 ### Full setup
 
@@ -98,7 +98,7 @@ For each file below, `init` creates it when it is missing, except `vite.config.t
    import { theme } from "./src/lib/theme.ts";
 
    export default defineConfig({
-     plugins: [sveltekit(), caThemePlugin(theme), caErrorPlugin({ scaffold: true })],
+     plugins: [sveltekit(), caThemePlugin(theme), caErrorPlugin({ scaffold: true, theme })],
    });
    ```
 
@@ -172,7 +172,7 @@ Kit 3 changed three things this setup touches. `init` handles the third (the the
    import { theme } from "./src/lib/theme.ts";
 
    export default defineConfig({
-     plugins: [sveltekit({ adapter: adapter() }), caThemePlugin(theme), caErrorPlugin({ scaffold: true })],
+     plugins: [sveltekit({ adapter: adapter() }), caThemePlugin(theme), caErrorPlugin({ scaffold: true, theme })],
    });
    ```
 

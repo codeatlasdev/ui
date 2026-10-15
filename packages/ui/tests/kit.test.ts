@@ -297,9 +297,69 @@ describe("caErrorPlugin", () => {
 		mkdirSync(join(root, "src/routes"), { recursive: true });
 		writeFileSync(join(root, "src/routes/+error.svelte"), "mine");
 		const warn = spyOn(console, "warn").mockImplementation(() => {});
-		call(caErrorPlugin({ root, scaffold: true }).buildStart, {});
+		call(caErrorPlugin({ root, scaffold: true, locale: "en" }).buildStart, {});
 		expect(readFileSync(join(root, "src/routes/+error.svelte"), "utf8")).toBe("mine");
 		expect(warn).not.toHaveBeenCalled();
+	});
+
+	describe("scaffolded error.html", () => {
+		const scaffold = (opts: Parameters<typeof caErrorPlugin>[0] = {}) => {
+			spyOn(console, "warn").mockImplementation(() => {});
+			call(caErrorPlugin({ root, scaffold: true, ...opts }).buildStart, {});
+			return readFileSync(join(root, "src/error.html"), "utf8");
+		};
+
+		it("is valid: the init script sits in <head>, never inside <style>", () => {
+			const html = scaffold();
+			const styles = [...html.matchAll(/<style[^>]*>([\s\S]*?)<\/style>/g)].map((m) => m[1]);
+			expect(styles.length).toBeGreaterThan(0);
+			for (const css of styles) expect(css).not.toContain("<script");
+			const head = html.slice(html.indexOf("<head>"), html.indexOf("</head>"));
+			expect(head).toContain(`<script id="${CA_THEME_MARKER}">`);
+		});
+
+		it("has no javascript: URL and no inline event handler", () => {
+			const html = scaffold();
+			expect(html).not.toMatch(/javascript:/i);
+			expect(html).not.toMatch(/\son\w+=/i);
+		});
+
+		it("uses the theme passed to the plugin", () => {
+			const html = scaffold({
+				theme: { defaultPreset: "ocean", defaultScheme: "light" },
+			});
+			expect(html).toContain('data-preset="ocean"');
+			expect(html).not.toContain('data-preset="amber"');
+			expect(html).toContain('"light"');
+			expect(html).not.toContain("oklch(0.72 0.18 55)");
+		});
+
+		it("translates the copy and sets lang from `locale`", () => {
+			const html = scaffold({ locale: "pt-BR" });
+			expect(html).toContain('<html lang="pt-BR"');
+			expect(html).toContain("Algo deu errado");
+			expect(html).toContain("Início");
+			expect(html).not.toContain("Something went wrong");
+		});
+
+		it("warns that the copy is English when no locale is set", () => {
+			const warn = spyOn(console, "warn").mockImplementation(() => {});
+			call(caErrorPlugin({ root, scaffold: true }).buildStart, {});
+			expect(warn.mock.calls.map((c) => String(c[0])).join()).toContain("locale");
+		});
+
+		it("defaults to English", () => {
+			const html = scaffold();
+			expect(html).toContain('<html lang="en"');
+			expect(html).toContain("Something went wrong");
+		});
+
+		it("scaffolds +error.svelte formatted like the other generated files", () => {
+			scaffold();
+			const svelte = readFileSync(join(root, "src/routes/+error.svelte"), "utf8");
+			expect(svelte).not.toContain("'");
+			expect(svelte).not.toMatch(/^ {2}/m);
+		});
 	});
 
 	it("skips error.html when scaffoldErrorHtml is false", () => {

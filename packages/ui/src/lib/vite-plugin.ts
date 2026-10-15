@@ -33,6 +33,7 @@ import { existsSync, readFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Plugin } from "vite";
+import { type ErrorHtmlOptions, errorHtml } from "./kit/error-html.js";
 import { SSR_NO_EXTERNAL } from "./theme/define.js";
 import { CA_THEME_MARKER, THEME_SCRIPT, type ThemeOptions, themeHead } from "./theme-script.js";
 
@@ -148,7 +149,7 @@ export function caThemePlugin(options: ThemeOptions = {}): Plugin {
 
 import { mkdirSync, writeFileSync } from "node:fs";
 
-export interface CaErrorPluginOptions {
+export interface CaErrorPluginOptions extends ErrorHtmlOptions {
 	root?: string;
 	/** @default 'src/routes' */
 	routesDir?: string;
@@ -157,13 +158,19 @@ export interface CaErrorPluginOptions {
 	 * Files are NEVER overwritten. Default: false (warn only).
 	 */
 	scaffold?: boolean;
-	/** Whether to also scaffold src/error.html. Only used when scaffold:true. @default true */
+	/**
+	 * Whether to also scaffold src/error.html. Only used when scaffold:true. The page takes its
+	 * colors from `theme` (pass the same object as `caThemePlugin`) and its copy and `lang` from
+	 * `locale`; the plugin warns when `locale` is not set, since the copy is then English.
+	 * @default true
+	 */
 	scaffoldErrorHtml?: boolean;
 }
 
 /** Vite plugin: at build start, warns when `+error.svelte` (and `src/error.html`) are missing from the app; with `scaffold: true` it writes default ones once and never overwrites existing files. */
 export function caErrorPlugin(options: CaErrorPluginOptions = {}): Plugin {
 	const { routesDir = "src/routes", scaffold = false, scaffoldErrorHtml = true } = options;
+	const html = { theme: options.theme, locale: options.locale };
 
 	const templateDir = resolve(dirname(fileURLToPath(import.meta.url)), "kit/templates");
 
@@ -177,12 +184,12 @@ export function caErrorPlugin(options: CaErrorPluginOptions = {}): Plugin {
 		},
 
 		buildStart() {
-			checkOrScaffold(root, routesDir, templateDir, scaffold, scaffoldErrorHtml);
+			checkOrScaffold(root, routesDir, templateDir, scaffold, scaffoldErrorHtml, html);
 		},
 
 		configureServer() {
 			return () => {
-				checkOrScaffold(root, routesDir, templateDir, scaffold, scaffoldErrorHtml);
+				checkOrScaffold(root, routesDir, templateDir, scaffold, scaffoldErrorHtml, html);
 			};
 		},
 	};
@@ -193,7 +200,8 @@ function checkOrScaffold(
 	routesDir: string,
 	templateDir: string,
 	scaffold: boolean,
-	scaffoldErrorHtml: boolean
+	scaffoldErrorHtml: boolean,
+	html: ErrorHtmlOptions
 ): void {
 	const errorPageDest = join(root, routesDir, "+error.svelte");
 	const errorHtmlDest = join(root, "src", "error.html");
@@ -223,14 +231,15 @@ function checkOrScaffold(
 	}
 
 	if (scaffoldErrorHtml && scaffold && !existsSync(errorHtmlDest)) {
-		const src = join(templateDir, "error.html");
-		if (existsSync(src)) {
-			ensureDir(dirname(errorHtmlDest));
-			writeFileSync(errorHtmlDest, readFileSync(src, "utf-8"), "utf-8");
-			console.info(
-				`\n[codeatlasdev/ui] Scaffolded src/error.html\n  Edit freely — won't be overwritten.\n`
+		ensureDir(dirname(errorHtmlDest));
+		writeFileSync(errorHtmlDest, errorHtml(html), "utf-8");
+		console.info(
+			`\n[codeatlasdev/ui] Scaffolded src/error.html (lang="${html.locale ?? "en"}")\n  Edit freely — won't be overwritten.\n`
+		);
+		if (!html.locale)
+			console.warn(
+				'[codeatlasdev/ui] src/error.html copy is English. Pass `locale` (e.g. caErrorPlugin({ scaffold: true, locale: "pt-BR" })) or translate it by hand.\n'
 			);
-		}
 	}
 }
 

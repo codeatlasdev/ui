@@ -101,7 +101,7 @@ function addImport(src: string, line: string): string {
 /** Plugins init adds to `plugins`, in this order, each only when absent. Both go after `sveltekit()`. */
 const VITE_PLUGINS = [
 	{ name: "caThemePlugin", call: "caThemePlugin(theme)" },
-	{ name: "caErrorPlugin", call: "caErrorPlugin({ scaffold: true })" },
+	{ name: "caErrorPlugin", call: "caErrorPlugin({ scaffold: true, theme })" },
 ] as const;
 
 const VITE_IMPORT = /import\s*\{([^}]*)\}\s*from\s*["']@codeatlasdev\/ui\/vite["'];?/;

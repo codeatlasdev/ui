@@ -56,7 +56,7 @@ import { theme } from './src/lib/theme.ts'; // keep the .ts extension: Vite 8's 
 // caThemePlugin: anti-FOUC script + ssr.noExternal for @tanstack/svelte-table and shiki
 // caErrorPlugin: scaffolds +error.svelte and error.html once, never overwrites. Order in `plugins` does not matter.
 export default defineConfig({
-  plugins: [sveltekit(), caThemePlugin(theme), caErrorPlugin({ scaffold: true })],
+  plugins: [sveltekit(), caThemePlugin(theme), caErrorPlugin({ scaffold: true, theme })],
 });
 
 // src/hooks.server.ts: theme script in SSR/prerendered pages + sanitized server errors

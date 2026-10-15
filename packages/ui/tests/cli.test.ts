@@ -41,7 +41,7 @@ describe("init on SvelteKit", () => {
 		expect(hooks).toContain("export const handleError = createErrorHandler();");
 		const vite = read(root, "vite.config.ts");
 		expect(vite).toContain("caThemePlugin(theme)");
-		expect(vite).toContain("caErrorPlugin({ scaffold: true })");
+		expect(vite).toContain("caErrorPlugin({ scaffold: true, theme })");
 		expect(vite).toContain('import { caErrorPlugin, caThemePlugin } from "@codeatlasdev/ui/vite";');
 		// Both plugins come after sveltekit(), theme first.
 		expect(vite.indexOf("sveltekit()")).toBeLessThan(vite.indexOf("caThemePlugin(theme)"));
@@ -174,7 +174,7 @@ describe("init on SvelteKit", () => {
 		init(root, { ...quiet, write: true });
 		const vite = read(root, "vite.config.ts");
 		expect(vite).toContain(
-			"plugins: [sveltekit(),\n\t\tcaThemePlugin(theme),\n\t\tcaErrorPlugin({ scaffold: true })\n\t]"
+			"plugins: [sveltekit(),\n\t\tcaThemePlugin(theme),\n\t\tcaErrorPlugin({ scaffold: true, theme })\n\t]"
 		);
 		expect(vite).toContain('import { caErrorPlugin, caThemePlugin } from "@codeatlasdev/ui/vite";');
 		expect(read(root, "src/app.html")).toContain("viewport-fit=cover");
