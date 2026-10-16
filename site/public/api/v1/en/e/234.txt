@@ -9,7 +9,7 @@ Spec:
 - `<TableOfContents {headings} variant="inline" />`
 - `headings` typed `DocsHeading[]` has 4 entries with `id`, `text` and `depth` of 2 or 3
 Tags: docs-nav, table-of-contents, docs-kit, sidebar, navigation, headings
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: DocsNav, TableOfContents
 Live demo: https://ui.codeatlas.com.br/docs/docs-kit/docs#docsnav-and-tableofcontents
 

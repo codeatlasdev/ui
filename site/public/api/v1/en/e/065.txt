@@ -9,7 +9,7 @@ Spec:
 - `Open item: {Array.isArray(value) ? value.join(', ') : (value ?? 'none')}` prints the bound value
 - Wrapped in `.wrap` with `max-width: 560px`
 Tags: accordion, accordion-item, controlled, bind, single, faq
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Accordion, AccordionItem
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/accordion#controlled
 

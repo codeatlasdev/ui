@@ -63,6 +63,8 @@ Every docs demo has a stable id `#NNN` (index: [`/api/v1/catalog.json`](/api/v1/
 /plugin install codeatlas-ui --marketplace codeatlasdev/ui
 ```
 
+Motion demos also carry **Names** (a canonical name and aliases, other languages included) and a **Motion** list with the exact property, duration, easing, delay, stagger or spring. `search_demos` matches a name or alias first, so "fade rise" finds #256 before any summary does. The prompt tells the agent to reproduce those values exactly and to render the final state under `prefers-reduced-motion`. See [Motion](/docs/motion/).
+
 Each reference carries a **Spec** list written from the demo's literal values (props, snippets, state, counts, sizes), so the agent can check its port against it. `get_demo` and the `/api/v1/en/e/NNN.txt` page print it under *What it shows* and *When to use*.
 
 To choose pages without leaving the terminal, run the pick command. It opens the gallery, waits for you to press **Send to AI**, and prints the ids:

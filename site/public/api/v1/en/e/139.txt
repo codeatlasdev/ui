@@ -9,7 +9,7 @@ Spec:
 - 3 rows from `rows` with `name`, `email`, `role`, `status`
 - The first cell uses `class="primary"`
 Tags: table, simple-table, scroll, overflow, card, users
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: SimpleTable, Card
 Live demo: https://ui.codeatlas.com.br/docs/display/table#default-scroll
 

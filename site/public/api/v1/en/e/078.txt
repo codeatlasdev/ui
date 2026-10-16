@@ -8,7 +8,7 @@ Spec:
 - Each tile prints its material name in a `.name` paragraph
 - `.backdrop` paints `linear-gradient(135deg` behind the tiles
 Tags: surface, material, glass, frosted, liquid, solid
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Surface
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/surface#materials
 

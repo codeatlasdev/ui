@@ -6,7 +6,7 @@ Spec:
 - Renders `<Swatches {tokens} bordered={true} />` with 3 tokens
 - Tokens in order: `--ca-outline-subtle`, `--ca-outline-default`, `--ca-outline-strong`
 Tags: colors, outline, border, tokens, swatches
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/colors#outline
 

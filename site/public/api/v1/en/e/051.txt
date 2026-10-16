@@ -7,7 +7,7 @@ Spec:
 - `<Switch checked disabled label="Disabled on" />`
 - No bound state
 Tags: switch, disabled, checked, toggle, state
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Switch
 Live demo: https://ui.codeatlas.com.br/docs/inputs/switch#disabled
 

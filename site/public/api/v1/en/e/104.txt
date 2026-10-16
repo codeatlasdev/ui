@@ -9,7 +9,7 @@ Spec:
 - `{#if !closedInfo}` and `{#if !closedWarn}` render the alert, `{:else}` renders a `<p class="dismissed">` note
 - Wrapper `.col` has `max-width: 560px`
 Tags: alert, closable, dismiss, onclose, notice, severity
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Alert
 Live demo: https://ui.codeatlas.com.br/docs/display/alert#closable
 

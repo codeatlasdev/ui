@@ -9,7 +9,7 @@ Spec:
 - `<ScatterChart {series} yName="Conversion %"` with `yFormatter={(v) => `${v.toFixed(1)}%`}`
 - `height="340px"` inside `<Card material="glass" full>`
 Tags: scatter-chart, clusters, segments, multi-series, palette, card
-Needs: @codeatlasdev/ui@4.1.0 + echarts
+Needs: @codeatlasdev/ui@4.2.0 + echarts
 Components: Card, ScatterChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/scatter#clustered-by-tier
 

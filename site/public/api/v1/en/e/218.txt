@@ -10,7 +10,7 @@ Spec:
 - `<Sparkline data={m.data} height="40px" />` in a `<Card material="glass">`
 - `<Grid class="grid-auto-200" gap="4">` holds the 3 cards
 Tags: sparkline, live, realtime, monitoring, onmount, grid
-Needs: @codeatlasdev/ui@4.1.0 + echarts
+Needs: @codeatlasdev/ui@4.2.0 + echarts
 Components: Card, Grid, Stack, Flex, Sparkline
 Live demo: https://ui.codeatlas.com.br/docs/charts/sparklines#live-streaming-micro-charts
 

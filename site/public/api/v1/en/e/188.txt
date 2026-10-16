@@ -8,7 +8,7 @@ Spec:
 - `<TextField label="Name" bind:value={name} placeholder="Type to reveal the bar" />` above a `Long content…` filler
 - Scroller uses `max-height: 280px` and `overflow-y: auto`
 Tags: sticky-actions, dirty, form, save-bar, scroll, text-field
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: StickyActions, Button, TextField, Stack
 Live demo: https://ui.codeatlas.com.br/docs/layout/sticky-actions#end-aligned
 

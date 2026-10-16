@@ -8,7 +8,7 @@ Spec:
 - Form uses `<Stack gap="3.5">` with `<TextField label="Full name" bind:value={name}` and `<TextField label="Email" type="email" bind:value={email}`
 - Save is `<Button variant="filled" onclick={() => (open = false)}>`
 Tags: dialog, split, chromeless, form, text-field, modal
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Dialog, Button, TextField, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/dialog#split
 

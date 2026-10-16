@@ -7,7 +7,7 @@ Spec:
 - `roseData` has 6 items with `value` and `name`: Analytics `72`, Automation `58`, Security `45`, Integrations `38`, Storage `30`, Support `22`
 - Wrapped in `<Card material="glass" full>`
 Tags: pie-chart, rose, nightingale, categories, card
-Needs: @codeatlasdev/ui@4.1.0 + echarts
+Needs: @codeatlasdev/ui@4.2.0 + echarts
 Components: Card, PieChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/pie#rose-chart
 

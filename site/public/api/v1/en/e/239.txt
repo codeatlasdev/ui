@@ -10,7 +10,7 @@ Spec:
 - Last item is `brandIcon disabled`
 - Each item sets `last` through `onclick`, shown as `Opened: {last}` with `aria-live="polite"`
 Tags: dropdown-menu, menu, brand-icon, scheme-asset, dark-mode, icon, disabled
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: DropdownMenu, DropdownMenuItem, DropdownMenuLabel, SchemeAsset, Button
 Live demo: https://ui.codeatlas.com.br/docs/navigation/menu#leading-icons-and-brand-logos
 

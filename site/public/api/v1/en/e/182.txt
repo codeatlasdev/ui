@@ -8,7 +8,7 @@ Spec:
 - Chip labels: Flex, space between; gap 3; wraps
 - A last `<Box class="chip" p="4">` reads Stack gap 4, Box padding 4
 Tags: stack, flex, box, spacing, gap, layout, primitives
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Stack, Flex, Box
 Live demo: https://ui.codeatlas.com.br/docs/layout/layout-primitives#flex-stack-and-box
 

@@ -9,7 +9,7 @@ Spec:
 - `{#snippet trailing()}` holds `<Button size="sm" variant="filled">Upgrade</Button>`
 - Trailing also has `<Avatar alt="Carlos M" size="sm" />`
 Tags: app-bar, glass-app-bar, leading, trailing, header, menu-button
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: GlassAppBar, Button, IconButton, Avatar, Card
 Live demo: https://ui.codeatlas.com.br/docs/navigation/app-bar#with-leading-icon
 

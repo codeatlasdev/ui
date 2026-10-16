@@ -8,7 +8,7 @@ Spec:
 - Caption in `<Stack gap="2">`: `height="16px" width="50%"` and `height="13px" width="80%"`
 - Caption wrapper `<div class="caption">` has `padding: 16px`
 Tags: skeleton, image, card, flush, loading, placeholder
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Skeleton, Card, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/skeleton#image-placeholder
 

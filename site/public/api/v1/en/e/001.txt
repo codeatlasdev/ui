@@ -7,7 +7,7 @@ Spec:
 - Primary action keeps the default variant, secondary uses `variant="outlined"`
 - Wrapper column is `max-width: 320px` with `gap: var(--ca-space-2)`
 Tags: button, full-width, stacked, actions, form
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/inputs/button#full-width
 

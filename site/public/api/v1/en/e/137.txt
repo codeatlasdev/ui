@@ -8,7 +8,7 @@ Spec:
 - `Array.from({ length: 20 }, (_, i) =>` builds items labelled Item 1 to Item 20: Lorem ipsum dolor sit amet
 - Each row is a `<div class="item">` rendered with `{#each items as item}`
 Tags: scroll-area, vertical, max-height, scrollbar, card, list
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: ScrollArea, Card
 Live demo: https://ui.codeatlas.com.br/docs/display/scroll-area#vertical-scroll
 

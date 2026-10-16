@@ -8,7 +8,7 @@ Spec:
 - `disabled` with `value="12"`
 - `<PinInput label="Access key" type="text" length={5} value="" />`
 Tags: pin-input, otp, error, disabled, description, length, forms
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: PinInput
 Live demo: https://ui.codeatlas.com.br/docs/inputs/pin-input#states
 

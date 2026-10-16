@@ -7,7 +7,7 @@ Spec:
 - `<TextArea label="Notes" placeholder="Write something…" bind:value={notes} />`
 - `<TextArea label="Description" bind:value={description} />` starts as `Some initial content here.`
 Tags: text-area, textarea, placeholder, label, bind-value
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: TextArea
 Live demo: https://ui.codeatlas.com.br/docs/inputs/text-area#basic
 

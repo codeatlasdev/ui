@@ -9,7 +9,7 @@ Spec:
 - `async function lookup(raw: string)` waits 600 ms and returns a `CepAddress` only for `01310100`, otherwise `null`
 - Result line shows `Looking up…` while pending, then `logradouro`, `bairro`, `localidade` and `uf`
 Tags: phone-field, cep-field, lookup, address, brazil, async, forms
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: CepField, PhoneField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/masked-field#phone-and-cep
 

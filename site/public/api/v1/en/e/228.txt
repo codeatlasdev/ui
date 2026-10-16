@@ -8,7 +8,7 @@ Spec:
 - Labels `shadow-{size}` and `--ca-shadow-{size}` shown in each card
 - Cards use `background: var(--ca-surface-base)` and `box-shadow: var(--card-shadow)`
 Tags: shadows, elevation, tokens, scale, box-shadow
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/shadows#shadow-scale
 

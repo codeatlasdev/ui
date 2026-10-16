@@ -6,7 +6,7 @@ Spec:
 - `<ErrorPage status={404} hideActions />`
 - Only the `status` prop and `hideActions` are passed, no custom title or actions
 Tags: error-page, 404, not-found, status, error
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: ErrorPage
 Live demo: https://ui.codeatlas.com.br/docs/layout/error-page#404-without-actions
 

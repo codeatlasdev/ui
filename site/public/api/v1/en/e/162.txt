@@ -10,7 +10,7 @@ Spec:
 - Back is `<Button variant="ghost" disabled={step <= 0} onclick={() => step--}>`
 - Next is `<Button variant="filled" disabled={step >= steps.length - 1} onclick={() => step++}>` and reads Finish on the last step
 Tags: stepper, wizard, steps, progress, onboarding, back-next, card
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Stepper, Button, Card, Stack, Flex
 Live demo: https://ui.codeatlas.com.br/docs/navigation/stepper#horizontal-stepper
 

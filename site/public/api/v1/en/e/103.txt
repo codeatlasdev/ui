@@ -9,7 +9,7 @@ Spec:
 - Timed: `toast.success('Gone in 1 second.', 1000)` and `toast.info('Stays for 8 seconds.', 8000)`
 - All triggers are `<Button variant="outlined"` in two labelled groups, Variants and Duration
 Tags: toast, toaster, notification, success, error, duration
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Button, Toaster
 Live demo: https://ui.codeatlas.com.br/docs/feedback/toast#variants-and-duration
 

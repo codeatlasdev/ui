@@ -8,7 +8,7 @@ Spec:
 - `<Badge dot color="error">` around `<Avatar alt="Diana K" size="md" />`
 - `<Flex gap="4" align="center" wrap>` lays them out
 Tags: badge, avatar, dot, status, presence
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Badge, Avatar, Flex
 Live demo: https://ui.codeatlas.com.br/docs/display/badge#on-avatars
 

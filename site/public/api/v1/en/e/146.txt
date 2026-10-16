@@ -8,7 +8,7 @@ Spec:
 - `let key = $state(0)` drives `{#key key}` around the input
 - `<Button onclick={() => key++}>Remount input</Button>` remounts the input so focus is applied again
 Tags: autofocus, action, focus, input, remount, a11y
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/navigation/actions#autofocus
 

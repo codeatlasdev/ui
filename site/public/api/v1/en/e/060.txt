@@ -9,7 +9,7 @@ Spec:
 - `format` is `$state<string[]>(['bold'])` with items Bold, Italic, Underline
 - Values are printed as `value: {align || '–'}` and `JSON.stringify(format)`
 Tags: toggle-group, single, multiple, icon, toolbar, aria-label
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: ToggleGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/toggle-group#single-and-multiple
 

@@ -9,7 +9,7 @@ Spec:
 - `src="https://i.pravatar.cc/150?img=32"` with `alt="Clara Silva"`
 - `src="https://i.pravatar.cc/150?img=47"` with `alt="David Kim"`
 Tags: avatar, image, src, alt, profile-photo
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Avatar
 Live demo: https://ui.codeatlas.com.br/docs/display/avatar#with-image
 

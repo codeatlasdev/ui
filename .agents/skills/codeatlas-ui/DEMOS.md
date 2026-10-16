@@ -260,3 +260,4 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 253 | Mixed media | display/media-grid | MediaGrid |
 | 254 | Chat history | display/virtual-list | Button, Stack, VirtualList |
 | 255 | Fast and slow loads | navigation/loading-boundary | Button, LoadingBoundary, Stack |
+| 256 | Fade rise | motion/basics | Card |

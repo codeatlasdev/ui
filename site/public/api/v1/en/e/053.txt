@@ -7,7 +7,7 @@ Spec:
 - `<Switch checked aria-label="Always on" />` with no binding
 - No `label` prop is passed
 Tags: switch, aria-label, without-label, toggle, a11y
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Switch
 Live demo: https://ui.codeatlas.com.br/docs/inputs/switch#without-label
 

@@ -8,7 +8,7 @@ Spec:
 - Initial value is `$state('ocean')`
 - Current value is shown as `value: {preset}`
 Tags: swatch-group, presets, theme, accent, swatch
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: SwatchGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/swatch-group#theme-presets
 

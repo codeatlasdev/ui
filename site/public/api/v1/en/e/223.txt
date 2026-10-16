@@ -6,7 +6,7 @@ Spec:
 - Renders `<Swatches {tokens} bordered={true} />` with 4 tokens
 - Tokens in order: `--ca-surface-sunken`, `--ca-surface-base`, `--ca-surface-raised`, `--ca-surface-overlay`
 Tags: colors, surface, background, tokens, swatches, elevation
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/colors#surfaces
 

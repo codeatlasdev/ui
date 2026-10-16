@@ -9,7 +9,7 @@ Spec:
 - First group sends a POST to messages/text, second group lists sessions with `{curlList}` and `{nodeList}`
 - Wrapped in `<div class="ca-prose wrap">`
 Tags: code-tabs, code-tab, docs-kit, sync, curl, api-docs
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: CodeTab, CodeTabs
 Live demo: https://ui.codeatlas.com.br/docs/docs-kit/docs#codetabs
 

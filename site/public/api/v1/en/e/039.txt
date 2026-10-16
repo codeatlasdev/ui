@@ -9,7 +9,7 @@ Spec:
 - Gamma has `disabled: true`
 - Wrapper `.wide` uses `max-width: 420px`
 Tags: segmented-control, size, sm, full-width, disabled
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: SegmentedControl
 Live demo: https://ui.codeatlas.com.br/docs/inputs/segmented-control#small-full-width-disabled-item
 

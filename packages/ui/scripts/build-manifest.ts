@@ -760,6 +760,16 @@ export function buildGuides(): ManifestGuide[] {
 
 // ── demos (ca-prompt catalog) ─────────────────────────────────────────────────
 
+/** One animated property of a motion demo: literal values, each of which must appear verbatim in the demo source. */
+export interface ManifestMotion {
+	property: string;
+	duration: string;
+	easing: string;
+	delay?: string;
+	stagger?: string;
+	spring?: string;
+}
+
 export interface ManifestDemo {
 	id: string;
 	group: string;
@@ -772,6 +782,10 @@ export interface ManifestDemo {
 	use: string;
 	spec: string[];
 	tags: string[];
+	/** Motion vocabulary: first = canonical name, the rest are aliases (other languages included). */
+	names?: string[];
+	/** Exact timing of the motion, printed in e/ and p/ so an AI never guesses it. */
+	motion?: ManifestMotion[];
 	shape: "square" | "wide" | "tall";
 	components: string[];
 	imports: { from: string; names: string[] }[];
@@ -819,7 +833,10 @@ function demoUsages() {
 	return out;
 }
 
-type DemoMeta = Pick<ManifestDemo, "summary" | "use" | "spec" | "tags" | "shape">;
+type DemoMeta = Pick<
+	ManifestDemo,
+	"summary" | "use" | "spec" | "tags" | "shape" | "names" | "motion"
+>;
 
 const META_KEYS: Record<string, true> = {
 	summary: true,
@@ -827,7 +844,12 @@ const META_KEYS: Record<string, true> = {
 	spec: true,
 	tags: true,
 	shape: true,
+	names: true,
+	motion: true,
 };
+const MOTION_REQUIRED = ["property", "duration", "easing"] as const;
+const MOTION_OPTIONAL = ["delay", "stagger", "spring"] as const;
+const MOTION_KEYS: string[] = [...MOTION_REQUIRED, ...MOTION_OPTIONAL];
 const SHAPES: Record<string, true> = { square: true, wide: true, tall: true };
 const isLines = (v: unknown): v is string[] =>
 	Array.isArray(v) && v.every((s) => typeof s === "string" && s.trim() !== "");
@@ -849,6 +871,33 @@ export function checkMeta(meta: unknown, source: string): string[] {
 	if (!isLines(m.tags) || m.tags.length < 2 || m.tags.some((t) => t !== t.toLowerCase()))
 		errors.push("tags: at least 2 lowercase strings");
 	if (typeof m.shape !== "string" || !SHAPES[m.shape]) errors.push("shape: square | wide | tall");
+	if ("names" in m && (!isLines(m.names) || m.names.length < 1))
+		errors.push("names: non-empty strings, at least one");
+	if ("motion" in m) {
+		if (!Array.isArray(m.motion) || m.motion.length < 1)
+			errors.push("motion: at least one entry when present");
+		else
+			m.motion.forEach((entry: unknown, i: number) => {
+				const at = `motion[${i}]`;
+				if (!entry || typeof entry !== "object" || Array.isArray(entry)) {
+					errors.push(`${at}: not an object`);
+					return;
+				}
+				const e = entry as Record<string, unknown>;
+				for (const k of Object.keys(e).filter((k) => !MOTION_KEYS.includes(k)))
+					errors.push(`${at}: unknown key "${k}"`);
+				for (const k of MOTION_REQUIRED)
+					if (typeof e[k] !== "string" || e[k].trim() === "")
+						errors.push(`${at}.${k}: non-empty string required`);
+				// `property` names what moves (it may be prose); the timing values are the contract.
+				for (const k of ["duration", "easing", ...MOTION_OPTIONAL])
+					if (typeof e[k] === "string" && e[k].trim() !== "" && !source.includes(e[k]))
+						errors.push(`${at}.${k}: \`${e[k]}\` is not in the demo source`);
+				for (const k of MOTION_OPTIONAL)
+					if (k in e && (typeof e[k] !== "string" || e[k].trim() === ""))
+						errors.push(`${at}.${k}: non-empty string required`);
+			});
+	}
 	return errors;
 }
 
@@ -945,6 +994,8 @@ export function buildDemos(
 			use: meta.use,
 			spec: meta.spec,
 			tags: meta.tags,
+			...(meta.names && { names: meta.names }),
+			...(meta.motion && { motion: meta.motion }),
 			shape: meta.shape,
 			components,
 			imports,
@@ -960,8 +1011,25 @@ export function buildDemos(
 	});
 	const files: Record<string, string> = {
 		"catalog.json": `${JSON.stringify({ version: manifest.version, count: demos.length, groups, elements: demos.map(({ source: _, ...d }) => d) }, null, "\t")}\n`,
-		"en/catalog.tsv": `${["id\tgroup\tpage\ttitle\ttags\tsummary", ...demos.map((d) => [d.id, d.group, d.page, d.title, d.tags.join(","), d.summary].map((v) => v.replace(/[\t\n]/g, " ")).join("\t"))].join("\n")}\n`,
+		"en/catalog.tsv": `${["id\tgroup\tpage\ttitle\tnames\ttags\tsummary", ...demos.map((d) => [d.id, d.group, d.page, d.title, (d.names ?? []).join(" | "), d.tags.join(","), d.summary].map((v) => v.replace(/[\t\n]/g, " ")).join("\t"))].join("\n")}\n`,
 	};
+	const motionLines = (d: ManifestDemo) =>
+		d.motion?.length
+			? [
+					"Motion:",
+					...d.motion.map(
+						(m) =>
+							`- ${m.property}: ${m.duration} ${m.easing}${[
+								m.delay && ` delay ${m.delay}`,
+								m.stagger && ` stagger ${m.stagger}`,
+								m.spring && ` spring ${m.spring}`,
+							]
+								.filter(Boolean)
+								.join("")}`
+					),
+				]
+			: [];
+	const namesLine = (d: ManifestDemo) => (d.names?.length ? [`Names: ${d.names.join(" | ")}`] : []);
 	for (const d of demos) {
 		const header = [
 			`<!-- ${PKG} demo #${d.id} · MIT License (c) CodeAtlas · ${d.demo} -->`,
@@ -970,6 +1038,8 @@ export function buildDemos(
 			`When to use: ${d.use}`,
 			"Spec:",
 			...d.spec.map((s) => `- ${s}`),
+			...motionLines(d),
+			...namesLine(d),
 			`Tags: ${d.tags.join(", ")}`,
 			`Needs: ${d.needs}`,
 			`Components: ${d.components.join(", ") || "none"}`,
@@ -981,6 +1051,13 @@ export function buildDemos(
 			`What it shows: ${d.summary.replace(/\.$/, "")}. When to use: ${d.use.replace(/\.$/, "")}.`,
 			"Spec:",
 			...d.spec.map((s) => `- ${s}`),
+			...motionLines(d),
+			...namesLine(d),
+			...(d.motion?.length
+				? [
+						"Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.",
+					]
+				: []),
 			"Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?",
 			`Apply: import only from "${PKG}[/charts|/table|/code|/forms]"; keep component names, props and`,
 			"  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);",

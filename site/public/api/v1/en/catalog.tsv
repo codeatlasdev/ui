@@ -1,256 +1,257 @@
-id	group	page	title	tags	summary
-001	inputs	button	Full width	button,full-width,stacked,actions,form	Two buttons that stretch to the width of their container: a filled primary and an outlined cancel.
-002	inputs	button	With icons	button,icon,leading,trailing,snippet	Buttons with an icon before the label, after the label, and with a ghost download action.
-003	inputs	button	Loading	button,loading,spinner,async,submit	Buttons in the loading state, including one that toggles loading for two seconds when clicked.
-004	inputs	button	Sizes	button,size,sm,md,lg	The three button sizes side by side: small, medium and large.
-005	inputs	button	States	button,disabled,destructive,link,href	Disabled buttons, a destructive action with an icon, and a link rendered as a button.
-006	inputs	button	Variants	button,variant,filled,glass,outlined,ghost,destructive	All five button variants in a row: filled, glass, outlined, ghost and destructive.
-007	inputs	checkbox	Disabled	checkbox,disabled,checked,indeterminate,form	Three disabled checkboxes: unchecked, checked and indeterminate.
-008	inputs	checkbox	States	checkbox,checked,indeterminate,bind,form	Checkboxes in unchecked, pre-checked and indeterminate states, the first two bound to local state.
-009	inputs	checkbox	Without label	checkbox,aria-label,accessibility,unlabelled,indeterminate	Three checkboxes with no visible label, named only through aria-label: bound, checked and indeterminate.
-010	inputs	combobox	Basic	combobox,search,autocomplete,options,select,form	A searchable Combobox over eight frameworks that prints the selected value below the field.
-011	inputs	combobox	States	combobox,error,disabled,required,description,empty-state	Three Combobox states: with description and custom search and empty texts, with error and required, and disabled.
-012	inputs	copy-button	Default	copy-button,clipboard,copy,install,command	A default CopyButton that copies an npm install command.
-013	inputs	copy-button	Icon only and toast	copy-button,toast,toaster,icon-only,clipboard,label	An icon-only CopyButton and a labelled one that shows a toast after copying, with a Toaster mounted.
-014	inputs	copy-button	Variants and sizes	copy-button,variant,size,filled,glass,outlined	CopyButton in three variants and two extra sizes, side by side.
-015	inputs	date-picker	Calendar and RangeCalendar	calendar,range-calendar,date,date-range,inline,locale	An inline single-date Calendar and a RangeCalendar, each printing its selected value below.
-016	inputs	date-picker	Min, max, error and disabled	date-picker,date-field,time-field,min-max,required,disabled,readonly	Date and time inputs with constraints: a bounded DatePicker, a required DatePicker with an error, a disabled DateField and a read-only TimeField.
-017	inputs	date-picker	DateField and TimeField	date-field,time-field,granularity,hour-cycle,segmented,form	Segmented DateField and TimeField inputs with bound values, minute granularity and 24h and 12h hour cycles.
-018	inputs	date-picker	DatePicker and DateRangePicker	date-picker,date-range-picker,popover,date,date-range,calendar	A DatePicker and a DateRangePicker with popover calendars, each printing its selected value.
-019	inputs	export-menu	Default	export-menu,export,download,csv,table,columns	An ExportMenu exporting three domain rows with custom column headers and a status line reporting the last export.
-020	inputs	file-upload	Basic	file-upload,dropzone,multiple,max-size,files,attachment	A multi-file FileUpload with a size limit and hint that reports how many files are selected.
-021	inputs	file-upload	Images only and disabled	file-upload,dropzone,accept,image,disabled,label	Two FileUpload dropzones: one restricted to images with custom label and hint, and one disabled.
-022	inputs	filter-group	Role filter	filter-group,filter,options,role,bind,category	A FilterGroup of three role options bound to a value that is printed below.
-023	inputs	masked-field	Documents and dates	masked-field,cpf,cnpj,mask,validation,brazil,forms	Five MaskedField inputs for Brazilian documents: CPF, CNPJ, combined CPF or CNPJ, birth date and RG, with validators on three.
-024	inputs	masked-field	use:mask action	mask,action,input-mask,cpf,native-input,forms	A native input masked with the mask action, showing the bound value below.
-025	inputs	masked-field	Phone and CEP	phone-field,cep-field,lookup,address,brazil,async,forms	A PhoneField and a CepField that looks up an address asynchronously and prints the resolved street, district and city.
-026	inputs	money-input	Min, max, negative, error and disabled	money-input,min-max,negative,error,disabled,currency,forms	Four MoneyInput fields showing min and max bounds, negative values, an error message and a disabled state.
-027	inputs	money-input	Currency and locale	money-input,currency,locale,usd,jpy,eur,forms	MoneyInput in three currencies and locales: USD en-US, JPY without decimals and EUR de-DE.
-028	inputs	money-input	Default	money-input,cents,currency,format,bind,forms	A default MoneyInput bound to a cents value, with the raw cents and formatted display printed below.
-029	inputs	money-input	Helpers	money-input,helpers,cents,parse,format,currency	Two money helper functions evaluated inline: centsToDisplay and parseInputToCents.
-030	inputs	number-field	Basic	number-field,stepper,min-max,step,quantity,forms	Two NumberField inputs in a Stack: an integer quantity with bounds and a decimal price with a step.
-031	inputs	number-field	States	number-field,error,disabled,required,size,description,forms	Four NumberField states in a Stack: with description, with error and required, disabled, and small.
-032	inputs	pin-input	Default	pin-input,otp,verification-code,mask,oncomplete,forms	A verification-code PinInput that reports its value and completion, plus a masked four-digit PIN.
-033	inputs	pin-input	States	pin-input,otp,error,disabled,description,length,forms	Four PinInput states: with description, with error, disabled with a partial value, and a text-type five-character key.
-034	inputs	radio	Cards	radio-group,radio,cards,plan,disabled,description	Radio group in `cards` variant with three plans, one disabled, bound to a selected plan.
-035	inputs	radio	Disabled	radio-group,radio,disabled,horizontal,form	Two radio groups: one with a single disabled item and one fully disabled group.
-036	inputs	radio	Horizontal	radio-group,radio,horizontal,orientation,size	Radio group laid out in a row with Small, Medium and Large options.
-037	inputs	radio	Vertical	radio-group,radio,vertical,single-choice,bind-value	Default vertical radio group of three fruits with the selected value printed below.
-038	inputs	segmented-control	Default	segmented-control,tabs,icon,view-switch,period	Two segmented controls: a text-only Week/Month/Year period and a List/Grid view switch with icons.
-039	inputs	segmented-control	Small, full width, disabled item	segmented-control,size,sm,full-width,disabled	Small full-width segmented control with four items, one disabled.
-040	inputs	select	Basic	select,dropdown,options,label,bind-value	Select with five framework options and the chosen value printed below.
-041	inputs	select	Empty-value option	select,empty-option,filter,placeholder,all	Select whose first option has an empty value labelled All projects, with the raw value printed.
-042	inputs	select	Placeholder	select,placeholder,country,form,options	Select with no initial value that shows placeholder text until a country is chosen.
-043	inputs	select	States	select,error,disabled,description,validation	Three selects showing a description, an error and a disabled state, with one disabled option.
-044	inputs	setting-item	Switch rows	setting-item,switch,settings,preferences,notifications	Two setting rows, each with a label, a description and a Switch on the right.
-045	inputs	slider	Range	slider,range,two-thumb,price,filter	Two-thumb range slider from 0 to 100 with the selected price range printed beside it.
-046	inputs	slider	Single value	slider,single,volume,brightness,bind-value	Two single-value sliders, Volume and Brightness, each with a live readout.
-047	inputs	slider	Step and disabled	slider,step,disabled,discrete,bind-value	A slider that snaps in steps of 10 and a disabled slider fixed at 35.
-048	inputs	swatch-group	Custom colors	swatch-group,color-picker,custom,palette,disabled	Swatch group with four custom colors where one swatch is disabled.
-049	inputs	swatch-group	Theme presets	swatch-group,presets,theme,accent,swatch	Swatch group of five theme presets: ocean, violet, emerald, rose, amber.
-050	inputs	switch	Basic	switch,toggle,label,checked,boolean	Two labelled switches, one starting off and one starting on.
-051	inputs	switch	Disabled	switch,disabled,checked,toggle,state	Two disabled switches, one off and one on.
-052	inputs	switch	Settings list	switch,settings-list,preferences,aria-label,toggle	Settings list of three rows, each with a title, a subtitle and a Switch.
-053	inputs	switch	Without label	switch,aria-label,without-label,toggle,a11y	Two switches with no visible label, named only through aria-label.
-054	inputs	text-area	Basic	text-area,textarea,placeholder,label,bind-value	Three text areas: empty, with a placeholder, and with initial content.
-055	inputs	text-area	States	text-area,textarea,error,required,readonly,disabled	Six text areas showing description, error, required, read-only, disabled and fixed-size states.
-056	inputs	text-field	Default	text-field,input,label,placeholder,email	Two basic text fields: a full name and an email with type email.
-057	inputs	text-field	With icons	text-field,icon,leading,trailing,password,search,snippet	Search field with a leading icon and a password field with a trailing show/hide button.
-058	inputs	text-field	States	text-field,error,required,readonly,disabled,size,description	Six text fields showing description, error, required, read-only, disabled and small size.
-059	inputs	theme-toggle	Basic	theme-toggle,dark-mode,theme,appearance,rail	Theme toggle button rendered inside a rail container.
-060	inputs	toggle-group	Single and multiple	toggle-group,single,multiple,icon,toolbar,aria-label	Single-select alignment group and multi-select formatting group, both icon-only.
-061	inputs	toggle-group	Variants and orientation	toggle-group,variant,outlined,ghost,vertical,size	Three toggle groups sharing one value: outlined, ghost and vertical.
-062	inputs	use-form	No schema	use-form,form,validation,text-field,dirty,reset	Form built with useForm and a hand-written validate function, with Validate and Reset buttons.
-063	inputs	use-form	Submit state	use-form,submit,loading,schema,validation,async	Form with a schema that simulates a 1.2 second submit, then shows a success message and resets.
-064	inputs	use-form	With schema	use-form,schema,validation,text-area,character-count	Form using a schema for username length and bio length, with a live character count.
-065	surfaces	accordion	Controlled	accordion,accordion-item,controlled,bind,single,faq	A single-open Accordion with its open item bound to state and the current value printed below.
-066	surfaces	accordion	Multiple	accordion,accordion-item,multiple,expand,disclosure	An Accordion that lets several of its three items stay open at once.
-067	surfaces	accordion	Single	accordion,accordion-item,single,faq,disclosure	A single-open Accordion with three Liquid Glass FAQ questions, where opening one closes the others.
-068	surfaces	card	Tone and glow	card,glass,tone,brand,glow,accent	Two glass Cards side by side: one with a brand tint and one with a brand glow, each with a title and one line of text.
-069	surfaces	card	Content card	card,glass,content-card,featured,link,promo	A single glass Card with a Featured eyebrow, a heading, a description and an Explore materials link.
-070	surfaces	card	Header and actions	card,header-actions,title,snippet,button,glass	A glass Card with a built-in Team members header and an Invite button supplied through a headerActions snippet.
-071	surfaces	card	Link card	card,link,href,heading-level,elevation,solid	A solid Card that is a link as a whole, with a Surface heading and a one line description.
-072	surfaces	card	Stat cards	card,stats,kpi,dashboard,glass,metrics	Three glass stat Cards in a flex row, each with a label, a large value and a delta line.
-073	surfaces	collapsible	Default (closed)	collapsible,faq,stack,disclosure,expand,title	Three independent Collapsible FAQ panels stacked with a small gap, all closed initially.
-074	surfaces	collapsible	Open by default	collapsible,open,bind,expanded,controlled	A Collapsible that starts expanded with its open state bound and printed below it.
-075	surfaces	liquid-glass	Refraction layer	liquid-glass,glass-optics,refraction,glass,material,preset	A LiquidGlass refraction layer using the regular optics preset behind a line of text in a padded frame.
-076	surfaces	surface	Elevation	surface,elevation,shadow,depth,solid,levels	Six solid Surface tiles showing elevation levels 0 to 5 in a wrapping row.
-077	surfaces	surface	Interactive	surface,interactive,button,as,onclick,counter	A Surface rendered as a button that counts how many times it was pressed.
-078	surfaces	surface	Materials	surface,material,glass,frosted,liquid,solid	Five Surface tiles, one per material, over a brand to info to success gradient so the translucency is visible.
-079	surfaces	surface	Tone and variant	surface,tone,variant,filled,outlined,ghost	An 18 tile grid of solid Surfaces crossing six tones with three variants.
-080	feedback	alert-dialog	Async onconfirm	alert-dialog,destructive,async,confirm,delete,dialog	A destructive alert dialog whose async confirm handler waits 1.5 seconds before an Item removed note appears.
-081	feedback	alert-dialog	Basic and destructive	alert-dialog,confirm,destructive,sign-out,delete,dialog	Two alert dialogs, a plain sign out confirmation and a destructive project delete, with an event log below.
-082	feedback	alert-dialog	Controlled pending	alert-dialog,controlled,pending,async,publish	An alert dialog driven by parent state: the pending prop is set for 1.5 seconds before the dialog closes itself.
-083	feedback	dialog	Chromeless	dialog,chromeless,modal,preview,media	A medium dialog with the chromeless prop, so the content fills the panel edge to edge with no header or padding.
-084	feedback	dialog	Confirmation	dialog,confirmation,destructive,delete,actions	A small dialog asking to delete an item, with Cancel and Delete buttons in the actions snippet.
-085	feedback	dialog	Form	dialog,form,text-field,select,invite,modal	A medium dialog containing an invite form with name, email and role fields and a Send invite button disabled until name and email are filled.
-086	feedback	dialog	Info	dialog,info,modal,help,rich-text	An informational dialog with rich text about how Dialog works and a single Got it action.
-087	feedback	dialog	Split	dialog,split,chromeless,form,text-field,modal	A split dialog with a media panel beside a lead form containing name, email and a Save button.
-088	feedback	drawer	Notification panel	drawer,notifications,side-panel,unread,list	A right drawer, 400px wide, listing four notifications with unread dots and timestamps.
-089	feedback	drawer	Right (default)	drawer,filters,filter-group,switch,side-panel	A default drawer titled Filters with status and role filter groups, two switches and Reset and Apply actions.
-090	feedback	drawer	Left and bottom	drawer,left,bottom,navigation,sort,side-panel	Two drawers opened from separate buttons: a 280px left navigation drawer and a bottom sort drawer.
-091	feedback	lightbox	Open from a button	lightbox,image,preview,modal,alt-text	A lightbox opened from a button to show a single generated SVG image.
-092	feedback	progress	Animated	progress,animated,upload,determinate,button	A progress bar that fills from 0 to 100 percent in steps of 5 every 100 ms when Start upload is clicked.
-093	feedback	progress	Determinate	progress,determinate,value,percent,label	Four determinate progress bars at 25, 50, 75 and 100 percent, each with a percent label.
-094	feedback	progress	Indeterminate	progress,indeterminate,loading,sync,label	Two indeterminate progress bars labelled Loading and Syncing for work of unknown length.
-095	feedback	sheet	Footer and swipeToDismiss	sheet,footer,swipe-to-dismiss,bottom-sheet,mobile	A bottom sheet titled Sessions with a footer button, opened with swipe to dismiss on or off.
-096	feedback	sheet	Swipe to dismiss	sheet,swipe,bottom-sheet,account-switcher,list,mobile	A sheet titled Switch session with a description and a list of eight accounts that close it on click.
-097	feedback	skeleton	Card layout	skeleton,card,loading,avatar,placeholder	A glass card skeleton with a circular avatar placeholder beside three text lines of different widths.
-098	feedback	skeleton	Image placeholder	skeleton,image,card,flush,loading,placeholder	A flush glass card skeleton with a 180px rectangular image placeholder above two caption lines.
-099	feedback	skeleton	Text lines	skeleton,text,rows,card,loading	A glass card skeleton with a 60% wide heading line above a block of three text lines.
-100	feedback	spinner	In a button	spinner,button,loading,save,async	A Button that shows its loading spinner for two seconds after click and changes its label to Saving.
-101	feedback	spinner	Section loader	spinner,loader,card,section,loading	A glass card with a centered 40px spinner and a Loading data text.
-102	feedback	spinner	Sizes	spinner,size,loading,flex	Three spinners side by side at 16, 24 and 40 pixels.
-103	feedback	toast	Variants and duration	toast,toaster,notification,success,error,duration	Eight buttons that trigger toasts: five variants and three duration cases, with one Toaster mounted.
-104	display	alert	Closable	alert,closable,dismiss,onclose,notice,severity	Two dismissible alerts, an info one with a title and a warning one, that are replaced by a short dismissed note once closed.
-105	display	alert	Severities	alert,severity,success,warning,error,info	The four alert severities stacked: success, warning, error and info, each with a one-line message.
-106	display	alert	With title	alert,title,severity,success,error	Two alerts with a bold title above the body text: a success and an error.
-107	display	avatar	With image	avatar,image,src,alt,profile-photo	A row of four large avatars loaded from image URLs.
-108	display	avatar	Initials fallback	avatar,initials,fallback,alt,placeholder	Large avatars with no image source: three given only `alt` names and two given explicit `fallback` text.
-109	display	avatar	Shape and status	avatar,shape,rounded,status,presence,online	Large avatars showing the rounded shape and the four status indicators: online, busy, away and offline.
-110	display	avatar	Sizes	avatar,size,xs,xl,custom-size	Avatars at every preset size from extra small to extra large, plus a custom numeric size.
-111	display	avatar	Avatar stack	avatar,stack,avatar-group,overlap,overflow,collaborators	An overlapping avatar stack of three photo avatars and a fourth `+4` overflow avatar.
-112	display	badge	Colors	badge,color,count,icon-button,notification,flex	A notification bell icon button wrapped in a count badge, shown in the four badge colors.
-113	display	badge	Dot and counts	badge,count,dot,overflow,icon-button,unread	Four badges on icon buttons: a dot, a count of 3, a count of 99 and a count of 100.
-114	display	badge	On avatars	badge,avatar,dot,status,presence	Three medium avatars each carrying a status dot in success, warning or error color.
-115	display	chip	Basic	chip,label,tag,basic	Three plain chips with text labels.
-116	display	chip	Deletable	chip,deletable,ondelete,tags,removable,state	Removable chips: deleting one drops it from the list, and a reset link appears when all are gone.
-117	display	chip	With icons	chip,icon,lucide,label,star	Three chips each with a leading lucide icon: star, zap and tag.
-118	display	chip	Selectable	chip,selectable,selected,filter,toggle,onclick	Two toggle chips, Filter A starting off and Filter B starting on, that flip on click.
-119	display	chip	StatusChip	chip,status-chip,status,success,neutral,state	StatusChip in its five statuses: success, warning, error, info and neutral.
-120	display	chip	Variants and size	chip,variant,brand,size,sm,color	Chip color variants (default, brand, success, warning, error, info) plus a small size chip.
-121	display	code-snippet	Languages	code-snippet,code,syntax-highlighting,svelte,typescript,css	Three CodeSnippet blocks highlighting Svelte, TypeScript and CSS sources.
-122	display	data-table	Controlled mode	data-table,controlled,pagination,sorting,global-filter,server-side,tanstack	A DataTable driven from outside: filter, sort and pagination state live in the page, which slices 12 users into pages of 5.
-123	display	data-table	Simple mode	data-table,columns,column-helper,tanstack,table,basic	A DataTable with five columns and 12 user rows, passing only `columns` and `data`.
-124	display	divider	Horizontal	divider,horizontal,separator,card,stack	Three stacked text sections inside a glass card separated by horizontal dividers.
-125	display	divider	Vertical	divider,vertical,orientation,separator,flex	Three text items in a row inside a glass card separated by vertical dividers.
-126	display	external-link	In a results table	external-link,link,table,simple-table,responsive-cards,outbound	A table of three domains where each row ends with an ExternalLink to a registrar URL.
-127	display	image	Fixed ratio	image,alt,width,height,aspect-ratio,placeholder	An Image with an inline 4:3 gradient SVG, constrained to a 360px wrapper.
-128	display	image	srcset and sizes	image,srcset,sizes,responsive,alt,width	An Image with a two-rendition `srcset` (400w and 800w) and a `sizes` hint, in a 420px wrapper.
-129	display	kbd	Shortcuts in text	kbd,keyboard,shortcut,key,command-palette,hint	Keyboard key caps inline in a sentence describing the Ctrl+K shortcut to open the command palette and Esc to close it.
-130	display	live-list	Streaming rows	live-list,stream,progress,chip,bulk,status,real-time	A LiveList that streams in 40 simulated domain availability checks, one every 150ms, after a Start bulk check button is pressed.
-131	display	notification-bell	Controlled	notification-bell,notifications,controlled,unread,header,state	A NotificationBell whose notifications live in state and are updated by its read, read-all and clear callbacks.
-132	display	notification-bell	Default	notification-bell,notifications,empty-state,unread,badge,header	Two NotificationBell triggers side by side: one given three notifications and one given an empty list.
-133	display	pagination	Basic	pagination,page,bind,count,per-page,navigation	Pagination for 100 items at 10 per page, with the current page bound to state and printed below.
-134	display	pagination	Few items	pagination,few-pages,count,per-page,uncontrolled	Pagination with 30 items at 10 per page and no bound state.
-135	display	pagination	More siblings	pagination,siblings,sibling-count,many-pages,navigation	Pagination for 200 items at 10 per page with two sibling pages shown on each side of the current page.
-136	display	scroll-area	Horizontal scroll	scroll-area,horizontal,scrollbar,chip,card,overflow	A horizontal ScrollArea with an always visible scrollbar holding a row of 24 Tag chips inside a glass card.
-137	display	scroll-area	Vertical scroll	scroll-area,vertical,max-height,scrollbar,card,list	A vertical ScrollArea capped at 220px tall containing 20 Lorem ipsum rows inside a glass card.
-138	display	table	Cards on narrow containers	table,simple-table,responsive,cards,mobile,data-label	A SimpleTable that turns each row into a stacked card on narrow screens, listing three users in a flush glass card.
-139	display	table	Default (scroll)	table,simple-table,scroll,overflow,card,users	A default SimpleTable listing three users with name, email, role and status in a flush glass card.
-140	display	timeline	Simple	timeline,milestones,roadmap,history,dates	A basic Timeline of four project milestones, each with a label and a date.
-141	display	timeline	With variants	timeline,variant,success,info,order-tracking,status	A Timeline of an order's five tracking events, coloured by variant, with descriptions and timestamps.
-142	display	tooltip	Text trigger	tooltip,children,inline,text-trigger,hover,focus	A Tooltip wrapping plain inline text, which becomes the hover and focus trigger.
-143	display	tooltip	Custom delay	tooltip,delay,button,hover,timing	Three tooltips with different open delays on glass buttons: instant, default and slow.
-144	display	tooltip	On icon buttons	tooltip,icon-button,icons,aria-label,toolbar,lucide	Four icon-only buttons (Info, Heart, Zap, Star) that each reveal a Tooltip describing the action.
-145	display	tooltip	All sides	tooltip,side,placement,top,bottom,button	Four outlined buttons whose tooltips open on the top, right, bottom and left side.
-146	navigation	actions	autofocus	autofocus,action,focus,input,remount,a11y	An input that receives focus on mount, with a button that remounts it through a keyed block.
-147	navigation	actions	clickOutside	click-outside,action,dismiss,popover,dropdown,event	A box that counts how many clicks land outside it using the clickOutside action.
-148	navigation	actions	clipboard	clipboard,copy,action,button,feedback,install-command	A native button that copies an install command to the clipboard and shows a Copied! label for two seconds.
-149	navigation	actions	focusTrap	focus-trap,action,keyboard,a11y,modal,tab-order	A button that opens a box where Tab stays trapped among three buttons until Close is pressed.
-150	navigation	actions	longpress	longpress,action,touch,gesture,button,hold	A native button that fires a long-press handler after an 800ms hold and shows Long press! for 1.5 seconds.
-151	navigation	app-bar	Default	app-bar,glass-app-bar,header,toolbar,icon-button,avatar	A glass app bar with a title on the left and search, notifications and avatar on the right, inside a flush glass card.
-152	navigation	app-bar	With leading icon	app-bar,glass-app-bar,leading,trailing,header,menu-button	A glass app bar with a menu button in the leading slot and an Upgrade button plus avatar in the trailing slot.
-153	navigation	breadcrumb	Levels	breadcrumb,navigation,hierarchy,levels,path,links	Four stacked breadcrumbs with 2, 3, 5 and 1 levels, where the last item is the current page without a link.
-154	navigation	breadcrumb	Custom separator	breadcrumb,separator,navigation,custom,path	A breadcrumb with a custom separator character between three items.
-155	navigation	command-palette	Keyboard	kbd,keyboard,shortcuts,command-palette,hints,legend	A static list of four keyboard hints for the command palette, each pairing a Kbd key with a description.
-156	navigation	command-palette	Open the palette	command-palette,search,navigation,modules,keyboard,kbd,dialog	A command palette opened by a button, filtering two modules of navigation items and reporting the picked path.
-157	navigation	drawer	Left and right	drawer,side-panel,navigation,settings,overlay,left,right	Two buttons that open a left navigation drawer and a right settings drawer.
-158	navigation	menu	Default	dropdown-menu,menu,actions,destructive,separator,icon,trigger	A dropdown menu of file actions with icons, a separator and a destructive Delete item, reporting the last action.
-159	navigation	menu	Icon trigger	dropdown-menu,menu,icon-button,overflow,more-options,align,a11y	A dropdown menu opened by a three-dot icon button, with Share and Copy link items aligned to the end.
-160	navigation	popover	Basic	popover,trigger,overlay,confirm,stack,contextual	A popover opened from a button, containing a sentence of text and a Confirm button.
-161	navigation	popover	Form	popover,form,text-field,inline-edit,side,align,overlay	A popover anchored below-start of a button that holds a text field with Cancel and Save buttons.
-162	navigation	stepper	Horizontal stepper	stepper,wizard,steps,progress,onboarding,back-next,card	A four-step horizontal stepper inside a glass card with Back and Next buttons that advance the step.
-163	navigation	tabs	Controlled	tabs,controlled,bind-value,state,tabs-list,tabs-content	Tabs bound to a state variable with a line below showing the active tab value.
-164	navigation	tabs	Default	tabs,uncontrolled,tabs-list,tabs-content,sections,default	An uncontrolled tab set of Overview, Props and Examples, each with a short paragraph of documentation text.
-165	layout	app-shell	Anatomy	app-shell,anatomy,rail,panel,layout,diagram	A labelled diagram of the app shell showing a 52px rail, a 200px panel and the main content area.
-166	layout	app-shell	Live shell	app-shell,app-shell-layout,navigation,rail,sidebar,router-agnostic,page-shell	A working app shell with a rail, panel and page content whose pathname lives in local state and updates on navigation.
-167	layout	empty-state	Basic	empty-state,inbox,icon,actions,placeholder	An empty inbox state with an icon, a title, a description and a Compose message button.
-168	layout	empty-state	Hero	empty-state,hero,onboarding,first-run,actions,project	A hero-sized empty state inviting the user to start a first project, with Create project and Import buttons.
-169	layout	empty-state	No icon	empty-state,no-icon,create,leading-icon,actions	An empty state without an icon, showing a title, a description and a Create item button with a Plus icon.
-170	layout	empty-state	No results	empty-state,no-results,search,filters,actions	A no-results state for search with a magnifier icon and a Clear filters button.
-171	layout	empty-state	Error or offline	empty-state,offline,error,retry,network,actions	A load-failure state with a wifi-off icon and Retry plus Contact support buttons.
-172	layout	error-page	404 without actions	error-page,404,not-found,status,error	The ErrorPage component rendering a 404 status without its action buttons.
-173	layout	form-page	Basic form	app-form,form-section,form,text-field,select,switch,footer	A complete user creation form with a header, two sections, bound fields and a footer with Cancel and Create user.
-174	layout	form-page	Without header	app-form,form-section,form,no-header,text-field,footer	A compact form page with no title or description, one section and a Cancel and Save footer.
-175	layout	kpi-card	Basic metrics	kpi-card,kpi-grid,metrics,trend,dashboard,unit,icon	Three KPI cards with title, value, an optional unit, a positive or negative trend and an icon, inside a KpiGrid.
-176	layout	kpi-card	Negative trend	kpi-card,kpi-grid,negative-trend,metrics,churn,unit	Two KPI cards whose trends are negative, one with an icon and one without.
-177	layout	kpi-card	Without trend	kpi-card,kpi-grid,no-trend,metrics,counters,unit	Three KPI cards without a trend value, one with an icon and two plain.
-178	layout	kpi-grid	Four cards	kpi-grid,kpi-card,dashboard,metrics,four-columns,grid	A KpiGrid holding four KPI cards: Revenue, Users, Growth and Uptime, each with a trend and icon.
-179	layout	kpi-grid	Three cards	kpi-grid,kpi-card,odd,three-columns,dashboard,grid	A KpiGrid holding three KPI cards to show how the grid lays out an odd number of items.
-180	layout	layout-primitives	Container and Section	container,section,stack,card,layout,page,heading-level	A Container and Section holding a Stack of two plan cards, showing the page-level layout primitives.
-181	layout	layout-primitives	Responsive Grid	grid,responsive,columns,gap,breakpoints,box,layout	A Grid with responsive column counts and gaps holding eight numbered cells.
-182	layout	layout-primitives	Flex, Stack and Box	stack,flex,box,spacing,gap,layout,primitives	A Stack with a wrapping Flex row of three chips above a single padded Box.
-183	layout	list-page	AppList	app-list,list-page,search,filter-group,simple-table,status-chip,user-cell	A searchable, filterable users list with a New user action, a role filter and a table with user cell and status chip.
-184	layout	list-page	AppSettings	app-settings,settings,tabs,form-section,switch,text-field,list-page	A settings page with General and Security tabs, a Save action and form sections with text fields and switches.
-185	layout	list-page	PageShell	page-shell,dashboard,kpi-grid,kpi-card,card,glass,list-page	A dashboard page shell with four KPI cards and a placeholder glass card for a chart or table.
-186	layout	mobile-pane	Chat	mobile-pane,chat,mobile,icon-button,text-field,conversation	A button that opens a full-screen mobile pane titled Maria Souza with a message list, a header action and a composer.
-187	layout	page-shell	Dashboard page	page-shell,dashboard,kpi-grid,card,glass,actions,header	A page shell inside a flush glass card with a title, description, New report action, four KPI cards and a placeholder card.
-188	layout	sticky-actions	End aligned	sticky-actions,dirty,form,save-bar,scroll,text-field	A scrolling form whose sticky Cancel and Save bar only appears once the Name field has text.
-189	layout	sticky-actions	Stretch	sticky-actions,stretch,wizard,action-bar,scroll,align	A scrolling area with a sticky bar whose Back and Continue buttons stretch across the width.
-190	charts	bar	Horizontal bars	bar-chart,horizontal,ranking,categories,value-formatter,card	A horizontal bar chart ranking eight products by a single Sales series, with values formatted as thousands.
-191	charts	bar	Stacked bars	bar-chart,stacked,series,categories,revenue,card	A stacked bar chart splitting six months of revenue into four acquisition channels.
-192	charts	bar	Grouped and stacked	bar-chart,stacked,grouped,toggle,button,state,flex	A bar chart with Grouped and Stacked buttons that switch the same two-year quarterly data between layouts.
-193	charts	bar	Vertical bars	bar-chart,vertical,revenue,categories,value-formatter,card	A vertical bar chart of one Revenue series across four quarters.
-194	charts	gauge	Animated counter	gauge-chart,ring,counter,animation,onmount,score,stack	A ring gauge that counts up from 0 to 94 on mount, with a text label that changes with the value.
-195	charts	gauge	Progress ring	gauge-chart,ring,slider,bind-value,state,interactive	A ring gauge controlled by a slider, starting at 65.
-196	charts	gauge	Simple gauge	gauge-chart,score,value,label,card	A single gauge showing a score of 78 with a Score label.
-197	charts	gauge	Custom zones	gauge-chart,zones,thresholds,grid,metrics,card	Three gauges (CPU 67, Memory 82, Disk 45) that share colour zones for success, warning and error.
-198	charts	heatmap	Calendar heatmap	heatmap-chart,calendar,activity,range,tooltip-formatter,card	A calendar heatmap of daily commit counts from 2026-01-01 to 2026-09-15.
-199	charts	heatmap	Hour by day matrix	heatmap-chart,matrix,hours,weekdays,tooltip-formatter,card	A matrix heatmap of task counts by hour of day (24 columns) and weekday (7 rows).
-200	charts	heatmap	Year toggle	heatmap-chart,calendar,year-toggle,button,state,range	A calendar heatmap with 2026 and 2025 buttons that swap the dataset and date range.
-201	charts	line	Area with gradient fill	line-chart,area,revenue,time-series,value-formatter,card	A single Revenue line with a filled area under it across nine months.
-202	charts	line	Multi-line comparison	line-chart,multi-series,revenue,expenses,time-series,card	A line chart with three series, Revenue, Expenses and Profit, across nine months.
-203	charts	line	Simple line	line-chart,simple,revenue,time-series,value-formatter,card	A basic line chart of a single Revenue series over nine months.
-204	charts	line	Real-time stream	line-chart,streaming,live,realtime,onmount,interval	A live line chart that shifts in a new Live revenue point every 800 ms over a 20-point window.
-205	charts	overview	Dashboard	dashboard,kpi-card,line-chart,bar-chart,pie-chart,scatter-chart,radar-chart	An analytics dashboard combining four KPI cards with line, stacked bar, donut, scatter, calendar heatmap, gauge and radar charts.
-206	charts	pie	Animated proportions	pie-chart,donut,chip,quarters,state,derived	A donut chart with Q1, Q2 and Q3 chips that switch which quarter of data the chart shows.
-207	charts	pie	Donut with center KPI	pie-chart,donut,center-label,total,market-share,card	A donut chart with a total value and caption shown in the centre.
-208	charts	pie	Basic donut	pie-chart,donut,market-share,proportions,card	A donut chart of market share split across five categories.
-209	charts	pie	Rose chart	pie-chart,rose,nightingale,categories,card	A Nightingale rose chart of six product areas, using the rose prop on PieChart.
-210	charts	radar	Comparison	radar-chart,compare,series,indicators,scores,card	A radar chart comparing Team A and Team B across six dimensions.
-211	charts	radar	Interactive team builder	radar-chart,slider,interactive,derived,state,builder	A radar chart for My team with six sliders that edit each dimension live.
-212	charts	radar	Simple radar	radar-chart,simple,indicators,scores,single-series,card	A radar chart of one team, Team Alpha, across six dimensions.
-213	charts	scatter	Basic scatter	scatter-chart,basic,points,y-axis,y-formatter,card	A scatter plot of 80 generated points in a single Data points series.
-214	charts	scatter	Bubble chart	scatter-chart,bubble,size,three-dimensions,accounts,card	A bubble chart where each of 50 accounts carries a third value that sets the bubble size.
-215	charts	scatter	Clustered by tier	scatter-chart,clusters,segments,multi-series,palette,card	A scatter plot with three named series, Premium, Standard and Free, of 30 points each.
-216	charts	sparklines	Bar sparklines	sparkline,bar,trend,inline-metrics,flex,stack	Three labelled bar sparklines with up, down and neutral trends in a wrapping row.
-217	charts	sparklines	KPI cards with trend lines	sparkline,kpi,card,trend,dashboard,grid	Four KPI cards, each with a value, a change percentage and a trend-coloured sparkline.
-218	charts	sparklines	Live streaming micro charts	sparkline,live,realtime,monitoring,onmount,grid	Three live sparklines for CPU, Memory and Network that shift in a new value every 600 ms.
-219	charts	sparklines	Table row sparklines	sparkline,table,trend,card,flush,rows	A table of four products with an inline sparkline per row and a text trend label.
-220	foundation	colors	Brand	colors,brand,tokens,swatches,theme	Six swatches for the brand color tokens, each showing its name and CSS variable.
-221	foundation	colors	Outline	colors,outline,border,tokens,swatches	Three swatches for the outline tokens, drawn with a border so they stay visible on the page.
-222	foundation	colors	Semantic	colors,semantic,success,warning,error,info,tokens	Four swatches for the semantic status color tokens: success, warning, error and info.
-223	foundation	colors	Surfaces	colors,surface,background,tokens,swatches,elevation	Four swatches for the surface tokens from sunken to overlay, drawn with a border.
-224	foundation	colors	Text	colors,text,typography,tokens,swatches,contrast	Four swatches for the text color tokens: primary, secondary, hint and disabled.
-225	foundation	materials	Button glass variants	materials,glass,button,glass-btn,backdrop	Three native buttons using the glass button classes over a brand to info gradient backdrop.
-226	foundation	materials	Glass tiers	materials,glass,surface,elevation,blur,tiers	Five glass surfaces at elevations 1 to 5, from Ultra thin to Chrome, over a three color gradient.
-227	foundation	materials	Tinted and glowing	materials,glass,surface,tone,glow,tinted	Three glass surfaces over a gradient: tinted, glowing, and tinted with glow.
-228	foundation	shadows	Shadow scale	shadows,elevation,tokens,scale,box-shadow	Five cards, each with one shadow token from xs to xl, labelled with its name and CSS variable.
-229	foundation	typography	Body and UI scale	typography,body,font-size,tokens,caption,label	Seven body text size tokens from Body 1 to Nano, each rendered as a sample line.
-230	foundation	typography	Font families	typography,font-family,sans,display,mono,tokens	The three font family tokens, sans, display and mono, each with a sample sentence.
-231	foundation	typography	Heading scale	typography,headings,font-size,tokens,h1	Six heading size tokens, Heading 1 to Heading 6, each rendered as a bold sample line.
-232	docs-kit	docs	LinkCard, CardGrid and MethodBadge	card-grid,link-card,method-badge,docs-kit,http-method,api-docs	A CardGrid with two LinkCards, followed by a row of five MethodBadges for the HTTP verbs.
-233	docs-kit	docs	CodeTabs	code-tabs,code-tab,docs-kit,sync,curl,api-docs	Two CodeTabs groups, each with cURL and Node.js tabs, that share the selected language through the same sync key.
-234	docs-kit	docs	DocsNav and TableOfContents	docs-nav,table-of-contents,docs-kit,sidebar,navigation,headings	A DocsNav sidebar with two groups and a TableOfContents of four headings rendered side by side.
-235	docs-kit	docs	ca-prose, Callout and Steps	prose,callout,steps,docs-kit,table,api-docs	A documentation article using the ca-prose wrapper with headings, two Callouts, a Steps list and a request fields table.
-236	docs-kit	docs	DocsSearch	docs-search,search,docs-kit,dialog,command-palette,index	A DocsSearch dialog opened from an Open search button over a two-entry index, showing the selected href afterwards.
-237	navigation	tabs	Scrollable	tabs,scrollable,fade,overflow,settings,tabs-list	Seven tabs in a narrow container where the list scrolls horizontally with edge fades.
-238	navigation	tabs	Icons	tabs,icon,brand-icon,scheme-asset,dark-mode,tabs-trigger	Tabs with a Lucide icon, a brand-colored svg icon and a scheme-aware monochrome icon next to each label.
-239	navigation	menu	Leading icons and brand logos	dropdown-menu,menu,brand-icon,scheme-asset,dark-mode,icon,disabled	A dropdown menu of agents where brand-colored icons opt out of the item's text color, including a scheme-aware monochrome mark.
-240	display	avatar	IconFallback	avatar,fallback,snippet,icon,image-error,lucide	Two large avatars whose fallback is a custom icon: one with an image that fails to decode and one with no image.
-241	feedback	skeleton	The skeleton prop	skeleton,loading,avatar,kpi-card,text-field,card	Avatar, KpiCard, TextField and Card all switched to their skeleton state by one shared loading flag.
-242	feedback	lightbox	Gallery with video, caption and download	lightbox,gallery,video,caption,carousel,media	A lightbox gallery with three items, two images and one video, each with a caption and some with meta text.
-243	feedback	install-prompt	iOS instructions	install-prompt,pwa,ios,banner,install	The install prompt in iOS mode, showing add to home screen instructions inside a reserved stage box.
-244	feedback	install-prompt	Native prompt	install-prompt,pwa,native,beforeinstallprompt,banner	The install prompt in native mode, triggered by a stand-in beforeinstallprompt event fired on mount.
-245	layout	record-list	Apps	record-list,record-row,table,status-chip,row-menu,avatar,responsive	A record list of three apps with an avatar identity, scopes, install count, status chip, created date and a row menu.
-246	layout	record-list	Without a menu	record-list,record-row,table,no-actions,webhooks,responsive	A three column record list of webhooks with no actions slot, so there is no trailing menu track.
-247	layout	record-list	Phone width	record-list,record-row,table,phone,responsive,container-width	The same record list inside a narrow slot, to show it stacking because the list reads its own width.
-248	display	message-bubble	A grouped conversation	message-bubble,chat,avatar,grouped,delivery-status	A grouped chat thread: two incoming bubbles from one sender with a name and avatar, then an outgoing read bubble.
-249	display	message-bubble	Delivery status	message-bubble,chat,status,delivery,ticks	Four outgoing bubbles, one per delivery state: pending, sent, delivered and read.
-250	display	message-bubble	Quote and reactions	message-bubble,chat,quote,reactions,reply	An incoming bubble with a reply quote at the top and two reaction chips under it.
-251	display	conversation-item	Inbox	conversation-item,inbox,chat,unread,avatar	An inbox of four conversation rows: unread count, pinned, muted, typing, with the selected row highlighted.
-252	display	audio-player	Voice messages	audio-player,voice,waveform,chat,scrub	Two voice message players: one with a waveform from peaks, one with flat placeholder bars.
-253	display	media-grid	Mixed media	media-grid,gallery,chat,lightbox,attachments	A media grid of six items (images, a video, a document) showing four tiles and a +2 overflow that opens the gallery.
-254	display	virtual-list	Chat history	virtual-list,history,chat,infinite,prepend	A windowed chat history of 40 messages that loads 30 older ones at the top without moving the view.
-255	navigation	loading-boundary	Fast and slow loads	loading-boundary,skeleton,suspense,pending,delay	A LoadingBoundary around a suspending report with a fast (100 ms) and a slow (1.5 s) load button.
+id	group	page	title	names	tags	summary
+001	inputs	button	Full width		button,full-width,stacked,actions,form	Two buttons that stretch to the width of their container: a filled primary and an outlined cancel.
+002	inputs	button	With icons		button,icon,leading,trailing,snippet	Buttons with an icon before the label, after the label, and with a ghost download action.
+003	inputs	button	Loading		button,loading,spinner,async,submit	Buttons in the loading state, including one that toggles loading for two seconds when clicked.
+004	inputs	button	Sizes		button,size,sm,md,lg	The three button sizes side by side: small, medium and large.
+005	inputs	button	States		button,disabled,destructive,link,href	Disabled buttons, a destructive action with an icon, and a link rendered as a button.
+006	inputs	button	Variants		button,variant,filled,glass,outlined,ghost,destructive	All five button variants in a row: filled, glass, outlined, ghost and destructive.
+007	inputs	checkbox	Disabled		checkbox,disabled,checked,indeterminate,form	Three disabled checkboxes: unchecked, checked and indeterminate.
+008	inputs	checkbox	States		checkbox,checked,indeterminate,bind,form	Checkboxes in unchecked, pre-checked and indeterminate states, the first two bound to local state.
+009	inputs	checkbox	Without label		checkbox,aria-label,accessibility,unlabelled,indeterminate	Three checkboxes with no visible label, named only through aria-label: bound, checked and indeterminate.
+010	inputs	combobox	Basic		combobox,search,autocomplete,options,select,form	A searchable Combobox over eight frameworks that prints the selected value below the field.
+011	inputs	combobox	States		combobox,error,disabled,required,description,empty-state	Three Combobox states: with description and custom search and empty texts, with error and required, and disabled.
+012	inputs	copy-button	Default		copy-button,clipboard,copy,install,command	A default CopyButton that copies an npm install command.
+013	inputs	copy-button	Icon only and toast		copy-button,toast,toaster,icon-only,clipboard,label	An icon-only CopyButton and a labelled one that shows a toast after copying, with a Toaster mounted.
+014	inputs	copy-button	Variants and sizes		copy-button,variant,size,filled,glass,outlined	CopyButton in three variants and two extra sizes, side by side.
+015	inputs	date-picker	Calendar and RangeCalendar		calendar,range-calendar,date,date-range,inline,locale	An inline single-date Calendar and a RangeCalendar, each printing its selected value below.
+016	inputs	date-picker	Min, max, error and disabled		date-picker,date-field,time-field,min-max,required,disabled,readonly	Date and time inputs with constraints: a bounded DatePicker, a required DatePicker with an error, a disabled DateField and a read-only TimeField.
+017	inputs	date-picker	DateField and TimeField		date-field,time-field,granularity,hour-cycle,segmented,form	Segmented DateField and TimeField inputs with bound values, minute granularity and 24h and 12h hour cycles.
+018	inputs	date-picker	DatePicker and DateRangePicker		date-picker,date-range-picker,popover,date,date-range,calendar	A DatePicker and a DateRangePicker with popover calendars, each printing its selected value.
+019	inputs	export-menu	Default		export-menu,export,download,csv,table,columns	An ExportMenu exporting three domain rows with custom column headers and a status line reporting the last export.
+020	inputs	file-upload	Basic		file-upload,dropzone,multiple,max-size,files,attachment	A multi-file FileUpload with a size limit and hint that reports how many files are selected.
+021	inputs	file-upload	Images only and disabled		file-upload,dropzone,accept,image,disabled,label	Two FileUpload dropzones: one restricted to images with custom label and hint, and one disabled.
+022	inputs	filter-group	Role filter		filter-group,filter,options,role,bind,category	A FilterGroup of three role options bound to a value that is printed below.
+023	inputs	masked-field	Documents and dates		masked-field,cpf,cnpj,mask,validation,brazil,forms	Five MaskedField inputs for Brazilian documents: CPF, CNPJ, combined CPF or CNPJ, birth date and RG, with validators on three.
+024	inputs	masked-field	use:mask action		mask,action,input-mask,cpf,native-input,forms	A native input masked with the mask action, showing the bound value below.
+025	inputs	masked-field	Phone and CEP		phone-field,cep-field,lookup,address,brazil,async,forms	A PhoneField and a CepField that looks up an address asynchronously and prints the resolved street, district and city.
+026	inputs	money-input	Min, max, negative, error and disabled		money-input,min-max,negative,error,disabled,currency,forms	Four MoneyInput fields showing min and max bounds, negative values, an error message and a disabled state.
+027	inputs	money-input	Currency and locale		money-input,currency,locale,usd,jpy,eur,forms	MoneyInput in three currencies and locales: USD en-US, JPY without decimals and EUR de-DE.
+028	inputs	money-input	Default		money-input,cents,currency,format,bind,forms	A default MoneyInput bound to a cents value, with the raw cents and formatted display printed below.
+029	inputs	money-input	Helpers		money-input,helpers,cents,parse,format,currency	Two money helper functions evaluated inline: centsToDisplay and parseInputToCents.
+030	inputs	number-field	Basic		number-field,stepper,min-max,step,quantity,forms	Two NumberField inputs in a Stack: an integer quantity with bounds and a decimal price with a step.
+031	inputs	number-field	States		number-field,error,disabled,required,size,description,forms	Four NumberField states in a Stack: with description, with error and required, disabled, and small.
+032	inputs	pin-input	Default		pin-input,otp,verification-code,mask,oncomplete,forms	A verification-code PinInput that reports its value and completion, plus a masked four-digit PIN.
+033	inputs	pin-input	States		pin-input,otp,error,disabled,description,length,forms	Four PinInput states: with description, with error, disabled with a partial value, and a text-type five-character key.
+034	inputs	radio	Cards		radio-group,radio,cards,plan,disabled,description	Radio group in `cards` variant with three plans, one disabled, bound to a selected plan.
+035	inputs	radio	Disabled		radio-group,radio,disabled,horizontal,form	Two radio groups: one with a single disabled item and one fully disabled group.
+036	inputs	radio	Horizontal		radio-group,radio,horizontal,orientation,size	Radio group laid out in a row with Small, Medium and Large options.
+037	inputs	radio	Vertical		radio-group,radio,vertical,single-choice,bind-value	Default vertical radio group of three fruits with the selected value printed below.
+038	inputs	segmented-control	Default		segmented-control,tabs,icon,view-switch,period	Two segmented controls: a text-only Week/Month/Year period and a List/Grid view switch with icons.
+039	inputs	segmented-control	Small, full width, disabled item		segmented-control,size,sm,full-width,disabled	Small full-width segmented control with four items, one disabled.
+040	inputs	select	Basic		select,dropdown,options,label,bind-value	Select with five framework options and the chosen value printed below.
+041	inputs	select	Empty-value option		select,empty-option,filter,placeholder,all	Select whose first option has an empty value labelled All projects, with the raw value printed.
+042	inputs	select	Placeholder		select,placeholder,country,form,options	Select with no initial value that shows placeholder text until a country is chosen.
+043	inputs	select	States		select,error,disabled,description,validation	Three selects showing a description, an error and a disabled state, with one disabled option.
+044	inputs	setting-item	Switch rows		setting-item,switch,settings,preferences,notifications	Two setting rows, each with a label, a description and a Switch on the right.
+045	inputs	slider	Range		slider,range,two-thumb,price,filter	Two-thumb range slider from 0 to 100 with the selected price range printed beside it.
+046	inputs	slider	Single value		slider,single,volume,brightness,bind-value	Two single-value sliders, Volume and Brightness, each with a live readout.
+047	inputs	slider	Step and disabled		slider,step,disabled,discrete,bind-value	A slider that snaps in steps of 10 and a disabled slider fixed at 35.
+048	inputs	swatch-group	Custom colors		swatch-group,color-picker,custom,palette,disabled	Swatch group with four custom colors where one swatch is disabled.
+049	inputs	swatch-group	Theme presets		swatch-group,presets,theme,accent,swatch	Swatch group of five theme presets: ocean, violet, emerald, rose, amber.
+050	inputs	switch	Basic		switch,toggle,label,checked,boolean	Two labelled switches, one starting off and one starting on.
+051	inputs	switch	Disabled		switch,disabled,checked,toggle,state	Two disabled switches, one off and one on.
+052	inputs	switch	Settings list		switch,settings-list,preferences,aria-label,toggle	Settings list of three rows, each with a title, a subtitle and a Switch.
+053	inputs	switch	Without label		switch,aria-label,without-label,toggle,a11y	Two switches with no visible label, named only through aria-label.
+054	inputs	text-area	Basic		text-area,textarea,placeholder,label,bind-value	Three text areas: empty, with a placeholder, and with initial content.
+055	inputs	text-area	States		text-area,textarea,error,required,readonly,disabled	Six text areas showing description, error, required, read-only, disabled and fixed-size states.
+056	inputs	text-field	Default		text-field,input,label,placeholder,email	Two basic text fields: a full name and an email with type email.
+057	inputs	text-field	With icons		text-field,icon,leading,trailing,password,search,snippet	Search field with a leading icon and a password field with a trailing show/hide button.
+058	inputs	text-field	States		text-field,error,required,readonly,disabled,size,description	Six text fields showing description, error, required, read-only, disabled and small size.
+059	inputs	theme-toggle	Basic		theme-toggle,dark-mode,theme,appearance,rail	Theme toggle button rendered inside a rail container.
+060	inputs	toggle-group	Single and multiple		toggle-group,single,multiple,icon,toolbar,aria-label	Single-select alignment group and multi-select formatting group, both icon-only.
+061	inputs	toggle-group	Variants and orientation		toggle-group,variant,outlined,ghost,vertical,size	Three toggle groups sharing one value: outlined, ghost and vertical.
+062	inputs	use-form	No schema		use-form,form,validation,text-field,dirty,reset	Form built with useForm and a hand-written validate function, with Validate and Reset buttons.
+063	inputs	use-form	Submit state		use-form,submit,loading,schema,validation,async	Form with a schema that simulates a 1.2 second submit, then shows a success message and resets.
+064	inputs	use-form	With schema		use-form,schema,validation,text-area,character-count	Form using a schema for username length and bio length, with a live character count.
+065	surfaces	accordion	Controlled		accordion,accordion-item,controlled,bind,single,faq	A single-open Accordion with its open item bound to state and the current value printed below.
+066	surfaces	accordion	Multiple		accordion,accordion-item,multiple,expand,disclosure	An Accordion that lets several of its three items stay open at once.
+067	surfaces	accordion	Single		accordion,accordion-item,single,faq,disclosure	A single-open Accordion with three Liquid Glass FAQ questions, where opening one closes the others.
+068	surfaces	card	Tone and glow		card,glass,tone,brand,glow,accent	Two glass Cards side by side: one with a brand tint and one with a brand glow, each with a title and one line of text.
+069	surfaces	card	Content card		card,glass,content-card,featured,link,promo	A single glass Card with a Featured eyebrow, a heading, a description and an Explore materials link.
+070	surfaces	card	Header and actions		card,header-actions,title,snippet,button,glass	A glass Card with a built-in Team members header and an Invite button supplied through a headerActions snippet.
+071	surfaces	card	Link card		card,link,href,heading-level,elevation,solid	A solid Card that is a link as a whole, with a Surface heading and a one line description.
+072	surfaces	card	Stat cards		card,stats,kpi,dashboard,glass,metrics	Three glass stat Cards in a flex row, each with a label, a large value and a delta line.
+073	surfaces	collapsible	Default (closed)		collapsible,faq,stack,disclosure,expand,title	Three independent Collapsible FAQ panels stacked with a small gap, all closed initially.
+074	surfaces	collapsible	Open by default		collapsible,open,bind,expanded,controlled	A Collapsible that starts expanded with its open state bound and printed below it.
+075	surfaces	liquid-glass	Refraction layer		liquid-glass,glass-optics,refraction,glass,material,preset	A LiquidGlass refraction layer using the regular optics preset behind a line of text in a padded frame.
+076	surfaces	surface	Elevation		surface,elevation,shadow,depth,solid,levels	Six solid Surface tiles showing elevation levels 0 to 5 in a wrapping row.
+077	surfaces	surface	Interactive		surface,interactive,button,as,onclick,counter	A Surface rendered as a button that counts how many times it was pressed.
+078	surfaces	surface	Materials		surface,material,glass,frosted,liquid,solid	Five Surface tiles, one per material, over a brand to info to success gradient so the translucency is visible.
+079	surfaces	surface	Tone and variant		surface,tone,variant,filled,outlined,ghost	An 18 tile grid of solid Surfaces crossing six tones with three variants.
+080	feedback	alert-dialog	Async onconfirm		alert-dialog,destructive,async,confirm,delete,dialog	A destructive alert dialog whose async confirm handler waits 1.5 seconds before an Item removed note appears.
+081	feedback	alert-dialog	Basic and destructive		alert-dialog,confirm,destructive,sign-out,delete,dialog	Two alert dialogs, a plain sign out confirmation and a destructive project delete, with an event log below.
+082	feedback	alert-dialog	Controlled pending		alert-dialog,controlled,pending,async,publish	An alert dialog driven by parent state: the pending prop is set for 1.5 seconds before the dialog closes itself.
+083	feedback	dialog	Chromeless		dialog,chromeless,modal,preview,media	A medium dialog with the chromeless prop, so the content fills the panel edge to edge with no header or padding.
+084	feedback	dialog	Confirmation		dialog,confirmation,destructive,delete,actions	A small dialog asking to delete an item, with Cancel and Delete buttons in the actions snippet.
+085	feedback	dialog	Form		dialog,form,text-field,select,invite,modal	A medium dialog containing an invite form with name, email and role fields and a Send invite button disabled until name and email are filled.
+086	feedback	dialog	Info		dialog,info,modal,help,rich-text	An informational dialog with rich text about how Dialog works and a single Got it action.
+087	feedback	dialog	Split		dialog,split,chromeless,form,text-field,modal	A split dialog with a media panel beside a lead form containing name, email and a Save button.
+088	feedback	drawer	Notification panel		drawer,notifications,side-panel,unread,list	A right drawer, 400px wide, listing four notifications with unread dots and timestamps.
+089	feedback	drawer	Right (default)		drawer,filters,filter-group,switch,side-panel	A default drawer titled Filters with status and role filter groups, two switches and Reset and Apply actions.
+090	feedback	drawer	Left and bottom		drawer,left,bottom,navigation,sort,side-panel	Two drawers opened from separate buttons: a 280px left navigation drawer and a bottom sort drawer.
+091	feedback	lightbox	Open from a button		lightbox,image,preview,modal,alt-text	A lightbox opened from a button to show a single generated SVG image.
+092	feedback	progress	Animated		progress,animated,upload,determinate,button	A progress bar that fills from 0 to 100 percent in steps of 5 every 100 ms when Start upload is clicked.
+093	feedback	progress	Determinate		progress,determinate,value,percent,label	Four determinate progress bars at 25, 50, 75 and 100 percent, each with a percent label.
+094	feedback	progress	Indeterminate		progress,indeterminate,loading,sync,label	Two indeterminate progress bars labelled Loading and Syncing for work of unknown length.
+095	feedback	sheet	Footer and swipeToDismiss		sheet,footer,swipe-to-dismiss,bottom-sheet,mobile	A bottom sheet titled Sessions with a footer button, opened with swipe to dismiss on or off.
+096	feedback	sheet	Swipe to dismiss		sheet,swipe,bottom-sheet,account-switcher,list,mobile	A sheet titled Switch session with a description and a list of eight accounts that close it on click.
+097	feedback	skeleton	Card layout		skeleton,card,loading,avatar,placeholder	A glass card skeleton with a circular avatar placeholder beside three text lines of different widths.
+098	feedback	skeleton	Image placeholder		skeleton,image,card,flush,loading,placeholder	A flush glass card skeleton with a 180px rectangular image placeholder above two caption lines.
+099	feedback	skeleton	Text lines		skeleton,text,rows,card,loading	A glass card skeleton with a 60% wide heading line above a block of three text lines.
+100	feedback	spinner	In a button		spinner,button,loading,save,async	A Button that shows its loading spinner for two seconds after click and changes its label to Saving.
+101	feedback	spinner	Section loader		spinner,loader,card,section,loading	A glass card with a centered 40px spinner and a Loading data text.
+102	feedback	spinner	Sizes		spinner,size,loading,flex	Three spinners side by side at 16, 24 and 40 pixels.
+103	feedback	toast	Variants and duration		toast,toaster,notification,success,error,duration	Eight buttons that trigger toasts: five variants and three duration cases, with one Toaster mounted.
+104	display	alert	Closable		alert,closable,dismiss,onclose,notice,severity	Two dismissible alerts, an info one with a title and a warning one, that are replaced by a short dismissed note once closed.
+105	display	alert	Severities		alert,severity,success,warning,error,info	The four alert severities stacked: success, warning, error and info, each with a one-line message.
+106	display	alert	With title		alert,title,severity,success,error	Two alerts with a bold title above the body text: a success and an error.
+107	display	avatar	With image		avatar,image,src,alt,profile-photo	A row of four large avatars loaded from image URLs.
+108	display	avatar	Initials fallback		avatar,initials,fallback,alt,placeholder	Large avatars with no image source: three given only `alt` names and two given explicit `fallback` text.
+109	display	avatar	Shape and status		avatar,shape,rounded,status,presence,online	Large avatars showing the rounded shape and the four status indicators: online, busy, away and offline.
+110	display	avatar	Sizes		avatar,size,xs,xl,custom-size	Avatars at every preset size from extra small to extra large, plus a custom numeric size.
+111	display	avatar	Avatar stack		avatar,stack,avatar-group,overlap,overflow,collaborators	An overlapping avatar stack of three photo avatars and a fourth `+4` overflow avatar.
+112	display	badge	Colors		badge,color,count,icon-button,notification,flex	A notification bell icon button wrapped in a count badge, shown in the four badge colors.
+113	display	badge	Dot and counts		badge,count,dot,overflow,icon-button,unread	Four badges on icon buttons: a dot, a count of 3, a count of 99 and a count of 100.
+114	display	badge	On avatars		badge,avatar,dot,status,presence	Three medium avatars each carrying a status dot in success, warning or error color.
+115	display	chip	Basic		chip,label,tag,basic	Three plain chips with text labels.
+116	display	chip	Deletable		chip,deletable,ondelete,tags,removable,state	Removable chips: deleting one drops it from the list, and a reset link appears when all are gone.
+117	display	chip	With icons		chip,icon,lucide,label,star	Three chips each with a leading lucide icon: star, zap and tag.
+118	display	chip	Selectable		chip,selectable,selected,filter,toggle,onclick	Two toggle chips, Filter A starting off and Filter B starting on, that flip on click.
+119	display	chip	StatusChip		chip,status-chip,status,success,neutral,state	StatusChip in its five statuses: success, warning, error, info and neutral.
+120	display	chip	Variants and size		chip,variant,brand,size,sm,color	Chip color variants (default, brand, success, warning, error, info) plus a small size chip.
+121	display	code-snippet	Languages		code-snippet,code,syntax-highlighting,svelte,typescript,css	Three CodeSnippet blocks highlighting Svelte, TypeScript and CSS sources.
+122	display	data-table	Controlled mode		data-table,controlled,pagination,sorting,global-filter,server-side,tanstack	A DataTable driven from outside: filter, sort and pagination state live in the page, which slices 12 users into pages of 5.
+123	display	data-table	Simple mode		data-table,columns,column-helper,tanstack,table,basic	A DataTable with five columns and 12 user rows, passing only `columns` and `data`.
+124	display	divider	Horizontal		divider,horizontal,separator,card,stack	Three stacked text sections inside a glass card separated by horizontal dividers.
+125	display	divider	Vertical		divider,vertical,orientation,separator,flex	Three text items in a row inside a glass card separated by vertical dividers.
+126	display	external-link	In a results table		external-link,link,table,simple-table,responsive-cards,outbound	A table of three domains where each row ends with an ExternalLink to a registrar URL.
+127	display	image	Fixed ratio		image,alt,width,height,aspect-ratio,placeholder	An Image with an inline 4:3 gradient SVG, constrained to a 360px wrapper.
+128	display	image	srcset and sizes		image,srcset,sizes,responsive,alt,width	An Image with a two-rendition `srcset` (400w and 800w) and a `sizes` hint, in a 420px wrapper.
+129	display	kbd	Shortcuts in text		kbd,keyboard,shortcut,key,command-palette,hint	Keyboard key caps inline in a sentence describing the Ctrl+K shortcut to open the command palette and Esc to close it.
+130	display	live-list	Streaming rows		live-list,stream,progress,chip,bulk,status,real-time	A LiveList that streams in 40 simulated domain availability checks, one every 150ms, after a Start bulk check button is pressed.
+131	display	notification-bell	Controlled		notification-bell,notifications,controlled,unread,header,state	A NotificationBell whose notifications live in state and are updated by its read, read-all and clear callbacks.
+132	display	notification-bell	Default		notification-bell,notifications,empty-state,unread,badge,header	Two NotificationBell triggers side by side: one given three notifications and one given an empty list.
+133	display	pagination	Basic		pagination,page,bind,count,per-page,navigation	Pagination for 100 items at 10 per page, with the current page bound to state and printed below.
+134	display	pagination	Few items		pagination,few-pages,count,per-page,uncontrolled	Pagination with 30 items at 10 per page and no bound state.
+135	display	pagination	More siblings		pagination,siblings,sibling-count,many-pages,navigation	Pagination for 200 items at 10 per page with two sibling pages shown on each side of the current page.
+136	display	scroll-area	Horizontal scroll		scroll-area,horizontal,scrollbar,chip,card,overflow	A horizontal ScrollArea with an always visible scrollbar holding a row of 24 Tag chips inside a glass card.
+137	display	scroll-area	Vertical scroll		scroll-area,vertical,max-height,scrollbar,card,list	A vertical ScrollArea capped at 220px tall containing 20 Lorem ipsum rows inside a glass card.
+138	display	table	Cards on narrow containers		table,simple-table,responsive,cards,mobile,data-label	A SimpleTable that turns each row into a stacked card on narrow screens, listing three users in a flush glass card.
+139	display	table	Default (scroll)		table,simple-table,scroll,overflow,card,users	A default SimpleTable listing three users with name, email, role and status in a flush glass card.
+140	display	timeline	Simple		timeline,milestones,roadmap,history,dates	A basic Timeline of four project milestones, each with a label and a date.
+141	display	timeline	With variants		timeline,variant,success,info,order-tracking,status	A Timeline of an order's five tracking events, coloured by variant, with descriptions and timestamps.
+142	display	tooltip	Text trigger		tooltip,children,inline,text-trigger,hover,focus	A Tooltip wrapping plain inline text, which becomes the hover and focus trigger.
+143	display	tooltip	Custom delay		tooltip,delay,button,hover,timing	Three tooltips with different open delays on glass buttons: instant, default and slow.
+144	display	tooltip	On icon buttons		tooltip,icon-button,icons,aria-label,toolbar,lucide	Four icon-only buttons (Info, Heart, Zap, Star) that each reveal a Tooltip describing the action.
+145	display	tooltip	All sides		tooltip,side,placement,top,bottom,button	Four outlined buttons whose tooltips open on the top, right, bottom and left side.
+146	navigation	actions	autofocus		autofocus,action,focus,input,remount,a11y	An input that receives focus on mount, with a button that remounts it through a keyed block.
+147	navigation	actions	clickOutside		click-outside,action,dismiss,popover,dropdown,event	A box that counts how many clicks land outside it using the clickOutside action.
+148	navigation	actions	clipboard		clipboard,copy,action,button,feedback,install-command	A native button that copies an install command to the clipboard and shows a Copied! label for two seconds.
+149	navigation	actions	focusTrap		focus-trap,action,keyboard,a11y,modal,tab-order	A button that opens a box where Tab stays trapped among three buttons until Close is pressed.
+150	navigation	actions	longpress		longpress,action,touch,gesture,button,hold	A native button that fires a long-press handler after an 800ms hold and shows Long press! for 1.5 seconds.
+151	navigation	app-bar	Default		app-bar,glass-app-bar,header,toolbar,icon-button,avatar	A glass app bar with a title on the left and search, notifications and avatar on the right, inside a flush glass card.
+152	navigation	app-bar	With leading icon		app-bar,glass-app-bar,leading,trailing,header,menu-button	A glass app bar with a menu button in the leading slot and an Upgrade button plus avatar in the trailing slot.
+153	navigation	breadcrumb	Levels		breadcrumb,navigation,hierarchy,levels,path,links	Four stacked breadcrumbs with 2, 3, 5 and 1 levels, where the last item is the current page without a link.
+154	navigation	breadcrumb	Custom separator		breadcrumb,separator,navigation,custom,path	A breadcrumb with a custom separator character between three items.
+155	navigation	command-palette	Keyboard		kbd,keyboard,shortcuts,command-palette,hints,legend	A static list of four keyboard hints for the command palette, each pairing a Kbd key with a description.
+156	navigation	command-palette	Open the palette		command-palette,search,navigation,modules,keyboard,kbd,dialog	A command palette opened by a button, filtering two modules of navigation items and reporting the picked path.
+157	navigation	drawer	Left and right		drawer,side-panel,navigation,settings,overlay,left,right	Two buttons that open a left navigation drawer and a right settings drawer.
+158	navigation	menu	Default		dropdown-menu,menu,actions,destructive,separator,icon,trigger	A dropdown menu of file actions with icons, a separator and a destructive Delete item, reporting the last action.
+159	navigation	menu	Icon trigger		dropdown-menu,menu,icon-button,overflow,more-options,align,a11y	A dropdown menu opened by a three-dot icon button, with Share and Copy link items aligned to the end.
+160	navigation	popover	Basic		popover,trigger,overlay,confirm,stack,contextual	A popover opened from a button, containing a sentence of text and a Confirm button.
+161	navigation	popover	Form		popover,form,text-field,inline-edit,side,align,overlay	A popover anchored below-start of a button that holds a text field with Cancel and Save buttons.
+162	navigation	stepper	Horizontal stepper		stepper,wizard,steps,progress,onboarding,back-next,card	A four-step horizontal stepper inside a glass card with Back and Next buttons that advance the step.
+163	navigation	tabs	Controlled		tabs,controlled,bind-value,state,tabs-list,tabs-content	Tabs bound to a state variable with a line below showing the active tab value.
+164	navigation	tabs	Default		tabs,uncontrolled,tabs-list,tabs-content,sections,default	An uncontrolled tab set of Overview, Props and Examples, each with a short paragraph of documentation text.
+165	layout	app-shell	Anatomy		app-shell,anatomy,rail,panel,layout,diagram	A labelled diagram of the app shell showing a 52px rail, a 200px panel and the main content area.
+166	layout	app-shell	Live shell		app-shell,app-shell-layout,navigation,rail,sidebar,router-agnostic,page-shell	A working app shell with a rail, panel and page content whose pathname lives in local state and updates on navigation.
+167	layout	empty-state	Basic		empty-state,inbox,icon,actions,placeholder	An empty inbox state with an icon, a title, a description and a Compose message button.
+168	layout	empty-state	Hero		empty-state,hero,onboarding,first-run,actions,project	A hero-sized empty state inviting the user to start a first project, with Create project and Import buttons.
+169	layout	empty-state	No icon		empty-state,no-icon,create,leading-icon,actions	An empty state without an icon, showing a title, a description and a Create item button with a Plus icon.
+170	layout	empty-state	No results		empty-state,no-results,search,filters,actions	A no-results state for search with a magnifier icon and a Clear filters button.
+171	layout	empty-state	Error or offline		empty-state,offline,error,retry,network,actions	A load-failure state with a wifi-off icon and Retry plus Contact support buttons.
+172	layout	error-page	404 without actions		error-page,404,not-found,status,error	The ErrorPage component rendering a 404 status without its action buttons.
+173	layout	form-page	Basic form		app-form,form-section,form,text-field,select,switch,footer	A complete user creation form with a header, two sections, bound fields and a footer with Cancel and Create user.
+174	layout	form-page	Without header		app-form,form-section,form,no-header,text-field,footer	A compact form page with no title or description, one section and a Cancel and Save footer.
+175	layout	kpi-card	Basic metrics		kpi-card,kpi-grid,metrics,trend,dashboard,unit,icon	Three KPI cards with title, value, an optional unit, a positive or negative trend and an icon, inside a KpiGrid.
+176	layout	kpi-card	Negative trend		kpi-card,kpi-grid,negative-trend,metrics,churn,unit	Two KPI cards whose trends are negative, one with an icon and one without.
+177	layout	kpi-card	Without trend		kpi-card,kpi-grid,no-trend,metrics,counters,unit	Three KPI cards without a trend value, one with an icon and two plain.
+178	layout	kpi-grid	Four cards		kpi-grid,kpi-card,dashboard,metrics,four-columns,grid	A KpiGrid holding four KPI cards: Revenue, Users, Growth and Uptime, each with a trend and icon.
+179	layout	kpi-grid	Three cards		kpi-grid,kpi-card,odd,three-columns,dashboard,grid	A KpiGrid holding three KPI cards to show how the grid lays out an odd number of items.
+180	layout	layout-primitives	Container and Section		container,section,stack,card,layout,page,heading-level	A Container and Section holding a Stack of two plan cards, showing the page-level layout primitives.
+181	layout	layout-primitives	Responsive Grid		grid,responsive,columns,gap,breakpoints,box,layout	A Grid with responsive column counts and gaps holding eight numbered cells.
+182	layout	layout-primitives	Flex, Stack and Box		stack,flex,box,spacing,gap,layout,primitives	A Stack with a wrapping Flex row of three chips above a single padded Box.
+183	layout	list-page	AppList		app-list,list-page,search,filter-group,simple-table,status-chip,user-cell	A searchable, filterable users list with a New user action, a role filter and a table with user cell and status chip.
+184	layout	list-page	AppSettings		app-settings,settings,tabs,form-section,switch,text-field,list-page	A settings page with General and Security tabs, a Save action and form sections with text fields and switches.
+185	layout	list-page	PageShell		page-shell,dashboard,kpi-grid,kpi-card,card,glass,list-page	A dashboard page shell with four KPI cards and a placeholder glass card for a chart or table.
+186	layout	mobile-pane	Chat		mobile-pane,chat,mobile,icon-button,text-field,conversation	A button that opens a full-screen mobile pane titled Maria Souza with a message list, a header action and a composer.
+187	layout	page-shell	Dashboard page		page-shell,dashboard,kpi-grid,card,glass,actions,header	A page shell inside a flush glass card with a title, description, New report action, four KPI cards and a placeholder card.
+188	layout	sticky-actions	End aligned		sticky-actions,dirty,form,save-bar,scroll,text-field	A scrolling form whose sticky Cancel and Save bar only appears once the Name field has text.
+189	layout	sticky-actions	Stretch		sticky-actions,stretch,wizard,action-bar,scroll,align	A scrolling area with a sticky bar whose Back and Continue buttons stretch across the width.
+190	charts	bar	Horizontal bars		bar-chart,horizontal,ranking,categories,value-formatter,card	A horizontal bar chart ranking eight products by a single Sales series, with values formatted as thousands.
+191	charts	bar	Stacked bars		bar-chart,stacked,series,categories,revenue,card	A stacked bar chart splitting six months of revenue into four acquisition channels.
+192	charts	bar	Grouped and stacked		bar-chart,stacked,grouped,toggle,button,state,flex	A bar chart with Grouped and Stacked buttons that switch the same two-year quarterly data between layouts.
+193	charts	bar	Vertical bars		bar-chart,vertical,revenue,categories,value-formatter,card	A vertical bar chart of one Revenue series across four quarters.
+194	charts	gauge	Animated counter		gauge-chart,ring,counter,animation,onmount,score,stack	A ring gauge that counts up from 0 to 94 on mount, with a text label that changes with the value.
+195	charts	gauge	Progress ring		gauge-chart,ring,slider,bind-value,state,interactive	A ring gauge controlled by a slider, starting at 65.
+196	charts	gauge	Simple gauge		gauge-chart,score,value,label,card	A single gauge showing a score of 78 with a Score label.
+197	charts	gauge	Custom zones		gauge-chart,zones,thresholds,grid,metrics,card	Three gauges (CPU 67, Memory 82, Disk 45) that share colour zones for success, warning and error.
+198	charts	heatmap	Calendar heatmap		heatmap-chart,calendar,activity,range,tooltip-formatter,card	A calendar heatmap of daily commit counts from 2026-01-01 to 2026-09-15.
+199	charts	heatmap	Hour by day matrix		heatmap-chart,matrix,hours,weekdays,tooltip-formatter,card	A matrix heatmap of task counts by hour of day (24 columns) and weekday (7 rows).
+200	charts	heatmap	Year toggle		heatmap-chart,calendar,year-toggle,button,state,range	A calendar heatmap with 2026 and 2025 buttons that swap the dataset and date range.
+201	charts	line	Area with gradient fill		line-chart,area,revenue,time-series,value-formatter,card	A single Revenue line with a filled area under it across nine months.
+202	charts	line	Multi-line comparison		line-chart,multi-series,revenue,expenses,time-series,card	A line chart with three series, Revenue, Expenses and Profit, across nine months.
+203	charts	line	Simple line		line-chart,simple,revenue,time-series,value-formatter,card	A basic line chart of a single Revenue series over nine months.
+204	charts	line	Real-time stream		line-chart,streaming,live,realtime,onmount,interval	A live line chart that shifts in a new Live revenue point every 800 ms over a 20-point window.
+205	charts	overview	Dashboard		dashboard,kpi-card,line-chart,bar-chart,pie-chart,scatter-chart,radar-chart	An analytics dashboard combining four KPI cards with line, stacked bar, donut, scatter, calendar heatmap, gauge and radar charts.
+206	charts	pie	Animated proportions		pie-chart,donut,chip,quarters,state,derived	A donut chart with Q1, Q2 and Q3 chips that switch which quarter of data the chart shows.
+207	charts	pie	Donut with center KPI		pie-chart,donut,center-label,total,market-share,card	A donut chart with a total value and caption shown in the centre.
+208	charts	pie	Basic donut		pie-chart,donut,market-share,proportions,card	A donut chart of market share split across five categories.
+209	charts	pie	Rose chart		pie-chart,rose,nightingale,categories,card	A Nightingale rose chart of six product areas, using the rose prop on PieChart.
+210	charts	radar	Comparison		radar-chart,compare,series,indicators,scores,card	A radar chart comparing Team A and Team B across six dimensions.
+211	charts	radar	Interactive team builder		radar-chart,slider,interactive,derived,state,builder	A radar chart for My team with six sliders that edit each dimension live.
+212	charts	radar	Simple radar		radar-chart,simple,indicators,scores,single-series,card	A radar chart of one team, Team Alpha, across six dimensions.
+213	charts	scatter	Basic scatter		scatter-chart,basic,points,y-axis,y-formatter,card	A scatter plot of 80 generated points in a single Data points series.
+214	charts	scatter	Bubble chart		scatter-chart,bubble,size,three-dimensions,accounts,card	A bubble chart where each of 50 accounts carries a third value that sets the bubble size.
+215	charts	scatter	Clustered by tier		scatter-chart,clusters,segments,multi-series,palette,card	A scatter plot with three named series, Premium, Standard and Free, of 30 points each.
+216	charts	sparklines	Bar sparklines		sparkline,bar,trend,inline-metrics,flex,stack	Three labelled bar sparklines with up, down and neutral trends in a wrapping row.
+217	charts	sparklines	KPI cards with trend lines		sparkline,kpi,card,trend,dashboard,grid	Four KPI cards, each with a value, a change percentage and a trend-coloured sparkline.
+218	charts	sparklines	Live streaming micro charts		sparkline,live,realtime,monitoring,onmount,grid	Three live sparklines for CPU, Memory and Network that shift in a new value every 600 ms.
+219	charts	sparklines	Table row sparklines		sparkline,table,trend,card,flush,rows	A table of four products with an inline sparkline per row and a text trend label.
+220	foundation	colors	Brand		colors,brand,tokens,swatches,theme	Six swatches for the brand color tokens, each showing its name and CSS variable.
+221	foundation	colors	Outline		colors,outline,border,tokens,swatches	Three swatches for the outline tokens, drawn with a border so they stay visible on the page.
+222	foundation	colors	Semantic		colors,semantic,success,warning,error,info,tokens	Four swatches for the semantic status color tokens: success, warning, error and info.
+223	foundation	colors	Surfaces		colors,surface,background,tokens,swatches,elevation	Four swatches for the surface tokens from sunken to overlay, drawn with a border.
+224	foundation	colors	Text		colors,text,typography,tokens,swatches,contrast	Four swatches for the text color tokens: primary, secondary, hint and disabled.
+225	foundation	materials	Button glass variants		materials,glass,button,glass-btn,backdrop	Three native buttons using the glass button classes over a brand to info gradient backdrop.
+226	foundation	materials	Glass tiers		materials,glass,surface,elevation,blur,tiers	Five glass surfaces at elevations 1 to 5, from Ultra thin to Chrome, over a three color gradient.
+227	foundation	materials	Tinted and glowing		materials,glass,surface,tone,glow,tinted	Three glass surfaces over a gradient: tinted, glowing, and tinted with glow.
+228	foundation	shadows	Shadow scale		shadows,elevation,tokens,scale,box-shadow	Five cards, each with one shadow token from xs to xl, labelled with its name and CSS variable.
+229	foundation	typography	Body and UI scale		typography,body,font-size,tokens,caption,label	Seven body text size tokens from Body 1 to Nano, each rendered as a sample line.
+230	foundation	typography	Font families		typography,font-family,sans,display,mono,tokens	The three font family tokens, sans, display and mono, each with a sample sentence.
+231	foundation	typography	Heading scale		typography,headings,font-size,tokens,h1	Six heading size tokens, Heading 1 to Heading 6, each rendered as a bold sample line.
+232	docs-kit	docs	LinkCard, CardGrid and MethodBadge		card-grid,link-card,method-badge,docs-kit,http-method,api-docs	A CardGrid with two LinkCards, followed by a row of five MethodBadges for the HTTP verbs.
+233	docs-kit	docs	CodeTabs		code-tabs,code-tab,docs-kit,sync,curl,api-docs	Two CodeTabs groups, each with cURL and Node.js tabs, that share the selected language through the same sync key.
+234	docs-kit	docs	DocsNav and TableOfContents		docs-nav,table-of-contents,docs-kit,sidebar,navigation,headings	A DocsNav sidebar with two groups and a TableOfContents of four headings rendered side by side.
+235	docs-kit	docs	ca-prose, Callout and Steps		prose,callout,steps,docs-kit,table,api-docs	A documentation article using the ca-prose wrapper with headings, two Callouts, a Steps list and a request fields table.
+236	docs-kit	docs	DocsSearch		docs-search,search,docs-kit,dialog,command-palette,index	A DocsSearch dialog opened from an Open search button over a two-entry index, showing the selected href afterwards.
+237	navigation	tabs	Scrollable		tabs,scrollable,fade,overflow,settings,tabs-list	Seven tabs in a narrow container where the list scrolls horizontally with edge fades.
+238	navigation	tabs	Icons		tabs,icon,brand-icon,scheme-asset,dark-mode,tabs-trigger	Tabs with a Lucide icon, a brand-colored svg icon and a scheme-aware monochrome icon next to each label.
+239	navigation	menu	Leading icons and brand logos		dropdown-menu,menu,brand-icon,scheme-asset,dark-mode,icon,disabled	A dropdown menu of agents where brand-colored icons opt out of the item's text color, including a scheme-aware monochrome mark.
+240	display	avatar	IconFallback		avatar,fallback,snippet,icon,image-error,lucide	Two large avatars whose fallback is a custom icon: one with an image that fails to decode and one with no image.
+241	feedback	skeleton	The skeleton prop		skeleton,loading,avatar,kpi-card,text-field,card	Avatar, KpiCard, TextField and Card all switched to their skeleton state by one shared loading flag.
+242	feedback	lightbox	Gallery with video, caption and download		lightbox,gallery,video,caption,carousel,media	A lightbox gallery with three items, two images and one video, each with a caption and some with meta text.
+243	feedback	install-prompt	iOS instructions		install-prompt,pwa,ios,banner,install	The install prompt in iOS mode, showing add to home screen instructions inside a reserved stage box.
+244	feedback	install-prompt	Native prompt		install-prompt,pwa,native,beforeinstallprompt,banner	The install prompt in native mode, triggered by a stand-in beforeinstallprompt event fired on mount.
+245	layout	record-list	Apps		record-list,record-row,table,status-chip,row-menu,avatar,responsive	A record list of three apps with an avatar identity, scopes, install count, status chip, created date and a row menu.
+246	layout	record-list	Without a menu		record-list,record-row,table,no-actions,webhooks,responsive	A three column record list of webhooks with no actions slot, so there is no trailing menu track.
+247	layout	record-list	Phone width		record-list,record-row,table,phone,responsive,container-width	The same record list inside a narrow slot, to show it stacking because the list reads its own width.
+248	display	message-bubble	A grouped conversation		message-bubble,chat,avatar,grouped,delivery-status	A grouped chat thread: two incoming bubbles from one sender with a name and avatar, then an outgoing read bubble.
+249	display	message-bubble	Delivery status		message-bubble,chat,status,delivery,ticks	Four outgoing bubbles, one per delivery state: pending, sent, delivered and read.
+250	display	message-bubble	Quote and reactions		message-bubble,chat,quote,reactions,reply	An incoming bubble with a reply quote at the top and two reaction chips under it.
+251	display	conversation-item	Inbox		conversation-item,inbox,chat,unread,avatar	An inbox of four conversation rows: unread count, pinned, muted, typing, with the selected row highlighted.
+252	display	audio-player	Voice messages		audio-player,voice,waveform,chat,scrub	Two voice message players: one with a waveform from peaks, one with flat placeholder bars.
+253	display	media-grid	Mixed media		media-grid,gallery,chat,lightbox,attachments	A media grid of six items (images, a video, a document) showing four tiles and a +2 overflow that opens the gallery.
+254	display	virtual-list	Chat history		virtual-list,history,chat,infinite,prepend	A windowed chat history of 40 messages that loads 30 older ones at the top without moving the view.
+255	navigation	loading-boundary	Fast and slow loads		loading-boundary,skeleton,suspense,pending,delay	A LoadingBoundary around a suspending report with a fast (100 ms) and a slow (1.5 s) load button.
+256	motion	basics	Fade rise	Fade rise | Fade up | Subir com fade	motion,fade,rise,entrance,card	A card that fades in while rising 16px into place, replaying on a loop only while it is in view.

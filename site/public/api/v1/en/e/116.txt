@@ -8,7 +8,7 @@ Spec:
 - `{#if tags.length === 0}` shows a `<button class="reset" type="button"` labelled Reset tags
 - The reset button runs `onclick={() => (tags = [...initial])}`
 Tags: chip, deletable, ondelete, tags, removable, state
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Chip
 Live demo: https://ui.codeatlas.com.br/docs/display/chip#deletable
 

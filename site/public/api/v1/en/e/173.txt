@@ -10,7 +10,7 @@ Spec:
 - `{#snippet footer()}` has Cancel with `variant="ghost"` and Create user with `disabled={saving || !name || !email}`
 - `function save()` sets `saving = true` and resets it with `setTimeout(() => (saving = false), 1400)`
 Tags: app-form, form-section, form, text-field, select, switch, footer
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: AppForm, FormSection, TextField, Select, Switch, Button, Divider
 Live demo: https://ui.codeatlas.com.br/docs/layout/form-page#basic-form
 

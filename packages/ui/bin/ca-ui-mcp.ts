@@ -195,7 +195,7 @@ server.registerTool(
 	"search_demos",
 	{
 		description:
-			"Find numbered demos (#NNN) of the gallery by words in title, summary, tags or component names. Returns `#id title — group/page — summary — components`. Fetch the source with get_demo.",
+			"Find numbered demos (#NNN) of the gallery by words in motion names (a name or an alias, in any language), title, summary, tags or component names. Names rank first. Returns `#id title — group/page — summary — components`. Fetch the source with get_demo.",
 		inputSchema: {
 			query: z.string(),
 			group: z.string().optional(),
@@ -204,11 +204,22 @@ server.registerTool(
 	},
 	({ query, group, limit }) => {
 		const words = query.split(/\s+/).map(squash).filter(Boolean);
+		const whole = squash(query);
 		const hits = demos
 			.filter((d) => !group || d.group === group)
 			.map((d) => {
 				const hay = squash([d.title, d.summary, ...d.tags, ...d.components, d.page].join(" "));
-				return { d, score: words.filter((w) => hay.includes(w)).length };
+				const names = (d.names ?? []).map(squash);
+				// Motion names rank before everything else: an exact name or alias, then a partial one.
+				const nameScore =
+					whole && names.includes(whole)
+						? 1000
+						: whole && names.some((n) => n.includes(whole) || whole.includes(n))
+							? 500
+							: words.some((w) => names.some((n) => n.includes(w)))
+								? 100
+								: 0;
+				return { d, score: nameScore + words.filter((w) => hay.includes(w)).length };
 			})
 			.filter((h) => h.score > 0)
 			.sort((a, b) => b.score - a.score)

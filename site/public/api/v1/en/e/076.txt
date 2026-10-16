@@ -8,7 +8,7 @@ Spec:
 - Each tile prints Elevation 0 to Elevation 5 in a `.name` paragraph
 - `.tile` uses `min-width: 7rem` in a wrapping flex `.row`
 Tags: surface, elevation, shadow, depth, solid, levels
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Surface
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/surface#elevation
 

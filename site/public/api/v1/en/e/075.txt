@@ -8,7 +8,7 @@ Spec:
 - Sits in `<div class="frame">` with `position: relative` and `overflow: hidden`
 - Foreground text: Refraction layer behind this text.
 Tags: liquid-glass, glass-optics, refraction, glass, material, preset
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: LiquidGlass
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/liquid-glass#refraction-layer
 

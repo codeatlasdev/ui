@@ -9,7 +9,7 @@ Spec:
 - `const messages` has 5 strings rendered with `{#each messages as m}<li>{m}</li>{/each}`
 - Composer is `<TextField label="Message" placeholder="Write something…" />`
 Tags: mobile-pane, chat, mobile, icon-button, text-field, conversation
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: MobilePane, Button, IconButton, TextField
 Live demo: https://ui.codeatlas.com.br/docs/layout/mobile-pane#chat
 

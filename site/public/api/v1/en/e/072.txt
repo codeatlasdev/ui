@@ -8,7 +8,7 @@ Spec:
 - Each card has three paragraphs: `{s.label}`, `{s.value}` and `{s.delta}`
 - `.stat` uses `min-width: 140px` inside a wrapping flex `.grid`
 Tags: card, stats, kpi, dashboard, glass, metrics
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Card
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/card#stat-cards
 

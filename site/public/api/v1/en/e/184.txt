@@ -10,7 +10,7 @@ Spec:
 - Security has `<FormSection title="Authentication" layout="list">` with `<Switch label="Two-factor authentication" />` and `<Switch label="Single sign-on (SSO)" />`
 - Frame size is `height: 380px`
 Tags: app-settings, settings, tabs, form-section, switch, text-field, list-page
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: AppSettings, Button, FormSection, Switch, TextField
 Live demo: https://ui.codeatlas.com.br/docs/layout/list-page#appsettings
 

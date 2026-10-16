@@ -10,7 +10,7 @@ Spec:
 - `status="offline"` on `alt="Offline"`
 - All five use `size="lg"`
 Tags: avatar, shape, rounded, status, presence, online
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Avatar
 Live demo: https://ui.codeatlas.com.br/docs/display/avatar#shape-and-status
 

@@ -261,4 +261,15 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "253", path: "display/media-grid/Gallery" },
 	{ id: "254", path: "display/virtual-list/History" },
 	{ id: "255", path: "navigation/loading-boundary/Delayed" },
+	{ id: "256", path: "motion/basics/FadeRise" },
 ];
+
+/**
+ * Reserved id ranges for the motion catalog (no entries yet). Gaps are allowed: ids only have to be
+ * unique, 3-digit and increasing in this array, so append inside the owner's range, never renumber.
+ *   text         300-319   split text, reveals, counters, typewriter
+ *   scroll       320-339   scroll-linked, sticky, parallax, progress
+ *   micro        340-359   hover, press, toggle, feedback micro-interactions
+ *   transitions  360-379   page, shared-element, list, dialog transitions
+ *   hero/ambient 380-399   hero entrances, backgrounds, ambient loops
+ */

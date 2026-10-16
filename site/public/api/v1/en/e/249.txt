@@ -6,7 +6,7 @@ Spec:
 - `const states = ['pending', 'sent', 'delivered', 'read'] as const;`
 - `{#each states as status}` renders `<MessageBubble direction="out" time="09:41" {status}>`
 Tags: message-bubble, chat, status, delivery, ticks
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: MessageBubble
 Live demo: https://ui.codeatlas.com.br/docs/display/message-bubble#delivery-status
 

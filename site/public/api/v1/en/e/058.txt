@@ -9,7 +9,7 @@ Spec:
 - Read-only field uses `readonly` and Disabled field uses `disabled`, both `value="Cannot edit this"`
 - Small field uses `size="sm"`
 Tags: text-field, error, required, readonly, disabled, size, description
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/text-field#states
 

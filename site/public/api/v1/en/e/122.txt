@@ -10,7 +10,7 @@ Spec:
 - `createCaColumnHelper<User>()` defines 5 columns with `col.accessor`
 - `onGlobalFilterChange` resets `pageIndex: 0`
 Tags: data-table, controlled, pagination, sorting, global-filter, server-side, tanstack
-Needs: @codeatlasdev/ui@4.1.0 + @tanstack/svelte-table
+Needs: @codeatlasdev/ui@4.2.0 + @tanstack/svelte-table
 Components: DataTable
 Live demo: https://ui.codeatlas.com.br/docs/display/data-table#controlled-mode
 

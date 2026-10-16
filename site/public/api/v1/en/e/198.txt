@@ -9,7 +9,7 @@ Spec:
 - `tooltipFormatter={(v) => `${v} commits`}`
 - `height="160px"` inside `<Card material="glass" full>`
 Tags: heatmap-chart, calendar, activity, range, tooltip-formatter, card
-Needs: @codeatlasdev/ui@4.1.0 + echarts
+Needs: @codeatlasdev/ui@4.2.0 + echarts
 Components: Card, HeatmapChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/heatmap#calendar-heatmap
 

@@ -1,0 +1,46 @@
+<!-- @codeatlasdev/ui demo #256 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/motion/basics#fade-rise -->
+Element: #256 Fade rise (motion/basics)
+What it shows: A card that fades in while rising 16px into place, replaying on a loop only while it is in view.
+When to use: Entrance of a card, a toast, a list row or any block that appears after the page has loaded.
+Spec:
+- Wrapped in `MotionStage` with `label="Fade rise: a card fades in while rising into place"` and `loop={2400}`
+- `{#key m.cycle}` remounts the card so `animation: fade-rise` runs again each cycle
+- Keyframes: `from { opacity: 0; transform: translateY(16px); }` to `to { opacity: 1; transform: translateY(0); }`
+- Under reduced motion `class:rise--run={!m.reduced}` drops the animation and the card renders in its final state
+Motion:
+- opacity, transform: translateY: 420ms cubic-bezier(0.2, 0, 0, 1) delay 80ms
+Names: Fade rise | Fade up | Subir com fade
+Tags: motion, fade, rise, entrance, card
+Needs: @codeatlasdev/ui@4.2.0
+Components: Card
+Live demo: https://ui.codeatlas.com.br/docs/motion/basics#fade-rise
+
+<script lang="ts">
+  import { Card } from '@codeatlasdev/ui';
+  import MotionStage from '~/components/motion/MotionStage.svelte';
+</script>
+
+<MotionStage label="Fade rise: a card fades in while rising into place" loop={2400}>
+  {#snippet children(m)}
+    <!-- Keyed on the cycle: a new cycle mounts a fresh element, so the animation runs again. -->
+    {#key m.cycle}
+      <div class="rise" class:rise--run={!m.reduced}>
+        <Card>
+          <p class="rise__title">Invoice paid</p>
+          <p class="rise__body">The card fades in and rises 16px into place.</p>
+        </Card>
+      </div>
+    {/key}
+  {/snippet}
+</MotionStage>
+
+<style>
+  .rise { width: 100%; max-width: 320px; }
+  .rise--run { animation: fade-rise 420ms cubic-bezier(0.2, 0, 0, 1) 80ms both; }
+  .rise__title { margin: 0; font-weight: var(--ca-font-weight-semibold); }
+  .rise__body { margin: var(--ca-space-1) 0 0; color: var(--ca-text-secondary); }
+  @keyframes fade-rise {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+</style>

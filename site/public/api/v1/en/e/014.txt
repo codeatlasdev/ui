@@ -9,7 +9,7 @@ Spec:
 - `size="sm"` with `value="small"`
 - `size="lg"` with `value="large"`
 Tags: copy-button, variant, size, filled, glass, outlined
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: CopyButton
 Live demo: https://ui.codeatlas.com.br/docs/inputs/copy-button#variants-and-sizes
 

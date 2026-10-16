@@ -8,7 +8,7 @@ Spec:
 - Initial value is `$state('apple')`
 - Selected value is shown in `<code>{fruit}</code>` under the group
 Tags: radio-group, radio, vertical, single-choice, bind-value
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: RadioGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/radio#vertical
 

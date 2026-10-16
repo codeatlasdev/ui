@@ -8,7 +8,7 @@ Spec:
 - `currency="EUR" locale="de-DE"` with `bind:value={eur}` starting at `$state(123456)`
 - Labels: `Price (USD, en-US)`, `Price (JPY, no decimals)` and `Preis (EUR, de-DE)`
 Tags: money-input, currency, locale, usd, jpy, eur, forms
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: MoneyInput
 Live demo: https://ui.codeatlas.com.br/docs/inputs/money-input#currency-and-locale
 

@@ -7,7 +7,7 @@ Spec:
 - Output line prints `value: {code || '–'} · completed: {done || '–'}`
 - `<PinInput label="PIN" length={4} mask bind:value={pin} />`
 Tags: pin-input, otp, verification-code, mask, oncomplete, forms
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: PinInput
 Live demo: https://ui.codeatlas.com.br/docs/inputs/pin-input#default
 

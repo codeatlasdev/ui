@@ -9,7 +9,7 @@ Spec:
 - `valueFormatter={fmt}` renders `$${(v / 1000).toFixed(0)}k`
 - `height="300px"` inside `<Card material="glass" full>`
 Tags: line-chart, simple, revenue, time-series, value-formatter, card
-Needs: @codeatlasdev/ui@4.1.0 + echarts
+Needs: @codeatlasdev/ui@4.2.0 + echarts
 Components: Card, LineChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/line#simple-line
 

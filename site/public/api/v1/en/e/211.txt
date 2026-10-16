@@ -10,7 +10,7 @@ Spec:
 - `onchange={(v) => { dims[i] = v[0]; }}` writes back the first slider value
 - Each row shows the dimension name and `{dims[i]}` in a `<Flex justify="between">`
 Tags: radar-chart, slider, interactive, derived, state, builder
-Needs: @codeatlasdev/ui@4.1.0 + echarts
+Needs: @codeatlasdev/ui@4.2.0 + echarts
 Components: Card, Stack, Flex, Slider, RadarChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/radar#interactive-team-builder
 

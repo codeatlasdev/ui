@@ -69,3 +69,34 @@ describe.skipIf(!built)("ca-ui-mcp list_surfaces", () => {
 		expect(text).toContain("Styles: glass, frosted, solid");
 	});
 });
+
+describe.skipIf(!built || !existsSync(join(import.meta.dir, "../dist/demos.json")))(
+	"ca-ui-mcp search_demos names",
+	() => {
+		const client = new Client({ name: "test", version: "0.0.0" });
+		beforeAll(async () => {
+			await client.connect(new StdioClientTransport({ command: "node", args: [bin] }));
+		});
+		afterAll(() => client.close());
+
+		const search = async (query: string) => {
+			const res = (await client.callTool({ name: "search_demos", arguments: { query } })) as {
+				isError?: boolean;
+				content: { text: string }[];
+			};
+			return res.content[0]?.text ?? "";
+		};
+
+		it("finds a motion by canonical name, alias and partial name, case-insensitively", async () => {
+			for (const q of ["Fade rise", "SUBIR COM FADE", "fade up", "rise"])
+				expect((await search(q)).split("\n")[0]).toMatch(/^#256 Fade rise /);
+		});
+
+		it("ranks a name match before demos that only mention the words", async () => {
+			// "card" is in the summary, tags and components of many demos; the alias "Fade up" must still win.
+			const lines = (await search("fade up card")).split("\n");
+			expect(lines[0]).toMatch(/^#256 /);
+			expect(lines.length).toBeGreaterThan(1);
+		});
+	}
+);

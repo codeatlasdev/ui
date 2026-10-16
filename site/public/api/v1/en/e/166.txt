@@ -10,7 +10,7 @@ Spec:
 - Page is `<PageShell title={titles[pathname] ?? 'Page'} description={pathname}>` with a `KpiGrid` of 2 `KpiCard` items: Revenue and Users
 - Stage height is `height: 440px`
 Tags: app-shell, app-shell-layout, navigation, rail, sidebar, router-agnostic, page-shell
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: AppShellLayout, PageShell, KpiCard, KpiGrid, Card
 Live demo: https://ui.codeatlas.com.br/docs/layout/app-shell#live-shell
 

@@ -8,7 +8,7 @@ Spec:
 - Each item is `<button class="item" onclick={() => (open = false)}>` inside `<Stack gap="1">`
 - Trigger is `<Button variant="outlined"` labelled Open sheet
 Tags: sheet, swipe, bottom-sheet, account-switcher, list, mobile
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Sheet, Button, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/sheet#swipe-to-dismiss
 

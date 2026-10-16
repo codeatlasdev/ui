@@ -9,7 +9,7 @@ Spec:
 - `<Card material="glass" full>` holds the text Chart or data table goes here
 - Frame size is `height: 420px`
 Tags: page-shell, dashboard, kpi-grid, kpi-card, card, glass, list-page
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: PageShell, KpiCard, KpiGrid, Card
 Live demo: https://ui.codeatlas.com.br/docs/layout/list-page#pageshell
 

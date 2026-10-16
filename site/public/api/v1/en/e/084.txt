@@ -9,7 +9,7 @@ Spec:
 - Delete runs `confirmed = true; open = false;` and shows `Item deleted.` with `aria-live="polite"`
 - Trigger is `<Button variant="destructive"` with a `<Trash2 size={14} />` icon in `{#snippet leading()}`
 Tags: dialog, confirmation, destructive, delete, actions
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Dialog, Button
 Live demo: https://ui.codeatlas.com.br/docs/feedback/dialog#confirmation
 

@@ -9,7 +9,7 @@ Spec:
 - Each item closes its drawer with `onclick={() => (leftOpen = false)}` or `onclick={() => (bottomOpen = false)}`
 - Triggers are two `<Button variant="outlined"` labelled Open left and Open bottom
 Tags: drawer, left, bottom, navigation, sort, side-panel
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Drawer, Button, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/drawer#left-and-bottom
 

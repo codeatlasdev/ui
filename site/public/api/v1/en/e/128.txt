@@ -9,7 +9,7 @@ Spec:
 - `alt="Two renditions of the same 16 by 9 picture"`
 - Wrapper is `<div style="max-width: 420px">`
 Tags: image, srcset, sizes, responsive, alt, width
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Image
 Live demo: https://ui.codeatlas.com.br/docs/display/image#srcset-and-sizes
 

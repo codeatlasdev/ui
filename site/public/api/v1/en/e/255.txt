@@ -7,7 +7,7 @@ Spec:
 - `{#key run}` restarts the load for each button
 - `ms = 100; run++;` is the fast case and `ms = 1500; run++;` the slow one
 Tags: loading-boundary, skeleton, suspense, pending, delay
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Button, LoadingBoundary, Stack
 Live demo: https://ui.codeatlas.com.br/docs/navigation/loading-boundary#fast-and-slow-loads
 

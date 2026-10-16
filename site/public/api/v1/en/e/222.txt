@@ -6,7 +6,7 @@ Spec:
 - Renders `<Swatches {tokens} bordered={false} />` with 4 tokens
 - Tokens in order: `--ca-semantic-success`, `--ca-semantic-warning`, `--ca-semantic-error`, `--ca-semantic-info`
 Tags: colors, semantic, success, warning, error, info, tokens
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/colors#semantic
 

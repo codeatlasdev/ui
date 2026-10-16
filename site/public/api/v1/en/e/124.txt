@@ -7,7 +7,7 @@ Spec:
 - `<Stack gap="4">` stacks Section A, B and C paragraphs
 - `<Divider />` is placed between them with no props
 Tags: divider, horizontal, separator, card, stack
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Divider, Card, Stack
 Live demo: https://ui.codeatlas.com.br/docs/display/divider#horizontal
 

@@ -8,7 +8,7 @@ Spec:
 - Row shows a Price label and the value `${range[0]} – ${range[1]}`
 - Wrapper `.row` uses `max-width: 480px`
 Tags: slider, range, two-thumb, price, filter
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Slider
 Live demo: https://ui.codeatlas.com.br/docs/inputs/slider#range
 

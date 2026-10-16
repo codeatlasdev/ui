@@ -10,7 +10,7 @@ Spec:
 - `<Button variant="filled" onclick={start} disabled={status === 'running'}>` starts the stream, label becomes Checking… while running
 - `start()` pushes one item with `domain` and `free` every 150ms with `setInterval` and sets `status = 'done'` at `TOTAL`
 Tags: live-list, stream, progress, chip, bulk, status, real-time
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: LiveList, Button, Chip
 Live demo: https://ui.codeatlas.com.br/docs/display/live-list#streaming-rows
 

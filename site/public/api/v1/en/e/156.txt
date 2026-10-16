@@ -10,7 +10,7 @@ Spec:
 - A `<Kbd>` hint is shown beside the button
 - Result shown in `aria-live="polite"` as `Selected: <code>{picked}</code>`
 Tags: command-palette, search, navigation, modules, keyboard, kbd, dialog
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: CommandPalette, Button, Kbd
 Live demo: https://ui.codeatlas.com.br/docs/navigation/command-palette#open-the-palette
 

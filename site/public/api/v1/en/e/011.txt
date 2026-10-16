@@ -9,7 +9,7 @@ Spec:
 - Third field: `disabled` with `placeholder="Unavailable"`
 - Wrapper `.col` has `max-width: 320px`
 Tags: combobox, error, disabled, required, description, empty-state
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Combobox
 Live demo: https://ui.codeatlas.com.br/docs/inputs/combobox#states
 

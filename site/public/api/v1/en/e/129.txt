@@ -7,7 +7,7 @@ Spec:
 - `<Kbd>Esc</Kbd>` as the second shortcut in the same sentence
 - Each key is plain text children of `Kbd`, no props
 Tags: kbd, keyboard, shortcut, key, command-palette, hint
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Kbd
 Live demo: https://ui.codeatlas.com.br/docs/display/kbd#shortcuts-in-text
 

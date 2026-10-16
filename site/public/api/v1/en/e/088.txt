@@ -9,7 +9,7 @@ Spec:
 - `{#snippet actions()}` holds `<Button variant="ghost" size="sm"` labelled Mark all read
 - Trigger is `<Button variant="ghost"` with a `<Bell size={14} />` icon
 Tags: drawer, notifications, side-panel, unread, list
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Drawer, Button, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/drawer#notification-panel
 

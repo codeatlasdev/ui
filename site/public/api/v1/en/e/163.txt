@@ -9,7 +9,7 @@ Spec:
 - State is echoed as `Active tab: <code>{active}</code>`
 - Wrapper is `.wrap` with `max-width: 480px`
 Tags: tabs, controlled, bind-value, state, tabs-list, tabs-content
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Tabs, TabsList, TabsTrigger, TabsContent
 Live demo: https://ui.codeatlas.com.br/docs/navigation/tabs#controlled
 

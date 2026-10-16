@@ -8,7 +8,7 @@ Spec:
 - Label switches with state: `{fired ? 'Long press!' : 'Press and hold (800ms)'}`
 - `let fired = $state(false)`
 Tags: longpress, action, touch, gesture, button, hold
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/navigation/actions#longpress
 

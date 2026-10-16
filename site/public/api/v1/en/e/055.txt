@@ -9,7 +9,7 @@ Spec:
 - Read-only content uses `readonly`; Disabled content uses `disabled`, both `value="Cannot be edited."`
 - Fixed uses `resize="none"` and `rows={3}`
 Tags: text-area, textarea, error, required, readonly, disabled
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: TextArea
 Live demo: https://ui.codeatlas.com.br/docs/inputs/text-area#states
 

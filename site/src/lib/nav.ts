@@ -10,6 +10,7 @@ export const GROUPS = [
 	"Feedback",
 	"Navigation",
 	"Layout",
+	"Motion",
 	"Charts",
 	"Docs kit",
 ] as const;

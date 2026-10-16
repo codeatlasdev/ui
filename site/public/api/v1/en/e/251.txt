@@ -8,7 +8,7 @@ Spec:
 - `unread`, `pinned`, `muted` and `typing` come from the row
 - `{#snippet avatar()}<Avatar alt={row.title} size="lg" />{/snippet}`
 Tags: conversation-item, inbox, chat, unread, avatar
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Avatar, ConversationItem
 Live demo: https://ui.codeatlas.com.br/docs/display/conversation-item#inbox
 

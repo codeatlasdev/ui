@@ -7,7 +7,7 @@ Spec:
 - `<CopyButton value="icon-only" label="" />` is icon-only via an empty `label`
 - `<CopyButton value="https://ui.codeatlas.com.br" label="Copy link" toast="Link copied" />`
 Tags: copy-button, toast, toaster, icon-only, clipboard, label
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: CopyButton, Toaster
 Live demo: https://ui.codeatlas.com.br/docs/inputs/copy-button#icon-only-and-toast
 

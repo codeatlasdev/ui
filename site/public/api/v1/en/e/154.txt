@@ -6,7 +6,7 @@ Spec:
 - `<Breadcrumb` with `items` Docs (`href: '/'`), API Reference (`href: '/api'`) and Components (no `href`)
 - `separator="›"` sets a single character as the separator
 Tags: breadcrumb, separator, navigation, custom, path
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Breadcrumb
 Live demo: https://ui.codeatlas.com.br/docs/navigation/breadcrumb#custom-separator
 

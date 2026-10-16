@@ -8,7 +8,7 @@ Spec:
 - Rows labelled Step 10 and Disabled with readouts `{stepped}` and 35
 - Wrapper `.col` uses `max-width: 480px`
 Tags: slider, step, disabled, discrete, bind-value
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Slider
 Live demo: https://ui.codeatlas.com.br/docs/inputs/slider#step-and-disabled
 

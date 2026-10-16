@@ -8,7 +8,7 @@ Spec:
 - `onconfirm={publish}` sets `pending = true`, awaits 1500 ms, then sets `pending = false` and `open = false`
 - Trigger is `<Button variant="outlined"` labelled Open controlled
 Tags: alert-dialog, controlled, pending, async, publish
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: AlertDialog, Button
 Live demo: https://ui.codeatlas.com.br/docs/feedback/alert-dialog#controlled-pending
 

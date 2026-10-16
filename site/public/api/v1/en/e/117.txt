@@ -8,7 +8,7 @@ Spec:
 - `<Chip label="Tagged" icon={Tag} />`
 - `icon` receives the component itself imported from `@lucide/svelte`
 Tags: chip, icon, lucide, label, star
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Chip
 Live demo: https://ui.codeatlas.com.br/docs/display/chip#with-icons
 

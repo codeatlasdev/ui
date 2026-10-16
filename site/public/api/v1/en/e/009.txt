@@ -8,7 +8,7 @@ Spec:
 - `indeterminate` with `aria-label="Unlabelled indeterminate checkbox"`
 - No `label` prop on any of the three
 Tags: checkbox, aria-label, accessibility, unlabelled, indeterminate
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Checkbox
 Live demo: https://ui.codeatlas.com.br/docs/inputs/checkbox#without-label
 

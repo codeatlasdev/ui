@@ -1,0 +1,13 @@
+---
+title: Basics
+description: "The smallest motion demos: one effect, one name, exact timing, wrapped in MotionStage."
+group: Motion
+order: 1
+---
+import Demo from "~/components/docs/Demo.astro";
+import FadeRise from "~/demos/motion/basics/FadeRise.svelte";
+import FadeRiseSrc from "~/demos/motion/basics/FadeRise.svelte?raw";
+
+Every motion demo is wrapped in `MotionStage`: it plays only while it is in view, stops when you touch it, and shows its final state under `prefers-reduced-motion`. Read [Motion](/docs/motion/) for the contract.
+
+<Demo title="Fade rise" description={"A card fades in while rising 16px into place: 420ms, an ease-out curve, an 80ms delay. Touch it to stop the loop."} src={FadeRiseSrc}><FadeRise client:visible /></Demo>

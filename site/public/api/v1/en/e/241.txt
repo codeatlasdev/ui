@@ -9,7 +9,7 @@ Spec:
 - `<Card title="Overview" skeleton={loading}>` with one paragraph of content
 - Toggle `<Button variant="outlined" size="sm"` runs `onclick={() => (loading = !loading)}`
 Tags: skeleton, loading, avatar, kpi-card, text-field, card
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Avatar, Button, Card, Flex, KpiCard, Stack, TextField
 Live demo: https://ui.codeatlas.com.br/docs/feedback/skeleton#the-skeleton-prop
 

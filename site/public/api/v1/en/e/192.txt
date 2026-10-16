@@ -10,7 +10,7 @@ Spec:
 - `categories={['Q1', 'Q2', 'Q3', 'Q4']}`
 - `stacked={mode === 'stacked'}` and `height="300px"`
 Tags: bar-chart, stacked, grouped, toggle, button, state, flex
-Needs: @codeatlasdev/ui@4.1.0 + echarts
+Needs: @codeatlasdev/ui@4.2.0 + echarts
 Components: Card, Flex, Button, BarChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/bar#grouped-and-stacked
 

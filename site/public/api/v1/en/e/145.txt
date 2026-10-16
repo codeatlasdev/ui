@@ -9,7 +9,7 @@ Spec:
 - `side="left"` with `content="Tooltip on left"`
 - Each trigger uses `{#snippet triggerChild(props)}` with `<Button variant="outlined" {...props}>`
 Tags: tooltip, side, placement, top, bottom, button
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Tooltip, Button
 Live demo: https://ui.codeatlas.com.br/docs/display/tooltip#all-sides
 

@@ -8,7 +8,7 @@ Spec:
 - `{#snippet actions()}` has one `<Button variant="filled"` labelled Got it
 - Trigger is `<Button variant="outlined"` with an `<Info size={14} />` icon in `{#snippet leading()}`
 Tags: dialog, info, modal, help, rich-text
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Dialog, Button
 Live demo: https://ui.codeatlas.com.br/docs/feedback/dialog#info
 

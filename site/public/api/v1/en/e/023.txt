@@ -10,7 +10,7 @@ Spec:
 - `mask={maskRG}` with `placeholder="00.000.000-0"` and no `validate`
 - Imports come from `@codeatlasdev/ui/forms`, each field uses `bind:value`
 Tags: masked-field, cpf, cnpj, mask, validation, brazil, forms
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: MaskedField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/masked-field#documents-and-dates
 

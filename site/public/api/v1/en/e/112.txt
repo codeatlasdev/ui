@@ -7,7 +7,7 @@ Spec:
 - Each is a `<Badge count={5}` around `<IconButton aria-label="Notifications">` with a `<Bell size={20} />`
 - `color="brand"`, `color="success"`, `color="warning"` and `color="error"` are the four variants
 Tags: badge, color, count, icon-button, notification, flex
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Badge, IconButton, Flex
 Live demo: https://ui.codeatlas.com.br/docs/display/badge#colors
 

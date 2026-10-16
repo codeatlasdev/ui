@@ -8,7 +8,7 @@ Spec:
 - `{#each metrics as m}` renders `<GaugeChart value={m.value} {zones} height="200px" />`
 - Each gauge sits in its own `<Card material="glass">` inside `<Grid class="grid-auto-200" gap="4">`
 Tags: gauge-chart, zones, thresholds, grid, metrics, card
-Needs: @codeatlasdev/ui@4.1.0 + echarts
+Needs: @codeatlasdev/ui@4.2.0 + echarts
 Components: Card, Grid, GaugeChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/gauge#custom-zones
 

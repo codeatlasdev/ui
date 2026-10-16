@@ -7,7 +7,7 @@ Spec:
 - `siblingCount={2}` sets how many pages show on each side of the current page
 - Only `count`, `perPage` and `siblingCount` are set, nothing is bound
 Tags: pagination, siblings, sibling-count, many-pages, navigation
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Pagination
 Live demo: https://ui.codeatlas.com.br/docs/display/pagination#more-siblings
 

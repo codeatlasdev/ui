@@ -8,7 +8,7 @@ Spec:
 - `indeterminate disabled` with `label="Disabled indeterminate"`
 - Three `<Checkbox` components, no bound state
 Tags: checkbox, disabled, checked, indeterminate, form
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Checkbox
 Live demo: https://ui.codeatlas.com.br/docs/inputs/checkbox#disabled
 

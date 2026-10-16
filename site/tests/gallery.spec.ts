@@ -42,6 +42,22 @@ test.describe("gallery", () => {
 		expect(await cards.count()).toBeGreaterThan(0);
 	});
 
+	test("a motion group filter lists motion demos, and a card plays only while in view", async ({
+		page,
+	}) => {
+		await page.emulateMedia({ reducedMotion: "no-preference" });
+		await gotoReady(page, "/gallery/");
+		await page.getByRole("radio", { name: "motion", exact: true }).click();
+		const cards = page.locator("article.gallery-card");
+		await expect(cards.first()).toBeVisible();
+		expect(await cards.count()).toBeGreaterThan(0);
+		for (const group of await page.locator(".gallery-card__group").allTextContents())
+			expect(group).toBe("motion");
+		const stage = page.locator("[id='256']").getByRole("group", { name: /^Fade rise:/ });
+		await stage.scrollIntoViewIfNeeded();
+		await expect(stage).toHaveAttribute("data-playing", "true");
+	});
+
 	test("Send to AI only appears with a loopback ?cb=", async ({ page }) => {
 		await gotoReady(page, "/gallery/?pick=001");
 		await expect(page.getByRole("button", { name: /send to ai/i })).toHaveCount(0);

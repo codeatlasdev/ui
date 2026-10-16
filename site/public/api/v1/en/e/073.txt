@@ -8,7 +8,7 @@ Spec:
 - Each body is a `<p>` child, two of them include a `<code>` token
 - Nothing is bound to the open state, each panel manages its own
 Tags: collapsible, faq, stack, disclosure, expand, title
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Collapsible, Stack
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/collapsible#default-closed
 

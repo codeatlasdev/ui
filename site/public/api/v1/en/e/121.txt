@@ -9,7 +9,7 @@ Spec:
 - `<CodeSnippet code={css} language="css" />` shows rules using design tokens
 - Wrapper `.col` has `width: 100%`
 Tags: code-snippet, code, syntax-highlighting, svelte, typescript, css
-Needs: @codeatlasdev/ui@4.1.0 + shiki
+Needs: @codeatlasdev/ui@4.2.0 + shiki
 Components: CodeSnippet
 Live demo: https://ui.codeatlas.com.br/docs/display/code-snippet#languages
 

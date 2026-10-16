@@ -8,7 +8,7 @@ Spec:
 - No trigger snippet, the tooltip renders its own trigger
 - Placed inside a paragraph after the sentence Static text can be a trigger too:
 Tags: tooltip, children, inline, text-trigger, hover, focus
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Tooltip
 Live demo: https://ui.codeatlas.com.br/docs/display/tooltip#text-trigger
 

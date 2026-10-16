@@ -8,7 +8,7 @@ Spec:
 - `<button type="button" class="glass-btn-clear">` labelled glass-btn-clear
 - Backdrop is `linear-gradient(135deg, var(--ca-brand-main), var(--ca-semantic-info))`
 Tags: materials, glass, button, glass-btn, backdrop
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/materials#button-glass-variants
 

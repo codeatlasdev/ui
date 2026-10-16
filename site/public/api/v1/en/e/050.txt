@@ -6,7 +6,7 @@ Spec:
 - `<Switch label="Off by default" bind:checked={darkMode} />` with `$state(false)`
 - `<Switch label="On by default" bind:checked={notifications} />` with `$state(true)`
 Tags: switch, toggle, label, checked, boolean
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Switch
 Live demo: https://ui.codeatlas.com.br/docs/inputs/switch#basic
 

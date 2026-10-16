@@ -9,7 +9,7 @@ Spec:
 - `severity="info"` with the new-version message
 - Wrapper `.col` has `max-width: 560px`
 Tags: alert, severity, success, warning, error, info
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Alert
 Live demo: https://ui.codeatlas.com.br/docs/display/alert#severities
 

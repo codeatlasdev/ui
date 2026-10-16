@@ -9,7 +9,7 @@ Spec:
 - `<TimeField label="Read-only" locale="en-US" readonly value={new Time(9, 0)} />`
 - Wrapper `.col` has `max-width: 400px`
 Tags: date-picker, date-field, time-field, min-max, required, disabled, readonly
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: DateField, DatePicker, TimeField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/date-picker#min-max-error-and-disabled
 

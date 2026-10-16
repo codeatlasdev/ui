@@ -8,7 +8,7 @@ Spec:
 - `<TextField label="Label name" placeholder="e.g. Priority" />` inside `<Stack gap="3">`
 - `<Flex gap="2" justify="end">` holds `<Button size="sm" variant="ghost">Cancel</Button>` and `<Button size="sm" variant="filled">Save</Button>`
 Tags: popover, form, text-field, inline-edit, side, align, overlay
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Popover, Button, TextField, Stack, Flex
 Live demo: https://ui.codeatlas.com.br/docs/navigation/popover#form
 

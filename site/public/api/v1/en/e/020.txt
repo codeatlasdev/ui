@@ -10,7 +10,7 @@ Spec:
 - `{#if files.length > 0}` shows the selected file count with a plural `s`
 - Wrapper `.wrap` has `max-width: 480px`
 Tags: file-upload, dropzone, multiple, max-size, files, attachment
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: FileUpload
 Live demo: https://ui.codeatlas.com.br/docs/inputs/file-upload#basic
 

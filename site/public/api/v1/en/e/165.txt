@@ -9,7 +9,7 @@ Spec:
 - Main area labelled Main content with a top bar and 3 content blocks, one `content-block--short`
 - Diagram size is `height: 280px` and `width: 100%`
 Tags: app-shell, anatomy, rail, panel, layout, diagram
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/layout/app-shell#anatomy
 

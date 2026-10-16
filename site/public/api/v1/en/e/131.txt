@@ -10,7 +10,7 @@ Spec:
 - `onReadAll={() =>` marks every item as read
 - `onClear={() => (items = [])}` empties the list
 Tags: notification-bell, notifications, controlled, unread, header, state
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: NotificationBell
 Live demo: https://ui.codeatlas.com.br/docs/display/notification-bell#controlled
 

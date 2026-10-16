@@ -8,7 +8,7 @@ Spec:
 - `const peaks = Array.from({ length: 48 }` builds the waveform amplitudes
 - `tone(2)` builds a 2 second WAV blob as the source
 Tags: audio-player, voice, waveform, chat, scrub
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: AudioPlayer
 Live demo: https://ui.codeatlas.com.br/docs/display/audio-player#voice-messages
 

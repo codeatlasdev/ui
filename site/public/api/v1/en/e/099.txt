@@ -7,7 +7,7 @@ Spec:
 - Heading line `<Skeleton height="20px" width="60%" />`
 - Body lines `<Skeleton rows={3} height="14px" />` render three rows from one element
 Tags: skeleton, text, rows, card, loading
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Skeleton, Card, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/skeleton#text-lines
 

@@ -8,7 +8,7 @@ Spec:
 - Body is `<Stack gap="2">` with a paragraph whose text depends on `swipe`
 - `{#snippet footer()}` holds `<Button variant="filled"` New session with a `<Plus size={15} />` icon
 Tags: sheet, footer, swipe-to-dismiss, bottom-sheet, mobile
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Sheet, Button, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/sheet#footer-and-swipetodismiss
 

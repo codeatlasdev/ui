@@ -8,7 +8,7 @@ Spec:
 - `trend` values are `'up' as const`, `'down' as const` and `'neutral' as const`
 - `<Flex gap="6" wrap align="center">` lays out the items, each in a `<Stack gap="1.5">` with a label
 Tags: sparkline, bar, trend, inline-metrics, flex, stack
-Needs: @codeatlasdev/ui@4.1.0 + echarts
+Needs: @codeatlasdev/ui@4.2.0 + echarts
 Components: Flex, Stack, Sparkline
 Live demo: https://ui.codeatlas.com.br/docs/charts/sparklines#bar-sparklines
 

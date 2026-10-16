@@ -8,7 +8,7 @@ Spec:
 - `onclick={save}` sets `saving = true` and resets it with `setTimeout(() => (saving = false), 2000)`
 - Label switches with state: `{saving ? 'Saving…' : 'Save (2s)'}`
 Tags: button, loading, spinner, async, submit
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/inputs/button#loading
 

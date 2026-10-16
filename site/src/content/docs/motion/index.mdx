@@ -1,0 +1,42 @@
+---
+title: Motion
+description: "A vocabulary of named motion: live samples, exact timing, and a way to ask an AI for a motion by name or number."
+group: Motion
+order: 0
+---
+import { CardGrid, LinkCard } from "@codeatlasdev/ui";
+
+Motion is hard to describe and easy to get wrong. "Make it fade in nicely" gives a different animation every time. This section gives every effect a **name**, a **number** and **exact values**, so a person can point at it and an AI can reproduce it without guessing.
+
+## The vocabulary idea
+
+Each motion demo is a real, running element with four things attached:
+
+- **A name**: `Split text reveal`, `Fade rise`. The first name is canonical; the sidecar lists aliases, including other languages (`Subir com fade`).
+- **A number**: the same `#NNN` as every other demo in the [gallery](/gallery/).
+- **A spec**: the property, duration, easing, delay, stagger or spring. Each value appears verbatim in the demo source, and the build fails if one does not.
+- **A way to ask**: one line for your AI.
+
+## Ask an AI by name or number
+
+Name it, or give the number. Both resolve to the same reference.
+
+```text
+Use @codeatlasdev/ui motion "Fade rise" on the invoice cards.
+Use @codeatlasdev/ui demo #256 on the invoice cards.
+```
+
+With the MCP server, `search_demos({ query: "fade rise" })` matches names and aliases first, and `get_demo({ ids: ["#256"] })` returns the source, the `Motion:` lines and the instruction to reproduce the values exactly. Without MCP, fetch `/api/v1/en/p/256.txt`: it is the prompt, ready to paste.
+
+## The contract every motion demo follows
+
+- **Plays in view.** A demo starts when at least half of it is visible and stops when it leaves the viewport or the tab is hidden. A gallery full of motion never animates everything at once.
+- **You can take over.** Touching, clicking or focusing the demo stops the autoplay and makes it interactive. A **Replay** button appears.
+- **You can pause.** A visible **Pause** button (`aria-pressed` when stopped) is always there while motion can run, so no motion lasts more than five seconds without a control (WCAG 2.2.2).
+- **Reduced motion renders the final state.** Under `prefers-reduced-motion: reduce` nothing animates, the Pause and Replay buttons are not shown (there is nothing to stop), and the demo shows where the motion ends. Your code must do the same.
+
+## Pages
+
+<CardGrid>
+  <LinkCard title="Basics" href="/docs/motion/basics/" description="Fade rise, the reference demo for the pipeline." />
+</CardGrid>

@@ -9,7 +9,7 @@ Spec:
 - `<KpiCard title="Growth" value="34" unit="%" trend={5.6} icon={TrendingUp} />`
 - `<KpiCard title="Uptime" value="99.9" unit="%" trend={0.1} icon={Activity} />`
 Tags: kpi-grid, kpi-card, dashboard, metrics, four-columns, grid
-Needs: @codeatlasdev/ui@4.1.0
+Needs: @codeatlasdev/ui@4.2.0
 Components: KpiCard, KpiGrid
 Live demo: https://ui.codeatlas.com.br/docs/layout/kpi-grid#four-cards
 
