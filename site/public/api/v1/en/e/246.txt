@@ -1,0 +1,34 @@
+<!-- @codeatlasdev/ui demo #246 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/record-list#without-a-menu -->
+Element: #246 Without a menu (layout/record-list)
+What it shows: No actions slot and no actions track: three columns that stack the same way.
+Tags: without, a, menu, recordcell, recordlist, recordrow
+Needs: @codeatlasdev/ui@4.1.0
+Components: RecordCell, RecordList, RecordRow
+Live demo: https://ui.codeatlas.com.br/docs/layout/record-list#without-a-menu
+
+<script lang="ts">
+  import { RecordCell, RecordList, RecordRow } from '@codeatlasdev/ui';
+
+  const hooks = [
+    { id: 1, url: 'https://example.com/hooks/orders', events: 'order.created', ok: '99.8%' },
+    { id: 2, url: 'https://example.com/hooks/refunds', events: 'refund.created refund.failed', ok: '100%' },
+  ];
+</script>
+
+<RecordList
+  columns="minmax(0,2fr) minmax(0,1.4fr) 5rem"
+  labels={['Endpoint', 'Events', 'Delivered']}
+  aria-label="Webhooks"
+>
+  {#each hooks as hook (hook.id)}
+    <RecordRow>
+      {#snippet identity()}<code>{hook.url}</code>{/snippet}
+      <RecordCell label="Events">{hook.events}</RecordCell>
+      <RecordCell label="Delivered">{hook.ok}</RecordCell>
+    </RecordRow>
+  {/each}
+</RecordList>
+
+<style>
+  code { font-size: var(--ca-font-size-caption); overflow-wrap: anywhere; }
+</style>

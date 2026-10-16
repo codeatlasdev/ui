@@ -1647,6 +1647,55 @@ Classes: `ca-rail` `ca-rail__bottom` `ca-rail__bottom-sep` `ca-rail__dock` `ca-r
 
 Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
 
+## RecordCell
+
+`import { RecordCell } from "@codeatlasdev/ui"`
+
+RecordCell: one column value of a `RecordRow`. `label` names it: it is kept for assistive tech on wide rows (the column header is `aria-hidden`) and painted above the value when the row is stacked on a phone.
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `label` | `string` |  | The column name, repeated per cell so the value is still named once the header is gone. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Classes: `ca-record-cell`
+
+## RecordList
+
+`import { RecordList } from "@codeatlasdev/ui"`
+
+RecordList: records as dense rows (identity | a few columns | row menu) that re-flow to a two-line stacked row on a phone. It owns the flush container, the row separators, the shared column template of the header and every row, the re-flow and the 44px actions cell.
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `columns` | `string` |  | `grid-template-columns` shared by the header and every row: identity, one track per cell, then actions. |
+| `labels?` | `string[]` |  | Column headers for the identity and each cell, in order. Omit for no header row. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLUListElement>, 'class' \| 'children'>`
+
+Classes: `ca-record-list` `ca-record-list__body` `ca-record-list__head`
+
+## RecordRow
+
+`import { RecordRow } from "@codeatlasdev/ui"`
+
+RecordRow: one record inside a `RecordList`. `identity` is the first column (name, avatar), the children are the `RecordCell`s, `actions` is the last column (a row menu). See `RecordList`.
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `class?` | `string` | `''` |  |
+
+Snippets: `identity`, `actions`, `children`
+
+Also accepts: `Omit<HTMLLiAttributes, 'class' \| 'children'>`
+
+Classes: `ca-record-row` `ca-record-row__actions` `ca-record-row__cells` `ca-record-row__identity`
+
 ## RouteAnnouncer
 
 `import { RouteAnnouncer } from "@codeatlasdev/ui/kit"`

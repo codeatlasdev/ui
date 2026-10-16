@@ -243,3 +243,6 @@ id	group	page	title	tags	summary
 242	feedback	lightbox	Gallery with video, caption and download	gallery,with,video,caption,and,download,button,lightbox	Arrow keys, buttons and swipe move through the items.
 243	feedback	install-prompt	iOS instructions	ios,instructions,installprompt	What Safari on iPhone and iPad gets: the two steps, no button.
 244	feedback	install-prompt	Native prompt	native,prompt,installprompt	The Chromium flow: Install opens the browser's install dialog. This demo fires a stand-in event so the banner shows in any browser.
+245	layout	record-list	Apps	apps,avatar,dropdownmenu,dropdownmenuitem,iconbutton,recordcell,recordlist,recordrow,statuschip	Identity with avatar, status chip and a row menu. Narrow the window or the container to see it stack.
+246	layout	record-list	Without a menu	without,a,menu,recordcell,recordlist,recordrow	No actions slot and no actions track: three columns that stack the same way.
+247	layout	record-list	Phone width	phone,width,avatar,dropdownmenu,dropdownmenuitem,iconbutton,recordcell,recordlist,recordrow	A 344px slot: the same list stacked, because the list reads its own width.

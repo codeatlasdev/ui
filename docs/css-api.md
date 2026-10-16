@@ -230,6 +230,12 @@ Total: 806 unique classes across 82 components.
 
 `.ca-radio-group` `.ca-radio-group--horizontal` `.ca-radio-group--vertical` `.ca-radio-indicator` `.ca-radio-input` `.ca-radio-item` `.ca-radio-label` `.ca-radio-label--disabled`
 
+## RecordList
+
+`.ca-record-cell` `.ca-record-list` `.ca-record-list__body` `.ca-record-list__head` `.ca-record-row` `.ca-record-row__actions` `.ca-record-row__cells` `.ca-record-row__identity`
+
+Re-flow: the list is a size container (`container-type: inline-size`), rows stack below 36rem of the list's own width. `--ca-record-columns` (set from the `columns` prop) is the shared `grid-template-columns` of the header and every row.
+
 ## Row
 
 

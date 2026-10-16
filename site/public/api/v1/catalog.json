@@ -1,6 +1,6 @@
 {
 	"version": "4.1.0",
-	"count": 244,
+	"count": 247,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -35,8 +35,8 @@
 		{
 			"slug": "layout",
 			"first": "165",
-			"last": "189",
-			"count": 25
+			"last": "247",
+			"count": 28
 		},
 		{
 			"slug": "charts",
@@ -8661,6 +8661,147 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/feedback/install-prompt#native-prompt",
+			"needs": "@codeatlasdev/ui@4.1.0"
+		},
+		{
+			"id": "245",
+			"group": "layout",
+			"page": "record-list",
+			"variant": "Apps",
+			"slug": "apps",
+			"title": "Apps",
+			"description": "Identity with avatar, status chip and a row menu. Narrow the window or the container to see it stack.",
+			"summary": "Identity with avatar, status chip and a row menu. Narrow the window or the container to see it stack.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"apps",
+				"avatar",
+				"dropdownmenu",
+				"dropdownmenuitem",
+				"iconbutton",
+				"recordcell",
+				"recordlist",
+				"recordrow",
+				"statuschip"
+			],
+			"shape": "wide",
+			"components": [
+				"Avatar",
+				"DropdownMenu",
+				"DropdownMenuItem",
+				"IconButton",
+				"RecordCell",
+				"RecordList",
+				"RecordRow",
+				"StatusChip"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Avatar",
+						"DropdownMenu",
+						"DropdownMenuItem",
+						"IconButton",
+						"RecordCell",
+						"RecordList",
+						"RecordRow",
+						"StatusChip"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/record-list#apps",
+			"needs": "@codeatlasdev/ui@4.1.0"
+		},
+		{
+			"id": "246",
+			"group": "layout",
+			"page": "record-list",
+			"variant": "NoMenu",
+			"slug": "without-a-menu",
+			"title": "Without a menu",
+			"description": "No actions slot and no actions track: three columns that stack the same way.",
+			"summary": "No actions slot and no actions track: three columns that stack the same way.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"without",
+				"a",
+				"menu",
+				"recordcell",
+				"recordlist",
+				"recordrow"
+			],
+			"shape": "wide",
+			"components": [
+				"RecordCell",
+				"RecordList",
+				"RecordRow"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"RecordCell",
+						"RecordList",
+						"RecordRow"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/record-list#without-a-menu",
+			"needs": "@codeatlasdev/ui@4.1.0"
+		},
+		{
+			"id": "247",
+			"group": "layout",
+			"page": "record-list",
+			"variant": "Phone",
+			"slug": "phone-width",
+			"title": "Phone width",
+			"description": "A 344px slot: the same list stacked, because the list reads its own width.",
+			"summary": "A 344px slot: the same list stacked, because the list reads its own width.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"phone",
+				"width",
+				"avatar",
+				"dropdownmenu",
+				"dropdownmenuitem",
+				"iconbutton",
+				"recordcell",
+				"recordlist",
+				"recordrow"
+			],
+			"shape": "wide",
+			"components": [
+				"Avatar",
+				"DropdownMenu",
+				"DropdownMenuItem",
+				"IconButton",
+				"RecordCell",
+				"RecordList",
+				"RecordRow"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Avatar",
+						"DropdownMenu",
+						"DropdownMenuItem",
+						"IconButton",
+						"RecordCell",
+						"RecordList",
+						"RecordRow"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/record-list#phone-width",
 			"needs": "@codeatlasdev/ui@4.1.0"
 		}
 	]

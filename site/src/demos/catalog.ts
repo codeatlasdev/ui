@@ -250,4 +250,7 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "242", path: "feedback/lightbox/Gallery" },
 	{ id: "243", path: "feedback/install-prompt/IosInstructions" },
 	{ id: "244", path: "feedback/install-prompt/NativePrompt" },
+	{ id: "245", path: "layout/record-list/Apps" },
+	{ id: "246", path: "layout/record-list/NoMenu" },
+	{ id: "247", path: "layout/record-list/Phone" },
 ];

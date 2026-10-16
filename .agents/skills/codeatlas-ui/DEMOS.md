@@ -249,3 +249,6 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 242 | Gallery with video, caption and download | feedback/lightbox | Button, Lightbox |
 | 243 | iOS instructions | feedback/install-prompt | InstallPrompt |
 | 244 | Native prompt | feedback/install-prompt | InstallPrompt |
+| 245 | Apps | layout/record-list | Avatar, DropdownMenu, DropdownMenuItem, IconButton, RecordCell, RecordList, RecordRow, StatusChip |
+| 246 | Without a menu | layout/record-list | RecordCell, RecordList, RecordRow |
+| 247 | Phone width | layout/record-list | Avatar, DropdownMenu, DropdownMenuItem, IconButton, RecordCell, RecordList, RecordRow |

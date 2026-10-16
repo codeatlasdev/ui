@@ -1,0 +1,69 @@
+---
+title: RecordList
+description: Records as dense rows (identity, a few columns, a row menu) that re-flow to a compact two-line row on a phone.
+group: Layout
+order: 62
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Apps from "~/demos/layout/record-list/Apps.svelte";
+import AppsSrc from "~/demos/layout/record-list/Apps.svelte?raw";
+import Phone from "~/demos/layout/record-list/Phone.svelte";
+import PhoneSrc from "~/demos/layout/record-list/Phone.svelte?raw";
+import NoMenu from "~/demos/layout/record-list/NoMenu.svelte";
+import NoMenuSrc from "~/demos/layout/record-list/NoMenu.svelte?raw";
+
+```svelte
+<script>
+  import { RecordList, RecordRow, RecordCell } from "@codeatlasdev/ui";
+</script>
+
+<RecordList columns="minmax(0,1.2fr) minmax(0,1.6fr) 5rem 2.75rem" labels={["App", "Scopes", "Installs"]} aria-label="Apps">
+  {#each apps as app (app.id)}
+    <RecordRow>
+      {#snippet identity()}{app.name}{/snippet}
+      <RecordCell label="Scopes">{app.scopes}</RecordCell>
+      <RecordCell label="Installs">{app.installs}</RecordCell>
+      {#snippet actions()}<DropdownMenu>…</DropdownMenu>{/snippet}
+    </RecordRow>
+  {/each}
+</RecordList>
+```
+
+The usual dashboard list is neither a table nor a card per record. `Table` with `responsive="cards"` makes each row three or four times taller on a phone, and a `Card` per record repeats the chrome. `RecordList` owns what every app hand-rolls around that shape: the flush container, the separators, one column template shared by the header and every row, the re-flow below a width, and a 44px actions cell.
+
+`columns` is one `grid-template-columns` value: the identity first, one track per `RecordCell`, the actions track last. `labels` are the column headers of the identity and the cells. A row without `actions` simply leaves the last track out of `columns`.
+
+## Wide and stacked
+
+Wide, the header is an `aria-hidden` row and every `RecordCell` keeps its `label` as a visually hidden `dt`, so assistive technology still gets "Scopes: read:invoices" per cell. Below 36rem of the **list's own width** (a container query, not the viewport) the header disappears and the row becomes two lines: identity and actions on the first, the cells below as small label/value pairs that wrap. The same list behaves the same in a narrow card or beside a sidebar, and it needs no JavaScript, so server-rendered pages are correct from the first paint.
+
+With no rows, render your own [empty state](/docs/layout/empty-state/) instead of the list.
+
+<Demo title="Apps" description="Identity with avatar, status chip and a row menu. Narrow the window or the container to see it stack." src={AppsSrc}><Apps client:visible /></Demo>
+<Demo title="Phone width" description="A 344px slot: the same list stacked, because the list reads its own width." src={PhoneSrc}><Phone client:visible /></Demo>
+<Demo title="Without a menu" description="No actions slot and no actions track: three columns that stack the same way." src={NoMenuSrc}><NoMenu client:visible /></Demo>
+
+## Accessibility
+
+The list is a real `<ul>` with one `<li>` per record: give it an `aria-label`. Per-cell labels are `dt`/`dd` pairs inside a `dl`, so they are announced with their value in both layouts. Put an `aria-label` that names the record on every action button ("Actions for Billing"), because the visible column header is hidden from assistive technology.
+
+<Props title="RecordList props" rows={[
+  { name: "columns", type: "string", description: "`grid-template-columns` shared by the header and every row: identity, one track per cell, then actions." },
+  { name: "labels", type: "string[]", description: "Column headers for the identity and each cell, in order. Omit for no header row." },
+  { name: "class", type: "string", default: "''", description: "Extra class names on the wrapper." },
+  { name: "children", type: "Snippet", description: "The RecordRows." },
+]} />
+
+<Props title="RecordRow props" rows={[
+  { name: "identity", type: "Snippet", description: "First column: what the record is. Heads the stacked row." },
+  { name: "actions", type: "Snippet", description: "Last column, usually a DropdownMenu. At least 44px square." },
+  { name: "class", type: "string", default: "''", description: "Extra class names on the row." },
+  { name: "children", type: "Snippet", description: "The RecordCells, in the order of the `columns` tracks." },
+]} />
+
+<Props title="RecordCell props" rows={[
+  { name: "label", type: "string", description: "The column name: kept for assistive technology on wide rows, painted above the value when stacked." },
+  { name: "class", type: "string", default: "''", description: "Extra class names on the cell." },
+  { name: "children", type: "Snippet", description: "The value." },
+]} />

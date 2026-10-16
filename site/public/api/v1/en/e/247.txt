@@ -1,0 +1,54 @@
+<!-- @codeatlasdev/ui demo #247 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/record-list#phone-width -->
+Element: #247 Phone width (layout/record-list)
+What it shows: A 344px slot: the same list stacked, because the list reads its own width.
+Tags: phone, width, avatar, dropdownmenu, dropdownmenuitem, iconbutton, recordcell, recordlist, recordrow
+Needs: @codeatlasdev/ui@4.1.0
+Components: Avatar, DropdownMenu, DropdownMenuItem, IconButton, RecordCell, RecordList, RecordRow
+Live demo: https://ui.codeatlas.com.br/docs/layout/record-list#phone-width
+
+<script lang="ts">
+  import {
+    Avatar, DropdownMenu, DropdownMenuItem, IconButton, RecordCell, RecordList, RecordRow,
+  } from '@codeatlasdev/ui';
+  import { MoreHorizontal } from '@lucide/svelte';
+
+  const keys = [
+    { id: 1, name: 'Production key', prefix: 'ca_live_9f2…', used: '2 min ago', created: 'Jan 8, 2026' },
+    { id: 2, name: 'CI pipeline', prefix: 'ca_live_41c…', used: 'Yesterday', created: 'Feb 19, 2026' },
+  ];
+</script>
+
+<!-- The list reacts to its own width, so a 344px slot (a 390px phone minus page padding) stacks
+     exactly like the real thing, whatever the browser window is. -->
+<div class="slot">
+  <RecordList
+    columns="minmax(0,1.3fr) minmax(0,1fr) 7rem 7rem 2.75rem"
+    labels={['Key', 'Prefix', 'Last used', 'Created']}
+    aria-label="API keys"
+  >
+    {#each keys as key (key.id)}
+      <RecordRow>
+        {#snippet identity()}
+          <span class="who"><Avatar alt={key.name} size="sm" /> <strong>{key.name}</strong></span>
+        {/snippet}
+        <RecordCell label="Prefix"><code>{key.prefix}</code></RecordCell>
+        <RecordCell label="Last used">{key.used}</RecordCell>
+        <RecordCell label="Created">{key.created}</RecordCell>
+        {#snippet actions()}
+          <DropdownMenu align="end">
+            {#snippet triggerChild(props)}
+              <IconButton aria-label={`Actions for ${key.name}`} {...props}><MoreHorizontal size={18} /></IconButton>
+            {/snippet}
+            <DropdownMenuItem>Revoke</DropdownMenuItem>
+          </DropdownMenu>
+        {/snippet}
+      </RecordRow>
+    {/each}
+  </RecordList>
+</div>
+
+<style>
+  .slot { inline-size: min(100%, 21.5rem); }
+  .who { display: flex; align-items: center; gap: var(--ca-space-2); min-width: 0; }
+  code { font-size: var(--ca-font-size-caption); }
+</style>
