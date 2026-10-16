@@ -13,19 +13,22 @@ BRANCH=$(git rev-parse --abbrev-ref HEAD)
 PR=$(gh pr list --head "$BRANCH" --json number -q '.[0].number')
 echo "== #$N  PR #$PR  $BRANCH"
 
+. "$ROOT/scripts/generated-paths.sh"
 git fetch -q origin main
 # Leftovers from an earlier attempt: generated files are rebuilt below, anything else stops here.
 for f in $(git status --porcelain --untracked-files=no | awk '{print $2}'); do
-	case "$f" in bun.lock | */API.md | */components.json | docs/css-api.md) git checkout -- "$f" ;; esac
+	if is_generated "$f"; then git checkout -- "$f"; fi
 done
 [ -z "$(git status --porcelain --untracked-files=no)" ] || { git status --short; echo "uncommitted changes in $WT" >&2; exit 1; }
 if ! git rebase -q origin/main; then
 	# Generated files conflict by construction: take main's and regenerate below.
 	for f in $(git diff --name-only --diff-filter=U); do
-		case "$f" in
-		*/API.md | */components.json | docs/css-api.md | bun.lock) git checkout --theirs -- "$f" 2>/dev/null || git checkout --ours -- "$f"; git add "$f" ;;
-		*) echo "manual conflict: $f" >&2 ;;
-		esac
+		if is_generated "$f"; then
+			git checkout --theirs -- "$f" 2>/dev/null || git checkout --ours -- "$f"
+			git add "$f"
+		else
+			echo "manual conflict: $f" >&2
+		fi
 	done
 	[ -z "$(git diff --name-only --diff-filter=U)" ] || { echo "resolve the conflicts above in $WT, then rerun" >&2; exit 1; }
 	GIT_EDITOR=true git rebase --continue
@@ -34,9 +37,9 @@ fi
 # svelte-package needs (an install can drop it).
 bun install >/dev/null && node scripts/fix-ts-symlink.js >/dev/null
 # Only generated files: never sweep stray worktree files into the commit.
-bun run --cwd packages/ui manifest -- --skill >/dev/null 2>&1 || true
+bun run --cwd packages/ui manifest -- --skill >/dev/null
 for f in $(git status --porcelain --untracked-files=no | awk '{print $2}'); do
-	case "$f" in bun.lock | */API.md | */components.json | docs/css-api.md) git add -- "$f" ;; esac
+	if is_generated "$f"; then git add -- "$f"; fi
 done
 git diff --cached --quiet || git commit -qm "chore: regenerate lockfile and manifest after rebase"
 [ -z "$(git status --porcelain --untracked-files=no)" ] || { git status --short; echo "uncommitted changes in $WT" >&2; exit 1; }

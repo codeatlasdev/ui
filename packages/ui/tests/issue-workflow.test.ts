@@ -156,4 +156,32 @@ describe("issue-land.sh", () => {
 		expect(merges).toHaveLength(1);
 		expect(merges[0]).not.toContain("--delete-branch");
 	});
+
+	// The files the land rebuilds instead of merging (#241): css-api.md is hand-written (a picked side
+	// dropped #237's .ca-install rows); the demo catalog output and DEMOS.md stopped every rebase.
+	const generated = (path: string) =>
+		Bun.spawnSync([
+			"sh",
+			"-c",
+			`. "${join(import.meta.dir, "../../../scripts/generated-paths.sh")}" && is_generated "$1"`,
+			"sh",
+			path,
+		]).exitCode === 0;
+	it("rebuilds generated files and never picks a side of hand-written ones (#241)", () => {
+		for (const p of [
+			"bun.lock",
+			".agents/skills/codeatlas-ui/API.md",
+			".agents/skills/codeatlas-ui/DEMOS.md",
+			"packages/ui/components.json",
+			"site/public/api/v1/catalog.json",
+			"site/public/api/v1/en/e/237.txt",
+		])
+			expect(generated(p)).toBe(true);
+		for (const p of [
+			"docs/css-api.md",
+			"site/src/demos/catalog.ts",
+			"packages/ui/src/lib/index.ts",
+		])
+			expect(generated(p)).toBe(false);
+	});
 });
