@@ -245,4 +245,5 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "237", path: "navigation/tabs/Scrollable" },
 	{ id: "238", path: "navigation/tabs/Icons" },
 	{ id: "239", path: "navigation/menu/BrandIcons" },
+	{ id: "240", path: "display/avatar/IconFallback" },
 ];

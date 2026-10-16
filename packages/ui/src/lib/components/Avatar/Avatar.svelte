@@ -1,4 +1,5 @@
 <script lang="ts">
+  import type { Snippet } from 'svelte';
   import { useT } from '../../i18n/state.svelte.js';
   const t = useT();
 
@@ -20,13 +21,22 @@
   type Status = 'online' | 'offline' | 'busy' | 'away';
 
   interface Props {
+    /** Image URL. Rendered as a real `<img>`; the fallback shows beneath it while it loads and after it fails. */
     src?:      string;
     alt?:      string;
-    /** Explicit initials override. Otherwise derived from alt. */
-    fallback?: string;
+    /** Initials override (string), or an icon/any content (Snippet). Otherwise initials derive from `alt`. */
+    fallback?: string | Snippet;
     size?:     Size;
     shape?:    Shape;
     status?:   Status;
+    /** Passed to the `<img>`. Use `"lazy"` in long lists. */
+    loading?:        'lazy' | 'eager';
+    /** Passed to the `<img>`, e.g. `"no-referrer"` for CDN photos that reject a cross-origin Referer. */
+    referrerpolicy?: ReferrerPolicy;
+    /** Passed to the `<img>`. */
+    crossorigin?:    'anonymous' | 'use-credentials';
+    /** Called when the image fails; the fallback shows. Use it to refetch a signed URL. */
+    onerror?:        (event: Event) => void;
     class?:    string;
   }
 
@@ -65,47 +75,56 @@
     size      = 'md',
     shape     = 'circle',
     status,
+    loading,
+    referrerpolicy,
+    crossorigin,
+    onerror,
     class: className = '',
   }: Props = $props();
 
   const px       = $derived(typeof size === 'number' ? size : (SIZES[size] ?? 36));
-  const initials = $derived(getInitials(alt, fallback));
-  const palette  = $derived(PALETTES[hashName((fallback ?? alt).trim()) % PALETTES.length]);
+  const text     = $derived(typeof fallback === 'string' ? fallback : undefined);
+  const initials = $derived(getInitials(alt, text));
+  const palette  = $derived(PALETTES[hashName((text ?? alt).trim()) % PALETTES.length]);
   const fontSize = $derived(Math.round(px * (initials.length > 1 ? 0.36 : 0.42)));
   const radius   = $derived(shape === 'rounded' ? `${Math.round(px * 0.22)}px` : '50%');
   const dotSize  = $derived(Math.max(6, Math.round(px * 0.26)));
 
-  // The <img> is only rendered once it has loaded; until then (and on error) the initials show.
-  let imgState = $state<'idle' | 'loading' | 'loaded' | 'error'>('idle');
+  // `failed` is keyed on the src it failed for, so a new src gets a fresh attempt.
+  let failedSrc = $state<string | undefined>();
+  let loadedSrc = $state<string | undefined>();
+  const showImg = $derived(!!src && failedSrc !== src);
+  const covered = $derived(showImg && loadedSrc === src);
 
-  $effect(() => {
-    if (!src) {
-      imgState = 'error';
-      return;
-    }
-    const probe = new Image();
-    imgState = 'loading';
-    probe.onload = () => (imgState = 'loaded');
-    probe.onerror = () => (imgState = 'error');
-    probe.src = src;
-    return () => {
-      probe.onload = null;
-      probe.onerror = null;
-    };
-  });
+  function handleError(e: Event) {
+    failedSrc = src;
+    onerror?.(e);
+  }
 </script>
 
 <span
   class="ca-avatar {className}"
-  data-status={imgState}
   style="--av-size:{px}px;--av-radius:{radius};--av-bg:{palette.bg};--av-fg:{palette.fg};--av-fs:{fontSize}px;--av-dot:{dotSize}px;"
 >
-  {#if src && imgState === 'loaded'}
-    <img {src} {alt} class="ca-avatar__img" />
-  {:else}
-    <span class="ca-avatar__fallback">
+  <!-- The fallback is always rendered beneath the <img>, so a slow or failed load never changes the box. -->
+  <span class="ca-avatar__fallback" class:ca-avatar__fallback--covered={covered} aria-hidden={covered ? 'true' : undefined}>
+    {#if typeof fallback === 'function'}
+      {@render fallback()}
+    {:else}
       {initials}
-    </span>
+    {/if}
+  </span>
+  {#if showImg}
+    <img
+      {src}
+      {alt}
+      {loading}
+      {referrerpolicy}
+      {crossorigin}
+      class="ca-avatar__img"
+      onload={() => (loadedSrc = src)}
+      onerror={handleError}
+    />
   {/if}
 
   {#if status}
@@ -135,11 +154,16 @@
     }
 
     :global(.ca-avatar__img) {
+      position: absolute;
+      inset: 0;
       width: 100%;
       height: 100%;
       object-fit: cover;
       border-radius: inherit;
     }
+
+    /* Hidden (not removed) once the photo painted, so a transparent PNG never shows initials through it. */
+    :global(.ca-avatar__fallback--covered) { visibility: hidden; }
 
     :global(.ca-avatar__fallback) {
       display: flex;

@@ -3,6 +3,7 @@ import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { q } from "../../../../tests/dom";
 import Avatar from "./Avatar.svelte";
+import AvatarIcon from "./AvatarIcon.test.svelte";
 
 // 1x1 transparent GIF so the image really loads in Chromium
 const PIXEL = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
@@ -43,6 +44,60 @@ describe("Avatar", () => {
 	it("keeps initials when the image fails to load", async () => {
 		const screen = await render(Avatar, { src: "http://127.0.0.1:1/missing.png", alt: "Ana Lima" });
 		await expect.element(screen.getByText("AL")).toBeVisible();
+	});
+
+	it("renders a real <img> with loading, referrerpolicy and crossorigin (no probe)", async () => {
+		const screen = await render(Avatar, {
+			src: PIXEL,
+			alt: "Ana Lima",
+			loading: "lazy",
+			referrerpolicy: "no-referrer",
+			crossorigin: "anonymous",
+		});
+		const img = screen.container.querySelector<HTMLImageElement>("img.ca-avatar__img");
+		expect(img).not.toBeNull();
+		expect(img?.getAttribute("loading")).toBe("lazy");
+		expect(img?.getAttribute("referrerpolicy")).toBe("no-referrer");
+		expect(img?.getAttribute("crossorigin")).toBe("anonymous");
+	});
+
+	it("does not fetch src through a detached Image()", async () => {
+		const created: HTMLImageElement[] = [];
+		const Native = window.Image;
+		window.Image = class extends Native {
+			constructor(w?: number, h?: number) {
+				super(w, h);
+				created.push(this);
+			}
+		} as typeof Image;
+		try {
+			await render(Avatar, { src: PIXEL, alt: "Ana Lima" });
+		} finally {
+			window.Image = Native;
+		}
+		expect(created).toHaveLength(0);
+	});
+
+	it("onerror fires and the string fallback shows", async () => {
+		let failed = 0;
+		const screen = await render(Avatar, {
+			src: "http://127.0.0.1:1/missing.png",
+			alt: "Ana Lima",
+			onerror: () => failed++,
+		});
+		await expect.element(screen.getByText("AL")).toBeVisible();
+		expect(failed).toBe(1);
+		expect(screen.container.querySelector("img")).toBeNull();
+	});
+
+	it("renders a Snippet fallback (icon) instead of initials", async () => {
+		const screen = await render(AvatarIcon, {
+			src: "http://127.0.0.1:1/missing.png",
+			alt: "Familia",
+		});
+		await expect.element(screen.getByTestId("fallback-icon")).toBeVisible();
+		expect(screen.container.querySelector(".ca-avatar__fallback")?.textContent).not.toContain("FA");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
 	it.each([

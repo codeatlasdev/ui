@@ -10,6 +10,8 @@ import Images from "~/demos/display/avatar/Images.svelte";
 import ImagesSrc from "~/demos/display/avatar/Images.svelte?raw";
 import Initials from "~/demos/display/avatar/Initials.svelte";
 import InitialsSrc from "~/demos/display/avatar/Initials.svelte?raw";
+import IconFallback from "~/demos/display/avatar/IconFallback.svelte";
+import IconFallbackSrc from "~/demos/display/avatar/IconFallback.svelte?raw";
 import Sizes from "~/demos/display/avatar/Sizes.svelte";
 import SizesSrc from "~/demos/display/avatar/Sizes.svelte?raw";
 import ShapeStatus from "~/demos/display/avatar/ShapeStatus.svelte";
@@ -25,20 +27,25 @@ import StackSrc from "~/demos/display/avatar/Stack.svelte?raw";
 <Avatar src="/ana.jpg" alt="Ana Lima" size="lg" status="online" />
 ```
 
-Without `src`, or when the image fails to load, the avatar shows initials derived from `alt` (or `fallback`). The background color is generated from the name, so the same person always gets the same color.
+Without `src`, or when the image fails to load, the avatar shows initials derived from `alt` (or `fallback`). `fallback` also takes a snippet, for an icon on groups, channels and bots that have no meaningful initials. The photo is a real `<img>`: pass `loading="lazy"` in long lists and `referrerpolicy="no-referrer"` for CDNs that reject a cross-origin `Referer`; `onerror` fires when it fails so you can refetch a signed URL. The background color is generated from the name, so the same person always gets the same color.
 
 <Demo title="With image" description={"Loads a real image URL and falls back to initials if it fails."} src={ImagesSrc}><Images client:visible /></Demo>
 <Demo title="Initials fallback" description={"No `src`: initials come from `alt`, or from `fallback` when set."} src={InitialsSrc}><Initials client:visible /></Demo>
+<Demo title="Icon fallback" description={"`fallback` as a snippet: an icon instead of initials, with `loading` and `referrerpolicy` passed to the `<img>`."} src={IconFallbackSrc}><IconFallback client:visible /></Demo>
 <Demo title="Sizes" description={"Named sizes `xs` to `xl`, or any number in pixels."} src={SizesSrc}><Sizes client:visible /></Demo>
 <Demo title="Shape and status" description={"`shape=\"rounded\"` and the presence dot."} src={ShapeStatusSrc}><ShapeStatus client:visible /></Demo>
 <Demo title="Avatar stack" description={"Overlap pattern common in collaboration UIs."} src={StackSrc}><Stack client:visible /></Demo>
 
 <Props rows={[
-  { name: "src", type: "string", default: "undefined", description: "Image URL. Initials are shown while loading or when loading fails." },
+  { name: "src", type: "string", default: "undefined", description: "Image URL, rendered as a real `<img>`. The fallback shows beneath it while it loads and when it fails." },
   { name: "alt", type: "string", default: "''", description: "Alt text. Initials are derived from it when no `fallback` is set." },
-  { name: "fallback", type: "string", default: "undefined", description: "Explicit initials. Overrides the ones derived from `alt`." },
+  { name: "fallback", type: "string | Snippet", default: "undefined", description: "Explicit initials (string) or an icon/any content (snippet). Overrides the initials derived from `alt`." },
   { name: "size", type: "'xs' | 'sm' | 'md' | 'lg' | 'xl' | number", default: "'md'", description: "Named size (20, 28, 36, 48, 64px) or a diameter in pixels." },
   { name: "shape", type: "'circle' | 'rounded'", default: "'circle'", description: "Avatar outline." },
   { name: "status", type: "'online' | 'offline' | 'busy' | 'away'", default: "undefined", description: "Shows a presence dot in the bottom-right corner." },
+  { name: "loading", type: "'lazy' | 'eager'", default: "undefined", description: "Passed to the `<img>`. Use `lazy` in long lists so off-screen photos are not fetched." },
+  { name: "referrerpolicy", type: "ReferrerPolicy", default: "undefined", description: "Passed to the `<img>`, e.g. `no-referrer` for CDNs that reject a cross-origin `Referer`." },
+  { name: "crossorigin", type: "'anonymous' | 'use-credentials'", default: "undefined", description: "Passed to the `<img>`." },
+  { name: "onerror", type: "(event: Event) => void", default: "undefined", description: "Called when the image fails to load; the fallback shows. Refetch a signed URL here." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />

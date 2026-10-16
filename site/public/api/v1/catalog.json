@@ -1,6 +1,6 @@
 {
 	"version": "4.1.0",
-	"count": 239,
+	"count": 240,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -23,8 +23,8 @@
 		{
 			"slug": "display",
 			"first": "104",
-			"last": "145",
-			"count": 42
+			"last": "240",
+			"count": 43
 		},
 		{
 			"slug": "navigation",
@@ -8475,6 +8475,37 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/navigation/menu#leading-icons-and-brand-logos",
+			"needs": "@codeatlasdev/ui@4.1.0"
+		},
+		{
+			"id": "240",
+			"group": "display",
+			"page": "avatar",
+			"variant": "IconFallback",
+			"slug": "iconfallback",
+			"title": "IconFallback",
+			"description": "",
+			"summary": "IconFallback",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"iconfallback",
+				"avatar"
+			],
+			"shape": "wide",
+			"components": [
+				"Avatar"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Avatar"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/display/avatar#iconfallback",
 			"needs": "@codeatlasdev/ui@4.1.0"
 		}
 	]
