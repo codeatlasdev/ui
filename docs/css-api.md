@@ -6,7 +6,7 @@ Conventions: BEM (`ca-block__element`, `ca-block--modifier`). CSS variables (`--
 
 Generated from `grep -o 'ca-[a-z0-9_-]*'` over `packages/ui/src/lib/components/<Component>/` (`.svelte`, `.css`, `.ts`), excluding custom properties and duplicates. When you add or rename components, rerun the command and update this file. Some listed names may be `@keyframes` or internal identifiers (e.g. `ca-accordion-down`) rather than classes; treat them as stable to be safe.
 
-Total: 796 unique classes across 81 components.
+Total: 806 unique classes across 82 components.
 
 ---
 
@@ -173,6 +173,10 @@ Total: 796 unique classes across 81 components.
 ## Grid
 
 `.ca-grid`
+
+## InstallPrompt
+
+`.ca-install` `.ca-install-dismissed` `.ca-install-title` `.ca-install__body` `.ca-install__close` `.ca-install__glyph` `.ca-install__icon` `.ca-install__steps` `.ca-install__text` `.ca-install__title`
 
 ## Kbd
 

@@ -247,3 +247,5 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 240 | IconFallback | display/avatar | Avatar |
 | 241 | The skeleton prop | feedback/skeleton | Avatar, Button, Card, Flex, KpiCard, Stack, TextField |
 | 242 | Gallery with video, caption and download | feedback/lightbox | Button, Lightbox |
+| 243 | iOS instructions | feedback/install-prompt | InstallPrompt |
+| 244 | Native prompt | feedback/install-prompt | InstallPrompt |
