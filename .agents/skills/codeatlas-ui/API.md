@@ -344,6 +344,7 @@ Card — a Surface with a header (`title`, `headerActions`), padding and an opti
 | `target?` | `string` |  | Link target. `_blank` also sets `rel="noopener noreferrer"`. |
 | `title?` | `string` |  | Header title. |
 | `headingLevel?` | `HeadingLevel` |  | Renders `title` as `<h2>`–`<h6>` so the card is a section in the page outline. Omit for a plain paragraph. Only the tag changes, never the look. |
+| `padding?` | `'none' \| 'sm' \| 'md' \| 'lg' \| (string & {}) \| number` |  | Content padding: `'none'`, `'sm'` (12px), `'md'` (20px, the default), `'lg'` (32px), or any CSS length (`'1.5rem'`) or number (px). It sets `--ca-card-padding` on this card only. `flush` is the alias of `'none'` and wins over `padding`. |
 | `flush?` | `boolean` | `false` | Removes all padding, for tables, images and code that touch the edges. |
 | `full?` | `boolean` | `false` | `width: 100%`. |
 | `class?` | `string` | `''` |  |
@@ -539,8 +540,11 @@ Classes: `ca-container`
 | `size?` | `'sm' \| 'md' \| 'lg'` | `'md'` |  |
 | `variant?` | `'filled' \| 'glass' \| 'outlined' \| 'ghost'` | `'ghost'` |  |
 | `toast?` | `string` |  | Success toast message shown after copying. Omit for no toast. |
+| `aria-label?` | `string` |  | Accessible name of the icon-only button (`label=""`). Give each row its own ("Copy client_id of Acme"). Defaults to the localized `Copy`. Ignored when `label` is visible, so the name keeps containing the visible text. |
 | `class?` | `string` | `''` |  |
 | `oncopy?` | `(value: string) => void` |  |  |
+
+Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class' \| 'children' \| 'onclick' \| 'oncopy' \| 'aria-label'>`
 
 ## DataTable
 
