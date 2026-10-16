@@ -121,6 +121,18 @@
       cursor: inherit;
     }
 
+    /* Under coarse pointers the input is the 44px hit area (base.css drops the overlay's taps). */
+    @media (pointer: coarse) {
+      :global(.ca-switch__input) {
+        inset: auto;
+        top: 50%;
+        left: 50%;
+        width: max(100%, var(--ca-touch-target));
+        height: max(100%, var(--ca-touch-target));
+        translate: -50% -50%;
+      }
+    }
+
     :global(.ca-switch__thumb) {
       display: block;
       width: var(--_thumb);

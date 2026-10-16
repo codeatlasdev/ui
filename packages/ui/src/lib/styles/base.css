@@ -271,6 +271,11 @@ html[data-ca-native] .ca-selectable * {
     height: max(100%, var(--ca-touch-target));
     translate: -50% -50%;
   }
+  /* Checkbox, switch and radio wrap a native input that is the control: the overlay would paint
+   * over it and swallow the tap, so the input itself takes the 44px area (component CSS). */
+  :where(.ca-switch, .ca-checkbox, .ca-radio-input)::after {
+    pointer-events: none;
+  }
 }
 
 /* ── Focus not obscured (WCAG 2.4.11) ─────────────────────────────────────

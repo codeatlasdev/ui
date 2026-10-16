@@ -186,6 +186,18 @@
   		cursor: inherit;
   	}
 
+  	/* Under coarse pointers the input is the 44px hit area (base.css drops the overlay's taps). */
+  	@media (pointer: coarse) {
+  		:global(.ca-radio-input__native) {
+  			inset: auto;
+  			top: 50%;
+  			left: 50%;
+  			width: max(100%, var(--ca-touch-target));
+  			height: max(100%, var(--ca-touch-target));
+  			translate: -50% -50%;
+  		}
+  	}
+
   	:global(.ca-radio-input:has(.ca-radio-input__native:focus-visible)) {
   		outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
   		outline-offset: var(--ca-focus-ring-offset);
