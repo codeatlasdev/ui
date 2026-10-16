@@ -27,6 +27,8 @@
     flush?:         boolean;
     /** width: 100% */
     full?:          boolean;
+    /** Loading placeholder: same size as the loaded card, announced as busy. */
+    skeleton?:      boolean;
     title?:         string;
     /**
      * Renders `title` as an `<h2>`–`<h6>` so the card is a section in the page outline.
@@ -46,6 +48,7 @@
     padding,
     flush = false,
     full  = false,
+    skeleton = false,
     title,
     headingLevel,
     headerActions,
@@ -82,7 +85,7 @@
 </script>
 
 <!-- Same look as GlassCard had: material follows the theme, elevation is the old thickness tier. -->
-<Card {href} {target} elevation={ELEVATION[thickness]} class={cls} style={paddingVar}>
+<Card {href} {target} elevation={ELEVATION[thickness]} class={cls} style={paddingVar} {skeleton}>
   <LiquidGlass optics={GLASS_OPTICS[thickness]} />
   {#if title || headerActions}
     <div class="ca-glass-card__header">

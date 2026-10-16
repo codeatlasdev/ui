@@ -12,8 +12,10 @@
      * `<td>` only to override it.
      */
     responsive?: 'scroll' | 'cards';
+    /** Loading placeholder: the table keeps its exact box (rows stay laid out, hidden) and is announced as busy. Pass the same rows you will show, or placeholder rows, so the height matches. */
+    skeleton?: boolean;
   }
-  let { children, class: className = '', responsive = 'scroll' }: Props = $props();
+  let { children, class: className = '', responsive = 'scroll', skeleton = false }: Props = $props();
 
   /** Cards mode: caption every cell with its column header unless the author set one. Re-runs
       when rows change (sorting, paging, filtering), so new rows are captioned too. */
@@ -45,9 +47,10 @@
   role="region"
   aria-label={t().table.scrollRegion}
   tabindex="0"
+  aria-busy={skeleton ? 'true' : undefined}
   use:scrollFocusable
 >
-  <table class="ca-table" class:ca-table--cards={responsive === 'cards'} {@attach headerLabels}>
+  <table class="ca-table" class:ca-table--cards={responsive === 'cards'} data-skeleton={skeleton ? '' : undefined} {@attach headerLabels}>
     {@render children?.()}
   </table>
 </div>

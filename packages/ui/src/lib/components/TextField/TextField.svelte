@@ -19,6 +19,8 @@
     leading?:      Snippet;
     trailing?:     Snippet;
     size?:         'sm' | 'md';
+    /** Loading placeholder: same size as the loaded field, disabled, announced as busy. */
+    skeleton?:     boolean;
     class?:        string;
     name?:         string;
     oninput?:      (value: string) => void;
@@ -41,6 +43,7 @@
     leading,
     trailing,
     size         = 'md',
+    skeleton     = false,
     class: className = '',
     name,
     oninput,
@@ -53,7 +56,7 @@
   const hint  = $derived(description ?? helperText);
 </script>
 
-<div class="ca-tf {className}" class:ca-tf--sm={size === 'sm'} class:ca-tf--error={!!error} class:ca-tf--disabled={disabled}>
+<div class="ca-tf {className}" aria-busy={skeleton ? 'true' : undefined} data-skeleton={skeleton ? '' : undefined} class:ca-tf--sm={size === 'sm'} class:ca-tf--error={!!error} class:ca-tf--disabled={disabled}>
   {#if label}
     <label for={id} class="ca-tf__label">
       {label}{#if required}<span class="ca-tf__req" aria-hidden="true"> *</span>{/if}
@@ -70,7 +73,7 @@
       {type}
       {name}
       {placeholder}
-      {disabled}
+      disabled={disabled || skeleton}
       {required}
       {readonly}
       {autocomplete}

@@ -39,6 +39,8 @@
     flush?: boolean;
     /** `width: 100%`. */
     full?: boolean;
+    /** Loading placeholder: same size as the loaded card (content keeps its layout, hidden), announced as busy. */
+    skeleton?: boolean;
     class?: string;
     children?: Snippet;
   }
@@ -51,6 +53,7 @@
     padding,
     flush = false,
     full = false,
+    skeleton = false,
     class: className = '',
     style,
     children,
@@ -99,6 +102,8 @@
   style={styleAttr}
   data-padding={flush ? undefined : step}
   {@attach checkDoublePadding}
+  data-skeleton={skeleton ? '' : undefined}
+  aria-busy={skeleton ? 'true' : undefined}
 >
   {#if title || headerActions}
     <div class="ca-card__header">

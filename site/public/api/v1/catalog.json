@@ -1,6 +1,6 @@
 {
 	"version": "4.1.0",
-	"count": 240,
+	"count": 241,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -17,8 +17,8 @@
 		{
 			"slug": "feedback",
 			"first": "080",
-			"last": "103",
-			"count": 24
+			"last": "241",
+			"count": 25
 		},
 		{
 			"slug": "display",
@@ -8506,6 +8506,57 @@
 			],
 			"interactive": false,
 			"demo": "https://ui.codeatlas.com.br/docs/display/avatar#iconfallback",
+			"needs": "@codeatlasdev/ui@4.1.0"
+		},
+		{
+			"id": "241",
+			"group": "feedback",
+			"page": "skeleton",
+			"variant": "SkeletonProp",
+			"slug": "the-skeleton-prop",
+			"title": "The skeleton prop",
+			"description": "One flag on the real component keeps its size while data loads.",
+			"summary": "One flag on the real component keeps its size while data loads.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"the",
+				"skeleton",
+				"prop",
+				"avatar",
+				"button",
+				"card",
+				"flex",
+				"kpicard",
+				"stack",
+				"textfield"
+			],
+			"shape": "wide",
+			"components": [
+				"Avatar",
+				"Button",
+				"Card",
+				"Flex",
+				"KpiCard",
+				"Stack",
+				"TextField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Avatar",
+						"Button",
+						"Card",
+						"Flex",
+						"KpiCard",
+						"Stack",
+						"TextField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/skeleton#the-skeleton-prop",
 			"needs": "@codeatlasdev/ui@4.1.0"
 		}
 	]

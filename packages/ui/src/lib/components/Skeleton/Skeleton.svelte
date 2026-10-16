@@ -86,11 +86,8 @@
       flex-direction: column;
       gap: var(--ca-space-1);
     }
-    /* The sweep is a transform on a pseudo-element: it composites on the GPU, no repaint per frame. */
-    @keyframes ca-shimmer {
-      0%   { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
-    }
+    /* The sweep is a transform on a pseudo-element: it composites on the GPU, no repaint per frame.
+       `ca-shimmer` (global keyframes) lives in utilities.css, shared with the `skeleton` prop. */
     @media (prefers-reduced-motion: reduce) {
       .ca-skeleton { opacity: 0.5; }
       .ca-skeleton::after { animation: none; }

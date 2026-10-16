@@ -239,3 +239,4 @@ id	group	page	title	tags	summary
 238	navigation	tabs	Icons	icons,tabs,tabslist,tabstrigger,tabscontent,schemeasset	A leading icon per tab. A brand logo keeps its own colors with brandIcon; SchemeAsset swaps a monochrome mark between light and dark.
 239	navigation	menu	Leading icons and brand logos	leading,icons,and,brand,logos,dropdownmenu,dropdownmenuitem,dropdownmenulabel,schemeasset,button	The icon slot gives every item the same box and gap. brandIcon keeps a logo's own colors, and SchemeAsset swaps a monochrome mark between light and dark.
 240	display	avatar	IconFallback	iconfallback,avatar	IconFallback
+241	feedback	skeleton	The skeleton prop	the,skeleton,prop,avatar,button,card,flex,kpicard,stack,textfield	One flag on the real component keeps its size while data loads.

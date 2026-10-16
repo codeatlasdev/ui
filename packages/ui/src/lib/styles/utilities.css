@@ -241,3 +241,44 @@ tr:focus-within .ca-row-actions {
 .ca-bar__sub{flex:1;font-size:var(--ca-font-size-caption);color:var(--ca-text-secondary)}
 .ca-bar__actions{display:flex;align-items:center;gap:var(--ca-space-2);flex-shrink:0;margin-inline-start:auto}
 @container (max-width:599.98px){.ca-bar__sub{display:none}}
+
+/* ─── Skeleton state (`skeleton` prop) ─────────────────────────────── */
+
+/* The component keeps its real DOM, so its box is exactly the loaded one (CLS 0). Content is
+   `visibility: hidden` (laid out, not painted, not read by AT); the host paints the placeholder
+   and the same translated shimmer as <Skeleton>. The host also carries `aria-busy="true"`.
+   `.ca-skeleton-on` goes on the element that frames the component. */
+@keyframes ca-shimmer {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100%); }
+}
+[data-skeleton] {
+  position: relative;
+  overflow: hidden;
+  pointer-events: none;
+  user-select: none;
+}
+[data-skeleton] > * { visibility: hidden; }
+[data-skeleton]::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--ca-action-hover);
+}
+[data-skeleton]::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, var(--ca-outline-subtle), transparent);
+  transform: translateX(-100%);
+  animation: ca-shimmer var(--ca-duration-loop) var(--ca-ease-standard) infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-skeleton]::after { animation: none; }
+  [data-skeleton] { opacity: 0.5; }
+}
+@media (forced-colors: active) {
+  [data-skeleton]::before { background: Canvas; outline: 1px solid CanvasText; outline-offset: -1px; }
+  [data-skeleton]::after { display: none; }
+}

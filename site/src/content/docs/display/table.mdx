@@ -29,6 +29,7 @@ SimpleTable styles plain `thead` and `tbody` markup inside a focusable, horizont
 
 <Props for="SimpleTable" rows={[
   { name: "responsive", type: "'scroll' | 'cards'", default: "'scroll'", description: "`scroll` keeps a regular table. `cards` turns each row into a card when the table's own width is below the `sm` breakpoint (600px). Cell captions come from the `thead` headers automatically." },
+  { name: "skeleton", type: "boolean", default: "false", description: "Loading placeholder: rows keep their layout but are hidden, so the table has the exact loaded size. Render placeholder rows so the height matches. See Skeleton." },
   { name: "class", type: "string", default: "''", description: "Extra class on the wrapper." },
   { name: "children", type: "Snippet", default: "undefined", description: "`thead` and `tbody` markup." },
 ]} />

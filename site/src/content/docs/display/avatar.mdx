@@ -47,5 +47,6 @@ Without `src`, or when the image fails to load, the avatar shows initials derive
   { name: "referrerpolicy", type: "ReferrerPolicy", default: "undefined", description: "Passed to the `<img>`, e.g. `no-referrer` for CDNs that reject a cross-origin `Referer`." },
   { name: "crossorigin", type: "'anonymous' | 'use-credentials'", default: "undefined", description: "Passed to the `<img>`." },
   { name: "onerror", type: "(event: Event) => void", default: "undefined", description: "Called when the image fails to load; the fallback shows. Refetch a signed URL here." },
+  { name: "skeleton", type: "boolean", default: "false", description: "Loading placeholder with the exact avatar size; no image request is made. See Skeleton." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />

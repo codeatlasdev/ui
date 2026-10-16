@@ -43,6 +43,7 @@ An `error` replaces the `description` and is announced to assistive tech. On tou
   { name: "size", type: "'sm' | 'md'", default: "'md'", description: "Field height." },
   { name: "leading", type: "Snippet", description: "Icon or element before the input." },
   { name: "trailing", type: "Snippet", description: "Icon or element after the input." },
+  { name: "skeleton", type: "boolean", default: "false", description: "Loading placeholder with the exact size of the loaded field (disabled, `aria-busy`). See Skeleton." },
   { name: "class", type: "string", description: "Extra classes on the root." },
   { name: "oninput", type: "(value: string) => void", description: "Called on every keystroke with the new value." },
   { name: "onchange", type: "(value: string) => void", description: "Called when the value is committed (blur or Enter)." },

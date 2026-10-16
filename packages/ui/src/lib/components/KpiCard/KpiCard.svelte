@@ -11,10 +11,12 @@
     trend?:  number;
     /** Lucide icon component; size and color are managed by KpiCard */
     icon?:   IconComponent;
+    /** Loading placeholder: same size as the loaded card, announced as busy. */
+    skeleton?: boolean;
     class?:  string;
   }
 
-  let { title, value, unit, trend, icon: Icon, class: className = '' }: Props = $props();
+  let { title, value, unit, trend, icon: Icon, skeleton = false, class: className = '' }: Props = $props();
 
   const isUp   = $derived(trend !== undefined && trend > 0);
   const isDown = $derived(trend !== undefined && trend < 0);
@@ -23,7 +25,7 @@
   );
 </script>
 
-<Card elevation={3} class="ca-kpi {className}">
+<Card elevation={3} class="ca-kpi {className}" {skeleton}>
   <div class="ca-kpi__inner">
     <div class="ca-kpi__top">
       <p class="ca-kpi__title">{title}</p>

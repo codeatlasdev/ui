@@ -85,6 +85,7 @@ describe("Skeleton", () => {
 			.getAnimations({ subtree: true })
 			.find((a) => (a.effect as KeyframeEffect).pseudoElement === "::after");
 		if (!sweep) throw new Error("no animation on ::after");
+		expect((sweep as CSSAnimation).animationName).toBe("ca-shimmer");
 		const frames = (sweep.effect as KeyframeEffect).getKeyframes();
 		expect(frames.some((f) => "transform" in f || "translate" in f)).toBe(true);
 		expect(frames.some((f) => "backgroundPosition" in f)).toBe(false);

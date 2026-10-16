@@ -2,11 +2,11 @@
 	import SimpleTable from "./Table.svelte";
 	import UserCell from "./UserCell.svelte";
 
-	let { responsive = "scroll", labels = true }: { responsive?: "scroll" | "cards"; labels?: boolean } = $props();
+	let { responsive = "scroll", labels = true, skeleton = false }: { responsive?: "scroll" | "cards"; labels?: boolean; skeleton?: boolean } = $props();
 	const l = (name: string) => (labels ? name : undefined);
 </script>
 
-<SimpleTable {responsive}>
+<SimpleTable {responsive} {skeleton}>
 	<thead>
 		<tr>
 			<th scope="col">User</th>

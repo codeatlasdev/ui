@@ -37,6 +37,8 @@
     crossorigin?:    'anonymous' | 'use-credentials';
     /** Called when the image fails; the fallback shows. Use it to refetch a signed URL. */
     onerror?:        (event: Event) => void;
+    /** Loading placeholder: same size, no image request, announced as busy. */
+    skeleton?: boolean;
     class?:    string;
   }
 
@@ -79,6 +81,7 @@
     referrerpolicy,
     crossorigin,
     onerror,
+    skeleton = false,
     class: className = '',
   }: Props = $props();
 
@@ -93,7 +96,7 @@
   // `failed` is keyed on the src it failed for, so a new src gets a fresh attempt.
   let failedSrc = $state<string | undefined>();
   let loadedSrc = $state<string | undefined>();
-  const showImg = $derived(!!src && failedSrc !== src);
+  const showImg = $derived(!skeleton && !!src && failedSrc !== src);
   const covered = $derived(showImg && loadedSrc === src);
 
   function handleError(e: Event) {
@@ -104,6 +107,8 @@
 
 <span
   class="ca-avatar {className}"
+  data-skeleton={skeleton ? '' : undefined}
+  aria-busy={skeleton ? 'true' : undefined}
   style="--av-size:{px}px;--av-radius:{radius};--av-bg:{palette.bg};--av-fg:{palette.fg};--av-fs:{fontSize}px;--av-dot:{dotSize}px;"
 >
   <!-- The fallback is always rendered beneath the <img>, so a slow or failed load never changes the box. -->

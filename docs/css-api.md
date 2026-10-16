@@ -265,6 +265,8 @@ Total: 796 unique classes across 81 components.
 
 `.ca-shimmer` `.ca-skeleton` `.ca-skeleton--circular` `.ca-skeleton--rectangular` `.ca-skeleton--rounded` `.ca-skeleton--text` `.ca-skeleton-rows`
 
+The `skeleton` prop of `Avatar`, `KpiCard`, `TextField`, `Table`, `Card` and `GlassCard` sets `[data-skeleton]` (and `aria-busy="true"`) on the component's frame; the placeholder paint and the `ca-shimmer` keyframes live in `utilities.css`.
+
 ## SkipLink
 
 `.ca-skip-link`
