@@ -538,17 +538,30 @@ function sveltekitSteps(root: string): Step[] {
 // ── Astro ─────────────────────────────────────────────────────────────────────
 
 function astroConfigPatch(src: string, themeSpec: string): string | null {
-	if (src.includes("caUI(")) return src;
+	const hasCaUI = src.includes("caUI(");
+	// The components are Svelte: without the Svelte integration they do not render (#273).
+	const hasSvelte = /\bsvelte\s*\(/.test(src);
+	if (hasCaUI && hasSvelte) return src;
 	const m = src.match(/integrations:\s*\[/);
 	if (!m || m.index === undefined) return null;
 	const at = m.index + m[0].length;
 	const rest = src.slice(at);
-	const empty = /^\s*\]/.test(rest);
-	const next = `${src.slice(0, at)}caUI(theme)${empty ? "" : ", "}${rest}`;
-	return addImport(
-		addImport(next, 'import { caUI } from "@codeatlasdev/ui/astro";'),
-		`import { theme } from "${themeSpec}";`
-	);
+	const items = [hasCaUI ? "" : "caUI(theme)", hasSvelte ? "" : "svelte()"].filter(Boolean);
+	let next = `${src.slice(0, at)}${items.join(", ")}${/^\s*\]/.test(rest) ? "" : ", "}${rest}`;
+	if (!hasSvelte) next = addImport(next, 'import svelte from "@astrojs/svelte";');
+	if (!hasCaUI) {
+		next = addImport(next, 'import { caUI } from "@codeatlasdev/ui/astro";');
+		next = addImport(next, `import { theme } from "${themeSpec}";`);
+	}
+	return next;
+}
+
+/** `@astrojs/svelte` is a peer the user installs: init edits the config but cannot run the package manager. */
+function astroNotes(root: string): string[] {
+	if (readDeps(root)?.["@astrojs/svelte"]) return [];
+	return [
+		"@astrojs/svelte is not in package.json, and the components need it. Install it with `npx astro add svelte`.",
+	];
 }
 
 const ASTRO_LAYOUT = `---
@@ -615,7 +628,8 @@ function astroSteps(root: string): Step[] {
 		{
 			path: configName,
 			patch: (src) => astroConfigPatch(src, existing ?? "./src/theme.ts"),
-			manual: 'Add caUI(theme) from "@codeatlasdev/ui/astro" to `integrations`.',
+			manual:
+				'Add caUI(theme) from "@codeatlasdev/ui/astro" and svelte() from "@astrojs/svelte" to `integrations`.',
 		},
 		layout
 			? {
@@ -699,6 +713,7 @@ export function init(
 	const notes = [
 		...(fw === "sveltekit" && kitMajor(root) >= 3 ? kit3Notes(root) : []),
 		...(fw === "sveltekit" ? seoNotes(root, createdManifest) : []),
+		...(fw === "astro" ? astroNotes(root) : []),
 	];
 	for (const n of notes) log(`\n  note    ${n}`);
 	if (ok && !pending && !notes.length)

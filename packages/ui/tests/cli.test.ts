@@ -413,6 +413,50 @@ describe("init on Astro", () => {
 		init(root, { ...quiet, write: true });
 		expect(read(root, "src/layouts/Base.astro")).toContain("colorScheme.init()");
 	});
+
+	// #273: components do not render in Astro without the Svelte integration.
+	describe("the Svelte integration (#273)", () => {
+		const REACT = `import react from "@astrojs/react";\nimport { defineConfig } from "astro/config";\n\nexport default defineConfig({\n\tintegrations: [react()],\n});\n`;
+		const pkg = (deps: Record<string, string>) =>
+			JSON.stringify({ dependencies: { astro: "^7.0.0", ...deps } });
+
+		it("adds svelte() and its import when the config has no Svelte integration", () => {
+			const root = project({
+				"package.json": pkg({ "@astrojs/react": "^4.0.0", "@astrojs/svelte": "^8.0.0" }),
+				"astro.config.mjs": REACT,
+			});
+			init(root, { ...quiet, write: true });
+			const config = read(root, "astro.config.mjs");
+			expect(config).toContain('import svelte from "@astrojs/svelte";');
+			expect(config).toContain("integrations: [caUI(theme), svelte(), react()]");
+		});
+
+		it("leaves an existing svelte() alone", () => {
+			const root = project({
+				"package.json": pkg({ "@astrojs/svelte": "^8.0.0" }),
+				"astro.config.mjs": CONFIG,
+			});
+			init(root, { ...quiet, write: true });
+			expect(read(root, "astro.config.mjs").match(/svelte\(\)/g)).toHaveLength(1);
+		});
+
+		it("warns to install @astrojs/svelte when the dependency is missing", () => {
+			const root = project({ "package.json": pkg({}), "astro.config.mjs": REACT });
+			const lines: string[] = [];
+			init(root, { write: true, log: (l) => lines.push(l) });
+			expect(lines.join("\n")).toMatch(/note\s+.*@astrojs\/svelte.*astro add svelte/s);
+		});
+
+		it("does not warn when @astrojs/svelte is installed", () => {
+			const root = project({
+				"package.json": pkg({ "@astrojs/svelte": "^8.0.0" }),
+				"astro.config.mjs": CONFIG,
+			});
+			const lines: string[] = [];
+			init(root, { write: true, log: (l) => lines.push(l) });
+			expect(lines.join("\n")).not.toContain("astro add svelte");
+		});
+	});
 });
 
 describe("migrate", () => {

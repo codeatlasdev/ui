@@ -206,7 +206,7 @@ Use the integration together with `@astrojs/svelte`. `caUI` injects the theme in
 | File | What `init` puts there | If the file exists |
 |---|---|---|
 | `src/theme.ts` | the shared `theme` object (`defaultPreset: "amber"`, `defaultScheme: "system"`) | left alone |
-| `astro.config.mjs` (or `.ts`, `.js`, `.mts`) | `caUI(theme)` first in `integrations`, with its two imports | adds `caUI(theme)` unless `caUI(` is already there; reports `manual` when there is no `integrations: [` array |
+| `astro.config.mjs` (or `.ts`, `.js`, `.mts`) | `caUI(theme)` and `svelte()` first in `integrations`, with their imports | adds each one unless `caUI(` / `svelte(` is already there; reports `manual` when there is no `integrations: [` array. `init` cannot install `@astrojs/svelte`: when it is not in `package.json` it prints a `note` to run `npx astro add svelte` |
 | the first `.astro` file in `src/layouts` that renders `<html>` | the stylesheet import, the viewport meta and a client `<script>` that calls `colorScheme.init()` | adds only what is missing; reports `manual` when there is no `</body>` for the script |
 | `src/layouts/Base.astro` | created only when `src/layouts` has no layout that renders `<html>` | not applicable |
 
@@ -256,6 +256,8 @@ import "@codeatlasdev/ui/styles/global.css";
 ```
 
 Components are Svelte islands. Add a client directive to anything interactive (`client:visible` or `client:load`); purely visual components render on the server with no JavaScript. Call `colorScheme.init()` once per page, from that layout script or from one island that is always present.
+
+With `<ClientRouter />` (View Transitions) the theme survives navigation: `caUI` copies the injected `<style id="ca-theme">`, the runtime tokens, the `theme-color` meta and the `data-preset`, `data-style`, `data-ca-scheme`, `data-ca-style` attributes and the `dark` class onto each incoming page before Astro swaps it in. Nothing to configure.
 
 <Callout type="note">
   Astro needs `astro` 5, 6 or 7 as a peer. Components that read `colorScheme` render correctly on the server because the init script sets `class="dark"` and `data-preset` before the stylesheet applies.
