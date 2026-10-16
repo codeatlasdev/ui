@@ -1,9 +1,15 @@
-import { describe, expect, it } from "vitest";
+/// <reference types="@vitest/browser-playwright" />
+import { afterEach, describe, expect, it } from "vitest";
+import { cdp } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import Skeleton from "./Skeleton.svelte";
 
 const blocks = (c: HTMLElement) => [...c.querySelectorAll<HTMLElement>(".ca-skeleton")];
+
+afterEach(async () => {
+	await cdp().send("Emulation.setEmulatedMedia", { features: [] });
+});
 
 describe("Skeleton", () => {
 	it("is hidden from assistive tech and passes axe", async () => {
@@ -68,5 +74,29 @@ describe("Skeleton", () => {
 		const screen = await render(Skeleton, { rows: 1 });
 		expect(blocks(screen.container)).toHaveLength(1);
 		expect(screen.container.querySelector(".ca-skeleton-rows")).toBeNull();
+	});
+
+	it("shimmer is a translated pseudo-element, never an animated background", async () => {
+		const screen = await render(Skeleton, { width: 120, height: 16 });
+		const [el] = blocks(screen.container);
+		const host = el.getAnimations().flatMap((a) => (a as CSSAnimation).animationName);
+		expect(host).not.toContain("ca-shimmer");
+		const sweep = el
+			.getAnimations({ subtree: true })
+			.find((a) => (a.effect as KeyframeEffect).pseudoElement === "::after");
+		if (!sweep) throw new Error("no animation on ::after");
+		const frames = (sweep.effect as KeyframeEffect).getKeyframes();
+		expect(frames.some((f) => "transform" in f || "translate" in f)).toBe(true);
+		expect(frames.some((f) => "backgroundPosition" in f)).toBe(false);
+		expect(getComputedStyle(el).overflow).toBe("hidden");
+	});
+
+	it("reduced motion removes the sweep", async () => {
+		await cdp().send("Emulation.setEmulatedMedia", {
+			features: [{ name: "prefers-reduced-motion", value: "reduce" }],
+		});
+		const screen = await render(Skeleton, { width: 120, height: 16 });
+		const [el] = blocks(screen.container);
+		expect(el.getAnimations({ subtree: true })).toHaveLength(0);
 	});
 });

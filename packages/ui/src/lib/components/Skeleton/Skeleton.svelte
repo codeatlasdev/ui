@@ -48,13 +48,16 @@
 @layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
 @layer ca.components {
     .ca-skeleton {
-      background: linear-gradient(
-        90deg,
-        var(--ca-action-hover) 25%,
-        var(--ca-outline-subtle) 50%,
-        var(--ca-action-hover) 75%
-      );
-      background-size: 200% 100%;
+      position: relative;
+      overflow: hidden;
+      background: var(--ca-action-hover);
+    }
+    .ca-skeleton::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent, var(--ca-outline-subtle), transparent);
+      transform: translateX(-100%);
       animation: ca-shimmer var(--ca-duration-loop) var(--ca-ease-standard) infinite;
     }
     .ca-skeleton--text {
@@ -83,15 +86,14 @@
       flex-direction: column;
       gap: var(--ca-space-1);
     }
+    /* The sweep is a transform on a pseudo-element: it composites on the GPU, no repaint per frame. */
     @keyframes ca-shimmer {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
+      0%   { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
     }
     @media (prefers-reduced-motion: reduce) {
-      .ca-skeleton {
-        animation: none;
-        opacity: 0.5;
-      }
+      .ca-skeleton { opacity: 0.5; }
+      .ca-skeleton::after { animation: none; }
     }
 }
 </style>
