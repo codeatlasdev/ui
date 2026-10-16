@@ -17,7 +17,9 @@
 
   let { modules, activeIndex, onSelect, brand, bottom, class: className = '' }: Props = $props();
 
-  // Dock magnification: track mouseY, scale icons near cursor
+  // Dock magnification: track mouseY, scale the glyph near the cursor. The button keeps its
+  // box (a scaled button would cover the active neighbour), and the amount follows
+  // --ca-motion-scale in CSS: 0 (motion.scale: 0, prefers-reduced-motion) turns it off.
   let mouseY  = $state(Infinity);
   let iconEls = $state<(HTMLElement | null)[]>([]);
 
@@ -158,8 +160,12 @@
       transition:
         background var(--ca-duration-fast) var(--ca-ease-standard),
         color      var(--ca-duration-fast) var(--ca-ease-standard);
+    }
+
+    .ca-rail__icon > :global(svg) {
       transform-origin: center;
-      transform: scale(var(--rail-scale, 1));
+      /* --rail-scale runs 1..1.35; the motion scale scales the extra part, 0 keeps 1 */
+      transform: scale(calc(1 + (var(--rail-scale, 1) - 1) * min(1, var(--ca-motion-scale, 1))));
     }
 
     .ca-rail__icon:hover {

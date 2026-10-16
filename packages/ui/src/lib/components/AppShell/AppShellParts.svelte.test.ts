@@ -84,6 +84,53 @@ describe("Rail", () => {
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
+	describe("dock magnification (#296)", () => {
+		const boxOf = (el: Element) => {
+			const r = el.getBoundingClientRect();
+			return [r.left, r.top, r.width, r.height];
+		};
+		const glyphOf = (btn: Element) => btn.querySelector("svg") as SVGElement;
+		const hoverFirst = async (screen: Awaited<ReturnType<typeof render>>) => {
+			const first = screen.getByRole("button", { name: "Application" }).element();
+			const r = first.getBoundingClientRect();
+			first.dispatchEvent(
+				new MouseEvent("mousemove", {
+					bubbles: true,
+					clientX: r.left + r.width / 2,
+					clientY: r.top + r.height / 2,
+				})
+			);
+			return first;
+		};
+
+		it("grows the glyph, never the button, so hover cannot cover the active neighbour", async () => {
+			const screen = await render(Rail, { modules, activeIndex: 1, onSelect: vi.fn() });
+			const first = screen.getByRole("button", { name: "Application" }).element();
+			const active = screen.getByRole("button", { name: "Settings" }).element();
+			const before = [boxOf(first), boxOf(active)];
+			await hoverFirst(screen);
+			await expect
+				.poll(() => new DOMMatrix(getComputedStyle(glyphOf(first)).transform).a)
+				.toBeGreaterThan(1.1);
+			expect(getComputedStyle(first).transform).toBe("none");
+			expect([boxOf(first), boxOf(active)]).toEqual(before);
+		});
+
+		it("is off when the motion scale is 0 (motion.scale: 0, prefers-reduced-motion)", async () => {
+			const screen = await render(Rail, { modules, activeIndex: 1, onSelect: vi.fn() });
+			const first = await hoverFirst(screen);
+			const scaleX = () => new DOMMatrix(getComputedStyle(glyphOf(first)).transform).a;
+			// Same pointer position: magnified at the default scale, flat once the scale is 0.
+			await expect.poll(scaleX).toBeGreaterThan(1.1);
+			document.documentElement.style.setProperty("--ca-motion-scale", "0");
+			try {
+				await expect.poll(scaleX).toBe(1);
+			} finally {
+				document.documentElement.style.removeProperty("--ca-motion-scale");
+			}
+		});
+	});
+
 	it("hides the default CA mark from the accessibility tree", async () => {
 		const screen = await render(Rail, { modules, activeIndex: 0, onSelect: vi.fn() });
 		expect(screen.container.querySelector(".ca-rail__logo")?.getAttribute("aria-hidden")).toBe(
