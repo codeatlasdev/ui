@@ -184,7 +184,7 @@ Total: 796 unique classes across 81 components.
 
 ## Lightbox
 
-`.ca-lightbox` `.ca-lightbox-in` `.ca-lightbox-out` `.ca-lightbox__close` `.ca-lightbox__img` `.ca-lightbox__overlay` `.ca-lightbox__sr` `.ca-lightbox__stage`
+`.ca-lightbox` `.ca-lightbox-in` `.ca-lightbox-out` `.ca-lightbox__action` `.ca-lightbox__caption` `.ca-lightbox__caption-text` `.ca-lightbox__close` `.ca-lightbox__counter` `.ca-lightbox__img` `.ca-lightbox__meta` `.ca-lightbox__nav` `.ca-lightbox__nav--next` `.ca-lightbox__nav--prev` `.ca-lightbox__overlay` `.ca-lightbox__sr` `.ca-lightbox__stage` `.ca-lightbox__tools` `.ca-lightbox__video`
 
 ## LiveList
 

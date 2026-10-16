@@ -240,3 +240,4 @@ id	group	page	title	tags	summary
 239	navigation	menu	Leading icons and brand logos	leading,icons,and,brand,logos,dropdownmenu,dropdownmenuitem,dropdownmenulabel,schemeasset,button	The icon slot gives every item the same box and gap. brandIcon keeps a logo's own colors, and SchemeAsset swaps a monochrome mark between light and dark.
 240	display	avatar	IconFallback	iconfallback,avatar	IconFallback
 241	feedback	skeleton	The skeleton prop	the,skeleton,prop,avatar,button,card,flex,kpicard,stack,textfield	One flag on the real component keeps its size while data loads.
+242	feedback	lightbox	Gallery with video, caption and download	gallery,with,video,caption,and,download,button,lightbox	Arrow keys, buttons and swipe move through the items.

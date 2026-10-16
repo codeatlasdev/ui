@@ -1,6 +1,6 @@
 {
 	"version": "4.1.0",
-	"count": 241,
+	"count": 242,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -17,8 +17,8 @@
 		{
 			"slug": "feedback",
 			"first": "080",
-			"last": "241",
-			"count": 25
+			"last": "242",
+			"count": 26
 		},
 		{
 			"slug": "display",
@@ -8557,6 +8557,46 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/feedback/skeleton#the-skeleton-prop",
+			"needs": "@codeatlasdev/ui@4.1.0"
+		},
+		{
+			"id": "242",
+			"group": "feedback",
+			"page": "lightbox",
+			"variant": "Gallery",
+			"slug": "gallery-with-video-caption-and-download",
+			"title": "Gallery with video, caption and download",
+			"description": "Arrow keys, buttons and swipe move through the items.",
+			"summary": "Arrow keys, buttons and swipe move through the items.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"gallery",
+				"with",
+				"video",
+				"caption",
+				"and",
+				"download",
+				"button",
+				"lightbox"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"Lightbox"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"Lightbox",
+						"LightboxItem"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/lightbox#gallery-with-video-caption-and-download",
 			"needs": "@codeatlasdev/ui@4.1.0"
 		}
 	]

@@ -203,6 +203,10 @@ export const ptBR: Messages = {
 	},
 	lightbox: {
 		close: "Fechar",
+		previous: "Anterior",
+		next: "Próxima",
+		download: "Baixar",
+		counter: (n: number, total: number) => `${n} / ${total}`,
 	},
 	mobilePane: {
 		back: "Voltar",

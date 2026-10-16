@@ -1,6 +1,6 @@
 ---
 title: Lightbox
-description: A full-screen image viewer on a native modal dialog.
+description: A full-screen viewer for images and videos, single or as a gallery, on a native modal dialog.
 group: Feedback
 order: 9
 ---
@@ -8,6 +8,8 @@ import Demo from "~/components/docs/Demo.astro";
 import Props from "~/components/docs/Props.astro";
 import Basic from "~/demos/feedback/lightbox/Basic.svelte";
 import BasicSrc from "~/demos/feedback/lightbox/Basic.svelte?raw";
+import Gallery from "~/demos/feedback/lightbox/Gallery.svelte";
+import GallerySrc from "~/demos/feedback/lightbox/Gallery.svelte?raw";
 
 ```svelte
 <script>
@@ -20,13 +22,28 @@ import BasicSrc from "~/demos/feedback/lightbox/Basic.svelte?raw";
 <Lightbox bind:open src={url} alt="Photo sent by Maria" />
 ```
 
-The image is contained in the viewport and respects the device safe areas. Escape, the close button and a click on the backdrop close it. Because it is a native modal `<dialog>`, the page behind is inert, focus returns to the trigger and scrolling is locked while it is open. `alt` is required.
+Pass `items` for a gallery of images and videos; `src` and `alt` are sugar for a single image.
+
+```svelte
+<Lightbox bind:open bind:index items={[
+  { src: photo, alt: "Beach", caption: "Praia", meta: "Maria, 10:42" },
+  { type: "video", src: clip, poster, alt: "Short clip" },
+]} ondownload={(item, i) => save(item)} />
+```
+
+With more than one item the viewer shows previous and next buttons, a counter, and answers to the ArrowLeft and ArrowRight keys and to a horizontal swipe. It does not wrap: the buttons at either end are `aria-disabled` and keep focus. Arrow keys are left alone while a video has focus so they keep seeking, and a video is paused as soon as you move to another item. The caption and `meta` (sender, time) overlay the bottom edge without changing the media box. A Download button appears for galleries: `ondownload(item, index)` replaces the default `<a download>` to `item.download ?? item.src`, which only works for same-origin or CORS-enabled files.
+
+The media is contained in the viewport and respects the device safe areas. Escape, the close button and a click on the backdrop close it. Because it is a native modal `<dialog>`, the page behind is inert, focus returns to the trigger and scrolling is locked while it is open. `alt` is required.
 
 <Demo title="Open from a button" src={BasicSrc}><Basic client:visible /></Demo>
+<Demo title="Gallery with video, caption and download" description="Arrow keys, buttons and swipe move through the items." src={GallerySrc}><Gallery client:visible /></Demo>
 
 <Props rows={[
   { name: "open", type: "boolean", default: "false", description: "Bindable open state." },
-  { name: "src", type: "string", description: "Image URL. Required." },
-  { name: "alt", type: "string", description: "Image description. Required." },
+  { name: "src", type: "string", description: "Single-image sugar: same as `items={[{ src, alt }]}`." },
+  { name: "alt", type: "string", description: "Image description for the `src` form." },
+  { name: "items", type: "LightboxItem[]", description: "Gallery. Each item: `{ type?: 'image' | 'video', src, alt?, caption?, meta?, poster?, download? }`. Wins over `src`." },
+  { name: "index", type: "number", default: "0", description: "Bindable current item." },
+  { name: "ondownload", type: "(item: LightboxItem, index: number) => void", description: "Replaces the default download link. The Download button shows for `items` galleries." },
   { name: "onclose", type: "() => void", description: "Called after the viewer closes." },
 ]} />

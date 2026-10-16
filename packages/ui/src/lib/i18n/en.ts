@@ -206,6 +206,10 @@ export const en = {
 	},
 	lightbox: {
 		close: "Close",
+		previous: "Previous",
+		next: "Next",
+		download: "Download",
+		counter: (n: number, total: number) => `${n} / ${total}`,
 	},
 	mobilePane: {
 		back: "Back",

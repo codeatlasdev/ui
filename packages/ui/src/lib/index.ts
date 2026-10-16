@@ -136,6 +136,7 @@ export type {
 	Responsive,
 	Space,
 } from "./components/Layout/layout.js";
+export type { LightboxItem } from "./components/Lightbox/Lightbox.svelte";
 export { default as Lightbox } from "./components/Lightbox/Lightbox.svelte";
 export { default as LiquidGlass } from "./components/LiquidGlass/LiquidGlass.svelte";
 export { default as LiveList } from "./components/LiveList/LiveList.svelte";

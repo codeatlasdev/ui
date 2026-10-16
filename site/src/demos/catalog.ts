@@ -247,4 +247,5 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "239", path: "navigation/menu/BrandIcons" },
 	{ id: "240", path: "display/avatar/IconFallback" },
 	{ id: "241", path: "feedback/skeleton/SkeletonProp" },
+	{ id: "242", path: "feedback/lightbox/Gallery" },
 ];
