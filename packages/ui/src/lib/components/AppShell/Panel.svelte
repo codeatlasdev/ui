@@ -56,6 +56,7 @@
 {#if show || panelW > 1}
   <aside
     class="ca-panel {className}"
+    data-ca-blur="mat-regular"
     aria-label={t().appShell.sectionNavigation}
     style="--panel-w:{panelW}px; --panel-opacity:{panelW < 20 ? panelW / 20 : 1}"
   >
@@ -95,8 +96,6 @@
       width: var(--panel-w, var(--ca-panel-width));
       opacity: var(--panel-opacity, 1);
       background: var(--ca-glass-bg);
-      -webkit-backdrop-filter: var(--ca-mat-regular-filter);
-      backdrop-filter: var(--ca-mat-regular-filter);
       box-shadow: var(--ca-glass-separator);
     }
 

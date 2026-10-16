@@ -125,6 +125,7 @@
   {id}
   role="tooltip"
   class="ca-tooltip-content {className}"
+  blur="tooltip"
   onpointerenter={() => cancel()}
   onpointerleave={closeIntent}
 >
@@ -145,8 +146,6 @@
     :global(.ca-tooltip-content) {
       /* Inverse, near-opaque surface: --ca-tooltip-fg needs it to reach AA in both schemes. */
       background: var(--ca-tooltip-bg);
-      -webkit-backdrop-filter: var(--ca-tooltip-blur);
-      backdrop-filter: var(--ca-tooltip-blur);
       border: var(--ca-border-width) solid var(--ca-glass-border);
       border-radius: var(--ca-radius-sm);
       padding: var(--ca-space-1-5) var(--ca-space-2-5);

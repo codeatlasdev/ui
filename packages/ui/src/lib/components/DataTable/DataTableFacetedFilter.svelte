@@ -77,6 +77,7 @@
   aria-label={title}
   tabindex={-1}
   class="ca-facet__content"
+  blur="overlay"
   onDismiss={(reason) => close(reason === 'escape')}
 >
       <div class="ca-facet__list" role="listbox" aria-label={title} aria-multiselectable="true">
@@ -162,8 +163,6 @@
       border-radius: var(--ca-radius-lg);
       border: var(--ca-border-width) solid var(--ca-overlay-border);
       background-color: var(--ca-overlay-bg);
-      -webkit-backdrop-filter: var(--ca-overlay-blur);
-      backdrop-filter: var(--ca-overlay-blur);
       box-shadow: var(--ca-shadow-lg);
       overflow: hidden;
       outline: none;

@@ -12,7 +12,7 @@ const items = [
 ---
 <nav class="rail" aria-label="Chapters">
 	<span class="rail__line" aria-hidden="true"></span>
-	<ol>
+	<ol data-ca-blur="chrome">
 		{items.map(({ id, label, icon: Icon }) => (
 			<li>
 				<a href={`#${id}`} data-rail={id} aria-label={label}>

@@ -125,8 +125,6 @@
     /* Glass */
     .ca-icon-btn--glass {
       background: var(--ca-glass-tint);
-      -webkit-backdrop-filter: var(--ca-blur-regular);
-      backdrop-filter: var(--ca-blur-regular);
       border: var(--ca-border-width) solid var(--ca-glass-border);
       color: var(--ca-text-primary);
       box-shadow: var(--ca-glass-shadow);
@@ -159,8 +157,6 @@
     .ca-icon-btn[aria-disabled='true']:not(.ca-icon-btn--loading) {
       color: var(--ca-text-disabled);
       box-shadow: none;
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
     }
     .ca-icon-btn--glass:disabled:not(.ca-icon-btn--loading),
     .ca-icon-btn--glass[aria-disabled='true']:not(.ca-icon-btn--loading),

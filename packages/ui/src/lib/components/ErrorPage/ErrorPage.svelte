@@ -45,7 +45,7 @@
 <div class="ca-error-page {className}">
   <div class="ca-error-page__inner">
     <!-- Status glow bubble -->
-    <div class="ca-error-page__bubble" aria-hidden="true">
+    <div class="ca-error-page__bubble" data-ca-blur="regular" aria-hidden="true">
       <IconComponent size={32} stroke-width={1.5} />
     </div>
 
@@ -98,8 +98,6 @@
       background: color-mix(in oklab, var(--ca-brand-main) 12%, transparent);
       border: var(--ca-border-width) solid color-mix(in oklab, var(--ca-brand-main) 25%, transparent);
       color: var(--ca-brand-text);
-      -webkit-backdrop-filter: var(--ca-blur-regular);
-      backdrop-filter: var(--ca-blur-regular);
       margin-bottom: var(--ca-space-2);
     }
 

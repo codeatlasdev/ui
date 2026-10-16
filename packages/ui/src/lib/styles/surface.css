@@ -206,6 +206,46 @@
   .ca-surface[data-interactive] { transition: none; }
 }
 
+/* ── Blur roles: the one place a component's backdrop blur is declared ─────────────
+ * Components paint their own fill, border and radius, but never declare `backdrop-filter`: they set
+ * `data-ca-blur="<role>"` and this block applies the filter from the tokens `html[data-style]`
+ * rewrites. A role is a tier (`ultra-thin` to `chrome`), a `--ca-mat-*` filter, or a layer token
+ * (`overlay`, `chrome-layer`, `tooltip`, `scrim`). Under solid/flat every role resolves to `none`, under
+ * liquid to its glass blur, so one attribute follows the theme exactly like `.ca-surface[data-material="auto"]`.
+ * A disabled glass button draws no blur; `data-ca-blur-wide-off` drops it from 900px up (an inline layout). */
+[data-ca-blur],
+.ca-btn--glass,
+.ca-icon-btn--glass {
+  --ca-blur-role: none;
+  -webkit-backdrop-filter: var(--ca-blur-role);
+  backdrop-filter: var(--ca-blur-role);
+}
+[data-ca-blur="ultra-thin"] { --ca-blur-role: var(--ca-blur-ultra-thin); }
+[data-ca-blur="thin"] { --ca-blur-role: var(--ca-blur-thin); }
+[data-ca-blur="regular"] { --ca-blur-role: var(--ca-blur-regular); }
+[data-ca-blur="thick"] { --ca-blur-role: var(--ca-blur-thick); }
+[data-ca-blur="chrome"] { --ca-blur-role: var(--ca-blur-chrome); }
+[data-ca-blur="mat-thin"] { --ca-blur-role: var(--ca-mat-thin-filter); }
+[data-ca-blur="mat-regular"] { --ca-blur-role: var(--ca-mat-regular-filter); }
+[data-ca-blur="overlay"] { --ca-blur-role: var(--ca-overlay-blur); }
+[data-ca-blur="chrome-layer"] { --ca-blur-role: var(--ca-chrome-blur); }
+[data-ca-blur="tooltip"] { --ca-blur-role: var(--ca-tooltip-blur); }
+/* The glass variant of Button and IconButton is the `regular` role, keyed on the class they already carry. */
+.ca-btn--glass,
+.ca-icon-btn--glass { --ca-blur-role: var(--ca-blur-regular); }
+/* The modal scrim (the ::backdrop of every `dialog.ca-overlay`: Dialog, AlertDialog, Sheet, Drawer, CommandPalette,
+ * DocsSearch) takes --ca-scrim-blur; `none` drops it everywhere. */
+dialog.ca-overlay::backdrop {
+  -webkit-backdrop-filter: var(--ca-scrim-blur);
+  backdrop-filter: var(--ca-scrim-blur);
+}
+/* The docs pager is a blurred bar only below 900px; from there it is an inline row. */
+@media (min-width: 900px) {
+  [data-ca-blur][data-ca-blur-wide-off] { --ca-blur-role: none; }
+}
+/* A disabled glass button is unavailable, not busy: a loading one keeps its blur. */
+:is(.ca-btn--glass:not(.ca-btn--loading), .ca-icon-btn--glass:not(.ca-icon-btn--loading)):is(:disabled, [aria-disabled="true"]) { --ca-blur-role: none; }
+
 /* ── Reduced transparency: translucent fills become opaque ────────────────────── */
 @media (prefers-reduced-transparency: reduce) {
   .ca-surface[data-material="frosted"],
@@ -230,4 +270,12 @@
   }
   .ca-surface[data-variant="ghost"] { border-color: transparent; }
   .ca-surface[data-interactive]:focus-visible { outline-color: Highlight; }
+}
+
+/* Blur roles also drop their blur here (the tokens are remapped to none above, this covers a role added later). */
+@media (forced-colors: active) {
+  [data-ca-blur] {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
 }

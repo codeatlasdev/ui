@@ -40,9 +40,7 @@
     touch-action: auto;
   }
   dialog.ca-overlay::backdrop {
-    /* Blur the page content (--ca-scrim-blur; `none` drops it), then darken */
-    -webkit-backdrop-filter: var(--ca-scrim-blur);
-    backdrop-filter: var(--ca-scrim-blur);
+    /* The blur lives in surface.css (dialog.ca-overlay::backdrop, --ca-scrim-blur); this darkens it */
     background: var(--ca-scrim-color);
     touch-action: none;
     overscroll-behavior: contain;

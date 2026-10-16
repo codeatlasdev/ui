@@ -348,8 +348,6 @@ html.lenis body {
 	gap: var(--ca-space-1);
 	border-radius: var(--ca-radius-pill);
 	background: var(--ca-glass-bg);
-	-webkit-backdrop-filter: var(--ca-blur-chrome);
-	backdrop-filter: var(--ca-blur-chrome);
 	box-shadow: 0 0 0 1px var(--ca-outline-subtle);
 }
 .rail__line {

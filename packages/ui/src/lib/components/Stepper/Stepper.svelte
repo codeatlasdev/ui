@@ -25,6 +25,7 @@
       <button
         type="button"
         class="ca-stepper__bubble"
+        data-ca-blur="ultra-thin"
         aria-current={active ? 'step' : undefined}
         aria-label={t().stepper.step(i + 1, step.label, done)}
         onclick={() => { current = i; }}
@@ -72,8 +73,6 @@
       border-radius: 50%;
       border: var(--ca-border-width-strong) solid var(--ca-outline-default);
       background: var(--ca-glass-bg);
-      -webkit-backdrop-filter: var(--ca-blur-ultra-thin);
-      backdrop-filter: var(--ca-blur-ultra-thin);
       display: flex;
       align-items: center;
       justify-content: center;

@@ -68,6 +68,7 @@
   data-orientation="horizontal"
   data-fade={fade ? hidden : undefined}
   class="ca-tabs-list {className}"
+  data-ca-blur="ultra-thin"
   onscroll={fade ? measure : undefined}
   {@attach roving}
 >
@@ -96,8 +97,6 @@
       scroll-padding-inline: var(--ca-space-1);
       border-radius: var(--ca-radius-pill);
       background: var(--ca-glass-tint-ultra-thin);
-      -webkit-backdrop-filter: var(--ca-blur-ultra-thin);
-      backdrop-filter: var(--ca-blur-ultra-thin);
       border: var(--ca-border-width) solid var(--ca-glass-border);
     }
 

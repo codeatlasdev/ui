@@ -6,7 +6,7 @@ const rules = (file: string, src: string) => lintSource(file, src).map((v) => v.
 describe("lint-tokens", () => {
 	it("flags will-change next to backdrop-filter, with the right line", () => {
 		const v = lintSource(
-			"a.css",
+			"styles/surface.css",
 			".a {\n  -webkit-backdrop-filter: blur(4px);\n  backdrop-filter: blur(4px);\n}\n.b {\n  will-change: transform;\n}"
 		);
 		expect(v).toHaveLength(1);
@@ -16,8 +16,22 @@ describe("lint-tokens", () => {
 	it("ignores will-change when the file has no backdrop-filter, and ignores comments", () => {
 		expect(rules("a.css", ".a { will-change: transform; }")).toEqual([]);
 		expect(
-			rules("a.css", "/* will-change: transform */\n.a { backdrop-filter: blur(1px); }")
+			rules(
+				"styles/surface.css",
+				"/* will-change: transform */\n.a { backdrop-filter: blur(1px); }"
+			)
 		).toEqual([]);
+	});
+
+	it("flags will-change in a file that opts into a blur role or .ca-surface (#203)", () => {
+		const blurred = '<div data-ca-blur="thick"></div><style>.a { will-change: transform; }</style>';
+		expect(rules("A.svelte", blurred)).toEqual(["will-change"]);
+		expect(
+			rules("A.svelte", '<div class="ca-surface"></div><style>.a { will-change: opacity; }</style>')
+		).toEqual(["will-change"]);
+		expect(rules("A.svelte", "<div></div><style>.a { will-change: transform; }</style>")).toEqual(
+			[]
+		);
 	});
 
 	it("only reads <style> blocks of a .svelte file", () => {
@@ -37,12 +51,45 @@ describe("lint-tokens", () => {
 
 	it("flags the standard backdrop-filter declared before the prefixed one", () => {
 		const bad = ".a {\n  backdrop-filter: blur(1px);\n  -webkit-backdrop-filter: blur(1px);\n}";
-		expect(lintSource("a.css", bad)).toMatchObject([{ rule: "backdrop-order", line: 2 }]);
+		expect(lintSource("styles/surface.css", bad)).toMatchObject([
+			{ rule: "backdrop-order", line: 2 },
+		]);
 		expect(
-			rules("a.css", ".a { -webkit-backdrop-filter: blur(1px); backdrop-filter: blur(1px); }")
+			rules(
+				"styles/surface.css",
+				".a { -webkit-backdrop-filter: blur(1px); backdrop-filter: blur(1px); }"
+			)
 		).toEqual([]);
 		// A lone standard declaration is fine; order only matters when both exist.
-		expect(rules("a.css", ".a { backdrop-filter: blur(1px); }")).toEqual([]);
+		expect(rules("styles/surface.css", ".a { backdrop-filter: blur(1px); }")).toEqual([]);
+	});
+
+	it("rejects backdrop-filter outside surface.css and materials.css (#203)", () => {
+		const css = ".a { -webkit-backdrop-filter: blur(1px); backdrop-filter: blur(1px); }";
+		const v = lintSource("components/Chip/Chip.svelte", `<style>\n${css}\n</style>`);
+		// the prefixed and the standard declaration are both reported
+		expect(v.map((x) => [x.rule, x.line])).toEqual([
+			["backdrop-owner", 2],
+			["backdrop-owner", 2],
+		]);
+		expect(v[0]?.message).toContain("data-ca-blur");
+		expect(rules("a.css", ".a { backdrop-filter: none; }")).toEqual(["backdrop-owner"]);
+		expect(rules("a.css", ".a::backdrop { -webkit-backdrop-filter: blur(4px); }")).toEqual([
+			"backdrop-owner",
+		]);
+		// the two files that own the property
+		expect(rules("packages/ui/src/lib/styles/surface.css", css)).toEqual([]);
+		expect(rules("packages/ui/src/lib/styles/materials.css", css)).toEqual([]);
+		// a different file that merely shares the name is not exempt
+		expect(rules("components/Foo/surface.css.svelte", `<style>${css}</style>`)).toEqual([
+			"backdrop-owner",
+			"backdrop-owner",
+		]);
+		// prose, comments, custom properties and the role attribute are not declarations
+		expect(rules("a.css", "/* backdrop-filter: blur(1px) */ .a { --ca-blur: blur(1px); }")).toEqual(
+			[]
+		);
+		expect(rules("A.svelte", '<div data-ca-blur="thick">backdrop-filter</div>')).toEqual([]);
 	});
 
 	it("flags input font-size under 16px unless guarded by max()", () => {

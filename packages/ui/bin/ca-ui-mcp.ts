@@ -5,8 +5,8 @@
  *
  *   claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp
  *
- * Tools: list_components, get_component, get_export, search_tokens, get_guide, search_demos, get_demo,
- * report_issue (drafts a sanitized GitHub issue from a library problem; it never posts anything).
+ * Tools: list_components, get_component, get_export, search_tokens, list_surfaces, get_guide, search_demos,
+ * get_demo, report_issue (drafts a sanitized GitHub issue from a library problem; it never posts anything).
  */
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -18,6 +18,7 @@ import type {
 	Manifest,
 	ManifestDemo,
 	ManifestGuide,
+	ManifestSurface,
 	ManifestToken,
 } from "../scripts/build-manifest.ts";
 import { buildReport } from "../src/cli/report.ts";
@@ -32,6 +33,7 @@ function load<T>(file: string): T {
 const manifest = load<Manifest>("components.json");
 const tokens = load<{ tokens: ManifestToken[] }>("tokens.json").tokens;
 const guides = load<{ guides: ManifestGuide[] }>("guides.json").guides;
+const surfaces = load<{ surfaces: ManifestSurface[] }>("surfaces.json").surfaces;
 // A build without site/ (from the published tarball) emits no demos: the other tools must keep working.
 const demos = existsSync(join(DIST, "demos.json")) ? load<ManifestDemo[]>("demos.json") : [];
 const noDemos = "No demo catalog in this build (dist/demos.json is missing).";
@@ -123,6 +125,40 @@ server.registerTool(
 					`${t.name}: ${t.value}${t.dark ? ` (dark: ${t.dark})` : ""}${t.group ? `  [${t.group}]` : ""}`
 			);
 		return text(rows.length ? rows.join("\n") : `No token matches "${query}".`);
+	}
+);
+
+/** Appended to every list_surfaces answer: which style a platform ends up with is not measured here. */
+const PLATFORM_NOTE =
+	"Per-platform defaultStyle: the package default is solid (no blur). Blur needs backdrop-filter, which Tauri on Linux (WebKitGTK) and some Android WebViews may not render or may render slowly: " +
+	"[INFERENCE: validate with feature detection] — check CSS.supports('backdrop-filter', 'blur(1px)') (or -webkit-backdrop-filter) at startup and set colorScheme.setStyle('solid') when it fails. " +
+	"Surfaces already fall back to opaque tints when neither property is supported (@supports not in materials.css).";
+
+server.registerTool(
+	"list_surfaces",
+	{
+		description:
+			"List the surface styles (<html data-style>, colorScheme.setStyle): glass, frosted, solid, flat, outlined, neumorphic, clay, tonal, chrome. Each has its blur behaviour (full/reduced/none), the tokens it rewrites and the design recipes that default to it. Generated from the [data-style] selectors in materials.css. Optional query filters by id, description, token or recipe.",
+		inputSchema: { query: z.string().optional() },
+	},
+	({ query }) => {
+		const q = query ? squash(query) : "";
+		const hits = surfaces.filter(
+			(s) =>
+				!q ||
+				[s.id, s.description ?? "", s.blur, ...s.tokens, ...s.recipes].some((f) =>
+					squash(f).includes(q)
+				)
+		);
+		if (!hits.length)
+			return fail(
+				`No surface style matches "${query}". Styles: ${surfaces.map((s) => s.id).join(", ")}.`
+			);
+		const rows = hits.map(
+			(s) =>
+				`${s.id}${s.packageDefault ? " (package default)" : ""}: blur ${s.blur}${s.recipes.length ? `; recipes: ${s.recipes.join(", ")}` : ""}\n  ${s.description ?? ""}\n  rewrites ${s.tokens.length} tokens${s.tokens.length ? `: ${s.tokens.join(", ")}` : " (none: it is the :root set)"}`
+		);
+		return text(`${rows.join("\n\n")}\n\n${PLATFORM_NOTE}`);
 	}
 );
 

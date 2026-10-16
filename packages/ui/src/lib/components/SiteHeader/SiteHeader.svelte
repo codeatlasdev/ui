@@ -26,7 +26,7 @@
   });
 </script>
 
-<header class="ca-site-header {className}">
+<header class="ca-site-header {className}" data-ca-blur="mat-regular">
   <div class="ca-site-header__inner">
     <!-- Left: panel toggle + separator + breadcrumb -->
     <div class="ca-site-header__left">
@@ -80,8 +80,6 @@
       flex-shrink: 0;
       width: 100%;
       background: var(--ca-glass-bg);
-      -webkit-backdrop-filter: var(--ca-mat-regular-filter);
-      backdrop-filter: var(--ca-mat-regular-filter);
       /* hairline bottom separator — no border: property */
       box-shadow:
         inset 0 calc(var(--ca-border-width) * -1) 0 var(--ca-outline-subtle),

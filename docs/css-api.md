@@ -373,9 +373,13 @@ These attributes are part of the public contract too (an app can restyle one axi
 | `data-variant` | `filled` `outlined` `ghost` | `.ca-surface` |
 | `data-radius` | `none` `sm` `md` `lg` `xl` `pill` | `.ca-surface` |
 | `data-interactive`, `data-glow` | present or absent | `.ca-surface` |
+| `data-ca-blur` | `ultra-thin` `thin` `regular` `thick` `chrome` `mat-thin` `mat-regular` `overlay` `chrome-layer` `tooltip` | any blurred element that is not a `.ca-surface` (Tabs list, Chip, Toast, Rail, Panel, FloatingLayer...) |
+| `data-ca-blur-wide-off` | present or absent | an element with `data-ca-blur`: no blur from 900px up (StickyActions, the docs pager) |
 | `data-gap`, `data-p`, `data-px`, `data-py` | spacing steps `0` `0.5` ... `24` (`--ca-space-<step>`) | layout primitives |
 | `data-align`, `data-justify`, `data-direction`, `data-wrap`, `data-columns` | see Layout primitives docs | layout primitives |
 | `data-<bp>-<prop>` | the same, from `sm` (600) `md` (900) `lg` (1200) `xl` (1536) px up | layout primitives |
 | `data-size` | `sm` `md` `lg` `xl` (Container), `1` `2` `3` (Section) | `.ca-container`, `.ca-layout-section` |
 
-Surface and layout CSS variables (`--ca-surface-*`, `--ca-elevation-*`) are tokens, not listed here.
+`data-ca-blur` is the only way a component blurs its backdrop: the filter is declared once per role in `surface.css` (`@layer ca.materials`) from the `--ca-blur-*`, `--ca-mat-*-filter`, `--ca-overlay-blur`, `--ca-chrome-blur` and `--ca-tooltip-blur` tokens, so `html[data-style]` turns every one of them off or down together. Override a single role with `[data-ca-blur="thick"] { --ca-blur-role: ... }` (unlayered app CSS wins). The modal scrim is `dialog.ca-overlay::backdrop` and reads `--ca-scrim-blur`.
+
+Surface and layout CSS variables (`--ca-surface-*`, `--ca-elevation-*`, `--ca-blur-role`) are tokens, not listed here.

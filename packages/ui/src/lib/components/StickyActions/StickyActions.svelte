@@ -29,7 +29,7 @@
 </script>
 
 {#if show}
-  <div class="ca-sticky-actions ca-sticky-actions--{align} {className}" use:keyboardAware>
+  <div class="ca-sticky-actions ca-sticky-actions--{align} {className}" data-ca-blur="regular" data-ca-blur-wide-off use:keyboardAware>
     <div class="ca-sticky-actions__inner">{@render children()}</div>
   </div>
 {/if}
@@ -45,8 +45,6 @@
       margin: var(--ca-space-2) calc(var(--ca-page-px-sm) * -1) 0;
       padding: var(--ca-space-3) max(var(--ca-page-px-sm), var(--ca-safe-right)) calc(var(--ca-space-3) + var(--ca-safe-bottom)) max(var(--ca-page-px-sm), var(--ca-safe-left));
       background: var(--ca-glass-bg);
-      -webkit-backdrop-filter: var(--ca-blur-regular);
-      backdrop-filter: var(--ca-blur-regular);
       box-shadow: inset 0 var(--ca-border-width) 0 var(--ca-outline-subtle);
     }
 
@@ -87,8 +85,6 @@
         margin: 0;
         padding: 0;
         background: none;
-        -webkit-backdrop-filter: none;
-        backdrop-filter: none;
         box-shadow: none;
       }
     }

@@ -29,6 +29,7 @@
 <div
   role="status"
   class="ca-toast ca-toast--{item.variant}"
+  data-ca-blur="thick"
   class:ca-toast--visible={visible}
 >
   {#if Icon}
@@ -57,8 +58,6 @@
       border-radius: var(--ca-radius-md);
       border: var(--ca-border-width) solid var(--ca-outline-subtle);
       background: var(--ca-glass-bg);
-      -webkit-backdrop-filter: var(--ca-blur-thick);
-      backdrop-filter: var(--ca-blur-thick);
       box-shadow: var(--ca-shadow-md);
       pointer-events: all;
       font-size: var(--ca-font-size-body2);

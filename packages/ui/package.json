@@ -108,6 +108,7 @@
 		},
 		"./components.json": "./dist/components.json",
 		"./tokens.json": "./dist/tokens.json",
+		"./surfaces.json": "./dist/surfaces.json",
 		"./demos.json": "./dist/demos.json"
 	},
 	"files": [

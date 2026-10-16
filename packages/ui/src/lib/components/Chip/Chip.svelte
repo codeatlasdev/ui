@@ -32,6 +32,7 @@
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <span
   class="ca-chip {className}"
+  data-ca-blur="thin"
   class:ca-chip--selected={selected}
   class:ca-chip--interactive={!!onclick}
   class:ca-chip--success={variant === 'success'}
@@ -78,8 +79,6 @@
       font-weight: var(--ca-font-weight-medium);
       color: var(--ca-text-secondary);
       background: var(--ca-chip-bg);
-      -webkit-backdrop-filter: var(--ca-blur-thin);
-      backdrop-filter: var(--ca-blur-thin);
       border: var(--ca-border-width) solid var(--ca-chip-border-color);
       box-shadow: var(--ca-chip-shadow);
       transition:

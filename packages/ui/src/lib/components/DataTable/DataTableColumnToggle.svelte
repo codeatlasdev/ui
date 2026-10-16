@@ -102,6 +102,7 @@
   aria-orientation="vertical"
   tabindex={-1}
   class="ca-col-toggle__content"
+  blur="overlay"
   onDismiss={(reason) => close(reason === 'escape')}
   {onkeydown}
   {onMounted}
@@ -157,8 +158,6 @@
       border-radius: var(--ca-radius-lg);
       border: var(--ca-border-width) solid var(--ca-overlay-border);
       background-color: var(--ca-overlay-bg);
-      -webkit-backdrop-filter: var(--ca-overlay-blur);
-      backdrop-filter: var(--ca-overlay-blur);
       box-shadow: var(--ca-shadow-lg);
     }
 

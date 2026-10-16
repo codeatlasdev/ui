@@ -118,7 +118,7 @@
 
 <SkipLink class="ca-docs-skip">{t().docs.skipToContent}</SkipLink>
 
-<header class="ca-docs-header">
+<header class="ca-docs-header" data-ca-blur="mat-thin">
   <div class="ca-docs-header__inner">
     <button type="button" class="ca-docs-icon ca-docs-menu" aria-label={t().docs.openNavigation} onclick={() => (menuOpen = true)}>
       <Menu size={20} />
@@ -167,7 +167,7 @@
     {/if}
     {@render children()}
     {#if pager?.prev || pager?.next}
-      <nav class="ca-docs-pager" aria-label={t().docs.pager}>
+      <nav class="ca-docs-pager" data-ca-blur="chrome-layer" data-ca-blur-wide-off aria-label={t().docs.pager}>
         {#if pager.prev}
           <a class="ca-docs-pager__link" href={pager.prev.href} rel="prev">
             <ChevronLeft size={18} aria-hidden="true" />
@@ -241,8 +241,6 @@
       z-index: var(--ca-z-sticky);
       padding-top: var(--ca-safe-top);
       background: color-mix(in oklab, var(--ca-surface-base) 82%, transparent);
-      -webkit-backdrop-filter: var(--ca-mat-thin-filter);
-      backdrop-filter: var(--ca-mat-thin-filter);
       border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
     }
 
@@ -518,8 +516,6 @@
         padding: 0 var(--ca-safe-right) var(--ca-safe-bottom) var(--ca-safe-left);
         border-top: none;
         background: var(--ca-chrome-bg);
-        -webkit-backdrop-filter: var(--ca-chrome-blur);
-        backdrop-filter: var(--ca-chrome-blur);
         box-shadow: inset 0 var(--ca-border-width) 0 var(--ca-glass-separator);
       }
       .ca-docs-pager__link {

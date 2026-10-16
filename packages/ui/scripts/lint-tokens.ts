@@ -1,10 +1,13 @@
 // Guards the CSS rules that broke glass or layout in production before.
 // Run: bun scripts/lint-tokens.ts   (exit 1 on any violation; wired into `validate`)
 //
-//   will-change      a file that uses backdrop-filter must not declare will-change:
-//                    it promotes the layer and the blur captures transparent content.
+//   will-change      a file that blurs (backdrop-filter, data-ca-blur, .ca-surface) must not declare
+//                    will-change: it promotes the layer and the blur captures transparent content.
 //   viewport-unit    a literal 100vh/100dvh/100svh/100lvh must go through var(--ca-vh)
 //                    (tokens.css defines the token; test harnesses are exempt).
+//   backdrop-owner   `backdrop-filter` is declared in styles/surface.css and styles/materials.css only.
+//                    A component sets `data-ca-blur="<role>"` (or uses .ca-surface), so `html[data-style]`
+//                    drives every blur from one place and the order/will-change rules have one file to guard.
 //   backdrop-order   -webkit-backdrop-filter must come BEFORE backdrop-filter in a rule:
 //                    Lightning CSS keeps only the prefixed one otherwise.
 //   input-font-size  a literal font-size under 16px on an input/textarea/select rule
@@ -27,6 +30,7 @@ export interface Violation {
 		| "will-change"
 		| "viewport-unit"
 		| "backdrop-order"
+		| "backdrop-owner"
 		| "input-font-size"
 		| "svelte-ignore"
 		| "breakpoint"
@@ -46,6 +50,9 @@ function cssRegions(file: string, src: string): { text: string; offset: number }
 		out.push({ text: m[1] ?? "", offset: (m.index ?? 0) + m[0].indexOf(">") + 1 });
 	return out;
 }
+
+/** The only files that may declare `backdrop-filter` (see the backdrop-owner rule). */
+const BACKDROP_OWNERS = /(^|[\\/])styles[\\/](surface|materials)\.css$/;
 
 const INPUT_SELECTOR =
 	/(^|[\s,>+~(])(input|textarea|select)\b|\[contenteditable|-input\b|__input\b/;
@@ -73,7 +80,8 @@ export function lintSource(file: string, source: string): Violation[] {
 	const regions = cssRegions(file, src);
 	const css = regions.map((r) => r.text).join("\n");
 
-	if (/(^|[^-\w])backdrop-filter\s*:/m.test(css)) {
+	// A file that blurs (declares the filter, or opts into a role / .ca-surface) must not promote its layer.
+	if (/(^|[^-\w])backdrop-filter\s*:/m.test(css) || /data-ca-blur|ca-surface/.test(src)) {
 		for (const r of regions)
 			for (const m of r.text.matchAll(/(^|[^-\w])will-change\s*:/g))
 				v.push({
@@ -84,6 +92,17 @@ export function lintSource(file: string, source: string): Violation[] {
 						"will-change in a file that uses backdrop-filter: it promotes the layer and kills the blur",
 				});
 	}
+
+	if (!BACKDROP_OWNERS.test(file))
+		for (const r of regions)
+			for (const m of r.text.matchAll(/(^|[^-\w])(?:-webkit-)?backdrop-filter\s*:/g))
+				v.push({
+					file,
+					line: lineOf(src, r.offset + (m.index ?? 0) + m[1].length),
+					rule: "backdrop-owner",
+					message:
+						'backdrop-filter belongs to styles/surface.css: set data-ca-blur="<role>" on the element (tiers: ultra-thin, thin, regular, thick, chrome, mat-thin, mat-regular, overlay, chrome-layer, tooltip) or use .ca-surface',
+				});
 
 	for (const r of regions) {
 		if (!isHarness && !/styles[\\/]tokens\.css$/.test(file))

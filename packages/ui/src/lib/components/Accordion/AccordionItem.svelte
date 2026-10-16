@@ -33,7 +33,7 @@
   });
 </script>
 
-<div class="ca-accordion-item {className}" data-state={dataState} data-orientation="vertical">
+<div class="ca-accordion-item {className}" data-ca-blur="ultra-thin" data-state={dataState} data-orientation="vertical">
   <h2 class="ca-accordion-item__header" data-state={dataState} data-orientation="vertical">
     <button
       type="button"
@@ -73,8 +73,6 @@
 @layer ca.components {
     :global(.ca-accordion-item) {
       background: var(--ca-glass-tint-ultra-thin);
-      -webkit-backdrop-filter: var(--ca-blur-ultra-thin);
-      backdrop-filter: var(--ca-blur-ultra-thin);
       border: var(--ca-border-width) solid var(--ca-glass-border);
       border-radius: var(--ca-radius-lg);
       overflow: hidden;

@@ -110,7 +110,7 @@
 
   <!-- Sticky footer with glass blur -->
   {#if footer}
-    <div class="ca-app-form__footer" role="toolbar" aria-label={t().appForm.actions}>
+    <div class="ca-app-form__footer" data-ca-blur="chrome-layer" role="toolbar" aria-label={t().appForm.actions}>
       <div class="ca-app-form__footer-inner">
         {@render footer()}
       </div>
@@ -204,8 +204,6 @@
       flex-shrink: 0;
       border-top: var(--ca-border-width) solid var(--ca-outline-subtle);
       background: var(--ca-chrome-bg);
-      -webkit-backdrop-filter: var(--ca-chrome-blur);
-      backdrop-filter: var(--ca-chrome-blur);
     }
 
     .ca-app-form__footer-inner {

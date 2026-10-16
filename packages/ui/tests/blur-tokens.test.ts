@@ -12,9 +12,11 @@ const rule = (css: string, selector: string) => {
 
 describe("--ca-scrim-blur", () => {
 	it("is what the modal scrim blurs with", () => {
-		const backdrop = rule(src("components/Dialog/dialog.css"), "dialog.ca-overlay::backdrop");
+		const backdrop = rule(src("styles/surface.css"), "dialog.ca-overlay::backdrop");
 		expect(backdrop).toMatch(/(?<!-webkit-)backdrop-filter:\s*var\(--ca-scrim-blur\)/);
 		expect(backdrop).toMatch(/-webkit-backdrop-filter:\s*var\(--ca-scrim-blur\)/);
+		// dialog.css only darkens the scrim: the blur is declared once, in surface.css
+		expect(src("components/Dialog/dialog.css")).not.toMatch(/backdrop-filter\s*:/);
 	});
 
 	it("is not overridden by a hardcoded blur on the command palette scrim", () => {

@@ -53,7 +53,7 @@
   const level = $derived(headingLevel ?? inheritedLevel);
 </script>
 
-<section class="ca-form-section ca-form-section--{layout} {className}">
+<section class="ca-form-section ca-form-section--{layout} {className}" data-ca-blur="mat-thin">
   {#if heading || description}
     <div class="ca-form-section__header">
       {#if heading}<svelte:element this={`h${level}`} class="ca-form-section__title">{heading}</svelte:element>{/if}
@@ -71,8 +71,6 @@
     .ca-form-section {
       container-type: inline-size;
       background: var(--ca-mat-thin-fill);
-      -webkit-backdrop-filter: var(--ca-mat-thin-filter);
-      backdrop-filter: var(--ca-mat-thin-filter);
       border-radius: var(--ca-radius-lg);
       border: var(--ca-border-width) solid var(--ca-outline-subtle);
       padding: var(--ca-card-padding);

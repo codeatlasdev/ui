@@ -53,6 +53,7 @@
     type="button"
     id={ids.part('trigger')}
     class="ca-collapsible__trigger"
+    data-ca-blur="ultra-thin"
     aria-expanded={open}
     aria-controls={ids.part('content')}
     data-state={dataState}
@@ -93,8 +94,6 @@
       width: 100%;
       padding: var(--ca-space-3) var(--ca-space-4);
       background: var(--ca-glass-bg);
-      -webkit-backdrop-filter: var(--ca-blur-ultra-thin);
-      backdrop-filter: var(--ca-blur-ultra-thin);
       border: var(--ca-border-width) solid var(--ca-outline-subtle);
       border-radius: var(--ca-radius-md);
       cursor: pointer;

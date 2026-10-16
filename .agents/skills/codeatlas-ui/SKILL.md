@@ -100,7 +100,7 @@ Icons passed to components (`icon: Settings`) are `@lucide/svelte` components. T
 
 Never guess a prop name. Two sources, both generated from the source types:
 
-1. **MCP server (preferred).** `ca-ui-mcp` answers `get_component("Button")` (props, defaults, snippets, `ca-*` classes), `get_export("setLocale")` (signature and summary of any function, store, constant or type: `caErrorPlugin`, `createErrorHandler`, `nativeFeel`, `primeKeyboard`, `toast`...), `list_components`, `search_tokens("safe-bottom")` and `get_guide("theming")`. Setup: `claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp`.
+1. **MCP server (preferred).** `ca-ui-mcp` answers `get_component("Button")` (props, defaults, snippets, `ca-*` classes), `get_export("setLocale")` (signature and summary of any function, store, constant or type: `caErrorPlugin`, `createErrorHandler`, `nativeFeel`, `primeKeyboard`, `toast`...), `list_components`, `search_tokens("safe-bottom")`, `list_surfaces()` (the `data-style` surface styles and which draw a blur) and `get_guide("theming")`. Setup: `claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp`.
 2. **[API.md](./API.md)**: the same data as one markdown file (offline fallback; large, search it instead of reading it whole). Components first, then the `# Non-component exports` section grouped by import path. Regenerate with `bun run --cwd packages/ui manifest -- --skill` after changing a component.
 
 ## Mobile, theme, SEO

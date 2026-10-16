@@ -89,6 +89,7 @@
   <button
     type="button"
     class="ca-pagination__nav"
+    data-ca-blur="ultra-thin"
     data-pagination-prev=""
     aria-label={t().pagination.previous}
     disabled={page <= 1}
@@ -104,6 +105,7 @@
       <button
         type="button"
         class="ca-pagination__page"
+        data-ca-blur="ultra-thin"
         data-pagination-page=""
         data-value={p.value}
         data-selected={p.value === page ? '' : undefined}
@@ -119,6 +121,7 @@
   <button
     type="button"
     class="ca-pagination__nav"
+    data-ca-blur="ultra-thin"
     data-pagination-next=""
     aria-label={t().pagination.next}
     disabled={page >= totalPages}
@@ -149,8 +152,6 @@
       border-radius: var(--ca-radius-control);
       border: var(--ca-border-width) solid var(--ca-outline-subtle);
       background: var(--ca-glass-bg);
-      -webkit-backdrop-filter: var(--ca-blur-ultra-thin);
-      backdrop-filter: var(--ca-blur-ultra-thin);
       cursor: pointer;
       font-size: var(--ca-font-size-body2);
       color: var(--ca-text-primary);

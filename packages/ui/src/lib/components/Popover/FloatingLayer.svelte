@@ -17,6 +17,8 @@
     exclude?: () => Element[];
     /** Classes on the layer element (carries `data-state`, `data-side`, `data-align`). */
     class?: string;
+    /** Blur role of the layer (`overlay`, `tooltip`, ...): `surface.css` paints it from the theme's tokens. */
+    blur?: 'overlay' | 'tooltip';
     role?: string;
     id?: string;
     'aria-label'?: string;
@@ -53,6 +55,7 @@
     focusOutside = false,
     exclude,
     class: className = '',
+    blur,
     ref = $bindable(null),
     onMounted,
     dismiss = true,
@@ -98,6 +101,7 @@
     bind:this={ref}
     {@attach presence.ref}
     class="ca-floating {className}"
+    data-ca-blur={blur}
     data-state={open ? 'open' : 'closed'}
     data-side={side}
     data-align={align}

@@ -34,6 +34,7 @@
 
 <nav
   class="ca-rail {className}"
+  data-ca-blur="mat-regular"
   aria-label={t().appShell.moduleNavigation}
   onmousemove={(e) => (mouseY = e.clientY)}
   onmouseleave={() => (mouseY = Infinity)}
@@ -97,8 +98,6 @@
       padding: 0;
       z-index: 1;
       background: var(--ca-glass-bg);
-      -webkit-backdrop-filter: var(--ca-mat-regular-filter);
-      backdrop-filter: var(--ca-mat-regular-filter);
       box-shadow: var(--ca-glass-separator);
     }
 

@@ -5,11 +5,10 @@ const src = (p: string) => readFileSync(new URL(`../src/lib/${p}`, import.meta.u
 
 describe("tooltip blur token", () => {
 	it("the tooltip blurs with --ca-tooltip-blur, not the shared ultra-thin tier", () => {
-		const tooltip = src("components/Tooltip/Tooltip.svelte");
-		const rule = tooltip.slice(tooltip.indexOf(":global(.ca-tooltip-content) {"));
-		const body = rule.slice(0, rule.indexOf("}"));
-		expect(body).toMatch(/-webkit-backdrop-filter:\s*var\(--ca-tooltip-blur\)/);
-		expect(body).toMatch(/(?<!-webkit-)backdrop-filter:\s*var\(--ca-tooltip-blur\)/);
+		expect(src("components/Tooltip/Tooltip.svelte")).toMatch(/blur="tooltip"/);
+		const surface = src("styles/surface.css");
+		const body = surface.slice(surface.indexOf('[data-ca-blur="tooltip"]'));
+		expect(body.slice(0, body.indexOf("}"))).toMatch(/--ca-blur-role:\s*var\(--ca-tooltip-blur\)/);
 	});
 
 	it("--ca-tooltip-blur defaults to the ultra-thin tier, so the look is unchanged", () => {

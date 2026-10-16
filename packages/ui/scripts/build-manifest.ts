@@ -3,6 +3,7 @@
  *   dist/components.json  every exported component (props, snippets, public `ca-*` classes) and every
  *                         other runtime/type export of every entry point (`exports`: signature + summary)
  *   dist/tokens.json      every `--ca-*` custom property (tokens.css + built-in presets + brand)
+ *   dist/surfaces.json    every `<html data-style>` surface style, from materials.css (offline `list_surfaces`)
  *   dist/guides.json      the docs site pages as markdown (offline `get_guide`)
  *   --skill               also rewrites .agents/skills/codeatlas-ui/API.md (components, then non-component exports)
  *
@@ -22,6 +23,8 @@ import { createRequire } from "node:module";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import ts from "typescript";
+import { STYLES, type SurfaceStyle } from "../src/lib/theme/define.ts";
+import { DESIGN_STYLES } from "../src/lib/theme/styles.ts";
 import { mdxToMarkdown } from "./mdx-to-markdown.ts";
 
 // CJS require keeps svelte2tsx out of Vite's transform pipeline (its sourceMappingURL points at a file it does not ship).
@@ -611,6 +614,106 @@ export function buildTokens(): ManifestToken[] {
 	return [...out.values()].sort((a, b) => a.name.localeCompare(b.name));
 }
 
+// ── surfaces ──────────────────────────────────────────────────────────────────
+
+export interface ManifestSurface {
+	/** Value of `<html data-style>` (and `colorScheme.setStyle`). */
+	id: SurfaceStyle;
+	/** The comment above the `[data-style="id"]` block in materials.css. */
+	description?: string;
+	/**
+	 * What the style does to every `--ca-blur-*` token: `full` leaves the `:root` glass blur,
+	 * `reduced` rewrites it to a lighter blur, `none` turns it off (opaque surfaces).
+	 */
+	blur: "full" | "reduced" | "none";
+	/** Every custom property the `[data-style]` blocks of this id rewrite, in first-seen order. */
+	tokens: string[];
+	/** The package default (`defineTheme` without `defaultStyle`). */
+	packageDefault: boolean;
+	/** Design recipes (`designStyle(id)`) whose `defaultStyle` is this one. */
+	recipes: string[];
+}
+
+/** `[data-style="x"]` selectors of a rule, with or without a `.dark`/`html` prefix. */
+const STYLE_SELECTOR = /\[data-style="([a-z]+)"\]/g;
+const BLUR_TOKEN = /^--ca-(?:blur-[a-z-]+|(?:overlay|panel|chrome|upload)-blur)$/;
+
+/** Read the surface styles out of `[data-style]` rules: blur behaviour, rewritten tokens, description. */
+export function extractSurfaces(
+	css: string
+): Pick<ManifestSurface, "id" | "description" | "blur" | "tokens">[] {
+	const acc = new Map<
+		string,
+		{ description?: string; own?: boolean; tokens: Map<string, string> }
+	>();
+	for (const rule of css.matchAll(/((?:\/\*[\s\S]*?\*\/\s*)*)([^{}/]+)\{([^{}]*)\}/g)) {
+		const ids = [...rule[2].matchAll(STYLE_SELECTOR)].map((m) => m[1]);
+		if (!ids.length) continue;
+		// The nearest comment above the block: `── Solid — opaque, no blur ── ` → "Solid — opaque, no blur".
+		const note = [...rule[1].matchAll(/\/\*([\s\S]*?)\*\//g)].pop()?.[1];
+		const description = note
+			?.replace(/^[\s*─-]*|[\s*─-]*$/g, "")
+			.replace(/\s*\n\s*\*?\s*/g, " ")
+			.replace(/\s*─+.*$/, "")
+			.trim();
+		const decls = [...rule[3].matchAll(/(--ca-[\w-]+)\s*:\s*([^;]+);/g)];
+		for (const id of ids) {
+			const cur = acc.get(id) ?? { tokens: new Map<string, string>() };
+			// A style's own block comment beats the comment of a grouped rule that lists it with others.
+			if (description && (cur.description === undefined || (ids.length === 1 && !cur.own))) {
+				cur.description = description;
+				cur.own = ids.length === 1;
+			}
+			for (const d of decls) if (!cur.tokens.has(d[1])) cur.tokens.set(d[1], d[2].trim());
+			acc.set(id, cur);
+		}
+	}
+	return [...acc].map(([id, v]) => {
+		const blurs = [...v.tokens].filter(([name]) => BLUR_TOKEN.test(name));
+		const blur = !blurs.length
+			? "full"
+			: blurs.every(([, value]) => value === "none")
+				? "none"
+				: "reduced";
+		return {
+			id: id as SurfaceStyle,
+			description: v.description,
+			blur,
+			tokens: [...v.tokens.keys()],
+		};
+	});
+}
+
+/** Styles with no `[data-style]` block: glass is the `:root` token set every other style rewrites. */
+const GLASS_DESCRIPTION: Partial<Record<SurfaceStyle, string>> = {
+	glass:
+		"Glass: the :root tokens untouched, full blur, translucent tints, glow and rim (the opt-in liquid look)",
+};
+
+/**
+ * Every surface style, from `materials.css`: the `[data-style]` blocks give the blur and the tokens,
+ * `STYLES` gives the valid ids (glass is the `:root` set, it has no block), `DESIGN_STYLES` the recipes.
+ */
+export function buildSurfaces(): ManifestSurface[] {
+	const found = new Map(
+		extractSurfaces(readFileSync(join(LIB, "styles/materials.css"), "utf8")).map((s) => [s.id, s])
+	);
+	return STYLES.map((id) => {
+		const f = found.get(id);
+		const description = f?.description ?? GLASS_DESCRIPTION[id];
+		return {
+			id,
+			...(description ? { description } : {}),
+			blur: f?.blur ?? "full",
+			tokens: f?.tokens ?? [],
+			packageDefault: id === "solid",
+			recipes: Object.values(DESIGN_STYLES)
+				.filter((d) => (d.theme.defaultStyle ?? "solid") === id)
+				.map((d) => d.id),
+		};
+	});
+}
+
 // ── guides ────────────────────────────────────────────────────────────────────
 
 export interface ManifestGuide {
@@ -996,6 +1099,11 @@ if (import.meta.main) {
 			writeFileSync(join(dist, name), `${JSON.stringify(data, null, "\t")}\n`);
 		write("components.json", manifest);
 		write("tokens.json", { name: manifest.name, version: manifest.version, tokens });
+		write("surfaces.json", {
+			name: manifest.name,
+			version: manifest.version,
+			surfaces: buildSurfaces(),
+		});
 		// Docs live in the monorepo's site/; a build from a published tarball keeps the shipped file.
 		if (guides.length)
 			write("guides.json", { name: manifest.name, version: manifest.version, guides });

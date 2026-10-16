@@ -190,8 +190,6 @@
     /* Glass */
     .ca-btn--glass {
       background: var(--ca-glass-tint);
-      -webkit-backdrop-filter: var(--ca-blur-regular);
-      backdrop-filter: var(--ca-blur-regular);
       border: var(--ca-border-width) solid var(--ca-glass-border);
       color: var(--ca-text-primary);
       box-shadow: var(--ca-glass-shadow);
@@ -243,8 +241,6 @@
       background: var(--ca-action-disabled-bg);
       border-color: var(--ca-outline-default);
       box-shadow: none;
-      -webkit-backdrop-filter: none;
-      backdrop-filter: none;
     }
     .ca-btn--filled:disabled:not(.ca-btn--loading),
     .ca-btn--filled[aria-disabled='true']:not(.ca-btn--loading),
