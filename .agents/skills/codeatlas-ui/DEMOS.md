@@ -244,3 +244,6 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 237 | Scrollable | navigation/tabs | Tabs, TabsList, TabsTrigger, TabsContent |
 | 238 | Icons | navigation/tabs | Tabs, TabsList, TabsTrigger, TabsContent, SchemeAsset |
 | 239 | Leading icons and brand logos | navigation/menu | DropdownMenu, DropdownMenuItem, DropdownMenuLabel, SchemeAsset, Button |
+| 240 | IconFallback | display/avatar | Avatar |
+| 241 | The skeleton prop | feedback/skeleton | Avatar, Button, Card, Flex, KpiCard, Stack, TextField |
+| 242 | Gallery with video, caption and download | feedback/lightbox | Button, Lightbox |
