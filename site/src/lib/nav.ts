@@ -17,6 +17,7 @@ export type Group = (typeof GROUPS)[number];
 
 export const SECTIONS: DocsSection[] = [
 	{ id: "docs", label: "Docs", href: "/docs/" },
+	{ id: "gallery", label: "Gallery", href: "/gallery/" },
 	{ id: "templates", label: "Templates", href: "/templates/" },
 	{ id: "theme", label: "Theme editor", href: "/theme/" },
 	{ id: "changelog", label: "Changelog", href: "/changelog/" },

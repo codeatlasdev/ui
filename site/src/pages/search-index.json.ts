@@ -27,5 +27,14 @@ export async function GET() {
 		})),
 		text: strip(e.body ?? ""),
 	}));
+	index.push({
+		href: "/gallery/",
+		title: "Gallery",
+		section: "Gallery",
+		description:
+			"Every numbered demo as a live card. Pick the ones you want and copy the list or hand it to an AI.",
+		headings: [],
+		text: "gallery showcase demos pick copy picks send to ai deep link",
+	});
 	return new Response(JSON.stringify(index), { headers: { "content-type": "application/json" } });
 }

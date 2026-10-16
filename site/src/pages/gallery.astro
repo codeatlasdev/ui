@@ -1,0 +1,30 @@
+---
+import Gallery from "~/components/gallery/Gallery.svelte";
+import SiteDocsShell from "~/components/docs/SiteDocsShell.svelte";
+import Base from "~/layouts/Base.astro";
+import { SECTIONS } from "~/lib/nav";
+import catalog from "../../public/api/v1/catalog.json";
+
+// Only what a card renders: the full catalog (components, imports, needs, ...) stays in the API.
+const elements = catalog.elements.map((e) => ({
+	id: e.id,
+	group: e.group,
+	page: e.page,
+	variant: e.variant,
+	title: e.title,
+	summary: e.summary,
+	tags: e.tags,
+	components: e.components,
+	demo: new URL(e.demo).pathname + new URL(e.demo).hash,
+}));
+const groups = catalog.groups.map((g) => g.slug);
+---
+<Base
+	title="Gallery"
+	description={`Every numbered demo of @codeatlasdev/ui as a live card. Pick the ones you want, copy the list or send it to your AI. ${elements.length} demos.`}
+	skipLink={false}
+>
+	<SiteDocsShell client:load sections={SECTIONS} active="gallery" pathname={Astro.url.pathname}>
+		<Gallery client:load {elements} {groups} />
+	</SiteDocsShell>
+</Base>
