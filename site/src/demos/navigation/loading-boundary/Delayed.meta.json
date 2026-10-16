@@ -6,12 +6,6 @@
 		"`{#key run}` restarts the load for each button",
 		"`ms = 100; run++;` is the fast case and `ms = 1500; run++;` the slow one"
 	],
-	"tags": [
-		"loading-boundary",
-		"skeleton",
-		"suspense",
-		"pending",
-		"delay"
-	],
+	"tags": ["loading-boundary", "skeleton", "suspense", "pending", "delay"],
 	"shape": "wide"
 }
