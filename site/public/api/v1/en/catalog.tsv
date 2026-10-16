@@ -235,3 +235,4 @@ id	group	page	title	tags	summary
 234	docs-kit	docs	DocsNav and TableOfContents	docsnav,and,tableofcontents	The sidebar tree and the page index. The inline variant is shown; DocsShell uses the rail variant on desktop.
 235	docs-kit	docs	ca-prose, Callout and Steps	ca,prose,callout,and,steps	Wrap rendered markdown in .ca-prose. Callout is an Alert vocabulary (note, tip, caution, danger); keep two per page. Steps turns an ordered list into a numbered rail.
 236	docs-kit	docs	DocsSearch	docssearch,button	Full-text search. A dialog on desktop and a full-height sheet with a 16px input on phones. Pass entries or an async loader.
+237	navigation	tabs	Scrollable	scrollable,tabs,tabslist,tabstrigger,tabscontent	Seven tabs in a narrow column: the list scrolls on its own, the active tab starts in view, and fade marks the edge.

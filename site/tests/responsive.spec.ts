@@ -48,4 +48,22 @@ test.describe("responsive (mobile)", () => {
 		await expect(tab).toBeVisible();
 		expect((await tab.boundingBox())?.height).toBeGreaterThanOrEqual(44);
 	});
+
+	test("TabsList scrolls on its own with the active tab in view", async ({ page }) => {
+		await gotoReady(page, "/docs/navigation/tabs/");
+		const list = page.getByRole("tablist").nth(2);
+		await list.scrollIntoViewIfNeeded();
+		const m = await list.evaluate((el) => {
+			const box = el.getBoundingClientRect();
+			const tab = el.querySelector<HTMLElement>("[aria-selected='true']")?.getBoundingClientRect();
+			const de = document.documentElement;
+			return {
+				overflows: el.scrollWidth > el.clientWidth,
+				fits: box.right <= window.innerWidth,
+				pageScrolls: de.scrollWidth > de.clientWidth,
+				tabInView: !!tab && tab.left >= box.left - 1 && tab.right <= box.right + 1,
+			};
+		});
+		expect(m).toEqual({ overflows: true, fits: true, pageScrolls: false, tabInView: true });
+	});
 });

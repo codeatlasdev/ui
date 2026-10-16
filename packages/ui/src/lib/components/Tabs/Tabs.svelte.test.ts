@@ -1,8 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
-import { userEvent } from "vitest/browser";
+import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { VIEWPORTS } from "../../../../tests/viewports";
 import TabsHarness from "./TabsHarness.test.svelte";
+import TabsOverflow from "./TabsOverflow.test.svelte";
 
 describe("Tabs", () => {
 	it("marks the active tab and shows only its panel", async () => {
@@ -81,5 +83,54 @@ describe("Tabs", () => {
 		const panel = screen.getByRole("tabpanel").element();
 		expect(tab.getAttribute("aria-controls")).toBe(panel.id);
 		expect(panel.getAttribute("aria-labelledby")).toBe(tab.id);
+	});
+});
+
+describe("TabsList overflow", () => {
+	it("scrolls inside itself on a phone instead of widening the page", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		const screen = await render(TabsOverflow, {});
+		const list = screen.getByRole("tablist").element() as HTMLElement;
+		expect(list.scrollWidth).toBeGreaterThan(list.clientWidth);
+		expect(list.getBoundingClientRect().right).toBeLessThanOrEqual(window.innerWidth);
+		expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(window.innerWidth);
+		expect(getComputedStyle(list).overflowX).toBe("auto");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("keeps its intrinsic width on desktop instead of spanning the column", async () => {
+		await page.viewport(1600, 720);
+		const screen = await render(TabsOverflow, {});
+		const list = screen.getByRole("tablist").element() as HTMLElement;
+		const root = list.closest(".ca-tabs") as HTMLElement;
+		expect(list.scrollWidth).toBeLessThanOrEqual(list.clientWidth);
+		expect(list.getBoundingClientRect().width).toBeLessThan(
+			root.getBoundingClientRect().width - 100
+		);
+	});
+
+	it("scrolls the selected tab into view on mount and when it changes", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		const screen = await render(TabsOverflow, { value: "integrations" });
+		const list = screen.getByRole("tablist").element() as HTMLElement;
+		const inView = (name: string) => {
+			const tab = screen.getByRole("tab", { name }).element() as HTMLElement;
+			const t = tab.getBoundingClientRect();
+			const l = list.getBoundingClientRect();
+			return t.left >= l.left - 1 && t.right <= l.right + 1;
+		};
+		await expect.poll(() => inView("Integrations")).toBe(true);
+		(screen.getByRole("tab", { name: "General" }).element() as HTMLElement).focus();
+		await expect.poll(() => inView("General")).toBe(true);
+	});
+
+	it("fade masks the trailing edge only while there is more to scroll", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		const screen = await render(TabsOverflow, { fade: true });
+		const list = screen.getByRole("tablist").element() as HTMLElement;
+		await expect.poll(() => list.dataset.fade).toBe("end");
+		list.scrollLeft = list.scrollWidth;
+		await expect.poll(() => list.dataset.fade).toBe("start");
+		expect(getComputedStyle(list).maskImage).toContain("linear-gradient");
 	});
 });

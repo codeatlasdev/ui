@@ -10,6 +10,8 @@ import Default from "~/demos/navigation/tabs/Default.svelte";
 import DefaultSrc from "~/demos/navigation/tabs/Default.svelte?raw";
 import Controlled from "~/demos/navigation/tabs/Controlled.svelte";
 import ControlledSrc from "~/demos/navigation/tabs/Controlled.svelte?raw";
+import Scrollable from "~/demos/navigation/tabs/Scrollable.svelte";
+import ScrollableSrc from "~/demos/navigation/tabs/Scrollable.svelte?raw";
 
 ```svelte
 <script>
@@ -28,8 +30,11 @@ import ControlledSrc from "~/demos/navigation/tabs/Controlled.svelte?raw";
 
 Arrow keys move between tabs, Home and End jump to the first and last, and focusing a tab selects it (automatic activation). Disabled tabs are skipped. The panels use the `tabpanel` role and are focusable. Each `TabsTrigger` and `TabsContent` pair must share a `value`. `Tabs` is horizontal only.
 
+`TabsList` keeps the width of its tabs (it never stretches across the column) and, when the tabs do not fit, scrolls sideways on its own with the scrollbar hidden. The selected tab is scrolled into view on mount and whenever it changes. Add `fade` to mask the edge that still has tabs to reveal. No wrapper element or CSS is needed for 7 tabs on a phone.
+
 <Demo title="Default" description="Three tabs with content panels." src={DefaultSrc}><Default client:visible /></Demo>
 <Demo title="Controlled" description="The parent owns the active tab with bind:value." src={ControlledSrc}><Controlled client:visible /></Demo>
+<Demo title="Scrollable" description="Seven tabs in a narrow column: the list scrolls on its own, the active tab starts in view, and fade marks the edge." src={ScrollableSrc}><Scrollable client:visible /></Demo>
 
 <Props for="Tabs" title="Tabs" rows={[
   { name: "value", type: "string", description: "Bindable active tab value." },
@@ -52,6 +57,7 @@ Arrow keys move between tabs, Home and End jump to the first and last, and focus
 ]} />
 
 <Props for="TabsList" title="TabsList" rows={[
+  { name: "fade", type: "boolean", default: "false", description: "Fade the edge(s) that still hide tabs, so the strip reads as scrollable." },
   { name: "children", type: "Snippet", description: "The `TabsTrigger` elements." },
   { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
 ]} />

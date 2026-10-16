@@ -1,6 +1,6 @@
 {
 	"version": "4.1.0",
-	"count": 236,
+	"count": 237,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -29,8 +29,8 @@
 		{
 			"slug": "navigation",
 			"first": "146",
-			"last": "164",
-			"count": 19
+			"last": "237",
+			"count": 20
 		},
 		{
 			"slug": "layout",
@@ -8345,6 +8345,46 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/docs-kit/docs#docssearch",
+			"needs": "@codeatlasdev/ui@4.1.0"
+		},
+		{
+			"id": "237",
+			"group": "navigation",
+			"page": "tabs",
+			"variant": "Scrollable",
+			"slug": "scrollable",
+			"title": "Scrollable",
+			"description": "Seven tabs in a narrow column: the list scrolls on its own, the active tab starts in view, and fade marks the edge.",
+			"summary": "Seven tabs in a narrow column: the list scrolls on its own, the active tab starts in view, and fade marks the edge.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"scrollable",
+				"tabs",
+				"tabslist",
+				"tabstrigger",
+				"tabscontent"
+			],
+			"shape": "wide",
+			"components": [
+				"Tabs",
+				"TabsList",
+				"TabsTrigger",
+				"TabsContent"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Tabs",
+						"TabsList",
+						"TabsTrigger",
+						"TabsContent"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/tabs#scrollable",
 			"needs": "@codeatlasdev/ui@4.1.0"
 		}
 	]
