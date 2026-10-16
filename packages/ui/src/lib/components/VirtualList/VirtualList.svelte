@@ -431,7 +431,7 @@
     .ca-virtual-list__head > * { pointer-events: auto; }
 
     .ca-virtual-list__older {
-      min-block-size: 2.75rem;
+      min-block-size: var(--ca-touch-target);
       padding: var(--ca-space-1-5) var(--ca-space-4);
       border: var(--ca-border-width) solid var(--ca-outline-default);
       border-radius: var(--ca-radius-pill);

@@ -251,8 +251,8 @@
     .ca-media-grid__tile {
       position: relative;
       display: block;
-      min-inline-size: 2.75rem;
-      min-block-size: 2.75rem;
+      min-inline-size: var(--ca-touch-target);
+      min-block-size: var(--ca-touch-target);
       aspect-ratio: 1;
       padding: 0;
       overflow: hidden;
