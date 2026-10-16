@@ -1,7 +1,7 @@
 ---
 import { readFileSync } from "node:fs";
 import { codeToHtml } from "shiki";
-import { Button, CardGrid, LinkCard } from "@codeatlasdev/ui";
+import { CardGrid, LinkCard } from "@codeatlasdev/ui";
 import { graph, website } from "@codeatlasdev/ui/seo";
 import FinaleActions from "~/components/landing/FinaleActions.svelte";
 import Chapter from "~/components/landing/Chapter.astro";
@@ -12,7 +12,7 @@ import Rail from "~/components/landing/Rail.astro";
 import ThemeLab from "~/components/landing/ThemeLab.svelte";
 import SiteBar from "~/components/site/SiteBar.astro";
 import SiteFooter from "~/components/site/SiteFooter.astro";
-import SketchbookHero from "~/components/landing/SketchbookHero.svelte";
+import HeroPrompt from "~/components/landing/HeroPrompt.svelte";
 import Base from "~/layouts/Base.astro";
 import catalog from "../../public/api/v1/catalog.json";
 import "~/styles/landing.css";
@@ -27,14 +27,6 @@ const hl = (code: string, lang: string) =>
 // The "code" of the agents chapter is the literal prompt the catalog emits for #001.
 const agentPrompt = readFileSync("public/api/v1/en/p/001.txt", "utf8").trim();
 
-// Hero pages: real catalog entries, mapped to what a card renders (as gallery.astro does).
-const HERO_IDS = ["001", "005", "015"];
-const heroPages = HERO_IDS.flatMap((id) => {
-	const e = catalog.elements.find((x) => x.id === id);
-	if (!e) return [];
-	const demo = new URL(e.demo);
-	return [{ id: e.id, title: e.title, group: e.group, page: e.page, variant: e.variant, summary: e.summary, demo: demo.pathname + demo.hash }];
-});
 const total = catalog.count;
 
 const install = await Promise.all(
@@ -94,7 +86,6 @@ const jsonLd = graph(
 		isPartOf: { "@id": `${SITE}/#website` },
 	},
 );
-import SendPrompt from "~/components/landing/SendPrompt.svelte";
 ---
 <Base title={title} description={description} jsonLd={jsonLd}>
 	<Fragment slot="head">
@@ -117,24 +108,15 @@ import SendPrompt from "~/components/landing/SendPrompt.svelte";
 				<h1 id="hero-h" class="hero__title">
 					<span class="rewrite">
 						<s class="rewrite__old" data-old>Describe a screen and hope.</s>
-						<span class="rewrite__new ca-mark-underline" data-new>Point at page #012.</span>
+						<span class="rewrite__new ca-mark-underline" data-new>Point your AI at page #012.</span>
 					</span>
 				</h1>
 				<p class="hero__lead">
-					A sketchbook of {total} finished screens, each one numbered. You pick the pages; your AI gets the exact
-					reference (code, spec, license line) through MCP or one URL, and reproduces it with your data. Svelte 5,
-					one theme object, works on a phone.
+					A Svelte 5 library of {total} numbered, finished screens. Copy one prompt: your AI picks the right ones and builds your app with them.
 				</p>
-				<div class="hero__actions">
-					<Button size="lg" href="/gallery/">Open the sketchbook</Button>
-					<Button size="lg" variant="outlined" href="/docs/getting-started/ai-agents/">Wire it to your AI</Button>
-				</div>
 			</div>
-			<div class="hero__stage">
-				<SketchbookHero client:load elements={heroPages} />
-				<p class="hero__caption ca-mark-note">
-					Real cards from the gallery. Pick a page; the prompt on the right is what you paste to your AI.
-				</p>
+			<div class="hero__prompt-wrap">
+				<HeroPrompt client:load />
 			</div>
 		</section>
 
@@ -159,9 +141,10 @@ import SendPrompt from "~/components/landing/SendPrompt.svelte";
 			lead="search_demos finds a page by words; get_demo returns its license line, spec, components and source. The skill tells the agent to keep the reference's components, props and motion, and to change only data, copy and theme."
 			layout="wide"
 		>
-			<div class="agents__prompt" data-reveal>
-				<SendPrompt client:visible />
-			</div>
+			<p class="agents__prompt" data-reveal>
+				The prompt at the top of this page is the whole setup. It is also served as plain text at
+				<a href="/prompt.txt">/prompt.txt</a>, so you can just tell your AI to follow that URL.
+			</p>
 			<div class="agents">
 				<div class="agents__code"><pre>{agentPrompt}</pre></div>
 				<ul class="agents__list">

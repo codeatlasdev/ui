@@ -35,20 +35,32 @@ html.lenis body {
 .hero {
 	display: grid;
 	grid-template-columns: minmax(0, 1fr);
-	gap: clamp(var(--ca-space-8), 6vw, var(--ca-space-16));
-	align-items: center;
+	gap: clamp(var(--ca-space-4), 3vh, var(--ca-space-8));
+	align-content: start;
 	max-inline-size: var(--lp-max);
 	margin-inline: auto;
-	padding: clamp(var(--ca-space-6), 6vh, var(--ca-space-12)) var(--lp-gutter) var(--lp-chapter-gap);
+	padding: clamp(var(--ca-space-4), 3vh, var(--ca-space-12)) var(--lp-gutter) var(--lp-chapter-gap);
 }
-/* The open sketchbook needs the full row: copy on top, the two pages below. */
+/* Wide screens: the promise on the left, the prompt (the one thing to do) on the right. */
+@media (min-width: 900px) {
+	.hero {
+		grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr);
+		align-items: center;
+		gap: clamp(var(--ca-space-8), 4vw, var(--ca-space-16));
+		min-block-size: calc(var(--ca-vh) - 6rem);
+		align-content: center;
+	}
+}
+.hero__prompt-wrap {
+	min-inline-size: 0;
+}
 .hero__copy {
-	max-inline-size: 48rem;
+	min-inline-size: 0;
 }
 .hero__title {
 	font-family: var(--lp-display);
 	font-weight: 600;
-	font-size: clamp(2.4rem, 5vw, 4.4rem);
+	font-size: clamp(1.85rem, 1.1rem + 3.6vw, 4rem);
 	line-height: 1;
 	letter-spacing: -0.025em;
 	text-wrap: balance;
@@ -91,39 +103,22 @@ html.lenis body {
 	font-style: italic;
 }
 .hero__lead {
-	margin: var(--ca-space-6) 0 0;
-	max-inline-size: 32rem;
-	font-size: clamp(var(--ca-font-size-body1), 2.4vw, var(--ca-font-size-lg));
-	line-height: 1.6;
+	margin: var(--ca-space-3) 0 0;
+	max-inline-size: 36rem;
+	font-size: clamp(var(--ca-font-size-body1), 0.95rem + 0.3vw, var(--ca-font-size-lg));
+	line-height: 1.5;
 	color: var(--ca-text-secondary);
-}
-.hero__actions {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--ca-space-3);
-	margin-top: var(--ca-space-8);
 }
 .agents__prompt {
 	margin-block-end: var(--ca-space-8);
 	max-inline-size: 48rem;
 }
-.hero__caption code,
 .chapter__facts code,
 .agents__list code {
 	font-family: var(--ca-font-mono);
 	font-size: 0.92em;
 	color: var(--ca-text-primary);
 	overflow-wrap: anywhere;
-}
-.hero__stage {
-	container-type: inline-size;
-	min-inline-size: 0;
-}
-.hero__caption {
-	margin: var(--ca-space-4) 0 0;
-	max-inline-size: 36rem;
-	font-size: var(--ca-font-size-body1);
-	color: var(--ca-text-secondary);
 }
 
 /* ── Chapters ────────────────────────────────────────────────────────── */

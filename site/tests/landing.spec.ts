@@ -1,3 +1,4 @@
+import type { Locator } from "@playwright/test";
 import { expect, test, waitIslands } from "./fixtures";
 
 test.describe("landing", () => {
@@ -26,19 +27,59 @@ test.describe("landing", () => {
 		}
 	});
 
-	test("hero sketchbook: picking #005 updates the prompt and the gallery link", async ({
-		page,
-	}) => {
+	test("hero prompt: Copy writes exactly the prompt text", async ({ page, context }) => {
+		await context.grantPermissions(["clipboard-read", "clipboard-write"]);
 		await page.goto("/");
 		await waitIslands(page, "astro-island[client='load']");
-		await page.getByLabel("Pick #005").check();
-		const text = page.locator("pre.book__text");
-		await expect(text).toContainText("#001");
-		await expect(text).toContainText("#005");
-		await expect(page.getByRole("link", { name: "Continue in the gallery" })).toHaveAttribute(
-			"href",
-			/\/gallery\/\?pick=001,005$/
-		);
+		const shown = (await page.locator("pre.hero__prompt").textContent()) ?? "";
+		expect(shown).toContain("npx -y -p @codeatlasdev/ui ca-ui-mcp");
+		expect(shown).toContain("migrate-react");
+		expect(shown).toContain("report_issue");
+		await page.getByRole("button", { name: "Copy prompt" }).click();
+		expect(await page.evaluate(() => navigator.clipboard.readText())).toBe(shown);
+		// The same text is what /prompt.txt serves (agents can fetch it by URL).
+		const served = await (await page.request.get("/prompt.txt")).text();
+		expect(served.trim()).toBe(shown);
+	});
+
+	// viewport_complete §3: headline, one-sentence promise, the start of the prompt and the primary
+	// action share the first viewport on a phone, in both orientations and on desktop.
+	for (const vp of [
+		{ width: 360, height: 640 },
+		{ width: 390, height: 844 },
+		{ width: 844, height: 390 },
+		{ width: 1440, height: 900 },
+	]) {
+		test(`hero first viewport holds title, prompt and Copy at ${vp.width}x${vp.height}`, async ({
+			page,
+			isMobile,
+		}) => {
+			test.skip(isMobile, "viewport is set explicitly, desktop project only");
+			await page.setViewportSize(vp);
+			await page.goto("/");
+			await waitIslands(page, "astro-island[client='load']");
+			const inView = async (loc: Locator) => {
+				const box = await loc.boundingBox();
+				expect(box).not.toBeNull();
+				return box!.y >= 0 && box!.y + box!.height <= vp.height;
+			};
+			expect(await inView(page.locator("h1#hero-h"))).toBe(true);
+			expect(await inView(page.locator(".hero__lead"))).toBe(true);
+			expect(await inView(page.getByRole("button", { name: "Copy prompt" }))).toBe(true);
+			// The prompt box starts inside the viewport (it may scroll or run past the fold).
+			const prompt = await page.locator("pre.hero__prompt").boundingBox();
+			expect(prompt!.y).toBeLessThan(vp.height);
+			expect(prompt!.height).toBeGreaterThan(0);
+		});
+	}
+
+	test("hero prompt box is keyboard-scrollable when it overflows", async ({ page }) => {
+		await page.setViewportSize({ width: 360, height: 640 });
+		await page.goto("/");
+		await waitIslands(page, "astro-island[client='load']");
+		const pre = page.locator("pre.hero__prompt");
+		const overflows = await pre.evaluate((el) => el.scrollHeight > el.clientHeight);
+		if (overflows) await expect(pre).toHaveAttribute("tabindex", "0");
 	});
 
 	test("skip link is the first tab stop and focuses #main", async ({ page }) => {
@@ -126,8 +167,8 @@ test.describe("landing", () => {
 			test(`link #${id} scrolls to its section`, async ({ page }) => {
 				await page.goto("/");
 				await page.waitForFunction(() => document.querySelector("[data-rail]") !== null);
-				// The rail only appears once the first chapter is in view.
-				await page.locator("#pick").scrollIntoViewIfNeeded();
+				// The rail only appears once the first chapter has scrolled up into the top of the viewport.
+				await page.locator("#pick").evaluate((el) => el.scrollIntoView({ block: "start" }));
 				await expect(page.locator("html")).toHaveClass(/rail-on/);
 				const link = page.locator(`[data-rail="${id}"]`);
 				await expect(link).toHaveAttribute("href", `#${id}`);
