@@ -1,0 +1,12 @@
+Use @codeatlasdev/ui demo #250 "Quote and reactions" (display/message-bubble).
+What it shows: An incoming bubble with a reply quote at the top and two reaction chips under it. When to use: Chat messages that reply to an earlier message or carry emoji reactions.
+Spec:
+- `<MessageBubble` with `direction="in"` and `sender="Carlos"`
+- `reactions={[{ emoji: '👍', count: 2, mine: true }, { emoji: '🎉' }]}`
+- `{#snippet quote()}` holds a `<strong>You</strong>` label and the quoted text
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #250 Quote and reactions → file, what changed, https://ui.codeatlas.com.br/docs/display/message-bubble#quote-and-reactions; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/250.txt   Components API: ca-ui-mcp get_component(MessageBubble)

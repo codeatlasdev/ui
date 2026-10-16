@@ -1,0 +1,10 @@
+{
+	"summary": "Four outgoing bubbles, one per delivery state: pending, sent, delivered and read.",
+	"use": "Showing message delivery ticks in a chat, with a visually hidden status text for screen readers.",
+	"spec": [
+		"`const states = ['pending', 'sent', 'delivered', 'read'] as const;`",
+		"`{#each states as status}` renders `<MessageBubble direction=\"out\" time=\"09:41\" {status}>`"
+	],
+	"tags": ["message-bubble", "chat", "status", "delivery", "ticks"],
+	"shape": "wide"
+}

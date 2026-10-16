@@ -1,0 +1,27 @@
+<!-- @codeatlasdev/ui demo #249 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/message-bubble#delivery-status -->
+Element: #249 Delivery status (display/message-bubble)
+What it shows: Four outgoing bubbles, one per delivery state: pending, sent, delivered and read.
+When to use: Showing message delivery ticks in a chat, with a visually hidden status text for screen readers.
+Spec:
+- `const states = ['pending', 'sent', 'delivered', 'read'] as const;`
+- `{#each states as status}` renders `<MessageBubble direction="out" time="09:41" {status}>`
+Tags: message-bubble, chat, status, delivery, ticks
+Needs: @codeatlasdev/ui@4.1.0
+Components: MessageBubble
+Live demo: https://ui.codeatlas.com.br/docs/display/message-bubble#delivery-status
+
+<script lang="ts">
+  import { MessageBubble } from '@codeatlasdev/ui';
+
+  const states = ['pending', 'sent', 'delivered', 'read'] as const;
+</script>
+
+<div class="thread">
+  {#each states as status}
+    <MessageBubble direction="out" time="09:41" {status}>{status}</MessageBubble>
+  {/each}
+</div>
+
+<style>
+  .thread { display: flex; flex-direction: column; gap: var(--ca-space-2); max-inline-size: 32rem; }
+</style>

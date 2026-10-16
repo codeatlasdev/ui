@@ -1,0 +1,39 @@
+---
+title: Conversation Item
+description: An inbox row with avatar, title, time, preview, unread badge, pinned and muted flags and an active state.
+group: Display
+order: 19
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Inbox from "~/demos/display/conversation-item/Inbox.svelte";
+import InboxSrc from "~/demos/display/conversation-item/Inbox.svelte?raw";
+
+```svelte
+<script>
+  import { Avatar, ConversationItem } from "@codeatlasdev/ui";
+</script>
+
+<ConversationItem title="Maria Souza" time="14:32" preview="Sent it by email." unread={3} active>
+  {#snippet avatar()}<Avatar alt="Maria Souza" size="lg" />{/snippet}
+</ConversationItem>
+```
+
+The whole row is the hit area (at least 44px tall). With `href` it renders a link, otherwise a button. `active` sets `aria-current`; unread rows make the title and time bold; the count is capped at 99+ and announced as "3 unread messages". `typing` replaces the preview.
+
+<Demo title="Inbox" description="Pinned, muted, unread, typing and the active row." src={InboxSrc}><Inbox client:visible /></Demo>
+
+<Props for="ConversationItem" rows={[
+  { name: "title", type: "string", description: "Contact or group name." },
+  { name: "time", type: "string", description: "Last activity time." },
+  { name: "preview", type: "string", description: "One-line preview." },
+  { name: "previewIcon", type: "Snippet", description: "Leading icon or ticks before the preview." },
+  { name: "avatar", type: "Snippet", description: "Avatar slot." },
+  { name: "unread", type: "number", description: "Unread count badge (99+ cap)." },
+  { name: "pinned", type: "boolean", default: "false", description: "Shows the pin indicator." },
+  { name: "muted", type: "boolean", default: "false", description: "Shows the muted indicator and a quiet badge." },
+  { name: "active", type: "boolean", default: "false", description: "Selected row (aria-current)." },
+  { name: "typing", type: "boolean", default: "false", description: "Shows a typing indicator instead of the preview." },
+  { name: "href", type: "string", description: "Render as a link." },
+  { name: "onclick", type: "(e: MouseEvent) => void", description: "Click handler." },
+]} />

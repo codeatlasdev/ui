@@ -1,34 +1,33 @@
-<!-- @codeatlasdev/ui demo #248 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/loading-boundary#fast-and-slow-loads -->
-Element: #248 Fast and slow loads (navigation/loading-boundary)
-What it shows: A LoadingBoundary around a suspending report with a fast (100 ms) and a slow (1.5 s) load button.
-When to use: Showing a skeleton for slow data without flashing it on fast responses, in any page that awaits a loader.
+<!-- @codeatlasdev/ui demo #248 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/message-bubble#a-grouped-conversation -->
+Element: #248 A grouped conversation (display/message-bubble)
+What it shows: A grouped chat thread: two incoming bubbles from one sender with a name and avatar, then an outgoing read bubble.
+When to use: Chat threads and support inboxes where consecutive messages from one person are grouped and your own replies show delivery status.
 Spec:
-- `<LoadingBoundary label="Loading invoices">` wraps `<Report load={load(ms)} />`
-- `{#key run}` restarts the load for each button
-- `ms = 100; run++;` is the fast case and `ms = 1500; run++;` the slow one
-Tags: loading-boundary, skeleton, suspense, pending, delay
+- `<MessageBubble direction="in" grouped="first" sender="Maria Souza" time="14:30">` opens the run and shows the sender
+- `<MessageBubble direction="in" grouped="last" time="14:30">` closes it
+- `{#snippet avatar()}<Avatar alt="Maria Souza" size="sm" />{/snippet}` in each incoming bubble
+- `<MessageBubble direction="out" time="14:32" status="read">`
+Tags: message-bubble, chat, avatar, grouped, delivery-status
 Needs: @codeatlasdev/ui@4.1.0
-Components: Button, LoadingBoundary, Stack
-Live demo: https://ui.codeatlas.com.br/docs/navigation/loading-boundary#fast-and-slow-loads
+Components: Avatar, MessageBubble
+Live demo: https://ui.codeatlas.com.br/docs/display/message-bubble#a-grouped-conversation
 
 <script lang="ts">
-  import { Button, LoadingBoundary, Stack } from '@codeatlasdev/ui';
-  import Report from './Report.svelte';
-
-  let ms = $state(1500);
-  let run = $state(0);
-  const load = (wait: number) => () =>
-    new Promise<string[]>((r) => setTimeout(() => r(['Invoice 1042', 'Invoice 1043', 'Invoice 1044']), wait));
+  import { Avatar, MessageBubble } from '@codeatlasdev/ui';
 </script>
 
-<Stack gap="4">
-  <Stack direction="row" gap="2">
-    <Button variant="outlined" size="sm" onclick={() => { ms = 100; run++; }}>Fast (100 ms)</Button>
-    <Button variant="outlined" size="sm" onclick={() => { ms = 1500; run++; }}>Slow (1.5 s)</Button>
-  </Stack>
-  {#key run}
-    <LoadingBoundary label="Loading invoices">
-      <Report load={load(ms)} />
-    </LoadingBoundary>
-  {/key}
-</Stack>
+<div class="thread">
+  <MessageBubble direction="in" grouped="first" sender="Maria Souza" time="14:30">
+    {#snippet avatar()}<Avatar alt="Maria Souza" size="sm" />{/snippet}
+    Can you send the invoice for March?
+  </MessageBubble>
+  <MessageBubble direction="in" grouped="last" time="14:30">
+    {#snippet avatar()}<Avatar alt="Maria Souza" size="sm" />{/snippet}
+    I need it before the review.
+  </MessageBubble>
+  <MessageBubble direction="out" time="14:32" status="read">Sent it by email just now.</MessageBubble>
+</div>
+
+<style>
+  .thread { display: flex; flex-direction: column; gap: var(--ca-space-1); max-inline-size: 32rem; }
+</style>

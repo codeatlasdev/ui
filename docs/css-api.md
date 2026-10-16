@@ -38,6 +38,10 @@ Total: 806 unique classes across 82 components.
 
 `.ca-bottom-nav` `.ca-bottom-nav__btn` `.ca-bottom-nav__btn--active` `.ca-bottom-nav__icon` `.ca-bottom-nav__label` `.ca-main` `.ca-mobile-header` `.ca-mobile-header__inner` `.ca-mobile-header__leading` `.ca-mobile-header__title` `.ca-mobile-header__title--custom` `.ca-mobile-header__trailing` `.ca-nav-item` `.ca-nav-item--active` `.ca-nav-item__badge` `.ca-nav-item__dot` `.ca-nav-item__icon` `.ca-nav-item__label` `.ca-nav-item__pip` `.ca-panel` `.ca-panel-open` `.ca-panel__header` `.ca-panel__nav` `.ca-panel__title` `.ca-rail` `.ca-rail__bottom` `.ca-rail__bottom-sep` `.ca-rail__dock` `.ca-rail__icon` `.ca-rail__icon--active` `.ca-rail__logo` `.ca-rail__logo-mark` `.ca-rail__pip` `.ca-rail__sep` `.ca-section` `.ca-section__chevron` `.ca-section__chevron--open` `.ca-section__header` `.ca-section__label` `.ca-section__trigger` `.ca-shell` `.ca-shell__content` `.ca-shell__desktop-header` `.ca-shell__mobile-header` `.ca-sidebar`
 
+## AudioPlayer
+
+`.ca-audio` `.ca-audio__bar` `.ca-audio__bar--played` `.ca-audio__error` `.ca-audio__meta` `.ca-audio__rate` `.ca-audio__scrub` `.ca-audio__wave`
+
 ## AuthLayout
 
 `.ca-auth` `.ca-auth-card` `.ca-auth-card__body` `.ca-auth-card__footer` `.ca-auth-card__header` `.ca-auth-card__subtitle` `.ca-auth-card__title` `.ca-auth-float` `.ca-auth__blob` `.ca-auth__blob--a` `.ca-auth__blob--b` `.ca-auth__blob--c` `.ca-auth__blobs` `.ca-auth__col` `.ca-auth__logo` `.ca-auth__mark` `.ca-auth__mobile-brand` `.ca-auth__mobile-mark` `.ca-auth__mobile-name` `.ca-auth__name` `.ca-auth__panel` `.ca-auth__panel-inner` `.ca-auth__slot`
@@ -96,6 +100,10 @@ Total: 806 unique classes across 82 components.
 
 
 `.ca-container`
+
+## ConversationItem
+
+`.ca-conversation` `.ca-conversation--active` `.ca-conversation--unread` `.ca-conversation__avatar` `.ca-conversation__flags` `.ca-conversation__line` `.ca-conversation__main` `.ca-conversation__preview` `.ca-conversation__preview--typing` `.ca-conversation__previewicon` `.ca-conversation__previewrow` `.ca-conversation__time` `.ca-conversation__title` `.ca-conversation__unread` `.ca-conversation__unread--muted`
 
 ## CopyButton
 
@@ -197,6 +205,14 @@ Total: 806 unique classes across 82 components.
 ## LoadingBoundary
 
 `.ca-loading-boundary` `.ca-loading-boundary__content` `.ca-loading-boundary__pending`
+
+## MediaGrid
+
+`.ca-media-grid` `.ca-media-grid__doc` `.ca-media-grid__doc-title` `.ca-media-grid__duration` `.ca-media-grid__failed` `.ca-media-grid__grid` `.ca-media-grid__grid--single` `.ca-media-grid__grid--wide` `.ca-media-grid__img` `.ca-media-grid__img--hidden` `.ca-media-grid__more` `.ca-media-grid__play` `.ca-media-grid__skeleton` `.ca-media-grid__tile`
+
+## MessageBubble
+
+`.ca-bubble` `.ca-bubble--in` `.ca-bubble--out` `.ca-bubble-row` `.ca-bubble-row--in` `.ca-bubble-row--out` `.ca-bubble-row--reacted` `.ca-bubble-row__avatar` `.ca-bubble__body` `.ca-bubble__meta` `.ca-bubble__quote` `.ca-bubble__reaction` `.ca-bubble__reaction--mine` `.ca-bubble__reactions` `.ca-bubble__sender` `.ca-bubble__status` `.ca-bubble__status--read`
 
 ## MobilePane
 
@@ -366,6 +382,10 @@ The `skeleton` prop of `Avatar`, `KpiCard`, `TextField`, `Table`, `Card` and `Gl
 ## Tooltip
 
 `.ca-tooltip-content` `.ca-tooltip-in` `.ca-tooltip-out` `.ca-tooltip__trigger`
+
+## VirtualList
+
+`.ca-virtual-list` `.ca-virtual-list__empty` `.ca-virtual-list__head` `.ca-virtual-list__item` `.ca-virtual-list__list` `.ca-virtual-list__loading` `.ca-virtual-list__older` `.ca-virtual-list__scroller`
 
 ---
 

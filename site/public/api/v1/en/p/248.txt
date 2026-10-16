@@ -1,12 +1,13 @@
-Use @codeatlasdev/ui demo #248 "Fast and slow loads" (navigation/loading-boundary).
-What it shows: A LoadingBoundary around a suspending report with a fast (100 ms) and a slow (1.5 s) load button. When to use: Showing a skeleton for slow data without flashing it on fast responses, in any page that awaits a loader.
+Use @codeatlasdev/ui demo #248 "A grouped conversation" (display/message-bubble).
+What it shows: A grouped chat thread: two incoming bubbles from one sender with a name and avatar, then an outgoing read bubble. When to use: Chat threads and support inboxes where consecutive messages from one person are grouped and your own replies show delivery status.
 Spec:
-- `<LoadingBoundary label="Loading invoices">` wraps `<Report load={load(ms)} />`
-- `{#key run}` restarts the load for each button
-- `ms = 100; run++;` is the fast case and `ms = 1500; run++;` the slow one
+- `<MessageBubble direction="in" grouped="first" sender="Maria Souza" time="14:30">` opens the run and shows the sender
+- `<MessageBubble direction="in" grouped="last" time="14:30">` closes it
+- `{#snippet avatar()}<Avatar alt="Maria Souza" size="sm" />{/snippet}` in each incoming bubble
+- `<MessageBubble direction="out" time="14:32" status="read">`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
-Report: #248 Fast and slow loads → file, what changed, https://ui.codeatlas.com.br/docs/navigation/loading-boundary#fast-and-slow-loads; what you could not check (light/dark, 375px, keyboard, reduced motion).
-Reference: https://ui.codeatlas.com.br/api/v1/en/e/248.txt   Components API: ca-ui-mcp get_component(Button)
+Report: #248 A grouped conversation → file, what changed, https://ui.codeatlas.com.br/docs/display/message-bubble#a-grouped-conversation; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/248.txt   Components API: ca-ui-mcp get_component(Avatar)

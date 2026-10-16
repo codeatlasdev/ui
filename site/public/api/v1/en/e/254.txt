@@ -1,0 +1,44 @@
+<!-- @codeatlasdev/ui demo #254 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/virtual-list#chat-history -->
+Element: #254 Chat history (display/virtual-list)
+What it shows: A windowed chat history of 40 messages that loads 30 older ones at the top without moving the view.
+When to use: Long conversations where older messages load on scroll and the scroll position must be preserved.
+Spec:
+- `<VirtualList {items} getKey={(m) => m.id} label="Conversation" height="18rem" {hasMore} loadingMore={loading} onloadmore={loadOlder}>`
+- `async function loadOlder()` prepends a page of 30 messages with `items = [...page, ...items];`
+- `<Button size="sm" variant="outlined" onclick={add}>Receive a message</Button>` appends a new row
+Tags: virtual-list, history, chat, infinite, prepend
+Needs: @codeatlasdev/ui@4.1.0
+Components: Button, Stack, VirtualList
+Live demo: https://ui.codeatlas.com.br/docs/display/virtual-list#chat-history
+
+<script lang="ts">
+  import { Button, Stack, VirtualList } from '@codeatlasdev/ui';
+
+  type Msg = { id: number; text: string };
+  let oldest = 5000;
+  let items = $state<Msg[]>(Array.from({ length: 40 }, (_, i) => ({ id: oldest + i, text: `Message ${oldest + i}` })));
+  let loading = $state(false);
+  let hasMore = $state(true);
+
+  async function loadOlder() {
+    loading = true;
+    await new Promise((r) => setTimeout(r, 400));
+    const page = Array.from({ length: 30 }, (_, i) => ({ id: oldest - 30 + i, text: `Message ${oldest - 30 + i}` }));
+    oldest -= 30;
+    items = [...page, ...items];
+    hasMore = oldest > 4850;
+    loading = false;
+  }
+  const add = () => items.push({ id: items.at(-1)!.id + 1, text: `Message ${items.at(-1)!.id + 1}` });
+</script>
+
+<Stack gap="3">
+  <VirtualList {items} getKey={(m) => m.id} label="Conversation" height="18rem" {hasMore} loadingMore={loading} onloadmore={loadOlder}>
+    {#snippet item(m)}<div class="row">{m.text}</div>{/snippet}
+  </VirtualList>
+  <Button size="sm" variant="outlined" onclick={add}>Receive a message</Button>
+</Stack>
+
+<style>
+  .row { padding: var(--ca-space-2) var(--ca-space-3); }
+</style>

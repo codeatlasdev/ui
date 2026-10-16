@@ -1,0 +1,11 @@
+{
+	"summary": "An incoming bubble with a reply quote at the top and two reaction chips under it.",
+	"use": "Chat messages that reply to an earlier message or carry emoji reactions.",
+	"spec": [
+		"`<MessageBubble` with `direction=\"in\"` and `sender=\"Carlos\"`",
+		"`reactions={[{ emoji: '👍', count: 2, mine: true }, { emoji: '🎉' }]}`",
+		"`{#snippet quote()}` holds a `<strong>You</strong>` label and the quoted text"
+	],
+	"tags": ["message-bubble", "chat", "quote", "reactions", "reply"],
+	"shape": "wide"
+}

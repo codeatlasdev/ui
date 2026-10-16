@@ -1,0 +1,32 @@
+---
+title: Audio Player
+description: A voice message player with waveform scrubbing, playback rate, lazy loading and slider semantics.
+group: Display
+order: 20
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Voice from "~/demos/display/audio-player/Voice.svelte";
+import VoiceSrc from "~/demos/display/audio-player/Voice.svelte?raw";
+
+```svelte
+<script>
+  import { AudioPlayer } from "@codeatlasdev/ui";
+</script>
+
+<AudioPlayer src="/voice/42.ogg" peaks={peaks} duration={31} />
+```
+
+The native `<audio controls>` is unstyled and differs in dark mode and on iOS. This player keeps the `<audio>` element but draws its own controls. The `src` is attached on the first play (`preload="none"`), so a thread with fifty voice notes makes no request until you press play; pass `duration` so the UI is complete before that. The waveform is a `role="slider"`: drag or click to seek, Arrow keys move 5 seconds, Page Up and Page Down 10, Home and End jump. Starting one player pauses any other.
+
+<Demo title="Voice messages" description="With peaks, and without waveform data." src={VoiceSrc}><Voice client:visible /></Demo>
+
+<Props for="AudioPlayer" rows={[
+  { name: "src", type: "string", description: "Audio URL, loaded on first play." },
+  { name: "peaks", type: "number[]", description: "Waveform amplitudes from 0 to 1, resampled to the width." },
+  { name: "duration", type: "number", description: "Seconds, shown before metadata loads." },
+  { name: "rates", type: "number[]", default: "[1, 1.5, 2]", description: "Playback speeds the rate button cycles through." },
+  { name: "preload", type: "'none' | 'metadata'", default: "'none'", description: "Load nothing, or only metadata, before the first play." },
+  { name: "label", type: "string", description: "Accessible name of the player." },
+  { name: "onplay / onpause / onended / onerror", type: "(e: Event) => void", description: "Media events." },
+]} />

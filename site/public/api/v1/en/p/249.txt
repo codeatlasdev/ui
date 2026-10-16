@@ -1,0 +1,11 @@
+Use @codeatlasdev/ui demo #249 "Delivery status" (display/message-bubble).
+What it shows: Four outgoing bubbles, one per delivery state: pending, sent, delivered and read. When to use: Showing message delivery ticks in a chat, with a visually hidden status text for screen readers.
+Spec:
+- `const states = ['pending', 'sent', 'delivered', 'read'] as const;`
+- `{#each states as status}` renders `<MessageBubble direction="out" time="09:41" {status}>`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #249 Delivery status → file, what changed, https://ui.codeatlas.com.br/docs/display/message-bubble#delivery-status; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/249.txt   Components API: ca-ui-mcp get_component(MessageBubble)

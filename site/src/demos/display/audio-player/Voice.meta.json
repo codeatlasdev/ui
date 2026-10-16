@@ -1,0 +1,12 @@
+{
+	"summary": "Two voice message players: one with a waveform from peaks, one with flat placeholder bars.",
+	"use": "Voice notes in chat where the audio loads only on the first play and can be scrubbed.",
+	"spec": [
+		"`<AudioPlayer {src} {peaks} duration={2} />`",
+		"`<AudioPlayer {src} duration={2} label=\"Without waveform data\" />`",
+		"`const peaks = Array.from({ length: 48 }` builds the waveform amplitudes",
+		"`tone(2)` builds a 2 second WAV blob as the source"
+	],
+	"tags": ["audio-player", "voice", "waveform", "chat", "scrub"],
+	"shape": "wide"
+}

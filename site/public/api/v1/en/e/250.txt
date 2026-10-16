@@ -1,0 +1,35 @@
+<!-- @codeatlasdev/ui demo #250 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/message-bubble#quote-and-reactions -->
+Element: #250 Quote and reactions (display/message-bubble)
+What it shows: An incoming bubble with a reply quote at the top and two reaction chips under it.
+When to use: Chat messages that reply to an earlier message or carry emoji reactions.
+Spec:
+- `<MessageBubble` with `direction="in"` and `sender="Carlos"`
+- `reactions={[{ emoji: '👍', count: 2, mine: true }, { emoji: '🎉' }]}`
+- `{#snippet quote()}` holds a `<strong>You</strong>` label and the quoted text
+Tags: message-bubble, chat, quote, reactions, reply
+Needs: @codeatlasdev/ui@4.1.0
+Components: MessageBubble
+Live demo: https://ui.codeatlas.com.br/docs/display/message-bubble#quote-and-reactions
+
+<script lang="ts">
+  import { MessageBubble } from '@codeatlasdev/ui';
+</script>
+
+<div class="thread">
+  <MessageBubble
+    direction="in"
+    sender="Carlos"
+    time="18:02"
+    reactions={[{ emoji: '👍', count: 2, mine: true }, { emoji: '🎉' }]}
+  >
+    {#snippet quote()}
+      <strong>You</strong>
+      <span>Meeting moved to 3 pm</span>
+    {/snippet}
+    Perfect, see you there.
+  </MessageBubble>
+</div>
+
+<style>
+  .thread { max-inline-size: 32rem; padding-block-end: var(--ca-space-4); }
+</style>

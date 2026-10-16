@@ -1,0 +1,41 @@
+---
+title: Message Bubble
+description: A chat bubble with direction, grouping tails, sender and avatar, reply quote, reactions and delivery ticks.
+group: Display
+order: 18
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Conversation from "~/demos/display/message-bubble/Conversation.svelte";
+import ConversationSrc from "~/demos/display/message-bubble/Conversation.svelte?raw";
+import Status from "~/demos/display/message-bubble/Status.svelte";
+import StatusSrc from "~/demos/display/message-bubble/Status.svelte?raw";
+import QuoteReactions from "~/demos/display/message-bubble/QuoteReactions.svelte";
+import QuoteReactionsSrc from "~/demos/display/message-bubble/QuoteReactions.svelte?raw";
+
+```svelte
+<script>
+  import { MessageBubble } from "@codeatlasdev/ui";
+</script>
+
+<MessageBubble direction="out" time="14:32" status="delivered">Sent it by email.</MessageBubble>
+```
+
+`direction` picks the side and colors (`out` uses the brand fill). Consecutive messages from one person use `grouped`: `first`, `middle` and `last` flatten the joined corners, and only `single` and `last` keep the tail and show the `avatar` slot (the other positions reserve its width so the column stays aligned). The delivery ticks are decorative; the state is also written as visually hidden text after the time, so a screen reader hears "14:32, Delivered" once. The bubble has no live region: the list that appends messages decides what is announced.
+
+<Demo title="A grouped conversation" description="The first bubble shows the sender, the last one the avatar and the tail." src={ConversationSrc}><Conversation client:visible /></Demo>
+<Demo title="Delivery status" description="pending, sent, delivered and read; read ticks use the info color." src={StatusSrc}><Status /></Demo>
+<Demo title="Quote and reactions" description="The quote slot renders a reply preview; reactions overlap the bottom edge." src={QuoteReactionsSrc}><QuoteReactions /></Demo>
+
+<Props for="MessageBubble" rows={[
+  { name: "direction", type: "'in' | 'out'", default: "'in'", description: "Side and color." },
+  { name: "grouped", type: "'single' | 'first' | 'middle' | 'last'", default: "'single'", description: "Position in a run of bubbles from one sender; controls the tail and spacing." },
+  { name: "sender", type: "string", description: "Name above the text, for incoming single or first bubbles." },
+  { name: "avatar", type: "Snippet", description: "Avatar slot beside incoming bubbles (single and last)." },
+  { name: "quote", type: "Snippet", description: "Reply preview shown at the top of the bubble." },
+  { name: "reactions", type: "{ emoji: string; count?: number; mine?: boolean }[]", description: "Reaction chips under the bubble." },
+  { name: "time", type: "string", description: "Footer time text." },
+  { name: "status", type: "'pending' | 'sent' | 'delivered' | 'read'", description: "Delivery ticks for outgoing bubbles." },
+  { name: "footer", type: "Snippet", description: "Extra footer content before the time." },
+  { name: "children", type: "Snippet", description: "Message body." },
+]} />

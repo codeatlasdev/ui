@@ -1,0 +1,11 @@
+{
+	"summary": "A windowed chat history of 40 messages that loads 30 older ones at the top without moving the view.",
+	"use": "Long conversations where older messages load on scroll and the scroll position must be preserved.",
+	"spec": [
+		"`<VirtualList {items} getKey={(m) => m.id} label=\"Conversation\" height=\"18rem\" {hasMore} loadingMore={loading} onloadmore={loadOlder}>`",
+		"`async function loadOlder()` prepends a page of 30 messages with `items = [...page, ...items];`",
+		"`<Button size=\"sm\" variant=\"outlined\" onclick={add}>Receive a message</Button>` appends a new row"
+	],
+	"tags": ["virtual-list", "history", "chat", "infinite", "prepend"],
+	"shape": "tall"
+}

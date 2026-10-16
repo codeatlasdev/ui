@@ -253,5 +253,12 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "245", path: "layout/record-list/Apps" },
 	{ id: "246", path: "layout/record-list/NoMenu" },
 	{ id: "247", path: "layout/record-list/Phone" },
+	{ id: "248", path: "display/message-bubble/Conversation" },
+	{ id: "249", path: "display/message-bubble/Status" },
+	{ id: "250", path: "display/message-bubble/QuoteReactions" },
+	{ id: "251", path: "display/conversation-item/Inbox" },
+	{ id: "252", path: "display/audio-player/Voice" },
+	{ id: "253", path: "display/media-grid/Gallery" },
+	{ id: "254", path: "display/virtual-list/History" },
 	{ id: "255", path: "navigation/loading-boundary/Delayed" },
 ];

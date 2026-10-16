@@ -1,0 +1,47 @@
+<!-- @codeatlasdev/ui demo #251 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/conversation-item#inbox -->
+Element: #251 Inbox (display/conversation-item)
+What it shows: An inbox of four conversation rows: unread count, pinned, muted, typing, with the selected row highlighted.
+When to use: Chat or support inboxes that list conversations with avatar, last message, time and unread state.
+Spec:
+- 4 rows in `rows`, each a `<ConversationItem` with `title`, `time` and `preview`
+- `active={active === row.id}` and `onclick={() => (active = row.id)}` select a row
+- `unread`, `pinned`, `muted` and `typing` come from the row
+- `{#snippet avatar()}<Avatar alt={row.title} size="lg" />{/snippet}`
+Tags: conversation-item, inbox, chat, unread, avatar
+Needs: @codeatlasdev/ui@4.1.0
+Components: Avatar, ConversationItem
+Live demo: https://ui.codeatlas.com.br/docs/display/conversation-item#inbox
+
+<script lang="ts">
+  import { Avatar, ConversationItem } from '@codeatlasdev/ui';
+
+  let active = $state('maria');
+  const rows = [
+    { id: 'maria', title: 'Maria Souza', time: '14:32', preview: 'Sent it by email just now.', unread: 3 },
+    { id: 'team', title: 'Design team', time: '13:10', preview: 'Carlos: new mocks are up', pinned: true },
+    { id: 'ops', title: 'Ops alerts', time: 'Mon', preview: 'Deploy finished', muted: true },
+    { id: 'ana', title: 'Ana Lima', time: '09:00', preview: '', typing: true },
+  ];
+</script>
+
+<div class="inbox">
+  {#each rows as row}
+    <ConversationItem
+      title={row.title}
+      time={row.time}
+      preview={row.preview}
+      unread={row.unread}
+      pinned={row.pinned}
+      muted={row.muted}
+      typing={row.typing}
+      active={active === row.id}
+      onclick={() => (active = row.id)}
+    >
+      {#snippet avatar()}<Avatar alt={row.title} size="lg" />{/snippet}
+    </ConversationItem>
+  {/each}
+</div>
+
+<style>
+  .inbox { max-inline-size: 26rem; display: flex; flex-direction: column; }
+</style>

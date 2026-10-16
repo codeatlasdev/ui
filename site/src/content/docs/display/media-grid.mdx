@@ -1,0 +1,31 @@
+---
+title: Media Grid
+description: Image, video and document tiles for a chat message that open a Lightbox gallery.
+group: Display
+order: 21
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Gallery from "~/demos/display/media-grid/Gallery.svelte";
+import GallerySrc from "~/demos/display/media-grid/Gallery.svelte?raw";
+
+```svelte
+<script>
+  import { MediaGrid } from "@codeatlasdev/ui";
+</script>
+
+<MediaGrid items={[{ src: "/a.jpg", alt: "Beach" }, { type: "video", src: "/b.mp4", thumb: "/b.jpg", duration: "0:12" }]} />
+```
+
+Tiles keep their box while the thumbnail loads (a skeleton shows meanwhile) and show an error state if it fails. Past `maxVisible` the last tile reads "+N more" and opens the gallery at that index. Images and videos open a [Lightbox](/docs/feedback/lightbox/) with previous and next; documents are plain download links and stay out of the gallery.
+
+<Demo title="Mixed media" description="Images, a video, a document and the +N overflow tile." src={GallerySrc}><Gallery client:visible /></Demo>
+
+<Props for="MediaGrid" rows={[
+  { name: "items", type: "MediaGridItem[]", description: "{ type?, src, thumb?, alt?, title?, caption?, meta?, duration?, poster?, download?, size? }." },
+  { name: "maxVisible", type: "number", default: "4", description: "Tiles shown before the +N overflow tile." },
+  { name: "columns", type: "1 | 2 | 3", description: "Defaults by item count." },
+  { name: "label", type: "string", description: "Accessible name of the group." },
+  { name: "onopen", type: "(index: number, item: MediaGridItem) => void", description: "Called when a tile is opened." },
+  { name: "ondownload", type: "(item, index) => void", description: "Forwarded to the Lightbox Download button." },
+]} />

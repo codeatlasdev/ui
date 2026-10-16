@@ -149,6 +149,26 @@ Snippets: `header`, `brand`, `railBottom`, `mobileHeaderActions`, `mobileTitle`,
 
 Classes: `ca-main` `ca-panel` `ca-shell` `ca-shell__content` `ca-shell__desktop-header` `ca-shell__mobile-header` `ca-sidebar`
 
+## AudioPlayer
+
+`import { AudioPlayer } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `src` | `string` |  | Audio URL. Not requested until the first play when `preload` is `none`. |
+| `peaks?` | `number[]` |  | Waveform amplitudes, 0 to 1, any length. Resampled to the width (max per bucket). Absent: a flat placeholder. |
+| `duration?` | `number` |  | Length in seconds, shown before the metadata loads. Replaced by the real length once known. |
+| `rates?` | `number[]` | `[1, 1.5, 2]` | Playback speeds the rate button cycles through. |
+| `preload?` | `'none' \| 'metadata'` | `'none'` | `none` attaches `src` on the first play; `metadata` attaches it at once and reads the length. |
+| `label?` | `string` |  | Accessible name of the player group. Defaults to the localized "Audio message". |
+| `onplay?` | `(e: Event) => void` |  | Called when playback starts. |
+| `onpause?` | `(e: Event) => void` |  | Called when playback pauses. |
+| `onended?` | `(e: Event) => void` |  | Called when the audio reaches its end. |
+| `onerror?` | `(e: Event) => void` |  | Called when the audio cannot be loaded or played. |
+| `class?` | `string` | `''` | Extra class on the root. |
+
+Classes: `ca-audio` `ca-audio__bar` `ca-audio__bar--played` `ca-audio__error` `ca-audio__meta` `ca-audio__rate` `ca-audio__scrub` `ca-audio__wave`
+
 ## AuthCard
 
 `import { AuthCard } from "@codeatlasdev/ui"`
@@ -534,6 +554,28 @@ Snippets: `children`
 Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>, Pick<LayoutProps, 'px' \| 'py'>`
 
 Classes: `ca-container`
+
+## ConversationItem
+
+`import { ConversationItem } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `title` | `string` |  | Conversation name. |
+| `time?` | `string` |  | Time of the last message, for example `14:32`. |
+| `preview?` | `string` |  | Last message, truncated to one line. |
+| `unread?` | `number` |  | Unread count. Shown as a pill, capped at `99+`. Hidden at 0. |
+| `pinned?` | `boolean` | `false` | Show the pin indicator. |
+| `muted?` | `boolean` | `false` | Show the muted indicator and quiet the unread pill. |
+| `active?` | `boolean` | `false` | Selected row: `aria-current="true"` and a selected background. |
+| `typing?` | `boolean` | `false` | Replace the preview with the typing label. |
+| `href?` | `string` |  | Renders an `<a>` instead of a button. |
+| `onclick?` | `(event: MouseEvent) => void` |  | Click handler. |
+| `class?` | `string` | `''` | Extra class on the row. |
+
+Snippets: `previewIcon`, `avatar`
+
+Classes: `ca-conversation` `ca-conversation--active` `ca-conversation--unread` `ca-conversation__avatar` `ca-conversation__flags` `ca-conversation__line` `ca-conversation__main` `ca-conversation__preview` `ca-conversation__preview--typing` `ca-conversation__previewicon` `ca-conversation__previewrow` `ca-conversation__time` `ca-conversation__title` `ca-conversation__unread` `ca-conversation__unread--muted`
 
 ## CopyButton
 
@@ -1343,6 +1385,40 @@ Classes: `ca-loading-boundary` `ca-loading-boundary__content`
 Snippets: `leading`, `trailing`
 
 Classes: `ca-masked`
+
+## MediaGrid
+
+`import { MediaGrid } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `items` | `MediaGridItem[]` |  | Tiles, in order. |
+| `maxVisible?` | `number` | `4` | Tiles shown before the "+N more" overlay takes over the last one. |
+| `columns?` | `1 \| 2 \| 3` |  | Column count. Default: by item count (1, 2, or 2 with a wide first tile for exactly 3). |
+| `label?` | `string` |  | Accessible name of the group. Defaults to the localised "Media". |
+| `onopen?` | `(index: number, item: MediaGridItem) => void` |  | Called when a tile is activated (before the gallery opens). |
+| `ondownload?` | `(item: LightboxItem, index: number) => void` |  | Called instead of the default `<a download>` when the user taps Download in the gallery. |
+| `class?` | `string` | `''` |  |
+
+Classes: `ca-media-grid` `ca-media-grid__doc` `ca-media-grid__doc-title` `ca-media-grid__duration` `ca-media-grid__failed` `ca-media-grid__grid` `ca-media-grid__grid--single` `ca-media-grid__grid--wide` `ca-media-grid__img` `ca-media-grid__img--hidden` `ca-media-grid__more` `ca-media-grid__play` `ca-media-grid__tile`
+
+## MessageBubble
+
+`import { MessageBubble } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `direction?` | `Direction` | `'in'` | `in` aligns to the start (received), `out` to the end (sent). |
+| `grouped?` | `Grouped` | `'single'` | Position inside a run from one sender; drives the tail, spacing, sender name and avatar. |
+| `sender?` | `string` |  | Sender name above the text. Incoming bubbles at the start of a run only. |
+| `reactions?` | `Reaction[]` |  | Reaction chips overlapping the bottom edge of the bubble. |
+| `time?` | `string` |  | Footer time text, for example `14:32`. |
+| `status?` | `Status` |  | Delivery state, shown as ticks. Outgoing bubbles only. |
+| `class?` | `string` | `''` | Extra class on the row. |
+
+Snippets: `avatar`, `quote`, `children`, `footer`
+
+Classes: `ca-bubble` `ca-bubble--in` `ca-bubble--out` `ca-bubble-row` `ca-bubble-row--in` `ca-bubble-row--out` `ca-bubble-row--reacted` `ca-bubble-row__avatar` `ca-bubble__body` `ca-bubble__meta` `ca-bubble__quote` `ca-bubble__reaction` `ca-bubble__reaction--mine` `ca-bubble__reactions` `ca-bubble__sender` `ca-bubble__status` `ca-bubble__status--read`
 
 ## MethodBadge
 
@@ -2363,6 +2439,29 @@ Classes: `ca-tooltip-content` `ca-tooltip__trigger`
 | `size?` | `'sm' \| 'md'` | `'sm'` |  |
 
 Classes: `ca-user-cell` `ca-user-cell__email` `ca-user-cell__info` `ca-user-cell__name`
+
+## VirtualList
+
+`import { VirtualList } from "@codeatlasdev/ui"` (generic: `T`)
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `items` | `readonly T[]` |  | Rows, oldest first. Prepend older history to it; append new messages to it. |
+| `getKey` | `(item: T, index: number) => string \| number` |  | Stable key per row. Required: it anchors the scroll position when rows are prepended. |
+| `estimateSize?` | `number` | `56` | Height in px assumed for a row until it has been measured. |
+| `overscan?` | `number` | `6` | Rows rendered beyond the viewport on each side. |
+| `height?` | `string` | `'24rem'` | Height of the scrolling area (any CSS length). |
+| `label` | `string` |  | Accessible name of the scrolling region (required). |
+| `follow?` | `boolean` | `true` | Stay pinned to the newest row while the user is at the bottom. |
+| `hasMore?` | `boolean` | `false` | Older rows exist. Shows the "Load older" button and enables scroll-triggered loading. |
+| `loadingMore?` | `boolean` | `false` | Older rows are being fetched. Suppresses further `onloadmore` calls. |
+| `loadThreshold?` | `number` | `120` | Distance from the top, in px, that triggers `onloadmore`. |
+| `onloadmore?` | `() => void \| Promise<void>` |  | Fetch older rows. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `item` (`Snippet<[T, number]>`), `empty`
+
+Classes: `ca-virtual-list` `ca-virtual-list__empty` `ca-virtual-list__head` `ca-virtual-list__item` `ca-virtual-list__list` `ca-virtual-list__loading` `ca-virtual-list__older` `ca-virtual-list__scroller`
 
 # Non-component exports
 

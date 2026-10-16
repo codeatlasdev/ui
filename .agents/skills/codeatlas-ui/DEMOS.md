@@ -252,4 +252,11 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 245 | Apps | layout/record-list | Avatar, DropdownMenu, DropdownMenuItem, IconButton, RecordCell, RecordList, RecordRow, StatusChip |
 | 246 | Without a menu | layout/record-list | RecordCell, RecordList, RecordRow |
 | 247 | Phone width | layout/record-list | Avatar, DropdownMenu, DropdownMenuItem, IconButton, RecordCell, RecordList, RecordRow |
+| 248 | A grouped conversation | display/message-bubble | Avatar, MessageBubble |
+| 249 | Delivery status | display/message-bubble | MessageBubble |
+| 250 | Quote and reactions | display/message-bubble | MessageBubble |
+| 251 | Inbox | display/conversation-item | Avatar, ConversationItem |
+| 252 | Voice messages | display/audio-player | AudioPlayer |
+| 253 | Mixed media | display/media-grid | MediaGrid |
+| 254 | Chat history | display/virtual-list | Button, Stack, VirtualList |
 | 255 | Fast and slow loads | navigation/loading-boundary | Button, LoadingBoundary, Stack |

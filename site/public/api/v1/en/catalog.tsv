@@ -246,4 +246,11 @@ id	group	page	title	tags	summary
 245	layout	record-list	Apps	record-list,record-row,table,status-chip,row-menu,avatar,responsive	A record list of three apps with an avatar identity, scopes, install count, status chip, created date and a row menu.
 246	layout	record-list	Without a menu	record-list,record-row,table,no-actions,webhooks,responsive	A three column record list of webhooks with no actions slot, so there is no trailing menu track.
 247	layout	record-list	Phone width	record-list,record-row,table,phone,responsive,container-width	The same record list inside a narrow slot, to show it stacking because the list reads its own width.
+248	display	message-bubble	A grouped conversation	message-bubble,chat,avatar,grouped,delivery-status	A grouped chat thread: two incoming bubbles from one sender with a name and avatar, then an outgoing read bubble.
+249	display	message-bubble	Delivery status	message-bubble,chat,status,delivery,ticks	Four outgoing bubbles, one per delivery state: pending, sent, delivered and read.
+250	display	message-bubble	Quote and reactions	message-bubble,chat,quote,reactions,reply	An incoming bubble with a reply quote at the top and two reaction chips under it.
+251	display	conversation-item	Inbox	conversation-item,inbox,chat,unread,avatar	An inbox of four conversation rows: unread count, pinned, muted, typing, with the selected row highlighted.
+252	display	audio-player	Voice messages	audio-player,voice,waveform,chat,scrub	Two voice message players: one with a waveform from peaks, one with flat placeholder bars.
+253	display	media-grid	Mixed media	media-grid,gallery,chat,lightbox,attachments	A media grid of six items (images, a video, a document) showing four tiles and a +2 overflow that opens the gallery.
+254	display	virtual-list	Chat history	virtual-list,history,chat,infinite,prepend	A windowed chat history of 40 messages that loads 30 older ones at the top without moving the view.
 255	navigation	loading-boundary	Fast and slow loads	loading-boundary,skeleton,suspense,pending,delay	A LoadingBoundary around a suspending report with a fast (100 ms) and a slow (1.5 s) load button.

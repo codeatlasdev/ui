@@ -1,0 +1,40 @@
+---
+title: Virtual List
+description: A windowed list with load-older at the top that keeps the scroll position, for long chat histories.
+group: Display
+order: 22
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import History from "~/demos/display/virtual-list/History.svelte";
+import HistorySrc from "~/demos/display/virtual-list/History.svelte?raw";
+
+```svelte
+<script>
+  import { VirtualList } from "@codeatlasdev/ui";
+</script>
+
+<VirtualList {items} getKey={(m) => m.id} label="Conversation" {hasMore} loadingMore={loading} onloadmore={loadOlder}>
+  {#snippet item(m)}<Message {m} />{/snippet}
+</VirtualList>
+```
+
+Only the rows in view (plus `overscan`) are in the DOM; row heights are measured, so they can vary. Prepending older rows keeps the row you were reading in the same place: the list finds the previous first row by `getKey` and corrects `scrollTop`. `LiveList` follows the bottom but cannot prepend history without a jump; this one can, and also follows new rows while you are at the bottom. A visible "Load older messages" button gives keyboard and screen reader users the same trigger as scrolling.
+
+<Demo title="Chat history" description="Scroll to the top to load older messages; the view does not jump." src={HistorySrc}><History client:visible /></Demo>
+
+<Props for="VirtualList" rows={[
+  { name: "items", type: "readonly T[]", description: "Rows, oldest first." },
+  { name: "item", type: "Snippet<[T, number]>", description: "One row, rendered inside an li." },
+  { name: "getKey", type: "(item: T, index: number) => string | number", description: "Stable key per row; required to keep position on prepend." },
+  { name: "label", type: "string", description: "Accessible name of the scrolling region." },
+  { name: "estimateSize", type: "number", default: "56", description: "Row height guess in px until measured." },
+  { name: "overscan", type: "number", default: "6", description: "Extra rows rendered above and below the view." },
+  { name: "height", type: "string", default: "'24rem'", description: "Height of the scrolling area." },
+  { name: "follow", type: "boolean", default: "true", description: "Stay at the bottom while new rows arrive and you are there." },
+  { name: "hasMore", type: "boolean", default: "false", description: "More older rows exist." },
+  { name: "loadingMore", type: "boolean", default: "false", description: "A page is loading." },
+  { name: "loadThreshold", type: "number", default: "120", description: "Distance from the top in px that triggers onloadmore." },
+  { name: "onloadmore", type: "() => void | Promise<void>", description: "Load the next older page." },
+  { name: "empty", type: "Snippet", description: "Shown when there are no rows." },
+]} />

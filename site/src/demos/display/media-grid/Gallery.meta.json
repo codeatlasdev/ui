@@ -1,0 +1,12 @@
+{
+	"summary": "A media grid of six items (images, a video, a document) showing four tiles and a +2 overflow that opens the gallery.",
+	"use": "Chat messages with several attachments: thumbnails that open a lightbox, with documents as download links.",
+	"spec": [
+		"`<MediaGrid {items} maxVisible={4} />`",
+		"`{ type: 'video', src: '', thumb: art(130, '▶'), alt: 'Clip', duration: '0:12' }`",
+		"`{ type: 'document', src: '#', title: 'invoice-0412.pdf', size: '84 KB' }`",
+		"`const art = (hue: number, label: string)` builds inline SVG images"
+	],
+	"tags": ["media-grid", "gallery", "chat", "lightbox", "attachments"],
+	"shape": "wide"
+}

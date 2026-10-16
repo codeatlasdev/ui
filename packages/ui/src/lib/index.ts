@@ -38,6 +38,7 @@ export {
 	isItemActive,
 	isNavSection,
 } from "./components/AppShell/types.js";
+export { default as AudioPlayer } from "./components/AudioPlayer/AudioPlayer.svelte";
 export { default as AuthCard } from "./components/AuthLayout/AuthCard.svelte";
 // ── AUTH LAYOUTS ───────────────────────────────────────────────────────────────
 export { default as AuthLayout } from "./components/AuthLayout/AuthLayout.svelte";
@@ -59,6 +60,7 @@ export type { ComboboxOption } from "./components/Combobox/Combobox.svelte";
 export { default as Combobox } from "./components/Combobox/Combobox.svelte";
 export { default as CommandPalette } from "./components/CommandPalette/CommandPalette.svelte";
 export { default as Container } from "./components/Container/Container.svelte";
+export { default as ConversationItem } from "./components/ConversationItem/ConversationItem.svelte";
 export { default as CopyButton } from "./components/CopyButton/CopyButton.svelte";
 export type { DateRange, DateValue, TimeValue } from "./components/Date/index.js";
 export {
@@ -142,6 +144,9 @@ export { default as Lightbox } from "./components/Lightbox/Lightbox.svelte";
 export { default as LiquidGlass } from "./components/LiquidGlass/LiquidGlass.svelte";
 export { default as LiveList } from "./components/LiveList/LiveList.svelte";
 export { default as LoadingBoundary } from "./components/LoadingBoundary/LoadingBoundary.svelte";
+export type { MediaGridItem } from "./components/MediaGrid/MediaGrid.svelte";
+export { default as MediaGrid } from "./components/MediaGrid/MediaGrid.svelte";
+export { default as MessageBubble } from "./components/MessageBubble/MessageBubble.svelte";
 export { default as MobilePane } from "./components/MobilePane/MobilePane.svelte";
 export type { NotificationItem } from "./components/NotificationBell/NotificationBell.svelte";
 export { default as NotificationBell } from "./components/NotificationBell/NotificationBell.svelte";
@@ -197,6 +202,7 @@ export { default as ToggleGroup } from "./components/ToggleGroup/ToggleGroup.sve
 export { default as Tooltip } from "./components/Tooltip/Tooltip.svelte";
 // Form sections and items
 export { default as FormSection } from "./components/templates/FormSection.svelte";
+export { default as VirtualList } from "./components/VirtualList/VirtualList.svelte";
 // ── STORES ────────────────────────────────────────────────────────────────────
 export type { DeepPartial, Locale, Messages, MessagesOverride } from "./i18n/index.js";
 export {

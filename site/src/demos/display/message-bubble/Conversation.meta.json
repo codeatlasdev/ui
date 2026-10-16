@@ -1,0 +1,12 @@
+{
+	"summary": "A grouped chat thread: two incoming bubbles from one sender with a name and avatar, then an outgoing read bubble.",
+	"use": "Chat threads and support inboxes where consecutive messages from one person are grouped and your own replies show delivery status.",
+	"spec": [
+		"`<MessageBubble direction=\"in\" grouped=\"first\" sender=\"Maria Souza\" time=\"14:30\">` opens the run and shows the sender",
+		"`<MessageBubble direction=\"in\" grouped=\"last\" time=\"14:30\">` closes it",
+		"`{#snippet avatar()}<Avatar alt=\"Maria Souza\" size=\"sm\" />{/snippet}` in each incoming bubble",
+		"`<MessageBubble direction=\"out\" time=\"14:32\" status=\"read\">`"
+	],
+	"tags": ["message-bubble", "chat", "avatar", "grouped", "delivery-status"],
+	"shape": "wide"
+}
