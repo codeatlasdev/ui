@@ -17,9 +17,11 @@
 		mainId?: string;
 		/** Keep panel, module, sections and scroll in storage (off by default: tests start clean). */
 		persist?: boolean;
+		/** First module is the catch-all `basePath: "/"` with a root item `path: "/"` (#274). */
+		root?: boolean;
 	}
 
-	let { pathname = "/app/dashboard", onNavigate, full = false, single = false, ownMain = false, mainId = "main", persist = false }: Props = $props();
+	let { pathname = "/app/dashboard", onNavigate, full = false, single = false, ownMain = false, mainId = "main", persist = false, root = false }: Props = $props();
 
 	const modules: NavModule[] = [
 		{
@@ -53,7 +55,20 @@
 	];
 
 	const singleModules: NavModule[] = [modules[0], { ...modules[1], items: [modules[1].items[0]] }];
-	const mods = $derived(single ? singleModules : modules);
+	const rootModules: NavModule[] = [
+		{
+			id: "home",
+			label: "Home",
+			icon: Home,
+			basePath: "/",
+			items: [
+				{ id: "root", label: "Overview", icon: Home, path: "/" },
+				{ id: "reports", label: "Reports", icon: FileText, path: "/reports" },
+			],
+		},
+		modules[1],
+	];
+	const mods = $derived(root ? rootModules : single ? singleModules : modules);
 </script>
 
 {#if full}

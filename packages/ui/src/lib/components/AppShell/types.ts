@@ -46,12 +46,23 @@ export function isNavSection(item: NavItem | NavSection): item is NavSection {
 	return "items" in item && !("path" in item);
 }
 
-/** True when `pathname` is the item's path or sits below it; trailing slashes are ignored on both sides. */
+/** `path` without trailing slashes: `"/"` becomes `""`, so the root is the empty prefix. */
+const trimmed = (path: string) => path.replace(/\/+$/, "");
+
+/** True when `pathname` equals `prefix` or sits below it, on whole segments; trailing slashes are ignored. */
+function underPath(pathname: string, prefix: string): boolean {
+	const current = trimmed(pathname);
+	const base = trimmed(prefix);
+	return current === base || current.startsWith(`${base}/`);
+}
+
+/**
+ * True when `pathname` is the item's path or sits below it; trailing slashes are ignored on both
+ * sides. An item at `"/"` is active on `"/"` only, it does not claim every page.
+ */
 export function isItemActive(item: NavItem, pathname: string): boolean {
-	// Works with or without trailing slashes on either side ("/users" vs "/users/").
-	const path = item.path.replace(/\/+$/, "");
-	const current = pathname.replace(/\/+$/, "");
-	return current === path || current.startsWith(`${path}/`);
+	// The root item is the page "/" itself; as a prefix it would cover the whole site.
+	return trimmed(item.path) === "" ? trimmed(pathname) === "" : underPath(pathname, item.path);
 }
 
 /** Every navigable path of the given modules, in order, flattening sections. */
@@ -61,13 +72,24 @@ export function collectPaths(modules: NavModule[]): string[] {
 	);
 }
 
-/** Index of the module whose `basePath` or `pathPrefixes` match `pathname`; `-1` when none does. */
+/**
+ * Index of the module whose `basePath` or `pathPrefixes` match `pathname`; `-1` when none does.
+ * Prefixes match whole path segments and the longest one wins, so a module at `basePath: "/"`
+ * only gets the pages no other module claims, whatever the module order.
+ */
 export function matchModuleIndex(modules: NavModule[], pathname: string): number {
-	return modules.findIndex(
-		(mod) =>
-			pathname.startsWith(mod.basePath) ||
-			(mod.pathPrefixes?.some((p) => pathname.startsWith(p)) ?? false)
-	);
+	let best = -1;
+	let bestLength = -1;
+	modules.forEach((mod, index) => {
+		for (const prefix of [mod.basePath, ...(mod.pathPrefixes ?? [])]) {
+			const length = trimmed(prefix).length;
+			if (length > bestLength && underPath(pathname, prefix)) {
+				best = index;
+				bestLength = length;
+			}
+		}
+	});
+	return best;
 }
 
 /** Index of the module whose `basePath` or `pathPrefixes` match `pathname`; `0` when none does. */

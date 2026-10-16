@@ -103,6 +103,38 @@ describe("AppShellLayout: desktop", () => {
 			.toHaveAttribute("aria-current", "page");
 	});
 
+	it("root item and basePath '/' do not capture other modules (#274)", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		const screen = await render(Harness, { pathname: "/settings/general", root: true });
+		const rail = page.getByRole("navigation", { name: "Module navigation" }).first();
+		await expect
+			.element(rail.getByRole("button", { name: "Settings" }))
+			.toHaveAttribute("aria-current", "page");
+		await expect
+			.element(rail.getByRole("button", { name: "Home" }))
+			.not.toHaveAttribute("aria-current");
+
+		// On "/" the root module and its root item are the active ones, and "Reports" is not.
+		await screen.rerender({ pathname: "/", root: true });
+		await expect
+			.element(rail.getByRole("button", { name: "Home" }))
+			.toHaveAttribute("aria-current", "page");
+		await expect
+			.element(screen.getByRole("link", { name: "Overview" }))
+			.toHaveAttribute("aria-current", "page");
+		await expect
+			.element(screen.getByRole("link", { name: "Reports" }))
+			.not.toHaveAttribute("aria-current");
+
+		await screen.rerender({ pathname: "/reports/q3", root: true });
+		await expect
+			.element(screen.getByRole("link", { name: "Overview" }))
+			.not.toHaveAttribute("aria-current");
+		await expect
+			.element(screen.getByRole("link", { name: "Reports" }))
+			.toHaveAttribute("aria-current", "page");
+	});
+
 	it("omits the panel for a module with a single destination", async () => {
 		await page.viewport(...VIEWPORTS.desktop);
 		await render(Harness, { pathname: "/settings/general", single: true });

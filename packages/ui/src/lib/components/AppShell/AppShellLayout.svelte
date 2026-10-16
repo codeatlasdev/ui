@@ -4,7 +4,7 @@
   import { Spring } from 'svelte/motion';
   import { reducedMotion } from '../../stores/reduced-motion.svelte.js';
   import type { NavModule } from './types.js';
-  import { firstModulePath, isNavSection, matchModuleIndex, RAIL_WIDTH, PANEL_WIDTH } from './types.js';
+  import { firstModulePath, isItemActive, isNavSection, matchModuleIndex, RAIL_WIDTH, PANEL_WIDTH } from './types.js';
   import { readShellState, shellScript, writeShellState } from './shell-state.js';
   import Rail from './Rail.svelte';
   import Panel from './Panel.svelte';
@@ -102,9 +102,9 @@
     if (!mod) return '';
     for (const entry of mod.items) {
       if (isNavSection(entry)) {
-        const hit = entry.items.find(i => pathname === i.path || pathname.startsWith(i.path + '/'));
+        const hit = entry.items.find(i => isItemActive(i, pathname));
         if (hit) return hit.label;
-      } else if (pathname === entry.path || pathname.startsWith(entry.path + '/')) {
+      } else if (isItemActive(entry, pathname)) {
         return entry.label;
       }
     }

@@ -10,7 +10,7 @@ Full navigation shell: side rail (icon dock) + collapsible panel + main area.
 
 ## NavModule shape
 
-A module is one icon in the Rail. `basePath` (plus optional `pathPrefixes`) decides which module is active for the current URL; `items` fills the Panel and is a mix of `NavItem` (a link) and `NavSection` (a labelled, optionally collapsible group of links). Every `NavItem` needs an `icon` and a `path`. A module with `items: []` has no panel: the Rail click goes to `basePath`.
+A module is one icon in the Rail. `basePath` (plus optional `pathPrefixes`) decides which module is active for the current URL; `items` fills the Panel and is a mix of `NavItem` (a link) and `NavSection` (a labelled, optionally collapsible group of links). Every `NavItem` needs an `icon` and a `path`. A module with `items: []` has no panel: the Rail click goes to `basePath`. Prefixes match whole path segments and the longest one wins, so a module at `basePath: '/'` only gets the pages no other module claims, and an item at `path: '/'` is active on `/` only.
 
 ```ts
 import type { NavModule } from '@codeatlasdev/ui';

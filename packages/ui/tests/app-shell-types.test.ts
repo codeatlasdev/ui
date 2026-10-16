@@ -6,6 +6,7 @@ import {
 	firstModulePath,
 	isItemActive,
 	isNavSection,
+	matchModuleIndex,
 	type NavItem,
 	type NavModule,
 	type NavSection,
@@ -54,6 +55,59 @@ describe("isItemActive", () => {
 		expect(isItemActive(item("/admin/users/"), "/admin/users/new/")).toBe(true);
 		expect(isItemActive(item("/admin/users"), "/admin/users/")).toBe(true);
 		expect(isItemActive(item("/admin/users/"), "/admin/user-roles/")).toBe(false);
+	});
+});
+
+describe("root path (#274)", () => {
+	it("an item at '/' is active only on '/'", () => {
+		expect(isItemActive(item("/"), "/")).toBe(true);
+		expect(isItemActive(item("/"), "")).toBe(true);
+		expect(isItemActive(item("/"), "/settings")).toBe(false);
+		expect(isItemActive(item("/"), "/settings/general/")).toBe(false);
+	});
+
+	it("an item at '/' wins no other item's page in findActiveItemPath", () => {
+		const m: NavModule[] = [
+			{ ...modules[0], basePath: "/", items: [item("/"), item("/x")] },
+			{ ...modules[1], items: [item("/settings")] },
+		];
+		expect(findActiveItemPath(m, "/")).toBe("/");
+		expect(findActiveItemPath(m, "/x")).toBe("/x");
+		expect(findActiveItemPath(m, "/settings")).toBe("/settings");
+	});
+});
+
+describe("matchModuleIndex", () => {
+	const root: NavModule[] = [
+		{ id: "a", label: "A", icon, basePath: "/", items: [item("/"), item("/x")] },
+		{ id: "b", label: "B", icon, basePath: "/settings", pathPrefixes: ["/account"], items: [] },
+	];
+
+	it("basePath '/' matches '/' and unmatched paths only after every other module", () => {
+		expect(matchModuleIndex(root, "/")).toBe(0);
+		expect(matchModuleIndex(root, "/x")).toBe(0);
+		expect(matchModuleIndex(root, "/settings")).toBe(1);
+		expect(matchModuleIndex(root, "/settings/general")).toBe(1);
+		expect(matchModuleIndex(root, "/account/me")).toBe(1);
+	});
+
+	it("the longest matching prefix wins, whatever the module order", () => {
+		const nested: NavModule[] = [
+			{ id: "a", label: "A", icon, basePath: "/app", items: [] },
+			{ id: "b", label: "B", icon, basePath: "/app/admin", items: [] },
+		];
+		expect(matchModuleIndex(nested, "/app/admin/users")).toBe(1);
+		expect(matchModuleIndex(nested, "/app/home")).toBe(0);
+	});
+
+	it("matches whole path segments, ignoring trailing slashes", () => {
+		expect(matchModuleIndex(root, "/settings/")).toBe(1);
+		expect(matchModuleIndex([{ ...root[1], basePath: "/settings/" }], "/settings")).toBe(0);
+		expect(matchModuleIndex([root[1]], "/settingsfoo")).toBe(-1);
+	});
+
+	it("returns -1 when no module matches", () => {
+		expect(matchModuleIndex([root[1]], "/other")).toBe(-1);
 	});
 });
 
