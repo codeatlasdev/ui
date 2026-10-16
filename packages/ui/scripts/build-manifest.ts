@@ -634,7 +634,7 @@ function mdxFiles(dir: string): string[] {
 	);
 }
 
-function buildGuides(): ManifestGuide[] {
+export function buildGuides(): ManifestGuide[] {
 	if (!existsSync(DOCS_DIR)) return [];
 	return mdxFiles(DOCS_DIR)
 		.map((file) => {

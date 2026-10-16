@@ -81,6 +81,8 @@ bunx @codeatlasdev/ui migrate --write  # apply it
 
 `migrate` rewrites code for renamed APIs by parsing `.svelte`, `.ts`, `.js` and `.astro` files (it walks `src` by default, or the paths you pass), so only real references change (not strings or same-named identifiers from other packages). It renames the `BrandPreset` type to `PresetDefinition` and moves the deprecated `GlassCard`, `GlassSurface` and `Row` to `Card`, `Surface` and `Flex`; an element with a prop it cannot map is left as it was and listed at the end (file:line, reason, recipe). `--strict` exits with code 1 when anything was left.
 
+Coming from React? The [Migrate from React](/docs/getting-started/migrate-react/) guide maps MUI, shadcn/Radix and Chakra components, hooks and themes onto this library, and tells the agent how to report what has no equivalent. In MCP it is `get_guide("migrate-react")`.
+
 ## Install the skills
 
 The repository ships three agent skills that work with Claude Code, Cursor, Codex and other agents that support the skills format:

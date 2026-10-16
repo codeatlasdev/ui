@@ -1,0 +1,316 @@
+---
+title: Migrate from React
+description: Move a React app (MUI, shadcn/Radix or Chakra) to Svelte 5 and CodeAtlas UI. Decision flow, hook-to-rune map, component maps, layout, theme and data table recipes, and how to report gaps.
+group: Getting started
+order: 9
+---
+import { Callout, Steps } from "@codeatlasdev/ui";
+
+This page is written for a coding agent and for the person reviewing its work. Every component and prop named here exists in the generated manifest (`get_component`, `get_export`), and a test fails when one stops existing. If you cannot find an equivalent for something in your app, that is a [gap](#gaps-and-workarounds): write a documented workaround and report it, do not invent a component.
+
+## Decide first: incremental or rewrite
+
+| Situation | Choose | Why |
+|---|---|---|
+| Under about 15 routes, few shared stores, no heavy React-only dependency | **Rewrite** into a fresh SvelteKit app | One framework at the end, no bridge code to delete later. |
+| Large app that ships weekly | **Incremental, route by route** | Put the new Svelte app behind the same domain (reverse proxy per path prefix), migrate a route at a time, share only the session cookie and the API. |
+| Design system is the main goal | **Rewrite the shell and the list/form pages first** | `AppList`, `AppForm`, `AppSettings` and `PageShell` replace most hand-built page wrappers in one step. |
+
+Never mount React inside Svelte (or the reverse) to save time: two reconcilers on one page means two focus models and two sets of effects. A route is either React or Svelte.
+
+Port in this order, whatever you picked: theme and shell, then one list page, one form page, one settings page, then the rest. Keep the React app's API calls as they are; only the UI layer moves.
+
+## Project setup
+
+<Steps>
+
+1. **Create the app.** `bunx sv create my-app` and choose SvelteKit with TypeScript. Svelte 5 runes mode is the default.
+
+2. **Install and wire the package.**
+
+   ```sh
+   bun add @codeatlasdev/ui @lucide/svelte
+   bunx @codeatlasdev/ui init --write
+   ```
+
+   `init` writes the theme file, the Vite plugins, the server hook, the `global.css` import and a mobile-ready viewport meta. Details: [Installation](/docs/getting-started/installation/).
+
+3. **Install optional peers only for what you port.** `@tanstack/svelte-table` for `DataTable`, `echarts` for charts, `shiki` for code blocks.
+
+4. **Give your agent the manifest.** `claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp`, see [AI agents](/docs/getting-started/ai-agents/). Tell it to call `get_component` before it writes any prop.
+
+</Steps>
+
+## React to Svelte 5 runes
+
+| React | Svelte 5 | Notes |
+|---|---|---|
+| `useState(0)` | `let n = $state(0)` | Assign to change it: `n += 1`. Objects and arrays are deep reactive, mutate in place (`list.push(x)`). |
+| `useMemo(() => a * 2, [a])` | `let b = $derived(a * 2)` | No dependency array. Use `$derived.by(() => { … })` for several statements. |
+| `useEffect(fn, [dep])` | `$effect(() => { … })` | Dependencies are whatever the effect reads. Runs in the browser only, after the DOM updates. |
+| `useEffect(() => { fetch… }, [])` | `onMount` or a SvelteKit `load` | Fetch in `load` (server and client) instead of in an effect. |
+| `useCallback(fn, [dep])` | a plain function | Functions are not recreated per render, there is nothing to memoize. |
+| `useRef(null)` + `ref={r}` | `let el = $state<HTMLElement>()` + `bind:this={el}` | Read `el` inside `$effect` or an event handler. |
+| `props` and `children` | `let { title, children } = $props()` and `{@render children?.()}` | `children` is a snippet. |
+| render props, slots | named snippets: `{#snippet actions()}…{/snippet}` | The component renders it with `{@render actions?.()}`. Components of this library use snippets for every hole, see `get_component`. |
+| `createContext` / `useContext` | `setContext(key, value)` / `getContext(key)` from `svelte` | Call both during component init. For shared app state prefer a `.svelte.ts` module exporting `$state`. |
+| controlled `value` + `onChange` | `bind:value` | Two-way binding replaces the pair. Use `onchange` only for side effects. |
+| `<form onSubmit>` + `e.preventDefault()` | `<form method="POST" use:enhance>` | SvelteKit form actions validate on the server and work without JavaScript. |
+
+### Effect pitfalls
+
+- **Do not use `$effect` to compute a value.** `useEffect` plus `setState` becomes `$derived`. An effect that writes state it also reads can loop.
+- **Reads after `await` are not tracked.** Read every reactive value before the first `await` inside an effect.
+- **Return a cleanup function** for timers, listeners and observers, exactly like `useEffect`. It runs before the next run and on destroy.
+- **There is no effect on the server.** Code that touches `window`, `localStorage` or `matchMedia` belongs in `onMount` or `$effect`, or behind `browser` from `$app/environment`.
+- **Reading `$state` outside a component** (a plain `.ts` file) does not track. Put shared reactive state in a `.svelte.ts` file.
+
+```svelte
+<script lang="ts">
+  import { Button, TextField } from "@codeatlasdev/ui";
+
+  let name = $state("");
+  let saving = $state(false);
+  let valid = $derived(name.trim().length > 1);
+
+  async function save() {
+    saving = true;
+    await fetch("/api/users", { method: "POST", body: JSON.stringify({ name }) });
+    saving = false;
+  }
+</script>
+
+<TextField label="Name" bind:value={name} />
+<Button variant="filled" loading={saving} disabled={!valid} onclick={save}>Save</Button>
+```
+
+## Component map
+
+Targets are real exports of `@codeatlasdev/ui` unless the import path says otherwise. Props that differ from what you expect are listed; for the rest, call `get_component`.
+
+### MUI
+
+| MUI | CodeAtlas UI | Differences |
+|---|---|---|
+| `Button` (`contained`, `outlined`, `text`) | `Button` | `variant` is `filled`, `outlined`, `ghost`, `glass` or `destructive`. `loading`, `fullWidth`, `href`, snippets `leading` and `trailing` replace `startIcon` and `endIcon`. |
+| `IconButton` | `IconButton` | `aria-label` is required, the child is the icon. |
+| `TextField` | `TextField` | `label`, `error` (a string), `helperText`, `bind:value`. Multiline: `TextArea`. Number: `NumberField`. |
+| `Select`, `MenuItem` | `Select` | Options go in the `options` array, not as children. For search use `Combobox`. |
+| `Autocomplete` | `Combobox` | `options`, `bind:value`, `emptyText`. |
+| `Checkbox` + `FormControlLabel` | `Checkbox` | `label` is built in, `bind:checked`. |
+| `Switch` | `Switch` | `label`, `bind:checked`. |
+| `RadioGroup`, `Radio` | `RadioGroup` | `items` array and `bind:value`. |
+| `Slider` | `Slider` | `bind:value`, or `bind:values` for a range. |
+| `ToggleButtonGroup` | `ToggleGroup` | Or `SegmentedControl` for a single choice. |
+| `DatePicker`, `DateRangePicker` | `DatePicker`, `DateRangePicker` | Values are `@internationalized/date` values, not `Date`. Also `DateField`, `TimeField`, `Calendar`, `RangeCalendar`. |
+| `Dialog` | `Dialog` | `bind:open`, `title`, `description`, snippets `children` and `actions`. Confirmations: `AlertDialog`. |
+| `Drawer` | `Drawer` | `side` is `left`, `right` or `bottom`. On a phone, a bottom `Sheet` is the native pattern. |
+| `Menu`, `MenuItem` | `DropdownMenu`, `DropdownMenuItem` | Also `DropdownMenuLabel` and `DropdownMenuSeparator`. |
+| `Popover` | `Popover` | Snippets `trigger` and `children`. |
+| `Tooltip` | `Tooltip` | `content` is a string. |
+| `Tabs`, `Tab` | `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent` | `bind:value` on `Tabs`. |
+| `Accordion` | `Accordion`, `AccordionItem` | `type` is `single` or `multiple`. |
+| `Alert` | `Alert` | `severity` is `success`, `warning`, `error` or `info`. |
+| `Snackbar` | `Toaster` plus `toast` | Mount `Toaster` once; call `toast.success(msg)`, `toast.error(msg)`, `toast.show(msg, { variant })`. |
+| `Chip` | `Chip` | `deletable` and `ondelete`. Status labels: `StatusChip`. |
+| `Badge` | `Badge` | `count`, `dot`, `color`. |
+| `Avatar` | `Avatar` | `src`, `alt`, `fallback`. |
+| `Card` | `Card` | `title`, `headerActions`, `flush`. |
+| `Paper` | `Surface` | `elevation`, `material`, `tone`. |
+| `Skeleton` | `Skeleton` | `variant`, `rows`. |
+| `CircularProgress` | `Spinner` | `label` for assistive tech. |
+| `LinearProgress` | `Progress` | `value`, `indeterminate`. |
+| `Divider` | `Divider` | `orientation`. |
+| `Breadcrumbs` | `Breadcrumb` | `items` array. |
+| `Pagination` | `Pagination` | `count`, `perPage`, `bind:page`. |
+| `Stepper` | `Stepper` | `steps` array, `bind:current`. |
+| `Box`, `Stack`, `Grid`, `Container` | `Box`, `Stack`, `Grid`, `Container` | `gap`, `columns` and the other layout props are numbers on the token scale. No `sx`. |
+| `Table` family | `SimpleTable` | Native `<thead>`/`<tbody>` markup inside. Sorting, search and paging: [Data tables](#data-tables). |
+
+### shadcn/ui and Radix
+
+| shadcn / Radix | CodeAtlas UI | Differences |
+|---|---|---|
+| `Button` | `Button` | Same variant names for `outline` → `outlined`, `ghost`, `destructive`; `default` → `filled`. |
+| `Input`, `Label` | `TextField` | The label, hint (`description`) and error are props, not siblings. |
+| `Textarea` | `TextArea` | `rows`, `resize`. |
+| `Select` | `Select` | `options` array. |
+| `Command` | `CommandPalette`, `Combobox` | Palette is for app navigation (`modules`); a searchable field is `Combobox`. |
+| `Checkbox`, `Switch`, `RadioGroup`, `Slider` | `Checkbox`, `Switch`, `RadioGroup`, `Slider` | All `bind:`. |
+| `ToggleGroup` | `ToggleGroup` | `items` array. |
+| `Dialog` | `Dialog` | Controlled with `bind:open`. There is no `DialogTrigger`: put a `Button` that sets `open = true`. |
+| `AlertDialog` | `AlertDialog` | `onconfirm`, `oncancel`, `destructive`. |
+| `Sheet` | `Drawer` or `Sheet` | `Drawer` slides from a side; `Sheet` is the mobile bottom sheet. |
+| `Popover`, `HoverCard` | `Popover` | |
+| `DropdownMenu` | `DropdownMenu`, `DropdownMenuItem` | |
+| `Tooltip` | `Tooltip` | |
+| `Tabs` | `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent` | |
+| `Accordion`, `Collapsible` | `Accordion`, `Collapsible` | |
+| `Alert` | `Alert` | |
+| `Sonner` / `Toast` | `Toaster` plus `toast` | |
+| `Badge` | `Badge`, `Chip` | |
+| `Avatar` | `Avatar` | |
+| `Card` | `Card` | Header, content and footer are `title`, `children` and `headerActions`. |
+| `Skeleton` | `Skeleton` | |
+| `Progress` | `Progress` | |
+| `Separator` | `Divider` | |
+| `Breadcrumb`, `Pagination` | `Breadcrumb`, `Pagination` | |
+| `ScrollArea` | `ScrollArea` | |
+| `Calendar`, `DatePicker` | `Calendar`, `DatePicker` | |
+| `Table` | `SimpleTable` | |
+| `DataTable` (TanStack recipe) | `DataTable` from `@codeatlasdev/ui/table` | See [Data tables](#data-tables). |
+| `cn()` / `clsx` | not needed | Components take a `class` prop; layout comes from `Stack`, `Flex`, `Grid` and tokens. |
+
+### Chakra UI
+
+| Chakra | CodeAtlas UI |
+|---|---|
+| `Button`, `IconButton` | `Button`, `IconButton` |
+| `Input`, `Textarea`, `NumberInput` | `TextField`, `TextArea`, `NumberField` |
+| `FormControl` (label, helper, error) | the same props on each field (`label`, `description`, `error`) |
+| `Select` | `Select` |
+| `Checkbox`, `Switch`, `RadioGroup`, `Slider` | `Checkbox`, `Switch`, `RadioGroup`, `Slider` |
+| `PinInput` | `PinInput` |
+| `Modal` | `Dialog` |
+| `AlertDialog` | `AlertDialog` |
+| `Drawer` | `Drawer` |
+| `Menu` | `DropdownMenu`, `DropdownMenuItem` |
+| `Popover`, `Tooltip` | `Popover`, `Tooltip` |
+| `Tabs` | `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent` |
+| `Accordion` | `Accordion`, `AccordionItem` |
+| `Alert`, `useToast` | `Alert`, `Toaster` plus `toast` |
+| `Badge`, `Tag` | `Badge`, `Chip` |
+| `Avatar` | `Avatar` |
+| `Skeleton`, `Spinner`, `Progress` | `Skeleton`, `Spinner`, `Progress` |
+| `Divider`, `Breadcrumb` | `Divider`, `Breadcrumb` |
+| `Box`, `Flex`, `Stack`, `Grid`, `Container` | `Box`, `Flex`, `Stack`, `Grid`, `Container` |
+| `Table` | `SimpleTable` |
+| style props (`p`, `mt`, `bg`) | tokens (`--ca-space-*`, `--ca-*`) through `gap`, `padding` props on layout components, never inline styles |
+
+## Layout patterns
+
+Do not port a React page wrapper one-to-one. Pick the template that matches what the page is, then fill its snippets. They own the scroll behaviour, the header, the footer and the mobile layout.
+
+| Your React page | Use | Holes |
+|---|---|---|
+| A list or CRUD index with search, filters and paging | `AppList` | `data`, `searchKeys`, `perPage`; snippets `actions`, `filters`, `children`. |
+| Create or edit one entity | `AppForm` with `FormSection` | `backHref`, snippets `footer` for Cancel and Save, `leading`. |
+| Settings with several sections | `AppSettings` | `tabs`, `bind:activeTab`; sections are `FormSection` and `SettingItem`. |
+| Any other content page (dashboard, detail) | `PageShell` | `title`, `description`, snippet `actions`. |
+| The signed-in frame (sidebar, bottom nav) | `AppShellLayout` | `modules`, `pathname`, `onNavigate`. Only in authenticated route layouts. |
+| Login, sign-up | `AuthLayout` with `AuthCard` | |
+| Empty and error states | `EmptyState`, `ErrorPage` | |
+
+```svelte
+<script lang="ts">
+  import { AppList, Button, SimpleTable, StatusChip } from "@codeatlasdev/ui";
+
+  let { data } = $props();
+</script>
+
+<AppList title="Users" data={data.users} searchKeys={["name", "email"]} perPage={10}>
+  {#snippet actions()}
+    <Button variant="filled" href="/users/new">New user</Button>
+  {/snippet}
+
+  {#snippet children(list)}
+    <SimpleTable>
+      <thead><tr><th>Name</th><th>Status</th></tr></thead>
+      <tbody>
+        {#each list.rows as u (u.id)}
+          <tr>
+            <td>{u.name}</td>
+            <td><StatusChip status={u.active ? "success" : "neutral"} label={u.active ? "Active" : "Inactive"} /></td>
+          </tr>
+        {/each}
+      </tbody>
+    </SimpleTable>
+  {/snippet}
+</AppList>
+```
+
+Do not wrap fields in `Stack` or `Flex` for layout inside `FormSection`: `layout` is `grid` by default, `list` for switches and `stack` for composite blocks. Mobile rules (viewport units, safe areas, keyboard) are in [Mobile](/docs/getting-started/mobile/).
+
+## Theme mapping
+
+There is one `ThemeOptions` object in `src/lib/theme.ts`. Map your design tokens into it instead of recreating a theme provider:
+
+| React source | `ThemeOptions` |
+|---|---|
+| MUI `palette.primary.main`, Tailwind `primary`, Chakra `brand.500` | `presets: [{ id: "app", color: "#rrggbb" }]` and `defaultPreset: "app"`. The library derives the full light and dark ramp in OKLCH. |
+| Per-role colors (`background`, `text`, `error`) | `presets[].colors.light` and `.dark`, see [Theming](/docs/getting-started/theming/#porting-a-palette-by-role). |
+| MUI `palette.mode`, `next-themes`, Chakra `colorMode` | `defaultScheme: "system"` and the `colorScheme` store (`colorScheme.toggle()`, or the `ThemeToggle` component). |
+| MUI `shape.borderRadius`, Tailwind `rounded-*` | `radius` (multiplier) and `controlRadius`. |
+| MUI `spacing`, Tailwind spacing scale, Chakra `space` | `density`: `compact`, `comfortable` or `airy`. |
+| MUI `typography.fontFamily`, Tailwind `fontFamily` | `fonts: { body, mono, display }`. |
+| Anything else (a one-off color or size) | `overrides: { light: { "--ca-…": "…" }, dark: { … } }`. Find the token with `search_tokens`. |
+
+```ts
+// src/lib/theme.ts
+import type { ThemeOptions } from "@codeatlasdev/ui/vite";
+
+export const theme: ThemeOptions = {
+  presets: [{ id: "app", color: "#2563eb" }],
+  defaultPreset: "app",
+  defaultScheme: "system",
+  radius: 0.8,
+  density: "comfortable",
+  fonts: { body: "Inter, system-ui, sans-serif" },
+};
+```
+
+Delete the React theme provider, the Tailwind color config and every `sx`, `className` and style prop that only set color, spacing or radius.
+
+## Data tables
+
+TanStack Table for React becomes `DataTable` from the `@codeatlasdev/ui/table` entry, built on `@tanstack/svelte-table`. Column helpers keep the same accessor idea; search, sorting, paging and the column toggle are built in.
+
+| TanStack Table (React) | `@codeatlasdev/ui/table` |
+|---|---|
+| `createColumnHelper<T>()` | `createCaColumnHelper<T>()` |
+| `useReactTable({ data, columns, … })` + your markup | `DataTable` with `columns` and `data` (simple mode), or `createCaTable` to render your own markup |
+| `getFilteredRowModel`, `globalFilter` state | built in; controlled with `globalFilter` and `onGlobalFilterChange` |
+| sorting state | built in; controlled with `sorting` and `onSortingChange` |
+| pagination state, manual pagination | built in; controlled with `pagination`, `onPaginationChange` and `total` for server data |
+| `flexRender(cell.column.columnDef.cell, …)` | `renderComponent` from `@tanstack/svelte-table` for header or cell components |
+| column visibility menu | `DataTableColumnToggle`, already in the toolbar |
+| faceted filter chips | `DataTableFacetedFilter` as a child of `DataTable` |
+
+```svelte
+<script lang="ts">
+  import { DataTable, createCaColumnHelper } from "@codeatlasdev/ui/table";
+
+  type User = { name: string; email: string };
+  let { users }: { users: User[] } = $props();
+
+  const col = createCaColumnHelper<User>();
+  const columns = col.columns([
+    col.accessor("name", { header: "Name", meta: { label: "Name" } }),
+    col.accessor("email", { header: "Email", meta: { label: "Email" } }),
+  ]);
+</script>
+
+<DataTable {columns} data={users} />
+```
+
+Details and controlled mode: [DataTable](/docs/display/data-table/). For a plain list without search or sorting, `SimpleTable` inside `AppList` is lighter.
+
+## Gaps and workarounds
+
+If something in the React app has no equivalent in the library (a component, a prop, a behaviour), do not fake it and do not leave it undocumented:
+
+1. **Check twice.** Call `search_demos`, `get_component` and `get_export` with the React name and with a description of what it does. `list_components` shows everything.
+2. **Write a workaround** in the app's own code, with a one-line marker so it can be found and removed later:
+
+   ```svelte
+   <!-- ca-ui-workaround(#123): no equivalent of MUI TreeView, using nested Collapsible -->
+   ```
+
+   In script code use `// ca-ui-workaround(#123): reason`. Use the issue number once you have it; until then write the marker without a number and add it after step 3.
+3. **Report it.** Call the MCP tool `report_issue` with `kind: "migration-gap"`, a neutral `title`, `expected` (what the React component did), `actual` (what the library offers), a minimal `repro` and your `workaround`. It returns a sanitized issue body and a prefilled link; it never posts by itself. Open the link, or run the `gh issue create` command it prints.
+
+Never put project, company or customer names, file paths, URLs, environment values, secrets, data or business logic in the report. Use neutral names (`Foo`, `items`) in the repro. `bunx @codeatlasdev/ui workarounds` lists the markers in your code and which of their issues are closed, so you know when to delete a workaround.
+
+<Callout type="tip">
+  Run `svelte-check` after every ported page. A wrong prop or snippet name is a type error, which is the fastest signal that a component was guessed instead of looked up.
+</Callout>
