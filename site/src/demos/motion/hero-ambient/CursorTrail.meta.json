@@ -1,0 +1,30 @@
+{
+	"summary": "A chain of 14 dots that eases after the pointer, each one shrinking and following the dot ahead; autoplay traces a looping path.",
+	"use": "Playful hero sections, creative portfolios and empty canvases where the cursor should leave a soft, short-lived mark.",
+	"spec": [
+		"`const N = 14` dots in a fixed pool: no node is created while the pointer moves",
+		"Each frame every dot moves `0.32` of the way toward the dot ahead (`p.x += (prev.x - p.x) * 0.32`), the head follows the pointer",
+		"Only `transform` is written: `translate3d(${p.x}px, ${p.y}px, 0) scale(${1 - i / (N + 4)})`",
+		"The `requestAnimationFrame` loop stops when the demo leaves the viewport (`IntersectionObserver`) and when every dot has settled",
+		"Autoplay drives a Lissajous path (`Math.cos(k * 2.1)`, `Math.sin(k * 3.2)`); under reduced motion no dots render",
+		"`@media (pointer: coarse)` sets `touch-action: none` so a finger draws the trail instead of scrolling"
+	],
+	"tags": ["motion", "cursor", "trail", "pointer", "follow", "playful"],
+	"names": [
+		"Cursor trail",
+		"Mouse trail",
+		"Pointer trail",
+		"Rastro do cursor",
+		"Rastro do mouse",
+		"Estela del cursor"
+	],
+	"motion": [
+		{
+			"property": "transform: translate3d, scale (per dot)",
+			"duration": "per frame",
+			"easing": "0.32",
+			"stagger": "0.32"
+		}
+	],
+	"shape": "wide"
+}

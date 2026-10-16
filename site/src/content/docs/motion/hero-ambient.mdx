@@ -1,0 +1,37 @@
+---
+title: Hero and ambient
+description: "Cursor spotlight, grid ripple, gradient field, compare slider, cursor trail, hero intro and card tilt: named, numbered, with exact values."
+group: Motion
+order: 3
+---
+import Demo from "~/components/docs/Demo.astro";
+import CursorSpotlight from "~/demos/motion/hero-ambient/CursorSpotlight.svelte";
+import CursorSpotlightSrc from "~/demos/motion/hero-ambient/CursorSpotlight.svelte?raw";
+import ClickRipple from "~/demos/motion/hero-ambient/ClickRipple.svelte";
+import ClickRippleSrc from "~/demos/motion/hero-ambient/ClickRipple.svelte?raw";
+import GradientField from "~/demos/motion/hero-ambient/GradientField.svelte";
+import GradientFieldSrc from "~/demos/motion/hero-ambient/GradientField.svelte?raw";
+import CompareSlider from "~/demos/motion/hero-ambient/CompareSlider.svelte";
+import CompareSliderSrc from "~/demos/motion/hero-ambient/CompareSlider.svelte?raw";
+import CursorTrail from "~/demos/motion/hero-ambient/CursorTrail.svelte";
+import CursorTrailSrc from "~/demos/motion/hero-ambient/CursorTrail.svelte?raw";
+import HeroIntro from "~/demos/motion/hero-ambient/HeroIntro.svelte";
+import HeroIntroSrc from "~/demos/motion/hero-ambient/HeroIntro.svelte?raw";
+import TiltGlare from "~/demos/motion/hero-ambient/TiltGlare.svelte";
+import TiltGlareSrc from "~/demos/motion/hero-ambient/TiltGlare.svelte?raw";
+
+The effects people ask for on a first screen: a light that follows the cursor, a surface that reacts to a click, a background that never sits still. Every one runs inside [`MotionStage`](/docs/motion/motion-stage/), so it plays only in view, stops when you touch it and shows its final state under `prefers-reduced-motion`. Ambient effects are decoration: keep them behind the content and never carry meaning in them.
+
+<Demo title="Cursor spotlight" description={"A pricing grid lit by a soft brand light and a line grid that only shows inside it. Also called mouse spotlight or holofote do cursor. Use it on pricing, bento and docs landing grids where hovering should reveal structure. The light eases to the pointer in 520ms through registered CSS properties. Ask an AI: \"Use #380, a cursor spotlight, on our pricing grid.\""} src={CursorSpotlightSrc}><CursorSpotlight client:visible /></Demo>
+
+<Demo title="Grid ripple" description={"Dots swell in a wave that spreads from the clicked cell, each waiting 70ms per cell of distance. Also called click ripple or ondulação em grade. Use it for empty states, hero backdrops and interactive posters. Ask an AI: \"Use #381, a grid ripple from the click point, behind the hero.\""} src={ClickRippleSrc}><ClickRipple client:visible /></Demo>
+
+<Demo title="Animated gradient field" description={"A KPI card on a mesh gradient whose hue and angle drift through registered CSS properties (9s, ease-in-out, alternating). Also called aurora background or gradiente animado. Use it for hero and dashboard headers that need ambient color without canvas or JavaScript. Move the pointer to paint it. Ask an AI: \"Use #382, an animated gradient field, on the revenue card.\""} src={GradientFieldSrc}><GradientField client:visible /></Demo>
+
+<Demo title="Before and after slider" description={"A divider clips the old design over the new one and snaps to 25%, 50% or 75% on a spring. Arrow keys move it by 10, Shift by 25. Also called compare slider or slider de antes e depois. Use it for redesigns, theme comparisons and changelogs. Ask an AI: \"Use #383, a before and after slider, in the release notes.\""} src={CompareSliderSrc}><CompareSlider client:visible /></Demo>
+
+<Demo title="Cursor trail" description={"A pool of 14 dots, each easing 0.32 of the way toward the one ahead, so the chain draws a trail behind the pointer. Only transform is written, and the frame loop stops when the demo leaves the screen. Also called mouse trail or rastro do cursor. Use it sparingly on playful or portfolio pages. Ask an AI: \"Use #384, a cursor trail, on the portfolio hero.\""} src={CursorTrailSrc}><CursorTrail client:visible /></Demo>
+
+<Demo title="Hero intro sequence" description={"Eyebrow, headline, copy and buttons enter one after another: 520ms each, 90ms apart, rising 14px. The static first frame is already the finished layout. Also called staggered hero entrance or intro escalonada do hero. Use it on the first screen of a landing page. Ask an AI: \"Use #385, a hero intro sequence, on the home page.\""} src={HeroIntroSrc}><HeroIntro client:visible /></Demo>
+
+<Demo title="Card tilt with glare" description={"A payment card leans up to 10 degrees toward the pointer on a spring while a white glare slides across it. Off on touch screens. Also called 3D tilt or card inclinado com brilho. Use it on product cards, pricing tiers and badges. Ask an AI: \"Use #386, a card tilt with glare, on the pricing tiers.\""} src={TiltGlareSrc}><TiltGlare client:visible /></Demo>

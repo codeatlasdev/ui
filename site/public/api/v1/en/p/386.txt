@@ -1,0 +1,18 @@
+Use @codeatlasdev/ui demo #386 "Card tilt with glare" (motion/hero-ambient).
+What it shows: A payment card that leans up to 10 degrees toward the pointer on a spring while a soft glare slides across its surface. When to use: Product cards, pricing tiers, credit cards and badges that should feel like physical objects on hover.
+Spec:
+- `const MAX = 10`: the card leans at most 10 degrees (`ry.target = nx * MAX`, `rx.target = -ny * MAX`)
+- Two springs: `new Spring(0, { stiffness: 0.12, damping: 0.55 })` for `rx` and for `ry`
+- `transform: rotateX(var(--rx)) rotateY(var(--ry))` inside a `perspective: 700px` parent; the glare is `radial-gradient(circle at var(--gx) var(--gy), rgb(255 255 255 / 0.38), transparent 55%)`
+- Disabled on touch: `matchMedia('(hover: hover) and (pointer: fine)')` sets `fine`, and `@media (hover: none), (pointer: coarse)` removes the transform
+- Autoplay sweeps `sweep` every `loop={1500}`; under reduced motion the card is flat (`--rx:{m.reduced || !fine ? 0 : rx.current}deg`)
+Motion:
+- transform: rotateX, rotateY; glare position: spring spring spring { stiffness: 0.12, damping: 0.55 }
+Names: Card tilt with glare | 3D tilt | Tilt card | Parallax tilt | Card inclinado com brilho | Tilt 3D com reflexo | Tarjeta inclinada con brillo
+Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #386 Card tilt with glare → file, what changed, https://ui.codeatlas.com.br/docs/motion/hero-ambient#card-tilt-with-glare; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/386.txt   Components API: ca-ui-mcp get_component(MotionStage)

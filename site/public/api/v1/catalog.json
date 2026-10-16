@@ -1,6 +1,6 @@
 {
 	"version": "4.2.0",
-	"count": 280,
+	"count": 287,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -59,8 +59,8 @@
 		{
 			"slug": "motion",
 			"first": "256",
-			"last": "348",
-			"count": 25
+			"last": "386",
+			"count": 32
 		}
 	],
 	"elements": [
@@ -12408,6 +12408,415 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/motion/micro#spring-switch",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "380",
+			"group": "motion",
+			"page": "hero-ambient",
+			"variant": "CursorSpotlight",
+			"slug": "cursor-spotlight",
+			"title": "Cursor spotlight",
+			"description": "",
+			"summary": "A pricing grid lit by a soft brand spotlight and a grid of fine lines that only shows inside the light; the light eases toward the pointer.",
+			"use": "Hero or feature grids where hovering should reveal structure: pricing tables, bento grids, docs landing pages.",
+			"spec": [
+				"`MotionStage` with `loop={1600}`; each cycle moves the light to the next entry of `waypoints`",
+				"`@property --x` and `@property --y` are registered percentages, so `transition: --x 520ms cubic-bezier(0.2, 0, 0, 1)` eases them",
+				"The pointer sets `--x` and `--y` from `getBoundingClientRect()`; `onpointerleave` hands control back to the autoplay waypoint",
+				"One mask: `radial-gradient(circle 8rem at var(--x) var(--y), #000, transparent 72%)` reveals the line grid, `circle 10rem` paints the brand glow",
+				"`@media (pointer: coarse)` sets `touch-action: none` so a finger drags the light instead of scrolling the demo",
+				"Under reduced motion `class:spot--run={!m.reduced}` removes the transition and the light rests at `50%` / `40%`"
+			],
+			"tags": [
+				"motion",
+				"spotlight",
+				"cursor",
+				"hero",
+				"mask",
+				"grid"
+			],
+			"names": [
+				"Cursor spotlight",
+				"Mouse spotlight",
+				"Spotlight hover",
+				"Holofote do cursor",
+				"Foco de luz no cursor",
+				"Luz que segue o mouse"
+			],
+			"motion": [
+				{
+					"property": "--x, --y (radial mask center)",
+					"duration": "520ms",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)"
+				}
+			],
+			"shape": "wide",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/hero-ambient#cursor-spotlight",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "381",
+			"group": "motion",
+			"page": "hero-ambient",
+			"variant": "ClickRipple",
+			"slug": "grid-ripple",
+			"title": "Grid ripple",
+			"description": "",
+			"summary": "A grid of dots where a click sends a wave outward: each dot swells and fades back after a delay equal to its distance from the click.",
+			"use": "Empty states, hero backdrops and interactive posters where a click or tap should feel like it disturbs a surface.",
+			"spec": [
+				"`MotionStage` with `loop={2200}`; each cycle starts a ripple from the next entry of `origins`",
+				"The delay is the distance in cells times 70: `--d:{Math.round(dist * 70)}ms`, passed to `animation: rip-wave 700ms cubic-bezier(0.2, 0, 0, 1) var(--d) both`",
+				"`rip-wave` keyframes: `transform: scale(2.6)` at the peak, then back to `scale(1)`, colored with `var(--ca-brand-fill)` at the peak",
+				"`{#key src.n}` remounts the dots on every click so all delays restart from the new origin",
+				"Under reduced motion `class:rip__dot--run={!m.reduced}` drops the animation and every dot stays at rest"
+			],
+			"tags": [
+				"motion",
+				"ripple",
+				"click",
+				"grid",
+				"dots",
+				"wave"
+			],
+			"names": [
+				"Grid ripple",
+				"Dot ripple",
+				"Click ripple",
+				"Ripple from point",
+				"Ondulação em grade",
+				"Onda de pontos a partir do clique",
+				"Ondas en cuadrícula"
+			],
+			"motion": [
+				{
+					"property": "transform: scale, background-color",
+					"duration": "700ms",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)",
+					"stagger": "70ms"
+				}
+			],
+			"shape": "wide",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/hero-ambient#grid-ripple",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "382",
+			"group": "motion",
+			"page": "hero-ambient",
+			"variant": "GradientField",
+			"slug": "animated-gradient-field",
+			"title": "Animated gradient field",
+			"description": "",
+			"summary": "A KPI card on a gradient field whose hue and angle drift slowly through registered CSS custom properties; the pointer takes over and paints it.",
+			"use": "Hero backgrounds, dashboard headers and cards that need ambient color without video, canvas or a JavaScript loop.",
+			"spec": [
+				"`@property --hue` is a `<number>` and `@property --angle` is an `<angle>`, so CSS can interpolate them",
+				"`animation: field-drift 9s ease-in-out infinite alternate` runs only while `m.playing && !driven`",
+				"Keyframes: `from { --hue: 0; --angle: 135deg; }` to `to { --hue: 90; --angle: 315deg; }`",
+				"Takeover: `hue` follows the pointer x (0 to 90) and `angle` follows y (0 to 360), written as `--hue` and `--angle`",
+				"Reduced motion: `m.playing` is false, so nothing animates and the field stays at `135deg`"
+			],
+			"tags": [
+				"motion",
+				"gradient",
+				"ambient",
+				"background",
+				"hue",
+				"property"
+			],
+			"names": [
+				"Animated gradient field",
+				"Gradient mesh",
+				"Aurora background",
+				"Shifting gradient",
+				"Campo de gradiente animado",
+				"Gradiente animado",
+				"Fundo aurora",
+				"Degradado animado"
+			],
+			"motion": [
+				{
+					"property": "--hue, --angle (registered custom properties)",
+					"duration": "9s",
+					"easing": "ease-in-out"
+				}
+			],
+			"shape": "wide",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/hero-ambient#animated-gradient-field",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "383",
+			"group": "motion",
+			"page": "hero-ambient",
+			"variant": "CompareSlider",
+			"slug": "before-and-after-slider",
+			"title": "Before and after slider",
+			"description": "",
+			"summary": "A before and after compare slider: a handle clips the old design over the new one, and a spring snaps it to 25%, 50% or 75% on release.",
+			"use": "Redesign showcases, image or theme comparisons, changelog visuals and onboarding that shows what a setting changes.",
+			"spec": [
+				"`new Spring(50, { stiffness: 0.14, damping: 0.62 })` drives the divider position `pos`",
+				"The before pane is revealed with `clip-path: inset(0 calc(100% - var(--p)) 0 0)`; the handle sits at `inset-inline-start: var(--p)`",
+				"Drag: `{ instant: true }` follows the pointer, and on release `pos.target = nearest(pos.target)` snaps to `snaps` (`[25, 50, 75]`)",
+				"Keyboard: `role=\"slider\"` on the handle; ArrowLeft and ArrowRight move 10, with Shift 25, Home and End jump to 0 and 100",
+				"Autoplay cycles `stops` (`[22, 78, 50]`) every `loop={2200}`; under reduced motion the divider rests at `50%`"
+			],
+			"tags": [
+				"motion",
+				"compare",
+				"slider",
+				"before-after",
+				"spring",
+				"drag"
+			],
+			"names": [
+				"Before and after slider",
+				"Compare slider",
+				"Image comparison",
+				"Slider de antes e depois",
+				"Comparador antes e depois",
+				"Comparador de imagens",
+				"Slider avant après"
+			],
+			"motion": [
+				{
+					"property": "clip-path (divider position)",
+					"duration": "spring",
+					"easing": "spring",
+					"spring": "{ stiffness: 0.14, damping: 0.62 }"
+				}
+			],
+			"shape": "wide",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage",
+						"MotionCtx"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/hero-ambient#before-and-after-slider",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "384",
+			"group": "motion",
+			"page": "hero-ambient",
+			"variant": "CursorTrail",
+			"slug": "cursor-trail",
+			"title": "Cursor trail",
+			"description": "",
+			"summary": "A chain of 14 dots that eases after the pointer, each one shrinking and following the dot ahead; autoplay traces a looping path.",
+			"use": "Playful hero sections, creative portfolios and empty canvases where the cursor should leave a soft, short-lived mark.",
+			"spec": [
+				"`const N = 14` dots in a fixed pool: no node is created while the pointer moves",
+				"Each frame every dot moves `0.32` of the way toward the dot ahead (`p.x += (prev.x - p.x) * 0.32`), the head follows the pointer",
+				"Only `transform` is written: `translate3d(${p.x}px, ${p.y}px, 0) scale(${1 - i / (N + 4)})`",
+				"The `requestAnimationFrame` loop stops when the demo leaves the viewport (`IntersectionObserver`) and when every dot has settled",
+				"Autoplay drives a Lissajous path (`Math.cos(k * 2.1)`, `Math.sin(k * 3.2)`); under reduced motion no dots render",
+				"`@media (pointer: coarse)` sets `touch-action: none` so a finger draws the trail instead of scrolling"
+			],
+			"tags": [
+				"motion",
+				"cursor",
+				"trail",
+				"pointer",
+				"follow",
+				"playful"
+			],
+			"names": [
+				"Cursor trail",
+				"Mouse trail",
+				"Pointer trail",
+				"Rastro do cursor",
+				"Rastro do mouse",
+				"Estela del cursor"
+			],
+			"motion": [
+				{
+					"property": "transform: translate3d, scale (per dot)",
+					"duration": "per frame",
+					"easing": "0.32",
+					"stagger": "0.32"
+				}
+			],
+			"shape": "wide",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage",
+						"MotionCtx"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/hero-ambient#cursor-trail",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "385",
+			"group": "motion",
+			"page": "hero-ambient",
+			"variant": "HeroIntro",
+			"slug": "hero-intro-sequence",
+			"title": "Hero intro sequence",
+			"description": "",
+			"summary": "A hero block whose eyebrow, headline, copy and buttons enter one after another, each rising 14px and fading in, 90ms apart.",
+			"use": "The first screen of a landing page or the header of a feature page. The static first frame is already complete, so no content is hidden for crawlers or slow scripts.",
+			"spec": [
+				"`MotionStage` with `loop={4200}`; `{#key m.cycle}` remounts the block so the sequence replays",
+				"Each child gets `--i` (0 to 3) and `animation: intro-in 520ms cubic-bezier(0.2, 0, 0, 1) calc(var(--i) * 90ms) both`",
+				"Keyframes: `from { opacity: 0; transform: translateY(14px); }` to `to { opacity: 1; transform: translateY(0); }`",
+				"`class:intro--run={m.playing && m.cycle > 0}`: server HTML, reduced motion and a taken-over demo render the finished layout with no animation"
+			],
+			"tags": [
+				"motion",
+				"hero",
+				"intro",
+				"stagger",
+				"entrance",
+				"cta"
+			],
+			"names": [
+				"Hero intro sequence",
+				"Staggered hero entrance",
+				"Headline and CTA intro",
+				"Intro escalonada do hero",
+				"Entrada em sequência do hero",
+				"Séquence d'entrée du hero"
+			],
+			"motion": [
+				{
+					"property": "opacity, transform: translateY",
+					"duration": "520ms",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)",
+					"stagger": "90ms"
+				}
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"MotionStage"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/hero-ambient#hero-intro-sequence",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "386",
+			"group": "motion",
+			"page": "hero-ambient",
+			"variant": "TiltGlare",
+			"slug": "card-tilt-with-glare",
+			"title": "Card tilt with glare",
+			"description": "",
+			"summary": "A payment card that leans up to 10 degrees toward the pointer on a spring while a soft glare slides across its surface.",
+			"use": "Product cards, pricing tiers, credit cards and badges that should feel like physical objects on hover.",
+			"spec": [
+				"`const MAX = 10`: the card leans at most 10 degrees (`ry.target = nx * MAX`, `rx.target = -ny * MAX`)",
+				"Two springs: `new Spring(0, { stiffness: 0.12, damping: 0.55 })` for `rx` and for `ry`",
+				"`transform: rotateX(var(--rx)) rotateY(var(--ry))` inside a `perspective: 700px` parent; the glare is `radial-gradient(circle at var(--gx) var(--gy), rgb(255 255 255 / 0.38), transparent 55%)`",
+				"Disabled on touch: `matchMedia('(hover: hover) and (pointer: fine)')` sets `fine`, and `@media (hover: none), (pointer: coarse)` removes the transform",
+				"Autoplay sweeps `sweep` every `loop={1500}`; under reduced motion the card is flat (`--rx:{m.reduced || !fine ? 0 : rx.current}deg`)"
+			],
+			"tags": [
+				"motion",
+				"tilt",
+				"glare",
+				"card",
+				"pointer",
+				"spring",
+				"3d"
+			],
+			"names": [
+				"Card tilt with glare",
+				"3D tilt",
+				"Tilt card",
+				"Parallax tilt",
+				"Card inclinado com brilho",
+				"Tilt 3D com reflexo",
+				"Tarjeta inclinada con brillo"
+			],
+			"motion": [
+				{
+					"property": "transform: rotateX, rotateY; glare position",
+					"duration": "spring",
+					"easing": "spring",
+					"spring": "{ stiffness: 0.12, damping: 0.55 }"
+				}
+			],
+			"shape": "wide",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage",
+						"MotionCtx"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/hero-ambient#card-tilt-with-glare",
 			"needs": "@codeatlasdev/ui@4.2.0"
 		}
 	]

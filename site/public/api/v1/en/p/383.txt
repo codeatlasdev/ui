@@ -1,0 +1,18 @@
+Use @codeatlasdev/ui demo #383 "Before and after slider" (motion/hero-ambient).
+What it shows: A before and after compare slider: a handle clips the old design over the new one, and a spring snaps it to 25%, 50% or 75% on release. When to use: Redesign showcases, image or theme comparisons, changelog visuals and onboarding that shows what a setting changes.
+Spec:
+- `new Spring(50, { stiffness: 0.14, damping: 0.62 })` drives the divider position `pos`
+- The before pane is revealed with `clip-path: inset(0 calc(100% - var(--p)) 0 0)`; the handle sits at `inset-inline-start: var(--p)`
+- Drag: `{ instant: true }` follows the pointer, and on release `pos.target = nearest(pos.target)` snaps to `snaps` (`[25, 50, 75]`)
+- Keyboard: `role="slider"` on the handle; ArrowLeft and ArrowRight move 10, with Shift 25, Home and End jump to 0 and 100
+- Autoplay cycles `stops` (`[22, 78, 50]`) every `loop={2200}`; under reduced motion the divider rests at `50%`
+Motion:
+- clip-path (divider position): spring spring spring { stiffness: 0.14, damping: 0.62 }
+Names: Before and after slider | Compare slider | Image comparison | Slider de antes e depois | Comparador antes e depois | Comparador de imagens | Slider avant après
+Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #383 Before and after slider → file, what changed, https://ui.codeatlas.com.br/docs/motion/hero-ambient#before-and-after-slider; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/383.txt   Components API: ca-ui-mcp get_component(MotionStage)

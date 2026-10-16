@@ -1,0 +1,19 @@
+Use @codeatlasdev/ui demo #384 "Cursor trail" (motion/hero-ambient).
+What it shows: A chain of 14 dots that eases after the pointer, each one shrinking and following the dot ahead; autoplay traces a looping path. When to use: Playful hero sections, creative portfolios and empty canvases where the cursor should leave a soft, short-lived mark.
+Spec:
+- `const N = 14` dots in a fixed pool: no node is created while the pointer moves
+- Each frame every dot moves `0.32` of the way toward the dot ahead (`p.x += (prev.x - p.x) * 0.32`), the head follows the pointer
+- Only `transform` is written: `translate3d(${p.x}px, ${p.y}px, 0) scale(${1 - i / (N + 4)})`
+- The `requestAnimationFrame` loop stops when the demo leaves the viewport (`IntersectionObserver`) and when every dot has settled
+- Autoplay drives a Lissajous path (`Math.cos(k * 2.1)`, `Math.sin(k * 3.2)`); under reduced motion no dots render
+- `@media (pointer: coarse)` sets `touch-action: none` so a finger draws the trail instead of scrolling
+Motion:
+- transform: translate3d, scale (per dot): per frame 0.32 stagger 0.32
+Names: Cursor trail | Mouse trail | Pointer trail | Rastro do cursor | Rastro do mouse | Estela del cursor
+Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #384 Cursor trail → file, what changed, https://ui.codeatlas.com.br/docs/motion/hero-ambient#cursor-trail; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/384.txt   Components API: ca-ui-mcp get_component(MotionStage)

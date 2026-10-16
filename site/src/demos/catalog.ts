@@ -286,6 +286,13 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "346", path: "motion/micro/AddToCartFly" },
 	{ id: "347", path: "motion/micro/TiltCard" },
 	{ id: "348", path: "motion/micro/SpringSwitch" },
+	{ id: "380", path: "motion/hero-ambient/CursorSpotlight" },
+	{ id: "381", path: "motion/hero-ambient/ClickRipple" },
+	{ id: "382", path: "motion/hero-ambient/GradientField" },
+	{ id: "383", path: "motion/hero-ambient/CompareSlider" },
+	{ id: "384", path: "motion/hero-ambient/CursorTrail" },
+	{ id: "385", path: "motion/hero-ambient/HeroIntro" },
+	{ id: "386", path: "motion/hero-ambient/TiltGlare" },
 ];
 
 /**

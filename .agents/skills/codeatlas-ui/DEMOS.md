@@ -285,3 +285,10 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 346 | Add to cart fly | motion/micro | MotionStage |
 | 347 | Tilt card | motion/micro | MotionStage |
 | 348 | Spring switch | motion/micro | MotionStage |
+| 380 | Cursor spotlight | motion/hero-ambient | MotionStage |
+| 381 | Grid ripple | motion/hero-ambient | MotionStage |
+| 382 | Animated gradient field | motion/hero-ambient | MotionStage |
+| 383 | Before and after slider | motion/hero-ambient | MotionStage |
+| 384 | Cursor trail | motion/hero-ambient | MotionStage |
+| 385 | Hero intro sequence | motion/hero-ambient | Button, MotionStage |
+| 386 | Card tilt with glare | motion/hero-ambient | MotionStage |

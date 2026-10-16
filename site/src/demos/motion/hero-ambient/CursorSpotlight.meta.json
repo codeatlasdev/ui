@@ -1,0 +1,29 @@
+{
+	"summary": "A pricing grid lit by a soft brand spotlight and a grid of fine lines that only shows inside the light; the light eases toward the pointer.",
+	"use": "Hero or feature grids where hovering should reveal structure: pricing tables, bento grids, docs landing pages.",
+	"spec": [
+		"`MotionStage` with `loop={1600}`; each cycle moves the light to the next entry of `waypoints`",
+		"`@property --x` and `@property --y` are registered percentages, so `transition: --x 520ms cubic-bezier(0.2, 0, 0, 1)` eases them",
+		"The pointer sets `--x` and `--y` from `getBoundingClientRect()`; `onpointerleave` hands control back to the autoplay waypoint",
+		"One mask: `radial-gradient(circle 8rem at var(--x) var(--y), #000, transparent 72%)` reveals the line grid, `circle 10rem` paints the brand glow",
+		"`@media (pointer: coarse)` sets `touch-action: none` so a finger drags the light instead of scrolling the demo",
+		"Under reduced motion `class:spot--run={!m.reduced}` removes the transition and the light rests at `50%` / `40%`"
+	],
+	"tags": ["motion", "spotlight", "cursor", "hero", "mask", "grid"],
+	"names": [
+		"Cursor spotlight",
+		"Mouse spotlight",
+		"Spotlight hover",
+		"Holofote do cursor",
+		"Foco de luz no cursor",
+		"Luz que segue o mouse"
+	],
+	"motion": [
+		{
+			"property": "--x, --y (radial mask center)",
+			"duration": "520ms",
+			"easing": "cubic-bezier(0.2, 0, 0, 1)"
+		}
+	],
+	"shape": "wide"
+}

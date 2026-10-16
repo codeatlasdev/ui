@@ -1,0 +1,30 @@
+{
+	"summary": "A before and after compare slider: a handle clips the old design over the new one, and a spring snaps it to 25%, 50% or 75% on release.",
+	"use": "Redesign showcases, image or theme comparisons, changelog visuals and onboarding that shows what a setting changes.",
+	"spec": [
+		"`new Spring(50, { stiffness: 0.14, damping: 0.62 })` drives the divider position `pos`",
+		"The before pane is revealed with `clip-path: inset(0 calc(100% - var(--p)) 0 0)`; the handle sits at `inset-inline-start: var(--p)`",
+		"Drag: `{ instant: true }` follows the pointer, and on release `pos.target = nearest(pos.target)` snaps to `snaps` (`[25, 50, 75]`)",
+		"Keyboard: `role=\"slider\"` on the handle; ArrowLeft and ArrowRight move 10, with Shift 25, Home and End jump to 0 and 100",
+		"Autoplay cycles `stops` (`[22, 78, 50]`) every `loop={2200}`; under reduced motion the divider rests at `50%`"
+	],
+	"tags": ["motion", "compare", "slider", "before-after", "spring", "drag"],
+	"names": [
+		"Before and after slider",
+		"Compare slider",
+		"Image comparison",
+		"Slider de antes e depois",
+		"Comparador antes e depois",
+		"Comparador de imagens",
+		"Slider avant après"
+	],
+	"motion": [
+		{
+			"property": "clip-path (divider position)",
+			"duration": "spring",
+			"easing": "spring",
+			"spring": "{ stiffness: 0.14, damping: 0.62 }"
+		}
+	],
+	"shape": "wide"
+}

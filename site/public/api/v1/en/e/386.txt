@@ -1,0 +1,122 @@
+<!-- @codeatlasdev/ui demo #386 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/motion/hero-ambient#card-tilt-with-glare -->
+Element: #386 Card tilt with glare (motion/hero-ambient)
+What it shows: A payment card that leans up to 10 degrees toward the pointer on a spring while a soft glare slides across its surface.
+When to use: Product cards, pricing tiers, credit cards and badges that should feel like physical objects on hover.
+Spec:
+- `const MAX = 10`: the card leans at most 10 degrees (`ry.target = nx * MAX`, `rx.target = -ny * MAX`)
+- Two springs: `new Spring(0, { stiffness: 0.12, damping: 0.55 })` for `rx` and for `ry`
+- `transform: rotateX(var(--rx)) rotateY(var(--ry))` inside a `perspective: 700px` parent; the glare is `radial-gradient(circle at var(--gx) var(--gy), rgb(255 255 255 / 0.38), transparent 55%)`
+- Disabled on touch: `matchMedia('(hover: hover) and (pointer: fine)')` sets `fine`, and `@media (hover: none), (pointer: coarse)` removes the transform
+- Autoplay sweeps `sweep` every `loop={1500}`; under reduced motion the card is flat (`--rx:{m.reduced || !fine ? 0 : rx.current}deg`)
+Motion:
+- transform: rotateX, rotateY; glare position: spring spring spring { stiffness: 0.12, damping: 0.55 }
+Names: Card tilt with glare | 3D tilt | Tilt card | Parallax tilt | Card inclinado com brilho | Tilt 3D com reflexo | Tarjeta inclinada con brillo
+Tags: motion, tilt, glare, card, pointer, spring, 3d
+Needs: @codeatlasdev/ui@4.2.0
+Components: MotionStage
+Live demo: https://ui.codeatlas.com.br/docs/motion/hero-ambient#card-tilt-with-glare
+
+<script lang="ts">
+  import { MotionStage, type MotionCtx } from '@codeatlasdev/ui';
+  import { Spring } from 'svelte/motion';
+
+  // The card leans up to 10 degrees toward the pointer; rotation uses a spring so it settles softly.
+  const MAX = 10;
+  const rx = new Spring(0, { stiffness: 0.12, damping: 0.55 });
+  const ry = new Spring(0, { stiffness: 0.12, damping: 0.55 });
+  let gx = $state(50);
+  let gy = $state(30);
+  let fine = $state(true);
+  // Autoplay sweep: one stop per cycle.
+  const sweep = [
+    [-0.7, -0.5],
+    [0.7, -0.4],
+    [0.6, 0.6],
+    [-0.6, 0.5]
+  ];
+
+  let stage = $state.raw<MotionCtx>();
+  $effect(() => {
+    if (!stage?.playing) return;
+    const s = sweep[stage.cycle % sweep.length];
+    lean(s[0], s[1]);
+  });
+  function lean(nx: number, ny: number) {
+    ry.target = nx * MAX;
+    rx.target = -ny * MAX;
+    gx = 50 + nx * 50;
+    gy = 50 + ny * 50;
+  }
+  function move(e: PointerEvent) {
+    if (!fine) return;
+    const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
+    lean(((e.clientX - r.left) / r.width - 0.5) * 2, ((e.clientY - r.top) / r.height - 0.5) * 2);
+  }
+  function rest() {
+    rx.target = 0;
+    ry.target = 0;
+    gx = 50;
+    gy = 30;
+  }
+  function probe(node: HTMLElement) {
+    const mq = matchMedia('(hover: hover) and (pointer: fine)');
+    const set = () => (fine = mq.matches);
+    set();
+    mq.addEventListener('change', set);
+    return () => mq.removeEventListener('change', set);
+  }
+</script>
+
+<MotionStage label="Card tilt with glare: a credit card leans toward the pointer and catches the light" loop={1500}>
+  {#snippet children(m)}
+    <div class="tilt" role="presentation" {@attach probe} {@attach () => { stage = m; }} onpointermove={move} onpointerleave={rest}>
+      <div
+        class="tilt__card"
+        style="--rx:{m.reduced || !fine ? 0 : rx.current}deg; --ry:{m.reduced || !fine ? 0 : ry.current}deg; --gx:{gx}%; --gy:{gy}%"
+      >
+        <p class="tilt__brand">CodeAtlas Pay</p>
+        <p class="tilt__num">4821 &nbsp;7730 &nbsp;0916 &nbsp;2204</p>
+        <div class="tilt__row">
+          <span>Ana Lima</span>
+          <span>09/29</span>
+        </div>
+        <div class="tilt__glare" aria-hidden="true"></div>
+      </div>
+    </div>
+  {/snippet}
+</MotionStage>
+
+<style>
+  .tilt { perspective: 700px; inline-size: 100%; padding: var(--ca-space-2); }
+  .tilt__card {
+    position: relative;
+    aspect-ratio: 1.586;
+    inline-size: min(20rem, 100%);
+    margin-inline: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: var(--ca-space-5);
+    border-radius: var(--ca-radius-lg);
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--ca-brand-dark), var(--ca-brand-main) 60%, var(--ca-brand-light));
+    color: var(--ca-brand-contrast);
+    box-shadow: var(--ca-shadow-lg);
+    transform: rotateX(var(--rx)) rotateY(var(--ry));
+    transform-style: preserve-3d;
+  }
+  .tilt__brand { margin: 0; font-weight: var(--ca-font-weight-semibold); }
+  .tilt__num { margin: 0; font-family: var(--ca-font-mono); font-size: var(--ca-font-size-lg); letter-spacing: 0.04em; }
+  .tilt__row { display: flex; justify-content: space-between; font-size: var(--ca-font-size-body2); }
+  /* The glare is a white radial highlight that follows --gx / --gy, always on top of the card. */
+  .tilt__glare {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: radial-gradient(circle at var(--gx) var(--gy), rgb(255 255 255 / 0.38), transparent 55%);
+    mix-blend-mode: soft-light;
+  }
+  @media (hover: none), (pointer: coarse) {
+    .tilt__card { transform: none; }
+  }
+</style>

@@ -1,0 +1,30 @@
+{
+	"summary": "A KPI card on a gradient field whose hue and angle drift slowly through registered CSS custom properties; the pointer takes over and paints it.",
+	"use": "Hero backgrounds, dashboard headers and cards that need ambient color without video, canvas or a JavaScript loop.",
+	"spec": [
+		"`@property --hue` is a `<number>` and `@property --angle` is an `<angle>`, so CSS can interpolate them",
+		"`animation: field-drift 9s ease-in-out infinite alternate` runs only while `m.playing && !driven`",
+		"Keyframes: `from { --hue: 0; --angle: 135deg; }` to `to { --hue: 90; --angle: 315deg; }`",
+		"Takeover: `hue` follows the pointer x (0 to 90) and `angle` follows y (0 to 360), written as `--hue` and `--angle`",
+		"Reduced motion: `m.playing` is false, so nothing animates and the field stays at `135deg`"
+	],
+	"tags": ["motion", "gradient", "ambient", "background", "hue", "property"],
+	"names": [
+		"Animated gradient field",
+		"Gradient mesh",
+		"Aurora background",
+		"Shifting gradient",
+		"Campo de gradiente animado",
+		"Gradiente animado",
+		"Fundo aurora",
+		"Degradado animado"
+	],
+	"motion": [
+		{
+			"property": "--hue, --angle (registered custom properties)",
+			"duration": "9s",
+			"easing": "ease-in-out"
+		}
+	],
+	"shape": "wide"
+}

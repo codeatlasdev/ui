@@ -1,0 +1,18 @@
+Use @codeatlasdev/ui demo #382 "Animated gradient field" (motion/hero-ambient).
+What it shows: A KPI card on a gradient field whose hue and angle drift slowly through registered CSS custom properties; the pointer takes over and paints it. When to use: Hero backgrounds, dashboard headers and cards that need ambient color without video, canvas or a JavaScript loop.
+Spec:
+- `@property --hue` is a `<number>` and `@property --angle` is an `<angle>`, so CSS can interpolate them
+- `animation: field-drift 9s ease-in-out infinite alternate` runs only while `m.playing && !driven`
+- Keyframes: `from { --hue: 0; --angle: 135deg; }` to `to { --hue: 90; --angle: 315deg; }`
+- Takeover: `hue` follows the pointer x (0 to 90) and `angle` follows y (0 to 360), written as `--hue` and `--angle`
+- Reduced motion: `m.playing` is false, so nothing animates and the field stays at `135deg`
+Motion:
+- --hue, --angle (registered custom properties): 9s ease-in-out
+Names: Animated gradient field | Gradient mesh | Aurora background | Shifting gradient | Campo de gradiente animado | Gradiente animado | Fundo aurora | Degradado animado
+Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #382 Animated gradient field → file, what changed, https://ui.codeatlas.com.br/docs/motion/hero-ambient#animated-gradient-field; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/382.txt   Components API: ca-ui-mcp get_component(MotionStage)

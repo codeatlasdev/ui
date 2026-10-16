@@ -1,0 +1,18 @@
+Use @codeatlasdev/ui demo #381 "Grid ripple" (motion/hero-ambient).
+What it shows: A grid of dots where a click sends a wave outward: each dot swells and fades back after a delay equal to its distance from the click. When to use: Empty states, hero backdrops and interactive posters where a click or tap should feel like it disturbs a surface.
+Spec:
+- `MotionStage` with `loop={2200}`; each cycle starts a ripple from the next entry of `origins`
+- The delay is the distance in cells times 70: `--d:{Math.round(dist * 70)}ms`, passed to `animation: rip-wave 700ms cubic-bezier(0.2, 0, 0, 1) var(--d) both`
+- `rip-wave` keyframes: `transform: scale(2.6)` at the peak, then back to `scale(1)`, colored with `var(--ca-brand-fill)` at the peak
+- `{#key src.n}` remounts the dots on every click so all delays restart from the new origin
+- Under reduced motion `class:rip__dot--run={!m.reduced}` drops the animation and every dot stays at rest
+Motion:
+- transform: scale, background-color: 700ms cubic-bezier(0.2, 0, 0, 1) stagger 70ms
+Names: Grid ripple | Dot ripple | Click ripple | Ripple from point | Ondulação em grade | Onda de pontos a partir do clique | Ondas en cuadrícula
+Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #381 Grid ripple → file, what changed, https://ui.codeatlas.com.br/docs/motion/hero-ambient#grid-ripple; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/381.txt   Components API: ca-ui-mcp get_component(MotionStage)

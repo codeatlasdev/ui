@@ -1,0 +1,17 @@
+Use @codeatlasdev/ui demo #385 "Hero intro sequence" (motion/hero-ambient).
+What it shows: A hero block whose eyebrow, headline, copy and buttons enter one after another, each rising 14px and fading in, 90ms apart. When to use: The first screen of a landing page or the header of a feature page. The static first frame is already complete, so no content is hidden for crawlers or slow scripts.
+Spec:
+- `MotionStage` with `loop={4200}`; `{#key m.cycle}` remounts the block so the sequence replays
+- Each child gets `--i` (0 to 3) and `animation: intro-in 520ms cubic-bezier(0.2, 0, 0, 1) calc(var(--i) * 90ms) both`
+- Keyframes: `from { opacity: 0; transform: translateY(14px); }` to `to { opacity: 1; transform: translateY(0); }`
+- `class:intro--run={m.playing && m.cycle > 0}`: server HTML, reduced motion and a taken-over demo render the finished layout with no animation
+Motion:
+- opacity, transform: translateY: 520ms cubic-bezier(0.2, 0, 0, 1) stagger 90ms
+Names: Hero intro sequence | Staggered hero entrance | Headline and CTA intro | Intro escalonada do hero | Entrada em sequência do hero | Séquence d'entrée du hero
+Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #385 Hero intro sequence → file, what changed, https://ui.codeatlas.com.br/docs/motion/hero-ambient#hero-intro-sequence; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/385.txt   Components API: ca-ui-mcp get_component(Button)
