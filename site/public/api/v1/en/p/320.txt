@@ -1,0 +1,20 @@
+Use @codeatlasdev/ui demo #320 "Staggered reveal on scroll" (motion/scroll).
+What it shows: A feed of cards inside a scroll container: each row fades in and rises 24px as it enters, a short stagger between rows that arrive together. When to use: Lists, activity feeds, search results and dashboards that load more content as the user scrolls.
+Spec:
+- `MotionStage` from `@codeatlasdev/ui` with `loop={4600}`: autoplay scrolls the container itself, a wheel or touch scroll takes over
+- `IntersectionObserver` with `root` set to the scroller and `threshold: 0.35`: a row is revealed once, when 35% of it is visible
+- Hidden state is `opacity: 0;` with `transform: translateY(24px);`; the revealed state `.feed__row--in` sets `opacity: 1;` and `transform: translateY(0);`
+- Returning to `root.scrollTop === 0` clears the revealed set, so a user scrolling down replays the stagger
+- Stagger: the transitions share a delay of `calc(var(--i) * 80ms)`, where `--i` is the row index modulo 3 (`style="--i:{i % 3}"`)
+- Autoplay scroll is driven by `requestAnimationFrame` over `2400` ms with an ease-in-out cubic
+- Under reduced motion every row renders revealed (`m.reduced`) and nothing scrolls by itself
+Motion:
+- opacity, transform: translateY: 420ms cubic-bezier(0.2, 0, 0, 1) stagger calc(var(--i) * 80ms)
+Names: Staggered reveal on scroll | Scroll reveal | Reveal ao rolar | Révélation au défilement
+Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #320 Staggered reveal on scroll → file, what changed, https://ui.codeatlas.com.br/docs/motion/scroll#staggered-reveal-on-scroll; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/320.txt   Components API: ca-ui-mcp get_component(Card)

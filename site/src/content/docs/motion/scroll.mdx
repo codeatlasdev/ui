@@ -1,0 +1,39 @@
+---
+title: Scroll
+description: "Scroll-linked motion with names and exact values: staggered reveal, view-timeline reveal, parallax, reading progress, horizontal scroll, pinned steps and scroll-driven counters."
+group: Motion
+order: 3
+---
+import Demo from "~/components/docs/Demo.astro";
+import StaggerReveal from "~/demos/motion/scroll/StaggerReveal.svelte";
+import StaggerRevealSrc from "~/demos/motion/scroll/StaggerReveal.svelte?raw";
+import ViewReveal from "~/demos/motion/scroll/ViewReveal.svelte";
+import ViewRevealSrc from "~/demos/motion/scroll/ViewReveal.svelte?raw";
+import Parallax from "~/demos/motion/scroll/Parallax.svelte";
+import ParallaxSrc from "~/demos/motion/scroll/Parallax.svelte?raw";
+import ReadingProgress from "~/demos/motion/scroll/ReadingProgress.svelte";
+import ReadingProgressSrc from "~/demos/motion/scroll/ReadingProgress.svelte?raw";
+import HorizontalScroll from "~/demos/motion/scroll/HorizontalScroll.svelte";
+import HorizontalScrollSrc from "~/demos/motion/scroll/HorizontalScroll.svelte?raw";
+import PinnedSteps from "~/demos/motion/scroll/PinnedSteps.svelte";
+import PinnedStepsSrc from "~/demos/motion/scroll/PinnedSteps.svelte?raw";
+import ScrollCounter from "~/demos/motion/scroll/ScrollCounter.svelte";
+import ScrollCounterSrc from "~/demos/motion/scroll/ScrollCounter.svelte?raw";
+
+Scroll motion ties an effect to where the reader is on the page. Every demo below scrolls **inside its own container**, so it works in a card, a gallery tile or a modal, and the stage scrolls it for you while it is in view. Scroll it yourself (wheel, trackpad or touch) to take over; the Pause button stops the autoplay.
+
+Where the browser supports **CSS scroll-driven animations** (`animation-timeline: scroll()` and `view()`), the effect runs on the compositor with no JavaScript. Where it does not, a passive `scroll` listener writes the same progress to a custom property and the same transforms read it. Under `prefers-reduced-motion` the container shows its final state and does not scroll by itself.
+
+<Demo title="Staggered reveal on scroll" description={"Each row fades in and rises 24px as it enters the container; rows arriving together are 80ms apart. It fires once per row (IntersectionObserver, threshold 0.35). Ask for \"a staggered reveal on scroll\" or \"Use #320\"."} src={StaggerRevealSrc}><StaggerReveal client:visible /></Demo>
+
+<Demo title="View timeline reveal" description={"A reveal that scrubs: each tile's opacity, rise and scale follow its position while it enters, and run backwards when you scroll up. Pure CSS with `animation-timeline: view(block)` and `animation-range: entry 0% entry 70%`. Ask for \"a view timeline reveal\" or \"Use #321\"."} src={ViewRevealSrc}><ViewReveal client:visible /></Demo>
+
+<Demo title="Parallax" description={"Sky, ridge, foreground and caption travel -6%, -22%, -48% and +30% of the frame over the same scroll distance, so near things move faster than far things. Use it behind hero headlines. Ask for \"a parallax\" or \"Use #322\"."} src={ParallaxSrc}><Parallax client:visible /></Demo>
+
+<Demo title="Reading progress bar" description={"A 4px bar fills from the left as the article scrolls, with a percentage readout. It is tied to the scroll position, so it is exact and reversible. Ask for \"a reading progress bar\" or \"Use #323\"."} src={ReadingProgressSrc}><ReadingProgress client:visible /></Demo>
+
+<Demo title="Horizontal scroll section" description={"Scrolling down inside a pinned frame slides four cards sideways (-75% of a 400% rail). Use it for steps that read left to right. Ask for \"a horizontal scroll section\" or \"Use #324\"."} src={HorizontalScrollSrc}><HorizontalScroll client:visible /></Demo>
+
+<Demo title="Pinned step story" description={"The media stays pinned and swaps its figure as each step passes the middle of the frame; inactive steps dim to 40%. Also called scrollytelling. Ask for \"a pinned step story\" or \"Use #325\"."} src={PinnedStepsSrc}><PinnedSteps client:visible /></Demo>
+
+<Demo title="Scroll-linked counter and chart draw" description={"A revenue figure counts from $0 to $48,210 while the line draws itself, both scrubbed by scroll position. Ask for \"a scroll-linked counter and chart draw\" or \"Use #326\"."} src={ScrollCounterSrc}><ScrollCounter client:visible /></Demo>

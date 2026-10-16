@@ -1,0 +1,18 @@
+Use @codeatlasdev/ui demo #321 "View timeline reveal" (motion/scroll).
+What it shows: Tiles tied to their own position in the scroll area: opacity, rise and scale advance exactly as far as the tile has entered, in both directions, with no JavaScript when the browser supports view timelines. When to use: Scroll-driven entrances that must scrub with the finger (and reverse) instead of firing once: metric grids, feature lists, timelines.
+Spec:
+- `MotionStage` from `@codeatlasdev/ui` with `loop={4600}`: autoplay scrolls the container, a wheel or touch scroll takes over
+- CSS `animation-timeline: view(block)` with `animation-range: entry 0% entry 70%` inside `@supports (animation-timeline: view())`
+- Keyframes `view-in`: `from { opacity: 0; transform: translateY(28px) scale(0.92); }` to opacity 1, no translate, scale 1
+- Fallback without support: a `scroll` listener writes each tile's progress to `--v`, which drives the same opacity and transform
+- Under reduced motion `.vt--final` shows every tile settled and no listener is attached
+Motion:
+- opacity, transform: translateY, scale: animation-timeline: view(block) linear delay animation-range: entry 0% entry 70%
+Names: View timeline reveal | Scroll-driven reveal | Reveal por view timeline | Révélation pilotée par le défilement
+Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #321 View timeline reveal → file, what changed, https://ui.codeatlas.com.br/docs/motion/scroll#view-timeline-reveal; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/321.txt   Components API: ca-ui-mcp get_component(Card)

@@ -1,0 +1,29 @@
+{
+	"summary": "A feed of cards inside a scroll container: each row fades in and rises 24px as it enters, a short stagger between rows that arrive together.",
+	"use": "Lists, activity feeds, search results and dashboards that load more content as the user scrolls.",
+	"spec": [
+		"`MotionStage` from `@codeatlasdev/ui` with `loop={4600}`: autoplay scrolls the container itself, a wheel or touch scroll takes over",
+		"`IntersectionObserver` with `root` set to the scroller and `threshold: 0.35`: a row is revealed once, when 35% of it is visible",
+		"Hidden state is `opacity: 0;` with `transform: translateY(24px);`; the revealed state `.feed__row--in` sets `opacity: 1;` and `transform: translateY(0);`",
+		"Returning to `root.scrollTop === 0` clears the revealed set, so a user scrolling down replays the stagger",
+		"Stagger: the transitions share a delay of `calc(var(--i) * 80ms)`, where `--i` is the row index modulo 3 (`style=\"--i:{i % 3}\"`)",
+		"Autoplay scroll is driven by `requestAnimationFrame` over `2400` ms with an ease-in-out cubic",
+		"Under reduced motion every row renders revealed (`m.reduced`) and nothing scrolls by itself"
+	],
+	"tags": ["motion", "scroll", "reveal", "stagger", "intersectionobserver", "list"],
+	"names": [
+		"Staggered reveal on scroll",
+		"Scroll reveal",
+		"Reveal ao rolar",
+		"Révélation au défilement"
+	],
+	"motion": [
+		{
+			"property": "opacity, transform: translateY",
+			"duration": "420ms",
+			"easing": "cubic-bezier(0.2, 0, 0, 1)",
+			"stagger": "calc(var(--i) * 80ms)"
+		}
+	],
+	"shape": "tall"
+}

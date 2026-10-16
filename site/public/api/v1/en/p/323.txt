@@ -1,0 +1,19 @@
+Use @codeatlasdev/ui demo #323 "Reading progress bar" (motion/scroll).
+What it shows: A 4px bar stuck to the top of an article fills from left to right as it is read, with a percentage readout, tied directly to scroll position. When to use: Long articles, docs and legal pages where the reader wants to know how far they are.
+Spec:
+- `MotionStage` from `@codeatlasdev/ui` with `loop={5200}`: autoplay scrolls the article, a wheel or touch scroll takes over
+- `.doc__bar` is `position: sticky;` with `block-size: 4px;` and holds a fill scaled with `transform: scaleX(var(--p));` from `transform-origin: left center;`
+- Native: `animation-timeline: scroll(nearest block)` with `@keyframes fill` from `scaleX(0)` to `scaleX(1)`, inside `@supports (animation-timeline: scroll())`
+- Fallback and readout: a `scroll` listener computes `el.scrollTop / max` (`max` is `el.scrollHeight - el.clientHeight`); the percentage is `Math.round(p * 100)`
+- Autoplay reads the article in `3600` ms, linear like a steady reader
+- Under reduced motion the bar is full and the readout shows 100%
+Motion:
+- transform: scaleX: animation-timeline: scroll(nearest block) linear
+Names: Reading progress bar | Scroll progress | Barra de progresso de leitura | Barre de progression de lecture
+Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #323 Reading progress bar → file, what changed, https://ui.codeatlas.com.br/docs/motion/scroll#reading-progress-bar; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/323.txt   Components API: ca-ui-mcp get_component(MotionStage)

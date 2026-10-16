@@ -1,6 +1,6 @@
 {
 	"version": "4.2.0",
-	"count": 273,
+	"count": 280,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -60,7 +60,7 @@
 			"slug": "motion",
 			"first": "256",
 			"last": "348",
-			"count": 18
+			"count": 25
 		}
 	],
 	"elements": [
@@ -11453,6 +11453,430 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/motion/text#blur-in",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "320",
+			"group": "motion",
+			"page": "scroll",
+			"variant": "StaggerReveal",
+			"slug": "staggered-reveal-on-scroll",
+			"title": "Staggered reveal on scroll",
+			"description": "",
+			"summary": "A feed of cards inside a scroll container: each row fades in and rises 24px as it enters, a short stagger between rows that arrive together.",
+			"use": "Lists, activity feeds, search results and dashboards that load more content as the user scrolls.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `loop={4600}`: autoplay scrolls the container itself, a wheel or touch scroll takes over",
+				"`IntersectionObserver` with `root` set to the scroller and `threshold: 0.35`: a row is revealed once, when 35% of it is visible",
+				"Hidden state is `opacity: 0;` with `transform: translateY(24px);`; the revealed state `.feed__row--in` sets `opacity: 1;` and `transform: translateY(0);`",
+				"Returning to `root.scrollTop === 0` clears the revealed set, so a user scrolling down replays the stagger",
+				"Stagger: the transitions share a delay of `calc(var(--i) * 80ms)`, where `--i` is the row index modulo 3 (`style=\"--i:{i % 3}\"`)",
+				"Autoplay scroll is driven by `requestAnimationFrame` over `2400` ms with an ease-in-out cubic",
+				"Under reduced motion every row renders revealed (`m.reduced`) and nothing scrolls by itself"
+			],
+			"tags": [
+				"motion",
+				"scroll",
+				"reveal",
+				"stagger",
+				"intersectionobserver",
+				"list"
+			],
+			"names": [
+				"Staggered reveal on scroll",
+				"Scroll reveal",
+				"Reveal ao rolar",
+				"Révélation au défilement"
+			],
+			"motion": [
+				{
+					"property": "opacity, transform: translateY",
+					"duration": "420ms",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)",
+					"stagger": "calc(var(--i) * 80ms)"
+				}
+			],
+			"shape": "tall",
+			"components": [
+				"Card",
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card",
+						"MotionStage",
+						"MotionCtx"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/scroll#staggered-reveal-on-scroll",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "321",
+			"group": "motion",
+			"page": "scroll",
+			"variant": "ViewReveal",
+			"slug": "view-timeline-reveal",
+			"title": "View timeline reveal",
+			"description": "",
+			"summary": "Tiles tied to their own position in the scroll area: opacity, rise and scale advance exactly as far as the tile has entered, in both directions, with no JavaScript when the browser supports view timelines.",
+			"use": "Scroll-driven entrances that must scrub with the finger (and reverse) instead of firing once: metric grids, feature lists, timelines.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `loop={4600}`: autoplay scrolls the container, a wheel or touch scroll takes over",
+				"CSS `animation-timeline: view(block)` with `animation-range: entry 0% entry 70%` inside `@supports (animation-timeline: view())`",
+				"Keyframes `view-in`: `from { opacity: 0; transform: translateY(28px) scale(0.92); }` to opacity 1, no translate, scale 1",
+				"Fallback without support: a `scroll` listener writes each tile's progress to `--v`, which drives the same opacity and transform",
+				"Under reduced motion `.vt--final` shows every tile settled and no listener is attached"
+			],
+			"tags": [
+				"motion",
+				"scroll",
+				"view-timeline",
+				"scroll-driven",
+				"scrub",
+				"reveal"
+			],
+			"names": [
+				"View timeline reveal",
+				"Scroll-driven reveal",
+				"Reveal por view timeline",
+				"Révélation pilotée par le défilement"
+			],
+			"motion": [
+				{
+					"property": "opacity, transform: translateY, scale",
+					"duration": "animation-timeline: view(block)",
+					"easing": "linear",
+					"delay": "animation-range: entry 0% entry 70%"
+				}
+			],
+			"shape": "tall",
+			"components": [
+				"Card",
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card",
+						"MotionStage",
+						"MotionCtx"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/scroll#view-timeline-reveal",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "322",
+			"group": "motion",
+			"page": "scroll",
+			"variant": "Parallax",
+			"slug": "parallax",
+			"title": "Parallax",
+			"description": "",
+			"summary": "Three layers (sky, ridge, foreground) plus a caption move at different speeds while the container scrolls, so the scene gains depth. Native scroll timeline, with a scroll listener fallback.",
+			"use": "Hero images, editorial headers, product storytelling: any pinned scene where background should move slower than foreground.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `loop={6200}`: autoplay scrolls the container, a wheel or touch scroll takes over",
+				"A sticky scene inside a taller scroller: `position: sticky;` on `.scene__sticky` and `block-size: 26rem;` on `.scene__track`",
+				"Native: `animation-timeline: --scene` over `scroll-timeline: --scene block`, inside `@supports (animation-timeline: scroll())`",
+				"Layer travel at full scroll: sky `-6%`, ridge `-22%`, foreground `-48%`, caption `30%` while fading to opacity `0.15`",
+				"Fallback without support: a `scroll` listener writes progress to `--p` and the transforms read `translateY(calc(var(--p) * -22%))`",
+				"Under reduced motion `--p` is `1` and nothing moves (`.scene--final`)"
+			],
+			"tags": [
+				"motion",
+				"scroll",
+				"parallax",
+				"layers",
+				"depth",
+				"hero"
+			],
+			"names": [
+				"Parallax",
+				"Parallax layers",
+				"Paralaxe",
+				"Parallaxe"
+			],
+			"motion": [
+				{
+					"property": "transform: translateY, sky layer to -6%",
+					"duration": "animation-timeline: --scene",
+					"easing": "linear"
+				},
+				{
+					"property": "transform: translateY, ridge layer to -22%",
+					"duration": "animation-timeline: --scene",
+					"easing": "linear"
+				},
+				{
+					"property": "transform: translateY, foreground layer to -48%",
+					"duration": "animation-timeline: --scene",
+					"easing": "linear"
+				},
+				{
+					"property": "transform: translateY to 30% and opacity to 0.15, caption",
+					"duration": "animation-timeline: --scene",
+					"easing": "linear"
+				}
+			],
+			"shape": "tall",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage",
+						"MotionCtx"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/scroll#parallax",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "323",
+			"group": "motion",
+			"page": "scroll",
+			"variant": "ReadingProgress",
+			"slug": "reading-progress-bar",
+			"title": "Reading progress bar",
+			"description": "",
+			"summary": "A 4px bar stuck to the top of an article fills from left to right as it is read, with a percentage readout, tied directly to scroll position.",
+			"use": "Long articles, docs and legal pages where the reader wants to know how far they are.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `loop={5200}`: autoplay scrolls the article, a wheel or touch scroll takes over",
+				"`.doc__bar` is `position: sticky;` with `block-size: 4px;` and holds a fill scaled with `transform: scaleX(var(--p));` from `transform-origin: left center;`",
+				"Native: `animation-timeline: scroll(nearest block)` with `@keyframes fill` from `scaleX(0)` to `scaleX(1)`, inside `@supports (animation-timeline: scroll())`",
+				"Fallback and readout: a `scroll` listener computes `el.scrollTop / max` (`max` is `el.scrollHeight - el.clientHeight`); the percentage is `Math.round(p * 100)`",
+				"Autoplay reads the article in `3600` ms, linear like a steady reader",
+				"Under reduced motion the bar is full and the readout shows 100%"
+			],
+			"tags": [
+				"motion",
+				"scroll",
+				"progress",
+				"reading",
+				"article",
+				"scroll-driven"
+			],
+			"names": [
+				"Reading progress bar",
+				"Scroll progress",
+				"Barra de progresso de leitura",
+				"Barre de progression de lecture"
+			],
+			"motion": [
+				{
+					"property": "transform: scaleX",
+					"duration": "animation-timeline: scroll(nearest block)",
+					"easing": "linear"
+				}
+			],
+			"shape": "tall",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage",
+						"MotionCtx"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/scroll#reading-progress-bar",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "324",
+			"group": "motion",
+			"page": "scroll",
+			"variant": "HorizontalScroll",
+			"slug": "horizontal-scroll-section",
+			"title": "Horizontal scroll section",
+			"description": "",
+			"summary": "Vertical scrolling inside a pinned frame slides a row of four step cards sideways, with a progress bar underneath. The page scrolls down; the content moves across.",
+			"use": "Onboarding steps, feature tours and case-study timelines where a sequence reads better left to right than stacked.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `loop={5600}`: autoplay scrolls the container, a wheel or touch scroll takes over",
+				"`.hs__pin` is `position: sticky;` and keeps the frame fixed while `block-size: 30rem;` on `.hs__track` provides the scroll distance",
+				"The rail is `inline-size: 400%` (four slides of `25%`) and travels `-75%` on X, so the last slide ends exactly in view",
+				"Native: `animation-timeline: --hs` over `scroll-timeline: --hs block` on the scroller (the pin is `overflow: hidden`, so `scroll()` would bind to it); `@keyframes slide` runs from `translateX(0)` to `translateX(-75%)`, inside `@supports (animation-timeline: scroll())`",
+				"Fallback without support: a `scroll` listener writes `--p` and the rail uses `translateX(calc(var(--p) * -75%))`",
+				"Under reduced motion `--p` is `1`: the last slide is shown and the container does not scroll by itself"
+			],
+			"tags": [
+				"motion",
+				"scroll",
+				"horizontal",
+				"pinned",
+				"sticky",
+				"steps"
+			],
+			"names": [
+				"Horizontal scroll section",
+				"Scroll-jacked horizontal",
+				"Rolagem horizontal por scroll vertical",
+				"Défilement horizontal"
+			],
+			"motion": [
+				{
+					"property": "transform: translateX",
+					"duration": "animation-timeline: --hs",
+					"easing": "linear"
+				}
+			],
+			"shape": "tall",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage",
+						"MotionCtx"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/scroll#horizontal-scroll-section",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "325",
+			"group": "motion",
+			"page": "scroll",
+			"variant": "PinnedSteps",
+			"slug": "pinned-step-story",
+			"title": "Pinned step story",
+			"description": "",
+			"summary": "A pinned media panel on the left changes its figure and caption as each step on the right scrolls through the middle of the frame; inactive steps dim to 40%.",
+			"use": "Explaining a product flow: connect, sort, review. One visual stays on screen while the copy advances.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `loop={5600}`: autoplay scrolls the container, a wheel or touch scroll takes over",
+				"`.story__media` is `position: sticky;` with `inset-block-start: 0;` and pins the media while the steps list scrolls past",
+				"`IntersectionObserver` with `rootMargin: '-45% 0px -45% 0px'` makes the step crossing the middle 10% band the active one",
+				"Figure transition: `opacity 320ms cubic-bezier(0.2, 0, 0, 1)` and a `translateY(12px) scale(0.96)` start state",
+				"Inactive steps use `opacity: 0.4`, the active step `opacity: 1`",
+				"Under reduced motion the last step is active and nothing scrolls by itself"
+			],
+			"tags": [
+				"motion",
+				"scroll",
+				"pinned",
+				"sticky",
+				"steps",
+				"storytelling"
+			],
+			"names": [
+				"Pinned step story",
+				"Sticky scrollytelling",
+				"Scrollytelling fixo por etapas",
+				"Récit épinglé par étapes"
+			],
+			"motion": [
+				{
+					"property": "opacity, transform: translateY, scale (media figure)",
+					"duration": "320ms",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)"
+				},
+				{
+					"property": "opacity (step copy 0.4 to 1)",
+					"duration": "320ms",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)"
+				}
+			],
+			"shape": "wide",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage",
+						"MotionCtx"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/scroll#pinned-step-story",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "326",
+			"group": "motion",
+			"page": "scroll",
+			"variant": "ScrollCounter",
+			"slug": "scroll-linked-counter-and-chart-draw",
+			"title": "Scroll-linked counter and chart draw",
+			"description": "",
+			"summary": "A revenue figure counts up from $0 to $48,210 while a line chart draws itself, both tied to the container's scroll position; scrolling back reverses them.",
+			"use": "KPI headers, report sections and pricing pages where a number and its trend should build as the reader reaches them.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `loop={5000}`: autoplay scrolls the container, a wheel or touch scroll takes over",
+				"The counter text is `Math.round(TOTAL * v)` formatted with `Intl.NumberFormat('en-US')`; `v` is `el.scrollTop / max` (text cannot be scroll-driven in CSS)",
+				"The line has `pathLength=\"1\"` and `stroke-dasharray: 1`; `stroke-dashoffset` goes from `1` to `0` (`calc(1 - var(--p))`)",
+				"Native: `animation-timeline: scroll(nearest block)` with `@keyframes draw`, inside `@supports (animation-timeline: scroll())`; otherwise a `scroll` listener writes `--p`",
+				"Autoplay scrolls in `2800` ms with an ease-out cubic",
+				"Screen readers get the final figure from a `ca-sr-only` span; the animating digits are `aria-hidden=\"true\"`",
+				"Under reduced motion the figure shows the final total and the line is fully drawn"
+			],
+			"tags": [
+				"motion",
+				"scroll",
+				"counter",
+				"chart",
+				"draw",
+				"scroll-driven"
+			],
+			"names": [
+				"Scroll-linked counter and chart draw",
+				"Count-up on scroll",
+				"Contador e gráfico ligados ao scroll",
+				"Compteur lié au défilement"
+			],
+			"motion": [
+				{
+					"property": "text (count-up 0 to 48,210)",
+					"duration": "scroll position",
+					"easing": "1 - (1 - t) ** 3"
+				},
+				{
+					"property": "stroke-dashoffset 1 to 0",
+					"duration": "animation-timeline: scroll(nearest block)",
+					"easing": "linear"
+				}
+			],
+			"shape": "tall",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage",
+						"MotionCtx"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/scroll#scroll-linked-counter-and-chart-draw",
 			"needs": "@codeatlasdev/ui@4.2.0"
 		},
 		{

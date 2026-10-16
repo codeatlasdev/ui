@@ -1,0 +1,121 @@
+<script lang="ts">
+  import { MotionStage, type MotionCtx } from '@codeatlasdev/ui';
+  import type { Attachment } from 'svelte/attachments';
+
+  const native = typeof CSS !== 'undefined' && CSS.supports('animation-timeline: scroll()');
+  let pct = $state(0);
+
+  // Fallback and label: the same progress the CSS timeline uses, as 0..1 in --p and 0..100 in the readout.
+  const track = (m: MotionCtx): Attachment<HTMLElement> => (el) => {
+    const write = () => {
+      const max = el.scrollHeight - el.clientHeight;
+      const p = max > 0 ? el.scrollTop / max : 0;
+      pct = Math.round(p * 100);
+      if (!native && !m.reduced) el.style.setProperty('--p', String(p));
+    };
+    write();
+    el.addEventListener('scroll', write, { passive: true });
+    return () => el.removeEventListener('scroll', write);
+  };
+
+  // Autoplay = read the article top to bottom in 3600ms (linear, like a steady reader); wheel or touch = takeover.
+  const drive = (m: MotionCtx): Attachment<HTMLElement> => (el) => {
+    const stop = () => m.takeover();
+    el.addEventListener('wheel', stop, { passive: true });
+    el.addEventListener('touchmove', stop, { passive: true });
+    let raf = 0;
+    if (m.playing) {
+      void m.cycle;
+      el.scrollTop = 0;
+      const to = el.scrollHeight - el.clientHeight;
+      const t0 = performance.now();
+      const step = (now: number) => {
+        if (!m.playing) return; // taken over or paused: never write a frame after the user starts scrolling
+        const t = Math.min(1, (now - t0) / 3600);
+        el.scrollTop = to * t;
+        if (t < 1) raf = requestAnimationFrame(step);
+      };
+      raf = requestAnimationFrame(step);
+    }
+    return () => {
+      cancelAnimationFrame(raf);
+      el.removeEventListener('wheel', stop);
+      el.removeEventListener('touchmove', stop);
+    };
+  };
+</script>
+
+<MotionStage label="Reading progress bar: a bar at the top fills as the article scrolls" loop={5200}>
+  {#snippet children(m)}
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+    <div
+      class="doc"
+      class:doc--native={native}
+      class:doc--final={m.reduced}
+      role="region"
+      aria-label="Article: How we cut checkout time in half"
+      tabindex="0"
+      {@attach track(m)}
+      {@attach drive(m)}
+    >
+      <div class="doc__bar" aria-hidden="true"><span class="doc__fill"></span></div>
+      <article class="doc__body">
+        <p class="doc__meta">Engineering · 6 min read <span class="doc__pct">{m.reduced ? 100 : pct}%</span></p>
+        <h3 class="doc__title">How we cut checkout time in half</h3>
+        <p>We measured every step of the flow before touching a pixel. Address entry alone took 41 seconds on a phone.</p>
+        <p>The first change was removing the account wall: guests now pay in three taps, and the median dropped to 58 seconds.</p>
+        <p>Next we prefilled the postcode from the card, replaced the select lists with native pickers and moved totals above the fold.</p>
+        <p>Failed payments were the last big leak. A retry sheet with the previous method preselected recovered 23% of them.</p>
+        <p>Together, the changes took the median from 2m 04s to 58s, and conversion rose 11 points in four weeks.</p>
+      </article>
+    </div>
+  {/snippet}
+</MotionStage>
+
+<style>
+  .doc {
+    --p: 0;
+    position: relative;
+    inline-size: 100%;
+    max-inline-size: 360px;
+    block-size: 13rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-radius: var(--ca-radius-lg);
+    box-shadow: inset 0 0 0 1px var(--ca-outline-subtle);
+  }
+  .doc--final { --p: 1; }
+  .doc__bar {
+    position: sticky;
+    inset-block-start: 0;
+    z-index: 1;
+    block-size: 4px;
+    background: var(--ca-outline-subtle);
+  }
+  .doc__fill {
+    display: block;
+    block-size: 100%;
+    background: var(--ca-brand-main);
+    transform-origin: left center;
+    transform: scaleX(var(--p));
+  }
+  .doc__body { padding: var(--ca-space-3) var(--ca-space-4) var(--ca-space-5); }
+  .doc__body p { margin: 0 0 var(--ca-space-3); color: var(--ca-text-secondary); font-size: var(--ca-font-size-body2); line-height: 1.55; }
+  .doc__meta { display: flex; justify-content: space-between; font-family: var(--ca-font-mono); font-size: var(--ca-font-size-caption); color: var(--ca-text-hint); }
+  .doc__pct { color: var(--ca-brand-text); }
+  .doc__title { margin: 0 0 var(--ca-space-3); font-size: var(--ca-font-size-h6); color: var(--ca-text-primary); }
+
+  @supports (animation-timeline: scroll()) {
+    .doc--native:not(.doc--final) .doc__fill {
+      animation-name: fill;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-duration: 1ms;
+      animation-timeline: scroll(nearest block);
+    }
+    @keyframes fill {
+      from { transform: scaleX(0); }
+      to { transform: scaleX(1); }
+    }
+  }
+</style>

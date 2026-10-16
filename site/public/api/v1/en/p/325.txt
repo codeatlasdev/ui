@@ -1,0 +1,20 @@
+Use @codeatlasdev/ui demo #325 "Pinned step story" (motion/scroll).
+What it shows: A pinned media panel on the left changes its figure and caption as each step on the right scrolls through the middle of the frame; inactive steps dim to 40%. When to use: Explaining a product flow: connect, sort, review. One visual stays on screen while the copy advances.
+Spec:
+- `MotionStage` from `@codeatlasdev/ui` with `loop={5600}`: autoplay scrolls the container, a wheel or touch scroll takes over
+- `.story__media` is `position: sticky;` with `inset-block-start: 0;` and pins the media while the steps list scrolls past
+- `IntersectionObserver` with `rootMargin: '-45% 0px -45% 0px'` makes the step crossing the middle 10% band the active one
+- Figure transition: `opacity 320ms cubic-bezier(0.2, 0, 0, 1)` and a `translateY(12px) scale(0.96)` start state
+- Inactive steps use `opacity: 0.4`, the active step `opacity: 1`
+- Under reduced motion the last step is active and nothing scrolls by itself
+Motion:
+- opacity, transform: translateY, scale (media figure): 320ms cubic-bezier(0.2, 0, 0, 1)
+- opacity (step copy 0.4 to 1): 320ms cubic-bezier(0.2, 0, 0, 1)
+Names: Pinned step story | Sticky scrollytelling | Scrollytelling fixo por etapas | Récit épinglé par étapes
+Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #325 Pinned step story → file, what changed, https://ui.codeatlas.com.br/docs/motion/scroll#pinned-step-story; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/325.txt   Components API: ca-ui-mcp get_component(MotionStage)

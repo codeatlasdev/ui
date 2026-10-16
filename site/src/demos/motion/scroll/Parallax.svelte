@@ -1,0 +1,156 @@
+<script lang="ts">
+  import { MotionStage, type MotionCtx } from '@codeatlasdev/ui';
+  import type { Attachment } from 'svelte/attachments';
+
+  // Scroll progress 0..1 of the container. With CSS scroll-driven animations the browser computes it;
+  // elsewhere the scroll listener writes it to --p and the same transforms read it.
+  const native = typeof CSS !== 'undefined' && CSS.supports('animation-timeline: scroll()');
+
+  const track = (m: MotionCtx): Attachment<HTMLElement> => (el) => {
+    if (native) return;
+    const write = () => {
+      const max = el.scrollHeight - el.clientHeight;
+      if (!m.reduced) el.style.setProperty('--p', String(max > 0 ? el.scrollTop / max : 0));
+    };
+    write();
+    el.addEventListener('scroll', write, { passive: true });
+    return () => el.removeEventListener('scroll', write);
+  };
+
+  // Autoplay = scroll down in 3000ms, once per cycle; wheel or touch = takeover.
+  const drive = (m: MotionCtx): Attachment<HTMLElement> => (el) => {
+    const stop = () => m.takeover();
+    el.addEventListener('wheel', stop, { passive: true });
+    el.addEventListener('touchmove', stop, { passive: true });
+    let raf = 0;
+    if (m.playing) {
+      void m.cycle;
+      el.scrollTop = 0;
+      const to = el.scrollHeight - el.clientHeight;
+      const t0 = performance.now();
+      const step = (now: number) => {
+        if (!m.playing) return; // taken over or paused: never write a frame after the user starts scrolling
+        const t = Math.min(1, (now - t0) / 3000);
+        el.scrollTop = to * (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+        if (t < 1) raf = requestAnimationFrame(step);
+      };
+      raf = requestAnimationFrame(step);
+    }
+    return () => {
+      cancelAnimationFrame(raf);
+      el.removeEventListener('wheel', stop);
+      el.removeEventListener('touchmove', stop);
+    };
+  };
+</script>
+
+<MotionStage label="Parallax layers: sky, ridge and foreground move at different speeds while scrolling" loop={6200}>
+  {#snippet children(m)}
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+    <div
+      class="scene"
+      class:scene--native={native}
+      class:scene--final={m.reduced}
+      role="region"
+      aria-label="Alpine route preview"
+      tabindex="0"
+      {@attach track(m)}
+      {@attach drive(m)}
+    >
+      <div class="scene__sticky">
+        <div class="layer layer--sky" aria-hidden="true"></div>
+        <svg class="layer layer--ridge" viewBox="0 0 400 140" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 140V80l60-40 50 30 70-55 80 60 60-35 80 50v50z" />
+        </svg>
+        <svg class="layer layer--near" viewBox="0 0 400 120" preserveAspectRatio="none" aria-hidden="true">
+          <path d="M0 120V70l80-28 90 40 90-46 140 52v32z" />
+        </svg>
+        <div class="layer layer--copy">
+          <p class="copy__eyebrow">Route 14</p>
+          <p class="copy__title">Col de la Croix</p>
+          <p class="copy__meta">2,067 m · 18.4 km · 7.1% average</p>
+        </div>
+      </div>
+      <div class="scene__track" aria-hidden="true"></div>
+    </div>
+  {/snippet}
+</MotionStage>
+
+<style>
+  .scene {
+    --p: 0;
+    inline-size: 100%;
+    max-inline-size: 360px;
+    block-size: 13rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-radius: var(--ca-radius-lg);
+    box-shadow: inset 0 0 0 1px var(--ca-outline-subtle);
+    scroll-timeline: --scene block;
+  }
+  .scene--final { --p: 1; }
+  .scene__sticky {
+    position: sticky;
+    inset-block-start: 0;
+    block-size: 13rem;
+    overflow: hidden;
+    contain: paint;
+  }
+  .scene__track { block-size: 26rem; }
+  .layer { position: absolute; inset: 0; }
+  .layer--sky {
+    background: linear-gradient(to bottom, var(--ca-brand-main), var(--ca-surface-raised));
+    opacity: 0.55;
+    transform: translateY(calc(var(--p) * -6%));
+  }
+  .layer--ridge {
+    inset-block-start: auto;
+    block-size: 55%;
+    inline-size: 100%;
+    fill: var(--ca-brand-text);
+    opacity: 0.35;
+    transform: translateY(calc(var(--p) * -22%));
+  }
+  .layer--near {
+    inset-block-start: auto;
+    block-size: 42%;
+    inline-size: 100%;
+    fill: var(--ca-text-primary);
+    opacity: 0.8;
+    transform: translateY(calc(var(--p) * -48%));
+  }
+  .layer--copy {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: var(--ca-space-1);
+    padding: var(--ca-space-4);
+    transform: translateY(calc(var(--p) * 30%));
+    opacity: calc(1 - var(--p) * 0.85);
+  }
+  .copy__eyebrow { margin: 0; font-family: var(--ca-font-mono); font-size: var(--ca-font-size-caption); color: var(--ca-text-secondary); letter-spacing: 0.08em; text-transform: uppercase; }
+  .copy__title { margin: 0; font-size: var(--ca-font-size-h5); font-weight: var(--ca-font-weight-semibold); color: var(--ca-text-primary); }
+  .copy__meta { margin: 0; font-size: var(--ca-font-size-body2); color: var(--ca-text-secondary); }
+
+  @supports (animation-timeline: scroll()) {
+    .scene--native:not(.scene--final) .layer {
+      animation-name: parallax;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-duration: 1ms;
+      animation-timeline: --scene;
+    }
+    .scene--native:not(.scene--final) .layer--sky { --to: -6%; }
+    .scene--native:not(.scene--final) .layer--ridge { --to: -22%; }
+    .scene--native:not(.scene--final) .layer--near { --to: -48%; }
+    .scene--native:not(.scene--final) .layer--copy { --to: 30%; animation-name: parallax-copy; }
+    @keyframes parallax {
+      from { transform: translateY(0); }
+      to { transform: translateY(var(--to)); }
+    }
+    @keyframes parallax-copy {
+      from { transform: translateY(0); opacity: 1; }
+      to { transform: translateY(30%); opacity: 0.15; }
+    }
+  }
+</style>

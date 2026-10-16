@@ -269,6 +269,13 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 305 | Shine sweep | motion/text | MotionStage |
 | 306 | Count up | motion/text | Button, MotionStage |
 | 307 | Blur in | motion/text | Button, MotionStage |
+| 320 | Staggered reveal on scroll | motion/scroll | Card, MotionStage |
+| 321 | View timeline reveal | motion/scroll | Card, MotionStage |
+| 322 | Parallax | motion/scroll | MotionStage |
+| 323 | Reading progress bar | motion/scroll | MotionStage |
+| 324 | Horizontal scroll section | motion/scroll | MotionStage |
+| 325 | Pinned step story | motion/scroll | MotionStage |
+| 326 | Scroll-linked counter and chart draw | motion/scroll | MotionStage |
 | 340 | Magnetic button | motion/micro | MotionStage |
 | 341 | Press spring | motion/micro | MotionStage |
 | 342 | Morphing toggle | motion/micro | MotionStage |

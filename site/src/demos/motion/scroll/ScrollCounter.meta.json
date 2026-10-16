@@ -1,0 +1,33 @@
+{
+	"summary": "A revenue figure counts up from $0 to $48,210 while a line chart draws itself, both tied to the container's scroll position; scrolling back reverses them.",
+	"use": "KPI headers, report sections and pricing pages where a number and its trend should build as the reader reaches them.",
+	"spec": [
+		"`MotionStage` from `@codeatlasdev/ui` with `loop={5000}`: autoplay scrolls the container, a wheel or touch scroll takes over",
+		"The counter text is `Math.round(TOTAL * v)` formatted with `Intl.NumberFormat('en-US')`; `v` is `el.scrollTop / max` (text cannot be scroll-driven in CSS)",
+		"The line has `pathLength=\"1\"` and `stroke-dasharray: 1`; `stroke-dashoffset` goes from `1` to `0` (`calc(1 - var(--p))`)",
+		"Native: `animation-timeline: scroll(nearest block)` with `@keyframes draw`, inside `@supports (animation-timeline: scroll())`; otherwise a `scroll` listener writes `--p`",
+		"Autoplay scrolls in `2800` ms with an ease-out cubic",
+		"Screen readers get the final figure from a `ca-sr-only` span; the animating digits are `aria-hidden=\"true\"`",
+		"Under reduced motion the figure shows the final total and the line is fully drawn"
+	],
+	"tags": ["motion", "scroll", "counter", "chart", "draw", "scroll-driven"],
+	"names": [
+		"Scroll-linked counter and chart draw",
+		"Count-up on scroll",
+		"Contador e gráfico ligados ao scroll",
+		"Compteur lié au défilement"
+	],
+	"motion": [
+		{
+			"property": "text (count-up 0 to 48,210)",
+			"duration": "scroll position",
+			"easing": "1 - (1 - t) ** 3"
+		},
+		{
+			"property": "stroke-dashoffset 1 to 0",
+			"duration": "animation-timeline: scroll(nearest block)",
+			"easing": "linear"
+		}
+	],
+	"shape": "tall"
+}

@@ -1,0 +1,37 @@
+{
+	"summary": "Three layers (sky, ridge, foreground) plus a caption move at different speeds while the container scrolls, so the scene gains depth. Native scroll timeline, with a scroll listener fallback.",
+	"use": "Hero images, editorial headers, product storytelling: any pinned scene where background should move slower than foreground.",
+	"spec": [
+		"`MotionStage` from `@codeatlasdev/ui` with `loop={6200}`: autoplay scrolls the container, a wheel or touch scroll takes over",
+		"A sticky scene inside a taller scroller: `position: sticky;` on `.scene__sticky` and `block-size: 26rem;` on `.scene__track`",
+		"Native: `animation-timeline: --scene` over `scroll-timeline: --scene block`, inside `@supports (animation-timeline: scroll())`",
+		"Layer travel at full scroll: sky `-6%`, ridge `-22%`, foreground `-48%`, caption `30%` while fading to opacity `0.15`",
+		"Fallback without support: a `scroll` listener writes progress to `--p` and the transforms read `translateY(calc(var(--p) * -22%))`",
+		"Under reduced motion `--p` is `1` and nothing moves (`.scene--final`)"
+	],
+	"tags": ["motion", "scroll", "parallax", "layers", "depth", "hero"],
+	"names": ["Parallax", "Parallax layers", "Paralaxe", "Parallaxe"],
+	"motion": [
+		{
+			"property": "transform: translateY, sky layer to -6%",
+			"duration": "animation-timeline: --scene",
+			"easing": "linear"
+		},
+		{
+			"property": "transform: translateY, ridge layer to -22%",
+			"duration": "animation-timeline: --scene",
+			"easing": "linear"
+		},
+		{
+			"property": "transform: translateY, foreground layer to -48%",
+			"duration": "animation-timeline: --scene",
+			"easing": "linear"
+		},
+		{
+			"property": "transform: translateY to 30% and opacity to 0.15, caption",
+			"duration": "animation-timeline: --scene",
+			"easing": "linear"
+		}
+	],
+	"shape": "tall"
+}

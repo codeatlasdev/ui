@@ -1,0 +1,27 @@
+{
+	"summary": "Vertical scrolling inside a pinned frame slides a row of four step cards sideways, with a progress bar underneath. The page scrolls down; the content moves across.",
+	"use": "Onboarding steps, feature tours and case-study timelines where a sequence reads better left to right than stacked.",
+	"spec": [
+		"`MotionStage` from `@codeatlasdev/ui` with `loop={5600}`: autoplay scrolls the container, a wheel or touch scroll takes over",
+		"`.hs__pin` is `position: sticky;` and keeps the frame fixed while `block-size: 30rem;` on `.hs__track` provides the scroll distance",
+		"The rail is `inline-size: 400%` (four slides of `25%`) and travels `-75%` on X, so the last slide ends exactly in view",
+		"Native: `animation-timeline: --hs` over `scroll-timeline: --hs block` on the scroller (the pin is `overflow: hidden`, so `scroll()` would bind to it); `@keyframes slide` runs from `translateX(0)` to `translateX(-75%)`, inside `@supports (animation-timeline: scroll())`",
+		"Fallback without support: a `scroll` listener writes `--p` and the rail uses `translateX(calc(var(--p) * -75%))`",
+		"Under reduced motion `--p` is `1`: the last slide is shown and the container does not scroll by itself"
+	],
+	"tags": ["motion", "scroll", "horizontal", "pinned", "sticky", "steps"],
+	"names": [
+		"Horizontal scroll section",
+		"Scroll-jacked horizontal",
+		"Rolagem horizontal por scroll vertical",
+		"Défilement horizontal"
+	],
+	"motion": [
+		{
+			"property": "transform: translateX",
+			"duration": "animation-timeline: --hs",
+			"easing": "linear"
+		}
+	],
+	"shape": "tall"
+}

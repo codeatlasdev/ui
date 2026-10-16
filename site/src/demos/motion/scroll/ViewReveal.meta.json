@@ -1,0 +1,27 @@
+{
+	"summary": "Tiles tied to their own position in the scroll area: opacity, rise and scale advance exactly as far as the tile has entered, in both directions, with no JavaScript when the browser supports view timelines.",
+	"use": "Scroll-driven entrances that must scrub with the finger (and reverse) instead of firing once: metric grids, feature lists, timelines.",
+	"spec": [
+		"`MotionStage` from `@codeatlasdev/ui` with `loop={4600}`: autoplay scrolls the container, a wheel or touch scroll takes over",
+		"CSS `animation-timeline: view(block)` with `animation-range: entry 0% entry 70%` inside `@supports (animation-timeline: view())`",
+		"Keyframes `view-in`: `from { opacity: 0; transform: translateY(28px) scale(0.92); }` to opacity 1, no translate, scale 1",
+		"Fallback without support: a `scroll` listener writes each tile's progress to `--v`, which drives the same opacity and transform",
+		"Under reduced motion `.vt--final` shows every tile settled and no listener is attached"
+	],
+	"tags": ["motion", "scroll", "view-timeline", "scroll-driven", "scrub", "reveal"],
+	"names": [
+		"View timeline reveal",
+		"Scroll-driven reveal",
+		"Reveal por view timeline",
+		"Révélation pilotée par le défilement"
+	],
+	"motion": [
+		{
+			"property": "opacity, transform: translateY, scale",
+			"duration": "animation-timeline: view(block)",
+			"easing": "linear",
+			"delay": "animation-range: entry 0% entry 70%"
+		}
+	],
+	"shape": "tall"
+}

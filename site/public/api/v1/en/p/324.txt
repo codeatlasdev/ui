@@ -1,0 +1,19 @@
+Use @codeatlasdev/ui demo #324 "Horizontal scroll section" (motion/scroll).
+What it shows: Vertical scrolling inside a pinned frame slides a row of four step cards sideways, with a progress bar underneath. The page scrolls down; the content moves across. When to use: Onboarding steps, feature tours and case-study timelines where a sequence reads better left to right than stacked.
+Spec:
+- `MotionStage` from `@codeatlasdev/ui` with `loop={5600}`: autoplay scrolls the container, a wheel or touch scroll takes over
+- `.hs__pin` is `position: sticky;` and keeps the frame fixed while `block-size: 30rem;` on `.hs__track` provides the scroll distance
+- The rail is `inline-size: 400%` (four slides of `25%`) and travels `-75%` on X, so the last slide ends exactly in view
+- Native: `animation-timeline: --hs` over `scroll-timeline: --hs block` on the scroller (the pin is `overflow: hidden`, so `scroll()` would bind to it); `@keyframes slide` runs from `translateX(0)` to `translateX(-75%)`, inside `@supports (animation-timeline: scroll())`
+- Fallback without support: a `scroll` listener writes `--p` and the rail uses `translateX(calc(var(--p) * -75%))`
+- Under reduced motion `--p` is `1`: the last slide is shown and the container does not scroll by itself
+Motion:
+- transform: translateX: animation-timeline: --hs linear
+Names: Horizontal scroll section | Scroll-jacked horizontal | Rolagem horizontal por scroll vertical | Défilement horizontal
+Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #324 Horizontal scroll section → file, what changed, https://ui.codeatlas.com.br/docs/motion/scroll#horizontal-scroll-section; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/324.txt   Components API: ca-ui-mcp get_component(MotionStage)

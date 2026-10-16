@@ -1,0 +1,137 @@
+<script lang="ts">
+  import { MotionStage, type MotionCtx } from '@codeatlasdev/ui';
+  import type { Attachment } from 'svelte/attachments';
+
+  const TOTAL = 48210;
+  // One polyline, normalized pathLength=1 so stroke-dashoffset 1 -> 0 draws it from start to end.
+  const line = 'M4 74 L36 62 L68 66 L100 44 L132 50 L164 28 L196 34 L228 12';
+
+  let p = $state(0);
+  const native = typeof CSS !== 'undefined' && CSS.supports('animation-timeline: scroll()');
+
+  // The counter always reads progress from JS (text cannot be scroll-driven in CSS); the chart draw uses the
+  // CSS timeline when supported and --p otherwise, so both stay in step with the same scroll position.
+  const track = (m: MotionCtx): Attachment<HTMLElement> => (el) => {
+    const write = () => {
+      const max = el.scrollHeight - el.clientHeight;
+      p = max > 0 ? el.scrollTop / max : 0;
+      if (!native && !m.reduced) el.style.setProperty('--p', String(p));
+    };
+    write();
+    el.addEventListener('scroll', write, { passive: true });
+    return () => el.removeEventListener('scroll', write);
+  };
+
+  // Autoplay = scroll down in 2800ms (ease-out) once per cycle; wheel or touch = takeover.
+  const drive = (m: MotionCtx): Attachment<HTMLElement> => (el) => {
+    const stop = () => m.takeover();
+    el.addEventListener('wheel', stop, { passive: true });
+    el.addEventListener('touchmove', stop, { passive: true });
+    let raf = 0;
+    if (m.playing) {
+      void m.cycle;
+      el.scrollTop = 0;
+      const to = el.scrollHeight - el.clientHeight;
+      const t0 = performance.now();
+      const step = (now: number) => {
+        if (!m.playing) return; // taken over or paused: never write a frame after the user starts scrolling
+        const t = Math.min(1, (now - t0) / 2800);
+        el.scrollTop = to * (1 - (1 - t) ** 3);
+        if (t < 1) raf = requestAnimationFrame(step);
+      };
+      raf = requestAnimationFrame(step);
+    }
+    return () => {
+      cancelAnimationFrame(raf);
+      el.removeEventListener('wheel', stop);
+      el.removeEventListener('touchmove', stop);
+    };
+  };
+
+  const fmt = new Intl.NumberFormat('en-US');
+</script>
+
+<MotionStage label="Scroll-linked counter and chart: the revenue number and the line grow as you scroll" loop={5000}>
+  {#snippet children(m)}
+    {@const v = m.reduced ? 1 : p}
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+    <div
+      class="rev"
+      class:rev--native={native}
+      class:rev--final={m.reduced}
+      role="region"
+      aria-label="Revenue summary"
+      tabindex="0"
+      {@attach track(m)}
+      {@attach drive(m)}
+    >
+      <div class="rev__pin">
+        <p class="rev__label">Revenue, last 30 days</p>
+        <p class="rev__value">
+          <span class="ca-sr-only">${fmt.format(TOTAL)}</span>
+          <span aria-hidden="true">${fmt.format(Math.round(TOTAL * v))}</span>
+        </p>
+        <svg class="rev__chart" viewBox="0 0 232 80" aria-hidden="true">
+          <path class="rev__base" d="M4 76 H228" />
+          <path class="rev__line" d={line} pathLength="1" />
+        </svg>
+        <p class="rev__delta">+12.4% vs previous period</p>
+      </div>
+      <div class="rev__track" aria-hidden="true"></div>
+    </div>
+  {/snippet}
+</MotionStage>
+
+<style>
+  .rev {
+    --p: 0;
+    inline-size: 100%;
+    max-inline-size: 360px;
+    block-size: 13rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    border-radius: var(--ca-radius-lg);
+    box-shadow: inset 0 0 0 1px var(--ca-outline-subtle);
+  }
+  .rev--final { --p: 1; }
+  .rev__pin {
+    position: sticky;
+    inset-block-start: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: var(--ca-space-1);
+    block-size: 13rem;
+    padding: 0 var(--ca-space-5);
+    box-sizing: border-box;
+  }
+  .rev__track { block-size: 26rem; }
+  .rev__label { margin: 0; font-size: var(--ca-font-size-caption); color: var(--ca-text-secondary); letter-spacing: 0.06em; text-transform: uppercase; }
+  .rev__value { margin: 0; font-size: var(--ca-font-size-h3); font-weight: var(--ca-font-weight-semibold); color: var(--ca-text-primary); font-variant-numeric: tabular-nums; }
+  .rev__chart { inline-size: 100%; block-size: 5rem; overflow: visible; }
+  .rev__base { fill: none; stroke: var(--ca-outline-subtle); stroke-width: 1; }
+  .rev__line {
+    fill: none;
+    stroke: var(--ca-brand-main);
+    stroke-width: 2.5;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-dasharray: 1;
+    stroke-dashoffset: calc(1 - var(--p));
+  }
+  .rev__delta { margin: 0; font-size: var(--ca-font-size-body2); color: var(--ca-semantic-success); }
+
+  @supports (animation-timeline: scroll()) {
+    .rev--native:not(.rev--final) .rev__line {
+      animation-name: draw;
+      animation-timing-function: linear;
+      animation-fill-mode: both;
+      animation-duration: 1ms;
+      animation-timeline: scroll(nearest block);
+    }
+    @keyframes draw {
+      from { stroke-dashoffset: 1; }
+      to { stroke-dashoffset: 0; }
+    }
+  }
+</style>

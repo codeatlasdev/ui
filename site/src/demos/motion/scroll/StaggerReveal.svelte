@@ -1,0 +1,112 @@
+<script lang="ts">
+  import { Card, MotionStage, type MotionCtx } from '@codeatlasdev/ui';
+  import type { Attachment } from 'svelte/attachments';
+
+  const rows = [
+    { title: 'Payout sent', meta: '$12,480.00 to Northwind Ltd', when: '09:41' },
+    { title: 'Invoice #4821 paid', meta: 'Acme Studio, net 30', when: '09:12' },
+    { title: 'New subscriber', meta: 'Growth plan, annual', when: '08:57' },
+    { title: 'Refund issued', meta: '$89.00 to J. Moreira', when: '08:30' },
+    { title: 'Dispute won', meta: 'Case 7731, funds released', when: 'Yesterday' },
+    { title: 'Payout scheduled', meta: '$9,210.40 on Friday', when: 'Yesterday' }
+  ];
+
+  let shown = $state(new Set<number>());
+
+  // IntersectionObserver rooted in the scroller: a row is revealed once, when 35% of it is visible.
+  const reveal: Attachment<HTMLElement> = (root) => {
+    const io = new IntersectionObserver(
+      (entries) => {
+        const hits = entries
+          .filter((e) => e.isIntersecting)
+          .map((e) => Number((e.target as HTMLElement).dataset.i));
+        if (hits.length) shown = new Set([...shown, ...hits]);
+      },
+      { root, threshold: 0.35 }
+    );
+    root.querySelectorAll('[data-i]').forEach((el) => io.observe(el));
+    // Back at the top the list is "unread" again: scrolling down replays the reveal for the user.
+    const rewind = () => {
+      if (root.scrollTop === 0) shown = new Set();
+    };
+    root.addEventListener('scroll', rewind, { passive: true });
+    return () => {
+      io.disconnect();
+      root.removeEventListener('scroll', rewind);
+    };
+  };
+
+  // Autoplay = scroll the container down in 2400ms (ease-in-out) once per cycle; wheel or touch = takeover.
+  const drive = (m: MotionCtx): Attachment<HTMLElement> => (el) => {
+    const stop = () => m.takeover();
+    el.addEventListener('wheel', stop, { passive: true });
+    el.addEventListener('touchmove', stop, { passive: true });
+    let raf = 0;
+    if (m.playing) {
+      void m.cycle;
+      shown = new Set();
+      el.scrollTop = 0;
+      const to = el.scrollHeight - el.clientHeight;
+      const t0 = performance.now();
+      const step = (now: number) => {
+        if (!m.playing) return; // taken over or paused: never write a frame after the user starts scrolling
+        const t = Math.min(1, (now - t0) / 2400);
+        el.scrollTop = to * (t < 0.5 ? 4 * t * t * t : 1 - (-2 * t + 2) ** 3 / 2);
+        if (t < 1) raf = requestAnimationFrame(step);
+      };
+      raf = requestAnimationFrame(step);
+    }
+    return () => {
+      cancelAnimationFrame(raf);
+      el.removeEventListener('wheel', stop);
+      el.removeEventListener('touchmove', stop);
+    };
+  };
+</script>
+
+<MotionStage label="Staggered reveal on scroll: rows fade in one after another as the list scrolls" loop={4600}>
+  {#snippet children(m)}
+    <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+    <div class="feed" role="region" aria-label="Activity feed" tabindex="0" {@attach reveal} {@attach drive(m)}>
+      {#each rows as row, i (row.title)}
+        <div class="feed__row" class:feed__row--in={m.reduced || shown.has(i)} data-i={i} style="--i:{i % 3}">
+          <Card>
+            <p class="feed__title">{row.title}</p>
+            <p class="feed__meta">{row.meta} <span class="feed__when">{row.when}</span></p>
+          </Card>
+        </div>
+      {/each}
+    </div>
+  {/snippet}
+</MotionStage>
+
+<style>
+  .feed {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-3);
+    inline-size: 100%;
+    max-inline-size: 360px;
+    block-size: 13rem;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    padding: var(--ca-space-2);
+    border-radius: var(--ca-radius-lg);
+    box-shadow: inset 0 0 0 1px var(--ca-outline-subtle);
+  }
+  .feed__row {
+    flex: none;
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  .feed__row--in {
+    opacity: 1;
+    transform: translateY(0);
+    transition:
+      opacity 420ms cubic-bezier(0.2, 0, 0, 1) calc(var(--i) * 80ms),
+      transform 420ms cubic-bezier(0.2, 0, 0, 1) calc(var(--i) * 80ms);
+  }
+  .feed__title { margin: 0; font-weight: var(--ca-font-weight-semibold); }
+  .feed__meta { margin: var(--ca-space-1) 0 0; color: var(--ca-text-secondary); font-size: var(--ca-font-size-body2); }
+  .feed__when { color: var(--ca-text-hint); font-family: var(--ca-font-mono); font-size: var(--ca-font-size-caption); margin-inline-start: var(--ca-space-2); }
+</style>

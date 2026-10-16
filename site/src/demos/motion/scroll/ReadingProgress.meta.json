@@ -1,0 +1,27 @@
+{
+	"summary": "A 4px bar stuck to the top of an article fills from left to right as it is read, with a percentage readout, tied directly to scroll position.",
+	"use": "Long articles, docs and legal pages where the reader wants to know how far they are.",
+	"spec": [
+		"`MotionStage` from `@codeatlasdev/ui` with `loop={5200}`: autoplay scrolls the article, a wheel or touch scroll takes over",
+		"`.doc__bar` is `position: sticky;` with `block-size: 4px;` and holds a fill scaled with `transform: scaleX(var(--p));` from `transform-origin: left center;`",
+		"Native: `animation-timeline: scroll(nearest block)` with `@keyframes fill` from `scaleX(0)` to `scaleX(1)`, inside `@supports (animation-timeline: scroll())`",
+		"Fallback and readout: a `scroll` listener computes `el.scrollTop / max` (`max` is `el.scrollHeight - el.clientHeight`); the percentage is `Math.round(p * 100)`",
+		"Autoplay reads the article in `3600` ms, linear like a steady reader",
+		"Under reduced motion the bar is full and the readout shows 100%"
+	],
+	"tags": ["motion", "scroll", "progress", "reading", "article", "scroll-driven"],
+	"names": [
+		"Reading progress bar",
+		"Scroll progress",
+		"Barra de progresso de leitura",
+		"Barre de progression de lecture"
+	],
+	"motion": [
+		{
+			"property": "transform: scaleX",
+			"duration": "animation-timeline: scroll(nearest block)",
+			"easing": "linear"
+		}
+	],
+	"shape": "tall"
+}
