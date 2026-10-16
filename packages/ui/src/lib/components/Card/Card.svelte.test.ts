@@ -1,10 +1,11 @@
 import { createRawSnippet } from "svelte";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import SurfacePanel from "../SurfacePanel/SurfacePanel.svelte";
 import Card from "./Card.svelte";
 import Harness from "./Card.test.svelte";
+import PaddedChild from "./CardPaddedChild.test.svelte";
 
 const body = createRawSnippet(() => ({ render: () => `<p data-testid="body">Content</p>` }));
 const card = (c: HTMLElement) => c.querySelector(".ca-card") as HTMLElement;
@@ -73,6 +74,42 @@ describe("Card", () => {
 			(el.parentElement as HTMLElement).getBoundingClientRect().width,
 			0
 		);
+	});
+
+	it("padding steps and custom values reach the content box", async () => {
+		const px = async (padding: string | number) => {
+			const screen = await render(Card, { padding, children: body });
+			const value = getComputedStyle(card(screen.container)).paddingTop;
+			screen.unmount();
+			return value;
+		};
+		expect(await px("none")).toBe("0px");
+		expect(await px("sm")).toBe("12px");
+		expect(await px("md")).toBe("20px");
+		expect(await px("lg")).toBe("32px");
+		expect(await px(10)).toBe("10px");
+		expect(await px("7px")).toBe("7px");
+	});
+
+	it("flush wins over padding and stays the alias of 'none'", async () => {
+		const screen = await render(Card, { flush: true, padding: "lg", children: body });
+		expect(getComputedStyle(card(screen.container)).paddingTop).toBe("0px");
+	});
+
+	it("warns once when a padded child doubles the card padding", async () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		const screen = await render(PaddedChild, {});
+		await vi.waitFor(() =>
+			expect(warn).toHaveBeenCalledWith(expect.stringContaining("<Card> content is already padded"))
+		);
+		screen.unmount();
+		warn.mockClear();
+		for (const props of [{ flush: true }, { padding: "none" }]) {
+			const ok = await render(PaddedChild, props);
+			await new Promise((r) => setTimeout(r, 50));
+			ok.unmount();
+		}
+		expect(warn).not.toHaveBeenCalled();
 	});
 
 	it("headerActions render beside the title", async () => {

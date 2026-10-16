@@ -27,6 +27,8 @@ import LinkSrc from "~/demos/surfaces/card/Link.svelte?raw";
 
 Card is a [Surface](/docs/surfaces/surface/) with a header (`title`, `headerActions`), padding from `--ca-card-padding` and an optional link. Every Surface prop passes through (`elevation`, `material`, `tone`, `variant`, `radius`, `glow`, `interactive`), and `material="auto"` follows the theme: opaque under the default solid style, glass under `liquid`. The demos below set `material="glass"` so they look the same under any style. Use `flush` for content that touches the edges, such as tables, images and code.
 
+**The content is already padded.** Card pads its children with `--ca-card-padding` (20px). A wrapper that adds its own padding (`<Card><div class="box">…</div></Card>` with `.box { padding: 1.25rem }`) doubles it to 40px, the usual cause of an oversized card. Remove the wrapper padding, pick a density with `padding` (`'none'`, `'sm'`, `'md'`, `'lg'`, a CSS length or a number of pixels), or use `flush` when you bring your own layout. In development a `[ca-ui]` warning names the mistake when the first child is padded. To change the default for the whole app, override `--ca-card-padding` on `:root`.
+
 `title` is a paragraph unless you pass `headingLevel`, so adding a Card never changes a page outline by accident. Pass `headingLevel` to make the card a section under the page heading (a `PageShell` title is the `<h1>`, so cards start at `2`). Only the tag changes, never the look.
 
 With `href` the card is a single `<a>` and is interactive. The link name comes from the content, so give the card a `title`.
@@ -43,7 +45,8 @@ With `href` the card is a single `<a>` and is interactive. The link name comes f
   { name: "headerActions", type: "Snippet", default: "undefined", description: "Actions aligned to the end of the header." },
   { name: "href", type: "string", default: "undefined", description: "Renders the card as a link (`<a>`, interactive)." },
   { name: "target", type: "string", default: "undefined", description: "Link target. `_blank` also sets `rel=\"noopener noreferrer\"`." },
-  { name: "flush", type: "boolean", default: "false", description: "Removes all padding." },
+  { name: "padding", type: "'none' | 'sm' | 'md' | 'lg' | string | number", default: "'md'", description: "Content padding: 0, 12px, 20px, 32px, or a CSS length / number of pixels. Sets `--ca-card-padding` on this card only." },
+  { name: "flush", type: "boolean", default: "false", description: "Removes all padding. Alias of `padding=\"none\"`, and wins over `padding`." },
   { name: "full", type: "boolean", default: "false", description: "Sets `width: 100%`." },
   { name: "elevation, material, tone, variant, radius, glow, interactive", type: "Surface props", default: "see Surface", description: "Passed to the underlying [Surface](/docs/surfaces/surface/)." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },

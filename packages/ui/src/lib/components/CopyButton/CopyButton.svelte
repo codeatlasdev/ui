@@ -10,7 +10,7 @@
   import type { HTMLAttributes } from 'svelte/elements';
   const t = useT();
 
-  interface Props extends Omit<HTMLAttributes<HTMLElement>, 'class' | 'children' | 'onclick' | 'aria-label'> {
+  interface Props extends Omit<HTMLAttributes<HTMLElement>, 'class' | 'children' | 'onclick' | 'oncopy' | 'aria-label'> {
     value: string;
     /** Visible label. Pass `''` for an icon-only button. */
     label?: string;
