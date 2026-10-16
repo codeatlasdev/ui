@@ -66,15 +66,11 @@
 
   let openedByKeyboard = false;
 
+  // Reset state when the palette closes so the next open starts clean (no async gap on reopen, #97).
   $effect(() => {
-    if (open) {
+    if (!open) {
       query = '';
       selectedIndex = 0;
-      const force = openedByKeyboard;
-      openedByKeyboard = false;
-      // A shortcut means "I'm about to type": focus the field even on touch devices with a
-      // keyboard (iPad + keyboard). A tap-open keeps the default (no surprise on-screen keyboard).
-      requestAnimationFrame(() => focusTextField(inputRef, force));
     }
   });
 
@@ -141,7 +137,18 @@
     aria-label={t().commandPalette.dialog}
     data-state={open ? 'open' : 'closed'}
     {@attach presence.ref}
-    {@attach modalLayer(() => ({ onDismiss: () => (open = false), initial: false }))}
+    {@attach modalLayer(() => ({
+      onDismiss: () => (open = false),
+      initial: false,
+      // Focus the field synchronously inside onOpen: open → reset → focus is one
+      // deterministic step with no rAF gap that keystrokes could race through (#97).
+      // force=true for keyboard open: user is about to type, so focus even on touch+keyboard.
+      onOpen: () => {
+        const force = openedByKeyboard;
+        openedByKeyboard = false;
+        focusTextField(inputRef, force);
+      },
+    }))}
   >
       <div class="ca-cmd-search">
         <Search size={16} class="ca-cmd-search__icon" />

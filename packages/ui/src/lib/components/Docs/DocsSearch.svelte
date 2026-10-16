@@ -49,8 +49,6 @@
   // wipe the query and selection the user already typed (#76).
   $effect(() => {
     if (!open) return;
-    query = '';
-    selected = 0;
     if (Array.isArray(index)) {
       entries = index;
     } else if (!untrack(() => entries)) {
@@ -58,6 +56,16 @@
       index()
         .then((data) => (entries = data))
         .catch(() => (failed = true));
+    }
+  });
+
+  // Reset query and selection when the dialog closes so the next open starts clean (#97).
+  // The onOpen callback in modalLayer focuses the field synchronously, so
+  // open → clean-state → focus is one deterministic step with no async gap to race.
+  $effect(() => {
+    if (!open) {
+      query = '';
+      selected = 0;
     }
   });
 
