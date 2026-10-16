@@ -232,6 +232,8 @@ Every component stylesheet is wrapped in `@layer ca.components`, the last kit la
 .ca-dialog__body { padding: 0; }
 ```
 
+`ca.reset` is the first layer and holds one rule: `button, input, select, textarea { font: inherit }`, so native controls use the page font instead of the browser's (Arial on Chromium/Windows). Every component and every app rule outranks it.
+
 If your own CSS lives in a layer (for example Tailwind's `@layer components`), declare it after the kit's order statement so it ranks higher: `@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components, app;`.
 
 <Callout type="caution" title="Important beats layers, in reverse">
