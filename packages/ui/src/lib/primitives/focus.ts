@@ -65,7 +65,7 @@ if (typeof document !== "undefined") {
 }
 
 /** Element to hand focus back to: the control pressed in the last second when the browser did not focus it, else the focused element. */
-function opener(): HTMLElement | null {
+export function opener(): HTMLElement | null {
 	const active = document.activeElement instanceof HTMLElement ? document.activeElement : null;
 	const pressed =
 		lastPressed && performance.now() - lastPressed.at < 1000 && lastPressed.el.isConnected

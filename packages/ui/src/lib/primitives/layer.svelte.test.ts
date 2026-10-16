@@ -217,6 +217,29 @@ describe("openLayer: focus", () => {
 		expect(document.activeElement).toBe(trigger);
 	});
 
+	it("returns focus to the pressed opener when the browser never focused it (Safari)", () => {
+		const trigger = el("button", "open");
+		(document.activeElement as HTMLElement | null)?.blur();
+		down(trigger);
+		expect(document.activeElement).toBe(document.body);
+		const handle = openLayer(modal(), { kind: "modal", onDismiss: () => {} });
+		handle.close();
+		expect(document.activeElement).toBe(trigger);
+	});
+
+	it("prefers the pressed opener over a focused ancestor (WebKit tap focuses <main>)", () => {
+		const main = el("main");
+		main.tabIndex = -1;
+		const trigger = document.createElement("button");
+		trigger.textContent = "open";
+		main.append(trigger);
+		down(trigger);
+		main.focus();
+		const handle = openLayer(modal(), { kind: "modal", onDismiss: () => {} });
+		handle.close();
+		expect(document.activeElement).toBe(trigger);
+	});
+
 	it("returns focus to the anchor when a popover closes", () => {
 		const trigger = el("button", "open");
 		trigger.focus();

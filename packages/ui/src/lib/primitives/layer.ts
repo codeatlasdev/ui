@@ -1,5 +1,5 @@
 import { type Align, float, type Side } from "./floating.js";
-import { trapFocus } from "./focus.js";
+import { opener, trapFocus } from "./focus.js";
 import { lockScroll } from "./scroll-lock.js";
 
 /**
@@ -276,7 +276,8 @@ export function openLayer(el: HTMLElement, options: LayerOptions): LayerHandle {
 	// Server render, or a node its owner already removed (an effect re-running mid-teardown): nothing to show.
 	if (typeof document === "undefined" || !el.isConnected) return { update() {}, close() {} };
 	const { kind } = options;
-	const restoreTo = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+	// Not `document.activeElement`: Safari leaves <body> or an ancestor focused after a tap on the opener.
+	const restoreTo = opener();
 	const cleanups: Array<() => void> = [];
 	let closed = false;
 
