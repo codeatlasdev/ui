@@ -11,6 +11,11 @@ for (const route of ROUTES) {
 		// Redirect stubs (<meta http-equiv=refresh>) navigate away mid-test: check the raw HTML first.
 		const html = await (await page.request.get(route)).text();
 		test.skip(/http-equiv="?refresh/i.test(html), "redirect page");
+		// /gallery/ renders one card per catalog demo (255 cards, ~4,300 nodes), so its axe work grows
+		// with the catalog: one full pass measured 5.7 s alone (no dominant rule: region 1.2 s,
+		// color-contrast 0.9 s…), and this test runs three. The default 30 s fits every other route but
+		// not this one under a full parallel run (#250).
+		if (route === "/gallery/") test.slow();
 
 		// A signed-in user is bounced off sign-in pages (mid-test navigation): check them signed out.
 		if (route.endsWith("/sign-in/"))
