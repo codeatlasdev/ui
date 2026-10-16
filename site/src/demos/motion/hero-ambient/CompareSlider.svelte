@@ -143,8 +143,9 @@
     position: absolute;
     inset-block: 0;
     inset-inline-start: var(--p);
-    inline-size: 2.75rem;
-    margin-inline-start: -1.375rem;
+    inline-size: var(--ca-touch-target);
+    min-block-size: var(--ca-touch-target);
+    margin-inline-start: calc(var(--ca-touch-target) / -2);
     display: grid;
     place-items: center;
     cursor: ew-resize;
@@ -165,7 +166,7 @@
     background: var(--ca-brand-fill);
     box-shadow: var(--ca-shadow-md);
   }
-  .cmp__handle:focus-visible .cmp__grip { outline: var(--ca-border-width-focus) solid var(--ca-text-primary); outline-offset: 2px; }
+  .cmp__handle:focus-visible .cmp__grip { outline: var(--ca-border-width-focus) solid var(--ca-focus-ring); outline-offset: var(--ca-focus-ring-offset); }
   @media (pointer: coarse) {
     .cmp { touch-action: none; }
   }
