@@ -15,7 +15,7 @@
 import { existsSync } from "node:fs";
 import { basename, join, resolve } from "node:path";
 import { $ } from "bun";
-import { blockingPrs, ownPr, type PrRef } from "./issue-lib.ts";
+import { blockingPrs, ownPr, type PrRef, prTitle } from "./issue-lib.ts";
 
 const ROOT = resolve(import.meta.dir, "..");
 const WORKTREES = resolve(ROOT, "..", `${basename(ROOT)}-worktrees`);
@@ -138,7 +138,7 @@ async function start(n: string) {
 			"- [ ] Docs updated if behavior or API changed",
 		].join("\n");
 		pr = (
-			await $`gh pr create --draft --base main --head ${branch} --title ${`${type}: ${is.title}`.slice(0, 120)} --body ${body}`
+			await $`gh pr create --draft --base main --head ${branch} --title ${prTitle(type, is.title)} --body ${body}`
 				.cwd(dir)
 				.text()
 		).trim();

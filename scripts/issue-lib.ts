@@ -28,6 +28,11 @@ export function blockingPrs(linked: PrRef[], branch: string): PrRef[] {
 	);
 }
 
+/** Draft PR title: the subject starts lowercase (pr-title.yml subjectPattern), at most 120 chars. */
+export function prTitle(type: string, issueTitle: string): string {
+	return `${type}: ${issueTitle.charAt(0).toLowerCase()}${issueTitle.slice(1)}`.slice(0, 120);
+}
+
 export interface Worktree {
 	path: string;
 	branch?: string;

@@ -16,6 +16,7 @@ import {
 	blockingPrs,
 	ownPr,
 	type PrRef,
+	prTitle,
 	removeWorktree,
 	worktrees,
 } from "../../../scripts/issue-lib.ts";
@@ -31,6 +32,18 @@ const fork = (number: number, headRefName: string): PrRef => ({
 const ours = (number: number, headRefName: string): PrRef => ({
 	...fork(number, headRefName),
 	headRepositoryOwner: { login: "codeatlasdev" },
+});
+
+describe("prTitle", () => {
+	// .github/workflows/pr-title.yml: subjectPattern ^(?![A-Z]).+$ (#238: "feat: CopyButton: …" failed).
+	it("starts the subject lowercase so the PR title check passes", () => {
+		const t = prTitle("feat", "CopyButton: icon-only form can't take an accessible name");
+		expect(t).toBe("feat: copyButton: icon-only form can't take an accessible name");
+		expect(t.slice("feat: ".length)).toMatch(/^(?![A-Z]).+$/);
+	});
+	it("caps the title at 120 characters", () => {
+		expect(prTitle("fix", `a${"b".repeat(200)}`)).toHaveLength(120);
+	});
 });
 
 describe("issue:start", () => {
