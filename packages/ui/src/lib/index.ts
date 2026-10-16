@@ -141,6 +141,7 @@ export type { LightboxItem } from "./components/Lightbox/Lightbox.svelte";
 export { default as Lightbox } from "./components/Lightbox/Lightbox.svelte";
 export { default as LiquidGlass } from "./components/LiquidGlass/LiquidGlass.svelte";
 export { default as LiveList } from "./components/LiveList/LiveList.svelte";
+export { default as LoadingBoundary } from "./components/LoadingBoundary/LoadingBoundary.svelte";
 export { default as MobilePane } from "./components/MobilePane/MobilePane.svelte";
 export type { NotificationItem } from "./components/NotificationBell/NotificationBell.svelte";
 export { default as NotificationBell } from "./components/NotificationBell/NotificationBell.svelte";

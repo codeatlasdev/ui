@@ -194,9 +194,17 @@ Total: 806 unique classes across 82 components.
 
 `.ca-live-list` `.ca-live-list__bar` `.ca-live-list__count` `.ca-live-list__empty` `.ca-live-list__frame` `.ca-live-list__head` `.ca-live-list__item` `.ca-live-list__jump` `.ca-live-list__list` `.ca-live-list__scroller`
 
+## LoadingBoundary
+
+`.ca-loading-boundary` `.ca-loading-boundary__content` `.ca-loading-boundary__pending`
+
 ## MobilePane
 
 `.ca-mobile-pane` `.ca-mobile-pane__body` `.ca-mobile-pane__body--fixed` `.ca-mobile-pane__header`
+
+## NavigationProgress
+
+`.ca-nav-progress` `.ca-nav-progress__bar`
 
 ## NotificationBell
 

@@ -1299,6 +1299,22 @@ Snippets: `item` (`Snippet<[T, number]>`), `empty`
 
 Classes: `ca-live-list` `ca-live-list__count` `ca-live-list__empty` `ca-live-list__frame` `ca-live-list__head` `ca-live-list__item` `ca-live-list__jump` `ca-live-list__list` `ca-live-list__scroller`
 
+## LoadingBoundary
+
+`import { LoadingBoundary } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `delay?` | `number` | `200` | Wait this long (ms) before showing `pending`; faster loads show nothing. |
+| `minDuration?` | `number` | `500` | Once `pending` is visible, keep it at least this long (ms). |
+| `label?` | `string` |  | Accessible name of the busy region. Defaults to a localised "Loading…". |
+| `rows?` | `number` | `3` | Skeleton lines of the default `pending`. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`, `pending`
+
+Classes: `ca-loading-boundary` `ca-loading-boundary__content`
+
 ## MaskedField
 
 `import { MaskedField } from "@codeatlasdev/ui/forms"`
@@ -1395,6 +1411,18 @@ Classes: `ca-mobile-pane` `ca-mobile-pane__body` `ca-mobile-pane__body--fixed`
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
 
 Snippets: `leading`, `trailing`
+
+## NavigationProgress
+
+`import { NavigationProgress } from "@codeatlasdev/ui/kit"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `delay?` | `number` | `120` | Wait this long (ms) before showing the bar; faster navigations show nothing. |
+| `label?` | `string` |  | Accessible name. Defaults to a localised "Loading…". |
+| `class?` | `string` | `''` |  |
+
+Classes: `ca-nav-progress` `ca-nav-progress__bar`
 
 ## NotificationBell
 
@@ -3697,6 +3725,16 @@ Make an app shell behave like a native app instead of a web page: - focus rings 
 
 ```ts
 function nativeFeel(options?: NativeFeelOptions): () => void
+```
+
+### pendingLink
+
+`import { pendingLink } from "@codeatlasdev/ui/kit"`
+
+Attachment for `<a>`: while SvelteKit navigates to this link's `href`, it carries `data-pending` and `aria-busy="true"`, so the link the user tapped can show its own loading state (`a[data-pending] { opacity: .6 }`) before the next page is ready.
+
+```ts
+function pendingLink(): Attachment<HTMLAnchorElement>
 ```
 
 ### themeCSS

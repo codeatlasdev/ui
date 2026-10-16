@@ -6,6 +6,8 @@ export type { ThemeOptions } from "../theme-script.js";
 export type { CaError, CreateErrorHandlerOptions } from "./create-error-handler.js";
 export { createErrorHandler } from "./create-error-handler.js";
 export { type NativeFeelOptions, nativeFeel } from "./native-feel.js";
+export { default as NavigationProgress } from "./navigation-progress.svelte";
+export { pendingLink } from "./pending-link.svelte.js";
 export { default as RouteAnnouncer } from "./route-announcer.svelte";
 export { caThemeHandle } from "./theme-handle.js";
 export { useBreadcrumbs } from "./use-breadcrumbs.svelte.js";

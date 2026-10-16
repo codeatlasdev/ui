@@ -786,7 +786,11 @@ const DEMOS_DIR = resolve(ROOT, "../../site/src/demos");
 const SITE = "https://ui.codeatlas.com.br";
 const API = `${SITE}/api/v1`;
 /** Shared building blocks under site/src/demos that are not demos themselves. */
-export const HELPERS = ["foundation/colors/Swatches", "foundation/typography/TypeRows"];
+export const HELPERS = [
+	"foundation/colors/Swatches",
+	"foundation/typography/TypeRows",
+	"navigation/loading-boundary/Report",
+];
 const PEERS: Record<string, string> = {
 	[`${PKG}/charts`]: "echarts",
 	[`${PKG}/table`]: "@tanstack/svelte-table",

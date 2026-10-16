@@ -36,12 +36,13 @@ export default defineConfig({
 			: ["default"],
 		projects: [
 			{
-				// SvelteKit-only module used by kit/route-announcer.svelte; tests override it with vi.mock.
+				// SvelteKit-only modules used by kit/*.svelte (`$app/navigation`, `$app/state`); tests override it with vi.mock.
 				resolve: {
 					alias: {
 						"$app/navigation": fileURLToPath(
 							new URL("./tests/app-navigation.stub.ts", import.meta.url)
 						),
+						"$app/state": fileURLToPath(new URL("./tests/app-state.stub.ts", import.meta.url)),
 					},
 				},
 				test: {

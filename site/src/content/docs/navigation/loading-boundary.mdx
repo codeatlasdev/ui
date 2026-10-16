@@ -1,0 +1,55 @@
+---
+title: Loading boundary
+description: A loading UI that never flashes, plus a top progress bar and pending links for SvelteKit navigations.
+group: Navigation
+order: 10
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Delayed from "~/demos/navigation/loading-boundary/Delayed.svelte";
+import DelayedSrc from "~/demos/navigation/loading-boundary/Delayed.svelte?raw";
+
+```svelte
+<script>
+  import { LoadingBoundary } from "@codeatlasdev/ui";
+</script>
+
+<LoadingBoundary label="Loading invoices">
+  <Invoices /> <!-- contains: const rows = $derived(await load()) -->
+</LoadingBoundary>
+```
+
+`LoadingBoundary` wraps `<svelte:boundary>` for content that suspends on `await`. It shows nothing for the first `delay` ms (200 by default), so a fast response never flickers a skeleton. Once the placeholder is visible it stays for at least `minDuration` ms (500), so it never flashes for one frame either. Under a second, show nothing; under ten, a skeleton (NN/g). While waiting the region is `role="group"` with `aria-busy="true"` and an accessible name. The default placeholder is `rows` skeleton lines; pass a `pending` snippet shaped like your content to keep the layout still. It needs the `experimental.async` Svelte compiler option in the app.
+
+<Demo title="Fast and slow loads" description="A 100 ms load shows nothing. A 1.5 s load shows the skeleton after 200 ms, then the rows." src={DelayedSrc}><Delayed client:visible /></Demo>
+
+<Props for="LoadingBoundary" rows={[
+  { name: "children", type: "Snippet", description: "The suspending content." },
+  { name: "pending", type: "Snippet", description: "What to show while waiting. Defaults to skeleton lines." },
+  { name: "delay", type: "number", default: "200", description: "Milliseconds to wait before showing the placeholder." },
+  { name: "minDuration", type: "number", default: "500", description: "Minimum milliseconds the placeholder stays once shown." },
+  { name: "label", type: "string", description: "Accessible name of the busy region. Defaults to a localised 'Loading…'." },
+  { name: "rows", type: "number", default: "3", description: "Skeleton lines of the default placeholder." },
+]} />
+
+## Navigation progress
+
+`NavigationProgress` (from `@codeatlasdev/ui/kit`, because it reads `navigating` from SvelteKit's `$app/state`) draws a thin bar at the top of the viewport while a client-side navigation is pending. It appears after `delay` ms (120), so quick navigations show nothing, and it sets `data-ca-navigating` on `<html>`. Mount it once in the root layout, next to `RouteAnnouncer`.
+
+```svelte
+<script>
+  import { NavigationProgress, RouteAnnouncer, pendingLink } from "@codeatlasdev/ui/kit";
+</script>
+
+<NavigationProgress />
+<RouteAnnouncer />
+
+<a href="/billing" {@attach pendingLink()}>Billing</a>
+```
+
+`pendingLink()` is a link attachment: the `<a>` being navigated to carries `data-pending` and `aria-busy="true"` until the page is ready, so you can style the tapped link (`a[data-pending] { opacity: .6 }`). The AppShell stays mounted through the navigation: only the page below it changes.
+
+<Props for="NavigationProgress" rows={[
+  { name: "delay", type: "number", default: "120", description: "Milliseconds to wait before showing the bar." },
+  { name: "label", type: "string", description: "Accessible name. Defaults to a localised 'Loading…'." },
+]} />

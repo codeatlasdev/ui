@@ -1,0 +1,34 @@
+<!-- @codeatlasdev/ui demo #248 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/loading-boundary#fast-and-slow-loads -->
+Element: #248 Fast and slow loads (navigation/loading-boundary)
+What it shows: A LoadingBoundary around a suspending report with a fast (100 ms) and a slow (1.5 s) load button.
+When to use: Showing a skeleton for slow data without flashing it on fast responses, in any page that awaits a loader.
+Spec:
+- `<LoadingBoundary label="Loading invoices">` wraps `<Report load={load(ms)} />`
+- `{#key run}` restarts the load for each button
+- `ms = 100; run++;` is the fast case and `ms = 1500; run++;` the slow one
+Tags: loading-boundary, skeleton, suspense, pending, delay
+Needs: @codeatlasdev/ui@4.1.0
+Components: Button, LoadingBoundary, Stack
+Live demo: https://ui.codeatlas.com.br/docs/navigation/loading-boundary#fast-and-slow-loads
+
+<script lang="ts">
+  import { Button, LoadingBoundary, Stack } from '@codeatlasdev/ui';
+  import Report from './Report.svelte';
+
+  let ms = $state(1500);
+  let run = $state(0);
+  const load = (wait: number) => () =>
+    new Promise<string[]>((r) => setTimeout(() => r(['Invoice 1042', 'Invoice 1043', 'Invoice 1044']), wait));
+</script>
+
+<Stack gap="4">
+  <Stack direction="row" gap="2">
+    <Button variant="outlined" size="sm" onclick={() => { ms = 100; run++; }}>Fast (100 ms)</Button>
+    <Button variant="outlined" size="sm" onclick={() => { ms = 1500; run++; }}>Slow (1.5 s)</Button>
+  </Stack>
+  {#key run}
+    <LoadingBoundary label="Loading invoices">
+      <Report load={load(ms)} />
+    </LoadingBoundary>
+  {/key}
+</Stack>

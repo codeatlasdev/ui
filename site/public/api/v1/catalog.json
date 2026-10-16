@@ -1,6 +1,6 @@
 {
 	"version": "4.1.0",
-	"count": 247,
+	"count": 248,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -29,8 +29,8 @@
 		{
 			"slug": "navigation",
 			"first": "146",
-			"last": "239",
-			"count": 22
+			"last": "248",
+			"count": 23
 		},
 		{
 			"slug": "layout",
@@ -10587,6 +10587,48 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/layout/record-list#phone-width",
+			"needs": "@codeatlasdev/ui@4.1.0"
+		},
+		{
+			"id": "248",
+			"group": "navigation",
+			"page": "loading-boundary",
+			"variant": "Delayed",
+			"slug": "fast-and-slow-loads",
+			"title": "Fast and slow loads",
+			"description": "A 100 ms load shows nothing. A 1.5 s load shows the skeleton after 200 ms, then the rows.",
+			"summary": "A LoadingBoundary around a suspending report with a fast (100 ms) and a slow (1.5 s) load button.",
+			"use": "Showing a skeleton for slow data without flashing it on fast responses, in any page that awaits a loader.",
+			"spec": [
+				"`<LoadingBoundary label=\"Loading invoices\">` wraps `<Report load={load(ms)} />`",
+				"`{#key run}` restarts the load for each button",
+				"`ms = 100; run++;` is the fast case and `ms = 1500; run++;` the slow one"
+			],
+			"tags": [
+				"loading-boundary",
+				"skeleton",
+				"suspense",
+				"pending",
+				"delay"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"LoadingBoundary",
+				"Stack"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"LoadingBoundary",
+						"Stack"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/loading-boundary#fast-and-slow-loads",
 			"needs": "@codeatlasdev/ui@4.1.0"
 		}
 	]

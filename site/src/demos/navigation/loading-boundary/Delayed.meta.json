@@ -1,0 +1,17 @@
+{
+	"summary": "A LoadingBoundary around a suspending report with a fast (100 ms) and a slow (1.5 s) load button.",
+	"use": "Showing a skeleton for slow data without flashing it on fast responses, in any page that awaits a loader.",
+	"spec": [
+		"`<LoadingBoundary label=\"Loading invoices\">` wraps `<Report load={load(ms)} />`",
+		"`{#key run}` restarts the load for each button",
+		"`ms = 100; run++;` is the fast case and `ms = 1500; run++;` the slow one"
+	],
+	"tags": [
+		"loading-boundary",
+		"skeleton",
+		"suspense",
+		"pending",
+		"delay"
+	],
+	"shape": "wide"
+}
