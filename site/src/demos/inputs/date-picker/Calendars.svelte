@@ -29,6 +29,9 @@
     display: flex;
     flex-direction: column;
     gap: var(--ca-space-3);
+    /* A flex item defaults to min-width: auto and would grow to the calendar's content; with 0 the
+       calendar's max-width: 100% holds and its month grid scrolls inside it on narrow phones. */
+    min-width: 0;
   }
 
   .out {

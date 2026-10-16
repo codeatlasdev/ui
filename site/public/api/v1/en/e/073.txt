@@ -10,7 +10,7 @@ Live demo: https://ui.codeatlas.com.br/docs/surfaces/collapsible#default-closed
   import { Collapsible, Stack } from '@codeatlasdev/ui';
 </script>
 
-<Stack gap="2" class="stack">
+<Stack gap="2" class="collapsible-faq">
   <Collapsible title="What is a glass surface?">
     <p>A glass surface uses backdrop-filter blur and a translucent tint to create a layered depth effect that reacts to the content behind it.</p>
   </Collapsible>
@@ -23,6 +23,6 @@ Live demo: https://ui.codeatlas.com.br/docs/surfaces/collapsible#default-closed
 </Stack>
 
 <style>
-  :global(.stack) { width: 100%; max-width: 560px; }
+  :global(.collapsible-faq) { width: 100%; max-width: 560px; }
   p { margin: 0; font-size: var(--ca-font-size-body2); color: var(--ca-text-secondary); line-height: 1.6; }
 </style>
