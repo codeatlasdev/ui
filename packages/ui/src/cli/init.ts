@@ -235,9 +235,147 @@ export const handle = sequence(caThemeHandle(theme));
 export const handleError = createErrorHandler();
 `;
 
+/** Default `<Seo>` of the root layout. `page` comes from `$app/state`: a layout may use it, a service worker may not. */
+const SEO_TAG = `<Seo
+	title="My app"
+	canonical={page.url.origin + page.url.pathname}
+	manifest="/manifest.webmanifest"
+/>`;
+
+/** `src/routes/manifest.webmanifest/+server.ts`: colors come from the app theme, icons from `static/icons`. */
+const manifestRoute = (themeSpec: string) => `import { manifest } from "@codeatlasdev/ui/seo";
+import { theme } from "${themeSpec}";
+
+export const prerender = true;
+
+// Icons: put the files in static/icons, or generate them from one SVG mark with caBrandPlugin
+// (\`@codeatlasdev/ui/vite\`) and read the URLs from its generated module.
+export const GET = () =>
+	new Response(
+		JSON.stringify(
+			manifest({
+				name: "My app",
+				theme,
+				icons: [
+					{ src: "/icons/192.png", sizes: "192x192" },
+					{ src: "/icons/512.png", sizes: "512x512" },
+					{ src: "/icons/maskable-512.png", sizes: "512x512", purpose: "maskable" },
+				],
+			})
+		),
+		{ headers: { "content-type": "application/manifest+json" } }
+	);
+`;
+
+const ROBOTS_ROUTE = `import type { RequestHandler } from "@sveltejs/kit";
+import { robotsTxt } from "@codeatlasdev/ui/seo";
+
+export const prerender = true;
+
+export const GET: RequestHandler = ({ url }) =>
+	new Response(robotsTxt({ sitemap: \`\${url.origin}/sitemap.xml\` }), {
+		headers: { "content-type": "text/plain; charset=utf-8" },
+	});
+`;
+
+/** Static pages only (no `[param]` segments; route-group parentheses are dropped, `/offline` is left out): dynamic routes need their own list. */
+const SITEMAP_ROUTE = `import type { RequestHandler } from "@sveltejs/kit";
+import { sitemapXml } from "@codeatlasdev/ui/seo";
+
+export const prerender = true;
+
+const pages = Object.keys(import.meta.glob("/src/routes/**/+page.svelte"))
+	.map((file) => file.replace("/src/routes", "").replace(/\\/?\\+page\\.svelte$/, ""))
+	.filter((path) => !path.includes("["))
+	.map((path) => path.replace(/\\/\\([^)]*\\)/g, "") || "/")
+	.filter((path) => path !== "/offline");
+
+export const GET: RequestHandler = ({ url }) =>
+	new Response(sitemapXml([...new Set(pages)].sort().map((path) => ({ loc: url.origin + path }))), {
+		headers: { "content-type": "application/xml" },
+	});
+`;
+
+const OFFLINE_PAGE = `<h1>You are offline</h1>
+<p>This page needs a connection. Check the network and try again.</p>
+<button type="button" onclick={() => location.reload()}>Try again</button>
+`;
+
+const OFFLINE_PAGE_TS = `export const prerender = true;\n`;
+
+const SW_HEAD = `/// <reference types="@sveltejs/kit" />
+/// <reference no-default-lib="true"/>
+/// <reference lib="esnext" />
+/// <reference lib="webworker" />
+`;
+
+/** Cache rules shared by both Kit majors: only \`ASSETS\` and the cache name differ. */
+const SW_BODY = `
+const CACHE = \`app-\${version}\`;
+const ASSETS = [...BUILD, ...FILES, "/offline"];
+
+sw.addEventListener("install", (event) => {
+	event.waitUntil(
+		caches
+			.open(CACHE)
+			.then((cache) => cache.addAll(ASSETS))
+			.then(() => sw.skipWaiting())
+	);
+});
+
+sw.addEventListener("activate", (event) => {
+	event.waitUntil(
+		caches
+			.keys()
+			.then((keys) => Promise.all(keys.filter((k) => k !== CACHE).map((k) => caches.delete(k))))
+			.then(() => sw.clients.claim())
+	);
+});
+
+sw.addEventListener("fetch", (event) => {
+	const { request } = event;
+	if (request.method !== "GET") return;
+	const url = new URL(request.url);
+	if (url.origin !== sw.location.origin) return;
+
+	// Pages: network first, the cached offline page when the network fails.
+	if (request.mode === "navigate") {
+		event.respondWith(
+			fetch(request).catch(async () => (await caches.match("/offline")) ?? Response.error())
+		);
+		return;
+	}
+
+	// Hashed build output and static files: cache first. API, auth and form actions are never touched.
+	if (ASSETS.includes(url.pathname))
+		event.respondWith(caches.match(request).then((hit) => hit ?? fetch(request)));
+});
+`;
+
+/** Kit 2: \`$service-worker\` exports \`build\`, \`files\` and \`version\`. */
+const SW_KIT2 = `${SW_HEAD}import { build as BUILD, files as FILES, version } from "$service-worker";
+
+const sw = self as unknown as ServiceWorkerGlobalScope;
+${SW_BODY}`;
+
+/**
+ * Kit 3 removed \`$service-worker\`: \`self\` is typed by \`$app/service-worker\`, the file lists live in
+ * \`$app/manifest\` and \`version\` in \`$app/env\`. \`$app/forms\`, \`/navigation\` and \`/state\` cannot be
+ * imported into a worker (the build fails with \`service_worker_invalid_import\`).
+ */
+const SW_KIT3 = `${SW_HEAD}import { self as sw } from "$app/service-worker";
+import { assets, immutable } from "$app/manifest";
+import { version } from "$app/env";
+
+const BUILD = immutable.map((f) => f.path);
+const FILES = assets.map((f) => f.path);
+${SW_BODY}`;
+
 const LAYOUT_NEW = `<script lang="ts">
 	import "@codeatlasdev/ui/styles/global.css";
 	import { colorScheme } from "@codeatlasdev/ui";
+	import { Seo } from "@codeatlasdev/ui/seo";
+	import { page } from "$app/state";
 	import { onMount } from "svelte";
 
 	let { children } = $props();
@@ -245,33 +383,50 @@ const LAYOUT_NEW = `<script lang="ts">
 	onMount(() => colorScheme.init());
 </script>
 
+${SEO_TAG}
+
 {@render children()}
 `;
 
+/**
+ * The root-layout \`<Seo>\`: a default title and the page's own canonical (origin + path, no query),
+ * plus the manifest link. A page overrides it with its own \`<Seo>\`, or passes \`noindex\`.
+ */
+function seoImports(src: string): string[] {
+	const lines: string[] = [];
+	if (!/import\s*\{[^}]*\bSeo\b[^}]*\}\s*from\s*["']@codeatlasdev\/ui\/seo["']/.test(src))
+		lines.push('\timport { Seo } from "@codeatlasdev/ui/seo";');
+	if (!/import\s*\{[^}]*\bpage\b[^}]*\}\s*from\s*["']\$app\/state["']/.test(src))
+		lines.push('\timport { page } from "$app/state";');
+	return lines;
+}
+
 function layoutPatch(src: string): string | null {
 	let out = src;
-	if (
-		!out.includes("@codeatlasdev/ui/styles/global.css") ||
-		!/colorScheme\s*\.\s*init\s*\(/.test(out)
-	) {
-		const script = out.match(/<script\b[^>]*>/);
-		if (!script || script.index === undefined) {
-			out = `<script lang="ts">\n\timport "@codeatlasdev/ui/styles/global.css";\n\timport { colorScheme } from "@codeatlasdev/ui";\n\timport { onMount } from "svelte";\n\n\tonMount(() => colorScheme.init());\n</script>\n\n${out}`;
-			return out;
-		}
-		const insertAt = script.index + script[0].length;
-		const lines: string[] = [];
-		if (!out.includes("@codeatlasdev/ui/styles/global.css"))
-			lines.push('\timport "@codeatlasdev/ui/styles/global.css";');
-		if (!/import\s*\{[^}]*\bcolorScheme\b[^}]*\}\s*from\s*["']@codeatlasdev\/ui["']/.test(out))
-			lines.push('\timport { colorScheme } from "@codeatlasdev/ui";');
-		if (!/import\s*\{[^}]*\bonMount\b[^}]*\}\s*from\s*["']svelte["']/.test(out))
-			lines.push('\timport { onMount } from "svelte";');
-		out = `${out.slice(0, insertAt)}\n${lines.join("\n")}${out.slice(insertAt)}`;
-		if (!/colorScheme\s*\.\s*init\s*\(/.test(out)) {
-			const close = out.indexOf("</script>");
-			out = `${out.slice(0, close).replace(/\s*$/, "")}\n\n\tonMount(() => colorScheme.init());\n${out.slice(close)}`;
-		}
+	const needCss = !out.includes("@codeatlasdev/ui/styles/global.css");
+	const needScheme = !/colorScheme\s*\.\s*init\s*\(/.test(out);
+	const needSeo = !/<Seo\b/.test(out);
+	if (!needCss && !needScheme && !needSeo) return out;
+	const script = out.match(/<script\b[^>]*>/);
+	if (!script || script.index === undefined) {
+		return `<script lang="ts">\n\timport "@codeatlasdev/ui/styles/global.css";\n\timport { colorScheme } from "@codeatlasdev/ui";\n${seoImports(out).join("\n")}\n\timport { onMount } from "svelte";\n\n\tonMount(() => colorScheme.init());\n</script>\n\n${SEO_TAG}\n\n${out}`;
+	}
+	const insertAt = script.index + script[0].length;
+	const lines: string[] = [];
+	if (needCss) lines.push('\timport "@codeatlasdev/ui/styles/global.css";');
+	if (!/import\s*\{[^}]*\bcolorScheme\b[^}]*\}\s*from\s*["']@codeatlasdev\/ui["']/.test(out))
+		lines.push('\timport { colorScheme } from "@codeatlasdev/ui";');
+	if (needSeo) lines.push(...seoImports(out));
+	if (!/import\s*\{[^}]*\bonMount\b[^}]*\}\s*from\s*["']svelte["']/.test(out))
+		lines.push('\timport { onMount } from "svelte";');
+	out = `${out.slice(0, insertAt)}\n${lines.join("\n")}${out.slice(insertAt)}`;
+	if (needScheme) {
+		const close = out.indexOf("</script>");
+		out = `${out.slice(0, close).replace(/\s*$/, "")}\n\n\tonMount(() => colorScheme.init());\n${out.slice(close)}`;
+	}
+	if (needSeo) {
+		const close = out.indexOf("</script>") + "</script>".length;
+		out = `${out.slice(0, close)}\n\n${SEO_TAG}${out.slice(close)}`;
 	}
 	return out;
 }
@@ -304,6 +459,29 @@ function kit3Notes(root: string): string[] {
 	return notes;
 }
 
+/**
+ * What the scaffolded SEO/PWA files still need from the app. Printed only when init created them:
+ * the placeholder origin Kit uses while prerendering would otherwise reach the sitemap, robots.txt
+ * and canonical URLs, and the icons are files init cannot invent.
+ */
+function seoNotes(root: string, created: boolean): string[] {
+	if (!created) return [];
+	const notes = [
+		'Set your public origin (`sveltekit({ paths: { origin: "https://example.com" } })` on Kit 3, `kit.paths.origin` on Kit 2): while prerendering Kit uses a placeholder one, and it would end up in sitemap.xml, robots.txt and every canonical URL.',
+		"Add the manifest icons (static/icons/192.png, 512.png, maskable-512.png), or generate them from one SVG with caBrandPlugin (`@codeatlasdev/ui/vite`).",
+	];
+	const tsconfig = join(root, "tsconfig.json");
+	if (
+		kitMajor(root) >= 3 &&
+		existsSync(tsconfig) &&
+		!readFileSync(tsconfig, "utf8").includes("src/service-worker")
+	)
+		notes.push(
+			'Add "src/service-worker" to the `exclude` of tsconfig.json: the worker has its own tsconfig (`$app/tsconfig/service-worker`), and Kit 3 fails the build with tsconfig_invalid otherwise.'
+		);
+	return notes;
+}
+
 /** The step that would create the app's theme file, or the explanation that init keeps the app's own. */
 function themeStep(path: string, create: string, existing: string | null): Step {
 	return existing
@@ -314,9 +492,18 @@ function themeStep(path: string, create: string, existing: string | null): Step 
 		: { path, create };
 }
 
+/**
+ * Theme specifier from a file under `src/routes/<dir>/`. `themeImport` returns `./lib/theme.ts`
+ * (relative to `src/`) for a Kit 3 app without the `#lib` map; from a route it is two levels up.
+ */
+function routeThemeSpec(lib: string, depth: number): string {
+	return lib.startsWith("./") ? `${"../".repeat(depth + 1)}${lib.slice(2)}` : lib;
+}
+
 function sveltekitSteps(root: string): Step[] {
 	const existing = existingThemeSpec(root, ["vite.config.ts", "src/hooks.server.ts"]);
 	const lib = existing ?? themeImport(root);
+	const kit3 = kitMajor(root) >= 3;
 	return [
 		themeStep("src/lib/theme.ts", THEME_TS, existing),
 		{
@@ -332,6 +519,18 @@ function sveltekitSteps(root: string): Step[] {
 			manual: 'Add caThemePlugin(theme) from "@codeatlasdev/ui/vite" to `plugins`.',
 		},
 		{ path: "src/routes/+layout.svelte", create: LAYOUT_NEW, patch: layoutPatch },
+		{
+			path: "src/routes/manifest.webmanifest/+server.ts",
+			create: manifestRoute(routeThemeSpec(lib, 2)),
+		},
+		{ path: "src/routes/robots.txt/+server.ts", create: ROBOTS_ROUTE },
+		{ path: "src/routes/sitemap.xml/+server.ts", create: SITEMAP_ROUTE },
+		{ path: "src/routes/offline/+page.svelte", create: OFFLINE_PAGE },
+		{ path: "src/routes/offline/+page.ts", create: OFFLINE_PAGE_TS },
+		// Kit 3 reads `src/service-worker/index.ts`, Kit 2 `src/service-worker.ts`: never both.
+		kit3
+			? { path: "src/service-worker/index.ts", create: SW_KIT3 }
+			: { path: "src/service-worker.ts", create: SW_KIT2 },
 		{ path: "src/app.html", patch: appHtmlPatch, manual: `Set the viewport meta to: ${VIEWPORT}` },
 	];
 }
@@ -452,6 +651,7 @@ export function init(
 
 	let ok = true;
 	let pending = 0;
+	let createdManifest = false;
 	for (const step of fw === "sveltekit" ? sveltekitSteps(root) : astroSteps(root)) {
 		if (step.note) {
 			log(`  skip    ${step.path}: ${step.note}`);
@@ -467,6 +667,7 @@ export function init(
 			if (write) {
 				mkdirSync(dirname(abs), { recursive: true });
 				writeFileSync(abs, step.create);
+				createdManifest ||= step.path.endsWith("manifest.webmanifest/+server.ts");
 				log(`  create  ${step.path}`);
 			} else {
 				pending++;
@@ -495,7 +696,10 @@ export function init(
 		log(
 			`\n${pending} change(s) not applied. Re-run with --write to create the files and apply the diffs above.`
 		);
-	const notes = fw === "sveltekit" && kitMajor(root) >= 3 ? kit3Notes(root) : [];
+	const notes = [
+		...(fw === "sveltekit" && kitMajor(root) >= 3 ? kit3Notes(root) : []),
+		...(fw === "sveltekit" ? seoNotes(root, createdManifest) : []),
+	];
 	for (const n of notes) log(`\n  note    ${n}`);
 	if (ok && !pending && !notes.length)
 		log("\nDone. Run your dev server: the theme paints on the first frame.");

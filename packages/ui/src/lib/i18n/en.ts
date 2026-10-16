@@ -204,6 +204,14 @@ export const en = {
 		cepNotFound: "ZIP code not found",
 		cepLookupFailed: "Could not look up the ZIP code",
 	},
+	installPrompt: {
+		title: "Install this app",
+		description: "Add it to your home screen for quick access, full screen and offline use.",
+		install: "Install",
+		dismiss: "Dismiss install prompt",
+		iosShare: "Tap Share in the browser toolbar.",
+		iosAdd: 'Choose "Add to Home Screen".',
+	},
 	lightbox: {
 		close: "Close",
 		previous: "Previous",

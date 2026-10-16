@@ -88,4 +88,46 @@ describe("Seo", () => {
 			expect(warn).toHaveBeenCalledWith(expect.stringContaining("no canonical URL"))
 		);
 	});
+
+	it("mirrors title and description into twitter:title and twitter:description (#207)", async () => {
+		await render(Seo, {
+			title: "Pricing",
+			titleTemplate: "%s · Acme",
+			description: "Plans.",
+			canonical: "https://acme.test/pricing/",
+		});
+		await vi.waitFor(() => expect(meta('meta[name="twitter:title"]')).not.toBeNull());
+		expect(meta('meta[name="twitter:title"]')?.content).toBe("Pricing · Acme");
+		expect(meta('meta[name="twitter:description"]')?.content).toBe("Plans.");
+	});
+
+	it("falls back to og.defaultImage; a page image wins (#207)", async () => {
+		const a = await render(Seo, {
+			title: "A",
+			canonical: "https://acme.test/a/",
+			og: { defaultImage: "https://acme.test/default.png" },
+		});
+		await vi.waitFor(() =>
+			expect(meta('meta[property="og:image"]')?.content).toBe("https://acme.test/default.png")
+		);
+		expect(meta('meta[name="twitter:image"]')?.content).toBe("https://acme.test/default.png");
+		expect(meta('meta[name="twitter:card"]')?.content).toBe("summary_large_image");
+		await a.unmount();
+		await render(Seo, {
+			title: "B",
+			canonical: "https://acme.test/b/",
+			og: { defaultImage: "https://acme.test/default.png", image: "https://acme.test/b.png" },
+		});
+		await vi.waitFor(() =>
+			expect(meta('meta[property="og:image"]')?.content).toBe("https://acme.test/b.png")
+		);
+	});
+
+	it("lang sets og:locale and the document language (#207)", async () => {
+		const before = document.documentElement.lang;
+		await render(Seo, { title: "Oi", canonical: "https://acme.test/pt/", lang: "pt-BR" });
+		await vi.waitFor(() => expect(meta('meta[property="og:locale"]')?.content).toBe("pt_BR"));
+		expect(document.documentElement.lang).toBe("pt-BR");
+		document.documentElement.lang = before;
+	});
 });

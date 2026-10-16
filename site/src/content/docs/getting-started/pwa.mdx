@@ -74,9 +74,11 @@ Safari ignores most manifest fields. `appleMeta()` returns the tags it does read
 
 ## Service worker
 
-SvelteKit builds the worker when `src/service-worker.ts` exists and registers it for you. The `$service-worker` module lists the hashed build files, static files and the app version, so the cache never serves stale assets after a deploy.
+SvelteKit builds the worker when `src/service-worker.ts` (Kit 2) or `src/service-worker/index.ts` (Kit 3) exists and registers it for you. `bunx @codeatlasdev/ui init --write` creates the right one for your Kit major, plus the prerendered `/offline` page. The build lists give the hashed build files, static files and the app version, so the cache never serves stale assets after a deploy.
 
-The pattern below mirrors what works in production apps:
+Kit 3 removed `$service-worker`: `self` comes from `$app/service-worker`, the file lists from `$app/manifest` (`immutable`, `assets`) and `version` from `$app/env`. `$app/forms`, `$app/navigation` and `$app/state` cannot be imported into a worker (the build fails with `service_worker_invalid_import`), and `tsconfig.json` must list `src/service-worker` in `exclude` (the worker has its own `$app/tsconfig/service-worker`).
+
+The pattern below (Kit 2 imports; the rules are the same on Kit 3) mirrors what works in production apps:
 
 | Request | Strategy | Why |
 |---|---|---|
@@ -141,6 +143,10 @@ Create `src/routes/offline/+page.svelte` with a short message and a retry button
   Service workers only run on HTTPS or `localhost`, and only in a production build: run `bun run build && bun run preview`, open DevTools, Application, Service Workers, then tick Offline and reload.
 </Callout>
 
+## Install prompt
+
+Browsers only offer to install an app that meets the criteria: the manifest above (`display: "standalone"`, 192 and 512 icons) and a service worker. [`InstallPrompt`](/docs/feedback/install-prompt/) turns that into UI: put it once in the root layout and it shows the native install dialog on Chromium, the Share, Add to Home Screen steps on iOS, and nothing once the app is installed or the user dismissed it.
+
 ## Checklist
 
 | Check | Where |
@@ -151,3 +157,4 @@ Create `src/routes/offline/+page.svelte` with a short message and a retry button
 | iOS tags present | `appleMeta()` |
 | Offline page prerendered and cached on install | `src/service-worker.ts` |
 | No authenticated responses cached | fetch handler |
+| An install entry point | `InstallPrompt` in the root layout |

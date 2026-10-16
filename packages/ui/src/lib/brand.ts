@@ -127,6 +127,8 @@ export function resvgOptions(svg: string, size: number) {
 function plan(o: Pick<GenerateBrandOptions, "mark" | "theme" | "base" | "name" | "shortName">) {
 	const base = (o.base ?? "/brand").replace(/\/$/, "");
 	const brand = resolveBrand(o.theme);
+	const scheme: keyof ResolvedBrand =
+		defineTheme(o.theme).defaultScheme === "light" ? "light" : "dark";
 	// resvg and standalone SVG files need the namespace; inline use in HTML does not.
 	const mark = /<svg\b[^>]*\bxmlns=/.test(o.mark)
 		? o.mark
@@ -135,6 +137,7 @@ function plan(o: Pick<GenerateBrandOptions, "mark" | "theme" | "base" | "name" |
 	const hash = brandHash(
 		mark,
 		JSON.stringify(brand),
+		scheme,
 		JSON.stringify(SIZES),
 		o.name ?? "",
 		o.shortName ?? ""
@@ -151,7 +154,7 @@ function plan(o: Pick<GenerateBrandOptions, "mark" | "theme" | "base" | "name" |
 		manifest: url(`manifest.${hash}.webmanifest`),
 		hash,
 	};
-	return { mark, brand, hash, assets, url };
+	return { mark, brand, scheme, hash, assets, url };
 }
 
 /**
@@ -190,7 +193,7 @@ export async function generateBrand(o: GenerateBrandOptions): Promise<BrandAsset
 		optionalPeer<typeof ResvgModule>("@resvg/resvg-js"),
 		optionalPeer<typeof PngToIcoModule>("png-to-ico"),
 	]);
-	const { mark, brand, hash, assets, url } = plan(o);
+	const { mark, brand, scheme, hash, assets, url } = plan(o);
 	const light = renderMark(mark, brand.light);
 
 	/** Mark centered on an opaque square. `inset` is the fraction of the canvas left empty on each side. */
@@ -223,13 +226,19 @@ export async function generateBrand(o: GenerateBrandOptions): Promise<BrandAsset
 		// Maskable: content inside the central 80% safe zone (W3C maskable icon spec).
 		[`maskable-512.${hash}.png`]: png(tile(512, 0.2), 512),
 	};
+	// One color per manifest field (the spec has no per-scheme variant): the default scheme's, with
+	// `system` counting as dark, the same rule `manifest()` follows. `id` pins the app identity so a
+	// later `start_url` change does not install a second copy.
+	const surface = brand[scheme].surface;
 	const manifest = {
+		id: "/",
 		name: o.name,
 		short_name: o.shortName ?? o.name,
 		start_url: "/",
-		display: "browser",
-		background_color: brand.light.surface,
-		theme_color: brand.light.surface,
+		scope: "/",
+		display: "standalone",
+		background_color: surface,
+		theme_color: surface,
 		icons: [
 			{ src: url(`icon-192.${hash}.png`), sizes: "192x192", type: "image/png" },
 			{ src: url(`icon-512.${hash}.png`), sizes: "512x512", type: "image/png" },

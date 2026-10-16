@@ -1171,6 +1171,21 @@ Also accepts: `Omit<HTMLImgAttributes, 'src' \| 'alt' \| 'width' \| 'height' \| 
 
 Classes: `ca-image`
 
+## InstallPrompt
+
+`import { InstallPrompt } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `mode?` | `'auto' \| 'native' \| 'ios'` | `'auto'` | Which prompt to offer. `auto` picks from the browser: the native install button where `beforeinstallprompt` fires (Chromium), the Share-sheet instructions on iOS Safari (it has no install API). Pass `ios` or `native` to force one, e.g. to document or test it. |
+| `dismissDays?` | `number` | `14` | Days the prompt stays hidden after the user dismisses it. |
+| `storageKey?` | `string` | `'ca-install-dismissed'` | `localStorage` key of the dismissal. |
+| `onchoice?` | `(outcome: 'accepted' \| 'dismissed') => void` |  | Called with the user's choice in the browser's install dialog. |
+| `ondismiss?` | `() => void` |  | Called when the user closes the banner with the close button. |
+| `class?` | `string` | `''` |  |
+
+Classes: `ca-install` `ca-install__body` `ca-install__close` `ca-install__glyph` `ca-install__icon` `ca-install__steps` `ca-install__text` `ca-install__title`
+
 ## Kbd
 
 `import { Kbd } from "@codeatlasdev/ui"`
@@ -1782,6 +1797,7 @@ Classes: `ca-sel` `ca-sel--sm` `ca-sel__check` `ca-sel__content` `ca-sel__hint` 
 | `twitter?` | `Twitter` |  |  |
 | `jsonLd?` | `object \| object[]` |  | One node, an array, or a `graph()` document. |
 | `manifest?` | `string` |  | Link to the web app manifest, e.g. `"/manifest.webmanifest"`. |
+| `lang?` | `string` |  | BCP 47 language of the page, e.g. `"pt-BR"`. Sets `og:locale` (`pt_BR`) when `og.locale` is not given and keeps `<html lang>` in sync on the client. The server-rendered `<html lang>` belongs in `app.html`. |
 
 ## SettingItem
 

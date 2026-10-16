@@ -93,6 +93,43 @@ describe("generateBrand", () => {
 	});
 });
 
+describe("generated web app manifest (#206)", () => {
+	const manifestOf = async (t: typeof theme & { defaultScheme?: "light" | "dark" | "system" }) => {
+		const outDir = mkdtempSync(join(tmpdir(), "brand-"));
+		const assets = await generateBrand({ mark: MARK, theme: t, outDir, name: "Tokyo App" });
+		return JSON.parse(readFileSync(join(outDir, `manifest.${assets.hash}.webmanifest`), "utf8"));
+	};
+
+	it("is installable: standalone, with a stable id and a scope", async () => {
+		const m = await manifestOf(theme);
+		expect(m.display).toBe("standalone");
+		expect(m.id).toBe("/");
+		expect(m.scope).toBe("/");
+		expect(m.start_url).toBe("/");
+	});
+
+	it("takes theme and background colors from the default scheme", async () => {
+		const brand = resolveBrand(theme);
+		const dark = await manifestOf({ ...theme, defaultScheme: "dark" });
+		expect(dark.theme_color).toBe(brand.dark.surface);
+		expect(dark.background_color).toBe(brand.dark.surface);
+		const light = await manifestOf({ ...theme, defaultScheme: "light" });
+		expect(light.theme_color).toBe(brand.light.surface);
+		expect(light.background_color).toBe(brand.light.surface);
+		expect(brand.dark.surface).not.toBe(brand.light.surface);
+	});
+
+	it("`system` (what init scaffolds) counts as dark, like manifest(), and renames the icons only when the color changes", async () => {
+		const brand = resolveBrand(theme);
+		const system = await manifestOf({ ...theme, defaultScheme: "system" });
+		expect(system.theme_color).toBe(brand.dark.surface);
+		const url = (s: "light" | "dark" | "system") =>
+			brandUrls({ mark: MARK, theme: { ...theme, defaultScheme: s }, name: "Tokyo App" }).hash;
+		expect(url("system")).toBe(url("dark"));
+		expect(url("light")).not.toBe(url("dark"));
+	});
+});
+
 describe("iconLinks / ogCard", () => {
 	it("links only what it is given and escapes attributes", () => {
 		const out = iconLinks({ favicon: '/a"b.svg', appleTouch: "/t.png" });

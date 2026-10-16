@@ -1,0 +1,21 @@
+<!-- @codeatlasdev/ui demo #243 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/install-prompt#ios-instructions -->
+Element: #243 iOS instructions (feedback/install-prompt)
+What it shows: What Safari on iPhone and iPad gets: the two steps, no button.
+Tags: ios, instructions, installprompt
+Needs: @codeatlasdev/ui@4.1.0
+Components: InstallPrompt
+Live demo: https://ui.codeatlas.com.br/docs/feedback/install-prompt#ios-instructions
+
+<script lang="ts">
+  import { InstallPrompt } from '@codeatlasdev/ui';
+</script>
+
+<!-- The prompt renders nothing until it is mounted in the browser; the box gives the island
+     something to intersect (client:visible) and keeps the page from shifting when it appears. -->
+<div class="stage">
+  <InstallPrompt mode="ios" storageKey="demo-install-ios" />
+</div>
+
+<style>
+  .stage { min-height: calc(var(--ca-space-8) * 3); }
+</style>

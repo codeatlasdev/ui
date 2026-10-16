@@ -1,0 +1,41 @@
+---
+title: InstallPrompt
+description: A dismissible banner that offers to install the app, with the native dialog on Chromium and Share-sheet steps on iOS.
+group: Feedback
+order: 10
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import NativePrompt from "~/demos/feedback/install-prompt/NativePrompt.svelte";
+import NativePromptSrc from "~/demos/feedback/install-prompt/NativePrompt.svelte?raw";
+import IosInstructions from "~/demos/feedback/install-prompt/IosInstructions.svelte";
+import IosInstructionsSrc from "~/demos/feedback/install-prompt/IosInstructions.svelte?raw";
+
+```svelte
+<script>
+  import { InstallPrompt } from "@codeatlasdev/ui";
+</script>
+
+<InstallPrompt onchoice={(outcome) => console.log(outcome)} />
+```
+
+Render it once, in the root layout. It shows nothing until there is something to offer:
+
+- **Chromium (Android, desktop)**: it keeps the `beforeinstallprompt` event, so the browser's own mini-infobar does not appear, and shows an **Install** button that opens the native dialog. The browser only fires the event when the app is installable: a manifest with `display: "standalone"` and 192 and 512 icons, and a service worker (see [PWA](/docs/getting-started/pwa/)).
+- **iOS Safari** (iPhone, and iPad, which reports a Mac user agent): Safari has no install API, so it shows the two steps, Share then Add to Home Screen.
+- **Already installed** (`display-mode: standalone`, or `navigator.standalone`): nothing.
+- **Dismissed**: nothing for `dismissDays`, remembered in `localStorage`.
+
+<Demo title="Native prompt" description="The Chromium flow: Install opens the browser's install dialog. This demo fires a stand-in event so the banner shows in any browser." src={NativePromptSrc}><NativePrompt client:visible /></Demo>
+<Demo title="iOS instructions" description="What Safari on iPhone and iPad gets: the two steps, no button." src={IosInstructionsSrc}><IosInstructions client:visible /></Demo>
+
+<Props for="InstallPrompt" rows={[
+  { name: "mode", type: "'auto' | 'native' | 'ios'", default: "'auto'", description: "`auto` picks from the browser. Force `native` or `ios` to document or test one flow." },
+  { name: "dismissDays", type: "number", default: "14", description: "Days the banner stays hidden after the user closes it." },
+  { name: "storageKey", type: "string", default: "'ca-install-dismissed'", description: "`localStorage` key that holds the end of the dismissal." },
+  { name: "onchoice", type: "(outcome: 'accepted' | 'dismissed') => void", description: "The user's answer in the browser's install dialog." },
+  { name: "ondismiss", type: "() => void", description: "The user closed the banner with the close button." },
+  { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
+]} />
+
+Strings come from the `installPrompt` group of the i18n catalog (`en` and `pt-BR` built in).

@@ -1,0 +1,25 @@
+<script lang="ts">
+  import { InstallPrompt } from '@codeatlasdev/ui';
+  import { onMount } from 'svelte';
+
+  // A real page waits for the browser's `beforeinstallprompt`. This demo fires a stand-in so the
+  // banner can be seen anywhere; Install then resolves without opening a browser dialog.
+  onMount(() => {
+    const event = new Event('beforeinstallprompt', { cancelable: true });
+    Object.assign(event, {
+      prompt: () => Promise.resolve(),
+      userChoice: Promise.resolve({ outcome: 'dismissed' }),
+    });
+    dispatchEvent(event);
+  });
+</script>
+
+<!-- The prompt renders nothing until it is mounted in the browser; the box gives the island
+     something to intersect (client:visible) and keeps the page from shifting when it appears. -->
+<div class="stage">
+  <InstallPrompt mode="native" storageKey="demo-install-native" />
+</div>
+
+<style>
+  .stage { min-height: calc(var(--ca-space-8) * 3); }
+</style>

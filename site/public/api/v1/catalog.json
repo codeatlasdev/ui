@@ -1,6 +1,6 @@
 {
 	"version": "4.1.0",
-	"count": 242,
+	"count": 244,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -17,8 +17,8 @@
 		{
 			"slug": "feedback",
 			"first": "080",
-			"last": "242",
-			"count": 26
+			"last": "244",
+			"count": 28
 		},
 		{
 			"slug": "display",
@@ -8597,6 +8597,70 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/feedback/lightbox#gallery-with-video-caption-and-download",
+			"needs": "@codeatlasdev/ui@4.1.0"
+		},
+		{
+			"id": "243",
+			"group": "feedback",
+			"page": "install-prompt",
+			"variant": "IosInstructions",
+			"slug": "ios-instructions",
+			"title": "iOS instructions",
+			"description": "What Safari on iPhone and iPad gets: the two steps, no button.",
+			"summary": "What Safari on iPhone and iPad gets: the two steps, no button.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"ios",
+				"instructions",
+				"installprompt"
+			],
+			"shape": "wide",
+			"components": [
+				"InstallPrompt"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"InstallPrompt"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/install-prompt#ios-instructions",
+			"needs": "@codeatlasdev/ui@4.1.0"
+		},
+		{
+			"id": "244",
+			"group": "feedback",
+			"page": "install-prompt",
+			"variant": "NativePrompt",
+			"slug": "native-prompt",
+			"title": "Native prompt",
+			"description": "The Chromium flow: Install opens the browser's install dialog. This demo fires a stand-in event so the banner shows in any browser.",
+			"summary": "The Chromium flow: Install opens the browser's install dialog. This demo fires a stand-in event so the banner shows in any browser.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"native",
+				"prompt",
+				"installprompt"
+			],
+			"shape": "wide",
+			"components": [
+				"InstallPrompt"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"InstallPrompt"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/install-prompt#native-prompt",
 			"needs": "@codeatlasdev/ui@4.1.0"
 		}
 	]

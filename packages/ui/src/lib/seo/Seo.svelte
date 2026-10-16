@@ -7,6 +7,8 @@
     type?: string;
     /** Absolute image URL, 1200x630. */
     image?: string;
+    /** Used when `image` is not set: the site-wide card, passed once from the root layout. */
+    defaultImage?: string;
     imageAlt?: string;
     /** @default "image/png" */
     imageType?: string;
@@ -44,6 +46,12 @@
     jsonLd?: object | object[];
     /** Link to the web app manifest, e.g. `"/manifest.webmanifest"`. */
     manifest?: string;
+    /**
+     * BCP 47 language of the page, e.g. `"pt-BR"`. Sets `og:locale` (`pt_BR`) when `og.locale` is
+     * not given and keeps `<html lang>` in sync on the client. The server-rendered `<html lang>`
+     * belongs in `app.html`.
+     */
+    lang?: string;
   }
 
   let {
@@ -58,12 +66,19 @@
     twitter,
     jsonLd,
     manifest,
+    lang,
   }: Props = $props();
 
   let fullTitle = $derived(titleTemplate.replace('%s', title));
   let directives = $derived(noindex ? 'noindex,nofollow' : robots);
   let indexable = $derived(!directives.includes('noindex'));
   let ld = $derived(jsonLd ? serializeJsonLd(jsonLd) : undefined);
+  let image = $derived(og?.image ?? og?.defaultImage);
+  let locale = $derived(og?.locale ?? lang?.replace('-', '_'));
+
+  $effect(() => {
+    if (lang && document.documentElement.lang !== lang) document.documentElement.lang = lang;
+  });
 
   $effect(() => {
     if (DEV && indexable && !canonical)
@@ -87,20 +102,22 @@
   {#if description}<meta property="og:description" content={description} />{/if}
   {#if canonical}<meta property="og:url" content={canonical} />{/if}
   {#if og?.siteName}<meta property="og:site_name" content={og.siteName} />{/if}
-  {#if og?.locale}<meta property="og:locale" content={og.locale} />{/if}
+  {#if locale}<meta property="og:locale" content={locale} />{/if}
   {#each og?.localeAlternates ?? [] as locale (locale)}
     <meta property="og:locale:alternate" content={locale} />
   {/each}
-  {#if og?.image}
-    <meta property="og:image" content={og.image} />
-    <meta property="og:image:type" content={og.imageType ?? 'image/png'} />
-    {#if og.imageAlt}<meta property="og:image:alt" content={og.imageAlt} />{/if}
-    <meta property="og:image:width" content={String(og.imageWidth ?? 1200)} />
-    <meta property="og:image:height" content={String(og.imageHeight ?? 630)} />
+  {#if image}
+    <meta property="og:image" content={image} />
+    <meta property="og:image:type" content={og?.imageType ?? 'image/png'} />
+    {#if og?.imageAlt}<meta property="og:image:alt" content={og.imageAlt} />{/if}
+    <meta property="og:image:width" content={String(og?.imageWidth ?? 1200)} />
+    <meta property="og:image:height" content={String(og?.imageHeight ?? 630)} />
   {/if}
 
-  <meta name="twitter:card" content={og?.image ? (twitter?.card ?? 'summary_large_image') : 'summary'} />
-  {#if og?.image}<meta name="twitter:image" content={og.image} />{/if}
+  <meta name="twitter:card" content={image ? (twitter?.card ?? 'summary_large_image') : 'summary'} />
+  <meta name="twitter:title" content={fullTitle} />
+  {#if description}<meta name="twitter:description" content={description} />{/if}
+  {#if image}<meta name="twitter:image" content={image} />{/if}
   {#if twitter?.site}<meta name="twitter:site" content={twitter.site} />{/if}
 
   {#if manifest}<link rel="manifest" href={manifest} />{/if}

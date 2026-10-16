@@ -241,3 +241,5 @@ id	group	page	title	tags	summary
 240	display	avatar	IconFallback	iconfallback,avatar	IconFallback
 241	feedback	skeleton	The skeleton prop	the,skeleton,prop,avatar,button,card,flex,kpicard,stack,textfield	One flag on the real component keeps its size while data loads.
 242	feedback	lightbox	Gallery with video, caption and download	gallery,with,video,caption,and,download,button,lightbox	Arrow keys, buttons and swipe move through the items.
+243	feedback	install-prompt	iOS instructions	ios,instructions,installprompt	What Safari on iPhone and iPad gets: the two steps, no button.
+244	feedback	install-prompt	Native prompt	native,prompt,installprompt	The Chromium flow: Install opens the browser's install dialog. This demo fires a stand-in event so the banner shows in any browser.

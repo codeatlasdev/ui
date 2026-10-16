@@ -55,15 +55,16 @@ Place one `Seo` per page, in the route or layout that knows the page's data.
 <Props for="Seo" rows={[
   { name: "title", type: "string", default: "required", description: "Page title, also used for og:title." },
   { name: "titleTemplate", type: "string", default: "'%s'", description: "Wrapper for the title; %s is replaced." },
-  { name: "description", type: "string", default: "-", description: "Meta description and og:description." },
+  { name: "description", type: "string", default: "-", description: "Meta description, og:description and twitter:description." },
   { name: "canonical", type: "string", default: "-", description: "Absolute URL of this page. Required on indexable pages; a dev warning fires without it." },
   { name: "robots", type: "string", default: "'index,follow'", description: "Content of the robots meta." },
   { name: "noindex", type: "boolean", default: "false", description: "Shorthand for 'noindex,nofollow'. Use on admin, auth and app pages." },
   { name: "alternates", type: "{ hreflang: string; href: string }[]", default: "-", description: "Translations, including the page itself and an x-default entry." },
-  { name: "og", type: "{ type?, image?, imageAlt?, imageType?, imageWidth?, imageHeight?, locale?, localeAlternates?, siteName? }", default: "-", description: "Open Graph. `type` defaults to 'website', image size to 1200x630 and `imageType` to 'image/png' (set it to 'image/jpeg' for `ogImageRoute`, which renders JPEG by default)." },
-  { name: "twitter", type: "{ card?, site? }", default: "-", description: "`card` is summary_large_image when an og image is set, otherwise summary. `site` is the @handle." },
+  { name: "og", type: "{ type?, image?, defaultImage?, imageAlt?, imageType?, imageWidth?, imageHeight?, locale?, localeAlternates?, siteName? }", default: "-", description: "Open Graph. `type` defaults to 'website', image size to 1200x630 and `imageType` to 'image/png' (set it to 'image/jpeg' for `ogImageRoute`, which renders JPEG by default). `defaultImage` is the site-wide card from the root layout; a page `image` replaces it. Without either, no image tag is written." },
+  { name: "twitter", type: "{ card?, site? }", default: "-", description: "`card` is summary_large_image when an og image is set, otherwise summary. `site` is the @handle. `twitter:title` and `twitter:description` always mirror the page title and description." },
   { name: "jsonLd", type: "object | object[]", default: "-", description: "Structured data. Serialized with '<' escaped, so values cannot close the script tag." },
   { name: "manifest", type: "string", default: "-", description: "URL of the web app manifest." },
+  { name: "lang", type: "string", default: "-", description: "BCP 47 language of the page (`'pt-BR'`). Sets `og:locale` (`pt_BR`) unless `og.locale` is given and keeps `<html lang>` in sync on the client. The server-rendered `<html lang>` belongs in `app.html`." },
 ]} />
 
 <Callout type="info" title="Where the dev warnings come from">
@@ -234,6 +235,8 @@ export default defineConfig({
 ```
 
 As soon as Vite resolves its config (dev server, build) it writes `src/generated/brand.ts` with the asset URLs, so the module exists before the first build. At build start it writes `favicon.<hash>.svg` (follows `prefers-color-scheme`), `favicon.<hash>.ico` (16, 32, 48), `favicon-32`, `apple-touch-icon` (180, opaque), `icon-192`, `icon-512`, `maskable-512` and `manifest.<hash>.webmanifest`. `outDir` is emptied first. Colors are `--ca-text-primary`, `--ca-brand-main` and `--ca-surface-base` of the theme's default preset, converted to `#rrggbb`. Add `static/brand/` and `src/generated/` to `.gitignore`: nothing it writes is meant to be committed.
+
+The generated manifest is installable as is: `display: "standalone"`, `id` and `scope` `"/"`, and `theme_color` / `background_color` set to the surface color of the theme's default scheme (the dark one unless `defaultScheme` is `"light"`; a manifest holds a single color per field). Chromium shows the install prompt once the manifest, a service worker and the 192/512 icons are present.
 
 | `caBrandPlugin` option | Default | Description |
 |---|---|---|

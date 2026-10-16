@@ -58,6 +58,16 @@ test.describe("docs", () => {
 		}
 	});
 
+	test("InstallPrompt demos hydrate and show their banner", async ({ page }) => {
+		// Both render nothing on the server: without a box of their own the client:visible
+		// islands never intersected and the demos stayed empty.
+		await gotoReady(page, "/docs/feedback/install-prompt/");
+		const banners = page.locator("main .ca-install");
+		await expect(banners).toHaveCount(2);
+		await expect(page.getByRole("button", { name: "Install", exact: true })).toBeVisible();
+		await expect(page.getByText('Choose "Add to Home Screen".')).toBeVisible();
+	});
+
 	test("search: opens, finds Button, Enter navigates", async ({ page, isMobile }) => {
 		await gotoReady(page, "/docs/");
 		if (isMobile) {

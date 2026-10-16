@@ -201,6 +201,14 @@ export const ptBR: Messages = {
 		cepNotFound: "CEP não encontrado",
 		cepLookupFailed: "Não foi possível consultar o CEP",
 	},
+	installPrompt: {
+		title: "Instalar este app",
+		description: "Adicione à tela inicial para acesso rápido, tela cheia e uso offline.",
+		install: "Instalar",
+		dismiss: "Dispensar convite de instalação",
+		iosShare: "Toque em Compartilhar na barra do navegador.",
+		iosAdd: 'Escolha "Adicionar à Tela de Início".',
+	},
 	lightbox: {
 		close: "Fechar",
 		previous: "Anterior",

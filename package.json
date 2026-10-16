@@ -36,6 +36,7 @@
 		"test:watch": "bun run --cwd packages/ui test:watch",
 		"test:e2e": "bun run --cwd site test:e2e",
 		"test:a11y": "bun run --cwd site test:a11y",
+		"lighthouse": "bun scripts/test-run.ts bun scripts/lighthouse.ts",
 		"issue:start": "bun scripts/issue.ts start",
 		"issue:status": "bun scripts/issue.ts status",
 		"issue:triage": "bun scripts/issue.ts triage",
@@ -53,7 +54,9 @@
 		"@changesets/cli": "3.0.3",
 		"@types/bun": "1.4.3",
 		"@types/node": "24.19.2",
+		"chrome-launcher": "1.2.2",
 		"lefthook": "2.2.1",
+		"lighthouse": "13.5.0",
 		"typescript": "6.0.3"
 	}
 }

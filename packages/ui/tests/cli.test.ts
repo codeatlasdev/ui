@@ -261,6 +261,133 @@ describe("init on SvelteKit", () => {
 	});
 });
 
+describe("init scaffolds SEO and PWA on SvelteKit (#205)", () => {
+	const KIT3_PKG = JSON.stringify({ devDependencies: { "@sveltejs/kit": "^3.0.1" } });
+	const scaffold = (pkg: string, files: Record<string, string> = {}) => {
+		const root = project({ "package.json": pkg, ...files });
+		expect(init(root, { ...quiet, write: true })).toBe(true);
+		return root;
+	};
+
+	it("writes manifest, robots and sitemap routes that use the seo builders", () => {
+		const root = scaffold(KIT_PKG);
+		const manifest = read(root, "src/routes/manifest.webmanifest/+server.ts");
+		expect(manifest).toContain('from "@codeatlasdev/ui/seo"');
+		expect(manifest).toContain("manifest({");
+		expect(manifest).toContain("theme,");
+		expect(manifest).toContain("export const prerender = true;");
+		expect(manifest).toContain("application/manifest+json");
+		expect(manifest).toContain('purpose: "maskable"');
+		const robots = read(root, "src/routes/robots.txt/+server.ts");
+		expect(robots).toContain("robotsTxt({");
+		expect(robots).toContain("/sitemap.xml");
+		const sitemap = read(root, "src/routes/sitemap.xml/+server.ts");
+		expect(sitemap).toContain("sitemapXml(");
+		expect(sitemap).toContain("application/xml");
+		expect(sitemap).toContain("export const prerender = true;");
+	});
+
+	it("Kit 2: service worker at src/service-worker.ts with $service-worker and an offline route", () => {
+		const root = scaffold(KIT_PKG);
+		const sw = read(root, "src/service-worker.ts");
+		expect(sw).toContain('from "$service-worker"');
+		expect(sw).toContain("/offline");
+		expect(existsSync(join(root, "src/service-worker"))).toBe(false);
+		expect(read(root, "src/routes/offline/+page.svelte")).toContain("<h1>");
+		expect(read(root, "src/routes/offline/+page.ts")).toContain("export const prerender = true;");
+	});
+
+	it("Kit 3: service worker at src/service-worker/index.ts on $app/service-worker, $app/manifest and $app/env", () => {
+		const root = scaffold(KIT3_PKG);
+		const sw = read(root, "src/service-worker/index.ts");
+		expect(sw).toContain('from "$app/service-worker"');
+		expect(sw).toContain('from "$app/manifest"');
+		expect(sw).toContain('from "$app/env"');
+		expect(sw).not.toContain("$service-worker");
+		// Kit 3 builds the worker with its own tsconfig; forms/navigation/state are invalid there.
+		expect(sw).not.toMatch(/\$app\/(forms|navigation|state)/);
+		expect(existsSync(join(root, "src/service-worker.ts"))).toBe(false);
+	});
+
+	it("puts <Seo> with a canonical in the root layout, and keeps the layout's own code", () => {
+		const root = scaffold(KIT_PKG);
+		const layout = read(root, "src/routes/+layout.svelte");
+		expect(layout).toContain('import { Seo } from "@codeatlasdev/ui/seo";');
+		expect(layout).toContain("<Seo");
+		expect(layout).toContain("canonical={");
+		expect(layout).toContain('manifest="/manifest.webmanifest"');
+		expect(layout).toContain("{@render children()}");
+		expect(layout).toContain("colorScheme.init()");
+	});
+
+	it("adds <Seo> to an existing layout without a Seo, once", () => {
+		const layout = `<script>\n\timport { onMount } from "svelte";\n\tlet { children } = $props();\n</script>\n{@render children()}\n`;
+		const root = project({ "package.json": KIT_PKG, "src/routes/+layout.svelte": layout });
+		init(root, { ...quiet, write: true });
+		init(root, { ...quiet, write: true });
+		const out = read(root, "src/routes/+layout.svelte");
+		expect(out.match(/<Seo\b/g)).toHaveLength(1);
+		expect(out.match(/import \{ Seo \}/g)).toHaveLength(1);
+	});
+
+	it("never touches routes, worker or layout Seo the app already owns", () => {
+		const own = "// mine\n";
+		const layout = `<script>\n\timport { Seo } from "@codeatlasdev/ui/seo";\n</script>\n<Seo title="x" canonical="https://a.test/" />\n<slot />\n`;
+		const root = project({
+			"package.json": KIT3_PKG,
+			"src/routes/robots.txt/+server.ts": own,
+			"src/routes/sitemap.xml/+server.ts": own,
+			"src/routes/manifest.webmanifest/+server.ts": own,
+			"src/service-worker/index.ts": own,
+			"src/routes/+layout.svelte": layout,
+		});
+		init(root, { ...quiet, write: true });
+		for (const f of [
+			"src/routes/robots.txt/+server.ts",
+			"src/routes/sitemap.xml/+server.ts",
+			"src/routes/manifest.webmanifest/+server.ts",
+			"src/service-worker/index.ts",
+		])
+			expect(read(root, f)).toBe(own);
+		expect(read(root, "src/routes/+layout.svelte").match(/<Seo\b/g)).toHaveLength(1);
+	});
+
+	it("tells the app to set its origin and add icons once, and stays quiet on a re-run", () => {
+		const root = project({ "package.json": KIT_PKG });
+		const first: string[] = [];
+		init(root, { log: (l) => first.push(l), write: true });
+		expect(first.join("\n")).toContain("paths.origin");
+		expect(first.join("\n")).toContain("static/icons");
+		const again: string[] = [];
+		init(root, { log: (l) => again.push(l), write: true });
+		expect(again.join("\n")).not.toContain("note ");
+		expect(again.join("\n")).toContain("Done.");
+	});
+
+	it("sitemap route lists static pages only: no params, groups dropped, no /offline", () => {
+		const root = scaffold(KIT_PKG);
+		const src = read(root, "src/routes/sitemap.xml/+server.ts");
+		const glob = {
+			"/src/routes/+page.svelte": 1,
+			"/src/routes/(app)/about/+page.svelte": 1,
+			"/src/routes/blog/[slug]/+page.svelte": 1,
+			"/src/routes/offline/+page.svelte": 1,
+		};
+		const body = src.match(/const pages = ([\s\S]*?);\n\nexport const GET/)?.[1] ?? "";
+		const pages = new Function(
+			"import_meta",
+			`return ${body.replace('import.meta.glob("/src/routes/**/+page.svelte")', "import_meta")}`
+		)(glob);
+		expect(pages.sort()).toEqual(["/", "/about"]);
+	});
+
+	it("Astro projects get no SvelteKit routes", () => {
+		const root = project({ "package.json": JSON.stringify({ dependencies: { astro: "^7.0.0" } }) });
+		init(root, { ...quiet, write: true });
+		expect(existsSync(join(root, "src/routes"))).toBe(false);
+	});
+});
+
 describe("init on Astro", () => {
 	const ASTRO_PKG = JSON.stringify({ dependencies: { astro: "^7.0.0" } });
 	const CONFIG = `import svelte from "@astrojs/svelte";\nimport { defineConfig } from "astro/config";\n\nexport default defineConfig({\n\tintegrations: [svelte()],\n});\n`;

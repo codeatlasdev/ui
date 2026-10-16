@@ -248,4 +248,6 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "240", path: "display/avatar/IconFallback" },
 	{ id: "241", path: "feedback/skeleton/SkeletonProp" },
 	{ id: "242", path: "feedback/lightbox/Gallery" },
+	{ id: "243", path: "feedback/install-prompt/IosInstructions" },
+	{ id: "244", path: "feedback/install-prompt/NativePrompt" },
 ];
