@@ -3,7 +3,8 @@
   import { Bot, Users } from '@lucide/svelte';
 </script>
 
-<Avatar src="/missing-group.png" alt="Family" size="lg" loading="lazy" referrerpolicy="no-referrer">
+<!-- An image that fails to decode without a request: shows the fallback, logs no 404. -->
+<Avatar src="data:image/png;base64,AAAA" alt="Family" size="lg" loading="lazy" referrerpolicy="no-referrer">
   {#snippet fallback()}<Users size={22} aria-hidden="true" />{/snippet}
 </Avatar>
 <Avatar alt="Support bot" size="lg">
