@@ -8,7 +8,7 @@ Spec:
 - `<Chip label="Headless" />`
 - No variant, size or handlers are set
 Tags: chip, label, tag, basic
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Chip
 Live demo: https://ui.codeatlas.com.br/docs/display/chip#basic
 

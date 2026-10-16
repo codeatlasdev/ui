@@ -10,7 +10,7 @@ Spec:
 - Buttons: `Validate all` calls `form.validate()`, Reset calls `form.reset()`
 - Footer prints `valid: {form.valid}`
 Tags: use-form, schema, validation, text-area, character-count
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Button, TextArea, TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/use-form#with-schema
 

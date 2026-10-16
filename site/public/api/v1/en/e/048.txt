@@ -9,7 +9,7 @@ Spec:
 - Initial value is `$state('#2563eb')`
 - Current value is shown as `value: {color}`
 Tags: swatch-group, color-picker, custom, palette, disabled
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: SwatchGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/swatch-group#custom-colors
 

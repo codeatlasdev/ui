@@ -7,7 +7,7 @@ Spec:
 - `async function loadOlder()` prepends a page of 30 messages with `items = [...page, ...items];`
 - `<Button size="sm" variant="outlined" onclick={add}>Receive a message</Button>` appends a new row
 Tags: virtual-list, history, chat, infinite, prepend
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Button, Stack, VirtualList
 Live demo: https://ui.codeatlas.com.br/docs/display/virtual-list#chat-history
 

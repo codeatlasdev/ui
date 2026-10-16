@@ -8,7 +8,7 @@ Spec:
 - `<NotificationBell notifications={[]} />` passes an empty list
 - No callback props are passed to either bell
 Tags: notification-bell, notifications, empty-state, unread, badge, header
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: NotificationBell, Flex
 Live demo: https://ui.codeatlas.com.br/docs/display/notification-bell#default
 

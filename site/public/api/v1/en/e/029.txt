@@ -8,7 +8,7 @@ Spec:
 - Both helpers are imported from `@codeatlasdev/ui/forms`
 - No input component is rendered
 Tags: money-input, helpers, cents, parse, format, currency
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/inputs/money-input#helpers
 

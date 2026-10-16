@@ -8,7 +8,7 @@ Spec:
 - Each avatar is wrapped in `<div class="item" style="--z:{people.length - i}">`
 - Overlap uses `.item { margin-left: -10px; position: relative; z-index: var(--z, 0); }`
 Tags: avatar, stack, avatar-group, overlap, overflow, collaborators
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Avatar
 Live demo: https://ui.codeatlas.com.br/docs/display/avatar#avatar-stack
 

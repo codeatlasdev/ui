@@ -8,7 +8,7 @@ Spec:
 - `{#snippet avatar()}<Avatar alt="Maria Souza" size="sm" />{/snippet}` in each incoming bubble
 - `<MessageBubble direction="out" time="14:32" status="read">`
 Tags: message-bubble, chat, avatar, grouped, delivery-status
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Avatar, MessageBubble
 Live demo: https://ui.codeatlas.com.br/docs/display/message-bubble#a-grouped-conversation
 

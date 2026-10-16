@@ -9,7 +9,7 @@ Spec:
 - `<DropdownMenuSeparator />` precedes `<DropdownMenuItem variant="destructive"` for Delete
 - `let last = $state('')` is set per item and shown as `Last action: {last}` with `aria-live="polite"`
 Tags: dropdown-menu, menu, actions, destructive, separator, icon, trigger
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: DropdownMenu, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuLabel, Button
 Live demo: https://ui.codeatlas.com.br/docs/navigation/menu#default
 

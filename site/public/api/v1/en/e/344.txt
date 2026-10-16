@@ -13,7 +13,7 @@ Motion:
 - stroke-dashoffset (progress ring): 1200ms linear
 Names: Hold to confirm | Press and hold | Segurar para confirmar | Maintenir pour confirmer
 Tags: motion, hold, confirm, progress, button, destructive
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/micro#hold-to-confirm
 

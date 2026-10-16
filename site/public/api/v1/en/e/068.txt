@@ -8,7 +8,7 @@ Spec:
 - Both cards share `class="accent"` styled with `flex: 1` and `min-width: 200px`
 - Card content is a `.title` paragraph and a `.text` paragraph
 Tags: card, glass, tone, brand, glow, accent
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Card
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/card#tone-and-glow
 

@@ -9,7 +9,7 @@ Spec:
 - Two `<Switch label="Show inactive only" />` and `<Switch label="Include archived" />` inside `<Stack gap="4">`
 - `{#snippet actions()}` holds ghost Reset and filled Apply buttons
 Tags: drawer, filters, filter-group, switch, side-panel
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Drawer, Button, Switch, Stack, FilterGroup
 Live demo: https://ui.codeatlas.com.br/docs/feedback/drawer#right-default
 

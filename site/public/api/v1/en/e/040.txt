@@ -9,7 +9,7 @@ Spec:
 - Selected value is shown in `<strong>{framework}</strong>`
 - Wrapper `.col` uses `max-width: 320px`
 Tags: select, dropdown, options, label, bind-value
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Select
 Live demo: https://ui.codeatlas.com.br/docs/inputs/select#basic
 

@@ -12,7 +12,7 @@ Motion:
 - --hue, --angle (registered custom properties): 9s ease-in-out
 Names: Animated gradient field | Gradient mesh | Aurora background | Shifting gradient | Campo de gradiente animado | Gradiente animado | Fundo aurora | Degradado animado
 Tags: motion, gradient, ambient, background, hue, property
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/hero-ambient#animated-gradient-field
 

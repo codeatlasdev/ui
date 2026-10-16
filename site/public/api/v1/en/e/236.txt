@@ -9,7 +9,7 @@ Spec:
 - `index` typed `DocsSearchEntry[]` has 2 entries (Send text, Webhooks) with `href`, `title`, `section`, `description`, `headings` and `text`
 - `<span class="picked" aria-live="polite">` shows Selected plus the chosen href
 Tags: docs-search, search, docs-kit, dialog, command-palette, index
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Button, DocsSearch
 Live demo: https://ui.codeatlas.com.br/docs/docs-kit/docs#docssearch
 

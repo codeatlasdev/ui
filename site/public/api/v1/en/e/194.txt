@@ -10,7 +10,7 @@ Spec:
 - `<Stack gap="3">` stacks the gauge above `<p class="label">{label}</p>`
 - Interval is cleared when `value >= 94` and on unmount
 Tags: gauge-chart, ring, counter, animation, onmount, score, stack
-Needs: @codeatlasdev/ui@4.2.0 + echarts
+Needs: @codeatlasdev/ui@4.3.0 + echarts
 Components: Card, Stack, GaugeChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/gauge#animated-counter
 

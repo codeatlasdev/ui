@@ -9,7 +9,7 @@ Spec:
 - Each switch has an `aria-label` matching its row title, e.g. `aria-label="Dark mode"`
 - Initial state: email `$state(true)`, dark and analytics `$state(false)`
 Tags: switch, settings-list, preferences, aria-label, toggle
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Switch
 Live demo: https://ui.codeatlas.com.br/docs/inputs/switch#settings-list
 

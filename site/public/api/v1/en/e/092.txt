@@ -10,7 +10,7 @@ Spec:
 - `onDestroy(() => clearInterval(timer))` cleans the timer
 - Column wrapper has `max-width: 480px`
 Tags: progress, animated, upload, determinate, button
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Progress, Button
 Live demo: https://ui.codeatlas.com.br/docs/feedback/progress#animated
 

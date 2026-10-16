@@ -9,7 +9,7 @@ Spec:
 - 2 rows from `keys` (Production key, CI pipeline) with `<Avatar alt={key.name} size="sm" />` in `{#snippet identity()}`
 - `<RecordCell label="Prefix">`, `<RecordCell label="Last used">` and `<RecordCell label="Created">`; `{#snippet actions()}` holds a `<DropdownMenu align="end">` with a `Revoke` item
 Tags: record-list, record-row, table, phone, responsive, container-width
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Avatar, DropdownMenu, DropdownMenuItem, IconButton, RecordCell, RecordList, RecordRow
 Live demo: https://ui.codeatlas.com.br/docs/layout/record-list#phone-width
 

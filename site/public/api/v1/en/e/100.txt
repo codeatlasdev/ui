@@ -7,7 +7,7 @@ Spec:
 - `simulate` sets `loading = true` and resets it with `setTimeout(() => (loading = false), 2000)`
 - Label is `{loading ? 'Saving…' : 'Save changes'}`
 Tags: spinner, button, loading, save, async
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/feedback/spinner#in-a-button
 

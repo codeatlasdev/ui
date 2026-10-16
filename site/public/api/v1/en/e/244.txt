@@ -8,7 +8,7 @@ Spec:
 - The fake event gets `prompt: () => Promise.resolve()` and `userChoice: Promise.resolve({ outcome: 'dismissed' })`
 - Wrapped in `<div class="stage">` with `min-height: calc(var(--ca-space-8) * 3)`
 Tags: install-prompt, pwa, native, beforeinstallprompt, banner
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: InstallPrompt
 Live demo: https://ui.codeatlas.com.br/docs/feedback/install-prompt#native-prompt
 

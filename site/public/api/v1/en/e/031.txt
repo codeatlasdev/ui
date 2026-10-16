@@ -9,7 +9,7 @@ Spec:
 - `<NumberField label="Small" size="sm" value={2} />`
 - `<Stack gap="4">` wraps the four fields
 Tags: number-field, error, disabled, required, size, description, forms
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: NumberField, Stack
 Live demo: https://ui.codeatlas.com.br/docs/inputs/number-field#states
 

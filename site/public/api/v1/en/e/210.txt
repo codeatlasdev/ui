@@ -9,7 +9,7 @@ Spec:
 - `{ name: 'Team B', values: [74, 68, 90, 72, 81, 83] }`
 - `height="340px"` inside `<Card material="glass" full>`
 Tags: radar-chart, compare, series, indicators, scores, card
-Needs: @codeatlasdev/ui@4.2.0 + echarts
+Needs: @codeatlasdev/ui@4.3.0 + echarts
 Components: Card, RadarChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/radar#comparison
 

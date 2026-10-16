@@ -9,7 +9,7 @@ Spec:
 - Values come from `const key = (s: string) => s.toLowerCase().replace(' ', '-')`
 - Wrapper is `.wrap` with `max-width: 360px`
 Tags: tabs, scrollable, fade, overflow, settings, tabs-list
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Tabs, TabsList, TabsTrigger, TabsContent
 Live demo: https://ui.codeatlas.com.br/docs/navigation/tabs#scrollable
 

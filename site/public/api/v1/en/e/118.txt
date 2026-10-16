@@ -7,7 +7,7 @@ Spec:
 - `<Chip label="Filter A" selected={a} onclick={() => (a = !a)} />`
 - `<Chip label="Filter B" selected={b} onclick={() => (b = !b)} />`
 Tags: chip, selectable, selected, filter, toggle, onclick
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Chip
 Live demo: https://ui.codeatlas.com.br/docs/display/chip#selectable
 

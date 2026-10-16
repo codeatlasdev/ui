@@ -9,7 +9,7 @@ Spec:
 - `qData` has 4 items per quarter: Cloud, Enterprise, SaaS, Other
 - `<PieChart {data} donut height="300px" />` inside `<Card material="glass" full>`
 Tags: pie-chart, donut, chip, quarters, state, derived
-Needs: @codeatlasdev/ui@4.2.0 + echarts
+Needs: @codeatlasdev/ui@4.3.0 + echarts
 Components: Card, Flex, Chip, PieChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/pie#animated-proportions
 

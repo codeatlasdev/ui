@@ -10,7 +10,7 @@ Spec:
 - `categories={streamData.map((_, i) => String(i))}`
 - `valueFormatter={fmt}` and `height="300px"`
 Tags: line-chart, streaming, live, realtime, onmount, interval
-Needs: @codeatlasdev/ui@4.2.0 + echarts
+Needs: @codeatlasdev/ui@4.3.0 + echarts
 Components: Card, LineChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/line#real-time-stream
 

@@ -15,7 +15,7 @@ Motion:
 - stroke-dashoffset 1 to 0: animation-timeline: scroll(nearest block) linear
 Names: Scroll-linked counter and chart draw | Count-up on scroll | Contador e gráfico ligados ao scroll | Compteur lié au défilement
 Tags: motion, scroll, counter, chart, draw, scroll-driven
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/scroll#scroll-linked-counter-and-chart-draw
 

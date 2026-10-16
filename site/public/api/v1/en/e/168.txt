@@ -8,7 +8,7 @@ Spec:
 - `{#snippet actions()}` holds `<Button variant="filled">Create project</Button>` and `<Button variant="ghost">Import</Button>`
 - Both buttons use the default size, with no size attribute
 Tags: empty-state, hero, onboarding, first-run, actions, project
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: EmptyState, Button
 Live demo: https://ui.codeatlas.com.br/docs/layout/empty-state#hero
 

@@ -13,7 +13,7 @@ Motion:
 - text content (integer counting from 0 to the total): 1400ms 1 - 2 ** (-10 * t)
 Names: Count up | Number counter | Animated counter | Contagem progressiva | Contador animado | Compteur animé
 Tags: motion, text, count-up, counter, kpi, number
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Button, MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/text#count-up
 

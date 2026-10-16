@@ -8,7 +8,7 @@ Spec:
 - `fallback="?"` sets a placeholder character
 - All five use `size="lg"`
 Tags: avatar, initials, fallback, alt, placeholder
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Avatar
 Live demo: https://ui.codeatlas.com.br/docs/display/avatar#initials-fallback
 

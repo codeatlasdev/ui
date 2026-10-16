@@ -7,7 +7,7 @@ Spec:
 - Trailing icon goes in `{#snippet trailing()}` (`ArrowRight`, `size={15}`)
 - Variants shown: `variant="filled"`, `variant="outlined"`, `variant="ghost"`
 Tags: button, icon, leading, trailing, snippet
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/inputs/button#with-icons
 

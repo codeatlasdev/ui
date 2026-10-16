@@ -8,7 +8,7 @@ Spec:
 - `<KpiCard title="Avg. Session" value="3m 42s" />`
 - `<KpiCard title="Error Rate" value="0.03" unit="%" />`
 Tags: kpi-card, kpi-grid, no-trend, metrics, counters, unit
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: KpiCard, KpiGrid
 Live demo: https://ui.codeatlas.com.br/docs/layout/kpi-card#without-trend
 

@@ -15,7 +15,7 @@ Motion:
 - opacity (caret blink): 1060ms steps(1, end)
 Names: Typewriter | Typing effect | Type and delete | Máquina de escrever | Efeito de digitação | Machine à écrire
 Tags: motion, text, typewriter, caret, typing, prompt
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/text#typewriter
 

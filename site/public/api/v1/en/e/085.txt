@@ -9,7 +9,7 @@ Spec:
 - `let role = $state('viewer')` is the default role
 - `{#snippet actions()}`: ghost Cancel and filled Send invite with `disabled={!name || !email}`
 Tags: dialog, form, text-field, select, invite, modal
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Dialog, Button, TextField, Select, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/dialog#form
 

@@ -8,7 +8,7 @@ Spec:
 - `<label class="lbl" for="mask-action-input">` is linked to `id="mask-action-input"`
 - Output line prints `value = {value || '–'}`
 Tags: mask, action, input-mask, cpf, native-input, forms
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/inputs/masked-field#use-mask-action
 

@@ -7,7 +7,7 @@ Spec:
 - State: `let page = $state(1)` starts on page 1
 - A paragraph renders `Current page: {page}` below the control
 Tags: pagination, page, bind, count, per-page, navigation
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Pagination
 Live demo: https://ui.codeatlas.com.br/docs/display/pagination#basic
 

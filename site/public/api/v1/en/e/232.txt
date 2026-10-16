@@ -8,7 +8,7 @@ Spec:
 - `<MethodBadge method="GET" />`
 - Other badges: `method="POST"`, `method="PUT"`, `method="PATCH"`, `method="DELETE"`
 Tags: card-grid, link-card, method-badge, docs-kit, http-method, api-docs
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: CardGrid, LinkCard, MethodBadge
 Live demo: https://ui.codeatlas.com.br/docs/docs-kit/docs#linkcard-cardgrid-and-methodbadge
 

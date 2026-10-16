@@ -7,7 +7,7 @@ Spec:
 - `<RadarChart {indicators} series={[{ name: 'Team Alpha', values: [88, 92, 76, 85, 94, 79] }]}`
 - `height="340px"` inside `<Card material="glass" full>`
 Tags: radar-chart, simple, indicators, scores, single-series, card
-Needs: @codeatlasdev/ui@4.2.0 + echarts
+Needs: @codeatlasdev/ui@4.3.0 + echarts
 Components: Card, RadarChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/radar#simple-radar
 

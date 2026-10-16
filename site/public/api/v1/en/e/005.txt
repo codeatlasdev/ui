@@ -7,7 +7,7 @@ Spec:
 - `variant="destructive"` with a `Trash2` icon in `{#snippet leading()}` (`size={15}`)
 - `href="https://github.com/codeatlasdev/ui"` with `target="_blank"` renders an anchor
 Tags: button, disabled, destructive, link, href
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/inputs/button#states
 

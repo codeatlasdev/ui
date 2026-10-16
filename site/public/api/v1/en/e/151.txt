@@ -9,7 +9,7 @@ Spec:
 - Trailing also has `<Avatar alt="Ada L" size="sm" />`
 - Icons are `<Search size={18} />` and `<Bell size={18} />` from `@lucide/svelte`
 Tags: app-bar, glass-app-bar, header, toolbar, icon-button, avatar
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: GlassAppBar, IconButton, Avatar, Card
 Live demo: https://ui.codeatlas.com.br/docs/navigation/app-bar#default
 

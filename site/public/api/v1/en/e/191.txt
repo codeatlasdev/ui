@@ -10,7 +10,7 @@ Spec:
 - `valueFormatter={fmt}` renders `$${(v / 1000).toFixed(0)}k`
 - `height="300px"`
 Tags: bar-chart, stacked, series, categories, revenue, card
-Needs: @codeatlasdev/ui@4.2.0 + echarts
+Needs: @codeatlasdev/ui@4.3.0 + echarts
 Components: Card, BarChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/bar#stacked-bars
 

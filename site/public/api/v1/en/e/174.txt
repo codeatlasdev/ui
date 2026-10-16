@@ -7,7 +7,7 @@ Spec:
 - `<FormSection title="Quick update">` holds `<TextField label="Name" placeholder="Enter name…" />` and `<TextField label="Email" type="email" placeholder="email@example.com" />`
 - `{#snippet footer()}` holds `<Button variant="ghost">Cancel</Button>` and `<Button variant="filled">Save</Button>`
 Tags: app-form, form-section, form, no-header, text-field, footer
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: AppForm, FormSection, TextField, Button
 Live demo: https://ui.codeatlas.com.br/docs/layout/form-page#without-header
 

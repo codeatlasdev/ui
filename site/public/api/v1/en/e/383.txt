@@ -12,7 +12,7 @@ Motion:
 - clip-path (divider position): spring spring spring { stiffness: 0.14, damping: 0.62 }
 Names: Before and after slider | Compare slider | Image comparison | Slider de antes e depois | Comparador antes e depois | Comparador de imagens | Slider avant après
 Tags: motion, compare, slider, before-after, spring, drag
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/hero-ambient#before-and-after-slider
 

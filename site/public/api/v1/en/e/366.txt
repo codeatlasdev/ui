@@ -15,7 +15,7 @@ Motion:
 - the total (number tween): 420 cubicOut
 Names: Animated filter | List exit animation | Presence animation | Filtro animado | Filtro animado de lista
 Tags: motion, filter, list, exit, flip
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Chip, MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/transitions#filter-list
 

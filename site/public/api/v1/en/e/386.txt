@@ -12,7 +12,7 @@ Motion:
 - transform: rotateX, rotateY; glare position: spring spring spring { stiffness: 0.12, damping: 0.55 }
 Names: Card tilt with glare | 3D tilt | Tilt card | Parallax tilt | Card inclinado com brilho | Tilt 3D com reflexo | Tarjeta inclinada con brillo
 Tags: motion, tilt, glare, card, pointer, spring, 3d
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/hero-ambient#card-tilt-with-glare
 

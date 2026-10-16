@@ -8,7 +8,7 @@ Spec:
 - Then `--ca-brand-contrast`, `--ca-brand-fill`, `--ca-brand-text`
 - No bordered prop is passed
 Tags: colors, brand, tokens, swatches, theme
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/colors#brand
 

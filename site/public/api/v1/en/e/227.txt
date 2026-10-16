@@ -8,7 +8,7 @@ Spec:
 - `<Surface material="glass" tone="brand" glow class="chip">` labelled Tinted + glowing
 - Backdrop gradient runs `var(--ca-brand-main) 0%` to `var(--ca-semantic-success) 100%`
 Tags: materials, glass, surface, tone, glow, tinted
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Surface
 Live demo: https://ui.codeatlas.com.br/docs/foundation/materials#tinted-and-glowing
 

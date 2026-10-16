@@ -8,7 +8,7 @@ Spec:
 - Trap is rendered inside `{#if open}` and holds Button A and Button B with `variant="outlined"`
 - Close button uses `onclick={() => (open = false)}` to release the trap
 Tags: focus-trap, action, keyboard, a11y, modal, tab-order
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/navigation/actions#focustrap
 

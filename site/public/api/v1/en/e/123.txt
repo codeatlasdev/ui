@@ -9,7 +9,7 @@ Spec:
 - `<DataTable {columns} {data} />` has no other props
 - Wrapper `.wrap` has `width: 100%`
 Tags: data-table, columns, column-helper, tanstack, table, basic
-Needs: @codeatlasdev/ui@4.2.0 + @tanstack/svelte-table
+Needs: @codeatlasdev/ui@4.3.0 + @tanstack/svelte-table
 Components: DataTable
 Live demo: https://ui.codeatlas.com.br/docs/display/data-table#simple-mode
 

@@ -9,7 +9,7 @@ Spec:
 - `<Badge count={100}>` around a Bell `<IconButton aria-label="Notifications">`
 - `<Flex gap="4" align="center" wrap>` lays them out
 Tags: badge, count, dot, overflow, icon-button, unread
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Badge, IconButton, Flex
 Live demo: https://ui.codeatlas.com.br/docs/display/badge#dot-and-counts
 

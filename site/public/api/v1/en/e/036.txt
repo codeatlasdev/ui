@@ -7,7 +7,7 @@ Spec:
 - `sizes` has 3 items: `value: 'sm'`, `value: 'md'`, `value: 'lg'` labelled Small, Medium, Large
 - `bind:value={size}` with initial `$state('md')`
 Tags: radio-group, radio, horizontal, orientation, size
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: RadioGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/radio#horizontal
 

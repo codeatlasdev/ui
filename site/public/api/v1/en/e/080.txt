@@ -9,7 +9,7 @@ Spec:
 - Trigger is `<Button variant="destructive"` labelled Remove item (1.5s)
 - Result note uses `aria-live="polite"` and shows when `{#if done}`
 Tags: alert-dialog, destructive, async, confirm, delete, dialog
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: AlertDialog, Button
 Live demo: https://ui.codeatlas.com.br/docs/feedback/alert-dialog#async-onconfirm
 

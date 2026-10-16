@@ -8,7 +8,7 @@ Spec:
 - `<KpiCard title="Active Users" value="3,847" trend={-2.1} icon={Users} />`
 - `<KpiCard title="Conversion" value="4.8" unit="%" trend={0.6} icon={TrendingUp} />`
 Tags: kpi-card, kpi-grid, metrics, trend, dashboard, unit, icon
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: KpiCard, KpiGrid
 Live demo: https://ui.codeatlas.com.br/docs/layout/kpi-card#basic-metrics
 

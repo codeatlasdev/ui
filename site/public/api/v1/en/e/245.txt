@@ -10,7 +10,7 @@ Spec:
 - `<RecordCell label="Scopes">`, `<RecordCell label="Installs">`, `<RecordCell label="Status">` and `<RecordCell label="Created">`
 - `<StatusChip status={app.live ? 'success' : 'neutral'} label={app.live ? 'Live' : 'Draft'} />`; `{#snippet actions()}` holds a `<DropdownMenu align="end">` with `Edit` and `Rotate secret` items
 Tags: record-list, record-row, table, status-chip, row-menu, avatar, responsive
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Avatar, DropdownMenu, DropdownMenuItem, IconButton, RecordCell, RecordList, RecordRow, StatusChip
 Live demo: https://ui.codeatlas.com.br/docs/layout/record-list#apps
 

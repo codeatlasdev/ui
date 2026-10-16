@@ -7,7 +7,7 @@ Spec:
 - Content is a single `<div class="filler">Long content…</div>` taller than the scroller
 - Scroller uses `max-height: 280px` and `overflow-y: auto`
 Tags: sticky-actions, stretch, wizard, action-bar, scroll, align
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: StickyActions, Button
 Live demo: https://ui.codeatlas.com.br/docs/layout/sticky-actions#stretch
 

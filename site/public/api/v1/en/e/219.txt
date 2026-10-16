@@ -9,7 +9,7 @@ Spec:
 - `labels` maps `up`, `down` and `neutral` to `'▲ Growing'`, `'▼ Declining'` and `'→ Stable'`
 - Columns: Product, Last 6 months, Trend
 Tags: sparkline, table, trend, card, flush, rows
-Needs: @codeatlasdev/ui@4.2.0 + echarts
+Needs: @codeatlasdev/ui@4.3.0 + echarts
 Components: Card, Sparkline
 Live demo: https://ui.codeatlas.com.br/docs/charts/sparklines#table-row-sparklines
 

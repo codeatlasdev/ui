@@ -9,7 +9,7 @@ Spec:
 - `<StatusChip status="info" label="Scheduled" />`
 - `<StatusChip status="neutral" label="Draft" />`
 Tags: chip, status-chip, status, success, neutral, state
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: StatusChip
 Live demo: https://ui.codeatlas.com.br/docs/display/chip#statuschip
 

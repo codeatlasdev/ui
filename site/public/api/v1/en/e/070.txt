@@ -7,7 +7,7 @@ Spec:
 - `{#snippet headerActions()}` renders `<Button size="sm" variant="outlined">Invite</Button>`
 - Body is one paragraph explaining `title` and `headerActions`
 Tags: card, header-actions, title, snippet, button, glass
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Card, Button
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/card#header-and-actions
 

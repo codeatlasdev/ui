@@ -10,7 +10,7 @@ Spec:
 - `tooltipFormatter={(v) => `${v} tasks`}`
 - `height="320px"` inside `<Card material="glass" full>`
 Tags: heatmap-chart, matrix, hours, weekdays, tooltip-formatter, card
-Needs: @codeatlasdev/ui@4.2.0 + echarts
+Needs: @codeatlasdev/ui@4.3.0 + echarts
 Components: Card, HeatmapChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/heatmap#hour-by-day-matrix
 

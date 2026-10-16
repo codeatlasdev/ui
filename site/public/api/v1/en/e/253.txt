@@ -8,7 +8,7 @@ Spec:
 - `{ type: 'document', src: '#', title: 'invoice-0412.pdf', size: '84 KB' }`
 - `const art = (hue: number, label: string)` builds inline SVG images
 Tags: media-grid, gallery, chat, lightbox, attachments
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: MediaGrid
 Live demo: https://ui.codeatlas.com.br/docs/display/media-grid#mixed-media
 

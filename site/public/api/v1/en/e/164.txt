@@ -8,7 +8,7 @@ Spec:
 - Each value has a `TabsContent` with a `<div class="panel">` and one paragraph
 - Wrapper is `.wrap` with `max-width: 560px`
 Tags: tabs, uncontrolled, tabs-list, tabs-content, sections, default
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Tabs, TabsList, TabsTrigger, TabsContent
 Live demo: https://ui.codeatlas.com.br/docs/navigation/tabs#default
 

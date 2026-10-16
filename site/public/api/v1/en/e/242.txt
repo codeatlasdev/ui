@@ -8,7 +8,7 @@ Spec:
 - Fields used: `src`, `alt`, `caption`, `meta`; the third item has no `meta`
 - Trigger resets `index = 0; open = true;` and is labelled `Open gallery ({items.length})`
 Tags: lightbox, gallery, video, caption, carousel, media
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Button, Lightbox
 Live demo: https://ui.codeatlas.com.br/docs/feedback/lightbox#gallery-with-video-caption-and-download
 

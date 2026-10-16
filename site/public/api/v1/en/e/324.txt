@@ -13,7 +13,7 @@ Motion:
 - transform: translateX: animation-timeline: --hs linear
 Names: Horizontal scroll section | Scroll-jacked horizontal | Rolagem horizontal por scroll vertical | Défilement horizontal
 Tags: motion, scroll, horizontal, pinned, sticky, steps
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/scroll#horizontal-scroll-section
 

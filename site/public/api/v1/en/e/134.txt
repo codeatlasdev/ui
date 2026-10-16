@@ -6,7 +6,7 @@ Spec:
 - `<Pagination count={30} perPage={10} />`
 - Only `count` and `perPage` are set, nothing is bound
 Tags: pagination, few-pages, count, per-page, uncontrolled
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Pagination
 Live demo: https://ui.codeatlas.com.br/docs/display/pagination#few-items
 

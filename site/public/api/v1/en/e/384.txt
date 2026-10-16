@@ -13,7 +13,7 @@ Motion:
 - transform: translate3d, scale (per dot): per frame 0.32 stagger 0.32
 Names: Cursor trail | Mouse trail | Pointer trail | Rastro do cursor | Rastro do mouse | Estela del cursor
 Tags: motion, cursor, trail, pointer, follow, playful
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/hero-ambient#cursor-trail
 

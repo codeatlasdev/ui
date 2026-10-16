@@ -7,7 +7,7 @@ Spec:
 - Each row has label `Heading ${n}` and token `--ca-font-size-h${n}`
 - Renders `<TypeRows {rows} heading />` with the `heading` flag for bold samples
 Tags: typography, headings, font-size, tokens, h1
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/typography#heading-scale
 

@@ -9,7 +9,7 @@ Spec:
 - The accordion is uncontrolled, nothing is bound
 - Wrapped in `.wrap` with `max-width: 560px`
 Tags: accordion, accordion-item, multiple, expand, disclosure
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Accordion, AccordionItem
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/accordion#multiple
 

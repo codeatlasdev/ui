@@ -7,7 +7,7 @@ Spec:
 - `<TextField label="Email" placeholder="you@example.com" type="email" bind:value={email} />`
 - Both values start as `$state('')`
 Tags: text-field, input, label, placeholder, email
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/text-field#default
 

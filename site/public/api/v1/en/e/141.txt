@@ -10,7 +10,7 @@ Spec:
 - `variant: 'default' as const` on Awaiting shipment and Delivered
 - Wrapped in `.wrap` with `max-width: 440px`
 Tags: timeline, variant, success, info, order-tracking, status
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Timeline
 Live demo: https://ui.codeatlas.com.br/docs/display/timeline#with-variants
 

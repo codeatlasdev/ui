@@ -7,7 +7,7 @@ Spec:
 - `<Flex gap="6" align="center">` lays out Left, Center and Right
 - `<Divider orientation="vertical" />` is placed between them
 Tags: divider, vertical, orientation, separator, flex
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Divider, Card, Flex
 Live demo: https://ui.codeatlas.com.br/docs/display/divider#vertical
 

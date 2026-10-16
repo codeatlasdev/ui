@@ -8,7 +8,7 @@ Spec:
 - Team entry has `disabled: true`
 - `bind:value={plan}` with initial `$state('pro')`
 Tags: radio-group, radio, cards, plan, disabled, description
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: RadioGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/radio#cards
 

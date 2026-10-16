@@ -7,7 +7,7 @@ Spec:
 - `countries` has 5 options: Brazil, United States, Germany, Japan, Australia
 - `bind:value={country}` with initial `$state('')`
 Tags: select, placeholder, country, form, options
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Select
 Live demo: https://ui.codeatlas.com.br/docs/inputs/select#placeholder
 

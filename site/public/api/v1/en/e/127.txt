@@ -7,7 +7,7 @@ Spec:
 - `src` is an inlined `data:image/svg+xml;utf8,` gradient, so the demo needs no asset
 - Wrapper is `<div style="max-width: 360px">`
 Tags: image, alt, width, height, aspect-ratio, placeholder
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Image
 Live demo: https://ui.codeatlas.com.br/docs/display/image#fixed-ratio
 
