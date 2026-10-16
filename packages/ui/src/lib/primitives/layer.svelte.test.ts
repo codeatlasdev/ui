@@ -205,6 +205,50 @@ describe("openLayer: top layer, no z-index", () => {
 		handle.close();
 		expect(content.parentElement).toBe(host);
 	});
+
+	it("a popover already open when a modal opens moves into it and stays hit-testable", () => {
+		const trigger = el("button", "open");
+		const content = menu();
+		Object.assign(content.style, { width: "120px", height: "60px" });
+		track(openLayer(content, { kind: "popover", anchor: trigger, onDismiss: () => {} }));
+		expect(content.parentElement).toBe(document.body);
+
+		const dialog = modal();
+		track(openLayer(dialog, { kind: "modal", onDismiss: () => {} }));
+		expect(dialog.contains(content)).toBe(true);
+		expect(content.matches(":popover-open")).toBe(true);
+		const r = content.getBoundingClientRect();
+		const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+		expect(hit && content.contains(hit)).toBe(true);
+	});
+
+	it("a popover opened over two stacked modals lives in the topmost one", () => {
+		const bottom = modal("Bottom");
+		track(openLayer(bottom, { kind: "modal", onDismiss: () => {} }));
+		const top = modal("Top");
+		track(openLayer(top, { kind: "modal", onDismiss: () => {} }));
+		const content = menu();
+		track(openLayer(content, { kind: "popover", anchor: top, onDismiss: () => {} }));
+		expect(top.contains(content)).toBe(true);
+		expect(bottom.contains(content)).toBe(false);
+	});
+
+	it("a popover that was moved into a modal survives that modal closing first", () => {
+		const host = el("section");
+		const content = document.createElement("div");
+		content.setAttribute("role", "menu");
+		host.appendChild(content);
+		const dialog = modal();
+		const modalHandle = openLayer(dialog, { kind: "modal", onDismiss: () => {} });
+		const handle = track(openLayer(content, { kind: "popover", onDismiss: () => {} }));
+		expect(dialog.contains(content)).toBe(true);
+
+		modalHandle.close();
+		expect(content.isConnected).toBe(true);
+		expect(dialog.contains(content)).toBe(false);
+		handle.close();
+		expect(host.contains(content)).toBe(true);
+	});
 });
 
 describe("openLayer: focus", () => {

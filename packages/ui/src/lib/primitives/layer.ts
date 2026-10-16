@@ -81,6 +81,8 @@ interface Entry {
 	node: HTMLElement;
 	kind: LayerKind;
 	opts: LayerOptions;
+	/** Popover/hint only, while hosted in a modal: a comment left in the owner's range where the node was declared. */
+	home?: Comment;
 	dismiss(type: "escape" | "pointerdown" | "focusin", e: Event): void;
 }
 
@@ -94,6 +96,40 @@ function topModal(): HTMLElement | undefined {
 
 function topInteractive(): Entry | undefined {
 	for (let i = stack.length - 1; i >= 0; i--) if (stack[i].kind !== "hint") return stack[i];
+}
+
+/**
+ * `showModal()` makes everything outside the dialog inert, *including top-layer popovers*: a layer
+ * must live inside the topmost open modal to stay interactive. Moves `entry` there (leaving a
+ * comment where its owner declared it, or taking it back to that spot when no modal is open) and
+ * re-enters the top layer so it paints above a modal that just opened. Moving a `popover="manual"`
+ * element hides it, hence the re-show.
+ */
+function rehost(entry: Entry) {
+	const el = entry.node;
+	const host = topModal();
+	if (host) {
+		if (host.contains(el)) return;
+		if (!entry.home) {
+			entry.home = document.createComment("ca-layer");
+			el.before(entry.home);
+		}
+		host.appendChild(el);
+	} else if (entry.home) {
+		if (entry.home.isConnected) entry.home.replaceWith(el);
+		else el.remove();
+		entry.home = undefined;
+	} else return;
+	if (el.hasAttribute("popover") && !el.matches(":popover-open")) el.showPopover();
+}
+
+/** Closing a popover/hint: put it back where its owner declared it (or drop it if that range is gone). */
+function restore(entry: Entry) {
+	const { home, node } = entry;
+	if (!home) return;
+	if (home.isConnected) home.replaceWith(node);
+	else node.remove();
+	entry.home = undefined;
 }
 
 const onKeydown = (e: KeyboardEvent) => {
@@ -352,17 +388,11 @@ export function openLayer(el: HTMLElement, options: LayerOptions): LayerHandle {
 			if (dialog.open) dialog.close();
 		});
 	} else {
-		// `showModal()` makes everything outside the dialog inert, *including top-layer popovers*: a
-		// menu must live inside the topmost open modal to stay interactive. Moved back on close.
-		const host = topModal();
-		if (host && !host.contains(el)) {
-			const marker = document.createComment("ca-layer");
-			el.before(marker);
-			host.appendChild(el);
-			// Svelte removes only the nodes it placed: if the owner's range is gone (marker detached), the
-			// moved node must go with it rather than be resurrected at the old spot.
-			cleanups.push(() => (marker.isConnected ? marker.replaceWith(el) : el.remove()));
-		}
+		// Inside the topmost open modal (see `rehost`); a later modal pulls it in, a closing one hands it on.
+		rehost(entry);
+		// Svelte removes only the nodes it placed: if the owner's range is gone (marker detached), a
+		// node that was moved away must go with it rather than be resurrected at the old spot.
+		cleanups.push(() => restore(entry));
 		el.setAttribute("popover", "manual");
 		if (!el.matches(":popover-open")) el.showPopover();
 		const placement = placeAnchored(el, options);
@@ -375,6 +405,8 @@ export function openLayer(el: HTMLElement, options: LayerOptions): LayerHandle {
 	}
 
 	stack.push(entry);
+	// A modal that opens over already-open popovers/hints takes them in so they stay interactive above it.
+	if (kind === "modal") for (const other of stack) if (other.kind !== "modal") rehost(other);
 	listen(true);
 	announce();
 
@@ -388,6 +420,8 @@ export function openLayer(el: HTMLElement, options: LayerOptions): LayerHandle {
 			const i = stack.indexOf(entry);
 			if (i >= 0) stack.splice(i, 1);
 			if (!stack.length) listen(false);
+			// Popovers hosted in this modal go to the next modal (or home) before it is removed with them inside.
+			if (kind === "modal") for (const other of stack) if (other.kind !== "modal") rehost(other);
 			while (cleanups.length) cleanups.pop()?.();
 			if (options.restoreFocus !== false) {
 				const target = kind === "modal" ? restoreTo : (options.anchor ?? restoreTo);

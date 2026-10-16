@@ -57,6 +57,8 @@ Dialogs, sheets, drawers, menus, popovers and tooltips share one layer stack. Mo
 
 Escape and outside presses go to the topmost layer only, so a menu inside a dialog closes first and the dialog on the next press. Focus returns to the trigger when a layer closes.
 
+An open modal makes the rest of the page inert (no pointer, no Tab, no screen reader), and that includes top-layer popovers that live outside it. So a menu, select list, popover or tooltip is mounted inside the topmost open modal while it is open and goes back to where it was declared when it closes. This also holds when the modal opens after the popover (a shortcut opening a dialog over an open menu): the popover moves into the new modal and is shown again above it, and when a modal closes first its popovers are handed to the next modal or put back. Do not give a layer a `z-index` to fight this: it has no effect in the top layer.
+
 A host that draws outside the DOM (a native view over a webview) can follow the stack with `onLayerChange`. It fires on every open and close with the open layers, bottom to top, and their rectangles, and returns the function that unsubscribes:
 
 ```ts
