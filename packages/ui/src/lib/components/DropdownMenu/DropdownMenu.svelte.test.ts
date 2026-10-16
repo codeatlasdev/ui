@@ -141,4 +141,18 @@ describe("DropdownMenuItem icon", () => {
 		expect(getComputedStyle(box("Remove")).color).not.toBe(remove.color);
 		expect(getComputedStyle(box("Remove")).opacity).toBe("1");
 	});
+
+	it("a SchemeAsset logo fills the 14px box, sized or not", async () => {
+		await open();
+		const size = (id: string) => {
+			const r = (page.getByTestId(id).element() as Element).getBoundingClientRect();
+			return [r.width, r.height];
+		};
+		const slot = box("Claude Code").getBoundingClientRect();
+		expect(slot.width).toBeGreaterThan(0);
+		// Both axes are driven by the box, not by the asset: no width/height attribute, no intrinsic size.
+		expect(size("brand-light")).toEqual([slot.width, slot.width]);
+		expect(size("img-light")).toEqual([slot.width, slot.width]);
+		expect(size("sized-light")).toEqual([slot.width, slot.width]);
+	});
 });

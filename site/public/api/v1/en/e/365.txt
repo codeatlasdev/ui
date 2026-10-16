@@ -13,7 +13,7 @@ Motion:
 - transform: translateY of the sheet: stiffness: 0.2 damping: 0.75 spring { stiffness: 0.2, damping: 0.75 }
 Names: Spring sheet | Bottom sheet drag to dismiss | Swipe to dismiss | Sheet com mola e arrastar para fechar | Hoja con resorte y arrastrar para cerrar
 Tags: motion, sheet, drawer, spring, drag
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Button, MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/transitions#sheet-spring
 

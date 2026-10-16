@@ -7,7 +7,7 @@ Spec:
 - `{#snippet actions()}` holds `<Button variant="filled" size="sm">`
 - Button has `{#snippet leading()}<Plus size={14} />{/snippet}` and the label Create item
 Tags: empty-state, no-icon, create, leading-icon, actions
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: EmptyState, Button
 Live demo: https://ui.codeatlas.com.br/docs/layout/empty-state#no-icon
 

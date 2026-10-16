@@ -8,7 +8,7 @@ Spec:
 - Each tier shows a `label` and a `desc`, for example Subtle background hint and Heaviest blur and fill
 - Backdrop gradient uses `var(--ca-brand-main) 0%`, `var(--ca-semantic-info) 50%` and `var(--ca-semantic-success) 100%`
 Tags: materials, glass, surface, elevation, blur, tiers
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Surface
 Live demo: https://ui.codeatlas.com.br/docs/foundation/materials#glass-tiers
 

@@ -8,7 +8,7 @@ Spec:
 - `<Spinner size={40} />`
 - Wrapped in `<Flex gap="6" align="center">`
 Tags: spinner, size, loading, flex
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Spinner, Flex
 Live demo: https://ui.codeatlas.com.br/docs/feedback/spinner#sizes
 

@@ -8,7 +8,7 @@ Spec:
 - Link is `<a href="/docs/foundation/materials/">Explore materials →</a>`
 - The card itself has no `href`, only the inner anchor is a link
 Tags: card, glass, content-card, featured, link, promo
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Card
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/card#content-card
 

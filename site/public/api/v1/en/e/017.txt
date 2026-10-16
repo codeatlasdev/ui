@@ -9,7 +9,7 @@ Spec:
 - `<TimeField label="Time (12h)" locale="en-US" hourCycle={12} />`
 - Two `value:` output lines print `birthday.toString()` and `time.toString()`
 Tags: date-field, time-field, granularity, hour-cycle, segmented, form
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: DateField, TimeField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/date-picker#datefield-and-timefield
 

@@ -9,7 +9,7 @@ Spec:
 - Five levels run from Home to `{ label: 'Two-Factor Auth' }` via `href: '/settings/account/security'`
 - Single level: `items={[{ label: 'Home' }]}` with no `href`
 Tags: breadcrumb, navigation, hierarchy, levels, path, links
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Breadcrumb
 Live demo: https://ui.codeatlas.com.br/docs/navigation/breadcrumb#levels
 

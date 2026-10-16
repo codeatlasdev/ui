@@ -8,7 +8,7 @@ Spec:
 - `headingLevel={3}` sets the title heading level
 - Body is plain text: The one painted container every card is built on
 Tags: card, link, href, heading-level, elevation, solid
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Card
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/card#link-card
 

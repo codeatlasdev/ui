@@ -8,7 +8,7 @@ Spec:
 - Then `--ca-font-size-button`, `--ca-font-size-micro`, `--ca-font-size-nano`
 - Row labels: Body 1, Body 2, Caption, Label, Button, Micro, Nano
 Tags: typography, body, font-size, tokens, caption, label
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/typography#body-and-ui-scale
 

@@ -10,7 +10,7 @@ Spec:
 - `size="xl"` with `alt="Extra large"`
 - `size={80}` with `alt="Custom"` is a numeric size
 Tags: avatar, size, xs, xl, custom-size
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Avatar
 Live demo: https://ui.codeatlas.com.br/docs/display/avatar#sizes
 

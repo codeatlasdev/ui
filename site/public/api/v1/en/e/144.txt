@@ -8,7 +8,7 @@ Spec:
 - Tooltip content: Info, Add to favourites, Boost performance, Rate this component
 - Other `aria-label` values: `aria-label="Favourite"`, `aria-label="Boost"`, `aria-label="Rate"`
 Tags: tooltip, icon-button, icons, aria-label, toolbar, lucide
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Tooltip, IconButton
 Live demo: https://ui.codeatlas.com.br/docs/display/tooltip#on-icon-buttons
 

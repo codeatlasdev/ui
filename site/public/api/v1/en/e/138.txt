@@ -10,7 +10,7 @@ Spec:
 - Each cell carries a label such as `data-label="Name"` for the card layout
 - The first cell uses `class="primary"`
 Tags: table, simple-table, responsive, cards, mobile, data-label
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: SimpleTable, Card
 Live demo: https://ui.codeatlas.com.br/docs/display/table#cards-on-narrow-containers
 

@@ -10,7 +10,7 @@ Spec:
 - `<HeatmapChart variant="calendar" data={data[year]} range={ranges[year]}`
 - `tooltipFormatter={(v) => `${v} commits`}` and `height="160px"`
 Tags: heatmap-chart, calendar, year-toggle, button, state, range
-Needs: @codeatlasdev/ui@4.2.0 + echarts
+Needs: @codeatlasdev/ui@4.3.0 + echarts
 Components: Card, Flex, Button, HeatmapChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/heatmap#year-toggle
 

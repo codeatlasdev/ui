@@ -9,7 +9,7 @@ Spec:
 - Vertical group: `orientation="vertical"`, `aria-label="Vertical"`
 - All 3 use `bind:value={view}` with initial `$state('list')`
 Tags: toggle-group, variant, outlined, ghost, vertical, size
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: ToggleGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/toggle-group#variants-and-orientation
 

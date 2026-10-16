@@ -9,7 +9,7 @@ Spec:
 - `variant="ghost"` labelled Ghost
 - `variant="destructive"` labelled Destructive
 Tags: button, variant, filled, glass, outlined, ghost, destructive
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/inputs/button#variants
 

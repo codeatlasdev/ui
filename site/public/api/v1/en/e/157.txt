@@ -8,7 +8,7 @@ Spec:
 - `<Drawer bind:open={rightOpen} side="right" title="Settings">` lists 3 label and value rows: Theme Amber, Language English, Notifications Enabled
 - Triggers are `Button` with `variant="outlined"`, the second with `{#snippet leading()}<Settings size={16} stroke-width={2} />{/snippet}`
 Tags: drawer, side-panel, navigation, settings, overlay, left, right
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Drawer, Button
 Live demo: https://ui.codeatlas.com.br/docs/navigation/drawer#left-and-right
 

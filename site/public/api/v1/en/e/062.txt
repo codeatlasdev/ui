@@ -10,7 +10,7 @@ Spec:
 - Buttons: Validate with `onclick={validate}`, Reset with `variant="outlined"` calling `form.reset()`
 - `{#if form.dirty}` shows the hint `dirty: values changed from initial`
 Tags: use-form, form, validation, text-field, dirty, reset
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Button, TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/use-form#no-schema
 

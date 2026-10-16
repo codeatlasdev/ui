@@ -9,7 +9,7 @@ Spec:
 - `onexport` sets `last` to the exported `e.filename` and `e.rows` count
 - Idle status text is `Pick a format to download.`
 Tags: export-menu, export, download, csv, table, columns
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: ExportMenu
 Live demo: https://ui.codeatlas.com.br/docs/inputs/export-menu#default
 

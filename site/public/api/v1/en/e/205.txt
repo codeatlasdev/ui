@@ -10,7 +10,7 @@ Spec:
 - Second `<Grid class="grid-auto-280" gap="4">`: `<HeatmapChart variant="calendar"` with `range={['2026-03-01', '2026-09-18']}` and `<GaugeChart value={84} label="Score"`
 - `<RadarChart` with 5 `indicators` (Speed, Quality, Reliability, Innovation, Support, `max: 100`) and series Team A and Team B
 Tags: dashboard, kpi-card, line-chart, bar-chart, pie-chart, scatter-chart, radar-chart
-Needs: @codeatlasdev/ui@4.2.0 + echarts
+Needs: @codeatlasdev/ui@4.3.0 + echarts
 Components: Card, Grid, KpiCard, KpiGrid, Stack, LineChart, BarChart, PieChart, ScatterChart, HeatmapChart, GaugeChart, RadarChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/overview#dashboard
 

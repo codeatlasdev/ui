@@ -8,7 +8,7 @@ Spec:
 - Close button runs `onclick={() => (open = false)}`
 - Trigger is `<Button variant="outlined"` labelled Open chromeless
 Tags: dialog, chromeless, modal, preview, media
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Dialog, Button
 Live demo: https://ui.codeatlas.com.br/docs/feedback/dialog#chromeless
 

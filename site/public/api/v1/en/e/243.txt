@@ -7,7 +7,7 @@ Spec:
 - Wrapped in `<div class="stage">` with `min-height: calc(var(--ca-space-8) * 3)` so the page does not shift when it appears
 - No handlers or state in the demo, the prompt renders only after mounting in the browser
 Tags: install-prompt, pwa, ios, banner, install
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: InstallPrompt
 Live demo: https://ui.codeatlas.com.br/docs/feedback/install-prompt#ios-instructions
 

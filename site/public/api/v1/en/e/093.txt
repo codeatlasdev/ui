@@ -8,7 +8,7 @@ Spec:
 - Text `{v}%` shown beside each bar
 - Column has `max-width: 480px`
 Tags: progress, determinate, value, percent, label
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Progress
 Live demo: https://ui.codeatlas.com.br/docs/feedback/progress#determinate
 

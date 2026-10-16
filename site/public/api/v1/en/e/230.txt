@@ -8,7 +8,7 @@ Spec:
 - `--ca-font-mono` with `const answer = 42;`
 - Samples use `class="sample sample--sans"`, `class="sample sample--display"` and `class="sample sample--mono"`
 Tags: typography, font-family, sans, display, mono, tokens
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/typography#font-families
 

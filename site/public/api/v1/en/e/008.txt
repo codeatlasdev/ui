@@ -8,7 +8,7 @@ Spec:
 - `indeterminate` with `label="Indeterminate"`
 - Three `<Checkbox` components imported from `@codeatlasdev/ui`
 Tags: checkbox, checked, indeterminate, bind, form
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Checkbox
 Live demo: https://ui.codeatlas.com.br/docs/inputs/checkbox#states
 

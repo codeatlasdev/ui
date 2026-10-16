@@ -8,7 +8,7 @@ Spec:
 - Output line prints `{price} cents → {centsToDisplay(price)}`
 - Wrapper `.col` has `max-width: 400px`
 Tags: money-input, cents, currency, format, bind, forms
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: MoneyInput
 Live demo: https://ui.codeatlas.com.br/docs/inputs/money-input#default
 

@@ -8,7 +8,7 @@ Spec:
 - `<Avatar alt="Support bot" size="lg">` has no `src`
 - `{#snippet fallback()}<Bot size={22} aria-hidden="true" />{/snippet}` renders the Bot icon
 Tags: avatar, fallback, snippet, icon, image-error, lucide
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Avatar
 Live demo: https://ui.codeatlas.com.br/docs/display/avatar#iconfallback
 

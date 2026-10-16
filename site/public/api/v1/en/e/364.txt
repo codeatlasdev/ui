@@ -16,7 +16,7 @@ Motion:
 - transform and opacity (restack as the list changes): 320ms cubic-bezier(0.2, 0, 0, 1)
 Names: Stacked toasts | Toast stack | Notification stack | Pilha de toasts | Pila de notificaciones
 Tags: motion, toast, stack, notification, enter
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Button, MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/transitions#stacked-toasts
 

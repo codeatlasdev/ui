@@ -8,7 +8,7 @@ Spec:
 - Label switches with state: `{copied ? 'Copied!' : 'Copy install command'}`
 - `let copied = $state(false)`
 Tags: clipboard, copy, action, button, feedback, install-command
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/navigation/actions#clipboard
 

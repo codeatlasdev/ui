@@ -8,7 +8,7 @@ Spec:
 - `{ length: 24 }` builds 24 tags labelled Tag 1 to Tag 24, each rendered as `<Chip label={tag} />`
 - Chips sit in a `<div class="row">` styled with `width: max-content` so the content overflows
 Tags: scroll-area, horizontal, scrollbar, chip, card, overflow
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: ScrollArea, Card, Chip
 Live demo: https://ui.codeatlas.com.br/docs/display/scroll-area#horizontal-scroll
 

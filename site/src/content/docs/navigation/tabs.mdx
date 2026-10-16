@@ -49,7 +49,7 @@ Arrow keys move between tabs, Home and End jump to the first and last, and focus
 <Props for="TabsTrigger" title="TabsTrigger" rows={[
   { name: "value", type: "string", description: "Required. Links the trigger to its TabsContent." },
   { name: "disabled", type: "boolean", default: "false", description: "Prevents selecting the tab." },
-  { name: "icon", type: "Snippet", description: "Leading icon in a fixed 14px box, `aria-hidden`: the label stays the accessible name. A plain icon follows the tab's text color." },
+  { name: "icon", type: "Snippet", description: "Leading icon in a fixed 14px box, `aria-hidden`: the label stays the accessible name. Any `svg` or `img` inside the box fills it, including one wrapped in `SchemeAsset`. A plain icon follows the tab's text color." },
   { name: "brandIcon", type: "boolean", default: "false", description: "The icon is a brand mark with its own colors: no active, hover or disabled color reaches it. Pair it with `SchemeAsset` when the mark needs a light and a dark asset." },
   { name: "children", type: "Snippet", description: "Trigger label." },
   { name: "class", type: "string", default: "''", description: "Extra CSS classes." },

@@ -9,7 +9,7 @@ Spec:
 - Button sets `aria-pressed={reveal}` and `aria-label={reveal ? 'Hide password' : 'Show password'}`
 - Icons `Eye` and `EyeOff` come from `@lucide/svelte`
 Tags: text-field, icon, leading, trailing, password, search, snippet
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/text-field#with-icons
 

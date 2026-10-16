@@ -182,4 +182,23 @@ describe("TabsTrigger icon", () => {
 			document.documentElement.classList.remove("dark");
 		}
 	});
+
+	it("a SchemeAsset logo fills the 14px box, sized or not", async () => {
+		const screen = await render(TabsIcon, {});
+		const size = (id: string) => {
+			const r = (screen.getByTestId(id).element() as Element).getBoundingClientRect();
+			return [r.width, r.height];
+		};
+		const slot = (
+			screen
+				.getByRole("tab", { name: "Brand" })
+				.element()
+				.querySelector(".ca-tabs-trigger__icon") as HTMLElement
+		).getBoundingClientRect();
+		expect(slot.width).toBeGreaterThan(0);
+		// Both axes are driven by the box, not by the asset: no width/height attribute, no intrinsic size.
+		expect(size("brand-light")).toEqual([slot.width, slot.width]);
+		expect(size("img-light")).toEqual([slot.width, slot.width]);
+		expect(size("sized-light")).toEqual([slot.width, slot.width]);
+	});
 });

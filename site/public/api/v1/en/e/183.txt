@@ -10,7 +10,7 @@ Spec:
 - `{#snippet children(list)}` renders a `SimpleTable` over `{#each list.rows as u (u.id)}` with `<UserCell name={u.name} email={u.email} />` and `<StatusChip`
 - Frame size is `height: 420px`
 Tags: app-list, list-page, search, filter-group, simple-table, status-chip, user-cell
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: AppList, Button, FilterGroup, SimpleTable, StatusChip, UserCell
 Live demo: https://ui.codeatlas.com.br/docs/layout/list-page#applist
 

@@ -12,7 +12,7 @@ Motion:
 - transform: translateX and inline-size of the pill: 360ms cubic-bezier(0.2, 0, 0, 1)
 Names: Sliding tab indicator | Tab pill | Magic line | Indicador deslizante de abas | Indicador de pestaña deslizante
 Tags: motion, tabs, indicator, slide, pill
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: MotionStage, Tabs, TabsContent, TabsList, TabsTrigger
 Live demo: https://ui.codeatlas.com.br/docs/motion/transitions#tab-indicator
 

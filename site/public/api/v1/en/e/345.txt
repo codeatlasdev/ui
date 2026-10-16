@@ -14,7 +14,7 @@ Motion:
 - stroke-dashoffset (check tick): 320ms cubic-bezier(0.2, 0, 0, 1) delay 120ms
 Names: Copy to check | Copy confirmation | Copiar e confirmar | Copier puis valider
 Tags: motion, copy, check, morph, icon, clipboard
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/micro#copy-to-check
 

@@ -9,7 +9,7 @@ Spec:
 - `{#snippet identity()}` renders the endpoint as `<code>{hook.url}</code>`
 - `<RecordCell label="Events">` and `<RecordCell label="Delivered">` follow; the row has no actions snippet and `columns` has no trailing action track
 Tags: record-list, record-row, table, no-actions, webhooks, responsive
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: RecordCell, RecordList, RecordRow
 Live demo: https://ui.codeatlas.com.br/docs/layout/record-list#without-a-menu
 

@@ -6,7 +6,7 @@ Spec:
 - `<Grid columns={{ base: 1, sm: 2, lg: 4 }} gap={{ base: '2', md: '4' }} p="4">`
 - `{#each [1, 2, 3, 4, 5, 6, 7, 8] as n (n)}` renders 8 `<Box class="cell" p="4">` cells labelled by `{n}`
 Tags: grid, responsive, columns, gap, breakpoints, box, layout
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Grid, Box
 Live demo: https://ui.codeatlas.com.br/docs/layout/layout-primitives#responsive-grid
 

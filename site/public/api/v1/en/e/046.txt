@@ -8,7 +8,7 @@ Spec:
 - Readouts are `{volume}` and `{brightness}%`
 - Wrapper `.col` uses `max-width: 480px`
 Tags: slider, single, volume, brightness, bind-value
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Slider
 Live demo: https://ui.codeatlas.com.br/docs/inputs/slider#single-value
 

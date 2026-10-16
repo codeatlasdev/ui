@@ -7,7 +7,7 @@ Spec:
 - Content is `<Stack gap="3">` with a paragraph and `<Button size="sm" variant="filled">Confirm</Button>`
 - Paragraph text: This is a basic popover with some content inside.
 Tags: popover, trigger, overlay, confirm, stack, contextual
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Popover, Button, Stack
 Live demo: https://ui.codeatlas.com.br/docs/navigation/popover#basic
 

@@ -13,7 +13,7 @@ Motion:
 - transform: scale: spring spring spring stiffness: 0.35, damping: 0.42
 Names: Press spring | Press scale | Efeito de pressionar | Pression élastique
 Tags: motion, press, button, spring, tap, feedback
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/micro#press-spring
 

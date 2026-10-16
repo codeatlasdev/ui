@@ -37,7 +37,7 @@ Keyboard support follows the WAI-ARIA menu pattern: Enter, Space or ArrowDown op
 
 ### Leading icons and brand logos
 
-Pass a leading icon with the `icon` snippet instead of placing it in `children`: it gets a fixed 14px box, the standard gap and `aria-hidden` (the label stays the accessible name), so icon size and alignment never drift between menus. A plain icon (Lucide, any `currentColor` glyph) follows the item's text color, including the highlighted, disabled and destructive states.
+Pass a leading icon with the `icon` snippet instead of placing it in `children`: it gets a fixed 14px box, the standard gap and `aria-hidden` (the label stays the accessible name), so icon size and alignment never drift between menus. Any `svg` or `img` inside the box fills it, including one wrapped in `SchemeAsset`, whatever `width` or `height` the asset declares. A plain icon (Lucide, any `currentColor` glyph) follows the item's text color, including the highlighted, disabled and destructive states.
 
 A brand logo (a multi-color or fixed-color SVG) must not be recolored: set `brandIcon` on the item and no state color or dimming reaches the icon. A monochrome mark such as the OpenAI blossom needs a black asset on light themes and a white one on dark: wrap both in `SchemeAsset`, which renders the variant of the kit's color scheme (the `.dark` class on `<html>`, or a `data-theme-scope` island) with CSS only, so it is correct in SSR and on first paint and no app has to read the theme store. The same `icon` / `brandIcon` pair exists on `TabsTrigger`. Follow each brand's own guidelines for the marks you ship.
 

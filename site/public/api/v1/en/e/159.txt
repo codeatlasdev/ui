@@ -8,7 +8,7 @@ Spec:
 - `<DropdownMenuLabel>Actions</DropdownMenuLabel>` then 2 items: Share and Copy link
 - Item content is passed with `{#snippet children()}` using `<Share2 size={14} />` and `<Copy size={14} />`
 Tags: dropdown-menu, menu, icon-button, overflow, more-options, align, a11y
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: DropdownMenu, DropdownMenuItem, DropdownMenuLabel, IconButton
 Live demo: https://ui.codeatlas.com.br/docs/navigation/menu#icon-trigger
 

@@ -9,7 +9,7 @@ Spec:
 - `let range = $state<DateRange>({ start: undefined, end: undefined })` starts empty
 - Output lines show `fmt(value)`, `fmt(range.start)` and `fmt(range.end)`, with `–` when unset
 Tags: calendar, range-calendar, date, date-range, inline, locale
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Calendar, RangeCalendar
 Live demo: https://ui.codeatlas.com.br/docs/inputs/date-picker#calendar-and-rangecalendar
 

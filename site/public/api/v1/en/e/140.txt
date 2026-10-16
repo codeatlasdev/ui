@@ -7,7 +7,7 @@ Spec:
 - 4 items with `label` and `date` only: Project started Jan 2025, Alpha released Mar 2025, Public beta Jun 2025, v1.0 stable Sep 2025
 - Wrapped in `.wrap` with `max-width: 440px`
 Tags: timeline, milestones, roadmap, history, dates
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Timeline
 Live demo: https://ui.codeatlas.com.br/docs/display/timeline#simple
 

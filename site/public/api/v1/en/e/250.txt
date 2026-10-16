@@ -7,7 +7,7 @@ Spec:
 - `reactions={[{ emoji: '👍', count: 2, mine: true }, { emoji: '🎉' }]}`
 - `{#snippet quote()}` holds a `<strong>You</strong>` label and the quoted text
 Tags: message-bubble, chat, quote, reactions, reply
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: MessageBubble
 Live demo: https://ui.codeatlas.com.br/docs/display/message-bubble#quote-and-reactions
 

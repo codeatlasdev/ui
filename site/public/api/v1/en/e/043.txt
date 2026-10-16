@@ -9,7 +9,7 @@ Spec:
 - Size select has `disabled` with `bind:value={size}`
 - 3 selects stacked in `.col` with `max-width: 320px`
 Tags: select, error, disabled, description, validation
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Select
 Live demo: https://ui.codeatlas.com.br/docs/inputs/select#states
 

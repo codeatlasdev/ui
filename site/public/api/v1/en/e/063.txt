@@ -10,7 +10,7 @@ Spec:
 - Success text renders in `<p class="hint hint--success" role="status">`
 - Reset button has `variant="outlined"` and clears `result`
 Tags: use-form, submit, loading, schema, validation, async
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Button, TextArea, TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/use-form#submit-state
 

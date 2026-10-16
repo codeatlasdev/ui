@@ -96,7 +96,7 @@
       inline-size: var(--ca-space-3-5);
       block-size: var(--ca-space-3-5);
     }
-    :global(.ca-tabs-trigger__icon > :is(svg, img)) {
+    :global(.ca-tabs-trigger__icon :is(svg, img)) {
       inline-size: 100%;
       block-size: 100%;
     }

@@ -8,7 +8,7 @@ Spec:
 - `delay={1000}` on the Slow button
 - Each trigger uses `{#snippet triggerChild(props)}` with `<Button variant="glass" {...props}>`
 Tags: tooltip, delay, button, hover, timing
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Tooltip, Button
 Live demo: https://ui.codeatlas.com.br/docs/display/tooltip#custom-delay
 

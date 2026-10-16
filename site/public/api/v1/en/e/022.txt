@@ -8,7 +8,7 @@ Spec:
 - `let role = $state('all')` starts at `all`, which is not one of the options
 - `<p>Selected: {role}</p>` prints the current value
 Tags: filter-group, filter, options, role, bind, category
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: FilterGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/filter-group#role-filter
 

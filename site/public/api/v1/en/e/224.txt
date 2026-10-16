@@ -6,7 +6,7 @@ Spec:
 - Renders `<Swatches {tokens} bordered={true} />` with 4 tokens
 - Tokens in order: `--ca-text-primary`, `--ca-text-secondary`, `--ca-text-hint`, `--ca-text-disabled`
 Tags: colors, text, typography, tokens, swatches, contrast
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/colors#text
 

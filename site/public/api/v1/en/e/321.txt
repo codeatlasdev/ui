@@ -12,7 +12,7 @@ Motion:
 - opacity, transform: translateY, scale: animation-timeline: view(block) linear delay animation-range: entry 0% entry 70%
 Names: View timeline reveal | Scroll-driven reveal | Reveal por view timeline | Révélation pilotée par le défilement
 Tags: motion, scroll, view-timeline, scroll-driven, scrub, reveal
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Card, MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/scroll#view-timeline-reveal
 

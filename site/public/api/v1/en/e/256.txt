@@ -11,7 +11,7 @@ Motion:
 - opacity, transform: translateY: 420ms cubic-bezier(0.2, 0, 0, 1) delay 80ms
 Names: Fade rise | Fade up | Subir com fade
 Tags: motion, fade, rise, entrance, card
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Card, MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/basics#fade-rise
 

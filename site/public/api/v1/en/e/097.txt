@@ -7,7 +7,7 @@ Spec:
 - `<Skeleton variant="circular" width="48px" height="48px" />` inside `<Flex gap="4" align="start">`
 - Three lines in `<Stack gap="2">`: `height="16px" width="40%"`, `height="13px" width="70%"`, `height="13px" width="55%"`
 Tags: skeleton, card, loading, avatar, placeholder
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Skeleton, Card, Stack, Flex
 Live demo: https://ui.codeatlas.com.br/docs/feedback/skeleton#card-layout
 

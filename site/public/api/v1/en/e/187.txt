@@ -9,7 +9,7 @@ Spec:
 - `KpiGrid` has 4 `KpiCard` items: Revenue `$118k`, Users `24.8k`, Growth `34%`, Uptime `99.9%`
 - Placeholder card text is Chart or data table goes here
 Tags: page-shell, dashboard, kpi-grid, card, glass, actions, header
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: PageShell, KpiCard, KpiGrid, Card, Stack, Button
 Live demo: https://ui.codeatlas.com.br/docs/layout/page-shell#dashboard-page
 

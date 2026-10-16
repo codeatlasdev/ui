@@ -8,7 +8,7 @@ Spec:
 - Body text is passed as the alert children
 - Wrapper `.col` has `max-width: 560px`
 Tags: alert, title, severity, success, error
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Alert
 Live demo: https://ui.codeatlas.com.br/docs/display/alert#with-title
 

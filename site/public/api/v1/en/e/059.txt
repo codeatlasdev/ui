@@ -6,7 +6,7 @@ Spec:
 - `<ThemeToggle />` with no props
 - Wrapped in `<div class="rail">`
 Tags: theme-toggle, dark-mode, theme, appearance, rail
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: ThemeToggle
 Live demo: https://ui.codeatlas.com.br/docs/inputs/theme-toggle#basic
 

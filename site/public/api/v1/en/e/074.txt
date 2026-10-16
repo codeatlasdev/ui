@@ -8,7 +8,7 @@ Spec:
 - `<p class="state">open = {open}</p>` prints the bound value
 - Wrapped in `.wrap` with `max-width: 560px`
 Tags: collapsible, open, bind, expanded, controlled
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Collapsible
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/collapsible#open-by-default
 

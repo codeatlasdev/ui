@@ -13,7 +13,7 @@ Motion:
 - transform: rotateX, rotateY: spring spring spring stiffness: 0.1, damping: 0.6
 Names: Tilt card | 3D tilt | Card com inclinação | Carte inclinée
 Tags: motion, tilt, card, hover, 3d, spring
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/micro#tilt-card
 

@@ -13,7 +13,7 @@ Motion:
 - text content (random glyphs resolving to the final letters, left to right): 55ms per letter linear stagger 40ms
 Names: Text scramble | Decode effect | Character scramble | Embaralhar texto | Texto decodificando | Texte brouillé
 Tags: motion, text, scramble, decode, hover, label
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/text#text-scramble
 

@@ -10,7 +10,7 @@ Spec:
 - `valueFormatter` renders `${(v / 1000).toFixed(1)}k`
 - `height="300px"`
 Tags: bar-chart, horizontal, ranking, categories, value-formatter, card
-Needs: @codeatlasdev/ui@4.2.0 + echarts
+Needs: @codeatlasdev/ui@4.3.0 + echarts
 Components: Card, BarChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/bar#horizontal-bars
 

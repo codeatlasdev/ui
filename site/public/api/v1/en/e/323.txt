@@ -13,7 +13,7 @@ Motion:
 - transform: scaleX: animation-timeline: scroll(nearest block) linear
 Names: Reading progress bar | Scroll progress | Barra de progresso de leitura | Barre de progression de lecture
 Tags: motion, scroll, progress, reading, article, scroll-driven
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/scroll#reading-progress-bar
 

@@ -9,7 +9,7 @@ Spec:
 - Handlers call `push('Signed out')`, `push('Sign out cancelled')` and `push('Project deleted')`
 - Log keeps the latest four entries with `slice(0, 4)` in a `<ul class="log" aria-live="polite">`
 Tags: alert-dialog, confirm, destructive, sign-out, delete, dialog
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: AlertDialog, Button
 Live demo: https://ui.codeatlas.com.br/docs/feedback/alert-dialog#basic-and-destructive
 

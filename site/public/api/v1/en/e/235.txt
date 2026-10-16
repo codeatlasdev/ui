@@ -9,7 +9,7 @@ Spec:
 - Table sits in `<div class="ca-table-wrap" tabindex="0" role="region" aria-label="Request fields">`
 - Table columns: Field, Type, Description, with 2 rows for `to` and `text`
 Tags: prose, callout, steps, docs-kit, table, api-docs
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Callout, Steps
 Live demo: https://ui.codeatlas.com.br/docs/docs-kit/docs#ca-prose-callout-and-steps
 

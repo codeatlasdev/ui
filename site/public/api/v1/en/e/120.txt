@@ -7,7 +7,7 @@ Spec:
 - `variant="brand"`, `variant="success"`, `variant="warning"`, `variant="error"` and `variant="info"` each with a matching label
 - `<Chip label="Small" size="sm" />` shows the small size
 Tags: chip, variant, brand, size, sm, color
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Chip
 Live demo: https://ui.codeatlas.com.br/docs/display/chip#variants-and-size
 

@@ -8,7 +8,7 @@ Spec:
 - `bind:value={project}` with initial `$state('')`
 - Current value is shown as `JSON.stringify(project)`
 Tags: select, empty-option, filter, placeholder, all
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Select
 Live demo: https://ui.codeatlas.com.br/docs/inputs/select#empty-value-option
 

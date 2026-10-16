@@ -7,7 +7,7 @@ Spec:
 - `<Stack align="center" gap="3">` centers the spinner and text
 - `<Spinner size={40} />` above `<span class="text">Loading data…</span>`
 Tags: spinner, loader, card, section, loading
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Spinner, Card, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/spinner#section-loader
 

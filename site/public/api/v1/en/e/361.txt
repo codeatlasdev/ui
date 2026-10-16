@@ -11,7 +11,7 @@ Motion:
 - transform: translateY (inverted offset to 0): 420 cubic-bezier(0.2, 0, 0, 1)
 Names: FLIP reorder | List reorder animation | Layout animation | Reordenar lista com animação | Animación de reordenación
 Tags: motion, flip, reorder, list, sort
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Button, MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/transitions#flip-reorder
 

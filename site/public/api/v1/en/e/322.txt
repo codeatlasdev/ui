@@ -16,7 +16,7 @@ Motion:
 - transform: translateY to 30% and opacity to 0.15, caption: animation-timeline: --scene linear
 Names: Parallax | Parallax layers | Paralaxe | Parallaxe
 Tags: motion, scroll, parallax, layers, depth, hero
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/scroll#parallax
 

@@ -15,7 +15,7 @@ Motion:
 - transform: translateX (manual nudge after takeover): 240ms cubic-bezier(0.2, 0, 0, 1)
 Names: Infinite marquee | Ticker | Logo wall scroll | Letreiro infinito | Faixa rolante | Défilement infini
 Tags: motion, text, marquee, ticker, logos, loop
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Button, MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/text#infinite-marquee
 

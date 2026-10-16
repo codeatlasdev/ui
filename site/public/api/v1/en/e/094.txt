@@ -8,7 +8,7 @@ Spec:
 - Each bar sits in a row next to a text label, Loading and Syncing
 - Column has `max-width: 480px`
 Tags: progress, indeterminate, loading, sync, label
-Needs: @codeatlasdev/ui@4.2.0
+Needs: @codeatlasdev/ui@4.3.0
 Components: Progress
 Live demo: https://ui.codeatlas.com.br/docs/feedback/progress#indeterminate
 
