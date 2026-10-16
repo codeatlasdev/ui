@@ -189,15 +189,20 @@ Avatar: user identity display component.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `src?` | `string` |  |  |
+| `src?` | `string` |  | Image URL. Rendered as a real `<img>`; the fallback shows beneath it while it loads and after it fails. |
 | `alt?` | `string` | `''` |  |
-| `fallback?` | `string` |  | Explicit initials override. Otherwise derived from alt. |
+| `fallback?` | `string \| Snippet` |  | Initials override (string), or an icon/any content (Snippet). Otherwise initials derive from `alt`. |
 | `size?` | `Size` | `'md'` |  |
 | `shape?` | `Shape` | `'circle'` |  |
 | `status?` | `Status` |  |  |
+| `loading?` | `'lazy' \| 'eager'` |  | Passed to the `<img>`. Use `"lazy"` in long lists. |
+| `referrerpolicy?` | `ReferrerPolicy` |  | Passed to the `<img>`, e.g. `"no-referrer"` for CDN photos that reject a cross-origin Referer. |
+| `crossorigin?` | `'anonymous' \| 'use-credentials'` |  | Passed to the `<img>`. |
+| `onerror?` | `(event: Event) => void` |  | Called when the image fails; the fallback shows. Use it to refetch a signed URL. |
+| `skeleton?` | `boolean` | `false` | Loading placeholder: same size, no image request, announced as busy. |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-avatar` `ca-avatar__fallback` `ca-avatar__img` `ca-avatar__status` `ca-avatar__status--away` `ca-avatar__status--busy` `ca-avatar__status--offline` `ca-avatar__status--online`
+Classes: `ca-avatar` `ca-avatar__fallback` `ca-avatar__fallback--covered` `ca-avatar__img` `ca-avatar__status` `ca-avatar__status--away` `ca-avatar__status--busy` `ca-avatar__status--offline` `ca-avatar__status--online`
 
 ## Badge
 
@@ -347,6 +352,7 @@ Card — a Surface with a header (`title`, `headerActions`), padding and an opti
 | `padding?` | `'none' \| 'sm' \| 'md' \| 'lg' \| (string & {}) \| number` |  | Content padding: `'none'`, `'sm'` (12px), `'md'` (20px, the default), `'lg'` (32px), or any CSS length (`'1.5rem'`) or number (px). It sets `--ca-card-padding` on this card only. `flush` is the alias of `'none'` and wins over `padding`. |
 | `flush?` | `boolean` | `false` | Removes all padding, for tables, images and code that touch the edges. |
 | `full?` | `boolean` | `false` | `width: 100%`. |
+| `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded card (content keeps its layout, hidden), announced as busy. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `headerActions`, `children`
@@ -1053,6 +1059,7 @@ Classes: `ca-app-bar` `ca-app-bar__content` `ca-app-bar__leading` `ca-app-bar__t
 | `padding?` | `string \| number` |  | Padding override. Omit to use `--ca-card-padding` (default 20px). Passed as a CSS custom property, not as a fixed inline value. |
 | `flush?` | `boolean` | `false` | Removes all padding, for tables, images and code that touch the edges. |
 | `full?` | `boolean` | `false` | width: 100% |
+| `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded card, announced as busy. |
 | `title?` | `string` |  |  |
 | `headingLevel?` | `HeadingLevel` |  | Renders `title` as an `<h2>`–`<h6>` so the card is a section in the page outline. Omit for a plain paragraph. Only the tag changes, never the look. |
 | `class?` | `string` | `''` |  |
@@ -1187,6 +1194,7 @@ Classes: `ca-kbd`
 | `unit?` | `string` |  |  |
 | `trend?` | `number` |  |  |
 | `icon?` | `IconComponent` |  | Lucide icon component; size and color are managed by KpiCard |
+| `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded card, announced as busy. |
 | `class?` | `string` | `''` |  |
 
 Classes: `ca-kpi` `ca-kpi__icon` `ca-kpi__inner` `ca-kpi__title` `ca-kpi__top` `ca-kpi__trend` `ca-kpi__trend--down` `ca-kpi__trend--up` `ca-kpi__unit` `ca-kpi__value` `ca-kpi__value-row`
@@ -1213,11 +1221,14 @@ Classes: `ca-kpi-grid` `ca-kpi-grid__grid`
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `open?` | `boolean` | `false` | `bind:` |
-| `src` | `string` |  |  |
-| `alt` | `string` |  |  |
+| `src?` | `string` |  | Single-item sugar: same as `items={[{ src, alt }]}`. |
+| `alt?` | `string` | `""` |  |
+| `items?` | `LightboxItem[]` |  | Gallery. Wins over `src`/`alt`. |
+| `index?` | `number` | `0` | `bind:` Current item, bindable. |
+| `ondownload?` | `(item: LightboxItem, index: number) => void` |  | Called instead of the default `<a download>` when the user taps Download. |
 | `onclose?` | `() => void` |  |  |
 
-Classes: `ca-lightbox` `ca-lightbox__close` `ca-lightbox__img` `ca-lightbox__stage`
+Classes: `ca-lightbox` `ca-lightbox__action` `ca-lightbox__caption` `ca-lightbox__caption-text` `ca-lightbox__close` `ca-lightbox__counter` `ca-lightbox__img` `ca-lightbox__meta` `ca-lightbox__nav` `ca-lightbox__nav--next` `ca-lightbox__nav--prev` `ca-lightbox__stage` `ca-lightbox__tools` `ca-lightbox__video`
 
 ## LineChart
 
@@ -1810,6 +1821,7 @@ Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__acti
 |---|---|---|---|
 | `class?` | `string` | `''` |  |
 | `responsive?` | `'scroll' \| 'cards'` | `'scroll'` | `scroll` (default): regular table. `cards`: when its own width is below the `sm` breakpoint (600px) each row becomes a card. Each cell's caption is its column header; set `data-label` on a `<td>` only to override it. |
+| `skeleton?` | `boolean` | `false` | Loading placeholder: the table keeps its exact box (rows stay laid out, hidden) and is announced as busy. Pass the same rows you will show, or placeholder rows, so the height matches. |
 
 Snippets: `children`
 
@@ -2146,6 +2158,7 @@ Classes: `ca-ta` `ca-ta--disabled` `ca-ta__hint` `ca-ta__hint--error` `ca-ta__in
 | `readonly?` | `boolean` | `false` |  |
 | `autocomplete?` | `HTMLInputAttributes["autocomplete"]` |  |  |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
+| `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded field, disabled, announced as busy. |
 | `class?` | `string` | `''` |  |
 | `name?` | `string` |  |  |
 | `oninput?` | `(value: string) => void` |  |  |
