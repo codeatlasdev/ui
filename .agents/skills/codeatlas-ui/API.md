@@ -4480,6 +4480,16 @@ First 10 hex chars of the sha256 of the parts.
 function brandHash(...parts: string[]): string
 ```
 
+### brandUrls
+
+`import { brandUrls } from "@codeatlasdev/ui/vite"`
+
+The URLs `generateBrand` will write, computed from the inputs alone (no rasterizer, no files). Names depend on a hash of the inputs, so this is cheap and exact.
+
+```ts
+function brandUrls(o: Pick<GenerateBrandOptions, "mark" | "theme" | "base" | "name" | "shortName">): BrandAssets
+```
+
 ### CA_THEME_MARKER
 
 `import { CA_THEME_MARKER } from "@codeatlasdev/ui/vite"`
@@ -4628,6 +4638,16 @@ Colors of the theme's default preset in both schemes, as `#rrggbb`. Pure: same t
 
 ```ts
 function resolveBrand(theme?: ThemeOptions): ResolvedBrand
+```
+
+### runBrand
+
+`import { runBrand } from "@codeatlasdev/ui/vite"`
+
+Renders the whole set and writes the module, outside Vite: what `codeatlas-ui brand` runs, for a type-check-only job on a fresh clone. Returns `false` when the mark file is missing.
+
+```ts
+function runBrand(root: string, options: CaBrandPluginOptions): Promise<boolean>
 ```
 
 Types:
