@@ -852,10 +852,11 @@ Classes: `ca-dropdown-content` `ca-dropdown__trigger`
 | `onclick?` | `() => void` |  |  |
 | `disabled?` | `boolean` | `false` |  |
 | `variant?` | `'default' \| 'destructive'` | `'default'` |  |
+| `brandIcon?` | `boolean` | `false` | The icon is a brand mark (fixed colors, not a `currentColor` glyph): it is never recolored by the highlighted, disabled or destructive state. Pair with `SchemeAsset` for light/dark variants. |
 
-Snippets: `children`
+Snippets: `icon`, `children`
 
-Classes: `ca-dropdown-item` `ca-dropdown-item--destructive`
+Classes: `ca-dropdown-item` `ca-dropdown-item--destructive` `ca-dropdown-item__icon`
 
 ## DropdownMenuLabel
 
@@ -1657,6 +1658,18 @@ Snippets: `children`
 | `height?` | `string` | `"320px"` |  |
 | `class?` | `string` | `""` |  |
 
+## SchemeAsset
+
+`import { SchemeAsset } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `class?` | `string` | `''` |  |
+
+Snippets: `light`, `dark`
+
+Classes: `ca-scheme-asset` `ca-scheme-asset__dark` `ca-scheme-asset__light`
+
 ## ScrollArea
 
 `import { ScrollArea } from "@codeatlasdev/ui"`
@@ -2067,6 +2080,7 @@ Classes: `ca-tabs-content`
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
+| `fade?` | `boolean` | `false` | Fade the edge(s) that still have tabs to scroll to, so the strip reads as scrollable. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
@@ -2081,11 +2095,12 @@ Classes: `ca-tabs-list`
 |---|---|---|---|
 | `value` | `string` |  |  |
 | `disabled?` | `boolean` | `false` |  |
+| `brandIcon?` | `boolean` | `false` | The icon is a brand mark (fixed colors, not a `currentColor` glyph): it is never recolored by the active, hover or disabled state. Pair with `SchemeAsset` for light/dark variants. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `children`
+Snippets: `icon`, `children`
 
-Classes: `ca-tabs-trigger`
+Classes: `ca-tabs-trigger` `ca-tabs-trigger__icon`
 
 ## TextArea
 
