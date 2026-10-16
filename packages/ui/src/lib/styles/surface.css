@@ -222,7 +222,6 @@
 }
 [data-ca-blur="ultra-thin"] { --ca-blur-role: var(--ca-blur-ultra-thin); }
 [data-ca-blur="thin"] { --ca-blur-role: var(--ca-blur-thin); }
-[data-ca-blur="regular"] { --ca-blur-role: var(--ca-blur-regular); }
 [data-ca-blur="thick"] { --ca-blur-role: var(--ca-blur-thick); }
 [data-ca-blur="chrome"] { --ca-blur-role: var(--ca-blur-chrome); }
 [data-ca-blur="mat-thin"] { --ca-blur-role: var(--ca-mat-thin-filter); }
@@ -231,6 +230,7 @@
 [data-ca-blur="chrome-layer"] { --ca-blur-role: var(--ca-chrome-blur); }
 [data-ca-blur="tooltip"] { --ca-blur-role: var(--ca-tooltip-blur); }
 /* The glass variant of Button and IconButton is the `regular` role, keyed on the class they already carry. */
+[data-ca-blur="regular"],
 .ca-btn--glass,
 .ca-icon-btn--glass { --ca-blur-role: var(--ca-blur-regular); }
 /* The modal scrim (the ::backdrop of every `dialog.ca-overlay`: Dialog, AlertDialog, Sheet, Drawer, CommandPalette,
@@ -270,12 +270,4 @@ dialog.ca-overlay::backdrop {
   }
   .ca-surface[data-variant="ghost"] { border-color: transparent; }
   .ca-surface[data-interactive]:focus-visible { outline-color: Highlight; }
-}
-
-/* Blur roles also drop their blur here (the tokens are remapped to none above, this covers a role added later). */
-@media (forced-colors: active) {
-  [data-ca-blur] {
-    -webkit-backdrop-filter: none;
-    backdrop-filter: none;
-  }
 }
