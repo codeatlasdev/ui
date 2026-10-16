@@ -34,6 +34,7 @@ Every page is also linked with `<link rel="alternate" type="text/plain" href="/l
 | `get_export` | Signature and summary of any non-component export: functions, stores, constants and types of every entry point (`setLocale`, `toast`, `caErrorPlugin` from `/vite`, `createErrorHandler` and `nativeFeel` from `/kit`, `primeKeyboard` from `/actions`). Without a name it lists them all with their import path. |
 | `search_tokens` | `--ca-*` design tokens matching a name, value or section, with light and dark values (the first 60 matches). |
 | `get_guide` | A documentation page as markdown, by slug (`getting-started/theming`) or title. Without a name it lists every guide. |
+| `report_issue` | Drafts a sanitized GitHub issue when the library gets in the agent's way: markdown body, the redactions applied, a prefilled form link and a `gh issue create` command. It never posts. See [Reporting problems](/docs/getting-started/reporting/). |
 
 Prop names are never guessed: an agent asks the server and gets the types the compiler sees.
 
@@ -60,6 +61,10 @@ Every docs demo has a stable id `#NNN` (index: [`/api/v1/catalog.json`](/api/v1/
 ```sh
 /plugin install codeatlas-ui --marketplace codeatlasdev/ui
 ```
+
+## When the library gets in the way
+
+The agent writes a workaround marked `// ca-ui-workaround(#<n>): <why>` and drafts a sanitized issue with `report_issue`, with neutral names only. `bunx @codeatlasdev/ui workarounds` later lists the markers and which issues are closed. Details and the privacy rules: [Reporting problems](/docs/getting-started/reporting/).
 
 ## Set up and migrate with the CLI
 

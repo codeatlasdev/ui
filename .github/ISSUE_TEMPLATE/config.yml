@@ -1,5 +1,8 @@
 blank_issues_enabled: false
 contact_links:
+  - name: Hit a problem while an AI builds with the library?
+    url: https://ui.codeatlas.com.br/docs/getting-started/reporting/
+    about: Your agent drafts a sanitized report with the report_issue tool (ca-ui-mcp)
   - name: Question or discussion
     url: https://github.com/codeatlasdev/ui/discussions
     about: Ask questions and discuss ideas

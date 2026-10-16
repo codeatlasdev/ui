@@ -1,0 +1,76 @@
+name: AI report
+description: Filed by an AI coding agent (or you) when the library got in the way. Neutral names only.
+title: "[ai-report] "
+labels: [ai-report]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        This form is meant to be filled by `report_issue` (the `ca-ui-mcp` MCP tool), which sanitizes the text first. It is public.
+
+        **Never include:** project or company names, file paths, URLs (other than ui.codeatlas.com.br and github.com/codeatlasdev), environment variables, tokens, emails, IPs, customer data or business logic. Use a minimal reproduction with neutral names (`Item A`, `user@example.com`).
+
+  - type: dropdown
+    id: kind
+    attributes:
+      label: Kind
+      options:
+        - bug
+        - missing
+        - migration-gap
+        - docs
+    validations:
+      required: true
+
+  - type: input
+    id: component
+    attributes:
+      label: Component or export
+      placeholder: "e.g. Select, caThemePlugin"
+
+  - type: input
+    id: version
+    attributes:
+      label: "@codeatlasdev/ui version"
+      placeholder: "e.g. 4.1.0"
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected
+      description: What you needed the library to do.
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual
+      description: What it does, or what is missing. Include the error text (sanitized).
+    validations:
+      required: true
+
+  - type: textarea
+    id: repro
+    attributes:
+      label: Minimal reproduction
+      description: A few lines with neutral names. No real data.
+      render: svelte
+
+  - type: textarea
+    id: workaround
+    attributes:
+      label: Workaround used
+      description: What the user's code does meanwhile. It is marked in the code with `// ca-ui-workaround(#<this issue>): <why>`.
+
+  - type: checkboxes
+    id: privacy
+    attributes:
+      label: Before submitting
+      options:
+        - label: No private project details (names, paths, URLs, env, secrets, data, business logic)
+          required: true
+        - label: I searched existing issues and this hasn't been reported yet
+          required: true

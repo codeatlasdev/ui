@@ -68,6 +68,8 @@ Then, in the worktree (use paths inside it; your editor or agent must not edit t
 3. **Before review:** `bun run validate`, a changeset if the package changes, docs if behavior changed. Never bypass the pre-push hook (`--no-verify`, `LEFTHOOK=0`): a gate that fails only under load is a bug; open an issue for it.
 4. **Landing (maintainers):** `sh scripts/issue-land.sh 47` rebases on `main`, rebuilds generated files (lockfile, API.md, components.json, css-api), validates, regenerates visual baselines on CI, waits until every check on the final head passed and squash-merges. GitHub closes the issue through `Closes #47`; the script then runs `issue:done` (worktree, branch and `in progress` label cleanup).
 
+Issues filed by an AI agent through the `report_issue` MCP tool use the **AI report** form (`ai-report` label) and are sanitized before posting (no project names, paths, URLs, env, secrets or data). Treat them like any bug report; when you close one, `bunx @codeatlasdev/ui workarounds` is how its reporter finds the workaround to remove. See [Reporting problems](https://ui.codeatlas.com.br/docs/getting-started/reporting/).
+
 If you find the issue is already fixed or obsolete, prove it with a test that passes on `main`, comment that evidence on the issue and close it.
 
 ## Adding a component

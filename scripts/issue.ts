@@ -181,6 +181,7 @@ const LABELS: [string, string, string][] = [
 	["area:docs", "C5DEF5", "site, guides, skills, API.md"],
 	["area:tests", "C5DEF5", "test infra, flakes, CI"],
 	["blocked", "B60205", "waits on another issue (see 'Blocked by')"],
+	["ai-report", "5319E7", "filed by an AI agent through report_issue"],
 ];
 
 async function triage() {

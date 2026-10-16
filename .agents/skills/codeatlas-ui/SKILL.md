@@ -137,6 +137,19 @@ Every docs demo has a stable id `#NNN` (list: [DEMOS.md](./DEMOS.md), gallery: h
 2. Port: keep component names, props, variants and motion tokens as in the reference; change only data, copy and theme. Keep the first comment line (license) of the reference in the file you write.
 3. Report one line per demo: `#NNN title → file, what changed, demo link`.
 
+## When the library gets in your way
+
+A bug, a missing prop or component, a migration step the guide does not cover, or docs that lie. Do both, in this order:
+
+1. **Work around it in the user's code, visibly.** Keep the workaround small and put one marker line next to it: `// ca-ui-workaround(#<n>): <one line why>` (`<!-- ca-ui-workaround(#<n>): <why> -->` in markup). `<n>` is the issue number from step 2; until you have it, write `#0` and fix it afterwards. `bunx @codeatlasdev/ui workarounds` lists the markers and which issues are closed, so the workaround can be removed after an upgrade.
+2. **Report it.** Call `report_issue({ kind, title, component?, expected, actual, repro?, workaround?, version? })` (`kind`: `bug`, `missing`, `migration-gap`, `docs`). It returns a sanitized body, the list of redactions and a prefilled issue-form URL plus a `gh issue create` command. It never posts: show the user the body and open the URL or run the command. First search existing issues (`gh issue list --repo codeatlasdev/ui --search "<words>"`) and use that number in the marker instead of opening a duplicate.
+
+Privacy rules for every field you write (the tool redacts again, but do not rely on it): neutral names only (`Item A`, `user@example.com`). Never include project, company or customer names, file paths, URLs other than ui.codeatlas.com.br and github.com/codeatlasdev, env variable names or values, tokens, emails, IPs, data or business logic. The repro is the smallest snippet that shows the problem with generic names, not an excerpt of the user's file.
+
+## Migrating a React app (MUI, shadcn/Radix, Chakra)
+
+Call `get_guide("migrate-react")` before touching a React codebase and follow it: choose rewrite (small app) or route-by-route incremental (never mount React inside Svelte), set up SvelteKit with `bunx @codeatlasdev/ui init --write`, then port theme and shell first, one list/form/settings page next (`AppList`, `AppForm`, `AppSettings`, `PageShell`, not hand-built wrappers). Translate hooks to runes (`useState`→`$state`, `useMemo`→`$derived`, `useEffect`→`$effect` only for side effects, never to compute a value; `ref`→`bind:this`; children/render props→snippets; context→`setContext`), map components only with the guide's tables and confirm every prop with `get_component`, map the design tokens into one `ThemeOptions`, and move TanStack Table to `@codeatlasdev/ui/table`. If something has no equivalent, never invent a component: write a `ca-ui-workaround(#n)` marker next to a documented workaround and call `report_issue` with `kind: "migration-gap"` using neutral names only (no project, path, URL, secret or business logic).
+
 ## Companion files
 
 - [LAYOUT.md](./LAYOUT.md): Grid, Row, Stack, all props and composition patterns

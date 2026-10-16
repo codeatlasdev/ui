@@ -1,0 +1,53 @@
+---
+title: Reporting problems
+description: How an AI agent that hits a library problem writes a documented workaround and opens a sanitized issue, and what it must never include.
+group: Getting started
+order: 9
+---
+import { Callout } from "@codeatlasdev/ui";
+
+When an agent building with CodeAtlas UI hits a problem (a bug, a missing prop or component, a migration step the guide does not cover, docs that are wrong), it does two things: it works around it in your code so you are not blocked, and it drafts a public issue so the library gets fixed. The report must never leak anything about your project.
+
+## The flow
+
+1. **Workaround with a marker.** The agent keeps the workaround small and writes one line next to it:
+
+   ```ts
+   // ca-ui-workaround(#227): Select closes when the list scrolls inside a dialog
+   ```
+
+   In markup: `<!-- ca-ui-workaround(#227): why -->`. The number is the issue it filed (or found).
+2. **Draft the report.** The MCP tool `report_issue` takes `kind` (`bug`, `missing`, `migration-gap` or `docs`), `title`, `expected`, `actual` and optionally `component`, `repro`, `workaround` and `version`. It returns the sanitized markdown body, the list of redactions it applied, a prefilled link to the [AI report form](https://github.com/codeatlasdev/ui/issues/new?template=ai_report.yml) and a `gh issue create` command. It never posts by itself: the agent shows you the body and you open the link or run the command.
+3. **Clean up later.** After you upgrade, list the markers and see which issues were closed:
+
+   ```sh
+   bunx @codeatlasdev/ui workarounds        # scans src; pass paths to scan others
+   ```
+
+   Each line is `file:line  #issue  open|closed|unknown  reason`. A closed issue means the library fixed it: remove the workaround and its marker. The command only reads, asks the public GitHub API without a token, and exits 0 even offline (the state is then `unknown`).
+
+## What is never reported
+
+<Callout type="warning" title="Neutral names only">
+  The issue is public. A report contains no project, company or customer names, file paths, URLs (except ui.codeatlas.com.br and github.com/codeatlasdev), environment variables, tokens, emails, IP addresses, data or business logic. The reproduction is the smallest snippet that shows the problem, written with generic names (`Item A`, `user@example.com`), not an excerpt of your files.
+</Callout>
+
+`report_issue` enforces this a second time on every field it receives. It replaces:
+
+| Found | Becomes |
+|---|---|
+| Absolute, home and project-relative file paths | `<path>` |
+| URLs other than ui.codeatlas.com.br and github.com/codeatlasdev | `<url>` |
+| Email addresses | `<email>` |
+| IPv4 and IPv6 addresses | `<ip>` |
+| `sk-`, `ghp_`, AWS-style keys, `Bearer` tokens, JWTs and other long high-entropy strings | `<secret>` |
+| `NAME_LIKE_THIS=value` assignments | `<env>` |
+| Package scopes other than `@codeatlasdev` | `@scope/pkg` |
+
+The result lists which categories matched, so the agent (and you) can see that something was removed. Redaction is a safety net, not a substitute for writing the report with neutral names in the first place: it can only recognize patterns, not that a word is your client's name.
+
+The body carries the library version (from the installed package unless the agent passes one), the kind, the component and the sections above, and ends with `Reported by an AI agent via ca-ui-mcp; reviewed for private details`. The form has a required checkbox, "No private project details".
+
+## Set it up
+
+The tool ships in the same MCP server as the demo tools, see [AI agents](/docs/getting-started/ai-agents/#mcp-server). The skill `codeatlas-ui` (also installed by the Claude Code plugin) tells the agent when to use it: in the section "When the library gets in your way".

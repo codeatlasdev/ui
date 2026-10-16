@@ -5,7 +5,8 @@
  *
  *   claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp
  *
- * Tools: list_components, get_component, get_export, search_tokens, get_guide.
+ * Tools: list_components, get_component, get_export, search_tokens, get_guide, search_demos, get_demo,
+ * report_issue (drafts a sanitized GitHub issue from a library problem; it never posts anything).
  */
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -19,6 +20,7 @@ import type {
 	ManifestGuide,
 	ManifestToken,
 } from "../scripts/build-manifest.ts";
+import { buildReport } from "../src/cli/report.ts";
 
 // Built to dist/bin/ca-ui-mcp.js; the manifests sit one level up in dist/.
 const DIST = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -205,6 +207,36 @@ server.registerTool(
 			out.push(readFileSync(join(DIST, `api/v1/en/e/${hit.id}.txt`), "utf8"));
 		}
 		return text(out.join("\n\n---\n\n"));
+	}
+);
+
+server.registerTool(
+	"report_issue",
+	{
+		description:
+			"Draft a sanitized GitHub issue for codeatlasdev/ui when the library gets in your way (a bug, a missing component or prop, a migration gap, wrong docs). Write a documented workaround in the user's code first (`// ca-ui-workaround(#<n>): <why>`). Use neutral names only: never put project or company names, file paths, URLs, env, secrets, data or business logic in any field; give a minimal repro with generic names. Paths, URLs, emails, IPs, tokens, env assignments and foreign package scopes are redacted again here and listed in `redactions`. Returns the markdown body, a prefilled issue-form URL and a `gh issue create` command; it never posts. Show the user the body, then open the URL or run the command.",
+		inputSchema: {
+			kind: z.enum(["bug", "missing", "migration-gap", "docs"]),
+			title: z.string().min(1),
+			component: z.string().optional(),
+			expected: z.string().min(1),
+			actual: z.string().min(1),
+			repro: z.string().optional(),
+			workaround: z.string().optional(),
+			version: z.string().optional(),
+		},
+	},
+	(input) => {
+		const r = buildReport(input, manifest.version);
+		return text(
+			[
+				`Redactions applied: ${r.redactions.length ? r.redactions.join(", ") : "none"}`,
+				`Title: ${r.title}`,
+				`## Body\n\n${r.body}`,
+				`## Open prefilled form\n\n${r.url}`,
+				`## Or with the GitHub CLI\n\n${r.command}`,
+			].join("\n\n")
+		);
 	}
 );
 
