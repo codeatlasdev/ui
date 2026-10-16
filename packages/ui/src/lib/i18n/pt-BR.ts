@@ -289,6 +289,10 @@ export const ptBR: Messages = {
 		loading: "Carregando áudio…",
 		error: "Não foi possível reproduzir este áudio",
 	},
+	motionStage: {
+		pause: "Pausar",
+		replay: "Repetir",
+	},
 	mediaGrid: {
 		label: "Mídia",
 		open: (title: string, n: number, total: number) => `Abrir ${title}, ${n} de ${total}`,

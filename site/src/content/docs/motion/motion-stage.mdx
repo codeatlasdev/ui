@@ -1,0 +1,38 @@
+---
+title: MotionStage
+description: "The frame of a motion demo: plays only in view, hands control to the user on touch, always pauses, and renders the final state under reduced motion."
+group: Motion
+order: 2
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import FadeRise from "~/demos/motion/basics/FadeRise.svelte";
+import FadeRiseSrc from "~/demos/motion/basics/FadeRise.svelte?raw";
+
+```svelte
+<script>
+  import { MotionStage } from "@codeatlasdev/ui";
+</script>
+
+<MotionStage label="Fade rise: a card fades in while rising" loop={2400}>
+  {#snippet children(m)}
+    {#key m.cycle}
+      <div class:rise={!m.reduced}>Invoice paid</div>
+    {/key}
+  {/snippet}
+</MotionStage>
+```
+
+`MotionStage` owns the timing contract so a demo only has to draw. It starts when at least half of it is in view and stops when it leaves the viewport or the tab is hidden, so a page full of motion never animates everything at once. Pointer, key or focus inside the demo takes over: autoplay stops, the demo stays interactive and a **Replay** button appears. A **Pause** button (`aria-pressed` while stopped) is always there while motion can run (WCAG 2.2.2). Under `prefers-reduced-motion: reduce` nothing autoplays, the buttons are not rendered and `m.reduced` is `true`: render the final state.
+
+The snippet receives `m` with `playing`, `reduced`, `cycle`, `takeover()`, `play()` and `pause()`. `cycle` increments on every loop and on Replay: key the animated element on it (`{#key m.cycle}`) so the animation runs again. Keep the animation in CSS and never start your own timers.
+
+<Demo title="Fade rise" description={"The reference demo: it loops while in view. Touch it to take over, or press Pause."} src={FadeRiseSrc}><FadeRise client:visible /></Demo>
+
+<Props for="MotionStage" rows={[
+  { name: "label", type: "string", description: "Accessible name of the stage (the group label). Say what the demo shows." },
+  { name: "loop", type: "number", default: "3200", description: "Autoplay loop length in milliseconds. `cycle` increments once per loop." },
+  { name: "pauseLabel", type: "string", description: "Label of the pause button. Defaults to the i18n catalog (`motionStage.pause`)." },
+  { name: "replayLabel", type: "string", description: "Label of the replay button. Defaults to the i18n catalog (`motionStage.replay`)." },
+  { name: "children", type: "Snippet<[MotionCtx]>", description: "The demo. Receives `{ playing, reduced, cycle, takeover, play, pause }`." },
+]} />

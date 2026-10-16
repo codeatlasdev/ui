@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { Card } from '@codeatlasdev/ui';
-  import MotionStage from '~/components/motion/MotionStage.svelte';
+  import { Card, MotionStage } from '@codeatlasdev/ui';
 </script>
 
 <MotionStage label="Fade rise: a card fades in while rising into place" loop={2400}>

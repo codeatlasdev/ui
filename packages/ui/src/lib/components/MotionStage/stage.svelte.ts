@@ -15,15 +15,13 @@ export interface MotionCtx {
 }
 
 export interface StageOptions {
-	/** Autoplay loop length in ms. */
-	loop: number;
 	isReduced: () => boolean;
 }
 
 /**
  * The state machine behind `MotionStage`: autoplay is allowed only while the stage is in view,
  * the tab is visible, the user did not pause and did not take over. Timers live in the component;
- * this holds the flags so they can be unit-tested without a DOM.
+ * this holds the flags.
  */
 export function createStage(opts: StageOptions) {
 	let inView = $state(false);
@@ -63,14 +61,8 @@ export function createStage(opts: StageOptions) {
 		get taken() {
 			return taken;
 		},
-		get paused() {
-			return paused;
-		},
-		get loop() {
-			return opts.loop;
-		},
 		setInView(v: boolean) {
-			if (v && !inView) cycle += 1;
+			if (v && !inView && !reduced) cycle += 1;
 			inView = v;
 		},
 		setHidden(v: boolean) {
@@ -80,7 +72,7 @@ export function createStage(opts: StageOptions) {
 		tick() {
 			if (playing) cycle += 1;
 		},
-		/** Play/Pause toggle button. Resuming after a takeover also counts as a replay. */
+		/** Pause toggle: resuming after a pause or a takeover also counts as a replay. */
 		toggle() {
 			if (paused || taken) ctx.play();
 			else ctx.pause();

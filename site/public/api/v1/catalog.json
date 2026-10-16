@@ -10926,7 +10926,7 @@
 			"summary": "A card that fades in while rising 16px into place, replaying on a loop only while it is in view.",
 			"use": "Entrance of a card, a toast, a list row or any block that appears after the page has loaded.",
 			"spec": [
-				"Wrapped in `MotionStage` with `label=\"Fade rise: a card fades in while rising into place\"` and `loop={2400}`",
+				"`MotionStage` from `@codeatlasdev/ui` with `label=\"Fade rise: a card fades in while rising into place\"` and `loop={2400}`",
 				"`{#key m.cycle}` remounts the card so `animation: fade-rise` runs again each cycle",
 				"Keyframes: `from { opacity: 0; transform: translateY(16px); }` to `to { opacity: 1; transform: translateY(0); }`",
 				"Under reduced motion `class:rise--run={!m.reduced}` drops the animation and the card renders in its final state"
@@ -10953,13 +10953,15 @@
 			],
 			"shape": "square",
 			"components": [
-				"Card"
+				"Card",
+				"MotionStage"
 			],
 			"imports": [
 				{
 					"from": "@codeatlasdev/ui",
 					"names": [
-						"Card"
+						"Card",
+						"MotionStage"
 					]
 				}
 			],

@@ -218,6 +218,12 @@ Total: 806 unique classes across 82 components.
 
 `.ca-mobile-pane` `.ca-mobile-pane__body` `.ca-mobile-pane__body--fixed` `.ca-mobile-pane__header`
 
+## MotionStage
+
+`.ca-motion-stage` `.ca-motion-stage__bar` `.ca-motion-stage__canvas`
+
+State attributes on `.ca-motion-stage`: `data-playing`, `data-taken`, `data-reduced`, `data-cycle`.
+
 ## NavigationProgress
 
 `.ca-nav-progress` `.ca-nav-progress__bar`

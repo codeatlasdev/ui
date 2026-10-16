@@ -296,6 +296,10 @@ export const en = {
 		loading: "Loading audio…",
 		error: "Could not play this audio",
 	},
+	motionStage: {
+		pause: "Pause",
+		replay: "Replay",
+	},
 	mediaGrid: {
 		label: "Media",
 		open: (title: string, n: number, total: number) => `Open ${title}, ${n} of ${total}`,

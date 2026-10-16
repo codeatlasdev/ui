@@ -3,7 +3,7 @@ Element: #256 Fade rise (motion/basics)
 What it shows: A card that fades in while rising 16px into place, replaying on a loop only while it is in view.
 When to use: Entrance of a card, a toast, a list row or any block that appears after the page has loaded.
 Spec:
-- Wrapped in `MotionStage` with `label="Fade rise: a card fades in while rising into place"` and `loop={2400}`
+- `MotionStage` from `@codeatlasdev/ui` with `label="Fade rise: a card fades in while rising into place"` and `loop={2400}`
 - `{#key m.cycle}` remounts the card so `animation: fade-rise` runs again each cycle
 - Keyframes: `from { opacity: 0; transform: translateY(16px); }` to `to { opacity: 1; transform: translateY(0); }`
 - Under reduced motion `class:rise--run={!m.reduced}` drops the animation and the card renders in its final state
@@ -12,12 +12,11 @@ Motion:
 Names: Fade rise | Fade up | Subir com fade
 Tags: motion, fade, rise, entrance, card
 Needs: @codeatlasdev/ui@4.2.0
-Components: Card
+Components: Card, MotionStage
 Live demo: https://ui.codeatlas.com.br/docs/motion/basics#fade-rise
 
 <script lang="ts">
-  import { Card } from '@codeatlasdev/ui';
-  import MotionStage from '~/components/motion/MotionStage.svelte';
+  import { Card, MotionStage } from '@codeatlasdev/ui';
 </script>
 
 <MotionStage label="Fade rise: a card fades in while rising into place" loop={2400}>

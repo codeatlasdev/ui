@@ -1488,6 +1488,21 @@ Classes: `ca-mobile-pane` `ca-mobile-pane__body` `ca-mobile-pane__body--fixed`
 
 Snippets: `leading`, `trailing`
 
+## MotionStage
+
+`import { MotionStage } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `label` | `string` |  | Accessible name of the stage (what the demo shows). |
+| `loop?` | `number` | `3200` | Autoplay loop length in ms; `ctx.cycle` increments once per loop. |
+| `pauseLabel?` | `string` |  | Label of the pause button. |
+| `replayLabel?` | `string` |  | Label of the replay button. |
+
+Snippets: `children` (`Snippet<[MotionCtx]>`)
+
+Classes: `ca-motion-stage` `ca-motion-stage__bar` `ca-motion-stage__canvas`
+
 ## NavigationProgress
 
 `import { NavigationProgress } from "@codeatlasdev/ui/kit"`
@@ -3397,6 +3412,7 @@ Types:
 | `Locale` | `type Locale = string;` | BCP 47 language tag. `en` and `pt-BR` are built in; add others with `registerLocale`. |
 | `Messages` | `type Messages = Widen<typeof en>;` | Full message shape (string literals widened so other locales can translate). |
 | `MessagesOverride` | `type MessagesOverride = DeepPartial<Messages>;` | Partial, deep override accepted by `setLocale`, `registerLocale` and `I18nProvider`. |
+| `MotionCtx` | `interface MotionCtx { playing: boolean; reduced: boolean; takeover(): void; play(): void; pause(): void; cycle: number; }` | What a motion demo receives from `MotionStage`. Demos render from this and never run their own timers. |
 | `MotionOptions` | `interface MotionOptions { scale?: number; easing?: "standard" \| "emphasized" \| "spring" \| "linear" \| "steps"; }` |  |
 | `NavItem` | `interface NavItem { id: string; label: string; icon: IconComponent; path: string; badge?: number; isNew?: boolean; shortcut?: string; description?: string; }` |  |
 | `NavModule` | `interface NavModule { id: string; label: string; icon: IconComponent; basePath: string; pathPrefixes?: string[]; items: (NavItem \| NavSection)[]; }` |  |

@@ -30,6 +30,8 @@ With the MCP server, `search_demos({ query: "fade rise" })` matches names and al
 
 ## The contract every motion demo follows
 
+It is implemented once, by [`MotionStage`](/docs/motion/motion-stage/), exported from `@codeatlasdev/ui`.
+
 - **Plays in view.** A demo starts when at least half of it is visible and stops when it leaves the viewport or the tab is hidden. A gallery full of motion never animates everything at once.
 - **You can take over.** Touching, clicking or focusing the demo stops the autoplay and makes it interactive. A **Replay** button appears.
 - **You can pause.** A visible **Pause** button (`aria-pressed` when stopped) is always there while motion can run, so no motion lasts more than five seconds without a control (WCAG 2.2.2).
@@ -38,5 +40,6 @@ With the MCP server, `search_demos({ query: "fade rise" })` matches names and al
 ## Pages
 
 <CardGrid>
+  <LinkCard title="MotionStage" href="/docs/motion/motion-stage/" description="The frame every motion demo uses: props, takeover and reduced motion." />
   <LinkCard title="Basics" href="/docs/motion/basics/" description="Fade rise, the reference demo for the pipeline." />
 </CardGrid>

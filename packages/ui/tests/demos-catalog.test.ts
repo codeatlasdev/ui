@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { existsSync, readdirSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 import { CATALOG } from "../../../site/src/demos/catalog.ts";
 import {
@@ -52,6 +52,13 @@ describe("demo catalog", () => {
 			expect(e).toContain(d.source);
 			for (const c of d.components) expect(names.has(c)).toBe(true);
 		}
+	});
+
+	it("no demo imports a site-internal path: references are handed to other projects", () => {
+		const bad = CATALOG.filter((d) =>
+			/from\s+["']~\//.test(readFileSync(join(DEMOS, `${d.path}.svelte`), "utf8"))
+		);
+		expect(bad.map((d) => `#${d.id} ${d.path}`)).toEqual([]);
 	});
 
 	it("chart demos declare the echarts peer", () => {

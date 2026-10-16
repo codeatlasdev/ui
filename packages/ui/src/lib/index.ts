@@ -148,6 +148,8 @@ export type { MediaGridItem } from "./components/MediaGrid/MediaGrid.svelte";
 export { default as MediaGrid } from "./components/MediaGrid/MediaGrid.svelte";
 export { default as MessageBubble } from "./components/MessageBubble/MessageBubble.svelte";
 export { default as MobilePane } from "./components/MobilePane/MobilePane.svelte";
+export { default as MotionStage } from "./components/MotionStage/MotionStage.svelte";
+export type { MotionCtx } from "./components/MotionStage/stage.svelte.js";
 export type { NotificationItem } from "./components/NotificationBell/NotificationBell.svelte";
 export { default as NotificationBell } from "./components/NotificationBell/NotificationBell.svelte";
 export { default as NumberField } from "./components/NumberField/NumberField.svelte";
