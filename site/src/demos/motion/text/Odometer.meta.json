@@ -1,0 +1,31 @@
+{
+	"summary": "A KPI value made of digit columns that slide to the new digit, the ones place first and each column 60ms after the last. It cycles through values on its own; typing a number rolls it.",
+	"use": "Dashboards, revenue and counter KPIs, price changes, scores and any number that updates in place and should feel like a mechanical counter.",
+	"spec": [
+		"`MotionStage` from `@codeatlasdev/ui` with `label=\"Odometer: a KPI value rolls digit by digit\"` and `loop={2600}`",
+		"Each digit is a `.odo__col` window (`overflow: hidden`, `block-size: 1em`) holding a strip of `0` to `9`",
+		"`transform: translateY(calc(var(--d) * -1em))` slides the strip to the digit `--d`",
+		"`transition: transform 900ms cubic-bezier(0.2, 0.9, 0.2, 1) calc(var(--i) * 60ms)` with `--i` counted from the right, so the ones place rolls first",
+		"`role=\"img\"` with `aria-label` carries the whole number once; the columns are `aria-hidden=\"true\"`",
+		"`oninput={onType}` sets `value`: typing a number in the field is the takeover and rolls the columns",
+		"`{@attach autoplay(m)}` walks `values[cycle % values.length]` only while `playing`; under reduced motion `class:odo__strip--run={!m.reduced}` drops the transition and the last value is shown"
+	],
+	"tags": ["motion", "text", "odometer", "counter", "kpi", "number"],
+	"names": [
+		"Odometer roll",
+		"Rolling digits",
+		"Slot counter",
+		"Contador mecânico",
+		"Números rolando",
+		"Compteur à rouleaux"
+	],
+	"motion": [
+		{
+			"property": "transform: translateY (digit strip inside an overflow window)",
+			"duration": "900ms",
+			"easing": "cubic-bezier(0.2, 0.9, 0.2, 1)",
+			"stagger": "calc(var(--i) * 60ms)"
+		}
+	],
+	"shape": "square"
+}

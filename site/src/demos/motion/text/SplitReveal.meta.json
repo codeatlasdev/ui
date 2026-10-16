@@ -1,0 +1,30 @@
+{
+	"summary": "A headline whose words rise out of a clipping mask one after another, 70ms apart. The unsplit sentence stays the accessible name; the split words are aria-hidden.",
+	"use": "Hero and section headlines, empty states and onboarding titles that should arrive with a deliberate, editorial entrance.",
+	"spec": [
+		"`MotionStage` from `@codeatlasdev/ui` with `label=\"Split text reveal: a headline rises in word by word\"` and `loop={3600}`",
+		"`aria-label={headline}` on the heading keeps the unsplit sentence as the accessible name",
+		"Each word is `aria-hidden=\"true\"` inside `.split__mask` (`overflow: hidden`) so it rises from below its own line",
+		"`animation: split-rise 640ms cubic-bezier(0.2, 0, 0, 1) calc(var(--i) * 70ms) both` with `style=\"--i:{i}\"` per word",
+		"Keyframes: `from { opacity: 0; transform: translateY(110%); }` to `to { opacity: 1; transform: translateY(0); }`",
+		"`{#key` remounts the words on every loop (`m.cycle`) and on the Reveal again button (`manual++`, the takeover path)",
+		"Under reduced motion `class:split__word--run={!m.reduced}` drops the animation: the words render in place"
+	],
+	"tags": ["motion", "text", "split", "headline", "entrance", "stagger"],
+	"names": [
+		"Split text reveal",
+		"Word-by-word reveal",
+		"Staggered text mask",
+		"Texto dividido por palavra",
+		"Révélation de texte par mot"
+	],
+	"motion": [
+		{
+			"property": "opacity, transform: translateY (per word, inside an overflow mask)",
+			"duration": "640ms",
+			"easing": "cubic-bezier(0.2, 0, 0, 1)",
+			"stagger": "calc(var(--i) * 70ms)"
+		}
+	],
+	"shape": "wide"
+}

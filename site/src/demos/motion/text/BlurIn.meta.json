@@ -1,0 +1,30 @@
+{
+	"summary": "A two-line headline that sharpens from a 12px blur while rising 8px, each line 160ms after the previous. The sentence keeps one accessible name; a button replays it.",
+	"use": "Hero titles, product-reveal moments and section intros that want a soft, cinematic entrance instead of a hard slide.",
+	"spec": [
+		"`MotionStage` from `@codeatlasdev/ui` with `label=\"Blur in: a headline sharpens from a blur, line by line\"` and `loop={3400}`",
+		"`aria-label={lines.join(' ')}` on the heading is the one accessible name; each `.bi__line` is `aria-hidden=\"true\"`",
+		"`animation: blur-in 900ms cubic-bezier(0.2, 0, 0, 1) calc(var(--i) * 160ms) both` with `style=\"--i:{i}\"` per line",
+		"Keyframes: `from { opacity: 0; filter: blur(12px); transform: translateY(8px); }` to `to { opacity: 1; filter: blur(0); transform: translateY(0); }`",
+		"The `Button` `onclick` runs `manual++`, which remounts the lines through `{#key`: pressing Sharpen again is the takeover",
+		"Under reduced motion `class:bi__line--run={!m.reduced}` drops the animation: the lines render sharp"
+	],
+	"tags": ["motion", "text", "blur", "headline", "entrance", "stagger"],
+	"names": [
+		"Blur in",
+		"Blur reveal",
+		"Focus pull text",
+		"Texto com desfoque",
+		"Entrada com blur",
+		"Apparition floue"
+	],
+	"motion": [
+		{
+			"property": "opacity, filter: blur, transform: translateY (per line)",
+			"duration": "900ms",
+			"easing": "cubic-bezier(0.2, 0, 0, 1)",
+			"stagger": "calc(var(--i) * 160ms)"
+		}
+	],
+	"shape": "wide"
+}

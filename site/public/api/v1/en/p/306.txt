@@ -1,0 +1,19 @@
+Use @codeatlasdev/ui demo #306 "Count up" (motion/text).
+What it shows: A KPI that counts from 0 to 12,480 in 1400ms with an ease-out-expo curve, so the last digits settle slowly. A Count again button replays it on demand. When to use: Stat blocks and metrics sections that scroll into view, totals after a report loads, and any headline number worth a moment of attention.
+Spec:
+- `MotionStage` from `@codeatlasdev/ui` with `label="Count up: a number counts from zero and eases into its total"` and `loop={3200}`
+- `const DURATION = 1400` with `1 - 2 ** (-10 * t)` as the easeOutExpo curve
+- `n = Math.round(target * ease(t))` on every `requestAnimationFrame`, `toLocaleString('en-US')` formats the digits
+- `role="img"` with `aria-label` states the final total once; the counting `<span aria-hidden="true">` is decoration
+- The `Button` `onclick` calls `run()`: pressing Count again is the takeover and re-runs the count on demand
+- Under reduced motion the attachment sets `n = target` and no frame loop starts
+Motion:
+- text content (integer counting from 0 to the total): 1400ms 1 - 2 ** (-10 * t)
+Names: Count up | Number counter | Animated counter | Contagem progressiva | Contador animado | Compteur animé
+Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #306 Count up → file, what changed, https://ui.codeatlas.com.br/docs/motion/text#count-up; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/306.txt   Components API: ca-ui-mcp get_component(Button)

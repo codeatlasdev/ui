@@ -1,0 +1,21 @@
+Use @codeatlasdev/ui demo #303 "Infinite marquee" (motion/text).
+What it shows: A row of partner names sliding left forever at a constant speed, with a seamless loop. Hovering or focusing any name pauses it; Back and Forward buttons nudge it once you take over. When to use: Logo walls, customer and press strips, announcement tickers and feature tags that should stay visible without taking space or a carousel.
+Spec:
+- `MotionStage` from `@codeatlasdev/ui` with `label="Marquee: partner names scroll endlessly and pause on hover or focus"` and `loop={4000}`
+- `animation: mq-slide 18s linear infinite` on the track while `m.playing && !m.reduced`
+- Keyframes: `from { transform: translateX(var(--nudge)); }` to `to { transform: translateX(calc(var(--nudge) - 50%)); }`
+- The list is rendered twice; the second copy is `aria-hidden="true"` with `tabindex="-1"` so the loop is seamless and read once
+- `.mq__viewport:hover .mq__track` and `.mq__viewport:focus-within .mq__track` set `animation-play-state: paused`
+- The `Button` `onclick` handlers change `nudge` by 56px, the manual takeover
+- Under reduced motion `m.playing` is false, so the strip stays static and every name is readable
+Motion:
+- transform: translateX (the track moves -50% of its own width): 18s linear
+- transform: translateX (manual nudge after takeover): 240ms cubic-bezier(0.2, 0, 0, 1)
+Names: Infinite marquee | Ticker | Logo wall scroll | Letreiro infinito | Faixa rolante | Défilement infini
+Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #303 Infinite marquee → file, what changed, https://ui.codeatlas.com.br/docs/motion/text#infinite-marquee; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/303.txt   Components API: ca-ui-mcp get_component(Button)

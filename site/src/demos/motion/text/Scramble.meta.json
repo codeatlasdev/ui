@@ -1,0 +1,30 @@
+{
+	"summary": "A line of monospace text that decodes from random glyphs, locking one letter every 55ms from left to right. It re-runs on every loop and again on hover or focus.",
+	"use": "Security and crypto screens, a status label that just changed, a hacker-style heading or any short label that should feel like it is resolving.",
+	"spec": [
+		"`MotionStage` from `@codeatlasdev/ui` with `label=\"Scramble: a line of text decodes from random glyphs\"` and `loop={2800}`",
+		"`const STEP = 40` redraws the random glyphs every 40ms; `const SETTLE = 55` locks the next letter every 55ms",
+		"`aria-label={target}` on the button keeps the real sentence as the accessible name; the flickering glyphs sit in a `<span` with `aria-hidden=\"true\"`, as decoration",
+		"`onpointerenter` and `onfocus` call `decode()` again: hover or keyboard focus is the takeover",
+		"The autoplay attachment reads the stage cycle through `const { cycle, reduced } = m`, so each stage loop decodes again",
+		"Under reduced motion the attachment sets `text = target` and `decode()` is never started"
+	],
+	"tags": ["motion", "text", "scramble", "decode", "hover", "label"],
+	"names": [
+		"Text scramble",
+		"Decode effect",
+		"Character scramble",
+		"Embaralhar texto",
+		"Texto decodificando",
+		"Texte brouillé"
+	],
+	"motion": [
+		{
+			"property": "text content (random glyphs resolving to the final letters, left to right)",
+			"duration": "55ms per letter",
+			"easing": "linear",
+			"stagger": "40ms"
+		}
+	],
+	"shape": "square"
+}

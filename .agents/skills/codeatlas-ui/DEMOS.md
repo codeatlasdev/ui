@@ -261,6 +261,14 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 254 | Chat history | display/virtual-list | Button, Stack, VirtualList |
 | 255 | Fast and slow loads | navigation/loading-boundary | Button, LoadingBoundary, Stack |
 | 256 | Fade rise | motion/basics | Card, MotionStage |
+| 300 | Split text reveal | motion/text | Button, MotionStage |
+| 301 | Text scramble | motion/text | MotionStage |
+| 302 | Odometer roll | motion/text | MotionStage |
+| 303 | Infinite marquee | motion/text | Button, MotionStage |
+| 304 | Typewriter | motion/text | MotionStage |
+| 305 | Shine sweep | motion/text | MotionStage |
+| 306 | Count up | motion/text | Button, MotionStage |
+| 307 | Blur in | motion/text | Button, MotionStage |
 | 340 | Magnetic button | motion/micro | MotionStage |
 | 341 | Press spring | motion/micro | MotionStage |
 | 342 | Morphing toggle | motion/micro | MotionStage |

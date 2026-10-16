@@ -1,6 +1,6 @@
 {
 	"version": "4.2.0",
-	"count": 265,
+	"count": 273,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -60,7 +60,7 @@
 			"slug": "motion",
 			"first": "256",
 			"last": "348",
-			"count": 10
+			"count": 18
 		}
 	],
 	"elements": [
@@ -10967,6 +10967,492 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/motion/basics#fade-rise",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "300",
+			"group": "motion",
+			"page": "text",
+			"variant": "SplitReveal",
+			"slug": "split-text-reveal",
+			"title": "Split text reveal",
+			"description": "",
+			"summary": "A headline whose words rise out of a clipping mask one after another, 70ms apart. The unsplit sentence stays the accessible name; the split words are aria-hidden.",
+			"use": "Hero and section headlines, empty states and onboarding titles that should arrive with a deliberate, editorial entrance.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `label=\"Split text reveal: a headline rises in word by word\"` and `loop={3600}`",
+				"`aria-label={headline}` on the heading keeps the unsplit sentence as the accessible name",
+				"Each word is `aria-hidden=\"true\"` inside `.split__mask` (`overflow: hidden`) so it rises from below its own line",
+				"`animation: split-rise 640ms cubic-bezier(0.2, 0, 0, 1) calc(var(--i) * 70ms) both` with `style=\"--i:{i}\"` per word",
+				"Keyframes: `from { opacity: 0; transform: translateY(110%); }` to `to { opacity: 1; transform: translateY(0); }`",
+				"`{#key` remounts the words on every loop (`m.cycle`) and on the Reveal again button (`manual++`, the takeover path)",
+				"Under reduced motion `class:split__word--run={!m.reduced}` drops the animation: the words render in place"
+			],
+			"tags": [
+				"motion",
+				"text",
+				"split",
+				"headline",
+				"entrance",
+				"stagger"
+			],
+			"names": [
+				"Split text reveal",
+				"Word-by-word reveal",
+				"Staggered text mask",
+				"Texto dividido por palavra",
+				"Révélation de texte par mot"
+			],
+			"motion": [
+				{
+					"property": "opacity, transform: translateY (per word, inside an overflow mask)",
+					"duration": "640ms",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)",
+					"stagger": "calc(var(--i) * 70ms)"
+				}
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"MotionStage"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/text#split-text-reveal",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "301",
+			"group": "motion",
+			"page": "text",
+			"variant": "Scramble",
+			"slug": "text-scramble",
+			"title": "Text scramble",
+			"description": "",
+			"summary": "A line of monospace text that decodes from random glyphs, locking one letter every 55ms from left to right. It re-runs on every loop and again on hover or focus.",
+			"use": "Security and crypto screens, a status label that just changed, a hacker-style heading or any short label that should feel like it is resolving.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `label=\"Scramble: a line of text decodes from random glyphs\"` and `loop={2800}`",
+				"`const STEP = 40` redraws the random glyphs every 40ms; `const SETTLE = 55` locks the next letter every 55ms",
+				"`aria-label={target}` on the button keeps the real sentence as the accessible name; the flickering glyphs sit in a `<span` with `aria-hidden=\"true\"`, as decoration",
+				"`onpointerenter` and `onfocus` call `decode()` again: hover or keyboard focus is the takeover",
+				"The autoplay attachment reads the stage cycle through `const { cycle, reduced } = m`, so each stage loop decodes again",
+				"Under reduced motion the attachment sets `text = target` and `decode()` is never started"
+			],
+			"tags": [
+				"motion",
+				"text",
+				"scramble",
+				"decode",
+				"hover",
+				"label"
+			],
+			"names": [
+				"Text scramble",
+				"Decode effect",
+				"Character scramble",
+				"Embaralhar texto",
+				"Texto decodificando",
+				"Texte brouillé"
+			],
+			"motion": [
+				{
+					"property": "text content (random glyphs resolving to the final letters, left to right)",
+					"duration": "55ms per letter",
+					"easing": "linear",
+					"stagger": "40ms"
+				}
+			],
+			"shape": "square",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage",
+						"MotionCtx"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/text#text-scramble",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "302",
+			"group": "motion",
+			"page": "text",
+			"variant": "Odometer",
+			"slug": "odometer-roll",
+			"title": "Odometer roll",
+			"description": "",
+			"summary": "A KPI value made of digit columns that slide to the new digit, the ones place first and each column 60ms after the last. It cycles through values on its own; typing a number rolls it.",
+			"use": "Dashboards, revenue and counter KPIs, price changes, scores and any number that updates in place and should feel like a mechanical counter.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `label=\"Odometer: a KPI value rolls digit by digit\"` and `loop={2600}`",
+				"Each digit is a `.odo__col` window (`overflow: hidden`, `block-size: 1em`) holding a strip of `0` to `9`",
+				"`transform: translateY(calc(var(--d) * -1em))` slides the strip to the digit `--d`",
+				"`transition: transform 900ms cubic-bezier(0.2, 0.9, 0.2, 1) calc(var(--i) * 60ms)` with `--i` counted from the right, so the ones place rolls first",
+				"`role=\"img\"` with `aria-label` carries the whole number once; the columns are `aria-hidden=\"true\"`",
+				"`oninput={onType}` sets `value`: typing a number in the field is the takeover and rolls the columns",
+				"`{@attach autoplay(m)}` walks `values[cycle % values.length]` only while `playing`; under reduced motion `class:odo__strip--run={!m.reduced}` drops the transition and the last value is shown"
+			],
+			"tags": [
+				"motion",
+				"text",
+				"odometer",
+				"counter",
+				"kpi",
+				"number"
+			],
+			"names": [
+				"Odometer roll",
+				"Rolling digits",
+				"Slot counter",
+				"Contador mecânico",
+				"Números rolando",
+				"Compteur à rouleaux"
+			],
+			"motion": [
+				{
+					"property": "transform: translateY (digit strip inside an overflow window)",
+					"duration": "900ms",
+					"easing": "cubic-bezier(0.2, 0.9, 0.2, 1)",
+					"stagger": "calc(var(--i) * 60ms)"
+				}
+			],
+			"shape": "square",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage",
+						"MotionCtx"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/text#odometer-roll",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "303",
+			"group": "motion",
+			"page": "text",
+			"variant": "Marquee",
+			"slug": "infinite-marquee",
+			"title": "Infinite marquee",
+			"description": "",
+			"summary": "A row of partner names sliding left forever at a constant speed, with a seamless loop. Hovering or focusing any name pauses it; Back and Forward buttons nudge it once you take over.",
+			"use": "Logo walls, customer and press strips, announcement tickers and feature tags that should stay visible without taking space or a carousel.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `label=\"Marquee: partner names scroll endlessly and pause on hover or focus\"` and `loop={4000}`",
+				"`animation: mq-slide 18s linear infinite` on the track while `m.playing && !m.reduced`",
+				"Keyframes: `from { transform: translateX(var(--nudge)); }` to `to { transform: translateX(calc(var(--nudge) - 50%)); }`",
+				"The list is rendered twice; the second copy is `aria-hidden=\"true\"` with `tabindex=\"-1\"` so the loop is seamless and read once",
+				"`.mq__viewport:hover .mq__track` and `.mq__viewport:focus-within .mq__track` set `animation-play-state: paused`",
+				"The `Button` `onclick` handlers change `nudge` by 56px, the manual takeover",
+				"Under reduced motion `m.playing` is false, so the strip stays static and every name is readable"
+			],
+			"tags": [
+				"motion",
+				"text",
+				"marquee",
+				"ticker",
+				"logos",
+				"loop"
+			],
+			"names": [
+				"Infinite marquee",
+				"Ticker",
+				"Logo wall scroll",
+				"Letreiro infinito",
+				"Faixa rolante",
+				"Défilement infini"
+			],
+			"motion": [
+				{
+					"property": "transform: translateX (the track moves -50% of its own width)",
+					"duration": "18s",
+					"easing": "linear"
+				},
+				{
+					"property": "transform: translateX (manual nudge after takeover)",
+					"duration": "240ms",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)"
+				}
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"MotionStage"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/text#infinite-marquee",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "304",
+			"group": "motion",
+			"page": "text",
+			"variant": "Typewriter",
+			"slug": "typewriter",
+			"title": "Typewriter",
+			"description": "",
+			"summary": "A prompt that types itself at 55ms per character, holds for 1100ms, then deletes at 28ms per character while a caret blinks. Typing in the field below takes over the line.",
+			"use": "AI and search inputs with example prompts, hero taglines that cycle phrases, terminal and chat demos and onboarding hints.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `label=\"Typewriter: a prompt types itself, holds, then deletes\"` and `loop={4800}`",
+				"`const TYPE = 55`, `const ERASE = 28` and `const HOLD = 1100` are the typing, deleting and hold times in milliseconds",
+				"One autoplay cycle types `phrases[m.cycle % phrases.length]`, holds it, then deletes it",
+				"`animation: tw-blink 1060ms steps(1, end) infinite` blinks the caret with a hard on/off step",
+				"The typed text and caret are `aria-hidden=\"true\"`; the labelled `id=\"tw-input\"` input is the accessible control",
+				"`bind:value={draft}`: typing in the field replaces the autoplay text, the manual takeover",
+				"Under reduced motion `class:tw__caret--blink={!m.reduced}` stops the blink and the first phrase is shown complete"
+			],
+			"tags": [
+				"motion",
+				"text",
+				"typewriter",
+				"caret",
+				"typing",
+				"prompt"
+			],
+			"names": [
+				"Typewriter",
+				"Typing effect",
+				"Type and delete",
+				"Máquina de escrever",
+				"Efeito de digitação",
+				"Machine à écrire"
+			],
+			"motion": [
+				{
+					"property": "text content (characters typed, held, then deleted)",
+					"duration": "55ms per character",
+					"easing": "linear",
+					"delay": "1100ms"
+				},
+				{
+					"property": "opacity (caret blink)",
+					"duration": "1060ms",
+					"easing": "steps(1, end)"
+				}
+			],
+			"shape": "square",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage",
+						"MotionCtx"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/text#typewriter",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "305",
+			"group": "motion",
+			"page": "text",
+			"variant": "ShineSweep",
+			"slug": "shine-sweep",
+			"title": "Shine sweep",
+			"description": "",
+			"summary": "A heading painted with a brand gradient and a light band that sweeps across it in 2200ms. Once you move the pointer or press arrow keys the band follows you.",
+			"use": "Hero and pricing headlines, a highlighted keyword, a premium badge or a loading title that needs a single glint of attention.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `label=\"Shine sweep: a highlight glides across a gradient heading\"` and `loop={3200}`",
+				"`background-size: 250% 100%` with `background-clip: text` makes the gradient show through the letters",
+				"`animation: shine-sweep 2200ms cubic-bezier(0.4, 0, 0.2, 1) both` on the heading while `m.playing && !m.reduced`",
+				"Keyframes: `from { background-position: 100% 0; }` to `to { background-position: 0% 0; }`",
+				"The heading holds a real `<button` with `onpointermove={onMove}` and `onkeydown={onKey}` that steer `--x`, the manual takeover (`.shine__title--manual` reads `background-position: var(--x) 0`)",
+				"`@media (forced-colors: active)` falls back to `color: CanvasText`, so the heading stays readable"
+			],
+			"tags": [
+				"motion",
+				"text",
+				"shine",
+				"gradient",
+				"heading",
+				"highlight"
+			],
+			"names": [
+				"Shine sweep",
+				"Gradient shimmer",
+				"Text shine",
+				"Brilho em texto",
+				"Reflexo no título",
+				"Reflet sur le texte"
+			],
+			"motion": [
+				{
+					"property": "background-position (a light band across text-clipped gradient)",
+					"duration": "2200ms",
+					"easing": "cubic-bezier(0.4, 0, 0.2, 1)"
+				}
+			],
+			"shape": "wide",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/text#shine-sweep",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "306",
+			"group": "motion",
+			"page": "text",
+			"variant": "CountUp",
+			"slug": "count-up",
+			"title": "Count up",
+			"description": "",
+			"summary": "A KPI that counts from 0 to 12,480 in 1400ms with an ease-out-expo curve, so the last digits settle slowly. A Count again button replays it on demand.",
+			"use": "Stat blocks and metrics sections that scroll into view, totals after a report loads, and any headline number worth a moment of attention.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `label=\"Count up: a number counts from zero and eases into its total\"` and `loop={3200}`",
+				"`const DURATION = 1400` with `1 - 2 ** (-10 * t)` as the easeOutExpo curve",
+				"`n = Math.round(target * ease(t))` on every `requestAnimationFrame`, `toLocaleString('en-US')` formats the digits",
+				"`role=\"img\"` with `aria-label` states the final total once; the counting `<span aria-hidden=\"true\">` is decoration",
+				"The `Button` `onclick` calls `run()`: pressing Count again is the takeover and re-runs the count on demand",
+				"Under reduced motion the attachment sets `n = target` and no frame loop starts"
+			],
+			"tags": [
+				"motion",
+				"text",
+				"count-up",
+				"counter",
+				"kpi",
+				"number"
+			],
+			"names": [
+				"Count up",
+				"Number counter",
+				"Animated counter",
+				"Contagem progressiva",
+				"Contador animado",
+				"Compteur animé"
+			],
+			"motion": [
+				{
+					"property": "text content (integer counting from 0 to the total)",
+					"duration": "1400ms",
+					"easing": "1 - 2 ** (-10 * t)"
+				}
+			],
+			"shape": "square",
+			"components": [
+				"Button",
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"MotionStage",
+						"MotionCtx"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/text#count-up",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "307",
+			"group": "motion",
+			"page": "text",
+			"variant": "BlurIn",
+			"slug": "blur-in",
+			"title": "Blur in",
+			"description": "",
+			"summary": "A two-line headline that sharpens from a 12px blur while rising 8px, each line 160ms after the previous. The sentence keeps one accessible name; a button replays it.",
+			"use": "Hero titles, product-reveal moments and section intros that want a soft, cinematic entrance instead of a hard slide.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `label=\"Blur in: a headline sharpens from a blur, line by line\"` and `loop={3400}`",
+				"`aria-label={lines.join(' ')}` on the heading is the one accessible name; each `.bi__line` is `aria-hidden=\"true\"`",
+				"`animation: blur-in 900ms cubic-bezier(0.2, 0, 0, 1) calc(var(--i) * 160ms) both` with `style=\"--i:{i}\"` per line",
+				"Keyframes: `from { opacity: 0; filter: blur(12px); transform: translateY(8px); }` to `to { opacity: 1; filter: blur(0); transform: translateY(0); }`",
+				"The `Button` `onclick` runs `manual++`, which remounts the lines through `{#key`: pressing Sharpen again is the takeover",
+				"Under reduced motion `class:bi__line--run={!m.reduced}` drops the animation: the lines render sharp"
+			],
+			"tags": [
+				"motion",
+				"text",
+				"blur",
+				"headline",
+				"entrance",
+				"stagger"
+			],
+			"names": [
+				"Blur in",
+				"Blur reveal",
+				"Focus pull text",
+				"Texto com desfoque",
+				"Entrada com blur",
+				"Apparition floue"
+			],
+			"motion": [
+				{
+					"property": "opacity, filter: blur, transform: translateY (per line)",
+					"duration": "900ms",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)",
+					"stagger": "calc(var(--i) * 160ms)"
+				}
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"MotionStage"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/text#blur-in",
 			"needs": "@codeatlasdev/ui@4.2.0"
 		},
 		{

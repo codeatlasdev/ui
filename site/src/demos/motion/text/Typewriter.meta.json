@@ -1,0 +1,36 @@
+{
+	"summary": "A prompt that types itself at 55ms per character, holds for 1100ms, then deletes at 28ms per character while a caret blinks. Typing in the field below takes over the line.",
+	"use": "AI and search inputs with example prompts, hero taglines that cycle phrases, terminal and chat demos and onboarding hints.",
+	"spec": [
+		"`MotionStage` from `@codeatlasdev/ui` with `label=\"Typewriter: a prompt types itself, holds, then deletes\"` and `loop={4800}`",
+		"`const TYPE = 55`, `const ERASE = 28` and `const HOLD = 1100` are the typing, deleting and hold times in milliseconds",
+		"One autoplay cycle types `phrases[m.cycle % phrases.length]`, holds it, then deletes it",
+		"`animation: tw-blink 1060ms steps(1, end) infinite` blinks the caret with a hard on/off step",
+		"The typed text and caret are `aria-hidden=\"true\"`; the labelled `id=\"tw-input\"` input is the accessible control",
+		"`bind:value={draft}`: typing in the field replaces the autoplay text, the manual takeover",
+		"Under reduced motion `class:tw__caret--blink={!m.reduced}` stops the blink and the first phrase is shown complete"
+	],
+	"tags": ["motion", "text", "typewriter", "caret", "typing", "prompt"],
+	"names": [
+		"Typewriter",
+		"Typing effect",
+		"Type and delete",
+		"Máquina de escrever",
+		"Efeito de digitação",
+		"Machine à écrire"
+	],
+	"motion": [
+		{
+			"property": "text content (characters typed, held, then deleted)",
+			"duration": "55ms per character",
+			"easing": "linear",
+			"delay": "1100ms"
+		},
+		{
+			"property": "opacity (caret blink)",
+			"duration": "1060ms",
+			"easing": "steps(1, end)"
+		}
+	],
+	"shape": "square"
+}

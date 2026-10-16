@@ -1,0 +1,21 @@
+Use @codeatlasdev/ui demo #304 "Typewriter" (motion/text).
+What it shows: A prompt that types itself at 55ms per character, holds for 1100ms, then deletes at 28ms per character while a caret blinks. Typing in the field below takes over the line. When to use: AI and search inputs with example prompts, hero taglines that cycle phrases, terminal and chat demos and onboarding hints.
+Spec:
+- `MotionStage` from `@codeatlasdev/ui` with `label="Typewriter: a prompt types itself, holds, then deletes"` and `loop={4800}`
+- `const TYPE = 55`, `const ERASE = 28` and `const HOLD = 1100` are the typing, deleting and hold times in milliseconds
+- One autoplay cycle types `phrases[m.cycle % phrases.length]`, holds it, then deletes it
+- `animation: tw-blink 1060ms steps(1, end) infinite` blinks the caret with a hard on/off step
+- The typed text and caret are `aria-hidden="true"`; the labelled `id="tw-input"` input is the accessible control
+- `bind:value={draft}`: typing in the field replaces the autoplay text, the manual takeover
+- Under reduced motion `class:tw__caret--blink={!m.reduced}` stops the blink and the first phrase is shown complete
+Motion:
+- text content (characters typed, held, then deleted): 55ms per character linear delay 1100ms
+- opacity (caret blink): 1060ms steps(1, end)
+Names: Typewriter | Typing effect | Type and delete | Máquina de escrever | Efeito de digitação | Machine à écrire
+Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #304 Typewriter → file, what changed, https://ui.codeatlas.com.br/docs/motion/text#typewriter; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/304.txt   Components API: ca-ui-mcp get_component(MotionStage)

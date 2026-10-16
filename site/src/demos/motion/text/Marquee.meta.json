@@ -1,0 +1,35 @@
+{
+	"summary": "A row of partner names sliding left forever at a constant speed, with a seamless loop. Hovering or focusing any name pauses it; Back and Forward buttons nudge it once you take over.",
+	"use": "Logo walls, customer and press strips, announcement tickers and feature tags that should stay visible without taking space or a carousel.",
+	"spec": [
+		"`MotionStage` from `@codeatlasdev/ui` with `label=\"Marquee: partner names scroll endlessly and pause on hover or focus\"` and `loop={4000}`",
+		"`animation: mq-slide 18s linear infinite` on the track while `m.playing && !m.reduced`",
+		"Keyframes: `from { transform: translateX(var(--nudge)); }` to `to { transform: translateX(calc(var(--nudge) - 50%)); }`",
+		"The list is rendered twice; the second copy is `aria-hidden=\"true\"` with `tabindex=\"-1\"` so the loop is seamless and read once",
+		"`.mq__viewport:hover .mq__track` and `.mq__viewport:focus-within .mq__track` set `animation-play-state: paused`",
+		"The `Button` `onclick` handlers change `nudge` by 56px, the manual takeover",
+		"Under reduced motion `m.playing` is false, so the strip stays static and every name is readable"
+	],
+	"tags": ["motion", "text", "marquee", "ticker", "logos", "loop"],
+	"names": [
+		"Infinite marquee",
+		"Ticker",
+		"Logo wall scroll",
+		"Letreiro infinito",
+		"Faixa rolante",
+		"Défilement infini"
+	],
+	"motion": [
+		{
+			"property": "transform: translateX (the track moves -50% of its own width)",
+			"duration": "18s",
+			"easing": "linear"
+		},
+		{
+			"property": "transform: translateX (manual nudge after takeover)",
+			"duration": "240ms",
+			"easing": "cubic-bezier(0.2, 0, 0, 1)"
+		}
+	],
+	"shape": "wide"
+}

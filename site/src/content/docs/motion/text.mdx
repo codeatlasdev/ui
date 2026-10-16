@@ -1,0 +1,49 @@
+---
+title: Text motion
+description: "Named text effects with exact timing: split reveal, scramble, odometer, count up, marquee, typewriter, shine sweep and blur in."
+group: Motion
+order: 3
+---
+import Demo from "~/components/docs/Demo.astro";
+import SplitReveal from "~/demos/motion/text/SplitReveal.svelte";
+import SplitRevealSrc from "~/demos/motion/text/SplitReveal.svelte?raw";
+import Scramble from "~/demos/motion/text/Scramble.svelte";
+import ScrambleSrc from "~/demos/motion/text/Scramble.svelte?raw";
+import Odometer from "~/demos/motion/text/Odometer.svelte";
+import OdometerSrc from "~/demos/motion/text/Odometer.svelte?raw";
+import Marquee from "~/demos/motion/text/Marquee.svelte";
+import MarqueeSrc from "~/demos/motion/text/Marquee.svelte?raw";
+import Typewriter from "~/demos/motion/text/Typewriter.svelte";
+import TypewriterSrc from "~/demos/motion/text/Typewriter.svelte?raw";
+import ShineSweep from "~/demos/motion/text/ShineSweep.svelte";
+import ShineSweepSrc from "~/demos/motion/text/ShineSweep.svelte?raw";
+import CountUp from "~/demos/motion/text/CountUp.svelte";
+import CountUpSrc from "~/demos/motion/text/CountUp.svelte?raw";
+import BlurIn from "~/demos/motion/text/BlurIn.svelte";
+import BlurInSrc from "~/demos/motion/text/BlurIn.svelte?raw";
+
+Text is the cheapest place to add motion and the easiest to break: split words that a screen reader spells out, counters that announce every frame, tickers nobody can stop. Every demo here keeps the real sentence or number as the accessible name, hides the animated copy with `aria-hidden`, shows the final text under `prefers-reduced-motion`, and can be taken over by touching it. Ask an AI for one by name or by number: `Use #300` or `Use a split text reveal on the hero headline`.
+
+## Reveal
+
+<Demo title="Split text reveal" description={"Called a split text reveal (also word-by-word reveal, texto dividido por palavra). Use it for a hero or section headline that should arrive with intent: each word rises out of a mask, 640ms with a 70ms stagger. The unsplit sentence stays the heading's accessible name. Ask: \"Use #300\" or \"a split text reveal\"."} src={SplitRevealSrc}><SplitReveal client:visible /></Demo>
+
+<Demo title="Blur in" description={"Called a blur in (also blur reveal, texto com desfoque). Use it for a softer, cinematic title: each line sharpens from a 12px blur in 900ms, 160ms apart. Ask: \"Use #307\" or \"a blur in\"."} src={BlurInSrc}><BlurIn client:visible /></Demo>
+
+## Transform and decode
+
+<Demo title="Text scramble" description={"Called a text scramble (also decode effect, character scramble, embaralhar texto). Use it for a status label that just changed or a security screen: random glyphs resolve to the real letters, one every 55ms. Hover or focus re-runs it. Ask: \"Use #301\" or \"a text scramble on hover\"."} src={ScrambleSrc}><Scramble client:visible /></Demo>
+
+<Demo title="Typewriter" description={"Called a typewriter (also typing effect, máquina de escrever). Use it for AI prompt inputs and cycling taglines: 55ms per character, a 1100ms hold, 28ms per deleted character and a caret blinking at 1060ms. Type in the field to take over. Ask: \"Use #304\" or \"a typewriter with deletion\"."} src={TypewriterSrc}><Typewriter client:visible /></Demo>
+
+## Numbers
+
+<Demo title="Odometer roll" description={"Called an odometer roll (also rolling digits, slot counter, contador mecânico). Use it for a KPI that changes in place: each digit slides to its new value in 900ms, the ones place first, 60ms apart. Type a number to roll it. Ask: \"Use #302\" or \"an odometer for the revenue KPI\"."} src={OdometerSrc}><Odometer client:visible /></Demo>
+
+<Demo title="Count up" description={"Called a count up (also number counter, animated counter, contagem progressiva). Use it for a stat block that scrolls into view: 0 to the total in 1400ms with an ease-out-expo curve. Ask: \"Use #306\" or \"a count up on the customers stat\"."} src={CountUpSrc}><CountUp client:visible /></Demo>
+
+## Loops and highlights
+
+<Demo title="Infinite marquee" description={"Called an infinite marquee (also ticker, logo wall scroll, letreiro infinito). Use it for customer or press strips: a seamless 18s linear loop that pauses on hover or focus, and Back and Forward buttons nudge it. Ask: \"Use #303\" or \"an infinite marquee that pauses on hover\"."} src={MarqueeSrc}><Marquee client:visible /></Demo>
+
+<Demo title="Shine sweep" description={"Called a shine sweep (also gradient shimmer, text shine, brilho em texto). Use it for one hero keyword or a premium heading: a light band crosses a text-clipped gradient in 2200ms. Move the pointer to steer it. Ask: \"Use #305\" or \"a shine sweep on the heading\"."} src={ShineSweepSrc}><ShineSweep client:visible /></Demo>

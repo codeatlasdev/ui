@@ -1,0 +1,29 @@
+{
+	"summary": "A heading painted with a brand gradient and a light band that sweeps across it in 2200ms. Once you move the pointer or press arrow keys the band follows you.",
+	"use": "Hero and pricing headlines, a highlighted keyword, a premium badge or a loading title that needs a single glint of attention.",
+	"spec": [
+		"`MotionStage` from `@codeatlasdev/ui` with `label=\"Shine sweep: a highlight glides across a gradient heading\"` and `loop={3200}`",
+		"`background-size: 250% 100%` with `background-clip: text` makes the gradient show through the letters",
+		"`animation: shine-sweep 2200ms cubic-bezier(0.4, 0, 0.2, 1) both` on the heading while `m.playing && !m.reduced`",
+		"Keyframes: `from { background-position: 100% 0; }` to `to { background-position: 0% 0; }`",
+		"The heading holds a real `<button` with `onpointermove={onMove}` and `onkeydown={onKey}` that steer `--x`, the manual takeover (`.shine__title--manual` reads `background-position: var(--x) 0`)",
+		"`@media (forced-colors: active)` falls back to `color: CanvasText`, so the heading stays readable"
+	],
+	"tags": ["motion", "text", "shine", "gradient", "heading", "highlight"],
+	"names": [
+		"Shine sweep",
+		"Gradient shimmer",
+		"Text shine",
+		"Brilho em texto",
+		"Reflexo no título",
+		"Reflet sur le texte"
+	],
+	"motion": [
+		{
+			"property": "background-position (a light band across text-clipped gradient)",
+			"duration": "2200ms",
+			"easing": "cubic-bezier(0.4, 0, 0.2, 1)"
+		}
+	],
+	"shape": "wide"
+}
