@@ -1,0 +1,9 @@
+/* Form controls inherit the page font: the UA default (Arial / system-ui) is not --ca-font-sans.
+ * Imported into `ca.reset`, the first layer, so every component rule and every app rule wins. */
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  letter-spacing: inherit;
+}

@@ -1,5 +1,5 @@
 /* @codeatlasdev/ui core — everything except the non-default presets.
- * Layers: reset+tokens+base, the default amber preset (:root tokens), materials (+ Surface), utilities
+ * Layers: reset (controls inherit the page font) + tokens + base, the default amber preset (:root tokens), materials (+ Surface), utilities
  * (+ the layout token props), prose.
  * Pair it with only the presets your app uses:
  *   import '@codeatlasdev/ui/styles/core.css';
@@ -9,6 +9,7 @@
  * a token with --ca-* on :root, or a component rule with the same single-class selector, no
  * !important and no doubled classes. */
 @layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@import url('./reset.css') layer(ca.reset);
 @import url('./base.css') layer(ca.base);
 @import url('./tokens.css') layer(ca.tokens);
 @import url('./presets/amber.css') layer(ca.themes);
