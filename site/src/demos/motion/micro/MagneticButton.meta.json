@@ -1,0 +1,28 @@
+{
+	"summary": "A pill button that leans toward the pointer inside a 72px range, pulled by a Spring and released on leave.",
+	"use": "Primary call to action on a landing page or hero where the button should feel attracted to the cursor.",
+	"spec": [
+		"`MotionStage` from `@codeatlasdev/ui` with `loop={2800}`",
+		"`const PULL = 0.35;` the button moves 35% of the pointer offset from its centre",
+		"`const RANGE = 72;` the pull starts 72px outside the button edge",
+		"`new Spring({ x: 0, y: 0 }, { stiffness: 0.12, damping: 0.55 })` drives the translate, set back to zero on `onpointerleave`",
+		"`@media (pointer: coarse)` removes the transform: no magnetic pull on touch",
+		"Autoplay moves an `aria-hidden` ghost dot; under reduced motion `--mx` and `--my` stay at 0"
+	],
+	"tags": ["motion", "magnetic", "button", "hover", "spring", "pointer"],
+	"names": ["Magnetic button", "Botão magnético", "Bouton magnétique"],
+	"motion": [
+		{
+			"property": "transform: translate3d (pointer pull)",
+			"duration": "spring",
+			"easing": "spring",
+			"spring": "stiffness: 0.12, damping: 0.55"
+		},
+		{
+			"property": "transform: translate3d (fake cursor, autoplay only)",
+			"duration": "520ms",
+			"easing": "cubic-bezier(0.2, 0, 0, 1)"
+		}
+	],
+	"shape": "square"
+}

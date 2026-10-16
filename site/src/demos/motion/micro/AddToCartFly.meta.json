@@ -1,0 +1,27 @@
+{
+	"summary": "Tapping Add to cart sends a dot flying from the button to the bag, then the badge count bumps with an overshoot.",
+	"use": "E-commerce add actions, saving to a list or any action whose result lives somewhere else on screen.",
+	"spec": [
+		"`MotionStage` from `@codeatlasdev/ui` with `loop={2400}`",
+		"`@keyframes cart-fly` moves the dot `translate(40px, -26px)` at 60% and `translate(72px, -4px)` at 100% while fading out",
+		"`setTimeout` of `520` ms after the click increments `count`, matching the flight length",
+		"`@keyframes cart-bump` scales the badge `1` to `1.5` and back",
+		"`announce(`Cart: ${count} items`)` tells assistive tech; the bag is `role=\"img\"` with the count in its label",
+		"`{#key flight}` remounts the dot so each add flies again; nothing flies when reduced"
+	],
+	"tags": ["motion", "cart", "fly", "badge", "ecommerce", "feedback"],
+	"names": ["Add to cart fly", "Fly to cart", "Adicionar ao carrinho", "Ajout au panier"],
+	"motion": [
+		{
+			"property": "transform, opacity (flying dot)",
+			"duration": "520ms",
+			"easing": "cubic-bezier(0.4, 0, 0.2, 1)"
+		},
+		{
+			"property": "transform: scale (badge bump)",
+			"duration": "360ms",
+			"easing": "cubic-bezier(0.175, 0.885, 0.32, 1.275)"
+		}
+	],
+	"shape": "wide"
+}

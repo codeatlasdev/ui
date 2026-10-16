@@ -1,0 +1,27 @@
+{
+	"summary": "A like button whose heart pops to 1.45 and throws eight particles outward while the count ticks up; aria-pressed carries the state.",
+	"use": "Like, favorite or reaction buttons where a positive action deserves a small celebration.",
+	"spec": [
+		"`MotionStage` from `@codeatlasdev/ui` with `loop={2600}`",
+		"`aria-pressed={liked}` on the button, count in `tabular-nums`",
+		"`const PARTICLES = 8;` each `<i style=\"--a:{i * (360 / PARTICLES)}deg\">` is one dot on a ring",
+		"`@keyframes like-pop` scales the heart `1` to `1.45` and back",
+		"`@keyframes like-particle` moves each dot `translateY(-26px)` while it fades to `opacity: 0` and `scale(0.3)`",
+		"`{#key burst}` remounts the ring so the burst replays on every like; nothing bursts when reduced"
+	],
+	"tags": ["motion", "like", "burst", "particles", "button", "feedback"],
+	"names": ["Like burst", "Heart burst", "Explosão de curtida", "Explosion de cœur"],
+	"motion": [
+		{
+			"property": "transform: scale (heart)",
+			"duration": "460ms",
+			"easing": "cubic-bezier(0.175, 0.885, 0.32, 1.275)"
+		},
+		{
+			"property": "transform, opacity (particles)",
+			"duration": "560ms",
+			"easing": "cubic-bezier(0, 0, 0.2, 1)"
+		}
+	],
+	"shape": "square"
+}

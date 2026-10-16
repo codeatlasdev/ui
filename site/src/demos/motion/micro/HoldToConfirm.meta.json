@@ -1,0 +1,27 @@
+{
+	"summary": "A destructive button that only fires after a 1.2 second hold, filling a progress ring; releasing early cancels and drains the ring. Space and Enter work the same way.",
+	"use": "Deleting data, sending money or any action that must be deliberate without a confirmation dialog.",
+	"spec": [
+		"`MotionStage` from `@codeatlasdev/ui` with `loop={3400}`",
+		"`const HOLD = 1200;` milliseconds to hold; progress is `(now - start) / HOLD` read in `requestAnimationFrame`",
+		"`stroke-dashoffset={C * (1 - (m.reduced && !done ? 0 : progress))}` on the ring circle, with `C = 2 * Math.PI * R`",
+		"`onkeydown` starts on Space or Enter (`!e.repeat`), `onkeyup` and `onblur` call `cancel`",
+		"`onpointerup`, `onpointerleave` and `onpointercancel` call `cancel`, which sets `progress = 0`",
+		"`announce('Project deleted')` tells assistive tech when the hold completes; Undo resets"
+	],
+	"tags": ["motion", "hold", "confirm", "progress", "button", "destructive"],
+	"names": [
+		"Hold to confirm",
+		"Press and hold",
+		"Segurar para confirmar",
+		"Maintenir pour confirmer"
+	],
+	"motion": [
+		{
+			"property": "stroke-dashoffset (progress ring)",
+			"duration": "1200ms",
+			"easing": "linear"
+		}
+	],
+	"shape": "square"
+}

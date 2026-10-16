@@ -1,6 +1,6 @@
 {
 	"version": "4.2.0",
-	"count": 256,
+	"count": 265,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -59,8 +59,8 @@
 		{
 			"slug": "motion",
 			"first": "256",
-			"last": "256",
-			"count": 1
+			"last": "348",
+			"count": 10
 		}
 	],
 	"elements": [
@@ -10967,6 +10967,537 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/motion/basics#fade-rise",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "340",
+			"group": "motion",
+			"page": "micro",
+			"variant": "MagneticButton",
+			"slug": "magnetic-button",
+			"title": "Magnetic button",
+			"description": "",
+			"summary": "A pill button that leans toward the pointer inside a 72px range, pulled by a Spring and released on leave.",
+			"use": "Primary call to action on a landing page or hero where the button should feel attracted to the cursor.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `loop={2800}`",
+				"`const PULL = 0.35;` the button moves 35% of the pointer offset from its centre",
+				"`const RANGE = 72;` the pull starts 72px outside the button edge",
+				"`new Spring({ x: 0, y: 0 }, { stiffness: 0.12, damping: 0.55 })` drives the translate, set back to zero on `onpointerleave`",
+				"`@media (pointer: coarse)` removes the transform: no magnetic pull on touch",
+				"Autoplay moves an `aria-hidden` ghost dot; under reduced motion `--mx` and `--my` stay at 0"
+			],
+			"tags": [
+				"motion",
+				"magnetic",
+				"button",
+				"hover",
+				"spring",
+				"pointer"
+			],
+			"names": [
+				"Magnetic button",
+				"Botão magnético",
+				"Bouton magnétique"
+			],
+			"motion": [
+				{
+					"property": "transform: translate3d (pointer pull)",
+					"duration": "spring",
+					"easing": "spring",
+					"spring": "stiffness: 0.12, damping: 0.55"
+				},
+				{
+					"property": "transform: translate3d (fake cursor, autoplay only)",
+					"duration": "520ms",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)"
+				}
+			],
+			"shape": "square",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/micro#magnetic-button",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "341",
+			"group": "motion",
+			"page": "micro",
+			"variant": "PressSpring",
+			"slug": "press-spring",
+			"title": "Press spring",
+			"description": "",
+			"summary": "A button that scales to 0.94 on press and overshoots past 1 on release before settling, driven by a Spring.",
+			"use": "Any tappable surface (pay, send, buy) that needs a physical press feel without a color change.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `loop={1800}`",
+				"`new Spring(1, { stiffness: 0.35, damping: 0.42 })` is the scale",
+				"`scale.target = 0.94` on pointerdown and on Space or Enter keydown",
+				"`scale.target = 1` on pointerup, pointerleave, pointercancel and keyup: the low damping overshoots",
+				"`transform: scale(var(--s, 1))` is the only animated property",
+				"Under reduced motion `--s` stays at 1"
+			],
+			"tags": [
+				"motion",
+				"press",
+				"button",
+				"spring",
+				"tap",
+				"feedback"
+			],
+			"names": [
+				"Press spring",
+				"Press scale",
+				"Efeito de pressionar",
+				"Pression élastique"
+			],
+			"motion": [
+				{
+					"property": "transform: scale",
+					"duration": "spring",
+					"easing": "spring",
+					"spring": "stiffness: 0.35, damping: 0.42"
+				}
+			],
+			"shape": "square",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/micro#press-spring",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "342",
+			"group": "motion",
+			"page": "micro",
+			"variant": "MorphToggle",
+			"slug": "morphing-toggle",
+			"title": "Morphing toggle",
+			"description": "",
+			"summary": "A sun icon that morphs into a moon: a mask circle slides over the disc to bite it into a crescent while the rays rotate and shrink away.",
+			"use": "Theme switch, mute toggle or any two-state icon button where the icon itself should show the state change.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `loop={2400}`",
+				"`role=\"switch\"` with `aria-checked={dark}` and `aria-label=\"Dark mode\"`",
+				"`<mask id=\"{uid}-bite\">` holds a black `circle` that `.tg__bite` moves from `translate(10px, -10px)` to `translate(0, 0)`",
+				"`.tg__btn--dark .tg__rays` goes to `transform: rotate(45deg) scale(0.4)` and `opacity: 0`",
+				"`.tg__btn--dark .tg__icon` rotates to `transform: rotate(-35deg)`",
+				"`.tg__btn--still` sets `transition: none` under reduced motion"
+			],
+			"tags": [
+				"motion",
+				"toggle",
+				"morph",
+				"icon",
+				"theme",
+				"switch"
+			],
+			"names": [
+				"Morphing toggle",
+				"Icon morph",
+				"Toggle com morph",
+				"Bascule animée"
+			],
+			"motion": [
+				{
+					"property": "transform (bite mask, icon rotation, rays), opacity (rays)",
+					"duration": "420ms",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)"
+				},
+				{
+					"property": "opacity (rays)",
+					"duration": "280ms",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)"
+				}
+			],
+			"shape": "square",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/micro#morphing-toggle",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "343",
+			"group": "motion",
+			"page": "micro",
+			"variant": "LikeBurst",
+			"slug": "like-burst",
+			"title": "Like burst",
+			"description": "",
+			"summary": "A like button whose heart pops to 1.45 and throws eight particles outward while the count ticks up; aria-pressed carries the state.",
+			"use": "Like, favorite or reaction buttons where a positive action deserves a small celebration.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `loop={2600}`",
+				"`aria-pressed={liked}` on the button, count in `tabular-nums`",
+				"`const PARTICLES = 8;` each `<i style=\"--a:{i * (360 / PARTICLES)}deg\">` is one dot on a ring",
+				"`@keyframes like-pop` scales the heart `1` to `1.45` and back",
+				"`@keyframes like-particle` moves each dot `translateY(-26px)` while it fades to `opacity: 0` and `scale(0.3)`",
+				"`{#key burst}` remounts the ring so the burst replays on every like; nothing bursts when reduced"
+			],
+			"tags": [
+				"motion",
+				"like",
+				"burst",
+				"particles",
+				"button",
+				"feedback"
+			],
+			"names": [
+				"Like burst",
+				"Heart burst",
+				"Explosão de curtida",
+				"Explosion de cœur"
+			],
+			"motion": [
+				{
+					"property": "transform: scale (heart)",
+					"duration": "460ms",
+					"easing": "cubic-bezier(0.175, 0.885, 0.32, 1.275)"
+				},
+				{
+					"property": "transform, opacity (particles)",
+					"duration": "560ms",
+					"easing": "cubic-bezier(0, 0, 0.2, 1)"
+				}
+			],
+			"shape": "square",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/micro#like-burst",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "344",
+			"group": "motion",
+			"page": "micro",
+			"variant": "HoldToConfirm",
+			"slug": "hold-to-confirm",
+			"title": "Hold to confirm",
+			"description": "",
+			"summary": "A destructive button that only fires after a 1.2 second hold, filling a progress ring; releasing early cancels and drains the ring. Space and Enter work the same way.",
+			"use": "Deleting data, sending money or any action that must be deliberate without a confirmation dialog.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `loop={3400}`",
+				"`const HOLD = 1200;` milliseconds to hold; progress is `(now - start) / HOLD` read in `requestAnimationFrame`",
+				"`stroke-dashoffset={C * (1 - (m.reduced && !done ? 0 : progress))}` on the ring circle, with `C = 2 * Math.PI * R`",
+				"`onkeydown` starts on Space or Enter (`!e.repeat`), `onkeyup` and `onblur` call `cancel`",
+				"`onpointerup`, `onpointerleave` and `onpointercancel` call `cancel`, which sets `progress = 0`",
+				"`announce('Project deleted')` tells assistive tech when the hold completes; Undo resets"
+			],
+			"tags": [
+				"motion",
+				"hold",
+				"confirm",
+				"progress",
+				"button",
+				"destructive"
+			],
+			"names": [
+				"Hold to confirm",
+				"Press and hold",
+				"Segurar para confirmar",
+				"Maintenir pour confirmer"
+			],
+			"motion": [
+				{
+					"property": "stroke-dashoffset (progress ring)",
+					"duration": "1200ms",
+					"easing": "linear"
+				}
+			],
+			"shape": "square",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage",
+						"announce"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/micro#hold-to-confirm",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "345",
+			"group": "motion",
+			"page": "micro",
+			"variant": "CopyCheck",
+			"slug": "copy-to-check",
+			"title": "Copy to check",
+			"description": "",
+			"summary": "A copy button whose two sheets scale away while a check mark draws itself, then it reverts after 1.6 seconds.",
+			"use": "Copy-to-clipboard buttons next to a command, token or link, where the icon confirms the action.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `loop={2800}`",
+				"`navigator.clipboard?.writeText(CODE)` on a real click; autoplay never touches the clipboard",
+				"`.cc__btn--done .cc__sheets` goes to `transform: scale(0.6)` and `opacity: 0`",
+				"`stroke-dasharray: 1;` with `stroke-dashoffset: 1` drawing to `stroke-dashoffset: 0` on the tick path",
+				"`setTimeout(() => (copied = false), 1600)` reverts the icon",
+				"`announce('Copied to clipboard')` and a `ca-sr-only` label carry the state for screen readers"
+			],
+			"tags": [
+				"motion",
+				"copy",
+				"check",
+				"morph",
+				"icon",
+				"clipboard"
+			],
+			"names": [
+				"Copy to check",
+				"Copy confirmation",
+				"Copiar e confirmar",
+				"Copier puis valider"
+			],
+			"motion": [
+				{
+					"property": "transform, opacity (sheets)",
+					"duration": "280ms",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)"
+				},
+				{
+					"property": "stroke-dashoffset (check tick)",
+					"duration": "320ms",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)",
+					"delay": "120ms"
+				}
+			],
+			"shape": "wide",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage",
+						"announce"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/micro#copy-to-check",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "346",
+			"group": "motion",
+			"page": "micro",
+			"variant": "AddToCartFly",
+			"slug": "add-to-cart-fly",
+			"title": "Add to cart fly",
+			"description": "",
+			"summary": "Tapping Add to cart sends a dot flying from the button to the bag, then the badge count bumps with an overshoot.",
+			"use": "E-commerce add actions, saving to a list or any action whose result lives somewhere else on screen.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `loop={2400}`",
+				"`@keyframes cart-fly` moves the dot `translate(40px, -26px)` at 60% and `translate(72px, -4px)` at 100% while fading out",
+				"`setTimeout` of `520` ms after the click increments `count`, matching the flight length",
+				"`@keyframes cart-bump` scales the badge `1` to `1.5` and back",
+				"`announce(`Cart: ${count} items`)` tells assistive tech; the bag is `role=\"img\"` with the count in its label",
+				"`{#key flight}` remounts the dot so each add flies again; nothing flies when reduced"
+			],
+			"tags": [
+				"motion",
+				"cart",
+				"fly",
+				"badge",
+				"ecommerce",
+				"feedback"
+			],
+			"names": [
+				"Add to cart fly",
+				"Fly to cart",
+				"Adicionar ao carrinho",
+				"Ajout au panier"
+			],
+			"motion": [
+				{
+					"property": "transform, opacity (flying dot)",
+					"duration": "520ms",
+					"easing": "cubic-bezier(0.4, 0, 0.2, 1)"
+				},
+				{
+					"property": "transform: scale (badge bump)",
+					"duration": "360ms",
+					"easing": "cubic-bezier(0.175, 0.885, 0.32, 1.275)"
+				}
+			],
+			"shape": "wide",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage",
+						"announce"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/micro#add-to-cart-fly",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "347",
+			"group": "motion",
+			"page": "micro",
+			"variant": "TiltCard",
+			"slug": "tilt-card",
+			"title": "Tilt card",
+			"description": "",
+			"summary": "A stat card that leans up to 10 degrees toward the pointer in 3D and settles flat on leave, driven by a Spring.",
+			"use": "Feature cards, pricing tiers or stat tiles on desktop where hover should add depth.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `loop={2800}`",
+				"`const MAX = 10;` degrees of rotation at the card edge",
+				"`new Spring({ x: 0, y: 0 }, { stiffness: 0.1, damping: 0.6 })` drives `rotateX` and `rotateY`",
+				"`transform: rotateX(var(--rx, 0)) rotateY(var(--ry, 0))` inside `perspective: 700px`",
+				"`@media (pointer: coarse)` sets `transform: none`: no tilt on touch",
+				"Under reduced motion `--rx` and `--ry` stay at 0"
+			],
+			"tags": [
+				"motion",
+				"tilt",
+				"card",
+				"hover",
+				"3d",
+				"spring"
+			],
+			"names": [
+				"Tilt card",
+				"3D tilt",
+				"Card com inclinação",
+				"Carte inclinée"
+			],
+			"motion": [
+				{
+					"property": "transform: rotateX, rotateY",
+					"duration": "spring",
+					"easing": "spring",
+					"spring": "stiffness: 0.1, damping: 0.6"
+				}
+			],
+			"shape": "square",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/micro#tilt-card",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "348",
+			"group": "motion",
+			"page": "micro",
+			"variant": "SpringSwitch",
+			"slug": "spring-switch",
+			"title": "Spring switch",
+			"description": "",
+			"summary": "A switch whose thumb stretches to 1.3 on press and overshoots into place on release.",
+			"use": "Settings switches where the thumb should feel physical rather than slide linearly.",
+			"spec": [
+				"`MotionStage` from `@codeatlasdev/ui` with `loop={2800}`",
+				"`role=\"switch\"` with `aria-checked={on}` and `aria-labelledby` pointing at the visible label",
+				"`.sw__track--press .sw__thumb` is `transform: scaleX(1.3)` while pressed",
+				"`.sw__track--on .sw__thumb` is `transform: translateX(20px)`",
+				"`transition: transform 420ms cubic-bezier(0.175, 0.885, 0.32, 1.275)` overshoots the landing",
+				"`.sw__track--still` sets `transition: none` under reduced motion"
+			],
+			"tags": [
+				"motion",
+				"switch",
+				"toggle",
+				"spring",
+				"press",
+				"settings"
+			],
+			"names": [
+				"Spring switch",
+				"Elastic toggle",
+				"Switch elástico",
+				"Interrupteur élastique"
+			],
+			"motion": [
+				{
+					"property": "transform: translateX, scaleX (thumb)",
+					"duration": "420ms",
+					"easing": "cubic-bezier(0.175, 0.885, 0.32, 1.275)"
+				},
+				{
+					"property": "background (track)",
+					"duration": "240ms",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)"
+				}
+			],
+			"shape": "square",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/micro#spring-switch",
 			"needs": "@codeatlasdev/ui@4.2.0"
 		}
 	]

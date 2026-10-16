@@ -1,0 +1,89 @@
+<script lang="ts">
+  import { MotionStage } from '@codeatlasdev/ui';
+  import { Spring } from 'svelte/motion';
+
+  // Press: scale to 0.94 fast (stiff), release overshoots past 1 then settles (low damping).
+  const scale = new Spring(1, { stiffness: 0.35, damping: 0.42 });
+  let pressed = $state(false);
+  let count = $state(0);
+
+  function down() {
+    pressed = true;
+    scale.target = 0.94;
+  }
+  function up(user = true) {
+    if (!pressed) return;
+    pressed = false;
+    scale.target = 1;
+    if (user) count += 1;
+  }
+
+  // Autoplay presses the button for 160ms every cycle.
+  function autopress(node: HTMLElement) {
+    const t1 = setTimeout(down, 500);
+    const t2 = setTimeout(() => up(false), 660);
+    // Only the timers go: after a takeover the press belongs to the user.
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }
+</script>
+
+<MotionStage label="Press spring: a button scales down on press and overshoots on release" loop={1800}>
+  {#snippet children(m)}
+    {#key m.cycle}
+      <div class="press" {@attach (node) => (m.playing && !m.reduced ? autopress(node) : undefined)}>
+        <button
+          type="button"
+          class="press__btn"
+          class:press__btn--down={pressed}
+          style="--s:{m.reduced ? 1 : scale.current}"
+          onpointerdown={down}
+          onpointerup={() => up()}
+          onpointerleave={() => up()}
+          onpointercancel={() => up()}
+          onkeydown={(e) => (e.key === ' ' || e.key === 'Enter') && !e.repeat && down()}
+          onkeyup={(e) => (e.key === ' ' || e.key === 'Enter') && up()}
+        >
+          Pay $48.00
+        </button>
+        <p class="press__count" aria-live="polite">Pressed {count} {count === 1 ? 'time' : 'times'}</p>
+      </div>
+    {/key}
+  {/snippet}
+</MotionStage>
+
+<style>
+  .press {
+    display: grid;
+    justify-items: center;
+    gap: var(--ca-space-3);
+  }
+  .press__btn {
+    min-block-size: var(--ca-touch-target);
+    padding-inline: var(--ca-space-8);
+    border: none;
+    border-radius: var(--ca-radius-lg);
+    background: var(--ca-brand-fill);
+    color: var(--ca-brand-contrast);
+    font: inherit;
+    font-weight: var(--ca-font-weight-semibold);
+    cursor: pointer;
+    box-shadow: var(--ca-shadow-md);
+    transform: scale(var(--s, 1));
+    touch-action: manipulation;
+  }
+  .press__btn--down {
+    box-shadow: var(--ca-shadow-xs);
+  }
+  .press__btn:focus-visible {
+    outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
+    outline-offset: var(--ca-focus-ring-offset);
+  }
+  .press__count {
+    margin: 0;
+    color: var(--ca-text-secondary);
+    font-size: var(--ca-font-size-body2);
+  }
+</style>

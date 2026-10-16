@@ -1,0 +1,19 @@
+Use @codeatlasdev/ui demo #347 "Tilt card" (motion/micro).
+What it shows: A stat card that leans up to 10 degrees toward the pointer in 3D and settles flat on leave, driven by a Spring. When to use: Feature cards, pricing tiers or stat tiles on desktop where hover should add depth.
+Spec:
+- `MotionStage` from `@codeatlasdev/ui` with `loop={2800}`
+- `const MAX = 10;` degrees of rotation at the card edge
+- `new Spring({ x: 0, y: 0 }, { stiffness: 0.1, damping: 0.6 })` drives `rotateX` and `rotateY`
+- `transform: rotateX(var(--rx, 0)) rotateY(var(--ry, 0))` inside `perspective: 700px`
+- `@media (pointer: coarse)` sets `transform: none`: no tilt on touch
+- Under reduced motion `--rx` and `--ry` stay at 0
+Motion:
+- transform: rotateX, rotateY: spring spring spring stiffness: 0.1, damping: 0.6
+Names: Tilt card | 3D tilt | Card com inclinação | Carte inclinée
+Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #347 Tilt card → file, what changed, https://ui.codeatlas.com.br/docs/motion/micro#tilt-card; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/347.txt   Components API: ca-ui-mcp get_component(MotionStage)

@@ -1,0 +1,23 @@
+{
+	"summary": "A stat card that leans up to 10 degrees toward the pointer in 3D and settles flat on leave, driven by a Spring.",
+	"use": "Feature cards, pricing tiers or stat tiles on desktop where hover should add depth.",
+	"spec": [
+		"`MotionStage` from `@codeatlasdev/ui` with `loop={2800}`",
+		"`const MAX = 10;` degrees of rotation at the card edge",
+		"`new Spring({ x: 0, y: 0 }, { stiffness: 0.1, damping: 0.6 })` drives `rotateX` and `rotateY`",
+		"`transform: rotateX(var(--rx, 0)) rotateY(var(--ry, 0))` inside `perspective: 700px`",
+		"`@media (pointer: coarse)` sets `transform: none`: no tilt on touch",
+		"Under reduced motion `--rx` and `--ry` stay at 0"
+	],
+	"tags": ["motion", "tilt", "card", "hover", "3d", "spring"],
+	"names": ["Tilt card", "3D tilt", "Card com inclinação", "Carte inclinée"],
+	"motion": [
+		{
+			"property": "transform: rotateX, rotateY",
+			"duration": "spring",
+			"easing": "spring",
+			"spring": "stiffness: 0.1, damping: 0.6"
+		}
+	],
+	"shape": "square"
+}

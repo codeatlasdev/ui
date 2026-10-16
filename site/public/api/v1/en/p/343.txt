@@ -1,0 +1,20 @@
+Use @codeatlasdev/ui demo #343 "Like burst" (motion/micro).
+What it shows: A like button whose heart pops to 1.45 and throws eight particles outward while the count ticks up; aria-pressed carries the state. When to use: Like, favorite or reaction buttons where a positive action deserves a small celebration.
+Spec:
+- `MotionStage` from `@codeatlasdev/ui` with `loop={2600}`
+- `aria-pressed={liked}` on the button, count in `tabular-nums`
+- `const PARTICLES = 8;` each `<i style="--a:{i * (360 / PARTICLES)}deg">` is one dot on a ring
+- `@keyframes like-pop` scales the heart `1` to `1.45` and back
+- `@keyframes like-particle` moves each dot `translateY(-26px)` while it fades to `opacity: 0` and `scale(0.3)`
+- `{#key burst}` remounts the ring so the burst replays on every like; nothing bursts when reduced
+Motion:
+- transform: scale (heart): 460ms cubic-bezier(0.175, 0.885, 0.32, 1.275)
+- transform, opacity (particles): 560ms cubic-bezier(0, 0, 0.2, 1)
+Names: Like burst | Heart burst | Explosão de curtida | Explosion de cœur
+Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #343 Like burst → file, what changed, https://ui.codeatlas.com.br/docs/motion/micro#like-burst; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/343.txt   Components API: ca-ui-mcp get_component(MotionStage)

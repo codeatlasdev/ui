@@ -261,3 +261,12 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 254 | Chat history | display/virtual-list | Button, Stack, VirtualList |
 | 255 | Fast and slow loads | navigation/loading-boundary | Button, LoadingBoundary, Stack |
 | 256 | Fade rise | motion/basics | Card, MotionStage |
+| 340 | Magnetic button | motion/micro | MotionStage |
+| 341 | Press spring | motion/micro | MotionStage |
+| 342 | Morphing toggle | motion/micro | MotionStage |
+| 343 | Like burst | motion/micro | MotionStage |
+| 344 | Hold to confirm | motion/micro | MotionStage |
+| 345 | Copy to check | motion/micro | MotionStage |
+| 346 | Add to cart fly | motion/micro | MotionStage |
+| 347 | Tilt card | motion/micro | MotionStage |
+| 348 | Spring switch | motion/micro | MotionStage |

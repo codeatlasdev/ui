@@ -1,0 +1,28 @@
+{
+	"summary": "A copy button whose two sheets scale away while a check mark draws itself, then it reverts after 1.6 seconds.",
+	"use": "Copy-to-clipboard buttons next to a command, token or link, where the icon confirms the action.",
+	"spec": [
+		"`MotionStage` from `@codeatlasdev/ui` with `loop={2800}`",
+		"`navigator.clipboard?.writeText(CODE)` on a real click; autoplay never touches the clipboard",
+		"`.cc__btn--done .cc__sheets` goes to `transform: scale(0.6)` and `opacity: 0`",
+		"`stroke-dasharray: 1;` with `stroke-dashoffset: 1` drawing to `stroke-dashoffset: 0` on the tick path",
+		"`setTimeout(() => (copied = false), 1600)` reverts the icon",
+		"`announce('Copied to clipboard')` and a `ca-sr-only` label carry the state for screen readers"
+	],
+	"tags": ["motion", "copy", "check", "morph", "icon", "clipboard"],
+	"names": ["Copy to check", "Copy confirmation", "Copiar e confirmar", "Copier puis valider"],
+	"motion": [
+		{
+			"property": "transform, opacity (sheets)",
+			"duration": "280ms",
+			"easing": "cubic-bezier(0.2, 0, 0, 1)"
+		},
+		{
+			"property": "stroke-dashoffset (check tick)",
+			"duration": "320ms",
+			"easing": "cubic-bezier(0.2, 0, 0, 1)",
+			"delay": "120ms"
+		}
+	],
+	"shape": "wide"
+}

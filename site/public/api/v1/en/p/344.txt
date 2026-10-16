@@ -1,0 +1,19 @@
+Use @codeatlasdev/ui demo #344 "Hold to confirm" (motion/micro).
+What it shows: A destructive button that only fires after a 1.2 second hold, filling a progress ring; releasing early cancels and drains the ring. Space and Enter work the same way. When to use: Deleting data, sending money or any action that must be deliberate without a confirmation dialog.
+Spec:
+- `MotionStage` from `@codeatlasdev/ui` with `loop={3400}`
+- `const HOLD = 1200;` milliseconds to hold; progress is `(now - start) / HOLD` read in `requestAnimationFrame`
+- `stroke-dashoffset={C * (1 - (m.reduced && !done ? 0 : progress))}` on the ring circle, with `C = 2 * Math.PI * R`
+- `onkeydown` starts on Space or Enter (`!e.repeat`), `onkeyup` and `onblur` call `cancel`
+- `onpointerup`, `onpointerleave` and `onpointercancel` call `cancel`, which sets `progress = 0`
+- `announce('Project deleted')` tells assistive tech when the hold completes; Undo resets
+Motion:
+- stroke-dashoffset (progress ring): 1200ms linear
+Names: Hold to confirm | Press and hold | Segurar para confirmar | Maintenir pour confirmer
+Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #344 Hold to confirm → file, what changed, https://ui.codeatlas.com.br/docs/motion/micro#hold-to-confirm; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/344.txt   Components API: ca-ui-mcp get_component(MotionStage)

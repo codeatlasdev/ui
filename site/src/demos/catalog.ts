@@ -262,6 +262,15 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "254", path: "display/virtual-list/History" },
 	{ id: "255", path: "navigation/loading-boundary/Delayed" },
 	{ id: "256", path: "motion/basics/FadeRise" },
+	{ id: "340", path: "motion/micro/MagneticButton" },
+	{ id: "341", path: "motion/micro/PressSpring" },
+	{ id: "342", path: "motion/micro/MorphToggle" },
+	{ id: "343", path: "motion/micro/LikeBurst" },
+	{ id: "344", path: "motion/micro/HoldToConfirm" },
+	{ id: "345", path: "motion/micro/CopyCheck" },
+	{ id: "346", path: "motion/micro/AddToCartFly" },
+	{ id: "347", path: "motion/micro/TiltCard" },
+	{ id: "348", path: "motion/micro/SpringSwitch" },
 ];
 
 /**

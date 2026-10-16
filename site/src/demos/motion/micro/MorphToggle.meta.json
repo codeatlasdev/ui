@@ -1,0 +1,27 @@
+{
+	"summary": "A sun icon that morphs into a moon: a mask circle slides over the disc to bite it into a crescent while the rays rotate and shrink away.",
+	"use": "Theme switch, mute toggle or any two-state icon button where the icon itself should show the state change.",
+	"spec": [
+		"`MotionStage` from `@codeatlasdev/ui` with `loop={2400}`",
+		"`role=\"switch\"` with `aria-checked={dark}` and `aria-label=\"Dark mode\"`",
+		"`<mask id=\"{uid}-bite\">` holds a black `circle` that `.tg__bite` moves from `translate(10px, -10px)` to `translate(0, 0)`",
+		"`.tg__btn--dark .tg__rays` goes to `transform: rotate(45deg) scale(0.4)` and `opacity: 0`",
+		"`.tg__btn--dark .tg__icon` rotates to `transform: rotate(-35deg)`",
+		"`.tg__btn--still` sets `transition: none` under reduced motion"
+	],
+	"tags": ["motion", "toggle", "morph", "icon", "theme", "switch"],
+	"names": ["Morphing toggle", "Icon morph", "Toggle com morph", "Bascule animée"],
+	"motion": [
+		{
+			"property": "transform (bite mask, icon rotation, rays), opacity (rays)",
+			"duration": "420ms",
+			"easing": "cubic-bezier(0.2, 0, 0, 1)"
+		},
+		{
+			"property": "opacity (rays)",
+			"duration": "280ms",
+			"easing": "cubic-bezier(0.2, 0, 0, 1)"
+		}
+	],
+	"shape": "square"
+}

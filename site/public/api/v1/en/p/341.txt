@@ -1,0 +1,19 @@
+Use @codeatlasdev/ui demo #341 "Press spring" (motion/micro).
+What it shows: A button that scales to 0.94 on press and overshoots past 1 on release before settling, driven by a Spring. When to use: Any tappable surface (pay, send, buy) that needs a physical press feel without a color change.
+Spec:
+- `MotionStage` from `@codeatlasdev/ui` with `loop={1800}`
+- `new Spring(1, { stiffness: 0.35, damping: 0.42 })` is the scale
+- `scale.target = 0.94` on pointerdown and on Space or Enter keydown
+- `scale.target = 1` on pointerup, pointerleave, pointercancel and keyup: the low damping overshoots
+- `transform: scale(var(--s, 1))` is the only animated property
+- Under reduced motion `--s` stays at 1
+Motion:
+- transform: scale: spring spring spring stiffness: 0.35, damping: 0.42
+Names: Press spring | Press scale | Efeito de pressionar | Pression élastique
+Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #341 Press spring → file, what changed, https://ui.codeatlas.com.br/docs/motion/micro#press-spring; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/341.txt   Components API: ca-ui-mcp get_component(MotionStage)

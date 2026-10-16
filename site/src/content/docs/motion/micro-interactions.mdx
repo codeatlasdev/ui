@@ -1,0 +1,51 @@
+---
+title: Micro-interactions
+description: "Named micro-interactions with exact values: magnetic button, press spring, morphing toggle, like burst, hold to confirm, copy to check, add to cart fly."
+group: Motion
+order: 3
+---
+import Demo from "~/components/docs/Demo.astro";
+import MagneticButton from "~/demos/motion/micro/MagneticButton.svelte";
+import MagneticButtonSrc from "~/demos/motion/micro/MagneticButton.svelte?raw";
+import PressSpring from "~/demos/motion/micro/PressSpring.svelte";
+import PressSpringSrc from "~/demos/motion/micro/PressSpring.svelte?raw";
+import MorphToggle from "~/demos/motion/micro/MorphToggle.svelte";
+import MorphToggleSrc from "~/demos/motion/micro/MorphToggle.svelte?raw";
+import LikeBurst from "~/demos/motion/micro/LikeBurst.svelte";
+import LikeBurstSrc from "~/demos/motion/micro/LikeBurst.svelte?raw";
+import HoldToConfirm from "~/demos/motion/micro/HoldToConfirm.svelte";
+import HoldToConfirmSrc from "~/demos/motion/micro/HoldToConfirm.svelte?raw";
+import CopyCheck from "~/demos/motion/micro/CopyCheck.svelte";
+import CopyCheckSrc from "~/demos/motion/micro/CopyCheck.svelte?raw";
+import AddToCartFly from "~/demos/motion/micro/AddToCartFly.svelte";
+import AddToCartFlySrc from "~/demos/motion/micro/AddToCartFly.svelte?raw";
+import TiltCard from "~/demos/motion/micro/TiltCard.svelte";
+import TiltCardSrc from "~/demos/motion/micro/TiltCard.svelte?raw";
+import SpringSwitch from "~/demos/motion/micro/SpringSwitch.svelte";
+import SpringSwitchSrc from "~/demos/motion/micro/SpringSwitch.svelte?raw";
+
+A micro-interaction is the small reply an element gives to a touch: it leans, presses, flips, confirms. Each demo below plays itself while in view with a faint fake pointer (hidden from assistive tech), and the moment you touch it, it is yours: the real pointer or keyboard drives the same effect. Under reduced motion every demo shows its final state. Read [Motion](/docs/motion/) for the contract.
+
+## Hover and pointer
+
+<Demo title="Magnetic button" description={"A pill button that leans toward the pointer when it comes within 72px, pulled by a Spring (stiffness 0.12, damping 0.55) at 35% of the offset, and springs back when the pointer leaves. Disabled on coarse pointers. Also called a magnet button, botão magnético. Ask: “Use #340, a magnetic button, on the hero call to action.”"} src={MagneticButtonSrc}><MagneticButton client:visible /></Demo>
+
+<Demo title="Tilt card" description={"A card that rotates up to 10° toward the pointer in 3D inside a 700px perspective and settles flat on leave. Use it for feature or pricing cards on desktop. Also called 3D tilt, card com inclinação. Ask: “Use #347, a tilt card, for the plan tiles.”"} src={TiltCardSrc}><TiltCard client:visible /></Demo>
+
+## Press and toggle
+
+<Demo title="Press spring" description={"The button scales to 0.94 on press and overshoots past 1 on release: a Spring with stiffness 0.35 and damping 0.42. Space and Enter press it too. Use it on any tappable surface. Also called press scale, efeito de pressionar. Ask: “Use #341, a press spring, on the pay button.”"} src={PressSpringSrc}><PressSpring client:visible /></Demo>
+
+<Demo title="Morphing toggle" description={"A sun that becomes a moon: a mask circle slides over the disc for 420ms (cubic-bezier(0.2, 0, 0, 1)) while the rays rotate and shrink away. A real role=switch. Use it for a theme or mute toggle. Also called icon morph, toggle com morph. Ask: “Use #342, a morphing toggle, for dark mode.”"} src={MorphToggleSrc}><MorphToggle client:visible /></Demo>
+
+<Demo title="Spring switch" description={"The thumb stretches to 1.3 while pressed and lands with a 420ms overshoot (cubic-bezier(0.175, 0.885, 0.32, 1.275)). Use it on settings switches. Also called elastic toggle, switch elástico. Ask: “Use #348, a spring switch, for the notification setting.”"} src={SpringSwitchSrc}><SpringSwitch client:visible /></Demo>
+
+## Feedback
+
+<Demo title="Like burst" description={"The heart pops to 1.45 over 460ms and throws eight particles 26px outward in 560ms; aria-pressed carries the state and the count ticks. Use it for likes and reactions. Also called heart burst, explosão de curtida. Ask: “Use #343, a like burst, on the post footer.”"} src={LikeBurstSrc}><LikeBurst client:visible /></Demo>
+
+<Demo title="Hold to confirm" description={"A progress ring fills over 1200ms while you hold; releasing early cancels and drains it. Hold Space or Enter for the same on a keyboard. Use it for deleting or paying without a dialog. Also called press and hold, segurar para confirmar. Ask: “Use #344, hold to confirm, for deleting a project.”"} src={HoldToConfirmSrc}><HoldToConfirm client:visible /></Demo>
+
+<Demo title="Copy to check" description={"Two sheets scale away in 280ms while a check mark draws itself in 320ms after a 120ms delay, then it reverts after 1.6 seconds. Use it beside any command or token. Also called copy confirmation, copiar e confirmar. Ask: “Use #345, a copy to check, on the install command.”"} src={CopyCheckSrc}><CopyCheck client:visible /></Demo>
+
+<Demo title="Add to cart fly" description={"A dot flies from the button to the bag in 520ms, then the badge bumps to 1.5 and back in 360ms. Use it when an action lands somewhere else on screen. Also called fly to cart, adicionar ao carrinho. Ask: “Use #346, an add to cart fly, on the product card.”"} src={AddToCartFlySrc}><AddToCartFly client:visible /></Demo>

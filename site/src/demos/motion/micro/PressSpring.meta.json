@@ -1,0 +1,23 @@
+{
+	"summary": "A button that scales to 0.94 on press and overshoots past 1 on release before settling, driven by a Spring.",
+	"use": "Any tappable surface (pay, send, buy) that needs a physical press feel without a color change.",
+	"spec": [
+		"`MotionStage` from `@codeatlasdev/ui` with `loop={1800}`",
+		"`new Spring(1, { stiffness: 0.35, damping: 0.42 })` is the scale",
+		"`scale.target = 0.94` on pointerdown and on Space or Enter keydown",
+		"`scale.target = 1` on pointerup, pointerleave, pointercancel and keyup: the low damping overshoots",
+		"`transform: scale(var(--s, 1))` is the only animated property",
+		"Under reduced motion `--s` stays at 1"
+	],
+	"tags": ["motion", "press", "button", "spring", "tap", "feedback"],
+	"names": ["Press spring", "Press scale", "Efeito de pressionar", "Pression élastique"],
+	"motion": [
+		{
+			"property": "transform: scale",
+			"duration": "spring",
+			"easing": "spring",
+			"spring": "stiffness: 0.35, damping: 0.42"
+		}
+	],
+	"shape": "square"
+}
