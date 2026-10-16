@@ -348,7 +348,12 @@
   	}
   	:global(.ca-lightbox__nav--prev) { inset-inline-start: max(var(--ca-space-3), var(--ca-safe-left)); }
   	:global(.ca-lightbox__nav--next) { inset-inline-end: max(var(--ca-space-3), var(--ca-safe-right)); }
-  	:global(.ca-lightbox__nav[aria-disabled="true"]) { opacity: 0.35; cursor: default; }
+  	/* The end of the gallery: no fill (a flat outline) instead of a dimmed label, so the chevron stays legible. */
+  	:global(.ca-lightbox__nav[aria-disabled="true"]) {
+  		background: transparent;
+  		box-shadow: inset 0 0 0 var(--ca-border-width) oklch(1 0 0 / 0.6);
+  		cursor: default;
+  	}
   	:global([dir="rtl"] .ca-lightbox__nav svg) { scale: -1 1; }
 
   	:global(.ca-lightbox__counter) {
