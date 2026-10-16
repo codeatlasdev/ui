@@ -3,6 +3,11 @@ import { expect, expectNoViolations, gotoReady, makeAxe, settle, test } from "./
 // One block per demo of /docs/motion/hero-ambient/: plays in view, a user gesture takes over and
 // visibly drives the effect, reduced motion shows the final state, axe is clean in both modes.
 const PAGE = "/docs/motion/hero-ambient/";
+const boxOf = async (loc: import("@playwright/test").Locator) => {
+	const b = await loc.boundingBox();
+	if (!b) throw new Error("element has no box");
+	return b;
+};
 const stageOf = (page: import("@playwright/test").Page, label: string) =>
 	page.getByRole("group", { name: new RegExp(`^${label}:`) });
 
@@ -37,7 +42,7 @@ test.describe("hero and ambient motion", () => {
 			const stage = stageOf(page, "Cursor spotlight");
 			await stage.scrollIntoViewIfNeeded();
 			const spot = stage.locator(".spot");
-			const box = (await spot.boundingBox())!;
+			const box = await boxOf(spot);
 			await page.mouse.move(box.x + box.width * 0.9, box.y + box.height * 0.8);
 			await page.mouse.move(box.x + box.width * 0.9, box.y + box.height * 0.8, { steps: 2 });
 			await expect(stage).toHaveAttribute("data-taken", "false");
@@ -53,7 +58,7 @@ test.describe("hero and ambient motion", () => {
 			await gotoReady(page, PAGE);
 			const stage = stageOf(page, "Grid ripple");
 			await stage.scrollIntoViewIfNeeded();
-			const first = (await stage.locator(".rip__dot").first().boundingBox())!;
+			const first = await boxOf(stage.locator(".rip__dot").first());
 			// Top-left cell: its own delay is 0ms, the far corner waits the longest.
 			await page.mouse.click(first.x + first.width / 2, first.y + first.height / 2);
 			await expect(stage).toHaveAttribute("data-taken", "true");
@@ -61,7 +66,7 @@ test.describe("hero and ambient motion", () => {
 				.locator(".rip__dot")
 				.evaluateAll((els) => els.map((e) => (e as HTMLElement).style.getPropertyValue("--d")));
 			expect(delays[0]).toBe("0ms");
-			expect(parseInt(delays.at(-1)!)).toBeGreaterThan(700);
+			expect(Number.parseInt(delays.at(-1) ?? "0", 10)).toBeGreaterThan(700);
 		});
 
 		test("Gradient field: moving the pointer paints hue and angle", async ({ page }) => {
@@ -70,7 +75,7 @@ test.describe("hero and ambient motion", () => {
 			await stage.scrollIntoViewIfNeeded();
 			const field = stage.locator(".field");
 			await expect(field).toHaveCSS("animation-name", /field-drift$/);
-			const box = (await field.boundingBox())!;
+			const box = await boxOf(field);
 			await page.mouse.move(box.x + box.width * 0.5, box.y + box.height * 0.5);
 			await page.mouse.down();
 			await page.mouse.up();
@@ -96,7 +101,7 @@ test.describe("hero and ambient motion", () => {
 			await expect(handle).toHaveAttribute("aria-valuenow", "100");
 			// Drag to ~70%: on release the divider snaps to the nearest stop, 75.
 			const cmp = stage.locator(".cmp");
-			const box = (await cmp.boundingBox())!;
+			const box = await boxOf(cmp);
 			await page.mouse.move(box.x + box.width * 0.9, box.y + box.height / 2);
 			await page.mouse.down();
 			await page.mouse.move(box.x + box.width * 0.7, box.y + box.height / 2, { steps: 4 });
@@ -110,7 +115,7 @@ test.describe("hero and ambient motion", () => {
 			await stage.scrollIntoViewIfNeeded();
 			const trail = stage.locator(".trail");
 			await expect(stage.locator(".trail__dot")).toHaveCount(14);
-			const box = (await trail.boundingBox())!;
+			const box = await boxOf(trail);
 			await page.mouse.move(box.x + 30, box.y + 30);
 			await page.mouse.down();
 			await page.mouse.up();
@@ -149,7 +154,7 @@ test.describe("hero and ambient motion", () => {
 			await stage.scrollIntoViewIfNeeded();
 			const tilt = stage.locator(".tilt");
 			const card = stage.locator(".tilt__card");
-			const box = (await tilt.boundingBox())!;
+			const box = await boxOf(tilt);
 			await page.mouse.move(box.x + box.width * 0.9, box.y + box.height * 0.5);
 			await page.mouse.down();
 			await page.mouse.up();
