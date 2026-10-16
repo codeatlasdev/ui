@@ -252,4 +252,4 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 245 | Apps | layout/record-list | Avatar, DropdownMenu, DropdownMenuItem, IconButton, RecordCell, RecordList, RecordRow, StatusChip |
 | 246 | Without a menu | layout/record-list | RecordCell, RecordList, RecordRow |
 | 247 | Phone width | layout/record-list | Avatar, DropdownMenu, DropdownMenuItem, IconButton, RecordCell, RecordList, RecordRow |
-| 248 | Fast and slow loads | navigation/loading-boundary | Button, LoadingBoundary, Stack |
+| 255 | Fast and slow loads | navigation/loading-boundary | Button, LoadingBoundary, Stack |

@@ -29,7 +29,7 @@
 		{
 			"slug": "navigation",
 			"first": "146",
-			"last": "248",
+			"last": "255",
 			"count": 23
 		},
 		{
@@ -10590,7 +10590,7 @@
 			"needs": "@codeatlasdev/ui@4.1.0"
 		},
 		{
-			"id": "248",
+			"id": "255",
 			"group": "navigation",
 			"page": "loading-boundary",
 			"variant": "Delayed",

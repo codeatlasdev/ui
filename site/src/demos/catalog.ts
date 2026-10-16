@@ -253,5 +253,5 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "245", path: "layout/record-list/Apps" },
 	{ id: "246", path: "layout/record-list/NoMenu" },
 	{ id: "247", path: "layout/record-list/Phone" },
-	{ id: "248", path: "navigation/loading-boundary/Delayed" },
+	{ id: "255", path: "navigation/loading-boundary/Delayed" },
 ];
