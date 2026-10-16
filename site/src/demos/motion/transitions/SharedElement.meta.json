@@ -1,0 +1,32 @@
+{
+	"summary": "A plan cover that morphs from a list tile into the detail card through the View Transitions API, with a plain crossfade when the API is missing.",
+	"use": "Opening a product, plan, photo or message from a list into its detail view without a jump cut.",
+	"spec": [
+		"`MotionStage` with `label=\"Shared element: a plan cover grows into the detail view\"` and `loop={2800}`",
+		"The cover in the tile and the cover in the detail both carry `view-transition-name: se-cover`",
+		"`doc.startViewTransition(() => flushSync(() => (open = next)))` swaps the view; without the API the new view runs `animation: se-fade 240ms`",
+		"`::view-transition-group(se-cover)` uses `animation-duration: 420ms` and `animation-timing-function: cubic-bezier(0.2, 0, 0, 1)`",
+		"Under reduced motion the detail is shown and no transition runs"
+	],
+	"tags": ["motion", "transition", "shared-element", "view-transitions", "card"],
+	"names": [
+		"Shared element transition",
+		"Hero transition",
+		"Container transform",
+		"Transição de elemento compartilhado",
+		"Transición de elemento compartido"
+	],
+	"motion": [
+		{
+			"property": "position and size of the shared cover (view-transition-name: se-cover)",
+			"duration": "420ms",
+			"easing": "cubic-bezier(0.2, 0, 0, 1)"
+		},
+		{
+			"property": "opacity (crossfade fallback)",
+			"duration": "240ms",
+			"easing": "cubic-bezier(0.2, 0, 0, 1)"
+		}
+	],
+	"shape": "square"
+}

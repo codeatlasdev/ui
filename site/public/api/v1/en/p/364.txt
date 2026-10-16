@@ -1,0 +1,22 @@
+Use @codeatlasdev/ui demo #364 "Stacked toasts" (motion/transitions).
+What it shows: Toasts that slide in from above, stack with a depth cascade (each older one lower, smaller and dimmer) and leave when dismissed. When to use: In-app notifications that can arrive in bursts: payments, comments, exports, limit warnings.
+Spec:
+- `MotionStage` with `label="Stacked toasts: they enter, stack up and dismiss"` and `loop={1400}`
+- At most `const MAX = 3` toasts; a new one goes first and the oldest is cut
+- Depth comes from `--i`: `transform: translateY(calc(var(--i) * 0.9rem)) scale(calc(1 - var(--i) * 0.05))` and `opacity: calc(1 - var(--i) * 0.28)`
+- Enter: `animation: ts-in 320ms cubic-bezier(0.2, 0, 0, 1)` from `translateY(-1.5rem) scale(0.96)`; restack: `transition: transform 320ms cubic-bezier(0.2, 0, 0, 1), opacity 320ms cubic-bezier(0.2, 0, 0, 1)`
+- Only the front toast is announced and readable: older ones get `class:ts__toast--behind={i > 0}` (content `opacity: 0`), `aria-hidden` and `inert`, so the stack never overlaps text
+- Dismiss: `out:leave` runs `duration: reduced ? 0 : 240` with `easing: cubicOut`, fading to `opacity:${t}` while `translate:${u * 2.5}rem 0` slides it aside
+- Under reduced motion the stack is shown full with `animation: none`
+Motion:
+- opacity, transform: translateY and scale (enter): 320ms cubic-bezier(0.2, 0, 0, 1)
+- opacity and translate (dismiss): 240 cubicOut
+- transform and opacity (restack as the list changes): 320ms cubic-bezier(0.2, 0, 0, 1)
+Names: Stacked toasts | Toast stack | Notification stack | Pilha de toasts | Pila de notificaciones
+Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #364 Stacked toasts → file, what changed, https://ui.codeatlas.com.br/docs/motion/transitions#stacked-toasts; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/364.txt   Components API: ca-ui-mcp get_component(Button)

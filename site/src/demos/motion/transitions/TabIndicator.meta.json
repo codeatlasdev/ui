@@ -1,0 +1,27 @@
+{
+	"summary": "The package Tabs with one pill that slides and stretches under the active tab instead of each tab repainting its own background.",
+	"use": "Segmented controls, tab bars and filters where the eye should follow the selection from one option to the next.",
+	"spec": [
+		"`MotionStage` with `label=\"Tab indicator: a pill slides under the active tab\"` and `loop={1800}`",
+		"`Tabs`, `TabsList`, `TabsTrigger` and `TabsContent` come from `@codeatlasdev/ui`, untouched",
+		"The active trigger's `offsetLeft` and `offsetWidth` are written to `--x` and `--w`; the pill reads `transform: translateX(var(--x))` and `inline-size: var(--w)`",
+		"`transition: transform 360ms cubic-bezier(0.2, 0, 0, 1), inline-size 360ms cubic-bezier(0.2, 0, 0, 1)`; no transition before the first measure and under reduced motion",
+		"A `ResizeObserver` re-measures when the list resizes"
+	],
+	"tags": ["motion", "tabs", "indicator", "slide", "pill"],
+	"names": [
+		"Sliding tab indicator",
+		"Tab pill",
+		"Magic line",
+		"Indicador deslizante de abas",
+		"Indicador de pestaña deslizante"
+	],
+	"motion": [
+		{
+			"property": "transform: translateX and inline-size of the pill",
+			"duration": "360ms",
+			"easing": "cubic-bezier(0.2, 0, 0, 1)"
+		}
+	],
+	"shape": "square"
+}

@@ -1,0 +1,86 @@
+<script lang="ts">
+  import { MotionStage, type MotionCtx } from '@codeatlasdev/ui';
+  import { ChevronDown } from '@lucide/svelte';
+  import { Spring } from 'svelte/motion';
+
+  const faqs = [
+    { id: 'billing', q: 'When am I billed?', a: 'On the day you subscribed, every month. Upgrades are prorated to the day, downgrades apply at the next renewal.' },
+    { id: 'seats', q: 'Can I add seats mid-cycle?', a: 'Yes. A new seat costs R$ 19, prorated for the days left. Remove one and the credit lands on the next invoice.' },
+    { id: 'export', q: 'How do I export my data?', a: 'Settings, Data, Export. You get a CSV per table within a minute, and a link by email for large workspaces.' },
+  ];
+
+  let opened = $state<string | null>('billing');
+  let stage = $state<MotionCtx>();
+  let lastCycle = -1;
+  let heights = $state<Record<string, number>>({});
+
+  // One spring per panel drives its height in px. Closing aims at 0, opening at the measured height.
+  const springs = Object.fromEntries(faqs.map((f) => [f.id, new Spring(0, { stiffness: 0.18, damping: 0.72 })]));
+
+  function measure(id: string, node: HTMLElement) {
+    const ro = new ResizeObserver(() => (heights[id] = node.scrollHeight));
+    ro.observe(node);
+    return () => ro.disconnect();
+  }
+
+  $effect(() => {
+    const reduced = stage?.reduced ?? false;
+    for (const f of faqs) {
+      const target = opened === f.id ? (heights[f.id] ?? 0) : 0;
+      if (reduced) springs[f.id].set(target, { instant: true });
+      else springs[f.id].target = target;
+    }
+  });
+
+  $effect(() => {
+    if (!stage) return;
+    if (stage.reduced) {
+      opened = 'billing';
+      return;
+    }
+    if (!stage.playing || stage.cycle === lastCycle) return;
+    lastCycle = stage.cycle;
+    const i = faqs.findIndex((f) => f.id === opened);
+    opened = faqs[(i + 1) % faqs.length].id;
+  });
+</script>
+
+<MotionStage label="Height spring: accordion panels open and close with a spring" loop={2200}>
+  {#snippet children(m)}
+    <div class="hs" {@attach () => { stage = m; }}>
+      {#each faqs as f (f.id)}
+        {@const isOpen = opened === f.id}
+        <div class="hs__item" data-open={isOpen}>
+          <h3 class="hs__h">
+            <button type="button" class="hs__trigger" aria-expanded={isOpen} aria-controls={`hs-${f.id}`} onclick={() => (opened = isOpen ? null : f.id)}>
+              <span>{f.q}</span>
+              <ChevronDown size={16} class="hs__chev" aria-hidden="true" />
+            </button>
+          </h3>
+          <div class="hs__clip" id={`hs-${f.id}`} role="region" aria-label={f.q} inert={!isOpen} style="--h:{Math.max(0, springs[f.id].current)}px">
+            <p class="hs__body" {@attach (n) => measure(f.id, n)}>{f.a}</p>
+          </div>
+        </div>
+      {/each}
+    </div>
+  {/snippet}
+</MotionStage>
+
+<style>
+  .hs { width: 100%; max-width: 380px; display: grid; gap: var(--ca-space-2); }
+  .hs__item {
+    background: var(--ca-surface-raised); border: var(--ca-border-width) solid var(--ca-outline-subtle);
+    border-radius: var(--ca-radius-lg); overflow: hidden;
+  }
+  .hs__h { margin: 0; font: inherit; }
+  .hs__trigger {
+    display: flex; inline-size: 100%; align-items: center; justify-content: space-between; gap: var(--ca-space-3);
+    min-block-size: var(--ca-touch-target); padding: var(--ca-space-3) var(--ca-space-4); font: inherit; font-weight: var(--ca-font-weight-semibold);
+    color: var(--ca-text-primary); background: transparent; border: 0; cursor: pointer; text-align: start;
+  }
+  .hs__trigger:focus-visible { outline: var(--ca-border-width-focus) solid var(--ca-focus-ring); outline-offset: calc(-1 * var(--ca-border-width-focus)); }
+  .hs__item[data-open='true'] :global(.hs__chev) { transform: rotate(180deg); }
+  .hs__trigger :global(.hs__chev) { flex: none; transition: transform 240ms cubic-bezier(0.2, 0, 0, 1); }
+  .hs__clip { block-size: var(--h); overflow: hidden; }
+  .hs__body { margin: 0; padding: 0 var(--ca-space-4) var(--ca-space-4); color: var(--ca-text-secondary); font-size: var(--ca-font-size-body2); }
+</style>

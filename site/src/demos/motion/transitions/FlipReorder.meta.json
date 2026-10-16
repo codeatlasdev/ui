@@ -1,0 +1,26 @@
+{
+	"summary": "A sortable list whose rows slide to their new position instead of teleporting when the sort changes (First, Last, Invert, Play).",
+	"use": "Sorting or filtering a table, leaderboard or card list where the user must keep track of which row went where.",
+	"spec": [
+		"`MotionStage` with `label=\"FLIP reorder: rows slide to their new place when the sort changes\"` and `loop={2400}`",
+		"Measure `getBoundingClientRect().top` before the reorder, `await tick()`, measure again, then `el.animate(` from `translateY` of the difference to `translateY(0)`",
+		"Rows keep a stable key: `{#each ordered as r (r.id)}` so Svelte moves the node instead of recreating it",
+		"Under reduced motion the order changes with no animation"
+	],
+	"tags": ["motion", "flip", "reorder", "list", "sort"],
+	"names": [
+		"FLIP reorder",
+		"List reorder animation",
+		"Layout animation",
+		"Reordenar lista com animação",
+		"Animación de reordenación"
+	],
+	"motion": [
+		{
+			"property": "transform: translateY (inverted offset to 0)",
+			"duration": "420",
+			"easing": "cubic-bezier(0.2, 0, 0, 1)"
+		}
+	],
+	"shape": "square"
+}

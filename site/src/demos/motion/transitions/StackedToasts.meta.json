@@ -1,0 +1,39 @@
+{
+	"summary": "Toasts that slide in from above, stack with a depth cascade (each older one lower, smaller and dimmer) and leave when dismissed.",
+	"use": "In-app notifications that can arrive in bursts: payments, comments, exports, limit warnings.",
+	"spec": [
+		"`MotionStage` with `label=\"Stacked toasts: they enter, stack up and dismiss\"` and `loop={1400}`",
+		"At most `const MAX = 3` toasts; a new one goes first and the oldest is cut",
+		"Depth comes from `--i`: `transform: translateY(calc(var(--i) * 0.9rem)) scale(calc(1 - var(--i) * 0.05))` and `opacity: calc(1 - var(--i) * 0.28)`",
+		"Enter: `animation: ts-in 320ms cubic-bezier(0.2, 0, 0, 1)` from `translateY(-1.5rem) scale(0.96)`; restack: `transition: transform 320ms cubic-bezier(0.2, 0, 0, 1), opacity 320ms cubic-bezier(0.2, 0, 0, 1)`",
+		"Only the front toast is announced and readable: older ones get `class:ts__toast--behind={i > 0}` (content `opacity: 0`), `aria-hidden` and `inert`, so the stack never overlaps text",
+		"Dismiss: `out:leave` runs `duration: reduced ? 0 : 240` with `easing: cubicOut`, fading to `opacity:${t}` while `translate:${u * 2.5}rem 0` slides it aside",
+		"Under reduced motion the stack is shown full with `animation: none`"
+	],
+	"tags": ["motion", "toast", "stack", "notification", "enter"],
+	"names": [
+		"Stacked toasts",
+		"Toast stack",
+		"Notification stack",
+		"Pilha de toasts",
+		"Pila de notificaciones"
+	],
+	"motion": [
+		{
+			"property": "opacity, transform: translateY and scale (enter)",
+			"duration": "320ms",
+			"easing": "cubic-bezier(0.2, 0, 0, 1)"
+		},
+		{
+			"property": "opacity and translate (dismiss)",
+			"duration": "240",
+			"easing": "cubicOut"
+		},
+		{
+			"property": "transform and opacity (restack as the list changes)",
+			"duration": "320ms",
+			"easing": "cubic-bezier(0.2, 0, 0, 1)"
+		}
+	],
+	"shape": "square"
+}

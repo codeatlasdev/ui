@@ -285,6 +285,13 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 346 | Add to cart fly | motion/micro | MotionStage |
 | 347 | Tilt card | motion/micro | MotionStage |
 | 348 | Spring switch | motion/micro | MotionStage |
+| 360 | Shared element | motion/transitions | Button, Card, MotionStage |
+| 361 | FLIP reorder | motion/transitions | Button, MotionStage |
+| 362 | Height spring | motion/transitions | MotionStage |
+| 363 | Tab indicator | motion/transitions | MotionStage, Tabs, TabsContent, TabsList, TabsTrigger |
+| 364 | Stacked toasts | motion/transitions | Button, MotionStage |
+| 365 | Sheet spring | motion/transitions | Button, MotionStage |
+| 366 | Filter list | motion/transitions | Chip, MotionStage |
 | 380 | Cursor spotlight | motion/hero-ambient | MotionStage |
 | 381 | Grid ripple | motion/hero-ambient | MotionStage |
 | 382 | Animated gradient field | motion/hero-ambient | MotionStage |

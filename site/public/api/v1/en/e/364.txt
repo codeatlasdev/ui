@@ -1,0 +1,130 @@
+<!-- @codeatlasdev/ui demo #364 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/motion/transitions#stacked-toasts -->
+Element: #364 Stacked toasts (motion/transitions)
+What it shows: Toasts that slide in from above, stack with a depth cascade (each older one lower, smaller and dimmer) and leave when dismissed.
+When to use: In-app notifications that can arrive in bursts: payments, comments, exports, limit warnings.
+Spec:
+- `MotionStage` with `label="Stacked toasts: they enter, stack up and dismiss"` and `loop={1400}`
+- At most `const MAX = 3` toasts; a new one goes first and the oldest is cut
+- Depth comes from `--i`: `transform: translateY(calc(var(--i) * 0.9rem)) scale(calc(1 - var(--i) * 0.05))` and `opacity: calc(1 - var(--i) * 0.28)`
+- Enter: `animation: ts-in 320ms cubic-bezier(0.2, 0, 0, 1)` from `translateY(-1.5rem) scale(0.96)`; restack: `transition: transform 320ms cubic-bezier(0.2, 0, 0, 1), opacity 320ms cubic-bezier(0.2, 0, 0, 1)`
+- Only the front toast is announced and readable: older ones get `class:ts__toast--behind={i > 0}` (content `opacity: 0`), `aria-hidden` and `inert`, so the stack never overlaps text
+- Dismiss: `out:leave` runs `duration: reduced ? 0 : 240` with `easing: cubicOut`, fading to `opacity:${t}` while `translate:${u * 2.5}rem 0` slides it aside
+- Under reduced motion the stack is shown full with `animation: none`
+Motion:
+- opacity, transform: translateY and scale (enter): 320ms cubic-bezier(0.2, 0, 0, 1)
+- opacity and translate (dismiss): 240 cubicOut
+- transform and opacity (restack as the list changes): 320ms cubic-bezier(0.2, 0, 0, 1)
+Names: Stacked toasts | Toast stack | Notification stack | Pilha de toasts | Pila de notificaciones
+Tags: motion, toast, stack, notification, enter
+Needs: @codeatlasdev/ui@4.2.0
+Components: Button, MotionStage
+Live demo: https://ui.codeatlas.com.br/docs/motion/transitions#stacked-toasts
+
+<script lang="ts">
+  import { Button, MotionStage, type MotionCtx } from '@codeatlasdev/ui';
+  import { CheckCircle, Info, TriangleAlert, X } from '@lucide/svelte';
+  import { cubicOut } from 'svelte/easing';
+
+  type Kind = 'success' | 'info' | 'warning';
+  type Toast = { id: number; kind: Kind; title: string; body: string };
+  const script: Omit<Toast, 'id'>[] = [
+    { kind: 'success', title: 'Invoice paid', body: 'R$ 4.820 from Northwind' },
+    { kind: 'info', title: 'New comment', body: 'Ana on "Q4 forecast"' },
+    { kind: 'warning', title: 'Seat limit', body: '11 of 12 seats used' },
+    { kind: 'success', title: 'Export ready', body: 'customers.csv, 2.4 MB' },
+  ];
+  const icons = { success: CheckCircle, info: Info, warning: TriangleAlert };
+  const MAX = 3;
+
+  let toasts = $state<Toast[]>([]);
+  let n = 0;
+  let stage = $state<MotionCtx>();
+  let lastCycle = -1;
+
+  function push() {
+    const t = { ...script[n % script.length], id: n++ };
+    toasts = [t, ...toasts].slice(0, MAX);
+  }
+  // Dismiss: slide up-and-out sideways while fading; absolute positioning keeps the rest from jumping.
+  function leave(_: Element, { reduced }: { reduced: boolean }) {
+    return {
+      duration: reduced ? 0 : 240,
+      easing: cubicOut,
+      css: (t: number, u: number) => `opacity:${t}; translate:${u * 2.5}rem 0`,
+    };
+  }
+  const dismiss = (id: number) => (toasts = toasts.filter((t) => t.id !== id));
+
+  $effect(() => {
+    if (!stage) return;
+    if (stage.reduced) {
+      if (!toasts.length) for (let i = 0; i < MAX; i++) push();
+      return;
+    }
+    if (!stage.playing || stage.cycle === lastCycle) return;
+    lastCycle = stage.cycle;
+    // Two pushes, then the oldest leaves: enter, stack, dismiss.
+    if (toasts.length >= MAX) dismiss(toasts[toasts.length - 1].id);
+    else push();
+  });
+</script>
+
+<MotionStage label="Stacked toasts: they enter, stack up and dismiss" loop={1400}>
+  {#snippet children(m)}
+    <div class="ts" {@attach () => { stage = m; }}>
+      <div class="ts__bar">
+        <Button size="sm" onclick={push}>Show toast</Button>
+      </div>
+      <ol class="ts__stack" aria-label="Notifications">
+        {#each toasts as t, i (t.id)}
+          {@const Icon = icons[t.kind]}
+          <li class="ts__item" class:ts__item--instant={m.reduced} style="--i:{i}" out:leave={{ reduced: m.reduced }}>
+            <div class="ts__toast ts__toast--{t.kind}" class:ts__toast--behind={i > 0} aria-hidden={i > 0 ? 'true' : undefined} inert={i > 0}>
+              <Icon size={18} aria-hidden="true" />
+              <div class="ts__text">
+                <p class="ts__title">{t.title}</p>
+                <p class="ts__body">{t.body}</p>
+              </div>
+              <button type="button" class="ts__x" aria-label={`Dismiss ${t.title}`} onclick={() => dismiss(t.id)}><X size={14} aria-hidden="true" /></button>
+            </div>
+          </li>
+        {/each}
+      </ol>
+    </div>
+  {/snippet}
+</MotionStage>
+
+<style>
+  .ts { width: 100%; max-width: 340px; display: grid; gap: var(--ca-space-3); }
+  .ts__stack { position: relative; margin: 0; padding: 0; list-style: none; block-size: 9.5rem; }
+  /* Newest on top (i = 0). Older ones sit lower, smaller and dimmer: the stack reads as depth. */
+  .ts__item {
+    position: absolute; inset-inline: 0; inset-block-start: 0;
+    transform: translateY(calc(var(--i) * 0.9rem)) scale(calc(1 - var(--i) * 0.05));
+    transform-origin: 50% 0; opacity: calc(1 - var(--i) * 0.28); z-index: calc(10 - var(--i));
+    transition: transform 320ms cubic-bezier(0.2, 0, 0, 1), opacity 320ms cubic-bezier(0.2, 0, 0, 1);
+    animation: ts-in 320ms cubic-bezier(0.2, 0, 0, 1) both;
+  }
+  .ts__item--instant { transition: none; animation: none; }
+  @keyframes ts-in { from { opacity: 0; transform: translateY(-1.5rem) scale(0.96); } }
+  .ts__toast {
+    display: flex; align-items: center; gap: var(--ca-space-3); padding: var(--ca-space-3) var(--ca-space-4);
+    background: var(--ca-surface-raised); color: var(--ca-text-primary);
+    border: var(--ca-border-width) solid var(--ca-outline-subtle); border-inline-start: var(--ca-border-width-strong) solid var(--ca-brand-fill);
+    border-radius: var(--ca-radius-md); box-shadow: var(--ca-shadow-md);
+  }
+  /* Behind the front toast: only the surface peeks out; its text fades in when it moves to the front. */
+  .ts__toast > :global(*) { transition: opacity 320ms cubic-bezier(0.2, 0, 0, 1); }
+  .ts__toast--behind > :global(*) { opacity: 0; }
+  .ts__toast--success { border-inline-start-color: var(--ca-semantic-success); }
+  .ts__toast--warning { border-inline-start-color: var(--ca-semantic-warning); }
+  .ts__text { flex: 1; min-inline-size: 0; }
+  .ts__title { margin: 0; font-weight: var(--ca-font-weight-semibold); font-size: var(--ca-font-size-body2); }
+  .ts__body { margin: 0; color: var(--ca-text-secondary); font-size: var(--ca-font-size-caption); }
+  .ts__x {
+    display: grid; place-items: center; inline-size: var(--ca-space-6); block-size: var(--ca-space-6); flex: none;
+    color: var(--ca-text-secondary); background: transparent; border: 0; border-radius: var(--ca-radius-sm); cursor: pointer;
+  }
+  @media (pointer: coarse) { .ts__x { inline-size: var(--ca-touch-target); block-size: var(--ca-touch-target); margin-block: calc(-1 * var(--ca-space-2)); } }
+  .ts__x:focus-visible { outline: var(--ca-border-width-focus) solid var(--ca-focus-ring); outline-offset: var(--ca-border-width-focus); }
+</style>

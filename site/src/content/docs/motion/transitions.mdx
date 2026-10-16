@@ -1,0 +1,41 @@
+---
+title: Transitions
+description: "Shared element, FLIP reorder, spring height, sliding tab indicator, stacked toasts, drag-to-dismiss sheet and filter exits: named, numbered, with exact values."
+group: Motion
+order: 3
+---
+import Demo from "~/components/docs/Demo.astro";
+import SharedElement from "~/demos/motion/transitions/SharedElement.svelte";
+import SharedElementSrc from "~/demos/motion/transitions/SharedElement.svelte?raw";
+import FlipReorder from "~/demos/motion/transitions/FlipReorder.svelte";
+import FlipReorderSrc from "~/demos/motion/transitions/FlipReorder.svelte?raw";
+import HeightSpring from "~/demos/motion/transitions/HeightSpring.svelte";
+import HeightSpringSrc from "~/demos/motion/transitions/HeightSpring.svelte?raw";
+import TabIndicator from "~/demos/motion/transitions/TabIndicator.svelte";
+import TabIndicatorSrc from "~/demos/motion/transitions/TabIndicator.svelte?raw";
+import StackedToasts from "~/demos/motion/transitions/StackedToasts.svelte";
+import StackedToastsSrc from "~/demos/motion/transitions/StackedToasts.svelte?raw";
+import SheetSpring from "~/demos/motion/transitions/SheetSpring.svelte";
+import SheetSpringSrc from "~/demos/motion/transitions/SheetSpring.svelte?raw";
+import FilterList from "~/demos/motion/transitions/FilterList.svelte";
+import FilterListSrc from "~/demos/motion/transitions/FilterList.svelte?raw";
+
+A transition is the motion between two states of the same screen. Each demo below wraps real package components (`Card`, `Tabs`, `Chip`, `Button`) and animates around them; none of them is forked. Every demo is wrapped in [`MotionStage`](/docs/motion/motion-stage/): it plays only in view, stops when you touch it, and shows the final state under `prefers-reduced-motion`.
+
+## How to ask for one
+
+Say the name, or the number. `Use #360 for the plan cards` and `Use a shared element transition from the plan list to its detail` resolve to the same reference, with the exact values.
+
+<Demo title="Shared element" description={"A shared element transition (also called hero or container transform): the plan cover in the list and in the detail view carry the same view-transition-name, so the browser morphs its position and size in 420ms. Browsers without the View Transitions API get a 240ms crossfade. Use it to open an item from a list without a jump cut. Ask: \"Use #360\" or \"a shared element transition\"."} src={SharedElementSrc}><SharedElement client:visible /></Demo>
+
+<Demo title="FLIP reorder" description={"A FLIP reorder (First, Last, Invert, Play, also called a layout animation): measure each row, let the DOM reorder, translate each row back to where it was, then release it over 420ms. Use it when a sort or filter changes the order and the user must follow which row went where. Ask: \"Use #361\" or \"a FLIP reorder\"."} src={FlipReorderSrc}><FlipReorder client:visible /></Demo>
+
+<Demo title="Height spring" description={"A height spring: the panel's height follows a Spring (stiffness 0.18, damping 0.72), so it overshoots slightly and settles, instead of a stiff CSS ease. It measures the content, so any text length works. Use it for FAQs, expandable rows and disclosure panels. Ask: \"Use #362\" or \"a height spring\"."} src={HeightSpringSrc}><HeightSpring client:visible /></Demo>
+
+<Demo title="Tab indicator" description={"A sliding tab indicator (a magic line, or a pill): one element that translates and stretches under the active tab in 360ms, wrapped around the untouched package Tabs. Use it for tab bars and segmented controls so the eye follows the selection. Ask: \"Use #363\" or \"a sliding tab indicator\"."} src={TabIndicatorSrc}><TabIndicator client:visible /></Demo>
+
+<Demo title="Stacked toasts" description={"Stacked toasts: each new one enters from above in 320ms, the older ones sit lower, smaller and dimmer so the stack reads as depth, and a dismissed one slides aside in 240ms. At most three are kept. Use it for bursts of in-app notifications. Ask: \"Use #364\" or \"a toast stack\"."} src={StackedToastsSrc}><StackedToasts client:visible /></Demo>
+
+<Demo title="Sheet spring" description={"A spring sheet (bottom sheet with swipe to dismiss): it springs up with stiffness 0.2 and damping 0.75, follows your finger when dragged down, and dismisses past 30% of its height or a flick faster than 0.5 px/ms; otherwise it springs back. Use it for mobile pickers and filters. Ask: \"Use #365\" or \"a spring sheet with drag to dismiss\"."} src={SheetSpringSrc}><SheetSpring client:visible /></Demo>
+
+<Demo title="Filter list" description={"An animated filter (list exit animation): rows that no longer match shrink and fade in 240ms, survivors slide into the gap in 320ms, and the total counts to its new value in 420ms. Use it for catalogs and task lists so the user sees what disappeared. Ask: \"Use #366\" or \"an animated filter\"."} src={FilterListSrc}><FilterList client:visible /></Demo>

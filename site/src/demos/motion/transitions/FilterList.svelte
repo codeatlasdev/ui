@@ -1,0 +1,83 @@
+<script lang="ts">
+  import { Chip, MotionStage, type MotionCtx } from '@codeatlasdev/ui';
+  import { flip } from 'svelte/animate';
+  import { cubicOut } from 'svelte/easing';
+  import { Tween } from 'svelte/motion';
+
+  type Item = { id: string; name: string; kind: 'Design' | 'Dev' | 'Ops'; price: number };
+  const items: Item[] = [
+    { id: '1', name: 'Brand audit', kind: 'Design', price: 2400 },
+    { id: '2', name: 'API gateway', kind: 'Dev', price: 5200 },
+    { id: '3', name: 'Icon set', kind: 'Design', price: 1100 },
+    { id: '4', name: 'CI pipeline', kind: 'Ops', price: 1800 },
+    { id: '5', name: 'Checkout flow', kind: 'Dev', price: 3900 },
+    { id: '6', name: 'On-call runbook', kind: 'Ops', price: 900 },
+  ];
+  const filters = ['All', 'Design', 'Dev', 'Ops'] as const;
+  type Filter = (typeof filters)[number];
+
+  let filter = $state<Filter>('All');
+  let stage = $state<MotionCtx>();
+  let lastCycle = -1;
+  const shown = $derived(filter === 'All' ? items : items.filter((i) => i.kind === filter));
+  const total = new Tween(0, { duration: 420, easing: cubicOut });
+  $effect(() => {
+    const sum = shown.reduce((s, i) => s + i.price, 0);
+    if (stage?.reduced) total.set(sum, { duration: 0 });
+    else total.target = sum;
+  });
+
+  // Exit: shrink and fade (transform/opacity only); enter is the mirror. The flip animation moves
+  // the survivors into the gap, so nothing jumps.
+  function pop(_: Element, { reduced }: { reduced: boolean }) {
+    return { duration: reduced ? 0 : 240, easing: cubicOut, css: (t: number) => `opacity:${t}; transform: scale(${0.92 + 0.08 * t})` };
+  }
+
+  $effect(() => {
+    if (!stage) return;
+    if (stage.reduced) {
+      filter = 'Dev';
+      return;
+    }
+    if (!stage.playing || stage.cycle === lastCycle) return;
+    lastCycle = stage.cycle;
+    filter = filters[(filters.indexOf(filter) + 1) % filters.length];
+  });
+</script>
+
+<MotionStage label="Filter list: rows exit and enter as the filter changes" loop={1800}>
+  {#snippet children(m)}
+    <div class="fi" {@attach () => { stage = m; }}>
+      <div class="fi__chips" role="group" aria-label="Filter projects">
+        {#each filters as f (f)}
+          <Chip label={f} selected={filter === f} onclick={() => (filter = f)} />
+        {/each}
+      </div>
+      <p class="fi__total" aria-live="polite">{shown.length} projects, R$ {Math.round(total.current).toLocaleString('pt-BR')}</p>
+      <ul class="fi__list">
+        {#each shown as it (it.id)}
+          <li class="fi__row" animate:flip={{ duration: m.reduced ? 0 : 320, easing: cubicOut }} in:pop={{ reduced: m.reduced }} out:pop={{ reduced: m.reduced }}>
+            <span class="fi__name">{it.name}</span>
+            <span class="fi__kind">{it.kind}</span>
+            <span class="fi__price">R$ {it.price.toLocaleString('pt-BR')}</span>
+          </li>
+        {/each}
+      </ul>
+    </div>
+  {/snippet}
+</MotionStage>
+
+<style>
+  .fi { width: 100%; max-width: 360px; display: grid; gap: var(--ca-space-3); }
+  .fi__chips { display: flex; flex-wrap: wrap; gap: var(--ca-space-2); }
+  .fi__total { margin: 0; color: var(--ca-text-secondary); font-size: var(--ca-font-size-body2); font-variant-numeric: tabular-nums; }
+  .fi__list { display: grid; gap: var(--ca-space-2); margin: 0; padding: 0; list-style: none; min-block-size: 15.5rem; align-content: start; }
+  .fi__row {
+    display: grid; grid-template-columns: 1fr auto auto; gap: var(--ca-space-3); align-items: center;
+    padding: var(--ca-space-2) var(--ca-space-3);
+    background: var(--ca-surface-raised); border: var(--ca-border-width) solid var(--ca-outline-subtle); border-radius: var(--ca-radius-md);
+  }
+  .fi__name { font-weight: var(--ca-font-weight-semibold); }
+  .fi__kind { color: var(--ca-text-secondary); font-size: var(--ca-font-size-caption); }
+  .fi__price { font-variant-numeric: tabular-nums; }
+</style>

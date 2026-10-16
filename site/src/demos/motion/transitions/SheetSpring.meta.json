@@ -1,0 +1,29 @@
+{
+	"summary": "A bottom sheet that springs up over its page, follows your finger when dragged down and either dismisses or springs back depending on distance and speed.",
+	"use": "Mobile pickers, filters, share menus and any secondary task that should feel attached to the screen instead of popping in.",
+	"spec": [
+		"`MotionStage` with `label=\"Sheet spring: a bottom sheet springs up and drags down to dismiss\"` and `loop={2600}`",
+		"`new Spring(SHEET, { stiffness: 0.2, damping: 0.75 })` with `const SHEET = 256`: offset 0 is open, `SHEET` is hidden",
+		"The sheet reads `transform: translateY(var(--y))`; the scrim opacity follows `calc(var(--o) * 0.5)`",
+		"Drag down follows the pointer 1:1 with `{ instant: true }`; dragging up divides by `4` (rubber band)",
+		"Release dismisses past `SHEET * 0.3` or faster than `0.5` px/ms, otherwise the spring returns to 0; Escape also closes it",
+		"Under reduced motion the sheet is open and moves with `{ instant: true }`"
+	],
+	"tags": ["motion", "sheet", "drawer", "spring", "drag"],
+	"names": [
+		"Spring sheet",
+		"Bottom sheet drag to dismiss",
+		"Swipe to dismiss",
+		"Sheet com mola e arrastar para fechar",
+		"Hoja con resorte y arrastrar para cerrar"
+	],
+	"motion": [
+		{
+			"property": "transform: translateY of the sheet",
+			"duration": "stiffness: 0.2",
+			"easing": "damping: 0.75",
+			"spring": "{ stiffness: 0.2, damping: 0.75 }"
+		}
+	],
+	"shape": "tall"
+}

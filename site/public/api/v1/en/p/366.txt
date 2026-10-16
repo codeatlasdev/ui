@@ -1,0 +1,21 @@
+Use @codeatlasdev/ui demo #366 "Filter list" (motion/transitions).
+What it shows: Filter chips over a list: rows that no longer match shrink and fade out, survivors slide into the gap, and the total counts to its new value. When to use: Filtering a catalog, task list or table where the user must see what disappeared and what stayed.
+Spec:
+- `MotionStage` with `label="Filter list: rows exit and enter as the filter changes"` and `loop={1800}`
+- `Chip` from `@codeatlasdev/ui` sets the filter; rows are keyed with `{#each shown as it (it.id)}`
+- `in:pop` and `out:pop` run `duration: reduced ? 0 : 240` with `easing: cubicOut`, animating `opacity:${t}; transform: scale(${0.92 + 0.08 * t})`
+- `animate:flip={{ duration: m.reduced ? 0 : 320, easing: cubicOut }}` slides the surviving rows
+- The total is `new Tween(0, { duration: 420, easing: cubicOut })`
+- Under reduced motion every duration is `0`
+Motion:
+- opacity and transform: scale (enter and exit): 240 cubicOut
+- position of the surviving rows (flip): 320 cubicOut
+- the total (number tween): 420 cubicOut
+Names: Animated filter | List exit animation | Presence animation | Filtro animado | Filtro animado de lista
+Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #366 Filter list → file, what changed, https://ui.codeatlas.com.br/docs/motion/transitions#filter-list; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/366.txt   Components API: ca-ui-mcp get_component(Chip)

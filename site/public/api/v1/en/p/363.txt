@@ -1,0 +1,18 @@
+Use @codeatlasdev/ui demo #363 "Tab indicator" (motion/transitions).
+What it shows: The package Tabs with one pill that slides and stretches under the active tab instead of each tab repainting its own background. When to use: Segmented controls, tab bars and filters where the eye should follow the selection from one option to the next.
+Spec:
+- `MotionStage` with `label="Tab indicator: a pill slides under the active tab"` and `loop={1800}`
+- `Tabs`, `TabsList`, `TabsTrigger` and `TabsContent` come from `@codeatlasdev/ui`, untouched
+- The active trigger's `offsetLeft` and `offsetWidth` are written to `--x` and `--w`; the pill reads `transform: translateX(var(--x))` and `inline-size: var(--w)`
+- `transition: transform 360ms cubic-bezier(0.2, 0, 0, 1), inline-size 360ms cubic-bezier(0.2, 0, 0, 1)`; no transition before the first measure and under reduced motion
+- A `ResizeObserver` re-measures when the list resizes
+Motion:
+- transform: translateX and inline-size of the pill: 360ms cubic-bezier(0.2, 0, 0, 1)
+Names: Sliding tab indicator | Tab pill | Magic line | Indicador deslizante de abas | Indicador de pestaña deslizante
+Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #363 Tab indicator → file, what changed, https://ui.codeatlas.com.br/docs/motion/transitions#tab-indicator; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/363.txt   Components API: ca-ui-mcp get_component(MotionStage)

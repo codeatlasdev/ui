@@ -1,6 +1,6 @@
 {
 	"version": "4.2.0",
-	"count": 287,
+	"count": 294,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -60,7 +60,7 @@
 			"slug": "motion",
 			"first": "256",
 			"last": "386",
-			"count": 32
+			"count": 39
 		}
 	],
 	"elements": [
@@ -12408,6 +12408,447 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/motion/micro#spring-switch",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "360",
+			"group": "motion",
+			"page": "transitions",
+			"variant": "SharedElement",
+			"slug": "shared-element",
+			"title": "Shared element",
+			"description": "",
+			"summary": "A plan cover that morphs from a list tile into the detail card through the View Transitions API, with a plain crossfade when the API is missing.",
+			"use": "Opening a product, plan, photo or message from a list into its detail view without a jump cut.",
+			"spec": [
+				"`MotionStage` with `label=\"Shared element: a plan cover grows into the detail view\"` and `loop={2800}`",
+				"The cover in the tile and the cover in the detail both carry `view-transition-name: se-cover`",
+				"`doc.startViewTransition(() => flushSync(() => (open = next)))` swaps the view; without the API the new view runs `animation: se-fade 240ms`",
+				"`::view-transition-group(se-cover)` uses `animation-duration: 420ms` and `animation-timing-function: cubic-bezier(0.2, 0, 0, 1)`",
+				"Under reduced motion the detail is shown and no transition runs"
+			],
+			"tags": [
+				"motion",
+				"transition",
+				"shared-element",
+				"view-transitions",
+				"card"
+			],
+			"names": [
+				"Shared element transition",
+				"Hero transition",
+				"Container transform",
+				"Transição de elemento compartilhado",
+				"Transición de elemento compartido"
+			],
+			"motion": [
+				{
+					"property": "position and size of the shared cover (view-transition-name: se-cover)",
+					"duration": "420ms",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)"
+				},
+				{
+					"property": "opacity (crossfade fallback)",
+					"duration": "240ms",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)"
+				}
+			],
+			"shape": "square",
+			"components": [
+				"Button",
+				"Card",
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"Card",
+						"MotionStage",
+						"MotionCtx"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/transitions#shared-element",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "361",
+			"group": "motion",
+			"page": "transitions",
+			"variant": "FlipReorder",
+			"slug": "flip-reorder",
+			"title": "FLIP reorder",
+			"description": "",
+			"summary": "A sortable list whose rows slide to their new position instead of teleporting when the sort changes (First, Last, Invert, Play).",
+			"use": "Sorting or filtering a table, leaderboard or card list where the user must keep track of which row went where.",
+			"spec": [
+				"`MotionStage` with `label=\"FLIP reorder: rows slide to their new place when the sort changes\"` and `loop={2400}`",
+				"Measure `getBoundingClientRect().top` before the reorder, `await tick()`, measure again, then `el.animate(` from `translateY` of the difference to `translateY(0)`",
+				"Rows keep a stable key: `{#each ordered as r (r.id)}` so Svelte moves the node instead of recreating it",
+				"Under reduced motion the order changes with no animation"
+			],
+			"tags": [
+				"motion",
+				"flip",
+				"reorder",
+				"list",
+				"sort"
+			],
+			"names": [
+				"FLIP reorder",
+				"List reorder animation",
+				"Layout animation",
+				"Reordenar lista com animação",
+				"Animación de reordenación"
+			],
+			"motion": [
+				{
+					"property": "transform: translateY (inverted offset to 0)",
+					"duration": "420",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)"
+				}
+			],
+			"shape": "square",
+			"components": [
+				"Button",
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"MotionStage",
+						"MotionCtx"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/transitions#flip-reorder",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "362",
+			"group": "motion",
+			"page": "transitions",
+			"variant": "HeightSpring",
+			"slug": "height-spring",
+			"title": "Height spring",
+			"description": "",
+			"summary": "An FAQ accordion whose panels open and close with a spring on their height, overshooting slightly before they settle.",
+			"use": "Disclosure panels, FAQs and expandable table rows where a CSS ease feels stiff and the content height is not known in advance.",
+			"spec": [
+				"`MotionStage` with `label=\"Height spring: accordion panels open and close with a spring\"` and `loop={2200}`",
+				"One `new Spring(0, { stiffness: 0.18, damping: 0.72 })` per panel drives the height in px; its target is the measured `scrollHeight` when open and `0` when closed",
+				"A `ResizeObserver` keeps the target correct when the text wraps differently",
+				"The clipped box reads `block-size: var(--h)` and a closed panel is `inert`",
+				"The chevron rotates with `transition: transform 240ms cubic-bezier(0.2, 0, 0, 1)`",
+				"Under reduced motion the spring is set with `{ instant: true }`"
+			],
+			"tags": [
+				"motion",
+				"accordion",
+				"spring",
+				"height",
+				"disclosure"
+			],
+			"names": [
+				"Height spring",
+				"Spring accordion",
+				"Auto height animation",
+				"Mola de altura",
+				"Animación de altura con resorte"
+			],
+			"motion": [
+				{
+					"property": "block-size of the panel",
+					"duration": "stiffness: 0.18",
+					"easing": "damping: 0.72",
+					"spring": "{ stiffness: 0.18, damping: 0.72 }"
+				},
+				{
+					"property": "transform: rotate of the chevron",
+					"duration": "240ms",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)"
+				}
+			],
+			"shape": "square",
+			"components": [
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage",
+						"MotionCtx"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/transitions#height-spring",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "363",
+			"group": "motion",
+			"page": "transitions",
+			"variant": "TabIndicator",
+			"slug": "tab-indicator",
+			"title": "Tab indicator",
+			"description": "",
+			"summary": "The package Tabs with one pill that slides and stretches under the active tab instead of each tab repainting its own background.",
+			"use": "Segmented controls, tab bars and filters where the eye should follow the selection from one option to the next.",
+			"spec": [
+				"`MotionStage` with `label=\"Tab indicator: a pill slides under the active tab\"` and `loop={1800}`",
+				"`Tabs`, `TabsList`, `TabsTrigger` and `TabsContent` come from `@codeatlasdev/ui`, untouched",
+				"The active trigger's `offsetLeft` and `offsetWidth` are written to `--x` and `--w`; the pill reads `transform: translateX(var(--x))` and `inline-size: var(--w)`",
+				"`transition: transform 360ms cubic-bezier(0.2, 0, 0, 1), inline-size 360ms cubic-bezier(0.2, 0, 0, 1)`; no transition before the first measure and under reduced motion",
+				"A `ResizeObserver` re-measures when the list resizes"
+			],
+			"tags": [
+				"motion",
+				"tabs",
+				"indicator",
+				"slide",
+				"pill"
+			],
+			"names": [
+				"Sliding tab indicator",
+				"Tab pill",
+				"Magic line",
+				"Indicador deslizante de abas",
+				"Indicador de pestaña deslizante"
+			],
+			"motion": [
+				{
+					"property": "transform: translateX and inline-size of the pill",
+					"duration": "360ms",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)"
+				}
+			],
+			"shape": "square",
+			"components": [
+				"MotionStage",
+				"Tabs",
+				"TabsContent",
+				"TabsList",
+				"TabsTrigger"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MotionStage",
+						"Tabs",
+						"TabsContent",
+						"TabsList",
+						"TabsTrigger",
+						"MotionCtx"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/transitions#tab-indicator",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "364",
+			"group": "motion",
+			"page": "transitions",
+			"variant": "StackedToasts",
+			"slug": "stacked-toasts",
+			"title": "Stacked toasts",
+			"description": "",
+			"summary": "Toasts that slide in from above, stack with a depth cascade (each older one lower, smaller and dimmer) and leave when dismissed.",
+			"use": "In-app notifications that can arrive in bursts: payments, comments, exports, limit warnings.",
+			"spec": [
+				"`MotionStage` with `label=\"Stacked toasts: they enter, stack up and dismiss\"` and `loop={1400}`",
+				"At most `const MAX = 3` toasts; a new one goes first and the oldest is cut",
+				"Depth comes from `--i`: `transform: translateY(calc(var(--i) * 0.9rem)) scale(calc(1 - var(--i) * 0.05))` and `opacity: calc(1 - var(--i) * 0.28)`",
+				"Enter: `animation: ts-in 320ms cubic-bezier(0.2, 0, 0, 1)` from `translateY(-1.5rem) scale(0.96)`; restack: `transition: transform 320ms cubic-bezier(0.2, 0, 0, 1), opacity 320ms cubic-bezier(0.2, 0, 0, 1)`",
+				"Only the front toast is announced and readable: older ones get `class:ts__toast--behind={i > 0}` (content `opacity: 0`), `aria-hidden` and `inert`, so the stack never overlaps text",
+				"Dismiss: `out:leave` runs `duration: reduced ? 0 : 240` with `easing: cubicOut`, fading to `opacity:${t}` while `translate:${u * 2.5}rem 0` slides it aside",
+				"Under reduced motion the stack is shown full with `animation: none`"
+			],
+			"tags": [
+				"motion",
+				"toast",
+				"stack",
+				"notification",
+				"enter"
+			],
+			"names": [
+				"Stacked toasts",
+				"Toast stack",
+				"Notification stack",
+				"Pilha de toasts",
+				"Pila de notificaciones"
+			],
+			"motion": [
+				{
+					"property": "opacity, transform: translateY and scale (enter)",
+					"duration": "320ms",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)"
+				},
+				{
+					"property": "opacity and translate (dismiss)",
+					"duration": "240",
+					"easing": "cubicOut"
+				},
+				{
+					"property": "transform and opacity (restack as the list changes)",
+					"duration": "320ms",
+					"easing": "cubic-bezier(0.2, 0, 0, 1)"
+				}
+			],
+			"shape": "square",
+			"components": [
+				"Button",
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"MotionStage",
+						"MotionCtx"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/transitions#stacked-toasts",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "365",
+			"group": "motion",
+			"page": "transitions",
+			"variant": "SheetSpring",
+			"slug": "sheet-spring",
+			"title": "Sheet spring",
+			"description": "",
+			"summary": "A bottom sheet that springs up over its page, follows your finger when dragged down and either dismisses or springs back depending on distance and speed.",
+			"use": "Mobile pickers, filters, share menus and any secondary task that should feel attached to the screen instead of popping in.",
+			"spec": [
+				"`MotionStage` with `label=\"Sheet spring: a bottom sheet springs up and drags down to dismiss\"` and `loop={2600}`",
+				"`new Spring(SHEET, { stiffness: 0.2, damping: 0.75 })` with `const SHEET = 256`: offset 0 is open, `SHEET` is hidden",
+				"The sheet reads `transform: translateY(var(--y))`; the scrim opacity follows `calc(var(--o) * 0.5)`",
+				"Drag down follows the pointer 1:1 with `{ instant: true }`; dragging up divides by `4` (rubber band)",
+				"Release dismisses past `SHEET * 0.3` or faster than `0.5` px/ms, otherwise the spring returns to 0; Escape also closes it",
+				"Under reduced motion the sheet is open and moves with `{ instant: true }`"
+			],
+			"tags": [
+				"motion",
+				"sheet",
+				"drawer",
+				"spring",
+				"drag"
+			],
+			"names": [
+				"Spring sheet",
+				"Bottom sheet drag to dismiss",
+				"Swipe to dismiss",
+				"Sheet com mola e arrastar para fechar",
+				"Hoja con resorte y arrastrar para cerrar"
+			],
+			"motion": [
+				{
+					"property": "transform: translateY of the sheet",
+					"duration": "stiffness: 0.2",
+					"easing": "damping: 0.75",
+					"spring": "{ stiffness: 0.2, damping: 0.75 }"
+				}
+			],
+			"shape": "tall",
+			"components": [
+				"Button",
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"MotionStage",
+						"MotionCtx"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/transitions#sheet-spring",
+			"needs": "@codeatlasdev/ui@4.2.0"
+		},
+		{
+			"id": "366",
+			"group": "motion",
+			"page": "transitions",
+			"variant": "FilterList",
+			"slug": "filter-list",
+			"title": "Filter list",
+			"description": "",
+			"summary": "Filter chips over a list: rows that no longer match shrink and fade out, survivors slide into the gap, and the total counts to its new value.",
+			"use": "Filtering a catalog, task list or table where the user must see what disappeared and what stayed.",
+			"spec": [
+				"`MotionStage` with `label=\"Filter list: rows exit and enter as the filter changes\"` and `loop={1800}`",
+				"`Chip` from `@codeatlasdev/ui` sets the filter; rows are keyed with `{#each shown as it (it.id)}`",
+				"`in:pop` and `out:pop` run `duration: reduced ? 0 : 240` with `easing: cubicOut`, animating `opacity:${t}; transform: scale(${0.92 + 0.08 * t})`",
+				"`animate:flip={{ duration: m.reduced ? 0 : 320, easing: cubicOut }}` slides the surviving rows",
+				"The total is `new Tween(0, { duration: 420, easing: cubicOut })`",
+				"Under reduced motion every duration is `0`"
+			],
+			"tags": [
+				"motion",
+				"filter",
+				"list",
+				"exit",
+				"flip"
+			],
+			"names": [
+				"Animated filter",
+				"List exit animation",
+				"Presence animation",
+				"Filtro animado",
+				"Filtro animado de lista"
+			],
+			"motion": [
+				{
+					"property": "opacity and transform: scale (enter and exit)",
+					"duration": "240",
+					"easing": "cubicOut"
+				},
+				{
+					"property": "position of the surviving rows (flip)",
+					"duration": "320",
+					"easing": "cubicOut"
+				},
+				{
+					"property": "the total (number tween)",
+					"duration": "420",
+					"easing": "cubicOut"
+				}
+			],
+			"shape": "tall",
+			"components": [
+				"Chip",
+				"MotionStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Chip",
+						"MotionStage",
+						"MotionCtx"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/motion/transitions#filter-list",
 			"needs": "@codeatlasdev/ui@4.2.0"
 		},
 		{

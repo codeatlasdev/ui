@@ -1,0 +1,38 @@
+{
+	"summary": "Filter chips over a list: rows that no longer match shrink and fade out, survivors slide into the gap, and the total counts to its new value.",
+	"use": "Filtering a catalog, task list or table where the user must see what disappeared and what stayed.",
+	"spec": [
+		"`MotionStage` with `label=\"Filter list: rows exit and enter as the filter changes\"` and `loop={1800}`",
+		"`Chip` from `@codeatlasdev/ui` sets the filter; rows are keyed with `{#each shown as it (it.id)}`",
+		"`in:pop` and `out:pop` run `duration: reduced ? 0 : 240` with `easing: cubicOut`, animating `opacity:${t}; transform: scale(${0.92 + 0.08 * t})`",
+		"`animate:flip={{ duration: m.reduced ? 0 : 320, easing: cubicOut }}` slides the surviving rows",
+		"The total is `new Tween(0, { duration: 420, easing: cubicOut })`",
+		"Under reduced motion every duration is `0`"
+	],
+	"tags": ["motion", "filter", "list", "exit", "flip"],
+	"names": [
+		"Animated filter",
+		"List exit animation",
+		"Presence animation",
+		"Filtro animado",
+		"Filtro animado de lista"
+	],
+	"motion": [
+		{
+			"property": "opacity and transform: scale (enter and exit)",
+			"duration": "240",
+			"easing": "cubicOut"
+		},
+		{
+			"property": "position of the surviving rows (flip)",
+			"duration": "320",
+			"easing": "cubicOut"
+		},
+		{
+			"property": "the total (number tween)",
+			"duration": "420",
+			"easing": "cubicOut"
+		}
+	],
+	"shape": "tall"
+}
