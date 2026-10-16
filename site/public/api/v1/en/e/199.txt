@@ -2,7 +2,7 @@
 Element: #199 Hour by day matrix (charts/heatmap)
 What it shows: Points are [xIndex, yIndex, value] into xCategories and yCategories.
 Tags: hour, by, day, matrix, card, heatmapchart
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, HeatmapChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/heatmap#hour-by-day-matrix
 

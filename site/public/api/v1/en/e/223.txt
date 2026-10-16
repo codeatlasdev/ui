@@ -2,7 +2,7 @@
 Element: #223 Surfaces (foundation/colors)
 What it shows: A layered scale for depth: sunken, base, raised, overlay.
 Tags: surfaces
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/colors#surfaces
 

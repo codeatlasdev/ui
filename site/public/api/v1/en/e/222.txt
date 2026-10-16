@@ -2,7 +2,7 @@
 Element: #222 Semantic (foundation/colors)
 What it shows: Success, warning, error and info. Semantic colors never change with the preset.
 Tags: semantic
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/colors#semantic
 

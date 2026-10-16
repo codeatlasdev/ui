@@ -2,7 +2,7 @@
 Element: #226 Glass tiers (foundation/materials)
 What it shows: All five thickness levels on a gradient backdrop.
 Tags: glass, tiers, surface
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Surface
 Live demo: https://ui.codeatlas.com.br/docs/foundation/materials#glass-tiers
 

@@ -2,7 +2,7 @@
 Element: #189 Stretch (layout/sticky-actions)
 What it shows: On touch screens the primary button fills the width and the ghost button stays compact.
 Tags: stretch, stickyactions, button
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: StickyActions, Button
 Live demo: https://ui.codeatlas.com.br/docs/layout/sticky-actions#stretch
 

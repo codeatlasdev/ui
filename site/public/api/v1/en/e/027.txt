@@ -2,7 +2,7 @@
 Element: #027 Currency and locale (inputs/money-input)
 What it shows: currency picks the minor unit (USD 2 decimals, JPY none); locale picks separators and symbol placement.
 Tags: currency, and, locale, moneyinput
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: MoneyInput
 Live demo: https://ui.codeatlas.com.br/docs/inputs/money-input#currency-and-locale
 

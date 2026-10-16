@@ -2,7 +2,7 @@
 Element: #173 Basic form (layout/form-page)
 What it shows: Header with a back button, a grid of fields, a list of switches and a sticky footer.
 Tags: basic, form, appform, formsection, textfield, select, switch, button, divider
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: AppForm, FormSection, TextField, Select, Switch, Button, Divider
 Live demo: https://ui.codeatlas.com.br/docs/layout/form-page#basic-form
 

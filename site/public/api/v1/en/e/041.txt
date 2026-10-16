@@ -2,7 +2,7 @@
 Element: #041 Empty-value option (inputs/select)
 What it shows: An option with value '' (such as 'All projects') is a real selection: the trigger shows its label, not the placeholder. Use it for filters instead of a sentinel value.
 Tags: empty, value, option, select
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Select
 Live demo: https://ui.codeatlas.com.br/docs/inputs/select#empty-value-option
 

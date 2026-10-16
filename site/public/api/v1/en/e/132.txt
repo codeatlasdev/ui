@@ -2,7 +2,7 @@
 Element: #132 Default (display/notification-bell)
 What it shows: Default
 Tags: default, notificationbell, flex
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: NotificationBell, Flex
 Live demo: https://ui.codeatlas.com.br/docs/display/notification-bell#default
 

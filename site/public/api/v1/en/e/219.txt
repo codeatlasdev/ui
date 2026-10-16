@@ -2,7 +2,7 @@
 Element: #219 Table row sparklines (charts/sparklines)
 What it shows: Table row sparklines
 Tags: table, row, sparklines, card, sparkline
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, Sparkline
 Live demo: https://ui.codeatlas.com.br/docs/charts/sparklines#table-row-sparklines
 

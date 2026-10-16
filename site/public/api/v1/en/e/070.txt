@@ -2,7 +2,7 @@
 Element: #070 Header and actions (surfaces/card)
 What it shows: Header and actions
 Tags: header, and, actions, card, button
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Card, Button
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/card#header-and-actions
 

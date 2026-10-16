@@ -2,7 +2,7 @@
 Element: #232 LinkCard, CardGrid and MethodBadge (docs-kit/docs)
 What it shows: LinkCard, CardGrid and MethodBadge
 Tags: linkcard, cardgrid, and, methodbadge
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: CardGrid, LinkCard, MethodBadge
 Live demo: https://ui.codeatlas.com.br/docs/docs-kit/docs#linkcard-cardgrid-and-methodbadge
 

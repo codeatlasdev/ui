@@ -2,7 +2,7 @@
 Element: #152 With leading icon (navigation/app-bar)
 What it shows: A menu button in the leading slot.
 Tags: with, leading, icon, glassappbar, button, iconbutton, avatar, card
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: GlassAppBar, Button, IconButton, Avatar, Card
 Live demo: https://ui.codeatlas.com.br/docs/navigation/app-bar#with-leading-icon
 

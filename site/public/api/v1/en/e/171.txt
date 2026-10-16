@@ -2,7 +2,7 @@
 Element: #171 Error or offline (layout/empty-state)
 What it shows: Failed network requests and loading errors.
 Tags: error, or, offline, emptystate, button
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: EmptyState, Button
 Live demo: https://ui.codeatlas.com.br/docs/layout/empty-state#error-or-offline
 

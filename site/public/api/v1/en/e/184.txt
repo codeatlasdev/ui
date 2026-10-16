@@ -2,7 +2,7 @@
 Element: #184 AppSettings (layout/list-page)
 What it shows: Side navigation plus content. The active tab is managed internally.
 Tags: appsettings, button, formsection, switch, textfield
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: AppSettings, Button, FormSection, Switch, TextField
 Live demo: https://ui.codeatlas.com.br/docs/layout/list-page#appsettings
 

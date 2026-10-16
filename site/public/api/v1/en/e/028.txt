@@ -2,7 +2,7 @@
 Element: #028 Default (inputs/money-input)
 What it shows: Type 123456 to get R$ 1.234,56.
 Tags: default, moneyinput
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: MoneyInput
 Live demo: https://ui.codeatlas.com.br/docs/inputs/money-input#default
 

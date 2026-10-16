@@ -2,7 +2,7 @@
 Element: #024 use:mask action (inputs/masked-field)
 What it shows: Apply any pure mask to a plain input. The caret stays on the same digit.
 Tags: use, mask, action
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/inputs/masked-field#use-mask-action
 

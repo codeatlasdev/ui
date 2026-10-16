@@ -2,7 +2,7 @@
 Element: #042 Placeholder (inputs/select)
 What it shows: No initial value: the placeholder shows until the user picks an option.
 Tags: placeholder, select
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Select
 Live demo: https://ui.codeatlas.com.br/docs/inputs/select#placeholder
 

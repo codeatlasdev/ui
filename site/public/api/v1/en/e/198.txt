@@ -2,7 +2,7 @@
 Element: #198 Calendar heatmap (charts/heatmap)
 What it shows: Daily commit activity from January to September.
 Tags: calendar, heatmap, card, heatmapchart
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, HeatmapChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/heatmap#calendar-heatmap
 

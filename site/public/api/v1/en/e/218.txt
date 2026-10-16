@@ -2,7 +2,7 @@
 Element: #218 Live streaming micro charts (charts/sparklines)
 What it shows: Live streaming micro charts
 Tags: live, streaming, micro, charts, card, grid, stack, flex, sparkline
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, Grid, Stack, Flex, Sparkline
 Live demo: https://ui.codeatlas.com.br/docs/charts/sparklines#live-streaming-micro-charts
 

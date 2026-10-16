@@ -2,7 +2,7 @@
 Element: #045 Range (inputs/slider)
 What it shows: Bind a [min, max] tuple to values for two thumbs.
 Tags: range, slider
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Slider
 Live demo: https://ui.codeatlas.com.br/docs/inputs/slider#range
 

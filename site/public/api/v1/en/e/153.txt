@@ -2,7 +2,7 @@
 Element: #153 Levels (navigation/breadcrumb)
 What it shows: Two, three and five levels, and a single root item.
 Tags: levels, breadcrumb
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Breadcrumb
 Live demo: https://ui.codeatlas.com.br/docs/navigation/breadcrumb#levels
 

@@ -1,6 +1,7 @@
 ---
 import { render } from "astro:content";
 import SiteDocsShell from "~/components/docs/SiteDocsShell.svelte";
+import SiteFooter from "~/components/site/SiteFooter.astro";
 import Base from "~/layouts/Base.astro";
 import { loadDocs } from "~/lib/docs";
 import { docHref, SECTIONS } from "~/lib/nav";
@@ -24,7 +25,7 @@ const edit = `https://github.com/codeatlasdev/ui/edit/main/site/src/content/docs
 <Base title={entry.data.title} description={entry.data.description} skipLink={false}>
 	<SiteDocsShell client:load sections={SECTIONS} active="docs" {groups} pathname={Astro.url.pathname} headings={toc} pager={{ prev: prev && { href: docHref(prev.slug), title: prev.title }, next: next && { href: docHref(next.slug), title: next.title } }}>
 		<article class="ca-prose doc">
-			<p class="doc__eyebrow">{entry.data.group}</p>
+			<p class="doc__eyebrow sk-eyebrow">{entry.data.group}</p>
 			<h1>{entry.data.title}</h1>
 			<p class="doc__lead">{entry.data.description}</p>
 			<Content />
@@ -33,4 +34,5 @@ const edit = `https://github.com/codeatlasdev/ui/edit/main/site/src/content/docs
 			</footer>
 		</article>
 	</SiteDocsShell>
+	<SiteFooter />
 </Base>

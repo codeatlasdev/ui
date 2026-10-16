@@ -2,7 +2,7 @@
 Element: #086 Info (feedback/dialog)
 What it shows: Informational content with a single action.
 Tags: info, dialog, button
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Dialog, Button
 Live demo: https://ui.codeatlas.com.br/docs/feedback/dialog#info
 

@@ -2,7 +2,7 @@
 Element: #064 With schema (inputs/use-form)
 What it shows: A plain-function schema runs on every keystroke once a field is touched.
 Tags: with, schema, button, textarea, textfield
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Button, TextArea, TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/use-form#with-schema
 

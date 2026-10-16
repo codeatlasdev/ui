@@ -2,7 +2,7 @@
 Element: #096 Swipe to dismiss (feedback/sheet)
 What it shows: Drag the handle or header down on a viewport below 900px. Above that, it is a centered dialog.
 Tags: swipe, to, dismiss, sheet, button, stack
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Sheet, Button, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/sheet#swipe-to-dismiss
 

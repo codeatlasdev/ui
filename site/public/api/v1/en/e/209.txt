@@ -2,7 +2,7 @@
 Element: #209 Rose chart (charts/pie)
 What it shows: Nightingale rose: the radius of each slice scales with its value.
 Tags: rose, chart, card, piechart
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, PieChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/pie#rose-chart
 

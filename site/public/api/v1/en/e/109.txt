@@ -2,7 +2,7 @@
 Element: #109 Shape and status (display/avatar)
 What it shows: Shape and status
 Tags: shape, and, status, avatar
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Avatar
 Live demo: https://ui.codeatlas.com.br/docs/display/avatar#shape-and-status
 

@@ -47,6 +47,20 @@ If the package is already a dependency of your app, point the command at the loc
 
 The same data is available as files: `@codeatlasdev/ui/components.json` (components under `components`, every other export under `exports`) and `@codeatlasdev/ui/tokens.json` (tokens).
 
+## Pick a demo by number
+
+Every docs demo has a stable id `#NNN` (index: [`/api/v1/catalog.json`](/api/v1/catalog.json), gallery: [`/gallery/`](/gallery/)). An id, a `?pick=012,045` link and pasted "I picked these N from the @codeatlasdev/ui gallery" text are the same selection.
+
+1. Unknown id: `search_demos({ query })` (MCP `ca-ui-mcp`). Known ids: `get_demo({ ids })`, at most 8 per call. Without MCP, fetch `https://ui.codeatlas.com.br/api/v1/en/e/NNN.txt`.
+2. Port: keep component names, props, variants and motion tokens as in the reference; change only data, copy and theme. Keep the first comment line (license) of the reference in the file you write.
+3. Report one line per demo: `#NNN title → file, what changed, demo link`.
+
+`get_demo` takes ids as `12`, `012`, `#012` or a docs URL ending in `#<slug>`. In Claude Code the plugin installs the skill and the MCP server in one line:
+
+```sh
+/plugin install codeatlas-ui --marketplace codeatlasdev/ui
+```
+
 ## Set up and migrate with the CLI
 
 ```sh

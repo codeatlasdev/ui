@@ -2,7 +2,7 @@
 Element: #122 Controlled mode (display/data-table)
 What it shows: Controlled mode
 Tags: controlled, mode, datatable
-Needs: @codeatlasdev/ui@4.0.0 + @tanstack/svelte-table
+Needs: @codeatlasdev/ui@4.1.0 + @tanstack/svelte-table
 Components: DataTable
 Live demo: https://ui.codeatlas.com.br/docs/display/data-table#controlled-mode
 

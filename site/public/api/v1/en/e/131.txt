@@ -2,7 +2,7 @@
 Element: #131 Controlled (display/notification-bell)
 What it shows: Controlled
 Tags: controlled, notificationbell
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: NotificationBell
 Live demo: https://ui.codeatlas.com.br/docs/display/notification-bell#controlled
 

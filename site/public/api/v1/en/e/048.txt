@@ -2,7 +2,7 @@
 Element: #048 Custom colors (inputs/swatch-group)
 What it shows: Any CSS color, a small size and a disabled swatch.
 Tags: custom, colors, swatchgroup
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: SwatchGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/swatch-group#custom-colors
 

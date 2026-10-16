@@ -2,7 +2,7 @@
 Element: #013 Icon only and toast (inputs/copy-button)
 What it shows: label=&quot;&quot; renders an icon-only button. toast shows a success message after copying.
 Tags: icon, only, and, toast, copybutton, toaster
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: CopyButton, Toaster
 Live demo: https://ui.codeatlas.com.br/docs/inputs/copy-button#icon-only-and-toast
 

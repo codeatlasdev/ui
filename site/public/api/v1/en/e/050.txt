@@ -2,7 +2,7 @@
 Element: #050 Basic (inputs/switch)
 What it shows: Default off and on states.
 Tags: basic, switch
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Switch
 Live demo: https://ui.codeatlas.com.br/docs/inputs/switch#basic
 

@@ -2,7 +2,7 @@
 Element: #205 Dashboard (charts/overview)
 What it shows: Every chart type together inside glass cards.
 Tags: dashboard, card, grid, kpicard, kpigrid, stack, linechart, barchart, piechart, scatterchart, heatmapchart, gaugechart, radarchart
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, Grid, KpiCard, KpiGrid, Stack, LineChart, BarChart, PieChart, ScatterChart, HeatmapChart, GaugeChart, RadarChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/overview#dashboard
 

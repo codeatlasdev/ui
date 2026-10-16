@@ -2,7 +2,7 @@
 Element: #019 Default (inputs/export-menu)
 What it shows: Custom column order and headers. onexport receives the generated text, handy for tests or uploads.
 Tags: default, exportmenu
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: ExportMenu
 Live demo: https://ui.codeatlas.com.br/docs/inputs/export-menu#default
 

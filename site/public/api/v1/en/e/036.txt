@@ -2,7 +2,7 @@
 Element: #036 Horizontal (inputs/radio)
 What it shows: orientation=&quot;horizontal&quot; lays the options out in a row.
 Tags: horizontal, radiogroup
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: RadioGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/radio#horizontal
 

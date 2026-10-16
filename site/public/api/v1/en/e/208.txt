@@ -2,7 +2,7 @@
 Element: #208 Basic donut (charts/pie)
 What it shows: Basic donut
 Tags: basic, donut, card, piechart
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, PieChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/pie#basic-donut
 

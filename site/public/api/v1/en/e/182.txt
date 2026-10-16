@@ -2,7 +2,7 @@
 Element: #182 Flex, Stack and Box (layout/layout-primitives)
 What it shows: Flex, Stack and Box
 Tags: flex, stack, and, box
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Stack, Flex, Box
 Live demo: https://ui.codeatlas.com.br/docs/layout/layout-primitives#flex-stack-and-box
 

@@ -2,7 +2,7 @@
 Element: #090 Left and bottom (feedback/drawer)
 What it shows: Left suits mobile navigation. Bottom is a simple bottom panel without gestures.
 Tags: left, and, bottom, drawer, button, stack
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Drawer, Button, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/drawer#left-and-bottom
 

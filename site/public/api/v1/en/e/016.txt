@@ -2,7 +2,7 @@
 Element: #016 Min, max, error and disabled (inputs/date-picker)
 What it shows: Only the next 30 days are selectable. Out-of-range days are disabled and typed values become invalid.
 Tags: min, max, error, and, disabled, datefield, datepicker, timefield
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: DateField, DatePicker, TimeField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/date-picker#min-max-error-and-disabled
 

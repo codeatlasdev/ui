@@ -2,7 +2,7 @@
 Element: #029 Helpers (inputs/money-input)
 What it shows: Pure functions exported from @codeatlasdev/ui/forms.
 Tags: helpers
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/inputs/money-input#helpers
 

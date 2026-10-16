@@ -2,7 +2,7 @@
 Element: #227 Tinted and glowing (foundation/materials)
 What it shows: Tinted and glowing
 Tags: tinted, and, glowing, surface
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Surface
 Live demo: https://ui.codeatlas.com.br/docs/foundation/materials#tinted-and-glowing
 

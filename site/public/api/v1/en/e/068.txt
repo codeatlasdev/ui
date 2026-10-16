@@ -2,7 +2,7 @@
 Element: #068 Tone and glow (surfaces/card)
 What it shows: Tone and glow
 Tags: tone, and, glow, card
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Card
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/card#tone-and-glow
 

@@ -2,7 +2,7 @@
 Element: #197 Custom zones (charts/gauge)
 What it shows: Reverse the default zones when a high value is bad, such as CPU load.
 Tags: custom, zones, card, grid, gaugechart
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, Grid, GaugeChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/gauge#custom-zones
 

@@ -2,7 +2,7 @@
 Element: #148 clipboard (navigation/actions)
 What it shows: Copies the given text on click and dispatches a copy event (listen with `oncopy`) once the copy succeeded.
 Tags: clipboard
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/navigation/actions#clipboard
 

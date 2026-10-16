@@ -2,7 +2,7 @@
 Element: #233 CodeTabs (docs-kit/docs)
 What it shows: Language tabs with a copy button. Groups that share a sync key follow each other and persist the choice in localStorage. Highlighting stays with you: wrap each block in .ca-code.
 Tags: codetabs, codetab
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: CodeTab, CodeTabs
 Live demo: https://ui.codeatlas.com.br/docs/docs-kit/docs#codetabs
 

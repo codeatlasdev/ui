@@ -2,7 +2,7 @@
 Element: #126 In a results table (display/external-link)
 What it shows: One link per row. The accessible name of each link is for example “Buy at registrar (opens in a new tab)”.
 Tags: in, a, results, table, externallink, simpletable, card
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: ExternalLink, SimpleTable, Card
 Live demo: https://ui.codeatlas.com.br/docs/display/external-link#in-a-results-table
 

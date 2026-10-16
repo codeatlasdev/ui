@@ -2,7 +2,7 @@
 Element: #101 Section loader (feedback/spinner)
 What it shows: Section loader
 Tags: section, loader, spinner, card, stack
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Spinner, Card, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/spinner#section-loader
 

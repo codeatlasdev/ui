@@ -2,7 +2,7 @@
 Element: #139 Default (scroll) (display/table)
 What it shows: Default (scroll)
 Tags: default, scroll, simpletable, card
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: SimpleTable, Card
 Live demo: https://ui.codeatlas.com.br/docs/display/table#default-scroll
 

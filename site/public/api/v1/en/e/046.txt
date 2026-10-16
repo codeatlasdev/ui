@@ -2,7 +2,7 @@
 Element: #046 Single value (inputs/slider)
 What it shows: Binds a plain number. Default range is 0 to 100.
 Tags: single, value, slider
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Slider
 Live demo: https://ui.codeatlas.com.br/docs/inputs/slider#single-value
 

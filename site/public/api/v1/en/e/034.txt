@@ -2,7 +2,7 @@
 Element: #034 Cards (inputs/radio)
 What it shows: variant=&quot;cards&quot; renders each option as a selectable card with an optional description.
 Tags: cards, radiogroup
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: RadioGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/radio#cards
 

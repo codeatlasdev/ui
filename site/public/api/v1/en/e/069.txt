@@ -2,7 +2,7 @@
 Element: #069 Content card (surfaces/card)
 What it shows: Content card
 Tags: content, card
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Card
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/card#content-card
 

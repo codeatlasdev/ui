@@ -2,7 +2,7 @@
 Element: #225 Button glass variants (foundation/materials)
 What it shows: glass-btn, glass-btn-prominent and glass-btn-clear for custom controls. They follow `data-style`, so the halo and blur disappear under `solid`.
 Tags: button, glass, variants
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/materials#button-glass-variants
 

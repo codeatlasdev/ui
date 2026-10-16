@@ -2,7 +2,7 @@
 Element: #092 Animated (feedback/progress)
 What it shows: Start a simulated upload.
 Tags: animated, progress, button
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Progress, Button
 Live demo: https://ui.codeatlas.com.br/docs/feedback/progress#animated
 

@@ -2,7 +2,7 @@
 Element: #138 Cards on narrow containers (display/table)
 What it shows: Cards on narrow containers
 Tags: cards, on, narrow, containers, simpletable, card
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: SimpleTable, Card
 Live demo: https://ui.codeatlas.com.br/docs/display/table#cards-on-narrow-containers
 

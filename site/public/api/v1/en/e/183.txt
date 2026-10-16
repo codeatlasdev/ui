@@ -2,7 +2,7 @@
 Element: #183 AppList (layout/list-page)
 What it shows: Pass data and the layout handles search, filters and pagination.
 Tags: applist, button, filtergroup, simpletable, statuschip, usercell
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: AppList, Button, FilterGroup, SimpleTable, StatusChip, UserCell
 Live demo: https://ui.codeatlas.com.br/docs/layout/list-page#applist
 

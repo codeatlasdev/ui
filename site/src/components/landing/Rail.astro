@@ -1,12 +1,12 @@
 ---
 // Fixed chapter rail (desktop). Real sequence of anchors, so numbering is not decoration.
-import { Brush, Bot, ChartNoAxesCombined, Rocket, ShieldCheck, Smartphone } from "@lucide/svelte";
+import { Bot, BookMarked, Brush, ChartNoAxesCombined, Rocket, Smartphone } from "@lucide/svelte";
 const items = [
+	{ id: "pick", label: "Pick pages", icon: BookMarked },
+	{ id: "agents", label: "Your AI", icon: Bot },
 	{ id: "theme", label: "Theme engine", icon: Brush },
 	{ id: "mobile", label: "Native mobile", icon: Smartphone },
-	{ id: "agents", label: "Agent first", icon: Bot },
 	{ id: "data", label: "Charts and data", icon: ChartNoAxesCombined },
-	{ id: "quality", label: "Accessibility and speed", icon: ShieldCheck },
 	{ id: "start", label: "Quick start", icon: Rocket },
 ];
 ---

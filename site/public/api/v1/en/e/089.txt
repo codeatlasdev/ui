@@ -2,7 +2,7 @@
 Element: #089 Right (default) (feedback/drawer)
 What it shows: Slides in from the right, with a footer actions area.
 Tags: right, default, drawer, button, switch, stack, filtergroup
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Drawer, Button, Switch, Stack, FilterGroup
 Live demo: https://ui.codeatlas.com.br/docs/feedback/drawer#right-default
 

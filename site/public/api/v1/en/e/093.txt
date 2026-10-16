@@ -2,7 +2,7 @@
 Element: #093 Determinate (feedback/progress)
 What it shows: An explicit value from 0 to max (100 by default).
 Tags: determinate, progress
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Progress
 Live demo: https://ui.codeatlas.com.br/docs/feedback/progress#determinate
 

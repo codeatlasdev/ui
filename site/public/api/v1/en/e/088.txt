@@ -2,7 +2,7 @@
 Element: #088 Notification panel (feedback/drawer)
 What it shows: A real-world use: a 400px wide panel on the right.
 Tags: notification, panel, drawer, button, stack
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Drawer, Button, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/drawer#notification-panel
 

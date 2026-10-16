@@ -2,7 +2,7 @@
 Element: #196 Simple gauge (charts/gauge)
 What it shows: Simple gauge
 Tags: simple, gauge, card, gaugechart
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, GaugeChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/gauge#simple-gauge
 

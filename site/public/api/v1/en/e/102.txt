@@ -2,7 +2,7 @@
 Element: #102 Sizes (feedback/spinner)
 What it shows: The size prop takes a number of pixels or any CSS length.
 Tags: sizes, spinner, flex
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Spinner, Flex
 Live demo: https://ui.codeatlas.com.br/docs/feedback/spinner#sizes
 

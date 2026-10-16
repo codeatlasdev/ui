@@ -2,7 +2,7 @@
 Element: #105 Severities (display/alert)
 What it shows: Severities
 Tags: severities, alert
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Alert
 Live demo: https://ui.codeatlas.com.br/docs/display/alert#severities
 

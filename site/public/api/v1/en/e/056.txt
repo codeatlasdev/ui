@@ -2,7 +2,7 @@
 Element: #056 Default (inputs/text-field)
 What it shows: Basic text inputs with a label.
 Tags: default, textfield
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/text-field#default
 

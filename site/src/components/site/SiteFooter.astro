@@ -1,0 +1,22 @@
+---
+import catalog from "../../../public/api/v1/catalog.json";
+
+const REPO = "https://github.com/codeatlasdev/ui";
+const NPM = "https://www.npmjs.com/package/@codeatlasdev/ui";
+const last = catalog.elements[catalog.elements.length - 1].id;
+---
+<footer class="foot">
+	<p>
+		Free and open source (MIT). Built with Svelte 5. Every demo is a numbered page: #001 to #{last}.
+		Interaction patterns inspired by <a href="https://bits-ui.com" rel="noopener">Bits UI</a>.
+	</p>
+	<nav aria-label="Footer">
+		<a href="/docs/">Docs</a>
+		<a href="/gallery/">Gallery</a>
+		<a href={REPO} rel="noopener">GitHub</a>
+		<a href={NPM} rel="noopener">npm</a>
+		<a href={`${REPO}/blob/main/.claude-plugin/marketplace.json`} rel="noopener">Plugin</a>
+		<a href="/llms.txt">llms.txt</a>
+		<a href="/api/v1/catalog.json">api/v1</a>
+	</nav>
+</footer>

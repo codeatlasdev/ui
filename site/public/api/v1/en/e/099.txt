@@ -2,7 +2,7 @@
 Element: #099 Text lines (feedback/skeleton)
 What it shows: With rows, the last line is shortened to 60% for a natural paragraph.
 Tags: text, lines, skeleton, card, stack
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Skeleton, Card, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/skeleton#text-lines
 

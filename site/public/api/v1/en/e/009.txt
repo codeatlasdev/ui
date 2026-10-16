@@ -2,7 +2,7 @@
 Element: #009 Without label (inputs/checkbox)
 What it shows: Bare checkbox for table rows or custom layouts.
 Tags: without, label, checkbox
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Checkbox
 Live demo: https://ui.codeatlas.com.br/docs/inputs/checkbox#without-label
 

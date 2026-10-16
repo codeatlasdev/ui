@@ -2,7 +2,7 @@
 Element: #005 States (inputs/button)
 What it shows: Disabled buttons, a destructive action and a link rendered as a button.
 Tags: states, button
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/inputs/button#states
 

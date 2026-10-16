@@ -2,7 +2,7 @@
 Element: #073 Default (closed) (surfaces/collapsible)
 What it shows: Default (closed)
 Tags: default, closed, collapsible, stack
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Collapsible, Stack
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/collapsible#default-closed
 

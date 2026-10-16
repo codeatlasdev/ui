@@ -2,7 +2,7 @@
 Element: #054 Basic (inputs/text-area)
 What it shows: Empty, with a placeholder, and pre-filled.
 Tags: basic, textarea
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: TextArea
 Live demo: https://ui.codeatlas.com.br/docs/inputs/text-area#basic
 

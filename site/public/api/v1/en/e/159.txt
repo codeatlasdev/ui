@@ -2,7 +2,7 @@
 Element: #159 Icon trigger (navigation/menu)
 What it shows: An IconButton trigger. IconButton needs an aria-label.
 Tags: icon, trigger, dropdownmenu, dropdownmenuitem, dropdownmenulabel, iconbutton
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: DropdownMenu, DropdownMenuItem, DropdownMenuLabel, IconButton
 Live demo: https://ui.codeatlas.com.br/docs/navigation/menu#icon-trigger
 

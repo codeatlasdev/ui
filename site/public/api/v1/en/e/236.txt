@@ -2,7 +2,7 @@
 Element: #236 DocsSearch (docs-kit/docs)
 What it shows: Full-text search. A dialog on desktop and a full-height sheet with a 16px input on phones. Pass entries or an async loader.
 Tags: docssearch, button
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Button, DocsSearch
 Live demo: https://ui.codeatlas.com.br/docs/docs-kit/docs#docssearch
 

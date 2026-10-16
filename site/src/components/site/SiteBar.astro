@@ -1,0 +1,23 @@
+---
+import { Button } from "@codeatlasdev/ui";
+import Logo from "~/components/Logo.svelte";
+import { SECTIONS } from "~/lib/nav";
+
+interface Props {
+	active?: "docs" | "gallery" | "templates" | "theme" | "changelog";
+}
+const { active } = Astro.props;
+const REPO = "https://github.com/codeatlasdev/ui";
+---
+<header class="bar">
+	<a class="bar__brand" href="/" aria-label="CodeAtlas UI home">
+		<Logo />
+		<span>CodeAtlas UI</span>
+		<span class="site-brand__tag">sketchbook</span>
+	</a>
+	<nav class="bar__nav" aria-label="Primary">
+		{SECTIONS.map((s) => <a href={s.href} aria-current={s.id === active ? "page" : undefined}>{s.label}</a>)}
+		<a href={REPO} rel="noopener">GitHub</a>
+		<Button size="sm" href="/gallery/">Open the sketchbook</Button>
+	</nav>
+</header>

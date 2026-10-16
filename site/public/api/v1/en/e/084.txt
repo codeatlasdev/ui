@@ -2,7 +2,7 @@
 Element: #084 Confirmation (feedback/dialog)
 What it shows: The destructive confirm and cancel pattern.
 Tags: confirmation, dialog, button
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Dialog, Button
 Live demo: https://ui.codeatlas.com.br/docs/feedback/dialog#confirmation
 

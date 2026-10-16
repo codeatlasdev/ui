@@ -2,7 +2,7 @@
 Element: #076 Elevation (surfaces/surface)
 What it shows: Elevation
 Tags: elevation, surface
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Surface
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/surface#elevation
 

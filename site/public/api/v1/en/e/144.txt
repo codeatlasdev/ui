@@ -2,7 +2,7 @@
 Element: #144 On icon buttons (display/tooltip)
 What it shows: On icon buttons
 Tags: on, icon, buttons, tooltip, iconbutton
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Tooltip, IconButton
 Live demo: https://ui.codeatlas.com.br/docs/display/tooltip#on-icon-buttons
 

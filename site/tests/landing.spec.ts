@@ -26,6 +26,21 @@ test.describe("landing", () => {
 		}
 	});
 
+	test("hero sketchbook: picking #005 updates the prompt and the gallery link", async ({
+		page,
+	}) => {
+		await page.goto("/");
+		await waitIslands(page, "astro-island[client='load']");
+		await page.getByLabel("Pick #005").check();
+		const text = page.locator("pre.book__text");
+		await expect(text).toContainText("#001");
+		await expect(text).toContainText("#005");
+		await expect(page.getByRole("link", { name: "Continue in the gallery" })).toHaveAttribute(
+			"href",
+			/\/gallery\/\?pick=001,005$/
+		);
+	});
+
 	test("skip link is the first tab stop and focuses #main", async ({ page }) => {
 		await page.goto("/");
 		await page.keyboard.press("Tab");
@@ -107,12 +122,12 @@ test.describe("landing", () => {
 		test.use({ viewport: { width: 1440, height: 900 } });
 		test.skip(({ isMobile }) => isMobile, "rail is desktop-only");
 
-		for (const id of ["theme", "mobile", "agents", "data", "quality", "start"]) {
+		for (const id of ["pick", "agents", "theme", "mobile", "data", "start"]) {
 			test(`link #${id} scrolls to its section`, async ({ page }) => {
 				await page.goto("/");
 				await page.waitForFunction(() => document.querySelector("[data-rail]") !== null);
 				// The rail only appears once the first chapter is in view.
-				await page.locator("#theme").scrollIntoViewIfNeeded();
+				await page.locator("#pick").scrollIntoViewIfNeeded();
 				await expect(page.locator("html")).toHaveClass(/rail-on/);
 				const link = page.locator(`[data-rail="${id}"]`);
 				await expect(link).toHaveAttribute("href", `#${id}`);

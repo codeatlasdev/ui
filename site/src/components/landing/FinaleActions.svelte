@@ -10,12 +10,12 @@
 	let { repo, npm }: Props = $props();
 </script>
 
-<Button size="lg" href="/docs/">
+<Button size="lg" href="/gallery/">
 	{#snippet leading()}<BookOpen size={18} aria-hidden="true" />{/snippet}
-	Read the docs
+	Open the sketchbook
 </Button>
-<Button size="lg" variant="outlined" href={repo}>
-	See it on GitHub
+<Button size="lg" variant="outlined" href={`${repo}#readme`}>
+	Install the plugin
 	{#snippet trailing()}<ArrowUpRight size={18} aria-hidden="true" />{/snippet}
 </Button>
 <Button size="lg" variant="ghost" href={npm}>

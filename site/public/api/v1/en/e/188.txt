@@ -2,7 +2,7 @@
 Element: #188 End aligned (layout/sticky-actions)
 What it shows: Buttons sit on the right. The bar only renders while the form is dirty (show).
 Tags: end, aligned, stickyactions, button, textfield, stack
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: StickyActions, Button, TextField, Stack
 Live demo: https://ui.codeatlas.com.br/docs/layout/sticky-actions#end-aligned
 

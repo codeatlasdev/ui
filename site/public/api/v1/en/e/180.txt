@@ -2,7 +2,7 @@
 Element: #180 Container and Section (layout/layout-primitives)
 What it shows: Container and Section
 Tags: container, and, section, stack, card
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Container, Section, Stack, Card
 Live demo: https://ui.codeatlas.com.br/docs/layout/layout-primitives#container-and-section
 

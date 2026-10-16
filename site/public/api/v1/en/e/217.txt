@@ -2,7 +2,7 @@
 Element: #217 KPI cards with trend lines (charts/sparklines)
 What it shows: KPI cards with trend lines
 Tags: kpi, cards, with, trend, lines, card, grid, stack, flex, sparkline
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, Grid, Stack, Flex, Sparkline
 Live demo: https://ui.codeatlas.com.br/docs/charts/sparklines#kpi-cards-with-trend-lines
 

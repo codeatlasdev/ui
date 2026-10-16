@@ -2,7 +2,7 @@
 Element: #057 With icons (inputs/text-field)
 What it shows: leading and trailing snippets. Interactive trailing content, like a reveal button, must be a real button with its own label.
 Tags: with, icons, textfield
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/text-field#with-icons
 

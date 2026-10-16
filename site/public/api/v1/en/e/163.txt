@@ -2,7 +2,7 @@
 Element: #163 Controlled (navigation/tabs)
 What it shows: The parent owns the active tab with bind:value.
 Tags: controlled, tabs, tabslist, tabstrigger, tabscontent
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Tabs, TabsList, TabsTrigger, TabsContent
 Live demo: https://ui.codeatlas.com.br/docs/navigation/tabs#controlled
 

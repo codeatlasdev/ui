@@ -2,7 +2,7 @@
 Element: #185 PageShell (layout/list-page)
 What it shows: A scrollable container for dashboards and non-CRUD pages.
 Tags: pageshell, kpicard, kpigrid, card
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: PageShell, KpiCard, KpiGrid, Card
 Live demo: https://ui.codeatlas.com.br/docs/layout/list-page#pageshell
 

@@ -2,7 +2,7 @@
 Element: #043 States (inputs/select)
 What it shows: Disabled options, description, error and a disabled select.
 Tags: states, select
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Select
 Live demo: https://ui.codeatlas.com.br/docs/inputs/select#states
 

@@ -2,7 +2,7 @@
 Element: #186 Chat (layout/mobile-pane)
 What it shows: Open the pane. On a phone the text field rises with the virtual keyboard.
 Tags: chat, mobilepane, button, iconbutton, textfield
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: MobilePane, Button, IconButton, TextField
 Live demo: https://ui.codeatlas.com.br/docs/layout/mobile-pane#chat
 

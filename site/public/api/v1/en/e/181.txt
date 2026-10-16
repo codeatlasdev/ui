@@ -2,7 +2,7 @@
 Element: #181 Responsive Grid (layout/layout-primitives)
 What it shows: Responsive Grid
 Tags: responsive, grid, box
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Grid, Box
 Live demo: https://ui.codeatlas.com.br/docs/layout/layout-primitives#responsive-grid
 

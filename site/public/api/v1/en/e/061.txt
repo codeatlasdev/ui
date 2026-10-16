@@ -2,7 +2,7 @@
 Element: #061 Variants and orientation (inputs/toggle-group)
 What it shows: outlined and ghost variants, sizes, a disabled item and a vertical layout.
 Tags: variants, and, orientation, togglegroup
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: ToggleGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/toggle-group#variants-and-orientation
 

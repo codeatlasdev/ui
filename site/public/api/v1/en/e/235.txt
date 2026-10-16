@@ -2,7 +2,7 @@
 Element: #235 ca-prose, Callout and Steps (docs-kit/docs)
 What it shows: Wrap rendered markdown in .ca-prose. Callout is an Alert vocabulary (note, tip, caution, danger); keep two per page. Steps turns an ordered list into a numbered rail.
 Tags: ca, prose, callout, and, steps
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Callout, Steps
 Live demo: https://ui.codeatlas.com.br/docs/docs-kit/docs#ca-prose-callout-and-steps
 

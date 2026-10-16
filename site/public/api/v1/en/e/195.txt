@@ -2,7 +2,7 @@
 Element: #195 Progress ring (charts/gauge)
 What it shows: variant ring draws a single brand-colored arc with the value in the center.
 Tags: progress, ring, card, stack, slider, gaugechart
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, Stack, Slider, GaugeChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/gauge#progress-ring
 

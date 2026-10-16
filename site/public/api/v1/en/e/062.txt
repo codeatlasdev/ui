@@ -2,7 +2,7 @@
 Element: #062 No schema (inputs/use-form)
 What it shows: Manual validation on submit. touch() and set() drive the per-field state.
 Tags: no, schema, button, textfield
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Button, TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/use-form#no-schema
 

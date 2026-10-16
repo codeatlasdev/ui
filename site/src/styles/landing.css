@@ -5,8 +5,6 @@
 :root {
 	/* Journal display: the theme's serif (site/src/theme.ts), no extra web font to download. */
 	--lp-display: var(--ca-font-display);
-	--lp-max: 76rem;
-	--lp-gutter: clamp(var(--ca-space-4), 4vw, var(--ca-space-12));
 	--lp-chapter-gap: clamp(5rem, 14vh, 9rem);
 }
 
@@ -27,53 +25,6 @@ html.lenis body {
 	overflow-x: clip;
 }
 
-/* ── Top bar ─────────────────────────────────────────────────────────── */
-/* Sticky, full-bleed and OPAQUE: content never scrolls behind the links, and browsers tint
-   the status bar from it (Safari 26 samples sticky edge elements; theme-color sync elsewhere). */
-.bar {
-	position: sticky;
-	top: 0;
-	z-index: var(--ca-z-sticky);
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: var(--ca-space-4);
-	padding:
-		calc(var(--ca-safe-top) + var(--ca-space-3))
-		max(var(--lp-gutter), calc((100% - var(--lp-max)) / 2 + var(--lp-gutter)))
-		var(--ca-space-3);
-	background-color: var(--ca-surface-base);
-	box-shadow: inset 0 -1px 0 var(--ca-outline-subtle);
-}
-.bar__brand {
-	display: inline-flex;
-	align-items: center;
-	gap: var(--ca-space-2);
-	color: var(--ca-text-primary);
-	font-family: var(--lp-display);
-	font-weight: 650;
-	font-size: var(--ca-font-size-lg);
-	text-decoration: none;
-	min-block-size: 44px;
-}
-.bar__nav {
-	display: flex;
-	align-items: center;
-	gap: var(--ca-space-5);
-}
-.bar__nav a:not(.ca-btn) {
-	color: var(--ca-text-secondary);
-	text-decoration: none;
-	font-size: var(--ca-font-size-body2);
-	min-block-size: 44px;
-	display: inline-flex;
-	align-items: center;
-}
-.bar__nav a:not(.ca-btn):hover {
-	color: var(--ca-text-primary);
-}
-.bar a:focus-visible,
-.foot a:focus-visible,
 .landing a:focus-visible {
 	outline: 2px solid var(--ca-focus-ring);
 	outline-offset: 3px;
@@ -90,14 +41,9 @@ html.lenis body {
 	margin-inline: auto;
 	padding: clamp(var(--ca-space-6), 6vh, var(--ca-space-12)) var(--lp-gutter) var(--lp-chapter-gap);
 }
-@media (min-width: 1200px) {
-	.hero {
-		grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
-		align-items: start;
-	}
-	.hero__copy {
-		padding-block-start: var(--ca-space-8);
-	}
+/* The open sketchbook needs the full row: copy on top, the two pages below. */
+.hero__copy {
+	max-inline-size: 48rem;
 }
 .hero__title {
 	font-family: var(--lp-display);
@@ -247,6 +193,8 @@ html.lenis body {
 	line-height: 1.55;
 }
 .chapter__demo {
+	display: grid;
+	gap: var(--ca-space-6);
 	min-inline-size: 0;
 }
 .chapter--wide .chapter__demo {
@@ -310,17 +258,16 @@ html.lenis body {
 
 .agents__code pre {
 	margin: 0;
-	background: transparent !important;
 	font-family: var(--ca-font-mono);
 	font-size: var(--ca-font-size-body2);
 	line-height: 1.7;
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
 }
 /* shiki dual theme: pick by the package's own .dark class */
-.agents__code .shiki span,
 .chapter .ca-codetab .shiki span {
 	color: var(--shiki-light);
 }
-.dark .agents__code .shiki span,
 .dark .chapter .ca-codetab .shiki span {
 	color: var(--shiki-dark);
 }
@@ -349,35 +296,17 @@ html.lenis body {
 	color: var(--ca-brand-text);
 }
 
+/* ── Pick ────────────────────────────────────────────────────────────── */
+.pick {
+	min-inline-size: 0;
+}
+
 /* ── Data ────────────────────────────────────────────────────────────── */
 .data {
 	min-inline-size: 0;
 }
 
-/* ── Quality facts ───────────────────────────────────────────────────── */
-.facts {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-	gap: var(--ca-space-6) var(--ca-space-8);
-	margin: 0;
-}
-.facts > div {
-	padding-block-start: var(--ca-space-4);
-	border-block-start: 1px solid var(--ca-outline-default);
-}
-.facts dt {
-	font-size: var(--ca-font-size-body2);
-	color: var(--ca-text-secondary);
-}
-.facts dd {
-	margin: var(--ca-space-1) 0 0;
-	font-family: var(--lp-display);
-	font-weight: 650;
-	font-size: var(--ca-font-size-h4);
-	line-height: 1.25;
-}
-
-/* ── Finale + footer ─────────────────────────────────────────────────── */
+/* ── Finale ──────────────────────────────────────────────────────────── */
 .finale {
 	max-inline-size: var(--lp-max);
 	margin-inline: auto;
@@ -394,33 +323,6 @@ html.lenis body {
 	gap: var(--ca-space-3);
 	margin-top: var(--ca-space-8);
 }
-.foot {
-	display: flex;
-	flex-wrap: wrap;
-	justify-content: space-between;
-	gap: var(--ca-space-4);
-	max-inline-size: var(--lp-max);
-	margin-inline: auto;
-	padding: var(--ca-space-6) var(--lp-gutter) calc(var(--ca-space-8) + var(--ca-safe-bottom));
-	border-block-start: 1px solid var(--ca-outline-subtle);
-	font-size: var(--ca-font-size-body2);
-	color: var(--ca-text-secondary);
-}
-.foot nav {
-	display: flex;
-	flex-wrap: wrap;
-	gap: var(--ca-space-5);
-}
-.foot a {
-	color: var(--ca-text-secondary);
-	min-block-size: 44px;
-	display: inline-flex;
-	align-items: center;
-}
-.foot a:hover {
-	color: var(--ca-text-primary);
-}
-
 /* ── Chapter rail (desktop, after the hero) ──────────────────────────── */
 .rail {
 	position: fixed;

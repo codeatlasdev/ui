@@ -2,7 +2,7 @@
 Element: #166 Live shell (layout/app-shell)
 What it shows: The real component inside a fixed-height frame. The pathname lives in local state; click the rail and panel to navigate.
 Tags: live, shell, appshelllayout, pageshell, kpicard, kpigrid, card
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: AppShellLayout, PageShell, KpiCard, KpiGrid, Card
 Live demo: https://ui.codeatlas.com.br/docs/layout/app-shell#live-shell
 

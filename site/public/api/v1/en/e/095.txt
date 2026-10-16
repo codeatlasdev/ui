@@ -2,7 +2,7 @@
 Element: #095 Footer and swipeToDismiss (feedback/sheet)
 What it shows: A pinned footer, and swipeToDismiss set to false so only the close button, Escape and the overlay dismiss it.
 Tags: footer, and, swipetodismiss, sheet, button, stack
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Sheet, Button, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/sheet#footer-and-swipetodismiss
 

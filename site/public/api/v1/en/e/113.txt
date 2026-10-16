@@ -2,7 +2,7 @@
 Element: #113 Dot and counts (display/badge)
 What it shows: Dot and counts
 Tags: dot, and, counts, badge, iconbutton, flex
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Badge, IconButton, Flex
 Live demo: https://ui.codeatlas.com.br/docs/display/badge#dot-and-counts
 

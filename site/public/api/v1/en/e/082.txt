@@ -2,7 +2,7 @@
 Element: #082 Controlled pending (feedback/alert-dialog)
 What it shows: Pass pending when the loading state lives outside, for example a mutation from your query client.
 Tags: controlled, pending, alertdialog, button
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: AlertDialog, Button
 Live demo: https://ui.codeatlas.com.br/docs/feedback/alert-dialog#controlled-pending
 

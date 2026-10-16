@@ -2,7 +2,7 @@
 Element: #104 Closable (display/alert)
 What it shows: Closable
 Tags: closable, alert
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Alert
 Live demo: https://ui.codeatlas.com.br/docs/display/alert#closable
 

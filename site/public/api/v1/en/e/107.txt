@@ -2,7 +2,7 @@
 Element: #107 With image (display/avatar)
 What it shows: With image
 Tags: with, image, avatar
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Avatar
 Live demo: https://ui.codeatlas.com.br/docs/display/avatar#with-image
 

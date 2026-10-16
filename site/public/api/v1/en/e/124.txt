@@ -2,7 +2,7 @@
 Element: #124 Horizontal (display/divider)
 What it shows: Horizontal
 Tags: horizontal, divider, card, stack
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Divider, Card, Stack
 Live demo: https://ui.codeatlas.com.br/docs/display/divider#horizontal
 

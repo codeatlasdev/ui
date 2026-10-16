@@ -2,7 +2,7 @@
 Element: #146 autofocus (navigation/actions)
 What it shows: Focuses the element when it mounts.
 Tags: autofocus, button
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/navigation/actions#autofocus
 

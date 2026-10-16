@@ -2,7 +2,7 @@
 Element: #213 Basic scatter (charts/scatter)
 What it shows: Visits against conversion rate.
 Tags: basic, scatter, card, scatterchart
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, ScatterChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/scatter#basic-scatter
 

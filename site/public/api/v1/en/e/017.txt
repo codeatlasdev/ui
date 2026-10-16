@@ -2,7 +2,7 @@
 Element: #017 DateField and TimeField (inputs/date-picker)
 What it shows: Segments only, no popover. granularity=&quot;minute&quot; adds a time, and hourCycle switches between 12h and 24h.
 Tags: datefield, and, timefield
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: DateField, TimeField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/date-picker#datefield-and-timefield
 

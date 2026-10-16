@@ -2,7 +2,7 @@
 Element: #032 Default (inputs/pin-input)
 What it shows: Six digits by default. oncomplete fires once all cells are filled. A four-digit masked PIN is shown below it.
 Tags: default, pininput
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: PinInput
 Live demo: https://ui.codeatlas.com.br/docs/inputs/pin-input#default
 

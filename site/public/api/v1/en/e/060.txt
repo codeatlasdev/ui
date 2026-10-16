@@ -2,7 +2,7 @@
 Element: #060 Single and multiple (inputs/toggle-group)
 What it shows: type=&quot;single&quot; binds a string. type=&quot;multiple&quot; binds a string array.
 Tags: single, and, multiple, togglegroup
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: ToggleGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/toggle-group#single-and-multiple
 

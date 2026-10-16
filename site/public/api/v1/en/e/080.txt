@@ -2,7 +2,7 @@
 Element: #080 Async onconfirm (feedback/alert-dialog)
 What it shows: While the promise is pending the confirm button shows a spinner, Cancel is disabled and Escape is ignored. The dialog closes when it resolves and stays open if it throws.
 Tags: async, onconfirm, alertdialog, button
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: AlertDialog, Button
 Live demo: https://ui.codeatlas.com.br/docs/feedback/alert-dialog#async-onconfirm
 

@@ -2,7 +2,7 @@
 Element: #010 Basic (inputs/combobox)
 What it shows: Search a list of options and bind the selected value.
 Tags: basic, combobox
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Combobox
 Live demo: https://ui.codeatlas.com.br/docs/inputs/combobox#basic
 

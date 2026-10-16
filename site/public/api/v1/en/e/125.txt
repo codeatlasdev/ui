@@ -2,7 +2,7 @@
 Element: #125 Vertical (display/divider)
 What it shows: Vertical
 Tags: vertical, divider, card, flex
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Divider, Card, Flex
 Live demo: https://ui.codeatlas.com.br/docs/display/divider#vertical
 

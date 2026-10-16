@@ -1,6 +1,7 @@
 ---
 import Gallery from "~/components/gallery/Gallery.svelte";
 import SiteDocsShell from "~/components/docs/SiteDocsShell.svelte";
+import SiteFooter from "~/components/site/SiteFooter.astro";
 import Base from "~/layouts/Base.astro";
 import { SECTIONS } from "~/lib/nav";
 import catalog from "../../public/api/v1/catalog.json";
@@ -21,10 +22,11 @@ const groups = catalog.groups.map((g) => g.slug);
 ---
 <Base
 	title="Gallery"
-	description={`Every numbered demo of @codeatlasdev/ui as a live card. Pick the ones you want, copy the list or send it to your AI. ${elements.length} demos.`}
+	description="The sketchbook: every numbered demo as a live page. Pick, copy, hand to your AI."
 	skipLink={false}
 >
 	<SiteDocsShell client:load sections={SECTIONS} active="gallery" pathname={Astro.url.pathname}>
 		<Gallery client:load {elements} {groups} />
 	</SiteDocsShell>
+	<SiteFooter />
 </Base>

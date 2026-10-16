@@ -2,7 +2,7 @@
 Element: #023 Documents and dates (inputs/masked-field)
 What it shows: CPF, CNPJ, a mask that switches after 11 digits, a birth date and RG.
 Tags: documents, and, dates, maskedfield
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: MaskedField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/masked-field#documents-and-dates
 

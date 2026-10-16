@@ -2,7 +2,7 @@
 Element: #018 DatePicker and DateRangePicker (inputs/date-picker)
 What it shows: Editable segments plus a calendar popover. The range picker shows two months.
 Tags: datepicker, and, daterangepicker
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: DatePicker, DateRangePicker
 Live demo: https://ui.codeatlas.com.br/docs/inputs/date-picker#datepicker-and-daterangepicker
 

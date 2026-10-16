@@ -2,7 +2,7 @@
 Element: #137 Vertical scroll (display/scroll-area)
 What it shows: Vertical scroll
 Tags: vertical, scroll, scrollarea, card
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: ScrollArea, Card
 Live demo: https://ui.codeatlas.com.br/docs/display/scroll-area#vertical-scroll
 

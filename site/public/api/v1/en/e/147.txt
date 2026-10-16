@@ -2,7 +2,7 @@
 Element: #147 clickOutside (navigation/actions)
 What it shows: Calls the handler for every click that lands outside the element. It listens on the capture phase of `document`.
 Tags: clickoutside
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/navigation/actions#clickoutside
 

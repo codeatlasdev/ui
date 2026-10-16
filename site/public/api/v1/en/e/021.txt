@@ -2,7 +2,7 @@
 Element: #021 Images only and disabled (inputs/file-upload)
 What it shows: Images only and disabled
 Tags: images, only, and, disabled, fileupload
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: FileUpload
 Live demo: https://ui.codeatlas.com.br/docs/inputs/file-upload#images-only-and-disabled
 

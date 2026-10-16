@@ -2,7 +2,7 @@
 Element: #207 Donut with center KPI (charts/pie)
 What it shows: centerLabel overlays a value and caption in the hole of a donut.
 Tags: donut, with, center, kpi, card, piechart
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, PieChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/pie#donut-with-center-kpi
 

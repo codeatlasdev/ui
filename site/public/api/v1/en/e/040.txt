@@ -2,7 +2,7 @@
 Element: #040 Basic (inputs/select)
 What it shows: Controlled select with a pre-selected value.
 Tags: basic, select
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Select
 Live demo: https://ui.codeatlas.com.br/docs/inputs/select#basic
 

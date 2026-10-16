@@ -2,7 +2,7 @@
 Element: #083 Chromeless (feedback/dialog)
 What it shows: No header, description or actions, and the body has no padding. The title becomes the visually hidden accessible name.
 Tags: chromeless, dialog, button
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Dialog, Button
 Live demo: https://ui.codeatlas.com.br/docs/feedback/dialog#chromeless
 

@@ -2,7 +2,7 @@
 Element: #022 Role filter (inputs/filter-group)
 What it shows: Role filter
 Tags: role, filter, filtergroup
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: FilterGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/filter-group#role-filter
 

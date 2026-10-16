@@ -1,5 +1,7 @@
 ---
 import { CardGrid, LinkCard } from "@codeatlasdev/ui";
+import SiteBar from "~/components/site/SiteBar.astro";
+import SiteFooter from "~/components/site/SiteFooter.astro";
 import Base from "~/layouts/Base.astro";
 
 const groups = [
@@ -61,6 +63,7 @@ const groups = [
 	title="Templates"
 	description="Full-page templates built with CodeAtlas UI: admin app, auth flows, error pages and a documentation layout. Open them live and copy what you need."
 >
+	<SiteBar active="templates" />
 	<main id="main" tabindex="-1" class="templates">
 		<header class="templates__head">
 			<a class="templates__back" href="/docs/">&larr; Documentation</a>
@@ -79,6 +82,7 @@ const groups = [
 			</section>
 		))}
 	</main>
+	<SiteFooter />
 </Base>
 
 <style>

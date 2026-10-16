@@ -2,7 +2,7 @@
 Element: #229 Body and UI scale (foundation/typography)
 What it shows: Body, caption, label and button sizes, plus the micro and nano steps used by badges.
 Tags: body, and, ui, scale
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/typography#body-and-ui-scale
 

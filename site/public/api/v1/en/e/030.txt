@@ -2,7 +2,7 @@
 Element: #030 Basic (inputs/number-field)
 What it shows: Integer and decimal steps with bounds.
 Tags: basic, numberfield, stack
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: NumberField, Stack
 Live demo: https://ui.codeatlas.com.br/docs/inputs/number-field#basic
 

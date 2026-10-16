@@ -2,7 +2,7 @@
 Element: #031 States (inputs/number-field)
 What it shows: Helper text, error, disabled and the small size.
 Tags: states, numberfield, stack
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: NumberField, Stack
 Live demo: https://ui.codeatlas.com.br/docs/inputs/number-field#states
 

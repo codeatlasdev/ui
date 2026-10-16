@@ -2,7 +2,7 @@
 Element: #115 Basic (display/chip)
 What it shows: Basic
 Tags: basic, chip
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Chip
 Live demo: https://ui.codeatlas.com.br/docs/display/chip#basic
 

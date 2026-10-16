@@ -2,7 +2,7 @@
 Element: #220 Brand (foundation/colors)
 What it shows: Derived from the active preset. brand-fill and brand-text keep contrast in both schemes.
 Tags: brand
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/colors#brand
 

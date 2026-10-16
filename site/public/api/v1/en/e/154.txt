@@ -2,7 +2,7 @@
 Element: #154 Custom separator (navigation/breadcrumb)
 What it shows: Using › instead of /.
 Tags: custom, separator, breadcrumb
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Breadcrumb
 Live demo: https://ui.codeatlas.com.br/docs/navigation/breadcrumb#custom-separator
 

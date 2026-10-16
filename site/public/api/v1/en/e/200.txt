@@ -2,7 +2,7 @@
 Element: #200 Year toggle (charts/heatmap)
 What it shows: Swap data and range to move between years.
 Tags: year, toggle, card, flex, button, heatmapchart
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, Flex, Button, HeatmapChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/heatmap#year-toggle
 

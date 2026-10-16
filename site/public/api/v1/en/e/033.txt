@@ -2,7 +2,7 @@
 Element: #033 States (inputs/pin-input)
 What it shows: Description, error, disabled and a free-text code.
 Tags: states, pininput
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: PinInput
 Live demo: https://ui.codeatlas.com.br/docs/inputs/pin-input#states
 

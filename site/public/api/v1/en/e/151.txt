@@ -2,7 +2,7 @@
 Element: #151 Default (navigation/app-bar)
 What it shows: Content in the middle and actions in the trailing slot.
 Tags: default, glassappbar, iconbutton, avatar, card
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: GlassAppBar, IconButton, Avatar, Card
 Live demo: https://ui.codeatlas.com.br/docs/navigation/app-bar#default
 

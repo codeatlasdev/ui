@@ -2,7 +2,7 @@
 Element: #165 Anatomy (layout/app-shell)
 What it shows: Rail (52px), panel (200px) and the main content area.
 Tags: anatomy
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/layout/app-shell#anatomy
 

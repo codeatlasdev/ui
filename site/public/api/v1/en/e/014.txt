@@ -2,7 +2,7 @@
 Element: #014 Variants and sizes (inputs/copy-button)
 What it shows: Variants and sizes
 Tags: variants, and, sizes, copybutton
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: CopyButton
 Live demo: https://ui.codeatlas.com.br/docs/inputs/copy-button#variants-and-sizes
 

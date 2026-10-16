@@ -2,7 +2,7 @@
 Element: #001 Full width (inputs/button)
 What it shows: fullWidth stretches the button to its container.
 Tags: full, width, button
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/inputs/button#full-width
 

@@ -2,7 +2,7 @@
 Element: #230 Font families (foundation/typography)
 What it shows: Font families
 Tags: font, families
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/typography#font-families
 

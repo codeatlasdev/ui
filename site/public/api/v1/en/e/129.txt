@@ -2,7 +2,7 @@
 Element: #129 Shortcuts in text (display/kbd)
 What it shows: Shortcuts in text
 Tags: shortcuts, in, text, kbd
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Kbd
 Live demo: https://ui.codeatlas.com.br/docs/display/kbd#shortcuts-in-text
 

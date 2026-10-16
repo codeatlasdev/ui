@@ -1,6 +1,7 @@
 ---
 import ThemeEditor from "~/components/theme/ThemeEditor.svelte";
 import SiteDocsShell from "~/components/docs/SiteDocsShell.svelte";
+import SiteFooter from "~/components/site/SiteFooter.astro";
 import Base from "~/layouts/Base.astro";
 import { SECTIONS } from "~/lib/nav";
 ---
@@ -12,4 +13,5 @@ import { SECTIONS } from "~/lib/nav";
 	<SiteDocsShell client:load sections={SECTIONS} active="theme" pathname={Astro.url.pathname}>
 		<ThemeEditor client:load />
 	</SiteDocsShell>
+	<SiteFooter />
 </Base>

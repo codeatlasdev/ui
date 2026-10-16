@@ -2,7 +2,7 @@
 Element: #140 Simple (display/timeline)
 What it shows: Simple
 Tags: simple, timeline
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Timeline
 Live demo: https://ui.codeatlas.com.br/docs/display/timeline#simple
 

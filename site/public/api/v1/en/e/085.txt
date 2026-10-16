@@ -2,7 +2,7 @@
 Element: #085 Form (feedback/dialog)
 What it shows: A dialog holding a form, at the md size.
 Tags: form, dialog, button, textfield, select, stack
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Dialog, Button, TextField, Select, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/dialog#form
 

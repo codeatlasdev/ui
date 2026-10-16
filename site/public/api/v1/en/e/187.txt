@@ -2,7 +2,7 @@
 Element: #187 Dashboard page (layout/page-shell)
 What it shows: KPI cards and a content card inside a PageShell.
 Tags: dashboard, page, pageshell, kpicard, kpigrid, card, stack, button
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: PageShell, KpiCard, KpiGrid, Card, Stack, Button
 Live demo: https://ui.codeatlas.com.br/docs/layout/page-shell#dashboard-page
 

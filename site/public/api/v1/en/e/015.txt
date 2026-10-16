@@ -2,7 +2,7 @@
 Element: #015 Calendar and RangeCalendar (inputs/date-picker)
 What it shows: Inline calendars. Click a start date, then an end date for the range.
 Tags: calendar, and, rangecalendar
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Calendar, RangeCalendar
 Live demo: https://ui.codeatlas.com.br/docs/inputs/date-picker#calendar-and-rangecalendar
 

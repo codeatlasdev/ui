@@ -2,7 +2,7 @@
 Element: #075 Refraction layer (surfaces/liquid-glass)
 What it shows: Refraction layer
 Tags: refraction, layer, liquidglass
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: LiquidGlass
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/liquid-glass#refraction-layer
 

@@ -2,7 +2,7 @@
 Element: #049 Theme presets (inputs/swatch-group)
 What it shows: Swatches without a color paint from the preset named by their value.
 Tags: theme, presets, swatchgroup
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: SwatchGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/swatch-group#theme-presets
 

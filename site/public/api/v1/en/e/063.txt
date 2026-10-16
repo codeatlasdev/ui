@@ -2,7 +2,7 @@
 Element: #063 Submit state (inputs/use-form)
 What it shows: validate() gates submission, submitting drives the button loading state, and reset() clears everything after success.
 Tags: submit, state, button, textarea, textfield
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Button, TextArea, TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/use-form#submit-state
 

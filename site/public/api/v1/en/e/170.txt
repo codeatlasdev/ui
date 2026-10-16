@@ -2,7 +2,7 @@
 Element: #170 No results (layout/empty-state)
 What it shows: For searches and filters that match nothing.
 Tags: no, results, emptystate, button
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: EmptyState, Button
 Live demo: https://ui.codeatlas.com.br/docs/layout/empty-state#no-results
 

@@ -2,7 +2,7 @@
 Element: #039 Small, full width, disabled item (inputs/segmented-control)
 What it shows: Small, full width, disabled item
 Tags: small, full, width, disabled, item, segmentedcontrol
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: SegmentedControl
 Live demo: https://ui.codeatlas.com.br/docs/inputs/segmented-control#small-full-width-disabled-item
 

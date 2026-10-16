@@ -2,7 +2,7 @@
 Element: #058 States (inputs/text-field)
 What it shows: Helper text, error, required, read-only, disabled and the small size.
 Tags: states, textfield
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/text-field#states
 

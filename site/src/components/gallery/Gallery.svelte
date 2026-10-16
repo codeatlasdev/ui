@@ -93,12 +93,18 @@
 
 <div class="gallery">
 	<header class="gallery__head">
-		<p class="gallery__eyebrow">Gallery</p>
-		<h1>{elements.length} numbered demos</h1>
+		<p class="sk-eyebrow">Sketchbook</p>
+		<h1>{elements.length} numbered pages</h1>
 		<p class="gallery__lead">
-			Every demo is a numbered reference. Pick the ones you want, then copy the list or send it to your AI.
+			Every demo in the docs is a page with a number. Filter, tick the ones you want, then copy the list or hand it to your AI.
 		</p>
 	</header>
+
+	<aside class="gallery__howto sk-page" aria-label="How it works">
+		<p class="sk-caption">1. Pick pages.</p>
+		<p class="sk-caption">2. Copy the list, or open <code>?pick=</code> links.</p>
+		<p class="sk-caption">3. Your AI calls <code>get_demo</code> for each number: <code>get_demo({'{'} ids: ["#012"] {'}'})</code></p>
+	</aside>
 
 	<div class="gallery__filters">
 		<TextField label="Filter demos" placeholder="Search title, tag or component" bind:value={query} />
@@ -116,14 +122,14 @@
 	<ul class="gallery__grid">
 		{#each visible as e (e.id)}
 			<li class="gallery-card-wrap">
-				<article class="gallery-card" id={e.id} class:gallery-card--picked={picked.has(e.id)}>
+				<article class="gallery-card sk-page" id={e.id} class:gallery-card--picked={picked.has(e.id)}>
+					<span class="sk-page__num">#{e.id}</span>
 					<header class="gallery-card__head">
-						<span class="gallery-card__id">#{e.id}</span>
 						<span class="gallery-card__group">{e.group}</span>
 					</header>
 					<h2 class="gallery-card__title">{e.title}</h2>
 					<p class="gallery-card__summary">{e.summary}</p>
-					<div class="gallery-card__preview glass-ultra-thin">
+					<div class="gallery-card__preview">
 						<GalleryPreview path={`${e.group}/${e.page}/${e.variant}`} title={e.title} />
 					</div>
 					<footer class="gallery-card__foot">
@@ -159,19 +165,23 @@
 		display: grid;
 		gap: var(--ca-space-4);
 	}
-	.gallery__eyebrow {
-		margin: 0;
-		font-size: var(--ca-font-size-caption);
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
-		color: var(--ca-text-secondary);
-	}
 	.gallery__head h1 {
 		margin: var(--ca-space-1) 0;
 	}
 	.gallery__lead {
 		margin: 0;
 		color: var(--ca-text-body);
+	}
+	.gallery__howto {
+		display: grid;
+		gap: var(--ca-space-1);
+		padding-block: var(--ca-space-4);
+		padding-inline-end: var(--ca-space-4);
+	}
+	.gallery__howto code {
+		font-family: var(--ca-font-mono);
+		font-style: normal;
+		color: var(--ca-text-primary);
 	}
 	.gallery__filters {
 		display: grid;
@@ -203,26 +213,19 @@
 		grid-template-rows: auto auto auto 1fr auto;
 		gap: var(--ca-space-2);
 		min-width: 0;
-		padding: var(--ca-space-4);
-		border-radius: var(--ca-radius-lg);
-		background: var(--ca-surface-1, transparent);
-		box-shadow: inset 0 0 0 var(--ca-border-width) var(--ca-outline-subtle);
+		padding-block: var(--ca-space-5) var(--ca-space-4);
+		padding-inline-end: var(--ca-space-4);
 		scroll-margin-top: calc(var(--ca-space-16) + var(--ca-space-4));
 	}
 	.gallery-card--picked {
-		box-shadow: inset 0 0 0 2px var(--ca-brand-main);
+		outline: 3px solid var(--ca-brand-main);
+		outline-offset: 2px;
 	}
 	.gallery-card__head {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
 		gap: var(--ca-space-2);
-	}
-	.gallery-card__id {
-		font-family: var(--ca-font-mono);
-		font-size: var(--ca-font-size-body2);
-		font-weight: 600;
-		color: var(--ca-text-primary);
 	}
 	.gallery-card__group {
 		padding: 0 var(--ca-space-2);
@@ -251,6 +254,7 @@
 		min-width: 0;
 		padding: var(--ca-space-4);
 		border-radius: var(--ca-radius-md);
+		box-shadow: inset 0 0 0 var(--ca-border-width) var(--ca-outline-subtle);
 		overflow: hidden;
 	}
 	.gallery-card__foot {

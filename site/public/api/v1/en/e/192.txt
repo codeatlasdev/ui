@@ -2,7 +2,7 @@
 Element: #192 Grouped and stacked (charts/bar)
 What it shows: Toggling stacked animates between both layouts.
 Tags: grouped, and, stacked, card, flex, button, barchart
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, Flex, Button, BarChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/bar#grouped-and-stacked
 

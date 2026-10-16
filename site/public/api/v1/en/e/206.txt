@@ -2,7 +2,7 @@
 Element: #206 Animated proportions (charts/pie)
 What it shows: Swap the data and the slices animate to the new proportions.
 Tags: animated, proportions, card, flex, chip, piechart
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, Flex, Chip, PieChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/pie#animated-proportions
 

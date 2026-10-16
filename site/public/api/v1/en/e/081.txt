@@ -2,7 +2,7 @@
 Element: #081 Basic and destructive (feedback/alert-dialog)
 What it shows: Confirm and cancel, with the destructive variant for irreversible actions.
 Tags: basic, and, destructive, alertdialog, button
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: AlertDialog, Button
 Live demo: https://ui.codeatlas.com.br/docs/feedback/alert-dialog#basic-and-destructive
 

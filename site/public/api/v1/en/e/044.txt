@@ -2,7 +2,7 @@
 Element: #044 Switch rows (inputs/setting-item)
 What it shows: Switch rows
 Tags: switch, rows, settingitem
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: SettingItem, Switch
 Live demo: https://ui.codeatlas.com.br/docs/inputs/setting-item#switch-rows
 

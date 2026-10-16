@@ -2,7 +2,7 @@
 Element: #128 srcset and sizes (display/image)
 What it shows: srcset and sizes
 Tags: srcset, and, sizes, image
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Image
 Live demo: https://ui.codeatlas.com.br/docs/display/image#srcset-and-sizes
 

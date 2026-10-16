@@ -14,14 +14,7 @@
 
 /* ── Docs article ─────────────────────────────────────────────────────── */
 .doc { outline: none; }
-.doc__eyebrow {
-	margin: 0 0 var(--ca-space-2);
-	font-size: var(--ca-font-size-caption);
-	font-weight: var(--ca-font-weight-semibold);
-	letter-spacing: var(--ca-overline-tracking);
-	text-transform: uppercase;
-	color: var(--ca-brand-text);
-}
+.doc__eyebrow { margin: 0 0 var(--ca-space-2); }
 .doc__lead { font-size: var(--ca-font-size-lg); color: var(--ca-text-body); }
 .doc__footer {
 	display: grid;
@@ -33,7 +26,13 @@
 }
 
 /* ── Demo block ───────────────────────────────────────────────────────── */
-.demo { margin-top: var(--ca-space-10); }
+/* Top room is for the number tab, so a wrapping title never slides under it. */
+.demo {
+	margin-top: var(--ca-space-10);
+	padding: var(--ca-space-8) var(--ca-space-5) var(--ca-space-5) calc(var(--sk-spiral) + var(--ca-space-4));
+}
+.demo > h2 { margin-top: 0; }
+.demo__ref { margin-top: var(--ca-space-2); }
 .demo__desc { color: var(--ca-text-secondary); }
 .demo__preview {
 	display: flex;
@@ -41,8 +40,7 @@
 	align-items: center;
 	gap: var(--ca-space-3);
 	margin-top: var(--ca-space-3);
-	padding: var(--ca-space-6);
-	border-radius: var(--ca-radius-lg);
+	padding: var(--ca-space-6) 0;
 }
 .demo__preview--stage { justify-content: center; min-height: 220px; }
 .demo__code { margin-top: var(--ca-space-2); }

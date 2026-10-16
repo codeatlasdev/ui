@@ -2,7 +2,7 @@
 Element: #158 Default (navigation/menu)
 What it shows: A button trigger with a label, items, a separator and a destructive item.
 Tags: default, dropdownmenu, dropdownmenuitem, dropdownmenuseparator, dropdownmenulabel, button
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: DropdownMenu, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuLabel, Button
 Live demo: https://ui.codeatlas.com.br/docs/navigation/menu#default
 

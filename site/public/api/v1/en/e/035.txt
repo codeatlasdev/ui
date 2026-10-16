@@ -2,7 +2,7 @@
 Element: #035 Disabled (inputs/radio)
 What it shows: Disable a single item, or the whole group.
 Tags: disabled, radiogroup
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: RadioGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/radio#disabled
 

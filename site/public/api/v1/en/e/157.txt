@@ -2,7 +2,7 @@
 Element: #157 Left and right (navigation/drawer)
 What it shows: Left for navigation, right for settings or details.
 Tags: left, and, right, drawer, button
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Drawer, Button
 Live demo: https://ui.codeatlas.com.br/docs/navigation/drawer#left-and-right
 

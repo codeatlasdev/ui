@@ -2,7 +2,7 @@
 Element: #164 Default (navigation/tabs)
 What it shows: Three tabs with content panels.
 Tags: default, tabs, tabslist, tabstrigger, tabscontent
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Tabs, TabsList, TabsTrigger, TabsContent
 Live demo: https://ui.codeatlas.com.br/docs/navigation/tabs#default
 

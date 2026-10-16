@@ -2,7 +2,7 @@
 Element: #111 Avatar stack (display/avatar)
 What it shows: Avatar stack
 Tags: avatar, stack
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Avatar
 Live demo: https://ui.codeatlas.com.br/docs/display/avatar#avatar-stack
 

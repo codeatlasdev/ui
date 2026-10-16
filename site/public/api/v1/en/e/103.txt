@@ -2,7 +2,7 @@
 Element: #103 Variants and duration (feedback/toast)
 What it shows: Five variants, plus persistent (duration 0) and custom durations. The default auto-dismiss is 4 seconds.
 Tags: variants, and, duration, button, toaster
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Button, Toaster
 Live demo: https://ui.codeatlas.com.br/docs/feedback/toast#variants-and-duration
 

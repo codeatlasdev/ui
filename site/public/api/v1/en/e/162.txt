@@ -2,7 +2,7 @@
 Element: #162 Horizontal stepper (navigation/stepper)
 What it shows: Four steps with Back and Next controls.
 Tags: horizontal, stepper, button, card, stack, flex
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Stepper, Button, Card, Stack, Flex
 Live demo: https://ui.codeatlas.com.br/docs/navigation/stepper#horizontal-stepper
 

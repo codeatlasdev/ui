@@ -2,7 +2,7 @@
 Element: #074 Open by default (surfaces/collapsible)
 What it shows: Open by default
 Tags: open, by, default, collapsible
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Collapsible
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/collapsible#open-by-default
 

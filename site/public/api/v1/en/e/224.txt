@@ -2,7 +2,7 @@
 Element: #224 Text (foundation/colors)
 What it shows: text-hint is the lowest readable tier (4.5:1). text-disabled is the label of disabled controls only (3:1 on every surface), never information.
 Tags: text
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/colors#text
 

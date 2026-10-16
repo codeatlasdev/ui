@@ -32,6 +32,18 @@ test.describe("docs", () => {
 		).toBe(scrolled);
 	});
 
+	test("demo blocks carry their catalog number", async ({ page }) => {
+		await gotoReady(page, "/docs/inputs/button/");
+		const demo = page.locator("section.demo", {
+			has: page.getByRole("heading", { name: "Full width" }),
+		});
+		await expect(demo.locator(".sk-page__num")).toHaveText("#001");
+		await expect(page.getByRole("link", { name: "Reference #001" })).toHaveAttribute(
+			"href",
+			"/api/v1/en/e/001.txt"
+		);
+	});
+
 	test("every sidebar link resolves with 200", async ({ page, request }) => {
 		await gotoReady(page, "/docs/inputs/button/");
 		const hrefs = await page

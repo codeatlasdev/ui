@@ -2,7 +2,7 @@
 Element: #038 Default (inputs/segmented-control)
 What it shows: Text items, and text items with icons.
 Tags: default, segmentedcontrol
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: SegmentedControl
 Live demo: https://ui.codeatlas.com.br/docs/inputs/segmented-control#default
 

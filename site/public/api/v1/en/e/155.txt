@@ -2,7 +2,7 @@
 Element: #155 Keyboard (navigation/command-palette)
 What it shows: Type to filter across every module. Queries shorter than minQueryLength keep the full grouped list.
 Tags: keyboard, kbd
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Kbd
 Live demo: https://ui.codeatlas.com.br/docs/navigation/command-palette#keyboard
 

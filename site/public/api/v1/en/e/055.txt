@@ -2,7 +2,7 @@
 Element: #055 States (inputs/text-area)
 What it shows: Helper text, error, required, read-only, disabled and resize=&quot;none&quot;.
 Tags: states, textarea
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: TextArea
 Live demo: https://ui.codeatlas.com.br/docs/inputs/text-area#states
 

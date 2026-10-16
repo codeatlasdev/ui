@@ -2,7 +2,7 @@
 Element: #091 Open from a button (feedback/lightbox)
 What it shows: Open from a button
 Tags: open, from, a, button, lightbox
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Button, Lightbox
 Live demo: https://ui.codeatlas.com.br/docs/feedback/lightbox#open-from-a-button
 

@@ -1,0 +1,186 @@
+/* The sketchbook language shared by landing, gallery, templates and docs: numbered pages with a
+ * spiral margin, a page-number tab, italic captions and the pencil hatch. Tokens only. */
+
+:root {
+	--sk-spiral: 1.25rem;
+	--lp-max: 76rem;
+	--lp-gutter: clamp(var(--ca-space-4), 4vw, var(--ca-space-12));
+}
+
+/* ── Page ────────────────────────────────────────────────────────────── */
+.sk-page {
+	position: relative;
+	padding-inline-start: calc(var(--sk-spiral) + var(--ca-space-4));
+	border: var(--ca-border-width-strong) solid var(--ca-outline-strong);
+	border-radius: 0;
+	background: var(--ca-surface-raised);
+	box-shadow: var(--ca-shadow-md);
+}
+.sk-page::before {
+	content: "";
+	position: absolute;
+	inset-block: 0;
+	inset-inline-start: 0;
+	inline-size: var(--sk-spiral);
+	background: radial-gradient(circle, var(--ca-outline-strong) 2px, transparent 2.5px) center / 100% 2rem repeat-y;
+	pointer-events: none;
+}
+.sk-page__num {
+	position: absolute;
+	inset-block-start: calc(-1 * var(--ca-border-width-strong));
+	inset-inline-end: var(--ca-space-4);
+	padding: var(--ca-space-1) var(--ca-space-3);
+	background: var(--ca-brand-fill);
+	color: var(--ca-brand-contrast);
+	font-family: var(--ca-font-mono);
+	font-size: var(--ca-font-size-caption);
+	letter-spacing: 0.08em;
+}
+.sk-caption {
+	margin: 0;
+	color: var(--ca-text-secondary);
+	font-family: var(--ca-font-display);
+	font-size: var(--ca-font-size-body2);
+	font-style: italic;
+}
+.sk-eyebrow {
+	margin: 0;
+	color: var(--ca-brand-text);
+	font-size: var(--ca-font-size-caption);
+	font-weight: var(--ca-font-weight-semibold);
+	letter-spacing: var(--ca-overline-tracking);
+	text-transform: uppercase;
+}
+/* Pencil hatch: the corner is shaded in the active preset's brand color and fades toward the middle. */
+.sk-hatch::before {
+	content: "";
+	position: absolute;
+	inset-block-end: 0;
+	inset-inline-start: 0;
+	inline-size: min(44%, 13rem);
+	block-size: 5rem;
+	border-end-start-radius: inherit;
+	background: repeating-linear-gradient(
+		135deg,
+		color-mix(in oklab, var(--ca-brand-main) 55%, transparent) 0 1.5px,
+		transparent 1.5px 7px
+	);
+	mask: linear-gradient(to top right, #000, transparent 72%);
+	opacity: 0.5;
+	pointer-events: none;
+}
+
+.site-brand__tag {
+	margin-inline-start: var(--ca-space-2);
+	color: var(--ca-text-secondary);
+	font-family: var(--ca-font-display);
+	font-style: italic;
+}
+/* The docs header brand never wraps: on a phone it has no room for the tag. */
+@media (max-width: 899.98px) {
+	.site-brand__tag {
+		display: none;
+	}
+}
+
+/* ── Site bar ────────────────────────────────────────────────────────── */
+/* Sticky, full-bleed and OPAQUE: content never scrolls behind the links, and browsers tint
+   the status bar from it (Safari 26 samples sticky edge elements; theme-color sync elsewhere). */
+.bar {
+	position: sticky;
+	top: 0;
+	z-index: var(--ca-z-sticky);
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: var(--ca-space-4);
+	padding:
+		calc(var(--ca-safe-top) + var(--ca-space-3))
+		max(var(--lp-gutter), calc((100% - var(--lp-max)) / 2 + var(--lp-gutter)))
+		var(--ca-space-3);
+	background-color: var(--ca-surface-base);
+	box-shadow: inset 0 -1px 0 var(--ca-outline-subtle);
+}
+.bar__brand {
+	display: inline-flex;
+	align-items: center;
+	gap: var(--ca-space-2);
+	color: var(--ca-text-primary);
+	font-family: var(--ca-font-display);
+	font-weight: 650;
+	font-size: var(--ca-font-size-lg);
+	text-decoration: none;
+	min-block-size: 44px;
+}
+.bar__nav {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	justify-content: flex-end;
+	gap: var(--ca-space-1) var(--ca-space-5);
+}
+.bar__nav a:not(.ca-btn) {
+	color: var(--ca-text-secondary);
+	text-decoration: none;
+	font-size: var(--ca-font-size-body2);
+	min-block-size: 44px;
+	display: inline-flex;
+	align-items: center;
+}
+.bar__nav a:not(.ca-btn):hover,
+.bar__nav a[aria-current="page"] {
+	color: var(--ca-text-primary);
+}
+.bar a:focus-visible,
+.foot a:focus-visible {
+	outline: 2px solid var(--ca-focus-ring);
+	outline-offset: 3px;
+	border-radius: var(--ca-radius-sm);
+}
+/* The bar links sit in a row only where there is room: the phone keeps brand + the main action
+   (every link is also in the footer). */
+@media (max-width: 899.98px) {
+	.bar__nav a:not(.ca-btn) {
+		display: none;
+	}
+}
+
+/* ── Site footer ─────────────────────────────────────────────────────── */
+.foot {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+	gap: var(--ca-space-4);
+	max-inline-size: var(--lp-max);
+	margin-inline: auto;
+	padding: var(--ca-space-6) var(--lp-gutter) calc(var(--ca-space-8) + var(--ca-safe-bottom));
+	border-block-start: 1px solid var(--ca-outline-subtle);
+	font-size: var(--ca-font-size-body2);
+	color: var(--ca-text-secondary);
+}
+.foot nav {
+	display: flex;
+	flex-wrap: wrap;
+	gap: var(--ca-space-5);
+}
+.foot a {
+	color: var(--ca-text-secondary);
+	min-block-size: 44px;
+	display: inline-flex;
+	align-items: center;
+}
+.foot a:hover {
+	color: var(--ca-text-primary);
+}
+
+@media (forced-colors: active) {
+	.sk-page {
+		border-color: CanvasText;
+		box-shadow: none;
+	}
+	.sk-page__num {
+		forced-color-adjust: none;
+		background: Highlight;
+		color: HighlightText;
+	}
+}

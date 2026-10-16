@@ -2,7 +2,7 @@
 Element: #194 Animated counter (charts/gauge)
 What it shows: Updating value animates the ring and counts the number.
 Tags: animated, counter, card, stack, gaugechart
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, Stack, GaugeChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/gauge#animated-counter
 

@@ -2,7 +2,7 @@
 Element: #130 Streaming rows (display/live-list)
 What it shows: Start the check, then scroll up while it runs: following pauses and a New button appears.
 Tags: streaming, rows, livelist, button, chip
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: LiveList, Button, Chip
 Live demo: https://ui.codeatlas.com.br/docs/display/live-list#streaming-rows
 

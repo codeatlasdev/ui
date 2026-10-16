@@ -2,7 +2,7 @@
 Element: #079 Tone and variant (surfaces/surface)
 What it shows: Tone and variant
 Tags: tone, and, variant, surface
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Surface
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/surface#tone-and-variant
 

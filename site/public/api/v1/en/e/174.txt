@@ -2,7 +2,7 @@
 Element: #174 Without header (layout/form-page)
 What it shows: Omit title, description, leading, trailing and backHref to drop the header.
 Tags: without, header, appform, formsection, textfield, button
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: AppForm, FormSection, TextField, Button
 Live demo: https://ui.codeatlas.com.br/docs/layout/form-page#without-header
 

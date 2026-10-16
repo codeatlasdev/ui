@@ -1,6 +1,7 @@
 ---
+import { readFileSync } from "node:fs";
 import { codeToHtml } from "shiki";
-import { Button } from "@codeatlasdev/ui";
+import { Button, CardGrid, LinkCard } from "@codeatlasdev/ui";
 import { graph, website } from "@codeatlasdev/ui/seo";
 import FinaleActions from "~/components/landing/FinaleActions.svelte";
 import Chapter from "~/components/landing/Chapter.astro";
@@ -9,8 +10,11 @@ import HeroStage from "~/components/landing/HeroStage.svelte";
 import QuickStart from "~/components/landing/QuickStart.svelte";
 import Rail from "~/components/landing/Rail.astro";
 import ThemeLab from "~/components/landing/ThemeLab.svelte";
-import Logo from "~/components/Logo.svelte";
+import SiteBar from "~/components/site/SiteBar.astro";
+import SiteFooter from "~/components/site/SiteFooter.astro";
+import SketchbookHero from "~/components/landing/SketchbookHero.svelte";
 import Base from "~/layouts/Base.astro";
+import catalog from "../../public/api/v1/catalog.json";
 import "~/styles/landing.css";
 
 const REPO = "https://github.com/codeatlasdev/ui";
@@ -20,22 +24,18 @@ const SITE = "https://ui.codeatlas.com.br";
 const hl = (code: string, lang: string) =>
 	codeToHtml(code.trim(), { lang, themes: { light: "github-light-high-contrast", dark: "github-dark-high-contrast" }, defaultColor: false });
 
-const agentSnippet = await hl(
-	`<AppList title="Users" data={users} searchKeys={['name', 'email']} perPage={8}>
-  {#snippet actions()}
-    <Button variant="filled" href="/users/new">New user</Button>
-  {/snippet}
+// The "code" of the agents chapter is the literal prompt the catalog emits for #001.
+const agentPrompt = readFileSync("public/api/v1/en/p/001.txt", "utf8").trim();
 
-  {#snippet children(list)}
-    <SimpleTable>
-      {#each list.rows as u (u.id)}
-        <tr><td><UserCell name={u.name} email={u.email} /></td></tr>
-      {/each}
-    </SimpleTable>
-  {/snippet}
-</AppList>`,
-	"svelte",
-);
+// Hero pages: real catalog entries, mapped to what a card renders (as gallery.astro does).
+const HERO_IDS = ["001", "005", "015"];
+const heroPages = HERO_IDS.flatMap((id) => {
+	const e = catalog.elements.find((x) => x.id === id);
+	if (!e) return [];
+	const demo = new URL(e.demo);
+	return [{ id: e.id, title: e.title, group: e.group, page: e.page, variant: e.variant, summary: e.summary, demo: demo.pathname + demo.hash }];
+});
+const total = catalog.count;
 
 const install = await Promise.all(
 	[
@@ -77,8 +77,7 @@ export default defineConfig({
 );
 
 const title = "CodeAtlas UI";
-const description =
-	"Ready-made screens for Svelte apps: dashboards, lists, forms and mobile layouts that look right out of the box, restyle from one color, and that AI assistants write correctly the first time.";
+const description = `Svelte 5 UI as a sketchbook: ${total} numbered screens you pick and your AI reproduces, through MCP, a plugin and skills. One theme object, native-feeling on phones.`;
 
 const jsonLd = graph(
 	website({ id: `${SITE}/#website`, name: "CodeAtlas UI", url: `${SITE}/`, description, inLanguage: "en" }),
@@ -108,17 +107,7 @@ import SendPrompt from "~/components/landing/SendPrompt.svelte";
 		</script>
 	</Fragment>
 
-	<header class="bar">
-		<a class="bar__brand" href="/" aria-label="CodeAtlas UI home">
-			<Logo />
-			<span>CodeAtlas UI</span>
-		</a>
-		<nav class="bar__nav" aria-label="Primary">
-			<a href="/docs/">Docs</a>
-			<a href={REPO} rel="noopener">GitHub</a>
-			<Button size="sm" href="/docs/">Get started</Button>
-		</nav>
-	</header>
+	<SiteBar />
 
 	<Rail />
 
@@ -127,27 +116,74 @@ import SendPrompt from "~/components/landing/SendPrompt.svelte";
 			<div class="hero__copy">
 				<h1 id="hero-h" class="hero__title">
 					<span class="rewrite">
-						<s class="rewrite__old" data-old>Describing a UI to an AI.</s>
-						<span class="rewrite__new ca-mark-underline" data-new>Screens it builds right the first time.</span>
+						<s class="rewrite__old" data-old>Describe a screen and hope.</s>
+						<span class="rewrite__new ca-mark-underline" data-new>Point at page #012.</span>
 					</span>
 				</h1>
 				<p class="hero__lead">
-					CodeAtlas UI gives your Svelte app finished screens: dashboards, lists, forms and a phone layout that
-					feels native. Pick one brand color and the whole app follows. Names are plain, so people and AI
-					assistants both get it right.
+					A sketchbook of {total} finished screens, each one numbered. You pick the pages; your AI gets the exact
+					reference (code, spec, license line) through MCP or one URL, and reproduces it with your data. Svelte 5,
+					one theme object, works on a phone.
 				</p>
 				<div class="hero__actions">
-					<Button size="lg" href="/docs/">Read the docs</Button>
-					<Button size="lg" variant="outlined" href={REPO}>See it on GitHub</Button>
+					<Button size="lg" href="/gallery/">Open the sketchbook</Button>
+					<Button size="lg" variant="outlined" href="/docs/getting-started/ai-agents/">Wire it to your AI</Button>
 				</div>
 			</div>
 			<div class="hero__stage">
-				<HeroStage client:load />
+				<SketchbookHero client:load elements={heroPages} />
 				<p class="hero__caption ca-mark-note">
-					This is a real, working screen, not a picture. Try the buttons, then change its colors below.
+					Real cards from the gallery. Pick a page; the prompt on the right is what you paste to your AI.
 				</p>
 			</div>
 		</section>
+
+		<Chapter
+			id="pick"
+			title="Pick pages, not pixels."
+			lead='Every demo in the docs has a number. Filter the gallery, tick the pages you want, and copy one message: "I picked these 3 from the @codeatlasdev/ui gallery: #012 …". A link with ?pick=012,045 is the same selection.'
+			layout="wide"
+		>
+			<div class="pick" data-reveal>
+				<CardGrid>
+					<LinkCard title="The gallery" href="/gallery/" description={`${total} numbered demos, live.`} />
+					<LinkCard title="One page as text: #012" href="/api/v1/en/e/012.txt" description="License line, spec, components and source." />
+					<LinkCard title="The whole index as JSON" href="/api/v1/catalog.json" description="Every id, title, tag and component." />
+				</CardGrid>
+			</div>
+		</Chapter>
+
+		<Chapter
+			id="agents"
+			title="Your AI gets the same page."
+			lead="search_demos finds a page by words; get_demo returns its license line, spec, components and source. The skill tells the agent to keep the reference's components, props and motion, and to change only data, copy and theme."
+			layout="wide"
+		>
+			<div class="agents__prompt" data-reveal>
+				<SendPrompt client:visible />
+			</div>
+			<div class="agents">
+				<div class="agents__code"><pre>{agentPrompt}</pre></div>
+				<ul class="agents__list">
+					<li>
+						<strong>MCP server</strong>
+						<span><code>npx -y -p @codeatlasdev/ui ca-ui-mcp</code>: search_demos, get_demo, get_component, search_tokens, get_guide.</span>
+					</li>
+					<li>
+						<strong>Claude Code plugin</strong>
+						<span><code>/plugin install codeatlas-ui --marketplace codeatlasdev/ui</code>: skills + MCP in one line.</span>
+					</li>
+					<li>
+						<strong>Skills</strong>
+						<span><code>npx skills add codeatlasdev/ui</code></span>
+					</li>
+					<li>
+						<strong>llms.txt</strong>
+						<span><a href="/llms.txt">A plain-text index</a> of the whole library for any AI to read.</span>
+					</li>
+				</ul>
+			</div>
+		</Chapter>
 
 		<Chapter
 			id="theme"
@@ -155,6 +191,7 @@ import SendPrompt from "~/components/landing/SendPrompt.svelte";
 			lead="Choose a brand color and every button, chart and card follows. Eight ready-made palettes come built in. Light and dark modes switch with no flash, and any part of a page can have its own look."
 		>
 			<ThemeLab client:visible />
+			<HeroStage client:visible />
 			<div slot="copy" class="chapter__facts" data-reveal>
 				<ul>
 					<li>The same settings always give the same result, so design stays predictable.</li>
@@ -192,40 +229,6 @@ import SendPrompt from "~/components/landing/SendPrompt.svelte";
 		</Chapter>
 
 		<Chapter
-			id="agents"
-			title="AI assistants get it right on the first try."
-			lead="Component names say what a screen is, and props are just your data. There are no styling choices left for an assistant to guess."
-			layout="wide"
-		>
-			<div class="agents__prompt" data-reveal>
-				<SendPrompt client:visible />
-			</div>
-			<div class="agents">
-				<div class="agents__code" set:html={agentSnippet} />
-				<ul class="agents__list">
-					<li>
-						<strong>Typed props</strong>
-						<span>Every component describes what it accepts, so editors and AI assistants know the rules.</span>
-					</li>
-					<li>
-						<strong>llms.txt</strong>
-						<span><a href="/llms.txt">A plain-text index</a> of the whole library for any AI to read.</span>
-					</li>
-					<li>
-						<strong>AGENTS.md</strong>
-						<span>
-							<a href={`${REPO}/blob/main/AGENTS.md`} rel="noopener">A rules file</a> with layouts, colors and the mistakes to avoid.
-						</span>
-					</li>
-					<li>
-						<strong>Ready-made skills</strong>
-						<span>Teach your assistant the library with <code>npx skills add codeatlasdev/ui</code>.</span>
-					</li>
-				</ul>
-			</div>
-		</Chapter>
-
-		<Chapter
 			id="data"
 			title="Charts and tables that already match."
 			lead="Hand over your data and get a chart that fits your colors. When the theme changes, the charts change with it. Charts and tables are optional add-ons, so apps that skip them stay small."
@@ -237,34 +240,8 @@ import SendPrompt from "~/components/landing/SendPrompt.svelte";
 		</Chapter>
 
 		<Chapter
-			id="quality"
-			title="Works for everyone."
-			lead="Keyboard, screen readers and high-contrast modes are built in, following the WAI-ARIA patterns. Every component is tested in a real browser, and this page is built with the same components."
-			layout="wide"
-		>
-			<dl class="facts">
-				<div>
-					<dt>Accessibility checks</dt>
-					<dd>80 component test suites</dd>
-				</div>
-				<div>
-					<dt>Looks the same everywhere</dt>
-					<dd>77 screenshot test suites</dd>
-				</div>
-				<div>
-					<dt>Ready-made palettes</dt>
-					<dd>8, plus your own from one color</dd>
-				</div>
-				<div>
-					<dt>Optional add-ons</dt>
-					<dd>Charts, tables and code blocks load only if you use them</dd>
-				</div>
-			</dl>
-		</Chapter>
-
-		<Chapter
 			id="start"
-			title="Up and running in three steps."
+			title="Three steps, then your AI does the rest."
 			lead="Works with SvelteKit and Astro. Install it, add the theme, and start from a ready-made layout."
 			layout="wide"
 		>
@@ -272,25 +249,14 @@ import SendPrompt from "~/components/landing/SendPrompt.svelte";
 		</Chapter>
 
 		<section class="finale" aria-labelledby="finale-h">
-			<h2 id="finale-h" class="display" data-rise>Build the screen. Skip the styling.</h2>
+			<h2 id="finale-h" class="display" data-rise>Hand them the sketchbook.</h2>
 			<div class="finale__actions" data-reveal>
 				<FinaleActions repo={REPO} npm={NPM} />
 			</div>
 		</section>
 	</main>
 
-	<footer class="foot">
-		<p>
-			Free and open source (MIT). Built with Svelte 5. Interaction patterns inspired by
-			<a href="https://bits-ui.com" rel="noopener">Bits UI</a>.
-		</p>
-		<nav aria-label="Footer">
-			<a href="/docs/">Docs</a>
-			<a href={REPO} rel="noopener">GitHub</a>
-			<a href={NPM} rel="noopener">npm</a>
-			<a href="/llms.txt">llms.txt</a>
-		</nav>
-	</footer>
+	<SiteFooter />
 
 	<script>
 		import { boot, lazyFrames } from "~/lib/landing";

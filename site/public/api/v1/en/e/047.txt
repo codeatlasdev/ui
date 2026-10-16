@@ -2,7 +2,7 @@
 Element: #047 Step and disabled (inputs/slider)
 What it shows: step={10} snaps to increments of 10.
 Tags: step, and, disabled, slider
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Slider
 Live demo: https://ui.codeatlas.com.br/docs/inputs/slider#step-and-disabled
 

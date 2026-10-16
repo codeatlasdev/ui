@@ -2,7 +2,7 @@
 Element: #087 Split (feedback/dialog)
 What it shows: Split
 Tags: split, dialog, button, textfield, stack
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Dialog, Button, TextField, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/dialog#split
 

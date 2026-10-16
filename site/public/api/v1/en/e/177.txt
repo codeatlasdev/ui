@@ -2,7 +2,7 @@
 Element: #177 Without trend (layout/kpi-card)
 What it shows: Omit trend and the indicator disappears.
 Tags: without, trend, kpicard, kpigrid
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: KpiCard, KpiGrid
 Live demo: https://ui.codeatlas.com.br/docs/layout/kpi-card#without-trend
 

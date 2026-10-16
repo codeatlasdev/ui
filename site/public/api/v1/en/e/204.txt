@@ -2,7 +2,7 @@
 Element: #204 Real-time stream (charts/line)
 What it shows: Replace the data array and the chart updates in place.
 Tags: real, time, stream, card, linechart
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, LineChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/line#real-time-stream
 

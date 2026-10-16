@@ -2,7 +2,7 @@
 Element: #011 States (inputs/combobox)
 What it shows: Description, custom search placeholder and empty text, disabled option, error and disabled.
 Tags: states, combobox
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Combobox
 Live demo: https://ui.codeatlas.com.br/docs/inputs/combobox#states
 

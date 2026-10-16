@@ -2,7 +2,7 @@
 Element: #210 Comparison (charts/radar)
 What it shows: Two series with a legend and focus on hover.
 Tags: comparison, card, radarchart
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, RadarChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/radar#comparison
 

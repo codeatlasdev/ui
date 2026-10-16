@@ -2,7 +2,7 @@
 Element: #150 longpress (navigation/actions)
 What it shows: Dispatches a longpress event (listen with `onlongpress`) after the pointer is held for the given duration.
 Tags: longpress
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/navigation/actions#longpress
 

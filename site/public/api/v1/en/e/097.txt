@@ -2,7 +2,7 @@
 Element: #097 Card layout (feedback/skeleton)
 What it shows: Card layout
 Tags: card, layout, skeleton, stack, flex
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Skeleton, Card, Stack, Flex
 Live demo: https://ui.codeatlas.com.br/docs/feedback/skeleton#card-layout
 

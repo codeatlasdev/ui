@@ -2,7 +2,7 @@
 Element: #193 Vertical bars (charts/bar)
 What it shows: Vertical bars
 Tags: vertical, bars, card, barchart
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, BarChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/bar#vertical-bars
 

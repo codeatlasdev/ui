@@ -2,7 +2,7 @@
 Element: #212 Simple radar (charts/radar)
 What it shows: Simple radar
 Tags: simple, radar, card, radarchart
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, RadarChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/radar#simple-radar
 

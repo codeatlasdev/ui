@@ -2,7 +2,7 @@
 Element: #052 Settings list (inputs/switch)
 What it shows: Common pattern: a row with title, helper text and a trailing switch.
 Tags: settings, list, switch
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Switch
 Live demo: https://ui.codeatlas.com.br/docs/inputs/switch#settings-list
 

@@ -2,7 +2,7 @@
 Element: #117 With icons (display/chip)
 What it shows: With icons
 Tags: with, icons, chip
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Chip
 Live demo: https://ui.codeatlas.com.br/docs/display/chip#with-icons
 

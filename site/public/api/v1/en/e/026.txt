@@ -2,7 +2,7 @@
 Element: #026 Min, max, negative, error and disabled (inputs/money-input)
 What it shows: Deposit is clamped between R$ 10,00 and R$ 100,00. Include a minus sign to toggle the sign when allowNegative is set.
 Tags: min, max, negative, error, and, disabled, moneyinput
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: MoneyInput
 Live demo: https://ui.codeatlas.com.br/docs/inputs/money-input#min-max-negative-error-and-disabled
 

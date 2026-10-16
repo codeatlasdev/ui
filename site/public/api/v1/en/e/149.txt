@@ -2,7 +2,7 @@
 Element: #149 focusTrap (navigation/actions)
 What it shows: Keeps Tab and Shift+Tab inside the element while enabled.
 Tags: focustrap, button
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/navigation/actions#focustrap
 

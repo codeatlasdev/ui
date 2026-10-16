@@ -2,7 +2,7 @@
 Element: #216 Bar sparklines (charts/sparklines)
 What it shows: variant bar draws narrow columns instead of a line.
 Tags: bar, sparklines, flex, stack, sparkline
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Flex, Stack, Sparkline
 Live demo: https://ui.codeatlas.com.br/docs/charts/sparklines#bar-sparklines
 

@@ -2,7 +2,7 @@
 Element: #133 Basic (display/pagination)
 What it shows: Basic
 Tags: basic, pagination
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Pagination
 Live demo: https://ui.codeatlas.com.br/docs/display/pagination#basic
 

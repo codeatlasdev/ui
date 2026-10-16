@@ -2,6 +2,7 @@
 import { readFileSync } from "node:fs";
 import { breadcrumbList, graph } from "@codeatlasdev/ui/seo";
 import SiteDocsShell from "~/components/docs/SiteDocsShell.svelte";
+import SiteFooter from "~/components/site/SiteFooter.astro";
 import Base from "~/layouts/Base.astro";
 import { SECTIONS } from "~/lib/nav";
 import { THANKS } from "../../../../scripts/release-meta";
@@ -27,7 +28,7 @@ const jsonLd = graph(breadcrumbList([{ name: "CodeAtlas UI", href: `${SITE}/` },
 	<link slot="head" rel="alternate" type="application/atom+xml" title="CodeAtlas UI changelog" href="/changelog/feed.xml" />
 	<SiteDocsShell client:load sections={SECTIONS} active="changelog" pathname={Astro.url.pathname}>
 		<article class="ca-prose doc" data-changelog>
-			<p class="doc__eyebrow">Releases</p>
+			<p class="doc__eyebrow sk-eyebrow">Releases</p>
 			<h1>Changelog</h1>
 			<p class="doc__lead">
 				Every published version of <code>@codeatlasdev/ui</code>, newest first.
@@ -36,4 +37,5 @@ const jsonLd = graph(breadcrumbList([{ name: "CodeAtlas UI", href: `${SITE}/` },
 			<Fragment set:html="<!--CHANGELOG-->" /><Fragment set:html={body} /><Fragment set:html="<!--/CHANGELOG-->" />
 		</article>
 	</SiteDocsShell>
+	<SiteFooter />
 </Base>

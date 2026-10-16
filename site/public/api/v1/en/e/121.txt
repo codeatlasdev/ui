@@ -2,7 +2,7 @@
 Element: #121 Languages (display/code-snippet)
 What it shows: Languages
 Tags: languages, codesnippet
-Needs: @codeatlasdev/ui@4.0.0 + shiki
+Needs: @codeatlasdev/ui@4.1.0 + shiki
 Components: CodeSnippet
 Live demo: https://ui.codeatlas.com.br/docs/display/code-snippet#languages
 

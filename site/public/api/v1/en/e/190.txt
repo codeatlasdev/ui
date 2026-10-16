@@ -2,7 +2,7 @@
 Element: #190 Horizontal bars (charts/bar)
 What it shows: Good for long category names and rankings.
 Tags: horizontal, bars, card, barchart
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, BarChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/bar#horizontal-bars
 

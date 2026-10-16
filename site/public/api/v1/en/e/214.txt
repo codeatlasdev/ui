@@ -2,7 +2,7 @@
 Element: #214 Bubble chart (charts/scatter)
 What it shows: The third value of each point sets the bubble size.
 Tags: bubble, chart, card, scatterchart
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, ScatterChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/scatter#bubble-chart
 

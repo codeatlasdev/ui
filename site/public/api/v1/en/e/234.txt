@@ -2,7 +2,7 @@
 Element: #234 DocsNav and TableOfContents (docs-kit/docs)
 What it shows: The sidebar tree and the page index. The inline variant is shown; DocsShell uses the rail variant on desktop.
 Tags: docsnav, and, tableofcontents
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: DocsNav, TableOfContents
 Live demo: https://ui.codeatlas.com.br/docs/docs-kit/docs#docsnav-and-tableofcontents
 

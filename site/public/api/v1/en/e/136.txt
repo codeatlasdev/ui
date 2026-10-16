@@ -2,7 +2,7 @@
 Element: #136 Horizontal scroll (display/scroll-area)
 What it shows: Horizontal scroll
 Tags: horizontal, scroll, scrollarea, card, chip
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: ScrollArea, Card, Chip
 Live demo: https://ui.codeatlas.com.br/docs/display/scroll-area#horizontal-scroll
 

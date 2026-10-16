@@ -2,7 +2,7 @@
 Element: #114 On avatars (display/badge)
 What it shows: On avatars
 Tags: on, avatars, badge, avatar, flex
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Badge, Avatar, Flex
 Live demo: https://ui.codeatlas.com.br/docs/display/badge#on-avatars
 

@@ -2,7 +2,7 @@
 Element: #025 Phone and CEP (inputs/masked-field)
 What it shows: PhoneField binds E.164 (+55...) while showing the masked form. CepField resolves an address through onlookup. Try 01310-100.
 Tags: phone, and, cep, cepfield, phonefield
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: CepField, PhoneField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/masked-field#phone-and-cep
 

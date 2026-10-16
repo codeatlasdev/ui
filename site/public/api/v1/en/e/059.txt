@@ -2,7 +2,7 @@
 Element: #059 Basic (inputs/theme-toggle)
 What it shows: Click it: the whole site flips between light and dark.
 Tags: basic, themetoggle
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: ThemeToggle
 Live demo: https://ui.codeatlas.com.br/docs/inputs/theme-toggle#basic
 

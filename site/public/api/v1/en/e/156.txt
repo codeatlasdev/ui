@@ -2,7 +2,7 @@
 Element: #156 Open the palette (navigation/command-palette)
 What it shows: Click the button or press Cmd+K / Ctrl+K while this page is focused. Picking an item shows its path instead of navigating.
 Tags: open, the, palette, commandpalette, button, kbd
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: CommandPalette, Button, Kbd
 Live demo: https://ui.codeatlas.com.br/docs/navigation/command-palette#open-the-palette
 

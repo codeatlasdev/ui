@@ -2,7 +2,7 @@
 Element: #067 Single (surfaces/accordion)
 What it shows: Single
 Tags: single, accordion, accordionitem
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Accordion, AccordionItem
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/accordion#single
 

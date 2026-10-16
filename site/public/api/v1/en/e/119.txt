@@ -2,7 +2,7 @@
 Element: #119 StatusChip (display/chip)
 What it shows: StatusChip
 Tags: statuschip
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: StatusChip
 Live demo: https://ui.codeatlas.com.br/docs/display/chip#statuschip
 

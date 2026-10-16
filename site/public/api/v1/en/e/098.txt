@@ -2,7 +2,7 @@
 Element: #098 Image placeholder (feedback/skeleton)
 What it shows: Image placeholder
 Tags: image, placeholder, skeleton, card, stack
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Skeleton, Card, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/skeleton#image-placeholder
 

@@ -2,7 +2,7 @@
 Element: #231 Heading scale (foundation/typography)
 What it shows: --ca-font-size-h1 to h6.
 Tags: heading, scale
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/typography#heading-scale
 

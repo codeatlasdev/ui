@@ -2,7 +2,7 @@
 Element: #053 Without label (inputs/switch)
 What it shows: Provide aria-label when no visible label is rendered.
 Tags: without, label, switch
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Switch
 Live demo: https://ui.codeatlas.com.br/docs/inputs/switch#without-label
 

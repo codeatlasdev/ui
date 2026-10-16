@@ -2,7 +2,7 @@
 Element: #127 Fixed ratio (display/image)
 What it shows: Fixed ratio
 Tags: fixed, ratio, image
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Image
 Live demo: https://ui.codeatlas.com.br/docs/display/image#fixed-ratio
 

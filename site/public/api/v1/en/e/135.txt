@@ -2,7 +2,7 @@
 Element: #135 More siblings (display/pagination)
 What it shows: More siblings
 Tags: more, siblings, pagination
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Pagination
 Live demo: https://ui.codeatlas.com.br/docs/display/pagination#more-siblings
 

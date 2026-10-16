@@ -2,7 +2,7 @@
 Element: #094 Indeterminate (feedback/progress)
 What it shows: Use when progress cannot be determined.
 Tags: indeterminate, progress
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Progress
 Live demo: https://ui.codeatlas.com.br/docs/feedback/progress#indeterminate
 

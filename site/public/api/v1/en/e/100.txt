@@ -2,7 +2,7 @@
 Element: #100 In a button (feedback/spinner)
 What it shows: Use the loading prop of Button instead of placing a Spinner by hand.
 Tags: in, a, button
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/feedback/spinner#in-a-button
 

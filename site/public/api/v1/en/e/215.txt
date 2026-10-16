@@ -2,7 +2,7 @@
 Element: #215 Clustered by tier (charts/scatter)
 What it shows: One series per group, each with its own palette color.
 Tags: clustered, by, tier, card, scatterchart
-Needs: @codeatlasdev/ui@4.0.0 + echarts
+Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, ScatterChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/scatter#clustered-by-tier
 

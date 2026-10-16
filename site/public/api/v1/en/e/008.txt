@@ -2,7 +2,7 @@
 Element: #008 States (inputs/checkbox)
 What it shows: Unchecked, checked and indeterminate.
 Tags: states, checkbox
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: Checkbox
 Live demo: https://ui.codeatlas.com.br/docs/inputs/checkbox#states
 

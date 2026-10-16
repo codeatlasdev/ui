@@ -2,7 +2,7 @@
 Element: #178 Four cards (layout/kpi-grid)
 What it shows: Four across, then 2 x 2, then one column.
 Tags: four, cards, kpicard, kpigrid
-Needs: @codeatlasdev/ui@4.0.0
+Needs: @codeatlasdev/ui@4.1.0
 Components: KpiCard, KpiGrid
 Live demo: https://ui.codeatlas.com.br/docs/layout/kpi-grid#four-cards
 
