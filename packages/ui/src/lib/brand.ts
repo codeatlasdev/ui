@@ -16,6 +16,8 @@
 import { createHash } from "node:crypto";
 import { existsSync, mkdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
+import type * as ResvgModule from "@resvg/resvg-js";
+import type * as PngToIcoModule from "png-to-ico";
 import type { Plugin } from "vite";
 import { defaultPresetTokens, defineTheme } from "./theme/define.js";
 import type { ThemeOptions } from "./theme-script.js";
@@ -162,6 +164,22 @@ export function brandUrls(
 	return plan(o).assets;
 }
 
+/** Optional peers with a native binary: never bundled, always resolved by Node at runtime. */
+const NATIVE_PEERS = ["@resvg/resvg-js", "png-to-ico"] as const;
+
+/**
+ * Loads an optional peer at runtime. The specifier is a variable on purpose (the documented exception
+ * to static imports): a literal `import("@resvg/resvg-js")` makes Rolldown follow the call into the
+ * `.node` binary as soon as any SSR graph reaches this module, e.g. through `designStyle` (#184).
+ */
+async function optionalPeer<T>(name: (typeof NATIVE_PEERS)[number]): Promise<T> {
+	try {
+		return (await import(/* @vite-ignore */ name)) as T;
+	} catch (e) {
+		return missing(name, e);
+	}
+}
+
 /**
  * Writes `favicon.<h>.svg`, `favicon.<h>.ico` (16/32/48), `favicon-32.<h>.png`, `apple-touch-icon.<h>.png`
  * (180, opaque), `icon-192/512.<h>.png`, `maskable-512.<h>.png` and `manifest.<h>.webmanifest`.
@@ -169,8 +187,8 @@ export function brandUrls(
  */
 export async function generateBrand(o: GenerateBrandOptions): Promise<BrandAssets> {
 	const [{ Resvg }, { default: pngToIco }] = await Promise.all([
-		import("@resvg/resvg-js").catch((e) => missing("@resvg/resvg-js", e)),
-		import("png-to-ico").catch((e) => missing("png-to-ico", e)),
+		optionalPeer<typeof ResvgModule>("@resvg/resvg-js"),
+		optionalPeer<typeof PngToIcoModule>("png-to-ico"),
 	]);
 	const { mark, brand, hash, assets, url } = plan(o);
 	const light = renderMark(mark, brand.light);
@@ -303,6 +321,9 @@ export function caBrandPlugin(options: CaBrandPluginOptions = {}): Plugin {
 	let root = "";
 	return {
 		name: "codeatlasdev-ui:brand",
+		// Belt and braces for #184: the specifiers below are already opaque to bundlers, but an app
+		// that bundles the SSR graph must never try to inline these native packages.
+		config: () => ({ ssr: { external: [...NATIVE_PEERS] } }),
 		configResolved(config) {
 			root = config.root;
 			const i = brandInputs(root, options);

@@ -261,6 +261,27 @@ bunx svelte-check
 
 `--theme` is a module exporting `theme` (or a default export); a `.ts` file needs Bun or Node 22.18+. The other flags are `--mark`, `--out`, `--base`, `--manifest`, `--short-name` and `--dir`, with the plugin's defaults. It exits 1 when the mark file is missing. A `package.json` script such as `"prepare:brand": "codeatlas-ui brand --theme src/lib/theme.ts"` run before `check-types` keeps the order explicit.
 
+### From your own script
+
+If you already describe the brand once as a `CaBrandPluginOptions` object, call the same functions the plugin and the CLI use instead of repeating the flags:
+
+```ts
+// scripts/brand.ts
+import { brandUrls, runBrand } from "@codeatlasdev/ui/vite";
+import { readFileSync } from "node:fs";
+import { brand } from "../brand.config.ts";
+
+await runBrand(process.cwd(), brand); // renders the icons, writes the module; false when the mark is missing
+const mark = readFileSync(brand.mark ?? "src/brand/mark.svg", "utf8");
+const urls = brandUrls({ mark, theme: brand.theme ?? {}, base: brand.base }); // URLs only: no rasterizer, no files
+```
+
+`runBrand(root, options)` needs `@resvg/resvg-js` and `png-to-ico`; `brandUrls` does not.
+
+### Importing the theme in server code
+
+`designStyle`, `mergeTheme`, `DESIGN_STYLES` and `ThemeOptions` are safe to import from `@codeatlasdev/ui/vite` in a `theme.ts` that `src/hooks.server.ts` also imports. The two native packages are loaded at run time, by name, only when you render icons, so the SSR build never bundles `resvgjs.*.node`. `caBrandPlugin` also marks both as `ssr.external`.
+
 Outside Vite (an Astro prebuild script, a CI step), call `generateBrand({ mark, theme, outDir })`, which the plugin wraps. It returns the same URLs.
 
 The hash covers the inputs (mark, resolved colors, sizes), not the rendered bytes, so it is the same on every machine. A changed color renames every file, which makes `/brand/*` safe to serve with `Cache-Control: public, max-age=31536000, immutable`; no `?v=` query is needed and scrapers see a new URL.

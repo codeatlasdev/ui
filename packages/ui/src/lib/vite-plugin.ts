@@ -46,11 +46,13 @@ export type {
 } from "./brand.js";
 export {
 	brandHash,
+	brandUrls,
 	caBrandPlugin,
 	faviconSvg,
 	generateBrand,
 	renderMark,
 	resolveBrand,
+	runBrand,
 } from "./brand.js";
 // Node-side build tooling (astro.config, prebuild scripts) cannot import the `seo` barrel: it re-exports
 // `Seo.svelte`, which Node does not load. The social-card renderers are plain TypeScript, so re-export them here.
