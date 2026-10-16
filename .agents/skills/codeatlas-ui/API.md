@@ -2903,7 +2903,7 @@ const GLASS_OPTICS: {
 
 `import { isItemActive } from "@codeatlasdev/ui"`
 
-True when `pathname` is the item's path or sits below it; trailing slashes are ignored on both sides.
+True when `pathname` is the item's path or sits below it; trailing slashes are ignored on both sides. An item at `"/"` is active on `"/"` only, it does not claim every page.
 
 ```ts
 function isItemActive(item: NavItem, pathname: string): boolean
