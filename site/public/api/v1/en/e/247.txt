@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #247 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/record-list#phone-width -->
 Element: #247 Phone width (layout/record-list)
-What it shows: A 344px slot: the same list stacked, because the list reads its own width.
-Tags: phone, width, avatar, dropdownmenu, dropdownmenuitem, iconbutton, recordcell, recordlist, recordrow
+What it shows: The same record list inside a narrow slot, to show it stacking because the list reads its own width.
+When to use: Checking how a dense record list reads on a phone before shipping it, without resizing the browser.
+Spec:
+- Wrapper `<div class="slot">` with `inline-size: min(100%, 21.5rem)`
+- `<RecordList` with `columns="minmax(0,1.3fr) minmax(0,1fr) 7rem 7rem 2.75rem"`
+- `labels={['Key', 'Prefix', 'Last used', 'Created']}` and `aria-label="API keys"`
+- 2 rows from `keys` (Production key, CI pipeline) with `<Avatar alt={key.name} size="sm" />` in `{#snippet identity()}`
+- `<RecordCell label="Prefix">`, `<RecordCell label="Last used">` and `<RecordCell label="Created">`; `{#snippet actions()}` holds a `<DropdownMenu align="end">` with a `Revoke` item
+Tags: record-list, record-row, table, phone, responsive, container-width
 Needs: @codeatlasdev/ui@4.1.0
 Components: Avatar, DropdownMenu, DropdownMenuItem, IconButton, RecordCell, RecordList, RecordRow
 Live demo: https://ui.codeatlas.com.br/docs/layout/record-list#phone-width

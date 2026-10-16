@@ -10442,19 +10442,24 @@
 			"slug": "apps",
 			"title": "Apps",
 			"description": "Identity with avatar, status chip and a row menu. Narrow the window or the container to see it stack.",
-			"summary": "Identity with avatar, status chip and a row menu. Narrow the window or the container to see it stack.",
-			"use": "",
-			"spec": [],
+			"summary": "A record list of three apps with an avatar identity, scopes, install count, status chip, created date and a row menu.",
+			"use": "Admin tables of API apps, integrations or projects where each row needs a name, a few facts, a status and per-row actions.",
+			"spec": [
+				"`<RecordList` with `columns=\"minmax(0,1.3fr) minmax(0,1.8fr) 4.5rem 5.5rem 6.5rem 2.75rem\"`",
+				"`labels={['App', 'Scopes', 'Installs', 'Status', 'Created']}` and `aria-label=\"Apps\"`",
+				"3 rows from `apps` (Billing, Support desk, Analytics exporter), each a `<RecordRow>` keyed by `app.id`",
+				"`{#snippet identity()}` holds `<Avatar alt={app.name} size=\"sm\" />` and the name in `<strong>`",
+				"`<RecordCell label=\"Scopes\">`, `<RecordCell label=\"Installs\">`, `<RecordCell label=\"Status\">` and `<RecordCell label=\"Created\">`",
+				"`<StatusChip status={app.live ? 'success' : 'neutral'} label={app.live ? 'Live' : 'Draft'} />`; `{#snippet actions()}` holds a `<DropdownMenu align=\"end\">` with `Edit` and `Rotate secret` items"
+			],
 			"tags": [
-				"apps",
+				"record-list",
+				"record-row",
+				"table",
+				"status-chip",
+				"row-menu",
 				"avatar",
-				"dropdownmenu",
-				"dropdownmenuitem",
-				"iconbutton",
-				"recordcell",
-				"recordlist",
-				"recordrow",
-				"statuschip"
+				"responsive"
 			],
 			"shape": "wide",
 			"components": [
@@ -10494,16 +10499,22 @@
 			"slug": "without-a-menu",
 			"title": "Without a menu",
 			"description": "No actions slot and no actions track: three columns that stack the same way.",
-			"summary": "No actions slot and no actions track: three columns that stack the same way.",
-			"use": "",
-			"spec": [],
+			"summary": "A three column record list of webhooks with no actions slot, so there is no trailing menu track.",
+			"use": "Read-only lists such as webhook endpoints or logs where rows have facts but no per-row actions.",
+			"spec": [
+				"`<RecordList` with `columns=\"minmax(0,2fr) minmax(0,1.4fr) 5rem\"`",
+				"`labels={['Endpoint', 'Events', 'Delivered']}` and `aria-label=\"Webhooks\"`",
+				"2 rows from `hooks`, each a `<RecordRow>` keyed by `hook.id`",
+				"`{#snippet identity()}` renders the endpoint as `<code>{hook.url}</code>`",
+				"`<RecordCell label=\"Events\">` and `<RecordCell label=\"Delivered\">` follow; the row has no actions snippet and `columns` has no trailing action track"
+			],
 			"tags": [
-				"without",
-				"a",
-				"menu",
-				"recordcell",
-				"recordlist",
-				"recordrow"
+				"record-list",
+				"record-row",
+				"table",
+				"no-actions",
+				"webhooks",
+				"responsive"
 			],
 			"shape": "wide",
 			"components": [
@@ -10533,21 +10544,24 @@
 			"slug": "phone-width",
 			"title": "Phone width",
 			"description": "A 344px slot: the same list stacked, because the list reads its own width.",
-			"summary": "A 344px slot: the same list stacked, because the list reads its own width.",
-			"use": "",
-			"spec": [],
-			"tags": [
-				"phone",
-				"width",
-				"avatar",
-				"dropdownmenu",
-				"dropdownmenuitem",
-				"iconbutton",
-				"recordcell",
-				"recordlist",
-				"recordrow"
+			"summary": "The same record list inside a narrow slot, to show it stacking because the list reads its own width.",
+			"use": "Checking how a dense record list reads on a phone before shipping it, without resizing the browser.",
+			"spec": [
+				"Wrapper `<div class=\"slot\">` with `inline-size: min(100%, 21.5rem)`",
+				"`<RecordList` with `columns=\"minmax(0,1.3fr) minmax(0,1fr) 7rem 7rem 2.75rem\"`",
+				"`labels={['Key', 'Prefix', 'Last used', 'Created']}` and `aria-label=\"API keys\"`",
+				"2 rows from `keys` (Production key, CI pipeline) with `<Avatar alt={key.name} size=\"sm\" />` in `{#snippet identity()}`",
+				"`<RecordCell label=\"Prefix\">`, `<RecordCell label=\"Last used\">` and `<RecordCell label=\"Created\">`; `{#snippet actions()}` holds a `<DropdownMenu align=\"end\">` with a `Revoke` item"
 			],
-			"shape": "wide",
+			"tags": [
+				"record-list",
+				"record-row",
+				"table",
+				"phone",
+				"responsive",
+				"container-width"
+			],
+			"shape": "square",
 			"components": [
 				"Avatar",
 				"DropdownMenu",

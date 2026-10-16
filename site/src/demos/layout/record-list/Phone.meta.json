@@ -1,0 +1,13 @@
+{
+	"summary": "The same record list inside a narrow slot, to show it stacking because the list reads its own width.",
+	"use": "Checking how a dense record list reads on a phone before shipping it, without resizing the browser.",
+	"spec": [
+		"Wrapper `<div class=\"slot\">` with `inline-size: min(100%, 21.5rem)`",
+		"`<RecordList` with `columns=\"minmax(0,1.3fr) minmax(0,1fr) 7rem 7rem 2.75rem\"`",
+		"`labels={['Key', 'Prefix', 'Last used', 'Created']}` and `aria-label=\"API keys\"`",
+		"2 rows from `keys` (Production key, CI pipeline) with `<Avatar alt={key.name} size=\"sm\" />` in `{#snippet identity()}`",
+		"`<RecordCell label=\"Prefix\">`, `<RecordCell label=\"Last used\">` and `<RecordCell label=\"Created\">`; `{#snippet actions()}` holds a `<DropdownMenu align=\"end\">` with a `Revoke` item"
+	],
+	"tags": ["record-list", "record-row", "table", "phone", "responsive", "container-width"],
+	"shape": "square"
+}

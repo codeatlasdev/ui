@@ -1,0 +1,13 @@
+{
+	"summary": "A three column record list of webhooks with no actions slot, so there is no trailing menu track.",
+	"use": "Read-only lists such as webhook endpoints or logs where rows have facts but no per-row actions.",
+	"spec": [
+		"`<RecordList` with `columns=\"minmax(0,2fr) minmax(0,1.4fr) 5rem\"`",
+		"`labels={['Endpoint', 'Events', 'Delivered']}` and `aria-label=\"Webhooks\"`",
+		"2 rows from `hooks`, each a `<RecordRow>` keyed by `hook.id`",
+		"`{#snippet identity()}` renders the endpoint as `<code>{hook.url}</code>`",
+		"`<RecordCell label=\"Events\">` and `<RecordCell label=\"Delivered\">` follow; the row has no actions snippet and `columns` has no trailing action track"
+	],
+	"tags": ["record-list", "record-row", "table", "no-actions", "webhooks", "responsive"],
+	"shape": "wide"
+}

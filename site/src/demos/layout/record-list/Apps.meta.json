@@ -1,0 +1,14 @@
+{
+	"summary": "A record list of three apps with an avatar identity, scopes, install count, status chip, created date and a row menu.",
+	"use": "Admin tables of API apps, integrations or projects where each row needs a name, a few facts, a status and per-row actions.",
+	"spec": [
+		"`<RecordList` with `columns=\"minmax(0,1.3fr) minmax(0,1.8fr) 4.5rem 5.5rem 6.5rem 2.75rem\"`",
+		"`labels={['App', 'Scopes', 'Installs', 'Status', 'Created']}` and `aria-label=\"Apps\"`",
+		"3 rows from `apps` (Billing, Support desk, Analytics exporter), each a `<RecordRow>` keyed by `app.id`",
+		"`{#snippet identity()}` holds `<Avatar alt={app.name} size=\"sm\" />` and the name in `<strong>`",
+		"`<RecordCell label=\"Scopes\">`, `<RecordCell label=\"Installs\">`, `<RecordCell label=\"Status\">` and `<RecordCell label=\"Created\">`",
+		"`<StatusChip status={app.live ? 'success' : 'neutral'} label={app.live ? 'Live' : 'Draft'} />`; `{#snippet actions()}` holds a `<DropdownMenu align=\"end\">` with `Edit` and `Rotate secret` items"
+	],
+	"tags": ["record-list", "record-row", "table", "status-chip", "row-menu", "avatar", "responsive"],
+	"shape": "wide"
+}

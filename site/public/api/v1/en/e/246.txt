@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #246 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/record-list#without-a-menu -->
 Element: #246 Without a menu (layout/record-list)
-What it shows: No actions slot and no actions track: three columns that stack the same way.
-Tags: without, a, menu, recordcell, recordlist, recordrow
+What it shows: A three column record list of webhooks with no actions slot, so there is no trailing menu track.
+When to use: Read-only lists such as webhook endpoints or logs where rows have facts but no per-row actions.
+Spec:
+- `<RecordList` with `columns="minmax(0,2fr) minmax(0,1.4fr) 5rem"`
+- `labels={['Endpoint', 'Events', 'Delivered']}` and `aria-label="Webhooks"`
+- 2 rows from `hooks`, each a `<RecordRow>` keyed by `hook.id`
+- `{#snippet identity()}` renders the endpoint as `<code>{hook.url}</code>`
+- `<RecordCell label="Events">` and `<RecordCell label="Delivered">` follow; the row has no actions snippet and `columns` has no trailing action track
+Tags: record-list, record-row, table, no-actions, webhooks, responsive
 Needs: @codeatlasdev/ui@4.1.0
 Components: RecordCell, RecordList, RecordRow
 Live demo: https://ui.codeatlas.com.br/docs/layout/record-list#without-a-menu

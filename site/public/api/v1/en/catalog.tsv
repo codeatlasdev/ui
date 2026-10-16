@@ -243,3 +243,6 @@ id	group	page	title	tags	summary
 242	feedback	lightbox	Gallery with video, caption and download	lightbox,gallery,video,caption,carousel,media	A lightbox gallery with three items, two images and one video, each with a caption and some with meta text.
 243	feedback	install-prompt	iOS instructions	install-prompt,pwa,ios,banner,install	The install prompt in iOS mode, showing add to home screen instructions inside a reserved stage box.
 244	feedback	install-prompt	Native prompt	install-prompt,pwa,native,beforeinstallprompt,banner	The install prompt in native mode, triggered by a stand-in beforeinstallprompt event fired on mount.
+245	layout	record-list	Apps	record-list,record-row,table,status-chip,row-menu,avatar,responsive	A record list of three apps with an avatar identity, scopes, install count, status chip, created date and a row menu.
+246	layout	record-list	Without a menu	record-list,record-row,table,no-actions,webhooks,responsive	A three column record list of webhooks with no actions slot, so there is no trailing menu track.
+247	layout	record-list	Phone width	record-list,record-row,table,phone,responsive,container-width	The same record list inside a narrow slot, to show it stacking because the list reads its own width.

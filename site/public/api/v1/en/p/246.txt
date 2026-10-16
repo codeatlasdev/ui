@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #246 "Without a menu" (layout/record-list).
-What it shows: No actions slot and no actions track: three columns that stack the same way..
+What it shows: A three column record list of webhooks with no actions slot, so there is no trailing menu track. When to use: Read-only lists such as webhook endpoints or logs where rows have facts but no per-row actions.
+Spec:
+- `<RecordList` with `columns="minmax(0,2fr) minmax(0,1.4fr) 5rem"`
+- `labels={['Endpoint', 'Events', 'Delivered']}` and `aria-label="Webhooks"`
+- 2 rows from `hooks`, each a `<RecordRow>` keyed by `hook.id`
+- `{#snippet identity()}` renders the endpoint as `<code>{hook.url}</code>`
+- `<RecordCell label="Events">` and `<RecordCell label="Delivered">` follow; the row has no actions snippet and `columns` has no trailing action track
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
