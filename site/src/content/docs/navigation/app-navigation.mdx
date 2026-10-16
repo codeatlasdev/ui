@@ -97,13 +97,20 @@ Preloading covers the common case. When a page still suspends on `await`, wrap t
 ```svelte
 <script lang="ts">
   import { LoadingBoundary, Skeleton } from "@codeatlasdev/ui";
-  import Invoices from "./Invoices.svelte"; // const rows = $derived(await loadInvoices())
+
+  async function loadInvoices(): Promise<{ id: string; total: string }[]> {
+    return (await fetch("/api/invoices")).json();
+  }
 </script>
 
 <h1>Invoices</h1>
 
 <LoadingBoundary label="Loading invoices">
-  <Invoices />
+  <ul>
+    {#each await loadInvoices() as invoice (invoice.id)}
+      <li>{invoice.id}: {invoice.total}</li>
+    {/each}
+  </ul>
   {#snippet pending()}<Skeleton height="12rem" />{/snippet}
 </LoadingBoundary>
 ```
