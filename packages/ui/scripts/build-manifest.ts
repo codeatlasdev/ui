@@ -784,7 +784,7 @@ export function buildDemos(
 			slug,
 			title,
 			description,
-			summary: meta.summary ?? description,
+			summary: meta.summary || description || title,
 			use: meta.use ?? "",
 			spec: meta.spec ?? [],
 			tags: meta.tags ?? [
@@ -931,16 +931,17 @@ if (import.meta.main) {
 	const catalog = existsSync(DEMOS_DIR)
 		? (await import("../../../site/src/demos/catalog.ts")).CATALOG
 		: [];
+	// Every run (build included) refuses an invalid registry: a demo without an id must never ship.
+	const errors = catalog.length ? checkCatalog(catalog) : [];
+	if (errors.length) {
+		console.error(`demo catalog (site/src/demos/catalog.ts):\n  ${errors.join("\n  ")}`);
+		process.exit(1);
+	}
 	if (process.argv.includes("--check")) {
-		const errors = catalog.length ? checkCatalog(catalog) : [];
 		const bare = manifest.components.filter((c) => !c.props.length && !c.snippets.length);
 		console.log(
 			`${manifest.components.length} components (${bare.length} without own props), ${tokens.length} tokens, ${guides.length} guides, ${catalog.length} demos`
 		);
-		if (errors.length) {
-			console.error(`demo catalog (site/src/demos/catalog.ts):\n  ${errors.join("\n  ")}`);
-			process.exit(1);
-		}
 	} else {
 		const dist = join(ROOT, "dist");
 		mkdirSync(dist, { recursive: true });

@@ -7,7 +7,7 @@
  *
  * Tools: list_components, get_component, get_export, search_tokens, get_guide.
  */
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
@@ -30,7 +30,9 @@ function load<T>(file: string): T {
 const manifest = load<Manifest>("components.json");
 const tokens = load<{ tokens: ManifestToken[] }>("tokens.json").tokens;
 const guides = load<{ guides: ManifestGuide[] }>("guides.json").guides;
-const demos = load<ManifestDemo[]>("demos.json");
+// A build without site/ (from the published tarball) emits no demos: the other tools must keep working.
+const demos = existsSync(join(DIST, "demos.json")) ? load<ManifestDemo[]>("demos.json") : [];
+const noDemos = "No demo catalog in this build (dist/demos.json is missing).";
 
 const text = (s: string) => ({ content: [{ type: "text" as const, text: s }] });
 const fail = (s: string) => ({ ...text(s), isError: true });
@@ -173,7 +175,7 @@ server.registerTool(
 			.filter((h) => h.score > 0)
 			.sort((a, b) => b.score - a.score)
 			.slice(0, limit);
-		if (!hits.length) return fail(`No demo matches "${query}".`);
+		if (!hits.length) return fail(demos.length ? `No demo matches "${query}".` : noDemos);
 		return text(
 			hits
 				.map(
@@ -199,7 +201,7 @@ server.registerTool(
 			const hit = num
 				? demos.find((d) => d.id === num.padStart(3, "0"))
 				: demos.find((d) => raw.endsWith(d.demo.slice(d.demo.indexOf("/docs/"))));
-			if (!hit) return fail(`Unknown demo id "${raw}"; use search_demos.`);
+			if (!hit) return fail(demos.length ? `Unknown demo id "${raw}"; use search_demos.` : noDemos);
 			out.push(readFileSync(join(DIST, `api/v1/en/e/${hit.id}.txt`), "utf8"));
 		}
 		return text(out.join("\n\n---\n\n"));

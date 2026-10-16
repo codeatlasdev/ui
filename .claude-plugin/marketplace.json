@@ -1,12 +1,12 @@
 {
 	"name": "codeatlas-ui",
+	"description": "CodeAtlas UI: Svelte 5 components, numbered demo catalog and agent skills",
 	"owner": { "name": "CodeAtlas" },
 	"plugins": [
 		{
 			"name": "codeatlas-ui",
 			"source": "./",
-			"description": "Svelte 5 UI library: numbered demo catalog (#NNN), ca-ui-mcp server and agent skills",
-			"category": "design"
+			"description": "Svelte 5 UI library: numbered demo catalog (#NNN), ca-ui-mcp server and agent skills"
 		}
 	]
 }

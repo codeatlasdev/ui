@@ -1,12 +1,14 @@
 {
 	"name": "codeatlas-ui",
+	"displayName": "CodeAtlas UI",
 	"description": "Svelte 5 UI library with numbered demo catalog, MCP server and skills",
 	"version": "4.0.0",
-	"skills": [
-		".agents/skills/codeatlas-ui",
-		".agents/skills/codeatlas-dx",
-		".agents/skills/codeatlas-writing"
-	],
+	"author": { "name": "CodeAtlas", "url": "https://ui.codeatlas.com.br" },
+	"homepage": "https://ui.codeatlas.com.br",
+	"repository": "https://github.com/codeatlasdev/ui",
+	"license": "MIT",
+	"keywords": ["svelte", "ui", "design-system", "components"],
+	"skills": ["./.agents/skills/"],
 	"mcpServers": {
 		"codeatlas-ui": {
 			"command": "npx",

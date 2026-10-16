@@ -2,25 +2,25 @@ id	group	page	title	tags	summary
 001	inputs	button	Full width	full,width,button	fullWidth stretches the button to its container.
 002	inputs	button	With icons	with,icons,button	Leading and trailing snippets.
 003	inputs	button	Loading	loading,button	Swaps the leading icon for a spinner, sets aria-busy and blocks clicks while keeping the label.
-004	inputs	button	Sizes	sizes,button	
+004	inputs	button	Sizes	sizes,button	Sizes
 005	inputs	button	States	states,button	Disabled buttons, a destructive action and a link rendered as a button.
 006	inputs	button	Variants	variants,button	filled, glass, outlined, ghost and destructive.
-007	inputs	checkbox	Disabled	disabled,checkbox	
+007	inputs	checkbox	Disabled	disabled,checkbox	Disabled
 008	inputs	checkbox	States	states,checkbox	Unchecked, checked and indeterminate.
 009	inputs	checkbox	Without label	without,label,checkbox	Bare checkbox for table rows or custom layouts.
 010	inputs	combobox	Basic	basic,combobox	Search a list of options and bind the selected value.
 011	inputs	combobox	States	states,combobox	Description, custom search placeholder and empty text, disabled option, error and disabled.
-012	inputs	copy-button	Default	default,copybutton	
+012	inputs	copy-button	Default	default,copybutton	Default
 013	inputs	copy-button	Icon only and toast	icon,only,and,toast,copybutton,toaster	label=&quot;&quot; renders an icon-only button. toast shows a success message after copying.
-014	inputs	copy-button	Variants and sizes	variants,and,sizes,copybutton	
+014	inputs	copy-button	Variants and sizes	variants,and,sizes,copybutton	Variants and sizes
 015	inputs	date-picker	Calendar and RangeCalendar	calendar,and,rangecalendar	Inline calendars. Click a start date, then an end date for the range.
 016	inputs	date-picker	Min, max, error and disabled	min,max,error,and,disabled,datefield,datepicker,timefield	Only the next 30 days are selectable. Out-of-range days are disabled and typed values become invalid.
 017	inputs	date-picker	DateField and TimeField	datefield,and,timefield	Segments only, no popover. granularity=&quot;minute&quot; adds a time, and hourCycle switches between 12h and 24h.
 018	inputs	date-picker	DatePicker and DateRangePicker	datepicker,and,daterangepicker	Editable segments plus a calendar popover. The range picker shows two months.
 019	inputs	export-menu	Default	default,exportmenu	Custom column order and headers. onexport receives the generated text, handy for tests or uploads.
 020	inputs	file-upload	Basic	basic,fileupload	Multiple files with a size limit and the selected count.
-021	inputs	file-upload	Images only and disabled	images,only,and,disabled,fileupload	
-022	inputs	filter-group	Role filter	role,filter,filtergroup	
+021	inputs	file-upload	Images only and disabled	images,only,and,disabled,fileupload	Images only and disabled
+022	inputs	filter-group	Role filter	role,filter,filtergroup	Role filter
 023	inputs	masked-field	Documents and dates	documents,and,dates,maskedfield	CPF, CNPJ, a mask that switches after 11 digits, a birth date and RG.
 024	inputs	masked-field	use:mask action	use,mask,action	Apply any pure mask to a plain input. The caret stays on the same digit.
 025	inputs	masked-field	Phone and CEP	phone,and,cep,cepfield,phonefield	PhoneField binds E.164 (+55...) while showing the masked form. CepField resolves an address through onlookup. Try 01310-100.
@@ -37,19 +37,19 @@ id	group	page	title	tags	summary
 036	inputs	radio	Horizontal	horizontal,radiogroup	orientation=&quot;horizontal&quot; lays the options out in a row.
 037	inputs	radio	Vertical	vertical,radiogroup	The default layout.
 038	inputs	segmented-control	Default	default,segmentedcontrol	Text items, and text items with icons.
-039	inputs	segmented-control	Small, full width, disabled item	small,full,width,disabled,item,segmentedcontrol	
+039	inputs	segmented-control	Small, full width, disabled item	small,full,width,disabled,item,segmentedcontrol	Small, full width, disabled item
 040	inputs	select	Basic	basic,select	Controlled select with a pre-selected value.
 041	inputs	select	Empty-value option	empty,value,option,select	An option with value '' (such as 'All projects') is a real selection: the trigger shows its label, not the placeholder. Use it for filters instead of a sentinel value.
 042	inputs	select	Placeholder	placeholder,select	No initial value: the placeholder shows until the user picks an option.
 043	inputs	select	States	states,select	Disabled options, description, error and a disabled select.
-044	inputs	setting-item	Switch rows	switch,rows,settingitem	
+044	inputs	setting-item	Switch rows	switch,rows,settingitem	Switch rows
 045	inputs	slider	Range	range,slider	Bind a [min, max] tuple to values for two thumbs.
 046	inputs	slider	Single value	single,value,slider	Binds a plain number. Default range is 0 to 100.
 047	inputs	slider	Step and disabled	step,and,disabled,slider	step={10} snaps to increments of 10.
 048	inputs	swatch-group	Custom colors	custom,colors,swatchgroup	Any CSS color, a small size and a disabled swatch.
 049	inputs	swatch-group	Theme presets	theme,presets,swatchgroup	Swatches without a color paint from the preset named by their value.
 050	inputs	switch	Basic	basic,switch	Default off and on states.
-051	inputs	switch	Disabled	disabled,switch	
+051	inputs	switch	Disabled	disabled,switch	Disabled
 052	inputs	switch	Settings list	settings,list,switch	Common pattern: a row with title, helper text and a trailing switch.
 053	inputs	switch	Without label	without,label,switch	Provide aria-label when no visible label is rendered.
 054	inputs	text-area	Basic	basic,textarea	Empty, with a placeholder, and pre-filled.
@@ -63,21 +63,21 @@ id	group	page	title	tags	summary
 062	inputs	use-form	No schema	no,schema,button,textfield	Manual validation on submit. touch() and set() drive the per-field state.
 063	inputs	use-form	Submit state	submit,state,button,textarea,textfield	validate() gates submission, submitting drives the button loading state, and reset() clears everything after success.
 064	inputs	use-form	With schema	with,schema,button,textarea,textfield	A plain-function schema runs on every keystroke once a field is touched.
-065	surfaces	accordion	Controlled	controlled,accordion,accordionitem	
-066	surfaces	accordion	Multiple	multiple,accordion,accordionitem	
-067	surfaces	accordion	Single	single,accordion,accordionitem	
-068	surfaces	card	Tone and glow	tone,and,glow,card	
-069	surfaces	card	Content card	content,card	
-070	surfaces	card	Header and actions	header,and,actions,card,button	
-071	surfaces	card	Link card	link,card	
-072	surfaces	card	Stat cards	stat,cards,card	
-073	surfaces	collapsible	Default (closed)	default,closed,collapsible,stack	
-074	surfaces	collapsible	Open by default	open,by,default,collapsible	
-075	surfaces	liquid-glass	Refraction layer	refraction,layer,liquidglass	
-076	surfaces	surface	Elevation	elevation,surface	
-077	surfaces	surface	Interactive	interactive,surface	
-078	surfaces	surface	Materials	materials,surface	
-079	surfaces	surface	Tone and variant	tone,and,variant,surface	
+065	surfaces	accordion	Controlled	controlled,accordion,accordionitem	Controlled
+066	surfaces	accordion	Multiple	multiple,accordion,accordionitem	Multiple
+067	surfaces	accordion	Single	single,accordion,accordionitem	Single
+068	surfaces	card	Tone and glow	tone,and,glow,card	Tone and glow
+069	surfaces	card	Content card	content,card	Content card
+070	surfaces	card	Header and actions	header,and,actions,card,button	Header and actions
+071	surfaces	card	Link card	link,card	Link card
+072	surfaces	card	Stat cards	stat,cards,card	Stat cards
+073	surfaces	collapsible	Default (closed)	default,closed,collapsible,stack	Default (closed)
+074	surfaces	collapsible	Open by default	open,by,default,collapsible	Open by default
+075	surfaces	liquid-glass	Refraction layer	refraction,layer,liquidglass	Refraction layer
+076	surfaces	surface	Elevation	elevation,surface	Elevation
+077	surfaces	surface	Interactive	interactive,surface	Interactive
+078	surfaces	surface	Materials	materials,surface	Materials
+079	surfaces	surface	Tone and variant	tone,and,variant,surface	Tone and variant
 080	feedback	alert-dialog	Async onconfirm	async,onconfirm,alertdialog,button	While the promise is pending the confirm button shows a spinner, Cancel is disabled and Escape is ignored. The dialog closes when it resolves and stays open if it throws.
 081	feedback	alert-dialog	Basic and destructive	basic,and,destructive,alertdialog,button	Confirm and cancel, with the destructive variant for irreversible actions.
 082	feedback	alert-dialog	Controlled pending	controlled,pending,alertdialog,button	Pass pending when the loading state lives outside, for example a mutation from your query client.
@@ -85,65 +85,65 @@ id	group	page	title	tags	summary
 084	feedback	dialog	Confirmation	confirmation,dialog,button	The destructive confirm and cancel pattern.
 085	feedback	dialog	Form	form,dialog,button,textfield,select,stack	A dialog holding a form, at the md size.
 086	feedback	dialog	Info	info,dialog,button	Informational content with a single action.
-087	feedback	dialog	Split	split,dialog,button,textfield,stack	
+087	feedback	dialog	Split	split,dialog,button,textfield,stack	Split
 088	feedback	drawer	Notification panel	notification,panel,drawer,button,stack	A real-world use: a 400px wide panel on the right.
 089	feedback	drawer	Right (default)	right,default,drawer,button,switch,stack,filtergroup	Slides in from the right, with a footer actions area.
 090	feedback	drawer	Left and bottom	left,and,bottom,drawer,button,stack	Left suits mobile navigation. Bottom is a simple bottom panel without gestures.
-091	feedback	lightbox	Open from a button	open,from,a,button,lightbox	
+091	feedback	lightbox	Open from a button	open,from,a,button,lightbox	Open from a button
 092	feedback	progress	Animated	animated,progress,button	Start a simulated upload.
 093	feedback	progress	Determinate	determinate,progress	An explicit value from 0 to max (100 by default).
 094	feedback	progress	Indeterminate	indeterminate,progress	Use when progress cannot be determined.
 095	feedback	sheet	Footer and swipeToDismiss	footer,and,swipetodismiss,sheet,button,stack	A pinned footer, and swipeToDismiss set to false so only the close button, Escape and the overlay dismiss it.
 096	feedback	sheet	Swipe to dismiss	swipe,to,dismiss,sheet,button,stack	Drag the handle or header down on a viewport below 900px. Above that, it is a centered dialog.
-097	feedback	skeleton	Card layout	card,layout,skeleton,stack,flex	
-098	feedback	skeleton	Image placeholder	image,placeholder,skeleton,card,stack	
+097	feedback	skeleton	Card layout	card,layout,skeleton,stack,flex	Card layout
+098	feedback	skeleton	Image placeholder	image,placeholder,skeleton,card,stack	Image placeholder
 099	feedback	skeleton	Text lines	text,lines,skeleton,card,stack	With rows, the last line is shortened to 60% for a natural paragraph.
 100	feedback	spinner	In a button	in,a,button	Use the loading prop of Button instead of placing a Spinner by hand.
-101	feedback	spinner	Section loader	section,loader,spinner,card,stack	
+101	feedback	spinner	Section loader	section,loader,spinner,card,stack	Section loader
 102	feedback	spinner	Sizes	sizes,spinner,flex	The size prop takes a number of pixels or any CSS length.
 103	feedback	toast	Variants and duration	variants,and,duration,button,toaster	Five variants, plus persistent (duration 0) and custom durations. The default auto-dismiss is 4 seconds.
-104	display	alert	Closable	closable,alert	
-105	display	alert	Severities	severities,alert	
-106	display	alert	With title	with,title,alert	
-107	display	avatar	With image	with,image,avatar	
-108	display	avatar	Initials fallback	initials,fallback,avatar	
-109	display	avatar	Shape and status	shape,and,status,avatar	
-110	display	avatar	Sizes	sizes,avatar	
-111	display	avatar	Avatar stack	avatar,stack	
-112	display	badge	Colors	colors,badge,iconbutton,flex	
-113	display	badge	Dot and counts	dot,and,counts,badge,iconbutton,flex	
-114	display	badge	On avatars	on,avatars,badge,avatar,flex	
-115	display	chip	Basic	basic,chip	
-116	display	chip	Deletable	deletable,chip	
-117	display	chip	With icons	with,icons,chip	
-118	display	chip	Selectable	selectable,chip	
-119	display	chip	StatusChip	statuschip	
-120	display	chip	Variants and size	variants,and,size,chip	
-121	display	code-snippet	Languages	languages,codesnippet	
-122	display	data-table	Controlled mode	controlled,mode,datatable	
-123	display	data-table	Simple mode	simple,mode,datatable	
-124	display	divider	Horizontal	horizontal,divider,card,stack	
-125	display	divider	Vertical	vertical,divider,card,flex	
+104	display	alert	Closable	closable,alert	Closable
+105	display	alert	Severities	severities,alert	Severities
+106	display	alert	With title	with,title,alert	With title
+107	display	avatar	With image	with,image,avatar	With image
+108	display	avatar	Initials fallback	initials,fallback,avatar	Initials fallback
+109	display	avatar	Shape and status	shape,and,status,avatar	Shape and status
+110	display	avatar	Sizes	sizes,avatar	Sizes
+111	display	avatar	Avatar stack	avatar,stack	Avatar stack
+112	display	badge	Colors	colors,badge,iconbutton,flex	Colors
+113	display	badge	Dot and counts	dot,and,counts,badge,iconbutton,flex	Dot and counts
+114	display	badge	On avatars	on,avatars,badge,avatar,flex	On avatars
+115	display	chip	Basic	basic,chip	Basic
+116	display	chip	Deletable	deletable,chip	Deletable
+117	display	chip	With icons	with,icons,chip	With icons
+118	display	chip	Selectable	selectable,chip	Selectable
+119	display	chip	StatusChip	statuschip	StatusChip
+120	display	chip	Variants and size	variants,and,size,chip	Variants and size
+121	display	code-snippet	Languages	languages,codesnippet	Languages
+122	display	data-table	Controlled mode	controlled,mode,datatable	Controlled mode
+123	display	data-table	Simple mode	simple,mode,datatable	Simple mode
+124	display	divider	Horizontal	horizontal,divider,card,stack	Horizontal
+125	display	divider	Vertical	vertical,divider,card,flex	Vertical
 126	display	external-link	In a results table	in,a,results,table,externallink,simpletable,card	One link per row. The accessible name of each link is for example “Buy at registrar (opens in a new tab)”.
-127	display	image	Fixed ratio	fixed,ratio,image	
-128	display	image	srcset and sizes	srcset,and,sizes,image	
-129	display	kbd	Shortcuts in text	shortcuts,in,text,kbd	
+127	display	image	Fixed ratio	fixed,ratio,image	Fixed ratio
+128	display	image	srcset and sizes	srcset,and,sizes,image	srcset and sizes
+129	display	kbd	Shortcuts in text	shortcuts,in,text,kbd	Shortcuts in text
 130	display	live-list	Streaming rows	streaming,rows,livelist,button,chip	Start the check, then scroll up while it runs: following pauses and a New button appears.
-131	display	notification-bell	Controlled	controlled,notificationbell	
-132	display	notification-bell	Default	default,notificationbell,flex	
-133	display	pagination	Basic	basic,pagination	
-134	display	pagination	Few items	few,items,pagination	
-135	display	pagination	More siblings	more,siblings,pagination	
-136	display	scroll-area	Horizontal scroll	horizontal,scroll,scrollarea,card,chip	
-137	display	scroll-area	Vertical scroll	vertical,scroll,scrollarea,card	
-138	display	table	Cards on narrow containers	cards,on,narrow,containers,simpletable,card	
-139	display	table	Default (scroll)	default,scroll,simpletable,card	
-140	display	timeline	Simple	simple,timeline	
-141	display	timeline	With variants	with,variants,timeline	
-142	display	tooltip	Text trigger	text,trigger,tooltip	
-143	display	tooltip	Custom delay	custom,delay,tooltip,button	
-144	display	tooltip	On icon buttons	on,icon,buttons,tooltip,iconbutton	
-145	display	tooltip	All sides	all,sides,tooltip,button	
+131	display	notification-bell	Controlled	controlled,notificationbell	Controlled
+132	display	notification-bell	Default	default,notificationbell,flex	Default
+133	display	pagination	Basic	basic,pagination	Basic
+134	display	pagination	Few items	few,items,pagination	Few items
+135	display	pagination	More siblings	more,siblings,pagination	More siblings
+136	display	scroll-area	Horizontal scroll	horizontal,scroll,scrollarea,card,chip	Horizontal scroll
+137	display	scroll-area	Vertical scroll	vertical,scroll,scrollarea,card	Vertical scroll
+138	display	table	Cards on narrow containers	cards,on,narrow,containers,simpletable,card	Cards on narrow containers
+139	display	table	Default (scroll)	default,scroll,simpletable,card	Default (scroll)
+140	display	timeline	Simple	simple,timeline	Simple
+141	display	timeline	With variants	with,variants,timeline	With variants
+142	display	tooltip	Text trigger	text,trigger,tooltip	Text trigger
+143	display	tooltip	Custom delay	custom,delay,tooltip,button	Custom delay
+144	display	tooltip	On icon buttons	on,icon,buttons,tooltip,iconbutton	On icon buttons
+145	display	tooltip	All sides	all,sides,tooltip,button	All sides
 146	navigation	actions	autofocus	autofocus,button	Focuses the element when it mounts.
 147	navigation	actions	clickOutside	clickoutside	Calls the handler for every click that lands outside the element. It listens on the capture phase of `document`.
 148	navigation	actions	clipboard	clipboard	Copies the given text on click and dispatches a copy event (listen with `oncopy`) once the copy succeeded.
@@ -173,14 +173,14 @@ id	group	page	title	tags	summary
 172	layout	error-page	404 without actions	404,without,actions,errorpage	hideActions removes the back and home buttons.
 173	layout	form-page	Basic form	basic,form,appform,formsection,textfield,select,switch,button,divider	Header with a back button, a grid of fields, a list of switches and a sticky footer.
 174	layout	form-page	Without header	without,header,appform,formsection,textfield,button	Omit title, description, leading, trailing and backHref to drop the header.
-175	layout	kpi-card	Basic metrics	basic,metrics,kpicard,kpigrid	
-176	layout	kpi-card	Negative trend	negative,trend,kpicard,kpigrid	
+175	layout	kpi-card	Basic metrics	basic,metrics,kpicard,kpigrid	Basic metrics
+176	layout	kpi-card	Negative trend	negative,trend,kpicard,kpigrid	Negative trend
 177	layout	kpi-card	Without trend	without,trend,kpicard,kpigrid	Omit trend and the indicator disappears.
 178	layout	kpi-grid	Four cards	four,cards,kpicard,kpigrid	Four across, then 2 x 2, then one column.
 179	layout	kpi-grid	Three cards	three,cards,kpicard,kpigrid	One row when it fits, one column on a phone, never 2 + 1.
-180	layout	layout-primitives	Container and Section	container,and,section,stack,card	
-181	layout	layout-primitives	Responsive Grid	responsive,grid,box	
-182	layout	layout-primitives	Flex, Stack and Box	flex,stack,and,box	
+180	layout	layout-primitives	Container and Section	container,and,section,stack,card	Container and Section
+181	layout	layout-primitives	Responsive Grid	responsive,grid,box	Responsive Grid
+182	layout	layout-primitives	Flex, Stack and Box	flex,stack,and,box	Flex, Stack and Box
 183	layout	list-page	AppList	applist,button,filtergroup,simpletable,statuschip,usercell	Pass data and the layout handles search, filters and pagination.
 184	layout	list-page	AppSettings	appsettings,button,formsection,switch,textfield	Side navigation plus content. The active tab is managed internally.
 185	layout	list-page	PageShell	pageshell,kpicard,kpigrid,card	A scrollable container for dashboards and non-CRUD pages.
@@ -189,35 +189,35 @@ id	group	page	title	tags	summary
 188	layout	sticky-actions	End aligned	end,aligned,stickyactions,button,textfield,stack	Buttons sit on the right. The bar only renders while the form is dirty (show).
 189	layout	sticky-actions	Stretch	stretch,stickyactions,button	On touch screens the primary button fills the width and the ghost button stays compact.
 190	charts	bar	Horizontal bars	horizontal,bars,card,barchart	Good for long category names and rankings.
-191	charts	bar	Stacked bars	stacked,bars,card,barchart	
+191	charts	bar	Stacked bars	stacked,bars,card,barchart	Stacked bars
 192	charts	bar	Grouped and stacked	grouped,and,stacked,card,flex,button,barchart	Toggling stacked animates between both layouts.
-193	charts	bar	Vertical bars	vertical,bars,card,barchart	
+193	charts	bar	Vertical bars	vertical,bars,card,barchart	Vertical bars
 194	charts	gauge	Animated counter	animated,counter,card,stack,gaugechart	Updating value animates the ring and counts the number.
 195	charts	gauge	Progress ring	progress,ring,card,stack,slider,gaugechart	variant ring draws a single brand-colored arc with the value in the center.
-196	charts	gauge	Simple gauge	simple,gauge,card,gaugechart	
+196	charts	gauge	Simple gauge	simple,gauge,card,gaugechart	Simple gauge
 197	charts	gauge	Custom zones	custom,zones,card,grid,gaugechart	Reverse the default zones when a high value is bad, such as CPU load.
 198	charts	heatmap	Calendar heatmap	calendar,heatmap,card,heatmapchart	Daily commit activity from January to September.
 199	charts	heatmap	Hour by day matrix	hour,by,day,matrix,card,heatmapchart	Points are [xIndex, yIndex, value] into xCategories and yCategories.
 200	charts	heatmap	Year toggle	year,toggle,card,flex,button,heatmapchart	Swap data and range to move between years.
 201	charts	line	Area with gradient fill	area,with,gradient,fill,card,linechart	area fills under each line with a gradient that fades to transparent.
 202	charts	line	Multi-line comparison	multi,line,comparison,card,linechart	Each series gets its own palette color.
-203	charts	line	Simple line	simple,line,card,linechart	
+203	charts	line	Simple line	simple,line,card,linechart	Simple line
 204	charts	line	Real-time stream	real,time,stream,card,linechart	Replace the data array and the chart updates in place.
 205	charts	overview	Dashboard	dashboard,card,grid,kpicard,kpigrid,stack,linechart,barchart,piechart,scatterchart,heatmapchart,gaugechart,radarchart	Every chart type together inside glass cards.
 206	charts	pie	Animated proportions	animated,proportions,card,flex,chip,piechart	Swap the data and the slices animate to the new proportions.
 207	charts	pie	Donut with center KPI	donut,with,center,kpi,card,piechart	centerLabel overlays a value and caption in the hole of a donut.
-208	charts	pie	Basic donut	basic,donut,card,piechart	
+208	charts	pie	Basic donut	basic,donut,card,piechart	Basic donut
 209	charts	pie	Rose chart	rose,chart,card,piechart	Nightingale rose: the radius of each slice scales with its value.
 210	charts	radar	Comparison	comparison,card,radarchart	Two series with a legend and focus on hover.
 211	charts	radar	Interactive team builder	interactive,team,builder,card,stack,flex,slider,radarchart	Drag the sliders and the radar updates live.
-212	charts	radar	Simple radar	simple,radar,card,radarchart	
+212	charts	radar	Simple radar	simple,radar,card,radarchart	Simple radar
 213	charts	scatter	Basic scatter	basic,scatter,card,scatterchart	Visits against conversion rate.
 214	charts	scatter	Bubble chart	bubble,chart,card,scatterchart	The third value of each point sets the bubble size.
 215	charts	scatter	Clustered by tier	clustered,by,tier,card,scatterchart	One series per group, each with its own palette color.
 216	charts	sparklines	Bar sparklines	bar,sparklines,flex,stack,sparkline	variant bar draws narrow columns instead of a line.
-217	charts	sparklines	KPI cards with trend lines	kpi,cards,with,trend,lines,card,grid,stack,flex,sparkline	
-218	charts	sparklines	Live streaming micro charts	live,streaming,micro,charts,card,grid,stack,flex,sparkline	
-219	charts	sparklines	Table row sparklines	table,row,sparklines,card,sparkline	
+217	charts	sparklines	KPI cards with trend lines	kpi,cards,with,trend,lines,card,grid,stack,flex,sparkline	KPI cards with trend lines
+218	charts	sparklines	Live streaming micro charts	live,streaming,micro,charts,card,grid,stack,flex,sparkline	Live streaming micro charts
+219	charts	sparklines	Table row sparklines	table,row,sparklines,card,sparkline	Table row sparklines
 220	foundation	colors	Brand	brand	Derived from the active preset. brand-fill and brand-text keep contrast in both schemes.
 221	foundation	colors	Outline	outline	Border and divider scale.
 222	foundation	colors	Semantic	semantic	Success, warning, error and info. Semantic colors never change with the preset.
@@ -225,12 +225,12 @@ id	group	page	title	tags	summary
 224	foundation	colors	Text	text	text-hint is the lowest readable tier (4.5:1). text-disabled is the label of disabled controls only (3:1 on every surface), never information.
 225	foundation	materials	Button glass variants	button,glass,variants	glass-btn, glass-btn-prominent and glass-btn-clear for custom controls. They follow `data-style`, so the halo and blur disappear under `solid`.
 226	foundation	materials	Glass tiers	glass,tiers,surface	All five thickness levels on a gradient backdrop.
-227	foundation	materials	Tinted and glowing	tinted,and,glowing,surface	
+227	foundation	materials	Tinted and glowing	tinted,and,glowing,surface	Tinted and glowing
 228	foundation	shadows	Shadow scale	shadow,scale	xs for hairline lift up to xl for modal depth.
 229	foundation	typography	Body and UI scale	body,and,ui,scale	Body, caption, label and button sizes, plus the micro and nano steps used by badges.
-230	foundation	typography	Font families	font,families	
+230	foundation	typography	Font families	font,families	Font families
 231	foundation	typography	Heading scale	heading,scale	--ca-font-size-h1 to h6.
-232	docs-kit	docs	LinkCard, CardGrid and MethodBadge	linkcard,cardgrid,and,methodbadge	
+232	docs-kit	docs	LinkCard, CardGrid and MethodBadge	linkcard,cardgrid,and,methodbadge	LinkCard, CardGrid and MethodBadge
 233	docs-kit	docs	CodeTabs	codetabs,codetab	Language tabs with a copy button. Groups that share a sync key follow each other and persist the choice in localStorage. Highlighting stays with you: wrap each block in .ca-code.
 234	docs-kit	docs	DocsNav and TableOfContents	docsnav,and,tableofcontents	The sidebar tree and the page index. The inline variant is shown; DocsShell uses the rail variant on desktop.
 235	docs-kit	docs	ca-prose, Callout and Steps	ca,prose,callout,and,steps	Wrap rendered markdown in .ca-prose. Callout is an Alert vocabulary (note, tip, caution, danger); keep two per page. Steps turns an ordered list into a numbered rail.

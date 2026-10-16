@@ -38,6 +38,7 @@ describe("demo catalog", () => {
 		expect(demos.length).toBe(CATALOG.length);
 		const names = new Set(manifest.components.map((c) => c.name));
 		for (const d of demos) {
+			expect(d.summary).not.toBe("");
 			const e = files[`en/e/${d.id}.txt`];
 			expect(e.split("\n")[0]).toBe(
 				`<!-- @codeatlasdev/ui demo #${d.id} · MIT License (c) CodeAtlas · ${d.demo} -->`

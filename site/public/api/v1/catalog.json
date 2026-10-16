@@ -161,7 +161,7 @@
 			"slug": "sizes",
 			"title": "Sizes",
 			"description": "",
-			"summary": "",
+			"summary": "Sizes",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -254,7 +254,7 @@
 			"slug": "disabled",
 			"title": "Disabled",
 			"description": "",
-			"summary": "",
+			"summary": "Disabled",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -410,7 +410,7 @@
 			"slug": "default",
 			"title": "Default",
 			"description": "",
-			"summary": "",
+			"summary": "Default",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -478,7 +478,7 @@
 			"slug": "variants-and-sizes",
 			"title": "Variants and sizes",
 			"description": "",
-			"summary": "",
+			"summary": "Variants and sizes",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -730,7 +730,7 @@
 			"slug": "images-only-and-disabled",
 			"title": "Images only and disabled",
 			"description": "",
-			"summary": "",
+			"summary": "Images only and disabled",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -764,7 +764,7 @@
 			"slug": "role-filter",
 			"title": "Role filter",
 			"description": "",
-			"summary": "",
+			"summary": "Role filter",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -1320,7 +1320,7 @@
 			"slug": "small-full-width-disabled-item",
 			"title": "Small, full width, disabled item",
 			"description": "",
-			"summary": "",
+			"summary": "Small, full width, disabled item",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -1481,7 +1481,7 @@
 			"slug": "switch-rows",
 			"title": "Switch rows",
 			"description": "",
-			"summary": "",
+			"summary": "Switch rows",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -1706,7 +1706,7 @@
 			"slug": "disabled",
 			"title": "Disabled",
 			"description": "",
-			"summary": "",
+			"summary": "Disabled",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -2168,7 +2168,7 @@
 			"slug": "controlled",
 			"title": "Controlled",
 			"description": "",
-			"summary": "",
+			"summary": "Controlled",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -2202,7 +2202,7 @@
 			"slug": "multiple",
 			"title": "Multiple",
 			"description": "",
-			"summary": "",
+			"summary": "Multiple",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -2236,7 +2236,7 @@
 			"slug": "single",
 			"title": "Single",
 			"description": "",
-			"summary": "",
+			"summary": "Single",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -2270,7 +2270,7 @@
 			"slug": "tone-and-glow",
 			"title": "Tone and glow",
 			"description": "",
-			"summary": "",
+			"summary": "Tone and glow",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -2303,7 +2303,7 @@
 			"slug": "content-card",
 			"title": "Content card",
 			"description": "",
-			"summary": "",
+			"summary": "Content card",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -2334,7 +2334,7 @@
 			"slug": "header-and-actions",
 			"title": "Header and actions",
 			"description": "",
-			"summary": "",
+			"summary": "Header and actions",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -2370,7 +2370,7 @@
 			"slug": "link-card",
 			"title": "Link card",
 			"description": "",
-			"summary": "",
+			"summary": "Link card",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -2401,7 +2401,7 @@
 			"slug": "stat-cards",
 			"title": "Stat cards",
 			"description": "",
-			"summary": "",
+			"summary": "Stat cards",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -2433,7 +2433,7 @@
 			"slug": "default-closed",
 			"title": "Default (closed)",
 			"description": "",
-			"summary": "",
+			"summary": "Default (closed)",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -2468,7 +2468,7 @@
 			"slug": "open-by-default",
 			"title": "Open by default",
 			"description": "",
-			"summary": "",
+			"summary": "Open by default",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -2501,7 +2501,7 @@
 			"slug": "refraction-layer",
 			"title": "Refraction layer",
 			"description": "",
-			"summary": "",
+			"summary": "Refraction layer",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -2534,7 +2534,7 @@
 			"slug": "elevation",
 			"title": "Elevation",
 			"description": "",
-			"summary": "",
+			"summary": "Elevation",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -2565,7 +2565,7 @@
 			"slug": "interactive",
 			"title": "Interactive",
 			"description": "",
-			"summary": "",
+			"summary": "Interactive",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -2596,7 +2596,7 @@
 			"slug": "materials",
 			"title": "Materials",
 			"description": "",
-			"summary": "",
+			"summary": "Materials",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -2627,7 +2627,7 @@
 			"slug": "tone-and-variant",
 			"title": "Tone and variant",
 			"description": "",
-			"summary": "",
+			"summary": "Tone and variant",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -2911,7 +2911,7 @@
 			"slug": "split",
 			"title": "Split",
 			"description": "",
-			"summary": "",
+			"summary": "Split",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -3072,7 +3072,7 @@
 			"slug": "open-from-a-button",
 			"title": "Open from a button",
 			"description": "",
-			"summary": "",
+			"summary": "Open from a button",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -3282,7 +3282,7 @@
 			"slug": "card-layout",
 			"title": "Card layout",
 			"description": "",
-			"summary": "",
+			"summary": "Card layout",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -3322,7 +3322,7 @@
 			"slug": "image-placeholder",
 			"title": "Image placeholder",
 			"description": "",
-			"summary": "",
+			"summary": "Image placeholder",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -3430,7 +3430,7 @@
 			"slug": "section-loader",
 			"title": "Section loader",
 			"description": "",
-			"summary": "",
+			"summary": "Section loader",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -3539,7 +3539,7 @@
 			"slug": "closable",
 			"title": "Closable",
 			"description": "",
-			"summary": "",
+			"summary": "Closable",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -3570,7 +3570,7 @@
 			"slug": "severities",
 			"title": "Severities",
 			"description": "",
-			"summary": "",
+			"summary": "Severities",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -3601,7 +3601,7 @@
 			"slug": "with-title",
 			"title": "With title",
 			"description": "",
-			"summary": "",
+			"summary": "With title",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -3633,7 +3633,7 @@
 			"slug": "with-image",
 			"title": "With image",
 			"description": "",
-			"summary": "",
+			"summary": "With image",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -3665,7 +3665,7 @@
 			"slug": "initials-fallback",
 			"title": "Initials fallback",
 			"description": "",
-			"summary": "",
+			"summary": "Initials fallback",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -3697,7 +3697,7 @@
 			"slug": "shape-and-status",
 			"title": "Shape and status",
 			"description": "",
-			"summary": "",
+			"summary": "Shape and status",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -3730,7 +3730,7 @@
 			"slug": "sizes",
 			"title": "Sizes",
 			"description": "",
-			"summary": "",
+			"summary": "Sizes",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -3761,7 +3761,7 @@
 			"slug": "avatar-stack",
 			"title": "Avatar stack",
 			"description": "",
-			"summary": "",
+			"summary": "Avatar stack",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -3792,7 +3792,7 @@
 			"slug": "colors",
 			"title": "Colors",
 			"description": "",
-			"summary": "",
+			"summary": "Colors",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -3829,7 +3829,7 @@
 			"slug": "dot-and-counts",
 			"title": "Dot and counts",
 			"description": "",
-			"summary": "",
+			"summary": "Dot and counts",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -3868,7 +3868,7 @@
 			"slug": "on-avatars",
 			"title": "On avatars",
 			"description": "",
-			"summary": "",
+			"summary": "On avatars",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -3906,7 +3906,7 @@
 			"slug": "basic",
 			"title": "Basic",
 			"description": "",
-			"summary": "",
+			"summary": "Basic",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -3937,7 +3937,7 @@
 			"slug": "deletable",
 			"title": "Deletable",
 			"description": "",
-			"summary": "",
+			"summary": "Deletable",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -3968,7 +3968,7 @@
 			"slug": "with-icons",
 			"title": "With icons",
 			"description": "",
-			"summary": "",
+			"summary": "With icons",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4000,7 +4000,7 @@
 			"slug": "selectable",
 			"title": "Selectable",
 			"description": "",
-			"summary": "",
+			"summary": "Selectable",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4031,7 +4031,7 @@
 			"slug": "statuschip",
 			"title": "StatusChip",
 			"description": "",
-			"summary": "",
+			"summary": "StatusChip",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4061,7 +4061,7 @@
 			"slug": "variants-and-size",
 			"title": "Variants and size",
 			"description": "",
-			"summary": "",
+			"summary": "Variants and size",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4094,7 +4094,7 @@
 			"slug": "languages",
 			"title": "Languages",
 			"description": "",
-			"summary": "",
+			"summary": "Languages",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4125,7 +4125,7 @@
 			"slug": "controlled-mode",
 			"title": "Controlled mode",
 			"description": "",
-			"summary": "",
+			"summary": "Controlled mode",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4158,7 +4158,7 @@
 			"slug": "simple-mode",
 			"title": "Simple mode",
 			"description": "",
-			"summary": "",
+			"summary": "Simple mode",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4191,7 +4191,7 @@
 			"slug": "horizontal",
 			"title": "Horizontal",
 			"description": "",
-			"summary": "",
+			"summary": "Horizontal",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4228,7 +4228,7 @@
 			"slug": "vertical",
 			"title": "Vertical",
 			"description": "",
-			"summary": "",
+			"summary": "Vertical",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4305,7 +4305,7 @@
 			"slug": "fixed-ratio",
 			"title": "Fixed ratio",
 			"description": "",
-			"summary": "",
+			"summary": "Fixed ratio",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4337,7 +4337,7 @@
 			"slug": "srcset-and-sizes",
 			"title": "srcset and sizes",
 			"description": "",
-			"summary": "",
+			"summary": "srcset and sizes",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4370,7 +4370,7 @@
 			"slug": "shortcuts-in-text",
 			"title": "Shortcuts in text",
 			"description": "",
-			"summary": "",
+			"summary": "Shortcuts in text",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4441,7 +4441,7 @@
 			"slug": "controlled",
 			"title": "Controlled",
 			"description": "",
-			"summary": "",
+			"summary": "Controlled",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4472,7 +4472,7 @@
 			"slug": "default",
 			"title": "Default",
 			"description": "",
-			"summary": "",
+			"summary": "Default",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4506,7 +4506,7 @@
 			"slug": "basic",
 			"title": "Basic",
 			"description": "",
-			"summary": "",
+			"summary": "Basic",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4537,7 +4537,7 @@
 			"slug": "few-items",
 			"title": "Few items",
 			"description": "",
-			"summary": "",
+			"summary": "Few items",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4569,7 +4569,7 @@
 			"slug": "more-siblings",
 			"title": "More siblings",
 			"description": "",
-			"summary": "",
+			"summary": "More siblings",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4601,7 +4601,7 @@
 			"slug": "horizontal-scroll",
 			"title": "Horizontal scroll",
 			"description": "",
-			"summary": "",
+			"summary": "Horizontal scroll",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4639,7 +4639,7 @@
 			"slug": "vertical-scroll",
 			"title": "Vertical scroll",
 			"description": "",
-			"summary": "",
+			"summary": "Vertical scroll",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4674,7 +4674,7 @@
 			"slug": "cards-on-narrow-containers",
 			"title": "Cards on narrow containers",
 			"description": "",
-			"summary": "",
+			"summary": "Cards on narrow containers",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4711,7 +4711,7 @@
 			"slug": "default-scroll",
 			"title": "Default (scroll)",
 			"description": "",
-			"summary": "",
+			"summary": "Default (scroll)",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4746,7 +4746,7 @@
 			"slug": "simple",
 			"title": "Simple",
 			"description": "",
-			"summary": "",
+			"summary": "Simple",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4777,7 +4777,7 @@
 			"slug": "with-variants",
 			"title": "With variants",
 			"description": "",
-			"summary": "",
+			"summary": "With variants",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4809,7 +4809,7 @@
 			"slug": "text-trigger",
 			"title": "Text trigger",
 			"description": "",
-			"summary": "",
+			"summary": "Text trigger",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4841,7 +4841,7 @@
 			"slug": "custom-delay",
 			"title": "Custom delay",
 			"description": "",
-			"summary": "",
+			"summary": "Custom delay",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4876,7 +4876,7 @@
 			"slug": "on-icon-buttons",
 			"title": "On icon buttons",
 			"description": "",
-			"summary": "",
+			"summary": "On icon buttons",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -4912,7 +4912,7 @@
 			"slug": "all-sides",
 			"title": "All sides",
 			"description": "",
-			"summary": "",
+			"summary": "All sides",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -6011,7 +6011,7 @@
 			"slug": "basic-metrics",
 			"title": "Basic metrics",
 			"description": "",
-			"summary": "",
+			"summary": "Basic metrics",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -6046,7 +6046,7 @@
 			"slug": "negative-trend",
 			"title": "Negative trend",
 			"description": "",
-			"summary": "",
+			"summary": "Negative trend",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -6186,7 +6186,7 @@
 			"slug": "container-and-section",
 			"title": "Container and Section",
 			"description": "",
-			"summary": "",
+			"summary": "Container and Section",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -6226,7 +6226,7 @@
 			"slug": "responsive-grid",
 			"title": "Responsive Grid",
 			"description": "",
-			"summary": "",
+			"summary": "Responsive Grid",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -6260,7 +6260,7 @@
 			"slug": "flex-stack-and-box",
 			"title": "Flex, Stack and Box",
 			"description": "",
-			"summary": "",
+			"summary": "Flex, Stack and Box",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -6625,7 +6625,7 @@
 			"slug": "stacked-bars",
 			"title": "Stacked bars",
 			"description": "",
-			"summary": "",
+			"summary": "Stacked bars",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -6712,7 +6712,7 @@
 			"slug": "vertical-bars",
 			"title": "Vertical bars",
 			"description": "",
-			"summary": "",
+			"summary": "Vertical bars",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -6841,7 +6841,7 @@
 			"slug": "simple-gauge",
 			"title": "Simple gauge",
 			"description": "",
-			"summary": "",
+			"summary": "Simple gauge",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -7139,7 +7139,7 @@
 			"slug": "simple-line",
 			"title": "Simple line",
 			"description": "",
-			"summary": "",
+			"summary": "Simple line",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -7378,7 +7378,7 @@
 			"slug": "basic-donut",
 			"title": "Basic donut",
 			"description": "",
-			"summary": "",
+			"summary": "Basic donut",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -7547,7 +7547,7 @@
 			"slug": "simple-radar",
 			"title": "Simple radar",
 			"description": "",
-			"summary": "",
+			"summary": "Simple radar",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -7752,7 +7752,7 @@
 			"slug": "kpi-cards-with-trend-lines",
 			"title": "KPI cards with trend lines",
 			"description": "",
-			"summary": "",
+			"summary": "KPI cards with trend lines",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -7804,7 +7804,7 @@
 			"slug": "live-streaming-micro-charts",
 			"title": "Live streaming micro charts",
 			"description": "",
-			"summary": "",
+			"summary": "Live streaming micro charts",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -7855,7 +7855,7 @@
 			"slug": "table-row-sparklines",
 			"title": "Table row sparklines",
 			"description": "",
-			"summary": "",
+			"summary": "Table row sparklines",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -8056,7 +8056,7 @@
 			"slug": "tinted-and-glowing",
 			"title": "Tinted and glowing",
 			"description": "",
-			"summary": "",
+			"summary": "Tinted and glowing",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -8135,7 +8135,7 @@
 			"slug": "font-families",
 			"title": "Font families",
 			"description": "",
-			"summary": "",
+			"summary": "Font families",
 			"use": "",
 			"spec": [],
 			"tags": [
@@ -8179,7 +8179,7 @@
 			"slug": "linkcard-cardgrid-and-methodbadge",
 			"title": "LinkCard, CardGrid and MethodBadge",
 			"description": "",
-			"summary": "",
+			"summary": "LinkCard, CardGrid and MethodBadge",
 			"use": "",
 			"spec": [],
 			"tags": [

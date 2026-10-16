@@ -22,6 +22,12 @@ bunx @codeatlasdev/ui init --write
 
 that's the setup. theme, dark mode, error pages, no white flash. sveltekit or astro.
 
+claude code? skills + mcp + the numbered demo catalog in one line:
+
+```
+/plugin install codeatlas-ui --marketplace codeatlasdev/ui
+```
+
 <br>
 
 ## a whole page in 12 lines
