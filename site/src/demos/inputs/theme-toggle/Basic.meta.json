@@ -1,0 +1,7 @@
+{
+	"summary": "Theme toggle button rendered inside a rail container.",
+	"use": "Letting users switch between light and dark appearance from a sidebar or header.",
+	"spec": ["`<ThemeToggle />` with no props", "Wrapped in `<div class=\"rail\">`"],
+	"tags": ["theme-toggle", "dark-mode", "theme", "appearance", "rail"],
+	"shape": "square"
+}

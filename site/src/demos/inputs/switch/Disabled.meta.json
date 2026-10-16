@@ -1,0 +1,11 @@
+{
+	"summary": "Two disabled switches, one off and one on.",
+	"use": "Showing a setting that cannot be changed, for example a locked plan feature.",
+	"spec": [
+		"`<Switch disabled label=\"Disabled off\" />`",
+		"`<Switch checked disabled label=\"Disabled on\" />`",
+		"No bound state"
+	],
+	"tags": ["switch", "disabled", "checked", "toggle", "state"],
+	"shape": "wide"
+}

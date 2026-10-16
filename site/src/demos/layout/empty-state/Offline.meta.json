@@ -1,0 +1,10 @@
+{
+	"summary": "A load-failure state with a wifi-off icon and Retry plus Contact support buttons.",
+	"use": "Network or fetch errors on a data panel where the user can retry or escalate.",
+	"spec": [
+		"`<EmptyState icon={WifiOff} title=\"Couldn't load data\" description=\"Check your connection and try again.\">`",
+		"`{#snippet actions()}` holds `<Button variant=\"outlined\" size=\"sm\">Retry</Button>` and `<Button variant=\"ghost\" size=\"sm\">Contact support</Button>`"
+	],
+	"tags": ["empty-state", "offline", "error", "retry", "network", "actions"],
+	"shape": "square"
+}

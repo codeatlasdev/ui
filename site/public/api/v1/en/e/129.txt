@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #129 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/kbd#shortcuts-in-text -->
 Element: #129 Shortcuts in text (display/kbd)
-What it shows: Shortcuts in text
-Tags: shortcuts, in, text, kbd
+What it shows: Keyboard key caps inline in a sentence describing the Ctrl+K shortcut to open the command palette and Esc to close it.
+When to use: Documenting keyboard shortcuts inside help text, tooltips or onboarding hints.
+Spec:
+- `<Kbd>Ctrl</Kbd>` and `<Kbd>K</Kbd>` joined by a plus sign inside a paragraph
+- `<Kbd>Esc</Kbd>` as the second shortcut in the same sentence
+- Each key is plain text children of `Kbd`, no props
+Tags: kbd, keyboard, shortcut, key, command-palette, hint
 Needs: @codeatlasdev/ui@4.1.0
 Components: Kbd
 Live demo: https://ui.codeatlas.com.br/docs/display/kbd#shortcuts-in-text

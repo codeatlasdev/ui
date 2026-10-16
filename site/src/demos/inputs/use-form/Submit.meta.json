@@ -1,0 +1,14 @@
+{
+	"summary": "Form with a schema that simulates a 1.2 second submit, then shows a success message and resets.",
+	"use": "Create or edit forms that show a loading state while saving.",
+	"spec": [
+		"`useForm(` with `schema: (data) => {` requires a non-empty title",
+		"`submit()` calls `form.validate()`, sets `form.submitting = true`, waits `setTimeout(r, 1200)`, then `form.reset()`",
+		"TextField Title and TextArea Notes use `disabled={form.submitting}`",
+		"Submit button uses `loading={form.submitting}`, label is `{form.submitting ? 'Saving…' : 'Submit'}`",
+		"Success text renders in `<p class=\"hint hint--success\" role=\"status\">`",
+		"Reset button has `variant=\"outlined\"` and clears `result`"
+	],
+	"tags": ["use-form", "submit", "loading", "schema", "validation", "async"],
+	"shape": "wide"
+}

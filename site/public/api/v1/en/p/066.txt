@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #066 "Multiple" (surfaces/accordion).
-What it shows: Multiple.
+What it shows: An Accordion that lets several of its three items stay open at once. When to use: Reference or feature lists where users compare multiple sections without the others collapsing.
+Spec:
+- `<Accordion type="multiple">`
+- 3 items: `<AccordionItem value="b1" title="Svelte 5 runes">`, `value="b2" title="Headless primitives"`, `value="b3" title="CSS custom properties"`
+- Item content is plain text passed as children
+- The accordion is uncontrolled, nothing is bound
+- Wrapped in `.wrap` with `max-width: 560px`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

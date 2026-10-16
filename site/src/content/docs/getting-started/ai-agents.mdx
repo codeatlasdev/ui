@@ -62,6 +62,17 @@ Every docs demo has a stable id `#NNN` (index: [`/api/v1/catalog.json`](/api/v1/
 /plugin install codeatlas-ui --marketplace codeatlasdev/ui
 ```
 
+Each reference carries a **Spec** list written from the demo's literal values (props, snippets, state, counts, sizes), so the agent can check its port against it. `get_demo` and the `/api/v1/en/e/NNN.txt` page print it under *What it shows* and *When to use*.
+
+To choose pages without leaving the terminal, run the pick command. It opens the gallery, waits for you to press **Send to AI**, and prints the ids:
+
+```sh
+bunx @codeatlasdev/ui pick           # opens /gallery/, prints: #005 #012
+bunx @codeatlasdev/ui pick 12 45     # same, with #012 and #045 already ticked
+```
+
+The command listens on `127.0.0.1` only, on a random port, and the callback link carries a random per-run token: a request without the token gets a 403 and the listener keeps waiting. It closes after the first valid pick, after `--timeout <seconds>` (600 by default) or on Ctrl-C, and exits with code 1 if nothing was picked. The gallery only shows **Send to AI** for a loopback `cb` address. `--url <gallery>` points it at another deployment.
+
 ## When the library gets in the way
 
 The agent writes a workaround marked `// ca-ui-workaround(#<n>): <why>` and drafts a sanitized issue with `report_issue`, with neutral names only. `bunx @codeatlasdev/ui workarounds` later lists the markers and which issues are closed. Details and the privacy rules: [Reporting problems](/docs/getting-started/reporting/).

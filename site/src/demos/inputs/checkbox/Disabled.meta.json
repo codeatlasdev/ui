@@ -1,0 +1,12 @@
+{
+	"summary": "Three disabled checkboxes: unchecked, checked and indeterminate.",
+	"use": "Showing a read-only option whose value the user cannot change, such as a setting locked by plan or permission.",
+	"spec": [
+		"`disabled` with `label=\"Disabled unchecked\"`",
+		"`checked disabled` with `label=\"Disabled checked\"`",
+		"`indeterminate disabled` with `label=\"Disabled indeterminate\"`",
+		"Three `<Checkbox` components, no bound state"
+	],
+	"tags": ["checkbox", "disabled", "checked", "indeterminate", "form"],
+	"shape": "wide"
+}

@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #056 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/text-field#default -->
 Element: #056 Default (inputs/text-field)
-What it shows: Basic text inputs with a label.
-Tags: default, textfield
+What it shows: Two basic text fields: a full name and an email with type email.
+When to use: Standard single-line inputs in a signup or profile form.
+Spec:
+- `<TextField label="Full name" placeholder="Jane Smith" bind:value={name} />`
+- `<TextField label="Email" placeholder="you@example.com" type="email" bind:value={email} />`
+- Both values start as `$state('')`
+Tags: text-field, input, label, placeholder, email
 Needs: @codeatlasdev/ui@4.1.0
 Components: TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/text-field#default

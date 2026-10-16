@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #179 "Three cards" (layout/kpi-grid).
-What it shows: One row when it fits, one column on a phone, never 2 + 1..
+What it shows: A KpiGrid holding three KPI cards to show how the grid lays out an odd number of items. When to use: Dashboards with three headline metrics, where the grid should still look balanced.
+Spec:
+- `<KpiGrid>` with 3 `KpiCard` items
+- `<KpiCard title="Revenue" value="$112k" trend={18.4} icon={DollarSign} />`
+- `<KpiCard title="Users" value="24.8k" trend={12.1} icon={Users} />`
+- `<KpiCard title="Growth" value="34" unit="%" trend={5.6} icon={TrendingUp} />`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

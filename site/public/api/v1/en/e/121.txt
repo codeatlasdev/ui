@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #121 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/code-snippet#languages -->
 Element: #121 Languages (display/code-snippet)
-What it shows: Languages
-Tags: languages, codesnippet
+What it shows: Three CodeSnippet blocks highlighting Svelte, TypeScript and CSS sources.
+When to use: Documentation or settings pages that display code samples with syntax highlighting.
+Spec:
+- `import { CodeSnippet } from '@codeatlasdev/ui/code'` is the entry point
+- `<CodeSnippet code={svelte} language="svelte" />` shows an `AppList` markup sample
+- `<CodeSnippet code={ts} language="typescript" />` shows a `useListState` call
+- `<CodeSnippet code={css} language="css" />` shows rules using design tokens
+- Wrapper `.col` has `width: 100%`
+Tags: code-snippet, code, syntax-highlighting, svelte, typescript, css
 Needs: @codeatlasdev/ui@4.1.0 + shiki
 Components: CodeSnippet
 Live demo: https://ui.codeatlas.com.br/docs/display/code-snippet#languages

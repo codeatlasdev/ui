@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #083 "Chromeless" (feedback/dialog).
-What it shows: No header, description or actions, and the body has no padding. The title becomes the visually hidden accessible name..
+What it shows: A medium dialog with the chromeless prop, so the content fills the panel edge to edge with no header or padding. When to use: Previews and media viewers where the content supplies its own layout and close control.
+Spec:
+- `<Dialog bind:open title="Preview" size="md" chromeless>`
+- Body is a `<div class="media">` with a paragraph and a `<Button variant="filled"` labelled Close
+- Close button runs `onclick={() => (open = false)}`
+- Trigger is `<Button variant="outlined"` labelled Open chromeless
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

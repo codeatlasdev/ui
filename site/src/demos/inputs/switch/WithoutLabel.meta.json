@@ -1,0 +1,11 @@
+{
+	"summary": "Two switches with no visible label, named only through aria-label.",
+	"use": "Compact toggles in table rows or cards where the context already names the setting.",
+	"spec": [
+		"`<Switch bind:checked={analytics} aria-label=\"Analytics\" />` with `$state(false)`",
+		"`<Switch checked aria-label=\"Always on\" />` with no binding",
+		"No `label` prop is passed"
+	],
+	"tags": ["switch", "aria-label", "without-label", "toggle", "a11y"],
+	"shape": "wide"
+}

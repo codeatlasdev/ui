@@ -1,5 +1,12 @@
 Use @codeatlasdev/ui demo #173 "Basic form" (layout/form-page).
-What it shows: Header with a back button, a grid of fields, a list of switches and a sticky footer..
+What it shows: A complete user creation form with a header, two sections, bound fields and a footer with Cancel and Create user. When to use: Create or edit pages that group fields into sections and keep their actions in a footer.
+Spec:
+- `<AppForm title="New User" description="Fill in the details to create a new user.">` with `{#snippet leading()}` holding `<Button variant="ghost" size="sm" aria-label="Back">`
+- `<FormSection title="Account details"` holds `<TextField label="Full name" bind:value={name}`, `<TextField label="Work email" bind:value={email}` and `<Select label="Role" bind:value={role} options={roleOptions} />`
+- `roleOptions` has 3 entries: Admin, Editor, Viewer, with `let role = $state('viewer')`
+- `<FormSection title="Notifications" description="Email preferences." layout="list">` holds `<Switch label="Send welcome email" bind:checked={welcome} />`, `<Divider />` and `<Switch label="Weekly digest" bind:checked={digest} />`
+- `{#snippet footer()}` has Cancel with `variant="ghost"` and Create user with `disabled={saving || !name || !email}`
+- `function save()` sets `saving = true` and resets it with `setTimeout(() => (saving = false), 1400)`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #238 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/tabs#icons -->
 Element: #238 Icons (navigation/tabs)
-What it shows: A leading icon per tab. A brand logo keeps its own colors with brandIcon; SchemeAsset swaps a monochrome mark between light and dark.
-Tags: icons, tabs, tabslist, tabstrigger, tabscontent, schemeasset
+What it shows: Tabs with a Lucide icon, a brand-colored svg icon and a scheme-aware monochrome icon next to each label.
+When to use: Tab bars that mix generic and third-party product marks, such as terminal or agent sessions.
+Spec:
+- `<Tabs value="shell">` with 3 triggers: `value="shell"`, `value="claude"`, `value="codex"`
+- Shell uses `{#snippet icon()}<Terminal />{/snippet}`
+- Claude Code and Codex set `brandIcon` so the inline `svg` keeps its own colors
+- Codex wraps `<SchemeAsset>` with `{#snippet light()}` and `{#snippet dark()}` svg variants
+- Wrapper is `.wrap` with `max-width: 480px`
+Tags: tabs, icon, brand-icon, scheme-asset, dark-mode, tabs-trigger
 Needs: @codeatlasdev/ui@4.1.0
 Components: Tabs, TabsList, TabsTrigger, TabsContent, SchemeAsset
 Live demo: https://ui.codeatlas.com.br/docs/navigation/tabs#icons

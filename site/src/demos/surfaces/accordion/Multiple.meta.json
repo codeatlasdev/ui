@@ -1,0 +1,13 @@
+{
+	"summary": "An Accordion that lets several of its three items stay open at once.",
+	"use": "Reference or feature lists where users compare multiple sections without the others collapsing.",
+	"spec": [
+		"`<Accordion type=\"multiple\">`",
+		"3 items: `<AccordionItem value=\"b1\" title=\"Svelte 5 runes\">`, `value=\"b2\" title=\"Headless primitives\"`, `value=\"b3\" title=\"CSS custom properties\"`",
+		"Item content is plain text passed as children",
+		"The accordion is uncontrolled, nothing is bound",
+		"Wrapped in `.wrap` with `max-width: 560px`"
+	],
+	"tags": ["accordion", "accordion-item", "multiple", "expand", "disclosure"],
+	"shape": "wide"
+}

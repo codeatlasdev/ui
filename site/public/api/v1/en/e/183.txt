@@ -1,7 +1,15 @@
 <!-- @codeatlasdev/ui demo #183 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/list-page#applist -->
 Element: #183 AppList (layout/list-page)
-What it shows: Pass data and the layout handles search, filters and pagination.
-Tags: applist, button, filtergroup, simpletable, statuschip, usercell
+What it shows: A searchable, filterable users list with a New user action, a role filter and a table with user cell and status chip.
+When to use: Admin list pages where the user searches, filters by one field and acts on rows.
+Spec:
+- `<AppList title="Users" data={ALL} searchKeys={['name', 'email']} perPage={4}>`
+- `const ALL` has 4 rows with fields `id`, `name`, `email`, `role`, `status`
+- `{#snippet actions()}` holds `<Button variant="filled" size="sm">` with `<Plus size={14} />` and the label New user
+- `{#snippet filters(list)}` renders `<FilterGroup options={roleOpts} value={list.filters['role'] ?? 'all'} onchange={(v) => list.setFilter('role', v)} />`
+- `{#snippet children(list)}` renders a `SimpleTable` over `{#each list.rows as u (u.id)}` with `<UserCell name={u.name} email={u.email} />` and `<StatusChip`
+- Frame size is `height: 420px`
+Tags: app-list, list-page, search, filter-group, simple-table, status-chip, user-cell
 Needs: @codeatlasdev/ui@4.1.0
 Components: AppList, Button, FilterGroup, SimpleTable, StatusChip, UserCell
 Live demo: https://ui.codeatlas.com.br/docs/layout/list-page#applist

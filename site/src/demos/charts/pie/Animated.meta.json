@@ -1,0 +1,13 @@
+{
+	"summary": "A donut chart with Q1, Q2 and Q3 chips that switch which quarter of data the chart shows.",
+	"use": "Showing how a share breakdown shifts between periods with a selector.",
+	"spec": [
+		"`let selected = $state<Quarter>('Q1')` and `const data = $derived(qData[selected])`",
+		"`{#each quarters as q}` renders `<Chip label={q} selected={selected === q}` with `variant=\"brand\"` and `size=\"sm\"`",
+		"`onclick={() => (selected = q)}` changes the quarter",
+		"`qData` has 4 items per quarter: Cloud, Enterprise, SaaS, Other",
+		"`<PieChart {data} donut height=\"300px\" />` inside `<Card material=\"glass\" full>`"
+	],
+	"tags": ["pie-chart", "donut", "chip", "quarters", "state", "derived"],
+	"shape": "square"
+}

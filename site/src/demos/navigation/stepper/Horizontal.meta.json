@@ -1,0 +1,14 @@
+{
+	"summary": "A four-step horizontal stepper inside a glass card with Back and Next buttons that advance the step.",
+	"use": "Multi-step flows such as onboarding or checkout where the user moves through ordered stages.",
+	"spec": [
+		"`<Stepper {steps} bind:current={step} />` with `let step = $state(0)`",
+		"`const steps` has 4 entries with a `label` field: Account, Profile, Billing, Review",
+		"Wrapper is `<Card material=\"glass\" p=\"6\" full>` with `<Stack gap=\"6\">`",
+		"Body shows `Step {step + 1}: {steps[step].label}`",
+		"Back is `<Button variant=\"ghost\" disabled={step <= 0} onclick={() => step--}>`",
+		"Next is `<Button variant=\"filled\" disabled={step >= steps.length - 1} onclick={() => step++}>` and reads Finish on the last step"
+	],
+	"tags": ["stepper", "wizard", "steps", "progress", "onboarding", "back-next", "card"],
+	"shape": "wide"
+}

@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #048 "Custom colors" (inputs/swatch-group).
-What it shows: Any CSS color, a small size and a disabled swatch..
+What it shows: Swatch group with four custom colors where one swatch is disabled. When to use: Letting users pick a label or tag color from a fixed palette.
+Spec:
+- `<SwatchGroup` with `size="sm"` and `aria-label="Label color"` and `bind:value={color}`
+- Items set `value`, `label` and `color`: Blue `#2563eb`, Green `#16a34a`, Red `#dc2626`, Purple `#9333ea`
+- Purple has `disabled: true`
+- Initial value is `$state('#2563eb')`
+- Current value is shown as `value: {color}`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

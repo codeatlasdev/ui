@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #055 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/text-area#states -->
 Element: #055 States (inputs/text-area)
-What it shows: Helper text, error, required, read-only, disabled and resize=&quot;none&quot;.
-Tags: states, textarea
+What it shows: Six text areas showing description, error, required, read-only, disabled and fixed-size states.
+When to use: Reference for every validation and availability state of a multi-line field.
+Spec:
+- Feedback has `description="Max 500 characters."`
+- Bio has `error="Bio must be at least 20 characters."` and `description="Tell us about yourself."`
+- Summary has `required`
+- Read-only content uses `readonly`; Disabled content uses `disabled`, both `value="Cannot be edited."`
+- Fixed uses `resize="none"` and `rows={3}`
+Tags: text-area, textarea, error, required, readonly, disabled
 Needs: @codeatlasdev/ui@4.1.0
 Components: TextArea
 Live demo: https://ui.codeatlas.com.br/docs/inputs/text-area#states

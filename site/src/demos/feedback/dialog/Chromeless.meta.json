@@ -1,0 +1,12 @@
+{
+	"summary": "A medium dialog with the chromeless prop, so the content fills the panel edge to edge with no header or padding.",
+	"use": "Previews and media viewers where the content supplies its own layout and close control.",
+	"spec": [
+		"`<Dialog bind:open title=\"Preview\" size=\"md\" chromeless>`",
+		"Body is a `<div class=\"media\">` with a paragraph and a `<Button variant=\"filled\"` labelled Close",
+		"Close button runs `onclick={() => (open = false)}`",
+		"Trigger is `<Button variant=\"outlined\"` labelled Open chromeless"
+	],
+	"tags": ["dialog", "chromeless", "modal", "preview", "media"],
+	"shape": "wide"
+}

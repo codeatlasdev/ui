@@ -1,0 +1,13 @@
+{
+	"summary": "Four stacked breadcrumbs with 2, 3, 5 and 1 levels, where the last item is the current page without a link.",
+	"use": "Showing where a page sits in the hierarchy, from a single root page to a deep settings path.",
+	"spec": [
+		"Four `Breadcrumb` components in a `<div class=\"stack\">`, each with an `items` array of `label` and optional `href`",
+		"Two levels: `{ label: 'Home', href: '/' }, { label: 'Components' }`",
+		"Three levels end with `{ label: 'Breadcrumb' }` after `href: '/docs/navigation/'`",
+		"Five levels run from Home to `{ label: 'Two-Factor Auth' }` via `href: '/settings/account/security'`",
+		"Single level: `items={[{ label: 'Home' }]}` with no `href`"
+	],
+	"tags": ["breadcrumb", "navigation", "hierarchy", "levels", "path", "links"],
+	"shape": "wide"
+}

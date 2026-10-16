@@ -1,0 +1,12 @@
+{
+	"summary": "Three native buttons using the glass button classes over a brand to info gradient backdrop.",
+	"use": "Choosing between the default, prominent and clear glass button styles on a colorful or image background.",
+	"spec": [
+		"`<button type=\"button\" class=\"glass-btn\">` labelled glass-btn",
+		"`<button type=\"button\" class=\"glass-btn-prominent\">` labelled glass-btn-prominent",
+		"`<button type=\"button\" class=\"glass-btn-clear\">` labelled glass-btn-clear",
+		"Backdrop is `linear-gradient(135deg, var(--ca-brand-main), var(--ca-semantic-info))`"
+	],
+	"tags": ["materials", "glass", "button", "glass-btn", "backdrop"],
+	"shape": "wide"
+}

@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #024 "use:mask action" (inputs/masked-field).
-What it shows: Apply any pure mask to a plain input. The caret stays on the same digit..
+What it shows: A native input masked with the mask action, showing the bound value below. When to use: Adding input masking to a custom or third-party input that is not a MaskedField.
+Spec:
+- `use:mask={maskCPF}` on a plain `<input` with `bind:value`
+- `placeholder="000.000.000-00"` and `inputmode="numeric"`
+- `<label class="lbl" for="mask-action-input">` is linked to `id="mask-action-input"`
+- Output line prints `value = {value || '–'}`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

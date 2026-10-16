@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #145 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/tooltip#all-sides -->
 Element: #145 All sides (display/tooltip)
-What it shows: All sides
-Tags: all, sides, tooltip, button
+What it shows: Four outlined buttons whose tooltips open on the top, right, bottom and left side.
+When to use: Choosing the tooltip side so it does not cover neighbouring controls or run off the screen.
+Spec:
+- `side="top"` with `content="Tooltip on top"`
+- `side="right"` with `content="Tooltip on right"`
+- `side="bottom"` with `content="Tooltip on bottom"`
+- `side="left"` with `content="Tooltip on left"`
+- Each trigger uses `{#snippet triggerChild(props)}` with `<Button variant="outlined" {...props}>`
+Tags: tooltip, side, placement, top, bottom, button
 Needs: @codeatlasdev/ui@4.1.0
 Components: Tooltip, Button
 Live demo: https://ui.codeatlas.com.br/docs/display/tooltip#all-sides

@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #111 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/avatar#avatar-stack -->
 Element: #111 Avatar stack (display/avatar)
-What it shows: Avatar stack
-Tags: avatar, stack
+What it shows: An overlapping avatar stack of three photo avatars and a fourth `+4` overflow avatar.
+When to use: Showing collaborators on a card, project or document with an overflow count.
+Spec:
+- `const people` has 4 entries: Alice, Bob and Clara with `src`, and `{ alt: '+4' }` without one
+- `{#each people as p, i}` renders `<Avatar src={p.src} alt={p.alt} size="md" />`
+- Each avatar is wrapped in `<div class="item" style="--z:{people.length - i}">`
+- Overlap uses `.item { margin-left: -10px; position: relative; z-index: var(--z, 0); }`
+Tags: avatar, stack, avatar-group, overlap, overflow, collaborators
 Needs: @codeatlasdev/ui@4.1.0
 Components: Avatar
 Live demo: https://ui.codeatlas.com.br/docs/display/avatar#avatar-stack

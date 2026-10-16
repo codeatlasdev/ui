@@ -1,7 +1,15 @@
 <!-- @codeatlasdev/ui demo #201 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/line#area-with-gradient-fill -->
 Element: #201 Area with gradient fill (charts/line)
-What it shows: area fills under each line with a gradient that fades to transparent.
-Tags: area, with, gradient, fill, card, linechart
+What it shows: A single Revenue line with a filled area under it across nine months.
+When to use: Emphasizing volume or cumulative growth of one metric over time.
+Spec:
+- `<LineChart` with one series `{ name: 'Revenue', data: revenue }`
+- `revenue` has 9 values from `42000` to `112000`
+- `categories={months}` with `'Jan'` to `'Sep'`
+- `area` prop
+- `valueFormatter={fmt}` renders `$${(v / 1000).toFixed(0)}k`
+- `height="360px"` inside `<Card material="glass" full>`
+Tags: line-chart, area, revenue, time-series, value-formatter, card
 Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, LineChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/line#area-with-gradient-fill

@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #103 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/toast#variants-and-duration -->
 Element: #103 Variants and duration (feedback/toast)
-What it shows: Five variants, plus persistent (duration 0) and custom durations. The default auto-dismiss is 4 seconds.
-Tags: variants, and, duration, button, toaster
+What it shows: Eight buttons that trigger toasts: five variants and three duration cases, with one Toaster mounted.
+When to use: Non-blocking feedback after an action, such as saved, failed or an available update.
+Spec:
+- `<Toaster />` mounted once, toasts fired with `toast` from `@codeatlasdev/ui`
+- Variants: `toast.show(`, `toast.success(`, `toast.error(`, `toast.warning(` and `toast.info(` with a message string
+- Persistent: `{ variant: 'info', duration: 0 }` passed as second argument of `toast.show(`
+- Timed: `toast.success('Gone in 1 second.', 1000)` and `toast.info('Stays for 8 seconds.', 8000)`
+- All triggers are `<Button variant="outlined"` in two labelled groups, Variants and Duration
+Tags: toast, toaster, notification, success, error, duration
 Needs: @codeatlasdev/ui@4.1.0
 Components: Button, Toaster
 Live demo: https://ui.codeatlas.com.br/docs/feedback/toast#variants-and-duration

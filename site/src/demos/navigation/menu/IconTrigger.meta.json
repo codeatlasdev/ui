@@ -1,0 +1,12 @@
+{
+	"summary": "A dropdown menu opened by a three-dot icon button, with Share and Copy link items aligned to the end.",
+	"use": "Compact overflow menus on cards and table rows where a full button would take too much space.",
+	"spec": [
+		"`<DropdownMenu align=\"end\">`",
+		"`{#snippet triggerChild(props)}` renders `<IconButton aria-label=\"More options\" {...props}>` with `<MoreHorizontal size={18} />`",
+		"`<DropdownMenuLabel>Actions</DropdownMenuLabel>` then 2 items: Share and Copy link",
+		"Item content is passed with `{#snippet children()}` using `<Share2 size={14} />` and `<Copy size={14} />`"
+	],
+	"tags": ["dropdown-menu", "menu", "icon-button", "overflow", "more-options", "align", "a11y"],
+	"shape": "wide"
+}

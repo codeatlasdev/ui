@@ -1,0 +1,12 @@
+{
+	"summary": "A hero-sized empty state inviting the user to start a first project, with Create project and Import buttons.",
+	"use": "Onboarding screens for an empty workspace where the page has nothing else to show.",
+	"spec": [
+		"`<EmptyState variant=\"hero\" icon={Inbox} title=\"Start your first project\"`",
+		"`description=\"Projects keep your sessions, contacts and settings in one place.\"`",
+		"`{#snippet actions()}` holds `<Button variant=\"filled\">Create project</Button>` and `<Button variant=\"ghost\">Import</Button>`",
+		"Both buttons use the default size, with no size attribute"
+	],
+	"tags": ["empty-state", "hero", "onboarding", "first-run", "actions", "project"],
+	"shape": "square"
+}

@@ -1,0 +1,12 @@
+{
+	"summary": "An alert dialog driven by parent state: the pending prop is set for 1.5 seconds before the dialog closes itself.",
+	"use": "Publishing or saving flows where the confirm button must show progress and the parent decides when to close.",
+	"spec": [
+		"`<AlertDialog bind:open title=\"Publish changes?\" confirmLabel=\"Publish\"` with no description",
+		"`{pending}` shorthand passes `let pending = $state(false)` to the dialog",
+		"`onconfirm={publish}` sets `pending = true`, awaits 1500 ms, then sets `pending = false` and `open = false`",
+		"Trigger is `<Button variant=\"outlined\"` labelled Open controlled"
+	],
+	"tags": ["alert-dialog", "controlled", "pending", "async", "publish"],
+	"shape": "wide"
+}

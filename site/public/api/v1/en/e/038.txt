@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #038 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/segmented-control#default -->
 Element: #038 Default (inputs/segmented-control)
-What it shows: Text items, and text items with icons.
-Tags: default, segmentedcontrol
+What it shows: Two segmented controls: a text-only Week/Month/Year period and a List/Grid view switch with icons.
+When to use: Switching a view mode or time range inline above a list, chart or dashboard.
+Spec:
+- Period control `aria-label="Period"` with `bind:value={period}` and 3 items: Week, Month, Year
+- Current value is shown as `value: {period}`
+- View control `aria-label="View"` with 2 items using `icon: LayoutList` and `icon: LayoutGrid`
+- Icons come from `@lucide/svelte`
+Tags: segmented-control, tabs, icon, view-switch, period
 Needs: @codeatlasdev/ui@4.1.0
 Components: SegmentedControl
 Live demo: https://ui.codeatlas.com.br/docs/inputs/segmented-control#default

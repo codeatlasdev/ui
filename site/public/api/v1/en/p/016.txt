@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #016 "Min, max, error and disabled" (inputs/date-picker).
-What it shows: Only the next 30 days are selectable. Out-of-range days are disabled and typed values become invalid..
+What it shows: Date and time inputs with constraints: a bounded DatePicker, a required DatePicker with an error, a disabled DateField and a read-only TimeField. When to use: Forms that limit selectable dates, require a date of birth or show locked date and time values.
+Spec:
+- `minValue={min}` and `maxValue={max}` with `const max = today(tz).add({ days: 30 })` and `description="Only the next 30 days."`
+- `required` with `error={requiredError}` derived as `'Enter your date of birth.'` while empty
+- `<DateField label="Disabled" locale="en-US" disabled value={new CalendarDate(2026, 1, 15)} />`
+- `<TimeField label="Read-only" locale="en-US" readonly value={new Time(9, 0)} />`
+- Wrapper `.col` has `max-width: 400px`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #070 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/surfaces/card#header-and-actions -->
 Element: #070 Header and actions (surfaces/card)
-What it shows: Header and actions
-Tags: header, and, actions, card, button
+What it shows: A glass Card with a built-in Team members header and an Invite button supplied through a headerActions snippet.
+When to use: Panels whose header needs a title and an action, such as team, billing or settings sections.
+Spec:
+- `<Card material="glass" title="Team members" class="titled">` with `max-width: 420px`
+- `{#snippet headerActions()}` renders `<Button size="sm" variant="outlined">Invite</Button>`
+- Body is one paragraph explaining `title` and `headerActions`
+Tags: card, header-actions, title, snippet, button, glass
 Needs: @codeatlasdev/ui@4.1.0
 Components: Card, Button
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/card#header-and-actions

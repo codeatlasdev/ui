@@ -1,0 +1,11 @@
+{
+	"summary": "An Image with an inline 4:3 gradient SVG, constrained to a 360px wrapper.",
+	"use": "Content images where width and height are declared so the layout does not shift.",
+	"spec": [
+		"`<Image {src} alt=\"Gradient placeholder, 4 by 3\" width={800} height={600} />`",
+		"`src` is an inlined `data:image/svg+xml;utf8,` gradient, so the demo needs no asset",
+		"Wrapper is `<div style=\"max-width: 360px\">`"
+	],
+	"tags": ["image", "alt", "width", "height", "aspect-ratio", "placeholder"],
+	"shape": "square"
+}

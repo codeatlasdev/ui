@@ -1,0 +1,12 @@
+{
+	"summary": "Checkboxes in unchecked, pre-checked and indeterminate states, the first two bound to local state.",
+	"use": "Boolean options in a form, such as terms acceptance or feature toggles, including a mixed state for partial selection.",
+	"spec": [
+		"`bind:checked={basic}` with `let basic = $state(false)` and `label=\"Unchecked (click me)\"`",
+		"`bind:checked` bound to `let checked = $state(true)` with `label=\"Pre-checked\"`",
+		"`indeterminate` with `label=\"Indeterminate\"`",
+		"Three `<Checkbox` components imported from `@codeatlasdev/ui`"
+	],
+	"tags": ["checkbox", "checked", "indeterminate", "bind", "form"],
+	"shape": "wide"
+}

@@ -1,7 +1,15 @@
 <!-- @codeatlasdev/ui demo #156 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/command-palette#open-the-palette -->
 Element: #156 Open the palette (navigation/command-palette)
-What it shows: Click the button or press Cmd+K / Ctrl+K while this page is focused. Picking an item shows its path instead of navigating.
-Tags: open, the, palette, commandpalette, button, kbd
+What it shows: A command palette opened by a button, filtering two modules of navigation items and reporting the picked path.
+When to use: Global quick navigation: jump to any page of a multi-module app by typing its name.
+Spec:
+- `<CommandPalette {modules} onNavigate={(path) => (picked = path)} bind:open />`
+- `const modules: NavModule[]` has two modules, `id: 'app'` with 3 items and `id: 'account'` with 3 items
+- Items carry `id`, `label`, `icon` and `path`, for example `path: '/app/dashboard'`
+- `<Button variant="filled" onclick={() => (open = true)}>` with `{#snippet leading()}<Keyboard size={16} />{/snippet}` opens it
+- A `<Kbd>` hint is shown beside the button
+- Result shown in `aria-live="polite"` as `Selected: <code>{picked}</code>`
+Tags: command-palette, search, navigation, modules, keyboard, kbd, dialog
 Needs: @codeatlasdev/ui@4.1.0
 Components: CommandPalette, Button, Kbd
 Live demo: https://ui.codeatlas.com.br/docs/navigation/command-palette#open-the-palette

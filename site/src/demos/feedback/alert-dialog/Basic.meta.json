@@ -1,0 +1,13 @@
+{
+	"summary": "Two alert dialogs, a plain sign out confirmation and a destructive project delete, with an event log below.",
+	"use": "Asking the user to confirm an interrupting action such as signing out or deleting a project.",
+	"spec": [
+		"Sign out dialog: `bind:open={signOutOpen}`, `confirmLabel=\"Sign out\"`, `onconfirm` and `oncancel` handlers",
+		"Delete dialog: `bind:open={deleteOpen}`, `confirmLabel=\"Delete\"`, `destructive` flag, only `onconfirm`",
+		"Triggers are `<Button variant=\"outlined\"` and `<Button variant=\"destructive\"` with `{#snippet leading()}` icons `<LogOut size={14} />` and `<Trash2 size={14} />`",
+		"Handlers call `push('Signed out')`, `push('Sign out cancelled')` and `push('Project deleted')`",
+		"Log keeps the latest four entries with `slice(0, 4)` in a `<ul class=\"log\" aria-live=\"polite\">`"
+	],
+	"tags": ["alert-dialog", "confirm", "destructive", "sign-out", "delete", "dialog"],
+	"shape": "wide"
+}

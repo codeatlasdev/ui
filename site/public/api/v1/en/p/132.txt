@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #132 "Default" (display/notification-bell).
-What it shows: Default.
+What it shows: Two NotificationBell triggers side by side: one given three notifications and one given an empty list. When to use: Comparing the populated and empty bell states for an app header or toolbar.
+Spec:
+- `<Flex gap="6" align="center">` wraps both bells
+- `<NotificationBell notifications={items} />` with 3 const items (`id`, `title`, `body`, `time`, `read`), two with `read: false` and one with `read: true`
+- `<NotificationBell notifications={[]} />` passes an empty list
+- No callback props are passed to either bell
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

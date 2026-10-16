@@ -1,0 +1,12 @@
+{
+	"summary": "Three gauges (CPU 67, Memory 82, Disk 45) that share colour zones for success, warning and error.",
+	"use": "Resource or SLA dashboards where thresholds change the gauge colour.",
+	"spec": [
+		"`const zones: GaugeZone[]` with 3 entries: `{ until: 0.5, color: 'success' }`, `{ until: 0.8, color: 'warning' }`, `{ until: 1, color: 'error' }`",
+		"`const metrics` with 3 items: CPU `67`, Memory `82`, Disk `45`, fields `label` and `value`",
+		"`{#each metrics as m}` renders `<GaugeChart value={m.value} {zones} height=\"200px\" />`",
+		"Each gauge sits in its own `<Card material=\"glass\">` inside `<Grid class=\"grid-auto-200\" gap=\"4\">`"
+	],
+	"tags": ["gauge-chart", "zones", "thresholds", "grid", "metrics", "card"],
+	"shape": "wide"
+}

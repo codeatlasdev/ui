@@ -1,0 +1,13 @@
+{
+	"summary": "A dropdown menu of file actions with icons, a separator and a destructive Delete item, reporting the last action.",
+	"use": "Row or toolbar action menus offering several operations, with the dangerous one set apart.",
+	"spec": [
+		"`<DropdownMenu>` with `{#snippet triggerChild(props)}` rendering `<Button variant=\"glass\" {...props}>Open menu</Button>`",
+		"`<DropdownMenuLabel>File actions</DropdownMenuLabel>` then items Edit, Duplicate, Download",
+		"Each item has `{#snippet icon()}` with `<Edit2 />`, `<Copy />`, `<Download />` or `<Trash2 />`",
+		"`<DropdownMenuSeparator />` precedes `<DropdownMenuItem variant=\"destructive\"` for Delete",
+		"`let last = $state('')` is set per item and shown as `Last action: {last}` with `aria-live=\"polite\"`"
+	],
+	"tags": ["dropdown-menu", "menu", "actions", "destructive", "separator", "icon", "trigger"],
+	"shape": "wide"
+}

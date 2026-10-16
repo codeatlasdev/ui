@@ -1,0 +1,12 @@
+{
+	"summary": "Three independent Collapsible FAQ panels stacked with a small gap, all closed initially.",
+	"use": "Short FAQ or help blocks where each answer expands on its own.",
+	"spec": [
+		"`<Stack gap=\"2\" class=\"collapsible-faq\">` with `max-width: 560px`",
+		"3 `<Collapsible` items with a `title`: What is a glass surface?, How do presets work?, Is dark mode automatic?",
+		"Each body is a `<p>` child, two of them include a `<code>` token",
+		"Nothing is bound to the open state, each panel manages its own"
+	],
+	"tags": ["collapsible", "faq", "stack", "disclosure", "expand", "title"],
+	"shape": "wide"
+}

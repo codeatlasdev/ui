@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #001 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/button#full-width -->
 Element: #001 Full width (inputs/button)
-What it shows: fullWidth stretches the button to its container.
-Tags: full, width, button
+What it shows: Two buttons that stretch to the width of their container: a filled primary and an outlined cancel.
+When to use: Stacked action pairs in forms, dialogs and bottom sheets where the buttons should span the column.
+Spec:
+- `fullWidth` on `Button` makes it fill its parent
+- Primary action keeps the default variant, secondary uses `variant="outlined"`
+- Wrapper column is `max-width: 320px` with `gap: var(--ca-space-2)`
+Tags: button, full-width, stacked, actions, form
 Needs: @codeatlasdev/ui@4.1.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/inputs/button#full-width

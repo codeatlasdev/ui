@@ -1,0 +1,13 @@
+{
+	"summary": "A line chart with three series, Revenue, Expenses and Profit, across nine months.",
+	"use": "Comparing related metrics over time, such as income against cost and the resulting margin.",
+	"spec": [
+		"`<LineChart` with 3 series: `{ name: 'Revenue', data: revenue }`, `{ name: 'Expenses', data: expenses }`, `{ name: 'Profit', data: profit }`",
+		"`const profit = revenue.map((r, i) => r - expenses[i])` derives the third series",
+		"`categories={months}` with `'Jan'` to `'Sep'`",
+		"`valueFormatter={fmt}` renders `$${(v / 1000).toFixed(0)}k`",
+		"`height=\"300px\"` inside `<Card material=\"glass\" full>`"
+	],
+	"tags": ["line-chart", "multi-series", "revenue", "expenses", "time-series", "card"],
+	"shape": "wide"
+}

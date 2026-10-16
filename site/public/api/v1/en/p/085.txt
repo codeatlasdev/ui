@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #085 "Form" (feedback/dialog).
-What it shows: A dialog holding a form, at the md size..
+What it shows: A medium dialog containing an invite form with name, email and role fields and a Send invite button disabled until name and email are filled. When to use: Short create or invite flows that collect a few fields without leaving the page.
+Spec:
+- `<Dialog bind:open title="Invite team member" size="md">`
+- Fields stacked in `<Stack gap="3.5">`: two `<TextField` (Full name, Email with `type="email"`) using `bind:value={name}` and `bind:value={email}`
+- `<Select label="Role" bind:value={role} options={roleOpts}` with three options: Admin, Editor, Viewer
+- `let role = $state('viewer')` is the default role
+- `{#snippet actions()}`: ghost Cancel and filled Send invite with `disabled={!name || !email}`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

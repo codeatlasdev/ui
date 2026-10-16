@@ -1,0 +1,13 @@
+{
+	"summary": "A bubble chart where each of 50 accounts carries a third value that sets the bubble size.",
+	"use": "Adding a third dimension, such as account size, to a two-axis comparison.",
+	"spec": [
+		"`data` is 50 `[number, number, number]` triples from `Array.from({ length: 50 }`",
+		"The third value of each point is the bubble size",
+		"`<ScatterChart series={[{ name: 'Accounts', data }]}`",
+		"`yName=\"Conversion %\"` and `yFormatter={(v) => `${v.toFixed(1)}%`}`",
+		"`height=\"340px\"` inside `<Card material=\"glass\" full>`"
+	],
+	"tags": ["scatter-chart", "bubble", "size", "three-dimensions", "accounts", "card"],
+	"shape": "wide"
+}

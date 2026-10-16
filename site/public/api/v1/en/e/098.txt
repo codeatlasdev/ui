@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #098 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/skeleton#image-placeholder -->
 Element: #098 Image placeholder (feedback/skeleton)
-What it shows: Image placeholder
-Tags: image, placeholder, skeleton, card, stack
+What it shows: A flush glass card skeleton with a 180px rectangular image placeholder above two caption lines.
+When to use: Loading placeholder for media cards such as products, posts or galleries.
+Spec:
+- `<Card material="glass" flush full>`
+- `<Skeleton variant="rectangular" height="180px" />` fills the top of the card
+- Caption in `<Stack gap="2">`: `height="16px" width="50%"` and `height="13px" width="80%"`
+- Caption wrapper `<div class="caption">` has `padding: 16px`
+Tags: skeleton, image, card, flush, loading, placeholder
 Needs: @codeatlasdev/ui@4.1.0
 Components: Skeleton, Card, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/skeleton#image-placeholder

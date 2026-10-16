@@ -1,0 +1,12 @@
+{
+	"summary": "Large avatars with no image source: three given only `alt` names and two given explicit `fallback` text.",
+	"use": "Users who have no uploaded photo, shown with initials or a placeholder character.",
+	"spec": [
+		"`alt=\"Alice Martin\"`, `alt=\"Bob Chen\"` and `alt=\"Clara Silva\"` with no image",
+		"`fallback=\"DK\"` sets explicit text",
+		"`fallback=\"?\"` sets a placeholder character",
+		"All five use `size=\"lg\"`"
+	],
+	"tags": ["avatar", "initials", "fallback", "alt", "placeholder"],
+	"shape": "wide"
+}

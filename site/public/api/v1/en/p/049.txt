@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #049 "Theme presets" (inputs/swatch-group).
-What it shows: Swatches without a color paint from the preset named by their value..
+What it shows: Swatch group of five theme presets: ocean, violet, emerald, rose, amber. When to use: Choosing an accent theme preset in appearance settings.
+Spec:
+- `<SwatchGroup` with `aria-label="Accent"` and `bind:value={preset}`
+- 5 items with only `value`: `{ value: 'ocean' }`, `{ value: 'violet' }`, `{ value: 'emerald' }`, `{ value: 'rose' }`, `{ value: 'amber' }`
+- Initial value is `$state('ocean')`
+- Current value is shown as `value: {preset}`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

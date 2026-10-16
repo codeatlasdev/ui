@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #206 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/pie#animated-proportions -->
 Element: #206 Animated proportions (charts/pie)
-What it shows: Swap the data and the slices animate to the new proportions.
-Tags: animated, proportions, card, flex, chip, piechart
+What it shows: A donut chart with Q1, Q2 and Q3 chips that switch which quarter of data the chart shows.
+When to use: Showing how a share breakdown shifts between periods with a selector.
+Spec:
+- `let selected = $state<Quarter>('Q1')` and `const data = $derived(qData[selected])`
+- `{#each quarters as q}` renders `<Chip label={q} selected={selected === q}` with `variant="brand"` and `size="sm"`
+- `onclick={() => (selected = q)}` changes the quarter
+- `qData` has 4 items per quarter: Cloud, Enterprise, SaaS, Other
+- `<PieChart {data} donut height="300px" />` inside `<Card material="glass" full>`
+Tags: pie-chart, donut, chip, quarters, state, derived
 Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, Flex, Chip, PieChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/pie#animated-proportions

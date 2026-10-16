@@ -1,0 +1,11 @@
+{
+	"summary": "A popover opened from a button, containing a sentence of text and a Confirm button.",
+	"use": "Short contextual help or a quick confirmation anchored to the element that triggered it.",
+	"spec": [
+		"`<Popover>` with `{#snippet triggerChild(props)}<Button {...props}>Open popover</Button>{/snippet}`",
+		"Content is `<Stack gap=\"3\">` with a paragraph and `<Button size=\"sm\" variant=\"filled\">Confirm</Button>`",
+		"Paragraph text: This is a basic popover with some content inside."
+	],
+	"tags": ["popover", "trigger", "overlay", "confirm", "stack", "contextual"],
+	"shape": "square"
+}

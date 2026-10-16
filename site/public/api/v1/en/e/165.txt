@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #165 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/app-shell#anatomy -->
 Element: #165 Anatomy (layout/app-shell)
-What it shows: Rail (52px), panel (200px) and the main content area.
-Tags: anatomy
+What it shows: A labelled diagram of the app shell showing a 52px rail, a 200px panel and the main content area.
+When to use: Explaining how the app shell is divided before wiring navigation into it.
+Spec:
+- Root is `role="img"` with `aria-label="App shell anatomy: rail, panel and main content"`
+- Rail label `Rail<br />52px` over 4 icon blocks, the second marked `class:rail-icon--active={i === 1}`
+- Panel label `Panel<br />200px` over items Dashboard, Users, Reports, Settings, the first marked `class:panel-item--active={i === 0}`
+- Main area labelled Main content with a top bar and 3 content blocks, one `content-block--short`
+- Diagram size is `height: 280px` and `width: 100%`
+Tags: app-shell, anatomy, rail, panel, layout, diagram
 Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/layout/app-shell#anatomy

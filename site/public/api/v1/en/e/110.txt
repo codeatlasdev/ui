@@ -1,7 +1,15 @@
 <!-- @codeatlasdev/ui demo #110 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/avatar#sizes -->
 Element: #110 Sizes (display/avatar)
-What it shows: Sizes
-Tags: sizes, avatar
+What it shows: Avatars at every preset size from extra small to extra large, plus a custom numeric size.
+When to use: Choosing avatar size for dense lists, headers and profile pages.
+Spec:
+- `size="xs"` with `alt="Extra small"`
+- `size="sm"` with `alt="Small"`
+- `size="md"` with `alt="Medium"`
+- `size="lg"` with `alt="Large"`
+- `size="xl"` with `alt="Extra large"`
+- `size={80}` with `alt="Custom"` is a numeric size
+Tags: avatar, size, xs, xl, custom-size
 Needs: @codeatlasdev/ui@4.1.0
 Components: Avatar
 Live demo: https://ui.codeatlas.com.br/docs/display/avatar#sizes

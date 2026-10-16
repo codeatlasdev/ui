@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #072 "Stat cards" (surfaces/card).
-What it shows: Stat cards.
+What it shows: Three glass stat Cards in a flex row, each with a label, a large value and a delta line. When to use: Dashboard KPI strips showing a metric, its value and a short qualifier.
+Spec:
+- `{#each stats as s}` renders `<Card material="glass" class="stat">` once per stat
+- 3 stats with `label`, `value`, `delta`: Components 70+, Presets 8, Tokens 80+
+- Each card has three paragraphs: `{s.label}`, `{s.value}` and `{s.delta}`
+- `.stat` uses `min-width: 140px` inside a wrapping flex `.grid`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

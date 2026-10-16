@@ -1,0 +1,12 @@
+{
+	"summary": "Five Surface tiles, one per material, over a brand to info to success gradient so the translucency is visible.",
+	"use": "Comparing auto, solid, frosted, glass and liquid materials before picking one for a card or panel.",
+	"spec": [
+		"`const materials = ['auto', 'solid', 'frosted', 'glass', 'liquid'] as const`",
+		"`<Surface {material} elevation={3} p=\"4\" class=\"tile\">` rendered with `{#each materials as material (material)}`",
+		"Each tile prints its material name in a `.name` paragraph",
+		"`.backdrop` paints `linear-gradient(135deg` behind the tiles"
+	],
+	"tags": ["surface", "material", "glass", "frosted", "liquid", "solid"],
+	"shape": "wide"
+}

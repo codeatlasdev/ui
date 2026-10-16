@@ -1,0 +1,12 @@
+{
+	"summary": "Three chips each with a leading lucide icon: star, zap and tag.",
+	"use": "Labelled badges that gain meaning from an icon, such as featured or boosted items.",
+	"spec": [
+		"`<Chip label=\"Featured\" icon={Star} />`",
+		"`<Chip label=\"Boosted\" icon={Zap} />`",
+		"`<Chip label=\"Tagged\" icon={Tag} />`",
+		"`icon` receives the component itself imported from `@lucide/svelte`"
+	],
+	"tags": ["chip", "icon", "lucide", "label", "star"],
+	"shape": "wide"
+}

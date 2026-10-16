@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #215 "Clustered by tier" (charts/scatter).
-What it shows: One series per group, each with its own palette color..
+What it shows: A scatter plot with three named series, Premium, Standard and Free, of 30 points each. When to use: Showing segments or clusters of customers as separate colour-coded groups.
+Spec:
+- `const series: ScatterSeries[]` with 3 entries: `'Premium'`, `'Standard'`, `'Free'`
+- Each series uses `cluster(30,` to generate 30 `[number, number]` points
+- `color` is optional on a series, omitted here so the palette assigns one per series
+- `<ScatterChart {series} yName="Conversion %"` with `yFormatter={(v) => `${v.toFixed(1)}%`}`
+- `height="340px"` inside `<Card material="glass" full>`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

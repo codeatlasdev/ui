@@ -1,0 +1,14 @@
+{
+	"summary": "Five MaskedField inputs for Brazilian documents: CPF, CNPJ, combined CPF or CNPJ, birth date and RG, with validators on three.",
+	"use": "Brazilian registration and checkout forms that collect formatted identity documents and dates.",
+	"spec": [
+		"`mask={maskCPF}` with `validate={(v) => (isValidCPF(v) ? undefined : 'Invalid CPF')}` and `placeholder=\"000.000.000-00\"`",
+		"`mask={maskCNPJ}` with `validate={(v) => (isValidCNPJ(v) ? undefined : 'Invalid CNPJ')}` and `placeholder=\"00.000.000/0000-00\"`",
+		"`mask={maskCPFCNPJ}` with `description=\"Switches mask after 11 digits.\"`",
+		"`mask={maskDateBR}` with `isValidDateBR(v)` validation and `placeholder=\"dd/mm/yyyy\"`",
+		"`mask={maskRG}` with `placeholder=\"00.000.000-0\"` and no `validate`",
+		"Imports come from `@codeatlasdev/ui/forms`, each field uses `bind:value`"
+	],
+	"tags": ["masked-field", "cpf", "cnpj", "mask", "validation", "brazil", "forms"],
+	"shape": "wide"
+}

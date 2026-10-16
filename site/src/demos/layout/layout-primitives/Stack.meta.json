@@ -1,0 +1,12 @@
+{
+	"summary": "A Stack with a wrapping Flex row of three chips above a single padded Box.",
+	"use": "Composing small layouts with spacing props instead of custom CSS.",
+	"spec": [
+		"`<Stack gap=\"4\" p=\"4\">` is the root",
+		"`<Flex gap=\"3\" align=\"center\" justify=\"between\" wrap>` holds 3 `<Box class=\"chip\" px=\"3\" py=\"1\">` items",
+		"Chip labels: Flex, space between; gap 3; wraps",
+		"A last `<Box class=\"chip\" p=\"4\">` reads Stack gap 4, Box padding 4"
+	],
+	"tags": ["stack", "flex", "box", "spacing", "gap", "layout", "primitives"],
+	"shape": "wide"
+}

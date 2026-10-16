@@ -1,7 +1,11 @@
 <!-- @codeatlasdev/ui demo #059 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/theme-toggle#basic -->
 Element: #059 Basic (inputs/theme-toggle)
-What it shows: Click it: the whole site flips between light and dark.
-Tags: basic, themetoggle
+What it shows: Theme toggle button rendered inside a rail container.
+When to use: Letting users switch between light and dark appearance from a sidebar or header.
+Spec:
+- `<ThemeToggle />` with no props
+- Wrapped in `<div class="rail">`
+Tags: theme-toggle, dark-mode, theme, appearance, rail
 Needs: @codeatlasdev/ui@4.1.0
 Components: ThemeToggle
 Live demo: https://ui.codeatlas.com.br/docs/inputs/theme-toggle#basic

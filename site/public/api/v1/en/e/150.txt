@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #150 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/actions#longpress -->
 Element: #150 longpress (navigation/actions)
-What it shows: Dispatches a longpress event (listen with `onlongpress`) after the pointer is held for the given duration.
-Tags: longpress
+What it shows: A native button that fires a long-press handler after an 800ms hold and shows Long press! for 1.5 seconds.
+When to use: Touch and desktop shortcuts for secondary actions, such as selecting a row or opening a context menu.
+Spec:
+- `use:longpress={800}` imported from `@codeatlasdev/ui/actions` on a native `<button`
+- `onlongpress={done}` sets `fired = true` and resets it with `setTimeout(() => (fired = false), 1500)`
+- Label switches with state: `{fired ? 'Long press!' : 'Press and hold (800ms)'}`
+- `let fired = $state(false)`
+Tags: longpress, action, touch, gesture, button, hold
 Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/navigation/actions#longpress

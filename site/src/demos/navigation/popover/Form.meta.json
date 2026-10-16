@@ -1,0 +1,12 @@
+{
+	"summary": "A popover anchored below-start of a button that holds a text field with Cancel and Save buttons.",
+	"use": "Inline editing of a single value, such as renaming a label, without opening a modal.",
+	"spec": [
+		"`<Popover side=\"bottom\" align=\"start\">`",
+		"`{#snippet triggerChild(props)}` renders `<Button variant=\"filled\" {...props}>Edit label</Button>`",
+		"`<TextField label=\"Label name\" placeholder=\"e.g. Priority\" />` inside `<Stack gap=\"3\">`",
+		"`<Flex gap=\"2\" justify=\"end\">` holds `<Button size=\"sm\" variant=\"ghost\">Cancel</Button>` and `<Button size=\"sm\" variant=\"filled\">Save</Button>`"
+	],
+	"tags": ["popover", "form", "text-field", "inline-edit", "side", "align", "overlay"],
+	"shape": "square"
+}

@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #126 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/external-link#in-a-results-table -->
 Element: #126 In a results table (display/external-link)
-What it shows: One link per row. The accessible name of each link is for example “Buy at registrar (opens in a new tab)”.
-Tags: in, a, results, table, externallink, simpletable, card
+What it shows: A table of three domains where each row ends with an ExternalLink to a registrar URL.
+When to use: Table cells that link out to a third-party site, with the external-link affordance.
+Spec:
+- `<Card material="glass" flush full>` wraps `<SimpleTable responsive="cards">`
+- `const rows` has 3 entries with `domain`, `price` and `url`
+- Header cells are Domain, Price and Registrar
+- `<ExternalLink href={r.url}>Buy at registrar</ExternalLink>` is rendered in each last cell
+- `{#each rows as r (r.domain)}` renders one `<tr>` per row
+Tags: external-link, link, table, simple-table, responsive-cards, outbound
 Needs: @codeatlasdev/ui@4.1.0
 Components: ExternalLink, SimpleTable, Card
 Live demo: https://ui.codeatlas.com.br/docs/display/external-link#in-a-results-table

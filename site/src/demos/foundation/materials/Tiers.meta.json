@@ -1,0 +1,12 @@
+{
+	"summary": "Five glass surfaces at elevations 1 to 5, from Ultra thin to Chrome, over a three color gradient.",
+	"use": "Choosing the glass tier by how much blur and fill a panel needs over its background.",
+	"spec": [
+		"`{#each tiers as tier (tier.elevation)}` renders 5 `<Surface material=\"glass\" elevation={tier.elevation} class=\"tier\">`",
+		"Tiers: Ultra thin (`elevation: 1`), Thin (`elevation: 2`), Regular (`elevation: 3`), Thick (`elevation: 4`), Chrome (`elevation: 5`)",
+		"Each tier shows a `label` and a `desc`, for example Subtle background hint and Heaviest blur and fill",
+		"Backdrop gradient uses `var(--ca-brand-main) 0%`, `var(--ca-semantic-info) 50%` and `var(--ca-semantic-success) 100%`"
+	],
+	"tags": ["materials", "glass", "surface", "elevation", "blur", "tiers"],
+	"shape": "wide"
+}

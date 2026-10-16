@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #187 "Dashboard page" (layout/page-shell).
-What it shows: KPI cards and a content card inside a PageShell..
+What it shows: A page shell inside a flush glass card with a title, description, New report action, four KPI cards and a placeholder card. When to use: Dashboard pages with a header, a primary action, headline metrics and a content area.
+Spec:
+- `<Card material="glass" flush full>` wraps `<PageShell title="Dashboard" description="Overview of this month">`
+- `{#snippet actions()}<Button variant="filled" size="sm">New report</Button>{/snippet}`
+- `<Stack gap="6">` holds a `KpiGrid` and a `<Card material="glass" full>`
+- `KpiGrid` has 4 `KpiCard` items: Revenue `$118k`, Users `24.8k`, Growth `34%`, Uptime `99.9%`
+- Placeholder card text is Chart or data table goes here
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

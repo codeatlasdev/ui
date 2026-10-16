@@ -1,0 +1,12 @@
+{
+	"summary": "The three font family tokens, sans, display and mono, each with a sample sentence.",
+	"use": "Choosing a font family: sans for UI text, display for headings, mono for code.",
+	"spec": [
+		"`--ca-font-sans` with The quick brown fox jumps over the lazy dog",
+		"`--ca-font-display` with Headings use the display family",
+		"`--ca-font-mono` with `const answer = 42;`",
+		"Samples use `class=\"sample sample--sans\"`, `class=\"sample sample--display\"` and `class=\"sample sample--mono\"`"
+	],
+	"tags": ["typography", "font-family", "sans", "display", "mono", "tokens"],
+	"shape": "wide"
+}

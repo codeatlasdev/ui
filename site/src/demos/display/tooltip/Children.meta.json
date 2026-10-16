@@ -1,0 +1,12 @@
+{
+	"summary": "A Tooltip wrapping plain inline text, which becomes the hover and focus trigger.",
+	"use": "Adding a short explanation to a term or inline phrase without building a custom trigger.",
+	"spec": [
+		"`<Tooltip content=\"Wrapped in the tooltip's own button\">` with plain text children",
+		"Children text: hover or focus this text",
+		"No trigger snippet, the tooltip renders its own trigger",
+		"Placed inside a paragraph after the sentence Static text can be a trigger too:"
+	],
+	"tags": ["tooltip", "children", "inline", "text-trigger", "hover", "focus"],
+	"shape": "wide"
+}

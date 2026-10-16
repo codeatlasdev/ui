@@ -1,0 +1,13 @@
+{
+	"summary": "A Surface rendered as a button that counts how many times it was pressed.",
+	"use": "Custom clickable tiles or cards that need hover and press feedback while staying a native button.",
+	"spec": [
+		"`<Surface` with `as=\"button\"`, `type=\"button\"` and `interactive`",
+		"Styling props: `elevation={2}`, `material=\"solid\"`, `radius=\"md\"`, `p=\"4\"`",
+		"Handler: `onclick={() => count++}`",
+		"State: `let count = $state(0)`",
+		"Label: `Pressed {count} times`"
+	],
+	"tags": ["surface", "interactive", "button", "as", "onclick", "counter"],
+	"shape": "square"
+}

@@ -1,0 +1,11 @@
+{
+	"summary": "Select with no initial value that shows placeholder text until a country is chosen.",
+	"use": "Required choice in a form where no default should be preselected.",
+	"spec": [
+		"`<Select label=\"Country\" placeholder=\"Choose a country…\"` with `options={countries}`",
+		"`countries` has 5 options: Brazil, United States, Germany, Japan, Australia",
+		"`bind:value={country}` with initial `$state('')`"
+	],
+	"tags": ["select", "placeholder", "country", "form", "options"],
+	"shape": "wide"
+}

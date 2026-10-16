@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #153 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/breadcrumb#levels -->
 Element: #153 Levels (navigation/breadcrumb)
-What it shows: Two, three and five levels, and a single root item.
-Tags: levels, breadcrumb
+What it shows: Four stacked breadcrumbs with 2, 3, 5 and 1 levels, where the last item is the current page without a link.
+When to use: Showing where a page sits in the hierarchy, from a single root page to a deep settings path.
+Spec:
+- Four `Breadcrumb` components in a `<div class="stack">`, each with an `items` array of `label` and optional `href`
+- Two levels: `{ label: 'Home', href: '/' }, { label: 'Components' }`
+- Three levels end with `{ label: 'Breadcrumb' }` after `href: '/docs/navigation/'`
+- Five levels run from Home to `{ label: 'Two-Factor Auth' }` via `href: '/settings/account/security'`
+- Single level: `items={[{ label: 'Home' }]}` with no `href`
+Tags: breadcrumb, navigation, hierarchy, levels, path, links
 Needs: @codeatlasdev/ui@4.1.0
 Components: Breadcrumb
 Live demo: https://ui.codeatlas.com.br/docs/navigation/breadcrumb#levels

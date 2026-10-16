@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #047 "Step and disabled" (inputs/slider).
-What it shows: step={10} snaps to increments of 10..
+What it shows: A slider that snaps in steps of 10 and a disabled slider fixed at 35. When to use: Discrete values such as percentages in tens, or a locked setting.
+Spec:
+- Stepped slider: `<Slider bind:value={stepped} min={0} max={100} step={10} />` with initial `$state(50)`
+- Disabled slider: `<Slider value={35} disabled />`
+- Rows labelled Step 10 and Disabled with readouts `{stepped}` and 35
+- Wrapper `.col` uses `max-width: 480px`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

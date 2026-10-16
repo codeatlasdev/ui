@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #065 "Controlled" (surfaces/accordion).
-What it shows: Controlled.
+What it shows: A single-open Accordion with its open item bound to state and the current value printed below. When to use: FAQ or settings sections where the app needs to read or set which item is open.
+Spec:
+- `<Accordion type="single" bind:value>`
+- State: `let value = $state<string | string[] | undefined>('c1')` opens the first item initially
+- 2 items: `<AccordionItem value="c1" title="First section">` and `<AccordionItem value="c2" title="Second section">`
+- `Open item: {Array.isArray(value) ? value.join(', ') : (value ?? 'none')}` prints the bound value
+- Wrapped in `.wrap` with `max-width: 560px`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

@@ -1,0 +1,12 @@
+{
+	"summary": "A static list of four keyboard hints for the command palette, each pairing a Kbd key with a description.",
+	"use": "Documenting the shortcuts of a search or command palette next to the feature it belongs to.",
+	"spec": [
+		"`const keys` has four entries with fields `key` and `desc`",
+		"Rendered with `{#each keys as k}` as `<Kbd>{k.key}</Kbd><span>{k.desc}</span>` inside a `<ul class=\"list\">`",
+		"Key labels: `Type`, `↑ ↓`, `↵`, `ESC`",
+		"Descriptions: `Filter by label or module name`, `Move through the results`, `Navigate to the selected item`, `Close the palette`"
+	],
+	"tags": ["kbd", "keyboard", "shortcuts", "command-palette", "hints", "legend"],
+	"shape": "wide"
+}

@@ -1,0 +1,13 @@
+{
+	"summary": "Three selects showing a description, an error and a disabled state, with one disabled option.",
+	"use": "Showing helper text, validation errors and locked fields on dropdowns in a form.",
+	"spec": [
+		"Plan select has `description=\"Enterprise is disabled.\"` and `bind:value={plan}`",
+		"`plans` has Free, Pro, Enterprise, and Enterprise has `disabled: true`",
+		"Region select has `error=\"Pick a region to continue.\"` and no bound value",
+		"Size select has `disabled` with `bind:value={size}`",
+		"3 selects stacked in `.col` with `max-width: 320px`"
+	],
+	"tags": ["select", "error", "disabled", "description", "validation"],
+	"shape": "wide"
+}

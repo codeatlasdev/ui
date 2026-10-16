@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #091 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/lightbox#open-from-a-button -->
 Element: #091 Open from a button (feedback/lightbox)
-What it shows: Open from a button
-Tags: open, from, a, button, lightbox
+What it shows: A lightbox opened from a button to show a single generated SVG image.
+When to use: Enlarging one thumbnail or photo to full view on click.
+Spec:
+- `<Lightbox bind:open src={photo} alt="Gray circle on a dark background" />`
+- `photo` is a `data:image/svg+xml;utf8,` URL built with `encodeURIComponent`, 640 by 400 with a circle `r="90"`
+- Trigger is `<Button variant="outlined" onclick={() => (open = true)}>` labelled View photo
+Tags: lightbox, image, preview, modal, alt-text
 Needs: @codeatlasdev/ui@4.1.0
 Components: Button, Lightbox
 Live demo: https://ui.codeatlas.com.br/docs/feedback/lightbox#open-from-a-button

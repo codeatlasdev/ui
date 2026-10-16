@@ -1,5 +1,12 @@
 Use @codeatlasdev/ui demo #156 "Open the palette" (navigation/command-palette).
-What it shows: Click the button or press Cmd+K / Ctrl+K while this page is focused. Picking an item shows its path instead of navigating..
+What it shows: A command palette opened by a button, filtering two modules of navigation items and reporting the picked path. When to use: Global quick navigation: jump to any page of a multi-module app by typing its name.
+Spec:
+- `<CommandPalette {modules} onNavigate={(path) => (picked = path)} bind:open />`
+- `const modules: NavModule[]` has two modules, `id: 'app'` with 3 items and `id: 'account'` with 3 items
+- Items carry `id`, `label`, `icon` and `path`, for example `path: '/app/dashboard'`
+- `<Button variant="filled" onclick={() => (open = true)}>` with `{#snippet leading()}<Keyboard size={16} />{/snippet}` opens it
+- A `<Kbd>` hint is shown beside the button
+- Result shown in `aria-live="polite"` as `Selected: <code>{picked}</code>`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

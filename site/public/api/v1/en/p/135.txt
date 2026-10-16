@@ -1,5 +1,9 @@
 Use @codeatlasdev/ui demo #135 "More siblings" (display/pagination).
-What it shows: More siblings.
+What it shows: Pagination for 200 items at 10 per page with two sibling pages shown on each side of the current page. When to use: Long result sets where users need to jump a few pages around the current one.
+Spec:
+- `<Pagination count={200} perPage={10} siblingCount={2} />`
+- `siblingCount={2}` sets how many pages show on each side of the current page
+- Only `count`, `perPage` and `siblingCount` are set, nothing is bound
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

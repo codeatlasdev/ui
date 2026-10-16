@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #113 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/badge#dot-and-counts -->
 Element: #113 Dot and counts (display/badge)
-What it shows: Dot and counts
-Tags: dot, and, counts, badge, iconbutton, flex
+What it shows: Four badges on icon buttons: a dot, a count of 3, a count of 99 and a count of 100.
+When to use: Unread counters on notification, message and cart icons.
+Spec:
+- `<Badge dot>` around a Bell `<IconButton aria-label="Notifications">`
+- `<Badge count={3}>` around a Mail `<IconButton aria-label="Messages">`
+- `<Badge count={99}>` around a ShoppingCart `<IconButton aria-label="Cart">`
+- `<Badge count={100}>` around a Bell `<IconButton aria-label="Notifications">`
+- `<Flex gap="4" align="center" wrap>` lays them out
+Tags: badge, count, dot, overflow, icon-button, unread
 Needs: @codeatlasdev/ui@4.1.0
 Components: Badge, IconButton, Flex
 Live demo: https://ui.codeatlas.com.br/docs/display/badge#dot-and-counts

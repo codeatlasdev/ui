@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #234 "DocsNav and TableOfContents" (docs-kit/docs).
-What it shows: The sidebar tree and the page index. The inline variant is shown; DocsShell uses the rail variant on desktop..
+What it shows: A DocsNav sidebar with two groups and a TableOfContents of four headings rendered side by side. When to use: Documentation pages that need a section navigation tree next to an inline outline of the current page.
+Spec:
+- `<DocsNav {groups} pathname="/docs/docs-kit/docs/" onNavigate={() => {}} />`
+- `groups` typed `DocsNavGroup[]` has 2 groups: Get started with 2 items and Messages with 4 items
+- Messages items carry a `badge`: `badge: 'POST'`, `badge: 'GET'`, `badge: 'PUT'`, `badge: 'DELETE'`
+- `<TableOfContents {headings} variant="inline" />`
+- `headings` typed `DocsHeading[]` has 4 entries with `id`, `text` and `depth` of 2 or 3
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

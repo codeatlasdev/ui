@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #036 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/radio#horizontal -->
 Element: #036 Horizontal (inputs/radio)
-What it shows: orientation=&quot;horizontal&quot; lays the options out in a row.
-Tags: horizontal, radiogroup
+What it shows: Radio group laid out in a row with Small, Medium and Large options.
+When to use: Short choice lists of 2 to 4 options, such as a size picker, where a row fits the layout.
+Spec:
+- `<RadioGroup items={sizes}` with `orientation="horizontal"`
+- `sizes` has 3 items: `value: 'sm'`, `value: 'md'`, `value: 'lg'` labelled Small, Medium, Large
+- `bind:value={size}` with initial `$state('md')`
+Tags: radio-group, radio, horizontal, orientation, size
 Needs: @codeatlasdev/ui@4.1.0
 Components: RadioGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/radio#horizontal

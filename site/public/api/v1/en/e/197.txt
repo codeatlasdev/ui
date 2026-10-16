@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #197 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/gauge#custom-zones -->
 Element: #197 Custom zones (charts/gauge)
-What it shows: Reverse the default zones when a high value is bad, such as CPU load.
-Tags: custom, zones, card, grid, gaugechart
+What it shows: Three gauges (CPU 67, Memory 82, Disk 45) that share colour zones for success, warning and error.
+When to use: Resource or SLA dashboards where thresholds change the gauge colour.
+Spec:
+- `const zones: GaugeZone[]` with 3 entries: `{ until: 0.5, color: 'success' }`, `{ until: 0.8, color: 'warning' }`, `{ until: 1, color: 'error' }`
+- `const metrics` with 3 items: CPU `67`, Memory `82`, Disk `45`, fields `label` and `value`
+- `{#each metrics as m}` renders `<GaugeChart value={m.value} {zones} height="200px" />`
+- Each gauge sits in its own `<Card material="glass">` inside `<Grid class="grid-auto-200" gap="4">`
+Tags: gauge-chart, zones, thresholds, grid, metrics, card
 Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, Grid, GaugeChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/gauge#custom-zones

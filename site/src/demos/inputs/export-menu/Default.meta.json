@@ -1,0 +1,13 @@
+{
+	"summary": "An ExportMenu exporting three domain rows with custom column headers and a status line reporting the last export.",
+	"use": "Table toolbars that let users download the current data set as a file in a chosen format.",
+	"spec": [
+		"`data={rows}` with `const rows` of 3 objects with `domain`, `price` and `available` fields",
+		"`filename=\"domains\"`",
+		"`columns` has 3 entries with `header` `Domain`, `Price (USD)` and `Available`",
+		"`onexport` sets `last` to the exported `e.filename` and `e.rows` count",
+		"Idle status text is `Pick a format to download.`"
+	],
+	"tags": ["export-menu", "export", "download", "csv", "table", "columns"],
+	"shape": "wide"
+}

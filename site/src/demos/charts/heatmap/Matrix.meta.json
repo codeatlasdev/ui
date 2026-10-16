@@ -1,0 +1,14 @@
+{
+	"summary": "A matrix heatmap of task counts by hour of day (24 columns) and weekday (7 rows).",
+	"use": "Spotting busy periods in a day-by-hour grid, like support load or traffic.",
+	"spec": [
+		"`<HeatmapChart variant=\"matrix\"`",
+		"`matrixData` is `MatrixHeatmapPoint[]` of `[h, d, Math.max(0, Math.min(10, v))]` triples, 24 hours by 7 days",
+		"`xCategories={hours}` built from `String(i).padStart(2, '0') + ':00'` (24 labels)",
+		"`yCategories={days}` with `'Mon'` to `'Sun'`",
+		"`tooltipFormatter={(v) => `${v} tasks`}`",
+		"`height=\"320px\"` inside `<Card material=\"glass\" full>`"
+	],
+	"tags": ["heatmap-chart", "matrix", "hours", "weekdays", "tooltip-formatter", "card"],
+	"shape": "wide"
+}

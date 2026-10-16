@@ -134,8 +134,10 @@ Import from the subpath, never copy the logic. Every export:
 Every docs demo has a stable id `#NNN` (list: [DEMOS.md](./DEMOS.md), gallery: https://ui.codeatlas.com.br/gallery). An id, a `?pick=012,045` link and pasted "I picked these N from the @codeatlasdev/ui gallery" text are the same selection.
 
 1. Unknown id: `search_demos({ query })` (MCP `ca-ui-mcp`). Known ids: `get_demo({ ids })`, at most 8 per call. Without MCP, fetch `https://ui.codeatlas.com.br/api/v1/en/e/NNN.txt`.
-2. Port: keep component names, props, variants and motion tokens as in the reference; change only data, copy and theme. Keep the first comment line (license) of the reference in the file you write.
+2. Port: keep component names, props, variants and motion tokens as in the reference; change only data, copy and theme. The reference's **Spec** list states the literal values of the demo (props, snippets, state, counts, sizes): your port must satisfy every line unless the user's data requires otherwise. Keep the first comment line (license) of the reference in the file you write.
 3. Report one line per demo: `#NNN title → file, what changed, demo link`.
+
+The user can also run `bunx @codeatlasdev/ui pick` (opens the gallery, prints the ids they send, e.g. `#005 #012`); treat that output as the selection.
 
 ## When the library gets in your way
 

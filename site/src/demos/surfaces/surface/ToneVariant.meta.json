@@ -1,0 +1,12 @@
+{
+	"summary": "An 18 tile grid of solid Surfaces crossing six tones with three variants.",
+	"use": "Picking the tone and variant of a surface for status, brand or neutral emphasis.",
+	"spec": [
+		"`const tones = ['neutral', 'brand', 'success', 'warning', 'error', 'info'] as const`",
+		"`const variants = ['filled', 'outlined', 'ghost'] as const`",
+		"`<Surface material=\"solid\" elevation={1} {tone} {variant} p=\"3\" class=\"tile\">` in nested `{#each variants as variant (variant)}` and `{#each tones as tone (tone)}` loops",
+		"Each tile prints its tone and variant name"
+	],
+	"tags": ["surface", "tone", "variant", "filled", "outlined", "ghost"],
+	"shape": "wide"
+}

@@ -1,0 +1,13 @@
+{
+	"summary": "A medium dialog containing an invite form with name, email and role fields and a Send invite button disabled until name and email are filled.",
+	"use": "Short create or invite flows that collect a few fields without leaving the page.",
+	"spec": [
+		"`<Dialog bind:open title=\"Invite team member\" size=\"md\">`",
+		"Fields stacked in `<Stack gap=\"3.5\">`: two `<TextField` (Full name, Email with `type=\"email\"`) using `bind:value={name}` and `bind:value={email}`",
+		"`<Select label=\"Role\" bind:value={role} options={roleOpts}` with three options: Admin, Editor, Viewer",
+		"`let role = $state('viewer')` is the default role",
+		"`{#snippet actions()}`: ghost Cancel and filled Send invite with `disabled={!name || !email}`"
+	],
+	"tags": ["dialog", "form", "text-field", "select", "invite", "modal"],
+	"shape": "wide"
+}

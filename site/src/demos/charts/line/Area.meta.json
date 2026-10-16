@@ -1,0 +1,14 @@
+{
+	"summary": "A single Revenue line with a filled area under it across nine months.",
+	"use": "Emphasizing volume or cumulative growth of one metric over time.",
+	"spec": [
+		"`<LineChart` with one series `{ name: 'Revenue', data: revenue }`",
+		"`revenue` has 9 values from `42000` to `112000`",
+		"`categories={months}` with `'Jan'` to `'Sep'`",
+		"`area` prop",
+		"`valueFormatter={fmt}` renders `$${(v / 1000).toFixed(0)}k`",
+		"`height=\"360px\"` inside `<Card material=\"glass\" full>`"
+	],
+	"tags": ["line-chart", "area", "revenue", "time-series", "value-formatter", "card"],
+	"shape": "wide"
+}

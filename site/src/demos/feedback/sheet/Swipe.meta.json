@@ -1,0 +1,12 @@
+{
+	"summary": "A sheet titled Switch session with a description and a list of eight accounts that close it on click.",
+	"use": "Mobile account or option pickers that slide up and can be dragged down to dismiss.",
+	"spec": [
+		"`<Sheet bind:open title=\"Switch session\" description=\"Choose the active account\">`",
+		"`const accounts` has 8 entries, Account A to Account H, rendered by `{#each accounts as acc}`",
+		"Each item is `<button class=\"item\" onclick={() => (open = false)}>` inside `<Stack gap=\"1\">`",
+		"Trigger is `<Button variant=\"outlined\"` labelled Open sheet"
+	],
+	"tags": ["sheet", "swipe", "bottom-sheet", "account-switcher", "list", "mobile"],
+	"shape": "wide"
+}

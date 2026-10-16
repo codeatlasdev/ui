@@ -1,5 +1,9 @@
 Use @codeatlasdev/ui demo #209 "Rose chart" (charts/pie).
-What it shows: Nightingale rose: the radius of each slice scales with its value..
+What it shows: A Nightingale rose chart of six product areas, using the rose prop on PieChart. When to use: Comparing category sizes in a rose layout instead of a plain pie.
+Spec:
+- `<PieChart data={roseData} rose height="340px" />`
+- `roseData` has 6 items with `value` and `name`: Analytics `72`, Automation `58`, Security `45`, Integrations `38`, Storage `30`, Support `22`
+- Wrapped in `<Card material="glass" full>`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

@@ -1,5 +1,12 @@
 Use @codeatlasdev/ui demo #205 "Dashboard" (charts/overview).
-What it shows: Every chart type together inside glass cards..
+What it shows: An analytics dashboard combining four KPI cards with line, stacked bar, donut, scatter, calendar heatmap, gauge and radar charts. When to use: Building an overview page that puts headline KPIs and several chart types on one screen.
+Spec:
+- `<KpiGrid>` with 4 `<KpiCard`: Revenue `$118k`, Users `94.2k`, Growth `34%`, Uptime `99.9%`, each with a `trend` and an `icon`
+- `<LineChart` with 2 series Revenue and Expenses, `area`, `height="280px"`
+- Two-column `<Grid class="grid-auto-280" gap="4">`: `<BarChart` with 4 series and `stacked`, and `<PieChart` with 5 items and `donut`
+- `<ScatterChart series={[{ name: 'Accounts', data: scatter }]}` with 60 points, `yName="Conversion %"` and `yFormatter`
+- Second `<Grid class="grid-auto-280" gap="4">`: `<HeatmapChart variant="calendar"` with `range={['2026-03-01', '2026-09-18']}` and `<GaugeChart value={84} label="Score"`
+- `<RadarChart` with 5 `indicators` (Speed, Quality, Reliability, Innovation, Support, `max: 100`) and series Team A and Team B
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

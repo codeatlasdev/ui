@@ -1,0 +1,11 @@
+{
+	"summary": "Keyboard key caps inline in a sentence describing the Ctrl+K shortcut to open the command palette and Esc to close it.",
+	"use": "Documenting keyboard shortcuts inside help text, tooltips or onboarding hints.",
+	"spec": [
+		"`<Kbd>Ctrl</Kbd>` and `<Kbd>K</Kbd>` joined by a plus sign inside a paragraph",
+		"`<Kbd>Esc</Kbd>` as the second shortcut in the same sentence",
+		"Each key is plain text children of `Kbd`, no props"
+	],
+	"tags": ["kbd", "keyboard", "shortcut", "key", "command-palette", "hint"],
+	"shape": "wide"
+}

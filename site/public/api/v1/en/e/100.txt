@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #100 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/spinner#in-a-button -->
 Element: #100 In a button (feedback/spinner)
-What it shows: Use the loading prop of Button instead of placing a Spinner by hand.
-Tags: in, a, button
+What it shows: A Button that shows its loading spinner for two seconds after click and changes its label to Saving.
+When to use: Save or submit buttons that wait on a request.
+Spec:
+- `<Button onclick={simulate} {loading}>` with `let loading = $state(false)`
+- `simulate` sets `loading = true` and resets it with `setTimeout(() => (loading = false), 2000)`
+- Label is `{loading ? 'Saving…' : 'Save changes'}`
+Tags: spinner, button, loading, save, async
 Needs: @codeatlasdev/ui@4.1.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/feedback/spinner#in-a-button

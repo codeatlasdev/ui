@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #233 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/docs-kit/docs#codetabs -->
 Element: #233 CodeTabs (docs-kit/docs)
-What it shows: Language tabs with a copy button. Groups that share a sync key follow each other and persist the choice in localStorage. Highlighting stays with you: wrap each block in .ca-code.
-Tags: codetabs, codetab
+What it shows: Two CodeTabs groups, each with cURL and Node.js tabs, that share the selected language through the same sync key.
+When to use: API docs that show the same request in several languages and keep the choice in sync across the page.
+Spec:
+- Two `<CodeTabs sync="demo-lang">` blocks use the same sync key
+- Each group has `<CodeTab label="cURL">` and `<CodeTab label="Node.js">`
+- Tab content is `<div class="ca-code"><pre><code>` rendering a string constant such as `{curl}` or `{node}`
+- First group sends a POST to messages/text, second group lists sessions with `{curlList}` and `{nodeList}`
+- Wrapped in `<div class="ca-prose wrap">`
+Tags: code-tabs, code-tab, docs-kit, sync, curl, api-docs
 Needs: @codeatlasdev/ui@4.1.0
 Components: CodeTab, CodeTabs
 Live demo: https://ui.codeatlas.com.br/docs/docs-kit/docs#codetabs

@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #139 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/table#default-scroll -->
 Element: #139 Default (scroll) (display/table)
-What it shows: Default (scroll)
-Tags: default, scroll, simpletable, card
+What it shows: A default SimpleTable listing three users with name, email, role and status in a flush glass card.
+When to use: Compact read-only tables that keep their columns and scroll horizontally when space runs out.
+Spec:
+- `<Card material="glass" flush full>` wraps the table
+- `<SimpleTable>` with no props, plain `thead` and `tbody`
+- Header columns: Name, Email, Role, Status
+- 3 rows from `rows` with `name`, `email`, `role`, `status`
+- The first cell uses `class="primary"`
+Tags: table, simple-table, scroll, overflow, card, users
 Needs: @codeatlasdev/ui@4.1.0
 Components: SimpleTable, Card
 Live demo: https://ui.codeatlas.com.br/docs/display/table#default-scroll

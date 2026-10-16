@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #157 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/drawer#left-and-right -->
 Element: #157 Left and right (navigation/drawer)
-What it shows: Left for navigation, right for settings or details.
-Tags: left, and, right, drawer, button
+What it shows: Two buttons that open a left navigation drawer and a right settings drawer.
+When to use: Slide-in panels for site navigation on mobile or for quick settings without leaving the page.
+Spec:
+- `<Drawer bind:open={leftOpen} side="left" title="Navigation">` holds a `<nav class="nav" aria-label="Demo navigation">` with 4 links: Home, Components, Foundation, About
+- Left links close it with `onclick={() => (leftOpen = false)}`
+- `<Drawer bind:open={rightOpen} side="right" title="Settings">` lists 3 label and value rows: Theme Amber, Language English, Notifications Enabled
+- Triggers are `Button` with `variant="outlined"`, the second with `{#snippet leading()}<Settings size={16} stroke-width={2} />{/snippet}`
+Tags: drawer, side-panel, navigation, settings, overlay, left, right
 Needs: @codeatlasdev/ui@4.1.0
 Components: Drawer, Button
 Live demo: https://ui.codeatlas.com.br/docs/navigation/drawer#left-and-right

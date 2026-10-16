@@ -1,0 +1,14 @@
+{
+	"summary": "Large avatars showing the rounded shape and the four status indicators: online, busy, away and offline.",
+	"use": "Presence in chat, team lists or support queues, plus a rounded avatar shape.",
+	"spec": [
+		"`shape=\"rounded\"` on `alt=\"Ana Lima\"`",
+		"`status=\"online\"` on `alt=\"Online\"`",
+		"`status=\"busy\"` on `alt=\"Busy\"`",
+		"`status=\"away\"` on `alt=\"Away\"`",
+		"`status=\"offline\"` on `alt=\"Offline\"`",
+		"All five use `size=\"lg\"`"
+	],
+	"tags": ["avatar", "shape", "rounded", "status", "presence", "online"],
+	"shape": "wide"
+}

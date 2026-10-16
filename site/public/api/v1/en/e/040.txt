@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #040 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/select#basic -->
 Element: #040 Basic (inputs/select)
-What it shows: Controlled select with a pre-selected value.
-Tags: basic, select
+What it shows: Select with five framework options and the chosen value printed below.
+When to use: Picking one value from a known list in a form, such as a framework or category.
+Spec:
+- `<Select label="Framework" options={frameworks}` with `bind:value={framework}`
+- `frameworks` has 5 options: Svelte 5, React 19, Vue 3, SolidJS, Astro
+- Initial value is `$state('svelte')`
+- Selected value is shown in `<strong>{framework}</strong>`
+- Wrapper `.col` uses `max-width: 320px`
+Tags: select, dropdown, options, label, bind-value
 Needs: @codeatlasdev/ui@4.1.0
 Components: Select
 Live demo: https://ui.codeatlas.com.br/docs/inputs/select#basic

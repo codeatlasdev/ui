@@ -1,0 +1,21 @@
+{
+	"summary": "Date and time inputs with constraints: a bounded DatePicker, a required DatePicker with an error, a disabled DateField and a read-only TimeField.",
+	"use": "Forms that limit selectable dates, require a date of birth or show locked date and time values.",
+	"spec": [
+		"`minValue={min}` and `maxValue={max}` with `const max = today(tz).add({ days: 30 })` and `description=\"Only the next 30 days.\"`",
+		"`required` with `error={requiredError}` derived as `'Enter your date of birth.'` while empty",
+		"`<DateField label=\"Disabled\" locale=\"en-US\" disabled value={new CalendarDate(2026, 1, 15)} />`",
+		"`<TimeField label=\"Read-only\" locale=\"en-US\" readonly value={new Time(9, 0)} />`",
+		"Wrapper `.col` has `max-width: 400px`"
+	],
+	"tags": [
+		"date-picker",
+		"date-field",
+		"time-field",
+		"min-max",
+		"required",
+		"disabled",
+		"readonly"
+	],
+	"shape": "wide"
+}

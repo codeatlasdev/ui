@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #123 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/data-table#simple-mode -->
 Element: #123 Simple mode (display/data-table)
-What it shows: Simple mode
-Tags: simple, mode, datatable
+What it shows: A DataTable with five columns and 12 user rows, passing only `columns` and `data`.
+When to use: The minimal setup for a table of records defined with a column helper.
+Spec:
+- `createCaColumnHelper<User>()` and `col.columns([` define 5 columns: ID, Name, Email, Role, Status
+- `col.accessor('id', { header: 'ID', meta: { label: 'ID' } })` shows the accessor shape
+- `const data: User[]` has 12 rows with `id`, `name`, `email`, `role` and `status`
+- `<DataTable {columns} {data} />` has no other props
+- Wrapper `.wrap` has `width: 100%`
+Tags: data-table, columns, column-helper, tanstack, table, basic
 Needs: @codeatlasdev/ui@4.1.0 + @tanstack/svelte-table
 Components: DataTable
 Live demo: https://ui.codeatlas.com.br/docs/display/data-table#simple-mode

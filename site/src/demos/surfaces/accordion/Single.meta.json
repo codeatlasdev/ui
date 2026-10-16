@@ -1,0 +1,13 @@
+{
+	"summary": "A single-open Accordion with three Liquid Glass FAQ questions, where opening one closes the others.",
+	"use": "FAQ sections where only one answer should be visible at a time.",
+	"spec": [
+		"`<Accordion type=\"single\">`",
+		"3 items: `<AccordionItem value=\"a1\" title=\"What is Liquid Glass?\">`, `value=\"a2\"` and `value=\"a3\"`",
+		"Item titles: What is Liquid Glass?, Which browsers support backdrop-filter?, Can I nest a Surface inside a Card?",
+		"The accordion is uncontrolled, nothing is bound",
+		"Wrapped in `.wrap` with `max-width: 560px`"
+	],
+	"tags": ["accordion", "accordion-item", "single", "faq", "disclosure"],
+	"shape": "wide"
+}

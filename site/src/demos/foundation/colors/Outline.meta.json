@@ -1,0 +1,10 @@
+{
+	"summary": "Three swatches for the outline tokens, drawn with a border so they stay visible on the page.",
+	"use": "Choosing a divider or border strength from the subtle, default and strong outline tokens.",
+	"spec": [
+		"Renders `<Swatches {tokens} bordered={true} />` with 3 tokens",
+		"Tokens in order: `--ca-outline-subtle`, `--ca-outline-default`, `--ca-outline-strong`"
+	],
+	"tags": ["colors", "outline", "border", "tokens", "swatches"],
+	"shape": "wide"
+}

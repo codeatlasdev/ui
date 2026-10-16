@@ -1,0 +1,11 @@
+{
+	"summary": "A Container and Section holding a Stack of two plan cards, showing the page-level layout primitives.",
+	"use": "Structuring a marketing or settings page with a centered container, a labelled section and stacked cards.",
+	"spec": [
+		"`<Container size=\"md\">` wraps `<Section size=\"1\" aria-label=\"Plans\">`",
+		"`<Stack gap=\"4\">` holds 2 cards with `material=\"solid\"` and `headingLevel={3}`",
+		"Cards are `title=\"Starter\"` (Up to 3 projects.) and `title=\"Team\"` (Unlimited projects and roles.)"
+	],
+	"tags": ["container", "section", "stack", "card", "layout", "page", "heading-level"],
+	"shape": "wide"
+}

@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #185 "PageShell" (layout/list-page).
-What it shows: A scrollable container for dashboards and non-CRUD pages..
+What it shows: A dashboard page shell with four KPI cards and a placeholder glass card for a chart or table. When to use: The base page layout of a dashboard: title, headline metrics and a main content area.
+Spec:
+- `<PageShell title="Dashboard">` is the root, with no description or actions
+- `<KpiGrid>` holds 4 `KpiCard` items: Revenue `$118k`, Users `24.8k`, Growth `34%`, Uptime `99.9%`
+- Each card has a `trend` and an `icon`, for example `trend={23.4} icon={DollarSign}`
+- `<Card material="glass" full>` holds the text Chart or data table goes here
+- Frame size is `height: 420px`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

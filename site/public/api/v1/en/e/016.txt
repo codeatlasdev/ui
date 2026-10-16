@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #016 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/date-picker#min-max-error-and-disabled -->
 Element: #016 Min, max, error and disabled (inputs/date-picker)
-What it shows: Only the next 30 days are selectable. Out-of-range days are disabled and typed values become invalid.
-Tags: min, max, error, and, disabled, datefield, datepicker, timefield
+What it shows: Date and time inputs with constraints: a bounded DatePicker, a required DatePicker with an error, a disabled DateField and a read-only TimeField.
+When to use: Forms that limit selectable dates, require a date of birth or show locked date and time values.
+Spec:
+- `minValue={min}` and `maxValue={max}` with `const max = today(tz).add({ days: 30 })` and `description="Only the next 30 days."`
+- `required` with `error={requiredError}` derived as `'Enter your date of birth.'` while empty
+- `<DateField label="Disabled" locale="en-US" disabled value={new CalendarDate(2026, 1, 15)} />`
+- `<TimeField label="Read-only" locale="en-US" readonly value={new Time(9, 0)} />`
+- Wrapper `.col` has `max-width: 400px`
+Tags: date-picker, date-field, time-field, min-max, required, disabled, readonly
 Needs: @codeatlasdev/ui@4.1.0
 Components: DateField, DatePicker, TimeField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/date-picker#min-max-error-and-disabled

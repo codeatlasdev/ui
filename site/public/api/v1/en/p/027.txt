@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #027 "Currency and locale" (inputs/money-input).
-What it shows: currency picks the minor unit (USD 2 decimals, JPY none); locale picks separators and symbol placement..
+What it shows: MoneyInput in three currencies and locales: USD en-US, JPY without decimals and EUR de-DE. When to use: Price fields in multi-currency products that must format and parse per locale.
+Spec:
+- `currency="USD" locale="en-US"` with `bind:value={usd}` starting at `$state(123456)`
+- `currency="JPY" locale="en-US"` with `bind:value={jpy}` starting at `$state(1234)`
+- `currency="EUR" locale="de-DE"` with `bind:value={eur}` starting at `$state(123456)`
+- Labels: `Price (USD, en-US)`, `Price (JPY, no decimals)` and `Preis (EUR, de-DE)`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

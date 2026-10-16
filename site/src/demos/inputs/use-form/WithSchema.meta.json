@@ -1,0 +1,14 @@
+{
+	"summary": "Form using a schema for username length and bio length, with a live character count.",
+	"use": "Forms with several validation rules that run all at once.",
+	"spec": [
+		"`useForm(` with `schema: (data) => {` returns `errs`",
+		"Username rules: `data.username.length < 3` and `data.username.length > 20`",
+		"Bio rule: `data.bio.length > 160` with `Bio must be 160 characters or fewer.`",
+		"Bio TextArea shows `description=\"{form.fields.bio.value.length}/160\"`",
+		"Buttons: `Validate all` calls `form.validate()`, Reset calls `form.reset()`",
+		"Footer prints `valid: {form.valid}`"
+	],
+	"tags": ["use-form", "schema", "validation", "text-area", "character-count"],
+	"shape": "wide"
+}

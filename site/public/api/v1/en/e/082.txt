@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #082 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/alert-dialog#controlled-pending -->
 Element: #082 Controlled pending (feedback/alert-dialog)
-What it shows: Pass pending when the loading state lives outside, for example a mutation from your query client.
-Tags: controlled, pending, alertdialog, button
+What it shows: An alert dialog driven by parent state: the pending prop is set for 1.5 seconds before the dialog closes itself.
+When to use: Publishing or saving flows where the confirm button must show progress and the parent decides when to close.
+Spec:
+- `<AlertDialog bind:open title="Publish changes?" confirmLabel="Publish"` with no description
+- `{pending}` shorthand passes `let pending = $state(false)` to the dialog
+- `onconfirm={publish}` sets `pending = true`, awaits 1500 ms, then sets `pending = false` and `open = false`
+- Trigger is `<Button variant="outlined"` labelled Open controlled
+Tags: alert-dialog, controlled, pending, async, publish
 Needs: @codeatlasdev/ui@4.1.0
 Components: AlertDialog, Button
 Live demo: https://ui.codeatlas.com.br/docs/feedback/alert-dialog#controlled-pending

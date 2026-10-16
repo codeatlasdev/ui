@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #054 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/text-area#basic -->
 Element: #054 Basic (inputs/text-area)
-What it shows: Empty, with a placeholder, and pre-filled.
-Tags: basic, textarea
+What it shows: Three text areas: empty, with a placeholder, and with initial content.
+When to use: Free-form multi-line input such as a message, notes or a description.
+Spec:
+- `<TextArea label="Message" bind:value={message} />` starts empty
+- `<TextArea label="Notes" placeholder="Write something…" bind:value={notes} />`
+- `<TextArea label="Description" bind:value={description} />` starts as `Some initial content here.`
+Tags: text-area, textarea, placeholder, label, bind-value
 Needs: @codeatlasdev/ui@4.1.0
 Components: TextArea
 Live demo: https://ui.codeatlas.com.br/docs/inputs/text-area#basic

@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #045 "Range" (inputs/slider).
-What it shows: Bind a [min, max] tuple to values for two thumbs..
+What it shows: Two-thumb range slider from 0 to 100 with the selected price range printed beside it. When to use: Filtering by a numeric range such as price.
+Spec:
+- `<Slider bind:values={range} min={0} max={100} />`
+- `range` is `$state<[number, number]>([20, 75])`
+- Row shows a Price label and the value `${range[0]} – ${range[1]}`
+- Wrapper `.row` uses `max-width: 480px`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

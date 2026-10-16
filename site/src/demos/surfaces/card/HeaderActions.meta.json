@@ -1,0 +1,11 @@
+{
+	"summary": "A glass Card with a built-in Team members header and an Invite button supplied through a headerActions snippet.",
+	"use": "Panels whose header needs a title and an action, such as team, billing or settings sections.",
+	"spec": [
+		"`<Card material=\"glass\" title=\"Team members\" class=\"titled\">` with `max-width: 420px`",
+		"`{#snippet headerActions()}` renders `<Button size=\"sm\" variant=\"outlined\">Invite</Button>`",
+		"Body is one paragraph explaining `title` and `headerActions`"
+	],
+	"tags": ["card", "header-actions", "title", "snippet", "button", "glass"],
+	"shape": "wide"
+}

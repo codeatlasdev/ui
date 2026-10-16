@@ -1,0 +1,11 @@
+{
+	"summary": "Pagination for 100 items at 10 per page, with the current page bound to state and printed below.",
+	"use": "Paged lists and tables where the app needs to know the active page to fetch or slice data.",
+	"spec": [
+		"`<Pagination count={100} perPage={10} bind:page />`",
+		"State: `let page = $state(1)` starts on page 1",
+		"A paragraph renders `Current page: {page}` below the control"
+	],
+	"tags": ["pagination", "page", "bind", "count", "per-page", "navigation"],
+	"shape": "wide"
+}

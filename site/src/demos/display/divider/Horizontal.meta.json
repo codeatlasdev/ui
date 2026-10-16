@@ -1,0 +1,11 @@
+{
+	"summary": "Three stacked text sections inside a glass card separated by horizontal dividers.",
+	"use": "Separating sections of content inside a card or panel.",
+	"spec": [
+		"`<Card material=\"glass\" p=\"6\" full>` wraps the content",
+		"`<Stack gap=\"4\">` stacks Section A, B and C paragraphs",
+		"`<Divider />` is placed between them with no props"
+	],
+	"tags": ["divider", "horizontal", "separator", "card", "stack"],
+	"shape": "wide"
+}

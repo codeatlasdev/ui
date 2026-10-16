@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #116 "Deletable" (display/chip).
-What it shows: Deletable.
+What it shows: Removable chips: deleting one drops it from the list, and a reset link appears when all are gone. When to use: Tag inputs and filter pills the user can remove, with a way to restore them.
+Spec:
+- `const initial = ['Design', 'Svelte', 'Glass']` seeds `let tags = $state([...initial])`
+- `{#each tags as tag (tag)}` renders `<Chip label={tag} deletable ondelete={() => (tags = tags.filter((t) => t !== tag))} />`
+- `{#if tags.length === 0}` shows a `<button class="reset" type="button"` labelled Reset tags
+- The reset button runs `onclick={() => (tags = [...initial])}`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

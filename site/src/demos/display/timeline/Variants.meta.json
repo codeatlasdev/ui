@@ -1,0 +1,14 @@
+{
+	"summary": "A Timeline of an order's five tracking events, coloured by variant, with descriptions and timestamps.",
+	"use": "Order, shipment or ticket status trails where completed, in progress and pending steps need different emphasis.",
+	"spec": [
+		"`<Timeline items={events} />`",
+		"5 events with `label`, `description`, `date` and `variant`; the last, Delivered, has no `description`",
+		"`variant: 'success' as const` on Order created and Payment confirmed",
+		"`variant: 'info' as const` on Picking",
+		"`variant: 'default' as const` on Awaiting shipment and Delivered",
+		"Wrapped in `.wrap` with `max-width: 440px`"
+	],
+	"tags": ["timeline", "variant", "success", "info", "order-tracking", "status"],
+	"shape": "tall"
+}

@@ -1,0 +1,13 @@
+{
+	"summary": "Search field with a leading icon and a password field with a trailing show/hide button.",
+	"use": "Search boxes and password inputs that need an inline icon or action.",
+	"spec": [
+		"Search field uses `{#snippet leading()}` with `<Search size={16} stroke-width={2} />`",
+		"Password field uses `{#snippet trailing()}` containing a `<button type=\"button\" class=\"reveal\"`",
+		"Field `type={reveal ? 'text' : 'password'}` toggled by `onclick={() => (reveal = !reveal)}`",
+		"Button sets `aria-pressed={reveal}` and `aria-label={reveal ? 'Hide password' : 'Show password'}`",
+		"Icons `Eye` and `EyeOff` come from `@lucide/svelte`"
+	],
+	"tags": ["text-field", "icon", "leading", "trailing", "password", "search", "snippet"],
+	"shape": "wide"
+}

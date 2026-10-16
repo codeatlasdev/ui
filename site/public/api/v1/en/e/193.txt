@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #193 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/bar#vertical-bars -->
 Element: #193 Vertical bars (charts/bar)
-What it shows: Vertical bars
-Tags: vertical, bars, card, barchart
+What it shows: A vertical bar chart of one Revenue series across four quarters.
+When to use: Comparing a single metric across a few time periods, such as quarterly revenue.
+Spec:
+- `<BarChart` inside `<Card material="glass" full>`
+- One series `{ name: 'Revenue', data: [38400, 54200, 71600, 89800] }`
+- `categories={['Q1', 'Q2', 'Q3', 'Q4']}`
+- `valueFormatter={fmt}` renders `$${(v / 1000).toFixed(0)}k`
+- `height="300px"`
+Tags: bar-chart, vertical, revenue, categories, value-formatter, card
 Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, BarChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/bar#vertical-bars

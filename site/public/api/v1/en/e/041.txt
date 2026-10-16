@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #041 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/select#empty-value-option -->
 Element: #041 Empty-value option (inputs/select)
-What it shows: An option with value '' (such as 'All projects') is a real selection: the trigger shows its label, not the placeholder. Use it for filters instead of a sentinel value.
-Tags: empty, value, option, select
+What it shows: Select whose first option has an empty value labelled All projects, with the raw value printed.
+When to use: Filters where an empty value means no filter, such as All projects.
+Spec:
+- `<Select label="Project" placeholder="Choose a project…"` with `options={projects}`
+- `projects` has 4 options: All projects with `value: ''`, Web app, API, Docs
+- `bind:value={project}` with initial `$state('')`
+- Current value is shown as `JSON.stringify(project)`
+Tags: select, empty-option, filter, placeholder, all
 Needs: @codeatlasdev/ui@4.1.0
 Components: Select
 Live demo: https://ui.codeatlas.com.br/docs/inputs/select#empty-value-option

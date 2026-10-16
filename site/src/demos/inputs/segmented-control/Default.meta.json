@@ -1,0 +1,12 @@
+{
+	"summary": "Two segmented controls: a text-only Week/Month/Year period and a List/Grid view switch with icons.",
+	"use": "Switching a view mode or time range inline above a list, chart or dashboard.",
+	"spec": [
+		"Period control `aria-label=\"Period\"` with `bind:value={period}` and 3 items: Week, Month, Year",
+		"Current value is shown as `value: {period}`",
+		"View control `aria-label=\"View\"` with 2 items using `icon: LayoutList` and `icon: LayoutGrid`",
+		"Icons come from `@lucide/svelte`"
+	],
+	"tags": ["segmented-control", "tabs", "icon", "view-switch", "period"],
+	"shape": "wide"
+}

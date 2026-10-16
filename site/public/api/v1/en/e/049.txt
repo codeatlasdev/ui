@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #049 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/swatch-group#theme-presets -->
 Element: #049 Theme presets (inputs/swatch-group)
-What it shows: Swatches without a color paint from the preset named by their value.
-Tags: theme, presets, swatchgroup
+What it shows: Swatch group of five theme presets: ocean, violet, emerald, rose, amber.
+When to use: Choosing an accent theme preset in appearance settings.
+Spec:
+- `<SwatchGroup` with `aria-label="Accent"` and `bind:value={preset}`
+- 5 items with only `value`: `{ value: 'ocean' }`, `{ value: 'violet' }`, `{ value: 'emerald' }`, `{ value: 'rose' }`, `{ value: 'amber' }`
+- Initial value is `$state('ocean')`
+- Current value is shown as `value: {preset}`
+Tags: swatch-group, presets, theme, accent, swatch
 Needs: @codeatlasdev/ui@4.1.0
 Components: SwatchGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/swatch-group#theme-presets

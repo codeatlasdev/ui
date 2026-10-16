@@ -1,5 +1,9 @@
 Use @codeatlasdev/ui demo #056 "Default" (inputs/text-field).
-What it shows: Basic text inputs with a label..
+What it shows: Two basic text fields: a full name and an email with type email. When to use: Standard single-line inputs in a signup or profile form.
+Spec:
+- `<TextField label="Full name" placeholder="Jane Smith" bind:value={name} />`
+- `<TextField label="Email" placeholder="you@example.com" type="email" bind:value={email} />`
+- Both values start as `$state('')`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

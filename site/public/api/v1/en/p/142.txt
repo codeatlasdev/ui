@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #142 "Text trigger" (display/tooltip).
-What it shows: Text trigger.
+What it shows: A Tooltip wrapping plain inline text, which becomes the hover and focus trigger. When to use: Adding a short explanation to a term or inline phrase without building a custom trigger.
+Spec:
+- `<Tooltip content="Wrapped in the tooltip's own button">` with plain text children
+- Children text: hover or focus this text
+- No trigger snippet, the tooltip renders its own trigger
+- Placed inside a paragraph after the sentence Static text can be a trigger too:
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

@@ -1,5 +1,12 @@
 Use @codeatlasdev/ui demo #138 "Cards on narrow containers" (display/table).
-What it shows: Cards on narrow containers.
+What it shows: A SimpleTable that turns each row into a stacked card on narrow screens, listing three users in a flush glass card. When to use: Data tables that must stay readable on phones without horizontal scrolling.
+Spec:
+- `<Card material="glass" flush full>` wraps the table
+- `<SimpleTable responsive="cards">` with plain `thead` and `tbody`
+- Header columns: Name, Email, Role, Status
+- 3 rows from `rows` with `name`, `email`, `role`, `status`
+- Each cell carries a label such as `data-label="Name"` for the card layout
+- The first cell uses `class="primary"`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

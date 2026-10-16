@@ -1,5 +1,12 @@
 Use @codeatlasdev/ui demo #020 "Basic" (inputs/file-upload).
-What it shows: Multiple files with a size limit and the selected count..
+What it shows: A multi-file FileUpload with a size limit and hint that reports how many files are selected. When to use: Attachment and document upload areas that accept several files and cap their size.
+Spec:
+- `bind:files` with `let files = $state<File[]>([])`
+- `multiple`
+- `hint="PNG, JPG, PDF up to 10 MB"`
+- `maxSize={10 * 1024 * 1024}`
+- `{#if files.length > 0}` shows the selected file count with a plural `s`
+- Wrapper `.wrap` has `max-width: 480px`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

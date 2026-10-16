@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #187 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/page-shell#dashboard-page -->
 Element: #187 Dashboard page (layout/page-shell)
-What it shows: KPI cards and a content card inside a PageShell.
-Tags: dashboard, page, pageshell, kpicard, kpigrid, card, stack, button
+What it shows: A page shell inside a flush glass card with a title, description, New report action, four KPI cards and a placeholder card.
+When to use: Dashboard pages with a header, a primary action, headline metrics and a content area.
+Spec:
+- `<Card material="glass" flush full>` wraps `<PageShell title="Dashboard" description="Overview of this month">`
+- `{#snippet actions()}<Button variant="filled" size="sm">New report</Button>{/snippet}`
+- `<Stack gap="6">` holds a `KpiGrid` and a `<Card material="glass" full>`
+- `KpiGrid` has 4 `KpiCard` items: Revenue `$118k`, Users `24.8k`, Growth `34%`, Uptime `99.9%`
+- Placeholder card text is Chart or data table goes here
+Tags: page-shell, dashboard, kpi-grid, card, glass, actions, header
 Needs: @codeatlasdev/ui@4.1.0
 Components: PageShell, KpiCard, KpiGrid, Card, Stack, Button
 Live demo: https://ui.codeatlas.com.br/docs/layout/page-shell#dashboard-page

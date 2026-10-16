@@ -1,0 +1,14 @@
+{
+	"summary": "A command palette opened by a button, filtering two modules of navigation items and reporting the picked path.",
+	"use": "Global quick navigation: jump to any page of a multi-module app by typing its name.",
+	"spec": [
+		"`<CommandPalette {modules} onNavigate={(path) => (picked = path)} bind:open />`",
+		"`const modules: NavModule[]` has two modules, `id: 'app'` with 3 items and `id: 'account'` with 3 items",
+		"Items carry `id`, `label`, `icon` and `path`, for example `path: '/app/dashboard'`",
+		"`<Button variant=\"filled\" onclick={() => (open = true)}>` with `{#snippet leading()}<Keyboard size={16} />{/snippet}` opens it",
+		"A `<Kbd>` hint is shown beside the button",
+		"Result shown in `aria-live=\"polite\"` as `Selected: <code>{picked}</code>`"
+	],
+	"tags": ["command-palette", "search", "navigation", "modules", "keyboard", "kbd", "dialog"],
+	"shape": "wide"
+}

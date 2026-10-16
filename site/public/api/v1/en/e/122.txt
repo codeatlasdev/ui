@@ -1,7 +1,15 @@
 <!-- @codeatlasdev/ui demo #122 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/data-table#controlled-mode -->
 Element: #122 Controlled mode (display/data-table)
-What it shows: Controlled mode
-Tags: controlled, mode, datatable
+What it shows: A DataTable driven from outside: filter, sort and pagination state live in the page, which slices 12 users into pages of 5.
+When to use: Server-side or externally managed tables where the page owns search, sort and paging state.
+Spec:
+- `let globalFilter = $state('')`, `let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 5 })` and `let sorting = $state<SortingState>([])`
+- `const allData: User[]` has 12 rows with `id`, `name`, `email`, `role` and `status`
+- `<DataTable` receives `data={pageData}`, `total={filtered.length}`, `{globalFilter}`, `{onGlobalFilterChange}`, `{pagination}`, `{onPaginationChange}`, `{sorting}` and `{onSortingChange}`
+- `searchPlaceholder="Search by name, email, role…"` sets the search input hint
+- `createCaColumnHelper<User>()` defines 5 columns with `col.accessor`
+- `onGlobalFilterChange` resets `pageIndex: 0`
+Tags: data-table, controlled, pagination, sorting, global-filter, server-side, tanstack
 Needs: @codeatlasdev/ui@4.1.0 + @tanstack/svelte-table
 Components: DataTable
 Live demo: https://ui.codeatlas.com.br/docs/display/data-table#controlled-mode

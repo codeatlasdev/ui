@@ -1,5 +1,12 @@
 Use @codeatlasdev/ui demo #166 "Live shell" (layout/app-shell).
-What it shows: The real component inside a fixed-height frame. The pathname lives in local state; click the rail and panel to navigate..
+What it shows: A working app shell with a rail, panel and page content whose pathname lives in local state and updates on navigation. When to use: Wiring the shell into an app: the router owns the URL and the shell receives it as a prop.
+Spec:
+- `<AppShellLayout {modules} {pathname} onNavigate={(path) => (pathname = path)} persistPanel={false} mainId={null} skipLink={false}>`
+- `const modules: NavModule[]` has two modules, `id: 'app'` and `id: 'account'`, with 3 items each
+- `let pathname = $state('/app/dashboard')` is the only navigation state
+- `function intercept(e: MouseEvent)` turns in-stage `a[href^="/"]` clicks into `pathname` updates
+- Page is `<PageShell title={titles[pathname] ?? 'Page'} description={pathname}>` with a `KpiGrid` of 2 `KpiCard` items: Revenue and Users
+- Stage height is `height: 440px`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

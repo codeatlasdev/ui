@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #061 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/toggle-group#variants-and-orientation -->
 Element: #061 Variants and orientation (inputs/toggle-group)
-What it shows: outlined and ghost variants, sizes, a disabled item and a vertical layout.
-Tags: variants, and, orientation, togglegroup
+What it shows: Three toggle groups sharing one value: outlined, ghost and vertical.
+When to use: Choosing a view such as list, grid or board with a button-style group.
+Spec:
+- Outlined group: `variant="outlined"`, `size="md"`, `aria-label="Outlined"`
+- Outlined items: List, Grid, Board, and Board has `disabled: true`
+- Ghost group: `variant="ghost"`, `size="sm"`, `aria-label="Ghost"`
+- Vertical group: `orientation="vertical"`, `aria-label="Vertical"`
+- All 3 use `bind:value={view}` with initial `$state('list')`
+Tags: toggle-group, variant, outlined, ghost, vertical, size
 Needs: @codeatlasdev/ui@4.1.0
 Components: ToggleGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/toggle-group#variants-and-orientation

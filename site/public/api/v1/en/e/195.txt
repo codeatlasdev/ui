@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #195 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/gauge#progress-ring -->
 Element: #195 Progress ring (charts/gauge)
-What it shows: variant ring draws a single brand-colored arc with the value in the center.
-Tags: progress, ring, card, stack, slider, gaugechart
+What it shows: A ring gauge controlled by a slider, starting at 65.
+When to use: Letting users tune a percentage or score and see the gauge respond live.
+Spec:
+- `let value = $state(65)` shared by gauge and slider
+- `<GaugeChart {value} variant="ring" height="260px" />`
+- `<Slider bind:value min={0} max={100} step={1} />`
+- `<Stack gap="5">` stacks gauge and slider inside `<Card material="glass" full>`
+Tags: gauge-chart, ring, slider, bind-value, state, interactive
 Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, Stack, Slider, GaugeChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/gauge#progress-ring

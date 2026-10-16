@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #098 "Image placeholder" (feedback/skeleton).
-What it shows: Image placeholder.
+What it shows: A flush glass card skeleton with a 180px rectangular image placeholder above two caption lines. When to use: Loading placeholder for media cards such as products, posts or galleries.
+Spec:
+- `<Card material="glass" flush full>`
+- `<Skeleton variant="rectangular" height="180px" />` fills the top of the card
+- Caption in `<Stack gap="2">`: `height="16px" width="50%"` and `height="13px" width="80%"`
+- Caption wrapper `<div class="caption">` has `padding: 16px`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

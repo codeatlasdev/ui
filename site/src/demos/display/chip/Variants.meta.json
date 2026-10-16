@@ -1,0 +1,11 @@
+{
+	"summary": "Chip color variants (default, brand, success, warning, error, info) plus a small size chip.",
+	"use": "Picking the chip tone for categories and semantic labels.",
+	"spec": [
+		"`<Chip label=\"Default\" />` has no variant",
+		"`variant=\"brand\"`, `variant=\"success\"`, `variant=\"warning\"`, `variant=\"error\"` and `variant=\"info\"` each with a matching label",
+		"`<Chip label=\"Small\" size=\"sm\" />` shows the small size"
+	],
+	"tags": ["chip", "variant", "brand", "size", "sm", "color"],
+	"shape": "wide"
+}

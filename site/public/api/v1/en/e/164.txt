@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #164 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/tabs#default -->
 Element: #164 Default (navigation/tabs)
-What it shows: Three tabs with content panels.
-Tags: default, tabs, tabslist, tabstrigger, tabscontent
+What it shows: An uncontrolled tab set of Overview, Props and Examples, each with a short paragraph of documentation text.
+When to use: Splitting a detail view into a few peer sections of content without managing state.
+Spec:
+- `<Tabs value="overview">` sets the initial tab without binding
+- `<TabsList>` holds 3 `TabsTrigger` items: `value="overview"`, `value="props"`, `value="examples"`
+- Each value has a `TabsContent` with a `<div class="panel">` and one paragraph
+- Wrapper is `.wrap` with `max-width: 560px`
+Tags: tabs, uncontrolled, tabs-list, tabs-content, sections, default
 Needs: @codeatlasdev/ui@4.1.0
 Components: Tabs, TabsList, TabsTrigger, TabsContent
 Live demo: https://ui.codeatlas.com.br/docs/navigation/tabs#default

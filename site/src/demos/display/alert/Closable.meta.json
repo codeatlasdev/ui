@@ -1,0 +1,13 @@
+{
+	"summary": "Two dismissible alerts, an info one with a title and a warning one, that are replaced by a short dismissed note once closed.",
+	"use": "Inline notices the user can dismiss, such as beta-feature banners or storage warnings.",
+	"spec": [
+		"`<Alert severity=\"info\" title=\"Heads up\" closable onclose={() => (closedInfo = true)}>` with beta-feature text",
+		"`<Alert severity=\"warning\" closable onclose={() => (closedWarn = true)}>` with a storage 85% full message, no title",
+		"`let closedInfo = $state(false)` and `let closedWarn = $state(false)` track each alert",
+		"`{#if !closedInfo}` and `{#if !closedWarn}` render the alert, `{:else}` renders a `<p class=\"dismissed\">` note",
+		"Wrapper `.col` has `max-width: 560px`"
+	],
+	"tags": ["alert", "closable", "dismiss", "onclose", "notice", "severity"],
+	"shape": "wide"
+}

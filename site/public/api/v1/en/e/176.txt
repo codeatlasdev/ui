@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #176 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/kpi-card#negative-trend -->
 Element: #176 Negative trend (layout/kpi-card)
-What it shows: Negative trend
-Tags: negative, trend, kpicard, kpigrid
+What it shows: Two KPI cards whose trends are negative, one with an icon and one without.
+When to use: Metrics where a falling number is good or bad news, such as churn rate and response time.
+Spec:
+- `<KpiGrid>` with 2 `KpiCard` items
+- `<KpiCard title="Churn Rate" value="5.2" unit="%" trend={-1.8} icon={Activity} />`
+- `<KpiCard title="Response Time" value="1.4" unit="s" trend={-12.3} />` has no `icon`
+Tags: kpi-card, kpi-grid, negative-trend, metrics, churn, unit
 Needs: @codeatlasdev/ui@4.1.0
 Components: KpiCard, KpiGrid
 Live demo: https://ui.codeatlas.com.br/docs/layout/kpi-card#negative-trend

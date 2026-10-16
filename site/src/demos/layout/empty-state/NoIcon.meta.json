@@ -1,0 +1,11 @@
+{
+	"summary": "An empty state without an icon, showing a title, a description and a Create item button with a Plus icon.",
+	"use": "Simple empty lists where an icon adds no meaning and a single create action is enough.",
+	"spec": [
+		"`<EmptyState title=\"Nothing here yet\" description=\"Create your first item to get started.\">` is passed no icon",
+		"`{#snippet actions()}` holds `<Button variant=\"filled\" size=\"sm\">`",
+		"Button has `{#snippet leading()}<Plus size={14} />{/snippet}` and the label Create item"
+	],
+	"tags": ["empty-state", "no-icon", "create", "leading-icon", "actions"],
+	"shape": "square"
+}

@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #161 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/popover#form -->
 Element: #161 Form (navigation/popover)
-What it shows: A small form anchored to its trigger, aligned to the start.
-Tags: form, popover, button, textfield, stack, flex
+What it shows: A popover anchored below-start of a button that holds a text field with Cancel and Save buttons.
+When to use: Inline editing of a single value, such as renaming a label, without opening a modal.
+Spec:
+- `<Popover side="bottom" align="start">`
+- `{#snippet triggerChild(props)}` renders `<Button variant="filled" {...props}>Edit label</Button>`
+- `<TextField label="Label name" placeholder="e.g. Priority" />` inside `<Stack gap="3">`
+- `<Flex gap="2" justify="end">` holds `<Button size="sm" variant="ghost">Cancel</Button>` and `<Button size="sm" variant="filled">Save</Button>`
+Tags: popover, form, text-field, inline-edit, side, align, overlay
 Needs: @codeatlasdev/ui@4.1.0
 Components: Popover, Button, TextField, Stack, Flex
 Live demo: https://ui.codeatlas.com.br/docs/navigation/popover#form

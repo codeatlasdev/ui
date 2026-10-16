@@ -1,7 +1,15 @@
 <!-- @codeatlasdev/ui demo #194 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/gauge#animated-counter -->
 Element: #194 Animated counter (charts/gauge)
-What it shows: Updating value animates the ring and counts the number.
-Tags: animated, counter, card, stack, gaugechart
+What it shows: A ring gauge that counts up from 0 to 94 on mount, with a text label that changes with the value.
+When to use: Animating a score or health metric on load and pairing it with a verdict label.
+Spec:
+- `let value = $state(0)` incremented in `onMount` by `Math.min(value + 2, 94)` every 40 ms via `setInterval`
+- `<GaugeChart {value} variant="ring"` with `height="260px"`
+- `formatter={(v) => String(Math.round(v))}` rounds the displayed number
+- `const label = $derived(value < 40 ? 'Needs work' : value <= 70 ? 'Good' : 'Excellent')`
+- `<Stack gap="3">` stacks the gauge above `<p class="label">{label}</p>`
+- Interval is cleared when `value >= 94` and on unmount
+Tags: gauge-chart, ring, counter, animation, onmount, score, stack
 Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, Stack, GaugeChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/gauge#animated-counter

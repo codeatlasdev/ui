@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #198 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/heatmap#calendar-heatmap -->
 Element: #198 Calendar heatmap (charts/heatmap)
-What it shows: Daily commit activity from January to September.
-Tags: calendar, heatmap, card, heatmapchart
+What it shows: A calendar heatmap of daily commit counts from 2026-01-01 to 2026-09-15.
+When to use: Showing activity over a year, like contributions, logins or deploys per day.
+Spec:
+- `<HeatmapChart variant="calendar"`
+- `data` is `CalendarHeatmapPoint[]` built with `Array.from({ length: 258 }` as `[ 'YYYY-MM-DD', value ]` pairs
+- `range={['2026-01-01', '2026-09-15']}`
+- `tooltipFormatter={(v) => `${v} commits`}`
+- `height="160px"` inside `<Card material="glass" full>`
+Tags: heatmap-chart, calendar, activity, range, tooltip-formatter, card
 Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, HeatmapChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/heatmap#calendar-heatmap

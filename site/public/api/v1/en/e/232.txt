@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #232 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/docs-kit/docs#linkcard-cardgrid-and-methodbadge -->
 Element: #232 LinkCard, CardGrid and MethodBadge (docs-kit/docs)
-What it shows: LinkCard, CardGrid and MethodBadge
-Tags: linkcard, cardgrid, and, methodbadge
+What it shows: A CardGrid with two LinkCards, followed by a row of five MethodBadges for the HTTP verbs.
+When to use: Docs landing pages linking to guides, and API references that tag endpoints with their HTTP method.
+Spec:
+- `<CardGrid>` contains 2 `LinkCard` entries: Quick start and Webhooks
+- Each `LinkCard` sets `title`, `description` and `href="#top"`
+- `<MethodBadge method="GET" />`
+- Other badges: `method="POST"`, `method="PUT"`, `method="PATCH"`, `method="DELETE"`
+Tags: card-grid, link-card, method-badge, docs-kit, http-method, api-docs
 Needs: @codeatlasdev/ui@4.1.0
 Components: CardGrid, LinkCard, MethodBadge
 Live demo: https://ui.codeatlas.com.br/docs/docs-kit/docs#linkcard-cardgrid-and-methodbadge

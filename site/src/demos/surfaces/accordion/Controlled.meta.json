@@ -1,0 +1,13 @@
+{
+	"summary": "A single-open Accordion with its open item bound to state and the current value printed below.",
+	"use": "FAQ or settings sections where the app needs to read or set which item is open.",
+	"spec": [
+		"`<Accordion type=\"single\" bind:value>`",
+		"State: `let value = $state<string | string[] | undefined>('c1')` opens the first item initially",
+		"2 items: `<AccordionItem value=\"c1\" title=\"First section\">` and `<AccordionItem value=\"c2\" title=\"Second section\">`",
+		"`Open item: {Array.isArray(value) ? value.join(', ') : (value ?? 'none')}` prints the bound value",
+		"Wrapped in `.wrap` with `max-width: 560px`"
+	],
+	"tags": ["accordion", "accordion-item", "controlled", "bind", "single", "faq"],
+	"shape": "wide"
+}

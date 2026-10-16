@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #233 "CodeTabs" (docs-kit/docs).
-What it shows: Language tabs with a copy button. Groups that share a sync key follow each other and persist the choice in localStorage. Highlighting stays with you: wrap each block in .ca-code..
+What it shows: Two CodeTabs groups, each with cURL and Node.js tabs, that share the selected language through the same sync key. When to use: API docs that show the same request in several languages and keep the choice in sync across the page.
+Spec:
+- Two `<CodeTabs sync="demo-lang">` blocks use the same sync key
+- Each group has `<CodeTab label="cURL">` and `<CodeTab label="Node.js">`
+- Tab content is `<div class="ca-code"><pre><code>` rendering a string constant such as `{curl}` or `{node}`
+- First group sends a POST to messages/text, second group lists sessions with `{curlList}` and `{nodeList}`
+- Wrapped in `<div class="ca-prose wrap">`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

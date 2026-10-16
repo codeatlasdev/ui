@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #105 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/alert#severities -->
 Element: #105 Severities (display/alert)
-What it shows: Severities
-Tags: severities, alert
+What it shows: The four alert severities stacked: success, warning, error and info, each with a one-line message.
+When to use: Choosing the alert severity for save confirmations, trial warnings, connection errors and update notices.
+Spec:
+- `severity="success"` with the saved-changes message
+- `severity="warning"` with the trial-expires-in-3-days message
+- `severity="error"` with the failed-to-connect message
+- `severity="info"` with the new-version message
+- Wrapper `.col` has `max-width: 560px`
+Tags: alert, severity, success, warning, error, info
 Needs: @codeatlasdev/ui@4.1.0
 Components: Alert
 Live demo: https://ui.codeatlas.com.br/docs/display/alert#severities

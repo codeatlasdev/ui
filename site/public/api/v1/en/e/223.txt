@@ -1,7 +1,11 @@
 <!-- @codeatlasdev/ui demo #223 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/foundation/colors#surfaces -->
 Element: #223 Surfaces (foundation/colors)
-What it shows: A layered scale for depth: sunken, base, raised, overlay.
-Tags: surfaces
+What it shows: Four swatches for the surface tokens from sunken to overlay, drawn with a border.
+When to use: Choosing the background layer for a page, card, raised panel or popover.
+Spec:
+- Renders `<Swatches {tokens} bordered={true} />` with 4 tokens
+- Tokens in order: `--ca-surface-sunken`, `--ca-surface-base`, `--ca-surface-raised`, `--ca-surface-overlay`
+Tags: colors, surface, background, tokens, swatches, elevation
 Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/colors#surfaces

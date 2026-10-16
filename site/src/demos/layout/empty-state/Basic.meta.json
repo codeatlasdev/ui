@@ -1,0 +1,10 @@
+{
+	"summary": "An empty inbox state with an icon, a title, a description and a Compose message button.",
+	"use": "First-run or cleared lists where the user needs a clear next action.",
+	"spec": [
+		"`<EmptyState icon={Inbox} title=\"No messages yet\" description=\"Your inbox is empty. New messages will appear here.\">`",
+		"`{#snippet actions()}` holds `<Button variant=\"filled\" size=\"sm\">Compose message</Button>`"
+	],
+	"tags": ["empty-state", "inbox", "icon", "actions", "placeholder"],
+	"shape": "square"
+}

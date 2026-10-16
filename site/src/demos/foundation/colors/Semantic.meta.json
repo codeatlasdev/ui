@@ -1,0 +1,10 @@
+{
+	"summary": "Four swatches for the semantic status color tokens: success, warning, error and info.",
+	"use": "Choosing a status color for alerts, badges and validation states.",
+	"spec": [
+		"Renders `<Swatches {tokens} bordered={false} />` with 4 tokens",
+		"Tokens in order: `--ca-semantic-success`, `--ca-semantic-warning`, `--ca-semantic-error`, `--ca-semantic-info`"
+	],
+	"tags": ["colors", "semantic", "success", "warning", "error", "info", "tokens"],
+	"shape": "wide"
+}

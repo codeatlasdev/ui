@@ -1,0 +1,14 @@
+{
+	"summary": "A live line chart that shifts in a new Live revenue point every 800 ms over a 20-point window.",
+	"use": "Real-time monitoring such as live revenue, traffic or latency streams.",
+	"spec": [
+		"`let streamData = $state<number[]>` starts with 20 values from `68000` to `115000`",
+		"`setInterval` in `onMount` runs every `800` ms and sets `streamData = [...streamData.slice(1), next]`",
+		"`next` is clamped with `Math.min(125000, Math.max(42000,`",
+		"`series={[{ name: 'Live revenue', data: streamData }]}`",
+		"`categories={streamData.map((_, i) => String(i))}`",
+		"`valueFormatter={fmt}` and `height=\"300px\"`"
+	],
+	"tags": ["line-chart", "streaming", "live", "realtime", "onmount", "interval"],
+	"shape": "wide"
+}

@@ -1,0 +1,12 @@
+{
+	"summary": "Four determinate progress bars at 25, 50, 75 and 100 percent, each with a percent label.",
+	"use": "Showing known completion, such as quota used or onboarding steps done.",
+	"spec": [
+		"`{#each [25, 50, 75, 100] as v}` renders one row per value",
+		"`<Progress value={v} label=\"{v} percent\" />` gives each bar an accessible label",
+		"Text `{v}%` shown beside each bar",
+		"Column has `max-width: 480px`"
+	],
+	"tags": ["progress", "determinate", "value", "percent", "label"],
+	"shape": "wide"
+}

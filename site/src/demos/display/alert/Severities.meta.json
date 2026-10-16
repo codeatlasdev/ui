@@ -1,0 +1,13 @@
+{
+	"summary": "The four alert severities stacked: success, warning, error and info, each with a one-line message.",
+	"use": "Choosing the alert severity for save confirmations, trial warnings, connection errors and update notices.",
+	"spec": [
+		"`severity=\"success\"` with the saved-changes message",
+		"`severity=\"warning\"` with the trial-expires-in-3-days message",
+		"`severity=\"error\"` with the failed-to-connect message",
+		"`severity=\"info\"` with the new-version message",
+		"Wrapper `.col` has `max-width: 560px`"
+	],
+	"tags": ["alert", "severity", "success", "warning", "error", "info"],
+	"shape": "wide"
+}

@@ -1,0 +1,12 @@
+{
+	"summary": "Four PinInput states: with description, with error, disabled with a partial value, and a text-type five-character key.",
+	"use": "Documenting helper text, error feedback and non-numeric code variants of one-time code inputs.",
+	"spec": [
+		"`description=\"Check your email.\"` with `bind:value={hinted}` starting at `$state('123')`",
+		"`error=\"Invalid or expired code.\"` with `value=\"123456\"`",
+		"`disabled` with `value=\"12\"`",
+		"`<PinInput label=\"Access key\" type=\"text\" length={5} value=\"\" />`"
+	],
+	"tags": ["pin-input", "otp", "error", "disabled", "description", "length", "forms"],
+	"shape": "wide"
+}

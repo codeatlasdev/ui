@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #203 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/line#simple-line -->
 Element: #203 Simple line (charts/line)
-What it shows: Simple line
-Tags: simple, line, card, linechart
+What it shows: A basic line chart of a single Revenue series over nine months.
+When to use: Showing the trend of one metric over time, the default time-series view.
+Spec:
+- `<LineChart` with one series `{ name: 'Revenue', data: revenue }`
+- `revenue` has 9 values from `42000` to `112000`
+- `categories={months}` with `'Jan'` to `'Sep'`
+- `valueFormatter={fmt}` renders `$${(v / 1000).toFixed(0)}k`
+- `height="300px"` inside `<Card material="glass" full>`
+Tags: line-chart, simple, revenue, time-series, value-formatter, card
 Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, LineChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/line#simple-line

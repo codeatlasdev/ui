@@ -1,0 +1,13 @@
+{
+	"summary": "A right drawer, 400px wide, listing four notifications with unread dots and timestamps.",
+	"use": "A notifications panel opened from a header bell button.",
+	"spec": [
+		"`<Drawer bind:open title=\"Notifications\" side=\"right\" width=\"400px\">`",
+		"`const items` has four entries with fields `title`, `body`, `time` and `unread`, two unread",
+		"Rows rendered with `{#each items as n}` and `class:notif--unread={n.unread}`; unread rows show `<span class=\"dot\">`",
+		"`{#snippet actions()}` holds `<Button variant=\"ghost\" size=\"sm\"` labelled Mark all read",
+		"Trigger is `<Button variant=\"ghost\"` with a `<Bell size={14} />` icon"
+	],
+	"tags": ["drawer", "notifications", "side-panel", "unread", "list"],
+	"shape": "wide"
+}

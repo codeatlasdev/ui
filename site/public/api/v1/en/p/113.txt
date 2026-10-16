@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #113 "Dot and counts" (display/badge).
-What it shows: Dot and counts.
+What it shows: Four badges on icon buttons: a dot, a count of 3, a count of 99 and a count of 100. When to use: Unread counters on notification, message and cart icons.
+Spec:
+- `<Badge dot>` around a Bell `<IconButton aria-label="Notifications">`
+- `<Badge count={3}>` around a Mail `<IconButton aria-label="Messages">`
+- `<Badge count={99}>` around a ShoppingCart `<IconButton aria-label="Cart">`
+- `<Badge count={100}>` around a Bell `<IconButton aria-label="Notifications">`
+- `<Flex gap="4" align="center" wrap>` lays them out
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #045 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/slider#range -->
 Element: #045 Range (inputs/slider)
-What it shows: Bind a [min, max] tuple to values for two thumbs.
-Tags: range, slider
+What it shows: Two-thumb range slider from 0 to 100 with the selected price range printed beside it.
+When to use: Filtering by a numeric range such as price.
+Spec:
+- `<Slider bind:values={range} min={0} max={100} />`
+- `range` is `$state<[number, number]>([20, 75])`
+- Row shows a Price label and the value `${range[0]} – ${range[1]}`
+- Wrapper `.row` uses `max-width: 480px`
+Tags: slider, range, two-thumb, price, filter
 Needs: @codeatlasdev/ui@4.1.0
 Components: Slider
 Live demo: https://ui.codeatlas.com.br/docs/inputs/slider#range

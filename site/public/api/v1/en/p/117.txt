@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #117 "With icons" (display/chip).
-What it shows: With icons.
+What it shows: Three chips each with a leading lucide icon: star, zap and tag. When to use: Labelled badges that gain meaning from an icon, such as featured or boosted items.
+Spec:
+- `<Chip label="Featured" icon={Star} />`
+- `<Chip label="Boosted" icon={Zap} />`
+- `<Chip label="Tagged" icon={Tag} />`
+- `icon` receives the component itself imported from `@lucide/svelte`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

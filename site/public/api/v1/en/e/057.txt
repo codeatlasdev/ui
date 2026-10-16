@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #057 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/text-field#with-icons -->
 Element: #057 With icons (inputs/text-field)
-What it shows: leading and trailing snippets. Interactive trailing content, like a reveal button, must be a real button with its own label.
-Tags: with, icons, textfield
+What it shows: Search field with a leading icon and a password field with a trailing show/hide button.
+When to use: Search boxes and password inputs that need an inline icon or action.
+Spec:
+- Search field uses `{#snippet leading()}` with `<Search size={16} stroke-width={2} />`
+- Password field uses `{#snippet trailing()}` containing a `<button type="button" class="reveal"`
+- Field `type={reveal ? 'text' : 'password'}` toggled by `onclick={() => (reveal = !reveal)}`
+- Button sets `aria-pressed={reveal}` and `aria-label={reveal ? 'Hide password' : 'Show password'}`
+- Icons `Eye` and `EyeOff` come from `@lucide/svelte`
+Tags: text-field, icon, leading, trailing, password, search, snippet
 Needs: @codeatlasdev/ui@4.1.0
 Components: TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/text-field#with-icons

@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #088 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/drawer#notification-panel -->
 Element: #088 Notification panel (feedback/drawer)
-What it shows: A real-world use: a 400px wide panel on the right.
-Tags: notification, panel, drawer, button, stack
+What it shows: A right drawer, 400px wide, listing four notifications with unread dots and timestamps.
+When to use: A notifications panel opened from a header bell button.
+Spec:
+- `<Drawer bind:open title="Notifications" side="right" width="400px">`
+- `const items` has four entries with fields `title`, `body`, `time` and `unread`, two unread
+- Rows rendered with `{#each items as n}` and `class:notif--unread={n.unread}`; unread rows show `<span class="dot">`
+- `{#snippet actions()}` holds `<Button variant="ghost" size="sm"` labelled Mark all read
+- Trigger is `<Button variant="ghost"` with a `<Bell size={14} />` icon
+Tags: drawer, notifications, side-panel, unread, list
 Needs: @codeatlasdev/ui@4.1.0
 Components: Drawer, Button, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/drawer#notification-panel

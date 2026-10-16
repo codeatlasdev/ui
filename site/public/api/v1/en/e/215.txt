@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #215 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/scatter#clustered-by-tier -->
 Element: #215 Clustered by tier (charts/scatter)
-What it shows: One series per group, each with its own palette color.
-Tags: clustered, by, tier, card, scatterchart
+What it shows: A scatter plot with three named series, Premium, Standard and Free, of 30 points each.
+When to use: Showing segments or clusters of customers as separate colour-coded groups.
+Spec:
+- `const series: ScatterSeries[]` with 3 entries: `'Premium'`, `'Standard'`, `'Free'`
+- Each series uses `cluster(30,` to generate 30 `[number, number]` points
+- `color` is optional on a series, omitted here so the palette assigns one per series
+- `<ScatterChart {series} yName="Conversion %"` with `yFormatter={(v) => `${v.toFixed(1)}%`}`
+- `height="340px"` inside `<Card material="glass" full>`
+Tags: scatter-chart, clusters, segments, multi-series, palette, card
 Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, ScatterChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/scatter#clustered-by-tier

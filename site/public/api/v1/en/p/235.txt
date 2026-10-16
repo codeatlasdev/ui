@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #235 "ca-prose, Callout and Steps" (docs-kit/docs).
-What it shows: Wrap rendered markdown in .ca-prose. Callout is an Alert vocabulary (note, tip, caution, danger); keep two per page. Steps turns an ordered list into a numbered rail..
+What it shows: A documentation article using the ca-prose wrapper with headings, two Callouts, a Steps list and a request fields table. When to use: Rendering API guide content, with tips, warnings, numbered steps and reference tables, inside a docs page.
+Spec:
+- Wrapper `<div class="ca-prose prose">` holds plain `h2`, `h3` and `p` elements with ids like `id="demo-auth"`
+- `<Callout type="tip">` and `<Callout type="caution">`
+- `<Steps>` wraps an `<ol>` with 2 items: Create a session and Connect with a QR code
+- Table sits in `<div class="ca-table-wrap" tabindex="0" role="region" aria-label="Request fields">`
+- Table columns: Field, Type, Description, with 2 rows for `to` and `text`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

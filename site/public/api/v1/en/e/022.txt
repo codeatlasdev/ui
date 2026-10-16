@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #022 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/filter-group#role-filter -->
 Element: #022 Role filter (inputs/filter-group)
-What it shows: Role filter
-Tags: role, filter, filtergroup
+What it shows: A FilterGroup of three role options bound to a value that is printed below.
+When to use: Filtering a list or table by one category, such as user role, with a short set of choices.
+Spec:
+- `<FilterGroup label="Role" options={roles} bind:value={role} />`
+- `const roles` has 3 options with `value` and `label`: `admin`, `editor`, `viewer`
+- `let role = $state('all')` starts at `all`, which is not one of the options
+- `<p>Selected: {role}</p>` prints the current value
+Tags: filter-group, filter, options, role, bind, category
 Needs: @codeatlasdev/ui@4.1.0
 Components: FilterGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/filter-group#role-filter

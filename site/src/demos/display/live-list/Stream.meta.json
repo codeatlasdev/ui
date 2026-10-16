@@ -1,0 +1,14 @@
+{
+	"summary": "A LiveList that streams in 40 simulated domain availability checks, one every 150ms, after a Start bulk check button is pressed.",
+	"use": "Bulk jobs such as domain checks, imports or batch validations where results arrive one by one and the user wants to watch progress.",
+	"spec": [
+		"`<LiveList {items} total={TOTAL} {status} label=\"Domain checks\" height=\"14rem\">` with `const TOTAL = 40`",
+		"State: `let items = $state<Check[]>([])` and `let status = $state<'idle' | 'running' | 'done'>('idle')`",
+		"Row content rendered with `{#snippet item(row)}`: `row.domain` text plus a `Chip`",
+		"`<Chip size=\"sm\" variant={row.free ? 'success' : 'default'}` labelled Available or Taken from `row.free`",
+		"`<Button variant=\"filled\" onclick={start} disabled={status === 'running'}>` starts the stream, label becomes Checking… while running",
+		"`start()` pushes one item with `domain` and `free` every 150ms with `setInterval` and sets `status = 'done'` at `TOTAL`"
+	],
+	"tags": ["live-list", "stream", "progress", "chip", "bulk", "status", "real-time"],
+	"shape": "tall"
+}

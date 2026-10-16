@@ -1,0 +1,13 @@
+{
+	"summary": "Four NumberField states in a Stack: with description, with error and required, disabled, and small.",
+	"use": "Documenting helper text, validation, locked and compact variants of numeric fields such as seat counts.",
+	"spec": [
+		"`<NumberField label=\"Seats\" value={3} min={1} max={50} description=\"Max 50 seats per plan.\" />`",
+		"`bind:value={seats}` with `let seats = $state(60)`, `error=\"Plans support up to 50 seats.\"` and `required`",
+		"`<NumberField label=\"Fixed amount\" bind:value={fixed} disabled />`",
+		"`<NumberField label=\"Small\" size=\"sm\" value={2} />`",
+		"`<Stack gap=\"4\">` wraps the four fields"
+	],
+	"tags": ["number-field", "error", "disabled", "required", "size", "description", "forms"],
+	"shape": "wide"
+}

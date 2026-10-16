@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #033 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/pin-input#states -->
 Element: #033 States (inputs/pin-input)
-What it shows: Description, error, disabled and a free-text code.
-Tags: states, pininput
+What it shows: Four PinInput states: with description, with error, disabled with a partial value, and a text-type five-character key.
+When to use: Documenting helper text, error feedback and non-numeric code variants of one-time code inputs.
+Spec:
+- `description="Check your email."` with `bind:value={hinted}` starting at `$state('123')`
+- `error="Invalid or expired code."` with `value="123456"`
+- `disabled` with `value="12"`
+- `<PinInput label="Access key" type="text" length={5} value="" />`
+Tags: pin-input, otp, error, disabled, description, length, forms
 Needs: @codeatlasdev/ui@4.1.0
 Components: PinInput
 Live demo: https://ui.codeatlas.com.br/docs/inputs/pin-input#states

@@ -1,0 +1,12 @@
+{
+	"summary": "Select whose first option has an empty value labelled All projects, with the raw value printed.",
+	"use": "Filters where an empty value means no filter, such as All projects.",
+	"spec": [
+		"`<Select label=\"Project\" placeholder=\"Choose a project…\"` with `options={projects}`",
+		"`projects` has 4 options: All projects with `value: ''`, Web app, API, Docs",
+		"`bind:value={project}` with initial `$state('')`",
+		"Current value is shown as `JSON.stringify(project)`"
+	],
+	"tags": ["select", "empty-option", "filter", "placeholder", "all"],
+	"shape": "wide"
+}

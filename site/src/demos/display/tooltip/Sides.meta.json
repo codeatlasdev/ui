@@ -1,0 +1,13 @@
+{
+	"summary": "Four outlined buttons whose tooltips open on the top, right, bottom and left side.",
+	"use": "Choosing the tooltip side so it does not cover neighbouring controls or run off the screen.",
+	"spec": [
+		"`side=\"top\"` with `content=\"Tooltip on top\"`",
+		"`side=\"right\"` with `content=\"Tooltip on right\"`",
+		"`side=\"bottom\"` with `content=\"Tooltip on bottom\"`",
+		"`side=\"left\"` with `content=\"Tooltip on left\"`",
+		"Each trigger uses `{#snippet triggerChild(props)}` with `<Button variant=\"outlined\" {...props}>`"
+	],
+	"tags": ["tooltip", "side", "placement", "top", "bottom", "button"],
+	"shape": "wide"
+}

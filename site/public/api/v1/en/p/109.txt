@@ -1,5 +1,12 @@
 Use @codeatlasdev/ui demo #109 "Shape and status" (display/avatar).
-What it shows: Shape and status.
+What it shows: Large avatars showing the rounded shape and the four status indicators: online, busy, away and offline. When to use: Presence in chat, team lists or support queues, plus a rounded avatar shape.
+Spec:
+- `shape="rounded"` on `alt="Ana Lima"`
+- `status="online"` on `alt="Online"`
+- `status="busy"` on `alt="Busy"`
+- `status="away"` on `alt="Away"`
+- `status="offline"` on `alt="Offline"`
+- All five use `size="lg"`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

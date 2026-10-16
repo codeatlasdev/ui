@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #228 "Shadow scale" (foundation/shadows).
-What it shows: xs for hairline lift up to xl for modal depth..
+What it shows: Five cards, each with one shadow token from xs to xl, labelled with its name and CSS variable. When to use: Comparing the five shadow sizes before choosing one for a card, popover or floating panel.
+Spec:
+- `const sizes = ["xs", "sm", "md", "lg", "xl"]` rendered by `{#each sizes as size (size)}`
+- Each card sets `style="--card-shadow: var(--ca-shadow-{size})"`
+- Labels `shadow-{size}` and `--ca-shadow-{size}` shown in each card
+- Cards use `background: var(--ca-surface-base)` and `box-shadow: var(--card-shadow)`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

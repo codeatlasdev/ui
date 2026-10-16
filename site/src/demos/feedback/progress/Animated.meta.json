@@ -1,0 +1,14 @@
+{
+	"summary": "A progress bar that fills from 0 to 100 percent in steps of 5 every 100 ms when Start upload is clicked.",
+	"use": "Showing upload or export progress that the app updates as work completes.",
+	"spec": [
+		"`<Progress {value} label=\"Upload progress\" />` with `let value = $state(0)`",
+		"`setInterval` runs every `100` ms with `value = Math.min(100, value + 5)` and clears at 100",
+		"Percent text `{value}%` shown beside the bar",
+		"Button `<Button variant=\"outlined\" size=\"sm\" disabled={running} onclick={start}>` switches label with `{running ? 'Uploading…' : 'Start upload'}`",
+		"`onDestroy(() => clearInterval(timer))` cleans the timer",
+		"Column wrapper has `max-width: 480px`"
+	],
+	"tags": ["progress", "animated", "upload", "determinate", "button"],
+	"shape": "wide"
+}

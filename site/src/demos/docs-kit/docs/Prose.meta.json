@@ -1,0 +1,13 @@
+{
+	"summary": "A documentation article using the ca-prose wrapper with headings, two Callouts, a Steps list and a request fields table.",
+	"use": "Rendering API guide content, with tips, warnings, numbered steps and reference tables, inside a docs page.",
+	"spec": [
+		"Wrapper `<div class=\"ca-prose prose\">` holds plain `h2`, `h3` and `p` elements with ids like `id=\"demo-auth\"`",
+		"`<Callout type=\"tip\">` and `<Callout type=\"caution\">`",
+		"`<Steps>` wraps an `<ol>` with 2 items: Create a session and Connect with a QR code",
+		"Table sits in `<div class=\"ca-table-wrap\" tabindex=\"0\" role=\"region\" aria-label=\"Request fields\">`",
+		"Table columns: Field, Type, Description, with 2 rows for `to` and `text`"
+	],
+	"tags": ["prose", "callout", "steps", "docs-kit", "table", "api-docs"],
+	"shape": "tall"
+}

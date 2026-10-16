@@ -1,0 +1,13 @@
+{
+	"summary": "An Image with a two-rendition `srcset` (400w and 800w) and a `sizes` hint, in a 420px wrapper.",
+	"use": "Responsive content images where the browser should pick the smaller file on narrow screens.",
+	"spec": [
+		"`srcset={`${small} 400w, ${large} 800w`}` lists two renditions",
+		"`sizes=\"(min-width: 768px) 420px, 100vw\"`",
+		"`src={large}` with `width={800}` and `height={450}`",
+		"`alt=\"Two renditions of the same 16 by 9 picture\"`",
+		"Wrapper is `<div style=\"max-width: 420px\">`"
+	],
+	"tags": ["image", "srcset", "sizes", "responsive", "alt", "width"],
+	"shape": "wide"
+}

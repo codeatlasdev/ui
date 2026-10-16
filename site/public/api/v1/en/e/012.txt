@@ -1,7 +1,11 @@
 <!-- @codeatlasdev/ui demo #012 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/copy-button#default -->
 Element: #012 Default (inputs/copy-button)
-What it shows: Default
-Tags: default, copybutton
+What it shows: A default CopyButton that copies an npm install command.
+When to use: Next to install commands, tokens or IDs so users can copy them in one click.
+Spec:
+- `<CopyButton value="npm i @codeatlasdev/ui" />`
+- Only the `value` prop is set, no other props
+Tags: copy-button, clipboard, copy, install, command
 Needs: @codeatlasdev/ui@4.1.0
 Components: CopyButton
 Live demo: https://ui.codeatlas.com.br/docs/inputs/copy-button#default

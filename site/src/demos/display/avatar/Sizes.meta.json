@@ -1,0 +1,14 @@
+{
+	"summary": "Avatars at every preset size from extra small to extra large, plus a custom numeric size.",
+	"use": "Choosing avatar size for dense lists, headers and profile pages.",
+	"spec": [
+		"`size=\"xs\"` with `alt=\"Extra small\"`",
+		"`size=\"sm\"` with `alt=\"Small\"`",
+		"`size=\"md\"` with `alt=\"Medium\"`",
+		"`size=\"lg\"` with `alt=\"Large\"`",
+		"`size=\"xl\"` with `alt=\"Extra large\"`",
+		"`size={80}` with `alt=\"Custom\"` is a numeric size"
+	],
+	"tags": ["avatar", "size", "xs", "xl", "custom-size"],
+	"shape": "wide"
+}

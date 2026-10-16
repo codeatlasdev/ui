@@ -1,0 +1,12 @@
+{
+	"summary": "Three KPI cards without a trend value, one with an icon and two plain.",
+	"use": "Snapshot counters, such as orders today or error rate, that have no comparison period.",
+	"spec": [
+		"`<KpiGrid>` with 3 `KpiCard` items and no trend value",
+		"`<KpiCard title=\"Orders Today\" value=\"124\" icon={ShoppingCart} />`",
+		"`<KpiCard title=\"Avg. Session\" value=\"3m 42s\" />`",
+		"`<KpiCard title=\"Error Rate\" value=\"0.03\" unit=\"%\" />`"
+	],
+	"tags": ["kpi-card", "kpi-grid", "no-trend", "metrics", "counters", "unit"],
+	"shape": "wide"
+}

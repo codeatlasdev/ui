@@ -1,0 +1,13 @@
+{
+	"summary": "Tabs with a Lucide icon, a brand-colored svg icon and a scheme-aware monochrome icon next to each label.",
+	"use": "Tab bars that mix generic and third-party product marks, such as terminal or agent sessions.",
+	"spec": [
+		"`<Tabs value=\"shell\">` with 3 triggers: `value=\"shell\"`, `value=\"claude\"`, `value=\"codex\"`",
+		"Shell uses `{#snippet icon()}<Terminal />{/snippet}`",
+		"Claude Code and Codex set `brandIcon` so the inline `svg` keeps its own colors",
+		"Codex wraps `<SchemeAsset>` with `{#snippet light()}` and `{#snippet dark()}` svg variants",
+		"Wrapper is `.wrap` with `max-width: 480px`"
+	],
+	"tags": ["tabs", "icon", "brand-icon", "scheme-asset", "dark-mode", "tabs-trigger"],
+	"shape": "wide"
+}

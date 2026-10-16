@@ -1,0 +1,10 @@
+{
+	"summary": "A default CopyButton that copies an npm install command.",
+	"use": "Next to install commands, tokens or IDs so users can copy them in one click.",
+	"spec": [
+		"`<CopyButton value=\"npm i @codeatlasdev/ui\" />`",
+		"Only the `value` prop is set, no other props"
+	],
+	"tags": ["copy-button", "clipboard", "copy", "install", "command"],
+	"shape": "square"
+}

@@ -1,5 +1,9 @@
 Use @codeatlasdev/ui demo #091 "Open from a button" (feedback/lightbox).
-What it shows: Open from a button.
+What it shows: A lightbox opened from a button to show a single generated SVG image. When to use: Enlarging one thumbnail or photo to full view on click.
+Spec:
+- `<Lightbox bind:open src={photo} alt="Gray circle on a dark background" />`
+- `photo` is a `data:image/svg+xml;utf8,` URL built with `encodeURIComponent`, 640 by 400 with a circle `r="90"`
+- Trigger is `<Button variant="outlined" onclick={() => (open = true)}>` labelled View photo
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

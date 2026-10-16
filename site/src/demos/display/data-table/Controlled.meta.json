@@ -1,0 +1,22 @@
+{
+	"summary": "A DataTable driven from outside: filter, sort and pagination state live in the page, which slices 12 users into pages of 5.",
+	"use": "Server-side or externally managed tables where the page owns search, sort and paging state.",
+	"spec": [
+		"`let globalFilter = $state('')`, `let pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 5 })` and `let sorting = $state<SortingState>([])`",
+		"`const allData: User[]` has 12 rows with `id`, `name`, `email`, `role` and `status`",
+		"`<DataTable` receives `data={pageData}`, `total={filtered.length}`, `{globalFilter}`, `{onGlobalFilterChange}`, `{pagination}`, `{onPaginationChange}`, `{sorting}` and `{onSortingChange}`",
+		"`searchPlaceholder=\"Search by name, email, role…\"` sets the search input hint",
+		"`createCaColumnHelper<User>()` defines 5 columns with `col.accessor`",
+		"`onGlobalFilterChange` resets `pageIndex: 0`"
+	],
+	"tags": [
+		"data-table",
+		"controlled",
+		"pagination",
+		"sorting",
+		"global-filter",
+		"server-side",
+		"tanstack"
+	],
+	"shape": "wide"
+}

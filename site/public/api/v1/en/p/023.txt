@@ -1,5 +1,12 @@
 Use @codeatlasdev/ui demo #023 "Documents and dates" (inputs/masked-field).
-What it shows: CPF, CNPJ, a mask that switches after 11 digits, a birth date and RG..
+What it shows: Five MaskedField inputs for Brazilian documents: CPF, CNPJ, combined CPF or CNPJ, birth date and RG, with validators on three. When to use: Brazilian registration and checkout forms that collect formatted identity documents and dates.
+Spec:
+- `mask={maskCPF}` with `validate={(v) => (isValidCPF(v) ? undefined : 'Invalid CPF')}` and `placeholder="000.000.000-00"`
+- `mask={maskCNPJ}` with `validate={(v) => (isValidCNPJ(v) ? undefined : 'Invalid CNPJ')}` and `placeholder="00.000.000/0000-00"`
+- `mask={maskCPFCNPJ}` with `description="Switches mask after 11 digits."`
+- `mask={maskDateBR}` with `isValidDateBR(v)` validation and `placeholder="dd/mm/yyyy"`
+- `mask={maskRG}` with `placeholder="00.000.000-0"` and no `validate`
+- Imports come from `@codeatlasdev/ui/forms`, each field uses `bind:value`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

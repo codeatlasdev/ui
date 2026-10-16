@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #095 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/sheet#footer-and-swipetodismiss -->
 Element: #095 Footer and swipeToDismiss (feedback/sheet)
-What it shows: A pinned footer, and swipeToDismiss set to false so only the close button, Escape and the overlay dismiss it.
-Tags: footer, and, swipetodismiss, sheet, button, stack
+What it shows: A bottom sheet titled Sessions with a footer button, opened with swipe to dismiss on or off.
+When to use: Mobile sheets with a pinned primary action that sometimes must not be dismissed by dragging.
+Spec:
+- `<Sheet bind:open title="Sessions" swipeToDismiss={swipe} onclose={() => (open = false)}>`
+- Two triggers set `swipe = true` and `swipe = false` before `open = true`: Sheet with footer and Swipe disabled
+- Body is `<Stack gap="2">` with a paragraph whose text depends on `swipe`
+- `{#snippet footer()}` holds `<Button variant="filled"` New session with a `<Plus size={15} />` icon
+Tags: sheet, footer, swipe-to-dismiss, bottom-sheet, mobile
 Needs: @codeatlasdev/ui@4.1.0
 Components: Sheet, Button, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/sheet#footer-and-swipetodismiss

@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #103 "Variants and duration" (feedback/toast).
-What it shows: Five variants, plus persistent (duration 0) and custom durations. The default auto-dismiss is 4 seconds..
+What it shows: Eight buttons that trigger toasts: five variants and three duration cases, with one Toaster mounted. When to use: Non-blocking feedback after an action, such as saved, failed or an available update.
+Spec:
+- `<Toaster />` mounted once, toasts fired with `toast` from `@codeatlasdev/ui`
+- Variants: `toast.show(`, `toast.success(`, `toast.error(`, `toast.warning(` and `toast.info(` with a message string
+- Persistent: `{ variant: 'info', duration: 0 }` passed as second argument of `toast.show(`
+- Timed: `toast.success('Gone in 1 second.', 1000)` and `toast.info('Stays for 8 seconds.', 8000)`
+- All triggers are `<Button variant="outlined"` in two labelled groups, Variants and Duration
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

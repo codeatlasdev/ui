@@ -1,0 +1,12 @@
+{
+	"summary": "Swatch group of five theme presets: ocean, violet, emerald, rose, amber.",
+	"use": "Choosing an accent theme preset in appearance settings.",
+	"spec": [
+		"`<SwatchGroup` with `aria-label=\"Accent\"` and `bind:value={preset}`",
+		"5 items with only `value`: `{ value: 'ocean' }`, `{ value: 'violet' }`, `{ value: 'emerald' }`, `{ value: 'rose' }`, `{ value: 'amber' }`",
+		"Initial value is `$state('ocean')`",
+		"Current value is shown as `value: {preset}`"
+	],
+	"tags": ["swatch-group", "presets", "theme", "accent", "swatch"],
+	"shape": "square"
+}

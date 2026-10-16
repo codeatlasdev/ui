@@ -1,7 +1,11 @@
 <!-- @codeatlasdev/ui demo #196 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/gauge#simple-gauge -->
 Element: #196 Simple gauge (charts/gauge)
-What it shows: Simple gauge
-Tags: simple, gauge, card, gaugechart
+What it shows: A single gauge showing a score of 78 with a Score label.
+When to use: Showing one headline score or health percentage in a compact card.
+Spec:
+- `<GaugeChart value={78} label="Score" height="280px" />`
+- Wrapped in `<Card material="glass" full>`
+Tags: gauge-chart, score, value, label, card
 Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, GaugeChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/gauge#simple-gauge

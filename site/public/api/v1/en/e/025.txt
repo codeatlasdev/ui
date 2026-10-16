@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #025 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/masked-field#phone-and-cep -->
 Element: #025 Phone and CEP (inputs/masked-field)
-What it shows: PhoneField binds E.164 (+55...) while showing the masked form. CepField resolves an address through onlookup. Try 01310-100.
-Tags: phone, and, cep, cepfield, phonefield
+What it shows: A PhoneField and a CepField that looks up an address asynchronously and prints the resolved street, district and city.
+When to use: Brazilian address and contact forms that autofill street data from a postal code lookup.
+Spec:
+- `<PhoneField label="WhatsApp" bind:value={phone} />`
+- `<CepField` with `label="CEP"` and `description="Try 01310-100."`
+- `bind:lookupPending={pending}`, `onlookup={lookup}` and `onresolve={(a) => (address = a)}`
+- `async function lookup(raw: string)` waits 600 ms and returns a `CepAddress` only for `01310100`, otherwise `null`
+- Result line shows `Looking up…` while pending, then `logradouro`, `bairro`, `localidade` and `uf`
+Tags: phone-field, cep-field, lookup, address, brazil, async, forms
 Needs: @codeatlasdev/ui@4.1.0
 Components: CepField, PhoneField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/masked-field#phone-and-cep

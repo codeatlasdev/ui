@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #024 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/masked-field#use-mask-action -->
 Element: #024 use:mask action (inputs/masked-field)
-What it shows: Apply any pure mask to a plain input. The caret stays on the same digit.
-Tags: use, mask, action
+What it shows: A native input masked with the mask action, showing the bound value below.
+When to use: Adding input masking to a custom or third-party input that is not a MaskedField.
+Spec:
+- `use:mask={maskCPF}` on a plain `<input` with `bind:value`
+- `placeholder="000.000.000-00"` and `inputmode="numeric"`
+- `<label class="lbl" for="mask-action-input">` is linked to `id="mask-action-input"`
+- Output line prints `value = {value || '–'}`
+Tags: mask, action, input-mask, cpf, native-input, forms
 Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/inputs/masked-field#use-mask-action

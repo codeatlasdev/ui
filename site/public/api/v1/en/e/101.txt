@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #101 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/spinner#section-loader -->
 Element: #101 Section loader (feedback/spinner)
-What it shows: Section loader
-Tags: section, loader, spinner, card, stack
+What it shows: A glass card with a centered 40px spinner and a Loading data text.
+When to use: Loader for a whole section or panel while its data is fetched.
+Spec:
+- `<Card material="glass" p="10" full>`
+- `<Stack align="center" gap="3">` centers the spinner and text
+- `<Spinner size={40} />` above `<span class="text">Loading data…</span>`
+Tags: spinner, loader, card, section, loading
 Needs: @codeatlasdev/ui@4.1.0
 Components: Spinner, Card, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/spinner#section-loader

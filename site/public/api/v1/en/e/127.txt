@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #127 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/image#fixed-ratio -->
 Element: #127 Fixed ratio (display/image)
-What it shows: Fixed ratio
-Tags: fixed, ratio, image
+What it shows: An Image with an inline 4:3 gradient SVG, constrained to a 360px wrapper.
+When to use: Content images where width and height are declared so the layout does not shift.
+Spec:
+- `<Image {src} alt="Gradient placeholder, 4 by 3" width={800} height={600} />`
+- `src` is an inlined `data:image/svg+xml;utf8,` gradient, so the demo needs no asset
+- Wrapper is `<div style="max-width: 360px">`
+Tags: image, alt, width, height, aspect-ratio, placeholder
 Needs: @codeatlasdev/ui@4.1.0
 Components: Image
 Live demo: https://ui.codeatlas.com.br/docs/display/image#fixed-ratio

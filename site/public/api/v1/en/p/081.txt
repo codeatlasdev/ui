@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #081 "Basic and destructive" (feedback/alert-dialog).
-What it shows: Confirm and cancel, with the destructive variant for irreversible actions..
+What it shows: Two alert dialogs, a plain sign out confirmation and a destructive project delete, with an event log below. When to use: Asking the user to confirm an interrupting action such as signing out or deleting a project.
+Spec:
+- Sign out dialog: `bind:open={signOutOpen}`, `confirmLabel="Sign out"`, `onconfirm` and `oncancel` handlers
+- Delete dialog: `bind:open={deleteOpen}`, `confirmLabel="Delete"`, `destructive` flag, only `onconfirm`
+- Triggers are `<Button variant="outlined"` and `<Button variant="destructive"` with `{#snippet leading()}` icons `<LogOut size={14} />` and `<Trash2 size={14} />`
+- Handlers call `push('Signed out')`, `push('Sign out cancelled')` and `push('Project deleted')`
+- Log keeps the latest four entries with `slice(0, 4)` in a `<ul class="log" aria-live="polite">`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

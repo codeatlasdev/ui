@@ -1,0 +1,11 @@
+{
+	"summary": "An icon-only CopyButton and a labelled one that shows a toast after copying, with a Toaster mounted.",
+	"use": "Copying links or snippets where a compact icon is enough or where a visible confirmation toast is wanted.",
+	"spec": [
+		"`<Toaster />` is rendered alongside the buttons",
+		"`<CopyButton value=\"icon-only\" label=\"\" />` is icon-only via an empty `label`",
+		"`<CopyButton value=\"https://ui.codeatlas.com.br\" label=\"Copy link\" toast=\"Link copied\" />`"
+	],
+	"tags": ["copy-button", "toast", "toaster", "icon-only", "clipboard", "label"],
+	"shape": "wide"
+}

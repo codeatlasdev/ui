@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #152 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/app-bar#with-leading-icon -->
 Element: #152 With leading icon (navigation/app-bar)
-What it shows: A menu button in the leading slot.
-Tags: with, leading, icon, glassappbar, button, iconbutton, avatar, card
+What it shows: A glass app bar with a menu button in the leading slot and an Upgrade button plus avatar in the trailing slot.
+When to use: Mobile or dashboard headers that need a menu toggle on the left and a primary call to action on the right.
+Spec:
+- `<Card material="glass" full flush>` wraps the bar
+- `GlassAppBar` content is `<span class="title">Dashboard</span>`
+- `{#snippet leading()}` holds `<IconButton aria-label="Open menu">` with `<Menu size={20} />`
+- `{#snippet trailing()}` holds `<Button size="sm" variant="filled">Upgrade</Button>`
+- Trailing also has `<Avatar alt="Carlos M" size="sm" />`
+Tags: app-bar, glass-app-bar, leading, trailing, header, menu-button
 Needs: @codeatlasdev/ui@4.1.0
 Components: GlassAppBar, Button, IconButton, Avatar, Card
 Live demo: https://ui.codeatlas.com.br/docs/navigation/app-bar#with-leading-icon

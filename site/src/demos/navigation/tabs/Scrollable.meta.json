@@ -1,0 +1,13 @@
+{
+	"summary": "Seven tabs in a narrow container where the list scrolls horizontally with edge fades.",
+	"use": "Settings areas with more sections than fit the width, especially on mobile.",
+	"spec": [
+		"`<TabsList fade>` over `{#each sections as s (s)}` producing `TabsTrigger` items",
+		"`const sections` has 7 labels: General, Billing, Members, Webhooks, Security, Integrations, Danger zone",
+		"`<Tabs value=\"integrations\">` starts on the sixth tab",
+		"Values come from `const key = (s: string) => s.toLowerCase().replace(' ', '-')`",
+		"Wrapper is `.wrap` with `max-width: 360px`"
+	],
+	"tags": ["tabs", "scrollable", "fade", "overflow", "settings", "tabs-list"],
+	"shape": "wide"
+}

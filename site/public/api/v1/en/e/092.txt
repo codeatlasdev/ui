@@ -1,7 +1,15 @@
 <!-- @codeatlasdev/ui demo #092 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/progress#animated -->
 Element: #092 Animated (feedback/progress)
-What it shows: Start a simulated upload.
-Tags: animated, progress, button
+What it shows: A progress bar that fills from 0 to 100 percent in steps of 5 every 100 ms when Start upload is clicked.
+When to use: Showing upload or export progress that the app updates as work completes.
+Spec:
+- `<Progress {value} label="Upload progress" />` with `let value = $state(0)`
+- `setInterval` runs every `100` ms with `value = Math.min(100, value + 5)` and clears at 100
+- Percent text `{value}%` shown beside the bar
+- Button `<Button variant="outlined" size="sm" disabled={running} onclick={start}>` switches label with `{running ? 'Uploading…' : 'Start upload'}`
+- `onDestroy(() => clearInterval(timer))` cleans the timer
+- Column wrapper has `max-width: 480px`
+Tags: progress, animated, upload, determinate, button
 Needs: @codeatlasdev/ui@4.1.0
 Components: Progress, Button
 Live demo: https://ui.codeatlas.com.br/docs/feedback/progress#animated

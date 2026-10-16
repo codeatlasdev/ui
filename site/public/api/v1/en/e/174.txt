@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #174 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/form-page#without-header -->
 Element: #174 Without header (layout/form-page)
-What it shows: Omit title, description, leading, trailing and backHref to drop the header.
-Tags: without, header, appform, formsection, textfield, button
+What it shows: A compact form page with no title or description, one section and a Cancel and Save footer.
+When to use: Quick edit forms embedded in a larger page that already provides its own heading.
+Spec:
+- `<AppForm>` is used with no title or description
+- `<FormSection title="Quick update">` holds `<TextField label="Name" placeholder="Enter name…" />` and `<TextField label="Email" type="email" placeholder="email@example.com" />`
+- `{#snippet footer()}` holds `<Button variant="ghost">Cancel</Button>` and `<Button variant="filled">Save</Button>`
+Tags: app-form, form-section, form, no-header, text-field, footer
 Needs: @codeatlasdev/ui@4.1.0
 Components: AppForm, FormSection, TextField, Button
 Live demo: https://ui.codeatlas.com.br/docs/layout/form-page#without-header

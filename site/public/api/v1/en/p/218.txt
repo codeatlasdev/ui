@@ -1,5 +1,12 @@
 Use @codeatlasdev/ui demo #218 "Live streaming micro charts" (charts/sparklines).
-What it shows: Live streaming micro charts.
+What it shows: Three live sparklines for CPU, Memory and Network that shift in a new value every 600 ms. When to use: Real-time system or traffic monitors showing the current value beside a rolling mini chart.
+Spec:
+- `let live = $state({` with `cpu`, `mem` and `net` arrays of 10 values
+- `setInterval` in `onMount` every `600` ms replaces each array through `next(`
+- `const metrics = $derived([` maps to labels CPU, Memory, Network
+- `{m.data[m.data.length - 1].toFixed(0)}%` shows the latest value
+- `<Sparkline data={m.data} height="40px" />` in a `<Card material="glass">`
+- `<Grid class="grid-auto-200" gap="4">` holds the 3 cards
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

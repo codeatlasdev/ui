@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #151 "Default" (navigation/app-bar).
-What it shows: Content in the middle and actions in the trailing slot..
+What it shows: A glass app bar with a title on the left and search, notifications and avatar on the right, inside a flush glass card. When to use: Top bar of a page or panel with a product title and a few global quick actions.
+Spec:
+- `<Card material="glass" full flush>` wraps the bar
+- `GlassAppBar` content is `<span class="title">My Application</span>`
+- `{#snippet trailing()}` holds two `IconButton` items with `aria-label="Search"` and `aria-label="Notifications"`
+- Trailing also has `<Avatar alt="Ada L" size="sm" />`
+- Icons are `<Search size={18} />` and `<Bell size={18} />` from `@lucide/svelte`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

@@ -1,0 +1,11 @@
+{
+	"summary": "A glass card skeleton with a 60% wide heading line above a block of three text lines.",
+	"use": "Loading placeholder for an article or description block.",
+	"spec": [
+		"`<Card material=\"glass\" p=\"5\" full>` with `<Stack gap=\"3\">`",
+		"Heading line `<Skeleton height=\"20px\" width=\"60%\" />`",
+		"Body lines `<Skeleton rows={3} height=\"14px\" />` render three rows from one element"
+	],
+	"tags": ["skeleton", "text", "rows", "card", "loading"],
+	"shape": "wide"
+}

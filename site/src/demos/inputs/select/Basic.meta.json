@@ -1,0 +1,13 @@
+{
+	"summary": "Select with five framework options and the chosen value printed below.",
+	"use": "Picking one value from a known list in a form, such as a framework or category.",
+	"spec": [
+		"`<Select label=\"Framework\" options={frameworks}` with `bind:value={framework}`",
+		"`frameworks` has 5 options: Svelte 5, React 19, Vue 3, SolidJS, Astro",
+		"Initial value is `$state('svelte')`",
+		"Selected value is shown in `<strong>{framework}</strong>`",
+		"Wrapper `.col` uses `max-width: 320px`"
+	],
+	"tags": ["select", "dropdown", "options", "label", "bind-value"],
+	"shape": "wide"
+}

@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #208 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/pie#basic-donut -->
 Element: #208 Basic donut (charts/pie)
-What it shows: Basic donut
-Tags: basic, donut, card, piechart
+What it shows: A donut chart of market share split across five categories.
+When to use: Showing the proportional split of a total, such as revenue by product line.
+Spec:
+- `<PieChart data={marketData} donut height="300px" />`
+- `marketData` has 5 items with `value` and `name`: Cloud Services `38`, Enterprise SW `24`, SaaS Tools `18`, Infrastructure `12`, Other `8`
+- Wrapped in `<Card material="glass" full>`
+Tags: pie-chart, donut, market-share, proportions, card
 Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, PieChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/pie#basic-donut

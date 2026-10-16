@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #133 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/pagination#basic -->
 Element: #133 Basic (display/pagination)
-What it shows: Basic
-Tags: basic, pagination
+What it shows: Pagination for 100 items at 10 per page, with the current page bound to state and printed below.
+When to use: Paged lists and tables where the app needs to know the active page to fetch or slice data.
+Spec:
+- `<Pagination count={100} perPage={10} bind:page />`
+- State: `let page = $state(1)` starts on page 1
+- A paragraph renders `Current page: {page}` below the control
+Tags: pagination, page, bind, count, per-page, navigation
 Needs: @codeatlasdev/ui@4.1.0
 Components: Pagination
 Live demo: https://ui.codeatlas.com.br/docs/display/pagination#basic

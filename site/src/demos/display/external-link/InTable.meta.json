@@ -1,0 +1,13 @@
+{
+	"summary": "A table of three domains where each row ends with an ExternalLink to a registrar URL.",
+	"use": "Table cells that link out to a third-party site, with the external-link affordance.",
+	"spec": [
+		"`<Card material=\"glass\" flush full>` wraps `<SimpleTable responsive=\"cards\">`",
+		"`const rows` has 3 entries with `domain`, `price` and `url`",
+		"Header cells are Domain, Price and Registrar",
+		"`<ExternalLink href={r.url}>Buy at registrar</ExternalLink>` is rendered in each last cell",
+		"`{#each rows as r (r.domain)}` renders one `<tr>` per row"
+	],
+	"tags": ["external-link", "link", "table", "simple-table", "responsive-cards", "outbound"],
+	"shape": "wide"
+}

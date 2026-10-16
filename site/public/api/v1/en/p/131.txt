@@ -1,5 +1,12 @@
 Use @codeatlasdev/ui demo #131 "Controlled" (display/notification-bell).
-What it shows: Controlled.
+What it shows: A NotificationBell whose notifications live in state and are updated by its read, read-all and clear callbacks. When to use: An app header bell where the app owns the notification list and persists read and cleared state itself.
+Spec:
+- `let items = $state([` holds 3 notifications with `id`, `title`, `body`, `time` and `read`
+- Two items set `variant: 'success' as const` and `variant: 'warning' as const`, the New comment item sets none
+- `notifications={items}` passes the list to `NotificationBell`
+- `onRead={(id) =>` marks the matching item `read: true`
+- `onReadAll={() =>` marks every item as read
+- `onClear={() => (items = [])}` empties the list
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

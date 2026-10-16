@@ -1,7 +1,11 @@
 <!-- @codeatlasdev/ui demo #172 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/error-page#404-without-actions -->
 Element: #172 404 without actions (layout/error-page)
-What it shows: hideActions removes the back and home buttons.
-Tags: 404, without, actions, errorpage
+What it shows: The ErrorPage component rendering a 404 status without its action buttons.
+When to use: Route-level error screens for not found, forbidden or server errors.
+Spec:
+- `<ErrorPage status={404} hideActions />`
+- Only the `status` prop and `hideActions` are passed, no custom title or actions
+Tags: error-page, 404, not-found, status, error
 Needs: @codeatlasdev/ui@4.1.0
 Components: ErrorPage
 Live demo: https://ui.codeatlas.com.br/docs/layout/error-page#404-without-actions

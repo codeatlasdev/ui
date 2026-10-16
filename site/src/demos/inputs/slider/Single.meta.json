@@ -1,0 +1,12 @@
+{
+	"summary": "Two single-value sliders, Volume and Brightness, each with a live readout.",
+	"use": "Adjusting a continuous setting such as volume or brightness.",
+	"spec": [
+		"Volume: `<Slider bind:value={volume} min={0} max={100} />` with initial `$state(60)`",
+		"Brightness: `<Slider bind:value={brightness} min={0} max={100} />` with initial `$state(40)`",
+		"Readouts are `{volume}` and `{brightness}%`",
+		"Wrapper `.col` uses `max-width: 480px`"
+	],
+	"tags": ["slider", "single", "volume", "brightness", "bind-value"],
+	"shape": "wide"
+}

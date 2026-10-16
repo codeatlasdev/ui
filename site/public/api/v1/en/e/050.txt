@@ -1,7 +1,11 @@
 <!-- @codeatlasdev/ui demo #050 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/switch#basic -->
 Element: #050 Basic (inputs/switch)
-What it shows: Default off and on states.
-Tags: basic, switch
+What it shows: Two labelled switches, one starting off and one starting on.
+When to use: Boolean settings that take effect immediately, such as notifications.
+Spec:
+- `<Switch label="Off by default" bind:checked={darkMode} />` with `$state(false)`
+- `<Switch label="On by default" bind:checked={notifications} />` with `$state(true)`
+Tags: switch, toggle, label, checked, boolean
 Needs: @codeatlasdev/ui@4.1.0
 Components: Switch
 Live demo: https://ui.codeatlas.com.br/docs/inputs/switch#basic

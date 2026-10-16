@@ -1,0 +1,13 @@
+{
+	"summary": "A calendar heatmap of daily commit counts from 2026-01-01 to 2026-09-15.",
+	"use": "Showing activity over a year, like contributions, logins or deploys per day.",
+	"spec": [
+		"`<HeatmapChart variant=\"calendar\"`",
+		"`data` is `CalendarHeatmapPoint[]` built with `Array.from({ length: 258 }` as `[ 'YYYY-MM-DD', value ]` pairs",
+		"`range={['2026-01-01', '2026-09-15']}`",
+		"`tooltipFormatter={(v) => `${v} commits`}`",
+		"`height=\"160px\"` inside `<Card material=\"glass\" full>`"
+	],
+	"tags": ["heatmap-chart", "calendar", "activity", "range", "tooltip-formatter", "card"],
+	"shape": "wide"
+}

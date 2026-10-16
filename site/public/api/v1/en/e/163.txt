@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #163 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/tabs#controlled -->
 Element: #163 Controlled (navigation/tabs)
-What it shows: The parent owns the active tab with bind:value.
-Tags: controlled, tabs, tabslist, tabstrigger, tabscontent
+What it shows: Tabs bound to a state variable with a line below showing the active tab value.
+When to use: Tabbed views whose active tab must also drive other UI or be read and set from code.
+Spec:
+- `<Tabs bind:value={active}>` with `let active = $state('overview')`
+- `<TabsList>` holds 3 `TabsTrigger` items: `value="overview"`, `value="props"`, `value="examples"`
+- A matching `TabsContent` per value, each with a one-line `<div class="panel">`
+- State is echoed as `Active tab: <code>{active}</code>`
+- Wrapper is `.wrap` with `max-width: 480px`
+Tags: tabs, controlled, bind-value, state, tabs-list, tabs-content
 Needs: @codeatlasdev/ui@4.1.0
 Components: Tabs, TabsList, TabsTrigger, TabsContent
 Live demo: https://ui.codeatlas.com.br/docs/navigation/tabs#controlled

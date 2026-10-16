@@ -1,0 +1,12 @@
+{
+	"summary": "A native input masked with the mask action, showing the bound value below.",
+	"use": "Adding input masking to a custom or third-party input that is not a MaskedField.",
+	"spec": [
+		"`use:mask={maskCPF}` on a plain `<input` with `bind:value`",
+		"`placeholder=\"000.000.000-00\"` and `inputmode=\"numeric\"`",
+		"`<label class=\"lbl\" for=\"mask-action-input\">` is linked to `id=\"mask-action-input\"`",
+		"Output line prints `value = {value || '–'}`"
+	],
+	"tags": ["mask", "action", "input-mask", "cpf", "native-input", "forms"],
+	"shape": "wide"
+}

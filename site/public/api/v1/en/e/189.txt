@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #189 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/sticky-actions#stretch -->
 Element: #189 Stretch (layout/sticky-actions)
-What it shows: On touch screens the primary button fills the width and the ghost button stays compact.
-Tags: stretch, stickyactions, button
+What it shows: A scrolling area with a sticky bar whose Back and Continue buttons stretch across the width.
+When to use: Wizard and checkout steps where a full-width action bar stays visible while the content scrolls.
+Spec:
+- `<StickyActions align="stretch">` holds `<Button variant="ghost">Back</Button>` and `<Button variant="filled">Continue</Button>`
+- Content is a single `<div class="filler">Long content…</div>` taller than the scroller
+- Scroller uses `max-height: 280px` and `overflow-y: auto`
+Tags: sticky-actions, stretch, wizard, action-bar, scroll, align
 Needs: @codeatlasdev/ui@4.1.0
 Components: StickyActions, Button
 Live demo: https://ui.codeatlas.com.br/docs/layout/sticky-actions#stretch

@@ -1,0 +1,11 @@
+{
+	"summary": "Two FileUpload dropzones: one restricted to images with custom label and hint, and one disabled.",
+	"use": "Image-only upload fields and upload areas that are unavailable to the current user.",
+	"spec": [
+		"`accept=\"image/*\"` with `label=\"Drop images here\"` and `hint=\"PNG, JPG, GIF, WebP\"`",
+		"`disabled` with `label=\"Upload unavailable\"`",
+		"Wrapper `.wrap` stacks both with `max-width: 480px`"
+	],
+	"tags": ["file-upload", "dropzone", "accept", "image", "disabled", "label"],
+	"shape": "wide"
+}

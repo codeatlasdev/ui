@@ -1,0 +1,13 @@
+{
+	"summary": "Three toggle groups sharing one value: outlined, ghost and vertical.",
+	"use": "Choosing a view such as list, grid or board with a button-style group.",
+	"spec": [
+		"Outlined group: `variant=\"outlined\"`, `size=\"md\"`, `aria-label=\"Outlined\"`",
+		"Outlined items: List, Grid, Board, and Board has `disabled: true`",
+		"Ghost group: `variant=\"ghost\"`, `size=\"sm\"`, `aria-label=\"Ghost\"`",
+		"Vertical group: `orientation=\"vertical\"`, `aria-label=\"Vertical\"`",
+		"All 3 use `bind:value={view}` with initial `$state('list')`"
+	],
+	"tags": ["toggle-group", "variant", "outlined", "ghost", "vertical", "size"],
+	"shape": "wide"
+}

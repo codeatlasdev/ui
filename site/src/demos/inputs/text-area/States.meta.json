@@ -1,0 +1,13 @@
+{
+	"summary": "Six text areas showing description, error, required, read-only, disabled and fixed-size states.",
+	"use": "Reference for every validation and availability state of a multi-line field.",
+	"spec": [
+		"Feedback has `description=\"Max 500 characters.\"`",
+		"Bio has `error=\"Bio must be at least 20 characters.\"` and `description=\"Tell us about yourself.\"`",
+		"Summary has `required`",
+		"Read-only content uses `readonly`; Disabled content uses `disabled`, both `value=\"Cannot be edited.\"`",
+		"Fixed uses `resize=\"none\"` and `rows={3}`"
+	],
+	"tags": ["text-area", "textarea", "error", "required", "readonly", "disabled"],
+	"shape": "tall"
+}

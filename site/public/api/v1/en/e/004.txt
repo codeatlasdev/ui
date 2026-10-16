@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #004 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/button#sizes -->
 Element: #004 Sizes (inputs/button)
-What it shows: Sizes
-Tags: sizes, button
+What it shows: The three button sizes side by side: small, medium and large.
+When to use: Choosing button density: `sm` in toolbars and tables, `md` by default, `lg` for hero or touch-first actions.
+Spec:
+- `size="sm"` labelled Small
+- `size="md"` labelled Medium
+- `size="lg"` labelled Large
+Tags: button, size, sm, md, lg
 Needs: @codeatlasdev/ui@4.1.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/inputs/button#sizes

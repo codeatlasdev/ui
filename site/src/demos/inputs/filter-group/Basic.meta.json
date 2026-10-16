@@ -1,0 +1,12 @@
+{
+	"summary": "A FilterGroup of three role options bound to a value that is printed below.",
+	"use": "Filtering a list or table by one category, such as user role, with a short set of choices.",
+	"spec": [
+		"`<FilterGroup label=\"Role\" options={roles} bind:value={role} />`",
+		"`const roles` has 3 options with `value` and `label`: `admin`, `editor`, `viewer`",
+		"`let role = $state('all')` starts at `all`, which is not one of the options",
+		"`<p>Selected: {role}</p>` prints the current value"
+	],
+	"tags": ["filter-group", "filter", "options", "role", "bind", "category"],
+	"shape": "wide"
+}

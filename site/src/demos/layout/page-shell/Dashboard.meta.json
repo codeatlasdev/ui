@@ -1,0 +1,13 @@
+{
+	"summary": "A page shell inside a flush glass card with a title, description, New report action, four KPI cards and a placeholder card.",
+	"use": "Dashboard pages with a header, a primary action, headline metrics and a content area.",
+	"spec": [
+		"`<Card material=\"glass\" flush full>` wraps `<PageShell title=\"Dashboard\" description=\"Overview of this month\">`",
+		"`{#snippet actions()}<Button variant=\"filled\" size=\"sm\">New report</Button>{/snippet}`",
+		"`<Stack gap=\"6\">` holds a `KpiGrid` and a `<Card material=\"glass\" full>`",
+		"`KpiGrid` has 4 `KpiCard` items: Revenue `$118k`, Users `24.8k`, Growth `34%`, Uptime `99.9%`",
+		"Placeholder card text is Chart or data table goes here"
+	],
+	"tags": ["page-shell", "dashboard", "kpi-grid", "card", "glass", "actions", "header"],
+	"shape": "wide"
+}

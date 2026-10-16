@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #159 "Icon trigger" (navigation/menu).
-What it shows: An IconButton trigger. IconButton needs an aria-label..
+What it shows: A dropdown menu opened by a three-dot icon button, with Share and Copy link items aligned to the end. When to use: Compact overflow menus on cards and table rows where a full button would take too much space.
+Spec:
+- `<DropdownMenu align="end">`
+- `{#snippet triggerChild(props)}` renders `<IconButton aria-label="More options" {...props}>` with `<MoreHorizontal size={18} />`
+- `<DropdownMenuLabel>Actions</DropdownMenuLabel>` then 2 items: Share and Copy link
+- Item content is passed with `{#snippet children()}` using `<Share2 size={14} />` and `<Copy size={14} />`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

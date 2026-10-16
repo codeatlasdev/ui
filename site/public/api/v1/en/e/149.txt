@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #149 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/actions#focustrap -->
 Element: #149 focusTrap (navigation/actions)
-What it shows: Keeps Tab and Shift+Tab inside the element while enabled.
-Tags: focustrap, button
+What it shows: A button that opens a box where Tab stays trapped among three buttons until Close is pressed.
+When to use: Modal-like surfaces such as dialogs, drawers and inline panels that must keep keyboard focus inside.
+Spec:
+- `use:focusTrap={open}` imported from `@codeatlasdev/ui/actions` on a `div` with `class="trap"`
+- `let open = $state(false)` toggled by `<Button onclick={() => (open = true)}>Open trap</Button>`
+- Trap is rendered inside `{#if open}` and holds Button A and Button B with `variant="outlined"`
+- Close button uses `onclick={() => (open = false)}` to release the trap
+Tags: focus-trap, action, keyboard, a11y, modal, tab-order
 Needs: @codeatlasdev/ui@4.1.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/navigation/actions#focustrap

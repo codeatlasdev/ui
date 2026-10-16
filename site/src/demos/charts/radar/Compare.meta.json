@@ -1,0 +1,13 @@
+{
+	"summary": "A radar chart comparing Team A and Team B across six dimensions.",
+	"use": "Comparing two entities, such as teams or products, on the same set of scores.",
+	"spec": [
+		"`const indicators` maps 6 names (Speed, Quality, Reliability, Innovation, Support, Coverage) to `{ name, max: 100 }`",
+		"`<RadarChart` with `{indicators}` and 2 series",
+		"`{ name: 'Team A', values: [88, 92, 76, 85, 94, 79] }`",
+		"`{ name: 'Team B', values: [74, 68, 90, 72, 81, 83] }`",
+		"`height=\"340px\"` inside `<Card material=\"glass\" full>`"
+	],
+	"tags": ["radar-chart", "compare", "series", "indicators", "scores", "card"],
+	"shape": "square"
+}

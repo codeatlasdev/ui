@@ -1,0 +1,13 @@
+{
+	"summary": "A scatter plot with three named series, Premium, Standard and Free, of 30 points each.",
+	"use": "Showing segments or clusters of customers as separate colour-coded groups.",
+	"spec": [
+		"`const series: ScatterSeries[]` with 3 entries: `'Premium'`, `'Standard'`, `'Free'`",
+		"Each series uses `cluster(30,` to generate 30 `[number, number]` points",
+		"`color` is optional on a series, omitted here so the palette assigns one per series",
+		"`<ScatterChart {series} yName=\"Conversion %\"` with `yFormatter={(v) => `${v.toFixed(1)}%`}`",
+		"`height=\"340px\"` inside `<Card material=\"glass\" full>`"
+	],
+	"tags": ["scatter-chart", "clusters", "segments", "multi-series", "palette", "card"],
+	"shape": "wide"
+}

@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #017 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/date-picker#datefield-and-timefield -->
 Element: #017 DateField and TimeField (inputs/date-picker)
-What it shows: Segments only, no popover. granularity=&quot;minute&quot; adds a time, and hourCycle switches between 12h and 24h.
-Tags: datefield, and, timefield
+What it shows: Segmented DateField and TimeField inputs with bound values, minute granularity and 24h and 12h hour cycles.
+When to use: Typing a date or time directly in a form, such as a birthday or an appointment start time.
+Spec:
+- `<DateField label="Birthday" locale="en-US" bind:value={birthday} />` initialised with `new CalendarDate(2026, 10, 10)`
+- `<DateField label="Starts at" locale="en-US" granularity="minute" />`
+- `<TimeField label="Time (24h)" locale="en-US" hourCycle={24} bind:value={time} />` initialised with `new Time(14, 30)`
+- `<TimeField label="Time (12h)" locale="en-US" hourCycle={12} />`
+- Two `value:` output lines print `birthday.toString()` and `time.toString()`
+Tags: date-field, time-field, granularity, hour-cycle, segmented, form
 Needs: @codeatlasdev/ui@4.1.0
 Components: DateField, TimeField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/date-picker#datefield-and-timefield

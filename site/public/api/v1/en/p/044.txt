@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #044 "Switch rows" (inputs/setting-item).
-What it shows: Switch rows.
+What it shows: Two setting rows, each with a label, a description and a Switch on the right. When to use: Preference lists such as notification settings, one toggle per row.
+Spec:
+- `<SettingItem label="Email notifications" description="Receive an email for every mention.">`
+- `<SettingItem label="Weekly digest" description="One summary every Monday.">`
+- Each row wraps `<Switch bind:checked={email} />` or `<Switch bind:checked={digest} />` as children
+- Initial state: `$state(true)` for email, `$state(false)` for digest
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

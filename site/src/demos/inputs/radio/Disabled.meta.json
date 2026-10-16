@@ -1,0 +1,12 @@
+{
+	"summary": "Two radio groups: one with a single disabled item and one fully disabled group.",
+	"use": "Showing unavailable choices in a form: one option locked, or a whole question locked.",
+	"spec": [
+		"First group `items={yesNo}` with `orientation=\"horizontal\"` and `bind:value={answer}`",
+		"`yesNo` has Yes, No, Maybe, and Maybe carries `disabled: true`",
+		"Second group `items={fruits}` with `value=\"banana\"` and `disabled` on the whole group",
+		"`fruits` has 3 items: Apple, Banana, Cherry"
+	],
+	"tags": ["radio-group", "radio", "disabled", "horizontal", "form"],
+	"shape": "wide"
+}

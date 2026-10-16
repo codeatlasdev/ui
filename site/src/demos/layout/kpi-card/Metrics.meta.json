@@ -1,0 +1,12 @@
+{
+	"summary": "Three KPI cards with title, value, an optional unit, a positive or negative trend and an icon, inside a KpiGrid.",
+	"use": "Dashboard headline numbers such as revenue, users and conversion with their period-over-period change.",
+	"spec": [
+		"`<KpiGrid>` with 3 `KpiCard` items",
+		"`<KpiCard title=\"Monthly Revenue\" value=\"$48,200\" trend={12.4} icon={DollarSign} />`",
+		"`<KpiCard title=\"Active Users\" value=\"3,847\" trend={-2.1} icon={Users} />`",
+		"`<KpiCard title=\"Conversion\" value=\"4.8\" unit=\"%\" trend={0.6} icon={TrendingUp} />`"
+	],
+	"tags": ["kpi-card", "kpi-grid", "metrics", "trend", "dashboard", "unit", "icon"],
+	"shape": "wide"
+}

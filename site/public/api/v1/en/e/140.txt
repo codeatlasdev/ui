@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #140 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/timeline#simple -->
 Element: #140 Simple (display/timeline)
-What it shows: Simple
-Tags: simple, timeline
+What it shows: A basic Timeline of four project milestones, each with a label and a date.
+When to use: Roadmaps, changelogs or release histories that need a short vertical sequence of dated events.
+Spec:
+- `<Timeline {items} />`
+- 4 items with `label` and `date` only: Project started Jan 2025, Alpha released Mar 2025, Public beta Jun 2025, v1.0 stable Sep 2025
+- Wrapped in `.wrap` with `max-width: 440px`
+Tags: timeline, milestones, roadmap, history, dates
 Needs: @codeatlasdev/ui@4.1.0
 Components: Timeline
 Live demo: https://ui.codeatlas.com.br/docs/display/timeline#simple

@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #114 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/badge#on-avatars -->
 Element: #114 On avatars (display/badge)
-What it shows: On avatars
-Tags: on, avatars, badge, avatar, flex
+What it shows: Three medium avatars each carrying a status dot in success, warning or error color.
+When to use: Presence or health indicators on a user avatar.
+Spec:
+- `<Badge dot color="success">` around `<Avatar alt="Ana Lima" size="md" />`
+- `<Badge dot color="warning">` around `<Avatar alt="Carlos M" size="md" />`
+- `<Badge dot color="error">` around `<Avatar alt="Diana K" size="md" />`
+- `<Flex gap="4" align="center" wrap>` lays them out
+Tags: badge, avatar, dot, status, presence
 Needs: @codeatlasdev/ui@4.1.0
 Components: Badge, Avatar, Flex
 Live demo: https://ui.codeatlas.com.br/docs/display/badge#on-avatars

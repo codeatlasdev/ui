@@ -1,7 +1,15 @@
 <!-- @codeatlasdev/ui demo #063 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/use-form#submit-state -->
 Element: #063 Submit state (inputs/use-form)
-What it shows: validate() gates submission, submitting drives the button loading state, and reset() clears everything after success.
-Tags: submit, state, button, textarea, textfield
+What it shows: Form with a schema that simulates a 1.2 second submit, then shows a success message and resets.
+When to use: Create or edit forms that show a loading state while saving.
+Spec:
+- `useForm(` with `schema: (data) => {` requires a non-empty title
+- `submit()` calls `form.validate()`, sets `form.submitting = true`, waits `setTimeout(r, 1200)`, then `form.reset()`
+- TextField Title and TextArea Notes use `disabled={form.submitting}`
+- Submit button uses `loading={form.submitting}`, label is `{form.submitting ? 'Saving…' : 'Submit'}`
+- Success text renders in `<p class="hint hint--success" role="status">`
+- Reset button has `variant="outlined"` and clears `result`
+Tags: use-form, submit, loading, schema, validation, async
 Needs: @codeatlasdev/ui@4.1.0
 Components: Button, TextArea, TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/use-form#submit-state

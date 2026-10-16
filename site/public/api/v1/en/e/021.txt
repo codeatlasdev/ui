@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #021 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/file-upload#images-only-and-disabled -->
 Element: #021 Images only and disabled (inputs/file-upload)
-What it shows: Images only and disabled
-Tags: images, only, and, disabled, fileupload
+What it shows: Two FileUpload dropzones: one restricted to images with custom label and hint, and one disabled.
+When to use: Image-only upload fields and upload areas that are unavailable to the current user.
+Spec:
+- `accept="image/*"` with `label="Drop images here"` and `hint="PNG, JPG, GIF, WebP"`
+- `disabled` with `label="Upload unavailable"`
+- Wrapper `.wrap` stacks both with `max-width: 480px`
+Tags: file-upload, dropzone, accept, image, disabled, label
 Needs: @codeatlasdev/ui@4.1.0
 Components: FileUpload
 Live demo: https://ui.codeatlas.com.br/docs/inputs/file-upload#images-only-and-disabled

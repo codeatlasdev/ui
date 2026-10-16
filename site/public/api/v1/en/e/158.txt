@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #158 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/menu#default -->
 Element: #158 Default (navigation/menu)
-What it shows: A button trigger with a label, items, a separator and a destructive item.
-Tags: default, dropdownmenu, dropdownmenuitem, dropdownmenuseparator, dropdownmenulabel, button
+What it shows: A dropdown menu of file actions with icons, a separator and a destructive Delete item, reporting the last action.
+When to use: Row or toolbar action menus offering several operations, with the dangerous one set apart.
+Spec:
+- `<DropdownMenu>` with `{#snippet triggerChild(props)}` rendering `<Button variant="glass" {...props}>Open menu</Button>`
+- `<DropdownMenuLabel>File actions</DropdownMenuLabel>` then items Edit, Duplicate, Download
+- Each item has `{#snippet icon()}` with `<Edit2 />`, `<Copy />`, `<Download />` or `<Trash2 />`
+- `<DropdownMenuSeparator />` precedes `<DropdownMenuItem variant="destructive"` for Delete
+- `let last = $state('')` is set per item and shown as `Last action: {last}` with `aria-live="polite"`
+Tags: dropdown-menu, menu, actions, destructive, separator, icon, trigger
 Needs: @codeatlasdev/ui@4.1.0
 Components: DropdownMenu, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuLabel, Button
 Live demo: https://ui.codeatlas.com.br/docs/navigation/menu#default

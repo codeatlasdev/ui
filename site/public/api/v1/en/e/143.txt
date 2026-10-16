@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #143 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/tooltip#custom-delay -->
 Element: #143 Custom delay (display/tooltip)
-What it shows: Custom delay
-Tags: custom, delay, tooltip, button
+What it shows: Three tooltips with different open delays on glass buttons: instant, default and slow.
+When to use: Tuning how quickly a tooltip appears, instant for dense toolbars and slower for hints that should not flash.
+Spec:
+- `delay={0}` on the Instant button with `content="No delay (delay=0)"`
+- No `delay` prop on the Default button, `content="Default delay (500ms)"`
+- `delay={1000}` on the Slow button
+- Each trigger uses `{#snippet triggerChild(props)}` with `<Button variant="glass" {...props}>`
+Tags: tooltip, delay, button, hover, timing
 Needs: @codeatlasdev/ui@4.1.0
 Components: Tooltip, Button
 Live demo: https://ui.codeatlas.com.br/docs/display/tooltip#custom-delay

@@ -1,0 +1,12 @@
+{
+	"summary": "Two buttons that open a left navigation drawer and a right settings drawer.",
+	"use": "Slide-in panels for site navigation on mobile or for quick settings without leaving the page.",
+	"spec": [
+		"`<Drawer bind:open={leftOpen} side=\"left\" title=\"Navigation\">` holds a `<nav class=\"nav\" aria-label=\"Demo navigation\">` with 4 links: Home, Components, Foundation, About",
+		"Left links close it with `onclick={() => (leftOpen = false)}`",
+		"`<Drawer bind:open={rightOpen} side=\"right\" title=\"Settings\">` lists 3 label and value rows: Theme Amber, Language English, Notifications Enabled",
+		"Triggers are `Button` with `variant=\"outlined\"`, the second with `{#snippet leading()}<Settings size={16} stroke-width={2} />{/snippet}`"
+	],
+	"tags": ["drawer", "side-panel", "navigation", "settings", "overlay", "left", "right"],
+	"shape": "wide"
+}

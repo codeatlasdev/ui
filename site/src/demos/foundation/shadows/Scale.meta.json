@@ -1,0 +1,12 @@
+{
+	"summary": "Five cards, each with one shadow token from xs to xl, labelled with its name and CSS variable.",
+	"use": "Comparing the five shadow sizes before choosing one for a card, popover or floating panel.",
+	"spec": [
+		"`const sizes = [\"xs\", \"sm\", \"md\", \"lg\", \"xl\"]` rendered by `{#each sizes as size (size)}`",
+		"Each card sets `style=\"--card-shadow: var(--ca-shadow-{size})\"`",
+		"Labels `shadow-{size}` and `--ca-shadow-{size}` shown in each card",
+		"Cards use `background: var(--ca-surface-base)` and `box-shadow: var(--card-shadow)`"
+	],
+	"tags": ["shadows", "elevation", "tokens", "scale", "box-shadow"],
+	"shape": "wide"
+}

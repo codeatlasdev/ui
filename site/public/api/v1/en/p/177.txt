@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #177 "Without trend" (layout/kpi-card).
-What it shows: Omit trend and the indicator disappears..
+What it shows: Three KPI cards without a trend value, one with an icon and two plain. When to use: Snapshot counters, such as orders today or error rate, that have no comparison period.
+Spec:
+- `<KpiGrid>` with 3 `KpiCard` items and no trend value
+- `<KpiCard title="Orders Today" value="124" icon={ShoppingCart} />`
+- `<KpiCard title="Avg. Session" value="3m 42s" />`
+- `<KpiCard title="Error Rate" value="0.03" unit="%" />`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

@@ -1,7 +1,15 @@
 <!-- @codeatlasdev/ui demo #191 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/bar#stacked-bars -->
 Element: #191 Stacked bars (charts/bar)
-What it shows: Stacked bars
-Tags: stacked, bars, card, barchart
+What it shows: A stacked bar chart splitting six months of revenue into four acquisition channels.
+When to use: Showing how a total is composed of channels or segments over time.
+Spec:
+- `<BarChart` inside `<Card material="glass" full>`
+- 4 series in `series`: Organic, Paid, Referral, Direct, each with 6 values
+- `categories={months}` with `'Jan'` to `'Jun'`
+- `stacked` prop
+- `valueFormatter={fmt}` renders `$${(v / 1000).toFixed(0)}k`
+- `height="300px"`
+Tags: bar-chart, stacked, series, categories, revenue, card
 Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, BarChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/bar#stacked-bars

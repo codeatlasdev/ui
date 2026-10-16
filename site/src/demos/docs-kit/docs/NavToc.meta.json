@@ -1,0 +1,13 @@
+{
+	"summary": "A DocsNav sidebar with two groups and a TableOfContents of four headings rendered side by side.",
+	"use": "Documentation pages that need a section navigation tree next to an inline outline of the current page.",
+	"spec": [
+		"`<DocsNav {groups} pathname=\"/docs/docs-kit/docs/\" onNavigate={() => {}} />`",
+		"`groups` typed `DocsNavGroup[]` has 2 groups: Get started with 2 items and Messages with 4 items",
+		"Messages items carry a `badge`: `badge: 'POST'`, `badge: 'GET'`, `badge: 'PUT'`, `badge: 'DELETE'`",
+		"`<TableOfContents {headings} variant=\"inline\" />`",
+		"`headings` typed `DocsHeading[]` has 4 entries with `id`, `text` and `depth` of 2 or 3"
+	],
+	"tags": ["docs-nav", "table-of-contents", "docs-kit", "sidebar", "navigation", "headings"],
+	"shape": "wide"
+}

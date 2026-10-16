@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #075 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/surfaces/liquid-glass#refraction-layer -->
 Element: #075 Refraction layer (surfaces/liquid-glass)
-What it shows: Refraction layer
-Tags: refraction, layer, liquidglass
+What it shows: A LiquidGlass refraction layer using the regular optics preset behind a line of text in a padded frame.
+When to use: Adding a real refraction effect to a hero or overlay frame, using a preset from GLASS_OPTICS.
+Spec:
+- `<LiquidGlass optics={GLASS_OPTICS.regular} />`
+- Imports `LiquidGlass` and `GLASS_OPTICS` from `@codeatlasdev/ui`
+- Sits in `<div class="frame">` with `position: relative` and `overflow: hidden`
+- Foreground text: Refraction layer behind this text.
+Tags: liquid-glass, glass-optics, refraction, glass, material, preset
 Needs: @codeatlasdev/ui@4.1.0
 Components: LiquidGlass
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/liquid-glass#refraction-layer

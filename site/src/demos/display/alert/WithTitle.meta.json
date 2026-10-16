@@ -1,0 +1,12 @@
+{
+	"summary": "Two alerts with a bold title above the body text: a success and an error.",
+	"use": "Notices that need a headline plus an explanation, such as save confirmations or failed sign-ins.",
+	"spec": [
+		"`severity=\"success\"` with `title=\"Changes saved\"`",
+		"`severity=\"error\"` with `title=\"Authentication failed\"`",
+		"Body text is passed as the alert children",
+		"Wrapper `.col` has `max-width: 560px`"
+	],
+	"tags": ["alert", "title", "severity", "success", "error"],
+	"shape": "wide"
+}

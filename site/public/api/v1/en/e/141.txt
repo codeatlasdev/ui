@@ -1,7 +1,15 @@
 <!-- @codeatlasdev/ui demo #141 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/timeline#with-variants -->
 Element: #141 With variants (display/timeline)
-What it shows: With variants
-Tags: with, variants, timeline
+What it shows: A Timeline of an order's five tracking events, coloured by variant, with descriptions and timestamps.
+When to use: Order, shipment or ticket status trails where completed, in progress and pending steps need different emphasis.
+Spec:
+- `<Timeline items={events} />`
+- 5 events with `label`, `description`, `date` and `variant`; the last, Delivered, has no `description`
+- `variant: 'success' as const` on Order created and Payment confirmed
+- `variant: 'info' as const` on Picking
+- `variant: 'default' as const` on Awaiting shipment and Delivered
+- Wrapped in `.wrap` with `max-width: 440px`
+Tags: timeline, variant, success, info, order-tracking, status
 Needs: @codeatlasdev/ui@4.1.0
 Components: Timeline
 Live demo: https://ui.codeatlas.com.br/docs/display/timeline#with-variants

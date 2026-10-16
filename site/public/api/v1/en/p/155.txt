@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #155 "Keyboard" (navigation/command-palette).
-What it shows: Type to filter across every module. Queries shorter than minQueryLength keep the full grouped list..
+What it shows: A static list of four keyboard hints for the command palette, each pairing a Kbd key with a description. When to use: Documenting the shortcuts of a search or command palette next to the feature it belongs to.
+Spec:
+- `const keys` has four entries with fields `key` and `desc`
+- Rendered with `{#each keys as k}` as `<Kbd>{k.key}</Kbd><span>{k.desc}</span>` inside a `<ul class="list">`
+- Key labels: `Type`, `↑ ↓`, `↵`, `ESC`
+- Descriptions: `Filter by label or module name`, `Move through the results`, `Navigate to the selected item`, `Close the palette`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

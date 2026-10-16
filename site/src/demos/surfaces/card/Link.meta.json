@@ -1,0 +1,12 @@
+{
+	"summary": "A solid Card that is a link as a whole, with a Surface heading and a one line description.",
+	"use": "Clickable cards that navigate to a detail page, such as index tiles or related-article links.",
+	"spec": [
+		"`<Card href=\"/docs/surfaces/surface/\" title=\"Surface\" headingLevel={3} material=\"solid\" elevation={2}>`",
+		"`href` makes the whole card the link",
+		"`headingLevel={3}` sets the title heading level",
+		"Body is plain text: The one painted container every card is built on"
+	],
+	"tags": ["card", "link", "href", "heading-level", "elevation", "solid"],
+	"shape": "square"
+}

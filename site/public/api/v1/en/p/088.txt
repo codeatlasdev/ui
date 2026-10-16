@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #088 "Notification panel" (feedback/drawer).
-What it shows: A real-world use: a 400px wide panel on the right..
+What it shows: A right drawer, 400px wide, listing four notifications with unread dots and timestamps. When to use: A notifications panel opened from a header bell button.
+Spec:
+- `<Drawer bind:open title="Notifications" side="right" width="400px">`
+- `const items` has four entries with fields `title`, `body`, `time` and `unread`, two unread
+- Rows rendered with `{#each items as n}` and `class:notif--unread={n.unread}`; unread rows show `<span class="dot">`
+- `{#snippet actions()}` holds `<Button variant="ghost" size="sm"` labelled Mark all read
+- Trigger is `<Button variant="ghost"` with a `<Bell size={14} />` icon
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

@@ -1,0 +1,14 @@
+{
+	"summary": "A SimpleTable that turns each row into a stacked card on narrow screens, listing three users in a flush glass card.",
+	"use": "Data tables that must stay readable on phones without horizontal scrolling.",
+	"spec": [
+		"`<Card material=\"glass\" flush full>` wraps the table",
+		"`<SimpleTable responsive=\"cards\">` with plain `thead` and `tbody`",
+		"Header columns: Name, Email, Role, Status",
+		"3 rows from `rows` with `name`, `email`, `role`, `status`",
+		"Each cell carries a label such as `data-label=\"Name\"` for the card layout",
+		"The first cell uses `class=\"primary\"`"
+	],
+	"tags": ["table", "simple-table", "responsive", "cards", "mobile", "data-label"],
+	"shape": "wide"
+}

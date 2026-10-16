@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #067 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/surfaces/accordion#single -->
 Element: #067 Single (surfaces/accordion)
-What it shows: Single
-Tags: single, accordion, accordionitem
+What it shows: A single-open Accordion with three Liquid Glass FAQ questions, where opening one closes the others.
+When to use: FAQ sections where only one answer should be visible at a time.
+Spec:
+- `<Accordion type="single">`
+- 3 items: `<AccordionItem value="a1" title="What is Liquid Glass?">`, `value="a2"` and `value="a3"`
+- Item titles: What is Liquid Glass?, Which browsers support backdrop-filter?, Can I nest a Surface inside a Card?
+- The accordion is uncontrolled, nothing is bound
+- Wrapped in `.wrap` with `max-width: 560px`
+Tags: accordion, accordion-item, single, faq, disclosure
 Needs: @codeatlasdev/ui@4.1.0
 Components: Accordion, AccordionItem
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/accordion#single

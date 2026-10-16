@@ -1,0 +1,13 @@
+{
+	"summary": "Single-select alignment group and multi-select formatting group, both icon-only.",
+	"use": "Editor toolbars with exclusive options like alignment and combinable options like bold or italic.",
+	"spec": [
+		"Alignment: `type=\"single\"` with `aria-label=\"Text alignment\"` and `bind:value={align}`",
+		"Alignment items: AlignLeft, AlignCenter, AlignRight with `'aria-label': 'Align left'` etc.",
+		"Formatting: `type=\"multiple\"` with `aria-label=\"Text formatting\"` and `bind:value={format}`",
+		"`format` is `$state<string[]>(['bold'])` with items Bold, Italic, Underline",
+		"Values are printed as `value: {align || '–'}` and `JSON.stringify(format)`"
+	],
+	"tags": ["toggle-group", "single", "multiple", "icon", "toolbar", "aria-label"],
+	"shape": "wide"
+}

@@ -1,0 +1,13 @@
+{
+	"summary": "A scatter plot of 80 generated points in a single Data points series.",
+	"use": "Exploring the relationship between two numeric variables, such as traffic and conversion.",
+	"spec": [
+		"`<ScatterChart series={[{ name: 'Data points', data }]}`",
+		"`data` is 80 `[number, number]` pairs from `Array.from({ length: 80 }`",
+		"`yName=\"Conversion %\"`",
+		"`yFormatter={(v) => `${v.toFixed(1)}%`}`",
+		"`height=\"320px\"` inside `<Card material=\"glass\" full>`"
+	],
+	"tags": ["scatter-chart", "basic", "points", "y-axis", "y-formatter", "card"],
+	"shape": "wide"
+}

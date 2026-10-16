@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #010 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/combobox#basic -->
 Element: #010 Basic (inputs/combobox)
-What it shows: Search a list of options and bind the selected value.
-Tags: basic, combobox
+What it shows: A searchable Combobox over eight frameworks that prints the selected value below the field.
+When to use: Picking one item from a long list where typing to filter is faster than scrolling a select.
+Spec:
+- `<Combobox label="Framework" options={frameworks} bind:value={selected} />`
+- `const frameworks` has 8 options with `value` and `label` keys, from `svelte` to `sveltekit`
+- `let selected = $state('')` starts empty
+- `{#if selected}` renders `Selected:` with the value in `<code>`
+- Wrapper `.col` has `max-width: 320px`
+Tags: combobox, search, autocomplete, options, select, form
 Needs: @codeatlasdev/ui@4.1.0
 Components: Combobox
 Live demo: https://ui.codeatlas.com.br/docs/inputs/combobox#basic

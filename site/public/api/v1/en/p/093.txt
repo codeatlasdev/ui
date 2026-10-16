@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #093 "Determinate" (feedback/progress).
-What it shows: An explicit value from 0 to max (100 by default)..
+What it shows: Four determinate progress bars at 25, 50, 75 and 100 percent, each with a percent label. When to use: Showing known completion, such as quota used or onboarding steps done.
+Spec:
+- `{#each [25, 50, 75, 100] as v}` renders one row per value
+- `<Progress value={v} label="{v} percent" />` gives each bar an accessible label
+- Text `{v}%` shown beside each bar
+- Column has `max-width: 480px`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

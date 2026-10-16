@@ -1,5 +1,9 @@
 Use @codeatlasdev/ui demo #032 "Default" (inputs/pin-input).
-What it shows: Six digits by default. oncomplete fires once all cells are filled. A four-digit masked PIN is shown below it..
+What it shows: A verification-code PinInput that reports its value and completion, plus a masked four-digit PIN. When to use: One-time code entry for sign-in verification, or a short secret PIN that must be hidden.
+Spec:
+- `<PinInput label="Verification code" bind:value={code} oncomplete={(v) => (done = v)} />`
+- Output line prints `value: {code || '–'} · completed: {done || '–'}`
+- `<PinInput label="PIN" length={4} mask bind:value={pin} />`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

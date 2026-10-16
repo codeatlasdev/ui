@@ -1,0 +1,11 @@
+{
+	"summary": "Two basic text fields: a full name and an email with type email.",
+	"use": "Standard single-line inputs in a signup or profile form.",
+	"spec": [
+		"`<TextField label=\"Full name\" placeholder=\"Jane Smith\" bind:value={name} />`",
+		"`<TextField label=\"Email\" placeholder=\"you@example.com\" type=\"email\" bind:value={email} />`",
+		"Both values start as `$state('')`"
+	],
+	"tags": ["text-field", "input", "label", "placeholder", "email"],
+	"shape": "wide"
+}

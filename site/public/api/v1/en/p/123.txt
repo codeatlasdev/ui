@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #123 "Simple mode" (display/data-table).
-What it shows: Simple mode.
+What it shows: A DataTable with five columns and 12 user rows, passing only `columns` and `data`. When to use: The minimal setup for a table of records defined with a column helper.
+Spec:
+- `createCaColumnHelper<User>()` and `col.columns([` define 5 columns: ID, Name, Email, Role, Status
+- `col.accessor('id', { header: 'ID', meta: { label: 'ID' } })` shows the accessor shape
+- `const data: User[]` has 12 rows with `id`, `name`, `email`, `role` and `status`
+- `<DataTable {columns} {data} />` has no other props
+- Wrapper `.wrap` has `width: 100%`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

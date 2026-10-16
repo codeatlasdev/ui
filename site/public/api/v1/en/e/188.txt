@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #188 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/sticky-actions#end-aligned -->
 Element: #188 End aligned (layout/sticky-actions)
-What it shows: Buttons sit on the right. The bar only renders while the form is dirty (show).
-Tags: end, aligned, stickyactions, button, textfield, stack
+What it shows: A scrolling form whose sticky Cancel and Save bar only appears once the Name field has text.
+When to use: Edit forms that reveal a save bar only after the user changes something.
+Spec:
+- `let name = $state('')` and `const dirty = $derived(name.length > 0)`
+- `<StickyActions show={dirty}>` holds `<Button variant="ghost" onclick={() => (name = '')}>Cancel</Button>` and `<Button variant="filled">Save</Button>`
+- `<TextField label="Name" bind:value={name} placeholder="Type to reveal the bar" />` above a `Long content…` filler
+- Scroller uses `max-height: 280px` and `overflow-y: auto`
+Tags: sticky-actions, dirty, form, save-bar, scroll, text-field
 Needs: @codeatlasdev/ui@4.1.0
 Components: StickyActions, Button, TextField, Stack
 Live demo: https://ui.codeatlas.com.br/docs/layout/sticky-actions#end-aligned

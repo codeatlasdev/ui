@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #148 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/actions#clipboard -->
 Element: #148 clipboard (navigation/actions)
-What it shows: Copies the given text on click and dispatches a copy event (listen with `oncopy`) once the copy succeeded.
-Tags: clipboard
+What it shows: A native button that copies an install command to the clipboard and shows a Copied! label for two seconds.
+When to use: Copy-to-clipboard affordances for install commands, API keys and share links.
+Spec:
+- `use:clipboard={'bun add @codeatlasdev/ui'}` imported from `@codeatlasdev/ui/actions` on a native `<button`
+- `oncopy={done}` sets `copied = true` and resets it with `setTimeout(() => (copied = false), 2000)`
+- Label switches with state: `{copied ? 'Copied!' : 'Copy install command'}`
+- `let copied = $state(false)`
+Tags: clipboard, copy, action, button, feedback, install-command
 Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/navigation/actions#clipboard

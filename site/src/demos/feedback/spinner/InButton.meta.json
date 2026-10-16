@@ -1,0 +1,11 @@
+{
+	"summary": "A Button that shows its loading spinner for two seconds after click and changes its label to Saving.",
+	"use": "Save or submit buttons that wait on a request.",
+	"spec": [
+		"`<Button onclick={simulate} {loading}>` with `let loading = $state(false)`",
+		"`simulate` sets `loading = true` and resets it with `setTimeout(() => (loading = false), 2000)`",
+		"Label is `{loading ? 'Saving…' : 'Save changes'}`"
+	],
+	"tags": ["spinner", "button", "loading", "save", "async"],
+	"shape": "square"
+}

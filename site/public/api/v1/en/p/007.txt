@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #007 "Disabled" (inputs/checkbox).
-What it shows: Disabled.
+What it shows: Three disabled checkboxes: unchecked, checked and indeterminate. When to use: Showing a read-only option whose value the user cannot change, such as a setting locked by plan or permission.
+Spec:
+- `disabled` with `label="Disabled unchecked"`
+- `checked disabled` with `label="Disabled checked"`
+- `indeterminate disabled` with `label="Disabled indeterminate"`
+- Three `<Checkbox` components, no bound state
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

@@ -1,0 +1,10 @@
+{
+	"summary": "Four swatches for the text color tokens: primary, secondary, hint and disabled.",
+	"use": "Choosing a text color by importance, from main content to hints and disabled labels.",
+	"spec": [
+		"Renders `<Swatches {tokens} bordered={true} />` with 4 tokens",
+		"Tokens in order: `--ca-text-primary`, `--ca-text-secondary`, `--ca-text-hint`, `--ca-text-disabled`"
+	],
+	"tags": ["colors", "text", "typography", "tokens", "swatches", "contrast"],
+	"shape": "wide"
+}

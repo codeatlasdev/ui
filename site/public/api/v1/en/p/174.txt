@@ -1,5 +1,9 @@
 Use @codeatlasdev/ui demo #174 "Without header" (layout/form-page).
-What it shows: Omit title, description, leading, trailing and backHref to drop the header..
+What it shows: A compact form page with no title or description, one section and a Cancel and Save footer. When to use: Quick edit forms embedded in a larger page that already provides its own heading.
+Spec:
+- `<AppForm>` is used with no title or description
+- `<FormSection title="Quick update">` holds `<TextField label="Name" placeholder="Enter name…" />` and `<TextField label="Email" type="email" placeholder="email@example.com" />`
+- `{#snippet footer()}` holds `<Button variant="ghost">Cancel</Button>` and `<Button variant="filled">Save</Button>`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

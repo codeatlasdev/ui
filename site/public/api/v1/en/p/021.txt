@@ -1,5 +1,9 @@
 Use @codeatlasdev/ui demo #021 "Images only and disabled" (inputs/file-upload).
-What it shows: Images only and disabled.
+What it shows: Two FileUpload dropzones: one restricted to images with custom label and hint, and one disabled. When to use: Image-only upload fields and upload areas that are unavailable to the current user.
+Spec:
+- `accept="image/*"` with `label="Drop images here"` and `hint="PNG, JPG, GIF, WebP"`
+- `disabled` with `label="Upload unavailable"`
+- Wrapper `.wrap` stacks both with `max-width: 480px`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

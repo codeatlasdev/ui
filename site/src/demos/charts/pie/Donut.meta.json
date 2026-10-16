@@ -1,0 +1,11 @@
+{
+	"summary": "A donut chart of market share split across five categories.",
+	"use": "Showing the proportional split of a total, such as revenue by product line.",
+	"spec": [
+		"`<PieChart data={marketData} donut height=\"300px\" />`",
+		"`marketData` has 5 items with `value` and `name`: Cloud Services `38`, Enterprise SW `24`, SaaS Tools `18`, Infrastructure `12`, Other `8`",
+		"Wrapped in `<Card material=\"glass\" full>`"
+	],
+	"tags": ["pie-chart", "donut", "market-share", "proportions", "card"],
+	"shape": "square"
+}

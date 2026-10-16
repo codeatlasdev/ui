@@ -1,0 +1,14 @@
+{
+	"summary": "A NotificationBell whose notifications live in state and are updated by its read, read-all and clear callbacks.",
+	"use": "An app header bell where the app owns the notification list and persists read and cleared state itself.",
+	"spec": [
+		"`let items = $state([` holds 3 notifications with `id`, `title`, `body`, `time` and `read`",
+		"Two items set `variant: 'success' as const` and `variant: 'warning' as const`, the New comment item sets none",
+		"`notifications={items}` passes the list to `NotificationBell`",
+		"`onRead={(id) =>` marks the matching item `read: true`",
+		"`onReadAll={() =>` marks every item as read",
+		"`onClear={() => (items = [])}` empties the list"
+	],
+	"tags": ["notification-bell", "notifications", "controlled", "unread", "header", "state"],
+	"shape": "square"
+}

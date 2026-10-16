@@ -1,0 +1,12 @@
+{
+	"summary": "Four icon-only buttons (Info, Heart, Zap, Star) that each reveal a Tooltip describing the action.",
+	"use": "Icon-only toolbar actions that need a visible text label on hover or focus.",
+	"spec": [
+		"Each `Tooltip` uses `{#snippet triggerChild(props)}` with `<IconButton aria-label=\"Info\" {...props}>`",
+		"Icons from `@lucide/svelte`: `<Info size={20} />`, `<Heart size={20} />`, `<Zap size={20} />`, `<Star size={20} />`",
+		"Tooltip content: Info, Add to favourites, Boost performance, Rate this component",
+		"Other `aria-label` values: `aria-label=\"Favourite\"`, `aria-label=\"Boost\"`, `aria-label=\"Rate\"`"
+	],
+	"tags": ["tooltip", "icon-button", "icons", "aria-label", "toolbar", "lucide"],
+	"shape": "wide"
+}

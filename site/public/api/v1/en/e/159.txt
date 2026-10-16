@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #159 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/menu#icon-trigger -->
 Element: #159 Icon trigger (navigation/menu)
-What it shows: An IconButton trigger. IconButton needs an aria-label.
-Tags: icon, trigger, dropdownmenu, dropdownmenuitem, dropdownmenulabel, iconbutton
+What it shows: A dropdown menu opened by a three-dot icon button, with Share and Copy link items aligned to the end.
+When to use: Compact overflow menus on cards and table rows where a full button would take too much space.
+Spec:
+- `<DropdownMenu align="end">`
+- `{#snippet triggerChild(props)}` renders `<IconButton aria-label="More options" {...props}>` with `<MoreHorizontal size={18} />`
+- `<DropdownMenuLabel>Actions</DropdownMenuLabel>` then 2 items: Share and Copy link
+- Item content is passed with `{#snippet children()}` using `<Share2 size={14} />` and `<Copy size={14} />`
+Tags: dropdown-menu, menu, icon-button, overflow, more-options, align, a11y
 Needs: @codeatlasdev/ui@4.1.0
 Components: DropdownMenu, DropdownMenuItem, DropdownMenuLabel, IconButton
 Live demo: https://ui.codeatlas.com.br/docs/navigation/menu#icon-trigger

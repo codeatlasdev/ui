@@ -1,0 +1,12 @@
+{
+	"summary": "Three checkboxes with no visible label, named only through aria-label: bound, checked and indeterminate.",
+	"use": "Row selection checkboxes in tables or lists where the label is implied by the row and only an accessible name is needed.",
+	"spec": [
+		"`bind:checked={value}` with `aria-label=\"Unlabelled checkbox\"`",
+		"`checked` with `aria-label=\"Unlabelled checked checkbox\"`",
+		"`indeterminate` with `aria-label=\"Unlabelled indeterminate checkbox\"`",
+		"No `label` prop on any of the three"
+	],
+	"tags": ["checkbox", "aria-label", "accessibility", "unlabelled", "indeterminate"],
+	"shape": "wide"
+}

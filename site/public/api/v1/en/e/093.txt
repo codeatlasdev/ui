@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #093 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/progress#determinate -->
 Element: #093 Determinate (feedback/progress)
-What it shows: An explicit value from 0 to max (100 by default).
-Tags: determinate, progress
+What it shows: Four determinate progress bars at 25, 50, 75 and 100 percent, each with a percent label.
+When to use: Showing known completion, such as quota used or onboarding steps done.
+Spec:
+- `{#each [25, 50, 75, 100] as v}` renders one row per value
+- `<Progress value={v} label="{v} percent" />` gives each bar an accessible label
+- Text `{v}%` shown beside each bar
+- Column has `max-width: 480px`
+Tags: progress, determinate, value, percent, label
 Needs: @codeatlasdev/ui@4.1.0
 Components: Progress
 Live demo: https://ui.codeatlas.com.br/docs/feedback/progress#determinate

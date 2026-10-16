@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #076 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/surfaces/surface#elevation -->
 Element: #076 Elevation (surfaces/surface)
-What it shows: Elevation
-Tags: elevation, surface
+What it shows: Six solid Surface tiles showing elevation levels 0 to 5 in a wrapping row.
+When to use: Choosing how much depth a card, panel or popover needs.
+Spec:
+- `const levels = [0, 1, 2, 3, 4, 5] as const` rendered with `{#each levels as elevation (elevation)}`
+- `<Surface material="solid" {elevation} p="4" class="tile">`
+- Each tile prints Elevation 0 to Elevation 5 in a `.name` paragraph
+- `.tile` uses `min-width: 7rem` in a wrapping flex `.row`
+Tags: surface, elevation, shadow, depth, solid, levels
 Needs: @codeatlasdev/ui@4.1.0
 Components: Surface
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/surface#elevation

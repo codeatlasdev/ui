@@ -1,7 +1,15 @@
 <!-- @codeatlasdev/ui demo #166 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/app-shell#live-shell -->
 Element: #166 Live shell (layout/app-shell)
-What it shows: The real component inside a fixed-height frame. The pathname lives in local state; click the rail and panel to navigate.
-Tags: live, shell, appshelllayout, pageshell, kpicard, kpigrid, card
+What it shows: A working app shell with a rail, panel and page content whose pathname lives in local state and updates on navigation.
+When to use: Wiring the shell into an app: the router owns the URL and the shell receives it as a prop.
+Spec:
+- `<AppShellLayout {modules} {pathname} onNavigate={(path) => (pathname = path)} persistPanel={false} mainId={null} skipLink={false}>`
+- `const modules: NavModule[]` has two modules, `id: 'app'` and `id: 'account'`, with 3 items each
+- `let pathname = $state('/app/dashboard')` is the only navigation state
+- `function intercept(e: MouseEvent)` turns in-stage `a[href^="/"]` clicks into `pathname` updates
+- Page is `<PageShell title={titles[pathname] ?? 'Page'} description={pathname}>` with a `KpiGrid` of 2 `KpiCard` items: Revenue and Users
+- Stage height is `height: 440px`
+Tags: app-shell, app-shell-layout, navigation, rail, sidebar, router-agnostic, page-shell
 Needs: @codeatlasdev/ui@4.1.0
 Components: AppShellLayout, PageShell, KpiCard, KpiGrid, Card
 Live demo: https://ui.codeatlas.com.br/docs/layout/app-shell#live-shell

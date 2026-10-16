@@ -1,0 +1,12 @@
+{
+	"summary": "Two glass Cards side by side: one with a brand tint and one with a brand glow, each with a title and one line of text.",
+	"use": "Highlighting a featured or selected card without changing its content layout.",
+	"spec": [
+		"`<Card material=\"glass\" tone=\"brand\" class=\"accent\">` titled Tinted",
+		"`<Card material=\"glass\" glow class=\"accent\">` titled Glowing",
+		"Both cards share `class=\"accent\"` styled with `flex: 1` and `min-width: 200px`",
+		"Card content is a `.title` paragraph and a `.text` paragraph"
+	],
+	"tags": ["card", "glass", "tone", "brand", "glow", "accent"],
+	"shape": "wide"
+}

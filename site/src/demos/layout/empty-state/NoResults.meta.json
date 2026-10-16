@@ -1,0 +1,10 @@
+{
+	"summary": "A no-results state for search with a magnifier icon and a Clear filters button.",
+	"use": "Search and filter screens where the query matched nothing and the user should reset it.",
+	"spec": [
+		"`<EmptyState icon={Search} title=\"No results found\" description=\"Try adjusting your search terms or filters.\">`",
+		"`{#snippet actions()}` holds `<Button variant=\"outlined\" size=\"sm\">Clear filters</Button>`"
+	],
+	"tags": ["empty-state", "no-results", "search", "filters", "actions"],
+	"shape": "square"
+}

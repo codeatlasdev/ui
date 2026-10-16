@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #086 "Info" (feedback/dialog).
-What it shows: Informational content with a single action..
+What it shows: An informational dialog with rich text about how Dialog works and a single Got it action. When to use: Help, about or detail popups that only need to be read and dismissed.
+Spec:
+- `<Dialog bind:open title="About this component">` with no `size` prop
+- Body is two `<p class="body">` paragraphs using `<strong>` and `<code>`
+- `{#snippet actions()}` has one `<Button variant="filled"` labelled Got it
+- Trigger is `<Button variant="outlined"` with an `<Info size={14} />` icon in `{#snippet leading()}`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #118 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/chip#selectable -->
 Element: #118 Selectable (display/chip)
-What it shows: Selectable
-Tags: selectable, chip
+What it shows: Two toggle chips, Filter A starting off and Filter B starting on, that flip on click.
+When to use: Filter chips that toggle a facet on or off in a list or search view.
+Spec:
+- `let a = $state(false)` and `let b = $state(true)` hold the state
+- `<Chip label="Filter A" selected={a} onclick={() => (a = !a)} />`
+- `<Chip label="Filter B" selected={b} onclick={() => (b = !b)} />`
+Tags: chip, selectable, selected, filter, toggle, onclick
 Needs: @codeatlasdev/ui@4.1.0
 Components: Chip
 Live demo: https://ui.codeatlas.com.br/docs/display/chip#selectable

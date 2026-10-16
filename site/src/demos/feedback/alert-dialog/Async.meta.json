@@ -1,0 +1,13 @@
+{
+	"summary": "A destructive alert dialog whose async confirm handler waits 1.5 seconds before an Item removed note appears.",
+	"use": "Confirming a delete that calls the server, where the dialog waits for the request before closing.",
+	"spec": [
+		"`<AlertDialog` with `bind:open`, `title=\"Remove item?\"` and `confirmLabel=\"Remove\"`",
+		"`destructive` flag set on the dialog",
+		"`onconfirm={removeItem}` is an async function that awaits `wait(1500)` then sets `done = true`",
+		"Trigger is `<Button variant=\"destructive\"` labelled Remove item (1.5s)",
+		"Result note uses `aria-live=\"polite\"` and shows when `{#if done}`"
+	],
+	"tags": ["alert-dialog", "destructive", "async", "confirm", "delete", "dialog"],
+	"shape": "wide"
+}

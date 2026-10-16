@@ -1,0 +1,13 @@
+{
+	"summary": "Six text fields showing description, error, required, read-only, disabled and small size.",
+	"use": "Reference for validation and availability states of a single-line input.",
+	"spec": [
+		"Username has `description=\"3–20 characters, letters and underscores only.\"`",
+		"Email has `error=\"Please enter a valid email address.\"` and `bind:value={wrong}`",
+		"Company has `required`",
+		"Read-only field uses `readonly` and Disabled field uses `disabled`, both `value=\"Cannot edit this\"`",
+		"Small field uses `size=\"sm\"`"
+	],
+	"tags": ["text-field", "error", "required", "readonly", "disabled", "size", "description"],
+	"shape": "tall"
+}

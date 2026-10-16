@@ -1,0 +1,12 @@
+{
+	"summary": "Two NotificationBell triggers side by side: one given three notifications and one given an empty list.",
+	"use": "Comparing the populated and empty bell states for an app header or toolbar.",
+	"spec": [
+		"`<Flex gap=\"6\" align=\"center\">` wraps both bells",
+		"`<NotificationBell notifications={items} />` with 3 const items (`id`, `title`, `body`, `time`, `read`), two with `read: false` and one with `read: true`",
+		"`<NotificationBell notifications={[]} />` passes an empty list",
+		"No callback props are passed to either bell"
+	],
+	"tags": ["notification-bell", "notifications", "empty-state", "unread", "badge", "header"],
+	"shape": "square"
+}

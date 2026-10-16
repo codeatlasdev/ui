@@ -1,0 +1,12 @@
+{
+	"summary": "Three medium avatars each carrying a status dot in success, warning or error color.",
+	"use": "Presence or health indicators on a user avatar.",
+	"spec": [
+		"`<Badge dot color=\"success\">` around `<Avatar alt=\"Ana Lima\" size=\"md\" />`",
+		"`<Badge dot color=\"warning\">` around `<Avatar alt=\"Carlos M\" size=\"md\" />`",
+		"`<Badge dot color=\"error\">` around `<Avatar alt=\"Diana K\" size=\"md\" />`",
+		"`<Flex gap=\"4\" align=\"center\" wrap>` lays them out"
+	],
+	"tags": ["badge", "avatar", "dot", "status", "presence"],
+	"shape": "wide"
+}

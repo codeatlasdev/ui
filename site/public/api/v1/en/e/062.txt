@@ -1,7 +1,15 @@
 <!-- @codeatlasdev/ui demo #062 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/use-form#no-schema -->
 Element: #062 No schema (inputs/use-form)
-What it shows: Manual validation on submit. touch() and set() drive the per-field state.
-Tags: no, schema, button, textfield
+What it shows: Form built with useForm and a hand-written validate function, with Validate and Reset buttons.
+When to use: Small forms where validation runs on demand without a schema.
+Spec:
+- `const form = useForm({ name: '', email: '' })`
+- TextFields use `value={form.fields.name.value}`, `error={form.fields.name.error}`, `oninput={(v) => form.set('name', v)}`, `onblur={() => form.touch('name')}`
+- Same wiring for `email` with `type="email"`
+- `validate()` sets `form.fields[k].touched` and `form.fields[k].error` manually
+- Buttons: Validate with `onclick={validate}`, Reset with `variant="outlined"` calling `form.reset()`
+- `{#if form.dirty}` shows the hint `dirty: values changed from initial`
+Tags: use-form, form, validation, text-field, dirty, reset
 Needs: @codeatlasdev/ui@4.1.0
 Components: Button, TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/use-form#no-schema

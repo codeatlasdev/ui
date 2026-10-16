@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #217 "KPI cards with trend lines" (charts/sparklines).
-What it shows: KPI cards with trend lines.
+What it shows: Four KPI cards, each with a value, a change percentage and a trend-coloured sparkline. When to use: Dashboard summary tiles where each headline number needs a small history line.
+Spec:
+- `kpis` has 4 items: Monthly Revenue `$112k`, Active Users `24.8k`, Churn Rate `2.3%`, Avg Session `4m 12s`
+- Each item has `label`, `value`, `change`, `trend` and 9 `data` values
+- `<Sparkline data={k.data} trend={k.trend} height="32px" />`
+- `<Grid class="grid-auto-220" gap="4">` with each KPI in `<Card material="glass">`
+- `class:up={k.trend === 'up'}` and `class:down={k.trend === 'down'}` colour the change text
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

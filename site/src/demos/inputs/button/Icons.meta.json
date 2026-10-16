@@ -1,0 +1,11 @@
+{
+	"summary": "Buttons with an icon before the label, after the label, and with a ghost download action.",
+	"use": "Actions that benefit from an icon cue: favourite, continue to next step, download.",
+	"spec": [
+		"Leading icon goes in `{#snippet leading()}` (`Star` from `@lucide/svelte`, `size={15}`)",
+		"Trailing icon goes in `{#snippet trailing()}` (`ArrowRight`, `size={15}`)",
+		"Variants shown: `variant=\"filled\"`, `variant=\"outlined\"`, `variant=\"ghost\"`"
+	],
+	"tags": ["button", "icon", "leading", "trailing", "snippet"],
+	"shape": "wide"
+}

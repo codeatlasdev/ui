@@ -1,0 +1,10 @@
+{
+	"summary": "Four swatches for the surface tokens from sunken to overlay, drawn with a border.",
+	"use": "Choosing the background layer for a page, card, raised panel or popover.",
+	"spec": [
+		"Renders `<Swatches {tokens} bordered={true} />` with 4 tokens",
+		"Tokens in order: `--ca-surface-sunken`, `--ca-surface-base`, `--ca-surface-raised`, `--ca-surface-overlay`"
+	],
+	"tags": ["colors", "surface", "background", "tokens", "swatches", "elevation"],
+	"shape": "wide"
+}

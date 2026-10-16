@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #102 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/spinner#sizes -->
 Element: #102 Sizes (feedback/spinner)
-What it shows: The size prop takes a number of pixels or any CSS length.
-Tags: sizes, spinner, flex
+What it shows: Three spinners side by side at 16, 24 and 40 pixels.
+When to use: Choosing a spinner size: small for inline text and buttons, large for page or section loaders.
+Spec:
+- `<Spinner size={16} />`
+- `<Spinner size={24} />`
+- `<Spinner size={40} />`
+- Wrapped in `<Flex gap="6" align="center">`
+Tags: spinner, size, loading, flex
 Needs: @codeatlasdev/ui@4.1.0
 Components: Spinner, Flex
 Live demo: https://ui.codeatlas.com.br/docs/feedback/spinner#sizes

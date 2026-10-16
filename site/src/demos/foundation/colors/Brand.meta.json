@@ -1,0 +1,12 @@
+{
+	"summary": "Six swatches for the brand color tokens, each showing its name and CSS variable.",
+	"use": "Picking a brand color token for a fill, a text color or an accent.",
+	"spec": [
+		"Renders `<Swatches {tokens} />` with 6 tokens",
+		"Tokens in order: `--ca-brand-main`, `--ca-brand-light`, `--ca-brand-dark`",
+		"Then `--ca-brand-contrast`, `--ca-brand-fill`, `--ca-brand-text`",
+		"No bordered prop is passed"
+	],
+	"tags": ["colors", "brand", "tokens", "swatches", "theme"],
+	"shape": "wide"
+}

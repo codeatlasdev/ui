@@ -1,0 +1,13 @@
+{
+	"summary": "Eight buttons that trigger toasts: five variants and three duration cases, with one Toaster mounted.",
+	"use": "Non-blocking feedback after an action, such as saved, failed or an available update.",
+	"spec": [
+		"`<Toaster />` mounted once, toasts fired with `toast` from `@codeatlasdev/ui`",
+		"Variants: `toast.show(`, `toast.success(`, `toast.error(`, `toast.warning(` and `toast.info(` with a message string",
+		"Persistent: `{ variant: 'info', duration: 0 }` passed as second argument of `toast.show(`",
+		"Timed: `toast.success('Gone in 1 second.', 1000)` and `toast.info('Stays for 8 seconds.', 8000)`",
+		"All triggers are `<Button variant=\"outlined\"` in two labelled groups, Variants and Duration"
+	],
+	"tags": ["toast", "toaster", "notification", "success", "error", "duration"],
+	"shape": "wide"
+}

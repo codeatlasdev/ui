@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #136 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/scroll-area#horizontal-scroll -->
 Element: #136 Horizontal scroll (display/scroll-area)
-What it shows: Horizontal scroll
-Tags: horizontal, scroll, scrollarea, card, chip
+What it shows: A horizontal ScrollArea with an always visible scrollbar holding a row of 24 Tag chips inside a glass card.
+When to use: Overflowing chip, tag or filter rows that should scroll sideways instead of wrapping.
+Spec:
+- `<Card material="glass" p="2" full>` wraps the area
+- `<ScrollArea orientation="horizontal" type="always">`
+- `{ length: 24 }` builds 24 tags labelled Tag 1 to Tag 24, each rendered as `<Chip label={tag} />`
+- Chips sit in a `<div class="row">` styled with `width: max-content` so the content overflows
+Tags: scroll-area, horizontal, scrollbar, chip, card, overflow
 Needs: @codeatlasdev/ui@4.1.0
 Components: ScrollArea, Card, Chip
 Live demo: https://ui.codeatlas.com.br/docs/display/scroll-area#horizontal-scroll

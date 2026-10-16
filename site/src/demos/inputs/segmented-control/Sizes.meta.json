@@ -1,0 +1,13 @@
+{
+	"summary": "Small full-width segmented control with four items, one disabled.",
+	"use": "Compact filter bar that should stretch to its container, such as a table toolbar.",
+	"spec": [
+		"`<SegmentedControl` with `size=\"sm\"`, `fullWidth` and `aria-label=\"Size\"`",
+		"`bind:value={size}` with initial `$state('b')`",
+		"4 items: Alpha, Beta, Gamma, Delta",
+		"Gamma has `disabled: true`",
+		"Wrapper `.wide` uses `max-width: 420px`"
+	],
+	"tags": ["segmented-control", "size", "sm", "full-width", "disabled"],
+	"shape": "wide"
+}

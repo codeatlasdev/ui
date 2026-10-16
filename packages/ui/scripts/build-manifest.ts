@@ -712,28 +712,77 @@ function demoUsages() {
 	return out;
 }
 
-type DemoMeta = Partial<Pick<ManifestDemo, "summary" | "use" | "spec" | "tags" | "shape">>;
+type DemoMeta = Pick<ManifestDemo, "summary" | "use" | "spec" | "tags" | "shape">;
 
-/** Problems that make the registry invalid: unregistered demos, missing files, duplicate ids/paths. */
+const META_KEYS: Record<string, true> = {
+	summary: true,
+	use: true,
+	spec: true,
+	tags: true,
+	shape: true,
+};
+const SHAPES: Record<string, true> = { square: true, wide: true, tall: true };
+const isLines = (v: unknown): v is string[] =>
+	Array.isArray(v) && v.every((s) => typeof s === "string" && s.trim() !== "");
+
+/** Problems of one sidecar against its demo source: shape of every field, and spec tokens quoted from the source. */
+export function checkMeta(meta: unknown, source: string): string[] {
+	if (!meta || typeof meta !== "object" || Array.isArray(meta)) return ["not an object"];
+	const m = meta as Record<string, unknown>;
+	const errors = Object.keys(m)
+		.filter((k) => !META_KEYS[k])
+		.map((k) => `unknown key "${k}"`);
+	for (const k of ["summary", "use"])
+		if (typeof m[k] !== "string" || m[k].trim().length < 12) errors.push(`${k}: sentence required`);
+	if (!isLines(m.spec) || m.spec.length < 1) errors.push("spec: at least one non-empty line");
+	else
+		for (const line of m.spec)
+			for (const [, token] of line.matchAll(/`([^`]+)`/g))
+				if (!source.includes(token)) errors.push(`spec: \`${token}\` is not in the demo source`);
+	if (!isLines(m.tags) || m.tags.length < 2 || m.tags.some((t) => t !== t.toLowerCase()))
+		errors.push("tags: at least 2 lowercase strings");
+	if (typeof m.shape !== "string" || !SHAPES[m.shape]) errors.push("shape: square | wide | tall");
+	return errors;
+}
+
+/** Problems that make the registry invalid: unregistered demos, missing files, duplicate ids/paths, missing or inaccurate sidecars. */
 export function checkCatalog(catalog: readonly { id: string; path: string }[]): string[] {
 	const errors: string[] = [];
-	const walk = (dir: string): string[] =>
+	const walk = (dir: string, ext: string): string[] =>
 		readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
 			e.isDirectory()
-				? walk(join(dir, e.name))
-				: e.name.endsWith(".svelte")
-					? [relative(DEMOS_DIR, join(dir, e.name)).replaceAll("\\", "/").slice(0, -7)]
+				? walk(join(dir, e.name), ext)
+				: e.name.endsWith(ext)
+					? [relative(DEMOS_DIR, join(dir, e.name)).replaceAll("\\", "/").slice(0, -ext.length)]
 					: []
 		);
 	const paths = new Set(catalog.map((d) => d.path));
-	for (const p of walk(DEMOS_DIR))
+	for (const p of walk(DEMOS_DIR, ".svelte"))
 		if (!HELPERS.includes(p) && !paths.has(p)) errors.push(`demo without id: ${p}`);
+	for (const p of walk(DEMOS_DIR, ".meta.json"))
+		if (!paths.has(p)) errors.push(`sidecar without demo: ${p}.meta.json`);
 	const ids = new Set<string>();
 	for (const d of catalog) {
 		if (ids.has(d.id)) errors.push(`duplicate id: ${d.id}`);
 		ids.add(d.id);
-		if (!existsSync(join(DEMOS_DIR, `${d.path}.svelte`)))
+		if (!existsSync(join(DEMOS_DIR, `${d.path}.svelte`))) {
 			errors.push(`#${d.id} missing file: ${d.path}`);
+			continue;
+		}
+		const metaFile = join(DEMOS_DIR, `${d.path}.meta.json`);
+		if (!existsSync(metaFile)) {
+			errors.push(`#${d.id} no sidecar: ${d.path}.meta.json`);
+			continue;
+		}
+		let meta: unknown;
+		try {
+			meta = JSON.parse(readFileSync(metaFile, "utf8"));
+		} catch (e) {
+			errors.push(`#${d.id} ${d.path}.meta.json: ${(e as Error).message}`);
+			continue;
+		}
+		const source = readFileSync(join(DEMOS_DIR, `${d.path}.svelte`), "utf8");
+		for (const e of checkMeta(meta, source)) errors.push(`#${d.id} ${d.path}.meta.json: ${e}`);
 	}
 	if (paths.size !== catalog.length) errors.push("duplicate path in catalog");
 	return errors;
@@ -749,8 +798,9 @@ export function buildDemos(
 		const [group, page, variant] = path.split("/");
 		const file = join(DEMOS_DIR, `${path}.svelte`);
 		const source = readFileSync(file, "utf8");
-		const metaFile = file.replace(/\.svelte$/, ".meta.json");
-		const meta: DemoMeta = existsSync(metaFile) ? JSON.parse(readFileSync(metaFile, "utf8")) : {};
+		const meta = JSON.parse(
+			readFileSync(file.replace(/\.svelte$/, ".meta.json"), "utf8")
+		) as DemoMeta;
 		const imports = [
 			...source.matchAll(/import\s*\{([^}]+)\}\s*from\s*["'](@codeatlasdev\/ui[^"']*)["']/g),
 		].map(([, names, from]) => ({
@@ -784,16 +834,11 @@ export function buildDemos(
 			slug,
 			title,
 			description,
-			summary: meta.summary || description || title,
-			use: meta.use ?? "",
-			spec: meta.spec ?? [],
-			tags: meta.tags ?? [
-				...new Set([
-					...title.toLowerCase().split(/\W+/).filter(Boolean),
-					...components.map((c) => c.toLowerCase()),
-				]),
-			],
-			shape: meta.shape ?? "wide",
+			summary: meta.summary,
+			use: meta.use,
+			spec: meta.spec,
+			tags: meta.tags,
+			shape: meta.shape,
 			components,
 			imports,
 			interactive: use?.interactive ?? false,
@@ -814,9 +859,10 @@ export function buildDemos(
 		const header = [
 			`<!-- ${PKG} demo #${d.id} · MIT License (c) CodeAtlas · ${d.demo} -->`,
 			`Element: #${d.id} ${d.title} (${d.group}/${d.page})`,
-			`What it shows: ${d.summary || d.title}`,
-			...(d.use ? [`When to use: ${d.use}`] : []),
-			...(d.spec.length ? ["Spec:", ...d.spec.map((s) => `- ${s}`)] : []),
+			`What it shows: ${d.summary}`,
+			`When to use: ${d.use}`,
+			"Spec:",
+			...d.spec.map((s) => `- ${s}`),
 			`Tags: ${d.tags.join(", ")}`,
 			`Needs: ${d.needs}`,
 			`Components: ${d.components.join(", ") || "none"}`,
@@ -825,8 +871,9 @@ export function buildDemos(
 		files[`en/e/${d.id}.txt`] = `${header.join("\n")}\n\n${d.source}`;
 		files[`en/p/${d.id}.txt`] = `${[
 			`Use ${PKG} demo #${d.id} "${d.title}" (${d.group}/${d.page}).`,
-			`What it shows: ${d.summary || d.title}.${d.use ? ` When to use: ${d.use}.` : ""}`,
-			...(d.spec.length ? ["Spec:", ...d.spec.map((s) => `- ${s}`)] : []),
+			`What it shows: ${d.summary.replace(/\.$/, "")}. When to use: ${d.use.replace(/\.$/, "")}.`,
+			"Spec:",
+			...d.spec.map((s) => `- ${s}`),
 			"Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?",
 			`Apply: import only from "${PKG}[/charts|/table|/code|/forms]"; keep component names, props and`,
 			"  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);",

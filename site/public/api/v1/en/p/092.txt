@@ -1,5 +1,12 @@
 Use @codeatlasdev/ui demo #092 "Animated" (feedback/progress).
-What it shows: Start a simulated upload..
+What it shows: A progress bar that fills from 0 to 100 percent in steps of 5 every 100 ms when Start upload is clicked. When to use: Showing upload or export progress that the app updates as work completes.
+Spec:
+- `<Progress {value} label="Upload progress" />` with `let value = $state(0)`
+- `setInterval` runs every `100` ms with `value = Math.min(100, value + 5)` and clears at 100
+- Percent text `{value}%` shown beside the bar
+- Button `<Button variant="outlined" size="sm" disabled={running} onclick={start}>` switches label with `{running ? 'Uploading…' : 'Start upload'}`
+- `onDestroy(() => clearInterval(timer))` cleans the timer
+- Column wrapper has `max-width: 480px`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

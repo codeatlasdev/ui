@@ -1,0 +1,12 @@
+{
+	"summary": "Three plain chips with text labels.",
+	"use": "Static tags or keywords attached to a record.",
+	"spec": [
+		"`<Chip label=\"Design System\" />`",
+		"`<Chip label=\"Svelte 5\" />`",
+		"`<Chip label=\"Headless\" />`",
+		"No variant, size or handlers are set"
+	],
+	"tags": ["chip", "label", "tag", "basic"],
+	"shape": "wide"
+}

@@ -1,0 +1,13 @@
+{
+	"summary": "Swatch group with four custom colors where one swatch is disabled.",
+	"use": "Letting users pick a label or tag color from a fixed palette.",
+	"spec": [
+		"`<SwatchGroup` with `size=\"sm\"` and `aria-label=\"Label color\"` and `bind:value={color}`",
+		"Items set `value`, `label` and `color`: Blue `#2563eb`, Green `#16a34a`, Red `#dc2626`, Purple `#9333ea`",
+		"Purple has `disabled: true`",
+		"Initial value is `$state('#2563eb')`",
+		"Current value is shown as `value: {color}`"
+	],
+	"tags": ["swatch-group", "color-picker", "custom", "palette", "disabled"],
+	"shape": "square"
+}

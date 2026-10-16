@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #035 "Disabled" (inputs/radio).
-What it shows: Disable a single item, or the whole group..
+What it shows: Two radio groups: one with a single disabled item and one fully disabled group. When to use: Showing unavailable choices in a form: one option locked, or a whole question locked.
+Spec:
+- First group `items={yesNo}` with `orientation="horizontal"` and `bind:value={answer}`
+- `yesNo` has Yes, No, Maybe, and Maybe carries `disabled: true`
+- Second group `items={fruits}` with `value="banana"` and `disabled` on the whole group
+- `fruits` has 3 items: Apple, Banana, Cherry
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

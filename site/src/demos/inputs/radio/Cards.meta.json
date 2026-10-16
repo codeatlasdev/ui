@@ -1,0 +1,12 @@
+{
+	"summary": "Radio group in `cards` variant with three plans, one disabled, bound to a selected plan.",
+	"use": "Choosing a subscription plan or any option that needs a title and a short description.",
+	"spec": [
+		"`<RadioGroup variant=\"cards\"` with `aria-label=\"Plan\"`",
+		"`items={plans}` holds 3 entries with `value`, `label`, `description`: Free, Pro, Team",
+		"Team entry has `disabled: true`",
+		"`bind:value={plan}` with initial `$state('pro')`"
+	],
+	"tags": ["radio-group", "radio", "cards", "plan", "disabled", "description"],
+	"shape": "wide"
+}

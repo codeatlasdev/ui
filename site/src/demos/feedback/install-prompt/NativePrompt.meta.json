@@ -1,0 +1,12 @@
+{
+	"summary": "The install prompt in native mode, triggered by a stand-in beforeinstallprompt event fired on mount.",
+	"use": "Offering an install banner on browsers that expose the beforeinstallprompt event, such as Chrome and Edge.",
+	"spec": [
+		"`<InstallPrompt mode=\"native\" storageKey=\"demo-install-native\" />`",
+		"`onMount` dispatches `new Event('beforeinstallprompt', { cancelable: true })` on the window",
+		"The fake event gets `prompt: () => Promise.resolve()` and `userChoice: Promise.resolve({ outcome: 'dismissed' })`",
+		"Wrapped in `<div class=\"stage\">` with `min-height: calc(var(--ca-space-8) * 3)`"
+	],
+	"tags": ["install-prompt", "pwa", "native", "beforeinstallprompt", "banner"],
+	"shape": "wide"
+}

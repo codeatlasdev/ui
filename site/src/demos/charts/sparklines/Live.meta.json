@@ -1,0 +1,14 @@
+{
+	"summary": "Three live sparklines for CPU, Memory and Network that shift in a new value every 600 ms.",
+	"use": "Real-time system or traffic monitors showing the current value beside a rolling mini chart.",
+	"spec": [
+		"`let live = $state({` with `cpu`, `mem` and `net` arrays of 10 values",
+		"`setInterval` in `onMount` every `600` ms replaces each array through `next(`",
+		"`const metrics = $derived([` maps to labels CPU, Memory, Network",
+		"`{m.data[m.data.length - 1].toFixed(0)}%` shows the latest value",
+		"`<Sparkline data={m.data} height=\"40px\" />` in a `<Card material=\"glass\">`",
+		"`<Grid class=\"grid-auto-200\" gap=\"4\">` holds the 3 cards"
+	],
+	"tags": ["sparkline", "live", "realtime", "monitoring", "onmount", "grid"],
+	"shape": "wide"
+}

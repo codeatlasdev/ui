@@ -1,0 +1,12 @@
+{
+	"summary": "A box that counts how many clicks land outside it using the clickOutside action.",
+	"use": "Closing popovers, dropdowns and inline editors when the user clicks elsewhere on the page.",
+	"spec": [
+		"`use:clickOutside={() => count++}` imported from `@codeatlasdev/ui/actions` on a `div` with `class=\"box\"`",
+		"`let count = $state(0)` is incremented by the callback",
+		"Box text: Click inside this area, then click outside.",
+		"Counter shown as `Outside clicks: {count}`"
+	],
+	"tags": ["click-outside", "action", "dismiss", "popover", "dropdown", "event"],
+	"shape": "wide"
+}

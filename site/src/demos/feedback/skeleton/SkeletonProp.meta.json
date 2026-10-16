@@ -1,0 +1,13 @@
+{
+	"summary": "Avatar, KpiCard, TextField and Card all switched to their skeleton state by one shared loading flag.",
+	"use": "Loading states where real components keep their exact size and show a placeholder until data arrives.",
+	"spec": [
+		"`let loading = $state(true)` passed as `skeleton={loading}` to four components",
+		"`<Avatar alt=\"Ana Lima\" size=\"xl\" skeleton={loading} />` and `<KpiCard title=\"Revenue\" value=\"R$ 12.400\" trend={3.2} skeleton={loading} />`",
+		"`<TextField label=\"Email\" description=\"We never share it\" skeleton={loading} />`",
+		"`<Card title=\"Overview\" skeleton={loading}>` with one paragraph of content",
+		"Toggle `<Button variant=\"outlined\" size=\"sm\"` runs `onclick={() => (loading = !loading)}`"
+	],
+	"tags": ["skeleton", "loading", "avatar", "kpi-card", "text-field", "card"],
+	"shape": "wide"
+}

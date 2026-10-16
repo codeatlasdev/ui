@@ -1,0 +1,12 @@
+{
+	"summary": "A LiquidGlass refraction layer using the regular optics preset behind a line of text in a padded frame.",
+	"use": "Adding a real refraction effect to a hero or overlay frame, using a preset from GLASS_OPTICS.",
+	"spec": [
+		"`<LiquidGlass optics={GLASS_OPTICS.regular} />`",
+		"Imports `LiquidGlass` and `GLASS_OPTICS` from `@codeatlasdev/ui`",
+		"Sits in `<div class=\"frame\">` with `position: relative` and `overflow: hidden`",
+		"Foreground text: Refraction layer behind this text."
+	],
+	"tags": ["liquid-glass", "glass-optics", "refraction", "glass", "material", "preset"],
+	"shape": "square"
+}

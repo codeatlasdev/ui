@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #094 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/progress#indeterminate -->
 Element: #094 Indeterminate (feedback/progress)
-What it shows: Use when progress cannot be determined.
-Tags: indeterminate, progress
+What it shows: Two indeterminate progress bars labelled Loading and Syncing for work of unknown length.
+When to use: Background loading or syncing where no percentage is available.
+Spec:
+- `<Progress indeterminate label="Loading content" />`
+- `<Progress indeterminate label="Syncing data" />`
+- Each bar sits in a row next to a text label, Loading and Syncing
+- Column has `max-width: 480px`
+Tags: progress, indeterminate, loading, sync, label
 Needs: @codeatlasdev/ui@4.1.0
 Components: Progress
 Live demo: https://ui.codeatlas.com.br/docs/feedback/progress#indeterminate

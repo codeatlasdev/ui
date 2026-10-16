@@ -1,0 +1,14 @@
+{
+	"summary": "A complete user creation form with a header, two sections, bound fields and a footer with Cancel and Create user.",
+	"use": "Create or edit pages that group fields into sections and keep their actions in a footer.",
+	"spec": [
+		"`<AppForm title=\"New User\" description=\"Fill in the details to create a new user.\">` with `{#snippet leading()}` holding `<Button variant=\"ghost\" size=\"sm\" aria-label=\"Back\">`",
+		"`<FormSection title=\"Account details\"` holds `<TextField label=\"Full name\" bind:value={name}`, `<TextField label=\"Work email\" bind:value={email}` and `<Select label=\"Role\" bind:value={role} options={roleOptions} />`",
+		"`roleOptions` has 3 entries: Admin, Editor, Viewer, with `let role = $state('viewer')`",
+		"`<FormSection title=\"Notifications\" description=\"Email preferences.\" layout=\"list\">` holds `<Switch label=\"Send welcome email\" bind:checked={welcome} />`, `<Divider />` and `<Switch label=\"Weekly digest\" bind:checked={digest} />`",
+		"`{#snippet footer()}` has Cancel with `variant=\"ghost\"` and Create user with `disabled={saving || !name || !email}`",
+		"`function save()` sets `saving = true` and resets it with `setTimeout(() => (saving = false), 1400)`"
+	],
+	"tags": ["app-form", "form-section", "form", "text-field", "select", "switch", "footer"],
+	"shape": "wide"
+}

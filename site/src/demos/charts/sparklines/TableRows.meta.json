@@ -1,0 +1,13 @@
+{
+	"summary": "A table of four products with an inline sparkline per row and a text trend label.",
+	"use": "Adding a mini trend line to table rows, such as revenue history per product.",
+	"spec": [
+		"`<Card material=\"glass\" flush full>` wraps a plain `<table>`",
+		"`rows` has 4 products: Atlas Pro, Nova Suite, Relay SDK, Mesh API, each with 6 `revenue` values and a `trend`",
+		"`<Sparkline data={row.revenue} trend={row.trend} height=\"32px\" />` in each row",
+		"`labels` maps `up`, `down` and `neutral` to `'▲ Growing'`, `'▼ Declining'` and `'→ Stable'`",
+		"Columns: Product, Last 6 months, Trend"
+	],
+	"tags": ["sparkline", "table", "trend", "card", "flush", "rows"],
+	"shape": "wide"
+}

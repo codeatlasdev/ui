@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #086 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/dialog#info -->
 Element: #086 Info (feedback/dialog)
-What it shows: Informational content with a single action.
-Tags: info, dialog, button
+What it shows: An informational dialog with rich text about how Dialog works and a single Got it action.
+When to use: Help, about or detail popups that only need to be read and dismissed.
+Spec:
+- `<Dialog bind:open title="About this component">` with no `size` prop
+- Body is two `<p class="body">` paragraphs using `<strong>` and `<code>`
+- `{#snippet actions()}` has one `<Button variant="filled"` labelled Got it
+- Trigger is `<Button variant="outlined"` with an `<Info size={14} />` icon in `{#snippet leading()}`
+Tags: dialog, info, modal, help, rich-text
 Needs: @codeatlasdev/ui@4.1.0
 Components: Dialog, Button
 Live demo: https://ui.codeatlas.com.br/docs/feedback/dialog#info

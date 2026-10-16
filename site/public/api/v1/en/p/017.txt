@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #017 "DateField and TimeField" (inputs/date-picker).
-What it shows: Segments only, no popover. granularity=&quot;minute&quot; adds a time, and hourCycle switches between 12h and 24h..
+What it shows: Segmented DateField and TimeField inputs with bound values, minute granularity and 24h and 12h hour cycles. When to use: Typing a date or time directly in a form, such as a birthday or an appointment start time.
+Spec:
+- `<DateField label="Birthday" locale="en-US" bind:value={birthday} />` initialised with `new CalendarDate(2026, 10, 10)`
+- `<DateField label="Starts at" locale="en-US" granularity="minute" />`
+- `<TimeField label="Time (24h)" locale="en-US" hourCycle={24} bind:value={time} />` initialised with `new Time(14, 30)`
+- `<TimeField label="Time (12h)" locale="en-US" hourCycle={12} />`
+- Two `value:` output lines print `birthday.toString()` and `time.toString()`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

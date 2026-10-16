@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #008 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/checkbox#states -->
 Element: #008 States (inputs/checkbox)
-What it shows: Unchecked, checked and indeterminate.
-Tags: states, checkbox
+What it shows: Checkboxes in unchecked, pre-checked and indeterminate states, the first two bound to local state.
+When to use: Boolean options in a form, such as terms acceptance or feature toggles, including a mixed state for partial selection.
+Spec:
+- `bind:checked={basic}` with `let basic = $state(false)` and `label="Unchecked (click me)"`
+- `bind:checked` bound to `let checked = $state(true)` with `label="Pre-checked"`
+- `indeterminate` with `label="Indeterminate"`
+- Three `<Checkbox` components imported from `@codeatlasdev/ui`
+Tags: checkbox, checked, indeterminate, bind, form
 Needs: @codeatlasdev/ui@4.1.0
 Components: Checkbox
 Live demo: https://ui.codeatlas.com.br/docs/inputs/checkbox#states

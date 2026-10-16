@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #116 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/chip#deletable -->
 Element: #116 Deletable (display/chip)
-What it shows: Deletable
-Tags: deletable, chip
+What it shows: Removable chips: deleting one drops it from the list, and a reset link appears when all are gone.
+When to use: Tag inputs and filter pills the user can remove, with a way to restore them.
+Spec:
+- `const initial = ['Design', 'Svelte', 'Glass']` seeds `let tags = $state([...initial])`
+- `{#each tags as tag (tag)}` renders `<Chip label={tag} deletable ondelete={() => (tags = tags.filter((t) => t !== tag))} />`
+- `{#if tags.length === 0}` shows a `<button class="reset" type="button"` labelled Reset tags
+- The reset button runs `onclick={() => (tags = [...initial])}`
+Tags: chip, deletable, ondelete, tags, removable, state
 Needs: @codeatlasdev/ui@4.1.0
 Components: Chip
 Live demo: https://ui.codeatlas.com.br/docs/display/chip#deletable

@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #213 "Basic scatter" (charts/scatter).
-What it shows: Visits against conversion rate..
+What it shows: A scatter plot of 80 generated points in a single Data points series. When to use: Exploring the relationship between two numeric variables, such as traffic and conversion.
+Spec:
+- `<ScatterChart series={[{ name: 'Data points', data }]}`
+- `data` is 80 `[number, number]` pairs from `Array.from({ length: 80 }`
+- `yName="Conversion %"`
+- `yFormatter={(v) => `${v.toFixed(1)}%`}`
+- `height="320px"` inside `<Card material="glass" full>`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

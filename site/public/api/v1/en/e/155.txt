@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #155 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/command-palette#keyboard -->
 Element: #155 Keyboard (navigation/command-palette)
-What it shows: Type to filter across every module. Queries shorter than minQueryLength keep the full grouped list.
-Tags: keyboard, kbd
+What it shows: A static list of four keyboard hints for the command palette, each pairing a Kbd key with a description.
+When to use: Documenting the shortcuts of a search or command palette next to the feature it belongs to.
+Spec:
+- `const keys` has four entries with fields `key` and `desc`
+- Rendered with `{#each keys as k}` as `<Kbd>{k.key}</Kbd><span>{k.desc}</span>` inside a `<ul class="list">`
+- Key labels: `Type`, `↑ ↓`, `↵`, `ESC`
+- Descriptions: `Filter by label or module name`, `Move through the results`, `Navigate to the selected item`, `Close the palette`
+Tags: kbd, keyboard, shortcuts, command-palette, hints, legend
 Needs: @codeatlasdev/ui@4.1.0
 Components: Kbd
 Live demo: https://ui.codeatlas.com.br/docs/navigation/command-palette#keyboard

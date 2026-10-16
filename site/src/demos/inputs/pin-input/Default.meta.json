@@ -1,0 +1,11 @@
+{
+	"summary": "A verification-code PinInput that reports its value and completion, plus a masked four-digit PIN.",
+	"use": "One-time code entry for sign-in verification, or a short secret PIN that must be hidden.",
+	"spec": [
+		"`<PinInput label=\"Verification code\" bind:value={code} oncomplete={(v) => (done = v)} />`",
+		"Output line prints `value: {code || '–'} · completed: {done || '–'}`",
+		"`<PinInput label=\"PIN\" length={4} mask bind:value={pin} />`"
+	],
+	"tags": ["pin-input", "otp", "verification-code", "mask", "oncomplete", "forms"],
+	"shape": "wide"
+}

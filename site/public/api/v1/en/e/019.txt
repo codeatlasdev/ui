@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #019 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/export-menu#default -->
 Element: #019 Default (inputs/export-menu)
-What it shows: Custom column order and headers. onexport receives the generated text, handy for tests or uploads.
-Tags: default, exportmenu
+What it shows: An ExportMenu exporting three domain rows with custom column headers and a status line reporting the last export.
+When to use: Table toolbars that let users download the current data set as a file in a chosen format.
+Spec:
+- `data={rows}` with `const rows` of 3 objects with `domain`, `price` and `available` fields
+- `filename="domains"`
+- `columns` has 3 entries with `header` `Domain`, `Price (USD)` and `Available`
+- `onexport` sets `last` to the exported `e.filename` and `e.rows` count
+- Idle status text is `Pick a format to download.`
+Tags: export-menu, export, download, csv, table, columns
 Needs: @codeatlasdev/ui@4.1.0
 Components: ExportMenu
 Live demo: https://ui.codeatlas.com.br/docs/inputs/export-menu#default

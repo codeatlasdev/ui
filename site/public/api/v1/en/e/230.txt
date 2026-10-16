@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #230 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/foundation/typography#font-families -->
 Element: #230 Font families (foundation/typography)
-What it shows: Font families
-Tags: font, families
+What it shows: The three font family tokens, sans, display and mono, each with a sample sentence.
+When to use: Choosing a font family: sans for UI text, display for headings, mono for code.
+Spec:
+- `--ca-font-sans` with The quick brown fox jumps over the lazy dog
+- `--ca-font-display` with Headings use the display family
+- `--ca-font-mono` with `const answer = 42;`
+- Samples use `class="sample sample--sans"`, `class="sample sample--display"` and `class="sample sample--mono"`
+Tags: typography, font-family, sans, display, mono, tokens
 Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/typography#font-families

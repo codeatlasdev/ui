@@ -1,0 +1,12 @@
+{
+	"summary": "A Collapsible that starts expanded with its open state bound and printed below it.",
+	"use": "Panels that should be visible on first load, or whose open state the app tracks.",
+	"spec": [
+		"`<Collapsible title=\"Expanded on mount\" bind:open>`",
+		"State: `let open = $state(true)` starts the panel open",
+		"`<p class=\"state\">open = {open}</p>` prints the bound value",
+		"Wrapped in `.wrap` with `max-width: 560px`"
+	],
+	"tags": ["collapsible", "open", "bind", "expanded", "controlled"],
+	"shape": "wide"
+}

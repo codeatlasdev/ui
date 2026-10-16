@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #188 "End aligned" (layout/sticky-actions).
-What it shows: Buttons sit on the right. The bar only renders while the form is dirty (show)..
+What it shows: A scrolling form whose sticky Cancel and Save bar only appears once the Name field has text. When to use: Edit forms that reveal a save bar only after the user changes something.
+Spec:
+- `let name = $state('')` and `const dirty = $derived(name.length > 0)`
+- `<StickyActions show={dirty}>` holds `<Button variant="ghost" onclick={() => (name = '')}>Cancel</Button>` and `<Button variant="filled">Save</Button>`
+- `<TextField label="Name" bind:value={name} placeholder="Type to reveal the bar" />` above a `Long content…` filler
+- Scroller uses `max-height: 280px` and `overflow-y: auto`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

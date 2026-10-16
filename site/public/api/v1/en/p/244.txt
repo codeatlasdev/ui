@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #244 "Native prompt" (feedback/install-prompt).
-What it shows: The Chromium flow: Install opens the browser's install dialog. This demo fires a stand-in event so the banner shows in any browser..
+What it shows: The install prompt in native mode, triggered by a stand-in beforeinstallprompt event fired on mount. When to use: Offering an install banner on browsers that expose the beforeinstallprompt event, such as Chrome and Edge.
+Spec:
+- `<InstallPrompt mode="native" storageKey="demo-install-native" />`
+- `onMount` dispatches `new Event('beforeinstallprompt', { cancelable: true })` on the window
+- The fake event gets `prompt: () => Promise.resolve()` and `userChoice: Promise.resolve({ outcome: 'dismissed' })`
+- Wrapped in `<div class="stage">` with `min-height: calc(var(--ca-space-8) * 3)`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

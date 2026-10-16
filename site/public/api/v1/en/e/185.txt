@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #185 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/list-page#pageshell -->
 Element: #185 PageShell (layout/list-page)
-What it shows: A scrollable container for dashboards and non-CRUD pages.
-Tags: pageshell, kpicard, kpigrid, card
+What it shows: A dashboard page shell with four KPI cards and a placeholder glass card for a chart or table.
+When to use: The base page layout of a dashboard: title, headline metrics and a main content area.
+Spec:
+- `<PageShell title="Dashboard">` is the root, with no description or actions
+- `<KpiGrid>` holds 4 `KpiCard` items: Revenue `$118k`, Users `24.8k`, Growth `34%`, Uptime `99.9%`
+- Each card has a `trend` and an `icon`, for example `trend={23.4} icon={DollarSign}`
+- `<Card material="glass" full>` holds the text Chart or data table goes here
+- Frame size is `height: 420px`
+Tags: page-shell, dashboard, kpi-grid, kpi-card, card, glass, list-page
 Needs: @codeatlasdev/ui@4.1.0
 Components: PageShell, KpiCard, KpiGrid, Card
 Live demo: https://ui.codeatlas.com.br/docs/layout/list-page#pageshell

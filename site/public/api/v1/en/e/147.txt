@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #147 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/actions#clickoutside -->
 Element: #147 clickOutside (navigation/actions)
-What it shows: Calls the handler for every click that lands outside the element. It listens on the capture phase of `document`.
-Tags: clickoutside
+What it shows: A box that counts how many clicks land outside it using the clickOutside action.
+When to use: Closing popovers, dropdowns and inline editors when the user clicks elsewhere on the page.
+Spec:
+- `use:clickOutside={() => count++}` imported from `@codeatlasdev/ui/actions` on a `div` with `class="box"`
+- `let count = $state(0)` is incremented by the callback
+- Box text: Click inside this area, then click outside.
+- Counter shown as `Outside clicks: {count}`
+Tags: click-outside, action, dismiss, popover, dropdown, event
 Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/navigation/actions#clickoutside

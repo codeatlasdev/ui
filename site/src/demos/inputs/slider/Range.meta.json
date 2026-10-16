@@ -1,0 +1,12 @@
+{
+	"summary": "Two-thumb range slider from 0 to 100 with the selected price range printed beside it.",
+	"use": "Filtering by a numeric range such as price.",
+	"spec": [
+		"`<Slider bind:values={range} min={0} max={100} />`",
+		"`range` is `$state<[number, number]>([20, 75])`",
+		"Row shows a Price label and the value `${range[0]} – ${range[1]}`",
+		"Wrapper `.row` uses `max-width: 480px`"
+	],
+	"tags": ["slider", "range", "two-thumb", "price", "filter"],
+	"shape": "wide"
+}

@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #011 "States" (inputs/combobox).
-What it shows: Description, custom search placeholder and empty text, disabled option, error and disabled..
+What it shows: Three Combobox states: with description and custom search and empty texts, with error and required, and disabled. When to use: Documenting validation, helper text and unavailable states of a searchable select in a form.
+Spec:
+- `frameworks` has 4 options, the last is `{ value: 'astro', label: 'Astro', disabled: true }`
+- First field: `bind:value`, `description="Astro is disabled."`, `searchPlaceholder="Filter frameworks…"`, `emptyText="No framework matches."`
+- Second field: `error="Pick a framework."` and `required`
+- Third field: `disabled` with `placeholder="Unavailable"`
+- Wrapper `.col` has `max-width: 320px`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #053 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/switch#without-label -->
 Element: #053 Without label (inputs/switch)
-What it shows: Provide aria-label when no visible label is rendered.
-Tags: without, label, switch
+What it shows: Two switches with no visible label, named only through aria-label.
+When to use: Compact toggles in table rows or cards where the context already names the setting.
+Spec:
+- `<Switch bind:checked={analytics} aria-label="Analytics" />` with `$state(false)`
+- `<Switch checked aria-label="Always on" />` with no binding
+- No `label` prop is passed
+Tags: switch, aria-label, without-label, toggle, a11y
 Needs: @codeatlasdev/ui@4.1.0
 Components: Switch
 Live demo: https://ui.codeatlas.com.br/docs/inputs/switch#without-label

@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #078 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/surfaces/surface#materials -->
 Element: #078 Materials (surfaces/surface)
-What it shows: Materials
-Tags: materials, surface
+What it shows: Five Surface tiles, one per material, over a brand to info to success gradient so the translucency is visible.
+When to use: Comparing auto, solid, frosted, glass and liquid materials before picking one for a card or panel.
+Spec:
+- `const materials = ['auto', 'solid', 'frosted', 'glass', 'liquid'] as const`
+- `<Surface {material} elevation={3} p="4" class="tile">` rendered with `{#each materials as material (material)}`
+- Each tile prints its material name in a `.name` paragraph
+- `.backdrop` paints `linear-gradient(135deg` behind the tiles
+Tags: surface, material, glass, frosted, liquid, solid
 Needs: @codeatlasdev/ui@4.1.0
 Components: Surface
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/surface#materials

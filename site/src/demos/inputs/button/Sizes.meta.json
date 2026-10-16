@@ -1,0 +1,11 @@
+{
+	"summary": "The three button sizes side by side: small, medium and large.",
+	"use": "Choosing button density: `sm` in toolbars and tables, `md` by default, `lg` for hero or touch-first actions.",
+	"spec": [
+		"`size=\"sm\"` labelled Small",
+		"`size=\"md\"` labelled Medium",
+		"`size=\"lg\"` labelled Large"
+	],
+	"tags": ["button", "size", "sm", "md", "lg"],
+	"shape": "wide"
+}

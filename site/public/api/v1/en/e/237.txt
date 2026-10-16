@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #237 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/tabs#scrollable -->
 Element: #237 Scrollable (navigation/tabs)
-What it shows: Seven tabs in a narrow column: the list scrolls on its own, the active tab starts in view, and fade marks the edge.
-Tags: scrollable, tabs, tabslist, tabstrigger, tabscontent
+What it shows: Seven tabs in a narrow container where the list scrolls horizontally with edge fades.
+When to use: Settings areas with more sections than fit the width, especially on mobile.
+Spec:
+- `<TabsList fade>` over `{#each sections as s (s)}` producing `TabsTrigger` items
+- `const sections` has 7 labels: General, Billing, Members, Webhooks, Security, Integrations, Danger zone
+- `<Tabs value="integrations">` starts on the sixth tab
+- Values come from `const key = (s: string) => s.toLowerCase().replace(' ', '-')`
+- Wrapper is `.wrap` with `max-width: 360px`
+Tags: tabs, scrollable, fade, overflow, settings, tabs-list
 Needs: @codeatlasdev/ui@4.1.0
 Components: Tabs, TabsList, TabsTrigger, TabsContent
 Live demo: https://ui.codeatlas.com.br/docs/navigation/tabs#scrollable

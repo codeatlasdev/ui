@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #112 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/badge#colors -->
 Element: #112 Colors (display/badge)
-What it shows: Colors
-Tags: colors, badge, iconbutton, flex
+What it shows: A notification bell icon button wrapped in a count badge, shown in the four badge colors.
+When to use: Telling apart badge meaning on a counter: brand, success, warning and error.
+Spec:
+- `<Flex gap="4" align="center" wrap>` wraps four badges
+- Each is a `<Badge count={5}` around `<IconButton aria-label="Notifications">` with a `<Bell size={20} />`
+- `color="brand"`, `color="success"`, `color="warning"` and `color="error"` are the four variants
+Tags: badge, color, count, icon-button, notification, flex
 Needs: @codeatlasdev/ui@4.1.0
 Components: Badge, IconButton, Flex
 Live demo: https://ui.codeatlas.com.br/docs/display/badge#colors

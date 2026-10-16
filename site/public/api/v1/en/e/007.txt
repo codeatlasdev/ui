@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #007 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/checkbox#disabled -->
 Element: #007 Disabled (inputs/checkbox)
-What it shows: Disabled
-Tags: disabled, checkbox
+What it shows: Three disabled checkboxes: unchecked, checked and indeterminate.
+When to use: Showing a read-only option whose value the user cannot change, such as a setting locked by plan or permission.
+Spec:
+- `disabled` with `label="Disabled unchecked"`
+- `checked disabled` with `label="Disabled checked"`
+- `indeterminate disabled` with `label="Disabled indeterminate"`
+- Three `<Checkbox` components, no bound state
+Tags: checkbox, disabled, checked, indeterminate, form
 Needs: @codeatlasdev/ui@4.1.0
 Components: Checkbox
 Live demo: https://ui.codeatlas.com.br/docs/inputs/checkbox#disabled

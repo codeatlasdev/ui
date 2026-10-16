@@ -1,0 +1,13 @@
+{
+	"summary": "Two CodeTabs groups, each with cURL and Node.js tabs, that share the selected language through the same sync key.",
+	"use": "API docs that show the same request in several languages and keep the choice in sync across the page.",
+	"spec": [
+		"Two `<CodeTabs sync=\"demo-lang\">` blocks use the same sync key",
+		"Each group has `<CodeTab label=\"cURL\">` and `<CodeTab label=\"Node.js\">`",
+		"Tab content is `<div class=\"ca-code\"><pre><code>` rendering a string constant such as `{curl}` or `{node}`",
+		"First group sends a POST to messages/text, second group lists sessions with `{curlList}` and `{nodeList}`",
+		"Wrapped in `<div class=\"ca-prose wrap\">`"
+	],
+	"tags": ["code-tabs", "code-tab", "docs-kit", "sync", "curl", "api-docs"],
+	"shape": "wide"
+}

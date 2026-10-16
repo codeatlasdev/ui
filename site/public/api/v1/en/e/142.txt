@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #142 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/tooltip#text-trigger -->
 Element: #142 Text trigger (display/tooltip)
-What it shows: Text trigger
-Tags: text, trigger, tooltip
+What it shows: A Tooltip wrapping plain inline text, which becomes the hover and focus trigger.
+When to use: Adding a short explanation to a term or inline phrase without building a custom trigger.
+Spec:
+- `<Tooltip content="Wrapped in the tooltip's own button">` with plain text children
+- Children text: hover or focus this text
+- No trigger snippet, the tooltip renders its own trigger
+- Placed inside a paragraph after the sentence Static text can be a trigger too:
+Tags: tooltip, children, inline, text-trigger, hover, focus
 Needs: @codeatlasdev/ui@4.1.0
 Components: Tooltip
 Live demo: https://ui.codeatlas.com.br/docs/display/tooltip#text-trigger

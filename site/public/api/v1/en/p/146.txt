@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #146 "autofocus" (navigation/actions).
-What it shows: Focuses the element when it mounts..
+What it shows: An input that receives focus on mount, with a button that remounts it through a keyed block. When to use: Dialogs, inline editors and search fields where the first field should take focus as soon as it appears.
+Spec:
+- `use:autofocus` imported from `@codeatlasdev/ui/actions` on a native `<input`
+- Input has `placeholder="Focused on mount"` and `aria-label="Autofocused input"`
+- `let key = $state(0)` drives `{#key key}` around the input
+- `<Button onclick={() => key++}>Remount input</Button>` remounts the input so focus is applied again
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

@@ -1,0 +1,12 @@
+{
+	"summary": "Two money helper functions evaluated inline: centsToDisplay and parseInputToCents.",
+	"use": "Formatting stored cents for display or parsing user-typed currency strings outside a MoneyInput.",
+	"spec": [
+		"`centsToDisplay(123456)` is printed with its result",
+		"`parseInputToCents('R$ 1.234,56')` is printed with its result",
+		"Both helpers are imported from `@codeatlasdev/ui/forms`",
+		"No input component is rendered"
+	],
+	"tags": ["money-input", "helpers", "cents", "parse", "format", "currency"],
+	"shape": "wide"
+}

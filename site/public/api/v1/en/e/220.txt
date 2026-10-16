@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #220 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/foundation/colors#brand -->
 Element: #220 Brand (foundation/colors)
-What it shows: Derived from the active preset. brand-fill and brand-text keep contrast in both schemes.
-Tags: brand
+What it shows: Six swatches for the brand color tokens, each showing its name and CSS variable.
+When to use: Picking a brand color token for a fill, a text color or an accent.
+Spec:
+- Renders `<Swatches {tokens} />` with 6 tokens
+- Tokens in order: `--ca-brand-main`, `--ca-brand-light`, `--ca-brand-dark`
+- Then `--ca-brand-contrast`, `--ca-brand-fill`, `--ca-brand-text`
+- No bordered prop is passed
+Tags: colors, brand, tokens, swatches, theme
 Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/colors#brand

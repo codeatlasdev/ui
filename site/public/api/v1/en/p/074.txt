@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #074 "Open by default" (surfaces/collapsible).
-What it shows: Open by default.
+What it shows: A Collapsible that starts expanded with its open state bound and printed below it. When to use: Panels that should be visible on first load, or whose open state the app tracks.
+Spec:
+- `<Collapsible title="Expanded on mount" bind:open>`
+- State: `let open = $state(true)` starts the panel open
+- `<p class="state">open = {open}</p>` prints the bound value
+- Wrapped in `.wrap` with `max-width: 560px`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

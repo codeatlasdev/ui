@@ -1,0 +1,13 @@
+{
+	"summary": "A KpiGrid holding four KPI cards: Revenue, Users, Growth and Uptime, each with a trend and icon.",
+	"use": "A full-width row of headline metrics at the top of a dashboard.",
+	"spec": [
+		"`<KpiGrid>` with 4 `KpiCard` items",
+		"`<KpiCard title=\"Revenue\" value=\"$112k\" trend={18.4} icon={DollarSign} />`",
+		"`<KpiCard title=\"Users\" value=\"24.8k\" trend={12.1} icon={Users} />`",
+		"`<KpiCard title=\"Growth\" value=\"34\" unit=\"%\" trend={5.6} icon={TrendingUp} />`",
+		"`<KpiCard title=\"Uptime\" value=\"99.9\" unit=\"%\" trend={0.1} icon={Activity} />`"
+	],
+	"tags": ["kpi-grid", "kpi-card", "dashboard", "metrics", "four-columns", "grid"],
+	"shape": "wide"
+}

@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #089 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/drawer#right-default -->
 Element: #089 Right (default) (feedback/drawer)
-What it shows: Slides in from the right, with a footer actions area.
-Tags: right, default, drawer, button, switch, stack, filtergroup
+What it shows: A default drawer titled Filters with status and role filter groups, two switches and Reset and Apply actions.
+When to use: Filter panels for tables and lists that would crowd the page if shown inline.
+Spec:
+- `<Drawer bind:open title="Filters">` with no side or width prop
+- Two `<FilterGroup` blocks: status with 2 options (Active, Inactive) and role with 3 options (Admin, Editor, Viewer)
+- Filter state: `onchange={(v) => (statusF = v)}` and `onchange={(v) => (roleF = v)}`, both starting at `'all'`
+- Two `<Switch label="Show inactive only" />` and `<Switch label="Include archived" />` inside `<Stack gap="4">`
+- `{#snippet actions()}` holds ghost Reset and filled Apply buttons
+Tags: drawer, filters, filter-group, switch, side-panel
 Needs: @codeatlasdev/ui@4.1.0
 Components: Drawer, Button, Switch, Stack, FilterGroup
 Live demo: https://ui.codeatlas.com.br/docs/feedback/drawer#right-default

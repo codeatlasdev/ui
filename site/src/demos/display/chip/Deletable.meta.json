@@ -1,0 +1,12 @@
+{
+	"summary": "Removable chips: deleting one drops it from the list, and a reset link appears when all are gone.",
+	"use": "Tag inputs and filter pills the user can remove, with a way to restore them.",
+	"spec": [
+		"`const initial = ['Design', 'Svelte', 'Glass']` seeds `let tags = $state([...initial])`",
+		"`{#each tags as tag (tag)}` renders `<Chip label={tag} deletable ondelete={() => (tags = tags.filter((t) => t !== tag))} />`",
+		"`{#if tags.length === 0}` shows a `<button class=\"reset\" type=\"button\"` labelled Reset tags",
+		"The reset button runs `onclick={() => (tags = [...initial])}`"
+	],
+	"tags": ["chip", "deletable", "ondelete", "tags", "removable", "state"],
+	"shape": "wide"
+}

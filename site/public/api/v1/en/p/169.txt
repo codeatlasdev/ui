@@ -1,5 +1,9 @@
 Use @codeatlasdev/ui demo #169 "No icon" (layout/empty-state).
-What it shows: A minimal version without an icon..
+What it shows: An empty state without an icon, showing a title, a description and a Create item button with a Plus icon. When to use: Simple empty lists where an icon adds no meaning and a single create action is enough.
+Spec:
+- `<EmptyState title="Nothing here yet" description="Create your first item to get started.">` is passed no icon
+- `{#snippet actions()}` holds `<Button variant="filled" size="sm">`
+- Button has `{#snippet leading()}<Plus size={14} />{/snippet}` and the label Create item
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

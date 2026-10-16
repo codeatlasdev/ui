@@ -1,0 +1,11 @@
+{
+	"summary": "Three text areas: empty, with a placeholder, and with initial content.",
+	"use": "Free-form multi-line input such as a message, notes or a description.",
+	"spec": [
+		"`<TextArea label=\"Message\" bind:value={message} />` starts empty",
+		"`<TextArea label=\"Notes\" placeholder=\"Write something…\" bind:value={notes} />`",
+		"`<TextArea label=\"Description\" bind:value={description} />` starts as `Some initial content here.`"
+	],
+	"tags": ["text-area", "textarea", "placeholder", "label", "bind-value"],
+	"shape": "tall"
+}

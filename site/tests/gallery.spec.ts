@@ -1,3 +1,4 @@
+import { runPick } from "../../packages/ui/src/cli/pick";
 import { expect, gotoReady, test } from "./fixtures";
 
 test.describe("gallery", () => {
@@ -48,5 +49,25 @@ test.describe("gallery", () => {
 		await expect(page.getByRole("button", { name: /send to ai/i })).toHaveCount(0);
 		await gotoReady(page, "/gallery/?pick=001&cb=http%3A%2F%2F127.0.0.1%3A4599%2Fpick%3Ft%3Dabc");
 		await expect(page.getByRole("button", { name: /send to ai/i })).toBeVisible();
+	});
+});
+
+test.describe("gallery handoff to `codeatlas-ui pick`", () => {
+	test("Send to AI delivers the picked ids to the CLI listener", async ({ page, baseURL }) => {
+		let link = "";
+		const result = runPick({
+			gallery: `${baseURL}/gallery/`,
+			ids: ["001"],
+			timeoutMs: 20_000,
+			open: (url) => (link = url),
+			log: () => {},
+		});
+		await expect.poll(() => link).not.toBe("");
+		await gotoReady(page, link.replace(baseURL ?? "", ""));
+		await expect(page.locator("[id='001']").getByRole("checkbox")).toBeChecked();
+		await page.getByText("Pick #005", { exact: true }).click();
+		await page.getByRole("button", { name: /send to ai/i }).click();
+		expect(await result).toEqual({ ids: ["001", "005"] });
+		await expect(page.getByText(/You can close this tab/)).toBeVisible();
 	});
 });

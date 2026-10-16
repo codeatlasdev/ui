@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #028 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/money-input#default -->
 Element: #028 Default (inputs/money-input)
-What it shows: Type 123456 to get R$ 1.234,56.
-Tags: default, moneyinput
+What it shows: A default MoneyInput bound to a cents value, with the raw cents and formatted display printed below.
+When to use: A price or amount field where the model stores integer cents and the UI shows a formatted amount.
+Spec:
+- `<MoneyInput label="Price" bind:value={price} />`
+- `let price = $state(123456)` holds cents
+- Output line prints `{price} cents → {centsToDisplay(price)}`
+- Wrapper `.col` has `max-width: 400px`
+Tags: money-input, cents, currency, format, bind, forms
 Needs: @codeatlasdev/ui@4.1.0
 Components: MoneyInput
 Live demo: https://ui.codeatlas.com.br/docs/inputs/money-input#default

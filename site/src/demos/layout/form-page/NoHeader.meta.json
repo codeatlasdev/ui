@@ -1,0 +1,11 @@
+{
+	"summary": "A compact form page with no title or description, one section and a Cancel and Save footer.",
+	"use": "Quick edit forms embedded in a larger page that already provides its own heading.",
+	"spec": [
+		"`<AppForm>` is used with no title or description",
+		"`<FormSection title=\"Quick update\">` holds `<TextField label=\"Name\" placeholder=\"Enter name…\" />` and `<TextField label=\"Email\" type=\"email\" placeholder=\"email@example.com\" />`",
+		"`{#snippet footer()}` holds `<Button variant=\"ghost\">Cancel</Button>` and `<Button variant=\"filled\">Save</Button>`"
+	],
+	"tags": ["app-form", "form-section", "form", "no-header", "text-field", "footer"],
+	"shape": "wide"
+}

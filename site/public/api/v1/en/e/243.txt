@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #243 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/install-prompt#ios-instructions -->
 Element: #243 iOS instructions (feedback/install-prompt)
-What it shows: What Safari on iPhone and iPad gets: the two steps, no button.
-Tags: ios, instructions, installprompt
+What it shows: The install prompt in iOS mode, showing add to home screen instructions inside a reserved stage box.
+When to use: Prompting Safari on iPhone users, who have no native install event, to install the app to their home screen.
+Spec:
+- `<InstallPrompt mode="ios" storageKey="demo-install-ios" />`
+- Wrapped in `<div class="stage">` with `min-height: calc(var(--ca-space-8) * 3)` so the page does not shift when it appears
+- No handlers or state in the demo, the prompt renders only after mounting in the browser
+Tags: install-prompt, pwa, ios, banner, install
 Needs: @codeatlasdev/ui@4.1.0
 Components: InstallPrompt
 Live demo: https://ui.codeatlas.com.br/docs/feedback/install-prompt#ios-instructions

@@ -1,0 +1,12 @@
+{
+	"summary": "A scrolling form whose sticky Cancel and Save bar only appears once the Name field has text.",
+	"use": "Edit forms that reveal a save bar only after the user changes something.",
+	"spec": [
+		"`let name = $state('')` and `const dirty = $derived(name.length > 0)`",
+		"`<StickyActions show={dirty}>` holds `<Button variant=\"ghost\" onclick={() => (name = '')}>Cancel</Button>` and `<Button variant=\"filled\">Save</Button>`",
+		"`<TextField label=\"Name\" bind:value={name} placeholder=\"Type to reveal the bar\" />` above a `Long content…` filler",
+		"Scroller uses `max-height: 280px` and `overflow-y: auto`"
+	],
+	"tags": ["sticky-actions", "dirty", "form", "save-bar", "scroll", "text-field"],
+	"shape": "wide"
+}

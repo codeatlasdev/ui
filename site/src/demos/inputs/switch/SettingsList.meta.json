@@ -1,0 +1,13 @@
+{
+	"summary": "Settings list of three rows, each with a title, a subtitle and a Switch.",
+	"use": "Account preferences screen with one toggle per setting.",
+	"spec": [
+		"3 rows in `.settings-list`: Email notifications, Dark mode, Usage analytics",
+		"Each row has `settings-item__title` and `settings-item__sub` text",
+		"Switches use `bind:checked={email}`, `bind:checked={dark}`, `bind:checked={analytics}`",
+		"Each switch has an `aria-label` matching its row title, e.g. `aria-label=\"Dark mode\"`",
+		"Initial state: email `$state(true)`, dark and analytics `$state(false)`"
+	],
+	"tags": ["switch", "settings-list", "preferences", "aria-label", "toggle"],
+	"shape": "wide"
+}

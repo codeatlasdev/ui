@@ -1,0 +1,12 @@
+{
+	"summary": "Three glass surfaces over a gradient: tinted, glowing, and tinted with glow.",
+	"use": "Highlighting a glass chip or panel with a brand tint, a glow, or both.",
+	"spec": [
+		"`<Surface material=\"glass\" tone=\"brand\" class=\"chip\">` labelled Tinted",
+		"`<Surface material=\"glass\" glow class=\"chip\">` labelled Glowing",
+		"`<Surface material=\"glass\" tone=\"brand\" glow class=\"chip\">` labelled Tinted + glowing",
+		"Backdrop gradient runs `var(--ca-brand-main) 0%` to `var(--ca-semantic-success) 100%`"
+	],
+	"tags": ["materials", "glass", "surface", "tone", "glow", "tinted"],
+	"shape": "wide"
+}

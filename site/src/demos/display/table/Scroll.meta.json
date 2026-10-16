@@ -1,0 +1,13 @@
+{
+	"summary": "A default SimpleTable listing three users with name, email, role and status in a flush glass card.",
+	"use": "Compact read-only tables that keep their columns and scroll horizontally when space runs out.",
+	"spec": [
+		"`<Card material=\"glass\" flush full>` wraps the table",
+		"`<SimpleTable>` with no props, plain `thead` and `tbody`",
+		"Header columns: Name, Email, Role, Status",
+		"3 rows from `rows` with `name`, `email`, `role`, `status`",
+		"The first cell uses `class=\"primary\"`"
+	],
+	"tags": ["table", "simple-table", "scroll", "overflow", "card", "users"],
+	"shape": "wide"
+}

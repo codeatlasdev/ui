@@ -1,0 +1,13 @@
+{
+	"summary": "Three Combobox states: with description and custom search and empty texts, with error and required, and disabled.",
+	"use": "Documenting validation, helper text and unavailable states of a searchable select in a form.",
+	"spec": [
+		"`frameworks` has 4 options, the last is `{ value: 'astro', label: 'Astro', disabled: true }`",
+		"First field: `bind:value`, `description=\"Astro is disabled.\"`, `searchPlaceholder=\"Filter frameworks…\"`, `emptyText=\"No framework matches.\"`",
+		"Second field: `error=\"Pick a framework.\"` and `required`",
+		"Third field: `disabled` with `placeholder=\"Unavailable\"`",
+		"Wrapper `.col` has `max-width: 320px`"
+	],
+	"tags": ["combobox", "error", "disabled", "required", "description", "empty-state"],
+	"shape": "wide"
+}

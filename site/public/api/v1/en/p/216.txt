@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #216 "Bar sparklines" (charts/sparklines).
-What it shows: variant bar draws narrow columns instead of a line..
+What it shows: Three labelled bar sparklines with up, down and neutral trends in a wrapping row. When to use: Showing compact weekly metrics inline where a full chart would be too heavy.
+Spec:
+- `items` has 3 entries: Weekly sessions, Bounce rate, Avg pages, each with 7 `data` values
+- `<Sparkline data={s.data} variant="bar" trend={s.trend} height="40px" />`
+- `trend` values are `'up' as const`, `'down' as const` and `'neutral' as const`
+- `<Flex gap="6" wrap align="center">` lays out the items, each in a `<Stack gap="1.5">` with a label
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

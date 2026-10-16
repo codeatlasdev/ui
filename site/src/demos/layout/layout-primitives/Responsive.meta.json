@@ -1,0 +1,10 @@
+{
+	"summary": "A Grid with responsive column counts and gaps holding eight numbered cells.",
+	"use": "Card galleries and dashboards that go from one column on phones to four on large screens.",
+	"spec": [
+		"`<Grid columns={{ base: 1, sm: 2, lg: 4 }} gap={{ base: '2', md: '4' }} p=\"4\">`",
+		"`{#each [1, 2, 3, 4, 5, 6, 7, 8] as n (n)}` renders 8 `<Box class=\"cell\" p=\"4\">` cells labelled by `{n}`"
+	],
+	"tags": ["grid", "responsive", "columns", "gap", "breakpoints", "box", "layout"],
+	"shape": "wide"
+}

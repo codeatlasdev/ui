@@ -1,0 +1,13 @@
+{
+	"summary": "CopyButton in three variants and two extra sizes, side by side.",
+	"use": "Choosing the emphasis and size of a copy action to match the surrounding UI.",
+	"spec": [
+		"`variant=\"filled\"` with `value=\"filled\"`",
+		"`variant=\"glass\"` with `value=\"glass\"`",
+		"`variant=\"outlined\"` with `value=\"outlined\"`",
+		"`size=\"sm\"` with `value=\"small\"`",
+		"`size=\"lg\"` with `value=\"large\"`"
+	],
+	"tags": ["copy-button", "variant", "size", "filled", "glass", "outlined"],
+	"shape": "wide"
+}

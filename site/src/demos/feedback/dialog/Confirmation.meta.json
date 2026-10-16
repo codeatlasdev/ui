@@ -1,0 +1,13 @@
+{
+	"summary": "A small dialog asking to delete an item, with Cancel and Delete buttons in the actions snippet.",
+	"use": "Confirming a destructive action when you need custom footer buttons instead of the AlertDialog defaults.",
+	"spec": [
+		"`<Dialog` with `bind:open`, `title=\"Delete this item?\"` and `size=\"sm\"`",
+		"`description=` text says the action cannot be undone",
+		"`{#snippet actions()}` holds `<Button variant=\"ghost\"` Cancel and `<Button variant=\"destructive\"` Delete",
+		"Delete runs `confirmed = true; open = false;` and shows `Item deleted.` with `aria-live=\"polite\"`",
+		"Trigger is `<Button variant=\"destructive\"` with a `<Trash2 size={14} />` icon in `{#snippet leading()}`"
+	],
+	"tags": ["dialog", "confirmation", "destructive", "delete", "actions"],
+	"shape": "wide"
+}

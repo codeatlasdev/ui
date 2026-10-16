@@ -1,0 +1,11 @@
+{
+	"summary": "Disabled buttons, a destructive action with an icon, and a link rendered as a button.",
+	"use": "Showing non-interactive and dangerous actions, or navigating with button styling via `href`.",
+	"spec": [
+		"`disabled` on `variant=\"filled\"`, `variant=\"outlined\"` and `variant=\"glass\"`",
+		"`variant=\"destructive\"` with a `Trash2` icon in `{#snippet leading()}` (`size={15}`)",
+		"`href=\"https://github.com/codeatlasdev/ui\"` with `target=\"_blank\"` renders an anchor"
+	],
+	"tags": ["button", "disabled", "destructive", "link", "href"],
+	"shape": "wide"
+}

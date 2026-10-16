@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #042 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/select#placeholder -->
 Element: #042 Placeholder (inputs/select)
-What it shows: No initial value: the placeholder shows until the user picks an option.
-Tags: placeholder, select
+What it shows: Select with no initial value that shows placeholder text until a country is chosen.
+When to use: Required choice in a form where no default should be preselected.
+Spec:
+- `<Select label="Country" placeholder="Choose a country…"` with `options={countries}`
+- `countries` has 5 options: Brazil, United States, Germany, Japan, Australia
+- `bind:value={country}` with initial `$state('')`
+Tags: select, placeholder, country, form, options
 Needs: @codeatlasdev/ui@4.1.0
 Components: Select
 Live demo: https://ui.codeatlas.com.br/docs/inputs/select#placeholder

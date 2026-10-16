@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #009 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/checkbox#without-label -->
 Element: #009 Without label (inputs/checkbox)
-What it shows: Bare checkbox for table rows or custom layouts.
-Tags: without, label, checkbox
+What it shows: Three checkboxes with no visible label, named only through aria-label: bound, checked and indeterminate.
+When to use: Row selection checkboxes in tables or lists where the label is implied by the row and only an accessible name is needed.
+Spec:
+- `bind:checked={value}` with `aria-label="Unlabelled checkbox"`
+- `checked` with `aria-label="Unlabelled checked checkbox"`
+- `indeterminate` with `aria-label="Unlabelled indeterminate checkbox"`
+- No `label` prop on any of the three
+Tags: checkbox, aria-label, accessibility, unlabelled, indeterminate
 Needs: @codeatlasdev/ui@4.1.0
 Components: Checkbox
 Live demo: https://ui.codeatlas.com.br/docs/inputs/checkbox#without-label

@@ -1,0 +1,12 @@
+{
+	"summary": "Buttons in the loading state, including one that toggles loading for two seconds when clicked.",
+	"use": "Submit and save buttons that wait on a request and must block repeat clicks while keeping their label.",
+	"spec": [
+		"`loading` on `variant=\"filled\"` and `variant=\"outlined\"` shows the spinner in place of the leading icon",
+		"Bound to state: `loading={saving}` with `let saving = $state(false)`",
+		"`onclick={save}` sets `saving = true` and resets it with `setTimeout(() => (saving = false), 2000)`",
+		"Label switches with state: `{saving ? 'Saving…' : 'Save (2s)'}`"
+	],
+	"tags": ["button", "loading", "spinner", "async", "submit"],
+	"shape": "wide"
+}

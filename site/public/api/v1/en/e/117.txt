@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #117 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/chip#with-icons -->
 Element: #117 With icons (display/chip)
-What it shows: With icons
-Tags: with, icons, chip
+What it shows: Three chips each with a leading lucide icon: star, zap and tag.
+When to use: Labelled badges that gain meaning from an icon, such as featured or boosted items.
+Spec:
+- `<Chip label="Featured" icon={Star} />`
+- `<Chip label="Boosted" icon={Zap} />`
+- `<Chip label="Tagged" icon={Tag} />`
+- `icon` receives the component itself imported from `@lucide/svelte`
+Tags: chip, icon, lucide, label, star
 Needs: @codeatlasdev/ui@4.1.0
 Components: Chip
 Live demo: https://ui.codeatlas.com.br/docs/display/chip#with-icons

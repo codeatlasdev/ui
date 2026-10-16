@@ -1,0 +1,11 @@
+{
+	"summary": "The install prompt in iOS mode, showing add to home screen instructions inside a reserved stage box.",
+	"use": "Prompting Safari on iPhone users, who have no native install event, to install the app to their home screen.",
+	"spec": [
+		"`<InstallPrompt mode=\"ios\" storageKey=\"demo-install-ios\" />`",
+		"Wrapped in `<div class=\"stage\">` with `min-height: calc(var(--ca-space-8) * 3)` so the page does not shift when it appears",
+		"No handlers or state in the demo, the prompt renders only after mounting in the browser"
+	],
+	"tags": ["install-prompt", "pwa", "ios", "banner", "install"],
+	"shape": "wide"
+}

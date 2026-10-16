@@ -1,7 +1,15 @@
 <!-- @codeatlasdev/ui demo #211 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/radar#interactive-team-builder -->
 Element: #211 Interactive team builder (charts/radar)
-What it shows: Drag the sliders and the radar updates live.
-Tags: interactive, team, builder, card, stack, flex, slider, radarchart
+What it shows: A radar chart for My team with six sliders that edit each dimension live.
+When to use: Letting users build or tweak a skill or score profile and see the shape update.
+Spec:
+- `let dims = $state([88, 92, 76, 85, 94, 79])` holds the six scores
+- `const series = $derived([{ name: 'My team', values: [...dims] }])`
+- `<RadarChart {indicators} {series} height="320px" />`
+- `{#each DIMS as dim, i}` renders one `<Slider value={dims[i]} min={0} max={100} step={1}`
+- `onchange={(v) => { dims[i] = v[0]; }}` writes back the first slider value
+- Each row shows the dimension name and `{dims[i]}` in a `<Flex justify="between">`
+Tags: radar-chart, slider, interactive, derived, state, builder
 Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, Stack, Flex, Slider, RadarChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/radar#interactive-team-builder

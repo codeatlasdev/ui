@@ -1,0 +1,13 @@
+{
+	"summary": "A PhoneField and a CepField that looks up an address asynchronously and prints the resolved street, district and city.",
+	"use": "Brazilian address and contact forms that autofill street data from a postal code lookup.",
+	"spec": [
+		"`<PhoneField label=\"WhatsApp\" bind:value={phone} />`",
+		"`<CepField` with `label=\"CEP\"` and `description=\"Try 01310-100.\"`",
+		"`bind:lookupPending={pending}`, `onlookup={lookup}` and `onresolve={(a) => (address = a)}`",
+		"`async function lookup(raw: string)` waits 600 ms and returns a `CepAddress` only for `01310100`, otherwise `null`",
+		"Result line shows `Looking up…` while pending, then `logradouro`, `bairro`, `localidade` and `uf`"
+	],
+	"tags": ["phone-field", "cep-field", "lookup", "address", "brazil", "async", "forms"],
+	"shape": "wide"
+}

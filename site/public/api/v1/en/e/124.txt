@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #124 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/divider#horizontal -->
 Element: #124 Horizontal (display/divider)
-What it shows: Horizontal
-Tags: horizontal, divider, card, stack
+What it shows: Three stacked text sections inside a glass card separated by horizontal dividers.
+When to use: Separating sections of content inside a card or panel.
+Spec:
+- `<Card material="glass" p="6" full>` wraps the content
+- `<Stack gap="4">` stacks Section A, B and C paragraphs
+- `<Divider />` is placed between them with no props
+Tags: divider, horizontal, separator, card, stack
 Needs: @codeatlasdev/ui@4.1.0
 Components: Divider, Card, Stack
 Live demo: https://ui.codeatlas.com.br/docs/display/divider#horizontal

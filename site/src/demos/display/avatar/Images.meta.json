@@ -1,0 +1,13 @@
+{
+	"summary": "A row of four large avatars loaded from image URLs.",
+	"use": "User lists, comments and team pages where members have profile photos.",
+	"spec": [
+		"Four avatars with `size=\"lg\"`",
+		"`src=\"https://i.pravatar.cc/150?img=1\"` with `alt=\"Alice Martin\"`",
+		"`src=\"https://i.pravatar.cc/150?img=12\"` with `alt=\"Bob Chen\"`",
+		"`src=\"https://i.pravatar.cc/150?img=32\"` with `alt=\"Clara Silva\"`",
+		"`src=\"https://i.pravatar.cc/150?img=47\"` with `alt=\"David Kim\"`"
+	],
+	"tags": ["avatar", "image", "src", "alt", "profile-photo"],
+	"shape": "wide"
+}

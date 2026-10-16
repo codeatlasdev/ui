@@ -1,0 +1,13 @@
+{
+	"summary": "All five button variants in a row: filled, glass, outlined, ghost and destructive.",
+	"use": "Picking the emphasis of an action: filled for primary, outlined or ghost for secondary, destructive for irreversible.",
+	"spec": [
+		"`variant=\"filled\"` labelled Filled",
+		"`variant=\"glass\"` labelled Glass",
+		"`variant=\"outlined\"` labelled Outlined",
+		"`variant=\"ghost\"` labelled Ghost",
+		"`variant=\"destructive\"` labelled Destructive"
+	],
+	"tags": ["button", "variant", "filled", "glass", "outlined", "ghost", "destructive"],
+	"shape": "wide"
+}

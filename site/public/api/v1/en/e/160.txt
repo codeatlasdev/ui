@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #160 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/popover#basic -->
 Element: #160 Basic (navigation/popover)
-What it shows: Text and an action inside the popover.
-Tags: basic, popover, button, stack
+What it shows: A popover opened from a button, containing a sentence of text and a Confirm button.
+When to use: Short contextual help or a quick confirmation anchored to the element that triggered it.
+Spec:
+- `<Popover>` with `{#snippet triggerChild(props)}<Button {...props}>Open popover</Button>{/snippet}`
+- Content is `<Stack gap="3">` with a paragraph and `<Button size="sm" variant="filled">Confirm</Button>`
+- Paragraph text: This is a basic popover with some content inside.
+Tags: popover, trigger, overlay, confirm, stack, contextual
 Needs: @codeatlasdev/ui@4.1.0
 Components: Popover, Button, Stack
 Live demo: https://ui.codeatlas.com.br/docs/navigation/popover#basic

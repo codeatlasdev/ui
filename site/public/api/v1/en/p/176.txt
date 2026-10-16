@@ -1,5 +1,9 @@
 Use @codeatlasdev/ui demo #176 "Negative trend" (layout/kpi-card).
-What it shows: Negative trend.
+What it shows: Two KPI cards whose trends are negative, one with an icon and one without. When to use: Metrics where a falling number is good or bad news, such as churn rate and response time.
+Spec:
+- `<KpiGrid>` with 2 `KpiCard` items
+- `<KpiCard title="Churn Rate" value="5.2" unit="%" trend={-1.8} icon={Activity} />`
+- `<KpiCard title="Response Time" value="1.4" unit="s" trend={-12.3} />` has no `icon`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #071 "Link card" (surfaces/card).
-What it shows: Link card.
+What it shows: A solid Card that is a link as a whole, with a Surface heading and a one line description. When to use: Clickable cards that navigate to a detail page, such as index tiles or related-article links.
+Spec:
+- `<Card href="/docs/surfaces/surface/" title="Surface" headingLevel={3} material="solid" elevation={2}>`
+- `href` makes the whole card the link
+- `headingLevel={3}` sets the title heading level
+- Body is plain text: The one painted container every card is built on
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

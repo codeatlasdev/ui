@@ -1,0 +1,12 @@
+{
+	"summary": "Two large avatars whose fallback is a custom icon: one with an image that fails to decode and one with no image.",
+	"use": "Representing groups or bots, where initials do not make sense, with a lucide icon.",
+	"spec": [
+		"`<Avatar src=\"data:image/png;base64,AAAA\" alt=\"Family\" size=\"lg\" loading=\"lazy\" referrerpolicy=\"no-referrer\">` uses an image that fails to decode",
+		"`{#snippet fallback()}<Users size={22} aria-hidden=\"true\" />{/snippet}` renders the Users icon",
+		"`<Avatar alt=\"Support bot\" size=\"lg\">` has no `src`",
+		"`{#snippet fallback()}<Bot size={22} aria-hidden=\"true\" />{/snippet}` renders the Bot icon"
+	],
+	"tags": ["avatar", "fallback", "snippet", "icon", "image-error", "lucide"],
+	"shape": "wide"
+}

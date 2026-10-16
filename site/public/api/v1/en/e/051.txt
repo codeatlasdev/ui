@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #051 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/switch#disabled -->
 Element: #051 Disabled (inputs/switch)
-What it shows: Disabled
-Tags: disabled, switch
+What it shows: Two disabled switches, one off and one on.
+When to use: Showing a setting that cannot be changed, for example a locked plan feature.
+Spec:
+- `<Switch disabled label="Disabled off" />`
+- `<Switch checked disabled label="Disabled on" />`
+- No bound state
+Tags: switch, disabled, checked, toggle, state
 Needs: @codeatlasdev/ui@4.1.0
 Components: Switch
 Live demo: https://ui.codeatlas.com.br/docs/inputs/switch#disabled

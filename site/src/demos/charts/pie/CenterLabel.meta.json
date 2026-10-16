@@ -1,0 +1,12 @@
+{
+	"summary": "A donut chart with a total value and caption shown in the centre.",
+	"use": "Summarising a total inside the donut, like total revenue split by category.",
+	"spec": [
+		"`<PieChart data={marketData} donut`",
+		"`centerLabel={{ value: '$2.4M', label: 'Total Revenue' }}`",
+		"`marketData` has 5 items: Cloud Services `38`, Enterprise SW `24`, SaaS Tools `18`, Infrastructure `12`, Other `8`",
+		"`height=\"300px\"` inside `<Card material=\"glass\" full>`"
+	],
+	"tags": ["pie-chart", "donut", "center-label", "total", "market-share", "card"],
+	"shape": "square"
+}

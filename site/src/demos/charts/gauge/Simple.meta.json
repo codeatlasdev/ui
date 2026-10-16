@@ -1,0 +1,10 @@
+{
+	"summary": "A single gauge showing a score of 78 with a Score label.",
+	"use": "Showing one headline score or health percentage in a compact card.",
+	"spec": [
+		"`<GaugeChart value={78} label=\"Score\" height=\"280px\" />`",
+		"Wrapped in `<Card material=\"glass\" full>`"
+	],
+	"tags": ["gauge-chart", "score", "value", "label", "card"],
+	"shape": "square"
+}

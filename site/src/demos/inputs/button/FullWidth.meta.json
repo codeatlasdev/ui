@@ -1,0 +1,11 @@
+{
+	"summary": "Two buttons that stretch to the width of their container: a filled primary and an outlined cancel.",
+	"use": "Stacked action pairs in forms, dialogs and bottom sheets where the buttons should span the column.",
+	"spec": [
+		"`fullWidth` on `Button` makes it fill its parent",
+		"Primary action keeps the default variant, secondary uses `variant=\"outlined\"`",
+		"Wrapper column is `max-width: 320px` with `gap: var(--ca-space-2)`"
+	],
+	"tags": ["button", "full-width", "stacked", "actions", "form"],
+	"shape": "square"
+}

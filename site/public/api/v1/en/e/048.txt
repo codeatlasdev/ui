@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #048 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/swatch-group#custom-colors -->
 Element: #048 Custom colors (inputs/swatch-group)
-What it shows: Any CSS color, a small size and a disabled swatch.
-Tags: custom, colors, swatchgroup
+What it shows: Swatch group with four custom colors where one swatch is disabled.
+When to use: Letting users pick a label or tag color from a fixed palette.
+Spec:
+- `<SwatchGroup` with `size="sm"` and `aria-label="Label color"` and `bind:value={color}`
+- Items set `value`, `label` and `color`: Blue `#2563eb`, Green `#16a34a`, Red `#dc2626`, Purple `#9333ea`
+- Purple has `disabled: true`
+- Initial value is `$state('#2563eb')`
+- Current value is shown as `value: {color}`
+Tags: swatch-group, color-picker, custom, palette, disabled
 Needs: @codeatlasdev/ui@4.1.0
 Components: SwatchGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/swatch-group#custom-colors

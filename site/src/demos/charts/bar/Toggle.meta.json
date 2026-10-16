@@ -1,0 +1,14 @@
+{
+	"summary": "A bar chart with Grouped and Stacked buttons that switch the same two-year quarterly data between layouts.",
+	"use": "Letting users flip between comparing values side by side and seeing the combined total.",
+	"spec": [
+		"`let mode = $state<'grouped' | 'stacked'>('grouped')` drives the layout",
+		"Two `<Button` elements with `size=\"sm\"`, labelled Grouped and Stacked, using `variant={mode === 'grouped' ? 'filled' : 'glass'}` and `variant={mode === 'stacked' ? 'filled' : 'glass'}`",
+		"`onclick={() => (mode = 'grouped')}` and `onclick={() => (mode = 'stacked')}` set the mode",
+		"`<BarChart` with 2 series `'2025'` and `'2026'`, 4 values each",
+		"`categories={['Q1', 'Q2', 'Q3', 'Q4']}`",
+		"`stacked={mode === 'stacked'}` and `height=\"300px\"`"
+	],
+	"tags": ["bar-chart", "stacked", "grouped", "toggle", "button", "state", "flex"],
+	"shape": "wide"
+}

@@ -1,0 +1,12 @@
+{
+	"summary": "A native button that fires a long-press handler after an 800ms hold and shows Long press! for 1.5 seconds.",
+	"use": "Touch and desktop shortcuts for secondary actions, such as selecting a row or opening a context menu.",
+	"spec": [
+		"`use:longpress={800}` imported from `@codeatlasdev/ui/actions` on a native `<button`",
+		"`onlongpress={done}` sets `fired = true` and resets it with `setTimeout(() => (fired = false), 1500)`",
+		"Label switches with state: `{fired ? 'Long press!' : 'Press and hold (800ms)'}`",
+		"`let fired = $state(false)`"
+	],
+	"tags": ["longpress", "action", "touch", "gesture", "button", "hold"],
+	"shape": "wide"
+}

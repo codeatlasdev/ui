@@ -1,0 +1,13 @@
+{
+	"summary": "Four badges on icon buttons: a dot, a count of 3, a count of 99 and a count of 100.",
+	"use": "Unread counters on notification, message and cart icons.",
+	"spec": [
+		"`<Badge dot>` around a Bell `<IconButton aria-label=\"Notifications\">`",
+		"`<Badge count={3}>` around a Mail `<IconButton aria-label=\"Messages\">`",
+		"`<Badge count={99}>` around a ShoppingCart `<IconButton aria-label=\"Cart\">`",
+		"`<Badge count={100}>` around a Bell `<IconButton aria-label=\"Notifications\">`",
+		"`<Flex gap=\"4\" align=\"center\" wrap>` lays them out"
+	],
+	"tags": ["badge", "count", "dot", "overflow", "icon-button", "unread"],
+	"shape": "wide"
+}

@@ -1,5 +1,9 @@
 Use @codeatlasdev/ui demo #099 "Text lines" (feedback/skeleton).
-What it shows: With rows, the last line is shortened to 60% for a natural paragraph..
+What it shows: A glass card skeleton with a 60% wide heading line above a block of three text lines. When to use: Loading placeholder for an article or description block.
+Spec:
+- `<Card material="glass" p="5" full>` with `<Stack gap="3">`
+- Heading line `<Skeleton height="20px" width="60%" />`
+- Body lines `<Skeleton rows={3} height="14px" />` render three rows from one element
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

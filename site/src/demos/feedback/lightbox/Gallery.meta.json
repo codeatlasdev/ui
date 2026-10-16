@@ -1,0 +1,12 @@
+{
+	"summary": "A lightbox gallery with three items, two images and one video, each with a caption and some with meta text.",
+	"use": "Browsing attachments or media in a thread, with captions and authors, using next and previous navigation.",
+	"spec": [
+		"`<Lightbox bind:open bind:index {items} />` with `items: LightboxItem[]`",
+		"Three items: image Moodboard, v1, video `type: 'video'` Short clip with a `poster`, image Moodboard, v2",
+		"Fields used: `src`, `alt`, `caption`, `meta`; the third item has no `meta`",
+		"Trigger resets `index = 0; open = true;` and is labelled `Open gallery ({items.length})`"
+	],
+	"tags": ["lightbox", "gallery", "video", "caption", "carousel", "media"],
+	"shape": "wide"
+}

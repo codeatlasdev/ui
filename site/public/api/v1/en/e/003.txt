@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #003 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/button#loading -->
 Element: #003 Loading (inputs/button)
-What it shows: Swaps the leading icon for a spinner, sets aria-busy and blocks clicks while keeping the label.
-Tags: loading, button
+What it shows: Buttons in the loading state, including one that toggles loading for two seconds when clicked.
+When to use: Submit and save buttons that wait on a request and must block repeat clicks while keeping their label.
+Spec:
+- `loading` on `variant="filled"` and `variant="outlined"` shows the spinner in place of the leading icon
+- Bound to state: `loading={saving}` with `let saving = $state(false)`
+- `onclick={save}` sets `saving = true` and resets it with `setTimeout(() => (saving = false), 2000)`
+- Label switches with state: `{saving ? 'Saving…' : 'Save (2s)'}`
+Tags: button, loading, spinner, async, submit
 Needs: @codeatlasdev/ui@4.1.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/inputs/button#loading

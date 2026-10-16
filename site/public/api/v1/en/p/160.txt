@@ -1,5 +1,9 @@
 Use @codeatlasdev/ui demo #160 "Basic" (navigation/popover).
-What it shows: Text and an action inside the popover..
+What it shows: A popover opened from a button, containing a sentence of text and a Confirm button. When to use: Short contextual help or a quick confirmation anchored to the element that triggered it.
+Spec:
+- `<Popover>` with `{#snippet triggerChild(props)}<Button {...props}>Open popover</Button>{/snippet}`
+- Content is `<Stack gap="3">` with a paragraph and `<Button size="sm" variant="filled">Confirm</Button>`
+- Paragraph text: This is a basic popover with some content inside.
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

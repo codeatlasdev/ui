@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #161 "Form" (navigation/popover).
-What it shows: A small form anchored to its trigger, aligned to the start..
+What it shows: A popover anchored below-start of a button that holds a text field with Cancel and Save buttons. When to use: Inline editing of a single value, such as renaming a label, without opening a modal.
+Spec:
+- `<Popover side="bottom" align="start">`
+- `{#snippet triggerChild(props)}` renders `<Button variant="filled" {...props}>Edit label</Button>`
+- `<TextField label="Label name" placeholder="e.g. Priority" />` inside `<Stack gap="3">`
+- `<Flex gap="2" justify="end">` holds `<Button size="sm" variant="ghost">Cancel</Button>` and `<Button size="sm" variant="filled">Save</Button>`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

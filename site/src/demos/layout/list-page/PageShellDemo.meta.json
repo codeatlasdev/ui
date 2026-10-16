@@ -1,0 +1,13 @@
+{
+	"summary": "A dashboard page shell with four KPI cards and a placeholder glass card for a chart or table.",
+	"use": "The base page layout of a dashboard: title, headline metrics and a main content area.",
+	"spec": [
+		"`<PageShell title=\"Dashboard\">` is the root, with no description or actions",
+		"`<KpiGrid>` holds 4 `KpiCard` items: Revenue `$118k`, Users `24.8k`, Growth `34%`, Uptime `99.9%`",
+		"Each card has a `trend` and an `icon`, for example `trend={23.4} icon={DollarSign}`",
+		"`<Card material=\"glass\" full>` holds the text Chart or data table goes here",
+		"Frame size is `height: 420px`"
+	],
+	"tags": ["page-shell", "dashboard", "kpi-grid", "kpi-card", "card", "glass", "list-page"],
+	"shape": "wide"
+}

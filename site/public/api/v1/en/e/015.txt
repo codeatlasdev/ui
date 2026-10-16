@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #015 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/date-picker#calendar-and-rangecalendar -->
 Element: #015 Calendar and RangeCalendar (inputs/date-picker)
-What it shows: Inline calendars. Click a start date, then an end date for the range.
-Tags: calendar, and, rangecalendar
+What it shows: An inline single-date Calendar and a RangeCalendar, each printing its selected value below.
+When to use: Always-visible date selection such as booking a stay or choosing an event day without a popover.
+Spec:
+- `<Calendar bind:value label="Event date" locale="en-US" weekStartsOn={0} />`
+- `let value = $state<DateValue | undefined>(today(getLocalTimeZone()))` preselects today
+- `<RangeCalendar bind:value={range} label="Stay" locale="en-US" weekStartsOn={0} numberOfMonths={1} />`
+- `let range = $state<DateRange>({ start: undefined, end: undefined })` starts empty
+- Output lines show `fmt(value)`, `fmt(range.start)` and `fmt(range.end)`, with `–` when unset
+Tags: calendar, range-calendar, date, date-range, inline, locale
 Needs: @codeatlasdev/ui@4.1.0
 Components: Calendar, RangeCalendar
 Live demo: https://ui.codeatlas.com.br/docs/inputs/date-picker#calendar-and-rangecalendar

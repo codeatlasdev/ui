@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #060 "Single and multiple" (inputs/toggle-group).
-What it shows: type=&quot;single&quot; binds a string. type=&quot;multiple&quot; binds a string array..
+What it shows: Single-select alignment group and multi-select formatting group, both icon-only. When to use: Editor toolbars with exclusive options like alignment and combinable options like bold or italic.
+Spec:
+- Alignment: `type="single"` with `aria-label="Text alignment"` and `bind:value={align}`
+- Alignment items: AlignLeft, AlignCenter, AlignRight with `'aria-label': 'Align left'` etc.
+- Formatting: `type="multiple"` with `aria-label="Text formatting"` and `bind:value={format}`
+- `format` is `$state<string[]>(['bold'])` with items Bold, Italic, Underline
+- Values are printed as `value: {align || '–'}` and `JSON.stringify(format)`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

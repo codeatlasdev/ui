@@ -1,0 +1,12 @@
+{
+	"summary": "A CardGrid with two LinkCards, followed by a row of five MethodBadges for the HTTP verbs.",
+	"use": "Docs landing pages linking to guides, and API references that tag endpoints with their HTTP method.",
+	"spec": [
+		"`<CardGrid>` contains 2 `LinkCard` entries: Quick start and Webhooks",
+		"Each `LinkCard` sets `title`, `description` and `href=\"#top\"`",
+		"`<MethodBadge method=\"GET\" />`",
+		"Other badges: `method=\"POST\"`, `method=\"PUT\"`, `method=\"PATCH\"`, `method=\"DELETE\"`"
+	],
+	"tags": ["card-grid", "link-card", "method-badge", "docs-kit", "http-method", "api-docs"],
+	"shape": "wide"
+}

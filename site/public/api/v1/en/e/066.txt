@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #066 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/surfaces/accordion#multiple -->
 Element: #066 Multiple (surfaces/accordion)
-What it shows: Multiple
-Tags: multiple, accordion, accordionitem
+What it shows: An Accordion that lets several of its three items stay open at once.
+When to use: Reference or feature lists where users compare multiple sections without the others collapsing.
+Spec:
+- `<Accordion type="multiple">`
+- 3 items: `<AccordionItem value="b1" title="Svelte 5 runes">`, `value="b2" title="Headless primitives"`, `value="b3" title="CSS custom properties"`
+- Item content is plain text passed as children
+- The accordion is uncontrolled, nothing is bound
+- Wrapped in `.wrap` with `max-width: 560px`
+Tags: accordion, accordion-item, multiple, expand, disclosure
 Needs: @codeatlasdev/ui@4.1.0
 Components: Accordion, AccordionItem
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/accordion#multiple

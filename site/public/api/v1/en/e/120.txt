@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #120 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/chip#variants-and-size -->
 Element: #120 Variants and size (display/chip)
-What it shows: Variants and size
-Tags: variants, and, size, chip
+What it shows: Chip color variants (default, brand, success, warning, error, info) plus a small size chip.
+When to use: Picking the chip tone for categories and semantic labels.
+Spec:
+- `<Chip label="Default" />` has no variant
+- `variant="brand"`, `variant="success"`, `variant="warning"`, `variant="error"` and `variant="info"` each with a matching label
+- `<Chip label="Small" size="sm" />` shows the small size
+Tags: chip, variant, brand, size, sm, color
 Needs: @codeatlasdev/ui@4.1.0
 Components: Chip
 Live demo: https://ui.codeatlas.com.br/docs/display/chip#variants-and-size

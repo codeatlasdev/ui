@@ -1,7 +1,15 @@
 <!-- @codeatlasdev/ui demo #204 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/line#real-time-stream -->
 Element: #204 Real-time stream (charts/line)
-What it shows: Replace the data array and the chart updates in place.
-Tags: real, time, stream, card, linechart
+What it shows: A live line chart that shifts in a new Live revenue point every 800 ms over a 20-point window.
+When to use: Real-time monitoring such as live revenue, traffic or latency streams.
+Spec:
+- `let streamData = $state<number[]>` starts with 20 values from `68000` to `115000`
+- `setInterval` in `onMount` runs every `800` ms and sets `streamData = [...streamData.slice(1), next]`
+- `next` is clamped with `Math.min(125000, Math.max(42000,`
+- `series={[{ name: 'Live revenue', data: streamData }]}`
+- `categories={streamData.map((_, i) => String(i))}`
+- `valueFormatter={fmt}` and `height="300px"`
+Tags: line-chart, streaming, live, realtime, onmount, interval
 Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, LineChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/line#real-time-stream

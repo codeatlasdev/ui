@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #034 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/radio#cards -->
 Element: #034 Cards (inputs/radio)
-What it shows: variant=&quot;cards&quot; renders each option as a selectable card with an optional description.
-Tags: cards, radiogroup
+What it shows: Radio group in `cards` variant with three plans, one disabled, bound to a selected plan.
+When to use: Choosing a subscription plan or any option that needs a title and a short description.
+Spec:
+- `<RadioGroup variant="cards"` with `aria-label="Plan"`
+- `items={plans}` holds 3 entries with `value`, `label`, `description`: Free, Pro, Team
+- Team entry has `disabled: true`
+- `bind:value={plan}` with initial `$state('pro')`
+Tags: radio-group, radio, cards, plan, disabled, description
 Needs: @codeatlasdev/ui@4.1.0
 Components: RadioGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/radio#cards

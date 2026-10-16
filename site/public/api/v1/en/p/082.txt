@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #082 "Controlled pending" (feedback/alert-dialog).
-What it shows: Pass pending when the loading state lives outside, for example a mutation from your query client..
+What it shows: An alert dialog driven by parent state: the pending prop is set for 1.5 seconds before the dialog closes itself. When to use: Publishing or saving flows where the confirm button must show progress and the parent decides when to close.
+Spec:
+- `<AlertDialog bind:open title="Publish changes?" confirmLabel="Publish"` with no description
+- `{pending}` shorthand passes `let pending = $state(false)` to the dialog
+- `onconfirm={publish}` sets `pending = true`, awaits 1500 ms, then sets `pending = false` and `open = false`
+- Trigger is `<Button variant="outlined"` labelled Open controlled
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

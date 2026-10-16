@@ -1,0 +1,12 @@
+{
+	"summary": "Seven body text size tokens from Body 1 to Nano, each rendered as a sample line.",
+	"use": "Choosing a font size token for body copy, captions, labels and buttons.",
+	"spec": [
+		"Renders `<TypeRows {rows} />` with 7 rows",
+		"Row tokens: `--ca-font-size-body1`, `--ca-font-size-body2`, `--ca-font-size-caption`, `--ca-font-size-label`",
+		"Then `--ca-font-size-button`, `--ca-font-size-micro`, `--ca-font-size-nano`",
+		"Row labels: Body 1, Body 2, Caption, Label, Button, Micro, Nano"
+	],
+	"tags": ["typography", "body", "font-size", "tokens", "caption", "label"],
+	"shape": "wide"
+}

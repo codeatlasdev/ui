@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #089 "Right (default)" (feedback/drawer).
-What it shows: Slides in from the right, with a footer actions area..
+What it shows: A default drawer titled Filters with status and role filter groups, two switches and Reset and Apply actions. When to use: Filter panels for tables and lists that would crowd the page if shown inline.
+Spec:
+- `<Drawer bind:open title="Filters">` with no side or width prop
+- Two `<FilterGroup` blocks: status with 2 options (Active, Inactive) and role with 3 options (Admin, Editor, Viewer)
+- Filter state: `onchange={(v) => (statusF = v)}` and `onchange={(v) => (roleF = v)}`, both starting at `'all'`
+- Two `<Switch label="Show inactive only" />` and `<Switch label="Include archived" />` inside `<Stack gap="4">`
+- `{#snippet actions()}` holds ghost Reset and filled Apply buttons
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

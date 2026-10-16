@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #115 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/chip#basic -->
 Element: #115 Basic (display/chip)
-What it shows: Basic
-Tags: basic, chip
+What it shows: Three plain chips with text labels.
+When to use: Static tags or keywords attached to a record.
+Spec:
+- `<Chip label="Design System" />`
+- `<Chip label="Svelte 5" />`
+- `<Chip label="Headless" />`
+- No variant, size or handlers are set
+Tags: chip, label, tag, basic
 Needs: @codeatlasdev/ui@4.1.0
 Components: Chip
 Live demo: https://ui.codeatlas.com.br/docs/display/chip#basic

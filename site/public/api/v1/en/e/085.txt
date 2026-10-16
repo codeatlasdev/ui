@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #085 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/dialog#form -->
 Element: #085 Form (feedback/dialog)
-What it shows: A dialog holding a form, at the md size.
-Tags: form, dialog, button, textfield, select, stack
+What it shows: A medium dialog containing an invite form with name, email and role fields and a Send invite button disabled until name and email are filled.
+When to use: Short create or invite flows that collect a few fields without leaving the page.
+Spec:
+- `<Dialog bind:open title="Invite team member" size="md">`
+- Fields stacked in `<Stack gap="3.5">`: two `<TextField` (Full name, Email with `type="email"`) using `bind:value={name}` and `bind:value={email}`
+- `<Select label="Role" bind:value={role} options={roleOpts}` with three options: Admin, Editor, Viewer
+- `let role = $state('viewer')` is the default role
+- `{#snippet actions()}`: ghost Cancel and filled Send invite with `disabled={!name || !email}`
+Tags: dialog, form, text-field, select, invite, modal
 Needs: @codeatlasdev/ui@4.1.0
 Components: Dialog, Button, TextField, Select, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/dialog#form

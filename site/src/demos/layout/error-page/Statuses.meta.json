@@ -1,0 +1,10 @@
+{
+	"summary": "The ErrorPage component rendering a 404 status without its action buttons.",
+	"use": "Route-level error screens for not found, forbidden or server errors.",
+	"spec": [
+		"`<ErrorPage status={404} hideActions />`",
+		"Only the `status` prop and `hideActions` are passed, no custom title or actions"
+	],
+	"tags": ["error-page", "404", "not-found", "status", "error"],
+	"shape": "square"
+}

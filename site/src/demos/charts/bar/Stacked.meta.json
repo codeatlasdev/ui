@@ -1,0 +1,14 @@
+{
+	"summary": "A stacked bar chart splitting six months of revenue into four acquisition channels.",
+	"use": "Showing how a total is composed of channels or segments over time.",
+	"spec": [
+		"`<BarChart` inside `<Card material=\"glass\" full>`",
+		"4 series in `series`: Organic, Paid, Referral, Direct, each with 6 values",
+		"`categories={months}` with `'Jan'` to `'Jun'`",
+		"`stacked` prop",
+		"`valueFormatter={fmt}` renders `$${(v / 1000).toFixed(0)}k`",
+		"`height=\"300px\"`"
+	],
+	"tags": ["bar-chart", "stacked", "series", "categories", "revenue", "card"],
+	"shape": "wide"
+}

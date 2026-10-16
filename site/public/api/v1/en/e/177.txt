@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #177 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/kpi-card#without-trend -->
 Element: #177 Without trend (layout/kpi-card)
-What it shows: Omit trend and the indicator disappears.
-Tags: without, trend, kpicard, kpigrid
+What it shows: Three KPI cards without a trend value, one with an icon and two plain.
+When to use: Snapshot counters, such as orders today or error rate, that have no comparison period.
+Spec:
+- `<KpiGrid>` with 3 `KpiCard` items and no trend value
+- `<KpiCard title="Orders Today" value="124" icon={ShoppingCart} />`
+- `<KpiCard title="Avg. Session" value="3m 42s" />`
+- `<KpiCard title="Error Rate" value="0.03" unit="%" />`
+Tags: kpi-card, kpi-grid, no-trend, metrics, counters, unit
 Needs: @codeatlasdev/ui@4.1.0
 Components: KpiCard, KpiGrid
 Live demo: https://ui.codeatlas.com.br/docs/layout/kpi-card#without-trend

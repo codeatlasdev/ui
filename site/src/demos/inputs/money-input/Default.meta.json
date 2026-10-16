@@ -1,0 +1,12 @@
+{
+	"summary": "A default MoneyInput bound to a cents value, with the raw cents and formatted display printed below.",
+	"use": "A price or amount field where the model stores integer cents and the UI shows a formatted amount.",
+	"spec": [
+		"`<MoneyInput label=\"Price\" bind:value={price} />`",
+		"`let price = $state(123456)` holds cents",
+		"Output line prints `{price} cents → {centsToDisplay(price)}`",
+		"Wrapper `.col` has `max-width: 400px`"
+	],
+	"tags": ["money-input", "cents", "currency", "format", "bind", "forms"],
+	"shape": "wide"
+}

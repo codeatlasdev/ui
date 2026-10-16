@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #072 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/surfaces/card#stat-cards -->
 Element: #072 Stat cards (surfaces/card)
-What it shows: Stat cards
-Tags: stat, cards, card
+What it shows: Three glass stat Cards in a flex row, each with a label, a large value and a delta line.
+When to use: Dashboard KPI strips showing a metric, its value and a short qualifier.
+Spec:
+- `{#each stats as s}` renders `<Card material="glass" class="stat">` once per stat
+- 3 stats with `label`, `value`, `delta`: Components 70+, Presets 8, Tokens 80+
+- Each card has three paragraphs: `{s.label}`, `{s.value}` and `{s.delta}`
+- `.stat` uses `min-width: 140px` inside a wrapping flex `.grid`
+Tags: card, stats, kpi, dashboard, glass, metrics
 Needs: @codeatlasdev/ui@4.1.0
 Components: Card
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/card#stat-cards

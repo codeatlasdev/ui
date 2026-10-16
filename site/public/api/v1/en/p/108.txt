@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #108 "Initials fallback" (display/avatar).
-What it shows: Initials fallback.
+What it shows: Large avatars with no image source: three given only `alt` names and two given explicit `fallback` text. When to use: Users who have no uploaded photo, shown with initials or a placeholder character.
+Spec:
+- `alt="Alice Martin"`, `alt="Bob Chen"` and `alt="Clara Silva"` with no image
+- `fallback="DK"` sets explicit text
+- `fallback="?"` sets a placeholder character
+- All five use `size="lg"`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

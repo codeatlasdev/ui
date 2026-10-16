@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #213 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/scatter#basic-scatter -->
 Element: #213 Basic scatter (charts/scatter)
-What it shows: Visits against conversion rate.
-Tags: basic, scatter, card, scatterchart
+What it shows: A scatter plot of 80 generated points in a single Data points series.
+When to use: Exploring the relationship between two numeric variables, such as traffic and conversion.
+Spec:
+- `<ScatterChart series={[{ name: 'Data points', data }]}`
+- `data` is 80 `[number, number]` pairs from `Array.from({ length: 80 }`
+- `yName="Conversion %"`
+- `yFormatter={(v) => `${v.toFixed(1)}%`}`
+- `height="320px"` inside `<Card material="glass" full>`
+Tags: scatter-chart, basic, points, y-axis, y-formatter, card
 Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, ScatterChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/scatter#basic-scatter

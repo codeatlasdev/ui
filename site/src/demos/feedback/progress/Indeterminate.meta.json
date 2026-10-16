@@ -1,0 +1,12 @@
+{
+	"summary": "Two indeterminate progress bars labelled Loading and Syncing for work of unknown length.",
+	"use": "Background loading or syncing where no percentage is available.",
+	"spec": [
+		"`<Progress indeterminate label=\"Loading content\" />`",
+		"`<Progress indeterminate label=\"Syncing data\" />`",
+		"Each bar sits in a row next to a text label, Loading and Syncing",
+		"Column has `max-width: 480px`"
+	],
+	"tags": ["progress", "indeterminate", "loading", "sync", "label"],
+	"shape": "wide"
+}

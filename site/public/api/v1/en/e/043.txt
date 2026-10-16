@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #043 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/select#states -->
 Element: #043 States (inputs/select)
-What it shows: Disabled options, description, error and a disabled select.
-Tags: states, select
+What it shows: Three selects showing a description, an error and a disabled state, with one disabled option.
+When to use: Showing helper text, validation errors and locked fields on dropdowns in a form.
+Spec:
+- Plan select has `description="Enterprise is disabled."` and `bind:value={plan}`
+- `plans` has Free, Pro, Enterprise, and Enterprise has `disabled: true`
+- Region select has `error="Pick a region to continue."` and no bound value
+- Size select has `disabled` with `bind:value={size}`
+- 3 selects stacked in `.col` with `max-width: 320px`
+Tags: select, error, disabled, description, validation
 Needs: @codeatlasdev/ui@4.1.0
 Components: Select
 Live demo: https://ui.codeatlas.com.br/docs/inputs/select#states

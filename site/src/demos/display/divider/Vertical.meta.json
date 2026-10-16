@@ -1,0 +1,11 @@
+{
+	"summary": "Three text items in a row inside a glass card separated by vertical dividers.",
+	"use": "Separating inline items in a toolbar or meta row.",
+	"spec": [
+		"`<Card material=\"glass\" p=\"6\" full>` wraps the content",
+		"`<Flex gap=\"6\" align=\"center\">` lays out Left, Center and Right",
+		"`<Divider orientation=\"vertical\" />` is placed between them"
+	],
+	"tags": ["divider", "vertical", "orientation", "separator", "flex"],
+	"shape": "wide"
+}

@@ -1,5 +1,9 @@
 Use @codeatlasdev/ui demo #002 "With icons" (inputs/button).
-What it shows: Leading and trailing snippets..
+What it shows: Buttons with an icon before the label, after the label, and with a ghost download action. When to use: Actions that benefit from an icon cue: favourite, continue to next step, download.
+Spec:
+- Leading icon goes in `{#snippet leading()}` (`Star` from `@lucide/svelte`, `size={15}`)
+- Trailing icon goes in `{#snippet trailing()}` (`ArrowRight`, `size={15}`)
+- Variants shown: `variant="filled"`, `variant="outlined"`, `variant="ghost"`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #180 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/layout-primitives#container-and-section -->
 Element: #180 Container and Section (layout/layout-primitives)
-What it shows: Container and Section
-Tags: container, and, section, stack, card
+What it shows: A Container and Section holding a Stack of two plan cards, showing the page-level layout primitives.
+When to use: Structuring a marketing or settings page with a centered container, a labelled section and stacked cards.
+Spec:
+- `<Container size="md">` wraps `<Section size="1" aria-label="Plans">`
+- `<Stack gap="4">` holds 2 cards with `material="solid"` and `headingLevel={3}`
+- Cards are `title="Starter"` (Up to 3 projects.) and `title="Team"` (Unlimited projects and roles.)
+Tags: container, section, stack, card, layout, page, heading-level
 Needs: @codeatlasdev/ui@4.1.0
 Components: Container, Section, Stack, Card
 Live demo: https://ui.codeatlas.com.br/docs/layout/layout-primitives#container-and-section

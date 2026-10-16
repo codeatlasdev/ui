@@ -1,7 +1,15 @@
 <!-- @codeatlasdev/ui demo #130 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/live-list#streaming-rows -->
 Element: #130 Streaming rows (display/live-list)
-What it shows: Start the check, then scroll up while it runs: following pauses and a New button appears.
-Tags: streaming, rows, livelist, button, chip
+What it shows: A LiveList that streams in 40 simulated domain availability checks, one every 150ms, after a Start bulk check button is pressed.
+When to use: Bulk jobs such as domain checks, imports or batch validations where results arrive one by one and the user wants to watch progress.
+Spec:
+- `<LiveList {items} total={TOTAL} {status} label="Domain checks" height="14rem">` with `const TOTAL = 40`
+- State: `let items = $state<Check[]>([])` and `let status = $state<'idle' | 'running' | 'done'>('idle')`
+- Row content rendered with `{#snippet item(row)}`: `row.domain` text plus a `Chip`
+- `<Chip size="sm" variant={row.free ? 'success' : 'default'}` labelled Available or Taken from `row.free`
+- `<Button variant="filled" onclick={start} disabled={status === 'running'}>` starts the stream, label becomes Checking… while running
+- `start()` pushes one item with `domain` and `free` every 150ms with `setInterval` and sets `status = 'done'` at `TOTAL`
+Tags: live-list, stream, progress, chip, bulk, status, real-time
 Needs: @codeatlasdev/ui@4.1.0
 Components: LiveList, Button, Chip
 Live demo: https://ui.codeatlas.com.br/docs/display/live-list#streaming-rows

@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #186 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/mobile-pane#chat -->
 Element: #186 Chat (layout/mobile-pane)
-What it shows: Open the pane. On a phone the text field rises with the virtual keyboard.
-Tags: chat, mobilepane, button, iconbutton, textfield
+What it shows: A button that opens a full-screen mobile pane titled Maria Souza with a message list, a header action and a composer.
+When to use: Chat threads and other drill-down detail views on phones, opened from a list and closed again.
+Spec:
+- `<MobilePane bind:open title="Maria Souza">` with `let open = $state(false)`
+- `<Button variant="filled" onclick={() => (open = true)}>Open conversation</Button>` opens it
+- `{#snippet actions()}` holds `<IconButton variant="text" aria-label="More options">` with `<MoreVertical size={20} aria-hidden="true" />`
+- `const messages` has 5 strings rendered with `{#each messages as m}<li>{m}</li>{/each}`
+- Composer is `<TextField label="Message" placeholder="Write something…" />`
+Tags: mobile-pane, chat, mobile, icon-button, text-field, conversation
 Needs: @codeatlasdev/ui@4.1.0
 Components: MobilePane, Button, IconButton, TextField
 Live demo: https://ui.codeatlas.com.br/docs/layout/mobile-pane#chat

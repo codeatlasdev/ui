@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #106 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/alert#with-title -->
 Element: #106 With title (display/alert)
-What it shows: With title
-Tags: with, title, alert
+What it shows: Two alerts with a bold title above the body text: a success and an error.
+When to use: Notices that need a headline plus an explanation, such as save confirmations or failed sign-ins.
+Spec:
+- `severity="success"` with `title="Changes saved"`
+- `severity="error"` with `title="Authentication failed"`
+- Body text is passed as the alert children
+- Wrapper `.col` has `max-width: 560px`
+Tags: alert, title, severity, success, error
 Needs: @codeatlasdev/ui@4.1.0
 Components: Alert
 Live demo: https://ui.codeatlas.com.br/docs/display/alert#with-title

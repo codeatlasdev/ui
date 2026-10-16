@@ -1,7 +1,15 @@
 <!-- @codeatlasdev/ui demo #239 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/menu#leading-icons-and-brand-logos -->
 Element: #239 Leading icons and brand logos (navigation/menu)
-What it shows: The icon slot gives every item the same box and gap. brandIcon keeps a logo's own colors, and SchemeAsset swaps a monochrome mark between light and dark.
-Tags: leading, icons, and, brand, logos, dropdownmenu, dropdownmenuitem, dropdownmenulabel, schemeasset, button
+What it shows: A dropdown menu of agents where brand-colored icons opt out of the item's text color, including a scheme-aware monochrome mark.
+When to use: Pickers that list third-party products or agents with their real logos, such as a new-tab or integration menu.
+Spec:
+- `<DropdownMenu>` with `{#snippet triggerChild(props)}` rendering `<Button variant="glass" {...props}>New tab</Button>`
+- `<DropdownMenuLabel>Agents</DropdownMenuLabel>` followed by 4 items: Shell, Claude Code, Codex, Coming soon
+- Shell uses `{#snippet icon()}<Bot />{/snippet}`; Claude Code and Codex set `brandIcon` so the inline `svg` keeps its own colors
+- Codex wraps `<SchemeAsset>` with `{#snippet light()}` and `{#snippet dark()}` svg variants
+- Last item is `brandIcon disabled`
+- Each item sets `last` through `onclick`, shown as `Opened: {last}` with `aria-live="polite"`
+Tags: dropdown-menu, menu, brand-icon, scheme-asset, dark-mode, icon, disabled
 Needs: @codeatlasdev/ui@4.1.0
 Components: DropdownMenu, DropdownMenuItem, DropdownMenuLabel, SchemeAsset, Button
 Live demo: https://ui.codeatlas.com.br/docs/navigation/menu#leading-icons-and-brand-logos

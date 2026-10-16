@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #034 "Cards" (inputs/radio).
-What it shows: variant=&quot;cards&quot; renders each option as a selectable card with an optional description..
+What it shows: Radio group in `cards` variant with three plans, one disabled, bound to a selected plan. When to use: Choosing a subscription plan or any option that needs a title and a short description.
+Spec:
+- `<RadioGroup variant="cards"` with `aria-label="Plan"`
+- `items={plans}` holds 3 entries with `value`, `label`, `description`: Free, Pro, Team
+- Team entry has `disabled: true`
+- `bind:value={plan}` with initial `$state('pro')`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

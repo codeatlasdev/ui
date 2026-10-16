@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #136 "Horizontal scroll" (display/scroll-area).
-What it shows: Horizontal scroll.
+What it shows: A horizontal ScrollArea with an always visible scrollbar holding a row of 24 Tag chips inside a glass card. When to use: Overflowing chip, tag or filter rows that should scroll sideways instead of wrapping.
+Spec:
+- `<Card material="glass" p="2" full>` wraps the area
+- `<ScrollArea orientation="horizontal" type="always">`
+- `{ length: 24 }` builds 24 tags labelled Tag 1 to Tag 24, each rendered as `<Chip label={tag} />`
+- Chips sit in a `<div class="row">` styled with `width: max-content` so the content overflows
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

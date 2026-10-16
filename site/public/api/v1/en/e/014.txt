@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #014 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/copy-button#variants-and-sizes -->
 Element: #014 Variants and sizes (inputs/copy-button)
-What it shows: Variants and sizes
-Tags: variants, and, sizes, copybutton
+What it shows: CopyButton in three variants and two extra sizes, side by side.
+When to use: Choosing the emphasis and size of a copy action to match the surrounding UI.
+Spec:
+- `variant="filled"` with `value="filled"`
+- `variant="glass"` with `value="glass"`
+- `variant="outlined"` with `value="outlined"`
+- `size="sm"` with `value="small"`
+- `size="lg"` with `value="large"`
+Tags: copy-button, variant, size, filled, glass, outlined
 Needs: @codeatlasdev/ui@4.1.0
 Components: CopyButton
 Live demo: https://ui.codeatlas.com.br/docs/inputs/copy-button#variants-and-sizes

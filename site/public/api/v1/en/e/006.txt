@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #006 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/button#variants -->
 Element: #006 Variants (inputs/button)
-What it shows: filled, glass, outlined, ghost and destructive.
-Tags: variants, button
+What it shows: All five button variants in a row: filled, glass, outlined, ghost and destructive.
+When to use: Picking the emphasis of an action: filled for primary, outlined or ghost for secondary, destructive for irreversible.
+Spec:
+- `variant="filled"` labelled Filled
+- `variant="glass"` labelled Glass
+- `variant="outlined"` labelled Outlined
+- `variant="ghost"` labelled Ghost
+- `variant="destructive"` labelled Destructive
+Tags: button, variant, filled, glass, outlined, ghost, destructive
 Needs: @codeatlasdev/ui@4.1.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/inputs/button#variants

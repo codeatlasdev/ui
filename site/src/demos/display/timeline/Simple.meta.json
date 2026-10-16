@@ -1,0 +1,11 @@
+{
+	"summary": "A basic Timeline of four project milestones, each with a label and a date.",
+	"use": "Roadmaps, changelogs or release histories that need a short vertical sequence of dated events.",
+	"spec": [
+		"`<Timeline {items} />`",
+		"4 items with `label` and `date` only: Project started Jan 2025, Alpha released Mar 2025, Public beta Jun 2025, v1.0 stable Sep 2025",
+		"Wrapped in `.wrap` with `max-width: 440px`"
+	],
+	"tags": ["timeline", "milestones", "roadmap", "history", "dates"],
+	"shape": "tall"
+}

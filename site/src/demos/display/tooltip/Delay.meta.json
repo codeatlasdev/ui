@@ -1,0 +1,12 @@
+{
+	"summary": "Three tooltips with different open delays on glass buttons: instant, default and slow.",
+	"use": "Tuning how quickly a tooltip appears, instant for dense toolbars and slower for hints that should not flash.",
+	"spec": [
+		"`delay={0}` on the Instant button with `content=\"No delay (delay=0)\"`",
+		"No `delay` prop on the Default button, `content=\"Default delay (500ms)\"`",
+		"`delay={1000}` on the Slow button",
+		"Each trigger uses `{#snippet triggerChild(props)}` with `<Button variant=\"glass\" {...props}>`"
+	],
+	"tags": ["tooltip", "delay", "button", "hover", "timing"],
+	"shape": "wide"
+}

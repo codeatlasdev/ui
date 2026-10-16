@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #212 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/radar#simple-radar -->
 Element: #212 Simple radar (charts/radar)
-What it shows: Simple radar
-Tags: simple, radar, card, radarchart
+What it shows: A radar chart of one team, Team Alpha, across six dimensions.
+When to use: Showing a single score profile across several attributes.
+Spec:
+- `const indicators` maps 6 names (Speed, Quality, Reliability, Innovation, Support, Coverage) to `{ name, max: 100 }`
+- `<RadarChart {indicators} series={[{ name: 'Team Alpha', values: [88, 92, 76, 85, 94, 79] }]}`
+- `height="340px"` inside `<Card material="glass" full>`
+Tags: radar-chart, simple, indicators, scores, single-series, card
 Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, RadarChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/radar#simple-radar

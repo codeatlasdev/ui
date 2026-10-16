@@ -1,7 +1,15 @@
 <!-- @codeatlasdev/ui demo #020 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/file-upload#basic -->
 Element: #020 Basic (inputs/file-upload)
-What it shows: Multiple files with a size limit and the selected count.
-Tags: basic, fileupload
+What it shows: A multi-file FileUpload with a size limit and hint that reports how many files are selected.
+When to use: Attachment and document upload areas that accept several files and cap their size.
+Spec:
+- `bind:files` with `let files = $state<File[]>([])`
+- `multiple`
+- `hint="PNG, JPG, PDF up to 10 MB"`
+- `maxSize={10 * 1024 * 1024}`
+- `{#if files.length > 0}` shows the selected file count with a plural `s`
+- Wrapper `.wrap` has `max-width: 480px`
+Tags: file-upload, dropzone, multiple, max-size, files, attachment
 Needs: @codeatlasdev/ui@4.1.0
 Components: FileUpload
 Live demo: https://ui.codeatlas.com.br/docs/inputs/file-upload#basic

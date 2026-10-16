@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #175 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/kpi-card#basic-metrics -->
 Element: #175 Basic metrics (layout/kpi-card)
-What it shows: Basic metrics
-Tags: basic, metrics, kpicard, kpigrid
+What it shows: Three KPI cards with title, value, an optional unit, a positive or negative trend and an icon, inside a KpiGrid.
+When to use: Dashboard headline numbers such as revenue, users and conversion with their period-over-period change.
+Spec:
+- `<KpiGrid>` with 3 `KpiCard` items
+- `<KpiCard title="Monthly Revenue" value="$48,200" trend={12.4} icon={DollarSign} />`
+- `<KpiCard title="Active Users" value="3,847" trend={-2.1} icon={Users} />`
+- `<KpiCard title="Conversion" value="4.8" unit="%" trend={0.6} icon={TrendingUp} />`
+Tags: kpi-card, kpi-grid, metrics, trend, dashboard, unit, icon
 Needs: @codeatlasdev/ui@4.1.0
 Components: KpiCard, KpiGrid
 Live demo: https://ui.codeatlas.com.br/docs/layout/kpi-card#basic-metrics

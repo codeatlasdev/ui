@@ -1,0 +1,13 @@
+{
+	"summary": "Three CodeSnippet blocks highlighting Svelte, TypeScript and CSS sources.",
+	"use": "Documentation or settings pages that display code samples with syntax highlighting.",
+	"spec": [
+		"`import { CodeSnippet } from '@codeatlasdev/ui/code'` is the entry point",
+		"`<CodeSnippet code={svelte} language=\"svelte\" />` shows an `AppList` markup sample",
+		"`<CodeSnippet code={ts} language=\"typescript\" />` shows a `useListState` call",
+		"`<CodeSnippet code={css} language=\"css\" />` shows rules using design tokens",
+		"Wrapper `.col` has `width: 100%`"
+	],
+	"tags": ["code-snippet", "code", "syntax-highlighting", "svelte", "typescript", "css"],
+	"shape": "wide"
+}

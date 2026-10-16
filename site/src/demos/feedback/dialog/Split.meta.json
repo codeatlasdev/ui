@@ -1,0 +1,12 @@
+{
+	"summary": "A split dialog with a media panel beside a lead form containing name, email and a Save button.",
+	"use": "Detail or onboarding dialogs that pair an image or summary with a short form.",
+	"spec": [
+		"`<Dialog bind:open title=\"Lead details\" size=\"split\" chromeless>`",
+		"Two direct children: `<div class=\"media\">` labelled Media / summary and `<div class=\"form\">`",
+		"Form uses `<Stack gap=\"3.5\">` with `<TextField label=\"Full name\" bind:value={name}` and `<TextField label=\"Email\" type=\"email\" bind:value={email}`",
+		"Save is `<Button variant=\"filled\" onclick={() => (open = false)}>`"
+	],
+	"tags": ["dialog", "split", "chromeless", "form", "text-field", "modal"],
+	"shape": "wide"
+}

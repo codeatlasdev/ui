@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #002 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/button#with-icons -->
 Element: #002 With icons (inputs/button)
-What it shows: Leading and trailing snippets.
-Tags: with, icons, button
+What it shows: Buttons with an icon before the label, after the label, and with a ghost download action.
+When to use: Actions that benefit from an icon cue: favourite, continue to next step, download.
+Spec:
+- Leading icon goes in `{#snippet leading()}` (`Star` from `@lucide/svelte`, `size={15}`)
+- Trailing icon goes in `{#snippet trailing()}` (`ArrowRight`, `size={15}`)
+- Variants shown: `variant="filled"`, `variant="outlined"`, `variant="ghost"`
+Tags: button, icon, leading, trailing, snippet
 Needs: @codeatlasdev/ui@4.1.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/inputs/button#with-icons

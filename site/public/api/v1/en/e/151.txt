@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #151 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/app-bar#default -->
 Element: #151 Default (navigation/app-bar)
-What it shows: Content in the middle and actions in the trailing slot.
-Tags: default, glassappbar, iconbutton, avatar, card
+What it shows: A glass app bar with a title on the left and search, notifications and avatar on the right, inside a flush glass card.
+When to use: Top bar of a page or panel with a product title and a few global quick actions.
+Spec:
+- `<Card material="glass" full flush>` wraps the bar
+- `GlassAppBar` content is `<span class="title">My Application</span>`
+- `{#snippet trailing()}` holds two `IconButton` items with `aria-label="Search"` and `aria-label="Notifications"`
+- Trailing also has `<Avatar alt="Ada L" size="sm" />`
+- Icons are `<Search size={18} />` and `<Bell size={18} />` from `@lucide/svelte`
+Tags: app-bar, glass-app-bar, header, toolbar, icon-button, avatar
 Needs: @codeatlasdev/ui@4.1.0
 Components: GlassAppBar, IconButton, Avatar, Card
 Live demo: https://ui.codeatlas.com.br/docs/navigation/app-bar#default

@@ -1,0 +1,13 @@
+{
+	"summary": "Four MoneyInput fields showing min and max bounds, negative values, an error message and a disabled state.",
+	"use": "Amount fields in payment and ledger forms that limit ranges, allow adjustments or lock a value.",
+	"spec": [
+		"`label=\"Deposit\"` with `min={1000}`, `max={10000}` and `description=\"Between R$ 10,00 and R$ 100,00.\"`",
+		"`<MoneyInput label=\"Adjustment\" bind:value={adjustment} allowNegative />` with `let adjustment = $state(-2500)`",
+		"`<MoneyInput label=\"Amount\" value={0} error=\"Amount must be greater than zero.\" />`",
+		"`<MoneyInput label=\"Locked\" value={99900} disabled />`",
+		"Wrapper `.col` has `max-width: 400px`"
+	],
+	"tags": ["money-input", "min-max", "negative", "error", "disabled", "currency", "forms"],
+	"shape": "wide"
+}

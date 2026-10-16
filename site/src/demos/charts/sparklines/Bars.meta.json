@@ -1,0 +1,12 @@
+{
+	"summary": "Three labelled bar sparklines with up, down and neutral trends in a wrapping row.",
+	"use": "Showing compact weekly metrics inline where a full chart would be too heavy.",
+	"spec": [
+		"`items` has 3 entries: Weekly sessions, Bounce rate, Avg pages, each with 7 `data` values",
+		"`<Sparkline data={s.data} variant=\"bar\" trend={s.trend} height=\"40px\" />`",
+		"`trend` values are `'up' as const`, `'down' as const` and `'neutral' as const`",
+		"`<Flex gap=\"6\" wrap align=\"center\">` lays out the items, each in a `<Stack gap=\"1.5\">` with a label"
+	],
+	"tags": ["sparkline", "bar", "trend", "inline-metrics", "flex", "stack"],
+	"shape": "wide"
+}

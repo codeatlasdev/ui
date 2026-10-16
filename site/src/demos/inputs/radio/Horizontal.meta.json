@@ -1,0 +1,11 @@
+{
+	"summary": "Radio group laid out in a row with Small, Medium and Large options.",
+	"use": "Short choice lists of 2 to 4 options, such as a size picker, where a row fits the layout.",
+	"spec": [
+		"`<RadioGroup items={sizes}` with `orientation=\"horizontal\"`",
+		"`sizes` has 3 items: `value: 'sm'`, `value: 'md'`, `value: 'lg'` labelled Small, Medium, Large",
+		"`bind:value={size}` with initial `$state('md')`"
+	],
+	"tags": ["radio-group", "radio", "horizontal", "orientation", "size"],
+	"shape": "wide"
+}

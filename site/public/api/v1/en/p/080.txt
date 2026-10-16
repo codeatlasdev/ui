@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #080 "Async onconfirm" (feedback/alert-dialog).
-What it shows: While the promise is pending the confirm button shows a spinner, Cancel is disabled and Escape is ignored. The dialog closes when it resolves and stays open if it throws..
+What it shows: A destructive alert dialog whose async confirm handler waits 1.5 seconds before an Item removed note appears. When to use: Confirming a delete that calls the server, where the dialog waits for the request before closing.
+Spec:
+- `<AlertDialog` with `bind:open`, `title="Remove item?"` and `confirmLabel="Remove"`
+- `destructive` flag set on the dialog
+- `onconfirm={removeItem}` is an async function that awaits `wait(1500)` then sets `done = true`
+- Trigger is `<Button variant="destructive"` labelled Remove item (1.5s)
+- Result note uses `aria-live="polite"` and shows when `{#if done}`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

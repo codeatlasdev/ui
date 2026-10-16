@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #099 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/skeleton#text-lines -->
 Element: #099 Text lines (feedback/skeleton)
-What it shows: With rows, the last line is shortened to 60% for a natural paragraph.
-Tags: text, lines, skeleton, card, stack
+What it shows: A glass card skeleton with a 60% wide heading line above a block of three text lines.
+When to use: Loading placeholder for an article or description block.
+Spec:
+- `<Card material="glass" p="5" full>` with `<Stack gap="3">`
+- Heading line `<Skeleton height="20px" width="60%" />`
+- Body lines `<Skeleton rows={3} height="14px" />` render three rows from one element
+Tags: skeleton, text, rows, card, loading
 Needs: @codeatlasdev/ui@4.1.0
 Components: Skeleton, Card, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/skeleton#text-lines

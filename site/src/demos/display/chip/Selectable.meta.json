@@ -1,0 +1,11 @@
+{
+	"summary": "Two toggle chips, Filter A starting off and Filter B starting on, that flip on click.",
+	"use": "Filter chips that toggle a facet on or off in a list or search view.",
+	"spec": [
+		"`let a = $state(false)` and `let b = $state(true)` hold the state",
+		"`<Chip label=\"Filter A\" selected={a} onclick={() => (a = !a)} />`",
+		"`<Chip label=\"Filter B\" selected={b} onclick={() => (b = !b)} />`"
+	],
+	"tags": ["chip", "selectable", "selected", "filter", "toggle", "onclick"],
+	"shape": "wide"
+}

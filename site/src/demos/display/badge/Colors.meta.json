@@ -1,0 +1,11 @@
+{
+	"summary": "A notification bell icon button wrapped in a count badge, shown in the four badge colors.",
+	"use": "Telling apart badge meaning on a counter: brand, success, warning and error.",
+	"spec": [
+		"`<Flex gap=\"4\" align=\"center\" wrap>` wraps four badges",
+		"Each is a `<Badge count={5}` around `<IconButton aria-label=\"Notifications\">` with a `<Bell size={20} />`",
+		"`color=\"brand\"`, `color=\"success\"`, `color=\"warning\"` and `color=\"error\"` are the four variants"
+	],
+	"tags": ["badge", "color", "count", "icon-button", "notification", "flex"],
+	"shape": "wide"
+}

@@ -1,0 +1,12 @@
+{
+	"summary": "An uncontrolled tab set of Overview, Props and Examples, each with a short paragraph of documentation text.",
+	"use": "Splitting a detail view into a few peer sections of content without managing state.",
+	"spec": [
+		"`<Tabs value=\"overview\">` sets the initial tab without binding",
+		"`<TabsList>` holds 3 `TabsTrigger` items: `value=\"overview\"`, `value=\"props\"`, `value=\"examples\"`",
+		"Each value has a `TabsContent` with a `<div class=\"panel\">` and one paragraph",
+		"Wrapper is `.wrap` with `max-width: 560px`"
+	],
+	"tags": ["tabs", "uncontrolled", "tabs-list", "tabs-content", "sections", "default"],
+	"shape": "wide"
+}

@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #144 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/tooltip#on-icon-buttons -->
 Element: #144 On icon buttons (display/tooltip)
-What it shows: On icon buttons
-Tags: on, icon, buttons, tooltip, iconbutton
+What it shows: Four icon-only buttons (Info, Heart, Zap, Star) that each reveal a Tooltip describing the action.
+When to use: Icon-only toolbar actions that need a visible text label on hover or focus.
+Spec:
+- Each `Tooltip` uses `{#snippet triggerChild(props)}` with `<IconButton aria-label="Info" {...props}>`
+- Icons from `@lucide/svelte`: `<Info size={20} />`, `<Heart size={20} />`, `<Zap size={20} />`, `<Star size={20} />`
+- Tooltip content: Info, Add to favourites, Boost performance, Rate this component
+- Other `aria-label` values: `aria-label="Favourite"`, `aria-label="Boost"`, `aria-label="Rate"`
+Tags: tooltip, icon-button, icons, aria-label, toolbar, lucide
 Needs: @codeatlasdev/ui@4.1.0
 Components: Tooltip, IconButton
 Live demo: https://ui.codeatlas.com.br/docs/display/tooltip#on-icon-buttons

@@ -1,5 +1,12 @@
 Use @codeatlasdev/ui demo #199 "Hour by day matrix" (charts/heatmap).
-What it shows: Points are [xIndex, yIndex, value] into xCategories and yCategories..
+What it shows: A matrix heatmap of task counts by hour of day (24 columns) and weekday (7 rows). When to use: Spotting busy periods in a day-by-hour grid, like support load or traffic.
+Spec:
+- `<HeatmapChart variant="matrix"`
+- `matrixData` is `MatrixHeatmapPoint[]` of `[h, d, Math.max(0, Math.min(10, v))]` triples, 24 hours by 7 days
+- `xCategories={hours}` built from `String(i).padStart(2, '0') + ':00'` (24 labels)
+- `yCategories={days}` with `'Mon'` to `'Sun'`
+- `tooltipFormatter={(v) => `${v} tasks`}`
+- `height="320px"` inside `<Card material="glass" full>`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

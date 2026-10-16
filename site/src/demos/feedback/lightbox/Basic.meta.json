@@ -1,0 +1,11 @@
+{
+	"summary": "A lightbox opened from a button to show a single generated SVG image.",
+	"use": "Enlarging one thumbnail or photo to full view on click.",
+	"spec": [
+		"`<Lightbox bind:open src={photo} alt=\"Gray circle on a dark background\" />`",
+		"`photo` is a `data:image/svg+xml;utf8,` URL built with `encodeURIComponent`, 640 by 400 with a circle `r=\"90\"`",
+		"Trigger is `<Button variant=\"outlined\" onclick={() => (open = true)}>` labelled View photo"
+	],
+	"tags": ["lightbox", "image", "preview", "modal", "alt-text"],
+	"shape": "wide"
+}

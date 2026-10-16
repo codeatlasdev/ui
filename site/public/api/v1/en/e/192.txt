@@ -1,7 +1,15 @@
 <!-- @codeatlasdev/ui demo #192 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/bar#grouped-and-stacked -->
 Element: #192 Grouped and stacked (charts/bar)
-What it shows: Toggling stacked animates between both layouts.
-Tags: grouped, and, stacked, card, flex, button, barchart
+What it shows: A bar chart with Grouped and Stacked buttons that switch the same two-year quarterly data between layouts.
+When to use: Letting users flip between comparing values side by side and seeing the combined total.
+Spec:
+- `let mode = $state<'grouped' | 'stacked'>('grouped')` drives the layout
+- Two `<Button` elements with `size="sm"`, labelled Grouped and Stacked, using `variant={mode === 'grouped' ? 'filled' : 'glass'}` and `variant={mode === 'stacked' ? 'filled' : 'glass'}`
+- `onclick={() => (mode = 'grouped')}` and `onclick={() => (mode = 'stacked')}` set the mode
+- `<BarChart` with 2 series `'2025'` and `'2026'`, 4 values each
+- `categories={['Q1', 'Q2', 'Q3', 'Q4']}`
+- `stacked={mode === 'stacked'}` and `height="300px"`
+Tags: bar-chart, stacked, grouped, toggle, button, state, flex
 Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, Flex, Button, BarChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/bar#grouped-and-stacked

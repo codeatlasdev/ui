@@ -1,0 +1,10 @@
+{
+	"summary": "Two labelled switches, one starting off and one starting on.",
+	"use": "Boolean settings that take effect immediately, such as notifications.",
+	"spec": [
+		"`<Switch label=\"Off by default\" bind:checked={darkMode} />` with `$state(false)`",
+		"`<Switch label=\"On by default\" bind:checked={notifications} />` with `$state(true)`"
+	],
+	"tags": ["switch", "toggle", "label", "checked", "boolean"],
+	"shape": "wide"
+}

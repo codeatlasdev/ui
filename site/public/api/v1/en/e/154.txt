@@ -1,7 +1,11 @@
 <!-- @codeatlasdev/ui demo #154 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/breadcrumb#custom-separator -->
 Element: #154 Custom separator (navigation/breadcrumb)
-What it shows: Using › instead of /.
-Tags: custom, separator, breadcrumb
+What it shows: A breadcrumb with a custom separator character between three items.
+When to use: Matching breadcrumb punctuation to a product's visual language, for example a chevron between levels.
+Spec:
+- `<Breadcrumb` with `items` Docs (`href: '/'`), API Reference (`href: '/api'`) and Components (no `href`)
+- `separator="›"` sets a single character as the separator
+Tags: breadcrumb, separator, navigation, custom, path
 Needs: @codeatlasdev/ui@4.1.0
 Components: Breadcrumb
 Live demo: https://ui.codeatlas.com.br/docs/navigation/breadcrumb#custom-separator

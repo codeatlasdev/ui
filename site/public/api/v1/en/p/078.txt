@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #078 "Materials" (surfaces/surface).
-What it shows: Materials.
+What it shows: Five Surface tiles, one per material, over a brand to info to success gradient so the translucency is visible. When to use: Comparing auto, solid, frosted, glass and liquid materials before picking one for a card or panel.
+Spec:
+- `const materials = ['auto', 'solid', 'frosted', 'glass', 'liquid'] as const`
+- `<Surface {material} elevation={3} p="4" class="tile">` rendered with `{#each materials as material (material)}`
+- Each tile prints its material name in a `.name` paragraph
+- `.backdrop` paints `linear-gradient(135deg` behind the tiles
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

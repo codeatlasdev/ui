@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #073 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/surfaces/collapsible#default-closed -->
 Element: #073 Default (closed) (surfaces/collapsible)
-What it shows: Default (closed)
-Tags: default, closed, collapsible, stack
+What it shows: Three independent Collapsible FAQ panels stacked with a small gap, all closed initially.
+When to use: Short FAQ or help blocks where each answer expands on its own.
+Spec:
+- `<Stack gap="2" class="collapsible-faq">` with `max-width: 560px`
+- 3 `<Collapsible` items with a `title`: What is a glass surface?, How do presets work?, Is dark mode automatic?
+- Each body is a `<p>` child, two of them include a `<code>` token
+- Nothing is bound to the open state, each panel manages its own
+Tags: collapsible, faq, stack, disclosure, expand, title
 Needs: @codeatlasdev/ui@4.1.0
 Components: Collapsible, Stack
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/collapsible#default-closed

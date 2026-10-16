@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #135 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/pagination#more-siblings -->
 Element: #135 More siblings (display/pagination)
-What it shows: More siblings
-Tags: more, siblings, pagination
+What it shows: Pagination for 200 items at 10 per page with two sibling pages shown on each side of the current page.
+When to use: Long result sets where users need to jump a few pages around the current one.
+Spec:
+- `<Pagination count={200} perPage={10} siblingCount={2} />`
+- `siblingCount={2}` sets how many pages show on each side of the current page
+- Only `count`, `perPage` and `siblingCount` are set, nothing is bound
+Tags: pagination, siblings, sibling-count, many-pages, navigation
 Needs: @codeatlasdev/ui@4.1.0
 Components: Pagination
 Live demo: https://ui.codeatlas.com.br/docs/display/pagination#more-siblings

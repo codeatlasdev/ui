@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #052 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/switch#settings-list -->
 Element: #052 Settings list (inputs/switch)
-What it shows: Common pattern: a row with title, helper text and a trailing switch.
-Tags: settings, list, switch
+What it shows: Settings list of three rows, each with a title, a subtitle and a Switch.
+When to use: Account preferences screen with one toggle per setting.
+Spec:
+- 3 rows in `.settings-list`: Email notifications, Dark mode, Usage analytics
+- Each row has `settings-item__title` and `settings-item__sub` text
+- Switches use `bind:checked={email}`, `bind:checked={dark}`, `bind:checked={analytics}`
+- Each switch has an `aria-label` matching its row title, e.g. `aria-label="Dark mode"`
+- Initial state: email `$state(true)`, dark and analytics `$state(false)`
+Tags: switch, settings-list, preferences, aria-label, toggle
 Needs: @codeatlasdev/ui@4.1.0
 Components: Switch
 Live demo: https://ui.codeatlas.com.br/docs/inputs/switch#settings-list

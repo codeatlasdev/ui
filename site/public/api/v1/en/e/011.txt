@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #011 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/combobox#states -->
 Element: #011 States (inputs/combobox)
-What it shows: Description, custom search placeholder and empty text, disabled option, error and disabled.
-Tags: states, combobox
+What it shows: Three Combobox states: with description and custom search and empty texts, with error and required, and disabled.
+When to use: Documenting validation, helper text and unavailable states of a searchable select in a form.
+Spec:
+- `frameworks` has 4 options, the last is `{ value: 'astro', label: 'Astro', disabled: true }`
+- First field: `bind:value`, `description="Astro is disabled."`, `searchPlaceholder="Filter frameworks…"`, `emptyText="No framework matches."`
+- Second field: `error="Pick a framework."` and `required`
+- Third field: `disabled` with `placeholder="Unavailable"`
+- Wrapper `.col` has `max-width: 320px`
+Tags: combobox, error, disabled, required, description, empty-state
 Needs: @codeatlasdev/ui@4.1.0
 Components: Combobox
 Live demo: https://ui.codeatlas.com.br/docs/inputs/combobox#states

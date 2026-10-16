@@ -1,0 +1,13 @@
+{
+	"summary": "A default drawer titled Filters with status and role filter groups, two switches and Reset and Apply actions.",
+	"use": "Filter panels for tables and lists that would crowd the page if shown inline.",
+	"spec": [
+		"`<Drawer bind:open title=\"Filters\">` with no side or width prop",
+		"Two `<FilterGroup` blocks: status with 2 options (Active, Inactive) and role with 3 options (Admin, Editor, Viewer)",
+		"Filter state: `onchange={(v) => (statusF = v)}` and `onchange={(v) => (roleF = v)}`, both starting at `'all'`",
+		"Two `<Switch label=\"Show inactive only\" />` and `<Switch label=\"Include archived\" />` inside `<Stack gap=\"4\">`",
+		"`{#snippet actions()}` holds ghost Reset and filled Apply buttons"
+	],
+	"tags": ["drawer", "filters", "filter-group", "switch", "side-panel"],
+	"shape": "wide"
+}

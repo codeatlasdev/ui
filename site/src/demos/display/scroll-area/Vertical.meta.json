@@ -1,0 +1,12 @@
+{
+	"summary": "A vertical ScrollArea capped at 220px tall containing 20 Lorem ipsum rows inside a glass card.",
+	"use": "Bounded panels such as activity logs or long option lists that scroll inside a fixed height.",
+	"spec": [
+		"`<Card material=\"glass\" full>` wraps the area",
+		"`<ScrollArea maxHeight=\"220px\">`",
+		"`Array.from({ length: 20 }, (_, i) =>` builds items labelled Item 1 to Item 20: Lorem ipsum dolor sit amet",
+		"Each row is a `<div class=\"item\">` rendered with `{#each items as item}`"
+	],
+	"tags": ["scroll-area", "vertical", "max-height", "scrollbar", "card", "list"],
+	"shape": "wide"
+}

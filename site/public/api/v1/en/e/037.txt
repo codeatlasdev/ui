@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #037 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/radio#vertical -->
 Element: #037 Vertical (inputs/radio)
-What it shows: The default layout.
-Tags: vertical, radiogroup
+What it shows: Default vertical radio group of three fruits with the selected value printed below.
+When to use: Single choice from a short list in a form or settings panel.
+Spec:
+- `<RadioGroup items={fruits}` with `bind:value={fruit}` and no orientation prop
+- `fruits` has 3 items: Apple, Banana, Cherry
+- Initial value is `$state('apple')`
+- Selected value is shown in `<code>{fruit}</code>` under the group
+Tags: radio-group, radio, vertical, single-choice, bind-value
 Needs: @codeatlasdev/ui@4.1.0
 Components: RadioGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/radio#vertical

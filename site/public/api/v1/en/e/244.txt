@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #244 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/install-prompt#native-prompt -->
 Element: #244 Native prompt (feedback/install-prompt)
-What it shows: The Chromium flow: Install opens the browser's install dialog. This demo fires a stand-in event so the banner shows in any browser.
-Tags: native, prompt, installprompt
+What it shows: The install prompt in native mode, triggered by a stand-in beforeinstallprompt event fired on mount.
+When to use: Offering an install banner on browsers that expose the beforeinstallprompt event, such as Chrome and Edge.
+Spec:
+- `<InstallPrompt mode="native" storageKey="demo-install-native" />`
+- `onMount` dispatches `new Event('beforeinstallprompt', { cancelable: true })` on the window
+- The fake event gets `prompt: () => Promise.resolve()` and `userChoice: Promise.resolve({ outcome: 'dismissed' })`
+- Wrapped in `<div class="stage">` with `min-height: calc(var(--ca-space-8) * 3)`
+Tags: install-prompt, pwa, native, beforeinstallprompt, banner
 Needs: @codeatlasdev/ui@4.1.0
 Components: InstallPrompt
 Live demo: https://ui.codeatlas.com.br/docs/feedback/install-prompt#native-prompt

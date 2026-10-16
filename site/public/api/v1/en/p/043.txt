@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #043 "States" (inputs/select).
-What it shows: Disabled options, description, error and a disabled select..
+What it shows: Three selects showing a description, an error and a disabled state, with one disabled option. When to use: Showing helper text, validation errors and locked fields on dropdowns in a form.
+Spec:
+- Plan select has `description="Enterprise is disabled."` and `bind:value={plan}`
+- `plans` has Free, Pro, Enterprise, and Enterprise has `disabled: true`
+- Region select has `error="Pick a region to continue."` and no bound value
+- Size select has `disabled` with `bind:value={size}`
+- 3 selects stacked in `.col` with `max-width: 320px`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

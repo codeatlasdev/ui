@@ -1,7 +1,15 @@
 <!-- @codeatlasdev/ui demo #109 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/avatar#shape-and-status -->
 Element: #109 Shape and status (display/avatar)
-What it shows: Shape and status
-Tags: shape, and, status, avatar
+What it shows: Large avatars showing the rounded shape and the four status indicators: online, busy, away and offline.
+When to use: Presence in chat, team lists or support queues, plus a rounded avatar shape.
+Spec:
+- `shape="rounded"` on `alt="Ana Lima"`
+- `status="online"` on `alt="Online"`
+- `status="busy"` on `alt="Busy"`
+- `status="away"` on `alt="Away"`
+- `status="offline"` on `alt="Offline"`
+- All five use `size="lg"`
+Tags: avatar, shape, rounded, status, presence, online
 Needs: @codeatlasdev/ui@4.1.0
 Components: Avatar
 Live demo: https://ui.codeatlas.com.br/docs/display/avatar#shape-and-status

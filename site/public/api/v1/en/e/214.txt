@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #214 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/scatter#bubble-chart -->
 Element: #214 Bubble chart (charts/scatter)
-What it shows: The third value of each point sets the bubble size.
-Tags: bubble, chart, card, scatterchart
+What it shows: A bubble chart where each of 50 accounts carries a third value that sets the bubble size.
+When to use: Adding a third dimension, such as account size, to a two-axis comparison.
+Spec:
+- `data` is 50 `[number, number, number]` triples from `Array.from({ length: 50 }`
+- The third value of each point is the bubble size
+- `<ScatterChart series={[{ name: 'Accounts', data }]}`
+- `yName="Conversion %"` and `yFormatter={(v) => `${v.toFixed(1)}%`}`
+- `height="340px"` inside `<Card material="glass" full>`
+Tags: scatter-chart, bubble, size, three-dimensions, accounts, card
 Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, ScatterChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/scatter#bubble-chart

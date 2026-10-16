@@ -1,0 +1,12 @@
+{
+	"summary": "A slider that snaps in steps of 10 and a disabled slider fixed at 35.",
+	"use": "Discrete values such as percentages in tens, or a locked setting.",
+	"spec": [
+		"Stepped slider: `<Slider bind:value={stepped} min={0} max={100} step={10} />` with initial `$state(50)`",
+		"Disabled slider: `<Slider value={35} disabled />`",
+		"Rows labelled Step 10 and Disabled with readouts `{stepped}` and 35",
+		"Wrapper `.col` uses `max-width: 480px`"
+	],
+	"tags": ["slider", "step", "disabled", "discrete", "bind-value"],
+	"shape": "wide"
+}

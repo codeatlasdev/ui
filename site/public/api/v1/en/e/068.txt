@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #068 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/surfaces/card#tone-and-glow -->
 Element: #068 Tone and glow (surfaces/card)
-What it shows: Tone and glow
-Tags: tone, and, glow, card
+What it shows: Two glass Cards side by side: one with a brand tint and one with a brand glow, each with a title and one line of text.
+When to use: Highlighting a featured or selected card without changing its content layout.
+Spec:
+- `<Card material="glass" tone="brand" class="accent">` titled Tinted
+- `<Card material="glass" glow class="accent">` titled Glowing
+- Both cards share `class="accent"` styled with `flex: 1` and `min-width: 200px`
+- Card content is a `.title` paragraph and a `.text` paragraph
+Tags: card, glass, tone, brand, glow, accent
 Needs: @codeatlasdev/ui@4.1.0
 Components: Card
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/card#tone-and-glow

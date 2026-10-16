@@ -1,0 +1,13 @@
+{
+	"summary": "StatusChip in its five statuses: success, warning, error, info and neutral.",
+	"use": "Showing the state of a record, such as active, pending, failed, scheduled or draft, in tables and lists.",
+	"spec": [
+		"`<StatusChip status=\"success\" label=\"Active\" />`",
+		"`<StatusChip status=\"warning\" label=\"Pending\" />`",
+		"`<StatusChip status=\"error\" label=\"Failed\" />`",
+		"`<StatusChip status=\"info\" label=\"Scheduled\" />`",
+		"`<StatusChip status=\"neutral\" label=\"Draft\" />`"
+	],
+	"tags": ["chip", "status-chip", "status", "success", "neutral", "state"],
+	"shape": "wide"
+}

@@ -1,0 +1,13 @@
+{
+	"summary": "A DataTable with five columns and 12 user rows, passing only `columns` and `data`.",
+	"use": "The minimal setup for a table of records defined with a column helper.",
+	"spec": [
+		"`createCaColumnHelper<User>()` and `col.columns([` define 5 columns: ID, Name, Email, Role, Status",
+		"`col.accessor('id', { header: 'ID', meta: { label: 'ID' } })` shows the accessor shape",
+		"`const data: User[]` has 12 rows with `id`, `name`, `email`, `role` and `status`",
+		"`<DataTable {columns} {data} />` has no other props",
+		"Wrapper `.wrap` has `width: 100%`"
+	],
+	"tags": ["data-table", "columns", "column-helper", "tanstack", "table", "basic"],
+	"shape": "wide"
+}

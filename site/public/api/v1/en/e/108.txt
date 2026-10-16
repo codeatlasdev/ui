@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #108 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/avatar#initials-fallback -->
 Element: #108 Initials fallback (display/avatar)
-What it shows: Initials fallback
-Tags: initials, fallback, avatar
+What it shows: Large avatars with no image source: three given only `alt` names and two given explicit `fallback` text.
+When to use: Users who have no uploaded photo, shown with initials or a placeholder character.
+Spec:
+- `alt="Alice Martin"`, `alt="Bob Chen"` and `alt="Clara Silva"` with no image
+- `fallback="DK"` sets explicit text
+- `fallback="?"` sets a placeholder character
+- All five use `size="lg"`
+Tags: avatar, initials, fallback, alt, placeholder
 Needs: @codeatlasdev/ui@4.1.0
 Components: Avatar
 Live demo: https://ui.codeatlas.com.br/docs/display/avatar#initials-fallback

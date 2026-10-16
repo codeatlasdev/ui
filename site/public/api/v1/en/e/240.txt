@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #240 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/avatar#iconfallback -->
 Element: #240 IconFallback (display/avatar)
-What it shows: IconFallback
-Tags: iconfallback, avatar
+What it shows: Two large avatars whose fallback is a custom icon: one with an image that fails to decode and one with no image.
+When to use: Representing groups or bots, where initials do not make sense, with a lucide icon.
+Spec:
+- `<Avatar src="data:image/png;base64,AAAA" alt="Family" size="lg" loading="lazy" referrerpolicy="no-referrer">` uses an image that fails to decode
+- `{#snippet fallback()}<Users size={22} aria-hidden="true" />{/snippet}` renders the Users icon
+- `<Avatar alt="Support bot" size="lg">` has no `src`
+- `{#snippet fallback()}<Bot size={22} aria-hidden="true" />{/snippet}` renders the Bot icon
+Tags: avatar, fallback, snippet, icon, image-error, lucide
 Needs: @codeatlasdev/ui@4.1.0
 Components: Avatar
 Live demo: https://ui.codeatlas.com.br/docs/display/avatar#iconfallback

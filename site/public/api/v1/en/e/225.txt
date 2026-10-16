@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #225 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/foundation/materials#button-glass-variants -->
 Element: #225 Button glass variants (foundation/materials)
-What it shows: glass-btn, glass-btn-prominent and glass-btn-clear for custom controls. They follow `data-style`, so the halo and blur disappear under `solid`.
-Tags: button, glass, variants
+What it shows: Three native buttons using the glass button classes over a brand to info gradient backdrop.
+When to use: Choosing between the default, prominent and clear glass button styles on a colorful or image background.
+Spec:
+- `<button type="button" class="glass-btn">` labelled glass-btn
+- `<button type="button" class="glass-btn-prominent">` labelled glass-btn-prominent
+- `<button type="button" class="glass-btn-clear">` labelled glass-btn-clear
+- Backdrop is `linear-gradient(135deg, var(--ca-brand-main), var(--ca-semantic-info))`
+Tags: materials, glass, button, glass-btn, backdrop
 Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/foundation/materials#button-glass-variants

@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #168 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/empty-state#hero -->
 Element: #168 Hero (layout/empty-state)
-What it shows: A larger, brand-tinted tile with a glow. On mobile the actions stack full width, so put the primary one first.
-Tags: hero, emptystate, button
+What it shows: A hero-sized empty state inviting the user to start a first project, with Create project and Import buttons.
+When to use: Onboarding screens for an empty workspace where the page has nothing else to show.
+Spec:
+- `<EmptyState variant="hero" icon={Inbox} title="Start your first project"`
+- `description="Projects keep your sessions, contacts and settings in one place."`
+- `{#snippet actions()}` holds `<Button variant="filled">Create project</Button>` and `<Button variant="ghost">Import</Button>`
+- Both buttons use the default size, with no size attribute
+Tags: empty-state, hero, onboarding, first-run, actions, project
 Needs: @codeatlasdev/ui@4.1.0
 Components: EmptyState, Button
 Live demo: https://ui.codeatlas.com.br/docs/layout/empty-state#hero

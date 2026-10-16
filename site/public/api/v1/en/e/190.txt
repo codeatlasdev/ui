@@ -1,7 +1,15 @@
 <!-- @codeatlasdev/ui demo #190 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/bar#horizontal-bars -->
 Element: #190 Horizontal bars (charts/bar)
-What it shows: Good for long category names and rankings.
-Tags: horizontal, bars, card, barchart
+What it shows: A horizontal bar chart ranking eight products by a single Sales series, with values formatted as thousands.
+When to use: Ranking items by one metric, such as top products or top accounts, when category labels are long.
+Spec:
+- `<BarChart` inside `<Card material="glass" full>`
+- One series `{ name: 'Sales', data: [9840, 8720, 7650, 6430, 5980, 4810, 3920, 3140] }`
+- `categories={products}` with 8 product names
+- `horizontal` prop
+- `valueFormatter` renders `${(v / 1000).toFixed(1)}k`
+- `height="300px"`
+Tags: bar-chart, horizontal, ranking, categories, value-formatter, card
 Needs: @codeatlasdev/ui@4.1.0 + echarts
 Components: Card, BarChart
 Live demo: https://ui.codeatlas.com.br/docs/charts/bar#horizontal-bars

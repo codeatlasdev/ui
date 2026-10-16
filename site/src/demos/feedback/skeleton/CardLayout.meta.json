@@ -1,0 +1,11 @@
+{
+	"summary": "A glass card skeleton with a circular avatar placeholder beside three text lines of different widths.",
+	"use": "Loading placeholder for a profile or list card so layout does not jump when data arrives.",
+	"spec": [
+		"`<Card material=\"glass\" p=\"5\" full>`",
+		"`<Skeleton variant=\"circular\" width=\"48px\" height=\"48px\" />` inside `<Flex gap=\"4\" align=\"start\">`",
+		"Three lines in `<Stack gap=\"2\">`: `height=\"16px\" width=\"40%\"`, `height=\"13px\" width=\"70%\"`, `height=\"13px\" width=\"55%\"`"
+	],
+	"tags": ["skeleton", "card", "loading", "avatar", "placeholder"],
+	"shape": "wide"
+}

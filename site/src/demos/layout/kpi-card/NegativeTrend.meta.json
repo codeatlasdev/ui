@@ -1,0 +1,11 @@
+{
+	"summary": "Two KPI cards whose trends are negative, one with an icon and one without.",
+	"use": "Metrics where a falling number is good or bad news, such as churn rate and response time.",
+	"spec": [
+		"`<KpiGrid>` with 2 `KpiCard` items",
+		"`<KpiCard title=\"Churn Rate\" value=\"5.2\" unit=\"%\" trend={-1.8} icon={Activity} />`",
+		"`<KpiCard title=\"Response Time\" value=\"1.4\" unit=\"s\" trend={-12.3} />` has no `icon`"
+	],
+	"tags": ["kpi-card", "kpi-grid", "negative-trend", "metrics", "churn", "unit"],
+	"shape": "wide"
+}

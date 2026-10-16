@@ -1,0 +1,14 @@
+{
+	"summary": "A dropdown menu of agents where brand-colored icons opt out of the item's text color, including a scheme-aware monochrome mark.",
+	"use": "Pickers that list third-party products or agents with their real logos, such as a new-tab or integration menu.",
+	"spec": [
+		"`<DropdownMenu>` with `{#snippet triggerChild(props)}` rendering `<Button variant=\"glass\" {...props}>New tab</Button>`",
+		"`<DropdownMenuLabel>Agents</DropdownMenuLabel>` followed by 4 items: Shell, Claude Code, Codex, Coming soon",
+		"Shell uses `{#snippet icon()}<Bot />{/snippet}`; Claude Code and Codex set `brandIcon` so the inline `svg` keeps its own colors",
+		"Codex wraps `<SchemeAsset>` with `{#snippet light()}` and `{#snippet dark()}` svg variants",
+		"Last item is `brandIcon disabled`",
+		"Each item sets `last` through `onclick`, shown as `Opened: {last}` with `aria-live=\"polite\"`"
+	],
+	"tags": ["dropdown-menu", "menu", "brand-icon", "scheme-asset", "dark-mode", "icon", "disabled"],
+	"shape": "wide"
+}

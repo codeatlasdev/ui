@@ -1,0 +1,13 @@
+{
+	"summary": "A searchable Combobox over eight frameworks that prints the selected value below the field.",
+	"use": "Picking one item from a long list where typing to filter is faster than scrolling a select.",
+	"spec": [
+		"`<Combobox label=\"Framework\" options={frameworks} bind:value={selected} />`",
+		"`const frameworks` has 8 options with `value` and `label` keys, from `svelte` to `sveltekit`",
+		"`let selected = $state('')` starts empty",
+		"`{#if selected}` renders `Selected:` with the value in `<code>`",
+		"Wrapper `.col` has `max-width: 320px`"
+	],
+	"tags": ["combobox", "search", "autocomplete", "options", "select", "form"],
+	"shape": "wide"
+}

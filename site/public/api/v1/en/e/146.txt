@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #146 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/actions#autofocus -->
 Element: #146 autofocus (navigation/actions)
-What it shows: Focuses the element when it mounts.
-Tags: autofocus, button
+What it shows: An input that receives focus on mount, with a button that remounts it through a keyed block.
+When to use: Dialogs, inline editors and search fields where the first field should take focus as soon as it appears.
+Spec:
+- `use:autofocus` imported from `@codeatlasdev/ui/actions` on a native `<input`
+- Input has `placeholder="Focused on mount"` and `aria-label="Autofocused input"`
+- `let key = $state(0)` drives `{#key key}` around the input
+- `<Button onclick={() => key++}>Remount input</Button>` remounts the input so focus is applied again
+Tags: autofocus, action, focus, input, remount, a11y
 Needs: @codeatlasdev/ui@4.1.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/navigation/actions#autofocus

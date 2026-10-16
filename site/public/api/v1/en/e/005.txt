@@ -1,7 +1,12 @@
 <!-- @codeatlasdev/ui demo #005 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/button#states -->
 Element: #005 States (inputs/button)
-What it shows: Disabled buttons, a destructive action and a link rendered as a button.
-Tags: states, button
+What it shows: Disabled buttons, a destructive action with an icon, and a link rendered as a button.
+When to use: Showing non-interactive and dangerous actions, or navigating with button styling via `href`.
+Spec:
+- `disabled` on `variant="filled"`, `variant="outlined"` and `variant="glass"`
+- `variant="destructive"` with a `Trash2` icon in `{#snippet leading()}` (`size={15}`)
+- `href="https://github.com/codeatlasdev/ui"` with `target="_blank"` renders an anchor
+Tags: button, disabled, destructive, link, href
 Needs: @codeatlasdev/ui@4.1.0
 Components: Button
 Live demo: https://ui.codeatlas.com.br/docs/inputs/button#states

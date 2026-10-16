@@ -1,7 +1,11 @@
 <!-- @codeatlasdev/ui demo #134 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/pagination#few-items -->
 Element: #134 Few items (display/pagination)
-What it shows: Few items
-Tags: few, items, pagination
+What it shows: Pagination with 30 items at 10 per page and no bound state.
+When to use: Short result sets with only a few pages.
+Spec:
+- `<Pagination count={30} perPage={10} />`
+- Only `count` and `perPage` are set, nothing is bound
+Tags: pagination, few-pages, count, per-page, uncontrolled
 Needs: @codeatlasdev/ui@4.1.0
 Components: Pagination
 Live demo: https://ui.codeatlas.com.br/docs/display/pagination#few-items

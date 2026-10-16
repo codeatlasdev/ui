@@ -1,0 +1,14 @@
+{
+	"summary": "A radar chart for My team with six sliders that edit each dimension live.",
+	"use": "Letting users build or tweak a skill or score profile and see the shape update.",
+	"spec": [
+		"`let dims = $state([88, 92, 76, 85, 94, 79])` holds the six scores",
+		"`const series = $derived([{ name: 'My team', values: [...dims] }])`",
+		"`<RadarChart {indicators} {series} height=\"320px\" />`",
+		"`{#each DIMS as dim, i}` renders one `<Slider value={dims[i]} min={0} max={100} step={1}`",
+		"`onchange={(v) => { dims[i] = v[0]; }}` writes back the first slider value",
+		"Each row shows the dimension name and `{dims[i]}` in a `<Flex justify=\"between\">`"
+	],
+	"tags": ["radar-chart", "slider", "interactive", "derived", "state", "builder"],
+	"shape": "wide"
+}

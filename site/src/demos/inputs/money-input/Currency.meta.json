@@ -1,0 +1,12 @@
+{
+	"summary": "MoneyInput in three currencies and locales: USD en-US, JPY without decimals and EUR de-DE.",
+	"use": "Price fields in multi-currency products that must format and parse per locale.",
+	"spec": [
+		"`currency=\"USD\" locale=\"en-US\"` with `bind:value={usd}` starting at `$state(123456)`",
+		"`currency=\"JPY\" locale=\"en-US\"` with `bind:value={jpy}` starting at `$state(1234)`",
+		"`currency=\"EUR\" locale=\"de-DE\"` with `bind:value={eur}` starting at `$state(123456)`",
+		"Labels: `Price (USD, en-US)`, `Price (JPY, no decimals)` and `Preis (EUR, de-DE)`"
+	],
+	"tags": ["money-input", "currency", "locale", "usd", "jpy", "eur", "forms"],
+	"shape": "wide"
+}

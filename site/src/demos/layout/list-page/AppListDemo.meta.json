@@ -1,0 +1,22 @@
+{
+	"summary": "A searchable, filterable users list with a New user action, a role filter and a table with user cell and status chip.",
+	"use": "Admin list pages where the user searches, filters by one field and acts on rows.",
+	"spec": [
+		"`<AppList title=\"Users\" data={ALL} searchKeys={['name', 'email']} perPage={4}>`",
+		"`const ALL` has 4 rows with fields `id`, `name`, `email`, `role`, `status`",
+		"`{#snippet actions()}` holds `<Button variant=\"filled\" size=\"sm\">` with `<Plus size={14} />` and the label New user",
+		"`{#snippet filters(list)}` renders `<FilterGroup options={roleOpts} value={list.filters['role'] ?? 'all'} onchange={(v) => list.setFilter('role', v)} />`",
+		"`{#snippet children(list)}` renders a `SimpleTable` over `{#each list.rows as u (u.id)}` with `<UserCell name={u.name} email={u.email} />` and `<StatusChip`",
+		"Frame size is `height: 420px`"
+	],
+	"tags": [
+		"app-list",
+		"list-page",
+		"search",
+		"filter-group",
+		"simple-table",
+		"status-chip",
+		"user-cell"
+	],
+	"shape": "wide"
+}

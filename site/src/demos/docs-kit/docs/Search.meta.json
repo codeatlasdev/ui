@@ -1,0 +1,13 @@
+{
+	"summary": "A DocsSearch dialog opened from an Open search button over a two-entry index, showing the selected href afterwards.",
+	"use": "Docs site search opened by a button or shortcut that jumps to a page or heading.",
+	"spec": [
+		"`<Button variant=\"outlined\" onclick={() => (open = true)}>` labelled Open search",
+		"`<DocsSearch bind:open {index} onselect={(href) => (picked = href)} />`",
+		"State: `let open = $state(false)` and `let picked = $state('')`",
+		"`index` typed `DocsSearchEntry[]` has 2 entries (Send text, Webhooks) with `href`, `title`, `section`, `description`, `headings` and `text`",
+		"`<span class=\"picked\" aria-live=\"polite\">` shows Selected plus the chosen href"
+	],
+	"tags": ["docs-search", "search", "docs-kit", "dialog", "command-palette", "index"],
+	"shape": "wide"
+}

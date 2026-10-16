@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #163 "Controlled" (navigation/tabs).
-What it shows: The parent owns the active tab with bind:value..
+What it shows: Tabs bound to a state variable with a line below showing the active tab value. When to use: Tabbed views whose active tab must also drive other UI or be read and set from code.
+Spec:
+- `<Tabs bind:value={active}>` with `let active = $state('overview')`
+- `<TabsList>` holds 3 `TabsTrigger` items: `value="overview"`, `value="props"`, `value="examples"`
+- A matching `TabsContent` per value, each with a one-line `<div class="panel">`
+- State is echoed as `Active tab: <code>{active}</code>`
+- Wrapper is `.wrap` with `max-width: 480px`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

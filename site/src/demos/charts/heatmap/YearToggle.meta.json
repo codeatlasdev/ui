@@ -1,0 +1,14 @@
+{
+	"summary": "A calendar heatmap with 2026 and 2025 buttons that swap the dataset and date range.",
+	"use": "Letting users compare activity across years in the same calendar view.",
+	"spec": [
+		"`let year = $state<2025 | 2026>(2026)` selects the year",
+		"Two `<Button` elements with `size=\"sm\"` labelled 2026 and 2025, `variant={year === 2026 ? 'filled' : 'glass'}` and `variant={year === 2025 ? 'filled' : 'glass'}`",
+		"`onclick={() => (year = 2026)}` and `onclick={() => (year = 2025)}`",
+		"`data` holds `gen(2026, 258, 1.4)` and `gen(2025, 365, 2.1)`",
+		"`<HeatmapChart variant=\"calendar\" data={data[year]} range={ranges[year]}`",
+		"`tooltipFormatter={(v) => `${v} commits`}` and `height=\"160px\"`"
+	],
+	"tags": ["heatmap-chart", "calendar", "year-toggle", "button", "state", "range"],
+	"shape": "wide"
+}

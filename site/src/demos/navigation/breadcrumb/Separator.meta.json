@@ -1,0 +1,10 @@
+{
+	"summary": "A breadcrumb with a custom separator character between three items.",
+	"use": "Matching breadcrumb punctuation to a product's visual language, for example a chevron between levels.",
+	"spec": [
+		"`<Breadcrumb` with `items` Docs (`href: '/'`), API Reference (`href: '/api'`) and Components (no `href`)",
+		"`separator=\"›\"` sets a single character as the separator"
+	],
+	"tags": ["breadcrumb", "separator", "navigation", "custom", "path"],
+	"shape": "wide"
+}

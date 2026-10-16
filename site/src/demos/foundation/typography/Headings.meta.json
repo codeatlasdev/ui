@@ -1,0 +1,11 @@
+{
+	"summary": "Six heading size tokens, Heading 1 to Heading 6, each rendered as a bold sample line.",
+	"use": "Choosing a heading size token for a page title hierarchy.",
+	"spec": [
+		"`[1, 2, 3, 4, 5, 6].map((n) =>` builds 6 rows",
+		"Each row has label `Heading ${n}` and token `--ca-font-size-h${n}`",
+		"Renders `<TypeRows {rows} heading />` with the `heading` flag for bold samples"
+	],
+	"tags": ["typography", "headings", "font-size", "tokens", "h1"],
+	"shape": "wide"
+}

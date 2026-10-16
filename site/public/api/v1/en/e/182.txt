@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #182 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/layout-primitives#flex-stack-and-box -->
 Element: #182 Flex, Stack and Box (layout/layout-primitives)
-What it shows: Flex, Stack and Box
-Tags: flex, stack, and, box
+What it shows: A Stack with a wrapping Flex row of three chips above a single padded Box.
+When to use: Composing small layouts with spacing props instead of custom CSS.
+Spec:
+- `<Stack gap="4" p="4">` is the root
+- `<Flex gap="3" align="center" justify="between" wrap>` holds 3 `<Box class="chip" px="3" py="1">` items
+- Chip labels: Flex, space between; gap 3; wraps
+- A last `<Box class="chip" p="4">` reads Stack gap 4, Box padding 4
+Tags: stack, flex, box, spacing, gap, layout, primitives
 Needs: @codeatlasdev/ui@4.1.0
 Components: Stack, Flex, Box
 Live demo: https://ui.codeatlas.com.br/docs/layout/layout-primitives#flex-stack-and-box

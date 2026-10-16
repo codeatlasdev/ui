@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #029 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/money-input#helpers -->
 Element: #029 Helpers (inputs/money-input)
-What it shows: Pure functions exported from @codeatlasdev/ui/forms.
-Tags: helpers
+What it shows: Two money helper functions evaluated inline: centsToDisplay and parseInputToCents.
+When to use: Formatting stored cents for display or parsing user-typed currency strings outside a MoneyInput.
+Spec:
+- `centsToDisplay(123456)` is printed with its result
+- `parseInputToCents('R$ 1.234,56')` is printed with its result
+- Both helpers are imported from `@codeatlasdev/ui/forms`
+- No input component is rendered
+Tags: money-input, helpers, cents, parse, format, currency
 Needs: @codeatlasdev/ui@4.1.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/inputs/money-input#helpers

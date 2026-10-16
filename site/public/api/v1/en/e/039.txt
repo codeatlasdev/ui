@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #039 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/segmented-control#small-full-width-disabled-item -->
 Element: #039 Small, full width, disabled item (inputs/segmented-control)
-What it shows: Small, full width, disabled item
-Tags: small, full, width, disabled, item, segmentedcontrol
+What it shows: Small full-width segmented control with four items, one disabled.
+When to use: Compact filter bar that should stretch to its container, such as a table toolbar.
+Spec:
+- `<SegmentedControl` with `size="sm"`, `fullWidth` and `aria-label="Size"`
+- `bind:value={size}` with initial `$state('b')`
+- 4 items: Alpha, Beta, Gamma, Delta
+- Gamma has `disabled: true`
+- Wrapper `.wide` uses `max-width: 420px`
+Tags: segmented-control, size, sm, full-width, disabled
 Needs: @codeatlasdev/ui@4.1.0
 Components: SegmentedControl
 Live demo: https://ui.codeatlas.com.br/docs/inputs/segmented-control#small-full-width-disabled-item

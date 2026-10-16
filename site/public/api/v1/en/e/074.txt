@@ -1,7 +1,13 @@
 <!-- @codeatlasdev/ui demo #074 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/surfaces/collapsible#open-by-default -->
 Element: #074 Open by default (surfaces/collapsible)
-What it shows: Open by default
-Tags: open, by, default, collapsible
+What it shows: A Collapsible that starts expanded with its open state bound and printed below it.
+When to use: Panels that should be visible on first load, or whose open state the app tracks.
+Spec:
+- `<Collapsible title="Expanded on mount" bind:open>`
+- State: `let open = $state(true)` starts the panel open
+- `<p class="state">open = {open}</p>` prints the bound value
+- Wrapped in `.wrap` with `max-width: 560px`
+Tags: collapsible, open, bind, expanded, controlled
 Needs: @codeatlasdev/ui@4.1.0
 Components: Collapsible
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/collapsible#open-by-default

@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #003 "Loading" (inputs/button).
-What it shows: Swaps the leading icon for a spinner, sets aria-busy and blocks clicks while keeping the label..
+What it shows: Buttons in the loading state, including one that toggles loading for two seconds when clicked. When to use: Submit and save buttons that wait on a request and must block repeat clicks while keeping their label.
+Spec:
+- `loading` on `variant="filled"` and `variant="outlined"` shows the spinner in place of the leading icon
+- Bound to state: `loading={saving}` with `let saving = $state(false)`
+- `onclick={save}` sets `saving = true` and resets it with `setTimeout(() => (saving = false), 2000)`
+- Label switches with state: `{saving ? 'Saving…' : 'Save (2s)'}`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

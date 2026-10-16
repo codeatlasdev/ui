@@ -1,5 +1,11 @@
 Use @codeatlasdev/ui demo #026 "Min, max, negative, error and disabled" (inputs/money-input).
-What it shows: Deposit is clamped between R$ 10,00 and R$ 100,00. Include a minus sign to toggle the sign when allowNegative is set..
+What it shows: Four MoneyInput fields showing min and max bounds, negative values, an error message and a disabled state. When to use: Amount fields in payment and ledger forms that limit ranges, allow adjustments or lock a value.
+Spec:
+- `label="Deposit"` with `min={1000}`, `max={10000}` and `description="Between R$ 10,00 and R$ 100,00."`
+- `<MoneyInput label="Adjustment" bind:value={adjustment} allowNegative />` with `let adjustment = $state(-2500)`
+- `<MoneyInput label="Amount" value={0} error="Amount must be greater than zero." />`
+- `<MoneyInput label="Locked" value={99900} disabled />`
+- Wrapper `.col` has `max-width: 400px`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

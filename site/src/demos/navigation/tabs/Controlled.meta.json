@@ -1,0 +1,13 @@
+{
+	"summary": "Tabs bound to a state variable with a line below showing the active tab value.",
+	"use": "Tabbed views whose active tab must also drive other UI or be read and set from code.",
+	"spec": [
+		"`<Tabs bind:value={active}>` with `let active = $state('overview')`",
+		"`<TabsList>` holds 3 `TabsTrigger` items: `value=\"overview\"`, `value=\"props\"`, `value=\"examples\"`",
+		"A matching `TabsContent` per value, each with a one-line `<div class=\"panel\">`",
+		"State is echoed as `Active tab: <code>{active}</code>`",
+		"Wrapper is `.wrap` with `max-width: 480px`"
+	],
+	"tags": ["tabs", "controlled", "bind-value", "state", "tabs-list", "tabs-content"],
+	"shape": "wide"
+}

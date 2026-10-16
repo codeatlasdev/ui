@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #107 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/avatar#with-image -->
 Element: #107 With image (display/avatar)
-What it shows: With image
-Tags: with, image, avatar
+What it shows: A row of four large avatars loaded from image URLs.
+When to use: User lists, comments and team pages where members have profile photos.
+Spec:
+- Four avatars with `size="lg"`
+- `src="https://i.pravatar.cc/150?img=1"` with `alt="Alice Martin"`
+- `src="https://i.pravatar.cc/150?img=12"` with `alt="Bob Chen"`
+- `src="https://i.pravatar.cc/150?img=32"` with `alt="Clara Silva"`
+- `src="https://i.pravatar.cc/150?img=47"` with `alt="David Kim"`
+Tags: avatar, image, src, alt, profile-photo
 Needs: @codeatlasdev/ui@4.1.0
 Components: Avatar
 Live demo: https://ui.codeatlas.com.br/docs/display/avatar#with-image

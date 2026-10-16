@@ -1,0 +1,11 @@
+{
+	"summary": "Pagination for 200 items at 10 per page with two sibling pages shown on each side of the current page.",
+	"use": "Long result sets where users need to jump a few pages around the current one.",
+	"spec": [
+		"`<Pagination count={200} perPage={10} siblingCount={2} />`",
+		"`siblingCount={2}` sets how many pages show on each side of the current page",
+		"Only `count`, `perPage` and `siblingCount` are set, nothing is bound"
+	],
+	"tags": ["pagination", "siblings", "sibling-count", "many-pages", "navigation"],
+	"shape": "wide"
+}

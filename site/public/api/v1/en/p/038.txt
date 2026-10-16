@@ -1,5 +1,10 @@
 Use @codeatlasdev/ui demo #038 "Default" (inputs/segmented-control).
-What it shows: Text items, and text items with icons..
+What it shows: Two segmented controls: a text-only Week/Month/Year period and a List/Grid view switch with icons. When to use: Switching a view mode or time range inline above a list, chart or dashboard.
+Spec:
+- Period control `aria-label="Period"` with `bind:value={period}` and 3 items: Week, Month, Year
+- Current value is shown as `value: {period}`
+- View control `aria-label="View"` with 2 items using `icon: LayoutList` and `icon: LayoutGrid`
+- Icons come from `@lucide/svelte`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

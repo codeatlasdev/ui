@@ -1,0 +1,12 @@
+{
+	"summary": "Default vertical radio group of three fruits with the selected value printed below.",
+	"use": "Single choice from a short list in a form or settings panel.",
+	"spec": [
+		"`<RadioGroup items={fruits}` with `bind:value={fruit}` and no orientation prop",
+		"`fruits` has 3 items: Apple, Banana, Cherry",
+		"Initial value is `$state('apple')`",
+		"Selected value is shown in `<code>{fruit}</code>` under the group"
+	],
+	"tags": ["radio-group", "radio", "vertical", "single-choice", "bind-value"],
+	"shape": "square"
+}

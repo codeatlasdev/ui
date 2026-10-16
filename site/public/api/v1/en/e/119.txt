@@ -1,7 +1,14 @@
 <!-- @codeatlasdev/ui demo #119 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/chip#statuschip -->
 Element: #119 StatusChip (display/chip)
-What it shows: StatusChip
-Tags: statuschip
+What it shows: StatusChip in its five statuses: success, warning, error, info and neutral.
+When to use: Showing the state of a record, such as active, pending, failed, scheduled or draft, in tables and lists.
+Spec:
+- `<StatusChip status="success" label="Active" />`
+- `<StatusChip status="warning" label="Pending" />`
+- `<StatusChip status="error" label="Failed" />`
+- `<StatusChip status="info" label="Scheduled" />`
+- `<StatusChip status="neutral" label="Draft" />`
+Tags: chip, status-chip, status, success, neutral, state
 Needs: @codeatlasdev/ui@4.1.0
 Components: StatusChip
 Live demo: https://ui.codeatlas.com.br/docs/display/chip#statuschip

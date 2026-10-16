@@ -1,0 +1,12 @@
+{
+	"summary": "A button that opens a box where Tab stays trapped among three buttons until Close is pressed.",
+	"use": "Modal-like surfaces such as dialogs, drawers and inline panels that must keep keyboard focus inside.",
+	"spec": [
+		"`use:focusTrap={open}` imported from `@codeatlasdev/ui/actions` on a `div` with `class=\"trap\"`",
+		"`let open = $state(false)` toggled by `<Button onclick={() => (open = true)}>Open trap</Button>`",
+		"Trap is rendered inside `{#if open}` and holds Button A and Button B with `variant=\"outlined\"`",
+		"Close button uses `onclick={() => (open = false)}` to release the trap"
+	],
+	"tags": ["focus-trap", "action", "keyboard", "a11y", "modal", "tab-order"],
+	"shape": "wide"
+}

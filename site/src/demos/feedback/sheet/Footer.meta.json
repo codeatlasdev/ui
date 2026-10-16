@@ -1,0 +1,12 @@
+{
+	"summary": "A bottom sheet titled Sessions with a footer button, opened with swipe to dismiss on or off.",
+	"use": "Mobile sheets with a pinned primary action that sometimes must not be dismissed by dragging.",
+	"spec": [
+		"`<Sheet bind:open title=\"Sessions\" swipeToDismiss={swipe} onclose={() => (open = false)}>`",
+		"Two triggers set `swipe = true` and `swipe = false` before `open = true`: Sheet with footer and Swipe disabled",
+		"Body is `<Stack gap=\"2\">` with a paragraph whose text depends on `swipe`",
+		"`{#snippet footer()}` holds `<Button variant=\"filled\"` New session with a `<Plus size={15} />` icon"
+	],
+	"tags": ["sheet", "footer", "swipe-to-dismiss", "bottom-sheet", "mobile"],
+	"shape": "wide"
+}
