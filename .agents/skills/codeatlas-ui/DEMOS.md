@@ -241,3 +241,6 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 234 | DocsNav and TableOfContents | docs-kit/docs | DocsNav, TableOfContents |
 | 235 | ca-prose, Callout and Steps | docs-kit/docs | Callout, Steps |
 | 236 | DocsSearch | docs-kit/docs | Button, DocsSearch |
+| 237 | Scrollable | navigation/tabs | Tabs, TabsList, TabsTrigger, TabsContent |
+| 238 | Icons | navigation/tabs | Tabs, TabsList, TabsTrigger, TabsContent, SchemeAsset |
+| 239 | Leading icons and brand logos | navigation/menu | DropdownMenu, DropdownMenuItem, DropdownMenuLabel, SchemeAsset, Button |
