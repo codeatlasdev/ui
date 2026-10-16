@@ -151,6 +151,7 @@ export { default as Progress } from "./components/Progress/Progress.svelte";
 export type { RadioItem } from "./components/RadioGroup/RadioGroup.svelte";
 export { default as RadioGroup } from "./components/RadioGroup/RadioGroup.svelte";
 export { default as Row } from "./components/Row/Row.svelte";
+export { default as SchemeAsset } from "./components/SchemeAsset/SchemeAsset.svelte";
 export { default as ScrollArea } from "./components/ScrollArea/ScrollArea.svelte";
 export { default as Section } from "./components/Section/Section.svelte";
 export { default as Select } from "./components/Select/Select.svelte";

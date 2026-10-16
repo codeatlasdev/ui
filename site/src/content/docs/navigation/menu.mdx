@@ -8,6 +8,8 @@ import Demo from "~/components/docs/Demo.astro";
 import Props from "~/components/docs/Props.astro";
 import Default from "~/demos/navigation/menu/Default.svelte";
 import DefaultSrc from "~/demos/navigation/menu/Default.svelte?raw";
+import BrandIcons from "~/demos/navigation/menu/BrandIcons.svelte";
+import BrandIconsSrc from "~/demos/navigation/menu/BrandIcons.svelte?raw";
 import IconTrigger from "~/demos/navigation/menu/IconTrigger.svelte";
 import IconTriggerSrc from "~/demos/navigation/menu/IconTrigger.svelte?raw";
 
@@ -33,7 +35,26 @@ import IconTriggerSrc from "~/demos/navigation/menu/IconTrigger.svelte?raw";
 
 Keyboard support follows the WAI-ARIA menu pattern: Enter, Space or ArrowDown opens the menu on the first item, ArrowUp opens it on the last, arrows then move, Enter or Space selects, Escape closes and focus returns to the trigger. Tab closes the menu. Selecting an item closes it. The menu is a popover layer in the browser top layer, positioned with CSS anchor positioning where supported, so it stays on top of a dialog it is opened from. Pass an interactive trigger (`Button`, `IconButton`) through `triggerChild` and spread the received `props` on it. Use `trigger` only for non-interactive content such as text or an icon. Use `DropdownMenuLabel` for a non-interactive group heading and `DropdownMenuSeparator` for a divider.
 
+### Leading icons and brand logos
+
+Pass a leading icon with the `icon` snippet instead of placing it in `children`: it gets a fixed 14px box, the standard gap and `aria-hidden` (the label stays the accessible name), so icon size and alignment never drift between menus. A plain icon (Lucide, any `currentColor` glyph) follows the item's text color, including the highlighted, disabled and destructive states.
+
+A brand logo (a multi-color or fixed-color SVG) must not be recolored: set `brandIcon` on the item and no state color or dimming reaches the icon. A monochrome mark such as the OpenAI blossom needs a black asset on light themes and a white one on dark: wrap both in `SchemeAsset`, which renders the variant of the kit's color scheme (the `.dark` class on `<html>`, or a `data-theme-scope` island) with CSS only, so it is correct in SSR and on first paint and no app has to read the theme store. The same `icon` / `brandIcon` pair exists on `TabsTrigger`. Follow each brand's own guidelines for the marks you ship.
+
+```svelte
+<DropdownMenuItem brandIcon onclick={openCodex}>
+  {#snippet icon()}
+    <SchemeAsset>
+      {#snippet light()}<img src="/logos/codex-black.svg" alt="" />{/snippet}
+      {#snippet dark()}<img src="/logos/codex-white.svg" alt="" />{/snippet}
+    </SchemeAsset>
+  {/snippet}
+  Codex
+</DropdownMenuItem>
+```
+
 <Demo title="Default" description="A button trigger with a label, items, a separator and a destructive item." src={DefaultSrc}><Default client:visible /></Demo>
+<Demo title="Leading icons and brand logos" description="The icon slot gives every item the same box and gap. brandIcon keeps a logo's own colors, and SchemeAsset swaps a monochrome mark between light and dark." src={BrandIconsSrc}><BrandIcons client:visible /></Demo>
 <Demo title="Icon trigger" description="An IconButton trigger. IconButton needs an aria-label." src={IconTriggerSrc}><IconTrigger client:visible /></Demo>
 
 <Props for="DropdownMenu" title="DropdownMenu" rows={[
@@ -50,7 +71,9 @@ Keyboard support follows the WAI-ARIA menu pattern: Enter, Space or ArrowDown op
   { name: "onclick", type: "() => void", description: "Called when the item is selected." },
   { name: "variant", type: "'default' | 'destructive'", default: "'default'", description: "destructive colors the item with the error token." },
   { name: "disabled", type: "boolean", default: "false", description: "Prevents selection." },
-  { name: "children", type: "Snippet", description: "Item content, usually an icon and a label." },
+  { name: "icon", type: "Snippet", description: "Leading icon in a fixed 14px box, `aria-hidden`. A plain icon follows the item's text color." },
+  { name: "brandIcon", type: "boolean", default: "false", description: "The icon is a brand mark with its own colors: no highlighted, disabled or destructive color reaches it. Pair with `SchemeAsset` for light and dark assets." },
+  { name: "children", type: "Snippet", description: "Item label." },
   { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
 ]} />
 
@@ -60,3 +83,9 @@ Keyboard support follows the WAI-ARIA menu pattern: Enter, Space or ArrowDown op
 ]} />
 
 `DropdownMenuSeparator` takes no props.
+
+<Props for="SchemeAsset" title="SchemeAsset" rows={[
+  { name: "light", type: "Snippet", description: "Required. Rendered while the light scheme is active." },
+  { name: "dark", type: "Snippet", description: "Required. Rendered while the dark scheme is active." },
+  { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
+]} />

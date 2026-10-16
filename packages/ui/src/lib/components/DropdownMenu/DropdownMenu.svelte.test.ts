@@ -4,6 +4,7 @@ import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
 import Harness from "./DropdownMenu.test.svelte";
+import IconHarness from "./DropdownMenuIcon.test.svelte";
 
 const openByKeyboard = async (props = {}, key = "{Enter}") => {
 	const screen = await render(Harness, props);
@@ -102,5 +103,42 @@ describe("DropdownMenu", () => {
 		await screen.getByRole("button", { name: "Actions" }).click();
 		await page.getByRole("menuitem", { name: "Delete" }).click();
 		expect(ondelete).toHaveBeenCalledOnce();
+	});
+});
+
+describe("DropdownMenuItem icon", () => {
+	const open = async () => {
+		const screen = await render(IconHarness, {});
+		(screen.getByRole("button", { name: "Actions" }).element() as HTMLElement).focus();
+		await userEvent.keyboard("{Enter}");
+		await expect.element(page.getByRole("menu")).toBeVisible();
+		await settled();
+		return screen;
+	};
+	const box = (name: string) =>
+		page
+			.getByRole("menuitem", { name })
+			.element()
+			.querySelector(".ca-dropdown-item__icon") as HTMLElement;
+
+	it("renders a fixed aria-hidden icon box; the label stays the accessible name", async () => {
+		await open();
+		const b = box("Edit");
+		expect(b.getAttribute("aria-hidden")).toBe("true");
+		const r = b.getBoundingClientRect();
+		expect(r.width).toBe(r.height);
+		expect(r.width).toBeGreaterThan(0);
+		expect(
+			await checkA11y(document.querySelector('[role="menu"]') as HTMLElement)
+		).toHaveNoViolations();
+	});
+
+	it("a plain icon follows the item color, a brand icon ignores destructive and disabled", async () => {
+		await open();
+		const item = (name: string) => page.getByRole("menuitem", { name }).element() as HTMLElement;
+		expect(getComputedStyle(box("Edit")).color).toBe(getComputedStyle(item("Edit")).color);
+		const remove = getComputedStyle(item("Remove"));
+		expect(getComputedStyle(box("Remove")).color).not.toBe(remove.color);
+		expect(getComputedStyle(box("Remove")).opacity).toBe("1");
 	});
 });

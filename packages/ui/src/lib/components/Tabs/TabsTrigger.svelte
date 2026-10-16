@@ -5,11 +5,18 @@
   interface Props {
     value: string;
     disabled?: boolean;
+    /** Leading icon in a fixed box (`aria-hidden`, so the label stays the accessible name). */
+    icon?: Snippet;
+    /**
+     * The icon is a brand mark (fixed colors, not a `currentColor` glyph): it is never recolored
+     * by the active, hover or disabled state. Pair with `SchemeAsset` for light/dark variants.
+     */
+    brandIcon?: boolean;
     class?: string;
     children?: Snippet;
   }
 
-  let { value, disabled = false, class: className = '', children }: Props = $props();
+  let { value, disabled = false, icon, brandIcon = false, class: className = '', children }: Props = $props();
 
   const tabs = getTabsContext();
   const active = $derived(tabs.value === value);
@@ -30,6 +37,9 @@
   onclick={() => tabs.select(value)}
   onfocus={() => tabs.select(value)}
 >
+  {#if icon}
+    <span class="ca-tabs-trigger__icon" data-brand={brandIcon ? '' : undefined} aria-hidden="true">{@render icon()}</span>
+  {/if}
   {@render children?.()}
 </button>
 
@@ -49,6 +59,7 @@
       font-family: var(--ca-font-sans);
       font-size: var(--ca-font-size-body2);
       font-weight: var(--ca-font-weight-medium);
+      gap: var(--ca-space-2);
       cursor: pointer;
       white-space: nowrap;
       transition:
@@ -73,6 +84,25 @@
     :global(.ca-tabs-trigger[disabled][data-state='active']) {
       background: var(--ca-action-disabled-bg);
       color: var(--ca-text-disabled);
+    }
+
+    /* Fixed icon box: size, gap and alignment never drift between tabs. A brand mark keeps its own
+       colors (data-brand): no state color reaches it, so it is never tinted or dimmed. */
+    :global(.ca-tabs-trigger__icon) {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: none;
+      inline-size: var(--ca-space-3-5);
+      block-size: var(--ca-space-3-5);
+    }
+    :global(.ca-tabs-trigger__icon > :is(svg, img)) {
+      inline-size: 100%;
+      block-size: 100%;
+    }
+    :global(.ca-tabs-trigger__icon[data-brand]) {
+      color: initial;
+      opacity: 1;
     }
 
     :global(.ca-tabs-trigger:focus-visible) {

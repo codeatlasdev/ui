@@ -243,4 +243,6 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "235", path: "docs-kit/docs/Prose" },
 	{ id: "236", path: "docs-kit/docs/Search" },
 	{ id: "237", path: "navigation/tabs/Scrollable" },
+	{ id: "238", path: "navigation/tabs/Icons" },
+	{ id: "239", path: "navigation/menu/BrandIcons" },
 ];

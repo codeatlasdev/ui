@@ -11,17 +11,21 @@
   {/snippet}
   <DropdownMenuLabel>File actions</DropdownMenuLabel>
   <DropdownMenuItem onclick={() => (last = 'Edit')}>
-    {#snippet children()}<Edit2 size={14} /> Edit{/snippet}
+    {#snippet icon()}<Edit2 />{/snippet}
+    Edit
   </DropdownMenuItem>
   <DropdownMenuItem onclick={() => (last = 'Duplicate')}>
-    {#snippet children()}<Copy size={14} /> Duplicate{/snippet}
+    {#snippet icon()}<Copy />{/snippet}
+    Duplicate
   </DropdownMenuItem>
   <DropdownMenuItem onclick={() => (last = 'Download')}>
-    {#snippet children()}<Download size={14} /> Download{/snippet}
+    {#snippet icon()}<Download />{/snippet}
+    Download
   </DropdownMenuItem>
   <DropdownMenuSeparator />
   <DropdownMenuItem variant="destructive" onclick={() => (last = 'Delete')}>
-    {#snippet children()}<Trash2 size={14} /> Delete{/snippet}
+    {#snippet icon()}<Trash2 />{/snippet}
+    Delete
   </DropdownMenuItem>
 </DropdownMenu>
 

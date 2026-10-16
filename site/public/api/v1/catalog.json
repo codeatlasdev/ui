@@ -1,6 +1,6 @@
 {
 	"version": "4.1.0",
-	"count": 237,
+	"count": 239,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -29,8 +29,8 @@
 		{
 			"slug": "navigation",
 			"first": "146",
-			"last": "237",
-			"count": 20
+			"last": "239",
+			"count": 22
 		},
 		{
 			"slug": "layout",
@@ -8385,6 +8385,96 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/navigation/tabs#scrollable",
+			"needs": "@codeatlasdev/ui@4.1.0"
+		},
+		{
+			"id": "238",
+			"group": "navigation",
+			"page": "tabs",
+			"variant": "Icons",
+			"slug": "icons",
+			"title": "Icons",
+			"description": "A leading icon per tab. A brand logo keeps its own colors with brandIcon; SchemeAsset swaps a monochrome mark between light and dark.",
+			"summary": "A leading icon per tab. A brand logo keeps its own colors with brandIcon; SchemeAsset swaps a monochrome mark between light and dark.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"icons",
+				"tabs",
+				"tabslist",
+				"tabstrigger",
+				"tabscontent",
+				"schemeasset"
+			],
+			"shape": "wide",
+			"components": [
+				"Tabs",
+				"TabsList",
+				"TabsTrigger",
+				"TabsContent",
+				"SchemeAsset"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Tabs",
+						"TabsList",
+						"TabsTrigger",
+						"TabsContent",
+						"SchemeAsset"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/tabs#icons",
+			"needs": "@codeatlasdev/ui@4.1.0"
+		},
+		{
+			"id": "239",
+			"group": "navigation",
+			"page": "menu",
+			"variant": "BrandIcons",
+			"slug": "leading-icons-and-brand-logos",
+			"title": "Leading icons and brand logos",
+			"description": "The icon slot gives every item the same box and gap. brandIcon keeps a logo's own colors, and SchemeAsset swaps a monochrome mark between light and dark.",
+			"summary": "The icon slot gives every item the same box and gap. brandIcon keeps a logo's own colors, and SchemeAsset swaps a monochrome mark between light and dark.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"leading",
+				"icons",
+				"and",
+				"brand",
+				"logos",
+				"dropdownmenu",
+				"dropdownmenuitem",
+				"dropdownmenulabel",
+				"schemeasset",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"DropdownMenu",
+				"DropdownMenuItem",
+				"DropdownMenuLabel",
+				"SchemeAsset",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"DropdownMenu",
+						"DropdownMenuItem",
+						"DropdownMenuLabel",
+						"SchemeAsset",
+						"Button"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/menu#leading-icons-and-brand-logos",
 			"needs": "@codeatlasdev/ui@4.1.0"
 		}
 	]

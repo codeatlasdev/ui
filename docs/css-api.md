@@ -6,7 +6,7 @@ Conventions: BEM (`ca-block__element`, `ca-block--modifier`). CSS variables (`--
 
 Generated from `grep -o 'ca-[a-z0-9_-]*'` over `packages/ui/src/lib/components/<Component>/` (`.svelte`, `.css`, `.ts`), excluding custom properties and duplicates. When you add or rename components, rerun the command and update this file. Some listed names may be `@keyframes` or internal identifiers (e.g. `ca-accordion-down`) rather than classes; treat them as stable to be safe.
 
-Total: 791 unique classes across 80 components.
+Total: 796 unique classes across 81 components.
 
 ---
 
@@ -127,7 +127,7 @@ Total: 791 unique classes across 80 components.
 
 ## DropdownMenu
 
-`.ca-dropdown-content` `.ca-dropdown-in` `.ca-dropdown-item` `.ca-dropdown-item--destructive` `.ca-dropdown-label` `.ca-dropdown-out` `.ca-dropdown-sep` `.ca-dropdown__trigger`
+`.ca-dropdown-content` `.ca-dropdown-in` `.ca-dropdown-item` `.ca-dropdown-item--destructive` `.ca-dropdown-item__icon` `.ca-dropdown-label` `.ca-dropdown-out` `.ca-dropdown-sep` `.ca-dropdown__trigger`
 
 ## EmptyState
 
@@ -232,6 +232,10 @@ Total: 791 unique classes across 80 components.
 > Deprecated, removed in the next major: use `Flex` (`.ca-flex`).
 `.ca-row` `.ca-row--wrap`
 
+## SchemeAsset
+
+`.ca-scheme-asset` `.ca-scheme-asset__dark` `.ca-scheme-asset__light`
+
 ## ScrollArea
 
 `.ca-scroll-area` `.ca-scroll-area__scrollbar` `.ca-scroll-area__scrollbar--h` `.ca-scroll-area__scrollbar--v` `.ca-scroll-area__thumb` `.ca-scroll-area__viewport`
@@ -309,7 +313,7 @@ Total: 791 unique classes across 80 components.
 
 ## Tabs
 
-`.ca-tabs` `.ca-tabs-content` `.ca-tabs-list` `.ca-tabs-trigger`
+`.ca-tabs` `.ca-tabs-content` `.ca-tabs-list` `.ca-tabs-trigger` `.ca-tabs-trigger__icon`
 
 ## templates
 

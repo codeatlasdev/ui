@@ -51,7 +51,7 @@ test.describe("responsive (mobile)", () => {
 
 	test("TabsList scrolls on its own with the active tab in view", async ({ page }) => {
 		await gotoReady(page, "/docs/navigation/tabs/");
-		const list = page.getByRole("tablist").nth(2);
+		const list = page.getByRole("tablist").filter({ hasText: "Danger zone" });
 		await list.scrollIntoViewIfNeeded();
 		const m = await list.evaluate((el) => {
 			const box = el.getBoundingClientRect();

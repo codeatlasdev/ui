@@ -10,6 +10,8 @@ import Default from "~/demos/navigation/tabs/Default.svelte";
 import DefaultSrc from "~/demos/navigation/tabs/Default.svelte?raw";
 import Controlled from "~/demos/navigation/tabs/Controlled.svelte";
 import ControlledSrc from "~/demos/navigation/tabs/Controlled.svelte?raw";
+import Icons from "~/demos/navigation/tabs/Icons.svelte";
+import IconsSrc from "~/demos/navigation/tabs/Icons.svelte?raw";
 import Scrollable from "~/demos/navigation/tabs/Scrollable.svelte";
 import ScrollableSrc from "~/demos/navigation/tabs/Scrollable.svelte?raw";
 
@@ -30,10 +32,11 @@ import ScrollableSrc from "~/demos/navigation/tabs/Scrollable.svelte?raw";
 
 Arrow keys move between tabs, Home and End jump to the first and last, and focusing a tab selects it (automatic activation). Disabled tabs are skipped. The panels use the `tabpanel` role and are focusable. Each `TabsTrigger` and `TabsContent` pair must share a `value`. `Tabs` is horizontal only.
 
-`TabsList` keeps the width of its tabs (it never stretches across the column) and, when the tabs do not fit, scrolls sideways on its own with the scrollbar hidden. The selected tab is scrolled into view on mount and whenever it changes. Add `fade` to mask the edge that still has tabs to reveal. No wrapper element or CSS is needed for 7 tabs on a phone.
+`TabsList` keeps the width of its tabs (it never stretches across the column) and, when the tabs do not fit, scrolls sideways on its own with the scrollbar hidden. The selected tab is scrolled into view on mount and whenever it changes. The leading `icon` snippet and brand logos are covered on the [Dropdown Menu](/docs/navigation/menu/) page too (same `icon` / `brandIcon` pair). Add `fade` to mask the edge that still has tabs to reveal. No wrapper element or CSS is needed for 7 tabs on a phone.
 
 <Demo title="Default" description="Three tabs with content panels." src={DefaultSrc}><Default client:visible /></Demo>
 <Demo title="Controlled" description="The parent owns the active tab with bind:value." src={ControlledSrc}><Controlled client:visible /></Demo>
+<Demo title="Icons" description="A leading icon per tab. A brand logo keeps its own colors with brandIcon; SchemeAsset swaps a monochrome mark between light and dark." src={IconsSrc}><Icons client:visible /></Demo>
 <Demo title="Scrollable" description="Seven tabs in a narrow column: the list scrolls on its own, the active tab starts in view, and fade marks the edge." src={ScrollableSrc}><Scrollable client:visible /></Demo>
 
 <Props for="Tabs" title="Tabs" rows={[
@@ -46,6 +49,8 @@ Arrow keys move between tabs, Home and End jump to the first and last, and focus
 <Props for="TabsTrigger" title="TabsTrigger" rows={[
   { name: "value", type: "string", description: "Required. Links the trigger to its TabsContent." },
   { name: "disabled", type: "boolean", default: "false", description: "Prevents selecting the tab." },
+  { name: "icon", type: "Snippet", description: "Leading icon in a fixed 14px box, `aria-hidden`: the label stays the accessible name. A plain icon follows the tab's text color." },
+  { name: "brandIcon", type: "boolean", default: "false", description: "The icon is a brand mark with its own colors: no active, hover or disabled color reaches it. Pair it with `SchemeAsset` when the mark needs a light and a dark asset." },
   { name: "children", type: "Snippet", description: "Trigger label." },
   { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
 ]} />

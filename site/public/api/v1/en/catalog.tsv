@@ -236,3 +236,5 @@ id	group	page	title	tags	summary
 235	docs-kit	docs	ca-prose, Callout and Steps	ca,prose,callout,and,steps	Wrap rendered markdown in .ca-prose. Callout is an Alert vocabulary (note, tip, caution, danger); keep two per page. Steps turns an ordered list into a numbered rail.
 236	docs-kit	docs	DocsSearch	docssearch,button	Full-text search. A dialog on desktop and a full-height sheet with a 16px input on phones. Pass entries or an async loader.
 237	navigation	tabs	Scrollable	scrollable,tabs,tabslist,tabstrigger,tabscontent	Seven tabs in a narrow column: the list scrolls on its own, the active tab starts in view, and fade marks the edge.
+238	navigation	tabs	Icons	icons,tabs,tabslist,tabstrigger,tabscontent,schemeasset	A leading icon per tab. A brand logo keeps its own colors with brandIcon; SchemeAsset swaps a monochrome mark between light and dark.
+239	navigation	menu	Leading icons and brand logos	leading,icons,and,brand,logos,dropdownmenu,dropdownmenuitem,dropdownmenulabel,schemeasset,button	The icon slot gives every item the same box and gap. brandIcon keeps a logo's own colors, and SchemeAsset swaps a monochrome mark between light and dark.
