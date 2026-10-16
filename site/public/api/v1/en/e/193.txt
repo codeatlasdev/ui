@@ -1,0 +1,18 @@
+<!-- @codeatlasdev/ui demo #193 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/bar#vertical-bars -->
+Element: #193 Vertical bars (charts/bar)
+What it shows: Vertical bars
+Tags: vertical, bars, card, barchart
+Needs: @codeatlasdev/ui@4.0.0 + echarts
+Components: Card, BarChart
+Live demo: https://ui.codeatlas.com.br/docs/charts/bar#vertical-bars
+
+<script lang="ts">
+  import { Card } from '@codeatlasdev/ui';
+  import { BarChart } from '@codeatlasdev/ui/charts';
+
+  const fmt = (v: number) => `$${(v / 1000).toFixed(0)}k`;
+</script>
+
+<Card material="glass" full>
+  <BarChart series={[{ name: 'Revenue', data: [38400, 54200, 71600, 89800] }]} categories={['Q1', 'Q2', 'Q3', 'Q4']} valueFormatter={fmt} height="300px" />
+</Card>

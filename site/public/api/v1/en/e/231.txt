@@ -1,0 +1,14 @@
+<!-- @codeatlasdev/ui demo #231 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/foundation/typography#heading-scale -->
+Element: #231 Heading scale (foundation/typography)
+What it shows: --ca-font-size-h1 to h6.
+Tags: heading, scale
+Needs: @codeatlasdev/ui@4.0.0
+Components: none
+Live demo: https://ui.codeatlas.com.br/docs/foundation/typography#heading-scale
+
+<script lang="ts">
+	import TypeRows from "./TypeRows.svelte";
+	const rows = [1, 2, 3, 4, 5, 6].map((n) => ({ label: `Heading ${n}`, token: `--ca-font-size-h${n}` }));
+</script>
+
+<TypeRows {rows} heading />

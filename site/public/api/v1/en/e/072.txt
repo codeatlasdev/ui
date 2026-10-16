@@ -1,0 +1,42 @@
+<!-- @codeatlasdev/ui demo #072 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/surfaces/card#stat-cards -->
+Element: #072 Stat cards (surfaces/card)
+What it shows: Stat cards
+Tags: stat, cards, card
+Needs: @codeatlasdev/ui@4.0.0
+Components: Card
+Live demo: https://ui.codeatlas.com.br/docs/surfaces/card#stat-cards
+
+<script lang="ts">
+  import { Card } from '@codeatlasdev/ui';
+
+  const stats = [
+    { label: 'Components', value: '70+', delta: 'Svelte 5' },
+    { label: 'Presets', value: '8', delta: 'Amber, Ocean, Crimson and more' },
+    { label: 'Tokens', value: '80+', delta: 'CSS custom properties' },
+  ];
+</script>
+
+<div class="grid">
+  {#each stats as s}
+    <Card material="glass" class="stat">
+      <p class="label">{s.label}</p>
+      <p class="value">{s.value}</p>
+      <p class="delta">{s.delta}</p>
+    </Card>
+  {/each}
+</div>
+
+<style>
+  .grid { display: flex; flex-wrap: wrap; gap: var(--ca-space-3); width: 100%; }
+  :global(.stat) { flex: 1; min-width: 140px; }
+  .label {
+    margin: 0 0 4px;
+    font-size: var(--ca-font-size-caption);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--ca-text-secondary);
+  }
+  .value { margin: 0 0 4px; font-size: var(--ca-font-size-h3); font-weight: 700; line-height: 1.1; color: var(--ca-text-primary); }
+  .delta { margin: 0; font-size: var(--ca-font-size-caption); color: var(--ca-brand-text); }
+</style>

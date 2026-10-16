@@ -1,0 +1,35 @@
+<!-- @codeatlasdev/ui demo #148 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/actions#clipboard -->
+Element: #148 clipboard (navigation/actions)
+What it shows: Copies the given text on click and dispatches a copy event (listen with `oncopy`) once the copy succeeded.
+Tags: clipboard
+Needs: @codeatlasdev/ui@4.0.0
+Components: none
+Live demo: https://ui.codeatlas.com.br/docs/navigation/actions#clipboard
+
+<script lang="ts">
+  import { clipboard } from '@codeatlasdev/ui/actions';
+
+  let copied = $state(false);
+  function done() {
+    copied = true;
+    setTimeout(() => (copied = false), 2000);
+  }
+</script>
+
+<button use:clipboard={'bun add @codeatlasdev/ui'} oncopy={done} class="btn">
+  {copied ? 'Copied!' : 'Copy install command'}
+</button>
+
+<style>
+  .btn {
+    min-height: var(--ca-control-height);
+    padding: 8px 20px;
+    border-radius: var(--ca-radius-md);
+    border: 1px solid var(--ca-outline-subtle);
+    background: var(--ca-action-hover);
+    cursor: pointer;
+    font: inherit;
+    font-size: var(--ca-font-size-body2);
+    color: var(--ca-text-primary);
+  }
+</style>

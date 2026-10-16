@@ -1,0 +1,51 @@
+<!-- @codeatlasdev/ui demo #024 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/masked-field#use-mask-action -->
+Element: #024 use:mask action (inputs/masked-field)
+What it shows: Apply any pure mask to a plain input. The caret stays on the same digit.
+Tags: use, mask, action
+Needs: @codeatlasdev/ui@4.0.0
+Components: none
+Live demo: https://ui.codeatlas.com.br/docs/inputs/masked-field#use-mask-action
+
+<script lang="ts">
+  import { mask, maskCPF } from '@codeatlasdev/ui/forms';
+
+  let value = $state('');
+</script>
+
+<div class="col">
+  <label class="lbl" for="mask-action-input">Plain input with <code>use:mask</code></label>
+  <input id="mask-action-input" class="native" use:mask={maskCPF} bind:value placeholder="000.000.000-00" inputmode="numeric" />
+  <p class="out">value = {value || '–'}</p>
+</div>
+
+<style>
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-2);
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .lbl {
+    font-size: var(--ca-font-size-body2);
+    color: var(--ca-text-secondary);
+  }
+
+  .native {
+    height: 44px;
+    padding: 0 var(--ca-space-3);
+    border: 1px solid var(--ca-outline-default);
+    border-radius: var(--ca-radius-md);
+    background: transparent;
+    color: var(--ca-text-primary);
+    font: inherit;
+  }
+
+  .out {
+    margin: 0;
+    font-family: var(--ca-font-mono);
+    font-size: var(--ca-font-size-caption);
+    color: var(--ca-text-secondary);
+  }
+</style>

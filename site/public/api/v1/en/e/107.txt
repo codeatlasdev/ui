@@ -1,0 +1,16 @@
+<!-- @codeatlasdev/ui demo #107 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/avatar#with-image -->
+Element: #107 With image (display/avatar)
+What it shows: With image
+Tags: with, image, avatar
+Needs: @codeatlasdev/ui@4.0.0
+Components: Avatar
+Live demo: https://ui.codeatlas.com.br/docs/display/avatar#with-image
+
+<script lang="ts">
+  import { Avatar } from '@codeatlasdev/ui';
+</script>
+
+<Avatar src="https://i.pravatar.cc/150?img=1" alt="Alice Martin" size="lg" />
+<Avatar src="https://i.pravatar.cc/150?img=12" alt="Bob Chen" size="lg" />
+<Avatar src="https://i.pravatar.cc/150?img=32" alt="Clara Silva" size="lg" />
+<Avatar src="https://i.pravatar.cc/150?img=47" alt="David Kim" size="lg" />

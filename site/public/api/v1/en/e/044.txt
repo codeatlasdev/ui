@@ -1,0 +1,21 @@
+<!-- @codeatlasdev/ui demo #044 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/setting-item#switch-rows -->
+Element: #044 Switch rows (inputs/setting-item)
+What it shows: Switch rows
+Tags: switch, rows, settingitem
+Needs: @codeatlasdev/ui@4.0.0
+Components: SettingItem, Switch
+Live demo: https://ui.codeatlas.com.br/docs/inputs/setting-item#switch-rows
+
+<script lang="ts">
+  import { SettingItem, Switch } from '@codeatlasdev/ui';
+
+  let email = $state(true);
+  let digest = $state(false);
+</script>
+
+<SettingItem label="Email notifications" description="Receive an email for every mention.">
+  <Switch bind:checked={email} />
+</SettingItem>
+<SettingItem label="Weekly digest" description="One summary every Monday.">
+  <Switch bind:checked={digest} />
+</SettingItem>

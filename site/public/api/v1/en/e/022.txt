@@ -1,0 +1,21 @@
+<!-- @codeatlasdev/ui demo #022 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/filter-group#role-filter -->
+Element: #022 Role filter (inputs/filter-group)
+What it shows: Role filter
+Tags: role, filter, filtergroup
+Needs: @codeatlasdev/ui@4.0.0
+Components: FilterGroup
+Live demo: https://ui.codeatlas.com.br/docs/inputs/filter-group#role-filter
+
+<script lang="ts">
+  import { FilterGroup } from '@codeatlasdev/ui';
+
+  const roles = [
+    { value: 'admin', label: 'Admin' },
+    { value: 'editor', label: 'Editor' },
+    { value: 'viewer', label: 'Viewer' },
+  ];
+  let role = $state('all');
+</script>
+
+<FilterGroup label="Role" options={roles} bind:value={role} />
+<p>Selected: {role}</p>

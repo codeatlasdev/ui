@@ -1,0 +1,46 @@
+<!-- @codeatlasdev/ui demo #227 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/foundation/materials#tinted-and-glowing -->
+Element: #227 Tinted and glowing (foundation/materials)
+What it shows: Tinted and glowing
+Tags: tinted, and, glowing, surface
+Needs: @codeatlasdev/ui@4.0.0
+Components: Surface
+Live demo: https://ui.codeatlas.com.br/docs/foundation/materials#tinted-and-glowing
+
+<script lang="ts">
+	import { Surface } from "@codeatlasdev/ui";
+</script>
+
+<div class="backdrop">
+	<Surface material="glass" tone="brand" class="chip">
+		<p>Tinted</p>
+	</Surface>
+	<Surface material="glass" glow class="chip">
+		<p>Glowing</p>
+	</Surface>
+	<Surface material="glass" tone="brand" glow class="chip">
+		<p>Tinted + glowing</p>
+	</Surface>
+</div>
+
+<style>
+	.backdrop {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--ca-space-3);
+		width: 100%;
+		padding: var(--ca-space-6);
+		border-radius: var(--ca-radius-lg);
+		background: linear-gradient(135deg, var(--ca-brand-main) 0%, var(--ca-semantic-info) 50%, var(--ca-semantic-success) 100%);
+	}
+	.backdrop :global(.chip) {
+		flex: 1;
+		min-width: 8.5rem;
+		padding: var(--ca-space-5) var(--ca-space-6);
+		border-radius: var(--ca-radius-md);
+	}
+	p {
+		margin: 0;
+		font-weight: 600;
+		color: var(--ca-text-primary);
+	}
+</style>

@@ -1,0 +1,31 @@
+<!-- @codeatlasdev/ui demo #029 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/money-input#helpers -->
+Element: #029 Helpers (inputs/money-input)
+What it shows: Pure functions exported from @codeatlasdev/ui/forms.
+Tags: helpers
+Needs: @codeatlasdev/ui@4.0.0
+Components: none
+Live demo: https://ui.codeatlas.com.br/docs/inputs/money-input#helpers
+
+<script lang="ts">
+  import { centsToDisplay, parseInputToCents } from '@codeatlasdev/ui/forms';
+</script>
+
+<div class="col">
+  <p class="out">centsToDisplay(123456) = {centsToDisplay(123456)}</p>
+  <p class="out">parseInputToCents("R$ 1.234,56") = {parseInputToCents('R$ 1.234,56')}</p>
+</div>
+
+<style>
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-2);
+  }
+
+  .out {
+    margin: 0;
+    font-family: var(--ca-font-mono);
+    font-size: var(--ca-font-size-caption);
+    color: var(--ca-text-secondary);
+  }
+</style>

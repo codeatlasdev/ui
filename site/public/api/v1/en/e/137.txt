@@ -1,0 +1,31 @@
+<!-- @codeatlasdev/ui demo #137 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/scroll-area#vertical-scroll -->
+Element: #137 Vertical scroll (display/scroll-area)
+What it shows: Vertical scroll
+Tags: vertical, scroll, scrollarea, card
+Needs: @codeatlasdev/ui@4.0.0
+Components: ScrollArea, Card
+Live demo: https://ui.codeatlas.com.br/docs/display/scroll-area#vertical-scroll
+
+<script lang="ts">
+  import { ScrollArea, Card } from '@codeatlasdev/ui';
+
+  const items = Array.from({ length: 20 }, (_, i) => `Item ${i + 1}: Lorem ipsum dolor sit amet`);
+</script>
+
+<Card material="glass" full>
+  <ScrollArea maxHeight="220px">
+    {#each items as item}
+      <div class="item">{item}</div>
+    {/each}
+  </ScrollArea>
+</Card>
+
+<style>
+  .item {
+    padding: 10px 16px;
+    font-size: var(--ca-font-size-body2);
+    color: var(--ca-text-secondary);
+    border-bottom: 1px solid var(--ca-outline-subtle);
+  }
+  .item:last-child { border-bottom: none; }
+</style>

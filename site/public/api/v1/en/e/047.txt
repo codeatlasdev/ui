@@ -1,0 +1,59 @@
+<!-- @codeatlasdev/ui demo #047 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/slider#step-and-disabled -->
+Element: #047 Step and disabled (inputs/slider)
+What it shows: step={10} snaps to increments of 10.
+Tags: step, and, disabled, slider
+Needs: @codeatlasdev/ui@4.0.0
+Components: Slider
+Live demo: https://ui.codeatlas.com.br/docs/inputs/slider#step-and-disabled
+
+<script lang="ts">
+  import { Slider } from '@codeatlasdev/ui';
+
+  let stepped = $state(50);
+</script>
+
+<div class="col">
+  <div class="row">
+    <span class="label">Step 10</span>
+    <Slider bind:value={stepped} min={0} max={100} step={10} />
+    <span class="val">{stepped}</span>
+  </div>
+  <div class="row">
+    <span class="label">Disabled</span>
+    <Slider value={35} disabled />
+    <span class="val">35</span>
+  </div>
+</div>
+
+<style>
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-5);
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .label {
+    flex-shrink: 0;
+    min-width: 76px;
+    font-size: var(--ca-font-size-body2);
+    color: var(--ca-text-secondary);
+  }
+
+  .val {
+    flex-shrink: 0;
+    min-width: 64px;
+    text-align: right;
+    font-family: var(--ca-font-mono);
+    font-size: var(--ca-font-size-body2);
+    font-weight: 600;
+    color: var(--ca-brand-text);
+  }
+</style>

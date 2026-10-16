@@ -1,0 +1,33 @@
+<!-- @codeatlasdev/ui demo #116 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/chip#deletable -->
+Element: #116 Deletable (display/chip)
+What it shows: Deletable
+Tags: deletable, chip
+Needs: @codeatlasdev/ui@4.0.0
+Components: Chip
+Live demo: https://ui.codeatlas.com.br/docs/display/chip#deletable
+
+<script lang="ts">
+  import { Chip } from '@codeatlasdev/ui';
+
+  const initial = ['Design', 'Svelte', 'Glass'];
+  let tags = $state([...initial]);
+</script>
+
+{#each tags as tag (tag)}
+  <Chip label={tag} deletable ondelete={() => (tags = tags.filter((t) => t !== tag))} />
+{/each}
+{#if tags.length === 0}
+  <button class="reset" type="button" onclick={() => (tags = [...initial])}>Reset tags</button>
+{/if}
+
+<style>
+  .reset {
+    font: inherit;
+    font-size: var(--ca-font-size-caption);
+    color: var(--ca-brand-text);
+    background: none;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+  }
+</style>

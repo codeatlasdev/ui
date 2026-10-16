@@ -1,0 +1,15 @@
+<!-- @codeatlasdev/ui demo #013 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/copy-button#icon-only-and-toast -->
+Element: #013 Icon only and toast (inputs/copy-button)
+What it shows: label=&quot;&quot; renders an icon-only button. toast shows a success message after copying.
+Tags: icon, only, and, toast, copybutton, toaster
+Needs: @codeatlasdev/ui@4.0.0
+Components: CopyButton, Toaster
+Live demo: https://ui.codeatlas.com.br/docs/inputs/copy-button#icon-only-and-toast
+
+<script lang="ts">
+  import { CopyButton, Toaster } from '@codeatlasdev/ui';
+</script>
+
+<Toaster />
+<CopyButton value="icon-only" label="" />
+<CopyButton value="https://ui.codeatlas.com.br" label="Copy link" toast="Link copied" />

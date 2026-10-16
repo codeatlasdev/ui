@@ -1,0 +1,17 @@
+<!-- @codeatlasdev/ui demo #109 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/avatar#shape-and-status -->
+Element: #109 Shape and status (display/avatar)
+What it shows: Shape and status
+Tags: shape, and, status, avatar
+Needs: @codeatlasdev/ui@4.0.0
+Components: Avatar
+Live demo: https://ui.codeatlas.com.br/docs/display/avatar#shape-and-status
+
+<script lang="ts">
+  import { Avatar } from '@codeatlasdev/ui';
+</script>
+
+<Avatar alt="Ana Lima" size="lg" shape="rounded" />
+<Avatar alt="Online" size="lg" status="online" />
+<Avatar alt="Busy" size="lg" status="busy" />
+<Avatar alt="Away" size="lg" status="away" />
+<Avatar alt="Offline" size="lg" status="offline" />

@@ -42,7 +42,8 @@
 			"!**/.vitest",
 			"!**/test-results",
 			"!**/playwright-report",
-			"!site/src/generated"
+			"!site/src/generated",
+			"!site/public/api"
 		]
 	}
 }

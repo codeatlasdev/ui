@@ -1,0 +1,33 @@
+<!-- @codeatlasdev/ui demo #186 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/mobile-pane#chat -->
+Element: #186 Chat (layout/mobile-pane)
+What it shows: Open the pane. On a phone the text field rises with the virtual keyboard.
+Tags: chat, mobilepane, button, iconbutton, textfield
+Needs: @codeatlasdev/ui@4.0.0
+Components: MobilePane, Button, IconButton, TextField
+Live demo: https://ui.codeatlas.com.br/docs/layout/mobile-pane#chat
+
+<script lang="ts">
+  import { MobilePane, Button, IconButton, TextField } from '@codeatlasdev/ui';
+  import { MoreVertical } from '@lucide/svelte';
+
+  let open = $state(false);
+  const messages = ['Hi!', 'How are you?', 'The report is attached.', 'Can you review it today?', 'Deal, thanks.'];
+</script>
+
+<Button variant="filled" onclick={() => (open = true)}>Open conversation</Button>
+
+<MobilePane bind:open title="Maria Souza">
+  {#snippet actions()}
+    <IconButton variant="text" aria-label="More options"><MoreVertical size={20} aria-hidden="true" /></IconButton>
+  {/snippet}
+  <ul class="msgs">
+    {#each messages as m}<li>{m}</li>{/each}
+  </ul>
+  <div class="composer"><TextField label="Message" placeholder="Write something…" /></div>
+</MobilePane>
+
+<style>
+  .msgs { list-style: none; margin: 0; padding: var(--ca-space-4); display: flex; flex-direction: column; gap: var(--ca-space-2); flex: 1; }
+  .msgs li { align-self: flex-start; padding: var(--ca-space-2) var(--ca-space-3); border-radius: var(--ca-radius-lg); background: var(--ca-surface-raised); }
+  .composer { padding: var(--ca-space-3) var(--ca-space-4); }
+</style>

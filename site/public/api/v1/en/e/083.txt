@@ -1,0 +1,34 @@
+<!-- @codeatlasdev/ui demo #083 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/dialog#chromeless -->
+Element: #083 Chromeless (feedback/dialog)
+What it shows: No header, description or actions, and the body has no padding. The title becomes the visually hidden accessible name.
+Tags: chromeless, dialog, button
+Needs: @codeatlasdev/ui@4.0.0
+Components: Dialog, Button
+Live demo: https://ui.codeatlas.com.br/docs/feedback/dialog#chromeless
+
+<script lang="ts">
+  import { Dialog, Button } from '@codeatlasdev/ui';
+
+  let open = $state(false);
+</script>
+
+<Button variant="outlined" onclick={() => (open = true)}>Open chromeless</Button>
+
+<Dialog bind:open title="Preview" size="md" chromeless>
+  <div class="media">
+    <p>Edge-to-edge content. Close with Esc or by clicking outside.</p>
+    <Button variant="filled" onclick={() => (open = false)}>Close</Button>
+  </div>
+</Dialog>
+
+<style>
+  .media {
+    display: grid;
+    gap: 12px;
+    padding: 24px;
+    justify-items: start;
+    color: var(--ca-text-secondary);
+    font-size: var(--ca-font-size-body2);
+  }
+  .media p { margin: 0; }
+</style>

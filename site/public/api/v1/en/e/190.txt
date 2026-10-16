@@ -1,0 +1,24 @@
+<!-- @codeatlasdev/ui demo #190 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/bar#horizontal-bars -->
+Element: #190 Horizontal bars (charts/bar)
+What it shows: Good for long category names and rankings.
+Tags: horizontal, bars, card, barchart
+Needs: @codeatlasdev/ui@4.0.0 + echarts
+Components: Card, BarChart
+Live demo: https://ui.codeatlas.com.br/docs/charts/bar#horizontal-bars
+
+<script lang="ts">
+  import { Card } from '@codeatlasdev/ui';
+  import { BarChart } from '@codeatlasdev/ui/charts';
+
+  const products = ['Atlas Pro', 'Nova Suite', 'Relay SDK', 'Mesh API', 'Drift UI', 'Pulse DB', 'Forge CI', 'Orbit ML'];
+</script>
+
+<Card material="glass" full>
+  <BarChart
+    series={[{ name: 'Sales', data: [9840, 8720, 7650, 6430, 5980, 4810, 3920, 3140] }]}
+    categories={products}
+    valueFormatter={(v) => `${(v / 1000).toFixed(1)}k`}
+    horizontal
+    height="300px"
+  />
+</Card>

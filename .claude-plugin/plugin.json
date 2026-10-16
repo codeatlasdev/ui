@@ -1,0 +1,16 @@
+{
+	"name": "codeatlas-ui",
+	"description": "Svelte 5 UI library with numbered demo catalog, MCP server and skills",
+	"version": "4.0.0",
+	"skills": [
+		".agents/skills/codeatlas-ui",
+		".agents/skills/codeatlas-dx",
+		".agents/skills/codeatlas-writing"
+	],
+	"mcpServers": {
+		"codeatlas-ui": {
+			"command": "npx",
+			"args": ["-y", "-p", "@codeatlasdev/ui", "ca-ui-mcp"]
+		}
+	}
+}

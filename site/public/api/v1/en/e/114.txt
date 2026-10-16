@@ -1,0 +1,17 @@
+<!-- @codeatlasdev/ui demo #114 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/badge#on-avatars -->
+Element: #114 On avatars (display/badge)
+What it shows: On avatars
+Tags: on, avatars, badge, avatar, flex
+Needs: @codeatlasdev/ui@4.0.0
+Components: Badge, Avatar, Flex
+Live demo: https://ui.codeatlas.com.br/docs/display/badge#on-avatars
+
+<script lang="ts">
+  import { Badge, Avatar, Flex } from '@codeatlasdev/ui';
+</script>
+
+<Flex gap="4" align="center" wrap>
+  <Badge dot color="success"><Avatar alt="Ana Lima" size="md" /></Badge>
+  <Badge dot color="warning"><Avatar alt="Carlos M" size="md" /></Badge>
+  <Badge dot color="error"><Avatar alt="Diana K" size="md" /></Badge>
+</Flex>

@@ -1,0 +1,71 @@
+<!-- @codeatlasdev/ui demo #173 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/form-page#basic-form -->
+Element: #173 Basic form (layout/form-page)
+What it shows: Header with a back button, a grid of fields, a list of switches and a sticky footer.
+Tags: basic, form, appform, formsection, textfield, select, switch, button, divider
+Needs: @codeatlasdev/ui@4.0.0
+Components: AppForm, FormSection, TextField, Select, Switch, Button, Divider
+Live demo: https://ui.codeatlas.com.br/docs/layout/form-page#basic-form
+
+<script lang="ts">
+  import { AppForm, FormSection, TextField, Select, Switch, Button, Divider } from '@codeatlasdev/ui';
+  import { ArrowLeft } from '@lucide/svelte';
+
+  let name = $state('');
+  let email = $state('');
+  let role = $state('viewer');
+  let welcome = $state(true);
+  let digest = $state(false);
+  let saving = $state(false);
+
+  function save() {
+    saving = true;
+    setTimeout(() => (saving = false), 1400);
+  }
+
+  const roleOptions = [
+    { value: 'admin', label: 'Admin' },
+    { value: 'editor', label: 'Editor' },
+    { value: 'viewer', label: 'Viewer' },
+  ];
+</script>
+
+<div class="frame">
+  <AppForm title="New User" description="Fill in the details to create a new user.">
+    {#snippet leading()}
+      <Button variant="ghost" size="sm" aria-label="Back">
+        {#snippet leading()}<ArrowLeft size={15} />{/snippet}
+      </Button>
+    {/snippet}
+
+    <FormSection title="Account details" description="Basic information for the new user.">
+      <TextField label="Full name" bind:value={name} placeholder="Ada Lovelace" />
+      <TextField label="Work email" bind:value={email} placeholder="ada@company.com" type="email" />
+      <Select label="Role" bind:value={role} options={roleOptions} />
+    </FormSection>
+
+    <FormSection title="Notifications" description="Email preferences." layout="list">
+      <Switch label="Send welcome email" bind:checked={welcome} />
+      <Divider />
+      <Switch label="Weekly digest" bind:checked={digest} />
+    </FormSection>
+
+    {#snippet footer()}
+      <Button variant="ghost">Cancel</Button>
+      <Button variant="filled" onclick={save} disabled={saving || !name || !email}>
+        {saving ? 'Saving…' : 'Create user'}
+      </Button>
+    {/snippet}
+  </AppForm>
+</div>
+
+<style>
+  .frame {
+    width: 100%;
+    height: 480px;
+    border-radius: var(--ca-radius-lg);
+    box-shadow: inset 0 0 0 1px var(--ca-outline-subtle);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+</style>

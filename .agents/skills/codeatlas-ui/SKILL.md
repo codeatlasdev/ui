@@ -129,6 +129,14 @@ Import from the subpath, never copy the logic. Every export:
 | `longpress` | `use:longpress={500}` fires `longpress` after the pointer is held for that many ms |
 | `scrollFocusable` | `use:scrollFocusable` on a scroll container: tab stop only while it overflows |
 
+## Pick a demo by number
+
+Every docs demo has a stable id `#NNN` (list: [DEMOS.md](./DEMOS.md), gallery: https://ui.codeatlas.com.br/gallery). An id, a `?pick=012,045` link and pasted "I picked these N from the @codeatlasdev/ui gallery" text are the same selection.
+
+1. Unknown id: `search_demos({ query })` (MCP `ca-ui-mcp`). Known ids: `get_demo({ ids })`, at most 8 per call. Without MCP, fetch `https://ui.codeatlas.com.br/api/v1/en/e/NNN.txt`.
+2. Port: keep component names, props, variants and motion tokens as in the reference; change only data, copy and theme. Keep the first comment line (license) of the reference in the file you write.
+3. Report one line per demo: `#NNN title → file, what changed, demo link`.
+
 ## Companion files
 
 - [LAYOUT.md](./LAYOUT.md): Grid, Row, Stack, all props and composition patterns
@@ -136,4 +144,5 @@ Import from the subpath, never copy the logic. Every export:
 - [APPSHELL.md](./APPSHELL.md): navigation shell setup
 - [COMPONENTS.md](./COMPONENTS.md): Button, inputs, display, overlays, curated usage examples
 - [API.md](./API.md): generated props, defaults and classes for every component
+- [DEMOS.md](./DEMOS.md): generated list of numbered demos (id, title, page, components)
 - [ANTIPATTERNS.md](./ANTIPATTERNS.md): explicit don'ts with corrected alternatives

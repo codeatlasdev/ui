@@ -1,0 +1,63 @@
+<!-- @codeatlasdev/ui demo #081 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/alert-dialog#basic-and-destructive -->
+Element: #081 Basic and destructive (feedback/alert-dialog)
+What it shows: Confirm and cancel, with the destructive variant for irreversible actions.
+Tags: basic, and, destructive, alertdialog, button
+Needs: @codeatlasdev/ui@4.0.0
+Components: AlertDialog, Button
+Live demo: https://ui.codeatlas.com.br/docs/feedback/alert-dialog#basic-and-destructive
+
+<script lang="ts">
+  import { AlertDialog, Button } from '@codeatlasdev/ui';
+  import { Trash2, LogOut } from '@lucide/svelte';
+
+  let signOutOpen = $state(false);
+  let deleteOpen = $state(false);
+  let log = $state<string[]>([]);
+  const push = (m: string) => (log = [m, ...log].slice(0, 4));
+</script>
+
+<Button variant="outlined" onclick={() => (signOutOpen = true)}>
+  {#snippet leading()}<LogOut size={14} />{/snippet}
+  Sign out
+</Button>
+<Button variant="destructive" onclick={() => (deleteOpen = true)}>
+  {#snippet leading()}<Trash2 size={14} />{/snippet}
+  Delete project
+</Button>
+
+<AlertDialog
+  bind:open={signOutOpen}
+  title="Sign out?"
+  description="You will need to sign in again to access your workspace."
+  confirmLabel="Sign out"
+  onconfirm={() => push('Signed out')}
+  oncancel={() => push('Sign out cancelled')}
+/>
+
+<AlertDialog
+  bind:open={deleteOpen}
+  title="Delete this project?"
+  description="This action cannot be undone. All data will be permanently removed."
+  confirmLabel="Delete"
+  destructive
+  onconfirm={() => push('Project deleted')}
+/>
+
+{#if log.length}
+  <ul class="log" aria-live="polite">
+    {#each log as entry, i (i + entry)}<li>{entry}</li>{/each}
+  </ul>
+{/if}
+
+<style>
+  .log {
+    flex-basis: 100%;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 4px;
+    font-size: 13px;
+    color: var(--ca-text-secondary);
+  }
+</style>

@@ -1,0 +1,27 @@
+<!-- @codeatlasdev/ui demo #152 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/app-bar#with-leading-icon -->
+Element: #152 With leading icon (navigation/app-bar)
+What it shows: A menu button in the leading slot.
+Tags: with, leading, icon, glassappbar, button, iconbutton, avatar, card
+Needs: @codeatlasdev/ui@4.0.0
+Components: GlassAppBar, Button, IconButton, Avatar, Card
+Live demo: https://ui.codeatlas.com.br/docs/navigation/app-bar#with-leading-icon
+
+<script lang="ts">
+  import { GlassAppBar, Button, IconButton, Avatar, Card } from '@codeatlasdev/ui';
+  import { Menu } from '@lucide/svelte';
+</script>
+
+<Card material="glass" full flush>
+  <GlassAppBar>
+    <span class="title">Dashboard</span>
+    {#snippet leading()}<IconButton aria-label="Open menu"><Menu size={20} /></IconButton>{/snippet}
+    {#snippet trailing()}
+      <Button size="sm" variant="filled">Upgrade</Button>
+      <Avatar alt="Carlos M" size="sm" />
+    {/snippet}
+  </GlassAppBar>
+</Card>
+
+<style>
+  .title { font-weight: 600; color: var(--ca-text-primary); }
+</style>

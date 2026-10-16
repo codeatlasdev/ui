@@ -655,9 +655,208 @@ function buildGuides(): ManifestGuide[] {
 		.sort((a, b) => a.slug.localeCompare(b.slug));
 }
 
+// ── demos (ca-prompt catalog) ─────────────────────────────────────────────────
+
+export interface ManifestDemo {
+	id: string;
+	group: string;
+	page: string;
+	variant: string;
+	slug: string;
+	title: string;
+	description: string;
+	summary: string;
+	use: string;
+	spec: string[];
+	tags: string[];
+	shape: "square" | "wide" | "tall";
+	components: string[];
+	imports: { from: string; names: string[] }[];
+	interactive: boolean;
+	/** Live demo URL on the docs site. */
+	demo: string;
+	source: string;
+	needs: string;
+}
+
+const DEMOS_DIR = resolve(ROOT, "../../site/src/demos");
+const SITE = "https://ui.codeatlas.com.br";
+const API = `${SITE}/api/v1`;
+/** Shared building blocks under site/src/demos that are not demos themselves. */
+export const HELPERS = ["foundation/colors/Swatches", "foundation/typography/TypeRows"];
+const PEERS: Record<string, string> = {
+	[`${PKG}/charts`]: "echarts",
+	[`${PKG}/table`]: "@tanstack/svelte-table",
+	[`${PKG}/code`]: "shiki",
+};
+
+/** `<Demo title description><X client:…>` per demo path, read from every MDX page. */
+function demoUsages() {
+	const out = new Map<string, { title: string; description: string; interactive: boolean }>();
+	if (!existsSync(DOCS_DIR)) return out;
+	for (const file of mdxFiles(DOCS_DIR)) {
+		const raw = readFileSync(file, "utf8");
+		for (const [, name, path] of raw.matchAll(
+			/^import (\w+) from "~\/demos\/([^"?]+)\.svelte";$/gm
+		)) {
+			const tag = raw.match(new RegExp(`<Demo ([^>]*)>\\s*<${name}\\b([^>]*)>`));
+			if (!tag) continue;
+			const attr = (k: string) => tag[1].match(new RegExp(`${k}="([^"]*)"`))?.[1] ?? "";
+			out.set(path, {
+				title: attr("title"),
+				description: attr("description"),
+				interactive: tag[2].includes("client:"),
+			});
+		}
+	}
+	return out;
+}
+
+type DemoMeta = Partial<Pick<ManifestDemo, "summary" | "use" | "spec" | "tags" | "shape">>;
+
+/** Problems that make the registry invalid: unregistered demos, missing files, duplicate ids/paths. */
+export function checkCatalog(catalog: readonly { id: string; path: string }[]): string[] {
+	const errors: string[] = [];
+	const walk = (dir: string): string[] =>
+		readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
+			e.isDirectory()
+				? walk(join(dir, e.name))
+				: e.name.endsWith(".svelte")
+					? [relative(DEMOS_DIR, join(dir, e.name)).replaceAll("\\", "/").slice(0, -7)]
+					: []
+		);
+	const paths = new Set(catalog.map((d) => d.path));
+	for (const p of walk(DEMOS_DIR))
+		if (!HELPERS.includes(p) && !paths.has(p)) errors.push(`demo without id: ${p}`);
+	const ids = new Set<string>();
+	for (const d of catalog) {
+		if (ids.has(d.id)) errors.push(`duplicate id: ${d.id}`);
+		ids.add(d.id);
+		if (!existsSync(join(DEMOS_DIR, `${d.path}.svelte`)))
+			errors.push(`#${d.id} missing file: ${d.path}`);
+	}
+	if (paths.size !== catalog.length) errors.push("duplicate path in catalog");
+	return errors;
+}
+
+export function buildDemos(
+	manifest: Manifest,
+	catalog: readonly { id: string; path: string }[]
+): { demos: ManifestDemo[]; files: Record<string, string> } {
+	const known = new Set(manifest.components.map((c) => c.name));
+	const usages = demoUsages();
+	const demos = catalog.map(({ id, path }): ManifestDemo => {
+		const [group, page, variant] = path.split("/");
+		const file = join(DEMOS_DIR, `${path}.svelte`);
+		const source = readFileSync(file, "utf8");
+		const metaFile = file.replace(/\.svelte$/, ".meta.json");
+		const meta: DemoMeta = existsSync(metaFile) ? JSON.parse(readFileSync(metaFile, "utf8")) : {};
+		const imports = [
+			...source.matchAll(/import\s*\{([^}]+)\}\s*from\s*["'](@codeatlasdev\/ui[^"']*)["']/g),
+		].map(([, names, from]) => ({
+			from,
+			names: names
+				.split(",")
+				.map(
+					(n) =>
+						n
+							.trim()
+							.replace(/^type\s+/, "")
+							.split(/\s+as\s+/)[0]
+				)
+				.filter(Boolean),
+		}));
+		const components = [...new Set(imports.flatMap((i) => i.names).filter((n) => known.has(n)))];
+		const use = usages.get(path);
+		const title = use?.title || variant;
+		const description = use?.description ?? "";
+		// Same transform as site/src/components/docs/Demo.astro (heading id).
+		const slug = title
+			.toLowerCase()
+			.replace(/[^a-z0-9]+/g, "-")
+			.replace(/^-|-$/g, "");
+		const peers = [...new Set(imports.map((i) => PEERS[i.from]).filter(Boolean))];
+		return {
+			id,
+			group,
+			page,
+			variant,
+			slug,
+			title,
+			description,
+			summary: meta.summary ?? description,
+			use: meta.use ?? "",
+			spec: meta.spec ?? [],
+			tags: meta.tags ?? [
+				...new Set([
+					...title.toLowerCase().split(/\W+/).filter(Boolean),
+					...components.map((c) => c.toLowerCase()),
+				]),
+			],
+			shape: meta.shape ?? "wide",
+			components,
+			imports,
+			interactive: use?.interactive ?? false,
+			demo: `${SITE}/docs/${group}/${page}#${slug}`,
+			source,
+			needs: [`${PKG}@${manifest.version}`, ...peers].join(" + "),
+		};
+	});
+	const groups = [...new Set(demos.map((d) => d.group))].map((slug) => {
+		const g = demos.filter((d) => d.group === slug);
+		return { slug, first: g[0].id, last: g[g.length - 1].id, count: g.length };
+	});
+	const files: Record<string, string> = {
+		"catalog.json": `${JSON.stringify({ version: manifest.version, count: demos.length, groups, elements: demos.map(({ source: _, ...d }) => d) }, null, "\t")}\n`,
+		"en/catalog.tsv": `${["id\tgroup\tpage\ttitle\ttags\tsummary", ...demos.map((d) => [d.id, d.group, d.page, d.title, d.tags.join(","), d.summary].map((v) => v.replace(/[\t\n]/g, " ")).join("\t"))].join("\n")}\n`,
+	};
+	for (const d of demos) {
+		const header = [
+			`<!-- ${PKG} demo #${d.id} · MIT License (c) CodeAtlas · ${d.demo} -->`,
+			`Element: #${d.id} ${d.title} (${d.group}/${d.page})`,
+			`What it shows: ${d.summary || d.title}`,
+			...(d.use ? [`When to use: ${d.use}`] : []),
+			...(d.spec.length ? ["Spec:", ...d.spec.map((s) => `- ${s}`)] : []),
+			`Tags: ${d.tags.join(", ")}`,
+			`Needs: ${d.needs}`,
+			`Components: ${d.components.join(", ") || "none"}`,
+			`Live demo: ${d.demo}`,
+		];
+		files[`en/e/${d.id}.txt`] = `${header.join("\n")}\n\n${d.source}`;
+		files[`en/p/${d.id}.txt`] = `${[
+			`Use ${PKG} demo #${d.id} "${d.title}" (${d.group}/${d.page}).`,
+			`What it shows: ${d.summary || d.title}.${d.use ? ` When to use: ${d.use}.` : ""}`,
+			...(d.spec.length ? ["Spec:", ...d.spec.map((s) => `- ${s}`)] : []),
+			"Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?",
+			`Apply: import only from "${PKG}[/charts|/table|/code|/forms]"; keep component names, props and`,
+			"  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);",
+			"  replace sample data/copy with the project's; keep the first comment line.",
+			`Report: #${d.id} ${d.title} → file, what changed, ${d.demo}; what you could not check (light/dark, 375px, keyboard, reduced motion).`,
+			`Reference: ${API}/en/e/${d.id}.txt   Components API: ca-ui-mcp get_component(${d.components[0] ?? "…"})`,
+		].join("\n")}\n`;
+	}
+	return { demos, files };
+}
+
+export function demosMarkdown(demos: ManifestDemo[]): string {
+	return `${[
+		"<!-- generated by packages/ui/scripts/build-manifest.ts (bun run --cwd packages/ui manifest -- --skill). Do not edit. -->",
+		"# Demo catalog",
+		"",
+		`Every demo has a stable number. Fetch one with \`get_demo\` (MCP) or ${API}/en/e/NNN.txt.`,
+		"",
+		"| id | title | group/page | components |",
+		"|---|---|---|---|",
+		...demos.map(
+			(d) => `| ${d.id} | ${cell(d.title)} | ${d.group}/${d.page} | ${d.components.join(", ")} |`
+		),
+	].join("\n")}\n`;
+}
+
 // ── agent skill reference ─────────────────────────────────────────────────────
 
 const SKILL_API = resolve(ROOT, "../../.agents/skills/codeatlas-ui/API.md");
+const SKILL_DEMOS = resolve(ROOT, "../../.agents/skills/codeatlas-ui/DEMOS.md");
 
 const cell = (v: string) => v.replace(/\|/g, "\\|");
 
@@ -728,11 +927,20 @@ if (import.meta.main) {
 	const manifest = buildManifest();
 	const tokens = buildTokens();
 	const guides = buildGuides();
+	// Dynamic import: site/ exists only in the monorepo; a build from a published tarball keeps the shipped files.
+	const catalog = existsSync(DEMOS_DIR)
+		? (await import("../../../site/src/demos/catalog.ts")).CATALOG
+		: [];
 	if (process.argv.includes("--check")) {
+		const errors = catalog.length ? checkCatalog(catalog) : [];
 		const bare = manifest.components.filter((c) => !c.props.length && !c.snippets.length);
 		console.log(
-			`${manifest.components.length} components (${bare.length} without own props), ${tokens.length} tokens, ${guides.length} guides`
+			`${manifest.components.length} components (${bare.length} without own props), ${tokens.length} tokens, ${guides.length} guides, ${catalog.length} demos`
 		);
+		if (errors.length) {
+			console.error(`demo catalog (site/src/demos/catalog.ts):\n  ${errors.join("\n  ")}`);
+			process.exit(1);
+		}
 	} else {
 		const dist = join(ROOT, "dist");
 		mkdirSync(dist, { recursive: true });
@@ -743,9 +951,23 @@ if (import.meta.main) {
 		// Docs live in the monorepo's site/; a build from a published tarball keeps the shipped file.
 		if (guides.length)
 			write("guides.json", { name: manifest.name, version: manifest.version, guides });
-		if (process.argv.includes("--skill")) writeFileSync(SKILL_API, skillMarkdown(manifest));
+		const { demos, files } = catalog.length
+			? buildDemos(manifest, catalog)
+			: { demos: [], files: {} };
+		if (demos.length) {
+			write("demos.json", demos);
+			for (const base of [join(dist, "api/v1"), resolve(ROOT, "../../site/public/api/v1")])
+				for (const [name, body] of Object.entries(files)) {
+					mkdirSync(dirname(join(base, name)), { recursive: true });
+					writeFileSync(join(base, name), body);
+				}
+		}
+		if (process.argv.includes("--skill")) {
+			writeFileSync(SKILL_API, skillMarkdown(manifest));
+			if (demos.length) writeFileSync(SKILL_DEMOS, demosMarkdown(demos));
+		}
 		console.log(
-			`manifest: ${manifest.components.length} components, ${tokens.length} tokens, ${guides.length} guides`
+			`manifest: ${manifest.components.length} components, ${tokens.length} tokens, ${guides.length} guides, ${demos.length} demos`
 		);
 	}
 }

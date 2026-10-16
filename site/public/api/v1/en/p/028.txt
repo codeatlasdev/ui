@@ -1,0 +1,8 @@
+Use @codeatlasdev/ui demo #028 "Default" (inputs/money-input).
+What it shows: Type 123456 to get R$ 1.234,56..
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #028 Default → file, what changed, https://ui.codeatlas.com.br/docs/inputs/money-input#default; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/028.txt   Components API: ca-ui-mcp get_component(MoneyInput)

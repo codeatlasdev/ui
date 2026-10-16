@@ -1,0 +1,25 @@
+<!-- @codeatlasdev/ui demo #141 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/timeline#with-variants -->
+Element: #141 With variants (display/timeline)
+What it shows: With variants
+Tags: with, variants, timeline
+Needs: @codeatlasdev/ui@4.0.0
+Components: Timeline
+Live demo: https://ui.codeatlas.com.br/docs/display/timeline#with-variants
+
+<script lang="ts">
+  import { Timeline } from '@codeatlasdev/ui';
+
+  const events = [
+    { label: 'Order created', description: 'Order #1234 received.', date: 'Today, 14:32', variant: 'success' as const },
+    { label: 'Payment confirmed', description: 'Card ending 4242 approved.', date: 'Today, 14:35', variant: 'success' as const },
+    { label: 'Picking', description: 'Items are being collected from stock.', date: 'Today, 15:10', variant: 'info' as const },
+    { label: 'Awaiting shipment', description: 'Package ready for pickup.', date: 'Today, 16:00', variant: 'default' as const },
+    { label: 'Delivered', date: 'Expected tomorrow', variant: 'default' as const },
+  ];
+</script>
+
+<div class="wrap"><Timeline items={events} /></div>
+
+<style>
+  .wrap { max-width: 440px; width: 100%; }
+</style>

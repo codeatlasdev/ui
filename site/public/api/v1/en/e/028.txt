@@ -1,0 +1,35 @@
+<!-- @codeatlasdev/ui demo #028 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/money-input#default -->
+Element: #028 Default (inputs/money-input)
+What it shows: Type 123456 to get R$ 1.234,56.
+Tags: default, moneyinput
+Needs: @codeatlasdev/ui@4.0.0
+Components: MoneyInput
+Live demo: https://ui.codeatlas.com.br/docs/inputs/money-input#default
+
+<script lang="ts">
+  import { MoneyInput, centsToDisplay } from '@codeatlasdev/ui/forms';
+
+  let price = $state(123456);
+</script>
+
+<div class="col">
+  <MoneyInput label="Price" bind:value={price} />
+  <p class="out">value = {price} cents → {centsToDisplay(price)}</p>
+</div>
+
+<style>
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-3);
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .out {
+    margin: 0;
+    font-family: var(--ca-font-mono);
+    font-size: var(--ca-font-size-caption);
+    color: var(--ca-text-secondary);
+  }
+</style>

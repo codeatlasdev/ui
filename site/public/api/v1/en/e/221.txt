@@ -1,0 +1,14 @@
+<!-- @codeatlasdev/ui demo #221 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/foundation/colors#outline -->
+Element: #221 Outline (foundation/colors)
+What it shows: Border and divider scale.
+Tags: outline
+Needs: @codeatlasdev/ui@4.0.0
+Components: none
+Live demo: https://ui.codeatlas.com.br/docs/foundation/colors#outline
+
+<script lang="ts">
+	import Swatches from "./Swatches.svelte";
+	const tokens = ["--ca-outline-subtle", "--ca-outline-default", "--ca-outline-strong"];
+</script>
+
+<Swatches {tokens} bordered={true} />

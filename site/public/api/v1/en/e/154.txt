@@ -1,0 +1,16 @@
+<!-- @codeatlasdev/ui demo #154 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/breadcrumb#custom-separator -->
+Element: #154 Custom separator (navigation/breadcrumb)
+What it shows: Using › instead of /.
+Tags: custom, separator, breadcrumb
+Needs: @codeatlasdev/ui@4.0.0
+Components: Breadcrumb
+Live demo: https://ui.codeatlas.com.br/docs/navigation/breadcrumb#custom-separator
+
+<script lang="ts">
+  import { Breadcrumb } from '@codeatlasdev/ui';
+</script>
+
+<Breadcrumb
+  items={[{ label: 'Docs', href: '/' }, { label: 'API Reference', href: '/api' }, { label: 'Components' }]}
+  separator="›"
+/>

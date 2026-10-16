@@ -1,0 +1,18 @@
+<!-- @codeatlasdev/ui demo #170 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/empty-state#no-results -->
+Element: #170 No results (layout/empty-state)
+What it shows: For searches and filters that match nothing.
+Tags: no, results, emptystate, button
+Needs: @codeatlasdev/ui@4.0.0
+Components: EmptyState, Button
+Live demo: https://ui.codeatlas.com.br/docs/layout/empty-state#no-results
+
+<script lang="ts">
+  import { EmptyState, Button } from '@codeatlasdev/ui';
+  import { Search } from '@lucide/svelte';
+</script>
+
+<EmptyState icon={Search} title="No results found" description="Try adjusting your search terms or filters.">
+  {#snippet actions()}
+    <Button variant="outlined" size="sm">Clear filters</Button>
+  {/snippet}
+</EmptyState>

@@ -1,0 +1,17 @@
+<!-- @codeatlasdev/ui demo #009 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/checkbox#without-label -->
+Element: #009 Without label (inputs/checkbox)
+What it shows: Bare checkbox for table rows or custom layouts.
+Tags: without, label, checkbox
+Needs: @codeatlasdev/ui@4.0.0
+Components: Checkbox
+Live demo: https://ui.codeatlas.com.br/docs/inputs/checkbox#without-label
+
+<script lang="ts">
+  import { Checkbox } from '@codeatlasdev/ui';
+
+  let value = $state(false);
+</script>
+
+<Checkbox bind:checked={value} aria-label="Unlabelled checkbox" />
+<Checkbox checked aria-label="Unlabelled checked checkbox" />
+<Checkbox indeterminate aria-label="Unlabelled indeterminate checkbox" />

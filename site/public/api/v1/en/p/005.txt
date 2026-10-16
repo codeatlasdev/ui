@@ -1,0 +1,8 @@
+Use @codeatlasdev/ui demo #005 "States" (inputs/button).
+What it shows: Disabled buttons, a destructive action and a link rendered as a button..
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #005 States → file, what changed, https://ui.codeatlas.com.br/docs/inputs/button#states; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/005.txt   Components API: ca-ui-mcp get_component(Button)

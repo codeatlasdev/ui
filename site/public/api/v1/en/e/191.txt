@@ -1,0 +1,30 @@
+<!-- @codeatlasdev/ui demo #191 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/bar#stacked-bars -->
+Element: #191 Stacked bars (charts/bar)
+What it shows: Stacked bars
+Tags: stacked, bars, card, barchart
+Needs: @codeatlasdev/ui@4.0.0 + echarts
+Components: Card, BarChart
+Live demo: https://ui.codeatlas.com.br/docs/charts/bar#stacked-bars
+
+<script lang="ts">
+  import { Card } from '@codeatlasdev/ui';
+  import { BarChart } from '@codeatlasdev/ui/charts';
+
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'];
+  const fmt = (v: number) => `$${(v / 1000).toFixed(0)}k`;
+</script>
+
+<Card material="glass" full>
+  <BarChart
+    series={[
+      { name: 'Organic', data: [12400, 14800, 18200, 16600, 21200, 24800] },
+      { name: 'Paid', data: [8200, 9600, 11800, 10400, 13600, 15200] },
+      { name: 'Referral', data: [4800, 5600, 7200, 6400, 8800, 10400] },
+      { name: 'Direct', data: [3200, 4000, 5200, 4600, 6200, 7600] },
+    ]}
+    categories={months}
+    valueFormatter={fmt}
+    stacked
+    height="300px"
+  />
+</Card>

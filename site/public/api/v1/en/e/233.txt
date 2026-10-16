@@ -1,0 +1,46 @@
+<!-- @codeatlasdev/ui demo #233 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/docs-kit/docs#codetabs -->
+Element: #233 CodeTabs (docs-kit/docs)
+What it shows: Language tabs with a copy button. Groups that share a sync key follow each other and persist the choice in localStorage. Highlighting stays with you: wrap each block in .ca-code.
+Tags: codetabs, codetab
+Needs: @codeatlasdev/ui@4.0.0
+Components: CodeTab, CodeTabs
+Live demo: https://ui.codeatlas.com.br/docs/docs-kit/docs#codetabs
+
+<script lang="ts">
+  import { CodeTab, CodeTabs } from '@codeatlasdev/ui';
+
+  const curl = `curl -X POST https://api.example.com/messages/text \\
+  -H "x-api-key: YOUR_API_KEY" \\
+  -H "x-instance: my-session" \\
+  -d '{"to":"5511999990000","text":"Hello"}'`;
+  const node = `await fetch("https://api.example.com/messages/text", {
+  method: "POST",
+  headers: { "x-api-key": process.env.API_KEY, "x-instance": "my-session" },
+  body: JSON.stringify({ to: "5511999990000", text: "Hello" }),
+});`;
+  const curlList = `curl https://api.example.com/sessions -H "x-api-key: YOUR_API_KEY"`;
+  const nodeList = `await fetch("https://api.example.com/sessions", { headers: { "x-api-key": KEY } });`;
+</script>
+
+<div class="ca-prose wrap">
+  <CodeTabs sync="demo-lang">
+    <CodeTab label="cURL">
+      <div class="ca-code"><pre><code>{curl}</code></pre></div>
+    </CodeTab>
+    <CodeTab label="Node.js">
+      <div class="ca-code"><pre><code>{node}</code></pre></div>
+    </CodeTab>
+  </CodeTabs>
+  <CodeTabs sync="demo-lang">
+    <CodeTab label="cURL">
+      <div class="ca-code"><pre><code>{curlList}</code></pre></div>
+    </CodeTab>
+    <CodeTab label="Node.js">
+      <div class="ca-code"><pre><code>{nodeList}</code></pre></div>
+    </CodeTab>
+  </CodeTabs>
+</div>
+
+<style>
+  .wrap { width: 100%; max-width: 100%; }
+</style>

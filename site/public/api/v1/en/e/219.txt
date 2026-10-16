@@ -1,0 +1,48 @@
+<!-- @codeatlasdev/ui demo #219 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/sparklines#table-row-sparklines -->
+Element: #219 Table row sparklines (charts/sparklines)
+What it shows: Table row sparklines
+Tags: table, row, sparklines, card, sparkline
+Needs: @codeatlasdev/ui@4.0.0 + echarts
+Components: Card, Sparkline
+Live demo: https://ui.codeatlas.com.br/docs/charts/sparklines#table-row-sparklines
+
+<script lang="ts">
+  import { Card } from '@codeatlasdev/ui';
+  import { Sparkline } from '@codeatlasdev/ui/charts';
+
+  const rows = [
+    { product: 'Atlas Pro', revenue: [84, 91, 88, 96, 102, 110], trend: 'up' as const },
+    { product: 'Nova Suite', revenue: [62, 58, 64, 61, 67, 72], trend: 'up' as const },
+    { product: 'Relay SDK', revenue: [45, 47, 44, 43, 46, 45], trend: 'neutral' as const },
+    { product: 'Mesh API', revenue: [38, 35, 32, 30, 28, 26], trend: 'down' as const },
+  ];
+  const labels = { up: '▲ Growing', down: '▼ Declining', neutral: '→ Stable' };
+</script>
+
+<Card material="glass" flush full>
+  <table>
+    <thead>
+      <tr><th>Product</th><th>Last 6 months</th><th class="right">Trend</th></tr>
+    </thead>
+    <tbody>
+      {#each rows as row}
+        <tr>
+          <td class="name">{row.product}</td>
+          <td class="spark"><Sparkline data={row.revenue} trend={row.trend} height="32px" /></td>
+          <td class="right trend">{labels[row.trend]}</td>
+        </tr>
+      {/each}
+    </tbody>
+  </table>
+</Card>
+
+<style>
+  table { width: 100%; border-collapse: collapse; font-size: var(--ca-font-size-body2); }
+  th, td { padding: var(--ca-space-3) var(--ca-space-4); }
+  th { text-align: left; color: var(--ca-text-secondary); font-weight: 500; box-shadow: inset 0 -1px 0 var(--ca-outline-subtle); }
+  tr + tr td { box-shadow: inset 0 1px 0 var(--ca-outline-subtle); }
+  .name { font-weight: 500; color: var(--ca-text-primary); }
+  .spark { width: 40%; }
+  .right { text-align: right; }
+  .trend { font-size: var(--ca-font-size-caption); color: var(--ca-text-secondary); }
+</style>

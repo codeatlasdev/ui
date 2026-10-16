@@ -1,0 +1,18 @@
+<!-- @codeatlasdev/ui demo #110 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/avatar#sizes -->
+Element: #110 Sizes (display/avatar)
+What it shows: Sizes
+Tags: sizes, avatar
+Needs: @codeatlasdev/ui@4.0.0
+Components: Avatar
+Live demo: https://ui.codeatlas.com.br/docs/display/avatar#sizes
+
+<script lang="ts">
+  import { Avatar } from '@codeatlasdev/ui';
+</script>
+
+<Avatar alt="Extra small" size="xs" />
+<Avatar alt="Small" size="sm" />
+<Avatar alt="Medium" size="md" />
+<Avatar alt="Large" size="lg" />
+<Avatar alt="Extra large" size="xl" />
+<Avatar alt="Custom" size={80} />

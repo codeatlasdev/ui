@@ -1,0 +1,34 @@
+<!-- @codeatlasdev/ui demo #163 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/tabs#controlled -->
+Element: #163 Controlled (navigation/tabs)
+What it shows: The parent owns the active tab with bind:value.
+Tags: controlled, tabs, tabslist, tabstrigger, tabscontent
+Needs: @codeatlasdev/ui@4.0.0
+Components: Tabs, TabsList, TabsTrigger, TabsContent
+Live demo: https://ui.codeatlas.com.br/docs/navigation/tabs#controlled
+
+<script lang="ts">
+  import { Tabs, TabsList, TabsTrigger, TabsContent } from '@codeatlasdev/ui';
+
+  let active = $state('overview');
+</script>
+
+<div class="wrap">
+  <Tabs bind:value={active}>
+    <TabsList>
+      <TabsTrigger value="overview">Overview</TabsTrigger>
+      <TabsTrigger value="props">Props</TabsTrigger>
+      <TabsTrigger value="examples">Examples</TabsTrigger>
+    </TabsList>
+    <TabsContent value="overview"><div class="panel">Overview panel.</div></TabsContent>
+    <TabsContent value="props"><div class="panel">Props panel.</div></TabsContent>
+    <TabsContent value="examples"><div class="panel">Examples panel.</div></TabsContent>
+  </Tabs>
+  <p class="state">Active tab: <code>{active}</code></p>
+</div>
+
+<style>
+  .wrap { width: 100%; max-width: 480px; }
+  .panel { padding: 20px 0 8px; font-size: var(--ca-font-size-body2); color: var(--ca-text-secondary); }
+  .state { font-size: var(--ca-font-size-caption); color: var(--ca-text-secondary); margin: 12px 0 0; }
+  .state code { font-family: var(--ca-font-mono); color: var(--ca-brand-text); }
+</style>

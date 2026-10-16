@@ -1,0 +1,18 @@
+<!-- @codeatlasdev/ui demo #099 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/skeleton#text-lines -->
+Element: #099 Text lines (feedback/skeleton)
+What it shows: With rows, the last line is shortened to 60% for a natural paragraph.
+Tags: text, lines, skeleton, card, stack
+Needs: @codeatlasdev/ui@4.0.0
+Components: Skeleton, Card, Stack
+Live demo: https://ui.codeatlas.com.br/docs/feedback/skeleton#text-lines
+
+<script lang="ts">
+  import { Skeleton, Card, Stack } from '@codeatlasdev/ui';
+</script>
+
+<Card material="glass" p="5" full>
+  <Stack gap="3">
+    <Skeleton height="20px" width="60%" />
+    <Skeleton rows={3} height="14px" />
+  </Stack>
+</Card>

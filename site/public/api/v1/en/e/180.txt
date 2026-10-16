@@ -1,0 +1,20 @@
+<!-- @codeatlasdev/ui demo #180 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/layout-primitives#container-and-section -->
+Element: #180 Container and Section (layout/layout-primitives)
+What it shows: Container and Section
+Tags: container, and, section, stack, card
+Needs: @codeatlasdev/ui@4.0.0
+Components: Container, Section, Stack, Card
+Live demo: https://ui.codeatlas.com.br/docs/layout/layout-primitives#container-and-section
+
+<script lang="ts">
+  import { Container, Section, Stack, Card } from '@codeatlasdev/ui';
+</script>
+
+<Container size="md">
+  <Section size="1" aria-label="Plans">
+    <Stack gap="4">
+      <Card title="Starter" headingLevel={3} material="solid">Up to 3 projects.</Card>
+      <Card title="Team" headingLevel={3} material="solid">Unlimited projects and roles.</Card>
+    </Stack>
+  </Section>
+</Container>

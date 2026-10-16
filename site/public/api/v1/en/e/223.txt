@@ -1,0 +1,14 @@
+<!-- @codeatlasdev/ui demo #223 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/foundation/colors#surfaces -->
+Element: #223 Surfaces (foundation/colors)
+What it shows: A layered scale for depth: sunken, base, raised, overlay.
+Tags: surfaces
+Needs: @codeatlasdev/ui@4.0.0
+Components: none
+Live demo: https://ui.codeatlas.com.br/docs/foundation/colors#surfaces
+
+<script lang="ts">
+	import Swatches from "./Swatches.svelte";
+	const tokens = ["--ca-surface-sunken", "--ca-surface-base", "--ca-surface-raised", "--ca-surface-overlay"];
+</script>
+
+<Swatches {tokens} bordered={true} />

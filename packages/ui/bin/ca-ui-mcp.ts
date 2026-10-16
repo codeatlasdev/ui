@@ -13,7 +13,12 @@ import { fileURLToPath } from "node:url";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import type { Manifest, ManifestGuide, ManifestToken } from "../scripts/build-manifest.ts";
+import type {
+	Manifest,
+	ManifestDemo,
+	ManifestGuide,
+	ManifestToken,
+} from "../scripts/build-manifest.ts";
 
 // Built to dist/bin/ca-ui-mcp.js; the manifests sit one level up in dist/.
 const DIST = join(dirname(fileURLToPath(import.meta.url)), "..");
@@ -25,6 +30,7 @@ function load<T>(file: string): T {
 const manifest = load<Manifest>("components.json");
 const tokens = load<{ tokens: ManifestToken[] }>("tokens.json").tokens;
 const guides = load<{ guides: ManifestGuide[] }>("guides.json").guides;
+const demos = load<ManifestDemo[]>("demos.json");
 
 const text = (s: string) => ({ content: [{ type: "text" as const, text: s }] });
 const fail = (s: string) => ({ ...text(s), isError: true });
@@ -142,6 +148,61 @@ server.registerTool(
 			);
 		}
 		return text(`# ${hit.title}\n\n${hit.description}\n\n${hit.markdown}`);
+	}
+);
+
+server.registerTool(
+	"search_demos",
+	{
+		description:
+			"Find numbered demos (#NNN) of the gallery by words in title, summary, tags or component names. Returns `#id title — group/page — summary — components`. Fetch the source with get_demo.",
+		inputSchema: {
+			query: z.string(),
+			group: z.string().optional(),
+			limit: z.number().int().max(50).default(10),
+		},
+	},
+	({ query, group, limit }) => {
+		const words = query.split(/\s+/).map(squash).filter(Boolean);
+		const hits = demos
+			.filter((d) => !group || d.group === group)
+			.map((d) => {
+				const hay = squash([d.title, d.summary, ...d.tags, ...d.components, d.page].join(" "));
+				return { d, score: words.filter((w) => hay.includes(w)).length };
+			})
+			.filter((h) => h.score > 0)
+			.sort((a, b) => b.score - a.score)
+			.slice(0, limit);
+		if (!hits.length) return fail(`No demo matches "${query}".`);
+		return text(
+			hits
+				.map(
+					({ d }) =>
+						`#${d.id} ${d.title} — ${d.group}/${d.page} — ${d.summary} — ${d.components.join(", ")}`
+				)
+				.join("\n")
+		);
+	}
+);
+
+server.registerTool(
+	"get_demo",
+	{
+		description:
+			"Reference source of up to 8 numbered demos: license line, header (what it shows, spec, needs, components, live link) and the raw .svelte. Ids as `12`, `012`, `#012` or a docs URL ending `#<slug>`. Keep the first comment line when porting.",
+		inputSchema: { ids: z.array(z.string()).min(1).max(8) },
+	},
+	({ ids }) => {
+		const out: string[] = [];
+		for (const raw of ids) {
+			const num = raw.match(/^#?(\d{1,3})$/)?.[1];
+			const hit = num
+				? demos.find((d) => d.id === num.padStart(3, "0"))
+				: demos.find((d) => raw.endsWith(d.demo.slice(d.demo.indexOf("/docs/"))));
+			if (!hit) return fail(`Unknown demo id "${raw}"; use search_demos.`);
+			out.push(readFileSync(join(DIST, `api/v1/en/e/${hit.id}.txt`), "utf8"));
+		}
+		return text(out.join("\n\n---\n\n"));
 	}
 );
 

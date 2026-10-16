@@ -1,0 +1,42 @@
+<!-- @codeatlasdev/ui demo #049 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/swatch-group#theme-presets -->
+Element: #049 Theme presets (inputs/swatch-group)
+What it shows: Swatches without a color paint from the preset named by their value.
+Tags: theme, presets, swatchgroup
+Needs: @codeatlasdev/ui@4.0.0
+Components: SwatchGroup
+Live demo: https://ui.codeatlas.com.br/docs/inputs/swatch-group#theme-presets
+
+<script lang="ts">
+  import { SwatchGroup } from '@codeatlasdev/ui';
+
+  let preset = $state('ocean');
+</script>
+
+<div class="col">
+  <SwatchGroup
+    aria-label="Accent"
+    bind:value={preset}
+    items={[
+      { value: 'ocean' },
+      { value: 'violet' },
+      { value: 'emerald' },
+      { value: 'rose' },
+      { value: 'amber' },
+    ]}
+  />
+  <p class="out">value: {preset}</p>
+</div>
+
+<style>
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-3);
+  }
+
+  .out {
+    margin: 0;
+    font-size: var(--ca-font-size-caption);
+    color: var(--ca-text-secondary);
+  }
+</style>

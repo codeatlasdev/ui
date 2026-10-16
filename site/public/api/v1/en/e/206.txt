@@ -1,0 +1,36 @@
+<!-- @codeatlasdev/ui demo #206 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/pie#animated-proportions -->
+Element: #206 Animated proportions (charts/pie)
+What it shows: Swap the data and the slices animate to the new proportions.
+Tags: animated, proportions, card, flex, chip, piechart
+Needs: @codeatlasdev/ui@4.0.0 + echarts
+Components: Card, Flex, Chip, PieChart
+Live demo: https://ui.codeatlas.com.br/docs/charts/pie#animated-proportions
+
+<script lang="ts">
+  import { Card, Flex, Chip } from '@codeatlasdev/ui';
+  import { PieChart } from '@codeatlasdev/ui/charts';
+
+  type Quarter = 'Q1' | 'Q2' | 'Q3';
+  const quarters: Quarter[] = ['Q1', 'Q2', 'Q3'];
+  const qData: Record<Quarter, { value: number; name: string }[]> = {
+    Q1: [{ value: 42, name: 'Cloud' }, { value: 28, name: 'Enterprise' }, { value: 18, name: 'SaaS' }, { value: 12, name: 'Other' }],
+    Q2: [{ value: 35, name: 'Cloud' }, { value: 31, name: 'Enterprise' }, { value: 22, name: 'SaaS' }, { value: 12, name: 'Other' }],
+    Q3: [{ value: 38, name: 'Cloud' }, { value: 26, name: 'Enterprise' }, { value: 24, name: 'SaaS' }, { value: 12, name: 'Other' }],
+  };
+
+  let selected = $state<Quarter>('Q1');
+  const data = $derived(qData[selected]);
+</script>
+
+<div class="wrap">
+  <Flex gap="2">
+    {#each quarters as q}
+      <Chip label={q} selected={selected === q} onclick={() => (selected = q)} variant="brand" size="sm" />
+    {/each}
+  </Flex>
+  <Card material="glass" full><PieChart {data} donut height="300px" /></Card>
+</div>
+
+<style>
+  .wrap { width: 100%; display: flex; flex-direction: column; gap: var(--ca-space-3); }
+</style>

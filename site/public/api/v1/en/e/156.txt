@@ -1,0 +1,54 @@
+<!-- @codeatlasdev/ui demo #156 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/command-palette#open-the-palette -->
+Element: #156 Open the palette (navigation/command-palette)
+What it shows: Click the button or press Cmd+K / Ctrl+K while this page is focused. Picking an item shows its path instead of navigating.
+Tags: open, the, palette, commandpalette, button, kbd
+Needs: @codeatlasdev/ui@4.0.0
+Components: CommandPalette, Button, Kbd
+Live demo: https://ui.codeatlas.com.br/docs/navigation/command-palette#open-the-palette
+
+<script lang="ts">
+  import { CommandPalette, Button, Kbd, type NavModule } from '@codeatlasdev/ui';
+  import { Keyboard, Home, Users, Settings, BarChart3, FileText, CreditCard } from '@lucide/svelte';
+
+  let open = $state(false);
+  let picked = $state('');
+
+  const modules: NavModule[] = [
+    {
+      id: 'app',
+      label: 'App',
+      icon: Home,
+      basePath: '/app',
+      items: [
+        { id: 'dashboard', label: 'Dashboard', icon: Home, path: '/app/dashboard' },
+        { id: 'users', label: 'Users', icon: Users, path: '/app/users' },
+        { id: 'reports', label: 'Reports', icon: BarChart3, path: '/app/reports' },
+      ],
+    },
+    {
+      id: 'account',
+      label: 'Account',
+      icon: Settings,
+      basePath: '/account',
+      items: [
+        { id: 'settings', label: 'Settings', icon: Settings, path: '/account/settings' },
+        { id: 'billing', label: 'Billing', icon: CreditCard, path: '/account/billing' },
+        { id: 'docs', label: 'Documentation', icon: FileText, path: '/account/docs' },
+      ],
+    },
+  ];
+</script>
+
+<CommandPalette {modules} onNavigate={(path) => (picked = path)} bind:open />
+
+<Button variant="filled" onclick={() => (open = true)}>
+  {#snippet leading()}<Keyboard size={16} />{/snippet}
+  Open command palette
+</Button>
+<Kbd>⌘K</Kbd>
+{#if picked}<span class="picked" aria-live="polite">Selected: <code>{picked}</code></span>{/if}
+
+<style>
+  .picked { font-size: var(--ca-font-size-body2); color: var(--ca-text-secondary); }
+  .picked code { font-family: var(--ca-font-mono); color: var(--ca-brand-text); }
+</style>

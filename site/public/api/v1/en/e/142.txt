@@ -1,0 +1,20 @@
+<!-- @codeatlasdev/ui demo #142 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/tooltip#text-trigger -->
+Element: #142 Text trigger (display/tooltip)
+What it shows: Text trigger
+Tags: text, trigger, tooltip
+Needs: @codeatlasdev/ui@4.0.0
+Components: Tooltip
+Live demo: https://ui.codeatlas.com.br/docs/display/tooltip#text-trigger
+
+<script lang="ts">
+  import { Tooltip } from '@codeatlasdev/ui';
+</script>
+
+<p>
+  Static text can be a trigger too:
+  <Tooltip content="Wrapped in the tooltip's own button">hover or focus this text</Tooltip>
+</p>
+
+<style>
+  p { margin: 0; font-size: var(--ca-font-size-body2); color: var(--ca-text-secondary); }
+</style>

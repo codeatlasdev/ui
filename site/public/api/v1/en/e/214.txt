@@ -1,0 +1,23 @@
+<!-- @codeatlasdev/ui demo #214 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/scatter#bubble-chart -->
+Element: #214 Bubble chart (charts/scatter)
+What it shows: The third value of each point sets the bubble size.
+Tags: bubble, chart, card, scatterchart
+Needs: @codeatlasdev/ui@4.0.0 + echarts
+Components: Card, ScatterChart
+Live demo: https://ui.codeatlas.com.br/docs/charts/scatter#bubble-chart
+
+<script lang="ts">
+  import { Card } from '@codeatlasdev/ui';
+  import { ScatterChart } from '@codeatlasdev/ui/charts';
+
+  // The third value of each point is the bubble size.
+  const data = Array.from({ length: 50 }, (_, i): [number, number, number] => [
+    Math.round(1000 + 13000 * (0.5 + 0.5 * Math.sin(i * 0.43 + 0.6)) * (0.65 + 0.35 * Math.cos(i * 0.19))),
+    parseFloat((1 + 12 * (0.5 + 0.5 * Math.cos(i * 0.37 + 1.1)) * (0.7 + 0.3 * Math.sin(i * 0.53))).toFixed(2)),
+    Math.round(1000 + 49000 * Math.abs(Math.sin(i * 0.29 + 0.4)) * Math.abs(Math.cos(i * 0.11))),
+  ]);
+</script>
+
+<Card material="glass" full>
+  <ScatterChart series={[{ name: 'Accounts', data }]} yName="Conversion %" yFormatter={(v) => `${v.toFixed(1)}%`} height="340px" />
+</Card>

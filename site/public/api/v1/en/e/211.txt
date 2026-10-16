@@ -1,0 +1,42 @@
+<!-- @codeatlasdev/ui demo #211 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/radar#interactive-team-builder -->
+Element: #211 Interactive team builder (charts/radar)
+What it shows: Drag the sliders and the radar updates live.
+Tags: interactive, team, builder, card, stack, flex, slider, radarchart
+Needs: @codeatlasdev/ui@4.0.0 + echarts
+Components: Card, Stack, Flex, Slider, RadarChart
+Live demo: https://ui.codeatlas.com.br/docs/charts/radar#interactive-team-builder
+
+<script lang="ts">
+  import { Card, Stack, Flex, Slider } from '@codeatlasdev/ui';
+  import { RadarChart } from '@codeatlasdev/ui/charts';
+
+  const DIMS = ['Speed', 'Quality', 'Reliability', 'Innovation', 'Support', 'Coverage'];
+  const indicators = DIMS.map((name) => ({ name, max: 100 }));
+
+  let dims = $state([88, 92, 76, 85, 94, 79]);
+  const series = $derived([{ name: 'My team', values: [...dims] }]);
+</script>
+
+<Card material="glass" full>
+  <div class="builder">
+    <RadarChart {indicators} {series} height="320px" />
+    <Stack gap="3">
+      {#each DIMS as dim, i}
+        <Stack gap="1">
+          <Flex justify="between">
+            <span class="dim-name">{dim}</span>
+            <span class="dim-value">{dims[i]}</span>
+          </Flex>
+          <Slider value={dims[i]} min={0} max={100} step={1} onchange={(v) => { dims[i] = v[0]; }} />
+        </Stack>
+      {/each}
+    </Stack>
+  </div>
+</Card>
+
+<style>
+  .builder { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: var(--ca-space-6); align-items: start; }
+  .dim-name { font-size: var(--ca-font-size-body2); }
+  .dim-value { color: var(--ca-brand-text); font-weight: 600; font-size: var(--ca-font-size-body2); }
+  @media (max-width: 899.98px) { .builder { grid-template-columns: minmax(0, 1fr); } }
+</style>

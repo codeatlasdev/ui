@@ -1,0 +1,15 @@
+<!-- @codeatlasdev/ui demo #071 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/surfaces/card#link-card -->
+Element: #071 Link card (surfaces/card)
+What it shows: Link card
+Tags: link, card
+Needs: @codeatlasdev/ui@4.0.0
+Components: Card
+Live demo: https://ui.codeatlas.com.br/docs/surfaces/card#link-card
+
+<script lang="ts">
+  import { Card } from '@codeatlasdev/ui';
+</script>
+
+<Card href="/docs/surfaces/surface/" title="Surface" headingLevel={3} material="solid" elevation={2}>
+  The one painted container every card is built on. The whole card is the link.
+</Card>

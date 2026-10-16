@@ -1,0 +1,8 @@
+Use @codeatlasdev/ui demo #053 "Without label" (inputs/switch).
+What it shows: Provide aria-label when no visible label is rendered..
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #053 Without label → file, what changed, https://ui.codeatlas.com.br/docs/inputs/switch#without-label; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/053.txt   Components API: ca-ui-mcp get_component(Switch)

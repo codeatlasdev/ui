@@ -1,0 +1,21 @@
+<!-- @codeatlasdev/ui demo #059 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/theme-toggle#basic -->
+Element: #059 Basic (inputs/theme-toggle)
+What it shows: Click it: the whole site flips between light and dark.
+Tags: basic, themetoggle
+Needs: @codeatlasdev/ui@4.0.0
+Components: ThemeToggle
+Live demo: https://ui.codeatlas.com.br/docs/inputs/theme-toggle#basic
+
+<script lang="ts">
+  import { ThemeToggle } from '@codeatlasdev/ui';
+</script>
+
+<div class="rail">
+  <ThemeToggle />
+</div>
+
+<style>
+  .rail {
+    width: 52px;
+  }
+</style>

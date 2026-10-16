@@ -1,0 +1,22 @@
+<!-- @codeatlasdev/ui demo #101 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/spinner#section-loader -->
+Element: #101 Section loader (feedback/spinner)
+What it shows: Section loader
+Tags: section, loader, spinner, card, stack
+Needs: @codeatlasdev/ui@4.0.0
+Components: Spinner, Card, Stack
+Live demo: https://ui.codeatlas.com.br/docs/feedback/spinner#section-loader
+
+<script lang="ts">
+  import { Spinner, Card, Stack } from '@codeatlasdev/ui';
+</script>
+
+<Card material="glass" p="10" full>
+  <Stack align="center" gap="3">
+    <Spinner size={40} />
+    <span class="text">Loading data…</span>
+  </Stack>
+</Card>
+
+<style>
+  .text { font-size: var(--ca-font-size-body2); color: var(--ca-text-secondary); }
+</style>

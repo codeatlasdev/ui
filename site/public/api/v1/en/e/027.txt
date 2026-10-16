@@ -1,0 +1,29 @@
+<!-- @codeatlasdev/ui demo #027 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/money-input#currency-and-locale -->
+Element: #027 Currency and locale (inputs/money-input)
+What it shows: currency picks the minor unit (USD 2 decimals, JPY none); locale picks separators and symbol placement.
+Tags: currency, and, locale, moneyinput
+Needs: @codeatlasdev/ui@4.0.0
+Components: MoneyInput
+Live demo: https://ui.codeatlas.com.br/docs/inputs/money-input#currency-and-locale
+
+<script lang="ts">
+  import { MoneyInput } from '@codeatlasdev/ui/forms';
+
+  let usd = $state(123456);
+  let jpy = $state(1234);
+  let eur = $state(123456);
+</script>
+
+<div class="col">
+  <MoneyInput label="Price (USD, en-US)" currency="USD" locale="en-US" bind:value={usd} />
+  <MoneyInput label="Price (JPY, no decimals)" currency="JPY" locale="en-US" bind:value={jpy} />
+  <MoneyInput label="Preis (EUR, de-DE)" currency="EUR" locale="de-DE" bind:value={eur} />
+</div>
+
+<style>
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-2);
+  }
+</style>

@@ -1,0 +1,30 @@
+<!-- @codeatlasdev/ui demo #199 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/heatmap#hour-by-day-matrix -->
+Element: #199 Hour by day matrix (charts/heatmap)
+What it shows: Points are [xIndex, yIndex, value] into xCategories and yCategories.
+Tags: hour, by, day, matrix, card, heatmapchart
+Needs: @codeatlasdev/ui@4.0.0 + echarts
+Components: Card, HeatmapChart
+Live demo: https://ui.codeatlas.com.br/docs/charts/heatmap#hour-by-day-matrix
+
+<script lang="ts">
+  import { Card } from '@codeatlasdev/ui';
+  import { HeatmapChart, type MatrixHeatmapPoint } from '@codeatlasdev/ui/charts';
+
+  const hours = Array.from({ length: 24 }, (_, i) => String(i).padStart(2, '0') + ':00');
+  const days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+  // [ xIndex, yIndex, value ]
+  const matrixData: MatrixHeatmapPoint[] = [];
+  for (let d = 0; d < 7; d++) {
+    for (let h = 0; h < 24; h++) {
+      let v = 0;
+      if (h >= 9 && h <= 17 && d < 5) v = Math.round(Math.exp(-Math.pow(h - 10.5, 2) / 4) * 9 + Math.exp(-Math.pow(h - 14.5, 2) / 3) * 7);
+      else if (h >= 20 && h <= 23 && d < 5) v = Math.round(Math.sin(h * 0.5 + d) * 1.5 + 1);
+      matrixData.push([h, d, Math.max(0, Math.min(10, v))]);
+    }
+  }
+</script>
+
+<Card material="glass" full>
+  <HeatmapChart variant="matrix" {matrixData} xCategories={hours} yCategories={days} tooltipFormatter={(v) => `${v} tasks`} height="320px" />
+</Card>

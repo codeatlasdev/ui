@@ -1,0 +1,49 @@
+<!-- @codeatlasdev/ui demo #123 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/data-table#simple-mode -->
+Element: #123 Simple mode (display/data-table)
+What it shows: Simple mode
+Tags: simple, mode, datatable
+Needs: @codeatlasdev/ui@4.0.0 + @tanstack/svelte-table
+Components: DataTable
+Live demo: https://ui.codeatlas.com.br/docs/display/data-table#simple-mode
+
+<script lang="ts">
+  import { DataTable, createCaColumnHelper } from '@codeatlasdev/ui/table';
+
+  interface User {
+    id: number;
+    name: string;
+    email: string;
+    role: string;
+    status: 'active' | 'inactive' | 'pending';
+  }
+
+  const data: User[] = [
+    { id: 1, name: 'Ana Souza', email: 'ana@example.com', role: 'Admin', status: 'active' },
+    { id: 2, name: 'Bruno Lima', email: 'bruno@example.com', role: 'Developer', status: 'active' },
+    { id: 3, name: 'Carla Mendes', email: 'carla@example.com', role: 'Designer', status: 'inactive' },
+    { id: 4, name: 'Diego Ferreira', email: 'diego@example.com', role: 'Developer', status: 'active' },
+    { id: 5, name: 'Elena Castro', email: 'elena@example.com', role: 'Manager', status: 'pending' },
+    { id: 6, name: 'Felipe Rocha', email: 'felipe@example.com', role: 'Developer', status: 'active' },
+    { id: 7, name: 'Gabriela Nunes', email: 'gabi@example.com', role: 'Designer', status: 'active' },
+    { id: 8, name: 'Henrique Lopes', email: 'henrique@example.com', role: 'Admin', status: 'inactive' },
+    { id: 9, name: 'Isabela Torres', email: 'isa@example.com', role: 'Developer', status: 'active' },
+    { id: 10, name: 'Joao Almeida', email: 'joao@example.com', role: 'Manager', status: 'pending' },
+    { id: 11, name: 'Karina Bastos', email: 'karina@example.com', role: 'Developer', status: 'active' },
+    { id: 12, name: 'Lucas Carvalho', email: 'lucas@example.com', role: 'Designer', status: 'active' },
+  ];
+
+  const col = createCaColumnHelper<User>();
+  const columns = col.columns([
+    col.accessor('id', { header: 'ID', meta: { label: 'ID' } }),
+    col.accessor('name', { header: 'Name', meta: { label: 'Name' } }),
+    col.accessor('email', { header: 'Email', meta: { label: 'Email' } }),
+    col.accessor('role', { header: 'Role', meta: { label: 'Role' } }),
+    col.accessor('status', { header: 'Status', meta: { label: 'Status' } }),
+  ]);
+</script>
+
+<div class="wrap"><DataTable {columns} {data} /></div>
+
+<style>
+  .wrap { width: 100%; min-width: 0; }
+</style>

@@ -1,0 +1,72 @@
+<!-- @codeatlasdev/ui demo #062 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/use-form#no-schema -->
+Element: #062 No schema (inputs/use-form)
+What it shows: Manual validation on submit. touch() and set() drive the per-field state.
+Tags: no, schema, button, textfield
+Needs: @codeatlasdev/ui@4.0.0
+Components: Button, TextField
+Live demo: https://ui.codeatlas.com.br/docs/inputs/use-form#no-schema
+
+<script lang="ts">
+  import { Button, TextField, useForm } from '@codeatlasdev/ui';
+
+  const form = useForm({ name: '', email: '' });
+
+  function validate() {
+    const errs: Partial<Record<'name' | 'email', string>> = {};
+    if (!form.fields.name.value.trim()) errs.name = 'Name is required.';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.fields.email.value)) errs.email = 'Enter a valid email address.';
+    for (const k of ['name', 'email'] as const) {
+      form.fields[k].touched = true;
+      form.fields[k].error = errs[k];
+    }
+    return Object.keys(errs).length === 0;
+  }
+</script>
+
+<div class="col">
+  <TextField
+    label="Name"
+    placeholder="Jane Smith"
+    value={form.fields.name.value}
+    error={form.fields.name.error}
+    oninput={(v) => form.set('name', v)}
+    onblur={() => form.touch('name')}
+  />
+  <TextField
+    label="Email"
+    type="email"
+    placeholder="you@example.com"
+    value={form.fields.email.value}
+    error={form.fields.email.error}
+    oninput={(v) => form.set('email', v)}
+    onblur={() => form.touch('email')}
+  />
+  <div class="row">
+    <Button onclick={validate}>Validate</Button>
+    <Button variant="outlined" onclick={() => form.reset()}>Reset</Button>
+  </div>
+  {#if form.dirty}
+    <p class="hint">dirty: values changed from initial</p>
+  {/if}
+</div>
+
+<style>
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-4);
+    width: 100%;
+    max-width: 420px;
+  }
+
+  .row {
+    display: flex;
+    gap: var(--ca-space-2);
+  }
+
+  .hint {
+    margin: 0;
+    font-size: var(--ca-font-size-caption);
+    color: var(--ca-text-secondary);
+  }
+</style>

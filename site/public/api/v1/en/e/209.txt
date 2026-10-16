@@ -1,0 +1,23 @@
+<!-- @codeatlasdev/ui demo #209 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/pie#rose-chart -->
+Element: #209 Rose chart (charts/pie)
+What it shows: Nightingale rose: the radius of each slice scales with its value.
+Tags: rose, chart, card, piechart
+Needs: @codeatlasdev/ui@4.0.0 + echarts
+Components: Card, PieChart
+Live demo: https://ui.codeatlas.com.br/docs/charts/pie#rose-chart
+
+<script lang="ts">
+  import { Card } from '@codeatlasdev/ui';
+  import { PieChart } from '@codeatlasdev/ui/charts';
+
+  const roseData = [
+    { value: 72, name: 'Analytics' },
+    { value: 58, name: 'Automation' },
+    { value: 45, name: 'Security' },
+    { value: 38, name: 'Integrations' },
+    { value: 30, name: 'Storage' },
+    { value: 22, name: 'Support' },
+  ];
+</script>
+
+<Card material="glass" full><PieChart data={roseData} rose height="340px" /></Card>

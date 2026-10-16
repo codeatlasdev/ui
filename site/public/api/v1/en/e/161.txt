@@ -1,0 +1,22 @@
+<!-- @codeatlasdev/ui demo #161 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/popover#form -->
+Element: #161 Form (navigation/popover)
+What it shows: A small form anchored to its trigger, aligned to the start.
+Tags: form, popover, button, textfield, stack, flex
+Needs: @codeatlasdev/ui@4.0.0
+Components: Popover, Button, TextField, Stack, Flex
+Live demo: https://ui.codeatlas.com.br/docs/navigation/popover#form
+
+<script lang="ts">
+  import { Popover, Button, TextField, Stack, Flex } from '@codeatlasdev/ui';
+</script>
+
+<Popover side="bottom" align="start">
+  {#snippet triggerChild(props)}<Button variant="filled" {...props}>Edit label</Button>{/snippet}
+  <Stack gap="3">
+    <TextField label="Label name" placeholder="e.g. Priority" />
+    <Flex gap="2" justify="end">
+      <Button size="sm" variant="ghost">Cancel</Button>
+      <Button size="sm" variant="filled">Save</Button>
+    </Flex>
+  </Stack>
+</Popover>

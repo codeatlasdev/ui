@@ -1,0 +1,77 @@
+<!-- @codeatlasdev/ui demo #052 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/switch#settings-list -->
+Element: #052 Settings list (inputs/switch)
+What it shows: Common pattern: a row with title, helper text and a trailing switch.
+Tags: settings, list, switch
+Needs: @codeatlasdev/ui@4.0.0
+Components: Switch
+Live demo: https://ui.codeatlas.com.br/docs/inputs/switch#settings-list
+
+<script lang="ts">
+  import { Switch } from '@codeatlasdev/ui';
+
+  let email = $state(true);
+  let dark = $state(false);
+  let analytics = $state(false);
+</script>
+
+<div class="settings-list">
+  <div class="settings-item">
+    <div>
+      <p class="settings-item__title">Email notifications</p>
+      <p class="settings-item__sub">Receive updates about your account activity.</p>
+    </div>
+    <Switch bind:checked={email} aria-label="Email notifications" />
+  </div>
+  <div class="settings-item">
+    <div>
+      <p class="settings-item__title">Dark mode</p>
+      <p class="settings-item__sub">Switch between light and dark appearance.</p>
+    </div>
+    <Switch bind:checked={dark} aria-label="Dark mode" />
+  </div>
+  <div class="settings-item">
+    <div>
+      <p class="settings-item__title">Usage analytics</p>
+      <p class="settings-item__sub">Help improve the product by sharing usage data.</p>
+    </div>
+    <Switch bind:checked={analytics} aria-label="Usage analytics" />
+  </div>
+</div>
+
+<style>
+  .settings-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 480px;
+    border: 1px solid var(--ca-outline-subtle);
+    border-radius: var(--ca-radius-lg);
+    overflow: hidden;
+  }
+
+  .settings-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ca-space-4);
+    padding: var(--ca-space-4) var(--ca-space-5);
+    border-bottom: 1px solid var(--ca-outline-subtle);
+  }
+
+  .settings-item:last-child {
+    border-bottom: none;
+  }
+
+  .settings-item__title {
+    margin: 0 0 2px;
+    font-size: var(--ca-font-size-body2);
+    font-weight: 500;
+    color: var(--ca-text-primary);
+  }
+
+  .settings-item__sub {
+    margin: 0;
+    font-size: var(--ca-font-size-caption);
+    color: var(--ca-text-secondary);
+  }
+</style>

@@ -1,0 +1,32 @@
+<!-- @codeatlasdev/ui demo #058 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/text-field#states -->
+Element: #058 States (inputs/text-field)
+What it shows: Helper text, error, required, read-only, disabled and the small size.
+Tags: states, textfield
+Needs: @codeatlasdev/ui@4.0.0
+Components: TextField
+Live demo: https://ui.codeatlas.com.br/docs/inputs/text-field#states
+
+<script lang="ts">
+  import { TextField } from '@codeatlasdev/ui';
+
+  let wrong = $state('wrong@');
+</script>
+
+<div class="col">
+  <TextField label="Username" placeholder="john_doe" description="3–20 characters, letters and underscores only." />
+  <TextField label="Email" bind:value={wrong} error="Please enter a valid email address." />
+  <TextField label="Company" required />
+  <TextField label="Read-only field" value="Cannot edit this" readonly />
+  <TextField label="Disabled field" value="Cannot edit this" disabled />
+  <TextField label="Small" size="sm" placeholder="Compact height" />
+</div>
+
+<style>
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-4);
+    width: 100%;
+    max-width: 400px;
+  }
+</style>

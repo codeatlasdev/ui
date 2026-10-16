@@ -1,0 +1,30 @@
+<!-- @codeatlasdev/ui demo #067 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/surfaces/accordion#single -->
+Element: #067 Single (surfaces/accordion)
+What it shows: Single
+Tags: single, accordion, accordionitem
+Needs: @codeatlasdev/ui@4.0.0
+Components: Accordion, AccordionItem
+Live demo: https://ui.codeatlas.com.br/docs/surfaces/accordion#single
+
+<script lang="ts">
+  import { Accordion, AccordionItem } from '@codeatlasdev/ui';
+</script>
+
+<div class="wrap">
+  <Accordion type="single">
+    <AccordionItem value="a1" title="What is Liquid Glass?">
+      Liquid Glass is the opt-in look of the kit: backdrop blur, refraction and tinting on
+      surfaces. The default theme is solid.
+    </AccordionItem>
+    <AccordionItem value="a2" title="Which browsers support backdrop-filter?">
+      All modern evergreen browsers. Older environments receive a fallback without the blur effect.
+    </AccordionItem>
+    <AccordionItem value="a3" title="Can I nest a Surface inside a Card?">
+      Yes. A Card is a Surface, so any Surface can sit inside it.
+    </AccordionItem>
+  </Accordion>
+</div>
+
+<style>
+  .wrap { width: 100%; max-width: 560px; }
+</style>

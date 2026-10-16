@@ -1,0 +1,24 @@
+<!-- @codeatlasdev/ui demo #207 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/pie#donut-with-center-kpi -->
+Element: #207 Donut with center KPI (charts/pie)
+What it shows: centerLabel overlays a value and caption in the hole of a donut.
+Tags: donut, with, center, kpi, card, piechart
+Needs: @codeatlasdev/ui@4.0.0 + echarts
+Components: Card, PieChart
+Live demo: https://ui.codeatlas.com.br/docs/charts/pie#donut-with-center-kpi
+
+<script lang="ts">
+  import { Card } from '@codeatlasdev/ui';
+  import { PieChart } from '@codeatlasdev/ui/charts';
+
+  const marketData = [
+    { value: 38, name: 'Cloud Services' },
+    { value: 24, name: 'Enterprise SW' },
+    { value: 18, name: 'SaaS Tools' },
+    { value: 12, name: 'Infrastructure' },
+    { value: 8, name: 'Other' },
+  ];
+</script>
+
+<Card material="glass" full>
+  <PieChart data={marketData} donut centerLabel={{ value: '$2.4M', label: 'Total Revenue' }} height="300px" />
+</Card>

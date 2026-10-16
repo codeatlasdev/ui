@@ -107,7 +107,8 @@
 			"default": "./dist/testing/index.js"
 		},
 		"./components.json": "./dist/components.json",
-		"./tokens.json": "./dist/tokens.json"
+		"./tokens.json": "./dist/tokens.json",
+		"./demos.json": "./dist/demos.json"
 	},
 	"files": [
 		"dist",

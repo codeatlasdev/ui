@@ -1,0 +1,98 @@
+<!-- @codeatlasdev/ui demo #165 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/app-shell#anatomy -->
+Element: #165 Anatomy (layout/app-shell)
+What it shows: Rail (52px), panel (200px) and the main content area.
+Tags: anatomy
+Needs: @codeatlasdev/ui@4.0.0
+Components: none
+Live demo: https://ui.codeatlas.com.br/docs/layout/app-shell#anatomy
+
+<div class="shell-diagram" role="img" aria-label="App shell anatomy: rail, panel and main content">
+  <div class="shell-rail">
+    <span class="shell-label">Rail<br />52px</span>
+    <div class="rail-icons">
+      {#each [0, 1, 2, 3] as i}
+        <div class="rail-icon" class:rail-icon--active={i === 1}></div>
+      {/each}
+    </div>
+  </div>
+  <div class="shell-panel">
+    <span class="shell-label">Panel<br />200px</span>
+    <div class="panel-items">
+      {#each ['Dashboard', 'Users', 'Reports', 'Settings'] as item, i}
+        <div class="panel-item" class:panel-item--active={i === 0}>{item}</div>
+      {/each}
+    </div>
+  </div>
+  <div class="shell-main">
+    <span class="shell-label">Main content</span>
+    <div class="main-topbar"></div>
+    <div class="content-block"></div>
+    <div class="content-block content-block--short"></div>
+    <div class="content-block"></div>
+  </div>
+</div>
+
+<style>
+  .shell-diagram {
+    display: flex;
+    width: 100%;
+    height: 280px;
+    border-radius: var(--ca-radius-lg);
+    overflow: hidden;
+    box-shadow: inset 0 0 0 1px var(--ca-outline-subtle);
+  }
+  .shell-label {
+    font-size: 10px;
+    font-weight: 600;
+    color: var(--ca-text-hint);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    line-height: 1.3;
+    text-align: center;
+  }
+  .shell-rail {
+    width: 52px;
+    flex-shrink: 0;
+    box-shadow: inset -1px 0 0 var(--ca-outline-subtle);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 12px 0;
+    gap: 16px;
+  }
+  .rail-icons { display: flex; flex-direction: column; gap: 8px; align-items: center; }
+  .rail-icon { width: 32px; height: 32px; border-radius: var(--ca-radius-md); background: var(--ca-action-hover); }
+  .rail-icon--active {
+    background: color-mix(in oklch, var(--ca-brand-main) 20%, transparent);
+    box-shadow: inset 3px 0 0 var(--ca-brand-main);
+  }
+  .shell-panel {
+    width: 200px;
+    flex-shrink: 0;
+    box-shadow: inset -1px 0 0 var(--ca-outline-subtle);
+    display: flex;
+    flex-direction: column;
+    padding: 12px 8px;
+    gap: 12px;
+  }
+  .panel-items { display: flex; flex-direction: column; gap: 4px; }
+  .panel-item {
+    padding: 6px 10px;
+    border-radius: var(--ca-radius-sm);
+    font-size: var(--ca-font-size-caption);
+    color: var(--ca-text-secondary);
+  }
+  .panel-item--active {
+    background: color-mix(in oklch, var(--ca-brand-main) 12%, transparent);
+    color: var(--ca-brand-text);
+    font-weight: 600;
+  }
+  .shell-main { flex: 1; display: flex; flex-direction: column; padding: 12px; gap: 8px; overflow: hidden; min-width: 0; }
+  .main-topbar { height: 40px; border-radius: var(--ca-radius-md); background: var(--ca-action-hover); flex-shrink: 0; }
+  .content-block { height: 48px; border-radius: var(--ca-radius-md); background: var(--ca-action-hover); }
+  .content-block--short { height: 32px; width: 60%; }
+
+  @media (max-width: 599.98px) {
+    .shell-panel { display: none; }
+  }
+</style>

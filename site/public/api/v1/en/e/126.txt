@@ -1,0 +1,34 @@
+<!-- @codeatlasdev/ui demo #126 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/external-link#in-a-results-table -->
+Element: #126 In a results table (display/external-link)
+What it shows: One link per row. The accessible name of each link is for example “Buy at registrar (opens in a new tab)”.
+Tags: in, a, results, table, externallink, simpletable, card
+Needs: @codeatlasdev/ui@4.0.0
+Components: ExternalLink, SimpleTable, Card
+Live demo: https://ui.codeatlas.com.br/docs/display/external-link#in-a-results-table
+
+<script lang="ts">
+  import { ExternalLink, SimpleTable, Card } from '@codeatlasdev/ui';
+
+  const rows = [
+    { domain: 'atlas.dev', price: '$12.00', url: 'https://registrar.example/buy?d=atlas.dev' },
+    { domain: 'nimbus.io', price: '$38.00', url: 'https://registrar.example/buy?d=nimbus.io' },
+    { domain: 'orbit.app', price: '$21.00', url: 'https://registrar.example/buy?d=orbit.app' },
+  ];
+</script>
+
+<Card material="glass" flush full>
+  <SimpleTable responsive="cards">
+    <thead>
+      <tr><th>Domain</th><th>Price</th><th>Registrar</th></tr>
+    </thead>
+    <tbody>
+      {#each rows as r (r.domain)}
+        <tr>
+          <td class="primary">{r.domain}</td>
+          <td>{r.price}</td>
+          <td><ExternalLink href={r.url}>Buy at registrar</ExternalLink></td>
+        </tr>
+      {/each}
+    </tbody>
+  </SimpleTable>
+</Card>

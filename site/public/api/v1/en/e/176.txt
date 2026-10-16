@@ -1,0 +1,17 @@
+<!-- @codeatlasdev/ui demo #176 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/kpi-card#negative-trend -->
+Element: #176 Negative trend (layout/kpi-card)
+What it shows: Negative trend
+Tags: negative, trend, kpicard, kpigrid
+Needs: @codeatlasdev/ui@4.0.0
+Components: KpiCard, KpiGrid
+Live demo: https://ui.codeatlas.com.br/docs/layout/kpi-card#negative-trend
+
+<script lang="ts">
+  import { KpiCard, KpiGrid } from '@codeatlasdev/ui';
+  import { Activity } from '@lucide/svelte';
+</script>
+
+<KpiGrid>
+  <KpiCard title="Churn Rate" value="5.2" unit="%" trend={-1.8} icon={Activity} />
+  <KpiCard title="Response Time" value="1.4" unit="s" trend={-12.3} />
+</KpiGrid>

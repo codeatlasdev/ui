@@ -1,0 +1,30 @@
+<!-- @codeatlasdev/ui demo #153 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/breadcrumb#levels -->
+Element: #153 Levels (navigation/breadcrumb)
+What it shows: Two, three and five levels, and a single root item.
+Tags: levels, breadcrumb
+Needs: @codeatlasdev/ui@4.0.0
+Components: Breadcrumb
+Live demo: https://ui.codeatlas.com.br/docs/navigation/breadcrumb#levels
+
+<script lang="ts">
+  import { Breadcrumb } from '@codeatlasdev/ui';
+</script>
+
+<div class="stack">
+  <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Components' }]} />
+  <Breadcrumb items={[{ label: 'Home', href: '/' }, { label: 'Navigation', href: '/docs/navigation/' }, { label: 'Breadcrumb' }]} />
+  <Breadcrumb
+    items={[
+      { label: 'Home', href: '/' },
+      { label: 'Settings', href: '/settings' },
+      { label: 'Account', href: '/settings/account' },
+      { label: 'Security', href: '/settings/account/security' },
+      { label: 'Two-Factor Auth' },
+    ]}
+  />
+  <Breadcrumb items={[{ label: 'Home' }]} />
+</div>
+
+<style>
+  .stack { display: grid; gap: 18px; }
+</style>

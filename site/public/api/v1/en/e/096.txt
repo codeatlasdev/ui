@@ -1,0 +1,43 @@
+<!-- @codeatlasdev/ui demo #096 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/sheet#swipe-to-dismiss -->
+Element: #096 Swipe to dismiss (feedback/sheet)
+What it shows: Drag the handle or header down on a viewport below 900px. Above that, it is a centered dialog.
+Tags: swipe, to, dismiss, sheet, button, stack
+Needs: @codeatlasdev/ui@4.0.0
+Components: Sheet, Button, Stack
+Live demo: https://ui.codeatlas.com.br/docs/feedback/sheet#swipe-to-dismiss
+
+<script lang="ts">
+  import { Sheet, Button, Stack } from '@codeatlasdev/ui';
+
+  let open = $state(false);
+  const accounts = ['Account A', 'Account B', 'Account C', 'Account D', 'Account E', 'Account F', 'Account G', 'Account H'];
+</script>
+
+<Button variant="outlined" onclick={() => (open = true)}>Open sheet</Button>
+
+<Sheet bind:open title="Switch session" description="Choose the active account">
+  <Stack gap="1">
+    {#each accounts as acc}
+      <button class="item" onclick={() => (open = false)}>{acc}</button>
+    {/each}
+  </Stack>
+</Sheet>
+
+<style>
+  .item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 9px 12px;
+    background: transparent;
+    border: none;
+    border-radius: var(--ca-radius-md);
+    font-size: var(--ca-font-size-body2);
+    font-family: inherit;
+    color: var(--ca-text-primary);
+    cursor: pointer;
+    text-align: left;
+    transition: background var(--ca-duration-fast);
+  }
+  .item:hover { background: var(--ca-action-hover); }
+</style>

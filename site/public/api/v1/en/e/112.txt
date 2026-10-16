@@ -1,0 +1,19 @@
+<!-- @codeatlasdev/ui demo #112 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/badge#colors -->
+Element: #112 Colors (display/badge)
+What it shows: Colors
+Tags: colors, badge, iconbutton, flex
+Needs: @codeatlasdev/ui@4.0.0
+Components: Badge, IconButton, Flex
+Live demo: https://ui.codeatlas.com.br/docs/display/badge#colors
+
+<script lang="ts">
+  import { Badge, IconButton, Flex } from '@codeatlasdev/ui';
+  import { Bell } from '@lucide/svelte';
+</script>
+
+<Flex gap="4" align="center" wrap>
+  <Badge count={5} color="brand"><IconButton aria-label="Notifications"><Bell size={20} /></IconButton></Badge>
+  <Badge count={5} color="success"><IconButton aria-label="Notifications"><Bell size={20} /></IconButton></Badge>
+  <Badge count={5} color="warning"><IconButton aria-label="Notifications"><Bell size={20} /></IconButton></Badge>
+  <Badge count={5} color="error"><IconButton aria-label="Notifications"><Bell size={20} /></IconButton></Badge>
+</Flex>

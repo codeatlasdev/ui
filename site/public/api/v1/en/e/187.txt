@@ -1,0 +1,43 @@
+<!-- @codeatlasdev/ui demo #187 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/page-shell#dashboard-page -->
+Element: #187 Dashboard page (layout/page-shell)
+What it shows: KPI cards and a content card inside a PageShell.
+Tags: dashboard, page, pageshell, kpicard, kpigrid, card, stack, button
+Needs: @codeatlasdev/ui@4.0.0
+Components: PageShell, KpiCard, KpiGrid, Card, Stack, Button
+Live demo: https://ui.codeatlas.com.br/docs/layout/page-shell#dashboard-page
+
+<script lang="ts">
+  import { PageShell, KpiCard, KpiGrid, Card, Stack, Button } from '@codeatlasdev/ui';
+  import { TrendingUp, Users, DollarSign, Activity } from '@lucide/svelte';
+</script>
+
+<Card material="glass" flush full>
+  <PageShell title="Dashboard" description="Overview of this month">
+    {#snippet actions()}<Button variant="filled" size="sm">New report</Button>{/snippet}
+
+    <Stack gap="6">
+      <KpiGrid>
+        <KpiCard title="Revenue" value="$118k" trend={23.4} icon={DollarSign} />
+        <KpiCard title="Users" value="24.8k" trend={8.1} icon={Users} />
+        <KpiCard title="Growth" value="34%" trend={5.6} icon={TrendingUp} />
+        <KpiCard title="Uptime" value="99.9%" trend={0.1} icon={Activity} />
+      </KpiGrid>
+
+      <Card material="glass" full>
+        <p class="placeholder">Chart or data table goes here</p>
+      </Card>
+    </Stack>
+  </PageShell>
+</Card>
+
+<style>
+  .placeholder {
+    margin: 0;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ca-text-hint);
+    font-size: var(--ca-font-size-body2);
+  }
+</style>

@@ -1,0 +1,19 @@
+<!-- @codeatlasdev/ui demo #100 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/spinner#in-a-button -->
+Element: #100 In a button (feedback/spinner)
+What it shows: Use the loading prop of Button instead of placing a Spinner by hand.
+Tags: in, a, button
+Needs: @codeatlasdev/ui@4.0.0
+Components: Button
+Live demo: https://ui.codeatlas.com.br/docs/feedback/spinner#in-a-button
+
+<script lang="ts">
+  import { Button } from '@codeatlasdev/ui';
+
+  let loading = $state(false);
+  function simulate() {
+    loading = true;
+    setTimeout(() => (loading = false), 2000);
+  }
+</script>
+
+<Button onclick={simulate} {loading}>{loading ? 'Saving…' : 'Save changes'}</Button>

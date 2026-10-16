@@ -1,0 +1,14 @@
+<!-- @codeatlasdev/ui demo #051 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/switch#disabled -->
+Element: #051 Disabled (inputs/switch)
+What it shows: Disabled
+Tags: disabled, switch
+Needs: @codeatlasdev/ui@4.0.0
+Components: Switch
+Live demo: https://ui.codeatlas.com.br/docs/inputs/switch#disabled
+
+<script lang="ts">
+  import { Switch } from '@codeatlasdev/ui';
+</script>
+
+<Switch disabled label="Disabled off" />
+<Switch checked disabled label="Disabled on" />

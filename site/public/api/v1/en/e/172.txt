@@ -1,0 +1,13 @@
+<!-- @codeatlasdev/ui demo #172 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/error-page#404-without-actions -->
+Element: #172 404 without actions (layout/error-page)
+What it shows: hideActions removes the back and home buttons.
+Tags: 404, without, actions, errorpage
+Needs: @codeatlasdev/ui@4.0.0
+Components: ErrorPage
+Live demo: https://ui.codeatlas.com.br/docs/layout/error-page#404-without-actions
+
+<script lang="ts">
+  import { ErrorPage } from '@codeatlasdev/ui';
+</script>
+
+<ErrorPage status={404} hideActions />

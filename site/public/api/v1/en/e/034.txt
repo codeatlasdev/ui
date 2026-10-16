@@ -1,0 +1,21 @@
+<!-- @codeatlasdev/ui demo #034 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/radio#cards -->
+Element: #034 Cards (inputs/radio)
+What it shows: variant=&quot;cards&quot; renders each option as a selectable card with an optional description.
+Tags: cards, radiogroup
+Needs: @codeatlasdev/ui@4.0.0
+Components: RadioGroup
+Live demo: https://ui.codeatlas.com.br/docs/inputs/radio#cards
+
+<script lang="ts">
+  import { RadioGroup } from '@codeatlasdev/ui';
+
+  let plan = $state('pro');
+
+  const plans = [
+    { value: 'free', label: 'Free', description: 'For side projects.' },
+    { value: 'pro', label: 'Pro', description: 'For teams that ship weekly.' },
+    { value: 'team', label: 'Team', description: 'Shared billing and audit log.', disabled: true },
+  ];
+</script>
+
+<RadioGroup variant="cards" aria-label="Plan" items={plans} bind:value={plan} />

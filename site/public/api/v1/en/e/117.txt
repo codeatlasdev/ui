@@ -1,0 +1,16 @@
+<!-- @codeatlasdev/ui demo #117 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/chip#with-icons -->
+Element: #117 With icons (display/chip)
+What it shows: With icons
+Tags: with, icons, chip
+Needs: @codeatlasdev/ui@4.0.0
+Components: Chip
+Live demo: https://ui.codeatlas.com.br/docs/display/chip#with-icons
+
+<script lang="ts">
+  import { Chip } from '@codeatlasdev/ui';
+  import { Tag, Star, Zap } from '@lucide/svelte';
+</script>
+
+<Chip label="Featured" icon={Star} />
+<Chip label="Boosted" icon={Zap} />
+<Chip label="Tagged" icon={Tag} />

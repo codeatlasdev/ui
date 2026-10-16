@@ -1,0 +1,13 @@
+<!-- @codeatlasdev/ui demo #129 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/kbd#shortcuts-in-text -->
+Element: #129 Shortcuts in text (display/kbd)
+What it shows: Shortcuts in text
+Tags: shortcuts, in, text, kbd
+Needs: @codeatlasdev/ui@4.0.0
+Components: Kbd
+Live demo: https://ui.codeatlas.com.br/docs/display/kbd#shortcuts-in-text
+
+<script lang="ts">
+  import { Kbd } from '@codeatlasdev/ui';
+</script>
+
+<p>Press <Kbd>Ctrl</Kbd> + <Kbd>K</Kbd> to open the command palette, or <Kbd>Esc</Kbd> to close it.</p>

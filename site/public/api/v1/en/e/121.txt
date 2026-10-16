@@ -1,0 +1,42 @@
+<!-- @codeatlasdev/ui demo #121 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/code-snippet#languages -->
+Element: #121 Languages (display/code-snippet)
+What it shows: Languages
+Tags: languages, codesnippet
+Needs: @codeatlasdev/ui@4.0.0 + shiki
+Components: CodeSnippet
+Live demo: https://ui.codeatlas.com.br/docs/display/code-snippet#languages
+
+<script lang="ts">
+  import { CodeSnippet } from '@codeatlasdev/ui/code';
+
+  const svelte = `<AppList title="Users" data={ALL} searchKeys={['name', 'email']} perPage={8}>
+  {#snippet children(list)}
+    {#each list.rows as u (u.id)}
+      <tr><td>{u.name}</td></tr>
+    {/each}
+  {/snippet}
+</AppList>`;
+
+  const ts = `const list = useListState({
+  data: ALL,
+  perPage: 8,
+  searchKeys: ['name', 'email'],
+});`;
+
+  const css = `/* Using design tokens */
+.my-component {
+  font-size: var(--ca-font-size-body2);
+  color: var(--ca-text-primary);
+  border: 1px solid var(--ca-outline-subtle);
+}`;
+</script>
+
+<div class="col">
+  <CodeSnippet code={svelte} language="svelte" />
+  <CodeSnippet code={ts} language="typescript" />
+  <CodeSnippet code={css} language="css" />
+</div>
+
+<style>
+  .col { display: flex; flex-direction: column; gap: var(--ca-space-3); width: 100%; }
+</style>

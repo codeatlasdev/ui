@@ -1,0 +1,28 @@
+<!-- @codeatlasdev/ui demo #033 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/pin-input#states -->
+Element: #033 States (inputs/pin-input)
+What it shows: Description, error, disabled and a free-text code.
+Tags: states, pininput
+Needs: @codeatlasdev/ui@4.0.0
+Components: PinInput
+Live demo: https://ui.codeatlas.com.br/docs/inputs/pin-input#states
+
+<script lang="ts">
+  import { PinInput } from '@codeatlasdev/ui';
+
+  let hinted = $state('123');
+</script>
+
+<div class="col">
+  <PinInput label="Code" description="Check your email." bind:value={hinted} />
+  <PinInput label="Code" error="Invalid or expired code." value="123456" />
+  <PinInput label="Code" disabled value="12" />
+  <PinInput label="Access key" type="text" length={5} value="" />
+</div>
+
+<style>
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-5);
+  }
+</style>

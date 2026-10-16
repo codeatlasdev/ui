@@ -1,0 +1,15 @@
+<!-- @codeatlasdev/ui demo #007 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/checkbox#disabled -->
+Element: #007 Disabled (inputs/checkbox)
+What it shows: Disabled
+Tags: disabled, checkbox
+Needs: @codeatlasdev/ui@4.0.0
+Components: Checkbox
+Live demo: https://ui.codeatlas.com.br/docs/inputs/checkbox#disabled
+
+<script lang="ts">
+  import { Checkbox } from '@codeatlasdev/ui';
+</script>
+
+<Checkbox disabled label="Disabled unchecked" />
+<Checkbox checked disabled label="Disabled checked" />
+<Checkbox indeterminate disabled label="Disabled indeterminate" />

@@ -1,0 +1,25 @@
+<!-- @codeatlasdev/ui demo #159 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/menu#icon-trigger -->
+Element: #159 Icon trigger (navigation/menu)
+What it shows: An IconButton trigger. IconButton needs an aria-label.
+Tags: icon, trigger, dropdownmenu, dropdownmenuitem, dropdownmenulabel, iconbutton
+Needs: @codeatlasdev/ui@4.0.0
+Components: DropdownMenu, DropdownMenuItem, DropdownMenuLabel, IconButton
+Live demo: https://ui.codeatlas.com.br/docs/navigation/menu#icon-trigger
+
+<script lang="ts">
+  import { DropdownMenu, DropdownMenuItem, DropdownMenuLabel, IconButton } from '@codeatlasdev/ui';
+  import { MoreHorizontal, Copy, Share2 } from '@lucide/svelte';
+</script>
+
+<DropdownMenu align="end">
+  {#snippet triggerChild(props)}
+    <IconButton aria-label="More options" {...props}><MoreHorizontal size={18} /></IconButton>
+  {/snippet}
+  <DropdownMenuLabel>Actions</DropdownMenuLabel>
+  <DropdownMenuItem>
+    {#snippet children()}<Share2 size={14} /> Share{/snippet}
+  </DropdownMenuItem>
+  <DropdownMenuItem>
+    {#snippet children()}<Copy size={14} /> Copy link{/snippet}
+  </DropdownMenuItem>
+</DropdownMenu>

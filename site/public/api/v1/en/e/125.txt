@@ -1,0 +1,25 @@
+<!-- @codeatlasdev/ui demo #125 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/divider#vertical -->
+Element: #125 Vertical (display/divider)
+What it shows: Vertical
+Tags: vertical, divider, card, flex
+Needs: @codeatlasdev/ui@4.0.0
+Components: Divider, Card, Flex
+Live demo: https://ui.codeatlas.com.br/docs/display/divider#vertical
+
+<script lang="ts">
+  import { Divider, Card, Flex } from '@codeatlasdev/ui';
+</script>
+
+<Card material="glass" p="6" full>
+  <Flex gap="6" align="center">
+    <p>Left</p>
+    <Divider orientation="vertical" />
+    <p>Center</p>
+    <Divider orientation="vertical" />
+    <p>Right</p>
+  </Flex>
+</Card>
+
+<style>
+  p { margin: 0; font-size: var(--ca-font-size-body1); color: var(--ca-text-secondary); }
+</style>

@@ -1,0 +1,67 @@
+<!-- @codeatlasdev/ui demo #088 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/drawer#notification-panel -->
+Element: #088 Notification panel (feedback/drawer)
+What it shows: A real-world use: a 400px wide panel on the right.
+Tags: notification, panel, drawer, button, stack
+Needs: @codeatlasdev/ui@4.0.0
+Components: Drawer, Button, Stack
+Live demo: https://ui.codeatlas.com.br/docs/feedback/drawer#notification-panel
+
+<script lang="ts">
+  import { Drawer, Button, Stack } from '@codeatlasdev/ui';
+  import { Bell } from '@lucide/svelte';
+
+  let open = $state(false);
+  const items = [
+    { title: 'New user joined', body: 'Ana Lima joined the workspace.', time: '2m ago', unread: true },
+    { title: 'Export complete', body: 'Your CSV export is ready to download.', time: '18m ago', unread: true },
+    { title: 'Billing updated', body: 'Your plan was upgraded to Pro.', time: '1h ago', unread: false },
+    { title: 'Comment on #design', body: 'Carlos replied to your comment.', time: '3h ago', unread: false },
+  ];
+</script>
+
+<Button variant="ghost" onclick={() => (open = true)}>
+  {#snippet leading()}<Bell size={14} />{/snippet}
+  Notifications
+</Button>
+
+<Drawer bind:open title="Notifications" side="right" width="400px">
+  <Stack gap="0">
+    {#each items as n}
+      <div class="notif" class:notif--unread={n.unread}>
+        {#if n.unread}<span class="dot"></span>{/if}
+        <div class="content">
+          <p class="title">{n.title}</p>
+          <p class="body">{n.body}</p>
+        </div>
+        <span class="time">{n.time}</span>
+      </div>
+    {/each}
+  </Stack>
+  {#snippet actions()}
+    <Button variant="ghost" size="sm" onclick={() => (open = false)}>Mark all read</Button>
+  {/snippet}
+</Drawer>
+
+<style>
+  .notif {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 14px 0 14px 17px;
+    border-bottom: 1px solid var(--ca-outline-subtle);
+  }
+  .notif:last-child { border-bottom: none; }
+  .notif--unread { padding-left: 0; }
+  .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--ca-brand-main);
+    flex-shrink: 0;
+    margin-top: 5px;
+  }
+  .content { flex: 1; min-width: 0; }
+  .title { font-size: 13px; font-weight: 500; color: var(--ca-text-primary); margin: 0 0 3px; }
+  .body { font-size: 12px; color: var(--ca-text-secondary); margin: 0; line-height: 1.4; }
+  .time { font-size: 11px; color: var(--ca-text-hint); flex-shrink: 0; margin-top: 2px; }
+</style>

@@ -1,0 +1,47 @@
+<!-- @codeatlasdev/ui demo #185 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/list-page#pageshell -->
+Element: #185 PageShell (layout/list-page)
+What it shows: A scrollable container for dashboards and non-CRUD pages.
+Tags: pageshell, kpicard, kpigrid, card
+Needs: @codeatlasdev/ui@4.0.0
+Components: PageShell, KpiCard, KpiGrid, Card
+Live demo: https://ui.codeatlas.com.br/docs/layout/list-page#pageshell
+
+<script lang="ts">
+  import { PageShell, KpiCard, KpiGrid, Card } from '@codeatlasdev/ui';
+  import { Users, DollarSign, TrendingUp, Activity } from '@lucide/svelte';
+</script>
+
+<div class="frame">
+  <PageShell title="Dashboard">
+    <KpiGrid>
+      <KpiCard title="Revenue" value="$118k" trend={23.4} icon={DollarSign} />
+      <KpiCard title="Users" value="24.8k" trend={8.1} icon={Users} />
+      <KpiCard title="Growth" value="34%" trend={5.6} icon={TrendingUp} />
+      <KpiCard title="Uptime" value="99.9%" trend={0.1} icon={Activity} />
+    </KpiGrid>
+    <Card material="glass" full>
+      <p class="placeholder">Chart or data table goes here</p>
+    </Card>
+  </PageShell>
+</div>
+
+<style>
+  .frame {
+    width: 100%;
+    height: 420px;
+    border-radius: var(--ca-radius-lg);
+    box-shadow: inset 0 0 0 1px var(--ca-outline-subtle);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+  .placeholder {
+    margin: 0;
+    height: 120px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--ca-text-hint);
+    font-size: var(--ca-font-size-body2);
+  }
+</style>

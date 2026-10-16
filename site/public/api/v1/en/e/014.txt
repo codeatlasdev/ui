@@ -1,0 +1,17 @@
+<!-- @codeatlasdev/ui demo #014 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/copy-button#variants-and-sizes -->
+Element: #014 Variants and sizes (inputs/copy-button)
+What it shows: Variants and sizes
+Tags: variants, and, sizes, copybutton
+Needs: @codeatlasdev/ui@4.0.0
+Components: CopyButton
+Live demo: https://ui.codeatlas.com.br/docs/inputs/copy-button#variants-and-sizes
+
+<script lang="ts">
+  import { CopyButton } from '@codeatlasdev/ui';
+</script>
+
+<CopyButton value="filled" variant="filled" />
+<CopyButton value="glass" variant="glass" />
+<CopyButton value="outlined" variant="outlined" />
+<CopyButton value="small" size="sm" />
+<CopyButton value="large" size="lg" />

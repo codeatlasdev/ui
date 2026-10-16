@@ -1,0 +1,36 @@
+<!-- @codeatlasdev/ui demo #174 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/form-page#without-header -->
+Element: #174 Without header (layout/form-page)
+What it shows: Omit title, description, leading, trailing and backHref to drop the header.
+Tags: without, header, appform, formsection, textfield, button
+Needs: @codeatlasdev/ui@4.0.0
+Components: AppForm, FormSection, TextField, Button
+Live demo: https://ui.codeatlas.com.br/docs/layout/form-page#without-header
+
+<script lang="ts">
+  import { AppForm, FormSection, TextField, Button } from '@codeatlasdev/ui';
+</script>
+
+<div class="frame">
+  <AppForm>
+    <FormSection title="Quick update">
+      <TextField label="Name" placeholder="Enter name…" />
+      <TextField label="Email" type="email" placeholder="email@example.com" />
+    </FormSection>
+    {#snippet footer()}
+      <Button variant="ghost">Cancel</Button>
+      <Button variant="filled">Save</Button>
+    {/snippet}
+  </AppForm>
+</div>
+
+<style>
+  .frame {
+    width: 100%;
+    height: 360px;
+    border-radius: var(--ca-radius-lg);
+    box-shadow: inset 0 0 0 1px var(--ca-outline-subtle);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+</style>

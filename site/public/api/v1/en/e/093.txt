@@ -1,0 +1,33 @@
+<!-- @codeatlasdev/ui demo #093 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/progress#determinate -->
+Element: #093 Determinate (feedback/progress)
+What it shows: An explicit value from 0 to max (100 by default).
+Tags: determinate, progress
+Needs: @codeatlasdev/ui@4.0.0
+Components: Progress
+Live demo: https://ui.codeatlas.com.br/docs/feedback/progress#determinate
+
+<script lang="ts">
+  import { Progress } from '@codeatlasdev/ui';
+</script>
+
+<div class="col">
+  {#each [25, 50, 75, 100] as v}
+    <div class="row">
+      <span class="label">{v}%</span>
+      <Progress value={v} label="{v} percent" />
+    </div>
+  {/each}
+</div>
+
+<style>
+  .col { display: flex; flex-direction: column; gap: 16px; width: 100%; max-width: 480px; }
+  .row { display: flex; align-items: center; gap: 14px; }
+  .label {
+    font-size: var(--ca-font-size-caption);
+    font-family: var(--ca-font-mono);
+    color: var(--ca-text-secondary);
+    min-width: 64px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+</style>

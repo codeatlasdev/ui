@@ -1,0 +1,26 @@
+<!-- @codeatlasdev/ui demo #077 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/surfaces/surface#interactive -->
+Element: #077 Interactive (surfaces/surface)
+What it shows: Interactive
+Tags: interactive, surface
+Needs: @codeatlasdev/ui@4.0.0
+Components: Surface
+Live demo: https://ui.codeatlas.com.br/docs/surfaces/surface#interactive
+
+<script lang="ts">
+  import { Surface } from '@codeatlasdev/ui';
+
+  let count = $state(0);
+</script>
+
+<Surface
+  as="button"
+  type="button"
+  interactive
+  elevation={2}
+  material="solid"
+  radius="md"
+  p="4"
+  onclick={() => count++}
+>
+  Pressed {count} times
+</Surface>

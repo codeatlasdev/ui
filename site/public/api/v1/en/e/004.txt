@@ -1,0 +1,15 @@
+<!-- @codeatlasdev/ui demo #004 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/button#sizes -->
+Element: #004 Sizes (inputs/button)
+What it shows: Sizes
+Tags: sizes, button
+Needs: @codeatlasdev/ui@4.0.0
+Components: Button
+Live demo: https://ui.codeatlas.com.br/docs/inputs/button#sizes
+
+<script lang="ts">
+  import { Button } from '@codeatlasdev/ui';
+</script>
+
+<Button size="sm">Small</Button>
+<Button size="md">Medium</Button>
+<Button size="lg">Large</Button>

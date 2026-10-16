@@ -1,0 +1,21 @@
+<!-- @codeatlasdev/ui demo #031 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/number-field#states -->
+Element: #031 States (inputs/number-field)
+What it shows: Helper text, error, disabled and the small size.
+Tags: states, numberfield, stack
+Needs: @codeatlasdev/ui@4.0.0
+Components: NumberField, Stack
+Live demo: https://ui.codeatlas.com.br/docs/inputs/number-field#states
+
+<script lang="ts">
+  import { NumberField, Stack } from '@codeatlasdev/ui';
+
+  let fixed = $state(5);
+  let seats = $state(60);
+</script>
+
+<Stack gap="4">
+  <NumberField label="Seats" value={3} min={1} max={50} description="Max 50 seats per plan." />
+  <NumberField label="Seats" bind:value={seats} min={1} max={50} error="Plans support up to 50 seats." required />
+  <NumberField label="Fixed amount" bind:value={fixed} disabled />
+  <NumberField label="Small" size="sm" value={2} />
+</Stack>

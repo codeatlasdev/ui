@@ -1,0 +1,52 @@
+<!-- @codeatlasdev/ui demo #018 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/date-picker#datepicker-and-daterangepicker -->
+Element: #018 DatePicker and DateRangePicker (inputs/date-picker)
+What it shows: Editable segments plus a calendar popover. The range picker shows two months.
+Tags: datepicker, and, daterangepicker
+Needs: @codeatlasdev/ui@4.0.0
+Components: DatePicker, DateRangePicker
+Live demo: https://ui.codeatlas.com.br/docs/inputs/date-picker#datepicker-and-daterangepicker
+
+<script lang="ts">
+  import { DatePicker, DateRangePicker, type DateRange, type DateValue } from '@codeatlasdev/ui';
+
+  let picked = $state<DateValue | undefined>();
+  let range = $state<DateRange>({ start: undefined, end: undefined });
+
+  const fmt = (d: DateValue | undefined) => (d ? d.toString() : '–');
+</script>
+
+<div class="col">
+  <DatePicker
+    label="Delivery date"
+    description="Type a date or pick one from the calendar."
+    locale="en-US"
+    weekStartsOn={0}
+    bind:value={picked}
+  />
+  <p class="out">value: <code>{fmt(picked)}</code></p>
+</div>
+
+<div class="col col--wide">
+  <DateRangePicker label="Period" locale="en-US" weekStartsOn={0} bind:value={range} />
+  <p class="out">start: <code>{fmt(range.start)}</code> · end: <code>{fmt(range.end)}</code></p>
+</div>
+
+<style>
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-4);
+    width: 100%;
+    max-width: 400px;
+  }
+
+  .col--wide {
+    max-width: 460px;
+  }
+
+  .out {
+    margin: 0;
+    font-size: var(--ca-font-size-caption);
+    color: var(--ca-text-secondary);
+  }
+</style>

@@ -1,0 +1,25 @@
+<!-- @codeatlasdev/ui demo #210 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/radar#comparison -->
+Element: #210 Comparison (charts/radar)
+What it shows: Two series with a legend and focus on hover.
+Tags: comparison, card, radarchart
+Needs: @codeatlasdev/ui@4.0.0 + echarts
+Components: Card, RadarChart
+Live demo: https://ui.codeatlas.com.br/docs/charts/radar#comparison
+
+<script lang="ts">
+  import { Card } from '@codeatlasdev/ui';
+  import { RadarChart } from '@codeatlasdev/ui/charts';
+
+  const indicators = ['Speed', 'Quality', 'Reliability', 'Innovation', 'Support', 'Coverage'].map((name) => ({ name, max: 100 }));
+</script>
+
+<Card material="glass" full>
+  <RadarChart
+    {indicators}
+    series={[
+      { name: 'Team A', values: [88, 92, 76, 85, 94, 79] },
+      { name: 'Team B', values: [74, 68, 90, 72, 81, 83] },
+    ]}
+    height="340px"
+  />
+</Card>

@@ -1,0 +1,33 @@
+<!-- @codeatlasdev/ui demo #019 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/export-menu#default -->
+Element: #019 Default (inputs/export-menu)
+What it shows: Custom column order and headers. onexport receives the generated text, handy for tests or uploads.
+Tags: default, exportmenu
+Needs: @codeatlasdev/ui@4.0.0
+Components: ExportMenu
+Live demo: https://ui.codeatlas.com.br/docs/inputs/export-menu#default
+
+<script lang="ts">
+  import { ExportMenu } from '@codeatlasdev/ui';
+
+  const rows = [
+    { domain: 'atlas.dev', price: 12, available: true },
+    { domain: 'nimbus.io', price: 38, available: false },
+    { domain: 'orbit.app', price: 21, available: true },
+  ];
+  let last = $state('');
+</script>
+
+<div class="wrap">
+  <ExportMenu
+    data={rows}
+    filename="domains"
+    columns={[{ key: 'domain', header: 'Domain' }, { key: 'price', header: 'Price (USD)' }, { key: 'available', header: 'Available' }]}
+    onexport={(e) => (last = `${e.filename}: ${e.rows} rows`)}
+  />
+  <p class="last" aria-live="off">{last || 'Pick a format to download.'}</p>
+</div>
+
+<style>
+  .wrap { display: flex; align-items: center; gap: var(--ca-space-3); flex-wrap: wrap; }
+  .last { margin: 0; color: var(--ca-text-secondary); font-size: var(--ca-font-size-body2); }
+</style>

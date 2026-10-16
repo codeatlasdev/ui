@@ -1,0 +1,25 @@
+<!-- @codeatlasdev/ui demo #082 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/alert-dialog#controlled-pending -->
+Element: #082 Controlled pending (feedback/alert-dialog)
+What it shows: Pass pending when the loading state lives outside, for example a mutation from your query client.
+Tags: controlled, pending, alertdialog, button
+Needs: @codeatlasdev/ui@4.0.0
+Components: AlertDialog, Button
+Live demo: https://ui.codeatlas.com.br/docs/feedback/alert-dialog#controlled-pending
+
+<script lang="ts">
+  import { AlertDialog, Button } from '@codeatlasdev/ui';
+
+  let open = $state(false);
+  let pending = $state(false);
+
+  async function publish() {
+    pending = true;
+    await new Promise<void>((r) => setTimeout(r, 1500));
+    pending = false;
+    open = false;
+  }
+</script>
+
+<Button variant="outlined" onclick={() => (open = true)}>Open controlled</Button>
+
+<AlertDialog bind:open title="Publish changes?" confirmLabel="Publish" {pending} onconfirm={publish} />

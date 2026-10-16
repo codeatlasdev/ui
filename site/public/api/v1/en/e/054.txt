@@ -1,0 +1,31 @@
+<!-- @codeatlasdev/ui demo #054 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/text-area#basic -->
+Element: #054 Basic (inputs/text-area)
+What it shows: Empty, with a placeholder, and pre-filled.
+Tags: basic, textarea
+Needs: @codeatlasdev/ui@4.0.0
+Components: TextArea
+Live demo: https://ui.codeatlas.com.br/docs/inputs/text-area#basic
+
+<script lang="ts">
+  import { TextArea } from '@codeatlasdev/ui';
+
+  let message = $state('');
+  let notes = $state('');
+  let description = $state('Some initial content here.');
+</script>
+
+<div class="col">
+  <TextArea label="Message" bind:value={message} />
+  <TextArea label="Notes" placeholder="Write something…" bind:value={notes} />
+  <TextArea label="Description" bind:value={description} />
+</div>
+
+<style>
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-4);
+    width: 100%;
+    max-width: 480px;
+  }
+</style>

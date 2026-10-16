@@ -1,0 +1,8351 @@
+{
+	"version": "4.0.0",
+	"count": 236,
+	"groups": [
+		{
+			"slug": "inputs",
+			"first": "001",
+			"last": "064",
+			"count": 64
+		},
+		{
+			"slug": "surfaces",
+			"first": "065",
+			"last": "079",
+			"count": 15
+		},
+		{
+			"slug": "feedback",
+			"first": "080",
+			"last": "103",
+			"count": 24
+		},
+		{
+			"slug": "display",
+			"first": "104",
+			"last": "145",
+			"count": 42
+		},
+		{
+			"slug": "navigation",
+			"first": "146",
+			"last": "164",
+			"count": 19
+		},
+		{
+			"slug": "layout",
+			"first": "165",
+			"last": "189",
+			"count": 25
+		},
+		{
+			"slug": "charts",
+			"first": "190",
+			"last": "219",
+			"count": 30
+		},
+		{
+			"slug": "foundation",
+			"first": "220",
+			"last": "231",
+			"count": 12
+		},
+		{
+			"slug": "docs-kit",
+			"first": "232",
+			"last": "236",
+			"count": 5
+		}
+	],
+	"elements": [
+		{
+			"id": "001",
+			"group": "inputs",
+			"page": "button",
+			"variant": "FullWidth",
+			"slug": "full-width",
+			"title": "Full width",
+			"description": "fullWidth stretches the button to its container.",
+			"summary": "fullWidth stretches the button to its container.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"full",
+				"width",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/button#full-width",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "002",
+			"group": "inputs",
+			"page": "button",
+			"variant": "Icons",
+			"slug": "with-icons",
+			"title": "With icons",
+			"description": "Leading and trailing snippets.",
+			"summary": "Leading and trailing snippets.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"with",
+				"icons",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/button#with-icons",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "003",
+			"group": "inputs",
+			"page": "button",
+			"variant": "Loading",
+			"slug": "loading",
+			"title": "Loading",
+			"description": "Swaps the leading icon for a spinner, sets aria-busy and blocks clicks while keeping the label.",
+			"summary": "Swaps the leading icon for a spinner, sets aria-busy and blocks clicks while keeping the label.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"loading",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/button#loading",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "004",
+			"group": "inputs",
+			"page": "button",
+			"variant": "Sizes",
+			"slug": "sizes",
+			"title": "Sizes",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"sizes",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/button#sizes",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "005",
+			"group": "inputs",
+			"page": "button",
+			"variant": "States",
+			"slug": "states",
+			"title": "States",
+			"description": "Disabled buttons, a destructive action and a link rendered as a button.",
+			"summary": "Disabled buttons, a destructive action and a link rendered as a button.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"states",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/button#states",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "006",
+			"group": "inputs",
+			"page": "button",
+			"variant": "Variants",
+			"slug": "variants",
+			"title": "Variants",
+			"description": "filled, glass, outlined, ghost and destructive.",
+			"summary": "filled, glass, outlined, ghost and destructive.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"variants",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/button#variants",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "007",
+			"group": "inputs",
+			"page": "checkbox",
+			"variant": "Disabled",
+			"slug": "disabled",
+			"title": "Disabled",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"disabled",
+				"checkbox"
+			],
+			"shape": "wide",
+			"components": [
+				"Checkbox"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Checkbox"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/checkbox#disabled",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "008",
+			"group": "inputs",
+			"page": "checkbox",
+			"variant": "States",
+			"slug": "states",
+			"title": "States",
+			"description": "Unchecked, checked and indeterminate.",
+			"summary": "Unchecked, checked and indeterminate.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"states",
+				"checkbox"
+			],
+			"shape": "wide",
+			"components": [
+				"Checkbox"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Checkbox"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/checkbox#states",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "009",
+			"group": "inputs",
+			"page": "checkbox",
+			"variant": "WithoutLabel",
+			"slug": "without-label",
+			"title": "Without label",
+			"description": "Bare checkbox for table rows or custom layouts.",
+			"summary": "Bare checkbox for table rows or custom layouts.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"without",
+				"label",
+				"checkbox"
+			],
+			"shape": "wide",
+			"components": [
+				"Checkbox"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Checkbox"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/checkbox#without-label",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "010",
+			"group": "inputs",
+			"page": "combobox",
+			"variant": "Basic",
+			"slug": "basic",
+			"title": "Basic",
+			"description": "Search a list of options and bind the selected value.",
+			"summary": "Search a list of options and bind the selected value.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"basic",
+				"combobox"
+			],
+			"shape": "wide",
+			"components": [
+				"Combobox"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Combobox"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/combobox#basic",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "011",
+			"group": "inputs",
+			"page": "combobox",
+			"variant": "States",
+			"slug": "states",
+			"title": "States",
+			"description": "Description, custom search placeholder and empty text, disabled option, error and disabled.",
+			"summary": "Description, custom search placeholder and empty text, disabled option, error and disabled.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"states",
+				"combobox"
+			],
+			"shape": "wide",
+			"components": [
+				"Combobox"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Combobox"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/combobox#states",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "012",
+			"group": "inputs",
+			"page": "copy-button",
+			"variant": "Default",
+			"slug": "default",
+			"title": "Default",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"default",
+				"copybutton"
+			],
+			"shape": "wide",
+			"components": [
+				"CopyButton"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"CopyButton"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/copy-button#default",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "013",
+			"group": "inputs",
+			"page": "copy-button",
+			"variant": "IconToast",
+			"slug": "icon-only-and-toast",
+			"title": "Icon only and toast",
+			"description": "label=&quot;&quot; renders an icon-only button. toast shows a success message after copying.",
+			"summary": "label=&quot;&quot; renders an icon-only button. toast shows a success message after copying.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"icon",
+				"only",
+				"and",
+				"toast",
+				"copybutton",
+				"toaster"
+			],
+			"shape": "wide",
+			"components": [
+				"CopyButton",
+				"Toaster"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"CopyButton",
+						"Toaster"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/copy-button#icon-only-and-toast",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "014",
+			"group": "inputs",
+			"page": "copy-button",
+			"variant": "Variants",
+			"slug": "variants-and-sizes",
+			"title": "Variants and sizes",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"variants",
+				"and",
+				"sizes",
+				"copybutton"
+			],
+			"shape": "wide",
+			"components": [
+				"CopyButton"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"CopyButton"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/copy-button#variants-and-sizes",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "015",
+			"group": "inputs",
+			"page": "date-picker",
+			"variant": "Calendars",
+			"slug": "calendar-and-rangecalendar",
+			"title": "Calendar and RangeCalendar",
+			"description": "Inline calendars. Click a start date, then an end date for the range.",
+			"summary": "Inline calendars. Click a start date, then an end date for the range.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"calendar",
+				"and",
+				"rangecalendar"
+			],
+			"shape": "wide",
+			"components": [
+				"Calendar",
+				"RangeCalendar"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Calendar",
+						"RangeCalendar",
+						"getLocalTimeZone",
+						"today",
+						"DateRange",
+						"DateValue"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/date-picker#calendar-and-rangecalendar",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "016",
+			"group": "inputs",
+			"page": "date-picker",
+			"variant": "Constraints",
+			"slug": "min-max-error-and-disabled",
+			"title": "Min, max, error and disabled",
+			"description": "Only the next 30 days are selectable. Out-of-range days are disabled and typed values become invalid.",
+			"summary": "Only the next 30 days are selectable. Out-of-range days are disabled and typed values become invalid.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"min",
+				"max",
+				"error",
+				"and",
+				"disabled",
+				"datefield",
+				"datepicker",
+				"timefield"
+			],
+			"shape": "wide",
+			"components": [
+				"DateField",
+				"DatePicker",
+				"TimeField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"CalendarDate",
+						"DateField",
+						"DatePicker",
+						"Time",
+						"TimeField",
+						"getLocalTimeZone",
+						"today",
+						"DateValue"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/date-picker#min-max-error-and-disabled",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "017",
+			"group": "inputs",
+			"page": "date-picker",
+			"variant": "Fields",
+			"slug": "datefield-and-timefield",
+			"title": "DateField and TimeField",
+			"description": "Segments only, no popover. granularity=&quot;minute&quot; adds a time, and hourCycle switches between 12h and 24h.",
+			"summary": "Segments only, no popover. granularity=&quot;minute&quot; adds a time, and hourCycle switches between 12h and 24h.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"datefield",
+				"and",
+				"timefield"
+			],
+			"shape": "wide",
+			"components": [
+				"DateField",
+				"TimeField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"CalendarDate",
+						"DateField",
+						"Time",
+						"TimeField",
+						"DateValue"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/date-picker#datefield-and-timefield",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "018",
+			"group": "inputs",
+			"page": "date-picker",
+			"variant": "Pickers",
+			"slug": "datepicker-and-daterangepicker",
+			"title": "DatePicker and DateRangePicker",
+			"description": "Editable segments plus a calendar popover. The range picker shows two months.",
+			"summary": "Editable segments plus a calendar popover. The range picker shows two months.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"datepicker",
+				"and",
+				"daterangepicker"
+			],
+			"shape": "wide",
+			"components": [
+				"DatePicker",
+				"DateRangePicker"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"DatePicker",
+						"DateRangePicker",
+						"DateRange",
+						"DateValue"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/date-picker#datepicker-and-daterangepicker",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "019",
+			"group": "inputs",
+			"page": "export-menu",
+			"variant": "Default",
+			"slug": "default",
+			"title": "Default",
+			"description": "Custom column order and headers. onexport receives the generated text, handy for tests or uploads.",
+			"summary": "Custom column order and headers. onexport receives the generated text, handy for tests or uploads.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"default",
+				"exportmenu"
+			],
+			"shape": "wide",
+			"components": [
+				"ExportMenu"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"ExportMenu"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/export-menu#default",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "020",
+			"group": "inputs",
+			"page": "file-upload",
+			"variant": "Basic",
+			"slug": "basic",
+			"title": "Basic",
+			"description": "Multiple files with a size limit and the selected count.",
+			"summary": "Multiple files with a size limit and the selected count.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"basic",
+				"fileupload"
+			],
+			"shape": "wide",
+			"components": [
+				"FileUpload"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"FileUpload"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/file-upload#basic",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "021",
+			"group": "inputs",
+			"page": "file-upload",
+			"variant": "Variants",
+			"slug": "images-only-and-disabled",
+			"title": "Images only and disabled",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"images",
+				"only",
+				"and",
+				"disabled",
+				"fileupload"
+			],
+			"shape": "wide",
+			"components": [
+				"FileUpload"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"FileUpload"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/file-upload#images-only-and-disabled",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "022",
+			"group": "inputs",
+			"page": "filter-group",
+			"variant": "Basic",
+			"slug": "role-filter",
+			"title": "Role filter",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"role",
+				"filter",
+				"filtergroup"
+			],
+			"shape": "wide",
+			"components": [
+				"FilterGroup"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"FilterGroup"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/filter-group#role-filter",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "023",
+			"group": "inputs",
+			"page": "masked-field",
+			"variant": "Documents",
+			"slug": "documents-and-dates",
+			"title": "Documents and dates",
+			"description": "CPF, CNPJ, a mask that switches after 11 digits, a birth date and RG.",
+			"summary": "CPF, CNPJ, a mask that switches after 11 digits, a birth date and RG.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"documents",
+				"and",
+				"dates",
+				"maskedfield"
+			],
+			"shape": "wide",
+			"components": [
+				"MaskedField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui/forms",
+					"names": [
+						"MaskedField",
+						"isValidCNPJ",
+						"isValidCPF",
+						"isValidDateBR",
+						"maskCNPJ",
+						"maskCPF",
+						"maskCPFCNPJ",
+						"maskDateBR",
+						"maskRG"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/masked-field#documents-and-dates",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "024",
+			"group": "inputs",
+			"page": "masked-field",
+			"variant": "MaskAction",
+			"slug": "use-mask-action",
+			"title": "use:mask action",
+			"description": "Apply any pure mask to a plain input. The caret stays on the same digit.",
+			"summary": "Apply any pure mask to a plain input. The caret stays on the same digit.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"use",
+				"mask",
+				"action"
+			],
+			"shape": "wide",
+			"components": [],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui/forms",
+					"names": [
+						"mask",
+						"maskCPF"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/masked-field#use-mask-action",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "025",
+			"group": "inputs",
+			"page": "masked-field",
+			"variant": "PhoneCep",
+			"slug": "phone-and-cep",
+			"title": "Phone and CEP",
+			"description": "PhoneField binds E.164 (+55...) while showing the masked form. CepField resolves an address through onlookup. Try 01310-100.",
+			"summary": "PhoneField binds E.164 (+55...) while showing the masked form. CepField resolves an address through onlookup. Try 01310-100.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"phone",
+				"and",
+				"cep",
+				"cepfield",
+				"phonefield"
+			],
+			"shape": "wide",
+			"components": [
+				"CepField",
+				"PhoneField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui/forms",
+					"names": [
+						"CepField",
+						"PhoneField",
+						"CepAddress"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/masked-field#phone-and-cep",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "026",
+			"group": "inputs",
+			"page": "money-input",
+			"variant": "Constraints",
+			"slug": "min-max-negative-error-and-disabled",
+			"title": "Min, max, negative, error and disabled",
+			"description": "Deposit is clamped between R$ 10,00 and R$ 100,00. Include a minus sign to toggle the sign when allowNegative is set.",
+			"summary": "Deposit is clamped between R$ 10,00 and R$ 100,00. Include a minus sign to toggle the sign when allowNegative is set.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"min",
+				"max",
+				"negative",
+				"error",
+				"and",
+				"disabled",
+				"moneyinput"
+			],
+			"shape": "wide",
+			"components": [
+				"MoneyInput"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui/forms",
+					"names": [
+						"MoneyInput"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/money-input#min-max-negative-error-and-disabled",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "027",
+			"group": "inputs",
+			"page": "money-input",
+			"variant": "Currency",
+			"slug": "currency-and-locale",
+			"title": "Currency and locale",
+			"description": "currency picks the minor unit (USD 2 decimals, JPY none); locale picks separators and symbol placement.",
+			"summary": "currency picks the minor unit (USD 2 decimals, JPY none); locale picks separators and symbol placement.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"currency",
+				"and",
+				"locale",
+				"moneyinput"
+			],
+			"shape": "wide",
+			"components": [
+				"MoneyInput"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui/forms",
+					"names": [
+						"MoneyInput"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/money-input#currency-and-locale",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "028",
+			"group": "inputs",
+			"page": "money-input",
+			"variant": "Default",
+			"slug": "default",
+			"title": "Default",
+			"description": "Type 123456 to get R$ 1.234,56.",
+			"summary": "Type 123456 to get R$ 1.234,56.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"default",
+				"moneyinput"
+			],
+			"shape": "wide",
+			"components": [
+				"MoneyInput"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui/forms",
+					"names": [
+						"MoneyInput",
+						"centsToDisplay"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/money-input#default",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "029",
+			"group": "inputs",
+			"page": "money-input",
+			"variant": "Helpers",
+			"slug": "helpers",
+			"title": "Helpers",
+			"description": "Pure functions exported from @codeatlasdev/ui/forms.",
+			"summary": "Pure functions exported from @codeatlasdev/ui/forms.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"helpers"
+			],
+			"shape": "wide",
+			"components": [],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui/forms",
+					"names": [
+						"centsToDisplay",
+						"parseInputToCents"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/money-input#helpers",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "030",
+			"group": "inputs",
+			"page": "number-field",
+			"variant": "Basic",
+			"slug": "basic",
+			"title": "Basic",
+			"description": "Integer and decimal steps with bounds.",
+			"summary": "Integer and decimal steps with bounds.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"basic",
+				"numberfield",
+				"stack"
+			],
+			"shape": "wide",
+			"components": [
+				"NumberField",
+				"Stack"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"NumberField",
+						"Stack"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/number-field#basic",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "031",
+			"group": "inputs",
+			"page": "number-field",
+			"variant": "States",
+			"slug": "states",
+			"title": "States",
+			"description": "Helper text, error, disabled and the small size.",
+			"summary": "Helper text, error, disabled and the small size.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"states",
+				"numberfield",
+				"stack"
+			],
+			"shape": "wide",
+			"components": [
+				"NumberField",
+				"Stack"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"NumberField",
+						"Stack"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/number-field#states",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "032",
+			"group": "inputs",
+			"page": "pin-input",
+			"variant": "Default",
+			"slug": "default",
+			"title": "Default",
+			"description": "Six digits by default. oncomplete fires once all cells are filled. A four-digit masked PIN is shown below it.",
+			"summary": "Six digits by default. oncomplete fires once all cells are filled. A four-digit masked PIN is shown below it.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"default",
+				"pininput"
+			],
+			"shape": "wide",
+			"components": [
+				"PinInput"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"PinInput"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/pin-input#default",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "033",
+			"group": "inputs",
+			"page": "pin-input",
+			"variant": "States",
+			"slug": "states",
+			"title": "States",
+			"description": "Description, error, disabled and a free-text code.",
+			"summary": "Description, error, disabled and a free-text code.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"states",
+				"pininput"
+			],
+			"shape": "wide",
+			"components": [
+				"PinInput"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"PinInput"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/pin-input#states",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "034",
+			"group": "inputs",
+			"page": "radio",
+			"variant": "Cards",
+			"slug": "cards",
+			"title": "Cards",
+			"description": "variant=&quot;cards&quot; renders each option as a selectable card with an optional description.",
+			"summary": "variant=&quot;cards&quot; renders each option as a selectable card with an optional description.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"cards",
+				"radiogroup"
+			],
+			"shape": "wide",
+			"components": [
+				"RadioGroup"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"RadioGroup"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/radio#cards",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "035",
+			"group": "inputs",
+			"page": "radio",
+			"variant": "Disabled",
+			"slug": "disabled",
+			"title": "Disabled",
+			"description": "Disable a single item, or the whole group.",
+			"summary": "Disable a single item, or the whole group.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"disabled",
+				"radiogroup"
+			],
+			"shape": "wide",
+			"components": [
+				"RadioGroup"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"RadioGroup"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/radio#disabled",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "036",
+			"group": "inputs",
+			"page": "radio",
+			"variant": "Horizontal",
+			"slug": "horizontal",
+			"title": "Horizontal",
+			"description": "orientation=&quot;horizontal&quot; lays the options out in a row.",
+			"summary": "orientation=&quot;horizontal&quot; lays the options out in a row.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"horizontal",
+				"radiogroup"
+			],
+			"shape": "wide",
+			"components": [
+				"RadioGroup"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"RadioGroup"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/radio#horizontal",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "037",
+			"group": "inputs",
+			"page": "radio",
+			"variant": "Vertical",
+			"slug": "vertical",
+			"title": "Vertical",
+			"description": "The default layout.",
+			"summary": "The default layout.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"vertical",
+				"radiogroup"
+			],
+			"shape": "wide",
+			"components": [
+				"RadioGroup"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"RadioGroup"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/radio#vertical",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "038",
+			"group": "inputs",
+			"page": "segmented-control",
+			"variant": "Default",
+			"slug": "default",
+			"title": "Default",
+			"description": "Text items, and text items with icons.",
+			"summary": "Text items, and text items with icons.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"default",
+				"segmentedcontrol"
+			],
+			"shape": "wide",
+			"components": [
+				"SegmentedControl"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"SegmentedControl"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/segmented-control#default",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "039",
+			"group": "inputs",
+			"page": "segmented-control",
+			"variant": "Sizes",
+			"slug": "small-full-width-disabled-item",
+			"title": "Small, full width, disabled item",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"small",
+				"full",
+				"width",
+				"disabled",
+				"item",
+				"segmentedcontrol"
+			],
+			"shape": "wide",
+			"components": [
+				"SegmentedControl"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"SegmentedControl"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/segmented-control#small-full-width-disabled-item",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "040",
+			"group": "inputs",
+			"page": "select",
+			"variant": "Basic",
+			"slug": "basic",
+			"title": "Basic",
+			"description": "Controlled select with a pre-selected value.",
+			"summary": "Controlled select with a pre-selected value.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"basic",
+				"select"
+			],
+			"shape": "wide",
+			"components": [
+				"Select"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Select"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/select#basic",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "041",
+			"group": "inputs",
+			"page": "select",
+			"variant": "EmptyOption",
+			"slug": "empty-value-option",
+			"title": "Empty-value option",
+			"description": "An option with value '' (such as 'All projects') is a real selection: the trigger shows its label, not the placeholder. Use it for filters instead of a sentinel value.",
+			"summary": "An option with value '' (such as 'All projects') is a real selection: the trigger shows its label, not the placeholder. Use it for filters instead of a sentinel value.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"empty",
+				"value",
+				"option",
+				"select"
+			],
+			"shape": "wide",
+			"components": [
+				"Select"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Select"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/select#empty-value-option",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "042",
+			"group": "inputs",
+			"page": "select",
+			"variant": "Placeholder",
+			"slug": "placeholder",
+			"title": "Placeholder",
+			"description": "No initial value: the placeholder shows until the user picks an option.",
+			"summary": "No initial value: the placeholder shows until the user picks an option.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"placeholder",
+				"select"
+			],
+			"shape": "wide",
+			"components": [
+				"Select"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Select"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/select#placeholder",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "043",
+			"group": "inputs",
+			"page": "select",
+			"variant": "States",
+			"slug": "states",
+			"title": "States",
+			"description": "Disabled options, description, error and a disabled select.",
+			"summary": "Disabled options, description, error and a disabled select.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"states",
+				"select"
+			],
+			"shape": "wide",
+			"components": [
+				"Select"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Select"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/select#states",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "044",
+			"group": "inputs",
+			"page": "setting-item",
+			"variant": "Basic",
+			"slug": "switch-rows",
+			"title": "Switch rows",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"switch",
+				"rows",
+				"settingitem"
+			],
+			"shape": "wide",
+			"components": [
+				"SettingItem",
+				"Switch"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"SettingItem",
+						"Switch"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/setting-item#switch-rows",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "045",
+			"group": "inputs",
+			"page": "slider",
+			"variant": "Range",
+			"slug": "range",
+			"title": "Range",
+			"description": "Bind a [min, max] tuple to values for two thumbs.",
+			"summary": "Bind a [min, max] tuple to values for two thumbs.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"range",
+				"slider"
+			],
+			"shape": "wide",
+			"components": [
+				"Slider"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Slider"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/slider#range",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "046",
+			"group": "inputs",
+			"page": "slider",
+			"variant": "Single",
+			"slug": "single-value",
+			"title": "Single value",
+			"description": "Binds a plain number. Default range is 0 to 100.",
+			"summary": "Binds a plain number. Default range is 0 to 100.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"single",
+				"value",
+				"slider"
+			],
+			"shape": "wide",
+			"components": [
+				"Slider"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Slider"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/slider#single-value",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "047",
+			"group": "inputs",
+			"page": "slider",
+			"variant": "StepDisabled",
+			"slug": "step-and-disabled",
+			"title": "Step and disabled",
+			"description": "step={10} snaps to increments of 10.",
+			"summary": "step={10} snaps to increments of 10.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"step",
+				"and",
+				"disabled",
+				"slider"
+			],
+			"shape": "wide",
+			"components": [
+				"Slider"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Slider"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/slider#step-and-disabled",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "048",
+			"group": "inputs",
+			"page": "swatch-group",
+			"variant": "Custom",
+			"slug": "custom-colors",
+			"title": "Custom colors",
+			"description": "Any CSS color, a small size and a disabled swatch.",
+			"summary": "Any CSS color, a small size and a disabled swatch.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"custom",
+				"colors",
+				"swatchgroup"
+			],
+			"shape": "wide",
+			"components": [
+				"SwatchGroup"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"SwatchGroup"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/swatch-group#custom-colors",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "049",
+			"group": "inputs",
+			"page": "swatch-group",
+			"variant": "Presets",
+			"slug": "theme-presets",
+			"title": "Theme presets",
+			"description": "Swatches without a color paint from the preset named by their value.",
+			"summary": "Swatches without a color paint from the preset named by their value.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"theme",
+				"presets",
+				"swatchgroup"
+			],
+			"shape": "wide",
+			"components": [
+				"SwatchGroup"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"SwatchGroup"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/swatch-group#theme-presets",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "050",
+			"group": "inputs",
+			"page": "switch",
+			"variant": "Basic",
+			"slug": "basic",
+			"title": "Basic",
+			"description": "Default off and on states.",
+			"summary": "Default off and on states.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"basic",
+				"switch"
+			],
+			"shape": "wide",
+			"components": [
+				"Switch"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Switch"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/switch#basic",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "051",
+			"group": "inputs",
+			"page": "switch",
+			"variant": "Disabled",
+			"slug": "disabled",
+			"title": "Disabled",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"disabled",
+				"switch"
+			],
+			"shape": "wide",
+			"components": [
+				"Switch"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Switch"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/switch#disabled",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "052",
+			"group": "inputs",
+			"page": "switch",
+			"variant": "SettingsList",
+			"slug": "settings-list",
+			"title": "Settings list",
+			"description": "Common pattern: a row with title, helper text and a trailing switch.",
+			"summary": "Common pattern: a row with title, helper text and a trailing switch.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"settings",
+				"list",
+				"switch"
+			],
+			"shape": "wide",
+			"components": [
+				"Switch"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Switch"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/switch#settings-list",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "053",
+			"group": "inputs",
+			"page": "switch",
+			"variant": "WithoutLabel",
+			"slug": "without-label",
+			"title": "Without label",
+			"description": "Provide aria-label when no visible label is rendered.",
+			"summary": "Provide aria-label when no visible label is rendered.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"without",
+				"label",
+				"switch"
+			],
+			"shape": "wide",
+			"components": [
+				"Switch"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Switch"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/switch#without-label",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "054",
+			"group": "inputs",
+			"page": "text-area",
+			"variant": "Basic",
+			"slug": "basic",
+			"title": "Basic",
+			"description": "Empty, with a placeholder, and pre-filled.",
+			"summary": "Empty, with a placeholder, and pre-filled.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"basic",
+				"textarea"
+			],
+			"shape": "wide",
+			"components": [
+				"TextArea"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"TextArea"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/text-area#basic",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "055",
+			"group": "inputs",
+			"page": "text-area",
+			"variant": "States",
+			"slug": "states",
+			"title": "States",
+			"description": "Helper text, error, required, read-only, disabled and resize=&quot;none&quot;.",
+			"summary": "Helper text, error, required, read-only, disabled and resize=&quot;none&quot;.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"states",
+				"textarea"
+			],
+			"shape": "wide",
+			"components": [
+				"TextArea"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"TextArea"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/text-area#states",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "056",
+			"group": "inputs",
+			"page": "text-field",
+			"variant": "Default",
+			"slug": "default",
+			"title": "Default",
+			"description": "Basic text inputs with a label.",
+			"summary": "Basic text inputs with a label.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"default",
+				"textfield"
+			],
+			"shape": "wide",
+			"components": [
+				"TextField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"TextField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/text-field#default",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "057",
+			"group": "inputs",
+			"page": "text-field",
+			"variant": "Icons",
+			"slug": "with-icons",
+			"title": "With icons",
+			"description": "leading and trailing snippets. Interactive trailing content, like a reveal button, must be a real button with its own label.",
+			"summary": "leading and trailing snippets. Interactive trailing content, like a reveal button, must be a real button with its own label.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"with",
+				"icons",
+				"textfield"
+			],
+			"shape": "wide",
+			"components": [
+				"TextField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"TextField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/text-field#with-icons",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "058",
+			"group": "inputs",
+			"page": "text-field",
+			"variant": "States",
+			"slug": "states",
+			"title": "States",
+			"description": "Helper text, error, required, read-only, disabled and the small size.",
+			"summary": "Helper text, error, required, read-only, disabled and the small size.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"states",
+				"textfield"
+			],
+			"shape": "wide",
+			"components": [
+				"TextField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"TextField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/text-field#states",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "059",
+			"group": "inputs",
+			"page": "theme-toggle",
+			"variant": "Basic",
+			"slug": "basic",
+			"title": "Basic",
+			"description": "Click it: the whole site flips between light and dark.",
+			"summary": "Click it: the whole site flips between light and dark.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"basic",
+				"themetoggle"
+			],
+			"shape": "wide",
+			"components": [
+				"ThemeToggle"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"ThemeToggle"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/theme-toggle#basic",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "060",
+			"group": "inputs",
+			"page": "toggle-group",
+			"variant": "Selection",
+			"slug": "single-and-multiple",
+			"title": "Single and multiple",
+			"description": "type=&quot;single&quot; binds a string. type=&quot;multiple&quot; binds a string array.",
+			"summary": "type=&quot;single&quot; binds a string. type=&quot;multiple&quot; binds a string array.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"single",
+				"and",
+				"multiple",
+				"togglegroup"
+			],
+			"shape": "wide",
+			"components": [
+				"ToggleGroup"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"ToggleGroup"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/toggle-group#single-and-multiple",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "061",
+			"group": "inputs",
+			"page": "toggle-group",
+			"variant": "Variants",
+			"slug": "variants-and-orientation",
+			"title": "Variants and orientation",
+			"description": "outlined and ghost variants, sizes, a disabled item and a vertical layout.",
+			"summary": "outlined and ghost variants, sizes, a disabled item and a vertical layout.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"variants",
+				"and",
+				"orientation",
+				"togglegroup"
+			],
+			"shape": "wide",
+			"components": [
+				"ToggleGroup"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"ToggleGroup"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/toggle-group#variants-and-orientation",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "062",
+			"group": "inputs",
+			"page": "use-form",
+			"variant": "NoSchema",
+			"slug": "no-schema",
+			"title": "No schema",
+			"description": "Manual validation on submit. touch() and set() drive the per-field state.",
+			"summary": "Manual validation on submit. touch() and set() drive the per-field state.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"no",
+				"schema",
+				"button",
+				"textfield"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"TextField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"TextField",
+						"useForm"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/use-form#no-schema",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "063",
+			"group": "inputs",
+			"page": "use-form",
+			"variant": "Submit",
+			"slug": "submit-state",
+			"title": "Submit state",
+			"description": "validate() gates submission, submitting drives the button loading state, and reset() clears everything after success.",
+			"summary": "validate() gates submission, submitting drives the button loading state, and reset() clears everything after success.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"submit",
+				"state",
+				"button",
+				"textarea",
+				"textfield"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"TextArea",
+				"TextField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"TextArea",
+						"TextField",
+						"useForm"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/use-form#submit-state",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "064",
+			"group": "inputs",
+			"page": "use-form",
+			"variant": "WithSchema",
+			"slug": "with-schema",
+			"title": "With schema",
+			"description": "A plain-function schema runs on every keystroke once a field is touched.",
+			"summary": "A plain-function schema runs on every keystroke once a field is touched.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"with",
+				"schema",
+				"button",
+				"textarea",
+				"textfield"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"TextArea",
+				"TextField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"TextArea",
+						"TextField",
+						"useForm"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/use-form#with-schema",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "065",
+			"group": "surfaces",
+			"page": "accordion",
+			"variant": "Controlled",
+			"slug": "controlled",
+			"title": "Controlled",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"controlled",
+				"accordion",
+				"accordionitem"
+			],
+			"shape": "wide",
+			"components": [
+				"Accordion",
+				"AccordionItem"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Accordion",
+						"AccordionItem"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/surfaces/accordion#controlled",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "066",
+			"group": "surfaces",
+			"page": "accordion",
+			"variant": "Multiple",
+			"slug": "multiple",
+			"title": "Multiple",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"multiple",
+				"accordion",
+				"accordionitem"
+			],
+			"shape": "wide",
+			"components": [
+				"Accordion",
+				"AccordionItem"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Accordion",
+						"AccordionItem"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/surfaces/accordion#multiple",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "067",
+			"group": "surfaces",
+			"page": "accordion",
+			"variant": "Single",
+			"slug": "single",
+			"title": "Single",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"single",
+				"accordion",
+				"accordionitem"
+			],
+			"shape": "wide",
+			"components": [
+				"Accordion",
+				"AccordionItem"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Accordion",
+						"AccordionItem"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/surfaces/accordion#single",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "068",
+			"group": "surfaces",
+			"page": "card",
+			"variant": "Accents",
+			"slug": "tone-and-glow",
+			"title": "Tone and glow",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"tone",
+				"and",
+				"glow",
+				"card"
+			],
+			"shape": "wide",
+			"components": [
+				"Card"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/surfaces/card#tone-and-glow",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "069",
+			"group": "surfaces",
+			"page": "card",
+			"variant": "ContentCard",
+			"slug": "content-card",
+			"title": "Content card",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"content",
+				"card"
+			],
+			"shape": "wide",
+			"components": [
+				"Card"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/surfaces/card#content-card",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "070",
+			"group": "surfaces",
+			"page": "card",
+			"variant": "HeaderActions",
+			"slug": "header-and-actions",
+			"title": "Header and actions",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"header",
+				"and",
+				"actions",
+				"card",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card",
+						"Button"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/surfaces/card#header-and-actions",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "071",
+			"group": "surfaces",
+			"page": "card",
+			"variant": "Link",
+			"slug": "link-card",
+			"title": "Link card",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"link",
+				"card"
+			],
+			"shape": "wide",
+			"components": [
+				"Card"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/surfaces/card#link-card",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "072",
+			"group": "surfaces",
+			"page": "card",
+			"variant": "Stats",
+			"slug": "stat-cards",
+			"title": "Stat cards",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"stat",
+				"cards",
+				"card"
+			],
+			"shape": "wide",
+			"components": [
+				"Card"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/surfaces/card#stat-cards",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "073",
+			"group": "surfaces",
+			"page": "collapsible",
+			"variant": "Default",
+			"slug": "default-closed",
+			"title": "Default (closed)",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"default",
+				"closed",
+				"collapsible",
+				"stack"
+			],
+			"shape": "wide",
+			"components": [
+				"Collapsible",
+				"Stack"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Collapsible",
+						"Stack"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/surfaces/collapsible#default-closed",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "074",
+			"group": "surfaces",
+			"page": "collapsible",
+			"variant": "Open",
+			"slug": "open-by-default",
+			"title": "Open by default",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"open",
+				"by",
+				"default",
+				"collapsible"
+			],
+			"shape": "wide",
+			"components": [
+				"Collapsible"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Collapsible"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/surfaces/collapsible#open-by-default",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "075",
+			"group": "surfaces",
+			"page": "liquid-glass",
+			"variant": "Basic",
+			"slug": "refraction-layer",
+			"title": "Refraction layer",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"refraction",
+				"layer",
+				"liquidglass"
+			],
+			"shape": "wide",
+			"components": [
+				"LiquidGlass"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"LiquidGlass",
+						"GLASS_OPTICS"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/surfaces/liquid-glass#refraction-layer",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "076",
+			"group": "surfaces",
+			"page": "surface",
+			"variant": "Elevation",
+			"slug": "elevation",
+			"title": "Elevation",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"elevation",
+				"surface"
+			],
+			"shape": "wide",
+			"components": [
+				"Surface"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Surface"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/surfaces/surface#elevation",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "077",
+			"group": "surfaces",
+			"page": "surface",
+			"variant": "Interactive",
+			"slug": "interactive",
+			"title": "Interactive",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"interactive",
+				"surface"
+			],
+			"shape": "wide",
+			"components": [
+				"Surface"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Surface"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/surfaces/surface#interactive",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "078",
+			"group": "surfaces",
+			"page": "surface",
+			"variant": "Materials",
+			"slug": "materials",
+			"title": "Materials",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"materials",
+				"surface"
+			],
+			"shape": "wide",
+			"components": [
+				"Surface"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Surface"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/surfaces/surface#materials",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "079",
+			"group": "surfaces",
+			"page": "surface",
+			"variant": "ToneVariant",
+			"slug": "tone-and-variant",
+			"title": "Tone and variant",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"tone",
+				"and",
+				"variant",
+				"surface"
+			],
+			"shape": "wide",
+			"components": [
+				"Surface"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Surface"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/surfaces/surface#tone-and-variant",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "080",
+			"group": "feedback",
+			"page": "alert-dialog",
+			"variant": "Async",
+			"slug": "async-onconfirm",
+			"title": "Async onconfirm",
+			"description": "While the promise is pending the confirm button shows a spinner, Cancel is disabled and Escape is ignored. The dialog closes when it resolves and stays open if it throws.",
+			"summary": "While the promise is pending the confirm button shows a spinner, Cancel is disabled and Escape is ignored. The dialog closes when it resolves and stays open if it throws.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"async",
+				"onconfirm",
+				"alertdialog",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"AlertDialog",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AlertDialog",
+						"Button"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/alert-dialog#async-onconfirm",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "081",
+			"group": "feedback",
+			"page": "alert-dialog",
+			"variant": "Basic",
+			"slug": "basic-and-destructive",
+			"title": "Basic and destructive",
+			"description": "Confirm and cancel, with the destructive variant for irreversible actions.",
+			"summary": "Confirm and cancel, with the destructive variant for irreversible actions.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"basic",
+				"and",
+				"destructive",
+				"alertdialog",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"AlertDialog",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AlertDialog",
+						"Button"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/alert-dialog#basic-and-destructive",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "082",
+			"group": "feedback",
+			"page": "alert-dialog",
+			"variant": "Controlled",
+			"slug": "controlled-pending",
+			"title": "Controlled pending",
+			"description": "Pass pending when the loading state lives outside, for example a mutation from your query client.",
+			"summary": "Pass pending when the loading state lives outside, for example a mutation from your query client.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"controlled",
+				"pending",
+				"alertdialog",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"AlertDialog",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AlertDialog",
+						"Button"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/alert-dialog#controlled-pending",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "083",
+			"group": "feedback",
+			"page": "dialog",
+			"variant": "Chromeless",
+			"slug": "chromeless",
+			"title": "Chromeless",
+			"description": "No header, description or actions, and the body has no padding. The title becomes the visually hidden accessible name.",
+			"summary": "No header, description or actions, and the body has no padding. The title becomes the visually hidden accessible name.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"chromeless",
+				"dialog",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"Dialog",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Dialog",
+						"Button"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/dialog#chromeless",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "084",
+			"group": "feedback",
+			"page": "dialog",
+			"variant": "Confirmation",
+			"slug": "confirmation",
+			"title": "Confirmation",
+			"description": "The destructive confirm and cancel pattern.",
+			"summary": "The destructive confirm and cancel pattern.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"confirmation",
+				"dialog",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"Dialog",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Dialog",
+						"Button"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/dialog#confirmation",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "085",
+			"group": "feedback",
+			"page": "dialog",
+			"variant": "Form",
+			"slug": "form",
+			"title": "Form",
+			"description": "A dialog holding a form, at the md size.",
+			"summary": "A dialog holding a form, at the md size.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"form",
+				"dialog",
+				"button",
+				"textfield",
+				"select",
+				"stack"
+			],
+			"shape": "wide",
+			"components": [
+				"Dialog",
+				"Button",
+				"TextField",
+				"Select",
+				"Stack"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Dialog",
+						"Button",
+						"TextField",
+						"Select",
+						"Stack"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/dialog#form",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "086",
+			"group": "feedback",
+			"page": "dialog",
+			"variant": "Info",
+			"slug": "info",
+			"title": "Info",
+			"description": "Informational content with a single action.",
+			"summary": "Informational content with a single action.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"info",
+				"dialog",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"Dialog",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Dialog",
+						"Button"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/dialog#info",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "087",
+			"group": "feedback",
+			"page": "dialog",
+			"variant": "Split",
+			"slug": "split",
+			"title": "Split",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"split",
+				"dialog",
+				"button",
+				"textfield",
+				"stack"
+			],
+			"shape": "wide",
+			"components": [
+				"Dialog",
+				"Button",
+				"TextField",
+				"Stack"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Dialog",
+						"Button",
+						"TextField",
+						"Stack"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/dialog#split",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "088",
+			"group": "feedback",
+			"page": "drawer",
+			"variant": "Notifications",
+			"slug": "notification-panel",
+			"title": "Notification panel",
+			"description": "A real-world use: a 400px wide panel on the right.",
+			"summary": "A real-world use: a 400px wide panel on the right.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"notification",
+				"panel",
+				"drawer",
+				"button",
+				"stack"
+			],
+			"shape": "wide",
+			"components": [
+				"Drawer",
+				"Button",
+				"Stack"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Drawer",
+						"Button",
+						"Stack"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/drawer#notification-panel",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "089",
+			"group": "feedback",
+			"page": "drawer",
+			"variant": "Right",
+			"slug": "right-default",
+			"title": "Right (default)",
+			"description": "Slides in from the right, with a footer actions area.",
+			"summary": "Slides in from the right, with a footer actions area.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"right",
+				"default",
+				"drawer",
+				"button",
+				"switch",
+				"stack",
+				"filtergroup"
+			],
+			"shape": "wide",
+			"components": [
+				"Drawer",
+				"Button",
+				"Switch",
+				"Stack",
+				"FilterGroup"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Drawer",
+						"Button",
+						"Switch",
+						"Stack",
+						"FilterGroup"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/drawer#right-default",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "090",
+			"group": "feedback",
+			"page": "drawer",
+			"variant": "Sides",
+			"slug": "left-and-bottom",
+			"title": "Left and bottom",
+			"description": "Left suits mobile navigation. Bottom is a simple bottom panel without gestures.",
+			"summary": "Left suits mobile navigation. Bottom is a simple bottom panel without gestures.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"left",
+				"and",
+				"bottom",
+				"drawer",
+				"button",
+				"stack"
+			],
+			"shape": "wide",
+			"components": [
+				"Drawer",
+				"Button",
+				"Stack"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Drawer",
+						"Button",
+						"Stack"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/drawer#left-and-bottom",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "091",
+			"group": "feedback",
+			"page": "lightbox",
+			"variant": "Basic",
+			"slug": "open-from-a-button",
+			"title": "Open from a button",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"open",
+				"from",
+				"a",
+				"button",
+				"lightbox"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"Lightbox"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"Lightbox"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/lightbox#open-from-a-button",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "092",
+			"group": "feedback",
+			"page": "progress",
+			"variant": "Animated",
+			"slug": "animated",
+			"title": "Animated",
+			"description": "Start a simulated upload.",
+			"summary": "Start a simulated upload.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"animated",
+				"progress",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"Progress",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Progress",
+						"Button"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/progress#animated",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "093",
+			"group": "feedback",
+			"page": "progress",
+			"variant": "Determinate",
+			"slug": "determinate",
+			"title": "Determinate",
+			"description": "An explicit value from 0 to max (100 by default).",
+			"summary": "An explicit value from 0 to max (100 by default).",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"determinate",
+				"progress"
+			],
+			"shape": "wide",
+			"components": [
+				"Progress"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Progress"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/progress#determinate",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "094",
+			"group": "feedback",
+			"page": "progress",
+			"variant": "Indeterminate",
+			"slug": "indeterminate",
+			"title": "Indeterminate",
+			"description": "Use when progress cannot be determined.",
+			"summary": "Use when progress cannot be determined.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"indeterminate",
+				"progress"
+			],
+			"shape": "wide",
+			"components": [
+				"Progress"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Progress"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/progress#indeterminate",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "095",
+			"group": "feedback",
+			"page": "sheet",
+			"variant": "Footer",
+			"slug": "footer-and-swipetodismiss",
+			"title": "Footer and swipeToDismiss",
+			"description": "A pinned footer, and swipeToDismiss set to false so only the close button, Escape and the overlay dismiss it.",
+			"summary": "A pinned footer, and swipeToDismiss set to false so only the close button, Escape and the overlay dismiss it.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"footer",
+				"and",
+				"swipetodismiss",
+				"sheet",
+				"button",
+				"stack"
+			],
+			"shape": "wide",
+			"components": [
+				"Sheet",
+				"Button",
+				"Stack"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Sheet",
+						"Button",
+						"Stack"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/sheet#footer-and-swipetodismiss",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "096",
+			"group": "feedback",
+			"page": "sheet",
+			"variant": "Swipe",
+			"slug": "swipe-to-dismiss",
+			"title": "Swipe to dismiss",
+			"description": "Drag the handle or header down on a viewport below 900px. Above that, it is a centered dialog.",
+			"summary": "Drag the handle or header down on a viewport below 900px. Above that, it is a centered dialog.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"swipe",
+				"to",
+				"dismiss",
+				"sheet",
+				"button",
+				"stack"
+			],
+			"shape": "wide",
+			"components": [
+				"Sheet",
+				"Button",
+				"Stack"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Sheet",
+						"Button",
+						"Stack"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/sheet#swipe-to-dismiss",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "097",
+			"group": "feedback",
+			"page": "skeleton",
+			"variant": "CardLayout",
+			"slug": "card-layout",
+			"title": "Card layout",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"card",
+				"layout",
+				"skeleton",
+				"stack",
+				"flex"
+			],
+			"shape": "wide",
+			"components": [
+				"Skeleton",
+				"Card",
+				"Stack",
+				"Flex"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Skeleton",
+						"Card",
+						"Stack",
+						"Flex"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/skeleton#card-layout",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "098",
+			"group": "feedback",
+			"page": "skeleton",
+			"variant": "Image",
+			"slug": "image-placeholder",
+			"title": "Image placeholder",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"image",
+				"placeholder",
+				"skeleton",
+				"card",
+				"stack"
+			],
+			"shape": "wide",
+			"components": [
+				"Skeleton",
+				"Card",
+				"Stack"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Skeleton",
+						"Card",
+						"Stack"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/skeleton#image-placeholder",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "099",
+			"group": "feedback",
+			"page": "skeleton",
+			"variant": "TextLines",
+			"slug": "text-lines",
+			"title": "Text lines",
+			"description": "With rows, the last line is shortened to 60% for a natural paragraph.",
+			"summary": "With rows, the last line is shortened to 60% for a natural paragraph.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"text",
+				"lines",
+				"skeleton",
+				"card",
+				"stack"
+			],
+			"shape": "wide",
+			"components": [
+				"Skeleton",
+				"Card",
+				"Stack"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Skeleton",
+						"Card",
+						"Stack"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/skeleton#text-lines",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "100",
+			"group": "feedback",
+			"page": "spinner",
+			"variant": "InButton",
+			"slug": "in-a-button",
+			"title": "In a button",
+			"description": "Use the loading prop of Button instead of placing a Spinner by hand.",
+			"summary": "Use the loading prop of Button instead of placing a Spinner by hand.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"in",
+				"a",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/spinner#in-a-button",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "101",
+			"group": "feedback",
+			"page": "spinner",
+			"variant": "SectionLoader",
+			"slug": "section-loader",
+			"title": "Section loader",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"section",
+				"loader",
+				"spinner",
+				"card",
+				"stack"
+			],
+			"shape": "wide",
+			"components": [
+				"Spinner",
+				"Card",
+				"Stack"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Spinner",
+						"Card",
+						"Stack"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/spinner#section-loader",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "102",
+			"group": "feedback",
+			"page": "spinner",
+			"variant": "Sizes",
+			"slug": "sizes",
+			"title": "Sizes",
+			"description": "The size prop takes a number of pixels or any CSS length.",
+			"summary": "The size prop takes a number of pixels or any CSS length.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"sizes",
+				"spinner",
+				"flex"
+			],
+			"shape": "wide",
+			"components": [
+				"Spinner",
+				"Flex"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Spinner",
+						"Flex"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/spinner#sizes",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "103",
+			"group": "feedback",
+			"page": "toast",
+			"variant": "Toasts",
+			"slug": "variants-and-duration",
+			"title": "Variants and duration",
+			"description": "Five variants, plus persistent (duration 0) and custom durations. The default auto-dismiss is 4 seconds.",
+			"summary": "Five variants, plus persistent (duration 0) and custom durations. The default auto-dismiss is 4 seconds.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"variants",
+				"and",
+				"duration",
+				"button",
+				"toaster"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"Toaster"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"Toaster",
+						"toast"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/toast#variants-and-duration",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "104",
+			"group": "display",
+			"page": "alert",
+			"variant": "Closable",
+			"slug": "closable",
+			"title": "Closable",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"closable",
+				"alert"
+			],
+			"shape": "wide",
+			"components": [
+				"Alert"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Alert"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/alert#closable",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "105",
+			"group": "display",
+			"page": "alert",
+			"variant": "Severities",
+			"slug": "severities",
+			"title": "Severities",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"severities",
+				"alert"
+			],
+			"shape": "wide",
+			"components": [
+				"Alert"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Alert"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/display/alert#severities",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "106",
+			"group": "display",
+			"page": "alert",
+			"variant": "WithTitle",
+			"slug": "with-title",
+			"title": "With title",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"with",
+				"title",
+				"alert"
+			],
+			"shape": "wide",
+			"components": [
+				"Alert"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Alert"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/display/alert#with-title",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "107",
+			"group": "display",
+			"page": "avatar",
+			"variant": "Images",
+			"slug": "with-image",
+			"title": "With image",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"with",
+				"image",
+				"avatar"
+			],
+			"shape": "wide",
+			"components": [
+				"Avatar"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Avatar"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/avatar#with-image",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "108",
+			"group": "display",
+			"page": "avatar",
+			"variant": "Initials",
+			"slug": "initials-fallback",
+			"title": "Initials fallback",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"initials",
+				"fallback",
+				"avatar"
+			],
+			"shape": "wide",
+			"components": [
+				"Avatar"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Avatar"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/avatar#initials-fallback",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "109",
+			"group": "display",
+			"page": "avatar",
+			"variant": "ShapeStatus",
+			"slug": "shape-and-status",
+			"title": "Shape and status",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"shape",
+				"and",
+				"status",
+				"avatar"
+			],
+			"shape": "wide",
+			"components": [
+				"Avatar"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Avatar"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/avatar#shape-and-status",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "110",
+			"group": "display",
+			"page": "avatar",
+			"variant": "Sizes",
+			"slug": "sizes",
+			"title": "Sizes",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"sizes",
+				"avatar"
+			],
+			"shape": "wide",
+			"components": [
+				"Avatar"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Avatar"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/avatar#sizes",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "111",
+			"group": "display",
+			"page": "avatar",
+			"variant": "Stack",
+			"slug": "avatar-stack",
+			"title": "Avatar stack",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"avatar",
+				"stack"
+			],
+			"shape": "wide",
+			"components": [
+				"Avatar"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Avatar"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/avatar#avatar-stack",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "112",
+			"group": "display",
+			"page": "badge",
+			"variant": "Colors",
+			"slug": "colors",
+			"title": "Colors",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"colors",
+				"badge",
+				"iconbutton",
+				"flex"
+			],
+			"shape": "wide",
+			"components": [
+				"Badge",
+				"IconButton",
+				"Flex"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Badge",
+						"IconButton",
+						"Flex"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/display/badge#colors",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "113",
+			"group": "display",
+			"page": "badge",
+			"variant": "Counts",
+			"slug": "dot-and-counts",
+			"title": "Dot and counts",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"dot",
+				"and",
+				"counts",
+				"badge",
+				"iconbutton",
+				"flex"
+			],
+			"shape": "wide",
+			"components": [
+				"Badge",
+				"IconButton",
+				"Flex"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Badge",
+						"IconButton",
+						"Flex"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/display/badge#dot-and-counts",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "114",
+			"group": "display",
+			"page": "badge",
+			"variant": "OnAvatars",
+			"slug": "on-avatars",
+			"title": "On avatars",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"on",
+				"avatars",
+				"badge",
+				"avatar",
+				"flex"
+			],
+			"shape": "wide",
+			"components": [
+				"Badge",
+				"Avatar",
+				"Flex"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Badge",
+						"Avatar",
+						"Flex"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/display/badge#on-avatars",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "115",
+			"group": "display",
+			"page": "chip",
+			"variant": "Basic",
+			"slug": "basic",
+			"title": "Basic",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"basic",
+				"chip"
+			],
+			"shape": "wide",
+			"components": [
+				"Chip"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Chip"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/display/chip#basic",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "116",
+			"group": "display",
+			"page": "chip",
+			"variant": "Deletable",
+			"slug": "deletable",
+			"title": "Deletable",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"deletable",
+				"chip"
+			],
+			"shape": "wide",
+			"components": [
+				"Chip"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Chip"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/chip#deletable",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "117",
+			"group": "display",
+			"page": "chip",
+			"variant": "Icons",
+			"slug": "with-icons",
+			"title": "With icons",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"with",
+				"icons",
+				"chip"
+			],
+			"shape": "wide",
+			"components": [
+				"Chip"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Chip"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/display/chip#with-icons",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "118",
+			"group": "display",
+			"page": "chip",
+			"variant": "Selectable",
+			"slug": "selectable",
+			"title": "Selectable",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"selectable",
+				"chip"
+			],
+			"shape": "wide",
+			"components": [
+				"Chip"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Chip"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/chip#selectable",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "119",
+			"group": "display",
+			"page": "chip",
+			"variant": "Status",
+			"slug": "statuschip",
+			"title": "StatusChip",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"statuschip"
+			],
+			"shape": "wide",
+			"components": [
+				"StatusChip"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"StatusChip"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/display/chip#statuschip",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "120",
+			"group": "display",
+			"page": "chip",
+			"variant": "Variants",
+			"slug": "variants-and-size",
+			"title": "Variants and size",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"variants",
+				"and",
+				"size",
+				"chip"
+			],
+			"shape": "wide",
+			"components": [
+				"Chip"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Chip"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/display/chip#variants-and-size",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "121",
+			"group": "display",
+			"page": "code-snippet",
+			"variant": "Languages",
+			"slug": "languages",
+			"title": "Languages",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"languages",
+				"codesnippet"
+			],
+			"shape": "wide",
+			"components": [
+				"CodeSnippet"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui/code",
+					"names": [
+						"CodeSnippet"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/code-snippet#languages",
+			"needs": "@codeatlasdev/ui@4.0.0 + shiki"
+		},
+		{
+			"id": "122",
+			"group": "display",
+			"page": "data-table",
+			"variant": "Controlled",
+			"slug": "controlled-mode",
+			"title": "Controlled mode",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"controlled",
+				"mode",
+				"datatable"
+			],
+			"shape": "wide",
+			"components": [
+				"DataTable"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui/table",
+					"names": [
+						"DataTable",
+						"createCaColumnHelper"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/data-table#controlled-mode",
+			"needs": "@codeatlasdev/ui@4.0.0 + @tanstack/svelte-table"
+		},
+		{
+			"id": "123",
+			"group": "display",
+			"page": "data-table",
+			"variant": "Simple",
+			"slug": "simple-mode",
+			"title": "Simple mode",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"simple",
+				"mode",
+				"datatable"
+			],
+			"shape": "wide",
+			"components": [
+				"DataTable"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui/table",
+					"names": [
+						"DataTable",
+						"createCaColumnHelper"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/data-table#simple-mode",
+			"needs": "@codeatlasdev/ui@4.0.0 + @tanstack/svelte-table"
+		},
+		{
+			"id": "124",
+			"group": "display",
+			"page": "divider",
+			"variant": "Horizontal",
+			"slug": "horizontal",
+			"title": "Horizontal",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"horizontal",
+				"divider",
+				"card",
+				"stack"
+			],
+			"shape": "wide",
+			"components": [
+				"Divider",
+				"Card",
+				"Stack"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Divider",
+						"Card",
+						"Stack"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/display/divider#horizontal",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "125",
+			"group": "display",
+			"page": "divider",
+			"variant": "Vertical",
+			"slug": "vertical",
+			"title": "Vertical",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"vertical",
+				"divider",
+				"card",
+				"flex"
+			],
+			"shape": "wide",
+			"components": [
+				"Divider",
+				"Card",
+				"Flex"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Divider",
+						"Card",
+						"Flex"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/display/divider#vertical",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "126",
+			"group": "display",
+			"page": "external-link",
+			"variant": "InTable",
+			"slug": "in-a-results-table",
+			"title": "In a results table",
+			"description": "One link per row. The accessible name of each link is for example “Buy at registrar (opens in a new tab)”.",
+			"summary": "One link per row. The accessible name of each link is for example “Buy at registrar (opens in a new tab)”.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"in",
+				"a",
+				"results",
+				"table",
+				"externallink",
+				"simpletable",
+				"card"
+			],
+			"shape": "wide",
+			"components": [
+				"ExternalLink",
+				"SimpleTable",
+				"Card"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"ExternalLink",
+						"SimpleTable",
+						"Card"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/external-link#in-a-results-table",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "127",
+			"group": "display",
+			"page": "image",
+			"variant": "Basic",
+			"slug": "fixed-ratio",
+			"title": "Fixed ratio",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"fixed",
+				"ratio",
+				"image"
+			],
+			"shape": "wide",
+			"components": [
+				"Image"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Image"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/image#fixed-ratio",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "128",
+			"group": "display",
+			"page": "image",
+			"variant": "Responsive",
+			"slug": "srcset-and-sizes",
+			"title": "srcset and sizes",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"srcset",
+				"and",
+				"sizes",
+				"image"
+			],
+			"shape": "wide",
+			"components": [
+				"Image"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Image"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/image#srcset-and-sizes",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "129",
+			"group": "display",
+			"page": "kbd",
+			"variant": "Basic",
+			"slug": "shortcuts-in-text",
+			"title": "Shortcuts in text",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"shortcuts",
+				"in",
+				"text",
+				"kbd"
+			],
+			"shape": "wide",
+			"components": [
+				"Kbd"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Kbd"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/display/kbd#shortcuts-in-text",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "130",
+			"group": "display",
+			"page": "live-list",
+			"variant": "Stream",
+			"slug": "streaming-rows",
+			"title": "Streaming rows",
+			"description": "Start the check, then scroll up while it runs: following pauses and a New button appears.",
+			"summary": "Start the check, then scroll up while it runs: following pauses and a New button appears.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"streaming",
+				"rows",
+				"livelist",
+				"button",
+				"chip"
+			],
+			"shape": "wide",
+			"components": [
+				"LiveList",
+				"Button",
+				"Chip"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"LiveList",
+						"Button",
+						"Chip"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/live-list#streaming-rows",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "131",
+			"group": "display",
+			"page": "notification-bell",
+			"variant": "Controlled",
+			"slug": "controlled",
+			"title": "Controlled",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"controlled",
+				"notificationbell"
+			],
+			"shape": "wide",
+			"components": [
+				"NotificationBell"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"NotificationBell"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/notification-bell#controlled",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "132",
+			"group": "display",
+			"page": "notification-bell",
+			"variant": "Default",
+			"slug": "default",
+			"title": "Default",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"default",
+				"notificationbell",
+				"flex"
+			],
+			"shape": "wide",
+			"components": [
+				"NotificationBell",
+				"Flex"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"NotificationBell",
+						"Flex"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/notification-bell#default",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "133",
+			"group": "display",
+			"page": "pagination",
+			"variant": "Basic",
+			"slug": "basic",
+			"title": "Basic",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"basic",
+				"pagination"
+			],
+			"shape": "wide",
+			"components": [
+				"Pagination"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Pagination"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/pagination#basic",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "134",
+			"group": "display",
+			"page": "pagination",
+			"variant": "FewItems",
+			"slug": "few-items",
+			"title": "Few items",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"few",
+				"items",
+				"pagination"
+			],
+			"shape": "wide",
+			"components": [
+				"Pagination"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Pagination"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/pagination#few-items",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "135",
+			"group": "display",
+			"page": "pagination",
+			"variant": "Siblings",
+			"slug": "more-siblings",
+			"title": "More siblings",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"more",
+				"siblings",
+				"pagination"
+			],
+			"shape": "wide",
+			"components": [
+				"Pagination"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Pagination"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/pagination#more-siblings",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "136",
+			"group": "display",
+			"page": "scroll-area",
+			"variant": "Horizontal",
+			"slug": "horizontal-scroll",
+			"title": "Horizontal scroll",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"horizontal",
+				"scroll",
+				"scrollarea",
+				"card",
+				"chip"
+			],
+			"shape": "wide",
+			"components": [
+				"ScrollArea",
+				"Card",
+				"Chip"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"ScrollArea",
+						"Card",
+						"Chip"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/scroll-area#horizontal-scroll",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "137",
+			"group": "display",
+			"page": "scroll-area",
+			"variant": "Vertical",
+			"slug": "vertical-scroll",
+			"title": "Vertical scroll",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"vertical",
+				"scroll",
+				"scrollarea",
+				"card"
+			],
+			"shape": "wide",
+			"components": [
+				"ScrollArea",
+				"Card"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"ScrollArea",
+						"Card"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/scroll-area#vertical-scroll",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "138",
+			"group": "display",
+			"page": "table",
+			"variant": "Cards",
+			"slug": "cards-on-narrow-containers",
+			"title": "Cards on narrow containers",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"cards",
+				"on",
+				"narrow",
+				"containers",
+				"simpletable",
+				"card"
+			],
+			"shape": "wide",
+			"components": [
+				"SimpleTable",
+				"Card"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"SimpleTable",
+						"Card"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/display/table#cards-on-narrow-containers",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "139",
+			"group": "display",
+			"page": "table",
+			"variant": "Scroll",
+			"slug": "default-scroll",
+			"title": "Default (scroll)",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"default",
+				"scroll",
+				"simpletable",
+				"card"
+			],
+			"shape": "wide",
+			"components": [
+				"SimpleTable",
+				"Card"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"SimpleTable",
+						"Card"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/display/table#default-scroll",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "140",
+			"group": "display",
+			"page": "timeline",
+			"variant": "Simple",
+			"slug": "simple",
+			"title": "Simple",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"simple",
+				"timeline"
+			],
+			"shape": "wide",
+			"components": [
+				"Timeline"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Timeline"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/display/timeline#simple",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "141",
+			"group": "display",
+			"page": "timeline",
+			"variant": "Variants",
+			"slug": "with-variants",
+			"title": "With variants",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"with",
+				"variants",
+				"timeline"
+			],
+			"shape": "wide",
+			"components": [
+				"Timeline"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Timeline"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/display/timeline#with-variants",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "142",
+			"group": "display",
+			"page": "tooltip",
+			"variant": "Children",
+			"slug": "text-trigger",
+			"title": "Text trigger",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"text",
+				"trigger",
+				"tooltip"
+			],
+			"shape": "wide",
+			"components": [
+				"Tooltip"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Tooltip"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/tooltip#text-trigger",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "143",
+			"group": "display",
+			"page": "tooltip",
+			"variant": "Delay",
+			"slug": "custom-delay",
+			"title": "Custom delay",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"custom",
+				"delay",
+				"tooltip",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"Tooltip",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Tooltip",
+						"Button"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/tooltip#custom-delay",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "144",
+			"group": "display",
+			"page": "tooltip",
+			"variant": "OnIcons",
+			"slug": "on-icon-buttons",
+			"title": "On icon buttons",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"on",
+				"icon",
+				"buttons",
+				"tooltip",
+				"iconbutton"
+			],
+			"shape": "wide",
+			"components": [
+				"Tooltip",
+				"IconButton"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Tooltip",
+						"IconButton"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/tooltip#on-icon-buttons",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "145",
+			"group": "display",
+			"page": "tooltip",
+			"variant": "Sides",
+			"slug": "all-sides",
+			"title": "All sides",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"all",
+				"sides",
+				"tooltip",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"Tooltip",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Tooltip",
+						"Button"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/tooltip#all-sides",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "146",
+			"group": "navigation",
+			"page": "actions",
+			"variant": "Autofocus",
+			"slug": "autofocus",
+			"title": "autofocus",
+			"description": "Focuses the element when it mounts.",
+			"summary": "Focuses the element when it mounts.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"autofocus",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/actions",
+					"names": [
+						"autofocus"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/actions#autofocus",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "147",
+			"group": "navigation",
+			"page": "actions",
+			"variant": "ClickOutside",
+			"slug": "clickoutside",
+			"title": "clickOutside",
+			"description": "Calls the handler for every click that lands outside the element. It listens on the capture phase of `document`.",
+			"summary": "Calls the handler for every click that lands outside the element. It listens on the capture phase of `document`.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"clickoutside"
+			],
+			"shape": "wide",
+			"components": [],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui/actions",
+					"names": [
+						"clickOutside"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/actions#clickoutside",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "148",
+			"group": "navigation",
+			"page": "actions",
+			"variant": "Clipboard",
+			"slug": "clipboard",
+			"title": "clipboard",
+			"description": "Copies the given text on click and dispatches a copy event (listen with `oncopy`) once the copy succeeded.",
+			"summary": "Copies the given text on click and dispatches a copy event (listen with `oncopy`) once the copy succeeded.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"clipboard"
+			],
+			"shape": "wide",
+			"components": [],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui/actions",
+					"names": [
+						"clipboard"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/actions#clipboard",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "149",
+			"group": "navigation",
+			"page": "actions",
+			"variant": "FocusTrap",
+			"slug": "focustrap",
+			"title": "focusTrap",
+			"description": "Keeps Tab and Shift+Tab inside the element while enabled.",
+			"summary": "Keeps Tab and Shift+Tab inside the element while enabled.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"focustrap",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/actions",
+					"names": [
+						"focusTrap"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/actions#focustrap",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "150",
+			"group": "navigation",
+			"page": "actions",
+			"variant": "Longpress",
+			"slug": "longpress",
+			"title": "longpress",
+			"description": "Dispatches a longpress event (listen with `onlongpress`) after the pointer is held for the given duration.",
+			"summary": "Dispatches a longpress event (listen with `onlongpress`) after the pointer is held for the given duration.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"longpress"
+			],
+			"shape": "wide",
+			"components": [],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui/actions",
+					"names": [
+						"longpress"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/actions#longpress",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "151",
+			"group": "navigation",
+			"page": "app-bar",
+			"variant": "Default",
+			"slug": "default",
+			"title": "Default",
+			"description": "Content in the middle and actions in the trailing slot.",
+			"summary": "Content in the middle and actions in the trailing slot.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"default",
+				"glassappbar",
+				"iconbutton",
+				"avatar",
+				"card"
+			],
+			"shape": "wide",
+			"components": [
+				"GlassAppBar",
+				"IconButton",
+				"Avatar",
+				"Card"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"GlassAppBar",
+						"IconButton",
+						"Avatar",
+						"Card"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/app-bar#default",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "152",
+			"group": "navigation",
+			"page": "app-bar",
+			"variant": "WithLeading",
+			"slug": "with-leading-icon",
+			"title": "With leading icon",
+			"description": "A menu button in the leading slot.",
+			"summary": "A menu button in the leading slot.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"with",
+				"leading",
+				"icon",
+				"glassappbar",
+				"button",
+				"iconbutton",
+				"avatar",
+				"card"
+			],
+			"shape": "wide",
+			"components": [
+				"GlassAppBar",
+				"Button",
+				"IconButton",
+				"Avatar",
+				"Card"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"GlassAppBar",
+						"Button",
+						"IconButton",
+						"Avatar",
+						"Card"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/app-bar#with-leading-icon",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "153",
+			"group": "navigation",
+			"page": "breadcrumb",
+			"variant": "Levels",
+			"slug": "levels",
+			"title": "Levels",
+			"description": "Two, three and five levels, and a single root item.",
+			"summary": "Two, three and five levels, and a single root item.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"levels",
+				"breadcrumb"
+			],
+			"shape": "wide",
+			"components": [
+				"Breadcrumb"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Breadcrumb"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/breadcrumb#levels",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "154",
+			"group": "navigation",
+			"page": "breadcrumb",
+			"variant": "Separator",
+			"slug": "custom-separator",
+			"title": "Custom separator",
+			"description": "Using › instead of /.",
+			"summary": "Using › instead of /.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"custom",
+				"separator",
+				"breadcrumb"
+			],
+			"shape": "wide",
+			"components": [
+				"Breadcrumb"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Breadcrumb"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/breadcrumb#custom-separator",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "155",
+			"group": "navigation",
+			"page": "command-palette",
+			"variant": "Keys",
+			"slug": "keyboard",
+			"title": "Keyboard",
+			"description": "Type to filter across every module. Queries shorter than minQueryLength keep the full grouped list.",
+			"summary": "Type to filter across every module. Queries shorter than minQueryLength keep the full grouped list.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"keyboard",
+				"kbd"
+			],
+			"shape": "wide",
+			"components": [
+				"Kbd"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Kbd"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/command-palette#keyboard",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "156",
+			"group": "navigation",
+			"page": "command-palette",
+			"variant": "Palette",
+			"slug": "open-the-palette",
+			"title": "Open the palette",
+			"description": "Click the button or press Cmd+K / Ctrl+K while this page is focused. Picking an item shows its path instead of navigating.",
+			"summary": "Click the button or press Cmd+K / Ctrl+K while this page is focused. Picking an item shows its path instead of navigating.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"open",
+				"the",
+				"palette",
+				"commandpalette",
+				"button",
+				"kbd"
+			],
+			"shape": "wide",
+			"components": [
+				"CommandPalette",
+				"Button",
+				"Kbd"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"CommandPalette",
+						"Button",
+						"Kbd",
+						"NavModule"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/command-palette#open-the-palette",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "157",
+			"group": "navigation",
+			"page": "drawer",
+			"variant": "Sides",
+			"slug": "left-and-right",
+			"title": "Left and right",
+			"description": "Left for navigation, right for settings or details.",
+			"summary": "Left for navigation, right for settings or details.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"left",
+				"and",
+				"right",
+				"drawer",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"Drawer",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Drawer",
+						"Button"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/drawer#left-and-right",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "158",
+			"group": "navigation",
+			"page": "menu",
+			"variant": "Default",
+			"slug": "default",
+			"title": "Default",
+			"description": "A button trigger with a label, items, a separator and a destructive item.",
+			"summary": "A button trigger with a label, items, a separator and a destructive item.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"default",
+				"dropdownmenu",
+				"dropdownmenuitem",
+				"dropdownmenuseparator",
+				"dropdownmenulabel",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"DropdownMenu",
+				"DropdownMenuItem",
+				"DropdownMenuSeparator",
+				"DropdownMenuLabel",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"DropdownMenu",
+						"DropdownMenuItem",
+						"DropdownMenuSeparator",
+						"DropdownMenuLabel",
+						"Button"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/menu#default",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "159",
+			"group": "navigation",
+			"page": "menu",
+			"variant": "IconTrigger",
+			"slug": "icon-trigger",
+			"title": "Icon trigger",
+			"description": "An IconButton trigger. IconButton needs an aria-label.",
+			"summary": "An IconButton trigger. IconButton needs an aria-label.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"icon",
+				"trigger",
+				"dropdownmenu",
+				"dropdownmenuitem",
+				"dropdownmenulabel",
+				"iconbutton"
+			],
+			"shape": "wide",
+			"components": [
+				"DropdownMenu",
+				"DropdownMenuItem",
+				"DropdownMenuLabel",
+				"IconButton"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"DropdownMenu",
+						"DropdownMenuItem",
+						"DropdownMenuLabel",
+						"IconButton"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/menu#icon-trigger",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "160",
+			"group": "navigation",
+			"page": "popover",
+			"variant": "Basic",
+			"slug": "basic",
+			"title": "Basic",
+			"description": "Text and an action inside the popover.",
+			"summary": "Text and an action inside the popover.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"basic",
+				"popover",
+				"button",
+				"stack"
+			],
+			"shape": "wide",
+			"components": [
+				"Popover",
+				"Button",
+				"Stack"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Popover",
+						"Button",
+						"Stack"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/popover#basic",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "161",
+			"group": "navigation",
+			"page": "popover",
+			"variant": "Form",
+			"slug": "form",
+			"title": "Form",
+			"description": "A small form anchored to its trigger, aligned to the start.",
+			"summary": "A small form anchored to its trigger, aligned to the start.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"form",
+				"popover",
+				"button",
+				"textfield",
+				"stack",
+				"flex"
+			],
+			"shape": "wide",
+			"components": [
+				"Popover",
+				"Button",
+				"TextField",
+				"Stack",
+				"Flex"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Popover",
+						"Button",
+						"TextField",
+						"Stack",
+						"Flex"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/popover#form",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "162",
+			"group": "navigation",
+			"page": "stepper",
+			"variant": "Horizontal",
+			"slug": "horizontal-stepper",
+			"title": "Horizontal stepper",
+			"description": "Four steps with Back and Next controls.",
+			"summary": "Four steps with Back and Next controls.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"horizontal",
+				"stepper",
+				"button",
+				"card",
+				"stack",
+				"flex"
+			],
+			"shape": "wide",
+			"components": [
+				"Stepper",
+				"Button",
+				"Card",
+				"Stack",
+				"Flex"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Stepper",
+						"Button",
+						"Card",
+						"Stack",
+						"Flex"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/stepper#horizontal-stepper",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "163",
+			"group": "navigation",
+			"page": "tabs",
+			"variant": "Controlled",
+			"slug": "controlled",
+			"title": "Controlled",
+			"description": "The parent owns the active tab with bind:value.",
+			"summary": "The parent owns the active tab with bind:value.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"controlled",
+				"tabs",
+				"tabslist",
+				"tabstrigger",
+				"tabscontent"
+			],
+			"shape": "wide",
+			"components": [
+				"Tabs",
+				"TabsList",
+				"TabsTrigger",
+				"TabsContent"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Tabs",
+						"TabsList",
+						"TabsTrigger",
+						"TabsContent"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/tabs#controlled",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "164",
+			"group": "navigation",
+			"page": "tabs",
+			"variant": "Default",
+			"slug": "default",
+			"title": "Default",
+			"description": "Three tabs with content panels.",
+			"summary": "Three tabs with content panels.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"default",
+				"tabs",
+				"tabslist",
+				"tabstrigger",
+				"tabscontent"
+			],
+			"shape": "wide",
+			"components": [
+				"Tabs",
+				"TabsList",
+				"TabsTrigger",
+				"TabsContent"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Tabs",
+						"TabsList",
+						"TabsTrigger",
+						"TabsContent"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/tabs#default",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "165",
+			"group": "layout",
+			"page": "app-shell",
+			"variant": "Anatomy",
+			"slug": "anatomy",
+			"title": "Anatomy",
+			"description": "Rail (52px), panel (200px) and the main content area.",
+			"summary": "Rail (52px), panel (200px) and the main content area.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"anatomy"
+			],
+			"shape": "wide",
+			"components": [],
+			"imports": [],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/app-shell#anatomy",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "166",
+			"group": "layout",
+			"page": "app-shell",
+			"variant": "Shell",
+			"slug": "live-shell",
+			"title": "Live shell",
+			"description": "The real component inside a fixed-height frame. The pathname lives in local state; click the rail and panel to navigate.",
+			"summary": "The real component inside a fixed-height frame. The pathname lives in local state; click the rail and panel to navigate.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"live",
+				"shell",
+				"appshelllayout",
+				"pageshell",
+				"kpicard",
+				"kpigrid",
+				"card"
+			],
+			"shape": "wide",
+			"components": [
+				"AppShellLayout",
+				"PageShell",
+				"KpiCard",
+				"KpiGrid",
+				"Card"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AppShellLayout",
+						"PageShell",
+						"KpiCard",
+						"KpiGrid",
+						"Card",
+						"NavModule"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/app-shell#live-shell",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "167",
+			"group": "layout",
+			"page": "empty-state",
+			"variant": "Basic",
+			"slug": "basic",
+			"title": "Basic",
+			"description": "Icon, title, description and a primary action.",
+			"summary": "Icon, title, description and a primary action.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"basic",
+				"emptystate",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"EmptyState",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"EmptyState",
+						"Button"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/empty-state#basic",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "168",
+			"group": "layout",
+			"page": "empty-state",
+			"variant": "Hero",
+			"slug": "hero",
+			"title": "Hero",
+			"description": "A larger, brand-tinted tile with a glow. On mobile the actions stack full width, so put the primary one first.",
+			"summary": "A larger, brand-tinted tile with a glow. On mobile the actions stack full width, so put the primary one first.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"hero",
+				"emptystate",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"EmptyState",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"EmptyState",
+						"Button"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/empty-state#hero",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "169",
+			"group": "layout",
+			"page": "empty-state",
+			"variant": "NoIcon",
+			"slug": "no-icon",
+			"title": "No icon",
+			"description": "A minimal version without an icon.",
+			"summary": "A minimal version without an icon.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"no",
+				"icon",
+				"emptystate",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"EmptyState",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"EmptyState",
+						"Button"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/empty-state#no-icon",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "170",
+			"group": "layout",
+			"page": "empty-state",
+			"variant": "NoResults",
+			"slug": "no-results",
+			"title": "No results",
+			"description": "For searches and filters that match nothing.",
+			"summary": "For searches and filters that match nothing.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"no",
+				"results",
+				"emptystate",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"EmptyState",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"EmptyState",
+						"Button"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/empty-state#no-results",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "171",
+			"group": "layout",
+			"page": "empty-state",
+			"variant": "Offline",
+			"slug": "error-or-offline",
+			"title": "Error or offline",
+			"description": "Failed network requests and loading errors.",
+			"summary": "Failed network requests and loading errors.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"error",
+				"or",
+				"offline",
+				"emptystate",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"EmptyState",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"EmptyState",
+						"Button"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/empty-state#error-or-offline",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "172",
+			"group": "layout",
+			"page": "error-page",
+			"variant": "Statuses",
+			"slug": "404-without-actions",
+			"title": "404 without actions",
+			"description": "hideActions removes the back and home buttons.",
+			"summary": "hideActions removes the back and home buttons.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"404",
+				"without",
+				"actions",
+				"errorpage"
+			],
+			"shape": "wide",
+			"components": [
+				"ErrorPage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"ErrorPage"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/error-page#404-without-actions",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "173",
+			"group": "layout",
+			"page": "form-page",
+			"variant": "Basic",
+			"slug": "basic-form",
+			"title": "Basic form",
+			"description": "Header with a back button, a grid of fields, a list of switches and a sticky footer.",
+			"summary": "Header with a back button, a grid of fields, a list of switches and a sticky footer.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"basic",
+				"form",
+				"appform",
+				"formsection",
+				"textfield",
+				"select",
+				"switch",
+				"button",
+				"divider"
+			],
+			"shape": "wide",
+			"components": [
+				"AppForm",
+				"FormSection",
+				"TextField",
+				"Select",
+				"Switch",
+				"Button",
+				"Divider"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AppForm",
+						"FormSection",
+						"TextField",
+						"Select",
+						"Switch",
+						"Button",
+						"Divider"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/form-page#basic-form",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "174",
+			"group": "layout",
+			"page": "form-page",
+			"variant": "NoHeader",
+			"slug": "without-header",
+			"title": "Without header",
+			"description": "Omit title, description, leading, trailing and backHref to drop the header.",
+			"summary": "Omit title, description, leading, trailing and backHref to drop the header.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"without",
+				"header",
+				"appform",
+				"formsection",
+				"textfield",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"AppForm",
+				"FormSection",
+				"TextField",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AppForm",
+						"FormSection",
+						"TextField",
+						"Button"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/form-page#without-header",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "175",
+			"group": "layout",
+			"page": "kpi-card",
+			"variant": "Metrics",
+			"slug": "basic-metrics",
+			"title": "Basic metrics",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"basic",
+				"metrics",
+				"kpicard",
+				"kpigrid"
+			],
+			"shape": "wide",
+			"components": [
+				"KpiCard",
+				"KpiGrid"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"KpiCard",
+						"KpiGrid"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/kpi-card#basic-metrics",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "176",
+			"group": "layout",
+			"page": "kpi-card",
+			"variant": "NegativeTrend",
+			"slug": "negative-trend",
+			"title": "Negative trend",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"negative",
+				"trend",
+				"kpicard",
+				"kpigrid"
+			],
+			"shape": "wide",
+			"components": [
+				"KpiCard",
+				"KpiGrid"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"KpiCard",
+						"KpiGrid"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/kpi-card#negative-trend",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "177",
+			"group": "layout",
+			"page": "kpi-card",
+			"variant": "NoTrend",
+			"slug": "without-trend",
+			"title": "Without trend",
+			"description": "Omit trend and the indicator disappears.",
+			"summary": "Omit trend and the indicator disappears.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"without",
+				"trend",
+				"kpicard",
+				"kpigrid"
+			],
+			"shape": "wide",
+			"components": [
+				"KpiCard",
+				"KpiGrid"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"KpiCard",
+						"KpiGrid"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/kpi-card#without-trend",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "178",
+			"group": "layout",
+			"page": "kpi-grid",
+			"variant": "Four",
+			"slug": "four-cards",
+			"title": "Four cards",
+			"description": "Four across, then 2 x 2, then one column.",
+			"summary": "Four across, then 2 x 2, then one column.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"four",
+				"cards",
+				"kpicard",
+				"kpigrid"
+			],
+			"shape": "wide",
+			"components": [
+				"KpiCard",
+				"KpiGrid"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"KpiCard",
+						"KpiGrid"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/kpi-grid#four-cards",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "179",
+			"group": "layout",
+			"page": "kpi-grid",
+			"variant": "Odd",
+			"slug": "three-cards",
+			"title": "Three cards",
+			"description": "One row when it fits, one column on a phone, never 2 + 1.",
+			"summary": "One row when it fits, one column on a phone, never 2 + 1.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"three",
+				"cards",
+				"kpicard",
+				"kpigrid"
+			],
+			"shape": "wide",
+			"components": [
+				"KpiCard",
+				"KpiGrid"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"KpiCard",
+						"KpiGrid"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/kpi-grid#three-cards",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "180",
+			"group": "layout",
+			"page": "layout-primitives",
+			"variant": "Page",
+			"slug": "container-and-section",
+			"title": "Container and Section",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"container",
+				"and",
+				"section",
+				"stack",
+				"card"
+			],
+			"shape": "wide",
+			"components": [
+				"Container",
+				"Section",
+				"Stack",
+				"Card"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Container",
+						"Section",
+						"Stack",
+						"Card"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/layout-primitives#container-and-section",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "181",
+			"group": "layout",
+			"page": "layout-primitives",
+			"variant": "Responsive",
+			"slug": "responsive-grid",
+			"title": "Responsive Grid",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"responsive",
+				"grid",
+				"box"
+			],
+			"shape": "wide",
+			"components": [
+				"Grid",
+				"Box"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Grid",
+						"Box"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/layout-primitives#responsive-grid",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "182",
+			"group": "layout",
+			"page": "layout-primitives",
+			"variant": "Stack",
+			"slug": "flex-stack-and-box",
+			"title": "Flex, Stack and Box",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"flex",
+				"stack",
+				"and",
+				"box"
+			],
+			"shape": "wide",
+			"components": [
+				"Stack",
+				"Flex",
+				"Box"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Stack",
+						"Flex",
+						"Box"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/layout-primitives#flex-stack-and-box",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "183",
+			"group": "layout",
+			"page": "list-page",
+			"variant": "AppListDemo",
+			"slug": "applist",
+			"title": "AppList",
+			"description": "Pass data and the layout handles search, filters and pagination.",
+			"summary": "Pass data and the layout handles search, filters and pagination.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"applist",
+				"button",
+				"filtergroup",
+				"simpletable",
+				"statuschip",
+				"usercell"
+			],
+			"shape": "wide",
+			"components": [
+				"AppList",
+				"Button",
+				"FilterGroup",
+				"SimpleTable",
+				"StatusChip",
+				"UserCell"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AppList",
+						"Button",
+						"FilterGroup",
+						"SimpleTable",
+						"StatusChip",
+						"UserCell"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/list-page#applist",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "184",
+			"group": "layout",
+			"page": "list-page",
+			"variant": "AppSettingsDemo",
+			"slug": "appsettings",
+			"title": "AppSettings",
+			"description": "Side navigation plus content. The active tab is managed internally.",
+			"summary": "Side navigation plus content. The active tab is managed internally.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"appsettings",
+				"button",
+				"formsection",
+				"switch",
+				"textfield"
+			],
+			"shape": "wide",
+			"components": [
+				"AppSettings",
+				"Button",
+				"FormSection",
+				"Switch",
+				"TextField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AppSettings",
+						"Button",
+						"FormSection",
+						"Switch",
+						"TextField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/list-page#appsettings",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "185",
+			"group": "layout",
+			"page": "list-page",
+			"variant": "PageShellDemo",
+			"slug": "pageshell",
+			"title": "PageShell",
+			"description": "A scrollable container for dashboards and non-CRUD pages.",
+			"summary": "A scrollable container for dashboards and non-CRUD pages.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"pageshell",
+				"kpicard",
+				"kpigrid",
+				"card"
+			],
+			"shape": "wide",
+			"components": [
+				"PageShell",
+				"KpiCard",
+				"KpiGrid",
+				"Card"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"PageShell",
+						"KpiCard",
+						"KpiGrid",
+						"Card"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/list-page#pageshell",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "186",
+			"group": "layout",
+			"page": "mobile-pane",
+			"variant": "Chat",
+			"slug": "chat",
+			"title": "Chat",
+			"description": "Open the pane. On a phone the text field rises with the virtual keyboard.",
+			"summary": "Open the pane. On a phone the text field rises with the virtual keyboard.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"chat",
+				"mobilepane",
+				"button",
+				"iconbutton",
+				"textfield"
+			],
+			"shape": "wide",
+			"components": [
+				"MobilePane",
+				"Button",
+				"IconButton",
+				"TextField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"MobilePane",
+						"Button",
+						"IconButton",
+						"TextField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/mobile-pane#chat",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "187",
+			"group": "layout",
+			"page": "page-shell",
+			"variant": "Dashboard",
+			"slug": "dashboard-page",
+			"title": "Dashboard page",
+			"description": "KPI cards and a content card inside a PageShell.",
+			"summary": "KPI cards and a content card inside a PageShell.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"dashboard",
+				"page",
+				"pageshell",
+				"kpicard",
+				"kpigrid",
+				"card",
+				"stack",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"PageShell",
+				"KpiCard",
+				"KpiGrid",
+				"Card",
+				"Stack",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"PageShell",
+						"KpiCard",
+						"KpiGrid",
+						"Card",
+						"Stack",
+						"Button"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/page-shell#dashboard-page",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "188",
+			"group": "layout",
+			"page": "sticky-actions",
+			"variant": "Dirty",
+			"slug": "end-aligned",
+			"title": "End aligned",
+			"description": "Buttons sit on the right. The bar only renders while the form is dirty (show).",
+			"summary": "Buttons sit on the right. The bar only renders while the form is dirty (show).",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"end",
+				"aligned",
+				"stickyactions",
+				"button",
+				"textfield",
+				"stack"
+			],
+			"shape": "wide",
+			"components": [
+				"StickyActions",
+				"Button",
+				"TextField",
+				"Stack"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"StickyActions",
+						"Button",
+						"TextField",
+						"Stack"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/sticky-actions#end-aligned",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "189",
+			"group": "layout",
+			"page": "sticky-actions",
+			"variant": "Stretch",
+			"slug": "stretch",
+			"title": "Stretch",
+			"description": "On touch screens the primary button fills the width and the ghost button stays compact.",
+			"summary": "On touch screens the primary button fills the width and the ghost button stays compact.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"stretch",
+				"stickyactions",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"StickyActions",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"StickyActions",
+						"Button"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/sticky-actions#stretch",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "190",
+			"group": "charts",
+			"page": "bar",
+			"variant": "Horizontal",
+			"slug": "horizontal-bars",
+			"title": "Horizontal bars",
+			"description": "Good for long category names and rankings.",
+			"summary": "Good for long category names and rankings.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"horizontal",
+				"bars",
+				"card",
+				"barchart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"BarChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"BarChart"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/bar#horizontal-bars",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "191",
+			"group": "charts",
+			"page": "bar",
+			"variant": "Stacked",
+			"slug": "stacked-bars",
+			"title": "Stacked bars",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"stacked",
+				"bars",
+				"card",
+				"barchart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"BarChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"BarChart"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/bar#stacked-bars",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "192",
+			"group": "charts",
+			"page": "bar",
+			"variant": "Toggle",
+			"slug": "grouped-and-stacked",
+			"title": "Grouped and stacked",
+			"description": "Toggling stacked animates between both layouts.",
+			"summary": "Toggling stacked animates between both layouts.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"grouped",
+				"and",
+				"stacked",
+				"card",
+				"flex",
+				"button",
+				"barchart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"Flex",
+				"Button",
+				"BarChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card",
+						"Flex",
+						"Button"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"BarChart"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/bar#grouped-and-stacked",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "193",
+			"group": "charts",
+			"page": "bar",
+			"variant": "Vertical",
+			"slug": "vertical-bars",
+			"title": "Vertical bars",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"vertical",
+				"bars",
+				"card",
+				"barchart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"BarChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"BarChart"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/bar#vertical-bars",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "194",
+			"group": "charts",
+			"page": "gauge",
+			"variant": "Counter",
+			"slug": "animated-counter",
+			"title": "Animated counter",
+			"description": "Updating value animates the ring and counts the number.",
+			"summary": "Updating value animates the ring and counts the number.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"animated",
+				"counter",
+				"card",
+				"stack",
+				"gaugechart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"Stack",
+				"GaugeChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card",
+						"Stack"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"GaugeChart"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/gauge#animated-counter",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "195",
+			"group": "charts",
+			"page": "gauge",
+			"variant": "Ring",
+			"slug": "progress-ring",
+			"title": "Progress ring",
+			"description": "variant ring draws a single brand-colored arc with the value in the center.",
+			"summary": "variant ring draws a single brand-colored arc with the value in the center.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"progress",
+				"ring",
+				"card",
+				"stack",
+				"slider",
+				"gaugechart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"Stack",
+				"Slider",
+				"GaugeChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card",
+						"Stack",
+						"Slider"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"GaugeChart"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/gauge#progress-ring",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "196",
+			"group": "charts",
+			"page": "gauge",
+			"variant": "Simple",
+			"slug": "simple-gauge",
+			"title": "Simple gauge",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"simple",
+				"gauge",
+				"card",
+				"gaugechart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"GaugeChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"GaugeChart"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/gauge#simple-gauge",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "197",
+			"group": "charts",
+			"page": "gauge",
+			"variant": "Zones",
+			"slug": "custom-zones",
+			"title": "Custom zones",
+			"description": "Reverse the default zones when a high value is bad, such as CPU load.",
+			"summary": "Reverse the default zones when a high value is bad, such as CPU load.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"custom",
+				"zones",
+				"card",
+				"grid",
+				"gaugechart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"Grid",
+				"GaugeChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card",
+						"Grid"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"GaugeChart",
+						"GaugeZone"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/gauge#custom-zones",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "198",
+			"group": "charts",
+			"page": "heatmap",
+			"variant": "Calendar",
+			"slug": "calendar-heatmap",
+			"title": "Calendar heatmap",
+			"description": "Daily commit activity from January to September.",
+			"summary": "Daily commit activity from January to September.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"calendar",
+				"heatmap",
+				"card",
+				"heatmapchart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"HeatmapChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"HeatmapChart",
+						"CalendarHeatmapPoint"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/heatmap#calendar-heatmap",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "199",
+			"group": "charts",
+			"page": "heatmap",
+			"variant": "Matrix",
+			"slug": "hour-by-day-matrix",
+			"title": "Hour by day matrix",
+			"description": "Points are [xIndex, yIndex, value] into xCategories and yCategories.",
+			"summary": "Points are [xIndex, yIndex, value] into xCategories and yCategories.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"hour",
+				"by",
+				"day",
+				"matrix",
+				"card",
+				"heatmapchart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"HeatmapChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"HeatmapChart",
+						"MatrixHeatmapPoint"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/heatmap#hour-by-day-matrix",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "200",
+			"group": "charts",
+			"page": "heatmap",
+			"variant": "YearToggle",
+			"slug": "year-toggle",
+			"title": "Year toggle",
+			"description": "Swap data and range to move between years.",
+			"summary": "Swap data and range to move between years.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"year",
+				"toggle",
+				"card",
+				"flex",
+				"button",
+				"heatmapchart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"Flex",
+				"Button",
+				"HeatmapChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card",
+						"Flex",
+						"Button"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"HeatmapChart",
+						"CalendarHeatmapPoint"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/heatmap#year-toggle",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "201",
+			"group": "charts",
+			"page": "line",
+			"variant": "Area",
+			"slug": "area-with-gradient-fill",
+			"title": "Area with gradient fill",
+			"description": "area fills under each line with a gradient that fades to transparent.",
+			"summary": "area fills under each line with a gradient that fades to transparent.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"area",
+				"with",
+				"gradient",
+				"fill",
+				"card",
+				"linechart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"LineChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"LineChart"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/line#area-with-gradient-fill",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "202",
+			"group": "charts",
+			"page": "line",
+			"variant": "Multi",
+			"slug": "multi-line-comparison",
+			"title": "Multi-line comparison",
+			"description": "Each series gets its own palette color.",
+			"summary": "Each series gets its own palette color.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"multi",
+				"line",
+				"comparison",
+				"card",
+				"linechart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"LineChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"LineChart"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/line#multi-line-comparison",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "203",
+			"group": "charts",
+			"page": "line",
+			"variant": "Simple",
+			"slug": "simple-line",
+			"title": "Simple line",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"simple",
+				"line",
+				"card",
+				"linechart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"LineChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"LineChart"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/line#simple-line",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "204",
+			"group": "charts",
+			"page": "line",
+			"variant": "Stream",
+			"slug": "real-time-stream",
+			"title": "Real-time stream",
+			"description": "Replace the data array and the chart updates in place.",
+			"summary": "Replace the data array and the chart updates in place.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"real",
+				"time",
+				"stream",
+				"card",
+				"linechart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"LineChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"LineChart"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/line#real-time-stream",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "205",
+			"group": "charts",
+			"page": "overview",
+			"variant": "Dashboard",
+			"slug": "dashboard",
+			"title": "Dashboard",
+			"description": "Every chart type together inside glass cards.",
+			"summary": "Every chart type together inside glass cards.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"dashboard",
+				"card",
+				"grid",
+				"kpicard",
+				"kpigrid",
+				"stack",
+				"linechart",
+				"barchart",
+				"piechart",
+				"scatterchart",
+				"heatmapchart",
+				"gaugechart",
+				"radarchart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"Grid",
+				"KpiCard",
+				"KpiGrid",
+				"Stack",
+				"LineChart",
+				"BarChart",
+				"PieChart",
+				"ScatterChart",
+				"HeatmapChart",
+				"GaugeChart",
+				"RadarChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card",
+						"Grid",
+						"KpiCard",
+						"KpiGrid",
+						"Stack"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"LineChart",
+						"BarChart",
+						"PieChart",
+						"ScatterChart",
+						"HeatmapChart",
+						"GaugeChart",
+						"RadarChart",
+						"CalendarHeatmapPoint"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/overview#dashboard",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "206",
+			"group": "charts",
+			"page": "pie",
+			"variant": "Animated",
+			"slug": "animated-proportions",
+			"title": "Animated proportions",
+			"description": "Swap the data and the slices animate to the new proportions.",
+			"summary": "Swap the data and the slices animate to the new proportions.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"animated",
+				"proportions",
+				"card",
+				"flex",
+				"chip",
+				"piechart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"Flex",
+				"Chip",
+				"PieChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card",
+						"Flex",
+						"Chip"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"PieChart"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/pie#animated-proportions",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "207",
+			"group": "charts",
+			"page": "pie",
+			"variant": "CenterLabel",
+			"slug": "donut-with-center-kpi",
+			"title": "Donut with center KPI",
+			"description": "centerLabel overlays a value and caption in the hole of a donut.",
+			"summary": "centerLabel overlays a value and caption in the hole of a donut.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"donut",
+				"with",
+				"center",
+				"kpi",
+				"card",
+				"piechart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"PieChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"PieChart"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/pie#donut-with-center-kpi",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "208",
+			"group": "charts",
+			"page": "pie",
+			"variant": "Donut",
+			"slug": "basic-donut",
+			"title": "Basic donut",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"basic",
+				"donut",
+				"card",
+				"piechart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"PieChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"PieChart"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/pie#basic-donut",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "209",
+			"group": "charts",
+			"page": "pie",
+			"variant": "Rose",
+			"slug": "rose-chart",
+			"title": "Rose chart",
+			"description": "Nightingale rose: the radius of each slice scales with its value.",
+			"summary": "Nightingale rose: the radius of each slice scales with its value.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"rose",
+				"chart",
+				"card",
+				"piechart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"PieChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"PieChart"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/pie#rose-chart",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "210",
+			"group": "charts",
+			"page": "radar",
+			"variant": "Compare",
+			"slug": "comparison",
+			"title": "Comparison",
+			"description": "Two series with a legend and focus on hover.",
+			"summary": "Two series with a legend and focus on hover.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"comparison",
+				"card",
+				"radarchart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"RadarChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"RadarChart"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/radar#comparison",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "211",
+			"group": "charts",
+			"page": "radar",
+			"variant": "Interactive",
+			"slug": "interactive-team-builder",
+			"title": "Interactive team builder",
+			"description": "Drag the sliders and the radar updates live.",
+			"summary": "Drag the sliders and the radar updates live.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"interactive",
+				"team",
+				"builder",
+				"card",
+				"stack",
+				"flex",
+				"slider",
+				"radarchart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"Stack",
+				"Flex",
+				"Slider",
+				"RadarChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card",
+						"Stack",
+						"Flex",
+						"Slider"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"RadarChart"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/radar#interactive-team-builder",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "212",
+			"group": "charts",
+			"page": "radar",
+			"variant": "Simple",
+			"slug": "simple-radar",
+			"title": "Simple radar",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"simple",
+				"radar",
+				"card",
+				"radarchart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"RadarChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"RadarChart"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/radar#simple-radar",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "213",
+			"group": "charts",
+			"page": "scatter",
+			"variant": "Basic",
+			"slug": "basic-scatter",
+			"title": "Basic scatter",
+			"description": "Visits against conversion rate.",
+			"summary": "Visits against conversion rate.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"basic",
+				"scatter",
+				"card",
+				"scatterchart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"ScatterChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"ScatterChart"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/scatter#basic-scatter",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "214",
+			"group": "charts",
+			"page": "scatter",
+			"variant": "Bubble",
+			"slug": "bubble-chart",
+			"title": "Bubble chart",
+			"description": "The third value of each point sets the bubble size.",
+			"summary": "The third value of each point sets the bubble size.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"bubble",
+				"chart",
+				"card",
+				"scatterchart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"ScatterChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"ScatterChart"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/scatter#bubble-chart",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "215",
+			"group": "charts",
+			"page": "scatter",
+			"variant": "Clusters",
+			"slug": "clustered-by-tier",
+			"title": "Clustered by tier",
+			"description": "One series per group, each with its own palette color.",
+			"summary": "One series per group, each with its own palette color.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"clustered",
+				"by",
+				"tier",
+				"card",
+				"scatterchart"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"ScatterChart"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"ScatterChart",
+						"ScatterSeries"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/scatter#clustered-by-tier",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "216",
+			"group": "charts",
+			"page": "sparklines",
+			"variant": "Bars",
+			"slug": "bar-sparklines",
+			"title": "Bar sparklines",
+			"description": "variant bar draws narrow columns instead of a line.",
+			"summary": "variant bar draws narrow columns instead of a line.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"bar",
+				"sparklines",
+				"flex",
+				"stack",
+				"sparkline"
+			],
+			"shape": "wide",
+			"components": [
+				"Flex",
+				"Stack",
+				"Sparkline"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Flex",
+						"Stack"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"Sparkline"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/sparklines#bar-sparklines",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "217",
+			"group": "charts",
+			"page": "sparklines",
+			"variant": "KpiCards",
+			"slug": "kpi-cards-with-trend-lines",
+			"title": "KPI cards with trend lines",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"kpi",
+				"cards",
+				"with",
+				"trend",
+				"lines",
+				"card",
+				"grid",
+				"stack",
+				"flex",
+				"sparkline"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"Grid",
+				"Stack",
+				"Flex",
+				"Sparkline"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card",
+						"Grid",
+						"Stack",
+						"Flex"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"Sparkline"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/sparklines#kpi-cards-with-trend-lines",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "218",
+			"group": "charts",
+			"page": "sparklines",
+			"variant": "Live",
+			"slug": "live-streaming-micro-charts",
+			"title": "Live streaming micro charts",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"live",
+				"streaming",
+				"micro",
+				"charts",
+				"card",
+				"grid",
+				"stack",
+				"flex",
+				"sparkline"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"Grid",
+				"Stack",
+				"Flex",
+				"Sparkline"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card",
+						"Grid",
+						"Stack",
+						"Flex"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"Sparkline"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/sparklines#live-streaming-micro-charts",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "219",
+			"group": "charts",
+			"page": "sparklines",
+			"variant": "TableRows",
+			"slug": "table-row-sparklines",
+			"title": "Table row sparklines",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"table",
+				"row",
+				"sparklines",
+				"card",
+				"sparkline"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"Sparkline"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"Sparkline"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/charts/sparklines#table-row-sparklines",
+			"needs": "@codeatlasdev/ui@4.0.0 + echarts"
+		},
+		{
+			"id": "220",
+			"group": "foundation",
+			"page": "colors",
+			"variant": "Brand",
+			"slug": "brand",
+			"title": "Brand",
+			"description": "Derived from the active preset. brand-fill and brand-text keep contrast in both schemes.",
+			"summary": "Derived from the active preset. brand-fill and brand-text keep contrast in both schemes.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"brand"
+			],
+			"shape": "wide",
+			"components": [],
+			"imports": [],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/foundation/colors#brand",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "221",
+			"group": "foundation",
+			"page": "colors",
+			"variant": "Outline",
+			"slug": "outline",
+			"title": "Outline",
+			"description": "Border and divider scale.",
+			"summary": "Border and divider scale.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"outline"
+			],
+			"shape": "wide",
+			"components": [],
+			"imports": [],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/foundation/colors#outline",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "222",
+			"group": "foundation",
+			"page": "colors",
+			"variant": "Semantic",
+			"slug": "semantic",
+			"title": "Semantic",
+			"description": "Success, warning, error and info. Semantic colors never change with the preset.",
+			"summary": "Success, warning, error and info. Semantic colors never change with the preset.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"semantic"
+			],
+			"shape": "wide",
+			"components": [],
+			"imports": [],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/foundation/colors#semantic",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "223",
+			"group": "foundation",
+			"page": "colors",
+			"variant": "Surfaces",
+			"slug": "surfaces",
+			"title": "Surfaces",
+			"description": "A layered scale for depth: sunken, base, raised, overlay.",
+			"summary": "A layered scale for depth: sunken, base, raised, overlay.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"surfaces"
+			],
+			"shape": "wide",
+			"components": [],
+			"imports": [],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/foundation/colors#surfaces",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "224",
+			"group": "foundation",
+			"page": "colors",
+			"variant": "Text",
+			"slug": "text",
+			"title": "Text",
+			"description": "text-hint is the lowest readable tier (4.5:1). text-disabled is the label of disabled controls only (3:1 on every surface), never information.",
+			"summary": "text-hint is the lowest readable tier (4.5:1). text-disabled is the label of disabled controls only (3:1 on every surface), never information.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"text"
+			],
+			"shape": "wide",
+			"components": [],
+			"imports": [],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/foundation/colors#text",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "225",
+			"group": "foundation",
+			"page": "materials",
+			"variant": "GlassButtons",
+			"slug": "button-glass-variants",
+			"title": "Button glass variants",
+			"description": "glass-btn, glass-btn-prominent and glass-btn-clear for custom controls. They follow `data-style`, so the halo and blur disappear under `solid`.",
+			"summary": "glass-btn, glass-btn-prominent and glass-btn-clear for custom controls. They follow `data-style`, so the halo and blur disappear under `solid`.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"button",
+				"glass",
+				"variants"
+			],
+			"shape": "wide",
+			"components": [],
+			"imports": [],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/foundation/materials#button-glass-variants",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "226",
+			"group": "foundation",
+			"page": "materials",
+			"variant": "Tiers",
+			"slug": "glass-tiers",
+			"title": "Glass tiers",
+			"description": "All five thickness levels on a gradient backdrop.",
+			"summary": "All five thickness levels on a gradient backdrop.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"glass",
+				"tiers",
+				"surface"
+			],
+			"shape": "wide",
+			"components": [
+				"Surface"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Surface"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/foundation/materials#glass-tiers",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "227",
+			"group": "foundation",
+			"page": "materials",
+			"variant": "Tinted",
+			"slug": "tinted-and-glowing",
+			"title": "Tinted and glowing",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"tinted",
+				"and",
+				"glowing",
+				"surface"
+			],
+			"shape": "wide",
+			"components": [
+				"Surface"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Surface"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/foundation/materials#tinted-and-glowing",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "228",
+			"group": "foundation",
+			"page": "shadows",
+			"variant": "Scale",
+			"slug": "shadow-scale",
+			"title": "Shadow scale",
+			"description": "xs for hairline lift up to xl for modal depth.",
+			"summary": "xs for hairline lift up to xl for modal depth.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"shadow",
+				"scale"
+			],
+			"shape": "wide",
+			"components": [],
+			"imports": [],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/foundation/shadows#shadow-scale",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "229",
+			"group": "foundation",
+			"page": "typography",
+			"variant": "Body",
+			"slug": "body-and-ui-scale",
+			"title": "Body and UI scale",
+			"description": "Body, caption, label and button sizes, plus the micro and nano steps used by badges.",
+			"summary": "Body, caption, label and button sizes, plus the micro and nano steps used by badges.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"body",
+				"and",
+				"ui",
+				"scale"
+			],
+			"shape": "wide",
+			"components": [],
+			"imports": [],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/foundation/typography#body-and-ui-scale",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "230",
+			"group": "foundation",
+			"page": "typography",
+			"variant": "Families",
+			"slug": "font-families",
+			"title": "Font families",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"font",
+				"families"
+			],
+			"shape": "wide",
+			"components": [],
+			"imports": [],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/foundation/typography#font-families",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "231",
+			"group": "foundation",
+			"page": "typography",
+			"variant": "Headings",
+			"slug": "heading-scale",
+			"title": "Heading scale",
+			"description": "--ca-font-size-h1 to h6.",
+			"summary": "--ca-font-size-h1 to h6.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"heading",
+				"scale"
+			],
+			"shape": "wide",
+			"components": [],
+			"imports": [],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/foundation/typography#heading-scale",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "232",
+			"group": "docs-kit",
+			"page": "docs",
+			"variant": "Cards",
+			"slug": "linkcard-cardgrid-and-methodbadge",
+			"title": "LinkCard, CardGrid and MethodBadge",
+			"description": "",
+			"summary": "",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"linkcard",
+				"cardgrid",
+				"and",
+				"methodbadge"
+			],
+			"shape": "wide",
+			"components": [
+				"CardGrid",
+				"LinkCard",
+				"MethodBadge"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"CardGrid",
+						"LinkCard",
+						"MethodBadge"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/docs-kit/docs#linkcard-cardgrid-and-methodbadge",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "233",
+			"group": "docs-kit",
+			"page": "docs",
+			"variant": "CodeTabs",
+			"slug": "codetabs",
+			"title": "CodeTabs",
+			"description": "Language tabs with a copy button. Groups that share a sync key follow each other and persist the choice in localStorage. Highlighting stays with you: wrap each block in .ca-code.",
+			"summary": "Language tabs with a copy button. Groups that share a sync key follow each other and persist the choice in localStorage. Highlighting stays with you: wrap each block in .ca-code.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"codetabs",
+				"codetab"
+			],
+			"shape": "wide",
+			"components": [
+				"CodeTab",
+				"CodeTabs"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"CodeTab",
+						"CodeTabs"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/docs-kit/docs#codetabs",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "234",
+			"group": "docs-kit",
+			"page": "docs",
+			"variant": "NavToc",
+			"slug": "docsnav-and-tableofcontents",
+			"title": "DocsNav and TableOfContents",
+			"description": "The sidebar tree and the page index. The inline variant is shown; DocsShell uses the rail variant on desktop.",
+			"summary": "The sidebar tree and the page index. The inline variant is shown; DocsShell uses the rail variant on desktop.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"docsnav",
+				"and",
+				"tableofcontents"
+			],
+			"shape": "wide",
+			"components": [
+				"DocsNav",
+				"TableOfContents"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"DocsNav",
+						"TableOfContents",
+						"DocsHeading",
+						"DocsNavGroup"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/docs-kit/docs#docsnav-and-tableofcontents",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "235",
+			"group": "docs-kit",
+			"page": "docs",
+			"variant": "Prose",
+			"slug": "ca-prose-callout-and-steps",
+			"title": "ca-prose, Callout and Steps",
+			"description": "Wrap rendered markdown in .ca-prose. Callout is an Alert vocabulary (note, tip, caution, danger); keep two per page. Steps turns an ordered list into a numbered rail.",
+			"summary": "Wrap rendered markdown in .ca-prose. Callout is an Alert vocabulary (note, tip, caution, danger); keep two per page. Steps turns an ordered list into a numbered rail.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"ca",
+				"prose",
+				"callout",
+				"and",
+				"steps"
+			],
+			"shape": "wide",
+			"components": [
+				"Callout",
+				"Steps"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Callout",
+						"Steps"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/docs-kit/docs#ca-prose-callout-and-steps",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		},
+		{
+			"id": "236",
+			"group": "docs-kit",
+			"page": "docs",
+			"variant": "Search",
+			"slug": "docssearch",
+			"title": "DocsSearch",
+			"description": "Full-text search. A dialog on desktop and a full-height sheet with a 16px input on phones. Pass entries or an async loader.",
+			"summary": "Full-text search. A dialog on desktop and a full-height sheet with a 16px input on phones. Pass entries or an async loader.",
+			"use": "",
+			"spec": [],
+			"tags": [
+				"docssearch",
+				"button"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"DocsSearch"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"DocsSearch",
+						"DocsSearchEntry"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/docs-kit/docs#docssearch",
+			"needs": "@codeatlasdev/ui@4.0.0"
+		}
+	]
+}

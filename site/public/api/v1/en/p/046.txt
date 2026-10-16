@@ -1,0 +1,8 @@
+Use @codeatlasdev/ui demo #046 "Single value" (inputs/slider).
+What it shows: Binds a plain number. Default range is 0 to 100..
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #046 Single value → file, what changed, https://ui.codeatlas.com.br/docs/inputs/slider#single-value; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/046.txt   Components API: ca-ui-mcp get_component(Slider)

@@ -1,0 +1,45 @@
+<!-- @codeatlasdev/ui demo #235 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/docs-kit/docs#ca-prose-callout-and-steps -->
+Element: #235 ca-prose, Callout and Steps (docs-kit/docs)
+What it shows: Wrap rendered markdown in .ca-prose. Callout is an Alert vocabulary (note, tip, caution, danger); keep two per page. Steps turns an ordered list into a numbered rail.
+Tags: ca, prose, callout, and, steps
+Needs: @codeatlasdev/ui@4.0.0
+Components: Callout, Steps
+Live demo: https://ui.codeatlas.com.br/docs/docs-kit/docs#ca-prose-callout-and-steps
+
+<script lang="ts">
+  import { Callout, Steps } from '@codeatlasdev/ui';
+</script>
+
+<div class="ca-prose prose">
+  <h2 id="demo-prerequisites">Prerequisites</h2>
+  <p>
+    You need an <strong>API key</strong> and a connected session. The <code>x-api-key</code> header
+    identifies the organization and <code>x-instance</code> picks the session.
+  </p>
+  <h2 id="demo-auth">Authentication</h2>
+  <h3 id="demo-header">The x-api-key header</h3>
+  <p>Send the key in the <code>x-api-key</code> header on every request.</p>
+  <Callout type="tip">Use one key per environment so you can revoke one without touching production.</Callout>
+  <Callout type="caution">Never expose the key in front-end code.</Callout>
+  <Steps>
+    <ol>
+      <li><p><strong>Create a session</strong></p><p><code>POST /sessions</code> returns the session <code>id</code>.</p></li>
+      <li><p><strong>Connect with a QR code</strong></p><p>Scan it from Linked devices in the mobile app.</p></li>
+    </ol>
+  </Steps>
+  <h2 id="demo-send">Send a message</h2>
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+  <div class="ca-table-wrap" tabindex="0" role="region" aria-label="Request fields">
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>to</code></td><td>string</td><td>Number with country code, no symbols. Example: 5511999990000</td></tr>
+        <tr><td><code>text</code></td><td>string</td><td>Message body, up to 4096 characters.</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<style>
+  .prose { width: 100%; max-width: 100%; }
+</style>

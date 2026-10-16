@@ -1,0 +1,17 @@
+<!-- @codeatlasdev/ui demo #108 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/avatar#initials-fallback -->
+Element: #108 Initials fallback (display/avatar)
+What it shows: Initials fallback
+Tags: initials, fallback, avatar
+Needs: @codeatlasdev/ui@4.0.0
+Components: Avatar
+Live demo: https://ui.codeatlas.com.br/docs/display/avatar#initials-fallback
+
+<script lang="ts">
+  import { Avatar } from '@codeatlasdev/ui';
+</script>
+
+<Avatar alt="Alice Martin" size="lg" />
+<Avatar alt="Bob Chen" size="lg" />
+<Avatar alt="Clara Silva" size="lg" />
+<Avatar fallback="DK" size="lg" />
+<Avatar fallback="?" size="lg" />

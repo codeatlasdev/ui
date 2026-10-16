@@ -1,0 +1,13 @@
+<!-- @codeatlasdev/ui demo #012 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/copy-button#default -->
+Element: #012 Default (inputs/copy-button)
+What it shows: Default
+Tags: default, copybutton
+Needs: @codeatlasdev/ui@4.0.0
+Components: CopyButton
+Live demo: https://ui.codeatlas.com.br/docs/inputs/copy-button#default
+
+<script lang="ts">
+  import { CopyButton } from '@codeatlasdev/ui';
+</script>
+
+<CopyButton value="npm i @codeatlasdev/ui" />

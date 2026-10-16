@@ -1,0 +1,51 @@
+<!-- @codeatlasdev/ui demo #184 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/list-page#appsettings -->
+Element: #184 AppSettings (layout/list-page)
+What it shows: Side navigation plus content. The active tab is managed internally.
+Tags: appsettings, button, formsection, switch, textfield
+Needs: @codeatlasdev/ui@4.0.0
+Components: AppSettings, Button, FormSection, Switch, TextField
+Live demo: https://ui.codeatlas.com.br/docs/layout/list-page#appsettings
+
+<script lang="ts">
+  import { AppSettings, Button, FormSection, Switch, TextField } from '@codeatlasdev/ui';
+  import { Settings, Shield } from '@lucide/svelte';
+
+  const TABS = [
+    { value: 'general', label: 'General', icon: Settings },
+    { value: 'security', label: 'Security', icon: Shield },
+  ];
+  let wsName = $state('My Workspace');
+</script>
+
+<div class="frame">
+  <AppSettings title="Settings" tabs={TABS}>
+    {#snippet actions()}
+      <Button variant="filled" size="sm">Save</Button>
+    {/snippet}
+    {#snippet children(tab)}
+      {#if tab === 'general'}
+        <FormSection title="Workspace">
+          <TextField label="Name" bind:value={wsName} />
+          <TextField label="Slug" value="my-workspace" />
+        </FormSection>
+      {:else if tab === 'security'}
+        <FormSection title="Authentication" layout="list">
+          <Switch label="Two-factor authentication" />
+          <Switch label="Single sign-on (SSO)" />
+        </FormSection>
+      {/if}
+    {/snippet}
+  </AppSettings>
+</div>
+
+<style>
+  .frame {
+    width: 100%;
+    height: 380px;
+    border-radius: var(--ca-radius-lg);
+    box-shadow: inset 0 0 0 1px var(--ca-outline-subtle);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+</style>

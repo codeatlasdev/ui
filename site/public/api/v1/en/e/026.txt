@@ -1,0 +1,37 @@
+<!-- @codeatlasdev/ui demo #026 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/money-input#min-max-negative-error-and-disabled -->
+Element: #026 Min, max, negative, error and disabled (inputs/money-input)
+What it shows: Deposit is clamped between R$ 10,00 and R$ 100,00. Include a minus sign to toggle the sign when allowNegative is set.
+Tags: min, max, negative, error, and, disabled, moneyinput
+Needs: @codeatlasdev/ui@4.0.0
+Components: MoneyInput
+Live demo: https://ui.codeatlas.com.br/docs/inputs/money-input#min-max-negative-error-and-disabled
+
+<script lang="ts">
+  import { MoneyInput } from '@codeatlasdev/ui/forms';
+
+  let deposit = $state(5000);
+  let adjustment = $state(-2500);
+</script>
+
+<div class="col">
+  <MoneyInput
+    label="Deposit"
+    bind:value={deposit}
+    min={1000}
+    max={10000}
+    description="Between R$ 10,00 and R$ 100,00."
+  />
+  <MoneyInput label="Adjustment" bind:value={adjustment} allowNegative />
+  <MoneyInput label="Amount" value={0} error="Amount must be greater than zero." />
+  <MoneyInput label="Locked" value={99900} disabled />
+</div>
+
+<style>
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-4);
+    width: 100%;
+    max-width: 400px;
+  }
+</style>

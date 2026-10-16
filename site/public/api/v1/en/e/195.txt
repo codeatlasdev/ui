@@ -1,0 +1,25 @@
+<!-- @codeatlasdev/ui demo #195 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/charts/gauge#progress-ring -->
+Element: #195 Progress ring (charts/gauge)
+What it shows: variant ring draws a single brand-colored arc with the value in the center.
+Tags: progress, ring, card, stack, slider, gaugechart
+Needs: @codeatlasdev/ui@4.0.0 + echarts
+Components: Card, Stack, Slider, GaugeChart
+Live demo: https://ui.codeatlas.com.br/docs/charts/gauge#progress-ring
+
+<script lang="ts">
+  import { Card, Stack, Slider } from '@codeatlasdev/ui';
+  import { GaugeChart } from '@codeatlasdev/ui/charts';
+
+  let value = $state(65);
+</script>
+
+<Card material="glass" full>
+  <Stack gap="5">
+    <GaugeChart {value} variant="ring" height="260px" />
+    <div class="slider"><Slider bind:value min={0} max={100} step={1} /></div>
+  </Stack>
+</Card>
+
+<style>
+  .slider { padding: 0 var(--ca-space-3); }
+</style>

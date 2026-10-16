@@ -1,0 +1,17 @@
+<!-- @codeatlasdev/ui demo #006 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/button#variants -->
+Element: #006 Variants (inputs/button)
+What it shows: filled, glass, outlined, ghost and destructive.
+Tags: variants, button
+Needs: @codeatlasdev/ui@4.0.0
+Components: Button
+Live demo: https://ui.codeatlas.com.br/docs/inputs/button#variants
+
+<script lang="ts">
+  import { Button } from '@codeatlasdev/ui';
+</script>
+
+<Button variant="filled">Filled</Button>
+<Button variant="glass">Glass</Button>
+<Button variant="outlined">Outlined</Button>
+<Button variant="ghost">Ghost</Button>
+<Button variant="destructive">Destructive</Button>

@@ -1,0 +1,30 @@
+<!-- @codeatlasdev/ui demo #232 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/docs-kit/docs#linkcard-cardgrid-and-methodbadge -->
+Element: #232 LinkCard, CardGrid and MethodBadge (docs-kit/docs)
+What it shows: LinkCard, CardGrid and MethodBadge
+Tags: linkcard, cardgrid, and, methodbadge
+Needs: @codeatlasdev/ui@4.0.0
+Components: CardGrid, LinkCard, MethodBadge
+Live demo: https://ui.codeatlas.com.br/docs/docs-kit/docs#linkcard-cardgrid-and-methodbadge
+
+<script lang="ts">
+  import { CardGrid, LinkCard, MethodBadge } from '@codeatlasdev/ui';
+</script>
+
+<div class="wrap">
+  <CardGrid>
+    <LinkCard title="Quick start" description="From install to your first request in two minutes." href="#top" />
+    <LinkCard title="Webhooks" description="Real-time events with retries and signatures." href="#top" />
+  </CardGrid>
+  <div class="methods">
+    <MethodBadge method="GET" />
+    <MethodBadge method="POST" />
+    <MethodBadge method="PUT" />
+    <MethodBadge method="PATCH" />
+    <MethodBadge method="DELETE" />
+  </div>
+</div>
+
+<style>
+  .wrap { width: 100%; display: grid; gap: 16px; }
+  .methods { display: flex; flex-wrap: wrap; gap: 12px; }
+</style>

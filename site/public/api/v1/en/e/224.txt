@@ -1,0 +1,14 @@
+<!-- @codeatlasdev/ui demo #224 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/foundation/colors#text -->
+Element: #224 Text (foundation/colors)
+What it shows: text-hint is the lowest readable tier (4.5:1). text-disabled is the label of disabled controls only (3:1 on every surface), never information.
+Tags: text
+Needs: @codeatlasdev/ui@4.0.0
+Components: none
+Live demo: https://ui.codeatlas.com.br/docs/foundation/colors#text
+
+<script lang="ts">
+	import Swatches from "./Swatches.svelte";
+	const tokens = ["--ca-text-primary", "--ca-text-secondary", "--ca-text-hint", "--ca-text-disabled"];
+</script>
+
+<Swatches {tokens} bordered={true} />

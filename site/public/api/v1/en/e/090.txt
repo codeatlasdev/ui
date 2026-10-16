@@ -1,0 +1,52 @@
+<!-- @codeatlasdev/ui demo #090 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/drawer#left-and-bottom -->
+Element: #090 Left and bottom (feedback/drawer)
+What it shows: Left suits mobile navigation. Bottom is a simple bottom panel without gestures.
+Tags: left, and, bottom, drawer, button, stack
+Needs: @codeatlasdev/ui@4.0.0
+Components: Drawer, Button, Stack
+Live demo: https://ui.codeatlas.com.br/docs/feedback/drawer#left-and-bottom
+
+<script lang="ts">
+  import { Drawer, Button, Stack } from '@codeatlasdev/ui';
+
+  let leftOpen = $state(false);
+  let bottomOpen = $state(false);
+</script>
+
+<Button variant="outlined" onclick={() => (leftOpen = true)}>Open left</Button>
+<Button variant="outlined" onclick={() => (bottomOpen = true)}>Open bottom</Button>
+
+<Drawer bind:open={leftOpen} title="Navigation" side="left" width="280px">
+  <Stack gap="1">
+    {#each ['Dashboard', 'Users', 'Products', 'Reports', 'Settings'] as item}
+      <button class="item" onclick={() => (leftOpen = false)}>{item}</button>
+    {/each}
+  </Stack>
+</Drawer>
+
+<Drawer bind:open={bottomOpen} title="Sort by" side="bottom">
+  <Stack gap="1">
+    {#each ['Name (A-Z)', 'Name (Z-A)', 'Date joined', 'Last active', 'Role'] as opt}
+      <button class="item" onclick={() => (bottomOpen = false)}>{opt}</button>
+    {/each}
+  </Stack>
+</Drawer>
+
+<style>
+  .item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 9px 12px;
+    background: transparent;
+    border: none;
+    border-radius: var(--ca-radius-md);
+    font-size: var(--ca-font-size-body2);
+    font-family: inherit;
+    color: var(--ca-text-primary);
+    cursor: pointer;
+    text-align: left;
+    transition: background var(--ca-duration-fast);
+  }
+  .item:hover { background: var(--ca-action-hover); }
+</style>

@@ -1,0 +1,35 @@
+<!-- @codeatlasdev/ui demo #094 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/progress#indeterminate -->
+Element: #094 Indeterminate (feedback/progress)
+What it shows: Use when progress cannot be determined.
+Tags: indeterminate, progress
+Needs: @codeatlasdev/ui@4.0.0
+Components: Progress
+Live demo: https://ui.codeatlas.com.br/docs/feedback/progress#indeterminate
+
+<script lang="ts">
+  import { Progress } from '@codeatlasdev/ui';
+</script>
+
+<div class="col">
+  <div class="row">
+    <span class="label">Loading</span>
+    <Progress indeterminate label="Loading content" />
+  </div>
+  <div class="row">
+    <span class="label">Syncing</span>
+    <Progress indeterminate label="Syncing data" />
+  </div>
+</div>
+
+<style>
+  .col { display: flex; flex-direction: column; gap: 16px; width: 100%; max-width: 480px; }
+  .row { display: flex; align-items: center; gap: 14px; }
+  .label {
+    font-size: var(--ca-font-size-caption);
+    font-family: var(--ca-font-mono);
+    color: var(--ca-text-secondary);
+    min-width: 64px;
+    flex-shrink: 0;
+    text-align: right;
+  }
+</style>

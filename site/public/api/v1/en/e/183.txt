@@ -1,0 +1,64 @@
+<!-- @codeatlasdev/ui demo #183 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/list-page#applist -->
+Element: #183 AppList (layout/list-page)
+What it shows: Pass data and the layout handles search, filters and pagination.
+Tags: applist, button, filtergroup, simpletable, statuschip, usercell
+Needs: @codeatlasdev/ui@4.0.0
+Components: AppList, Button, FilterGroup, SimpleTable, StatusChip, UserCell
+Live demo: https://ui.codeatlas.com.br/docs/layout/list-page#applist
+
+<script lang="ts">
+  import { AppList, Button, FilterGroup, SimpleTable, StatusChip, UserCell } from '@codeatlasdev/ui';
+  import { Plus } from '@lucide/svelte';
+
+  const ALL = [
+    { id: 1, name: 'Ana Lima', email: 'ana@acme.com', role: 'Admin', status: 'active' },
+    { id: 2, name: 'Carlos Melo', email: 'carlos@apex.io', role: 'Editor', status: 'active' },
+    { id: 3, name: 'Diana Kwan', email: 'diana@nova.dev', role: 'Viewer', status: 'inactive' },
+    { id: 4, name: 'Eduardo S.', email: 'edu@mesh.ai', role: 'Editor', status: 'active' },
+  ];
+  const roleOpts = [
+    { value: 'Admin', label: 'Admin' },
+    { value: 'Editor', label: 'Editor' },
+    { value: 'Viewer', label: 'Viewer' },
+  ];
+</script>
+
+<div class="frame">
+  <AppList title="Users" data={ALL} searchKeys={['name', 'email']} perPage={4}>
+    {#snippet actions()}
+      <Button variant="filled" size="sm">
+        {#snippet leading()}<Plus size={14} />{/snippet}
+        New user
+      </Button>
+    {/snippet}
+    {#snippet filters(list)}
+      <FilterGroup options={roleOpts} value={list.filters['role'] ?? 'all'} onchange={(v) => list.setFilter('role', v)} />
+    {/snippet}
+    {#snippet children(list)}
+      <SimpleTable>
+        <thead><tr><th>User</th><th>Role</th><th>Status</th></tr></thead>
+        <tbody>
+          {#each list.rows as u (u.id)}
+            <tr>
+              <td><UserCell name={u.name} email={u.email} /></td>
+              <td>{u.role}</td>
+              <td><StatusChip status={u.status === 'active' ? 'success' : 'neutral'} label={u.status === 'active' ? 'Active' : 'Inactive'} /></td>
+            </tr>
+          {/each}
+        </tbody>
+      </SimpleTable>
+    {/snippet}
+  </AppList>
+</div>
+
+<style>
+  .frame {
+    width: 100%;
+    height: 420px;
+    border-radius: var(--ca-radius-lg);
+    box-shadow: inset 0 0 0 1px var(--ca-outline-subtle);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+</style>

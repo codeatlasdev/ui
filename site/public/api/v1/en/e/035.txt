@@ -1,0 +1,28 @@
+<!-- @codeatlasdev/ui demo #035 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/radio#disabled -->
+Element: #035 Disabled (inputs/radio)
+What it shows: Disable a single item, or the whole group.
+Tags: disabled, radiogroup
+Needs: @codeatlasdev/ui@4.0.0
+Components: RadioGroup
+Live demo: https://ui.codeatlas.com.br/docs/inputs/radio#disabled
+
+<script lang="ts">
+  import { RadioGroup } from '@codeatlasdev/ui';
+
+  let answer = $state('yes');
+
+  const yesNo = [
+    { value: 'yes', label: 'Yes' },
+    { value: 'no', label: 'No' },
+    { value: 'maybe', label: 'Maybe', disabled: true },
+  ];
+
+  const fruits = [
+    { value: 'apple', label: 'Apple' },
+    { value: 'banana', label: 'Banana' },
+    { value: 'cherry', label: 'Cherry' },
+  ];
+</script>
+
+<RadioGroup items={yesNo} bind:value={answer} orientation="horizontal" />
+<RadioGroup items={fruits} value="banana" disabled />
