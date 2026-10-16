@@ -1,0 +1,164 @@
+---
+title: App navigation
+description: Make SvelteKit navigations feel instant. Preload defaults, where to mount NavigationProgress and RouteAnnouncer, LoadingBoundary for slow data, pendingLink for the tapped link and view transitions.
+group: Navigation
+order: 11
+---
+import { Callout } from "@codeatlasdev/ui";
+
+A navigation feels fast when the next page is already loaded, and honest when it is not. This page puts the pieces in one root layout: SvelteKit preloading so most clicks finish before the user lifts a finger, then [`NavigationProgress`](#where-to-mount-the-progress-bar), [`LoadingBoundary`](#slow-data-loadingboundary) and [`pendingLink`](#the-tapped-link-pendinglink) for the navigations that still take time.
+
+The package never imports `$app/*` outside `@codeatlasdev/ui/kit`, and it does not set any `data-sveltekit-*` attribute for you. Everything below is app code you copy into your SvelteKit project.
+
+## Preload defaults
+
+SvelteKit preloads from `data-sveltekit-preload-data` (the page's `load` data) and `data-sveltekit-preload-code` (its JavaScript). Put the defaults once on `<body>` in `src/app.html`; every link below it inherits them.
+
+```html
+<body data-sveltekit-preload-data="hover" data-sveltekit-preload-code="viewport">
+  <div style="display: contents">%sveltekit.body%</div>
+</body>
+```
+
+| Attribute | Value | What happens |
+|---|---|---|
+| `data-sveltekit-preload-data` | `hover` | Loads the page's data when the pointer rests on the link, or on `touchstart` on phones. The default for an app: no wasted requests, and the data is usually ready by the time the click lands. |
+| `data-sveltekit-preload-data` | `tap` | Loads the data on `mousedown` / `touchstart`. Use it for links to expensive or personalised pages. |
+| `data-sveltekit-preload-data` | `off` | No data preloading. Use it where a `load` has side effects or costs money. |
+| `data-sveltekit-preload-code` | `viewport` | Downloads the route's JavaScript as soon as the link enters the viewport. The right default for navigation chrome. |
+| `data-sveltekit-preload-code` | `eager` | Downloads the code immediately on page load. Reserve it for the one or two most likely next pages. |
+| `data-sveltekit-preload-code` | `hover`, `tap` | Same triggers as the data option, for code only. |
+
+Override per link or per region. The nearest ancestor wins, so the AppShell rail and panel can preload more eagerly than a long list of links in the page:
+
+```svelte
+<nav data-sveltekit-preload-code="eager">
+  <a href="/dashboard">Dashboard</a>
+</nav>
+
+<a href="/reports/export" data-sveltekit-preload-data="off">Export</a>
+```
+
+<Callout type="note" title="Data is preloaded, so loads must be safe">
+  Preloading runs the destination's `load` before the user commits to the click. Keep `load` functions free of side effects (writes, counters, one-time tokens) and mark the exceptions `data-sveltekit-preload-data="off"`.
+</Callout>
+
+[`AppShellLayout`](/docs/layout/app-shell/) renders its panel items as plain `<a href>` links, so they inherit the `<body>` defaults with no extra wiring. Switching module from the rail or the bottom navigation calls your `onNavigate(path)`: use `goto` there, which runs the same load pipeline.
+
+```svelte
+<AppShellLayout {modules} pathname={page.url.pathname} onNavigate={(path) => goto(path)}>
+  {@render children()}
+</AppShellLayout>
+```
+
+## Where to mount the progress bar
+
+`NavigationProgress` and `RouteAnnouncer` come from `@codeatlasdev/ui/kit` (not the main entry), because they read SvelteKit state. Mount both once in the root `src/routes/+layout.svelte`, outside the `AppShellLayout`, so the bar stays fixed to the top of the viewport through every navigation, including those on routes that have no shell.
+
+```svelte
+<script lang="ts">
+  import "@codeatlasdev/ui/styles/global.css";
+  import { NavigationProgress, RouteAnnouncer } from "@codeatlasdev/ui/kit";
+
+  let { children } = $props();
+</script>
+
+<NavigationProgress />
+<RouteAnnouncer />
+
+{@render children()}
+```
+
+- `NavigationProgress` draws a thin bar while `navigating.to` is set. It appears after `delay` ms (120 by default), so a navigation that finishes first, including every preloaded one, shows nothing. While visible it sets `data-ca-navigating` on `<html>`, so you can dim or disable UI during the wait: `html[data-ca-navigating] main { opacity: .7 }`.
+- `RouteAnnouncer` announces the new `document.title` (or the page `<h1>`) to screen readers after each client-side navigation. See [Accessibility](/docs/getting-started/accessibility/).
+- Keep the AppShell on application routes only, in a route group such as `src/routes/(app)/+layout.svelte`. Marketing routes keep the root layout and the progress bar, without the shell.
+
+```svelte
+<!-- src/routes/(app)/+layout.svelte -->
+<script lang="ts">
+  import { AppShellLayout } from "@codeatlasdev/ui";
+  import { goto } from "$app/navigation";
+  import { page } from "$app/state";
+
+  let { children } = $props();
+</script>
+
+<AppShellLayout {modules} pathname={page.url.pathname} onNavigate={(path) => goto(path)}>
+  {@render children()}
+</AppShellLayout>
+```
+
+The shell stays mounted through a navigation: only the page below it changes, and the progress bar sits above both.
+
+## Slow data: LoadingBoundary
+
+Preloading covers the common case. When a page still suspends on `await`, wrap the part that waits in [`LoadingBoundary`](/docs/navigation/loading-boundary/). It shows nothing for the first 200 ms, then a skeleton that stays at least 500 ms, so neither a fast nor a slow response flashes. It needs the `experimental.async` Svelte compiler option.
+
+```svelte
+<script lang="ts">
+  import { LoadingBoundary, Skeleton } from "@codeatlasdev/ui";
+  import Invoices from "./Invoices.svelte"; // const rows = $derived(await loadInvoices())
+</script>
+
+<h1>Invoices</h1>
+
+<LoadingBoundary label="Loading invoices">
+  <Invoices />
+  {#snippet pending()}<Skeleton height="12rem" />{/snippet}
+</LoadingBoundary>
+```
+
+Put the boundary around the data, not around the page: the heading and layout paint at once and only the region that waits shows the placeholder. Shape the `pending` snippet like the real content so nothing jumps when it arrives.
+
+## The tapped link: pendingLink
+
+`pendingLink()` is an attachment for `<a>`. While SvelteKit navigates to that link's `href`, the link carries `data-pending` and `aria-busy="true"`, so the item the user tapped can react before the next page is ready.
+
+```svelte
+<script lang="ts">
+  import { pendingLink } from "@codeatlasdev/ui/kit";
+</script>
+
+<a href="/billing" {@attach pendingLink()}>Billing</a>
+
+<style>
+  a[data-pending] { opacity: .6; }
+</style>
+```
+
+Use it on links you render yourself (a list of records, a card, a custom tab). It matches on pathname, so a link to `/billing?tab=plans` is also marked while `/billing` loads. Like the progress bar it only changes after SvelteKit reports a pending navigation, and a preloaded navigation is usually over before it shows.
+
+## View transitions
+
+For a cross-fade between routes, SvelteKit's `onNavigate` hook starts a browser view transition and waits for the new page. Add it once in the root layout. Skip it when the user prefers reduced motion.
+
+```svelte
+<script lang="ts">
+  import { onNavigate } from "$app/navigation";
+
+  onNavigate((navigation) => {
+    if (!document.startViewTransition) return;
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    return new Promise((resolve) => {
+      document.startViewTransition(async () => {
+        resolve();
+        await navigation.complete;
+      });
+    });
+  });
+</script>
+```
+
+The browser cross-fades screenshots, so there is no per-element code. It does not replace the progress bar: for a navigation that takes time, `NavigationProgress` is what tells the user something is happening, and the transition runs once the page is ready.
+
+## Putting it together
+
+| Layer | Handles | Tool |
+|---|---|---|
+| Preload | Most navigations finish before the click completes | `data-sveltekit-preload-data="hover"` and `data-sveltekit-preload-code="viewport"` on `<body>` |
+| Whole navigation | A route that still takes more than 120 ms | `NavigationProgress` in the root layout |
+| Tapped link | Feedback where the finger is | `pendingLink()` on the link |
+| Data inside a page | A region that awaits | `LoadingBoundary` around it |
+| Screen reader | The page changed | `RouteAnnouncer` in the root layout |
+| Between routes | A smooth change | `onNavigate` with `document.startViewTransition` |
