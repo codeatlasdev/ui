@@ -34,26 +34,10 @@
       overflow-wrap: anywhere;
     }
 
-    /* Wide: the column header labels it, so the <dt> is visually hidden (still in the a11y tree). */
-    .ca-record-cell dt {
-      position: absolute;
-      width: 1px;
-      height: 1px;
-      margin: -1px;
-      padding: 0;
-      overflow: hidden;
-      clip-path: inset(50%);
-      white-space: nowrap;
-    }
-
+    /* Wide: the column header labels it, so the <dt> is visually hidden (utilities.css, one
+       visually-hidden pattern) and stays in the a11y tree. Stacked: it is painted as a caption. */
     @container (max-width: 35.99rem) {
       .ca-record-cell dt {
-        position: static;
-        width: auto;
-        height: auto;
-        margin: 0;
-        overflow: visible;
-        clip-path: none;
         font-size: var(--ca-font-size-micro);
         font-weight: var(--ca-font-weight-semibold);
         color: var(--ca-text-hint);

@@ -70,6 +70,23 @@
   }
 }
 
+/* RecordList: the column header labels each cell while the row is wide, so the per-cell <dt> is
+   hidden visually but stays in the a11y tree. Stacked (list narrower than 36rem) the header is
+   gone and the <dt> is painted as the cell's caption. */
+@container (min-width: 36rem) {
+  .ca-record-cell dt {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+}
+
 /* ─── AppList toolbar ────────────────────────────────────────────── */
 
 .ca-search-field {
