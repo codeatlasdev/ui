@@ -7,9 +7,10 @@
   import { copyToClipboard } from '../../utils/clipboard.js';
   import { toast } from '../../stores/toast.svelte.js';
   import { announce } from '../../utils/announce.js';
+  import type { HTMLAttributes } from 'svelte/elements';
   const t = useT();
 
-  interface Props {
+  interface Props extends Omit<HTMLAttributes<HTMLElement>, 'class' | 'children' | 'onclick' | 'aria-label'> {
     value: string;
     /** Visible label. Pass `''` for an icon-only button. */
     label?: string;
@@ -17,6 +18,8 @@
     variant?: 'filled' | 'glass' | 'outlined' | 'ghost';
     /** Success toast message shown after copying. Omit for no toast. */
     toast?: string;
+    /** Accessible name of the icon-only button (`label=""`). Give each row its own ("Copy client_id of Acme"). Defaults to the localized `Copy`. Ignored when `label` is visible, so the name keeps containing the visible text. */
+    'aria-label'?: string;
     class?: string;
     oncopy?: (value: string) => void;
   }
@@ -27,8 +30,10 @@
     size = 'md',
     variant = 'ghost',
     toast: toastMessage,
+    'aria-label': ariaLabel,
     class: className = '',
     oncopy,
+    ...rest
   }: Props = $props();
 
   let copied = $state(false);
@@ -62,11 +67,11 @@
 {/snippet}
 
 {#if label !== ''}
-  <Button {variant} {size} class="ca-copy {className}" onclick={copy} leading={icon}>
+  <Button {...rest} {variant} {size} class="ca-copy {className}" onclick={copy} leading={icon}>
     {label ?? t().copyButton.label}
   </Button>
 {:else}
-  <IconButton variant={iconVariant} {size} class="ca-copy {className}" aria-label={t().copyButton.label} onclick={copy}>
+  <IconButton {...rest} variant={iconVariant} {size} class="ca-copy {className}" aria-label={ariaLabel ?? t().copyButton.label} onclick={copy}>
     {@render icon()}
   </IconButton>
 {/if}

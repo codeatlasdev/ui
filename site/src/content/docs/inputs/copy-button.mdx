@@ -20,7 +20,7 @@ import IconToastSrc from "~/demos/inputs/copy-button/IconToast.svelte?raw";
 <CopyButton value="npm i @codeatlasdev/ui" />
 ```
 
-The result is announced through a polite live region (`Copied`), and a failed copy raises an error toast. For a success toast, pass `toast` and mount a `<Toaster />` once in your layout. An icon-only button (`label=""`) keeps an accessible name from the localized `Copy` label. Default labels come from the active i18n catalog.
+The result is announced through a polite live region (`Copied`), and a failed copy raises an error toast. For a success toast, pass `toast` and mount a `<Toaster />` once in your layout. An icon-only button (`label=""`) is named from the localized `Copy` label by default. In a list or table every row would then announce the same name, so pass a distinct `aria-label` per row (`aria-label="Copy client_id of Acme"`). Default labels come from the active i18n catalog.
 
 <Demo title="Default" src={DefaultSrc}><Default client:visible /></Demo>
 <Demo title="Variants and sizes" src={VariantsSrc}><Variants client:visible /></Demo>
@@ -31,7 +31,9 @@ The result is announced through a polite live region (`Copied`), and a failed co
   { name: "label", type: "string", default: "'Copy' (localized)", description: "Visible label. '' renders an icon-only button." },
   { name: "size", type: "'sm' | 'md' | 'lg'", default: "'md'", description: "Button size." },
   { name: "variant", type: "'filled' | 'glass' | 'outlined' | 'ghost'", default: "'ghost'", description: "Button style." },
+  { name: "aria-label", type: "string", default: "'Copy' (localized)", description: "Accessible name of the icon-only button. Use one per row in lists. Ignored when `label` is visible." },
   { name: "toast", type: "string", description: "Success toast message. Omit for no toast." },
   { name: "class", type: "string", description: "Extra classes on the button." },
   { name: "oncopy", type: "(value: string) => void", description: "Called after a successful copy." },
+  { name: "...rest", type: "HTMLAttributes", description: "Forwarded to the underlying button." },
 ]} />

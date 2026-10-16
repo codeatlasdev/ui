@@ -53,6 +53,24 @@ describe("CopyButton", () => {
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
+	it("icon-only rows take a distinct accessible name each", async () => {
+		const screen = await render(CopyButton, {
+			value: "a",
+			label: "",
+			"aria-label": "Copiar client_id de Chatwoot",
+		});
+		await expect
+			.element(screen.getByRole("button", { name: "Copiar client_id de Chatwoot" }))
+			.toBeVisible();
+		expect(screen.getByRole("button", { name: "Copiar", exact: true }).elements()).toHaveLength(0);
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("labelled mode forwards rest attributes to the button", async () => {
+		const screen = await render(CopyButton, { value: "a", "data-testid": "cp" });
+		await expect.element(screen.getByTestId("cp")).toHaveAccessibleName("Copiar");
+	});
+
 	it("does not mark as copied when the clipboard write fails", async () => {
 		vi.spyOn(navigator.clipboard, "writeText").mockRejectedValue(new Error("denied"));
 		vi.spyOn(document, "execCommand").mockReturnValue(false);
