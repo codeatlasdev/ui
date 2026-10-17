@@ -161,6 +161,13 @@ describe("non-component exports (#57)", () => {
 		expect(md).toContain('`import { caErrorPlugin } from "@codeatlasdev/ui/vite"`');
 		expect(md).toContain("function primeKeyboard(): void");
 	});
+
+	it("states the version it describes and how to get the installed one (#272)", () => {
+		const header = skillMarkdown(manifest).split("\n").slice(0, 8).join("\n");
+		expect(header).toContain(`@codeatlasdev/ui@${manifest.version}`);
+		expect(header).toContain("ca-ui-mcp");
+		expect(header).toContain("components.json");
+	});
 });
 
 describe("extractClasses", () => {

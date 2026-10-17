@@ -121,6 +121,8 @@ Total: 806 unique classes across 82 components.
 
 `.ca-dialog` `.ca-dialog--chromeless` `.ca-dialog--split` `.ca-dialog-in` `.ca-dialog-out` `.ca-dialog__actions` `.ca-dialog__body` `.ca-dialog__description` `.ca-dialog__header` `.ca-dialog__sr-only` `.ca-dialog__title` `.ca-layer-close` `.ca-overlay` `.ca-overlay-in` `.ca-overlay-out`
 
+`.ca-overlay` is the modal `<dialog>` itself (`dialog.ca-overlay`), shared by Dialog, AlertDialog, Drawer, Sheet, CommandPalette and DocsSearch. The scrim is `dialog.ca-overlay::backdrop`, driven by `--ca-scrim-color` and `--ca-scrim-blur`. A `background` or `backdrop-filter` on `.ca-overlay` paints the panel, not the scrim.
+
 ## Divider
 
 `.ca-divider` `.ca-divider--horizontal` `.ca-divider--vertical`

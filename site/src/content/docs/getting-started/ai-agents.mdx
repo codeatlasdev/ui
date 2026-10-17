@@ -111,6 +111,10 @@ npx skills add codeatlasdev/ui
 | `codeatlas-dx` | File structure and size limits so the codebase stays clean. |
 | `codeatlas-writing` | UI copy that does not read like a chatbot wrote it. |
 
+<Callout type="caution" title="The skill follows main, not your installed version">
+  `npx skills add` copies the skill and its `API.md` from the `main` branch, so they can describe props, tools and exports that your installed `@codeatlasdev/ui` does not have yet (with 4.1.0 installed, a skill from main already documented the `icon` snippet of `DropdownMenuItem` and the `report_issue` tool, both new in 4.2.0). `API.md` states the version it was generated for in its first lines. The package you installed is the source of truth: `ca-ui-mcp` ships inside it and answers for exactly that version, as does `node_modules/@codeatlasdev/ui/dist/components.json`. Pin the server to your version (`npx -y -p @codeatlasdev/ui@<your version> ca-ui-mcp`, or `node_modules/.bin/ca-ui-mcp`), and update the skill with `npx skills update` after you upgrade the package.
+</Callout>
+
 ## Point your agent at the docs
 
 <Steps>

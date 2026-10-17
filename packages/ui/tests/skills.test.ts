@@ -40,6 +40,12 @@ describe("agent skills layout (npx skills add codeatlasdev/ui)", () => {
 		}
 	});
 
+	it("tells the agent the installed package outranks the skill's reference (#272)", () => {
+		const body = readFileSync(join(SKILLS, "codeatlas-ui", "SKILL.md"), "utf8");
+		expect(body).toContain("node_modules/@codeatlasdev/ui/dist/components.json");
+		expect(body).toMatch(/track the `main` branch/);
+	});
+
 	it("has string name and description in every SKILL.md", () => {
 		for (const d of dirs) {
 			const file = join(SKILLS, d.name, "SKILL.md");

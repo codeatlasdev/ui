@@ -393,3 +393,31 @@ describe("docs links", () => {
 		expect(bad).toEqual([]);
 	});
 });
+
+// ── The `.ca-overlay` role guide (#291) ──────────────────────────────────────
+
+describe("theming guide: dialogs, drawers and the scrim", () => {
+	const theming = pages.find((p) => p.rel === "getting-started/theming.mdx")?.src ?? "";
+	const section =
+		theming.match(/^## Dialogs, drawers and the scrim\n([\s\S]*?)(?=^## )/m)?.[1] ?? "";
+	const css = readFileSync(
+		join(import.meta.dir, "../src/lib/components/Dialog/dialog.css"),
+		"utf8"
+	);
+
+	it("is present and says `.ca-overlay` is the <dialog> with a ::backdrop scrim", () => {
+		expect(section).toContain("`.ca-overlay` is the modal `<dialog>` itself");
+		expect(section).toContain("dialog.ca-overlay::backdrop");
+	});
+
+	it("names only scrim tokens and selectors the package really defines", () => {
+		const tokens = new Set(section.match(/--ca-scrim-[a-z]+/g));
+		expect(tokens.size).toBeGreaterThan(0);
+		const defined = [
+			readFileSync(join(import.meta.dir, "../src/lib/styles/tokens.css"), "utf8"),
+			readFileSync(join(import.meta.dir, "../src/lib/styles/presets/amber.css"), "utf8"),
+		].join("\n");
+		for (const t of tokens) expect(defined, t).toContain(`${t}:`);
+		expect(css).toContain("dialog.ca-overlay::backdrop");
+	});
+});

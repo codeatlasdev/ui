@@ -98,10 +98,10 @@ Icons passed to components (`icon: Settings`) are `@lucide/svelte` components. T
 
 ## Look up the real API before writing a prop
 
-Never guess a prop name. Two sources, both generated from the source types:
+Never guess a prop name. This skill and `API.md` track the `main` branch, which can be ahead of the `@codeatlasdev/ui` the project has installed: a prop, snippet or MCP tool listed here may not exist in the installed version. Check the installed version first (`node_modules/@codeatlasdev/ui/package.json`) and prefer what that package answers over this file. Two sources, both generated from the source types:
 
 1. **MCP server (preferred).** `ca-ui-mcp` answers `get_component("Button")` (props, defaults, snippets, `ca-*` classes), `get_export("setLocale")` (signature and summary of any function, store, constant or type: `caErrorPlugin`, `createErrorHandler`, `nativeFeel`, `primeKeyboard`, `toast`...), `list_components`, `search_tokens("safe-bottom")`, `list_surfaces()` (the `data-style` surface styles and which draw a blur) and `get_guide("theming")`. Setup: `claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp`.
-2. **[API.md](./API.md)**: the same data as one markdown file (offline fallback; large, search it instead of reading it whole). Components first, then the `# Non-component exports` section grouped by import path. Regenerate with `bun run --cwd packages/ui manifest -- --skill` after changing a component.
+2. **[API.md](./API.md)**: the same data as one markdown file; its first lines name the version it was generated for. Offline fallback; for the installed version read `node_modules/@codeatlasdev/ui/dist/components.json` instead. Large, search it instead of reading it whole. Components first, then the `# Non-component exports` section grouped by import path. Regenerate with `bun run --cwd packages/ui manifest -- --skill` after changing a component.
 
 ## Mobile, theme, SEO
 
