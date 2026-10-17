@@ -1,13 +1,13 @@
 {
-	"summary": "A dashed area that opens a Rename, Duplicate, Delete menu at the pointer on right-click, or from the keyboard with Shift+F10 or the ContextMenu key.",
+	"summary": "A dashed button area that opens a Rename, Duplicate, Delete menu at the pointer on right-click, or from the keyboard with Shift+F10 or the ContextMenu key.",
 	"use": "Context menus on rows, files or canvases: the menu opens where the user pointed and moves when they right-click again.",
 	"spec": [
 		"`let open = $state(false)` and `let point = $state<{ x: number; y: number } | null>(null)`",
-		"The area div has `role=\"application\"`, `aria-label=\"File list\"`, `tabindex=\"0\"` and `{oncontextmenu}` / `{onkeydown}` handlers",
+		"The area is a native `<button type=\"button\" class=\"area\" {oncontextmenu} {onkeydown}>` so it is focusable and named by its visible text",
 		"`oncontextmenu` calls `e.preventDefault()`, sets `point = { x: e.clientX, y: e.clientY }` and `open = true`",
 		"`onkeydown` handles `ContextMenu` and Shift+F10 and anchors the menu to the area's top-left",
 		"`<DropdownMenu bind:open anchor={point}>` has no trigger; items Rename, Duplicate and a destructive Delete after `<DropdownMenuSeparator />`",
-		"`let last = $state('')` is shown as `Last action: {last}` with `aria-live=\"polite\"`"
+		"Each item calls `function pick(action: string)`, which sets `last = action` and calls `announce`; `Last action: {last}` is shown below"
 	],
 	"tags": ["dropdown-menu", "context-menu", "right-click", "anchor", "bind-open", "keyboard"],
 	"shape": "wide"
