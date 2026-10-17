@@ -1,0 +1,15 @@
+Use @codeatlasdev/ui demo #402 "Context menu" (navigation/menu).
+What it shows: A dashed area that opens a Rename, Duplicate, Delete menu at the pointer on right-click, or from the keyboard with Shift+F10 or the ContextMenu key. When to use: Context menus on rows, files or canvases: the menu opens where the user pointed and moves when they right-click again.
+Spec:
+- `let open = $state(false)` and `let point = $state<{ x: number; y: number } | null>(null)`
+- The area div has `role="application"`, `aria-label="File list"`, `tabindex="0"` and `{oncontextmenu}` / `{onkeydown}` handlers
+- `oncontextmenu` calls `e.preventDefault()`, sets `point = { x: e.clientX, y: e.clientY }` and `open = true`
+- `onkeydown` handles `ContextMenu` and Shift+F10 and anchors the menu to the area's top-left
+- `<DropdownMenu bind:open anchor={point}>` has no trigger; items Rename, Duplicate and a destructive Delete after `<DropdownMenuSeparator />`
+- `let last = $state('')` is shown as `Last action: {last}` with `aria-live="polite"`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #402 Context menu → file, what changed, https://ui.codeatlas.com.br/docs/navigation/menu#context-menu; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/402.txt   Components API: ca-ui-mcp get_component(DropdownMenu)

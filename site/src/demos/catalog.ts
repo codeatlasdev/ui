@@ -305,6 +305,7 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "389", path: "inputs/text-field/HiddenLabel" },
 	{ id: "400", path: "navigation/menu/Selection" },
 	{ id: "401", path: "navigation/menu/Submenu" },
+	{ id: "402", path: "navigation/menu/ContextMenu" },
 ];
 
 /**

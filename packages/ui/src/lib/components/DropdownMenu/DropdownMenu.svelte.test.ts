@@ -4,8 +4,10 @@ import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
 import Harness from "./DropdownMenu.test.svelte";
+import AnchorHarness from "./DropdownMenuAnchor.test.svelte";
 import AttrsHarness from "./DropdownMenuAttrs.test.svelte";
 import IconHarness from "./DropdownMenuIcon.test.svelte";
+import OpenHarness from "./DropdownMenuOpen.test.svelte";
 import SelectionHarness from "./DropdownMenuSelection.test.svelte";
 import SubHarness from "./DropdownMenuSub.test.svelte";
 
@@ -21,6 +23,14 @@ const openByKeyboard = async (props = {}, key = "{Enter}") => {
 };
 
 describe("DropdownMenu", () => {
+	it.each(["{ContextMenu}", "{Shift>}{F10}{/Shift}"])(
+		"the trigger opens on its first item with %j",
+		async (key) => {
+			await openByKeyboard({}, key);
+			await expect.element(page.getByRole("menuitem", { name: "Edit" })).toHaveFocus();
+		}
+	);
+
 	it.each(["{Enter}", " ", "{ArrowDown}"])(
 		"opens from the trigger with %j and exposes menuitems",
 		async (key) => {
@@ -428,5 +438,126 @@ describe("DropdownMenu submenu", () => {
 		await settled();
 		for (const el of document.querySelectorAll<HTMLElement>('[role="menu"]'))
 			expect(await checkA11y(el)).toHaveNoViolations();
+	});
+});
+
+describe("DropdownMenu bind:open", () => {
+	const isOpen = () => page.getByTestId("open");
+
+	it("opening from the trigger flips the bound value and calls onOpenChange", async () => {
+		const onOpenChange = vi.fn();
+		const screen = await render(OpenHarness, { onOpenChange });
+		await expect.element(isOpen()).toHaveTextContent("false");
+		await screen.getByRole("button", { name: "Actions" }).click();
+		await expect.element(isOpen()).toHaveTextContent("true");
+		expect(onOpenChange).toHaveBeenLastCalledWith(true);
+		await userEvent.keyboard("{Escape}");
+		await expect.element(isOpen()).toHaveTextContent("false");
+		expect(onOpenChange).toHaveBeenLastCalledWith(false);
+	});
+
+	it("setting the bound value from outside opens the menu", async () => {
+		const screen = await render(OpenHarness, {});
+		await screen.getByRole("button", { name: "Open from outside" }).click();
+		await expect.element(page.getByRole("menu")).toBeVisible();
+		await expect
+			.element(screen.getByRole("button", { name: "Actions" }))
+			.toHaveAttribute("aria-expanded", "true");
+	});
+
+	it("selecting an item closes the menu and resets the bound value", async () => {
+		await render(OpenHarness, {});
+		await page.getByRole("button", { name: "Actions" }).click();
+		await page.getByRole("menuitem", { name: "Edit" }).click();
+		await expect.element(isOpen()).toHaveTextContent("false");
+	});
+});
+
+describe("DropdownMenu opened at a point", () => {
+	const area = () => page.getByTestId("area");
+	const menu = () => document.querySelector('[role="menu"]') as HTMLElement;
+	const rightClick = async (x: number, y: number) => {
+		const el = area().element() as HTMLElement;
+		const r = el.getBoundingClientRect();
+		el.dispatchEvent(
+			new MouseEvent("contextmenu", {
+				bubbles: true,
+				cancelable: true,
+				clientX: r.left + x,
+				clientY: r.top + y,
+			})
+		);
+		return { x: r.left + x, y: r.top + y };
+	};
+
+	it("a menu with no trigger opens at the pointer", async () => {
+		await render(AnchorHarness, {});
+		const p = await rightClick(60, 40);
+		await expect.element(page.getByRole("menu")).toBeVisible();
+		await settled();
+		const r = menu().getBoundingClientRect();
+		expect(Math.abs(r.left - p.x)).toBeLessThan(2);
+		expect(r.top).toBeGreaterThanOrEqual(p.y - 1);
+		expect(r.top).toBeLessThan(p.y + 12);
+	});
+
+	it("a second right-click while open moves the menu instead of closing it", async () => {
+		await render(AnchorHarness, {});
+		const first = await rightClick(40, 30);
+		await expect.element(page.getByRole("menu")).toBeVisible();
+		await settled();
+		expect(Math.abs(menu().getBoundingClientRect().left - first.x)).toBeLessThan(2);
+		const second = await rightClick(180, 120);
+		await settled();
+		await expect.element(page.getByRole("menu")).toBeVisible();
+		await expect.element(page.getByTestId("open")).toHaveTextContent("true");
+		const after = menu().getBoundingClientRect();
+		expect(Math.abs(second.x - first.x)).toBeGreaterThan(50);
+		expect(Math.abs(after.left - second.x)).toBeLessThan(2);
+		expect(Math.abs(after.top - second.y)).toBeLessThan(2);
+	});
+
+	it.each([
+		["ContextMenu", "{ContextMenu}"],
+		["Shift+F10", "{Shift>}{F10}{/Shift}"],
+	])("%s opens the menu from the keyboard on the first item", async (_name, keys) => {
+		await render(AnchorHarness, {});
+		(area().element() as HTMLElement).focus();
+		await userEvent.keyboard(keys);
+		await expect.element(page.getByRole("menu")).toBeVisible();
+		await expect.element(page.getByRole("menuitem", { name: "Rename" })).toHaveFocus();
+	});
+
+	it("Escape closes it and focus returns to the element that had it", async () => {
+		await render(AnchorHarness, {});
+		(area().element() as HTMLElement).focus();
+		await userEvent.keyboard("{ContextMenu}");
+		await expect.element(page.getByRole("menu")).toBeVisible();
+		await userEvent.keyboard("{Escape}");
+		await expect.element(page.getByRole("menu")).not.toBeInTheDocument();
+		await expect.element(area()).toHaveFocus();
+		await expect.element(page.getByTestId("open")).toHaveTextContent("false");
+	});
+
+	it("a press outside closes it; an item runs and closes it", async () => {
+		const onrename = vi.fn();
+		await render(AnchorHarness, { onrename });
+		await rightClick(20, 20);
+		await page.getByRole("menuitem", { name: "Rename" }).click();
+		expect(onrename).toHaveBeenCalledOnce();
+		await expect.element(page.getByRole("menu")).not.toBeInTheDocument();
+		await rightClick(20, 20);
+		await expect.element(page.getByRole("menu")).toBeVisible();
+		await page.getByTestId("open").click({ force: true });
+		await expect.element(page.getByRole("menu")).not.toBeInTheDocument();
+		await expect.element(page.getByTestId("open")).toHaveTextContent("false");
+	});
+
+	it("has no axe violations while open at a point", async () => {
+		await render(AnchorHarness, {});
+		await rightClick(60, 40);
+		await expect.element(page.getByRole("menu")).toBeVisible();
+		await settled();
+		expect(await checkA11y(menu())).toHaveNoViolations();
 	});
 });
