@@ -114,12 +114,10 @@
     return () => current.destroy();
   });
 
-  function onMounted(el: HTMLElement) {
-    const frame = requestAnimationFrame(() => {
-      if (pendingFocus === 'first') listbox.first();
-      else if (!el.contains(document.activeElement)) return;
-    });
-    return () => cancelAnimationFrame(frame);
+  // The layer is already shown when this runs, so focus moves in the same task as the open: a
+  // key typed right after ArrowRight must reach the submenu, not the trigger it came from.
+  function onMounted() {
+    if (pendingFocus === 'first') listbox.first();
   }
 
   function onkeydown(e: KeyboardEvent) {
