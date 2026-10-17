@@ -7,6 +7,7 @@ import { onLayerChange } from "../../primitives/index.js";
 import ExitRace from "./ExitRace.test.svelte";
 import MenuThenDialog from "./MenuThenDialog.test.svelte";
 import Harness from "./NestedLayers.test.svelte";
+import TooltipThenDialog from "./TooltipThenDialog.test.svelte";
 
 const stops: Array<() => void> = [];
 afterEach(() => {
@@ -144,5 +145,25 @@ describe("layer stack ownership of Escape", () => {
 		await userEvent.keyboard("{Escape}");
 		await expect.element(dialog).not.toBeInTheDocument();
 		expect(onOpenChange).toHaveBeenLastCalledWith(false);
+	});
+
+	it("a tooltip open when its trigger opens a dialog is not left in normal flow (#324)", async () => {
+		await render(TooltipThenDialog);
+		const trigger = page.getByRole("button", { name: "Settings" });
+		await userEvent.hover(trigger);
+		await expect.element(page.getByRole("tooltip")).toBeVisible();
+
+		await trigger.click();
+		const dialog = page.getByRole("dialog", { name: "Settings" });
+		await expect.element(dialog).toBeVisible();
+
+		await userEvent.keyboard("{Escape}");
+		await expect.element(dialog).not.toBeInTheDocument();
+		await settled();
+		// Focus returns to the trigger, so its tooltip may show again (APG: tooltips open on focus),
+		// but only as a top-layer popover. The bug left a copy without `popover`, in the page's flow.
+		const hints = () => [...document.querySelectorAll<HTMLElement>(".ca-tooltip-content")];
+		await expect.poll(() => hints().filter((el) => !el.hasAttribute("popover")).length).toBe(0);
+		expect(hints().length).toBeLessThanOrEqual(1);
 	});
 });
