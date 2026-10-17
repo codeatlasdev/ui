@@ -49,6 +49,8 @@ The rail magnifies the module icon under the pointer, like a dock. Only the glyp
   { name: "persistPanel", type: "boolean", default: "true", description: "Keeps the shell across page loads: panel open or closed, selected module and expanded sections (localStorage), panel scroll (sessionStorage). Restored before the first paint. Turn it off for demos and embeds that must always start from the defaults." },
   { name: "panelWidth", type: "number", default: "200", description: "Width of the navigation panel in px, for lists with long labels. Held between 160 and 480. The content offset and the open and close animation follow it, so nothing misaligns. Prefer it to overriding `--ca-panel-width`, which the layout does not read." },
   { name: "resizablePanel", type: "boolean", default: "false", description: "Adds a drag handle on the panel's trailing edge. It is a keyboard-operable separator: Arrow keys move it by 8px, Shift by 32px, Home and End jump to the bounds. With `persistPanel` the chosen width is kept like the open state and restored before the first paint; `panelWidth` is the width used until the user picks one." },
+  { name: "reorder", type: "Component", description: "Pass the exported `NavReorder` to enable `onReorder` on sections and modules. Opt-in so the drag engine is only bundled by apps that reorder." },
+  { name: "itemMenu", type: "Component", description: "Pass the exported `NavItemMenu` to render `NavItem.actions` as a \"…\" menu. Opt-in so the dropdown menu is only bundled by apps that use it." },
   { name: "header", type: "Snippet", description: "Desktop header rendered above the page content. Hidden below 900px." },
   { name: "brand", type: "Snippet", description: "Logo shown at the top of the rail and in the mobile header." },
   { name: "railBottom", type: "Snippet", description: "Items pinned to the bottom of the rail, such as an avatar or notifications." },
@@ -73,13 +75,15 @@ A `NavItem` takes more than an icon and a label:
 | `leading` | A snippet that replaces the icon (a color swatch, an avatar, an emoji). Decorative: the label is the name. |
 | `count` | A neutral total after the label (`1.2k` above 999). The link's name carries the exact number, never "unread". `0` renders. |
 | `badge` | Unread-style count: announced "N unread", capped at 99+. Use `count` for a plain total. |
-| `actions` | A snippet of `DropdownMenuItem`s. The row gets a "…" button named `Actions for <label>`, a sibling of the link, shown on hover and focus. |
+| `actions` | A snippet of `DropdownMenuItem`s. The row gets a "…" button named `Actions for <label>`, a sibling of the link, shown on hover and focus. Needs `itemMenu={NavItemMenu}` on the shell. |
 
-Reordering is per list: set `onReorder` on a `NavSection` (or on the `NavModule` for the items that sit outside any section). Each row gets a grip that works with the mouse, touch (press and hold) and the keyboard (Space lifts, arrows move, Enter drops, Escape cancels), and every step is announced. It is the same `useDnd` engine as [drag and drop](/docs/foundation/drag-and-drop/). The shell never reorders `items` for you: commit the move in your state and the new order flows back in. `onReorder` is not called when the drop lands where it started.
+Reordering is per list: set `onReorder` on a `NavSection` (or on the `NavModule` for the items that sit outside any section) and pass `reorder={NavReorder}` to `AppShellLayout`. Each row gets a grip that works with the mouse, touch (press and hold) and the keyboard (Space lifts, arrows move, Enter drops, Escape cancels), and every step is announced. It is the same `useDnd` engine as [drag and drop](/docs/foundation/drag-and-drop/). The shell never reorders `items` for you: commit the move in your state and the new order flows back in. `onReorder` is not called when the drop lands where it started.
+
+`NavReorder` and `NavItemMenu` are opt-in on purpose: the drag engine and the dropdown menu are only bundled by apps that import them, so a shell without per-item menus or reordering stays small.
 
 ```svelte
 <script lang="ts">
-  import { DropdownMenuItem, type NavModule, type NavReorderEvent } from "@codeatlasdev/ui";
+  import { AppShellLayout, DropdownMenuItem, NavItemMenu, NavReorder, type NavModule, type NavReorderEvent } from "@codeatlasdev/ui";
 
   type Row = { id: string; name: string; color: string; count: number };
   let rows = $state<Row[]>([]);
@@ -97,6 +101,7 @@ Reordering is per list: set `onReorder` on a `NavSection` (or on the `NavModule`
 {/snippet}
 
 <!-- items: rows.map((r) => ({ id: r.id, label: r.name, icon: Folder, path: `/p/${r.id}`, color: r.color, count: r.count, actions: menu })) -->
+<!-- <AppShellLayout {modules} {pathname} reorder={NavReorder} itemMenu={NavItemMenu}> -->
 ```
 
 <Demo title="Color, count, actions and reorder" description="Each row has a color dot, a neutral count and a … menu; drag a row by its grip." src={ItemExtrasSrc} stage><ItemExtras client:visible /></Demo>

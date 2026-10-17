@@ -2,7 +2,7 @@
 	"summary": "App shell panel rows with a color dot, a neutral count, a per-row actions menu and drag-to-reorder.",
 	"use": "Lists of user-owned things (workspaces, folders, saved views) that need a marker, a total, quick actions and a custom order.",
 	"spec": [
-		"`<AppShellLayout {modules} {pathname} persistPanel={false} mainId={null} skipLink={false}>`",
+		"`<AppShellLayout {modules} {pathname} reorder={NavReorder} itemMenu={NavItemMenu} persistPanel={false} mainId={null} skipLink={false}>`: reorder and the item menu are opt-in imports",
 		"One module `id: 'projects'` with a non-collapsible section `label: 'Workspaces'` and `onReorder: reorder`",
 		"3 items: Design system (#e11d48, count 42), Marketing site (#2563eb, count 1280, shown as 1.2k), Mobile app (#16a34a, count 0)",
 		"Every item has `color`, `count` and `actions`; `actions` is a snippet with 2 `DropdownMenuItem`s: Favorite and Archive (destructive)",

@@ -11,7 +11,7 @@ export function clampPanelWidth(width: number): number {
 	return Math.min(PANEL_MAX_WIDTH, Math.max(PANEL_MIN_WIDTH, Math.round(width)));
 }
 
-import type { Snippet } from "svelte";
+import type { Component, Snippet } from "svelte";
 import type { IconComponent } from "../../types.js";
 
 export interface NavItem {
@@ -58,8 +58,10 @@ export interface NavSection {
 	items: NavItem[];
 	/**
 	 * Makes the items of this section reorderable: each row gets a grip (mouse, touch press-and-hold
-	 * and keyboard through `useDnd`). The shell never reorders `items` itself; commit the move in
-	 * your state, the new order flows back in. Not called when the drop lands where it started.
+	 * and keyboard through `useDnd`). Needs `reorder={NavReorder}` on `AppShellLayout` (opt-in, so the
+	 * drag engine is only bundled by apps that reorder). The shell never reorders `items` itself;
+	 * commit the move in your state, the new order flows back in. Not called when the drop lands where
+	 * it started.
 	 */
 	onReorder?: (e: NavReorderEvent) => void;
 }
@@ -74,6 +76,20 @@ export interface NavModule {
 	items: (NavItem | NavSection)[];
 	/** Same as `NavSection.onReorder`, for the items that sit directly in `items` (outside any section). */
 	onReorder?: (e: NavReorderEvent) => void;
+}
+
+/** Props of the opt-in `NavReorder` list (see `NavExtras.reorder`). */
+export interface NavReorderProps {
+	items: NavItem[];
+	onReorder: (e: NavReorderEvent) => void;
+	label: string;
+	isActive: (item: NavItem) => boolean;
+}
+
+/** Opt-in nav features passed to `AppShellLayout` (`reorder`, `itemMenu`), shared through context. */
+export interface NavExtras {
+	reorder?: Component<NavReorderProps>;
+	itemMenu?: Component<{ label: string; actions: Snippet }>;
 }
 
 export interface SidebarState {

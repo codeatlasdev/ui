@@ -2,6 +2,8 @@
   import {
     AppShellLayout,
     DropdownMenuItem,
+    NavItemMenu,
+    NavReorder,
     PageShell,
     Card,
     type NavModule,
@@ -68,7 +70,7 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions, a11y_click_events_have_key_events -->
 <div class="stage" onclick={intercept}>
-  <AppShellLayout {modules} {pathname} persistPanel={false} mainId={null} skipLink={false}>
+  <AppShellLayout {modules} {pathname} reorder={NavReorder} itemMenu={NavItemMenu} persistPanel={false} mainId={null} skipLink={false}>
     <PageShell title="Workspaces" description={pathname}>
       <Card material="glass" full>
         <p class="hint">{log}</p>

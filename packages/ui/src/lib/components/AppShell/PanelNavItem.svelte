@@ -1,10 +1,10 @@
 <script lang="ts">
-  import { GripVertical, MoreHorizontal } from '@lucide/svelte';
+  import { getContext } from 'svelte';
+  import { GripVertical } from '@lucide/svelte';
   import { useT } from '../../i18n/state.svelte.js';
-  import DropdownMenu from '../DropdownMenu/DropdownMenu.svelte';
-  import IconButton from '../Button/IconButton.svelte';
-  import type { NavItem } from './types.js';
+  import type { NavExtras, NavItem } from './types.js';
   const t = useT();
+  const extras = getContext<NavExtras | undefined>('appshell-nav-extras');
 
   interface Props {
     item:     NavItem;
@@ -81,16 +81,10 @@
       <span class="ca-nav-item__dot" aria-label={t().appShell.new}></span>
     {/if}
   </a>
-  {#if item.actions}
+  {#if item.actions && extras?.itemMenu}
+    {@const Menu = extras.itemMenu}
     <span class="ca-nav-item__actions">
-      <DropdownMenu align="end" side="bottom">
-        {#snippet triggerChild(props)}
-          <IconButton variant="text" size="sm" aria-label={t().appShell.itemActions(item.label)} {...props}>
-            <MoreHorizontal size={14} />
-          </IconButton>
-        {/snippet}
-        {@render item.actions()}
-      </DropdownMenu>
+      <Menu label={t().appShell.itemActions(item.label)} actions={item.actions} />
     </span>
   {/if}
 </div>

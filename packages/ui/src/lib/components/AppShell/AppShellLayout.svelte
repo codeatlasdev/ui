@@ -3,7 +3,7 @@
   import { setContext } from 'svelte';
   import { Spring } from 'svelte/motion';
   import { reducedMotion } from '../../stores/reduced-motion.svelte.js';
-  import type { NavModule } from './types.js';
+  import type { NavExtras, NavModule } from './types.js';
   import { clampPanelWidth, firstModulePath, isItemActive, isNavSection, matchModuleIndex, PANEL_WIDTH, RAIL_WIDTH } from './types.js';
   import { readShellState, shellScript, writeShellState } from './shell-state.js';
   import Rail from './Rail.svelte';
@@ -34,6 +34,16 @@
      * the user picks is kept with `persistPanel`, like the open state, and restored before paint.
      */
     resizablePanel?: boolean;
+    /**
+     * Enables `onReorder` on sections and modules: pass the exported `NavReorder` component.
+     * Opt-in so the drag engine is only bundled by apps that reorder.
+     */
+    reorder?:       NavExtras['reorder'];
+    /**
+     * Renders `NavItem.actions` as a "…" menu: pass the exported `NavItemMenu` component.
+     * Opt-in so DropdownMenu is only bundled by apps that use per-item menus.
+     */
+    itemMenu?:      NavExtras['itemMenu'];
     header?:        Snippet;
     /** Brand mark (logo) shown at the top of the Rail and in the mobile header. */
     brand?:         Snippet;
@@ -73,6 +83,8 @@
     persistPanel  = true,
     panelWidth    = PANEL_WIDTH,
     resizablePanel = false,
+    reorder,
+    itemMenu,
     header,
     brand,
     railBottom,
@@ -182,6 +194,11 @@
   $effect(() => {
     const id = modules[selectedIndex]?.id;
     if (persistPanel && id) writeShellState({ module: id });
+  });
+
+  setContext<NavExtras>('appshell-nav-extras', {
+    get reorder()  { return reorder; },
+    get itemMenu() { return itemMenu; },
   });
 
   setContext('appshell', {

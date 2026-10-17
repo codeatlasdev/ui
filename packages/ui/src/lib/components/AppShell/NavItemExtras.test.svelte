@@ -1,8 +1,14 @@
 <script lang="ts">
 	import { Archive, Folder, Star } from "@lucide/svelte";
+	import { setContext } from "svelte";
 	import DropdownMenuItem from "../DropdownMenu/DropdownMenuItem.svelte";
+	import NavItemMenu from "./NavItemMenu.svelte";
+	import NavReorder from "./NavReorder.svelte";
 	import Panel from "./Panel.svelte";
-	import type { NavModule } from "./types.js";
+	import type { NavExtras, NavModule } from "./types.js";
+
+	// What AppShellLayout does with `reorder={NavReorder} itemMenu={NavItemMenu}`.
+	setContext<NavExtras>("appshell-nav-extras", { reorder: NavReorder, itemMenu: NavItemMenu });
 
 	interface Props {
 		/** Section items start in this order; the test reads it back from the DOM. */
