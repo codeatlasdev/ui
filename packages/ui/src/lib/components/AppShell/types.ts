@@ -1,7 +1,15 @@
 // ─── AppShell navigation types ────────────────────────────────────────────────
 
 export const RAIL_WIDTH = 52; // px, icon dock
-export const PANEL_WIDTH = 200; // px, side panel
+export const PANEL_WIDTH = 200; // px, side panel (default)
+export const PANEL_MIN_WIDTH = 160; // px, narrowest panel `panelWidth` or the resize handle can reach
+export const PANEL_MAX_WIDTH = 480; // px, widest
+
+/** `width` rounded to a whole pixel and held inside `[PANEL_MIN_WIDTH, PANEL_MAX_WIDTH]`; `PANEL_WIDTH` for a non-finite value. */
+export function clampPanelWidth(width: number): number {
+	if (!Number.isFinite(width)) return PANEL_WIDTH;
+	return Math.min(PANEL_MAX_WIDTH, Math.max(PANEL_MIN_WIDTH, Math.round(width)));
+}
 
 import type { IconComponent } from "../../types.js";
 

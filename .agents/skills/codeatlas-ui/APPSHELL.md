@@ -93,6 +93,8 @@ Item extras: `badge` (number), `isNew`, `shortcut`, `description`.
 | `pathname` | `string` | required |
 | `onNavigate` | `(path: string) => void` | required |
 | `persistPanel` | `boolean` | `true` |
+| `panelWidth` | `number` | `200` (held between 160 and 480) |
+| `resizablePanel` | `boolean` | `false` (drag handle; the width is kept with `persistPanel`) |
 
 ## Anti-patterns
 

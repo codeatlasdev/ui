@@ -49,6 +49,11 @@ export const en = {
 		new: "New",
 		openNavigation: "Open navigation",
 		closeNavigation: "Close navigation",
+		resizePanel: "Resize navigation panel",
+		/** Name of the "…" button of a panel item; `label` is the item label. */
+		itemActions: (label: string) => `Actions for ${label}`,
+		/** Name of the drag handle of a panel item when the list can be reordered. */
+		moveItem: (label: string) => `Move ${label}`,
 	},
 	avatar: {
 		status: { online: "Online", offline: "Offline", away: "Away", busy: "Busy" },

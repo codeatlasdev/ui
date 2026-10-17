@@ -32,7 +32,7 @@ The shell never imports a router. You pass the current `pathname` and handle `on
 
 The rail magnifies the module icon under the pointer, like a dock. Only the glyph grows, never the button, so the hover background cannot cover the active neighbour. The effect follows the motion scale: it is off with `motion: { scale: 0 }` in the theme and under `prefers-reduced-motion`.
 
-<Demo title="Anatomy" description="Rail (52px), panel (200px) and the main content area." src={AnatomySrc}><Anatomy /></Demo>
+<Demo title="Anatomy" description="Rail (52px), panel (200px by default) and the main content area." src={AnatomySrc}><Anatomy /></Demo>
 <Demo title="Live shell" description="The real component inside a fixed-height frame. The pathname lives in local state; click the rail and panel to navigate." src={ShellSrc} stage><Shell client:visible /></Demo>
 
 <Props for="AppShellLayout" rows={[
@@ -41,6 +41,8 @@ The rail magnifies the module icon under the pointer, like a dock. Only the glyp
   { name: "onNavigate", type: "(path: string) => void", description: "Called with the first path of the module when the rail or the bottom navigation switches module. Panel items are links and do not call it." },
   { name: "defaultModule", type: "number", default: "0", description: "Module index used when the URL matches no module and none was stored." },
   { name: "persistPanel", type: "boolean", default: "true", description: "Keeps the shell across page loads: panel open or closed, selected module and expanded sections (localStorage), panel scroll (sessionStorage). Restored before the first paint. Turn it off for demos and embeds that must always start from the defaults." },
+  { name: "panelWidth", type: "number", default: "200", description: "Width of the navigation panel in px, for lists with long labels. Held between 160 and 480. The content offset and the open and close animation follow it, so nothing misaligns. Prefer it to overriding `--ca-panel-width`, which the layout does not read." },
+  { name: "resizablePanel", type: "boolean", default: "false", description: "Adds a drag handle on the panel's trailing edge. It is a keyboard-operable separator: Arrow keys move it by 8px, Shift by 32px, Home and End jump to the bounds. With `persistPanel` the chosen width is kept like the open state and restored before the first paint; `panelWidth` is the width used until the user picks one." },
   { name: "header", type: "Snippet", description: "Desktop header rendered above the page content. Hidden below 900px." },
   { name: "brand", type: "Snippet", description: "Logo shown at the top of the rail and in the mobile header." },
   { name: "railBottom", type: "Snippet", description: "Items pinned to the bottom of the rail, such as an avatar or notifications." },
@@ -57,7 +59,7 @@ On a multi-page site (Astro, a full reload) every link loads a new document, so 
 
 | What | Where | Key |
 |---|---|---|
-| Panel open or closed, selected module, section open map | `localStorage` | `ca-shell` |
+| Panel open or closed, selected module, dragged panel width, section open map | `localStorage` | `ca-shell` |
 | Panel scroll, per module | `sessionStorage` | `ca-shell-scroll` |
 
 An inline script emitted right after the sidebar reads those keys and sets `data-ca-panel="open|closed"` and `data-ca-module="<id>"` on `<html>` before anything paints, so a panel the user closed is laid out closed from the first frame instead of flashing open. Stored values are validated and discarded when malformed. A section's last open or closed choice wins over `defaultOpen`, but the section that holds the current page always opens. The module comes from the URL when `modules` matches it, and from the stored choice otherwise.

@@ -4,12 +4,14 @@
  * panel scroll. This module keeps them in storage and `shellScript()` puts them back before the
  * first paint, on the same model as `theme-script.ts`.
  *
- * - `localStorage["ca-shell"]`: `{ panel, module, sections }` (durable preferences).
+ * - `localStorage["ca-shell"]`: `{ panel, module, panelWidth, sections }` (durable preferences).
  * - `sessionStorage["ca-shell-scroll"]`: `{ [moduleId]: scrollTop }` (per tab, like DocsShell).
  *
  * Every stored value is validated on read and discarded when malformed, like `theme-script.ts`.
  * `restoreShell` is inlined by `shellScript`: keep it self-contained (no imports, no outer refs).
  */
+
+import { PANEL_MAX_WIDTH, PANEL_MIN_WIDTH } from "./types.js";
 
 export const SHELL_KEY = "ca-shell";
 export const SHELL_SCROLL_KEY = "ca-shell-scroll";
@@ -21,6 +23,8 @@ export interface ShellState {
 	panel?: boolean;
 	/** `id` of the module selected in the rail; `undefined` when never stored. */
 	module?: string;
+	/** Panel width in px the user dragged it to (`resizablePanel`); `undefined` when never resized. */
+	panelWidth?: number;
 	/** Section label → open. Only sections the user toggled are present. */
 	sections: Record<string, boolean>;
 }
@@ -41,6 +45,8 @@ export function parseShellState(raw: object): ShellState {
 	const state: ShellState = { sections: {} };
 	if ("panel" in raw && typeof raw.panel === "boolean") state.panel = raw.panel;
 	if ("module" in raw && typeof raw.module === "string" && raw.module) state.module = raw.module;
+	if ("panelWidth" in raw && typeof raw.panelWidth === "number" && Number.isFinite(raw.panelWidth))
+		state.panelWidth = raw.panelWidth;
 	if ("sections" in raw && typeof raw.sections === "object" && raw.sections !== null)
 		for (const [label, open] of Object.entries(raw.sections))
 			if (typeof open === "boolean") state.sections[label] = open;
@@ -66,6 +72,7 @@ export function writeShellState(patch: Partial<ShellState>): void {
 		const next = readShellState();
 		if (patch.panel !== undefined) next.panel = patch.panel;
 		if (patch.module !== undefined) next.module = patch.module;
+		if (patch.panelWidth !== undefined) next.panelWidth = patch.panelWidth;
 		if (patch.sections) Object.assign(next.sections, patch.sections);
 		localStorage.setItem(SHELL_KEY, JSON.stringify(next));
 	} catch {}
@@ -100,19 +107,24 @@ export function saveShellScroll(moduleId: string, top: number): void {
  * (it cannot import them) and:
  * 1. sets `data-ca-panel="open|closed"` and `data-ca-module="<id>"` on `<html>` so CSS can paint
  *    the stored layout before any JS runs;
- * 2. restores the scroll of `.ca-panel__nav` (the node is already parsed: the script sits right
+ * 2. when the shell has a resizable panel (`resize`), sets `--ca-panel-w-stored` on `<html>` to the
+ *    stored panel width (clamped to `min`..`max`) so the panel and the content offset paint at
+ *    that width before hydration;
+ * 3. restores the scroll of `.ca-panel__nav` (the node is already parsed: the script sits right
  *    after the sidebar markup).
  * `ids` are the module ids of this shell; a stored module that is not one of them is ignored.
  */
 export function restoreShell(
 	ids: string[],
 	keys: [string, string, string],
-	nav: Element | null
+	nav: Element | null,
+	resize: [number, number] | null
 ): void {
 	try {
 		const h = document.documentElement;
 		let panel = true;
 		let mod = "";
+		let width = 0;
 		try {
 			const raw = localStorage.getItem(keys[0]);
 			let v: unknown = null;
@@ -123,6 +135,13 @@ export function restoreShell(
 				if ("panel" in v && typeof v.panel === "boolean") panel = v.panel;
 				if ("module" in v && typeof v.module === "string" && ids.indexOf(v.module) >= 0)
 					mod = v.module;
+				if (
+					resize &&
+					"panelWidth" in v &&
+					typeof v.panelWidth === "number" &&
+					Number.isFinite(v.panelWidth)
+				)
+					width = Math.min(resize[1], Math.max(resize[0], Math.round(v.panelWidth)));
 			} else {
 				if (raw !== null) localStorage.removeItem(keys[0]);
 				const legacy = localStorage.getItem(keys[2]);
@@ -132,6 +151,8 @@ export function restoreShell(
 		h.setAttribute("data-ca-panel", panel ? "open" : "closed");
 		if (mod) h.setAttribute("data-ca-module", mod);
 		else h.removeAttribute("data-ca-module");
+		if (width) h.style.setProperty("--ca-panel-w-stored", width + "px");
+		else h.style.removeProperty("--ca-panel-w-stored");
 		if (nav) {
 			try {
 				const s: unknown = JSON.parse(sessionStorage.getItem(keys[1]) as string);
@@ -151,9 +172,10 @@ export function restoreShell(
  * component's markup: Vite's dependency scan would read a `<script>` there as a script block
  * (tests/svelte-script-tags.test.ts).
  */
-export function shellScript(ids: string[]): string {
+export function shellScript(ids: string[], resizable = false): string {
 	const keys = [SHELL_KEY, SHELL_SCROLL_KEY, LEGACY_PANEL_KEY];
+	const resize = resizable ? [PANEL_MIN_WIDTH, PANEL_MAX_WIDTH] : null;
 	const nav = `document.currentScript.previousElementSibling.querySelector(".ca-panel__nav")`;
 	const args = [ids, keys].map((v) => JSON.stringify(v).replace(/</g, "\\u003c")).join(",");
-	return `<script>(${restoreShell})(${args},${nav})</script>`;
+	return `<script>(${restoreShell})(${args},${nav},${JSON.stringify(resize)})</script>`;
 }

@@ -19,9 +19,13 @@
 		persist?: boolean;
 		/** First module is the catch-all `basePath: "/"` with a root item `path: "/"` (#274). */
 		root?: boolean;
+		/** Panel width in px (#292). */
+		panelWidth?: number;
+		/** Drag handle on the panel's trailing edge (#292). */
+		resizablePanel?: boolean;
 	}
 
-	let { pathname = "/app/dashboard", onNavigate, full = false, single = false, ownMain = false, mainId = "main", persist = false, root = false }: Props = $props();
+	let { pathname = "/app/dashboard", onNavigate, full = false, single = false, ownMain = false, mainId = "main", persist = false, root = false, panelWidth, resizablePanel = false }: Props = $props();
 
 	const modules: NavModule[] = [
 		{
@@ -72,7 +76,7 @@
 </script>
 
 {#if full}
-	<AppShellLayout modules={mods} {pathname} {onNavigate} persistPanel={persist} mainId={ownMain ? null : mainId}>
+	<AppShellLayout modules={mods} {pathname} {onNavigate} persistPanel={persist} {panelWidth} {resizablePanel} mainId={ownMain ? null : mainId}>
 		{#snippet header()}
 			<SiteHeader />
 		{/snippet}
@@ -94,7 +98,7 @@
 		{/if}
 	</AppShellLayout>
 {:else}
-	<AppShellLayout modules={mods} {pathname} {onNavigate} persistPanel={persist} mainId={ownMain ? null : mainId}>
+	<AppShellLayout modules={mods} {pathname} {onNavigate} persistPanel={persist} {panelWidth} {resizablePanel} mainId={ownMain ? null : mainId}>
 		{#if ownMain}
 			<main id="main" tabindex="-1">
 				<h1>Page content</h1>

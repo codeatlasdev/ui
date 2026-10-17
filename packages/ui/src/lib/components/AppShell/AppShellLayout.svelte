@@ -4,7 +4,7 @@
   import { Spring } from 'svelte/motion';
   import { reducedMotion } from '../../stores/reduced-motion.svelte.js';
   import type { NavModule } from './types.js';
-  import { firstModulePath, isItemActive, isNavSection, matchModuleIndex, RAIL_WIDTH, PANEL_WIDTH } from './types.js';
+  import { clampPanelWidth, firstModulePath, isItemActive, isNavSection, matchModuleIndex, PANEL_WIDTH, RAIL_WIDTH } from './types.js';
   import { readShellState, shellScript, writeShellState } from './shell-state.js';
   import Rail from './Rail.svelte';
   import Panel from './Panel.svelte';
@@ -23,6 +23,17 @@
      * off for demos and embeds that must always start from the defaults.
      */
     persistPanel?:  boolean;
+    /**
+     * Width of the navigation panel in px, for lists with long labels. Held between 160 and 480.
+     * The content offset and the open/close animation follow it. With `resizablePanel` it is the
+     * width used until the user drags the edge.
+     */
+    panelWidth?:    number;
+    /**
+     * Adds a drag handle (a keyboard-operable separator) on the panel's trailing edge. The width
+     * the user picks is kept with `persistPanel`, like the open state, and restored before paint.
+     */
+    resizablePanel?: boolean;
     header?:        Snippet;
     /** Brand mark (logo) shown at the top of the Rail and in the mobile header. */
     brand?:         Snippet;
@@ -60,6 +71,8 @@
     onNavigate,
     defaultModule = 0,
     persistPanel  = true,
+    panelWidth    = PANEL_WIDTH,
+    resizablePanel = false,
     header,
     brand,
     railBottom,
@@ -90,6 +103,14 @@
   }
 
   let panelOpen = $state(stored?.panel ?? true);
+
+  // The width the user dragged to wins over the `panelWidth` default, and only for a resizable
+  // panel: on a fixed one the prop is the contract, whatever an earlier version stored.
+  // svelte-ignore state_referenced_locally
+  let dragged = $state<number | null>(resizablePanel && stored?.panelWidth !== undefined ? clampPanelWidth(stored.panelWidth) : null);
+  let width = $derived(resizablePanel && dragged !== null ? dragged : clampPanelWidth(panelWidth));
+  // While the pointer holds the edge the panel is exactly where the pointer is: no spring in between.
+  let resizing = $state(false);
   // svelte-ignore state_referenced_locally
   let selectedIndex = $state(resolveModule(pathname));
 
@@ -132,11 +153,19 @@
   // the exact target once within it, so the offset settles on an integer (252, not 251.984).
   // It starts AT the target (no open animation on load): a reload must not replay the slide.
   // svelte-ignore state_referenced_locally
-  const panelW = new Spring(panelVisible ? PANEL_WIDTH : 0, { stiffness: 0.22, damping: 0.88, precision: 0.5 });
+  const panelW = new Spring(panelVisible ? width : 0, { stiffness: 0.22, damping: 0.88, precision: 0.5 });
   $effect(() => {
-    // Reduced motion: jump straight to the target, no frames in between.
-    panelW.set(panelVisible ? PANEL_WIDTH : 0, { instant: reducedMotion.value });
+    // Reduced motion and a held drag edge: jump straight to the target, no frames in between.
+    panelW.set(panelVisible ? width : 0, { instant: reducedMotion.value || resizing });
   });
+
+  function resizeTo(next: number) {
+    dragged = next;
+  }
+  function commitWidth(next: number) {
+    dragged = next;
+    if (persistPanel) writeShellState({ panelWidth: next });
+  }
 
   // Keep <html data-ca-*> in step with the live state so CSS and the next page load agree.
   $effect(() => {
@@ -195,9 +224,14 @@
       activeModuleIndex={selectedIndex}
       show={panelVisible}
       panelW={panelW.current}
+      resizable={resizablePanel}
+      width={width}
+      onResize={resizeTo}
+      onCommit={commitWidth}
+      onResizing={(v) => (resizing = v)}
     />
   </div>
-  {#if persistPanel}{@html shellScript(modules.map((m) => m.id))}{/if}
+  {#if persistPanel}{@html shellScript(modules.map((m) => m.id), resizablePanel)}{/if}
 
   <!-- Main area -->
   <div
@@ -277,6 +311,16 @@
     }
     :global(html[data-ca-panel='closed']:not([data-ca-hydrated])) :global(.ca-panel) {
       display: none;
+    }
+    /*
+     * A resized panel: the server renders the `panelWidth` default and `shellScript` puts the stored
+     * width in --ca-panel-w-stored on <html>, so the panel and the offset paint at it from the first frame.
+     */
+    :global(html[style*='--ca-panel-w-stored']:not([data-ca-panel='closed']):not([data-ca-hydrated])) .ca-main {
+      margin-left: calc(var(--ca-rail-width) + var(--ca-panel-w-stored)) !important;
+    }
+    :global(html[style*='--ca-panel-w-stored']:not([data-ca-hydrated])) :global(.ca-panel) {
+      width: var(--ca-panel-w-stored) !important;
     }
 
     .ca-shell__desktop-header {

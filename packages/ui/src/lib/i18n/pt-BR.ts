@@ -47,6 +47,9 @@ export const ptBR: Messages = {
 		new: "Novo",
 		openNavigation: "Abrir navegação",
 		closeNavigation: "Fechar navegação",
+		resizePanel: "Redimensionar painel de navegação",
+		itemActions: (label) => `Ações de ${label}`,
+		moveItem: (label) => `Mover ${label}`,
 	},
 	avatar: {
 		status: { online: "Online", offline: "Offline", away: "Ausente", busy: "Ocupado" },

@@ -5,6 +5,7 @@
   import { isNavSection } from './types.js';
   import PanelNavItem from './PanelNavItem.svelte';
   import SectionGroup from './SectionGroup.svelte';
+  import PanelResizeHandle from './PanelResizeHandle.svelte';
   import { readShellScroll, saveShellScroll } from './shell-state.js';
   const t = useT();
 
@@ -14,10 +15,17 @@
     pathname:          string;
     show:              boolean;
     panelW:            number;
+    /** Adds the drag handle on the trailing edge. */
+    resizable?:        boolean;
+    /** Target width in px (what the handle reports as its value); `panelW` is the animated one. */
+    width?:            number;
+    onResize?:         (width: number) => void;
+    onCommit?:         (width: number) => void;
+    onResizing?:       (resizing: boolean) => void;
     class?:            string;
   }
 
-  let { modules, activeModuleIndex, pathname, show, panelW, class: className = '' }: Props = $props();
+  let { modules, activeModuleIndex, pathname, show, panelW, resizable = false, width = panelW, onResize, onCommit, onResizing, class: className = '' }: Props = $props();
 
   let activeModule = $derived(modules[activeModuleIndex]);
 
@@ -81,6 +89,9 @@
         {/each}
       {/if}
     </nav>
+    {#if resizable}
+      <PanelResizeHandle {width} onResize={(w) => onResize?.(w)} onCommit={(w) => onCommit?.(w)} onDragChange={(v) => onResizing?.(v)} />
+    {/if}
   </aside>
 {/if}
 
@@ -88,6 +99,7 @@
 @layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
 @layer ca.components {
     .ca-panel {
+      position: relative;
       height: 100%;
       flex-shrink: 0;
       overflow: hidden; /* clip while animating */
