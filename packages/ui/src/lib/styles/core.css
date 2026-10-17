@@ -1,5 +1,5 @@
 /* @codeatlasdev/ui core — everything except the non-default presets.
- * Layers: reset (controls inherit the page font) + tokens + base, the default amber preset (:root tokens), materials (+ Surface), utilities
+ * Layers: reset+tokens+base, the default amber preset (:root tokens), materials (+ Surface), utilities
  * (+ the layout token props), prose.
  * Pair it with only the presets your app uses:
  *   import '@codeatlasdev/ui/styles/core.css';
