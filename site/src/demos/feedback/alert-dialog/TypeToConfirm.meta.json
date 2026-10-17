@@ -1,0 +1,21 @@
+{
+	"summary": "A destructive alert dialog with a rich description and a TextField body; Confirm stays disabled until the key is typed.",
+	"use": "Irreversible deletes that need a deliberate confirmation, such as typing the item key.",
+	"spec": [
+		"Trigger `<Button variant=\"destructive\"` labelled `Delete {key}` with a `<Trash2 size={14} />` leading icon; it resets `typed = ''` and opens the dialog",
+		"`<AlertDialog` with `bind:open`, `title=\"Delete {key}?\"`, `confirmLabel=\"Delete\"`, `cancelVariant=\"outlined\"` and `destructive`",
+		"`confirmDisabled={typed !== key}` where `const key = 'PRJ-42'`, and `confirmProps={{ 'data-testid': 'confirm-delete' }}`",
+		"`{#snippet description()}` renders `This removes <strong>3 linked records</strong> too and cannot be undone.`",
+		"Body is `<TextField label=\"Type {key} to confirm\" bind:value={typed} />`",
+		"`onconfirm` sets `deleted = true`, which shows `{key} deleted.` in a `<span class=\"out\" aria-live=\"polite\">`"
+	],
+	"tags": [
+		"alert-dialog",
+		"type-to-confirm",
+		"confirm-disabled",
+		"destructive",
+		"children",
+		"confirm-props"
+	],
+	"shape": "wide"
+}

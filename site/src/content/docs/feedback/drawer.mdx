@@ -10,6 +10,8 @@ import Right from "~/demos/feedback/drawer/Right.svelte";
 import RightSrc from "~/demos/feedback/drawer/Right.svelte?raw";
 import Sides from "~/demos/feedback/drawer/Sides.svelte";
 import SidesSrc from "~/demos/feedback/drawer/Sides.svelte?raw";
+import CustomHeader from "~/demos/feedback/drawer/CustomHeader.svelte";
+import CustomHeaderSrc from "~/demos/feedback/drawer/CustomHeader.svelte?raw";
 import Notifications from "~/demos/feedback/drawer/Notifications.svelte";
 import NotificationsSrc from "~/demos/feedback/drawer/Notifications.svelte?raw";
 
@@ -31,10 +33,17 @@ Same architecture as [Dialog](/docs/feedback/dialog/): the overlay blurs the pag
 <Demo title="Left and bottom" description="Left suits mobile navigation. Bottom is a simple bottom panel without gestures." src={SidesSrc}><Sides client:visible /></Demo>
 <Demo title="Notification panel" description="A real-world use: a 400px wide panel on the right." src={NotificationsSrc}><Notifications client:visible /></Demo>
 
+<Demo title="Own header" description="No title: aria-labelledby points at your heading, so the panel keeps its accessible name while you build the header and its close button. Attributes such as data-testid reach the dialog." src={CustomHeaderSrc}><CustomHeader client:visible /></Demo>
+
+The panel needs a name. Pass `title` (add `hideTitle` to keep it for screen readers only), or `aria-label`, or `aria-labelledby` with the id of your own heading. Any other attribute (`id`, `data-*`, `style`) reaches the `<dialog>` element.
+
 <Props for="Drawer" rows={[
   { name: "open", type: "boolean", default: "false", description: "Bindable open state." },
   { name: "side", type: "'left' | 'right' | 'bottom'", default: "'right'", description: "Edge the panel slides from." },
-  { name: "title", type: "string", description: "Header title." },
+  { name: "title", type: "string", description: "Header title and the panel's accessible name." },
+  { name: "hideTitle", type: "boolean", default: "false", description: "Hides the title heading visually but keeps it as the accessible name; the header shrinks to the close button." },
+  { name: "aria-label", type: "string", description: "Accessible name when there is no `title`. Replaces the title reference." },
+  { name: "aria-labelledby", type: "string", description: "Id of your own heading, for a custom header inside the body. Wins over `title`." },
   { name: "width", type: "string", default: "'360px'", description: "Panel width for left and right." },
   { name: "children", type: "Snippet", description: "Panel body." },
   { name: "actions", type: "Snippet", description: "Footer buttons, separated by a top rule." },

@@ -6,6 +6,7 @@ import { settled } from "../../../../tests/settled";
 import { VIEWPORTS } from "../../../../tests/viewports";
 import { setLocale } from "../../i18n/index.js";
 import Harness from "./Drawer.test.svelte";
+import CustomHeader from "./DrawerCustomHeader.test.svelte";
 
 const open = async (props = {}) => {
 	await page.viewport(...VIEWPORTS.desktop);
@@ -62,5 +63,47 @@ describe("Drawer", () => {
 		await open({ side });
 		const rect = (document.querySelector(".ca-drawer") as HTMLElement).getBoundingClientRect();
 		expect(docked(rect)).toBe(true);
+	});
+});
+
+describe("Drawer name (#285)", () => {
+	const openCustom = async (mode: "labelledby" | "aria-label" | "hideTitle") => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(CustomHeader, { mode });
+		await page.getByRole("button", { name: "Open item" }).click();
+		await settled();
+		return document.querySelector<HTMLElement>('[data-testid="item-drawer"]') as HTMLElement;
+	};
+
+	it("aria-labelledby names it from an own header", async () => {
+		const dialog = await openCustom("labelledby");
+		expect(dialog.getAttribute("aria-labelledby")).toBe("item-heading");
+		await expect.element(page.getByRole("dialog", { name: "PRJ-42 Fix login" })).toBeVisible();
+		expect(await checkA11y(document.body)).toHaveNoViolations();
+	});
+
+	it("forwards data-* and id to the dialog", async () => {
+		const dialog = await openCustom("labelledby");
+		expect(dialog.tagName).toBe("DIALOG");
+		expect(dialog.id).toBe("item-drawer");
+		expect(dialog.classList.contains("ca-drawer")).toBe(true);
+	});
+
+	it("aria-label names it, no title heading", async () => {
+		const dialog = await openCustom("aria-label");
+		expect(dialog.getAttribute("aria-label")).toBe("Item details");
+		expect(dialog.hasAttribute("aria-labelledby")).toBe(false);
+		expect(dialog.querySelector(".ca-drawer__title")).toBeNull();
+		await expect.element(page.getByRole("dialog", { name: "Item details" })).toBeVisible();
+		expect(await checkA11y(document.body)).toHaveNoViolations();
+	});
+
+	it("hideTitle keeps the name, hides the heading", async () => {
+		await openCustom("hideTitle");
+		await expect.element(page.getByRole("dialog", { name: "Item details" })).toBeVisible();
+		const h = document.querySelector<HTMLElement>(".ca-drawer__title") as HTMLElement;
+		expect(h.classList.contains("ca-sr-only")).toBe(true);
+		expect(h.getBoundingClientRect().width).toBeLessThanOrEqual(1);
+		expect(await checkA11y(document.body)).toHaveNoViolations();
 	});
 });

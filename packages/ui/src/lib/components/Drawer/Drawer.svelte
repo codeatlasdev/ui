@@ -1,6 +1,7 @@
 <script lang="ts">
   import { useT } from '../../i18n/state.svelte.js';
   import type { Snippet } from 'svelte';
+  import type { HTMLDialogAttributes } from 'svelte/elements';
   import { createIds, createPresence } from '../../primitives/index.js';
   import { modalLayer } from '../Dialog/modal-layer.js';
   import { X } from '@lucide/svelte';
@@ -18,12 +19,19 @@
    *   <Drawer bind:open title="Filters" side="right">
    *     …content…
    *   </Drawer>
+   *
+   * Name: `title` (visible, or `hideTitle` for screen readers only), or `aria-label`, or
+   * `aria-labelledby` pointing at your own heading. Other attributes (`id`, `data-*`) reach the
+   * `<dialog>`.
    */
 
-  interface Props {
+  interface Props extends Omit<HTMLDialogAttributes, 'children' | 'open' | 'title' | 'class' | 'role' | 'onclose' | 'oncancel'> {
     open?:         boolean;
     side?:         'left' | 'right' | 'bottom';
+    /** Heading of the default header, and the accessible name of the panel. */
     title?:        string;
+    /** Keeps `title` as the accessible name but hides the heading visually; the header shrinks to the close button. */
+    hideTitle?:    boolean;
     /** Width (left/right). Default: 360px */
     width?:        string;
     class?:        string;
@@ -32,19 +40,29 @@
     onOpenChange?: (open: boolean) => void;
   }
 
+  const uid = $props.id();
+  const ids = createIds(uid);
+
   let {
     open      = $bindable(false),
     side      = 'right',
     title,
+    hideTitle = false,
     width     = '360px',
     class: className = '',
     children,
     actions,
     onOpenChange,
+    style,
+    'aria-labelledby': ariaLabelledby,
+    ...rest
   }: Props = $props();
 
-  const uid = $props.id();
-  const ids = createIds(uid);
+  // An explicit aria-labelledby/aria-label (own header, hidden title) replaces the title reference.
+  const labelledby = $derived(
+    ariaLabelledby ?? (rest['aria-label'] || !title ? undefined : ids.part('title'))
+  );
+
   const presence = createPresence(() => open);
 
   function change(next: boolean) {
@@ -58,17 +76,18 @@
   <!-- An explicit role keeps `[role="dialog"]` selectors (and every engine) seeing the dialog. -->
   <!-- svelte-ignore a11y_no_redundant_roles -->
   <dialog
+    {...rest}
     class="ca-overlay ca-overlay--drawer ca-drawer ca-drawer--{side} {className}"
     role="dialog"
-    aria-labelledby={title ? ids.part('title') : undefined}
+    aria-labelledby={labelledby}
     data-state={open ? 'open' : 'closed'}
-    style="--drawer-w:{width}"
+    style="--drawer-w:{width};{style ?? ''}"
     {@attach presence.ref}
     {@attach modalLayer(() => ({ onDismiss: () => change(false), closing: !open }))}
   >
-    <div class="ca-drawer__header">
+    <div class="ca-drawer__header" class:ca-drawer__header--bare={hideTitle}>
       {#if title}
-        <h2 id={ids.part('title')} class="ca-drawer__title">{title}</h2>
+        <h2 id={ids.part('title')} class="ca-drawer__title" class:ca-sr-only={hideTitle}>{title}</h2>
       {/if}
       <button type="button" class="ca-layer-close" aria-label={t().drawer.close} onclick={() => change(false)}>
         <X size={16} stroke-width={2} />
@@ -168,6 +187,13 @@
       padding: var(--ca-space-4) var(--ca-space-5);
       flex-shrink: 0;
       border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
+    }
+
+    /* hideTitle: the heading is screen-reader-only, so the close button alone sits at the end. */
+    :global(.ca-drawer__header--bare) {
+      justify-content: flex-end;
+      border-bottom: none;
+      padding-bottom: 0;
     }
 
     :global(.ca-drawer__title) {

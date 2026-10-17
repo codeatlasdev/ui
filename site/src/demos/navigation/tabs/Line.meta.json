@@ -1,0 +1,13 @@
+{
+	"summary": "Tabs with variant=\"line\": bare text tabs with an underline on the active one, used as a view switcher with no panels.",
+	"use": "Page headers and view switchers where the tabs change what the page shows, not a panel under the list.",
+	"spec": [
+		"`<Tabs bind:value={view} variant=\"line\">` with `<TabsList aria-label=\"View\">`",
+		"3 triggers: `board`, `list`, `timeline`, each with a `data-testid` forwarded to the button",
+		"No `TabsContent`: triggers carry no `aria-controls`",
+		"A line below the tabs reads `Showing the {view} view.`",
+		"Wrapper is `.wrap` with `max-width: 420px`"
+	],
+	"tags": ["tabs", "line", "variant", "view-switcher", "aria-label", "tabs-list"],
+	"shape": "wide"
+}

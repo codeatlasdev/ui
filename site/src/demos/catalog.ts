@@ -306,16 +306,13 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "400", path: "navigation/menu/Selection" },
 	{ id: "401", path: "navigation/menu/Submenu" },
 	{ id: "402", path: "navigation/menu/ContextMenu" },
-	{ id: "420", path: "inputs/combobox/Multiple" },
-	{ id: "421", path: "inputs/combobox/Creatable" },
-	{ id: "422", path: "navigation/command-palette/Async" },
 	{ id: "430", path: "foundation/drag-and-drop/SortableList" },
 	{ id: "431", path: "foundation/drag-and-drop/Board" },
 	{ id: "432", path: "foundation/drag-and-drop/DropZones" },
 	{ id: "433", path: "display/data-table/Groups" },
-	{ id: "470", path: "navigation/popover/CloseOnPick" },
-	{ id: "480", path: "layout/app-shell/ResizablePanel" },
-	{ id: "481", path: "layout/app-shell/ItemExtras" },
+	{ id: "460", path: "navigation/tabs/Line" },
+	{ id: "461", path: "feedback/drawer/CustomHeader" },
+	{ id: "462", path: "feedback/alert-dialog/TypeToConfirm" },
 ];
 
 /**

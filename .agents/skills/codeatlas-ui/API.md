@@ -61,14 +61,20 @@ AlertDialog: confirmation that requires an explicit answer (role="alertdialog").
 |---|---|---|---|
 | `open?` | `boolean` | `false` | `bind:` |
 | `title` | `string` |  |  |
-| `description?` | `string` |  |  |
+| `description?` | `string \| Snippet` |  | Plain text, or a snippet for rich text (links, emphasis). |
 | `confirmLabel?` | `string` |  |  |
 | `cancelLabel?` | `string` |  |  |
+| `cancelVariant?` | `'ghost' \| 'outlined' \| 'glass' \| 'filled'` | `'ghost'` | Cancel button variant. Default `ghost`. |
+| `confirmDisabled?` | `boolean` | `false` | Keeps Confirm disabled (type-to-confirm). Escape and Cancel still work. |
+| `confirmProps?` | `ButtonExtras` |  | Attributes for the confirm button (`data-testid`, `id`, `aria-*`). |
+| `cancelProps?` | `ButtonExtras` |  | Attributes for the cancel button. |
 | `destructive?` | `boolean` | `false` | Confirm button uses the destructive variant. |
 | `pending?` | `boolean` | `false` | Controlled pending state. When omitted, pending is tracked while `onconfirm` is awaited. |
 | `onconfirm` | `() => void \| Promise<void>` |  | Runs on confirm. Dialog closes when it resolves (sync or async). |
 | `oncancel?` | `() => void` |  |  |
 | `class?` | `string` | `''` |  |
+
+Snippets: `children`
 
 Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
 
@@ -911,14 +917,17 @@ Drawer: side panel, second layer.
 |---|---|---|---|
 | `open?` | `boolean` | `false` | `bind:` |
 | `side?` | `'left' \| 'right' \| 'bottom'` | `'right'` |  |
-| `title?` | `string` |  |  |
+| `title?` | `string` |  | Heading of the default header, and the accessible name of the panel. |
+| `hideTitle?` | `boolean` | `false` | Keeps `title` as the accessible name but hides the heading visually; the header shrinks to the close button. |
 | `width?` | `string` | `'360px'` | Width (left/right). Default: 360px |
 | `class?` | `string` | `''` |  |
 | `onOpenChange?` | `(open: boolean) => void` |  |  |
 
 Snippets: `children`, `actions`
 
-Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-drawer` `ca-drawer--bottom` `ca-drawer--left` `ca-drawer--right` `ca-drawer__actions` `ca-drawer__body` `ca-drawer__header` `ca-drawer__title` `ca-layer-close` `ca-overlay`
+Also accepts: `Omit<HTMLDialogAttributes, 'children' \| 'open' \| 'title' \| 'class' \| 'role' \| 'onclose' \| 'oncancel'>`
+
+Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-drawer` `ca-drawer--bottom` `ca-drawer--left` `ca-drawer--right` `ca-drawer__actions` `ca-drawer__body` `ca-drawer__header` `ca-drawer__header--bare` `ca-drawer__title` `ca-layer-close` `ca-overlay`
 
 ## DropdownMenu
 
@@ -2409,6 +2418,7 @@ Classes: `ca-toc` `ca-toc--inline` `ca-toc--rail` `ca-toc__current` `ca-toc__lab
 |---|---|---|---|
 | `value?` | `string` |  | `bind:` |
 | `onchange?` | `(v: string) => void` |  |  |
+| `variant?` | `TabsVariant` | `'pill'` | `pill` fills the active tab on a glass list; `line` underlines it on a bare list (page headers). |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
@@ -2439,6 +2449,8 @@ Classes: `ca-tabs-content`
 
 Snippets: `children`
 
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'role'>`
+
 Classes: `ca-tabs-list`
 
 ## TabsTrigger
@@ -2453,6 +2465,8 @@ Classes: `ca-tabs-list`
 | `class?` | `string` | `''` |  |
 
 Snippets: `icon`, `children`
+
+Also accepts: `Omit<HTMLButtonAttributes, 'class' \| 'children' \| 'value' \| 'type' \| 'role'>`
 
 Classes: `ca-tabs-trigger` `ca-tabs-trigger__icon`
 

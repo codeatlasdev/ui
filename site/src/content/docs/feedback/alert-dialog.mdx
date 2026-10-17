@@ -10,6 +10,8 @@ import Basic from "~/demos/feedback/alert-dialog/Basic.svelte";
 import BasicSrc from "~/demos/feedback/alert-dialog/Basic.svelte?raw";
 import Async from "~/demos/feedback/alert-dialog/Async.svelte";
 import AsyncSrc from "~/demos/feedback/alert-dialog/Async.svelte?raw";
+import TypeToConfirm from "~/demos/feedback/alert-dialog/TypeToConfirm.svelte";
+import TypeToConfirmSrc from "~/demos/feedback/alert-dialog/TypeToConfirm.svelte?raw";
 import Controlled from "~/demos/feedback/alert-dialog/Controlled.svelte";
 import ControlledSrc from "~/demos/feedback/alert-dialog/Controlled.svelte?raw";
 
@@ -35,12 +37,19 @@ Unlike [Dialog](/docs/feedback/dialog/), there is no close button and a click ou
 <Demo title="Async onconfirm" description="While the promise is pending the confirm button shows a spinner, Cancel is disabled and Escape is ignored. The dialog closes when it resolves and stays open if it throws." src={AsyncSrc}><Async client:visible /></Demo>
 <Demo title="Controlled pending" description="Pass pending when the loading state lives outside, for example a mutation from your query client." src={ControlledSrc}><Controlled client:visible /></Demo>
 
+<Demo title="Type to confirm" description="children renders a field under the description, confirmDisabled keeps Confirm off until the key matches, description takes a snippet for rich text, and confirmProps tags the button for tests." src={TypeToConfirmSrc}><TypeToConfirm client:visible /></Demo>
+
 <Props for="AlertDialog" rows={[
   { name: "open", type: "boolean", default: "false", description: "Bindable open state." },
   { name: "title", type: "string", description: "Required. Dialog title and accessible name." },
-  { name: "description", type: "string", description: "Supporting text below the title." },
+  { name: "description", type: "string | Snippet", description: "Supporting text below the title. Pass a snippet for rich text; it still describes the dialog." },
+  { name: "children", type: "Snippet", description: "Body between the description and the buttons: a confirmation field or a choice." },
   { name: "confirmLabel", type: "string", default: "'Confirm' (localized)", description: "Label of the confirm button. Defaults to the active locale's string." },
   { name: "cancelLabel", type: "string", default: "'Cancel' (localized)", description: "Label of the cancel button. Defaults to the active locale's string." },
+  { name: "cancelVariant", type: "'ghost' | 'outlined' | 'glass' | 'filled'", default: "'ghost'", description: "Variant of the cancel button." },
+  { name: "confirmDisabled", type: "boolean", default: "false", description: "Keeps Confirm disabled, for type-to-confirm. Escape and Cancel still close the dialog." },
+  { name: "confirmProps", type: "{ id, class, size, aria-label, aria-describedby, data-* }", description: "Attributes for the confirm button. Variant, loading, label and click stay owned by the dialog." },
+  { name: "cancelProps", type: "{ id, class, size, aria-label, aria-describedby, data-* }", description: "Attributes for the cancel button." },
   { name: "destructive", type: "boolean", default: "false", description: "Confirm button uses the destructive variant." },
   { name: "pending", type: "boolean", default: "false", description: "Controls the loading state externally. Without it, pending is automatic while onconfirm is awaited." },
   { name: "onconfirm", type: "() => void | Promise<void>", description: "Required. Closes the dialog when it resolves; if it throws, the dialog stays open and the error propagates." },

@@ -20,7 +20,7 @@ Total: 829 unique classes across 83 components.
 
 ## AlertDialog
 
-`.ca-alert-dialog` `.ca-alert-dialog__actions` `.ca-dialog` `.ca-dialog--sm` `.ca-dialog__actions` `.ca-dialog__description` `.ca-dialog__header` `.ca-dialog__title` `.ca-overlay`
+`.ca-alert-dialog` `.ca-alert-dialog__actions` `.ca-dialog` `.ca-dialog--sm` `.ca-dialog__actions` `.ca-dialog__body` `.ca-dialog__description` `.ca-dialog__header` `.ca-dialog__title` `.ca-overlay`
 
 ## AppForm
 
@@ -137,7 +137,7 @@ Total: 829 unique classes across 83 components.
 
 ## Drawer
 
-`.ca-drawer` `.ca-drawer--bottom` `.ca-drawer--left` `.ca-drawer--right` `.ca-drawer-bottom-in` `.ca-drawer-bottom-out` `.ca-drawer-left-in` `.ca-drawer-left-out` `.ca-drawer-right-in` `.ca-drawer-right-out` `.ca-drawer__actions` `.ca-drawer__body` `.ca-drawer__header` `.ca-drawer__title` `.ca-layer-close` `.ca-overlay` `.ca-overlay--drawer`
+`.ca-drawer` `.ca-drawer--bottom` `.ca-drawer--left` `.ca-drawer--right` `.ca-drawer-bottom-in` `.ca-drawer-bottom-out` `.ca-drawer-left-in` `.ca-drawer-left-out` `.ca-drawer-right-in` `.ca-drawer-right-out` `.ca-drawer__actions` `.ca-drawer__body` `.ca-drawer__header` `.ca-drawer__header--bare` `.ca-drawer__title` `.ca-layer-close` `.ca-overlay` `.ca-overlay--drawer`
 
 ## DropdownMenu
 

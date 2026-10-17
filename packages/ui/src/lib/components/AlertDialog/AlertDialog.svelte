@@ -1,5 +1,6 @@
 <script lang="ts">
   import { useT } from '../../i18n/state.svelte.js';
+  import type { Snippet } from 'svelte';
   import { createIds, createPresence } from '../../primitives/index.js';
   import { modalLayer } from '../Dialog/modal-layer.js';
   import Button from '../Button/Button.svelte';
@@ -17,6 +18,11 @@
    * throws, it stays open (the error is rethrown).
    * Pass `pending` to control the state externally.
    *
+   * `children` renders a body under the description (a confirmation field, a choice) and
+   * `confirmDisabled` keeps Confirm off until it is valid (type-to-confirm). `confirmProps` and
+   * `cancelProps` forward attributes (`data-testid`, `id`, `aria-*`) to the two buttons and
+   * `cancelVariant` restyles Cancel.
+   *
    * Usage:
    *   <AlertDialog
    *     bind:open
@@ -28,12 +34,33 @@
    *   />
    */
 
+  /** Attributes a caller may add to a dialog button; variant, loading state, label and click stay owned by the dialog. */
+  interface ButtonExtras {
+    id?: string;
+    class?: string;
+    size?: 'sm' | 'md' | 'lg';
+    'aria-label'?: string;
+    'aria-describedby'?: string;
+    [data: `data-${string}`]: string | number | boolean | undefined;
+  }
+
   interface Props {
     open?:         boolean;
     title:         string;
-    description?:  string;
+    /** Plain text, or a snippet for rich text (links, emphasis). */
+    description?:  string | Snippet;
     confirmLabel?: string;
     cancelLabel?:  string;
+    /** Cancel button variant. Default `ghost`. */
+    cancelVariant?: 'ghost' | 'outlined' | 'glass' | 'filled';
+    /** Keeps Confirm disabled (type-to-confirm). Escape and Cancel still work. */
+    confirmDisabled?: boolean;
+    /** Attributes for the confirm button (`data-testid`, `id`, `aria-*`). */
+    confirmProps?: ButtonExtras;
+    /** Attributes for the cancel button. */
+    cancelProps?:  ButtonExtras;
+    /** Body between the description and the buttons: a confirmation field or a choice. */
+    children?:     Snippet;
     /** Confirm button uses the destructive variant. */
     destructive?:  boolean;
     /** Controlled pending state. When omitted, pending is tracked while `onconfirm` is awaited. */
@@ -50,6 +77,11 @@
     description,
     confirmLabel,
     cancelLabel,
+    cancelVariant = 'ghost',
+    confirmDisabled = false,
+    confirmProps,
+    cancelProps,
+    children,
     destructive  = false,
     pending      = false,
     onconfirm,
@@ -107,13 +139,21 @@
     </div>
 
     {#if description}
-      <p id={ids.part('description')} class="ca-dialog__description">{description}</p>
+      <p id={ids.part('description')} class="ca-dialog__description">
+        {#if typeof description === 'string'}{description}{:else}{@render description()}{/if}
+      </p>
+    {/if}
+
+    {#if children}
+      <div class="ca-dialog__body">{@render children()}</div>
     {/if}
 
     <div class="ca-dialog__actions ca-alert-dialog__actions">
-      <Button variant="ghost" disabled={isPending} onclick={cancel}>{cancelLabel ?? t().alertDialog.cancel}</Button>
+      <Button {...cancelProps} variant={cancelVariant} disabled={isPending} onclick={cancel}>{cancelLabel ?? t().alertDialog.cancel}</Button>
       <Button
+        {...confirmProps}
         variant={destructive ? 'destructive' : 'filled'}
+        disabled={confirmDisabled}
         loading={isPending}
         onclick={confirm}
       >

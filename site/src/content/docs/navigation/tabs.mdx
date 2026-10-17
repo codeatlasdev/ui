@@ -14,6 +14,8 @@ import Icons from "~/demos/navigation/tabs/Icons.svelte";
 import IconsSrc from "~/demos/navigation/tabs/Icons.svelte?raw";
 import Scrollable from "~/demos/navigation/tabs/Scrollable.svelte";
 import ScrollableSrc from "~/demos/navigation/tabs/Scrollable.svelte?raw";
+import Line from "~/demos/navigation/tabs/Line.svelte";
+import LineSrc from "~/demos/navigation/tabs/Line.svelte?raw";
 
 ```svelte
 <script>
@@ -34,14 +36,21 @@ Arrow keys move between tabs, Home and End jump to the first and last, and focus
 
 `TabsList` keeps the width of its tabs (it never stretches across the column) and, when the tabs do not fit, scrolls sideways on its own with the scrollbar hidden. The selected tab is scrolled into view on mount and whenever it changes. The leading `icon` snippet and brand logos are covered on the [Dropdown Menu](/docs/navigation/menu/) page too (same `icon` / `brandIcon` pair). Add `fade` to mask the edge that still has tabs to reveal. No wrapper element or CSS is needed for 7 tabs on a phone.
 
+`variant="line"` drops the glass pill: bare text tabs with a hairline under the strip and a 2px underline on the active tab, the usual look in a page header. Tabs that only switch a view (no `TabsContent`) are fine: a trigger points `aria-controls` at its panel only while a `TabsContent` with the same `value` is mounted, so nothing references a missing element. Name the strip with `aria-label` (or `aria-labelledby`) on `TabsList`; `TabsList` and `TabsTrigger` forward any other attribute (`data-*`, `id`, `aria-*`, event handlers) to their element.
+
+`TabsTrigger` forwards any other button attribute (`data-testid`, `id`, `aria-*`, `onclick`, `onfocus`) to its `<button role="tab">`, and `TabsList` forwards `data-*`, `id` and `aria-*` to the `role="tablist"` element. `role`, `type` and the roving `tabindex` stay owned by the component.
+
 <Demo title="Default" description="Three tabs with content panels." src={DefaultSrc}><Default client:visible /></Demo>
 <Demo title="Controlled" description="The parent owns the active tab with bind:value." src={ControlledSrc}><Controlled client:visible /></Demo>
 <Demo title="Icons" description="A leading icon per tab. A brand logo keeps its own colors with brandIcon; SchemeAsset swaps a monochrome mark between light and dark." src={IconsSrc}><Icons client:visible /></Demo>
+<Demo title="Line" description="variant=line as a view switcher: aria-label on the list, data-testid on a trigger, no panels." src={LineSrc}><Line client:visible /></Demo>
+
 <Demo title="Scrollable" description="Seven tabs in a narrow column: the list scrolls on its own, the active tab starts in view, and fade marks the edge." src={ScrollableSrc}><Scrollable client:visible /></Demo>
 
 <Props for="Tabs" title="Tabs" rows={[
   { name: "value", type: "string", description: "Bindable active tab value." },
   { name: "onchange", type: "(v: string) => void", description: "Fires when the active tab changes by click or keyboard." },
+  { name: "variant", type: "'pill' | 'line'", default: "'pill'", description: "`pill` fills the active tab on a glass list. `line` is bare text with an underline on the active tab, for page headers." },
   { name: "children", type: "Snippet", description: "`TabsList` and `TabsContent` children." },
   { name: "class", type: "string", default: "''", description: "Extra classes on the root." },
 ]} />
@@ -63,6 +72,7 @@ Arrow keys move between tabs, Home and End jump to the first and last, and focus
 
 <Props for="TabsList" title="TabsList" rows={[
   { name: "fade", type: "boolean", default: "false", description: "Fade the edge(s) that still hide tabs, so the strip reads as scrollable." },
+  { name: "aria-label", type: "string", description: "Accessible name of the tablist (also `aria-labelledby`). Name it whenever the page has more than one tablist or the purpose is not obvious." },
   { name: "children", type: "Snippet", description: "The `TabsTrigger` elements." },
   { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
 ]} />

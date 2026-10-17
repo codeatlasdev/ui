@@ -1,0 +1,14 @@
+Use @codeatlasdev/ui demo #460 "Line" (navigation/tabs).
+What it shows: Tabs with variant="line": bare text tabs with an underline on the active one, used as a view switcher with no panels. When to use: Page headers and view switchers where the tabs change what the page shows, not a panel under the list.
+Spec:
+- `<Tabs bind:value={view} variant="line">` with `<TabsList aria-label="View">`
+- 3 triggers: `board`, `list`, `timeline`, each with a `data-testid` forwarded to the button
+- No `TabsContent`: triggers carry no `aria-controls`
+- A line below the tabs reads `Showing the {view} view.`
+- Wrapper is `.wrap` with `max-width: 420px`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #460 Line → file, what changed, https://ui.codeatlas.com.br/docs/navigation/tabs#line; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/460.txt   Components API: ca-ui-mcp get_component(Tabs)

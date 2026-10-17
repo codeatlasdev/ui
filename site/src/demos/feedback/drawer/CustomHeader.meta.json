@@ -1,0 +1,12 @@
+{
+	"summary": "A drawer without a title whose own header carries the item key, a heading and a close button; aria-labelledby names the panel.",
+	"use": "Detail panels that build their own header (key, actions) and still need an accessible name.",
+	"spec": [
+		"`<Drawer bind:open aria-labelledby=\"item-heading\" data-testid=\"item-drawer\">` with no `title`",
+		"A `<header class=\"head\">` with `PRJ-42` as `<p class=\"key\">` and `<h2 id=\"item-heading\" class=\"name\">Fix login redirect</h2>`",
+		"A ghost small button with `aria-label=\"Close item\"` and a `<X size={14} />` leading icon sets `open = false`",
+		"A line below reads `Own header, own close button. The panel is still named by the heading above.`"
+	],
+	"tags": ["drawer", "aria-labelledby", "custom-header", "accessible-name", "detail-panel"],
+	"shape": "wide"
+}
