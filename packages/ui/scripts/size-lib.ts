@@ -69,3 +69,36 @@ export async function measure(
 	const modules = Object.keys(meta?.inputs ?? {}).filter((k) => k.startsWith("dist/"));
 	return { gzip: gzipSync(out.contents, { level: 9 }).length, modules, code: out.text };
 }
+
+/**
+ * Strings of groups that a Button-only bundle must not contain (#325): each component pays only for
+ * its own i18n group. One sample per group, English and pt-BR where the text differs.
+ */
+export const FOREIGN_STRINGS = [
+	// commandPalette
+	"Command palette",
+	"Paleta de comandos",
+	"Search failed",
+	// combobox
+	"Selected values",
+	"Valores selecionados",
+	// appShell
+	"Module navigation",
+	"Navegação de módulos",
+	"Resize navigation panel",
+	// motionStage
+	"Replay",
+	// docs / copyButton
+	"On this page",
+	"Could not copy",
+];
+
+/** esbuild escapes non-ASCII (`…`, `ã`) in minified output; compare decoded text. */
+const decode = (code: string) =>
+	code.replace(/\\u([0-9a-fA-F]{4})/g, (_, h) => String.fromCharCode(Number.parseInt(h, 16)));
+
+/** The sampled strings of other components' groups found in a bundle. */
+export function foreignStrings(code: string): string[] {
+	const text = decode(code);
+	return FOREIGN_STRINGS.filter((s) => text.includes(s));
+}

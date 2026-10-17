@@ -3051,7 +3051,7 @@ function formatRelativeTime(value: Date | number | string, locale?: string): str
 
 `import { getLocales } from "@codeatlasdev/ui"`
 
-Registered locale ids.
+Registered locale ids (built-ins first).
 
 ```ts
 function getLocales(): Locale[]
@@ -3061,7 +3061,7 @@ function getLocales(): Locale[]
 
 `import { getMessages } from "@codeatlasdev/ui"`
 
-Messages for a locale, with optional deep overrides. Pure: no global state read or written, so it is safe on the server. Region subtags fall back to the base language, then to English.
+Messages for a locale, with optional deep overrides. Pure, so safe on the server.
 
 ```ts
 function getMessages(id: Locale, override?: MessagesOverride): Messages
@@ -3534,7 +3534,7 @@ function useLocale(): () => Locale
 
 `import { useT } from "@codeatlasdev/ui"`
 
-Message accessor for the component being initialised. Call it at the top level of `<script>` (it reads Svelte context), then use `t().group.key` anywhere, including `$derived` and markup.
+Full-catalog accessor for the component being initialised (provider first, client-global otherwise). Prefer `useMessages(group, …)` inside this package: it ships only what it reads.
 
 ```ts
 function useT(): () => Messages
@@ -3618,7 +3618,7 @@ Types:
 | `LayerKind` | `type LayerKind = "modal" \| "popover" \| "hint";` | The single layer stack. Every overlay (dialog, sheet, menu, popover, tooltip) goes through `openLayer`, so there is one place for the top layer, Escape / outside press / focus-out, focus restoration, scroll lock and the `layerchange` event hosts listen to. |
 | `LayoutProps` | `interface LayoutProps { gap?: Responsive<Space>; p?: Responsive<Space>; px?: Responsive<Space>; py?: Responsive<Space>; align?: Responsive<Align>; justify?: Responsive<Justify>; direction?: Responsive<Direction>; columns?: Responsive<Columns>; wrap?: Responsive<boolean>; }` | Props shared by every layout primitive. Each one also takes a responsive object. |
 | `Locale` | `type Locale = string;` | BCP 47 language tag. `en` and `pt-BR` are built in; add others with `registerLocale`. |
-| `Messages` | `type Messages = Widen<typeof en>;` | Full message shape (string literals widened so other locales can translate). |
+| `Messages` | `type Messages = { -readonly [K in keyof typeof groups]: GroupMessages<(typeof groups)[K]>; };` | Full message shape: every group's messages, keyed by group id. |
 | `MessagesOverride` | `type MessagesOverride = DeepPartial<Messages>;` | Partial, deep override accepted by `setLocale`, `registerLocale` and `I18nProvider`. |
 | `MotionCtx` | `interface MotionCtx { playing: boolean; reduced: boolean; takeover(): void; play(): void; pause(): void; cycle: number; }` | What a motion demo receives from `MotionStage`. Demos render from this and never run their own timers. |
 | `MotionOptions` | `interface MotionOptions { scale?: number; easing?: "standard" \| "emphasized" \| "spring" \| "linear" \| "steps"; enter?: "default" \| "none"; }` |  |

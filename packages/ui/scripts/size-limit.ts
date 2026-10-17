@@ -8,7 +8,7 @@
 // The ratchet only moves down: --update never raises a limit, raise one by hand in a PR that explains why.
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { dist, type Entry, measure } from "./size-lib.js";
+import { dist, type Entry, foreignStrings, measure } from "./size-lib.js";
 
 const root = join(import.meta.dir, "..");
 const limitsFile = join(root, "size-limit.json");
@@ -56,12 +56,21 @@ for (const e of ENTRIES) {
 		console.log(`skip   ${e.name} (not built)`);
 		continue;
 	}
-	const { gzip: size, modules } = await measure(e);
+	const { gzip: size, modules, code } = await measure(e);
 	if (e.name === "root: Button only") {
 		const leaked = modules.filter((m) => !BUTTON_ALLOWED.test(m));
 		if (leaked.length) {
 			console.error(
 				`FAIL   ${e.name}: tree-shaking leak, unexpected modules:\n  ${leaked.join("\n  ")}`
+			);
+			failed++;
+		}
+		// i18n/ is allowed above, so a stray group import is only visible in the text: Button must
+		// carry its own strings (and Spinner's), not those of other components.
+		const foreign = foreignStrings(code);
+		if (foreign.length) {
+			console.error(
+				`FAIL   ${e.name}: i18n leak, strings of other components' groups in the bundle:\n  ${foreign.join("\n  ")}\n  Import only the groups a component reads (useMessages(group)); see AGENTS.md > Language (i18n).`
 			);
 			failed++;
 		}
