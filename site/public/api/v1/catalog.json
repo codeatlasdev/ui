@@ -29,8 +29,8 @@
 		{
 			"slug": "navigation",
 			"first": "146",
-			"last": "402",
-			"count": 26
+			"last": "255",
+			"count": 23
 		},
 		{
 			"slug": "layout",
@@ -47,8 +47,8 @@
 		{
 			"slug": "foundation",
 			"first": "220",
-			"last": "231",
-			"count": 12
+			"last": "432",
+			"count": 15
 		},
 		{
 			"slug": "docs-kit",
@@ -13386,155 +13386,150 @@
 			"needs": "@codeatlasdev/ui@4.3.0"
 		},
 		{
-			"id": "400",
-			"group": "navigation",
-			"page": "menu",
-			"variant": "Selection",
-			"slug": "checkbox-and-radio-items",
-			"title": "Checkbox and radio items",
-			"description": "Two toggles and a sort order. The menu stays open while options change; each item reports its state with aria-checked.",
-			"summary": "A view menu with two checkbox items and a radio group for the sort order, kept open while options change, with the current state shown below.",
-			"use": "Menus that set view options: toggles (show hidden, show preview) and one choice among several (sort by).",
+			"id": "430",
+			"group": "foundation",
+			"page": "drag-and-drop",
+			"variant": "SortableList",
+			"slug": "sortable-list",
+			"title": "Sortable list",
+			"description": "Drag the grip, press and hold on a touch screen, or focus the grip and press Space.",
+			"summary": "A checklist whose rows reorder by dragging a grip, by touch press-and-hold, or with the keyboard (Space, arrows, Enter).",
+			"use": "Any short ordered list the user curates: checklists, playlists, priorities, form field order.",
 			"spec": [
-				"`<DropdownMenu>` with `{#snippet triggerChild(props)}` rendering `<Button variant=\"glass\" {...props}>View options</Button>`",
-				"Two `<DropdownMenuCheckboxItem bind:checked={showHidden}>` style items (`bind:checked={showPreview}`): Show hidden files and Show preview",
-				"`<DropdownMenuSeparator />` then `<DropdownMenuRadioGroup bind:value={sort} aria-label=\"Sort by\">` with a `DropdownMenuLabel` and radio items name, date, size",
-				"`aria-live=\"polite\"` note reports `Sorted by {sort}` and the two toggles"
+				"`const dnd = useDnd();` once per component; `{@attach dnd.sortable(() => ({` on the `ul` with `handle: '.sl__grip'`, `getItems` and `onDrop`",
+				"Each `li` carries `data-dnd-item={task.id}`; the grip `button` has `aria-describedby={dnd.instructionsId}` and an `aria-label` naming the task",
+				"`onDrop` commits the move with `applyMove({ list: tasks }, e, (t) => t.id).list`; nothing re-renders while the pointer moves",
+				"`<DndLayer {dnd} />` renders the keyboard instructions (`dnd.instructionsId`) and the drag styles once; every step is announced to screen readers"
 			],
 			"tags": [
-				"dropdown-menu",
-				"menu",
-				"checkbox",
-				"radio",
-				"selection",
-				"view-options",
-				"bind"
-			],
-			"shape": "wide",
-			"components": [
-				"DropdownMenu",
-				"DropdownMenuCheckboxItem",
-				"DropdownMenuLabel",
-				"DropdownMenuRadioGroup",
-				"DropdownMenuRadioItem",
-				"DropdownMenuSeparator",
-				"Button"
-			],
-			"imports": [
-				{
-					"from": "@codeatlasdev/ui",
-					"names": [
-						"DropdownMenu",
-						"DropdownMenuCheckboxItem",
-						"DropdownMenuLabel",
-						"DropdownMenuRadioGroup",
-						"DropdownMenuRadioItem",
-						"DropdownMenuSeparator",
-						"Button"
-					]
-				}
-			],
-			"interactive": true,
-			"demo": "https://ui.codeatlas.com.br/docs/navigation/menu#checkbox-and-radio-items",
-			"needs": "@codeatlasdev/ui@4.3.0"
-		},
-		{
-			"id": "401",
-			"group": "navigation",
-			"page": "menu",
-			"variant": "Submenu",
-			"slug": "submenus",
-			"title": "Submenus",
-			"description": "Color and Move to open beside their item. ArrowRight opens, ArrowLeft or Escape closes one level, hover opens after a short delay.",
-			"summary": "An item menu with Rename, a Color submenu, a Move to submenu and a destructive Delete, reporting the last action.",
-			"use": "Menus where a secondary list (colors, destination groups) would make the main menu long: the list opens beside the item.",
-			"spec": [
-				"`<DropdownMenu>` with `{#snippet triggerChild(props)}` rendering `<Button variant=\"glass\" {...props}>Item actions</Button>`",
-				"`<DropdownMenuItem onclick={() => (last = 'Rename')}>Rename</DropdownMenuItem>`, then two `<DropdownMenuSub>` blocks",
-				"Each sub has `{#snippet trigger()}<DropdownMenuSubTrigger>Color</DropdownMenuSubTrigger>{/snippet}` (Color, Move to) and its options as `DropdownMenuItem` children from `{#each colors as color}` and `{#each groups as group}`",
-				"Colors are Red, Green, Blue; groups are Inbox, Archive, Projects",
-				"`<DropdownMenuSeparator />` precedes the destructive Delete item",
-				"`let last = $state('')` is set per item and shown as `Last action: {last}` with `aria-live=\"polite\"`"
-			],
-			"tags": [
-				"dropdown-menu",
-				"menu",
-				"submenu",
-				"nested",
-				"actions",
-				"destructive"
-			],
-			"shape": "wide",
-			"components": [
-				"DropdownMenu",
-				"DropdownMenuItem",
-				"DropdownMenuSeparator",
-				"DropdownMenuSub",
-				"DropdownMenuSubTrigger",
-				"Button"
-			],
-			"imports": [
-				{
-					"from": "@codeatlasdev/ui",
-					"names": [
-						"DropdownMenu",
-						"DropdownMenuItem",
-						"DropdownMenuSeparator",
-						"DropdownMenuSub",
-						"DropdownMenuSubTrigger",
-						"Button"
-					]
-				}
-			],
-			"interactive": true,
-			"demo": "https://ui.codeatlas.com.br/docs/navigation/menu#submenus",
-			"needs": "@codeatlasdev/ui@4.3.0"
-		},
-		{
-			"id": "402",
-			"group": "navigation",
-			"page": "menu",
-			"variant": "ContextMenu",
-			"slug": "context-menu",
-			"title": "Context menu",
-			"description": "Right-click opens the menu at the pointer and a second right-click moves it. Shift+F10 or the ContextMenu key opens it from the keyboard.",
-			"summary": "A dashed button area that opens a Rename, Duplicate, Delete menu at the pointer on right-click, or from the keyboard with Shift+F10 or the ContextMenu key.",
-			"use": "Context menus on rows, files or canvases: the menu opens where the user pointed and moves when they right-click again.",
-			"spec": [
-				"`let open = $state(false)` and `let point = $state<{ x: number; y: number } | null>(null)`",
-				"The area is a native `<button type=\"button\" class=\"area\" {oncontextmenu} {onkeydown}>` so it is focusable and named by its visible text",
-				"`oncontextmenu` calls `e.preventDefault()`, sets `point = { x: e.clientX, y: e.clientY }` and `open = true`",
-				"`onkeydown` handles `ContextMenu` and Shift+F10 and anchors the menu to the area's top-left",
-				"`<DropdownMenu bind:open anchor={point}>` has no trigger; items Rename, Duplicate and a destructive Delete after `<DropdownMenuSeparator />`",
-				"Each item calls `function pick(action: string)`, which sets `last = action` and calls `announce`; `Last action: {last}` is shown below"
-			],
-			"tags": [
-				"dropdown-menu",
-				"context-menu",
-				"right-click",
-				"anchor",
-				"bind-open",
+				"drag",
+				"drop",
+				"sortable",
+				"reorder",
+				"list",
 				"keyboard"
 			],
-			"shape": "wide",
+			"names": [
+				"Sortable list",
+				"Drag to reorder",
+				"Reorderable list",
+				"Lista ordenável",
+				"Lista reordenable"
+			],
+			"shape": "square",
 			"components": [
-				"DropdownMenu",
-				"DropdownMenuItem",
-				"DropdownMenuSeparator"
+				"DndLayer"
 			],
 			"imports": [
 				{
 					"from": "@codeatlasdev/ui",
 					"names": [
-						"announce",
-						"DropdownMenu",
-						"DropdownMenuItem",
-						"DropdownMenuSeparator"
+						"applyMove",
+						"DndLayer",
+						"useDnd",
+						"DndDropEvent"
 					]
 				}
 			],
 			"interactive": true,
-			"demo": "https://ui.codeatlas.com.br/docs/navigation/menu#context-menu",
+			"demo": "https://ui.codeatlas.com.br/docs/foundation/drag-and-drop#sortable-list",
+			"needs": "@codeatlasdev/ui@4.3.0"
+		},
+		{
+			"id": "431",
+			"group": "foundation",
+			"page": "drag-and-drop",
+			"variant": "Board",
+			"slug": "board",
+			"title": "Board",
+			"description": "Cards reorder inside a column and move between columns. With the keyboard, Space lifts, the arrows move and Enter drops.",
+			"summary": "A three-column board: cards reorder inside a column and move between columns by mouse, touch or keyboard.",
+			"use": "Kanban boards, status pipelines and any set of lists whose items move from one to another.",
+			"spec": [
+				"Every column is `{@attach dnd.sortable(() => ({ id: col, group: 'board',`; lists with the same `group` accept each other's cards",
+				"`onDrop` receives the moved id with its `from` and `to` positions and applies it with `applyMove(lists, e, (c) => c.id)`",
+				"Keyboard: Space lifts the card, ArrowUp and ArrowDown move it inside the column, ArrowLeft and ArrowRight jump to the next column, Enter drops, Escape cancels",
+				"Each card is `<li data-dnd-item={card.id}` with a focusable `button`"
+			],
+			"tags": [
+				"drag",
+				"drop",
+				"kanban",
+				"board",
+				"move",
+				"lists"
+			],
+			"names": [
+				"Kanban board",
+				"Drag between lists",
+				"Cards between columns",
+				"Quadro kanban",
+				"Tablero kanban"
+			],
+			"shape": "wide",
+			"components": [
+				"DndLayer"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"applyMove",
+						"DndLayer",
+						"useDnd",
+						"DndDropEvent"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/foundation/drag-and-drop#board",
+			"needs": "@codeatlasdev/ui@4.3.0"
+		},
+		{
+			"id": "432",
+			"group": "foundation",
+			"page": "drag-and-drop",
+			"variant": "DropZones",
+			"slug": "drop-zones",
+			"title": "Drop zones",
+			"description": "Drag a chip onto a day, or lift it with Space and pick the day with the arrows.",
+			"summary": "Task chips dragged from a tray onto weekday drop zones, with a dashed highlight while a chip is over a day.",
+			"use": "Scheduling, assigning and filing: any place a loose item is dropped onto a target that is not a sortable list.",
+			"spec": [
+				"Each chip is `{@attach dnd.draggable(() => ({ id: t.id, label: t.title }))}` on an element with `data-dnd-item`",
+				"Each day is `{@attach dnd.dropzone(() => ({ id: day, label: day, onDrop: (e) => drop(day, e) }))}`; the zone is outlined while a chip is over it",
+				"Keyboard: Space lifts a chip, the arrows pick the day, Enter drops; the zone name is announced to screen readers"
+			],
+			"tags": [
+				"drag",
+				"drop",
+				"dropzone",
+				"calendar",
+				"schedule"
+			],
+			"names": [
+				"Drop zones",
+				"Drag onto a day",
+				"Calendar drop target",
+				"Zonas de soltar",
+				"Zonas para soltar"
+			],
+			"shape": "wide",
+			"components": [
+				"DndLayer"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"DndLayer",
+						"useDnd",
+						"DndDropEvent"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/foundation/drag-and-drop#drop-zones",
 			"needs": "@codeatlasdev/ui@4.3.0"
 		}
 	]
