@@ -1,7 +1,12 @@
 <script lang="ts">
 	import { Check, Minus } from "@lucide/svelte";
+	import type { HTMLInputAttributes } from "svelte/elements";
 
-	interface Props {
+	interface Props
+		extends Omit<
+			HTMLInputAttributes,
+			"checked" | "class" | "children" | "onchange" | "type" | "value" | "group" | "aria-label" | "aria-labelledby"
+		> {
 		checked?: boolean;
 		indeterminate?: boolean;
 		disabled?: boolean;
@@ -12,7 +17,10 @@
 		"aria-label"?: string;
 		"aria-labelledby"?: string;
 		class?: string;
-		onchange?: (checked: boolean) => void;
+		/** The native `<input>`, to focus it or read it. */
+		ref?: HTMLInputElement | null;
+		/** `event` is the native `change` event. For Shift range selection read `shiftKey` in `onclick` (forwarded to the input, fires just before `change`). */
+		onchange?: (checked: boolean, event: Event) => void;
 	}
 
 	let {
@@ -24,7 +32,9 @@
 		"aria-label": ariaLabel,
 		"aria-labelledby": ariaLabelledby,
 		class: className = "",
+		ref = $bindable(null),
 		onchange,
+		...rest
 	}: Props = $props();
 
 	const checkId = $props.id();
@@ -37,6 +47,8 @@
 	     it only paints. The input covers the box so the whole target is clickable. -->
 	<span class="ca-checkbox" data-state={dataState} data-disabled={disabled ? "" : undefined}>
 		<input
+			{...rest}
+			bind:this={ref}
 			id={checkId}
 			{name}
 			type="checkbox"
@@ -49,7 +61,7 @@
 			aria-labelledby={label ? undefined : ariaLabelledby}
 			onchange={(e) => {
 				checked = e.currentTarget.checked;
-				onchange?.(checked);
+				onchange?.(checked, e);
 			}}
 		/>
 		<span class="ca-checkbox__indicator" aria-hidden="true">

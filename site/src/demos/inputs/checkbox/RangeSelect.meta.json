@@ -1,0 +1,12 @@
+{
+	"summary": "Five checkboxes where Shift+click selects the whole range from the last clicked row, using the forwarded onclick and data-testid.",
+	"use": "Lists and tables with row selection that need Shift range selection.",
+	"spec": [
+		"`onclick={(e) => (shift = e.shiftKey)}` is forwarded to the input and runs just before `onchange`",
+		"`onchange={(on) => toggle(i, on)}` applies the state to every row between the anchor and the clicked row when shift was held",
+		"`data-testid=\"row-{i}\"` lands on the native input",
+		"Footer line counts the selected rows"
+	],
+	"tags": ["checkbox", "shift", "range selection", "table", "list", "data-testid"],
+	"shape": "wide"
+}
