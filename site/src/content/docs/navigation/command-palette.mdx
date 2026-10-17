@@ -43,6 +43,7 @@ Results with a `group` are listed under that heading. Activating one calls `onSe
   { name: "minQueryLength", type: "number", default: "1", description: "Trimmed characters needed before the list is filtered. Shorter queries keep the full grouped list." },
   { name: "search", type: "(query: string, signal: AbortSignal) => Promise<CommandResult[]>", description: "Async/server-side search, debounced and aborted on every new query. Throw or reject to show the failed state." },
   { name: "searchDebounce", type: "number", default: "200", description: "Milliseconds without typing before `search` is called." },
+  { name: "shortcut", type: "boolean", default: "true", description: "Opens and closes on Mod+K (Cmd+K / Ctrl+K) anywhere in the window. Turn it off for every palette but one when a page has several, or when the app binds its own shortcut." },
   { name: "onSelect", type: "(result: CommandResult) => void", description: "Called with the whole result when a server result is activated. Replaces `onNavigate` for those results." },
   { name: "query", type: "string", default: "''", description: "Bindable current input text." },
 ]} />

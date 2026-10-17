@@ -13634,7 +13634,7 @@
 			"summary": "A CommandPalette whose async `search` returns grouped invoice and customer records after a simulated 600 ms server delay.",
 			"use": "Command palettes that search server data (records, documents, users) next to local navigation items.",
 			"spec": [
-				"`<CommandPalette {modules} {search} onNavigate={(path) => (picked = path)} bind:open />`",
+				"`<CommandPalette {modules} {search} shortcut={false} onNavigate={(path) => (picked = path)} bind:open />`: the page's other palette owns Mod+K",
 				"`function search(query: string, signal: AbortSignal)` resolves after 600 ms with `records` filtered by label and rejects with `AbortError` when the signal aborts",
 				"`records` has 4 results in the `Invoices` and `Customers` groups",
 				"Local `modules` items (Dashboard, Settings) filter instantly and stay above server results",
@@ -13652,8 +13652,7 @@
 			"shape": "wide",
 			"components": [
 				"CommandPalette",
-				"Button",
-				"Kbd"
+				"Button"
 			],
 			"imports": [
 				{
@@ -13661,7 +13660,6 @@
 					"names": [
 						"CommandPalette",
 						"Button",
-						"Kbd",
 						"CommandResult",
 						"NavModule"
 					]

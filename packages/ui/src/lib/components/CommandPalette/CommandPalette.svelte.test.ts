@@ -4,6 +4,7 @@ import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
 import Harness from "./CommandPalette.test.svelte";
+import TwoPalettes from "./TwoPalettes.test.svelte";
 
 const palette = () => page.getByRole("dialog", { name: "Command palette" });
 const input = () => page.getByPlaceholder("Search…");
@@ -134,6 +135,15 @@ describe("CommandPalette", () => {
 		} finally {
 			spy.mockRestore();
 		}
+	});
+
+	it("with two palettes, Mod+K opens only the one that keeps the shortcut (#329)", async () => {
+		const screen = await render(TwoPalettes);
+		await userEvent.keyboard("{Control>}k{/Control}");
+		await expect
+			.poll(() => screen.getByTestId("state").element().textContent?.trim())
+			.toBe("first");
+		await expect.poll(() => document.querySelectorAll("dialog[open]").length).toBe(1);
 	});
 });
 

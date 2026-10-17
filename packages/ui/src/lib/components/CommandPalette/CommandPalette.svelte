@@ -41,6 +41,11 @@
     search?: (query: string, signal: AbortSignal) => Promise<CommandResult[]>;
     /** Debounce delay (ms) before `search` is called after the last keystroke. Default 200. */
     searchDebounce?: number;
+    /**
+     * Opens and closes on Mod+K (Cmd+K / Ctrl+K) anywhere in the window. Turn it off for every
+     * palette but one when a page has several, or when the app binds its own shortcut.
+     */
+    shortcut?: boolean;
   }
 
   let {
@@ -52,6 +57,7 @@
     minQueryLength     = 1,
     search: searchFn,
     searchDebounce     = 200,
+    shortcut           = true,
   }: Props = $props();
 
   let selectedIndex = $state(0);
@@ -237,7 +243,7 @@
   const presence = createPresence(() => open);
 
   function handleGlobal(e: KeyboardEvent) {
-    if ((e.metaKey || e.ctrlKey) && e.key === 'k') {
+    if (shortcut && (e.metaKey || e.ctrlKey) && e.key === 'k') {
       e.preventDefault();
       openedByKeyboard = !open;
       open = !open;

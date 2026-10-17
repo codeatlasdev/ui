@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { CommandPalette, Button, Kbd, type CommandResult, type NavModule } from '@codeatlasdev/ui';
+  import { CommandPalette, Button, type CommandResult, type NavModule } from '@codeatlasdev/ui';
   import { Search, Home, Settings } from '@lucide/svelte';
 
   let open = $state(false);
@@ -39,14 +39,14 @@
   }
 </script>
 
-<CommandPalette {modules} {search} onNavigate={(path) => (picked = path)} bind:open />
+<!-- The page's first palette owns Mod+K; this one opens from its button only. -->
+<CommandPalette {modules} {search} shortcut={false} onNavigate={(path) => (picked = path)} bind:open />
 
 <Button variant="filled" onclick={() => (open = true)}>
   {#snippet leading()}<Search size={16} />{/snippet}
   Search records
 </Button>
-<Kbd>⌘K</Kbd>
-{#if picked}<span class="picked" aria-live="polite">Selected: <code>{picked}</code></span>{/if}
+{#if picked}<span class="picked">Selected: <code>{picked}</code></span>{/if}
 
 <style>
   .picked { font-size: var(--ca-font-size-body2); color: var(--ca-text-secondary); }

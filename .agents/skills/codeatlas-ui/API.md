@@ -559,6 +559,7 @@ Classes: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chev
 | `minQueryLength?` | `number` | `1` | Characters (after trimming) needed before filtering; shorter queries show every item grouped. |
 | `search?` | `(query: string, signal: AbortSignal) => Promise<CommandResult[]>` |  | Async search function. Called with the trimmed query and an `AbortSignal`; must throw / reject with a `DOMException("Aborted", "AbortError")` on abort (the standard `signal.throwIfAborted()` pattern). Returns `CommandResult[]`. |
 | `searchDebounce?` | `number` | `200` | Debounce delay (ms) before `search` is called after the last keystroke. Default 200. |
+| `shortcut?` | `boolean` | `true` | Opens and closes on Mod+K (Cmd+K / Ctrl+K) anywhere in the window. Turn it off for every palette but one when a page has several, or when the app binds its own shortcut. |
 
 Classes: `ca-cmd-dialog` `ca-cmd-empty` `ca-cmd-error` `ca-cmd-group__label` `ca-cmd-item` `ca-cmd-item--active` `ca-cmd-item__icon` `ca-cmd-item__label` `ca-cmd-item__module` `ca-cmd-list` `ca-cmd-loading` `ca-cmd-overlay` `ca-cmd-search` `ca-cmd-search__hint` `ca-cmd-search__icon` `ca-cmd-search__input` `ca-cmd-search__spinner` `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
 
