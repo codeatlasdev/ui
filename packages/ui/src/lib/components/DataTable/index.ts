@@ -2,6 +2,7 @@
 export type { PaginationState, SortingState, Updater } from "@tanstack/svelte-table";
 export { default as DataTable } from "./DataTable.svelte";
 export { default as DataTableColumnHeader } from "./DataTableColumnHeader.svelte";
+export { default as DataTableColumnResize } from "./DataTableColumnResize.svelte";
 export { default as DataTableColumnToggle } from "./DataTableColumnToggle.svelte";
 export { default as DataTableFacetedFilter } from "./DataTableFacetedFilter.svelte";
 export { default as DataTablePagination } from "./DataTablePagination.svelte";
@@ -13,6 +14,7 @@ export type {
 	CaColumnMeta,
 	CaTable,
 	CaTableFeatures,
+	DataTableReorderEvent,
 } from "./table-hook.svelte.js";
 export {
 	caTableFeatures,

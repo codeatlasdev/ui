@@ -6,7 +6,7 @@ Conventions: BEM (`ca-block__element`, `ca-block--modifier`). CSS variables (`--
 
 Generated from `grep -o 'ca-[a-z0-9_-]*'` over `packages/ui/src/lib/components/<Component>/` (`.svelte`, `.css`, `.ts`), excluding custom properties and duplicates. When you add or rename components, rerun the command and update this file. Some listed names may be `@keyframes` or internal identifiers (e.g. `ca-accordion-down`) rather than classes; treat them as stable to be safe.
 
-Total: 808 unique classes across 83 components.
+Total: 819 unique classes across 83 components.
 
 ---
 
@@ -111,7 +111,7 @@ Total: 808 unique classes across 83 components.
 
 ## DataTable
 
-`.ca-col-header` `.ca-col-header__idle` `.ca-col-toggle__check` `.ca-col-toggle__content` `.ca-col-toggle__item` `.ca-col-toggle__trigger` `.ca-datatable` `.ca-datatable__clear` `.ca-datatable__empty-panel` `.ca-datatable__glass` `.ca-datatable__no-results` `.ca-datatable__no-results-icon` `.ca-datatable__no-results-inner` `.ca-datatable__no-results-sub` `.ca-datatable__no-results-title` `.ca-datatable__row--clickable` `.ca-datatable__scroll` `.ca-datatable__table` `.ca-datatable__tbody` `.ca-datatable__thead` `.ca-dt-pagination` `.ca-dt-pagination__btn` `.ca-dt-pagination__count` `.ca-dt-pagination__label` `.ca-dt-pagination__nav` `.ca-dt-pagination__select` `.ca-dt-pagination__size` `.ca-dt-toolbar` `.ca-dt-toolbar__count` `.ca-dt-toolbar__export` `.ca-dt-toolbar__input` `.ca-dt-toolbar__left` `.ca-dt-toolbar__right` `.ca-dt-toolbar__search` `.ca-dt-toolbar__search-icon` `.ca-dt-toolbar__spinner` `.ca-facet__badge` `.ca-facet__check` `.ca-facet__clear` `.ca-facet__content` `.ca-facet__count` `.ca-facet__empty` `.ca-facet__footer` `.ca-facet__item` `.ca-facet__item--active` `.ca-facet__item-label` `.ca-facet__list` `.ca-facet__sep` `.ca-facet__trigger` `.ca-spin` `.ca-table` `.ca-table-container` `.ca-table-wrap`
+`.ca-col-header` `.ca-col-header__idle` `.ca-col-toggle__check` `.ca-col-toggle__content` `.ca-col-toggle__item` `.ca-col-toggle__trigger` `.ca-datatable` `.ca-datatable__clear` `.ca-datatable__empty-panel` `.ca-datatable__glass` `.ca-datatable__grip` `.ca-datatable__grip-cell` `.ca-datatable__grip-col` `.ca-datatable__group` `.ca-datatable__group-count` `.ca-datatable__group-row` `.ca-datatable__group-toggle` `.ca-datatable__no-results` `.ca-datatable__no-results-icon` `.ca-datatable__no-results-inner` `.ca-datatable__no-results-sub` `.ca-datatable__no-results-title` `.ca-datatable__resize` `.ca-datatable__resize--active` `.ca-datatable__row--clickable` `.ca-datatable__scroll` `.ca-datatable__table` `.ca-datatable__table--fixed` `.ca-datatable__tbody` `.ca-datatable__th--resizable` `.ca-datatable__thead` `.ca-dt-pagination` `.ca-dt-pagination__btn` `.ca-dt-pagination__count` `.ca-dt-pagination__label` `.ca-dt-pagination__nav` `.ca-dt-pagination__select` `.ca-dt-pagination__size` `.ca-dt-toolbar` `.ca-dt-toolbar__count` `.ca-dt-toolbar__export` `.ca-dt-toolbar__input` `.ca-dt-toolbar__left` `.ca-dt-toolbar__right` `.ca-dt-toolbar__search` `.ca-dt-toolbar__search-icon` `.ca-dt-toolbar__spinner` `.ca-facet__badge` `.ca-facet__check` `.ca-facet__clear` `.ca-facet__content` `.ca-facet__count` `.ca-facet__empty` `.ca-facet__footer` `.ca-facet__item` `.ca-facet__item--active` `.ca-facet__item-label` `.ca-facet__list` `.ca-facet__sep` `.ca-facet__trigger` `.ca-spin` `.ca-table` `.ca-table-container` `.ca-table-wrap`
 
 ## Date
 

@@ -1,0 +1,19 @@
+{
+	"summary": "A DataTable of tasks grouped into collapsible sprints, with a resizable Task column, drag-to-reorder rows between groups and a button inside a cell.",
+	"use": "Backlogs, boards in table form and any grouped list where rows are reordered or moved and cells hold controls.",
+	"spec": [
+		"`groupBy={(t) => t.sprint}` renders one tbody per sprint with a header button that collapses its rows",
+		"`meta: { label: 'Task', resizable: true }` with `size: 320`, `minSize: 160` and `maxSize: 560` adds a keyboard and pointer resize handle",
+		"`{onReorder}` adds a grip per row; `rowId={(t) => t.id}` gives rows stable ids; the handler applies `e.to.group` and `e.to.index` to `tasks`",
+		"`renderComponent(Button, {` puts a Button in a cell; clicking it does not fire `onRowClick`"
+	],
+	"tags": ["data-table", "groups", "resize", "reorder", "drag", "interactive-cells"],
+	"names": [
+		"Grouped table",
+		"Resizable columns",
+		"Reorderable rows",
+		"Tabela agrupada",
+		"Tabla agrupada"
+	],
+	"shape": "wide"
+}

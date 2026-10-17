@@ -1,5 +1,6 @@
 <script lang="ts" generics="TData extends RowData">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useLocale, useT } from '../../i18n/state.svelte.js';
+  import { tableMessages } from './table-messages.js';
   import type { Snippet } from 'svelte';
   import {
     FlexRender,
@@ -9,11 +10,18 @@
     type Updater,
     type RowData,
   } from '@tanstack/svelte-table';
-  import { SearchX } from '@lucide/svelte';
-  import { caTableFeatures, createCaTable } from './table-hook.svelte.js';
+  import { ChevronDown, GripVertical, SearchX } from '@lucide/svelte';
+  import { useDnd } from '../../primitives/dnd.svelte.js';
+  import type { DndDropEvent } from '../../primitives/dnd.js';
+  import DndLayer from '../DragAndDrop/DndLayer.svelte';
+  import { caTableFeatures, createCaTable, type DataTableReorderEvent } from './table-hook.svelte.js';
+  import DataTableColumnResize from './DataTableColumnResize.svelte';
   import DataTableToolbar from './DataTableToolbar.svelte';
   import DataTablePagination from './DataTablePagination.svelte';
   const t = useT();
+  const locale = useLocale();
+  const tm = $derived(tableMessages(locale()));
+
 
   interface Props {
     columns:               ColumnDef<typeof caTableFeatures, TData>[];
@@ -33,7 +41,18 @@
     emptyState?:           Snippet;
     /** Filter chips: DataTableFacetedFilter components */
     children?:             Snippet;
+    /** Clicks on a link, button, input or other control inside a cell never reach this. */
     onRowClick?:           (row: TData) => void;
+    /** Stable id of a row (default: its index). Needed for `onReorder`. */
+    rowId?:                (row: TData) => string;
+    /** Rows with the same key share a `<tbody>` with a collapsible header, in first-appearance order. */
+    groupBy?:              (row: TData) => string;
+    /** Custom group header content. */
+    groupLabel?:           Snippet<[{ group: string; count: number }]>;
+    /** Shows a drag grip on every row and reports the move; apply it to `data` yourself. */
+    onReorder?:            (e: DataTableReorderEvent) => void;
+    /** Rows per page in simple mode (default 10). */
+    pageSize?:             number;
     searchPlaceholder?:    string;
     isLoading?:            boolean;
     isExporting?:          boolean;
@@ -62,6 +81,11 @@
     emptyState,
     children,
     onRowClick,
+    rowId,
+    groupBy,
+    groupLabel,
+    onReorder,
+    pageSize = 10,
     searchPlaceholder,
     isLoading,
     isExporting,
@@ -77,7 +101,8 @@
 
   // Internal state for simple mode
   let _filter     = $state('');
-  let _pagination = $state<PaginationState>({ pageIndex: 0, pageSize: 10 });
+  // svelte-ignore state_referenced_locally
+  let _pagination = $state<PaginationState>({ pageIndex: 0, pageSize });
   let _sorting    = $state<SortingState>([]);
 
   // Resolved values: use internal or external
@@ -141,6 +166,7 @@
   const table = createCaTable({
     get columns()            { return columns; },
     get data()               { return resolvedPageData; },
+    getRowId: (row: TData, index: number) => (rowId ? rowId(row) : String(index)),
     get manualFiltering()  { return !isSimple; },
     get manualPagination() { return !isSimple; },
     get manualSorting()    { return !isSimple; },
@@ -163,6 +189,52 @@
   const isEmpty      = $derived(rows.length === 0);
   const isFiltered   = $derived(!!(resolvedFilter || hasActiveFilters));
   const headerGroups = $derived(table.getHeaderGroups());
+
+  // ── Row groups ────────────────────────────────────────────────────────────
+  // A `<tbody>` per group, in first-appearance order. Without `groupBy` there is one unnamed body.
+  type Row_ = (typeof rows)[number];
+  const sections = $derived.by(() => {
+    if (!groupBy) return [{ key: undefined as string | undefined, rows: rows as Row_[] }];
+    const map = new Map<string, Row_[]>();
+    for (const row of rows) {
+      const k = groupBy(row.original);
+      const list = map.get(k);
+      if (list) list.push(row);
+      else map.set(k, [row]);
+    }
+    return Array.from(map, ([key, list]) => ({ key: key as string | undefined, rows: list }));
+  });
+  let collapsed = $state<Record<string, boolean>>({});
+  const colCount = $derived(columns.length + (onReorder ? 1 : 0));
+  // A fixed layout is exactly as wide as its columns; `width: 100%` would stretch them past their size.
+  const tableWidth = $derived(
+    table.getVisibleLeafColumns().reduce((sum, c) => sum + c.getSize(), 0) + (onReorder ? 44 : 0)
+  );
+  const resizable = $derived(table.getAllLeafColumns().some((c) => c.columnDef.meta?.resizable));
+
+  // ── Row reorder ───────────────────────────────────────────────────────────
+  const dnd = useDnd();
+  const labelOf = (id: string) => {
+    const row = rows.find((r) => r.id === id);
+    const first = row?.getVisibleCells()[0];
+    return String(first?.getValue() ?? id);
+  };
+  function drop(e: DndDropEvent) {
+    onReorder?.({
+      id: e.id,
+      from: { group: groupBy ? e.from.container : undefined, index: e.from.index },
+      to: { group: groupBy ? e.to.container : undefined, index: e.to.index },
+    });
+  }
+
+  /** Clicks that belong to a control inside the cell are not row clicks. */
+  const CONTROL = 'a, button, input, select, textarea, label, summary, [role=button], [role=menuitem], [role=checkbox], [role=switch], [contenteditable=true], [data-no-row-click]';
+  function rowClick(e: MouseEvent, row: TData) {
+    const target = e.target as Element | null;
+    const control = target?.closest(CONTROL);
+    if (control && e.currentTarget instanceof Element && e.currentTarget.contains(control)) return;
+    onRowClick?.(row);
+  }
 </script>
 
 <div class="ca-datatable {className}">
@@ -187,13 +259,28 @@
   {:else}
     <div class="ca-datatable__glass">
       <div class="ca-datatable__scroll">
-        <table class="ca-datatable__table">
+        {#if onReorder}<DndLayer {dnd} />{/if}
+        <table
+          class="ca-datatable__table"
+          class:ca-datatable__table--fixed={resizable}
+          style:--ca-datatable-w={resizable ? `${tableWidth}px` : undefined}
+        >
+          {#if resizable}
+            <colgroup>
+              {#if onReorder}<col class="ca-datatable__grip-col" />{/if}
+              {#each table.getVisibleLeafColumns() as column (column.id)}
+                <col style:--ca-col-w="{column.getSize()}px" />
+              {/each}
+            </colgroup>
+          {/if}
           <thead class="ca-datatable__thead">
             {#each headerGroups as hg (hg.id)}
               <tr>
+                {#if onReorder}<th class="ca-datatable__grip-cell" scope="col"><span class="ca-sr-only">{tm.reorder}</span></th>{/if}
                 {#each hg.headers as header (header.id)}
                   <th
                     scope="col"
+                    class:ca-datatable__th--resizable={header.column.columnDef.meta?.resizable}
                     aria-sort={header.column.getIsSorted() === 'asc'
                       ? 'ascending'
                       : header.column.getIsSorted() === 'desc'
@@ -203,15 +290,21 @@
                     {#if !header.isPlaceholder}
                       <FlexRender {header} />
                     {/if}
+                    {#if header.column.columnDef.meta?.resizable}
+                      <DataTableColumnResize
+                        column={header.column}
+                        label={tm.resize(String(header.column.columnDef.meta?.label ?? header.column.id))}
+                      />
+                    {/if}
                   </th>
                 {/each}
               </tr>
             {/each}
           </thead>
-          <tbody class="ca-datatable__tbody">
-            {#if isEmpty}
+          {#if isEmpty}
+            <tbody class="ca-datatable__tbody">
               <tr>
-                <td class="ca-datatable__no-results" colspan={columns.length}>
+                <td class="ca-datatable__no-results" colspan={colCount}>
                   <div class="ca-datatable__no-results-inner">
                     <div class="ca-datatable__no-results-icon">
                       <SearchX size={20} stroke-width={1.5} />
@@ -232,19 +325,73 @@
                   </div>
                 </td>
               </tr>
-            {:else}
-              {#each rows as row (row.id)}
-                <tr
-                  class:ca-datatable__row--clickable={!!onRowClick}
-                  onclick={onRowClick ? () => onRowClick(row.original) : undefined}
-                >
-                  {#each row.getVisibleCells() as cell (cell.id)}
-                    <td><FlexRender {cell} /></td>
+            </tbody>
+          {:else}
+            {#each sections as section (section.key ?? '')}
+              {@const group = section.key}
+              {@const open = group === undefined || !collapsed[group]}
+              <tbody
+                class="ca-datatable__tbody"
+                data-group={group}
+                {@attach onReorder ? dnd.sortable(() => ({
+                  id: group ?? '',
+                  group: 'rows',
+                  label: group ?? '',
+                  getItems: () => section.rows.map((r) => r.id),
+                  getLabel: labelOf,
+                  handle: '.ca-datatable__grip',
+                  onDrop: drop,
+                })) : undefined}
+              >
+                {#if group !== undefined}
+                  <tr class="ca-datatable__group-row">
+                    <th scope="rowgroup" colspan={colCount} class="ca-datatable__group">
+                      <button
+                        type="button"
+                        class="ca-datatable__group-toggle"
+                        aria-expanded={open}
+                        onclick={() => (collapsed = { ...collapsed, [group]: open })}
+                      >
+                        <ChevronDown size={14} aria-hidden="true" class="ca-datatable__group-chevron" />
+                        {#if groupLabel}
+                          {@render groupLabel({ group, count: section.rows.length })}
+                        {:else}
+                          <span>{group}</span>
+                          <span class="ca-datatable__group-count">{section.rows.length}</span>
+                        {/if}
+                      </button>
+                    </th>
+                  </tr>
+                {/if}
+                {#if open}
+                  {#each section.rows as row (row.id)}
+                    <tr
+                      data-row
+                      data-dnd-item={onReorder ? row.id : undefined}
+                      class:ca-datatable__row--clickable={!!onRowClick}
+                      onclick={onRowClick ? (e) => rowClick(e, row.original) : undefined}
+                    >
+                      {#if onReorder}
+                        <td class="ca-datatable__grip-cell">
+                          <button
+                            type="button"
+                            class="ca-datatable__grip"
+                            aria-label={tm.move(labelOf(row.id))}
+                            aria-describedby={dnd.instructionsId}
+                          >
+                            <GripVertical size={16} aria-hidden="true" />
+                          </button>
+                        </td>
+                      {/if}
+                      {#each row.getVisibleCells() as cell (cell.id)}
+                        <td><FlexRender {cell} /></td>
+                      {/each}
+                    </tr>
                   {/each}
-                </tr>
-              {/each}
-            {/if}
-          </tbody>
+                {/if}
+              </tbody>
+            {/each}
+          {/if}
         </table>
       </div>
     </div>
@@ -261,6 +408,7 @@
       flex-direction: column;
       gap: var(--ca-space-3);
       min-height: 0;
+      min-width: 0;
       flex: 1;
     }
 
@@ -268,6 +416,7 @@
     .ca-datatable__glass {
       flex: 1;
       min-height: 0;
+      min-width: 0;
       overflow: auto;
       border-radius: var(--ca-radius-lg);
       border: var(--ca-border-width) solid var(--ca-outline-subtle);
@@ -301,10 +450,67 @@
     }
 
     .ca-datatable__tbody tr:last-child { border-bottom: none; }
+    .ca-datatable__tbody + .ca-datatable__tbody { border-top: var(--ca-border-width) solid var(--ca-outline-subtle); }
+
+    /* Fixed layout once a column is resizable: widths come from <colgroup>. */
+    .ca-datatable__table--fixed { table-layout: fixed; width: var(--ca-datatable-w); }
+    .ca-datatable__table--fixed td { overflow: hidden; text-overflow: ellipsis; }
+    .ca-datatable__thead th { position: relative; }
+    .ca-datatable__grip-col { width: 44px; }
+    .ca-datatable__table--fixed col:not(.ca-datatable__grip-col) { width: var(--ca-col-w); }
 
     .ca-datatable__tbody tr:hover { background: var(--ca-action-hover); }
 
     .ca-datatable__row--clickable { cursor: pointer; }
+
+    /* ── Row groups ───────────────────────────────────────────────────────── */
+    .ca-datatable__group-row { background: var(--ca-surface-sunken, var(--ca-action-hover)); }
+    .ca-datatable__tbody .ca-datatable__group-row:hover { background: var(--ca-surface-sunken, var(--ca-action-hover)); }
+    .ca-datatable__tbody th.ca-datatable__group {
+      padding: 0;
+      text-align: left;
+      font-weight: var(--ca-font-weight-semibold);
+      font-size: var(--ca-font-size-label);
+      color: var(--ca-text-secondary);
+    }
+    .ca-datatable__group-toggle {
+      display: flex;
+      align-items: center;
+      gap: var(--ca-space-2);
+      width: 100%;
+      min-height: var(--ca-touch-target);
+      padding: 0 var(--ca-space-3);
+      border: 0;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+      text-align: left;
+    }
+    .ca-datatable__group-toggle:focus-visible { outline-offset: -2px; }
+    .ca-datatable__group-toggle :global(.ca-datatable__group-chevron) {
+      transition: transform var(--ca-duration-fast) var(--ca-ease-standard);
+    }
+    .ca-datatable__group-toggle[aria-expanded='false'] :global(.ca-datatable__group-chevron) { transform: rotate(-90deg); }
+    .ca-datatable__group-count { color: var(--ca-text-hint); font-variant-numeric: tabular-nums; }
+
+    /* ── Row grip ─────────────────────────────────────────────────────────── */
+    .ca-datatable__tbody td.ca-datatable__grip-cell,
+    .ca-datatable__thead th.ca-datatable__grip-cell { width: var(--ca-touch-target); padding: 0; text-align: center; }
+    .ca-datatable__grip {
+      display: inline-grid;
+      place-items: center;
+      min-width: var(--ca-touch-target);
+      min-height: var(--ca-touch-target);
+      padding: 0;
+      border: 0;
+      background: transparent;
+      color: var(--ca-text-secondary);
+      cursor: grab;
+      touch-action: none;
+      border-radius: var(--ca-radius-sm);
+    }
+    .ca-datatable__grip:hover { background: var(--ca-action-hover); }
 
     .ca-datatable__tbody td {
       padding: var(--ca-space-2-5) var(--ca-space-3);

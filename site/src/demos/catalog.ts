@@ -309,6 +309,7 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "430", path: "foundation/drag-and-drop/SortableList" },
 	{ id: "431", path: "foundation/drag-and-drop/Board" },
 	{ id: "432", path: "foundation/drag-and-drop/DropZones" },
+	{ id: "433", path: "display/data-table/Groups" },
 ];
 
 /**

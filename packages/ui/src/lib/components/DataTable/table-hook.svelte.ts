@@ -11,6 +11,7 @@ import {
 	type Column,
 	type ColumnDef,
 	columnFilteringFeature,
+	columnSizingFeature,
 	columnVisibilityFeature,
 	createTableHook,
 	globalFilteringFeature,
@@ -25,14 +26,17 @@ import {
 export interface CaColumnMeta {
 	/** Human-readable label shown in the column-visibility toggle. */
 	label?: string;
+	/** Shows a resize handle on the header (pointer, touch and keyboard). Uses the column's `size`, `minSize` and `maxSize`. */
+	resizable?: boolean;
 }
 
 // ── Shared feature set ─────────────────────────────────────────────────────────
 // Declared once, stable reference, never recreate inside a component.
-/** The table feature set shared by every `createCaTable`: column filtering, column visibility, global filtering, row pagination and row sorting. Declared once; never recreate it inside a component. */
+/** The table feature set shared by every `createCaTable`: column filtering, column sizing, column visibility, global filtering, row pagination and row sorting. Declared once; never recreate it inside a component. */
 export const caTableFeatures = tableFeatures({
 	columnFilteringFeature,
 	columnMeta: {} as CaColumnMeta,
+	columnSizingFeature,
 	columnVisibilityFeature,
 	globalFilteringFeature,
 	rowPaginationFeature,
@@ -66,3 +70,10 @@ export type CaColumn<TData extends RowData, TValue = unknown> = Column<
 	TData,
 	TValue
 >;
+
+/** A row move reported by `DataTable`'s `onReorder`: `from` and `to` are positions inside a group (`group` is undefined without `groupBy`). */
+export interface DataTableReorderEvent {
+	id: string;
+	from: { group?: string; index: number };
+	to: { group?: string; index: number };
+}

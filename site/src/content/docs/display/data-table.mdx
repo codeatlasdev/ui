@@ -1,6 +1,6 @@
 ---
 title: DataTable
-description: "Table with global search, column sorting, pagination and a column visibility toggle, built on TanStack Table."
+description: "Table with search, sorting, pagination, column visibility, row groups, resizable columns, drag-to-reorder rows and interactive cells, built on TanStack Table."
 group: Display
 order: 7
 ---
@@ -11,6 +11,8 @@ import Simple from "~/demos/display/data-table/Simple.svelte";
 import SimpleSrc from "~/demos/display/data-table/Simple.svelte?raw";
 import Controlled from "~/demos/display/data-table/Controlled.svelte";
 import ControlledSrc from "~/demos/display/data-table/Controlled.svelte?raw";
+import Groups from "~/demos/display/data-table/Groups.svelte";
+import GroupsSrc from "~/demos/display/data-table/Groups.svelte?raw";
 
 DataTable lives in its own entry point so that TanStack Table stays out of bundles that do not need it. Install the optional peer first.
 
@@ -36,6 +38,19 @@ There are two modes. In simple mode you pass `columns` and `data` and the table 
 <Demo title="Simple mode" description={"Pass `columns` and `data`. Search, sort and pagination are managed automatically."} src={SimpleSrc}><Simple client:visible /></Demo>
 <Demo title="Controlled mode" description={"Own the state to drive server-side filtering, sorting and pagination."} src={ControlledSrc}><Controlled client:visible /></Demo>
 
+## Groups, resize, reorder and interactive cells
+
+Four options turn the table into a backlog or board in table form. They are independent: use any of them alone.
+
+- **Row groups.** `groupBy={(row) => row.sprint}` renders one `<tbody>` per key, in first-appearance order, each with a header row. The header is a button with `aria-expanded` that collapses its rows; `groupLabel` replaces its content.
+- **Column resize.** Set `meta: { resizable: true }` on a column, with `size`, `minSize` and `maxSize` on the definition. The header gets a handle that follows the window splitter pattern: drag it with a mouse, pen or finger, or focus it and press the arrow keys (10px, 40px with Shift), Home (minimum), End (maximum) and Enter (reset). Double click resets too. Once a column is resizable the table uses a fixed layout and scrolls sideways when its columns are wider than the container.
+- **Row reorder.** `onReorder` adds a drag grip to every row, built on the [drag and drop primitive](/docs/foundation/drag-and-drop/): mouse, touch (press and hold) and keyboard (Space lifts, arrows move, Enter drops, Escape cancels), announced to screen readers. Groups exchange rows. `DataTable` never changes `data`: the handler gets `{ id, from, to }` with `{ group, index }` positions inside a group and you apply them. Give rows stable ids with `rowId`.
+- **Interactive cells.** A cell can render any component (`renderComponent(Button, …)`, menus, inline editors). A click on a link, button, input or other control inside a cell does not reach `onRowClick`; mark any other element with `data-no-row-click` to opt it out too.
+
+Only the current page is in the DOM, so a table of thousands of rows stays fast: raise `pageSize` (simple mode) or page on the server (controlled mode).
+
+<Demo title="Groups" description={"Collapsible sprints, a resizable Task column, rows that move between sprints by drag or keyboard, and a Button inside a cell."} src={GroupsSrc}><Groups client:visible /></Demo>
+
 <Props for="DataTable" rows={[
   { name: "columns", type: "ColumnDef[]", description: "Column definitions created with `createCaColumnHelper`. Required." },
   { name: "data", type: "TData[]", description: "Row data. In simple mode pass all rows; in controlled mode pass the current page. Required." },
@@ -51,7 +66,12 @@ There are two modes. In simple mode you pass `columns` and `data` and the table 
   { name: "isLoading", type: "boolean", default: "undefined", description: "Shows a loading indicator in the toolbar." },
   { name: "isExporting", type: "boolean", default: "undefined", description: "Shows the export button as busy." },
   { name: "onExport", type: "() => void", default: "undefined", description: "Enables the export button in the toolbar." },
-  { name: "onRowClick", type: "(row: TData) => void", default: "undefined", description: "Called when a row is clicked." },
+  { name: "onRowClick", type: "(row: TData) => void", default: "undefined", description: "Called when a row is clicked. Clicks on a control inside a cell (link, button, input, `data-no-row-click`) are ignored." },
+  { name: "rowId", type: "(row: TData) => string", default: "undefined", description: "Stable id of a row. Defaults to its index; set it when you use `onReorder`." },
+  { name: "groupBy", type: "(row: TData) => string", default: "undefined", description: "Rows with the same key share a collapsible `<tbody>`, in first-appearance order." },
+  { name: "groupLabel", type: "Snippet<[{ group: string; count: number }]>", default: "undefined", description: "Custom content of a group header button." },
+  { name: "onReorder", type: "(e: DataTableReorderEvent) => void", default: "undefined", description: "Shows a drag grip on every row and reports `{ id, from, to }` with `{ group, index }` positions. You apply the move to `data`." },
+  { name: "pageSize", type: "number", default: "10", description: "Rows per page in simple mode." },
   { name: "hasActiveFilters", type: "boolean", default: "undefined", description: "Treats the table as filtered, which suppresses the empty state." },
   { name: "emptyState", type: "Snippet", default: "undefined", description: "Custom content shown when there is no data and no active filter." },
   { name: "children", type: "Snippet", default: "undefined", description: "Filter chips such as `DataTableFacetedFilter`, rendered in the toolbar." },
@@ -108,7 +128,15 @@ It renders a page size select (10, 20, 50 or 100 rows), a `page / pages` indicat
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />
 
-A sortable column renders a button that toggles sorting and shows the direction icon. A column that cannot sort renders the plain title.
+A sortable column renders a button that toggles sorting and shows the direction icon, and its `<th>` carries `aria-sort`. A column that cannot sort renders the plain title.
+
+<Props for="DataTableColumnResize" title="DataTableColumnResize props" rows={[
+  { name: "column", type: "CaColumn<TData, TValue>", description: "Column to resize. Required." },
+  { name: "label", type: "string", description: "Accessible name of the handle, such as `Resize Task`. Required." },
+  { name: "step", type: "number", default: "10", description: "Keyboard step in px; Shift uses four times as much." },
+]} />
+
+`DataTable` renders it for every column with `meta.resizable`. Use it in your own header markup when you build the table yourself.
 
 <Props for="DataTableColumnToggle" title="DataTableColumnToggle props" rows={[
   { name: "table", type: "CaTable<TData>", description: "Table instance from `createCaTable`. Required." },

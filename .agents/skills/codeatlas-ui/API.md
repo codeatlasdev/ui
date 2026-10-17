@@ -617,7 +617,11 @@ Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class' \| 'children' \| 'oncli
 | `onPaginationChange?` | `(v: Updater<PaginationState>) => void` |  |  |
 | `sorting?` | `SortingState` |  |  |
 | `onSortingChange?` | `(v: Updater<SortingState>) => void` |  |  |
-| `onRowClick?` | `(row: TData) => void` |  |  |
+| `onRowClick?` | `(row: TData) => void` |  | Clicks on a link, button, input or other control inside a cell never reach this. |
+| `rowId?` | `(row: TData) => string` |  | Stable id of a row (default: its index). Needed for `onReorder`. |
+| `groupBy?` | `(row: TData) => string` |  | Rows with the same key share a `<tbody>` with a collapsible header, in first-appearance order. |
+| `onReorder?` | `(e: DataTableReorderEvent) => void` |  | Shows a drag grip on every row and reports the move; apply it to `data` yourself. |
+| `pageSize?` | `number` | `10` | Rows per page in simple mode (default 10). |
 | `searchPlaceholder?` | `string` |  |  |
 | `isLoading?` | `boolean` |  |  |
 | `isExporting?` | `boolean` |  |  |
@@ -626,9 +630,9 @@ Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class' \| 'children' \| 'oncli
 | `class?` | `string` | `''` |  |
 | `labels?` | `{ noResults?: string; noResultsSub?: string; clearSearch?: string; }` |  |  |
 
-Snippets: `emptyState`, `children`
+Snippets: `emptyState`, `children`, `groupLabel` (`Snippet<[{ group: string; count: number }]>`)
 
-Classes: `ca-datatable` `ca-datatable__clear` `ca-datatable__empty-panel` `ca-datatable__glass` `ca-datatable__no-results` `ca-datatable__no-results-icon` `ca-datatable__no-results-inner` `ca-datatable__no-results-sub` `ca-datatable__no-results-title` `ca-datatable__row--clickable` `ca-datatable__scroll` `ca-datatable__table` `ca-datatable__tbody` `ca-datatable__thead`
+Classes: `ca-datatable` `ca-datatable__clear` `ca-datatable__empty-panel` `ca-datatable__glass` `ca-datatable__grip` `ca-datatable__grip-cell` `ca-datatable__grip-col` `ca-datatable__group` `ca-datatable__group-count` `ca-datatable__group-row` `ca-datatable__group-toggle` `ca-datatable__no-results` `ca-datatable__no-results-icon` `ca-datatable__no-results-inner` `ca-datatable__no-results-sub` `ca-datatable__no-results-title` `ca-datatable__row--clickable` `ca-datatable__scroll` `ca-datatable__table` `ca-datatable__table--fixed` `ca-datatable__tbody` `ca-datatable__thead`
 
 ## DataTableColumnHeader
 
@@ -641,6 +645,18 @@ Classes: `ca-datatable` `ca-datatable__clear` `ca-datatable__empty-panel` `ca-da
 | `class?` | `string` | `''` |  |
 
 Classes: `ca-col-header` `ca-col-header__idle`
+
+## DataTableColumnResize
+
+`import { DataTableColumnResize } from "@codeatlasdev/ui/table"` (generic: `TData extends RowData, TValue = unknown`)
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `column` | `CaColumn<TData, TValue>` |  |  |
+| `label` | `string` |  | Accessible name, e.g. "Resize Title". |
+| `step?` | `number` | `10` | Keyboard step in px (Shift uses 4x). |
+
+Classes: `ca-datatable__resize` `ca-datatable__resize--active`
 
 ## DataTableColumnToggle
 
@@ -4285,12 +4301,13 @@ Types:
 
 `import { caTableFeatures } from "@codeatlasdev/ui/table"`
 
-The table feature set shared by every `createCaTable`: column filtering, column visibility, global filtering, row pagination and row sorting. Declared once; never recreate it inside a component.
+The table feature set shared by every `createCaTable`: column filtering, column sizing, column visibility, global filtering, row pagination and row sorting. Declared once; never recreate it inside a component.
 
 ```ts
 const caTableFeatures: {
   columnFilteringFeature: TableFeature;
   columnMeta: CaColumnMeta;
+  columnSizingFeature: TableFeature;
   columnVisibilityFeature: TableFeature;
   globalFilteringFeature: TableFeature;
   rowPaginationFeature: TableFeature;
@@ -4305,7 +4322,7 @@ const caTableFeatures: {
 TanStack table factory (`createCaTable`) and typed column-definition helper (`createCaColumnHelper`), both pre-bound to `caTableFeatures`.
 
 ```ts
-const createCaColumnHelper: <TData extends RowData>() => AppColumnHelper<{ columnFilteringFeature: TableFeature; columnMeta: CaColumnMeta; columnVisibilityFeature: TableFeature; globalFilteringFeature: TableFeature; rowPaginationFeature: TableFeature; rowSortingFeature: TableFeature; }, TData, Record<string, ComponentType<any>>, Record<string, ComponentType<any>>>
+const createCaColumnHelper: <TData extends RowData>() => AppColumnHelper<{ columnFilteringFeature: TableFeature; columnMeta: CaColumnMeta; columnSizingFeature: TableFeature; columnVisibilityFeature: TableFeature; globalFilteringFeature: TableFeature; rowPaginationFeature: TableFeature; rowSortingFeature: TableFeature; }, TData, Record<string, ComponentType<any>>, Record<string, ComponentType<any>>>
 ```
 
 ### createCaTable
@@ -4315,7 +4332,7 @@ const createCaColumnHelper: <TData extends RowData>() => AppColumnHelper<{ colum
 TanStack table factory (`createCaTable`) and typed column-definition helper (`createCaColumnHelper`), both pre-bound to `caTableFeatures`.
 
 ```ts
-const createCaTable: <TData extends RowData>(tableOptions: Omit<TableOptions<{ columnFilteringFeature: TableFeature; columnMeta: CaColumnMeta; columnVisibilityFeature: TableFeature; globalFilteringFeature: TableFeature; rowPaginationFeature: TableFeature; rowSortingFeature: TableFeature; }, TData>, "features">) => AppSvelteTable<{ columnFilteringFeature: TableFeature; columnMeta: CaColumnMeta; columnVisibilityFeature: TableFeature; globalFilteringFeature: TableFeature; rowPaginationFeature: TableFeature; rowSortingFeature: TableFeature; }, TData, Record<string, ComponentType<any>>, Record<string, ComponentType<any>>, Record<string, ComponentType<any>>>
+const createCaTable: <TData extends RowData>(tableOptions: Omit<TableOptions<{ columnFilteringFeature: TableFeature; columnMeta: CaColumnMeta; columnSizingFeature: TableFeature; columnVisibilityFeature: TableFeature; globalFilteringFeature: TableFeature; rowPaginationFeature: TableFeature; rowSortingFeature: TableFeature; }, TData>, "features">) => AppSvelteTable<{ columnFilteringFeature: TableFeature; columnMeta: CaColumnMeta; columnSizingFeature: TableFeature; columnVisibilityFeature: TableFeature; globalFilteringFeature: TableFeature; rowPaginationFeature: TableFeature; rowSortingFeature: TableFeature; }, TData, Record<string, ComponentType<any>>, Record<string, ComponentType<any>>, Record<string, ComponentType<any>>>
 ```
 
 Types:
@@ -4324,9 +4341,10 @@ Types:
 |---|---|---|
 | `CaColumn` | `type CaColumn<TData extends RowData, TValue = unknown> = Column< CaTableFeatures, TData, TValue >;` | Use in column-header components. |
 | `CaColumnDef` | `type CaColumnDef<TData extends RowData, TValue = unknown> = ColumnDef< CaTableFeatures, TData, TValue >;` | Use instead of raw `ColumnDef` in every `-columns.ts` file. |
-| `CaColumnMeta` | `interface CaColumnMeta { label?: string; }` |  |
+| `CaColumnMeta` | `interface CaColumnMeta { label?: string; resizable?: boolean; }` |  |
 | `CaTable` | `type CaTable<TData extends RowData> = SvelteTable<CaTableFeatures, TData>;` | Use when a component receives a table instance. |
 | `CaTableFeatures` | `type CaTableFeatures = typeof caTableFeatures;` |  |
+| `DataTableReorderEvent` | `interface DataTableReorderEvent { id: string; from: { group?: string; index: number }; to: { group?: string; index: number }; }` | A row move reported by `DataTable`'s `onReorder`: `from` and `to` are positions inside a group (`group` is undefined without `groupBy`). |
 
 ## @codeatlasdev/ui/tokens
 
