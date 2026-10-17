@@ -1,0 +1,14 @@
+Use @codeatlasdev/ui demo #422 "Async results" (navigation/command-palette).
+What it shows: A CommandPalette whose async `search` returns grouped invoice and customer records after a simulated 600 ms server delay. When to use: Command palettes that search server data (records, documents, users) next to local navigation items.
+Spec:
+- `<CommandPalette {modules} {search} onNavigate={(path) => (picked = path)} bind:open />`
+- `function search(query: string, signal: AbortSignal)` resolves after 600 ms with `records` filtered by label and rejects with `AbortError` when the signal aborts
+- `records` has 4 results in the `Invoices` and `Customers` groups
+- Local `modules` items (Dashboard, Settings) filter instantly and stay above server results
+- Button `Search records` opens the palette, `Selected:` shows the picked path
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #422 Async results → file, what changed, https://ui.codeatlas.com.br/docs/navigation/command-palette#async-results; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/422.txt   Components API: ca-ui-mcp get_component(CommandPalette)

@@ -4,7 +4,7 @@
   import { uid } from '../../utils/index.js';
   import { createListbox } from '../../primitives/index.js';
   import FloatingLayer from '../Popover/FloatingLayer.svelte';
-  import { ChevronDown, Check } from '@lucide/svelte';
+  import { ChevronDown, Check, X } from '@lucide/svelte';
   const t = useT();
 
   export interface ComboboxOption {
@@ -14,13 +14,15 @@
   }
 
   interface Props {
-    value?:             string;
+    /** When `true`, `value` is `string[]` and the list stays open after each pick. */
+    multiple?:          boolean;
+    value?:             string | string[];
     options:            ComboboxOption[];
     placeholder?:       string;
     searchPlaceholder?: string;
     disabled?:          boolean;
     label?:             string;
-    /** Accessible name when there is no visible `label`. The trigger's name becomes `ariaLabel` followed by its current value (so it still contains the visible text). */
+    /** Accessible name when there is no visible `label`. */
     ariaLabel?:         string;
     class?:             string;
     error?:             string;
@@ -28,11 +30,16 @@
     required?:          boolean;
     size?:              'sm' | 'md';
     emptyText?:         string;
-    onchange?:          (value: string) => void;
+    onchange?:          (value: string | string[]) => void;
+    /** Called when a new tag is created via `creatable`. Receives the new value string. */
+    oncreate?:          (value: string) => void;
+    /** Show a "Create …" option when the query doesn't match any existing option exactly. */
+    creatable?:         boolean;
   }
 
   let {
-    value             = $bindable(''),
+    value             = $bindable<string | string[] | undefined>(undefined),
+    multiple          = false,
     options,
     placeholder,
     searchPlaceholder,
@@ -46,57 +53,132 @@
     size              = 'md',
     emptyText,
     onchange,
+    oncreate,
+    creatable         = false,
   }: Props = $props();
 
-  let query     = $state('');
+  // ── Selection ──────────────────────────────────────────────────────────────
+  let selectedValues = $derived<string[]>(
+    multiple
+      ? (Array.isArray(value) ? value : [])
+      : (typeof value === 'string' && value ? [value] : [])
+  );
+
+  function isSelected(v: string) {
+    return selectedValues.includes(v);
+  }
+
+  function writeValue(next: string[]) {
+    if (multiple) {
+      value = next;
+      onchange?.(next);
+    } else {
+      value = next[0] ?? '';
+      onchange?.(next[0] ?? '');
+    }
+  }
+
+  // ── State ─────────────────────────────────────────────────────────────────
+  let query       = $state('');
   let searchInput = $state<HTMLInputElement | null>(null);
-  let open = $state(false);
-  let trigger = $state<HTMLElement | null>(null);
-  let popup = $state<HTMLElement | null>(null);
+  let open        = $state(false);
+  let trigger     = $state<HTMLElement | null>(null);
+  let popup       = $state<HTMLElement | null>(null);
 
   const triggerId = uid('cbx');
   const listboxId = `${triggerId}-list`;
 
-  // The popup input owns keyboard focus (aria-activedescendant lives on it), so focus it as soon as it mounts.
   $effect(() => { focusTextField(searchInput); });
 
-  let selectedLabel = $derived(options.find(o => o.value === value)?.label ?? placeholder ?? t().combobox.placeholder);
+  // ── Label for the trigger (single mode) ──────────────────────────────────
+  let selectedLabel = $derived(
+    multiple
+      ? (selectedValues.length === 0 ? (placeholder ?? t().combobox.placeholder) : '')
+      : (options.find(o => o.value === (value as string))?.label ?? placeholder ?? t().combobox.placeholder)
+  );
+
+  // ── Filtered options ──────────────────────────────────────────────────────
+  let trimmedQuery = $derived(query.trim().toLowerCase());
 
   let filtered = $derived(
-    query.trim() === ''
+    trimmedQuery === ''
       ? options
-      : options.filter(o => o.label.toLowerCase().includes(query.toLowerCase()))
+      : options.filter(o => o.label.toLowerCase().includes(trimmedQuery))
+  );
+
+  // Show "Create …" row when creatable, query is non-empty, and no exact match
+  let showCreate = $derived(
+    !!creatable &&
+    trimmedQuery !== '' &&
+    !options.some(o => o.label.toLowerCase() === trimmedQuery)
+  );
+
+  // All items fed into the listbox: filtered options + optional create row
+  interface CreateRow { _create: true; label: string; value: string }
+  type Row = ComboboxOption | CreateRow;
+  let rows = $derived<Row[]>(
+    showCreate
+      ? [...filtered, { _create: true, label: t().combobox.create(query.trim()), value: query.trim() } as CreateRow]
+      : filtered
   );
 
   let rootClass = $derived(
-    ['ca-combobox', size === 'sm' ? 'ca-combobox--sm' : '', !!error ? 'ca-combobox--error' : '', className]
+    ['ca-combobox', multiple ? 'ca-combobox--multiple' : '', size === 'sm' ? 'ca-combobox--sm' : '', !!error ? 'ca-combobox--error' : '', className]
       .filter(Boolean).join(' ')
   );
 
+  // ── Listbox primitive ─────────────────────────────────────────────────────
   const listbox = createListbox({
     mode: 'activedescendant',
     spaceSelects: false,
     items: () =>
-      filtered.map((o, i) => ({
+      rows.map((row, i) => ({
         id: `${triggerId}-opt-${i}`,
         el: () => popup?.querySelector<HTMLElement>(`#${CSS.escape(`${triggerId}-opt-${i}`)}`),
-        text: o.label,
-        disabled: o.disabled,
+        text: row.label,
+        disabled: (row as ComboboxOption).disabled,
       })),
-    onSelect: (_item, i) => choose(filtered[i]),
+    onSelect: (_item, i) => choose(rows[i]),
   });
 
-  // Typing changes the result set: restart the highlight on the first match.
   $effect(() => {
     void filtered;
     if (open) listbox.first();
   });
 
-  function choose(option: ComboboxOption | undefined) {
-    if (!option || option.disabled) return;
-    value = option.value;
-    onchange?.(option.value);
-    close();
+  // ── Choose ────────────────────────────────────────────────────────────────
+  function choose(row: Row) {
+    if (!row) return;
+    if ((row as ComboboxOption).disabled) return;
+
+    if ('_create' in row && row._create) {
+      // creatable: add new tag
+      const newVal = row.value;
+      writeValue(multiple ? [...selectedValues, newVal] : [newVal]);
+      oncreate?.(newVal);
+      query = '';
+      if (multiple) listbox.first(); else close();
+      return;
+    }
+
+    const opt = row as ComboboxOption;
+    if (multiple) {
+      const already = selectedValues.includes(opt.value);
+      const next = already
+        ? selectedValues.filter(v => v !== opt.value)
+        : [...selectedValues, opt.value];
+      writeValue(next);
+      query = '';
+      listbox.first();
+      // keep open in multiple mode
+    } else {
+      writeValue([opt.value]);
+      close();
+    }
+  }
+
+  function removeChip(val: string) {
+    writeValue(selectedValues.filter(v => v !== val));
   }
 
   function close(restoreFocus = true) {
@@ -108,6 +190,10 @@
 
   function onInputKeydown(e: KeyboardEvent) {
     if (e.key === 'Tab') return close(false);
+    if (e.key === 'Backspace' && query === '' && multiple && selectedValues.length > 0) {
+      removeChip(selectedValues[selectedValues.length - 1]);
+      return;
+    }
     listbox.onkeydown(e);
   }
 </script>
@@ -117,6 +203,22 @@
     <label for={triggerId} class="ca-combobox__label">
       {label}{#if required}<span class="ca-combobox__req" aria-hidden="true"> *</span>{/if}
     </label>
+  {/if}
+  {#if multiple && selectedValues.length > 0}
+    <div class="ca-combobox__chips" role="group" aria-label={t().combobox.selectedValues}>
+      {#each selectedValues as val (val)}
+        {@const chipLabel = options.find(o => o.value === val)?.label ?? val}
+        <span class="ca-chip ca-chip--sm ca-combobox__chip">
+          <span class="ca-chip__label">{chipLabel}</span>
+          <button
+            type="button"
+            class="ca-chip__delete"
+            aria-label={t().chip.remove(chipLabel)}
+            onclick={() => removeChip(val)}
+          ><X size={12} stroke-width={2} /></button>
+        </span>
+      {/each}
+    </div>
   {/if}
 
   <!-- svelte-ignore a11y_role_supports_aria_props_implicit -->
@@ -146,18 +248,22 @@
     }}
   >
     {#if !label && ariaLabel}<span id="{triggerId}-name" hidden>{ariaLabel}</span>{/if}
-    <span id="{triggerId}-value" class="ca-combobox__trigger-label">{selectedLabel}</span>
+    <span id="{triggerId}-value" class="ca-combobox__trigger-label">
+      {#if multiple && selectedValues.length > 0}
+        <span class="ca-combobox__trigger-count" aria-hidden="true">{t().combobox.selectedCount(selectedValues.length)}</span>
+      {:else}
+        {selectedLabel}
+      {/if}
+    </span>
     <ChevronDown size={16} class="ca-combobox__chevron" />
   </button>
   {#if required}
-    <!-- Native constraint validation for <form required>: blocks submit while empty and moves focus to
-         the trigger. Not a form value carrier: there is no `name` prop. -->
     <input
       class="ca-validity-proxy"
       tabindex="-1"
       aria-hidden="true"
       required
-      value={value ?? ''}
+      value={selectedValues[0] ?? ''}
       oninvalid={(e) => { e.preventDefault(); trigger?.focus(); }}
     />
   {/if}
@@ -168,7 +274,6 @@
     <p id="{triggerId}-hint" class="ca-combobox__hint">{description}</p>
   {/if}
 
-  <!-- The popup is a plain container: the search input (role=combobox) must not live inside role=listbox. -->
   <FloatingLayer
     anchor={trigger}
     {open}
@@ -198,30 +303,38 @@
         onkeydown={onInputKeydown}
       />
     </div>
-    <div id={listboxId} role="listbox" aria-label={label ?? ariaLabel ?? placeholder ?? t().combobox.placeholder} class="ca-combobox__viewport">
-      {#each filtered as opt, i (opt.value)}
-        <!-- Keyboard is handled by the search input (aria-activedescendant); options are not tab stops. -->
+    <div
+      id={listboxId}
+      role="listbox"
+      aria-label={label ?? ariaLabel ?? placeholder ?? t().combobox.placeholder}
+      aria-multiselectable={multiple ? 'true' : undefined}
+      class="ca-combobox__viewport"
+    >
+      {#each rows as row, i (row.value)}
+        {@const isCreate = '_create' in row && row._create}
+        {@const selected = !isCreate && isSelected((row as ComboboxOption).value)}
         <!-- svelte-ignore a11y_interactive_supports_focus, a11y_click_events_have_key_events -->
         <div
           id="{triggerId}-opt-{i}"
           role="option"
           class="ca-combobox__item"
-          aria-selected={opt.value === value}
-          aria-disabled={opt.disabled ? 'true' : undefined}
-          data-disabled={opt.disabled ? '' : undefined}
+          class:ca-combobox__item--create={isCreate}
+          aria-selected={selected}
+          aria-disabled={(row as ComboboxOption).disabled ? 'true' : undefined}
+          data-disabled={(row as ComboboxOption).disabled ? '' : undefined}
           data-highlighted={listbox.isHighlighted(i) ? '' : undefined}
-          data-selected={opt.value === value ? '' : undefined}
-          onclick={() => choose(opt)}
-          onpointermove={() => !opt.disabled && listbox.highlight(i)}
+          data-selected={selected ? '' : undefined}
+          onclick={() => choose(row)}
+          onpointermove={() => !(row as ComboboxOption).disabled && listbox.highlight(i)}
         >
-          <span class="ca-combobox__item-label">{opt.label}</span>
-          {#if opt.value === value}
+          <span class="ca-combobox__item-label">{row.label}</span>
+          {#if selected}
             <Check size={14} class="ca-combobox__item-check" />
           {/if}
         </div>
       {/each}
     </div>
-    {#if filtered.length === 0}
+    {#if rows.length === 0}
       <div class="ca-combobox__empty">{emptyText ?? t().combobox.empty}</div>
     {/if}
   </FloatingLayer>
@@ -250,6 +363,13 @@
 
     :global(.ca-combobox__req) {
       color: var(--ca-semantic-error);
+    }
+
+    /* ── Chips row (multiple mode) ──────────────────────────────── */
+    :global(.ca-combobox__chips) {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--ca-space-1);
     }
 
     /* ── Trigger ───────────────────────────────────────────────── */
@@ -294,6 +414,11 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
+    }
+
+    :global(.ca-combobox__trigger-count) {
+      color: var(--ca-brand-text);
+      font-weight: var(--ca-font-weight-medium);
     }
 
     :global(.ca-combobox__chevron) {
@@ -391,6 +516,11 @@
       flex-shrink: 0;
     }
 
+    :global(.ca-combobox__item--create) {
+      color: var(--ca-brand-text);
+      font-style: italic;
+    }
+
     .ca-combobox__empty {
       padding: var(--ca-space-4) var(--ca-space-2-5);
       text-align: center;
@@ -398,13 +528,18 @@
       color: var(--ca-text-hint);
     }
 
-
     .ca-validity-proxy {
       position: absolute;
       width: 1px;
       height: 1px;
       opacity: 0;
       pointer-events: none;
+    }
+
+    /* forced-colors */
+    @media (forced-colors: active) {
+      :global(.ca-combobox__chips) { gap: var(--ca-space-1); }
+      :global(.ca-combobox__chip)  { border-color: CanvasText; }
     }
 }
 </style>

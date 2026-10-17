@@ -88,12 +88,18 @@ export const ptBR: Messages = {
 		placeholder: "Selecione…",
 		searchPlaceholder: "Buscar…",
 		empty: "Nenhum resultado",
+		selectedValues: "Valores selecionados",
+		selectedCount: (n) => `${n} selecionado${n === 1 ? "" : "s"}`,
+		create: (query) => `Criar "${query}"`,
 	},
 	commandPalette: {
 		dialog: "Paleta de comandos",
 		commands: "Comandos",
 		placeholder: "Buscar…",
 		empty: (query) => `Nenhum resultado para "${query}"`,
+		searching: "Buscando…",
+		searchFailed: "Falha na busca",
+		resultCount: (n) => `${n} ${n === 1 ? "resultado" : "resultados"}`,
 	},
 	copyButton: {
 		label: "Copiar",

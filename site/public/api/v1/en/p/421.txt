@@ -1,0 +1,14 @@
+Use @codeatlasdev/ui demo #421 "Creatable tags" (inputs/combobox).
+What it shows: A multi-select Combobox that offers a Create row for text that matches no tag, and adds the new tag to its options. When to use: Free-form tagging where users pick existing tags or invent new ones inline.
+Spec:
+- `multiple`, `creatable`, `label="Tags"`, `{options}`, `bind:value={tags}` and `oncreate={onCreate}` on one `Combobox`
+- `options` starts with `design`, `backend`, `urgent` and `onCreate` appends the new value
+- `let tags = $state<string[]>([])` starts empty
+- `placeholder="Add tags"` and `searchPlaceholder="Search or create a tag"`
+- Wrapper `.col` has `max-width: 360px`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #421 Creatable tags → file, what changed, https://ui.codeatlas.com.br/docs/inputs/combobox#creatable-tags; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/421.txt   Components API: ca-ui-mcp get_component(Combobox)

@@ -519,22 +519,25 @@ Classes: `ca-collapsible` `ca-collapsible__body` `ca-collapsible__chevron` `ca-c
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `value?` | `string` | `''` | `bind:` |
+| `multiple?` | `boolean` | `false` | When `true`, `value` is `string[]` and the list stays open after each pick. |
+| `value?` | `string \| string[]` |  | `bind:` |
 | `options` | `ComboboxOption[]` |  |  |
 | `placeholder?` | `string` |  |  |
 | `searchPlaceholder?` | `string` |  |  |
 | `disabled?` | `boolean` | `false` |  |
 | `label?` | `string` |  |  |
-| `ariaLabel?` | `string` |  | Accessible name when there is no visible `label`. The trigger's name becomes `ariaLabel` followed by its current value (so it still contains the visible text). |
+| `ariaLabel?` | `string` |  | Accessible name when there is no visible `label`. |
 | `class?` | `string` | `''` |  |
 | `error?` | `string` |  |  |
 | `description?` | `string` |  |  |
 | `required?` | `boolean` | `false` |  |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
 | `emptyText?` | `string` |  |  |
-| `onchange?` | `(value: string) => void` |  |  |
+| `onchange?` | `(value: string \| string[]) => void` |  |  |
+| `oncreate?` | `(value: string) => void` |  | Called when a new tag is created via `creatable`. Receives the new value string. |
+| `creatable?` | `boolean` | `false` | Show a "Create …" option when the query doesn't match any existing option exactly. |
 
-Classes: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chevron` `ca-combobox__content` `ca-combobox__empty` `ca-combobox__hint` `ca-combobox__hint--error` `ca-combobox__input` `ca-combobox__item` `ca-combobox__item-check` `ca-combobox__label` `ca-combobox__req` `ca-combobox__search-wrap` `ca-combobox__trigger` `ca-combobox__trigger-label` `ca-combobox__viewport` `ca-validity-proxy`
+Classes: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chevron` `ca-combobox__chip` `ca-combobox__chips` `ca-combobox__content` `ca-combobox__empty` `ca-combobox__hint` `ca-combobox__hint--error` `ca-combobox__input` `ca-combobox__item` `ca-combobox__item--create` `ca-combobox__item-check` `ca-combobox__label` `ca-combobox__req` `ca-combobox__search-wrap` `ca-combobox__trigger` `ca-combobox__trigger-count` `ca-combobox__trigger-label` `ca-combobox__viewport` `ca-validity-proxy`
 
 ## CommandPalette
 
@@ -544,10 +547,14 @@ Classes: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chev
 |---|---|---|---|
 | `modules` | `NavModule[]` |  |  |
 | `onNavigate` | `(path: string) => void` |  |  |
+| `onSelect?` | `(result: CommandResult) => void` |  | Called with the full `CommandResult` when a server result is activated. When provided, `onNavigate` is NOT called for server results. |
 | `open?` | `boolean` | `false` | `bind:` |
-| `minQueryLength?` | `number` | `1` | Characters (after trimming) needed before the list is filtered; shorter queries show every item grouped. |
+| `query?` | `string` | `''` | `bind:` Expose `query` for the caller (bind:query). |
+| `minQueryLength?` | `number` | `1` | Characters (after trimming) needed before filtering; shorter queries show every item grouped. |
+| `search?` | `(query: string, signal: AbortSignal) => Promise<CommandResult[]>` |  | Async search function. Called with the trimmed query and an `AbortSignal`; must throw / reject with a `DOMException("Aborted", "AbortError")` on abort (the standard `signal.throwIfAborted()` pattern). Returns `CommandResult[]`. |
+| `searchDebounce?` | `number` | `200` | Debounce delay (ms) before `search` is called after the last keystroke. Default 200. |
 
-Classes: `ca-cmd-dialog` `ca-cmd-empty` `ca-cmd-group__label` `ca-cmd-item` `ca-cmd-item--active` `ca-cmd-item__icon` `ca-cmd-item__label` `ca-cmd-item__module` `ca-cmd-list` `ca-cmd-overlay` `ca-cmd-search` `ca-cmd-search__hint` `ca-cmd-search__icon` `ca-cmd-search__input` `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
+Classes: `ca-cmd-dialog` `ca-cmd-empty` `ca-cmd-error` `ca-cmd-group__label` `ca-cmd-item` `ca-cmd-item--active` `ca-cmd-item__icon` `ca-cmd-item__label` `ca-cmd-item__module` `ca-cmd-list` `ca-cmd-loading` `ca-cmd-overlay` `ca-cmd-search` `ca-cmd-search__hint` `ca-cmd-search__icon` `ca-cmd-search__input` `ca-cmd-search__spinner` `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
 
 ## Container
 

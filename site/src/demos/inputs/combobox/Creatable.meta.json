@@ -1,0 +1,13 @@
+{
+	"summary": "A multi-select Combobox that offers a Create row for text that matches no tag, and adds the new tag to its options.",
+	"use": "Free-form tagging where users pick existing tags or invent new ones inline.",
+	"spec": [
+		"`multiple`, `creatable`, `label=\"Tags\"`, `{options}`, `bind:value={tags}` and `oncreate={onCreate}` on one `Combobox`",
+		"`options` starts with `design`, `backend`, `urgent` and `onCreate` appends the new value",
+		"`let tags = $state<string[]>([])` starts empty",
+		"`placeholder=\"Add tags\"` and `searchPlaceholder=\"Search or create a tag\"`",
+		"Wrapper `.col` has `max-width: 360px`"
+	],
+	"tags": ["combobox", "creatable", "tags", "multiple", "chips", "form"],
+	"shape": "wide"
+}

@@ -92,12 +92,18 @@ export const en = {
 		placeholder: "Select…",
 		searchPlaceholder: "Search…",
 		empty: "No results",
+		selectedValues: "Selected values",
+		selectedCount: (n: number) => `${n} selected`,
+		create: (query: string) => `Create "${query}"`,
 	},
 	commandPalette: {
 		dialog: "Command palette",
 		commands: "Commands",
 		placeholder: "Search…",
 		empty: (query: string) => `No results for "${query}"`,
+		searching: "Searching…",
+		searchFailed: "Search failed",
+		resultCount: (n: number) => `${n} ${n === 1 ? "result" : "results"}`,
 	},
 	copyButton: {
 		label: "Copy",

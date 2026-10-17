@@ -1,0 +1,54 @@
+<!-- @codeatlasdev/ui demo #420 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/combobox#multiple -->
+Element: #420 Multiple (inputs/combobox)
+What it shows: A multi-select Combobox with removable chips, starting with two labels selected and echoing the array below.
+When to use: Choosing several items from a searchable list, such as labels or categories, where the list stays open between picks.
+Spec:
+- `multiple`, `label="Labels"`, `options={labels}` and `bind:value={selected}` on one `Combobox`
+- `const labels` has 6 options, `legacy` is `disabled: true`
+- `let selected = $state<string[]>(['bug', 'ui'])` renders two chips on first paint
+- `description` hints that Backspace on an empty search removes the last chip
+- Output line `Selected:` joins the array with `, ` or shows `none`
+- Wrapper `.col` has `max-width: 360px`
+Tags: combobox, multiple, multi-select, chips, tags, search, form
+Needs: @codeatlasdev/ui@4.3.0
+Components: Combobox
+Live demo: https://ui.codeatlas.com.br/docs/inputs/combobox#multiple
+
+<script lang="ts">
+  import { Combobox } from '@codeatlasdev/ui';
+
+  const labels = [
+    { value: 'bug', label: 'Bug' },
+    { value: 'docs', label: 'Documentation' },
+    { value: 'ui', label: 'UI' },
+    { value: 'a11y', label: 'Accessibility' },
+    { value: 'perf', label: 'Performance' },
+    { value: 'legacy', label: 'Legacy', disabled: true },
+  ];
+
+  let selected = $state<string[]>(['bug', 'ui']);
+</script>
+
+<div class="col">
+  <Combobox
+    multiple
+    label="Labels"
+    description="Backspace on an empty search removes the last chip."
+    options={labels}
+    bind:value={selected}
+  />
+  <p class="out">Selected: <code>{selected.join(', ') || 'none'}</code></p>
+</div>
+
+<style>
+  .col {
+    width: 100%;
+    max-width: 360px;
+  }
+
+  .out {
+    margin: var(--ca-space-3) 0 0;
+    font-size: var(--ca-font-size-body2);
+    color: var(--ca-text-secondary);
+  }
+</style>

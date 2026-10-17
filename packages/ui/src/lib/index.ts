@@ -67,6 +67,7 @@ export { default as Chip } from "./components/Chip/Chip.svelte";
 export { default as Collapsible } from "./components/Collapsible/Collapsible.svelte";
 export type { ComboboxOption } from "./components/Combobox/Combobox.svelte";
 export { default as Combobox } from "./components/Combobox/Combobox.svelte";
+export type { CommandResult } from "./components/CommandPalette/CommandPalette.svelte";
 export { default as CommandPalette } from "./components/CommandPalette/CommandPalette.svelte";
 export { default as Container } from "./components/Container/Container.svelte";
 export { default as ConversationItem } from "./components/ConversationItem/ConversationItem.svelte";

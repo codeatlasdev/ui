@@ -1,0 +1,14 @@
+{
+	"summary": "A multi-select Combobox with removable chips, starting with two labels selected and echoing the array below.",
+	"use": "Choosing several items from a searchable list, such as labels or categories, where the list stays open between picks.",
+	"spec": [
+		"`multiple`, `label=\"Labels\"`, `options={labels}` and `bind:value={selected}` on one `Combobox`",
+		"`const labels` has 6 options, `legacy` is `disabled: true`",
+		"`let selected = $state<string[]>(['bug', 'ui'])` renders two chips on first paint",
+		"`description` hints that Backspace on an empty search removes the last chip",
+		"Output line `Selected:` joins the array with `, ` or shows `none`",
+		"Wrapper `.col` has `max-width: 360px`"
+	],
+	"tags": ["combobox", "multiple", "multi-select", "chips", "tags", "search", "form"],
+	"shape": "wide"
+}

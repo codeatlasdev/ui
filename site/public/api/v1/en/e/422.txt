@@ -1,0 +1,69 @@
+<!-- @codeatlasdev/ui demo #422 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/command-palette#async-results -->
+Element: #422 Async results (navigation/command-palette)
+What it shows: A CommandPalette whose async `search` returns grouped invoice and customer records after a simulated 600 ms server delay.
+When to use: Command palettes that search server data (records, documents, users) next to local navigation items.
+Spec:
+- `<CommandPalette {modules} {search} onNavigate={(path) => (picked = path)} bind:open />`
+- `function search(query: string, signal: AbortSignal)` resolves after 600 ms with `records` filtered by label and rejects with `AbortError` when the signal aborts
+- `records` has 4 results in the `Invoices` and `Customers` groups
+- Local `modules` items (Dashboard, Settings) filter instantly and stay above server results
+- Button `Search records` opens the palette, `Selected:` shows the picked path
+Tags: command-palette, async, search, server, debounce, abort, loading
+Needs: @codeatlasdev/ui@4.3.0
+Components: CommandPalette, Button, Kbd
+Live demo: https://ui.codeatlas.com.br/docs/navigation/command-palette#async-results
+
+<script lang="ts">
+  import { CommandPalette, Button, Kbd, type CommandResult, type NavModule } from '@codeatlasdev/ui';
+  import { Search, Home, Settings } from '@lucide/svelte';
+
+  let open = $state(false);
+  let picked = $state('');
+
+  const modules: NavModule[] = [
+    {
+      id: 'app',
+      label: 'App',
+      icon: Home,
+      basePath: '/app',
+      items: [
+        { id: 'dashboard', label: 'Dashboard', icon: Home, path: '/app/dashboard' },
+        { id: 'settings', label: 'Settings', icon: Settings, path: '/app/settings' },
+      ],
+    },
+  ];
+
+  const records: CommandResult[] = [
+    { id: 'i1', label: 'Invoice 1042', group: 'Invoices', path: '/invoices/1042' },
+    { id: 'i2', label: 'Invoice 1043', group: 'Invoices', path: '/invoices/1043' },
+    { id: 'c1', label: 'Acme Corp', group: 'Customers', path: '/customers/acme' },
+    { id: 'c2', label: 'Globex', group: 'Customers', path: '/customers/globex' },
+  ];
+
+  /** Stand-in for a server call: honours the AbortSignal like fetch(url, { signal }) does. */
+  function search(query: string, signal: AbortSignal): Promise<CommandResult[]> {
+    return new Promise((resolve, reject) => {
+      const timer = setTimeout(() => {
+        resolve(records.filter((r) => r.label.toLowerCase().includes(query.toLowerCase())));
+      }, 600);
+      signal.addEventListener('abort', () => {
+        clearTimeout(timer);
+        reject(new DOMException('Aborted', 'AbortError'));
+      });
+    });
+  }
+</script>
+
+<CommandPalette {modules} {search} onNavigate={(path) => (picked = path)} bind:open />
+
+<Button variant="filled" onclick={() => (open = true)}>
+  {#snippet leading()}<Search size={16} />{/snippet}
+  Search records
+</Button>
+<Kbd>⌘K</Kbd>
+{#if picked}<span class="picked" aria-live="polite">Selected: <code>{picked}</code></span>{/if}
+
+<style>
+  .picked { font-size: var(--ca-font-size-body2); color: var(--ca-text-secondary); }
+  .picked code { font-family: var(--ca-font-mono); color: var(--ca-brand-text); }
+</style>

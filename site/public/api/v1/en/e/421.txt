@@ -1,0 +1,49 @@
+<!-- @codeatlasdev/ui demo #421 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/combobox#creatable-tags -->
+Element: #421 Creatable tags (inputs/combobox)
+What it shows: A multi-select Combobox that offers a Create row for text that matches no tag, and adds the new tag to its options.
+When to use: Free-form tagging where users pick existing tags or invent new ones inline.
+Spec:
+- `multiple`, `creatable`, `label="Tags"`, `{options}`, `bind:value={tags}` and `oncreate={onCreate}` on one `Combobox`
+- `options` starts with `design`, `backend`, `urgent` and `onCreate` appends the new value
+- `let tags = $state<string[]>([])` starts empty
+- `placeholder="Add tags"` and `searchPlaceholder="Search or create a tag"`
+- Wrapper `.col` has `max-width: 360px`
+Tags: combobox, creatable, tags, multiple, chips, form
+Needs: @codeatlasdev/ui@4.3.0
+Components: Combobox
+Live demo: https://ui.codeatlas.com.br/docs/inputs/combobox#creatable-tags
+
+<script lang="ts">
+  import { Combobox } from '@codeatlasdev/ui';
+
+  let options = $state([
+    { value: 'design', label: 'design' },
+    { value: 'backend', label: 'backend' },
+    { value: 'urgent', label: 'urgent' },
+  ]);
+  let tags = $state<string[]>([]);
+
+  function onCreate(value: string) {
+    options = [...options, { value, label: value }];
+  }
+</script>
+
+<div class="col">
+  <Combobox
+    multiple
+    creatable
+    label="Tags"
+    placeholder="Add tags"
+    searchPlaceholder="Search or create a tag"
+    {options}
+    bind:value={tags}
+    oncreate={onCreate}
+  />
+</div>
+
+<style>
+  .col {
+    width: 100%;
+    max-width: 360px;
+  }
+</style>

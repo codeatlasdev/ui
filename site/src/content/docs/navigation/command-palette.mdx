@@ -10,6 +10,8 @@ import Palette from "~/demos/navigation/command-palette/Palette.svelte";
 import PaletteSrc from "~/demos/navigation/command-palette/Palette.svelte?raw";
 import Keys from "~/demos/navigation/command-palette/Keys.svelte";
 import KeysSrc from "~/demos/navigation/command-palette/Keys.svelte?raw";
+import Async from "~/demos/navigation/command-palette/Async.svelte";
+import AsyncSrc from "~/demos/navigation/command-palette/Async.svelte?raw";
 
 ```svelte
 <script>
@@ -26,9 +28,21 @@ The palette searches the same `NavModule[]` you pass to [AppShellLayout](/docs/l
 <Demo title="Open the palette" description="Click the button or press Cmd+K / Ctrl+K while this page is focused. Picking an item shows its path instead of navigating." src={PaletteSrc}><Palette client:visible /></Demo>
 <Demo title="Keyboard" description="Type to filter across every module. Queries shorter than minQueryLength keep the full grouped list." src={KeysSrc}><Keys /></Demo>
 
+## Async results
+
+Pass `search` to add server-side results under the local matches. It runs once the user stops typing for `searchDebounce` ms, receives the trimmed query and an `AbortSignal`, and returns `CommandResult[]` (`{ id, label, group?, path }`). A newer query, closing the palette or unmounting aborts the pending call, so forward the signal to `fetch` and never apply a stale answer. While it runs the list is `aria-busy` and a "Searching…" row shows; a rejection shows "Search failed" without hiding local matches; the empty state appears only after the search settles. Progress, the result count and failures are announced through `announce()`.
+
+Results with a `group` are listed under that heading. Activating one calls `onSelect(result)` when provided, otherwise `onNavigate(result.path)`.
+
+<Demo title="Async results" description="A simulated 600 ms server search, grouped, with loading and abort on every new query." src={AsyncSrc}><Async client:visible /></Demo>
+
 <Props for="CommandPalette" rows={[
   { name: "modules", type: "NavModule[]", description: "Navigation tree to search. Same format as AppShellLayout." },
   { name: "onNavigate", type: "(path: string) => void", description: "Called with the selected item's path. Use goto() in SvelteKit or location in static sites." },
   { name: "open", type: "boolean", default: "false", description: "Bindable. Controls visibility. Cmd+K and Ctrl+K also toggle it." },
   { name: "minQueryLength", type: "number", default: "1", description: "Trimmed characters needed before the list is filtered. Shorter queries keep the full grouped list." },
+  { name: "search", type: "(query: string, signal: AbortSignal) => Promise<CommandResult[]>", description: "Async/server-side search, debounced and aborted on every new query. Throw or reject to show the failed state." },
+  { name: "searchDebounce", type: "number", default: "200", description: "Milliseconds without typing before `search` is called." },
+  { name: "onSelect", type: "(result: CommandResult) => void", description: "Called with the whole result when a server result is activated. Replaces `onNavigate` for those results." },
+  { name: "query", type: "string", default: "''", description: "Bindable current input text." },
 ]} />

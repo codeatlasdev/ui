@@ -90,11 +90,11 @@ Total: 829 unique classes across 83 components.
 
 ## Combobox
 
-`.ca-combobox` `.ca-combobox--error` `.ca-combobox--sm` `.ca-combobox__chevron` `.ca-combobox__content` `.ca-combobox__empty` `.ca-combobox__hint` `.ca-combobox__hint--error` `.ca-combobox__input` `.ca-combobox__item` `.ca-combobox__item-check` `.ca-combobox__item-label` `.ca-combobox__label` `.ca-combobox__req` `.ca-combobox__search-wrap` `.ca-combobox__trigger` `.ca-combobox__trigger-label` `.ca-combobox__viewport`
+`.ca-combobox--error` `.ca-combobox--multiple` `.ca-combobox--sm` `.ca-combobox__chevron` `.ca-combobox__chip` `.ca-combobox__chips` `.ca-combobox__content` `.ca-combobox__empty` `.ca-combobox__hint--error` `.ca-combobox__hint` `.ca-combobox__input` `.ca-combobox__item--create` `.ca-combobox__item-check` `.ca-combobox__item-label` `.ca-combobox__item` `.ca-combobox__label` `.ca-combobox__req` `.ca-combobox__search-wrap` `.ca-combobox__trigger-count` `.ca-combobox__trigger-label` `.ca-combobox__trigger` `.ca-combobox__viewport` `.ca-combobox`
 
 ## CommandPalette
 
-`.ca-cmd-dialog` `.ca-cmd-empty` `.ca-cmd-fade-in` `.ca-cmd-fade-out` `.ca-cmd-group` `.ca-cmd-group__label` `.ca-cmd-item` `.ca-cmd-item--active` `.ca-cmd-item__icon` `.ca-cmd-item__label` `.ca-cmd-item__module` `.ca-cmd-list` `.ca-cmd-overlay` `.ca-cmd-search` `.ca-cmd-search__hint` `.ca-cmd-search__icon` `.ca-cmd-search__input` `.ca-cmd-slide-in` `.ca-cmd-slide-out`
+`.ca-cmd-dialog` `.ca-cmd-empty` `.ca-cmd-error` `.ca-cmd-fade-in` `.ca-cmd-fade-out` `.ca-cmd-group__label` `.ca-cmd-group` `.ca-cmd-item--active` `.ca-cmd-item__icon` `.ca-cmd-item__label` `.ca-cmd-item__module` `.ca-cmd-item` `.ca-cmd-list` `.ca-cmd-loading` `.ca-cmd-overlay` `.ca-cmd-search__hint` `.ca-cmd-search__icon` `.ca-cmd-search__input` `.ca-cmd-search__spinner` `.ca-cmd-search` `.ca-cmd-slide-in` `.ca-cmd-slide-out`
 
 ## Container
 
