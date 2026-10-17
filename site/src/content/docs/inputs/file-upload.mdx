@@ -39,10 +39,8 @@ Native input attributes (`name`, `capture`, `data-*`...) are spread on the `<inp
   { name: "hint", type: "string", description: "Helper text below the label." },
   { name: "list", type: "boolean", default: "true", description: "Shows the built-in file list. `false` makes a plain picker: `onchange` gets only the newly picked files and `files` is not kept." },
   { name: "ref", type: "HTMLInputElement | null", description: "Bindable native file input." },
-  { name: "open()", type: "() => void", description: "Instance method (through `bind:this`): opens the file picker. No-op while disabled." },
   { name: "disabled", type: "boolean", default: "false", description: "Disables the upload." },
   { name: "class", type: "string", description: "Extra classes on the root." },
   { name: "onchange", type: "(files: File[]) => void", description: "Called when the file list changes." },
   { name: "children", type: "Snippet", description: "Custom content inside the drop zone." },
-  { name: "...rest", type: "HTMLInputAttributes", description: "Every other native input attribute (`name`, `capture`, `data-*`...) is spread on the `<input type=\"file\">`." },
 ]} />
