@@ -1,0 +1,67 @@
+<!-- @codeatlasdev/ui demo #388 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/file-upload#external-trigger-no-list -->
+Element: #388 External trigger, no list (inputs/file-upload)
+What it shows: A FileUpload without its built-in list, opened from an Add files button in the section header; picked names are listed by the page.
+When to use: Upload on pick with your own progress or list UI, and a header button that opens the same picker.
+Spec:
+- `list={false}` and `multiple`: `onchange` receives only the files just picked and `files` is not kept
+- `bind:this={upload}` and a header `Button` calling `upload?.open()`
+- `data-testid="attachments-input"` is forwarded to the native file input
+- The page keeps its own `names` list in `onchange`
+- Wrapper has `max-width: 480px`
+Tags: file-upload, external trigger, open, list, upload on pick, data-testid
+Needs: @codeatlasdev/ui@4.3.0
+Components: Button, FileUpload
+Live demo: https://ui.codeatlas.com.br/docs/inputs/file-upload#external-trigger-no-list
+
+<script lang="ts">
+  import { Button, FileUpload } from '@codeatlasdev/ui';
+
+  let upload = $state<ReturnType<typeof FileUpload> | null>(null);
+  let names = $state<string[]>([]);
+
+  function onpick(picked: File[]) {
+    names = [...names, ...picked.map((f) => f.name)];
+  }
+</script>
+
+<div class="wrap">
+  <div class="head">
+    <h3 class="title">Attachments</h3>
+    <Button size="sm" onclick={() => upload?.open()}>Add files</Button>
+  </div>
+  <FileUpload bind:this={upload} list={false} multiple onchange={onpick} data-testid="attachments-input" />
+  {#if names.length > 0}
+    <ul class="list">
+      {#each names as name, i (i)}
+        <li>{name}</li>
+      {/each}
+    </ul>
+  {/if}
+</div>
+
+<style>
+  .wrap {
+    width: 100%;
+    max-width: 480px;
+  }
+
+  .head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--ca-space-3);
+    margin-block-end: var(--ca-space-2);
+  }
+
+  .title {
+    margin: 0;
+    font-size: var(--ca-font-size-h6);
+  }
+
+  .list {
+    margin: var(--ca-space-2) 0 0;
+    padding-inline-start: var(--ca-space-5);
+    font-size: var(--ca-font-size-body2);
+    color: var(--ca-text-secondary);
+  }
+</style>

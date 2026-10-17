@@ -299,3 +299,6 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 384 | Cursor trail | motion/hero-ambient | MotionStage |
 | 385 | Hero intro sequence | motion/hero-ambient | Button, MotionStage |
 | 386 | Card tilt with glare | motion/hero-ambient | MotionStage |
+| 387 | Shift range selection | inputs/checkbox | Checkbox |
+| 388 | External trigger, no list | inputs/file-upload | Button, FileUpload |
+| 389 | Hidden label | inputs/text-field | Button, TextField |

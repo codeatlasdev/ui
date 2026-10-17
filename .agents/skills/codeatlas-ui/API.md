@@ -425,7 +425,13 @@ Classes: `ca-card-grid`
 | `aria-label?` | `string` |  | Accessible name when no visible `label` is rendered. |
 | `aria-labelledby?` | `string` |  |  |
 | `class?` | `string` | `""` |  |
-| `onchange?` | `(checked: boolean) => void` |  |  |
+| `ref?` | `HTMLInputElement \| null` | `null` | `bind:` The native `<input>`, to focus it or read it. |
+| `onchange?` | `(checked: boolean, event: Event) => void` |  | `event` is the native `change` event. For Shift range selection read `shiftKey` in `onclick` (forwarded to the input, fires just before `change`). |
+
+Also accepts: `Omit<
+			HTMLInputAttributes,
+			"checked" \| "class" \| "children" \| "onchange" \| "type" \| "value" \| "group" \| "aria-label" \| "aria-labelledby"
+		>`
 
 Classes: `ca-checkbox` `ca-checkbox-wrapper` `ca-checkbox__indicator` `ca-checkbox__input` `ca-checkbox__label` `ca-checkbox__label--disabled`
 
@@ -1001,10 +1007,14 @@ Classes: `ca-external-link`
 | `files?` | `File[]` | `[]` | `bind:` |
 | `label?` | `string` |  |  |
 | `hint?` | `string` |  |  |
+| `list?` | `boolean` | `true` | Show the built-in file list. `false` makes the component a plain picker: `onchange` gets only the files just picked (after `maxSize`), nothing is kept in `files`, and the app renders its own list (upload on pick, progress per file). |
 | `class?` | `string` | `''` |  |
+| `ref?` | `HTMLInputElement \| null` | `null` | `bind:` The native `<input type="file">`, to read it or click it from your own button (or call `open()`). |
 | `onchange?` | `(files: File[]) => void` |  |  |
 
 Snippets: `children`
+
+Also accepts: `Omit<HTMLInputAttributes, 'type' \| 'value' \| 'files' \| 'class' \| 'children' \| 'onchange' \| 'list'>`
 
 Classes: `ca-file-upload` `ca-file-upload--disabled` `ca-file-upload__errors` `ca-file-upload__file` `ca-file-upload__file-icon` `ca-file-upload__file-name` `ca-file-upload__file-size` `ca-file-upload__hint` `ca-file-upload__icon` `ca-file-upload__input` `ca-file-upload__label` `ca-file-upload__list` `ca-file-upload__remove` `ca-file-upload__zone` `ca-file-upload__zone--dragging`
 
@@ -1943,6 +1953,8 @@ Classes: `ca-seg` `ca-seg--md` `ca-seg--sm` `ca-seg__item` `ca-seg__thumb`
 | `required?` | `boolean` | `false` |  |
 | `name?` | `string` |  | Native `name`: the selected value is part of `FormData` on a plain form submit. Nothing is sent while no option is selected. |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
+| `aria-label?` | `string` |  | Accessible name when there is no visible `label`. The trigger's name is this text followed by the current value, so it still contains the visible text. |
+| `aria-labelledby?` | `string` |  | Id(s) of the element(s) naming the select when there is no visible `label` (followed by the current value, like `aria-label`). |
 | `class?` | `string` | `''` |  |
 | `onchange?` | `(value: string) => void` |  |  |
 
@@ -2305,6 +2317,7 @@ Classes: `ca-tabs-trigger` `ca-tabs-trigger__icon`
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `label?` | `string` |  |  |
+| `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`). |
 | `placeholder?` | `string` | `''` |  |
 | `value?` | `string` | `''` | `bind:` |
 | `rows?` | `number` | `4` |  |
@@ -2318,9 +2331,13 @@ Classes: `ca-tabs-trigger` `ca-tabs-trigger__icon`
 | `resize?` | `'none' \| 'vertical' \| 'horizontal' \| 'both'` | `'vertical'` |  |
 | `class?` | `string` | `''` |  |
 | `name?` | `string` |  |  |
+| `ref?` | `HTMLTextAreaElement \| null` | `null` | `bind:` The native `<textarea>`, to focus it or read it. |
 | `oninput?` | `(value: string) => void` |  |  |
 | `onchange?` | `(value: string) => void` |  |  |
+| `onfocus?` | `(e: FocusEvent) => void` |  |  |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
+
+Also accepts: `Omit<HTMLTextareaAttributes, 'value' \| 'class' \| 'children' \| 'rows' \| 'oninput' \| 'onchange' \| 'onfocus' \| 'onblur'>`
 
 Classes: `ca-ta` `ca-ta--disabled` `ca-ta__hint` `ca-ta__hint--error` `ca-ta__input` `ca-ta__label` `ca-ta__req` `ca-ta__wrap` `ca-ta__wrap--error` `ca-ta__wrap--focused`
 
@@ -2331,6 +2348,7 @@ Classes: `ca-ta` `ca-ta--disabled` `ca-ta__hint` `ca-ta__hint--error` `ca-ta__in
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `label?` | `string` |  |  |
+| `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`), for inline fields in a list or toolbar. |
 | `placeholder?` | `string` | `''` |  |
 | `value?` | `string` | `''` | `bind:` |
 | `type?` | `string` | `'text'` |  |
@@ -2345,11 +2363,15 @@ Classes: `ca-ta` `ca-ta--disabled` `ca-ta__hint` `ca-ta__hint--error` `ca-ta__in
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded field, disabled, announced as busy. |
 | `class?` | `string` | `''` |  |
 | `name?` | `string` |  |  |
+| `ref?` | `HTMLInputElement \| null` | `null` | `bind:` The native `<input>`, to focus it or read it. |
 | `oninput?` | `(value: string) => void` |  |  |
 | `onchange?` | `(value: string) => void` |  |  |
+| `onfocus?` | `(e: FocusEvent) => void` |  |  |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
 
 Snippets: `leading`, `trailing`
+
+Also accepts: `Omit<HTMLInputAttributes, 'value' \| 'class' \| 'children' \| 'size' \| 'oninput' \| 'onchange' \| 'onfocus' \| 'onblur'>`
 
 Classes: `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__adorn` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__wrap` `ca-tf__wrap--error` `ca-tf__wrap--focused`
 

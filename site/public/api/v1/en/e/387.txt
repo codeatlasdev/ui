@@ -1,0 +1,64 @@
+<!-- @codeatlasdev/ui demo #387 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/checkbox#shift-range-selection -->
+Element: #387 Shift range selection (inputs/checkbox)
+What it shows: Five checkboxes where Shift+click selects the whole range from the last clicked row, using the forwarded onclick and data-testid.
+When to use: Lists and tables with row selection that need Shift range selection.
+Spec:
+- `onclick={(e) => (shift = e.shiftKey)}` is forwarded to the input and runs just before `onchange`
+- `onchange={(on) => toggle(i, on)}` applies the state to every row between the anchor and the clicked row when shift was held
+- `data-testid="row-{i}"` lands on the native input
+- Footer line counts the selected rows
+Tags: checkbox, shift, range selection, table, list, data-testid
+Needs: @codeatlasdev/ui@4.3.0
+Components: Checkbox
+Live demo: https://ui.codeatlas.com.br/docs/inputs/checkbox#shift-range-selection
+
+<script lang="ts">
+  import { Checkbox } from '@codeatlasdev/ui';
+
+  const rows = ['Invoice 101', 'Invoice 102', 'Invoice 103', 'Invoice 104', 'Invoice 105'];
+  let selected = $state<boolean[]>(rows.map(() => false));
+  let anchor = -1;
+  let shift = false;
+
+  function toggle(index: number, on: boolean) {
+    if (shift && anchor >= 0) {
+      const [from, to] = anchor < index ? [anchor, index] : [index, anchor];
+      for (let i = from; i <= to; i++) selected[i] = on;
+    } else {
+      selected[index] = on;
+    }
+    anchor = index;
+  }
+</script>
+
+<ul class="list">
+  {#each rows as row, i (row)}
+    <li>
+      <Checkbox
+        label={row}
+        checked={selected[i]}
+        data-testid="row-{i}"
+        onclick={(e) => (shift = e.shiftKey)}
+        onchange={(on) => toggle(i, on)}
+      />
+    </li>
+  {/each}
+</ul>
+<p class="out">{selected.filter(Boolean).length} selected. Shift+click extends the range.</p>
+
+<style>
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .out {
+    margin: var(--ca-space-3) 0 0;
+    font-size: var(--ca-font-size-body2);
+    color: var(--ca-text-secondary);
+  }
+</style>

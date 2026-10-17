@@ -300,6 +300,9 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "384", path: "motion/hero-ambient/CursorTrail" },
 	{ id: "385", path: "motion/hero-ambient/HeroIntro" },
 	{ id: "386", path: "motion/hero-ambient/TiltGlare" },
+	{ id: "387", path: "inputs/checkbox/RangeSelect" },
+	{ id: "388", path: "inputs/file-upload/ExternalTrigger" },
+	{ id: "389", path: "inputs/text-field/HiddenLabel" },
 ];
 
 /**

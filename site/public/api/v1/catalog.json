@@ -1,12 +1,12 @@
 {
 	"version": "4.3.0",
-	"count": 294,
+	"count": 297,
 	"groups": [
 		{
 			"slug": "inputs",
 			"first": "001",
-			"last": "064",
-			"count": 64
+			"last": "389",
+			"count": 67
 		},
 		{
 			"slug": "surfaces",
@@ -13258,6 +13258,131 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/motion/hero-ambient#card-tilt-with-glare",
+			"needs": "@codeatlasdev/ui@4.3.0"
+		},
+		{
+			"id": "387",
+			"group": "inputs",
+			"page": "checkbox",
+			"variant": "RangeSelect",
+			"slug": "shift-range-selection",
+			"title": "Shift range selection",
+			"description": "onclick is forwarded to the input and runs just before onchange, so shiftKey is readable. data-testid reaches the input.",
+			"summary": "Five checkboxes where Shift+click selects the whole range from the last clicked row, using the forwarded onclick and data-testid.",
+			"use": "Lists and tables with row selection that need Shift range selection.",
+			"spec": [
+				"`onclick={(e) => (shift = e.shiftKey)}` is forwarded to the input and runs just before `onchange`",
+				"`onchange={(on) => toggle(i, on)}` applies the state to every row between the anchor and the clicked row when shift was held",
+				"`data-testid=\"row-{i}\"` lands on the native input",
+				"Footer line counts the selected rows"
+			],
+			"tags": [
+				"checkbox",
+				"shift",
+				"range selection",
+				"table",
+				"list",
+				"data-testid"
+			],
+			"shape": "wide",
+			"components": [
+				"Checkbox"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Checkbox"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/checkbox#shift-range-selection",
+			"needs": "@codeatlasdev/ui@4.3.0"
+		},
+		{
+			"id": "388",
+			"group": "inputs",
+			"page": "file-upload",
+			"variant": "ExternalTrigger",
+			"slug": "external-trigger-no-list",
+			"title": "External trigger, no list",
+			"description": "list={false} plus an Add files button that calls open().",
+			"summary": "A FileUpload without its built-in list, opened from an Add files button in the section header; picked names are listed by the page.",
+			"use": "Upload on pick with your own progress or list UI, and a header button that opens the same picker.",
+			"spec": [
+				"`list={false}` and `multiple`: `onchange` receives only the files just picked and `files` is not kept",
+				"`bind:this={upload}` and a header `Button` calling `upload?.open()`",
+				"`data-testid=\"attachments-input\"` is forwarded to the native file input",
+				"The page keeps its own `names` list in `onchange`",
+				"Wrapper has `max-width: 480px`"
+			],
+			"tags": [
+				"file-upload",
+				"external trigger",
+				"open",
+				"list",
+				"upload on pick",
+				"data-testid"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"FileUpload"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"FileUpload"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/file-upload#external-trigger-no-list",
+			"needs": "@codeatlasdev/ui@4.3.0"
+		},
+		{
+			"id": "389",
+			"group": "inputs",
+			"page": "text-field",
+			"variant": "HiddenLabel",
+			"slug": "hidden-label",
+			"title": "Hidden label",
+			"description": "hideLabel keeps the label for assistive tech only; maxlength and ref reach the native input.",
+			"summary": "Two inline TextFields whose label is kept for screen readers only with hideLabel, plus native maxlength and a bound ref.",
+			"use": "Inline editing in lists and toolbars where the label is implied visually but each input still needs an accessible name.",
+			"spec": [
+				"`label=\"Task name\"` with `hideLabel`: the label stays for screen readers and is not shown",
+				"`maxlength={40}` and `autocomplete=\"off\"` reach the native input",
+				"`bind:ref` gives the `HTMLInputElement`; a text `Button` calls `first?.focus()`",
+				"Column wrapper has `max-width: 400px`"
+			],
+			"tags": [
+				"text-field",
+				"hidelabel",
+				"sr-only",
+				"ref",
+				"maxlength",
+				"inline editing"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"TextField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"TextField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/text-field#hidden-label",
 			"needs": "@codeatlasdev/ui@4.3.0"
 		}
 	]

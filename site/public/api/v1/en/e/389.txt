@@ -1,0 +1,44 @@
+<!-- @codeatlasdev/ui demo #389 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/text-field#hidden-label -->
+Element: #389 Hidden label (inputs/text-field)
+What it shows: Two inline TextFields whose label is kept for screen readers only with hideLabel, plus native maxlength and a bound ref.
+When to use: Inline editing in lists and toolbars where the label is implied visually but each input still needs an accessible name.
+Spec:
+- `label="Task name"` with `hideLabel`: the label stays for screen readers and is not shown
+- `maxlength={40}` and `autocomplete="off"` reach the native input
+- `bind:ref` gives the `HTMLInputElement`; a text `Button` calls `first?.focus()`
+- Column wrapper has `max-width: 400px`
+Tags: text-field, hidelabel, sr-only, ref, maxlength, inline editing
+Needs: @codeatlasdev/ui@4.3.0
+Components: Button, TextField
+Live demo: https://ui.codeatlas.com.br/docs/inputs/text-field#hidden-label
+
+<script lang="ts">
+  import { Button, TextField } from '@codeatlasdev/ui';
+
+  let items = $state([{ name: 'Design review' }, { name: 'Ship 4.3' }]);
+  let first = $state<HTMLInputElement | null>(null);
+</script>
+
+<div class="col">
+  {#each items as item, i (i)}
+    <TextField
+      label="Task name"
+      hideLabel
+      bind:value={item.name}
+      bind:ref={first}
+      maxlength={40}
+      autocomplete="off"
+    />
+  {/each}
+  <Button size="sm" variant="text" onclick={() => first?.focus()}>Focus the last field</Button>
+</div>
+
+<style>
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-3);
+    width: 100%;
+    max-width: 400px;
+  }
+</style>

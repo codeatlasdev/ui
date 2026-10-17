@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #387 "Shift range selection" (inputs/checkbox).
+What it shows: Five checkboxes where Shift+click selects the whole range from the last clicked row, using the forwarded onclick and data-testid. When to use: Lists and tables with row selection that need Shift range selection.
+Spec:
+- `onclick={(e) => (shift = e.shiftKey)}` is forwarded to the input and runs just before `onchange`
+- `onchange={(on) => toggle(i, on)}` applies the state to every row between the anchor and the clicked row when shift was held
+- `data-testid="row-{i}"` lands on the native input
+- Footer line counts the selected rows
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #387 Shift range selection → file, what changed, https://ui.codeatlas.com.br/docs/inputs/checkbox#shift-range-selection; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/387.txt   Components API: ca-ui-mcp get_component(Checkbox)
