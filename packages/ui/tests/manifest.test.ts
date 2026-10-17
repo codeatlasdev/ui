@@ -18,6 +18,16 @@ describe("components manifest", () => {
 		expect(loading?.description).toContain("aria-busy");
 	});
 
+	it("documents a Props union keyed on href (#290): shared props once, both attribute sets accepted", () => {
+		const button = byName("Button");
+		const names = button?.props.map((p) => p.name) ?? [];
+		expect(new Set(names).size).toBe(names.length);
+		expect(names).toEqual(expect.arrayContaining(["variant", "href", "target", "type", "loading"]));
+		expect(button?.props.find((p) => p.name === "href")?.description).toContain("download");
+		expect(button?.extends).toContain("AnchorAttributes");
+		expect(button?.extends).toContain("ButtonAttributes");
+	});
+
 	it("separates snippets from props", () => {
 		const names = byName("Button")?.snippets.map((s) => s.name);
 		expect(names).toEqual(["children", "leading", "trailing"]);

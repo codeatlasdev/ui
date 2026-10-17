@@ -215,17 +215,33 @@ function resolvePropsType(sf: ts.SourceFile, type: ts.TypeNode | undefined) {
 		// Props may be declared inside `$$render()` (instance script): search the whole file.
 		const inner = decl ?? findDeclDeep(sf, name);
 		if (inner && ts.isInterfaceDeclaration(inner)) {
-			members = inner.members;
-			ext = inner.heritageClauses?.flatMap((h) => h.types.map((t) => t.getText(sf))).join(", ");
+			// A base interface declared in the same file (`interface Own`) is part of the component's
+			// own contract: inline its members. Anything else (`Omit<HTMLAttributes>`) is `extends`.
+			const inherited: ts.TypeElement[] = [];
+			const external: string[] = [];
+			for (const h of inner.heritageClauses ?? [])
+				for (const t of h.types) {
+					const base = ts.isIdentifier(t.expression)
+						? findDeclDeep(sf, t.expression.text)
+						: undefined;
+					if (base && ts.isInterfaceDeclaration(base) && !t.typeArguments)
+						inherited.push(...base.members);
+					else external.push(t.getText(sf));
+				}
+			members = [...inherited, ...inner.members];
+			ext = external.join(", ") || undefined;
 		} else if (inner && ts.isTypeAliasDeclaration(inner)) {
 			const t = inner.type;
 			if (ts.isTypeLiteralNode(t)) members = t.members;
+			else if (ts.isUnionTypeNode(t)) return resolveUnion(sf, t);
 			else if (ts.isIntersectionTypeNode(t)) {
 				const own: ts.TypeElement[] = [];
 				const rest: string[] = [];
 				for (const part of t.types) {
 					if (ts.isTypeLiteralNode(part)) own.push(...part.members);
-					else rest.push(part.getText(sf));
+					else if (ts.isTypeReferenceNode(part) && isLocalInterface(sf, part)) {
+						own.push(...resolvePropsType(sf, part).members);
+					} else rest.push(part.getText(sf));
 				}
 				members = own;
 				ext = rest.join(" & ") || undefined;
@@ -233,6 +249,32 @@ function resolvePropsType(sf: ts.SourceFile, type: ts.TypeNode | undefined) {
 		}
 	}
 	return { members, ext };
+}
+
+/**
+ * `type Props = A | B` (a component whose element changes with a prop, e.g. Button on `href`):
+ * the documented props are those declared by the FIRST branch (the default rendering, with its
+ * JSDoc), made optional when a later branch leaves them out or optional, and the attribute sets of
+ * every branch are reported as `extends` so a reader sees all the native attributes that pass through.
+ */
+function resolveUnion(sf: ts.SourceFile, union: ts.UnionTypeNode) {
+	const branches = union.types.map((t) => resolvePropsType(sf, t));
+	const named = (m: ts.TypeElement) =>
+		ts.isPropertySignature(m) && m.name ? propName(m.name) : "";
+	// One entry per prop: the first declaration wins (the shared base, with its docs); a later
+	// branch only narrows it (`href?: undefined`, `type?: 'button' | ...`).
+	const byName = new Map<string, ts.TypeElement>();
+	for (const b of branches)
+		for (const m of b.members) if (named(m) && !byName.has(named(m))) byName.set(named(m), m);
+	const ext = [...new Set(branches.map((b) => b.ext).filter(Boolean))].join(" | ");
+	return { members: [...byName.values()], ext: ext || undefined };
+}
+
+/** A reference to an interface declared in the same component script (its members are the component's own props). */
+function isLocalInterface(sf: ts.SourceFile, ref: ts.TypeReferenceNode) {
+	if (ref.typeArguments) return false;
+	const d = findDeclDeep(sf, ref.typeName.getText(sf));
+	return !!d && ts.isInterfaceDeclaration(d);
 }
 
 function findDeclDeep(sf: ts.SourceFile, name: string) {

@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import type { HTMLAttributes } from 'svelte/elements';
+  import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
   import Spinner from '../Spinner/Spinner.svelte';
   import { useT } from '../../i18n/state.svelte.js';
   import { announce } from '../../utils/announce.js';
@@ -9,15 +9,19 @@
   type Variant = 'filled' | 'glass' | 'outlined' | 'ghost' | 'destructive';
   type Size = 'sm' | 'md' | 'lg';
 
-  interface Props extends Omit<HTMLAttributes<HTMLElement>, 'class' | 'children' | 'onclick'> {
+  /** Own props, shared by both renderings. */
+  interface Own {
     variant?: Variant;
     size?: Size;
     disabled?: boolean;
     /** Shows a spinner in place of `leading`, sets `aria-busy` and blocks interaction. Label is kept. */
     loading?: boolean;
-    type?: 'button' | 'submit' | 'reset';
+    /** Without `href` the button type (default `'button'`); with `href` the MIME type hint of the linked resource. */
+    type?: string;
     fullWidth?: boolean;
+    /** Renders an `<a>` styled as a button. Its attributes (`download`, `rel`, `hreflang`, `ping`, `referrerpolicy`) are then accepted. */
     href?: string;
+    /** Anchor target, used with `href`. `"_blank"` adds `noopener noreferrer` to any `rel` you pass. */
     target?: string;
     class?: string;
     children?: Snippet;
@@ -26,13 +30,31 @@
     onclick?: (e: MouseEvent) => void;
     'aria-label'?: string;
   }
+  type Overridden = keyof Own;
+  // Attributes only one element has. The other branch types them `never`: TypeScript accepts an
+  // excess property that exists in ANY union member until `href` narrows it, so without this
+  // `<Button download>` (no href) would compile and then be spread on a <button>.
+  type AnchorOnly = Exclude<keyof HTMLAnchorAttributes, keyof HTMLButtonAttributes | Overridden>;
+  type ButtonOnly = Exclude<keyof HTMLButtonAttributes, keyof HTMLAnchorAttributes | Overridden>;
+  /** The anchor's attributes (`download`, `rel`, `hreflang`, `ping`, `referrerpolicy`...) without the ones Button owns. */
+  type AnchorAttributes = Omit<HTMLAnchorAttributes, Overridden> & Partial<Record<ButtonOnly, never>>;
+  /** The button's attributes (`form`, `formaction`, `name`, `value`...) without the ones Button owns. */
+  type ButtonAttributes = Omit<HTMLButtonAttributes, Overridden> & Partial<Record<AnchorOnly, never>>;
+
+  /** With `href` it renders an `<a>` and takes the anchor's attributes. */
+  type LinkProps = Own & AnchorAttributes & { href: string };
+
+  /** Without `href` it renders a `<button>` and takes the button's attributes. */
+  type ButtonProps = Own & ButtonAttributes & { href?: undefined; target?: undefined; type?: 'button' | 'submit' | 'reset' };
+
+  type Props = LinkProps | ButtonProps;
 
   let {
     variant = 'filled',
     size = 'md',
     disabled = false,
     loading = false,
-    type = 'button',
+    type,
     fullWidth = false,
     href,
     target,
@@ -42,10 +64,18 @@
     trailing,
     onclick,
     'aria-label': ariaLabel,
-    ...rest
+    ...restProps
   }: Props = $props();
 
+  // `rest` is a union (anchor | button attributes); each element receives only its own half.
+  const rest = $derived(restProps as AnchorAttributes & ButtonAttributes);
+
   const isDisabled = $derived(disabled || loading);
+
+  // A new tab must not reach `window.opener`: add the tokens to whatever `rel` the caller passed (#290).
+  const rel = $derived(
+    target === '_blank' ? `${rest.rel ?? ''} noopener noreferrer`.trim() : (rest.rel ?? undefined)
+  );
 
   // Tell assistive tech when the busy state ends (aria-busy alone is not announced on change).
   let wasLoading = false;
@@ -69,7 +99,8 @@
     {...rest}
     {href}
     {target}
-    rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+    {type}
+    {rel}
     class="ca-btn ca-btn--{variant} ca-btn--{size} {className}"
     class:ca-btn--full-width={fullWidth}
     class:ca-btn--loading={loading}
@@ -88,7 +119,7 @@
 {:else}
   <button
     {...rest}
-    {type}
+    type={(type as ButtonProps['type']) ?? 'button'}
     disabled={isDisabled}
     class="ca-btn ca-btn--{variant} ca-btn--{size} {className}"
     class:ca-btn--full-width={fullWidth}

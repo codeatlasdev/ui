@@ -52,3 +52,63 @@ describe("Button", () => {
 		await expect.element(link).toHaveAttribute("tabindex", "-1");
 	});
 });
+
+describe("Button with href forwards anchor attributes (#290)", () => {
+	it("download, hreflang, ping, referrerpolicy and type reach the <a>", async () => {
+		const screen = await render(Button, {
+			children: label("Get"),
+			href: "/files/report.csv",
+			download: "report.csv",
+			hreflang: "pt-BR",
+			ping: "/ping",
+			referrerpolicy: "no-referrer",
+			type: "text/csv",
+		});
+		const link = screen.getByRole("link", { name: "Get" });
+		await expect.element(link).toHaveAttribute("href", "/files/report.csv");
+		await expect.element(link).toHaveAttribute("download", "report.csv");
+		await expect.element(link).toHaveAttribute("hreflang", "pt-BR");
+		await expect.element(link).toHaveAttribute("ping", "/ping");
+		await expect.element(link).toHaveAttribute("referrerpolicy", "no-referrer");
+		await expect.element(link).toHaveAttribute("type", "text/csv");
+		await expect.element(link).not.toHaveAttribute("target");
+		await expect.element(link).not.toHaveAttribute("rel");
+	});
+
+	it("a bare download attribute (<Button download>) is kept", async () => {
+		const screen = await render(Button, { children: label("Get"), href: "/f", download: "" });
+		await expect.element(screen.getByRole("link", { name: "Get" })).toHaveAttribute("download", "");
+	});
+
+	it("target=_blank adds noopener noreferrer", async () => {
+		const screen = await render(Button, {
+			props: { children: label("Out"), href: "https://x.dev", target: "_blank" },
+		});
+		const link = screen.getByRole("link", { name: "Out" });
+		await expect.element(link).toHaveAttribute("target", "_blank");
+		await expect.element(link).toHaveAttribute("rel", "noopener noreferrer");
+	});
+
+	it("a rel passed with target=_blank is kept next to noopener noreferrer", async () => {
+		const screen = await render(Button, {
+			props: { children: label("Out"), href: "https://x.dev", target: "_blank", rel: "nofollow" },
+		});
+		const rel =
+			(await screen.getByRole("link", { name: "Out" }).element()).getAttribute("rel") ?? "";
+		expect(rel.split(/\s+/).sort()).toEqual(["nofollow", "noopener", "noreferrer"]);
+	});
+
+	it("a rel passed without target is forwarded as is", async () => {
+		const screen = await render(Button, { children: label("Go"), href: "/x", rel: "nofollow" });
+		await expect
+			.element(screen.getByRole("link", { name: "Go" }))
+			.toHaveAttribute("rel", "nofollow");
+	});
+
+	it("without href the type stays a button type and anchor attributes are not rendered", async () => {
+		const screen = await render(Button, { children: label("Send"), type: "submit" });
+		const btn = screen.getByRole("button", { name: "Send" });
+		await expect.element(btn).toHaveAttribute("type", "submit");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});

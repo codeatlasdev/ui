@@ -305,17 +305,17 @@ Classes: `ca-breadcrumb__current` `ca-breadcrumb__item` `ca-breadcrumb__link` `c
 | `size?` | `Size` | `'md'` |  |
 | `disabled?` | `boolean` | `false` |  |
 | `loading?` | `boolean` | `false` | Shows a spinner in place of `leading`, sets `aria-busy` and blocks interaction. Label is kept. |
-| `type?` | `'button' \| 'submit' \| 'reset'` | `'button'` |  |
+| `type?` | `string` |  | Without `href` the button type (default `'button'`); with `href` the MIME type hint of the linked resource. |
 | `fullWidth?` | `boolean` | `false` |  |
-| `href?` | `string` |  |  |
-| `target?` | `string` |  |  |
+| `href?` | `string` |  | Renders an `<a>` styled as a button. Its attributes (`download`, `rel`, `hreflang`, `ping`, `referrerpolicy`) are then accepted. |
+| `target?` | `string` |  | Anchor target, used with `href`. `"_blank"` adds `noopener noreferrer` to any `rel` you pass. |
 | `class?` | `string` | `''` |  |
 | `onclick?` | `(e: MouseEvent) => void` |  |  |
 | `aria-label?` | `string` |  |  |
 
 Snippets: `children`, `leading`, `trailing`
 
-Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class' \| 'children' \| 'onclick'>`
+Also accepts: `AnchorAttributes \| ButtonAttributes`
 
 Classes: `ca-btn` `ca-btn--destructive` `ca-btn--filled` `ca-btn--full-width` `ca-btn--ghost` `ca-btn--glass` `ca-btn--lg` `ca-btn--loading` `ca-btn--md` `ca-btn--outlined` `ca-btn--sm` `ca-btn__leading` `ca-btn__trailing`
 
