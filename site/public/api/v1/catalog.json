@@ -1,6 +1,6 @@
 {
 	"version": "4.3.0",
-	"count": 303,
+	"count": 304,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -23,8 +23,8 @@
 		{
 			"slug": "display",
 			"first": "104",
-			"last": "254",
-			"count": 50
+			"last": "433",
+			"count": 51
 		},
 		{
 			"slug": "navigation",
@@ -13683,6 +13683,64 @@
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/foundation/drag-and-drop#drop-zones",
 			"needs": "@codeatlasdev/ui@4.3.0"
+		},
+		{
+			"id": "433",
+			"group": "display",
+			"page": "data-table",
+			"variant": "Groups",
+			"slug": "groups",
+			"title": "Groups",
+			"description": "",
+			"summary": "A DataTable of tasks grouped into collapsible sprints, with a resizable Task column, drag-to-reorder rows between groups and a button inside a cell.",
+			"use": "Backlogs, boards in table form and any grouped list where rows are reordered or moved and cells hold controls.",
+			"spec": [
+				"`groupBy={(t) => t.sprint}` renders one tbody per sprint with a header button that collapses its rows",
+				"`meta: { label: 'Task', resizable: true }` with `size: 320`, `minSize: 160` and `maxSize: 560` adds a keyboard and pointer resize handle",
+				"`{onReorder}` adds a grip per row; `rowId={(t) => t.id}` gives rows stable ids; the handler applies `e.to.group` and `e.to.index` to `tasks`",
+				"`renderComponent(Button, {` puts a Button in a cell; clicking it does not fire `onRowClick`"
+			],
+			"tags": [
+				"data-table",
+				"groups",
+				"resize",
+				"reorder",
+				"drag",
+				"interactive-cells"
+			],
+			"names": [
+				"Grouped table",
+				"Resizable columns",
+				"Reorderable rows",
+				"Tabela agrupada",
+				"Tabla agrupada"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"DataTable",
+				"DataTableColumnHeader"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/table",
+					"names": [
+						"DataTable",
+						"DataTableColumnHeader",
+						"createCaColumnHelper",
+						"DataTableReorderEvent"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/data-table#groups",
+			"needs": "@codeatlasdev/ui@4.3.0 + @tanstack/svelte-table"
 		}
 	]
 }
