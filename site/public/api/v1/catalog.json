@@ -1,6 +1,6 @@
 {
 	"version": "4.3.0",
-	"count": 305,
+	"count": 307,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -35,8 +35,8 @@
 		{
 			"slug": "layout",
 			"first": "165",
-			"last": "247",
-			"count": 28
+			"last": "481",
+			"count": 30
 		},
 		{
 			"slug": "charts",
@@ -6885,7 +6885,7 @@
 			"variant": "Anatomy",
 			"slug": "anatomy",
 			"title": "Anatomy",
-			"description": "Rail (52px), panel (200px) and the main content area.",
+			"description": "Rail (52px), panel (200px by default) and the main content area.",
 			"summary": "A labelled diagram of the app shell showing a 52px rail, a 200px panel and the main content area.",
 			"use": "Explaining how the app shell is divided before wiring navigation into it.",
 			"spec": [
@@ -13787,6 +13787,105 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/navigation/popover#close-on-pick",
+			"needs": "@codeatlasdev/ui@4.3.0"
+		},
+		{
+			"id": "480",
+			"group": "layout",
+			"page": "app-shell",
+			"variant": "ResizablePanel",
+			"slug": "panel-width",
+			"title": "Panel width",
+			"description": "panelWidth={280} with resizablePanel: drag the edge or focus it and use the arrow keys.",
+			"summary": "An app shell whose panel starts at 280px for long item names and has a drag handle on its edge.",
+			"use": "Navigation lists with long labels, or when users want to choose how wide the panel is.",
+			"spec": [
+				"`<AppShellLayout {modules} {pathname} panelWidth={280} resizablePanel persistPanel={false} mainId={null} skipLink={false}>`",
+				"One module `id: 'projects'` with 3 items whose labels are long (Quarterly revenue forecast and planning, Customer onboarding experience redesign, Infrastructure cost review)",
+				"A second module `id: 'other'` with `items: []`",
+				"Page is `<PageShell title=\"Wider panel\" description=\"Drag the panel edge, or focus it and use the arrow keys.\">` with one glass `Card` hint about the 160px to 480px range",
+				"Stage height is `height: 360px`"
+			],
+			"tags": [
+				"app-shell",
+				"panel-width",
+				"resizable",
+				"separator",
+				"sidebar",
+				"navigation"
+			],
+			"shape": "wide",
+			"components": [
+				"AppShellLayout",
+				"PageShell",
+				"Card"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AppShellLayout",
+						"PageShell",
+						"Card",
+						"NavModule"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/app-shell#panel-width",
+			"needs": "@codeatlasdev/ui@4.3.0"
+		},
+		{
+			"id": "481",
+			"group": "layout",
+			"page": "app-shell",
+			"variant": "ItemExtras",
+			"slug": "color-count-actions-and-reorder",
+			"title": "Color, count, actions and reorder",
+			"description": "Each row has a color dot, a neutral count and a … menu; drag a row by its grip.",
+			"summary": "App shell panel rows with a color dot, a neutral count, a per-row actions menu and drag-to-reorder.",
+			"use": "Lists of user-owned things (workspaces, folders, saved views) that need a marker, a total, quick actions and a custom order.",
+			"spec": [
+				"`<AppShellLayout {modules} {pathname} persistPanel={false} mainId={null} skipLink={false}>`",
+				"One module `id: 'projects'` with a non-collapsible section `label: 'Workspaces'` and `onReorder: reorder`",
+				"3 items: Design system (#e11d48, count 42), Marketing site (#2563eb, count 1280, shown as 1.2k), Mobile app (#16a34a, count 0)",
+				"Every item has `color`, `count` and `actions`; `actions` is a snippet with 2 `DropdownMenuItem`s: Favorite and Archive (destructive)",
+				"`reorder(e: NavReorderEvent)` uses `next.splice(e.from, 1)` and `next.splice(e.to, 0, moved)`, then writes the visible `log` line; the drag itself is announced by the shell",
+				"A second module `id: 'other'` with `items: []`",
+				"Stage height is `height: 360px`"
+			],
+			"tags": [
+				"app-shell",
+				"nav-item",
+				"color",
+				"count",
+				"actions-menu",
+				"reorder",
+				"drag-and-drop",
+				"sidebar"
+			],
+			"shape": "wide",
+			"components": [
+				"AppShellLayout",
+				"DropdownMenuItem",
+				"PageShell",
+				"Card"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AppShellLayout",
+						"DropdownMenuItem",
+						"PageShell",
+						"Card",
+						"NavModule",
+						"NavReorderEvent"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/app-shell#color-count-actions-and-reorder",
 			"needs": "@codeatlasdev/ui@4.3.0"
 		}
 	]

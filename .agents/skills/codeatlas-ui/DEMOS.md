@@ -310,3 +310,5 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 432 | Drop zones | foundation/drag-and-drop | DndLayer |
 | 433 | Groups | display/data-table | Button, DataTable, DataTableColumnHeader |
 | 470 | Close on pick | navigation/popover | Popover, Button, Calendar |
+| 480 | Panel width | layout/app-shell | AppShellLayout, PageShell, Card |
+| 481 | Color, count, actions and reorder | layout/app-shell | AppShellLayout, DropdownMenuItem, PageShell, Card |
