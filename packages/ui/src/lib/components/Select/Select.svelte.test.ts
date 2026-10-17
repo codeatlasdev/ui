@@ -161,4 +161,29 @@ describe("Select", () => {
 				.toHaveAttribute("aria-selected", "true");
 		});
 	});
+	describe("accessible name without a visible label", () => {
+		it("aria-label names the trigger and still contains the visible value", async () => {
+			const screen = await render(SelectHarness, { "aria-label": "Role", initial: "a" });
+			const trigger = screen.getByRole("button", { name: "Role Alpha" });
+			await expect.element(trigger).toHaveTextContent("Alpha");
+			expect(await checkA11y(screen.container)).toHaveNoViolations();
+			await trigger.click();
+			await expect.element(screen.getByRole("listbox", { name: "Role" })).toBeVisible();
+		});
+
+		it("aria-label is not replaced by the placeholder", async () => {
+			const screen = await render(SelectHarness, { "aria-label": "Role", placeholder: "Pick one" });
+			await expect.element(screen.getByRole("button", { name: "Role Pick one" })).toBeVisible();
+		});
+
+		it("aria-labelledby points at an outside element", async () => {
+			const screen = await render(SelectHarness, { "aria-labelledby": "outside", initial: "b" });
+			const outside = document.createElement("span");
+			outside.id = "outside";
+			outside.textContent = "Team";
+			screen.container.prepend(outside);
+			await expect.element(screen.getByRole("button", { name: "Team Beta" })).toBeVisible();
+			expect(await checkA11y(screen.container)).toHaveNoViolations();
+		});
+	});
 });

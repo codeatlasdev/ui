@@ -24,6 +24,10 @@
     /** Native `name`: the selected value is part of `FormData` on a plain form submit. Nothing is sent while no option is selected. */
     name?:         string;
     size?:         'sm' | 'md';
+    /** Accessible name when there is no visible `label`. The trigger's name is this text followed by the current value, so it still contains the visible text. */
+    'aria-label'?: string;
+    /** Id(s) of the element(s) naming the select when there is no visible `label` (followed by the current value, like `aria-label`). */
+    'aria-labelledby'?: string;
     class?:        string;
     onchange?:     (value: string) => void;
   }
@@ -39,6 +43,8 @@
     required    = false,
     name,
     size        = 'md',
+    'aria-label': ariaLabel,
+    'aria-labelledby': ariaLabelledby,
     class: className = '',
     onchange,
   }: Props = $props();
@@ -46,6 +52,11 @@
   const id       = uid('sel');
   // `''` is a legitimate option value ("All"); only an unmatched/undefined value means "no selection".
   const selected = $derived(options.find(o => o.value === value));
+
+  // No visible label: the name is the caller's text followed by the value shown in the trigger (WCAG 2.5.3,
+  // label in name). Without either prop the placeholder (or the localized "Select") names it, as before.
+  const namedBy = $derived(!label && (ariaLabelledby || ariaLabel));
+  const fallbackName = $derived(namedBy ? undefined : (placeholder ?? t().select.placeholder));
 
   let open = $state(false);
   let trigger = $state<HTMLElement | null>(null);
@@ -108,6 +119,8 @@
     </label>
   {/if}
 
+  {#if namedBy && !ariaLabelledby}<span id="{id}-name" hidden>{ariaLabel}</span>{/if}
+
   <!-- svelte-ignore a11y_role_supports_aria_props_implicit -->
   <button
     type="button"
@@ -118,7 +131,8 @@
     aria-haspopup="listbox"
     aria-expanded={open}
     aria-controls={open ? `${id}-list` : undefined}
-    aria-label={label ? undefined : (placeholder ?? t().select.placeholder)}
+    aria-label={label ? undefined : fallbackName}
+    aria-labelledby={namedBy ? `${ariaLabelledby || `${id}-name`} ${id}-value` : undefined}
     aria-describedby={error ? `${id}-err` : description ? `${id}-hint` : undefined}
     aria-invalid={error ? 'true' : undefined}
     data-state={open ? 'open' : 'closed'}
@@ -126,7 +140,7 @@
     onclick={() => (open ? close() : openList())}
     onkeydown={onTriggerKeydown}
   >
-    <span class="ca-sel__value" class:ca-sel__value--placeholder={!selected}>
+    <span id="{id}-value" class="ca-sel__value" class:ca-sel__value--placeholder={!selected}>
       {selected ? selected.label : (placeholder ?? t().select.placeholder)}
     </span>
     <span class="ca-sel__icon" aria-hidden="true">
@@ -161,7 +175,8 @@
     id="{id}-list"
     role="listbox"
     tabindex={-1}
-    aria-label={label ?? placeholder ?? t().select.placeholder}
+    aria-label={label ?? (ariaLabelledby ? undefined : ariaLabel) ?? placeholder ?? t().select.placeholder}
+    aria-labelledby={!label && ariaLabelledby ? ariaLabelledby : undefined}
     class="ca-sel__content"
     onDismiss={(reason) => close(reason === 'escape')}
     onkeydown={onListKeydown}
