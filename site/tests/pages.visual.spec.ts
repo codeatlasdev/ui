@@ -41,13 +41,24 @@ for (const scheme of ["dark", "light"] as const) {
 					const r = document.documentElement.getBoundingClientRect();
 					return { width: Math.floor(r.width), height: Math.floor(r.height) };
 				});
-				await expect(page).toHaveScreenshot(`${slug(route)}-${scheme}.webp`, {
-					fullPage: true,
-					clip: { x: 0, y: 0, width, height },
-					// No `mask`: Playwright places mask boxes from a layout read during the full-page
-					// capture, and they drift between the two compared shots (seen as a 23px shift on
-					// `/`). Canvases are hidden in-layout by tests/screenshot.css (stylePath) instead.
-				});
+				// WebP stops at 16383 px per side (#336: /docs/display/data-table/ is 17488 px on
+				// mobile). Taller pages are captured in segments; a page that fits keeps one file.
+				const SEGMENT = 16000;
+				const parts = Math.ceil(height / SEGMENT);
+				for (let i = 0; i < parts; i++) {
+					const y = i * SEGMENT;
+					const name =
+						parts === 1
+							? `${slug(route)}-${scheme}.webp`
+							: `${slug(route)}-${scheme}-${i + 1}.webp`;
+					await expect(page).toHaveScreenshot(name, {
+						fullPage: true,
+						clip: { x: 0, y, width, height: Math.min(SEGMENT, height - y) },
+						// No `mask`: Playwright places mask boxes from a layout read during the full-page
+						// capture, and they drift between the two compared shots (seen as a 23px shift on
+						// `/`). Canvases are hidden in-layout by tests/screenshot.css (stylePath) instead.
+					});
+				}
 			});
 		}
 
