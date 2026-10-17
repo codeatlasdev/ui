@@ -5,6 +5,19 @@ import { readFileSync } from "node:fs";
 
 export const PREFIX = "@codeatlasdev/ui@";
 
+/**
+ * Commands `bun run release` runs to turn pending changesets into the release commit. The bump
+ * stamps the new version into the generated catalog (API.md, DEMOS.md, site/public/api/v1:
+ * "Needs: @codeatlasdev/ui@<version>"), so they are regenerated before `git add -A`; otherwise
+ * main keeps the previous stamp until an unrelated PR rebuilds them.
+ */
+export function versionSteps(): string[][] {
+	return [
+		["bun", "run", "version"],
+		["bun", "run", "--cwd", "packages/ui", "manifest", "--", "--skill"],
+	];
+}
+
 /** Validates a release tag against the package version; channel = npm dist-tag. */
 export function checkTag(tag: string, pkgVersion: string): { version: string; channel: string } {
 	const m = /^(\d+\.\d+\.\d+)(?:-([a-z]+)\.\d+)?$/.exec(tag.slice(PREFIX.length));

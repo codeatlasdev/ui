@@ -9,7 +9,7 @@
 // Prerelease: `bunx changeset pre enter beta` (commit .changeset/pre.json), then `bun run release`
 // → X.Y.Z-beta.N on dist-tag beta. `bunx changeset pre exit` before the next stable.
 import { readdirSync, readFileSync } from "node:fs";
-import { PREFIX } from "./release-meta.ts";
+import { PREFIX, versionSteps } from "./release-meta.ts";
 
 const REPO = "codeatlasdev/ui";
 const args = process.argv.slice(2);
@@ -112,7 +112,7 @@ if (pending.length === 0) {
 		});
 		process.exit(0);
 	}
-	act(["bun", "run", "version"]);
+	for (const step of versionSteps()) act(step);
 }
 const tag = `${PREFIX}${version()}`;
 if (onOrigin(tag)) fail(`tag ${tag} already exists on origin`);

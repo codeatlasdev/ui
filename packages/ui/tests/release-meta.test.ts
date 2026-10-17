@@ -1,5 +1,6 @@
 import { describe, expect, it } from "bun:test";
-import { changelogSection, checkTag } from "../../../scripts/release-meta.ts";
+import { readFileSync } from "node:fs";
+import { changelogSection, checkTag, versionSteps } from "../../../scripts/release-meta.ts";
 
 describe("release tag", () => {
 	it("stable goes to latest, prerelease to its id", () => {
@@ -32,5 +33,19 @@ describe("changelog section", () => {
 	});
 	it("points to the file when the version is missing", () => {
 		expect(changelogSection(log, "9.9.9")).toBe("See packages/ui/CHANGELOG.md.");
+	});
+});
+
+describe("version steps", () => {
+	const steps = versionSteps().map((c) => c.join(" "));
+	it("the version script is changeset version", () => {
+		const pkg = JSON.parse(readFileSync(new URL("../../../package.json", import.meta.url), "utf8"));
+		expect(pkg.scripts.version).toStartWith("changeset version");
+	});
+	it("regenerates the version-stamped catalog files after changeset version", () => {
+		const bump = steps.indexOf("bun run version");
+		const manifest = steps.findIndex((c) => c.includes("manifest -- --skill"));
+		expect(bump).toBeGreaterThanOrEqual(0);
+		expect(manifest).toBeGreaterThan(bump);
 	});
 });
