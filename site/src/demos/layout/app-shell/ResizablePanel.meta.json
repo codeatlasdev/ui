@@ -1,0 +1,13 @@
+{
+	"summary": "An app shell whose panel starts at 280px for long item names and has a drag handle on its edge.",
+	"use": "Navigation lists with long labels, or when users want to choose how wide the panel is.",
+	"spec": [
+		"`<AppShellLayout {modules} {pathname} panelWidth={280} resizablePanel persistPanel={false} mainId={null} skipLink={false}>`",
+		"One module `id: 'projects'` with 3 items whose labels are long (Quarterly revenue forecast and planning, Customer onboarding experience redesign, Infrastructure cost review)",
+		"A second module `id: 'other'` with `items: []`",
+		"Page is `<PageShell title=\"Wider panel\" description=\"Drag the panel edge, or focus it and use the arrow keys.\">` with one glass `Card` hint about the 160px to 480px range",
+		"Stage height is `height: 360px`"
+	],
+	"tags": ["app-shell", "panel-width", "resizable", "separator", "sidebar", "navigation"],
+	"shape": "wide"
+}

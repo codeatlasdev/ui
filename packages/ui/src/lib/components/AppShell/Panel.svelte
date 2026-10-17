@@ -1,9 +1,9 @@
 <script lang="ts">
   import { getContext } from 'svelte';
   import { useT } from '../../i18n/state.svelte.js';
-  import type { NavModule } from './types.js';
+  import type { NavItem, NavModule, NavSection } from './types.js';
   import { isNavSection } from './types.js';
-  import PanelNavItem from './PanelNavItem.svelte';
+  import NavList from './NavList.svelte';
   import SectionGroup from './SectionGroup.svelte';
   import PanelResizeHandle from './PanelResizeHandle.svelte';
   import { readShellScroll, saveShellScroll } from './shell-state.js';
@@ -28,6 +28,22 @@
   let { modules, activeModuleIndex, pathname, show, panelW, resizable = false, width = panelW, onResize, onCommit, onResizing, class: className = '' }: Props = $props();
 
   let activeModule = $derived(modules[activeModuleIndex]);
+
+  /** Consecutive loose items form one list (so they can be reordered together); a section is its own run. */
+  type Run = { section: NavSection; items?: undefined } | { section?: undefined; items: NavItem[] };
+  let runs = $derived.by(() => {
+    const out: Run[] = [];
+    for (const entry of activeModule?.items ?? []) {
+      if (isNavSection(entry)) out.push({ section: entry });
+      else {
+        const last = out[out.length - 1];
+        if (last?.items) last.items.push(entry);
+        else out.push({ items: [entry] });
+      }
+    }
+    return out;
+  });
+  const isActiveHere = (item: NavItem) => pathname === item.path || pathname.startsWith(item.path + '/');
 
   // Only inside an AppShellLayout with persistPanel (a bare Panel keeps nothing).
   const persist = getContext<{ readonly enabled: boolean } | undefined>('appshell-persist');
@@ -76,15 +92,11 @@
     <!-- Nav items with top/bottom fade mask -->
     <nav class="ca-panel__nav" bind:this={nav}>
       {#if activeModule}
-        {#each activeModule.items as item}
-          {#if isNavSection(item)}
-            <SectionGroup section={item} {pathname} />
+        {#each runs as run, r (r)}
+          {#if run.section}
+            <SectionGroup section={run.section} {pathname} />
           {:else}
-            <PanelNavItem
-              {item}
-              isActive={pathname === item.path || pathname.startsWith(item.path + '/')}
-              href={item.path}
-            />
+            <NavList items={run.items} {pathname} onReorder={activeModule.onReorder} label={activeModule.label} active={isActiveHere} />
           {/if}
         {/each}
       {/if}

@@ -11,6 +11,7 @@ export function clampPanelWidth(width: number): number {
 	return Math.min(PANEL_MAX_WIDTH, Math.max(PANEL_MIN_WIDTH, Math.round(width)));
 }
 
+import type { Snippet } from "svelte";
 import type { IconComponent } from "../../types.js";
 
 export interface NavItem {
@@ -18,10 +19,36 @@ export interface NavItem {
 	label: string;
 	icon: IconComponent;
 	path: string;
+	/** Unread-style badge: announced as "N unread" and capped at 99+. For a plain total use `count`. */
 	badge?: number;
+	/**
+	 * Neutral count shown after the label (records in a folder, items in a list). It is part of the
+	 * link's name as a bare number, never "unread", and `0` renders. Large values abbreviate (`1.2k`).
+	 */
+	count?: number;
+	/**
+	 * A per-item marker: any CSS color (`#e11d48`, `var(--ca-success-main)`). Renders a decorative dot
+	 * before the label, in place of the icon's position when `leading` is not set. The icon stays.
+	 */
+	color?: string;
+	/** Replaces the icon (a color dot, an avatar, an emoji). Decorative: the label stays the name. */
+	leading?: Snippet;
+	/**
+	 * Menu content for a "…" button at the end of the row, usually `DropdownMenuItem`s. The button is
+	 * a sibling of the link (a link cannot contain a control), named "Actions for <label>", and
+	 * appears on hover and focus.
+	 */
+	actions?: Snippet;
 	isNew?: boolean;
 	shortcut?: string;
 	description?: string;
+}
+
+/** A drop in a reorderable list: `id` of the item that moved, from and to indexes inside `items`. */
+export interface NavReorderEvent {
+	id: string;
+	from: number;
+	to: number;
 }
 
 export interface NavSection {
@@ -29,6 +56,12 @@ export interface NavSection {
 	collapsible?: boolean;
 	defaultOpen?: boolean;
 	items: NavItem[];
+	/**
+	 * Makes the items of this section reorderable: each row gets a grip (mouse, touch press-and-hold
+	 * and keyboard through `useDnd`). The shell never reorders `items` itself; commit the move in
+	 * your state, the new order flows back in. Not called when the drop lands where it started.
+	 */
+	onReorder?: (e: NavReorderEvent) => void;
 }
 
 export interface NavModule {
@@ -39,6 +72,8 @@ export interface NavModule {
 	/** Extra URL prefixes that also activate this module in the Rail */
 	pathPrefixes?: string[];
 	items: (NavItem | NavSection)[];
+	/** Same as `NavSection.onReorder`, for the items that sit directly in `items` (outside any section). */
+	onReorder?: (e: NavReorderEvent) => void;
 }
 
 export interface SidebarState {

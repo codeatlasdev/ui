@@ -144,6 +144,8 @@ Classes: `ca-app-settings` `ca-app-settings__actions` `ca-app-settings__body` `c
 | `onNavigate?` | `(path: string) => void` |  |  |
 | `defaultModule?` | `number` | `0` |  |
 | `persistPanel?` | `boolean` | `true` | Keeps the shell across page loads: panel open/closed, selected module, expanded sections (localStorage) and the panel scroll (sessionStorage), restored before first paint. Turn it off for demos and embeds that must always start from the defaults. |
+| `panelWidth?` | `number` | `PANEL_WIDTH` | Width of the navigation panel in px, for lists with long labels. Held between 160 and 480. The content offset and the open/close animation follow it. With `resizablePanel` it is the width used until the user drags the edge. |
+| `resizablePanel?` | `boolean` | `false` | Adds a drag handle (a keyboard-operable separator) on the panel's trailing edge. The width the user picks is kept with `persistPanel`, like the open state, and restored before paint. |
 | `mainId?` | `string \| null` | `'main'` | `id` given to the content region, the target of the skip link. By default the region is the page's `<main id tabindex="-1">` landmark. Pass `null` when your own `<main id="main" tabindex="-1">` is the target: the region then renders as a plain `div` so the page never gets two landmarks. |
 | `skipLink?` | `boolean` | `true` | Render the "Skip to content" link. Turn it off when the shell is embedded in a page that already has one (a framed demo, a preview), so the page does not get two. |
 
@@ -1718,6 +1720,11 @@ Classes: `ca-pagination` `ca-pagination__ellipsis` `ca-pagination__nav` `ca-pagi
 | `pathname` | `string` |  |  |
 | `show` | `boolean` |  |  |
 | `panelW` | `number` |  |  |
+| `resizable?` | `boolean` | `false` | Adds the drag handle on the trailing edge. |
+| `width?` | `number` | `panelW` | Target width in px (what the handle reports as its value); `panelW` is the animated one. |
+| `onResize?` | `(width: number) => void` |  |  |
+| `onCommit?` | `(width: number) => void` |  |  |
+| `onResizing?` | `(resizing: boolean) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
 Classes: `ca-panel` `ca-panel__header` `ca-panel__nav` `ca-panel__title`
@@ -1731,9 +1738,11 @@ Classes: `ca-panel` `ca-panel__header` `ca-panel__nav` `ca-panel__title`
 | `item` | `NavItem` |  |  |
 | `isActive` | `boolean` |  |  |
 | `href` | `string` |  |  |
+| `grip?` | `boolean` | `false` | Adds the drag grip (the list this row sits in is reorderable). Set by `SectionGroup`/`Panel`. |
+| `describedby?` | `string` |  | `id` of the node that describes the keyboard drag (`dnd.instructionsId`). |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-nav-item` `ca-nav-item--active` `ca-nav-item__badge` `ca-nav-item__dot` `ca-nav-item__icon` `ca-nav-item__label` `ca-nav-item__pip`
+Classes: `ca-nav-item` `ca-nav-item--active` `ca-nav-item--grip` `ca-nav-item__actions` `ca-nav-item__badge` `ca-nav-item__color` `ca-nav-item__count` `ca-nav-item__dot` `ca-nav-item__grip` `ca-nav-item__icon` `ca-nav-item__label` `ca-nav-item__leading` `ca-nav-item__link` `ca-nav-item__pip`
 
 ## PhoneField
 
@@ -3574,9 +3583,10 @@ Types:
 | `MessagesOverride` | `type MessagesOverride = DeepPartial<Messages>;` | Partial, deep override accepted by `setLocale`, `registerLocale` and `I18nProvider`. |
 | `MotionCtx` | `interface MotionCtx { playing: boolean; reduced: boolean; takeover(): void; play(): void; pause(): void; cycle: number; }` | What a motion demo receives from `MotionStage`. Demos render from this and never run their own timers. |
 | `MotionOptions` | `interface MotionOptions { scale?: number; easing?: "standard" \| "emphasized" \| "spring" \| "linear" \| "steps"; enter?: "default" \| "none"; }` |  |
-| `NavItem` | `interface NavItem { id: string; label: string; icon: IconComponent; path: string; badge?: number; isNew?: boolean; shortcut?: string; description?: string; }` |  |
-| `NavModule` | `interface NavModule { id: string; label: string; icon: IconComponent; basePath: string; pathPrefixes?: string[]; items: (NavItem \| NavSection)[]; }` |  |
-| `NavSection` | `interface NavSection { label?: string; collapsible?: boolean; defaultOpen?: boolean; items: NavItem[]; }` |  |
+| `NavItem` | `interface NavItem { id: string; label: string; icon: IconComponent; path: string; badge?: number; count?: number; color?: string; leading?: Snippet; actions?: Snippet; isNew?: boolean; shortcut?: string; description?: string; }` |  |
+| `NavModule` | `interface NavModule { id: string; label: string; icon: IconComponent; basePath: string; pathPrefixes?: string[]; items: (NavItem \| NavSection)[]; onReorder?: (e: NavReorderEvent) => void; }` |  |
+| `NavReorderEvent` | `interface NavReorderEvent { id: string; from: number; to: number; }` | A drop in a reorderable list: `id` of the item that moved, from and to indexes inside `items`. |
+| `NavSection` | `interface NavSection { label?: string; collapsible?: boolean; defaultOpen?: boolean; items: NavItem[]; onReorder?: (e: NavReorderEvent) => void; }` |  |
 | `NeutralRamp` | `interface NeutralRamp { surfaceLight: SurfaceColors; surfaceDark: SurfaceColors; textLight: TextColors; textDark: TextColors; outlineLight: OutlineColors; outlineDark: OutlineColors; }` |  |
 | `OutlineColors` | `interface OutlineColors { subtle: string; default: string; strong: string; }` |  |
 | `Paper` | `type Paper = "mesh" \| "plain" \| "grid" \| "dots" \| "lines";` | Page background pattern. mesh = brand glow gradients (drawn by the glass and frosted materials); the rest are flat paper. |

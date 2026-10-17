@@ -2,7 +2,7 @@
   import { getContext } from 'svelte';
   import type { NavSection } from './types.js';
   import { isItemActive } from './types.js';
-  import PanelNavItem from './PanelNavItem.svelte';
+  import NavList from './NavList.svelte';
   import { readShellState, writeShellState } from './shell-state.js';
   import { ChevronRight } from '@lucide/svelte';
   import { createIds, createPresence } from '../../primitives/index.js';
@@ -62,35 +62,17 @@
           </span>
         </button>
         <div id={ids.part('content')} data-state={dataState} hidden={!presence.present} {@attach presence.ref}>
-          {#each section.items as item}
-            <PanelNavItem
-              {item}
-              isActive={isItemActive(item, pathname)}
-              href={item.path}
-            />
-          {/each}
+          <NavList items={section.items} {pathname} onReorder={section.onReorder} label={section.label} />
         </div>
       </div>
     {:else}
       <div class="ca-section__header">
         <span class="ca-section__label">{section.label}</span>
       </div>
-      {#each section.items as item}
-        <PanelNavItem
-          {item}
-          isActive={isItemActive(item, pathname)}
-          href={item.path}
-        />
-      {/each}
+      <NavList items={section.items} {pathname} onReorder={section.onReorder} label={section.label} />
     {/if}
   {:else}
-    {#each section.items as item}
-      <PanelNavItem
-        {item}
-        isActive={isItemActive(item, pathname)}
-        href={item.path}
-      />
-    {/each}
+    <NavList items={section.items} {pathname} onReorder={section.onReorder} label={section.label} />
   {/if}
 </div>
 

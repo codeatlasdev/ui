@@ -96,6 +96,10 @@ Item extras: `badge` (number), `isNew`, `shortcut`, `description`.
 | `panelWidth` | `number` | `200` (held between 160 and 480) |
 | `resizablePanel` | `boolean` | `false` (drag handle; the width is kept with `persistPanel`) |
 
+## Rich nav items
+
+`NavItem` also takes `color` (dot), `leading` (snippet replacing the icon), `count` (neutral total, `1.2k` above 999, `0` renders; `badge` stays the "N unread" one) and `actions` (snippet of `DropdownMenuItem`s behind a "…" button named "Actions for <label>"). Reorder: `onReorder: (e: NavReorderEvent) => void` on a `NavSection` or `NavModule` adds grips (mouse, touch, keyboard); commit `{ id, from, to }` in your state, the shell never reorders `items`.
+
 ## Anti-patterns
 
 ```svelte

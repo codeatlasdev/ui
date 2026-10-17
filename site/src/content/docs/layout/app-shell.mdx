@@ -10,6 +10,10 @@ import Anatomy from "~/demos/layout/app-shell/Anatomy.svelte";
 import AnatomySrc from "~/demos/layout/app-shell/Anatomy.svelte?raw";
 import Shell from "~/demos/layout/app-shell/Shell.svelte";
 import ShellSrc from "~/demos/layout/app-shell/Shell.svelte?raw";
+import ResizablePanel from "~/demos/layout/app-shell/ResizablePanel.svelte";
+import ResizablePanelSrc from "~/demos/layout/app-shell/ResizablePanel.svelte?raw";
+import ItemExtras from "~/demos/layout/app-shell/ItemExtras.svelte";
+import ItemExtrasSrc from "~/demos/layout/app-shell/ItemExtras.svelte?raw";
 
 ```svelte
 <script lang="ts">
@@ -35,6 +39,8 @@ The rail magnifies the module icon under the pointer, like a dock. Only the glyp
 <Demo title="Anatomy" description="Rail (52px), panel (200px by default) and the main content area." src={AnatomySrc}><Anatomy /></Demo>
 <Demo title="Live shell" description="The real component inside a fixed-height frame. The pathname lives in local state; click the rail and panel to navigate." src={ShellSrc} stage><Shell client:visible /></Demo>
 
+<Demo title="Panel width" description="panelWidth={280} with resizablePanel: drag the edge or focus it and use the arrow keys." src={ResizablePanelSrc} stage><ResizablePanel client:visible /></Demo>
+
 <Props for="AppShellLayout" rows={[
   { name: "modules", type: "NavModule[]", description: "Navigation modules. Each has id, label, icon, basePath, optional pathPrefixes and items (NavItem or NavSection). Prefixes match whole path segments and the longest one wins, so a module at `basePath: \"/\"` only gets the pages no other module claims." },
   { name: "pathname", type: "string", description: "Current location. Decides the active module and item. An item at `path: \"/\"` is active on `/` only." },
@@ -53,6 +59,44 @@ The rail magnifies the module icon under the pointer, like a dock. Only the glyp
   { name: "children", type: "Snippet", description: "Page content." },
 ]} />
 
+## Panel width
+
+The panel is 200px by default. For lists with long names pass `panelWidth` (px, held between 160 and 480): the content offset and the open and close animation follow it, so the page never misaligns. Add `resizablePanel` to let people choose: a handle sits on the panel's trailing edge and is a keyboard-operable separator (`role="separator"` with `aria-valuenow`, `aria-valuemin` and `aria-valuemax`). Arrow keys move it by 8px, Shift by 32px, Home and End jump to the bounds. While the pointer holds the edge the panel follows it with no spring in between. With `persistPanel` the width is stored with the open state and restored before the first paint; `panelWidth` is the width used until the user picks one. A stored width is ignored when `resizablePanel` is off, so the prop stays the contract.
+
+## Rich panel items
+
+A `NavItem` takes more than an icon and a label:
+
+| Field | What it does |
+|---|---|
+| `color` | A decorative dot before the label, any CSS color. The icon stays. |
+| `leading` | A snippet that replaces the icon (a color swatch, an avatar, an emoji). Decorative: the label is the name. |
+| `count` | A neutral total after the label (`1.2k` above 999). The link's name carries the exact number, never "unread". `0` renders. |
+| `badge` | Unread-style count: announced "N unread", capped at 99+. Use `count` for a plain total. |
+| `actions` | A snippet of `DropdownMenuItem`s. The row gets a "…" button named `Actions for <label>`, a sibling of the link, shown on hover and focus. |
+
+Reordering is per list: set `onReorder` on a `NavSection` (or on the `NavModule` for the items that sit outside any section). Each row gets a grip that works with the mouse, touch (press and hold) and the keyboard (Space lifts, arrows move, Enter drops, Escape cancels), and every step is announced. It is the same `useDnd` engine as [drag and drop](/docs/foundation/drag-and-drop/). The shell never reorders `items` for you: commit the move in your state and the new order flows back in. `onReorder` is not called when the drop lands where it started.
+
+```svelte
+<script lang="ts">
+  import { DropdownMenuItem, type NavModule, type NavReorderEvent } from "@codeatlasdev/ui";
+
+  function reorder(e: NavReorderEvent) {
+    const next = rows.slice();
+    next.splice(e.to, 0, ...next.splice(e.from, 1));
+    rows = next;
+  }
+</script>
+
+{#snippet menu()}
+  <DropdownMenuItem onclick={archive}>{#snippet children()}Archive{/snippet}</DropdownMenuItem>
+{/snippet}
+
+<!-- items: rows.map((r) => ({ id: r.id, label: r.name, icon: Folder, path: `/p/${r.id}`, color: r.color, count: r.count, actions: menu })) -->
+```
+
+<Demo title="Color, count, actions and reorder" description="Each row has a color dot, a neutral count and a … menu; drag a row by its grip." src={ItemExtrasSrc} stage><ItemExtras client:visible /></Demo>
+
 ## State across page loads
 
 On a multi-page site (Astro, a full reload) every link loads a new document, so a shell that only keeps state in memory reopens at its defaults: the panel, the module, the expanded groups and the panel scroll are all lost. With `persistPanel` (the default) the shell keeps them and puts them back before the first paint, the same way the theme script does.
@@ -68,7 +112,7 @@ Render the shell on the server so the first paint is not blank: the inline scrip
 
 ## Building blocks for a custom panel
 
-`AppShellLayout` renders the panel for you. `Rail`, `Panel`, `BottomNav` and `MobileHeader` are exported too, and two of them are the pieces to reuse when you lay out your own navigation: `PanelNavItem` is the row the panel draws for one `NavItem` (icon, label, unread badge, new dot and the active pip), and `SectionGroup` is a titled group of items that collapses.
+`AppShellLayout` renders the panel for you. `Rail`, `Panel`, `BottomNav` and `MobileHeader` are exported too, and two of them are the pieces to reuse when you lay out your own navigation: `PanelNavItem` is the row the panel draws for one `NavItem` (icon or `leading`, `color` dot, label, `count`, unread badge, new dot, the `actions` menu and the active pip), and `SectionGroup` is a titled group of items that collapses.
 
 ```svelte
 <script lang="ts">
@@ -81,17 +125,19 @@ Render the shell on the server so the first paint is not blank: the inline scrip
 <PanelNavItem item={items[0]} isActive={pathname === items[0].path} href={items[0].path} />
 ```
 
-`PanelNavItem` renders a plain `<a>` with `aria-current="page"` when active. `SectionGroup` opens itself when it holds the current page, and inside an `AppShellLayout` with `persistPanel` it stores its open state under the section `label`; a bare `SectionGroup` keeps nothing.
+`PanelNavItem` renders a row with a plain `<a>` inside it (`aria-current="page"` when active); the actions button and the grip are siblings of the link, because a link cannot contain controls. `SectionGroup` opens itself when it holds the current page, and inside an `AppShellLayout` with `persistPanel` it stores its open state under the section `label`; a bare `SectionGroup` keeps nothing.
 
 <Props for="PanelNavItem" title="PanelNavItem props" rows={[
-  { name: "item", type: "NavItem", description: "The destination: `id`, `label`, `icon`, `path`, and optional `badge`, `isNew`, `shortcut`, `description`. Required." },
+  { name: "item", type: "NavItem", description: "The destination: `id`, `label`, `icon`, `path`, and optional `badge`, `count`, `color`, `leading`, `actions`, `isNew`, `shortcut`, `description`. Required." },
   { name: "isActive", type: "boolean", description: "Marks the row as the current page (`aria-current=\"page\"`, active pip). Required." },
   { name: "href", type: "string", description: "Link target. Required." },
+  { name: "grip", type: "boolean", default: "false", description: "Adds the drag grip. Set it when the list the row sits in is reorderable (`NavSection.onReorder`)." },
+  { name: "describedby", type: "string", description: "`id` of the node that describes the keyboard drag (`dnd.instructionsId`), set on the grip." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />
 
 <Props for="SectionGroup" title="SectionGroup props" rows={[
-  { name: "section", type: "NavSection", description: "`label`, `items`, and optional `collapsible` (default `true`) and `defaultOpen` (default `true`). Required." },
+  { name: "section", type: "NavSection", description: "`label`, `items`, and optional `collapsible` (default `true`), `defaultOpen` (default `true`) and `onReorder` (makes the items reorderable). Required." },
   { name: "pathname", type: "string", description: "Current location, used to mark the active item and to keep the group holding it open. Required." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />

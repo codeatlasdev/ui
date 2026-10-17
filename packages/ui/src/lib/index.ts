@@ -29,7 +29,12 @@ export { default as Panel } from "./components/AppShell/Panel.svelte";
 export { default as PanelNavItem } from "./components/AppShell/PanelNavItem.svelte";
 export { default as Rail } from "./components/AppShell/Rail.svelte";
 export { default as SectionGroup } from "./components/AppShell/SectionGroup.svelte";
-export type { NavItem, NavModule, NavSection } from "./components/AppShell/types.js";
+export type {
+	NavItem,
+	NavModule,
+	NavReorderEvent,
+	NavSection,
+} from "./components/AppShell/types.js";
 export {
 	collectPaths,
 	findActiveItemPath,
