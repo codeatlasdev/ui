@@ -1,0 +1,14 @@
+Use @codeatlasdev/ui demo #430 "Sortable list" (foundation/drag-and-drop).
+What it shows: A checklist whose rows reorder by dragging a grip, by touch press-and-hold, or with the keyboard (Space, arrows, Enter). When to use: Any short ordered list the user curates: checklists, playlists, priorities, form field order.
+Spec:
+- `const dnd = useDnd();` once per component; `{@attach dnd.sortable(() => ({` on the `ul` with `handle: '.sl__grip'`, `getItems` and `onDrop`
+- Each `li` carries `data-dnd-item={task.id}`; the grip `button` has `aria-describedby={dnd.instructionsId}` and an `aria-label` naming the task
+- `onDrop` commits the move with `applyMove({ list: tasks }, e, (t) => t.id).list`; nothing re-renders while the pointer moves
+- `<DndLayer {dnd} />` renders the keyboard instructions (`dnd.instructionsId`) and the drag styles once; every step is announced to screen readers
+Names: Sortable list | Drag to reorder | Reorderable list | Lista ordenável | Lista reordenable
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #430 Sortable list → file, what changed, https://ui.codeatlas.com.br/docs/foundation/drag-and-drop#sortable-list; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/430.txt   Components API: ca-ui-mcp get_component(DndLayer)

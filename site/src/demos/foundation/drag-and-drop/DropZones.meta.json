@@ -1,0 +1,18 @@
+{
+	"summary": "Task chips dragged from a tray onto weekday drop zones, with a dashed highlight while a chip is over a day.",
+	"use": "Scheduling, assigning and filing: any place a loose item is dropped onto a target that is not a sortable list.",
+	"spec": [
+		"Each chip is `{@attach dnd.draggable(() => ({ id: t.id, label: t.title }))}` on an element with `data-dnd-item`",
+		"Each day is `{@attach dnd.dropzone(() => ({ id: day, label: day, onDrop: (e) => drop(day, e) }))}`; the zone is outlined while a chip is over it",
+		"Keyboard: Space lifts a chip, the arrows pick the day, Enter drops; the zone name is announced to screen readers"
+	],
+	"tags": ["drag", "drop", "dropzone", "calendar", "schedule"],
+	"names": [
+		"Drop zones",
+		"Drag onto a day",
+		"Calendar drop target",
+		"Zonas de soltar",
+		"Zonas para soltar"
+	],
+	"shape": "wide"
+}

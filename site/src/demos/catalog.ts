@@ -306,6 +306,9 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "400", path: "navigation/menu/Selection" },
 	{ id: "401", path: "navigation/menu/Submenu" },
 	{ id: "402", path: "navigation/menu/ContextMenu" },
+	{ id: "430", path: "foundation/drag-and-drop/SortableList" },
+	{ id: "431", path: "foundation/drag-and-drop/Board" },
+	{ id: "432", path: "foundation/drag-and-drop/DropZones" },
 ];
 
 /**

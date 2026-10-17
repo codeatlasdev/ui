@@ -105,6 +105,7 @@ export type {
 	DocsSearchEntry,
 	DocsSection,
 } from "./components/Docs/types.js";
+export { default as DndLayer } from "./components/DragAndDrop/DndLayer.svelte";
 export { default as Drawer } from "./components/Drawer/Drawer.svelte";
 export { default as DropdownMenu } from "./components/DropdownMenu/DropdownMenu.svelte";
 export { default as DropdownMenuCheckboxItem } from "./components/DropdownMenu/DropdownMenuCheckboxItem.svelte";
@@ -222,6 +223,17 @@ export {
 	useLocale,
 	useT,
 } from "./i18n/index.js";
+export type {
+	Dnd,
+	DndDropEvent,
+	DndMessages,
+	DndPosition,
+	DraggableOptions,
+	DropzoneOptions,
+	SortableOptions,
+	UseDndOptions,
+} from "./primitives/index.js";
+export { applyMove, useDnd } from "./primitives/index.js";
 export type { LayerChange, LayerInfo, LayerKind } from "./primitives/layer.js";
 export { onLayerChange } from "./primitives/layer.js";
 export type { ColorScheme, SurfaceStyle } from "./stores/color-scheme.svelte.js";

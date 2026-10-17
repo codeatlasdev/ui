@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #432 "Drop zones" (foundation/drag-and-drop).
+What it shows: Task chips dragged from a tray onto weekday drop zones, with a dashed highlight while a chip is over a day. When to use: Scheduling, assigning and filing: any place a loose item is dropped onto a target that is not a sortable list.
+Spec:
+- Each chip is `{@attach dnd.draggable(() => ({ id: t.id, label: t.title }))}` on an element with `data-dnd-item`
+- Each day is `{@attach dnd.dropzone(() => ({ id: day, label: day, onDrop: (e) => drop(day, e) }))}`; the zone is outlined while a chip is over it
+- Keyboard: Space lifts a chip, the arrows pick the day, Enter drops; the zone name is announced to screen readers
+Names: Drop zones | Drag onto a day | Calendar drop target | Zonas de soltar | Zonas para soltar
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #432 Drop zones → file, what changed, https://ui.codeatlas.com.br/docs/foundation/drag-and-drop#drop-zones; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/432.txt   Components API: ca-ui-mcp get_component(DndLayer)

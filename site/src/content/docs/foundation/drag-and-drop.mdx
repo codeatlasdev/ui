@@ -1,0 +1,101 @@
+---
+title: Drag and drop
+description: Sort a list, move items between lists and drop onto zones with mouse, touch and keyboard, announced to screen readers and calm under reduced motion.
+group: Foundation
+order: 5
+---
+import Demo from "~/components/docs/Demo.astro";
+import SortableList from "~/demos/foundation/drag-and-drop/SortableList.svelte";
+import SortableListSrc from "~/demos/foundation/drag-and-drop/SortableList.svelte?raw";
+import Board from "~/demos/foundation/drag-and-drop/Board.svelte";
+import BoardSrc from "~/demos/foundation/drag-and-drop/Board.svelte?raw";
+import DropZones from "~/demos/foundation/drag-and-drop/DropZones.svelte";
+import DropZonesSrc from "~/demos/foundation/drag-and-drop/DropZones.svelte?raw";
+
+`useDnd()` is the drag primitive behind reorderable lists, boards and drop targets. Call it once while a component initializes, render `<DndLayer {dnd} />` once next to your lists (it holds the keyboard instructions and the drag styles, so apps that never drag do not pay for them) and attach the parts `useDnd` hands back to your own markup:
+
+```svelte
+<script>
+  import { applyMove, DndLayer, useDnd } from "@codeatlasdev/ui";
+
+  let items = $state([{ id: "a" }, { id: "b" }, { id: "c" }]);
+  const dnd = useDnd();
+  const onDrop = (e) => (items = applyMove({ list: items }, e, (i) => i.id).list);
+</script>
+
+<DndLayer {dnd} />
+<ul {@attach dnd.sortable(() => ({ id: "list", getItems: () => items.map((i) => i.id), onDrop }))}>
+  {#each items as item (item.id)}
+    <li data-dnd-item={item.id}>
+      <button aria-describedby={dnd.instructionsId}>{item.id}</button>
+    </li>
+  {/each}
+</ul>
+```
+
+## How it behaves
+
+The engine measures the item boxes once when a drag starts and finds the target from those cached rectangles on every frame. While you drag, only three things move: a clone of the item that follows the pointer, a one-line drop indicator and `data-dnd-*` attributes. Your list does **not** re-render until `onDrop` fires, so a board with hundreds of cards stays smooth. `onDrop` is the only place you change state: `{ id, data, from, to }`, where `from` and `to` are `{ container, index }`.
+
+| Input | How it works |
+|---|---|
+| Mouse and pen | Press and move 4px. A press that does not move stays a click. |
+| Touch | Press and hold for 350ms, then drag. Moving before the hold ends is a scroll, so lists inside a scrolling page keep scrolling. |
+| Keyboard | Focus the item (or its handle) and press Space to lift. Arrows move it, Home and End jump to the ends, Enter drops, Escape cancels. Left and right (up and down in a horizontal list) move it to the next list or zone. |
+| Screen reader | Every step is spoken through [`announce()`](/docs/getting-started/accessibility/): "Lifted Write the release notes, position 2 of 4", "…position 3 of 4", "Dropped…", "Cancelled…". The text follows the active locale (English and Portuguese built in); pass `useDnd({ messages })` for another language. |
+| Edges | Holding the pointer near the edge of a scrolling container scrolls it, faster the closer you are. |
+| Reduced motion | The cancel animation and the press scale are removed. |
+
+Put `aria-describedby={dnd.instructionsId}` on the focusable handle so a screen reader tells people how to lift it. Pass `handle: ".grip"` when only a grip may start a drag (a row that also holds links or inputs).
+
+## Sort a list
+
+<Demo title="Sortable list" description="Drag the grip, press and hold on a touch screen, or focus the grip and press Space." src={SortableListSrc}><SortableList client:visible /></Demo>
+
+## Move between lists
+
+Lists that share a `group` accept each other's items. `applyMove` applies a drop event to a record of arrays (reorder inside one list, move between two); use your own reducer when the data lives in a store.
+
+<Demo title="Board" description="Cards reorder inside a column and move between columns. With the keyboard, Space lifts, the arrows move and Enter drops." src={BoardSrc}><Board client:visible /></Demo>
+
+## Drop zones
+
+A drop zone is a target that is not a sortable list: a calendar day, a folder, a trash can. A standalone item uses `dnd.draggable`; the zone gets `data-dnd-over` while an item is above it. Return `false` from `accepts` to refuse an item.
+
+<Demo title="Drop zones" description="Drag a chip onto a day, or lift it with Space and pick the day with the arrows." src={DropZonesSrc}><DropZones client:visible /></Demo>
+
+## API
+
+`useDnd(options?)` returns `{ sortable, draggable, dropzone, instructionsId, instructions, active, cancel }`. `<DndLayer dnd={dnd} />` renders `instructions` under `instructionsId` and carries the styles. `sortable`, `draggable` and `dropzone` take a getter that returns the options and return an attachment (`{@attach …}`), so reactive state flows in without recreating anything.
+
+| Option | Applies to | Description |
+|---|---|---|
+| `id` | all | Container or item id. Required. |
+| `group` | `sortable` | Lists with the same group exchange items. Default: the list id (no exchange). |
+| `getItems()` | `sortable` | Ids of the items, in order. |
+| `getLabel(id)` | `sortable` | Name of an item for announcements. Default: its text. |
+| `label` | all | Name of the list, zone or item for announcements. Default: the id. |
+| `axis` | `sortable` | `"y"` (default) or `"x"`. |
+| `handle` | `sortable`, `draggable` | CSS selector of the element that starts a drag. Default: the whole item. |
+| `disabled` | all | Turns the container or item off. |
+| `accepts(id, data)` | `dropzone` | Return `false` to refuse an item. |
+| `data` | `draggable` | Anything you want back in `onDrop`. |
+| `onDrop(e)` | `sortable`, `dropzone` | `{ id, data, from, to }`. The only place to change state. |
+
+`useDnd` also takes `{ messages, threshold, holdMs, edge }` to override the screen reader strings and the timings.
+
+### Styling hooks
+
+The engine sets attributes you can style; the package ships defaults for them.
+
+| Hook | Where | Meaning |
+|---|---|---|
+| `data-dnd-item` | item | You set it to the item id. |
+| `data-dnd-dragging` | item | The item being dragged (its slot). |
+| `data-dnd-pressing` | item | Touch press, before the hold completes. |
+| `data-dnd-over` | list or zone | The pointer or keyboard target. |
+| `data-dnd-zone` | zone | Set on every drop zone. |
+| `html[data-dnd-active]` | `<html>` | A drag is running. |
+| `.ca-dnd-overlay`, `.ca-dnd-indicator` | `<body>` | The clone and the drop line. |
+
+Under `forced-colors: active` the indicator and the outlines use system colors.

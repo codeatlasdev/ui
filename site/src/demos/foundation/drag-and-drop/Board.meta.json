@@ -1,0 +1,19 @@
+{
+	"summary": "A three-column board: cards reorder inside a column and move between columns by mouse, touch or keyboard.",
+	"use": "Kanban boards, status pipelines and any set of lists whose items move from one to another.",
+	"spec": [
+		"Every column is `{@attach dnd.sortable(() => ({ id: col, group: 'board',`; lists with the same `group` accept each other's cards",
+		"`onDrop` receives the moved id with its `from` and `to` positions and applies it with `applyMove(lists, e, (c) => c.id)`",
+		"Keyboard: Space lifts the card, ArrowUp and ArrowDown move it inside the column, ArrowLeft and ArrowRight jump to the next column, Enter drops, Escape cancels",
+		"Each card is `<li data-dnd-item={card.id}` with a focusable `button`"
+	],
+	"tags": ["drag", "drop", "kanban", "board", "move", "lists"],
+	"names": [
+		"Kanban board",
+		"Drag between lists",
+		"Cards between columns",
+		"Quadro kanban",
+		"Tablero kanban"
+	],
+	"shape": "wide"
+}

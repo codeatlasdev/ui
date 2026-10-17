@@ -1,0 +1,64 @@
+<!-- @codeatlasdev/ui demo #431 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/foundation/drag-and-drop#board -->
+Element: #431 Board (foundation/drag-and-drop)
+What it shows: A three-column board: cards reorder inside a column and move between columns by mouse, touch or keyboard.
+When to use: Kanban boards, status pipelines and any set of lists whose items move from one to another.
+Spec:
+- Every column is `{@attach dnd.sortable(() => ({ id: col, group: 'board',`; lists with the same `group` accept each other's cards
+- `onDrop` receives the moved id with its `from` and `to` positions and applies it with `applyMove(lists, e, (c) => c.id)`
+- Keyboard: Space lifts the card, ArrowUp and ArrowDown move it inside the column, ArrowLeft and ArrowRight jump to the next column, Enter drops, Escape cancels
+- Each card is `<li data-dnd-item={card.id}` with a focusable `button`
+Names: Kanban board | Drag between lists | Cards between columns | Quadro kanban | Tablero kanban
+Tags: drag, drop, kanban, board, move, lists
+Needs: @codeatlasdev/ui@4.3.0
+Components: DndLayer
+Live demo: https://ui.codeatlas.com.br/docs/foundation/drag-and-drop#board
+
+<script lang="ts">
+  import { applyMove, DndLayer, useDnd, type DndDropEvent } from '@codeatlasdev/ui';
+
+  type Card = { id: string; title: string };
+  const names: Record<string, string> = { todo: 'To do', doing: 'In progress', done: 'Done' };
+  let lists = $state<Record<string, Card[]>>({
+    todo: [{ id: 'c1', title: 'Design the empty state' }, { id: 'c2', title: 'Audit contrast' }],
+    doing: [{ id: 'c3', title: 'Wire the export menu' }],
+    done: [{ id: 'c4', title: 'Ship dark mode' }],
+  });
+
+  const dnd = useDnd();
+
+  function onDrop(e: DndDropEvent) {
+    lists = applyMove(lists, e, (c) => c.id);
+  }
+  const title = (id: string) => Object.values(lists).flat().find((c) => c.id === id)?.title ?? id;
+</script>
+
+<DndLayer {dnd} />
+<div class="bd">
+  {#each Object.keys(lists) as col (col)}
+    <section class="bd__col" aria-labelledby="bd-{col}">
+      <h4 id="bd-{col}" class="bd__h">{names[col]} <span>{lists[col].length}</span></h4>
+      <ul
+        class="bd__list"
+        aria-labelledby="bd-{col}"
+        {@attach dnd.sortable(() => ({ id: col, group: 'board', label: names[col], getItems: () => lists[col].map((c) => c.id), getLabel: title, onDrop }))}
+      >
+        {#each lists[col] as card (card.id)}
+          <li data-dnd-item={card.id} class="bd__card">
+            <button type="button" class="bd__btn" aria-describedby={dnd.instructionsId}>{card.title}</button>
+          </li>
+        {/each}
+      </ul>
+    </section>
+  {/each}
+</div>
+
+<style>
+  .bd { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--ca-space-3); width: 100%; }
+  .bd__col { display: grid; align-content: start; gap: var(--ca-space-2); }
+  .bd__h { margin: 0; font-size: var(--ca-font-size-label); color: var(--ca-text-secondary); display: flex; justify-content: space-between; }
+  .bd__list { margin: 0; padding: var(--ca-space-2); list-style: none; display: grid; gap: var(--ca-space-2); align-content: start; min-height: 8rem; background: var(--ca-surface-sunken, transparent); border: var(--ca-border-width) dashed var(--ca-outline-subtle); border-radius: var(--ca-radius-md); }
+  .bd__card { background: var(--ca-surface-raised); border: var(--ca-border-width) solid var(--ca-outline-subtle); border-radius: var(--ca-radius-md); }
+  .bd__btn { all: unset; box-sizing: border-box; min-height: var(--ca-touch-target); display: flex; align-items: center; width: 100%; padding: var(--ca-space-2) var(--ca-space-3); cursor: grab; touch-action: manipulation; border-radius: var(--ca-radius-md); }
+  .bd__btn:focus-visible { outline: 2px solid var(--ca-focus-ring); outline-offset: 2px; }
+  @media (max-width: 599.98px) { .bd { grid-template-columns: minmax(0, 1fr); } }
+</style>

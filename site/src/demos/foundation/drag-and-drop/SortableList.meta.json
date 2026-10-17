@@ -1,0 +1,19 @@
+{
+	"summary": "A checklist whose rows reorder by dragging a grip, by touch press-and-hold, or with the keyboard (Space, arrows, Enter).",
+	"use": "Any short ordered list the user curates: checklists, playlists, priorities, form field order.",
+	"spec": [
+		"`const dnd = useDnd();` once per component; `{@attach dnd.sortable(() => ({` on the `ul` with `handle: '.sl__grip'`, `getItems` and `onDrop`",
+		"Each `li` carries `data-dnd-item={task.id}`; the grip `button` has `aria-describedby={dnd.instructionsId}` and an `aria-label` naming the task",
+		"`onDrop` commits the move with `applyMove({ list: tasks }, e, (t) => t.id).list`; nothing re-renders while the pointer moves",
+		"`<DndLayer {dnd} />` renders the keyboard instructions (`dnd.instructionsId`) and the drag styles once; every step is announced to screen readers"
+	],
+	"tags": ["drag", "drop", "sortable", "reorder", "list", "keyboard"],
+	"names": [
+		"Sortable list",
+		"Drag to reorder",
+		"Reorderable list",
+		"Lista ordenável",
+		"Lista reordenable"
+	],
+	"shape": "square"
+}

@@ -6,7 +6,7 @@ Conventions: BEM (`ca-block__element`, `ca-block--modifier`). CSS variables (`--
 
 Generated from `grep -o 'ca-[a-z0-9_-]*'` over `packages/ui/src/lib/components/<Component>/` (`.svelte`, `.css`, `.ts`), excluding custom properties and duplicates. When you add or rename components, rerun the command and update this file. Some listed names may be `@keyframes` or internal identifiers (e.g. `ca-accordion-down`) rather than classes; treat them as stable to be safe.
 
-Total: 806 unique classes across 82 components.
+Total: 808 unique classes across 83 components.
 
 ---
 
@@ -126,6 +126,10 @@ Total: 806 unique classes across 82 components.
 ## Divider
 
 `.ca-divider` `.ca-divider--horizontal` `.ca-divider--vertical`
+
+## DndLayer
+
+`.ca-dnd-indicator` `.ca-dnd-overlay`
 
 ## Docs
 

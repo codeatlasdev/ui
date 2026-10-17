@@ -815,6 +815,16 @@ Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__acti
 
 Classes: `ca-divider` `ca-divider--horizontal` `ca-divider--vertical`
 
+## DndLayer
+
+`import { DndLayer } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `dnd` | `Dnd` |  | The instance returned by `useDnd()`. |
+
+Classes: `ca-dnd-indicator` `ca-dnd-overlay`
+
 ## DocsNav
 
 `import { DocsNav } from "@codeatlasdev/ui"`
@@ -2636,6 +2646,16 @@ Speak `message` to assistive technology without moving focus or showing anything
 function announce(message: string, politeness?: Politeness): void
 ```
 
+### applyMove
+
+`import { applyMove } from "@codeatlasdev/ui"`
+
+Move `id` per a drop event inside plain arrays: the reorder/move helper apps usually need.
+
+```ts
+function applyMove<T>(lists: Record<string, T[]>, e: DndDropEvent, key: (item: T) => string): Record<string, T[]>
+```
+
 ### collectPaths
 
 `import { collectPaths } from "@codeatlasdev/ui"`
@@ -3406,6 +3426,14 @@ Short random id `"<prefix>-xxxxxxx"` for DOM ids and keys. Not cryptographically
 function uid(prefix?: string): string
 ```
 
+### useDnd
+
+`import { useDnd } from "@codeatlasdev/ui"`
+
+```ts
+function useDnd(options?: UseDndOptions): Dnd
+```
+
 ### useForm
 
 `import { useForm } from "@codeatlasdev/ui"`
@@ -3493,6 +3521,10 @@ Types:
 | `DesignStyle` | `interface DesignStyle { id: DesignStyleId; label: string; description: string; taxonomy: string[]; theme: Partial<ThemeDefinition>; }` |  |
 | `DesignStyleId` | `type DesignStyleId = \| "default" \| "liquid" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
 | `Direction` | `type Direction = (typeof DIRECTION)[number];` |  |
+| `Dnd` | `interface Dnd { readonly controller: DndController; readonly instructionsId: string; readonly instructions: string; readonly active: string \| null; sortable(getOptions: () => SortableOptions): (node: HTMLElement) => () => void; dropzone(getOptions: () => DropzoneOptions): (node: HTMLElement) => () => void; draggable<T>(getOptions: () => DraggableOptions<T>): (node: HTMLElement) => () => void; cancel(): void; }` |  |
+| `DndDropEvent` | `interface DndDropEvent<T = unknown> { id: string; data: T \| undefined; from: DndPosition; to: DndPosition; }` |  |
+| `DndMessages` | `interface DndMessages { instructions: string; lifted: (label: string, position: number, total: number) => string; moved: (label: string, position: number, total: number, container?: string) => string; over: (label: string, zone: string) => string; dropped: (label: string, position: number, total: number, container?: string) => string; cancelled: (label: string) => string; }` | Screen reader strings. `i18n` fills them from the locale catalog; each is optional. |
+| `DndPosition` | `interface DndPosition { container: string; index: number; }` | Where an item sits: a container id and an index inside it (zones use index 0). |
 | `DocsHeading` | `interface DocsHeading { id: string; text: string; depth: 2 \| 3; }` |  |
 | `DocsNavGroup` | `interface DocsNavGroup { label?: string; items: DocsNavItem[]; }` | A labelled group of page links in the sidebar. |
 | `DocsNavItem` | `interface DocsNavItem { href: string; title: string; badge?: string; }` | A page link in the sidebar. |
@@ -3500,6 +3532,8 @@ Types:
 | `DocsSearchEntry` | `interface DocsSearchEntry { href: string; title: string; section: string; description: string; headings: { text: string; id: string }[]; text: string; }` | One entry of the search index consumed by DocsSearch. |
 | `DocsSearchResult` | `interface DocsSearchResult { href: string; title: string; context: string; kind: "page" \| "heading"; }` |  |
 | `DocsSection` | `interface DocsSection { id: string; label: string; href: string; }` | A top-level docs section shown in the header (e.g. Guide, API, Compat). |
+| `DraggableOptions` | `interface DraggableOptions<T = unknown> { id: string; data?: T; label?: string; handle?: string; disabled?: boolean; onDrop?: (e: DndDropEvent<T>) => void; }` |  |
+| `DropzoneOptions` | `interface DropzoneOptions { id: string; group?: string; label?: string; disabled?: boolean; accepts?: (id: string, data: unknown) => boolean; onDrop: (e: DndDropEvent) => void; }` |  |
 | `ElementTag` | `type ElementTag = keyof SvelteHTMLElements;` | Tags `as` can render: the HTML and SVG elements Svelte knows (`svelte:element`). |
 | `ElevationLevel` | `type ElevationLevel = keyof typeof elevation;` |  |
 | `ElevationModel` | `type ElevationModel = "soft" \| "none" \| "hard" \| "glow";` | Shadow model: how elevation is drawn. |
@@ -3539,6 +3573,7 @@ Types:
 | `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; background?: string; sunken?: string; surface?: string; overlay?: string; text?: string; textSecondary?: string; textHint?: string; textDisabled?: string; borderSubtle?: string; border?: string; borderStrong?: string; success?: string; warning?: string; info?: string; error?: string; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. |
 | `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
 | `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
+| `SortableOptions` | `interface SortableOptions { id: string; group?: string; getItems: () => readonly string[]; getLabel?: (id: string) => string; label?: string; axis?: "y" \| "x"; handle?: string; disabled?: boolean; onDrop: (e: DndDropEvent) => void; }` |  |
 | `Space` | `type Space = (typeof SPACE)[number] \| `${(typeof SPACE)[number]}`;` |  |
 | `SurfaceColors` | `interface SurfaceColors { sunken: string; base: string; raised: string; overlay: string; }` |  |
 | `SurfaceStyle` | `type SurfaceStyle = \| "glass" \| "frosted" \| "solid" \| "flat" \| "outlined" \| "neumorphic" \| "clay" \| "tonal" \| "chrome";` | Surface material. glass/frosted blur the backdrop; the rest are opaque. |
@@ -3551,6 +3586,7 @@ Types:
 | `ToastItem` | `interface ToastItem { id: string; message: string; variant: ToastVariant; duration: number; }` |  |
 | `ToastVariant` | `type ToastVariant = "default" \| "success" \| "error" \| "warning" \| "info";` |  |
 | `TypographyOptions` | `interface TypographyOptions { scale?: number; weights?: Partial<Record<"regular" \| "medium" \| "semibold" \| "bold" \| "heading", number>>; headingTracking?: string; headingCase?: "none" \| "uppercase"; labelTracking?: string; labelCase?: "none" \| "uppercase"; lineHeight?: number; measure?: string; }` |  |
+| `UseDndOptions` | `interface UseDndOptions { messages?: Partial<DndMessages>; threshold?: number; holdMs?: number; edge?: number; id?: string; }` |  |
 | `UseListStateOptions` | `interface UseListStateOptions<T extends object> { data: T[]; perPage?: number; searchKeys?: (keyof T)[]; idKey?: keyof T; ofLabel?: string; }` | useListState — eliminates boilerplate state management in list/CRUD pages. |
 | `UseListStateReturn` | `interface UseListStateReturn<T> { get search(): string; set search(v: string); readonly filters: Record<string, string>; setFilter(key: string, value: string \| undefined): void; clearFilters(): void; readonly hasFilters: boolean; readonly filtered: T[]; readonly count: string; readonly rows: T[]; get page(): number; set page(v: number); readonly pageCount: number; readonly pageInfo: string; readonly selected: Set<T[keyof T]>; readonly allPageSelected: boolean; toggleAll(): void; toggleRow(id: T[keyof T]): void; clearSelection(): void; }` |  |
 | `ValidationSchema` | `type ValidationSchema<K extends string> = \| { parse?: (data: Record<K, string>) => unknown; safeParse?: (data: Record<K, string>) => { success: boolean; error?: { flatten?: () => { fieldErrors: Partial<Record<K, string[]>> } }; }; _run?: ( data: Record<K, string>, config: unknown ) => { output: unknown; issues?: Array<{ path: (string \| number)[]; message: string }>; }; } \| ((data: Record<K, string>) => Partial<Record<K, string>>);` |  |

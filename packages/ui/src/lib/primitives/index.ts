@@ -1,3 +1,18 @@
+export {
+	applyMove,
+	createDnd,
+	DEFAULT_MESSAGES as DND_MESSAGES,
+	type DndController,
+	type DndDropEvent,
+	type DndHandle,
+	type DndMessages,
+	type DndOptions,
+	type DndPosition,
+	type DraggableOptions,
+	type DropzoneOptions,
+	type SortableOptions,
+} from "./dnd.js";
+export { type Dnd, type UseDndOptions, useDnd } from "./dnd.svelte.js";
 export { type Align, type FloatOptions, float, type Side } from "./floating.js";
 export { focusables, focusFirst, type TrapFocusOptions, trapFocus } from "./focus.js";
 export { createHoverIntent, type HoverIntent, type HoverIntentOptions } from "./hover-intent.js";

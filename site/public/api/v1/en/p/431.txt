@@ -1,0 +1,14 @@
+Use @codeatlasdev/ui demo #431 "Board" (foundation/drag-and-drop).
+What it shows: A three-column board: cards reorder inside a column and move between columns by mouse, touch or keyboard. When to use: Kanban boards, status pipelines and any set of lists whose items move from one to another.
+Spec:
+- Every column is `{@attach dnd.sortable(() => ({ id: col, group: 'board',`; lists with the same `group` accept each other's cards
+- `onDrop` receives the moved id with its `from` and `to` positions and applies it with `applyMove(lists, e, (c) => c.id)`
+- Keyboard: Space lifts the card, ArrowUp and ArrowDown move it inside the column, ArrowLeft and ArrowRight jump to the next column, Enter drops, Escape cancels
+- Each card is `<li data-dnd-item={card.id}` with a focusable `button`
+Names: Kanban board | Drag between lists | Cards between columns | Quadro kanban | Tablero kanban
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #431 Board → file, what changed, https://ui.codeatlas.com.br/docs/foundation/drag-and-drop#board; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/431.txt   Components API: ca-ui-mcp get_component(DndLayer)
