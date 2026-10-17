@@ -33,17 +33,31 @@ describe("LoadingBoundary", () => {
 	});
 
 	it("keeps the placeholder at least `minDuration` once it showed", async () => {
+		// A busy suite stalls the event loop while mounting; the hold must not depend on it.
+		setTimeout(() => {
+			const t0 = performance.now();
+			while (performance.now() - t0 < 120);
+		}, 5);
 		const screen = await render(Harness, { props: { delay: 20, minDuration: 400 } });
-		const start = performance.now();
+		// Time the placeholder itself, from the frame it is inserted to the one it is removed in:
+		// anything measured from before/after `render` drifts with how long mounting took (#307).
+		let shownAt = 0;
+		let goneAt = 0;
+		const watch = new MutationObserver(() => {
+			const now = skeleton(screen.container) !== null;
+			if (now && !shownAt) shownAt = performance.now();
+			if (!now && shownAt && !goneAt) goneAt = performance.now();
+		});
+		watch.observe(screen.container, { childList: true, subtree: true });
 		await expect.poll(() => skeleton(screen.container)).not.toBeNull();
 		release(screen);
-		await wait(150);
-		// Resolved already, but the placeholder still holds and the content stays hidden: no flash.
+		// Resolved already, but the boundary holds: no flash of content.
+		await expect.poll(() => busy(screen.container)?.getAttribute("data-state")).toBe("holding");
 		expect(skeleton(screen.container)).not.toBeNull();
 		expect(content(screen.container)?.checkVisibility()).toBe(false);
-		await expect.poll(() => skeleton(screen.container), { timeout: 2000 }).toBeNull();
-		// shown at ~delay (20 ms) after `start`; held 400 ms from then.
-		expect(performance.now() - start).toBeGreaterThanOrEqual(400);
+		await expect.poll(() => skeleton(screen.container), { timeout: 4000 }).toBeNull();
+		watch.disconnect();
+		expect(goneAt - shownAt).toBeGreaterThanOrEqual(400 - 5);
 		expect(content(screen.container)?.checkVisibility()).toBe(true);
 	});
 
