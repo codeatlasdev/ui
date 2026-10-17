@@ -1,3 +1,4 @@
+import { untrack } from "svelte";
 import { type LayerDismissReason, openLayer } from "../../primitives/index.js";
 
 export interface ModalLayerOptions {
@@ -9,6 +10,8 @@ export interface ModalLayerOptions {
 	initial?: "first" | "container" | HTMLElement | false;
 	/** Called after the layer is shown and focus is placed (for consumers that focus a field). */
 	onOpen?(dialog: HTMLDialogElement): void;
+	/** True from the moment the owner's `open` turns false until the dialog unmounts (the exit animation): the layer stops owning Escape and presses. */
+	closing?: boolean;
 }
 
 /**
@@ -21,12 +24,15 @@ export interface ModalLayerOptions {
 export function modalLayer(options: () => ModalLayerOptions) {
 	return (dialog: HTMLElement): (() => void) => {
 		if (!(dialog instanceof HTMLDialogElement)) return () => {};
-		const { initial, onOpen } = options();
+		// Attach-time reads are untracked: the attachment must not re-run (closing the layer and removing
+		// the dialog mid-exit) when the owner's reactive state, such as `open` for `closing`, changes.
+		const { initial, onOpen, outside } = untrack(options);
 		const layer = openLayer(dialog, {
 			kind: "modal",
 			initialFocus: initial,
 			onOpen: () => onOpen?.(dialog),
-			outside: options().outside,
+			outside,
+			closing: () => options().closing === true,
 			onDismiss: (reason: LayerDismissReason) =>
 				options().onDismiss(reason === "escape" ? "escape" : "outside"),
 		});

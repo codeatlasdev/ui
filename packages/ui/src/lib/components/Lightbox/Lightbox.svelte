@@ -118,7 +118,7 @@
 		aria-labelledby={ids.part("title")}
 		data-state={open ? "open" : "closed"}
 		{@attach presence.ref}
-		{@attach modalLayer(() => ({ onDismiss: dismiss, outside: false, initial: "container" }))}
+		{@attach modalLayer(() => ({ onDismiss: dismiss, outside: false, initial: "container", closing: !open }))}
 		{onkeydown}
 		onclick={(e) => {
 			// Anything except the media, its caption and the controls dismisses.

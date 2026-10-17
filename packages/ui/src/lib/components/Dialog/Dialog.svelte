@@ -84,7 +84,7 @@
     data-state={open ? 'open' : 'closed'}
     style="--dialog-max-w:{maxW[size]}"
     {@attach presence.ref}
-    {@attach modalLayer(() => ({ onDismiss: () => change(false) }))}
+    {@attach modalLayer(() => ({ onDismiss: () => change(false), closing: !open }))}
   >
     {#if chromeless}
       {#if title}

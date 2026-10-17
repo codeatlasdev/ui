@@ -50,6 +50,12 @@ export interface LayerOptions {
 	initialFocus?: "first" | "container" | HTMLElement | false;
 	/** Modal only: runs once shown and focused. */
 	onOpen?(el: HTMLElement): void;
+	/**
+	 * True once the owner has started closing the layer (its exit animation is playing) but has not
+	 * called `close()` yet. A closing layer no longer owns Escape or presses, and no new layer is
+	 * hosted in it: they go to the one below. Read live, so pass a getter over the owner's `open` state.
+	 */
+	closing?: () => boolean;
 	/** Hand focus back to the opener (modal) or the anchor (popover) on close. Default true. */
 	restoreFocus?: boolean;
 	/** Leave a modal where it is declared. Default false: it is moved to `<body>` so it does not inherit typography. */
@@ -86,16 +92,23 @@ interface Entry {
 	dismiss(type: "escape" | "pointerdown" | "focusin", e: Event): void;
 }
 
-/** Open layers, bottom → top. Only the last interactive one reacts to dismiss events. */
+/**
+ * Open layers, bottom → top. Only the last interactive, non-closing one reacts to dismiss events.
+ * A popover hosted in a modal ranks above it (it paints above and answers first), whichever opened first.
+ */
 const stack: Entry[] = [];
 let listening = false;
 
+const isClosing = (e: Entry) => e.opts.closing?.() === true;
+
 function topModal(): HTMLElement | undefined {
-	for (let i = stack.length - 1; i >= 0; i--) if (stack[i].kind === "modal") return stack[i].node;
+	for (let i = stack.length - 1; i >= 0; i--)
+		if (stack[i].kind === "modal" && !isClosing(stack[i])) return stack[i].node;
 }
 
 function topInteractive(): Entry | undefined {
-	for (let i = stack.length - 1; i >= 0; i--) if (stack[i].kind !== "hint") return stack[i];
+	for (let i = stack.length - 1; i >= 0; i--)
+		if (stack[i].kind !== "hint" && !isClosing(stack[i])) return stack[i];
 }
 
 /**
@@ -123,12 +136,19 @@ function rehost(entry: Entry) {
 	if (el.hasAttribute("popover") && !el.matches(":popover-open")) el.showPopover();
 }
 
-/** Closing a popover/hint: put it back where its owner declared it (or drop it if that range is gone). */
+/**
+ * Closing a popover/hint: put it back where its owner declared it. Dropped instead when its owner
+ * is gone (the marker is detached) or already removed it: Svelte removes a hosted node from wherever
+ * it sits before this runs, and putting it back would resurrect it as a stray, non-popover element.
+ */
 function restore(entry: Entry) {
 	const { home, node } = entry;
 	if (!home) return;
-	if (home.isConnected) home.replaceWith(node);
-	else node.remove();
+	if (home.isConnected && node.isConnected) home.replaceWith(node);
+	else {
+		home.remove();
+		node.remove();
+	}
 	entry.home = undefined;
 }
 
@@ -405,8 +425,13 @@ export function openLayer(el: HTMLElement, options: LayerOptions): LayerHandle {
 	}
 
 	stack.push(entry);
-	// A modal that opens over already-open popovers/hints takes them in so they stay interactive above it.
-	if (kind === "modal") for (const other of stack) if (other.kind !== "modal") rehost(other);
+	if (kind === "modal") {
+		// A modal that opens over already-open popovers/hints takes them in so they stay interactive
+		// above it. They also rank above it, so Escape reaches the menu first and the dialog second.
+		const adopted = stack.filter((other) => other.kind !== "modal");
+		for (const other of adopted) rehost(other);
+		stack.splice(0, stack.length, ...stack.filter((other) => other.kind === "modal"), ...adopted);
+	}
 	listen(true);
 	announce();
 

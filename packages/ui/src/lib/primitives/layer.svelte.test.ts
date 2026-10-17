@@ -39,6 +39,63 @@ function menu(label = "Menu") {
 	return node;
 }
 
+describe("openLayer: Escape ownership", () => {
+	it("a layer that is closing no longer owns Escape: it falls to the one below (#288)", () => {
+		const onBottom = vi.fn();
+		const onTop = vi.fn();
+		let closing = false;
+		track(openLayer(modal("Bottom"), { kind: "modal", onDismiss: onBottom }));
+		track(openLayer(modal("Top"), { kind: "modal", onDismiss: onTop, closing: () => closing }));
+
+		closing = true;
+		esc();
+		expect(onTop).not.toHaveBeenCalled();
+		expect(onBottom).toHaveBeenCalledExactlyOnceWith("escape");
+	});
+
+	it("a menu that was open before a modal opened stays above it: Escape closes the menu, then the modal (#299)", () => {
+		const trigger = el("button", "open");
+		const onMenu = vi.fn();
+		const onModal = vi.fn();
+		const content = menu();
+		track(openLayer(content, { kind: "popover", anchor: trigger, onDismiss: onMenu }));
+		const dialog = modal();
+		track(openLayer(dialog, { kind: "modal", onDismiss: onModal }));
+		expect(dialog.contains(content)).toBe(true);
+
+		esc();
+		expect(onMenu).toHaveBeenCalledExactlyOnceWith("escape");
+		expect(onModal).not.toHaveBeenCalled();
+	});
+
+	it("a hosted menu its owner already removed is not put back when the layer closes (#299)", () => {
+		const host = el("section");
+		const content = document.createElement("div");
+		content.setAttribute("role", "menu");
+		host.appendChild(content);
+		track(openLayer(modal(), { kind: "modal", onDismiss: () => {} }));
+		const handle = openLayer(content, { kind: "popover", onDismiss: () => {} });
+		expect(content.parentElement).not.toBe(host);
+
+		// Svelte destroys the owner's block first: it removes the node from wherever it sits...
+		content.remove();
+		// ...then the layer effect tears down. Putting the node back would leave a stray element.
+		handle.close();
+		expect(content.isConnected).toBe(false);
+		expect(host.querySelector("[role=menu]")).toBeNull();
+		expect(host.childNodes.length).toBe(0);
+	});
+
+	it("layerchange lists a hosted menu above the modal that hosts it (#299)", () => {
+		const seen: string[][] = [];
+		const stop = onLayerChange((d) => seen.push(d.layers.map((l) => l.kind)));
+		track(openLayer(menu(), { kind: "popover", anchor: el("button"), onDismiss: () => {} }));
+		track(openLayer(modal(), { kind: "modal", onDismiss: () => {} }));
+		stop();
+		expect(seen.at(-1)).toEqual(["modal", "popover"]);
+	});
+});
+
 describe("openLayer: stack", () => {
 	it("Escape dismisses nested layers top-first, one per press", () => {
 		const onBottom = vi.fn();

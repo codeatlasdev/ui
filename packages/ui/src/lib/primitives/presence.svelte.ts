@@ -17,6 +17,14 @@ export function createPresence(getOpen: () => boolean): Presence {
 	let node: HTMLElement | null = null;
 	let exiting = $state(false);
 	let token = 0;
+	// The `{#if present}` block re-reads `present` in the same flush that flips `open`, before the
+	// pre-effect below can raise `exiting`: without a bridge the node is destroyed with no exit.
+	// `armed` is that bridge: set while open, spent when the pre-effect takes the close over.
+	let armed = false;
+	// A derived, so an effect reading `present` re-runs when its value changes and not on every flip
+	// of `open`: a layer must not be torn down and reopened (a hosted menu is moved out of its dialog
+	// and back) just because its exit started.
+	const present = $derived(getOpen() || exiting || (armed && node !== null));
 
 	function runningAnimations(el: HTMLElement): Animation[] {
 		return el.getAnimations({ subtree: true }).filter((a) => a.playState === "running");
@@ -26,9 +34,11 @@ export function createPresence(getOpen: () => boolean): Presence {
 		const open = getOpen();
 		if (open) {
 			exiting = false;
+			armed = true;
 			token++;
 			return;
 		}
+		armed = false;
 		const el = node;
 		if (!el) return;
 		const mine = ++token;
@@ -51,7 +61,7 @@ export function createPresence(getOpen: () => boolean): Presence {
 
 	return {
 		get present() {
-			return getOpen() || exiting;
+			return present;
 		},
 		ref(el) {
 			node = el;

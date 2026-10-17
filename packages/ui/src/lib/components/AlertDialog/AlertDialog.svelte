@@ -100,7 +100,7 @@
     data-state={open ? 'open' : 'closed'}
     style="--dialog-max-w:400px"
     {@attach presence.ref}
-    {@attach modalLayer(() => ({ onDismiss, outside: false, initial: 'container' }))}
+    {@attach modalLayer(() => ({ onDismiss, outside: false, initial: 'container', closing: !open }))}
   >
     <div class="ca-dialog__header">
       <h2 id={ids.part('title')} class="ca-dialog__title">{title}</h2>

@@ -1,5 +1,8 @@
 import { flushSync } from "svelte";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
+import { page } from "vitest/browser";
+import { render } from "vitest-browser-svelte";
+import PresenceBlock from "./PresenceBlock.test.svelte";
 import { createPresence } from "./presence.svelte.js";
 
 const cleanups: Array<() => void> = [];
@@ -62,5 +65,27 @@ describe("createPresence", () => {
 		setOpen(true);
 		await new Promise((r) => setTimeout(r, 250));
 		expect(presence.present).toBe(true);
+	});
+});
+
+describe("createPresence in a template", () => {
+	it("keeps the node mounted through its exit when an {#if} reads `present`", async () => {
+		await render(PresenceBlock, {});
+		const node = document.getElementById("presence-node") as HTMLElement;
+		await page.getByRole("button", { name: "toggle" }).click();
+		// Not removed in the flush that flips `open`: the exit animation has to play.
+		expect(node.isConnected).toBe(true);
+		expect(node.dataset.state).toBe("closed");
+		await new Promise((r) => setTimeout(r, 150));
+		expect(node.isConnected).toBe(true);
+		await expect.poll(() => node.isConnected, { timeout: 2000 }).toBe(false);
+	});
+
+	it("`present` goes true to false once: an effect reading it never sees a blip when the exit starts", async () => {
+		const seen = vi.fn();
+		await render(PresenceBlock, { onPresent: seen });
+		await page.getByRole("button", { name: "toggle" }).click();
+		await expect.poll(() => document.getElementById("presence-node")).toBeNull();
+		expect(seen.mock.calls.map((c) => c[0])).toEqual([true, false]);
 	});
 });

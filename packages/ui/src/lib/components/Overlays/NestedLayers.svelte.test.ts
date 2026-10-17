@@ -4,6 +4,8 @@ import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
 import { onLayerChange } from "../../primitives/index.js";
+import ExitRace from "./ExitRace.test.svelte";
+import MenuThenDialog from "./MenuThenDialog.test.svelte";
 import Harness from "./NestedLayers.test.svelte";
 
 const stops: Array<() => void> = [];
@@ -99,5 +101,48 @@ describe("nested layers (menu inside a dialog)", () => {
 		await openMenuInDialog();
 		await settled();
 		expect(await checkA11y(document.body)).toHaveNoViolations();
+	});
+});
+
+describe("layer stack ownership of Escape", () => {
+	it("a confirm dialog in its exit animation does not swallow Escape: it closes the drawer below (#288)", async () => {
+		const onDrawerChange = vi.fn();
+		await render(ExitRace, { onDrawerChange });
+		await page.getByRole("button", { name: "Open drawer" }).click();
+		await expect.element(page.getByRole("dialog", { name: "Item A" })).toBeVisible();
+		await page.getByRole("button", { name: "Delete", exact: true }).click();
+		const confirm = page.getByRole("alertdialog");
+		await expect.element(confirm).toBeVisible();
+
+		await page.getByRole("button", { name: "Cancel" }).click();
+		// The exit is held open by the harness: the alert dialog is still mounted, but closed.
+		const alert = document.querySelector('dialog[role="alertdialog"]') as HTMLElement;
+		expect(alert.dataset.state).toBe("closed");
+		expect(alert.isConnected).toBe(true);
+
+		await userEvent.keyboard("{Escape}");
+		expect(onDrawerChange).toHaveBeenLastCalledWith(false);
+	});
+
+	it("a menu open before a dialog opens is closed by the first Escape, the dialog by the second (#299)", async () => {
+		const onOpenChange = vi.fn();
+		await render(MenuThenDialog, { onOpenChange });
+		await page.getByRole("button", { name: "Actions" }).click();
+		await expect.element(page.getByRole("menu")).toBeVisible();
+
+		await userEvent.keyboard("{Alt>}d{/Alt}");
+		const dialog = page.getByRole("dialog", { name: "Settings" });
+		await expect.element(dialog).toBeVisible();
+		const menu = document.querySelector('[role="menu"]') as HTMLElement;
+		expect((dialog.element() as HTMLElement).contains(menu)).toBe(true);
+
+		await userEvent.keyboard("{Escape}");
+		await expect.element(page.getByRole("menu")).not.toBeInTheDocument();
+		await expect.element(dialog).toBeVisible();
+		expect(onOpenChange).not.toHaveBeenCalled();
+
+		await userEvent.keyboard("{Escape}");
+		await expect.element(dialog).not.toBeInTheDocument();
+		expect(onOpenChange).toHaveBeenLastCalledWith(false);
 	});
 });

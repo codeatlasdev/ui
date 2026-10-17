@@ -139,6 +139,7 @@
     {@attach presence.ref}
     {@attach modalLayer(() => ({
       onDismiss: () => (open = false),
+      closing: !open,
       initial: false,
       // Focus the field synchronously inside onOpen: open → reset → focus is one
       // deterministic step with no rAF gap that keystrokes could race through (#97).

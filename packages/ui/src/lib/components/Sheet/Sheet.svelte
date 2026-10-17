@@ -120,7 +120,7 @@
 		data-state={open ? "open" : "closed"}
 		style={offset.current > 0 ? `translate: 0 ${offset.current}px` : undefined}
 		{@attach presence.ref}
-		{@attach modalLayer(() => ({ onDismiss: dismiss }))}
+		{@attach modalLayer(() => ({ onDismiss: dismiss, closing: !open }))}
 	>
 		<!-- Pointer-only gesture surface; keyboard users dismiss with Escape or the close button. -->
 		<div

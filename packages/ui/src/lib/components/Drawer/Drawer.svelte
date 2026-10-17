@@ -64,7 +64,7 @@
     data-state={open ? 'open' : 'closed'}
     style="--drawer-w:{width}"
     {@attach presence.ref}
-    {@attach modalLayer(() => ({ onDismiss: () => change(false) }))}
+    {@attach modalLayer(() => ({ onDismiss: () => change(false), closing: !open }))}
   >
     <div class="ca-drawer__header">
       {#if title}

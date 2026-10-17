@@ -110,7 +110,7 @@
     aria-labelledby={ids.part('title')}
     data-state={open ? 'open' : 'closed'}
     {@attach presence.ref}
-    {@attach modalLayer(() => ({ onDismiss: () => (open = false), initial: false, onOpen: () => focusTextField(input) }))}
+    {@attach modalLayer(() => ({ onDismiss: () => (open = false), initial: false, closing: !open, onOpen: () => focusTextField(input) }))}
   >
       <h2 id={ids.part('title')} class="ca-sr-only">{t().docs.search.label}</h2>
       <div class="ca-docs-search__bar">
