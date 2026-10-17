@@ -3,7 +3,6 @@ import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import Harness from "./LoadingBoundary.test.svelte";
 
-const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const release = (s: { component: unknown }) => (s.component as { release: () => void }).release();
 const busy = (c: Element) => c.querySelector<HTMLElement>("[aria-busy='true']");
 const skeleton = (c: Element) => c.querySelector(".ca-loading-boundary__pending .ca-skeleton");
@@ -33,32 +32,23 @@ describe("LoadingBoundary", () => {
 	});
 
 	it("keeps the placeholder at least `minDuration` once it showed", async () => {
-		// A busy suite stalls the event loop while mounting; the hold must not depend on it.
-		setTimeout(() => {
-			const t0 = performance.now();
-			while (performance.now() - t0 < 120);
-		}, 5);
-		const screen = await render(Harness, { props: { delay: 20, minDuration: 400 } });
-		// Time the placeholder itself, from the frame it is inserted to the one it is removed in:
-		// anything measured from before/after `render` drifts with how long mounting took (#307).
-		let shownAt = 0;
-		let goneAt = 0;
-		const watch = new MutationObserver(() => {
-			const now = skeleton(screen.container) !== null;
-			if (now && !shownAt) shownAt = performance.now();
-			if (!now && shownAt && !goneAt) goneAt = performance.now();
+		// A busy suite stalls the main thread between `delay` firing and the placeholder reaching the
+		// DOM (here: 120 ms inside its render). The hold must still last `minDuration` from there (#307).
+		// The placeholder stamps its own mount and unmount, so the hold is measured on the node the
+		// user saw, not from before/after `render` and not from an observer that lags the DOM.
+		const stamps: { mounted?: number; unmounted?: number } = {};
+		const screen = await render(Harness, {
+			props: { delay: 20, minDuration: 400, stamps, stall: 120 },
 		});
-		watch.observe(screen.container, { childList: true, subtree: true });
-		await expect.poll(() => skeleton(screen.container)).not.toBeNull();
+		await expect.poll(() => stamps.mounted).toBeDefined();
 		release(screen);
 		// Resolved already, but the boundary holds: no flash of content.
 		await expect.poll(() => busy(screen.container)?.getAttribute("data-state")).toBe("holding");
-		expect(skeleton(screen.container)).not.toBeNull();
+		expect(stamps.unmounted).toBeUndefined();
 		expect(content(screen.container)?.checkVisibility()).toBe(false);
-		await expect.poll(() => skeleton(screen.container), { timeout: 4000 }).toBeNull();
-		watch.disconnect();
-		expect(goneAt - shownAt).toBeGreaterThanOrEqual(400 - 5);
-		expect(content(screen.container)?.checkVisibility()).toBe(true);
+		await expect.poll(() => stamps.unmounted, { timeout: 4000 }).toBeDefined();
+		expect((stamps.unmounted ?? 0) - (stamps.mounted ?? 0)).toBeGreaterThanOrEqual(400);
+		await expect.poll(() => content(screen.container)?.checkVisibility()).toBe(true);
 	});
 
 	it("renders a custom `pending` snippet instead of the skeleton", async () => {

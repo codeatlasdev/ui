@@ -49,14 +49,21 @@
   let waiting = $state(false);
   let shown = $state(false);
   let hold = $state(false);
+  // When the placeholder reached the DOM. `minDuration` counts from here, not from the `shown`
+  // flip: Svelte flushes the insertion later, and a busy main thread stretches that gap (#307).
+  let shownAt = 0;
+
+  /** Attached to the placeholder wrapper: the moment the user can first see it. */
+  function visible(_node: HTMLElement) {
+    shownAt = performance.now();
+  }
 
   /** Mounted by the boundary only while it is pending: drives `shown` / `hold`. */
   function gate(_node: HTMLElement) {
     waiting = true;
-    let shownAt = 0;
+    shownAt = 0;
     const show = () => {
       shown = true;
-      shownAt = performance.now();
     };
     const timer = delay > 0 ? setTimeout(show, delay) : (show(), undefined);
     return () => {
@@ -64,6 +71,11 @@
       clearTimeout(timer);
       waiting = false;
       if (!shown) return;
+      // `shown` is set but not yet in the DOM (released within the same frame): nothing was seen.
+      if (!shownAt) {
+        shown = false;
+        return;
+      }
       const left = minDuration - (performance.now() - shownAt);
       if (left <= 0) {
         shown = false;
@@ -86,7 +98,7 @@
   data-state={waiting ? 'pending' : hold ? 'holding' : 'ready'}
 >
   {#if (waiting || hold) && shown}
-    <div class="ca-loading-boundary__pending">
+    <div class="ca-loading-boundary__pending" {@attach visible}>
       {#if placeholder}
         {@render placeholder()}
       {:else}
