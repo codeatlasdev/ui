@@ -23,6 +23,7 @@
 		"packages/ui/tests/setup.unit.ts",
 		"packages/ui/tests/stub-global.ts",
 		"packages/ui/tests/*.test.ts",
+		"packages/ui/tests/*.e2e.ts",
 		"site/tests/**/*.ts"
 	],
 	"exclude": ["**/node_modules", "**/dist", "**/build"]

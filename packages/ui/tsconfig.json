@@ -19,6 +19,6 @@
 		"paths": { "@codeatlasdev/ui": ["./src/lib/index.ts"] }
 	},
 	"include": ["src/**/*.ts", "src/**/*.svelte", "tests/**/*.ts"],
-	// Unit tests run on `bun test` and are type-checked by `bun --check` (root tsconfig.json).
-	"exclude": ["tests/*.test.ts", "tests/setup.unit.ts", "tests/stub-global.ts"]
+	// Unit tests and fixture tests (`*.e2e.ts`) run on `bun test` and are type-checked by `bun --check` (root tsconfig.json).
+	"exclude": ["tests/*.test.ts", "tests/*.e2e.ts", "tests/setup.unit.ts", "tests/stub-global.ts"]
 }
