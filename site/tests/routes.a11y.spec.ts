@@ -16,6 +16,14 @@ for (const route of ROUTES) {
 		// color-contrast 0.9 s…), and this test runs three. The default 30 s fits every other route but
 		// not this one under a full parallel run (#250).
 		if (route === "/gallery/") test.slow();
+		// /docs/inputs/date-picker/ documents Calendar and RangeCalendar with two live inline calendars
+		// (~370 of its 1,270 nodes, ~84 interactive day cells). Measured alone: one axe pass 1.15 s vs
+		// 0.68 s with those two islands excluded (the page then matches its peers), so they are ~40% of
+		// the axe work, three passes per test: 6.3 s alone vs 3.5 s for /docs/inputs/combobox/, and 27 s
+		// vs a 17 s peer median in a full parallel run, the closest docs route to the 30 s limit (#316).
+		// The calendars are the documented component and the markup is already minimal (td > div per
+		// day), so the route gets a longer budget like /gallery/.
+		if (route === "/docs/inputs/date-picker/") test.slow();
 
 		// A signed-in user is bounced off sign-in pages (mid-test navigation): check them signed out.
 		if (route.endsWith("/sign-in/"))
