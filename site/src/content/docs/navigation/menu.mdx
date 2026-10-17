@@ -75,6 +75,7 @@ A brand logo (a multi-color or fixed-color SVG) must not be recolored: set `bran
   { name: "brandIcon", type: "boolean", default: "false", description: "The icon is a brand mark with its own colors: no highlighted, disabled or destructive color reaches it. Pair with `SchemeAsset` for light and dark assets." },
   { name: "children", type: "Snippet", description: "Item label." },
   { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
+  { name: "...rest", type: "HTMLAttributes<HTMLDivElement>", description: "Forwarded to the `menuitem` element: `data-*`, `id`, `aria-*`, `title`. `role` and `tabindex` stay owned by the item." },
 ]} />
 
 <Props for="DropdownMenuLabel" title="DropdownMenuLabel" rows={[

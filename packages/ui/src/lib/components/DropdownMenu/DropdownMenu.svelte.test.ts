@@ -4,6 +4,7 @@ import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
 import Harness from "./DropdownMenu.test.svelte";
+import AttrsHarness from "./DropdownMenuAttrs.test.svelte";
 import IconHarness from "./DropdownMenuIcon.test.svelte";
 
 const openByKeyboard = async (props = {}, key = "{Enter}") => {
@@ -154,5 +155,19 @@ describe("DropdownMenuItem icon", () => {
 		expect(size("brand-light")).toEqual([slot.width, slot.width]);
 		expect(size("img-light")).toEqual([slot.width, slot.width]);
 		expect(size("sized-light")).toEqual([slot.width, slot.width]);
+	});
+});
+
+describe("DropdownMenuItem rest attributes", () => {
+	it("forwards data-*, id and aria-* onto the menuitem element", async () => {
+		const screen = await render(AttrsHarness, {});
+		await screen.getByRole("button", { name: "Actions" }).click();
+		const item = page.getByRole("menuitem", { name: "Sign out" });
+		await expect.element(item).toBeVisible();
+		await expect.element(item).toHaveAttribute("data-testid", "sign-out");
+		await expect.element(item).toHaveAttribute("id", "sign-out-item");
+		await expect.element(item).toHaveAttribute("aria-keyshortcuts", "Shift+Q");
+		await expect.element(item).toHaveAttribute("title", "Leave");
+		expect(document.getElementById("sign-out-item")?.getAttribute("role")).toBe("menuitem");
 	});
 });
