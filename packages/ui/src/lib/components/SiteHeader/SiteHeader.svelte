@@ -1,10 +1,12 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { appShell } from '../../i18n/groups/appShell.js';
+  import { breadcrumb } from '../../i18n/groups/breadcrumb.js';
   import type { Snippet } from 'svelte';
   import { getContext } from 'svelte';
   import { PanelLeft } from '@lucide/svelte';
   import type { SidebarState } from '../AppShell/types.js';
-  const t = useT();
+  const t = useMessages(appShell, breadcrumb);
 
   interface Props {
     trailing?: Snippet;

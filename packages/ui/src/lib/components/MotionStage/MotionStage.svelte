@@ -1,10 +1,11 @@
 <script lang="ts">
   import { onMount, type Snippet } from 'svelte';
   import Button from '../Button/Button.svelte';
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { motionStage } from '../../i18n/groups/motionStage.js';
   import { reducedMotion } from '../../stores/reduced-motion.svelte.js';
   import { createStage, type MotionCtx } from './stage.svelte.js';
-  const t = useT();
+  const t = useMessages(motionStage);
 
   /**
    * MotionStage: the frame of a motion demo. It autoplays only while at least half of it is in view

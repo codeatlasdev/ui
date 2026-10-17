@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { chip } from '../../i18n/groups/chip.js';
   import type { IconComponent as IconType } from '../../types.js';
   import { X } from '@lucide/svelte';
-  const t = useT();
+  const t = useMessages(chip);
 
   interface Props {
     label: string;

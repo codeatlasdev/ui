@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
-  const t = useT();
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { spinner } from '../../i18n/groups/spinner.js';
+  const t = useMessages(spinner);
   interface Props {
     size?: number | string;
     class?: string;

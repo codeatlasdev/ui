@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { calendar } from '../../i18n/groups/calendar.js';
   import type { DateValue } from '@internationalized/date';
   import { announce } from '../../utils/announce.js';
   import CalendarBody from './CalendarBody.svelte';
@@ -7,7 +8,7 @@
   import type { WeekStart } from './date-utils.js';
   import type { DateRange } from './types.js';
   import './date.css';
-  const t = useT();
+  const t = useMessages(calendar);
 
   interface Props {
     /** Selected range. Bindable. `start`/`end` are undefined until chosen. */

@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { useT } from '../i18n/state.svelte.js';
+  import { useMessages } from '../i18n/state.svelte.js';
+  import { forms } from '../i18n/groups/forms.js';
   import { untrack, type Snippet } from 'svelte';
   import MaskedField from './MaskedField.svelte';
   import { maskPhoneBR } from './masks.js';
-  const t = useT();
+  const t = useMessages(forms);
 
   interface Props {
     label?:        string;

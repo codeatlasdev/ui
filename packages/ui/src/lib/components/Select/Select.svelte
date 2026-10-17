@@ -1,10 +1,11 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { select } from '../../i18n/groups/select.js';
   import { uid } from '../../utils/index.js';
   import { createListbox } from '../../primitives/index.js';
   import FloatingLayer from '../Popover/FloatingLayer.svelte';
   import { ChevronDown, Check } from '@lucide/svelte';
-  const t = useT();
+  const t = useMessages(select);
 
   interface Option {
     value:     string;

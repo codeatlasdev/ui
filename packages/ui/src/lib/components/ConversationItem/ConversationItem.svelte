@@ -1,8 +1,9 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import { BellOff, Pin } from '@lucide/svelte';
-  import { useT } from '../../i18n/state.svelte.js';
-  const t = useT();
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { chat } from '../../i18n/groups/chat.js';
+  const t = useMessages(chat);
 
   /**
    * ConversationItem: one row of an inbox. Avatar, then title and time on the first line, preview

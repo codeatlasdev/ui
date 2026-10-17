@@ -9,8 +9,9 @@
   import { Pause, Play } from '@lucide/svelte';
   import IconButton from '../Button/IconButton.svelte';
   import Spinner from '../Spinner/Spinner.svelte';
-  import { useT } from '../../i18n/state.svelte.js';
-  const t = useT();
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { audioPlayer } from '../../i18n/groups/audioPlayer.js';
+  const t = useMessages(audioPlayer);
 
   /**
    * AudioPlayer: a voice-message player with a waveform scrubber (the native `<audio controls>` is

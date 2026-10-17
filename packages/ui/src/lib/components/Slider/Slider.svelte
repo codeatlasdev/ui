@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
-  const t = useT();
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { slider } from '../../i18n/groups/slider.js';
+  const t = useMessages(slider);
 
   /**
    * Slider — single or range value input.

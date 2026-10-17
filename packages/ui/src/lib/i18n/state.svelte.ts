@@ -13,10 +13,17 @@
 // English. Explicit component props always win over the catalog.
 
 import { getContext, hasContext, setContext } from "svelte";
-import { getMessages, type Locale, type Messages, type MessagesOverride } from "./catalog.js";
+import {
+	catalogVersion,
+	type Group,
+	type GroupMessages,
+	getGroup,
+	type Locale,
+	type MessagesOverride,
+} from "./catalog.js";
 
-export type { DeepPartial, Locale, Messages, MessagesOverride } from "./catalog.js";
-export { getLocales, getMessages, registerLocale } from "./catalog.js";
+export type { DeepPartial, Group, Locale, Messages, MessagesOverride } from "./catalog.js";
+export { defineGroup, getGroup, getLocales, registerLocale } from "./catalog.js";
 
 // ─── Client-global locale (SPA / islands) ────────────────────────────────────
 
@@ -58,7 +65,7 @@ const KEY = Symbol("ca-ui.i18n");
 
 interface I18nScope {
 	readonly locale: Locale;
-	readonly messages: Messages;
+	readonly messages: MessagesOverride | undefined;
 }
 
 /** Used by `I18nProvider`; `get` is a getter so prop changes stay reactive. */
@@ -68,8 +75,7 @@ export function provideI18n(get: () => { locale: Locale; messages?: MessagesOver
 			return get().locale;
 		},
 		get messages() {
-			const { locale: id, messages } = get();
-			return getMessages(id, messages);
+			return get().messages;
 		},
 	});
 }
@@ -80,11 +86,35 @@ export function useLocale(): () => Locale {
 	return () => (scope ? scope.locale : current);
 }
 
+/** Messages of the given groups, keyed by group id: `useMessages(button, spinner)` → `{ button, spinner }`. */
+export type MessagesOf<G extends readonly Group[]> = {
+	[K in G[number] as K["id"]]: GroupMessages<K>;
+};
+
 /**
- * Message accessor for the component being initialised. Call it at the top level of `<script>`
- * (it reads Svelte context), then use `t().group.key` anywhere, including `$derived` and markup.
+ * Message accessor for the component being initialised, limited to the groups it reads (so the
+ * bundle ships only those). Call it at the top level of `<script>` (it reads Svelte context), then
+ * use `t().group.key` anywhere, including `$derived` and markup.
+ *
+ *   const t = useMessages(button, spinner);
+ *   t().button.loaded
  */
-export function useT(): () => Messages {
+export function useMessages<const G extends readonly Group[]>(...groups: G): () => MessagesOf<G> {
 	const scope = hasContext(KEY) ? getContext<I18nScope>(KEY) : undefined;
-	return scope ? () => scope.messages : () => getMessages(current, overrides);
+	// One composite per (locale, overrides, registry version): `t()` is read many times per render
+	// and `$derived`s compare it by identity.
+	let key: [Locale, MessagesOverride | undefined, number] | undefined;
+	let cached: MessagesOf<G>;
+	return () => {
+		const id = scope ? scope.locale : current;
+		const over = scope ? scope.messages : overrides;
+		const v = catalogVersion();
+		if (!key || key[0] !== id || key[1] !== over || key[2] !== v) {
+			key = [id, over, v];
+			cached = Object.fromEntries(
+				groups.map((g) => [g.id, getGroup(g, id, over)])
+			) as MessagesOf<G>;
+		}
+		return cached;
+	};
 }

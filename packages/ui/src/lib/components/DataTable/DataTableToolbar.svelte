@@ -1,11 +1,12 @@
 <script lang="ts" generics="TData extends RowData">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { dataTable } from '../../i18n/groups/dataTable.js';
   import type { Snippet } from 'svelte';
   import { Search, Download, Loader } from '@lucide/svelte';
   import type { CaTable } from './table-hook.svelte.js';
   import type { RowData } from '@tanstack/svelte-table';
   import DataTableColumnToggle from './DataTableColumnToggle.svelte';
-  const t = useT();
+  const t = useMessages(dataTable);
 
   interface Props {
     table:                CaTable<TData>;

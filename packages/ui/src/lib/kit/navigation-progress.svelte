@@ -3,8 +3,9 @@
   // `$app/state`, so it lives in `/kit` (the rest of the package is router-agnostic).
   // It appears only after `delay` ms: a navigation that finishes first never flashes a bar.
   import { navigating } from '$app/state';
-  import { useT } from '../i18n/state.svelte.js';
-  const t = useT();
+  import { useMessages } from '../i18n/state.svelte.js';
+  import { spinner } from '../i18n/groups/spinner.js';
+  const t = useMessages(spinner);
 
   interface Props {
     /** Wait this long (ms) before showing the bar; faster navigations show nothing. */

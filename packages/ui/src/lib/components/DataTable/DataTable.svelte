@@ -1,5 +1,6 @@
 <script lang="ts" generics="TData extends RowData">
-  import { useLocale, useT } from '../../i18n/state.svelte.js';
+  import { dataTable } from '../../i18n/groups/dataTable.js';
+  import { useLocale, useMessages } from '../../i18n/state.svelte.js';
   import { tableMessages } from './table-messages.js';
   import type { Snippet } from 'svelte';
   import {
@@ -18,7 +19,7 @@
   import DataTableColumnResize from './DataTableColumnResize.svelte';
   import DataTableToolbar from './DataTableToolbar.svelte';
   import DataTablePagination from './DataTablePagination.svelte';
-  const t = useT();
+  const t = useMessages(dataTable);
   const locale = useLocale();
   const tm = $derived(tableMessages(locale()));
 

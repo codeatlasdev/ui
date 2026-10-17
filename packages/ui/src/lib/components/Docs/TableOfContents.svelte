@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { docs } from '../../i18n/groups/docs.js';
   import { ChevronDown } from '@lucide/svelte';
   import type { DocsHeading } from './types.js';
-  const t = useT();
+  const t = useMessages(docs);
 
   /**
    * TableOfContents: "On this page" index with scrollspy.

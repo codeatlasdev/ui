@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { appForm } from '../../i18n/groups/appForm.js';
   /**
    * AppForm: page-level form layout.
    *
@@ -33,7 +34,7 @@
   import Button from '../Button/Button.svelte';
   import { provideSectionHeadingLevel } from '../PageShell/heading-context.js';
   import { ArrowLeft } from '@lucide/svelte';
-  const t = useT();
+  const t = useMessages(appForm);
 
   interface Props {
     title?:       string;

@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { kpiCard } from '../../i18n/groups/kpiCard.js';
   import type { IconComponent } from '../../types.js';
   import Card from '../Card/Card.svelte';
-  const t = useT();
+  const t = useMessages(kpiCard);
 
   interface Props {
     title:   string;

@@ -2,9 +2,10 @@
   import type { Snippet } from 'svelte';
   import type { HTMLAnchorAttributes, HTMLButtonAttributes } from 'svelte/elements';
   import Spinner from '../Spinner/Spinner.svelte';
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { button } from '../../i18n/groups/button.js';
   import { announce } from '../../utils/announce.js';
-  const t = useT();
+  const t = useMessages(button);
 
   type Variant = 'filled' | 'glass' | 'outlined' | 'ghost' | 'destructive';
   type Size = 'sm' | 'md' | 'lg';

@@ -1,12 +1,13 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { drawer } from '../../i18n/groups/drawer.js';
   import type { Snippet } from 'svelte';
   import type { HTMLDialogAttributes } from 'svelte/elements';
   import { createIds, createPresence } from '../../primitives/index.js';
   import { modalLayer } from '../Dialog/modal-layer.js';
   import { X } from '@lucide/svelte';
   import '../Dialog/dialog.css';
-  const t = useT();
+  const t = useMessages(drawer);
 
   /**
    * Drawer: side panel, second layer.

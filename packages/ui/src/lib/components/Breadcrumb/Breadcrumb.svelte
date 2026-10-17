@@ -1,6 +1,7 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
-  const t = useT();
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { breadcrumb } from '../../i18n/groups/breadcrumb.js';
+  const t = useMessages(breadcrumb);
 	export interface BreadcrumbItem {
 		label: string;
 		href?: string;

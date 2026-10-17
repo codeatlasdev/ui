@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { pagination } from '../../i18n/groups/pagination.js';
   import { ChevronLeft, ChevronRight } from '@lucide/svelte';
-  const t = useT();
+  const t = useMessages(pagination);
 
   interface Props {
     count: number;

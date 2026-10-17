@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { toast } from '../../i18n/groups/toast.js';
   import type { ToastItem as ToastItemType } from '../../stores/toast.svelte.js';
   import { X, CheckCircle, XCircle, AlertTriangle, Info } from '@lucide/svelte';
-  const t = useT();
+  const t = useMessages(toast);
 
   interface Props {
     item: ToastItemType;

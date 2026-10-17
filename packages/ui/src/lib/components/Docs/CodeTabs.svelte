@@ -24,14 +24,15 @@
 </script>
 
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { docs } from '../../i18n/groups/docs.js';
   import type { Snippet } from 'svelte';
   import { onMount } from 'svelte';
   import { Check, Copy } from '@lucide/svelte';
   import { copyToClipboard } from '../../utils/clipboard.js';
   import { codeTabsPrefs } from './code-tabs-state.svelte.js';
   import CodeTab from './CodeTab.svelte';
-  const t = useT();
+  const t = useMessages(docs);
 
   /**
    * CodeTabs: language tabs around highlighted code, with copy.

@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { copyButton } from '../../i18n/groups/copyButton.js';
   import { Copy, Check } from '@lucide/svelte';
   import { onDestroy } from 'svelte';
   import Button from '../Button/Button.svelte';
@@ -8,7 +9,7 @@
   import { toast } from '../../stores/toast.svelte.js';
   import { announce } from '../../utils/announce.js';
   import type { HTMLAttributes } from 'svelte/elements';
-  const t = useT();
+  const t = useMessages(copyButton);
 
   interface Props extends Omit<HTMLAttributes<HTMLElement>, 'class' | 'children' | 'onclick' | 'oncopy' | 'aria-label'> {
     value: string;

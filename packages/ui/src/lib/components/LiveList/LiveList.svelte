@@ -2,11 +2,12 @@
   import type { Snippet } from 'svelte';
   import { onDestroy, untrack } from 'svelte';
   import { ArrowDown } from '@lucide/svelte';
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { liveList } from '../../i18n/groups/liveList.js';
   import { announce } from '../../utils/announce.js';
   import Progress from '../Progress/Progress.svelte';
   import { scrollFocusable } from '../../actions/scroll-focusable.js';
-  const t = useT();
+  const t = useMessages(liveList);
 
   type Status = 'idle' | 'running' | 'done' | 'error';
 

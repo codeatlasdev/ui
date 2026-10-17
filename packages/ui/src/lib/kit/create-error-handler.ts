@@ -15,7 +15,8 @@
 //     report: (error, event) => console.error(error, event.url.pathname),
 //   });
 
-import { getMessages, type Locale } from "../i18n/state.svelte.js";
+import { getGroup, type Locale } from "../i18n/catalog.js";
+import { kit } from "../i18n/groups/kit.js";
 
 export interface CaError {
 	message: string;
@@ -66,7 +67,7 @@ export function createErrorHandler(options: CreateErrorHandlerOptions = {}) {
 	}): CaError {
 		const fallback =
 			defaultMessage ??
-			getMessages((typeof locale === "function" ? locale(event) : locale) ?? "en").kit.defaultError;
+			getGroup(kit, (typeof locale === "function" ? locale(event) : locale) ?? "en").defaultError;
 
 		const message =
 			error instanceof Error ? error.message : typeof error === "string" ? error : fallback;

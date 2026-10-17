@@ -1,9 +1,10 @@
 <script lang="ts" generics="T">
   import type { Snippet } from 'svelte';
   import { onDestroy, tick, untrack } from 'svelte';
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { virtualList } from '../../i18n/groups/virtualList.js';
   import { announce } from '../../utils/announce.js';
-  const t = useT();
+  const t = useMessages(virtualList);
 
   /**
    * VirtualList: a windowed list for long histories, with infinite "load older" at the TOP.

@@ -27,10 +27,11 @@
 
 <script lang="ts">
   import { FileText, ImageOff, Play } from '@lucide/svelte';
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { mediaGrid } from '../../i18n/groups/mediaGrid.js';
   import Lightbox, { type LightboxItem } from '../Lightbox/Lightbox.svelte';
   import Skeleton from '../Skeleton/Skeleton.svelte';
-  const t = useT();
+  const t = useMessages(mediaGrid);
 
   /**
    * MediaGrid: the media tiles of a chat message (images, videos, documents).

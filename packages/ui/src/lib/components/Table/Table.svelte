@@ -1,8 +1,9 @@
 <script lang="ts">
   import { scrollFocusable } from '../../actions/scroll-focusable.js';
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { table } from '../../i18n/groups/table.js';
   import type { Snippet } from 'svelte';
-  const t = useT();
+  const t = useMessages(table);
   interface Props {
     children?:   Snippet;
     class?:      string;

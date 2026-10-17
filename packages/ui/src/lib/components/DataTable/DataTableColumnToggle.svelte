@@ -1,5 +1,6 @@
 <script lang="ts" generics="TData extends RowData">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { dataTable } from '../../i18n/groups/dataTable.js';
   import { createListbox } from '../../primitives/index.js';
   import { uid } from '../../utils/index.js';
   import FloatingLayer from '../Popover/FloatingLayer.svelte';
@@ -7,7 +8,7 @@
   import { SlidersHorizontal, Check } from '@lucide/svelte';
   import type { CaTable } from './table-hook.svelte.js';
   import type { RowData } from '@tanstack/svelte-table';
-  const t = useT();
+  const t = useMessages(dataTable);
 
   interface Props {
     table: CaTable<TData>;

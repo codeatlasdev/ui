@@ -1,8 +1,9 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import { Check, CheckCheck, Clock } from '@lucide/svelte';
-  import { useT } from '../../i18n/state.svelte.js';
-  const t = useT();
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { chat } from '../../i18n/groups/chat.js';
+  const t = useMessages(chat);
 
   type Direction = 'in' | 'out';
   type Grouped = 'single' | 'first' | 'middle' | 'last';

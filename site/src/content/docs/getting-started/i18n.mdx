@@ -116,7 +116,7 @@ Inside an `I18nProvider`, read the active locale and messages from context with 
 
 ## Catalog
 
-The catalog is grouped by component, for example `docs.search.placeholder`, `dialog.close`, `pagination.next`, `fileUpload`, `dataTable` and `toast`. English (`en.ts`) is the source of truth; `pt-BR.ts` is typed as `Messages`, so a missing key is a type error. A test checks that both locales have identical keys.
+The catalog is grouped by component, for example `docs.search.placeholder`, `dialog.close`, `pagination.next`, `fileUpload`, `dataTable` and `toast`. Each group is its own module with its English source and its `pt-BR` translation (a missing key is a type error, and a test checks that both locales have identical keys). A component bundles only its own groups, so importing `Button` does not ship the strings of `CommandPalette` or `AppShell`. `useT()` and `getMessages()` return the full catalog and bundle all of it; use them only when you need strings outside a component.
 
 ## Server errors
 

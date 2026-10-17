@@ -1,7 +1,8 @@
 <script lang="ts">
   import { untrack } from 'svelte';
   import { focusTextField } from '../../actions/autofocus.js';
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { commandPalette } from '../../i18n/groups/commandPalette.js';
   import { createPresence } from '../../primitives/index.js';
   import { modalLayer } from '../Dialog/modal-layer.js';
   import '../Dialog/dialog.css';
@@ -9,7 +10,7 @@
   import type { NavModule, NavItem } from '../AppShell/types.js';
   import { isNavSection } from '../AppShell/types.js';
   import { announce } from '../../utils/announce.js';
-  const t = useT();
+  const t = useMessages(commandPalette);
 
   /** A result returned by the `search` callback (server-side / async results). */
   export interface CommandResult {

@@ -1,12 +1,13 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { notificationBell } from '../../i18n/groups/notificationBell.js';
   import { Bell } from '@lucide/svelte';
   import { uid } from '../../utils/index.js';
   import FloatingLayer from '../Popover/FloatingLayer.svelte';
   import { createTriggerProps, tabIntoPopup } from '../Popover/trigger.js';
   import Badge from '../Badge/Badge.svelte';
   import type { Snippet } from 'svelte';
-  const t = useT();
+  const t = useMessages(notificationBell);
 
   export interface NotificationItem {
     id: string;

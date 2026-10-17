@@ -1,9 +1,10 @@
 <script lang="ts">
   import { getContext } from 'svelte';
   import { GripVertical } from '@lucide/svelte';
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { appShell } from '../../i18n/groups/appShell.js';
   import type { NavExtras, NavItem } from './types.js';
-  const t = useT();
+  const t = useMessages(appShell);
   const extras = getContext<NavExtras | undefined>('appshell-nav-extras');
 
   interface Props {

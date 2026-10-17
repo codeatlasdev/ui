@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { sheet } from '../../i18n/groups/sheet.js';
 	import { X } from "@lucide/svelte";
 	import { createIds, createPresence } from "../../primitives/index.js";
 	import { modalLayer } from "../Dialog/modal-layer.js";
@@ -7,7 +8,7 @@
 	import { Spring } from "svelte/motion";
 	import { reducedMotion } from "../../stores/reduced-motion.svelte";
 	import "../Dialog/dialog.css";
-  const t = useT();
+  const t = useMessages(sheet);
 
 	/**
 	 * Sheet: mobile-first bottom sheet.

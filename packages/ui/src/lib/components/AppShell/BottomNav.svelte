@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { appShell } from '../../i18n/groups/appShell.js';
   import type { NavModule } from './types.js';
-  const t = useT();
+  const t = useMessages(appShell);
 
   interface Props {
     modules: NavModule[];

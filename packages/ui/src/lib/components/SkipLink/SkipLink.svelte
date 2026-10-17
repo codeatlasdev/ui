@@ -1,7 +1,8 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { useT } from '../../i18n/state.svelte.js';
-  const t = useT();
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { skipLink } from '../../i18n/groups/skipLink.js';
+  const t = useMessages(skipLink);
 
   interface Props {
     /** Fragment id of the main landmark to jump to. Must match the `id` of the `<main>`. */

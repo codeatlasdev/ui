@@ -7,28 +7,16 @@
 // with the Svelte runtime and @floating-ui included (that is what ships). The metric is gzip bytes.
 // The ratchet only moves down: --update never raises a limit, raise one by hand in a PR that explains why.
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
-import { dirname, join } from "node:path";
-import { gzipSync } from "node:zlib";
-import { build, type Plugin } from "esbuild";
-import { compile, compileModule } from "svelte/compiler";
+import { join } from "node:path";
+import { dist, type Entry, measure } from "./size-lib.js";
 
 const root = join(import.meta.dir, "..");
-const dist = join(root, "dist");
 const limitsFile = join(root, "size-limit.json");
 const HEADROOM = 1.05;
 
-interface Entry {
-	name: string;
-	/** JS entry contents (resolved from dist) or a CSS file path under dist. */
-	js?: string;
-	css?: string;
-	/** Skipped when this path under dist does not exist (an entry that has not landed yet). */
-	requires?: string;
-}
-
 // Divider has no package dependencies, so "Divider only" is the Svelte client runtime plus ~250 B
 // of ours: the floor any Svelte component costs. "Button only" minus that floor is what the
-// package adds (Spinner, the i18n catalogs, clsx).
+// package adds (Spinner, its own i18n groups, clsx).
 const ENTRIES: Entry[] = [
 	{
 		name: "floor: Divider only",
@@ -40,57 +28,6 @@ const ENTRIES: Entry[] = [
 	{ name: "styles/core.css", css: "styles/core.css" },
 	{ name: "styles/global.css", css: "styles/global.css" },
 ];
-
-/** Compiles .svelte and .svelte.js/.ts files from dist the way vite-plugin-svelte would. */
-const sveltePlugin: Plugin = {
-	name: "svelte",
-	setup(b) {
-		b.onLoad({ filter: /\.svelte$/ }, ({ path }) => {
-			const r = compile(readFileSync(path, "utf8"), {
-				filename: path,
-				generate: "client",
-				css: "external",
-			});
-			return { contents: r.js.code, loader: "js", resolveDir: dirname(path) };
-		});
-		b.onLoad({ filter: /\.svelte\.(js|ts)$/ }, ({ path }) => {
-			const r = compileModule(readFileSync(path, "utf8"), { filename: path, generate: "client" });
-			return { contents: r.js.code, loader: "js", resolveDir: dirname(path) };
-		});
-	},
-};
-
-/** Gzip size, plus the package modules that ended up in the bundle (for the tree-shaking guard). */
-async function measure(e: Entry): Promise<{ gzip: number; modules: string[] }> {
-	const res = await build({
-		metafile: true,
-		stdin: e.css
-			? { contents: `@import "./${e.css}";`, resolveDir: dist, loader: "css" }
-			: { contents: e.js ?? "", resolveDir: dist, loader: "js" },
-		bundle: true,
-		minify: true,
-		format: "esm",
-		write: false,
-		outdir: "out",
-		treeShaking: true,
-		conditions: ["svelte", "browser", "import", "default"],
-		mainFields: ["svelte", "browser", "module", "main"],
-		plugins: [sveltePlugin],
-		logLevel: "error",
-		// Remote/relative assets (fonts) are not part of the byte budget.
-		external: e.css ? ["*.woff2"] : [],
-		// esm-env picks its production build from the "development" condition being absent.
-	});
-	// A CSS bundle yields one .css file; JS bundles yield one .js (esbuild extracts no css for stdin js).
-	const out = res.outputFiles.find((f) => f.path.endsWith(e.css ? ".css" : ".js"));
-	if (!out) throw new Error(`no output for ${e.name}`);
-	const meta =
-		res.metafile.outputs[
-			Object.keys(res.metafile.outputs).find((k) => k.endsWith(e.css ? ".css" : ".js")) ?? ""
-		];
-	const modules = Object.keys(meta?.inputs ?? {}).filter((k) => k.startsWith("dist/"));
-	return { gzip: gzipSync(out.contents, { level: 9 }).length, modules };
-}
 
 /** Importing `Button` must not drag in other components, stores or the theme engine. */
 // announce: Button announces when `loading` ends (screen readers).

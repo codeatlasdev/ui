@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { errorPage } from '../../i18n/groups/errorPage.js';
   import Button from '../Button/Button.svelte';
   import { Home, RefreshCw, AlertTriangle, Search, ServerCrash } from '@lucide/svelte';
-  const t = useT();
+  const t = useMessages(errorPage);
 
   interface Props {
     status?: number;

@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { calendar } from '../../i18n/groups/calendar.js';
   import { CalendarRange } from '@lucide/svelte';
   import type { DateValue } from '@internationalized/date';
   import { announce } from '../../utils/announce.js';
@@ -12,7 +13,7 @@
   import PickerPopover from './PickerPopover.svelte';
   import type { DateRange } from './types.js';
   import './date.css';
-  const t = useT();
+  const t = useMessages(calendar);
 
   interface Props {
     label?:        string;

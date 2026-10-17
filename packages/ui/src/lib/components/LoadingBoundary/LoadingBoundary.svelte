@@ -1,8 +1,9 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { spinner } from '../../i18n/groups/spinner.js';
   import Skeleton from '../Skeleton/Skeleton.svelte';
-  const t = useT();
+  const t = useMessages(spinner);
 
   /**
    * LoadingBoundary: `<svelte:boundary>` with a loading UI that never flashes.

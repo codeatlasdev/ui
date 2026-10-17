@@ -17,10 +17,11 @@
 
 <script lang="ts">
 	import { ChevronLeft, ChevronRight, Download, X } from "@lucide/svelte";
-	import { useT } from "../../i18n/state.svelte.js";
+	import { useMessages } from '../../i18n/state.svelte.js';
+	import { lightbox } from '../../i18n/groups/lightbox.js';
 	import { createIds, createPresence } from "../../primitives/index.js";
 	import { modalLayer } from "../Dialog/modal-layer.js";
-	const t = useT();
+	const t = useMessages(lightbox);
 
 	/**
 	 * Lightbox: full-screen media viewer for one image or a gallery of images and videos.

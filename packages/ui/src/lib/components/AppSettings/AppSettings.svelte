@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { appSettings } from '../../i18n/groups/appSettings.js';
   /**
    * AppSettings: settings/preferences page layout.
    *
@@ -45,7 +46,7 @@
   import type { IconComponent } from '../../types.js';
   import type { Snippet } from 'svelte';
   import { provideSectionHeadingLevel } from '../PageShell/heading-context.js';
-  const t = useT();
+  const t = useMessages(appSettings);
   // The page <h1> is rendered above; titles inside the page default to <h2>.
   provideSectionHeadingLevel();
 

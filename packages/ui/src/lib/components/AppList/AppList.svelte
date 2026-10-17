@@ -1,5 +1,6 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { appList } from '../../i18n/groups/appList.js';
   /**
    * AppList: fullscreen CRUD/list layout.
    *
@@ -42,7 +43,7 @@
   import TextField from '../TextField/TextField.svelte';
   import Pagination from '../Pagination/Pagination.svelte';
   import { Search } from '@lucide/svelte';
-  const t = useT();
+  const t = useMessages(appList);
 
   type ListCtx<T> = UseListStateReturn<T>;
 

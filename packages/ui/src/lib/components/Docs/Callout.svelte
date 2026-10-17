@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { docs } from '../../i18n/groups/docs.js';
   import type { Snippet } from 'svelte';
   import Alert from '../Alert/Alert.svelte';
-  const t = useT();
+  const t = useMessages(docs);
 
   /**
    * Callout: aside block for docs prose. Thin vocabulary layer over `Alert`:

@@ -1,11 +1,12 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { dataTable } from '../../i18n/groups/dataTable.js';
   import { uid } from '../../utils/index.js';
   import FloatingLayer from '../Popover/FloatingLayer.svelte';
   import { createTriggerProps, tabIntoPopup } from '../Popover/trigger.js';
   import { PlusCircle, Check } from '@lucide/svelte';
   import Badge from '../Badge/Badge.svelte';
-  const t = useT();
+  const t = useMessages(dataTable);
 
   interface Props {
     title:             string;

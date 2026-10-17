@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { badge } from '../../i18n/groups/badge.js';
   import type { Snippet } from 'svelte';
-  const t = useT();
+  const t = useMessages(badge);
 
   interface Props {
     count?: number;

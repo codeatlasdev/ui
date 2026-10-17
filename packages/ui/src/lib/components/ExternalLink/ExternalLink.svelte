@@ -2,8 +2,9 @@
   import type { Snippet } from 'svelte';
   import type { HTMLAnchorAttributes } from 'svelte/elements';
   import { ExternalLink as ExternalIcon } from '@lucide/svelte';
-  import { useT } from '../../i18n/state.svelte.js';
-  const t = useT();
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { externalLink } from '../../i18n/groups/externalLink.js';
+  const t = useMessages(externalLink);
 
   /**
    * ExternalLink: a link that leaves the app, opened in a new tab.

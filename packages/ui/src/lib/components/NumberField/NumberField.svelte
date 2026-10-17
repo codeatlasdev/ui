@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { numberField } from '../../i18n/groups/numberField.js';
   import { Minus, Plus } from '@lucide/svelte';
   import { uid } from '../../utils/index.js';
-  const t = useT();
+  const t = useMessages(numberField);
 
   interface Props {
     value?:       number;

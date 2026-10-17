@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { toast as toastMessages } from '../../i18n/groups/toast.js';
   import { toast } from '../../stores/toast.svelte.js';
   import ToastItem from './ToastItem.svelte';
-  const t = useT();
+  const t = useMessages(toastMessages);
 </script>
 
 <div class="ca-toaster" role="region" aria-live="polite" aria-label={t().toast.region}>

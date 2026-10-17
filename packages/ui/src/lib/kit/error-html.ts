@@ -1,7 +1,8 @@
 // Static `src/error.html` for SvelteKit, generated from the app's theme and locale.
 // Plain TypeScript (no runes, no `.svelte`): `caErrorPlugin` runs it in Node from vite.config.
 
-import { getMessages, type Locale } from "../i18n/catalog.js";
+import { getGroup, type Locale } from "../i18n/catalog.js";
+import { errorPage } from "../i18n/groups/errorPage.js";
 import { defaultPresetTokens, defineTheme } from "../theme/define.js";
 import { type ThemeOptions, themeHead } from "../theme-script.js";
 import { cssBlock } from "../utils/palette-generator.js";
@@ -113,7 +114,7 @@ export function errorHtml(options: ErrorHtmlOptions = {}): string {
 	const { theme = {}, locale = "en" } = options;
 	const t = defineTheme(theme);
 	const tokens = defaultPresetTokens(t);
-	const m = getMessages(locale).errorPage;
+	const m = getGroup(errorPage, locale);
 	const vars = `${cssBlock(":root", pick(tokens.light))}\n${cssBlock("html.dark", pick(tokens.dark))}`;
 	// themeHead carries brand-preset CSS + the init script; the page's own <style> follows it.
 	const head = themeHead(theme);

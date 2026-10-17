@@ -1,7 +1,8 @@
 <script lang="ts">
   import { untrack } from 'svelte';
   import { focusTextField } from '../../actions/autofocus.js';
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { docs } from '../../i18n/groups/docs.js';
   import { createIds, createPresence } from '../../primitives/index.js';
   import { modalLayer } from '../Dialog/modal-layer.js';
   import { CornerDownLeft, FileText, Hash, Search } from '@lucide/svelte';
@@ -9,7 +10,7 @@
   import '../Dialog/dialog.css';
   import { searchDocs, type DocsSearchResult } from './search.js';
   import type { DocsSearchEntry } from './types.js';
-  const t = useT();
+  const t = useMessages(docs);
 
   /**
    * DocsSearch: full-text search dialog for docs.

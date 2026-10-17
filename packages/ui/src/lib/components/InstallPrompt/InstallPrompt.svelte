@@ -1,7 +1,8 @@
 <script lang="ts">
   import { Download, Share, SquarePlus, X } from '@lucide/svelte';
   import { onMount } from 'svelte';
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { installPrompt } from '../../i18n/groups/installPrompt.js';
   import { storageGet, storageSet } from '../../utils/local-storage.js';
   import Button from '../Button/Button.svelte';
 
@@ -39,7 +40,7 @@
     class: className = '',
   }: Props = $props();
 
-  const t = useT();
+  const t = useMessages(installPrompt);
 
   let deferred = $state<BeforeInstallPromptEvent | null>(null);
   let ios = $state(false);

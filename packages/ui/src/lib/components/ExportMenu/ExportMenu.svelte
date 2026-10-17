@@ -1,12 +1,13 @@
 <script lang="ts" generics="T extends object">
   import { Download } from '@lucide/svelte';
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { exportMenu } from '../../i18n/groups/exportMenu.js';
   import { announce } from '../../utils/announce.js';
   import { downloadFile, toCsv, toJson, type ExportColumn } from '../../utils/export.js';
   import Button from '../Button/Button.svelte';
   import DropdownMenu from '../DropdownMenu/DropdownMenu.svelte';
   import DropdownMenuItem from '../DropdownMenu/DropdownMenuItem.svelte';
-  const t = useT();
+  const t = useMessages(exportMenu);
 
   type Format = 'csv' | 'json';
   interface ExportEvent {

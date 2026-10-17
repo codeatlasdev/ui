@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { codeSnippet } from '../../i18n/groups/codeSnippet.js';
   import { Copy, Check } from '@lucide/svelte';
   import { copyToClipboard } from '../../utils/index.js';
   import { getHighlighter } from '../../utils/highlighter.js';
-  const t = useT();
+  const t = useMessages(codeSnippet);
 
   interface Props {
     code: string;

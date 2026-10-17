@@ -1,6 +1,7 @@
 <script lang="ts">
   import { primeKeyboard } from '../../actions/autofocus.js';
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { docs } from '../../i18n/groups/docs.js';
   import type { Snippet } from 'svelte';
   import { onMount } from 'svelte';
   import { ChevronLeft, ChevronRight, Menu, Search } from '@lucide/svelte';
@@ -13,7 +14,7 @@
   import TableOfContents from './TableOfContents.svelte';
   import { restoreSidebar, saveSidebar, sidebarScript } from './sidebar-scroll.js';
   import type { DocsHeading, DocsNavGroup, DocsPagerLink, DocsSearchEntry, DocsSection } from './types.js';
-  const t = useT();
+  const t = useMessages(docs);
 
   /**
    * DocsShell: page frame for developer docs.

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "bun:test";
-import { getLocales, getMessages, registerLocale } from "../src/lib/i18n/catalog.js";
+import { getMessages } from "../src/lib/i18n/all.js";
+import { getLocales, registerLocale } from "../src/lib/i18n/catalog.js";
 
 describe("registerLocale", () => {
 	it("registers 'es' with partial messages and falls back to en for the rest", () => {

@@ -1,7 +1,8 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { stepper } from '../../i18n/groups/stepper.js';
   import { Check } from '@lucide/svelte';
-  const t = useT();
+  const t = useMessages(stepper);
 
   export interface StepItem {
     label: string;

@@ -1,12 +1,13 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { mobilePane } from '../../i18n/groups/mobilePane.js';
   import type { Snippet } from 'svelte';
   import { ArrowLeft } from '@lucide/svelte';
   import { tick } from 'svelte';
   import { keyboardAware } from '../../actions/keyboard-aware.js';
   import IconButton from '../Button/IconButton.svelte';
   import MobileHeader from '../AppShell/MobileHeader.svelte';
-  const t = useT();
+  const t = useMessages(mobilePane);
 
   /**
    * MobilePane: a full-screen layer above the shell for mobile drill-down

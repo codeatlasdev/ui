@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { themeToggle } from '../../i18n/groups/themeToggle.js';
   import { Moon, Sun } from '@lucide/svelte';
   import { colorScheme } from '../../stores/color-scheme.svelte.js';
-  const t = useT();
+  const t = useMessages(themeToggle);
 
   interface Props {
     /** Accessible name and tooltip. */

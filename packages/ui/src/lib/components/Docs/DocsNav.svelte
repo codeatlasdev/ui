@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { docs } from '../../i18n/groups/docs.js';
   import MethodBadge from './MethodBadge.svelte';
   import type { DocsNavGroup } from './types.js';
-  const t = useT();
+  const t = useMessages(docs);
 
   /**
    * DocsNav: sidebar tree: labelled groups of page links, current page marked with

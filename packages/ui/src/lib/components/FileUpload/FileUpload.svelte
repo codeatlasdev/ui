@@ -1,9 +1,10 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { fileUpload } from '../../i18n/groups/fileUpload.js';
   import { Upload, X, File as FileIcon, Image as ImageIcon } from '@lucide/svelte';
   import type { Snippet } from 'svelte';
   import type { HTMLInputAttributes } from 'svelte/elements';
-  const t = useT();
+  const t = useMessages(fileUpload);
 
   interface Props
     extends Omit<HTMLInputAttributes, 'type' | 'value' | 'files' | 'class' | 'children' | 'onchange' | 'list'> {

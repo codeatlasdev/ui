@@ -1,13 +1,14 @@
 <script lang="ts">
   import { getContext } from 'svelte';
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { appShell } from '../../i18n/groups/appShell.js';
   import type { NavItem, NavModule, NavSection } from './types.js';
   import { isNavSection } from './types.js';
   import NavList from './NavList.svelte';
   import SectionGroup from './SectionGroup.svelte';
   import PanelResizeHandle from './PanelResizeHandle.svelte';
   import { readShellScroll, saveShellScroll } from './shell-state.js';
-  const t = useT();
+  const t = useMessages(appShell);
 
   interface Props {
     modules:           NavModule[];

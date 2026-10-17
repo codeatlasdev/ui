@@ -1,8 +1,9 @@
 <script lang="ts">
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { alert } from '../../i18n/groups/alert.js';
   import type { Snippet } from 'svelte';
   import { CheckCircle2, AlertTriangle, XCircle, Info, X } from '@lucide/svelte';
-  const t = useT();
+  const t = useMessages(alert);
 
   interface Props {
     severity: 'success' | 'warning' | 'error' | 'info';

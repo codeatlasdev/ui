@@ -1,11 +1,13 @@
 <script lang="ts">
   import { focusTextField, primeKeyboard } from '../../actions/autofocus.js';
-  import { useT } from '../../i18n/state.svelte.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { chip } from '../../i18n/groups/chip.js';
+  import { combobox } from '../../i18n/groups/combobox.js';
   import { uid } from '../../utils/index.js';
   import { createListbox } from '../../primitives/index.js';
   import FloatingLayer from '../Popover/FloatingLayer.svelte';
   import { ChevronDown, Check, X } from '@lucide/svelte';
-  const t = useT();
+  const t = useMessages(chip, combobox);
 
   export interface ComboboxOption {
     value: string;

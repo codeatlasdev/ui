@@ -1,7 +1,8 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
-  import { useT } from '../../i18n/state.svelte.js';
-  const t = useT();
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { avatar } from '../../i18n/groups/avatar.js';
+  const t = useMessages(avatar);
 
   /**
    * Avatar: user identity display component.
