@@ -12,6 +12,9 @@
 
   const tabs = getTabsContext();
   const active = $derived(tabs.value === value);
+
+  // Tell the trigger this panel exists, so it only points aria-controls at real panels.
+  $effect(() => tabs.registerPanel(value));
 </script>
 
 <div

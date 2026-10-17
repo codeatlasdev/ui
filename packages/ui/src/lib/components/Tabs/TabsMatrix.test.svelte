@@ -27,6 +27,16 @@
 		<TabsContent value="a">Overview panel</TabsContent>
 		<TabsContent value="b">Advanced panel</TabsContent>
 	</Tabs>
+	<Tabs value="b" variant="line">
+		<TabsList aria-label="Line">
+			<TabsTrigger value="a">Overview</TabsTrigger>
+			<TabsTrigger value="b">Activity</TabsTrigger>
+			<TabsTrigger value="c" disabled>Billing</TabsTrigger>
+		</TabsList>
+		<TabsContent value="a">Overview panel</TabsContent>
+		<TabsContent value="b">Activity panel</TabsContent>
+		<TabsContent value="c">Billing panel</TabsContent>
+	</Tabs>
 	<Tabs value="a">
 		<TabsList>
 			<TabsTrigger value="a">

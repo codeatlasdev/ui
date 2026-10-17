@@ -411,6 +411,7 @@ These attributes are part of the public contract too (an app can restyle one axi
 | `data-material` | `auto` `solid` `frosted` `glass` `liquid` | `.ca-surface` |
 | `data-tone` | `neutral` `brand` `success` `warning` `error` `info` | `.ca-surface` |
 | `data-variant` | `filled` `outlined` `ghost` | `.ca-surface` |
+| `data-variant` | `pill` `line` | `.ca-tabs`, `.ca-tabs-list`, `.ca-tabs-trigger` (the `variant` prop of `Tabs`) |
 | `data-radius` | `none` `sm` `md` `lg` `xl` `pill` | `.ca-surface` |
 | `data-interactive`, `data-glow` | present or absent | `.ca-surface` |
 | `data-ca-blur` | `ultra-thin` `thin` `regular` `thick` `chrome` `mat-thin` `mat-regular` `overlay` `chrome-layer` `tooltip` | any blurred element that is not a `.ca-surface` (Tabs list, Chip, Toast, Rail, Panel, FloatingLayer...) |

@@ -1,8 +1,9 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
+  import type { HTMLButtonAttributes } from 'svelte/elements';
   import { getTabsContext, idKey } from './tabs-context.js';
 
-  interface Props {
+  interface Props extends Omit<HTMLButtonAttributes, 'class' | 'children' | 'value' | 'type' | 'role'> {
     value: string;
     disabled?: boolean;
     /** Leading icon in a fixed box (`aria-hidden`, so the label stays the accessible name). */
@@ -16,26 +17,44 @@
     children?: Snippet;
   }
 
-  let { value, disabled = false, icon, brandIcon = false, class: className = '', children }: Props = $props();
+  let {
+    value,
+    disabled = false,
+    icon,
+    brandIcon = false,
+    class: className = '',
+    children,
+    onclick,
+    onfocus,
+    ...rest
+  }: Props = $props();
 
   const tabs = getTabsContext();
   const active = $derived(tabs.value === value);
 </script>
 
 <button
+  {...rest}
   type="button"
   role="tab"
   id={tabs.ids.item('tab', idKey(value))}
   aria-selected={active}
-  aria-controls={tabs.ids.item('panel', idKey(value))}
+  aria-controls={tabs.hasPanel(value) ? tabs.ids.item('panel', idKey(value)) : undefined}
   {disabled}
   data-state={active ? 'active' : 'inactive'}
   data-value={value}
   data-orientation="horizontal"
   data-disabled={disabled ? '' : undefined}
   class="ca-tabs-trigger {className}"
-  onclick={() => tabs.select(value)}
-  onfocus={() => tabs.select(value)}
+  data-variant={tabs.variant}
+  onclick={(e) => {
+    onclick?.(e);
+    tabs.select(value);
+  }}
+  onfocus={(e) => {
+    onfocus?.(e);
+    tabs.select(value);
+  }}
 >
   {#if icon}
     <span class="ca-tabs-trigger__icon" data-brand={brandIcon ? '' : undefined} aria-hidden="true">{@render icon()}</span>
@@ -84,6 +103,40 @@
     :global(.ca-tabs-trigger[disabled][data-state='active']) {
       background: var(--ca-action-disabled-bg);
       color: var(--ca-text-disabled);
+    }
+
+    /* line: no fill; the active tab gets a 2px underline that sits on the list's hairline. */
+    :global(.ca-tabs-trigger[data-variant='line']) {
+      position: relative;
+      border-radius: var(--ca-radius-sm);
+    }
+    :global(.ca-tabs-trigger[data-variant='line']::after) {
+      content: '';
+      position: absolute;
+      inset-inline: var(--ca-space-2);
+      inset-block-end: 0;
+      height: var(--ca-border-width-focus);
+      border-radius: var(--ca-radius-pill);
+      background: transparent;
+      transition: background var(--ca-duration-fast) var(--ca-ease-standard);
+    }
+    :global(.ca-tabs-trigger[data-variant='line'][data-state='active']) {
+      background: transparent;
+      color: var(--ca-text-primary);
+    }
+    :global(.ca-tabs-trigger[data-variant='line'][data-state='active']::after) {
+      background: var(--ca-brand-fill);
+    }
+    :global(.ca-tabs-trigger[data-variant='line'][disabled][data-state='active']) {
+      background: transparent;
+    }
+    :global(.ca-tabs-trigger[data-variant='line'][disabled][data-state='active']::after) {
+      background: var(--ca-text-disabled);
+    }
+    @media (forced-colors: active) {
+      :global(.ca-tabs-trigger[data-variant='line'][data-state='active']::after) {
+        background: Highlight;
+      }
     }
 
     /* Fixed icon box: size, gap and alignment never drift between tabs. A brand mark keeps its own

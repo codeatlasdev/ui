@@ -6,6 +6,7 @@ import { VIEWPORTS } from "../../../../tests/viewports";
 import TabsHarness from "./TabsHarness.test.svelte";
 import TabsIcon from "./TabsIcon.test.svelte";
 import TabsOverflow from "./TabsOverflow.test.svelte";
+import TabsViews from "./TabsViews.test.svelte";
 
 describe("Tabs", () => {
 	it("marks the active tab and shows only its panel", async () => {
@@ -200,5 +201,52 @@ describe("TabsTrigger icon", () => {
 		expect(size("brand-light")).toEqual([slot.width, slot.width]);
 		expect(size("img-light")).toEqual([slot.width, slot.width]);
 		expect(size("sized-light")).toEqual([slot.width, slot.width]);
+	});
+});
+
+describe("Tabs as view switchers (no TabsContent)", () => {
+	it("names the tablist and forwards attributes to list and triggers", async () => {
+		const screen = await render(TabsViews, {});
+		await expect.element(screen.getByRole("tablist", { name: "View" })).toBeInTheDocument();
+		await expect.element(screen.getByTestId("views")).toHaveAttribute("role", "tablist");
+		await expect.element(screen.getByTestId("view-a")).toHaveAttribute("role", "tab");
+		await expect.element(screen.getByTestId("view-b")).toHaveAttribute("role", "tab");
+	});
+
+	it("does not point aria-controls at panels that do not exist", async () => {
+		const screen = await render(TabsViews, {});
+		await expect.element(screen.getByTestId("view-a")).not.toHaveAttribute("aria-controls");
+		await expect.element(screen.getByTestId("view-b")).not.toHaveAttribute("aria-controls");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("still links a trigger to its panel when TabsContent exists", async () => {
+		const screen = await render(TabsViews, { withPanel: true });
+		const panel = screen.getByRole("tabpanel").element();
+		await expect.element(screen.getByTestId("view-a")).toHaveAttribute("aria-controls", panel.id);
+		// B has no panel: no dangling reference.
+		await expect.element(screen.getByTestId("view-b")).not.toHaveAttribute("aria-controls");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});
+
+describe("Tabs variant line", () => {
+	it("underlines the active tab instead of filling the pill", async () => {
+		const screen = await render(TabsViews, { variant: "line" });
+		const list = screen.getByTestId("views").element() as HTMLElement;
+		const a = screen.getByTestId("view-a").element() as HTMLElement;
+		const b = screen.getByTestId("view-b").element() as HTMLElement;
+		expect(list.dataset.variant).toBe("line");
+		expect(getComputedStyle(list).borderRadius).toBe("0px");
+		expect(getComputedStyle(a).backgroundColor).toBe("rgba(0, 0, 0, 0)");
+		expect(getComputedStyle(a, "::after").backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
+		expect(getComputedStyle(b, "::after").backgroundColor).toBe("rgba(0, 0, 0, 0)");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("keeps the pill by default", async () => {
+		const screen = await render(TabsViews, {});
+		const a = screen.getByTestId("view-a").element() as HTMLElement;
+		expect(getComputedStyle(a).backgroundColor).not.toBe("rgba(0, 0, 0, 0)");
 	});
 });

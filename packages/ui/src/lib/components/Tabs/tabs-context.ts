@@ -8,8 +8,15 @@ export interface TabsContext {
 	readonly ids: Ids;
 	/** Currently selected tab value. */
 	readonly value: string | undefined;
+	readonly variant: TabsVariant;
 	select(value: string): void;
+	/** A `TabsContent` for `value` is mounted: its trigger may point `aria-controls` at it. */
+	hasPanel(value: string): boolean;
+	/** Called by `TabsContent`; returns the cleanup. */
+	registerPanel(value: string): () => void;
 }
+
+export type TabsVariant = "pill" | "line";
 
 const KEY = Symbol("ca-tabs");
 

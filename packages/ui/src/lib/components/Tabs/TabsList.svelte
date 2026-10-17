@@ -1,16 +1,17 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
+  import type { HTMLAttributes } from 'svelte/elements';
   import { rovingFocus } from '../../primitives/index.js';
   import { getTabsContext } from './tabs-context.js';
 
-  interface Props {
+  interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'class' | 'children' | 'role'> {
     /** Fade the edge(s) that still have tabs to scroll to, so the strip reads as scrollable. */
     fade?: boolean;
     class?: string;
     children?: Snippet;
   }
 
-  let { fade = false, class: className = '', children }: Props = $props();
+  let { fade = false, class: className = '', children, onscroll, ...rest }: Props = $props();
 
   const tabs = getTabsContext();
 
@@ -61,15 +62,20 @@
 </script>
 
 <div
+  {...rest}
   bind:this={list}
   role="tablist"
   id={tabs.ids.part('list')}
   aria-orientation="horizontal"
   data-orientation="horizontal"
+  data-variant={tabs.variant}
   data-fade={fade ? hidden : undefined}
   class="ca-tabs-list {className}"
-  data-ca-blur="ultra-thin"
-  onscroll={fade ? measure : undefined}
+  data-ca-blur={tabs.variant === 'line' ? undefined : 'ultra-thin'}
+  onscroll={(e) => {
+    if (fade) measure();
+    onscroll?.(e);
+  }}
   {@attach roving}
 >
   {@render children?.()}
@@ -98,6 +104,16 @@
       border-radius: var(--ca-radius-pill);
       background: var(--ca-glass-tint-ultra-thin);
       border: var(--ca-border-width) solid var(--ca-glass-border);
+    }
+
+    /* line: a bare strip with one hairline under it; each tab draws its own underline on top of it. */
+    :global(.ca-tabs-list[data-variant='line']) {
+      gap: var(--ca-space-1);
+      padding: 0;
+      border: none;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: inset 0 calc(-1 * var(--ca-border-width)) 0 var(--ca-outline-subtle);
     }
 
     :global(.ca-tabs-list::-webkit-scrollbar) {

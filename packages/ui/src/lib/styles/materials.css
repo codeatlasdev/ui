@@ -711,7 +711,7 @@
   .ca-glass-card, .ca-surface, .ca-auth-card, .ca-popover-content, .ca-dropdown-content, .ca-sel__content,
   .ca-combobox__content, .ca-tooltip-content, .ca-cmd-dialog, .ca-notif-panel, .ca-toast,
   .ca-dialog, .ca-sheet, .ca-drawer, .ca-alert, .ca-link-card, .ca-form-section,
-  .ca-accordion-item, .ca-tabs-list, .ca-col-toggle__content, .ca-facet__content {
+  .ca-accordion-item, .ca-tabs-list:not([data-variant="line"]), .ca-col-toggle__content, .ca-facet__content {
     border: 1px solid CanvasText;
   }
 
