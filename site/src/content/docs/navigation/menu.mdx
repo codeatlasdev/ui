@@ -12,6 +12,8 @@ import BrandIcons from "~/demos/navigation/menu/BrandIcons.svelte";
 import BrandIconsSrc from "~/demos/navigation/menu/BrandIcons.svelte?raw";
 import IconTrigger from "~/demos/navigation/menu/IconTrigger.svelte";
 import IconTriggerSrc from "~/demos/navigation/menu/IconTrigger.svelte?raw";
+import Selection from "~/demos/navigation/menu/Selection.svelte";
+import SelectionSrc from "~/demos/navigation/menu/Selection.svelte?raw";
 
 ```svelte
 <script>
@@ -35,6 +37,10 @@ import IconTriggerSrc from "~/demos/navigation/menu/IconTrigger.svelte?raw";
 
 Keyboard support follows the WAI-ARIA menu pattern: Enter, Space or ArrowDown opens the menu on the first item, ArrowUp opens it on the last, arrows then move, Enter or Space selects, Escape closes and focus returns to the trigger. Tab closes the menu. Selecting an item closes it. The menu is a popover layer in the browser top layer, positioned with CSS anchor positioning where supported, so it stays on top of a dialog it is opened from. Pass an interactive trigger (`Button`, `IconButton`) through `triggerChild` and spread the received `props` on it. Use `trigger` only for non-interactive content such as text or an icon. Use `DropdownMenuLabel` for a non-interactive group heading and `DropdownMenuSeparator` for a divider.
 
+### Checkbox and radio items
+
+`DropdownMenuCheckboxItem` renders `role="menuitemcheckbox"` with `aria-checked` and a check indicator; bind `checked` or listen to `onCheckedChange`. `DropdownMenuRadioGroup` wraps `DropdownMenuRadioItem`s (`role="menuitemradio"`): bind the group's `value`, each item sets it with its own `value`. Enter, Space or a click toggles the item and the menu stays open so several options can be set in one visit (the WAI-ARIA menu pattern); pass `closeOnSelect` to close after one pick. Arrow keys, Home, End and typeahead reach these items like any other, and disabled ones are skipped. Give the group an `aria-label` or put a `DropdownMenuLabel` first and the group is named for screen readers.
+
 ### Leading icons and brand logos
 
 Pass a leading icon with the `icon` snippet instead of placing it in `children`: it gets a fixed 14px box, the standard gap and `aria-hidden` (the label stays the accessible name), so icon size and alignment never drift between menus. Any `svg` or `img` inside the box fills it, including one wrapped in `SchemeAsset`, whatever `width` or `height` the asset declares. A plain icon (Lucide, any `currentColor` glyph) follows the item's text color, including the highlighted, disabled and destructive states.
@@ -55,6 +61,7 @@ A brand logo (a multi-color or fixed-color SVG) must not be recolored: set `bran
 
 <Demo title="Default" description="A button trigger with a label, items, a separator and a destructive item." src={DefaultSrc}><Default client:visible /></Demo>
 <Demo title="Leading icons and brand logos" description="The icon slot gives every item the same box and gap. brandIcon keeps a logo's own colors, and SchemeAsset swaps a monochrome mark between light and dark." src={BrandIconsSrc}><BrandIcons client:visible /></Demo>
+<Demo title="Checkbox and radio items" description="Two toggles and a sort order. The menu stays open while options change; each item reports its state with aria-checked." src={SelectionSrc}><Selection client:visible /></Demo>
 <Demo title="Icon trigger" description="An IconButton trigger. IconButton needs an aria-label." src={IconTriggerSrc}><IconTrigger client:visible /></Demo>
 
 <Props for="DropdownMenu" title="DropdownMenu" rows={[
@@ -75,13 +82,38 @@ A brand logo (a multi-color or fixed-color SVG) must not be recolored: set `bran
   { name: "brandIcon", type: "boolean", default: "false", description: "The icon is a brand mark with its own colors: no highlighted, disabled or destructive color reaches it. Pair with `SchemeAsset` for light and dark assets." },
   { name: "children", type: "Snippet", description: "Item label." },
   { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
-  { name: "...rest", type: "HTMLAttributes<HTMLDivElement>", description: "Forwarded to the `menuitem` element: `data-*`, `id`, `aria-*`, `title`. `role` and `tabindex` stay owned by the item." },
+]} />
+
+<Props for="DropdownMenuCheckboxItem" title="DropdownMenuCheckboxItem" rows={[
+  { name: "checked", type: "boolean", default: "false", description: "Bindable. Whether the item is checked." },
+  { name: "onCheckedChange", type: "(checked: boolean) => void", description: "Called with the new state when the user toggles the item." },
+  { name: "disabled", type: "boolean", default: "false", description: "Prevents toggling; arrow keys skip the item." },
+  { name: "closeOnSelect", type: "boolean", default: "false", description: "Close the menu after toggling." },
+  { name: "children", type: "Snippet", description: "Item label." },
+  { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
+]} />
+
+<Props for="DropdownMenuRadioGroup" title="DropdownMenuRadioGroup" rows={[
+  { name: "value", type: "string", description: "Bindable. Value of the checked radio item." },
+  { name: "onValueChange", type: "(value: string) => void", description: "Called with the new value when the user picks an item." },
+  { name: "children", type: "Snippet", description: "DropdownMenuRadioItem children (and an optional DropdownMenuLabel)." },
+  { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
+]} />
+
+<Props for="DropdownMenuRadioItem" title="DropdownMenuRadioItem" rows={[
+  { name: "value", type: "string", description: "Required. The group value this item sets." },
+  { name: "disabled", type: "boolean", default: "false", description: "Prevents selection; arrow keys skip the item." },
+  { name: "closeOnSelect", type: "boolean", default: "false", description: "Close the menu after picking." },
+  { name: "children", type: "Snippet", description: "Item label." },
+  { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
 ]} />
 
 <Props for="DropdownMenuLabel" title="DropdownMenuLabel" rows={[
   { name: "children", type: "Snippet", description: "Heading text." },
   { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
 ]} />
+
+Every item, the radio group and the checkbox item forward their remaining attributes (`data-*`, `id`, `aria-*`, `title`) to their element, so `data-testid` and `aria-keyshortcuts` land on the `menuitem`. `role` and `tabindex` stay owned by the component.
 
 `DropdownMenuSeparator` takes no props.
 

@@ -1,0 +1,12 @@
+{
+	"summary": "A view menu with two checkbox items and a radio group for the sort order, kept open while options change, with the current state shown below.",
+	"use": "Menus that set view options: toggles (show hidden, show preview) and one choice among several (sort by).",
+	"spec": [
+		"`<DropdownMenu>` with `{#snippet triggerChild(props)}` rendering `<Button variant=\"glass\" {...props}>View options</Button>`",
+		"Two `<DropdownMenuCheckboxItem bind:checked={showHidden}>` style items (`bind:checked={showPreview}`): Show hidden files and Show preview",
+		"`<DropdownMenuSeparator />` then `<DropdownMenuRadioGroup bind:value={sort} aria-label=\"Sort by\">` with a `DropdownMenuLabel` and radio items name, date, size",
+		"`aria-live=\"polite\"` note reports `Sorted by {sort}` and the two toggles"
+	],
+	"tags": ["dropdown-menu", "menu", "checkbox", "radio", "selection", "view-options", "bind"],
+	"shape": "wide"
+}

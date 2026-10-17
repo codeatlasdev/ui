@@ -1,7 +1,10 @@
 <script lang="ts">
 	import DropdownMenu from "./DropdownMenu.svelte";
+	import DropdownMenuCheckboxItem from "./DropdownMenuCheckboxItem.svelte";
 	import DropdownMenuItem from "./DropdownMenuItem.svelte";
 	import DropdownMenuLabel from "./DropdownMenuLabel.svelte";
+	import DropdownMenuRadioGroup from "./DropdownMenuRadioGroup.svelte";
+	import DropdownMenuRadioItem from "./DropdownMenuRadioItem.svelte";
 	import DropdownMenuSeparator from "./DropdownMenuSeparator.svelte";
 	import SchemeAsset from "../SchemeAsset/SchemeAsset.svelte";
 </script>
@@ -27,6 +30,13 @@
 			{#snippet icon()}<svg viewBox="0 0 10 10"><rect width="10" height="10" rx="2" fill="#d97757" /></svg>{/snippet}
 			Billing
 		</DropdownMenuItem>
+		<DropdownMenuSeparator />
+		<DropdownMenuCheckboxItem checked>Notifications</DropdownMenuCheckboxItem>
+		<DropdownMenuCheckboxItem>Dark mode</DropdownMenuCheckboxItem>
+		<DropdownMenuRadioGroup value="date" aria-label="Sort by">
+			<DropdownMenuRadioItem value="name">Name</DropdownMenuRadioItem>
+			<DropdownMenuRadioItem value="date">Date</DropdownMenuRadioItem>
+		</DropdownMenuRadioGroup>
 		<DropdownMenuSeparator />
 		<DropdownMenuItem variant="destructive">Sign out</DropdownMenuItem>
 	</DropdownMenu>

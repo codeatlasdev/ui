@@ -262,6 +262,7 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "254", path: "display/virtual-list/History" },
 	{ id: "255", path: "navigation/loading-boundary/Delayed" },
 	{ id: "256", path: "motion/basics/FadeRise" },
+	{ id: "257", path: "navigation/menu/Selection" },
 	{ id: "300", path: "motion/text/SplitReveal" },
 	{ id: "301", path: "motion/text/Scramble" },
 	{ id: "302", path: "motion/text/Odometer" },

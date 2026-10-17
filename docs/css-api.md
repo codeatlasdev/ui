@@ -137,7 +137,7 @@ Total: 806 unique classes across 82 components.
 
 ## DropdownMenu
 
-`.ca-dropdown-content` `.ca-dropdown-in` `.ca-dropdown-item` `.ca-dropdown-item--destructive` `.ca-dropdown-item__icon` `.ca-dropdown-label` `.ca-dropdown-out` `.ca-dropdown-sep` `.ca-dropdown__trigger`
+`.ca-dropdown-content` `.ca-dropdown-group` `.ca-dropdown-in` `.ca-dropdown-item` `.ca-dropdown-item--destructive` `.ca-dropdown-item--selectable` `.ca-dropdown-item__icon` `.ca-dropdown-item__indicator` `.ca-dropdown-label` `.ca-dropdown-out` `.ca-dropdown-sep` `.ca-dropdown__trigger`
 
 ## EmptyState
 

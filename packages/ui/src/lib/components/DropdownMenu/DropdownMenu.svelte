@@ -34,7 +34,7 @@
   let anchor = $state<HTMLElement | null>(null);
   let menu = $state<HTMLElement | null>(null);
 
-  const ALL_ITEMS = '[role="menuitem"], [role="menuitemcheckbox"]';
+  const ALL_ITEMS = '[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]';
 
   const listbox = createListbox({
     mode: 'roving',

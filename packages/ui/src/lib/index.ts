@@ -107,8 +107,11 @@ export type {
 } from "./components/Docs/types.js";
 export { default as Drawer } from "./components/Drawer/Drawer.svelte";
 export { default as DropdownMenu } from "./components/DropdownMenu/DropdownMenu.svelte";
+export { default as DropdownMenuCheckboxItem } from "./components/DropdownMenu/DropdownMenuCheckboxItem.svelte";
 export { default as DropdownMenuItem } from "./components/DropdownMenu/DropdownMenuItem.svelte";
 export { default as DropdownMenuLabel } from "./components/DropdownMenu/DropdownMenuLabel.svelte";
+export { default as DropdownMenuRadioGroup } from "./components/DropdownMenu/DropdownMenuRadioGroup.svelte";
+export { default as DropdownMenuRadioItem } from "./components/DropdownMenu/DropdownMenuRadioItem.svelte";
 export { default as DropdownMenuSeparator } from "./components/DropdownMenu/DropdownMenuSeparator.svelte";
 export { default as EmptyState } from "./components/EmptyState/EmptyState.svelte";
 export { default as ErrorPage } from "./components/ErrorPage/ErrorPage.svelte";

@@ -106,6 +106,16 @@
       color: initial;
       opacity: 1;
     }
+    /* Checkbox and radio items reserve the same indicator column, so labels line up checked or not. */
+    :global(.ca-dropdown-item__indicator) {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex: none;
+      inline-size: var(--ca-space-3-5);
+      block-size: var(--ca-space-3-5);
+      color: var(--ca-brand-text);
+    }
     :global(.ca-dropdown-item--destructive) {
       color: var(--ca-semantic-error);
     }

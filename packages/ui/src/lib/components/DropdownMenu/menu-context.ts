@@ -5,3 +5,11 @@ export interface MenuContext {
 }
 
 export const MENU_CONTEXT = Symbol("ca-menu");
+
+/** Shared between a `DropdownMenuRadioGroup` and its `DropdownMenuRadioItem`s. */
+export interface RadioGroupContext {
+	readonly value: string | undefined;
+	select(value: string): void;
+}
+
+export const RADIO_GROUP_CONTEXT = Symbol("ca-menu-radio-group");

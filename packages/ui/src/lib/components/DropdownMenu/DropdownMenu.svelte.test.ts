@@ -6,6 +6,7 @@ import { settled } from "../../../../tests/settled";
 import Harness from "./DropdownMenu.test.svelte";
 import AttrsHarness from "./DropdownMenuAttrs.test.svelte";
 import IconHarness from "./DropdownMenuIcon.test.svelte";
+import SelectionHarness from "./DropdownMenuSelection.test.svelte";
 
 const openByKeyboard = async (props = {}, key = "{Enter}") => {
 	const screen = await render(Harness, props);
@@ -169,5 +170,111 @@ describe("DropdownMenuItem rest attributes", () => {
 		await expect.element(item).toHaveAttribute("aria-keyshortcuts", "Shift+Q");
 		await expect.element(item).toHaveAttribute("title", "Leave");
 		expect(document.getElementById("sign-out-item")?.getAttribute("role")).toBe("menuitem");
+	});
+});
+
+describe("DropdownMenu selection items", () => {
+	const open = async (props = {}) => {
+		const screen = await render(SelectionHarness, props);
+		(screen.getByRole("button", { name: "View" }).element() as HTMLElement).focus();
+		await userEvent.keyboard("{Enter}");
+		await expect.element(page.getByRole("menu")).toBeVisible();
+		await settled();
+		return screen;
+	};
+	const state = () => page.getByTestId("state");
+
+	it("checkbox items are menuitemcheckbox with aria-checked", async () => {
+		await open();
+		const hidden = page.getByRole("menuitemcheckbox", { name: "Show hidden files" });
+		await expect.element(hidden).toHaveAttribute("aria-checked", "false");
+		await expect
+			.element(page.getByRole("menuitemcheckbox", { name: "Pinned" }))
+			.toHaveAttribute("aria-checked", "true");
+		await expect
+			.element(page.getByRole("menuitemcheckbox", { name: "Pinned" }))
+			.toHaveAttribute("aria-disabled", "true");
+	});
+
+	it.each(["{Enter}", " "])(
+		"%j toggles a checkbox, binds it and keeps the menu open",
+		async (key) => {
+			const onchange = vi.fn();
+			await open({ onchange });
+			await expect
+				.element(page.getByRole("menuitemcheckbox", { name: "Show hidden files" }))
+				.toHaveFocus();
+			await userEvent.keyboard(key);
+			await expect.element(state()).toHaveTextContent("true|name");
+			await expect
+				.element(page.getByRole("menuitemcheckbox", { name: "Show hidden files" }))
+				.toHaveAttribute("aria-checked", "true");
+			expect(onchange).toHaveBeenLastCalledWith(true);
+			await expect.element(page.getByRole("menu")).toBeVisible();
+			await userEvent.keyboard(key);
+			await expect.element(state()).toHaveTextContent("false|name");
+		}
+	);
+
+	it("a pointer click toggles a checkbox and keeps the menu open", async () => {
+		await open();
+		await page.getByRole("menuitemcheckbox", { name: "Show hidden files" }).click();
+		await expect.element(state()).toHaveTextContent("true|name");
+		await expect.element(page.getByRole("menu")).toBeVisible();
+	});
+
+	it("radio items sit in a labelled group and exactly one is checked", async () => {
+		await open();
+		const group = page.getByRole("group", { name: "Sort by" });
+		await expect.element(group).toBeVisible();
+		await expect
+			.element(page.getByRole("menuitemradio", { name: "Name" }))
+			.toHaveAttribute("aria-checked", "true");
+		await expect
+			.element(page.getByRole("menuitemradio", { name: "Date" }))
+			.toHaveAttribute("aria-checked", "false");
+		await expect
+			.element(page.getByRole("menuitemradio", { name: "Size" }))
+			.toHaveAttribute("aria-disabled", "true");
+	});
+
+	it("Enter on a radio item sets the group value and moves the check", async () => {
+		const onvalue = vi.fn();
+		await open({ onvalue });
+		await userEvent.keyboard("{ArrowDown}");
+		await expect.element(page.getByRole("menuitemradio", { name: "Name" })).toHaveFocus();
+		await userEvent.keyboard("{ArrowDown}");
+		await expect.element(page.getByRole("menuitemradio", { name: "Date" })).toHaveFocus();
+		await userEvent.keyboard("{Enter}");
+		await expect.element(state()).toHaveTextContent("false|date");
+		expect(onvalue).toHaveBeenLastCalledWith("date");
+		await expect
+			.element(page.getByRole("menuitemradio", { name: "Date" }))
+			.toHaveAttribute("aria-checked", "true");
+		await expect
+			.element(page.getByRole("menuitemradio", { name: "Name" }))
+			.toHaveAttribute("aria-checked", "false");
+		await expect.element(page.getByRole("menu")).toBeVisible();
+	});
+
+	it("arrow keys skip the disabled radio and typeahead reaches checkbox items", async () => {
+		await open();
+		await userEvent.keyboard("{End}");
+		await expect.element(page.getByRole("menuitem", { name: "Refresh" })).toHaveFocus();
+		await userEvent.keyboard("{ArrowUp}");
+		await expect.element(page.getByRole("menuitemradio", { name: "Date" })).toHaveFocus();
+		await userEvent.keyboard("s");
+		await expect
+			.element(page.getByRole("menuitemcheckbox", { name: "Show hidden files" }))
+			.toHaveFocus();
+	});
+
+	it("a plain item still closes the menu; selection items do not break axe", async () => {
+		await open();
+		expect(
+			await checkA11y(document.querySelector('[role="menu"]') as HTMLElement)
+		).toHaveNoViolations();
+		await page.getByRole("menuitem", { name: "Refresh" }).click();
+		await expect.element(page.getByRole("menu")).not.toBeInTheDocument();
 	});
 });
