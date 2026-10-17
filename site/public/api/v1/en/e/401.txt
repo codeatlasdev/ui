@@ -1,0 +1,57 @@
+<!-- @codeatlasdev/ui demo #401 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/menu#submenus -->
+Element: #401 Submenus (navigation/menu)
+What it shows: An item menu with Rename, a Color submenu, a Move to submenu and a destructive Delete, reporting the last action.
+When to use: Menus where a secondary list (colors, destination groups) would make the main menu long: the list opens beside the item.
+Spec:
+- `<DropdownMenu>` with `{#snippet triggerChild(props)}` rendering `<Button variant="glass" {...props}>Item actions</Button>`
+- `<DropdownMenuItem onclick={() => (last = 'Rename')}>Rename</DropdownMenuItem>`, then two `<DropdownMenuSub>` blocks
+- Each sub has `{#snippet trigger()}<DropdownMenuSubTrigger>Color</DropdownMenuSubTrigger>{/snippet}` (Color, Move to) and its options as `DropdownMenuItem` children from `{#each colors as color}` and `{#each groups as group}`
+- Colors are Red, Green, Blue; groups are Inbox, Archive, Projects
+- `<DropdownMenuSeparator />` precedes the destructive Delete item
+- `let last = $state('')` is set per item and shown as `Last action: {last}` with `aria-live="polite"`
+Tags: dropdown-menu, menu, submenu, nested, actions, destructive
+Needs: @codeatlasdev/ui@4.3.0
+Components: DropdownMenu, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubTrigger, Button
+Live demo: https://ui.codeatlas.com.br/docs/navigation/menu#submenus
+
+<script lang="ts">
+  import {
+    DropdownMenu,
+    DropdownMenuItem,
+    DropdownMenuSeparator,
+    DropdownMenuSub,
+    DropdownMenuSubTrigger,
+    Button,
+  } from '@codeatlasdev/ui';
+
+  let last = $state('');
+  const colors = ['Red', 'Green', 'Blue'];
+  const groups = ['Inbox', 'Archive', 'Projects'];
+</script>
+
+<DropdownMenu>
+  {#snippet triggerChild(props)}
+    <Button variant="glass" {...props}>Item actions</Button>
+  {/snippet}
+  <DropdownMenuItem onclick={() => (last = 'Rename')}>Rename</DropdownMenuItem>
+  <DropdownMenuSub>
+    {#snippet trigger()}<DropdownMenuSubTrigger>Color</DropdownMenuSubTrigger>{/snippet}
+    {#each colors as color}
+      <DropdownMenuItem onclick={() => (last = `Color ${color}`)}>{color}</DropdownMenuItem>
+    {/each}
+  </DropdownMenuSub>
+  <DropdownMenuSub>
+    {#snippet trigger()}<DropdownMenuSubTrigger>Move to</DropdownMenuSubTrigger>{/snippet}
+    {#each groups as group}
+      <DropdownMenuItem onclick={() => (last = `Moved to ${group}`)}>{group}</DropdownMenuItem>
+    {/each}
+  </DropdownMenuSub>
+  <DropdownMenuSeparator />
+  <DropdownMenuItem variant="destructive" onclick={() => (last = 'Delete')}>Delete</DropdownMenuItem>
+</DropdownMenu>
+
+{#if last}<span class="note" aria-live="polite">Last action: {last}</span>{/if}
+
+<style>
+  .note { font-size: var(--ca-font-size-body2); color: var(--ca-text-secondary); }
+</style>

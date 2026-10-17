@@ -113,6 +113,8 @@ export { default as DropdownMenuLabel } from "./components/DropdownMenu/Dropdown
 export { default as DropdownMenuRadioGroup } from "./components/DropdownMenu/DropdownMenuRadioGroup.svelte";
 export { default as DropdownMenuRadioItem } from "./components/DropdownMenu/DropdownMenuRadioItem.svelte";
 export { default as DropdownMenuSeparator } from "./components/DropdownMenu/DropdownMenuSeparator.svelte";
+export { default as DropdownMenuSub } from "./components/DropdownMenu/DropdownMenuSub.svelte";
+export { default as DropdownMenuSubTrigger } from "./components/DropdownMenu/DropdownMenuSubTrigger.svelte";
 export { default as EmptyState } from "./components/EmptyState/EmptyState.svelte";
 export { default as ErrorPage } from "./components/ErrorPage/ErrorPage.svelte";
 export { default as ExportMenu } from "./components/ExportMenu/ExportMenu.svelte";

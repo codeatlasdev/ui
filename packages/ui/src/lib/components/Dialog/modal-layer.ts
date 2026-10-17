@@ -32,7 +32,7 @@ export function modalLayer(options: () => ModalLayerOptions) {
 			initialFocus: initial,
 			onOpen: () => onOpen?.(dialog),
 			outside,
-			closing: () => options().closing === true,
+			closing: () => untrack(options).closing === true,
 			onDismiss: (reason: LayerDismissReason) =>
 				options().onDismiss(reason === "escape" ? "escape" : "outside"),
 		});

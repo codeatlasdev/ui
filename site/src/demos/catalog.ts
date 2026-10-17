@@ -262,7 +262,6 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "254", path: "display/virtual-list/History" },
 	{ id: "255", path: "navigation/loading-boundary/Delayed" },
 	{ id: "256", path: "motion/basics/FadeRise" },
-	{ id: "257", path: "navigation/menu/Selection" },
 	{ id: "300", path: "motion/text/SplitReveal" },
 	{ id: "301", path: "motion/text/Scramble" },
 	{ id: "302", path: "motion/text/Odometer" },
@@ -304,6 +303,8 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "387", path: "inputs/checkbox/RangeSelect" },
 	{ id: "388", path: "inputs/file-upload/ExternalTrigger" },
 	{ id: "389", path: "inputs/text-field/HiddenLabel" },
+	{ id: "400", path: "navigation/menu/Selection" },
+	{ id: "401", path: "navigation/menu/Submenu" },
 ];
 
 /**

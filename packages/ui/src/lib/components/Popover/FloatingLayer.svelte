@@ -41,6 +41,7 @@
 </script>
 
 <script lang="ts">
+  import { untrack } from 'svelte';
   import { createPresence, openLayer } from '../../primitives/index.js';
   import './floating-layer.css';
 
@@ -81,6 +82,10 @@
       sameWidth,
       focusOutside,
       exclude,
+      // Read live: once `open` turns false the exit animation plays, and Escape / presses belong to the layer below.
+      // Untracked: the stack calls this from document listeners and from other layers' effects, and a
+      // tracked read there would make those effects depend on this layer's `open`.
+      closing: () => untrack(() => !open),
       restoreFocus: restoreFocus ?? false,
       onDismiss: (reason) => onDismiss?.(reason),
     });

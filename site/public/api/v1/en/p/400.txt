@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #400 "Checkbox and radio items" (navigation/menu).
+What it shows: A view menu with two checkbox items and a radio group for the sort order, kept open while options change, with the current state shown below. When to use: Menus that set view options: toggles (show hidden, show preview) and one choice among several (sort by).
+Spec:
+- `<DropdownMenu>` with `{#snippet triggerChild(props)}` rendering `<Button variant="glass" {...props}>View options</Button>`
+- Two `<DropdownMenuCheckboxItem bind:checked={showHidden}>` style items (`bind:checked={showPreview}`): Show hidden files and Show preview
+- `<DropdownMenuSeparator />` then `<DropdownMenuRadioGroup bind:value={sort} aria-label="Sort by">` with a `DropdownMenuLabel` and radio items name, date, size
+- `aria-live="polite"` note reports `Sorted by {sort}` and the two toggles
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #400 Checkbox and radio items → file, what changed, https://ui.codeatlas.com.br/docs/navigation/menu#checkbox-and-radio-items; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/400.txt   Components API: ca-ui-mcp get_component(DropdownMenu)

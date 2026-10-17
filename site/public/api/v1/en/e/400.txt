@@ -1,0 +1,52 @@
+<!-- @codeatlasdev/ui demo #400 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/menu#checkbox-and-radio-items -->
+Element: #400 Checkbox and radio items (navigation/menu)
+What it shows: A view menu with two checkbox items and a radio group for the sort order, kept open while options change, with the current state shown below.
+When to use: Menus that set view options: toggles (show hidden, show preview) and one choice among several (sort by).
+Spec:
+- `<DropdownMenu>` with `{#snippet triggerChild(props)}` rendering `<Button variant="glass" {...props}>View options</Button>`
+- Two `<DropdownMenuCheckboxItem bind:checked={showHidden}>` style items (`bind:checked={showPreview}`): Show hidden files and Show preview
+- `<DropdownMenuSeparator />` then `<DropdownMenuRadioGroup bind:value={sort} aria-label="Sort by">` with a `DropdownMenuLabel` and radio items name, date, size
+- `aria-live="polite"` note reports `Sorted by {sort}` and the two toggles
+Tags: dropdown-menu, menu, checkbox, radio, selection, view-options, bind
+Needs: @codeatlasdev/ui@4.3.0
+Components: DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, Button
+Live demo: https://ui.codeatlas.com.br/docs/navigation/menu#checkbox-and-radio-items
+
+<script lang="ts">
+  import {
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuLabel,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
+    DropdownMenuSeparator,
+    Button,
+  } from '@codeatlasdev/ui';
+
+  let showHidden = $state(false);
+  let showPreview = $state(true);
+  let sort = $state('name');
+</script>
+
+<DropdownMenu>
+  {#snippet triggerChild(props)}
+    <Button variant="glass" {...props}>View options</Button>
+  {/snippet}
+  <DropdownMenuCheckboxItem bind:checked={showHidden}>Show hidden files</DropdownMenuCheckboxItem>
+  <DropdownMenuCheckboxItem bind:checked={showPreview}>Show preview</DropdownMenuCheckboxItem>
+  <DropdownMenuSeparator />
+  <DropdownMenuRadioGroup bind:value={sort} aria-label="Sort by">
+    <DropdownMenuLabel>Sort by</DropdownMenuLabel>
+    <DropdownMenuRadioItem value="name">Name</DropdownMenuRadioItem>
+    <DropdownMenuRadioItem value="date">Date modified</DropdownMenuRadioItem>
+    <DropdownMenuRadioItem value="size">Size</DropdownMenuRadioItem>
+  </DropdownMenuRadioGroup>
+</DropdownMenu>
+
+<span class="note" aria-live="polite">
+  Sorted by {sort}. Hidden files {showHidden ? 'shown' : 'hidden'}, preview {showPreview ? 'on' : 'off'}.
+</span>
+
+<style>
+  .note { font-size: var(--ca-font-size-body2); color: var(--ca-text-secondary); }
+</style>

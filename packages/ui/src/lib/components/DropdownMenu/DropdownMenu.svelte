@@ -6,6 +6,7 @@
   import FloatingLayer from '../Popover/FloatingLayer.svelte';
   import { createTriggerProps } from '../Popover/trigger.js';
   import { MENU_CONTEXT } from './menu-context.js';
+  import { ownItems } from './menu-items.js';
 
   interface Props {
     class?: string;
@@ -34,12 +35,10 @@
   let anchor = $state<HTMLElement | null>(null);
   let menu = $state<HTMLElement | null>(null);
 
-  const ALL_ITEMS = '[role="menuitem"], [role="menuitemcheckbox"], [role="menuitemradio"]';
-
   const listbox = createListbox({
     mode: 'roving',
     items: () =>
-      Array.from(menu?.querySelectorAll<HTMLElement>(ALL_ITEMS) ?? []).map((el, i) => ({
+      ownItems(menu).map((el, i) => ({
         id: el.id || `${id}-item-${i}`,
         el: () => el,
         text: el.textContent ?? '',
@@ -54,7 +53,7 @@
     if (restoreFocus) anchor?.focus({ preventScroll: true });
   }
 
-  setContext(MENU_CONTEXT, { close });
+  setContext(MENU_CONTEXT, { close, closeAll: close });
 
   /** Opens the menu; `focus` picks which item (or the container) receives focus. */
   let pendingFocus: 'first' | 'last' | 'container' = 'container';

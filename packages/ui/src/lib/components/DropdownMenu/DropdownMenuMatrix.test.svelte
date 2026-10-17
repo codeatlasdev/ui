@@ -6,6 +6,8 @@
 	import DropdownMenuRadioGroup from "./DropdownMenuRadioGroup.svelte";
 	import DropdownMenuRadioItem from "./DropdownMenuRadioItem.svelte";
 	import DropdownMenuSeparator from "./DropdownMenuSeparator.svelte";
+	import DropdownMenuSub from "./DropdownMenuSub.svelte";
+	import DropdownMenuSubTrigger from "./DropdownMenuSubTrigger.svelte";
 	import SchemeAsset from "../SchemeAsset/SchemeAsset.svelte";
 </script>
 
@@ -37,6 +39,10 @@
 			<DropdownMenuRadioItem value="name">Name</DropdownMenuRadioItem>
 			<DropdownMenuRadioItem value="date">Date</DropdownMenuRadioItem>
 		</DropdownMenuRadioGroup>
+		<DropdownMenuSub>
+			{#snippet trigger()}<DropdownMenuSubTrigger>Move to</DropdownMenuSubTrigger>{/snippet}
+			<DropdownMenuItem>Inbox</DropdownMenuItem>
+		</DropdownMenuSub>
 		<DropdownMenuSeparator />
 		<DropdownMenuItem variant="destructive">Sign out</DropdownMenuItem>
 	</DropdownMenu>

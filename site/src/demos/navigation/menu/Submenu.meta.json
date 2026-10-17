@@ -1,0 +1,14 @@
+{
+	"summary": "An item menu with Rename, a Color submenu, a Move to submenu and a destructive Delete, reporting the last action.",
+	"use": "Menus where a secondary list (colors, destination groups) would make the main menu long: the list opens beside the item.",
+	"spec": [
+		"`<DropdownMenu>` with `{#snippet triggerChild(props)}` rendering `<Button variant=\"glass\" {...props}>Item actions</Button>`",
+		"`<DropdownMenuItem onclick={() => (last = 'Rename')}>Rename</DropdownMenuItem>`, then two `<DropdownMenuSub>` blocks",
+		"Each sub has `{#snippet trigger()}<DropdownMenuSubTrigger>Color</DropdownMenuSubTrigger>{/snippet}` (Color, Move to) and its options as `DropdownMenuItem` children from `{#each colors as color}` and `{#each groups as group}`",
+		"Colors are Red, Green, Blue; groups are Inbox, Archive, Projects",
+		"`<DropdownMenuSeparator />` precedes the destructive Delete item",
+		"`let last = $state('')` is set per item and shown as `Last action: {last}` with `aria-live=\"polite\"`"
+	],
+	"tags": ["dropdown-menu", "menu", "submenu", "nested", "actions", "destructive"],
+	"shape": "wide"
+}

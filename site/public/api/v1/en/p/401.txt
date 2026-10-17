@@ -1,0 +1,15 @@
+Use @codeatlasdev/ui demo #401 "Submenus" (navigation/menu).
+What it shows: An item menu with Rename, a Color submenu, a Move to submenu and a destructive Delete, reporting the last action. When to use: Menus where a secondary list (colors, destination groups) would make the main menu long: the list opens beside the item.
+Spec:
+- `<DropdownMenu>` with `{#snippet triggerChild(props)}` rendering `<Button variant="glass" {...props}>Item actions</Button>`
+- `<DropdownMenuItem onclick={() => (last = 'Rename')}>Rename</DropdownMenuItem>`, then two `<DropdownMenuSub>` blocks
+- Each sub has `{#snippet trigger()}<DropdownMenuSubTrigger>Color</DropdownMenuSubTrigger>{/snippet}` (Color, Move to) and its options as `DropdownMenuItem` children from `{#each colors as color}` and `{#each groups as group}`
+- Colors are Red, Green, Blue; groups are Inbox, Archive, Projects
+- `<DropdownMenuSeparator />` precedes the destructive Delete item
+- `let last = $state('')` is set per item and shown as `Last action: {last}` with `aria-live="polite"`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #401 Submenus → file, what changed, https://ui.codeatlas.com.br/docs/navigation/menu#submenus; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/401.txt   Components API: ca-ui-mcp get_component(DropdownMenu)
