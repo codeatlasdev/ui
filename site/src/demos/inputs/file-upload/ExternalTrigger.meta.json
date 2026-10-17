@@ -1,0 +1,13 @@
+{
+	"summary": "A FileUpload without its built-in list, opened from an Add files button in the section header; picked names are listed by the page.",
+	"use": "Upload on pick with your own progress or list UI, and a header button that opens the same picker.",
+	"spec": [
+		"`list={false}` and `multiple`: `onchange` receives only the files just picked and `files` is not kept",
+		"`bind:this={upload}` and a header `Button` calling `upload?.open()`",
+		"`data-testid=\"attachments-input\"` is forwarded to the native file input",
+		"The page keeps its own `names` list in `onchange`",
+		"Wrapper has `max-width: 480px`"
+	],
+	"tags": ["file-upload", "external trigger", "open", "list", "upload on pick", "data-testid"],
+	"shape": "wide"
+}

@@ -2,9 +2,11 @@
   import { useT } from '../../i18n/state.svelte.js';
   import { Upload, X, File as FileIcon, Image as ImageIcon } from '@lucide/svelte';
   import type { Snippet } from 'svelte';
+  import type { HTMLInputAttributes } from 'svelte/elements';
   const t = useT();
 
-  interface Props {
+  interface Props
+    extends Omit<HTMLInputAttributes, 'type' | 'value' | 'files' | 'class' | 'children' | 'onchange' | 'list'> {
     accept?: string;
     multiple?: boolean;
     maxSize?: number; // bytes
@@ -12,7 +14,11 @@
     files?: File[];
     label?: string;
     hint?: string;
+    /** Show the built-in file list. `false` makes the component a plain picker: `onchange` gets only the files just picked (after `maxSize`), nothing is kept in `files`, and the app renders its own list (upload on pick, progress per file). */
+    list?: boolean;
     class?: string;
+    /** The native `<input type="file">`, to read it or click it from your own button (or call `open()`). */
+    ref?: HTMLInputElement | null;
     onchange?: (files: File[]) => void;
     children?: Snippet;
   }
@@ -25,14 +31,21 @@
     files = $bindable([]),
     label,
     hint,
+    list = true,
     class: className = '',
+    ref = $bindable(null),
     onchange,
     children,
+    ...rest
   }: Props = $props();
 
   let dragging = $state(false);
   let errors = $state<string[]>([]);
-  let inputRef = $state<HTMLInputElement | null>(null);
+
+  /** Opens the file picker (no-op while disabled): the handle for a button outside the dropzone. */
+  export function open() {
+    if (!disabled) ref?.click();
+  }
 
   function validate(picked: FileList | File[]): File[] {
     const arr = Array.from(picked);
@@ -51,6 +64,12 @@
   function pick(picked: FileList | null) {
     if (!picked) return;
     const valid = validate(picked);
+    if (!list) {
+      // Plain picker: hand the new files over and forget them. Clearing the input lets the same file be picked again.
+      if (ref) ref.value = '';
+      onchange?.(valid);
+      return;
+    }
     files = multiple ? [...files, ...valid] : valid;
     onchange?.(files);
   }
@@ -82,8 +101,8 @@
     ondragover={(e) => { e.preventDefault(); if (!disabled) dragging = true; }}
     ondragleave={() => { dragging = false; }}
     ondrop={handleDrop}
-    onclick={() => inputRef?.click()}
-    onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); inputRef?.click(); } }}
+    onclick={open}
+    onkeydown={(e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } }}
   >
     {#if children}
       {@render children()}
@@ -99,7 +118,8 @@
   </div>
 
   <input
-    bind:this={inputRef}
+    {...rest}
+    bind:this={ref}
     type="file"
     {accept}
     {multiple}
@@ -118,7 +138,7 @@
     </ul>
   {/if}
 
-  {#if files.length > 0}
+  {#if list && files.length > 0}
     <ul class="ca-file-upload__list">
       {#each files as f, i}
         <li class="ca-file-upload__file">

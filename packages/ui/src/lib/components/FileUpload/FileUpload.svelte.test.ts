@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import FileUpload from "./FileUpload.svelte";
+import FileUploadHandle from "./FileUploadHandle.test.svelte";
 
 const txt = (name: string, size = 10) =>
 	new File([new Uint8Array(size)], name, { type: "text/plain" });
@@ -158,5 +159,65 @@ describe("FileUpload", () => {
 		zone.dispatchEvent(new DragEvent("drop", { dataTransfer, bubbles: true, cancelable: true }));
 		expect(onchange).not.toHaveBeenCalled();
 		expect(screen.container.textContent).not.toContain("x.txt");
+	});
+	describe("external control", () => {
+		it("forwards data-* and native attributes to the file input", async () => {
+			const screen = await render(FileUpload, {
+				"data-testid": "file-input",
+				name: "attachments",
+				capture: "environment",
+			});
+			const input = screen.getByTestId("file-input").element() as HTMLInputElement;
+			expect(input).toBe(inputOf(screen.container));
+			expect(input.name).toBe("attachments");
+			expect(input.getAttribute("capture")).toBe("environment");
+		});
+
+		it("ref is the file input and an outside button opens the picker through open()", async () => {
+			const screen = await render(FileUploadHandle, {});
+			const input = inputOf(screen.container);
+			await expect.element(screen.getByTestId("ref-tag")).toHaveTextContent("INPUT");
+			const click = vi.spyOn(input, "click").mockImplementation(() => {});
+			await screen.getByRole("button", { name: "Add files" }).click();
+			expect(click).toHaveBeenCalledOnce();
+		});
+
+		it("open() does nothing while disabled", async () => {
+			const screen = await render(FileUploadHandle, { disabled: true });
+			const click = vi.spyOn(inputOf(screen.container), "click").mockImplementation(() => {});
+			await screen.getByRole("button", { name: "Add files" }).click();
+			expect(click).not.toHaveBeenCalled();
+		});
+
+		it("list={false} hands over only the newly picked files and renders no list", async () => {
+			const onchange = vi.fn();
+			const screen = await render(FileUpload, { list: false, multiple: true, onchange });
+			const input = inputOf(screen.container);
+			choose(input, txt("a.txt"));
+			choose(input, txt("b.txt"));
+			expect(onchange.mock.calls.map((c) => c[0].map((f: File) => f.name))).toEqual([
+				["a.txt"],
+				["b.txt"],
+			]);
+			expect(screen.container.querySelector(".ca-file-upload__list")).toBeNull();
+			expect(input.value).toBe("");
+			expect(await checkA11y(screen.container)).toHaveNoViolations();
+		});
+
+		it("list={false} still reports files rejected by maxSize", async () => {
+			const screen = await render(FileUpload, { list: false, maxSize: 1024 });
+			choose(inputOf(screen.container), txt("big.txt", 5000));
+			await expect.element(screen.getByText(/big\.txt: larger/)).toBeVisible();
+		});
+
+		it("files is controlled: setting it from outside drives the list", async () => {
+			const screen = await render(FileUploadHandle, { multiple: true });
+			await screen.getByRole("button", { name: "Clear" }).click();
+			choose(inputOf(screen.container), txt("a.txt"));
+			await expect.element(screen.getByText("a.txt")).toBeVisible();
+			await screen.getByRole("button", { name: "Clear" }).click();
+			expect(screen.container.querySelector(".ca-file-upload__list")).toBeNull();
+			expect(screen.getByTestId("count")).toHaveTextContent("0");
+		});
 	});
 });

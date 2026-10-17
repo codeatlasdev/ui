@@ -9,6 +9,8 @@ import Basic from "~/demos/inputs/file-upload/Basic.svelte";
 import BasicSrc from "~/demos/inputs/file-upload/Basic.svelte?raw";
 import Variants from "~/demos/inputs/file-upload/Variants.svelte";
 import VariantsSrc from "~/demos/inputs/file-upload/Variants.svelte?raw";
+import ExternalTrigger from "~/demos/inputs/file-upload/ExternalTrigger.svelte";
+import ExternalTriggerSrc from "~/demos/inputs/file-upload/ExternalTrigger.svelte?raw";
 
 ```svelte
 <script>
@@ -21,8 +23,12 @@ import VariantsSrc from "~/demos/inputs/file-upload/Variants.svelte?raw";
 
 The drop zone is a keyboard-operable control: Enter or Space opens the file picker. Files larger than `maxSize` are rejected with a per-file error message. In `multiple` mode new picks are appended to `files`, otherwise they replace it. The component never uploads: send `files` to your API yourself.
 
+Native input attributes (`name`, `capture`, `data-*`...) are spread on the `<input type="file">`, and `bind:ref` gives you that input. To open the picker from a button elsewhere, keep the component instance with `bind:this` and call `open()` (a no-op while `disabled`). For apps that upload on pick and draw their own progress, set `list={false}`: `onchange` receives only the files just picked, nothing is kept in `files`, and the built-in list is not rendered.
+
 <Demo title="Basic" description="Multiple files with a size limit and the selected count." src={BasicSrc}><Basic client:visible /></Demo>
 <Demo title="Images only and disabled" src={VariantsSrc}><Variants client:visible /></Demo>
+
+<Demo title="External trigger, no list" description="list={false} plus an Add files button that calls open()." src={ExternalTriggerSrc}><ExternalTrigger client:visible /></Demo>
 
 <Props rows={[
   { name: "files", type: "File[]", default: "[]", description: "Bindable list of selected files." },
@@ -31,8 +37,12 @@ The drop zone is a keyboard-operable control: Enter or Space opens the file pick
   { name: "maxSize", type: "number", description: "Maximum file size in bytes. Larger files are rejected with an error." },
   { name: "label", type: "string", default: "'Drop files here or click to browse' (localized)", description: "Drop zone text and accessible name." },
   { name: "hint", type: "string", description: "Helper text below the label." },
+  { name: "list", type: "boolean", default: "true", description: "Shows the built-in file list. `false` makes a plain picker: `onchange` gets only the newly picked files and `files` is not kept." },
+  { name: "ref", type: "HTMLInputElement | null", description: "Bindable native file input." },
+  { name: "open()", type: "() => void", description: "Instance method (through `bind:this`): opens the file picker. No-op while disabled." },
   { name: "disabled", type: "boolean", default: "false", description: "Disables the upload." },
   { name: "class", type: "string", description: "Extra classes on the root." },
   { name: "onchange", type: "(files: File[]) => void", description: "Called when the file list changes." },
   { name: "children", type: "Snippet", description: "Custom content inside the drop zone." },
+  { name: "...rest", type: "HTMLInputAttributes", description: "Every other native input attribute (`name`, `capture`, `data-*`...) is spread on the `<input type=\"file\">`." },
 ]} />
