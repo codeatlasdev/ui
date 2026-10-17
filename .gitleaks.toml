@@ -3,5 +3,10 @@
 useDefault = true
 
 [[allowlists]]
-description = "Documentation placeholders"
-regexes = ['''YOUR_API_KEY''']
+description = "Documentation placeholders (EN and pt-BR)"
+regexes = ['''YOUR_API_KEY''', '''SUA_API_KEY''']
+
+# report_issue's redaction test (#227) feeds this obviously fake token to prove it is redacted.
+[[allowlists]]
+description = "Fake JWT fixture in the redaction test"
+regexes = ['''eyJhbGciOiJIUzI1NiJ9\.eyJzdWIiOiIxMjM0In0\.abcDEF123_-xyz''']
