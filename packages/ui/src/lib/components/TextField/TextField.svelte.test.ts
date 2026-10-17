@@ -1,7 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
+import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import TextField from "./TextField.svelte";
+import TextFieldRef from "./TextFieldRef.test.svelte";
 
 describe("TextField", () => {
 	it("associates the label with the input", async () => {
@@ -59,5 +61,49 @@ describe("TextField", () => {
 	it("disabled input is not editable", async () => {
 		const screen = await render(TextField, { label: "Locked", disabled: true });
 		await expect.element(screen.getByLabelText("Locked")).toBeDisabled();
+	});
+	it("forwards native attributes and handlers to the input", async () => {
+		const onkeydown = vi.fn();
+		const onfocus = vi.fn();
+		const screen = await render(TextField, {
+			label: "Name",
+			onfocus,
+			maxlength: 5,
+			inputmode: "numeric",
+			"data-testid": "name",
+			onkeydown,
+		});
+		const input = screen.getByTestId("name");
+		await expect.element(input).toHaveAttribute("maxlength", "5");
+		await expect.element(input).toHaveAttribute("inputmode", "numeric");
+		await input.fill("1234567");
+		await expect.element(input).toHaveValue("12345");
+		await input.element().focus();
+		await userEvent.keyboard("{Enter}");
+		expect(onkeydown).toHaveBeenCalled();
+		expect(onfocus).toHaveBeenCalled();
+	});
+
+	it("ref is the input element", async () => {
+		const screen = await render(TextFieldRef, { label: "Name" });
+		await expect.element(screen.getByTestId("ref-tag")).toHaveTextContent("INPUT");
+		await screen.getByRole("button", { name: "focus" }).click();
+		expect(document.activeElement).toBe(screen.getByLabelText("Name").element());
+	});
+
+	it("hideLabel keeps the label for assistive tech only", async () => {
+		const screen = await render(TextField, { label: "Name", hideLabel: true });
+		const input = screen.getByRole("textbox", { name: "Name" });
+		await expect.element(input).toBeVisible();
+		const label = screen.container.querySelector<HTMLElement>("label.ca-tf__label");
+		expect(label?.classList.contains("ca-sr-only")).toBe(true);
+		expect(label?.getBoundingClientRect().width).toBeLessThanOrEqual(1);
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("aria-label names a field without a label", async () => {
+		const screen = await render(TextField, { "aria-label": "Search" });
+		await expect.element(screen.getByRole("textbox", { name: "Search" })).toBeVisible();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 });

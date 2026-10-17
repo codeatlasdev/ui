@@ -11,6 +11,8 @@ import Icons from "~/demos/inputs/text-field/Icons.svelte";
 import IconsSrc from "~/demos/inputs/text-field/Icons.svelte?raw";
 import States from "~/demos/inputs/text-field/States.svelte";
 import StatesSrc from "~/demos/inputs/text-field/States.svelte?raw";
+import HiddenLabel from "~/demos/inputs/text-field/HiddenLabel.svelte";
+import HiddenLabelSrc from "~/demos/inputs/text-field/HiddenLabel.svelte?raw";
 
 ```svelte
 <script>
@@ -21,14 +23,16 @@ import StatesSrc from "~/demos/inputs/text-field/States.svelte?raw";
 <TextField label="Email" type="email" bind:value={email} />
 ```
 
-An `error` replaces the `description` and is announced to assistive tech. On touch devices the input text stays at 16px or more so iOS Safari does not zoom on focus. Wrapper components such as `MaskedField`, `MoneyInput` and `PhoneField` forward these props to TextField.
+An `error` replaces the `description` and is announced to assistive tech. On touch devices the input text stays at 16px or more so iOS Safari does not zoom on focus. Native input attributes (`maxlength`, `inputmode`, `data-*`, `onkeydown`, `onfocus`...) are spread on the `<input>`, and `bind:ref` gives you the element. For an inline field whose label is implied visually, set `hideLabel` (the label stays for screen readers) or pass `aria-label` without `label`. Wrapper components such as `MaskedField`, `MoneyInput` and `PhoneField` forward these props to TextField.
 
 <Demo title="Default" description="Basic text inputs with a label." src={DefaultSrc}><Default client:visible /></Demo>
 <Demo title="With icons" description="leading and trailing snippets. Interactive trailing content, like a reveal button, must be a real button with its own label." src={IconsSrc}><Icons client:visible /></Demo>
 <Demo title="States" description="Helper text, error, required, read-only, disabled and the small size." src={StatesSrc}><States client:visible /></Demo>
+<Demo title="Hidden label" description="hideLabel keeps the label for assistive tech only; maxlength and ref reach the native input." src={HiddenLabelSrc}><HiddenLabel client:visible /></Demo>
 
 <Props rows={[
   { name: "label", type: "string", description: "Label text." },
+  { name: "hideLabel", type: "boolean", default: "false", description: "Renders the label with `.ca-sr-only`: read by screen readers, not shown." },
   { name: "placeholder", type: "string", default: "''", description: "Input placeholder." },
   { name: "value", type: "string", default: "''", description: "Bindable input value." },
   { name: "type", type: "string", default: "'text'", description: "HTML input type." },
@@ -45,7 +49,10 @@ An `error` replaces the `description` and is announced to assistive tech. On tou
   { name: "trailing", type: "Snippet", description: "Icon or element after the input." },
   { name: "skeleton", type: "boolean", default: "false", description: "Loading placeholder with the exact size of the loaded field (disabled, `aria-busy`). See Skeleton." },
   { name: "class", type: "string", description: "Extra classes on the root." },
+  { name: "ref", type: "HTMLInputElement | null", description: "Bindable native input element." },
   { name: "oninput", type: "(value: string) => void", description: "Called on every keystroke with the new value." },
   { name: "onchange", type: "(value: string) => void", description: "Called when the value is committed (blur or Enter)." },
+  { name: "onfocus", type: "(e: FocusEvent) => void", description: "Called when the input gains focus." },
   { name: "onblur", type: "(e: FocusEvent) => void", description: "Called when the input loses focus." },
+  { name: "...rest", type: "HTMLInputAttributes", description: "Every other native input attribute and event handler (`maxlength`, `inputmode`, `aria-label`, `data-*`, `onkeydown`...) is spread on the `<input>`." },
 ]} />

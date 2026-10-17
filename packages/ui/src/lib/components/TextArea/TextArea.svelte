@@ -1,8 +1,12 @@
 <script lang="ts">
+  import type { HTMLTextareaAttributes } from 'svelte/elements';
   import { uid } from '../../utils/index.js';
 
-  interface Props {
+  interface Props
+    extends Omit<HTMLTextareaAttributes, 'value' | 'class' | 'children' | 'rows' | 'oninput' | 'onchange' | 'onfocus' | 'onblur'> {
     label?:       string;
+    /** Keeps `label` for assistive tech only (`.ca-sr-only`). */
+    hideLabel?:   boolean;
     placeholder?: string;
     value?:       string;
     rows?:        number;
@@ -17,13 +21,17 @@
     resize?:      'none' | 'vertical' | 'horizontal' | 'both';
     class?:       string;
     name?:        string;
+    /** The native `<textarea>`, to focus it or read it. */
+    ref?:         HTMLTextAreaElement | null;
     oninput?:     (value: string) => void;
     onchange?:    (value: string) => void;
+    onfocus?:     (e: FocusEvent) => void;
     onblur?:      (e: FocusEvent) => void;
   }
 
   let {
     label,
+    hideLabel    = false,
     placeholder = '',
     value        = $bindable(''),
     rows         = 4,
@@ -37,9 +45,12 @@
     resize       = 'vertical',
     class: className = '',
     name,
+    ref          = $bindable(null),
     oninput,
     onchange,
+    onfocus,
     onblur,
+    ...rest
   }: Props = $props();
 
   let focused = $state(false);
@@ -56,13 +67,15 @@
   class:ca-ta--disabled={disabled}
 >
   {#if label}
-    <label for={id} class="ca-ta__label">
+    <label for={id} class="ca-ta__label" class:ca-sr-only={hideLabel}>
       {label}{#if required}<span class="ca-ta__req" aria-hidden="true"> *</span>{/if}
     </label>
   {/if}
 
   <div class="ca-ta__wrap" class:ca-ta__wrap--focused={focused} class:ca-ta__wrap--error={!!error}>
     <textarea
+      {...rest}
+      bind:this={ref}
       {id}
       {name}
       {placeholder}
@@ -75,7 +88,7 @@
       style="--ta-resize:{resize}; --ta-min-rows:{minRows_}"
       aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined}
       aria-invalid={error ? 'true' : undefined}
-      onfocus={() => (focused = true)}
+      onfocus={(e) => { focused = true; onfocus?.(e); }}
       onblur={(e) => { focused = false; onblur?.(e); }}
       oninput={(e) => oninput?.((e.target as HTMLTextAreaElement).value)}
       onchange={(e) => onchange?.((e.target as HTMLTextAreaElement).value)}

@@ -1,0 +1,12 @@
+{
+	"summary": "Two inline TextFields whose label is kept for screen readers only with hideLabel, plus native maxlength and a bound ref.",
+	"use": "Inline editing in lists and toolbars where the label is implied visually but each input still needs an accessible name.",
+	"spec": [
+		"`label=\"Task name\"` with `hideLabel`: the label stays for screen readers and is not shown",
+		"`maxlength={40}` and `autocomplete=\"off\"` reach the native input",
+		"`bind:ref` gives the `HTMLInputElement`; a text `Button` calls `first?.focus()`",
+		"Column wrapper has `max-width: 400px`"
+	],
+	"tags": ["text-field", "hidelabel", "sr-only", "ref", "maxlength", "inline editing"],
+	"shape": "wide"
+}

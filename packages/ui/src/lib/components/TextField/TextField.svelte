@@ -3,8 +3,11 @@
   import type { HTMLInputAttributes } from 'svelte/elements';
   import { uid } from '../../utils/index.js';
 
-  interface Props {
+  interface Props
+    extends Omit<HTMLInputAttributes, 'value' | 'class' | 'children' | 'size' | 'oninput' | 'onchange' | 'onfocus' | 'onblur'> {
     label?:        string;
+    /** Keeps `label` for assistive tech only (`.ca-sr-only`), for inline fields in a list or toolbar. */
+    hideLabel?:    boolean;
     placeholder?:  string;
     value?:        string;
     type?:         string;
@@ -23,13 +26,17 @@
     skeleton?:     boolean;
     class?:        string;
     name?:         string;
+    /** The native `<input>`, to focus it or read it. */
+    ref?:          HTMLInputElement | null;
     oninput?:      (value: string) => void;
     onchange?:     (value: string) => void;
+    onfocus?:      (e: FocusEvent) => void;
     onblur?:       (e: FocusEvent) => void;
   }
 
   let {
     label,
+    hideLabel    = false,
     placeholder = '',
     value        = $bindable(''),
     type         = 'text',
@@ -46,9 +53,12 @@
     skeleton     = false,
     class: className = '',
     name,
+    ref          = $bindable(null),
     oninput,
     onchange,
+    onfocus,
     onblur,
+    ...rest
   }: Props = $props();
 
   let focused = $state(false);
@@ -58,7 +68,7 @@
 
 <div class="ca-tf {className}" aria-busy={skeleton ? 'true' : undefined} data-skeleton={skeleton ? '' : undefined} class:ca-tf--sm={size === 'sm'} class:ca-tf--error={!!error} class:ca-tf--disabled={disabled}>
   {#if label}
-    <label for={id} class="ca-tf__label">
+    <label for={id} class="ca-tf__label" class:ca-sr-only={hideLabel}>
       {label}{#if required}<span class="ca-tf__req" aria-hidden="true"> *</span>{/if}
     </label>
   {/if}
@@ -69,6 +79,8 @@
     {/if}
 
     <input
+      {...rest}
+      bind:this={ref}
       {id}
       {type}
       {name}
@@ -81,7 +93,7 @@
       class="ca-tf__input"
       aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined}
       aria-invalid={error ? 'true' : undefined}
-      onfocus={() => (focused = true)}
+      onfocus={(e) => { focused = true; onfocus?.(e); }}
       onblur={(e) => { focused = false; onblur?.(e); }}
       oninput={(e) => oninput?.((e.target as HTMLInputElement).value)}
       onchange={(e) => onchange?.((e.target as HTMLInputElement).value)}

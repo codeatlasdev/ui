@@ -19,7 +19,7 @@ import StatesSrc from "~/demos/inputs/text-area/States.svelte?raw";
 <TextArea label="Message" bind:value={message} rows={4} />
 ```
 
-The label sits above the field. `description` is hidden while an `error` is shown, and the error is announced with `role="alert"`. Text stays at 16px or more on touch devices so iOS Safari does not zoom on focus.
+The label sits above the field. `description` is hidden while an `error` is shown, and the error is announced with `role="alert"`. Text stays at 16px or more on touch devices so iOS Safari does not zoom on focus. Native textarea attributes (`maxlength`, `data-*`, `onkeydown`, `aria-label`...) are spread on the `<textarea>`, `bind:ref` gives you the element, and `hideLabel` keeps the label for screen readers only.
 
 <Demo title="Basic" description="Empty, with a placeholder, and pre-filled." src={BasicSrc}><Basic client:visible /></Demo>
 <Demo title="States" description="Helper text, error, required, read-only, disabled and resize=&quot;none&quot;." src={StatesSrc}><States client:visible /></Demo>
@@ -27,6 +27,7 @@ The label sits above the field. `description` is hidden while an `error` is show
 <Props rows={[
   { name: "value", type: "string", default: "''", description: "Bindable text value." },
   { name: "label", type: "string", description: "Label text." },
+  { name: "hideLabel", type: "boolean", default: "false", description: "Renders the label with `.ca-sr-only`: read by screen readers, not shown." },
   { name: "placeholder", type: "string", default: "''", description: "Native placeholder." },
   { name: "rows", type: "number", default: "4", description: "Visible row count." },
   { name: "minRows", type: "number", description: "Row count used for the minimum height. Defaults to rows." },
@@ -39,7 +40,10 @@ The label sits above the field. `description` is hidden while an `error` is show
   { name: "readonly", type: "boolean", default: "false", description: "Makes the textarea read-only." },
   { name: "name", type: "string", description: "Native name, for form submission." },
   { name: "class", type: "string", description: "Extra classes on the root." },
+  { name: "ref", type: "HTMLTextAreaElement | null", description: "Bindable native textarea element." },
   { name: "oninput", type: "(value: string) => void", description: "Called on every keystroke with the new value." },
   { name: "onchange", type: "(value: string) => void", description: "Called when the value is committed (on blur, after an edit)." },
+  { name: "onfocus", type: "(e: FocusEvent) => void", description: "Called when the textarea gains focus." },
   { name: "onblur", type: "(e: FocusEvent) => void", description: "Called when the textarea loses focus." },
+  { name: "...rest", type: "HTMLTextareaAttributes", description: "Every other native textarea attribute and event handler is spread on the `<textarea>`." },
 ]} />
