@@ -50,9 +50,10 @@ Unit tests run on `bun test` (repo root, `bunfig.toml`); component and visual te
 
 | Command | What it runs |
 |---|---|
-| `bun run test` | unit + browser + E2E |
+| `bun run test` | unit + browser + fixtures + E2E |
 | `bun run test:unit` | `bun test` on `packages/ui/tests/*.test.ts` (fails any test without an `expect`) |
 | `bun run test:browser` | Vitest `browser` project (real Chromium, axe) |
+| `bun run test:fixtures` | `packages/ui/tests/*.e2e.ts`: builds a real fixture app (Astro, Kit) and drives it in Chromium (e.g. `caUI` + `<ClientRouter />`). Never name these `*.test.ts`: the unit suite runs in `validate` and in the release job, which have no browsers (`tests/unit-suite.test.ts` guards it) |
 | `bun run test:e2e` / `test:a11y` | Playwright against the static site (build + preview) |
 | `bun run lighthouse` | Lighthouse (SEO and accessibility must be 100, performance floor) plus the installability contract (standalone manifest with `id`, 192/512/maskable icons, `twitter:title`, `og:image`, `lang`) on the built site served locally, offline. Not in `validate`: it needs a production build and a Chrome, is CPU-heavy and its performance score moves with machine load, which AGENTS.md forbids as a gate. Run it when you touch SEO, the manifest, `<Seo>` or `init` output; `E2E_PREBUILT=1` skips the build |
 | `bun run test:vrt:update` | regenerate baselines on CI (the only place they are rendered, no Docker) for the pushed branch and pull the bot commit |

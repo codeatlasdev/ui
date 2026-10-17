@@ -124,6 +124,7 @@
 		"test:watch": "bun ../../scripts/test-run.ts vitest",
 		"test:unit": "bun test --cwd ../..",
 		"test:browser": "bun ../../scripts/test-run.ts vitest run --project browser",
+		"test:e2e:bun": "cd ../.. && bun test ./packages/ui/tests/*.e2e.ts",
 		"test:ssr": "bun ../../scripts/test-run.ts vitest run --project ssr",
 		"test:vrt": "bun ../../scripts/test-run.ts vitest run --project vrt --maxWorkers=2",
 		"test:vrt:update": "bun ../../scripts/test-run.ts vitest run --project vrt --maxWorkers=2 --update",
