@@ -31,6 +31,8 @@ Skeletons are `aria-hidden`. Announce the loading state on the container, for ex
 
 `Avatar`, `KpiCard`, `TextField`, `Table`, `Card` and `GlassCard` take `skeleton`. The component keeps its real DOM, so the placeholder has exactly the loaded size (no layout shift): content is laid out but hidden, the host paints the same shimmer as `<Skeleton>`, and it is announced with `aria-busy="true"`. A skeleton `TextField` is disabled and an `Avatar` makes no image request. For `Table`, render placeholder rows so the height matches. Under `prefers-reduced-motion` the sweep stops and the placeholder is dimmed.
 
+The sweep is a gradient band. Under the plain surface styles (`defaultStyle: "flat"`, `"solid"` or `"outlined"`, or `data-style` on `<html>`) no gradient is drawn: `<Skeleton>` and the `skeleton` prop pulse their opacity on a flat block instead. Glass, frosted, neumorphic, clay, chrome and tonal keep the sweep.
+
 <Demo title="Text lines" description="With rows, the last line is shortened to 60% for a natural paragraph." src={TextLinesSrc}><TextLines /></Demo>
 <Demo title="Card layout" src={CardLayoutSrc}><CardLayout /></Demo>
 <Demo title="The skeleton prop" description="One flag on the real component keeps its size while data loads." src={SkeletonPropSrc}><SkeletonProp client:visible /></Demo>

@@ -3435,7 +3435,7 @@ Types:
 | `Messages` | `type Messages = Widen<typeof en>;` | Full message shape (string literals widened so other locales can translate). |
 | `MessagesOverride` | `type MessagesOverride = DeepPartial<Messages>;` | Partial, deep override accepted by `setLocale`, `registerLocale` and `I18nProvider`. |
 | `MotionCtx` | `interface MotionCtx { playing: boolean; reduced: boolean; takeover(): void; play(): void; pause(): void; cycle: number; }` | What a motion demo receives from `MotionStage`. Demos render from this and never run their own timers. |
-| `MotionOptions` | `interface MotionOptions { scale?: number; easing?: "standard" \| "emphasized" \| "spring" \| "linear" \| "steps"; }` |  |
+| `MotionOptions` | `interface MotionOptions { scale?: number; easing?: "standard" \| "emphasized" \| "spring" \| "linear" \| "steps"; enter?: "default" \| "none"; }` |  |
 | `NavItem` | `interface NavItem { id: string; label: string; icon: IconComponent; path: string; badge?: number; isNew?: boolean; shortcut?: string; description?: string; }` |  |
 | `NavModule` | `interface NavModule { id: string; label: string; icon: IconComponent; basePath: string; pathPrefixes?: string[]; items: (NavItem \| NavSection)[]; }` |  |
 | `NavSection` | `interface NavSection { label?: string; collapsible?: boolean; defaultOpen?: boolean; items: NavItem[]; }` |  |

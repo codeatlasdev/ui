@@ -237,11 +237,11 @@
     }
 
     :global(.ca-cmd-dialog[data-state='open']) {
-      animation: ca-cmd-slide-in var(--ca-duration-base) var(--ca-ease-decelerate);
+      animation: ca-cmd-slide-in var(--ca-enter-base) var(--ca-ease-decelerate);
     }
 
     :global(.ca-cmd-dialog[data-state='closed']) {
-      animation: ca-cmd-slide-out var(--ca-duration-fast) var(--ca-ease-standard);
+      animation: ca-cmd-slide-out var(--ca-enter-fast) var(--ca-ease-standard);
     }
 
     .ca-cmd-search {

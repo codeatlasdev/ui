@@ -101,3 +101,46 @@ describe("Skeleton", () => {
 		expect(el.getAnimations({ subtree: true })).toHaveLength(0);
 	});
 });
+
+// #280: under the plain styles (flat, solid, outlined) the placeholder is a flat block that pulses
+// its opacity; no gradient band sweeps over it. Glass-like styles keep the sweep.
+describe("Skeleton follows the theme style (#280)", () => {
+	const html = document.documentElement;
+	const prior = html.getAttribute("data-style");
+	afterEach(() =>
+		prior === null ? html.removeAttribute("data-style") : html.setAttribute("data-style", prior)
+	);
+
+	const paint = (el: HTMLElement) => {
+		const after = getComputedStyle(el, "::after");
+		return {
+			image: after.backgroundImage,
+			content: after.content,
+			sweep: getComputedStyle(el, "::after").animationName,
+			pulse: getComputedStyle(el).animationName,
+		};
+	};
+
+	it.each(["flat", "solid", "outlined"])(
+		"data-style=%s: no gradient, opacity pulse",
+		async (style) => {
+			html.setAttribute("data-style", style);
+			const screen = await render(Skeleton, { variant: "rectangular", height: 48 });
+			const [el] = blocks(screen.container);
+			const p = paint(el);
+			expect(p.image).not.toContain("gradient");
+			expect(p.sweep).toBe("none");
+			expect(p.pulse).toContain("ca-skeleton-pulse");
+		}
+	);
+
+	it.each(["glass", "frosted", "clay"])("data-style=%s keeps the shimmer sweep", async (style) => {
+		html.setAttribute("data-style", style);
+		const screen = await render(Skeleton, { variant: "rectangular", height: 48 });
+		const [el] = blocks(screen.container);
+		const p = paint(el);
+		expect(p.image).toContain("linear-gradient");
+		expect(p.sweep).toBe("ca-shimmer");
+		expect(p.pulse).toBe("none");
+	});
+});

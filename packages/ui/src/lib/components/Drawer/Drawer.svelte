@@ -137,26 +137,26 @@
 
     /* ── Animations: right ─────────────────────────────────────── */
     :global(dialog.ca-drawer--right[data-state='open']) {
-      animation: ca-drawer-right-in var(--ca-duration-base) var(--ca-ease-decelerate) both;
+      animation: ca-drawer-right-in var(--ca-enter-base) var(--ca-ease-decelerate) both;
     }
     :global(dialog.ca-drawer--right[data-state='closed']) {
-      animation: ca-drawer-right-out var(--ca-duration-fast) var(--ca-ease-standard) both;
+      animation: ca-drawer-right-out var(--ca-enter-fast) var(--ca-ease-standard) both;
     }
 
     /* ── Animations: left ──────────────────────────────────────── */
     :global(dialog.ca-drawer--left[data-state='open']) {
-      animation: ca-drawer-left-in var(--ca-duration-base) var(--ca-ease-decelerate) both;
+      animation: ca-drawer-left-in var(--ca-enter-base) var(--ca-ease-decelerate) both;
     }
     :global(dialog.ca-drawer--left[data-state='closed']) {
-      animation: ca-drawer-left-out var(--ca-duration-fast) var(--ca-ease-standard) both;
+      animation: ca-drawer-left-out var(--ca-enter-fast) var(--ca-ease-standard) both;
     }
 
     /* ── Animations: bottom ────────────────────────────────────── */
     :global(dialog.ca-drawer--bottom[data-state='open']) {
-      animation: ca-drawer-bottom-in var(--ca-duration-base) var(--ca-ease-decelerate) both;
+      animation: ca-drawer-bottom-in var(--ca-enter-base) var(--ca-ease-decelerate) both;
     }
     :global(dialog.ca-drawer--bottom[data-state='closed']) {
-      animation: ca-drawer-bottom-out var(--ca-duration-fast) var(--ca-ease-standard) both;
+      animation: ca-drawer-bottom-out var(--ca-enter-fast) var(--ca-ease-standard) both;
     }
 
     /* ── Header ─────────────────────────────────────────────────── */

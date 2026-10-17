@@ -98,6 +98,26 @@ describe("MotionStage", () => {
 		expect(await checkA11y(container)).toHaveNoViolations();
 	});
 
+	it("a theme with motion.enter none (--ca-enter-scale: 0) renders the final state too (#268)", async () => {
+		await emulate("no-preference");
+		document.documentElement.style.setProperty("--ca-enter-scale", "0");
+		try {
+			const { container } = await render(Harness);
+			const stage = stageOf(container);
+			await expect.poll(() => stage.dataset.reduced).toBe("true");
+			expect(stage.dataset.playing).toBe("false");
+			expect((container.querySelector(".probe") as HTMLElement).dataset.final).toBe("true");
+			const before = cycle(container);
+			await new Promise((r) => setTimeout(r, 500));
+			expect(cycle(container)).toBe(before);
+			// the knob is live: switching entrances back on resumes autoplay
+			document.documentElement.style.removeProperty("--ca-enter-scale");
+			await expect.poll(() => stage.dataset.reduced).toBe("false");
+		} finally {
+			document.documentElement.style.removeProperty("--ca-enter-scale");
+		}
+	});
+
 	it("labels the group and keeps a fixed minimum height", async () => {
 		await emulate("no-preference");
 		const { container } = await render(Harness);

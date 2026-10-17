@@ -23,7 +23,7 @@ import FadeRiseSrc from "~/demos/motion/basics/FadeRise.svelte?raw";
 </MotionStage>
 ```
 
-`MotionStage` owns the timing contract so a demo only has to draw. It starts when at least half of it is in view and stops when it leaves the viewport or the tab is hidden, so a page full of motion never animates everything at once. Pointer, key or focus inside the demo takes over: autoplay stops, the demo stays interactive and a **Replay** button appears. A **Pause** button (`aria-pressed` while stopped) is always there while motion can run (WCAG 2.2.2). Under `prefers-reduced-motion: reduce` nothing autoplays, the buttons are not rendered and `m.reduced` is `true`: render the final state.
+`MotionStage` owns the timing contract so a demo only has to draw. It starts when at least half of it is in view and stops when it leaves the viewport or the tab is hidden, so a page full of motion never animates everything at once. Pointer, key or focus inside the demo takes over: autoplay stops, the demo stays interactive and a **Replay** button appears. A **Pause** button (`aria-pressed` while stopped) is always there while motion can run (WCAG 2.2.2). Under `prefers-reduced-motion: reduce`, or in a theme with `motion: { enter: "none" }` (`--ca-enter-scale: 0`), nothing autoplays, the buttons are not rendered and `m.reduced` is `true`: render the final state.
 
 The snippet receives `m` with `playing`, `reduced`, `cycle`, `takeover()`, `play()` and `pause()`. `cycle` increments on every loop and on Replay: key the animated element on it (`{#key m.cycle}`) so the animation runs again. Keep the animation in CSS and never start your own timers.
 

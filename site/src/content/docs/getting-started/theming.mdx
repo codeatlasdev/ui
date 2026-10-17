@@ -35,7 +35,7 @@ Pass the same object to `caThemeHandle` and `caThemePlugin` (SvelteKit), `caUI` 
 | `defaultScheme` | `"dark"` | `"light"`, `"dark"` or `"system"`. `bunx @codeatlasdev/ui init` scaffolds `"system"`. |
 | `defaultStyle` | `"solid"` | Surface material: `"solid"`, `"flat"`, `"frosted"`, `"glass"`, `"outlined"`, `"neumorphic"`, `"clay"`, `"tonal"` or `"chrome"`. Solid is the sober default; glass is the opt-in [`liquid`](#the-liquid-recipe) look. |
 | `fonts` | `{}` | `body`, `mono` and `display`. Each is a font stack string or a self-hosted font descriptor (`@font-face`, preload, metric-matched fallback), see [Performance](/docs/getting-started/performance/#fonts). They set `--ca-font-sans`, `--ca-font-mono` and `--ca-font-display`. |
-| `radius` | `0.8` | Multiplier applied to the `--ca-radius-xs` to `--ca-radius-xl` scale (`0.8` makes `--ca-radius-md` 8px). |
+| `radius` | `0.8` | Multiplier applied to the `--ca-radius-xs` to `--ca-radius-xl` scale (`0.8` makes `--ca-radius-md` 8px) and to `--ca-radius-round`, so `0` also squares swatches, active pips, dots and chips. |
 | `density` | `"comfortable"` | `"compact"` (0.75), `"comfortable"` (1), `"airy"` (1.25) or a number. Scales the `--ca-space-*` tokens, so padding, gaps and page spacing follow. |
 | `paper` | `"plain"` | Page background: `"plain"`, `"mesh"` (brand glow, drawn by the `glass` and `frosted` styles), `"grid"`, `"dots"` or `"lines"`. Flat patterns are drawn in `--ca-outline-subtle`, so they follow the preset and scheme. |
 | `iconStroke` | `1.75` | Lucide stroke width. |
@@ -43,7 +43,7 @@ Pass the same object to `caThemeHandle` and `caThemePlugin` (SvelteKit), `caUI` 
 | `border` | `{ width: 1, strong: 2 }` | Border weights in px (`--ca-border-width`, `--ca-border-width-strong`). |
 | `elevation` | `"soft"` | How shadows are drawn: `"soft"`, `"none"`, `"hard"` (offset, no blur) or `"glow"`. |
 | `typography` | `{}` | `scale`, `weights` (`heading` defaults to `600`), `headingTracking`, `headingCase`, `labelTracking`, `labelCase`, `lineHeight` and `measure`. |
-| `motion` | `{}` | `scale` (multiplier on every duration) and `easing`: `"standard"`, `"emphasized"`, `"spring"`, `"linear"` or `"steps"`. |
+| `motion` | `{}` | `scale` (multiplier on every duration), `easing` (`"standard"`, `"emphasized"`, `"spring"`, `"linear"` or `"steps"`) and `enter` (`"default"` or `"none"`). `enter: "none"` makes dialogs, drawers, sheets, menus, popovers, tooltips and toasts appear and leave in place while hover and focus color transitions keep `scale` (it sets `--ca-enter-scale: 0`); `MotionStage` demos render their final state. |
 | `noise` | `0` | Film-grain over the page background, from `0` to `0.12`. |
 | `overrides` | `{}` | Raw `--ca-*` token overrides, per scheme (`light`, `dark`). Prefer preset role colors (below) for palettes. |
 

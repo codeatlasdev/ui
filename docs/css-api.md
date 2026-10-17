@@ -305,7 +305,7 @@ Re-flow: the list is a size container (`container-type: inline-size`), rows stac
 
 `.ca-shimmer` `.ca-skeleton` `.ca-skeleton--circular` `.ca-skeleton--rectangular` `.ca-skeleton--rounded` `.ca-skeleton--text` `.ca-skeleton-rows`
 
-The `skeleton` prop of `Avatar`, `KpiCard`, `TextField`, `Table`, `Card` and `GlassCard` sets `[data-skeleton]` (and `aria-busy="true"`) on the component's frame; the placeholder paint and the `ca-shimmer` keyframes live in `utilities.css`.
+The `skeleton` prop of `Avatar`, `KpiCard`, `TextField`, `Table`, `Card` and `GlassCard` sets `[data-skeleton]` (and `aria-busy="true"`) on the component's frame; the placeholder paint and the `ca-shimmer` and `ca-skeleton-pulse` keyframes live in `utilities.css`. Under `data-style` `flat`, `solid` or `outlined` the sweep is not drawn: the block pulses its opacity (`ca-skeleton-pulse`) instead.
 
 ## SkipLink
 

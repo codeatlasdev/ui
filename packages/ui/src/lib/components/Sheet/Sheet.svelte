@@ -183,10 +183,10 @@
   	}
 
   	:global(.ca-sheet[data-state="open"]) {
-  		animation: ca-sheet-in var(--ca-duration-slow) var(--ca-ease-decelerate) both;
+  		animation: ca-sheet-in var(--ca-enter-slow) var(--ca-ease-decelerate) both;
   	}
   	:global(.ca-sheet[data-state="closed"]) {
-  		animation: ca-sheet-out var(--ca-duration-base) var(--ca-ease-standard) both;
+  		animation: ca-sheet-out var(--ca-enter-base) var(--ca-ease-standard) both;
   	}
 
   	/* Handle + header: the swipe-to-dismiss grab region. */
@@ -286,10 +286,10 @@
   			border-radius: var(--ca-radius-xl);
   		}
   		:global(.ca-sheet[data-state="open"]) {
-  			animation: ca-sheet-fade-in var(--ca-duration-fast) var(--ca-ease-decelerate) both;
+  			animation: ca-sheet-fade-in var(--ca-enter-fast) var(--ca-ease-decelerate) both;
   		}
   		:global(.ca-sheet[data-state="closed"]) {
-  			animation: ca-sheet-fade-out var(--ca-duration-fast) var(--ca-ease-standard) both;
+  			animation: ca-sheet-fade-out var(--ca-enter-fast) var(--ca-ease-standard) both;
   		}
   		:global(.ca-sheet__handle) {
   			display: none;

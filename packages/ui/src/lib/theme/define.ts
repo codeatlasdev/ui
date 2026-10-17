@@ -177,6 +177,12 @@ export interface MotionOptions {
 	scale?: number;
 	/** Default easing personality for --ca-ease-standard. */
 	easing?: "standard" | "emphasized" | "spring" | "linear" | "steps";
+	/**
+	 * `"none"`: dialogs, drawers, sheets, menus, popovers, tooltips and toasts appear and leave in
+	 * place (no fade, slide or zoom), while hover/focus color transitions keep `scale`. Sets
+	 * `--ca-enter-scale: 0`. @default "default"
+	 */
+	enter?: "default" | "none";
 }
 
 export interface ThemeDefinition {
@@ -190,7 +196,7 @@ export interface ThemeDefinition {
 	defaultStyle: SurfaceStyle;
 	/** Fonts for --ca-font-sans (body), --ca-font-mono and --ca-font-display. A string is a plain stack. */
 	fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec };
-	/** Radius multiplier (0 = square corners, 2 = very round). 0.8 makes `--ca-radius-md` 8px. @default 0.8 */
+	/** Radius multiplier (0 = square corners, 2 = very round). 0.8 makes `--ca-radius-md` 8px. Also scales `--ca-radius-round` (swatches, pips, dots, chips), so 0 squares those too. @default 0.8 */
 	radius: number;
 	/** Corner role used by buttons, fields and chips. @default "md" */
 	controlRadius: "xs" | "sm" | "md" | "lg" | "xl" | "pill";
@@ -568,6 +574,7 @@ export function designTokens(
 	Object.assign(root, elevationTokens(t.elevation));
 	if (t.motion.scale !== undefined && t.motion.scale !== 1)
 		root["--ca-motion-scale"] = String(t.motion.scale);
+	if (t.motion.enter === "none") root["--ca-enter-scale"] = "0";
 	if (t.motion.easing && t.motion.easing !== "standard")
 		root["--ca-ease-standard"] = EASING[t.motion.easing];
 	if (t.iconStroke !== DEFAULT_ICON_STROKE) root["--ca-icon-stroke"] = String(t.iconStroke);

@@ -153,12 +153,12 @@
       color: var(--ca-tooltip-fg);
       max-width: 240px;
       box-shadow: var(--ca-shadow-md);
-      animation: ca-tooltip-in var(--ca-duration-fast) var(--ca-ease-decelerate);
+      animation: ca-tooltip-in var(--ca-enter-fast) var(--ca-ease-decelerate);
       line-height: var(--ca-line-height-body);
     }
 
     :global(.ca-tooltip-content[data-state='closed']) {
-      animation: ca-tooltip-out var(--ca-duration-fast) var(--ca-ease-standard);
+      animation: ca-tooltip-out var(--ca-enter-fast) var(--ca-ease-standard);
     }
 
     @keyframes ca-tooltip-in {

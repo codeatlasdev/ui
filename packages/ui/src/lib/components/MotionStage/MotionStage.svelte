@@ -10,8 +10,9 @@
    * MotionStage: the frame of a motion demo. It autoplays only while at least half of it is in view
    * and the tab is visible; touching, clicking or focusing the demo takes over (autoplay stops, a
    * Replay button appears); a visible Pause button stops it for good (WCAG 2.2.2). Under
-   * `prefers-reduced-motion` nothing autoplays and `ctx.reduced` tells the demo to render its final
-   * state. `ctx.cycle` increments on every loop: key an animation on it to run it again.
+   * `prefers-reduced-motion`, or a theme that turns entrances off (`--ca-enter-scale: 0`), nothing
+   * autoplays and `ctx.reduced` tells the demo to render its final state. `ctx.cycle` increments on
+   * every loop: key an animation on it to run it again.
    *
    * @example
    * <MotionStage label="Fade rise">
@@ -32,7 +33,14 @@
   }
   let { label, loop = 3200, pauseLabel, replayLabel, children }: Props = $props();
 
-  const stage = createStage({ isReduced: () => reducedMotion.value });
+  // `motion.enter: "none"` in the theme (--ca-enter-scale: 0): entrances are off, so a motion
+  // demo renders its final state exactly as under prefers-reduced-motion (#268).
+  let enterOff = $state(false);
+  const readEnter = () => {
+    if (!host) return;
+    enterOff = getComputedStyle(host).getPropertyValue('--ca-enter-scale').trim() === '0';
+  };
+  const stage = createStage({ isReduced: () => reducedMotion.value || enterOff });
   const ctx = stage.ctx;
   let host = $state<HTMLElement>();
 
@@ -48,7 +56,13 @@
       { threshold: [0, 0.5, 1] }
     );
     if (host) io.observe(host);
+    readEnter();
+    // The theme can change at runtime (inline style, the theme stylesheet, a class on html).
+    const mo = new MutationObserver(readEnter);
+    mo.observe(document.documentElement, { attributes: true });
+    mo.observe(document.head, { childList: true, subtree: true, characterData: true });
     return () => {
+      mo.disconnect();
       stopMedia();
       document.removeEventListener('visibilitychange', onVisibility);
       io.disconnect();

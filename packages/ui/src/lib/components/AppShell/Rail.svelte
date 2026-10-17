@@ -191,7 +191,7 @@
       transform: translateY(-50%);
       width: var(--ca-space-1);
       height: var(--ca-space-4);
-      border-radius: var(--ca-radius-pill);
+      border-radius: var(--ca-radius-round);
       background: var(--ca-brand-main);
       box-shadow: 0 0 var(--ca-space-2) var(--ca-glow-primary-strong);
     }

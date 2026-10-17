@@ -65,8 +65,8 @@
       opacity: 0;
       transform: translateY(var(--ca-space-2));
       transition:
-        opacity var(--ca-duration-base) var(--ca-ease-decelerate),
-        transform var(--ca-duration-base) var(--ca-ease-decelerate);
+        opacity var(--ca-enter-base) var(--ca-ease-decelerate),
+        transform var(--ca-enter-base) var(--ca-ease-decelerate);
     }
 
     .ca-toast--visible {
@@ -103,7 +103,7 @@
 
     @media (prefers-reduced-motion: reduce) {
       .ca-toast {
-        transition: opacity var(--ca-duration-fast) var(--ca-ease-standard);
+        transition: opacity var(--ca-enter-fast) var(--ca-ease-standard);
         transform: none;
       }
     }

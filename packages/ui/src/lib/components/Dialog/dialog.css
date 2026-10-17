@@ -46,10 +46,10 @@
     overscroll-behavior: contain;
   }
   dialog.ca-overlay[data-state='open']::backdrop {
-    animation: ca-overlay-in var(--ca-duration-fast) var(--ca-ease-decelerate) both;
+    animation: ca-overlay-in var(--ca-enter-fast) var(--ca-ease-decelerate) both;
   }
   dialog.ca-overlay[data-state='closed']::backdrop {
-    animation: ca-overlay-out var(--ca-duration-fast) var(--ca-ease-standard) both;
+    animation: ca-overlay-out var(--ca-enter-fast) var(--ca-ease-standard) both;
   }
 
   /* ── Dialog panel ───────────────────────────────────────────── */
@@ -78,10 +78,10 @@
   }
 
   dialog.ca-dialog[data-state='open'] {
-    animation: ca-dialog-in var(--ca-duration-base) var(--ca-ease-decelerate) both;
+    animation: ca-dialog-in var(--ca-enter-base) var(--ca-ease-decelerate) both;
   }
   dialog.ca-dialog[data-state='closed'] {
-    animation: ca-dialog-out var(--ca-duration-fast) var(--ca-ease-standard) both;
+    animation: ca-dialog-out var(--ca-enter-fast) var(--ca-ease-standard) both;
   }
 
   /* ── Header ─────────────────────────────────────────────────── */

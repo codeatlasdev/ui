@@ -206,11 +206,11 @@
     }
 
     :global(.ca-docs-search[data-state='open']) {
-      animation: ca-docs-search-in var(--ca-duration-fast) var(--ca-ease-decelerate) both;
+      animation: ca-docs-search-in var(--ca-enter-fast) var(--ca-ease-decelerate) both;
     }
 
     :global(.ca-docs-search[data-state='closed']) {
-      animation: ca-docs-search-out var(--ca-duration-fast) var(--ca-ease-standard) both;
+      animation: ca-docs-search-out var(--ca-enter-fast) var(--ca-ease-standard) both;
     }
 
     .ca-docs-search__bar {

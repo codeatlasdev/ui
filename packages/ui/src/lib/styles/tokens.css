@@ -65,6 +65,9 @@
   /* ── Motion ──────────────────────────────────────────────────────────────
    * Durations times --ca-motion-scale (0 under reduced motion). Easing by role. */
   --ca-motion-scale: 1;
+  /* Extra multiplier on entrance/exit animations only (dialogs, drawers, menus, tooltips, toasts).
+     0 = they appear and leave in place while hover/focus color transitions keep --ca-duration-*. */
+  --ca-enter-scale: 1;
   /* Looping indicators (spinner, shimmer) keep their period under motion-scale;
    * reduced-motion stops them in the components themselves. */
   --ca-duration-loop: 1.4s;
@@ -155,7 +158,7 @@
 }
 
 /* ── Derived tokens ──────────────────────────────────────────────────────────
- * Computed from the knobs above (--ca-font-scale, --ca-radius-scale, --ca-motion-scale,
+ * Computed from the knobs above (--ca-font-scale, --ca-radius-scale, --ca-motion-scale, --ca-enter-scale,
  * --ca-space-unit, --ca-density). Custom properties resolve where they are declared, so
  * any element that changes a knob must re-derive them: add [data-ca-tokens] to it (the
  * theme editor preview and density islands do). */
@@ -184,12 +187,16 @@
   --ca-radius-pill: 999px;
   --ca-radius-xl:   calc(20px * var(--ca-radius-scale));
   --ca-radius-control: var(--ca-radius-md);
-  /* Tags/chips: pill at any radius-scale > 0, square when a recipe sets radius 0. */
-  --ca-radius-chip: calc(999px * var(--ca-radius-scale));
+  /* "Fully rounded at the current scale": pill/circle decorations (swatches, pips, dots, tags). 0 when a recipe sets radius 0 (square identity). Functional shapes (switch, slider, progress) keep --ca-radius-pill. */
+  --ca-radius-round: calc(999px * var(--ca-radius-scale));
+  --ca-radius-chip: var(--ca-radius-round);
   --ca-duration-press:  calc(80ms * var(--ca-motion-scale));
   --ca-duration-fast:   calc(150ms * var(--ca-motion-scale));
   --ca-duration-base:   calc(240ms * var(--ca-motion-scale));
   --ca-duration-slow:   calc(320ms * var(--ca-motion-scale));
+  --ca-enter-fast:      calc(var(--ca-duration-fast) * var(--ca-enter-scale));
+  --ca-enter-base:      calc(var(--ca-duration-base) * var(--ca-enter-scale));
+  --ca-enter-slow:      calc(var(--ca-duration-slow) * var(--ca-enter-scale));
   --ca-space-0-5: calc(var(--ca-space-unit) * 0.5 * var(--ca-density));
   --ca-space-1:   calc(var(--ca-space-unit) * 1 * var(--ca-density));
   --ca-space-1-5: calc(var(--ca-space-unit) * 1.5 * var(--ca-density));

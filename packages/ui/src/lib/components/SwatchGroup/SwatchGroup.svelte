@@ -100,7 +100,7 @@
       block-size: var(--ca-swatch-size);
       padding: 0;
       border: none;
-      border-radius: var(--ca-radius-pill);
+      border-radius: var(--ca-radius-round);
       background: var(--ca-swatch-color, var(--ca-brand-main));
       color: var(--ca-brand-contrast);
       cursor: pointer;

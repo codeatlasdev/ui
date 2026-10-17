@@ -49,6 +49,16 @@ describe("design knobs → tokens", () => {
 			expect(css).toContain(decl);
 	});
 
+	it("motion.enter: none zeroes entrances only, motion.scale keeps driving color transitions", () => {
+		const css = themeCSS(defineTheme({ motion: { enter: "none" } }));
+		expect(css).toContain("--ca-enter-scale: 0;");
+		expect(css).not.toContain("--ca-motion-scale");
+		expect(themeCSS(defineTheme({ motion: {} }))).not.toContain("--ca-enter-scale");
+		expect(themeCSS(defineTheme({ motion: { enter: "default" } }))).not.toContain(
+			"--ca-enter-scale"
+		);
+	});
+
 	it("hard elevation draws offset shadows with no blur from the border color", () => {
 		const css = themeCSS(defineTheme({ elevation: "hard" }));
 		expect(css).toContain("--ca-shadow-md: 6px 6px 0 0 var(--ca-border-color);");

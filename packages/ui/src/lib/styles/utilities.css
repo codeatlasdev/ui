@@ -269,6 +269,10 @@ tr:focus-within .ca-row-actions {
   0%   { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
 }
+/* Plain styles (flat, solid, outlined): no gradient band, the placeholder pulses its opacity. */
+@keyframes ca-skeleton-pulse {
+  50% { opacity: 0.55; }
+}
 [data-skeleton] {
   position: relative;
   overflow: hidden;
@@ -291,9 +295,18 @@ tr:focus-within .ca-row-actions {
   transform: translateX(-100%);
   animation: ca-shimmer var(--ca-duration-loop) var(--ca-ease-standard) infinite;
 }
+:is([data-style='flat'], [data-style='solid'], [data-style='outlined']) [data-skeleton] {
+  animation: ca-skeleton-pulse var(--ca-duration-loop) var(--ca-ease-standard) infinite;
+}
+:is([data-style='flat'], [data-style='solid'], [data-style='outlined']) [data-skeleton]::after {
+  content: none;
+  background: none;
+  animation: none;
+}
 @media (prefers-reduced-motion: reduce) {
   [data-skeleton]::after { animation: none; }
   [data-skeleton] { opacity: 0.5; }
+  :is([data-style='flat'], [data-style='solid'], [data-style='outlined']) [data-skeleton] { animation: none; }
 }
 @media (forced-colors: active) {
   [data-skeleton]::before { background: Canvas; outline: 1px solid CanvasText; outline-offset: -1px; }

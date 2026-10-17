@@ -377,11 +377,11 @@
   	}
 
   	:global(.ca-lightbox[data-state="open"]) {
-  		animation: ca-lightbox-in var(--ca-duration-fast) var(--ca-ease-decelerate) both;
+  		animation: ca-lightbox-in var(--ca-enter-fast) var(--ca-ease-decelerate) both;
   	}
 
   	:global(.ca-lightbox[data-state="closed"]) {
-  		animation: ca-lightbox-out var(--ca-duration-fast) var(--ca-ease-standard) both;
+  		animation: ca-lightbox-out var(--ca-enter-fast) var(--ca-ease-standard) both;
   	}
 
   	@keyframes ca-lightbox-in {

@@ -84,11 +84,11 @@
       padding: var(--ca-space-4);
       max-width: 320px;
       outline: none;
-      animation: ca-popover-in var(--ca-duration-fast) var(--ca-ease-decelerate);
+      animation: ca-popover-in var(--ca-enter-fast) var(--ca-ease-decelerate);
     }
 
     :global(.ca-popover-content[data-state='closed']) {
-      animation: ca-popover-out var(--ca-duration-fast) var(--ca-ease-standard);
+      animation: ca-popover-out var(--ca-enter-fast) var(--ca-ease-standard);
     }
 
     @keyframes ca-popover-in {
