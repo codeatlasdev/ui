@@ -302,3 +302,6 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 387 | Shift range selection | inputs/checkbox | Checkbox |
 | 388 | External trigger, no list | inputs/file-upload | Button, FileUpload |
 | 389 | Hidden label | inputs/text-field | Button, TextField |
+| 400 | Checkbox and radio items | navigation/menu | DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, Button |
+| 401 | Submenus | navigation/menu | DropdownMenu, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubTrigger, Button |
+| 402 | Context menu | navigation/menu | DropdownMenu, DropdownMenuItem, DropdownMenuSeparator |

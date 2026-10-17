@@ -890,13 +890,32 @@ Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__acti
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `class?` | `string` | `''` |  |
+| `open?` | `boolean` | `false` | `bind:` Bindable. Whether the menu is open. |
+| `onOpenChange?` | `(open: boolean) => void` |  | Called when the user opens or closes the menu (not when the bound value is set from code). |
+| `anchor?` | `{ x: number; y: number } \| null` | `null` | Viewport point (`clientX`/`clientY`) the menu opens at, for a context menu. Set it together with `open = true`; changing it while the menu is open moves the menu instead of toggling it. Without `trigger`/`triggerChild` the menu has no button of its own. |
 | `side?` | `'top' \| 'right' \| 'bottom' \| 'left'` | `'bottom'` |  |
 | `align?` | `'start' \| 'center' \| 'end'` | `'start'` |  |
-| `sideOffset?` | `number` | `6` |  |
+| `sideOffset?` | `number` |  |  |
 
 Snippets: `trigger`, `triggerChild` (`Snippet<[Record<string, unknown>]>`), `children`
 
-Classes: `ca-dropdown-content` `ca-dropdown__trigger`
+Classes: `ca-dropdown-content` `ca-dropdown__point` `ca-dropdown__trigger`
+
+## DropdownMenuCheckboxItem
+
+`import { DropdownMenuCheckboxItem } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `class?` | `string` | `''` |  |
+| `checked?` | `boolean` | `false` | `bind:` Whether the item is checked. Bindable. |
+| `onCheckedChange?` | `(checked: boolean) => void` |  | Called with the new state when the user toggles the item. |
+| `disabled?` | `boolean` | `false` |  |
+| `closeOnSelect?` | `boolean` | `false` | Close the menu after toggling. Default false: the menu stays open so several options can be set (APG). |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'onclick' \| 'role' \| 'tabindex'>`
 
 ## DropdownMenuItem
 
@@ -912,7 +931,9 @@ Classes: `ca-dropdown-content` `ca-dropdown__trigger`
 
 Snippets: `icon`, `children`
 
-Classes: `ca-dropdown-item` `ca-dropdown-item--destructive` `ca-dropdown-item__icon`
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'onclick' \| 'role' \| 'tabindex'>`
+
+Classes: `ca-dropdown-item` `ca-dropdown-item--destructive` `ca-dropdown-item__icon` `ca-dropdown-item__indicator`
 
 ## DropdownMenuLabel
 
@@ -926,11 +947,74 @@ Snippets: `children`
 
 Classes: `ca-dropdown-label`
 
+## DropdownMenuRadioGroup
+
+`import { DropdownMenuRadioGroup } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `class?` | `string` | `''` |  |
+| `value?` | `string` |  | `bind:` Value of the checked radio item. Bindable. |
+| `onValueChange?` | `(value: string) => void` |  | Called with the new value when the user picks an item. |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'role'>`
+
+## DropdownMenuRadioItem
+
+`import { DropdownMenuRadioItem } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `class?` | `string` | `''` |  |
+| `value` | `string` |  | Value this item sets on its `DropdownMenuRadioGroup`. |
+| `disabled?` | `boolean` | `false` |  |
+| `closeOnSelect?` | `boolean` | `false` | Close the menu after picking. Default false: the menu stays open (APG). |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'onclick' \| 'role' \| 'tabindex'>`
+
 ## DropdownMenuSeparator
 
 `import { DropdownMenuSeparator } from "@codeatlasdev/ui"`
 
 Classes: `ca-dropdown-sep`
+
+## DropdownMenuSub
+
+`import { DropdownMenuSub } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `class?` | `string` | `''` |  |
+| `open?` | `boolean` | `false` | `bind:` Bindable. Whether the submenu is open. |
+| `onOpenChange?` | `(open: boolean) => void` |  |  |
+| `disabled?` | `boolean` | `false` |  |
+| `side?` | `'top' \| 'right' \| 'bottom' \| 'left'` | `'right'` |  |
+| `align?` | `'start' \| 'center' \| 'end'` | `'start'` |  |
+| `sideOffset?` | `number` | `2` |  |
+| `openDelay?` | `number` | `120` | Milliseconds the pointer must rest on the trigger before the submenu opens. |
+| `closeDelay?` | `number` | `200` | Milliseconds the submenu stays open after the pointer leaves, so it can cross into it. |
+
+Snippets: `trigger`, `children`
+
+Classes: `ca-dropdown-sub`
+
+## DropdownMenuSubTrigger
+
+`import { DropdownMenuSubTrigger } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `class?` | `string` | `''` |  |
+
+Snippets: `icon`, `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'onclick' \| 'role' \| 'tabindex'>`
+
+Classes: `ca-dropdown-item--sub-trigger` `ca-dropdown-item__chevron` `ca-dropdown-item__label`
 
 ## EmptyState
 
