@@ -1,6 +1,6 @@
 {
 	"version": "4.3.0",
-	"count": 310,
+	"count": 313,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -17,8 +17,8 @@
 		{
 			"slug": "feedback",
 			"first": "080",
-			"last": "244",
-			"count": 28
+			"last": "462",
+			"count": 30
 		},
 		{
 			"slug": "display",
@@ -30,7 +30,7 @@
 			"slug": "navigation",
 			"first": "146",
 			"last": "470",
-			"count": 28
+			"count": 29
 		},
 		{
 			"slug": "layout",
@@ -13875,6 +13875,138 @@
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/display/data-table#groups",
 			"needs": "@codeatlasdev/ui@4.3.0 + @tanstack/svelte-table"
+		},
+		{
+			"id": "460",
+			"group": "navigation",
+			"page": "tabs",
+			"variant": "Line",
+			"slug": "line",
+			"title": "Line",
+			"description": "variant=line as a view switcher: aria-label on the list, data-testid on a trigger, no panels.",
+			"summary": "Tabs with variant=\"line\": bare text tabs with an underline on the active one, used as a view switcher with no panels.",
+			"use": "Page headers and view switchers where the tabs change what the page shows, not a panel under the list.",
+			"spec": [
+				"`<Tabs bind:value={view} variant=\"line\">` with `<TabsList aria-label=\"View\">`",
+				"3 triggers: `board`, `list`, `timeline`, each with a `data-testid` forwarded to the button",
+				"No `TabsContent`: triggers carry no `aria-controls`",
+				"A line below the tabs reads `Showing the {view} view.`",
+				"Wrapper is `.wrap` with `max-width: 420px`"
+			],
+			"tags": [
+				"tabs",
+				"line",
+				"variant",
+				"view-switcher",
+				"aria-label",
+				"tabs-list"
+			],
+			"shape": "wide",
+			"components": [
+				"Tabs",
+				"TabsList",
+				"TabsTrigger"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Tabs",
+						"TabsList",
+						"TabsTrigger"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/tabs#line",
+			"needs": "@codeatlasdev/ui@4.3.0"
+		},
+		{
+			"id": "461",
+			"group": "feedback",
+			"page": "drawer",
+			"variant": "CustomHeader",
+			"slug": "own-header",
+			"title": "Own header",
+			"description": "No title: aria-labelledby points at your heading, so the panel keeps its accessible name while you build the header and its close button. Attributes such as data-testid reach the dialog.",
+			"summary": "A drawer without a title whose own header carries the item key, a heading and a close button; aria-labelledby names the panel.",
+			"use": "Detail panels that build their own header (key, actions) and still need an accessible name.",
+			"spec": [
+				"`<Drawer bind:open aria-labelledby=\"item-heading\" data-testid=\"item-drawer\">` with no `title`",
+				"A `<header class=\"head\">` with `PRJ-42` as `<p class=\"key\">` and `<h2 id=\"item-heading\" class=\"name\">Fix login redirect</h2>`",
+				"A ghost small button with `aria-label=\"Close item\"` and a `<X size={14} />` leading icon sets `open = false`",
+				"A line below reads `Own header, own close button. The panel is still named by the heading above.`"
+			],
+			"tags": [
+				"drawer",
+				"aria-labelledby",
+				"custom-header",
+				"accessible-name",
+				"detail-panel"
+			],
+			"shape": "wide",
+			"components": [
+				"Drawer",
+				"Button"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Drawer",
+						"Button"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/drawer#own-header",
+			"needs": "@codeatlasdev/ui@4.3.0"
+		},
+		{
+			"id": "462",
+			"group": "feedback",
+			"page": "alert-dialog",
+			"variant": "TypeToConfirm",
+			"slug": "type-to-confirm",
+			"title": "Type to confirm",
+			"description": "children renders a field under the description, confirmDisabled keeps Confirm off until the key matches, description takes a snippet for rich text, and confirmProps tags the button for tests.",
+			"summary": "A destructive alert dialog with a rich description and a TextField body; Confirm stays disabled until the key is typed.",
+			"use": "Irreversible deletes that need a deliberate confirmation, such as typing the item key.",
+			"spec": [
+				"Trigger `<Button variant=\"destructive\"` labelled `Delete {key}` with a `<Trash2 size={14} />` leading icon; it resets `typed = ''` and opens the dialog",
+				"`<AlertDialog` with `bind:open`, `title=\"Delete {key}?\"`, `confirmLabel=\"Delete\"`, `cancelVariant=\"outlined\"` and `destructive`",
+				"`confirmDisabled={typed !== key}` where `const key = 'PRJ-42'`, and `confirmProps={{ 'data-testid': 'confirm-delete' }}`",
+				"`{#snippet description()}` renders `This removes <strong>3 linked records</strong> too and cannot be undone.`",
+				"Body is `<TextField label=\"Type {key} to confirm\" bind:value={typed} />`",
+				"`onconfirm` sets `deleted = true`, which shows `{key} deleted.` in a `<span class=\"out\" aria-live=\"polite\">`"
+			],
+			"tags": [
+				"alert-dialog",
+				"type-to-confirm",
+				"confirm-disabled",
+				"destructive",
+				"children",
+				"confirm-props"
+			],
+			"shape": "wide",
+			"components": [
+				"AlertDialog",
+				"Button",
+				"TextField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AlertDialog",
+						"Button",
+						"TextField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/alert-dialog#type-to-confirm",
+			"needs": "@codeatlasdev/ui@4.3.0"
 		},
 		{
 			"id": "470",
