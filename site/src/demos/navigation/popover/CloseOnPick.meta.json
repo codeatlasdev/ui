@@ -1,0 +1,12 @@
+{
+	"summary": "A button showing the chosen date that opens a popover holding a calendar; picking a day closes the popover.",
+	"use": "A choice made inside a popover (date, option, color) that should dismiss it and hand focus back to the trigger.",
+	"spec": [
+		"`<Popover bind:open align=\"start\">`",
+		"`{#snippet triggerChild(props)}` renders `<Button {...props}>` labelled with the selected date or `Pick a date`",
+		"`{#snippet children({ close })}` renders `<Calendar bind:value label=\"Due date\" locale=\"en-US\" weekStartsOn={0} onchange={() => close()} />`",
+		"`close()` closes the popover and returns focus to the trigger"
+	],
+	"tags": ["popover", "calendar", "bind-open", "close", "date", "overlay"],
+	"shape": "square"
+}

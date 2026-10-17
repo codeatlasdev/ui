@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #470 "Close on pick" (navigation/popover).
+What it shows: A button showing the chosen date that opens a popover holding a calendar; picking a day closes the popover. When to use: A choice made inside a popover (date, option, color) that should dismiss it and hand focus back to the trigger.
+Spec:
+- `<Popover bind:open align="start">`
+- `{#snippet triggerChild(props)}` renders `<Button {...props}>` labelled with the selected date or `Pick a date`
+- `{#snippet children({ close })}` renders `<Calendar bind:value label="Due date" locale="en-US" weekStartsOn={0} onchange={() => close()} />`
+- `close()` closes the popover and returns focus to the trigger
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #470 Close on pick → file, what changed, https://ui.codeatlas.com.br/docs/navigation/popover#close-on-pick; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/470.txt   Components API: ca-ui-mcp get_component(Popover)

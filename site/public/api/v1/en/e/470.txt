@@ -1,0 +1,29 @@
+<!-- @codeatlasdev/ui demo #470 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/popover#close-on-pick -->
+Element: #470 Close on pick (navigation/popover)
+What it shows: A button showing the chosen date that opens a popover holding a calendar; picking a day closes the popover.
+When to use: A choice made inside a popover (date, option, color) that should dismiss it and hand focus back to the trigger.
+Spec:
+- `<Popover bind:open align="start">`
+- `{#snippet triggerChild(props)}` renders `<Button {...props}>` labelled with the selected date or `Pick a date`
+- `{#snippet children({ close })}` renders `<Calendar bind:value label="Due date" locale="en-US" weekStartsOn={0} onchange={() => close()} />`
+- `close()` closes the popover and returns focus to the trigger
+Tags: popover, calendar, bind-open, close, date, overlay
+Needs: @codeatlasdev/ui@4.3.0
+Components: Popover, Button, Calendar
+Live demo: https://ui.codeatlas.com.br/docs/navigation/popover#close-on-pick
+
+<script lang="ts">
+  import { Popover, Button, Calendar, getLocalTimeZone, today, type DateValue } from '@codeatlasdev/ui';
+
+  let open = $state(false);
+  let value = $state<DateValue | undefined>(today(getLocalTimeZone()));
+</script>
+
+<Popover bind:open align="start">
+  {#snippet triggerChild(props)}
+    <Button {...props}>{value ? value.toString() : 'Pick a date'}</Button>
+  {/snippet}
+  {#snippet children({ close })}
+    <Calendar bind:value label="Due date" locale="en-US" weekStartsOn={0} onchange={() => close()} />
+  {/snippet}
+</Popover>

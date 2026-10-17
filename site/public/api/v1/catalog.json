@@ -1,6 +1,6 @@
 {
 	"version": "4.3.0",
-	"count": 304,
+	"count": 305,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -29,8 +29,8 @@
 		{
 			"slug": "navigation",
 			"first": "146",
-			"last": "402",
-			"count": 26
+			"last": "470",
+			"count": 27
 		},
 		{
 			"slug": "layout",
@@ -13741,6 +13741,53 @@
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/display/data-table#groups",
 			"needs": "@codeatlasdev/ui@4.3.0 + @tanstack/svelte-table"
+		},
+		{
+			"id": "470",
+			"group": "navigation",
+			"page": "popover",
+			"variant": "CloseOnPick",
+			"slug": "close-on-pick",
+			"title": "Close on pick",
+			"description": "A calendar inside a popover that closes itself when a day is chosen.",
+			"summary": "A button showing the chosen date that opens a popover holding a calendar; picking a day closes the popover.",
+			"use": "A choice made inside a popover (date, option, color) that should dismiss it and hand focus back to the trigger.",
+			"spec": [
+				"`<Popover bind:open align=\"start\">`",
+				"`{#snippet triggerChild(props)}` renders `<Button {...props}>` labelled with the selected date or `Pick a date`",
+				"`{#snippet children({ close })}` renders `<Calendar bind:value label=\"Due date\" locale=\"en-US\" weekStartsOn={0} onchange={() => close()} />`",
+				"`close()` closes the popover and returns focus to the trigger"
+			],
+			"tags": [
+				"popover",
+				"calendar",
+				"bind-open",
+				"close",
+				"date",
+				"overlay"
+			],
+			"shape": "square",
+			"components": [
+				"Popover",
+				"Button",
+				"Calendar"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Popover",
+						"Button",
+						"Calendar",
+						"getLocalTimeZone",
+						"today",
+						"DateValue"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/popover#close-on-pick",
+			"needs": "@codeatlasdev/ui@4.3.0"
 		}
 	]
 }

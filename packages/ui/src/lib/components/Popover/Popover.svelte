@@ -10,7 +10,12 @@
     trigger?: Snippet;
     /** Interactive trigger (a Button/IconButton): receives the trigger `props` to spread onto it. */
     triggerChild?: Snippet<[Record<string, unknown>]>;
-    children?: Snippet;
+    /** Popover content. Receives `close`, which closes the popover and returns focus to the trigger. */
+    children?: Snippet<[{ close: () => void }]>;
+    /** Bindable. Whether the popover is open. */
+    open?: boolean;
+    /** Called when the user opens or closes the popover (not when the bound value is set from code). */
+    onOpenChange?: (open: boolean) => void;
     side?:       'top' | 'right' | 'bottom' | 'left';
     align?:      'start' | 'center' | 'end';
     sideOffset?: number;
@@ -21,23 +26,30 @@
     trigger,
     triggerChild,
     children,
+    open = $bindable(false),
+    onOpenChange,
     side       = 'bottom',
     align      = 'center',
     sideOffset = 8,
   }: Props = $props();
 
   const id = uid('pop');
-  let open = $state(false);
   let anchor = $state<HTMLElement | null>(null);
   let content = $state<HTMLElement | null>(null);
 
+  function setOpen(next: boolean) {
+    if (next === open) return;
+    open = next;
+    onOpenChange?.(next);
+  }
+
   const makeTrigger = createTriggerProps((el) => (anchor = el));
   const triggerAttrs = $derived(
-    makeTrigger({ id: `${id}-trigger`, popup: 'dialog', open, controls: `${id}-content`, onToggle: () => (open = !open), onKeydown: (e) => open && tabIntoPopup(e, content) })
+    makeTrigger({ id: `${id}-trigger`, popup: 'dialog', open, controls: `${id}-content`, onToggle: () => setOpen(!open), onKeydown: (e) => open && tabIntoPopup(e, content) })
   );
 
   function close(restoreFocus: boolean) {
-    open = false;
+    setOpen(false);
     if (restoreFocus) anchor?.focus({ preventScroll: true });
   }
 
@@ -65,7 +77,7 @@
   class="ca-popover-content glass-overlay {className}"
   onDismiss={(reason) => close(reason === 'escape')}
 >
-  {@render children?.()}
+  {@render children?.({ close: () => close(true) })}
 </FloatingLayer>
 
 <style>

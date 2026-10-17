@@ -1798,11 +1798,13 @@ Classes: `ca-pin` `ca-pin--disabled` `ca-pin--error` `ca-pin__caret` `ca-pin__ce
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `class?` | `string` | `''` |  |
+| `open?` | `boolean` | `false` | `bind:` Bindable. Whether the popover is open. |
+| `onOpenChange?` | `(open: boolean) => void` |  | Called when the user opens or closes the popover (not when the bound value is set from code). |
 | `side?` | `'top' \| 'right' \| 'bottom' \| 'left'` | `'bottom'` |  |
 | `align?` | `'start' \| 'center' \| 'end'` | `'center'` |  |
 | `sideOffset?` | `number` | `8` |  |
 
-Snippets: `trigger`, `triggerChild` (`Snippet<[Record<string, unknown>]>`), `children`
+Snippets: `trigger`, `triggerChild` (`Snippet<[Record<string, unknown>]>`), `children` (`Snippet<[{ close: () => void }]>`)
 
 Classes: `ca-popover-content` `ca-popover__trigger`
 
