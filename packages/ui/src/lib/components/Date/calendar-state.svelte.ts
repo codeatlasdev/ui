@@ -4,7 +4,7 @@
  * Props are read through getters so the state stays reactive to prop changes.
  */
 import type { DateValue } from "@internationalized/date";
-import { tick } from "svelte";
+import { flushSync } from "svelte";
 import {
 	createMonths,
 	dayLabel,
@@ -196,11 +196,15 @@ export class CalendarState {
 		return d;
 	}
 
-	/** Moves the roving focus to `target` (changing month when needed) and focuses its button. */
-	async focusDate(target: DateValue) {
+	/**
+	 * Moves the roving focus to `target` (changing month when needed) and focuses its button.
+	 * Synchronous on purpose: with `await tick()` the next key of a fast sequence arrived while
+	 * focus was still on the previous (re-rendered) day, and Svelte's async mode delays `tick()`
+	 * further, so keys were lost (#305).
+	 */
+	focusDate(target: DateValue) {
 		const to = this.#clamp(target);
-		this.setAnchor(to);
-		await tick();
+		flushSync(() => this.setAnchor(to));
 		const el = this.root?.querySelector<HTMLElement>(
 			`[data-ca-day][data-value="${to.toString()}"]`
 		);
@@ -258,7 +262,7 @@ export class CalendarState {
 		}
 		e.preventDefault();
 		if (this.isDisabled(next) && !this.#reachable(next)) return;
-		void this.focusDate(next);
+		this.focusDate(next);
 	};
 
 	/** Day of week 0-6 (Sunday first) — independent of the locale's week rules. */
