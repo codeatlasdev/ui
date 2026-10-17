@@ -81,6 +81,10 @@ Reordering is per list: set `onReorder` on a `NavSection` (or on the `NavModule`
 <script lang="ts">
   import { DropdownMenuItem, type NavModule, type NavReorderEvent } from "@codeatlasdev/ui";
 
+  type Row = { id: string; name: string; color: string; count: number };
+  let rows = $state<Row[]>([]);
+  function archive() {}
+
   function reorder(e: NavReorderEvent) {
     const next = rows.slice();
     next.splice(e.to, 0, ...next.splice(e.from, 1));
