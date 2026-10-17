@@ -74,3 +74,77 @@ describe("ToggleGroup", () => {
 		expect(onchange).not.toHaveBeenCalled();
 	});
 });
+
+describe("ToggleGroup required", () => {
+	it("single: pressing the active item again clears by default", async () => {
+		const onchange = vi.fn();
+		const screen = await render(ToggleGroupHarness, {
+			type: "single",
+			initial: "left",
+			onchange,
+			"aria-label": "Alignment",
+		});
+		const left = screen.getByRole("radio", { name: "Left" });
+		await left.click();
+		await expect.element(left).toHaveAttribute("aria-checked", "false");
+		await expect.element(screen.getByTestId("bound")).toHaveTextContent("");
+		expect(onchange).toHaveBeenLastCalledWith("");
+	});
+
+	it("single required: pressing the active item keeps it and stays silent", async () => {
+		const onchange = vi.fn();
+		const screen = await render(ToggleGroupHarness, {
+			type: "single",
+			required: true,
+			initial: "left",
+			onchange,
+			"aria-label": "Alignment",
+		});
+		const left = screen.getByRole("radio", { name: "Left" });
+		const center = screen.getByRole("radio", { name: "Center" });
+		await left.click();
+		await expect.element(left).toHaveAttribute("aria-checked", "true");
+		await expect.element(screen.getByTestId("bound")).toHaveTextContent("left");
+		expect(onchange).not.toHaveBeenCalled();
+		left.element().focus();
+		await userEvent.keyboard(" ");
+		await expect.element(left).toHaveAttribute("aria-checked", "true");
+		expect(onchange).not.toHaveBeenCalled();
+		await center.click();
+		await expect.element(center).toHaveAttribute("aria-checked", "true");
+		expect(onchange).toHaveBeenLastCalledWith("center");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("single required: an empty group still selects on the first press", async () => {
+		const screen = await render(ToggleGroupHarness, {
+			type: "single",
+			required: true,
+			"aria-label": "Alignment",
+		});
+		const center = screen.getByRole("radio", { name: "Center" });
+		await center.click();
+		await expect.element(center).toHaveAttribute("aria-checked", "true");
+		await expect.element(screen.getByTestId("bound")).toHaveTextContent("center");
+	});
+
+	it("multiple required: the last pressed item cannot be turned off", async () => {
+		const onchange = vi.fn();
+		const screen = await render(ToggleGroupHarness, {
+			type: "multiple",
+			required: true,
+			initial: ["bold"],
+			onchange,
+			"aria-label": "Formatting",
+		});
+		const bold = screen.getByRole("button", { name: "Bold" });
+		const italic = screen.getByRole("button", { name: "Italic" });
+		await bold.click();
+		await expect.element(bold).toHaveAttribute("aria-pressed", "true");
+		expect(onchange).not.toHaveBeenCalled();
+		await italic.click();
+		await bold.click();
+		await expect.element(bold).toHaveAttribute("aria-pressed", "false");
+		await expect.element(screen.getByTestId("bound")).toHaveTextContent("italic");
+	});
+});

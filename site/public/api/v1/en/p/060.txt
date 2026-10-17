@@ -1,8 +1,9 @@
 Use @codeatlasdev/ui demo #060 "Single and multiple" (inputs/toggle-group).
-What it shows: Single-select alignment group and multi-select formatting group, both icon-only. When to use: Editor toolbars with exclusive options like alignment and combinable options like bold or italic.
+What it shows: Single-select alignment group, a required text filter and a multi-select formatting group. When to use: Editor toolbars with exclusive options like alignment and combinable options like bold or italic.
 Spec:
 - Alignment: `type="single"` with `aria-label="Text alignment"` and `bind:value={align}`
 - Alignment items: AlignLeft, AlignCenter, AlignRight with `'aria-label': 'Align left'` etc.
+- Filter: `type="single"` with `required`, `aria-label="Filter"`, `bind:value={filter}` (starts `'all'`), items All, Open, Closed; pressing the active item keeps it
 - Formatting: `type="multiple"` with `aria-label="Text formatting"` and `bind:value={format}`
 - `format` is `$state<string[]>(['bold'])` with items Bold, Italic, Underline
 - Values are printed as `value: {align || '–'}` and `JSON.stringify(format)`

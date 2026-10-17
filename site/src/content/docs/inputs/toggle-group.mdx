@@ -23,9 +23,9 @@ import VariantsSrc from "~/demos/inputs/toggle-group/Variants.svelte?raw";
 <ToggleGroup type="multiple" aria-label="Text formatting" bind:value={format} {items} />
 ```
 
-In `single` mode the user can press the active item again to clear the selection, so `value` can be an empty string. Use [SegmentedControl](/docs/inputs/segmented-control/) when a choice is required. In `single` mode the group is one tab stop and arrow keys move focus (Home and End jump to the ends); in `multiple` mode each item stays in the tab order. Icon-only items need an `aria-label`.
+In `single` mode the user can press the active item again to clear the selection, so `value` can be an empty string. Set `required` to keep a selection: pressing the active item does nothing and `onchange` stays silent, like a radio group (`multiple` keeps its last pressed item). Use [SegmentedControl](/docs/inputs/segmented-control/) when a required choice should look like a track with a sliding thumb. In `single` mode the group is one tab stop and arrow keys move focus (Home and End jump to the ends); in `multiple` mode each item stays in the tab order. Icon-only items need an `aria-label`.
 
-<Demo title="Single and multiple" description="type=&quot;single&quot; binds a string. type=&quot;multiple&quot; binds a string array." src={SelectionSrc}><Selection client:visible /></Demo>
+<Demo title="Single and multiple" description="type=&quot;single&quot; binds a string and can be cleared. type=&quot;multiple&quot; binds a string array. required keeps one item pressed." src={SelectionSrc}><Selection client:visible /></Demo>
 <Demo title="Variants and orientation" description="outlined and ghost variants, sizes, a disabled item and a vertical layout." src={VariantsSrc}><Variants client:visible /></Demo>
 
 <Props rows={[
@@ -36,6 +36,7 @@ In `single` mode the user can press the active item again to clear the selection
   { name: "variant", type: "'outlined' | 'ghost'", default: "'outlined'", description: "Container style." },
   { name: "disabled", type: "boolean", default: "false", description: "Disables the whole group." },
   { name: "orientation", type: "'horizontal' | 'vertical'", default: "'horizontal'", description: "Layout and arrow-key axis." },
+  { name: "required", type: "boolean", default: "false", description: "Keep a selection. Pressing the active item (the last pressed one for multiple) does not clear it." },
   { name: "aria-label", type: "string", description: "Accessible name of the group." },
   { name: "class", type: "string", description: "Extra classes on the root." },
   { name: "onchange", type: "(value: string | string[]) => void", description: "Called on every change." },

@@ -1,14 +1,15 @@
 <!-- @codeatlasdev/ui demo #060 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/toggle-group#single-and-multiple -->
 Element: #060 Single and multiple (inputs/toggle-group)
-What it shows: Single-select alignment group and multi-select formatting group, both icon-only.
+What it shows: Single-select alignment group, a required text filter and a multi-select formatting group.
 When to use: Editor toolbars with exclusive options like alignment and combinable options like bold or italic.
 Spec:
 - Alignment: `type="single"` with `aria-label="Text alignment"` and `bind:value={align}`
 - Alignment items: AlignLeft, AlignCenter, AlignRight with `'aria-label': 'Align left'` etc.
+- Filter: `type="single"` with `required`, `aria-label="Filter"`, `bind:value={filter}` (starts `'all'`), items All, Open, Closed; pressing the active item keeps it
 - Formatting: `type="multiple"` with `aria-label="Text formatting"` and `bind:value={format}`
 - `format` is `$state<string[]>(['bold'])` with items Bold, Italic, Underline
 - Values are printed as `value: {align || '–'}` and `JSON.stringify(format)`
-Tags: toggle-group, single, multiple, icon, toolbar, aria-label
+Tags: toggle-group, single, required, multiple, icon, toolbar, aria-label
 Needs: @codeatlasdev/ui@4.3.0
 Components: ToggleGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/toggle-group#single-and-multiple
@@ -19,6 +20,7 @@ Live demo: https://ui.codeatlas.com.br/docs/inputs/toggle-group#single-and-multi
 
   let align = $state('left');
   let format = $state<string[]>(['bold']);
+  let filter = $state('all');
 </script>
 
 <div class="col">
@@ -34,6 +36,20 @@ Live demo: https://ui.codeatlas.com.br/docs/inputs/toggle-group#single-and-multi
       ]}
     />
     <p class="out">value: {align || '–'}</p>
+  </div>
+  <div>
+    <ToggleGroup
+      type="single"
+      required
+      aria-label="Filter"
+      bind:value={filter}
+      items={[
+        { value: 'all', label: 'All' },
+        { value: 'open', label: 'Open' },
+        { value: 'closed', label: 'Closed' },
+      ]}
+    />
+    <p class="out">required, value: {filter}</p>
   </div>
   <div>
     <ToggleGroup

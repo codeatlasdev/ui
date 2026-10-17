@@ -58,7 +58,7 @@ id	group	page	title	names	tags	summary
 057	inputs	text-field	With icons		text-field,icon,leading,trailing,password,search,snippet	Search field with a leading icon and a password field with a trailing show/hide button.
 058	inputs	text-field	States		text-field,error,required,readonly,disabled,size,description	Six text fields showing description, error, required, read-only, disabled and small size.
 059	inputs	theme-toggle	Basic		theme-toggle,dark-mode,theme,appearance,rail	Theme toggle button rendered inside a rail container.
-060	inputs	toggle-group	Single and multiple		toggle-group,single,multiple,icon,toolbar,aria-label	Single-select alignment group and multi-select formatting group, both icon-only.
+060	inputs	toggle-group	Single and multiple		toggle-group,single,required,multiple,icon,toolbar,aria-label	Single-select alignment group, a required text filter and a multi-select formatting group.
 061	inputs	toggle-group	Variants and orientation		toggle-group,variant,outlined,ghost,vertical,size	Three toggle groups sharing one value: outlined, ghost and vertical.
 062	inputs	use-form	No schema		use-form,form,validation,text-field,dirty,reset	Form built with useForm and a hand-written validate function, with Validate and Reset buttons.
 063	inputs	use-form	Submit state		use-form,submit,loading,schema,validation,async	Form with a schema that simulates a 1.2 second submit, then shows a success message and resets.

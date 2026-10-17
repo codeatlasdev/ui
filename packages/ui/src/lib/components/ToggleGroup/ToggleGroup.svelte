@@ -24,6 +24,11 @@
     variant?: 'outlined' | 'ghost';
     disabled?: boolean;
     orientation?: 'horizontal' | 'vertical';
+    /**
+     * Keep a selection: pressing the pressed item (the last one, for `multiple`) does nothing
+     * instead of clearing it, like a radio group. An empty group still selects on the first press.
+     */
+    required?: boolean;
     class?: string;
     'aria-label'?: string;
     onchange?: (value: string | string[]) => void;
@@ -37,6 +42,7 @@
     variant = 'outlined',
     disabled = false,
     orientation = 'horizontal',
+    required = false,
     class: className = '',
     'aria-label': ariaLabel,
     onchange,
@@ -50,6 +56,7 @@
 
   function toggle(item: ToggleGroupItem) {
     if (disabled || item.disabled) return;
+    if (required && selected.length === 1 && selected[0] === item.value) return;
     if (multiple) {
       const next = selected.includes(item.value)
         ? selected.filter((v) => v !== item.value)
@@ -58,7 +65,7 @@
       value = next;
       onchange?.(next);
     } else {
-      // Pressing the active item again clears a single group.
+      // Pressing the active item again clears a single group (unless `required`, returned above).
       const next = selected[0] === item.value ? '' : item.value;
       value = next;
       onchange?.(next);

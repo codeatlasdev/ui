@@ -4,6 +4,7 @@
 
   let align = $state('left');
   let format = $state<string[]>(['bold']);
+  let filter = $state('all');
 </script>
 
 <div class="col">
@@ -19,6 +20,20 @@
       ]}
     />
     <p class="out">value: {align || '–'}</p>
+  </div>
+  <div>
+    <ToggleGroup
+      type="single"
+      required
+      aria-label="Filter"
+      bind:value={filter}
+      items={[
+        { value: 'all', label: 'All' },
+        { value: 'open', label: 'Open' },
+        { value: 'closed', label: 'Closed' },
+      ]}
+    />
+    <p class="out">required, value: {filter}</p>
   </div>
   <div>
     <ToggleGroup

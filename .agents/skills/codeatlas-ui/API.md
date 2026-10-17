@@ -2589,6 +2589,7 @@ Classes: `ca-toaster`
 | `variant?` | `'outlined' \| 'ghost'` | `'outlined'` |  |
 | `disabled?` | `boolean` | `false` |  |
 | `orientation?` | `'horizontal' \| 'vertical'` | `'horizontal'` |  |
+| `required?` | `boolean` | `false` | Keep a selection: pressing the pressed item (the last one, for `multiple`) does nothing instead of clearing it, like a radio group. An empty group still selects on the first press. |
 | `class?` | `string` | `''` |  |
 | `aria-label?` | `string` |  |  |
 | `onchange?` | `(value: string \| string[]) => void` |  |  |
