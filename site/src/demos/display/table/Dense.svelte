@@ -59,8 +59,9 @@
 </div>
 
 <style>
+  .dense-demo { width: 100%; min-width: 0; max-width: 28rem; }
   .dense-demo__scroller {
-    max-width: 28rem;
+    width: 100%;
     overflow-x: auto;
     border: var(--ca-border-width) solid var(--ca-outline-subtle);
     border-radius: var(--ca-radius-lg);

@@ -251,6 +251,7 @@ html[data-ca-native] .ca-selectable * {
     .ca-chip__delete, .ca-code-snippet__copy, .ca-col-header, .ca-notif-trigger, .ca-app-settings__nav-item,
     .ca-alert__close, .ca-install__close, .ca-toast__action, .ca-toast__close, .ca-btn, .ca-icon-btn, .ca-combobox__trigger, .ca-collapsible__trigger,
     .ca-tooltip__trigger, .ca-rail-btn, .ca-toggle-group__item, .ca-dt-pagination__btn,
+    .ca-table-sort, .ca-table-group__toggle,
     .pass-btn, .glass-btn, .glass-btn-prominent, .glass-btn-clear
   ) {
     position: relative;
@@ -261,6 +262,7 @@ html[data-ca-native] .ca-selectable * {
     .ca-chip__delete, .ca-code-snippet__copy, .ca-col-header, .ca-notif-trigger, .ca-app-settings__nav-item,
     .ca-alert__close, .ca-install__close, .ca-toast__action, .ca-toast__close, .ca-btn, .ca-icon-btn, .ca-combobox__trigger, .ca-collapsible__trigger,
     .ca-tooltip__trigger, .ca-rail-btn, .ca-toggle-group__item, .ca-dt-pagination__btn,
+    .ca-table-sort, .ca-table-group__toggle,
     .pass-btn, .glass-btn, .glass-btn-prominent, .glass-btn-clear
   )::after {
     content: "";

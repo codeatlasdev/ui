@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { page, userEvent } from "vitest/browser";
+import { cdp, page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { VIEWPORTS } from "../../../../tests/viewports";
@@ -148,5 +148,34 @@ describe("SimpleTable dense mode (#360)", () => {
 		const table = document.querySelector("table") as HTMLElement;
 		expect(table.hasAttribute("data-skeleton")).toBe(true);
 		expect(table.getBoundingClientRect().height).toBeGreaterThan(0);
+	});
+});
+
+describe("SimpleTable touch targets (#360)", () => {
+	it("sort and group buttons have a 44px hit area under a coarse pointer at 390px", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
+		try {
+			await render(Harness, { scroll: "x", stickyColumns: 0, frame: true });
+			expect(matchMedia("(pointer: coarse)").matches).toBe(true);
+			// Same rule as the site's layout audit: the element or its expanded ::after overlay.
+			const hit = (e: Element) => {
+				const r = e.getBoundingClientRect();
+				const a = getComputedStyle(e, "::after");
+				const overlay = a.content !== "none" && a.position === "absolute";
+				return [
+					Math.max(r.width, overlay ? Number.parseFloat(a.width) || 0 : 0),
+					Math.max(r.height, overlay ? Number.parseFloat(a.height) || 0 : 0),
+				];
+			};
+			for (const sel of [".ca-table-sort", ".ca-table-group__toggle"]) {
+				const el = document.querySelector(sel) as HTMLElement;
+				expect(el, sel).not.toBeNull();
+				const [w, h] = hit(el);
+				expect(Math.min(w, h), `${sel} ${w}x${h}`).toBeGreaterThanOrEqual(44);
+			}
+		} finally {
+			await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: false });
+		}
 	});
 });
