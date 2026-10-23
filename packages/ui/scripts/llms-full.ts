@@ -1,6 +1,7 @@
-// Assembles the site's llms-full.txt: every doc page, then the consumer guide. The complete demo sources
-// are left out on purpose (an agent pastes this file whole into its context, see tests/llms-budget.test.ts):
-// each page points at its own /llms/<slug>.txt, which has them.
+// Assembles the site's llms-full.txt, the file an agent pastes whole into its context. Its shape does not depend
+// on how many pages exist: the core path is in full, every other page is a heading, its props tables and a link
+// to its own complete file (/llms/<slug>.txt, with the prose and the demo sources). tests/llms-budget.test.ts
+// asserts that shape and a size cap.
 import { CONSUMER_GUIDE, ENTRY_PAGES, llmsPagePath } from "./ai-entry.ts";
 import { mdxToMarkdown } from "./mdx-to-markdown.ts";
 
@@ -17,16 +18,45 @@ export interface LlmsFullDoc {
 }
 
 /**
- * Pages whose body is not repeated here: `llms.txt` links their sections first, and /llms/<slug>.txt serves them whole.
- * Besides the recipes, these are the long task-specific guides (migrating from React, PWA, SEO): an agent opens one
- * only while doing that task, so pasting it into every context would spend the budget (tests/llms-budget.test.ts).
+ * The pages an agent reads before it writes a screen, in full: the introduction, setup, the recipes, the decision
+ * tables, the workarounds, theming, mobile, i18n, the agent guide and the layout primitives. The long single-task
+ * guides (SEO, PWA, performance, accessibility, migrating from React) and every component page are summaries.
  */
-const POINTER_ONLY = new Set<string>([
+export const CORE_PAGES: readonly string[] = [
+	"index",
+	ENTRY_PAGES.install,
 	ENTRY_PAGES.recipes,
-	"getting-started/migrate-react",
-	"getting-started/pwa",
-	"getting-started/seo",
-]);
+	ENTRY_PAGES.choosing,
+	ENTRY_PAGES.workarounds,
+	"getting-started/theming",
+	"getting-started/mobile",
+	"getting-started/i18n",
+	ENTRY_PAGES.aiAgents,
+	ENTRY_PAGES.reporting,
+	"layout/layout-primitives",
+];
+
+/**
+ * The props tables of a page as compact markdown: `| Prop | Type | Default |`, no description column. The
+ * names, types and defaults are what an agent needs to write the call; the descriptions are in the page's file.
+ */
+export function propsSummary(markdown: string): string {
+	return markdown
+		.split(/\n(?=### )/)
+		.filter((block) => /^### [^\n]*\n\n\| Prop \|/.test(block))
+		.map((block) =>
+			block
+				.split("\n")
+				.map((line) => {
+					if (!line.startsWith("|")) return line;
+					// Cells are split on `|` that is not escaped as `\|` (a union type in a cell).
+					const cells = line.split(/(?<!\\)\|/);
+					return `|${cells[1]}|${cells[2]}|${cells[3]}|`;
+				})
+				.join("\n")
+		)
+		.join("\n\n");
+}
 
 export function buildLlmsFull(opts: { site: string; docs: LlmsFullDoc[] }): string {
 	const parts = [
@@ -36,6 +66,8 @@ export function buildLlmsFull(opts: { site: string; docs: LlmsFullDoc[] }): stri
 		"",
 	];
 	for (const d of opts.docs) {
+		const markdown = mdxToMarkdown(d.body);
+		const props = CORE_PAGES.includes(d.slug) ? "" : propsSummary(markdown);
 		parts.push(
 			"---",
 			"",
@@ -47,11 +79,7 @@ export function buildLlmsFull(opts: { site: string; docs: LlmsFullDoc[] }): stri
 			"",
 			d.description,
 			"",
-			POINTER_ONLY.has(d.slug)
-				? d.slug === ENTRY_PAGES.recipes
-					? `The ${d.title.toLowerCase()} are not repeated in this file: they are the first thing in ${opts.site}/llms.txt and each one is complete in the file above.`
-					: `This guide is not repeated in this file (it is long and only needed for that one task): read it in the file above.`
-				: mdxToMarkdown(d.body),
+			CORE_PAGES.includes(d.slug) ? markdown : props,
 			""
 		);
 	}

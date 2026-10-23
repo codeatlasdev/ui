@@ -10,7 +10,7 @@ describe("llms-full.txt", () => {
 				group: "Components",
 				title: "Button",
 				url: "/docs/u/",
-				slug: "u",
+				slug: "getting-started/installation",
 				description: "d",
 				body: '<Demo title="Basic" src={BasicSrc}><Basic /></Demo>',
 			},
@@ -35,7 +35,7 @@ describe("llms-full.txt", () => {
 
 	it("points each page at its complete file", () => {
 		expect(out).toContain(
-			"Complete page with demo sources: https://ui.codeatlas.com.br/llms/u.txt"
+			"Complete page with demo sources: https://ui.codeatlas.com.br/llms/getting-started/installation.txt"
 		);
 	});
 });

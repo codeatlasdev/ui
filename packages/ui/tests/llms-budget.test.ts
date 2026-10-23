@@ -2,12 +2,16 @@ import { describe, expect, it } from "bun:test";
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import { buildLlmsPage, llmsPagePath } from "../scripts/ai-entry.ts";
-import { buildLlmsFull } from "../scripts/llms-full.ts";
-import { demoSources } from "../scripts/mdx-to-markdown.ts";
+import { buildLlmsFull, CORE_PAGES } from "../scripts/llms-full.ts";
+import { demoSources, mdxToMarkdown } from "../scripts/mdx-to-markdown.ts";
 
-// llms-full.txt is the file an agent pastes whole into its context. It was 446,604 bytes when #384 started;
-// the complete demo sources live in one file per page instead (/llms/<slug>.txt).
-const BUDGET = 446_604;
+// llms-full.txt is the file an agent pastes whole into its context window, so its size is a hard limit of
+// the reader, not a style preference: past a few hundred KB it stops fitting next to the task. That is why this
+// is a CAP and not a snapshot of today's size. Pages come and go, so the file does not grow with them: the pages
+// of CORE_PAGES are in full, every other page is a heading, its props tables and a link to its own file.
+// The cap leaves real headroom (the file is ~270 KB), so an ordinary docs PR never trips it; if it does, a core
+// page grew too much or a page has a props table that belongs in prose.
+const CAP = 350_000;
 const DOCS = join(import.meta.dir, "../../../site/src/content/docs");
 const DEMOS = join(import.meta.dir, "../../../site/src/demos");
 
@@ -38,37 +42,96 @@ const read = (p: string) => {
 	}
 };
 
-describe("llms-full.txt size budget (#384)", () => {
-	const full = buildLlmsFull({
-		site: "https://ui.codeatlas.com.br",
-		docs: pages.map((p) => ({ ...p, url: `/docs/${p.slug}/` })),
+describe("llms-full.txt has a fixed shape (#436)", () => {
+	const site = "https://ui.codeatlas.com.br";
+	const docs = pages.map((p) => ({ ...p, url: `/docs/${p.slug}/` }));
+	const full = buildLlmsFull({ site, docs });
+	const core = new Set<string>(CORE_PAGES);
+	/** The text of one page's section of the dump. */
+	const section = (p: (typeof pages)[number]) => {
+		const at = full.indexOf(`\n# ${p.title}\n\nGroup: ${p.group}.`);
+		expect(at).toBeGreaterThan(-1);
+		// A section ends at the next page separator ("---" then a "# Title"), not at a rule inside the page.
+		const end = full.indexOf("\n---\n\n# ", at + 1);
+		return full.slice(at, end < 0 ? undefined : end);
+	};
+
+	it("stays under the cap", () => {
+		expect(Buffer.byteLength(full)).toBeLessThanOrEqual(CAP);
 	});
 
-	it("stays within the size it had before the recipes were added", () => {
-		expect(Buffer.byteLength(full)).toBeLessThanOrEqual(BUDGET);
+	it("names only core pages that exist", () => {
+		expect(CORE_PAGES.filter((slug) => !pages.some((p) => p.slug === slug))).toEqual([]);
 	});
 
-	it("points at the long task-specific guides instead of repeating them", () => {
-		for (const slug of [
-			"getting-started/migrate-react",
-			"getting-started/pwa",
-			"getting-started/seo",
-		]) {
-			const page = pages.find((p) => p.slug === slug);
-			expect(page).toBeDefined();
-			const heading = `# ${page?.title}\n\nGroup: ${page?.group}.`;
-			const at = full.indexOf(heading);
-			expect(at).toBeGreaterThan(-1);
-			const next = full.indexOf("\n---\n", at);
-			expect(next - at).toBeLessThan(600);
+	it("keeps the core path in full, prose and fences included", () => {
+		for (const p of pages.filter((x) => core.has(x.slug))) {
+			const prose = mdxToMarkdown(p.body);
+			// The first and the last paragraph of the body: a truncated page would miss one of them.
+			const paras = prose.split("\n\n").filter((x) => x.length > 60);
+			expect(section(p)).toContain(paras[0]);
+			expect(section(p)).toContain(paras.at(-1) as string);
 		}
 	});
 
-	it("keeps the demo sources out of the one-file dump", () => {
+	it("gives every other page a summary, its props tables and the link to its file", () => {
+		const others = pages.filter((p) => !core.has(p.slug));
+		expect(others.length).toBeGreaterThan(100);
+		for (const p of others) {
+			const s = section(p);
+			expect(s).toContain(`Complete page with demo sources: ${site}${llmsPagePath(p.slug)}`);
+			expect(s).toContain(p.description);
+		}
+	});
+
+	it("does not repeat the prose, the examples or the demo sources of those pages", () => {
+		const button = pages.find((p) => p.slug === "layout/list-page");
+		const body = mdxToMarkdown(button?.body ?? "");
+		const sample = body.match(/```svelte\n[\s\S]*?\n```/g)?.find((x) => x.length > 60);
+		expect(sample).toBeDefined();
+		expect(section(button as (typeof pages)[number])).not.toContain(sample as string);
 		const sources = pages.flatMap((p) => Object.values(demoSources(p.body, read)));
-		expect(sources.length).toBeGreaterThan(100);
-		const sample = sources.find((s) => s.length > 400) ?? "";
-		expect(full).not.toContain(sample);
+		expect(full).not.toContain(sources.find((x) => x.length > 400) ?? "");
+	});
+
+	it("keeps the props table of a component, without its description column", () => {
+		const s = section(pages.find((p) => p.slug === "inputs/button") as (typeof pages)[number]);
+		expect(s).toContain("| Prop | Type | Default |");
+		expect(s).toMatch(/\| `variant` \| `[^\n]+` \| 'filled' \|/);
+		expect(s).not.toContain("| Description |");
+	});
+
+	describe("a page costs its summary, not its size", () => {
+		const synthetic = (slug: string, group: string, extra = 0) => ({
+			slug,
+			group,
+			title: `T ${slug}`,
+			description: "One sentence.",
+			url: `/docs/${slug}/`,
+			body: `${"A long paragraph of prose. ".repeat(4_000 + extra)}\n\n<Props title="X props" rows={[\n  { name: "size", type: "'sm' | 'md'", default: "'md'", description: "${"Long description. ".repeat(40)}" },\n]} />`,
+		});
+		const cost = (docsIn: ReturnType<typeof synthetic>[]) =>
+			Buffer.byteLength(buildLlmsFull({ site, docs: docsIn })) -
+			Buffer.byteLength(buildLlmsFull({ site, docs: [] }));
+
+		it("charges a 100 KB page outside the core under 1 KB, with its props row", () => {
+			const page = synthetic("inputs/zzz", "Inputs");
+			expect(Buffer.byteLength(page.body)).toBeGreaterThan(100_000);
+			expect(cost([page])).toBeLessThan(1_000);
+			const out = buildLlmsFull({ site, docs: [page] });
+			expect(out).toContain("| `size` | `'sm' \\| 'md'` | 'md' |");
+			expect(out).not.toContain("A long paragraph of prose.");
+		});
+
+		it("adds the same for the 50th page as for the first", () => {
+			const many = Array.from({ length: 50 }, (_, i) => synthetic(`inputs/p${i}`, "Inputs", i));
+			expect(cost(many)).toBeLessThan(50 * 1_000);
+		});
+
+		it("still prints a core page whole", () => {
+			const page = synthetic(CORE_PAGES[0], "Getting started");
+			expect(cost([page])).toBeGreaterThan(100_000);
+		});
 	});
 });
 
