@@ -5,7 +5,7 @@
 		"`<ResizablePanels label=\"Mail\" persist=\"ca-demo-mail-layout\">`",
 		"`<ResizablePanel id=\"folders\" defaultSize={20} minSize={12}>` and `<ResizablePanel id=\"main\" defaultSize={80}>`",
 		"`<ResizablePanels direction=\"vertical\" label=\"Message list and reader\">` inside `main` with `list` (40) and `reader` (60)",
-		"A `<ResizableHandle>` named `Resize folders` and one named `Resize message list`"
+		"`<ResizableHandle label=\"Resize folders\" />` and `<ResizableHandle label=\"Resize message list\" />`"
 	],
 	"tags": ["resizable-panels", "nested", "vertical", "persist", "three-pane"],
 	"shape": "wide"

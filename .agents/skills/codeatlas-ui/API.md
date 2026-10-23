@@ -2475,6 +2475,59 @@ Parts: `ca-record-row` `ca-record-row__actions` `ca-record-row__cells` `ca-recor
 
 Variables: `--ca-record-columns`
 
+## ResizableHandle
+
+`import { ResizableHandle } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `label?` | `string` |  | Accessible name; name what it resizes ("Resize sidebar"). |
+| `class?` | `string` | `''` |  |
+
+Parts: `ca-resizable__handle`
+
+Data attributes: `data-active`, `data-direction` (`horizontal` `vertical`)
+
+## ResizablePanel
+
+`import { ResizablePanel } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `id` | `string` |  | Stable id: the key of the persisted layout. Unique inside the group. |
+| `defaultSize?` | `number` |  | Starting size in percent. Unset panels share what the others leave. |
+| `minSize?` | `number` | `10` | Smallest size in percent. |
+| `maxSize?` | `number` | `100` | Largest size in percent. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'id'>`
+
+Parts: `ca-resizable__panel`
+
+Variables: `--ca-panel-size`
+
+## ResizablePanels
+
+`import { ResizablePanels } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `direction?` | `'horizontal' \| 'vertical'` | `'horizontal'` | `horizontal` puts panels side by side, `vertical` stacks them. |
+| `label?` | `string` |  | Accessible name of the group. |
+| `persist?` | `string` |  | `localStorage` key: the layout is saved there when a drag or key press settles and restored on mount. |
+| `onlayout?` | `(sizes: number[]) => void` |  | Called with the sizes (percent, in panel order) when a drag or key press settles. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'aria-label'>`
+
+Parts: `ca-resizable`
+
+Data attributes: `data-direction` (`vertical`), `data-dragging`
+
 ## RouteAnnouncer
 
 `import { RouteAnnouncer } from "@codeatlasdev/ui/kit"`
