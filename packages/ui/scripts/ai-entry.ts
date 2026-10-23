@@ -208,7 +208,7 @@ export function buildLlmsIndex(i: {
 				.trim(),
 		intro: [
 			"Fetch the `.txt` links (`/llms/<group>/<slug>.txt`, index pages `/llms/<slug>.txt`, one recipe `/llms/recipes/<id>.txt`): they are plain markdown with the full demo sources and no anchors; the HTML pages (`/docs/...`) are for people and the only place the live demos run.",
-			'How to use this file: find the screen you are building under "Start here", copy that recipe whole, change only data, copy and theme. Before writing any CSS, wrapper or workaround, read "Choosing a component" and "Common workarounds". Never guess a prop: ask the ca-ui-mcp server (`get_component`, `get_recipe`) or read the installed package\'s `dist/components.json`; the installed version outranks every page here.',
+			'How to use this file: find the screen you are building under "Start here", copy that recipe whole, change only data, copy and theme. Before writing any CSS, wrapper or workaround, read "Choosing a component" and "Common workarounds". Never guess a prop: ask the ca-ui-mcp server (`get_component`, `get_recipe`) or read the installed package\'s `dist/components.json` (`.components[]`, one entry per component; other exports under `.exports[]`); the installed version outranks every page here.',
 		],
 		sections,
 	});
