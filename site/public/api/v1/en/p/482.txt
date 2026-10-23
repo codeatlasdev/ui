@@ -1,0 +1,12 @@
+Use @codeatlasdev/ui demo #482 "Stacked controls" (surfaces/card).
+What it shows: A glass Card titled Trending topics that stacks three Checkbox controls in a column with gap="sm", the title aligned with the controls. When to use: Settings and filter cards whose content is several inline controls (Checkbox, Switch, TextField) that need vertical spacing.
+Spec:
+- `<Card material="glass" title="Trending topics" headingLevel={3} gap="sm" class="stacked">` with `max-width: 320px`
+- Three `<Checkbox label="Hacker News" />` children: Hacker News, Product Hunt, Lobsters
+- `gap="sm"` stacks the children in a column with 8px between them; the title shares the checkboxes' left edge
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #482 Stacked controls → file, what changed, https://ui.codeatlas.com.br/docs/surfaces/card#stacked-controls; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/482.txt   Components API: ca-ui-mcp get_component(Card)
