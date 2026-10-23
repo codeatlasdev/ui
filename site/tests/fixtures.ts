@@ -109,11 +109,20 @@ export async function gotoReady(page: Page, path: string) {
 export async function settle(page: Page) {
 	await page.evaluate(async () => {
 		await document.fonts.ready;
-		// Infinite animations (spinners, blobs) never finish; only await finite ones.
-		const finite = document
-			.getAnimations()
-			.filter((a) => a.effect?.getComputedTiming().iterations !== Number.POSITIVE_INFINITY);
-		await Promise.all(finite.map((a) => a.finished.catch(() => {})));
+		// Infinite animations (spinners, blobs) never finish; only wait for finite ones. Poll `playState`
+		// instead of awaiting `Animation.finished`: that promise can stay pending for an animation that is
+		// already finished (measured: a 90ms `color` transition on a Button, `finished` unresolved for 3s+),
+		// which hung `settle` for the whole test timeout.
+		while (
+			document
+				.getAnimations()
+				.some(
+					(a) =>
+						a.playState === "running" &&
+						a.effect?.getComputedTiming().iterations !== Number.POSITIVE_INFINITY
+				)
+		)
+			await new Promise((r) => requestAnimationFrame(() => r(null)));
 	});
 	// CodeSnippet renders a raw <pre> until shiki resolves, then swaps in highlighted HTML.
 	// Snippets inside a closed <details> (demo "Code" panels) are never rendered, so they stay raw.

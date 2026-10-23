@@ -58,6 +58,10 @@ test.describe("hero and ambient motion", () => {
 			await gotoReady(page, PAGE);
 			const stage = stageOf(page, "Grid ripple");
 			await stage.scrollIntoViewIfNeeded();
+			// Autoplay remounts the whole dot grid (`{#key src.n}`) every loop: pause it first, or the box read
+			// below can hit the instant between two grids (no element) or go stale before the click lands.
+			await stage.getByRole("button", { name: "Pause" }).click();
+			await expect(stage.locator(".rip__dot").first()).toBeVisible();
 			const first = await boxOf(stage.locator(".rip__dot").first());
 			// Top-left cell: its own delay is 0ms, the far corner waits the longest.
 			await page.mouse.click(first.x + first.width / 2, first.y + first.height / 2);

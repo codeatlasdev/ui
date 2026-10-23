@@ -106,8 +106,30 @@ test.describe("scroll motion demos", () => {
 				await r.hover();
 				await page.mouse.wheel(0, -4000);
 				await expect(stage).toHaveAttribute("data-taken", "true");
-				// Within 4px of the top: touch devices keep a sub-pixel residue after a smooth wheel scroll.
-				await expect.poll(() => r.evaluate((el) => el.scrollTop)).toBeLessThan(4);
+				// After takeover autoplay writes nothing: the position holds still across several frames. The wheel
+				// is not asserted to land on 0: one wheel gesture sent right after axe's pause was measured to stop
+				// at 6-8px with no write from the demo after it (a second wheel reaches 0), so the baseline is set.
+				await expect
+					.poll(
+						() =>
+							r.evaluate(
+								(el) =>
+									new Promise<boolean>((resolve) => {
+										const at = el.scrollTop;
+										let frames = 0;
+										const step = () => {
+											if (el.scrollTop !== at) return resolve(false);
+											if (++frames >= 6) return resolve(true);
+											requestAnimationFrame(step);
+										};
+										requestAnimationFrame(step);
+									})
+							),
+						{ timeout: 5000 }
+					)
+					.toBe(true);
+				await r.evaluate((el) => el.scrollTo({ top: 0 }));
+				await expect.poll(() => r.evaluate((el) => el.scrollTop)).toBe(0);
 				const atTop = await d.probe(r);
 				await r.evaluate((el) => el.scrollTo({ top: el.scrollHeight }));
 				// The effect responds to the user's scroll (observable value changes with scrollTop).
