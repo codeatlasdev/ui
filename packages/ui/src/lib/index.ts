@@ -148,6 +148,7 @@ export { default as GlassSurface } from "./components/GlassSurface/GlassSurface.
 export { default as Grid } from "./components/Grid/Grid.svelte";
 export { default as Heading } from "./components/Heading/Heading.svelte";
 export { default as Highlight } from "./components/Highlight/Highlight.svelte";
+export { default as HoverCard } from "./components/HoverCard/HoverCard.svelte";
 export { default as Image } from "./components/Image/Image.svelte";
 export { default as InstallPrompt } from "./components/InstallPrompt/InstallPrompt.svelte";
 export type {

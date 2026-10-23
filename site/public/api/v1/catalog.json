@@ -1,6 +1,6 @@
 {
 	"version": "4.5.0",
-	"count": 357,
+	"count": 359,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -29,8 +29,8 @@
 		{
 			"slug": "navigation",
 			"first": "146",
-			"last": "502",
-			"count": 31
+			"last": "941",
+			"count": 33
 		},
 		{
 			"slug": "layout",
@@ -15925,6 +15925,91 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/feedback/dialog#configured-split",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "940",
+			"group": "navigation",
+			"page": "hover-card",
+			"variant": "Profile",
+			"slug": "profile-mention",
+			"title": "Profile mention",
+			"description": "A link in a sentence with a profile card. Hover it for the delay, or Tab to it for an instant card; Tab again to reach View profile; Escape closes.",
+			"summary": "A sentence with an @ada mention link that opens a profile card with a name, a line of detail and a View profile link on hover or keyboard focus.",
+			"use": "Previewing a person, link target or record inline without leaving the page; the link itself stays the primary action.",
+			"spec": [
+				"`<HoverCard>` with `{#snippet triggerChild(props)}<a class=\"mention\" href=\"#ada\" {...props}>@ada</a>{/snippet}`",
+				"Content is `<Stack gap=\"2\">` with a strong name, a secondary line and `<a class=\"more\" href=\"#ada-profile\">View profile</a>`",
+				"Default delays: the pointer waits 700 ms to open, keyboard focus opens at once; Escape closes"
+			],
+			"tags": [
+				"hover-card",
+				"preview",
+				"hover",
+				"focus",
+				"mention",
+				"link"
+			],
+			"shape": "wide",
+			"components": [
+				"Avatar",
+				"HoverCard",
+				"Stack"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Avatar",
+						"HoverCard",
+						"Stack"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/hover-card#profile-mention",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "941",
+			"group": "navigation",
+			"page": "hover-card",
+			"variant": "Controlled",
+			"slug": "delays-side-and-bind-open",
+			"title": "Delays, side and bind:open",
+			"description": "Short delays, placed above and aligned to the start. A second button shows the card from code, and onOpenChange reports only user-driven changes.",
+			"summary": "An outlined Plan details button with a top-start hover card, plus a button that shows or hides the card from code and a line reporting the last user-driven change.",
+			"use": "Short delays, a custom side and alignment, and driving the card with bind:open while onOpenChange reports only what the user did.",
+			"spec": [
+				"`let open = $state(false)` is bound with `<HoverCard bind:open openDelay={150} closeDelay={150} side=\"top\" align=\"start\" {onOpenChange}>`",
+				"`{#snippet triggerChild(props)}<Button variant=\"outlined\" {...props}>Plan details</Button>{/snippet}`",
+				"`function onOpenChange(o: boolean)` sets `log` to `opened by the user` or `closed by the user`; the code button toggles `open` and does not touch `log`",
+				"A second button flips `open` with `onclick={() => (open = !open)}`"
+			],
+			"tags": [
+				"hover-card",
+				"bind-open",
+				"delay",
+				"side",
+				"align",
+				"on-open-change"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"HoverCard"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"HoverCard"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/hover-card#delays-side-and-bind-open",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{

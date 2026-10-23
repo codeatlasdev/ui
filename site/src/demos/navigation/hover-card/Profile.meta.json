@@ -1,0 +1,11 @@
+{
+	"summary": "A sentence with an @ada mention link that opens a profile card with a name, a line of detail and a View profile link on hover or keyboard focus.",
+	"use": "Previewing a person, link target or record inline without leaving the page; the link itself stays the primary action.",
+	"spec": [
+		"`<HoverCard>` with `{#snippet triggerChild(props)}<a class=\"mention\" href=\"#ada\" {...props}>@ada</a>{/snippet}`",
+		"Content is `<Stack gap=\"2\">` with a strong name, a secondary line and `<a class=\"more\" href=\"#ada-profile\">View profile</a>`",
+		"Default delays: the pointer waits 700 ms to open, keyboard focus opens at once; Escape closes"
+	],
+	"tags": ["hover-card", "preview", "hover", "focus", "mention", "link"],
+	"shape": "wide"
+}

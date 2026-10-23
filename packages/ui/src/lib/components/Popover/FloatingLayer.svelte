@@ -30,6 +30,7 @@
     onkeydown?: (e: KeyboardEvent) => void;
     onpointerenter?: (e: PointerEvent) => void;
     onpointerleave?: (e: PointerEvent) => void;
+    onfocusout?: (e: FocusEvent) => void;
     children?: import('svelte').Snippet;
     /** Runs once the layer is mounted and positioned (focus management). May return a cleanup, run when the layer closes or unmounts (cancel deferred focus moves here). */
     onMounted?: (el: HTMLElement) => void | (() => void);
@@ -119,6 +120,7 @@
     onkeydown={rest.onkeydown}
     onpointerenter={rest.onpointerenter}
     onpointerleave={rest.onpointerleave}
+    onfocusout={rest.onfocusout}
   >
     {@render children?.()}
   </div>

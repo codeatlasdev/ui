@@ -210,6 +210,10 @@ State attributes on `dialog.ca-drawer`: `data-chromeless` (body padding 0, no he
 
 `.ca-heading` `.ca-heading--display` `.ca-heading--display-2` `.ca-heading--display-3` `.ca-heading--h1` `.ca-heading--h2` `.ca-heading--h3` `.ca-heading--h4` `.ca-heading--h5` `.ca-heading--h6` `.ca-highlight` `.ca-highlight--animated`
 
+## HoverCard
+
+`.ca-hovercard-content` `.ca-hovercard-in` `.ca-hovercard-out` `.ca-hovercard__trigger`
+
 ## InstallPrompt
 
 `.ca-install` `.ca-install-dismissed` `.ca-install-title` `.ca-install__body` `.ca-install__close` `.ca-install__glyph` `.ca-install__icon` `.ca-install__steps` `.ca-install__text` `.ca-install__title`
