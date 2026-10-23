@@ -23,7 +23,7 @@
 		{
 			"slug": "display",
 			"first": "104",
-			"last": "492",
+			"last": "760",
 			"count": 52
 		},
 		{
@@ -14157,7 +14157,7 @@
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{
-			"id": "492",
+			"id": "760",
 			"group": "display",
 			"page": "kanban",
 			"variant": "Pipeline",
