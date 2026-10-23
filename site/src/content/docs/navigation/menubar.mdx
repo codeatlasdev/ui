@@ -30,7 +30,7 @@ import CompactSrc from "~/demos/navigation/menubar/Compact.svelte?raw";
 
 With the pointer, a click opens a menu and a second click closes it. Once one menu is open, resting on another bar item switches to it; hover alone never opens a menu. Give the bar an `aria-label`.
 
-A menubar is for actions in a desktop-style application. For a menu on one button use `DropdownMenu`; for site navigation with links use `NavigationMenu`, which is not `role="menu"`.
+A menubar is for actions in a desktop-style application. For a menu on one button use `DropdownMenu`; for site navigation with links use [NavigationMenu](/docs/navigation/navigation-menu/), which is not `role="menu"`.
 
 <Demo title="Editor menu bar" description="File (with an Export submenu), Edit, View (a checkbox and a radio group) and a disabled Help. Try Tab, arrows, Down, then Left and Right." src={EditorSrc}><Editor client:visible /></Demo>
 <Demo title="Bar open state" description="onOpenChange fires when the bar goes from none open to one open and back, not for a switch between menus." src={CompactSrc}><Compact client:visible /></Demo>
