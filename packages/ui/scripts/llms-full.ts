@@ -16,8 +16,17 @@ export interface LlmsFullDoc {
 	slug: string;
 }
 
-/** Pages whose body is not repeated here: `llms.txt` links their sections first, and /llms/<slug>.txt serves them whole. */
-const POINTER_ONLY = new Set<string>([ENTRY_PAGES.recipes]);
+/**
+ * Pages whose body is not repeated here: `llms.txt` links their sections first, and /llms/<slug>.txt serves them whole.
+ * Besides the recipes, these are the long task-specific guides (migrating from React, PWA, SEO): an agent opens one
+ * only while doing that task, so pasting it into every context would spend the budget (tests/llms-budget.test.ts).
+ */
+const POINTER_ONLY = new Set<string>([
+	ENTRY_PAGES.recipes,
+	"getting-started/migrate-react",
+	"getting-started/pwa",
+	"getting-started/seo",
+]);
 
 export function buildLlmsFull(opts: { site: string; docs: LlmsFullDoc[] }): string {
 	const parts = [
@@ -39,7 +48,9 @@ export function buildLlmsFull(opts: { site: string; docs: LlmsFullDoc[] }): stri
 			d.description,
 			"",
 			POINTER_ONLY.has(d.slug)
-				? `The ${d.title.toLowerCase()} are not repeated in this file: they are the first thing in ${opts.site}/llms.txt and each one is complete in the file above.`
+				? d.slug === ENTRY_PAGES.recipes
+					? `The ${d.title.toLowerCase()} are not repeated in this file: they are the first thing in ${opts.site}/llms.txt and each one is complete in the file above.`
+					: `This guide is not repeated in this file (it is long and only needed for that one task): read it in the file above.`
 				: mdxToMarkdown(d.body),
 			""
 		);

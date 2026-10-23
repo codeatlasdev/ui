@@ -48,6 +48,22 @@ describe("llms-full.txt size budget (#384)", () => {
 		expect(Buffer.byteLength(full)).toBeLessThanOrEqual(BUDGET);
 	});
 
+	it("points at the long task-specific guides instead of repeating them", () => {
+		for (const slug of [
+			"getting-started/migrate-react",
+			"getting-started/pwa",
+			"getting-started/seo",
+		]) {
+			const page = pages.find((p) => p.slug === slug);
+			expect(page).toBeDefined();
+			const heading = `# ${page?.title}\n\nGroup: ${page?.group}.`;
+			const at = full.indexOf(heading);
+			expect(at).toBeGreaterThan(-1);
+			const next = full.indexOf("\n---\n", at);
+			expect(next - at).toBeLessThan(600);
+		}
+	});
+
 	it("keeps the demo sources out of the one-file dump", () => {
 		const sources = pages.flatMap((p) => Object.values(demoSources(p.body, read)));
 		expect(sources.length).toBeGreaterThan(100);
