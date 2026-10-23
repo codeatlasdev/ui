@@ -249,7 +249,7 @@ describe("caUI view-transition swap with islands (#352)", () => {
 	async function swapTo(next: string) {
 		const { caUI } = await import("../src/lib/astro.js");
 		let script = "";
-		const hooks = caUI().hooks as {
+		const hooks = caUI().hooks as unknown as {
 			"astro:config:setup": (o: {
 				injectScript: (stage: string, code: string) => void;
 				updateConfig: () => void;
