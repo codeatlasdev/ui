@@ -26,10 +26,9 @@
 		},
 		{
 			"shadcn": "Aspect Ratio",
-			"to": [],
+			"to": ["AspectRatio", "Image"],
 			"radix": "@radix-ui/react-aspect-ratio",
-			"gap": 432,
-			"workaround": "CSS `aspect-ratio` in a class."
+			"notes": "`AspectRatio` takes `ratio` for a video or an embed; a plain picture is `Image` with `ratio` and `fit`."
 		},
 		{
 			"shadcn": "Attachment",

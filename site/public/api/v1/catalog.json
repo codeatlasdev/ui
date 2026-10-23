@@ -1,6 +1,6 @@
 {
 	"version": "4.5.0",
-	"count": 353,
+	"count": 355,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -23,8 +23,8 @@
 		{
 			"slug": "display",
 			"first": "104",
-			"last": "900",
-			"count": 58
+			"last": "961",
+			"count": 60
 		},
 		{
 			"slug": "navigation",
@@ -15925,6 +15925,86 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/feedback/dialog#configured-split",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "960",
+			"group": "display",
+			"page": "image",
+			"variant": "Ratio",
+			"slug": "ratio-and-fit",
+			"title": "ratio and fit",
+			"description": "",
+			"summary": "One 4:3 gradient file rendered in three boxes: ratio 16/9 (cropped), ratio 1 (cropped) and ratio 1 with fit contain (letterboxed).",
+			"use": "Card covers, thumbnails and avatar grids where every picture must share one box whatever its own proportions.",
+			"spec": [
+				"`<Image {src} alt=\"Wide cover\" width={800} height={600} ratio={16 / 9} />`",
+				"`<Image {src} alt=\"Square cover\" width={800} height={600} ratio={1} />`",
+				"`<Image {src} alt=\"Contained\" width={800} height={600} ratio={1} fit=\"contain\" />`",
+				"`src` is an inlined 4:3 `data:image/svg+xml;utf8,` gradient with a circle",
+				"Each image sits in a `<figure>` with a `<figcaption>` naming its ratio"
+			],
+			"tags": [
+				"image",
+				"ratio",
+				"aspect-ratio",
+				"crop",
+				"object-fit",
+				"cover",
+				"contain"
+			],
+			"shape": "wide",
+			"components": [
+				"Image"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Image"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/image#ratio-and-fit",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "961",
+			"group": "display",
+			"page": "aspect-ratio",
+			"variant": "Embed",
+			"slug": "embed",
+			"title": "Embed",
+			"description": "The box holds 16:9 at any width.",
+			"summary": "An AspectRatio of 16/9 inside a 28rem frame holding a centred caption, standing in for a video or iframe.",
+			"use": "Embeds, maps and video players that have no intrinsic size but must hold a ratio while loading.",
+			"spec": [
+				"`<AspectRatio ratio={16 / 9}>` with one `<div class=\"slot\">16 / 9: any child, one box</div>` child",
+				"Wrapper `.frame` is `max-width: 28rem` with `--ca-radius-md` and `overflow: hidden`",
+				"`.slot` is `height: 100%` on `--ca-surface-sunken` and centres its text"
+			],
+			"tags": [
+				"aspect-ratio",
+				"embed",
+				"video",
+				"iframe",
+				"ratio"
+			],
+			"shape": "wide",
+			"components": [
+				"AspectRatio"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AspectRatio"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/aspect-ratio#embed",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		}
 	]

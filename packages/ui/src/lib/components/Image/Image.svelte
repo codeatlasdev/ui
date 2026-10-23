@@ -15,6 +15,12 @@
    * <Image src="/a.jpg" srcset="/a-480.jpg 480w, /a-960.jpg 960w" sizes="(min-width: 768px) 50vw, 100vw"
    *        alt="Team" width={960} height={640} />
    *
+   * `ratio` crops the image to a box of that width / height (`16 / 9`, `1`): a card cover or an avatar
+   * grid. `fit` chooses `cover` (default, crops) or `contain` (letterboxes). Without `ratio` the
+   * `width` / `height` attributes keep the picture's own ratio. For video or embeds use `AspectRatio`.
+   *
+   * <Image src="/a.jpg" alt="Team" width={960} height={640} ratio={16 / 9} />
+   *
    * For AVIF/WebP generation use @sveltejs/enhanced-img (see the Performance guide).
    */
   interface Props
@@ -30,6 +36,10 @@
     decorative?: boolean;
     /** Above-the-fold (LCP) image: eager, `fetchpriority="high"` and a preload link in <head>. */
     priority?: boolean;
+    /** Crop the image to a box of this width / height (`16 / 9`, `1`). Unset: the picture keeps its own ratio. */
+    ratio?: number;
+    /** How the picture fills the `ratio` box: `cover` crops, `contain` letterboxes. @default 'cover' */
+    fit?: 'cover' | 'contain';
     /** Overrides the default (`lazy`, or `eager` with `priority`). */
     loading?: 'lazy' | 'eager';
     /** @default 'async' */
@@ -44,6 +54,8 @@
     height,
     decorative = false,
     priority = false,
+    ratio,
+    fit = 'cover',
     loading,
     decoding = 'async',
     srcset,
@@ -84,7 +96,8 @@
   loading={loading ?? (priority ? 'eager' : 'lazy')}
   fetchpriority={priority ? 'high' : undefined}
   {decoding}
-  class={['ca-image', className]}
+  class={['ca-image', ratio && 'ca-image--ratio', ratio && `ca-image--${fit}`, className]}
+  style:--ca-aspect={ratio && ratio > 0 ? ratio : undefined}
 />
 
 <style>
@@ -96,5 +109,12 @@
       /* width/height attributes give the aspect ratio; height:auto keeps it when max-width shrinks the box. */
       height: auto;
     }
+    /* `ratio`: the box is cut to the ratio and the picture fills it; `width` stays the caller's. */
+    :global(.ca-image--ratio) {
+      width: 100%;
+      aspect-ratio: var(--ca-aspect);
+    }
+    :global(.ca-image--cover) { object-fit: cover; }
+    :global(.ca-image--contain) { object-fit: contain; }
 }
 </style>

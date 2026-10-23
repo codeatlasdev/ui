@@ -112,6 +112,8 @@ All six render any element with `as` and take spacing as tokens, never inline st
 | A template like `2fr 1fr` or `repeat(auto-fill, minmax(200px, 1fr))` | `Grid` plus a class | Write `grid-template-columns` in a class with `--ca-space-*` gaps. |
 | Padding only | `Box` | `p`, `px`, `py`. |
 | A centered page column, a page band | `Container`, `Section` | See Container above. |
+| Every picture in a grid or a card cover in one shape | [`Image`](/docs/display/image/#ratio) `ratio` | `ratio={16 / 9}` crops to the box (`fit="contain"` letterboxes) and keeps lazy loading and zero layout shift. |
+| A video, map or iframe that must hold a ratio while it loads | [`AspectRatio`](/docs/display/aspect-ratio/) | `ratio`; a direct `iframe`, `video` or `img` child fills the box. Layout only: no role. |
 
 `gap`, `p`, `px` and `py` take a spacing step as a string: `gap="4"` is `--ca-space-4`. A number such as `gap={16}` is the old API. `Row` is deprecated: use `Flex`. `PageShell gap` is the exception and takes a number in px.
 

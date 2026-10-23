@@ -1,0 +1,11 @@
+{
+	"summary": "An AspectRatio of 16/9 inside a 28rem frame holding a centred caption, standing in for a video or iframe.",
+	"use": "Embeds, maps and video players that have no intrinsic size but must hold a ratio while loading.",
+	"spec": [
+		"`<AspectRatio ratio={16 / 9}>` with one `<div class=\"slot\">16 / 9: any child, one box</div>` child",
+		"Wrapper `.frame` is `max-width: 28rem` with `--ca-radius-md` and `overflow: hidden`",
+		"`.slot` is `height: 100%` on `--ca-surface-sunken` and centres its text"
+	],
+	"tags": ["aspect-ratio", "embed", "video", "iframe", "ratio"],
+	"shape": "wide"
+}

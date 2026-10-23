@@ -1,0 +1,14 @@
+Use @codeatlasdev/ui demo #960 "ratio and fit" (display/image).
+What it shows: One 4:3 gradient file rendered in three boxes: ratio 16/9 (cropped), ratio 1 (cropped) and ratio 1 with fit contain (letterboxed). When to use: Card covers, thumbnails and avatar grids where every picture must share one box whatever its own proportions.
+Spec:
+- `<Image {src} alt="Wide cover" width={800} height={600} ratio={16 / 9} />`
+- `<Image {src} alt="Square cover" width={800} height={600} ratio={1} />`
+- `<Image {src} alt="Contained" width={800} height={600} ratio={1} fit="contain" />`
+- `src` is an inlined 4:3 `data:image/svg+xml;utf8,` gradient with a circle
+- Each image sits in a `<figure>` with a `<figcaption>` naming its ratio
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #960 ratio and fit → file, what changed, https://ui.codeatlas.com.br/docs/display/image#ratio-and-fit; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/960.txt   Components API: ca-ui-mcp get_component(Image)
