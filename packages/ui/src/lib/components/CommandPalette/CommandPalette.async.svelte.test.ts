@@ -57,7 +57,9 @@ describe("CommandPalette async search (#293)", () => {
 
 	it("typing again within the debounce window searches only the final query", async () => {
 		const search = vi.fn(async (_query: string, _signal: AbortSignal) => records);
-		await open({ search, debounce: 150 });
+		// Each keystroke is a CDP round trip that can outlast a short window on a loaded machine (a call
+		// would fire between keys); the window must stay longer than the whole burst, not just one key.
+		await open({ search, debounce: 1000 });
 		await userEvent.keyboard("inv");
 		await expect.element(page.getByRole("option", { name: /Invoice 1042/ })).toBeVisible();
 		expect(search).toHaveBeenCalledTimes(1);

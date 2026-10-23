@@ -38,14 +38,24 @@ export default defineConfig({
 			{
 				// SvelteKit-only modules used by kit/*.svelte (`$app/navigation`, `$app/state`); tests override it with vi.mock.
 				resolve: {
-					alias: {
+					alias: [
 						// Site demos import the package by name: render them against the source, not a stale dist.
-						"^@codeatlasdev/ui$": fileURLToPath(new URL("./src/lib/index.ts", import.meta.url)),
-						"$app/navigation": fileURLToPath(
-							new URL("./tests/app-navigation.stub.ts", import.meta.url)
-						),
-						"$app/state": fileURLToPath(new URL("./tests/app-state.stub.ts", import.meta.url)),
-					},
+						// A RegExp `find`: an object-form key is matched literally, and a bare string would also catch subpaths.
+						{
+							find: /^@codeatlasdev\/ui$/,
+							replacement: fileURLToPath(new URL("./src/lib/index.ts", import.meta.url)),
+						},
+						{
+							find: "$app/navigation",
+							replacement: fileURLToPath(
+								new URL("./tests/app-navigation.stub.ts", import.meta.url)
+							),
+						},
+						{
+							find: "$app/state",
+							replacement: fileURLToPath(new URL("./tests/app-state.stub.ts", import.meta.url)),
+						},
+					],
 				},
 				test: {
 					name: "browser",

@@ -155,8 +155,10 @@
     const bounds = fit;
     const p = { ...pad };
     if (!m || !bounds) return;
+    // The map keeps its padding, and `fitBounds` already fits inside it: passing it again would
+    // subtract it twice and leave a wide frame no area (maplibre throws on the empty box).
     m.setPadding(p);
-    m.fitBounds(bounds, { padding: p, animate: !reducedMotion.value });
+    m.fitBounds(bounds, { animate: !reducedMotion.value });
   });
 </script>
 
