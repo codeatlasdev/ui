@@ -183,19 +183,15 @@
   pointer-events: none;
   opacity: var(--ca-grain-opacity, 0.08);
   mix-blend-mode: multiply;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-image: var(--ca-noise-image);
   background-size: var(--ca-grain-size, 160px);
 }
 .dark .ca-surface[data-grain]::after,
 [data-theme-scope="dark"] .ca-surface[data-grain]::after { mix-blend-mode: screen; }
-.ca-surface[data-grain="animated"]::after { animation: ca-grain-shift 0.8s steps(6) infinite; }
+.ca-surface[data-grain="animated"]::after { animation: ca-grain-shift 0.8s steps(4) infinite; }
 @keyframes ca-grain-shift {
-  0%   { background-position: 0 0; }
-  20%  { background-position: -40px 25px; }
-  40%  { background-position: 30px -35px; }
-  60%  { background-position: -25px -15px; }
-  80%  { background-position: 45px 20px; }
-  100% { background-position: 0 0; }
+  33% { background-position: -40px 25px; }
+  66% { background-position: 30px -35px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .ca-surface[data-grain="animated"]::after { animation: none; }
