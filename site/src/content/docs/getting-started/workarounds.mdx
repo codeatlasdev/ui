@@ -24,6 +24,7 @@ Imports are from `@codeatlasdev/ui` unless the last column names a subpath.
 | A `position: fixed` full-screen mobile view | `MobilePane` | [MobilePane](/docs/layout/mobile-pane/) |
 | A sticky save bar | `StickyActions`, or the `footer` snippet of `AppForm` | [StickyActions](/docs/layout/sticky-actions/) |
 | A `.cover { aspect-ratio: 16 / 9; object-fit: cover }` class on an image, or a padding-top hack around an iframe | `<Image ratio={16 / 9}>` for a picture (`fit="contain"` letterboxes), `<AspectRatio ratio={16 / 9}>` for a video or an embed | [Image](/docs/display/image/#ratio), [AspectRatio](/docs/display/aspect-ratio/) |
+| A CSS grid with a drag handle and `mousemove` listeners for a resizable side panel | `ResizablePanels` with `ResizablePanel` and `ResizableHandle`: keyboard resize, `minSize` / `maxSize`, `persist` | [ResizablePanels](/docs/layout/resizable-panels/) |
 | A custom "nothing here" paragraph | `EmptyState`, or the `empty` snippet of `AppList` | [EmptyState](/docs/layout/empty-state/) |
 | A hand-made loading flash or a spinner that blinks on fast loads | `LoadingBoundary` for a route or section, `Skeleton` for content shape | [LoadingBoundary](/docs/navigation/loading-boundary/) |
 | Your own copy-to-clipboard button | `CopyButton`: swaps to a check, announces the result | [CopyButton](/docs/inputs/copy-button/) |

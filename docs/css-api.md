@@ -324,6 +324,12 @@ Re-flow: the list is a size container (`container-type: inline-size`), rows stac
 
 `.ca-scheme-asset` `.ca-scheme-asset__dark` `.ca-scheme-asset__light`
 
+## ResizablePanels
+
+`.ca-resizable` `.ca-resizable__handle` `.ca-resizable__panel`
+
+`data-direction="horizontal|vertical"` on `.ca-resizable` and `.ca-resizable__handle`; `data-dragging` on the group and `data-active` on the handle while it holds the pointer. `--ca-panel-size` (percent) is set inline on each panel.
+
 ## ScrollArea
 
 `.ca-scroll-area` `.ca-scroll-area__scrollbar` `.ca-scroll-area__scrollbar--h` `.ca-scroll-area__scrollbar--v` `.ca-scroll-area__thumb` `.ca-scroll-area__viewport`

@@ -201,6 +201,9 @@ export { default as RadioGroup } from "./components/RadioGroup/RadioGroup.svelte
 export { default as RecordCell } from "./components/RecordList/RecordCell.svelte";
 export { default as RecordList } from "./components/RecordList/RecordList.svelte";
 export { default as RecordRow } from "./components/RecordList/RecordRow.svelte";
+export { default as ResizableHandle } from "./components/ResizablePanels/ResizableHandle.svelte";
+export { default as ResizablePanel } from "./components/ResizablePanels/ResizablePanel.svelte";
+export { default as ResizablePanels } from "./components/ResizablePanels/ResizablePanels.svelte";
 export { default as Row } from "./components/Row/Row.svelte";
 export { default as SchemeAsset } from "./components/SchemeAsset/SchemeAsset.svelte";
 export { default as ScrollArea } from "./components/ScrollArea/ScrollArea.svelte";
