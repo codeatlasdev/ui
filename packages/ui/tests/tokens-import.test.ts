@@ -83,7 +83,7 @@ describe("importTokens: three themes with alpha", () => {
 		expect(secondary?.hex).toMatch(/^#[0-9a-f]{6}$/);
 		// 60% light text over a dark background is darker than the text itself, lighter than the page.
 		const colors = result.themes[0].colors;
-		expect(colors.textSecondary).toBe(secondary?.hex);
+		expect(colors.textSecondary).toBe(secondary?.hex as string);
 		expect(colors.textSecondary).not.toBe(colors.text);
 	});
 

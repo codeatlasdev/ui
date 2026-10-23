@@ -2,7 +2,7 @@
 // on each other. Output of each step is buffered and printed only if it fails.
 //
 //   phase 0: package build (svelte-check self-imports resolve to dist/)
-//   phase 1 (parallel): generated themes, token lint, Biome, unit tests, package type check
+//   phase 1 (parallel): generated themes, token lint, Biome, unit tests, test/config type check, package type check
 //   phase 2 (parallel, needs dist/): site type check, size budget
 // Locally at most 4 steps run at once; CI runs each phase fully in parallel.
 
@@ -17,6 +17,7 @@ const phase1: Step[] = [
 	{ name: "token lint", cmd: ["bun", "run", "lint:tokens"], cwd: "packages/ui" },
 	{ name: "biome", cmd: ["bun", "run", "lint"] },
 	{ name: "unit tests", cmd: ["bun", "run", "test:unit"] },
+	{ name: "types (tests, configs)", cmd: ["bun", "run", "check:native"] },
 	{ name: "types (package)", cmd: ["bun", "run", "check"], cwd: "packages/ui" },
 ];
 const phase2: Step[] = [
