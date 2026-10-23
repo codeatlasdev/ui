@@ -362,5 +362,7 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 941 | Delays, side and bind:open | navigation/hover-card | Button, HoverCard |
 | 960 | ratio and fit | display/image | Image |
 | 961 | Embed | display/aspect-ratio | AspectRatio |
+| 962 | Two panels | layout/resizable-panels | ResizableHandle, ResizablePanel, ResizablePanels |
+| 963 | Nested and saved | layout/resizable-panels | ResizableHandle, ResizablePanel, ResizablePanels |
 | 980 | Text, icon and filled groups | inputs/button-group | Button, ButtonGroup, IconButton |
 | 981 | Split button and vertical | inputs/button-group | Button, ButtonGroup, DropdownMenu, DropdownMenuItem, IconButton |
