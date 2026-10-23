@@ -236,6 +236,51 @@ interface PropsMembers {
 	ext: string | undefined;
 }
 
+/** Members of `LayoutProps` (components/Layout/layout.ts), the source of every layout primitive's token props. */
+let layoutMembers: Map<string, ts.TypeElement> | undefined;
+function layoutPropMembers(): Map<string, ts.TypeElement> {
+	if (layoutMembers) return layoutMembers;
+	const file = join(LIB, "components/Layout/layout.ts");
+	const sf = ts.createSourceFile(file, readFileSync(file, "utf8"), ts.ScriptTarget.ESNext, true);
+	layoutMembers = new Map();
+	for (const st of sf.statements)
+		if (ts.isInterfaceDeclaration(st) && st.name.text === "LayoutProps")
+			for (const m of st.members)
+				if (ts.isPropertySignature(m) && m.name) layoutMembers.set(propName(m.name), m);
+	return layoutMembers;
+}
+
+/**
+ * `Pick<LayoutProps, 'gap' | 'p'>` (what Flex, Stack, Grid, Box, Container, Section and Surface take): the
+ * picked members of `LayoutProps`, so the manifest lists the token props instead of an opaque `extends`.
+ * Anything else is `undefined`. Member nodes belong to layout.ts, hence they carry their own source file.
+ */
+function layoutPick(
+	type: ts.TypeReferenceNode | ts.ExpressionWithTypeArguments
+): ts.TypeElement[] | undefined {
+	const name = ts.isTypeReferenceNode(type) ? type.typeName : type.expression;
+	if (name.getText() !== "Pick") return undefined;
+	const [target, keys] = type.typeArguments ?? [];
+	if (!target || !keys || target.getText() !== "LayoutProps") return undefined;
+	const names = (ts.isUnionTypeNode(keys) ? keys.types : [keys]).map((k) =>
+		ts.isLiteralTypeNode(k) && ts.isStringLiteral(k.literal) ? k.literal.text : undefined
+	);
+	if (names.some((n) => n === undefined)) return undefined;
+	const all = layoutPropMembers();
+	return names.flatMap((n) => all.get(n as string) ?? []);
+}
+
+/**
+ * `PolymorphicAttributes<T, Own>` (Flex, Stack, Grid, Box): `Own` holds the token props, the rest is the tag's
+ * own attributes. Returns the members of a `Pick<LayoutProps, ...>` `Own`, or `undefined` for any other shape.
+ */
+function polymorphicOwn(type: ts.TypeNode): ts.TypeElement[] | undefined {
+	if (!ts.isTypeReferenceNode(type) || type.typeName.getText() !== "PolymorphicAttributes")
+		return undefined;
+	const own = type.typeArguments?.[1];
+	return own && ts.isTypeReferenceNode(own) ? layoutPick(own) : undefined;
+}
+
 /** Members of the `Props` interface/type alias, or of an inline type literal. */
 function resolvePropsType(sf: ts.SourceFile, type: ts.TypeNode | undefined): PropsMembers {
 	let members: readonly ts.TypeElement[] = [];
@@ -260,7 +305,9 @@ function resolvePropsType(sf: ts.SourceFile, type: ts.TypeNode | undefined): Pro
 					const base = ts.isIdentifier(t.expression)
 						? findDeclDeep(sf, t.expression.text)
 						: undefined;
-					if (base && ts.isInterfaceDeclaration(base) && !t.typeArguments)
+					const picked = layoutPick(t);
+					if (picked) inherited.push(...picked);
+					else if (base && ts.isInterfaceDeclaration(base) && !t.typeArguments)
 						inherited.push(...base.members);
 					else external.push(t.getText(sf));
 				}
@@ -274,8 +321,12 @@ function resolvePropsType(sf: ts.SourceFile, type: ts.TypeNode | undefined): Pro
 				const own: ts.TypeElement[] = [];
 				const rest: string[] = [];
 				for (const part of t.types) {
+					const polymorphic = polymorphicOwn(part);
 					if (ts.isTypeLiteralNode(part)) own.push(...part.members);
-					else if (ts.isTypeReferenceNode(part) && isLocalInterface(sf, part)) {
+					else if (polymorphic) {
+						own.push(...polymorphic);
+						rest.push("PolymorphicAttributes<T>");
+					} else if (ts.isTypeReferenceNode(part) && isLocalInterface(sf, part)) {
 						own.push(...resolvePropsType(sf, part).members);
 					} else rest.push(part.getText(sf));
 				}
@@ -439,7 +490,7 @@ function extractComponent(name: string, file: string, entry: string): ManifestCo
 
 	for (const m of members) {
 		if (!ts.isPropertySignature(m) || !m.name) continue;
-		const type = m.type?.getText(sf).replace(/\s+/g, " ") ?? "unknown";
+		const type = m.type?.getText(m.getSourceFile()).replace(/\s+/g, " ") ?? "unknown";
 		const d = defaults.get(propName(m.name));
 		const prop: ManifestProp = {
 			name: propName(m.name),
