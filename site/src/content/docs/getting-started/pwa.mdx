@@ -74,7 +74,7 @@ Safari ignores most manifest fields. `appleMeta()` returns the tags it does read
 
 ## Service worker
 
-SvelteKit builds the worker when `src/service-worker.ts` (Kit 2) or `src/service-worker/index.ts` (Kit 3) exists and registers it for you. `bunx @codeatlasdev/ui init --write` creates the right one for your Kit major, plus the prerendered `/offline` page. The build lists give the hashed build files, static files and the app version, so the cache never serves stale assets after a deploy.
+SvelteKit builds the worker when `src/service-worker.ts` (Kit 2) or `src/service-worker/index.ts` (Kit 3) exists and registers it for you. `bunx @codeatlasdev/ui init --write --with pwa` creates the right one for your Kit major, plus the manifest route, `robots.txt`, `sitemap.xml` and the prerendered `/offline` page; a plain `init` writes none of them (see [Installation](/docs/getting-started/installation/#pwa-and-seo---with-pwa)). The build lists give the hashed build files, static files and the app version, so the cache never serves stale assets after a deploy.
 
 Kit 3 removed `$service-worker`: `self` comes from `$app/service-worker`, the file lists from `$app/manifest` (`immutable`, `assets`) and `version` from `$app/env`. `$app/forms`, `$app/navigation` and `$app/state` cannot be imported into a worker (the build fails with `service_worker_invalid_import`), and `tsconfig.json` must list `src/service-worker` in `exclude` (the worker has its own `$app/tsconfig/service-worker`).
 

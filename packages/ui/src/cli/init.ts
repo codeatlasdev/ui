@@ -76,18 +76,37 @@ export function kitMajor(root: string): number {
 }
 
 /**
- * Import specifier for `src/lib/theme` from `src/hooks.server.ts`. Kit 3 removed `$lib` (using it
- * fails with `module_removed_lib`) in favor of the `#lib` package import that `sv create` writes
- * into package.json; Kit 2 apps keep `$lib`. A Kit 3 app without the `#lib` map gets a relative
- * path, which works everywhere. The `.ts` extension is explicit because neither the `#lib/*` map
- * nor Node's native config loader add one.
+ * Import specifier for a module under `src/lib`, from a file in `src/`. Kit 3 removed `$lib` (using
+ * it fails with `module_removed_lib`) in favor of the `#lib/*` package import: init adds that map to
+ * package.json (`libImportsStep`) and uses it, written with the extension because neither the map
+ * nor Node's native config loader add one. Kit 2 apps keep `$lib`.
  */
-function themeImport(root: string): string {
-	const pkg: { imports?: Record<string, unknown> } = JSON.parse(
-		readFileSync(join(root, "package.json"), "utf8")
-	);
-	if (pkg.imports && "#lib/*" in pkg.imports) return "#lib/theme.ts";
-	return kitMajor(root) >= 3 ? "./lib/theme.ts" : "$lib/theme";
+function libImport(root: string, name: string): string {
+	return kitMajor(root) >= 3 ? `#lib/${name}.ts` : `$lib/${name}`;
+}
+
+/** `imports["#lib/*"]` for Kit 3 apps: added to package.json when absent, never replaced. */
+function libImportsPatch(src: string): string | null {
+	const pkg = JSON.parse(src);
+	if (pkg.imports && "#lib/*" in pkg.imports) return src;
+	const indent = src.match(/^(\s+)"/m)?.[1] ?? "\t";
+	return `${JSON.stringify({ ...pkg, imports: { ...pkg.imports, "#lib/*": "./src/lib/*" } }, null, indent)}\n`;
+}
+
+/**
+ * The app's `@sveltejs/adapter-static` setup, or `null` without it. `dir` is the output folder
+ * svelte-check must not scan (default `build`, or the `pages` option of an `adapter({ pages })`
+ * call in vite.config); `major` is the declared range's major, for the Kit pairing note.
+ */
+function adapterStatic(root: string): { dir: string; major: number | null } | null {
+	const range = readDeps(root)?.["@sveltejs/adapter-static"];
+	if (!range) return null;
+	const vite = join(root, "vite.config.ts");
+	const pages = existsSync(vite)
+		? readFileSync(vite, "utf8").match(/\bpages:\s*["']([^"']+)["']/)?.[1]
+		: undefined;
+	const major = Number(range.match(/\d+/)?.[0]);
+	return { dir: pages ?? "build", major: Number.isInteger(major) ? major : null };
 }
 
 /** Insert `line` after the last top-level import (or at the top when there is none). */
@@ -104,16 +123,24 @@ function addImport(src: string, line: string): string {
  * Module specifier of a `theme` the app already imports in one of `files` (the config or hook that
  * hands it to the theme plugin/handle), or `null`. The app then keeps its theme elsewhere (a shared
  * workspace package, say): init must not create a second, disagreeing one, and wires the files it
- * does touch to this one.
+ * does touch to this one. An import of `own` (the file init writes: `src/lib/theme.ts`, reached
+ * relatively, through `#lib` or through `$lib`) is init's own work from an earlier run, not the app's.
  */
-function existingThemeSpec(root: string, files: string[]): string | null {
+function existingThemeSpec(root: string, files: string[], own: string): string | null {
 	for (const file of files) {
 		const abs = join(root, file);
 		if (!existsSync(abs)) continue;
 		const m = readFileSync(abs, "utf8").match(
 			/import\s*\{[^}]*\btheme\b[^}]*\}\s*from\s*["']([^"']+)["']/
 		);
-		if (m) return m[1];
+		if (!m) continue;
+		const target = /^[#$]lib\//.test(m[1])
+			? join(root, "src/lib", m[1].slice(5))
+			: m[1].startsWith(".")
+				? join(dirname(abs), m[1])
+				: null;
+		if (target?.replace(/\.ts$/, "") === join(root, own).replace(/\.ts$/, "")) continue;
+		return m[1];
 	}
 	return null;
 }
@@ -236,15 +263,53 @@ export const handle = sequence(caThemeHandle(theme));
 export const handleError = createErrorHandler();
 `;
 
-/** Default `<Seo>` of the root layout. `page` comes from `$app/state`: a layout may use it, a service worker may not. */
-const SEO_TAG = `<Seo
-	title="My app"
-	canonical={page.url.origin + page.url.pathname}
-	manifest="/manifest.webmanifest"
+/**
+ * Default `<Seo>` of the root layout. `page` comes from `$app/state`: a layout may use it, a service
+ * worker may not. The title is app copy (`src/lib/messages.ts`), so the layout passes the lint; the
+ * manifest link exists only when `--with pwa` writes the manifest route (prerender 404s otherwise).
+ */
+const seoTag = (pwa: boolean) => `<Seo
+	title={m.appTitle}
+	canonical={page.url.origin + page.url.pathname}${pwa ? '\n\tmanifest="/manifest.webmanifest"' : ""}
 />`;
 
-/** `src/routes/manifest.webmanifest/+server.ts`: colors come from the app theme, icons from `static/icons`. */
-const manifestRoute = (themeSpec: string) => `import { manifest } from "@codeatlasdev/ui/seo";
+/**
+ * `src/lib/messages.ts`: the app's visible copy, read by templates as \`{m.key}\` so
+ * \`codeatlas-ui lint\` (i18n-literal) stays clean. Replace the object with your locale catalog when
+ * the app is translated.
+ */
+const MESSAGES_TS = `export const m = {
+	appTitle: "My app",
+	offline: {
+		title: "You are offline",
+		body: "This page needs a connection. Check the network and try again.",
+		retry: "Try again",
+	},
+} as const;
+`;
+
+const LAYOUT_TS = `export const prerender = true;\n`;
+
+/** The viewport meta and the document skeleton Kit needs; no wrapper \`style\` (the lint forbids inline styles). */
+const APP_HTML_NEW = `<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="${VIEWPORT}" />
+		%sveltekit.head%
+	</head>
+	<body data-sveltekit-preload-data="hover">
+		<div>%sveltekit.body%</div>
+	</body>
+</html>
+`;
+
+/** `src/routes/manifest.webmanifest/+server.ts`: name from the app copy, colors from the app theme, icons from `static/icons`. */
+const manifestRoute = (
+	themeSpec: string,
+	messagesSpec: string
+) => `import { manifest } from "@codeatlasdev/ui/seo";
+import { m } from "${messagesSpec}";
 import { theme } from "${themeSpec}";
 
 export const prerender = true;
@@ -255,7 +320,7 @@ export const GET = () =>
 	new Response(
 		JSON.stringify(
 			manifest({
-				name: "My app",
+				name: m.appTitle,
 				theme,
 				icons: [
 					{ src: "/icons/192.png", sizes: "192x192" },
@@ -297,9 +362,13 @@ export const GET: RequestHandler = ({ url }) =>
 	});
 `;
 
-const OFFLINE_PAGE = `<h1>You are offline</h1>
-<p>This page needs a connection. Check the network and try again.</p>
-<button type="button" onclick={() => location.reload()}>Try again</button>
+const offlinePage = (messagesSpec: string) => `<script lang="ts">
+	import { m } from "${messagesSpec}";
+</script>
+
+<h1>{m.offline.title}</h1>
+<p>{m.offline.body}</p>
+<button type="button" onclick={() => location.reload()}>{m.offline.retry}</button>
 `;
 
 const OFFLINE_PAGE_TS = `export const prerender = true;\n`;
@@ -372,64 +441,81 @@ const BUILD = immutable.map((f) => f.path);
 const FILES = assets.map((f) => f.path);
 ${SW_BODY}`;
 
-const LAYOUT_NEW = `<script lang="ts">
+/** What the root layout depends on: where the app copy lives and whether the manifest route exists. */
+interface LayoutOpts {
+	messagesSpec: string;
+	pwa: boolean;
+}
+
+const layoutNew = ({ messagesSpec, pwa }: LayoutOpts) => `<script lang="ts">
 	import "@codeatlasdev/ui/styles/global.css";
 	import { colorScheme } from "@codeatlasdev/ui";
 	import { Seo } from "@codeatlasdev/ui/seo";
 	import { page } from "$app/state";
 	import { onMount } from "svelte";
+	import { m } from "${messagesSpec}";
 
 	let { children } = $props();
 
 	onMount(() => colorScheme.init());
 </script>
 
-${SEO_TAG}
+${seoTag(pwa)}
 
 {@render children()}
 `;
 
 /**
- * The root-layout \`<Seo>\`: a default title and the page's own canonical (origin + path, no query),
- * plus the manifest link. A page overrides it with its own \`<Seo>\`, or passes \`noindex\`.
+ * The imports `<Seo>` needs in the root layout: a default title (app copy) and the page's own
+ * canonical (origin + path, no query). A page overrides it with its own `<Seo>`, or passes `noindex`.
  */
-function seoImports(src: string): string[] {
+function seoImports(src: string, messagesSpec: string): string[] {
 	const lines: string[] = [];
 	if (!/import\s*\{[^}]*\bSeo\b[^}]*\}\s*from\s*["']@codeatlasdev\/ui\/seo["']/.test(src))
 		lines.push('\timport { Seo } from "@codeatlasdev/ui/seo";');
 	if (!/import\s*\{[^}]*\bpage\b[^}]*\}\s*from\s*["']\$app\/state["']/.test(src))
 		lines.push('\timport { page } from "$app/state";');
+	if (!/import\s*\{[^}]*\bm\b[^}]*\}\s*from/.test(src))
+		lines.push(`\timport { m } from "${messagesSpec}";`);
 	return lines;
 }
 
-function layoutPatch(src: string): string | null {
-	let out = src;
-	const needCss = !out.includes("@codeatlasdev/ui/styles/global.css");
-	const needScheme = !/colorScheme\s*\.\s*init\s*\(/.test(out);
-	const needSeo = !/<Seo\b/.test(out);
-	if (!needCss && !needScheme && !needSeo) return out;
-	const script = out.match(/<script\b[^>]*>/);
-	if (!script || script.index === undefined) {
-		return `<script lang="ts">\n\timport "@codeatlasdev/ui/styles/global.css";\n\timport { colorScheme } from "@codeatlasdev/ui";\n${seoImports(out).join("\n")}\n\timport { onMount } from "svelte";\n\n\tonMount(() => colorScheme.init());\n</script>\n\n${SEO_TAG}\n\n${out}`;
-	}
-	const insertAt = script.index + script[0].length;
-	const lines: string[] = [];
-	if (needCss) lines.push('\timport "@codeatlasdev/ui/styles/global.css";');
-	if (!/import\s*\{[^}]*\bcolorScheme\b[^}]*\}\s*from\s*["']@codeatlasdev\/ui["']/.test(out))
-		lines.push('\timport { colorScheme } from "@codeatlasdev/ui";');
-	if (needSeo) lines.push(...seoImports(out));
-	if (!/import\s*\{[^}]*\bonMount\b[^}]*\}\s*from\s*["']svelte["']/.test(out))
-		lines.push('\timport { onMount } from "svelte";');
-	out = `${out.slice(0, insertAt)}\n${lines.join("\n")}${out.slice(insertAt)}`;
-	if (needScheme) {
-		const close = out.indexOf("</script>");
-		out = `${out.slice(0, close).replace(/\s*$/, "")}\n\n\tonMount(() => colorScheme.init());\n${out.slice(close)}`;
-	}
-	if (needSeo) {
-		const close = out.indexOf("</script>") + "</script>".length;
-		out = `${out.slice(0, close)}\n\n${SEO_TAG}${out.slice(close)}`;
-	}
-	return out;
+function layoutPatch({ messagesSpec, pwa }: LayoutOpts) {
+	return (src: string): string | null => {
+		let out = src;
+		// `--with pwa` after a plain init: init's own `<Seo>` (its title is the app copy) gets the manifest link.
+		if (pwa && !/manifest=/.test(out))
+			out = out.replace(
+				/(<Seo\s+title=\{m\.appTitle\}[^>]*?)(\s*\/>)/,
+				'$1\n\tmanifest="/manifest.webmanifest"$2'
+			);
+		const needCss = !out.includes("@codeatlasdev/ui/styles/global.css");
+		const needScheme = !/colorScheme\s*\.\s*init\s*\(/.test(out);
+		const needSeo = !/<Seo\b/.test(out);
+		if (!needCss && !needScheme && !needSeo) return out;
+		const script = out.match(/<script\b[^>]*>/);
+		if (!script || script.index === undefined) {
+			return `<script lang="ts">\n\timport "@codeatlasdev/ui/styles/global.css";\n\timport { colorScheme } from "@codeatlasdev/ui";\n${seoImports(out, messagesSpec).join("\n")}\n\timport { onMount } from "svelte";\n\n\tonMount(() => colorScheme.init());\n</script>\n\n${seoTag(pwa)}\n\n${out}`;
+		}
+		const insertAt = script.index + script[0].length;
+		const lines: string[] = [];
+		if (needCss) lines.push('\timport "@codeatlasdev/ui/styles/global.css";');
+		if (!/import\s*\{[^}]*\bcolorScheme\b[^}]*\}\s*from\s*["']@codeatlasdev\/ui["']/.test(out))
+			lines.push('\timport { colorScheme } from "@codeatlasdev/ui";');
+		if (needSeo) lines.push(...seoImports(out, messagesSpec));
+		if (!/import\s*\{[^}]*\bonMount\b[^}]*\}\s*from\s*["']svelte["']/.test(out))
+			lines.push('\timport { onMount } from "svelte";');
+		out = `${out.slice(0, insertAt)}\n${lines.join("\n")}${out.slice(insertAt)}`;
+		if (needScheme) {
+			const close = out.indexOf("</script>");
+			out = `${out.slice(0, close).replace(/\s*$/, "")}\n\n\tonMount(() => colorScheme.init());\n${out.slice(close)}`;
+		}
+		if (needSeo) {
+			const close = out.indexOf("</script>") + "</script>".length;
+			out = `${out.slice(0, close)}\n\n${seoTag(pwa)}${out.slice(close)}`;
+		}
+		return out;
+	};
 }
 
 function appHtmlPatch(src: string): string | null {
@@ -461,24 +547,43 @@ function kit3Notes(root: string): string[] {
 }
 
 /**
- * What the scaffolded SEO/PWA files still need from the app. Printed only when init created them:
- * the placeholder origin Kit uses while prerendering would otherwise reach the sitemap, robots.txt
- * and canonical URLs, and the icons are files init cannot invent.
+ * `@sveltejs/adapter-static` 4 peers on Kit 3 only and 3 on Kit 2; npm fails with ERESOLVE on a
+ * mismatch. Said once, when the declared major is the wrong one.
  */
-function seoNotes(root: string, created: boolean): string[] {
+function adapterNotes(root: string): string[] {
+	const adapter = adapterStatic(root);
+	if (!adapter?.major) return [];
+	const want = kitMajor(root) >= 3 ? 4 : 3;
+	if (adapter.major === want) return [];
+	return [
+		`@sveltejs/adapter-static ${adapter.major} does not pair with SvelteKit ${kitMajor(root)}: install @sveltejs/adapter-static@${want} (4 needs Kit 3, 3 needs Kit 2).`,
+	];
+}
+
+/**
+ * What the scaffolded SEO/PWA files (`--with pwa`) still need from the app. Printed only when init
+ * created them: the placeholder origin Kit uses while prerendering would otherwise reach the
+ * sitemap, robots.txt and canonical URLs, the icons are files init cannot invent, and Kit refuses
+ * to prerender `/robots.txt` and `/sitemap.xml` when no page links to them (`prerender_unseen_routes`)
+ * unless `handleUnseenRoutes` says to ignore it.
+ */
+function pwaNotes(root: string, created: boolean): string[] {
 	if (!created) return [];
+	const kit3 = kitMajor(root) >= 3;
 	const notes = [
-		'Set your public origin (`sveltekit({ paths: { origin: "https://example.com" } })` on Kit 3, `kit.paths.origin` on Kit 2): while prerendering Kit uses a placeholder one, and it would end up in sitemap.xml, robots.txt and every canonical URL.',
+		kit3
+			? 'Set your public origin: `sveltekit({ paths: { origin: "https://example.com" } })` in vite.config. While prerendering Kit uses a placeholder one, and it would end up in sitemap.xml, robots.txt and every canonical URL.'
+			: 'Set your public origin: `kit: { prerender: { origin: "https://example.com" } }` in svelte.config.js (Kit 2 has no `paths.origin`). While prerendering Kit uses a placeholder one, and it would end up in sitemap.xml, robots.txt and every canonical URL.',
 		"Add the manifest icons (static/icons/192.png, 512.png, maskable-512.png), or generate them from one SVG with caBrandPlugin (`@codeatlasdev/ui/vite`).",
 	];
-	const tsconfig = join(root, "tsconfig.json");
-	if (
-		kitMajor(root) >= 3 &&
-		existsSync(tsconfig) &&
-		!readFileSync(tsconfig, "utf8").includes("src/service-worker")
-	)
+	const vite = join(root, "vite.config.ts");
+	const svelteConfig = join(root, "svelte.config.js");
+	const configFile = kit3 ? vite : svelteConfig;
+	if (!existsSync(configFile) || !readFileSync(configFile, "utf8").includes("handleUnseenRoutes"))
 		notes.push(
-			'Add "src/service-worker" to the `exclude` of tsconfig.json: the worker has its own tsconfig (`$app/tsconfig/service-worker`), and Kit 3 fails the build with tsconfig_invalid otherwise.'
+			kit3
+				? 'Add `prerender: { handleUnseenRoutes: "ignore" }` to `sveltekit({ ... })` in vite.config: no page links to /robots.txt or /sitemap.xml, and the build fails with prerender_unseen_routes otherwise.'
+				: 'Add `prerender: { handleUnseenRoutes: "ignore" }` under `kit` in svelte.config.js: no page links to /robots.txt or /sitemap.xml, and the build fails with prerender_unseen_routes otherwise.'
 		);
 	return notes;
 }
@@ -493,12 +598,88 @@ function themeStep(path: string, create: string, existing: string | null): Step 
 		: { path, create };
 }
 
+/** `vite.config.ts` for a bare Kit app: the two plugins, plus the static adapter and prerender option when they apply. */
+function viteConfigNew(root: string, themeSpec: string, pwa: boolean): string {
+	const adapter = adapterStatic(root);
+	const kit3 = kitMajor(root) >= 3;
+	const options = [
+		adapter && kit3 ? "adapter: adapter()" : "",
+		pwa && kit3 ? 'prerender: { handleUnseenRoutes: "ignore" }' : "",
+	].filter(Boolean);
+	return `import { sveltekit } from "@sveltejs/kit/vite";
+${adapter && kit3 ? 'import adapter from "@sveltejs/adapter-static";\n' : ""}import { caErrorPlugin, caThemePlugin } from "@codeatlasdev/ui/vite";
+import { defineConfig } from "vite";
+import { theme } from "${themeSpec}";
+
+export default defineConfig({
+	plugins: [sveltekit(${options.length ? `{ ${options.join(", ")} }` : ""}), caThemePlugin(theme), caErrorPlugin({ scaffold: true, theme })],
+});
+`;
+}
+
 /**
- * Theme specifier from a file under `src/routes/<dir>/`. `themeImport` returns `./lib/theme.ts`
- * (relative to `src/`) for a Kit 3 app without the `#lib` map; from a route it is two levels up.
+ * What init wants in tsconfig.json. Kit 3's `$app/tsconfig` base already allows `.ts` import
+ * extensions (vite.config imports the theme with one) and skips library checks; Kit 2's generated
+ * `.svelte-kit/tsconfig.json` does neither, so svelte-check fails on vite.config and on the
+ * `.d.ts` files of node_modules. `exclude` keeps svelte-check out of the adapter-static output
+ * (`build/`), which it would scan as minified JS and report thousands of errors for.
  */
-function routeThemeSpec(lib: string, depth: number): string {
-	return lib.startsWith("./") ? `${"../".repeat(depth + 1)}${lib.slice(2)}` : lib;
+function tsconfigWants(root: string, exclude: string[]) {
+	const kit3 = kitMajor(root) >= 3;
+	return {
+		extends: kit3 ? "$app/tsconfig" : "./.svelte-kit/tsconfig.json",
+		options: kit3 ? {} : { allowImportingTsExtensions: true, noEmit: true, skipLibCheck: true },
+		exclude,
+	};
+}
+
+/** `tsconfig.json` for a bare app. */
+function tsconfigNew(root: string, exclude: string[]): string {
+	const { extends: base, options, exclude: ex } = tsconfigWants(root, exclude);
+	const config = {
+		extends: base,
+		...(Object.keys(options).length ? { compilerOptions: options } : {}),
+		...(ex.length ? { exclude: ex } : {}),
+	};
+	return `${JSON.stringify(config, null, "\t")}\n`;
+}
+
+/**
+ * Adds what is missing to an existing tsconfig.json without rewriting the rest: `exclude` entries
+ * are appended and compiler options are only set when the app has not set them (an explicit
+ * `skipLibCheck: false` stays). A tsconfig with comments or trailing commas is not strict JSON, so
+ * init leaves it and reports `manual`.
+ */
+function tsconfigPatch(root: string, exclude: string[]) {
+	const wants = tsconfigWants(root, exclude);
+	return (src: string): string | null => {
+		let config: { compilerOptions?: Record<string, unknown>; exclude?: string[] };
+		try {
+			config = JSON.parse(src);
+		} catch {
+			return null;
+		}
+		const options = { ...config.compilerOptions };
+		for (const [k, v] of Object.entries(wants.options)) options[k] ??= v;
+		const have = config.exclude ?? [];
+		const missing = wants.exclude.filter((e) => !have.includes(e));
+		const sameOptions =
+			Object.keys(options).length === Object.keys(config.compilerOptions ?? {}).length;
+		if (!missing.length && sameOptions) return src;
+		const next = {
+			...config,
+			...(Object.keys(options).length ? { compilerOptions: options } : {}),
+			...(missing.length ? { exclude: [...have, ...missing] } : {}),
+		};
+		const indent = src.match(/^(\s+)"/m)?.[1] ?? "\t";
+		return `${JSON.stringify(next, null, indent)}\n`;
+	};
+}
+
+/** `src/routes/+layout.ts` for a static deploy: without `prerender` adapter-static emits only the SPA fallback. */
+function layoutTsPatch(src: string): string | null {
+	if (/export\s+const\s+prerender\b/.test(src)) return src;
+	return `${src.replace(/\s*$/, "")}\n\n${LAYOUT_TS}`.replace(/^\n+/, "");
 }
 
 /**
@@ -521,46 +702,97 @@ export function agentsStep(): Step {
 	};
 }
 
-function sveltekitSteps(root: string): Step[] {
-	const existing = existingThemeSpec(root, ["vite.config.ts", "src/hooks.server.ts"]);
-	const lib = existing ?? themeImport(root);
+function sveltekitSteps(root: string, pwa: boolean): Step[] {
+	const existing = existingThemeSpec(
+		root,
+		["vite.config.ts", "src/hooks.server.ts"],
+		"src/lib/theme.ts"
+	);
+	const themeSpec = existing ?? libImport(root, "theme");
+	const messagesSpec = libImport(root, "messages");
 	const kit3 = kitMajor(root) >= 3;
-	return [
+	const adapter = adapterStatic(root);
+	// What svelte-check must not scan: the adapter output, and on Kit 3 the worker (own tsconfig).
+	const exclude = [adapter?.dir, pwa && kit3 ? "src/service-worker" : undefined].filter(
+		(e): e is string => !!e
+	);
+	const steps: Step[] = [
+		...(kit3
+			? [
+					{
+						path: "package.json",
+						patch: libImportsPatch,
+						manual: 'Add `"imports": { "#lib/*": "./src/lib/*" }` to package.json.',
+					},
+				]
+			: []),
 		themeStep("src/lib/theme.ts", THEME_TS, existing),
+		{ path: "src/lib/messages.ts", create: MESSAGES_TS },
 		{
 			path: "src/hooks.server.ts",
-			create: hooksNew(lib),
-			patch: hooksPatch(lib),
+			create: hooksNew(themeSpec),
+			patch: hooksPatch(themeSpec),
 			manual:
 				'Compose caThemeHandle(theme) from "@codeatlasdev/ui/kit" into your existing `handle` with sequence().',
 		},
 		{
 			path: "vite.config.ts",
+			create: viteConfigNew(root, existing ?? "./src/lib/theme.ts", pwa),
 			patch: (src) => viteConfigPatch(src, existing ?? "./src/lib/theme.ts"),
 			manual: 'Add caThemePlugin(theme) from "@codeatlasdev/ui/vite" to `plugins`.',
 		},
-		{ path: "src/routes/+layout.svelte", create: LAYOUT_NEW, patch: layoutPatch },
+		{
+			path: "src/routes/+layout.svelte",
+			create: layoutNew({ messagesSpec, pwa }),
+			patch: layoutPatch({ messagesSpec, pwa }),
+		},
+		{
+			path: "tsconfig.json",
+			create: tsconfigNew(root, exclude),
+			patch: tsconfigPatch(root, exclude),
+			manual: `In tsconfig.json: add ${exclude.map((e) => `"${e}"`).join(", ")} to "exclude"${kit3 ? "" : ", and set compilerOptions allowImportingTsExtensions, noEmit and skipLibCheck to true"}.`,
+		},
+		...(adapter
+			? [
+					{
+						path: "src/routes/+layout.ts",
+						create: LAYOUT_TS,
+						patch: layoutTsPatch,
+					},
+				]
+			: []),
+		{
+			path: "src/app.html",
+			create: APP_HTML_NEW,
+			patch: appHtmlPatch,
+			manual: `Set the viewport meta to: ${VIEWPORT}`,
+		},
+		agentsStep(),
+	];
+	if (!pwa) return steps;
+	return [
+		...steps,
 		{
 			path: "src/routes/manifest.webmanifest/+server.ts",
-			create: manifestRoute(routeThemeSpec(lib, 2)),
+			create: manifestRoute(themeSpec, messagesSpec),
 		},
 		{ path: "src/routes/robots.txt/+server.ts", create: ROBOTS_ROUTE },
 		{ path: "src/routes/sitemap.xml/+server.ts", create: SITEMAP_ROUTE },
-		{ path: "src/routes/offline/+page.svelte", create: OFFLINE_PAGE },
+		{ path: "src/routes/offline/+page.svelte", create: offlinePage(messagesSpec) },
 		{ path: "src/routes/offline/+page.ts", create: OFFLINE_PAGE_TS },
 		// Kit 3 reads `src/service-worker/index.ts`, Kit 2 `src/service-worker.ts`: never both.
 		kit3
 			? { path: "src/service-worker/index.ts", create: SW_KIT3 }
 			: { path: "src/service-worker.ts", create: SW_KIT2 },
-		{ path: "src/app.html", patch: appHtmlPatch, manual: `Set the viewport meta to: ${VIEWPORT}` },
-		agentsStep(),
 	];
 }
 
-// ── Opt-in: lint and e2e templates (`init --with lint,e2e`) ──────────────────
+// ── Opt-in extras (`init --with lint,e2e,pwa`) ───────────────────────────────
 
-export const WITH_FEATURES = ["lint", "e2e"] as const;
-export type WithFeature = (typeof WITH_FEATURES)[number];
+/** Templates that add files and package.json scripts; `pwa` only switches the SvelteKit steps. */
+const PACKAGE_FEATURES = ["lint", "e2e"] as const;
+type PackageFeature = (typeof PACKAGE_FEATURES)[number];
+export const WITH_FEATURES = [...PACKAGE_FEATURES, "pwa"] as const;
 
 const GUARD_CONFIG = `{
 \t"allow": []
@@ -606,7 +838,7 @@ for (const route of routes)
 
 /** Scripts and dev dependencies each feature adds; an existing key is never overwritten. */
 const WITH_PACKAGE: Record<
-	WithFeature,
+	PackageFeature,
 	{ scripts: Record<string, string>; devDependencies: Record<string, string> }
 > = {
 	lint: {
@@ -622,7 +854,7 @@ const WITH_PACKAGE: Record<
 	},
 };
 
-function packagePatch(features: readonly WithFeature[]) {
+function packagePatch(features: readonly PackageFeature[]) {
 	return (src: string): string | null => {
 		const pkg = JSON.parse(src);
 		const scripts = { ...pkg.scripts };
@@ -640,7 +872,7 @@ function packagePatch(features: readonly WithFeature[]) {
 	};
 }
 
-function withSteps(features: readonly WithFeature[]): Step[] {
+function withSteps(features: readonly PackageFeature[]): Step[] {
 	const steps: Step[] = [];
 	if (features.includes("lint")) steps.push({ path: "ui-guard.config.json", create: GUARD_CONFIG });
 	if (features.includes("e2e"))
@@ -743,7 +975,7 @@ function astroSteps(root: string): Step[] {
 			existsSync(join(root, f))
 		) ?? "astro.config.mjs";
 	const layout = findAstroLayout(root);
-	const existing = existingThemeSpec(root, [configName]);
+	const existing = existingThemeSpec(root, [configName], "src/theme.ts");
 	return [
 		themeStep("src/theme.ts", ASTRO_THEME_TS, existing),
 		{
@@ -783,7 +1015,10 @@ export function init(
 		log(`unknown --with value "${unknown}" (expected: ${WITH_FEATURES.join(", ")})`);
 		return false;
 	}
-	const features = extras as WithFeature[];
+	const pwa = extras.includes("pwa");
+	const other = extras.filter((f): f is PackageFeature =>
+		(PACKAGE_FEATURES as readonly string[]).includes(f)
+	);
 	const fw = detectFramework(root);
 	if (!fw) {
 		log(
@@ -796,8 +1031,8 @@ export function init(
 	let ok = true;
 	let pending = 0;
 	let createdManifest = false;
-	const base = fw === "sveltekit" ? sveltekitSteps(root) : astroSteps(root);
-	for (const step of features.length ? [...base, ...withSteps(features)] : base) {
+	const base = fw === "sveltekit" ? sveltekitSteps(root, pwa) : astroSteps(root);
+	for (const step of other.length ? [...base, ...withSteps(other)] : base) {
 		if (step.note) {
 			log(`  skip    ${step.path}: ${step.note}`);
 			continue;
@@ -843,7 +1078,7 @@ export function init(
 		);
 	const notes = [
 		...(fw === "sveltekit" && kitMajor(root) >= 3 ? kit3Notes(root) : []),
-		...(fw === "sveltekit" ? seoNotes(root, createdManifest) : []),
+		...(fw === "sveltekit" ? [...adapterNotes(root), ...pwaNotes(root, createdManifest)] : []),
 		...(fw === "astro" ? astroNotes(root) : []),
 	];
 	for (const n of notes) log(`\n  note    ${n}`);

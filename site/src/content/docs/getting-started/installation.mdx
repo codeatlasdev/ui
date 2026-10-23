@@ -46,7 +46,7 @@ Every version is published from CI with an npm provenance statement, so you can 
 ## The `init` command
 
 ```sh
-bunx @codeatlasdev/ui init [--write] [--dir <path>]
+bunx @codeatlasdev/ui init [--write] [--dir <path>] [--with lint,e2e,pwa]
 ```
 
 `init` detects the framework from `package.json` (`@sveltejs/kit` means SvelteKit, otherwise `astro` means Astro) and prints `Detected SvelteKit.` or `Detected Astro.`. With neither it prints an error and exits with code 1. Then it goes through the files of that framework, one line each:
@@ -60,13 +60,14 @@ bunx @codeatlasdev/ui init [--write] [--dir <path>]
 | `patch   <file>` | The change was applied (`--write`). |
 | `manual  <file>: could not patch safely.` | `init` could not edit the file safely (no `plugins: [...]` array, an existing `handle` of your own, no `</body>`). It says what to add by hand and exits with code 1. |
 | `create  AGENTS.md` / `patch   AGENTS.md` | The rules an agent needs to work in this app, between `<!-- codeatlas-ui:start -->` and `<!-- codeatlas-ui:end -->`. An existing `AGENTS.md` keeps everything outside the markers; running `init` again replaces only the block. |
-| `skip    <file> (not found)` | The file does not exist and `init` does not create it (`vite.config.ts`, `src/app.html` and the Astro config). |
+| `skip    <file> (not found)` | The file does not exist and `init` does not create it. On Astro this is the Astro config; SvelteKit creates every file it needs. |
 | `skip    <file>: the app already imports its theme from "<module>"` | `vite.config.ts`, `hooks.server.ts` (or the Astro config) already import `theme` from somewhere else, for example a shared workspace package. `init` does not create `src/lib/theme.ts` (`src/theme.ts` on Astro) and wires the files it adds to that import. |
 
 | Flag | Effect |
 |---|---|
 | `--write` | Create the missing files and apply the proposed changes. Without it `init` is a dry run: nothing touches the disk. |
 | `--dir <path>` | Project directory. Defaults to the current directory. |
+| `--with <list>` | Opt-in extras, comma separated: `lint` (UI guard scripts), `e2e` (Playwright matrix and axe spec), `pwa` (SvelteKit: manifest, service worker, offline page, `robots.txt`, `sitemap.xml`; see [`--with pwa`](#pwa-and-seo---with-pwa)). Without `--with` none of them is written. |
 
 When anything is pending it ends with `N change(s) not applied. Re-run with --write to create the files and apply the diffs above.` A clean run ends with `Done. Run your dev server: the theme paints on the first frame.`
 
@@ -76,20 +77,21 @@ When anything is pending it ends with `N change(s) not applied. Re-run with --wr
 
 ### What `init` writes
 
-For each file below, `init` creates it when it is missing, except `vite.config.ts` and `src/app.html`, which it only patches (it prints `skip` when they are not there). Without `--write` nothing is written: `init` prints `would create` for a missing file and a diff for an existing one. A file that already exists is never overwritten: its diff is applied only with `--write`. Re-running it changes nothing once the setup is complete.
+For each file below, `init` creates it when it is missing, or patches it when it exists. Without `--write` nothing is written: `init` prints `would create` for a missing file and a diff for an existing one. A file that already exists is never overwritten: its diff is applied only with `--write`. Re-running it changes nothing once the setup is complete. A project with nothing but `package.json` and `@sveltejs/kit` works: [`init` creates the config files it needs](#a-bare-app-files-init-creates).
 
 | File | What `init` puts there | If the file exists |
 |---|---|---|
+| `package.json` (Kit 3) | `"imports": { "#lib/*": "./src/lib/*" }`, so the files below can import `#lib/theme.ts` and `#lib/messages.ts` (`$lib` was removed in Kit 3) | adds only `#lib/*`; the rest of `imports` is kept |
 | `src/lib/theme.ts` | the shared `theme` object (`defaultPreset: "amber"`, `defaultScheme: "system"`) | left alone |
+| `src/lib/messages.ts` | the app copy the scaffold shows (`export const m = { appTitle, offline: { ... } }`): templates read `{m.appTitle}`, so `codeatlas-ui lint` stays clean. See [app copy](/docs/getting-started/app-copy/) | left alone |
 | `vite.config.ts` | `caThemePlugin(theme)` and `caErrorPlugin({ scaffold: true, theme })`, appended to `plugins`, in one `@codeatlasdev/ui/vite` import (plus `import { theme } from "./src/lib/theme.ts"`) | adds only the plugin that is missing |
 | `src/hooks.server.ts` | `handle = sequence(caThemeHandle(theme))` and `handleError = createErrorHandler()` | adds only what is missing; reports `manual` if you already define a `handle` of your own; never touches your `handleError` |
-| `src/routes/+layout.svelte` | the stylesheet import, `colorScheme.init()` in `onMount` and a default `<Seo>` (title, canonical from `page.url`, `manifest="/manifest.webmanifest"`) | adds only what is missing; an existing `<Seo>` is kept |
+| `src/routes/+layout.svelte` | the stylesheet import, `colorScheme.init()` in `onMount` and a default `<Seo>` (title from `m.appTitle`, canonical from `page.url`) | adds only what is missing; an existing `<Seo>` is kept |
 | `src/app.html` | the viewport meta with `viewport-fit=cover, interactive-widget=resizes-content` | rewrites only the viewport meta; reports `manual` when there is none |
-| `src/routes/manifest.webmanifest/+server.ts` | a prerendered manifest built with `manifest({ name, theme, icons })` | left alone |
-| `src/routes/robots.txt/+server.ts`, `src/routes/sitemap.xml/+server.ts` | prerendered `robotsTxt()` (pointing at the sitemap) and `sitemapXml()` listing the static pages (no `[param]` routes, route groups dropped, no `/offline`) | left alone |
-| `src/service-worker.ts` (Kit 2) or `src/service-worker/index.ts` (Kit 3), `src/routes/offline/` | the worker from [PWA](/docs/getting-started/pwa/#service-worker) and the prerendered offline page it falls back to | left alone |
+| `tsconfig.json` | see [a bare app](#a-bare-app-files-init-creates); with `@sveltejs/adapter-static`, the adapter output folder in `exclude` | adds only what is missing |
+| `src/routes/+layout.ts` | only with `@sveltejs/adapter-static`: `export const prerender = true;` | adds the line when missing |
 
-After creating these, `init` prints what the app still has to provide: its public origin (`paths.origin`, otherwise sitemap, `robots.txt` and canonical URLs carry Kit's prerender placeholder), the manifest icons, and on Kit 3 the `src/service-worker` entry in the `exclude` of `tsconfig.json`. See [SEO](/docs/getting-started/seo/) and [PWA](/docs/getting-started/pwa/).
+The service worker, manifest, `robots.txt`, `sitemap.xml` and offline page are [opt-in (`--with pwa`)](#pwa-and-seo---with-pwa). With `@sveltejs/adapter-static`, see [static deploys](#static-deploys-with-sveltejsadapter-static).
 
 `caErrorPlugin({ scaffold: true, theme })` then creates `src/routes/+error.svelte` and `src/error.html` the first time Vite runs (dev or build), and never overwrites them. `src/error.html` takes its colors, default scheme and preset from the `theme` you pass (the same object as `caThemePlugin`), carries the theme init script in `<head>`, and has no inline handler or `javascript:` URL, so it works under a strict CSP. Its copy and `lang` follow `locale` (`caErrorPlugin({ scaffold: true, theme, locale: "pt-BR" })`; default `en`, with a build warning until you set it). The result is the setup below, which you can also write by hand.
 
@@ -97,7 +99,7 @@ After creating these, `init` prints what the app still has to provide: its publi
 
 <Steps>
 
-1. **Register both Vite plugins.** `caThemePlugin` bundles the ESM-only dependencies for SSR (`@tanstack/svelte-table`, `shiki`) and warns at build time if the theme script is not injected. `caErrorPlugin` creates the error pages when they are missing (`scaffold: true`), or only warns without it. Import the theme **with its `.ts` extension**: Vite loads the config with Node's native loader, which does not resolve extensionless imports (Vite 8 warns about it). That needs `"allowImportingTsExtensions": true` in `tsconfig.json`; SvelteKit's generated base config already sets it.
+1. **Register both Vite plugins.** `caThemePlugin` bundles the ESM-only dependencies for SSR (`@tanstack/svelte-table`, `shiki`) and warns at build time if the theme script is not injected. `caErrorPlugin` creates the error pages when they are missing (`scaffold: true`), or only warns without it. Import the theme **with its `.ts` extension**: Vite loads the config with Node's native loader, which does not resolve extensionless imports (Vite 8 warns about it). That needs `"allowImportingTsExtensions": true` in `tsconfig.json`. Kit 3's `$app/tsconfig` sets it, as long as your `tsconfig.json` keeps `"extends": "$app/tsconfig"` and does not override `compilerOptions`; Kit 2's generated `.svelte-kit/tsconfig.json` does not, so set it (with `noEmit` and `skipLibCheck`) yourself. `init` writes them into the `tsconfig.json` it creates and adds the missing ones to a Kit 2 file you have.
 
    ```ts
    // vite.config.ts
@@ -114,7 +116,7 @@ After creating these, `init` prints what the app still has to provide: its publi
 2. **Inject the theme script and sanitize server errors in the server hook.** `caThemeHandle` puts the brand presets and the init script right after `<head>` of every SSR and prerendered page, so the first paint already has the right scheme and preset. `createErrorHandler` turns every unexpected server error into `{ message, code, id }` without leaking the message of a 5xx; [pass a `locale` or a `report` callback](/docs/getting-started/i18n/#server-errors) when you need them.
 
    ```ts
-   // src/hooks.server.ts
+   // src/hooks.server.ts (Kit 2; on Kit 3 import "#lib/theme.ts", see SvelteKit 3 below)
    import { sequence } from "@sveltejs/kit/hooks";
    import { caThemeHandle, createErrorHandler } from "@codeatlasdev/ui/kit";
    import { theme } from "$lib/theme";
@@ -168,7 +170,7 @@ After creating these, `init` prints what the app still has to provide: its publi
 
 ### SvelteKit 3
 
-Kit 3 changed three things this setup touches. `init` handles the third (the theme import in the hook) and, for the other two, prints a `note` line instead of rewriting `svelte.config.js` or `tsconfig.json`: it reports `svelte.config.js`/`.ts`/`.mjs` when one exists, and a `tsconfig.json` that does not mention `$app/tsconfig`. On a clean Kit 3 run you get no `Done.` line while a note is pending.
+Kit 3 changed three things this setup touches. `init` handles the third (`$lib` is gone): it adds the `#lib/*` map to `package.json` and imports through it. For the other two it prints a `note` line instead of rewriting `svelte.config.js` or an existing `tsconfig.json`: it reports `svelte.config.js`/`.ts`/`.mjs` when one exists, and a `tsconfig.json` that does not mention `$app/tsconfig`. On a clean Kit 3 run you get no `Done.` line while a note is pending.
 
 1. **Configuration moves into the Vite plugin.** `svelte.config.js` is ignored (`config_file_unsupported`) and the `kit` namespace is gone (`config_kit_namespace`). Pass the options directly to `sveltekit()`, next to the two plugins:
 
@@ -185,20 +187,77 @@ Kit 3 changed three things this setup touches. `init` handles the third (the the
    });
    ```
 
-2. **`tsconfig.json` extends `$app/tsconfig`.** `.svelte-kit/tsconfig.json` is no longer generated (`tsconfig_extends_missing`):
+2. **`tsconfig.json` extends `$app/tsconfig`.** `.svelte-kit/tsconfig.json` is no longer generated (`tsconfig_extends_missing`). The base config already allows `.ts` import extensions and skips library checks:
 
    ```json
    { "extends": "$app/tsconfig" }
    ```
 
-3. **`$lib` is removed** (`module_removed_lib`). Use the `#lib/*` import that `sv create` adds to `package.json` (`"imports": { "#lib/*": "./src/lib/*" }`), written with the extension. In the hook, import the theme as `#lib/theme.ts`:
+3. **`$lib` is removed** (`module_removed_lib`). Use the `#lib/*` import that `sv create` adds to `package.json`, written with the extension. `init --write` adds it when it is missing and never replaces an `imports` map you have:
+
+   ```json
+   { "imports": { "#lib/*": "./src/lib/*" } }
+   ```
 
    ```ts
    // src/hooks.server.ts
    import { theme } from "#lib/theme.ts";
    ```
 
-   Without a `#lib` map, use a relative path (`./lib/theme.ts` from `src/hooks.server.ts`). Everything else (the layout, the stylesheet import, `colorScheme.init()` and the viewport meta) is identical to Kit 2.
+   Everything else (the layout, the stylesheet import, `colorScheme.init()` and the viewport meta) is identical to Kit 2. On Kit 2 `init` keeps `$lib` and does not touch `imports`.
+
+### A bare app: files `init` creates
+
+`init` does the whole setup, including a project with nothing but `package.json` and `@sveltejs/kit` in it. When `vite.config.ts`, `src/app.html` or `tsconfig.json` are missing it creates a minimal one instead of skipping:
+
+| File | What `init` creates |
+|---|---|
+| `vite.config.ts` | `sveltekit()`, `caThemePlugin(theme)` and `caErrorPlugin({ scaffold: true, theme })`. On Kit 3 with `@sveltejs/adapter-static` in `package.json` it also imports the adapter and passes `sveltekit({ adapter: adapter() })`. On Kit 2 the adapter belongs in `svelte.config.js`, which you own. |
+| `src/app.html` | the document skeleton with the viewport meta and `%sveltekit.head%` / `%sveltekit.body%`, without the `style="display: contents"` wrapper that `sv create` adds (the UI guard forbids inline styles) |
+| `tsconfig.json` | Kit 3: `{ "extends": "$app/tsconfig" }`. Kit 2: `extends` `./.svelte-kit/tsconfig.json` plus `allowImportingTsExtensions`, `noEmit` and `skipLibCheck` (Kit 2's generated config sets none of them, and `vite.config.ts` imports the theme with its `.ts` extension) |
+
+If the files exist, `init` patches them as before (a diff without `--write`). For an existing Kit 2 `tsconfig.json` it adds only the compiler options you have not set yourself.
+
+### Static deploys with `@sveltejs/adapter-static`
+
+`init` detects `@sveltejs/adapter-static` in `package.json` and adds what a static build needs, so `vite build` and `svelte-check` both pass:
+
+- **`tsconfig.json` `exclude`.** The adapter writes its output (`build/` by default, or the `pages` option of `adapter({ pages })` in `vite.config.ts`) into the project, and `svelte-check` would type-check that minified JS (thousands of errors). `init` adds the folder to `exclude`.
+- **`src/routes/+layout.ts` with `export const prerender = true;`.** Without it adapter-static emits only the SPA fallback (`200.html`), not one HTML file per page. An existing `+layout.ts` keeps its content and gains the line.
+- **The adapter major must match the Kit major.** `@sveltejs/adapter-static@4` peers on SvelteKit 3 only and `@sveltejs/adapter-static@3` on SvelteKit 2; the other pairing fails `npm install` with `ERESOLVE`. `init` prints a `note` when the declared major is the wrong one.
+
+| SvelteKit | `@sveltejs/adapter-static` |
+|---|---|
+| 3 | `4` |
+| 2 (`^2.12`) | `3` |
+
+Links to routes that do not exist yet (a landing page's `/sign-in`) make the prerender fail with a 404 `linked from /`. Create the routes, or set `prerender: { handleHttpError: "warn" }` (in `sveltekit({ ... })` on Kit 3, under `kit` in `svelte.config.js` on Kit 2).
+
+### PWA and SEO: `--with pwa`
+
+A plain `init` does not write a service worker, manifest, offline page, `robots.txt` or sitemap. A screen app does not need them, they need icons and a public origin you have to supply, and a manifest route you delete later leaves a `manifest` link that fails the prerender. `<Seo>` in the root layout carries a title (read from `src/lib/messages.ts`) and the page's canonical URL, and no `manifest`.
+
+```sh
+bunx @codeatlasdev/ui init --write --with pwa
+```
+
+`--with pwa` writes the set below and links the manifest from `<Seo manifest="/manifest.webmanifest">`. It can be added to an app `init` already set up: the missing files are created and `init`'s own `<Seo>` gains the link (a `<Seo>` you wrote is left alone). `--with` takes a comma separated list: `--with lint,e2e,pwa`.
+
+| File | What `init --with pwa` puts there |
+|---|---|
+| `src/routes/manifest.webmanifest/+server.ts` | a prerendered manifest built with `manifest({ name, theme, icons })`, named from `m.appTitle` |
+| `src/routes/robots.txt/+server.ts`, `src/routes/sitemap.xml/+server.ts` | prerendered `robotsTxt()` (pointing at the sitemap) and `sitemapXml()` listing the static pages (no `[param]` routes, route groups dropped, no `/offline`) |
+| `src/service-worker.ts` (Kit 2) or `src/service-worker/index.ts` (Kit 3), `src/routes/offline/` | the worker from [PWA](/docs/getting-started/pwa/#service-worker) and the prerendered offline page it falls back to, with its copy in `src/lib/messages.ts` |
+| `vite.config.ts` (created, Kit 3) | `sveltekit({ prerender: { handleUnseenRoutes: "ignore" } })`: no page links to `/robots.txt` or `/sitemap.xml`, and Kit fails the build with `prerender_unseen_routes` otherwise |
+| `tsconfig.json` (Kit 3) | `src/service-worker` in `exclude`: the worker has its own tsconfig (`$app/tsconfig/service-worker`) |
+
+After creating them `init` prints what the app still has to provide:
+
+- **The public origin.** While prerendering Kit uses a placeholder origin, and it would end up in `sitemap.xml`, `robots.txt` and every canonical URL. On **Kit 3** it is `sveltekit({ paths: { origin: "https://example.com" } })` in `vite.config.ts`. On **Kit 2** there is no `paths.origin` (Kit 2.70 rejects it with `Unexpected option config.kit.paths.origin`): the option is `kit: { prerender: { origin: "https://example.com" } }` in `svelte.config.js`.
+- **`prerender.handleUnseenRoutes: "ignore"`** when the config already existed without it (Kit 2: under `kit` in `svelte.config.js`).
+- **The manifest icons** (`static/icons/192.png`, `512.png`, `maskable-512.png`), or generate them from one SVG with `caBrandPlugin` (`@codeatlasdev/ui/vite`).
+
+See [SEO](/docs/getting-started/seo/) and [PWA](/docs/getting-started/pwa/).
 
 ## Astro
 
@@ -303,7 +362,7 @@ Reload with the toggle on dark and check that there is no white flash. Continue 
 
 ## Lint and e2e templates
 
-`init --with lint,e2e --write` adds the `lint:ui` and `check:ca` scripts and `ui-guard.config.json` (`lint`), and a Playwright config with 390, 768 and 1280 px projects plus an axe spec per route in light and dark (`e2e`). `codeatlas-ui lint src` reads `.svelte`, `.astro` and `.css`, which Biome and ESLint do not see inside templates, and reports hex colors, raw `px`, inline `style`, `:global(.ca-*)` and literal text, each with file and line; a `.ca-*` override that must stay goes in `allow` with a `ca-ui-workaround(#n)` marker. Existing files and scripts are never overwritten. Biome cannot see template usage, so it may flag Svelte imports as unused: keep it on `.ts` and let `svelte-check` own `.svelte`.
+`init --with lint,e2e --write` adds the `lint:ui` and `check:ca` scripts and `ui-guard.config.json` (`lint`), and a Playwright config with 390, 768 and 1280 px projects plus an axe spec per route in light and dark (`e2e`). `codeatlas-ui lint src` reads `.svelte`, `.astro` and `.css`, which Biome and ESLint do not see inside templates, and reports hex colors, raw `px`, inline `style`, `:global(.ca-*)` and literal text ([app copy](/docs/getting-started/app-copy/)), each with file and line; a `.ca-*` override that must stay goes in `allow` with a `ca-ui-workaround(#n)` marker. Existing files and scripts are never overwritten. Biome cannot see template usage, so it may flag Svelte imports as unused: keep it on `.ts` and let `svelte-check` own `.svelte`. What `init` itself writes passes this lint: its copy lives in `src/lib/messages.ts`.
 
 ## Check an existing setup with `doctor`
 

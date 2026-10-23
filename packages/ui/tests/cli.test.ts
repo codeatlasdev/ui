@@ -11,6 +11,7 @@ import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { init } from "../src/cli/init.ts";
 import { migrate } from "../src/cli/migrate.ts";
+import { guardSource } from "../src/cli/ui-guard.ts";
 
 function project(files: Record<string, string>): string {
 	const root = mkdtempSync(join(tmpdir(), "ca-cli-"));
@@ -111,14 +112,14 @@ describe("init on SvelteKit", () => {
 		expect(read(root, "src/hooks.server.ts")).toContain('from "#lib/theme.ts"');
 	});
 
-	it("never emits $lib on Kit 3 without a #lib map: Kit 3 removed it (module_removed_lib)", () => {
+	it("never emits $lib on Kit 3 (module_removed_lib): it adds the #lib map instead", () => {
 		const root = project({
 			"package.json": JSON.stringify({ devDependencies: { "@sveltejs/kit": "^3.0.1" } }),
 		});
 		init(root, { ...quiet, write: true });
 		const hooks = read(root, "src/hooks.server.ts");
 		expect(hooks).not.toContain("$lib");
-		expect(hooks).toContain('from "./lib/theme.ts"');
+		expect(hooks).toContain('from "#lib/theme.ts"');
 	});
 
 	it("keeps $lib on Kit 2, with a caret, tilde or exact pin", () => {
@@ -265,7 +266,7 @@ describe("init scaffolds SEO and PWA on SvelteKit (#205)", () => {
 	const KIT3_PKG = JSON.stringify({ devDependencies: { "@sveltejs/kit": "^3.0.1" } });
 	const scaffold = (pkg: string, files: Record<string, string> = {}) => {
 		const root = project({ "package.json": pkg, ...files });
-		expect(init(root, { ...quiet, write: true })).toBe(true);
+		expect(init(root, { ...quiet, write: true, with: ["pwa"] })).toBe(true);
 		return root;
 	};
 
@@ -341,7 +342,7 @@ describe("init scaffolds SEO and PWA on SvelteKit (#205)", () => {
 			"src/service-worker/index.ts": own,
 			"src/routes/+layout.svelte": layout,
 		});
-		init(root, { ...quiet, write: true });
+		init(root, { ...quiet, write: true, with: ["pwa"] });
 		for (const f of [
 			"src/routes/robots.txt/+server.ts",
 			"src/routes/sitemap.xml/+server.ts",
@@ -355,11 +356,11 @@ describe("init scaffolds SEO and PWA on SvelteKit (#205)", () => {
 	it("tells the app to set its origin and add icons once, and stays quiet on a re-run", () => {
 		const root = project({ "package.json": KIT_PKG });
 		const first: string[] = [];
-		init(root, { log: (l) => first.push(l), write: true });
-		expect(first.join("\n")).toContain("paths.origin");
+		init(root, { log: (l) => first.push(l), write: true, with: ["pwa"] });
+		expect(first.join("\n")).toContain("origin");
 		expect(first.join("\n")).toContain("static/icons");
 		const again: string[] = [];
-		init(root, { log: (l) => again.push(l), write: true });
+		init(root, { log: (l) => again.push(l), write: true, with: ["pwa"] });
 		expect(again.join("\n")).not.toContain("note ");
 		expect(again.join("\n")).toContain("Done.");
 	});
@@ -787,5 +788,325 @@ describe("init --with lint,e2e (#383)", () => {
 		withFlags(root, ["lint", "e2e"], false);
 		expect(existsSync(join(root, "playwright.config.ts"))).toBe(false);
 		expect(JSON.parse(read(root, "package.json")).scripts).toBeUndefined();
+	});
+});
+
+describe("init scaffolds an app that builds and lints out of the box (#475)", () => {
+	const KIT3 = { "@sveltejs/kit": "^3.1.0" };
+	const pkg = (dev: Record<string, string>, extra: Record<string, unknown> = {}) =>
+		JSON.stringify({ devDependencies: dev, ...extra });
+	const run = (root: string, opts: { with?: string[]; write?: boolean } = {}) => {
+		const lines: string[] = [];
+		const ok = init(root, { write: true, ...opts, log: (l) => lines.push(l) });
+		return { ok, out: lines.join("\n") };
+	};
+	const svelteFiles = (root: string, dir = "src"): string[] =>
+		readdirSync(join(root, dir), { withFileTypes: true }).flatMap((e) =>
+			e.isDirectory()
+				? svelteFiles(root, `${dir}/${e.name}`)
+				: e.name.endsWith(".svelte")
+					? [`${dir}/${e.name}`]
+					: []
+		);
+
+	describe("#lib imports map (Kit 3)", () => {
+		it("adds imports { #lib/* } to package.json when the app has none, and imports through it", () => {
+			const root = project({ "package.json": pkg(KIT3) });
+			run(root);
+			expect(JSON.parse(read(root, "package.json")).imports).toEqual({
+				"#lib/*": "./src/lib/*",
+			});
+			expect(read(root, "src/hooks.server.ts")).toContain('from "#lib/theme.ts"');
+		});
+
+		it("keeps an imports map the app already has and only adds #lib/*", () => {
+			const root = project({
+				"package.json": pkg(KIT3, { imports: { "#db": "./src/db.ts" } }),
+			});
+			run(root);
+			expect(JSON.parse(read(root, "package.json")).imports).toEqual({
+				"#db": "./src/db.ts",
+				"#lib/*": "./src/lib/*",
+			});
+		});
+
+		it("does not touch package.json imports on Kit 2 (it keeps $lib)", () => {
+			const root = project({ "package.json": pkg({ "@sveltejs/kit": "^2.70.0" }) });
+			run(root);
+			expect(JSON.parse(read(root, "package.json")).imports).toBeUndefined();
+			expect(read(root, "src/hooks.server.ts")).toContain('from "$lib/theme"');
+		});
+
+		it("is a dry run without --write", () => {
+			const root = project({ "package.json": pkg(KIT3) });
+			const before = read(root, "package.json");
+			run(root, { write: false });
+			expect(read(root, "package.json")).toBe(before);
+		});
+	});
+
+	describe("PWA and SEO files are opt-in (--with pwa)", () => {
+		const PWA_FILES = [
+			"src/routes/manifest.webmanifest/+server.ts",
+			"src/routes/robots.txt/+server.ts",
+			"src/routes/sitemap.xml/+server.ts",
+			"src/routes/offline/+page.svelte",
+			"src/routes/offline/+page.ts",
+			"src/service-worker/index.ts",
+		];
+
+		it("a plain init writes none of them and no manifest link in the layout", () => {
+			const root = project({ "package.json": pkg(KIT3) });
+			const { ok, out } = run(root);
+			expect(ok).toBe(true);
+			for (const f of PWA_FILES) expect(existsSync(join(root, f))).toBe(false);
+			const layout = read(root, "src/routes/+layout.svelte");
+			expect(layout).not.toContain("manifest");
+			expect(layout).toContain("<Seo");
+			expect(out).not.toContain("static/icons");
+			expect(out).not.toContain("service-worker");
+		});
+
+		it("--with pwa writes the whole set and links the manifest from <Seo>", () => {
+			const root = project({ "package.json": pkg(KIT3) });
+			expect(run(root, { with: ["pwa"] }).ok).toBe(true);
+			for (const f of PWA_FILES) expect(existsSync(join(root, f))).toBe(true);
+			expect(read(root, "src/routes/+layout.svelte")).toContain('manifest="/manifest.webmanifest"');
+		});
+
+		it("--with pwa on Kit 2 writes src/service-worker.ts", () => {
+			const root = project({ "package.json": pkg({ "@sveltejs/kit": "^2.70.0" }) });
+			run(root, { with: ["pwa"] });
+			expect(existsSync(join(root, "src/service-worker.ts"))).toBe(true);
+			expect(existsSync(join(root, "src/service-worker"))).toBe(false);
+		});
+
+		it("adding pwa to an app init already set up keeps the manifest importing the app theme", () => {
+			const root = project({ "package.json": pkg(KIT3) });
+			run(root);
+			const again = run(root, { with: ["pwa"] });
+			expect(again.out).not.toContain("the app already imports its theme");
+			expect(read(root, "src/routes/manifest.webmanifest/+server.ts")).toContain(
+				'from "#lib/theme.ts"'
+			);
+			expect(read(root, "src/routes/+layout.svelte")).toContain('manifest="/manifest.webmanifest"');
+		});
+
+		it("pwa is a known --with value and combines with lint,e2e", () => {
+			const root = project({ "package.json": pkg(KIT3) });
+			expect(run(root, { with: ["lint", "pwa"] }).ok).toBe(true);
+			expect(existsSync(join(root, "ui-guard.config.json"))).toBe(true);
+			expect(existsSync(join(root, "src/routes/offline/+page.svelte"))).toBe(true);
+		});
+
+		it("--with pwa on Kit 3 adds prerender.handleUnseenRoutes to the vite config it creates", () => {
+			const root = project({ "package.json": pkg(KIT3) });
+			run(root, { with: ["pwa"] });
+			expect(read(root, "vite.config.ts")).toContain('handleUnseenRoutes: "ignore"');
+		});
+
+		it("--with pwa tells the app the real origin mechanism per Kit major", () => {
+			const k3 = project({ "package.json": pkg(KIT3) });
+			const out3 = run(k3, { with: ["pwa"] }).out;
+			expect(out3).toContain("sveltekit({ paths: { origin:");
+			const k2 = project({ "package.json": pkg({ "@sveltejs/kit": "^2.70.0" }) });
+			const out2 = run(k2, { with: ["pwa"] }).out;
+			expect(out2).toContain("prerender: { origin:");
+			expect(out2).not.toContain("kit.paths.origin");
+			expect(out2).not.toContain("paths: { origin");
+		});
+	});
+
+	describe("what init writes passes its own lint", () => {
+		for (const [name, dev, withs] of [
+			["Kit 3", KIT3, []],
+			["Kit 3 with pwa", KIT3, ["pwa"]],
+			["Kit 2", { "@sveltejs/kit": "^2.70.0" }, []],
+			["Kit 2 with pwa", { "@sveltejs/kit": "^2.70.0" }, ["pwa"]],
+		] as const) {
+			it(`${name}: codeatlas-ui lint finds nothing in src`, () => {
+				const root = project({ "package.json": pkg(dev) });
+				run(root, { with: [...withs] });
+				const files = svelteFiles(root);
+				expect(files).toContain("src/routes/+layout.svelte");
+				const found = files.flatMap((f) => guardSource(f, read(root, f)));
+				expect(found).toEqual([]);
+			});
+		}
+
+		it("keeps the copy in src/lib/messages.ts, which the layout title reads", () => {
+			const root = project({ "package.json": pkg(KIT3) });
+			run(root, { with: ["pwa"] });
+			const messages = read(root, "src/lib/messages.ts");
+			expect(messages).toContain("export const m");
+			expect(messages).toContain("appTitle");
+			expect(read(root, "src/routes/+layout.svelte")).toContain("m.appTitle");
+			expect(read(root, "src/routes/+layout.svelte")).toContain('from "#lib/messages.ts"');
+			expect(read(root, "src/routes/offline/+page.svelte")).toContain("m.offline.title");
+		});
+
+		it("Kit 2 imports the messages through $lib", () => {
+			const root = project({ "package.json": pkg({ "@sveltejs/kit": "^2.70.0" }) });
+			run(root);
+			expect(read(root, "src/routes/+layout.svelte")).toContain('from "$lib/messages"');
+		});
+
+		it("keeps an existing messages module and a layout title the app wrote", () => {
+			const root = project({
+				"package.json": pkg(KIT3),
+				"src/lib/messages.ts": "// mine\nexport const m = { appTitle: 'x', offline: {} };\n",
+			});
+			run(root);
+			expect(read(root, "src/lib/messages.ts")).toStartWith("// mine");
+		});
+	});
+
+	describe("adapter-static", () => {
+		const STATIC3 = { ...KIT3, "@sveltejs/adapter-static": "^4.0.0" };
+		const STATIC2 = { "@sveltejs/kit": "^2.70.0", "@sveltejs/adapter-static": "^3.0.0" };
+
+		it("excludes the adapter output from tsconfig (svelte-check would scan build/)", () => {
+			const root = project({
+				"package.json": pkg(STATIC3),
+				"tsconfig.json": `{ "extends": "$app/tsconfig" }\n`,
+			});
+			run(root);
+			const ts = JSON.parse(read(root, "tsconfig.json"));
+			expect(ts.extends).toBe("$app/tsconfig");
+			expect(ts.exclude).toContain("build");
+		});
+
+		it("honours a custom pages/assets dir and keeps the exclude entries the app has", () => {
+			const root = project({
+				"package.json": pkg(STATIC3),
+				"vite.config.ts": `import adapter from "@sveltejs/adapter-static";\nimport { sveltekit } from "@sveltejs/kit/vite";\nexport default { plugins: [sveltekit({ adapter: adapter({ pages: "dist" }) })] };\n`,
+				"tsconfig.json": `{ "extends": "$app/tsconfig", "exclude": ["mine"] }\n`,
+			});
+			run(root);
+			const ts = JSON.parse(read(root, "tsconfig.json"));
+			expect(ts.exclude).toEqual(expect.arrayContaining(["mine", "dist"]));
+		});
+
+		it("does not touch tsconfig without adapter-static", () => {
+			const tsconfig = `{ "extends": "$app/tsconfig" }\n`;
+			const root = project({ "package.json": pkg(KIT3), "tsconfig.json": tsconfig });
+			run(root);
+			expect(read(root, "tsconfig.json")).toBe(tsconfig);
+		});
+
+		it("writes prerender = true into src/routes/+layout.ts, and never overwrites one", () => {
+			const root = project({ "package.json": pkg(STATIC3) });
+			run(root);
+			expect(read(root, "src/routes/+layout.ts")).toContain("export const prerender = true;");
+			const own = project({
+				"package.json": pkg(STATIC2),
+				"src/routes/+layout.ts": "export const ssr = false;\n",
+			});
+			run(own);
+			expect(read(own, "src/routes/+layout.ts")).toContain("export const prerender = true;");
+			expect(read(own, "src/routes/+layout.ts")).toContain("export const ssr = false;");
+		});
+
+		it("is not written without adapter-static", () => {
+			const root = project({ "package.json": pkg(KIT3) });
+			run(root);
+			expect(existsSync(join(root, "src/routes/+layout.ts"))).toBe(false);
+		});
+
+		it("states which adapter-static major pairs with the installed Kit", () => {
+			const k3 = project({
+				"package.json": pkg({ ...KIT3, "@sveltejs/adapter-static": "^3.0.0" }),
+			});
+			expect(run(k3).out).toContain("@sveltejs/adapter-static@4");
+			const k2 = project({
+				"package.json": pkg({ "@sveltejs/kit": "^2.70.0", "@sveltejs/adapter-static": "^4.0.0" }),
+			});
+			expect(run(k2).out).toContain("@sveltejs/adapter-static@3");
+			const ok = project({ "package.json": pkg(STATIC3) });
+			expect(run(ok).out).not.toContain("adapter-static@");
+		});
+	});
+
+	describe("a bare app gets the files init used to skip", () => {
+		it("creates vite.config.ts, src/app.html and tsconfig.json when they are missing", () => {
+			const root = project({ "package.json": pkg(KIT3) });
+			const { ok, out } = run(root);
+			expect(ok).toBe(true);
+			expect(out).not.toContain("(not found)");
+			const vite = read(root, "vite.config.ts");
+			expect(vite).toContain("sveltekit()");
+			expect(vite).toContain("caThemePlugin(theme)");
+			expect(vite).toContain("caErrorPlugin(");
+			expect(vite).toContain('from "./src/lib/theme.ts"');
+			expect(read(root, "src/app.html")).toContain("viewport-fit=cover");
+			expect(read(root, "src/app.html")).toContain("%sveltekit.body%");
+			expect(JSON.parse(read(root, "tsconfig.json")).extends).toBe("$app/tsconfig");
+		});
+
+		it("the created app.html has no inline style on the body wrapper", () => {
+			const root = project({ "package.json": pkg(KIT3) });
+			run(root);
+			expect(read(root, "src/app.html")).not.toContain("style=");
+		});
+
+		it("Kit 2 tsconfig extends the generated .svelte-kit/tsconfig.json", () => {
+			const root = project({ "package.json": pkg({ "@sveltejs/kit": "^2.70.0" }) });
+			run(root);
+			expect(JSON.parse(read(root, "tsconfig.json")).extends).toBe("./.svelte-kit/tsconfig.json");
+		});
+
+		it("Kit 2 tsconfig allows .ts imports (vite.config imports the theme with its extension) and skips lib checks", () => {
+			const root = project({ "package.json": pkg({ "@sveltejs/kit": "^2.70.0" }) });
+			run(root);
+			expect(JSON.parse(read(root, "tsconfig.json")).compilerOptions).toEqual({
+				allowImportingTsExtensions: true,
+				noEmit: true,
+				skipLibCheck: true,
+			});
+		});
+
+		it("adds those options to an existing Kit 2 tsconfig and keeps the app's own", () => {
+			const root = project({
+				"package.json": pkg({ "@sveltejs/kit": "^2.70.0" }),
+				"tsconfig.json": `{ "extends": "./.svelte-kit/tsconfig.json", "compilerOptions": { "strict": true, "skipLibCheck": false } }\n`,
+			});
+			run(root);
+			expect(JSON.parse(read(root, "tsconfig.json")).compilerOptions).toEqual({
+				strict: true,
+				skipLibCheck: false,
+				allowImportingTsExtensions: true,
+				noEmit: true,
+			});
+		});
+
+		it("Kit 3 tsconfig stays the bare $app/tsconfig extends (it already sets them)", () => {
+			const root = project({ "package.json": pkg(KIT3) });
+			run(root);
+			expect(JSON.parse(read(root, "tsconfig.json")).compilerOptions).toBeUndefined();
+		});
+
+		it("a second run changes nothing", () => {
+			const root = project({ "package.json": pkg(KIT3) });
+			run(root);
+			const { out } = run(root);
+			expect(out).not.toMatch(/^\s+(create|patch)\s/m);
+		});
+
+		it("the vite config it creates puts the adapter into sveltekit() on Kit 3 when adapter-static is present", () => {
+			const root = project({
+				"package.json": pkg({ ...KIT3, "@sveltejs/adapter-static": "^4.0.0" }),
+			});
+			run(root);
+			const vite = read(root, "vite.config.ts");
+			expect(vite).toContain('import adapter from "@sveltejs/adapter-static"');
+			expect(vite).toContain("sveltekit({ adapter: adapter() })");
+		});
+
+		it("Kit 2 puts the adapter in svelte.config.js, which the app owns: vite stays plain", () => {
+			const root = project({ "package.json": pkg({ "@sveltejs/kit": "^2.70.0" }) });
+			run(root);
+			expect(read(root, "vite.config.ts")).toContain("sveltekit()");
+			expect(existsSync(join(root, "svelte.config.js"))).toBe(false);
+		});
 	});
 });

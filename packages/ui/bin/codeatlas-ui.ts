@@ -2,7 +2,7 @@
 /**
  * codeatlas-ui: project setup and migration.
  *
- *   bunx @codeatlasdev/ui init [--write] [--dir <path>] [--with lint,e2e]
+ *   bunx @codeatlasdev/ui init [--write] [--dir <path>] [--with lint,e2e,pwa]
  *   bunx @codeatlasdev/ui lint [paths...]
  *   bunx @codeatlasdev/ui migrate [--from <major> --to <major>] [--report json|md] [--write] [--strict] [paths...]
  *   bunx @codeatlasdev/ui migrate-react [--write] [paths...]
@@ -82,7 +82,7 @@ Options:
   --props <l>  compare: computed style properties, camelCase (default: weight, size, color, padding, margin, radius, gap)
   --tolerance <px>  compare: ignore box differences up to this many px (default: 0.5)
   --map <f>    tokens import: JSON of role -> token name (default: the shadcn names)
-  --with <l>   init: also write lint and/or e2e templates (comma separated)
+  --with <l>   init: also write lint, e2e and/or pwa (manifest, service worker, offline, robots, sitemap) (comma separated)
   --force      tokens import: overwrite --out
   --fix        doctor: apply the safe fixes (TODO(lib#n) to ca-ui-workaround(#n))
   --dir <p>    project directory (init, brand, doctor; default: cwd)
