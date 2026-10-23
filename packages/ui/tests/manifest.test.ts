@@ -115,6 +115,35 @@ describe("components manifest", () => {
 	});
 });
 
+describe("prop types spell out their union values (#509)", () => {
+	const prop = (c: string, n: string) => byName(c)?.props.find((p) => p.name === n);
+
+	it("expands a local alias: Avatar shape, size, status, tone", () => {
+		expect(prop("Avatar", "shape")?.type).toBe("'circle' | 'rounded'");
+		expect(prop("Avatar", "status")?.type).toBe("'online' | 'offline' | 'busy' | 'away'");
+		expect(prop("Avatar", "tone")?.type).toBe("'palette' | 'neutral'");
+		expect(prop("Avatar", "size")?.type).toBe("'xs' | 'sm' | 'md' | 'lg' | 'xl' | number");
+	});
+
+	it("expands an alias imported from a relative file: Card headingLevel", () => {
+		expect(prop("Card", "headingLevel")?.type).toBe("2 | 3 | 4 | 5 | 6");
+	});
+
+	it("leaves object, array and generic types as written", () => {
+		expect(prop("AppShellLayout", "modules")?.type).toBe("NavModule[]");
+		expect(prop("Calendar", "value")?.type).toBe("DateValue");
+	});
+
+	it("SkipLink documents its label snippet", () => {
+		const skip = byName("SkipLink");
+		expect(skip?.snippets.map((x) => x.name)).toContain("children");
+		expect(skip?.snippets.find((x) => x.name === "children")?.description).toContain("label");
+		const md = skillMarkdown(manifest);
+		const section = md.slice(md.indexOf("## SkipLink"), md.indexOf("## Slider"));
+		expect(section).toContain("Replaces the localized");
+	});
+});
+
 describe("non-component exports (#57)", () => {
 	const exp = (name: string, entry = "") =>
 		manifest.exports.find((e) => e.name === name && (!entry || e.import === entry));

@@ -80,7 +80,7 @@ AlertDialog: confirmation that requires an explicit answer (role="alertdialog").
 | `oncancel?` | `() => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Snippets: `children`
+Snippets: `children`: Body between the description and the buttons: a confirmation field or a choice.
 
 Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
 
@@ -106,7 +106,7 @@ AppForm: page-level form layout.
 | `backLabel?` | `string` |  | Accessible label for the auto-rendered back button. Default: 'Back' |
 | `class?` | `string` | `''` |  |
 
-Snippets: `leading`, `trailing`, `footer`, `children`
+Snippets: `leading`: Left side of header: back button, breadcrumb. When present, overrides backHref.; `trailing`: Right side of header: status chip, secondary actions; `footer`: Sticky bottom bar: cancel / save / delete; `children`
 
 Parts: `ca-app-form` `ca-app-form__body` `ca-app-form__desc` `ca-app-form__footer` `ca-app-form__footer-inner` `ca-app-form__header` `ca-app-form__header-inner` `ca-app-form__inner` `ca-app-form__leading` `ca-app-form__meta` `ca-app-form__title` `ca-app-form__trailing`
 
@@ -129,7 +129,7 @@ AppList: fullscreen CRUD/list layout.
 | `maxWidth?` | `string` |  |  |
 | `class?` | `string` | `''` |  |
 
-Snippets: `filters` (`Snippet<[ListCtx<T>]>`), `children` (`Snippet<[ListCtx<T>]> \| Snippet`), `actions`, `toolbar`, `empty` (`Snippet<[ListCtx<T>]> \| Snippet`), `footer`
+Snippets: `filters` (`Snippet<[ListCtx<T>]>`): Extra filter controls rendered after the search input. Receives list context.; `children` (`Snippet<[ListCtx<T>]> \| Snippet`): Table/grid content. Receives list context when `data` is provided.; `actions`: Top-right: primary CTA, export, etc.; `toolbar`: Manual toolbar, only used when `data` is NOT provided.; `empty` (`Snippet<[ListCtx<T>]> \| Snippet`): Empty state shown when filtered rows = 0. Receives list context.; `footer`: Manual footer, only used when `data` is NOT provided.
 
 Parts: `ca-app-list` `ca-app-list__actions` `ca-app-list__body` `ca-app-list__clear` `ca-app-list__desc` `ca-app-list__empty` `ca-app-list__empty-msg` `ca-app-list__footer` `ca-app-list__header` `ca-app-list__meta` `ca-app-list__sel-label` `ca-app-list__spacer` `ca-app-list__title` `ca-app-list__toolbar` `ca-app-list__toolbar-sep`
 
@@ -149,7 +149,7 @@ AppSettings: settings/preferences page layout.
 | `onTabChange?` | `(value: string) => void` |  | Optional callback when tab changes |
 | `class?` | `string` | `''` |  |
 
-Snippets: `actions`, `children` (`Snippet<[string]>`)
+Snippets: `actions`: Top-right slot: save / cancel buttons; `children` (`Snippet<[string]>`): Receives the active tab value as its first argument
 
 Parts: `ca-app-settings` `ca-app-settings__actions` `ca-app-settings__body` `ca-app-settings__content` `ca-app-settings__desc` `ca-app-settings__header` `ca-app-settings__meta` `ca-app-settings__nav` `ca-app-settings__nav-badge` `ca-app-settings__nav-icon` `ca-app-settings__nav-item` `ca-app-settings__nav-label` `ca-app-settings__title`
 
@@ -177,7 +177,7 @@ Parts: `ca-app-settings` `ca-app-settings__actions` `ca-app-settings__body` `ca-
 | `mainId?` | `string \| null` | `'main'` | `id` given to the content region, the target of the skip link. By default the region is the page's `<main id tabindex="-1">` landmark. Pass `null` when your own `<main id="main" tabindex="-1">` is the target: the region then renders as a plain `div` so the page never gets two landmarks. |
 | `skipLink?` | `boolean` | `true` | Render the "Skip to content" link. Turn it off when the shell is embedded in a page that already has one (a framed demo, a preview), so the page does not get two. |
 
-Snippets: `stage` (`Snippet<[{ hidden: boolean }]>`), `header`, `brand`, `railBottom`, `railTop`, `bottomNavOverflow`, `mobileHeaderActions`, `mobileTitle`, `children`
+Snippets: `stage` (`Snippet<[{ hidden: boolean }]>`): A persistent background layer (map, canvas, video, 3D scene) rendered ONCE, full-bleed under the content and beside the Rail / above the BottomNav, so it keeps its state (camera, GPU context, selection) while the pages change. The snippet receives `{ hidden }`: pause rendering while it is true. The content region passes pointer events through to the stage; give a page's panels `class="ca-stage-panel"` (or `pointer-events: auto`) to keep them interactive. The shell paints nothing behind the content when a stage is set, so the stage shows.; `header`; `brand`: Brand mark (logo) shown at the top of the Rail and in the mobile header.; `railBottom`: Items pinned to the bottom of the Rail (avatar, notifications…); `railTop`: Control between the brand and the modules in the Rail, e.g. a search / ⌘K trigger.; `bottomNavOverflow`: Extra content in the "More" dialog under the modules (search, account, sign out).; `mobileHeaderActions`: Compact controls rendered at the trailing edge of the single mobile header (session/workspace switcher, account menu…). Below 900px the desktop `header` snippet is hidden, so put anything that must stay reachable here.; `mobileTitle`: Replaces the plain page-title text in the mobile header, e.g. a tappable session title that opens a Sheet. It fills the space between the brand and `mobileHeaderActions`.; `children`
 
 Parts: `ca-main` `ca-panel` `ca-shell` `ca-shell--stage` `ca-shell__body` `ca-shell__content` `ca-shell__desktop-header` `ca-shell__mobile-header` `ca-shell__stage` `ca-shell__stage--hidden` `ca-sidebar`
 
@@ -241,7 +241,7 @@ AuthCard: authentication form card.
 | `subtitle?` | `string` |  |  |
 | `display?` | `boolean` | `false` | Display text role for the title: `--ca-display-tracking`, `--ca-display-leading` and the fluid `--ca-font-size-display-3`. |
 
-Snippets: `footer`, `children`
+Snippets: `footer`: Content below the form: links, terms, etc.; `children`
 
 Parts: `ca-auth-card` `ca-auth-card--plain` `ca-auth-card__body` `ca-auth-card__footer` `ca-auth-card__header` `ca-auth-card__subtitle` `ca-auth-card__title` `ca-auth-card__title--display`
 
@@ -263,7 +263,7 @@ AuthLayout: two-column layout for authentication pages.
 | `panelHidden?` | `'md' \| 'lg'` | `'md'` | Viewport width from which the panel shows: `md` 900px, `lg` 1200px. Below it only the form shows. |
 | `align?` | `'center' \| 'start'` | `'center'` | Horizontal alignment of the form: centered (default) or flush to the start. |
 
-Snippets: `brand`, `panel`, `header`, `children`
+Snippets: `brand`: Replaces the whole logo (mark and name), e.g. an SVG wordmark. Pass `logoName` as well to render a name next to it.; `panel`: Side column content: a quote, steps, or (with `panelBleed`) a map or image.; `header`: Bar across the top of the form column (logo, language switcher, CTA). Sticks to the top with the safe-area inset and replaces the mobile brand strip.; `children`: Form column
 
 Parts: `ca-auth` `ca-auth--right` `ca-auth__blob` `ca-auth__blob--a` `ca-auth__blob--b` `ca-auth__blob--c` `ca-auth__blobs` `ca-auth__col` `ca-auth__col--framed` `ca-auth__col--start` `ca-auth__header` `ca-auth__logo` `ca-auth__main` `ca-auth__mark` `ca-auth__mobile-brand` `ca-auth__mobile-mark` `ca-auth__mobile-name` `ca-auth__name` `ca-auth__panel` `ca-auth__panel--bleed` `ca-auth__panel-inner` `ca-auth__slot`
 
@@ -286,15 +286,15 @@ Avatar: user identity display component.
 | `src?` | `string` |  | Image URL. Rendered as a real `<img>`; the fallback shows beneath it while it loads and after it fails. |
 | `alt?` | `string` | `''` |  |
 | `fallback?` | `string \| Snippet` |  | Initials override (string), or an icon/any content (Snippet). Otherwise initials derive from `alt`. |
-| `size?` | `Size` | `'md'` |  |
-| `shape?` | `Shape` | `'circle'` |  |
-| `status?` | `Status` |  |  |
+| `size?` | `'xs' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| number` | `'md'` |  |
+| `shape?` | `'circle' \| 'rounded'` | `'circle'` |  |
+| `status?` | `'online' \| 'offline' \| 'busy' \| 'away'` |  |  |
 | `loading?` | `'lazy' \| 'eager'` |  | Passed to the `<img>`. Use `"lazy"` in long lists. |
 | `referrerpolicy?` | `ReferrerPolicy` |  | Passed to the `<img>`, e.g. `"no-referrer"` for CDN photos that reject a cross-origin Referer. |
 | `crossorigin?` | `'anonymous' \| 'use-credentials'` |  | Passed to the `<img>`. |
 | `onerror?` | `(event: Event) => void` |  | Called when the image fails; the fallback shows. Use it to refetch a signed URL. |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size, no image request, announced as busy. |
-| `tone?` | `Tone` | `'palette'` | Fallback colour: `'palette'` (default) derives a colour from the name, so each person keeps theirs; `'neutral'` draws every fallback the same, on `--ca-surface-overlay` with `--ca-text-secondary` and a hairline ring, for a dense list where coloured discs compete with the content. |
+| `tone?` | `'palette' \| 'neutral'` | `'palette'` | Fallback colour: `'palette'` (default) derives a colour from the name, so each person keeps theirs; `'neutral'` draws every fallback the same, on `--ca-surface-overlay` with `--ca-text-secondary` and a hairline ring, for a dense list where coloured discs compete with the content. |
 | `decorative?` | `boolean` | `false` | The avatar repeats a name that is already visible next to it: hidden from assistive tech (no name, no image role, no status label) so a screen reader does not say the name twice. |
 | `class?` | `string` | `''` |  |
 
@@ -315,7 +315,7 @@ Tokens: `--ca-avatar-fallback-bg` `--ca-avatar-fallback-color` `--ca-avatar-fall
 | `count?` | `number` |  |  |
 | `dot?` | `boolean` | `false` | Anchored: a plain status dot on the corner. With `tone`: a leading dot inside the pill. |
 | `color?` | `'brand' \| 'success' \| 'error' \| 'warning'` | `'brand'` | Anchored badge colour (`error` is the same hue as `tone="danger"`). Ignored when `tone` is set. |
-| `tone?` | `Tone` |  | Renders an inline pill (in text flow, children are its label) instead of a corner indicator: `<Badge tone="danger" subtle dot>Overdue</Badge>`. |
+| `tone?` | `'brand' \| 'success' \| 'danger' \| 'warning' \| 'info' \| 'neutral'` |  | Renders an inline pill (in text flow, children are its label) instead of a corner indicator: `<Badge tone="danger" subtle dot>Overdue</Badge>`. |
 | `subtle?` | `boolean` | `false` | Pill only: translucent tinted background with tone-coloured text, instead of a solid fill. |
 | `size?` | `'sm' \| 'md'` | `'sm'` | Pill only: `sm` is 20px high, `md` 24px. |
 | `class?` | `string` | `''` |  |
@@ -353,7 +353,7 @@ Variables: `--ca-badge-fill` `--ca-badge-on` `--ca-badge-tone`
 | `moreSheet?` | `Component<NavMoreSheetProps>` |  | Swap the built-in "More" dialog for another component, e.g. the exported `NavMoreSheet` (a full `Sheet` with swipe-to-dismiss and an exit animation). Opt-in because `Sheet` adds about 10 kB gzip to the shell; the built-in dialog needs nothing the shell does not bundle. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `overflow`
+Snippets: `overflow`: Extra content in the "More" sheet under the modules (search, account, sign out).
 
 Parts: `ca-bottom-nav` `ca-bottom-nav__btn` `ca-bottom-nav__btn--active` `ca-bottom-nav__icon` `ca-bottom-nav__label`
 
@@ -395,9 +395,9 @@ Parts: `ca-breadcrumb__current` `ca-breadcrumb__item` `ca-breadcrumb__link` `ca-
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `variant?` | `Variant` | `'filled'` |  |
-| `tone?` | `Tone` | `'brand'` | `'neutral'` draws `outlined` and `ghost` without brand colour (neutral label and border), for a secondary action beside a brand `filled` one. Other variants ignore it. |
-| `size?` | `Size` | `'md'` |  |
+| `variant?` | `'filled' \| 'glass' \| 'outlined' \| 'ghost' \| 'destructive'` | `'filled'` |  |
+| `tone?` | `'brand' \| 'neutral'` | `'brand'` | `'neutral'` draws `outlined` and `ghost` without brand colour (neutral label and border), for a secondary action beside a brand `filled` one. Other variants ignore it. |
+| `size?` | `'sm' \| 'md' \| 'lg'` | `'md'` |  |
 | `disabled?` | `boolean` | `false` |  |
 | `loading?` | `boolean` | `false` | Shows a spinner in place of `leading`, sets `aria-busy` and blocks interaction. Label is kept. |
 | `type?` | `string` |  | Without `href` the button type (default `'button'`); with `href` the MIME type hint of the linked resource. |
@@ -406,11 +406,11 @@ Parts: `ca-breadcrumb__current` `ca-breadcrumb__item` `ca-breadcrumb__link` `ca-
 | `target?` | `string` |  | Anchor target, used with `href`. `"_blank"` adds `noopener noreferrer` to any `rel` you pass. |
 | `class?` | `string` | `''` |  |
 | `trailingHint?` | `boolean` | `false` | Marks `trailing` as a keyboard hint (`<Kbd>`): it is hidden below `md` and on touch screens (`pointer: coarse`) and takes no space there, so the button is as wide as its label alone. |
-| `align?` | `Align` | `'center'` | `'between'` pins the label to the start and `trailing` to the end (use with `fullWidth` or a fixed width). The loading spinner stays in the leading slot. Default `'center'`. |
+| `align?` | `'center' \| 'between'` | `'center'` | `'between'` pins the label to the start and `trailing` to the end (use with `fullWidth` or a fixed width). The loading spinner stays in the leading slot. Default `'center'`. |
 | `onclick?` | `(e: MouseEvent) => void` |  |  |
 | `aria-label?` | `string` |  |  |
 
-Snippets: `children`, `leading`, `trailing`
+Snippets: `children`; `leading`; `trailing`
 
 Also accepts: `AnchorAttributes \| ButtonAttributes`
 
@@ -429,7 +429,7 @@ Tokens: `--ca-btn-disabled-bg` `--ca-btn-font-weight` `--ca-btn-gap` `--ca-btn-g
 | `orientation?` | `'horizontal' \| 'vertical'` | `'horizontal'` | Direction the buttons are attached in. Default `'horizontal'`. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `children`
+Snippets: `children`: `Button`, `IconButton` or a `DropdownMenu` whose `triggerChild` is one of them.
 
 Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'role'>`
 
@@ -450,7 +450,7 @@ Data attributes: `data-orientation` (`vertical`)
 | `disabled?` | `boolean` | `false` |  |
 | `readonly?` | `boolean` | `false` |  |
 | `locale?` | `string` | `'pt-BR'` |  |
-| `weekStartsOn?` | `WeekStart` | `1` | 0 = Sunday … 6 = Saturday. Default 1 (Monday). |
+| `weekStartsOn?` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `1` | 0 = Sunday … 6 = Saturday. Default 1 (Monday). |
 | `numberOfMonths?` | `number` | `1` |  |
 | `fixedWeeks?` | `boolean` | `false` |  |
 | `isDateDisabled?` | `(date: DateValue) => boolean` |  |  |
@@ -471,7 +471,7 @@ Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `dat
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `type?` | `CalloutType` | `'note'` |  |
+| `type?` | `'note' \| 'tip' \| 'caution' \| 'danger'` | `'note'` |  |
 | `title?` | `string` |  | Overrides the default title ("Note", "Tip", "Caution", "Danger"). |
 | `class?` | `string` | `''` |  |
 
@@ -490,7 +490,7 @@ Card — a Surface with a header (`title`, `headerActions`), padding and an opti
 | `href?` | `string` |  | Renders the card as a link (an `<a>`, interactive). |
 | `target?` | `string` |  | Link target. `_blank` also sets `rel="noopener noreferrer"`. |
 | `title?` | `string` |  | Header title. |
-| `headingLevel?` | `HeadingLevel` |  | Renders `title` as `<h2>`–`<h6>` so the card is a section in the page outline. Omit for a plain paragraph. Only the tag changes, never the look. |
+| `headingLevel?` | `2 \| 3 \| 4 \| 5 \| 6` |  | Renders `title` as `<h2>`–`<h6>` so the card is a section in the page outline. Omit for a plain paragraph. Only the tag changes, never the look. |
 | `padding?` | `'none' \| 'sm' \| 'md' \| 'lg' \| (string & {}) \| number` |  | Content padding: `'none'`, `'sm'` (12px), `'md'` (20px, the default), `'lg'` (32px), or any CSS length (`'1.5rem'`) or number (px). It sets `--ca-card-padding` on this card only. `flush` is the alias of `'none'` and wins over `padding`. |
 | `flush?` | `boolean` | `false` | Removes all padding, for tables, images and code that touch the edges. |
 | `full?` | `boolean` | `false` | `width: 100%`. |
@@ -498,7 +498,7 @@ Card — a Surface with a header (`title`, `headerActions`), padding and an opti
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded card (content keeps its layout, hidden), announced as busy. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `headerActions`, `children`
+Snippets: `headerActions`: Actions aligned to the end of the header.; `children`
 
 Also accepts: `Omit<ComponentProps<typeof Surface>, 'as' \| 'children'>`
 
@@ -683,7 +683,7 @@ Parts: `ca-codetab`
 | `class?` | `string` | `''` |  |
 | `tabs?` | `CodeTabItem[]` |  | Tabs as data instead of children. Use it where Svelte context cannot reach the children, e.g. Astro/MDX pages (each island is its own Svelte tree). |
 
-Snippets: `children`
+Snippets: `children`: `<CodeTab>` children.
 
 Parts: `ca-codetabs` `ca-codetabs__bar` `ca-codetabs__copy` `ca-codetabs__panels` `ca-codetabs__tab` `ca-codetabs__tabs`
 
@@ -805,7 +805,7 @@ Tokens: `--ca-container-max`
 | `focusable?` | `boolean` | `true` | Make the region reachable with Tab so Shift+F10 and the ContextMenu key work. Turn off when the region holds its own focusable target. |
 | `menuClass?` | `string` | `''` | Class on the menu surface. |
 
-Snippets: `children`, `menu`
+Snippets: `children`: The region the menu belongs to. Right-click, long-press and Shift+F10 inside it open the menu.; `menu`: The menu: `DropdownMenuItem`, `DropdownMenuCheckboxItem`, `DropdownMenuRadioGroup`, `DropdownMenuSub`, labels and separators.
 
 Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'oncontextmenu' \| 'onkeydown'>`
 
@@ -829,7 +829,7 @@ Parts: `ca-contextmenu`
 | `onclick?` | `(event: MouseEvent) => void` |  | Click handler. |
 | `class?` | `string` | `''` | Extra class on the row. |
 
-Snippets: `previewIcon`, `avatar`
+Snippets: `previewIcon`: Leading icon or ticks rendered before the preview.; `avatar`: Avatar slot.
 
 Parts: `ca-conversation` `ca-conversation--active` `ca-conversation--unread` `ca-conversation__avatar` `ca-conversation__flags` `ca-conversation__line` `ca-conversation__main` `ca-conversation__preview` `ca-conversation__preview--typing` `ca-conversation__previewicon` `ca-conversation__previewrow` `ca-conversation__time` `ca-conversation__title` `ca-conversation__unread` `ca-conversation__unread--muted`
 
@@ -878,7 +878,7 @@ Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class' \| 'children' \| 'oncli
 | `class?` | `string` | `''` |  |
 | `labels?` | `{ noResults?: string; noResultsSub?: string; clearSearch?: string; }` |  |  |
 
-Snippets: `emptyState`, `children`, `groupLabel` (`Snippet<[{ group: string; count: number }]>`)
+Snippets: `emptyState`: Shown when truly empty (no active filter); `children`: Filter chips: DataTableFacetedFilter components; `groupLabel` (`Snippet<[{ group: string; count: number }]>`): Custom group header content.
 
 Parts: `ca-datatable` `ca-datatable__clear` `ca-datatable__empty-panel` `ca-datatable__glass` `ca-datatable__grip` `ca-datatable__grip-cell` `ca-datatable__grip-col` `ca-datatable__group` `ca-datatable__group-count` `ca-datatable__group-row` `ca-datatable__group-toggle` `ca-datatable__no-results` `ca-datatable__no-results-icon` `ca-datatable__no-results-inner` `ca-datatable__no-results-sub` `ca-datatable__no-results-title` `ca-datatable__row--clickable` `ca-datatable__scroll` `ca-datatable__table` `ca-datatable__table--fixed` `ca-datatable__tbody` `ca-datatable__thead`
 
@@ -1012,7 +1012,7 @@ Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `dat
 | `minValue?` | `DateValue` |  |  |
 | `maxValue?` | `DateValue` |  |  |
 | `locale?` | `string` | `'pt-BR'` |  |
-| `weekStartsOn?` | `WeekStart` | `1` | 0 = Sunday … 6 = Saturday. Default 1 (Monday). |
+| `weekStartsOn?` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `1` | 0 = Sunday … 6 = Saturday. Default 1 (Monday). |
 | `granularity?` | `'day' \| 'hour' \| 'minute' \| 'second'` | `'day'` | Adds hour/minute segments to the field. Default 'day'. |
 | `numberOfMonths?` | `number` | `1` |  |
 | `isDateDisabled?` | `(date: DateValue) => boolean` |  |  |
@@ -1048,7 +1048,7 @@ Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `dat
 | `minValue?` | `DateValue` |  |  |
 | `maxValue?` | `DateValue` |  |  |
 | `locale?` | `string` | `'pt-BR'` |  |
-| `weekStartsOn?` | `WeekStart` | `1` | 0 = Sunday … 6 = Saturday. Default 1 (Monday). |
+| `weekStartsOn?` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `1` | 0 = Sunday … 6 = Saturday. Default 1 (Monday). |
 | `numberOfMonths?` | `number` | `2` |  |
 | `isDateDisabled?` | `(date: DateValue) => boolean` |  |  |
 | `isDateUnavailable?` | `(date: DateValue) => boolean` |  |  |
@@ -1083,7 +1083,7 @@ Dialog: second-layer modal.
 | `class?` | `string` | `''` |  |
 | `onOpenChange?` | `(open: boolean) => void` |  |  |
 
-Snippets: `children`, `actions`
+Snippets: `children`; `actions`
 
 Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
 
@@ -1171,7 +1171,7 @@ Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-spli
 | `brandLabel?` | `string` |  |  |
 | `pager?` | `{ prev?: DocsPagerLink; next?: DocsPagerLink }` |  | Previous/next pages. Cards at the end of the article on wide screens; a fixed bottom action bar on narrow ones, so reading flows header → content → actions like an e-book. |
 
-Snippets: `brand`, `actions`, `menuFooter`, `children`
+Snippets: `brand`: Brand mark + name inside the header link.; `actions`: Extra header actions on the right (e.g. a GitHub link). Keep to 1–2 icon buttons.; `menuFooter`: Content below the sidebar tree inside the mobile Sheet (e.g. external links).; `children`
 
 Parts: `ca-docs` `ca-docs--bare` `ca-docs-actions` `ca-docs-brand` `ca-docs-header` `ca-docs-header__inner` `ca-docs-icon` `ca-docs-main` `ca-docs-pager` `ca-docs-pager__link` `ca-docs-pager__link--next` `ca-docs-pager__text` `ca-docs-pager__title` `ca-docs-search-btn` `ca-docs-search-btn__label` `ca-docs-section` `ca-docs-sections` `ca-docs-sheet-sections` `ca-docs-sidebar` `ca-docs-spacer` `ca-docs-theme` `ca-docs-toc` `ca-docs-toc-inline` `ca-rail-btn`
 
@@ -1195,7 +1195,7 @@ Drawer: side panel, second layer.
 | `class?` | `string` | `''` |  |
 | `onOpenChange?` | `(open: boolean) => void` |  |  |
 
-Snippets: `children`, `actions`
+Snippets: `children`; `actions`
 
 Also accepts: `Omit<HTMLDialogAttributes, 'children' \| 'open' \| 'title' \| 'class' \| 'role' \| 'onclose' \| 'oncancel'>`
 
@@ -1226,7 +1226,7 @@ Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-spli
 | `ontriggerkeydown?` | `(e: KeyboardEvent) => void` |  | Called with the trigger's keydown before the menu's own (Down/Up/Enter/Space open). `preventDefault()` takes the key. |
 | `openFocus?` | `'first' \| 'last' \| 'container'` |  | Where focus goes when the menu opens without a pointer: the first item, the last, or the menu container. |
 
-Snippets: `trigger`, `triggerChild` (`Snippet<[Record<string, unknown>]>`), `children`
+Snippets: `trigger`: Non-interactive trigger content (text, icon). Wrapped in the menu's own button.; `triggerChild` (`Snippet<[Record<string, unknown>]>`): Interactive trigger (a Button/IconButton): receives the trigger `props` to spread onto it.; `children`
 
 Parts: `ca-dropdown-content` `ca-dropdown__point` `ca-dropdown__trigger`
 
@@ -1264,7 +1264,7 @@ Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'on
 | `variant?` | `'default' \| 'destructive'` | `'default'` |  |
 | `brandIcon?` | `boolean` | `false` | The icon is a brand mark (fixed colors, not a `currentColor` glyph): it is never recolored by the highlighted, disabled or destructive state. Pair with `SchemeAsset` for light/dark variants. |
 
-Snippets: `icon`, `children`
+Snippets: `icon`: Leading icon in a fixed box (`aria-hidden`, so the label stays the accessible name).; `children`
 
 Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'onclick' \| 'role' \| 'tabindex'>`
 
@@ -1335,7 +1335,7 @@ Parts: `ca-dropdown-sep`
 | `openDelay?` | `number` | `120` | Milliseconds the pointer must rest on the trigger before the submenu opens. |
 | `closeDelay?` | `number` | `200` | Milliseconds the submenu stays open after the pointer leaves, so it can cross into it. |
 
-Snippets: `trigger`, `children`
+Snippets: `trigger`: The `DropdownMenuSubTrigger` item that opens this submenu.; `children`: Submenu content: items, labels, separators and further `DropdownMenuSub`s.
 
 Parts: `ca-dropdown-sub`
 
@@ -1347,7 +1347,7 @@ Parts: `ca-dropdown-sub`
 |---|---|---|---|
 | `class?` | `string` | `''` |  |
 
-Snippets: `icon`, `children`
+Snippets: `icon`: Leading icon in a fixed box (`aria-hidden`, so the label stays the accessible name).; `children`
 
 Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'onclick' \| 'role' \| 'tabindex'>`
 
@@ -1363,7 +1363,7 @@ Data attributes: `data-highlighted`, `data-state` (`open`)
 |---|---|---|---|
 | `icon?` | `IconComponent` |  | Lucide icon component |
 | `title` | `string` |  |  |
-| `headingLevel?` | `HeadingLevel` |  | Heading level of the title (2–6). Only the tag changes, never the look. Defaults to 2 inside a `PageShell` (under its `<h1>`), 5 elsewhere. |
+| `headingLevel?` | `2 \| 3 \| 4 \| 5 \| 6` |  | Heading level of the title (2–6). Only the tag changes, never the look. Defaults to 2 inside a `PageShell` (under its `<h1>`), 5 elsewhere. |
 | `variant?` | `'default' \| 'hero'` | `'default'` | 'default' = compact inline empty state. 'hero'    = larger brand-tinted icon tile with glow, bigger title; `actions` stack full-width on mobile (put the primary action first). |
 | `description?` | `string` |  |  |
 | `display?` | `boolean` | `false` | Display text role for the title: `--ca-display-tracking`, `--ca-display-leading` and the fluid `--ca-font-size-display-3`. |
@@ -1371,7 +1371,7 @@ Data attributes: `data-highlighted`, `data-state` (`open`)
 | `actionsFill?` | `boolean` | `false` | Stacks `actions` full-width at every width (one wide button, an invite form). `variant="hero"` already does it in a narrow slot. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `actions`, `children`
+Snippets: `actions`; `children`
 
 Parts: `ca-empty` `ca-empty--bare` `ca-empty--fill` `ca-empty--hero` `ca-empty__actions` `ca-empty__description` `ca-empty__icon` `ca-empty__title` `ca-empty__title--display`
 
@@ -1420,7 +1420,7 @@ Parts: `ca-error-page` `ca-error-page__actions` `ca-error-page__bubble` `ca-erro
 | `showIcon?` | `boolean` | `true` | Trailing arrow icon. The screen-reader hint stays either way. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `children`
+Snippets: `children`: Link text.
 
 Also accepts: `Omit<HTMLAnchorAttributes, 'class' \| 'children' \| 'target' \| 'rel' \| 'href'>`
 
@@ -1499,7 +1499,7 @@ FormSection: form section with a title, description and field layout.
 |---|---|---|---|
 | `label?` | `string` |  |  |
 | `title?` | `string` |  |  |
-| `headingLevel?` | `HeadingLevel` |  | Heading level of the title (2–6). Only the tag changes, never the look. Defaults to 2 inside `PageShell`/`AppSettings`/`AppForm` (under their `<h1>`), 5 elsewhere. |
+| `headingLevel?` | `2 \| 3 \| 4 \| 5 \| 6` |  | Heading level of the title (2–6). Only the tag changes, never the look. Defaults to 2 inside `PageShell`/`AppSettings`/`AppForm` (under their `<h1>`), 5 elsewhere. |
 | `description?` | `string` |  |  |
 | `layout?` | `'grid' \| 'list' \| 'stack'` | `'grid'` |  |
 | `class?` | `string` | `''` |  |
@@ -1533,7 +1533,7 @@ Parts: `ca-form-section` `ca-form-section--grid` `ca-form-section--list` `ca-for
 |---|---|---|---|
 | `class?` | `string` | `''` |  |
 
-Snippets: `children`, `leading`, `trailing`
+Snippets: `children`; `leading`; `trailing`
 
 Parts: `ca-app-bar` `ca-app-bar__content` `ca-app-bar__leading` `ca-app-bar__trailing`
 
@@ -1545,7 +1545,7 @@ Parts: `ca-app-bar` `ca-app-bar__content` `ca-app-bar__leading` `ca-app-bar__tra
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `thickness?` | `Thickness` | `'regular'` |  |
+| `thickness?` | `"ultra-thin" \| "thin" \| "regular" \| "thick" \| "chrome"` | `'regular'` |  |
 | `tinted?` | `boolean` | `false` |  |
 | `glowing?` | `boolean` | `false` |  |
 | `href?` | `string` |  |  |
@@ -1555,10 +1555,10 @@ Parts: `ca-app-bar` `ca-app-bar__content` `ca-app-bar__leading` `ca-app-bar__tra
 | `full?` | `boolean` | `false` | width: 100% |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded card, announced as busy. |
 | `title?` | `string` |  |  |
-| `headingLevel?` | `HeadingLevel` |  | Renders `title` as an `<h2>`–`<h6>` so the card is a section in the page outline. Omit for a plain paragraph. Only the tag changes, never the look. |
+| `headingLevel?` | `2 \| 3 \| 4 \| 5 \| 6` |  | Renders `title` as an `<h2>`–`<h6>` so the card is a section in the page outline. Omit for a plain paragraph. Only the tag changes, never the look. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `headerActions`, `children`
+Snippets: `headerActions`; `children`
 
 Parts: `ca-glass-card` `ca-glass-card--flush` `ca-glass-card--full` `ca-glass-card__header` `ca-glass-card__header-actions` `ca-glass-card__title`
 
@@ -1570,7 +1570,7 @@ Parts: `ca-glass-card` `ca-glass-card--flush` `ca-glass-card--full` `ca-glass-ca
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `thickness?` | `Thickness` | `'regular'` |  |
+| `thickness?` | `"ultra-thin" \| "thin" \| "regular" \| "thick" \| "chrome"` | `'regular'` |  |
 | `tinted?` | `boolean` | `false` |  |
 | `glowing?` | `boolean` | `false` |  |
 | `refraction?` | `boolean` | `true` |  |
@@ -1609,7 +1609,7 @@ Parts: `ca-grid`
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `level?` | `1 \| 2 \| 3 \| 4 \| 5 \| 6` | `2` | Heading element, 1-6. Only the tag changes: never the look. |
-| `size?` | `Size` |  | Visual size. `display` (alias of `display-1`), `display-2` and `display-3` are the fluid editorial tier. Defaults to the size of the level. |
+| `size?` | `'display' \| 'display-2' \| 'display-3' \| 'h1' \| 'h2' \| 'h3' \| 'h4' \| 'h5' \| 'h6'` |  | Visual size. `display` (alias of `display-1`), `display-2` and `display-3` are the fluid editorial tier. Defaults to the size of the level. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
@@ -1668,7 +1668,7 @@ Tokens: `--ca-highlight-color`
 | `align?` | `'start' \| 'center' \| 'end'` | `'center'` |  |
 | `sideOffset?` | `number` | `8` |  |
 
-Snippets: `trigger`, `triggerChild` (`Snippet<[Record<string, unknown>]>`), `children`
+Snippets: `trigger`: Non-interactive trigger content (text, icon). Wrapped in the card's own button.; `triggerChild` (`Snippet<[Record<string, unknown>]>`): Interactive trigger (a link, Button or Avatar button): receives the trigger `props` to spread onto it.; `children`
 
 Parts: `ca-hovercard-content` `ca-hovercard__trigger`
 
@@ -1695,9 +1695,9 @@ Snippets: `children`
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `variant?` | `Variant` | `'glass'` |  |
-| `tone?` | `Tone` | `'brand'` | `'neutral'` draws `outlined` without brand colour (neutral border and icon). `text` is always neutral. |
-| `size?` | `Size` | `'md'` |  |
+| `variant?` | `'glass' \| 'filled' \| 'outlined' \| 'text'` | `'glass'` |  |
+| `tone?` | `'brand' \| 'neutral'` | `'brand'` | `'neutral'` draws `outlined` without brand colour (neutral border and icon). `text` is always neutral. |
+| `size?` | `'sm' \| 'md' \| 'lg'` | `'md'` |  |
 | `disabled?` | `boolean` | `false` |  |
 | `loading?` | `boolean` | `false` | Replaces the icon with a spinner, sets `aria-busy` and blocks interaction. |
 | `aria-label` | `string` |  |  |
@@ -1767,11 +1767,11 @@ Parts: `ca-install` `ca-install__body` `ca-install__close` `ca-install__glyph` `
 | `drop?` | `'container' \| 'position'` | `'container'` | `container` (default): the column is the drop target, no insertion line, `to.index` is 0: right for columns the server orders (newest first). `position`: the card lands between cards. |
 | `compact?` | `boolean` |  | Force the mobile layout (one column at a time, tab strip). Default: automatic below the `sm` breakpoint (600px) of the board's own width. |
 | `label?` | `string` |  | Accessible name of the board. |
-| `headingLevel?` | `HeadingLevel` |  | Heading level of the column titles (2–6). Only the tag changes, never the look. Default 2 (inside a `PageShell` the page's section level), so a board under the page `<h1>` keeps the heading order; pass 3 when the board sits under an `<h2>`. The mobile tab layout renders no column headings. |
+| `headingLevel?` | `2 \| 3 \| 4 \| 5 \| 6` |  | Heading level of the column titles (2–6). Only the tag changes, never the look. Default 2 (inside a `PageShell` the page's section level), so a board under the page `<h1>` keeps the heading order; pass 3 when the board sits under an `<h2>`. The mobile tab layout renders no column headings. |
 | `nearEnd?` | `number` | `240` | Distance from the end of a column list (px) at which `onloadmore` fires. Default 240. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `card` (`Snippet<[T, KanbanCardState]>`), `empty` (`Snippet<[KanbanColumn<T>, { canMove: boolean }]>`), `header` (`Snippet<[KanbanColumn<T>]>`), `summary` (`Snippet<[KanbanColumn<T>]>`)
+Snippets: `card` (`Snippet<[T, KanbanCardState]>`): Card content. The card wrapper, handle, drag state and "Move to…" button are the board's.; `empty` (`Snippet<[KanbanColumn<T>, { canMove: boolean }]>`): Shown in an empty column.; `header` (`Snippet<[KanbanColumn<T>]>`): Replaces the column title row (colour rail, title, count).; `summary` (`Snippet<[KanbanColumn<T>]>`): Extra content for each column, rendered after the count (a money total, a weight, a progress hint) while the colour rail, title and count stay. On the mobile tab layout it shows as a row above the active column's cards. Ignored when `header` replaces the title row.
 
 Parts: `ca-kanban` `ca-kanban--mobile` `ca-kanban__board` `ca-kanban__body` `ca-kanban__card` `ca-kanban__col` `ca-kanban__count` `ca-kanban__dot` `ca-kanban__empty` `ca-kanban__head` `ca-kanban__list` `ca-kanban__more` `ca-kanban__move` `ca-kanban__rail` `ca-kanban__skeleton` `ca-kanban__summary` `ca-kanban__summary--row` `ca-kanban__tab` `ca-kanban__tabs` `ca-kanban__title`
 
@@ -1892,14 +1892,14 @@ Parts: `ca-link-card` `ca-link-card__desc` `ca-link-card__title`
 | `items` | `readonly T[]` |  | Rows received so far, oldest first. Append to it (or replace it with a longer copy). |
 | `getKey?` | `(item: T, index: number) => string \| number` | `(_item: T, i: number) => i` | Stable key per row. Defaults to the index (rows are append-only). |
 | `total?` | `number` |  | Expected number of rows. Enables determinate progress. |
-| `status?` | `Status` | `'idle'` | `running` shows progress and keeps following; `done` / `error` are announced once. |
+| `status?` | `'idle' \| 'running' \| 'done' \| 'error'` | `'idle'` | `running` shows progress and keeps following; `done` / `error` are announced once. |
 | `label` | `string` |  | Accessible name of the log region (required: it is a landmark-like region). |
 | `follow?` | `boolean` | `true` | Follow the newest row while the user is at the bottom. Turn off to never auto-scroll. |
 | `height?` | `string` | `'24rem'` | Height of the scrolling area (any CSS length). |
 | `announceDelay?` | `number` | `600` | Quiet period before a batch of new rows is announced, in ms. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `item` (`Snippet<[T, number]>`), `empty`
+Snippets: `item` (`Snippet<[T, number]>`): One row. Rendered inside an `<li>`.; `empty`: Shown while there are no rows. Defaults to a localised "Waiting for results…".
 
 Parts: `ca-live-list` `ca-live-list__count` `ca-live-list__empty` `ca-live-list__frame` `ca-live-list__head` `ca-live-list__item` `ca-live-list__jump` `ca-live-list__list` `ca-live-list__scroller`
 
@@ -1917,7 +1917,7 @@ Variables: `--ca-live-list-h`
 | `rows?` | `number` | `3` | Skeleton lines of the default `pending`. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `children`, `pending`
+Snippets: `children`: The suspending content.; `pending`: What to show while waiting. Defaults to `rows` skeleton lines.
 
 Parts: `ca-loading-boundary` `ca-loading-boundary__content`
 
@@ -1970,7 +1970,7 @@ Variables: `--ca-map-bearing`
 | `onmapready?` | `(map: MapInstance) => void` |  | Called once with the engine's map object after the first style loads. |
 | `mapOptions?` | `Record<string, unknown>` |  | Extra constructor options passed to the engine's `Map` (for example `maxZoom`, `projection`). |
 
-Snippets: `children`
+Snippets: `children`: Overlay content: `<MapControls />`, legends, attribution.
 
 Parts: `ca-map` `ca-map__canvas` `ca-map__overlay`
 
@@ -1999,7 +1999,7 @@ Parts: `ca-map` `ca-map__canvas` `ca-map__overlay`
 | `onchange?` | `(value: string) => void` |  |  |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
 
-Snippets: `leading`, `trailing`
+Snippets: `leading`; `trailing`
 
 Parts: `ca-masked`
 
@@ -2030,7 +2030,7 @@ Variables: `--ca-media-grid-cols`
 | `class?` | `string` | `''` |  |
 | `onOpenChange?` | `(open: boolean) => void` |  | Called when the bar goes from no menu open to one open, and back (not for a switch between menus). |
 
-Snippets: `children`
+Snippets: `children`: `MenubarMenu`s.
 
 Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'role'>`
 
@@ -2049,7 +2049,7 @@ Variables: `--ca-surface-1`
 | `disabled?` | `boolean` | `false` |  |
 | `menuClass?` | `string` | `''` | Class on the menu surface. |
 
-Snippets: `children`
+Snippets: `children`: `DropdownMenuItem`, checkbox and radio items, `DropdownMenuSub`, labels and separators.
 
 Parts: `ca-menubar__item`
 
@@ -2061,15 +2061,15 @@ Data attributes: `data-disabled`, `data-state` (`open`)
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `direction?` | `Direction` | `'in'` | `in` aligns to the start (received), `out` to the end (sent). |
-| `grouped?` | `Grouped` | `'single'` | Position inside a run from one sender; drives the tail, spacing, sender name and avatar. |
+| `direction?` | `'in' \| 'out'` | `'in'` | `in` aligns to the start (received), `out` to the end (sent). |
+| `grouped?` | `'single' \| 'first' \| 'middle' \| 'last'` | `'single'` | Position inside a run from one sender; drives the tail, spacing, sender name and avatar. |
 | `sender?` | `string` |  | Sender name above the text. Incoming bubbles at the start of a run only. |
 | `reactions?` | `Reaction[]` |  | Reaction chips overlapping the bottom edge of the bubble. |
 | `time?` | `string` |  | Footer time text, for example `14:32`. |
-| `status?` | `Status` |  | Delivery state, shown as ticks. Outgoing bubbles only. |
+| `status?` | `'pending' \| 'sent' \| 'delivered' \| 'read'` |  | Delivery state, shown as ticks. Outgoing bubbles only. |
 | `class?` | `string` | `''` | Extra class on the row. |
 
-Snippets: `avatar`, `quote`, `children`, `footer`
+Snippets: `avatar`: Avatar beside incoming bubbles. Shown on `single` and `last`; other positions reserve its width.; `quote`: Reply preview rendered at the top of the bubble in a tinted block.; `children`: Message body. Whitespace is preserved and long words wrap.; `footer`: Extra footer content rendered before the time.
 
 Parts: `ca-bubble` `ca-bubble--in` `ca-bubble--out` `ca-bubble-row` `ca-bubble-row--in` `ca-bubble-row--out` `ca-bubble-row--reacted` `ca-bubble-row__avatar` `ca-bubble__body` `ca-bubble__meta` `ca-bubble__quote` `ca-bubble__reaction` `ca-bubble__reaction--mine` `ca-bubble__reactions` `ca-bubble__sender` `ca-bubble__status` `ca-bubble__status--read`
 
@@ -2100,7 +2100,7 @@ Data attributes: `data-method` (`DELETE` `PATCH` `POST` `PUT`)
 | `title?` | `string` |  |  |
 | `class?` | `string` | `''` |  |
 
-Snippets: `leading`, `titleSlot`, `trailing`
+Snippets: `leading`: Brand mark before the title.; `titleSlot`: Replaces the plain title text (e.g. a tappable session title).; `trailing`
 
 Parts: `ca-mobile-header` `ca-mobile-header__inner` `ca-mobile-header__leading` `ca-mobile-header__title` `ca-mobile-header__title--custom` `ca-mobile-header__trailing`
 
@@ -2116,7 +2116,7 @@ Parts: `ca-mobile-header` `ca-mobile-header__inner` `ca-mobile-header__leading` 
 | `scroll?` | `boolean` | `true` | `true` (default): the body scrolls. `false`: the body is a non-scrolling flex column, for layouts with their own scrollable area and a fixed composer (chat). |
 | `class?` | `string` | `''` |  |
 
-Snippets: `children`, `actions`, `headerTitle`
+Snippets: `children`: Scrollable body.; `actions`: Right side of the header.; `headerTitle`: Replaces the title text in the header (e.g. avatar + name); `title` remains the accessible name.
 
 Parts: `ca-mobile-pane` `ca-mobile-pane__body` `ca-mobile-pane__body--fixed`
 
@@ -2145,7 +2145,7 @@ Parts: `ca-mobile-pane` `ca-mobile-pane__body` `ca-mobile-pane__body--fixed`
 | `onchange?` | `(cents: number) => void` |  |  |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
 
-Snippets: `leading`, `trailing`
+Snippets: `leading`; `trailing`
 
 ## MotionStage
 
@@ -2158,7 +2158,7 @@ Snippets: `leading`, `trailing`
 | `pauseLabel?` | `string` |  | Label of the pause button. |
 | `replayLabel?` | `string` |  | Label of the replay button. |
 
-Snippets: `children` (`Snippet<[MotionCtx]>`)
+Snippets: `children` (`Snippet<[MotionCtx]>`): The demo. Receives the stage state (`playing`, `reduced`, `cycle`, `takeover`, `play`, `pause`).
 
 Parts: `ca-motion-stage` `ca-motion-stage__bar` `ca-motion-stage__canvas`
 
@@ -2172,7 +2172,7 @@ Parts: `ca-motion-stage` `ca-motion-stage__bar` `ca-motion-stage__canvas`
 | `openDelay?` | `number` | `150` | Milliseconds the pointer must rest on an item's button before its panel opens. Moving between items while one is open switches at once. |
 | `closeDelay?` | `number` | `250` | Milliseconds a panel stays open after the pointer leaves, so it can cross into it. |
 
-Snippets: `children`
+Snippets: `children`: `NavigationMenuItem`s (a button with a panel) and `NavigationMenuLink`s (a plain link).
 
 Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class' \| 'children'>`
 
@@ -2189,7 +2189,7 @@ Parts: `ca-navmenu__list`
 | `panelClass?` | `string` | `''` | Class on the panel. |
 | `align?` | `'start' \| 'center' \| 'end'` | `'start'` |  |
 
-Snippets: `children`
+Snippets: `children`: Panel content: `NavigationMenuLink`s, or any links and text.
 
 Parts: `ca-navmenu-panel` `ca-navmenu__chevron` `ca-navmenu__trigger`
 
@@ -2310,7 +2310,7 @@ Parts: `ca-nf` `ca-nf--disabled` `ca-nf--sm` `ca-nf__btn` `ca-nf__hint` `ca-nf__
 | `side?` | `'left' \| 'right'` | `'left'` | Which edge the panel (or the split's work area) sits on. |
 | `width?` | `'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | Panel width on desktop: `sm` 352px, `md` 416px, `lg` 544px, `xl` 704px. Ignored by `split` and `page`. |
 | `sheet?` | `boolean` | `false` | Below 900px, `mode="map"` becomes a non-modal bottom sheet (no backdrop, no focus trap, the stage above stays interactive) instead of a full-screen layer. |
-| `detent?` | `Detent` | `'half'` | `bind:` Sheet height step: `peek` (header only), `half` (~45% of the area, the default) or `full`. Bindable; dragging or the handle's arrow keys change it. |
+| `detent?` | `'peek' \| 'half' \| 'full'` | `'half'` | `bind:` Sheet height step: `peek` (header only), `half` (~45% of the area, the default) or `full`. Bindable; dragging or the handle's arrow keys change it. |
 | `mobileStage?` | `boolean` | `false` | `mode="split"` below 900px: show the stage instead of the work area. |
 | `padded?` | `boolean` | `true` | Pads the body. Turn off for full-bleed tables and maps. |
 | `headerBorder?` | `boolean` | `false` | Draws a separator under the header. |
@@ -2318,7 +2318,7 @@ Parts: `ca-nf` `ca-nf--disabled` `ca-nf--sm` `ca-nf__btn` `ca-nf__hint` `ca-nf__
 | `label?` | `string` |  | Accessible name of the panel (it is a `region`). |
 | `class?` | `string` | `''` |  |
 
-Snippets: `header`, `toolbar`, `footer`, `children`
+Snippets: `header`: Title, description and actions.; `toolbar`: Fixed row under the header: search, filters, tabs.; `footer`: Fixed row at the bottom: primary actions.; `children`: Scrolling body.
 
 Parts: `ca-page-frame` `ca-page-frame__body` `ca-page-frame__footer` `ca-page-frame__grip` `ca-page-frame__handle` `ca-page-frame__header` `ca-page-frame__panel` `ca-page-frame__toolbar`
 
@@ -2341,7 +2341,7 @@ Data attributes: `data-bordered`, `data-detent` (`full` `peek`), `data-dragging`
 | `asideLabel?` | `string` |  | Accessible name of the `<aside>` landmark. Defaults to "Page sidebar" (localized). |
 | `class?` | `string` | `''` |  |
 
-Snippets: `actions`, `aside`, `children`
+Snippets: `actions`; `aside`: Companion column (in-page index, summary, help, preview). Next to the content (sticky) when the shell is wide enough, after the content below that. Rendered as `<aside>`.; `children`
 
 Parts: `ca-page-shell` `ca-page-shell__actions` `ca-page-shell__aside` `ca-page-shell__body` `ca-page-shell__description` `ca-page-shell__frame` `ca-page-shell__header` `ca-page-shell__layout` `ca-page-shell__layout--aside` `ca-page-shell__layout--reading` `ca-page-shell__meta` `ca-page-shell__title` `ca-page-shell__title--display`
 
@@ -2435,7 +2435,7 @@ Data attributes: `data-on`, `data-score` (`1` `2` `3`)
 | `name?` | `string` |  |  |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
 
-Snippets: `leading`, `trailing`
+Snippets: `leading`; `trailing`
 
 ## PieChart
 
@@ -2488,7 +2488,7 @@ Data attributes: `data-active`
 | `align?` | `'start' \| 'center' \| 'end'` | `'center'` |  |
 | `sideOffset?` | `number` | `8` |  |
 
-Snippets: `trigger`, `triggerChild` (`Snippet<[Record<string, unknown>]>`), `children` (`Snippet<[{ close: () => void }]>`)
+Snippets: `trigger`: Non-interactive trigger content (text, icon). Wrapped in the popover's own button.; `triggerChild` (`Snippet<[Record<string, unknown>]>`): Interactive trigger (a Button/IconButton): receives the trigger `props` to spread onto it.; `children` (`Snippet<[{ close: () => void }]>`): Popover content. Receives `close`, which closes the popover and returns focus to the trigger.
 
 Parts: `ca-popover-content` `ca-popover__trigger`
 
@@ -2562,7 +2562,7 @@ Data attributes: `data-disabled`, `data-state` (`checked` `unchecked`)
 | `labels?` | `boolean` | `false` | Shows the module label under each icon (small caption). The button's name is the same either way. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `brand`, `top`, `bottom`
+Snippets: `brand`: Brand mark at the top of the rail. Defaults to the "CA" wordmark.; `top`: Control between the brand and the modules, e.g. a search / ⌘K trigger.; `bottom`: Items pinned to the bottom of the rail (avatar, notifications, etc.)
 
 Parts: `ca-rail` `ca-rail__bottom` `ca-rail__bottom-sep` `ca-rail__dock` `ca-rail__icon` `ca-rail__icon--active` `ca-rail__icon--labeled` `ca-rail__label` `ca-rail__logo` `ca-rail__logo-mark` `ca-rail__pip` `ca-rail__sep` `ca-rail__top`
 
@@ -2579,7 +2579,7 @@ Parts: `ca-rail` `ca-rail__bottom` `ca-rail__bottom-sep` `ca-rail__dock` `ca-rai
 | `disabled?` | `boolean` | `false` |  |
 | `readonly?` | `boolean` | `false` |  |
 | `locale?` | `string` | `'pt-BR'` |  |
-| `weekStartsOn?` | `WeekStart` | `1` | 0 = Sunday … 6 = Saturday. Default 1 (Monday). |
+| `weekStartsOn?` | `0 \| 1 \| 2 \| 3 \| 4 \| 5 \| 6` | `1` | 0 = Sunday … 6 = Saturday. Default 1 (Monday). |
 | `numberOfMonths?` | `number` | `2` |  |
 | `fixedWeeks?` | `boolean` | `false` |  |
 | `isDateDisabled?` | `(date: DateValue) => boolean` |  |  |
@@ -2621,7 +2621,7 @@ RecordList: records as dense rows (identity | a few columns | row menu) that re-
 | `labels?` | `string[]` |  | Column headers for the identity and each cell, in order. Omit for no header row. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `children`
+Snippets: `children`: The `RecordRow`s.
 
 Also accepts: `Omit<HTMLAttributes<HTMLUListElement>, 'class' \| 'children'>`
 
@@ -2641,7 +2641,7 @@ RecordRow: one record inside a `RecordList`. `identity` is the first column (nam
 |---|---|---|---|
 | `class?` | `string` | `''` |  |
 
-Snippets: `identity`, `actions`, `children`
+Snippets: `identity`: First column: what the record is. Heads the stacked row.; `actions`: Last column: a menu or button. Its cell is at least 44px square.; `children`: The `RecordCell`s, in the order of the `columns` tracks.
 
 Also accepts: `Omit<HTMLLiAttributes, 'class' \| 'children'>`
 
@@ -2749,7 +2749,7 @@ Snippets: `children`
 |---|---|---|---|
 | `class?` | `string` | `''` |  |
 
-Snippets: `light`, `dark`
+Snippets: `light`: Rendered while the light scheme is active.; `dark`: Rendered while the dark scheme is active.
 
 Parts: `ca-scheme-asset` `ca-scheme-asset__dark` `ca-scheme-asset__light`
 
@@ -2905,7 +2905,7 @@ Parts: `ca-setting-item` `ca-setting-item__control` `ca-setting-item__desc` `ca-
 | `onclose?` | `() => void` |  |  |
 | `swipeToDismiss?` | `boolean` | `true` | Drag the handle/header down to dismiss (bottom-sheet layout only). Default: true. |
 
-Snippets: `children`, `footer`
+Snippets: `children`; `footer`
 
 Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay` `ca-sheet` `ca-sheet__body` `ca-sheet__close` `ca-sheet__description` `ca-sheet__footer` `ca-sheet__grab` `ca-sheet__grab--active` `ca-sheet__handle` `ca-sheet__header` `ca-sheet__meta` `ca-sheet__title`
 
@@ -2949,7 +2949,7 @@ Data attributes: `data-label`, `data-pin` (`1` `2` `3` `4` `5` `6`)
 | `display?` | `boolean` | `false` | Display text role (family, `--ca-display-tracking`) for the current-page crumb. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `trailing`
+Snippets: `trailing`: The end of the bar: a `LocaleSwitcher`, a primary CTA, a user menu. Stays on the right and shrinks the breadcrumb first, so it fits at 390px. A `NavigationMenu` placed directly here is hidden below 600px (it never fits beside a CTA): give phones the same links in a menu of your own.
 
 Parts: `ca-site-header` `ca-site-header__bc-sep` `ca-site-header__breadcrumb` `ca-site-header__current--display` `ca-site-header__inner` `ca-site-header__left` `ca-site-header__sep` `ca-site-header__toggle` `ca-site-header__trailing`
 
@@ -2978,7 +2978,7 @@ Data attributes: `data-style` (`flat` `outlined` `solid`)
 | `href?` | `string` | `'#main'` | Fragment id of the main landmark to jump to. Must match the `id` of the `<main>`. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `children`
+Snippets: `children`: Replaces the localized "Skip to content" label.
 
 Parts: `ca-skip-link`
 
@@ -3011,7 +3011,7 @@ Data attributes: `data-disabled`
 |---|---|---|---|
 | `data` | `number[]` |  |  |
 | `variant?` | `"line" \| "bar"` | `"line"` |  |
-| `trend?` | `SparklineTrend` |  |  |
+| `trend?` | `"up" \| "down" \| "neutral"` |  |  |
 | `color?` | `string` |  |  |
 | `height?` | `string` | `"48px"` |  |
 | `class?` | `string` | `""` |  |
@@ -3042,7 +3042,7 @@ Internal (may change in any release): `ca-spin`
 | `ondone?` | `() => void` |  | Called once the splash is gone (or was skipped). |
 | `class?` | `string` | `''` |  |
 
-Snippets: `logo`
+Snippets: `logo`: Brand mark shown in the middle.
 
 Parts: `ca-splash` `ca-splash__logo`
 
@@ -3138,7 +3138,7 @@ Parts: `ca-steps`
 | `show?` | `boolean` | `true` | Renders the bar only while there is something to confirm (e.g. a dirty form). |
 | `class?` | `string` | `''` |  |
 
-Snippets: `children`
+Snippets: `children`: Bar buttons.
 
 Parts: `ca-sticky-actions` `ca-sticky-actions--end` `ca-sticky-actions--stretch` `ca-sticky-actions__inner`
 
@@ -3257,7 +3257,7 @@ Parts: `ca-table` `ca-table-container` `ca-table-root`
 | `open?` | `boolean` | `true` | `bind:` Expanded state, bindable. The rows below the group row are the caller's `{#if open}`. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `label`
+Snippets: `label`: Group title and count.
 
 ## TableOfContents
 
@@ -3295,7 +3295,7 @@ Also accepts: `Omit<HTMLAttributes<HTMLTableRowElement>, 'children' \| 'onclick'
 | `onsort?` | `() => void` |  | Called when the header button is pressed; the caller owns the sort state and the next direction. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `children`
+Snippets: `children`: Column label.
 
 ## Tabs
 
@@ -3305,7 +3305,7 @@ Snippets: `children`
 |---|---|---|---|
 | `value?` | `string` |  | `bind:` |
 | `onchange?` | `(v: string) => void` |  |  |
-| `variant?` | `TabsVariant` | `'pill'` | `pill` fills the active tab on a glass list; `line` underlines it on a bare list (page headers). |
+| `variant?` | `"pill" \| "line"` | `'pill'` | `pill` fills the active tab on a glass list; `line` underlines it on a bare list (page headers). |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
@@ -3353,7 +3353,7 @@ Data attributes: `data-fade` (`both` `end` `start`), `data-variant` (`line`)
 | `brandIcon?` | `boolean` | `false` | The icon is a brand mark (fixed colors, not a `currentColor` glyph): it is never recolored by the active, hover or disabled state. Pair with `SchemeAsset` for light/dark variants. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `icon`, `children`
+Snippets: `icon`: Leading icon in a fixed box (`aria-hidden`, so the label stays the accessible name).; `children`
 
 Also accepts: `Omit<HTMLButtonAttributes, 'class' \| 'children' \| 'value' \| 'type' \| 'role'>`
 
@@ -3367,7 +3367,7 @@ Data attributes: `data-brand`, `data-state` (`active`), `data-variant` (`line`)
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `role?` | `Role` | `'body'` | Type role. Defaults to `body`. |
+| `role?` | `'title' \| 'heading' \| 'body' \| 'label' \| 'caption' \| 'num'` | `'body'` | Type role. Defaults to `body`. |
 | `as?` | `'span' \| 'p' \| 'div' \| 'strong' \| 'em' \| 'small' \| 'label' \| 'dt' \| 'dd' \| 'li'` | `'span'` | Element to render. Only the tag changes, never the look. Defaults to `span`. |
 | `class?` | `string` | `''` |  |
 
@@ -3446,7 +3446,7 @@ Tokens: `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
 | `onfocus?` | `(e: FocusEvent) => void` |  |  |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
 
-Snippets: `leading`, `trailing`, `below`
+Snippets: `leading`; `trailing`; `below`: Content under the field and its hint, such as a "Forgot password?" link or a strength meter.
 
 Also accepts: `Omit<HTMLInputAttributes, 'value' \| 'class' \| 'children' \| 'size' \| 'prefix' \| 'oninput' \| 'onchange' \| 'onfocus' \| 'onblur'>`
 
@@ -3563,7 +3563,7 @@ Data attributes: `data-orientation` (`vertical`), `data-state` (`on`)
 | `delay?` | `number` | `500` |  |
 | `class?` | `string` | `''` |  |
 
-Snippets: `children`, `triggerChild` (`Snippet<[Record<string, unknown>]>`)
+Snippets: `children`: Non-interactive content (text, icon). Wrapped in the tooltip's own button.; `triggerChild` (`Snippet<[Record<string, unknown>]>`): Interactive target (a Button/IconButton): receives the trigger `props` to spread onto it.
 
 Parts: `ca-tooltip-content` `ca-tooltip__trigger`
 
@@ -3626,7 +3626,7 @@ Parts: `ca-user-cell` `ca-user-cell__email` `ca-user-cell__info` `ca-user-cell__
 | `onloadmore?` | `() => void \| Promise<void>` |  | Fetch older rows. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `item` (`Snippet<[T, number]>`), `empty`
+Snippets: `item` (`Snippet<[T, number]>`): One row. Rendered inside an `<li>`.; `empty`: Shown while there are no rows.
 
 Parts: `ca-virtual-list` `ca-virtual-list__empty` `ca-virtual-list__head` `ca-virtual-list__item` `ca-virtual-list__list` `ca-virtual-list__loading` `ca-virtual-list__older` `ca-virtual-list__scroller`
 
