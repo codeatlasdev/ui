@@ -307,3 +307,18 @@ describe("TextField addons (InputGroup)", () => {
 		expect(await checkA11y(bad.container)).toHaveNoViolations();
 	});
 });
+
+describe("TextField in a narrow slot (#464)", () => {
+	it("shrinks to a grid track narrower than its input's intrinsic width", async () => {
+		await page.viewport(390, 844);
+		const screen = await render(TextFieldAddons);
+		const field = (screen.getByLabelText("Website").element() as HTMLInputElement).closest(
+			".ca-tf"
+		) as HTMLElement;
+		const grid = document.createElement("div");
+		grid.style.cssText = "display:grid;width:200px";
+		field.parentElement?.insertBefore(grid, field);
+		grid.append(field);
+		expect(field.getBoundingClientRect().width).toBeLessThanOrEqual(200.5);
+	});
+});

@@ -16,7 +16,7 @@
 </div>
 
 <style>
-  .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr)); gap: var(--ca-space-3); max-width: 32rem; }
+  .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(8rem, 100%), 1fr)); gap: var(--ca-space-3); width: 100%; max-width: 32rem; }
   figure { margin: 0; }
   figcaption { margin-top: var(--ca-space-1); color: var(--ca-text-secondary); font-size: var(--ca-font-size-caption); }
 </style>
