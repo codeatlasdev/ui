@@ -85,12 +85,24 @@ function libImport(root: string, name: string): string {
 	return kitMajor(root) >= 3 ? `#lib/${name}.ts` : `$lib/${name}`;
 }
 
-/** `imports["#lib/*"]` for Kit 3 apps: added to package.json when absent, never replaced. */
-function libImportsPatch(src: string): string | null {
-	const pkg = JSON.parse(src);
-	if (pkg.imports && "#lib/*" in pkg.imports) return src;
-	const indent = src.match(/^(\s+)"/m)?.[1] ?? "\t";
-	return `${JSON.stringify({ ...pkg, imports: { ...pkg.imports, "#lib/*": "./src/lib/*" } }, null, indent)}\n`;
+/**
+ * package.json for a SvelteKit app. `scripts.prepare` runs `svelte-kit sync` after every install:
+ * without the generated types svelte-check cannot resolve `$app/tsconfig` (Kit 3) or
+ * `.svelte-kit/tsconfig.json` (Kit 2) on a fresh clone. Kit 3 also gets `imports["#lib/*"]`.
+ * Anything the app already has is kept, never replaced.
+ */
+function kitPackagePatch(kit3: boolean) {
+	return (src: string): string | null => {
+		const pkg = JSON.parse(src);
+		const needImports = kit3 && !(pkg.imports && "#lib/*" in pkg.imports);
+		const needPrepare = !pkg.scripts?.prepare;
+		if (!needImports && !needPrepare) return src;
+		const next = { ...pkg };
+		if (needImports) next.imports = { ...pkg.imports, "#lib/*": "./src/lib/*" };
+		if (needPrepare) next.scripts = { ...pkg.scripts, prepare: "svelte-kit sync" };
+		const indent = src.match(/^(\s+)"/m)?.[1] ?? "\t";
+		return `${JSON.stringify(next, null, indent)}\n`;
+	};
 }
 
 /**
@@ -278,15 +290,28 @@ const seoTag = (pwa: boolean) => `<Seo
  * \`codeatlas-ui lint\` (i18n-literal) stays clean. Replace the object with your locale catalog when
  * the app is translated.
  */
-const MESSAGES_TS = `export const m = {
-	appTitle: "My app",
+const messagesNew = (pwa: boolean) => `export const m = {
+	appTitle: "My app",${
+		pwa
+			? `
 	offline: {
 		title: "You are offline",
 		body: "This page needs a connection. Check the network and try again.",
 		retry: "Try again",
-	},
+	},`
+			: ""
+	}
 } as const;
 `;
+
+/** `--with pwa` after a plain init: the offline page reads \`m.offline\`, so the keys are added to init's own catalog. */
+function messagesPatch(pwa: boolean) {
+	return (src: string): string | null => {
+		if (!pwa || /\boffline\s*:/.test(src)) return src;
+		if (!/^export const m = \{\n\tappTitle: "My app",\n\} as const;\n$/.test(src)) return src;
+		return messagesNew(true);
+	};
+}
 
 const LAYOUT_TS = `export const prerender = true;\n`;
 
@@ -717,17 +742,13 @@ function sveltekitSteps(root: string, pwa: boolean): Step[] {
 		(e): e is string => !!e
 	);
 	const steps: Step[] = [
-		...(kit3
-			? [
-					{
-						path: "package.json",
-						patch: libImportsPatch,
-						manual: 'Add `"imports": { "#lib/*": "./src/lib/*" }` to package.json.',
-					},
-				]
-			: []),
+		{
+			path: "package.json",
+			patch: kitPackagePatch(kit3),
+			manual: `Add \`"scripts": { "prepare": "svelte-kit sync" }\`${kit3 ? ' and `"imports": { "#lib/*": "./src/lib/*" }`' : ""} to package.json.`,
+		},
 		themeStep("src/lib/theme.ts", THEME_TS, existing),
-		{ path: "src/lib/messages.ts", create: MESSAGES_TS },
+		{ path: "src/lib/messages.ts", create: messagesNew(pwa), patch: messagesPatch(pwa) },
 		{
 			path: "src/hooks.server.ts",
 			create: hooksNew(themeSpec),

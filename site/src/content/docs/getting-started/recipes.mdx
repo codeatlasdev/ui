@@ -4,10 +4,15 @@ description: Complete route files for the screens an app is made of, from the ap
 group: Getting started
 order: 2
 ---
+import { Callout } from "@codeatlasdev/ui";
 
 Pick the recipe that matches the screen you are building and copy it whole. Change only the data, the copy and the theme: the structure, the components and the slots are the part that is already right. When you are unsure about a prop, look it up with the `get_component` tool of the `ca-ui-mcp` server or in `API.md` instead of guessing.
 
 Every example is a SvelteKit route file with its imports, its data shape and its state in view. Spacing props on `Flex`, `Stack` and `Grid` take steps of the spacing scale as strings (`gap="4"`), never pixels.
+
+<Callout type="note" title="Written for SvelteKit 3">
+  The recipes assume SvelteKit 3 (`@sveltejs/kit ^3`), the version `sv create` installs. Kit 3 has no `$lib`: the imports below read `#lib/messages.ts`, through the `imports` map `init` adds to `package.json`, with the extension. On SvelteKit 2 write the same import as `$lib/messages` (no extension), and likewise for every other `#lib/` import (`#lib/map-state.svelte.ts` is `$lib/map-state.svelte`). Nothing else in the recipes changes between the two majors, except that Kit 2 keeps its options in `svelte.config.js` instead of `sveltekit({ ... })`. See [Installation](/docs/getting-started/installation/#sveltekit-3).
+</Callout>
 
 | I am building | Recipe | Main components |
 |---|---|---|
@@ -130,8 +135,6 @@ export const m = {
   collapseShortPanel
   bottomNavPrimary={4}
   moreSheet={NavMoreSheet}
-  {stage}
-  stageVisible={!page.url.pathname.startsWith("/settings")}
 >
   {#snippet brand()}
     <strong>{m.brand}</strong>
@@ -160,12 +163,41 @@ export const m = {
 
 <!-- Mounted once for the whole app: every toast.success(...) in a page renders here. -->
 <Toaster />
+```
+
+### With a stage (optional)
+
+Skip this block unless the app has a persistent background layer (a map, a canvas, a video). It is not part of the base recipe above: with no `stage` the shell renders none. Add the two props and the snippet to the same layout:
+
+```svelte
+<!-- src/routes/(app)/+layout.svelte: the same layout, plus a stage -->
+<script lang="ts">
+  import { AppShellLayout, type NavModule } from "@codeatlasdev/ui";
+  import { goto } from "$app/navigation";
+  import { page } from "$app/state";
+
+  let { children } = $props();
+  // `modules` is the same array as above.
+  const modules: NavModule[] = [];
+</script>
+
+<AppShellLayout
+  {modules}
+  pathname={page.url.pathname}
+  onNavigate={(path) => goto(path)}
+  {stage}
+  stageVisible={!page.url.pathname.startsWith("/settings")}
+>
+  {@render children()}
+</AppShellLayout>
 
 <!-- A layer that lives behind every page and is mounted once: a map, a canvas, a video. -->
 {#snippet stage({ hidden }: { hidden: boolean })}
   <canvas class="backdrop" class:paused={hidden}></canvas>
 {/snippet}
 ```
+
+`hidden` is true while `stageVisible` is false, so stop rendering then. `.backdrop` is yours to style: nothing in the package defines it. For a map, use the [Map page](#map-page) recipe instead of a hand-made stage.
 
 A page inside the shell. For a form or settings page, `width="reading"` caps the column at about 46rem, and an `aside` snippet puts a section index next to it.
 
@@ -210,7 +242,7 @@ Rules:
 - The `brand` snippet is the logo at the top of the rail and in the mobile header. Anything that must stay reachable on a phone (an avatar) goes in `railBottom`, with `mobileHeaderActions` for the mobile header.
 - `railLabels` writes each module's label under its rail icon. `railTop` is the slot between the brand and the modules for a search or command-palette trigger: a ghost `Button` that opens a `CommandPalette` (which also opens on Cmd+K). `collapseShortPanel` shows only the rail for a module with 2 destinations or fewer, so a short list does not reserve a column of empty panel.
 - Below 900px the bottom navigation holds `bottomNavPrimary` tabs (5 by default). With more modules the last tab is More, a dialog with the rest plus the `bottomNavOverflow` snippet (account, sign out), so no module is unreachable. `moreSheet={NavMoreSheet}` swaps that dialog for a swipe-to-dismiss `Sheet`; it is opt-in because it adds about 10 kB gzip.
-- A `{#snippet stage({ hidden })}` is a persistent background (a map, canvas or video) rendered once under the pages, so a route change never remounts it and its camera survives. Stop rendering while `hidden` is true. Mark floating panels with `class="ca-stage-panel"`: the content area lets pointer events through to the stage. `stageVisible={false}` hides the stage without unmounting it, for a full-page route that covers it. For a whole map page use the map recipe, not a hand-made stage.
+- Optional, see [With a stage](#with-a-stage-optional): a `{#snippet stage({ hidden })}` is a persistent background (a map, canvas or video) rendered once under the pages, so a route change never remounts it and its camera survives. Stop rendering while `hidden` is true. Mark floating panels with `class="ca-stage-panel"`: the content area lets pointer events through to the stage. `stageVisible={false}` hides the stage without unmounting it, for a full-page route that covers it. For a whole map page use the map recipe, not a hand-made stage.
 - `Toaster` is mounted here once, so pages in this group can call `toast.success(...)`. A route outside the group (the auth pages) that toasts needs its own `<Toaster />`; mount it in the root layout instead when both groups toast.
 - Copy comes from `src/lib/messages.ts`, never from literals in the template. Copy the `ts` block above next to the route and edit the text there; see [App copy](/docs/getting-started/app-copy/).
 
@@ -696,6 +728,12 @@ export const m = {
       subtitle: "Start free, no card needed",
       submit: "Create account",
     },
+    mapLabel: "Where our customers are",
+    waitlist: {
+      title: "Join the waitlist",
+      subtitle: "We open new regions every month",
+      submit: "Join",
+    },
   },
 } as const;
 ```
@@ -743,7 +781,7 @@ export const m = {
   {/snippet}
 
   <AuthCard title={a.signIn.title} subtitle={a.signIn.subtitle}>
-    <form onsubmit={submit}>
+    <form onsubmit={submit} novalidate>
       <Stack gap="4">
         <TextField
           label={a.email}
@@ -825,18 +863,54 @@ A form-first variant: the panel on the right edge to edge (a map, image or video
 </AuthLayout>
 ```
 
+A map in the `panelBleed` panel needs no wrapper: the panel slot is the full viewport height, and `MapStage` fills its parent. Install the map peers as in the [Map page](#map-page) recipe.
+
+```svelte
+<!-- src/routes/(auth)/waitlist/+page.svelte -->
+<script lang="ts">
+  import { AuthCard, AuthLayout, Button, Stack, TextField } from "@codeatlasdev/ui";
+  import { MapStage } from "@codeatlasdev/ui/map";
+  import { m } from "#lib/messages.ts";
+
+  const a = m.auth;
+  let email = $state("");
+</script>
+
+<AuthLayout panelSide="right" panelBleed panelHidden="lg" align="start">
+  {#snippet panel()}
+    <MapStage
+      styles={{ light: "https://demotiles.maplibre.org/style.json", dark: "https://demotiles.maplibre.org/style.json" }}
+      label={a.mapLabel}
+      fit={[[-74, -34], [-34, 5]]}
+    />
+  {/snippet}
+
+  <AuthCard variant="plain" title={a.waitlist.title} subtitle={a.waitlist.subtitle}>
+    <form method="post" novalidate>
+      <Stack gap="4">
+        <TextField label={a.email} type="email" name="email" autocomplete="email" required bind:value={email} />
+        <Button type="submit" variant="filled" fullWidth>{a.waitlist.submit}</Button>
+      </Stack>
+    </form>
+  </AuthCard>
+</AuthLayout>
+```
+
+Add `mapLabel` and `waitlist: { title, subtitle, submit }` to the `auth` keys above. The panel is hidden below the `panelHidden` width, so the map is decoration there: keep the form usable without it.
+
 Rules:
 
 - `AuthLayout` renders the page `<main id="main">`. Do not wrap it in another `<main>`, and do not put the app shell around it: auth routes live in their own group, outside `(app)`.
 - The logo comes from `logoMark` and `logoName`. The `brand` snippet replaces the whole logo, the mark and the default name ("CodeAtlas UI"); `logoName` is drawn beside it only when you pass it, so pass it for an SVG mark plus a name and leave it out for a full wordmark.
 - The form column holds an `AuthCard` with `title`, `subtitle`, the form as its child and links in the `footer` snippet. Do not render your own heading or card inside it.
+- `novalidate` on the `<form>` is what lets the library's `error` message show. Without it a `type="email"` or `required` field fails the browser's own validation first: the native bubble appears on submit, `onsubmit` never runs and the `error` you set is never seen. Keep `type`, `required` and `autocomplete` (they still drive the keyboard, the autofill and the screen reader) and do the checking yourself. For field-level messages (an invalid email, a password too short) wire [`useForm`](/docs/inputs/use-form/): `error={form.fields.email.error}`, `oninput={(v) => form.set("email", v)}` and `onblur={() => form.touch("email")}`.
 - Build the form with `Stack` and `TextField`, and a `Button type="submit"` with `fullWidth` and `loading`. Set `autocomplete` (`email`, `current-password`, `new-password`) so password managers work. A password field is `type="password"` with `revealable` (an eye toggle inside the field), never a hand-made button; a "Forgot password?" link goes in its `below` snippet.
 - The "Forgot password?" link is optional: it points at a `/forgot-password` route you build yourself (the same `AuthLayout` and `AuthCard` with one email field). An app with no password reset deletes the whole `below` snippet instead of linking to a page that does not exist.
 - `panelSide` (`left` or `right`), `panelBleed` (the panel fills edge to edge: no padding, logo or blobs, and the `brand` and `logoName` are not drawn there), `panelHidden` (`md` 900px or `lg` 1200px, from which the panel shows) and `align="start"` with `AuthCard variant="plain"` give a form-first page. The `header` snippet is a sticky bar over the form column and replaces the mobile brand strip.
 - Below the `panelHidden` width the panel is hidden and `mobileBrand` (on by default) shows a compact brand strip, so put nothing essential in `panel`. `AuthCard display` sets its title in the display role.
 - The language names in `LocaleSwitcher` options (`English`, `Português`) are the one exception to the copy rule: they are `label` keys of a data array, not template attributes, and each language is written in itself on purpose. Everything else, including the error and the footer links, comes from `messages.ts`.
 
-See also: [AuthLayout](/docs/layout/auth-layout/), [TextField](/docs/inputs/text-field/), [Button](/docs/inputs/button/), [App copy](/docs/getting-started/app-copy/).
+See also: [AuthLayout](/docs/layout/auth-layout/), [TextField](/docs/inputs/text-field/), [Button](/docs/inputs/button/), [useForm](/docs/inputs/use-form/), [Map](/docs/map/), [App copy](/docs/getting-started/app-copy/).
 
 ## Dashboard
 
@@ -1231,7 +1305,7 @@ See also: [PageFrame](/docs/layout/page-frame/), [Map](/docs/map/), [AppShell](/
 
 ## Landing page
 
-Use it for a public page: a sticky header with navigation, a hero, a grid of feature cards and the metadata crawlers read. It lives outside the app shell.
+Use it for a public page: a sticky header with navigation, a hero, a grid of feature cards, pricing cards, an FAQ, a footer and the metadata crawlers read. It lives outside the app shell. `init` writes a default `<Seo>` in the root layout: delete it when you add the page's own (see the rules below).
 
 ```ts
 // src/lib/landing.ts (the landing copy: one table per language, kept apart from the app's messages.ts)
@@ -1261,6 +1335,24 @@ export const messages = {
       { title: "Themed in one file", body: "One brand color becomes light and dark tokens." },
       { title: "Accessible", body: "Keyboard, focus and contrast handled in the components." },
     ],
+    pricingTitle: "Pricing",
+    plans: [
+      { name: "Free", price: "$0", period: "/month", features: ["1 project", "Community support"], cta: "Start free", href: "/sign-up", featured: false },
+      { name: "Pro", price: "$29", period: "/month", features: ["Unlimited projects", "Email support", "Custom domain"], cta: "Choose Pro", href: "/sign-up?plan=pro", featured: true },
+      { name: "Team", price: "$99", period: "/month", features: ["Everything in Pro", "SSO", "Audit log"], cta: "Contact sales", href: "/contact", featured: false },
+    ],
+    popular: "Most popular",
+    faqTitle: "Questions",
+    faq: [
+      { question: "Can I cancel any time?", answer: "Yes. The plan ends at the close of the billing period." },
+      { question: "Is there a free plan?", answer: "Yes, one project with community support, no card needed." },
+    ],
+    footerLabel: "Site",
+    footerLinks: "Company",
+    footerAbout: "About",
+    footerPrivacy: "Privacy",
+    footerTerms: "Terms",
+    copyright: "© 2026 Acme Inc.",
   },
   "pt-BR": {
     brand: "Acme",
@@ -1287,6 +1379,24 @@ export const messages = {
       { title: "Tema em um arquivo", body: "Uma cor de marca vira tokens claros e escuros." },
       { title: "Acessível", body: "Teclado, foco e contraste resolvidos nos componentes." },
     ],
+    pricingTitle: "Preços",
+    plans: [
+      { name: "Grátis", price: "R$ 0", period: "/mês", features: ["1 projeto", "Suporte da comunidade"], cta: "Começar grátis", href: "/sign-up", featured: false },
+      { name: "Pro", price: "R$ 149", period: "/mês", features: ["Projetos ilimitados", "Suporte por email", "Domínio próprio"], cta: "Escolher Pro", href: "/sign-up?plan=pro", featured: true },
+      { name: "Time", price: "R$ 499", period: "/mês", features: ["Tudo do Pro", "SSO", "Log de auditoria"], cta: "Falar com vendas", href: "/contact", featured: false },
+    ],
+    popular: "Mais popular",
+    faqTitle: "Perguntas",
+    faq: [
+      { question: "Posso cancelar quando quiser?", answer: "Sim. O plano termina no fim do período de cobrança." },
+      { question: "Existe plano grátis?", answer: "Sim, um projeto com suporte da comunidade, sem cartão." },
+    ],
+    footerLabel: "Site",
+    footerLinks: "Empresa",
+    footerAbout: "Sobre",
+    footerPrivacy: "Privacidade",
+    footerTerms: "Termos",
+    copyright: "© 2026 Acme Ltda.",
   },
 } as const;
 
@@ -1297,9 +1407,13 @@ export type Locale = keyof typeof messages;
 <!-- src/routes/(marketing)/+page.svelte -->
 <script lang="ts">
   import {
+    Accordion,
+    AccordionItem,
+    Badge,
     Button,
     Card,
     Container,
+    Divider,
     Drawer,
     Flex,
     Grid,
@@ -1316,7 +1430,7 @@ export type Locale = keyof typeof messages;
     StrikeThrough,
     ThemeIsland,
   } from "@codeatlasdev/ui";
-  import { Seo } from "@codeatlasdev/ui/seo";
+  import { faqPage, Seo } from "@codeatlasdev/ui/seo";
   import { Menu } from "@lucide/svelte";
   import { page } from "$app/state";
   import { messages, type Locale } from "#lib/landing.ts";
@@ -1332,11 +1446,20 @@ export type Locale = keyof typeof messages;
   // package's own strings (aria-labels, the switcher) in the same language.
   let locale = $state<Locale>("en");
   const m = $derived(messages[locale]);
+  // The one language the server renders and the first paint show: the page's own `lang`.
+  const lang = $derived(locale);
 
   let menuOpen = $state(false);
 </script>
 
-<Seo title={m.brand} description={m.metaDescription} canonical={origin + page.url.pathname} />
+<!-- `lang` keeps <html lang> in step with the in-page switch; `jsonLd` carries the FAQ the page shows. -->
+<Seo
+  title={m.brand}
+  description={m.metaDescription}
+  canonical={origin + page.url.pathname}
+  {lang}
+  jsonLd={faqPage([...m.faq])}
+/>
 
 <!-- A light page inside a dark app. `document` also paints <html>, so overscroll and the browser bar match. -->
 <ThemeIsland scheme="light" document>
@@ -1394,8 +1517,67 @@ export type Locale = keyof typeof messages;
             </Grid>
           </Stack>
         </Section>
+
+        <Section id="pricing" aria-labelledby="pricing-title">
+          <Stack gap="6">
+            <h2 id="pricing-title">{m.pricingTitle}</h2>
+            <Grid columns={{ base: 1, md: 3 }} gap="4">
+              {#each m.plans as plan (plan.name)}
+                <Card title={plan.name} headingLevel={3} full>
+                  {#snippet headerActions()}
+                    {#if plan.featured}<Badge tone="brand" subtle>{m.popular}</Badge>{/if}
+                  {/snippet}
+                  <Stack gap="4">
+                    <Heading level={4} size="display-3">{plan.price}<small>{plan.period}</small></Heading>
+                    <Stack as="ul" gap="2">
+                      {#each plan.features as feature (feature)}<li>{feature}</li>{/each}
+                    </Stack>
+                    <Button
+                      class="ca-pricing-cta"
+                      variant={plan.featured ? "filled" : "outlined"}
+                      tone={plan.featured ? undefined : "neutral"}
+                      href={plan.href}
+                    >
+                      {plan.cta}
+                    </Button>
+                  </Stack>
+                </Card>
+              {/each}
+            </Grid>
+          </Stack>
+        </Section>
+
+        <Section id="faq" aria-labelledby="faq-title" size="1">
+          <Stack gap="6">
+            <h2 id="faq-title">{m.faqTitle}</h2>
+            <Accordion type="single">
+              {#each m.faq as item, i (item.question)}
+                <AccordionItem value={String(i)} title={item.question}>{item.answer}</AccordionItem>
+              {/each}
+            </Accordion>
+          </Stack>
+        </Section>
       </Container>
     </main>
+
+    <footer aria-label={m.footerLabel}>
+      <Container size="lg">
+        <Divider />
+        <Section size="1">
+          <Flex gap="4" wrap justify="between" align="center">
+            <strong>{m.brand}</strong>
+            <Stack as="nav" aria-label={m.footerLinks}>
+              <Flex as="ul" gap="4" wrap>
+                <li><a href="#features">{m.navProduct}</a></li>
+                <li><a href="#pricing">{m.navPricing}</a></li>
+                <li><a href="#faq">{m.faqTitle}</a></li>
+              </Flex>
+            </Stack>
+            <small>{m.copyright}</small>
+          </Flex>
+        </Section>
+      </Container>
+    </footer>
   </I18nProvider>
 </ThemeIsland>
 
@@ -1413,17 +1595,18 @@ export type Locale = keyof typeof messages;
 
 Rules:
 
+- Delete the `<Seo>` that `init` put in `src/routes/+layout.svelte` when the page has its own: every `<Seo>` writes its tags into `<head>`, and only the `<title>` of the page replaces the layout's. The layout's `description`, `canonical` and `og:*` tags would stay next to the page's, so a crawler reads two. One `<Seo>` per page (SEO page: [the Seo component](/docs/getting-started/seo/#the-seo-component)), in the page or in the layout, never both. A layout `<Seo>` is only right when every route shares it unchanged.
 - A landing page is not an app page: no `AppShellLayout`. Put it in the root route or a `(marketing)` group, with its own `<main id="main" tabindex="-1">`. The `SkipLink` is yours too: put one before `SiteHeader` when the header is not inside a shell.
-- Build the page from `Container` (width and gutter), `Section` (vertical rhythm, a real `<section>`: give it `aria-labelledby`) and `Stack`, `Flex`, `Grid` for arrangement. `Grid` takes `columns` (1 to 12, or a responsive object) and a step `gap`; for a template like `2fr 1fr`, write the `grid-template-columns` in a class. A pricing table has no component of its own: a `Grid columns={{ base: 1, md: 3 }}` of `Card`s, the price in `Heading size="display-3"`, the features in `Stack as="ul"`, and `class="ca-pricing-cta"` on each `Button`.
+- Build the page from `Container` (width and gutter), `Section` (vertical rhythm, a real `<section>`: give it `aria-labelledby`) and `Stack`, `Flex`, `Grid` for arrangement. `Grid` takes `columns` (1 to 12, or a responsive object) and a step `gap`; for a template like `2fr 1fr`, write the `grid-template-columns` in a class. A pricing table has no component of its own, and the recipe shows it: a `Grid columns={{ base: 1, md: 3 }}` of `Card`s, the price in `Heading size="display-3"`, the features in `Stack as="ul"`, `class="ca-pricing-cta"` on each `Button` (it pins the button to the bottom of the card), and a `Badge tone="brand" subtle` in `headerActions` for the highlighted plan. There is no footer component either: a `<footer aria-label>` with a `Container`, a `Divider` and plain links.
 - `SiteHeader` is a sticky bar with a breadcrumb that is empty outside an app shell; the site navigation goes in its `trailing` snippet, which stays on the right. Put the `NavigationMenu` there as a direct child (not wrapped in a `div`): below 600px the header hides it, and a phone gets the same links from a `Drawer` opened by an `IconButton` that you show only below 600px. Keep at most the `LocaleSwitcher` and one CTA beside it in the bar: at 390px a second button does not fit. `LocaleSwitcher compact` always shows the short code.
 - Switching language inside the page needs no navigation: bind `LocaleSwitcher` to a `$state` locale, derive your copy from it (`messages[locale]`) and pass the same value to `I18nProvider locale={locale}`, which is reactive, so the package's own strings follow. To give each language its own URL, use ``onselect={(next) => goto(`/${next}`)}`` instead (it may return a promise; `value` changes once it settles) and read the locale from the route.
 - CTAs are `Button` with `href`: it renders a link, so no `onclick` navigation. One `filled` per view, the rest `outlined` or `ghost`; add `tone="neutral"` to an `outlined` or `ghost` button that sits beside the brand one. A tag on a card (a plan name, "New") is `Badge tone="brand" subtle`, not a `Chip`.
-- The hero headline is `Heading size="display"`, never a styled `h1`. `level` sets the tag and `size` the look, and `Heading` takes no `id`, so name the section with `aria-label`. `Highlight` and `StrikeThrough` take `animated` to play on mount; under reduced motion they render fully drawn.
+- The hero headline is `Heading size="display"`, never a styled `h1`. `level` sets the tag and `size` the look. `Heading` takes no `id` (see [Heading](/docs/display/heading/)), so the title that names a `Section` is a plain `<h2 id="features-title">` with `aria-labelledby` on the `Section`, as above; the hero names itself with `aria-label`. `Highlight` and `StrikeThrough` take `animated` to play on mount; under reduced motion they render fully drawn.
 - `ThemeIsland` keeps this page in its own scheme (and `preset`) inside a dark app. Add `document` for a full page so `<html>` follows it and is restored on leaving, and set `setRouteTheme` on the server (see [Theming](#theming)) so the first paint is already right.
-- Put `Seo` on every public page with `title`, `description` and an absolute `canonical`. With in-page language switching the page has one URL, so keep one canonical; use `alternates` only when each language has its own. An FAQ section can add `faqPage` JSON-LD from `@codeatlasdev/ui/seo`. Use `noindex` on app and auth pages.
+- Put `Seo` on every public page with `title`, `description` and an absolute `canonical`. With in-page language switching the page has one URL, so keep one canonical; use `alternates` only when each language has its own. The FAQ is an `Accordion type="single"` (one answer open at a time) and the same questions feed `faqPage(...)` into `jsonLd`, so the markup crawlers read is the text people see. Pass `lang` with an in-page language switch: `Seo` keeps `<html lang>` in step on the client and sets `og:locale`, which the `LocaleSwitcher` alone does not do. The `<html lang>` the server writes still belongs in `app.html`. Use `noindex` on app and auth pages.
 - Static hosting (`adapter-static`): set `export const prerender = true;` in the root `+layout.ts` so `/` is built. SvelteKit fails the build when a prerendered page links to a route that does not exist yet (`/sign-up`, `/docs`): create the routes, or set `prerender: { handleHttpError: "warn" }` in the `sveltekit({ ... })` options until they exist. `adapter-static@4` needs Kit 3, so a Kit 2 app installs `@sveltejs/adapter-static@3`.
 
-See also: [Layout primitives](/docs/layout/layout-primitives/), [Card](/docs/surfaces/card/), [Button](/docs/inputs/button/), [NavigationMenu](/docs/navigation/navigation-menu/), [Drawer](/docs/feedback/drawer/), [i18n](/docs/getting-started/i18n/), [SEO](/docs/getting-started/seo/).
+See also: [Layout primitives](/docs/layout/layout-primitives/), [Card](/docs/surfaces/card/), [Accordion](/docs/surfaces/accordion/), [Heading](/docs/display/heading/), [Button](/docs/inputs/button/), [NavigationMenu](/docs/navigation/navigation-menu/), [Drawer](/docs/feedback/drawer/), [i18n](/docs/getting-started/i18n/), [SEO](/docs/getting-started/seo/).
 
 ## Standalone page
 

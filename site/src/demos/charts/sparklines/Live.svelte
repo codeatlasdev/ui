@@ -26,7 +26,7 @@
   ]);
 </script>
 
-<Grid class="grid-auto-200" gap="4">
+<Grid columns={{ base: 1, sm: 3 }} gap="4">
   {#each metrics as m}
     <Card material="glass">
       <Stack gap="1">
@@ -41,7 +41,6 @@
 </Grid>
 
 <style>
-  :global(.grid-auto-200) { grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); }
   .label { font-size: var(--ca-font-size-caption); color: var(--ca-text-secondary); }
   .value { color: var(--ca-brand-text); font-weight: 600; }
 </style>

@@ -733,7 +733,7 @@ describe("init --with lint,e2e (#383)", () => {
 		const root = base();
 		init(root, { ...quiet, write: true });
 		expect(existsSync(join(root, "playwright.config.ts"))).toBe(false);
-		expect(JSON.parse(read(root, "package.json")).scripts).toBeUndefined();
+		expect(Object.keys(JSON.parse(read(root, "package.json")).scripts)).toEqual(["prepare"]);
 	});
 
 	it("lint adds the ui guard and ca-selector scripts, with no dependency the app lacks", () => {
@@ -958,6 +958,61 @@ describe("init scaffolds an app that builds and lints out of the box (#475)", ()
 			});
 			run(root);
 			expect(read(root, "src/lib/messages.ts")).toStartWith("// mine");
+		});
+	});
+
+	describe("messages.ts only carries the keys the setup uses (#491)", () => {
+		it("writes no offline keys without --with pwa, and adds them with it", () => {
+			const plain = project({ "package.json": pkg(KIT3) });
+			run(plain);
+			const messages = read(plain, "src/lib/messages.ts");
+			expect(messages).toContain("appTitle");
+			expect(messages).not.toContain("offline");
+			const pwa = project({ "package.json": pkg(KIT3) });
+			run(pwa, { with: ["pwa"] });
+			expect(read(pwa, "src/lib/messages.ts")).toContain("offline");
+		});
+
+		it("adding pwa to an app init already set up adds the offline keys the page reads", () => {
+			const root = project({ "package.json": pkg(KIT3) });
+			run(root);
+			run(root, { with: ["pwa"] });
+			const messages = read(root, "src/lib/messages.ts");
+			expect(messages).toContain("offline");
+			expect(messages).toContain("appTitle");
+		});
+	});
+
+	describe("prepare script (#491)", () => {
+		it("adds prepare: svelte-kit sync (svelte-check needs it on a fresh Kit 3 app)", () => {
+			const root = project({ "package.json": pkg(KIT3, { scripts: { dev: "vite dev" } }) });
+			run(root);
+			const scripts = JSON.parse(read(root, "package.json")).scripts;
+			expect(scripts.prepare).toBe("svelte-kit sync");
+			expect(scripts.dev).toBe("vite dev");
+		});
+
+		it("adds it to a package.json without scripts, on Kit 2 as well", () => {
+			const root = project({ "package.json": pkg({ "@sveltejs/kit": "^2.70.0" }) });
+			run(root);
+			expect(JSON.parse(read(root, "package.json")).scripts.prepare).toBe("svelte-kit sync");
+		});
+
+		it("keeps a prepare script the app already has", () => {
+			const root = project({
+				"package.json": pkg(KIT3, { scripts: { prepare: "husky && svelte-kit sync" } }),
+			});
+			run(root);
+			expect(JSON.parse(read(root, "package.json")).scripts.prepare).toBe(
+				"husky && svelte-kit sync"
+			);
+		});
+
+		it("is a dry run without --write", () => {
+			const root = project({ "package.json": pkg(KIT3) });
+			const before = read(root, "package.json");
+			run(root, { write: false });
+			expect(read(root, "package.json")).toBe(before);
 		});
 	});
 
