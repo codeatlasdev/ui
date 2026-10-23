@@ -357,4 +357,31 @@ describe("AuthLayout panelTone", () => {
 			delete document.documentElement.dataset.style;
 		}
 	});
+
+	// #440: the secondary and tertiary levels were alpha mixes of the panel foreground tuned for
+	// white over the dark brand gradient; over a flat (raised) surface they measured 4.39:1 (dark)
+	// and 2.21:1 (light), under the 4.5:1 floor for small text.
+	for (const scheme of ["light", "dark"] as const) {
+		it(`flat panel text levels pass axe color-contrast (${scheme})`, async () => {
+			await page.viewport(1280, 800);
+			const root = document.documentElement;
+			root.classList.toggle("dark", scheme === "dark");
+			root.dataset.style = "outlined";
+			try {
+				const quote = snip(
+					"<div><p class='auth-quote__text'>Quote</p>" +
+						"<footer class='auth-quote__attr'>Attribution</footer>" +
+						"<p style='font-size:var(--ca-font-size-body2);color:var(--panel-text-secondary)'>Secondary</p>" +
+						"<p style='font-size:var(--ca-font-size-body2);color:var(--panel-text-tertiary)'>Tertiary</p></div>"
+				);
+				const screen = await render(AuthLayout, { panel: quote });
+				const aside = screen.container.querySelector(".ca-auth__panel") as HTMLElement;
+				expect(bg(aside)).toBe("none");
+				expect(await checkA11y(screen.container)).toHaveNoViolations();
+			} finally {
+				root.classList.remove("dark");
+				delete root.dataset.style;
+			}
+		});
+	}
 });
