@@ -1,0 +1,85 @@
+<!-- @codeatlasdev/ui demo #491 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/table#dense-pinned-and-grouped -->
+Element: #491 Dense, pinned and grouped (display/table)
+What it shows: A dense SimpleTable of leads inside an already framed, horizontally scrolling panel: compact rows, two pinned columns, collapsible stage groups, a sortable Name header and clickable rows.
+When to use: CRM or spreadsheet-like record lists that need many columns and rows: dense rows, pinned checkbox and name columns, grouped sections and keyboard-operable rows.
+Spec:
+- `<SimpleTable density="compact" frame={false} scroll="none" stickyColumns={2} headerCase="sentence">` inside a caller-owned `overflow-x: auto` panel
+- `<TableSortHeader {sort} onsort={cycle}>` renders a sentence-case sortable header whose `sort` is `none`, `asc` or `desc`
+- One `<tbody>` per stage with `<TableGroupRow colspan={6} collapsible bind:open={opened[stage]}>` as its first row
+- `<TableRow selected={selected === l.id} onactivate=` rows: Tab, Enter/Space and click activate; the checkbox does not
+- The first two columns (checkbox, name) stay pinned while the panel scrolls sideways
+Names: Dense table | Compact table | Tabela densa | Pinned columns
+Tags: table, simple-table, dense, compact, sticky-columns, group-row, sortable, interactive-row, crm
+Needs: @codeatlasdev/ui@4.5.0
+Components: SimpleTable, TableRow, TableGroupRow, TableSortHeader, Checkbox
+Live demo: https://ui.codeatlas.com.br/docs/display/table#dense-pinned-and-grouped
+
+<script lang="ts">
+  import { SimpleTable, TableRow, TableGroupRow, TableSortHeader, Checkbox } from '@codeatlasdev/ui';
+
+  type Lead = { id: string; name: string; company: string; owner: string; value: number; stage: string };
+  const leads: Lead[] = [
+    { id: 'l1', name: 'Ana Souza', company: 'Atlas Co', owner: 'Matheus', value: 12000, stage: 'New' },
+    { id: 'l2', name: 'Bruno Lima', company: 'Nimbus', owner: 'Carla', value: 8400, stage: 'New' },
+    { id: 'l3', name: 'Carla Dias', company: 'Orbit', owner: 'Diego', value: 22000, stage: 'Won' },
+    { id: 'l4', name: 'Diego Reis', company: 'Vertex', owner: 'Matheus', value: 5600, stage: 'Won' },
+  ];
+
+  let sort = $state<'none' | 'asc' | 'desc'>('none');
+  let selected = $state<string | undefined>('l2');
+  let opened = $state<Record<string, boolean>>({ New: true, Won: true });
+  let last = $state('Nothing opened yet');
+
+  const sorted = $derived(
+    sort === 'none' ? leads : [...leads].sort((a, b) => (sort === 'asc' ? 1 : -1) * a.name.localeCompare(b.name)),
+  );
+  const stages = $derived([...new Set(sorted.map((l) => l.stage))]);
+  const cycle = () => (sort = sort === 'none' ? 'asc' : sort === 'asc' ? 'desc' : 'none');
+</script>
+
+<div class="dense-demo">
+  <div class="dense-demo__scroller">
+    <SimpleTable density="compact" frame={false} scroll="none" stickyColumns={2} headerCase="sentence">
+      <thead>
+        <tr>
+          <th scope="col"><Checkbox aria-label="Select all leads" /></th>
+          <TableSortHeader {sort} onsort={cycle}>Name</TableSortHeader>
+          <th scope="col">Company</th>
+          <th scope="col">Owner</th>
+          <th scope="col">Stage</th>
+          <th scope="col">Value</th>
+        </tr>
+      </thead>
+      {#each stages as stage (stage)}
+        <tbody>
+          <TableGroupRow colspan={6} collapsible bind:open={opened[stage]}>
+            {#snippet label()}{stage} <span>{sorted.filter((l) => l.stage === stage).length}</span>{/snippet}
+          </TableGroupRow>
+          {#if opened[stage]}
+            {#each sorted.filter((l) => l.stage === stage) as l (l.id)}
+              <TableRow selected={selected === l.id} onactivate={() => { selected = l.id; last = `Opened ${l.name}`; }}>
+                <td><Checkbox aria-label={`Select ${l.name}`} /></td>
+                <td class="primary">{l.name}</td>
+                <td>{l.company}</td>
+                <td>{l.owner}</td>
+                <td>{l.stage}</td>
+                <td>{l.value.toLocaleString('en-US', { style: 'currency', currency: 'USD' })}</td>
+              </TableRow>
+            {/each}
+          {/if}
+        </tbody>
+      {/each}
+    </SimpleTable>
+  </div>
+  <p class="dense-demo__status" aria-live="polite">{last}</p>
+</div>
+
+<style>
+  .dense-demo__scroller {
+    max-width: 28rem;
+    overflow-x: auto;
+    border: var(--ca-border-width) solid var(--ca-outline-subtle);
+    border-radius: var(--ca-radius-lg);
+  }
+  .dense-demo__status { margin: var(--ca-space-2) 0 0; color: var(--ca-text-hint); font-size: var(--ca-font-size-caption); }
+</style>

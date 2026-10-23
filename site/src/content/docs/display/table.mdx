@@ -10,6 +10,8 @@ import Scroll from "~/demos/display/table/Scroll.svelte";
 import ScrollSrc from "~/demos/display/table/Scroll.svelte?raw";
 import Cards from "~/demos/display/table/Cards.svelte";
 import CardsSrc from "~/demos/display/table/Cards.svelte?raw";
+import Dense from "~/demos/display/table/Dense.svelte";
+import DenseSrc from "~/demos/display/table/Dense.svelte?raw";
 
 ```svelte
 <script>
@@ -27,9 +29,43 @@ SimpleTable styles plain `thead` and `tbody` markup inside a focusable, horizont
 <Demo title="Default (scroll)" description={"A regular table at every width."} src={ScrollSrc}><Scroll /></Demo>
 <Demo title="Cards on narrow containers" description={"When the table's own container is narrower than 600px each row becomes a card. Every cell is captioned with its column header; `data-label` only overrides that. Resize the window to see it."} src={CardsSrc}><Cards /></Demo>
 
+<Demo title="Dense, pinned and grouped" description={"`density=\"compact\"`, `frame={false}`, `scroll=\"none\"` and `stickyColumns={2}` inside a panel that owns the scrolling, with collapsible group rows, a sortable header and interactive rows. Scroll the panel sideways: the checkbox and name columns stay put."} src={DenseSrc}><Dense /></Demo>
+
+## Dense records screens
+
+For a CRM-style list (thousands of rows, ~10 columns) set `density="compact"` (rows up to 40px), `frame={false}` when the table sits in a framed panel, and `scroll="none"` when the page or panel is the scroller so the sticky header keeps working. `stickyColumns={n}` pins the first `n` columns (checkbox, primary column); their background follows hover, selected and focus states and is never transparent. `headerCase="sentence"` drops the uppercase micro labels.
+
+- `TableRow`: `selected` sets `aria-selected`; `onactivate` makes the row reachable by Tab and activates it on click, Enter and Space with an inset focus ring. Events from a checkbox, button, link, menu or input inside the row never activate it (add `data-row-ignore` to any other element that must not).
+- `TableGroupRow`: a section row that spans `colspan` columns. With `collapsible` its label is a button with `aria-expanded` bound to `open`; render the group's rows under `{#if open}`. The label stays pinned to the left while the table scrolls.
+- `TableSortHeader`: a sentence-case sortable `th` with a direction icon. Pass the column's `sort` (`'none' | 'asc' | 'desc'`, which sets `aria-sort`) and an `onsort` handler; you own the sort state.
+
+<Props for="TableRow" rows={[
+  { name: "selected", type: "boolean", default: "undefined", description: "Sets `aria-selected` and the selected tint; pinned cells stay opaque." },
+  { name: "onactivate", type: "(event: MouseEvent | KeyboardEvent) => void", default: "undefined", description: "Makes the row interactive (tabindex 0, click, Enter, Space). Nested controls do not trigger it." },
+  { name: "children", type: "Snippet", default: "undefined", description: "The row's `td` cells." },
+]} />
+
+<Props for="TableGroupRow" rows={[
+  { name: "colspan", type: "number", default: "required", description: "Number of columns to span." },
+  { name: "collapsible", type: "boolean", default: "false", description: "Renders the label as a button with `aria-expanded`." },
+  { name: "open", type: "boolean", default: "true", description: "Expanded state, bindable. Render the group's rows under `{#if open}`." },
+  { name: "label", type: "Snippet", default: "undefined", description: "Group title and count." },
+]} />
+
+<Props for="TableSortHeader" rows={[
+  { name: "sort", type: "'none' | 'asc' | 'desc'", default: "'none'", description: "Current direction; sets `aria-sort` on the `th`." },
+  { name: "onsort", type: "() => void", default: "undefined", description: "Called when the header button is pressed; you own the next direction." },
+  { name: "children", type: "Snippet", default: "undefined", description: "Column label." },
+]} />
+
 <Props for="SimpleTable" rows={[
   { name: "responsive", type: "'scroll' | 'cards'", default: "'scroll'", description: "`scroll` keeps a regular table. `cards` turns each row into a card when the table's own width is below the `sm` breakpoint (600px). Cell captions come from the `thead` headers automatically." },
   { name: "skeleton", type: "boolean", default: "false", description: "Loading placeholder: rows keep their layout but are hidden, so the table has the exact loaded size. Render placeholder rows so the height matches. See Skeleton." },
+  { name: "density", type: "'default' | 'compact'", default: "'default'", description: "`compact` renders rows of at most 40px." },
+  { name: "frame", type: "boolean", default: "true", description: "`false` drops the table's own border and radius, for a table inside a framed panel." },
+  { name: "scroll", type: "'x' | 'none'", default: "'x'", description: "`x`: the root is a focusable horizontal scroller. `none`: the root is `overflow: visible` and the caller owns scrolling, so the sticky header sticks to the page or panel." },
+  { name: "stickyColumns", type: "number", default: "0", description: "Pins the first N columns (up to 6) to the left, with an opaque background in every row state." },
+  { name: "headerCase", type: "'upper' | 'sentence'", default: "'upper'", description: "`sentence` renders header labels in regular size and their own case." },
   { name: "class", type: "string", default: "''", description: "Extra class on the wrapper." },
   { name: "children", type: "Snippet", default: "undefined", description: "`thead` and `tbody` markup." },
 ]} />

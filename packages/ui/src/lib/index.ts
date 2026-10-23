@@ -207,7 +207,13 @@ export type { SwatchItem } from "./components/SwatchGroup/SwatchGroup.svelte";
 export { default as SwatchGroup } from "./components/SwatchGroup/SwatchGroup.svelte";
 export { default as Switch } from "./components/Switch/Switch.svelte";
 // ── TABLE (listagens simples) ─────────────────────────────────────────────────
-export { SimpleTable, UserCell } from "./components/Table/index.js";
+export {
+	SimpleTable,
+	TableGroupRow,
+	TableRow,
+	TableSortHeader,
+	UserCell,
+} from "./components/Table/index.js";
 export { default as Tabs } from "./components/Tabs/Tabs.svelte";
 export { default as TabsContent } from "./components/Tabs/TabsContent.svelte";
 export { default as TabsList } from "./components/Tabs/TabsList.svelte";

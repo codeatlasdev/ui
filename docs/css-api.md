@@ -371,7 +371,7 @@ The `skeleton` prop of `Avatar`, `KpiCard`, `TextField`, `Table`, `Card` and `Gl
 
 ## Table
 
-`.ca-table` `.ca-table--cards` `.ca-table-empty` `.ca-table-wrap` `.ca-table-wrap--cards` `.ca-user-cell` `.ca-user-cell__email` `.ca-user-cell__info` `.ca-user-cell__name`
+`.ca-table` `.ca-table--bare` `.ca-table--cards` `.ca-table--compact` `.ca-table--pinned` `.ca-table--sentence` `.ca-table-empty` `.ca-table-group` `.ca-table-group__chevron` `.ca-table-group__toggle` `.ca-table-root--static` `.ca-table-row--interactive` `.ca-table-sort` `.ca-table-sort__icon` `.ca-table-wrap` `.ca-table-wrap--cards` `.ca-user-cell` `.ca-user-cell__email` `.ca-user-cell__info` `.ca-user-cell__name`
 
 ## Tabs
 

@@ -1,0 +1,24 @@
+{
+	"summary": "A dense SimpleTable of leads inside an already framed, horizontally scrolling panel: compact rows, two pinned columns, collapsible stage groups, a sortable Name header and clickable rows.",
+	"use": "CRM or spreadsheet-like record lists that need many columns and rows: dense rows, pinned checkbox and name columns, grouped sections and keyboard-operable rows.",
+	"spec": [
+		"`<SimpleTable density=\"compact\" frame={false} scroll=\"none\" stickyColumns={2} headerCase=\"sentence\">` inside a caller-owned `overflow-x: auto` panel",
+		"`<TableSortHeader {sort} onsort={cycle}>` renders a sentence-case sortable header whose `sort` is `none`, `asc` or `desc`",
+		"One `<tbody>` per stage with `<TableGroupRow colspan={6} collapsible bind:open={opened[stage]}>` as its first row",
+		"`<TableRow selected={selected === l.id} onactivate=` rows: Tab, Enter/Space and click activate; the checkbox does not",
+		"The first two columns (checkbox, name) stay pinned while the panel scrolls sideways"
+	],
+	"tags": [
+		"table",
+		"simple-table",
+		"dense",
+		"compact",
+		"sticky-columns",
+		"group-row",
+		"sortable",
+		"interactive-row",
+		"crm"
+	],
+	"names": ["Dense table", "Compact table", "Tabela densa", "Pinned columns"],
+	"shape": "wide"
+}

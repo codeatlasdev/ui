@@ -2271,10 +2271,15 @@ Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__acti
 | `class?` | `string` | `''` |  |
 | `responsive?` | `'scroll' \| 'cards'` | `'scroll'` | `scroll` (default): regular table. `cards`: when its own width is below the `sm` breakpoint (600px) each row becomes a card. Each cell's caption is its column header; set `data-label` on a `<td>` only to override it. |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: the table keeps its exact box (rows stay laid out, hidden) and is announced as busy. Pass the same rows you will show, or placeholder rows, so the height matches. |
+| `density?` | `'default' \| 'compact'` | `'default'` | `compact`: rows of at most 40px (spreadsheet-like, thousands of rows). `default` keeps the roomy rows. |
+| `frame?` | `boolean` | `true` | `false` drops the table's own border and radius, for a table inside an already framed panel. |
+| `scroll?` | `'x' \| 'none'` | `'x'` | `x` (default): the root is a focusable, horizontally scrolling region. `none`: the root is `overflow: visible` and the caller owns scrolling, so the sticky header sticks to the page or panel that scrolls vertically. |
+| `stickyColumns?` | `number` | `0` | Pins the first N columns to the left while the table scrolls horizontally (checkbox + primary column). Needs `scroll="none"` inside a scroller you own, or the default `x`. |
+| `headerCase?` | `'upper' \| 'sentence'` | `'upper'` | `upper` (default): micro uppercase labels. `sentence`: regular-size labels in their own case. |
 
 Snippets: `children`
 
-Classes: `ca-table` `ca-table--cards` `ca-table-root`
+Classes: `ca-table` `ca-table--bare` `ca-table--cards` `ca-table--compact` `ca-table--pinned` `ca-table--sentence` `ca-table-root` `ca-table-root--static`
 
 ## SiteHeader
 
@@ -2515,6 +2520,19 @@ Also accepts: `HTMLTableAttributes`
 
 Classes: `ca-table` `ca-table-container` `ca-table-root`
 
+## TableGroupRow
+
+`import { TableGroupRow } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `colspan` | `number` |  | Number of columns to span (the table's column count). |
+| `collapsible?` | `boolean` | `false` | Renders the label as a toggle button with `aria-expanded`. Without it the row is a static section label. |
+| `open?` | `boolean` | `true` | `bind:` Expanded state, bindable. The rows below the group row are the caller's `{#if open}`. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `label`
+
 ## TableOfContents
 
 `import { TableOfContents } from "@codeatlasdev/ui"`
@@ -2527,6 +2545,31 @@ Classes: `ca-table` `ca-table-container` `ca-table-root`
 | `class?` | `string` | `''` |  |
 
 Classes: `ca-toc` `ca-toc--inline` `ca-toc--rail` `ca-toc__current` `ca-toc__label` `ca-toc__list` `ca-toc__sub` `ca-toc__summary-label`
+
+## TableRow
+
+`import { TableRow } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `selected?` | `boolean` |  | Marks the row `aria-selected` and paints the selected tint (pinned cells stay opaque). |
+| `onactivate?` | `(event: MouseEvent \| KeyboardEvent) => void` |  | Makes the row interactive: reachable by Tab, activates on click, Enter and Space, with an inset focus ring. Events from inline controls (checkbox, button, link, menu, input) never activate it. |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLTableRowElement>, 'children' \| 'onclick' \| 'onkeydown'>`
+
+## TableSortHeader
+
+`import { TableSortHeader } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `sort?` | `'none' \| 'asc' \| 'desc'` | `'none'` | Current sort direction of this column. `none` renders the idle icon and no `aria-sort`. |
+| `onsort?` | `() => void` |  | Called when the header button is pressed; the caller owns the sort state and the next direction. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
 
 ## Tabs
 
