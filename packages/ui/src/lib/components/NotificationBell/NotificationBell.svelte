@@ -3,10 +3,11 @@
   import { notificationBell } from '../../i18n/groups/notificationBell.js';
   import { Bell } from '@lucide/svelte';
   import { uid } from '../../utils/index.js';
+  import { announce } from '../../utils/announce.js';
   import FloatingLayer from '../Popover/FloatingLayer.svelte';
   import { createTriggerProps, tabIntoPopup } from '../Popover/trigger.js';
   import Badge from '../Badge/Badge.svelte';
-  import type { Snippet } from 'svelte';
+  import { type Snippet, untrack } from 'svelte';
   const t = useMessages(notificationBell);
 
   export interface NotificationItem {
@@ -20,6 +21,14 @@
 
   interface Props {
     notifications?: NotificationItem[];
+    /** Bindable. Whether the panel is open. */
+    open?: boolean;
+    /** Called when the user opens or closes the panel, not when the parent sets open. */
+    onOpenChange?: (open: boolean) => void;
+    /** Unread total. Defaults to the unread notifications in the list. */
+    count?: number;
+    /** Shows loading text while keeping loaded notifications visible. */
+    loading?: boolean;
     onRead?: (id: string) => void;
     onReadAll?: () => void;
     onClear?: () => void;
@@ -31,11 +40,16 @@
       markAll?: string;
       clear?:   string;
       empty?:   string;
+      loading?: string;
     };
   }
 
   let {
     notifications = [],
+    open = $bindable(false),
+    onOpenChange,
+    count,
+    loading = false,
     onRead,
     onReadAll,
     onClear,
@@ -44,20 +58,32 @@
     labels = {},
   }: Props = $props();
 
-  let unread = $derived(notifications.filter(n => !n.read).length);
+  let unread = $derived(count ?? notifications.filter(n => !n.read).length);
+  let lastUnread = untrack(() => unread);
+  $effect(() => {
+    const next = unread;
+    if (next === lastUnread) return;
+    lastUnread = next;
+    announce(t().notificationBell.label(next));
+  });
 
   const id = uid('notif');
-  let open = $state(false);
   let anchor = $state<HTMLElement | null>(null);
   let panel = $state<HTMLElement | null>(null);
 
+  function setOpen(next: boolean) {
+    if (next === open) return;
+    open = next;
+    onOpenChange?.(next);
+  }
+
   const makeTrigger = createTriggerProps((el) => (anchor = el));
   const triggerAttrs = $derived(
-    makeTrigger({ id: `${id}-trigger`, popup: 'dialog', open, controls: `${id}-panel`, onToggle: () => (open = !open), onKeydown: (e) => open && tabIntoPopup(e, panel) })
+    makeTrigger({ id: `${id}-trigger`, popup: 'dialog', open, controls: `${id}-panel`, onToggle: () => setOpen(!open), onKeydown: (e) => open && tabIntoPopup(e, panel) })
   );
 
   function close(restoreFocus: boolean) {
-    open = false;
+    setOpen(false);
     if (restoreFocus) anchor?.focus({ preventScroll: true });
   }
 </script>
@@ -107,8 +133,13 @@
         </div>
       </div>
 
+      {#if loading}
+        <div class="ca-notif-empty">{labels.loading ?? t().notificationBell.loading}</div>
+      {/if}
       {#if notifications.length === 0}
-        <div class="ca-notif-empty">{labels.empty ?? t().notificationBell.empty}</div>
+        {#if !loading}
+          <div class="ca-notif-empty">{labels.empty ?? t().notificationBell.empty}</div>
+        {/if}
       {:else}
         <ul class="ca-notif-list">
           {#each notifications as n}
