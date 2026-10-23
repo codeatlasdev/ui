@@ -312,4 +312,4 @@ id	group	page	title	names	tags	summary
 470	navigation	popover	Close on pick		popover,calendar,bind-open,close,date,overlay	A button showing the chosen date that opens a popover holding a calendar; picking a day closes the popover.
 480	layout	app-shell	Panel width		app-shell,panel-width,resizable,separator,sidebar,navigation	An app shell whose panel starts at 280px for long item names and has a drag handle on its edge.
 481	layout	app-shell	Color, count, actions and reorder		app-shell,nav-item,color,count,actions-menu,reorder,drag-and-drop,sidebar	App shell panel rows with a color dot, a neutral count, a per-row actions menu and drag-to-reorder.
-482	display	heading	Display role		heading,display,typography,headline,hero,font-display	Three Heading samples: a fluid display headline, a smaller display-3 heading and an h2 element drawn at the h4 size.
+540	display	heading	Display role		heading,display,typography,headline,hero,font-display	Three Heading samples: a fluid display headline, a smaller display-3 heading and an h2 element drawn at the h4 size.

@@ -1,4 +1,4 @@
-Use @codeatlasdev/ui demo #482 "Display role" (display/heading).
+Use @codeatlasdev/ui demo #540 "Display role" (display/heading).
 What it shows: Three Heading samples: a fluid display headline, a smaller display-3 heading and an h2 element drawn at the h4 size. When to use: Rendering an editorial or marketing headline in the display font with its own tracking and leading, or decoupling a heading's look from its level.
 Spec:
 - `<Heading level={1} size="display">` renders an h1 in the display text role
@@ -8,5 +8,5 @@ Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? K
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
-Report: #482 Display role → file, what changed, https://ui.codeatlas.com.br/docs/display/heading#display-role; what you could not check (light/dark, 375px, keyboard, reduced motion).
-Reference: https://ui.codeatlas.com.br/api/v1/en/e/482.txt   Components API: ca-ui-mcp get_component(Heading)
+Report: #540 Display role → file, what changed, https://ui.codeatlas.com.br/docs/display/heading#display-role; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/540.txt   Components API: ca-ui-mcp get_component(Heading)

@@ -1,5 +1,5 @@
-<!-- @codeatlasdev/ui demo #482 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/heading#display-role -->
-Element: #482 Display role (display/heading)
+<!-- @codeatlasdev/ui demo #540 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/heading#display-role -->
+Element: #540 Display role (display/heading)
 What it shows: Three Heading samples: a fluid display headline, a smaller display-3 heading and an h2 element drawn at the h4 size.
 When to use: Rendering an editorial or marketing headline in the display font with its own tracking and leading, or decoupling a heading's look from its level.
 Spec:
