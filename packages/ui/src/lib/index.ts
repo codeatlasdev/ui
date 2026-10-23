@@ -10,6 +10,7 @@
 //   AppForm     → create/edit form (header + body + sticky footer)
 //   AppSettings → settings with side nav (GitHub/Vercel style)
 //   PageShell   → dashboard, reports, free content (normal scroll)
+//   PageFrame   → map-first apps: a panel over a live stage (map, canvas), reports the covered area
 //
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -171,6 +172,7 @@ export type { MotionCtx } from "./components/MotionStage/stage.svelte.js";
 export type { NotificationItem } from "./components/NotificationBell/NotificationBell.svelte";
 export { default as NotificationBell } from "./components/NotificationBell/NotificationBell.svelte";
 export { default as NumberField } from "./components/NumberField/NumberField.svelte";
+export { default as PageFrame } from "./components/PageFrame/PageFrame.svelte";
 export { default as PageShell } from "./components/PageShell/PageShell.svelte";
 export { default as Pagination } from "./components/Pagination/Pagination.svelte";
 export { default as PinInput } from "./components/PinInput/PinInput.svelte";
@@ -254,6 +256,9 @@ export { reducedMotion, reducedTransparency } from "./stores/reduced-motion.svel
 export type { Breakpoint } from "./stores/responsive.svelte.js";
 export { responsive } from "./stores/responsive.svelte.js";
 export type { ToastItem, ToastOptions, ToastVariant } from "./stores/toast.svelte.js";
+export type { StageInsets } from "./stores/stage-insets.svelte.js";
+export { stageInsets } from "./stores/stage-insets.svelte.js";
+export type { ToastItem, ToastVariant } from "./stores/toast.svelte.js";
 export { toast } from "./stores/toast.svelte.js";
 export { viewport } from "./stores/viewport.svelte.js";
 export type {

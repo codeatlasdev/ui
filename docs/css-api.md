@@ -242,6 +242,10 @@ State attributes on `.ca-motion-stage`: `data-playing`, `data-taken`, `data-redu
 
 `.ca-nf` `.ca-nf--disabled` `.ca-nf--error` `.ca-nf--sm` `.ca-nf__btn` `.ca-nf__hint` `.ca-nf__hint--error` `.ca-nf__input` `.ca-nf__label` `.ca-nf__req` `.ca-nf__wrap` `.ca-nf__wrap--error` `.ca-nf__wrap--focused`
 
+## PageFrame
+
+`.ca-page-frame` `.ca-page-frame__body` `.ca-page-frame__footer` `.ca-page-frame__grip` `.ca-page-frame__handle` `.ca-page-frame__header` `.ca-page-frame__panel` `.ca-page-frame__toolbar`. State is on `data-mode`, `data-side`, `data-width`, `data-sheet`, `data-detent`, `data-dragging` of the root. Custom properties: `--ca-stage-inset-top|right|bottom|left` on `<html>` (the covered area).
+
 ## PageShell
 
 `.ca-page-shell` `.ca-page-shell__actions` `.ca-page-shell__aside` `.ca-page-shell__body` `.ca-page-shell__description` `.ca-page-shell__frame` `.ca-page-shell__header` `.ca-page-shell__layout` `.ca-page-shell__layout--aside` `.ca-page-shell__layout--reading` `.ca-page-shell__main` `.ca-page-shell__meta` `.ca-page-shell__title` `.ca-shell__content`

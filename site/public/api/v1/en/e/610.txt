@@ -1,0 +1,82 @@
+<!-- @codeatlasdev/ui demo #610 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/page-frame#map-split-and-page -->
+Element: #610 Map, split and page (layout/page-frame)
+What it shows: A PageFrame floating a 352px panel over a stand-in map, with a mode switch (map, split, page), a side switch and a live readout of the covered pixels from stageInsets.
+When to use: Map-first screens where a panel sits over a live stage and the stage must keep pins and routes clear of what the panel covers.
+Spec:
+- A 380px tall frame holds a map stand-in and `<PageFrame mode={mode as 'map' | 'split' | 'page'} side={side as 'left' | 'right'} width="sm" label="Territory" headerBorder>`
+- `{#snippet header()}` has an h2 Territory and a line reading the covered px from `stageInsets.current`
+- `{#snippet toolbar()}` has a `TextField` labelled Search
+- Body holds two `SegmentedControl`s: Mode (Map, Split, Page) and Side (Left, Right)
+- `{#snippet footer()}` has a filled small `Button` Save
+- A pin on the map shifts with the covered area
+Tags: page-frame, map, stage, stage-insets, panel, split, page, sheet, layout
+Needs: @codeatlasdev/ui@4.5.0
+Components: PageFrame, Button, TextField, SegmentedControl
+Live demo: https://ui.codeatlas.com.br/docs/layout/page-frame#map-split-and-page
+
+<script lang="ts">
+  import { PageFrame, Button, TextField, SegmentedControl, stageInsets } from '@codeatlasdev/ui';
+
+  let mode = $state('map');
+  let side = $state('left');
+  let query = $state('');
+</script>
+
+<div class="stage">
+  <!-- The stage stand-in: a real map keeps this area interactive and pads fitBounds with stageInsets. -->
+  <div class="map" aria-hidden="true">
+    <span class="pin" style="--x: {50 + (stageInsets.current.left - stageInsets.current.right) / 16}%"></span>
+  </div>
+
+  <PageFrame mode={mode as 'map' | 'split' | 'page'} side={side as 'left' | 'right'} width="sm" label="Territory" headerBorder>
+    {#snippet header()}
+      <h2 class="title">Territory</h2>
+      <p class="sub">Covers {stageInsets.current.left}px left, {stageInsets.current.right}px right</p>
+    {/snippet}
+    {#snippet toolbar()}
+      <TextField label="Search" bind:value={query} />
+    {/snippet}
+    <SegmentedControl aria-label="Mode" bind:value={mode} items={[{ value: 'map', label: 'Map' }, { value: 'split', label: 'Split' }, { value: 'page', label: 'Page' }]} />
+    <SegmentedControl aria-label="Side" bind:value={side} items={[{ value: 'left', label: 'Left' }, { value: 'right', label: 'Right' }]} />
+    {#snippet footer()}
+      <Button variant="filled" size="sm">Save</Button>
+    {/snippet}
+  </PageFrame>
+</div>
+
+<style>
+  .stage {
+    --ca-vh: 380px;
+    position: relative;
+    width: 100%;
+    height: 380px;
+    contain: layout paint;
+    overflow: hidden;
+    border-radius: var(--ca-radius-lg);
+    box-shadow: inset 0 0 0 1px var(--ca-outline-subtle);
+  }
+  .map {
+    position: absolute;
+    inset: 0;
+    background: var(--ca-surface-sunken, var(--ca-outline-subtle));
+  }
+  .pin {
+    position: absolute;
+    top: 50%;
+    left: var(--x);
+    width: var(--ca-space-4);
+    height: var(--ca-space-4);
+    border-radius: var(--ca-radius-pill);
+    background: var(--ca-brand-main);
+    transition: left var(--ca-duration-base) var(--ca-ease-standard);
+  }
+  .title {
+    margin: 0;
+    font-size: var(--ca-font-size-h6);
+  }
+  .sub {
+    margin: 0;
+    color: var(--ca-text-secondary);
+    font-size: var(--ca-font-size-body2);
+  }
+</style>

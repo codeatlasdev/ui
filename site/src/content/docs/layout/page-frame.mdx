@@ -1,0 +1,70 @@
+---
+title: PageFrame
+description: The page container for map-first apps. A panel, split or full page over a live stage, with a non-modal bottom sheet on phones and a stageInsets store that reports what it covers.
+group: Layout
+order: 42
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import MapDemo from "~/demos/layout/page-frame/Map.svelte";
+import MapSrc from "~/demos/layout/page-frame/Map.svelte?raw";
+
+```svelte
+<script>
+  import { PageFrame, stageInsets } from "@codeatlasdev/ui";
+  $effect(() => map.fitBounds(bounds, { padding: stageInsets.current }));
+</script>
+
+<PageFrame mode="map" side="left" width="md" sheet label="Territory" headerBorder>
+  {#snippet header()}<h2>Territory</h2>{/snippet}
+  {#snippet footer()}<Button variant="filled">Save</Button>{/snippet}
+  <!-- scrolling content -->
+</PageFrame>
+```
+
+Use `PageFrame` when a live stage (a map, a canvas) sits behind the page content. `PageShell` and `AppList` own the whole content area; `PageFrame` lays the page out *over* the stage and tells the stage what it covers. Place it as the page content of `AppShellLayout`: it fills the content area and lays its panel out inside it, leaving the rail and panel alone.
+
+| `mode` | Desktop | Below 900px |
+|---|---|---|
+| `map` | A floating panel (`side`, `width`). The stage around it stays interactive. | Full screen, or with `sheet` a non-modal bottom sheet. |
+| `split` | A work area of about 60% (tables, kanban) plus a stage strip. | Full screen; `mobileStage` shows the stage instead. |
+| `page` | An opaque full page. The stage is hidden (`data-ca-stage="hidden"` on `<html>`). | The same. |
+
+`header`, `toolbar` and `footer` stay fixed; only the body scrolls (`overscroll-behavior: contain`). The body is keyboard-scrollable while it overflows.
+
+## Covered area
+
+The frame publishes the rectangle it covers, in px from each edge of the stage, on `stageInsets`. It updates on resize, `mode`, `side`, `width` and every sheet height, and resets to zero when the frame unmounts. When two frames are mounted the newest one wins and the previous one takes over when it leaves.
+
+```ts
+import { stageInsets } from "@codeatlasdev/ui";
+
+stageInsets.current; // { top, right, bottom, left }, reactive
+map.fitBounds(bounds, { padding: stageInsets.current });
+```
+
+Without JavaScript, read `--ca-stage-inset-top`, `-right`, `-bottom` and `-left` on `<html>`. Never copy the panel widths or the 45% sheet height into the app: they are tokens of the frame.
+
+## Bottom sheet
+
+With `sheet`, `mode="map"` below 900px is a bottom sheet, not a `Sheet`: it is **not modal** (no backdrop, no focus trap, no scroll lock, no `inert`), so the stage above it still takes taps and pans. Its height snaps to a `detent`: `peek` (header only), `half` (45%, the default) or `full`. Drag the handle, or focus it and press Arrow Up and Arrow Down (Home and End jump to the ends). `bind:detent` follows the user.
+
+<Demo title="Map, split and page" description="Switch the mode and side; the readout shows the pixels the frame reports on stageInsets." src={MapSrc} stage><MapDemo client:visible /></Demo>
+
+<Props rows={[
+  { name: "mode", type: "'map' | 'split' | 'page'", default: "'map'", description: "`map`: floating panel. `split`: work area plus stage strip. `page`: opaque full page, stage hidden." },
+  { name: "side", type: "'left' | 'right'", default: "'left'", description: "Edge the panel (or the split work area) sits on." },
+  { name: "width", type: "'sm' | 'md' | 'lg' | 'xl'", default: "'md'", description: "Panel width on desktop: 352, 416, 544 or 704px. Ignored by `split` and `page`." },
+  { name: "sheet", type: "boolean", default: "false", description: "Below 900px, `mode=\"map\"` is a non-modal bottom sheet instead of a full-screen layer." },
+  { name: "detent", type: "'peek' | 'half' | 'full'", default: "'half'", description: "Sheet height step (bindable). Dragging the handle or its arrow keys change it." },
+  { name: "mobileStage", type: "boolean", default: "false", description: "`mode=\"split\"` below 900px: show the stage instead of the work area." },
+  { name: "padded", type: "boolean", default: "true", description: "Pads the body. Turn off for full-bleed tables." },
+  { name: "headerBorder", type: "boolean", default: "false", description: "Separator under the header." },
+  { name: "publishInsets", type: "boolean", default: "true", description: "Publish the covered rectangle on `stageInsets`." },
+  { name: "label", type: "string", default: "'Panel'", description: "Accessible name of the panel region (localized default)." },
+  { name: "header", type: "Snippet", description: "Title, description and actions. Fixed." },
+  { name: "toolbar", type: "Snippet", description: "Fixed row under the header: search, filters, tabs." },
+  { name: "footer", type: "Snippet", description: "Fixed row at the bottom: primary actions." },
+  { name: "children", type: "Snippet", description: "Scrolling body." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+]} />

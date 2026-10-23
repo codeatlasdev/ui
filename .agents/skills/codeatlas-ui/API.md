@@ -1743,6 +1743,28 @@ Classes: `ca-notif-action` `ca-notif-actions` `ca-notif-bell` `ca-notif-empty` `
 
 Classes: `ca-nf` `ca-nf--disabled` `ca-nf--sm` `ca-nf__btn` `ca-nf__hint` `ca-nf__hint--error` `ca-nf__input` `ca-nf__label` `ca-nf__req` `ca-nf__wrap` `ca-nf__wrap--error` `ca-nf__wrap--focused`
 
+## PageFrame
+
+`import { PageFrame } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `mode?` | `'map' \| 'split' \| 'page'` | `'map'` | `map` (default): floating panel. `split`: work area plus stage strip. `page`: opaque full page, stage hidden. |
+| `side?` | `'left' \| 'right'` | `'left'` | Which edge the panel (or the split's work area) sits on. |
+| `width?` | `'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | Panel width on desktop: `sm` 352px, `md` 416px, `lg` 544px, `xl` 704px. Ignored by `split` and `page`. |
+| `sheet?` | `boolean` | `false` | Below 900px, `mode="map"` becomes a non-modal bottom sheet (no backdrop, no focus trap, the stage above stays interactive) instead of a full-screen layer. |
+| `detent?` | `Detent` | `'half'` | `bind:` Sheet height step: `peek` (header only), `half` (~45% of the area, the default) or `full`. Bindable; dragging or the handle's arrow keys change it. |
+| `mobileStage?` | `boolean` | `false` | `mode="split"` below 900px: show the stage instead of the work area. |
+| `padded?` | `boolean` | `true` | Pads the body. Turn off for full-bleed tables and maps. |
+| `headerBorder?` | `boolean` | `false` | Draws a separator under the header. |
+| `publishInsets?` | `boolean` | `true` | Publish the covered rectangle on `stageInsets`. Turn off for a frame that is not over the stage. |
+| `label?` | `string` |  | Accessible name of the panel (it is a `region`). |
+| `class?` | `string` | `''` |  |
+
+Snippets: `header`, `toolbar`, `footer`, `children`
+
+Classes: `ca-page-frame` `ca-page-frame__body` `ca-page-frame__footer` `ca-page-frame__grip` `ca-page-frame__handle` `ca-page-frame__header` `ca-page-frame__panel` `ca-page-frame__toolbar`
+
 ## PageShell
 
 `import { PageShell } from "@codeatlasdev/ui"`
@@ -3419,6 +3441,21 @@ const shadows: {
 }
 ```
 
+### stageInsets
+
+`import { stageInsets } from "@codeatlasdev/ui"`
+
+The rectangle the active `PageFrame` covers over the stage, in px from each stage edge. `stageInsets.current` is reactive and mirrored to `--ca-stage-inset-*` on `<html>`.
+
+```ts
+const stageInsets: {
+  readonly current: StageInsets;
+  set: (key: symbol, rect: StageInsets) => void;
+  clear: (key: symbol) => void;
+  reset: () => void;
+}
+```
+
 ### storageGet
 
 `import { storageGet } from "@codeatlasdev/ui"`
@@ -3682,6 +3719,7 @@ Types:
 | `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
 | `SortableOptions` | `interface SortableOptions { id: string; group?: string; getItems: () => readonly string[]; getLabel?: (id: string) => string; label?: string; axis?: "y" \| "x"; handle?: string; disabled?: boolean; onDrop: (e: DndDropEvent) => void; }` |  |
 | `Space` | `type Space = (typeof SPACE)[number] \| `${(typeof SPACE)[number]}`;` |  |
+| `StageInsets` | `interface StageInsets { top: number; right: number; bottom: number; left: number; }` |  |
 | `SurfaceColors` | `interface SurfaceColors { sunken: string; base: string; raised: string; overlay: string; }` |  |
 | `SurfaceStyle` | `type SurfaceStyle = \| "glass" \| "frosted" \| "solid" \| "flat" \| "outlined" \| "neumorphic" \| "clay" \| "tonal" \| "chrome";` | Surface material. glass/frosted blur the backdrop; the rest are opaque. |
 | `TextColors` | `interface TextColors { primary: string; secondary: string; disabled: string; }` |  |

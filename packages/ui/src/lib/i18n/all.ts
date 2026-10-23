@@ -44,6 +44,7 @@ import { motionStage } from "./groups/motionStage.js";
 import { notificationBell } from "./groups/notificationBell.js";
 import { numberField } from "./groups/numberField.js";
 import { pageShell } from "./groups/pageShell.js";
+import { pageFrame } from "./groups/pageFrame.js";
 import { pagination } from "./groups/pagination.js";
 import { select } from "./groups/select.js";
 import { sheet } from "./groups/sheet.js";
@@ -92,6 +93,7 @@ export const groups = {
 	notificationBell,
 	numberField,
 	pageShell,
+	pageFrame,
 	pagination,
 	table,
 	select,

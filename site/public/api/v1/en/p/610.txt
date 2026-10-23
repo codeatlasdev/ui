@@ -1,0 +1,15 @@
+Use @codeatlasdev/ui demo #610 "Map, split and page" (layout/page-frame).
+What it shows: A PageFrame floating a 352px panel over a stand-in map, with a mode switch (map, split, page), a side switch and a live readout of the covered pixels from stageInsets. When to use: Map-first screens where a panel sits over a live stage and the stage must keep pins and routes clear of what the panel covers.
+Spec:
+- A 380px tall frame holds a map stand-in and `<PageFrame mode={mode as 'map' | 'split' | 'page'} side={side as 'left' | 'right'} width="sm" label="Territory" headerBorder>`
+- `{#snippet header()}` has an h2 Territory and a line reading the covered px from `stageInsets.current`
+- `{#snippet toolbar()}` has a `TextField` labelled Search
+- Body holds two `SegmentedControl`s: Mode (Map, Split, Page) and Side (Left, Right)
+- `{#snippet footer()}` has a filled small `Button` Save
+- A pin on the map shifts with the covered area
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #610 Map, split and page → file, what changed, https://ui.codeatlas.com.br/docs/layout/page-frame#map-split-and-page; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/610.txt   Components API: ca-ui-mcp get_component(PageFrame)
