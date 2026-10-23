@@ -1,5 +1,5 @@
-<!-- @codeatlasdev/ui demo #482 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/chip-group#wrapping-chips -->
-Element: #482 Wrapping chips (inputs/chip-group)
+<!-- @codeatlasdev/ui demo #720 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/chip-group#wrapping-chips -->
+Element: #720 Wrapping chips (inputs/chip-group)
 What it shows: Single-choice chips for a sales team size: five short options that wrap to two rows on a phone.
 When to use: Choosing one of a few short options (team size, plan length, frequency) where RadioGroup is too tall and SegmentedControl would overflow a 390px screen.
 Spec:

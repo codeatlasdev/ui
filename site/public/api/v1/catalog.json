@@ -5,7 +5,7 @@
 		{
 			"slug": "inputs",
 			"first": "001",
-			"last": "483",
+			"last": "721",
 			"count": 71
 		},
 		{
@@ -14157,7 +14157,7 @@
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{
-			"id": "482",
+			"id": "720",
 			"group": "inputs",
 			"page": "chip-group",
 			"variant": "Wrap",
@@ -14197,7 +14197,7 @@
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{
-			"id": "483",
+			"id": "721",
 			"group": "inputs",
 			"page": "chip-group",
 			"variant": "FormError",

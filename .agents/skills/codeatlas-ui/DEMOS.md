@@ -318,5 +318,5 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 470 | Close on pick | navigation/popover | Popover, Button, Calendar |
 | 480 | Panel width | layout/app-shell | AppShellLayout, PageShell, Card |
 | 481 | Color, count, actions and reorder | layout/app-shell | AppShellLayout, DropdownMenuItem, NavItemMenu, NavReorder, PageShell, Card |
-| 482 | Wrapping chips | inputs/chip-group | ChipGroup |
-| 483 | Required choice with error | inputs/chip-group | Button, ChipGroup |
+| 720 | Wrapping chips | inputs/chip-group | ChipGroup |
+| 721 | Required choice with error | inputs/chip-group | Button, ChipGroup |

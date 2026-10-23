@@ -334,6 +334,8 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "641", path: "feedback/progress/Sizes" },
 	{ id: "642", path: "layout/kpi-card/Stats" },
 	{ id: "700", path: "feedback/drawer/Chromeless" },
+	{ id: "720", path: "inputs/chip-group/Wrap" },
+	{ id: "721", path: "inputs/chip-group/FormError" },
 	{ id: "760", path: "display/kanban/Pipeline" },
 	{ id: "800", path: "map/stage/ThemedMap" },
 ];
