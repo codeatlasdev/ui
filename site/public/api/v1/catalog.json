@@ -1,6 +1,6 @@
 {
 	"version": "4.5.0",
-	"count": 315,
+	"count": 317,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -17,8 +17,8 @@
 		{
 			"slug": "feedback",
 			"first": "080",
-			"last": "462",
-			"count": 30
+			"last": "492",
+			"count": 32
 		},
 		{
 			"slug": "display",
@@ -14154,6 +14154,94 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/layout/app-shell#color-count-actions-and-reorder",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "490",
+			"group": "feedback",
+			"page": "toast",
+			"variant": "Dedupe",
+			"slug": "dedupe-and-replace-by-id",
+			"title": "Dedupe and replace by id",
+			"description": "Ten identical errors collapse into one toast with a count; the upload toast is replaced in place by its id.",
+			"summary": "Two buttons: one fires the same error ten times and shows a single toast with a ×10 badge, the other replaces an uploading toast by id.",
+			"use": "Polling or parallel requests that fail with the same message, and progress toasts that turn into a result.",
+			"spec": [
+				"`<Toaster />` mounted once, `toast` imported from `@codeatlasdev/ui`",
+				"Dedupe: `toast.error('Too many requests, retry later.')` called in a loop of 10 keeps one toast, bumps its count badge and restarts its timer",
+				"Replace: `toast.info('Uploading report.pdf…', { id: 'upload', duration: 0 })` then `toast.success('report.pdf uploaded.', { id: 'upload' })` swaps the same toast in place",
+				"Both triggers are `<Button variant=\"outlined\"`"
+			],
+			"tags": [
+				"toast",
+				"toaster",
+				"dedupe",
+				"id",
+				"replace",
+				"notification",
+				"count"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"Toaster"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"Toaster",
+						"toast"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/toast#dedupe-and-replace-by-id",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "492",
+			"group": "feedback",
+			"page": "toast",
+			"variant": "Actions",
+			"slug": "description-and-action",
+			"title": "Description and action",
+			"description": "A description under the title, a single inline action, and both. The action is a real button reachable with Tab.",
+			"summary": "Three buttons that fire a toast with a description, with one inline action, and with both.",
+			"use": "A toast that needs a secondary line of detail or a single shortcut such as Undo, Open or Mark as qualified.",
+			"spec": [
+				"`<Toaster />` mounted once, `toast` imported from `@codeatlasdev/ui`",
+				"Description: `toast.success('Task completed', { description: 'Next step scheduled for tomorrow 09:00' })`",
+				"Action: `toast.warning('Sequence paused for Acme', {` with `action: { label: 'Mark as qualified'`, whose `onClick` runs and dismisses the toast; an actionable toast lasts 8 seconds",
+				"Both: `description` and `action` in the same options object",
+				"All triggers are `<Button variant=\"outlined\"`"
+			],
+			"tags": [
+				"toast",
+				"toaster",
+				"action",
+				"description",
+				"undo",
+				"notification"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"Toaster"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"Toaster",
+						"toast"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/toast#description-and-action",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{
