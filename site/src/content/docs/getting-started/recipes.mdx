@@ -282,6 +282,8 @@ export const m = {
     SimpleTable,
     StatusChip,
     UserCell,
+    downloadFile,
+    toCsv,
   } from "@codeatlasdev/ui";
   import { m } from "#lib/messages.ts";
   import { Download, Plus } from "@lucide/svelte";
@@ -305,11 +307,14 @@ export const m = {
     value: role,
     label: m.users.roles[role],
   }));
+
+  // Export is a download, not a route: a link to /users/export would 404 on prerender.
+  const exportUsers = () => downloadFile("users.csv", toCsv(users), "text/csv");
 </script>
 
 <AppList title={m.users.title} data={users} searchKeys={["name", "email"]} perPage={20}>
   {#snippet actions()}
-    <Button variant="outlined" tone="neutral" size="sm" href="/users/export">
+    <Button variant="outlined" tone="neutral" size="sm" onclick={exportUsers}>
       {#snippet leading()}<Download size={14} />{/snippet}
       {m.users.export}
     </Button>
@@ -435,6 +440,7 @@ Rules:
 - Server-side pagination is the manual mode: omit `data`, render your own `toolbar` and `footer` snippets, and drive the rows from the `load` function. For a heavy grid (sorting, column sizing, thousands of rows) use `DataTable` from `@codeatlasdev/ui/table`, which needs `@tanstack/svelte-table`.
 - Use `SimpleTable` for plain rows. Pass `responsive="cards"` to turn rows into cards on a phone. `density="compact"` keeps rows to 40px, `stickyColumns={2}` pins the checkbox and the name while the table scrolls sideways, `headerCase="sentence"` drops the uppercase labels, and `frame={false}` removes its border inside an already framed panel (`scroll="none"` when you own the scroller).
 - In a dense table, a sortable header is `TableSortHeader` (`sort`, `onsort`: you own the state and the next direction), a clickable or selectable row is `TableRow` (`selected`, `onactivate`: Tab, Enter and Space work, and controls inside the row do not trigger it) and a group label is `TableGroupRow` (`colspan`, `collapsible`, `bind:open`, with your own `{#if open}` for the rows). Do not make a `<tr onclick>`.
+- An export is a client-side download: `downloadFile(name, toCsv(rows), "text/csv")` (both from `@codeatlasdev/ui`, `toJson` for JSON) from a `Button onclick`. Never a link to a route you have not written (`/users/export`): a prerendered page that links to a missing route fails the build.
 - Put the toolbar actions in the `actions` snippet: the brand action is `filled`, a secondary one is `variant="outlined" tone="neutral"` (or `ghost`), so it carries no brand color beside the primary.
 - Data values that people read (a role, a status, a stage) are copy too: map them through `messages.ts` (`m.users.roles[user.role]`) and keep the raw value for filtering and keys. Names, emails and numbers from your data are not copy.
 
