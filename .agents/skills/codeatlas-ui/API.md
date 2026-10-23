@@ -205,7 +205,7 @@ AuthLayout: two-column layout for authentication pages.
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `logoMark?` | `string` | `'CA'` |  |
-| `logoName?` | `string` | `'CodeAtlas UI'` |  |
+| `logoName?` | `string` |  | Name beside the mark. Defaults to "CodeAtlas UI" unless `brand` is set. |
 | `logoHref?` | `string` | `'/'` |  |
 | `mobileBrand?` | `boolean` | `true` | Below 768px the side panel is hidden; `true` shows a compact strip with the brand above the form. |
 
