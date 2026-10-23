@@ -15,6 +15,8 @@ import Loading from "~/demos/inputs/button/Loading.svelte";
 import LoadingSrc from "~/demos/inputs/button/Loading.svelte?raw";
 import States from "~/demos/inputs/button/States.svelte";
 import StatesSrc from "~/demos/inputs/button/States.svelte?raw";
+import NeutralTone from "~/demos/inputs/button/NeutralTone.svelte";
+import NeutralToneSrc from "~/demos/inputs/button/NeutralTone.svelte?raw";
 import FullWidth from "~/demos/inputs/button/FullWidth.svelte";
 import FullWidthSrc from "~/demos/inputs/button/FullWidth.svelte?raw";
 
@@ -26,6 +28,8 @@ import FullWidthSrc from "~/demos/inputs/button/FullWidth.svelte?raw";
 <Button variant="filled" onclick={save}>Save</Button>
 ```
 
+**Secondary actions use `tone="neutral"`.** One brand `filled` button per card; the actions beside it (Edit, Snooze, Previous, Skip) are `variant="outlined"` or `"ghost"` with `tone="neutral"`: `--ca-text-primary` label (`--ca-text-secondary` for ghost), `--ca-outline-control` border, `--ca-action-hover` / `--ca-action-selected` hover and pressed fills, and the same sizes, loading, disabled and focus ring. Never override `.ca-btn` colours from the app. `IconButton` takes the same `tone` on its `outlined` variant (its `text` variant is already neutral); extra attributes such as `aria-expanded` are forwarded, so both work as `Popover` triggers. Label and border contrast on the raised and overlay surfaces is measured for every preset in `tests/contrast.test.ts`.
+
 On touch devices every size grows to a 44px target and presses scale down slightly, like a native control.
 
 <Demo title="Variants" description="filled, glass, outlined, ghost and destructive." src={VariantsSrc}><Variants /></Demo>
@@ -33,10 +37,12 @@ On touch devices every size grows to a 44px target and presses scale down slight
 <Demo title="With icons" description="Leading and trailing snippets." src={IconsSrc}><Icons /></Demo>
 <Demo title="Loading" description="Swaps the leading icon for a spinner, sets aria-busy and blocks clicks while keeping the label." src={LoadingSrc}><Loading client:visible /></Demo>
 <Demo title="States" description="Disabled buttons, a destructive action and a link rendered as a button." src={StatesSrc}><States /></Demo>
+<Demo title="Neutral tone" description={"`tone=\"neutral\"` on `outlined` and `ghost` (Button) and on `outlined` (IconButton): neutral label and border for a secondary action beside a brand `filled` one."} src={NeutralToneSrc}><NeutralTone /></Demo>
 <Demo title="Full width" description="fullWidth stretches the button to its container." src={FullWidthSrc}><FullWidth /></Demo>
 
 <Props rows={[
   { name: "variant", type: "'filled' | 'glass' | 'outlined' | 'ghost' | 'destructive'", default: "'filled'", description: "Visual style." },
+  { name: "tone", type: "'brand' | 'neutral'", default: "'brand'", description: "`'neutral'` draws `outlined` and `ghost` with neutral label, border and hover fills (adds `ca-btn--neutral`). Other variants ignore it. `IconButton` has the same prop for its `outlined` variant (new, adds `ca-icon-btn--outlined`)." },
   { name: "size", type: "'sm' | 'md' | 'lg'", default: "'md'", description: "Height, padding and font size." },
   { name: "disabled", type: "boolean", default: "false", description: "Prevents interaction." },
   { name: "loading", type: "boolean", default: "false", description: "Shows a spinner in place of leading, sets aria-busy, blocks interaction and keeps the label. Adds ca-btn--loading. Screen readers hear \"Finished loading\" when it ends." },

@@ -1,0 +1,32 @@
+<!-- @codeatlasdev/ui demo #560 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/button#neutral-tone -->
+Element: #560 Neutral tone (inputs/button)
+What it shows: One brand filled Button beside secondary actions drawn with tone="neutral": an outlined Button, a small ghost Button and an outlined IconButton.
+When to use: Dense work screens (queues, inboxes, CRMs) with one primary action and several secondary ones that must not compete with it.
+Spec:
+- `<Button variant="filled">` labelled Send reply is the only brand-coloured control
+- `<Button variant="outlined" tone="neutral">` labelled Edit message
+- `<Button variant="ghost" tone="neutral" size="sm">` labelled Snooze
+- `<IconButton variant="outlined" tone="neutral" aria-label="More actions">` with a MoreHorizontal icon
+- Wrapping flex `.row` with `gap: var(--ca-space-3)`
+Tags: button, icon-button, tone, neutral, secondary, outlined, ghost
+Needs: @codeatlasdev/ui@4.5.0
+Components: Button, IconButton
+Live demo: https://ui.codeatlas.com.br/docs/inputs/button#neutral-tone
+
+<script lang="ts">
+  import { Button, IconButton } from '@codeatlasdev/ui';
+  import { MoreHorizontal } from '@lucide/svelte';
+</script>
+
+<div class="row">
+  <Button variant="filled">Send reply</Button>
+  <Button variant="outlined" tone="neutral">Edit message</Button>
+  <Button variant="ghost" tone="neutral" size="sm">Snooze</Button>
+  <IconButton variant="outlined" tone="neutral" aria-label="More actions">
+    <MoreHorizontal size={18} />
+  </IconButton>
+</div>
+
+<style>
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ca-space-3); }
+</style>

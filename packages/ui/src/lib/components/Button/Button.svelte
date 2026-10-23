@@ -9,10 +9,16 @@
 
   type Variant = 'filled' | 'glass' | 'outlined' | 'ghost' | 'destructive';
   type Size = 'sm' | 'md' | 'lg';
+  type Tone = 'brand' | 'neutral';
 
   /** Own props, shared by both renderings. */
   interface Own {
     variant?: Variant;
+    /**
+     * `'neutral'` draws `outlined` and `ghost` without brand colour (neutral label and border), for a
+     * secondary action beside a brand `filled` one. Other variants ignore it.
+     */
+    tone?: Tone;
     size?: Size;
     disabled?: boolean;
     /** Shows a spinner in place of `leading`, sets `aria-busy` and blocks interaction. Label is kept. */
@@ -52,6 +58,7 @@
 
   let {
     variant = 'filled',
+    tone = 'brand',
     size = 'md',
     disabled = false,
     loading = false,
@@ -72,6 +79,7 @@
   const rest = $derived(restProps as AnchorAttributes & ButtonAttributes);
 
   const isDisabled = $derived(disabled || loading);
+  const neutral = $derived(tone === 'neutral' && (variant === 'outlined' || variant === 'ghost'));
 
   // A new tab must not reach `window.opener`: add the tokens to whatever `rel` the caller passed (#290).
   const rel = $derived(
@@ -103,6 +111,7 @@
     {type}
     {rel}
     class="ca-btn ca-btn--{variant} ca-btn--{size} {className}"
+    class:ca-btn--neutral={neutral}
     class:ca-btn--full-width={fullWidth}
     class:ca-btn--loading={loading}
     aria-disabled={isDisabled}
@@ -123,6 +132,7 @@
     type={(type as ButtonProps['type']) ?? 'button'}
     disabled={isDisabled}
     class="ca-btn ca-btn--{variant} ca-btn--{size} {className}"
+    class:ca-btn--neutral={neutral}
     class:ca-btn--full-width={fullWidth}
     class:ca-btn--loading={loading}
     aria-disabled={isDisabled}
@@ -248,6 +258,26 @@
     }
     .ca-btn--ghost:hover:not(:disabled) {
       background: color-mix(in oklab, var(--ca-brand-main) 8%, transparent);
+    }
+
+    /* Neutral tone (outlined, ghost): a secondary action next to a brand one. Label, border and the
+       hover/pressed fills come from neutral tokens, never --ca-brand-*. */
+    .ca-btn--neutral.ca-btn--outlined {
+      border-color: var(--ca-outline-control);
+      color: var(--ca-text-primary);
+    }
+    .ca-btn--neutral.ca-btn--ghost {
+      color: var(--ca-text-secondary);
+    }
+    .ca-btn--neutral:hover:not(:disabled) {
+      background: var(--ca-action-hover);
+    }
+    .ca-btn--neutral.ca-btn--ghost:hover:not(:disabled) {
+      color: var(--ca-text-primary);
+    }
+    .ca-btn--neutral:active:not(:disabled) {
+      background: var(--ca-action-selected);
+      color: var(--ca-text-primary);
     }
 
     /* Destructive */

@@ -329,6 +329,7 @@ Classes: `ca-breadcrumb__current` `ca-breadcrumb__item` `ca-breadcrumb__link` `c
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `variant?` | `Variant` | `'filled'` |  |
+| `tone?` | `Tone` | `'brand'` | `'neutral'` draws `outlined` and `ghost` without brand colour (neutral label and border), for a secondary action beside a brand `filled` one. Other variants ignore it. |
 | `size?` | `Size` | `'md'` |  |
 | `disabled?` | `boolean` | `false` |  |
 | `loading?` | `boolean` | `false` | Shows a spinner in place of `leading`, sets `aria-busy` and blocks interaction. Label is kept. |
@@ -344,7 +345,7 @@ Snippets: `children`, `leading`, `trailing`
 
 Also accepts: `AnchorAttributes \| ButtonAttributes`
 
-Classes: `ca-btn` `ca-btn--destructive` `ca-btn--filled` `ca-btn--full-width` `ca-btn--ghost` `ca-btn--glass` `ca-btn--lg` `ca-btn--loading` `ca-btn--md` `ca-btn--outlined` `ca-btn--sm` `ca-btn__leading` `ca-btn__trailing`
+Classes: `ca-btn` `ca-btn--destructive` `ca-btn--filled` `ca-btn--full-width` `ca-btn--ghost` `ca-btn--glass` `ca-btn--lg` `ca-btn--loading` `ca-btn--md` `ca-btn--neutral` `ca-btn--outlined` `ca-btn--sm` `ca-btn__leading` `ca-btn__trailing`
 
 ## Calendar
 
@@ -1339,6 +1340,7 @@ Snippets: `children`
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `variant?` | `Variant` | `'glass'` |  |
+| `tone?` | `Tone` | `'brand'` | `'neutral'` draws `outlined` without brand colour (neutral border and icon). `text` is always neutral. |
 | `size?` | `Size` | `'md'` |  |
 | `disabled?` | `boolean` | `false` |  |
 | `loading?` | `boolean` | `false` | Replaces the icon with a spinner, sets `aria-busy` and blocks interaction. |
@@ -1350,7 +1352,7 @@ Snippets: `children`
 
 Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class' \| 'children' \| 'onclick' \| 'aria-label'>`
 
-Classes: `ca-icon-btn` `ca-icon-btn--filled` `ca-icon-btn--glass` `ca-icon-btn--lg` `ca-icon-btn--loading` `ca-icon-btn--md` `ca-icon-btn--sm` `ca-icon-btn--text`
+Classes: `ca-icon-btn` `ca-icon-btn--filled` `ca-icon-btn--glass` `ca-icon-btn--lg` `ca-icon-btn--loading` `ca-icon-btn--md` `ca-icon-btn--neutral` `ca-icon-btn--outlined` `ca-icon-btn--sm` `ca-icon-btn--text`
 
 ## Image
 

@@ -357,3 +357,42 @@ describe("FilterGroup label on its pill", () => {
 				}
 			});
 });
+
+// Button/IconButton `tone="neutral"` (#357): a secondary action drawn without brand colour. Label and
+// border hold their contrast on the raised and overlay surfaces, and on the hover/pressed fills.
+describe("Button tone=neutral (#357)", () => {
+	const RAISED = ["--ca-surface-raised", "--ca-surface-overlay"];
+	const btn = readFileSync(new URL("components/Button/Button.svelte", LIB), "utf8");
+	const iconBtn = readFileSync(new URL("components/Button/IconButton.svelte", LIB), "utf8");
+
+	it("draws the label and border from neutral tokens, never the brand ones", () => {
+		for (const src of [btn, iconBtn]) {
+			const rules = [...src.matchAll(/([^{}]*--neutral[^{}]*)\{([^{}]*)\}/g)]
+				.map((m) => m[2])
+				.join("\n");
+			expect(rules).toContain("--ca-text-primary");
+			expect(rules).toContain("--ca-outline-control");
+			expect(rules).toContain("--ca-action-hover");
+			expect(rules).not.toContain("--ca-brand");
+		}
+	});
+
+	for (const src of sources)
+		for (const scheme of ["light", "dark"] as const)
+			it(`${src.id} ${scheme}: label >= 4.5:1, border >= 3:1 on raised/overlay and hover/pressed`, () => {
+				const t = resolved(src, scheme);
+				for (const s of RAISED) {
+					const bg = surfaceRgb(t, s);
+					const border = resolve(t, "--ca-outline-control");
+					expect(ratio(over(border, bg), bg), `border on ${s}`).toBeGreaterThanOrEqual(3);
+					for (const fillToken of [null, "--ca-action-hover", "--ca-action-selected"]) {
+						const fill = fillToken ? over(resolve(t, fillToken), bg) : bg;
+						for (const text of ["--ca-text-primary", "--ca-text-secondary"])
+							expect(
+								ratio(rgb(oklchToHex(resolve(t, text))), fill),
+								`${text} on ${fillToken ?? "surface"} over ${s}`
+							).toBeGreaterThanOrEqual(4.5);
+					}
+				}
+			});
+});

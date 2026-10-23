@@ -8,11 +8,14 @@
   import { devWarn } from '../../utils/dev-warn.js';
   const t = useMessages(button);
 
-  type Variant = 'glass' | 'filled' | 'text';
+  type Variant = 'glass' | 'filled' | 'outlined' | 'text';
   type Size = 'sm' | 'md' | 'lg';
+  type Tone = 'brand' | 'neutral';
 
   interface Props extends Omit<HTMLAttributes<HTMLElement>, 'class' | 'children' | 'onclick' | 'aria-label'> {
     variant?: Variant;
+    /** `'neutral'` draws `outlined` without brand colour (neutral border and icon). `text` is always neutral. */
+    tone?: Tone;
     size?: Size;
     disabled?: boolean;
     /** Replaces the icon with a spinner, sets `aria-busy` and blocks interaction. */
@@ -25,6 +28,7 @@
 
   let {
     variant = 'glass',
+    tone = 'brand',
     size = 'md',
     disabled = false,
     loading = false,
@@ -58,6 +62,7 @@
   disabled={isDisabled}
   aria-label={ariaLabel}
   class="ca-icon-btn ca-icon-btn--{variant} ca-icon-btn--{size} {className}"
+  class:ca-icon-btn--neutral={tone === 'neutral' && variant === 'outlined'}
   class:ca-icon-btn--loading={loading}
   aria-disabled={isDisabled}
   aria-busy={loading || undefined}
@@ -143,6 +148,27 @@
       background: var(--ca-brand-fill-hover);
     }
 
+    /* Outlined */
+    .ca-icon-btn--outlined {
+      background: transparent;
+      border: var(--ca-border-width) solid var(--ca-brand-main);
+      color: var(--ca-brand-text);
+    }
+    .ca-icon-btn--outlined:hover:not(:disabled) {
+      background: color-mix(in oklab, var(--ca-brand-main) 8%, transparent);
+    }
+    /* Neutral tone: border, icon and fills from neutral tokens, never --ca-brand-*. */
+    .ca-icon-btn--neutral.ca-icon-btn--outlined {
+      border-color: var(--ca-outline-control);
+      color: var(--ca-text-primary);
+    }
+    .ca-icon-btn--neutral:hover:not(:disabled) {
+      background: var(--ca-action-hover);
+    }
+    .ca-icon-btn--neutral:active:not(:disabled) {
+      background: var(--ca-action-selected);
+    }
+
     /* Text */
     .ca-icon-btn--text {
       background: transparent;
@@ -165,6 +191,11 @@
     .ca-icon-btn--filled[aria-disabled='true']:not(.ca-icon-btn--loading) {
       background: var(--ca-action-disabled-bg);
       border: var(--ca-border-width) solid var(--ca-outline-default);
+    }
+    .ca-icon-btn--outlined:disabled:not(.ca-icon-btn--loading),
+    .ca-icon-btn--outlined[aria-disabled='true']:not(.ca-icon-btn--loading) {
+      background: transparent;
+      border-color: var(--ca-outline-default);
     }
     .ca-icon-btn--text:disabled:not(.ca-icon-btn--loading),
     .ca-icon-btn--text[aria-disabled='true']:not(.ca-icon-btn--loading) {

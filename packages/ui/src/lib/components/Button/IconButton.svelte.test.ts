@@ -80,3 +80,45 @@ describe("IconButton", () => {
 		warn.mockRestore();
 	});
 });
+
+describe("IconButton tone=neutral (#357)", () => {
+	it("outlined: border and icon are neutral, not the brand colour", async () => {
+		const brand = await render(IconButton, {
+			"aria-label": "A",
+			children: icon,
+			variant: "outlined",
+		});
+		const neutral = await render(IconButton, {
+			"aria-label": "B",
+			children: icon,
+			variant: "outlined",
+			tone: "neutral",
+			"aria-expanded": false,
+		});
+		const b = getComputedStyle(brand.container.querySelector("button") as HTMLElement);
+		const nEl = neutral.container.querySelector("button") as HTMLElement;
+		const n = getComputedStyle(nEl);
+		expect(n.color).not.toBe(b.color);
+		expect(n.borderTopColor).not.toBe(b.borderTopColor);
+		expect(nEl.getAttribute("aria-expanded")).toBe("false");
+		expect(await checkA11y(neutral.container)).toHaveNoViolations();
+	});
+
+	it("disabled outlined neutral keeps the shared disabled look", async () => {
+		const screen = await render(IconButton, {
+			"aria-label": "Off",
+			children: icon,
+			variant: "outlined",
+			tone: "neutral",
+			disabled: true,
+		});
+		const probe = document.createElement("span");
+		probe.style.color = "var(--ca-text-disabled)";
+		document.body.append(probe);
+		expect(getComputedStyle(screen.getByRole("button").element()).color).toBe(
+			getComputedStyle(probe).color
+		);
+		probe.remove();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});

@@ -65,7 +65,7 @@ Total: 829 unique classes across 83 components.
 
 ## Button
 
-`.ca-btn` `.ca-btn--destructive` `.ca-btn--filled` `.ca-btn--full-width` `.ca-btn--ghost` `.ca-btn--glass` `.ca-btn--lg` `.ca-btn--loading` `.ca-btn--md` `.ca-btn--outlined` `.ca-btn--sm` `.ca-btn__leading` `.ca-btn__trailing` `.ca-icon-btn` `.ca-icon-btn--filled` `.ca-icon-btn--glass` `.ca-icon-btn--lg` `.ca-icon-btn--loading` `.ca-icon-btn--md` `.ca-icon-btn--sm` `.ca-icon-btn--text` `.ca-spinner__arc` `.ca-spinner__track`
+`.ca-btn` `.ca-btn--destructive` `.ca-btn--filled` `.ca-btn--full-width` `.ca-btn--ghost` `.ca-btn--glass` `.ca-btn--lg` `.ca-btn--loading` `.ca-btn--md` `.ca-btn--neutral` `.ca-btn--outlined` `.ca-btn--sm` `.ca-btn__leading` `.ca-btn__trailing` `.ca-icon-btn` `.ca-icon-btn--filled` `.ca-icon-btn--glass` `.ca-icon-btn--lg` `.ca-icon-btn--loading` `.ca-icon-btn--md` `.ca-icon-btn--neutral` `.ca-icon-btn--outlined` `.ca-icon-btn--sm` `.ca-icon-btn--text` `.ca-spinner__arc` `.ca-spinner__track`
 
 ## Card
 

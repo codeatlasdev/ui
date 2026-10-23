@@ -1,0 +1,13 @@
+{
+	"summary": "One brand filled Button beside secondary actions drawn with tone=\"neutral\": an outlined Button, a small ghost Button and an outlined IconButton.",
+	"use": "Dense work screens (queues, inboxes, CRMs) with one primary action and several secondary ones that must not compete with it.",
+	"spec": [
+		"`<Button variant=\"filled\">` labelled Send reply is the only brand-coloured control",
+		"`<Button variant=\"outlined\" tone=\"neutral\">` labelled Edit message",
+		"`<Button variant=\"ghost\" tone=\"neutral\" size=\"sm\">` labelled Snooze",
+		"`<IconButton variant=\"outlined\" tone=\"neutral\" aria-label=\"More actions\">` with a MoreHorizontal icon",
+		"Wrapping flex `.row` with `gap: var(--ca-space-3)`"
+	],
+	"tags": ["button", "icon-button", "tone", "neutral", "secondary", "outlined", "ghost"],
+	"shape": "wide"
+}

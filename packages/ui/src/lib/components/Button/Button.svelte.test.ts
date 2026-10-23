@@ -112,3 +112,84 @@ describe("Button with href forwards anchor attributes (#290)", () => {
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 });
+
+describe("Button tone=neutral (#357)", () => {
+	const rgb = (el: Element, prop: "color" | "borderTopColor") => getComputedStyle(el)[prop];
+
+	it("outlined: label and border are neutral, not the brand colour", async () => {
+		const brand = await render(Button, { children: label("A"), variant: "outlined" });
+		const neutral = await render(Button, {
+			children: label("B"),
+			variant: "outlined",
+			tone: "neutral",
+		});
+		const b = brand.container.querySelector("button") as HTMLElement;
+		const n = neutral.container.querySelector("button") as HTMLElement;
+		expect(rgb(n, "color")).not.toBe(rgb(b, "color"));
+		expect(rgb(n, "borderTopColor")).not.toBe(rgb(b, "borderTopColor"));
+		expect(n.classList.contains("ca-btn--neutral")).toBe(true);
+		expect(await checkA11y(neutral.container)).toHaveNoViolations();
+	});
+
+	it("ghost: label is the secondary text and hover goes to the primary text", async () => {
+		const screen = await render(Button, {
+			children: label("Snooze"),
+			variant: "ghost",
+			tone: "neutral",
+			size: "sm",
+		});
+		const btn = screen.getByRole("button");
+		const el = btn.element();
+		const secondary = getComputedStyle(document.documentElement).getPropertyValue(
+			"--ca-text-secondary"
+		);
+		expect(secondary).not.toBe("");
+		const probe = document.createElement("span");
+		probe.style.color = "var(--ca-text-secondary)";
+		document.body.append(probe);
+		await btn.unhover();
+		await expect.poll(() => rgb(el, "color")).toBe(getComputedStyle(probe).color);
+		probe.style.color = "var(--ca-text-primary)";
+		await btn.hover();
+		await expect.poll(() => rgb(el, "color")).toBe(getComputedStyle(probe).color);
+		probe.remove();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("keeps sizes, loading and disabled the same as the brand tone", async () => {
+		const loading = await render(Button, {
+			children: label("Save"),
+			variant: "outlined",
+			tone: "neutral",
+			loading: true,
+		});
+		expect(loading.container.querySelector("button")?.getAttribute("aria-busy")).toBe("true");
+		const off = await render(Button, {
+			children: label("Off"),
+			variant: "outlined",
+			tone: "neutral",
+			disabled: true,
+		});
+		const probe = document.createElement("span");
+		probe.style.color = "var(--ca-text-disabled)";
+		document.body.append(probe);
+		expect(rgb(off.container.querySelector("button") as HTMLElement, "color")).toBe(
+			getComputedStyle(probe).color
+		);
+		probe.remove();
+		expect(await checkA11y(off.container)).toHaveNoViolations();
+	});
+
+	it("forwards aria-expanded and other attributes (Popover triggers)", async () => {
+		const screen = await render(Button, {
+			children: label("More"),
+			variant: "outlined",
+			tone: "neutral",
+			"aria-expanded": false,
+			"aria-haspopup": "menu",
+		});
+		const btn = screen.getByRole("button", { name: "More" });
+		await expect.element(btn).toHaveAttribute("aria-expanded", "false");
+		await expect.element(btn).toHaveAttribute("aria-haspopup", "menu");
+	});
+});
