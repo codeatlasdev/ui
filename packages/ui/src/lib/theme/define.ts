@@ -13,13 +13,13 @@ import {
 	type TokenMap,
 } from "../utils/palette-generator.js";
 import { BUILTIN_PRESETS, type BuiltinPresetSource } from "./builtins.js";
+import { type ComponentTokens, componentTokens } from "./components.js";
 import {
 	type ColorValue,
 	domainTokens,
 	type PresetTokenGroups,
 	roleColor,
 } from "./preset-tokens.js";
-import { type ComponentTokens, componentTokens } from "./components.js";
 
 export type {
 	ButtonSizeTokens,
