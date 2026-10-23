@@ -75,6 +75,10 @@ Tokens: `--ca-auth-panel-bg` (any tone: overrides the panel background, a color 
 
 `.ca-btn` `.ca-btn--destructive` `.ca-btn--filled` `.ca-btn--full-width` `.ca-btn--ghost` `.ca-btn--glass` `.ca-btn--lg` `.ca-btn--between` `.ca-btn--loading` `.ca-btn--md` `.ca-btn--neutral` `.ca-btn--outlined` `.ca-btn--sm` `.ca-btn__leading` `.ca-btn__trailing` `.ca-btn__trailing--hint` `.ca-icon-btn` `.ca-icon-btn--filled` `.ca-icon-btn--glass` `.ca-icon-btn--lg` `.ca-icon-btn--loading` `.ca-icon-btn--md` `.ca-icon-btn--neutral` `.ca-icon-btn--outlined` `.ca-icon-btn--sm` `.ca-icon-btn--text` `.ca-spinner__arc` `.ca-spinner__track`
 
+## ButtonGroup
+
+`.ca-btn-group`; `data-orientation="horizontal|vertical"` on the root. Members are its direct children (`.ca-btn`, `.ca-icon-btn`), which lose their inner corner radius and overlap by one `--ca-border-width`; the hovered, open or `:focus-visible` member gets `z-index` 1 or 2.
+
 ## Card
 
 

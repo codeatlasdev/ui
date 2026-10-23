@@ -27,6 +27,7 @@ Imports are from `@codeatlasdev/ui` unless the last column names a subpath.
 | A custom "nothing here" paragraph | `EmptyState`, or the `empty` snippet of `AppList` | [EmptyState](/docs/layout/empty-state/) |
 | A hand-made loading flash or a spinner that blinks on fast loads | `LoadingBoundary` for a route or section, `Skeleton` for content shape | [LoadingBoundary](/docs/navigation/loading-boundary/) |
 | Your own copy-to-clipboard button | `CopyButton`: swaps to a check, announces the result | [CopyButton](/docs/inputs/copy-button/) |
+| Adjacent `Button`s with `border-radius: 0` and a `margin-left: -1px` on the siblings | `ButtonGroup`: attached buttons with a single-line seam, `role="group"`, `orientation` | [ButtonGroup](/docs/inputs/button-group/) |
 | Your own toast stack or `aria-live` region | `toast.success()` with one `Toaster`, or `announce()` for speech only | [Toast](/docs/feedback/toast/) |
 | A `.overdue` pill class with `color-mix`, a 6px `.dot` span and a fixed height | `<Badge tone="danger" subtle dot size="md">Overdue</Badge>` | [Badge](/docs/display/badge/) |
 | `@media (max-width: 767px) { .ca-btn__trailing { display: none } }` to hide a `Kbd` hint | `<Button trailingHint>` with the `Kbd` in `trailing` | [Button](/docs/inputs/button/) |

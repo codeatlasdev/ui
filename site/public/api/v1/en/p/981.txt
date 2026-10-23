@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #981 "Split button and vertical" (inputs/button-group).
+What it shows: A split button (Publish plus a chevron DropdownMenu trigger) and a vertical ButtonGroup of two icon buttons. When to use: A primary action with its alternatives behind a menu, or a stacked pair of icon controls.
+Spec:
+- `<ButtonGroup aria-label="Publish">` with a `filled` Publish Button followed by a `DropdownMenu` whose `triggerChild` is a filled `IconButton` named "More publish options"
+- The menu has Schedule and Save as draft, aligned to the end
+- `<ButtonGroup aria-label="Pages" orientation="vertical">` with two outlined neutral IconButtons (Previous page, Next page)
+- Both groups sit in a wrapping row with `gap: var(--ca-space-6)`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #981 Split button and vertical → file, what changed, https://ui.codeatlas.com.br/docs/inputs/button-group#split-button-and-vertical; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/981.txt   Components API: ca-ui-mcp get_component(Button)

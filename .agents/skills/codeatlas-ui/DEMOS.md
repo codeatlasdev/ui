@@ -358,5 +358,5 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 901 | Responsive keyboard hint | inputs/button | Button, Kbd |
 | 902 | Align between | inputs/button | Button, Kbd |
 | 910 | Configured split | feedback/dialog | Dialog, Button, Stack |
-| 960 | ratio and fit | display/image | Image |
-| 961 | Embed | display/aspect-ratio | AspectRatio |
+| 980 | Text, icon and filled groups | inputs/button-group | Button, ButtonGroup, IconButton |
+| 981 | Split button and vertical | inputs/button-group | Button, ButtonGroup, DropdownMenu, DropdownMenuItem, IconButton |

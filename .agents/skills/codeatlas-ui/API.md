@@ -417,6 +417,23 @@ Variables: `--ca-btn-disabled-bg` `--ca-btn-font-weight` `--ca-btn-gap` `--ca-bt
 
 Tokens: `--ca-btn-disabled-bg` `--ca-btn-font-weight` `--ca-btn-gap` `--ca-btn-ghost-border-width` `--ca-btn-letter-spacing` `--ca-btn-lg-font-size` `--ca-btn-lg-font-weight` `--ca-btn-lg-height` `--ca-btn-lg-letter-spacing` `--ca-btn-lg-padding-x` `--ca-btn-line-height` `--ca-btn-md-font-size` `--ca-btn-md-font-weight` `--ca-btn-md-height` `--ca-btn-md-letter-spacing` `--ca-btn-md-padding-x` `--ca-btn-sm-font-size` `--ca-btn-sm-font-weight` `--ca-btn-sm-height` `--ca-btn-sm-letter-spacing` `--ca-btn-sm-padding-x` `--ca-btn-touch-height`
 
+## ButtonGroup
+
+`import { ButtonGroup } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `orientation?` | `'horizontal' \| 'vertical'` | `'horizontal'` | Direction the buttons are attached in. Default `'horizontal'`. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'role'>`
+
+Parts: `ca-btn-group`
+
+Data attributes: `data-orientation` (`vertical`)
+
 ## Calendar
 
 `import { Calendar } from "@codeatlasdev/ui"`
