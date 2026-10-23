@@ -183,6 +183,8 @@ export { default as LoadingBoundary } from "./components/LoadingBoundary/Loading
 export { default as LocaleSwitcher } from "./components/LocaleSwitcher/LocaleSwitcher.svelte";
 export type { MediaGridItem } from "./components/MediaGrid/MediaGrid.svelte";
 export { default as MediaGrid } from "./components/MediaGrid/MediaGrid.svelte";
+export { default as Menubar } from "./components/Menubar/Menubar.svelte";
+export { default as MenubarMenu } from "./components/Menubar/MenubarMenu.svelte";
 export { default as MessageBubble } from "./components/MessageBubble/MessageBubble.svelte";
 export { default as MobilePane } from "./components/MobilePane/MobilePane.svelte";
 export { default as MotionStage } from "./components/MotionStage/MotionStage.svelte";

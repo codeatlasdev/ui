@@ -1217,6 +1217,9 @@ Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-spli
 | `side?` | `'top' \| 'right' \| 'bottom' \| 'left'` | `'bottom'` |  |
 | `align?` | `'start' \| 'center' \| 'end'` | `'start'` |  |
 | `sideOffset?` | `number` |  |  |
+| `onmenukeydown?` | `(e: KeyboardEvent) => void` |  | Sees every key pressed on the menu itself (not inside a submenu) before the menu handles it. Call `preventDefault()` to take the key: the menu then ignores it. A `Menubar` takes ArrowLeft and ArrowRight here to move to the adjacent menu. |
+| `ontriggerkeydown?` | `(e: KeyboardEvent) => void` |  | Called with the trigger's keydown before the menu's own (Down/Up/Enter/Space open). `preventDefault()` takes the key. |
+| `openFocus?` | `'first' \| 'last' \| 'container'` |  | Where focus goes when the menu opens without a pointer: the first item, the last, or the menu container. |
 
 Snippets: `trigger`, `triggerChild` (`Snippet<[Record<string, unknown>]>`), `children`
 
@@ -1996,6 +1999,40 @@ Parts: `ca-masked`
 Parts: `ca-media-grid` `ca-media-grid__doc` `ca-media-grid__doc-title` `ca-media-grid__duration` `ca-media-grid__failed` `ca-media-grid__grid` `ca-media-grid__grid--single` `ca-media-grid__grid--wide` `ca-media-grid__img` `ca-media-grid__img--hidden` `ca-media-grid__more` `ca-media-grid__play` `ca-media-grid__tile`
 
 Variables: `--ca-media-grid-cols`
+
+## Menubar
+
+`import { Menubar } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `class?` | `string` | `''` |  |
+| `onOpenChange?` | `(open: boolean) => void` |  | Called when the bar goes from no menu open to one open, and back (not for a switch between menus). |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'role'>`
+
+Parts: `ca-menubar`
+
+Variables: `--ca-surface-1`
+
+## MenubarMenu
+
+`import { MenubarMenu } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `class?` | `string` | `''` |  |
+| `label` | `string` |  | Text of the bar item. |
+| `disabled?` | `boolean` | `false` |  |
+| `menuClass?` | `string` | `''` | Class on the menu surface. |
+
+Snippets: `children`
+
+Parts: `ca-menubar__item`
+
+Data attributes: `data-disabled`, `data-state` (`open`)
 
 ## MessageBubble
 

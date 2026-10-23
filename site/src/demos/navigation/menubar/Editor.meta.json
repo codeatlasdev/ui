@@ -1,0 +1,12 @@
+{
+	"summary": "An application menu bar with File, Edit, View and a disabled Help menu; File has a submenu, View has a checkbox and a radio group, and a line below reports the last action.",
+	"use": "A desktop-style application or editor menu bar: arrows move between menus, an open menu switches on hover or ArrowRight and ArrowLeft.",
+	"spec": [
+		"`<Menubar aria-label=\"Editor\">` holds four `MenubarMenu`s labelled File, Edit, View and a `disabled` Help",
+		"File has `DropdownMenuItem`s, a `DropdownMenuSub` with `DropdownMenuSubTrigger` for Export, a separator and a destructive Close",
+		"View has `<DropdownMenuCheckboxItem bind:checked={wrap}>` and a `<DropdownMenuRadioGroup bind:value={zoom} aria-label=\"Zoom\">` with 100% and 150%",
+		"Action items call `function pick(action: string)`, which sets `last` and calls `announce`"
+	],
+	"tags": ["menubar", "menu", "application", "keyboard", "dropdown-menu", "submenu"],
+	"shape": "wide"
+}

@@ -1,0 +1,51 @@
+---
+title: Menubar
+description: A horizontal application menu bar (WAI-ARIA menubar) whose menus reuse the DropdownMenu items.
+group: Navigation
+order: 17
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Editor from "~/demos/navigation/menubar/Editor.svelte";
+import EditorSrc from "~/demos/navigation/menubar/Editor.svelte?raw";
+import Compact from "~/demos/navigation/menubar/Compact.svelte";
+import CompactSrc from "~/demos/navigation/menubar/Compact.svelte?raw";
+
+```svelte
+<script>
+  import { Menubar, MenubarMenu, DropdownMenuItem } from "@codeatlasdev/ui";
+</script>
+
+<Menubar aria-label="Application">
+  <MenubarMenu label="File">
+    <DropdownMenuItem onclick={newFile}>New file</DropdownMenuItem>
+  </MenubarMenu>
+  <MenubarMenu label="Edit">
+    <DropdownMenuItem onclick={undo}>Undo</DropdownMenuItem>
+  </MenubarMenu>
+</Menubar>
+```
+
+`Menubar` is the WAI-ARIA menubar pattern for an application or editor: a row of top-level menus, each a [DropdownMenu](/docs/navigation/menu/) whose content is the same items (`DropdownMenuItem`, checkbox and radio items, `DropdownMenuSub`, labels, separators). The bar is one tab stop. Left and Right move between the bar items (Home and End jump, disabled menus are skipped, the ends wrap); Enter, Space or Down open a menu on its first item and Up on its last. Inside an open menu, Right and Left move to the adjacent menu and open it on its first item, except on a submenu trigger, where Right opens the submenu and Left closes it. Escape closes the menu and returns focus to its bar item; Tab closes it and leaves the bar.
+
+With the pointer, a click opens a menu and a second click closes it. Once one menu is open, resting on another bar item switches to it; hover alone never opens a menu. Give the bar an `aria-label`.
+
+A menubar is for actions in a desktop-style application. For a menu on one button use `DropdownMenu`; for site navigation with links use `NavigationMenu`, which is not `role="menu"`.
+
+<Demo title="Editor menu bar" description="File (with an Export submenu), Edit, View (a checkbox and a radio group) and a disabled Help. Try Tab, arrows, Down, then Left and Right." src={EditorSrc}><Editor client:visible /></Demo>
+<Demo title="Bar open state" description="onOpenChange fires when the bar goes from none open to one open and back, not for a switch between menus." src={CompactSrc}><Compact client:visible /></Demo>
+
+<Props for="Menubar" rows={[
+  { name: "children", type: "Snippet", description: "The `MenubarMenu`s." },
+  { name: "onOpenChange", type: "(open: boolean) => void", description: "Called when the bar goes from no menu open to one open, and back. Not called for a switch between menus." },
+  { name: "aria-label", type: "string", description: "Accessible name of the bar (also `aria-labelledby`)." },
+  { name: "class", type: "string", default: "''", description: "Extra CSS classes on the bar." },
+]} />
+
+<Props for="MenubarMenu" rows={[
+  { name: "label", type: "string", description: "Text of the bar item." },
+  { name: "children", type: "Snippet", description: "The menu content: DropdownMenu items, checkbox and radio items, submenus, labels and separators." },
+  { name: "disabled", type: "boolean", default: "false", description: "The bar item is announced as disabled, skipped by the arrow keys and never opens." },
+  { name: "menuClass", type: "string", default: "''", description: "Extra CSS classes on the menu surface." },
+  { name: "class", type: "string", default: "''", description: "Extra CSS classes on the bar item." },
+]} />
