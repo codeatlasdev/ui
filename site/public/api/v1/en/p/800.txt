@@ -2,7 +2,7 @@ Use @codeatlasdev/ui demo #800 "Themed map" (map/stage).
 What it shows: A map stage with an offline light and dark basemap, four deck.gl store circles in the brand color and glass zoom and compass controls. When to use: A map-first screen whose basemap and data layers must follow the app's light and dark theme.
 Spec:
 - `<MapStage` with `{styles}`, `{layers}`, `label="Store map"`, `padding={{ top: 24, right: 24, bottom: 24, left: 24 }}` and a `fit` of the southeast Brazil bounds
-- `styles` holds a `light` and a `dark` entry, each an inline style with one `background` layer, so the demo needs no tiles or token
+- `styles` is a `$derived.by` whose `light` and `dark` entries are one inline style with a single `background` layer painted with `rgbaCss(mapColors().surface)`, so the demo needs no tiles, token or hex color
 - `layers` is a `$derived.by` that calls `mapColors()` and returns a deck.gl `ScatterplotLayer` with `getFillColor: c.brandMuted` and `getLineColor: c.brand`, so it re-themes on scheme or preset change
 - `<MapControls />` as the child of `MapStage`
 - The stage box is `360px` high with `var(--ca-radius-lg)` corners

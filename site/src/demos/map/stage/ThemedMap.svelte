@@ -1,14 +1,18 @@
 <script lang="ts">
   import { ScatterplotLayer } from '@deck.gl/layers';
-  import { MapControls, MapStage, mapColors } from '@codeatlasdev/ui/map';
+  import { MapControls, MapStage, mapColors, rgbaCss } from '@codeatlasdev/ui/map';
 
-  // Offline basemaps (a background color per scheme): no tiles, no token.
-  const bg = (color: string) => ({
-    version: 8 as const,
-    sources: {},
-    layers: [{ id: 'bg', type: 'background' as const, paint: { 'background-color': color } }],
+  // Offline basemap: one background layer painted with the surface token, so no tiles, no token and
+  // no hex. `mapColors()` reads the theme, so the style is rebuilt when the scheme or preset changes.
+  const styles = $derived.by(() => {
+    const background = rgbaCss(mapColors().surface);
+    const style = {
+      version: 8 as const,
+      sources: {},
+      layers: [{ id: 'bg', type: 'background' as const, paint: { 'background-color': background } }],
+    };
+    return { light: style, dark: style };
   });
-  const styles = { light: bg('#eef1f5'), dark: bg('#12151b') };
 
   const stores = [
     { name: 'Sao Paulo', coordinates: [-46.63, -23.55], sales: 90 },
