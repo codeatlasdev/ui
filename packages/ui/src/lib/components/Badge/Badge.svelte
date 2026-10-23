@@ -4,20 +4,51 @@
   import type { Snippet } from 'svelte';
   const t = useMessages(badge);
 
+  type Tone = 'brand' | 'success' | 'danger' | 'warning' | 'info' | 'neutral';
+
   interface Props {
     count?: number;
+    /** Anchored: a plain status dot on the corner. With `tone`: a leading dot inside the pill. */
     dot?: boolean;
+    /** Anchored badge colour (`error` is the same hue as `tone="danger"`). Ignored when `tone` is set. */
     color?: 'brand' | 'success' | 'error' | 'warning';
+    /**
+     * Renders an inline pill (in text flow, children are its label) instead of a corner indicator:
+     * `<Badge tone="danger" subtle dot>Overdue</Badge>`.
+     */
+    tone?: Tone;
+    /** Pill only: translucent tinted background with tone-coloured text, instead of a solid fill. */
+    subtle?: boolean;
+    /** Pill only: `sm` is 20px high, `md` 24px. */
+    size?: 'sm' | 'md';
     class?: string;
     children?: Snippet;
   }
 
-  let { count, dot = false, color = 'brand', class: className = '', children }: Props = $props();
+  let {
+    count,
+    dot = false,
+    color = 'brand',
+    tone,
+    subtle = false,
+    size = 'sm',
+    class: className = '',
+    children
+  }: Props = $props();
 
   let showBadge = $derived(dot || (count !== undefined && count > 0));
   let label = $derived(count !== undefined && count > 99 ? '99+' : String(count ?? ''));
 </script>
 
+{#if tone}
+  <span
+    class="ca-badge ca-badge--inline ca-badge--{tone} ca-badge--{size} {className}"
+    class:ca-badge--subtle={subtle}
+  >
+    {#if dot}<span class="ca-badge__dot" aria-hidden="true"></span>{/if}
+    {@render children?.()}
+  </span>
+{:else}
 <span class="ca-badge-wrapper {className}">
   {@render children?.()}
   {#if showBadge}
@@ -31,6 +62,7 @@
     </span>
   {/if}
 </span>
+{/if}
 
 <style>
 @layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
@@ -84,6 +116,56 @@
     .ca-badge--warning {
       background: var(--ca-semantic-warning);
       color: var(--ca-on-semantic);
+    }
+
+    /* Inline pill: in flow, label from children. Tone sets --ca-badge-tone (the text/dot colour in
+       the subtle form, the fill in the solid one); `danger` is the error semantic. */
+    .ca-badge--inline {
+      position: static;
+      transform: none;
+      display: inline-flex;
+      gap: var(--ca-space-1-5);
+      width: auto;
+      white-space: nowrap;
+      vertical-align: middle;
+      padding: 0 var(--ca-space-2-5);
+      height: calc(var(--ca-space-5) + var(--ca-space-0-5));
+      min-width: 0;
+      border: none;
+      font-weight: var(--ca-font-weight-medium);
+    }
+    .ca-badge--inline.ca-badge--md {
+      height: calc(var(--ca-space-6));
+      font-size: var(--ca-font-size-body2);
+    }
+    .ca-badge--inline.ca-badge--brand { --ca-badge-tone: var(--ca-brand-text); --ca-badge-fill: var(--ca-brand-fill); --ca-badge-on: var(--ca-brand-contrast); }
+    .ca-badge--inline.ca-badge--success { --ca-badge-tone: var(--ca-semantic-success); --ca-badge-fill: var(--ca-semantic-success); --ca-badge-on: var(--ca-on-semantic); }
+    .ca-badge--inline.ca-badge--danger { --ca-badge-tone: var(--ca-semantic-error); --ca-badge-fill: var(--ca-semantic-error-fill); --ca-badge-on: var(--ca-semantic-error-contrast, var(--ca-on-semantic)); }
+    .ca-badge--inline.ca-badge--warning { --ca-badge-tone: var(--ca-semantic-warning); --ca-badge-fill: var(--ca-semantic-warning); --ca-badge-on: var(--ca-on-semantic); }
+    .ca-badge--inline.ca-badge--info { --ca-badge-tone: var(--ca-semantic-info); --ca-badge-fill: var(--ca-semantic-info); --ca-badge-on: var(--ca-on-semantic); }
+    .ca-badge--inline.ca-badge--neutral { --ca-badge-tone: var(--ca-text-secondary); --ca-badge-fill: var(--ca-text-secondary); --ca-badge-on: var(--ca-surface-base); }
+    .ca-badge--inline {
+      background: var(--ca-badge-fill);
+      color: var(--ca-badge-on);
+    }
+    .ca-badge--inline.ca-badge--subtle {
+      background: color-mix(in oklab, var(--ca-badge-tone) 14%, transparent);
+      /* The label is pulled toward the primary text colour so it clears 4.5:1 on its own tint in
+         light and dark (the raw semantic hue does not for error and warning); the dot keeps the hue. */
+      color: color-mix(in oklab, var(--ca-badge-tone) 65%, var(--ca-text-primary));
+    }
+    .ca-badge--subtle .ca-badge__dot {
+      background: var(--ca-badge-tone);
+    }
+    .ca-badge--inline.ca-badge--neutral.ca-badge--subtle {
+      background: var(--ca-action-hover);
+    }
+    .ca-badge__dot {
+      flex: none;
+      width: var(--ca-space-1-5);
+      height: var(--ca-space-1-5);
+      border-radius: 50%;
+      background: currentcolor;
     }
 }
 </style>

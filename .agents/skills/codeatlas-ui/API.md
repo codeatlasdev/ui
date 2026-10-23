@@ -260,13 +260,16 @@ Tokens: `--ca-avatar-fallback-bg` `--ca-avatar-fallback-color` `--ca-avatar-fall
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `count?` | `number` |  |  |
-| `dot?` | `boolean` | `false` |  |
-| `color?` | `'brand' \| 'success' \| 'error' \| 'warning'` | `'brand'` |  |
+| `dot?` | `boolean` | `false` | Anchored: a plain status dot on the corner. With `tone`: a leading dot inside the pill. |
+| `color?` | `'brand' \| 'success' \| 'error' \| 'warning'` | `'brand'` | Anchored badge colour (`error` is the same hue as `tone="danger"`). Ignored when `tone` is set. |
+| `tone?` | `Tone` |  | Renders an inline pill (in text flow, children are its label) instead of a corner indicator: `<Badge tone="danger" subtle dot>Overdue</Badge>`. |
+| `subtle?` | `boolean` | `false` | Pill only: translucent tinted background with tone-coloured text, instead of a solid fill. |
+| `size?` | `'sm' \| 'md'` | `'sm'` | Pill only: `sm` is 20px high, `md` 24px. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
 
-Classes: `ca-badge` `ca-badge--brand` `ca-badge--dot` `ca-badge--error` `ca-badge--success` `ca-badge--warning` `ca-badge-wrapper`
+Classes: `ca-badge` `ca-badge--brand` `ca-badge--danger` `ca-badge--dot` `ca-badge--error` `ca-badge--info` `ca-badge--inline` `ca-badge--md` `ca-badge--neutral` `ca-badge--subtle` `ca-badge--success` `ca-badge--warning` `ca-badge-wrapper` `ca-badge__dot`
 
 ## BarChart
 
@@ -344,6 +347,8 @@ Classes: `ca-breadcrumb__current` `ca-breadcrumb__item` `ca-breadcrumb__link` `c
 | `href?` | `string` |  | Renders an `<a>` styled as a button. Its attributes (`download`, `rel`, `hreflang`, `ping`, `referrerpolicy`) are then accepted. |
 | `target?` | `string` |  | Anchor target, used with `href`. `"_blank"` adds `noopener noreferrer` to any `rel` you pass. |
 | `class?` | `string` | `''` |  |
+| `trailingHint?` | `boolean` | `false` | Marks `trailing` as a keyboard hint (`<Kbd>`): it is hidden below `md` and on touch screens (`pointer: coarse`) and takes no space there, so the button is as wide as its label alone. |
+| `align?` | `Align` | `'center'` | `'between'` pins the label to the start and `trailing` to the end (use with `fullWidth` or a fixed width). The loading spinner stays in the leading slot. Default `'center'`. |
 | `onclick?` | `(e: MouseEvent) => void` |  |  |
 | `aria-label?` | `string` |  |  |
 
@@ -351,7 +356,7 @@ Snippets: `children`, `leading`, `trailing`
 
 Also accepts: `AnchorAttributes \| ButtonAttributes`
 
-Classes: `ca-btn` `ca-btn--destructive` `ca-btn--filled` `ca-btn--full-width` `ca-btn--ghost` `ca-btn--glass` `ca-btn--lg` `ca-btn--loading` `ca-btn--md` `ca-btn--neutral` `ca-btn--outlined` `ca-btn--sm` `ca-btn__leading` `ca-btn__trailing`
+Classes: `ca-btn` `ca-btn--between` `ca-btn--destructive` `ca-btn--filled` `ca-btn--full-width` `ca-btn--ghost` `ca-btn--glass` `ca-btn--lg` `ca-btn--loading` `ca-btn--md` `ca-btn--neutral` `ca-btn--outlined` `ca-btn--sm` `ca-btn__leading` `ca-btn__trailing` `ca-btn__trailing--hint`
 
 Tokens: `--ca-btn-disabled-bg` `--ca-btn-font-weight` `--ca-btn-gap` `--ca-btn-ghost-border-width` `--ca-btn-letter-spacing` `--ca-btn-lg-font-size` `--ca-btn-lg-font-weight` `--ca-btn-lg-height` `--ca-btn-lg-letter-spacing` `--ca-btn-lg-padding-x` `--ca-btn-line-height` `--ca-btn-md-font-size` `--ca-btn-md-font-weight` `--ca-btn-md-height` `--ca-btn-md-letter-spacing` `--ca-btn-md-padding-x` `--ca-btn-sm-font-size` `--ca-btn-sm-font-weight` `--ca-btn-sm-height` `--ca-btn-sm-letter-spacing` `--ca-btn-sm-padding-x` `--ca-btn-touch-height`
 

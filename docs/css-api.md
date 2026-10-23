@@ -52,7 +52,7 @@ Total: 829 unique classes across 83 components.
 
 ## Badge
 
-`.ca-badge` `.ca-badge--brand` `.ca-badge--dot` `.ca-badge--error` `.ca-badge--success` `.ca-badge--warning` `.ca-badge-wrapper`
+`.ca-badge` `.ca-badge--brand` `.ca-badge--danger` `.ca-badge--dot` `.ca-badge--error` `.ca-badge--info` `.ca-badge--inline` `.ca-badge--md` `.ca-badge--neutral` `.ca-badge--sm` `.ca-badge--subtle` `.ca-badge--success` `.ca-badge--warning` `.ca-badge__dot` `.ca-badge-wrapper`
 
 ## Box
 
@@ -65,7 +65,7 @@ Total: 829 unique classes across 83 components.
 
 ## Button
 
-`.ca-btn` `.ca-btn--destructive` `.ca-btn--filled` `.ca-btn--full-width` `.ca-btn--ghost` `.ca-btn--glass` `.ca-btn--lg` `.ca-btn--loading` `.ca-btn--md` `.ca-btn--neutral` `.ca-btn--outlined` `.ca-btn--sm` `.ca-btn__leading` `.ca-btn__trailing` `.ca-icon-btn` `.ca-icon-btn--filled` `.ca-icon-btn--glass` `.ca-icon-btn--lg` `.ca-icon-btn--loading` `.ca-icon-btn--md` `.ca-icon-btn--neutral` `.ca-icon-btn--outlined` `.ca-icon-btn--sm` `.ca-icon-btn--text` `.ca-spinner__arc` `.ca-spinner__track`
+`.ca-btn` `.ca-btn--destructive` `.ca-btn--filled` `.ca-btn--full-width` `.ca-btn--ghost` `.ca-btn--glass` `.ca-btn--lg` `.ca-btn--between` `.ca-btn--loading` `.ca-btn--md` `.ca-btn--neutral` `.ca-btn--outlined` `.ca-btn--sm` `.ca-btn__leading` `.ca-btn__trailing` `.ca-btn__trailing--hint` `.ca-icon-btn` `.ca-icon-btn--filled` `.ca-icon-btn--glass` `.ca-icon-btn--lg` `.ca-icon-btn--loading` `.ca-icon-btn--md` `.ca-icon-btn--neutral` `.ca-icon-btn--outlined` `.ca-icon-btn--sm` `.ca-icon-btn--text` `.ca-spinner__arc` `.ca-spinner__track`
 
 ## Card
 

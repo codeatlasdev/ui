@@ -1,6 +1,6 @@
 ---
 title: Badge
-description: "Small count and status indicators anchored to icons, avatars and buttons."
+description: "Count and status indicators anchored to icons and avatars, plus an inline tone pill with a status dot for text rows."
 group: Display
 order: 3
 ---
@@ -12,6 +12,8 @@ import OnAvatars from "~/demos/display/badge/OnAvatars.svelte";
 import OnAvatarsSrc from "~/demos/display/badge/OnAvatars.svelte?raw";
 import Colors from "~/demos/display/badge/Colors.svelte";
 import ColorsSrc from "~/demos/display/badge/Colors.svelte?raw";
+import InlinePill from "~/demos/display/badge/InlinePill.svelte";
+import InlinePillSrc from "~/demos/display/badge/InlinePill.svelte?raw";
 
 ```svelte
 <script>
@@ -27,10 +29,17 @@ Badge wraps its child and positions the indicator on the corner. Pass `count` fo
 <Demo title="On avatars" description={"Status dots on avatars."} src={OnAvatarsSrc}><OnAvatars /></Demo>
 <Demo title="Colors" description={"brand, success, warning and error."} src={ColorsSrc}><Colors /></Demo>
 
+**Status pill in a text row: `tone`.** `<Badge tone="danger" subtle dot size="md">Overdue</Badge>` renders an inline pill in text flow (its children are the label) instead of a corner indicator: 24px high at `md` (20px at `sm`), a 6px dot with `dot`, and with `subtle` a translucent tinted background whose label clears 4.5:1 in light and dark. Tones: `brand`, `success`, `danger`, `warning`, `info`, `neutral`. The dot is decorative: the label carries the meaning, so never rely on colour alone. Do not write a `.overdue` class with `color-mix` and a `.dot` span. For a status with a fixed vocabulary and no dot, `StatusChip` is still fine.
+
+<Demo title="Inline pill" description={"`tone` + `subtle` + `dot` next to a title in a list row."} src={InlinePillSrc}><InlinePill /></Demo>
+
 <Props rows={[
   { name: "count", type: "number", default: "undefined", description: "Number to display. Hidden when 0 or undefined unless `dot` is set. Values above 99 render as `99+`." },
-  { name: "dot", type: "boolean", default: "false", description: "Shows a dot instead of a number." },
-  { name: "color", type: "'brand' | 'success' | 'error' | 'warning'", default: "'brand'", description: "Indicator color." },
+  { name: "dot", type: "boolean", default: "false", description: "Anchored: shows a dot instead of a number. With `tone`: a 6px leading dot inside the pill." },
+  { name: "color", type: "'brand' | 'success' | 'error' | 'warning'", default: "'brand'", description: "Anchored indicator colour. Ignored when `tone` is set." },
+  { name: "tone", type: "'brand' | 'success' | 'danger' | 'warning' | 'info' | 'neutral'", default: "undefined", description: "Renders an inline pill (`ca-badge--inline`) in text flow; children are its label. `danger` is the error semantic." },
+  { name: "subtle", type: "boolean", default: "false", description: "Pill only: translucent tinted background with a tone-coloured label (`ca-badge--subtle`) instead of a solid fill." },
+  { name: "size", type: "'sm' | 'md'", default: "'sm'", description: "Pill only: 20px (`sm`) or 24px (`md`) high." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
   { name: "children", type: "Snippet", default: "undefined", description: "The element the badge is anchored to." },
 ]} />

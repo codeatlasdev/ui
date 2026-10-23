@@ -1,0 +1,11 @@
+{
+	"summary": "Two outlined neutral Buttons (Next lead, Snooze) with a Kbd keyboard hint in the trailing slot, marked trailingHint so the hint disappears below md and on touch screens without leaving a gap.",
+	"use": "Queue and inbox actions that show a keyboard shortcut on desktop only.",
+	"spec": [
+		"`<Button variant=\"outlined\" tone=\"neutral\" trailingHint>` labelled Next lead with a `trailing` snippet holding `<Kbd>K</Kbd>`",
+		"A second one labelled Snooze with `<Kbd>S</Kbd>`",
+		"Wrapping flex `.row` with `gap: var(--ca-space-3)`"
+	],
+	"tags": ["button", "trailing", "kbd", "shortcut", "hint", "responsive", "touch"],
+	"shape": "wide"
+}

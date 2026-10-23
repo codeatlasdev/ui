@@ -10,6 +10,7 @@
   type Variant = 'filled' | 'glass' | 'outlined' | 'ghost' | 'destructive';
   type Size = 'sm' | 'md' | 'lg';
   type Tone = 'brand' | 'neutral';
+  type Align = 'center' | 'between';
 
   /** Own props, shared by both renderings. */
   interface Own {
@@ -34,6 +35,16 @@
     children?: Snippet;
     leading?: Snippet;
     trailing?: Snippet;
+    /**
+     * Marks `trailing` as a keyboard hint (`<Kbd>`): it is hidden below `md` and on touch screens
+     * (`pointer: coarse`) and takes no space there, so the button is as wide as its label alone.
+     */
+    trailingHint?: boolean;
+    /**
+     * `'between'` pins the label to the start and `trailing` to the end (use with `fullWidth` or a
+     * fixed width). The loading spinner stays in the leading slot. Default `'center'`.
+     */
+    align?: Align;
     onclick?: (e: MouseEvent) => void;
     'aria-label'?: string;
   }
@@ -70,6 +81,8 @@
     children,
     leading,
     trailing,
+    trailingHint = false,
+    align = 'center',
     onclick,
     'aria-label': ariaLabel,
     ...restProps
@@ -112,6 +125,7 @@
     {rel}
     class="ca-btn ca-btn--{variant} ca-btn--{size} {className}"
     class:ca-btn--neutral={neutral}
+    class:ca-btn--between={align === 'between'}
     class:ca-btn--full-width={fullWidth}
     class:ca-btn--loading={loading}
     aria-disabled={isDisabled}
@@ -123,7 +137,7 @@
     {@render leadingSlot()}
     {@render children?.()}
     {#if trailing}
-      <span class="ca-btn__trailing" aria-hidden="true">{@render trailing()}</span>
+      <span class="ca-btn__trailing" class:ca-btn__trailing--hint={trailingHint} aria-hidden="true">{@render trailing()}</span>
     {/if}
   </a>
 {:else}
@@ -133,6 +147,7 @@
     disabled={isDisabled}
     class="ca-btn ca-btn--{variant} ca-btn--{size} {className}"
     class:ca-btn--neutral={neutral}
+    class:ca-btn--between={align === 'between'}
     class:ca-btn--full-width={fullWidth}
     class:ca-btn--loading={loading}
     aria-disabled={isDisabled}
@@ -143,7 +158,7 @@
     {@render leadingSlot()}
     {@render children?.()}
     {#if trailing}
-      <span class="ca-btn__trailing" aria-hidden="true">{@render trailing()}</span>
+      <span class="ca-btn__trailing" class:ca-btn__trailing--hint={trailingHint} aria-hidden="true">{@render trailing()}</span>
     {/if}
   </button>
 {/if}
@@ -302,6 +317,22 @@
     .ca-btn__trailing {
       display: flex;
       align-items: center;
+    }
+
+    /* align="between": label at the start, trailing slot at the end. The spinner is the leading
+       slot, so loading does not move it. */
+    .ca-btn--between,
+    .ca-btn--between.ca-btn--full-width {
+      justify-content: flex-start;
+    }
+    .ca-btn--between .ca-btn__trailing {
+      margin-inline-start: auto;
+    }
+
+    /* trailingHint: a keyboard hint is meaningless without a keyboard or room for it. display: none
+       removes the slot from the flex row, so its gap goes with it. */
+    @media (max-width: 899.98px), (pointer: coarse) {
+      .ca-btn__trailing--hint { display: none; }
     }
 
     /* Disabled look, per variant. Declared after the variants so it wins at equal specificity;

@@ -1,0 +1,31 @@
+<!-- @codeatlasdev/ui demo #901 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/button#responsive-keyboard-hint -->
+Element: #901 Responsive keyboard hint (inputs/button)
+What it shows: Two outlined neutral Buttons (Next lead, Snooze) with a Kbd keyboard hint in the trailing slot, marked trailingHint so the hint disappears below md and on touch screens without leaving a gap.
+When to use: Queue and inbox actions that show a keyboard shortcut on desktop only.
+Spec:
+- `<Button variant="outlined" tone="neutral" trailingHint>` labelled Next lead with a `trailing` snippet holding `<Kbd>K</Kbd>`
+- A second one labelled Snooze with `<Kbd>S</Kbd>`
+- Wrapping flex `.row` with `gap: var(--ca-space-3)`
+Tags: button, trailing, kbd, shortcut, hint, responsive, touch
+Needs: @codeatlasdev/ui@4.5.0
+Components: Button, Kbd
+Live demo: https://ui.codeatlas.com.br/docs/inputs/button#responsive-keyboard-hint
+
+<script lang="ts">
+  import { Button, Kbd } from '@codeatlasdev/ui';
+</script>
+
+<div class="row">
+  <Button variant="outlined" tone="neutral" trailingHint>
+    Next lead
+    {#snippet trailing()}<Kbd>K</Kbd>{/snippet}
+  </Button>
+  <Button variant="outlined" tone="neutral" trailingHint>
+    Snooze
+    {#snippet trailing()}<Kbd>S</Kbd>{/snippet}
+  </Button>
+</div>
+
+<style>
+  .row { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ca-space-3); }
+</style>

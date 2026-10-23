@@ -57,4 +57,72 @@ describe("Badge", () => {
 			expect(await checkA11y(screen.container)).toHaveNoViolations();
 		}
 	);
+
+	describe("inline tone pill", () => {
+		const text = createRawSnippet(() => ({ render: () => `<span>Overdue</span>` }));
+		const bg = (el: Element) => getComputedStyle(el).backgroundColor;
+
+		it("renders its children as the label, in flow, without a corner anchor", async () => {
+			const screen = await render(Badge, {
+				tone: "danger",
+				subtle: true,
+				dot: true,
+				children: text,
+			});
+			const pill = screen.getByText("Overdue").element().closest(".ca-badge") as HTMLElement;
+			expect(pill.classList.contains("ca-badge--inline")).toBe(true);
+			expect(getComputedStyle(pill).position).toBe("static");
+			expect(pill.querySelector(".ca-badge__dot")).not.toBeNull();
+			expect(await checkA11y(screen.container)).toHaveNoViolations();
+		});
+
+		it("size md is 24px high with a 6px dot", async () => {
+			const screen = await render(Badge, {
+				tone: "danger",
+				subtle: true,
+				dot: true,
+				size: "md",
+				children: text,
+			});
+			const pill = screen.getByText("Overdue").element().closest(".ca-badge") as HTMLElement;
+			expect(pill.getBoundingClientRect().height).toBe(24);
+			expect(pill.querySelector(".ca-badge__dot")!.getBoundingClientRect().width).toBe(6);
+		});
+
+		it("subtle tints the background; solid does not", async () => {
+			const subtle = await render(Badge, { tone: "danger", subtle: true, children: text });
+			const solid = await render(Badge, { tone: "danger", children: text });
+			const a = subtle.container.querySelector(".ca-badge") as HTMLElement;
+			const b = solid.container.querySelector(".ca-badge") as HTMLElement;
+			expect(bg(a)).not.toBe(bg(b));
+			expect(getComputedStyle(a).color).not.toBe(getComputedStyle(b).color);
+		});
+
+		it.each(["brand", "success", "danger", "warning", "info", "neutral"] as const)(
+			"subtle %s meets 4.5:1 in light and dark",
+			async (tone) => {
+				for (const dark of [false, true]) {
+					document.documentElement.classList.toggle("dark", dark);
+					try {
+						const screen = await render(Badge, {
+							tone,
+							subtle: true,
+							dot: true,
+							size: "md",
+							children: text,
+						});
+						expect(await checkA11y(screen.container)).toHaveNoViolations();
+					} finally {
+						document.documentElement.classList.remove("dark");
+					}
+				}
+			}
+		);
+
+		it("keeps the anchored badge when tone is not set", async () => {
+			const screen = await render(Badge, { count: 2, children: child });
+			const status = screen.getByRole("status", { name: "2 notifications" }).element();
+			expect(getComputedStyle(status).position).toBe("absolute");
+		});
+	});
 });

@@ -25,6 +25,9 @@ Imports are from `@codeatlasdev/ui` unless the last column names a subpath.
 | A hand-made loading flash or a spinner that blinks on fast loads | `LoadingBoundary` for a route or section, `Skeleton` for content shape | [LoadingBoundary](/docs/navigation/loading-boundary/) |
 | Your own copy-to-clipboard button | `CopyButton`: swaps to a check, announces the result | [CopyButton](/docs/inputs/copy-button/) |
 | Your own toast stack or `aria-live` region | `toast.success()` with one `Toaster`, or `announce()` for speech only | [Toast](/docs/feedback/toast/) |
+| A `.overdue` pill class with `color-mix`, a 6px `.dot` span and a fixed height | `<Badge tone="danger" subtle dot size="md">Overdue</Badge>` | [Badge](/docs/display/badge/) |
+| `@media (max-width: 767px) { .ca-btn__trailing { display: none } }` to hide a `Kbd` hint | `<Button trailingHint>` with the `Kbd` in `trailing` | [Button](/docs/inputs/button/) |
+| `justify-content: flex-start` and `margin-left: auto` on `.ca-btn__trailing` | `<Button align="between" fullWidth>` | [Button](/docs/inputs/button/) |
 | `100vh` or `100dvh` | `height: var(--ca-vh)` | [Mobile](/docs/getting-started/mobile/#safe-areas-and-viewport-height) |
 | A `min-height: 44px` touch override | Nothing: controls grow to 44px under `(pointer: coarse)` | [Mobile](/docs/getting-started/mobile/#native-feel) |
 | `padding-bottom: env(safe-area-inset-bottom)` on fixed UI | `var(--ca-safe-bottom)` and the other `--ca-safe-*` tokens | [Mobile](/docs/getting-started/mobile/#safe-areas-and-viewport-height) |
