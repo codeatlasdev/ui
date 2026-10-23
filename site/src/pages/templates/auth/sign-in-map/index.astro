@@ -1,0 +1,7 @@
+---
+import TemplateLayout from "~/layouts/TemplateLayout.astro";
+import SignInMap from "~/templates/auth/SignInMap.svelte";
+---
+<TemplateLayout title="Waitlist with map template" description="Form-first auth page with a header bar, a left-aligned plain card and a full-bleed map panel on the right, using AuthLayout panelBleed.">
+	<SignInMap client:load />
+</TemplateLayout>

@@ -189,12 +189,13 @@ AuthCard: authentication form card.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
+| `variant?` | `'card' \| 'plain'` | `'card'` | `plain` drops the card width cap and sets `title` at display size, for a left-aligned form (`AuthLayout align="start"`). Default `card`. |
 | `title?` | `string` |  |  |
 | `subtitle?` | `string` |  |  |
 
 Snippets: `footer`, `children`
 
-Classes: `ca-auth-card` `ca-auth-card__body` `ca-auth-card__footer` `ca-auth-card__header` `ca-auth-card__subtitle` `ca-auth-card__title`
+Classes: `ca-auth-card` `ca-auth-card--plain` `ca-auth-card__body` `ca-auth-card__footer` `ca-auth-card__header` `ca-auth-card__subtitle` `ca-auth-card__title`
 
 ## AuthLayout
 
@@ -207,11 +208,15 @@ AuthLayout: two-column layout for authentication pages.
 | `logoMark?` | `string` | `'CA'` |  |
 | `logoName?` | `string` |  | Name beside the mark. Defaults to "CodeAtlas UI" unless `brand` is set. |
 | `logoHref?` | `string` | `'/'` |  |
-| `mobileBrand?` | `boolean` | `true` | Below 768px the side panel is hidden; `true` shows a compact strip with the brand above the form. |
+| `mobileBrand?` | `boolean` | `true` | While the side panel is hidden, `true` shows a compact strip with the brand above the form. A `header` snippet replaces the strip. |
+| `panelSide?` | `'left' \| 'right'` | `'left'` | Which side the panel sits on. |
+| `panelBleed?` | `boolean` | `false` | `true` fills the panel edge to edge with the `panel` snippet: no padding, no logo, no decorative blobs. The panel sticks to the viewport height. |
+| `panelHidden?` | `'md' \| 'lg'` | `'md'` | Viewport width from which the panel shows: `md` 900px, `lg` 1024px. Below it only the form shows. |
+| `align?` | `'center' \| 'start'` | `'center'` | Horizontal alignment of the form: centered (default) or flush to the start. |
 
-Snippets: `brand`, `panel`, `children`
+Snippets: `brand`, `panel`, `header`, `children`
 
-Classes: `ca-auth` `ca-auth__blob` `ca-auth__blob--a` `ca-auth__blob--b` `ca-auth__blob--c` `ca-auth__blobs` `ca-auth__col` `ca-auth__logo` `ca-auth__mark` `ca-auth__mobile-brand` `ca-auth__mobile-mark` `ca-auth__mobile-name` `ca-auth__name` `ca-auth__panel` `ca-auth__panel-inner` `ca-auth__slot`
+Classes: `ca-auth` `ca-auth--right` `ca-auth__blob` `ca-auth__blob--a` `ca-auth__blob--b` `ca-auth__blob--c` `ca-auth__blobs` `ca-auth__col` `ca-auth__col--framed` `ca-auth__col--start` `ca-auth__header` `ca-auth__logo` `ca-auth__main` `ca-auth__mark` `ca-auth__mobile-brand` `ca-auth__mobile-mark` `ca-auth__mobile-name` `ca-auth__name` `ca-auth__panel` `ca-auth__panel--bleed` `ca-auth__panel-inner` `ca-auth__slot`
 
 ## Avatar
 

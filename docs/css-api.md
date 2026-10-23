@@ -44,7 +44,7 @@ Total: 829 unique classes across 83 components.
 
 ## AuthLayout
 
-`.ca-auth` `.ca-auth-card` `.ca-auth-card__body` `.ca-auth-card__footer` `.ca-auth-card__header` `.ca-auth-card__subtitle` `.ca-auth-card__title` `.ca-auth-float` `.ca-auth__blob` `.ca-auth__blob--a` `.ca-auth__blob--b` `.ca-auth__blob--c` `.ca-auth__blobs` `.ca-auth__col` `.ca-auth__logo` `.ca-auth__mark` `.ca-auth__mobile-brand` `.ca-auth__mobile-mark` `.ca-auth__mobile-name` `.ca-auth__name` `.ca-auth__panel` `.ca-auth__panel-inner` `.ca-auth__slot`
+`.ca-auth` `.ca-auth-card` `.ca-auth-card__body` `.ca-auth-card__footer` `.ca-auth-card__header` `.ca-auth-card__subtitle` `.ca-auth-card--plain` `.ca-auth-card__title` `.ca-auth-float` `.ca-auth__blob` `.ca-auth__blob--a` `.ca-auth__blob--b` `.ca-auth__blob--c` `.ca-auth__blobs` `.ca-auth--right` `.ca-auth__col` `.ca-auth__col--framed` `.ca-auth__col--start` `.ca-auth__header` `.ca-auth__logo` `.ca-auth__main` `.ca-auth__mark` `.ca-auth__mobile-brand` `.ca-auth__mobile-mark` `.ca-auth__mobile-name` `.ca-auth__name` `.ca-auth__panel` `.ca-auth__panel--bleed` `.ca-auth__panel-inner` `.ca-auth__slot`
 
 ## Avatar
 

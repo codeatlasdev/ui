@@ -14,6 +14,11 @@
    */
 
   interface Props {
+    /**
+     * `plain` drops the card width cap and sets `title` at display size, for a
+     * left-aligned form (`AuthLayout align="start"`). Default `card`.
+     */
+    variant?:  'card' | 'plain';
     title?:    string;
     subtitle?: string;
     /** Content below the form: links, terms, etc. */
@@ -21,10 +26,10 @@
     children?: Snippet;
   }
 
-  let { title, subtitle, footer, children }: Props = $props();
+  let { variant = 'card', title, subtitle, footer, children }: Props = $props();
 </script>
 
-<div class="ca-auth-card">
+<div class="ca-auth-card" class:ca-auth-card--plain={variant === 'plain'}>
   {#if title || subtitle}
     <div class="ca-auth-card__header">
       {#if title}<h1 class="ca-auth-card__title">{title}</h1>{/if}
@@ -53,6 +58,14 @@
       flex-direction: column;
       gap: var(--ca-space-6);
     }
+
+    /* Plain: no width cap beyond a form column, display-size title, start-aligned footer. */
+    .ca-auth-card--plain { max-width: calc(var(--ca-space-unit) * 105); }
+    .ca-auth-card--plain .ca-auth-card__title {
+      font-size: var(--ca-font-size-display-3);
+      line-height: var(--ca-line-height-tight);
+    }
+    .ca-auth-card--plain .ca-auth-card__footer { text-align: start; }
 
     .ca-auth-card__header {
       display: flex;
