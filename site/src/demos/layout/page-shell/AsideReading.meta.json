@@ -1,0 +1,12 @@
+{
+	"summary": "A PageShell with width=\"reading\" (form column capped at 46rem) and an aside snippet holding a section index, inside a fixed-height frame.",
+	"use": "Settings and form pages on wide screens that need a readable column plus a companion column (in-page index, summary, help, preview).",
+	"spec": [
+		"Frame is a 420px tall flex column with an inset outline",
+		"`<PageShell title=\"Workspace settings\" description=\"Reading width keeps the form at a comfortable line length.\" width=\"reading\" asideLabel=\"Sections\">`",
+		"`{#snippet aside()}` renders a glass `Card` with a nav (aria-label On this page) of three links: General, Billing, Danger zone",
+		"Body is a `Card material=\"glass\" full title=\"General\"` with a `Stack gap=\"4\"` of two `TextField`s: Name (Acme Inc.) and Slug (acme)"
+	],
+	"tags": ["page-shell", "aside", "width", "reading", "settings", "form", "sticky", "layout"],
+	"shape": "wide"
+}

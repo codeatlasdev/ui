@@ -12,6 +12,8 @@ import Shell from "~/demos/layout/app-shell/Shell.svelte";
 import ShellSrc from "~/demos/layout/app-shell/Shell.svelte?raw";
 import ResizablePanel from "~/demos/layout/app-shell/ResizablePanel.svelte";
 import ResizablePanelSrc from "~/demos/layout/app-shell/ResizablePanel.svelte?raw";
+import ShortPanel from "~/demos/layout/app-shell/ShortPanel.svelte";
+import ShortPanelSrc from "~/demos/layout/app-shell/ShortPanel.svelte?raw";
 import ItemExtras from "~/demos/layout/app-shell/ItemExtras.svelte";
 import ItemExtrasSrc from "~/demos/layout/app-shell/ItemExtras.svelte?raw";
 
@@ -41,6 +43,8 @@ The rail magnifies the module icon under the pointer, like a dock. Only the glyp
 
 <Demo title="Panel width" description="panelWidth={280} with resizablePanel: drag the edge or focus it and use the arrow keys." src={ResizablePanelSrc} stage><ResizablePanel client:visible /></Demo>
 
+<Demo title="Short panel" description="collapseShortPanel: a module with two destinations shows only the rail." src={ShortPanelSrc} stage><ShortPanel client:visible /></Demo>
+
 <Props for="AppShellLayout" rows={[
   { name: "modules", type: "NavModule[]", description: "Navigation modules. Each has id, label, icon, basePath, optional pathPrefixes and items (NavItem or NavSection). Prefixes match whole path segments and the longest one wins, so a module at `basePath: \"/\"` only gets the pages no other module claims." },
   { name: "pathname", type: "string", description: "Current location. Decides the active module and item. An item at `path: \"/\"` is active on `/` only." },
@@ -49,6 +53,7 @@ The rail magnifies the module icon under the pointer, like a dock. Only the glyp
   { name: "persistPanel", type: "boolean", default: "true", description: "Keeps the shell across page loads: panel open or closed, selected module and expanded sections (localStorage), panel scroll (sessionStorage). Restored before the first paint. Turn it off for demos and embeds that must always start from the defaults." },
   { name: "panelWidth", type: "number", default: "200", description: "Width of the navigation panel in px, for lists with long labels. Held between 160 and 480. The content offset and the open and close animation follow it, so nothing misaligns. Prefer it to overriding `--ca-panel-width`, which the layout does not read." },
   { name: "resizablePanel", type: "boolean", default: "false", description: "Adds a drag handle on the panel's trailing edge. It is a keyboard-operable separator: Arrow keys move it by 8px, Shift by 32px, Home and End jump to the bounds. With `persistPanel` the chosen width is kept like the open state and restored before the first paint; `panelWidth` is the width used until the user picks one." },
+  { name: "collapseShortPanel", type: "boolean", default: "false", description: "Collapses the panel to the rail for a module with 2 destinations or fewer, so a short list does not reserve a 200px column. A module with a single destination never shows a panel either way; with three or more it stays open." },
   { name: "reorder", type: "Component", description: "Pass the exported `NavReorder` to enable `onReorder` on sections and modules. Opt-in so the drag engine is only bundled by apps that reorder." },
   { name: "itemMenu", type: "Component", description: "Pass the exported `NavItemMenu` to render `NavItem.actions` as a \"…\" menu. Opt-in so the dropdown menu is only bundled by apps that use it." },
   { name: "header", type: "Snippet", description: "Desktop header rendered above the page content. Hidden below 900px." },

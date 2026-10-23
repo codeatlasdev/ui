@@ -1,0 +1,11 @@
+{
+	"summary": "An app shell with one module of two items and collapseShortPanel: only the rail shows, the page uses the full width.",
+	"use": "Small modules (settings, profile) where a 200px panel would hold two links and leave the rest empty.",
+	"spec": [
+		"`<AppShellLayout {modules} {pathname} collapseShortPanel persistPanel={false} mainId={null} skipLink={false}>` in a 320px tall frame",
+		"One module `id: 'settings'` (Settings icon) with two items: Profile and Billing",
+		"Page is `<PageShell title=\"Profile\" description=\"A two-item module needs no panel: the rail is enough.\">` with a glass `Card` hint"
+	],
+	"tags": ["app-shell", "panel", "collapse", "rail", "sidebar", "navigation"],
+	"shape": "wide"
+}

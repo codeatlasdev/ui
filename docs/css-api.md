@@ -244,7 +244,7 @@ State attributes on `.ca-motion-stage`: `data-playing`, `data-taken`, `data-redu
 
 ## PageShell
 
-`.ca-page-shell` `.ca-page-shell__actions` `.ca-page-shell__body` `.ca-page-shell__description` `.ca-page-shell__header` `.ca-page-shell__meta` `.ca-page-shell__title` `.ca-shell__content`
+`.ca-page-shell` `.ca-page-shell__actions` `.ca-page-shell__aside` `.ca-page-shell__body` `.ca-page-shell__description` `.ca-page-shell__frame` `.ca-page-shell__header` `.ca-page-shell__layout` `.ca-page-shell__layout--aside` `.ca-page-shell__layout--reading` `.ca-page-shell__main` `.ca-page-shell__meta` `.ca-page-shell__title` `.ca-shell__content`
 
 ## Pagination
 

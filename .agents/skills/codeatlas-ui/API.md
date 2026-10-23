@@ -152,6 +152,7 @@ Classes: `ca-app-settings` `ca-app-settings__actions` `ca-app-settings__body` `c
 | `persistPanel?` | `boolean` | `true` | Keeps the shell across page loads: panel open/closed, selected module, expanded sections (localStorage) and the panel scroll (sessionStorage), restored before first paint. Turn it off for demos and embeds that must always start from the defaults. |
 | `panelWidth?` | `number` | `PANEL_WIDTH` | Width of the navigation panel in px, for lists with long labels. Held between 160 and 480. The content offset and the open/close animation follow it. With `resizablePanel` it is the width used until the user drags the edge. |
 | `resizablePanel?` | `boolean` | `false` | Adds a drag handle (a keyboard-operable separator) on the panel's trailing edge. The width the user picks is kept with `persistPanel`, like the open state, and restored before paint. |
+| `collapseShortPanel?` | `boolean` | `false` | Collapses the panel to the rail for a module with 2 destinations or fewer, so a short list does not reserve a whole column of empty background. Off by default: a 2-item panel stays open (a single-destination module never shows one either way). Opening the panel for a longer module still works. |
 | `reorder?` | `NavExtras['reorder']` |  | Enables `onReorder` on sections and modules: pass the exported `NavReorder` component. Opt-in so the drag engine is only bundled by apps that reorder. |
 | `itemMenu?` | `NavExtras['itemMenu']` |  | Renders `NavItem.actions` as a "…" menu: pass the exported `NavItemMenu` component. Opt-in so DropdownMenu is only bundled by apps that use per-item menus. |
 | `mainId?` | `string \| null` | `'main'` | `id` given to the content region, the target of the skip link. By default the region is the page's `<main id tabindex="-1">` landmark. Pass `null` when your own `<main id="main" tabindex="-1">` is the target: the region then renders as a plain `div` so the page never gets two landmarks. |
@@ -1726,11 +1727,13 @@ Classes: `ca-nf` `ca-nf--disabled` `ca-nf--sm` `ca-nf__btn` `ca-nf__hint` `ca-nf
 | `description?` | `string` |  |  |
 | `gap?` | `number` |  |  |
 | `maxWidth?` | `string` |  |  |
+| `width?` | `'reading' \| 'wide'` | `'wide'` | Caps the content column. `reading` is ~46rem (forms, settings: readable line length, inputs that do not stretch edge to edge); `wide` (default) uses the full shell width. With an `aside` the cap applies to the content column and the aside sits next to it. |
+| `asideLabel?` | `string` |  | Accessible name of the `<aside>` landmark. Defaults to "Page sidebar" (localized). |
 | `class?` | `string` | `''` |  |
 
-Snippets: `actions`, `children`
+Snippets: `actions`, `aside`, `children`
 
-Classes: `ca-page-shell` `ca-page-shell__actions` `ca-page-shell__body` `ca-page-shell__description` `ca-page-shell__header` `ca-page-shell__meta` `ca-page-shell__title`
+Classes: `ca-page-shell` `ca-page-shell__actions` `ca-page-shell__aside` `ca-page-shell__body` `ca-page-shell__description` `ca-page-shell__frame` `ca-page-shell__header` `ca-page-shell__layout` `ca-page-shell__layout--aside` `ca-page-shell__layout--reading` `ca-page-shell__meta` `ca-page-shell__title`
 
 ## Pagination
 

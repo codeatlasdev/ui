@@ -1,19 +1,35 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import { scrollFocusable } from '../../actions/scroll-focusable.js';
+  import { useMessages } from '../../i18n/state.svelte.js';
+  import { pageShell } from '../../i18n/groups/pageShell.js';
   import { provideSectionHeadingLevel } from './heading-context.js';
+  const t = useMessages(pageShell);
 
   interface Props {
     title?: string;
     description?: string;
     gap?: number;
     maxWidth?: string;
+    /**
+     * Caps the content column. `reading` is ~46rem (forms, settings: readable line length, inputs
+     * that do not stretch edge to edge); `wide` (default) uses the full shell width. With an
+     * `aside` the cap applies to the content column and the aside sits next to it.
+     */
+    width?: 'reading' | 'wide';
     actions?: Snippet;
+    /**
+     * Companion column (in-page index, summary, help, preview). Next to the content (sticky) when
+     * the shell is wide enough, after the content below that. Rendered as `<aside>`.
+     */
+    aside?: Snippet;
+    /** Accessible name of the `<aside>` landmark. Defaults to "Page sidebar" (localized). */
+    asideLabel?: string;
     class?: string;
     children?: Snippet;
   }
 
-  let { title, description, gap, maxWidth, actions, class: className = '', children }: Props = $props();
+  let { title, description, gap, maxWidth, width = 'wide', actions, aside, asideLabel, class: className = '', children }: Props = $props();
   const titleId = $props.id();
   // The page <h1> is rendered above; titles inside the shell default to <h2>.
   provideSectionHeadingLevel();
@@ -53,8 +69,17 @@
       {/if}
     </div>
   {/if}
-  <div class="ca-page-shell__body">
-    {@render children?.()}
+  <div class="ca-page-shell__frame">
+    <div class="ca-page-shell__layout" class:ca-page-shell__layout--reading={width === 'reading'} class:ca-page-shell__layout--aside={!!aside}>
+      <div class="ca-page-shell__main ca-page-shell__body">
+        {@render children?.()}
+      </div>
+      {#if aside}
+        <aside class="ca-page-shell__aside" aria-label={asideLabel ?? t().pageShell.aside}>
+          {@render aside()}
+        </aside>
+      {/if}
+    </div>
   </div>
 </div>
 
@@ -114,6 +139,39 @@
       flex-direction: column;
       gap: var(--ps-gap, var(--ca-space-7));
       width: 100%;
+    }
+
+    /* The frame is the container: the aside moves beside the content when the SHELL is wide
+       (it shares the viewport with the rail and panel), not when the viewport is. */
+    .ca-page-shell__frame { container-type: inline-size; }
+
+    .ca-page-shell__layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--ps-gap, var(--ca-space-7));
+      align-items: start;
+    }
+
+    .ca-page-shell__layout--reading { grid-template-columns: minmax(0, var(--ca-reading-width, 46rem)); justify-content: center; }
+
+    .ca-page-shell__aside {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--ca-space-4);
+    }
+
+    @container (min-width: 60rem) {
+      .ca-page-shell__layout--aside {
+        grid-template-columns: minmax(0, 1fr) var(--ca-aside-width, 17rem);
+      }
+      .ca-page-shell__layout--aside.ca-page-shell__layout--reading {
+        grid-template-columns: minmax(0, var(--ca-reading-width, 46rem)) var(--ca-aside-width, 17rem);
+      }
+      .ca-page-shell__aside {
+        position: sticky;
+        top: 0;
+      }
     }
 
     @media (max-width: 599.98px) {

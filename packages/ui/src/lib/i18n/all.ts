@@ -43,6 +43,7 @@ import { mobilePane } from "./groups/mobilePane.js";
 import { motionStage } from "./groups/motionStage.js";
 import { notificationBell } from "./groups/notificationBell.js";
 import { numberField } from "./groups/numberField.js";
+import { pageShell } from "./groups/pageShell.js";
 import { pagination } from "./groups/pagination.js";
 import { select } from "./groups/select.js";
 import { sheet } from "./groups/sheet.js";
@@ -90,6 +91,7 @@ export const groups = {
 	mobilePane,
 	notificationBell,
 	numberField,
+	pageShell,
 	pagination,
 	table,
 	select,

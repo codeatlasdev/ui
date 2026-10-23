@@ -35,6 +35,13 @@
      */
     resizablePanel?: boolean;
     /**
+     * Collapses the panel to the rail for a module with 2 destinations or fewer, so a short list
+     * does not reserve a whole column of empty background. Off by default: a 2-item panel stays
+     * open (a single-destination module never shows one either way). Opening the panel for a
+     * longer module still works.
+     */
+    collapseShortPanel?: boolean;
+    /**
      * Enables `onReorder` on sections and modules: pass the exported `NavReorder` component.
      * Opt-in so the drag engine is only bundled by apps that reorder.
      */
@@ -83,6 +90,7 @@
     persistPanel  = true,
     panelWidth    = PANEL_WIDTH,
     resizablePanel = false,
+    collapseShortPanel = false,
     reorder,
     itemMenu,
     header,
@@ -150,13 +158,14 @@
   }
 
   // A panel listing a single destination only repeats the rail icon and the
-  // page title, so it is skipped for modules with fewer than two leaves.
+  // page title, so it is skipped for modules with fewer than two leaves
+  // (fewer than three with `collapseShortPanel`).
   let selectedHasChoices = $derived.by(() => {
     const mod = modules[selectedIndex];
     if (!mod) return false;
     let leaves = 0;
     for (const entry of mod.items) leaves += isNavSection(entry) ? entry.items.length : 1;
-    return leaves > 1;
+    return leaves > (collapseShortPanel ? 2 : 1);
   });
   let panelVisible = $derived(panelOpen && selectedHasChoices);
 

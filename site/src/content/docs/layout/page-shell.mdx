@@ -8,6 +8,8 @@ import Demo from "~/components/docs/Demo.astro";
 import Props from "~/components/docs/Props.astro";
 import Dashboard from "~/demos/layout/page-shell/Dashboard.svelte";
 import DashboardSrc from "~/demos/layout/page-shell/Dashboard.svelte?raw";
+import AsideReading from "~/demos/layout/page-shell/AsideReading.svelte";
+import AsideReadingSrc from "~/demos/layout/page-shell/AsideReading.svelte?raw";
 
 ```svelte
 <script>
@@ -26,12 +28,23 @@ The shell renders `title` as the page `<h1>`; below 900px inside an `AppShellLay
 
 <Demo title="Dashboard page" description="KPI cards and a content card inside a PageShell." src={DashboardSrc}><Dashboard /></Demo>
 
+## Aside and reading width
+
+Pass an `aside` snippet for a companion column (in-page index, summary, help, preview). When the shell itself is at least 60rem wide the aside sits next to the content (about 17rem, sticky); below that it follows the content. The breakpoint is the shell's width, not the viewport's, so an open `AppShellLayout` panel is accounted for. It renders as `<aside>`; name it with `asideLabel` when a page has more than one complementary landmark.
+
+`width="reading"` caps the content column at 46rem so forms and settings keep a readable line length instead of stretching to `maxWidth`. With an aside the pair is centred. `width="wide"` (default) is the previous behaviour.
+
+<Demo title="Reading width with an aside" description="width=&quot;reading&quot; plus an aside snippet holding a section index." src={AsideReadingSrc} stage><AsideReading client:visible /></Demo>
+
 <Props rows={[
   { name: "title", type: "string", description: "Page title." },
   { name: "description", type: "string", description: "Supporting text under the title." },
   { name: "gap", type: "number", default: "undefined", description: "Vertical gap between the header and the content, in px. Omit for `--ca-space-7` (28px at the default density)." },
   { name: "maxWidth", type: "string", default: "undefined", description: "Maximum width of the content column, any CSS length. Omit for 80rem (1280px at the default 4px spacing unit)." },
+  { name: "width", type: "'reading' | 'wide'", default: "'wide'", description: "`reading` caps the content column at 46rem (forms, settings). `wide` fills the shell up to `maxWidth`." },
   { name: "actions", type: "Snippet", description: "Right side of the page header." },
+  { name: "aside", type: "Snippet", description: "Companion column rendered as `<aside>`: beside the content (sticky, ~17rem) when the shell is at least 60rem wide, after the content below that." },
+  { name: "asideLabel", type: "string", default: "'Page sidebar'", description: "Accessible name of the `<aside>` landmark (localized default)." },
   { name: "children", type: "Snippet", description: "Page content." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />
