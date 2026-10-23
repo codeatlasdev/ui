@@ -312,5 +312,5 @@ id	group	page	title	names	tags	summary
 470	navigation	popover	Close on pick		popover,calendar,bind-open,close,date,overlay	A button showing the chosen date that opens a popover holding a calendar; picking a day closes the popover.
 480	layout	app-shell	Panel width		app-shell,panel-width,resizable,separator,sidebar,navigation	An app shell whose panel starts at 280px for long item names and has a drag handle on its edge.
 481	layout	app-shell	Color, count, actions and reorder		app-shell,nav-item,color,count,actions-menu,reorder,drag-and-drop,sidebar	App shell panel rows with a color dot, a neutral count, a per-row actions menu and drag-to-reorder.
-560	layout	page-shell	Reading width with an aside		page-shell,aside,width,reading,settings,form,sticky,layout	A PageShell with width="reading" (form column capped at 46rem) and an aside snippet holding a section index, inside a fixed-height frame.
-561	layout	app-shell	Short panel		app-shell,panel,collapse,rail,sidebar,navigation	An app shell with one module of two items and collapseShortPanel: only the rail shows, the page uses the full width.
+600	layout	page-shell	Reading width with an aside		page-shell,aside,width,reading,settings,form,sticky,layout	A PageShell with width="reading" (form column capped at 46rem) and an aside snippet holding a section index, inside a fixed-height frame.
+601	layout	app-shell	Short panel		app-shell,panel,collapse,rail,sidebar,navigation	An app shell with one module of two items and collapseShortPanel: only the rail shows, the page uses the full width.

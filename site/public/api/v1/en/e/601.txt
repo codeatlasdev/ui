@@ -1,5 +1,5 @@
-<!-- @codeatlasdev/ui demo #561 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/app-shell#short-panel -->
-Element: #561 Short panel (layout/app-shell)
+<!-- @codeatlasdev/ui demo #601 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/app-shell#short-panel -->
+Element: #601 Short panel (layout/app-shell)
 What it shows: An app shell with one module of two items and collapseShortPanel: only the rail shows, the page uses the full width.
 When to use: Small modules (settings, profile) where a 200px panel would hold two links and leave the rest empty.
 Spec:

@@ -1,5 +1,5 @@
-<!-- @codeatlasdev/ui demo #560 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/page-shell#reading-width-with-an-aside -->
-Element: #560 Reading width with an aside (layout/page-shell)
+<!-- @codeatlasdev/ui demo #600 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/page-shell#reading-width-with-an-aside -->
+Element: #600 Reading width with an aside (layout/page-shell)
 What it shows: A PageShell with width="reading" (form column capped at 46rem) and an aside snippet holding a section index, inside a fixed-height frame.
 When to use: Settings and form pages on wide screens that need a readable column plus a companion column (in-page index, summary, help, preview).
 Spec:

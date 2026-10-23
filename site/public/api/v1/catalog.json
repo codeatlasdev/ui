@@ -35,7 +35,7 @@
 		{
 			"slug": "layout",
 			"first": "165",
-			"last": "561",
+			"last": "601",
 			"count": 32
 		},
 		{
@@ -14157,7 +14157,7 @@
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{
-			"id": "560",
+			"id": "600",
 			"group": "layout",
 			"page": "page-shell",
 			"variant": "AsideReading",
@@ -14205,7 +14205,7 @@
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{
-			"id": "561",
+			"id": "601",
 			"group": "layout",
 			"page": "app-shell",
 			"variant": "ShortPanel",
