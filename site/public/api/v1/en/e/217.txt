@@ -6,7 +6,7 @@ Spec:
 - `kpis` has 4 items: Monthly Revenue `$112k`, Active Users `24.8k`, Churn Rate `2.3%`, Avg Session `4m 12s`
 - Each item has `label`, `value`, `change`, `trend` and 9 `data` values
 - `<Sparkline data={k.data} trend={k.trend} height="32px" />`
-- `<Grid class="grid-auto-220" gap="4">` with each KPI in `<Card material="glass">`
+- `<Grid columns={{ base: 1, sm: 2, lg: 4 }} gap="4">` with each KPI in `<Card material="glass">`
 - `class:up={k.trend === 'up'}` and `class:down={k.trend === 'down'}` colour the change text
 Tags: sparkline, kpi, card, trend, dashboard, grid
 Needs: @codeatlasdev/ui@4.5.0 + echarts
@@ -25,7 +25,7 @@ Live demo: https://ui.codeatlas.com.br/docs/charts/sparklines#kpi-cards-with-tre
   ];
 </script>
 
-<Grid class="grid-auto-220" gap="4">
+<Grid columns={{ base: 1, sm: 2, lg: 4 }} gap="4">
   {#each kpis as k}
     <Card material="glass">
       <Stack gap="2">
@@ -41,7 +41,6 @@ Live demo: https://ui.codeatlas.com.br/docs/charts/sparklines#kpi-cards-with-tre
 </Grid>
 
 <style>
-  :global(.grid-auto-220) { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
   .meta { font-size: var(--ca-font-size-caption); color: var(--ca-text-secondary); }
   .value { font-size: var(--ca-font-size-h5); font-weight: 700; color: var(--ca-text-primary); }
   .change { font-size: var(--ca-font-size-caption); }

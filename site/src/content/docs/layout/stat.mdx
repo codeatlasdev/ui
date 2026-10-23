@@ -23,6 +23,8 @@ Use `Stat` for a plain number inside a card, a panel or a flex/grid row. It has 
 
 It renders a description list (`<dl>`): the label is the `<dt>`, the value the `<dd>`, so assistive tech reads the label as the name of the number. The label is one line and truncates with an ellipsis in a narrow container (390px); the value uses tabular numerals and never wraps. Text colours are `--ca-text-secondary` (label), `--ca-text-primary` (value) and `--ca-text-hint` (hint). Place several Stats side by side with a grid or flex wrapper; do not wrap each one in a Card.
 
+`trend` is a relative percent change that you compute: `trend={12.5}` shows `+12.5%`. A metric that went from 80 to 90 passes `trend={12.5}`, not `10`.
+
 A trend is good news when it goes up by default: a rise is green, a fall red. For a metric where down is good (churn, cost, latency) set `trendTone="positive-down"`: the arrow still follows the sign, the colour flips, and the accessible label says "better" or "worse" (`Trend: -1.8%, better`; `Tendência: -1.8%, melhor` in pt-BR). `trendTone="neutral"` shows the change without judging it. A zero change is always neutral. Do not drop `trend` and write the delta in `hint` to avoid a wrong colour.
 
 <Demo title="Stats in a card" description={"Three card-less stats in one Card, with hint, unit and trend."} src={StatsSrc}><Stats /></Demo>
@@ -32,7 +34,7 @@ A trend is good news when it goes up by default: a rise is green, a fall red. Fo
   { name: "value", type: "string | number", description: "The number. Tabular numerals, never wraps." },
   { name: "unit", type: "string", description: "Unit shown after the value (`%`, `ms`, `users`)." },
   { name: "hint", type: "string", description: "Secondary caption below the value." },
-  { name: "trend", type: "number", description: "Percentage change. The arrow follows the sign (up, down, none for zero). Announced as \"Trend: +12.5%\"." },
+  { name: "trend", type: "number", description: "Relative percent change, already computed: `12.5` renders `+12.5%` and `-2.4` renders `-2.4%` (one decimal). It is not an absolute difference, so pass `(now - before) / before * 100`, not `now - before`. The arrow follows the sign (up, down, none for zero). Announced as \"Trend: +12.5%\"." },
   { name: "trendTone", type: "'positive-up' | 'positive-down' | 'neutral'", description: "Which direction of `trend` is good news. Without it a rise is green and a fall red; `'positive-up'` says the same and `'positive-down'` flips it (churn, cost, latency); `'neutral'` judges neither. Setting it adds \"better\" or \"worse\" to the accessible label. Zero is always neutral." },
   { name: "size", type: "'sm' | 'md' | 'lg'", default: "'md'", description: "Value size: 17px, 24px or 36px." },
   { name: "align", type: "'start' | 'center'", default: "'start'", description: "Text alignment." },

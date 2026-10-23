@@ -81,12 +81,14 @@ For each file below, `init` creates it when it is missing, or patches it when it
 
 | File | What `init` puts there | If the file exists |
 |---|---|---|
-| `package.json` (Kit 3) | `"imports": { "#lib/*": "./src/lib/*" }`, so the files below can import `#lib/theme.ts` and `#lib/messages.ts` (`$lib` was removed in Kit 3) | adds only `#lib/*`; the rest of `imports` is kept |
+| `package.json` | `"scripts": { "prepare": "svelte-kit sync" }` (Kit 2 and 3), and on Kit 3 `"imports": { "#lib/*": "./src/lib/*" }`, so the files below can import `#lib/theme.ts` and `#lib/messages.ts` (`$lib` was removed in Kit 3) | adds only what is missing: a `prepare` script you already have is kept as it is, and so is the rest of `imports` |
 | `src/lib/theme.ts` | the shared `theme` object (`defaultPreset: "amber"`, `defaultScheme: "system"`) | left alone |
-| `src/lib/messages.ts` | the app copy the scaffold shows (`export const m = { appTitle, offline: { ... } }`): templates read `{m.appTitle}`, so `codeatlas-ui lint` stays clean. See [app copy](/docs/getting-started/app-copy/) | left alone |
+| `src/lib/messages.ts` | the app copy the scaffold shows (`export const m = { appTitle }`): templates read `{m.appTitle}`, so `codeatlas-ui lint` stays clean. `--with pwa` adds the `offline` keys the offline page reads. See [app copy](/docs/getting-started/app-copy/) | left alone; `--with pwa` adds `offline` only to the file `init` wrote itself |
 | `vite.config.ts` | `caThemePlugin(theme)` and `caErrorPlugin({ scaffold: true, theme })`, appended to `plugins`, in one `@codeatlasdev/ui/vite` import (plus `import { theme } from "./src/lib/theme.ts"`) | adds only the plugin that is missing |
 | `src/hooks.server.ts` | `handle = sequence(caThemeHandle(theme))` and `handleError = createErrorHandler()` | adds only what is missing; reports `manual` if you already define a `handle` of your own; never touches your `handleError` |
 | `src/routes/+layout.svelte` | the stylesheet import, `colorScheme.init()` in `onMount` and a default `<Seo>` (title from `m.appTitle`, canonical from `page.url`) | adds only what is missing; an existing `<Seo>` is kept |
+
+That layout `<Seo>` is a placeholder, not a default a page overrides. Each `<Seo>` writes its own tags into `<head>`; only the `<title>` is replaced by the page's (the last one rendered wins). The `description`, `canonical`, `og:*` and `twitter:*` tags of the layout and of a page that has its own `<Seo>` would both be in the document. Delete the layout `<Seo>` as soon as the pages carry theirs, or keep it and give the pages no `<Seo>` of their own (see [SEO](/docs/getting-started/seo/#the-seo-component)).
 | `src/app.html` | the viewport meta with `viewport-fit=cover, interactive-widget=resizes-content` | rewrites only the viewport meta; reports `manual` when there is none |
 | `tsconfig.json` | see [a bare app](#a-bare-app-files-init-creates); with `@sveltejs/adapter-static`, the adapter output folder in `exclude` | adds only what is missing |
 | `src/routes/+layout.ts` | only with `@sveltejs/adapter-static`: `export const prerender = true;` | adds the line when missing |
@@ -169,6 +171,8 @@ The service worker, manifest, `robots.txt`, `sitemap.xml` and offline page are [
 </Callout>
 
 ### SvelteKit 3
+
+On a fresh Kit 3 app run `svelte-kit sync` (`bunx svelte-kit sync`) before `svelte-check`: `.svelte-kit/tsconfig.json` is no longer generated, and until the sync wrote `.svelte-kit/` `svelte-check` stops with `File '$app/tsconfig' not found`. `init` adds `"prepare": "svelte-kit sync"` to `package.json`, so the install step runs it for you; `vite dev` and `vite build` sync as well.
 
 Kit 3 changed three things this setup touches. `init` handles the third (`$lib` is gone): it adds the `#lib/*` map to `package.json` and imports through it. For the other two it prints a `note` line instead of rewriting `svelte.config.js` or an existing `tsconfig.json`: it reports `svelte.config.js`/`.ts`/`.mjs` when one exists, and a `tsconfig.json` that does not mention `$app/tsconfig`. On a clean Kit 3 run you get no `Done.` line while a note is pending.
 

@@ -8347,7 +8347,7 @@
 				"`const zones: GaugeZone[]` with 3 entries: `{ until: 0.5, color: 'success' }`, `{ until: 0.8, color: 'warning' }`, `{ until: 1, color: 'error' }`",
 				"`const metrics` with 3 items: CPU `67`, Memory `82`, Disk `45`, fields `label` and `value`",
 				"`{#each metrics as m}` renders `<GaugeChart value={m.value} {zones} height=\"200px\" />`",
-				"Each gauge sits in its own `<Card material=\"glass\">` inside `<Grid class=\"grid-auto-200\" gap=\"4\">`"
+				"Each gauge sits in its own `<Card material=\"glass\">` inside `<Grid columns={{ base: 1, sm: 3 }} gap=\"4\">`"
 			],
 			"tags": [
 				"gauge-chart",
@@ -8743,9 +8743,9 @@
 			"spec": [
 				"`<KpiGrid>` with 4 `<KpiCard`: Revenue `$118k`, Users `94.2k`, Growth `34%`, Uptime `99.9%`, each with a `trend` and an `icon`",
 				"`<LineChart` with 2 series Revenue and Expenses, `area`, `height=\"280px\"`",
-				"Two-column `<Grid class=\"grid-auto-280\" gap=\"4\">`: `<BarChart` with 4 series and `stacked`, and `<PieChart` with 5 items and `donut`",
+				"Two-column `<Grid columns={{ base: 1, md: 2 }} gap=\"4\">`: `<BarChart` with 4 series and `stacked`, and `<PieChart` with 5 items and `donut`",
 				"`<ScatterChart series={[{ name: 'Accounts', data: scatter }]}` with 60 points, `yName=\"Conversion %\"` and `yFormatter`",
-				"Second `<Grid class=\"grid-auto-280\" gap=\"4\">`: `<HeatmapChart variant=\"calendar\"` with `range={['2026-03-01', '2026-09-18']}` and `<GaugeChart value={84} label=\"Score\"`",
+				"Second `<Grid columns={{ base: 1, md: 2 }} gap=\"4\">`: `<HeatmapChart variant=\"calendar\"` with `range={['2026-03-01', '2026-09-18']}` and `<GaugeChart value={84} label=\"Score\"`",
 				"`<RadarChart` with 5 `indicators` (Speed, Quality, Reliability, Innovation, Support, `max: 100`) and series Team A and Team B"
 			],
 			"tags": [
@@ -9347,7 +9347,7 @@
 				"`kpis` has 4 items: Monthly Revenue `$112k`, Active Users `24.8k`, Churn Rate `2.3%`, Avg Session `4m 12s`",
 				"Each item has `label`, `value`, `change`, `trend` and 9 `data` values",
 				"`<Sparkline data={k.data} trend={k.trend} height=\"32px\" />`",
-				"`<Grid class=\"grid-auto-220\" gap=\"4\">` with each KPI in `<Card material=\"glass\">`",
+				"`<Grid columns={{ base: 1, sm: 2, lg: 4 }} gap=\"4\">` with each KPI in `<Card material=\"glass\">`",
 				"`class:up={k.trend === 'up'}` and `class:down={k.trend === 'down'}` colour the change text"
 			],
 			"tags": [
@@ -9403,7 +9403,7 @@
 				"`const metrics = $derived([` maps to labels CPU, Memory, Network",
 				"`{m.data[m.data.length - 1].toFixed(0)}%` shows the latest value",
 				"`<Sparkline data={m.data} height=\"40px\" />` in a `<Card material=\"glass\">`",
-				"`<Grid class=\"grid-auto-200\" gap=\"4\">` holds the 3 cards"
+				"`<Grid columns={{ base: 1, sm: 3 }} gap=\"4\">` holds the 3 cards"
 			],
 			"tags": [
 				"sparkline",

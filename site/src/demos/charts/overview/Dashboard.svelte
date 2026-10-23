@@ -31,7 +31,7 @@
     <LineChart series={[{ name: 'Revenue', data: revenue }, { name: 'Expenses', data: expenses }]} categories={months} valueFormatter={fmt} area height="280px" />
   </Card>
 
-  <Grid class="grid-auto-280" gap="4">
+  <Grid columns={{ base: 1, md: 2 }} gap="4">
     <Card material="glass">
       <BarChart
         series={[
@@ -65,7 +65,7 @@
     <ScatterChart series={[{ name: 'Accounts', data: scatter }]} yName="Conversion %" yFormatter={(v) => `${v.toFixed(1)}%`} height="260px" />
   </Card>
 
-  <Grid class="grid-auto-280" gap="4">
+  <Grid columns={{ base: 1, md: 2 }} gap="4">
     <Card material="glass">
       <HeatmapChart variant="calendar" data={calDays} range={['2026-03-01', '2026-09-18']} height="140px" />
     </Card>
@@ -85,7 +85,3 @@
     />
   </Card>
 </Stack>
-
-<style>
-  :global(.grid-auto-280) { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
-</style>

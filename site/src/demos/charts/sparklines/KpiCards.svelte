@@ -10,7 +10,7 @@
   ];
 </script>
 
-<Grid class="grid-auto-220" gap="4">
+<Grid columns={{ base: 1, sm: 2, lg: 4 }} gap="4">
   {#each kpis as k}
     <Card material="glass">
       <Stack gap="2">
@@ -26,7 +26,6 @@
 </Grid>
 
 <style>
-  :global(.grid-auto-220) { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
   .meta { font-size: var(--ca-font-size-caption); color: var(--ca-text-secondary); }
   .value { font-size: var(--ca-font-size-h5); font-weight: 700; color: var(--ca-text-primary); }
   .change { font-size: var(--ca-font-size-caption); }

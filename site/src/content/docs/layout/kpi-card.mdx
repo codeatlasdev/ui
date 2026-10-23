@@ -33,7 +33,7 @@ Put several cards in a [KpiGrid](/docs/layout/kpi-grid/) so a row never ends on 
 <Demo title="Negative trend" description={"A falling number that is good news: trendTone=\"positive-down\"."} src={NegativeTrendSrc}><NegativeTrend /></Demo>
 <Demo title="Trend tone" description="Down is good for churn and latency; a neutral tone shows the change without judging it." src={TrendToneSrc}><TrendTone /></Demo>
 
-By default a rise is green and a fall red. `trendTone="positive-down"` flips the colour for metrics where down is good (churn, cost, latency); the arrow still follows the sign and the accessible label says "better" or "worse". `trendTone="neutral"` judges neither way. Do not omit `trend` to avoid a wrong colour.
+`trend` is a relative percent change (`12.4` renders `+12.4%`), computed by you: a metric that went from 80 to 90 passes `12.5`, not `10`. By default a rise is green and a fall red. `trendTone="positive-down"` flips the colour for metrics where down is good (churn, cost, latency); the arrow still follows the sign and the accessible label says "better" or "worse". `trendTone="neutral"` judges neither way. Do not omit `trend` to avoid a wrong colour.
 
 <Props rows={[
   { name: "title", type: "string", description: "Metric name." },
