@@ -17,8 +17,8 @@
    * Inside the `panel` slot, use the CSS vars defined here (derived from `--ca-auth-panel-fg`,
    * white by default on the brand gradient, `--ca-text-primary` on a flat panel):
    *   --panel-text-primary   → fg at 95%
-   *   --panel-text-secondary → fg at 60%
-   *   --panel-text-tertiary  → fg at 35%
+   *   --panel-text-secondary → fg at 60% (flat panel: --ca-text-secondary)
+   *   --panel-text-tertiary  → fg at 35% (flat panel: --ca-text-hint)
    *   --panel-surface        → fg at 10%
    *   --panel-surface-active → fg at 18%
    *   --panel-border         → fg at 14%
@@ -209,6 +209,16 @@
     :global([data-style='flat']) .ca-auth[data-panel-tone='auto'] .ca-auth__blobs,
     :global([data-style='outlined']) .ca-auth[data-panel-tone='auto'] .ca-auth__blobs {
       display: none;
+    }
+
+    /* A flat panel is an ordinary surface, so the secondary and tertiary levels are the theme's own
+       AA-checked text tokens: an alpha mix of the foreground is only legible over the dark brand
+       gradient (#440: 4.39:1 and 2.4:1 over the raised surface in dark, 2.21:1 in light). */
+    .ca-auth[data-panel-tone='flat'] .ca-auth__slot,
+    :global([data-style='flat']) .ca-auth[data-panel-tone='auto'] .ca-auth__slot,
+    :global([data-style='outlined']) .ca-auth[data-panel-tone='auto'] .ca-auth__slot {
+      --panel-text-secondary: var(--ca-text-secondary);
+      --panel-text-tertiary:  var(--ca-text-hint);
     }
 
     /* Same selector as the rule above: a :global() override loses to the scoped class. */
