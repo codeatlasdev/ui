@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #843 "Sign-in form" (inputs/turnstile).
+What it shows: A sign-in form with a Turnstile captcha: no token without the check, reset() after a submit. When to use: Public forms (sign-in, sign-up, waitlist, reset) that need a captcha token to verify on the server.
+Spec:
+- `import { Turnstile, type TurnstileHandle } from '@codeatlasdev/ui/forms'`
+- `const SITE_KEY = '1x00000000000000000000AA'` (Cloudflare's always-pass test key)
+- `<Turnstile siteKey={SITE_KEY} action="sign-in" bind:handle />` between the Email field and the Sign in button
+- Submit reads `handle?.getToken()`, blocks with a message when it is empty, and calls `handle?.reset()` after sending
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #843 Sign-in form → file, what changed, https://ui.codeatlas.com.br/docs/inputs/turnstile#sign-in-form; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/843.txt   Components API: ca-ui-mcp get_component(Button)

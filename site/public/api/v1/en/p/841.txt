@@ -1,0 +1,12 @@
+Use @codeatlasdev/ui demo #841 "Sign-up field" (inputs/password-strength).
+What it shows: A password field with a 3-step strength meter and a polite text label under it. When to use: Sign-up and reset-password forms that need strength feedback that does not rely on colour alone.
+Spec:
+- `let password = $state('')` bound with `<TextField label="Password" type="password" bind:value={password} />`
+- `<PasswordStrength value={password} />` directly under the field
+- Column is `max-width: 20rem` with `gap: var(--ca-space-2)`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #841 Sign-up field → file, what changed, https://ui.codeatlas.com.br/docs/inputs/password-strength#sign-up-field; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/841.txt   Components API: ca-ui-mcp get_component(PasswordStrength)

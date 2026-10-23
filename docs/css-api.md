@@ -272,6 +272,12 @@ State attributes on `.ca-motion-stage`: `data-playing`, `data-taken`, `data-redu
 
 `.ca-pagination` `.ca-pagination__ellipsis` `.ca-pagination__nav` `.ca-pagination__page`
 
+## PasswordStrength
+
+`.ca-pwstrength` `.ca-pwstrength__bar` `.ca-pwstrength__label` `.ca-pwstrength__seg` `.ca-pwstrength__text`
+
+`data-score="0|1|2|3"` on `.ca-pwstrength`; `data-on` on a filled `.ca-pwstrength__seg`.
+
 ## PinInput
 
 `.ca-pin` `.ca-pin--disabled` `.ca-pin--error` `.ca-pin-blink` `.ca-pin__caret` `.ca-pin__cell` `.ca-pin__cells` `.ca-pin__hint` `.ca-pin__hint--error` `.ca-pin__label` `.ca-pin__root`
@@ -346,6 +352,10 @@ The `skeleton` prop of `Avatar`, `KpiCard`, `TextField`, `Table`, `Card` and `Gl
 ## Spinner
 
 `.ca-spin` `.ca-spinner` `.ca-spinner__arc` `.ca-spinner__track`
+
+## SplashScreen
+
+`.ca-splash` `.ca-splash__logo`
 
 ## Stack
 
@@ -428,6 +438,10 @@ The `skeleton` prop of `Avatar`, `KpiCard`, `TextField`, `Table`, `Card` and `Gl
 ## Tooltip
 
 `.ca-tooltip-content` `.ca-tooltip-in` `.ca-tooltip-out` `.ca-tooltip__trigger`
+
+## Turnstile
+
+`.ca-turnstile`
 
 ## VirtualList
 

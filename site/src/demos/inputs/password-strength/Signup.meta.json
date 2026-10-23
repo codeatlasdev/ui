@@ -1,0 +1,11 @@
+{
+	"summary": "A password field with a 3-step strength meter and a polite text label under it.",
+	"use": "Sign-up and reset-password forms that need strength feedback that does not rely on colour alone.",
+	"spec": [
+		"`let password = $state('')` bound with `<TextField label=\"Password\" type=\"password\" bind:value={password} />`",
+		"`<PasswordStrength value={password} />` directly under the field",
+		"Column is `max-width: 20rem` with `gap: var(--ca-space-2)`"
+	],
+	"tags": ["password-strength", "password", "meter", "sign-up", "text-field", "aria-live"],
+	"shape": "wide"
+}

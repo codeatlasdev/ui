@@ -187,6 +187,9 @@ export { default as NumberField } from "./components/NumberField/NumberField.sve
 export { default as PageFrame } from "./components/PageFrame/PageFrame.svelte";
 export { default as PageShell } from "./components/PageShell/PageShell.svelte";
 export { default as Pagination } from "./components/Pagination/Pagination.svelte";
+export { default as PasswordStrength } from "./components/PasswordStrength/PasswordStrength.svelte";
+export type { PasswordScore } from "./components/PasswordStrength/score.js";
+export { passwordScore } from "./components/PasswordStrength/score.js";
 export { default as PinInput } from "./components/PinInput/PinInput.svelte";
 export { default as Popover } from "./components/Popover/Popover.svelte";
 export { default as Progress } from "./components/Progress/Progress.svelte";
@@ -207,6 +210,7 @@ export { default as Skeleton } from "./components/Skeleton/Skeleton.svelte";
 export { default as SkipLink } from "./components/SkipLink/SkipLink.svelte";
 export { default as Slider } from "./components/Slider/Slider.svelte";
 export { default as Spinner } from "./components/Spinner/Spinner.svelte";
+export { default as SplashScreen } from "./components/SplashScreen/SplashScreen.svelte";
 export { default as Stack } from "./components/Stack/Stack.svelte";
 export { default as Stat } from "./components/Stat/Stat.svelte";
 export { default as StatusChip } from "./components/StatusChip/StatusChip.svelte";

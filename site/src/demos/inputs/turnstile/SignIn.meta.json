@@ -1,0 +1,12 @@
+{
+	"summary": "A sign-in form with a Turnstile captcha: no token without the check, reset() after a submit.",
+	"use": "Public forms (sign-in, sign-up, waitlist, reset) that need a captcha token to verify on the server.",
+	"spec": [
+		"`import { Turnstile, type TurnstileHandle } from '@codeatlasdev/ui/forms'`",
+		"`const SITE_KEY = '1x00000000000000000000AA'` (Cloudflare's always-pass test key)",
+		"`<Turnstile siteKey={SITE_KEY} action=\"sign-in\" bind:handle />` between the Email field and the Sign in button",
+		"Submit reads `handle?.getToken()`, blocks with a message when it is empty, and calls `handle?.reset()` after sending"
+	],
+	"tags": ["turnstile", "captcha", "forms", "sign-in", "token", "cloudflare"],
+	"shape": "wide"
+}

@@ -1,0 +1,34 @@
+<!-- @codeatlasdev/ui demo #842 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/password-strength#your-own-rule -->
+Element: #842 Your own rule (inputs/password-strength)
+What it shows: A strength meter driven by your own length rule, with custom label text.
+When to use: Apps whose password policy is length-based or comes from a server rule.
+Spec:
+- `const byLength = (v: string) => (v.length === 0 ? 0 : v.length >= 12 ? 3 : v.length >= 8 ? 2 : 1)`
+- `value={password}` and `score={byLength}` on `<PasswordStrength`
+- `labels={{ empty: 'Type a passphrase', weak: 'Too short', fair: 'Almost there', strong: 'Good length' }}`
+- Field is `<TextField label="Passphrase" type="password" bind:value={password} />`
+Tags: password-strength, score, labels, custom, policy
+Needs: @codeatlasdev/ui@4.5.0
+Components: PasswordStrength, TextField
+Live demo: https://ui.codeatlas.com.br/docs/inputs/password-strength#your-own-rule
+
+<script lang="ts">
+  import { PasswordStrength, TextField } from '@codeatlasdev/ui';
+
+  let password = $state('');
+  // Your own rule: 12+ characters is strong, 8+ fair. Return 0 (empty) to 3 (strong).
+  const byLength = (v: string) => (v.length === 0 ? 0 : v.length >= 12 ? 3 : v.length >= 8 ? 2 : 1);
+</script>
+
+<div class="col">
+  <TextField label="Passphrase" type="password" bind:value={password} />
+  <PasswordStrength
+    value={password}
+    score={byLength}
+    labels={{ empty: 'Type a passphrase', weak: 'Too short', fair: 'Almost there', strong: 'Good length' }}
+  />
+</div>
+
+<style>
+  .col { display: grid; gap: var(--ca-space-2); width: 100%; max-width: 20rem; }
+</style>

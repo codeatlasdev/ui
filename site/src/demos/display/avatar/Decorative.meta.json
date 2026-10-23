@@ -1,0 +1,10 @@
+{
+	"summary": "Avatars next to a visible name, marked decorative so a screen reader says the name once.",
+	"use": "Lists, headers and comment rows where the avatar repeats the name written beside it.",
+	"spec": [
+		"`<Avatar alt={name} size=\"sm\" decorative />` followed by `<span>{name}</span>` in each `<li>`",
+		"People are `Ada Lovelace` and `Grace Hopper` in a `ul` with `list-style: none`"
+	],
+	"tags": ["avatar", "decorative", "aria-hidden", "name", "list", "a11y"],
+	"shape": "wide"
+}

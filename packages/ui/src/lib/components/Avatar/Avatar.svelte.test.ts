@@ -4,6 +4,7 @@ import { checkA11y } from "../../../../tests/a11y";
 import { q } from "../../../../tests/dom";
 import Avatar from "./Avatar.svelte";
 import AvatarIcon from "./AvatarIcon.test.svelte";
+import AvatarWithName from "./AvatarWithName.test.svelte";
 
 // 1x1 transparent GIF so the image really loads in Chromium
 const PIXEL = "data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7";
@@ -143,5 +144,40 @@ describe("Avatar", () => {
 	it("renders no status indicator when status is omitted", async () => {
 		const screen = await render(Avatar, { alt: "Ana Lima" });
 		expect(screen.container.querySelector(".ca-avatar__status")).toBeNull();
+	});
+});
+
+describe("Avatar decorative", () => {
+	it("hides the avatar from assistive tech: no name, no image, no status role", async () => {
+		const screen = await render(Avatar, { src: PIXEL, alt: "Ada Lovelace", decorative: true });
+		const el = root(screen.container);
+		expect(el.getAttribute("aria-hidden")).toBe("true");
+		const img = screen.container.querySelector<HTMLImageElement>("img.ca-avatar__img");
+		expect(img?.getAttribute("alt")).toBe("");
+		expect(screen.getByRole("img", { name: "Ada Lovelace" }).elements()).toHaveLength(0);
+	});
+
+	it("keeps the initials derived from alt and drops the status dot's role and name", async () => {
+		const screen = await render(Avatar, {
+			alt: "Ada Lovelace",
+			decorative: true,
+			status: "online",
+		});
+		await expect.element(screen.getByText("AL")).toBeInTheDocument();
+		const dot = screen.container.querySelector(".ca-avatar__status");
+		expect(dot?.getAttribute("role")).toBeNull();
+		expect(dot?.getAttribute("aria-label")).toBeNull();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("a non-decorative avatar is unchanged (no aria-hidden on the root)", async () => {
+		const screen = await render(Avatar, { alt: "Ada Lovelace" });
+		expect(root(screen.container).getAttribute("aria-hidden")).toBeNull();
+	});
+
+	it("has no axe violations next to the visible name", async () => {
+		const screen = await render(AvatarWithName, {});
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+		expect(screen.getByRole("img").elements()).toHaveLength(0);
 	});
 });
