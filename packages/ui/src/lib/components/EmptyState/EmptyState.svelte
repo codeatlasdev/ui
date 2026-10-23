@@ -21,19 +21,23 @@
     description?: string;
     /** Display text role for the title: `--ca-display-tracking`, `--ca-display-leading` and the fluid `--ca-font-size-display-3`. */
     display?:     boolean;
+    /** No padding: an empty state inside a Card, a table or a pane that already insets its content. */
+    bare?:        boolean;
+    /** Stacks `actions` full-width at every width (one wide button, an invite form). `variant="hero"` already does it in a narrow slot. */
+    actionsFill?: boolean;
     actions?:     Snippet;
     class?:       string;
     children?:    Snippet;
   }
 
-  let { icon: Icon, title, headingLevel, variant = 'default', description, display = false, actions, children, class: className = '' }: Props = $props();
+  let { icon: Icon, title, headingLevel, variant = 'default', description, display = false, bare = false, actionsFill = false, actions, children, class: className = '' }: Props = $props();
 
   // Read once at init: context lookups are only valid during component initialisation.
   const inheritedLevel = sectionHeadingLevel(5);
   const level = $derived(headingLevel ?? inheritedLevel);
 </script>
 
-<div class="ca-empty ca-empty--{variant} {className}" role="status" aria-label={title}>
+<div class="ca-empty ca-empty--{variant} {className}" class:ca-empty--bare={bare} class:ca-empty--fill={actionsFill} role="status" aria-label={title}>
   {#if Icon}
     <div class="ca-empty__icon" aria-hidden="true">
       <Icon size={variant === 'hero' ? 32 : 24} stroke-width={1.5} />
@@ -64,7 +68,7 @@
       justify-content: center;
       text-align: center;
       gap: var(--ca-space-3);
-      padding: var(--ca-space-12) var(--ca-space-6);
+      padding: var(--ca-empty-padding, var(--ca-space-12) var(--ca-space-6));
     }
 
     .ca-empty__icon {
@@ -81,8 +85,8 @@
 
     .ca-empty__title {
       font-family: var(--ca-font-display);
-      font-size: var(--ca-font-size-body1);
-      font-weight: var(--ca-font-weight-semibold);
+      font-size: var(--ca-empty-title-size, var(--ca-font-size-body1));
+      font-weight: var(--ca-empty-title-weight, var(--ca-font-weight-semibold));
       color: var(--ca-text-primary);
       margin: 0;
       letter-spacing: var(--ca-heading-tracking);
@@ -110,7 +114,7 @@
     /* ── Hero ──────────────────────────────────────────────────── */
     .ca-empty--hero {
       gap: var(--ca-space-2);
-      padding: calc(var(--ca-space-12) + var(--ca-space-2)) var(--ca-space-6);
+      padding: var(--ca-empty-padding, calc(var(--ca-space-12) + var(--ca-space-2)) var(--ca-space-6));
     }
 
     .ca-empty--hero .ca-empty__icon {
@@ -138,8 +142,23 @@
     }
 
     .ca-empty--hero .ca-empty__title {
-      font-size: var(--ca-font-size-h6);
-      font-weight: var(--ca-font-weight-heading);
+      font-size: var(--ca-empty-title-size, var(--ca-font-size-h6));
+      font-weight: var(--ca-empty-title-weight, var(--ca-font-weight-heading));
+    }
+
+    /* bare: no padding, whatever the variant or --ca-empty-padding (it follows the parent's inset). */
+    .ca-empty.ca-empty--bare {
+      padding: 0;
+    }
+
+    /* actionsFill: the actions stack, each full-width, at every width. */
+    .ca-empty--fill .ca-empty__actions {
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+    }
+    .ca-empty--fill .ca-empty__actions > :global(*) {
+      width: 100%;
     }
 
     .ca-empty .ca-empty__title--display {

@@ -24,6 +24,10 @@ The label sits above the field. `description` is hidden while an `error` is show
 <Demo title="Basic" description="Empty, with a placeholder, and pre-filled." src={BasicSrc}><Basic client:visible /></Demo>
 <Demo title="States" description="Helper text, error, required, read-only, disabled and resize=&quot;none&quot;." src={StatesSrc}><States client:visible /></Demo>
 
+## Tokens
+
+`--ca-field-gap` and `--ca-field-label-leading` are shared with `TextField`; `--ca-ta-gap` and `--ca-ta-label-line-height` set this component only. `--ca-ta-min-height` is the height of the **visible box**, border included (`64px` is a 64px field); unset, it is `rows`-based.
+
 <Props rows={[
   { name: "value", type: "string", default: "''", description: "Bindable text value." },
   { name: "label", type: "string", description: "Label text." },

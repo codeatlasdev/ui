@@ -96,6 +96,64 @@ describe("design knobs → tokens", () => {
 		expect(themeCSS(defineTheme({ components: {} }))).toBe("");
 	});
 
+	it("components.avatar/field/card/segmented/emptyState emit their tokens (#376)", () => {
+		const css = themeCSS(
+			defineTheme({
+				components: {
+					avatar: {
+						fallbackBg: "var(--ca-surface-overlay)",
+						fallbackColor: "var(--ca-text-secondary)",
+						fallbackSize: "0.75rem",
+						fallbackWeight: 500,
+						size: { sm: { fallbackSize: "10px" } },
+					},
+					field: { gap: "var(--ca-space-1-5)", labelLeading: 1.2 },
+					textField: { gap: "2px", labelLeading: 1.1 },
+					textArea: { gap: "3px", labelLeading: 1.3, minHeight: "var(--ca-space-16)" },
+					card: {
+						bg: "var(--ca-surface-raised)",
+						radius: "var(--ca-radius-md)",
+						border: "1px solid var(--ca-outline-subtle)",
+						shadow: "none",
+					},
+					segmented: {
+						itemPaddingX: "var(--ca-space-3)",
+						itemFontSize: "0.8125rem",
+						itemLeading: 1,
+						sm: { itemPaddingX: "8px" },
+					},
+					emptyState: { padding: "0", titleSize: "1rem", titleWeight: 500 },
+				},
+			})
+		);
+		for (const decl of [
+			"--ca-avatar-fallback-bg: var(--ca-surface-overlay);",
+			"--ca-avatar-fallback-color: var(--ca-text-secondary);",
+			"--ca-avatar-fallback-size: 0.75rem;",
+			"--ca-avatar-fallback-weight: 500;",
+			"--ca-avatar-sm-fallback-size: 10px;",
+			"--ca-field-gap: var(--ca-space-1-5);",
+			"--ca-field-label-leading: 1.2;",
+			"--ca-tf-gap: 2px;",
+			"--ca-tf-label-line-height: 1.1;",
+			"--ca-ta-gap: 3px;",
+			"--ca-ta-label-line-height: 1.3;",
+			"--ca-ta-min-height: var(--ca-space-16);",
+			"--ca-card-bg: var(--ca-surface-raised);",
+			"--ca-card-radius: var(--ca-radius-md);",
+			"--ca-card-border: 1px solid var(--ca-outline-subtle);",
+			"--ca-card-shadow: none;",
+			"--ca-seg-item-padding-x: var(--ca-space-3);",
+			"--ca-seg-item-font-size: 0.8125rem;",
+			"--ca-seg-item-line-height: 1;",
+			"--ca-seg-sm-item-padding-x: 8px;",
+			"--ca-empty-padding: 0;",
+			"--ca-empty-title-size: 1rem;",
+			"--ca-empty-title-weight: 500;",
+		])
+			expect(css).toContain(decl);
+	});
+
 	it("mergeTheme merges components per block", () => {
 		const merged = mergeTheme(
 			{ components: { button: { weight: 600, sm: { paddingX: "8px" } } } },

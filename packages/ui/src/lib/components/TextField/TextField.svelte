@@ -152,7 +152,7 @@
     .ca-tf {
       display: flex;
       flex-direction: column;
-      gap: var(--ca-space-1);
+      gap: var(--ca-tf-gap, var(--ca-field-gap, var(--ca-space-1)));
       width: 100%;
     }
 
@@ -161,7 +161,7 @@
       font-size: var(--ca-font-size-label);
       font-weight: var(--ca-font-weight-medium);
       color: var(--ca-text-primary);
-      line-height: var(--ca-line-height-snug);
+      line-height: var(--ca-tf-label-line-height, var(--ca-field-label-leading, var(--ca-line-height-snug)));
       user-select: none;
     }
 

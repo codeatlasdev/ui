@@ -16,6 +16,8 @@ import Hero from "~/demos/layout/empty-state/Hero.svelte";
 import HeroSrc from "~/demos/layout/empty-state/Hero.svelte?raw";
 import NoIcon from "~/demos/layout/empty-state/NoIcon.svelte";
 import NoIconSrc from "~/demos/layout/empty-state/NoIcon.svelte?raw";
+import DenseCrm from "~/demos/layout/empty-state/DenseCrm.svelte";
+import DenseCrmSrc from "~/demos/layout/empty-state/DenseCrm.svelte?raw";
 
 ```svelte
 <script>
@@ -33,8 +35,15 @@ import NoIconSrc from "~/demos/layout/empty-state/NoIcon.svelte?raw";
 <Demo title="Error or offline" description="Failed network requests and loading errors." src={OfflineSrc}><Offline /></Demo>
 <Demo title="Hero" description="A larger, brand-tinted tile with a glow. On mobile the actions stack full width, so put the primary one first." src={HeroSrc}><Hero /></Demo>
 <Demo title="No icon" description="A minimal version without an icon." src={NoIconSrc}><NoIcon /></Demo>
+<Demo title="Dense CRM with component tokens" description="Six components restyled by tokens on one wrapper." src={DenseCrmSrc}><DenseCrm client:visible /></Demo>
+
+## Tokens
+
+`--ca-empty-padding` (default `--ca-space-12 --ca-space-6`; `bare` wins), `--ca-empty-title-size` and `--ca-empty-title-weight`.
 
 <Props rows={[
+  { name: "bare", type: "boolean", default: "false", description: "No padding: an empty state inside a Card, a table or a pane that already insets its content." },
+  { name: "actionsFill", type: "boolean", default: "false", description: "Stacks `actions` full-width at every width (one wide button, an invite form). `variant=\"hero\"` already does it in a narrow slot." },
   { name: "icon", type: "IconComponent", description: "Lucide icon. Size and color are managed by the component." },
   { name: "title", type: "string", description: "Main title." },
   { name: "headingLevel", type: "2 | 3 | 4 | 5 | 6", default: "2 inside PageShell/AppSettings/AppForm, 5 elsewhere", description: "Heading level of the title. Only the tag changes; the look stays on `.ca-empty__title`. Keeps the outline valid under the page's `<h1>`." },

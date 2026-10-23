@@ -46,6 +46,10 @@ With `href` the card is a single `<a>` and is interactive. The link name comes f
 <Demo title="Stacked controls" description={"`gap` stacks several controls in a column, aligned with the title."} src={StackedSrc}><Stacked /></Demo>
 <Demo title="Link card" description={"`href` renders the whole card as a link."} src={LinkSrc}><Link /></Demo>
 
+## Tokens
+
+Material, elevation, tone and variant still decide the paint; these replace one part of it: `--ca-card-bg` (a solid fill), `--ca-card-radius`, `--ca-card-border` (a shorthand, default none), `--ca-card-shadow` (`none` for flat), plus `--ca-card-padding` and `--ca-card-gap`.
+
 <Props rows={[
   { name: "title", type: "string", default: "undefined", description: "Header title." },
   { name: "headingLevel", type: "2 | 3 | 4 | 5 | 6", default: "undefined", description: "Renders `title` as `<h2>`–`<h6>` so the card is a section in the page outline. Omit for a plain paragraph." },

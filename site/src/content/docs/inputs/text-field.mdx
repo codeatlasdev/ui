@@ -33,6 +33,10 @@ An `error` replaces the `description` and is announced to assistive tech. On tou
 <Demo title="Password" description="revealable adds the show/hide eye, below holds the Forgot password link, requiredIndicator={false} drops the asterisk." src={PasswordSrc}><Password client:visible /></Demo>
 <Demo title="Hidden label" description="hideLabel keeps the label for assistive tech only; maxlength and ref reach the native input." src={HiddenLabelSrc}><HiddenLabel client:visible /></Demo>
 
+## Tokens
+
+`--ca-field-gap` (label to box to hint, default `--ca-space-1`) and `--ca-field-label-leading` (default `--ca-line-height-snug`) are shared with `TextArea`; `--ca-tf-gap` and `--ca-tf-label-line-height` set this component only and win.
+
 <Props rows={[
   { name: "label", type: "string", description: "Label text." },
   { name: "hideLabel", type: "boolean", default: "false", description: "Renders the label with `.ca-sr-only`: read by screen readers, not shown." },

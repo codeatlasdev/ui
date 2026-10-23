@@ -48,7 +48,7 @@ Pass the same object to `caThemeHandle` and `caThemePlugin` (SvelteKit), `caUI` 
 | `typography` | `{}` | `scale`, `weights` (`heading` defaults to `600`), `headingTracking`, `headingCase`, `displayTracking`, `displayLeading`, `labelTracking`, `labelCase`, `lineHeight` and `measure`. |
 | `motion` | `{}` | `scale` (multiplier on every duration), `easing` (`"standard"`, `"emphasized"`, `"spring"`, `"linear"` or `"steps"`) and `enter` (`"default"` or `"none"`). `enter: "none"` makes dialogs, drawers, sheets, menus, popovers, tooltips and toasts appear and leave in place while hover and focus color transitions keep `scale` (it sets `--ca-enter-scale: 0`); `MotionStage` demos render their final state. |
 | `noise` | `0` | Film-grain over the page background, from `0` to `0.12`. |
-| `components` | `{}` | [Component tokens](#component-tokens): `button`, `iconButton` and `kbd` weight, tracking, line-height, gap, padding and size, emitted as `--ca-btn-*`, `--ca-icon-btn-*` and `--ca-kbd-*`. |
+| `components` | `{}` | [Component tokens](#component-tokens) of `button`, `iconButton`, `kbd`, `avatar`, `field`, `textArea`, `card`, `segmented` and `emptyState`. |
 | `overrides` | `{}` | Raw `--ca-*` token overrides, per scheme (`light`, `dark`). Prefer preset role colors (below) for palettes. |
 
 `defineTheme(options)` resolves the options (defaults, validation) and `themeCSS(resolved)` returns the CSS string. You rarely call them yourself; the integrations do. Invalid input fails the build: a preset `id` that clashes with a built-in, a color that is not `#rrggbb`, or a `defaultPreset` that does not exist.
@@ -311,40 +311,31 @@ For per-scheme overrides prefer `overrides` in the theme object, which is emitte
 
 ## Component tokens
 
-A component token is a custom property a component reads before its own default. **One naming convention for every component**, so an agent never invents a selector against a `ca-*` class:
+A component token is a custom property a component reads before its own default. **One naming convention for every component**, so nobody writes a selector against a `ca-*` class:
 
-| Form | Meaning | Example |
-|---|---|---|
-| `--ca-<component>-<property>` | the component, every size and part | `--ca-btn-font-weight` |
-| `--ca-<component>-<size or part>-<property>` | one size or part; wins over the form above | `--ca-btn-lg-font-weight`, `--ca-icon-btn-size-sm` |
+- `--ca-<component>-<property>`: the component, every size and part (`--ca-btn-font-weight`).
+- `--ca-<component>-<size or part>-<property>`: one size or part; it wins over the form above (`--ca-btn-lg-font-weight`, `--ca-icon-btn-size-sm`).
+- `<component>` is the class stem (`btn`, `icon-btn`, `kbd`, `avatar`, `tf`, `ta`, `card`, `seg`, `empty`); a token shared by a family uses its name (`--ca-field-gap` for `TextField` and `TextArea`). `<property>` is spelled like the CSS it drives: `font-weight`, `line-height`, `gap`, `padding-x`, `size`.
 
-`<component>` is the short class stem (`btn`, `icon-btn`, `kbd`). `<property>` is spelled like the CSS it drives: `font-weight`, `letter-spacing`, `line-height`, `gap`, `padding-x`, `height`, `size`, `border-width`, `bg`. Values are plain CSS, so `var(--ca-space-3)` and `13px` both work. **Unset, a component draws what it always drew**: a token is an opt-in, never a changed default.
-
-Set them on `:root` (the whole app), on a wrapper (one screen or panel, no `:global(.ca-*)` needed) or in the theme:
+Values are plain CSS. **Unset, a component draws what it always drew.** Set them on `:root`, on a wrapper (no `:global(.ca-*)`) or in the theme, where `mergeTheme` merges per block and size:
 
 ```ts
-// src/lib/theme.ts: emitted on :root
 export const theme = {
   components: {
-    button: {
-      weight: 600, tracking: "-0.006em", leading: 1.25, gap: "var(--ca-space-2)",
-      ghostBorderWidth: "0px",           // ghost as wide as a text button
-      disabledBg: "var(--ca-brand-fill)", // disabled filled follows the brand
-      sm: { paddingX: "var(--ca-space-3)", fontSize: "0.8125rem" },
-      lg: { weight: 400 },
-    },
+    button: { weight: 600, gap: "var(--ca-space-2)", ghostBorderWidth: "0px", sm: { paddingX: "var(--ca-space-3)" } },
     iconButton: { size: { sm: "36px" } },
-    kbd: { size: "var(--ca-space-5)", fontSize: "0.75rem", leading: 1 },
+    kbd: { size: "var(--ca-space-5)" },
+    avatar: { fallbackSize: "0.75rem" },
+    field: { gap: "var(--ca-space-1-5)" },        // TextField and TextArea
+    textArea: { minHeight: "var(--ca-space-16)" }, // the visible box, border included
+    card: { border: "1px solid var(--ca-outline-subtle)", shadow: "none" },
+    segmented: { itemPaddingX: "var(--ca-space-3)" },
+    emptyState: { titleSize: "1rem" },
   },
 };
 ```
 
-```css
-/* one panel only */
-.focus-mode { --ca-btn-gap: var(--ca-space-2); --ca-icon-btn-size-sm: 36px; }
-```
-
-`mergeTheme` and `designStyle` merge `components` per block and per size. The 44px touch target under `pointer: coarse` is kept unless you set `--ca-btn-touch-height` or `--ca-icon-btn-touch-size`. The tokens of each component are listed on its page ([Button](/docs/inputs/button/#tokens), [Kbd](/docs/display/kbd/#tokens)), in [`docs/css-api.md`](https://github.com/codeatlasdev/ui/blob/main/docs/css-api.md) and in the `get_component` tool of `ca-ui-mcp`.
+The 44px touch targets stay unless you set `--ca-btn-touch-height` or `--ca-icon-btn-touch-size`. Each component page lists its tokens under "Tokens"; `get_component` returns them as `tokens`.
 
 ## Dialogs, drawers and the scrim
 

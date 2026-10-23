@@ -36,6 +36,10 @@ Without `src`, or when the image fails to load, the avatar shows initials derive
 <Demo title="Shape and status" description={"`shape=\"rounded\"` and the presence dot."} src={ShapeStatusSrc}><ShapeStatus client:visible /></Demo>
 <Demo title="Avatar stack" description={"Overlap pattern common in collaboration UIs."} src={StackSrc}><Stack client:visible /></Demo>
 
+## Tokens
+
+`tone="neutral"` suits a dense list where coloured discs compete with the content. Otherwise set `--ca-avatar-fallback-{bg,color,size,weight}` (default: the name palette, 36% of the size, semibold) or, for one named size, `--ca-avatar-{xs,sm,md,lg,xl}-fallback-{size,weight}`, which wins.
+
 <Props rows={[
   { name: "src", type: "string", default: "undefined", description: "Image URL, rendered as a real `<img>`. The fallback shows beneath it while it loads and when it fails." },
   { name: "alt", type: "string", default: "''", description: "Alt text. Initials are derived from it when no `fallback` is set." },
@@ -48,5 +52,6 @@ Without `src`, or when the image fails to load, the avatar shows initials derive
   { name: "crossorigin", type: "'anonymous' | 'use-credentials'", default: "undefined", description: "Passed to the `<img>`." },
   { name: "onerror", type: "(event: Event) => void", default: "undefined", description: "Called when the image fails to load; the fallback shows. Refetch a signed URL here." },
   { name: "skeleton", type: "boolean", default: "false", description: "Loading placeholder with the exact avatar size; no image request is made. See Skeleton." },
+  { name: "tone", type: "'palette' | 'neutral'", default: "'palette'", description: "Fallback colour. `palette` derives it from the name, so each person keeps theirs; `neutral` draws every fallback on `--ca-surface-overlay` with `--ca-text-secondary` text and a hairline ring." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />
