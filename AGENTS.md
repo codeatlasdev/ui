@@ -84,6 +84,8 @@ Accessibility rules (package and apps):
 - New surface CSS with glass/shadow/`border: none` needs an entry in the `@media (forced-colors: active)` block of `materials.css` (`CanvasText` border). Contrast tokens (`prefers-contrast: more`) come from `themeCSS`/`presetCSS`; `tests/contrast.test.ts` measures 7:1 for text and 3:1 for outlines in every preset.
 - `site/tests/routes.a11y.spec.ts` runs axe in dark, light and `forcedColors: "active"` on every route, and ensures at most one `#main`, one `<main>` and one skip link per page.
 
+The browser setup (`tests/setup.browser.ts`) parks the Playwright pointer outside the viewport before every test: the pointer is page state, so without it a test that hovers leaves `:hover` active on whatever the next file renders at the top-left (a filled Button reads its hover fill, a tooltip is already open) and results depend on file order. A test that needs a pointer moves it itself (`userEvent.hover`); `src/lib/testing/pointer-reset.svelte.test.ts` guards the hook.
+
 Reading failures: locators fail with an ARIA snapshot; traces are in `__traces__/` (Vitest) and `site/test-results/<id>/trace.zip` (`bunx playwright trace open <zip>`); visual diffs are in `packages/ui/.vitest/attachments` and `site/playwright-report`. For lean output: `bunx vitest run --reporter=minimal`. Optional: `npx @playwright/mcp` to inspect the site.
 
 ---
