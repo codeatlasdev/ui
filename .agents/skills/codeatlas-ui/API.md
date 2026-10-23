@@ -2282,6 +2282,7 @@ Classes: `ca-layout-section`
 |---|---|---|---|
 | `section` | `NavSection` |  |  |
 | `pathname` | `string` |  |  |
+| `active?` | `(item: NavItem) => boolean` |  | Decides which link is current (the shell passes the module-wide winner); defaults to `isItemActive`. |
 | `class?` | `string` | `''` |  |
 
 Classes: `ca-section` `ca-section__chevron` `ca-section__chevron--open` `ca-section__header` `ca-section__label` `ca-section__trigger`
@@ -3241,11 +3242,21 @@ const elevation: {
 }
 ```
 
+### findActiveItem
+
+`import { findActiveItem } from "@codeatlasdev/ui"`
+
+The nav item that is active for `pathname` among one module's entries (sections flattened), or `undefined` when none matches. Like modules, the most specific match wins whatever the order: with items at `/a` and `/a/b`, `/a/b/1` is `/a/b` only and `/a/c` stays on `/a`. On a tie the first wins.
+
+```ts
+function findActiveItem(entries: ReadonlyArray<NavItem | NavSection>, pathname: string): NavItem | undefined
+```
+
 ### findActiveItemPath
 
 `import { findActiveItemPath } from "@codeatlasdev/ui"`
 
-Path of the nav item that is active for `pathname`, or `null` when none matches.
+Path of the nav item that is active for `pathname` (see `findActiveItem`), or `null` when none matches.
 
 ```ts
 function findActiveItemPath(modules: NavModule[], pathname: string): string | null
@@ -3559,6 +3570,16 @@ Subscribes to `layerchange`: fired on `document` whenever a layer opens or close
 function onLayerChange(listener: (change: LayerChange) => void): () => void
 ```
 
+### onTokensChange
+
+`import { onTokensChange } from "@codeatlasdev/ui"`
+
+Call `fn` after the scheme, preset or surface style of the page changes (the `class`, `data-preset` and `data-style` attributes of `<html>`). Returns the unsubscribe function. Server-side it does nothing. Svelte code usually reads `colorScheme` instead; this is for canvas, map and chart code outside a component.
+
+```ts
+function onTokensChange(fn: () => void): () => void
+```
+
 ### radius
 
 `import { radius } from "@codeatlasdev/ui"`
@@ -3811,6 +3832,16 @@ Pretty-printed JSON array. With `columns`, each object keeps only those fields (
 function toJson<T extends object>(rows: readonly T[], columns?: readonly ExportColumn<T>[]): string
 ```
 
+### tokenRgba
+
+`import { tokenRgba } from "@codeatlasdev/ui"`
+
+A design token (`--ca-brand-main`), a domain token by name (`"status.new"` for `--ca-token-status-new`, also `"status.new-subtle"` / `"status.new-contrast"`) or any CSS color (`#f59e0b`, `oklch(...)`, `color-mix(...)`) as `[r, g, b, a]`. `alpha` (0-1) multiplies the color's own alpha. A token that is not declared is transparent black, and so is any call on the server. Read it inside a `$derived`/`$effect` together with `colorScheme.resolved` (or subscribe with `onTokensChange`) to follow scheme and preset changes.
+
+```ts
+function tokenRgba(token: CaTokenName | (string & {}), alpha?: number): Rgba
+```
+
 ### uid
 
 `import { uid } from "@codeatlasdev/ui"`
@@ -3910,7 +3941,10 @@ Types:
 | `BuiltinPresetId` | `type BuiltinPresetId = \| "amber" \| "ocean" \| "crimson" \| "cyan" \| "violet" \| "emerald" \| "rose" \| "slate";` | Presets shipped in global.css. |
 | `ButtonSizeTokens` | `interface ButtonSizeTokens { height?: CssValue; paddingX?: CssValue; fontSize?: CssValue; weight?: CssValue; tracking?: CssValue; }` | Typography and box tokens of one Button size. |
 | `ButtonTokens` | `interface ButtonTokens extends ButtonSizeTokens { weight?: CssValue; tracking?: CssValue; leading?: CssValue; gap?: CssValue; ghostBorderWidth?: CssValue; disabledBg?: CssValue; touchHeight?: CssValue; sm?: ButtonSizeTokens; md?: ButtonSizeTokens; lg?: ButtonSizeTokens; }` |  |
+| `CaTokenName` | `type CaTokenName = keyof CaTokenRegistry extends never ? never : keyof CaTokenRegistry & string;` | Names declared through `CaTokenRegistry`, else any `group.name` string. |
+| `CaTokenRegistry` | `interface CaTokenRegistry {}` | Registry of domain tokens an app declares, for typed names. Augment it to get autocomplete in `tokenRgba("status.new")`: |
 | `ColorScheme` | `type ColorScheme = "light" \| "dark" \| "system";` |  |
+| `ColorValue` | `type ColorValue = string \| { color: string; alpha: number };` | One color: any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `color-mix(…)`, `rgb(…)`) or an explicit alpha form that keeps the color and the opacity apart. |
 | `Columns` | `type Columns = (typeof COLUMNS)[number] \| `${(typeof COLUMNS)[number]}`;` |  |
 | `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
 | `DateRange` | `interface DateRange { start: DateValue \| undefined; end: DateValue \| undefined; }` | Value of RangeCalendar / DateRangePicker. Both ends are undefined until picked. |
@@ -3969,13 +4003,15 @@ Types:
 | `Politeness` | `type Politeness = "polite" \| "assertive";` |  |
 | `PolymorphicAttributes` | `type PolymorphicAttributes<T extends ElementTag, Own = object> = Omit< SvelteHTMLElements[T], "class" \| "children" \| "as" \| keyof Own > & Own;` | The tag's own attributes and event handlers, minus what the primitive declares itself (`Own`, `class`, `children`, `as`). |
 | `PolymorphicProps` | `type PolymorphicProps<T extends ElementTag, Own = object> = { as?: T; class?: string; children?: Snippet; } & PolymorphicAttributes<T, Own>;` | Props of a primitive that renders `as` an element: the tag's own attributes and event handlers (`as="form"` takes `novalidate`, `onsubmit` with `currentTarget: HTMLFormElement`), its token props, `class` and `children`. |
-| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
+| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; tokens?: PresetTokenGroups; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `PresetId` | `type PresetId = BuiltinPresetId \| (string & {});` | A built-in preset or a brand preset registered via `ThemeOptions.presets`. |
 | `PresetSizes` | `interface PresetSizes { inputFontSize?: string; }` |  |
+| `PresetTokenGroups` | `type PresetTokenGroups = Record<string, Record<string, TokenValue>>;` | `group → name → value`. Group and name are CSS identifier fragments (`[a-z][a-z0-9-]*`). |
 | `RadiusKey` | `type RadiusKey = keyof typeof radius;` |  |
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
 | `Responsive` | `type Responsive<T> = T \| ({ base?: T } & { [B in Breakpoint]?: T });` | A value, or one value per breakpoint: `{ base: "2", md: "6" }`. A breakpoint applies from its width up. |
-| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: string; brandFillHover?: string; brandContrast?: string; background?: string; sunken?: string; surface?: string; overlay?: string; text?: string; textSecondary?: string; textHint?: string; textDisabled?: string; borderSubtle?: string; border?: string; borderStrong?: string; success?: string; warning?: string; info?: string; error?: string; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. |
+| `Rgba` | `type Rgba = [number, number, number, number];` | `[r, g, b, a]`: r, g, b in 0-255, a in 0-1 (what `@deck.gl/core` `Color` expects, alpha scaled by the caller). |
+| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: ColorValue; brandFillHover?: ColorValue; brandContrast?: ColorValue; background?: ColorValue; sunken?: ColorValue; surface?: ColorValue; overlay?: ColorValue; text?: ColorValue; textSecondary?: ColorValue; textHint?: ColorValue; textDisabled?: ColorValue; borderSubtle?: ColorValue; border?: ColorValue; borderStrong?: ColorValue; success?: ColorValue; warning?: ColorValue; info?: ColorValue; error?: ColorValue; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it, and the build measures text roles after compositing it (see `presetContrastIssues`). |
 | `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
 | `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
 | `SortableOptions` | `interface SortableOptions { id: string; group?: string; getItems: () => readonly string[]; getLabel?: (id: string) => string; label?: string; axis?: "y" \| "x"; drop?: "position" \| "container"; handle?: string; disabled?: boolean; onDrop: (e: DndDropEvent) => void; }` |  |
@@ -3992,6 +4028,7 @@ Types:
 | `ToastItem` | `interface ToastItem { id: string; message: string; variant: ToastVariant; duration: number; count?: number; description?: string; action?: ToastAction; }` |  |
 | `ToastOptions` | `interface ToastOptions { variant?: ToastVariant; duration?: number; id?: string; description?: string; action?: ToastAction; }` |  |
 | `ToastVariant` | `type ToastVariant = "default" \| "success" \| "error" \| "warning" \| "info";` |  |
+| `TokenValue` | `type TokenValue = string \| { light?: string; dark?: string };` | One domain token: a single color for both schemes, or one per scheme (a missing side uses the other). |
 | `TypographyOptions` | `interface TypographyOptions { scale?: number; weights?: Partial<Record<"regular" \| "medium" \| "semibold" \| "bold" \| "heading", number>>; headingTracking?: string; headingCase?: "none" \| "uppercase"; displayTracking?: string; displayLeading?: number; labelTracking?: string; labelCase?: "none" \| "uppercase"; lineHeight?: number; measure?: string; }` |  |
 | `UseDndOptions` | `interface UseDndOptions { messages?: Partial<DndMessages>; threshold?: number; holdMs?: number; edge?: number; id?: string; }` |  |
 | `UseListStateOptions` | `interface UseListStateOptions<T extends object> { data: T[]; perPage?: number; searchKeys?: (keyof T)[]; idKey?: keyof T; ofLabel?: string; }` | useListState — eliminates boilerplate state management in list/CRUD pages. |
@@ -4140,9 +4177,9 @@ Types:
 |---|---|---|
 | `DesignStyleId` | `type DesignStyleId = \| "default" \| "liquid" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
 | `Paper` | `type Paper = "mesh" \| "plain" \| "grid" \| "dots" \| "lines";` | Page background pattern. mesh = brand glow gradients (drawn by the glass and frosted materials); the rest are flat paper. |
-| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
+| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; tokens?: PresetTokenGroups; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `PresetSizes` | `interface PresetSizes { inputFontSize?: string; }` |  |
-| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: string; brandFillHover?: string; brandContrast?: string; background?: string; sunken?: string; surface?: string; overlay?: string; text?: string; textSecondary?: string; textHint?: string; textDisabled?: string; borderSubtle?: string; border?: string; borderStrong?: string; success?: string; warning?: string; info?: string; error?: string; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. |
+| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: ColorValue; brandFillHover?: ColorValue; brandContrast?: ColorValue; background?: ColorValue; sunken?: ColorValue; surface?: ColorValue; overlay?: ColorValue; text?: ColorValue; textSecondary?: ColorValue; textHint?: ColorValue; textDisabled?: ColorValue; borderSubtle?: ColorValue; border?: ColorValue; borderStrong?: ColorValue; success?: ColorValue; warning?: ColorValue; info?: ColorValue; error?: ColorValue; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it, and the build measures text roles after compositing it (see `presetContrastIssues`). |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
 
 ## @codeatlasdev/ui/charts
@@ -4454,7 +4491,7 @@ Types:
 | `DesignStyleId` | `type DesignStyleId = \| "default" \| "liquid" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
 | `IslandTheme` | `interface IslandTheme { preset?: string; scheme: IslandScheme; }` |  |
 | `NativeFeelOptions` | `interface NativeFeelOptions { blockZoom?: boolean; allowContextMenu?: (e: MouseEvent) => boolean; }` |  |
-| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
+| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; tokens?: PresetTokenGroups; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
 | `RouteThemes` | `type RouteThemes = Record<string, Partial<IslandTheme>>;` | Route id prefixes (`event.route.id`, e.g. `"/(marketing)"`) → the theme their pages use. Longest prefix wins. |
 | `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; components: ComponentTokens; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
@@ -5126,6 +5163,16 @@ Neutral surface/text/outline ramp tinted with the given brand hue (OKLCH degrees
 function neutralRamp(hue: number): NeutralRamp
 ```
 
+### onTokensChange
+
+`import { onTokensChange } from "@codeatlasdev/ui/tokens"`
+
+Call `fn` after the scheme, preset or surface style of the page changes (the `class`, `data-preset` and `data-style` attributes of `<html>`). Returns the unsubscribe function. Server-side it does nothing. Svelte code usually reads `colorScheme` instead; this is for canvas, map and chart code outside a component.
+
+```ts
+function onTokensChange(fn: () => void): () => void
+```
+
 ### radius
 
 `import { radius } from "@codeatlasdev/ui/tokens"`
@@ -5202,6 +5249,16 @@ The built-in brand presets with their generated brand ramps, neutral ramp and se
 const THEME_PRESETS: ThemePreset[]
 ```
 
+### tokenRgba
+
+`import { tokenRgba } from "@codeatlasdev/ui/tokens"`
+
+A design token (`--ca-brand-main`), a domain token by name (`"status.new"` for `--ca-token-status-new`, also `"status.new-subtle"` / `"status.new-contrast"`) or any CSS color (`#f59e0b`, `oklch(...)`, `color-mix(...)`) as `[r, g, b, a]`. `alpha` (0-1) multiplies the color's own alpha. A token that is not declared is transparent black, and so is any call on the server. Read it inside a `$derived`/`$effect` together with `colorScheme.resolved` (or subscribe with `onTokensChange`) to follow scheme and preset changes.
+
+```ts
+function tokenRgba(token: CaTokenName | (string & {}), alpha?: number): Rgba
+```
+
 ### zIndex
 
 `import { zIndex } from "@codeatlasdev/ui/tokens"`
@@ -5234,6 +5291,7 @@ Types:
 | `OutlineColors` | `interface OutlineColors { subtle: string; default: string; strong: string; }` |  |
 | `PresetId` | `type PresetId = BuiltinPresetId \| (string & {});` | A built-in preset or a brand preset registered via `ThemeOptions.presets`. |
 | `RadiusKey` | `type RadiusKey = keyof typeof radius;` |  |
+| `Rgba` | `type Rgba = [number, number, number, number];` | `[r, g, b, a]`: r, g, b in 0-255, a in 0-1 (what `@deck.gl/core` `Color` expects, alpha scaled by the caller). |
 | `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
 | `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
 | `SurfaceColors` | `interface SurfaceColors { sunken: string; base: string; raised: string; overlay: string; }` |  |
@@ -5349,7 +5407,7 @@ Types:
 
 | Type | Declaration | Notes |
 |---|---|---|
-| `PresetTokens` | `interface PresetTokens { brandMain: string; brandLight: string; brandDark: string; brandContrast: string; brandFill: string; brandFillHover: string; surfaceSunken: string; surfaceBase: string; surfaceRaised: string; surfaceOverlay: string; textPrimary: string; textSecondary: string; textDisabled: string; textHint: string; outlineSubtle: string; outlineDefault: string; outlineStrong: string; outlineControl: string; focusRing: string; semanticErrorContrast: string; glassBg: string; glassTintUltraThin: string; glassTintThin: string; glassTint: string; glassTintThick: string; glassTintChrome: string; glassTintSolid: string; glassBorder: string; glassShadow: string; glowPrimary: string; glowPrimaryStrong: string; vibrancyLabel: string; vibrancySecondary: string; vibrancyTertiary: string; vibrancyFill: string; vibrancySeparator: string; scrimColor: string; tooltipFg: string; dark: { brandMain: string; brandLight: string; brandDark: string; brandContrast: string; brandFill: string; brandFillHover: string; surfaceSunken: string; surfaceBase: string; surfaceRaised: string; surfaceOverlay: string; textPrimary: string; textSecondary: string; textDisabled: string; textHint: string; outlineControl: string; focusRing: string; semanticErrorContrast: string; glassBg: string; glowPrimary: string; glowPrimaryStrong: string; vibrancyLabel: string; vibrancySecondary: string; vibrancyTertiary: string; vibrancyFill: string; vibrancySeparator: string; tooltipFg: string; }; }` |  |
+| `PresetTokens` | `interface PresetTokens { brandMain: string; brandLight: string; brandDark: string; brandContrast: string; brandText: string; brandFill: string; brandFillHover: string; surfaceSunken: string; surfaceBase: string; surfaceRaised: string; surfaceOverlay: string; textPrimary: string; textSecondary: string; textDisabled: string; textHint: string; outlineSubtle: string; outlineDefault: string; outlineStrong: string; outlineControl: string; focusRing: string; semanticErrorContrast: string; glassBg: string; glassTintUltraThin: string; glassTintThin: string; glassTint: string; glassTintThick: string; glassTintChrome: string; glassTintSolid: string; glassBorder: string; glassShadow: string; glowPrimary: string; glowPrimaryStrong: string; vibrancyLabel: string; vibrancySecondary: string; vibrancyTertiary: string; vibrancyFill: string; vibrancySeparator: string; scrimColor: string; tooltipFg: string; dark: { brandMain: string; brandLight: string; brandDark: string; brandContrast: string; brandText: string; brandFill: string; brandFillHover: string; surfaceSunken: string; surfaceBase: string; surfaceRaised: string; surfaceOverlay: string; textPrimary: string; textSecondary: string; textDisabled: string; textHint: string; outlineControl: string; focusRing: string; semanticErrorContrast: string; glassBg: string; glowPrimary: string; glowPrimaryStrong: string; vibrancyLabel: string; vibrancySecondary: string; vibrancyTertiary: string; vibrancyFill: string; vibrancySeparator: string; tooltipFg: string; }; }` |  |
 | `TokenMap` | `type TokenMap = Record<`--ca-${string}`, string>;` | CSS custom properties of one preset, per scheme. |
 
 ## @codeatlasdev/ui/vite
@@ -5548,7 +5606,7 @@ Types:
 | `FontSpec` | `type FontSpec = string \| FontDescriptor;` | A font stack string (existing behavior) or a self-hosted font descriptor. |
 | `GenerateBrandOptions` | `interface GenerateBrandOptions { mark: string; theme: ThemeOptions; outDir: string; base?: string; name?: string; shortName?: string; }` |  |
 | `OgCardOptions` | `interface OgCardOptions { title: string; description?: string; eyebrow?: string; siteName: string; mark: string; colors: { ink: string; spark: string; surface: string }; css?: string; fontFamily?: string; lang?: string; }` |  |
-| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
+| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; tokens?: PresetTokenGroups; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `PresetSizes` | `interface PresetSizes { inputFontSize?: string; }` |  |
 | `ResolvedBrand` | `interface ResolvedBrand { light: BrandColors; dark: BrandColors; }` |  |
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
