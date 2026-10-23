@@ -14,7 +14,7 @@ const items: NotificationItem[] = [
 
 const openByKeyboard = async (props = {}) => {
 	const screen = await render(Harness, props);
-	const trigger = page.getByRole("button", { name: /^Notifications/ });
+	const trigger = page.getByRole("button", { name: /notifications$/i });
 	(trigger.element() as HTMLElement).focus();
 	await userEvent.keyboard("{Enter}");
 	return { screen, trigger };
@@ -24,8 +24,13 @@ describe("NotificationBell", () => {
 	it("trigger label reports the unread count", async () => {
 		await render(Harness, { items });
 		await expect
-			.element(page.getByRole("button", { name: "Notifications (2 unread)" }))
+			.element(page.getByRole("button", { name: "2 unread notifications" }))
 			.toBeVisible();
+	});
+
+	it("closed bell with unread has no axe violations", async () => {
+		const screen = await render(Harness, { items });
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
 	it("opens from the keyboard listing notifications; no axe violations", async () => {

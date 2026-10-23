@@ -72,7 +72,7 @@ A later `setLocale` call replaces the previous overrides. Message functions (str
 
 ```ts
 setLocale("en", {
-  notificationBell: { label: (unread) => `Inbox, ${unread} new` },
+  notificationBell: { label: (unread) => `${unread} new in inbox` },
 });
 ```
 
