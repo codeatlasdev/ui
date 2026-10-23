@@ -99,3 +99,74 @@ describe("runWorkarounds", () => {
 		expect(lines.join("\n")).toContain("No ca-ui-workaround markers");
 	});
 });
+
+describe("runWorkarounds selector scan (#381)", () => {
+	const parts = {
+		components: [
+			{
+				name: "Button",
+				parts: [
+					{ name: "ca-btn", stable: true },
+					{ name: "ca-btn__trailing", stable: true },
+					{ name: "ca-x-measure", stable: false },
+				],
+			},
+		],
+	};
+	const run = async (files: Record<string, string>, strict = false) => {
+		const lines: string[] = [];
+		const root = project(files);
+		const code = await runWorkarounds([join(root, "src")], {
+			cwd: root,
+			parts,
+			strict,
+			fetch: (async () => new Response("{}", { status: 404 })) as unknown as typeof fetch,
+			log: (s) => lines.push(s),
+		});
+		return { code, text: lines.join("\n") };
+	};
+
+	it("reports a :global(.ca-*) selector that targets a part the lib does not document", async () => {
+		const { code, text } = await run(
+			{ "src/a.svelte": "<div />\n<style>\n:global(.ca-btn__label) { color: red }\n</style>\n" },
+			true
+		);
+		expect(text).toContain("src/a.svelte:3");
+		expect(text).toContain(".ca-btn__label");
+		expect(text).toContain("not a stable part");
+		expect(code).toBe(1);
+	});
+
+	it("accepts stable parts and exits 0 even under --strict", async () => {
+		const { code, text } = await run(
+			{ "src/a.css": ".ca-btn { height: 40px }\n.ca-btn .ca-btn__trailing { margin: 0 }\n" },
+			true
+		);
+		expect(text).not.toContain("not a stable part");
+		expect(code).toBe(0);
+	});
+
+	it("flags an internal part and a ca-x- class, but accepts a ca-ui-workaround marker above it", async () => {
+		const { code, text } = await run(
+			{
+				"src/a.css":
+					".ca-x-measure { a: b }\n/* ca-ui-workaround(#12): label is not a part */\n.ca-btn__label { a: b }\n",
+			},
+			true
+		);
+		expect(text).toContain("src/a.css:1");
+		expect(text).not.toContain("src/a.css:3");
+		expect(code).toBe(1);
+	});
+
+	it("only reports, exit 0, without --strict", async () => {
+		const { code, text } = await run({ "src/a.css": ".ca-btn__label { a: b }\n" });
+		expect(text).toContain("not a stable part");
+		expect(code).toBe(0);
+	});
+
+	it("ignores class names inside selectors in comments and strings of a .ts file", async () => {
+		const { text } = await run({ "src/a.ts": 'const s = ".ca-btn__label";\n' });
+		expect(text).not.toContain("not a stable part");
+	});
+});

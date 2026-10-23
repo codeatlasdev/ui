@@ -5,8 +5,8 @@
  *
  *   claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp
  *
- * Tools: get_recipe, list_components, get_component, get_export, search_tokens, list_surfaces, get_guide, search_demos,
- * get_demo, report_issue (drafts a sanitized GitHub issue from a library problem; it never posts anything).
+ * Tools: get_recipe, list_components, get_component, get_export, list_parts, search_tokens, list_surfaces, get_guide,
+ * search_demos, get_demo, report_issue (drafts a sanitized GitHub issue from a library problem; it never posts anything).
  */
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -21,6 +21,7 @@ import type {
 	ManifestGuide,
 	ManifestSurface,
 	ManifestToken,
+	PartsFile,
 } from "../scripts/build-manifest.ts";
 import { buildReport } from "../src/cli/report.ts";
 
@@ -34,6 +35,7 @@ function load<T>(file: string): T {
 const manifest = load<Manifest>("components.json");
 const tokens = load<{ tokens: ManifestToken[] }>("tokens.json").tokens;
 const guides = load<{ guides: ManifestGuide[] }>("guides.json").guides;
+const partsFile = load<PartsFile>("parts.json");
 const surfaces = load<{ surfaces: ManifestSurface[] }>("surfaces.json").surfaces;
 // Like demos: a build without the docs site has no recipes, and the other tools must keep working.
 const recipes = existsSync(join(DIST, "recipes.json"))
@@ -93,7 +95,7 @@ server.registerTool(
 	"get_component",
 	{
 		description:
-			"Full API of one component: import path, props (type, default, bindable, docs), snippets and the public ca-* CSS classes. A deprecated component carries a `deprecated` field with its replacement. Name is case-insensitive.",
+			"Full API of one component: import path, props (type, default, bindable, docs), snippets and `styling` (stable ca-* parts, scoped variables, data attributes; see list_parts). A deprecated component carries a `deprecated` field with its replacement. Name is case-insensitive.",
 		inputSchema: { name: z.string() },
 	},
 	({ name }) => {
@@ -130,6 +132,53 @@ server.registerTool(
 			);
 		}
 		return text(JSON.stringify(hits.length === 1 ? hits[0] : hits, null, 2));
+	}
+);
+
+server.registerTool(
+	"list_parts",
+	{
+		description:
+			"The official override surface of a component: stable ca-* parts (classes you may target in app CSS), component-scoped CSS variables and data-* attributes, plus the internal parts that may change in any release. Use it before writing a `.ca-*` selector: a part not listed as stable is not safe across releases (open an issue and mark the workaround). `component` is case-insensitive; without it, lists every component with its counts.",
+		inputSchema: { component: z.string().optional() },
+	},
+	({ component }) => {
+		const all = partsFile.components;
+		if (!component)
+			return text(
+				[
+					partsFile.rule,
+					"",
+					...all.map(
+						(c) =>
+							`${c.name}: ${c.parts.filter((p) => p.stable).length} parts, ${c.variables.length} variables, ${c.data.length} data attributes`
+					),
+				].join("\n")
+			);
+		const hits = all.filter((c) => squash(c.name) === squash(component));
+		if (!hits.length) {
+			const near = all.filter((c) => squash(c.name).includes(squash(component))).map((c) => c.name);
+			return fail(
+				`No component "${component}" with styling hooks.${near.length ? ` Did you mean: ${near.join(", ")}?` : ""}`
+			);
+		}
+		const code = (xs: string[]) => xs.map((x) => `\`${x}\``).join(" ");
+		return text(
+			[
+				partsFile.rule,
+				...hits.flatMap((c) => {
+					const internal = c.parts.filter((p) => !p.stable).map((p) => p.name);
+					return [
+						"",
+						`## ${c.name} (${c.import})`,
+						`Stable parts: ${code(c.parts.filter((p) => p.stable).map((p) => p.name)) || "none"}`,
+						...(internal.length ? [`Internal (may change in any release): ${code(internal)}`] : []),
+						`Variables: ${code(c.variables) || "none"}`,
+						`Data attributes: ${c.data.map((d) => `\`${d.name}\`${d.values.length ? ` (${d.values.join(" | ")})` : ""}`).join(", ") || "none"}`,
+					];
+				}),
+			].join("\n")
+		);
 	}
 );
 

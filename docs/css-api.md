@@ -2,7 +2,7 @@
 
 > **Renaming or removing any class listed here is a breaking change** (requires a major/minor release with a changelog note). Consuming apps use these classes as CSS targets, so they are a public contract alongside component props. Component CSS lives in `@layer ca.components`, so a plain unlayered app rule with the same single-class selector (`.ca-btn:disabled { ... }`) overrides the kit: no doubled classes, no `!important` (see `getting-started/theming`).
 
-Conventions: BEM (`ca-block__element`, `ca-block--modifier`). CSS variables (`--ca-*`) are NOT listed here; see `packages/ui/src/lib/styles/tokens.css`. Component tokens (`--ca-<component>-<property>`, `--ca-<component>-<size|part>-<property>`) are the supported way to change weight, tracking, gap, padding and size: see [Component tokens](#component-tokens) below and the theming guide.
+`--ca-*` `--ca-<component>-<property>` `--ca-<component>-<size|part>-<property>` `.ca-*` `@keyframes` `API.md` `Data attributes` `Internal` `Parts` `Variables` `ca-block--modifier` `ca-block__element` `ca-x-` `codeatlas-ui workarounds --strict` `dist/components.json` `dist/parts.json` `list_parts` `packages/ui/scripts/build-manifest.ts` `packages/ui/src/lib/styles/tokens.css` `styling` `tests/styling-parts.test.ts`
 
 Generated from `grep -o 'ca-[a-z0-9_-]*'` over `packages/ui/src/lib/components/<Component>/` (`.svelte`, `.css`, `.ts`), excluding custom properties and duplicates. When you add or rename components, rerun the command and update this file. Some listed names may be `@keyframes` or internal identifiers (e.g. `ca-accordion-down`) rather than classes; treat them as stable to be safe.
 

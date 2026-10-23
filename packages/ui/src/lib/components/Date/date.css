@@ -93,12 +93,6 @@
     padding: var(--ca-space-1-5) 0;
   }
 
-  .ca-date__sep {
-    color: var(--ca-text-hint);
-    padding: 0 var(--ca-space-1);
-    user-select: none;
-  }
-
   .ca-date__segment {
     display: inline-flex;
     align-items: center;

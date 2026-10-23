@@ -97,12 +97,35 @@ export interface ManifestComponent {
 	snippets: ManifestProp[];
 	/** Text of the interface `extends` clause: native attributes that also pass through. */
 	extends?: string;
-	/** Public `ca-*` class names defined in the component `<style>`. */
+	/** Stable `ca-*` class names defined in the component `<style>` (the stable subset of `styling.parts`). */
 	classes: string[];
+	/** Everything an app may target to restyle this component, each part flagged stable or internal (#381). */
+	styling: ManifestStyling;
 	/** Component tokens: `--ca-<stem>-*` custom properties the `<style>` reads with a fallback (`var(--ca-btn-gap, …)`). Set them on `:root`, a wrapper or `ThemeOptions.components`. */
 	tokens: string[];
 	/** Generic parameters, e.g. `TData extends RowData`. */
 	generics?: string;
+}
+
+export interface ManifestPart {
+	/** Class name without the dot, or a `@keyframes` name. */
+	name: string;
+	/** `false`: private (`ca-x-` prefix, `@keyframes`); it can be renamed in any release. */
+	stable: boolean;
+}
+
+export interface ManifestDataAttribute {
+	name: string;
+	/** Values the component CSS selects on (`[data-size='sm']`); empty when only its presence matters. */
+	values: string[];
+}
+
+export interface ManifestStyling {
+	parts: ManifestPart[];
+	/** Component-scoped `--ca-*` custom properties (not global tokens): set on the element to restyle one axis. */
+	variables: string[];
+	/** `data-*` attributes the component CSS selects on. */
+	data: ManifestDataAttribute[];
 }
 
 export interface Manifest {
@@ -382,10 +405,12 @@ function extractComponent(name: string, file: string, entry: string): ManifestCo
 		props: [],
 		snippets: [],
 		classes: [],
+		styling: { parts: [], variables: [], data: [] },
 		tokens: [],
 	};
 	const css = componentCss(src, dirname(abs));
-	out.classes = extractClasses(css);
+	out.styling = extractStyling(css, src, globalTokens());
+	out.classes = out.styling.parts.filter((p) => p.stable).map((p) => p.name);
 	out.tokens = extractComponentTokens(css, out.classes);
 
 	const generics = src.match(/<script[^>]*\bgenerics="([^"]+)"/)?.[1];
@@ -455,6 +480,69 @@ export function extractClasses(css: string): string[] {
 			for (const c of owned.matchAll(/\.(ca-[A-Za-z0-9_-]+)/g)) classes.add(c[1]);
 		}
 	return [...classes].sort();
+}
+
+/** A private class: `ca-x-` prefix, so a reader sees it is not a hook (naming rule, #381). */
+const INTERNAL_CLASS = /^ca-x-/;
+
+/** Every `--ca-*` the global stylesheets declare: these are tokens, documented in tokens.json. */
+let tokenNames: Set<string> | undefined;
+function globalTokens(): Set<string> {
+	if (tokenNames) return tokenNames;
+	tokenNames = new Set();
+	const walk = (dir: string) => {
+		for (const e of readdirSync(dir, { withFileTypes: true })) {
+			if (e.isDirectory()) walk(join(dir, e.name));
+			else if (e.name.endsWith(".css"))
+				for (const m of readFileSync(join(dir, e.name), "utf8").matchAll(/(--ca-[\w-]+)\s*:/g))
+					tokenNames?.add(m[1]);
+		}
+	};
+	walk(join(LIB, "styles"));
+	return tokenNames;
+}
+
+/** `data-*` hooks a component CSS selects on, with the values it styles (`[data-size='sm']`). */
+export function extractDataAttributes(css: string): ManifestDataAttribute[] {
+	const found = new Map<string, Set<string>>();
+	for (const m of css
+		.replace(/\/\*[\s\S]*?\*\//g, "")
+		.matchAll(/\[(data-[a-z][a-z0-9-]*)(?:[~|^$*]?=(?:'([^']*)'|"([^"]*)"|([^\]\s]+)))?\s*\]/g)) {
+		const values = found.get(m[1]) ?? new Set<string>();
+		const v = m[2] ?? m[3] ?? m[4];
+		if (v !== undefined) values.add(v);
+		found.set(m[1], values);
+	}
+	return [...found]
+		.sort(([a], [b]) => a.localeCompare(b))
+		.map(([name, values]) => ({ name, values: [...values].sort() }));
+}
+
+/**
+ * The override surface of a component: classes (stable unless `ca-x-` or a `@keyframes` name), the
+ * component-scoped custom properties it declares or reads (`tokens` are excluded: they live in tokens.json)
+ * and the `data-*` attributes its CSS selects on.
+ */
+export function extractStyling(
+	css: string,
+	_source: string,
+	tokens = new Set<string>()
+): ManifestStyling {
+	const bare = css.replace(/\/\*[\s\S]*?\*\//g, "");
+	const keyframes = [...bare.matchAll(/@keyframes\s+(ca-[A-Za-z0-9_-]+)/g)].map((m) => m[1]);
+	const names = new Set([...extractClasses(css), ...keyframes]);
+	// Plain code-unit order, like `extractClasses`: `classes` (the stable subset) keeps its historical order.
+	const parts = [...names]
+		.sort()
+		.map((name) => ({ name, stable: !INTERNAL_CLASS.test(name) && !keyframes.includes(name) }));
+	const variables = [
+		...new Set(
+			[...bare.matchAll(/(--ca-[\w-]+)\s*:|var\(\s*(--ca-[\w-]+)/g)]
+				.map((m) => m[1] ?? m[2])
+				.filter((v) => !tokens.has(v))
+		),
+	].sort();
+	return { parts, variables, data: extractDataAttributes(css) };
 }
 
 /**
@@ -1210,6 +1298,62 @@ const SKILL_DEMOS = resolve(ROOT, "../../.agents/skills/codeatlas-ui/DEMOS.md");
 
 const cell = (v: string) => v.replace(/\|/g, "\\|");
 
+/** One component's override surface: stable parts, internal parts, scoped variables, data attributes. */
+function stylingLines(s: ManifestStyling): string[] {
+	const code = (xs: string[]) => xs.map((x) => `\`${x}\``).join(" ");
+	const lines: string[] = [];
+	const stable = s.parts.filter((p) => p.stable).map((p) => p.name);
+	const internal = s.parts.filter((p) => !p.stable).map((p) => p.name);
+	if (stable.length) lines.push(`Parts: ${code(stable)}`, "");
+	if (internal.length) lines.push(`Internal (may change in any release): ${code(internal)}`, "");
+	if (s.variables.length) lines.push(`Variables: ${code(s.variables)}`, "");
+	if (s.data.length)
+		lines.push(
+			`Data attributes: ${s.data.map((d) => `\`${d.name}\`${d.values.length ? ` (${d.values.map((v) => `\`${v}\``).join(" ")})` : ""}`).join(", ")}`,
+			""
+		);
+	return lines;
+}
+
+export interface PartsFile {
+	name: string;
+	version: string;
+	/** Naming rule, repeated in the file so a consumer tool needs nothing else. */
+	rule: string;
+	components: {
+		name: string;
+		import: string;
+		parts: ManifestPart[];
+		variables: string[];
+		data: ManifestDataAttribute[];
+	}[];
+}
+
+const PARTS_RULE =
+	"A `ca-*` class owned by a component is a stable part: renaming or removing it is a breaking change. A `ca-x-*` class and every @keyframes name is internal and may change in any release. Variables and data attributes listed here are stable.";
+
+/** The stable override surface of every component that has one, for `parts.json`, `list_parts` and `workarounds`. */
+export function buildParts(m: Manifest): PartsFile {
+	return {
+		name: m.name,
+		version: m.version,
+		rule: PARTS_RULE,
+		components: m.components
+			.filter((c) => c.styling.parts.length || c.styling.variables.length || c.styling.data.length)
+			.map((c) => ({ name: c.name, import: c.import, ...c.styling })),
+	};
+}
+
+/** Markdown of the override surface, one section per component. Deterministic. */
+export function partsMarkdown(m: Manifest): string {
+	const out = [PARTS_RULE, ""];
+	for (const c of buildParts(m).components) out.push(`## ${c.name}`, "", ...stylingLines(c));
+	return `${out
+		.join("\n")
+		.replace(/\n{3,}/g, "\n\n")
+		.trimEnd()}\n`;
+}
+
 /** Markdown reference of every component's props, snippets and classes, then every other export's signature. Deterministic. */
 export function skillMarkdown(m: Manifest): string {
 	const out = [
@@ -1245,7 +1389,7 @@ export function skillMarkdown(m: Manifest): string {
 				""
 			);
 		if (c.extends) out.push(`Also accepts: \`${cell(c.extends)}\``, "");
-		if (c.classes.length) out.push(`Classes: ${c.classes.map((x) => `\`${x}\``).join(" ")}`, "");
+		out.push(...stylingLines(c.styling));
 		if (c.tokens.length) out.push(`Tokens: ${c.tokens.map((x) => `\`${x}\``).join(" ")}`, "");
 	}
 	out.push(
@@ -1303,6 +1447,7 @@ if (import.meta.main) {
 			writeFileSync(join(dist, name), `${JSON.stringify(data, null, "\t")}\n`);
 		write("components.json", manifest);
 		write("tokens.json", { name: manifest.name, version: manifest.version, tokens });
+		write("parts.json", buildParts(manifest));
 		write("surfaces.json", {
 			name: manifest.name,
 			version: manifest.version,
