@@ -1,0 +1,31 @@
+<!-- @codeatlasdev/ui demo #642 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/kpi-card#stats-in-a-card -->
+Element: #642 Stats in a card (layout/kpi-card)
+What it shows: A glass Card titled This week holding three card-less Stat blocks in a responsive grid: leads with a hint, reply rate with a unit, trend and hint, and booked calls with a positive trend.
+When to use: Plain statistics inside an existing card or panel, with no nested box, instead of several KpiCards.
+Spec:
+- `<Card material="glass" title="This week" headingLevel={3} class="stats-card">` with `max-width: 640px`
+- `<Stat label="Leads this week" value="128" hint="12 more than last week" />`
+- `<Stat label="Reply rate" value="18" unit="%" trend={-2.4} hint="Goal: 25%" />`
+- `<Stat label="Booked calls" value="9" trend={12.5} />`
+- The Stats sit in an auto-fit grid, `minmax(150px, 1fr)`, `gap: var(--ca-space-5)`
+Tags: stat, kpi, metric, statistic, dashboard, card-less, hint, trend
+Needs: @codeatlasdev/ui@4.5.0
+Components: Card, Stat
+Live demo: https://ui.codeatlas.com.br/docs/layout/kpi-card#stats-in-a-card
+
+<script lang="ts">
+  import { Card, Stat } from '@codeatlasdev/ui';
+</script>
+
+<Card material="glass" title="This week" headingLevel={3} class="stats-card">
+  <div class="row">
+    <Stat label="Leads this week" value="128" hint="12 more than last week" />
+    <Stat label="Reply rate" value="18" unit="%" trend={-2.4} hint="Goal: 25%" />
+    <Stat label="Booked calls" value="9" trend={12.5} />
+  </div>
+</Card>
+
+<style>
+  :global(.stats-card) { width: 100%; max-width: 640px; }
+  .row { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: var(--ca-space-5); }
+</style>

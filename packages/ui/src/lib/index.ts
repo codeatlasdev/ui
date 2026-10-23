@@ -196,6 +196,7 @@ export { default as SkipLink } from "./components/SkipLink/SkipLink.svelte";
 export { default as Slider } from "./components/Slider/Slider.svelte";
 export { default as Spinner } from "./components/Spinner/Spinner.svelte";
 export { default as Stack } from "./components/Stack/Stack.svelte";
+export { default as Stat } from "./components/Stat/Stat.svelte";
 export { default as StatusChip } from "./components/StatusChip/StatusChip.svelte";
 export type { StepItem } from "./components/Stepper/Stepper.svelte";
 export { default as Stepper } from "./components/Stepper/Stepper.svelte";

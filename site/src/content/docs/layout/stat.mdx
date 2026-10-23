@@ -1,0 +1,38 @@
+---
+title: Stat
+description: A card-less statistic with a label, a big number, a unit, a trend and a hint, sharing KpiCard typography.
+group: Layout
+order: 59
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Stats from "~/demos/layout/kpi-card/Stats.svelte";
+import StatsSrc from "~/demos/layout/kpi-card/Stats.svelte?raw";
+
+```svelte
+<script>
+  import { Stat } from "@codeatlasdev/ui";
+</script>
+
+<Stat label="Leads this week" value="128" hint="12 more than last week" />
+<Stat label="Reply rate" value="18" unit="%" trend={-2.4} size="sm" />
+```
+
+Use `Stat` for a plain number inside a card, a panel or a flex/grid row. It has no background, border or padding and inherits its colour from the container, so it never nests a second box. Use [KpiCard](/docs/layout/kpi-card/) when the metric needs its own card: a `KpiCard` is a `Stat` inside a [Card](/docs/surfaces/card/), so both share one set of typography tokens.
+
+It renders a description list (`<dl>`): the label is the `<dt>`, the value the `<dd>`, so assistive tech reads the label as the name of the number. The label is one line and truncates with an ellipsis in a narrow container (390px); the value uses tabular numerals and never wraps. Text colours are `--ca-text-secondary` (label), `--ca-text-primary` (value) and `--ca-text-hint` (hint). Place several Stats side by side with a grid or flex wrapper; do not wrap each one in a Card.
+
+<Demo title="Stats in a card" description={"Three card-less stats in one Card, with hint, unit and trend."} src={StatsSrc}><Stats /></Demo>
+
+<Props rows={[
+  { name: "label", type: "string", description: "What is measured. One line, truncates with an ellipsis." },
+  { name: "value", type: "string | number", description: "The number. Tabular numerals, never wraps." },
+  { name: "unit", type: "string", description: "Unit shown after the value (`%`, `ms`, `users`)." },
+  { name: "hint", type: "string", description: "Secondary caption below the value." },
+  { name: "trend", type: "number", description: "Percentage change. Positive is green with an up arrow, negative red with a down arrow, zero neutral. Announced as \"Trend: +12.5%\"." },
+  { name: "size", type: "'sm' | 'md' | 'lg'", default: "'md'", description: "Value size: 17px, 24px or 36px." },
+  { name: "align", type: "'start' | 'center'", default: "'start'", description: "Text alignment." },
+  { name: "skeleton", type: "boolean", default: "false", description: "Loading placeholder with the exact size of the loaded stat, announced as busy. See Skeleton." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+  { name: "legacyPrefix", type: "string", description: "Extra class prefix for components built on Stat (KpiCard passes `ca-kpi`). Apps do not need it." },
+]} />

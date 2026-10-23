@@ -1413,7 +1413,7 @@ Classes: `ca-kbd`
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded card, announced as busy. |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-kpi` `ca-kpi__icon` `ca-kpi__inner` `ca-kpi__title` `ca-kpi__top` `ca-kpi__trend` `ca-kpi__trend--down` `ca-kpi__trend--up` `ca-kpi__unit` `ca-kpi__value` `ca-kpi__value-row`
+Classes: `ca-kpi` `ca-kpi__icon` `ca-kpi__inner`
 
 ## KpiGrid
 
@@ -2370,6 +2370,27 @@ Snippets: `children`
 Also accepts: `PolymorphicAttributes<T, Pick<LayoutProps, 'gap' \| 'p' \| 'px' \| 'py' \| 'align' \| 'justify'>>`
 
 Classes: `ca-stack`
+
+## Stat
+
+`import { Stat } from "@codeatlasdev/ui"`
+
+Stat — a card-less statistic: label, big number, optional unit, trend and hint. It has no surface, border or padding and inherits its colour from the container, so it sits inside a Card, a panel or a flex/grid row. `KpiCard` is a Stat inside a Card.
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `label` | `string` |  | What is measured. One line: truncates with an ellipsis when the container is narrow. |
+| `value` | `string \| number` |  | The number (or short text). Tabular numerals, never wraps. |
+| `unit?` | `string` |  | Unit shown after the value (`%`, `ms`, `users`). |
+| `hint?` | `string` |  | Secondary caption below the value ("12 more than last week"). |
+| `trend?` | `number` |  | Percentage change. Positive is green with an up arrow, negative red with a down arrow, zero neutral. |
+| `size?` | `'sm' \| 'md' \| 'lg'` | `'md'` | Value size: `'sm'` (17px), `'md'` (24px, the default), `'lg'` (36px). |
+| `align?` | `'start' \| 'center'` | `'start'` | Text alignment inside the stat. |
+| `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded stat, announced as busy. |
+| `class?` | `string` | `''` |  |
+| `legacyPrefix?` | `string` |  | Prefix of an extra class set on every part (`<prefix>__title`, `__value`, `__unit`, `__trend`, `__trend--up`/`--down`), for a component built on Stat that keeps its own public classes (KpiCard uses `ca-kpi`). Apps do not need it. |
+
+Classes: `ca-stat` `ca-stat__hint` `ca-stat__label` `ca-stat__trend` `ca-stat__trend--down` `ca-stat__trend--up` `ca-stat__unit` `ca-stat__value`
 
 ## StatusChip
 

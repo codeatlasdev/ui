@@ -198,7 +198,7 @@ Total: 829 unique classes across 83 components.
 
 ## KpiCard
 
-`.ca-kpi` `.ca-kpi__icon` `.ca-kpi__inner` `.ca-kpi__title` `.ca-kpi__top` `.ca-kpi__trend` `.ca-kpi__trend--down` `.ca-kpi__trend--up` `.ca-kpi__unit` `.ca-kpi__value` `.ca-kpi__value-row`
+`.ca-kpi` `.ca-kpi__icon` `.ca-kpi__inner` `.ca-kpi__title` `.ca-kpi__trend` `.ca-kpi__trend--down` `.ca-kpi__trend--up` `.ca-kpi__unit` `.ca-kpi__value`
 
 ## Lightbox
 
@@ -336,6 +336,10 @@ The `skeleton` prop of `Avatar`, `KpiCard`, `TextField`, `Table`, `Card` and `Gl
 ## Stack
 
 `.ca-stack`
+
+## Stat
+
+`.ca-stat` `.ca-stat__hint` `.ca-stat__label` `.ca-stat__trend` `.ca-stat__trend--down` `.ca-stat__trend--up` `.ca-stat__unit` `.ca-stat__value`
 
 ## StatusChip
 

@@ -65,6 +65,39 @@ describe("KpiCard", () => {
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
+	it("is a Card around a Stat, padded once", async () => {
+		const screen = await render(KpiCard, {
+			title: "Revenue",
+			value: "R$ 1",
+			trend: 2,
+			icon: TrendingUp,
+		});
+		const card = q(screen.container, ".ca-kpi");
+		const stat = q(card, "dl.ca-stat");
+		expect(stat.querySelector("dt")?.textContent?.trim()).toBe("Revenue");
+		const pad = Number.parseFloat(getComputedStyle(card).paddingLeft);
+		expect(stat.getBoundingClientRect().left - card.getBoundingClientRect().left).toBe(pad);
+		expect(pad).toBe(20);
+	});
+
+	it("keeps the legacy classes apps target", async () => {
+		const screen = await render(KpiCard, {
+			title: "R",
+			value: 1,
+			unit: "ms",
+			trend: 1,
+			icon: TrendingUp,
+		});
+		for (const c of [
+			"ca-kpi__title",
+			"ca-kpi__value",
+			"ca-kpi__unit",
+			"ca-kpi__trend",
+			"ca-kpi__icon",
+		])
+			expect(screen.container.querySelector(`.${c}`), c).not.toBeNull();
+	});
+
 	it("is built on Card, so it never triggers a deprecation warning", async () => {
 		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
 		try {

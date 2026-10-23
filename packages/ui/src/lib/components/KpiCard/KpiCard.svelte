@@ -1,9 +1,7 @@
 <script lang="ts">
-  import { useMessages } from '../../i18n/state.svelte.js';
-  import { kpiCard } from '../../i18n/groups/kpiCard.js';
   import type { IconComponent } from '../../types.js';
   import Card from '../Card/Card.svelte';
-  const t = useMessages(kpiCard);
+  import Stat from '../Stat/Stat.svelte';
 
   interface Props {
     title:   string;
@@ -18,38 +16,15 @@
   }
 
   let { title, value, unit, trend, icon: Icon, skeleton = false, class: className = '' }: Props = $props();
-
-  const isUp   = $derived(trend !== undefined && trend > 0);
-  const isDown = $derived(trend !== undefined && trend < 0);
-  const trendLabel = $derived(
-    trend !== undefined ? `${trend > 0 ? '+' : ''}${trend.toFixed(1)}%` : null
-  );
 </script>
 
+<!-- A KpiCard is a Stat inside a Card: the label, number and trend typography come from Stat. -->
 <Card elevation={3} class="ca-kpi {className}" {skeleton}>
   <div class="ca-kpi__inner">
-    <div class="ca-kpi__top">
-      <p class="ca-kpi__title">{title}</p>
-      {#if Icon}
-        <span class="ca-kpi__icon" aria-hidden="true">
-          <Icon size={16} stroke-width={1.75} />
-        </span>
-      {/if}
-    </div>
-
-    <div class="ca-kpi__value-row">
-      <span class="ca-kpi__value">{value}</span>
-      {#if unit}<span class="ca-kpi__unit">{unit}</span>{/if}
-    </div>
-
-    {#if trendLabel}
-      <span
-        class="ca-kpi__trend"
-        class:ca-kpi__trend--up={isUp}
-        class:ca-kpi__trend--down={isDown}
-        aria-label={t().kpiCard.trend(trendLabel)}
-      >
-        {isUp ? '↑' : isDown ? '↓' : ''}{trendLabel}
+    <Stat label={title} {value} {unit} {trend} legacyPrefix="ca-kpi" />
+    {#if Icon}
+      <span class="ca-kpi__icon" aria-hidden="true">
+        <Icon size={16} stroke-width={1.75} />
       </span>
     {/if}
   </div>
@@ -60,74 +35,26 @@
 @layer ca.components {
     :global(.ca-kpi) { min-width: 0; }
 
+    /* The card already pads its content: the inner box only places the icon beside the label. */
     .ca-kpi__inner {
-      padding: var(--ca-card-padding);
-      display: flex;
-      flex-direction: column;
-      gap: var(--ca-space-1-5);
-    }
-
-    .ca-kpi__top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: var(--ca-space-2);
-    }
-
-    .ca-kpi__title {
-      font-size: var(--ca-font-size-micro);
-      font-weight: var(--ca-font-weight-semibold);
-      color: var(--ca-text-secondary);
-      margin: 0;
-      text-transform: uppercase;
-      letter-spacing: var(--ca-overline-tracking);
-      line-height: var(--ca-line-height-snug);
+      position: relative;
+      min-width: 0;
     }
 
     .ca-kpi__icon {
+      position: absolute;
+      inset-block-start: 0;
+      inset-inline-end: 0;
       display: flex;
       align-items: center;
       color: var(--ca-text-hint);
-      flex-shrink: 0;
       line-height: 0;
       margin-top: var(--ca-border-width);
     }
 
-    .ca-kpi__value-row {
-      display: flex;
-      align-items: baseline;
-      gap: var(--ca-space-1);
-      margin-top: var(--ca-space-0-5);
+    /* Keep the label clear of the icon. */
+    .ca-kpi__inner:has(.ca-kpi__icon) :global(.ca-stat__label) {
+      padding-inline-end: var(--ca-space-6);
     }
-
-    .ca-kpi__value {
-      font-size: var(--ca-font-size-h3);
-      font-family: var(--ca-font-display);
-      font-weight: var(--ca-font-weight-heading);
-      color: var(--ca-text-primary);
-      line-height: 1;
-      letter-spacing: var(--ca-heading-tracking);
-    }
-
-    .ca-kpi__unit {
-      font-size: var(--ca-font-size-body2);
-      color: var(--ca-text-secondary);
-      font-weight: var(--ca-font-weight-regular);
-    }
-
-    .ca-kpi__trend {
-      display: inline-flex;
-      align-items: center;
-      gap: var(--ca-space-0-5);
-      font-size: var(--ca-font-size-micro);
-      font-weight: var(--ca-font-weight-semibold);
-      border-radius: var(--ca-radius-pill);
-      padding: var(--ca-space-0-5) var(--ca-space-2);
-      align-self: flex-start;
-    }
-
-    .ca-kpi__trend--up   { color: var(--ca-semantic-success); background: color-mix(in oklab, var(--ca-semantic-success) 12%, transparent); }
-    .ca-kpi__trend--down { color: var(--ca-semantic-error);   background: color-mix(in oklab, var(--ca-semantic-error)   12%, transparent); }
-
 }
 </style>
