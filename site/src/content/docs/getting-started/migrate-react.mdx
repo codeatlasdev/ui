@@ -218,7 +218,7 @@ One row per component on [ui.shadcn.com/docs/components](https://ui.shadcn.com/d
 | Collapsible | `@radix-ui/react-collapsible`, `@base-ui-components/react/collapsible` |  | `Collapsible` | `title`, `bind:open`. |
 | Combobox |  | `Autocomplete` | `Combobox` | `options`, `bind:value`, `emptyText`, `creatable`, `multiple`. |
 | Command |  |  | `CommandPalette`, `Combobox` | `CommandPalette` is app-wide navigation (`modules`); a searchable field is `Combobox`. |
-| Context Menu | `@radix-ui/react-context-menu` |  | none (gap #432): `DropdownMenu` opened at the pointer from a `contextmenu` handler. | Controlled with `open` and `anchor` at the pointer. |
+| Context Menu | `@radix-ui/react-context-menu` |  | `ContextMenu`, `DropdownMenuItem` | Wrap the region in `ContextMenu`; the `menu` snippet takes the `DropdownMenu` items. Right-click, long-press and Shift+F10. |
 | Data Table |  |  | `DataTable` | `columns` and `data`; sorting, search and paging are built in. Needs `@tanstack/svelte-table`. |
 | Date Picker |  | `DatePicker` | `DatePicker`, `DateRangePicker` | Values are `@internationalized/date` values, not `Date`. |
 | Dialog | `@radix-ui/react-dialog`, `@base-ui-components/react/dialog` | `Dialog` | `Dialog` | `bind:open`, `title`, `description`; no `DialogTrigger`: a `Button` sets `open = true`. |

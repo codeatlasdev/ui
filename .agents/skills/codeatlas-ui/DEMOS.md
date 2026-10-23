@@ -358,13 +358,5 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 901 | Responsive keyboard hint | inputs/button | Button, Kbd |
 | 902 | Align between | inputs/button | Button, Kbd |
 | 910 | Configured split | feedback/dialog | Dialog, Button, Stack |
-| 940 | Profile mention | navigation/hover-card | Avatar, HoverCard, Stack |
-| 941 | Delays, side and bind:open | navigation/hover-card | Button, HoverCard |
-| 960 | ratio and fit | display/image | Image |
-| 961 | Embed | display/aspect-ratio | AspectRatio |
-| 962 | Two panels | layout/resizable-panels | ResizableHandle, ResizablePanel, ResizablePanels |
-| 963 | Nested and saved | layout/resizable-panels | ResizableHandle, ResizablePanel, ResizablePanels |
-| 980 | Text, icon and filled groups | inputs/button-group | Button, ButtonGroup, IconButton |
-| 981 | Split button and vertical | inputs/button-group | Button, ButtonGroup, DropdownMenu, DropdownMenuItem, IconButton |
-| 982 | Text addons | inputs/text-field | TextField |
-| 983 | Button addons | inputs/text-field | Button, IconButton, TextField |
+| 942 | File menu | navigation/context-menu | ContextMenu, DropdownMenuCheckboxItem, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubTrigger |
+| 943 | One menu per row | navigation/context-menu | ContextMenu, DropdownMenuItem, DropdownMenuLabel |
