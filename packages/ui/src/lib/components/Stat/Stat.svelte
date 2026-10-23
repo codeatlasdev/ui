@@ -9,6 +9,8 @@
    *
    * Semantics are a description list: the label is the `<dt>`, the value the `<dd>`.
    */
+  import { getContext } from 'svelte';
+  import { KPI_CONTEXT } from './context.js';
   import { useMessages } from '../../i18n/state.svelte.js';
   import { kpiCard } from '../../i18n/groups/kpiCard.js';
   const t = useMessages(kpiCard);
@@ -41,6 +43,10 @@
     class: className = '',
   }: Props = $props();
 
+  // Inside a KpiCard the parts also carry its documented `ca-kpi__*` classes (rendered in the markup, so SSR has them).
+  const kpi = getContext<boolean | undefined>(KPI_CONTEXT) ? 'ca-kpi' : null;
+  const k = (part: string) => (kpi ? ` ${kpi}__${part}` : '');
+
   const isUp   = $derived(trend !== undefined && trend > 0);
   const isDown = $derived(trend !== undefined && trend < 0);
   const trendLabel = $derived(
@@ -55,15 +61,17 @@
   data-skeleton={skeleton ? '' : undefined}
   aria-busy={skeleton ? 'true' : undefined}
 >
-  <dt class="ca-stat__label">{label}</dt>
-  <dd class="ca-stat__value">
-    {value}{#if unit}<span class="ca-stat__unit">{unit}</span>{/if}
+  <dt class="ca-stat__label{k('title')}">{label}</dt>
+  <dd class="ca-stat__value{k('value')}">
+    {value}{#if unit}<span class="ca-stat__unit{k('unit')}">{unit}</span>{/if}
   </dd>
   {#if trendLabel}
     <dd
-      class="ca-stat__trend"
+      class="ca-stat__trend{k('trend')}"
       class:ca-stat__trend--up={isUp}
       class:ca-stat__trend--down={isDown}
+      class:ca-kpi__trend--up={kpi && isUp}
+      class:ca-kpi__trend--down={kpi && isDown}
       aria-label={t().kpiCard.trend(trendLabel)}
     >
       {isUp ? '↑' : isDown ? '↓' : ''}{trendLabel}

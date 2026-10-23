@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { setContext } from 'svelte';
+  import { KPI_CONTEXT } from '../Stat/context.js';
   import type { IconComponent } from '../../types.js';
   import Card from '../Card/Card.svelte';
   import Stat from '../Stat/Stat.svelte';
@@ -17,29 +19,13 @@
 
   let { title, value, unit, trend, icon: Icon, skeleton = false, class: className = '' }: Props = $props();
 
-  // Apps target the documented `.ca-kpi__*` classes. Stat owns the markup, so they are added to its
-  // parts here (tracking the props) instead of widening Stat's API.
-  const LEGACY: [string, string][] = [
-    ['.ca-stat__label', 'ca-kpi__title'],
-    ['.ca-stat__value', 'ca-kpi__value'],
-    ['.ca-stat__unit', 'ca-kpi__unit'],
-    ['.ca-stat__trend', 'ca-kpi__trend'],
-    ['.ca-stat__trend--up', 'ca-kpi__trend--up'],
-    ['.ca-stat__trend--down', 'ca-kpi__trend--down'],
-  ];
-  let inner: HTMLElement | undefined = $state();
-  $effect(() => {
-    // Re-run when anything Stat renders from changes.
-    void [title, value, unit, trend];
-    if (!inner) return;
-    for (const [from, to] of LEGACY)
-      for (const el of inner.querySelectorAll(from)) el.classList.add(to);
-  });
+  // Stat renders the `.ca-kpi__*` classes apps target while it sits inside a KpiCard.
+  setContext(KPI_CONTEXT, true);
 </script>
 
 <!-- A KpiCard is a Stat inside a Card: the label, number and trend typography come from Stat. -->
 <Card elevation={3} class="ca-kpi {className}" {skeleton}>
-  <div class="ca-kpi__inner" bind:this={inner}>
+  <div class="ca-kpi__inner">
     <Stat label={title} {value} {unit} {trend} />
     {#if Icon}
       <span class="ca-kpi__icon" aria-hidden="true">
