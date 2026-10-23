@@ -4,7 +4,7 @@
   import { Spring } from 'svelte/motion';
   import { reducedMotion } from '../../stores/reduced-motion.svelte.js';
   import type { NavExtras, NavModule, NavMoreSheetProps } from './types.js';
-  import { clampPanelWidth, firstModulePath, isItemActive, isNavSection, matchModuleIndex, PANEL_WIDTH, RAIL_WIDTH } from './types.js';
+  import { clampPanelWidth, findActiveItem, firstModulePath, isNavSection, matchModuleIndex, PANEL_WIDTH, RAIL_WIDTH } from './types.js';
   import { readShellState, shellScript, writeShellState } from './shell-state.js';
   import Rail from './Rail.svelte';
   import Panel from './Panel.svelte';
@@ -190,15 +190,7 @@
   let pageTitle = $derived.by(() => {
     const mod = modules[activeModuleIndex];
     if (!mod) return '';
-    for (const entry of mod.items) {
-      if (isNavSection(entry)) {
-        const hit = entry.items.find(i => isItemActive(i, pathname));
-        if (hit) return hit.label;
-      } else if (isItemActive(entry, pathname)) {
-        return entry.label;
-      }
-    }
-    return mod.label;
+    return findActiveItem(mod.items, pathname)?.label ?? mod.label;
   });
 
   function setPanelOpen(v: boolean) {

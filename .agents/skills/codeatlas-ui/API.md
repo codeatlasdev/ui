@@ -2264,6 +2264,7 @@ Classes: `ca-layout-section`
 |---|---|---|---|
 | `section` | `NavSection` |  |  |
 | `pathname` | `string` |  |  |
+| `active?` | `(item: NavItem) => boolean` |  | Decides which link is current (the shell passes the module-wide winner); defaults to `isItemActive`. |
 | `class?` | `string` | `''` |  |
 
 Classes: `ca-section` `ca-section__chevron` `ca-section__chevron--open` `ca-section__header` `ca-section__label` `ca-section__trigger`
@@ -3219,11 +3220,21 @@ const elevation: {
 }
 ```
 
+### findActiveItem
+
+`import { findActiveItem } from "@codeatlasdev/ui"`
+
+The nav item that is active for `pathname` among one module's entries (sections flattened), or `undefined` when none matches. Like modules, the most specific match wins whatever the order: with items at `/a` and `/a/b`, `/a/b/1` is `/a/b` only and `/a/c` stays on `/a`. On a tie the first wins.
+
+```ts
+function findActiveItem(entries: ReadonlyArray<NavItem | NavSection>, pathname: string): NavItem | undefined
+```
+
 ### findActiveItemPath
 
 `import { findActiveItemPath } from "@codeatlasdev/ui"`
 
-Path of the nav item that is active for `pathname`, or `null` when none matches.
+Path of the nav item that is active for `pathname` (see `findActiveItem`), or `null` when none matches.
 
 ```ts
 function findActiveItemPath(modules: NavModule[], pathname: string): string | null

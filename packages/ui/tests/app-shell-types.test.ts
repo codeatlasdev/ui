@@ -152,11 +152,28 @@ describe("findActiveItemPath", () => {
 		expect(findActiveItemPath(modules, "/dashboard/orders/9")).toBe("/dashboard/orders");
 	});
 
-	it("returns the first matching item when an earlier item is a path prefix (order matters)", () => {
-		const m: NavModule[] = [
+	it("the most specific item wins whatever the order (/a and /a/b on /a/b)", () => {
+		const overviewFirst: NavModule[] = [
 			{ ...modules[0], items: [item("/dashboard"), item("/dashboard/orders")] },
 		];
-		expect(findActiveItemPath(m, "/dashboard/orders")).toBe("/dashboard");
+		const detailFirst: NavModule[] = [
+			{ ...modules[0], items: [item("/dashboard/orders"), item("/dashboard")] },
+		];
+		expect(findActiveItemPath(overviewFirst, "/dashboard/orders")).toBe("/dashboard/orders");
+		expect(findActiveItemPath(detailFirst, "/dashboard/orders")).toBe("/dashboard/orders");
+		expect(findActiveItemPath(overviewFirst, "/dashboard/orders/9/")).toBe("/dashboard/orders");
+		expect(findActiveItemPath(overviewFirst, "/dashboard/other")).toBe("/dashboard");
+	});
+
+	it("compares an overview item and a sibling inside a section", () => {
+		const m: NavModule[] = [
+			{
+				...modules[0],
+				items: [item("/items"), { label: "Recent", items: [item("/items/a")] }],
+			},
+		];
+		expect(findActiveItemPath(m, "/items/a")).toBe("/items/a");
+		expect(findActiveItemPath(m, "/items/b")).toBe("/items");
 	});
 
 	it("returns null when no item is active", () => {

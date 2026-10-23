@@ -181,19 +181,37 @@ export function findActiveModuleIndex(modules: NavModule[], pathname: string): n
 	return Math.max(0, matchModuleIndex(modules, pathname));
 }
 
-/** Path of the nav item that is active for `pathname`, or `null` when none matches. */
-export function findActiveItemPath(modules: NavModule[], pathname: string): string | null {
-	for (const mod of modules) {
-		for (const entry of mod.items) {
-			if (isNavSection(entry)) {
-				const hit = entry.items.find((i) => isItemActive(i, pathname));
-				if (hit) return hit.path;
-			} else if (isItemActive(entry, pathname)) {
-				return entry.path;
+/**
+ * The nav item that is active for `pathname` among one module's entries (sections flattened), or
+ * `undefined` when none matches. Like modules, the most specific match wins whatever the order: with
+ * items at `/a` and `/a/b`, `/a/b/1` is `/a/b` only and `/a/c` stays on `/a`. On a tie the first wins.
+ */
+export function findActiveItem(
+	entries: ReadonlyArray<NavItem | NavSection>,
+	pathname: string
+): NavItem | undefined {
+	let best: NavItem | undefined;
+	let bestLength = -1;
+	for (const entry of entries) {
+		for (const item of isNavSection(entry) ? entry.items : [entry]) {
+			const length = trimmed(item.path).length;
+			if (length > bestLength && isItemActive(item, pathname)) {
+				best = item;
+				bestLength = length;
 			}
 		}
 	}
-	return null;
+	return best;
+}
+
+/** Path of the nav item that is active for `pathname` (see `findActiveItem`), or `null` when none matches. */
+export function findActiveItemPath(modules: NavModule[], pathname: string): string | null {
+	let best: NavItem | undefined;
+	for (const mod of modules) {
+		const hit = findActiveItem(mod.items, pathname);
+		if (hit && (!best || trimmed(hit.path).length > trimmed(best.path).length)) best = hit;
+	}
+	return best?.path ?? null;
 }
 
 /** First navigable path inside a module (used by Rail/BottomNav on tap). */

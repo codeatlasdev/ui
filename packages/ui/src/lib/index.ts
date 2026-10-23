@@ -44,6 +44,7 @@ export type {
 } from "./components/AppShell/types.js";
 export {
 	collectPaths,
+	findActiveItem,
 	findActiveItemPath,
 	findActiveModuleIndex,
 	firstModulePath,

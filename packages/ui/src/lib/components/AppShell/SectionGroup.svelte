@@ -1,6 +1,6 @@
 <script lang="ts">
   import { getContext } from 'svelte';
-  import type { NavSection } from './types.js';
+  import type { NavItem, NavSection } from './types.js';
   import { isItemActive } from './types.js';
   import NavList from './NavList.svelte';
   import { readShellState, writeShellState } from './shell-state.js';
@@ -10,13 +10,15 @@
   interface Props {
     section: NavSection;
     pathname: string;
+    /** Decides which link is current (the shell passes the module-wide winner); defaults to `isItemActive`. */
+    active?: (item: NavItem) => boolean;
     class?: string;
   }
 
-  let { section, pathname, class: className = '' }: Props = $props();
+  let { section, pathname, active, class: className = '' }: Props = $props();
 
   const hasActiveChild = $derived(
-    section.items.some((item) => isItemActive(item, pathname))
+    section.items.some((item) => (active ? active(item) : isItemActive(item, pathname)))
   );
 
   // Only inside an AppShellLayout with persistPanel (a bare SectionGroup keeps nothing).
@@ -62,17 +64,17 @@
           </span>
         </button>
         <div id={ids.part('content')} data-state={dataState} hidden={!presence.present} {@attach presence.ref}>
-          <NavList items={section.items} {pathname} onReorder={section.onReorder} label={section.label} />
+          <NavList items={section.items} {pathname} {active} onReorder={section.onReorder} label={section.label} />
         </div>
       </div>
     {:else}
       <div class="ca-section__header">
         <span class="ca-section__label">{section.label}</span>
       </div>
-      <NavList items={section.items} {pathname} onReorder={section.onReorder} label={section.label} />
+      <NavList items={section.items} {pathname} {active} onReorder={section.onReorder} label={section.label} />
     {/if}
   {:else}
-    <NavList items={section.items} {pathname} onReorder={section.onReorder} label={section.label} />
+    <NavList items={section.items} {pathname} {active} onReorder={section.onReorder} label={section.label} />
   {/if}
 </div>
 

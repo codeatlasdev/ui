@@ -51,7 +51,7 @@ The rail magnifies the module icon under the pointer, like a dock. Only the glyp
 
 <Props for="AppShellLayout" rows={[
   { name: "modules", type: "NavModule[]", description: "Navigation modules. Each has id, label, icon, basePath, optional pathPrefixes and items (NavItem or NavSection). Prefixes match whole path segments and the longest one wins, so a module at `basePath: \"/\"` only gets the pages no other module claims." },
-  { name: "pathname", type: "string", description: "Current location. Decides the active module and item. An item at `path: \"/\"` is active on `/` only." },
+  { name: "pathname", type: "string", description: "Current location. Decides the active module and item. An item is active on its `path` and below it; when several match (`/items` and `/items/a` on `/items/a`) the most specific one wins, whatever the order, and its label is the mobile header title. An item at `path: \"/\"` is active on `/` only." },
   { name: "onNavigate", type: "(path: string) => void", description: "Called with the first path of the module when the rail or the bottom navigation switches module. Panel items are links and do not call it." },
   { name: "defaultModule", type: "number", default: "0", description: "Module index used when the URL matches no module and none was stored." },
   { name: "persistPanel", type: "boolean", default: "true", description: "Keeps the shell across page loads: panel open or closed, selected module and expanded sections (localStorage), panel scroll (sessionStorage). Restored before the first paint. Turn it off for demos and embeds that must always start from the defaults." },

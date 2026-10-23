@@ -3,7 +3,7 @@
   import { useMessages } from '../../i18n/state.svelte.js';
   import { appShell } from '../../i18n/groups/appShell.js';
   import type { NavItem, NavModule, NavSection } from './types.js';
-  import { isNavSection } from './types.js';
+  import { findActiveItem, isNavSection } from './types.js';
   import NavList from './NavList.svelte';
   import SectionGroup from './SectionGroup.svelte';
   import PanelResizeHandle from './PanelResizeHandle.svelte';
@@ -44,7 +44,9 @@
     }
     return out;
   });
-  const isActiveHere = (item: NavItem) => pathname === item.path || pathname.startsWith(item.path + '/');
+  // One winner for the whole module (sections included): an overview item and a deeper sibling are never both current.
+  let activeItem = $derived(findActiveItem(activeModule?.items ?? [], pathname));
+  const isActiveHere = (item: NavItem) => item === activeItem;
 
   // Only inside an AppShellLayout with persistPanel (a bare Panel keeps nothing).
   const persist = getContext<{ readonly enabled: boolean } | undefined>('appshell-persist');
@@ -95,7 +97,7 @@
       {#if activeModule}
         {#each runs as run, r (r)}
           {#if run.section}
-            <SectionGroup section={run.section} {pathname} />
+            <SectionGroup section={run.section} {pathname} active={isActiveHere} />
           {:else}
             <NavList items={run.items} {pathname} onReorder={activeModule.onReorder} label={activeModule.label} active={isActiveHere} />
           {/if}
