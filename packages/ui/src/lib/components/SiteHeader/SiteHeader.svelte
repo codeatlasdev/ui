@@ -11,7 +11,8 @@
   interface Props {
     /**
      * The end of the bar: a `LocaleSwitcher`, a primary CTA, a user menu. Stays on the right and
-     * shrinks the breadcrumb first, so it fits at 390px.
+     * shrinks the breadcrumb first, so it fits at 390px. A `NavigationMenu` placed directly here is
+     * hidden below 600px (it never fits beside a CTA): give phones the same links in a menu of your own.
      */
     trailing?: Snippet;
     /** Display text role (family, `--ca-display-tracking`) for the current-page crumb. */
@@ -191,6 +192,11 @@
       gap: var(--ca-space-1);
       margin-left: auto;
       flex-shrink: 0;
+      min-width: 0;
+    }
+    /* A navigation menu in trailing cannot fit beside a CTA on a phone: it yields to the consumer's mobile menu. */
+    @media (max-width: 599.98px) {
+      .ca-site-header__trailing > :global(.ca-navmenu) { display: none; }
     }
 }
 </style>
