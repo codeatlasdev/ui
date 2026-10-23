@@ -151,7 +151,8 @@
   /* ── Base element defaults ───────────────────────────────────────────── */
   color: var(--ca-text-primary);
   font-family: var(--ca-font-sans);
-  font-size: var(--ca-font-size-body1);
+  /* No font-size here: the root stays at the user-agent size so every rem token keeps its
+   * meaning; --ca-font-size-body1 sizes the text on body (base.css, #351). */
   line-height: var(--ca-line-height-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
