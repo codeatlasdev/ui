@@ -351,6 +351,7 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "900", path: "display/badge/InlinePill" },
 	{ id: "901", path: "inputs/button/TrailingHint" },
 	{ id: "902", path: "inputs/button/AlignBetween" },
+	{ id: "910", path: "feedback/dialog/SplitConfigured" },
 ];
 
 /**

@@ -886,6 +886,9 @@ Dialog: second-layer modal.
 | `description?` | `string` |  |  |
 | `size?` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'split'` | `'md'` | 'sm' = 400px \| 'md' = 480px (default) \| 'lg' = 600px \| 'xl' = 820px \| 'split' = 1100×720 two-column |
 | `chromeless?` | `boolean` | `false` | Omits header, description and actions; body has no padding. Pass `title` for the accessible name (visually hidden). |
+| `splitColumns?` | `string` |  | Column template of the `size="split"` body (CSS `grid-template-columns`), e.g. `'2fr 3fr'`. Default `'1fr 1fr'`. Sets `--ca-dialog-split-columns`. |
+| `splitSize?` | `{ width?: string; height?: string }` |  | Panel box of `size="split"`, any CSS length: `{ width: 'min(66vw, 80rem)', height: 'min(88svh, 56rem)' }`. Default 1100×720, capped to the viewport. Sets `--ca-dialog-split-width` / `--ca-dialog-split-height`. |
+| `fullscreenBelow?` | `'sm' \| 'md'` |  | Full screen below this breakpoint (`'sm'` = 600px, `'md'` = 900px), any `size`: exactly the viewport (`--ca-vh`), square corners, safe-area padding kept. Focus trap and Escape are unchanged. |
 | `class?` | `string` | `''` |  |
 | `onOpenChange?` | `(open: boolean) => void` |  |  |
 

@@ -1,0 +1,12 @@
+{
+	"summary": "A split dialog sized 66vw by 88svh with a 2fr/3fr column ratio that goes full screen under 600px: a map column beside a details column with a Close button.",
+	"use": "Wide detail dialogs (map + details, media + form) that need their own box and column ratio and must fill the screen on phones.",
+	"spec": [
+		"`<Dialog` with `size=\"split\"`, `chromeless` and `title=\"Lead details\"`",
+		"`splitColumns=\"2fr 3fr\"` and `fullscreenBelow=\"sm\"`",
+		"`splitSize={{ width: 'min(66vw, 80rem)', height: 'min(88svh, 56rem)' }}`",
+		"Two direct children: `<div class=\"map\">` labelled Map and `<div class=\"details\">` with a name and a filled Close `<Button variant=\"filled\" onclick={() => (open = false)}>`"
+	],
+	"tags": ["dialog", "split", "size", "columns", "fullscreen", "mobile", "modal"],
+	"shape": "wide"
+}

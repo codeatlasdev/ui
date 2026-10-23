@@ -1,12 +1,12 @@
 {
 	"version": "4.5.0",
-	"count": 345,
+	"count": 340,
 	"groups": [
 		{
 			"slug": "inputs",
 			"first": "001",
-			"last": "902",
-			"count": 76
+			"last": "721",
+			"count": 73
 		},
 		{
 			"slug": "surfaces",
@@ -17,14 +17,14 @@
 		{
 			"slug": "feedback",
 			"first": "080",
-			"last": "700",
-			"count": 34
+			"last": "910",
+			"count": 35
 		},
 		{
 			"slug": "display",
 			"first": "104",
-			"last": "900",
-			"count": 57
+			"last": "760",
+			"count": 56
 		},
 		{
 			"slug": "navigation",
@@ -35,8 +35,8 @@
 		{
 			"slug": "layout",
 			"first": "165",
-			"last": "881",
-			"count": 40
+			"last": "781",
+			"count": 38
 		},
 		{
 			"slug": "charts",
@@ -15310,275 +15310,48 @@
 			"needs": "@codeatlasdev/ui@4.5.0 + maplibre-gl"
 		},
 		{
-			"id": "860",
-			"group": "layout",
-			"page": "domain-tokens",
-			"variant": "StatusTokens",
-			"slug": "status-tokens",
-			"title": "Status tokens",
-			"description": "Pills colored by --ca-token-status-*, and a canvas colored with tokenRgba. Toggle the theme: both follow.",
-			"summary": "Three lead-status pills colored by preset domain tokens, plus a canvas bar per status colored with tokenRgba.",
-			"use": "Status, tier or channel colors that must follow the preset and the light or dark scheme: declare them once under tokens in the theme, read them as CSS vars or as [r, g, b, a].",
+			"id": "910",
+			"group": "feedback",
+			"page": "dialog",
+			"variant": "SplitConfigured",
+			"slug": "configured-split",
+			"title": "Configured split",
+			"description": "",
+			"summary": "A split dialog sized 66vw by 88svh with a 2fr/3fr column ratio that goes full screen under 600px: a map column beside a details column with a Close button.",
+			"use": "Wide detail dialogs (map + details, media + form) that need their own box and column ratio and must fill the screen on phones.",
 			"spec": [
-				"`import { colorScheme, tokenRgba } from '@codeatlasdev/ui'`",
-				"Three `<li class=\"st__pill st__pill--{s.name}\">` pills for `new`, `won` and `lost`, each with `background: var(--ca-token-status-new-subtle)` and `color: var(--ca-token-status-new)` (same pair for `won` and `lost`)",
-				"A `<canvas` of `width=\"300\" height=\"80\"` whose `$effect` reads `colorScheme.resolved` and `colorScheme.preset`, then fills one bar per status with ``tokenRgba(`status.${s.name}`)``",
-				"The pills sit in a wrapping flex row with `gap: var(--ca-space-2)` and `border-radius: var(--ca-radius-pill)`"
+				"`<Dialog` with `size=\"split\"`, `chromeless` and `title=\"Lead details\"`",
+				"`splitColumns=\"2fr 3fr\"` and `fullscreenBelow=\"sm\"`",
+				"`splitSize={{ width: 'min(66vw, 80rem)', height: 'min(88svh, 56rem)' }}`",
+				"Two direct children: `<div class=\"map\">` labelled Map and `<div class=\"details\">` with a name and a filled Close `<Button variant=\"filled\" onclick={() => (open = false)}>`"
 			],
 			"tags": [
-				"tokens",
-				"preset",
-				"domain",
-				"status",
-				"tokenrgba",
-				"canvas",
-				"theme"
+				"dialog",
+				"split",
+				"size",
+				"columns",
+				"fullscreen",
+				"mobile",
+				"modal"
 			],
 			"shape": "wide",
-			"components": [],
+			"components": [
+				"Dialog",
+				"Button",
+				"Stack"
+			],
 			"imports": [
 				{
 					"from": "@codeatlasdev/ui",
 					"names": [
-						"colorScheme",
-						"tokenRgba"
+						"Dialog",
+						"Button",
+						"Stack"
 					]
 				}
 			],
 			"interactive": true,
-			"demo": "https://ui.codeatlas.com.br/docs/layout/domain-tokens#status-tokens",
-			"needs": "@codeatlasdev/ui@4.5.0"
-		},
-		{
-			"id": "880",
-			"group": "inputs",
-			"page": "button",
-			"variant": "ComponentTokens",
-			"slug": "component-tokens",
-			"title": "Component tokens",
-			"description": "Weight, gap, padding, ghost border and icon size set on one wrapper.",
-			"summary": "A dense focus-mode toolbar that restyles Button, IconButton and Kbd with component tokens on one wrapper: tighter gap and line-height, a regular-weight large button, wider small padding, a borderless ghost button, a 36px icon button and a square keycap.",
-			"use": "A product whose design system fixes button weight, tracking, gap, padding and keycap size per context (public area, dashboard, focus mode), without writing selectors against ca-* classes.",
-			"spec": [
-				"Wrapper `.dense` declares only custom properties: `--ca-btn-gap`, `--ca-btn-line-height`, `--ca-btn-letter-spacing`, `--ca-btn-lg-font-weight`, `--ca-btn-lg-font-size`, `--ca-btn-sm-padding-x`, `--ca-btn-sm-font-size`, `--ca-btn-ghost-border-width`, `--ca-icon-btn-size-sm`, `--ca-kbd-size`, `--ca-kbd-font-size`, `--ca-kbd-line-height`",
-				"`<Button variant=\"filled\" size=\"lg\">` labelled Call next lead",
-				"`<Button variant=\"outlined\" tone=\"neutral\" size=\"sm\">` labelled Snooze, a ghost neutral sm Skip and a disabled outlined neutral sm Reassign",
-				"`<IconButton variant=\"text\" size=\"sm\" aria-label=\"Close focus mode\">` with an X icon",
-				"`<Kbd>N</Kbd>` after the text Next lead in a `.hint` span",
-				"Flex `.dense` wrapper with `gap: var(--ca-space-3)`; the CSS has no selector against a component class"
-			],
-			"tags": [
-				"button",
-				"icon-button",
-				"kbd",
-				"tokens",
-				"density",
-				"typography",
-				"theming",
-				"focus-mode"
-			],
-			"shape": "wide",
-			"components": [
-				"Button",
-				"IconButton",
-				"Kbd"
-			],
-			"imports": [
-				{
-					"from": "@codeatlasdev/ui",
-					"names": [
-						"Button",
-						"IconButton",
-						"Kbd"
-					]
-				}
-			],
-			"interactive": false,
-			"demo": "https://ui.codeatlas.com.br/docs/inputs/button#component-tokens",
-			"needs": "@codeatlasdev/ui@4.5.0"
-		},
-		{
-			"id": "881",
-			"group": "layout",
-			"page": "empty-state",
-			"variant": "DenseCrm",
-			"slug": "dense-crm-with-component-tokens",
-			"title": "Dense CRM with component tokens",
-			"description": "Six components restyled by tokens on one wrapper.",
-			"summary": "A dense CRM activity card whose Avatar, TextField, TextArea, Card, SegmentedControl and EmptyState are restyled only through component tokens declared on one wrapper: neutral avatars, tighter field gap, a 64px note box, a hairline flat card, compact segments and a bare empty state.",
-			"use": "Dense work screens (activity feed, notes composer, view switcher, empty and invite states) that need a different density than the defaults without selectors against internal parts.",
-			"spec": [
-				"Wrapper `.crm` declares only custom properties: `--ca-avatar-sm-fallback-size`, `--ca-avatar-fallback-weight`, `--ca-field-gap`, `--ca-field-label-leading`, `--ca-ta-min-height`, `--ca-card-bg`, `--ca-card-radius`, `--ca-card-border`, `--ca-card-shadow`, `--ca-seg-item-padding-x`, `--ca-seg-item-font-size`, `--ca-empty-title-size`, `--ca-empty-title-weight`",
-				"`<Card title=\"Activity\" headingLevel={3}>` holds everything",
-				"Two `<Avatar alt=\"Ana Lima\" tone=\"neutral\" size=\"sm\" />` style avatars (Ana Lima, Bruno Reis) beside a `<SegmentedControl` with `size=\"sm\"` and the items Day, Week and Month",
-				"`<TextField label=\"Contact\" placeholder=\"Search contacts\" />` and `<TextArea label=\"Note\" rows={1}` with a note placeholder",
-				"`<EmptyState bare icon={Inbox} title=\"No activity yet\"` with an Inbox icon, the title No activity yet and a neutral outlined small Button labelled Log a call",
-				"No selector against a component class in the CSS"
-			],
-			"tags": [
-				"avatar",
-				"text-field",
-				"text-area",
-				"card",
-				"segmented-control",
-				"empty-state",
-				"tokens",
-				"density",
-				"crm"
-			],
-			"shape": "wide",
-			"components": [
-				"Avatar",
-				"Button",
-				"Card",
-				"EmptyState",
-				"SegmentedControl",
-				"TextArea",
-				"TextField"
-			],
-			"imports": [
-				{
-					"from": "@codeatlasdev/ui",
-					"names": [
-						"Avatar",
-						"Button",
-						"Card",
-						"EmptyState",
-						"SegmentedControl",
-						"TextArea",
-						"TextField"
-					]
-				}
-			],
-			"interactive": true,
-			"demo": "https://ui.codeatlas.com.br/docs/layout/empty-state#dense-crm-with-component-tokens",
-			"needs": "@codeatlasdev/ui@4.5.0"
-		},
-		{
-			"id": "900",
-			"group": "display",
-			"page": "badge",
-			"variant": "InlinePill",
-			"slug": "inline-pill",
-			"title": "Inline pill",
-			"description": "",
-			"summary": "A follow-up list where each row has a title and an inline subtle Badge pill with a status dot: Overdue (danger), Due today (warning), Done (success) and a neutral Draft without a dot.",
-			"use": "Status pills next to a title in lists and queues. The pill sits in text flow; it is not anchored to a corner like a count badge.",
-			"spec": [
-				"Unstyled list with a grid and `gap: var(--ca-space-2)`; each `li` is a wrapping flex row",
-				"Title `span` in `--ca-text-primary`, followed by `<Badge tone=\"danger\" subtle dot size=\"md\">Overdue</Badge>`",
-				"`tone=\"warning\"` Due today and `tone=\"success\"` Done, both `subtle dot size=\"md\"`",
-				"`tone=\"neutral\" subtle size=\"md\"` Draft with no dot"
-			],
-			"tags": [
-				"badge",
-				"tone",
-				"subtle",
-				"dot",
-				"pill",
-				"status",
-				"overdue",
-				"inline",
-				"list"
-			],
-			"shape": "wide",
-			"components": [
-				"Badge"
-			],
-			"imports": [
-				{
-					"from": "@codeatlasdev/ui",
-					"names": [
-						"Badge"
-					]
-				}
-			],
-			"interactive": false,
-			"demo": "https://ui.codeatlas.com.br/docs/display/badge#inline-pill",
-			"needs": "@codeatlasdev/ui@4.5.0"
-		},
-		{
-			"id": "901",
-			"group": "inputs",
-			"page": "button",
-			"variant": "TrailingHint",
-			"slug": "responsive-keyboard-hint",
-			"title": "Responsive keyboard hint",
-			"description": "",
-			"summary": "Two outlined neutral Buttons (Next lead, Snooze) with a Kbd keyboard hint in the trailing slot, marked trailingHint so the hint disappears below md and on touch screens without leaving a gap.",
-			"use": "Queue and inbox actions that show a keyboard shortcut on desktop only.",
-			"spec": [
-				"`<Button variant=\"outlined\" tone=\"neutral\" trailingHint>` labelled Next lead with a `trailing` snippet holding `<Kbd>K</Kbd>`",
-				"A second one labelled Snooze with `<Kbd>S</Kbd>`",
-				"Wrapping flex `.row` with `gap: var(--ca-space-3)`"
-			],
-			"tags": [
-				"button",
-				"trailing",
-				"kbd",
-				"shortcut",
-				"hint",
-				"responsive",
-				"touch"
-			],
-			"shape": "wide",
-			"components": [
-				"Button",
-				"Kbd"
-			],
-			"imports": [
-				{
-					"from": "@codeatlasdev/ui",
-					"names": [
-						"Button",
-						"Kbd"
-					]
-				}
-			],
-			"interactive": false,
-			"demo": "https://ui.codeatlas.com.br/docs/inputs/button#responsive-keyboard-hint",
-			"needs": "@codeatlasdev/ui@4.5.0"
-		},
-		{
-			"id": "902",
-			"group": "inputs",
-			"page": "button",
-			"variant": "AlignBetween",
-			"slug": "align-between",
-			"title": "Align between",
-			"description": "",
-			"summary": "A stack of three full-width outlined neutral Buttons with align=\"between\": label at the start, a Kbd hint at the end; the last one is loading and keeps its spinner at the start.",
-			"use": "Action grids and menus of full-width buttons where the label is left-aligned and the shortcut sits on the right.",
-			"spec": [
-				"`.grid` with `gap: var(--ca-space-2)` and `max-width: 20rem`",
-				"Each `<Button variant=\"outlined\" tone=\"neutral\" align=\"between\" fullWidth trailingHint>` with a `<Kbd>` in `trailing`: Open lead (O), Assign to me (A)",
-				"Third button Syncing (R) also has `loading`, so the spinner replaces the leading slot while the label stays left"
-			],
-			"tags": [
-				"button",
-				"align",
-				"between",
-				"trailing",
-				"kbd",
-				"full-width",
-				"loading"
-			],
-			"shape": "wide",
-			"components": [
-				"Button",
-				"Kbd"
-			],
-			"imports": [
-				{
-					"from": "@codeatlasdev/ui",
-					"names": [
-						"Button",
-						"Kbd"
-					]
-				}
-			],
-			"interactive": false,
-			"demo": "https://ui.codeatlas.com.br/docs/inputs/button#align-between",
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/dialog#configured-split",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		}
 	]

@@ -16,6 +16,8 @@ import Chromeless from "~/demos/feedback/dialog/Chromeless.svelte";
 import ChromelessSrc from "~/demos/feedback/dialog/Chromeless.svelte?raw";
 import Split from "~/demos/feedback/dialog/Split.svelte";
 import SplitSrc from "~/demos/feedback/dialog/Split.svelte?raw";
+import SplitConfigured from "~/demos/feedback/dialog/SplitConfigured.svelte";
+import SplitConfiguredSrc from "~/demos/feedback/dialog/SplitConfigured.svelte?raw";
 
 ```svelte
 <script>
@@ -39,11 +41,18 @@ The dialog renders a native modal `<dialog>` opened with `showModal()`: the page
 <Demo title="Chromeless" description="No header, description or actions, and the body has no padding. The title becomes the visually hidden accessible name." src={ChromelessSrc}><Chromeless client:visible /></Demo>
 <Demo title="Split" description='size="split" is 1100 by 720 with two columns from the md breakpoint (900px) and a single column below it. Combine it with chromeless.' src={SplitSrc}><Split client:visible /></Demo>
 
+**Configure the split: `splitSize`, `splitColumns`, `fullscreenBelow`.** `splitSize={{ width, height }}` takes any CSS length (`min(66vw, 80rem)`), `splitColumns="2fr 3fr"` sets the column ratio and `fullscreenBelow="sm"` (600px) or `"md"` (900px) makes the dialog exactly the viewport (`--ca-vh`) with square corners and the safe-area inset as padding. The props set the tokens `--ca-dialog-split-width`, `--ca-dialog-split-height` and `--ca-dialog-split-columns`, so a `style` or class on an ancestor works too. Defaults are unchanged. Do not write selectors against `.ca-dialog--split` or `.ca-dialog__body`.
+
+<Demo title="Configured split" description='splitSize, splitColumns and fullscreenBelow="sm": 66vw by 88svh, 2fr/3fr, full screen on phones.' src={SplitConfiguredSrc}><SplitConfigured client:visible /></Demo>
+
 <Props for="Dialog" rows={[
   { name: "open", type: "boolean", default: "false", description: "Bindable open state." },
   { name: "title", type: "string", description: "Header title. With chromeless it is the hidden accessible name." },
   { name: "description", type: "string", description: "Subtitle below the title." },
   { name: "size", type: "'sm' | 'md' | 'lg' | 'xl' | 'split'", default: "'md'", description: "Width: 400, 480, 600 or 820px. split is 1100 by 720 in two columns from 900px." },
+  { name: "splitSize", type: "{ width?: string; height?: string }", description: "size=\"split\" panel box, any CSS length. Default 1100 by 720 capped to the viewport. Sets --ca-dialog-split-width and --ca-dialog-split-height." },
+  { name: "splitColumns", type: "string", default: "'1fr 1fr'", description: "size=\"split\" body grid-template-columns from 900px, for example '2fr 3fr'. Sets --ca-dialog-split-columns." },
+  { name: "fullscreenBelow", type: "'sm' | 'md'", description: "Any size: below 600px (sm) or 900px (md) the dialog is exactly the viewport, square corners, safe-area padding kept. Focus trap and Escape unchanged." },
   { name: "chromeless", type: "boolean", default: "false", description: "Omits header, description and actions; the body has no padding. title and description stay available to screen readers." },
   { name: "children", type: "Snippet", description: "Dialog body." },
   { name: "actions", type: "Snippet", description: "Footer buttons." },

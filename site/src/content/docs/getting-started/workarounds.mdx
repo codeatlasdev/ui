@@ -14,6 +14,8 @@ Imports are from `@codeatlasdev/ui` unless the last column names a subpath.
 |---|---|---|
 | A hand-written `<a target="_blank" rel="noopener">` | `ExternalLink`: sets `rel`, shows the icon, adds a localized "opens in a new tab" | [ExternalLink](/docs/display/external-link/) |
 | A CSV or JSON download built with `Blob` and an anchor | `ExportMenu` for a button, or `toCsv`, `toJson` and `downloadFile` for your own trigger | [ExportMenu](/docs/inputs/export-menu/) |
+| `dialog.ca-dialog--split:has(.x) { width: …; height: … }`, a `.ca-dialog__body { display: flex }` rule and a 639px media query to go full screen | `<Dialog size="split" splitSize={{ width, height }} splitColumns="2fr 3fr" fullscreenBelow="sm">` | [Dialog](/docs/feedback/dialog/) |
+| `.ca-dnd-indicator { display: none }` to drop the insertion line of a board column | `sortable({ drop: 'container' })` (the column is the target, no line, `to.index` 0) | [Drag and drop](/docs/foundation/drag-and-drop/) |
 | `confirm()` or a hand-made confirm dialog | `AlertDialog`: `onconfirm` may be async, plus `destructive` and `pending` | [AlertDialog](/docs/feedback/alert-dialog/) |
 | Appending streamed rows (SSE, WebSocket, a bulk job) to an array and rendering them | `LiveList`: batched announcements, follow-the-tail that pauses on scroll, never moves focus | [LiveList](/docs/display/live-list/) |
 | `setTimeout(() => input.focus())` for a field in a new view | `primeKeyboard()` in the tap handler, then `use:autofocus` on the field | [Mobile](/docs/getting-started/mobile/#opening-the-keyboard-on-ios), `@codeatlasdev/ui/actions` |
