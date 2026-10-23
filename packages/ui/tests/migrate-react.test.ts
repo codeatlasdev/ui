@@ -39,7 +39,15 @@ import React from "react";
 	});
 
 	it("keeps a gap row (no component) and ignores helpers and React itself", () => {
-		const found = scanReactImports(src, rows);
+		// A fixture row: the real table loses its gap rows as the gaps close, the gap path stays.
+		const gapRow = {
+			shadcn: "Resizable",
+			to: [],
+			gap: 1,
+			workaround: "app code",
+			radix: "react-resizable-panels",
+		};
+		const found = scanReactImports(src, [...rows.filter((r) => r.shadcn !== "Resizable"), gapRow]);
 		const resizable = found.find((f) => f.source === "@/components/ui/resizable");
 		expect(resizable?.imported).toBe("ResizablePanel");
 		expect(resizable?.row?.gap).toBeGreaterThan(0);
