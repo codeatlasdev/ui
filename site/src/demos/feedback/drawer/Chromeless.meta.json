@@ -1,0 +1,19 @@
+{
+	"summary": "A chromeless drawer for a detail view with its own header, close button and scrolling list; full width and height on phones.",
+	"use": "Side detail panels on desktop that become full-screen panels on phones, where the view owns its header and scroll (no double close button, no 48px page strip).",
+	"spec": [
+		"`<Drawer bind:open chromeless width=\"26rem\" fullBleedBelow=\"sm\" aria-labelledby=\"detail-title\">`",
+		"A column `.detail` with `<header class=\"head\">` holding `<h2 id=\"detail-title\" class=\"name\">Order 1042</h2>` and a ghost small button with `aria-label=\"Close detail\"` that sets `open = false`",
+		"A `.scroll` area with `flex: 1; min-height: 0; overflow-y: auto` listing 24 `Line item` rows"
+	],
+	"tags": [
+		"drawer",
+		"chromeless",
+		"full-bleed",
+		"fullbleedbelow",
+		"detail-panel",
+		"mobile",
+		"scroll"
+	],
+	"shape": "wide"
+}

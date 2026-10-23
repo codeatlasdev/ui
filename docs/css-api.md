@@ -139,6 +139,8 @@ Total: 829 unique classes across 83 components.
 
 `.ca-drawer` `.ca-drawer--bottom` `.ca-drawer--left` `.ca-drawer--right` `.ca-drawer-bottom-in` `.ca-drawer-bottom-out` `.ca-drawer-left-in` `.ca-drawer-left-out` `.ca-drawer-right-in` `.ca-drawer-right-out` `.ca-drawer__actions` `.ca-drawer__body` `.ca-drawer__header` `.ca-drawer__header--bare` `.ca-drawer__title` `.ca-layer-close` `.ca-overlay` `.ca-overlay--drawer`
 
+State attributes on `dialog.ca-drawer`: `data-chromeless` (body padding 0, no header), `data-full-bleed="sm|md|lg"` (full viewport below the breakpoint). `.ca-drawer__body` is a flex column with `min-height: 0`.
+
 ## DropdownMenu
 
 `.ca-dropdown-content` `.ca-dropdown-group` `.ca-dropdown-in` `.ca-dropdown-item` `.ca-dropdown-item--destructive` `.ca-dropdown-item--selectable` `.ca-dropdown-item--sub-trigger` `.ca-dropdown-item__chevron` `.ca-dropdown-item__icon` `.ca-dropdown-item__indicator` `.ca-dropdown-item__label` `.ca-dropdown-label` `.ca-dropdown-out` `.ca-dropdown-sep` `.ca-dropdown-sub` `.ca-dropdown__point` `.ca-dropdown__trigger`

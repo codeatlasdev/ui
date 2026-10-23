@@ -6,6 +6,7 @@ import { settled } from "../../../../tests/settled";
 import { VIEWPORTS } from "../../../../tests/viewports";
 import { setLocale } from "../../i18n/index.js";
 import Harness from "./Drawer.test.svelte";
+import Chromeless from "./DrawerChromeless.test.svelte";
 import CustomHeader from "./DrawerCustomHeader.test.svelte";
 
 const open = async (props = {}) => {
@@ -105,5 +106,111 @@ describe("Drawer name (#285)", () => {
 		expect(h.classList.contains("ca-sr-only")).toBe(true);
 		expect(h.getBoundingClientRect().width).toBeLessThanOrEqual(1);
 		expect(await checkA11y(document.body)).toHaveNoViolations();
+	});
+});
+
+describe("Drawer chromeless and fullBleedBelow (#362)", () => {
+	const openDetail = async (
+		props: Record<string, unknown> = {},
+		viewport: readonly [number, number] = VIEWPORTS.desktop
+	) => {
+		await page.viewport(...viewport);
+		const screen = await render(Chromeless, props);
+		const trigger = screen.getByRole("button", { name: "Open detail" });
+		await trigger.click();
+		await settled();
+		const drawer = document.querySelector<HTMLElement>(
+			'[data-testid="detail-drawer"]'
+		) as HTMLElement;
+		return { screen, trigger, drawer };
+	};
+
+	it("renders no header and a body with zero padding", async () => {
+		const { drawer } = await openDetail();
+		expect(drawer.querySelector(".ca-drawer__header")).toBeNull();
+		expect(drawer.querySelector(".ca-layer-close")).toBeNull();
+		const body = drawer.querySelector(".ca-drawer__body") as HTMLElement;
+		expect(getComputedStyle(body).padding).toBe("0px");
+	});
+
+	it.each(["labelledby", "aria-label", "title"] as const)("is named through %s", async (naming) => {
+		await openDetail({ naming });
+		await expect.element(page.getByRole("dialog", { name: "Detail" })).toBeVisible();
+		expect(await checkA11y(document.body)).toHaveNoViolations();
+	});
+
+	it("body is a flex column with min-height 0 so a child owns the scroll", async () => {
+		const { drawer } = await openDetail();
+		const body = drawer.querySelector(".ca-drawer__body") as HTMLElement;
+		const cs = getComputedStyle(body);
+		expect([cs.display, cs.flexDirection, cs.minHeight]).toEqual(["flex", "column", "0px"]);
+		const scroller = drawer.querySelector<HTMLElement>('[data-testid="scroller"]') as HTMLElement;
+		expect(scroller.scrollHeight).toBeGreaterThan(scroller.clientHeight);
+		expect(body.scrollHeight).toBeLessThanOrEqual(body.clientHeight);
+	});
+
+	it("keeps Escape, focus restore and scroll lock", async () => {
+		const { trigger } = await openDetail();
+		expect(document.body.style.overflow).toBe("hidden");
+		await userEvent.keyboard("{Escape}");
+		await expect.element(page.getByRole("dialog")).not.toBeInTheDocument();
+		await expect.element(trigger).toHaveFocus();
+		expect(document.body.style.overflow).not.toBe("hidden");
+	});
+
+	it("traps focus inside its own controls", async () => {
+		const { drawer } = await openDetail();
+		const own = page.getByRole("button", { name: "Close detail" }).element() as HTMLElement;
+		own.focus();
+		await userEvent.tab();
+		expect(drawer.contains(document.activeElement)).toBe(true);
+		await userEvent.tab();
+		expect(drawer.contains(document.activeElement)).toBe(true);
+	});
+
+	it("fullBleedBelow=sm fills the phone viewport: no strip, no radius, same height", async () => {
+		const { drawer } = await openDetail({ fullBleedBelow: "sm" }, VIEWPORTS.mobile);
+		const r = drawer.getBoundingClientRect();
+		expect([r.left, r.right, r.top, r.bottom]).toEqual([
+			0,
+			VIEWPORTS.mobile[0],
+			0,
+			VIEWPORTS.mobile[1],
+		]);
+		const cs = getComputedStyle(drawer);
+		expect(cs.borderTopLeftRadius).toBe("0px");
+		expect(cs.borderBottomLeftRadius).toBe("0px");
+		expect(await checkA11y(document.body)).toHaveNoViolations();
+	});
+
+	it("fullBleedBelow=sm leaves the panel docked at its width from sm up", async () => {
+		const { drawer } = await openDetail({ fullBleedBelow: "sm" }, VIEWPORTS.tablet);
+		await settled();
+		expect(window.innerWidth).toBe(VIEWPORTS.tablet[0]);
+		const r = drawer.getBoundingClientRect();
+		const rem = Number.parseFloat(getComputedStyle(document.documentElement).fontSize);
+		expect(Math.round(r.width)).toBe(Math.round(26 * rem));
+		expect(r.right).toBe(VIEWPORTS.tablet[0]);
+	});
+
+	it("without fullBleedBelow the phone keeps the 48px strip", async () => {
+		const { drawer } = await openDetail({}, VIEWPORTS.mobile);
+		expect(drawer.getBoundingClientRect().left).toBe(48);
+	});
+
+	it("fullBleedBelow keeps safe-area padding on the panel", async () => {
+		const root = document.documentElement;
+		root.style.setProperty("--ca-safe-top", "20px");
+		root.style.setProperty("--ca-safe-bottom", "34px");
+		try {
+			const { drawer } = await openDetail({ fullBleedBelow: "sm" }, VIEWPORTS.mobile);
+			const cs = getComputedStyle(drawer);
+			expect([cs.paddingTop, cs.paddingBottom]).toEqual(["20px", "34px"]);
+			const r = drawer.getBoundingClientRect();
+			expect([r.width, r.height]).toEqual([...VIEWPORTS.mobile]);
+		} finally {
+			root.style.removeProperty("--ca-safe-top");
+			root.style.removeProperty("--ca-safe-bottom");
+		}
 	});
 });

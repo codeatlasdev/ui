@@ -185,6 +185,12 @@ Under a page `<h1>`, give card titles and `EmptyState` titles a valid level (`Em
     …
   </AppForm>
 </Drawer>
+
+<!-- A detail view with its own header, close button and scroll: chromeless, full screen on phones.
+     Never hide the header with CSS or override the body padding in the app. -->
+<Drawer bind:open chromeless width="26rem" fullBleedBelow="sm" aria-labelledby="detail-title">
+  <MyDetail />
+</Drawer>
 ```
 
 ---

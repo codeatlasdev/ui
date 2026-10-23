@@ -12,6 +12,8 @@ import Sides from "~/demos/feedback/drawer/Sides.svelte";
 import SidesSrc from "~/demos/feedback/drawer/Sides.svelte?raw";
 import CustomHeader from "~/demos/feedback/drawer/CustomHeader.svelte";
 import CustomHeaderSrc from "~/demos/feedback/drawer/CustomHeader.svelte?raw";
+import Chromeless from "~/demos/feedback/drawer/Chromeless.svelte";
+import ChromelessSrc from "~/demos/feedback/drawer/Chromeless.svelte?raw";
 import Notifications from "~/demos/feedback/drawer/Notifications.svelte";
 import NotificationsSrc from "~/demos/feedback/drawer/Notifications.svelte?raw";
 
@@ -34,6 +36,9 @@ Same architecture as [Dialog](/docs/feedback/dialog/): the overlay blurs the pag
 <Demo title="Notification panel" description="A real-world use: a 400px wide panel on the right." src={NotificationsSrc}><Notifications client:visible /></Demo>
 
 <Demo title="Own header" description="No title: aria-labelledby points at your heading, so the panel keeps its accessible name while you build the header and its close button. Attributes such as data-testid reach the dialog." src={CustomHeaderSrc}><CustomHeader client:visible /></Demo>
+<Demo title="Chromeless, full bleed on phones" description="chromeless drops the header and the body padding; fullBleedBelow=&quot;sm&quot; makes the panel exactly the viewport on phones. The view owns its header, close button and scroll area." src={ChromelessSrc}><Chromeless client:visible /></Demo>
+
+`chromeless` mirrors [Dialog](/docs/feedback/dialog/)'s: no header row, no close button, no footer `actions`, and `.ca-drawer__body` has zero padding. It is a flex column with `min-height: 0`, so one child can be the scroll area. Name the panel with `title` (screen readers only), `aria-label` or `aria-labelledby`. `fullBleedBelow` (`sm` 600px, `md` 900px, `lg` 1200px) makes a left or right panel the full viewport width and `--ca-vh` height below that breakpoint, with no radius or border and the safe-area insets kept as padding; from the breakpoint up it docks at `width` again. Focus trap, Escape, scroll lock and focus restore are unchanged.
 
 The panel needs a name. Pass `title` (add `hideTitle` to keep it for screen readers only), or `aria-label`, or `aria-labelledby` with the id of your own heading. Any other attribute (`id`, `data-*`, `style`) reaches the `<dialog>` element.
 
@@ -44,6 +49,8 @@ The panel needs a name. Pass `title` (add `hideTitle` to keep it for screen read
   { name: "hideTitle", type: "boolean", default: "false", description: "Hides the title heading visually but keeps it as the accessible name; the header shrinks to the close button." },
   { name: "aria-label", type: "string", description: "Accessible name when there is no `title`. Replaces the title reference." },
   { name: "aria-labelledby", type: "string", description: "Id of your own heading, for a custom header inside the body. Wins over `title`." },
+  { name: "chromeless", type: "boolean", default: "false", description: "No header, close button, footer actions or body padding: the content brings its own header, close button and scroll. Name it with title, aria-label or aria-labelledby." },
+  { name: "fullBleedBelow", type: "'sm' | 'md' | 'lg'", description: "Below this breakpoint (600/900/1200px) a left or right panel is exactly the viewport width and --ca-vh height, no radius or border, safe-area padding kept." },
   { name: "width", type: "string", default: "'360px'", description: "Panel width for left and right." },
   { name: "children", type: "Snippet", description: "Panel body." },
   { name: "actions", type: "Snippet", description: "Footer buttons, separated by a top rule." },

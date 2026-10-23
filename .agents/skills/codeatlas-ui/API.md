@@ -937,7 +937,9 @@ Drawer: side panel, second layer.
 | `side?` | `'left' \| 'right' \| 'bottom'` | `'right'` |  |
 | `title?` | `string` |  | Heading of the default header, and the accessible name of the panel. |
 | `hideTitle?` | `boolean` | `false` | Keeps `title` as the accessible name but hides the heading visually; the header shrinks to the close button. |
+| `chromeless?` | `boolean` | `false` | Omits the header (and its close button) and the body padding: the content brings its own header, close button and scroll area. Name the panel with `title` (screen readers only), `aria-label` or `aria-labelledby`. |
 | `width?` | `string` | `'360px'` | Width (left/right). Default: 360px |
+| `fullBleedBelow?` | `'sm' \| 'md' \| 'lg'` |  | Below this breakpoint (`sm` 600px, `md` 900px, `lg` 1200px) a left/right panel is exactly the viewport width and height (`--ca-vh`), without radius, border or the page strip; safe-area padding is kept. |
 | `class?` | `string` | `''` |  |
 | `onOpenChange?` | `(open: boolean) => void` |  |  |
 

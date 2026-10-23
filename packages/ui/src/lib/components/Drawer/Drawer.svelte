@@ -33,8 +33,12 @@
     title?:        string;
     /** Keeps `title` as the accessible name but hides the heading visually; the header shrinks to the close button. */
     hideTitle?:    boolean;
+    /** Omits the header (and its close button) and the body padding: the content brings its own header, close button and scroll area. Name the panel with `title` (screen readers only), `aria-label` or `aria-labelledby`. */
+    chromeless?:   boolean;
     /** Width (left/right). Default: 360px */
     width?:        string;
+    /** Below this breakpoint (`sm` 600px, `md` 900px, `lg` 1200px) a left/right panel is exactly the viewport width and height (`--ca-vh`), without radius, border or the page strip; safe-area padding is kept. */
+    fullBleedBelow?: 'sm' | 'md' | 'lg';
     class?:        string;
     children?:     Snippet;
     actions?:      Snippet;
@@ -49,7 +53,9 @@
     side      = 'right',
     title,
     hideTitle = false,
+    chromeless = false,
     width     = '360px',
+    fullBleedBelow,
     class: className = '',
     children,
     actions,
@@ -82,24 +88,32 @@
     role="dialog"
     aria-labelledby={labelledby}
     data-state={open ? 'open' : 'closed'}
+    data-chromeless={chromeless ? '' : undefined}
+    data-full-bleed={fullBleedBelow}
     style="--drawer-w:{width};{style ?? ''}"
     {@attach presence.ref}
     {@attach modalLayer(() => ({ onDismiss: () => change(false), closing: !open }))}
   >
-    <div class="ca-drawer__header" class:ca-drawer__header--bare={hideTitle}>
+    {#if chromeless}
       {#if title}
-        <h2 id={ids.part('title')} class="ca-drawer__title" class:ca-sr-only={hideTitle}>{title}</h2>
+        <h2 id={ids.part('title')} class="ca-sr-only">{title}</h2>
       {/if}
-      <button type="button" class="ca-layer-close" aria-label={t().drawer.close} onclick={() => change(false)}>
-        <X size={16} stroke-width={2} />
-      </button>
-    </div>
+    {:else}
+      <div class="ca-drawer__header" class:ca-drawer__header--bare={hideTitle}>
+        {#if title}
+          <h2 id={ids.part('title')} class="ca-drawer__title" class:ca-sr-only={hideTitle}>{title}</h2>
+        {/if}
+        <button type="button" class="ca-layer-close" aria-label={t().drawer.close} onclick={() => change(false)}>
+          <X size={16} stroke-width={2} />
+        </button>
+      </div>
+    {/if}
 
     <div class="ca-drawer__body">
       {@render children?.()}
     </div>
 
-    {#if actions}
+    {#if actions && !chromeless}
       <div class="ca-drawer__actions">
         {@render actions()}
       </div>
@@ -212,10 +226,54 @@
     /* ── Body ───────────────────────────────────────────────────── */
     :global(.ca-drawer__body) {
       flex: 1;
+      display: flex;
+      flex-direction: column;
       overflow-y: auto;
       overscroll-behavior: contain;
       padding: var(--ca-space-5);
       min-height: 0;
+    }
+
+    /* Chromeless: edge-to-edge body; a child (own header + scroll area) fills it. */
+    :global(dialog.ca-drawer[data-chromeless] .ca-drawer__body) {
+      padding: 0;
+    }
+
+    /* Full bleed on small viewports: the panel is the viewport (width, --ca-vh), no radius or
+       border, content kept clear of the notch and home indicator. Breakpoints are the package
+       scale (sm 600, md 900, lg 1200; max = N - 0.02). */
+    @media (max-width: 599.98px) {
+      :global(dialog.ca-drawer[data-full-bleed='sm']:is(.ca-drawer--left, .ca-drawer--right)) {
+        width: 100%;
+        max-width: none;
+        height: var(--ca-vh);
+        border-radius: 0;
+        border: none;
+        padding: var(--ca-safe-top) var(--ca-safe-right) var(--ca-safe-bottom) var(--ca-safe-left);
+        box-sizing: border-box;
+      }
+    }
+    @media (max-width: 899.98px) {
+      :global(dialog.ca-drawer[data-full-bleed='md']:is(.ca-drawer--left, .ca-drawer--right)) {
+        width: 100%;
+        max-width: none;
+        height: var(--ca-vh);
+        border-radius: 0;
+        border: none;
+        padding: var(--ca-safe-top) var(--ca-safe-right) var(--ca-safe-bottom) var(--ca-safe-left);
+        box-sizing: border-box;
+      }
+    }
+    @media (max-width: 1199.98px) {
+      :global(dialog.ca-drawer[data-full-bleed='lg']:is(.ca-drawer--left, .ca-drawer--right)) {
+        width: 100%;
+        max-width: none;
+        height: var(--ca-vh);
+        border-radius: 0;
+        border: none;
+        padding: var(--ca-safe-top) var(--ca-safe-right) var(--ca-safe-bottom) var(--ca-safe-left);
+        box-sizing: border-box;
+      }
     }
 
     /* ── Footer actions ─────────────────────────────────────────── */

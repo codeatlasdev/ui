@@ -1,0 +1,12 @@
+Use @codeatlasdev/ui demo #560 "Chromeless, full bleed on phones" (feedback/drawer).
+What it shows: A chromeless drawer for a detail view with its own header, close button and scrolling list; full width and height on phones. When to use: Side detail panels on desktop that become full-screen panels on phones, where the view owns its header and scroll (no double close button, no 48px page strip).
+Spec:
+- `<Drawer bind:open chromeless width="26rem" fullBleedBelow="sm" aria-labelledby="detail-title">`
+- A column `.detail` with `<header class="head">` holding `<h2 id="detail-title" class="name">Order 1042</h2>` and a ghost small button with `aria-label="Close detail"` that sets `open = false`
+- A `.scroll` area with `flex: 1; min-height: 0; overflow-y: auto` listing 24 `Line item` rows
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #560 Chromeless, full bleed on phones → file, what changed, https://ui.codeatlas.com.br/docs/feedback/drawer#chromeless-full-bleed-on-phones; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/560.txt   Components API: ca-ui-mcp get_component(Drawer)
