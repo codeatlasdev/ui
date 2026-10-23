@@ -1,4 +1,4 @@
-<script lang="ts">
+<script lang="ts" generics="T extends Record<string, any> = Record<string, any>">
   import { useMessages } from '../../i18n/state.svelte.js';
   import { appList } from '../../i18n/groups/appList.js';
   /**
@@ -47,7 +47,7 @@
 
   type ListCtx<T> = UseListStateReturn<T>;
 
-  interface Props<T extends Record<string, any> = Record<string, any>> {
+  interface Props {
     title?:       string;
     description?: string;
 
@@ -55,11 +55,11 @@
     /** Full dataset. When provided, AppList manages search/filter/pagination internally. */
     data?:        T[];
     /** Fields to include in text search. Default: all string fields. */
-    searchKeys?:  (keyof T)[];
+    searchKeys?:  NoInfer<keyof T>[];
     /** Rows per page. Default: 20. */
     perPage?:     number;
     /** Row identifier field. Default: 'id'. */
-    idKey?:       keyof T;
+    idKey?:       NoInfer<keyof T>;
     /** Placeholder for the auto-rendered search input. Default: 'Search…' */
     searchPlaceholder?: string;
     /** Word between the numbers in the auto count and page info ("8 of 24"). Default: 'of'; use 'de' in pt-BR. */

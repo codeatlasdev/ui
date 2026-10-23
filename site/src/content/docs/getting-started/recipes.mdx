@@ -25,6 +25,39 @@ Every example is a SvelteKit route file with its imports, its data shape and its
 
 Use it once, in the layout of a route group that holds every authenticated page, so the rail, the panel and the mobile navigation wrap them all.
 
+Every recipe reads its visible text from `src/lib/messages.ts` (see [App copy](/docs/getting-started/app-copy/)): `codeatlas-ui lint` reports literal text in a template as `i18n-literal`. The module below is shared by the App shell, List page, Form page, Settings page and Auth recipes. Each recipe shows the keys it reads; put them all in the one file.
+
+```ts
+// src/lib/messages.ts (the keys the app shell reads)
+export const m = {
+  brand: "Acme",
+  nav: {
+    main: "Main",
+    dashboard: "Dashboard",
+    users: "Users",
+    settings: "Settings",
+    workspace: "Workspace",
+    profile: "My profile",
+    search: "Search, command K",
+  },
+  account: { name: "Ana Lima" },
+  notifications: [
+    { title: "New user signed up", body: "Hana Park joined the Pro plan.", time: "2 min ago" },
+    { title: "Monthly report ready", body: "September revenue is available.", time: "1 hr ago" },
+  ],
+  sections: "Sections",
+  onThisPage: "On this page",
+  workspaceSettings: {
+    title: "Workspace settings",
+    description: "Reading width keeps the form at a comfortable line length.",
+    general: "General",
+    billing: "Billing",
+    name: "Name",
+    slug: "Slug",
+  },
+} as const;
+```
+
 ```svelte
 <!-- src/routes/(app)/+layout.svelte -->
 <script lang="ts">
@@ -36,11 +69,13 @@ Use it once, in the layout of a route group that holds every authenticated page,
     NavMoreSheet,
     NotificationBell,
     ThemeToggle,
+    Toaster,
     type NavModule,
     type NotificationItem,
   } from "@codeatlasdev/ui";
   import { goto } from "$app/navigation";
   import { page } from "$app/state";
+  import { m } from "#lib/messages.ts";
   import { LayoutDashboard, Search, Settings, Users } from "@lucide/svelte";
 
   let { children } = $props();
@@ -48,31 +83,35 @@ Use it once, in the layout of a route group that holds every authenticated page,
   const modules: NavModule[] = [
     {
       id: "main",
-      label: "Main",
+      label: m.nav.main,
       icon: LayoutDashboard,
       basePath: "/dashboard",
       pathPrefixes: ["/users"],
       items: [
-        { id: "dashboard", label: "Dashboard", icon: LayoutDashboard, path: "/dashboard" },
-        { id: "users", label: "Users", icon: Users, path: "/users" },
+        { id: "dashboard", label: m.nav.dashboard, icon: LayoutDashboard, path: "/dashboard" },
+        { id: "users", label: m.nav.users, icon: Users, path: "/users" },
       ],
     },
     {
       id: "settings",
-      label: "Settings",
+      label: m.nav.settings,
       icon: Settings,
       basePath: "/settings",
       items: [
-        { id: "workspace", label: "Workspace", icon: Settings, path: "/settings" },
-        { id: "profile", label: "My profile", icon: Users, path: "/settings/profile" },
+        { id: "workspace", label: m.nav.workspace, icon: Settings, path: "/settings" },
+        { id: "profile", label: m.nav.profile, icon: Users, path: "/settings/profile" },
       ],
     },
   ];
 
-  let notifications = $state<NotificationItem[]>([
-    { id: "1", title: "New user signed up", body: "Hana Park joined the Pro plan.", time: "2 min ago", read: false, variant: "success" },
-    { id: "2", title: "Monthly report ready", body: "September revenue is available.", time: "1 hr ago", read: true, variant: "info" },
-  ]);
+  let notifications = $state<NotificationItem[]>(
+    m.notifications.map((n, i) => ({
+      id: String(i + 1),
+      ...n,
+      read: i > 0,
+      variant: i === 0 ? "success" : "info",
+    })),
+  );
 
   const markRead = (id: string) =>
     (notifications = notifications.map((n) => (n.id === id ? { ...n, read: true } : n)));
@@ -94,11 +133,11 @@ Use it once, in the layout of a route group that holds every authenticated page,
   stageVisible={!page.url.pathname.startsWith("/settings")}
 >
   {#snippet brand()}
-    <strong>Acme</strong>
+    <strong>{m.brand}</strong>
   {/snippet}
 
   {#snippet railTop()}
-    <Button variant="ghost" size="sm" aria-label="Search, command K" onclick={() => (searchOpen = true)}>
+    <Button variant="ghost" size="sm" aria-label={m.nav.search} onclick={() => (searchOpen = true)}>
       {#snippet leading()}<Search size={16} />{/snippet}
     </Button>
   {/snippet}
@@ -106,17 +145,20 @@ Use it once, in the layout of a route group that holds every authenticated page,
   {#snippet railBottom()}
     <ThemeToggle />
     <NotificationBell {notifications} onRead={markRead} onReadAll={markAllRead} onClear={clear} />
-    <Avatar alt="Ana Lima" size="sm" />
+    <Avatar alt={m.account.name} size="sm" />
   {/snippet}
 
   {#snippet bottomNavOverflow()}
-    <Button variant="outlined" tone="neutral" fullWidth href="/settings/profile">My profile</Button>
+    <Button variant="outlined" tone="neutral" fullWidth href="/settings/profile">{m.nav.profile}</Button>
   {/snippet}
 
   {@render children()}
 </AppShellLayout>
 
 <CommandPalette {modules} bind:open={searchOpen} onNavigate={(path) => goto(path)} />
+
+<!-- Mounted once for the whole app: every toast.success(...) in a page renders here. -->
+<Toaster />
 
 <!-- A layer that lives behind every page and is mounted once: a map, a canvas, a video. -->
 {#snippet stage({ hidden }: { hidden: boolean })}
@@ -130,29 +172,30 @@ A page inside the shell. For a form or settings page, `width="reading"` caps the
 <!-- src/routes/(app)/settings/workspace/+page.svelte -->
 <script lang="ts">
   import { Card, PageShell, Stack, TextField } from "@codeatlasdev/ui";
+  import { m } from "#lib/messages.ts";
 
   let name = $state("Acme Inc.");
   let slug = $state("acme");
 </script>
 
 <PageShell
-  title="Workspace settings"
-  description="Reading width keeps the form at a comfortable line length."
+  title={m.workspaceSettings.title}
+  description={m.workspaceSettings.description}
   width="reading"
-  asideLabel="Sections"
+  asideLabel={m.sections}
 >
   {#snippet aside()}
     <Card full>
-      <nav aria-label="On this page">
-        <a href="#general">General</a>
-        <a href="#billing">Billing</a>
+      <nav aria-label={m.onThisPage}>
+        <a href="#general">{m.workspaceSettings.general}</a>
+        <a href="#billing">{m.workspaceSettings.billing}</a>
       </nav>
     </Card>
   {/snippet}
 
-  <Card title="General" full gap="md" headingLevel={2}>
-    <TextField label="Name" bind:value={name} />
-    <TextField label="Slug" bind:value={slug} />
+  <Card title={m.workspaceSettings.general} full gap="md" headingLevel={2}>
+    <TextField label={m.workspaceSettings.name} bind:value={name} />
+    <TextField label={m.workspaceSettings.slug} bind:value={slug} />
   </Card>
 </PageShell>
 ```
@@ -167,12 +210,33 @@ Rules:
 - `railLabels` writes each module's label under its rail icon. `railTop` is the slot between the brand and the modules for a search or command-palette trigger: a ghost `Button` that opens a `CommandPalette` (which also opens on Cmd+K). `collapseShortPanel` shows only the rail for a module with 2 destinations or fewer, so a short list does not reserve a column of empty panel.
 - Below 900px the bottom navigation holds `bottomNavPrimary` tabs (5 by default). With more modules the last tab is More, a dialog with the rest plus the `bottomNavOverflow` snippet (account, sign out), so no module is unreachable. `moreSheet={NavMoreSheet}` swaps that dialog for a swipe-to-dismiss `Sheet`; it is opt-in because it adds about 10 kB gzip.
 - A `{#snippet stage({ hidden })}` is a persistent background (a map, canvas or video) rendered once under the pages, so a route change never remounts it and its camera survives. Stop rendering while `hidden` is true. Mark floating panels with `class="ca-stage-panel"`: the content area lets pointer events through to the stage. `stageVisible={false}` hides the stage without unmounting it, for a full-page route that covers it. For a whole map page use the map recipe, not a hand-made stage.
+- `Toaster` is mounted here once, so pages in this group can call `toast.success(...)`. A route outside the group (the auth pages) that toasts needs its own `<Toaster />`; mount it in the root layout instead when both groups toast.
+- Copy comes from `src/lib/messages.ts`, never from literals in the template. Copy the `ts` block above next to the route and edit the text there; see [App copy](/docs/getting-started/app-copy/).
 
-See also: [AppShell](/docs/layout/app-shell/), [ThemeToggle](/docs/inputs/theme-toggle/), [NotificationBell](/docs/display/notification-bell/), [Avatar](/docs/display/avatar/), [Mobile](/docs/getting-started/mobile/).
+See also: [AppShell](/docs/layout/app-shell/), [ThemeToggle](/docs/inputs/theme-toggle/), [NotificationBell](/docs/display/notification-bell/), [Avatar](/docs/display/avatar/), [Mobile](/docs/getting-started/mobile/), [App copy](/docs/getting-started/app-copy/).
 
 ## List page
 
 Use it for any collection that needs search, filters and pages: users, orders, invoices. Pass the whole dataset and `AppList` runs search, filters, selection and pagination.
+
+```ts
+// src/lib/messages.ts (the keys the list pages read)
+export const m = {
+  users: {
+    title: "Users",
+    export: "Export",
+    create: "New user",
+    columns: { user: "User", role: "Role", status: "Status" },
+    roles: { Admin: "Admin", Editor: "Editor", Viewer: "Viewer" },
+    status: { active: "Active", inactive: "Inactive" },
+  },
+  leads: {
+    selectAll: "Select all leads",
+    select: (name: string) => `Select ${name}`,
+    columns: { name: "Name", company: "Company", value: "Value" },
+  },
+} as const;
+```
 
 ```svelte
 <!-- src/routes/(app)/users/+page.svelte -->
@@ -185,6 +249,7 @@ Use it for any collection that needs search, filters and pages: users, orders, i
     StatusChip,
     UserCell,
   } from "@codeatlasdev/ui";
+  import { m } from "#lib/messages.ts";
   import { Download, Plus } from "@lucide/svelte";
 
   interface User {
@@ -202,22 +267,21 @@ Use it for any collection that needs search, filters and pages: users, orders, i
     { id: 4, name: "Eduardo Silva", email: "edu@mesh.ai", role: "Editor", status: "active" },
   ];
 
-  const roleOptions = [
-    { value: "Admin", label: "Admin" },
-    { value: "Editor", label: "Editor" },
-    { value: "Viewer", label: "Viewer" },
-  ];
+  const roleOptions = (["Admin", "Editor", "Viewer"] as const).map((role) => ({
+    value: role,
+    label: m.users.roles[role],
+  }));
 </script>
 
-<AppList title="Users" data={users} searchKeys={["name", "email"]} perPage={20}>
+<AppList title={m.users.title} data={users} searchKeys={["name", "email"]} perPage={20}>
   {#snippet actions()}
     <Button variant="outlined" tone="neutral" size="sm" href="/users/export">
       {#snippet leading()}<Download size={14} />{/snippet}
-      Export
+      {m.users.export}
     </Button>
     <Button variant="filled" size="sm" href="/users/new">
       {#snippet leading()}<Plus size={14} />{/snippet}
-      New user
+      {m.users.create}
     </Button>
   {/snippet}
 
@@ -232,17 +296,21 @@ Use it for any collection that needs search, filters and pages: users, orders, i
   {#snippet children(list)}
     <SimpleTable>
       <thead>
-        <tr><th>User</th><th>Role</th><th>Status</th></tr>
+        <tr>
+          <th>{m.users.columns.user}</th>
+          <th>{m.users.columns.role}</th>
+          <th>{m.users.columns.status}</th>
+        </tr>
       </thead>
       <tbody>
         {#each list.rows as user (user.id)}
           <tr>
             <td class="primary"><UserCell name={user.name} email={user.email} /></td>
-            <td>{user.role}</td>
+            <td>{m.users.roles[user.role]}</td>
             <td>
               <StatusChip
                 status={user.status === "active" ? "success" : "neutral"}
-                label={user.status === "active" ? "Active" : "Inactive"}
+                label={m.users.status[user.status]}
               />
             </td>
           </tr>
@@ -265,6 +333,7 @@ For a dense, spreadsheet-like grid (hundreds of rows, a pinned name column, grou
     TableRow,
     TableSortHeader,
   } from "@codeatlasdev/ui";
+  import { m } from "#lib/messages.ts";
 
   interface Lead {
     id: string;
@@ -297,10 +366,10 @@ For a dense, spreadsheet-like grid (hundreds of rows, a pinned name column, grou
 <SimpleTable density="compact" stickyColumns={2} headerCase="sentence">
   <thead>
     <tr>
-      <th scope="col"><Checkbox aria-label="Select all leads" /></th>
-      <TableSortHeader {sort} onsort={nextSort}>Name</TableSortHeader>
-      <th scope="col">Company</th>
-      <th scope="col">Value</th>
+      <th scope="col"><Checkbox aria-label={m.leads.selectAll} /></th>
+      <TableSortHeader {sort} onsort={nextSort}>{m.leads.columns.name}</TableSortHeader>
+      <th scope="col">{m.leads.columns.company}</th>
+      <th scope="col">{m.leads.columns.value}</th>
     </tr>
   </thead>
   {#each stages as stage (stage)}
@@ -311,7 +380,7 @@ For a dense, spreadsheet-like grid (hundreds of rows, a pinned name column, grou
       {#if opened[stage]}
         {#each sorted.filter((lead) => lead.stage === stage) as lead (lead.id)}
           <TableRow selected={selectedId === lead.id} onactivate={() => open(lead)}>
-            <td><Checkbox aria-label={`Select ${lead.name}`} /></td>
+            <td><Checkbox aria-label={m.leads.select(lead.name)} /></td>
             <td class="primary">{lead.name}</td>
             <td>{lead.company}</td>
             <td>{lead.value.toLocaleString("en-US", { style: "currency", currency: "USD" })}</td>
@@ -326,18 +395,42 @@ For a dense, spreadsheet-like grid (hundreds of rows, a pinned name column, grou
 Rules:
 
 - Render rows from `list.rows` (the current page after search and filters), not from your own array. `list.filters`, `list.setFilter(key, value)`, `list.selected` and `list.toggleRow(id)` are on the same `list` object each snippet receives.
+- `list` is typed from `data`: `T` is inferred, so `list.rows` are `User[]` and `user.email` is checked. To name the type yourself, annotate the parameter: `{#snippet children(list: UseListStateReturn<User>)}` (`UseListStateReturn` is exported from `@codeatlasdev/ui`). Leave the parameter untyped and Svelte infers it from `AppList`.
 - `FilterGroup` adds an "all" option itself. Read its value with `list.filters[key] ?? "all"`.
 - `AppList` has no own docs page: it is documented on the page layouts page. It fills its parent, so inside the app shell it needs no wrapper.
 - Server-side pagination is the manual mode: omit `data`, render your own `toolbar` and `footer` snippets, and drive the rows from the `load` function. For a heavy grid (sorting, column sizing, thousands of rows) use `DataTable` from `@codeatlasdev/ui/table`, which needs `@tanstack/svelte-table`.
 - Use `SimpleTable` for plain rows. Pass `responsive="cards"` to turn rows into cards on a phone. `density="compact"` keeps rows to 40px, `stickyColumns={2}` pins the checkbox and the name while the table scrolls sideways, `headerCase="sentence"` drops the uppercase labels, and `frame={false}` removes its border inside an already framed panel (`scroll="none"` when you own the scroller).
 - In a dense table, a sortable header is `TableSortHeader` (`sort`, `onsort`: you own the state and the next direction), a clickable or selectable row is `TableRow` (`selected`, `onactivate`: Tab, Enter and Space work, and controls inside the row do not trigger it) and a group label is `TableGroupRow` (`colspan`, `collapsible`, `bind:open`, with your own `{#if open}` for the rows). Do not make a `<tr onclick>`.
 - Put the toolbar actions in the `actions` snippet: the brand action is `filled`, a secondary one is `variant="outlined" tone="neutral"` (or `ghost`), so it carries no brand color beside the primary.
+- Data values that people read (a role, a status, a stage) are copy too: map them through `messages.ts` (`m.users.roles[user.role]`) and keep the raw value for filtering and keys. Names, emails and numbers from your data are not copy.
 
-See also: [Page layouts (AppList)](/docs/layout/list-page/), [Table](/docs/display/table/), [DataTable](/docs/display/data-table/), [Chip](/docs/display/chip/), [FilterGroup](/docs/inputs/filter-group/).
+See also: [Page layouts (AppList)](/docs/layout/list-page/), [Table](/docs/display/table/), [DataTable](/docs/display/data-table/), [Chip](/docs/display/chip/), [FilterGroup](/docs/inputs/filter-group/), [App copy](/docs/getting-started/app-copy/).
 
 ## Form page
 
 Use it for a create or edit screen: a header with a back button, a scrolling body of sections and a footer that stays in view.
+
+```ts
+// src/lib/messages.ts (the keys the form page reads)
+export const m = {
+  userForm: {
+    title: "New user",
+    description: "Fill in the details to invite a user.",
+    account: { title: "Account", description: "Basic information about the user." },
+    name: "Full name",
+    email: "Work email",
+    role: "Role",
+    roles: { admin: "Admin", editor: "Editor", viewer: "Viewer" },
+    notifications: "Notifications",
+    welcome: "Send a welcome email",
+    cancel: "Cancel",
+    submit: "Create user",
+    errors: { name: "Enter a name.", email: "Enter a valid email." },
+    created: "User created",
+    undo: "Undo",
+  },
+} as const;
+```
 
 ```svelte
 <!-- src/routes/(app)/users/new/+page.svelte -->
@@ -353,19 +446,21 @@ Use it for a create or edit screen: a header with a back button, a scrolling bod
     toast,
     useForm,
   } from "@codeatlasdev/ui";
+  import { m } from "#lib/messages.ts";
 
+  const f = m.userForm;
   const roleOptions = [
-    { value: "admin", label: "Admin" },
-    { value: "editor", label: "Editor" },
-    { value: "viewer", label: "Viewer" },
+    { value: "admin", label: f.roles.admin },
+    { value: "editor", label: f.roles.editor },
+    { value: "viewer", label: f.roles.viewer },
   ];
 
   const form = useForm(
     { name: "", email: "", role: "viewer" },
     {
       schema: (data) => ({
-        ...(data.name.trim() ? {} : { name: "Enter a name." }),
-        ...(data.email.includes("@") ? {} : { email: "Enter a valid email." }),
+        ...(data.name.trim() ? {} : { name: f.errors.name }),
+        ...(data.email.includes("@") ? {} : { email: f.errors.email }),
       }),
     },
   );
@@ -388,9 +483,9 @@ Use it for a create or edit screen: a header with a back button, a scrolling bod
         }),
       });
       const { id } = await response.json();
-      toast.success("User created", {
+      toast.success(f.created, {
         description: form.fields.email.value,
-        action: { label: "Undo", onClick: () => fetch(`/api/users/${id}`, { method: "DELETE" }) },
+        action: { label: f.undo, onClick: () => fetch(`/api/users/${id}`, { method: "DELETE" }) },
       });
       await goto("/users");
     } finally {
@@ -399,10 +494,10 @@ Use it for a create or edit screen: a header with a back button, a scrolling bod
   }
 </script>
 
-<AppForm title="New user" description="Fill in the details to invite a user." backHref="/users">
-  <FormSection title="Account" description="Basic information about the user.">
+<AppForm title={f.title} description={f.description} backHref="/users">
+  <FormSection title={f.account.title} description={f.account.description}>
     <TextField
-      label="Full name"
+      label={f.name}
       required
       value={form.fields.name.value}
       error={form.fields.name.error}
@@ -410,7 +505,7 @@ Use it for a create or edit screen: a header with a back button, a scrolling bod
       onblur={() => form.touch("name")}
     />
     <TextField
-      label="Work email"
+      label={f.email}
       type="email"
       required
       value={form.fields.email.value}
@@ -419,7 +514,7 @@ Use it for a create or edit screen: a header with a back button, a scrolling bod
       onblur={() => form.touch("email")}
     />
     <ChipGroup
-      label="Role"
+      label={f.role}
       items={roleOptions}
       required
       value={form.fields.role.value}
@@ -428,13 +523,13 @@ Use it for a create or edit screen: a header with a back button, a scrolling bod
     />
   </FormSection>
 
-  <FormSection title="Notifications" layout="list">
-    <Switch label="Send a welcome email" bind:checked={sendWelcome} />
+  <FormSection title={f.notifications} layout="list">
+    <Switch label={f.welcome} bind:checked={sendWelcome} />
   </FormSection>
 
   {#snippet footer()}
-    <Button variant="ghost" href="/users">Cancel</Button>
-    <Button variant="filled" loading={saving} onclick={save}>Create user</Button>
+    <Button variant="ghost" href="/users">{f.cancel}</Button>
+    <Button variant="filled" loading={saving} onclick={save}>{f.submit}</Button>
   {/snippet}
 </AppForm>
 ```
@@ -447,13 +542,42 @@ Rules:
 - Show progress with `loading` on the submit `Button`, not by swapping its label. Keep Cancel as a `ghost` button and the primary action as `filled`, last.
 - A `Switch` or `Checkbox` is a boolean, so keep it in `$state` and `bind:checked`. Do not put it in `useForm`, which is strings only.
 - A single choice among a few options is `ChipGroup` (a radiogroup of chips that wraps on a phone), not a `Select`: `items` are `{ value, label }`, `label` is the group name, `error` shows under it and `required` blocks a plain submit until one is picked. Use `Select` for a long list.
-- Confirm a save with `toast.success(message, { description, action })`, not a custom banner. `action: { label, onClick }` adds one inline button (an Undo). Pass `{ id }` to replace a toast in place, as a "Saving..." that becomes "Saved". Identical messages stack as a count and at most 3 show at once. `Toaster` is mounted once in the root layout.
+- Confirm a save with `toast.success(message, { description, action })`, not a custom banner. `action: { label, onClick }` adds one inline button (an Undo). Pass `{ id }` to replace a toast in place, as a "Saving..." that becomes "Saved". Identical messages stack as a count and at most 3 show at once.
+- `toast` renders nothing until a `<Toaster />` is mounted. Inside the [app shell](#app-shell) recipe it already is, in `(app)/+layout.svelte`. A form outside it (a standalone page) mounts `<Toaster />` once in its layout, never per page.
+- Validation messages and toast text are copy: they live in `messages.ts` like labels (`f.errors.name`), not as literals in `schema` or `toast`. Only `.svelte` templates are linted, but the same module keeps every language in one place.
 
-See also: [AppForm](/docs/layout/form-page/), [useForm](/docs/inputs/use-form/), [TextField](/docs/inputs/text-field/), [ChipGroup](/docs/inputs/chip-group/), [Toast](/docs/feedback/toast/), [Switch](/docs/inputs/switch/).
+See also: [AppForm](/docs/layout/form-page/), [useForm](/docs/inputs/use-form/), [TextField](/docs/inputs/text-field/), [ChipGroup](/docs/inputs/chip-group/), [Toast](/docs/feedback/toast/), [Switch](/docs/inputs/switch/), [App copy](/docs/getting-started/app-copy/).
 
 ## Settings page
 
 Use it for workspace, account or notification settings that split into a few tabs, each with sections of fields and toggles.
+
+```ts
+// src/lib/messages.ts (the keys the settings page reads)
+export const m = {
+  settings: {
+    title: "Settings",
+    description: "Manage your workspace.",
+    save: "Save changes",
+    saved: "Settings saved",
+    tabs: { general: "General", notifications: "Notifications" },
+    workspace: {
+      title: "Workspace",
+      description: "Basic information about your workspace.",
+      name: "Workspace name",
+      slug: "URL slug",
+      url: (slug: string) => `acme.app/${slug}`,
+    },
+    email: {
+      title: "Email",
+      description: "Choose which events send you an email.",
+      signup: { label: "New user signed up", description: "One email per registration." },
+      payment: { label: "Payment events", description: "Charges, failures and refunds." },
+      digest: { label: "Weekly digest", description: "A summary of key metrics every Monday." },
+    },
+  },
+} as const;
+```
 
 ```svelte
 <!-- src/routes/(app)/settings/+page.svelte -->
@@ -466,12 +590,15 @@ Use it for workspace, account or notification settings that split into a few tab
     SettingItem,
     Switch,
     TextField,
+    toast,
   } from "@codeatlasdev/ui";
+  import { m } from "#lib/messages.ts";
   import { Bell, Save, Settings } from "@lucide/svelte";
 
+  const s = m.settings;
   const tabs = [
-    { value: "general", label: "General", icon: Settings },
-    { value: "notifications", label: "Notifications", icon: Bell },
+    { value: "general", label: s.tabs.general, icon: Settings },
+    { value: "notifications", label: s.tabs.notifications, icon: Bell },
   ];
 
   let workspaceName = $state("Acme Inc.");
@@ -489,38 +616,39 @@ Use it for workspace, account or notification settings that split into a few tab
         headers: { "content-type": "application/json" },
         body: JSON.stringify({ workspaceName, workspaceSlug, emailOnSignup, emailOnPayment, weeklyDigest }),
       });
+      toast.success(s.saved);
     } finally {
       saving = false;
     }
   }
 </script>
 
-<AppSettings title="Settings" description="Manage your workspace." {tabs}>
+<AppSettings title={s.title} description={s.description} {tabs}>
   {#snippet actions()}
     <Button variant="filled" size="sm" loading={saving} onclick={save}>
       {#snippet leading()}<Save size={14} />{/snippet}
-      Save changes
+      {s.save}
     </Button>
   {/snippet}
 
   {#snippet children(tab)}
     {#if tab === "general"}
-      <FormSection title="Workspace" description="Basic information about your workspace.">
-        <TextField label="Workspace name" bind:value={workspaceName} />
-        <TextField label="URL slug" bind:value={workspaceSlug} description="acme.app/{workspaceSlug}" />
+      <FormSection title={s.workspace.title} description={s.workspace.description}>
+        <TextField label={s.workspace.name} bind:value={workspaceName} />
+        <TextField label={s.workspace.slug} bind:value={workspaceSlug} description={s.workspace.url(workspaceSlug)} />
       </FormSection>
     {:else if tab === "notifications"}
-      <FormSection title="Email" description="Choose which events send you an email.">
-        <SettingItem label="New user signed up" description="One email per registration.">
-          <Switch bind:checked={emailOnSignup} aria-label="New user signed up" />
+      <FormSection title={s.email.title} description={s.email.description}>
+        <SettingItem label={s.email.signup.label} description={s.email.signup.description}>
+          <Switch bind:checked={emailOnSignup} aria-label={s.email.signup.label} />
         </SettingItem>
         <Divider />
-        <SettingItem label="Payment events" description="Charges, failures and refunds.">
-          <Switch bind:checked={emailOnPayment} aria-label="Payment events" />
+        <SettingItem label={s.email.payment.label} description={s.email.payment.description}>
+          <Switch bind:checked={emailOnPayment} aria-label={s.email.payment.label} />
         </SettingItem>
         <Divider />
-        <SettingItem label="Weekly digest" description="A summary of key metrics every Monday.">
-          <Switch bind:checked={weeklyDigest} aria-label="Weekly digest" />
+        <SettingItem label={s.email.digest.label} description={s.email.digest.description}>
+          <Switch bind:checked={weeklyDigest} aria-label={s.email.digest.label} />
         </SettingItem>
       </FormSection>
     {/if}
@@ -535,19 +663,50 @@ Rules:
 - One Save button for the whole page goes in the `actions` snippet. A tab-local save belongs in that tab's content.
 - Give a `Switch` that sits in a `SettingItem` an `aria-label`, since the row text is not its label.
 - To control the tab from the outside, `bind:activeTab` or listen with `onTabChange`.
+- The save confirmation is `toast.success(...)`, which needs a mounted `<Toaster />`: inside the [app shell](#app-shell) it is already there. `AppSettings` fills its parent, so a page outside the shell needs a parent with a height and its own `<Toaster />` in the layout.
+- A value built from data (`description={s.workspace.url(workspaceSlug)}`) is a function in `messages.ts`, so no template concatenates words around it.
 
-See also: [Page layouts (AppSettings)](/docs/layout/list-page/), [SettingItem](/docs/inputs/setting-item/), [Switch](/docs/inputs/switch/).
+See also: [Page layouts (AppSettings)](/docs/layout/list-page/), [SettingItem](/docs/inputs/setting-item/), [Switch](/docs/inputs/switch/), [App copy](/docs/getting-started/app-copy/).
 
 ## Auth pages
 
 Use it for sign in, sign up and password reset: a brand panel on one side and a card with the form on the other.
+
+```ts
+// src/lib/messages.ts (the keys the auth pages read)
+export const m = {
+  brand: "Acme",
+  auth: {
+    email: "Email",
+    password: "Password",
+    quote: "Ship the boring parts in a day.",
+    quoteBy: "The Acme team",
+    signIn: {
+      title: "Welcome back",
+      subtitle: "Sign in to your account to continue",
+      submit: "Sign in",
+      wrong: "Wrong email or password.",
+      forgot: "Forgot password?",
+      noAccount: "No account yet?",
+      create: "Create one",
+    },
+    signUp: {
+      title: "Create your account",
+      subtitle: "Start free, no card needed",
+      submit: "Create account",
+    },
+  },
+} as const;
+```
 
 ```svelte
 <!-- src/routes/(auth)/sign-in/+page.svelte -->
 <script lang="ts">
   import { goto } from "$app/navigation";
   import { AuthCard, AuthLayout, Button, Stack, TextField } from "@codeatlasdev/ui";
+  import { m } from "#lib/messages.ts";
 
+  const a = m.auth;
   let email = $state("");
   let password = $state("");
   let error = $state<string | undefined>();
@@ -564,7 +723,7 @@ Use it for sign in, sign up and password reset: a brand panel on one side and a 
         body: JSON.stringify({ email, password }),
       });
       if (!response.ok) {
-        error = "Wrong email or password.";
+        error = a.signIn.wrong;
         return;
       }
       await goto("/dashboard");
@@ -574,26 +733,26 @@ Use it for sign in, sign up and password reset: a brand panel on one side and a 
   }
 </script>
 
-<AuthLayout logoMark="AC" logoName="Acme" logoHref="/">
+<AuthLayout logoMark="AC" logoName={m.brand} logoHref="/">
   {#snippet panel()}
     <blockquote>
-      <p>Ship the boring parts in a day.</p>
-      <footer>The Acme team</footer>
+      <p>{a.quote}</p>
+      <footer>{a.quoteBy}</footer>
     </blockquote>
   {/snippet}
 
-  <AuthCard title="Welcome back" subtitle="Sign in to your account to continue">
+  <AuthCard title={a.signIn.title} subtitle={a.signIn.subtitle}>
     <form onsubmit={submit}>
       <Stack gap="4">
         <TextField
-          label="Email"
+          label={a.email}
           type="email"
           autocomplete="email"
           required
           bind:value={email}
         />
         <TextField
-          label="Password"
+          label={a.password}
           type="password"
           revealable
           autocomplete="current-password"
@@ -602,15 +761,16 @@ Use it for sign in, sign up and password reset: a brand panel on one side and a 
           {error}
         >
           {#snippet below()}
-            <a href="/forgot-password">Forgot password?</a>
+            <!-- Optional: delete this snippet when the app has no password reset page. -->
+            <a href="/forgot-password">{a.signIn.forgot}</a>
           {/snippet}
         </TextField>
-        <Button type="submit" variant="filled" fullWidth {loading}>Sign in</Button>
+        <Button type="submit" variant="filled" fullWidth {loading}>{a.signIn.submit}</Button>
       </Stack>
     </form>
 
     {#snippet footer()}
-      No account yet? <a href="/sign-up">Create one</a>
+      {a.signIn.noAccount} <a href="/sign-up">{a.signIn.create}</a>
     {/snippet}
   </AuthCard>
 </AuthLayout>
@@ -622,7 +782,9 @@ A form-first variant: the panel on the right edge to edge (a map, image or video
 <!-- src/routes/(auth)/sign-up/+page.svelte -->
 <script lang="ts">
   import { AuthCard, AuthLayout, Button, LocaleSwitcher, Stack, TextField } from "@codeatlasdev/ui";
+  import { m } from "#lib/messages.ts";
 
+  const a = m.auth;
   const locales = [
     { value: "en", label: "English" },
     { value: "pt-BR", label: "Português", short: "PT" },
@@ -634,7 +796,7 @@ A form-first variant: the panel on the right edge to edge (a map, image or video
 
 <AuthLayout panelSide="right" panelBleed panelHidden="lg" align="start">
   {#snippet header()}
-    <a href="/">Acme</a>
+    <a href="/">{m.brand}</a>
     <LocaleSwitcher options={locales} bind:value={locale} compact />
   {/snippet}
 
@@ -642,12 +804,12 @@ A form-first variant: the panel on the right edge to edge (a map, image or video
     <img src="/sign-up-cover.jpg" alt="" />
   {/snippet}
 
-  <AuthCard variant="plain" title="Create your account" subtitle="Start free, no card needed">
+  <AuthCard variant="plain" title={a.signUp.title} subtitle={a.signUp.subtitle}>
     <form method="post">
       <Stack gap="4">
-        <TextField label="Email" type="email" name="email" autocomplete="email" required bind:value={email} />
+        <TextField label={a.email} type="email" name="email" autocomplete="email" required bind:value={email} />
         <TextField
-          label="Password"
+          label={a.password}
           type="password"
           name="password"
           revealable
@@ -655,7 +817,7 @@ A form-first variant: the panel on the right edge to edge (a map, image or video
           required
           bind:value={password}
         />
-        <Button type="submit" variant="filled" fullWidth>Create account</Button>
+        <Button type="submit" variant="filled" fullWidth>{a.signUp.submit}</Button>
       </Stack>
     </form>
   </AuthCard>
@@ -668,10 +830,12 @@ Rules:
 - The logo comes from `logoMark` and `logoName`. The `brand` snippet replaces the whole logo, the mark and the default name ("CodeAtlas UI"); `logoName` is drawn beside it only when you pass it, so pass it for an SVG mark plus a name and leave it out for a full wordmark.
 - The form column holds an `AuthCard` with `title`, `subtitle`, the form as its child and links in the `footer` snippet. Do not render your own heading or card inside it.
 - Build the form with `Stack` and `TextField`, and a `Button type="submit"` with `fullWidth` and `loading`. Set `autocomplete` (`email`, `current-password`, `new-password`) so password managers work. A password field is `type="password"` with `revealable` (an eye toggle inside the field), never a hand-made button; a "Forgot password?" link goes in its `below` snippet.
+- The "Forgot password?" link is optional: it points at a `/forgot-password` route you build yourself (the same `AuthLayout` and `AuthCard` with one email field). An app with no password reset deletes the whole `below` snippet instead of linking to a page that does not exist.
 - `panelSide` (`left` or `right`), `panelBleed` (the panel fills edge to edge: no padding, logo or blobs, and the `brand` and `logoName` are not drawn there), `panelHidden` (`md` 900px or `lg` 1200px, from which the panel shows) and `align="start"` with `AuthCard variant="plain"` give a form-first page. The `header` snippet is a sticky bar over the form column and replaces the mobile brand strip.
 - Below the `panelHidden` width the panel is hidden and `mobileBrand` (on by default) shows a compact brand strip, so put nothing essential in `panel`. `AuthCard display` sets its title in the display role.
+- The language names in `LocaleSwitcher` options (`English`, `Português`) are the one exception to the copy rule: they are `label` keys of a data array, not template attributes, and each language is written in itself on purpose. Everything else, including the error and the footer links, comes from `messages.ts`.
 
-See also: [AuthLayout](/docs/layout/auth-layout/), [TextField](/docs/inputs/text-field/), [Button](/docs/inputs/button/).
+See also: [AuthLayout](/docs/layout/auth-layout/), [TextField](/docs/inputs/text-field/), [Button](/docs/inputs/button/), [App copy](/docs/getting-started/app-copy/).
 
 ## Dashboard
 

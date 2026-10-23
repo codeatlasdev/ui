@@ -17,6 +17,19 @@ describe("docs code samples compile", () => {
 		expect(mine.join("\n")).toContain("Type '\"shiny\"' is not assignable");
 	}, 120_000);
 
+	it("resolves #lib/messages.ts from the page's messages.ts fence and checks the keys (#474)", async () => {
+		const good =
+			'<script lang="ts">\n  import { Button } from "@codeatlasdev/ui";\n  import { m } from "#lib/messages.ts";\n</script>\n<Button>{m.save}</Button>';
+		const typo =
+			'<script lang="ts">\n  import { Button } from "@codeatlasdev/ui";\n  import { m } from "#lib/messages.ts";\n</script>\n<Button>{m.sav}</Button>';
+		const messages =
+			'```ts\n// src/lib/messages.ts\nexport const m = { save: "Save" } as const;\n```';
+		const { errors } = await checkDocsSamples({ good, typo }, messages);
+		const by = (n: string) => errors.filter((e) => e.page === n).map((e) => e.message);
+		expect(by("good")).toEqual([]);
+		expect(by("typo").join("\n")).toContain("Property 'sav' does not exist");
+	}, 120_000);
+
 	it("skips fences that do not import the package", () => {
 		expect(normalize("<table><tr><td>x</td></tr></table>")).toBeNull();
 	});

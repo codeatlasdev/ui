@@ -94,6 +94,55 @@ export function normalize(raw: string): string | null {
 	return decl ? code.replace(tag[0], `${tag[0]}\n${decl}`) : code;
 }
 
+/**
+ * The app's copy module, as the docs show it: a `ts` fence opening with `// src/lib/messages.ts`.
+ * A page shows the keys each recipe reads in its own fence, all of one file, so a page's fences are
+ * merged into one `export const m` that its samples import (in place of `#lib/messages.ts`). A fence
+ * that is not a plain `export const m = {…}` (a per-locale module) is shown, not merged.
+ */
+const MESSAGES_FENCE =
+	/^```ts[^\n]*\n\s*\/\/ src\/lib\/messages\.ts[^\n]*\nexport const m = \{[\s\S]*?^```/gm;
+
+/** `#lib/messages.ts` (Kit 3) and `$lib/messages` (Kit 2) both name the page's merged module. */
+const LIB_MESSAGES = /(["'])(?:#lib\/messages\.ts|\$lib\/messages)\1/g;
+
+/**
+ * Merges the `export const m = { … } as const;` bodies of one page into a module. Two fences may
+ * repeat a top-level key only when the repeat is identical (`brand` in two recipes); a differing
+ * repeat means the recipes disagree about one key, which an app copying both would hit.
+ */
+export function mergeMessages(fences: string[]): string {
+	const entries = new Map<string, string>();
+	for (const fence of fences) {
+		const open = fence.indexOf("{", fence.indexOf("export const m"));
+		const close = fence.lastIndexOf("}");
+		const body = fence.slice(open + 1, close);
+		// Top-level `key: value,` entries: a key at depth 0 up to the comma that ends its value.
+		let depth = 0;
+		let start = 0;
+		const parts: string[] = [];
+		for (let i = 0; i < body.length; i++) {
+			const c = body[i];
+			if ("{[(".includes(c)) depth++;
+			else if ("}])".includes(c)) depth--;
+			else if (c === "," && depth === 0) {
+				parts.push(body.slice(start, i));
+				start = i + 1;
+			}
+		}
+		parts.push(body.slice(start));
+		for (const part of parts.map((x) => x.trim()).filter(Boolean)) {
+			const key = part.match(/^(\w+)\s*:/)?.[1];
+			if (!key) throw new Error(`messages fence: cannot read a key from "${part.slice(0, 40)}"`);
+			const prev = entries.get(key);
+			if (prev !== undefined && prev.replace(/\s+/g, "") !== part.replace(/\s+/g, ""))
+				throw new Error(`messages fences define "${key}" twice with different values`);
+			entries.set(key, part);
+		}
+	}
+	return `export const m = {\n${[...entries.values()].join(",\n")}\n} as const;\n`;
+}
+
 export function extractSamples(): Sample[] {
 	rmSync(OUT, { recursive: true, force: true });
 	mkdirSync(OUT, { recursive: true });
@@ -102,6 +151,11 @@ export function extractSamples(): Sample[] {
 		const src = readFileSync(mdx, "utf8");
 		// Forward slashes on every OS: the sample file name flattens them (#131).
 		const page = relative(DOCS, mdx).replaceAll("\\", "/");
+		const stem = page.replace(/\.mdx$/, "").replace(/[/.]/g, "_");
+		const fences = [...src.matchAll(MESSAGES_FENCE)].map((x) => x[0]);
+		const messages = fences.length ? mergeMessages(fences) : undefined;
+		const messagesFile = `${stem}_messages.ts`;
+		if (messages) writeFileSync(join(OUT, messagesFile), messages);
 		let index = 0;
 		for (const m of src.matchAll(/^([ \t]*)```svelte[^\n]*\n([\s\S]*?)^[ \t]*```/gm)) {
 			const indent = m[1].length;
@@ -109,17 +163,18 @@ export function extractSamples(): Sample[] {
 				.split("\n")
 				.map((l) => l.slice(Math.min(indent, l.length - l.trimStart().length)))
 				.join("\n");
-			const code = normalize(body);
-			if (code === null) continue;
+			const normalized = normalize(body);
+			if (normalized === null) continue;
+			const code = messages ? normalized.replace(LIB_MESSAGES, `"./${messagesFile}"`) : normalized;
 			const line = src.slice(0, m.index).split("\n").length;
-			const file = `${page.replace(/\.mdx$/, "").replace(/[/.]/g, "_")}_${index}.svelte`;
+			const file = `${stem}_${index}.svelte`;
 			writeFileSync(join(OUT, file), code);
 			samples.push({ page, index: index++, line, file });
 		}
 	}
 	writeFileSync(
 		join(OUT, "tsconfig.json"),
-		JSON.stringify({ extends: "../../tsconfig.json", include: ["./*.svelte"] })
+		JSON.stringify({ extends: "../../tsconfig.json", include: ["./*.svelte", "./*.ts"] })
 	);
 	return samples;
 }
@@ -132,13 +187,22 @@ export interface SampleError {
 
 /** Runs svelte-check over the extracted samples; returns one entry per error, mapped back to its docs page. */
 export async function checkDocsSamples(
-	extra: Record<string, string> = {}
+	extra: Record<string, string> = {},
+	/** Markdown of a messages fence, keyed by the page it belongs to; extra fences import it as `#lib/messages.ts`. */
+	messagesFence?: string
 ): Promise<{ checked: number; errors: SampleError[] }> {
 	const samples = extractSamples();
 	// Extra fences (tests feed known-bad ones to prove the check can fail), reported under their own name.
+	if (messagesFence) {
+		const fences = [...messagesFence.matchAll(MESSAGES_FENCE)].map((x) => x[0]);
+		writeFileSync(join(OUT, "extra_messages.ts"), mergeMessages(fences));
+	}
 	for (const [name, body] of Object.entries(extra)) {
-		const code = normalize(body);
-		if (code === null) continue;
+		const normalized = normalize(body);
+		if (normalized === null) continue;
+		const code = messagesFence
+			? normalized.replace(LIB_MESSAGES, '"./extra_messages.ts"')
+			: normalized;
 		const file = `extra_${name}.svelte`;
 		writeFileSync(join(OUT, file), code);
 		samples.push({ page: name, index: 0, line: 0, file });
