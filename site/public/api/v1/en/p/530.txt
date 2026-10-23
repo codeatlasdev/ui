@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #530 "Labels, search slot, badges and More" (layout/app-shell).
+What it shows: An app shell with captions under the rail icons, a search trigger on top of the rail, per-module badges and a More sheet on mobile. When to use: Apps with many modules, a command palette, per-module counters and role-based navigation.
+Spec:
+- `<AppShellLayout {modules} filterModules={(m) => admin || m.id !== 'settings'} {pathname} onNavigate={(path) => (pathname = path)} railLabels moreSheet={NavMoreSheet} persistPanel={false} mainId={null} skipLink={false}>` with `railTop` (a ghost search `Button`, aria-label 'Search, command K') and `bottomNavOverflow` (an outlined full-width 'Account' `Button`); `NavMoreSheet` is the opt-in import that enables the More tab
+- 7 modules: Inbox (`badge: 12`), Map (`badge: 'dot'`, `badgeLabel: 'Search running'`), People (`badge: 3`, `badgeLabel: '3 tasks pending'`), Alerts, Search, Home, Settings; below 900px the bar shows 4 modules plus a More tab that opens a sheet with the rest
+- `filterModules` is driven by an `admin` `$state`; a glass `Card` holds a hint and an outlined `Button` that toggles it
+- Page is `<PageShell title="Labeled rail" description={pathname}>`; stage height is `height: 440px`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #530 Labels, search slot, badges and More → file, what changed, https://ui.codeatlas.com.br/docs/layout/app-shell#labels-search-slot-badges-and-more; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/530.txt   Components API: ca-ui-mcp get_component(AppShellLayout)

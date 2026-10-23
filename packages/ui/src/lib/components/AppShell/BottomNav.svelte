@@ -1,19 +1,52 @@
 <script lang="ts">
+  import { Ellipsis } from '@lucide/svelte';
+  import type { Snippet } from 'svelte';
   import { useMessages } from '../../i18n/state.svelte.js';
   import { appShell } from '../../i18n/groups/appShell.js';
-  import type { NavModule } from './types.js';
+  import NavModuleBadge from './NavModuleBadge.svelte';
+  import type { Component } from 'svelte';
+  import type { NavModule, NavMoreSheetProps } from './types.js';
+  import { hasModuleBadge, moduleName } from './types.js';
   const t = useMessages(appShell);
 
   interface Props {
     modules: NavModule[];
     activeIndex: number;
     onSelect: (index: number) => void;
+    /**
+     * Most tabs on the bar. With `moreSheet` and more modules than this, the first `primary - 1` stay and the last
+     * tab is "More", a sheet with the rest. Default 5 (4 modules + More once there are 6 or more).
+     */
+    primary?: number;
+    /**
+     * The exported `NavMoreSheet`. Opt-in so the sheet is only bundled by apps with more modules
+     * than `primary`; without it the bar shows the first `primary` modules and no "More" tab.
+     */
+    moreSheet?: Component<NavMoreSheetProps>;
+    /** Extra content in the "More" sheet under the modules (search, account, sign out). */
+    overflow?: Snippet;
     class?: string;
   }
 
-  let { modules, activeIndex, onSelect, class: className = '' }: Props = $props();
+  let { modules, activeIndex, onSelect, primary = 5, moreSheet, overflow, class: className = '' }: Props = $props();
 
-  let visible = $derived(modules.slice(0, 5));
+  let cap = $derived(Math.max(2, Math.floor(primary)));
+  let overflowing = $derived(!!moreSheet && modules.length > cap);
+  // Without `moreSheet` the bar holds `primary` modules and drops the rest, as it always did.
+  let visibleCount = $derived(overflowing ? cap - 1 : Math.min(modules.length, cap));
+  let visible = $derived(modules.slice(0, visibleCount));
+  let rest = $derived(modules.slice(visibleCount));
+  // The More tab is current when the active module lives in the sheet.
+  let moreActive = $derived(overflowing && activeIndex >= visibleCount);
+  let moreBadge = $derived(rest.some((m) => hasModuleBadge(m)));
+
+  let moreOpen = $state(false);
+  const name = (mod: NavModule) => moduleName(mod, { unread: t().appShell.unread, fresh: t().appShell.new });
+
+  function pick(i: number) {
+    moreOpen = false;
+    onSelect(i);
+  }
 </script>
 
 <nav class="ca-bottom-nav glass-chrome-layer {className}" aria-label={t().appShell.moduleNavigation}>
@@ -22,17 +55,48 @@
       class="ca-bottom-nav__btn"
       class:ca-bottom-nav__btn--active={i === activeIndex}
       type="button"
-      aria-label={mod.label}
+      aria-label={name(mod)}
       aria-current={i === activeIndex ? 'page' : undefined}
       onclick={() => onSelect(i)}
     >
       <span class="ca-bottom-nav__icon">
         <mod.icon size={22} stroke-width={i === activeIndex ? 2 : 1.5} />
+        <NavModuleBadge module={mod} />
       </span>
       <span class="ca-bottom-nav__label">{mod.label}</span>
     </button>
   {/each}
+  {#if overflowing}
+    <button
+      class="ca-bottom-nav__btn"
+      class:ca-bottom-nav__btn--active={moreActive}
+      type="button"
+      aria-current={moreActive ? 'page' : undefined}
+      aria-haspopup="dialog"
+      aria-label={moreBadge ? `${t().appShell.more}, ${t().appShell.new}` : undefined}
+      onclick={() => (moreOpen = true)}
+    >
+      <span class="ca-bottom-nav__icon">
+        <Ellipsis size={22} stroke-width={moreActive ? 2 : 1.5} />
+        {#if moreBadge}<NavModuleBadge module={{ ...rest[0], badge: 'dot' }} />{/if}
+      </span>
+      <span class="ca-bottom-nav__label">{t().appShell.more}</span>
+    </button>
+  {/if}
 </nav>
+
+{#if overflowing && moreSheet}
+  {@const Sheet = moreSheet}
+  <Sheet
+    bind:open={moreOpen}
+    title={t().appShell.more}
+    {rest}
+    {visibleCount}
+    {activeIndex}
+    {overflow}
+    onPick={pick}
+  />
+{/if}
 
 <style>
 @layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
@@ -91,6 +155,7 @@
     }
 
     .ca-bottom-nav__icon {
+      position: relative;
       display: flex;
       align-items: center;
       justify-content: center;

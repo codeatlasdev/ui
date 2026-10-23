@@ -16,6 +16,8 @@ import ShortPanel from "~/demos/layout/app-shell/ShortPanel.svelte";
 import ShortPanelSrc from "~/demos/layout/app-shell/ShortPanel.svelte?raw";
 import ItemExtras from "~/demos/layout/app-shell/ItemExtras.svelte";
 import ItemExtrasSrc from "~/demos/layout/app-shell/ItemExtras.svelte?raw";
+import RailLabels from "~/demos/layout/app-shell/RailLabels.svelte";
+import RailLabelsSrc from "~/demos/layout/app-shell/RailLabels.svelte?raw";
 
 ```svelte
 <script lang="ts">
@@ -56,6 +58,12 @@ The rail magnifies the module icon under the pointer, like a dock. Only the glyp
   { name: "collapseShortPanel", type: "boolean", default: "false", description: "Collapses the panel to the rail for a module with 2 destinations or fewer, so a short list does not reserve a 200px column. A module with a single destination never shows a panel either way; with three or more it stays open." },
   { name: "reorder", type: "Component", description: "Pass the exported `NavReorder` to enable `onReorder` on sections and modules. Opt-in so the drag engine is only bundled by apps that reorder." },
   { name: "itemMenu", type: "Component", description: "Pass the exported `NavItemMenu` to render `NavItem.actions` as a \"…\" menu. Opt-in so the dropdown menu is only bundled by apps that use it." },
+  { name: "filterModules", type: "(module: NavModule) => boolean", description: "Hides modules the user may not see (role, plan, flag). Rail, panel, bottom navigation and the active-module logic all use the filtered list, so a hidden module never shifts the indexes. Return `true` to keep one." },
+  { name: "railLabels", type: "boolean", default: "false", description: "Shows each module's label as a caption under its rail icon. The button's accessible name is the same with or without it." },
+  { name: "railTop", type: "Snippet", description: "Control between the brand and the modules in the rail, such as a search or ⌘K trigger that opens a `CommandPalette`." },
+  { name: "bottomNavPrimary", type: "number", default: "5", description: "Most tabs on the mobile bottom navigation. With `moreSheet` and more modules, the first `bottomNavPrimary - 1` stay and the last tab is More, a sheet with the rest. The More tab is current when the active module is inside the sheet." },
+  { name: "moreSheet", type: "Component", description: "Pass the exported `NavMoreSheet` to enable the More tab. Opt-in so the sheet is only bundled by apps with more modules than `bottomNavPrimary`; without it the bar shows the first `bottomNavPrimary` modules." },
+  { name: "bottomNavOverflow", type: "Snippet", description: "Extra content in the More sheet under the modules: search, account, sign out. Needs `moreSheet`." },
   { name: "header", type: "Snippet", description: "Desktop header rendered above the page content. Hidden below 900px." },
   { name: "brand", type: "Snippet", description: "Logo shown at the top of the rail and in the mobile header." },
   { name: "railBottom", type: "Snippet", description: "Items pinned to the bottom of the rail, such as an avatar or notifications." },
@@ -65,6 +73,23 @@ The rail magnifies the module icon under the pointer, like a dock. Only the glyp
   { name: "skipLink", type: "boolean", default: "true", description: "Renders the SkipLink. Turn it off when the shell is embedded in a page that already has one." },
   { name: "children", type: "Snippet", description: "Page content." },
 ]} />
+
+## Rail labels, search slot, badges and More
+
+`railLabels` adds a caption under each rail icon. `railTop` is a slot above the modules for a search trigger: render a `Button` that opens your `CommandPalette` (see [CommandPalette](/docs/navigation/command-palette/)). Below 900px the bottom navigation holds up to `bottomNavPrimary` tabs (5 by default). Pass `moreSheet={NavMoreSheet}` (opt-in, like `reorder` and `itemMenu`, so the sheet stays out of bundles that do not need it) and, with more modules, it keeps `bottomNavPrimary - 1` and adds a More tab whose sheet lists the rest plus whatever `bottomNavOverflow` renders (an account row, sign out).
+
+A module can carry a marker on its rail icon and tab:
+
+| Field | What it does |
+|---|---|
+| `badge` | A number (capped at `99+`) or `'dot'`. `0` and unset draw nothing. |
+| `badgeLabel` | The text a screen reader gets. The button is named `"<label>, <badgeLabel>"`. Without it a number reads `"Inbox, 12 unread"` and a dot reads `"Inbox, New"`. Set it for anything that is not "unread" (`"3 tasks pending"`) and translate it yourself. |
+
+The marker itself is decorative; the count is never announced separately from the button. When any module inside the More sheet has a badge, the More tab shows a dot.
+
+`filterModules` is for role-based navigation: keep one module list and filter it. Because the shell resolves the active module, the panel and the bottom navigation against the filtered list, hiding an earlier module cannot make the wrong rail icon active. When the URL belongs to a hidden module, the first visible module is selected.
+
+<Demo title="Labels, search slot, badges and More" description="railLabels, railTop, module badges, bottomNavOverflow and filterModules. Narrow the viewport below 900px to see the More sheet." src={RailLabelsSrc} stage><RailLabels client:visible /></Demo>
 
 ## Panel width
 

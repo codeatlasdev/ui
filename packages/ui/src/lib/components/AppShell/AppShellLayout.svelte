@@ -1,9 +1,9 @@
 <script lang="ts">
-  import type { Snippet } from 'svelte';
+  import type { Component, Snippet } from 'svelte';
   import { setContext } from 'svelte';
   import { Spring } from 'svelte/motion';
   import { reducedMotion } from '../../stores/reduced-motion.svelte.js';
-  import type { NavExtras, NavModule } from './types.js';
+  import type { NavExtras, NavModule, NavMoreSheetProps } from './types.js';
   import { clampPanelWidth, firstModulePath, isItemActive, isNavSection, matchModuleIndex, PANEL_WIDTH, RAIL_WIDTH } from './types.js';
   import { readShellState, shellScript, writeShellState } from './shell-state.js';
   import Rail from './Rail.svelte';
@@ -14,6 +14,12 @@
 
   interface Props {
     modules:        NavModule[];
+    /**
+     * Hides modules the current user may not see (role, plan, feature flag). Rail, panel, bottom
+     * navigation and the active-module logic all work on the filtered list, so indexes never point
+     * at a hidden module. Return `true` to keep a module.
+     */
+    filterModules?: (module: NavModule) => boolean;
     pathname:       string;
     onNavigate?:    (path: string) => void;
     defaultModule?: number;
@@ -56,6 +62,22 @@
     brand?:         Snippet;
     /** Items pinned to the bottom of the Rail (avatar, notifications…) */
     railBottom?:    Snippet;
+    /** Control between the brand and the modules in the Rail, e.g. a search / ⌘K trigger. */
+    railTop?:       Snippet;
+    /** Shows each module's label as a caption under its rail icon. */
+    railLabels?:    boolean;
+    /**
+     * Most tabs on the mobile bottom navigation. With `moreSheet` and more modules the first
+     * `bottomNavPrimary - 1` stay and the last tab is "More", a sheet with the rest. Default 5.
+     */
+    bottomNavPrimary?: number;
+    /**
+     * Pass the exported `NavMoreSheet` to enable the "More" tab. Opt-in so the sheet is only bundled
+     * by apps with more modules than `bottomNavPrimary`; without it the bar shows the first `bottomNavPrimary` modules.
+     */
+    moreSheet?: Component<NavMoreSheetProps>;
+    /** Extra content in the "More" sheet under the modules (search, account, sign out). Needs `moreSheet`. */
+    bottomNavOverflow?: Snippet;
     /**
      * Compact controls rendered at the trailing edge of the single mobile header
      * (session/workspace switcher, account menu…). Below 900px the desktop `header`
@@ -83,7 +105,8 @@
   }
 
   let {
-    modules,
+    modules: allModules,
+    filterModules,
     pathname,
     onNavigate,
     defaultModule = 0,
@@ -96,12 +119,20 @@
     header,
     brand,
     railBottom,
+    railTop,
+    railLabels = false,
+    bottomNavPrimary,
+    moreSheet,
+    bottomNavOverflow,
     mobileHeaderActions,
     mobileTitle,
     mainId = 'main',
     skipLink = true,
     children,
   }: Props = $props();
+
+  // Every index below (rail, panel, bottom nav, active module) refers to this filtered list.
+  let modules = $derived(filterModules ? allModules.filter(filterModules) : allModules);
 
   // `persistPanel` reads on the client only. The server renders the defaults and `shellScript`
   // sets `data-ca-panel` / `data-ca-module` on <html> before paint, so the stored layout shows
@@ -119,7 +150,7 @@
     const hit = matchModuleIndex(modules, path);
     if (hit >= 0) return hit;
     const saved = modules.findIndex((m) => m.id === stored?.module);
-    return saved >= 0 ? saved : Math.min(Math.max(0, defaultModule), modules.length - 1);
+    return saved >= 0 ? saved : Math.max(0, Math.min(defaultModule, modules.length - 1));
   }
 
   let panelOpen = $state(stored?.panel ?? true);
@@ -234,6 +265,8 @@
       {modules}
       activeIndex={selectedIndex}
       {brand}
+      top={railTop}
+      labels={railLabels}
       bottom={railBottom}
       onSelect={(i) => {
         if (i !== selectedIndex) {
@@ -290,6 +323,9 @@
   <!-- Mobile bottom nav -->
   <BottomNav
     {modules}
+    primary={bottomNavPrimary}
+    {moreSheet}
+    overflow={bottomNavOverflow}
     activeIndex={selectedIndex}
     onSelect={(i) => {
       selectedIndex = i;

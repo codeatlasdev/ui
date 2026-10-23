@@ -323,6 +323,7 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "492", path: "feedback/toast/Actions" },
 	{ id: "600", path: "layout/page-shell/AsideReading" },
 	{ id: "601", path: "layout/app-shell/ShortPanel" },
+	{ id: "530", path: "layout/app-shell/RailLabels" },
 ];
 
 /**

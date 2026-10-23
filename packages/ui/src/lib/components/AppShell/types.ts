@@ -76,6 +76,18 @@ export interface NavModule {
 	items: (NavItem | NavSection)[];
 	/** Same as `NavSection.onReorder`, for the items that sit directly in `items` (outside any section). */
 	onReorder?: (e: NavReorderEvent) => void;
+	/**
+	 * Marker on the module's rail icon and bottom-nav tab: a number (capped at 99+) or `'dot'`
+	 * (something is going on, no count). `0` and `undefined` render nothing. The marker is part of
+	 * the button's accessible name: "Inbox, 12 unread", or `badgeLabel` when set.
+	 */
+	badge?: number | "dot";
+	/**
+	 * Accessible text for `badge`, appended to the module label ("Map, Search running"). Needed for
+	 * a `'dot'` that should say more than "New", and for a count that is not "unread" ("3 tasks
+	 * pending"). Translate it yourself: the shell cannot.
+	 */
+	badgeLabel?: string;
 }
 
 /** Props of the opt-in `NavReorder` list (see `NavExtras.reorder`). */
@@ -84,6 +96,19 @@ export interface NavReorderProps {
 	onReorder: (e: NavReorderEvent) => void;
 	label: string;
 	isActive: (item: NavItem) => boolean;
+}
+
+/** Props of the opt-in `NavMoreSheet` (see `AppShellLayout.moreSheet`). */
+export interface NavMoreSheetProps {
+	open: boolean;
+	title: string;
+	/** Modules that did not fit on the bar. */
+	rest: NavModule[];
+	/** Index of `rest[0]` inside the full module list. */
+	visibleCount: number;
+	activeIndex: number;
+	overflow?: Snippet;
+	onPick: (index: number) => void;
 }
 
 /** Opt-in nav features passed to `AppShellLayout` (`reorder`, `itemMenu`), shared through context. */
@@ -181,4 +206,32 @@ export function firstModulePath(mod: NavModule): string {
 		}
 	}
 	return mod.basePath;
+}
+
+/** Largest count a module badge shows; above it the badge reads `99+`. */
+export const MODULE_BADGE_MAX = 99;
+
+/** True when the module has a marker to draw: `'dot'`, or a count above zero. */
+export function hasModuleBadge(mod: NavModule): boolean {
+	return mod.badge === "dot" || (typeof mod.badge === "number" && mod.badge > 0);
+}
+
+/** Text drawn in a count badge (`'99+'` past the cap), empty for a dot or no badge. */
+export function moduleBadgeText(mod: NavModule): string {
+	if (typeof mod.badge !== "number" || mod.badge <= 0) return "";
+	return mod.badge > MODULE_BADGE_MAX ? `${MODULE_BADGE_MAX}+` : String(mod.badge);
+}
+
+/**
+ * Accessible name of a module button: the label, plus the badge as text. `badgeLabel` wins; without
+ * it a count reads "N unread" and a dot reads "New" (`unread` and `fresh` come from the i18n group).
+ */
+export function moduleName(
+	mod: NavModule,
+	text: { unread: (count: number) => string; fresh: string }
+): string {
+	if (!hasModuleBadge(mod)) return mod.label;
+	const extra =
+		mod.badgeLabel ?? (mod.badge === "dot" ? text.fresh : text.unread(mod.badge as number));
+	return `${mod.label}, ${extra}`;
 }

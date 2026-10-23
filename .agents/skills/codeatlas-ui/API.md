@@ -146,6 +146,7 @@ Classes: `ca-app-settings` `ca-app-settings__actions` `ca-app-settings__body` `c
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `modules` | `NavModule[]` |  |  |
+| `filterModules?` | `(module: NavModule) => boolean` |  | Hides modules the current user may not see (role, plan, feature flag). Rail, panel, bottom navigation and the active-module logic all work on the filtered list, so indexes never point at a hidden module. Return `true` to keep a module. |
 | `pathname` | `string` |  |  |
 | `onNavigate?` | `(path: string) => void` |  |  |
 | `defaultModule?` | `number` | `0` |  |
@@ -155,10 +156,13 @@ Classes: `ca-app-settings` `ca-app-settings__actions` `ca-app-settings__body` `c
 | `collapseShortPanel?` | `boolean` | `false` | Collapses the panel to the rail for a module with 2 destinations or fewer, so a short list does not reserve a whole column of empty background. Off by default: a 2-item panel stays open (a single-destination module never shows one either way). Opening the panel for a longer module still works. |
 | `reorder?` | `NavExtras['reorder']` |  | Enables `onReorder` on sections and modules: pass the exported `NavReorder` component. Opt-in so the drag engine is only bundled by apps that reorder. |
 | `itemMenu?` | `NavExtras['itemMenu']` |  | Renders `NavItem.actions` as a "…" menu: pass the exported `NavItemMenu` component. Opt-in so DropdownMenu is only bundled by apps that use per-item menus. |
+| `railLabels?` | `boolean` | `false` | Shows each module's label as a caption under its rail icon. |
+| `bottomNavPrimary?` | `number` |  | Most tabs on the mobile bottom navigation. With `moreSheet` and more modules the first `bottomNavPrimary - 1` stay and the last tab is "More", a sheet with the rest. Default 5. |
+| `moreSheet?` | `Component<NavMoreSheetProps>` |  | Pass the exported `NavMoreSheet` to enable the "More" tab. Opt-in so the sheet is only bundled by apps with more modules than `bottomNavPrimary`; without it the bar shows the first `bottomNavPrimary` modules. |
 | `mainId?` | `string \| null` | `'main'` | `id` given to the content region, the target of the skip link. By default the region is the page's `<main id tabindex="-1">` landmark. Pass `null` when your own `<main id="main" tabindex="-1">` is the target: the region then renders as a plain `div` so the page never gets two landmarks. |
 | `skipLink?` | `boolean` | `true` | Render the "Skip to content" link. Turn it off when the shell is embedded in a page that already has one (a framed demo, a preview), so the page does not get two. |
 
-Snippets: `header`, `brand`, `railBottom`, `mobileHeaderActions`, `mobileTitle`, `children`
+Snippets: `header`, `brand`, `railBottom`, `railTop`, `bottomNavOverflow`, `mobileHeaderActions`, `mobileTitle`, `children`
 
 Classes: `ca-main` `ca-panel` `ca-shell` `ca-shell__content` `ca-shell__desktop-header` `ca-shell__mobile-header` `ca-sidebar`
 
@@ -280,7 +284,11 @@ Classes: `ca-badge` `ca-badge--brand` `ca-badge--dot` `ca-badge--error` `ca-badg
 | `modules` | `NavModule[]` |  |  |
 | `activeIndex` | `number` |  |  |
 | `onSelect` | `(index: number) => void` |  |  |
+| `primary?` | `number` | `5` | Most tabs on the bar. With `moreSheet` and more modules than this, the first `primary - 1` stay and the last tab is "More", a sheet with the rest. Default 5 (4 modules + More once there are 6 or more). |
+| `moreSheet?` | `Component<NavMoreSheetProps>` |  | The exported `NavMoreSheet`. Opt-in so the sheet is only bundled by apps with more modules than `primary`; without it the bar shows the first `primary` modules and no "More" tab. |
 | `class?` | `string` | `''` |  |
+
+Snippets: `overflow`
 
 Classes: `ca-bottom-nav` `ca-bottom-nav__btn` `ca-bottom-nav__btn--active` `ca-bottom-nav__icon` `ca-bottom-nav__label`
 
@@ -1674,6 +1682,23 @@ Classes: `ca-nav-progress` `ca-nav-progress__bar`
 
 Snippets: `actions`
 
+## NavMoreSheet
+
+`import { NavMoreSheet } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `open` | `boolean` | `false` | `bind:` |
+| `title` | `string` |  |  |
+| `rest` | `NavModule[]` |  | Modules that did not fit on the bar. |
+| `visibleCount` | `number` |  | Index of `rest[0]` inside the full module list. |
+| `activeIndex` | `number` |  |  |
+| `onPick` | `(index: number) => void` |  |  |
+
+Snippets: `overflow`
+
+Classes: `ca-bottom-nav__more` `ca-bottom-nav__more-btn` `ca-bottom-nav__more-btn--active` `ca-bottom-nav__more-extra` `ca-bottom-nav__more-icon` `ca-bottom-nav__more-label`
+
 ## NavReorder
 
 `import { NavReorder } from "@codeatlasdev/ui"`
@@ -1910,11 +1935,12 @@ Classes: `ca-radio-card` `ca-radio-card__desc` `ca-radio-card__head` `ca-radio-c
 | `modules` | `NavModule[]` |  |  |
 | `activeIndex` | `number` |  |  |
 | `onSelect` | `(index: number) => void` |  |  |
+| `labels?` | `boolean` | `false` | Shows the module label under each icon (small caption). The button's name is the same either way. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `brand`, `bottom`
+Snippets: `brand`, `top`, `bottom`
 
-Classes: `ca-rail` `ca-rail__bottom` `ca-rail__bottom-sep` `ca-rail__dock` `ca-rail__icon` `ca-rail__icon--active` `ca-rail__logo` `ca-rail__logo-mark` `ca-rail__pip` `ca-rail__sep`
+Classes: `ca-rail` `ca-rail__bottom` `ca-rail__bottom-sep` `ca-rail__dock` `ca-rail__icon` `ca-rail__icon--active` `ca-rail__icon--labeled` `ca-rail__label` `ca-rail__logo` `ca-rail__logo-mark` `ca-rail__pip` `ca-rail__sep` `ca-rail__top`
 
 ## RangeCalendar
 
@@ -3634,7 +3660,8 @@ Types:
 | `MotionOptions` | `interface MotionOptions { scale?: number; easing?: "standard" \| "emphasized" \| "spring" \| "linear" \| "steps"; enter?: "default" \| "none"; }` |  |
 | `NavExtras` | `interface NavExtras { reorder?: Component<NavReorderProps>; itemMenu?: Component<{ label: string; actions: Snippet }>; }` | Opt-in nav features passed to `AppShellLayout` (`reorder`, `itemMenu`), shared through context. |
 | `NavItem` | `interface NavItem { id: string; label: string; icon: IconComponent; path: string; badge?: number; count?: number; color?: string; leading?: Snippet; actions?: Snippet; isNew?: boolean; shortcut?: string; description?: string; }` |  |
-| `NavModule` | `interface NavModule { id: string; label: string; icon: IconComponent; basePath: string; pathPrefixes?: string[]; items: (NavItem \| NavSection)[]; onReorder?: (e: NavReorderEvent) => void; }` |  |
+| `NavModule` | `interface NavModule { id: string; label: string; icon: IconComponent; basePath: string; pathPrefixes?: string[]; items: (NavItem \| NavSection)[]; onReorder?: (e: NavReorderEvent) => void; badge?: number \| "dot"; badgeLabel?: string; }` |  |
+| `NavMoreSheetProps` | `interface NavMoreSheetProps { open: boolean; title: string; rest: NavModule[]; visibleCount: number; activeIndex: number; overflow?: Snippet; onPick: (index: number) => void; }` | Props of the opt-in `NavMoreSheet` (see `AppShellLayout.moreSheet`). |
 | `NavReorderEvent` | `interface NavReorderEvent { id: string; from: number; to: number; }` | A drop in a reorderable list: `id` of the item that moved, from and to indexes inside `items`. |
 | `NavReorderProps` | `interface NavReorderProps { items: NavItem[]; onReorder: (e: NavReorderEvent) => void; label: string; isActive: (item: NavItem) => boolean; }` | Props of the opt-in `NavReorder` list (see `NavExtras.reorder`). |
 | `NavSection` | `interface NavSection { label?: string; collapsible?: boolean; defaultOpen?: boolean; items: NavItem[]; onReorder?: (e: NavReorderEvent) => void; }` |  |

@@ -3,6 +3,8 @@
   import { appShell } from '../../i18n/groups/appShell.js';
   import type { Snippet } from 'svelte';
   import type { NavModule } from './types.js';
+  import { moduleName } from './types.js';
+  import NavModuleBadge from './NavModuleBadge.svelte';
   const t = useMessages(appShell);
 
   interface Props {
@@ -11,12 +13,16 @@
     onSelect:    (index: number) => void;
     /** Brand mark at the top of the rail. Defaults to the "CA" wordmark. */
     brand?:      Snippet;
+    /** Control between the brand and the modules, e.g. a search / ⌘K trigger. */
+    top?:        Snippet;
     /** Items pinned to the bottom of the rail (avatar, notifications, etc.) */
     bottom?:     Snippet;
+    /** Shows the module label under each icon (small caption). The button's name is the same either way. */
+    labels?:     boolean;
     class?:      string;
   }
 
-  let { modules, activeIndex, onSelect, brand, bottom, class: className = '' }: Props = $props();
+  let { modules, activeIndex, onSelect, brand, top, bottom, labels = false, class: className = '' }: Props = $props();
 
   // Dock magnification: track mouseY, scale the glyph near the cursor. The button keeps its
   // box (a scaled button would cover the active neighbour), and the amount follows
@@ -53,6 +59,11 @@
 
   <div class="ca-rail__sep" aria-hidden="true"></div>
 
+  <!-- Top slot: search / ⌘K trigger -->
+  {#if top}
+    <div class="ca-rail__top">{@render top()}</div>
+  {/if}
+
   <!-- Module icons: flex:1 so they push bottom items down -->
   <ul class="ca-rail__dock" role="list">
     {#each modules as mod, i}
@@ -62,7 +73,8 @@
         <button
           class="ca-rail__icon"
           class:ca-rail__icon--active={active}
-          aria-label={mod.label}
+          class:ca-rail__icon--labeled={labels}
+          aria-label={moduleName(mod, { unread: t().appShell.unread, fresh: t().appShell.new })}
           aria-current={active ? 'page' : undefined}
           title={mod.label}
           type="button"
@@ -74,6 +86,8 @@
             <span class="ca-rail__pip" aria-hidden="true"></span>
           {/if}
           <Icon size={18} stroke-width={active ? 2 : 1.6} />
+          {#if labels}<span class="ca-rail__label" aria-hidden="true">{mod.label}</span>{/if}
+          <NavModuleBadge module={mod} />
         </button>
       </li>
     {/each}
@@ -182,6 +196,35 @@
     .ca-rail__icon:focus-visible {
       outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
       outline-offset: calc(var(--ca-border-width-focus) * -1);
+    }
+
+    /* Labeled rail: glyph with a caption under it. The name never depends on the caption. */
+    .ca-rail__icon--labeled {
+      height: auto;
+      min-height: var(--ca-space-10);
+      flex-direction: column;
+      gap: var(--ca-space-0-5);
+      padding: var(--ca-space-1-5) 0;
+    }
+
+    .ca-rail__label {
+      max-width: 100%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: var(--ca-font-size-nano);
+      font-weight: var(--ca-font-weight-medium);
+      line-height: var(--ca-line-height-tight);
+    }
+
+    .ca-rail__top {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 var(--ca-space-1-5) var(--ca-space-2);
+      box-sizing: border-box;
+      flex-shrink: 0;
     }
 
     /* Active left-side pip */

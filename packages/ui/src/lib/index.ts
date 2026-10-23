@@ -26,6 +26,7 @@ export { default as AppShellLayout } from "./components/AppShell/AppShellLayout.
 export { default as BottomNav } from "./components/AppShell/BottomNav.svelte";
 export { default as MobileHeader } from "./components/AppShell/MobileHeader.svelte";
 export { default as NavItemMenu } from "./components/AppShell/NavItemMenu.svelte";
+export { default as NavMoreSheet } from "./components/AppShell/NavMoreSheet.svelte";
 export { default as NavReorder } from "./components/AppShell/NavReorder.svelte";
 export { default as Panel } from "./components/AppShell/Panel.svelte";
 export { default as PanelNavItem } from "./components/AppShell/PanelNavItem.svelte";
@@ -35,6 +36,7 @@ export type {
 	NavExtras,
 	NavItem,
 	NavModule,
+	NavMoreSheetProps,
 	NavReorderEvent,
 	NavReorderProps,
 	NavSection,
