@@ -32,7 +32,9 @@
       <li class="st__pill st__pill--{s.name}">{s.label} <strong>{s.count}</strong></li>
     {/each}
   </ul>
-  <canvas bind:this={canvas} class="st__chart" width="300" height="80" role="img" aria-label="Leads by status: 18 new, 9 won, 4 lost"></canvas>
+  <div class="st__chart" role="img" aria-label="Leads by status: 18 new, 9 won, 4 lost">
+    <canvas bind:this={canvas} width="300" height="80" aria-hidden="true"></canvas>
+  </div>
 </div>
 
 <style>
@@ -69,5 +71,10 @@
   .st__chart {
     width: 300px;
     height: 80px;
+  }
+  .st__chart canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
   }
 </style>
