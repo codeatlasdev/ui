@@ -148,11 +148,9 @@
 		},
 		{
 			"shadcn": "Context Menu",
-			"to": ["DropdownMenu"],
+			"to": ["ContextMenu", "DropdownMenuItem"],
 			"radix": "@radix-ui/react-context-menu",
-			"notes": "Controlled with `open` and `anchor` at the pointer.",
-			"gap": 432,
-			"workaround": "`DropdownMenu` opened at the pointer from a `contextmenu` handler."
+			"notes": "Wrap the region in `ContextMenu`; the `menu` snippet takes the `DropdownMenu` items. Right-click, long-press and Shift+F10."
 		},
 		{
 			"shadcn": "Data Table",

@@ -744,6 +744,26 @@ Data attributes: `data-lg-px`, `data-md-px`, `data-px`, `data-size` (`lg` `md` `
 
 Tokens: `--ca-container-max`
 
+## ContextMenu
+
+`import { ContextMenu } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `class?` | `string` | `''` |  |
+| `open?` | `boolean` | `false` | `bind:` Bindable. Whether the menu is open. |
+| `onOpenChange?` | `(open: boolean) => void` |  | Called when the user opens or closes the menu (not when the bound value is set from code). |
+| `disabled?` | `boolean` | `false` | Keep the browser's own menu and open nothing. |
+| `longPressDelay?` | `number` | `500` | Milliseconds a touch must stay down before the menu opens. |
+| `focusable?` | `boolean` | `true` | Make the region reachable with Tab so Shift+F10 and the ContextMenu key work. Turn off when the region holds its own focusable target. |
+| `menuClass?` | `string` | `''` | Class on the menu surface. |
+
+Snippets: `children`, `menu`
+
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'oncontextmenu' \| 'onkeydown'>`
+
+Parts: `ca-contextmenu`
+
 ## ConversationItem
 
 `import { ConversationItem } from "@codeatlasdev/ui"`

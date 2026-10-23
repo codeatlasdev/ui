@@ -360,6 +360,8 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 910 | Configured split | feedback/dialog | Dialog, Button, Stack |
 | 940 | Profile mention | navigation/hover-card | Avatar, HoverCard, Stack |
 | 941 | Delays, side and bind:open | navigation/hover-card | Button, HoverCard |
+| 942 | File menu | navigation/context-menu | ContextMenu, DropdownMenuCheckboxItem, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubTrigger |
+| 943 | One menu per row | navigation/context-menu | ContextMenu, DropdownMenuItem, DropdownMenuLabel |
 | 960 | ratio and fit | display/image | Image |
 | 961 | Embed | display/aspect-ratio | AspectRatio |
 | 962 | Two panels | layout/resizable-panels | ResizableHandle, ResizablePanel, ResizablePanels |

@@ -78,6 +78,7 @@ export { default as Combobox } from "./components/Combobox/Combobox.svelte";
 export type { CommandResult } from "./components/CommandPalette/CommandPalette.svelte";
 export { default as CommandPalette } from "./components/CommandPalette/CommandPalette.svelte";
 export { default as Container } from "./components/Container/Container.svelte";
+export { default as ContextMenu } from "./components/ContextMenu/ContextMenu.svelte";
 export { default as ConversationItem } from "./components/ConversationItem/ConversationItem.svelte";
 export { default as CopyButton } from "./components/CopyButton/CopyButton.svelte";
 export type { DateRange, DateValue, TimeValue } from "./components/Date/index.js";

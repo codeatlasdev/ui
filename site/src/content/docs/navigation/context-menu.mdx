@@ -1,0 +1,50 @@
+---
+title: Context Menu
+description: A right-click, long-press and Shift+F10 menu that reuses the DropdownMenu items.
+group: Navigation
+order: 16
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Files from "~/demos/navigation/context-menu/Files.svelte";
+import FilesSrc from "~/demos/navigation/context-menu/Files.svelte?raw";
+import Rows from "~/demos/navigation/context-menu/Rows.svelte";
+import RowsSrc from "~/demos/navigation/context-menu/Rows.svelte?raw";
+
+```svelte
+<script>
+  import { ContextMenu, DropdownMenuItem, DropdownMenuSeparator } from "@codeatlasdev/ui";
+</script>
+
+<ContextMenu role="group" aria-label="Project file">
+  quarterly-report.pdf
+  {#snippet menu()}
+    <DropdownMenuItem onclick={rename}>Rename</DropdownMenuItem>
+    <DropdownMenuSeparator />
+    <DropdownMenuItem variant="destructive" onclick={remove}>Delete</DropdownMenuItem>
+  {/snippet}
+</ContextMenu>
+```
+
+`ContextMenu` wraps a region and opens a [DropdownMenu](/docs/navigation/menu/) at the pointer. The `menu` snippet takes the same items: `DropdownMenuItem`, checkbox and radio items, `DropdownMenuSub`, labels and separators, with the same keyboard support (arrows, Home, End, typeahead, Enter or Space, Escape, ArrowRight and ArrowLeft for submenus).
+
+Three triggers open it. A right-click opens it at the pointer and cancels the browser's own menu; a second right-click moves it. A touch that stays put for `longPressDelay` (500 ms) opens it at the finger; lifting early or dragging more than 10 px cancels the press, and the browser's own long-press menu is cancelled. Shift+F10 or the ContextMenu key on the focused region opens it at the region's start, on the first item. Escape closes it and focus returns to the region.
+
+The region is focusable by default (`tabindex="0"`) so the keyboard trigger is reachable; set `focusable={false}` when the region already contains its own focusable target (a row with a link) and put the handlers' role there. Give the region a `role` and an `aria-label` through the rest props when it is not plain content. A context menu is never the only way to reach an action: keep the same actions on a visible button, for example a [DropdownMenu](/docs/navigation/menu/) trigger.
+
+Text fields (`input`, `textarea`, `select`, editable content) keep the browser's menu (copy, paste, spellcheck); `disabled` keeps it everywhere. `bind:open` and `onOpenChange` work as on `DropdownMenu`.
+
+<Demo title="File menu" description="Right-click, long-press or Shift+F10. Checkbox items keep the menu open, Move to opens a submenu, and Delete is destructive." src={FilesSrc}><Files client:visible /></Demo>
+<Demo title="One menu per row" description="Each row is its own region. Tab to a row and press Shift+F10, or long-press on touch." src={RowsSrc}><Rows client:visible /></Demo>
+
+<Props for="ContextMenu" rows={[
+  { name: "children", type: "Snippet", description: "The region content. Right-click, long-press and Shift+F10 inside it open the menu." },
+  { name: "menu", type: "Snippet", description: "The menu content: DropdownMenu items, checkbox and radio items, submenus, labels and separators." },
+  { name: "open", type: "boolean", default: "false", description: "Bindable. Whether the menu is open." },
+  { name: "onOpenChange", type: "(open: boolean) => void", description: "Called when the user opens or closes the menu, not when the bound value is set from code." },
+  { name: "disabled", type: "boolean", default: "false", description: "Keep the browser's own menu and open nothing." },
+  { name: "longPressDelay", type: "number", default: "500", description: "Milliseconds a touch must stay down before the menu opens." },
+  { name: "focusable", type: "boolean", default: "true", description: "Make the region reachable with Tab so Shift+F10 and the ContextMenu key work." },
+  { name: "menuClass", type: "string", default: "''", description: "Extra CSS classes on the menu surface." },
+  { name: "class", type: "string", default: "''", description: "Extra CSS classes on the region." },
+]} />

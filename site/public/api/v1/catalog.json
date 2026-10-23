@@ -1,6 +1,6 @@
 {
 	"version": "4.5.0",
-	"count": 361,
+	"count": 365,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -29,8 +29,8 @@
 		{
 			"slug": "navigation",
 			"first": "146",
-			"last": "941",
-			"count": 33
+			"last": "943",
+			"count": 35
 		},
 		{
 			"slug": "layout",
@@ -16010,6 +16010,100 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/navigation/hover-card#delays-side-and-bind-open",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "942",
+			"group": "navigation",
+			"page": "context-menu",
+			"variant": "Files",
+			"slug": "file-menu",
+			"title": "File menu",
+			"description": "Right-click, long-press or Shift+F10. Checkbox items keep the menu open, Move to opens a submenu, and Delete is destructive.",
+			"summary": "A dashed file area that opens a Rename, Pinned, Move to and Delete menu at the pointer on right-click, at the finger on a long touch press, or from the keyboard with Shift+F10.",
+			"use": "Context menus on rows, files or canvases that reuse the DropdownMenu items, including checkbox items and submenus, without wiring any event handler.",
+			"spec": [
+				"`<ContextMenu class=\"area\" role=\"group\" aria-label=\"Project file\">` wraps the region content and takes the items in a `{#snippet menu()}`",
+				"The menu holds `DropdownMenuItem`, a `<DropdownMenuCheckboxItem bind:checked={pinned}>`, a `DropdownMenuSub` with `DropdownMenuSubTrigger`, a `DropdownMenuSeparator` and a destructive Delete",
+				"Each action item calls `function pick(action: string)`, which sets `last` and calls `announce`",
+				"Pinned (yes or no) and the last action are shown below the area"
+			],
+			"tags": [
+				"context-menu",
+				"right-click",
+				"long-press",
+				"keyboard",
+				"dropdown-menu",
+				"submenu"
+			],
+			"shape": "wide",
+			"components": [
+				"ContextMenu",
+				"DropdownMenuCheckboxItem",
+				"DropdownMenuItem",
+				"DropdownMenuSeparator",
+				"DropdownMenuSub",
+				"DropdownMenuSubTrigger"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"announce",
+						"ContextMenu",
+						"DropdownMenuCheckboxItem",
+						"DropdownMenuItem",
+						"DropdownMenuSeparator",
+						"DropdownMenuSub",
+						"DropdownMenuSubTrigger"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/context-menu#file-menu",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "943",
+			"group": "navigation",
+			"page": "context-menu",
+			"variant": "Rows",
+			"slug": "one-menu-per-row",
+			"title": "One menu per row",
+			"description": "Each row is its own region. Tab to a row and press Shift+F10, or long-press on touch.",
+			"summary": "Three invoice rows, each its own context menu with a label, Open and Send reminder, and a 400 ms long-press delay for touch.",
+			"use": "A menu per list row: each row is a focusable region, so keyboard users reach the same actions with Shift+F10.",
+			"spec": [
+				"`{#each rows as row (row)}` renders `<ContextMenu class=\"row\" role=\"group\" aria-label={row} longPressDelay={400}>` per row",
+				"The `menu` snippet starts with `<DropdownMenuLabel>{row}</DropdownMenuLabel>` and has Open and Send reminder items",
+				"Items set `last` to the action and the row name (Open or Send plus the invoice), shown under the list"
+			],
+			"tags": [
+				"context-menu",
+				"list",
+				"row",
+				"long-press",
+				"keyboard",
+				"label"
+			],
+			"shape": "wide",
+			"components": [
+				"ContextMenu",
+				"DropdownMenuItem",
+				"DropdownMenuLabel"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"ContextMenu",
+						"DropdownMenuItem",
+						"DropdownMenuLabel"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/context-menu#one-menu-per-row",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{

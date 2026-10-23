@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #942 "File menu" (navigation/context-menu).
+What it shows: A dashed file area that opens a Rename, Pinned, Move to and Delete menu at the pointer on right-click, at the finger on a long touch press, or from the keyboard with Shift+F10. When to use: Context menus on rows, files or canvases that reuse the DropdownMenu items, including checkbox items and submenus, without wiring any event handler.
+Spec:
+- `<ContextMenu class="area" role="group" aria-label="Project file">` wraps the region content and takes the items in a `{#snippet menu()}`
+- The menu holds `DropdownMenuItem`, a `<DropdownMenuCheckboxItem bind:checked={pinned}>`, a `DropdownMenuSub` with `DropdownMenuSubTrigger`, a `DropdownMenuSeparator` and a destructive Delete
+- Each action item calls `function pick(action: string)`, which sets `last` and calls `announce`
+- Pinned (yes or no) and the last action are shown below the area
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #942 File menu → file, what changed, https://ui.codeatlas.com.br/docs/navigation/context-menu#file-menu; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/942.txt   Components API: ca-ui-mcp get_component(ContextMenu)
