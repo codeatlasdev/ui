@@ -112,7 +112,7 @@ Parts: `ca-app-form` `ca-app-form__body` `ca-app-form__desc` `ca-app-form__foote
 
 ## AppList
 
-`import { AppList } from "@codeatlasdev/ui"`
+`import { AppList } from "@codeatlasdev/ui"` (generic: `T extends Record<string, any> = Record<string, any>`)
 
 AppList: fullscreen CRUD/list layout.
 
@@ -121,9 +121,9 @@ AppList: fullscreen CRUD/list layout.
 | `title?` | `string` |  |  |
 | `description?` | `string` |  |  |
 | `data?` | `T[]` |  | Full dataset. When provided, AppList manages search/filter/pagination internally. |
-| `searchKeys?` | `(keyof T)[]` |  | Fields to include in text search. Default: all string fields. |
+| `searchKeys?` | `NoInfer<keyof T>[]` |  | Fields to include in text search. Default: all string fields. |
 | `perPage?` | `number` | `20` | Rows per page. Default: 20. |
-| `idKey?` | `keyof T` |  | Row identifier field. Default: 'id'. |
+| `idKey?` | `NoInfer<keyof T>` |  | Row identifier field. Default: 'id'. |
 | `searchPlaceholder?` | `string` |  | Placeholder for the auto-rendered search input. Default: 'Search…' |
 | `ofLabel?` | `string` |  | Word between the numbers in the auto count and page info ("8 of 24"). Default: 'of'; use 'de' in pt-BR. |
 | `maxWidth?` | `string` |  |  |
