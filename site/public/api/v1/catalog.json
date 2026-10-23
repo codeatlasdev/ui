@@ -35,7 +35,7 @@
 		{
 			"slug": "layout",
 			"first": "165",
-			"last": "531",
+			"last": "601",
 			"count": 34
 		},
 		{
@@ -14294,6 +14294,55 @@
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{
+			"id": "531",
+			"group": "layout",
+			"page": "app-shell",
+			"variant": "Stage",
+			"slug": "stage",
+			"title": "Stage",
+			"description": "A draggable stand-in for a map. Navigate with the panel: the mount count stays at 1 and the camera stays where you left it.",
+			"summary": "An app shell with a persistent stage behind the pages: mounted once, click-through content, hide and pause.",
+			"use": "Map, canvas, video or 3D products where the pages float over one live layer that must keep its state across routes.",
+			"spec": [
+				"`<AppShellLayout {modules} {pathname} onNavigate={(path) => (pathname = path)} {stage} {stageVisible} persistPanel={false} mainId={null} skipLink={false}>` with `stage` a snippet that draws the map",
+				"The map is a draggable grid whose camera lives in `$state`; an attachment counts each mount in `mounts` with `untrack` (a tracked `+=` would loop), shown in the page",
+				"One module `id: 'field'` with 3 items: Leads, Routes, Report",
+				"The page is `<PageShell title=\"Floating over the stage\" description={pathname}>` with a `ca-stage-panel` wrapper around a glass `Card` that holds the mount count hint and an outlined `Button` toggling `stageVisible`",
+				"Stage frame height is `height: 440px`"
+			],
+			"tags": [
+				"app-shell",
+				"stage",
+				"map",
+				"canvas",
+				"persistent",
+				"pointer-events",
+				"inset"
+			],
+			"shape": "wide",
+			"components": [
+				"AppShellLayout",
+				"Button",
+				"Card",
+				"PageShell"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AppShellLayout",
+						"Button",
+						"Card",
+						"PageShell",
+						"NavModule"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/app-shell#stage",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
 			"id": "600",
 			"group": "layout",
 			"page": "page-shell",
@@ -14383,55 +14432,6 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/layout/app-shell#short-panel",
-			"needs": "@codeatlasdev/ui@4.5.0"
-		},
-		{
-			"id": "531",
-			"group": "layout",
-			"page": "app-shell",
-			"variant": "Stage",
-			"slug": "stage",
-			"title": "Stage",
-			"description": "A draggable stand-in for a map. Navigate with the panel: the mount count stays at 1 and the camera stays where you left it.",
-			"summary": "An app shell with a persistent stage behind the pages: mounted once, click-through content, hide and pause.",
-			"use": "Map, canvas, video or 3D products where the pages float over one live layer that must keep its state across routes.",
-			"spec": [
-				"`<AppShellLayout {modules} {pathname} onNavigate={(path) => (pathname = path)} {stage} {stageVisible} persistPanel={false} mainId={null} skipLink={false}>` with `stage` a snippet that draws the map",
-				"The map is a draggable grid whose camera lives in `$state`; an attachment counts each mount in `mounts` with `untrack` (a tracked `+=` would loop), shown in the page",
-				"One module `id: 'field'` with 3 items: Leads, Routes, Report",
-				"The page is `<PageShell title=\"Floating over the stage\" description={pathname}>` with a `ca-stage-panel` wrapper around a glass `Card` that holds the mount count hint and an outlined `Button` toggling `stageVisible`",
-				"Stage frame height is `height: 440px`"
-			],
-			"tags": [
-				"app-shell",
-				"stage",
-				"map",
-				"canvas",
-				"persistent",
-				"pointer-events",
-				"inset"
-			],
-			"shape": "wide",
-			"components": [
-				"AppShellLayout",
-				"Button",
-				"Card",
-				"PageShell"
-			],
-			"imports": [
-				{
-					"from": "@codeatlasdev/ui",
-					"names": [
-						"AppShellLayout",
-						"Button",
-						"Card",
-						"PageShell",
-						"NavModule"
-					]
-				}
-			],
-			"interactive": true,
-			"demo": "https://ui.codeatlas.com.br/docs/layout/app-shell#stage",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		}
 	]
