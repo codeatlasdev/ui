@@ -4,7 +4,7 @@ What it shows: An app shell with a persistent stage behind the pages: mounted on
 When to use: Map, canvas, video or 3D products where the pages float over one live layer that must keep its state across routes.
 Spec:
 - `<AppShellLayout {modules} {pathname} onNavigate={(path) => (pathname = path)} {stage} {stageVisible} persistPanel={false} mainId={null} skipLink={false}>` with `stage` a snippet that draws the map
-- The map is a draggable grid whose camera lives in `$state`; an attachment counts each mount in `mounts`, shown in the page
+- The map is a draggable grid whose camera lives in `$state`; an attachment counts each mount in `mounts` with `untrack` (a tracked `+=` would loop), shown in the page
 - One module `id: 'field'` with 3 items: Leads, Routes, Report
 - The page is `<PageShell title="Floating over the stage" description={pathname}>` with a `ca-stage-panel` wrapper around a glass `Card` that holds the mount count hint and an outlined `Button` toggling `stageVisible`
 - Stage frame height is `height: 440px`
@@ -14,6 +14,7 @@ Components: AppShellLayout, Button, Card, PageShell
 Live demo: https://ui.codeatlas.com.br/docs/layout/app-shell#stage
 
 <script lang="ts">
+  import { untrack } from 'svelte';
   import { AppShellLayout, Button, Card, PageShell, type NavModule } from '@codeatlasdev/ui';
   import { Compass, Layers, Map as MapIcon } from '@lucide/svelte';
 
@@ -56,7 +57,7 @@ Live demo: https://ui.codeatlas.com.br/docs/layout/app-shell#stage
     class:map--paused={s.hidden}
     role="presentation"
     style="--x:{x}px;--y:{y}px"
-    {@attach () => { mounts += 1; }}
+    {@attach () => untrack(() => { mounts += 1; })}
     onpointerdown={(e) => { drag = { px: e.clientX - x, py: e.clientY - y }; (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId); }}
     onpointermove={(e) => { if (drag) { x = e.clientX - drag.px; y = e.clientY - drag.py; } }}
     onpointerup={() => (drag = null)}

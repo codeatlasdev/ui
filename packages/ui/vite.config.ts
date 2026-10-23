@@ -39,6 +39,8 @@ export default defineConfig({
 				// SvelteKit-only modules used by kit/*.svelte (`$app/navigation`, `$app/state`); tests override it with vi.mock.
 				resolve: {
 					alias: {
+						// Site demos import the package by name: render them against the source, not a stale dist.
+						"^@codeatlasdev/ui$": fileURLToPath(new URL("./src/lib/index.ts", import.meta.url)),
 						"$app/navigation": fileURLToPath(
 							new URL("./tests/app-navigation.stub.ts", import.meta.url)
 						),

@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { untrack } from 'svelte';
   import { AppShellLayout, Button, Card, PageShell, type NavModule } from '@codeatlasdev/ui';
   import { Compass, Layers, Map as MapIcon } from '@lucide/svelte';
 
@@ -41,7 +42,7 @@
     class:map--paused={s.hidden}
     role="presentation"
     style="--x:{x}px;--y:{y}px"
-    {@attach () => { mounts += 1; }}
+    {@attach () => untrack(() => { mounts += 1; })}
     onpointerdown={(e) => { drag = { px: e.clientX - x, py: e.clientY - y }; (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId); }}
     onpointermove={(e) => { if (drag) { x = e.clientX - drag.px; y = e.clientY - drag.py; } }}
     onpointerup={() => (drag = null)}
