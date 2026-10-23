@@ -216,7 +216,7 @@ Kit 3 changed three things this setup touches. `init` handles the third (`$lib` 
 
 | File | What `init` creates |
 |---|---|
-| `vite.config.ts` | `sveltekit()`, `caThemePlugin(theme)` and `caErrorPlugin({ scaffold: true, theme })`. On Kit 3 with `@sveltejs/adapter-static` in `package.json` it also imports the adapter and passes `sveltekit({ adapter: adapter() })`. On Kit 2 the adapter belongs in `svelte.config.js`, which you own. |
+| `vite.config.ts` | `sveltekit()`, `caThemePlugin(theme)` and `caErrorPlugin({ scaffold: true, theme })`. On Kit 3 with `@sveltejs/adapter-static` in `package.json` it also imports the adapter and passes `sveltekit({ adapter: adapter() })`. On Kit 2 the adapter belongs in `svelte.config.js`: with `@sveltejs/adapter-static` in `package.json` init creates it (adapter plus `vitePreprocess`), or adds `adapter: adapter()` and the import to one that names no adapter. A config that already sets `adapter` is left alone. |
 | `src/app.html` | the document skeleton with the viewport meta and `%sveltekit.head%` / `%sveltekit.body%`, without the `style="display: contents"` wrapper that `sv create` adds (the UI guard forbids inline styles) |
 | `tsconfig.json` | Kit 3: `{ "extends": "$app/tsconfig" }`. Kit 2: `extends` `./.svelte-kit/tsconfig.json` plus `allowImportingTsExtensions`, `noEmit` and `skipLibCheck` (Kit 2's generated config sets none of them, and `vite.config.ts` imports the theme with its `.ts` extension) |
 
