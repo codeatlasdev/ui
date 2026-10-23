@@ -42,7 +42,7 @@ export async function loadDeckOverlay(layers: unknown[]): Promise<DeckOverlay> {
 		}) as unknown as DeckOverlay;
 	} catch (cause) {
 		throw new Error(
-			'[ca-ui] <MapStage layers> needs the optional peers "@deck.gl/core" and "@deck.gl/mapbox" (same ~9.4 minor): install them.',
+			'[ca-ui] <MapStage layers> needs the optional peers "@deck.gl/core" and "@deck.gl/mapbox" (same ~9.4 minor) with maplibre-gl 5: install them.',
 			{ cause }
 		);
 	}

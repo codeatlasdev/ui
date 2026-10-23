@@ -35,7 +35,7 @@ Never: wrap a page in your own `div` with a title row and a footer bar. Never pu
 
 | If you need | Use | Why / the rule |
 |---|---|---|
-| An interactive map behind the page | [`MapStage`](/docs/map/) | From `@codeatlasdev/ui/map`. Needs the peer `maplibre-gl` (default, no token) or `mapbox-gl` (`accessToken`), plus `deck.gl` for `layers`. Basemap per scheme in `styles`. |
+| An interactive map behind the page | [`MapStage`](/docs/map/) | From `@codeatlasdev/ui/map`. Needs the peer `maplibre-gl@5` (default, no token; deck.gl 9.4 does not support 6) or `mapbox-gl` (`accessToken`), plus `deck.gl` for `layers`. Basemap per scheme in `styles`. |
 | Zoom, compass and locate buttons | `MapControls` | Same entry. A child of `MapStage`. |
 | Your own layers in the theme colors | `useMapTheme` | Same entry. `theme.color(token)` returns an `Rgba` that follows the live preset. |
 | A panel that floats over the map | [`PageFrame`](/docs/layout/page-frame/) | It sets the map padding for you. Put `MapStage` in the `AppShellLayout` `stage` snippet so it survives navigation. |
