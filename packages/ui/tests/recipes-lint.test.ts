@@ -12,8 +12,18 @@ import { guardSource } from "../src/cli/ui-guard.ts";
  * A recipe leaves `PENDING` for `CLEAN` when it passes; a recipe in `PENDING` that already passes
  * fails the test, so the list only ever shrinks. A new recipe section must be in one of the two.
  */
-const CLEAN = ["App shell", "List page", "Form page", "Settings page", "Auth pages"];
-const PENDING: string[] = ["Dashboard", "Map page", "Landing page"];
+const CLEAN = [
+	"App shell",
+	"List page",
+	"Form page",
+	"Settings page",
+	"Auth pages",
+	"Dashboard",
+	"Map page",
+	"Landing page",
+	"Standalone page",
+];
+const PENDING: string[] = [];
 const RECIPES = join(import.meta.dir, "../../../site/src/content/docs/getting-started/recipes.mdx");
 
 interface Block {
