@@ -93,6 +93,24 @@ type Option = { label: string; value: string | number; disabled?: boolean };
 
 ---
 
+## ChipGroup (single choice among a few short options)
+
+Use it for 3 to 8 short options (team size, frequency): `RadioGroup` is too tall, `SegmentedControl` never wraps and overflows a 390px screen. Never build chips from `Chip` + `onclick` for this.
+
+```svelte
+<ChipGroup
+  label="Sales team size"
+  name="teamSize"
+  bind:value={size}
+  items={[{ value: '1', label: 'Just me' }, { value: '2-5', label: '2 to 5' }]}
+  error={errors.teamSize}
+/>
+```
+
+A real `radiogroup` (roving tab stop, arrows/Home/End/Space/Enter), check icon on the selected chip, `error` as `role="alert"`, `name`/`required` for native forms.
+
+---
+
 ## GlassCard
 
 ```svelte

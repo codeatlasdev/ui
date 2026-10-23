@@ -1,0 +1,46 @@
+<!-- @codeatlasdev/ui demo #483 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/chip-group#required-choice-with-error -->
+Element: #483 Required choice with error (inputs/chip-group)
+What it shows: ChipGroup inside a native form with a required choice and a field error shown after submitting without a selection.
+When to use: A form step with one required single choice, where the error must be announced and the value must reach FormData through `name`.
+Spec:
+- `<ChipGroup` with `label="Sales team size"`, `name="teamSize"`, `items={sizes}`, `bind:value={size}`, `{error}` and `required`
+- `sizes` has 3 items: `1`, `2-5`, `6-20`
+- `let size = $state('')` starts with nothing selected
+- `onsubmit` prevents default and sets the error to `'Choose a team size.'` when `size` is empty
+- `onchange` clears the error
+- `<Button type="submit" variant="filled">Continue</Button>` submits the form
+Tags: chip-group, form, error, required, name, validation
+Needs: @codeatlasdev/ui@4.5.0
+Components: Button, ChipGroup
+Live demo: https://ui.codeatlas.com.br/docs/inputs/chip-group#required-choice-with-error
+
+<script lang="ts">
+  import { Button, ChipGroup } from '@codeatlasdev/ui';
+
+  let size = $state('');
+  let error = $state<string | undefined>();
+
+  const sizes = [
+    { value: '1', label: 'Just me' },
+    { value: '2-5', label: '2 to 5' },
+    { value: '6-20', label: '6 to 20' },
+  ];
+
+  function submit(e: SubmitEvent) {
+    e.preventDefault();
+    error = size ? undefined : 'Choose a team size.';
+  }
+</script>
+
+<form onsubmit={submit} novalidate>
+  <ChipGroup
+    label="Sales team size"
+    name="teamSize"
+    items={sizes}
+    bind:value={size}
+    {error}
+    required
+    onchange={() => (error = undefined)}
+  />
+  <Button type="submit" variant="filled">Continue</Button>
+</form>

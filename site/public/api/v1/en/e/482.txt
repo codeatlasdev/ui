@@ -1,26 +1,28 @@
-<!-- @codeatlasdev/ui demo #482 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/surfaces/card#stacked-controls -->
-Element: #482 Stacked controls (surfaces/card)
-What it shows: A glass Card titled Trending topics that stacks three Checkbox controls in a column with gap="sm", the title aligned with the controls.
-When to use: Settings and filter cards whose content is several inline controls (Checkbox, Switch, TextField) that need vertical spacing.
+<!-- @codeatlasdev/ui demo #482 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/chip-group#wrapping-chips -->
+Element: #482 Wrapping chips (inputs/chip-group)
+What it shows: Single-choice chips for a sales team size: five short options that wrap to two rows on a phone.
+When to use: Choosing one of a few short options (team size, plan length, frequency) where RadioGroup is too tall and SegmentedControl would overflow a 390px screen.
 Spec:
-- `<Card material="glass" title="Trending topics" headingLevel={3} gap="sm" class="stacked">` with `max-width: 320px`
-- Three `<Checkbox label="Hacker News" />` children: Hacker News, Product Hunt, Lobsters
-- `gap="sm"` stacks the children in a column with 8px between them; the title shares the checkboxes' left edge
-Tags: card, gap, stack, checkbox, title, glass, settings
+- `<ChipGroup label="Sales team size" items={sizes} bind:value={size} />`
+- `sizes` has 5 items: `1` Just me, `2-5` 2 to 5, `6-20` 6 to 20, `21-50` 21 to 50, `50+` 50+
+- `bind:value={size}` with initial `$state('2-5')`; the selected chip shows a check icon
+Tags: chip-group, chips, radio, single-choice, wrap, team-size, mobile
 Needs: @codeatlasdev/ui@4.5.0
-Components: Card, Checkbox
-Live demo: https://ui.codeatlas.com.br/docs/surfaces/card#stacked-controls
+Components: ChipGroup
+Live demo: https://ui.codeatlas.com.br/docs/inputs/chip-group#wrapping-chips
 
 <script lang="ts">
-  import { Card, Checkbox } from '@codeatlasdev/ui';
+  import { ChipGroup } from '@codeatlasdev/ui';
+
+  let size = $state('2-5');
+
+  const sizes = [
+    { value: '1', label: 'Just me' },
+    { value: '2-5', label: '2 to 5' },
+    { value: '6-20', label: '6 to 20' },
+    { value: '21-50', label: '21 to 50' },
+    { value: '50+', label: '50+' },
+  ];
 </script>
 
-<Card material="glass" title="Trending topics" headingLevel={3} gap="sm" class="stacked">
-  <Checkbox label="Hacker News" />
-  <Checkbox label="Product Hunt" />
-  <Checkbox label="Lobsters" />
-</Card>
-
-<style>
-  :global(.stacked) { max-width: 320px; width: 100%; }
-</style>
+<ChipGroup label="Sales team size" items={sizes} bind:value={size} />

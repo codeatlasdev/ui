@@ -3,6 +3,7 @@
 	import IconButton from "./Button/IconButton.svelte";
 	import Checkbox from "./Checkbox/Checkbox.svelte";
 	import Chip from "./Chip/Chip.svelte";
+	import ChipGroup from "./ChipGroup/ChipGroup.svelte";
 	import Combobox from "./Combobox/Combobox.svelte";
 	import NumberField from "./NumberField/NumberField.svelte";
 	import PinInput from "./PinInput/PinInput.svelte";
@@ -27,6 +28,7 @@
 	<Checkbox label="Check" />
 	<Switch label="Switch" />
 	<RadioGroup aria-label="Radio" {items} value="a" />
+	<ChipGroup aria-label="Chips" {items} value="a" />
 	<SegmentedControl {items} value="a" aria-label="Seg" />
 	<Tabs value="a"><TabsList><TabsTrigger value="a">Tab</TabsTrigger></TabsList></Tabs>
 	<TextField label="Field" />

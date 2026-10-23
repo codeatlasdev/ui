@@ -482,6 +482,27 @@ Classes: `ca-checkbox` `ca-checkbox-wrapper` `ca-checkbox__indicator` `ca-checkb
 
 Classes: `ca-chip` `ca-chip--brand` `ca-chip--error` `ca-chip--info` `ca-chip--interactive` `ca-chip--selected` `ca-chip--sm` `ca-chip--success` `ca-chip--warning` `ca-chip__delete` `ca-chip__icon` `ca-chip__label`
 
+## ChipGroup
+
+`import { ChipGroup } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `value?` | `string` | `''` | `bind:` Selected value. `''` means nothing selected. |
+| `items` | `ChipGroupItem[]` |  |  |
+| `label?` | `string` |  | Visible title of the group; it is also the group's accessible name. |
+| `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`). |
+| `description?` | `string` |  |  |
+| `error?` | `string` |  | Field-level error: shown with `role="alert"`, sets `aria-invalid` and `aria-describedby` on the group. |
+| `name?` | `string` |  | Native `name` of the radios, so the value is part of `FormData` on a plain form submit. |
+| `required?` | `boolean` | `false` | Native `required`: a plain form blocks submit until a chip is picked. |
+| `disabled?` | `boolean` | `false` |  |
+| `class?` | `string` | `''` |  |
+| `aria-label?` | `string` |  | Accessible name when there is no visible `label`. |
+| `onchange?` | `(value: string) => void` |  |  |
+
+Classes: `ca-chip-group` `ca-chip-group__check` `ca-chip-group__chip` `ca-chip-group__hint` `ca-chip-group__hint--error` `ca-chip-group__input` `ca-chip-group__label` `ca-chip-group__list` `ca-chip-group__req` `ca-chip-group__text`
+
 ## CodeSnippet
 
 `import { CodeSnippet } from "@codeatlasdev/ui/code"`

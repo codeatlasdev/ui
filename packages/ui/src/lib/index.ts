@@ -67,6 +67,8 @@ export { default as IconButton } from "./components/Button/IconButton.svelte";
 export { default as Card } from "./components/Card/Card.svelte";
 export { default as Checkbox } from "./components/Checkbox/Checkbox.svelte";
 export { default as Chip } from "./components/Chip/Chip.svelte";
+export type { ChipGroupItem } from "./components/ChipGroup/ChipGroup.svelte";
+export { default as ChipGroup } from "./components/ChipGroup/ChipGroup.svelte";
 export { default as Collapsible } from "./components/Collapsible/Collapsible.svelte";
 export type { ComboboxOption } from "./components/Combobox/Combobox.svelte";
 export { default as Combobox } from "./components/Combobox/Combobox.svelte";

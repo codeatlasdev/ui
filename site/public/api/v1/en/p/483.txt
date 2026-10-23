@@ -1,0 +1,15 @@
+Use @codeatlasdev/ui demo #483 "Required choice with error" (inputs/chip-group).
+What it shows: ChipGroup inside a native form with a required choice and a field error shown after submitting without a selection. When to use: A form step with one required single choice, where the error must be announced and the value must reach FormData through `name`.
+Spec:
+- `<ChipGroup` with `label="Sales team size"`, `name="teamSize"`, `items={sizes}`, `bind:value={size}`, `{error}` and `required`
+- `sizes` has 3 items: `1`, `2-5`, `6-20`
+- `let size = $state('')` starts with nothing selected
+- `onsubmit` prevents default and sets the error to `'Choose a team size.'` when `size` is empty
+- `onchange` clears the error
+- `<Button type="submit" variant="filled">Continue</Button>` submits the form
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #483 Required choice with error → file, what changed, https://ui.codeatlas.com.br/docs/inputs/chip-group#required-choice-with-error; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/483.txt   Components API: ca-ui-mcp get_component(Button)

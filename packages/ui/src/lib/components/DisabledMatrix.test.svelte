@@ -2,6 +2,7 @@
 	import Button from "./Button/Button.svelte";
 	import IconButton from "./Button/IconButton.svelte";
 	import Checkbox from "./Checkbox/Checkbox.svelte";
+	import ChipGroup from "./ChipGroup/ChipGroup.svelte";
 	import Combobox from "./Combobox/Combobox.svelte";
 	import NumberField from "./NumberField/NumberField.svelte";
 	import Pagination from "./Pagination/Pagination.svelte";
@@ -50,6 +51,7 @@
 	<DateField disabled label="Date" />
 	<PinInput disabled label="Pin" length={4} />
 	<RadioGroup disabled aria-label="Radio" {items} value="a" />
+	<ChipGroup disabled aria-label="Chips" {items} value="a" />
 	<ToggleGroup items={items.map((i) => ({ ...i, disabled: true }))} value="a" aria-label="Toggle" />
 	<SegmentedControl disabled {items} value="a" aria-label="Segments" />
 	<Pagination count={100} page={1} />

@@ -80,6 +80,12 @@ Total: 829 unique classes across 83 components.
 
 `.ca-chip` `.ca-chip--brand` `.ca-chip--error` `.ca-chip--info` `.ca-chip--interactive` `.ca-chip--selected` `.ca-chip--sm` `.ca-chip--success` `.ca-chip--warning` `.ca-chip__delete` `.ca-chip__icon` `.ca-chip__label`
 
+## ChipGroup
+
+`.ca-chip-group` `.ca-chip-group__check` `.ca-chip-group__chip` `.ca-chip-group__hint` `.ca-chip-group__hint--error` `.ca-chip-group__input` `.ca-chip-group__label` `.ca-chip-group__list` `.ca-chip-group__req` `.ca-chip-group__text`
+
+State attributes on `.ca-chip-group__chip`: `data-state="checked|unchecked"`, `data-disabled`; on the root: `data-invalid`, `data-disabled`. The list is a 3-column grid below 600px and a wrapping flex row from 600px.
+
 ## CodeSnippet
 
 `.ca-code-snippet` `.ca-code-snippet__copy` `.ca-code-snippet__lang` `.ca-code-snippet__pre` `.ca-code-snippet__pre--raw` `.ca-code-snippet__toolbar`

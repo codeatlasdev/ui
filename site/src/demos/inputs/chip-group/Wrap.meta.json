@@ -1,0 +1,11 @@
+{
+	"summary": "Single-choice chips for a sales team size: five short options that wrap to two rows on a phone.",
+	"use": "Choosing one of a few short options (team size, plan length, frequency) where RadioGroup is too tall and SegmentedControl would overflow a 390px screen.",
+	"spec": [
+		"`<ChipGroup label=\"Sales team size\" items={sizes} bind:value={size} />`",
+		"`sizes` has 5 items: `1` Just me, `2-5` 2 to 5, `6-20` 6 to 20, `21-50` 21 to 50, `50+` 50+",
+		"`bind:value={size}` with initial `$state('2-5')`; the selected chip shows a check icon"
+	],
+	"tags": ["chip-group", "chips", "radio", "single-choice", "wrap", "team-size", "mobile"],
+	"shape": "wide"
+}

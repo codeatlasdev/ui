@@ -1,0 +1,50 @@
+---
+title: ChipGroup
+description: Single choice among a few short options as chips that wrap, with a roving tabindex, a check icon and a field error.
+group: Inputs
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Wrap from "~/demos/inputs/chip-group/Wrap.svelte";
+import WrapSrc from "~/demos/inputs/chip-group/Wrap.svelte?raw";
+import FormError from "~/demos/inputs/chip-group/FormError.svelte";
+import FormErrorSrc from "~/demos/inputs/chip-group/FormError.svelte?raw";
+
+```svelte
+<script>
+  import { ChipGroup } from "@codeatlasdev/ui";
+  let size = $state("");
+</script>
+
+<ChipGroup
+  label="Sales team size"
+  name="teamSize"
+  bind:value={size}
+  items={[{ value: "1", label: "Just me" }, { value: "2-5", label: "2 to 5" }]}
+  error={errors.teamSize}
+/>
+```
+
+Use it for one choice among 3 to 8 short options. [RadioGroup](/docs/inputs/radio/) is a vertical list or cards (too tall for short options) and [SegmentedControl](/docs/inputs/segmented-control/) never wraps, so it overflows a 390px screen.
+
+The group is a real `radiogroup` of native radios. Tab enters on the selected chip (or the first one) and leaves on the next Tab; the arrows, Home and End move focus and selection; Space and Enter select. Disabled chips are skipped. Below `sm` (600px) the chips sit in three equal columns, so five short options are two rows and never exceed the container; from `sm` they take their own width and wrap freely. The selected chip has a brand outline and fill plus a check icon, so colour is never the only signal, and every chip is at least 44px tall.
+
+`error` renders `role="alert"` under the group and sets `aria-invalid` and `aria-describedby` on it; `description` is announced through `aria-describedby` too. `name` makes the value part of `FormData` on a plain form submit, and `required` blocks a native submit until a chip is picked. A visible `label` names the group; with `hideLabel` or without `label`, pass `aria-label`.
+
+<Demo title="Wrapping chips" description="Five short options: two rows at 390px, one row of chips on desktop." src={WrapSrc}><Wrap client:visible /></Demo>
+<Demo title="Required choice with error" description="Inside a native form: submit without a selection to see the alert." src={FormErrorSrc}><FormError client:visible /></Demo>
+
+<Props for="ChipGroup" rows={[
+  { name: "items", type: "ChipGroupItem[]", description: "Options: { value, label, disabled? }." },
+  { name: "value", type: "string", default: "''", description: "Bindable selected value. '' means nothing selected." },
+  { name: "label", type: "string", description: "Visible title and accessible name of the group." },
+  { name: "hideLabel", type: "boolean", default: "false", description: "Keeps label for assistive tech only." },
+  { name: "description", type: "string", description: "Helper text under the group (aria-describedby)." },
+  { name: "error", type: "string", description: "Field-level error: role=\"alert\", aria-invalid and aria-describedby on the group, red outline on the unselected chips." },
+  { name: "name", type: "string", description: "Native name of the radios, so the value is in FormData on a plain form submit. Unset: an internal id groups them." },
+  { name: "required", type: "boolean", default: "false", description: "Native required: a form cannot submit until a chip is picked. Adds an asterisk to the label." },
+  { name: "disabled", type: "boolean", default: "false", description: "Disables the whole group." },
+  { name: "aria-label", type: "string", description: "Accessible name when there is no visible label." },
+  { name: "class", type: "string", description: "Extra classes on the root." },
+  { name: "onchange", type: "(value: string) => void", description: "Called when the selection changes." },
+]} />
