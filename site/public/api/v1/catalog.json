@@ -16635,7 +16635,7 @@
 			"variant": "SplitMenu",
 			"slug": "split-button-and-vertical",
 			"title": "Split button and vertical",
-			"description": "A DropdownMenu trigger as the last member, and `orientation=\\",
+			"description": "A DropdownMenu trigger as the last member, and `orientation='vertical'`.",
 			"summary": "A split button (Publish plus a chevron DropdownMenu trigger) and a vertical ButtonGroup of two icon buttons.",
 			"use": "A primary action with its alternatives behind a menu, or a stacked pair of icon controls.",
 			"spec": [
