@@ -83,7 +83,7 @@ For each file below, `init` creates it when it is missing, or patches it when it
 |---|---|---|
 | `package.json` (Kit 3) | `"imports": { "#lib/*": "./src/lib/*" }`, so the files below can import `#lib/theme.ts` and `#lib/messages.ts` (`$lib` was removed in Kit 3) | adds only `#lib/*`; the rest of `imports` is kept |
 | `src/lib/theme.ts` | the shared `theme` object (`defaultPreset: "amber"`, `defaultScheme: "system"`) | left alone |
-| `src/lib/messages.ts` | the app copy the scaffold shows (`export const m = { appTitle, offline: { ... } }`): templates read `{m.appTitle}`, so `codeatlas-ui lint` stays clean | left alone |
+| `src/lib/messages.ts` | the app copy the scaffold shows (`export const m = { appTitle, offline: { ... } }`): templates read `{m.appTitle}`, so `codeatlas-ui lint` stays clean. See [app copy](/docs/getting-started/app-copy/) | left alone |
 | `vite.config.ts` | `caThemePlugin(theme)` and `caErrorPlugin({ scaffold: true, theme })`, appended to `plugins`, in one `@codeatlasdev/ui/vite` import (plus `import { theme } from "./src/lib/theme.ts"`) | adds only the plugin that is missing |
 | `src/hooks.server.ts` | `handle = sequence(caThemeHandle(theme))` and `handleError = createErrorHandler()` | adds only what is missing; reports `manual` if you already define a `handle` of your own; never touches your `handleError` |
 | `src/routes/+layout.svelte` | the stylesheet import, `colorScheme.init()` in `onMount` and a default `<Seo>` (title from `m.appTitle`, canonical from `page.url`) | adds only what is missing; an existing `<Seo>` is kept |
@@ -362,7 +362,7 @@ Reload with the toggle on dark and check that there is no white flash. Continue 
 
 ## Lint and e2e templates
 
-`init --with lint,e2e --write` adds the `lint:ui` and `check:ca` scripts and `ui-guard.config.json` (`lint`), and a Playwright config with 390, 768 and 1280 px projects plus an axe spec per route in light and dark (`e2e`). `codeatlas-ui lint src` reads `.svelte`, `.astro` and `.css`, which Biome and ESLint do not see inside templates, and reports hex colors, raw `px`, inline `style`, `:global(.ca-*)` and literal text, each with file and line; a `.ca-*` override that must stay goes in `allow` with a `ca-ui-workaround(#n)` marker. Existing files and scripts are never overwritten. Biome cannot see template usage, so it may flag Svelte imports as unused: keep it on `.ts` and let `svelte-check` own `.svelte`. What `init` itself writes passes this lint: its copy lives in `src/lib/messages.ts`.
+`init --with lint,e2e --write` adds the `lint:ui` and `check:ca` scripts and `ui-guard.config.json` (`lint`), and a Playwright config with 390, 768 and 1280 px projects plus an axe spec per route in light and dark (`e2e`). `codeatlas-ui lint src` reads `.svelte`, `.astro` and `.css`, which Biome and ESLint do not see inside templates, and reports hex colors, raw `px`, inline `style`, `:global(.ca-*)` and literal text ([app copy](/docs/getting-started/app-copy/)), each with file and line; a `.ca-*` override that must stay goes in `allow` with a `ca-ui-workaround(#n)` marker. Existing files and scripts are never overwritten. Biome cannot see template usage, so it may flag Svelte imports as unused: keep it on `.ts` and let `svelte-check` own `.svelte`. What `init` itself writes passes this lint: its copy lives in `src/lib/messages.ts`.
 
 ## Check an existing setup with `doctor`
 
