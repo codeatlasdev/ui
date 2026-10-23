@@ -143,7 +143,7 @@
   });
 
   function onkeydown(e: KeyboardEvent) {
-    if (e.target !== root || e.altKey || e.ctrlKey || e.metaKey) return;
+    if (e.target !== strip || e.altKey || e.ctrlKey || e.metaKey) return;
     const rtl = root ? getComputedStyle(root).direction === 'rtl' : false;
     if (e.key === (rtl ? 'ArrowLeft' : 'ArrowRight')) go(index + 1);
     else if (e.key === (rtl ? 'ArrowRight' : 'ArrowLeft')) go(index - 1);
@@ -176,15 +176,12 @@
   const atEnd = $derived(!loop && index >= last);
 </script>
 
-<!-- A focusable carousel region (WAI-ARIA APG): arrows, Home and End move the slides while it holds focus. -->
-<!-- svelte-ignore a11y_no_noninteractive_tabindex, a11y_no_noninteractive_element_interactions -->
 <div
   {...rest}
   bind:this={root}
   role="region"
   aria-roledescription="carousel"
   aria-label={label}
-  tabindex="0"
   class="ca-carousel {className}"
   style:--ca-carousel-per-view={perView}
   onfocusin={() => (inside = true)}
@@ -193,13 +190,19 @@
   }}
   onmouseenter={() => (inside = true)}
   onmouseleave={() => (inside = false)}
-  {onkeydown}
 >
+  <!-- The strip is the scroll container, so it is the one tab stop (axe scrollable-region-focusable):
+       arrows, Home and End move the slides while it holds focus, even when no slide has a control. -->
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex, a11y_no_noninteractive_element_interactions -->
   <div
     bind:this={strip}
+    role="group"
+    aria-label={label}
+    tabindex="0"
     class="ca-carousel__viewport"
     aria-live={live ? 'off' : 'polite'}
     {onscroll}
+    {onkeydown}
   >
     <div class="ca-carousel__track">{@render children?.()}</div>
   </div>
@@ -264,12 +267,10 @@
       gap: var(--ca-space-3);
       min-width: 0;
     }
-    .ca-carousel:focus-visible {
-      outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
-      outline-offset: var(--ca-border-width-focus);
-      border-radius: var(--ca-radius-md);
-    }
     .ca-carousel__viewport {
+      /* The slides never size the carousel: it takes the width its parent gives, also as a flex or
+         grid item (min-width: auto), and the strip scrolls the rest. */
+      contain: inline-size;
       overflow-x: auto;
       overflow-y: hidden;
       scroll-snap-type: x mandatory;
@@ -277,10 +278,7 @@
       scrollbar-width: none;
     }
     .ca-carousel__viewport::-webkit-scrollbar { display: none; }
-    .ca-carousel__track {
-      display: flex;
-      gap: 0;
-    }
+    .ca-carousel__track { display: flex; }
     .ca-carousel__controls {
       display: flex;
       align-items: center;
@@ -333,6 +331,8 @@
       transition: background var(--ca-duration-fast) var(--ca-ease-standard), scale var(--ca-duration-fast) var(--ca-ease-standard);
     }
     .ca-carousel__dot[aria-current='true']::after { background: var(--ca-brand-fill); scale: 1.25; }
+    /* The dot is drawn with ::after, so the shared overlay of base.css cannot be used: the button grows. */
+    @media (pointer: coarse) { .ca-carousel__dot { min-width: var(--ca-touch-target); min-height: var(--ca-touch-target); } }
     @media (prefers-reduced-motion: reduce) {
       .ca-carousel__viewport { scroll-behavior: auto; }
       .ca-carousel__nav, .ca-carousel__play, .ca-carousel__dot::after { transition: none; }

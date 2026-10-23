@@ -197,6 +197,8 @@
       flex-direction: column;
       gap: var(--ca-tf-gap, var(--ca-field-gap, var(--ca-space-1)));
       width: 100%;
+      /* As a grid or flex item it may shrink below the input's intrinsic width (size="20"). */
+      min-width: 0;
     }
 
     /* ── Label ─────────────────────────────────────────────────── */

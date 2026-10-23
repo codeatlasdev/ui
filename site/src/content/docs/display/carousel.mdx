@@ -33,7 +33,7 @@ The replacement for shadcn `Carousel` (Embla). The strip is native `scroll-snap`
 
 ## Accessibility
 
-It follows the WAI-ARIA carousel pattern. The carousel is a labelled `role="region"` with `aria-roledescription="carousel"`; each slide is a `role="group"` named "2 of 4". Slides outside the view are `inert`, so their links and buttons leave the tab order and the reading order. The dots are labelled buttons with `aria-current` on the current one (the slides are not tab panels, so they are not a tablist). With the carousel itself focused, Left and Right (mirrored in RTL), Home and End move the slides.
+It follows the WAI-ARIA carousel pattern. The carousel is a labelled `role="region"` with `aria-roledescription="carousel"`; each slide is a `role="group"` named "2 of 4". Slides outside the view are `inert`, so their links and buttons leave the tab order and the reading order. The dots are labelled buttons with `aria-current` on the current one (the slides are not tab panels, so they are not a tablist). The slide strip is the one tab stop (it scrolls, so it must be reachable without a pointer, even when no slide holds a control). With it focused, Left and Right (mirrored in RTL), Home and End move the slides.
 
 ## Autoplay
 

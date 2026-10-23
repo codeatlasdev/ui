@@ -1,8 +1,9 @@
 import { describe, expect, it, vi } from "vitest";
-import { page, userEvent } from "vitest/browser";
+import { cdp, page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
+import { VIEWPORTS } from "../../../../tests/viewports";
 import Harness from "./Menubar.test.svelte";
 
 const bar = () => page.getByRole("menubar", { name: "Application" });
@@ -173,5 +174,26 @@ describe("Menubar", () => {
 		const screen = await render(Harness);
 		await expect.element(bar()).toBeVisible();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});
+
+describe("Menubar touch (#464)", () => {
+	it("every top-level menu has a 44px hit area under a coarse pointer", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
+		try {
+			await render(Harness);
+			expect(matchMedia("(pointer: coarse)").matches).toBe(true);
+			for (const el of document.querySelectorAll(".ca-menubar__item")) {
+				const r = el.getBoundingClientRect();
+				const a = getComputedStyle(el, "::after");
+				const overlay = a.content !== "none" && a.position === "absolute";
+				const w = Math.max(r.width, overlay ? Number.parseFloat(a.width) || 0 : 0);
+				const h = Math.max(r.height, overlay ? Number.parseFloat(a.height) || 0 : 0);
+				expect(Math.min(w, h), `${el.textContent?.trim()} ${w}x${h}`).toBeGreaterThanOrEqual(44);
+			}
+		} finally {
+			await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: false });
+		}
 	});
 });

@@ -1,8 +1,9 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { userEvent } from "vitest/browser";
+import { cdp, page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { q } from "../../../../tests/dom";
+import { VIEWPORTS } from "../../../../tests/viewports";
 import Harness from "./CarouselHarness.test.svelte";
 
 const slides = (c: HTMLElement) => [...c.querySelectorAll<HTMLElement>(".ca-carousel__item")];
@@ -102,9 +103,9 @@ describe("Carousel controls", () => {
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
-	it("keyboard: arrows on the focused region move slides, focus stays put", async () => {
+	it("keyboard: arrows on the focused strip move slides, focus stays put", async () => {
 		const screen = await render(Harness, {});
-		const region = q(screen.container, ".ca-carousel");
+		const region = viewport(screen.container);
 		region.focus();
 		await userEvent.keyboard("{ArrowRight}");
 		await expect.poll(() => dots(screen.container)[1].getAttribute("aria-current")).toBe("true");
@@ -190,6 +191,51 @@ describe("Carousel reduced motion", () => {
 			expect(await checkA11y(screen.container)).toHaveNoViolations();
 		} finally {
 			window.matchMedia = real;
+		}
+	});
+});
+
+describe("Carousel scroller and touch (#464)", () => {
+	it("a strip that scrolls is keyboard reachable even when no slide has a focusable child", async () => {
+		const screen = await render(Harness, { plain: true });
+		const vp = viewport(screen.container);
+		expect(vp.scrollWidth).toBeGreaterThan(vp.clientWidth);
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("is not wider than a narrow flex slot it sits in (390px viewport)", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		const screen = await render(Harness, { flexed: true, plain: true });
+		const root = q(screen.container, ".ca-carousel");
+		const slot = q(screen.container, ".row");
+		expect(root.getBoundingClientRect().width).toBeLessThanOrEqual(
+			slot.getBoundingClientRect().width + 0.5
+		);
+	});
+
+	it("previous, next and dots have a 44px hit area under a coarse pointer", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
+		try {
+			const screen = await render(Harness, { autoplay: 5000 });
+			expect(matchMedia("(pointer: coarse)").matches).toBe(true);
+			// Same rule as the site's layout audit: the element or its expanded ::after overlay.
+			const hit = (e: Element) => {
+				const r = e.getBoundingClientRect();
+				const a = getComputedStyle(e, "::after");
+				const overlay = a.content !== "none" && a.position === "absolute";
+				return [
+					Math.max(r.width, overlay ? Number.parseFloat(a.width) || 0 : 0),
+					Math.max(r.height, overlay ? Number.parseFloat(a.height) || 0 : 0),
+				];
+			};
+			for (const sel of [".ca-carousel__nav", ".ca-carousel__play", ".ca-carousel__dot"]) {
+				const el = q(screen.container, sel);
+				const [w, h] = hit(el);
+				expect(Math.min(w, h), `${sel} ${w}x${h}`).toBeGreaterThanOrEqual(44);
+			}
+		} finally {
+			await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: false });
 		}
 	});
 });
