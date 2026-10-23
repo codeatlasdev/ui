@@ -1,4 +1,4 @@
-Use @codeatlasdev/ui demo #561 "Sizes" (feedback/progress).
+Use @codeatlasdev/ui demo #641 "Sizes" (feedback/progress).
 What it shows: Four Progress bars at 60% showing size sm (4px), size md (6px) and the default lg (8px), plus an indeterminate sm bar. When to use: Picking the bar thickness: thin bars for dense cards and headers, the default 8px elsewhere.
 Spec:
 - `<Progress value={60} size="sm" label="Small bar" />`
@@ -10,5 +10,5 @@ Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? K
 Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
-Report: #561 Sizes → file, what changed, https://ui.codeatlas.com.br/docs/feedback/progress#sizes; what you could not check (light/dark, 375px, keyboard, reduced motion).
-Reference: https://ui.codeatlas.com.br/api/v1/en/e/561.txt   Components API: ca-ui-mcp get_component(Progress)
+Report: #641 Sizes → file, what changed, https://ui.codeatlas.com.br/docs/feedback/progress#sizes; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/641.txt   Components API: ca-ui-mcp get_component(Progress)

@@ -329,6 +329,7 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "601", path: "layout/app-shell/ShortPanel" },
 	{ id: "610", path: "layout/page-frame/Map" },
 	{ id: "640", path: "inputs/button/NeutralTone" },
+	{ id: "641", path: "feedback/progress/Sizes" },
 	{ id: "642", path: "layout/kpi-card/Stats" },
 	{ id: "800", path: "map/stage/ThemedMap" },
 ];
