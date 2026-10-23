@@ -1,0 +1,38 @@
+---
+title: ButtonGroup
+description: Attach related buttons into one control, horizontal or vertical, with a shared outer radius and a single-line seam.
+group: Inputs
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Basic from "~/demos/inputs/button-group/Basic.svelte";
+import BasicSrc from "~/demos/inputs/button-group/Basic.svelte?raw";
+import SplitMenu from "~/demos/inputs/button-group/SplitMenu.svelte";
+import SplitMenuSrc from "~/demos/inputs/button-group/SplitMenu.svelte?raw";
+
+```svelte
+<script>
+  import { Button, ButtonGroup } from "@codeatlasdev/ui";
+</script>
+
+<ButtonGroup aria-label="View range">
+  <Button variant="outlined" tone="neutral">Day</Button>
+  <Button variant="outlined" tone="neutral">Week</Button>
+</ButtonGroup>
+```
+
+`ButtonGroup` is `role="group"`: give it an `aria-label` (or `aria-labelledby`) so a screen reader announces what the buttons share; a dev warning fires without one. It only changes how the buttons sit: each keeps its own variant, size, `onclick`, loading and disabled state, and its own Tab stop (Tab moves through the group, there is no roving focus). The inner corners are square, the outer ones keep `--ca-radius-control`, and neighbours overlap by one border so the seam is a single line. The hovered, open or keyboard-focused button is raised so its ring is never half hidden.
+
+Members are `Button`, `IconButton` and a [`DropdownMenu`](/docs/navigation/menu/) whose `triggerChild` is one of them (the menu itself is portaled, only the trigger sits in the group): that is the split button. `orientation="vertical"` stacks them.
+
+It is for actions. A single choice that stays selected is [`SegmentedControl`](/docs/inputs/segmented-control/); a set of toggles is [`ToggleGroup`](/docs/inputs/toggle-group/).
+
+<Demo title="Text, icon and filled groups" src={BasicSrc}><Basic client:visible /></Demo>
+<Demo title="Split button and vertical" description="A DropdownMenu trigger as the last member, and `orientation=\"vertical\"`." src={SplitMenuSrc}><SplitMenu client:visible /></Demo>
+
+<Props for="ButtonGroup" rows={[
+  { name: "orientation", type: "'horizontal' | 'vertical'", default: "'horizontal'", description: "Direction the buttons are attached in. Exposed as `data-orientation`." },
+  { name: "aria-label", type: "string", default: "undefined", description: "Names the group. Required unless `aria-labelledby` is set." },
+  { name: "children", type: "Snippet", description: "`Button`, `IconButton` or a `DropdownMenu` with a `triggerChild`." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+]} />

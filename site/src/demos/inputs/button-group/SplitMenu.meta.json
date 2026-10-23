@@ -1,0 +1,19 @@
+{
+	"summary": "A split button (Publish plus a chevron DropdownMenu trigger) and a vertical ButtonGroup of two icon buttons.",
+	"use": "A primary action with its alternatives behind a menu, or a stacked pair of icon controls.",
+	"spec": [
+		"`<ButtonGroup aria-label=\"Publish\">` with a `filled` Publish Button followed by a `DropdownMenu` whose `triggerChild` is a filled `IconButton` named \"More publish options\"",
+		"The menu has Schedule and Save as draft, aligned to the end",
+		"`<ButtonGroup aria-label=\"Pages\" orientation=\"vertical\">` with two outlined neutral IconButtons (Previous page, Next page)",
+		"Both groups sit in a wrapping row with `gap: var(--ca-space-6)`"
+	],
+	"tags": [
+		"button-group",
+		"split-button",
+		"dropdown-menu",
+		"vertical",
+		"orientation",
+		"icon-button"
+	],
+	"shape": "wide"
+}

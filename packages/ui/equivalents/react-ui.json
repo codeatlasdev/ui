@@ -76,9 +76,9 @@
 		},
 		{
 			"shadcn": "Button Group",
-			"to": [],
-			"gap": 432,
-			"workaround": "Adjacent `Button`s in a `Flex`; a single choice is `SegmentedControl`."
+			"to": ["ButtonGroup"],
+			"mui": "ButtonGroup",
+			"notes": "`orientation=\"vertical\"` stacks; a split button is a `DropdownMenu` with a `triggerChild` as the last member. A single choice is `SegmentedControl`."
 		},
 		{
 			"shadcn": "Calendar",

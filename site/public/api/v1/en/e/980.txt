@@ -1,0 +1,41 @@
+<!-- @codeatlasdev/ui demo #980 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/button-group#text-icon-and-filled-groups -->
+Element: #980 Text, icon and filled groups (inputs/button-group)
+What it shows: Three ButtonGroups: text buttons (Day, Week, Month), icon buttons (Bold, Italic, Underline) and a filled plus destructive pair.
+When to use: Related actions that read as one control: a range switcher, a formatting toolbar, an approve and reject pair.
+Spec:
+- `<ButtonGroup aria-label="View range">` with three `variant="outlined" tone="neutral"` Buttons
+- `<ButtonGroup aria-label="Text style">` with three outlined neutral `IconButton`s, each with an `aria-label`
+- `<ButtonGroup aria-label="Review">` with a `filled` Approve and a `destructive` Reject
+- The groups are stacked in a column with `gap: var(--ca-space-3)`
+Tags: button-group, attached, toolbar, icon-button, segmented, role-group
+Needs: @codeatlasdev/ui@4.5.0
+Components: Button, ButtonGroup, IconButton
+Live demo: https://ui.codeatlas.com.br/docs/inputs/button-group#text-icon-and-filled-groups
+
+<script lang="ts">
+  import { Button, ButtonGroup, IconButton } from '@codeatlasdev/ui';
+  import { Bold, Italic, Underline } from '@lucide/svelte';
+</script>
+
+<div class="col">
+  <ButtonGroup aria-label="View range">
+    <Button variant="outlined" tone="neutral">Day</Button>
+    <Button variant="outlined" tone="neutral">Week</Button>
+    <Button variant="outlined" tone="neutral">Month</Button>
+  </ButtonGroup>
+
+  <ButtonGroup aria-label="Text style">
+    <IconButton variant="outlined" tone="neutral" aria-label="Bold"><Bold size={16} /></IconButton>
+    <IconButton variant="outlined" tone="neutral" aria-label="Italic"><Italic size={16} /></IconButton>
+    <IconButton variant="outlined" tone="neutral" aria-label="Underline"><Underline size={16} /></IconButton>
+  </ButtonGroup>
+
+  <ButtonGroup aria-label="Review">
+    <Button variant="filled">Approve</Button>
+    <Button variant="destructive">Reject</Button>
+  </ButtonGroup>
+</div>
+
+<style>
+  .col { display: grid; gap: var(--ca-space-3); justify-items: start; }
+</style>
