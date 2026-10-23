@@ -6,7 +6,7 @@ Spec:
 - `{#snippet aside()}` renders a glass `Card` with a nav (aria-label On this page) of three links: General, Billing, Danger zone
 - Body is a `Card material="glass" full title="General"` with a `Stack gap="4"` of two `TextField`s: Name (Acme Inc.) and Slug (acme)
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
-Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
 Report: #600 Reading width with an aside → file, what changed, https://ui.codeatlas.com.br/docs/layout/page-shell#reading-width-with-an-aside; what you could not check (light/dark, 375px, keyboard, reduced motion).

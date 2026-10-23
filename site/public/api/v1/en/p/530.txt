@@ -6,7 +6,7 @@ Spec:
 - `filterModules` is driven by an `admin` `$state`; a glass `Card` holds a hint and an outlined `Button` that toggles it
 - Page is `<PageShell title="Labeled rail" description={pathname}>`; stage height is `height: 440px`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
-Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
 Report: #530 Labels, search slot, badges and More → file, what changed, https://ui.codeatlas.com.br/docs/layout/app-shell#labels-search-slot-badges-and-more; what you could not check (light/dark, 375px, keyboard, reduced motion).
