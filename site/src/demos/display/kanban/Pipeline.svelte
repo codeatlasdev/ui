@@ -34,7 +34,8 @@
   }
 </script>
 
-<Kanban class="kb-demo" {columns} getId={(l) => l.id} {onmove} {onloadmore} label="Leads pipeline">
+<div class="kb-demo">
+<Kanban {columns} getId={(l) => l.id} {onmove} {onloadmore} label="Leads pipeline">
   {#snippet card(lead)}
     <strong class="kb-demo__name">{lead.name}</strong>
     <span class="kb-demo__company">{lead.company}</span>
@@ -43,9 +44,10 @@
     {canMove ? `Drop a lead here to win it` : `Nothing in ${column.label}`}
   {/snippet}
 </Kanban>
+</div>
 
 <style>
-  :global(.kb-demo) { height: 28rem; }
+  .kb-demo { display: flex; height: 28rem; }
   .kb-demo__name { display: block; font-size: var(--ca-font-size-body2); color: var(--ca-text-primary); }
   .kb-demo__company { font-size: var(--ca-font-size-caption); color: var(--ca-text-secondary); }
 </style>

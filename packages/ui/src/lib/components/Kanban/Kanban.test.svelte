@@ -11,6 +11,8 @@
 		more = false,
 		loading = false,
 		loadingMore = false,
+		withSummary = false,
+		withHeader = false,
 	}: {
 		moves?: KanbanMove<Card>[];
 		loads?: string[];
@@ -20,6 +22,8 @@
 		more?: boolean;
 		loading?: boolean;
 		loadingMore?: boolean;
+		withSummary?: boolean;
+		withHeader?: boolean;
 	} = $props();
 
 	let columns = $state<KanbanColumn<Card>[]>([
@@ -43,8 +47,15 @@
 	}
 </script>
 
+{#snippet customHead(column: KanbanColumn<Card>)}
+	<span>custom {column.label}</span>
+{/snippet}
+{#snippet sumSnippet(column: KanbanColumn<Card>)}
+	<span data-testid="sum-{column.id}">R$ {column.items.length * 100}</span>
+{/snippet}
+
 <div class="frame">
-	<Kanban columns={cols} getId={(c) => c.id} {onmove} onloadmore={(id) => loads.push(id)} {canMove} {compact} {drop} label="Leads">
+	<Kanban columns={cols} getId={(c) => c.id} {onmove} onloadmore={(id) => loads.push(id)} {canMove} {compact} {drop} label="Leads" summary={withSummary ? sumSnippet : undefined} header={withHeader ? customHead : undefined}>
 		{#snippet card(item, { dragging })}
 			<span data-dragging={dragging ? "" : undefined}>{item.title}</span>
 		{/snippet}
