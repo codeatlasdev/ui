@@ -54,7 +54,7 @@ describe("tokens ↔ tokens.css parity", () => {
 
 	it("--ca-font-mono leads with the system monospace, not a font the kit does not load", () => {
 		expect(cssVar("font-mono")).toStartWith("ui-monospace");
-		expect(fontFamily.mono).toBe(cssVar("font-mono"));
+		expect(fontFamily.mono as string).toBe(cssVar("font-mono") ?? "");
 	});
 });
 
