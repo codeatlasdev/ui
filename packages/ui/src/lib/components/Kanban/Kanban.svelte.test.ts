@@ -5,6 +5,7 @@ import { checkA11y } from "../../../../tests/a11y";
 import { VIEWPORTS } from "../../../../tests/viewports";
 import type { KanbanMove } from "./Kanban.svelte";
 import Harness from "./Kanban.test.svelte";
+import InShell from "./KanbanInShell.test.svelte";
 import ParentHarness from "./KanbanParent.test.svelte";
 
 type Card = { id: string; title: string };
@@ -354,5 +355,51 @@ describe("Kanban inside flex and grid parents (390px)", () => {
 		expect(doc.scrollWidth).toBeLessThanOrEqual(doc.clientWidth);
 		const board = document.querySelector(".ca-kanban__board") as HTMLElement;
 		expect(board.scrollWidth).toBeGreaterThan(board.clientWidth);
+	});
+});
+
+describe("Kanban column heading level", () => {
+	const levels = (root: Element) =>
+		[...root.querySelectorAll(".ca-kanban__title")].map((e) => e.tagName);
+
+	it("defaults to h2 under a PageShell h1, no heading-order violation", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		const screen = await render(InShell, {});
+		expect(levels(screen.container)).toEqual(["H2", "H2"]);
+		expect(await checkA11y(screen.container, { runOnly: ["heading-order"] })).toHaveNoViolations();
+	});
+
+	it("headingLevel={3} renders h3", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		const screen = await render(InShell, { headingLevel: 3 });
+		expect(levels(screen.container)).toEqual(["H3", "H3"]);
+	});
+
+	it("the level never changes the look", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		const sizes = new Set<string>();
+		for (const headingLevel of [2, 3] as const) {
+			const screen = await render(InShell, { headingLevel });
+			const cs = getComputedStyle(document.querySelector(".ca-kanban__title") as HTMLElement);
+			sizes.add(`${cs.fontSize}|${cs.fontWeight}|${cs.marginTop}|${cs.marginBottom}`);
+			screen.unmount();
+		}
+		expect(sizes.size).toBe(1);
+	});
+
+	it("a custom header snippet replaces the title row and stays valid", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		const screen = await render(InShell, { withHeader: true, headingLevel: 4 });
+		expect(levels(screen.container)).toEqual([]);
+		expect(document.querySelector("[data-testid='custom-new']")?.textContent).toBe("custom New");
+		expect(await checkA11y(screen.container, { runOnly: ["heading-order"] })).toHaveNoViolations();
+	});
+
+	it("the mobile tab layout has no column headings and passes heading-order", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		const screen = await render(InShell, { headingLevel: 3 });
+		expect(levels(screen.container)).toEqual([]);
+		expect(screen.getByRole("tab").elements()).toHaveLength(2);
+		expect(await checkA11y(screen.container, { runOnly: ["heading-order"] })).toHaveNoViolations();
 	});
 });

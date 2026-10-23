@@ -1767,6 +1767,7 @@ Parts: `ca-install` `ca-install__body` `ca-install__close` `ca-install__glyph` `
 | `drop?` | `'container' \| 'position'` | `'container'` | `container` (default): the column is the drop target, no insertion line, `to.index` is 0: right for columns the server orders (newest first). `position`: the card lands between cards. |
 | `compact?` | `boolean` |  | Force the mobile layout (one column at a time, tab strip). Default: automatic below the `sm` breakpoint (600px) of the board's own width. |
 | `label?` | `string` |  | Accessible name of the board. |
+| `headingLevel?` | `HeadingLevel` |  | Heading level of the column titles (2–6). Only the tag changes, never the look. Default 2 (inside a `PageShell` the page's section level), so a board under the page `<h1>` keeps the heading order; pass 3 when the board sits under an `<h2>`. The mobile tab layout renders no column headings. |
 | `nearEnd?` | `number` | `240` | Distance from the end of a column list (px) at which `onloadmore` fires. Default 240. |
 | `class?` | `string` | `''` |  |
 

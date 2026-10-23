@@ -38,11 +38,13 @@
   import { kanban } from '../../i18n/groups/kanban.js';
   import { rovingFocus } from '../../primitives/index.js';
   import { useDnd } from '../../primitives/dnd.svelte.js';
+  import type { HeadingLevel } from '../../types.js';
   import { announce } from '../../utils/announce.js';
   import DndLayer from '../DragAndDrop/DndLayer.svelte';
   import DropdownMenu from '../DropdownMenu/DropdownMenu.svelte';
   import DropdownMenuItem from '../DropdownMenu/DropdownMenuItem.svelte';
   import DropdownMenuLabel from '../DropdownMenu/DropdownMenuLabel.svelte';
+  import { sectionHeadingLevel } from '../PageShell/heading-context.js';
 
   interface Props {
     columns: KanbanColumn<T>[];
@@ -66,6 +68,13 @@
     compact?: boolean;
     /** Accessible name of the board. */
     label?: string;
+    /**
+     * Heading level of the column titles (2–6). Only the tag changes, never the look. Default 2
+     * (inside a `PageShell` the page's section level), so a board under the page `<h1>` keeps the
+     * heading order; pass 3 when the board sits under an `<h2>`. The mobile tab layout renders no
+     * column headings.
+     */
+    headingLevel?: HeadingLevel;
     /** Distance from the end of a column list (px) at which `onloadmore` fires. Default 240. */
     nearEnd?: number;
     class?: string;
@@ -92,6 +101,7 @@
     drop = 'container',
     compact,
     label,
+    headingLevel,
     nearEnd = 240,
     class: className = '',
     card,
@@ -103,6 +113,9 @@
   const t = useMessages(kanban);
   const dnd = useDnd();
   const uid = $props.id();
+  // Read once at init: context lookups are only valid during component initialisation.
+  const inheritedLevel = sectionHeadingLevel(2);
+  const level = $derived(headingLevel ?? inheritedLevel);
 
   let root = $state<HTMLElement>();
   let board = $state<HTMLElement>();
@@ -299,7 +312,7 @@
               {@render header(c)}
             {:else}
               <span class="ca-kanban__rail" aria-hidden="true"></span>
-              <h3 class="ca-kanban__title" id="{uid}-h-{c.id}">{c.label}</h3>
+              <svelte:element this={`h${level}`} class="ca-kanban__title" id="{uid}-h-{c.id}">{c.label}</svelte:element>
               <span class="ca-kanban__count">{total(c)}</span>
               {#if summary}
                 <span class="ca-kanban__summary">{@render summary(c)}</span>
