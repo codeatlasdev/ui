@@ -220,6 +220,7 @@ AuthLayout: two-column layout for authentication pages.
 | `logoName?` | `string` |  | Name beside the mark. Defaults to "CodeAtlas UI" unless `brand` is set. |
 | `logoHref?` | `string` | `'/'` |  |
 | `mobileBrand?` | `boolean` | `true` | While the side panel is hidden, `true` shows a compact strip with the brand above the form. A `header` snippet replaces the strip. |
+| `panelTone?` | `'auto' \| 'brand' \| 'flat'` | `'auto'` | Panel background. `brand` is the brand gradient with animated blobs; `flat` is a solid `--ca-auth-panel-bg` with no blobs (design systems that forbid gradients); `auto` (default) is `flat` under the `flat` and `outlined` surface styles and `brand` otherwise. |
 | `panelSide?` | `'left' \| 'right'` | `'left'` | Which side the panel sits on. |
 | `panelBleed?` | `boolean` | `false` | `true` fills the panel edge to edge with the `panel` snippet: no padding, no logo, no decorative blobs. The panel sticks to the viewport height. |
 | `panelHidden?` | `'md' \| 'lg'` | `'md'` | Viewport width from which the panel shows: `md` 900px, `lg` 1200px. Below it only the form shows. |
@@ -228,6 +229,8 @@ AuthLayout: two-column layout for authentication pages.
 Snippets: `brand`, `panel`, `header`, `children`
 
 Classes: `ca-auth` `ca-auth--right` `ca-auth__blob` `ca-auth__blob--a` `ca-auth__blob--b` `ca-auth__blob--c` `ca-auth__blobs` `ca-auth__col` `ca-auth__col--framed` `ca-auth__col--start` `ca-auth__header` `ca-auth__logo` `ca-auth__main` `ca-auth__mark` `ca-auth__mobile-brand` `ca-auth__mobile-mark` `ca-auth__mobile-name` `ca-auth__name` `ca-auth__panel` `ca-auth__panel--bleed` `ca-auth__panel-inner` `ca-auth__slot`
+
+Tokens: `--ca-auth-panel-bg`
 
 ## Avatar
 

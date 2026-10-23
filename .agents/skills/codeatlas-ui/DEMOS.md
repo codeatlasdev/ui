@@ -344,6 +344,7 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 780 | Scoped block | layout/theme-island | Button, ThemeIsland |
 | 781 | Full page | layout/theme-island | Button, ThemeIsland |
 | 800 | Themed map | map/stage | MapControls, MapStage |
+| 840 | Flat panel | layout/auth-layout | AuthLayout, AuthCard, Button, SegmentedControl, Stack |
 | 860 | Status tokens | layout/domain-tokens |  |
 | 880 | Component tokens | inputs/button | Button, IconButton, Kbd |
 | 881 | Dense CRM with component tokens | layout/empty-state | Avatar, Button, Card, EmptyState, SegmentedControl, TextArea, TextField |

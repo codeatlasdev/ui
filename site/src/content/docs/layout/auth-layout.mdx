@@ -4,7 +4,10 @@ description: A two-column page for sign in, sign up and password reset, with Aut
 group: Layout
 order: 100
 ---
+import Demo from "~/components/docs/Demo.astro";
 import Props from "~/components/docs/Props.astro";
+import FlatPanel from "~/demos/layout/auth-layout/FlatPanel.svelte";
+import FlatPanelSrc from "~/demos/layout/auth-layout/FlatPanel.svelte?raw";
 
 ```svelte
 <script>
@@ -50,6 +53,22 @@ Put the panel on the right, fill it edge to edge, add a bar above the form and l
 
 With `panelBleed` the panel has no padding, no logo and no blobs, sticks to the viewport height, and the divider between the columns is the low-contrast `--ca-outline-subtle` hairline.
 
+## Flat panel, no gradient or blobs
+
+The default panel is the brand gradient with three animated blobs. A theme with `defaultStyle: 'flat'` or `'outlined'` gets a flat panel on its own (`panelTone="auto"`, the default): a solid `--ca-surface-raised` fill, a hairline divider, `--ca-text-primary` panel text and no blobs. Force it with `panelTone="flat"`, or keep the gradient under a flat theme with `panelTone="brand"`. Never override `.ca-auth__panel` or hide `.ca-auth__blobs` from app CSS.
+
+```svelte
+<AuthLayout panelTone="flat">…</AuthLayout>
+```
+
+```css
+/* Any tone: a color or gradient of your own. Declare it on :root or a wrapper, without !important. */
+:root { --ca-auth-panel-bg: var(--ca-surface-sunken); }
+/* The text inside the panel follows --ca-auth-panel-fg (white on brand, --ca-text-primary on flat). */
+```
+
+<Demo title="Flat panel" description="Opens a sign-in page with a flat panel; toggle Brand to see the gradient and blobs." src={FlatPanelSrc}><FlatPanel client:visible /></Demo>
+
 <Props for="AuthLayout" title="AuthLayout props" rows={[
   { name: "logoMark", type: "string", default: "'CA'", description: "Text inside the logo square." },
   { name: "logoName", type: "string", default: "'CodeAtlas UI' (none when brand is set)", description: "Product name next to the mark. With a `brand` snippet it renders only when you pass it." },
@@ -58,6 +77,7 @@ With `panelBleed` the panel has no padding, no logo and no blobs, sticks to the 
   { name: "brand", type: "Snippet", description: "Replaces the whole logo, mark and name (an SVG wordmark). Pass `logoName` too if you want a name beside it." },
   { name: "panel", type: "Snippet", description: "Content of the side column." },
   { name: "panelSide", type: "'left' | 'right'", default: "'left'", description: "Which side the panel sits on." },
+  { name: "panelTone", type: "'auto' | 'brand' | 'flat'", default: "'auto'", description: "`brand` is the brand gradient with blobs; `flat` is a solid `--ca-auth-panel-bg` (default `--ca-surface-raised`) with no blobs; `auto` is `flat` under the `flat` and `outlined` surface styles, `brand` otherwise." },
   { name: "panelBleed", type: "boolean", default: "false", description: "Fills the panel edge to edge with the `panel` snippet: no padding, no logo, no blobs. Sticky to the viewport height." },
   { name: "panelHidden", type: "'md' | 'lg'", default: "'md'", description: "Width from which the panel shows: `md` 900px, `lg` 1200px. Below it only the form shows." },
   { name: "header", type: "Snippet", description: "Bar across the top of the form column (logo, language switcher, CTA). Sticky, honors the safe-area inset, and replaces the mobile brand strip." },

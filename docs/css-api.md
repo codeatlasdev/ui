@@ -46,6 +46,8 @@ Total: 829 unique classes across 83 components.
 
 `.ca-auth` `.ca-auth--right` `.ca-auth-card` `.ca-auth-card--plain` `.ca-auth-card__body` `.ca-auth-card__footer` `.ca-auth-card__header` `.ca-auth-card__subtitle` `.ca-auth-card__title` `.ca-auth-card__title--display` `.ca-auth-float` `.ca-auth__blob` `.ca-auth__blob--a` `.ca-auth__blob--b` `.ca-auth__blob--c` `.ca-auth__blobs` `.ca-auth__col` `.ca-auth__col--framed` `.ca-auth__col--start` `.ca-auth__header` `.ca-auth__logo` `.ca-auth__main` `.ca-auth__mark` `.ca-auth__mobile-brand` `.ca-auth__mobile-mark` `.ca-auth__mobile-name` `.ca-auth__name` `.ca-auth__panel` `.ca-auth__panel--bleed` `.ca-auth__panel-inner` `.ca-auth__slot`
 
+Tokens: `--ca-auth-panel-bg` (any tone: overrides the panel background, a color or gradient) and `--ca-auth-panel-fg` (panel text base color; the slot's `--panel-*` vars derive from it). `data-panel-tone="auto|brand|flat"` on `.ca-auth` selects the tone.
+
 ## Avatar
 
 `.ca-avatar` `.ca-avatar__fallback` `.ca-avatar__img` `.ca-avatar__status` `.ca-avatar__status--away` `.ca-avatar__status--busy` `.ca-avatar__status--offline` `.ca-avatar__status--online`

@@ -1,0 +1,12 @@
+{
+	"summary": "Full-page AuthLayout whose side panel is flat (solid surface, no gradient, no blobs) with a toggle back to the brand gradient.",
+	"use": "Sign-in pages in themes with a flat or outlined surface style, or design systems that forbid gradients.",
+	"spec": [
+		"`<AuthLayout logoName=\"Acme\" panelTone={tone}>` with `let tone = $state<'brand' | 'flat'>('flat')`",
+		"`panel` snippet holds `<p class=\"auth-quote__text\">Ship the boring parts in a day.</p>`",
+		"`<AuthCard title=\"Welcome back\" subtitle=\"Panel tone: {tone}\">` holds a `SegmentedControl` (Flat, Brand) bound to `tone` and a Close button",
+		"Opened by an outlined small Button inside an overlay with `position: fixed;` and `inset: 0;`"
+	],
+	"tags": ["auth-layout", "panel-tone", "flat", "gradient", "blobs", "sign-in"],
+	"shape": "wide"
+}
