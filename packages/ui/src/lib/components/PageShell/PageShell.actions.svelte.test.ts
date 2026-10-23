@@ -1,3 +1,4 @@
+import type { ComponentProps } from "svelte";
 import { afterEach, describe, expect, it } from "vitest";
 import { page } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
@@ -5,10 +6,11 @@ import { settled } from "../../../../tests/settled";
 import { VIEWPORTS } from "../../../../tests/viewports";
 import Host from "./PageShellActions.test.svelte";
 
+type Kind = ComponentProps<typeof Host>["kind"];
 const rect = (el: Element) => el.getBoundingClientRect();
 
-async function mount(kind: "theme-toggle" | "icon-button" | "labeled" | "mixed") {
-	await page.viewport(...VIEWPORTS.mobile);
+async function mount(kind: Kind, viewport: readonly [number, number] = VIEWPORTS.mobile) {
+	await page.viewport(...viewport);
 	const screen = await render(Host, { kind });
 	await settled();
 	const actions = screen.container.querySelector(".ca-page-shell__actions") as HTMLElement;
@@ -45,5 +47,25 @@ describe("PageShell actions at 390px", () => {
 		expect(rect(icon).width).toBeLessThan(64);
 		expect(Math.abs(rect(actions).right - rect(icon).right)).toBeLessThan(1);
 		expect(rect(label).width).toBeGreaterThan(rect(actions).width / 2);
+	});
+
+	// #339: only labeled buttons stretch; a status element keeps its intrinsic width.
+	for (const kind of ["status-chip", "chip", "badge"] as const) {
+		for (const viewport of [[800, 700], VIEWPORTS.mobile] as const) {
+			it(`a lone ${kind} keeps its intrinsic width at ${viewport[0]}px`, async () => {
+				const { actions, children } = await mount(kind, viewport);
+				const [el] = children;
+				expect(children).toHaveLength(1);
+				expect(rect(el).width).toBeLessThan(rect(actions).width / 3);
+				expect(Math.abs(rect(actions).right - rect(el).right)).toBeLessThan(1);
+			});
+		}
+	}
+
+	it("a chip next to a button stays intrinsic while the button stretches", async () => {
+		const { actions, children } = await mount("chip-and-button", [800, 700]);
+		const [chip, btn] = children;
+		expect(rect(chip).width).toBeLessThan(rect(actions).width / 3);
+		expect(rect(btn).width).toBeGreaterThan(rect(actions).width / 2);
 	});
 });
