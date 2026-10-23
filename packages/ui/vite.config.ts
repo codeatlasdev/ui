@@ -79,7 +79,6 @@ export default defineConfig({
 					// Baselines are rendered only on CI (ubuntu-24.04). An empty `include` would fall
 					// back to Vitest's defaults, so exclude everything elsewhere instead.
 					exclude: process.platform === "linux" ? defaultExclude : ["**/*"],
-					passWithNoTests: true,
 					setupFiles: ["./tests/setup.browser.ts", "./tests/setup.vrt.ts"],
 					browser: {
 						...browserBase("chromium"),

@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import { join } from "node:path";
-import { createServer } from "vite";
+import { createServer, type InlineConfig } from "vite";
 import config from "../vite.config.ts";
 
 const SRC_INDEX = join(import.meta.dir, "../src/lib/index.ts");
@@ -14,10 +14,16 @@ const SRC_INDEX = join(import.meta.dir, "../src/lib/index.ts");
  */
 describe("vitest browser project resolves the package by name (#407)", () => {
 	it("`@codeatlasdev/ui` resolves to the source entry, not to nothing", async () => {
-		const project = config.test?.projects?.find(
-			(p) => typeof p === "object" && p.test?.name === "browser"
+		type Project = { test?: { name?: string }; resolve?: InlineConfig["resolve"] };
+		// `projects` entries may be promises or paths: only inline objects can be inspected here.
+		const project = (config.test?.projects as unknown[] | undefined)?.find(
+			(p): p is Project =>
+				typeof p === "object" &&
+				p !== null &&
+				!(p instanceof Promise) &&
+				(p as Project).test?.name === "browser"
 		);
-		if (!project || typeof project !== "object") throw new Error("browser project not found");
+		if (!project) throw new Error("browser project not found");
 
 		const server = await createServer({
 			configFile: false,

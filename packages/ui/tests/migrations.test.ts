@@ -125,7 +125,7 @@ const APP = {
 	"src/lib/pick.ts": `import { Select } from "bits-ui";\n`,
 };
 
-function run(opts: Parameters<typeof migrate>[1] = {}, files = APP) {
+function run(opts: Parameters<typeof migrate>[1] = {}, files: Record<string, string> = APP) {
 	const dir = project(files);
 	const lines: string[] = [];
 	const ok = migrate(
