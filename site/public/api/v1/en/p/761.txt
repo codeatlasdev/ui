@@ -1,0 +1,16 @@
+Use @codeatlasdev/ui demo #761 "Money total per column" (display/kanban).
+What it shows: A deals pipeline board that shows the money total of each column next to its count, keeping the stage colour rail, title and count that a custom header would replace. When to use: Sales pipelines, invoicing stages and any board where each column needs an aggregate (sum, weight, hours) beside the card count.
+Spec:
+- `.kb-totals { display: flex; height: 22rem; }` is the board-height parent, a scoped class
+- `<Kanban`
+- `label="Deals pipeline"`
+- `{#snippet summary(column)}`
+- `money.format(`
+- `c.items.reduce(`
+Names: Kanban column total | Pipeline totals | Total por coluna | Total por columna
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #761 Money total per column → file, what changed, https://ui.codeatlas.com.br/docs/display/kanban#money-total-per-column; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/761.txt   Components API: ca-ui-mcp get_component(Kanban)

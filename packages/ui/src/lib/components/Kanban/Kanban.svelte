@@ -75,6 +75,12 @@
     empty?: Snippet<[KanbanColumn<T>, { canMove: boolean }]>;
     /** Replaces the column title row (colour rail, title, count). */
     header?: Snippet<[KanbanColumn<T>]>;
+    /**
+     * Extra content for each column, rendered after the count (a money total, a weight, a progress
+     * hint) while the colour rail, title and count stay. On the mobile tab layout it shows as a row
+     * above the active column's cards. Ignored when `header` replaces the title row.
+     */
+    summary?: Snippet<[KanbanColumn<T>]>;
   }
 
   let {
@@ -91,6 +97,7 @@
     card,
     empty,
     header,
+    summary,
   }: Props = $props();
 
   const t = useMessages(kanban);
@@ -294,8 +301,13 @@
               <span class="ca-kanban__rail" aria-hidden="true"></span>
               <h3 class="ca-kanban__title" id="{uid}-h-{c.id}">{c.label}</h3>
               <span class="ca-kanban__count">{total(c)}</span>
+              {#if summary}
+                <span class="ca-kanban__summary">{@render summary(c)}</span>
+              {/if}
             {/if}
           </header>
+        {:else if summary}
+          <div class="ca-kanban__summary ca-kanban__summary--row">{@render summary(c)}</div>
         {/if}
 
         <ul
@@ -471,6 +483,21 @@
     font-size: var(--ca-font-size-caption);
     font-variant-numeric: tabular-nums;
     color: var(--ca-text-secondary);
+  }
+
+  .ca-kanban__summary {
+    flex: none;
+    max-width: 60%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    font-size: var(--ca-font-size-caption);
+    font-variant-numeric: tabular-nums;
+    color: var(--ca-text-secondary);
+  }
+  .ca-kanban__summary--row {
+    max-width: none;
+    padding: var(--ca-space-2) var(--ca-space-3) 0;
   }
 
   /* ── Card list: scrolls on its own ── */

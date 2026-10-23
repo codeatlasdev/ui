@@ -8,6 +8,8 @@ import Demo from "~/components/docs/Demo.astro";
 import Props from "~/components/docs/Props.astro";
 import Pipeline from "~/demos/display/kanban/Pipeline.svelte";
 import PipelineSrc from "~/demos/display/kanban/Pipeline.svelte?raw";
+import Totals from "~/demos/display/kanban/Totals.svelte";
+import TotalsSrc from "~/demos/display/kanban/Totals.svelte?raw";
 
 ```svelte
 <script>
@@ -24,9 +26,25 @@ import PipelineSrc from "~/demos/display/kanban/Pipeline.svelte?raw";
 </Kanban>
 ```
 
-`Kanban` is the board around [`useDnd`](/docs/foundation/drag-and-drop/): you pass columns of cards and apply `onmove` to your data; the component owns the layout, the drag, the keyboard map and the touch alternative. Give it a parent with a height (a flex child or `height`), because every column list scrolls on its own.
+`Kanban` is the board around [`useDnd`](/docs/foundation/drag-and-drop/): you pass columns of cards and apply `onmove` to your data; the component owns the layout, the drag, the keyboard map and the touch alternative. Give it a parent with a height (a flex child or `height`), because every column list scrolls on its own. A plain wrapper with a scoped class is enough, no `:global` needed:
+
+A plain wrapper with a scoped class is enough, no `:global` needed:
+
+```svelte
+<div class="board"><Kanban {columns} getId={(card) => card.id} …>…</Kanban></div>
+
+<style>
+  .board { display: flex; height: 28rem; }
+</style>
+```
 
 <Demo title="Leads pipeline" description="Drag a card to another column, lift it with Space and move it with the arrows, or use the menu on the card. Scroll the New column to load more. Narrow the window below 600px for the tab strip." src={PipelineSrc}><Pipeline client:visible /></Demo>
+
+## Column summary
+
+Pass a `summary` snippet to show an aggregate (a money total, a weight, hours) after each column's count. The colour rail, title and count stay; `header` is for replacing the whole row and drops all three. The snippet receives the column, so compute from `column.items`; for a server-paged column (`total` larger than the loaded items) send the aggregate with the column data instead. On the mobile tab layout the summary shows as a row above the active column's cards.
+
+<Demo title="Money total per column" description="Each column shows the sum of its deals next to the count. Move a card and both totals follow." src={TotalsSrc}><Totals client:visible /></Demo>
 
 ## Drops
 
@@ -62,4 +80,5 @@ Below 600px of its own width (or with `compact`) the board shows one column at a
   { name: "card", type: "Snippet<[T, { dragging, active }]>", default: "required", description: "Card content; the wrapper, focus, drag state and menu are the board's." },
   { name: "empty", type: "Snippet<[KanbanColumn<T>, { canMove }]>", default: "undefined", description: "Content of an empty column." },
   { name: "header", type: "Snippet<[KanbanColumn<T>]>", default: "undefined", description: "Replaces the colour rail, title and count." },
+  { name: "summary", type: "Snippet<[KanbanColumn<T>]>", default: "undefined", description: "Aggregate shown after the count (a money total); rail, title and count stay. A row above the cards on mobile. Ignored when `header` is set." },
 ]} />

@@ -1,0 +1,15 @@
+{
+	"summary": "A deals pipeline board that shows the money total of each column next to its count, keeping the stage colour rail, title and count that a custom header would replace.",
+	"use": "Sales pipelines, invoicing stages and any board where each column needs an aggregate (sum, weight, hours) beside the card count.",
+	"spec": [
+		"`.kb-totals { display: flex; height: 22rem; }` is the board-height parent, a scoped class",
+		"`<Kanban`",
+		"`label=\"Deals pipeline\"`",
+		"`{#snippet summary(column)}`",
+		"`money.format(`",
+		"`c.items.reduce(`"
+	],
+	"tags": ["kanban", "board", "pipeline", "summary", "total", "money", "crm", "columns"],
+	"names": ["Kanban column total", "Pipeline totals", "Total por coluna", "Total por columna"],
+	"shape": "wide"
+}

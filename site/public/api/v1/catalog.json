@@ -1,6 +1,6 @@
 {
 	"version": "4.5.0",
-	"count": 373,
+	"count": 374,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -24,7 +24,7 @@
 			"slug": "display",
 			"first": "104",
 			"last": "966",
-			"count": 63
+			"count": 64
 		},
 		{
 			"slug": "navigation",
@@ -15145,7 +15145,8 @@
 			"summary": "A three-stage leads pipeline board: status-coloured columns that scroll on their own, cards that move between columns by drag, keyboard or a Move to menu, and a New column that loads more pages.",
 			"use": "CRM pipelines, ticket boards and any stage board whose columns are ordered by the server and keep loading as you scroll.",
 			"spec": [
-				"`<Kanban class=\"kb-demo\" {columns} getId={(l) => l.id} {onmove} {onloadmore} label=\"Leads pipeline\">` with `{#snippet card(lead)}` for the card content",
+				"`<Kanban {columns} getId={(l) => l.id} {onmove} {onloadmore} label=\"Leads pipeline\">` inside `<div class=\"kb-demo\">` with `{#snippet card(lead)}` for the card content",
+				"`.kb-demo { display: flex; height: 28rem; }` is the board-height parent",
 				"Each column is `{ id: 'new', label: 'New', color: 'var(--ca-info-main)', total: 24, hasMore: true, items`; the New column has 24 loaded-on-demand leads",
 				"`onmove` receives `{ card, from, to }`; the default whole-column drop makes the target index 0, so the handler prepends the card with `dst.items = [card, ...dst.items]`",
 				"`onloadmore` sets `col.loadingMore` to show skeleton cards, then appends the next page",
@@ -15183,6 +15184,57 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/display/kanban#leads-pipeline",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "761",
+			"group": "display",
+			"page": "kanban",
+			"variant": "Totals",
+			"slug": "money-total-per-column",
+			"title": "Money total per column",
+			"description": "Each column shows the sum of its deals next to the count. Move a card and both totals follow.",
+			"summary": "A deals pipeline board that shows the money total of each column next to its count, keeping the stage colour rail, title and count that a custom header would replace.",
+			"use": "Sales pipelines, invoicing stages and any board where each column needs an aggregate (sum, weight, hours) beside the card count.",
+			"spec": [
+				"`.kb-totals { display: flex; height: 22rem; }` is the board-height parent, a scoped class",
+				"`<Kanban`",
+				"`label=\"Deals pipeline\"`",
+				"`{#snippet summary(column)}`",
+				"`money.format(`",
+				"`c.items.reduce(`"
+			],
+			"tags": [
+				"kanban",
+				"board",
+				"pipeline",
+				"summary",
+				"total",
+				"money",
+				"crm",
+				"columns"
+			],
+			"names": [
+				"Kanban column total",
+				"Pipeline totals",
+				"Total por coluna",
+				"Total por columna"
+			],
+			"shape": "wide",
+			"components": [
+				"Kanban"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Kanban",
+						"KanbanColumn"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/kanban#money-total-per-column",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{

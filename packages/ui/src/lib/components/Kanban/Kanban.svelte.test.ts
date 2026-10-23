@@ -178,6 +178,45 @@ describe("Kanban board (desktop)", () => {
 		expect(loads[0]).toBe("new");
 	});
 
+	it("summary renders beside the count and keeps rail, title and count (light + dark)", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		const screen = await render(Harness, { withSummary: true });
+		const head = document.querySelector(
+			"[data-kanban-column='new'] .ca-kanban__head"
+		) as HTMLElement;
+		expect(head.querySelector(".ca-kanban__rail")).not.toBeNull();
+		expect(head.querySelector(".ca-kanban__title")?.textContent).toBe("New");
+		expect(head.querySelector(".ca-kanban__count")?.textContent).toBe("15");
+		const sum = head.querySelector(".ca-kanban__summary") as HTMLElement;
+		expect(sum.textContent).toContain("R$ 1500");
+		expect(sum.querySelector("[data-testid='sum-new']")).not.toBeNull();
+		// Same row, after the count.
+		const count = head.querySelector(".ca-kanban__count") as HTMLElement;
+		expect(count.compareDocumentPosition(sum) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+		expect(
+			Math.abs(sum.getBoundingClientRect().top - count.getBoundingClientRect().top)
+		).toBeLessThan(head.clientHeight);
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+		document.documentElement.classList.add("dark");
+		try {
+			expect(await checkA11y(screen.container)).toHaveNoViolations();
+		} finally {
+			document.documentElement.classList.remove("dark");
+		}
+	});
+
+	it("a custom header still replaces rail, title, count and summary", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(Harness, { withSummary: true, withHeader: true });
+		const head = document.querySelector(
+			"[data-kanban-column='new'] .ca-kanban__head"
+		) as HTMLElement;
+		expect(head.textContent).toContain("custom New");
+		expect(
+			head.querySelector(".ca-kanban__rail, .ca-kanban__count, .ca-kanban__summary")
+		).toBeNull();
+	});
+
 	it("shows skeleton cards while a page loads and has no axe violations", async () => {
 		await page.viewport(...VIEWPORTS.desktop);
 		const screen = await render(Harness, { more: true, loadingMore: true });
@@ -250,6 +289,17 @@ describe("Kanban mobile (390px)", () => {
 			.element(screen.getByRole("tab", { name: /Talking/ }))
 			.toHaveAttribute("aria-selected", "true");
 		expect(ids("talk")).toEqual(["c4"]);
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("summary shows in the active panel, tab keeps dot, label and count", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		const screen = await render(Harness, { withSummary: true });
+		const tab = document.querySelector("[data-kanban-column='new']") as HTMLElement;
+		expect(tab.querySelector(".ca-kanban__summary")?.textContent).toContain("R$ 1500");
+		const t = document.querySelector(".ca-kanban__tab") as HTMLElement;
+		expect(t.querySelector(".ca-kanban__dot")).not.toBeNull();
+		expect(t.querySelector(".ca-kanban__count")?.textContent).toBe("15");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 

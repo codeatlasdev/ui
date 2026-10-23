@@ -1770,9 +1770,9 @@ Parts: `ca-install` `ca-install__body` `ca-install__close` `ca-install__glyph` `
 | `nearEnd?` | `number` | `240` | Distance from the end of a column list (px) at which `onloadmore` fires. Default 240. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `card` (`Snippet<[T, KanbanCardState]>`), `empty` (`Snippet<[KanbanColumn<T>, { canMove: boolean }]>`), `header` (`Snippet<[KanbanColumn<T>]>`)
+Snippets: `card` (`Snippet<[T, KanbanCardState]>`), `empty` (`Snippet<[KanbanColumn<T>, { canMove: boolean }]>`), `header` (`Snippet<[KanbanColumn<T>]>`), `summary` (`Snippet<[KanbanColumn<T>]>`)
 
-Parts: `ca-kanban` `ca-kanban--mobile` `ca-kanban__board` `ca-kanban__body` `ca-kanban__card` `ca-kanban__col` `ca-kanban__count` `ca-kanban__dot` `ca-kanban__empty` `ca-kanban__head` `ca-kanban__list` `ca-kanban__more` `ca-kanban__move` `ca-kanban__rail` `ca-kanban__skeleton` `ca-kanban__tab` `ca-kanban__tabs` `ca-kanban__title`
+Parts: `ca-kanban` `ca-kanban--mobile` `ca-kanban__board` `ca-kanban__body` `ca-kanban__card` `ca-kanban__col` `ca-kanban__count` `ca-kanban__dot` `ca-kanban__empty` `ca-kanban__head` `ca-kanban__list` `ca-kanban__more` `ca-kanban__move` `ca-kanban__rail` `ca-kanban__skeleton` `ca-kanban__summary` `ca-kanban__summary--row` `ca-kanban__tab` `ca-kanban__tabs` `ca-kanban__title`
 
 Variables: `--ca-kanban-color`
 
