@@ -1,6 +1,6 @@
 <script lang="ts">
   import {
-    AppSettings, FormSection, Card, Grid, Flex, Button, KpiCard,
+    AppSettings, FormSection, Card, Grid, Flex, Button, KpiCard, KpiGrid,
     StatusChip, Chip, SimpleTable,
   } from '@codeatlasdev/ui';
   import { CreditCard, Download, TrendingUp, DollarSign, Users, Zap, Layers, FileText } from '@lucide/svelte';
@@ -69,12 +69,12 @@
 
   <!-- OVERVIEW -->
   {#if tab === 'overview'}
-    <Grid class="grid-auto-180" gap="4">
+    <KpiGrid>
       <KpiCard title="Gasto mensal"   value="$79"  trend={0}    icon={DollarSign} />
       <KpiCard title="Active users" value="12"    trend={20.0} icon={Users}      />
       <KpiCard title="Armazenamento"  value="82 GB"  trend={8.5}  icon={Zap}        />
       <KpiCard title="Chamadas API"   value="48,5k"  trend={14.2} icon={TrendingUp} />
-    </Grid>
+    </KpiGrid>
 
     <FormSection title="Current plan" description="Your active plan and next charge." layout="stack">
       <div class="plan-hero">
@@ -224,7 +224,6 @@
 </AppSettings>
 
 <style>
-  :global(.grid-auto-180) { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
   /* Current plan */
   .plan-hero        { display: flex; flex-direction: column; gap: var(--ca-space-1, 4px); }
   .plan-hero__name  { display: flex; align-items: center; gap: var(--ca-space-2, 8px); font-size: 18px; font-weight: 700; color: var(--ca-text-primary); }
