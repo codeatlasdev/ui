@@ -1,9 +1,9 @@
 // ─── Typography tokens (framework-agnostic) ───────────────────────────────────
 
-/** Font stacks: `sans` (Inter) and `mono` (JetBrains Mono). */
+/** Font stacks: `sans` (Inter) and `mono` (the system monospace: SF Mono, Menlo, Consolas). Mirrors `--ca-font-sans` / `--ca-font-mono`. */
 export const fontFamily = {
 	sans: "Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
-	mono: '"JetBrains Mono", "Fira Code", Consolas, monospace',
+	mono: 'ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace',
 } as const;
 
 /** Font weights: light 300, regular 400, medium 500, bold 600. */

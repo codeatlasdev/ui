@@ -134,6 +134,21 @@ import "@codeatlasdev/ui/styles/marks.css";
 
 Marks are SVG masks painted with `--ca-mark-color` (brand by default); swap the shapes with `--ca-mark-scribble` and `--ca-mark-arrow`. In forced-colors mode they paint in `CanvasText`.
 
+### Editorial tokens
+
+For marketing and editorial pages the kit ships the pieces a cover needs, so none of them is local CSS:
+
+| Token | Value | Use |
+|---|---|---|
+| `--ca-font-size-display-hero` | `clamp(3.75rem, min(15vw, 21dvh), 13.5rem)` | One-screen headline, 60px to 216px, capped by viewport height. Pair it with `--ca-display-tracking` and `--ca-display-leading` (`typography.displayTracking`, `typography.displayLeading`). |
+| `--ca-ease-out-expo` | `cubic-bezier(0.16, 1, 0.3, 1)` | Entrances that start fast and settle. |
+| `--ca-ease-out-quart` | `cubic-bezier(0.25, 1, 0.5, 1)` | Softer entrances, the strike draw. |
+| `--ca-ease-in-out-quart` | `cubic-bezier(0.76, 0, 0.24, 1)` | Symmetric moves. |
+| `--ca-grain-opacity`, `--ca-grain-size` | `0.08`, `160px` | Strength and tile of `<Surface grain>`. |
+| `--ca-highlight-color`, `--ca-strike-color` | brand tint, error | Colors of `Highlight` and `StrikeThrough`. |
+
+`<Highlight animated>` and `<StrikeThrough animated>` render their final state under `prefers-reduced-motion: reduce`. `--ca-font-mono` starts with the system monospace (`ui-monospace`, SF Mono, Menlo, Consolas) because the kit does not load JetBrains Mono; set `fonts.mono` to use another.
+
 ## Schemes
 
 `defaultScheme: "system"` follows the operating system, including live changes while the page is open. The init script also keeps `<meta name="theme-color">` in sync with the preset's surface color.

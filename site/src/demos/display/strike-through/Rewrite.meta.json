@@ -1,0 +1,19 @@
+{
+	"summary": "A rewrite line: one struck-out word with an animated pen line, followed by an animated highlighted replacement.",
+	"use": "Editorial strike-through-and-rewrite effects where the removed text stays announced as deleted and the animation respects reduced motion.",
+	"spec": [
+		"`<StrikeThrough animated>workarounds</StrikeThrough>` draws the line on mount",
+		"`<Highlight animated>one-shot components</Highlight>` follows as the replacement",
+		"The paragraph uses `--ca-font-size-h4`"
+	],
+	"tags": [
+		"strike-through",
+		"del",
+		"rewrite",
+		"animated",
+		"reduced-motion",
+		"editorial",
+		"highlight"
+	],
+	"shape": "wide"
+}

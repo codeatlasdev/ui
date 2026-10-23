@@ -1,0 +1,12 @@
+Use @codeatlasdev/ui demo #541 "Animated and static" (display/highlight).
+What it shows: A sentence with one animated marker-pen highlight and one static highlight. When to use: Emphasizing a key phrase in a headline or paragraph with a marker sweep that falls back to the final state under reduced motion.
+Spec:
+- `<Highlight animated>editorial pages</Highlight>` sweeps in on mount
+- `<Highlight>static marks</Highlight>` is drawn fully with no animation
+- The paragraph uses `--ca-font-size-h4`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #541 Animated and static → file, what changed, https://ui.codeatlas.com.br/docs/display/highlight#animated-and-static; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/541.txt   Components API: ca-ui-mcp get_component(Highlight)

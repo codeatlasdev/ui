@@ -1,0 +1,28 @@
+---
+title: StrikeThrough
+description: A hand-drawn strike on removed text, with an optional animated draw that renders fully drawn under reduced motion.
+group: Display
+order: 12
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Rewrite from "~/demos/display/strike-through/Rewrite.svelte";
+import RewriteSrc from "~/demos/display/strike-through/Rewrite.svelte?raw";
+
+```svelte
+<script>
+  import { StrikeThrough, Highlight } from "@codeatlasdev/ui";
+</script>
+
+<p>Stop writing <StrikeThrough animated>workarounds</StrikeThrough> <Highlight animated>one-shot components</Highlight>.</p>
+```
+
+`StrikeThrough` renders a native `<del>`, so assistive technology announces the text as deleted. The line is a slightly tilted pen stroke; with `animated` it draws left to right once on mount with `--ca-ease-out-quart`. Under `prefers-reduced-motion: reduce`, or `--ca-motion-scale: 0`, it is drawn complete with no animation. The color is `--ca-strike-color` (the error color by default). Under forced colors it falls back to the native `line-through`. Pair it with [Highlight](/docs/display/highlight/) for a rewrite effect.
+
+<Demo title="Strike and rewrite" src={RewriteSrc}><Rewrite /></Demo>
+
+<Props rows={[
+  { name: "animated", type: "boolean", default: "false", description: "Draw the line in on mount. Fully drawn under reduced motion." },
+  { name: "class", type: "string", default: "''", description: "Extra classes on the `<del>` element." },
+  { name: "children", type: "Snippet", description: "The removed text." },
+]} />

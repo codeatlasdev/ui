@@ -1,0 +1,12 @@
+Use @codeatlasdev/ui demo #543 "Paper grain" (surfaces/surface).
+What it shows: Three solid Surface tiles: static paper grain, animated paper grain and no grain. When to use: Giving a card or panel a printed-paper texture for editorial and marketing layouts.
+Spec:
+- `<Surface material="solid" elevation={2} grain p="4" class="tile">` is the static grain
+- `grain="animated"` shifts the noise and stays still under reduced motion
+- The third tile has no `grain` prop
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #543 Paper grain → file, what changed, https://ui.codeatlas.com.br/docs/surfaces/surface#paper-grain; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/543.txt   Components API: ca-ui-mcp get_component(Surface)

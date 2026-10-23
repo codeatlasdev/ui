@@ -11,7 +11,7 @@ export const duration = {
 	leavingScreen: 180,
 } as const;
 
-/** Cubic-bezier easing strings (`standard`, `decelerate`, `accelerate`, `spring`). Mirrors `--ca-ease-*`. */
+/** Cubic-bezier easing strings (`standard`, `decelerate`, `accelerate`, `spring`, `outExpo`, `outQuart`, `inOutQuart`). Mirrors `--ca-ease-*`. */
 export const easing = {
 	// Apple-aligned curves
 	standard: "cubic-bezier(0.4, 0, 0.2, 1)", // ease-in-out
@@ -19,4 +19,7 @@ export const easing = {
 	accelerate: "cubic-bezier(0.4, 0, 1, 1)", // ease-in  — exit
 	sharp: "cubic-bezier(0.4, 0, 0.6, 1)", // snappy
 	spring: "cubic-bezier(0.175, 0.885, 0.32, 1.275)",
+	outExpo: "cubic-bezier(0.16, 1, 0.3, 1)", // editorial entrances
+	outQuart: "cubic-bezier(0.25, 1, 0.5, 1)",
+	inOutQuart: "cubic-bezier(0.76, 0, 0.24, 1)",
 } as const;

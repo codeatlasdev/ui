@@ -1,0 +1,11 @@
+{
+	"summary": "Three solid Surface tiles: static paper grain, animated paper grain and no grain.",
+	"use": "Giving a card or panel a printed-paper texture for editorial and marketing layouts.",
+	"spec": [
+		"`<Surface material=\"solid\" elevation={2} grain p=\"4\" class=\"tile\">` is the static grain",
+		"`grain=\"animated\"` shifts the noise and stays still under reduced motion",
+		"The third tile has no `grain` prop"
+	],
+	"tags": ["surface", "grain", "paper", "noise", "texture", "editorial"],
+	"shape": "wide"
+}

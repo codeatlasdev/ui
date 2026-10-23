@@ -196,9 +196,7 @@ State attributes on `dialog.ca-drawer`: `data-chromeless` (body padding 0, no he
 
 `.ca-grid`
 
-## Heading
-
-`.ca-heading` `.ca-heading--display` `.ca-heading--display-2` `.ca-heading--display-3` `.ca-heading--h1` `.ca-heading--h2` `.ca-heading--h3` `.ca-heading--h4` `.ca-heading--h5` `.ca-heading--h6`
+`.ca-heading` `.ca-heading--display` `.ca-heading--display-2` `.ca-heading--display-3` `.ca-heading--h1` `.ca-heading--h2` `.ca-heading--h3` `.ca-heading--h4` `.ca-heading--h5` `.ca-heading--h6` `.ca-highlight` `.ca-highlight--animated`
 
 ## InstallPrompt
 
@@ -367,6 +365,10 @@ The `skeleton` prop of `Avatar`, `KpiCard`, `TextField`, `Table`, `Card` and `Gl
 
 `.ca-sticky-actions` `.ca-sticky-actions--end` `.ca-sticky-actions--stretch` `.ca-sticky-actions__inner`
 
+## StrikeThrough
+
+`.ca-strike` `.ca-strike--animated`
+
 ## Surface
 
 
@@ -444,6 +446,7 @@ These attributes are part of the public contract too (an app can restyle one axi
 | `data-variant` | `pill` `line` | `.ca-tabs`, `.ca-tabs-list`, `.ca-tabs-trigger` (the `variant` prop of `Tabs`) |
 | `data-radius` | `none` `sm` `md` `lg` `xl` `pill` | `.ca-surface` |
 | `data-interactive`, `data-glow` | present or absent | `.ca-surface` |
+| `data-grain` | present, or `animated` | `.ca-surface` |
 | `data-ca-blur` | `ultra-thin` `thin` `regular` `thick` `chrome` `mat-thin` `mat-regular` `overlay` `chrome-layer` `tooltip` | any blurred element that is not a `.ca-surface` (Tabs list, Chip, Toast, Rail, Panel, FloatingLayer...) |
 | `data-ca-blur-wide-off` | present or absent | an element with `data-ca-blur`: no blur from 900px up (StickyActions, the docs pager) |
 | `data-gap`, `data-p`, `data-px`, `data-py` | spacing steps `0` `0.5` ... `24` (`--ca-space-<step>`) | layout primitives |

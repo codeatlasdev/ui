@@ -4,6 +4,7 @@ import {
 	duration,
 	easing,
 	elevation,
+	fontFamily,
 	GLASS_OPTICS,
 	getPreset,
 	MATERIAL_BLUR_VARS,
@@ -33,8 +34,27 @@ describe("tokens ↔ tokens.css parity", () => {
 		}
 	);
 
-	it.each(["standard", "decelerate", "accelerate", "spring"] as const)("easing.%s", (k) => {
-		expect(cssVar(`ease-${k}`)).toBe(easing[k]);
+	it.each([
+		"standard",
+		"decelerate",
+		"accelerate",
+		"spring",
+		"outExpo",
+		"outQuart",
+		"inOutQuart",
+	] as const)("easing.%s", (k) => {
+		const name = k.replace(/[A-Z]/g, (c) => `-${c.toLowerCase()}`);
+		expect(easing[k]).toStartWith("cubic-bezier(");
+		expect(cssVar(`ease-${name}`)).toBe(easing[k]);
+	});
+
+	it("the editorial display tier reaches 216px and never leaves the viewport", () => {
+		expect(cssVar("font-size-display-hero")).toBe("clamp(3.75rem, min(15vw, 21dvh), 13.5rem)");
+	});
+
+	it("--ca-font-mono leads with the system monospace, not a font the kit does not load", () => {
+		expect(cssVar("font-mono")).toStartWith("ui-monospace");
+		expect(fontFamily.mono).toBe(cssVar("font-mono"));
 	});
 });
 

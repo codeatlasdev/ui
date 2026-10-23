@@ -1359,6 +1359,19 @@ Classes: `ca-heading` `ca-heading--display` `ca-heading--display-2` `ca-heading-
 | `height?` | `string` | `"240px"` |  |
 | `class?` | `string` | `""` |  |
 
+## Highlight
+
+`import { Highlight } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `animated?` | `boolean` | `false` | Sweep the marker in on mount. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Classes: `ca-highlight` `ca-highlight--animated`
+
 ## I18nProvider
 
 `import { I18nProvider } from "@codeatlasdev/ui"`
@@ -2524,6 +2537,19 @@ Snippets: `children`
 
 Classes: `ca-sticky-actions` `ca-sticky-actions--end` `ca-sticky-actions--stretch` `ca-sticky-actions__inner`
 
+## StrikeThrough
+
+`import { StrikeThrough } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `animated?` | `boolean` | `false` | Draw the line in on mount. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Classes: `ca-strike` `ca-strike--animated`
+
 ## Surface
 
 `import { Surface } from "@codeatlasdev/ui"`
@@ -2540,6 +2566,7 @@ Surface — the one painted container every card, panel and sheet is built on. I
 | `radius?` | `'none' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'pill'` |  | Corner radius; omit for the large radius. |
 | `interactive?` | `boolean` | `false` | Hover, press and focus-visible states and a pointer cursor. Give it a role and a name if it is not a link or button. |
 | `glow?` | `boolean` | `false` | Brand halo behind the surface. |
+| `grain?` | `boolean \| 'animated'` | `false` | Paper grain: a multiplied noise overlay. `'animated'` shifts it (still under reduced motion). Strength: `--ca-grain-opacity`. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
@@ -3154,7 +3181,7 @@ const duration: {
 
 `import { easing } from "@codeatlasdev/ui"`
 
-Cubic-bezier easing strings (`standard`, `decelerate`, `accelerate`, `spring`). Mirrors `--ca-ease-*`.
+Cubic-bezier easing strings (`standard`, `decelerate`, `accelerate`, `spring`, `outExpo`, `outQuart`, `inOutQuart`). Mirrors `--ca-ease-*`.
 
 ```ts
 const easing: {
@@ -3163,6 +3190,9 @@ const easing: {
   accelerate: "cubic-bezier(0.4, 0, 1, 1)";
   sharp: "cubic-bezier(0.4, 0, 0.6, 1)";
   spring: "cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+  outExpo: "cubic-bezier(0.16, 1, 0.3, 1)";
+  outQuart: "cubic-bezier(0.25, 1, 0.5, 1)";
+  inOutQuart: "cubic-bezier(0.76, 0, 0.24, 1)";
 }
 ```
 
@@ -3217,12 +3247,12 @@ function firstModulePath(mod: NavModule): string
 
 `import { fontFamily } from "@codeatlasdev/ui"`
 
-Font stacks: `sans` (Inter) and `mono` (JetBrains Mono).
+Font stacks: `sans` (Inter) and `mono` (the system monospace: SF Mono, Menlo, Consolas). Mirrors `--ca-font-sans` / `--ca-font-mono`.
 
 ```ts
 const fontFamily: {
   sans: "Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif";
-  mono: "\"JetBrains Mono\", \"Fira Code\", Consolas, monospace";
+  mono: "ui-monospace, \"SFMono-Regular\", Menlo, Consolas, \"Liberation Mono\", monospace";
 }
 ```
 
@@ -4853,7 +4883,7 @@ const duration: {
 
 `import { easing } from "@codeatlasdev/ui/tokens"`
 
-Cubic-bezier easing strings (`standard`, `decelerate`, `accelerate`, `spring`). Mirrors `--ca-ease-*`.
+Cubic-bezier easing strings (`standard`, `decelerate`, `accelerate`, `spring`, `outExpo`, `outQuart`, `inOutQuart`). Mirrors `--ca-ease-*`.
 
 ```ts
 const easing: {
@@ -4862,6 +4892,9 @@ const easing: {
   accelerate: "cubic-bezier(0.4, 0, 1, 1)";
   sharp: "cubic-bezier(0.4, 0, 0.6, 1)";
   spring: "cubic-bezier(0.175, 0.885, 0.32, 1.275)";
+  outExpo: "cubic-bezier(0.16, 1, 0.3, 1)";
+  outQuart: "cubic-bezier(0.25, 1, 0.5, 1)";
+  inOutQuart: "cubic-bezier(0.76, 0, 0.24, 1)";
 }
 ```
 
@@ -4886,12 +4919,12 @@ const elevation: {
 
 `import { fontFamily } from "@codeatlasdev/ui/tokens"`
 
-Font stacks: `sans` (Inter) and `mono` (JetBrains Mono).
+Font stacks: `sans` (Inter) and `mono` (the system monospace: SF Mono, Menlo, Consolas). Mirrors `--ca-font-sans` / `--ca-font-mono`.
 
 ```ts
 const fontFamily: {
   sans: "Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif";
-  mono: "\"JetBrains Mono\", \"Fira Code\", Consolas, monospace";
+  mono: "ui-monospace, \"SFMono-Regular\", Menlo, Consolas, \"Liberation Mono\", monospace";
 }
 ```
 

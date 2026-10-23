@@ -144,6 +144,7 @@ export { default as GlassSurface } from "./components/GlassSurface/GlassSurface.
 // ── LAYOUT PRIMITIVES ─────────────────────────────────────────────────────────
 export { default as Grid } from "./components/Grid/Grid.svelte";
 export { default as Heading } from "./components/Heading/Heading.svelte";
+export { default as Highlight } from "./components/Highlight/Highlight.svelte";
 export { default as Image } from "./components/Image/Image.svelte";
 export { default as InstallPrompt } from "./components/InstallPrompt/InstallPrompt.svelte";
 export type {
@@ -211,6 +212,7 @@ export { default as StatusChip } from "./components/StatusChip/StatusChip.svelte
 export type { StepItem } from "./components/Stepper/Stepper.svelte";
 export { default as Stepper } from "./components/Stepper/Stepper.svelte";
 export { default as StickyActions } from "./components/StickyActions/StickyActions.svelte";
+export { default as StrikeThrough } from "./components/StrikeThrough/StrikeThrough.svelte";
 export { default as Surface } from "./components/Surface/Surface.svelte";
 export { default as SurfacePanel } from "./components/SurfacePanel/SurfacePanel.svelte";
 export type { SwatchItem } from "./components/SwatchGroup/SwatchGroup.svelte";

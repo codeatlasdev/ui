@@ -1,0 +1,11 @@
+{
+	"summary": "A sentence with one animated marker-pen highlight and one static highlight.",
+	"use": "Emphasizing a key phrase in a headline or paragraph with a marker sweep that falls back to the final state under reduced motion.",
+	"spec": [
+		"`<Highlight animated>editorial pages</Highlight>` sweeps in on mount",
+		"`<Highlight>static marks</Highlight>` is drawn fully with no animation",
+		"The paragraph uses `--ca-font-size-h4`"
+	],
+	"tags": ["highlight", "mark", "marker", "animated", "reduced-motion", "editorial"],
+	"shape": "wide"
+}

@@ -1,5 +1,7 @@
+/// <reference types="@vitest/browser-playwright" />
 import { createRawSnippet } from "svelte";
 import { afterEach, describe, expect, it } from "vitest";
+import { cdp } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import Surface from "./Surface.svelte";
@@ -207,5 +209,33 @@ describe("accessibility in each state", () => {
 			expect(await checkA11y(screen.container)).toHaveNoViolations();
 			screen.unmount();
 		}
+	});
+});
+
+describe("Surface grain", () => {
+	it("is off by default and paints a multiply noise overlay with grain", async () => {
+		const off = await mount();
+		expect(getComputedStyle(off.el, "::after").content).toBe("none");
+		const on = await mount({ grain: true });
+		const after = getComputedStyle(on.el, "::after");
+		expect(on.el.hasAttribute("data-grain")).toBe(true);
+		expect(after.mixBlendMode).toBe("multiply");
+		expect(after.backgroundImage).toContain("feTurbulence");
+		expect(after.pointerEvents).toBe("none");
+		expect(await checkA11y(on.screen.container)).toHaveNoViolations();
+	});
+
+	it("grain animated shifts the overlay, and is static under reduced motion", async () => {
+		await cdp().send("Emulation.setEmulatedMedia", {
+			features: [{ name: "prefers-reduced-motion", value: "no-preference" }],
+		});
+		const moving = await mount({ grain: "animated" });
+		expect(getComputedStyle(moving.el, "::after").animationName).not.toBe("none");
+		await cdp().send("Emulation.setEmulatedMedia", {
+			features: [{ name: "prefers-reduced-motion", value: "reduce" }],
+		});
+		const still = await mount({ grain: "animated" });
+		expect(getComputedStyle(still.el, "::after").animationName).toBe("none");
+		await cdp().send("Emulation.setEmulatedMedia", { features: [] });
 	});
 });

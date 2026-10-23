@@ -318,26 +318,6 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 470 | Close on pick | navigation/popover | Popover, Button, Calendar |
 | 480 | Panel width | layout/app-shell | AppShellLayout, PageShell, Card |
 | 481 | Color, count, actions and reorder | layout/app-shell | AppShellLayout, DropdownMenuItem, NavItemMenu, NavReorder, PageShell, Card |
-| 482 | Stacked controls | surfaces/card | Card, Checkbox |
-| 490 | Dedupe and replace by id | feedback/toast | Button, Toaster |
-| 491 | Dense, pinned and grouped | display/table | SimpleTable, TableRow, TableGroupRow, TableSortHeader, Checkbox |
-| 492 | Description and action | feedback/toast | Button, Toaster |
-| 500 | Password | inputs/text-field | TextField |
-| 501 | Basic | navigation/locale-switcher | LocaleSwitcher |
-| 502 | In header | navigation/locale-switcher | Button, Card, LocaleSwitcher, SiteHeader |
-| 530 | Labels, search slot, badges and More | layout/app-shell | AppShellLayout, Button, PageShell, Card |
-| 531 | Stage | layout/app-shell | AppShellLayout, Button, Card, PageShell |
-| 540 | Display role | display/heading | Heading |
-| 600 | Reading width with an aside | layout/page-shell | PageShell, Card, TextField, Stack |
-| 601 | Short panel | layout/app-shell | AppShellLayout, PageShell, Card |
-| 610 | Map, split and page | layout/page-frame | PageFrame, Button, TextField, SegmentedControl |
-| 640 | Neutral tone | inputs/button | Button, IconButton |
-| 641 | Sizes | feedback/progress | Progress |
-| 642 | Stats in a card | layout/kpi-card | Card, Stat |
-| 700 | Chromeless, full bleed on phones | feedback/drawer | Drawer, Button |
-| 720 | Wrapping chips | inputs/chip-group | ChipGroup |
-| 721 | Required choice with error | inputs/chip-group | Button, ChipGroup |
-| 760 | Leads pipeline | display/kanban | Kanban |
-| 780 | Scoped block | layout/theme-island | Button, ThemeIsland |
-| 781 | Full page | layout/theme-island | Button, ThemeIsland |
-| 800 | Themed map | map/stage | MapControls, MapStage |
+| 541 | Animated and static | display/highlight | Highlight |
+| 542 | Strike and rewrite | display/strike-through | Highlight, StrikeThrough |
+| 543 | Paper grain | surfaces/surface | Surface |

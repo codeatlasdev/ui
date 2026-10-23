@@ -1,0 +1,28 @@
+<!-- @codeatlasdev/ui demo #541 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/highlight#animated-and-static -->
+Element: #541 Animated and static (display/highlight)
+What it shows: A sentence with one animated marker-pen highlight and one static highlight.
+When to use: Emphasizing a key phrase in a headline or paragraph with a marker sweep that falls back to the final state under reduced motion.
+Spec:
+- `<Highlight animated>editorial pages</Highlight>` sweeps in on mount
+- `<Highlight>static marks</Highlight>` is drawn fully with no animation
+- The paragraph uses `--ca-font-size-h4`
+Tags: highlight, mark, marker, animated, reduced-motion, editorial
+Needs: @codeatlasdev/ui@4.5.0
+Components: Highlight
+Live demo: https://ui.codeatlas.com.br/docs/display/highlight#animated-and-static
+
+<script lang="ts">
+	import { Highlight } from "@codeatlasdev/ui";
+</script>
+
+<p class="line">
+	Ship <Highlight animated>editorial pages</Highlight> without a line of local CSS, and keep <Highlight>static marks</Highlight> where motion would distract.
+</p>
+
+<style>
+	.line {
+		margin: 0;
+		font-size: var(--ca-font-size-h4);
+		line-height: var(--ca-line-height-snug);
+	}
+</style>

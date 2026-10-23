@@ -33,6 +33,8 @@
     interactive?: boolean;
     /** Brand halo behind the surface. */
     glow?: boolean;
+    /** Paper grain: a multiplied noise overlay. `'animated'` shifts it (still under reduced motion). Strength: `--ca-grain-opacity`. */
+    grain?: boolean | 'animated';
     class?: string;
     children?: Snippet;
   }
@@ -46,6 +48,7 @@
     radius,
     interactive = false,
     glow = false,
+    grain = false,
     p, px, py,
     class: className = '',
     children,
@@ -65,6 +68,7 @@
   data-radius={radius}
   data-interactive={interactive ? '' : undefined}
   data-glow={glow ? '' : undefined}
+  data-grain={grain === 'animated' ? 'animated' : grain ? '' : undefined}
   {...rest}
   {...layoutAttrs({ p, px, py })}
 >

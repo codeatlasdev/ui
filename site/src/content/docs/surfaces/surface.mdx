@@ -12,6 +12,8 @@ import Elevation from "~/demos/surfaces/surface/Elevation.svelte";
 import ElevationSrc from "~/demos/surfaces/surface/Elevation.svelte?raw";
 import ToneVariant from "~/demos/surfaces/surface/ToneVariant.svelte";
 import ToneVariantSrc from "~/demos/surfaces/surface/ToneVariant.svelte?raw";
+import Grain from "~/demos/surfaces/surface/Grain.svelte";
+import GrainSrc from "~/demos/surfaces/surface/Grain.svelte?raw";
 import Interactive from "~/demos/surfaces/surface/Interactive.svelte";
 import InteractiveSrc from "~/demos/surfaces/surface/Interactive.svelte?raw";
 
@@ -35,6 +37,8 @@ Rules the CSS follows, and you should too when you wrap a Surface: never `will-c
 <Demo title="Tone and variant" description={"Tone tints the fill, or colors the outline of `variant=\"outlined\"`."} src={ToneVariantSrc}><ToneVariant /></Demo>
 <Demo title="Interactive" description={"`interactive` adds hover, press and a focus-visible ring. Render a real `button` or `a` (`as`), so it is focusable and named."} src={InteractiveSrc}><Interactive client:visible /></Demo>
 
+<Demo title="Paper grain" description={"`grain` multiplies a noise texture over the surface; `grain=\"animated\"` shifts it and stays still under reduced motion."} src={GrainSrc}><Grain /></Demo>
+
 <Props rows={[
   { name: "as", type: "string", default: "'div'", description: "Element to render (`section`, `a`, `button`, `li`...)." },
   { name: "elevation", type: "0 | 1 | 2 | 3 | 4 | 5", default: "1", description: "Depth: drop shadow, and the blur/fill tier of the material." },
@@ -44,6 +48,7 @@ Rules the CSS follows, and you should too when you wrap a Surface: never `will-c
   { name: "radius", type: "'none' | 'sm' | 'md' | 'lg' | 'xl' | 'pill'", default: "undefined", description: "Corner radius from the radius scale. Omit for the large radius (`--ca-radius-lg`)." },
   { name: "interactive", type: "boolean", default: "false", description: "Hover, press and focus-visible states and a pointer cursor. Render a link or button, or give it a role and a name." },
   { name: "glow", type: "boolean", default: "false", description: "Brand halo behind the surface (a shadow, so it needs no isolation). It uses `--ca-glow-primary`, which is transparent under the `solid` and `flat` styles, so it only shows under styles that keep a glow, such as `glass`." },
+  { name: "grain", type: "boolean | 'animated'", default: "false", description: "Paper grain: a multiplied noise overlay clipped to the surface radius. `'animated'` shifts it, and it is still under reduced motion. Strength: `--ca-grain-opacity` (0.08), tile size: `--ca-grain-size` (160px)." },
   { name: "p, px, py", type: "Space | responsive", default: "undefined", description: "Padding as a spacing step (`\"4\"` = 16px). See [Layout primitives](/docs/layout/layout-primitives/)." },
   { name: "class", type: "string", default: "''", description: "Extra class names. Other attributes are forwarded to the element." },
   { name: "children", type: "Snippet", default: "undefined", description: "Content." },
@@ -51,7 +56,7 @@ Rules the CSS follows, and you should too when you wrap a Surface: never `will-c
 
 ## Data attributes
 
-The attributes are part of the public CSS contract, so an app can restyle one axis without touching the component: `[data-elevation="0"]`, `[data-material="glass"]`, `[data-tone="error"]`, `[data-variant="ghost"]`, `[data-radius="pill"]`, `[data-interactive]`, `[data-glow]`.
+The attributes are part of the public CSS contract, so an app can restyle one axis without touching the component: `[data-elevation="0"]`, `[data-material="glass"]`, `[data-tone="error"]`, `[data-variant="ghost"]`, `[data-radius="pill"]`, `[data-interactive]`, `[data-glow]`, `[data-grain]`.
 
 ## SurfacePanel
 

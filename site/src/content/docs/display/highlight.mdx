@@ -1,0 +1,28 @@
+---
+title: Highlight
+description: A marker-pen highlight for a phrase, with an optional animated sweep that renders its final state under reduced motion.
+group: Display
+order: 11
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Animated from "~/demos/display/highlight/Animated.svelte";
+import AnimatedSrc from "~/demos/display/highlight/Animated.svelte?raw";
+
+```svelte
+<script>
+  import { Highlight } from "@codeatlasdev/ui";
+</script>
+
+<h1>Ship <Highlight animated>faster</Highlight>.</h1>
+```
+
+`Highlight` renders a native `<mark>` painted as a marker stroke across the lower half of the line. With `animated` the marker sweeps in once on mount with `--ca-ease-out-expo`. Under `prefers-reduced-motion: reduce`, or `--ca-motion-scale: 0`, there is no animation and the marker is drawn complete. The color is `--ca-highlight-color` (a brand tint by default); under forced colors it uses the system `Mark` color. It wraps across lines without breaking.
+
+<Demo title="Animated and static" src={AnimatedSrc}><Animated /></Demo>
+
+<Props rows={[
+  { name: "animated", type: "boolean", default: "false", description: "Sweep the marker in on mount. Final state under reduced motion." },
+  { name: "class", type: "string", default: "''", description: "Extra classes on the `<mark>` element." },
+  { name: "children", type: "Snippet", description: "The highlighted text." },
+]} />
