@@ -111,29 +111,37 @@ A real `radiogroup` (roving tab stop, arrows/Home/End/Space/Enter), check icon o
 
 ---
 
-## GlassCard
+## Card / Surface
+
+`Card` is the container for titled content. `Surface` is the painted container underneath it (elevation, material, tone, variant, radius) for panels and custom blocks that are not a titled card. `GlassCard`, `GlassSurface` and `Row` are deprecated: use `Card`, `Surface` and `Flex` (`bunx @codeatlasdev/ui migrate --write`).
 
 ```svelte
-<GlassCard title="Revenue">
+<Card title="Revenue">
   <p>Content here</p>
-</GlassCard>
+</Card>
 
-<!-- No title -->
-<GlassCard>
-  <LineChart ... />
-</GlassCard>
+<!-- Several controls stacked with a gap, no Stack wrapper -->
+<Card title="Topics" gap="md">
+  <Checkbox label="Hacker News" />
+  <Switch label="Daily digest" />
+</Card>
 
 <!-- Flush padding (for tables/charts that bleed to edges) -->
-<GlassCard title="Users" flush>
+<Card title="Users" flush>
   <SimpleTable>…</SimpleTable>
-</GlassCard>
+</Card>
+
+<!-- Surface: no header, no default padding; p takes a spacing step -->
+<Surface elevation={2} tone="brand" p="4">…</Surface>
 ```
 
-Props: `title?: string`, `flush?: boolean` (removes card padding), `headingLevel?: 2-6` (renders `title` as a real heading; omit for a `<p>`).
+`Card` props: `title?: string`, `headingLevel?: 2-6` (renders `title` as a real heading; omit for a `<p>`), `padding?: 'none' | 'sm' | 'md' | 'lg' | <css length> | <number in px>`, `flush?: boolean` (no padding, wins over `padding`), `gap?: 'sm' | 'md' | 'lg' | <css length> | <number in px>` (stacks children in a column), `full?: boolean`, `skeleton?: boolean`, `href?: string` (renders a link card). Snippets: `children`, `headerActions`.
+
+`Surface` props: `elevation` (0-5), `material` (`auto | solid | frosted | glass | liquid`), `tone` (`neutral | brand | success | warning | error | info`), `variant` (`filled | outlined | ghost`), `radius`, `interactive`, `glow`, `grain`, `as`, plus the `p`, `px`, `py` spacing steps.
 
 Under a page `<h1>`, give card titles and `EmptyState` titles a valid level (`EmptyState` inside `PageShell` defaults to `<h2>`) so axe `heading-order` passes.
 
-**Never** apply `padding:` directly to a GlassCard. Use the `padding` prop.
+**Never** apply `padding:` directly to a Card. Use the `padding` prop or `flush`.
 
 ---
 
@@ -298,7 +306,7 @@ import { LineChart, BarChart, PieChart, ScatterChart, HeatmapChart, GaugeChart, 
 
 ## KpiGrid
 
-A row of KpiCards. It reads its child count in CSS and only uses column counts that divide it, so a row never ends on an empty cell. Use it instead of `Grid cols="repeat(auto-fill, minmax(…))"` for KPIs: that recipe turns 3 cards at 390px into 2 + 1.
+A row of KpiCards. It reads its child count in CSS and only uses column counts that divide it, so a row never ends on an empty cell. Use it instead of `Grid` with an auto-fill template for KPIs: that recipe turns 3 cards at 390px into 2 + 1.
 
 ```svelte
 <KpiGrid>
