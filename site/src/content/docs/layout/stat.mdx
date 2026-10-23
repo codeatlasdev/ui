@@ -16,11 +16,14 @@ import StatsSrc from "~/demos/layout/kpi-card/Stats.svelte?raw";
 
 <Stat label="Leads this week" value="128" hint="12 more than last week" />
 <Stat label="Reply rate" value="18" unit="%" trend={-2.4} size="sm" />
+<Stat label="Churn" value="5.2" unit="%" trend={-1.8} trendTone="positive-down" />
 ```
 
 Use `Stat` for a plain number inside a card, a panel or a flex/grid row. It has no background, border or padding and inherits its colour from the container, so it never nests a second box. Use [KpiCard](/docs/layout/kpi-card/) when the metric needs its own card: a `KpiCard` is a `Stat` inside a [Card](/docs/surfaces/card/), so both share one set of typography tokens.
 
 It renders a description list (`<dl>`): the label is the `<dt>`, the value the `<dd>`, so assistive tech reads the label as the name of the number. The label is one line and truncates with an ellipsis in a narrow container (390px); the value uses tabular numerals and never wraps. Text colours are `--ca-text-secondary` (label), `--ca-text-primary` (value) and `--ca-text-hint` (hint). Place several Stats side by side with a grid or flex wrapper; do not wrap each one in a Card.
+
+A trend is good news when it goes up by default: a rise is green, a fall red. For a metric where down is good (churn, cost, latency) set `trendTone="positive-down"`: the arrow still follows the sign, the colour flips, and the accessible label says "better" or "worse" (`Trend: -1.8%, better`; `Tendência: -1.8%, melhor` in pt-BR). `trendTone="neutral"` shows the change without judging it. A zero change is always neutral. Do not drop `trend` and write the delta in `hint` to avoid a wrong colour.
 
 <Demo title="Stats in a card" description={"Three card-less stats in one Card, with hint, unit and trend."} src={StatsSrc}><Stats /></Demo>
 
@@ -29,7 +32,8 @@ It renders a description list (`<dl>`): the label is the `<dt>`, the value the `
   { name: "value", type: "string | number", description: "The number. Tabular numerals, never wraps." },
   { name: "unit", type: "string", description: "Unit shown after the value (`%`, `ms`, `users`)." },
   { name: "hint", type: "string", description: "Secondary caption below the value." },
-  { name: "trend", type: "number", description: "Percentage change. Positive is green with an up arrow, negative red with a down arrow, zero neutral. Announced as \"Trend: +12.5%\"." },
+  { name: "trend", type: "number", description: "Percentage change. The arrow follows the sign (up, down, none for zero). Announced as \"Trend: +12.5%\"." },
+  { name: "trendTone", type: "'positive-up' | 'positive-down' | 'neutral'", description: "Which direction of `trend` is good news. Without it a rise is green and a fall red; `'positive-up'` says the same and `'positive-down'` flips it (churn, cost, latency); `'neutral'` judges neither. Setting it adds \"better\" or \"worse\" to the accessible label. Zero is always neutral." },
   { name: "size", type: "'sm' | 'md' | 'lg'", default: "'md'", description: "Value size: 17px, 24px or 36px." },
   { name: "align", type: "'start' | 'center'", default: "'start'", description: "Text alignment." },
   { name: "skeleton", type: "boolean", default: "false", description: "Loading placeholder with the exact size of the loaded stat, announced as busy. See Skeleton." },

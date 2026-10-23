@@ -1,6 +1,6 @@
 {
 	"version": "4.5.0",
-	"count": 372,
+	"count": 373,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -35,8 +35,8 @@
 		{
 			"slug": "layout",
 			"first": "165",
-			"last": "963",
-			"count": 43
+			"last": "984",
+			"count": 44
 		},
 		{
 			"slug": "charts",
@@ -7356,12 +7356,12 @@
 			"slug": "negative-trend",
 			"title": "Negative trend",
 			"description": "",
-			"summary": "Two KPI cards whose trends are negative, one with an icon and one without.",
-			"use": "Metrics where a falling number is good or bad news, such as churn rate and response time.",
+			"summary": "Two KPI cards whose trends fall and are good news (`trendTone=\"positive-down\"`), one with an icon and one without.",
+			"use": "Metrics where a falling number is good news, such as churn rate and response time.",
 			"spec": [
 				"`<KpiGrid>` with 2 `KpiCard` items",
-				"`<KpiCard title=\"Churn Rate\" value=\"5.2\" unit=\"%\" trend={-1.8} icon={Activity} />`",
-				"`<KpiCard title=\"Response Time\" value=\"1.4\" unit=\"s\" trend={-12.3} />` has no `icon`"
+				"`<KpiCard title=\"Churn Rate\" value=\"5.2\" unit=\"%\" trend={-1.8} trendTone=\"positive-down\" icon={Activity} />`",
+				"`<KpiCard title=\"Response Time\" value=\"1.4\" unit=\"s\" trend={-12.3} trendTone=\"positive-down\" />` has no `icon`"
 			],
 			"tags": [
 				"kpi-card",
@@ -16763,6 +16763,49 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/inputs/text-field#button-addons",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "984",
+			"group": "layout",
+			"page": "kpi-card",
+			"variant": "TrendTone",
+			"slug": "trend-tone",
+			"title": "Trend tone",
+			"description": "Down is good for churn and latency; a neutral tone shows the change without judging it.",
+			"summary": "Three KPI cards where the trend colour follows what is good news: churn falling is green, response time rising is red, sessions are neutral.",
+			"use": "Metrics where down is good (churn, cost, latency) or where a change is not a judgement, with an accurate better/worse screen reader label.",
+			"spec": [
+				"`<KpiGrid>` with 3 `KpiCard` items",
+				"`<KpiCard title=\"Churn Rate\" value=\"5.2\" unit=\"%\" trend={-1.8} trendTone=\"positive-down\" icon={UserMinus} />`: a fall is green, announced \"better\"",
+				"`<KpiCard title=\"Response Time\" value=\"1.4\" unit=\"s\" trend={12.3} trendTone=\"positive-down\" icon={Gauge} />`: a rise is red, announced \"worse\"",
+				"`<KpiCard title=\"Sessions\" value=\"3,847\" trend={-2.1} trendTone=\"neutral\" icon={Activity} />`: arrow only, no colour judgement"
+			],
+			"tags": [
+				"kpi-card",
+				"kpi-grid",
+				"trend-tone",
+				"positive-down",
+				"churn",
+				"latency",
+				"metrics"
+			],
+			"shape": "wide",
+			"components": [
+				"KpiCard",
+				"KpiGrid"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"KpiCard",
+						"KpiGrid"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/kpi-card#trend-tone",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		}
 	]

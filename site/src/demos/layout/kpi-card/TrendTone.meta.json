@@ -1,0 +1,12 @@
+{
+	"summary": "Three KPI cards where the trend colour follows what is good news: churn falling is green, response time rising is red, sessions are neutral.",
+	"use": "Metrics where down is good (churn, cost, latency) or where a change is not a judgement, with an accurate better/worse screen reader label.",
+	"spec": [
+		"`<KpiGrid>` with 3 `KpiCard` items",
+		"`<KpiCard title=\"Churn Rate\" value=\"5.2\" unit=\"%\" trend={-1.8} trendTone=\"positive-down\" icon={UserMinus} />`: a fall is green, announced \"better\"",
+		"`<KpiCard title=\"Response Time\" value=\"1.4\" unit=\"s\" trend={12.3} trendTone=\"positive-down\" icon={Gauge} />`: a rise is red, announced \"worse\"",
+		"`<KpiCard title=\"Sessions\" value=\"3,847\" trend={-2.1} trendTone=\"neutral\" icon={Activity} />`: arrow only, no colour judgement"
+	],
+	"tags": ["kpi-card", "kpi-grid", "trend-tone", "positive-down", "churn", "latency", "metrics"],
+	"shape": "wide"
+}

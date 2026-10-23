@@ -1,7 +1,8 @@
-import { describe, expect, it } from "vitest";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { q } from "../../../../tests/dom";
+import { setLocale } from "../../i18n/index.js";
 import Stat from "./Stat.svelte";
 import Narrow from "./StatNarrow.test.svelte";
 
@@ -67,6 +68,91 @@ describe("Stat", () => {
 		expect(el.classList.contains(cls)).toBe(true);
 		expect(el.getAttribute("aria-label")).toBe(`Trend: ${text.replace(/[↑↓]/, "")}`);
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	describe("trendTone", () => {
+		const probe = (token: string) => {
+			const el = document.createElement("span");
+			el.style.color = `var(${token})`;
+			document.body.append(el);
+			const c = getComputedStyle(el).color;
+			el.remove();
+			return c;
+		};
+		const colorOf = async (
+			trend: number,
+			trendTone?: "positive-up" | "positive-down" | "neutral"
+		) => {
+			const screen = await render(Stat, { label, value: "1", trend, trendTone });
+			const el = q(screen.container, ".ca-stat__trend");
+			return { screen, el, color: getComputedStyle(el).color };
+		};
+		const success = () => probe("--ca-semantic-success");
+		const error = () => probe("--ca-semantic-error");
+
+		it("positive-down: a fall is success, a rise is error, arrows follow the sign", async () => {
+			const down = await colorOf(-4, "positive-down");
+			expect(down.color).toBe(success());
+			expect(down.el.textContent?.trim()).toBe("↓-4.0%");
+			expect(down.el.classList.contains("ca-stat__trend--down")).toBe(true);
+			expect(down.el.getAttribute("aria-label")).toBe("Trend: -4.0%, better");
+			const up = await colorOf(4, "positive-down");
+			expect(up.color).toBe(error());
+			expect(up.el.textContent?.trim()).toBe("↑+4.0%");
+			expect(up.el.classList.contains("ca-stat__trend--up")).toBe(true);
+			expect(up.el.getAttribute("aria-label")).toBe("Trend: +4.0%, worse");
+			expect(await checkA11y(down.screen.container)).toHaveNoViolations();
+			expect(await checkA11y(up.screen.container)).toHaveNoViolations();
+		});
+
+		it("positive-up spells out better and worse", async () => {
+			const up = await colorOf(4, "positive-up");
+			expect(up.color).toBe(success());
+			expect(up.el.getAttribute("aria-label")).toBe("Trend: +4.0%, better");
+			const down = await colorOf(-4, "positive-up");
+			expect(down.color).toBe(error());
+			expect(down.el.getAttribute("aria-label")).toBe("Trend: -4.0%, worse");
+		});
+
+		it("omitted tone keeps today's colours and label", async () => {
+			const up = await colorOf(4);
+			expect(up.color).toBe(success());
+			expect(up.el.getAttribute("aria-label")).toBe("Trend: +4.0%");
+			expect((await colorOf(-4)).color).toBe(error());
+		});
+
+		it("neutral colours neither success nor error and judges nothing", async () => {
+			for (const trend of [4, -4]) {
+				const r = await colorOf(trend, "neutral");
+				expect(r.color).not.toBe(success());
+				expect(r.color).not.toBe(error());
+				expect(r.el.getAttribute("aria-label")).toBe(
+					`Trend: ${trend > 0 ? "+" : ""}${trend.toFixed(1)}%`
+				);
+			}
+		});
+
+		it("a zero change is neutral under every tone", async () => {
+			for (const tone of ["positive-up", "positive-down"] as const) {
+				const r = await colorOf(0, tone);
+				expect(r.color).not.toBe(success());
+				expect(r.color).not.toBe(error());
+				expect(r.el.getAttribute("aria-label")).toBe("Trend: 0.0%");
+			}
+		});
+
+		describe("pt-BR", () => {
+			beforeAll(() => setLocale("pt-BR"));
+			afterAll(() => setLocale("en"));
+			it("says melhor and pior", async () => {
+				expect((await colorOf(-4, "positive-down")).el.getAttribute("aria-label")).toBe(
+					"Tendência: -4.0%, melhor"
+				);
+				expect((await colorOf(4, "positive-down")).el.getAttribute("aria-label")).toBe(
+					"Tendência: +4.0%, pior"
+				);
+			});
+		});
 	});
 
 	it("omits unit, hint and trend when not given", async () => {

@@ -174,7 +174,7 @@ id	group	page	title	names	tags	summary
 173	layout	form-page	Basic form		app-form,form-section,form,text-field,select,switch,footer	A complete user creation form with a header, two sections, bound fields and a footer with Cancel and Create user.
 174	layout	form-page	Without header		app-form,form-section,form,no-header,text-field,footer	A compact form page with no title or description, one section and a Cancel and Save footer.
 175	layout	kpi-card	Basic metrics		kpi-card,kpi-grid,metrics,trend,dashboard,unit,icon	Three KPI cards with title, value, an optional unit, a positive or negative trend and an icon, inside a KpiGrid.
-176	layout	kpi-card	Negative trend		kpi-card,kpi-grid,negative-trend,metrics,churn,unit	Two KPI cards whose trends are negative, one with an icon and one without.
+176	layout	kpi-card	Negative trend		kpi-card,kpi-grid,negative-trend,metrics,churn,unit	Two KPI cards whose trends fall and are good news (`trendTone="positive-down"`), one with an icon and one without.
 177	layout	kpi-card	Without trend		kpi-card,kpi-grid,no-trend,metrics,counters,unit	Three KPI cards without a trend value, one with an icon and two plain.
 178	layout	kpi-grid	Four cards		kpi-grid,kpi-card,dashboard,metrics,four-columns,grid	A KpiGrid holding four KPI cards: Revenue, Users, Growth and Uptime, each with a trend and icon.
 179	layout	kpi-grid	Three cards		kpi-grid,kpi-card,odd,three-columns,dashboard,grid	A KpiGrid holding three KPI cards to show how the grid lays out an odd number of items.
@@ -371,3 +371,4 @@ id	group	page	title	names	tags	summary
 981	inputs	button-group	Split button and vertical		button-group,split-button,dropdown-menu,vertical,orientation,icon-button	A split button (Publish plus a chevron DropdownMenu trigger) and a vertical ButtonGroup of two icon buttons.
 982	inputs	text-field	Text addons		input-group,text-field,prefix,suffix,addon,text,currency,url	Five TextFields with text addons inside the border: a URL (https:// and .com), a price ($ and USD), a small @handle, an error with a .dev suffix and a disabled one.
 983	inputs	text-field	Button addons		input-group,text-field,suffix,addon,button,icon-button,copy,coupon	Two TextFields with a button inside the border: a read-only share link with a copy IconButton and a coupon code with an Apply button.
+984	layout	kpi-card	Trend tone		kpi-card,kpi-grid,trend-tone,positive-down,churn,latency,metrics	Three KPI cards where the trend colour follows what is good news: churn falling is green, response time rising is red, sessions are neutral.

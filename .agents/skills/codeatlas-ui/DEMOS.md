@@ -377,3 +377,4 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 981 | Split button and vertical | inputs/button-group | Button, ButtonGroup, DropdownMenu, DropdownMenuItem, IconButton |
 | 982 | Text addons | inputs/text-field | TextField |
 | 983 | Button addons | inputs/text-field | Button, IconButton, TextField |
+| 984 | Trend tone | layout/kpi-card | KpiCard, KpiGrid |

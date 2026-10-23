@@ -721,6 +721,7 @@ Use it for an overview page: a row of key numbers, then charts and tables in car
     <Flex gap="6" wrap>
       <Stat label="Seats" value="18" unit="of 25" hint="7 free" />
       <Stat label="Storage" value="62" unit="GB" trend={-4.2} />
+      <Stat label="Churn" value="1.7" unit="%" trend={-0.2} trendTone="positive-down" />
     </Flex>
     <Progress value={72} label="Seats used" size="sm" />
   </Card>
@@ -734,7 +735,7 @@ Use it for an overview page: a row of key numbers, then charts and tables in car
 Rules:
 
 - Charts come from `@codeatlasdev/ui/charts` and need the `echarts` peer (`bun add echarts`). Pass data only (`series`, `categories`): there are no ECharts options, colors or styles to set, and the chart follows the theme.
-- A number tile is `KpiCard` inside a `KpiGrid`, with `trend` as a percentage and `icon` as a `@lucide/svelte` component. Do not build tiles from `Card` and a heading. A number that sits inside a card, a panel or a row without its own surface is `Stat` (`label`, `value`, `unit`, `hint`, `trend`, `size`, `align`, `skeleton`): it has no border or padding and takes its color from the container.
+- A number tile is `KpiCard` inside a `KpiGrid`, with `trend` as a percentage and `icon` as a `@lucide/svelte` component. The arrow follows the sign of `trend` and the colour by default says up is good; for a metric where down is good (churn, latency, cost) pass `trendTone="positive-down"` (`"neutral"` to not judge it) instead of dropping `trend`. Do not build tiles from `Card` and a heading. A number that sits inside a card, a panel or a row without its own surface is `Stat` (`label`, `value`, `unit`, `hint`, `trend`, `trendTone`, `size`, `align`, `skeleton`): it has no border or padding and takes its color from the container.
 - `PageShell` is the page container: `title`, `description`, the `actions` snippet and the spacing between blocks. Its `gap` is a number in px, unlike `Flex`, `Stack` and `Grid`, which take spacing steps.
 - Wrap each chart or table in `Card` with a `title`. For side-by-side cards use `Grid columns={{ base: 1, lg: 2 }} gap="4"`. A card that holds several blocks (a `Stat` row, a `Progress`, a `TextField`) takes `gap="md"` (`sm`, `md` or `lg`) so they stack with space between them; without it inline controls sit side by side.
 - A thin bar is `Progress size="sm"` (4px; `md` is 6px and `lg`, the default, 8px). For another height set `--ca-progress-height`. `Surface grain` adds the paper-grain overlay to a panel that is not a `Card`, and `grain="animated"` shifts it.

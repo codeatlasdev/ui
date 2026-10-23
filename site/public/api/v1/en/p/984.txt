@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #984 "Trend tone" (layout/kpi-card).
+What it shows: Three KPI cards where the trend colour follows what is good news: churn falling is green, response time rising is red, sessions are neutral. When to use: Metrics where down is good (churn, cost, latency) or where a change is not a judgement, with an accurate better/worse screen reader label.
+Spec:
+- `<KpiGrid>` with 3 `KpiCard` items
+- `<KpiCard title="Churn Rate" value="5.2" unit="%" trend={-1.8} trendTone="positive-down" icon={UserMinus} />`: a fall is green, announced "better"
+- `<KpiCard title="Response Time" value="1.4" unit="s" trend={12.3} trendTone="positive-down" icon={Gauge} />`: a rise is red, announced "worse"
+- `<KpiCard title="Sessions" value="3,847" trend={-2.1} trendTone="neutral" icon={Activity} />`: arrow only, no colour judgement
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #984 Trend tone → file, what changed, https://ui.codeatlas.com.br/docs/layout/kpi-card#trend-tone; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/984.txt   Components API: ca-ui-mcp get_component(KpiCard)
