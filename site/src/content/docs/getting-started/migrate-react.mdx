@@ -143,7 +143,8 @@ Targets are real exports of `@codeatlasdev/ui` unless the import path says other
 | `Dialog` | `Dialog` | Controlled with `bind:open`. There is no `DialogTrigger`: put a `Button` that sets `open = true`. |
 | `AlertDialog` | `AlertDialog` | `onconfirm`, `oncancel`, `destructive`. |
 | `Sheet` | `Drawer` or `Sheet` | `Drawer` slides from a side; `Sheet` is the mobile bottom sheet. |
-| `Popover`, `HoverCard` | `Popover` | |
+| `Popover` | `Popover` | |
+| `HoverCard` | `HoverCard` | `openDelay`, `closeDelay`; touch never opens it. |
 | `DropdownMenu` | `DropdownMenu`, `DropdownMenuItem` | |
 | `Tooltip` | `Tooltip` | |
 | `Tabs` | `Tabs`, `TabsList`, `TabsTrigger`, `TabsContent` | |
@@ -226,7 +227,7 @@ One row per component on [ui.shadcn.com/docs/components](https://ui.shadcn.com/d
 | Dropdown Menu | `@radix-ui/react-dropdown-menu`, `@base-ui-components/react/menu` | `Menu` | `DropdownMenu`, `DropdownMenuItem` | Also `DropdownMenuLabel`, `DropdownMenuSeparator`, `DropdownMenuCheckboxItem`, `DropdownMenuRadioGroup`, `DropdownMenuSub`. |
 | Empty |  |  | `EmptyState` | `title`, `description`, snippet `actions`. |
 | Field |  |  | `TextField`, `FormSection` | Label, `description` and `error` are props of each field; group fields with `FormSection`. |
-| Hover Card | `@radix-ui/react-hover-card` |  | none (gap #432): `Popover` opened on hover and focus by the app. |  |
+| Hover Card | `@radix-ui/react-hover-card` |  | `HoverCard` | `openDelay`, `closeDelay`; touch never opens it (use `Popover` for tap-to-open). |
 | Input |  | `TextField` | `TextField` | `label`, `description`, `error` (a string), `bind:value`. |
 | Input Group |  |  | none (gap #432): App markup around `TextField`. |  |
 | Input OTP |  |  | `PinInput` | `length`, `oncomplete`, `mask`. |

@@ -359,6 +359,8 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "901", path: "inputs/button/TrailingHint" },
 	{ id: "902", path: "inputs/button/AlignBetween" },
 	{ id: "910", path: "feedback/dialog/SplitConfigured" },
+	{ id: "940", path: "navigation/hover-card/Profile" },
+	{ id: "941", path: "navigation/hover-card/Controlled" },
 	{ id: "960", path: "display/image/Ratio" },
 	{ id: "961", path: "display/aspect-ratio/Embed" },
 	{ id: "980", path: "inputs/button-group/Basic" },

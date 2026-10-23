@@ -1,0 +1,12 @@
+{
+	"summary": "An outlined Plan details button with a top-start hover card, plus a button that shows or hides the card from code and a line reporting the last user-driven change.",
+	"use": "Short delays, a custom side and alignment, and driving the card with bind:open while onOpenChange reports only what the user did.",
+	"spec": [
+		"`let open = $state(false)` is bound with `<HoverCard bind:open openDelay={150} closeDelay={150} side=\"top\" align=\"start\" {onOpenChange}>`",
+		"`{#snippet triggerChild(props)}<Button variant=\"outlined\" {...props}>Plan details</Button>{/snippet}`",
+		"`function onOpenChange(o: boolean)` sets `log` to `opened by the user` or `closed by the user`; the code button toggles `open` and does not touch `log`",
+		"A second button flips `open` with `onclick={() => (open = !open)}`"
+	],
+	"tags": ["hover-card", "bind-open", "delay", "side", "align", "on-open-change"],
+	"shape": "wide"
+}

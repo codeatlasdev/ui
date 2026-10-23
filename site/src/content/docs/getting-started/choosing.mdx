@@ -55,6 +55,7 @@ Every overlay below is a native `<dialog>` or a `popover` element in the browser
 | A mobile bottom panel with swipe to dismiss | [`Sheet`](/docs/feedback/sheet/) | Bottom sheet below 900px, centered dialog above. `footer` snippet. |
 | A small card anchored to a button (short content, a mini form) | [`Popover`](/docs/navigation/popover/) | `triggerChild` receives the trigger props; `children` receives `close`. |
 | A list of actions on a button or a right click | [`DropdownMenu`](/docs/navigation/menu/) | Items, checkbox and radio items, submenus. Sub-components are named exports, not dotted. |
+| A rich preview of a link or person on hover and focus (touch: the link's own action) | [`HoverCard`](/docs/navigation/hover-card/) | `openDelay`, `closeDelay`, Tab reaches links inside. Tap-to-open content is `Popover`. |
 | A label on hover or focus | [`Tooltip`](/docs/display/tooltip/) | Text only. Never put a control or the only copy of a fact in it. |
 | A full-screen mobile drill-down (chat thread, detail) | [`MobilePane`](/docs/layout/mobile-pane/) | Fixed, safe-area aware, back button. Replaces a hand-made fixed panel. |
 | Photos or videos at full size | [`Lightbox`](/docs/feedback/lightbox/) | `src` and `alt` for one image, `items` for a gallery. `alt` is required. |

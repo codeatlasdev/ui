@@ -1,0 +1,49 @@
+---
+title: Hover Card
+description: A rich preview that opens on hover and keyboard focus, with open and close delays.
+group: Navigation
+order: 15
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Profile from "~/demos/navigation/hover-card/Profile.svelte";
+import ProfileSrc from "~/demos/navigation/hover-card/Profile.svelte?raw";
+import Controlled from "~/demos/navigation/hover-card/Controlled.svelte";
+import ControlledSrc from "~/demos/navigation/hover-card/Controlled.svelte?raw";
+
+```svelte
+<script>
+  import { HoverCard } from "@codeatlasdev/ui";
+</script>
+
+<HoverCard>
+  {#snippet triggerChild(props)}<a href="/people/ada" {...props}>@ada</a>{/snippet}
+  <strong>Ada Lovelace</strong>
+  <p>Platform engineer.</p>
+</HoverCard>
+```
+
+The card previews more about its trigger (a person, a link target, a record). The trigger stays the primary action: it is a real link or button that works without the card. The card opens when the pointer rests on the trigger for `openDelay` (700 ms) and when the trigger receives keyboard focus, at once. It stays open while the pointer crosses into it and closes `closeDelay` (300 ms) after the pointer or focus leaves, on Escape, and on blur. The trigger gets `aria-describedby` pointing at the card while it is open. Tab from the trigger moves into the card, so a link inside it is reachable from the keyboard; Escape inside the card closes it and returns focus to the trigger.
+
+It is a hint layer: it never takes Escape or outside presses from a dialog or menu underneath. The card is a popover element in the browser top layer, positioned with CSS anchor positioning where supported.
+
+**Touch has no hover.** A tap never opens the card; it only performs the trigger's own action (follow the link, press the button), and the same information must be reachable from there. When the preview itself must be reachable on touch, use [Popover](/docs/navigation/popover/) (opens on tap) instead. Do not put content in a hover card that exists nowhere else, and do not use it for a text-only label: that is [Tooltip](/docs/display/tooltip/).
+
+Pass an interactive trigger (a link, `Button`, `IconButton`) through `triggerChild` and spread the received `props` on it; `trigger` wraps non-interactive content in its own button. `bind:open` controls it from code, and `onOpenChange` fires for user-driven changes only.
+
+<Demo title="Profile mention" description="A link in a sentence with a profile card. Hover it for the delay, or Tab to it for an instant card; Tab again to reach View profile; Escape closes." src={ProfileSrc}><Profile client:visible /></Demo>
+<Demo title="Delays, side and bind:open" description="Short delays, placed above and aligned to the start. A second button shows the card from code, and onOpenChange reports only user-driven changes." src={ControlledSrc}><Controlled client:visible /></Demo>
+
+<Props for="HoverCard" rows={[
+  { name: "triggerChild", type: "Snippet<[Record<string, unknown>]>", description: "Interactive trigger. Receives the trigger props to spread onto your link, Button or IconButton." },
+  { name: "trigger", type: "Snippet", description: "Non-interactive trigger content (text, icon), wrapped in the card's own button." },
+  { name: "children", type: "Snippet", description: "Card content." },
+  { name: "open", type: "boolean", default: "false", description: "Bindable. Whether the card is open." },
+  { name: "onOpenChange", type: "(open: boolean) => void", description: "Called when the user opens or closes the card, not when the bound value is set from code." },
+  { name: "openDelay", type: "number", default: "700", description: "Milliseconds the pointer must rest on the trigger before the card opens. Keyboard focus opens it at once." },
+  { name: "closeDelay", type: "number", default: "300", description: "Milliseconds the card stays open after the pointer or focus leaves, so the pointer can cross into it." },
+  { name: "side", type: "'top' | 'right' | 'bottom' | 'left'", default: "'bottom'", description: "Preferred side of the trigger." },
+  { name: "align", type: "'start' | 'center' | 'end'", default: "'center'", description: "Alignment against the trigger." },
+  { name: "sideOffset", type: "number", default: "8", description: "Distance from the trigger in pixels." },
+  { name: "class", type: "string", default: "''", description: "Extra CSS classes on the card." },
+]} />

@@ -207,10 +207,9 @@
 		},
 		{
 			"shadcn": "Hover Card",
-			"to": ["Popover"],
+			"to": ["HoverCard"],
 			"radix": "@radix-ui/react-hover-card",
-			"gap": 432,
-			"workaround": "`Popover` opened on hover and focus by the app."
+			"notes": "`openDelay`, `closeDelay`; touch never opens it (use `Popover` for tap-to-open)."
 		},
 		{
 			"shadcn": "Input",

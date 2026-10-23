@@ -1569,6 +1569,29 @@ Variables: `--ca-highlight-color`
 
 Tokens: `--ca-highlight-color`
 
+## HoverCard
+
+`import { HoverCard } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `class?` | `string` | `''` |  |
+| `open?` | `boolean` | `false` | `bind:` Bindable. Whether the card is open. |
+| `onOpenChange?` | `(open: boolean) => void` |  | Called when the user opens or closes the card (not when the bound value is set from code). |
+| `openDelay?` | `number` | `700` | Milliseconds the pointer must rest on the trigger before the card opens. Keyboard focus opens it at once. |
+| `closeDelay?` | `number` | `300` | Milliseconds the card stays open after the pointer or focus leaves, so the pointer can cross into it. |
+| `side?` | `'top' \| 'right' \| 'bottom' \| 'left'` | `'bottom'` |  |
+| `align?` | `'start' \| 'center' \| 'end'` | `'center'` |  |
+| `sideOffset?` | `number` | `8` |  |
+
+Snippets: `trigger`, `triggerChild` (`Snippet<[Record<string, unknown>]>`), `children`
+
+Parts: `ca-hovercard-content` `ca-hovercard__trigger`
+
+Internal (may change in any release): `ca-hovercard-in` `ca-hovercard-out`
+
+Data attributes: `data-state` (`closed`)
+
 ## I18nProvider
 
 `import { I18nProvider } from "@codeatlasdev/ui"`
