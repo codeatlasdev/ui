@@ -52,11 +52,21 @@ describe("HoverCard", () => {
 		const t = trigger(screen);
 		await t.hover();
 		await expect.element(page.getByText("Ada Lovelace")).toBeVisible();
-		await userEvent.unhover(t);
-		await userEvent.hover(page.getByText("Ada Lovelace"));
-		await new Promise((r) => setTimeout(r, 300));
-		expect(card()).not.toBeNull();
-		await userEvent.unhover(page.getByText("Ada Lovelace"));
+		// Fake timers: the close timer only runs when the test advances it, so the two pointer
+		// round-trips below can take any time under load (#466).
+		vi.useFakeTimers();
+		try {
+			await userEvent.unhover(t);
+			await userEvent.hover(page.getByText("Ada Lovelace"));
+			vi.advanceTimersByTime(1000);
+			expect(card()).not.toBeNull();
+			await userEvent.unhover(page.getByText("Ada Lovelace"));
+			vi.advanceTimersByTime(149);
+			expect(card()).not.toBeNull();
+			vi.advanceTimersByTime(1);
+		} finally {
+			vi.useRealTimers();
+		}
 		await expect.element(page.getByText("Ada Lovelace")).not.toBeInTheDocument();
 	});
 
