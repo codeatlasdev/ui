@@ -146,19 +146,24 @@ Classes: `ca-app-settings` `ca-app-settings__actions` `ca-app-settings__body` `c
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `modules` | `NavModule[]` |  |  |
+| `filterModules?` | `(module: NavModule) => boolean` |  | Hides modules the current user may not see (role, plan, feature flag). Rail, panel, bottom navigation and the active-module logic all work on the filtered list, so indexes never point at a hidden module. Return `true` to keep a module. |
 | `pathname` | `string` |  |  |
 | `onNavigate?` | `(path: string) => void` |  |  |
 | `defaultModule?` | `number` | `0` |  |
 | `persistPanel?` | `boolean` | `true` | Keeps the shell across page loads: panel open/closed, selected module, expanded sections (localStorage) and the panel scroll (sessionStorage), restored before first paint. Turn it off for demos and embeds that must always start from the defaults. |
 | `panelWidth?` | `number` | `PANEL_WIDTH` | Width of the navigation panel in px, for lists with long labels. Held between 160 and 480. The content offset and the open/close animation follow it. With `resizablePanel` it is the width used until the user drags the edge. |
 | `resizablePanel?` | `boolean` | `false` | Adds a drag handle (a keyboard-operable separator) on the panel's trailing edge. The width the user picks is kept with `persistPanel`, like the open state, and restored before paint. |
+| `collapseShortPanel?` | `boolean` | `false` | Collapses the panel to the rail for a module with 2 destinations or fewer, so a short list does not reserve a whole column of empty background. Off by default: a 2-item panel stays open (a single-destination module never shows one either way). Opening the panel for a longer module still works. |
 | `reorder?` | `NavExtras['reorder']` |  | Enables `onReorder` on sections and modules: pass the exported `NavReorder` component. Opt-in so the drag engine is only bundled by apps that reorder. |
 | `itemMenu?` | `NavExtras['itemMenu']` |  | Renders `NavItem.actions` as a "…" menu: pass the exported `NavItemMenu` component. Opt-in so DropdownMenu is only bundled by apps that use per-item menus. |
 | `stageVisible?` | `boolean` | `true` | `false` hides the stage (`visibility: hidden`, `inert`) and tells it to pause, without unmounting it: for a full-page route that covers it. A page can also set `data-ca-stage="hidden"` on `<html>` (what `PageFrame mode="page"` does). |
+| `railLabels?` | `boolean` | `false` | Shows each module's label as a caption under its rail icon. |
+| `bottomNavPrimary?` | `number` |  | Most tabs on the mobile bottom navigation. With more modules the first `bottomNavPrimary - 1` stay and the last tab is "More", a dialog with the rest. Default 5. |
+| `moreSheet?` | `Component<NavMoreSheetProps>` |  | Replaces the built-in "More" dialog with another component: pass the exported `NavMoreSheet` for a full `Sheet` (swipe to dismiss, exit animation). Opt-in because `Sheet` adds about 10 kB gzip to the shell; the built-in dialog is a plain native `<dialog>` and costs about 1 kB. |
 | `mainId?` | `string \| null` | `'main'` | `id` given to the content region, the target of the skip link. By default the region is the page's `<main id tabindex="-1">` landmark. Pass `null` when your own `<main id="main" tabindex="-1">` is the target: the region then renders as a plain `div` so the page never gets two landmarks. |
 | `skipLink?` | `boolean` | `true` | Render the "Skip to content" link. Turn it off when the shell is embedded in a page that already has one (a framed demo, a preview), so the page does not get two. |
 
-Snippets: `stage` (`Snippet<[{ hidden: boolean }]>`), `header`, `brand`, `railBottom`, `mobileHeaderActions`, `mobileTitle`, `children`
+Snippets: `stage` (`Snippet<[{ hidden: boolean }]>`), `header`, `brand`, `railBottom`, `railTop`, `bottomNavOverflow`, `mobileHeaderActions`, `mobileTitle`, `children`
 
 Classes: `ca-main` `ca-panel` `ca-shell` `ca-shell--stage` `ca-shell__body` `ca-shell__content` `ca-shell__desktop-header` `ca-shell__mobile-header` `ca-shell__stage` `ca-shell__stage--hidden` `ca-sidebar`
 
@@ -190,12 +195,13 @@ AuthCard: authentication form card.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
+| `variant?` | `'card' \| 'plain'` | `'card'` | `plain` drops the card width cap and sets `title` at display size, for a left-aligned form (`AuthLayout align="start"`). Default `card`. |
 | `title?` | `string` |  |  |
 | `subtitle?` | `string` |  |  |
 
 Snippets: `footer`, `children`
 
-Classes: `ca-auth-card` `ca-auth-card__body` `ca-auth-card__footer` `ca-auth-card__header` `ca-auth-card__subtitle` `ca-auth-card__title`
+Classes: `ca-auth-card` `ca-auth-card--plain` `ca-auth-card__body` `ca-auth-card__footer` `ca-auth-card__header` `ca-auth-card__subtitle` `ca-auth-card__title`
 
 ## AuthLayout
 
@@ -206,13 +212,17 @@ AuthLayout: two-column layout for authentication pages.
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `logoMark?` | `string` | `'CA'` |  |
-| `logoName?` | `string` | `'CodeAtlas UI'` |  |
+| `logoName?` | `string` |  | Name beside the mark. Defaults to "CodeAtlas UI" unless `brand` is set. |
 | `logoHref?` | `string` | `'/'` |  |
-| `mobileBrand?` | `boolean` | `true` | Below 768px the side panel is hidden; `true` shows a compact strip with the brand above the form. |
+| `mobileBrand?` | `boolean` | `true` | While the side panel is hidden, `true` shows a compact strip with the brand above the form. A `header` snippet replaces the strip. |
+| `panelSide?` | `'left' \| 'right'` | `'left'` | Which side the panel sits on. |
+| `panelBleed?` | `boolean` | `false` | `true` fills the panel edge to edge with the `panel` snippet: no padding, no logo, no decorative blobs. The panel sticks to the viewport height. |
+| `panelHidden?` | `'md' \| 'lg'` | `'md'` | Viewport width from which the panel shows: `md` 900px, `lg` 1200px. Below it only the form shows. |
+| `align?` | `'center' \| 'start'` | `'center'` | Horizontal alignment of the form: centered (default) or flush to the start. |
 
-Snippets: `brand`, `panel`, `children`
+Snippets: `brand`, `panel`, `header`, `children`
 
-Classes: `ca-auth` `ca-auth__blob` `ca-auth__blob--a` `ca-auth__blob--b` `ca-auth__blob--c` `ca-auth__blobs` `ca-auth__col` `ca-auth__logo` `ca-auth__mark` `ca-auth__mobile-brand` `ca-auth__mobile-mark` `ca-auth__mobile-name` `ca-auth__name` `ca-auth__panel` `ca-auth__panel-inner` `ca-auth__slot`
+Classes: `ca-auth` `ca-auth--right` `ca-auth__blob` `ca-auth__blob--a` `ca-auth__blob--b` `ca-auth__blob--c` `ca-auth__blobs` `ca-auth__col` `ca-auth__col--framed` `ca-auth__col--start` `ca-auth__header` `ca-auth__logo` `ca-auth__main` `ca-auth__mark` `ca-auth__mobile-brand` `ca-auth__mobile-mark` `ca-auth__mobile-name` `ca-auth__name` `ca-auth__panel` `ca-auth__panel--bleed` `ca-auth__panel-inner` `ca-auth__slot`
 
 ## Avatar
 
@@ -275,7 +285,11 @@ Classes: `ca-badge` `ca-badge--brand` `ca-badge--dot` `ca-badge--error` `ca-badg
 | `modules` | `NavModule[]` |  |  |
 | `activeIndex` | `number` |  |  |
 | `onSelect` | `(index: number) => void` |  |  |
+| `primary?` | `number` | `5` | Most tabs on the bar. With more modules than this, the first `primary - 1` stay and the last tab is "More", a sheet with the rest. Default 5 (4 modules + More once there are 6 or more). |
+| `moreSheet?` | `Component<NavMoreSheetProps>` |  | Swap the built-in "More" dialog for another component, e.g. the exported `NavMoreSheet` (a full `Sheet` with swipe-to-dismiss and an exit animation). Opt-in because `Sheet` adds about 10 kB gzip to the shell; the built-in dialog needs nothing the shell does not bundle. |
 | `class?` | `string` | `''` |  |
+
+Snippets: `overflow`
 
 Classes: `ca-bottom-nav` `ca-bottom-nav__btn` `ca-bottom-nav__btn--active` `ca-bottom-nav__icon` `ca-bottom-nav__label`
 
@@ -1669,6 +1683,23 @@ Classes: `ca-nav-progress` `ca-nav-progress__bar`
 
 Snippets: `actions`
 
+## NavMoreSheet
+
+`import { NavMoreSheet } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `open` | `boolean` | `false` | `bind:` |
+| `title` | `string` |  |  |
+| `rest` | `NavModule[]` |  | Modules that did not fit on the bar. |
+| `visibleCount` | `number` |  | Index of `rest[0]` inside the full module list. |
+| `activeIndex` | `number` |  |  |
+| `onPick` | `(index: number) => void` |  |  |
+
+Snippets: `overflow`
+
+Classes: `ca-bottom-nav__more` `ca-bottom-nav__more-btn` `ca-bottom-nav__more-btn--active` `ca-bottom-nav__more-extra` `ca-bottom-nav__more-icon` `ca-bottom-nav__more-label`
+
 ## NavReorder
 
 `import { NavReorder } from "@codeatlasdev/ui"`
@@ -1722,11 +1753,13 @@ Classes: `ca-nf` `ca-nf--disabled` `ca-nf--sm` `ca-nf__btn` `ca-nf__hint` `ca-nf
 | `description?` | `string` |  |  |
 | `gap?` | `number` |  |  |
 | `maxWidth?` | `string` |  |  |
+| `width?` | `'reading' \| 'wide'` | `'wide'` | Caps the content column. `reading` is ~46rem (forms, settings: readable line length, inputs that do not stretch edge to edge); `wide` (default) uses the full shell width. With an `aside` the cap applies to the content column and the aside sits next to it. |
+| `asideLabel?` | `string` |  | Accessible name of the `<aside>` landmark. Defaults to "Page sidebar" (localized). |
 | `class?` | `string` | `''` |  |
 
-Snippets: `actions`, `children`
+Snippets: `actions`, `aside`, `children`
 
-Classes: `ca-page-shell` `ca-page-shell__actions` `ca-page-shell__body` `ca-page-shell__description` `ca-page-shell__header` `ca-page-shell__meta` `ca-page-shell__title`
+Classes: `ca-page-shell` `ca-page-shell__actions` `ca-page-shell__aside` `ca-page-shell__body` `ca-page-shell__description` `ca-page-shell__frame` `ca-page-shell__header` `ca-page-shell__layout` `ca-page-shell__layout--aside` `ca-page-shell__layout--reading` `ca-page-shell__meta` `ca-page-shell__title`
 
 ## Pagination
 
@@ -1903,11 +1936,12 @@ Classes: `ca-radio-card` `ca-radio-card__desc` `ca-radio-card__head` `ca-radio-c
 | `modules` | `NavModule[]` |  |  |
 | `activeIndex` | `number` |  |  |
 | `onSelect` | `(index: number) => void` |  |  |
+| `labels?` | `boolean` | `false` | Shows the module label under each icon (small caption). The button's name is the same either way. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `brand`, `bottom`
+Snippets: `brand`, `top`, `bottom`
 
-Classes: `ca-rail` `ca-rail__bottom` `ca-rail__bottom-sep` `ca-rail__dock` `ca-rail__icon` `ca-rail__icon--active` `ca-rail__logo` `ca-rail__logo-mark` `ca-rail__pip` `ca-rail__sep`
+Classes: `ca-rail` `ca-rail__bottom` `ca-rail__bottom-sep` `ca-rail__dock` `ca-rail__icon` `ca-rail__icon--active` `ca-rail__icon--labeled` `ca-rail__label` `ca-rail__logo` `ca-rail__logo-mark` `ca-rail__pip` `ca-rail__sep` `ca-rail__top`
 
 ## RangeCalendar
 
@@ -3449,17 +3483,19 @@ function throttle<T extends (...args: unknown[]) => unknown>(fn: T, limit: numbe
 
 `import { toast } from "@codeatlasdev/ui"`
 
-Toast queue: `toast.show(message, opts)` and the `success`/`error`/`warning`/`info` shortcuts push an item, `toast.remove(id)` drops it. Render the queue with `<Toaster />` once in the root layout.
+Toast queue: `toast.show(message, opts)` and the `success`/`error`/`warning`/`info` shortcuts push an item, `toast.remove(id)` drops it. An identical message and variant bumps `count` and restarts the timer instead of stacking, at most 3 show at once (the oldest goes), and `{ id }` replaces a specific toast in place. `description` adds a secondary line and `action: { label, onClick }` one inline button (8 s by default). `pause(id)`/`resume(id)` hold the auto-dismiss timer while a toast is hovered or focused. Render the queue with `<Toaster />` once in the root layout.
 
 ```ts
 const toast: {
   readonly items: ToastItem[];
   remove: (id: string) => void;
-  show: (message: string, opts?: { variant?: ToastVariant; duration?: number; }) => string;
-  success: (message: string, duration?: number) => string;
-  error: (message: string, duration?: number) => string;
-  warning: (message: string, duration?: number) => string;
-  info: (message: string, duration?: number) => string;
+  pause: (id: string) => void;
+  resume: (id: string) => void;
+  show: (message: string, o?: ToastOptions) => string;
+  success: (message: string, o?: number | ToastOptions) => string;
+  error: (message: string, o?: number | ToastOptions) => string;
+  warning: (message: string, o?: number | ToastOptions) => string;
+  info: (message: string, o?: number | ToastOptions) => string;
 }
 ```
 
@@ -3625,7 +3661,8 @@ Types:
 | `MotionOptions` | `interface MotionOptions { scale?: number; easing?: "standard" \| "emphasized" \| "spring" \| "linear" \| "steps"; enter?: "default" \| "none"; }` |  |
 | `NavExtras` | `interface NavExtras { reorder?: Component<NavReorderProps>; itemMenu?: Component<{ label: string; actions: Snippet }>; }` | Opt-in nav features passed to `AppShellLayout` (`reorder`, `itemMenu`), shared through context. |
 | `NavItem` | `interface NavItem { id: string; label: string; icon: IconComponent; path: string; badge?: number; count?: number; color?: string; leading?: Snippet; actions?: Snippet; isNew?: boolean; shortcut?: string; description?: string; }` |  |
-| `NavModule` | `interface NavModule { id: string; label: string; icon: IconComponent; basePath: string; pathPrefixes?: string[]; items: (NavItem \| NavSection)[]; onReorder?: (e: NavReorderEvent) => void; }` |  |
+| `NavModule` | `interface NavModule { id: string; label: string; icon: IconComponent; basePath: string; pathPrefixes?: string[]; items: (NavItem \| NavSection)[]; onReorder?: (e: NavReorderEvent) => void; badge?: number \| "dot"; badgeLabel?: string; }` |  |
+| `NavMoreSheetProps` | `interface NavMoreSheetProps { open: boolean; title: string; rest: NavModule[]; visibleCount: number; activeIndex: number; overflow?: Snippet; onPick: (index: number) => void; }` | Props of the opt-in `NavMoreSheet` (see `AppShellLayout.moreSheet`). |
 | `NavReorderEvent` | `interface NavReorderEvent { id: string; from: number; to: number; }` | A drop in a reorderable list: `id` of the item that moved, from and to indexes inside `items`. |
 | `NavReorderProps` | `interface NavReorderProps { items: NavItem[]; onReorder: (e: NavReorderEvent) => void; label: string; isActive: (item: NavItem) => boolean; }` | Props of the opt-in `NavReorder` list (see `NavExtras.reorder`). |
 | `NavSection` | `interface NavSection { label?: string; collapsible?: boolean; defaultOpen?: boolean; items: NavItem[]; onReorder?: (e: NavReorderEvent) => void; }` |  |
@@ -3653,7 +3690,8 @@ Types:
 | `ThemePreset` | `interface ThemePreset { id: BuiltinPresetId; label: string; swatchColor: string; hue: number; brandLight: BrandColors; brandDark: BrandColors; ramp: NeutralRamp; semanticLight: SemanticColors; semanticDark: SemanticColors; }` |  |
 | `Thickness` | `type Thickness = "ultra-thin" \| "thin" \| "regular" \| "thick" \| "chrome";` |  |
 | `TimeValue` | `type TimeValue = Time \| CalendarDateTime \| ZonedDateTime;` | Accepted by TimeField `placeholder` / `minValue` / `maxValue`. |
-| `ToastItem` | `interface ToastItem { id: string; message: string; variant: ToastVariant; duration: number; }` |  |
+| `ToastItem` | `interface ToastItem { id: string; message: string; variant: ToastVariant; duration: number; count?: number; description?: string; action?: ToastAction; }` |  |
+| `ToastOptions` | `interface ToastOptions { variant?: ToastVariant; duration?: number; id?: string; description?: string; action?: ToastAction; }` |  |
 | `ToastVariant` | `type ToastVariant = "default" \| "success" \| "error" \| "warning" \| "info";` |  |
 | `TypographyOptions` | `interface TypographyOptions { scale?: number; weights?: Partial<Record<"regular" \| "medium" \| "semibold" \| "bold" \| "heading", number>>; headingTracking?: string; headingCase?: "none" \| "uppercase"; labelTracking?: string; labelCase?: "none" \| "uppercase"; lineHeight?: number; measure?: string; }` |  |
 | `UseDndOptions` | `interface UseDndOptions { messages?: Partial<DndMessages>; threshold?: number; holdMs?: number; edge?: number; id?: string; }` |  |
