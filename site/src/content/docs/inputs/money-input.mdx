@@ -25,6 +25,8 @@ import HelpersSrc from "~/demos/inputs/money-input/Helpers.svelte?raw";
 
 Import from the `@codeatlasdev/ui/forms` subpath. The value is always an integer in the currency's minor unit (cents for BRL and USD, whole yen for JPY), so there is no floating-point rounding. Digits shift in from the right: typing `123456` gives `R$ 1.234,56`. `min` and `max` clamp the value, and an out-of-range value set from outside is clamped back into `value`.
 
+`centsToDisplay(cents, { currency, locale })` formats a stored amount outside the field with the same rules: `currency` is an ISO 4217 code (default `"BRL"`) and `locale` a BCP 47 tag (default `"pt-BR"`), so `centsToDisplay(123456, { currency: "USD", locale: "en-US" })` is `$1,234.56`. The helper does not read the app's i18n locale: pass the same `currency` and `locale` you give `MoneyInput`, or the list shows a different format than the field.
+
 `centsToDisplay` returns the text exactly as `Intl` formats it, including the no-break space (U+00A0) between the symbol and the number, so a price in a narrow slot never wraps between `R$` and the amount. The input's own text uses a plain space instead, which is what `parseInputToCents` and the user type, so compare with `centsToDisplay(v).replace(/\u00a0/g, " ")` when you need that form.
 
 <Demo title="Default" description="Type 123456 to get R$ 1.234,56." src={DefaultSrc}><Default client:visible /></Demo>
@@ -34,8 +36,8 @@ Import from the `@codeatlasdev/ui/forms` subpath. The value is always an integer
 
 <Props rows={[
   { name: "value", type: "number", default: "0", description: "Bindable amount in the currency's minor unit (integer)." },
-  { name: "currency", type: "string", default: "'BRL'", description: "ISO 4217 code. Decimals come from Intl: USD 2, JPY 0, BHD 3." },
-  { name: "locale", type: "string", description: "BCP 47 tag for separators and symbol placement. Defaults to the active i18n locale when currency is set, and to 'pt-BR' when it is not, so the BRL default keeps its format." },
+  { name: "currency", type: "string", default: "'BRL'", description: "ISO 4217 code. Decimals come from Intl: USD 2, JPY 0, BHD 3. The same option exists on `centsToDisplay(cents, { currency, locale })`." },
+  { name: "locale", type: "string", description: "BCP 47 tag for separators and symbol placement. Defaults to the active i18n locale when currency is set, and to 'pt-BR' when it is not, so the BRL default keeps its format. `centsToDisplay` takes the same option but defaults to 'pt-BR' and ignores the i18n locale." },
   { name: "min", type: "number", description: "Minimum value in cents." },
   { name: "max", type: "number", description: "Maximum value in cents." },
   { name: "allowNegative", type: "boolean", default: "false", description: "Accepts negative amounts. Type a minus sign to toggle." },
