@@ -95,3 +95,25 @@ describe("list page recipe links (#507)", () => {
 		expect(links.filter((l) => !defined.includes(l))).toEqual([]);
 	});
 });
+
+describe("landing recipe links (#517)", () => {
+	// The landing page is copied whole into an app that prerenders: a link to a route nobody
+	// created fails `vite build` with a 404 "linked from /". Every internal link must be an
+	// in-page anchor or a route another recipe defines (`/sign-in`, `/sign-up`).
+	it("links only to anchors and to routes the recipes define", () => {
+		const doc = readFileSync(RECIPES, "utf8");
+		const section = doc.slice(
+			doc.indexOf("\n## Landing page"),
+			doc.indexOf("\n## Standalone page")
+		);
+		const defined = [...doc.matchAll(/<!-- src\/routes\/(\S+)\/\+page\.svelte/g)].map(
+			(m) => `/${m[1].replace(/\([^)]*\)\//g, "")}`
+		);
+		const fences = [...section.matchAll(/```(?:svelte|ts)\n([\s\S]*?)```/g)]
+			.map((m) => m[1])
+			.join("\n");
+		const links = [...fences.matchAll(/\bhref(?:=|:\s*)"(\/[^"#?]*)/g)].map((m) => m[1]);
+		expect(links.length).toBeGreaterThan(0);
+		expect([...new Set(links)].filter((l) => l !== "/" && !defined.includes(l))).toEqual([]);
+	});
+});
