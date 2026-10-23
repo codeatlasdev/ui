@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #860 "Status tokens" (layout/domain-tokens).
+What it shows: Three lead-status pills colored by preset domain tokens, plus a canvas bar per status colored with tokenRgba. When to use: Status, tier or channel colors that must follow the preset and the light or dark scheme: declare them once under tokens in the theme, read them as CSS vars or as [r, g, b, a].
+Spec:
+- `import { colorScheme, tokenRgba } from '@codeatlasdev/ui'`
+- Three `<li class="st__pill st__pill--{s.name}">` pills for `new`, `won` and `lost`, each with `background: var(--ca-token-status-new-subtle)` and `color: var(--ca-token-status-new)` (same pair for `won` and `lost`)
+- A `<canvas` of `width="300" height="80"` whose `$effect` reads `colorScheme.resolved` and `colorScheme.preset`, then fills one bar per status with ``tokenRgba(`status.${s.name}`)``
+- The pills sit in a wrapping flex row with `gap: var(--ca-space-2)` and `border-radius: var(--ca-radius-pill)`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #860 Status tokens → file, what changed, https://ui.codeatlas.com.br/docs/layout/domain-tokens#status-tokens; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/860.txt   Components API: ca-ui-mcp get_component(…)

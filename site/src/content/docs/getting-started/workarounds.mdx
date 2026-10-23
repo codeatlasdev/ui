@@ -38,6 +38,9 @@ Imports are from `@codeatlasdev/ui` unless the last column names a subpath.
 | Visually hidden text with `display: none` or `clip` rules | The `ca-sr-only` class | [Accessibility](/docs/getting-started/accessibility/) |
 | `useState`, `useEffect`, `useMemo` ported line by line | `$state`, `$derived`, `$effect` | [Migrate from React](/docs/getting-started/migrate-react/#react-to-svelte-5-runes) |
 | `GlassCard`, `GlassSurface`, `Row`, `Grid cols=`, `gap={16}` | `Card`, `Surface`, `Flex`, `Grid columns=`, `gap="4"`. Run `bunx @codeatlasdev/ui migrate --write` | [Choosing a component](/docs/getting-started/choosing/#container) |
+| A `domain.css` of `--app-status-*`, `--app-tier-*` or `--app-channel-*` colors | `tokens: { status: { new: { light, dark } } }` on the preset: `--ca-token-status-new` (+ `-subtle`, `-contrast`) follows the scheme and the preset | [Domain tokens](/docs/getting-started/theming/#domain-tokens-status-tier-channel) |
+| A 1x1 `<canvas>` that resolves `getComputedStyle(root).getPropertyValue(token)` to `[r, g, b, a]` | `tokenRgba("status.new")` or `tokenRgba("--ca-brand-main")` | [Domain tokens](/docs/getting-started/theming/#domain-tokens-status-tier-channel), `@codeatlasdev/ui/tokens` |
+| A hex computed by hand to flatten a translucent text or border color onto one background | The CSS color as written: `textSecondary: "oklch(1 0 0 / 0.62)"` or `borderSubtle: { color: "#fff", alpha: 0.1 }`. The build checks text contrast after compositing | [Porting a palette by role](/docs/getting-started/theming/#porting-a-palette-by-role) |
 
 <Callout type="note" title="Spacing units differ">
 

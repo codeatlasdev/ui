@@ -338,3 +338,4 @@ id	group	page	title	names	tags	summary
 780	layout	theme-island	Scoped block		theme-island,preset,scheme,light,dark,scope	ThemeIsland as a scoped block: a light ocean island inside a dark page.
 781	layout	theme-island	Full page		theme-island,document,full-page,landing,overscroll,ssr	Full-page ThemeIsland with `document`: html and body take the island's preset and scheme while it is mounted.
 800	map	stage	Themed map		map,deck.gl,maplibre,theme,dark-mode,controls	A map stage with an offline light and dark basemap, four deck.gl store circles in the brand color and glass zoom and compass controls.
+860	layout	domain-tokens	Status tokens		tokens,preset,domain,status,tokenrgba,canvas,theme	Three lead-status pills colored by preset domain tokens, plus a canvas bar per status colored with tokenRgba.

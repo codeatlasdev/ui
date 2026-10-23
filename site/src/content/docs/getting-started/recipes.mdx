@@ -637,6 +637,7 @@ Rules:
 - A brand color is a preset: give it a `#rrggbb` and the full light and dark token set is generated. Do not copy colors into component styles.
 - Import the theme in `vite.config.ts` with the `.ts` extension. Everything else (preset, scheme, style, fonts, radius, density) is a field of the same object.
 - To change one token, declare it on `:root` as `--ca-*`, without `!important`. Never write hex colors or pixel sizes in a component.
+- Colors that are not UI roles (status, tier, channel, map pins) go under `tokens` on the preset, not in a `domain.css`: `tokens.status.new` gives `--ca-token-status-new` (+ `-subtle`, `-contrast`) per scheme, and `tokenRgba("status.new")` gives `[r, g, b, a]` for canvas and maps. A role color may carry alpha (`oklch(1 0 0 / 0.62)` or `{ color, alpha }`): do not flatten it to a hex.
 - `bunx @codeatlasdev/ui init --write` creates and patches all of these files, and is a dry run without `--write`.
 
 See also: [Theming](/docs/getting-started/theming/), [Installation](/docs/getting-started/installation/).

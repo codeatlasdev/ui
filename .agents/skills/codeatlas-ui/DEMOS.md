@@ -344,3 +344,4 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 780 | Scoped block | layout/theme-island | Button, ThemeIsland |
 | 781 | Full page | layout/theme-island | Button, ThemeIsland |
 | 800 | Themed map | map/stage | MapControls, MapStage |
+| 860 | Status tokens | layout/domain-tokens |  |

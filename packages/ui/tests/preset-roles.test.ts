@@ -1,5 +1,6 @@
 import { describe, expect, it, spyOn } from "bun:test";
-import { defineTheme, presetContrastIssues, themeCSS } from "../src/lib/theme/define.js";
+import { presetContrastIssues } from "../src/lib/theme/contrast.js";
+import { defineTheme, themeCSS } from "../src/lib/theme/define.js";
 import { caThemePlugin } from "../src/lib/vite-plugin.js";
 
 // #354: a preset owns the primary-button roles and the field font size, emitted with the same

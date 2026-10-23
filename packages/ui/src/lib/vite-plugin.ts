@@ -34,7 +34,8 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { Plugin } from "vite";
 import { type ErrorHtmlOptions, errorHtml } from "./kit/error-html.js";
-import { defineTheme, SSR_NO_EXTERNAL, warnPresetContrast } from "./theme/define.js";
+import { warnPresetContrast } from "./theme/contrast.js";
+import { defineTheme, SSR_NO_EXTERNAL } from "./theme/define.js";
 import { CA_THEME_MARKER, THEME_SCRIPT, type ThemeOptions, themeHead } from "./theme-script.js";
 
 export type {

@@ -14,13 +14,8 @@
  * Import `@codeatlasdev/ui/styles/global.css` once in your base layout.
  */
 import type { AstroIntegration } from "astro";
-import {
-	defineTheme,
-	fontPreloads,
-	SSR_NO_EXTERNAL,
-	themeCSS,
-	warnPresetContrast,
-} from "./theme/define.js";
+import { warnPresetContrast } from "./theme/contrast.js";
+import { defineTheme, fontPreloads, SSR_NO_EXTERNAL, themeCSS } from "./theme/define.js";
 import { type ThemeOptions, themeScript } from "./theme-script.js";
 
 /**

@@ -297,6 +297,13 @@ export type {
 	TypographyOptions,
 } from "./theme/define.js";
 export { defineTheme, designTokens, themeCSS } from "./theme/define.js";
+export type {
+	CaTokenName,
+	CaTokenRegistry,
+	ColorValue,
+	PresetTokenGroups,
+	TokenValue,
+} from "./theme/preset-tokens.js";
 export type { DesignStyle, DesignStyleId } from "./theme/styles.js";
 export { DESIGN_STYLES, designStyle, mergeTheme } from "./theme/styles.js";
 export type { ThemeOptions } from "./theme-script.js";

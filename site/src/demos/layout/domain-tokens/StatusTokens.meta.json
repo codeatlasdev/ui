@@ -1,0 +1,12 @@
+{
+	"summary": "Three lead-status pills colored by preset domain tokens, plus a canvas bar per status colored with tokenRgba.",
+	"use": "Status, tier or channel colors that must follow the preset and the light or dark scheme: declare them once under tokens in the theme, read them as CSS vars or as [r, g, b, a].",
+	"spec": [
+		"`import { colorScheme, tokenRgba } from '@codeatlasdev/ui'`",
+		"Three `<li class=\"st__pill st__pill--{s.name}\">` pills for `new`, `won` and `lost`, each with `background: var(--ca-token-status-new-subtle)` and `color: var(--ca-token-status-new)` (same pair for `won` and `lost`)",
+		"A `<canvas` of `width=\"300\" height=\"80\"` whose `$effect` reads `colorScheme.resolved` and `colorScheme.preset`, then fills one bar per status with ``tokenRgba(`status.${s.name}`)``",
+		"The pills sit in a wrapping flex row with `gap: var(--ca-space-2)` and `border-radius: var(--ca-radius-pill)`"
+	],
+	"tags": ["tokens", "preset", "domain", "status", "tokenrgba", "canvas", "theme"],
+	"shape": "wide"
+}

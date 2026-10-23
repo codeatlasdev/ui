@@ -4,7 +4,6 @@
 // themeHead before any stylesheet. No runtime style insertion per render.
 
 import {
-	contrastRatio,
 	cssBlock,
 	generatePreset,
 	hexToOklch,
@@ -14,6 +13,12 @@ import {
 	type TokenMap,
 } from "../utils/palette-generator.js";
 import { BUILTIN_PRESETS, type BuiltinPresetSource } from "./builtins.js";
+import {
+	type ColorValue,
+	domainTokens,
+	type PresetTokenGroups,
+	roleColor,
+} from "./preset-tokens.js";
 
 export type ColorScheme = "light" | "dark" | "system";
 /** Surface material. glass/frosted blur the backdrop; the rest are opaque. */
@@ -57,39 +62,41 @@ export const BUILTIN_IDS: readonly string[] = BUILTIN_PRESETS.map((p) => p.id);
 /**
  * Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles
  * keep the generated value. Use it to port an existing palette (a terminal or editor theme)
- * without touching raw `--ca-*` tokens.
+ * without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`,
+ * `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it,
+ * and the build measures text roles after compositing it (see `presetContrastIssues`).
  */
 export interface SchemeColors {
 	/** Brand for this scheme as `#rrggbb`; brand fills, text and glows are regenerated from it. */
 	brand?: `#${string}`;
 	/** Background of `Button variant="filled"` and other brand-filled controls (--ca-brand-fill). Defaults to a fill darkened until white text reaches AA. */
-	brandFill?: string;
+	brandFill?: ColorValue;
 	/** Hover/pressed variant of `brandFill` (--ca-brand-fill-hover). */
-	brandFillHover?: string;
+	brandFillHover?: ColorValue;
 	/** Text on `brandFill` (--ca-brand-contrast). The build warns when the pair is under 4.5:1. */
-	brandContrast?: string;
+	brandContrast?: ColorValue;
 	/** Page background (--ca-surface-base, also the browser chrome color): `#rrggbb` or `oklch()`. */
-	background?: string;
+	background?: ColorValue;
 	/** Wells, inputs, code blocks (--ca-surface-sunken). */
-	sunken?: string;
+	sunken?: ColorValue;
 	/** Cards and panels (--ca-surface-raised). */
-	surface?: string;
+	surface?: ColorValue;
 	/** Menus, dialogs, popovers (--ca-surface-overlay). */
-	overlay?: string;
-	text?: string;
-	textSecondary?: string;
-	textHint?: string;
-	textDisabled?: string;
-	borderSubtle?: string;
-	border?: string;
-	borderStrong?: string;
-	success?: string;
-	warning?: string;
-	info?: string;
-	error?: string;
+	overlay?: ColorValue;
+	text?: ColorValue;
+	textSecondary?: ColorValue;
+	textHint?: ColorValue;
+	textDisabled?: ColorValue;
+	borderSubtle?: ColorValue;
+	border?: ColorValue;
+	borderStrong?: ColorValue;
+	success?: ColorValue;
+	warning?: ColorValue;
+	info?: ColorValue;
+	error?: ColorValue;
 }
 
-const ROLE_TOKENS: Record<Exclude<keyof SchemeColors, "brand">, string> = {
+export const ROLE_TOKENS: Record<Exclude<keyof SchemeColors, "brand">, string> = {
 	brandFill: "--ca-brand-fill",
 	brandFillHover: "--ca-brand-fill-hover",
 	brandContrast: "--ca-brand-contrast",
@@ -119,6 +126,12 @@ export interface PresetDefinition {
 	label?: string;
 	/** Per-scheme role colors on top of the generated palette. */
 	colors?: { light?: SchemeColors; dark?: SchemeColors };
+	/**
+	 * Domain tokens that are not UI roles (funnel status, score tier, contact channel, map pins):
+	 * `tokens.status.new` emits `--ca-token-status-new` (+ `-subtle`, `-contrast`) per scheme, and
+	 * `tokenRgba("status.new")` (`@codeatlasdev/ui/tokens`) reads it as `[r, g, b, a]`.
+	 */
+	tokens?: PresetTokenGroups;
 	/** Size roles for this preset, in both schemes. */
 	sizes?: PresetSizes;
 }
@@ -271,7 +284,7 @@ function withErrorContrast<T extends Record<string, string>>(vars: T): T {
 }
 
 /** Light/dark token maps (with `color-scheme`) for a built-in or brand preset. */
-function presetTokens(src: BuiltinPresetSource | PresetDefinition) {
+export function presetTokens(src: BuiltinPresetSource | PresetDefinition) {
 	let vars: { light: TokenMap; dark: TokenMap };
 	if ("hue" in src) {
 		const g = presetVars(generatePreset(src.hue, src.chroma, src.lightL));
@@ -293,8 +306,13 @@ function presetTokens(src: BuiltinPresetSource | PresetDefinition) {
 			dark: { ...g.dark, ...withErrorContrast(roleTokens(src, "dark")) },
 		};
 	}
-	const light: Record<string, string> = { "color-scheme": "light", ...vars.light };
-	const dark: Record<string, string> = { "color-scheme": "dark", ...vars.dark };
+	const tokens = "hue" in src ? undefined : domainTokens(src.id, src.tokens);
+	const light: Record<string, string> = {
+		"color-scheme": "light",
+		...vars.light,
+		...tokens?.light,
+	};
+	const dark: Record<string, string> = { "color-scheme": "dark", ...vars.dark, ...tokens?.dark };
 	return { light, dark };
 }
 
@@ -319,11 +337,14 @@ function roleTokens(src: PresetDefinition, scheme: "light" | "dark"): TokenMap {
 		keyof typeof ROLE_TOKENS,
 		keyof TokenMap,
 	][]) {
-		const v = colors[role];
-		if (v) out[token] = v;
+		const raw = colors[role];
+		if (raw === undefined || raw === "") continue;
+		out[token] = roleColor(src.id, `colors.${scheme}.${role}`, raw);
 	}
 	// A hand-picked error colour also owns the destructive fill, so its label is derived with it.
-	if (colors.error && /^oklch\(/.test(colors.error)) out["--ca-semantic-error-fill"] = colors.error;
+	const error = out["--ca-semantic-error"];
+	if (error && /^oklch\(/.test(error) && !error.includes("/"))
+		out["--ca-semantic-error-fill"] = error;
 	return out;
 }
 
@@ -355,50 +376,6 @@ function contrastTokens(src: BuiltinPresetSource | PresetDefinition, scheme: "li
 				"--ca-outline-control": "oklch(1 0 0 / 0.75)",
 				"--ca-text-disabled": `oklch(0.700 0.008 ${h})`,
 			};
-}
-
-export interface PresetContrastIssue {
-	preset: string;
-	scheme: "light" | "dark";
-	ratio: number;
-	message: string;
-}
-
-/** WCAG AA for normal text: the floor for a label on a brand fill. */
-const AA = 4.5;
-
-/**
- * Brand presets whose `brandContrast` on `brandFill` is under 4.5:1. A role left unset is measured
- * from the generated fill/contrast of that scheme, so a lone `brandContrast` is checked against the
- * fill it will actually sit on. Colors the build cannot evaluate (`var()`, `color-mix()`) are skipped.
- */
-export function presetContrastIssues(t: Pick<ResolvedTheme, "presets">): PresetContrastIssue[] {
-	const issues: PresetContrastIssue[] = [];
-	for (const p of t.presets) {
-		const tokens = presetTokens(p);
-		for (const scheme of ["light", "dark"] as const) {
-			const set = p.colors?.[scheme];
-			if (!set?.brandFill && !set?.brandContrast) continue;
-			const vars = tokens[scheme];
-			const fill = vars["--ca-brand-fill"];
-			const text = vars["--ca-brand-contrast"];
-			const ratio = fill && text ? contrastRatio(fill, text) : null;
-			if (ratio === null || ratio >= AA) continue;
-			issues.push({
-				preset: p.id,
-				scheme,
-				ratio,
-				message: `preset "${p.id}" (${scheme}): brandContrast ${text} on brandFill ${fill} is ${ratio.toFixed(2)}:1, under the 4.5:1 WCAG AA minimum for button text. Pick a darker/lighter pair.`,
-			});
-		}
-	}
-	return issues;
-}
-
-/** Print `presetContrastIssues` once per finding. Build tooling (`caThemePlugin`, `caUI`) calls it with the app's theme. */
-export function warnPresetContrast(t: Pick<ResolvedTheme, "presets">, tool: string): void {
-	for (const issue of presetContrastIssues(t))
-		console.warn(`\n[codeatlasdev/ui] ${tool}: ${issue.message}\n`);
 }
 
 /**

@@ -37,6 +37,14 @@ export const theme: ThemeOptions = designStyle("sketchbook", {
 					error: "#f7768e",
 				},
 			},
+			// Domain colors: status of a lead in the funnel. One value per scheme, no app stylesheet.
+			tokens: {
+				status: {
+					new: { dark: "oklch(0.76 0.11 245)", light: "oklch(0.45 0.14 245)" },
+					won: { dark: "oklch(0.78 0.13 155)", light: "oklch(0.42 0.12 155)" },
+					lost: { dark: "oklch(0.72 0.14 20)", light: "oklch(0.48 0.17 20)" },
+				},
+			},
 		},
 	],
 	defaultPreset: "tokyo",

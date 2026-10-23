@@ -5,6 +5,9 @@ group: Getting started
 order: 5
 ---
 import { Callout } from "@codeatlasdev/ui";
+import Demo from "~/components/docs/Demo.astro";
+import StatusTokens from "~/demos/layout/domain-tokens/StatusTokens.svelte";
+import StatusTokensSrc from "~/demos/layout/domain-tokens/StatusTokens.svelte?raw";
 
 A theme is a plain object. The library compiles it to CSS once at build time (the same object always gives the same CSS) and injects it before any stylesheet, so there is no per-render style work and no flash.
 
@@ -96,7 +99,9 @@ presets: [{
 }],
 ```
 
-Roles: `brand`, `brandFill`, `brandFillHover`, `brandContrast`, `background`, `sunken`, `surface`, `overlay`, `text`, `textSecondary`, `textHint`, `textDisabled`, `borderSubtle`, `border`, `borderStrong`, `success`, `warning`, `info`, `error`. Check contrast after overriding text or surfaces: the generated palette guarantees AA, hand-picked colors are yours to verify.
+Roles: `brand`, `brandFill`, `brandFillHover`, `brandContrast`, `background`, `sunken`, `surface`, `overlay`, `text`, `textSecondary`, `textHint`, `textDisabled`, `borderSubtle`, `border`, `borderStrong`, `success`, `warning`, `info`, `error`. Except `brand` (`#rrggbb`), a role is any CSS color: `#rrggbb`, `rgb()`, `oklch(1 0 0 / 0.62)`, `color-mix(in oklab, white 10%, transparent)`, or `{ color: "#fff", alpha: 0.1 }`. A translucent role follows the surface behind it instead of being flattened onto one background, so keep alpha in the theme, not in a hex computed by hand. A value that is not a single CSS color (`red; --x: 1`) throws at build time.
+
+`caThemePlugin` and `caUI` print a warning at startup when a `text`, `textSecondary` or `textHint` you set is under 4.5:1 on any of the four surfaces **after compositing its alpha** over that surface. Colors the build cannot evaluate (`var()`, other keywords) are skipped. The generated palette guarantees AA; hand-picked roles are measured, not corrected.
 
 ### Brand-colored buttons and field size
 
@@ -118,6 +123,27 @@ presets: [{
 ```
 
 `caThemePlugin` (SvelteKit, Vite) and `caUI` (Astro) print a warning at startup when `brandContrast` on `brandFill` is under 4.5:1 (a role left unset is measured from the generated one). `sizes.inputFontSize` takes a plain length (`px`, `rem`, `em`); touch devices and screens under 900px still get `max(16px, …)`, so iOS Safari does not zoom into focused fields, and the 44px touch targets do not change.
+
+### Domain tokens: status, tier, channel
+
+Colors that are not UI roles (funnel status, lead score tier, contact channel, map pins) belong to the preset too, so they follow the scheme and the preset with no parallel stylesheet. Declare them under `tokens` as `group → name → color`; one value serves both schemes, or give `{ light, dark }`.
+
+```ts
+presets: [{
+  id: "app",
+  color: "#3b82f6",
+  tokens: {
+    status:  { new: { dark: "oklch(0.76 0.11 245)", light: "oklch(0.45 0.14 245)" }, won: "oklch(0.7 0.13 155)" },
+    channel: { whatsapp: "#25d366" },
+  },
+}],
+```
+
+`tokens.status.new` emits `--ca-token-status-new` plus two derived tokens per scheme: `--ca-token-status-new-subtle` (a 16% tint, for a badge or row background) and `--ca-token-status-new-contrast` (white or ink, whichever reads at 4.5:1 on the token). Group and name match `[a-z][a-z0-9-]*`; anything else throws. To type the names, augment the registry once: `declare module "@codeatlasdev/ui" { interface CaTokenRegistry { "status.new": true } }`.
+
+Canvas, WebGL and map code cannot read `oklch()`. `tokenRgba("status.new")` (from `@codeatlasdev/ui` or `@codeatlasdev/ui/tokens`) returns `[r, g, b, a]` for a domain token, any `--ca-*` custom property or a CSS color, within 1/255 of what CSS paints. Read it inside a `$derived` or `$effect` together with `colorScheme.resolved`, or call `onTokensChange(fn)` outside Svelte; both re-run on scheme and preset changes. It replaces the 1×1-canvas helper an app would write.
+
+<Demo title="Status tokens" description="Pills colored by --ca-token-status-*, and a canvas colored with tokenRgba. Toggle the theme: both follow." src={StatusTokensSrc}><StatusTokens client:visible /></Demo>
 
 ### Sketchbook style and hand-drawn marks
 

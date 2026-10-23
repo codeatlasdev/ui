@@ -1,0 +1,87 @@
+<!-- @codeatlasdev/ui demo #860 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/domain-tokens#status-tokens -->
+Element: #860 Status tokens (layout/domain-tokens)
+What it shows: Three lead-status pills colored by preset domain tokens, plus a canvas bar per status colored with tokenRgba.
+When to use: Status, tier or channel colors that must follow the preset and the light or dark scheme: declare them once under tokens in the theme, read them as CSS vars or as [r, g, b, a].
+Spec:
+- `import { colorScheme, tokenRgba } from '@codeatlasdev/ui'`
+- Three `<li class="st__pill st__pill--{s.name}">` pills for `new`, `won` and `lost`, each with `background: var(--ca-token-status-new-subtle)` and `color: var(--ca-token-status-new)` (same pair for `won` and `lost`)
+- A `<canvas` of `width="300" height="80"` whose `$effect` reads `colorScheme.resolved` and `colorScheme.preset`, then fills one bar per status with ``tokenRgba(`status.${s.name}`)``
+- The pills sit in a wrapping flex row with `gap: var(--ca-space-2)` and `border-radius: var(--ca-radius-pill)`
+Tags: tokens, preset, domain, status, tokenrgba, canvas, theme
+Needs: @codeatlasdev/ui@4.5.0
+Components: none
+Live demo: https://ui.codeatlas.com.br/docs/layout/domain-tokens#status-tokens
+
+<script lang="ts">
+  import { colorScheme, tokenRgba } from '@codeatlasdev/ui';
+
+  // Domain tokens come from the preset in theme.ts: tokens: { status: { new, won, lost } }.
+  const statuses = [
+    { name: 'new', label: 'New', count: 18 },
+    { name: 'won', label: 'Won', count: 9 },
+    { name: 'lost', label: 'Lost', count: 4 },
+  ] as const;
+
+  let canvas = $state<HTMLCanvasElement>();
+
+  // The canvas cannot read oklch(): tokenRgba gives [r, g, b, a]. Reading colorScheme makes the
+  // effect re-run when the scheme or the preset changes.
+  $effect(() => {
+    void colorScheme.resolved;
+    void colorScheme.preset;
+    const ctx = canvas?.getContext('2d');
+    if (!canvas || !ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    statuses.forEach((s, i) => {
+      const [r, g, b] = tokenRgba(`status.${s.name}`);
+      ctx.fillStyle = `rgb(${r} ${g} ${b})`;
+      ctx.fillRect(i * 100, canvas.height - s.count * 4, 80, s.count * 4);
+    });
+  });
+</script>
+
+<div class="st">
+  <ul class="st__list" aria-label="Lead status">
+    {#each statuses as s (s.name)}
+      <li class="st__pill st__pill--{s.name}">{s.label} <strong>{s.count}</strong></li>
+    {/each}
+  </ul>
+  <canvas bind:this={canvas} class="st__chart" width="300" height="80" role="img" aria-label="Leads by status: 18 new, 9 won, 4 lost"></canvas>
+</div>
+
+<style>
+  .st {
+    display: grid;
+    gap: var(--ca-space-4);
+    justify-items: start;
+  }
+  .st__list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--ca-space-2);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .st__pill {
+    padding: var(--ca-space-1) var(--ca-space-3);
+    border-radius: var(--ca-radius-pill);
+    font-size: var(--ca-font-size-label);
+  }
+  .st__pill--new {
+    background: var(--ca-token-status-new-subtle);
+    color: var(--ca-token-status-new);
+  }
+  .st__pill--won {
+    background: var(--ca-token-status-won-subtle);
+    color: var(--ca-token-status-won);
+  }
+  .st__pill--lost {
+    background: var(--ca-token-status-lost-subtle);
+    color: var(--ca-token-status-lost);
+  }
+  .st__chart {
+    width: 300px;
+    height: 80px;
+  }
+</style>
