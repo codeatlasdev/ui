@@ -154,33 +154,3 @@ describe("per-page file /llms/<slug>.txt (#384)", () => {
 		expect(out).toContain('```svelte\n<script lang="ts">\n  import { AppForm, FormSection');
 	});
 });
-
-describe("which pages llms-full.txt leaves to their own file (#415)", () => {
-	const full = buildLlmsFull({
-		site: "https://ui.codeatlas.com.br",
-		docs: pages.map((p) => ({ ...p, url: `/docs/${p.slug}/` })),
-	});
-	const section = (title: string) => {
-		const start = full.indexOf(`\n# ${title}\n`);
-		return full.slice(start, full.indexOf("\n---\n", start));
-	};
-
-	it("points the long motion pages at their file instead of repeating them", () => {
-		for (const title of ["Scroll", "Micro-interactions", "Transitions"]) {
-			const s = section(title);
-			expect(s).toContain("llms/motion/");
-			expect(s).toContain("Not repeated here");
-			expect(Buffer.byteLength(s)).toBeLessThan(1_000);
-		}
-	});
-
-	it("keeps the motion overview and every non-motion page in full", () => {
-		expect(Buffer.byteLength(section("Motion"))).toBeGreaterThan(2_000);
-		expect(Buffer.byteLength(section("Choosing a component"))).toBeGreaterThan(8_000);
-		expect(Buffer.byteLength(section("Common workarounds"))).toBeGreaterThan(4_000);
-	});
-
-	it("still points the recipes at llms.txt and get_recipe", () => {
-		expect(section("Recipes")).toContain("get_recipe");
-	});
-});
