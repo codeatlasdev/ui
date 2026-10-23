@@ -78,6 +78,8 @@ Snippets: `children`
 
 Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
 
+Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+
 ## AppForm
 
 `import { AppForm } from "@codeatlasdev/ui"`
@@ -616,6 +618,8 @@ Classes: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chev
 
 Classes: `ca-cmd-dialog` `ca-cmd-empty` `ca-cmd-error` `ca-cmd-group__label` `ca-cmd-item` `ca-cmd-item--active` `ca-cmd-item__icon` `ca-cmd-item__label` `ca-cmd-item__module` `ca-cmd-list` `ca-cmd-loading` `ca-cmd-overlay` `ca-cmd-search` `ca-cmd-search__hint` `ca-cmd-search__icon` `ca-cmd-search__input` `ca-cmd-search__spinner` `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
 
+Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+
 ## Container
 
 `import { Container } from "@codeatlasdev/ui"`
@@ -896,6 +900,8 @@ Snippets: `children`, `actions`
 
 Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
 
+Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+
 ## Divider
 
 `import { Divider } from "@codeatlasdev/ui"`
@@ -945,6 +951,8 @@ Classes: `ca-docs-nav` `ca-docs-nav__label` `ca-docs-nav__link` `ca-docs-nav__ti
 
 Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-docs-search` `ca-docs-search__bar` `ca-docs-search__body` `ca-docs-search__cancel` `ca-docs-search__context` `ca-docs-search__empty` `ca-docs-search__enter` `ca-docs-search__esc` `ca-docs-search__icon` `ca-docs-search__input` `ca-docs-search__result` `ca-docs-search__result--on` `ca-docs-search__results` `ca-docs-search__text` `ca-docs-search__title` `ca-layer-close` `ca-overlay`
 
+Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+
 ## DocsShell
 
 `import { DocsShell } from "@codeatlasdev/ui"`
@@ -989,6 +997,8 @@ Snippets: `children`, `actions`
 Also accepts: `Omit<HTMLDialogAttributes, 'children' \| 'open' \| 'title' \| 'class' \| 'role' \| 'onclose' \| 'oncancel'>`
 
 Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-drawer` `ca-drawer--bottom` `ca-drawer--left` `ca-drawer--right` `ca-drawer__actions` `ca-drawer__body` `ca-drawer__header` `ca-drawer__header--bare` `ca-drawer__title` `ca-layer-close` `ca-overlay`
+
+Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
 
 ## DropdownMenu
 
@@ -2392,6 +2402,8 @@ Classes: `ca-setting-item` `ca-setting-item__control` `ca-setting-item__desc` `c
 Snippets: `children`, `footer`
 
 Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay` `ca-sheet` `ca-sheet__body` `ca-sheet__close` `ca-sheet__description` `ca-sheet__footer` `ca-sheet__grab` `ca-sheet__grab--active` `ca-sheet__handle` `ca-sheet__header` `ca-sheet__meta` `ca-sheet__title`
+
+Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
 
 ## SimpleTable
 
