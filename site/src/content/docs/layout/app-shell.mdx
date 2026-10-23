@@ -40,6 +40,8 @@ import StageSrc from "~/demos/layout/app-shell/Stage.svelte?raw";
 
 The shell never imports a router. You pass the current `pathname` and handle `onNavigate`, so it works with SvelteKit, Astro, or plain state. `onNavigate` fires when the user switches module from the rail or the bottom navigation. Panel items are plain `<a href>` links, so a client-side router takes them over like any other link. Put it only on application routes, never on marketing pages. The panel is skipped for a module with fewer than two destinations, since it would only repeat the rail icon and the page title. Below 900px the rail and panel disappear and the mobile header plus bottom navigation take over. See the [templates](/templates/) for complete applications built on it.
 
+`SiteHeader` is also the top bar of a public page (outside the shell, with no panel toggle). Its `trailing` snippet holds the actions at the end of the bar and keeps the bar to one row. Below 600px a `NavigationMenu` placed directly in `trailing` is hidden, because three links never fit beside a locale switcher and a call to action at 390px; the `LocaleSwitcher` already shows its short code there. Give phones the same links in a menu of your own (an `IconButton` that opens a `Drawer`), shown only below 600px.
+
 The rail magnifies the module icon under the pointer, like a dock. Only the glyph grows, never the button, so the hover background cannot cover the active neighbour. The effect follows the motion scale: it is off with `motion: { scale: 0 }` in the theme and under `prefers-reduced-motion`.
 
 <Demo title="Anatomy" description="Rail (52px), panel (200px by default) and the main content area." src={AnatomySrc}><Anatomy /></Demo>
