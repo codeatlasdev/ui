@@ -2720,8 +2720,10 @@ Classes: `ca-ta` `ca-ta--disabled` `ca-ta__hint` `ca-ta__hint--error` `ca-ta__in
 | `helperText?` | `string` |  |  |
 | `disabled?` | `boolean` | `false` |  |
 | `required?` | `boolean` | `false` |  |
+| `requiredIndicator?` | `boolean` | `true` | `false` hides the asterisk of a `required` field (the input stays `required`), for forms where nothing is optional. |
 | `readonly?` | `boolean` | `false` |  |
 | `autocomplete?` | `HTMLInputAttributes["autocomplete"]` |  |  |
+| `revealable?` | `boolean` | `false` | `type="password"` only: adds an eye button inside the field that shows or hides the value (`aria-pressed`, localized name). |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded field, disabled, announced as busy. |
 | `class?` | `string` | `''` |  |
@@ -2732,11 +2734,11 @@ Classes: `ca-ta` `ca-ta--disabled` `ca-ta__hint` `ca-ta__hint--error` `ca-ta__in
 | `onfocus?` | `(e: FocusEvent) => void` |  |  |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
 
-Snippets: `leading`, `trailing`
+Snippets: `leading`, `trailing`, `below`
 
 Also accepts: `Omit<HTMLInputAttributes, 'value' \| 'class' \| 'children' \| 'size' \| 'oninput' \| 'onchange' \| 'onfocus' \| 'onblur'>`
 
-Classes: `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__adorn` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__wrap` `ca-tf__wrap--error` `ca-tf__wrap--focused`
+Classes: `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__adorn` `ca-tf__adorn--trail` `ca-tf__below` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__reveal` `ca-tf__wrap` `ca-tf__wrap--error` `ca-tf__wrap--focused`
 
 ## ThemeToggle
 

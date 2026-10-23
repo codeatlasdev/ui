@@ -1,8 +1,7 @@
 <script lang="ts">
   import { TextField } from '@codeatlasdev/ui';
-  import { Eye, EyeOff, Search } from '@lucide/svelte';
+  import { Search } from '@lucide/svelte';
 
-  let reveal = $state(false);
   let password = $state('');
 </script>
 
@@ -10,13 +9,7 @@
   <TextField label="Search" placeholder="Type to search…">
     {#snippet leading()}<Search size={16} stroke-width={2} />{/snippet}
   </TextField>
-  <TextField label="Password" type={reveal ? 'text' : 'password'} placeholder="••••••••" bind:value={password}>
-    {#snippet trailing()}
-      <button type="button" class="reveal" aria-label={reveal ? 'Hide password' : 'Show password'} aria-pressed={reveal} onclick={() => (reveal = !reveal)}>
-        {#if reveal}<EyeOff size={16} stroke-width={2} />{:else}<Eye size={16} stroke-width={2} />{/if}
-      </button>
-    {/snippet}
-  </TextField>
+  <TextField label="Password" type="password" revealable placeholder="••••••••" bind:value={password} />
 </div>
 
 <style>
@@ -26,20 +19,5 @@
     gap: var(--ca-space-4);
     width: 100%;
     max-width: 400px;
-  }
-
-  .reveal {
-    min-width: var(--ca-touch-target);
-    min-height: var(--ca-touch-target);
-    margin-block: calc((var(--ca-touch-target) - 1lh) / -2);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    display: inline-flex;
-    padding: 0;
-    border: 0;
-    background: none;
-    color: inherit;
-    cursor: pointer;
   }
 </style>

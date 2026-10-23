@@ -55,6 +55,7 @@ import { slider } from "./groups/slider.js";
 import { spinner } from "./groups/spinner.js";
 import { stepper } from "./groups/stepper.js";
 import { table } from "./groups/table.js";
+import { textField } from "./groups/textField.js";
 import { themeToggle } from "./groups/themeToggle.js";
 import { toast } from "./groups/toast.js";
 import { virtualList } from "./groups/virtualList.js";
@@ -104,6 +105,7 @@ export const groups = {
 	slider,
 	spinner,
 	stepper,
+	textField,
 	themeToggle,
 	toast,
 	map,

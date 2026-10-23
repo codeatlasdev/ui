@@ -1,10 +1,8 @@
 <script lang="ts">
-  import { AuthLayout, AuthCard, TextField, Button, Stack, Flex } from '@codeatlasdev/ui';
-  import { Eye, EyeOff } from '@lucide/svelte';
+  import { AuthLayout, AuthCard, TextField, Button, Stack } from '@codeatlasdev/ui';
 
   let email    = $state('');
   let password = $state('');
-  let showPass = $state(false);
   let loading  = $state(false);
 
   function submit(e: Event) {
@@ -27,19 +25,12 @@
       <Stack gap="3.5">
         <TextField label="Email address" type="email" bind:value={email}
           placeholder="you@example.com" autocomplete="email" />
-        <TextField label="Password" type={showPass ? 'text' : 'password'}
+        <TextField label="Password" type="password" revealable
           bind:value={password} placeholder="Min. 8 characters" autocomplete="current-password">
-          {#snippet trailing()}
-            <button type="button" class="pass-btn"
-              onclick={() => (showPass = !showPass)}
-              aria-label={showPass ? 'Hide password' : 'Show password'}>
-              {#if showPass}<EyeOff size={14}/>{:else}<Eye size={14}/>{/if}
-            </button>
+          {#snippet below()}
+            <a href="/templates/auth/forgot-password/" class="auth-link auth-link--sm">Forgot password?</a>
           {/snippet}
         </TextField>
-        <Flex justify="end">
-          <a href="/templates/auth/forgot-password/" class="auth-link auth-link--sm">Forgot password?</a>
-        </Flex>
         <Button type="submit" variant="filled" fullWidth disabled={loading}>
           {loading ? 'Signing in…' : 'Sign in'}
         </Button>

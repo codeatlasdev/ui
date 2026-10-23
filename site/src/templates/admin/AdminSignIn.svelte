@@ -1,6 +1,5 @@
 <script lang="ts">
   import { AuthLayout, AuthCard, TextField, Button, Stack } from '@codeatlasdev/ui';
-  import { Eye, EyeOff } from '@lucide/svelte';
   import { onMount } from 'svelte';
   import { DEMO_EMAIL, DEMO_PASSWORD, getUser, login } from '../_shared/auth';
 
@@ -8,7 +7,6 @@
 
   let email    = $state(DEMO_EMAIL);
   let password = $state('');
-  let showPass = $state(false);
   let error    = $state('');
   let loading  = $state(false);
 
@@ -47,16 +45,8 @@
     <form onsubmit={submit}>
       <Stack gap="3.5">
         <TextField label="Email" type="email" bind:value={email} autocomplete="email" />
-        <TextField label="Password" type={showPass ? 'text' : 'password'}
-          bind:value={password} placeholder={DEMO_PASSWORD} autocomplete="current-password">
-          {#snippet trailing()}
-            <button type="button" class="pass-btn"
-              onclick={() => (showPass = !showPass)}
-              aria-label={showPass ? 'Hide password' : 'Show password'}>
-              {#if showPass}<EyeOff size={14} />{:else}<Eye size={14} />{/if}
-            </button>
-          {/snippet}
-        </TextField>
+        <TextField label="Password" type="password" revealable
+          bind:value={password} placeholder={DEMO_PASSWORD} autocomplete="current-password" />
         {#if error}<p class="auth-error" role="alert">{error}</p>{/if}
         <Button type="submit" variant="filled" fullWidth disabled={loading}>
           {loading ? 'Signing in…' : 'Sign in'}

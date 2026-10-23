@@ -1,0 +1,47 @@
+<!-- @codeatlasdev/ui demo #500 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/text-field#password -->
+Element: #500 Password (inputs/text-field)
+What it shows: A sign-in pair of TextFields: a required email and a revealable password with a Forgot password link under it, neither showing an asterisk.
+When to use: Login and reset forms: the show/hide password eye, a link or strength meter under the field, and required fields without the asterisk when nothing is optional.
+Spec:
+- Email field `type="email"` with `required` and `requiredIndicator={false}`: the input is required, the label shows no asterisk
+- Password field `type="password"` with `revealable`: the component renders the eye button inside the field; the demo has no local reveal state
+- `{#snippet below()}` renders `<a href="/forgot-password">Forgot password?</a>` under the field, after any error or description
+- Column wrapper has `max-width: 400px`
+Tags: text-field, password, revealable, show-password, below, required, login, forgot-password
+Needs: @codeatlasdev/ui@4.5.0
+Components: TextField
+Live demo: https://ui.codeatlas.com.br/docs/inputs/text-field#password
+
+<script lang="ts">
+  import { TextField } from '@codeatlasdev/ui';
+
+  let email = $state('');
+  let password = $state('');
+</script>
+
+<div class="col">
+  <TextField label="Email" type="email" autocomplete="email" required requiredIndicator={false} bind:value={email} />
+  <TextField
+    label="Password"
+    type="password"
+    revealable
+    required
+    requiredIndicator={false}
+    autocomplete="current-password"
+    bind:value={password}
+  >
+    {#snippet below()}
+      <a href="/forgot-password">Forgot password?</a>
+    {/snippet}
+  </TextField>
+</div>
+
+<style>
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-4);
+    width: 100%;
+    max-width: 400px;
+  }
+</style>

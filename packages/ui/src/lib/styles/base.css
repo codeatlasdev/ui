@@ -253,6 +253,7 @@ html[data-ca-native] .ca-selectable * {
     .ca-tooltip__trigger, .ca-rail-btn, .ca-toggle-group__item, .ca-dt-pagination__btn,
     .ca-table-sort, .ca-table-group__toggle,
     .pass-btn, .glass-btn, .glass-btn-prominent, .glass-btn-clear
+    .ca-tf__reveal, .pass-btn, .glass-btn, .glass-btn-prominent, .glass-btn-clear
   ) {
     position: relative;
   }
@@ -264,6 +265,7 @@ html[data-ca-native] .ca-selectable * {
     .ca-tooltip__trigger, .ca-rail-btn, .ca-toggle-group__item, .ca-dt-pagination__btn,
     .ca-table-sort, .ca-table-group__toggle,
     .pass-btn, .glass-btn, .glass-btn-prominent, .glass-btn-clear
+    .ca-tf__reveal, .pass-btn, .glass-btn, .glass-btn-prominent, .glass-btn-clear
   )::after {
     content: "";
     position: absolute;

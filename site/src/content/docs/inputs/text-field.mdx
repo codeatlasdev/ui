@@ -11,6 +11,8 @@ import Icons from "~/demos/inputs/text-field/Icons.svelte";
 import IconsSrc from "~/demos/inputs/text-field/Icons.svelte?raw";
 import States from "~/demos/inputs/text-field/States.svelte";
 import StatesSrc from "~/demos/inputs/text-field/States.svelte?raw";
+import Password from "~/demos/inputs/text-field/Password.svelte";
+import PasswordSrc from "~/demos/inputs/text-field/Password.svelte?raw";
 import HiddenLabel from "~/demos/inputs/text-field/HiddenLabel.svelte";
 import HiddenLabelSrc from "~/demos/inputs/text-field/HiddenLabel.svelte?raw";
 
@@ -23,11 +25,12 @@ import HiddenLabelSrc from "~/demos/inputs/text-field/HiddenLabel.svelte?raw";
 <TextField label="Email" type="email" bind:value={email} />
 ```
 
-An `error` replaces the `description` and is announced to assistive tech. On touch devices the input text stays at 16px or more so iOS Safari does not zoom on focus. Native input attributes (`maxlength`, `inputmode`, `data-*`, `onkeydown`, `onfocus`...) are spread on the `<input>`, and `bind:ref` gives you the element. For an inline field whose label is implied visually, set `hideLabel` (the label stays for screen readers) or pass `aria-label` without `label`. Wrapper components such as `MaskedField`, `MoneyInput` and `PhoneField` forward these props to TextField.
+An `error` replaces the `description` and is announced to assistive tech. On touch devices the input text stays at 16px or more so iOS Safari does not zoom on focus. Native input attributes (`maxlength`, `inputmode`, `data-*`, `onkeydown`, `onfocus`...) are spread on the `<input>`, and `bind:ref` gives you the element. For an inline field whose label is implied visually, set `hideLabel` (the label stays for screen readers) or pass `aria-label` without `label`. For a password, `type="password"` plus `revealable` adds the eye button inside the field: it toggles the input between `password` and `text`, has a localized name from the catalog ("Show password" / "Hide password"), `aria-pressed`, and a 44px hit area on touch without changing the field height. Do not rebuild it with `trailing`. `below` renders a snippet under the field, after the error or description: use it for a "Forgot password?" link or a strength meter. `requiredIndicator={false}` hides the asterisk of a `required` field when the form marks nothing as optional (the input stays `required`). Wrapper components such as `MaskedField`, `MoneyInput` and `PhoneField` forward these props to TextField.
 
 <Demo title="Default" description="Basic text inputs with a label." src={DefaultSrc}><Default client:visible /></Demo>
-<Demo title="With icons" description="leading and trailing snippets. Interactive trailing content, like a reveal button, must be a real button with its own label." src={IconsSrc}><Icons client:visible /></Demo>
+<Demo title="With icons" description="leading and trailing snippets. Interactive trailing content must be a real button with its own label; for a password reveal use revealable." src={IconsSrc}><Icons client:visible /></Demo>
 <Demo title="States" description="Helper text, error, required, read-only, disabled and the small size." src={StatesSrc}><States client:visible /></Demo>
+<Demo title="Password" description="revealable adds the show/hide eye, below holds the Forgot password link, requiredIndicator={false} drops the asterisk." src={PasswordSrc}><Password client:visible /></Demo>
 <Demo title="Hidden label" description="hideLabel keeps the label for assistive tech only; maxlength and ref reach the native input." src={HiddenLabelSrc}><HiddenLabel client:visible /></Demo>
 
 <Props rows={[
@@ -41,12 +44,15 @@ An `error` replaces the `description` and is announced to assistive tech. On tou
   { name: "helperText", type: "string", description: "Deprecated alias of description." },
   { name: "disabled", type: "boolean", default: "false", description: "Disables the input." },
   { name: "required", type: "boolean", default: "false", description: "Marks the field as required." },
+  { name: "requiredIndicator", type: "boolean", default: "true", description: "`false` hides the asterisk of a `required` field; the input stays `required`." },
   { name: "readonly", type: "boolean", default: "false", description: "Makes the input read-only." },
   { name: "autocomplete", type: "HTMLInputAttributes['autocomplete']", description: "Native autocomplete hint." },
   { name: "name", type: "string", description: "Native name, for form submission." },
   { name: "size", type: "'sm' | 'md'", default: "'md'", description: "Field height." },
   { name: "leading", type: "Snippet", description: "Icon or element before the input." },
   { name: "trailing", type: "Snippet", description: "Icon or element after the input." },
+  { name: "revealable", type: "boolean", default: "false", description: "With `type=\"password\"`: adds a show/hide eye button inside the field (`aria-pressed`, localized name, 44px on touch)." },
+  { name: "below", type: "Snippet", description: "Content under the field and its hint or error: a link such as Forgot password, or a strength meter." },
   { name: "skeleton", type: "boolean", default: "false", description: "Loading placeholder with the exact size of the loaded field (disabled, `aria-busy`). See Skeleton." },
   { name: "class", type: "string", description: "Extra classes on the root." },
   { name: "ref", type: "HTMLInputElement | null", description: "Bindable native input element." },
