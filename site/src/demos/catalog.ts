@@ -365,6 +365,8 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "943", path: "navigation/context-menu/Rows" },
 	{ id: "944", path: "navigation/menubar/Editor" },
 	{ id: "945", path: "navigation/menubar/Compact" },
+	{ id: "946", path: "navigation/navigation-menu/Header" },
+	{ id: "947", path: "navigation/navigation-menu/Delays" },
 	{ id: "960", path: "display/image/Ratio" },
 	{ id: "961", path: "display/aspect-ratio/Embed" },
 	{ id: "962", path: "layout/resizable-panels/Workspace" },

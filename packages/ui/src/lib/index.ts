@@ -189,6 +189,9 @@ export { default as MessageBubble } from "./components/MessageBubble/MessageBubb
 export { default as MobilePane } from "./components/MobilePane/MobilePane.svelte";
 export { default as MotionStage } from "./components/MotionStage/MotionStage.svelte";
 export type { MotionCtx } from "./components/MotionStage/stage.svelte.js";
+export { default as NavigationMenu } from "./components/NavigationMenu/NavigationMenu.svelte";
+export { default as NavigationMenuItem } from "./components/NavigationMenu/NavigationMenuItem.svelte";
+export { default as NavigationMenuLink } from "./components/NavigationMenu/NavigationMenuLink.svelte";
 export type { NotificationItem } from "./components/NotificationBell/NotificationBell.svelte";
 export { default as NotificationBell } from "./components/NotificationBell/NotificationBell.svelte";
 export { default as NumberField } from "./components/NumberField/NumberField.svelte";

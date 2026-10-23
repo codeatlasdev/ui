@@ -276,6 +276,10 @@ State attributes on `dialog.ca-drawer`: `data-chromeless` (body padding 0, no he
 
 State attributes on `.ca-motion-stage`: `data-playing`, `data-taken`, `data-reduced`, `data-cycle`.
 
+## NavigationMenu
+
+`.ca-navmenu` `.ca-navmenu-in` `.ca-navmenu-out` `.ca-navmenu-panel` `.ca-navmenu__chevron` `.ca-navmenu__desc` `.ca-navmenu__entry` `.ca-navmenu__link` `.ca-navmenu__list` `.ca-navmenu__title` `.ca-navmenu__trigger`
+
 ## NavigationProgress
 
 `.ca-nav-progress` `.ca-nav-progress__bar`

@@ -1,0 +1,12 @@
+{
+	"summary": "A marketing header nav with Products and Resources disclosure buttons that open panels of links (Products links carry a description), followed by Pricing (the current page) and Contact links.",
+	"use": "The primary navigation of a marketing site: a few top-level links and a couple of grouped panels, reachable by hover, click and keyboard.",
+	"spec": [
+		"`<NavigationMenu aria-label=\"Main\">` renders a navigation landmark with a list",
+		"`<NavigationMenuItem label=\"Products\">` and `<NavigationMenuItem label=\"Resources\">` are disclosure buttons whose children are `NavigationMenuLink`s",
+		"Products links pass `description` for a second line that is part of the link name",
+		"`<NavigationMenuLink href=\"#pricing\" current>` marks the current page; Contact is a plain link"
+	],
+	"tags": ["navigation-menu", "header", "disclosure", "marketing", "links", "keyboard"],
+	"shape": "wide"
+}

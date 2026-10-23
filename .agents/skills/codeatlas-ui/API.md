@@ -2141,6 +2141,60 @@ Snippets: `children` (`Snippet<[MotionCtx]>`)
 
 Parts: `ca-motion-stage` `ca-motion-stage__bar` `ca-motion-stage__canvas`
 
+## NavigationMenu
+
+`import { NavigationMenu } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `class?` | `string` | `''` |  |
+| `openDelay?` | `number` | `150` | Milliseconds the pointer must rest on an item's button before its panel opens. Moving between items while one is open switches at once. |
+| `closeDelay?` | `number` | `250` | Milliseconds a panel stays open after the pointer leaves, so it can cross into it. |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class' \| 'children'>`
+
+Parts: `ca-navmenu__list`
+
+## NavigationMenuItem
+
+`import { NavigationMenuItem } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `class?` | `string` | `''` |  |
+| `label` | `string` |  | Text of the disclosure button. |
+| `panelClass?` | `string` | `''` | Class on the panel. |
+| `align?` | `'start' \| 'center' \| 'end'` | `'start'` |  |
+
+Snippets: `children`
+
+Parts: `ca-navmenu-panel` `ca-navmenu__chevron` `ca-navmenu__trigger`
+
+Internal (may change in any release): `ca-navmenu-in` `ca-navmenu-out`
+
+Data attributes: `data-state` (`closed` `open`)
+
+## NavigationMenuLink
+
+`import { NavigationMenuLink } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `class?` | `string` | `''` |  |
+| `href?` | `string` |  | Link target. |
+| `current?` | `boolean` | `false` | The link is the current page: sets `aria-current="page"`. |
+| `description?` | `string` |  | A second line under the title, part of the link's accessible name. Panel links only. |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLAnchorAttributes, 'class' \| 'children'>`
+
+Parts: `ca-navmenu__desc` `ca-navmenu__link` `ca-navmenu__title`
+
+Data attributes: `data-current`
+
 ## NavigationProgress
 
 `import { NavigationProgress } from "@codeatlasdev/ui/kit"`

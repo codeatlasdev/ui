@@ -1,6 +1,6 @@
 {
 	"version": "4.5.0",
-	"count": 370,
+	"count": 372,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -29,8 +29,8 @@
 		{
 			"slug": "navigation",
 			"first": "146",
-			"last": "945",
-			"count": 37
+			"last": "947",
+			"count": 39
 		},
 		{
 			"slug": "layout",
@@ -16206,6 +16206,93 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/navigation/menubar#bar-open-state",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "946",
+			"group": "navigation",
+			"page": "navigation-menu",
+			"variant": "Header",
+			"slug": "marketing-header",
+			"title": "Marketing header",
+			"description": "Products and Resources open panels of links, Pricing is the current page. Try hover, click, Tab, Down and Escape.",
+			"summary": "A marketing header nav with Products and Resources disclosure buttons that open panels of links (Products links carry a description), followed by Pricing (the current page) and Contact links.",
+			"use": "The primary navigation of a marketing site: a few top-level links and a couple of grouped panels, reachable by hover, click and keyboard.",
+			"spec": [
+				"`<NavigationMenu aria-label=\"Main\">` renders a navigation landmark with a list",
+				"`<NavigationMenuItem label=\"Products\">` and `<NavigationMenuItem label=\"Resources\">` are disclosure buttons whose children are `NavigationMenuLink`s",
+				"Products links pass `description` for a second line that is part of the link name",
+				"`<NavigationMenuLink href=\"#pricing\" current>` marks the current page; Contact is a plain link"
+			],
+			"tags": [
+				"navigation-menu",
+				"header",
+				"disclosure",
+				"marketing",
+				"links",
+				"keyboard"
+			],
+			"shape": "wide",
+			"components": [
+				"NavigationMenu",
+				"NavigationMenuItem",
+				"NavigationMenuLink"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"NavigationMenu",
+						"NavigationMenuItem",
+						"NavigationMenuLink"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/navigation-menu#marketing-header",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "947",
+			"group": "navigation",
+			"page": "navigation-menu",
+			"variant": "Delays",
+			"slug": "delays-and-alignment",
+			"title": "Delays and alignment",
+			"description": "Opens on hover at once, stays open 400 ms after leaving, and each panel aligns to the start or end of its button.",
+			"summary": "A two-item docs nav (Guides, Reference) that opens on hover at once and stays open 400 ms after the pointer leaves.",
+			"use": "Tuning how eager the hover behaviour is for dense navigation, and aligning each panel to its button's start or end.",
+			"spec": [
+				"`<NavigationMenu aria-label=\"Docs sections\" openDelay={0} closeDelay={400}>`",
+				"`<NavigationMenuItem label=\"Guides\" align=\"start\">` and `<NavigationMenuItem label=\"Reference\" align=\"end\">` align their panels to the button",
+				"Each panel holds two `NavigationMenuLink`s"
+			],
+			"tags": [
+				"navigation-menu",
+				"delay",
+				"hover",
+				"align",
+				"docs",
+				"disclosure"
+			],
+			"shape": "wide",
+			"components": [
+				"NavigationMenu",
+				"NavigationMenuItem",
+				"NavigationMenuLink"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"NavigationMenu",
+						"NavigationMenuItem",
+						"NavigationMenuLink"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/navigation-menu#delays-and-alignment",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{

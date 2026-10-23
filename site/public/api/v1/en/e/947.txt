@@ -1,0 +1,27 @@
+<!-- @codeatlasdev/ui demo #947 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/navigation-menu#delays-and-alignment -->
+Element: #947 Delays and alignment (navigation/navigation-menu)
+What it shows: A two-item docs nav (Guides, Reference) that opens on hover at once and stays open 400 ms after the pointer leaves.
+When to use: Tuning how eager the hover behaviour is for dense navigation, and aligning each panel to its button's start or end.
+Spec:
+- `<NavigationMenu aria-label="Docs sections" openDelay={0} closeDelay={400}>`
+- `<NavigationMenuItem label="Guides" align="start">` and `<NavigationMenuItem label="Reference" align="end">` align their panels to the button
+- Each panel holds two `NavigationMenuLink`s
+Tags: navigation-menu, delay, hover, align, docs, disclosure
+Needs: @codeatlasdev/ui@4.5.0
+Components: NavigationMenu, NavigationMenuItem, NavigationMenuLink
+Live demo: https://ui.codeatlas.com.br/docs/navigation/navigation-menu#delays-and-alignment
+
+<script lang="ts">
+  import { NavigationMenu, NavigationMenuItem, NavigationMenuLink } from '@codeatlasdev/ui';
+</script>
+
+<NavigationMenu aria-label="Docs sections" openDelay={0} closeDelay={400}>
+  <NavigationMenuItem label="Guides" align="start">
+    <NavigationMenuLink href="#start">Getting started</NavigationMenuLink>
+    <NavigationMenuLink href="#theming">Theming</NavigationMenuLink>
+  </NavigationMenuItem>
+  <NavigationMenuItem label="Reference" align="end">
+    <NavigationMenuLink href="#components">Components</NavigationMenuLink>
+    <NavigationMenuLink href="#tokens">Tokens</NavigationMenuLink>
+  </NavigationMenuItem>
+</NavigationMenu>

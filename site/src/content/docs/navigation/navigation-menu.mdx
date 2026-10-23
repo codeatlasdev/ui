@@ -1,0 +1,59 @@
+---
+title: Navigation Menu
+description: Disclosure navigation for marketing headers, with links and buttons that reveal panels of links. Not role=menu.
+group: Navigation
+order: 18
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Header from "~/demos/navigation/navigation-menu/Header.svelte";
+import HeaderSrc from "~/demos/navigation/navigation-menu/Header.svelte?raw";
+import Delays from "~/demos/navigation/navigation-menu/Delays.svelte";
+import DelaysSrc from "~/demos/navigation/navigation-menu/Delays.svelte?raw";
+
+```svelte
+<script>
+  import { NavigationMenu, NavigationMenuItem, NavigationMenuLink } from "@codeatlasdev/ui";
+</script>
+
+<NavigationMenu aria-label="Main">
+  <NavigationMenuItem label="Products">
+    <NavigationMenuLink href="/analytics" description="Dashboards">Analytics</NavigationMenuLink>
+    <NavigationMenuLink href="/automation">Automation</NavigationMenuLink>
+  </NavigationMenuItem>
+  <NavigationMenuLink href="/pricing" current>Pricing</NavigationMenuLink>
+</NavigationMenu>
+```
+
+`NavigationMenu` is the site navigation of a marketing header: a `<nav>` with a list of plain links and disclosure buttons that reveal a panel of links. It follows the WAI-ARIA disclosure navigation pattern, not the menu pattern: there is no `role="menu"`, `menubar` or `menuitem`, links stay links, and a screen reader reads the list, the buttons with `aria-expanded` and `aria-controls`, and the links in the panel with their normal Tab order. For application commands (File, Edit) use [Menubar](/docs/navigation/menubar/); for actions on one button use [DropdownMenu](/docs/navigation/menu/).
+
+The top level is one tab stop with arrow keys: Left and Right (and Home and End) move between the buttons and links without opening anything. Enter or Space toggles a panel and focus stays on the button; Tab then moves into the panel's links and on to the next top-level item; Down opens the panel and moves to its first link; Up and Down move through the links; Escape closes the panel and returns focus to its button. Following a link closes the panel, and so does a press outside. Only one panel is open at a time.
+
+With a pointer, resting on a button for `openDelay` (150 ms) opens its panel, moving to another button while one is open switches at once, and leaving closes after `closeDelay` (250 ms) so the pointer can cross into the panel. A click toggles the panel, which is also how touch opens it. A `description` on a panel link adds a second line that is part of the link's accessible name. Mark the current page with `current` (`aria-current="page"`). Build a mobile version of the header with [Drawer](/docs/feedback/drawer/); this component is the desktop bar.
+
+<Demo title="Marketing header" description="Products and Resources open panels of links, Pricing is the current page. Try hover, click, Tab, Down and Escape." src={HeaderSrc}><Header client:visible /></Demo>
+<Demo title="Delays and alignment" description="Opens on hover at once, stays open 400 ms after leaving, and each panel aligns to the start or end of its button." src={DelaysSrc}><Delays client:visible /></Demo>
+
+<Props for="NavigationMenu" rows={[
+  { name: "children", type: "Snippet", description: "`NavigationMenuItem`s (a button with a panel) and `NavigationMenuLink`s (a plain link)." },
+  { name: "openDelay", type: "number", default: "150", description: "Milliseconds the pointer must rest on a button before its panel opens. Switching between items while one is open is immediate." },
+  { name: "closeDelay", type: "number", default: "250", description: "Milliseconds a panel stays open after the pointer leaves." },
+  { name: "aria-label", type: "string", description: "Accessible name of the nav landmark." },
+  { name: "class", type: "string", default: "''", description: "Extra CSS classes on the `nav`." },
+]} />
+
+<Props for="NavigationMenuItem" rows={[
+  { name: "label", type: "string", description: "Text of the disclosure button." },
+  { name: "children", type: "Snippet", description: "Panel content: `NavigationMenuLink`s, or any links and text." },
+  { name: "align", type: "'start' | 'center' | 'end'", default: "'start'", description: "Alignment of the panel against its button." },
+  { name: "panelClass", type: "string", default: "''", description: "Extra CSS classes on the panel." },
+  { name: "class", type: "string", default: "''", description: "Extra CSS classes on the button." },
+]} />
+
+<Props for="NavigationMenuLink" rows={[
+  { name: "href", type: "string", description: "Link target. Every other anchor attribute is forwarded." },
+  { name: "current", type: "boolean", default: "false", description: "The link is the current page: sets `aria-current=\"page\"`." },
+  { name: "description", type: "string", description: "A second line under the title, part of the accessible name. Use it on panel links." },
+  { name: "children", type: "Snippet", description: "The link title." },
+  { name: "class", type: "string", default: "''", description: "Extra CSS classes on the link." },
+]} />
