@@ -53,6 +53,62 @@ describe("design knobs → tokens", () => {
 			expect(css).toContain(decl);
 	});
 
+	it("components.button/iconButton/kbd emit the --ca-btn-*, --ca-icon-btn-* and --ca-kbd-* tokens (#373)", () => {
+		const css = themeCSS(
+			defineTheme({
+				components: {
+					button: {
+						weight: 600,
+						tracking: "-0.006em",
+						leading: 1.25,
+						gap: "var(--ca-space-2)",
+						ghostBorderWidth: "0px",
+						disabledBg: "var(--ca-brand-fill)",
+						sm: { paddingX: "var(--ca-space-3)", fontSize: "0.8125rem", weight: 500 },
+						lg: { fontSize: "var(--ca-font-size-button)", weight: 400, tracking: "-0.006em" },
+					},
+					iconButton: { weight: 500, size: { sm: "36px" } },
+					kbd: { size: "var(--ca-space-5)", fontSize: "0.75rem", leading: 1 },
+				},
+			})
+		);
+		for (const decl of [
+			"--ca-btn-font-weight: 600;",
+			"--ca-btn-letter-spacing: -0.006em;",
+			"--ca-btn-line-height: 1.25;",
+			"--ca-btn-gap: var(--ca-space-2);",
+			"--ca-btn-ghost-border-width: 0px;",
+			"--ca-btn-disabled-bg: var(--ca-brand-fill);",
+			"--ca-btn-sm-padding-x: var(--ca-space-3);",
+			"--ca-btn-sm-font-size: 0.8125rem;",
+			"--ca-btn-sm-font-weight: 500;",
+			"--ca-btn-lg-font-size: var(--ca-font-size-button);",
+			"--ca-btn-lg-font-weight: 400;",
+			"--ca-btn-lg-letter-spacing: -0.006em;",
+			"--ca-icon-btn-font-weight: 500;",
+			"--ca-icon-btn-size-sm: 36px;",
+			"--ca-kbd-size: var(--ca-space-5);",
+			"--ca-kbd-font-size: 0.75rem;",
+			"--ca-kbd-line-height: 1;",
+		])
+			expect(css).toContain(decl);
+		expect(css).not.toContain("--ca-btn-md-");
+		expect(themeCSS(defineTheme({ components: {} }))).toBe("");
+	});
+
+	it("mergeTheme merges components per block", () => {
+		const merged = mergeTheme(
+			{ components: { button: { weight: 600, sm: { paddingX: "8px" } } } },
+			{ components: { button: { gap: "4px", sm: { fontSize: "13px" } }, kbd: { size: "20px" } } }
+		);
+		expect(merged.components?.button).toEqual({
+			weight: 600,
+			gap: "4px",
+			sm: { paddingX: "8px", fontSize: "13px" },
+		});
+		expect(merged.components?.kbd).toEqual({ size: "20px" });
+	});
+
 	it("motion.enter: none zeroes entrances only, motion.scale keeps driving color transitions", () => {
 		const css = themeCSS(defineTheme({ motion: { enter: "none" } }));
 		expect(css).toContain("--ca-enter-scale: 0;");

@@ -2,7 +2,7 @@
 
 > **Renaming or removing any class listed here is a breaking change** (requires a major/minor release with a changelog note). Consuming apps use these classes as CSS targets, so they are a public contract alongside component props. Component CSS lives in `@layer ca.components`, so a plain unlayered app rule with the same single-class selector (`.ca-btn:disabled { ... }`) overrides the kit: no doubled classes, no `!important` (see `getting-started/theming`).
 
-Conventions: BEM (`ca-block__element`, `ca-block--modifier`). CSS variables (`--ca-*`) are NOT listed here; see `packages/ui/src/lib/styles/tokens.css`.
+Conventions: BEM (`ca-block__element`, `ca-block--modifier`). CSS variables (`--ca-*`) are NOT listed here; see `packages/ui/src/lib/styles/tokens.css`. Component tokens (`--ca-<component>-<property>`, `--ca-<component>-<size|part>-<property>`) are the supported way to change weight, tracking, gap, padding and size: see [Component tokens](#component-tokens) below and the theming guide.
 
 Generated from `grep -o 'ca-[a-z0-9_-]*'` over `packages/ui/src/lib/components/<Component>/` (`.svelte`, `.css`, `.ts`), excluding custom properties and duplicates. When you add or rename components, rerun the command and update this file. Some listed names may be `@keyframes` or internal identifiers (e.g. `ca-accordion-down`) rather than classes; treat them as stable to be safe.
 
@@ -457,3 +457,13 @@ These attributes are part of the public contract too (an app can restyle one axi
 `data-ca-blur` is the only way a component blurs its backdrop: the filter is declared once per role in `surface.css` (`@layer ca.materials`) from the `--ca-blur-*`, `--ca-mat-*-filter`, `--ca-overlay-blur`, `--ca-chrome-blur` and `--ca-tooltip-blur` tokens, so `html[data-style]` turns every one of them off or down together. Override a single role with `[data-ca-blur="thick"] { --ca-blur-role: ... }` (unlayered app CSS wins). The modal scrim is `dialog.ca-overlay::backdrop` and reads `--ca-scrim-blur`.
 
 Surface and layout CSS variables (`--ca-surface-*`, `--ca-elevation-*`, `--ca-blur-role`) are tokens, not listed here.
+
+---
+
+## Component tokens
+
+A component token is a custom property a component reads before its default: `--ca-<component>-<property>` for the component, `--ca-<component>-<size|part>-<property>` for one size or part (it wins over the first). Declare it on `:root`, on a wrapper or through `ThemeOptions.components`. Unset, the component draws what it always drew. Renaming or removing a token below is a breaking change, like a class.
+
+- **Button** `--ca-btn-font-weight` `--ca-btn-letter-spacing` `--ca-btn-line-height` `--ca-btn-gap` `--ca-btn-{sm,md,lg}-height` `--ca-btn-{sm,md,lg}-padding-x` `--ca-btn-{sm,md,lg}-font-size` `--ca-btn-{sm,md,lg}-font-weight` `--ca-btn-{sm,md,lg}-letter-spacing` `--ca-btn-ghost-border-width` `--ca-btn-disabled-bg` `--ca-btn-touch-height`
+- **IconButton** `--ca-icon-btn-size-{sm,md,lg}` `--ca-icon-btn-font-weight` `--ca-icon-btn-touch-size`
+- **Kbd** `--ca-kbd-size` `--ca-kbd-font-size` `--ca-kbd-line-height`

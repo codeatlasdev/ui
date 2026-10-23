@@ -86,6 +86,7 @@
       border: none;
       cursor: pointer;
       flex-shrink: 0;
+      font-weight: var(--ca-icon-btn-font-weight, inherit);
       transition:
         background var(--ca-duration-fast) var(--ca-ease-standard),
         color var(--ca-duration-fast) var(--ca-ease-standard),
@@ -116,15 +117,16 @@
       stroke: currentColor;
     }
 
-    /* Sizes */
-    .ca-icon-btn--sm { width: var(--ca-space-8); height: var(--ca-space-8); }
-    .ca-icon-btn--md { width: var(--ca-space-10); height: var(--ca-space-10); }
-    .ca-icon-btn--lg { width: var(--ca-space-12); height: var(--ca-space-12); }
+    /* Sizes: --ca-icon-btn-size-<size> sets width and height; unset, the 4.5.0 space steps. */
+    .ca-icon-btn--sm { width: var(--ca-icon-btn-size-sm, var(--ca-space-8)); height: var(--ca-icon-btn-size-sm, var(--ca-space-8)); }
+    .ca-icon-btn--md { width: var(--ca-icon-btn-size-md, var(--ca-space-10)); height: var(--ca-icon-btn-size-md, var(--ca-space-10)); }
+    .ca-icon-btn--lg { width: var(--ca-icon-btn-size-lg, var(--ca-space-12)); height: var(--ca-icon-btn-size-lg, var(--ca-space-12)); }
 
+    /* Touch: 44px floor; --ca-icon-btn-touch-size is the explicit opt-out. */
     @media (pointer: coarse) {
       .ca-icon-btn {
-        min-width: var(--ca-touch-target);
-        min-height: var(--ca-touch-target);
+        min-width: var(--ca-icon-btn-touch-size, var(--ca-touch-target));
+        min-height: var(--ca-icon-btn-touch-size, var(--ca-touch-target));
       }
     }
 

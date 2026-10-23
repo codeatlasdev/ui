@@ -21,6 +21,16 @@ import BasicSrc from "~/demos/display/kbd/Basic.svelte?raw";
 
 <Demo title="Shortcuts in text" src={BasicSrc}><Basic /></Demo>
 
+## Tokens
+
+| Token | Default | Drives |
+|---|---|---|
+| `--ca-kbd-size` | none (the keycap hugs its label) | Square keycap: minimum width and height, e.g. `var(--ca-space-5)` |
+| `--ca-kbd-font-size` | `--ca-font-size-micro` | Font size |
+| `--ca-kbd-line-height` | `--ca-line-height-snug` | Line-height |
+
+Set them on `:root`, on a wrapper or through [`ThemeOptions.components.kbd`](/docs/getting-started/theming/#component-tokens).
+
 <Props rows={[
   { name: "children", type: "Snippet", description: "The key label, for example Ctrl or K." },
   { name: "class", type: "string", default: "''", description: "Extra classes on the `<kbd>` element." },

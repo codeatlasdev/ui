@@ -5,8 +5,8 @@
 		{
 			"slug": "inputs",
 			"first": "001",
-			"last": "721",
-			"count": 73
+			"last": "880",
+			"count": 74
 		},
 		{
 			"slug": "surfaces",
@@ -35,8 +35,8 @@
 		{
 			"slug": "layout",
 			"first": "165",
-			"last": "860",
-			"count": 39
+			"last": "781",
+			"count": 38
 		},
 		{
 			"slug": "charts",
@@ -15310,43 +15310,51 @@
 			"needs": "@codeatlasdev/ui@4.5.0 + maplibre-gl"
 		},
 		{
-			"id": "860",
-			"group": "layout",
-			"page": "domain-tokens",
-			"variant": "StatusTokens",
-			"slug": "status-tokens",
-			"title": "Status tokens",
-			"description": "Pills colored by --ca-token-status-*, and a canvas colored with tokenRgba. Toggle the theme: both follow.",
-			"summary": "Three lead-status pills colored by preset domain tokens, plus a canvas bar per status colored with tokenRgba.",
-			"use": "Status, tier or channel colors that must follow the preset and the light or dark scheme: declare them once under tokens in the theme, read them as CSS vars or as [r, g, b, a].",
+			"id": "880",
+			"group": "inputs",
+			"page": "button",
+			"variant": "ComponentTokens",
+			"slug": "component-tokens",
+			"title": "Component tokens",
+			"description": "Weight, tracking, line-height, gap, padding, ghost border and icon button size set on one wrapper, with no selector against a ca-* class.",
+			"summary": "A dense focus-mode toolbar that restyles Button, IconButton and Kbd with component tokens on one wrapper: tighter gap and line-height, a regular-weight large button, wider small padding, a borderless ghost button, a 36px icon button and a square keycap.",
+			"use": "A product whose design system fixes button weight, tracking, gap, padding and keycap size per context (public area, dashboard, focus mode), without writing selectors against ca-* classes.",
 			"spec": [
-				"`import { colorScheme, tokenRgba } from '@codeatlasdev/ui'`",
-				"Three `<li class=\"st__pill st__pill--{s.name}\">` pills for `new`, `won` and `lost`, each with `background: var(--ca-token-status-new-subtle)` and `color: var(--ca-token-status-new)` (same pair for `won` and `lost`)",
-				"A `<canvas` of `width=\"300\" height=\"80\"` whose `$effect` reads `colorScheme.resolved` and `colorScheme.preset`, then fills one bar per status with ``tokenRgba(`status.${s.name}`)``",
-				"The pills sit in a wrapping flex row with `gap: var(--ca-space-2)` and `border-radius: var(--ca-radius-pill)`"
+				"Wrapper `.dense` declares only custom properties: `--ca-btn-gap`, `--ca-btn-line-height`, `--ca-btn-letter-spacing`, `--ca-btn-lg-font-weight`, `--ca-btn-lg-font-size`, `--ca-btn-sm-padding-x`, `--ca-btn-sm-font-size`, `--ca-btn-ghost-border-width`, `--ca-icon-btn-size-sm`, `--ca-kbd-size`, `--ca-kbd-font-size`, `--ca-kbd-line-height`",
+				"`<Button variant=\"filled\" size=\"lg\">` labelled Call next lead",
+				"`<Button variant=\"outlined\" tone=\"neutral\" size=\"sm\">` labelled Snooze, a ghost neutral sm Skip and a disabled outlined neutral sm Reassign",
+				"`<IconButton variant=\"text\" size=\"sm\" aria-label=\"Close focus mode\">` with an X icon",
+				"`<Kbd>N</Kbd>` after the text Next lead in a `.hint` span",
+				"Flex `.dense` wrapper with `gap: var(--ca-space-3)`; the CSS has no selector against a component class"
 			],
 			"tags": [
+				"button",
+				"icon-button",
+				"kbd",
 				"tokens",
-				"preset",
-				"domain",
-				"status",
-				"tokenrgba",
-				"canvas",
-				"theme"
+				"density",
+				"typography",
+				"theming",
+				"focus-mode"
 			],
 			"shape": "wide",
-			"components": [],
+			"components": [
+				"Button",
+				"IconButton",
+				"Kbd"
+			],
 			"imports": [
 				{
 					"from": "@codeatlasdev/ui",
 					"names": [
-						"colorScheme",
-						"tokenRgba"
+						"Button",
+						"IconButton",
+						"Kbd"
 					]
 				}
 			],
-			"interactive": true,
-			"demo": "https://ui.codeatlas.com.br/docs/layout/domain-tokens#status-tokens",
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/button#component-tokens",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		}
 	]

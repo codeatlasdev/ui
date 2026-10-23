@@ -282,11 +282,16 @@ export type { ToastItem, ToastOptions, ToastVariant } from "./stores/toast.svelt
 export { toast } from "./stores/toast.svelte.js";
 export { viewport } from "./stores/viewport.svelte.js";
 export type {
+	ButtonSizeTokens,
+	ButtonTokens,
+	ComponentTokens,
 	Density,
 	ElevationModel,
 	FontDescriptor,
 	FontFallbackMetrics,
 	FontSpec,
+	IconButtonTokens,
+	KbdTokens,
 	MotionOptions,
 	Paper,
 	PresetDefinition,

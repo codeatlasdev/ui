@@ -155,13 +155,14 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      gap: var(--ca-space-1-5);
+      gap: var(--ca-btn-gap, var(--ca-space-1-5));
       border-radius: var(--ca-radius-control);
       border: none;
       cursor: pointer;
       font-family: var(--ca-font-sans);
-      font-weight: var(--ca-font-weight-medium);
-      letter-spacing: var(--ca-label-tracking);
+      font-weight: var(--ca-btn-font-weight, var(--ca-font-weight-medium));
+      letter-spacing: var(--ca-btn-letter-spacing, var(--ca-label-tracking));
+      line-height: var(--ca-btn-line-height, inherit);
       text-decoration: none;
       white-space: nowrap;
       transition:
@@ -187,26 +188,34 @@
       pointer-events: none;
     }
 
-    /* Sizes: md aligns with TextField/Select height (--ca-control-height) */
+    /* Sizes: md aligns with TextField/Select height (--ca-control-height). Every value reads a
+       component token first (--ca-btn-<size>-*, then --ca-btn-*): unset, it is the 4.5.0 look. */
     .ca-btn--sm {
-      height: var(--ca-control-height-sm);
-      padding: 0 var(--ca-space-2-5);
-      font-size: var(--ca-font-size-body2);
+      height: var(--ca-btn-sm-height, var(--ca-control-height-sm));
+      padding: 0 var(--ca-btn-sm-padding-x, var(--ca-space-2-5));
+      font-size: var(--ca-btn-sm-font-size, var(--ca-font-size-body2));
+      font-weight: var(--ca-btn-sm-font-weight, var(--ca-btn-font-weight, var(--ca-font-weight-medium)));
+      letter-spacing: var(--ca-btn-sm-letter-spacing, var(--ca-btn-letter-spacing, var(--ca-label-tracking)));
     }
     .ca-btn--md {
-      height: var(--ca-control-height);
-      padding: 0 var(--ca-control-px);
-      font-size: var(--ca-font-size-button);
+      height: var(--ca-btn-md-height, var(--ca-control-height));
+      padding: 0 var(--ca-btn-md-padding-x, var(--ca-control-px));
+      font-size: var(--ca-btn-md-font-size, var(--ca-font-size-button));
+      font-weight: var(--ca-btn-md-font-weight, var(--ca-btn-font-weight, var(--ca-font-weight-medium)));
+      letter-spacing: var(--ca-btn-md-letter-spacing, var(--ca-btn-letter-spacing, var(--ca-label-tracking)));
     }
     .ca-btn--lg {
-      height: var(--ca-control-height-lg);
-      padding: 0 var(--ca-space-5);
-      font-size: var(--ca-font-size-dialog);
+      height: var(--ca-btn-lg-height, var(--ca-control-height-lg));
+      padding: 0 var(--ca-btn-lg-padding-x, var(--ca-space-5));
+      font-size: var(--ca-btn-lg-font-size, var(--ca-font-size-dialog));
+      font-weight: var(--ca-btn-lg-font-weight, var(--ca-btn-font-weight, var(--ca-font-weight-medium)));
+      letter-spacing: var(--ca-btn-lg-letter-spacing, var(--ca-btn-letter-spacing, var(--ca-label-tracking)));
     }
 
-    /* Touch: every size reaches the 44px target (min-height wins over height). */
+    /* Touch: every size reaches the 44px target (min-height wins over height). --ca-btn-touch-height
+       is the explicit opt-out (e.g. 36px in a dense focus mode). */
     @media (pointer: coarse) {
-      .ca-btn { min-height: var(--ca-touch-target); }
+      .ca-btn { min-height: var(--ca-btn-touch-height, var(--ca-touch-target)); }
       .ca-btn--lg { height: auto; }
     }
 
@@ -253,7 +262,7 @@
     /* Ghost */
     .ca-btn--ghost {
       background: transparent;
-      border: var(--ca-border-width) solid transparent;
+      border: var(--ca-btn-ghost-border-width, var(--ca-border-width)) solid transparent;
       color: var(--ca-brand-text);
     }
     .ca-btn--ghost:hover:not(:disabled) {
@@ -300,7 +309,7 @@
     .ca-btn:disabled:not(.ca-btn--loading),
     .ca-btn[aria-disabled='true']:not(.ca-btn--loading) {
       color: var(--ca-text-disabled);
-      background: var(--ca-action-disabled-bg);
+      background: var(--ca-btn-disabled-bg, var(--ca-action-disabled-bg));
       border-color: var(--ca-outline-default);
       box-shadow: none;
     }
