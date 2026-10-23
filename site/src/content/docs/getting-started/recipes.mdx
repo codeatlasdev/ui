@@ -11,14 +11,15 @@ Every example is a SvelteKit route file with its imports, its data shape and its
 
 | I am building | Recipe | Main components |
 |---|---|---|
-| The frame around every signed-in page | [App shell](#app-shell) | `AppShellLayout`, `NavModule`, `ThemeToggle`, `NotificationBell`, `Avatar` |
-| A searchable, filterable list of records | [List page](#list-page) | `AppList`, `SimpleTable`, `UserCell`, `StatusChip`, `FilterGroup` |
-| A create or edit form | [Form page](#form-page) | `AppForm`, `FormSection`, `TextField`, `Select`, `Switch`, `useForm` |
+| The frame around every signed-in page | [App shell](#app-shell) | `AppShellLayout` (`railLabels`, `railTop`, `stage`, `moreSheet`), `NavModule`, `CommandPalette`, `PageShell` (`aside`, `width`) |
+| A searchable, filterable list of records | [List page](#list-page) | `AppList`, `SimpleTable` (`density`, `stickyColumns`), `TableRow`, `TableGroupRow`, `TableSortHeader`, `UserCell`, `StatusChip`, `FilterGroup` |
+| A create or edit form | [Form page](#form-page) | `AppForm`, `FormSection`, `TextField`, `ChipGroup`, `Switch`, `useForm`, `toast` |
 | Workspace or account settings | [Settings page](#settings-page) | `AppSettings`, `FormSection`, `SettingItem`, `Switch` |
-| Sign in, sign up, password reset | [Auth pages](#auth-pages) | `AuthLayout`, `AuthCard`, `TextField`, `Button` |
-| An overview with numbers and a chart | [Dashboard](#dashboard) | `PageShell`, `KpiGrid`, `KpiCard`, `Card`, `LineChart` |
-| A public marketing page | [Landing page](#landing-page) | `SiteHeader`, `Container`, `Section`, `Grid`, `Card`, `Seo` |
-| A brand color, fonts and radius | [Theming](#theming) | `ThemeOptions`, `caThemePlugin`, `caThemeHandle` |
+| Sign in, sign up, password reset | [Auth pages](#auth-pages) | `AuthLayout` (`panelSide`, `panelBleed`, `header`), `AuthCard`, `TextField` (`revealable`, `below`), `Button` |
+| An overview with numbers and a chart | [Dashboard](#dashboard) | `PageShell`, `KpiGrid`, `KpiCard`, `Stat`, `Progress`, `Card`, `Surface`, `LineChart` |
+| A map the pages float over | [Map page](#map-page) | `AppShellLayout` `stage`, `MapStage`, `MapControls`, `PageFrame`, `stageInsets` |
+| A public marketing page | [Landing page](#landing-page) | `SiteHeader`, `LocaleSwitcher`, `Heading`, `Highlight`, `StrikeThrough`, `ThemeIsland`, `Container`, `Section`, `Grid`, `Seo` |
+| A brand color, fonts and radius | [Theming](#theming) | `ThemeOptions`, `caThemePlugin`, `caThemeHandle`, `setRouteTheme`, `ThemeIsland` |
 
 ## App shell
 
@@ -30,6 +31,9 @@ Use it once, in the layout of a route group that holds every authenticated page,
   import {
     AppShellLayout,
     Avatar,
+    Button,
+    CommandPalette,
+    NavMoreSheet,
     NotificationBell,
     ThemeToggle,
     type NavModule,
@@ -37,7 +41,7 @@ Use it once, in the layout of a route group that holds every authenticated page,
   } from "@codeatlasdev/ui";
   import { goto } from "$app/navigation";
   import { page } from "$app/state";
-  import { LayoutDashboard, Settings, Users } from "@lucide/svelte";
+  import { LayoutDashboard, Search, Settings, Users } from "@lucide/svelte";
 
   let { children } = $props();
 
@@ -74,11 +78,29 @@ Use it once, in the layout of a route group that holds every authenticated page,
     (notifications = notifications.map((n) => (n.id === id ? { ...n, read: true } : n)));
   const markAllRead = () => (notifications = notifications.map((n) => ({ ...n, read: true })));
   const clear = () => (notifications = notifications.filter((n) => !n.read));
+
+  let searchOpen = $state(false);
 </script>
 
-<AppShellLayout {modules} pathname={page.url.pathname} onNavigate={(path) => goto(path)}>
+<AppShellLayout
+  {modules}
+  pathname={page.url.pathname}
+  onNavigate={(path) => goto(path)}
+  railLabels
+  collapseShortPanel
+  bottomNavPrimary={4}
+  moreSheet={NavMoreSheet}
+  {stage}
+  stageVisible={!page.url.pathname.startsWith("/settings")}
+>
   {#snippet brand()}
     <strong>Acme</strong>
+  {/snippet}
+
+  {#snippet railTop()}
+    <Button variant="ghost" size="sm" aria-label="Search, command K" onclick={() => (searchOpen = true)}>
+      {#snippet leading()}<Search size={16} />{/snippet}
+    </Button>
   {/snippet}
 
   {#snippet railBottom()}
@@ -87,8 +109,52 @@ Use it once, in the layout of a route group that holds every authenticated page,
     <Avatar alt="Ana Lima" size="sm" />
   {/snippet}
 
+  {#snippet bottomNavOverflow()}
+    <Button variant="outlined" tone="neutral" fullWidth href="/settings/profile">My profile</Button>
+  {/snippet}
+
   {@render children()}
 </AppShellLayout>
+
+<CommandPalette {modules} bind:open={searchOpen} onNavigate={(path) => goto(path)} />
+
+<!-- A layer that lives behind every page and is mounted once: a map, a canvas, a video. -->
+{#snippet stage({ hidden }: { hidden: boolean })}
+  <canvas class="backdrop" class:paused={hidden}></canvas>
+{/snippet}
+```
+
+A page inside the shell. For a form or settings page, `width="reading"` caps the column at about 46rem, and an `aside` snippet puts a section index next to it.
+
+```svelte
+<!-- src/routes/(app)/settings/workspace/+page.svelte -->
+<script lang="ts">
+  import { Card, PageShell, Stack, TextField } from "@codeatlasdev/ui";
+
+  let name = $state("Acme Inc.");
+  let slug = $state("acme");
+</script>
+
+<PageShell
+  title="Workspace settings"
+  description="Reading width keeps the form at a comfortable line length."
+  width="reading"
+  asideLabel="Sections"
+>
+  {#snippet aside()}
+    <Card full>
+      <nav aria-label="On this page">
+        <a href="#general">General</a>
+        <a href="#billing">Billing</a>
+      </nav>
+    </Card>
+  {/snippet}
+
+  <Card title="General" full gap="md" headingLevel={2}>
+    <TextField label="Name" bind:value={name} />
+    <TextField label="Slug" bind:value={slug} />
+  </Card>
+</PageShell>
 ```
 
 Rules:
@@ -97,7 +163,10 @@ Rules:
 - The shell imports no router. Pass `pathname={page.url.pathname}` from `$app/state` (never the `$app/stores` store) and `onNavigate={(path) => goto(path)}`. Panel items are plain links; `onNavigate` only fires when the rail or the bottom navigation switches module.
 - `NavModule.basePath` is where the rail icon goes, `items` fill the panel, and `pathPrefixes` claims pages that belong to the module but sit outside its `basePath`. Icons are `@lucide/svelte` components, not strings.
 - Pages inside the shell render the content area only. They must not add their own `<main>`: the shell is the page landmark. Page layouts such as `AppList` and `AppForm` fill the area and scroll on their own.
-- The `brand` snippet is the logo at the top of the rail and in the mobile header. Anything that must stay reachable on a phone (search, an avatar) goes in `railBottom`, with `mobileHeaderActions` for the mobile header.
+- The `brand` snippet is the logo at the top of the rail and in the mobile header. Anything that must stay reachable on a phone (an avatar) goes in `railBottom`, with `mobileHeaderActions` for the mobile header.
+- `railLabels` writes each module's label under its rail icon. `railTop` is the slot between the brand and the modules for a search or command-palette trigger: a ghost `Button` that opens a `CommandPalette` (which also opens on Cmd+K). `collapseShortPanel` shows only the rail for a module with 2 destinations or fewer, so a short list does not reserve a column of empty panel.
+- Below 900px the bottom navigation holds `bottomNavPrimary` tabs (5 by default). With more modules the last tab is More, a dialog with the rest plus the `bottomNavOverflow` snippet (account, sign out), so no module is unreachable. `moreSheet={NavMoreSheet}` swaps that dialog for a swipe-to-dismiss `Sheet`; it is opt-in because it adds about 10 kB gzip.
+- A `{#snippet stage({ hidden })}` is a persistent background (a map, canvas or video) rendered once under the pages, so a route change never remounts it and its camera survives. Stop rendering while `hidden` is true. Mark floating panels with `class="ca-stage-panel"`: the content area lets pointer events through to the stage. `stageVisible={false}` hides the stage without unmounting it, for a full-page route that covers it. For a whole map page use the map recipe, not a hand-made stage.
 
 See also: [AppShell](/docs/layout/app-shell/), [ThemeToggle](/docs/inputs/theme-toggle/), [NotificationBell](/docs/display/notification-bell/), [Avatar](/docs/display/avatar/), [Mobile](/docs/getting-started/mobile/).
 
@@ -116,7 +185,7 @@ Use it for any collection that needs search, filters and pages: users, orders, i
     StatusChip,
     UserCell,
   } from "@codeatlasdev/ui";
-  import { Plus } from "@lucide/svelte";
+  import { Download, Plus } from "@lucide/svelte";
 
   interface User {
     id: number;
@@ -142,6 +211,10 @@ Use it for any collection that needs search, filters and pages: users, orders, i
 
 <AppList title="Users" data={users} searchKeys={["name", "email"]} perPage={20}>
   {#snippet actions()}
+    <Button variant="outlined" tone="neutral" size="sm" href="/users/export">
+      {#snippet leading()}<Download size={14} />{/snippet}
+      Export
+    </Button>
     <Button variant="filled" size="sm" href="/users/new">
       {#snippet leading()}<Plus size={14} />{/snippet}
       New user
@@ -180,13 +253,85 @@ Use it for any collection that needs search, filters and pages: users, orders, i
 </AppList>
 ```
 
+For a dense, spreadsheet-like grid (hundreds of rows, a pinned name column, groups, a selected row) keep `SimpleTable` and switch it to `density="compact"`. You own the sort and the selection; the table only draws them.
+
+```svelte
+<!-- src/routes/(app)/leads/+page.svelte -->
+<script lang="ts">
+  import {
+    Checkbox,
+    SimpleTable,
+    TableGroupRow,
+    TableRow,
+    TableSortHeader,
+  } from "@codeatlasdev/ui";
+
+  interface Lead {
+    id: string;
+    name: string;
+    company: string;
+    stage: "New" | "Won";
+    value: number;
+  }
+
+  const leads: Lead[] = [
+    { id: "l1", name: "Ana Souza", company: "Atlas Co", stage: "New", value: 12000 },
+    { id: "l2", name: "Bruno Lima", company: "Nimbus", stage: "New", value: 8400 },
+    { id: "l3", name: "Carla Dias", company: "Orbit", stage: "Won", value: 22000 },
+  ];
+
+  let sort = $state<"none" | "asc" | "desc">("none");
+  let selectedId = $state<string | undefined>();
+  let opened = $state<Record<string, boolean>>({ New: true, Won: true });
+
+  const sorted = $derived(
+    sort === "none"
+      ? leads
+      : [...leads].sort((a, b) => (sort === "asc" ? 1 : -1) * a.name.localeCompare(b.name)),
+  );
+  const stages = $derived([...new Set(sorted.map((lead) => lead.stage))]);
+  const nextSort = () => (sort = sort === "none" ? "asc" : sort === "asc" ? "desc" : "none");
+  const open = (lead: Lead) => (selectedId = lead.id);
+</script>
+
+<SimpleTable density="compact" stickyColumns={2} headerCase="sentence">
+  <thead>
+    <tr>
+      <th scope="col"><Checkbox aria-label="Select all leads" /></th>
+      <TableSortHeader {sort} onsort={nextSort}>Name</TableSortHeader>
+      <th scope="col">Company</th>
+      <th scope="col">Value</th>
+    </tr>
+  </thead>
+  {#each stages as stage (stage)}
+    <tbody>
+      <TableGroupRow colspan={4} collapsible bind:open={opened[stage]}>
+        {#snippet label()}{stage}{/snippet}
+      </TableGroupRow>
+      {#if opened[stage]}
+        {#each sorted.filter((lead) => lead.stage === stage) as lead (lead.id)}
+          <TableRow selected={selectedId === lead.id} onactivate={() => open(lead)}>
+            <td><Checkbox aria-label={`Select ${lead.name}`} /></td>
+            <td class="primary">{lead.name}</td>
+            <td>{lead.company}</td>
+            <td>{lead.value.toLocaleString("en-US", { style: "currency", currency: "USD" })}</td>
+          </TableRow>
+        {/each}
+      {/if}
+    </tbody>
+  {/each}
+</SimpleTable>
+```
+
 Rules:
 
 - Render rows from `list.rows` (the current page after search and filters), not from your own array. `list.filters`, `list.setFilter(key, value)`, `list.selected` and `list.toggleRow(id)` are on the same `list` object each snippet receives.
 - `FilterGroup` adds an "all" option itself. Read its value with `list.filters[key] ?? "all"`.
 - `AppList` has no own docs page: it is documented on the page layouts page. It fills its parent, so inside the app shell it needs no wrapper.
 - Server-side pagination is the manual mode: omit `data`, render your own `toolbar` and `footer` snippets, and drive the rows from the `load` function. For a heavy grid (sorting, column sizing, thousands of rows) use `DataTable` from `@codeatlasdev/ui/table`, which needs `@tanstack/svelte-table`.
-- Use `SimpleTable` for plain rows. Pass `responsive="cards"` to turn rows into cards on a phone.
+- Use `SimpleTable` for plain rows. Pass `responsive="cards"` to turn rows into cards on a phone. `density="compact"` keeps rows to 40px, `stickyColumns={2}` pins the checkbox and the name while the table scrolls sideways, `headerCase="sentence"` drops the uppercase labels, and `frame={false}` removes its border inside an already framed panel (`scroll="none"` when you own the scroller).
+- In a dense table, a sortable header is `TableSortHeader` (`sort`, `onsort`: you own the state and the next direction), a clickable or selectable row is `TableRow` (`selected`, `onactivate`: Tab, Enter and Space work, and controls inside the row do not trigger it) and a group label is `TableGroupRow` (`colspan`, `collapsible`, `bind:open`, with your own `{#if open}` for the rows). Do not make a `<tr onclick>`.
+- Put the toolbar actions in the `actions` snippet: the brand action is `filled`, a secondary one is `variant="outlined" tone="neutral"` (or `ghost`), so it carries no brand color beside the primary.
 
 See also: [Page layouts (AppList)](/docs/layout/list-page/), [Table](/docs/display/table/), [DataTable](/docs/display/data-table/), [Chip](/docs/display/chip/), [FilterGroup](/docs/inputs/filter-group/).
 
@@ -198,7 +343,16 @@ Use it for a create or edit screen: a header with a back button, a scrolling bod
 <!-- src/routes/(app)/users/new/+page.svelte -->
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { AppForm, Button, FormSection, Select, Switch, TextField, useForm } from "@codeatlasdev/ui";
+  import {
+    AppForm,
+    Button,
+    ChipGroup,
+    FormSection,
+    Switch,
+    TextField,
+    toast,
+    useForm,
+  } from "@codeatlasdev/ui";
 
   const roleOptions = [
     { value: "admin", label: "Admin" },
@@ -223,7 +377,7 @@ Use it for a create or edit screen: a header with a back button, a scrolling bod
     if (!form.validate()) return;
     saving = true;
     try {
-      await fetch("/api/users", {
+      const response = await fetch("/api/users", {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
@@ -232,6 +386,11 @@ Use it for a create or edit screen: a header with a back button, a scrolling bod
           role: form.fields.role.value,
           sendWelcome,
         }),
+      });
+      const { id } = await response.json();
+      toast.success("User created", {
+        description: form.fields.email.value,
+        action: { label: "Undo", onClick: () => fetch(`/api/users/${id}`, { method: "DELETE" }) },
       });
       await goto("/users");
     } finally {
@@ -259,10 +418,12 @@ Use it for a create or edit screen: a header with a back button, a scrolling bod
       oninput={(value) => form.set("email", value)}
       onblur={() => form.touch("email")}
     />
-    <Select
+    <ChipGroup
       label="Role"
-      options={roleOptions}
+      items={roleOptions}
+      required
       value={form.fields.role.value}
+      error={form.fields.role.error}
       onchange={(value) => form.set("role", value)}
     />
   </FormSection>
@@ -285,8 +446,10 @@ Rules:
 - Lay fields out with `FormSection`, not a wrapper `Stack`. `layout` is `grid` (default), `list` (rows of switches) or `stack`.
 - Show progress with `loading` on the submit `Button`, not by swapping its label. Keep Cancel as a `ghost` button and the primary action as `filled`, last.
 - A `Switch` or `Checkbox` is a boolean, so keep it in `$state` and `bind:checked`. Do not put it in `useForm`, which is strings only.
+- A single choice among a few options is `ChipGroup` (a radiogroup of chips that wraps on a phone), not a `Select`: `items` are `{ value, label }`, `label` is the group name, `error` shows under it and `required` blocks a plain submit until one is picked. Use `Select` for a long list.
+- Confirm a save with `toast.success(message, { description, action })`, not a custom banner. `action: { label, onClick }` adds one inline button (an Undo). Pass `{ id }` to replace a toast in place, as a "Saving..." that becomes "Saved". Identical messages stack as a count and at most 3 show at once. `Toaster` is mounted once in the root layout.
 
-See also: [AppForm](/docs/layout/form-page/), [useForm](/docs/inputs/use-form/), [TextField](/docs/inputs/text-field/), [Select](/docs/inputs/select/), [Switch](/docs/inputs/switch/).
+See also: [AppForm](/docs/layout/form-page/), [useForm](/docs/inputs/use-form/), [TextField](/docs/inputs/text-field/), [ChipGroup](/docs/inputs/chip-group/), [Toast](/docs/feedback/toast/), [Switch](/docs/inputs/switch/).
 
 ## Settings page
 
@@ -432,11 +595,16 @@ Use it for sign in, sign up and password reset: a brand panel on one side and a 
         <TextField
           label="Password"
           type="password"
+          revealable
           autocomplete="current-password"
           required
           bind:value={password}
           {error}
-        />
+        >
+          {#snippet below()}
+            <a href="/forgot-password">Forgot password?</a>
+          {/snippet}
+        </TextField>
         <Button type="submit" variant="filled" fullWidth {loading}>Sign in</Button>
       </Stack>
     </form>
@@ -448,13 +616,60 @@ Use it for sign in, sign up and password reset: a brand panel on one side and a 
 </AuthLayout>
 ```
 
+A form-first variant: the panel on the right edge to edge (a map, image or video), a bar above the form with the logo and a language switcher, and the form flush to the start with `AuthCard variant="plain"`.
+
+```svelte
+<!-- src/routes/(auth)/sign-up/+page.svelte -->
+<script lang="ts">
+  import { AuthCard, AuthLayout, Button, LocaleSwitcher, Stack, TextField } from "@codeatlasdev/ui";
+
+  const locales = [
+    { value: "en", label: "English" },
+    { value: "pt-BR", label: "Português", short: "PT" },
+  ];
+  let locale = $state("en");
+  let email = $state("");
+  let password = $state("");
+</script>
+
+<AuthLayout panelSide="right" panelBleed panelHidden="lg" align="start">
+  {#snippet header()}
+    <a href="/">Acme</a>
+    <LocaleSwitcher options={locales} bind:value={locale} compact />
+  {/snippet}
+
+  {#snippet panel()}
+    <img src="/sign-up-cover.jpg" alt="" />
+  {/snippet}
+
+  <AuthCard variant="plain" title="Create your account" subtitle="Start free, no card needed">
+    <form method="post">
+      <Stack gap="4">
+        <TextField label="Email" type="email" name="email" autocomplete="email" required bind:value={email} />
+        <TextField
+          label="Password"
+          type="password"
+          name="password"
+          revealable
+          autocomplete="new-password"
+          required
+          bind:value={password}
+        />
+        <Button type="submit" variant="filled" fullWidth>Create account</Button>
+      </Stack>
+    </form>
+  </AuthCard>
+</AuthLayout>
+```
+
 Rules:
 
 - `AuthLayout` renders the page `<main id="main">`. Do not wrap it in another `<main>`, and do not put the app shell around it: auth routes live in their own group, outside `(app)`.
-- The product name and mark come from `logoName` and `logoMark`. The `brand` snippet replaces only the mark (for an SVG logo); the `logoName` text is still drawn next to it, so keep passing `logoName`.
+- The logo comes from `logoMark` and `logoName`. The `brand` snippet replaces the whole logo, the mark and the default name ("CodeAtlas UI"); `logoName` is drawn beside it only when you pass it, so pass it for an SVG mark plus a name and leave it out for a full wordmark.
 - The form column holds an `AuthCard` with `title`, `subtitle`, the form as its child and links in the `footer` snippet. Do not render your own heading or card inside it.
-- Build the form with `Stack` and `TextField`, and a `Button type="submit"` with `fullWidth` and `loading`. Set `autocomplete` (`email`, `current-password`, `new-password`) so password managers work.
-- Below 768px the panel is hidden and `mobileBrand` (on by default) shows a compact brand strip, so put nothing essential in `panel`.
+- Build the form with `Stack` and `TextField`, and a `Button type="submit"` with `fullWidth` and `loading`. Set `autocomplete` (`email`, `current-password`, `new-password`) so password managers work. A password field is `type="password"` with `revealable` (an eye toggle inside the field), never a hand-made button; a "Forgot password?" link goes in its `below` snippet.
+- `panelSide` (`left` or `right`), `panelBleed` (the panel fills edge to edge: no padding, logo or blobs, and the `brand` and `logoName` are not drawn there), `panelHidden` (`md` 900px or `lg` 1200px, from which the panel shows) and `align="start"` with `AuthCard variant="plain"` give a form-first page. The `header` snippet is a sticky bar over the form column and replaces the mobile brand strip.
+- Below the `panelHidden` width the panel is hidden and `mobileBrand` (on by default) shows a compact brand strip, so put nothing essential in `panel`. `AuthCard display` sets its title in the display role.
 
 See also: [AuthLayout](/docs/layout/auth-layout/), [TextField](/docs/inputs/text-field/), [Button](/docs/inputs/button/).
 
@@ -465,7 +680,7 @@ Use it for an overview page: a row of key numbers, then charts and tables in car
 ```svelte
 <!-- src/routes/(app)/dashboard/+page.svelte -->
 <script lang="ts">
-  import { Button, Card, KpiCard, KpiGrid, PageShell } from "@codeatlasdev/ui";
+  import { Button, Card, Flex, KpiCard, KpiGrid, PageShell, Progress, Stat, Surface } from "@codeatlasdev/ui";
   import { LineChart } from "@codeatlasdev/ui/charts";
   import { Activity, ArrowUpRight, DollarSign, Users } from "@lucide/svelte";
 
@@ -501,31 +716,160 @@ Use it for an overview page: a row of key numbers, then charts and tables in car
       height="260px"
     />
   </Card>
+
+  <Card title="Plan usage" gap="md">
+    <Flex gap="6" wrap>
+      <Stat label="Seats" value="18" unit="of 25" hint="7 free" />
+      <Stat label="Storage" value="62" unit="GB" trend={-4.2} />
+    </Flex>
+    <Progress value={72} label="Seats used" size="sm" />
+  </Card>
+
+  <Surface grain p="5">
+    <Stat size="lg" label="Net revenue" value="$25k" hint="After expenses, this half year" />
+  </Surface>
 </PageShell>
 ```
 
 Rules:
 
 - Charts come from `@codeatlasdev/ui/charts` and need the `echarts` peer (`bun add echarts`). Pass data only (`series`, `categories`): there are no ECharts options, colors or styles to set, and the chart follows the theme.
-- A number tile is `KpiCard` inside a `KpiGrid`, with `trend` as a percentage and `icon` as a `@lucide/svelte` component. Do not build tiles from `Card` and a heading.
+- A number tile is `KpiCard` inside a `KpiGrid`, with `trend` as a percentage and `icon` as a `@lucide/svelte` component. Do not build tiles from `Card` and a heading. A number that sits inside a card, a panel or a row without its own surface is `Stat` (`label`, `value`, `unit`, `hint`, `trend`, `size`, `align`, `skeleton`): it has no border or padding and takes its color from the container.
 - `PageShell` is the page container: `title`, `description`, the `actions` snippet and the spacing between blocks. Its `gap` is a number in px, unlike `Flex`, `Stack` and `Grid`, which take spacing steps.
-- Wrap each chart or table in `Card` with a `title`. For side-by-side cards use `Grid columns={{ base: 1, lg: 2 }} gap="4"`.
+- Wrap each chart or table in `Card` with a `title`. For side-by-side cards use `Grid columns={{ base: 1, lg: 2 }} gap="4"`. A card that holds several blocks (a `Stat` row, a `Progress`, a `TextField`) takes `gap="md"` (`sm`, `md` or `lg`) so they stack with space between them; without it inline controls sit side by side.
+- A thin bar is `Progress size="sm"` (4px; `md` is 6px and `lg`, the default, 8px). For another height set `--ca-progress-height`. `Surface grain` adds the paper-grain overlay to a panel that is not a `Card`, and `grain="animated"` shifts it.
 - Inside the app shell this page needs no extra wrapper. Charts render on the client, so SSR shows the card and the chart fills in after hydration.
 
 See also: [PageShell](/docs/layout/page-shell/), [KpiGrid](/docs/layout/kpi-grid/), [KpiCard](/docs/layout/kpi-card/), [Card](/docs/surfaces/card/), [Line chart](/docs/charts/line/), [Charts](/docs/charts/).
+
+## Map page
+
+Use it when a live map (or canvas, video, 3D) is the page and the forms, lists and details float over it. `AppShellLayout` mounts the stage once, so the camera and the deck.gl layers survive every navigation; `PageFrame` lays the page out over the stage and reports what it covers. Install the peer: `bun add maplibre-gl` (or `mapbox-gl` with `engine="mapbox"` and an `accessToken`), and `@deck.gl/core @deck.gl/mapbox` for data layers.
+
+```svelte
+<!-- src/routes/(app)/+layout.svelte: the stage is mounted once, here -->
+<script lang="ts">
+  import { AppShellLayout, stageInsets, type NavModule } from "@codeatlasdev/ui";
+  import { MapControls, MapStage } from "@codeatlasdev/ui/map";
+  import { Compass, Map as MapIcon } from "@lucide/svelte";
+  import { goto } from "$app/navigation";
+  import { page } from "$app/state";
+
+  let { children }: { children?: import("svelte").Snippet } = $props();
+
+  const modules: NavModule[] = [
+    { id: "field", label: "Field", icon: MapIcon, basePath: "/field", items: [] },
+    { id: "routes", label: "Routes", icon: Compass, basePath: "/routes", items: [] },
+  ];
+
+  // One style per color scheme: the map swaps it when the theme changes and keeps its camera.
+  const styles = {
+    light: "https://demotiles.maplibre.org/style.json",
+    dark: "https://demotiles.maplibre.org/style.json",
+  };
+
+  // A full-page route (a report, a settings page) covers the stage: pause it, do not unmount it.
+  const stageVisible = $derived(!page.url.pathname.startsWith("/reports"));
+</script>
+
+{#snippet stage()}
+  <MapStage {styles} label="Territory map" fit={[[-74, -34], [-34, 5]]}>
+    <MapControls locate />
+    <p class="legend" style="--inset-left: {stageInsets.current.left}px">Pins: open leads</p>
+  </MapStage>
+{/snippet}
+
+<AppShellLayout
+  {modules}
+  pathname={page.url.pathname}
+  onNavigate={(path) => goto(path)}
+  {stage}
+  {stageVisible}
+>
+  {@render children?.()}
+</AppShellLayout>
+
+<style>
+  .legend {
+    position: absolute;
+    bottom: var(--ca-space-4);
+    left: calc(var(--inset-left) + var(--ca-space-4));
+    margin: 0;
+    padding: var(--ca-space-2) var(--ca-space-3);
+    border-radius: var(--ca-radius-md);
+    background: var(--ca-surface-raised);
+    font-size: var(--ca-font-size-caption);
+  }
+</style>
+```
+
+```svelte
+<!-- src/routes/(app)/field/+page.svelte: the page floats over the stage -->
+<script lang="ts">
+  import { Button, PageFrame, TextField } from "@codeatlasdev/ui";
+
+  let query = $state("");
+</script>
+
+<PageFrame mode="map" side="left" width="md" sheet label="Territory" headerBorder>
+  {#snippet header()}
+    <h2>Territory</h2>
+  {/snippet}
+  {#snippet toolbar()}
+    <TextField label="Search leads" bind:value={query} />
+  {/snippet}
+
+  <p>Results for "{query}" go here. This body is the only part that scrolls.</p>
+
+  {#snippet footer()}
+    <Button variant="filled">Save territory</Button>
+  {/snippet}
+</PageFrame>
+```
+
+Rules:
+
+- Mount `MapStage` in the shell's `stage` snippet, not in a page: a page mount would recreate the map on every navigation.
+- `MapStage` pads `fit` by what the frame covers, so it needs no `padding` prop. Read `stageInsets.current` (or `--ca-stage-inset-*` on `html`) for anything you position by hand, and never copy the panel widths.
+- `mode="page"` (or `stageVisible={false}`) for a route that covers the map; `mode="split"` for a work area beside a map strip.
+- With `sheet`, the panel is a non-modal bottom sheet on phones: the map above it stays interactive. Do not wrap it in `Sheet`.
+- Colors for deck.gl layers come from `mapColors()` or `useMapTheme()` (both reactive), never from `getComputedStyle`. Empty areas of the page pass pointer events to the stage; give your own floating panels `class="ca-stage-panel"`.
+
+See also: [PageFrame](/docs/layout/page-frame/), [Map](/docs/map/), [AppShell](/docs/layout/app-shell/).
 
 ## Landing page
 
 Use it for a public page: a sticky header, a hero, a grid of feature cards and the metadata crawlers read. It lives outside the app shell.
 
 ```svelte
-<!-- src/routes/+page.svelte -->
+<!-- src/routes/(marketing)/+page.svelte -->
 <script lang="ts">
-  import { Button, Card, Container, Flex, Grid, Section, SiteHeader, Stack } from "@codeatlasdev/ui";
+  import {
+    Button,
+    Card,
+    Container,
+    Flex,
+    Grid,
+    Heading,
+    Highlight,
+    LocaleSwitcher,
+    Section,
+    SiteHeader,
+    Stack,
+    StrikeThrough,
+    ThemeIsland,
+  } from "@codeatlasdev/ui";
   import { Seo } from "@codeatlasdev/ui/seo";
+  import { goto } from "$app/navigation";
   import { page } from "$app/state";
 
   const origin = "https://acme.com";
+
+  const locales = [
+    { value: "en", label: "English" },
+    { value: "pt-BR", label: "Português", short: "PT" },
+  ];
+  let locale = $state("en");
 
   const features = [
     { title: "Fast by default", body: "Server-rendered pages that paint on the first frame." },
@@ -540,46 +884,57 @@ Use it for a public page: a sticky header, a hero, a grid of feature cards and t
   canonical={origin + page.url.pathname}
 />
 
-<SiteHeader>
-  {#snippet trailing()}
-    <Button variant="ghost" size="sm" href="/sign-in">Sign in</Button>
-    <Button variant="filled" size="sm" href="/sign-up">Get started</Button>
-  {/snippet}
-</SiteHeader>
+<!-- A light page inside a dark app. `document` also paints <html>, so overscroll and the browser bar match. -->
+<ThemeIsland scheme="light" document>
+  <SiteHeader>
+    {#snippet trailing()}
+      <LocaleSwitcher options={locales} bind:value={locale} onselect={(next) => goto(`/${next}`)} />
+      <Button variant="ghost" size="sm" href="/sign-in">Sign in</Button>
+      <Button variant="filled" size="sm" href="/sign-up">Get started</Button>
+    {/snippet}
+  </SiteHeader>
 
-<main id="main" tabindex="-1">
-  <Container size="lg">
-    <Section size="3" aria-labelledby="hero-title">
-      <Stack gap="5" align="start">
-        <h1 id="hero-title">Ship the boring parts in a day</h1>
-        <p>Acme gives your team auth, billing and settings so you can build the part that matters.</p>
-        <Flex gap="3" wrap>
-          <Button variant="filled" href="/sign-up">Start free</Button>
-          <Button variant="outlined" href="/docs">Read the docs</Button>
-        </Flex>
-      </Stack>
-    </Section>
+  <main id="main" tabindex="-1">
+    <Container size="lg">
+      <Section size="3" aria-label="Introduction">
+        <Stack gap="5" align="start">
+          <Heading level={1} size="display">
+            Ship the boring parts in a <Highlight animated>day</Highlight>
+          </Heading>
+          <p>
+            Stop writing <StrikeThrough animated>auth, billing and settings</StrikeThrough> from scratch: Acme gives your
+            team all three so you can build the part that matters.
+          </p>
+          <Flex gap="3" wrap>
+            <Button variant="filled" href="/sign-up">Start free</Button>
+            <Button variant="outlined" tone="neutral" href="/docs">Read the docs</Button>
+          </Flex>
+        </Stack>
+      </Section>
 
-    <Section aria-labelledby="features-title">
-      <Stack gap="6">
-        <h2 id="features-title">Everything in the box</h2>
-        <Grid columns={{ base: 1, md: 3 }} gap="4">
-          {#each features as feature (feature.title)}
-            <Card title={feature.title} headingLevel={3}>{feature.body}</Card>
-          {/each}
-        </Grid>
-      </Stack>
-    </Section>
-  </Container>
-</main>
+      <Section aria-labelledby="features-title">
+        <Stack gap="6">
+          <h2 id="features-title">Everything in the box</h2>
+          <Grid columns={{ base: 1, md: 3 }} gap="4">
+            {#each features as feature (feature.title)}
+              <Card title={feature.title} headingLevel={3}>{feature.body}</Card>
+            {/each}
+          </Grid>
+        </Stack>
+      </Section>
+    </Container>
+  </main>
+</ThemeIsland>
 ```
 
 Rules:
 
 - A landing page is not an app page: no `AppShellLayout`, no `PageShell`. Put it in the root route or a `(marketing)` group, with its own `<main id="main" tabindex="-1">`.
 - Build the page from `Container` (width and gutter), `Section` (vertical rhythm, a real `<section>`: give it `aria-labelledby`) and `Stack`, `Flex`, `Grid` for arrangement. `Grid` takes `columns` (1 to 12, or a responsive object) and a step `gap`; for a template like `2fr 1fr`, write the `grid-template-columns` in a class.
-- `SiteHeader` is a sticky bar with a breadcrumb; the `trailing` snippet holds the actions on its right. Outside an app shell it has no panel toggle.
-- CTAs are `Button` with `href`: it renders a link, so no `onclick` navigation. One `filled` per view, the rest `outlined` or `ghost`.
+- `SiteHeader` is a sticky bar with a breadcrumb; the `trailing` snippet holds the actions on its right, including a `LocaleSwitcher` (`options`, `bind:value`, `onselect`; `compact` always shows the short code). `onselect` may return a promise: save the cookie and navigate there, and `value` only changes once it settles. Outside an app shell it has no panel toggle.
+- CTAs are `Button` with `href`: it renders a link, so no `onclick` navigation. One `filled` per view, the rest `outlined` or `ghost`; add `tone="neutral"` to an `outlined` or `ghost` button that sits beside the brand one.
+- The hero headline is `Heading size="display"`, never a styled `h1`. `level` sets the tag and `size` the look, and `Heading` takes no `id`, so name the section with `aria-label`. `display` on `PageShell`, `AuthCard` and `SiteHeader` gives their title the same role. `Highlight` and `StrikeThrough` take `animated` to play on mount; under reduced motion they render fully drawn.
+- `ThemeIsland` keeps this page in its own scheme (and `preset`) inside a dark app. Add `document` for a full page so `<html>` follows it and is restored on leaving, and set `setRouteTheme` on the server (see [Theming](#theming)) so the first paint is already right.
 - Put `Seo` on every public page with `title`, `description` and an absolute `canonical`. Use `noindex` on app and auth pages.
 
 See also: [Layout primitives](/docs/layout/layout-primitives/), [Card](/docs/surfaces/card/), [Button](/docs/inputs/button/), [SEO](/docs/getting-started/seo/).
@@ -593,11 +948,22 @@ Use it to set the brand color, fonts, radius and surface style for the whole app
 import type { ThemeOptions } from "@codeatlasdev/ui/vite";
 
 export const theme: ThemeOptions = {
-  presets: [{ id: "acme", color: "#2563eb", label: "Acme" }],
+  presets: [
+    {
+      id: "acme",
+      color: "#2563eb",
+      label: "Acme",
+      // Optional: the brand itself as the dark-mode button fill, with its text color.
+      colors: { dark: { brandFill: "#2563eb", brandFillHover: "#3b82f6", brandContrast: "#ffffff" } },
+      // Optional: a smaller font in every text field, in both schemes.
+      sizes: { inputFontSize: "0.875rem" },
+    },
+  ],
   defaultPreset: "acme",
   defaultScheme: "system",
   defaultStyle: "solid",
-  fonts: { body: "Geist, system-ui, sans-serif" },
+  fonts: { body: "Geist, system-ui, sans-serif", display: "Fraunces, serif" },
+  typography: { displayTracking: "-0.03em" },
   radius: 0.8,
 };
 ```
@@ -628,7 +994,27 @@ export const handleError = createErrorHandler();
 /* src/app.css: imported after @codeatlasdev/ui/styles/global.css */
 :root {
   --ca-card-padding: 20px;
+  --ca-font-size-body1: 0.875rem;
 }
+```
+
+```ts
+// src/routes/(marketing)/+layout.server.ts: a light route inside a dark app, themed on the first paint
+import { setRouteTheme } from "@codeatlasdev/ui/kit";
+
+export const load = (event) => {
+  setRouteTheme(event, { preset: "acme", scheme: "light" });
+};
+```
+
+```ts
+// src/hooks.server.ts: or declare a whole route group once
+import { caThemeHandle, type RouteThemes } from "@codeatlasdev/ui/kit";
+import { theme } from "$lib/theme";
+
+const routes: RouteThemes = { "/(marketing)": { preset: "acme", scheme: "light" } };
+
+export const handle = caThemeHandle(theme, { routes });
 ```
 
 Rules:
@@ -636,7 +1022,10 @@ Rules:
 - One `ThemeOptions` object in `src/lib/theme.ts`, passed to both `caThemePlugin(theme)` and `caThemeHandle(theme)`. Called with no argument, either one falls back to the default brand and ignores your presets.
 - A brand color is a preset: give it a `#rrggbb` and the full light and dark token set is generated. Do not copy colors into component styles.
 - Import the theme in `vite.config.ts` with the `.ts` extension. Everything else (preset, scheme, style, fonts, radius, density) is a field of the same object.
-- To change one token, declare it on `:root` as `--ca-*`, without `!important`. Never write hex colors or pixel sizes in a component.
+- To change one token, declare it on `:root` as `--ca-*`, without `!important`. Never write hex colors or pixel sizes in a component. For denser body text override only `--ca-font-size-body1`: it sizes the text on `body` and does not depend on the root rem, so never set `html { font-size: ... }`, which would rescale every label, input and button.
+- `brandFill`, `brandFillHover` and `brandContrast` under `colors.dark` make `Button variant="filled"` use the brand color itself in dark mode, with `brandContrast` as its text. `sizes.inputFontSize` is a plain length (`px`, `rem`, `em`). Both belong to the preset, never to app CSS.
+- Display text (`Heading size="display"`, the `display` prop of `PageShell`, `AuthCard` and `SiteHeader`) reads `--ca-font-display`, which `fonts.display` sets, and `typography.displayTracking`. Never set a font family in a component.
+- A page that must keep another preset or scheme than the app (a light landing in a dark app) renders `<ThemeIsland document>`. Pair it with `setRouteTheme` from `@codeatlasdev/ui/kit` in `load`, or `routes` in `caThemeHandle`, so the server response already has that theme and nothing flashes.
 - Colors that are not UI roles (status, tier, channel, map pins) go under `tokens` on the preset, not in a `domain.css`: `tokens.status.new` gives `--ca-token-status-new` (+ `-subtle`, `-contrast`) per scheme, and `tokenRgba("status.new")` gives `[r, g, b, a]` for canvas and maps. A role color may carry alpha (`oklch(1 0 0 / 0.62)` or `{ color, alpha }`): do not flatten it to a hex.
 - `bunx @codeatlasdev/ui init --write` creates and patches all of these files, and is a dry run without `--write`.
 
