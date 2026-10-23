@@ -192,6 +192,28 @@ describe("non-component exports (#57)", () => {
 		expect(md).toContain("function primeKeyboard(): void");
 	});
 
+	it("lists the fields of an exported interface with type, optionality and JSDoc (#508)", () => {
+		const nav = exp("NavModule", "@codeatlasdev/ui");
+		const badge = nav?.members?.find((m) => m.name === "badge");
+		expect(nav?.members?.map((m) => m.name)).toEqual(
+			expect.arrayContaining(["id", "label", "icon", "basePath", "items", "badge", "badgeLabel"])
+		);
+		expect(badge).toMatchObject({ type: 'number | "dot"', optional: true });
+		expect(badge?.description).toContain("rail icon");
+		expect(nav?.members?.find((m) => m.name === "basePath")?.optional).toBe(false);
+		expect(exp("NavItem")?.members?.find((m) => m.name === "count")?.description).toContain(
+			"Neutral count"
+		);
+		// not an object shape: no members
+		expect(exp("setLocale")?.members).toBeUndefined();
+	});
+
+	it("renders interface fields as a table in API.md (#508)", () => {
+		const md = skillMarkdown(manifest);
+		expect(md).toContain("#### NavModule");
+		expect(md).toContain('| `badge?` | `number \\| "dot"` |');
+	});
+
 	it("states the version it describes and how to get the installed one (#272)", () => {
 		const header = skillMarkdown(manifest).split("\n").slice(0, 8).join("\n");
 		expect(header).toContain(`@codeatlasdev/ui@${manifest.version}`);

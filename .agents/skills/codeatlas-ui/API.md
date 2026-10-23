@@ -4717,6 +4717,678 @@ Types:
 | `VibrancyLevel` | `type VibrancyLevel = "label" \| "secondary" \| "tertiary" \| "fill" \| "separator";` |  |
 | `ZIndexKey` | `type ZIndexKey = keyof typeof zIndex;` |  |
 
+#### AvatarTokens
+
+| Field | Type | Notes |
+|---|---|---|
+| `size?` | `Partial< Record< "xs" \| "sm" \| "md" \| "lg" \| "xl", Pick<AvatarFallbackTokens, "fallbackSize" \| "fallbackWeight"> > >` | One avatar size (`xs`, `sm`, `md`, `lg`, `xl`): `--ca-avatar-<size>-fallback-{size,weight}`. |
+
+#### BrandColors
+
+| Field | Type | Notes |
+|---|---|---|
+| `main` | `string` |  |
+| `light` | `string` |  |
+| `dark` | `string` |  |
+| `contrast` | `string` |  |
+
+#### ButtonSizeTokens
+
+| Field | Type | Notes |
+|---|---|---|
+| `height?` | `CssValue` | `--ca-btn-<size>-height`. |
+| `paddingX?` | `CssValue` | `--ca-btn-<size>-padding-x`. |
+| `fontSize?` | `CssValue` | `--ca-btn-<size>-font-size`. |
+| `weight?` | `CssValue` | `--ca-btn-<size>-font-weight`. |
+| `tracking?` | `CssValue` | `--ca-btn-<size>-letter-spacing`. |
+
+#### ButtonTokens
+
+| Field | Type | Notes |
+|---|---|---|
+| `weight?` | `CssValue` | `--ca-btn-font-weight`, every size. @default 500 |
+| `tracking?` | `CssValue` | `--ca-btn-letter-spacing`, every size. @default the label tracking |
+| `leading?` | `CssValue` | `--ca-btn-line-height` (unitless or length). @default inherited |
+| `gap?` | `CssValue` | `--ca-btn-gap` between icon and label. @default `--ca-space-1-5` |
+| `ghostBorderWidth?` | `CssValue` | `--ca-btn-ghost-border-width`: `0px` makes a ghost button as wide as a text button. @default `--ca-border-width` |
+| `disabledBg?` | `CssValue` | `--ca-btn-disabled-bg`: background of a disabled button. @default `--ca-action-disabled-bg` |
+| `touchHeight?` | `CssValue` | `--ca-btn-touch-height`: the `pointer: coarse` minimum height. @default 44px |
+| `sm?` | `ButtonSizeTokens` |  |
+| `md?` | `ButtonSizeTokens` |  |
+| `lg?` | `ButtonSizeTokens` |  |
+
+#### CardTokens
+
+| Field | Type | Notes |
+|---|---|---|
+| `bg?` | `CssValue` | `--ca-card-bg`: a solid fill. @default the material fill |
+| `radius?` | `CssValue` | `--ca-card-radius`. @default the surface radius |
+| `border?` | `CssValue` | `--ca-card-border`: a full border shorthand, e.g. `1px solid var(--ca-outline-subtle)`. @default none |
+| `shadow?` | `CssValue` | `--ca-card-shadow`: a `box-shadow`, `none` for flat. @default the material shadow |
+
+#### ComponentTokens
+
+| Field | Type | Notes |
+|---|---|---|
+| `button?` | `ButtonTokens` |  |
+| `iconButton?` | `IconButtonTokens` |  |
+| `kbd?` | `KbdTokens` |  |
+| `avatar?` | `AvatarTokens` |  |
+| `field?` | `FieldTokens` | `--ca-field-*`: shared by `TextField` and `TextArea`; the per-component keys win. |
+| `textField?` | `FieldTokens` |  |
+| `textArea?` | `TextAreaTokens` |  |
+| `card?` | `CardTokens` |  |
+| `segmented?` | `SegmentedTokens` |  |
+| `emptyState?` | `EmptyStateTokens` |  |
+
+#### DateRange
+
+| Field | Type | Notes |
+|---|---|---|
+| `start` | `DateValue \| undefined` |  |
+| `end` | `DateValue \| undefined` |  |
+
+#### DesignStyle
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `DesignStyleId` |  |
+| `label` | `string` |  |
+| `description` | `string` | One line: what it looks like and when it fits. |
+| `taxonomy` | `string[]` | Atlas taxonomy ids this recipe implements. |
+| `theme` | `Partial<ThemeDefinition>` |  |
+
+#### Dnd
+
+| Field | Type | Notes |
+|---|---|---|
+| `controller` | `DndController` |  |
+| `instructionsId` | `string` | Id of the hidden instructions node; set it as `aria-describedby` on handles. |
+| `instructions` | `string` | Instruction text in the current locale. |
+| `active` | `string \| null` | Id of the item being dragged, or null (reactive). |
+| `sortable` | `(getOptions: () => SortableOptions) => (node: HTMLElement) => () => void` |  |
+| `dropzone` | `(getOptions: () => DropzoneOptions) => (node: HTMLElement) => () => void` |  |
+| `scroller` | `(getOptions?: () => ScrollerOptions) => (node: HTMLElement) => () => void` | A board that auto-scrolls while a drag holds the pointer near its edge (speed grows with proximity). |
+| `draggable` | `(getOptions: () => DraggableOptions<T>) => (node: HTMLElement) => () => void` |  |
+| `cancel` | `() => void` |  |
+
+#### DndDropEvent
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `string` |  |
+| `data` | `T \| undefined` |  |
+| `from` | `DndPosition` |  |
+| `to` | `DndPosition` |  |
+
+#### DndMessages
+
+| Field | Type | Notes |
+|---|---|---|
+| `instructions` | `string` | Instructions read with the handle (`aria-describedby`). |
+| `lifted` | `(label: string, position: number, total: number) => string` |  |
+| `moved` | `(label: string, position: number, total: number, container?: string) => string` | `container` is set when the item is in another list than the one it came from. |
+| `over` | `(label: string, zone: string) => string` |  |
+| `dropped` | `(label: string, position: number, total: number, container?: string) => string` |  |
+| `cancelled` | `(label: string) => string` |  |
+
+#### DndPosition
+
+| Field | Type | Notes |
+|---|---|---|
+| `container` | `string` |  |
+| `index` | `number` |  |
+
+#### DocsHeading
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `string` |  |
+| `text` | `string` |  |
+| `depth` | `2 \| 3` |  |
+
+#### DocsNavGroup
+
+| Field | Type | Notes |
+|---|---|---|
+| `label?` | `string` |  |
+| `items` | `DocsNavItem[]` |  |
+
+#### DocsNavItem
+
+| Field | Type | Notes |
+|---|---|---|
+| `href` | `string` |  |
+| `title` | `string` |  |
+| `badge?` | `string` | HTTP method (GET, POST...) rendered as a MethodBadge. |
+
+#### DocsPagerLink
+
+| Field | Type | Notes |
+|---|---|---|
+| `href` | `string` |  |
+| `title` | `string` |  |
+
+#### DocsSearchEntry
+
+| Field | Type | Notes |
+|---|---|---|
+| `href` | `string` |  |
+| `title` | `string` |  |
+| `section` | `string` | Section label shown as context for page hits. |
+| `description` | `string` |  |
+| `headings` | `{ text: string; id: string }[]` |  |
+| `text` | `string` | Plain body text, searched but never rendered. |
+
+#### DocsSearchResult
+
+| Field | Type | Notes |
+|---|---|---|
+| `href` | `string` |  |
+| `title` | `string` |  |
+| `context` | `string` |  |
+| `kind` | `"page" \| "heading"` |  |
+
+#### DocsSection
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `string` |  |
+| `label` | `string` |  |
+| `href` | `string` | Landing page of the section. |
+
+#### DraggableOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `string` |  |
+| `data?` | `T` |  |
+| `label?` | `string` |  |
+| `handle?` | `string` |  |
+| `disabled?` | `boolean` |  |
+| `onDrop?` | `(e: DndDropEvent<T>) => void` | The element to move; defaults to the node. |
+
+#### DropzoneOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `string` |  |
+| `group?` | `string` | Same meaning as `SortableOptions.group`. Default: accepts everything. |
+| `label?` | `string` |  |
+| `disabled?` | `boolean` |  |
+| `accepts?` | `(id: string, data: unknown) => boolean` | Return false to refuse an item (the zone does not highlight). |
+| `onDrop` | `(e: DndDropEvent) => void` |  |
+
+#### EmptyStateTokens
+
+| Field | Type | Notes |
+|---|---|---|
+| `padding?` | `CssValue` | `--ca-empty-padding`: a padding shorthand. @default `--ca-space-12 --ca-space-6` |
+| `titleSize?` | `CssValue` | `--ca-empty-title-size`. @default `--ca-font-size-body1` (`--ca-font-size-h6` for `hero`) |
+| `titleWeight?` | `CssValue` | `--ca-empty-title-weight`. @default semibold (heading weight for `hero`) |
+
+#### ExportColumn
+
+| Field | Type | Notes |
+|---|---|---|
+| `key` | `keyof T & string` | Field of the row; also the header when `header` is omitted. |
+| `header?` | `string` | Column header in the CSV. Defaults to `key`. |
+| `value?` | `(row: T) => unknown` | Custom cell value; defaults to `row[key]`. |
+
+#### FieldState
+
+| Field | Type | Notes |
+|---|---|---|
+| `value` | `string` |  |
+| `error` | `string \| undefined` |  |
+| `touched` | `boolean` |  |
+
+#### FieldTokens
+
+| Field | Type | Notes |
+|---|---|---|
+| `gap?` | `CssValue` | `--ca-<tf\|ta\|field>-gap`: space between label, box and hint. @default `--ca-space-1` |
+| `labelLeading?` | `CssValue` | `--ca-<tf\|ta\|field>-label-line-height`. @default `--ca-line-height-snug` |
+
+#### FontDescriptor
+
+| Field | Type | Notes |
+|---|---|---|
+| `family` | `string` | Family name used in `font-family`. |
+| `src` | `string` | URL of the woff2 file. |
+| `weight?` | `number \| string` | A single weight or a variable range, e.g. `400` or `"100 900"`. @default 400 |
+| `style?` | `"normal" \| "italic"` |  |
+| `display?` | `"auto" \| "block" \| "swap" \| "fallback" \| "optional"` |  |
+| `preload?` | `boolean` | Emit `<link rel="preload" as="font" crossorigin>` in `themeHead`. Use for above-the-fold fonts only. @default false |
+| `fallback?` | `string` | System font the fallback face is built from, e.g. `"Arial"`. Needed for `fallbackMetrics`. |
+| `fallbackMetrics?` | `FontFallbackMetrics` | With `fallback`: declares `"<family> Fallback"` with these metrics (zero layout shift on swap). |
+| `generic?` | `string` | Generic family appended last. @default "sans-serif" |
+
+#### FontFallbackMetrics
+
+| Field | Type | Notes |
+|---|---|---|
+| `sizeAdjust?` | `string \| number` | `size-adjust`, e.g. `"104.6%"` or `1.046`. |
+| `ascent?` | `string` | `ascent-override`, e.g. `"92%"`. |
+| `descent?` | `string` | `descent-override`, e.g. `"24%"`. |
+| `lineGap?` | `string` | `line-gap-override`, e.g. `"0%"`. |
+
+#### FormState
+
+| Field | Type | Notes |
+|---|---|---|
+| `fields` | `Record<K, FieldState>` |  |
+| `arrays` | `{ [N in keyof A]: FieldArrayState<A[N]> }` | Repeatable row groups declared via `options.arrays`. |
+| `dirty` | `boolean` |  |
+| `valid` | `boolean` |  |
+| `submitting` | `boolean` |  |
+| `touch` | `(field: K) => void` | Mark a field as touched and run validation. |
+| `set` | `(field: K, value: string) => void` | Set field value and re-validate if touched. |
+| `validate` | `() => boolean` | Run full validation; returns true if all fields pass. |
+| `reset` | `() => void` | Reset to initial values and clear all errors/touched state. |
+
+#### IconButtonTokens
+
+| Field | Type | Notes |
+|---|---|---|
+| `weight?` | `CssValue` | `--ca-icon-btn-font-weight`. @default inherited |
+| `size?` | `{ sm?: CssValue; md?: CssValue; lg?: CssValue }` | `--ca-icon-btn-size-<size>`: width and height. @default 32px / 40px / 48px |
+| `touchSize?` | `CssValue` | `--ca-icon-btn-touch-size`: the `pointer: coarse` minimum side. @default 44px |
+
+#### IconProps
+
+| Field | Type | Notes |
+|---|---|---|
+| `size?` | `number \| string` |  |
+| `class?` | `string` |  |
+| `stroke-width?` | `number \| string` |  |
+
+#### KbdTokens
+
+| Field | Type | Notes |
+|---|---|---|
+| `size?` | `CssValue` | `--ca-kbd-size`: square keycap (minimum width and height). @default the keycap hugs its label |
+| `fontSize?` | `CssValue` | `--ca-kbd-font-size`. @default `--ca-font-size-micro` |
+| `leading?` | `CssValue` | `--ca-kbd-line-height`. @default `--ca-line-height-snug` |
+
+#### LayerChange
+
+| Field | Type | Notes |
+|---|---|---|
+| `layers` | `LayerInfo[]` | Open layers, bottom → top. |
+| `count` | `number` |  |
+| `modal` | `boolean` | At least one modal layer is open (the page behind is inert). |
+
+#### LayerInfo
+
+| Field | Type | Notes |
+|---|---|---|
+| `kind` | `LayerKind` |  |
+| `rect` | `DOMRect` |  |
+
+#### LayoutProps
+
+| Field | Type | Notes |
+|---|---|---|
+| `gap?` | `Responsive<Space>` | Gap between children (a spacing step). |
+| `p?` | `Responsive<Space>` | Padding on every side. |
+| `px?` | `Responsive<Space>` | Horizontal padding. |
+| `py?` | `Responsive<Space>` | Vertical padding. |
+| `align?` | `Responsive<Align>` | `align-items`. |
+| `justify?` | `Responsive<Justify>` | `justify-content`. |
+| `direction?` | `Responsive<Direction>` | `flex-direction` (Flex only; Stack is always a column). |
+| `columns?` | `Responsive<Columns>` | Equal grid tracks (Grid only). |
+| `wrap?` | `Responsive<boolean>` | `flex-wrap: wrap`. |
+
+#### MotionCtx
+
+| Field | Type | Notes |
+|---|---|---|
+| `playing` | `boolean` | True while autoplay is running (in view, tab visible, not paused, not taken over). |
+| `reduced` | `boolean` | `prefers-reduced-motion: reduce`: render the final state, no animation. |
+| `takeover` | `() => void` | The user touched the demo: stop autoplay, keep the demo interactive, show Replay. |
+| `play` | `() => void` | Start (or resume) autoplay and clear a takeover. |
+| `pause` | `() => void` | Stop autoplay without a takeover. |
+| `cycle` | `number` | Increments on every autoplay loop and on Replay; key an animation on it to re-run. |
+
+#### MotionOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `scale?` | `number` | Multiplier on every duration (0 = instant, 1.5 = slower). @default 1 |
+| `easing?` | `"standard" \| "emphasized" \| "spring" \| "linear" \| "steps"` | Default easing personality for --ca-ease-standard. |
+| `enter?` | `"default" \| "none"` | `"none"`: dialogs, drawers, sheets, menus, popovers, tooltips and toasts appear and leave in place (no fade, slide or zoom), while hover/focus color transitions keep `scale`. Sets `--ca-enter-scale: 0`. @default "default" |
+
+#### NavExtras
+
+| Field | Type | Notes |
+|---|---|---|
+| `reorder?` | `Component<NavReorderProps>` |  |
+| `itemMenu?` | `Component<{ label: string; actions: Snippet }>` |  |
+
+#### NavItem
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `string` |  |
+| `label` | `string` |  |
+| `icon` | `IconComponent` |  |
+| `path` | `string` |  |
+| `badge?` | `number` | Unread-style badge: announced as "N unread" and capped at 99+. For a plain total use `count`. |
+| `count?` | `number` | Neutral count shown after the label (records in a folder, items in a list). It is part of the link's name as a bare number, never "unread", and `0` renders. Large values abbreviate (`1.2k`). |
+| `color?` | `string` | A per-item marker: any CSS color (`#e11d48`, `var(--ca-success-main)`). Renders a decorative dot before the label, in place of the icon's position when `leading` is not set. The icon stays. |
+| `leading?` | `Snippet` | Replaces the icon (a color dot, an avatar, an emoji). Decorative: the label stays the name. |
+| `actions?` | `Snippet` | Menu content for a "…" button at the end of the row, usually `DropdownMenuItem`s. The button is a sibling of the link (a link cannot contain a control), named "Actions for <label>", and appears on hover and focus. |
+| `isNew?` | `boolean` |  |
+| `shortcut?` | `string` |  |
+| `description?` | `string` |  |
+
+#### NavModule
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `string` |  |
+| `label` | `string` |  |
+| `icon` | `IconComponent` |  |
+| `basePath` | `string` |  |
+| `pathPrefixes?` | `string[]` | Extra URL prefixes that also activate this module in the Rail |
+| `items` | `(NavItem \| NavSection)[]` |  |
+| `onReorder?` | `(e: NavReorderEvent) => void` | Same as `NavSection.onReorder`, for the items that sit directly in `items` (outside any section). |
+| `badge?` | `number \| "dot"` | Marker on the module's rail icon and bottom-nav tab: a number (capped at 99+) or `'dot'` (something is going on, no count). `0` and `undefined` render nothing. The marker is part of the button's accessible name: "Inbox, 12 unread", or `badgeLabel` when set. |
+| `badgeLabel?` | `string` | Accessible text for `badge`, appended to the module label ("Map, Search running"). Needed for a `'dot'` that should say more than "New", and for a count that is not "unread" ("3 tasks pending"). Translate it yourself: the shell cannot. |
+
+#### NavMoreSheetProps
+
+| Field | Type | Notes |
+|---|---|---|
+| `open` | `boolean` |  |
+| `title` | `string` |  |
+| `rest` | `NavModule[]` | Modules that did not fit on the bar. |
+| `visibleCount` | `number` | Index of `rest[0]` inside the full module list. |
+| `activeIndex` | `number` |  |
+| `overflow?` | `Snippet` |  |
+| `onPick` | `(index: number) => void` |  |
+
+#### NavReorderEvent
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `string` |  |
+| `from` | `number` |  |
+| `to` | `number` |  |
+
+#### NavReorderProps
+
+| Field | Type | Notes |
+|---|---|---|
+| `items` | `NavItem[]` |  |
+| `onReorder` | `(e: NavReorderEvent) => void` |  |
+| `label` | `string` |  |
+| `isActive` | `(item: NavItem) => boolean` |  |
+
+#### NavSection
+
+| Field | Type | Notes |
+|---|---|---|
+| `label?` | `string` |  |
+| `collapsible?` | `boolean` |  |
+| `defaultOpen?` | `boolean` |  |
+| `items` | `NavItem[]` |  |
+| `onReorder?` | `(e: NavReorderEvent) => void` | Makes the items of this section reorderable: each row gets a grip (mouse, touch press-and-hold and keyboard through `useDnd`). Needs `reorder={NavReorder}` on `AppShellLayout` (opt-in, so the drag engine is only bundled by apps that reorder). The shell never reorders `items` itself; commit the move in your state, the new order flows back in. Not called when the drop lands where it started. |
+
+#### NeutralRamp
+
+| Field | Type | Notes |
+|---|---|---|
+| `surfaceLight` | `SurfaceColors` |  |
+| `surfaceDark` | `SurfaceColors` |  |
+| `textLight` | `TextColors` |  |
+| `textDark` | `TextColors` |  |
+| `outlineLight` | `OutlineColors` |  |
+| `outlineDark` | `OutlineColors` |  |
+
+#### OutlineColors
+
+| Field | Type | Notes |
+|---|---|---|
+| `subtle` | `string` |  |
+| `default` | `string` |  |
+| `strong` | `string` |  |
+
+#### PresetDefinition
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `string` | Value for `data-preset`. Must not clash with a built-in preset id. |
+| `color` | ``#${string}`` | Brand color as `#rrggbb`. Hue, chroma and lightness are derived from it. |
+| `label?` | `string` |  |
+| `colors?` | `{ light?: SchemeColors; dark?: SchemeColors }` | Per-scheme role colors on top of the generated palette. |
+| `tokens?` | `PresetTokenGroups` | Domain tokens that are not UI roles (funnel status, score tier, contact channel, map pins): `tokens.status.new` emits `--ca-token-status-new` (+ `-subtle`, `-contrast`) per scheme, and `tokenRgba("status.new")` (`@codeatlasdev/ui/tokens`) reads it as `[r, g, b, a]`. |
+| `sizes?` | `PresetSizes` | Size roles for this preset, in both schemes. |
+
+#### PresetSizes
+
+| Field | Type | Notes |
+|---|---|---|
+| `inputFontSize?` | `string` | Text-entry font size (--ca-input-font-size), e.g. `"0.875rem"`. Touch and narrow screens still get `max(16px, …)` so iOS Safari does not zoom into focused fields. |
+
+#### ResolvedTheme
+
+| Field | Type | Notes |
+|---|---|---|
+| `known` | `string[]` | Every valid `data-preset` value: built-ins + brand presets. |
+| `themeColor` | `Record<string, { light: string; dark: string }>` | Hex of --ca-surface-base per preset and scheme, for `<meta name="theme-color">`. |
+
+#### SchemeColors
+
+| Field | Type | Notes |
+|---|---|---|
+| `brand?` | ``#${string}`` | Brand for this scheme as `#rrggbb`; brand fills, text and glows are regenerated from it. |
+| `brandFill?` | `ColorValue` | Background of `Button variant="filled"` and other brand-filled controls (--ca-brand-fill). Defaults to a fill darkened until white text reaches AA. |
+| `brandFillHover?` | `ColorValue` | Hover/pressed variant of `brandFill` (--ca-brand-fill-hover). |
+| `brandContrast?` | `ColorValue` | Text on `brandFill` (--ca-brand-contrast). The build warns when the pair is under 4.5:1. |
+| `background?` | `ColorValue` | Page background (--ca-surface-base, also the browser chrome color): `#rrggbb` or `oklch()`. |
+| `sunken?` | `ColorValue` | Wells, inputs, code blocks (--ca-surface-sunken). |
+| `surface?` | `ColorValue` | Cards and panels (--ca-surface-raised). |
+| `overlay?` | `ColorValue` | Menus, dialogs, popovers (--ca-surface-overlay). |
+| `text?` | `ColorValue` |  |
+| `textSecondary?` | `ColorValue` |  |
+| `textHint?` | `ColorValue` |  |
+| `textDisabled?` | `ColorValue` |  |
+| `borderSubtle?` | `ColorValue` |  |
+| `border?` | `ColorValue` |  |
+| `borderStrong?` | `ColorValue` |  |
+| `success?` | `ColorValue` |  |
+| `warning?` | `ColorValue` |  |
+| `info?` | `ColorValue` |  |
+| `error?` | `ColorValue` |  |
+
+#### SegmentedTokens
+
+| Field | Type | Notes |
+|---|---|---|
+| `sm?` | `SegmentedItemTokens` | One size: `--ca-seg-<sm\|md>-item-*`. |
+| `md?` | `SegmentedItemTokens` |  |
+
+#### SemanticColors
+
+| Field | Type | Notes |
+|---|---|---|
+| `secondary` | `string` |  |
+| `success` | `string` |  |
+| `warning` | `string` |  |
+| `info` | `string` |  |
+| `error` | `string` |  |
+
+#### SortableOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `string` | Container id; lists that share a `group` accept each other's items. |
+| `group?` | `string` | Containers with the same `group` exchange items. Default: the container `id` (no exchange). |
+| `getItems` | `() => readonly string[]` | Ids of the items, in order. Read on every drag start. |
+| `getLabel?` | `(id: string) => string` | Human name of an item for announcements. Default: the element text. |
+| `label?` | `string` | Human name of the container for announcements. Default: `id`. |
+| `axis?` | `"y" \| "x"` |  |
+| `drop?` | `"position" \| "container"` | `position` (default): the drop lands at an index between cards and an insertion line shows it. `container`: the whole list is the target (a column ordered by a server-side rule): no line, the list is highlighted (`data-dnd-over`) and `to.index` is always 0. |
+| `handle?` | `string` | CSS selector of the handle inside an item. Without it the whole item drags. |
+| `disabled?` | `boolean` |  |
+| `onDrop` | `(e: DndDropEvent) => void` | Commit the move (same container: reorder; another container: move). |
+
+#### StageInsets
+
+| Field | Type | Notes |
+|---|---|---|
+| `top` | `number` |  |
+| `right` | `number` |  |
+| `bottom` | `number` |  |
+| `left` | `number` |  |
+
+#### SurfaceColors
+
+| Field | Type | Notes |
+|---|---|---|
+| `sunken` | `string` |  |
+| `base` | `string` |  |
+| `raised` | `string` |  |
+| `overlay` | `string` |  |
+
+#### TextAreaTokens
+
+| Field | Type | Notes |
+|---|---|---|
+| `minHeight?` | `CssValue` | `--ca-ta-min-height`: the height of the visible box, border included. @default rows-based |
+
+#### TextColors
+
+| Field | Type | Notes |
+|---|---|---|
+| `primary` | `string` |  |
+| `secondary` | `string` |  |
+| `disabled` | `string` |  |
+
+#### ThemeDefinition
+
+| Field | Type | Notes |
+|---|---|---|
+| `presets` | `PresetDefinition[]` | Brand presets, emitted inline so they paint with the first frame. Built-ins are always available. |
+| `defaultPreset` | `string` | Preset applied until the user picks one. @default "amber" |
+| `defaultScheme` | `ColorScheme` | Scheme applied until the user picks one. @default "dark" |
+| `defaultStyle` | `SurfaceStyle` | Surface material applied until the user picks one. @default "solid" |
+| `fonts` | `{ display?: FontSpec; body?: FontSpec; mono?: FontSpec }` | Fonts for --ca-font-sans (body), --ca-font-mono and --ca-font-display. A string is a plain stack. |
+| `radius` | `number` | Radius multiplier (0 = square corners, 2 = very round). 0.8 makes `--ca-radius-md` 8px. Also scales `--ca-radius-round` (swatches, pips, dots, chips), so 0 squares those too. @default 0.8 |
+| `controlRadius` | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"` | Corner role used by buttons, fields and chips. @default "md" |
+| `density` | `Density` | Spacing density. compact = 0.75, comfortable = 1, airy = 1.25. @default "comfortable" |
+| `border` | `{ width?: number; strong?: number }` | Border weights in px. @default { width: 1, strong: 2 } |
+| `typography` | `TypographyOptions` |  |
+| `type` | `TypeScale` | Named type scale by role (`label`, `num`, …): size, leading, tracking and weight, overriding the defaults everywhere. |
+| `elevation` | `ElevationModel` | How elevation is drawn. hard = offset shadows with no blur (Neobrutalism). @default "soft" |
+| `motion` | `MotionOptions` |  |
+| `iconStroke` | `number` | Icon stroke width (Lucide). @default 1.75 |
+| `noise` | `number` | Film-grain texture over the page background, 0 to 0.12. @default 0 |
+| `paper` | `Paper` | Page background pattern. Flat patterns use --ca-outline-subtle, so they follow the preset. @default "plain" |
+| `components` | `ComponentTokens` | Component tokens (`--ca-btn-*`, `--ca-icon-btn-*`, `--ca-kbd-*`): weight, tracking, line-height, gap, padding and size per component, without a selector against a `.ca-*` class. Unset, a component keeps its default look. Applied before `overrides`. |
+| `overrides` | `{ light?: TokenMap; dark?: TokenMap }` | Raw token overrides per scheme. Applied last. |
+
+#### ThemePreset
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `BuiltinPresetId` |  |
+| `label` | `string` |  |
+| `swatchColor` | `string` |  |
+| `hue` | `number` |  |
+| `brandLight` | `BrandColors` |  |
+| `brandDark` | `BrandColors` |  |
+| `ramp` | `NeutralRamp` |  |
+| `semanticLight` | `SemanticColors` |  |
+| `semanticDark` | `SemanticColors` |  |
+
+#### ToastItem
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `string` |  |
+| `message` | `string` |  |
+| `variant` | `ToastVariant` |  |
+| `duration` | `number` |  |
+| `count?` | `number` | How many identical calls this toast stands for (`×3`). Absent or 1 for a fresh toast. |
+| `description?` | `string` | Secondary line under the message. |
+| `action?` | `ToastAction` | One inline action; clicking it runs `onClick` and dismisses the toast. |
+
+#### ToastOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `variant?` | `ToastVariant` |  |
+| `duration?` | `number` | Auto-dismiss delay in ms. 0 keeps the toast until dismissed. @default 4000 |
+| `id?` | `string` | Replaces the toast with this id in place (new text, variant and timer) instead of stacking a new one. |
+| `description?` | `string` | Secondary, smaller line under the message. |
+| `action?` | `ToastAction` | One inline button (label + handler). Clicking it runs `onClick` and dismisses the toast. An actionable toast lasts 8000 ms unless `duration` says otherwise. |
+
+#### TypeRoleSpec
+
+| Field | Type | Notes |
+|---|---|---|
+| `size?` | `string` | Font size as a CSS length (`"13px"`, `"0.8125rem"`). It replaces the default, which scales with `typography.scale`. |
+| `leading?` | `number \| string` | Line height: a unitless number (`1.25`) or a CSS length. |
+| `tracking?` | `string` | Letter spacing (`"0"`, `"0.01em"`). |
+| `weight?` | `number` | Font weight, 1 to 1000. |
+
+#### TypographyOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `scale?` | `number` | Multiplier on the whole UI type scale. @default 1 |
+| `weights?` | `Partial<Record<"regular" \| "medium" \| "semibold" \| "bold" \| "heading", number>>` |  |
+| `headingTracking?` | `string` | Heading letter-spacing, e.g. "-0.02em" (tight) or "0.04em" (wide). |
+| `headingCase?` | `"none" \| "uppercase"` |  |
+| `displayTracking?` | `string` | Display text role (`Heading size="display"`) letter-spacing, e.g. "-0.055em". @default the heading tracking |
+| `displayLeading?` | `number` | Display text role line-height (unitless), e.g. 0.84. @default 1.05 |
+| `labelTracking?` | `string` |  |
+| `labelCase?` | `"none" \| "uppercase"` |  |
+| `lineHeight?` | `number` | Body line-height. @default 1.55 |
+| `measure?` | `string` | Max line length for prose, e.g. "65ch". |
+
+#### UseDndOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `messages?` | `Partial<DndMessages>` | Override the locale-provided screen reader strings. |
+| `threshold?` | `number` |  |
+| `holdMs?` | `number` |  |
+| `edge?` | `number` |  |
+| `id?` | `string` | Id for the instructions element (default: a generated one). |
+
+#### UseListStateOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `data` | `T[]` | Full dataset |
+| `perPage?` | `number` | Rows per page. Default: 20 |
+| `searchKeys?` | `(keyof T)[]` | Which fields are included in text search |
+| `idKey?` | `keyof T` | Field used as row identifier for selection. Default: 'id' |
+| `ofLabel?` | `string` | Word between the numbers in `count` / `pageInfo` ("8 of 24"). Default: 'of'; use 'de' in pt-BR. |
+
+#### UseListStateReturn
+
+| Field | Type | Notes |
+|---|---|---|
+| `filters` | `Record<string, string>` | Current filter values, keyed by field name |
+| `setFilter` | `(key: string, value: string \| undefined) => void` | Set (or clear when value is undefined/'all') a single filter |
+| `clearFilters` | `() => void` | Reset all filters |
+| `hasFilters` | `boolean` | True when any filter is active (value !== 'all' and !== undefined) |
+| `filtered` | `T[]` | Rows after search + filters applied |
+| `count` | `string` | Human-readable count, e.g. "8 of 24" |
+| `rows` | `T[]` | Current page slice |
+| `pageCount` | `number` |  |
+| `pageInfo` | `string` | Human-readable range, e.g. "1–8 of 24" |
+| `selected` | `Set<T[keyof T]>` |  |
+| `allPageSelected` | `boolean` | True when every row on the current page is selected |
+| `toggleAll` | `() => void` | Toggle all rows on the current page |
+| `toggleRow` | `(id: T[keyof T]) => void` | Toggle a single row by ID |
+| `clearSelection` | `() => void` | Clear all selections |
+
 ## @codeatlasdev/ui/actions
 
 ### autofocus
@@ -4862,6 +5534,47 @@ Types:
 | `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: ColorValue; brandFillHover?: ColorValue; brandContrast?: ColorValue; background?: ColorValue; sunken?: ColorValue; surface?: ColorValue; overlay?: ColorValue; text?: ColorValue; textSecondary?: ColorValue; textHint?: ColorValue; textDisabled?: ColorValue; borderSubtle?: ColorValue; border?: ColorValue; borderStrong?: ColorValue; success?: ColorValue; warning?: ColorValue; info?: ColorValue; error?: ColorValue; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it, and the build measures text roles after compositing it (see `presetContrastIssues`). |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
 
+#### PresetDefinition
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `string` | Value for `data-preset`. Must not clash with a built-in preset id. |
+| `color` | ``#${string}`` | Brand color as `#rrggbb`. Hue, chroma and lightness are derived from it. |
+| `label?` | `string` |  |
+| `colors?` | `{ light?: SchemeColors; dark?: SchemeColors }` | Per-scheme role colors on top of the generated palette. |
+| `tokens?` | `PresetTokenGroups` | Domain tokens that are not UI roles (funnel status, score tier, contact channel, map pins): `tokens.status.new` emits `--ca-token-status-new` (+ `-subtle`, `-contrast`) per scheme, and `tokenRgba("status.new")` (`@codeatlasdev/ui/tokens`) reads it as `[r, g, b, a]`. |
+| `sizes?` | `PresetSizes` | Size roles for this preset, in both schemes. |
+
+#### PresetSizes
+
+| Field | Type | Notes |
+|---|---|---|
+| `inputFontSize?` | `string` | Text-entry font size (--ca-input-font-size), e.g. `"0.875rem"`. Touch and narrow screens still get `max(16px, …)` so iOS Safari does not zoom into focused fields. |
+
+#### SchemeColors
+
+| Field | Type | Notes |
+|---|---|---|
+| `brand?` | ``#${string}`` | Brand for this scheme as `#rrggbb`; brand fills, text and glows are regenerated from it. |
+| `brandFill?` | `ColorValue` | Background of `Button variant="filled"` and other brand-filled controls (--ca-brand-fill). Defaults to a fill darkened until white text reaches AA. |
+| `brandFillHover?` | `ColorValue` | Hover/pressed variant of `brandFill` (--ca-brand-fill-hover). |
+| `brandContrast?` | `ColorValue` | Text on `brandFill` (--ca-brand-contrast). The build warns when the pair is under 4.5:1. |
+| `background?` | `ColorValue` | Page background (--ca-surface-base, also the browser chrome color): `#rrggbb` or `oklch()`. |
+| `sunken?` | `ColorValue` | Wells, inputs, code blocks (--ca-surface-sunken). |
+| `surface?` | `ColorValue` | Cards and panels (--ca-surface-raised). |
+| `overlay?` | `ColorValue` | Menus, dialogs, popovers (--ca-surface-overlay). |
+| `text?` | `ColorValue` |  |
+| `textSecondary?` | `ColorValue` |  |
+| `textHint?` | `ColorValue` |  |
+| `textDisabled?` | `ColorValue` |  |
+| `borderSubtle?` | `ColorValue` |  |
+| `border?` | `ColorValue` |  |
+| `borderStrong?` | `ColorValue` |  |
+| `success?` | `ColorValue` |  |
+| `warning?` | `ColorValue` |  |
+| `info?` | `ColorValue` |  |
+| `error?` | `ColorValue` |  |
+
 ## @codeatlasdev/ui/charts
 
 Types:
@@ -4879,6 +5592,51 @@ Types:
 | `ScatterPoint` | `type ScatterPoint = [x: number, y: number] \| [x: number, y: number, size: number];` | x/y point, optionally with a third dimension for bubble sizing. |
 | `ScatterSeries` | `interface ScatterSeries { name: string; data: ScatterPoint[]; color?: string; }` |  |
 | `SparklineTrend` | `type SparklineTrend = "up" \| "down" \| "neutral";` |  |
+
+#### ChartSeries
+
+| Field | Type | Notes |
+|---|---|---|
+| `name` | `string` |  |
+| `data` | `number[]` |  |
+| `color?` | `string` | Override the auto-assigned palette color for this series (CSS color or token). |
+
+#### ChartSlice
+
+| Field | Type | Notes |
+|---|---|---|
+| `name` | `string` |  |
+| `value` | `number` |  |
+
+#### GaugeZone
+
+| Field | Type | Notes |
+|---|---|---|
+| `until` | `number` | Upper bound of this zone, 0–1 as a fraction of min–max. |
+| `color` | `GaugeZoneColor` |  |
+
+#### RadarIndicator
+
+| Field | Type | Notes |
+|---|---|---|
+| `name` | `string` |  |
+| `max` | `number` |  |
+
+#### RadarSeries
+
+| Field | Type | Notes |
+|---|---|---|
+| `name` | `string` |  |
+| `values` | `number[]` |  |
+| `color?` | `string` |  |
+
+#### ScatterSeries
+
+| Field | Type | Notes |
+|---|---|---|
+| `name` | `string` |  |
+| `data` | `ScatterPoint[]` |  |
+| `color?` | `string` |  |
 
 ## @codeatlasdev/ui/forms
 
@@ -5029,6 +5787,22 @@ Types:
 | `CepAddress` | `interface CepAddress { logradouro: string; bairro: string; localidade: string; uf: string; }` | Address shape returned by a CEP lookup (ViaCEP field names). |
 | `MoneyOptions` | `interface MoneyOptions { currency?: string; locale?: string; }` |  |
 
+#### CepAddress
+
+| Field | Type | Notes |
+|---|---|---|
+| `logradouro` | `string` |  |
+| `bairro` | `string` |  |
+| `localidade` | `string` |  |
+| `uf` | `string` |  |
+
+#### MoneyOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `currency?` | `string` | ISO 4217 code. Default `"BRL"`. |
+| `locale?` | `string` | BCP 47 tag used for separators and symbol placement. Default `"pt-BR"`. |
+
 ## @codeatlasdev/ui/kit
 
 ### caThemeHandle
@@ -5178,6 +5952,93 @@ Types:
 | `ThemeHandleOptions` | `interface ThemeHandleOptions { routes?: RouteThemes; }` | Options of the second argument of `caThemeHandle`. |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
 
+#### CaError
+
+| Field | Type | Notes |
+|---|---|---|
+| `message` | `string` |  |
+| `code?` | `string` |  |
+| `id?` | `string` |  |
+
+#### CreateErrorHandlerOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `report?` | `(error: CaError, event: ErrorEvent) => void` | Called for every unexpected error. Use to send to Sentry, LogRocket, etc. The error has already been sanitized — stack traces are not included. |
+| `defaultMessage?` | `string` | Override the default "Internal Error" message shown to users. |
+| `locale?` | `Locale \| ((event: ErrorEvent) => Locale \| undefined)` | Language of the built-in fallback message, or a function resolving it per request (e.g. from `event.locals`). The handler never reads global locale state: on the server that state would be shared by concurrent requests. Ignored when `defaultMessage` is set. |
+
+#### DesignStyle
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `DesignStyleId` |  |
+| `label` | `string` |  |
+| `description` | `string` | One line: what it looks like and when it fits. |
+| `taxonomy` | `string[]` | Atlas taxonomy ids this recipe implements. |
+| `theme` | `Partial<ThemeDefinition>` |  |
+
+#### IslandTheme
+
+| Field | Type | Notes |
+|---|---|---|
+| `preset?` | `string` | `data-preset` to apply. Omit to keep the app preset and change only the scheme. |
+| `scheme` | `IslandScheme` |  |
+
+#### NativeFeelOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `blockZoom?` | `boolean` | Block page zoom (⌘/Ctrl +, -, 0 and pinch). Only for desktop shells (Tauri): on the web zoom is an accessibility feature. @default false |
+| `allowContextMenu?` | `(e: MouseEvent) => boolean` | Keep the browser context menu for this event (e.g. debug builds). Editable fields always keep it. |
+
+#### PresetDefinition
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `string` | Value for `data-preset`. Must not clash with a built-in preset id. |
+| `color` | ``#${string}`` | Brand color as `#rrggbb`. Hue, chroma and lightness are derived from it. |
+| `label?` | `string` |  |
+| `colors?` | `{ light?: SchemeColors; dark?: SchemeColors }` | Per-scheme role colors on top of the generated palette. |
+| `tokens?` | `PresetTokenGroups` | Domain tokens that are not UI roles (funnel status, score tier, contact channel, map pins): `tokens.status.new` emits `--ca-token-status-new` (+ `-subtle`, `-contrast`) per scheme, and `tokenRgba("status.new")` (`@codeatlasdev/ui/tokens`) reads it as `[r, g, b, a]`. |
+| `sizes?` | `PresetSizes` | Size roles for this preset, in both schemes. |
+
+#### ResolvedTheme
+
+| Field | Type | Notes |
+|---|---|---|
+| `known` | `string[]` | Every valid `data-preset` value: built-ins + brand presets. |
+| `themeColor` | `Record<string, { light: string; dark: string }>` | Hex of --ca-surface-base per preset and scheme, for `<meta name="theme-color">`. |
+
+#### ThemeDefinition
+
+| Field | Type | Notes |
+|---|---|---|
+| `presets` | `PresetDefinition[]` | Brand presets, emitted inline so they paint with the first frame. Built-ins are always available. |
+| `defaultPreset` | `string` | Preset applied until the user picks one. @default "amber" |
+| `defaultScheme` | `ColorScheme` | Scheme applied until the user picks one. @default "dark" |
+| `defaultStyle` | `SurfaceStyle` | Surface material applied until the user picks one. @default "solid" |
+| `fonts` | `{ display?: FontSpec; body?: FontSpec; mono?: FontSpec }` | Fonts for --ca-font-sans (body), --ca-font-mono and --ca-font-display. A string is a plain stack. |
+| `radius` | `number` | Radius multiplier (0 = square corners, 2 = very round). 0.8 makes `--ca-radius-md` 8px. Also scales `--ca-radius-round` (swatches, pips, dots, chips), so 0 squares those too. @default 0.8 |
+| `controlRadius` | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"` | Corner role used by buttons, fields and chips. @default "md" |
+| `density` | `Density` | Spacing density. compact = 0.75, comfortable = 1, airy = 1.25. @default "comfortable" |
+| `border` | `{ width?: number; strong?: number }` | Border weights in px. @default { width: 1, strong: 2 } |
+| `typography` | `TypographyOptions` |  |
+| `type` | `TypeScale` | Named type scale by role (`label`, `num`, …): size, leading, tracking and weight, overriding the defaults everywhere. |
+| `elevation` | `ElevationModel` | How elevation is drawn. hard = offset shadows with no blur (Neobrutalism). @default "soft" |
+| `motion` | `MotionOptions` |  |
+| `iconStroke` | `number` | Icon stroke width (Lucide). @default 1.75 |
+| `noise` | `number` | Film-grain texture over the page background, 0 to 0.12. @default 0 |
+| `paper` | `Paper` | Page background pattern. Flat patterns use --ca-outline-subtle, so they follow the preset. @default "plain" |
+| `components` | `ComponentTokens` | Component tokens (`--ca-btn-*`, `--ca-icon-btn-*`, `--ca-kbd-*`): weight, tracking, line-height, gap, padding and size per component, without a selector against a `.ca-*` class. Unset, a component keeps its default look. Applied before `overrides`. |
+| `overrides` | `{ light?: TokenMap; dark?: TokenMap }` | Raw token overrides per scheme. Applied last. |
+
+#### ThemeHandleOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `routes?` | `RouteThemes` | Full-page themes by route id prefix, for whole route groups. `setRouteTheme` in `load` overrides it. |
+
 ## @codeatlasdev/ui/map
 
 ### mapColors
@@ -5231,6 +6092,45 @@ Types:
 | `MapStyles` | `interface MapStyles<S = string \| object> { light: S; dark: S; }` | A style URL or an inline style object, for the light and dark scheme. |
 | `MapTheme` | `interface MapTheme { readonly scheme: "light" \| "dark"; readonly colors: MapColors; color: (token: string, alpha?: number) => Rgba; }` | Which basemap style to show and the matching palette. `scheme` is `"light"` or `"dark"`. |
 | `Rgba` | `type Rgba = [number, number, number, number];` | `[r, g, b, a]`: r, g, b in 0-255, a in 0-1 (what `@deck.gl/core` `Color` expects, alpha scaled by the caller). |
+
+#### MapColors
+
+| Field | Type | Notes |
+|---|---|---|
+| `brand` | `Rgba` |  |
+| `brandMuted` | `Rgba` |  |
+| `surface` | `Rgba` |  |
+| `text` | `Rgba` |  |
+| `textMuted` | `Rgba` |  |
+| `outline` | `Rgba` |  |
+| `success` | `Rgba` |  |
+| `warning` | `Rgba` |  |
+| `error` | `Rgba` |  |
+| `info` | `Rgba` |  |
+
+#### MapPadding
+
+| Field | Type | Notes |
+|---|---|---|
+| `top` | `number` |  |
+| `right` | `number` |  |
+| `bottom` | `number` |  |
+| `left` | `number` |  |
+
+#### MapStyles
+
+| Field | Type | Notes |
+|---|---|---|
+| `light` | `S` |  |
+| `dark` | `S` |  |
+
+#### MapTheme
+
+| Field | Type | Notes |
+|---|---|---|
+| `scheme` | `"light" \| "dark"` |  |
+| `colors` | `MapColors` |  |
+| `color` | `(token: string, alpha?: number) => Rgba` | Resolves any token to RGBA under the current theme; reactive like `colors`. |
 
 ## @codeatlasdev/ui/seo
 
@@ -5471,6 +6371,224 @@ Types:
 | `SoftwareApplicationInput` | `interface SoftwareApplicationInput { name: string; description?: string; url?: string; applicationCategory: string; operatingSystem?: string; offer?: { price: string; priceCurrency: string }; rating?: { value: number; count: number }; id?: string; extra?: Extra; }` |  |
 | `WebsiteInput` | `interface WebsiteInput { name: string; url: string; description?: string; inLanguage?: string; id?: string; publisher?: JsonLdRef; searchUrlTemplate?: string; extra?: Extra; }` |  |
 
+#### AppleMetaOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `touchIcon` | `string` | Absolute path to a 180x180 PNG without transparency (iOS fills it with black). |
+| `title?` | `string` | Title under the icon. |
+| `statusBarStyle?` | `"default" \| "black" \| "black-translucent"` | `black-translucent` draws the page under the status bar (needs `viewport-fit=cover` and `--ca-safe-top` padding). @default "black-translucent" |
+
+#### ArticleInput
+
+| Field | Type | Notes |
+|---|---|---|
+| `headline` | `string` |  |
+| `description?` | `string` |  |
+| `url?` | `string` |  |
+| `image?` | `string \| string[]` |  |
+| `datePublished` | `string` | ISO 8601. |
+| `dateModified?` | `string` |  |
+| `author` | `{ name: string; url?: string } \| { name: string; url?: string }[]` |  |
+| `publisher?` | `JsonLdRef` |  |
+| `inLanguage?` | `string` |  |
+| `type?` | `"Article" \| "BlogPosting" \| "NewsArticle" \| "TechArticle"` |  |
+| `extra?` | `Extra` |  |
+
+#### BrowserLike
+
+| Field | Type | Notes |
+|---|---|---|
+| `newContext` | `(options: { deviceScaleFactor: number; viewport: { width: number; height: number }; }) => Promise<{ newPage: () => Promise<PageLike>; close: () => Promise<void> }>` |  |
+
+#### IconLinksInput
+
+| Field | Type | Notes |
+|---|---|---|
+| `favicon` | `string` | SVG favicon (follows `prefers-color-scheme`). |
+| `ico?` | `string` | ICO fallback for browsers that ignore SVG favicons. |
+| `appleTouch?` | `string` | 180x180 opaque PNG for the iOS home screen. |
+| `manifest?` | `string` | Web app manifest URL. |
+
+#### JsonLdRef
+
+| Field | Type | Notes |
+|---|---|---|
+| `@id` | `string` |  |
+
+#### LlmsSection
+
+| Field | Type | Notes |
+|---|---|---|
+| `heading` | `string` |  |
+| `links` | `{ title: string; href: string; description?: string }[]` |  |
+
+#### LlmsTxtInput
+
+| Field | Type | Notes |
+|---|---|---|
+| `title` | `string` |  |
+| `summary` | `string` | One-paragraph summary, rendered as a blockquote. |
+| `intro?` | `string[]` | Free-form lines between the summary and the sections. |
+| `sections` | `LlmsSection[]` |  |
+
+#### ManifestIcon
+
+| Field | Type | Notes |
+|---|---|---|
+| `src` | `string` |  |
+| `sizes` | `string` | e.g. `"192x192"`. |
+| `type?` | `string` |  |
+| `purpose?` | `"any" \| "maskable" \| "monochrome"` | `"maskable"` icons must keep their content inside the central 80% safe zone. |
+
+#### ManifestOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `name` | `string` |  |
+| `shortName?` | `string` | Label under the home screen icon. @default name |
+| `description?` | `string` |  |
+| `startUrl?` | `string` |  |
+| `scope?` | `string` | Navigation scope of the installed app. @default "/" |
+| `display?` | `"standalone" \| "fullscreen" \| "minimal-ui" \| "browser"` |  |
+| `orientation?` | `"any" \| "portrait" \| "landscape"` |  |
+| `lang?` | `string` |  |
+| `icons` | `ManifestIcon[]` | Include one `purpose: "maskable"` icon: Android crops others into a white tile. |
+| `shortcuts?` | `ManifestShortcut[]` |  |
+| `theme?` | `Partial<ThemeDefinition>` | Theme definition used to derive `theme_color` and `background_color` from the default preset's surface (the same values the init script puts in `<meta name="theme-color">`). |
+| `themeColor?` | `string` | Overrides the derived colors, as `#rrggbb`. |
+| `backgroundColor?` | `string` |  |
+| `extra?` | `Record<string, unknown>` | Extra manifest members (`categories`, `screenshots`, `id`...). |
+
+#### ManifestShortcut
+
+| Field | Type | Notes |
+|---|---|---|
+| `name` | `string` |  |
+| `url` | `string` |  |
+| `short_name?` | `string` |  |
+| `description?` | `string` |  |
+| `icons?` | `ManifestIcon[]` |  |
+
+#### MarkdownNegotiationOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `markdown` | `( pathname: string, event: HandleEvent ) => string \| undefined \| Promise<string \| undefined>` | Returns the Markdown for a pathname, or `undefined` when the page has no Markdown twin. Typical implementation: look the path up in a map of prerendered `.md` strings, or `event.fetch(`${pathname}.md`)` and return its text. |
+| `userAgents?` | `RegExp` | Extra user agents treated as AI bots, on top of the built-in list. |
+
+#### OgCardOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `title` | `string` |  |
+| `description?` | `string` |  |
+| `eyebrow?` | `string` | Small label above the title, e.g. the docs group. |
+| `siteName` | `string` | Site name next to the mark. |
+| `mark` | `string` | Mark SVG with colors already filled (`renderMark` from `@codeatlasdev/ui/vite`). |
+| `colors` | `{ ink: string; spark: string; surface: string }` | Literal `#rrggbb` colors, usually `resolveBrand(theme).dark` (`ink`, `spark`, `surface`). |
+| `css?` | `string` | Extra CSS for the document, typically `@font-face` rules or the app's stylesheet text. Fonts must be embedded (`data:` URLs) for renders to match across machines. |
+| `fontFamily?` | `string` | `font-family` stack. @default system sans-serif |
+| `lang?` | `string` | BCP 47 tag for `<html lang>`: drives hyphenation and CJK/locale font selection. @default "en" |
+
+#### OgImageRouteOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `browser` | `() => BrowserLike \| Promise<BrowserLike>` | Returns the browser to render with. Called per request; keep the instance alive across calls. |
+| `render` | `(event: E) => string \| undefined \| Promise<string \| undefined>` | Builds the HTML for this request (read `event.params` / `event.url`). Return `undefined` for an unknown page: the route answers 404. |
+| `cacheKey?` | `(event: E) => string` | Stable key for the rendered image, usually `event.url.pathname`. Enables the in-memory cache. |
+| `cacheSize?` | `number` | Max cached images (oldest evicted first). @default 100 |
+| `concurrency?` | `number` | Concurrent renders; each costs a browser page. @default 2 |
+| `cacheControl?` | `string` | `Cache-Control` for the response. @default "public, max-age=3600, s-maxage=86400" |
+
+#### OrganizationInput
+
+| Field | Type | Notes |
+|---|---|---|
+| `name` | `string` |  |
+| `url` | `string` |  |
+| `logo?` | `string` | Absolute logo URL. |
+| `sameAs?` | `string[]` | Profiles on other sites (GitHub, LinkedIn...). |
+| `description?` | `string` |  |
+| `id?` | `string` | Stable `@id` so other nodes can reference this one. |
+| `extra?` | `Extra` |  |
+
+#### ProductInput
+
+| Field | Type | Notes |
+|---|---|---|
+| `name` | `string` |  |
+| `description?` | `string` |  |
+| `image?` | `string \| string[]` | Absolute image URL(s). |
+| `sku?` | `string` |  |
+| `brand?` | `string` |  |
+| `offers` | `ProductOffer \| ProductOffer[]` |  |
+| `rating?` | `{ value: number; count: number }` |  |
+| `id?` | `string` |  |
+| `extra?` | `Extra` |  |
+
+#### ProductOffer
+
+| Field | Type | Notes |
+|---|---|---|
+| `price` | `number \| string` |  |
+| `priceCurrency` | `string` | ISO 4217, e.g. `"BRL"`. |
+| `availability?` | `\| "InStock" \| "OutOfStock" \| "PreOrder" \| "BackOrder" \| "SoldOut" \| "Discontinued" \| "LimitedAvailability"` |  |
+| `url?` | `string` |  |
+| `priceValidUntil?` | `string` | ISO date after which the price is no longer valid. |
+| `itemCondition?` | `"NewCondition" \| "UsedCondition" \| "RefurbishedCondition"` |  |
+
+#### RenderOgOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `format?` | `"jpeg" \| "png"` |  |
+| `quality?` | `number` | JPEG quality 1-100. @default 82 |
+
+#### RobotsOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `sitemap?` | `string \| string[]` | Absolute sitemap URL(s). |
+| `disallow?` | `string[]` | Paths blocked for every crawler. |
+| `allow?` | `string[]` | Paths explicitly allowed (useful to carve exceptions out of `disallow`). @default ["/"] when nothing is disallowed |
+
+#### SitemapEntry
+
+| Field | Type | Notes |
+|---|---|---|
+| `loc` | `string` | Absolute URL. |
+| `lastmod?` | `string \| Date` | ISO date or `Date`. |
+| `alternates?` | `{ hreflang: string; href: string }[]` | Translations of this URL, including itself and an `x-default` entry. |
+
+#### SoftwareApplicationInput
+
+| Field | Type | Notes |
+|---|---|---|
+| `name` | `string` |  |
+| `description?` | `string` |  |
+| `url?` | `string` |  |
+| `applicationCategory` | `string` | e.g. `"DeveloperApplication"`, `"BusinessApplication"`, `"GameApplication"`. |
+| `operatingSystem?` | `string` |  |
+| `offer?` | `{ price: string; priceCurrency: string }` | Price as a string (`"0"` for free) plus ISO 4217 currency. |
+| `rating?` | `{ value: number; count: number }` |  |
+| `id?` | `string` |  |
+| `extra?` | `Extra` |  |
+
+#### WebsiteInput
+
+| Field | Type | Notes |
+|---|---|---|
+| `name` | `string` |  |
+| `url` | `string` |  |
+| `description?` | `string` |  |
+| `inLanguage?` | `string` |  |
+| `id?` | `string` |  |
+| `publisher?` | `JsonLdRef` |  |
+| `searchUrlTemplate?` | `string` | Sitelinks search box. `{query}` in the template is the search term placeholder, e.g. `https://example.com/search?q={query}`. |
+| `extra?` | `Extra` |  |
+
 ## @codeatlasdev/ui/table
 
 ### caTableFeatures
@@ -5521,6 +6639,21 @@ Types:
 | `CaTable` | `type CaTable<TData extends RowData> = SvelteTable<CaTableFeatures, TData>;` | Use when a component receives a table instance. |
 | `CaTableFeatures` | `type CaTableFeatures = typeof caTableFeatures;` |  |
 | `DataTableReorderEvent` | `interface DataTableReorderEvent { id: string; from: { group?: string; index: number }; to: { group?: string; index: number }; }` | A row move reported by `DataTable`'s `onReorder`: `from` and `to` are positions inside a group (`group` is undefined without `groupBy`). |
+
+#### CaColumnMeta
+
+| Field | Type | Notes |
+|---|---|---|
+| `label?` | `string` | Human-readable label shown in the column-visibility toggle. |
+| `resizable?` | `boolean` | Shows a resize handle on the header (pointer, touch and keyboard). Uses the column's `size`, `minSize` and `maxSize`. |
+
+#### DataTableReorderEvent
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `string` |  |
+| `from` | `{ group?: string; index: number }` |  |
+| `to` | `{ group?: string; index: number }` |  |
 
 ## @codeatlasdev/ui/tokens
 
@@ -5981,6 +7114,75 @@ Types:
 | `VibrancyLevel` | `type VibrancyLevel = "label" \| "secondary" \| "tertiary" \| "fill" \| "separator";` |  |
 | `ZIndexKey` | `type ZIndexKey = keyof typeof zIndex;` |  |
 
+#### BrandColors
+
+| Field | Type | Notes |
+|---|---|---|
+| `main` | `string` |  |
+| `light` | `string` |  |
+| `dark` | `string` |  |
+| `contrast` | `string` |  |
+
+#### NeutralRamp
+
+| Field | Type | Notes |
+|---|---|---|
+| `surfaceLight` | `SurfaceColors` |  |
+| `surfaceDark` | `SurfaceColors` |  |
+| `textLight` | `TextColors` |  |
+| `textDark` | `TextColors` |  |
+| `outlineLight` | `OutlineColors` |  |
+| `outlineDark` | `OutlineColors` |  |
+
+#### OutlineColors
+
+| Field | Type | Notes |
+|---|---|---|
+| `subtle` | `string` |  |
+| `default` | `string` |  |
+| `strong` | `string` |  |
+
+#### SemanticColors
+
+| Field | Type | Notes |
+|---|---|---|
+| `secondary` | `string` |  |
+| `success` | `string` |  |
+| `warning` | `string` |  |
+| `info` | `string` |  |
+| `error` | `string` |  |
+
+#### SurfaceColors
+
+| Field | Type | Notes |
+|---|---|---|
+| `sunken` | `string` |  |
+| `base` | `string` |  |
+| `raised` | `string` |  |
+| `overlay` | `string` |  |
+
+#### TextColors
+
+| Field | Type | Notes |
+|---|---|---|
+| `primary` | `string` |  |
+| `secondary` | `string` |  |
+| `disabled` | `string` |  |
+
+#### ThemePreset
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `BuiltinPresetId` |  |
+| `label` | `string` |  |
+| `swatchColor` | `string` |  |
+| `hue` | `number` |  |
+| `brandLight` | `BrandColors` |  |
+| `brandDark` | `BrandColors` |  |
+| `ramp` | `NeutralRamp` |  |
+| `semanticLight` | `SemanticColors` |  |
+| `semanticDark` | `SemanticColors` |  |
+
 ## @codeatlasdev/ui/utils/palette-generator
 
 ### contrastRatio
@@ -6089,6 +7291,51 @@ Types:
 |---|---|---|
 | `PresetTokens` | `interface PresetTokens { brandMain: string; brandLight: string; brandDark: string; brandContrast: string; brandText: string; brandFill: string; brandFillHover: string; surfaceSunken: string; surfaceBase: string; surfaceRaised: string; surfaceOverlay: string; textPrimary: string; textSecondary: string; textDisabled: string; textHint: string; outlineSubtle: string; outlineDefault: string; outlineStrong: string; outlineControl: string; focusRing: string; semanticErrorContrast: string; glassBg: string; glassTintUltraThin: string; glassTintThin: string; glassTint: string; glassTintThick: string; glassTintChrome: string; glassTintSolid: string; glassBorder: string; glassShadow: string; glowPrimary: string; glowPrimaryStrong: string; vibrancyLabel: string; vibrancySecondary: string; vibrancyTertiary: string; vibrancyFill: string; vibrancySeparator: string; scrimColor: string; tooltipFg: string; dark: { brandMain: string; brandLight: string; brandDark: string; brandContrast: string; brandText: string; brandFill: string; brandFillHover: string; surfaceSunken: string; surfaceBase: string; surfaceRaised: string; surfaceOverlay: string; textPrimary: string; textSecondary: string; textDisabled: string; textHint: string; outlineControl: string; focusRing: string; semanticErrorContrast: string; glassBg: string; glowPrimary: string; glowPrimaryStrong: string; vibrancyLabel: string; vibrancySecondary: string; vibrancyTertiary: string; vibrancyFill: string; vibrancySeparator: string; tooltipFg: string; }; }` |  |
 | `TokenMap` | `type TokenMap = Record<`--ca-${string}`, string>;` | CSS custom properties of one preset, per scheme. |
+
+#### PresetTokens
+
+| Field | Type | Notes |
+|---|---|---|
+| `brandMain` | `string` |  |
+| `brandLight` | `string` |  |
+| `brandDark` | `string` |  |
+| `brandContrast` | `string` |  |
+| `brandText` | `string` | Brand-coloured text (--ca-brand-text): >= 4.5:1 on every surface and on hover/selected fills. |
+| `brandFill` | `string` | Background for brand-filled controls; `brandContrast` text on it is >= WCAG AA (4.5:1). |
+| `brandFillHover` | `string` | Hover/pressed variant of `brandFill`, also >= 4.5:1 against `brandContrast`. |
+| `surfaceSunken` | `string` |  |
+| `surfaceBase` | `string` |  |
+| `surfaceRaised` | `string` |  |
+| `surfaceOverlay` | `string` |  |
+| `textPrimary` | `string` |  |
+| `textSecondary` | `string` |  |
+| `textDisabled` | `string` |  |
+| `textHint` | `string` |  |
+| `outlineSubtle` | `string` |  |
+| `outlineDefault` | `string` |  |
+| `outlineStrong` | `string` |  |
+| `outlineControl` | `string` | Boundary of a field/control: >= 3:1 on every surface and on the 5% text tint of a field (WCAG 1.4.11). |
+| `focusRing` | `string` | Keyboard focus ring: >= 3:1 on every surface and on hover/selected fills (it floats 2px off a brand fill). |
+| `semanticErrorContrast` | `string` | Text on `--ca-semantic-error-fill` (>= 4.5:1), the pair of `brandContrast`/`brandFill`. |
+| `glassBg` | `string` |  |
+| `glassTintUltraThin` | `string` |  |
+| `glassTintThin` | `string` |  |
+| `glassTint` | `string` |  |
+| `glassTintThick` | `string` |  |
+| `glassTintChrome` | `string` |  |
+| `glassTintSolid` | `string` |  |
+| `glassBorder` | `string` |  |
+| `glassShadow` | `string` |  |
+| `glowPrimary` | `string` |  |
+| `glowPrimaryStrong` | `string` |  |
+| `vibrancyLabel` | `string` |  |
+| `vibrancySecondary` | `string` |  |
+| `vibrancyTertiary` | `string` |  |
+| `vibrancyFill` | `string` |  |
+| `vibrancySeparator` | `string` |  |
+| `scrimColor` | `string` |  |
+| `tooltipFg` | `string` |  |
+| `dark` | `{ brandMain: string; brandLight: string; brandDark: string; brandContrast: string; brandText: string; brandFill: string; brandFillHover: string; surfaceSunken: string; surfaceBase: string; surfaceRaised: string; surfaceOverlay: string; textPrimary: string; textSecondary: string; textDisabled: string; textHint: string; outlineControl: string; focusRing: string; semanticErrorContrast: string; glassBg: string; glowPrimary: string; glowPrimaryStrong: string; vibrancyLabel: string; vibrancySecondary: string; vibrancyTertiary: string; vibrancyFill: string; vibrancySeparator: string; tooltipFg: string; }` |  |
 
 ## @codeatlasdev/ui/vite
 
@@ -6292,3 +7539,145 @@ Types:
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
 | `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; type: TypeScale; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; components: ComponentTokens; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
+
+#### BrandAssets
+
+| Field | Type | Notes |
+|---|---|---|
+| `favicon` | `string` |  |
+| `ico` | `string` |  |
+| `favicon32` | `string` |  |
+| `appleTouch` | `string` |  |
+| `icon192` | `string` |  |
+| `icon512` | `string` |  |
+| `maskable512` | `string` |  |
+| `manifest` | `string` |  |
+| `hash` | `string` | Input hash shared by every icon; changes when the mark, the colors or the sizes change. |
+
+#### BrandColors
+
+| Field | Type | Notes |
+|---|---|---|
+| `ink` | `string` | Outline color (`--ca-text-primary`). |
+| `spark` | `string` | Accent color (`--ca-brand-main`). |
+| `surface` | `string` | Page background (`--ca-surface-base`); fills opaque icons. |
+
+#### BrowserLike
+
+| Field | Type | Notes |
+|---|---|---|
+| `newContext` | `(options: { deviceScaleFactor: number; viewport: { width: number; height: number }; }) => Promise<{ newPage: () => Promise<PageLike>; close: () => Promise<void> }>` |  |
+
+#### CaBrandPluginOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `mark?` | `string` | Path to the mark SVG, relative to the project root. @default "src/brand/mark.svg" |
+| `theme?` | `ThemeOptions` | The same `ThemeOptions` passed to `caThemePlugin`. |
+| `outDir?` | `string` | Directory served as `/brand`. @default "static/brand" (SvelteKit); use "public/brand" for Vite and Astro. |
+| `base?` | `string` | URL prefix. @default "/brand" |
+| `manifestFile?` | `string` | Where the asset URLs are written as a TypeScript module. @default "src/generated/brand.ts" |
+| `name?` | `string` |  |
+| `shortName?` | `string` |  |
+
+#### CaErrorPluginOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `root?` | `string` |  |
+| `routesDir?` | `string` |  |
+| `scaffold?` | `boolean` | Write default +error.svelte and src/error.html if absent. Files are NEVER overwritten. Default: false (warn only). |
+| `scaffoldErrorHtml?` | `boolean` | Whether to also scaffold src/error.html. Only used when scaffold:true. The page takes its colors from `theme` (pass the same object as `caThemePlugin`) and its copy and `lang` from `locale`; the plugin warns when `locale` is not set, since the copy is then English. |
+
+#### FontDescriptor
+
+| Field | Type | Notes |
+|---|---|---|
+| `family` | `string` | Family name used in `font-family`. |
+| `src` | `string` | URL of the woff2 file. |
+| `weight?` | `number \| string` | A single weight or a variable range, e.g. `400` or `"100 900"`. @default 400 |
+| `style?` | `"normal" \| "italic"` |  |
+| `display?` | `"auto" \| "block" \| "swap" \| "fallback" \| "optional"` |  |
+| `preload?` | `boolean` | Emit `<link rel="preload" as="font" crossorigin>` in `themeHead`. Use for above-the-fold fonts only. @default false |
+| `fallback?` | `string` | System font the fallback face is built from, e.g. `"Arial"`. Needed for `fallbackMetrics`. |
+| `fallbackMetrics?` | `FontFallbackMetrics` | With `fallback`: declares `"<family> Fallback"` with these metrics (zero layout shift on swap). |
+| `generic?` | `string` | Generic family appended last. @default "sans-serif" |
+
+#### GenerateBrandOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `mark` | `string` | Mark SVG source (placeholders, see module docs). |
+| `theme` | `ThemeOptions` |  |
+| `outDir` | `string` | Directory that is served as `/brand` (e.g. `public/brand`). Emptied first. |
+| `base?` | `string` | URL prefix of `outDir`. @default "/brand" |
+| `name?` | `string` | Web app manifest fields. |
+| `shortName?` | `string` |  |
+
+#### OgCardOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `title` | `string` |  |
+| `description?` | `string` |  |
+| `eyebrow?` | `string` | Small label above the title, e.g. the docs group. |
+| `siteName` | `string` | Site name next to the mark. |
+| `mark` | `string` | Mark SVG with colors already filled (`renderMark` from `@codeatlasdev/ui/vite`). |
+| `colors` | `{ ink: string; spark: string; surface: string }` | Literal `#rrggbb` colors, usually `resolveBrand(theme).dark` (`ink`, `spark`, `surface`). |
+| `css?` | `string` | Extra CSS for the document, typically `@font-face` rules or the app's stylesheet text. Fonts must be embedded (`data:` URLs) for renders to match across machines. |
+| `fontFamily?` | `string` | `font-family` stack. @default system sans-serif |
+| `lang?` | `string` | BCP 47 tag for `<html lang>`: drives hyphenation and CJK/locale font selection. @default "en" |
+
+#### PresetDefinition
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `string` | Value for `data-preset`. Must not clash with a built-in preset id. |
+| `color` | ``#${string}`` | Brand color as `#rrggbb`. Hue, chroma and lightness are derived from it. |
+| `label?` | `string` |  |
+| `colors?` | `{ light?: SchemeColors; dark?: SchemeColors }` | Per-scheme role colors on top of the generated palette. |
+| `tokens?` | `PresetTokenGroups` | Domain tokens that are not UI roles (funnel status, score tier, contact channel, map pins): `tokens.status.new` emits `--ca-token-status-new` (+ `-subtle`, `-contrast`) per scheme, and `tokenRgba("status.new")` (`@codeatlasdev/ui/tokens`) reads it as `[r, g, b, a]`. |
+| `sizes?` | `PresetSizes` | Size roles for this preset, in both schemes. |
+
+#### PresetSizes
+
+| Field | Type | Notes |
+|---|---|---|
+| `inputFontSize?` | `string` | Text-entry font size (--ca-input-font-size), e.g. `"0.875rem"`. Touch and narrow screens still get `max(16px, …)` so iOS Safari does not zoom into focused fields. |
+
+#### ResolvedBrand
+
+| Field | Type | Notes |
+|---|---|---|
+| `light` | `BrandColors` |  |
+| `dark` | `BrandColors` |  |
+
+#### ResolvedTheme
+
+| Field | Type | Notes |
+|---|---|---|
+| `known` | `string[]` | Every valid `data-preset` value: built-ins + brand presets. |
+| `themeColor` | `Record<string, { light: string; dark: string }>` | Hex of --ca-surface-base per preset and scheme, for `<meta name="theme-color">`. |
+
+#### ThemeDefinition
+
+| Field | Type | Notes |
+|---|---|---|
+| `presets` | `PresetDefinition[]` | Brand presets, emitted inline so they paint with the first frame. Built-ins are always available. |
+| `defaultPreset` | `string` | Preset applied until the user picks one. @default "amber" |
+| `defaultScheme` | `ColorScheme` | Scheme applied until the user picks one. @default "dark" |
+| `defaultStyle` | `SurfaceStyle` | Surface material applied until the user picks one. @default "solid" |
+| `fonts` | `{ display?: FontSpec; body?: FontSpec; mono?: FontSpec }` | Fonts for --ca-font-sans (body), --ca-font-mono and --ca-font-display. A string is a plain stack. |
+| `radius` | `number` | Radius multiplier (0 = square corners, 2 = very round). 0.8 makes `--ca-radius-md` 8px. Also scales `--ca-radius-round` (swatches, pips, dots, chips), so 0 squares those too. @default 0.8 |
+| `controlRadius` | `"xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"` | Corner role used by buttons, fields and chips. @default "md" |
+| `density` | `Density` | Spacing density. compact = 0.75, comfortable = 1, airy = 1.25. @default "comfortable" |
+| `border` | `{ width?: number; strong?: number }` | Border weights in px. @default { width: 1, strong: 2 } |
+| `typography` | `TypographyOptions` |  |
+| `type` | `TypeScale` | Named type scale by role (`label`, `num`, …): size, leading, tracking and weight, overriding the defaults everywhere. |
+| `elevation` | `ElevationModel` | How elevation is drawn. hard = offset shadows with no blur (Neobrutalism). @default "soft" |
+| `motion` | `MotionOptions` |  |
+| `iconStroke` | `number` | Icon stroke width (Lucide). @default 1.75 |
+| `noise` | `number` | Film-grain texture over the page background, 0 to 0.12. @default 0 |
+| `paper` | `Paper` | Page background pattern. Flat patterns use --ca-outline-subtle, so they follow the preset. @default "plain" |
+| `components` | `ComponentTokens` | Component tokens (`--ca-btn-*`, `--ca-icon-btn-*`, `--ca-kbd-*`): weight, tracking, line-height, gap, padding and size per component, without a selector against a `.ca-*` class. Unset, a component keeps its default look. Applied before `overrides`. |
+| `overrides` | `{ light?: TokenMap; dark?: TokenMap }` | Raw token overrides per scheme. Applied last. |
