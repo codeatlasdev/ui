@@ -270,8 +270,7 @@
   /* Tooltip: inverse surface in light mode, raised overlay in dark (pairs with --ca-tooltip-fg). */
   --ca-tooltip-bg: color-mix(in oklab, var(--ca-text-primary) 94%, transparent);
 
-  /* Brand colour for TEXT on tinted/glass surfaces (>= 4.5:1). brand-main is for fills and large UI. */
-  --ca-brand-text: var(--ca-brand-dark);
+  /* --ca-brand-text (brand colour for TEXT, >= 4.5:1) is generated per preset and scheme: see presets/*.css. */
 
   /* ── Shadows (light) ─────────────────────────────────────────────────── */
   --ca-shadow-xs: 0 1px 2px oklch(0 0 0 / 0.05);
@@ -316,7 +315,6 @@
 /* ── Dark mode static overrides (no hue — those live in themes/) ─────────── */
 .dark,
 [data-theme-scope="dark"] {
-  --ca-brand-text: var(--ca-brand-light);
   --ca-tooltip-bg: color-mix(in oklab, var(--ca-surface-overlay) 96%, transparent);
   /* Shadows */
   --ca-shadow-xs: 0 1px 3px oklch(0 0 0 / 0.30);

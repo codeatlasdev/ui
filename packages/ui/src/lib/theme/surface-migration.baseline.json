@@ -378,7 +378,7 @@
 			"borderTopWidth": "2px",
 			"borderTopColor": "oklch(0.63 0.206 55)",
 			"borderTopLeftRadius": "50%",
-			"color": "oklch(0.72 0.183 55)"
+			"color": "oklch(0.75 0.183 55)"
 		},
 		"collapsible-trigger": {
 			"backdropFilter": "blur(8px) saturate(1.5) brightness(1.02)",
@@ -504,7 +504,7 @@
 			"borderTopWidth": "1px",
 			"borderTopColor": "oklab(0.63 0.118157 0.168745 / 0.25)",
 			"borderTopLeftRadius": "50%",
-			"color": "oklch(0.72 0.183 55)"
+			"color": "oklch(0.75 0.183 55)"
 		},
 		"rail": {
 			"backdropFilter": "blur(22px) saturate(1.8) brightness(1.02)",
@@ -942,7 +942,7 @@
 			"borderTopWidth": "2px",
 			"borderTopColor": "oklch(0.63 0.206 55)",
 			"borderTopLeftRadius": "50%",
-			"color": "oklch(0.72 0.183 55)"
+			"color": "oklch(0.75 0.183 55)"
 		},
 		"collapsible-trigger": {
 			"backdropFilter": "blur(5px) saturate(1.4)",
@@ -1068,7 +1068,7 @@
 			"borderTopWidth": "1px",
 			"borderTopColor": "oklab(0.63 0.118157 0.168745 / 0.25)",
 			"borderTopLeftRadius": "50%",
-			"color": "oklch(0.72 0.183 55)"
+			"color": "oklch(0.75 0.183 55)"
 		},
 		"rail": {
 			"backdropFilter": "blur(12px) saturate(1.65)",
@@ -1506,7 +1506,7 @@
 			"borderTopWidth": "2px",
 			"borderTopColor": "oklch(0.63 0.206 55)",
 			"borderTopLeftRadius": "50%",
-			"color": "oklch(0.72 0.183 55)"
+			"color": "oklch(0.75 0.183 55)"
 		},
 		"collapsible-trigger": {
 			"backdropFilter": "none",
@@ -1632,7 +1632,7 @@
 			"borderTopWidth": "1px",
 			"borderTopColor": "oklab(0.63 0.118157 0.168745 / 0.25)",
 			"borderTopLeftRadius": "50%",
-			"color": "oklch(0.72 0.183 55)"
+			"color": "oklch(0.75 0.183 55)"
 		},
 		"rail": {
 			"backdropFilter": "none",
@@ -2070,7 +2070,7 @@
 			"borderTopWidth": "2px",
 			"borderTopColor": "oklch(0.63 0.206 55)",
 			"borderTopLeftRadius": "50%",
-			"color": "oklch(0.72 0.183 55)"
+			"color": "oklch(0.75 0.183 55)"
 		},
 		"collapsible-trigger": {
 			"backdropFilter": "none",
@@ -2196,7 +2196,7 @@
 			"borderTopWidth": "1px",
 			"borderTopColor": "oklab(0.63 0.118157 0.168745 / 0.25)",
 			"borderTopLeftRadius": "50%",
-			"color": "oklch(0.72 0.183 55)"
+			"color": "oklch(0.75 0.183 55)"
 		},
 		"rail": {
 			"backdropFilter": "none",
@@ -2634,7 +2634,7 @@
 			"borderTopWidth": "2px",
 			"borderTopColor": "oklch(0.63 0.206 55)",
 			"borderTopLeftRadius": "50%",
-			"color": "oklch(0.72 0.183 55)"
+			"color": "oklch(0.75 0.183 55)"
 		},
 		"collapsible-trigger": {
 			"backdropFilter": "none",
@@ -2760,7 +2760,7 @@
 			"borderTopWidth": "1px",
 			"borderTopColor": "oklab(0.63 0.118157 0.168745 / 0.25)",
 			"borderTopLeftRadius": "50%",
-			"color": "oklch(0.72 0.183 55)"
+			"color": "oklch(0.75 0.183 55)"
 		},
 		"rail": {
 			"backdropFilter": "none",
@@ -3198,7 +3198,7 @@
 			"borderTopWidth": "2px",
 			"borderTopColor": "oklch(0.63 0.206 55)",
 			"borderTopLeftRadius": "50%",
-			"color": "oklch(0.72 0.183 55)"
+			"color": "oklch(0.75 0.183 55)"
 		},
 		"collapsible-trigger": {
 			"backdropFilter": "none",
@@ -3324,7 +3324,7 @@
 			"borderTopWidth": "1px",
 			"borderTopColor": "oklab(0.63 0.118157 0.168745 / 0.25)",
 			"borderTopLeftRadius": "50%",
-			"color": "oklch(0.72 0.183 55)"
+			"color": "oklch(0.75 0.183 55)"
 		},
 		"rail": {
 			"backdropFilter": "none",
@@ -3762,7 +3762,7 @@
 			"borderTopWidth": "2px",
 			"borderTopColor": "oklch(0.63 0.206 55)",
 			"borderTopLeftRadius": "50%",
-			"color": "oklch(0.72 0.183 55)"
+			"color": "oklch(0.75 0.183 55)"
 		},
 		"collapsible-trigger": {
 			"backdropFilter": "none",
@@ -3888,7 +3888,7 @@
 			"borderTopWidth": "1px",
 			"borderTopColor": "oklab(0.63 0.118157 0.168745 / 0.25)",
 			"borderTopLeftRadius": "50%",
-			"color": "oklch(0.72 0.183 55)"
+			"color": "oklch(0.75 0.183 55)"
 		},
 		"rail": {
 			"backdropFilter": "none",
@@ -4326,7 +4326,7 @@
 			"borderTopWidth": "2px",
 			"borderTopColor": "oklch(0.63 0.206 55)",
 			"borderTopLeftRadius": "50%",
-			"color": "oklch(0.72 0.183 55)"
+			"color": "oklch(0.75 0.183 55)"
 		},
 		"collapsible-trigger": {
 			"backdropFilter": "blur(8px) saturate(1.5) brightness(1.02)",
@@ -4452,7 +4452,7 @@
 			"borderTopWidth": "1px",
 			"borderTopColor": "oklab(0.63 0.118157 0.168745 / 0.25)",
 			"borderTopLeftRadius": "50%",
-			"color": "oklch(0.72 0.183 55)"
+			"color": "oklch(0.75 0.183 55)"
 		},
 		"rail": {
 			"backdropFilter": "blur(22px) saturate(1.8) brightness(1.02)",
@@ -4890,7 +4890,7 @@
 			"borderTopWidth": "2px",
 			"borderTopColor": "oklch(0.63 0.206 55)",
 			"borderTopLeftRadius": "50%",
-			"color": "oklch(0.72 0.183 55)"
+			"color": "oklch(0.75 0.183 55)"
 		},
 		"collapsible-trigger": {
 			"backdropFilter": "none",
@@ -5016,7 +5016,7 @@
 			"borderTopWidth": "1px",
 			"borderTopColor": "oklab(0.63 0.118157 0.168745 / 0.25)",
 			"borderTopLeftRadius": "50%",
-			"color": "oklch(0.72 0.183 55)"
+			"color": "oklch(0.75 0.183 55)"
 		},
 		"rail": {
 			"backdropFilter": "none",

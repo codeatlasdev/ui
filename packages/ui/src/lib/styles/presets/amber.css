@@ -11,6 +11,8 @@
   --ca-brand-light: oklch(0.63 0.21 55);
   --ca-brand-dark: oklch(0.43 0.199 55);
   --ca-brand-contrast: oklch(1 0 0);
+  /* Brand-coloured text (outlined/ghost labels, links, active nav): >= 4.5:1 on every surface and on the hover/selected fills, solved per preset and scheme. Never use --ca-brand-main for text. */
+  --ca-brand-text: oklch(0.43 0.199 55);
   --ca-brand-fill: oklch(0.54 0.21 55);
   --ca-brand-fill-hover: oklch(0.48 0.199 55);
   --ca-surface-sunken: oklch(0.930 0.003 55);
@@ -62,6 +64,7 @@
   --ca-brand-light: oklch(0.72 0.183 55);
   --ca-brand-dark: oklch(0.52 0.204 55);
   --ca-brand-contrast: oklch(1 0 0);
+  --ca-brand-text: oklch(0.75 0.183 55);
   --ca-brand-fill: oklch(0.58 0.206 55);
   --ca-brand-fill-hover: oklch(0.52 0.204 55);
   --ca-surface-sunken: oklch(0.115 0.002 55);

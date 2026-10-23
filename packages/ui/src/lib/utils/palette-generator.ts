@@ -13,6 +13,8 @@ export interface PresetTokens {
 	brandLight: string;
 	brandDark: string;
 	brandContrast: string;
+	/** Brand-coloured text (--ca-brand-text): >= 4.5:1 on every surface and on hover/selected fills. */
+	brandText: string;
 	/** Background for brand-filled controls; `brandContrast` text on it is >= WCAG AA (4.5:1). */
 	brandFill: string;
 	/** Hover/pressed variant of `brandFill`, also >= 4.5:1 against `brandContrast`. */
@@ -66,6 +68,7 @@ export interface PresetTokens {
 		brandLight: string;
 		brandDark: string;
 		brandContrast: string;
+		brandText: string;
 		brandFill: string;
 		brandFillHover: string;
 
@@ -279,6 +282,26 @@ function solveFocusRing(
 	return `oklch(${L.toFixed(3)} ${c} ${h})`;
 }
 
+/**
+ * Brand-coloured text (outlined/ghost labels, links, active nav): >= 4.5:1 on every surface and on
+ * the hover/selected fills it is drawn next to. Starts at the generated brand text shade and walks
+ * toward the surface-contrast direction, so a light brand (lime, yellow) gets a darkened shade of
+ * its own hue instead of 1.6:1 on a near-white page, while a dark brand keeps its shade.
+ */
+function solveBrandText(
+	scheme: "light" | "dark",
+	fromL: number,
+	c: number,
+	h: number,
+	n: Neighbours
+): string {
+	const bgs = [...n.surfaces, ...n.fills];
+	const L = lift(fromL, scheme === "light" ? -1 : 1, (l) =>
+		bgs.every((b) => ratioOf(encoded(l, c, h), b) >= AA + MARGIN)
+	);
+	return `oklch(${L} ${c} ${h})`;
+}
+
 /** White or ink text on the error fill, whichever reads better (>= 4.5:1). */
 export function onFill(fillL: number, fillC: number, fillH: number): string {
 	return contrastOn(fillL, fillC, fillH, "white") >= contrastOn(fillL, fillC, fillH, "ink")
@@ -405,6 +428,7 @@ export function generatePreset(hue: number, chroma = 0.21, lightL = 0.54): Prese
 		brandLight: `oklch(${r(cl(L + 0.09))} ${r(c * 0.9)} ${h})`,
 		brandDark: `oklch(${r(cl(L - 0.11))} ${r(c * 0.95)} ${h})`,
 		brandContrast: lightFill.contrast,
+		brandText: solveBrandText("light", r(cl(L - 0.11)), r(c * 0.95), h, nL),
 		brandFill: `oklch(${lightFill.fillL} ${c} ${h})`,
 		brandFillHover: `oklch(${lightFill.hoverL} ${r(c * 0.95)} ${h})`,
 
@@ -459,6 +483,7 @@ export function generatePreset(hue: number, chroma = 0.21, lightL = 0.54): Prese
 			brandLight: `oklch(${r(cl(darkL + 0.09))} ${r(c * 0.87)} ${h})`,
 			brandDark: `oklch(${r(cl(darkL - 0.11))} ${r(c * 0.97)} ${h})`,
 			brandContrast: darkFill.contrast,
+			brandText: solveBrandText("dark", r(cl(darkL + 0.09)), r(c * 0.87), h, nD),
 			brandFill: `oklch(${darkFill.fillL} ${darkC} ${h})`,
 			brandFillHover: `oklch(${darkFill.hoverL} ${r(c * 0.97)} ${h})`,
 
@@ -531,6 +556,8 @@ export function presetVars(tokens: PresetTokens): { light: TokenMap; dark: Token
  * keep the shipped CSS and the `<head>` small.
  */
 export const TOKEN_DOCS: Record<string, string> = {
+	"--ca-brand-text":
+		"Brand-coloured text (outlined/ghost labels, links, active nav): >= 4.5:1 on every surface and on the hover/selected fills, solved per preset and scheme. Never use --ca-brand-main for text.",
 	"--ca-text-disabled":
 		"Label of disabled controls only; never information (use --ca-text-hint to de-emphasise). >= 3:1 on every surface and on the disabled fill.",
 	"--ca-outline-control":

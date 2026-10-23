@@ -89,7 +89,7 @@ function declsOf(source: string, selector: RegExp): Record<string, string> {
 }
 
 /** Resolved token map for one preset + scheme: static tokens, then preset tokens (both from the shipped CSS). */
-function resolved(src: (typeof sources)[number], scheme: "light" | "dark") {
+function resolved(src: Parameters<typeof presetCSS>[0], scheme: "light" | "dark") {
 	const kind = "hue" in src ? "builtin" : "brand";
 	const css = presetCSS(src, kind).split("@media (prefers-contrast: more)")[0];
 	const preset = declsOf(
@@ -395,4 +395,51 @@ describe("Button tone=neutral (#357)", () => {
 					}
 				}
 			});
+});
+
+// ── --ca-brand-text (#410) ───────────────────────────────────────────────────
+// Brand-coloured text (outlined/ghost labels, links, active nav) must hold AA on every surface and
+// on the hover/selected fills it sits on, for every built-in preset and for any brand a theme
+// generates from a hex, light brands (lime, yellow, light cyan) included.
+describe("--ca-brand-text (#410)", () => {
+	const lightBrands = [
+		{ id: "lime", color: "#B8F238" as const },
+		{ id: "yellow", color: "#FFE14D" as const },
+		{ id: "lightcyan", color: "#7DEBF5" as const },
+		{ id: "white", color: "#FFFFFF" as const },
+		{ id: "black", color: "#000000" as const },
+		{ id: "pink", color: "#FF8FB8" as const },
+	];
+	const NEIGHBOURS = ["--ca-action-hover", "--ca-action-selected"];
+	const cases = [...sources, ...lightBrands];
+	for (const src of cases)
+		for (const scheme of ["light", "dark"] as const)
+			it(`${src.id} ${scheme}: >= 4.5:1 on surfaces and hover/selected fills`, () => {
+				const t = resolved(src, scheme);
+				const text = rgb(oklchToHex(resolve(t, "--ca-brand-text")));
+				for (const s of SURFACES) {
+					const bg = surfaceRgb(t, s);
+					expect(ratio(text, bg), s).toBeGreaterThanOrEqual(4.5);
+					for (const n of NEIGHBOURS)
+						expect(ratio(text, over(resolve(t, n), bg)), `${n} on ${s}`).toBeGreaterThanOrEqual(
+							4.5
+						);
+				}
+			});
+
+	it("a scheme brand set from a hex (colors.<scheme>.brand) is solved the same way", () => {
+		const src = {
+			id: "scoped",
+			color: "#0f766e" as const,
+			colors: { light: { brand: "#B8F238" as const } },
+		};
+		const t = resolved(src, "light");
+		const text = rgb(oklchToHex(resolve(t, "--ca-brand-text")));
+		for (const s of SURFACES) expect(ratio(text, surfaceRgb(t, s)), s).toBeGreaterThanOrEqual(4.5);
+	});
+
+	it("keeps the brand hue and stays close to a readable brand shade (not grey)", () => {
+		const t = resolved({ id: "lime", color: "#B8F238" as const }, "light");
+		expect(resolve(t, "--ca-brand-text")).toMatch(/^oklch\(\S+ 0\.[1-9]\S* 12\d/);
+	});
 });

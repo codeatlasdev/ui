@@ -9,6 +9,7 @@
   --ca-brand-light: oklch(0.53 0.23 26);
   --ca-brand-dark: oklch(0.33 0.219 26);
   --ca-brand-contrast: oklch(1 0 0);
+  --ca-brand-text: oklch(0.33 0.219 26);
   --ca-brand-fill: oklch(0.44 0.23 26);
   --ca-brand-fill-hover: oklch(0.38 0.219 26);
   --ca-surface-sunken: oklch(0.930 0.003 26);
@@ -54,6 +55,7 @@
   --ca-brand-light: oklch(0.72 0.21 26);
   --ca-brand-dark: oklch(0.52 0.21 26);
   --ca-brand-contrast: oklch(1 0 0);
+  --ca-brand-text: oklch(0.81 0.2 26);
   --ca-brand-fill: oklch(0.59 0.21 26);
   --ca-brand-fill-hover: oklch(0.53 0.204 26);
   --ca-surface-sunken: oklch(0.115 0.002 26);
