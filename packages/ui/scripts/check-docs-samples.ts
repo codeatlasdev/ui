@@ -103,8 +103,45 @@ export function normalize(raw: string): string | null {
 const MESSAGES_FENCE =
 	/^```ts[^\n]*\n\s*\/\/ src\/lib\/messages\.ts[^\n]*\nexport const m = \{[\s\S]*?^```/gm;
 
-/** `#lib/messages.ts` (Kit 3) and `$lib/messages` (Kit 2) both name the page's merged module. */
-const LIB_MESSAGES = /(["'])(?:#lib\/messages\.ts|\$lib\/messages)\1/g;
+/** Any other app module a page shows: a `ts` fence whose first line is `// src/lib/<file>`. */
+const LIB_FENCE = /^```ts[^\n]*\n\s*\/\/ src\/lib\/([\w.-]+)[^\n]*\n([\s\S]*?)^```/gm;
+
+export interface LibModule {
+	/** File written next to the samples, `<page stem>_<name>.ts`. */
+	file: string;
+	/** Module name an app imports: `messages.ts`, `landing.ts`, `map-state.svelte.ts`. */
+	name: string;
+	code: string;
+}
+
+/**
+ * The app modules one docs page shows: its `export const m` fences merged into `messages.ts`, and every
+ * other `// src/lib/<file>` fence verbatim as its own module (a shared-state module, per-locale copy).
+ * Fences elsewhere (`src/hooks.server.ts`) are not under `src/lib` and stay display-only.
+ */
+export function libModules(markdown: string, stem: string): LibModule[] {
+	const messages = [...markdown.matchAll(MESSAGES_FENCE)].map((x) => x[0]);
+	const out: LibModule[] = messages.length
+		? [{ file: `${stem}_messages.ts`, name: "messages.ts", code: mergeMessages(messages) }]
+		: [];
+	for (const m of markdown.matchAll(LIB_FENCE)) {
+		const name = m[1];
+		if (name === "messages.ts" && messages.length) continue;
+		out.push({ file: `${stem}_${name.endsWith(".ts") ? name : `${name}.ts`}`, name, code: m[2] });
+	}
+	return out;
+}
+
+/** Points `#lib/<name>.ts` (Kit 3) and `$lib/<name>` (Kit 2) at the page's module files. */
+export function rewriteLib(code: string, modules: LibModule[]): string {
+	return code.replace(/(["'])(?:#lib\/([\w.-]+)|\$lib\/([\w.-]+))\1/g, (whole, q, kit3, kit2) => {
+		const spec: string = kit3 ?? kit2;
+		const hit = modules.find(
+			(x) => x.name === spec || x.name === `${spec}.ts` || x.name.replace(/\.ts$/, "") === spec
+		);
+		return hit ? `${q}./${hit.file}${q}` : whole;
+	});
+}
 
 /**
  * Merges the `export const m = { … } as const;` bodies of one page into a module. Two fences may
@@ -152,10 +189,8 @@ export function extractSamples(): Sample[] {
 		// Forward slashes on every OS: the sample file name flattens them (#131).
 		const page = relative(DOCS, mdx).replaceAll("\\", "/");
 		const stem = page.replace(/\.mdx$/, "").replace(/[/.]/g, "_");
-		const fences = [...src.matchAll(MESSAGES_FENCE)].map((x) => x[0]);
-		const messages = fences.length ? mergeMessages(fences) : undefined;
-		const messagesFile = `${stem}_messages.ts`;
-		if (messages) writeFileSync(join(OUT, messagesFile), messages);
+		const modules = libModules(src, stem);
+		for (const mod of modules) writeFileSync(join(OUT, mod.file), mod.code);
 		let index = 0;
 		for (const m of src.matchAll(/^([ \t]*)```svelte[^\n]*\n([\s\S]*?)^[ \t]*```/gm)) {
 			const indent = m[1].length;
@@ -165,7 +200,7 @@ export function extractSamples(): Sample[] {
 				.join("\n");
 			const normalized = normalize(body);
 			if (normalized === null) continue;
-			const code = messages ? normalized.replace(LIB_MESSAGES, `"./${messagesFile}"`) : normalized;
+			const code = rewriteLib(normalized, modules);
 			const line = src.slice(0, m.index).split("\n").length;
 			const file = `${stem}_${index}.svelte`;
 			writeFileSync(join(OUT, file), code);
@@ -188,21 +223,17 @@ export interface SampleError {
 /** Runs svelte-check over the extracted samples; returns one entry per error, mapped back to its docs page. */
 export async function checkDocsSamples(
 	extra: Record<string, string> = {},
-	/** Markdown of a messages fence, keyed by the page it belongs to; extra fences import it as `#lib/messages.ts`. */
-	messagesFence?: string
+	/** Markdown with `// src/lib/<file>` fences; the extra fences import them as `#lib/<file>`. */
+	libFences?: string
 ): Promise<{ checked: number; errors: SampleError[] }> {
 	const samples = extractSamples();
 	// Extra fences (tests feed known-bad ones to prove the check can fail), reported under their own name.
-	if (messagesFence) {
-		const fences = [...messagesFence.matchAll(MESSAGES_FENCE)].map((x) => x[0]);
-		writeFileSync(join(OUT, "extra_messages.ts"), mergeMessages(fences));
-	}
+	const modules = libFences ? libModules(libFences, "extra") : [];
+	for (const mod of modules) writeFileSync(join(OUT, mod.file), mod.code);
 	for (const [name, body] of Object.entries(extra)) {
 		const normalized = normalize(body);
 		if (normalized === null) continue;
-		const code = messagesFence
-			? normalized.replace(LIB_MESSAGES, '"./extra_messages.ts"')
-			: normalized;
+		const code = rewriteLib(normalized, modules);
 		const file = `extra_${name}.svelte`;
 		writeFileSync(join(OUT, file), code);
 		samples.push({ page: name, index: 0, line: 0, file });

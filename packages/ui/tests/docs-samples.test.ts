@@ -1,5 +1,10 @@
 import { describe, expect, it } from "bun:test";
-import { checkDocsSamples, normalize } from "../scripts/check-docs-samples.ts";
+import {
+	checkDocsSamples,
+	libModules,
+	normalize,
+	rewriteLib,
+} from "../scripts/check-docs-samples.ts";
 
 describe("docs code samples compile", () => {
 	it("type-checks every svelte fence that imports the package", async () => {
@@ -29,6 +34,42 @@ describe("docs code samples compile", () => {
 		expect(by("good")).toEqual([]);
 		expect(by("typo").join("\n")).toContain("Property 'sav' does not exist");
 	}, 120_000);
+
+	it("makes every other src/lib fence its own module and rewrites its imports (#474)", () => {
+		const md = [
+			"```ts",
+			"// src/lib/map-state.svelte.ts",
+			"export const center = [0, 0] as const;",
+			"```",
+			"```ts",
+			"// src/lib/landing.ts",
+			"export const messages = { en: {} };",
+			"```",
+			"```ts",
+			"// src/lib/messages.ts",
+			"export const m = { a: 1 } as const;",
+			"```",
+			"```ts",
+			"// src/hooks.server.ts",
+			"export const x = 1;",
+			"```",
+		].join("\n");
+		const mods = libModules(md, "page");
+		expect(mods.map((x) => x.file).sort()).toEqual([
+			"page_landing.ts",
+			"page_map-state.svelte.ts",
+			"page_messages.ts",
+		]);
+		expect(mods.find((x) => x.file === "page_landing.ts")?.code).toContain("export const messages");
+		const out = rewriteLib(
+			'import { messages } from "#lib/landing.ts";\nimport { center } from "$lib/map-state.svelte";\nimport { m } from "#lib/messages.ts";\nimport x from "#lib/other.ts";',
+			mods
+		);
+		expect(out).toContain('from "./page_landing.ts"');
+		expect(out).toContain('from "./page_map-state.svelte.ts"');
+		expect(out).toContain('from "./page_messages.ts"');
+		expect(out).toContain('"#lib/other.ts"');
+	});
 
 	it("skips fences that do not import the package", () => {
 		expect(normalize("<table><tr><td>x</td></tr></table>")).toBeNull();
