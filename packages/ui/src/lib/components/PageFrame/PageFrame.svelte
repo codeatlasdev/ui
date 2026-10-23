@@ -369,8 +369,8 @@
 
     /* Mobile: full screen over the stage, or a non-modal bottom sheet. */
     @media (max-width: 899.98px) {
-      .ca-page-frame__panel,
-      .ca-page-frame[data-mode='split'] .ca-page-frame__panel {
+      .ca-page-frame[data-side] .ca-page-frame__panel,
+      .ca-page-frame[data-mode='split'][data-side] .ca-page-frame__panel {
         inset: 0;
         width: 100%;
         max-width: none;

@@ -303,3 +303,24 @@ describe("PageFrame inside AppShellLayout", () => {
 		await expect.poll(() => stageInsets.current.right).toBeGreaterThan(300);
 	});
 });
+
+describe("PageFrame mobile stays inside the viewport (#489)", () => {
+	const cases: [string, Record<string, unknown>][] = [
+		["map side=left sheet", { mode: "map", side: "left", sheet: true }],
+		["map side=right sheet", { mode: "map", side: "right", sheet: true }],
+		["map side=left", { mode: "map", side: "left" }],
+		["map side=right", { mode: "map", side: "right" }],
+		["split side=left", { mode: "split", side: "left" }],
+		["split side=right", { mode: "split", side: "right" }],
+	];
+	for (const [name, props] of cases) {
+		it(`${name} fits within [0, innerWidth] with no h-scroll`, async () => {
+			await mount(props, VIEWPORTS.mobile);
+			const r = rect(panel());
+			expect(r.left).toBeGreaterThanOrEqual(0);
+			expect(r.right).toBeLessThanOrEqual(window.innerWidth);
+			expect(html.scrollWidth).toBeLessThanOrEqual(window.innerWidth);
+			if (props.sheet) expect(Math.round(r.bottom)).toBe(window.innerHeight);
+		});
+	}
+});
