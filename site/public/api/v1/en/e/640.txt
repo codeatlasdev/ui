@@ -1,5 +1,5 @@
-<!-- @codeatlasdev/ui demo #560 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/button#neutral-tone -->
-Element: #560 Neutral tone (inputs/button)
+<!-- @codeatlasdev/ui demo #640 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/button#neutral-tone -->
+Element: #640 Neutral tone (inputs/button)
 What it shows: One brand filled Button beside secondary actions drawn with tone="neutral": an outlined Button, a small ghost Button and an outlined IconButton.
 When to use: Dense work screens (queues, inboxes, CRMs) with one primary action and several secondary ones that must not compete with it.
 Spec:

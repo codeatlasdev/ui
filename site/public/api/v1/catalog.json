@@ -5,7 +5,7 @@
 		{
 			"slug": "inputs",
 			"first": "001",
-			"last": "560",
+			"last": "640",
 			"count": 70
 		},
 		{
@@ -14157,7 +14157,7 @@
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{
-			"id": "560",
+			"id": "640",
 			"group": "inputs",
 			"page": "button",
 			"variant": "NeutralTone",
