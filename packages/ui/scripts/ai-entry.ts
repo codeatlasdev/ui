@@ -2,6 +2,7 @@
 // sits at the repo root, plus the recipe list the MCP `get_recipe` tool serves. Pure functions: the
 // site endpoint, the manifest build and the tests all feed them data, so the three can never drift.
 import { llmsTxt } from "../src/lib/seo/llms.ts";
+import { mdxToMarkdown } from "./mdx-to-markdown.ts";
 
 export {
 	CONSUMER_GUIDE,
@@ -112,7 +113,13 @@ export function buildLlmsIndex(i: {
 				{
 					title: "llms-full.txt",
 					href: `${SITE}/llms-full.txt`,
-					description: "every docs page as markdown with the complete demo sources, in one file",
+					description:
+						"every docs page as markdown in one file (no demo sources: it is meant to be pasted whole)",
+				},
+				{
+					title: "Page with demo sources",
+					href: `${SITE}${llmsPagePath("layout/form-page")}`,
+					description: `one docs page with the complete source of its demos: ${SITE}/llms/<group>/<slug>.txt, the slug is the docs URL path`,
 				},
 				{
 					title: "Demo catalog",
@@ -176,6 +183,29 @@ export function buildLlmsIndex(i: {
 		],
 		sections,
 	});
+}
+
+/** Path of the complete, single-page file of a docs page: `layout/form-page` -> `/llms/layout/form-page.txt`. */
+export const llmsPagePath = (slug: string) => `/llms/${slug}.txt`;
+
+/** One docs page as markdown with the complete source of every demo: small enough to fetch alone. */
+export function buildLlmsPage(i: {
+	site: string;
+	doc: { title: string; group: string; url: string; description: string; body: string };
+	/** Demo sources by import name, see `demoSources`. */
+	sources: Record<string, string>;
+}): string {
+	return [
+		`# ${i.doc.title}`,
+		"",
+		`Group: ${i.doc.group}. URL: ${i.site}${i.doc.url}`,
+		`Index: ${i.site}/llms.txt`,
+		"",
+		i.doc.description,
+		"",
+		mdxToMarkdown(i.doc.body, i.sources),
+		"",
+	].join("\n");
 }
 
 /** The stub that lives at the repo root: same entry, no copy of the index to rot. */

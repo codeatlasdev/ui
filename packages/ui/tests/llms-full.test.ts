@@ -9,10 +9,10 @@ describe("llms-full.txt", () => {
 			{
 				group: "Components",
 				title: "Button",
-				url: "/u",
+				url: "/docs/u/",
+				slug: "u",
 				description: "d",
 				body: '<Demo title="Basic" src={BasicSrc}><Basic /></Demo>',
-				sources: { BasicSrc: "<Button>ok</Button>" },
 			},
 		],
 	});
@@ -28,7 +28,14 @@ describe("llms-full.txt", () => {
 		expect(out.indexOf("# Button")).toBeLessThan(out.indexOf(CONSUMER_GUIDE.trim()));
 	});
 
-	it("carries the complete demo source of a page (#384)", () => {
-		expect(out).toContain("```svelte\n<Button>ok</Button>\n```");
+	it("leaves demo sources to the per-page files so one fetch fits a context (#384)", () => {
+		expect(out).toContain("### Basic");
+		expect(out).not.toContain("<Button>ok</Button>");
+	});
+
+	it("points each page at its complete file", () => {
+		expect(out).toContain(
+			"Complete page with demo sources: https://ui.codeatlas.com.br/llms/u.txt"
+		);
 	});
 });

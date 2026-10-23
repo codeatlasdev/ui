@@ -1,8 +1,6 @@
-import { demoSource } from "~/lib/demo-source";
 import { loadDocs } from "~/lib/docs";
 import { docHref, GROUPS } from "~/lib/nav";
 import { buildLlmsFull } from "../../../packages/ui/scripts/llms-full";
-import { demoSources } from "../../../packages/ui/scripts/mdx-to-markdown";
 
 const SITE = "https://ui.codeatlas.com.br";
 
@@ -23,7 +21,7 @@ export async function GET() {
 								url: docHref(d.slug),
 								description: d.description,
 								body,
-								sources: demoSources(body, demoSource),
+								slug: d.slug,
 							},
 						]
 					: [];

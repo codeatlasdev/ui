@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import {
 	buildLlmsIndex,
@@ -7,6 +7,7 @@ import {
 	CONSUMER_GUIDE,
 	type DocLink,
 	ENTRY_PAGES,
+	llmsPagePath,
 	parseRecipes,
 	SITE,
 } from "../scripts/ai-entry.ts";
@@ -146,5 +147,36 @@ describe("the consumer guide only names things that exist (#384)", () => {
 			(l) => /\b(Row|GlassCard|GlassSurface)\b/.test(l) && !/deprecated/i.test(l)
 		);
 		expect(bad).toEqual([]);
+	});
+});
+
+describe("getting-started order (#384)", () => {
+	it("gives every page its own position, so the nav never falls back to the title", () => {
+		const dir = join(DOCS, "getting-started");
+		const orders = readdirSync(dir)
+			.filter((f) => f.endsWith(".mdx"))
+			.map((f) => Number(readFileSync(join(dir, f), "utf8").match(/^order: (\d+)$/m)?.[1]));
+		expect(orders.every(Number.isFinite)).toBe(true);
+		expect(new Set(orders).size).toBe(orders.length);
+	});
+
+	it("opens with installation, recipes, choosing and workarounds", () => {
+		const order = (slug: string) =>
+			Number(readFileSync(join(DOCS, `${slug}.mdx`), "utf8").match(/^order: (\d+)$/m)?.[1]);
+		const first = [
+			ENTRY_PAGES.install,
+			ENTRY_PAGES.recipes,
+			ENTRY_PAGES.choosing,
+			ENTRY_PAGES.workarounds,
+		];
+		expect(first.map(order)).toEqual([1, 2, 3, 4]);
+	});
+});
+
+describe("llms.txt links the per-page files (#384)", () => {
+	it("names /llms/<slug>.txt, with the form page as the worked example", () => {
+		const out = buildLlmsIndex({ docs: [], recipes: [], groups: [] });
+		expect(out).toContain(`${SITE}${llmsPagePath("layout/form-page")}`);
+		expect(out).toContain("/llms/<group>/<slug>.txt");
 	});
 });
