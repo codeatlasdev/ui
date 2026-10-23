@@ -68,8 +68,17 @@ export interface ManifestExport {
 	signature: string;
 	/** First paragraph of the JSDoc of the declaration (or of the comment right above it). */
 	description?: string;
+	/** Fields of an exported interface (or object type alias): name, type, optionality, JSDoc. */
+	members?: ManifestExportMember[];
 	/** Source file relative to `src/lib`. */
 	source: string;
+}
+
+export interface ManifestExportMember {
+	name: string;
+	type: string;
+	optional: boolean;
+	description?: string;
 }
 
 export interface ManifestProp {
@@ -632,6 +641,41 @@ function exportDoc(decl: ts.Declaration, sf: ts.SourceFile): string | undefined 
 
 const oneLine = (s: string) => s.replace(/\s+/g, " ").trim();
 
+/** Fields of an interface or object type alias, with the JSDoc of each. Methods and index signatures are kept as written. */
+function exportMembers(
+	decl: ts.Declaration,
+	sf: ts.SourceFile
+): ManifestExportMember[] | undefined {
+	let elements: readonly ts.TypeElement[] | undefined;
+	if (ts.isInterfaceDeclaration(decl)) elements = decl.members;
+	else if (ts.isTypeAliasDeclaration(decl) && ts.isTypeLiteralNode(decl.type))
+		elements = decl.type.members;
+	if (!elements?.length) return undefined;
+	const out: ManifestExportMember[] = [];
+	for (const m of elements) {
+		if (!ts.isPropertySignature(m) && !ts.isMethodSignature(m)) continue;
+		const doc = ts.getJSDocCommentsAndTags(m).find(ts.isJSDoc);
+		const description = doc
+			? docProse(
+					doc
+						.getText(sf)
+						.replace(/^\/\*\*|\*\/$/g, "")
+						.replace(/^\s*\* ?/gm, "")
+				)
+			: undefined;
+		const type = ts.isPropertySignature(m)
+			? oneLine(m.type?.getText(sf) ?? "unknown")
+			: `(${m.parameters.map((p) => p.getText(sf)).join(", ")}) => ${oneLine(m.type?.getText(sf) ?? "void")}`;
+		out.push({
+			name: propName(m.name),
+			type,
+			optional: !!m.questionToken,
+			...(description ? { description } : {}),
+		});
+	}
+	return out.length ? out : undefined;
+}
+
 const TYPE_FLAGS =
 	ts.TypeFormatFlags.NoTruncation | ts.TypeFormatFlags.UseAliasDefinedOutsideCurrentScope;
 
@@ -759,12 +803,14 @@ export function extractExports(components: ManifestComponent[]): ManifestExport[
 				continue;
 			const { kind, signature } = exportSignature(exported.name, decl, declFile, checker);
 			const description = exportDoc(decl, declFile);
+			const members = exportMembers(decl, declFile);
 			out.push({
 				name: exported.name,
 				import: entry,
 				kind,
 				signature,
 				...(description ? { description } : {}),
+				...(members ? { members } : {}),
 				source: relative(LIB, declFile.fileName),
 			});
 		}
@@ -1466,6 +1512,14 @@ export function skillMarkdown(m: Manifest): string {
 					`| \`${t.name}\` | \`${cell(t.signature)}\` | ${t.description ? cell(t.description) : ""} |`
 				);
 			out.push("");
+			for (const t of types.filter((x) => x.members)) {
+				out.push(`#### ${t.name}`, "", "| Field | Type | Notes |", "|---|---|---|");
+				for (const f of t.members ?? [])
+					out.push(
+						`| \`${f.name}${f.optional ? "?" : ""}\` | \`${cell(f.type)}\` | ${f.description ? cell(f.description) : ""} |`
+					);
+				out.push("");
+			}
 		}
 	}
 	return `${out
