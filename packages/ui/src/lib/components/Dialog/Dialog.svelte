@@ -37,6 +37,21 @@
     size?:         'sm' | 'md' | 'lg' | 'xl' | 'split';
     /** Omits header, description and actions; body has no padding. Pass `title` for the accessible name (visually hidden). */
     chromeless?:   boolean;
+    /**
+     * Column template of the `size="split"` body (CSS `grid-template-columns`), e.g. `'2fr 3fr'`.
+     * Default `'1fr 1fr'`. Sets `--ca-dialog-split-columns`.
+     */
+    splitColumns?: string;
+    /**
+     * Panel box of `size="split"`, any CSS length: `{ width: 'min(66vw, 80rem)', height: 'min(88svh, 56rem)' }`.
+     * Default 1100×720, capped to the viewport. Sets `--ca-dialog-split-width` / `--ca-dialog-split-height`.
+     */
+    splitSize?:    { width?: string; height?: string };
+    /**
+     * Full screen below this breakpoint (`'sm'` = 600px, `'md'` = 900px), any `size`: exactly the
+     * viewport (`--ca-vh`), square corners, safe-area padding kept. Focus trap and Escape are unchanged.
+     */
+    fullscreenBelow?: 'sm' | 'md';
     class?:        string;
     children?:     Snippet;
     actions?:      Snippet;
@@ -49,6 +64,9 @@
     description,
     size        = 'md',
     chromeless  = false,
+    splitColumns,
+    splitSize,
+    fullscreenBelow,
     class: className = '',
     children,
     actions,
@@ -61,7 +79,7 @@
       devWarn('dialog-title', '<Dialog> has no `title`, so the dialog has no accessible name. Pass title (use chromeless to hide the header and keep the label).');
   });
 
-  const maxW = { sm: '400px', md: '480px', lg: '600px', xl: '820px', split: '1100px' } as const;
+  const maxW = { sm: '400px', md: '480px', lg: '600px', xl: '820px', split: 'none' } as const;
 
   const uid = $props.id();
   const ids = createIds(uid);
@@ -83,7 +101,11 @@
     aria-labelledby={title ? ids.part('title') : undefined}
     aria-describedby={description ? ids.part('description') : undefined}
     data-state={open ? 'open' : 'closed'}
-    style="--dialog-max-w:{maxW[size]}"
+    data-fullscreen-below={fullscreenBelow}
+    style:--dialog-max-w={maxW[size]}
+    style:--ca-dialog-split-columns={splitColumns}
+    style:--ca-dialog-split-width={splitSize?.width}
+    style:--ca-dialog-split-height={splitSize?.height}
     {@attach presence.ref}
     {@attach modalLayer(() => ({ onDismiss: () => change(false), closing: !open }))}
   >

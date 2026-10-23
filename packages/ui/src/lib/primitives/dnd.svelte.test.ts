@@ -313,6 +313,34 @@ describe("dnd drop: container", () => {
 		await frame();
 		expect(drops[0].to).toEqual({ container: "b", index: 0 });
 	});
+
+	it("keyboard and touch drags announce the target container, without a line", async () => {
+		const drops: DndDropEvent[] = [];
+		const screen = await render(Harness, { props: { drops, container: true } });
+		const c = screen.container;
+		const g = grip(c, "a1");
+		g.focus();
+		await key(g, " ");
+		await key(g, "ArrowRight");
+		await waitFor(() => live().includes("List b"));
+		const ind = document.querySelector(".ca-dnd-indicator") as HTMLElement | null;
+		expect(!ind || ind.hidden).toBe(true);
+		await key(g, "Enter");
+		await waitFor(() => live().includes("Dropped a1 in List b"));
+
+		const [x, y] = center(grip(c, "a2"));
+		const [bx, by] = center(row(c, "b1"));
+		pointer("pointerdown", x, y, "touch", grip(c, "a2"));
+		await waitFor(() => document.querySelector(".ca-dnd-overlay") !== null);
+		pointer("pointermove", bx, by, "touch");
+		await frame();
+		expect(c.querySelector("[data-dnd-container=b]")?.hasAttribute("data-dnd-over")).toBe(true);
+		const ind2 = document.querySelector(".ca-dnd-indicator") as HTMLElement | null;
+		expect(!ind2 || ind2.hidden).toBe(true);
+		pointer("pointerup", bx, by, "touch");
+		await frame();
+		expect(drops.at(-1)?.to).toEqual({ container: "b", index: 0 });
+	});
 });
 
 describe("dnd scroller (board edge auto-scroll)", () => {

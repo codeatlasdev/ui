@@ -78,6 +78,8 @@ Snippets: `children`
 
 Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
 
+Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+
 ## AppForm
 
 `import { AppForm } from "@codeatlasdev/ui"`
@@ -616,6 +618,8 @@ Classes: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chev
 
 Classes: `ca-cmd-dialog` `ca-cmd-empty` `ca-cmd-error` `ca-cmd-group__label` `ca-cmd-item` `ca-cmd-item--active` `ca-cmd-item__icon` `ca-cmd-item__label` `ca-cmd-item__module` `ca-cmd-list` `ca-cmd-loading` `ca-cmd-overlay` `ca-cmd-search` `ca-cmd-search__hint` `ca-cmd-search__icon` `ca-cmd-search__input` `ca-cmd-search__spinner` `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
 
+Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+
 ## Container
 
 `import { Container } from "@codeatlasdev/ui"`
@@ -886,12 +890,17 @@ Dialog: second-layer modal.
 | `description?` | `string` |  |  |
 | `size?` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'split'` | `'md'` | 'sm' = 400px \| 'md' = 480px (default) \| 'lg' = 600px \| 'xl' = 820px \| 'split' = 1100×720 two-column |
 | `chromeless?` | `boolean` | `false` | Omits header, description and actions; body has no padding. Pass `title` for the accessible name (visually hidden). |
+| `splitColumns?` | `string` |  | Column template of the `size="split"` body (CSS `grid-template-columns`), e.g. `'2fr 3fr'`. Default `'1fr 1fr'`. Sets `--ca-dialog-split-columns`. |
+| `splitSize?` | `{ width?: string; height?: string }` |  | Panel box of `size="split"`, any CSS length: `{ width: 'min(66vw, 80rem)', height: 'min(88svh, 56rem)' }`. Default 1100×720, capped to the viewport. Sets `--ca-dialog-split-width` / `--ca-dialog-split-height`. |
+| `fullscreenBelow?` | `'sm' \| 'md'` |  | Full screen below this breakpoint (`'sm'` = 600px, `'md'` = 900px), any `size`: exactly the viewport (`--ca-vh`), square corners, safe-area padding kept. Focus trap and Escape are unchanged. |
 | `class?` | `string` | `''` |  |
 | `onOpenChange?` | `(open: boolean) => void` |  |  |
 
 Snippets: `children`, `actions`
 
 Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
+
+Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
 
 ## Divider
 
@@ -942,6 +951,8 @@ Classes: `ca-docs-nav` `ca-docs-nav__label` `ca-docs-nav__link` `ca-docs-nav__ti
 
 Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-docs-search` `ca-docs-search__bar` `ca-docs-search__body` `ca-docs-search__cancel` `ca-docs-search__context` `ca-docs-search__empty` `ca-docs-search__enter` `ca-docs-search__esc` `ca-docs-search__icon` `ca-docs-search__input` `ca-docs-search__result` `ca-docs-search__result--on` `ca-docs-search__results` `ca-docs-search__text` `ca-docs-search__title` `ca-layer-close` `ca-overlay`
 
+Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+
 ## DocsShell
 
 `import { DocsShell } from "@codeatlasdev/ui"`
@@ -986,6 +997,8 @@ Snippets: `children`, `actions`
 Also accepts: `Omit<HTMLDialogAttributes, 'children' \| 'open' \| 'title' \| 'class' \| 'role' \| 'onclose' \| 'oncancel'>`
 
 Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-drawer` `ca-drawer--bottom` `ca-drawer--left` `ca-drawer--right` `ca-drawer__actions` `ca-drawer__body` `ca-drawer__header` `ca-drawer__header--bare` `ca-drawer__title` `ca-layer-close` `ca-overlay`
+
+Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
 
 ## DropdownMenu
 
@@ -2389,6 +2402,8 @@ Classes: `ca-setting-item` `ca-setting-item__control` `ca-setting-item__desc` `c
 Snippets: `children`, `footer`
 
 Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay` `ca-sheet` `ca-sheet__body` `ca-sheet__close` `ca-sheet__description` `ca-sheet__footer` `ca-sheet__grab` `ca-sheet__grab--active` `ca-sheet__handle` `ca-sheet__header` `ca-sheet__meta` `ca-sheet__title`
+
+Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
 
 ## SimpleTable
 

@@ -350,3 +350,4 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 900 | Inline pill | display/badge | Badge |
 | 901 | Responsive keyboard hint | inputs/button | Button, Kbd |
 | 902 | Align between | inputs/button | Button, Kbd |
+| 910 | Configured split | feedback/dialog | Dialog, Button, Stack |

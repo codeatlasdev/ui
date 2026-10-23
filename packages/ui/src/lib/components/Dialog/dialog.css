@@ -145,11 +145,14 @@
   }
 
 
-  /* ── Split: two-column modal (e.g. media + form) ───────────── */
+  /* ── Split: two-column modal (e.g. map + details) ──────────── */
+  /* Tokens (also set by the `splitSize` / `splitColumns` props), defaults unchanged:
+       --ca-dialog-split-width    panel width   (default min(1100px, viewport - gutters))
+       --ca-dialog-split-height   panel height  (default min(720px, viewport - gutters))
+       --ca-dialog-split-columns  body columns  (default 1fr 1fr) */
   dialog.ca-dialog--split {
-    --dialog-max-w: 1100px;
-    width: min(1100px, calc(100vw - 2 * var(--ca-space-4)));
-    height: min(720px, calc(var(--ca-vh) - 2 * var(--ca-space-4)));
+    width: var(--ca-dialog-split-width, min(1100px, calc(100vw - 2 * var(--ca-space-4))));
+    height: var(--ca-dialog-split-height, min(720px, calc(var(--ca-vh) - 2 * var(--ca-space-4))));
     max-height: calc(var(--ca-vh) - 2 * var(--ca-space-4));
   }
   /* Fixed height, so the body can safely fill the panel. */
@@ -159,8 +162,36 @@
   @media (min-width: 900px) {
     .ca-dialog--split .ca-dialog__body {
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: var(--ca-dialog-split-columns, 1fr 1fr);
       overflow: hidden;
+    }
+  }
+
+  /* ── fullscreenBelow: any size, edge to edge under the breakpoint ─ */
+  @media (max-width: 599.98px) {
+    dialog.ca-dialog[data-fullscreen-below='sm'] {
+      inset: 0;
+      width: 100vw;
+      max-width: none;
+      height: var(--ca-vh);
+      max-height: var(--ca-vh);
+      border-radius: 0;
+      border-inline-width: 0;
+      padding: var(--ca-safe-top) var(--ca-safe-right) var(--ca-safe-bottom) var(--ca-safe-left);
+      box-sizing: border-box;
+    }
+  }
+  @media (max-width: 899.98px) {
+    dialog.ca-dialog[data-fullscreen-below='md'] {
+      inset: 0;
+      width: 100vw;
+      max-width: none;
+      height: var(--ca-vh);
+      max-height: var(--ca-vh);
+      border-radius: 0;
+      border-inline-width: 0;
+      padding: var(--ca-safe-top) var(--ca-safe-right) var(--ca-safe-bottom) var(--ca-safe-left);
+      box-sizing: border-box;
     }
   }
 

@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #910 "Configured split" (feedback/dialog).
+What it shows: A split dialog sized 66vw by 88svh with a 2fr/3fr column ratio that goes full screen under 600px: a map column beside a details column with a Close button. When to use: Wide detail dialogs (map + details, media + form) that need their own box and column ratio and must fill the screen on phones.
+Spec:
+- `<Dialog` with `size="split"`, `chromeless` and `title="Lead details"`
+- `splitColumns="2fr 3fr"` and `fullscreenBelow="sm"`
+- `splitSize={{ width: 'min(66vw, 80rem)', height: 'min(88svh, 56rem)' }}`
+- Two direct children: `<div class="map">` labelled Map and `<div class="details">` with a name and a filled Close `<Button variant="filled" onclick={() => (open = false)}>`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #910 Configured split → file, what changed, https://ui.codeatlas.com.br/docs/feedback/dialog#configured-split; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/910.txt   Components API: ca-ui-mcp get_component(Dialog)
