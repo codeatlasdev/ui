@@ -181,14 +181,23 @@ server.registerTool(
 				}),
 			].join("\n")
 		);
+	}
+);
+
+server.registerTool(
 	"get_migration",
+	{
+		description:
 			"Breaking changes between two majors of @codeatlasdev/ui, as before -> after with why and whether `bunx @codeatlasdev/ui migrate --from <from> --to <to> --write` rewrites it (`yes`), rewrites part of it and reports the rest (`partial`) or leaves it to you (`no`). `from` is the major the project is on, `to` the one it moves to (default: the newest). Call it before upgrading a project that is not on the latest major.",
 		inputSchema: { from: z.number().int().min(0), to: z.number().int().min(1).optional() },
+	},
 	({ from, to }) => {
 		const newest = Math.max(...migrations.map((m) => m.major));
 		const target = to ?? newest;
 		if (from >= target)
+			return fail(
 				`Nothing between ${from} and ${target}: \`from\` must be lower than \`to\` (newest major: ${newest}).`
+			);
 		const range = migrations.filter((m) => m.major > from && m.major <= target);
 		return text(migrationMarkdown(range));
 	}
