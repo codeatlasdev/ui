@@ -63,6 +63,10 @@ By default a column is the drop target as a whole (`drop="container"`): it is hi
 
 A column with `hasMore` fires `onloadmore(columnId)` when its list scrolls within `nearEnd` pixels of the end (once per page: it waits until the item count changes) and shows a "Load more (N)" button, where N is `total - items.length`. Set `loadingMore` on the column while the page loads to show skeleton cards, and `loading` for the first page.
 
+## Heading level
+
+Each column title is a heading, `<h2>` by default (inside a `PageShell` it follows the page's section level), so a board under the page `<h1>` keeps the heading order for axe and screen readers. Pass `headingLevel={3}` when the board sits under an `<h2>` of its own. Only the tag changes, never the look. A custom `header` snippet replaces the title row, so you choose its tag; the mobile tab layout renders no column headings.
+
 ## Mobile
 
 Below 600px of its own width (or with `compact`) the board shows one column at a time. A `role="tablist"` strip with a colour dot, the label and the count selects the column (arrow keys move between tabs; every tab is 44px tall), and the board never scrolls sideways. The "Move to…" menu replaces dragging between columns.
@@ -76,6 +80,7 @@ Below 600px of its own width (or with `compact`) the board shows one column at a
   { name: "drop", type: "'container' | 'position'", default: "'container'", description: "Whole-column drop (index 0, no line) or positional drop." },
   { name: "compact", type: "boolean", default: "undefined", description: "Force the mobile tab layout. Default: automatic below 600px of the board's width." },
   { name: "label", type: "string", default: "'Board'", description: "Accessible name of the board region." },
+  { name: "headingLevel", type: "2 | 3 | 4 | 5 | 6", default: "2", description: "Heading level of the column titles; only the tag changes. 2 under a page `<h1>`, 3 under an `<h2>`. Not used by a custom `header` or the mobile tab layout." },
   { name: "nearEnd", type: "number", default: "240", description: "Distance from the end of a list (px) at which `onloadmore` fires." },
   { name: "card", type: "Snippet<[T, { dragging, active }]>", default: "required", description: "Card content; the wrapper, focus, drag state and menu are the board's." },
   { name: "empty", type: "Snippet<[KanbanColumn<T>, { canMove }]>", default: "undefined", description: "Content of an empty column." },
