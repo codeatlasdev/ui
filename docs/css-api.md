@@ -224,9 +224,7 @@ State attributes on `dialog.ca-drawer`: `data-chromeless` (body padding 0, no he
 
 `.ca-loading-boundary` `.ca-loading-boundary__content` `.ca-loading-boundary__pending`
 
-## Map
-
-`.ca-map` `.ca-map__canvas` `.ca-map__overlay` `.ca-map-controls` `.ca-map-controls__needle`
+`.ca-locale` `.ca-locale--compact` `.ca-locale__code` `.ca-locale__name` `.ca-map` `.ca-map-controls` `.ca-map-controls__needle` `.ca-map__canvas` `.ca-map__overlay`
 
 ## MediaGrid
 

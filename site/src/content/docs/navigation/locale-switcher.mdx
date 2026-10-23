@@ -1,0 +1,53 @@
+---
+title: LocaleSwitcher
+description: A compact language selector for public headers, with options in their own language and an async onselect.
+group: Navigation
+order: 14
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Basic from "~/demos/navigation/locale-switcher/Basic.svelte";
+import BasicSrc from "~/demos/navigation/locale-switcher/Basic.svelte?raw";
+import InHeader from "~/demos/navigation/locale-switcher/InHeader.svelte";
+import InHeaderSrc from "~/demos/navigation/locale-switcher/InHeader.svelte?raw";
+
+```svelte
+<script>
+  import { LocaleSwitcher } from "@codeatlasdev/ui";
+  import { goto } from "$app/navigation";
+
+  const options = [
+    { value: "pt-BR", label: "Português", short: "PT" },
+    { value: "en", label: "English" },
+  ];
+  let { data } = $props();
+
+  async function onselect(locale) {
+    await fetch("/api/preferences", { method: "POST", body: JSON.stringify({ locale }) });
+    document.cookie = `locale=${locale}; path=/; max-age=31536000`;
+    await goto(`/${locale}/login`);
+  }
+</script>
+
+<LocaleSwitcher {options} value={data.locale} {onselect} />
+```
+
+Options are data, the callback is yours: the component knows no router, cookie or store, so it fits an app with localized URLs (`/en/login`) as well as one that only sets a cookie. `onselect(locale)` may return a promise. While it is pending the trigger is disabled and `aria-busy`, and `value` changes only after it resolves; if it rejects the old value stays and `onerror` receives the error. Choosing the current language does nothing.
+
+Each option is named in its own language and its menu item carries a `lang` attribute (default the option `value`, override with `lang`), so screen readers pronounce "Português" in Portuguese. The trigger shows a globe and the native name from 600px, and the short code (`short`, default the first two letters of `value` uppercased) below it; `compact` always shows the code. The accessible name is "Language: " plus the visible text, so it always contains what is on screen. It has a 44px hit area on touch. The menu is a `DropdownMenu` radio group, so it opens with Enter, Space and the arrow keys.
+
+To put it in a header, use the `trailing` slot of [`SiteHeader`](/docs/layout/app-shell/) (the end of the bar), next to the primary call to action.
+
+<Demo title="Basic" description="Native names, a short code on narrow screens and an async onselect that keeps the switcher busy." src={BasicSrc}><Basic client:visible /></Demo>
+<Demo title="In header" description="The SiteHeader trailing slot holds the switcher and a Sign up button." src={InHeaderSrc}><InHeader client:visible /></Demo>
+
+<Props rows={[
+  { name: "options", type: "{ value: string; label: string; short?: string; lang?: string }[]", description: "The languages on offer, each `label` in its own language. `short` is the narrow-screen code, `lang` the BCP 47 tag of the item (default `value`)." },
+  { name: "value", type: "string", description: "Current locale, an option `value`. Bindable; changes only after `onselect` succeeds." },
+  { name: "onselect", type: "(value: string) => void | Promise<void>", description: "Called with the picked locale. Await your save, cookie and navigation here." },
+  { name: "onerror", type: "(error: unknown) => void", description: "Called when `onselect` throws or rejects; `value` keeps its previous value." },
+  { name: "compact", type: "boolean", default: "false", description: "Always show the short code. Without it the name shows from 600px." },
+  { name: "label", type: "string", default: "'Language'", description: "Accessible name prefix. Localized by default." },
+  { name: "align", type: "'start' | 'center' | 'end'", default: "'end'", description: "Menu alignment to the trigger." },
+  { name: "class", type: "string", default: "''", description: "Extra classes on the trigger." },
+]} />

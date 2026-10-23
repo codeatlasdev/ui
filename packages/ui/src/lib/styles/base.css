@@ -252,6 +252,7 @@ html[data-ca-native] .ca-selectable * {
     .ca-alert__close, .ca-install__close, .ca-toast__action, .ca-toast__close, .ca-btn, .ca-icon-btn, .ca-combobox__trigger, .ca-collapsible__trigger,
     .ca-tooltip__trigger, .ca-rail-btn, .ca-toggle-group__item, .ca-dt-pagination__btn,
     .ca-table-sort, .ca-table-group__toggle,
+    .ca-tooltip__trigger, .ca-rail-btn, .ca-locale, .ca-toggle-group__item, .ca-dt-pagination__btn,
     .pass-btn, .glass-btn, .glass-btn-prominent, .glass-btn-clear
     .ca-tf__reveal, .pass-btn, .glass-btn, .glass-btn-prominent, .glass-btn-clear
   ) {
@@ -264,6 +265,7 @@ html[data-ca-native] .ca-selectable * {
     .ca-alert__close, .ca-install__close, .ca-toast__action, .ca-toast__close, .ca-btn, .ca-icon-btn, .ca-combobox__trigger, .ca-collapsible__trigger,
     .ca-tooltip__trigger, .ca-rail-btn, .ca-toggle-group__item, .ca-dt-pagination__btn,
     .ca-table-sort, .ca-table-group__toggle,
+    .ca-tooltip__trigger, .ca-rail-btn, .ca-locale, .ca-toggle-group__item, .ca-dt-pagination__btn,
     .pass-btn, .glass-btn, .glass-btn-prominent, .glass-btn-clear
     .ca-tf__reveal, .pass-btn, .glass-btn, .glass-btn-prominent, .glass-btn-clear
   )::after {

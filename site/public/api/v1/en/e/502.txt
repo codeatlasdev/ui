@@ -1,0 +1,32 @@
+<!-- @codeatlasdev/ui demo #502 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/locale-switcher#in-header -->
+Element: #502 In header (navigation/locale-switcher)
+What it shows: A site header whose trailing end holds a LocaleSwitcher next to a filled Sign up button.
+When to use: The public header of a multi-language product: language switcher plus the primary call to action, compact on a phone.
+Spec:
+- `<SiteHeader>` with a `{#snippet trailing()}` holding the end of the bar
+- `<LocaleSwitcher {options} bind:value={locale} />` with `pt-BR` (`Português`, `short: 'PT'`) and `en` (`English`)
+- A small filled `Button` labelled `Sign up` follows the switcher
+- The header sits in `<Card material="glass" full flush>`
+Tags: locale-switcher, site-header, trailing, cta, language, header
+Needs: @codeatlasdev/ui@4.5.0
+Components: Button, Card, LocaleSwitcher, SiteHeader
+Live demo: https://ui.codeatlas.com.br/docs/navigation/locale-switcher#in-header
+
+<script lang="ts">
+  import { Button, Card, LocaleSwitcher, SiteHeader } from '@codeatlasdev/ui';
+
+  const options = [
+    { value: 'pt-BR', label: 'Português', short: 'PT' },
+    { value: 'en', label: 'English' },
+  ];
+  let locale = $state('pt-BR');
+</script>
+
+<Card material="glass" full flush>
+  <SiteHeader>
+    {#snippet trailing()}
+      <LocaleSwitcher {options} bind:value={locale} />
+      <Button size="sm" variant="filled">Sign up</Button>
+    {/snippet}
+  </SiteHeader>
+</Card>

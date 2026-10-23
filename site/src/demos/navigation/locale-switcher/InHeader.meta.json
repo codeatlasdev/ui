@@ -1,0 +1,12 @@
+{
+	"summary": "A site header whose trailing end holds a LocaleSwitcher next to a filled Sign up button.",
+	"use": "The public header of a multi-language product: language switcher plus the primary call to action, compact on a phone.",
+	"spec": [
+		"`<SiteHeader>` with a `{#snippet trailing()}` holding the end of the bar",
+		"`<LocaleSwitcher {options} bind:value={locale} />` with `pt-BR` (`Português`, `short: 'PT'`) and `en` (`English`)",
+		"A small filled `Button` labelled `Sign up` follows the switcher",
+		"The header sits in `<Card material=\"glass\" full flush>`"
+	],
+	"tags": ["locale-switcher", "site-header", "trailing", "cta", "language", "header"],
+	"shape": "wide"
+}

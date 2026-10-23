@@ -1,0 +1,51 @@
+<!-- @codeatlasdev/ui demo #501 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/locale-switcher#basic -->
+Element: #501 Basic (navigation/locale-switcher)
+What it shows: A language switcher with three options named in their own language; picking one awaits an async onselect before the value changes.
+When to use: A language selector in a public header or settings: persist the choice, set the cookie and navigate to the localized URL, with the control busy meanwhile.
+Spec:
+- `<LocaleSwitcher {options} bind:value={locale} {onselect} />` with `options` of `pt-BR` (label `Português`, `short: 'PT'`), `en` (`English`) and `es` (`Español`)
+- `async function onselect(next: string)` waits 600 ms, then writes a visible `saved` note: Saved <locale>; the app would now go to /<locale>/login.
+- Before any pick the note reads `Pick a language: the switcher stays busy until onselect resolves.`
+- The column is left-aligned with `gap: var(--ca-space-3)`
+Tags: locale-switcher, language, i18n, dropdown, async, onselect
+Needs: @codeatlasdev/ui@4.5.0
+Components: LocaleSwitcher
+Live demo: https://ui.codeatlas.com.br/docs/navigation/locale-switcher#basic
+
+<script lang="ts">
+  import { LocaleSwitcher } from '@codeatlasdev/ui';
+
+  const options = [
+    { value: 'pt-BR', label: 'Português', short: 'PT' },
+    { value: 'en', label: 'English' },
+    { value: 'es', label: 'Español' },
+  ];
+
+  let locale = $state('pt-BR');
+  let saved = $state('');
+
+  // Save the preference, set the cookie, then navigate to the localized URL.
+  async function onselect(next: string) {
+    await new Promise((resolve) => setTimeout(resolve, 600));
+    saved = `Saved ${next}; the app would now go to /${next}/login.`;
+  }
+</script>
+
+<div class="col">
+  <LocaleSwitcher {options} bind:value={locale} {onselect} />
+  <p class="note">{saved || 'Pick a language: the switcher stays busy until onselect resolves.'}</p>
+</div>
+
+<style>
+  .col {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--ca-space-3);
+  }
+  .note {
+    margin: 0;
+    color: var(--ca-text-secondary);
+    font-size: var(--ca-font-size-body2);
+  }
+</style>

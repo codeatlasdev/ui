@@ -171,6 +171,7 @@ export { default as Lightbox } from "./components/Lightbox/Lightbox.svelte";
 export { default as LiquidGlass } from "./components/LiquidGlass/LiquidGlass.svelte";
 export { default as LiveList } from "./components/LiveList/LiveList.svelte";
 export { default as LoadingBoundary } from "./components/LoadingBoundary/LoadingBoundary.svelte";
+export { default as LocaleSwitcher } from "./components/LocaleSwitcher/LocaleSwitcher.svelte";
 export type { MediaGridItem } from "./components/MediaGrid/MediaGrid.svelte";
 export { default as MediaGrid } from "./components/MediaGrid/MediaGrid.svelte";
 export { default as MessageBubble } from "./components/MessageBubble/MessageBubble.svelte";

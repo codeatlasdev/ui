@@ -9,6 +9,10 @@
   const t = useMessages(appShell, breadcrumb);
 
   interface Props {
+    /**
+     * The end of the bar: a `LocaleSwitcher`, a primary CTA, a user menu. Stays on the right and
+     * shrinks the breadcrumb first, so it fits at 390px.
+     */
     trailing?: Snippet;
     class?:    string;
   }

@@ -1,0 +1,12 @@
+{
+	"summary": "A language switcher with three options named in their own language; picking one awaits an async onselect before the value changes.",
+	"use": "A language selector in a public header or settings: persist the choice, set the cookie and navigate to the localized URL, with the control busy meanwhile.",
+	"spec": [
+		"`<LocaleSwitcher {options} bind:value={locale} {onselect} />` with `options` of `pt-BR` (label `Português`, `short: 'PT'`), `en` (`English`) and `es` (`Español`)",
+		"`async function onselect(next: string)` waits 600 ms, then writes a visible `saved` note: Saved <locale>; the app would now go to /<locale>/login.",
+		"Before any pick the note reads `Pick a language: the switcher stays busy until onselect resolves.`",
+		"The column is left-aligned with `gap: var(--ca-space-3)`"
+	],
+	"tags": ["locale-switcher", "language", "i18n", "dropdown", "async", "onselect"],
+	"shape": "wide"
+}

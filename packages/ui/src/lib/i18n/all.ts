@@ -40,6 +40,7 @@ import { kpiCard } from "./groups/kpiCard.js";
 import { lightbox } from "./groups/lightbox.js";
 import { liveList } from "./groups/liveList.js";
 import { map } from "./groups/map.js";
+import { localeSwitcher } from "./groups/localeSwitcher.js";
 import { mediaGrid } from "./groups/mediaGrid.js";
 import { mobilePane } from "./groups/mobilePane.js";
 import { motionStage } from "./groups/motionStage.js";
@@ -112,6 +113,7 @@ export const groups = {
 	chat,
 	audioPlayer,
 	motionStage,
+	localeSwitcher,
 	mediaGrid,
 	virtualList,
 	charts,

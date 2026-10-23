@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #501 "Basic" (navigation/locale-switcher).
+What it shows: A language switcher with three options named in their own language; picking one awaits an async onselect before the value changes. When to use: A language selector in a public header or settings: persist the choice, set the cookie and navigate to the localized URL, with the control busy meanwhile.
+Spec:
+- `<LocaleSwitcher {options} bind:value={locale} {onselect} />` with `options` of `pt-BR` (label `Português`, `short: 'PT'`), `en` (`English`) and `es` (`Español`)
+- `async function onselect(next: string)` waits 600 ms, then writes a visible `saved` note: Saved <locale>; the app would now go to /<locale>/login.
+- Before any pick the note reads `Pick a language: the switcher stays busy until onselect resolves.`
+- The column is left-aligned with `gap: var(--ca-space-3)`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #501 Basic → file, what changed, https://ui.codeatlas.com.br/docs/navigation/locale-switcher#basic; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/501.txt   Components API: ca-ui-mcp get_component(LocaleSwitcher)
