@@ -228,12 +228,12 @@ If the files exist, `init` patches them as before (a diff without `--write`). Fo
 
 - **`tsconfig.json` `exclude`.** The adapter writes its output (`build/` by default, or the `pages` option of `adapter({ pages })` in `vite.config.ts`) into the project, and `svelte-check` would type-check that minified JS (thousands of errors). `init` adds the folder to `exclude`.
 - **`src/routes/+layout.ts` with `export const prerender = true;`.** Without it adapter-static emits only the SPA fallback (`200.html`), not one HTML file per page. An existing `+layout.ts` keeps its content and gains the line.
-- **The adapter major must match the Kit major.** `@sveltejs/adapter-static@4` peers on SvelteKit 3 only and `@sveltejs/adapter-static@3` on SvelteKit 2; the other pairing fails `npm install` with `ERESOLVE`. `init` prints a `note` when the declared major is the wrong one.
+- **The adapter major must match the Kit major, and Kit 3 needs TypeScript 6.** `@sveltejs/adapter-static@4` peers on SvelteKit 3 only and `@sveltejs/adapter-static@3` on SvelteKit 2; the other pairing fails `npm install` with `ERESOLVE`. SvelteKit 3 also peers on `typescript@^6` (SvelteKit 2 accepts `^5.3.3 || ^6`), so a hand-written `package.json` with `typescript@^5` fails the same way on Kit 3. `init` prints a `note` when the declared adapter major is the wrong one.
 
-| SvelteKit | `@sveltejs/adapter-static` |
-|---|---|
-| 3 | `4` |
-| 2 (`^2.12`) | `3` |
+| SvelteKit | `@sveltejs/adapter-static` | `typescript` |
+|---|---|---|
+| 3 | `4` | `^6` |
+| 2 (`^2.12`) | `3` | `^5.3.3 \|\| ^6` |
 
 Links to routes that do not exist yet (a landing page's `/sign-in`) make the prerender fail with a 404 `linked from /`. Create the routes, or set `prerender: { handleHttpError: "warn" }` (in `sveltekit({ ... })` on Kit 3, under `kit` in `svelte.config.js` on Kit 2).
 
