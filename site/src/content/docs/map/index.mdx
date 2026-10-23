@@ -16,7 +16,9 @@ import ThemedMapSrc from "~/demos/map/stage/ThemedMap.svelte?raw";
 
   const layers = $derived.by(() => {
     const c = mapColors(); // reactive: re-runs on scheme or preset change
-    return [new ScatterplotLayer({ id: "pins", data, getPosition: (d) => d.xy, getFillColor: c.brand })];
+    return [
+      new ScatterplotLayer({ id: "pins", data, getPosition: (d) => d.xy, radiusUnits: "pixels", getRadius: 8, getFillColor: c.brand }),
+    ];
   });
 </script>
 
@@ -24,6 +26,10 @@ import ThemedMapSrc from "~/demos/map/stage/ThemedMap.svelte?raw";
   <MapControls />
 </MapStage>
 ```
+
+`styles` takes a URL or a style object. A URL (a hosted `style.json`) is fetched at runtime, so it needs network. For an app that must work offline, pass a style object with one `background` layer painted from the theme: `{ version: 8, sources: {}, layers: [{ id: "bg", type: "background", paint: { "background-color": rgbaCss(mapColors().surface) } }] }`, built inside a `$derived` so it follows the scheme (see the demo below).
+
+deck.gl sizes a `ScatterplotLayer` dot in meters by default (`radiusUnits: "meters"`), so `getRadius: () => 500` is a speck on a country-wide map. For markers set `radiusUnits: "pixels"` and give `getRadius` pixel values (or keep meters and add `radiusMinPixels` so the dot never shrinks below a visible size). Use meters only when the circle is a real geographic area.
 
 The map lives in the `@codeatlasdev/ui/map` subpath and every engine is an optional peer, so install only what you use: `maplibre-gl` (default, no token) or `mapbox-gl` (`engine="mapbox"` and an `accessToken`), and for data layers `@deck.gl/core` plus `@deck.gl/mapbox`. Pin all `@deck.gl/*` packages to the same minor (`~9.4`): mixing `@luma.gl/core` 9.3 and 9.4 breaks the overlay at install time. Supported pair: `maplibre-gl@^5` with `@deck.gl/*@~9.4`. `@deck.gl/mapbox` 9.4 cannot draw into `maplibre-gl` 6: every frame throws `Cannot read properties of undefined (reading 'height')`, so install `maplibre-gl@5` (for example `bun add maplibre-gl@5 @deck.gl/core@~9.4 @deck.gl/mapbox@~9.4`) until deck.gl ships MapLibre 6 support. Nothing is imported on the server: the engines load inside `onMount`, so `MapStage` and `MapControls` render in SSR (an empty stage with disabled controls) and hydrate on the client. In Astro, use `client:visible`.
 

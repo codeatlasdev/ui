@@ -1135,7 +1135,9 @@ export const m = {
         id: "places",
         data: mapState.places,
         getPosition: (d) => d.coordinates,
-        getRadius: (d) => (d.id === mapState.selectedId ? 900 : 500),
+        // Pixels, not meters: getRadius defaults to meters, and 500 m is invisible on a country-wide map.
+        radiusUnits: "pixels",
+        getRadius: (d) => (d.id === mapState.selectedId ? 14 : 9),
         getFillColor: (d) => (d.id === mapState.selectedId ? c.brand : c.brandMuted),
         getLineColor: c.brand,
         stroked: true,
@@ -1242,7 +1244,8 @@ Rules:
 - Mount `MapStage` in the shell's `stage` snippet, not in a page: a page mount would recreate the map on every navigation. The layout and the page are different components, so they talk through a module-level `$state` class (`map-state.svelte.ts`, with the `.svelte.ts` extension so runes compile) or a context set in the layout: filters, the selection and the map handle live there.
 - The only public handle on the camera is `onmapready(map)`, the engine's map (`flyTo`, `jumpTo`, `easeTo`). Keep it in the shared state and call it from the result list to recenter. `MapContext.move`, which `MapStage` uses internally to fall back to `jumpTo`, is not exported, so check `prefers-reduced-motion` yourself as above. `onmapready` runs once after the first style loads: the map is `null` before that.
 - A pin that selects a row is a deck.gl layer with `pickable: true` and `onClick`; set `updateTriggers` for any accessor that reads the selection, or the layer keeps the old colors. Layers come from `@deck.gl/layers`: install it with `@deck.gl/core` and `@deck.gl/mapbox`.
-- An offline basemap is a style object with one `background` layer. Take its color from `mapColors().surface` through `rgbaCss`, inside a `$derived`, so it follows the theme; a hex in a style object fails `codeatlas-ui lint`. For real tiles pass a style URL per scheme.
+- An offline basemap is a style object with one `background` layer. Take its color from `mapColors().surface` through `rgbaCss`, inside a `$derived`, so it follows the theme; a hex in a style object fails `codeatlas-ui lint`. For real tiles pass a style URL per scheme: that needs network, so keep the offline background wherever the app must work without it.
+- `ScatterplotLayer` radii are in meters by default (`radiusUnits: "meters"`), so a 500 m dot is a speck on a country-wide map. For markers (pins, places) set `radiusUnits: "pixels"` and give `getRadius` pixel values: the dot keeps its size at every zoom. Keep meters only for a true geographic area (a 5 km coverage circle), and then add `radiusMinPixels` so it stays visible zoomed out.
 - `MapStage` pads `fit` by what the frame covers, so it needs no `padding` prop. Read `stageInsets.current` (or `--ca-stage-inset-*` on `html`) for anything you position by hand, and never copy the panel widths. A legend you place with `stageInsets.left` sits under the bottom sheet on a phone, where the insets are at the bottom: hide it below 900px or offset it by `stageInsets.current.bottom` too.
 - `mode="page"` (or `stageVisible={false}`) for a route that covers the map; `mode="split"` for a work area beside a map strip.
 - With `sheet`, the panel is a non-modal bottom sheet on phones: the map above it stays interactive and the `toolbar` snippet is hidden at the `peek` detent (it shows the header only). Do not wrap it in `Sheet`. `bind:detent` takes `"peek" | "half" | "full"`.
@@ -1257,19 +1260,30 @@ Rules:
 <!-- src/routes/+page.svelte -->
 <script lang="ts">
   import { PageFrame, SkipLink, TextField } from "@codeatlasdev/ui";
-  import { MapControls, MapStage } from "@codeatlasdev/ui/map";
+  import { MapControls, MapStage, mapColors, rgbaCss } from "@codeatlasdev/ui/map";
   import { mapState } from "#lib/map-state.svelte.ts";
   import { m } from "#lib/messages.ts";
 
   const t = m.map;
 
   let query = $state("");
+
+  // The same offline basemap as the shell recipe: no network needed, and it follows the theme.
+  const background = (color: string) => ({
+    version: 8 as const,
+    sources: {},
+    layers: [{ id: "bg", type: "background" as const, paint: { "background-color": color } }],
+  });
+  const styles = $derived({
+    light: background(rgbaCss(mapColors().surface)),
+    dark: background(rgbaCss(mapColors().surface)),
+  });
 </script>
 
 <SkipLink />
 <main id="main" tabindex="-1" class="host">
   <MapStage
-    styles={{ light: "https://demotiles.maplibre.org/style.json", dark: "https://demotiles.maplibre.org/style.json" }}
+    {styles}
     label={t.stageLabel}
     fit={[[-74, -34], [-34, 5]]}
     onmapready={(map) => (mapState.map = map)}
@@ -1303,6 +1317,7 @@ Rules:
 
 - The host takes `height: var(--ca-vh)` (never `100vh`). `PageFrame` is already `pointer-events: none` outside its panel; the wrapper keeps that so the map stays draggable around it.
 - Here the panel carries the page `<h1>` (there is no `PageShell`), and `<main>` is yours.
+- `styles` is the offline background from the shell recipe, so the screen works with no network. For real tiles pass a style URL instead, for example `"https://demotiles.maplibre.org/style.json"` for both schemes: it is fetched at runtime, so it needs network.
 
 See also: [PageFrame](/docs/layout/page-frame/), [Map](/docs/map/), [AppShell](/docs/layout/app-shell/).
 
