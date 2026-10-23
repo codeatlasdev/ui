@@ -1,9 +1,10 @@
 import { createRawSnippet } from "svelte";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { VIEWPORTS } from "../../../../tests/viewports";
+import { BUILTIN_PRESETS } from "../../theme/builtins.js";
 import AuthCard from "./AuthCard.svelte";
 import AuthLayout from "./AuthLayout.svelte";
 
@@ -384,4 +385,26 @@ describe("AuthLayout panelTone", () => {
 			}
 		});
 	}
+});
+
+// #472: the compact brand strip's mark (white on brand) must hold 4.5:1 in dark on every preset.
+describe("AuthLayout mobile brand mark contrast (#472)", () => {
+	afterEach(async () => {
+		document.documentElement.classList.remove("dark");
+		await page.viewport(...VIEWPORTS.desktop);
+	});
+
+	it.each(BUILTIN_PRESETS.map((p) => p.id))("%s dark at 390px: no color-contrast", async (id) => {
+		await page.viewport(...VIEWPORTS.mobile);
+		document.documentElement.classList.add("dark");
+		const screen = await render(AuthLayout, {
+			logoName: "My App",
+			logoMark: "MA",
+			children: snip("<h1>Sign in</h1>"),
+		});
+		screen.container.setAttribute("data-preset", id);
+		const mark = screen.container.querySelector(".ca-auth__mobile-mark") as HTMLElement;
+		expect(getComputedStyle(mark).display).toBe("flex");
+		expect(await checkA11y(mark, { runOnly: ["color-contrast"] })).toHaveNoViolations();
+	});
 });
