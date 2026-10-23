@@ -1,6 +1,6 @@
 {
 	"version": "4.5.0",
-	"count": 368,
+	"count": 370,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -29,8 +29,8 @@
 		{
 			"slug": "navigation",
 			"first": "146",
-			"last": "943",
-			"count": 35
+			"last": "945",
+			"count": 37
 		},
 		{
 			"slug": "layout",
@@ -16104,6 +16104,108 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/navigation/context-menu#one-menu-per-row",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "944",
+			"group": "navigation",
+			"page": "menubar",
+			"variant": "Editor",
+			"slug": "editor-menu-bar",
+			"title": "Editor menu bar",
+			"description": "File (with an Export submenu), Edit, View (a checkbox and a radio group) and a disabled Help. Try Tab, arrows, Down, then Left and Right.",
+			"summary": "An application menu bar with File, Edit, View and a disabled Help menu; File has a submenu, View has a checkbox and a radio group, and a line below reports the last action.",
+			"use": "A desktop-style application or editor menu bar: arrows move between menus, an open menu switches on hover or ArrowRight and ArrowLeft.",
+			"spec": [
+				"`<Menubar aria-label=\"Editor\">` holds four `MenubarMenu`s labelled File, Edit, View and a `disabled` Help",
+				"File has `DropdownMenuItem`s, a `DropdownMenuSub` with `DropdownMenuSubTrigger` for Export, a separator and a destructive Close",
+				"View has `<DropdownMenuCheckboxItem bind:checked={wrap}>` and a `<DropdownMenuRadioGroup bind:value={zoom} aria-label=\"Zoom\">` with 100% and 150%",
+				"Action items call `function pick(action: string)`, which sets `last` and calls `announce`"
+			],
+			"tags": [
+				"menubar",
+				"menu",
+				"application",
+				"keyboard",
+				"dropdown-menu",
+				"submenu"
+			],
+			"shape": "wide",
+			"components": [
+				"DropdownMenuCheckboxItem",
+				"DropdownMenuItem",
+				"DropdownMenuLabel",
+				"DropdownMenuRadioGroup",
+				"DropdownMenuRadioItem",
+				"DropdownMenuSeparator",
+				"DropdownMenuSub",
+				"DropdownMenuSubTrigger",
+				"Menubar",
+				"MenubarMenu"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"announce",
+						"DropdownMenuCheckboxItem",
+						"DropdownMenuItem",
+						"DropdownMenuLabel",
+						"DropdownMenuRadioGroup",
+						"DropdownMenuRadioItem",
+						"DropdownMenuSeparator",
+						"DropdownMenuSub",
+						"DropdownMenuSubTrigger",
+						"Menubar",
+						"MenubarMenu"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/menubar#editor-menu-bar",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "945",
+			"group": "navigation",
+			"page": "menubar",
+			"variant": "Compact",
+			"slug": "bar-open-state",
+			"title": "Bar open state",
+			"description": "onOpenChange fires when the bar goes from none open to one open and back, not for a switch between menus.",
+			"summary": "A two-menu bar (Share, Insert) with a line reporting whether any menu is open through onOpenChange.",
+			"use": "Reacting to the bar as a whole, for example dimming a canvas while a menu is open, without tracking each menu.",
+			"spec": [
+				"`<Menubar aria-label=\"Document\" onOpenChange={(o) => (open = o)}>` with two `MenubarMenu`s, Share and Insert",
+				"`onOpenChange` fires when the bar goes from none open to one open and back, not when the pointer or arrows switch between menus",
+				"A line reads \"A menu is\" followed by open or closed"
+			],
+			"tags": [
+				"menubar",
+				"on-open-change",
+				"menu",
+				"compact",
+				"state",
+				"hover"
+			],
+			"shape": "wide",
+			"components": [
+				"DropdownMenuItem",
+				"Menubar",
+				"MenubarMenu"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"DropdownMenuItem",
+						"Menubar",
+						"MenubarMenu"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/navigation/menubar#bar-open-state",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{

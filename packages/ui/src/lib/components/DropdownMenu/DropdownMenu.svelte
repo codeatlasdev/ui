@@ -28,6 +28,16 @@
     side?:       'top' | 'right' | 'bottom' | 'left';
     align?:      'start' | 'center' | 'end';
     sideOffset?: number;
+    /**
+     * Sees every key pressed on the menu itself (not inside a submenu) before the menu handles it.
+     * Call `preventDefault()` to take the key: the menu then ignores it. A `Menubar` takes ArrowLeft and
+     * ArrowRight here to move to the adjacent menu.
+     */
+    onmenukeydown?: (e: KeyboardEvent) => void;
+    /** Called with the trigger's keydown before the menu's own (Down/Up/Enter/Space open). `preventDefault()` takes the key. */
+    ontriggerkeydown?: (e: KeyboardEvent) => void;
+    /** Where focus goes when the menu opens without a pointer: the first item, the last, or the menu container. */
+    openFocus?: 'first' | 'last' | 'container';
   }
 
   let {
@@ -41,6 +51,9 @@
     side       = 'bottom',
     align      = 'start',
     sideOffset,
+    onmenukeydown,
+    ontriggerkeydown,
+    openFocus,
   }: Props = $props();
 
   const id = uid('menu');
@@ -94,7 +107,7 @@
     if (now && !wasOpen) {
       const active = document.activeElement;
       opener = active instanceof HTMLElement && active !== document.body ? active : null;
-      if (!triggerOpened) pendingFocus = 'first';
+      if (!triggerOpened) pendingFocus = openFocus ?? 'first';
     }
     triggerOpened = false;
     wasOpen = now;
@@ -116,6 +129,8 @@
         }
       },
       onKeydown: (e) => {
+        ontriggerkeydown?.(e);
+        if (e.defaultPrevented) return;
         if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
           if (!open) {
@@ -151,6 +166,8 @@
   }
 
   function onkeydown(e: KeyboardEvent) {
+    onmenukeydown?.(e);
+    if (e.defaultPrevented) return;
     if (e.key === 'Tab') {
       // Tabbing out of a menu closes it (APG); focus continues from the trigger.
       close();

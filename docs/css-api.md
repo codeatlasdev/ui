@@ -258,6 +258,10 @@ State attributes on `dialog.ca-drawer`: `data-chromeless` (body padding 0, no he
 
 `.ca-media-grid` `.ca-media-grid__doc` `.ca-media-grid__doc-title` `.ca-media-grid__duration` `.ca-media-grid__failed` `.ca-media-grid__grid` `.ca-media-grid__grid--single` `.ca-media-grid__grid--wide` `.ca-media-grid__img` `.ca-media-grid__img--hidden` `.ca-media-grid__more` `.ca-media-grid__play` `.ca-media-grid__skeleton` `.ca-media-grid__tile`
 
+## Menubar
+
+`.ca-menubar` `.ca-menubar__item`
+
 ## MessageBubble
 
 `.ca-bubble` `.ca-bubble--in` `.ca-bubble--out` `.ca-bubble-row` `.ca-bubble-row--in` `.ca-bubble-row--out` `.ca-bubble-row--reacted` `.ca-bubble-row__avatar` `.ca-bubble__body` `.ca-bubble__meta` `.ca-bubble__quote` `.ca-bubble__reaction` `.ca-bubble__reaction--mine` `.ca-bubble__reactions` `.ca-bubble__sender` `.ca-bubble__status` `.ca-bubble__status--read`

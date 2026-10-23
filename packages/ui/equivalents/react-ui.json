@@ -249,10 +249,9 @@
 		},
 		{
 			"shadcn": "Menubar",
-			"to": ["DropdownMenu"],
+			"to": ["Menubar", "MenubarMenu", "DropdownMenuItem"],
 			"radix": "@radix-ui/react-menubar",
-			"gap": 432,
-			"workaround": "One `DropdownMenu` per top-level entry."
+			"notes": "`Menubar` holds `MenubarMenu label`s; each menu's content is the `DropdownMenu` items."
 		},
 		{
 			"shadcn": "Message",

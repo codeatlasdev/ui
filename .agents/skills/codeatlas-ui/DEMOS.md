@@ -362,6 +362,8 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 941 | Delays, side and bind:open | navigation/hover-card | Button, HoverCard |
 | 942 | File menu | navigation/context-menu | ContextMenu, DropdownMenuCheckboxItem, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubTrigger |
 | 943 | One menu per row | navigation/context-menu | ContextMenu, DropdownMenuItem, DropdownMenuLabel |
+| 944 | Editor menu bar | navigation/menubar | DropdownMenuCheckboxItem, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubTrigger, Menubar, MenubarMenu |
+| 945 | Bar open state | navigation/menubar | DropdownMenuItem, Menubar, MenubarMenu |
 | 960 | ratio and fit | display/image | Image |
 | 961 | Embed | display/aspect-ratio | AspectRatio |
 | 962 | Two panels | layout/resizable-panels | ResizableHandle, ResizablePanel, ResizablePanels |

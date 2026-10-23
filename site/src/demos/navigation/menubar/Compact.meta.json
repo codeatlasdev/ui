@@ -1,0 +1,11 @@
+{
+	"summary": "A two-menu bar (Share, Insert) with a line reporting whether any menu is open through onOpenChange.",
+	"use": "Reacting to the bar as a whole, for example dimming a canvas while a menu is open, without tracking each menu.",
+	"spec": [
+		"`<Menubar aria-label=\"Document\" onOpenChange={(o) => (open = o)}>` with two `MenubarMenu`s, Share and Insert",
+		"`onOpenChange` fires when the bar goes from none open to one open and back, not when the pointer or arrows switch between menus",
+		"A line reads \"A menu is\" followed by open or closed"
+	],
+	"tags": ["menubar", "on-open-change", "menu", "compact", "state", "hover"],
+	"shape": "wide"
+}
