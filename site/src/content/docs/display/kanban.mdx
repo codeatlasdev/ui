@@ -1,0 +1,65 @@
+---
+title: Kanban
+description: "A stage board on top of the drag engine: columns that scroll on their own, cards that move by mouse, touch or keyboard, per-column loading and a mobile tab strip."
+group: Display
+order: 23
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Pipeline from "~/demos/display/kanban/Pipeline.svelte";
+import PipelineSrc from "~/demos/display/kanban/Pipeline.svelte?raw";
+
+```svelte
+<script>
+  import { Kanban } from "@codeatlasdev/ui";
+
+  let columns = $state([
+    { id: "new", label: "New", color: "var(--ca-info-main)", total: 42, hasMore: true, items },
+    { id: "won", label: "Won", color: "var(--ca-success-main)", items: [] },
+  ]);
+</script>
+
+<Kanban {columns} getId={(card) => card.id} onmove={({ card, from, to }) => {}} onloadmore={(columnId) => {}}>
+  {#snippet card(item, { dragging })}…{/snippet}
+</Kanban>
+```
+
+`Kanban` is the board around [`useDnd`](/docs/foundation/drag-and-drop/): you pass columns of cards and apply `onmove` to your data; the component owns the layout, the drag, the keyboard map and the touch alternative. Give it a parent with a height (a flex child or `height`), because every column list scrolls on its own.
+
+<Demo title="Leads pipeline" description="Drag a card to another column, lift it with Space and move it with the arrows, or use the menu on the card. Scroll the New column to load more. Narrow the window below 600px for the tab strip." src={PipelineSrc}><Pipeline client:visible /></Demo>
+
+## Drops
+
+By default a column is the drop target as a whole (`drop="container"`): it is highlighted, no insertion line is drawn and `to.index` is always `0`. That is right for columns the server orders (newest first), where dropping "between cards" would mean nothing. Set `drop="position"` to let the card land between cards; the line appears and `to.index` is the position.
+
+## Moving cards
+
+| Input | How it works |
+|---|---|
+| Mouse and pen | Press a card and move 4px. The empty board background pans sideways; a vertical wheel over the gaps scrolls the board sideways; trackpad `deltaX` stays native. |
+| Touch | Press and hold, then drag. Near the left or right edge the board scrolls, faster the closer you are. |
+| Keyboard | Focus a card, Space lifts it, Left and Right move it to the same index of the neighbouring column (an empty column receives it), Up, Down, Home and End move inside a column (with `drop="position"`), Enter drops, Escape cancels. Every step is announced. |
+| Menu | Every card has a "Move to…" button that opens a menu of the other columns. It is the touch and screen reader alternative to dragging and announces the result. |
+
+## Loading more
+
+A column with `hasMore` fires `onloadmore(columnId)` when its list scrolls within `nearEnd` pixels of the end (once per page: it waits until the item count changes) and shows a "Load more (N)" button, where N is `total - items.length`. Set `loadingMore` on the column while the page loads to show skeleton cards, and `loading` for the first page.
+
+## Mobile
+
+Below 600px of its own width (or with `compact`) the board shows one column at a time. A `role="tablist"` strip with a colour dot, the label and the count selects the column (arrow keys move between tabs; every tab is 44px tall), and the board never scrolls sideways. The "Move to…" menu replaces dragging between columns.
+
+<Props for="Kanban" rows={[
+  { name: "columns", type: "KanbanColumn<T>[]", default: "required", description: "`{ id, label, color?, items, total?, hasMore?, loading?, loadingMore? }` per column. `color` is any CSS colour or token." },
+  { name: "getId", type: "(card: T) => string", default: "required", description: "Stable id of a card." },
+  { name: "onmove", type: "(move: { card, from, to }) => void", default: "undefined", description: "A card moved by drag, keyboard or the menu. `from` and `to` are `{ column, index }`." },
+  { name: "onloadmore", type: "(columnId: string) => void", default: "undefined", description: "A column wants its next page." },
+  { name: "canMove", type: "boolean", default: "true", description: "`false` turns dragging off and hides the menu." },
+  { name: "drop", type: "'container' | 'position'", default: "'container'", description: "Whole-column drop (index 0, no line) or positional drop." },
+  { name: "compact", type: "boolean", default: "undefined", description: "Force the mobile tab layout. Default: automatic below 600px of the board's width." },
+  { name: "label", type: "string", default: "'Board'", description: "Accessible name of the board region." },
+  { name: "nearEnd", type: "number", default: "240", description: "Distance from the end of a list (px) at which `onloadmore` fires." },
+  { name: "card", type: "Snippet<[T, { dragging, active }]>", default: "required", description: "Card content; the wrapper, focus, drag state and menu are the board's." },
+  { name: "empty", type: "Snippet<[KanbanColumn<T>, { canMove }]>", default: "undefined", description: "Content of an empty column." },
+  { name: "header", type: "Snippet<[KanbanColumn<T>]>", default: "undefined", description: "Replaces the colour rail, title and count." },
+]} />

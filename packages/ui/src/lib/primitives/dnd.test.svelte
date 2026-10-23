@@ -8,11 +8,17 @@
     drops = [],
     zone = false,
     handle = false,
+    container = false,
+    scroller = false,
   }: {
     initial?: Record<string, string[]>;
     drops?: DndDropEvent[];
     zone?: boolean;
     handle?: boolean;
+    /** `drop: "container"` on every list. */
+    container?: boolean;
+    /** Wrap the lists in a horizontally scrolling `dnd.scroller` board. */
+    scroller?: boolean;
   } = $props();
 
   // svelte-ignore state_referenced_locally
@@ -26,12 +32,12 @@
 </script>
 
 <DndLayer {dnd} />
-<div class="board">
+<div class="board" class:scrolling={scroller} data-testid="board" {@attach dnd.scroller(() => ({ axis: 'x', disabled: !scroller }))}>
   {#each Object.keys(lists) as id (id)}
     <ul
       aria-label="List {id}"
       class="col"
-      {@attach dnd.sortable(() => ({ id, group: 'board', label: `List ${id}`, handle: handle ? '.grip' : undefined, getItems: () => lists[id], onDrop }))}
+      {@attach dnd.sortable(() => ({ id, group: 'board', label: `List ${id}`, handle: handle ? '.grip' : undefined, drop: container ? 'container' : 'position', getItems: () => lists[id], onDrop }))}
     >
       {#each lists[id] as item (item)}
         <li data-dnd-item={item} class="row">
@@ -48,9 +54,10 @@
 
 <style>
   .board { display: flex; gap: 24px; padding: 8px; }
-  .col { list-style: none; margin: 0; padding: 8px; width: 160px; min-height: 160px; border: 1px solid var(--ca-outline-subtle); }
+  .col { flex: none; list-style: none; margin: 0; padding: 8px; width: 160px; min-height: 160px; border: 1px solid var(--ca-outline-subtle); }
   .row { height: 40px; margin: 0 0 8px; border: 1px solid var(--ca-outline-subtle); }
   .grip { all: unset; display: block; width: 100%; height: 100%; cursor: grab; }
   .grip:focus-visible { outline: 2px solid var(--ca-focus-ring); }
+  .board.scrolling { width: 420px; overflow-x: auto; }
   .trash { width: 120px; height: 120px; border: 1px dashed var(--ca-outline-strong); }
 </style>

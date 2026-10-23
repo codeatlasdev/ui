@@ -198,6 +198,10 @@ State attributes on `dialog.ca-drawer`: `data-chromeless` (body padding 0, no he
 
 `.ca-kbd`
 
+## Kanban
+
+`.ca-kanban` `.ca-kanban--mobile` `.ca-kanban__body` `.ca-kanban__board` `.ca-kanban__card` `.ca-kanban__col` `.ca-kanban__count` `.ca-kanban__dot` `.ca-kanban__empty` `.ca-kanban__head` `.ca-kanban__list` `.ca-kanban__more` `.ca-kanban__move` `.ca-kanban__rail` `.ca-kanban__skeleton` `.ca-kanban__tab` `.ca-kanban__tab-label` `.ca-kanban__tabs` `.ca-kanban__title`
+
 ## KpiCard
 
 `.ca-kpi` `.ca-kpi__icon` `.ca-kpi__inner` `.ca-kpi__title` `.ca-kpi__trend` `.ca-kpi__trend--down` `.ca-kpi__trend--up` `.ca-kpi__unit` `.ca-kpi__value`

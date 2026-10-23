@@ -76,11 +76,14 @@ A drop zone is a target that is not a sortable list: a calendar day, a folder, a
 | `getLabel(id)` | `sortable` | Name of an item for announcements. Default: its text. |
 | `label` | all | Name of the list, zone or item for announcements. Default: the id. |
 | `axis` | `sortable` | `"y"` (default) or `"x"`. |
+| `drop` | `sortable` | `"position"` (default): the drop lands between items and a line shows where. `"container"`: the whole list is the target, highlighted, no line, `to.index` is always `0` (a list ordered by a server-side rule). |
 | `handle` | `sortable`, `draggable` | CSS selector of the element that starts a drag. Default: the whole item. |
 | `disabled` | all | Turns the container or item off. |
 | `accepts(id, data)` | `dropzone` | Return `false` to refuse an item. |
 | `data` | `draggable` | Anything you want back in `onDrop`. |
 | `onDrop(e)` | `sortable`, `dropzone` | `{ id, data, from, to }`. The only place to change state. |
+
+`dnd.scroller(() => ({ axis, edge, maxSpeed, disabled }))` marks a board as a scroll region: while a drag holds the pointer near its edge it scrolls the board, faster the closer the pointer is. For a ready-made board see [Kanban](/docs/display/kanban/).
 
 `useDnd` also takes `{ messages, threshold, holdMs, edge }` to override the screen reader strings and the timings.
 

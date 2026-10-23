@@ -1391,6 +1391,27 @@ Classes: `ca-image`
 
 Classes: `ca-install` `ca-install__body` `ca-install__close` `ca-install__glyph` `ca-install__icon` `ca-install__steps` `ca-install__text` `ca-install__title`
 
+## Kanban
+
+`import { Kanban } from "@codeatlasdev/ui"` (generic: `T`)
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `columns` | `KanbanColumn<T>[]` |  |  |
+| `getId` | `(card: T) => string` |  | Stable id of a card. |
+| `onmove?` | `(move: KanbanMove<T>) => void` |  | A card was moved (drag, keyboard or "Move to…"). Apply it to your data: `to.index` is always 0 with `drop="container"`. |
+| `onloadmore?` | `(columnId: string) => void` |  | A column wants its next page (its list scrolled near the end, or "Load more" was pressed). |
+| `canMove?` | `boolean` | `true` | Cards can be moved. `false` hides the menu and turns dragging off. Default true. |
+| `drop?` | `'container' \| 'position'` | `'container'` | `container` (default): the column is the drop target, no insertion line, `to.index` is 0: right for columns the server orders (newest first). `position`: the card lands between cards. |
+| `compact?` | `boolean` |  | Force the mobile layout (one column at a time, tab strip). Default: automatic below the `sm` breakpoint (600px) of the board's own width. |
+| `label?` | `string` |  | Accessible name of the board. |
+| `nearEnd?` | `number` | `240` | Distance from the end of a column list (px) at which `onloadmore` fires. Default 240. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `card` (`Snippet<[T, KanbanCardState]>`), `empty` (`Snippet<[KanbanColumn<T>, { canMove: boolean }]>`), `header` (`Snippet<[KanbanColumn<T>]>`)
+
+Classes: `ca-kanban` `ca-kanban--mobile` `ca-kanban__board` `ca-kanban__body` `ca-kanban__card` `ca-kanban__col` `ca-kanban__count` `ca-kanban__dot` `ca-kanban__empty` `ca-kanban__head` `ca-kanban__list` `ca-kanban__more` `ca-kanban__move` `ca-kanban__rail` `ca-kanban__skeleton` `ca-kanban__tab` `ca-kanban__tabs` `ca-kanban__title`
+
 ## Kbd
 
 `import { Kbd } from "@codeatlasdev/ui"`
@@ -3764,7 +3785,7 @@ Types:
 | `DesignStyle` | `interface DesignStyle { id: DesignStyleId; label: string; description: string; taxonomy: string[]; theme: Partial<ThemeDefinition>; }` |  |
 | `DesignStyleId` | `type DesignStyleId = \| "default" \| "liquid" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
 | `Direction` | `type Direction = (typeof DIRECTION)[number];` |  |
-| `Dnd` | `interface Dnd { readonly controller: DndController; readonly instructionsId: string; readonly instructions: string; readonly active: string \| null; sortable(getOptions: () => SortableOptions): (node: HTMLElement) => () => void; dropzone(getOptions: () => DropzoneOptions): (node: HTMLElement) => () => void; draggable<T>(getOptions: () => DraggableOptions<T>): (node: HTMLElement) => () => void; cancel(): void; }` |  |
+| `Dnd` | `interface Dnd { readonly controller: DndController; readonly instructionsId: string; readonly instructions: string; readonly active: string \| null; sortable(getOptions: () => SortableOptions): (node: HTMLElement) => () => void; dropzone(getOptions: () => DropzoneOptions): (node: HTMLElement) => () => void; scroller(getOptions?: () => ScrollerOptions): (node: HTMLElement) => () => void; draggable<T>(getOptions: () => DraggableOptions<T>): (node: HTMLElement) => () => void; cancel(): void; }` |  |
 | `DndDropEvent` | `interface DndDropEvent<T = unknown> { id: string; data: T \| undefined; from: DndPosition; to: DndPosition; }` |  |
 | `DndMessages` | `interface DndMessages { instructions: string; lifted: (label: string, position: number, total: number) => string; moved: (label: string, position: number, total: number, container?: string) => string; over: (label: string, zone: string) => string; dropped: (label: string, position: number, total: number, container?: string) => string; cancelled: (label: string) => string; }` | Screen reader strings. `i18n` fills them from the locale catalog; each is optional. |
 | `DndPosition` | `interface DndPosition { container: string; index: number; }` | Where an item sits: a container id and an index inside it (zones use index 0). |
@@ -3820,7 +3841,7 @@ Types:
 | `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; background?: string; sunken?: string; surface?: string; overlay?: string; text?: string; textSecondary?: string; textHint?: string; textDisabled?: string; borderSubtle?: string; border?: string; borderStrong?: string; success?: string; warning?: string; info?: string; error?: string; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. |
 | `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
 | `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
-| `SortableOptions` | `interface SortableOptions { id: string; group?: string; getItems: () => readonly string[]; getLabel?: (id: string) => string; label?: string; axis?: "y" \| "x"; handle?: string; disabled?: boolean; onDrop: (e: DndDropEvent) => void; }` |  |
+| `SortableOptions` | `interface SortableOptions { id: string; group?: string; getItems: () => readonly string[]; getLabel?: (id: string) => string; label?: string; axis?: "y" \| "x"; drop?: "position" \| "container"; handle?: string; disabled?: boolean; onDrop: (e: DndDropEvent) => void; }` |  |
 | `Space` | `type Space = (typeof SPACE)[number] \| `${(typeof SPACE)[number]}`;` |  |
 | `StageInsets` | `interface StageInsets { top: number; right: number; bottom: number; left: number; }` |  |
 | `SurfaceColors` | `interface SurfaceColors { sunken: string; base: string; raised: string; overlay: string; }` |  |

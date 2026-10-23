@@ -1,14 +1,15 @@
-Use @codeatlasdev/ui demo #492 "Description and action" (feedback/toast).
-What it shows: Three buttons that fire a toast with a description, with one inline action, and with both. When to use: A toast that needs a secondary line of detail or a single shortcut such as Undo, Open or Mark as qualified.
+Use @codeatlasdev/ui demo #492 "Leads pipeline" (display/kanban).
+What it shows: A three-stage leads pipeline board: status-coloured columns that scroll on their own, cards that move between columns by drag, keyboard or a Move to menu, and a New column that loads more pages. When to use: CRM pipelines, ticket boards and any stage board whose columns are ordered by the server and keep loading as you scroll.
 Spec:
-- `<Toaster />` mounted once, `toast` imported from `@codeatlasdev/ui`
-- Description: `toast.success('Task completed', { description: 'Next step scheduled for tomorrow 09:00' })`
-- Action: `toast.warning('Sequence paused for Acme', {` with `action: { label: 'Mark as qualified'`, whose `onClick` runs and dismisses the toast; an actionable toast lasts 8 seconds
-- Both: `description` and `action` in the same options object
-- All triggers are `<Button variant="outlined"`
+- `<Kanban {columns} getId={(l) => l.id} {onmove} {onloadmore} label="Leads pipeline">` with `{#snippet card(lead)}` for the card content
+- Each column is `{ id: 'new', label: 'New', color: 'var(--ca-info-main)', total: 24, hasMore: true, items`; the New column has 24 loaded-on-demand leads
+- `onmove` receives `{ card, from, to }`; the default whole-column drop makes the target index 0, so the handler prepends the card with `dst.items = [card, ...dst.items]`
+- `onloadmore` sets `col.loadingMore` to show skeleton cards, then appends the next page
+- `{#snippet empty(column, { canMove })}` fills the empty Won column
+Names: Kanban board | Pipeline board | Quadro de funil | Tablero de embudo
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
-Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
-Report: #492 Description and action → file, what changed, https://ui.codeatlas.com.br/docs/feedback/toast#description-and-action; what you could not check (light/dark, 375px, keyboard, reduced motion).
-Reference: https://ui.codeatlas.com.br/api/v1/en/e/492.txt   Components API: ca-ui-mcp get_component(Button)
+Report: #492 Leads pipeline → file, what changed, https://ui.codeatlas.com.br/docs/display/kanban#leads-pipeline; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/492.txt   Components API: ca-ui-mcp get_component(Kanban)

@@ -62,11 +62,27 @@ export interface SortableOptions {
 	/** Human name of the container for announcements. Default: `id`. */
 	label?: string;
 	axis?: "y" | "x";
+	/**
+	 * `position` (default): the drop lands at an index between cards and an insertion line shows it.
+	 * `container`: the whole list is the target (a column ordered by a server-side rule): no line, the
+	 * list is highlighted (`data-dnd-over`) and `to.index` is always 0.
+	 */
+	drop?: "position" | "container";
 	/** CSS selector of the handle inside an item. Without it the whole item drags. */
 	handle?: string;
 	disabled?: boolean;
 	/** Commit the move (same container: reorder; another container: move). */
 	onDrop: (e: DndDropEvent) => void;
+}
+
+export interface ScrollerOptions {
+	/** Scroll axis driven by the pointer's proximity to the edge. Default `"x"`. */
+	axis?: "x" | "y";
+	/** Width of the edge zone, px. Default: the engine `edge`. */
+	edge?: number;
+	/** Top speed at the very edge, px per frame. Default 24. */
+	maxSpeed?: number;
+	disabled?: boolean;
 }
 
 export interface DraggableOptions<T = unknown> {
@@ -114,6 +130,12 @@ export interface DndController {
 	sortable(node: HTMLElement, options: SortableOptions): DndHandle<SortableOptions>;
 	draggable<T>(node: HTMLElement, options: DraggableOptions<T>): DndHandle<DraggableOptions<T>>;
 	dropzone(node: HTMLElement, options: DropzoneOptions): DndHandle<DropzoneOptions>;
+	/**
+	 * Registers a scroll region (a board) that auto-scrolls while a drag holds the pointer near its
+	 * edge, at a speed proportional to the proximity. It takes over from the nearest-scroll-parent
+	 * heuristic for the pointer positions inside it.
+	 */
+	scroller(node: HTMLElement, options?: ScrollerOptions): DndHandle<ScrollerOptions>;
 	/** Id of the item being dragged, or null. */
 	readonly active: string | null;
 	/** Abort the drag in progress (as Escape). */
@@ -174,6 +196,11 @@ interface Session {
 
 const ATTR_ITEM = "data-dnd-item";
 
+interface Scroller {
+	node: HTMLElement;
+	options: ScrollerOptions;
+}
+
 function prefersReduced(): boolean {
 	return typeof matchMedia === "function" && matchMedia("(prefers-reduced-motion: reduce)").matches;
 }
@@ -202,6 +229,7 @@ export function createDnd(options: DndOptions = {}): DndController {
 
 	const containers = new Set<Container>();
 	const standalones = new Set<Standalone>();
+	const scrollers = new Set<Scroller>();
 	let session: Session | null = null;
 	let cleanups: Array<() => void> = [];
 
@@ -269,6 +297,9 @@ export function createDnd(options: DndOptions = {}): DndController {
 		return index;
 	}
 
+	/** A zone, or a list that takes the drop as a whole (`drop: "container"`): no positional index. */
+	const isWhole = (c: Container): boolean => c.kind === "zone" || c.sort?.drop === "container";
+
 	function containerAt(s: Session, x: number, y: number): Container | null {
 		let best: Container | null = null;
 		let bestArea = Number.POSITIVE_INFINITY;
@@ -303,7 +334,7 @@ export function createDnd(options: DndOptions = {}): DndController {
 			return;
 		}
 		const c = t.container;
-		if (c.kind === "zone") {
+		if (c.kind === "zone" || c.sort?.drop === "container") {
 			ind.hidden = true;
 			return;
 		}
@@ -493,10 +524,19 @@ export function createDnd(options: DndOptions = {}): DndController {
 		}
 		const to: DndPosition = {
 			container: t.container.id,
-			index: t.container.kind === "zone" ? 0 : t.index,
+			index: isWhole(t.container) ? 0 : t.index,
 		};
 		const sameSpot =
-			to.container === s.from.container && to.index === s.from.index && t.container.kind === "sort";
+			to.container === s.from.container &&
+			to.index === s.from.index &&
+			t.container.kind === "sort" &&
+			t.container.sort?.drop !== "container";
+		// A container drop back into the source column changes nothing.
+		if (t.container === s.source && t.container.sort?.drop === "container") {
+			announce(resolveMessages().cancelled(s.label));
+			restoreFocus(s);
+			return;
+		}
 		const total = (s.itemsOf.get(t.container)?.length ?? 0) + 1;
 		if (sameSpot) {
 			announce(resolveMessages().dropped(s.label, to.index + 1, total), "assertive");
@@ -526,6 +566,36 @@ export function createDnd(options: DndOptions = {}): DndController {
 		const tick = () => {
 			if (session !== s) return;
 			let moved = false;
+			for (const sc of scrollers) {
+				if (sc.options.disabled) continue;
+				const r = sc.node.getBoundingClientRect();
+				// Inside the board's box only (the vertical position is free: the pointer may be over a column).
+				if (s.lastY < r.top || s.lastY > r.bottom || s.lastX < r.left || s.lastX > r.right)
+					continue;
+				const zone = sc.options.edge ?? edge;
+				const vertical = sc.options.axis === "y";
+				const p = vertical ? s.lastY : s.lastX;
+				const lo = vertical ? r.top : r.left;
+				const hi = vertical ? r.bottom : r.right;
+				const top = sc.options.maxSpeed ?? 24;
+				// Proximity 0 at the zone's inner edge, 1 at the very edge; speed grows with its square.
+				const near =
+					p < lo + zone ? (lo + zone - p) / zone : p > hi - zone ? -(p - (hi - zone)) / zone : 0;
+				if (!near) continue;
+				const k = Math.min(1, Math.abs(near));
+				const step = Math.sign(near) * -1 * Math.max(1, top * k * k);
+				const before = vertical ? sc.node.scrollTop : sc.node.scrollLeft;
+				if (vertical) sc.node.scrollTop += step;
+				else sc.node.scrollLeft += step;
+				if ((vertical ? sc.node.scrollTop : sc.node.scrollLeft) !== before) moved = true;
+				// A scroller owns its box: the nearest-scroll-parent heuristic is skipped there.
+				if (moved) {
+					measure(s);
+					retarget(s, s.lastX, s.lastY);
+				}
+				s.scrollRaf = requestAnimationFrame(tick);
+				return;
+			}
 			const pts = [document.elementFromPoint(s.lastX, s.lastY)];
 			for (const start of pts) {
 				for (let el = start as HTMLElement | null; el; el = el.parentElement) {
@@ -562,7 +632,7 @@ export function createDnd(options: DndOptions = {}): DndController {
 			setTarget(s, null);
 			return;
 		}
-		setTarget(s, { container: c, index: c.kind === "zone" ? 0 : indexIn(c, s, x, y) });
+		setTarget(s, { container: c, index: isWhole(c) ? 0 : indexIn(c, s, x, y) });
 	}
 
 	function startPointerDrag(s: Session, x: number, y: number) {
@@ -701,6 +771,13 @@ export function createDnd(options: DndOptions = {}): DndController {
 			}
 			let nextTarget: Session["target"] | undefined;
 			const list = s.slots.get(c) ?? [];
+			const whole = isWhole(c);
+			if (whole && c.kind === "sort" && [next, prev, "Home", "End"].includes(e.key)) {
+				// A container drop has no position: the arrows inside the column do nothing.
+				e.preventDefault();
+				e.stopPropagation();
+				return;
+			}
 			if (e.key === next && c.kind === "sort") {
 				nextTarget = { container: c, index: Math.min(list.length, (t?.index ?? 0) + 1) };
 			} else if (e.key === prev && c.kind === "sort") {
@@ -710,16 +787,16 @@ export function createDnd(options: DndOptions = {}): DndController {
 				nextTarget = { container: c, index: list.length };
 			else if (cross.includes(e.key) || (c.kind === "zone" && (e.key === next || e.key === prev))) {
 				const forward = e.key === "ArrowRight" || e.key === "ArrowDown";
-				const order = Array.from(s.slots.keys()).sort((a, b) => {
-					const ra = a.node.getBoundingClientRect();
-					const rb = b.node.getBoundingClientRect();
-					return ra.top - rb.top || ra.left - rb.left;
-				});
+				// Document order: columns of a board follow the DOM, also when they wrap or reflow.
+				const order = Array.from(s.slots.keys()).sort((a, b) =>
+					a.node.compareDocumentPosition(b.node) & Node.DOCUMENT_POSITION_FOLLOWING ? -1 : 1
+				);
 				const i = order.indexOf(c);
 				const to = order[i + (forward ? 1 : -1)];
 				if (to) {
+					// Same index in the neighbour (clamped); an empty column takes index 0.
 					const keep = Math.min(t?.index ?? 0, s.slots.get(to)?.length ?? 0);
-					nextTarget = { container: to, index: to.kind === "zone" ? 0 : keep };
+					nextTarget = { container: to, index: isWhole(to) ? 0 : keep };
 				}
 			} else return;
 			e.preventDefault();
@@ -727,7 +804,7 @@ export function createDnd(options: DndOptions = {}): DndController {
 			if (!nextTarget) return;
 			setTarget(s, nextTarget);
 			const slot =
-				nextTarget.container.kind === "sort"
+				nextTarget.container.kind === "sort" && !isWhole(nextTarget.container)
 					? ((s.slots.get(nextTarget.container) ?? [])[nextTarget.index] ??
 						(s.slots.get(nextTarget.container) ?? []).at(-1))
 					: null;
@@ -943,10 +1020,26 @@ export function createDnd(options: DndOptions = {}): DndController {
 		);
 	}
 
+	function scroller(node: HTMLElement, o: ScrollerOptions = {}): DndHandle<ScrollerOptions> {
+		const entry: Scroller = { node, options: o };
+		scrollers.add(entry);
+		return Object.assign(
+			() => {
+				scrollers.delete(entry);
+			},
+			{
+				update(next: ScrollerOptions) {
+					entry.options = next;
+				},
+			}
+		);
+	}
+
 	return {
 		sortable,
 		draggable,
 		dropzone,
+		scroller,
 		get active() {
 			return session?.id ?? null;
 		},

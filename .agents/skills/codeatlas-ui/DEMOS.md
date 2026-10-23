@@ -318,17 +318,4 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 470 | Close on pick | navigation/popover | Popover, Button, Calendar |
 | 480 | Panel width | layout/app-shell | AppShellLayout, PageShell, Card |
 | 481 | Color, count, actions and reorder | layout/app-shell | AppShellLayout, DropdownMenuItem, NavItemMenu, NavReorder, PageShell, Card |
-| 482 | Stacked controls | surfaces/card | Card, Checkbox |
-| 490 | Dedupe and replace by id | feedback/toast | Button, Toaster |
-| 491 | Dense, pinned and grouped | display/table | SimpleTable, TableRow, TableGroupRow, TableSortHeader, Checkbox |
-| 492 | Description and action | feedback/toast | Button, Toaster |
-| 530 | Labels, search slot, badges and More | layout/app-shell | AppShellLayout, Button, PageShell, Card |
-| 531 | Stage | layout/app-shell | AppShellLayout, Button, Card, PageShell |
-| 600 | Reading width with an aside | layout/page-shell | PageShell, Card, TextField, Stack |
-| 601 | Short panel | layout/app-shell | AppShellLayout, PageShell, Card |
-| 610 | Map, split and page | layout/page-frame | PageFrame, Button, TextField, SegmentedControl |
-| 640 | Neutral tone | inputs/button | Button, IconButton |
-| 641 | Sizes | feedback/progress | Progress |
-| 642 | Stats in a card | layout/kpi-card | Card, Stat |
-| 700 | Chromeless, full bleed on phones | feedback/drawer | Drawer, Button |
-| 800 | Themed map | map/stage | MapControls, MapStage |
+| 492 | Leads pipeline | display/kanban | Kanban |

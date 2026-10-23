@@ -34,6 +34,7 @@ import { externalLink } from "./groups/externalLink.js";
 import { fileUpload } from "./groups/fileUpload.js";
 import { forms } from "./groups/forms.js";
 import { installPrompt } from "./groups/installPrompt.js";
+import { kanban } from "./groups/kanban.js";
 import { kit } from "./groups/kit.js";
 import { kpiCard } from "./groups/kpiCard.js";
 import { lightbox } from "./groups/lightbox.js";
@@ -81,6 +82,7 @@ export const groups = {
 	externalLink,
 	exportMenu,
 	liveList,
+	kanban,
 	dataTable,
 	dialog,
 	docs,

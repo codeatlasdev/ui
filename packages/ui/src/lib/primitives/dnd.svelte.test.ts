@@ -279,3 +279,85 @@ describe("dnd a11y and motion", () => {
 		expect(document.getElementById(id)?.textContent).toContain("Press Space to lift");
 	});
 });
+
+describe("dnd drop: container", () => {
+	it("draws no insertion line, highlights the list and always drops at index 0", async () => {
+		const drops: DndDropEvent[] = [];
+		const screen = await render(Harness, { props: { drops, container: true } });
+		const c = screen.container;
+		const [x, y] = center(grip(c, "a1"));
+		const [bx, by] = center(row(c, "b2"));
+		pointer("pointerdown", x, y, "mouse", grip(c, "a1"));
+		pointer("pointermove", x, y + 10);
+		pointer("pointermove", bx, by + 12); // lower half of the last card: "position" would pick index 2
+		await frame();
+		const ind = document.querySelector(".ca-dnd-indicator") as HTMLElement | null;
+		expect(!ind || ind.hidden).toBe(true);
+		expect(c.querySelector("[data-dnd-container=b]")?.hasAttribute("data-dnd-over")).toBe(true);
+		pointer("pointerup", bx, by + 12);
+		await frame();
+		expect(drops).toHaveLength(1);
+		expect(drops[0].to).toEqual({ container: "b", index: 0 });
+		expect(order(c)).toBe("a:a2,a3 | b:a1,b1,b2");
+	});
+
+	it("keyboard Up/Down inside the list stays on index 0 and Left/Right still changes list", async () => {
+		const drops: DndDropEvent[] = [];
+		const screen = await render(Harness, { props: { drops, container: true } });
+		const c = screen.container;
+		grip(c, "a2").focus();
+		await key(grip(c, "a2"), " ");
+		await key(grip(c, "a2"), "ArrowDown");
+		await key(grip(c, "a2"), "ArrowRight");
+		await key(grip(c, "a2"), "Enter");
+		await frame();
+		expect(drops[0].to).toEqual({ container: "b", index: 0 });
+	});
+});
+
+describe("dnd scroller (board edge auto-scroll)", () => {
+	it("scrolls the board sideways, faster the closer the pointer is to the edge", async () => {
+		const screen = await render(Harness, {
+			props: { scroller: true, initial: { a: ["a1", "a2"], b: ["b1"], c: ["c1"], d: ["d1"] } },
+		});
+		const c = screen.container;
+		const board = c.querySelector("[data-testid=board]") as HTMLElement;
+		expect(board.scrollWidth).toBeGreaterThan(board.clientWidth);
+		const br = board.getBoundingClientRect();
+		const [x, y] = center(grip(c, "a1"));
+		pointer("pointerdown", x, y, "mouse", grip(c, "a1"));
+		pointer("pointermove", x, y + 6);
+		const speedAt = async (px: number) => {
+			board.scrollLeft = 0;
+			pointer("pointermove", px, br.top + 20);
+			const t0 = performance.now();
+			await waitFor(() => board.scrollLeft > 20 || performance.now() - t0 > 1500);
+			return board.scrollLeft / Math.max(1, performance.now() - t0);
+		};
+		const slow = await speedAt(br.right - 40);
+		const fast = await speedAt(br.right - 4);
+		expect(slow).toBeGreaterThan(0);
+		expect(fast).toBeGreaterThan(slow);
+		pointer("pointerup", br.right - 4, br.top + 20);
+	});
+});
+
+describe("dnd keyboard across columns", () => {
+	it("Left/Right keep the index and an empty column receives the card", async () => {
+		const drops: DndDropEvent[] = [];
+		const screen = await render(Harness, {
+			props: { drops, initial: { a: ["a1", "a2", "a3"], b: [], c: ["c1"] } },
+		});
+		const c = screen.container;
+		grip(c, "a2").focus();
+		await key(grip(c, "a2"), " ");
+		await key(grip(c, "a2"), "ArrowRight");
+		await key(grip(c, "a2"), "ArrowRight");
+		expect(live()).toContain("List c");
+		await key(grip(c, "a2"), "ArrowLeft");
+		await key(grip(c, "a2"), "Enter");
+		await frame();
+		expect(drops[0].to).toEqual({ container: "b", index: 0 });
+		expect(order(c)).toBe("a:a1,a3 | b:a2 | c:c1");
+	});
+});

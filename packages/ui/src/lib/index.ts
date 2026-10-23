@@ -143,6 +143,12 @@ export { default as GlassSurface } from "./components/GlassSurface/GlassSurface.
 export { default as Grid } from "./components/Grid/Grid.svelte";
 export { default as Image } from "./components/Image/Image.svelte";
 export { default as InstallPrompt } from "./components/InstallPrompt/InstallPrompt.svelte";
+export type {
+	KanbanCardState,
+	KanbanColumn,
+	KanbanMove,
+} from "./components/Kanban/Kanban.svelte";
+export { default as Kanban } from "./components/Kanban/Kanban.svelte";
 export { default as Kbd } from "./components/Kbd/Kbd.svelte";
 export { default as KpiCard } from "./components/KpiCard/KpiCard.svelte";
 export { default as KpiGrid } from "./components/KpiGrid/KpiGrid.svelte";

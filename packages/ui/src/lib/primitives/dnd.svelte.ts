@@ -22,6 +22,7 @@ import {
 	type DndMessages,
 	type DraggableOptions,
 	type DropzoneOptions,
+	type ScrollerOptions,
 	type SortableOptions,
 } from "./dnd.js";
 import { dndMessages } from "./dnd-messages.js";
@@ -47,6 +48,8 @@ export interface Dnd {
 	readonly active: string | null;
 	sortable(getOptions: () => SortableOptions): (node: HTMLElement) => () => void;
 	dropzone(getOptions: () => DropzoneOptions): (node: HTMLElement) => () => void;
+	/** A board that auto-scrolls while a drag holds the pointer near its edge (speed grows with proximity). */
+	scroller(getOptions?: () => ScrollerOptions): (node: HTMLElement) => () => void;
 	draggable<T>(getOptions: () => DraggableOptions<T>): (node: HTMLElement) => () => void;
 	cancel(): void;
 }
@@ -93,6 +96,7 @@ export function useDnd(options: UseDndOptions = {}): Dnd {
 		},
 		sortable: (g) => bind(controller.sortable, g),
 		dropzone: (g) => bind(controller.dropzone, g),
+		scroller: (g = () => ({})) => bind(controller.scroller, g),
 		draggable: (g) => bind(controller.draggable, g),
 		cancel: () => controller.cancel(),
 	};

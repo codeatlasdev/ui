@@ -10,6 +10,7 @@ export {
 	type DndPosition,
 	type DraggableOptions,
 	type DropzoneOptions,
+	type ScrollerOptions,
 	type SortableOptions,
 } from "./dnd.js";
 export { type Dnd, type UseDndOptions, useDnd } from "./dnd.svelte.js";
