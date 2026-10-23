@@ -270,10 +270,9 @@
 		},
 		{
 			"shadcn": "Navigation Menu",
-			"to": ["DropdownMenu"],
+			"to": ["NavigationMenu", "NavigationMenuItem", "NavigationMenuLink"],
 			"radix": "@radix-ui/react-navigation-menu",
-			"gap": 432,
-			"workaround": "`DropdownMenu` or `Popover` per entry in app markup."
+			"notes": "Disclosure navigation (not `role=menu`): `NavigationMenuItem label` holds the panel links; plain entries are `NavigationMenuLink`."
 		},
 		{
 			"shadcn": "Pagination",

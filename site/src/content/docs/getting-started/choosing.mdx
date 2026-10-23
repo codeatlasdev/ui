@@ -54,6 +54,7 @@ Every overlay below is a native `<dialog>` or a `popover` element in the browser
 | A second panel from the left or right edge (filters, details, settings) | [`Drawer`](/docs/feedback/drawer/) | `side`, `width`, `actions` footer. Left suits navigation. |
 | A mobile bottom panel with swipe to dismiss | [`Sheet`](/docs/feedback/sheet/) | Bottom sheet below 900px, centered dialog above. `footer` snippet. |
 | A small card anchored to a button (short content, a mini form) | [`Popover`](/docs/navigation/popover/) | `triggerChild` receives the trigger props; `children` receives `close`. |
+| The main navigation of a marketing header, with grouped panels of links | [`NavigationMenu`](/docs/navigation/navigation-menu/) | Disclosure buttons and links, not `role=menu`. Application commands are `Menubar`. |
 | An application menu bar (File, Edit, View) | [`Menubar`](/docs/navigation/menubar/) | `MenubarMenu label`; its content is the `DropdownMenu` items. Arrow keys move between and across menus. |
 | A list of actions on a button | [`DropdownMenu`](/docs/navigation/menu/) | Items, checkbox and radio items, submenus. Sub-components are named exports, not dotted. |
 | A menu on right-click, long-press or Shift+F10 over a region | [`ContextMenu`](/docs/navigation/context-menu/) | The `menu` snippet takes the `DropdownMenu` items. Never the only way to reach an action. |

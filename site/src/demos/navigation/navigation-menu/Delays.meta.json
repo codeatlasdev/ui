@@ -1,0 +1,11 @@
+{
+	"summary": "A two-item docs nav (Guides, Reference) that opens on hover at once and stays open 400 ms after the pointer leaves.",
+	"use": "Tuning how eager the hover behaviour is for dense navigation, and aligning each panel to its button's start or end.",
+	"spec": [
+		"`<NavigationMenu aria-label=\"Docs sections\" openDelay={0} closeDelay={400}>`",
+		"`<NavigationMenuItem label=\"Guides\" align=\"start\">` and `<NavigationMenuItem label=\"Reference\" align=\"end\">` align their panels to the button",
+		"Each panel holds two `NavigationMenuLink`s"
+	],
+	"tags": ["navigation-menu", "delay", "hover", "align", "docs", "disclosure"],
+	"shape": "wide"
+}

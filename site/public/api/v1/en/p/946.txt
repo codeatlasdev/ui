@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #946 "Marketing header" (navigation/navigation-menu).
+What it shows: A marketing header nav with Products and Resources disclosure buttons that open panels of links (Products links carry a description), followed by Pricing (the current page) and Contact links. When to use: The primary navigation of a marketing site: a few top-level links and a couple of grouped panels, reachable by hover, click and keyboard.
+Spec:
+- `<NavigationMenu aria-label="Main">` renders a navigation landmark with a list
+- `<NavigationMenuItem label="Products">` and `<NavigationMenuItem label="Resources">` are disclosure buttons whose children are `NavigationMenuLink`s
+- Products links pass `description` for a second line that is part of the link name
+- `<NavigationMenuLink href="#pricing" current>` marks the current page; Contact is a plain link
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #946 Marketing header → file, what changed, https://ui.codeatlas.com.br/docs/navigation/navigation-menu#marketing-header; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/946.txt   Components API: ca-ui-mcp get_component(NavigationMenu)

@@ -1,0 +1,12 @@
+Use @codeatlasdev/ui demo #947 "Delays and alignment" (navigation/navigation-menu).
+What it shows: A two-item docs nav (Guides, Reference) that opens on hover at once and stays open 400 ms after the pointer leaves. When to use: Tuning how eager the hover behaviour is for dense navigation, and aligning each panel to its button's start or end.
+Spec:
+- `<NavigationMenu aria-label="Docs sections" openDelay={0} closeDelay={400}>`
+- `<NavigationMenuItem label="Guides" align="start">` and `<NavigationMenuItem label="Reference" align="end">` align their panels to the button
+- Each panel holds two `NavigationMenuLink`s
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #947 Delays and alignment → file, what changed, https://ui.codeatlas.com.br/docs/navigation/navigation-menu#delays-and-alignment; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/947.txt   Components API: ca-ui-mcp get_component(NavigationMenu)
