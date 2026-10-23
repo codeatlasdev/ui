@@ -34,20 +34,18 @@
   }
 </script>
 
-<div class="kb-demo">
-  <Kanban {columns} getId={(l) => l.id} {onmove} {onloadmore} label="Leads pipeline">
-    {#snippet card(lead)}
-      <strong class="kb-demo__name">{lead.name}</strong>
-      <span class="kb-demo__company">{lead.company}</span>
-    {/snippet}
-    {#snippet empty(column, { canMove })}
-      {canMove ? `Drop a lead here to win it` : `Nothing in ${column.label}`}
-    {/snippet}
-  </Kanban>
-</div>
+<Kanban class="kb-demo" {columns} getId={(l) => l.id} {onmove} {onloadmore} label="Leads pipeline">
+  {#snippet card(lead)}
+    <strong class="kb-demo__name">{lead.name}</strong>
+    <span class="kb-demo__company">{lead.company}</span>
+  {/snippet}
+  {#snippet empty(column, { canMove })}
+    {canMove ? `Drop a lead here to win it` : `Nothing in ${column.label}`}
+  {/snippet}
+</Kanban>
 
 <style>
-  .kb-demo { display: flex; width: 100%; min-width: 0; max-width: 100%; height: 28rem; }
+  :global(.kb-demo) { height: 28rem; }
   .kb-demo__name { display: block; font-size: var(--ca-font-size-body2); color: var(--ca-text-primary); }
   .kb-demo__company { font-size: var(--ca-font-size-caption); color: var(--ca-text-secondary); }
 </style>

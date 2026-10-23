@@ -5,6 +5,7 @@ import { checkA11y } from "../../../../tests/a11y";
 import { VIEWPORTS } from "../../../../tests/viewports";
 import type { KanbanMove } from "./Kanban.svelte";
 import Harness from "./Kanban.test.svelte";
+import ParentHarness from "./KanbanParent.test.svelte";
 
 type Card = { id: string; title: string };
 const frame = () => new Promise((r) => requestAnimationFrame(() => r(null)));
@@ -277,5 +278,31 @@ describe("Kanban mobile (390px)", () => {
 		await page.viewport(...VIEWPORTS.desktop);
 		const screen = await render(Harness, { compact: true });
 		expect(screen.getByRole("tab").elements()).toHaveLength(5);
+	});
+});
+
+describe("Kanban inside flex and grid parents (390px)", () => {
+	for (const parent of ["flex", "wrap", "nested", "grid"] as const) {
+		it(`never widens the page, parent: ${parent}`, async () => {
+			await page.viewport(...VIEWPORTS.mobile);
+			await render(ParentHarness, { parent });
+			await frame();
+			const doc = document.documentElement;
+			expect(doc.scrollWidth).toBeLessThanOrEqual(doc.clientWidth);
+			const root = document.querySelector(".ca-kanban") as HTMLElement;
+			expect(root.getBoundingClientRect().right).toBeLessThanOrEqual(doc.clientWidth);
+			// A parent with a definite width is filled; an auto-width wrapper only has to stay inside the page.
+			if (parent !== "nested") expect(root.getBoundingClientRect().width).toBeGreaterThan(200);
+		});
+	}
+
+	it("the board scrolls inside itself, not the page, in a wrapping flex parent", async () => {
+		await page.viewport(800, 600);
+		await render(ParentHarness, { parent: "wrap" });
+		await frame();
+		const doc = document.documentElement;
+		expect(doc.scrollWidth).toBeLessThanOrEqual(doc.clientWidth);
+		const board = document.querySelector(".ca-kanban__board") as HTMLElement;
+		expect(board.scrollWidth).toBeGreaterThan(board.clientWidth);
 	});
 });

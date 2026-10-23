@@ -1,7 +1,7 @@
 Use @codeatlasdev/ui demo #760 "Leads pipeline" (display/kanban).
 What it shows: A three-stage leads pipeline board: status-coloured columns that scroll on their own, cards that move between columns by drag, keyboard or a Move to menu, and a New column that loads more pages. When to use: CRM pipelines, ticket boards and any stage board whose columns are ordered by the server and keep loading as you scroll.
 Spec:
-- `<Kanban {columns} getId={(l) => l.id} {onmove} {onloadmore} label="Leads pipeline">` with `{#snippet card(lead)}` for the card content
+- `<Kanban class="kb-demo" {columns} getId={(l) => l.id} {onmove} {onloadmore} label="Leads pipeline">` with `{#snippet card(lead)}` for the card content
 - Each column is `{ id: 'new', label: 'New', color: 'var(--ca-info-main)', total: 24, hasMore: true, items`; the New column has 24 loaded-on-demand leads
 - `onmove` receives `{ card, from, to }`; the default whole-column drop makes the target index 0, so the handler prepends the card with `dst.items = [card, ...dst.items]`
 - `onloadmore` sets `col.loadingMore` to show skeleton cards, then appends the next page

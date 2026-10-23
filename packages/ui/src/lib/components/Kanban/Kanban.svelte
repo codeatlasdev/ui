@@ -392,7 +392,12 @@
     min-width: 0;
     min-height: 0;
     width: 100%;
+    max-width: 100%;
     height: 100%;
+    /* The columns scroll inside the board: they must never feed their width into a flex/grid parent's
+       intrinsic size (an auto-width wrapper would otherwise widen the page). The board fills the width
+       its parent gives it. */
+    contain: inline-size;
   }
 
   /* ── Board: horizontal scroller with an edge fade only where content is hidden ── */
