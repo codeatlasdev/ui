@@ -119,11 +119,12 @@
 	},
 	"files": [
 		"dist",
+		"equivalents",
 		"!dist/**/*.test.*",
 		"!dist/**/*.spec.*"
 	],
 	"scripts": {
-		"build": "svelte-package -i src/lib && node ../../scripts/prune-dist.js dist && bun scripts/build-manifest.ts && bun scripts/build-bin.ts",
+		"build": "svelte-package -i src/lib && node ../../scripts/prune-dist.js dist && bun scripts/build-manifest.ts && bun scripts/build-equivalents.ts && bun scripts/build-bin.ts",
 		"check": "svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
 		"build:watch": "svelte-package -i src/lib --watch",
 		"test": "bun run test:unit && bun ../../scripts/test-run.ts vitest run",
@@ -140,7 +141,9 @@
 		"lint:tokens": "bun scripts/lint-tokens.ts",
 		"size": "bun scripts/size-limit.ts",
 		"size:update": "bun scripts/size-limit.ts --update",
-		"manifest": "bun scripts/build-manifest.ts"
+		"manifest": "bun scripts/build-manifest.ts",
+		"equivalents": "bun scripts/build-equivalents.ts",
+		"equivalents:check": "bun scripts/build-equivalents.ts --check"
 	},
 	"dependencies": {
 		"@floating-ui/dom": "1.8.0",

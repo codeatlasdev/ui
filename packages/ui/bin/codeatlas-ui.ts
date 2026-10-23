@@ -4,6 +4,7 @@
  *
  *   bunx @codeatlasdev/ui init [--write] [--dir <path>]
  *   bunx @codeatlasdev/ui migrate [--from <major> --to <major>] [--report json|md] [--write] [--strict] [paths...]
+ *   bunx @codeatlasdev/ui migrate-react [--write] [paths...]
  *   bunx @codeatlasdev/ui brand [--theme <file>] [--mark <svg>] [--out <dir>] ...
  *   bunx @codeatlasdev/ui workarounds [--strict] [paths...]
  *   bunx @codeatlasdev/ui pick [ids...] [--url <gallery>] [--timeout <seconds>]
@@ -17,6 +18,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { init } from "../src/cli/init.ts";
 import { migrate } from "../src/cli/migrate.ts";
+import { migrateReact } from "../src/cli/migrate-react.ts";
 import { parseIds, runPick } from "../src/cli/pick.ts";
 import { type PartsData, runWorkarounds } from "../src/cli/workarounds.ts";
 
@@ -49,6 +51,7 @@ const HELP = `codeatlas-ui <command>
 
   init     Wire @codeatlasdev/ui into a SvelteKit or Astro project
   migrate  Rewrite code for renamed APIs and report what is left, per major (--from 2 --to 4; see MIGRATION.md)
+  migrate-react  List the shadcn/Radix/Base UI/MUI imports of a React app with their replacement; fix React props in ported .svelte files
   brand    Render the brand icons and src/generated/brand.ts without a Vite run (type-check jobs)
   workarounds  List the ca-ui-workaround(#n) markers in src and which issues are closed; flag .ca-* selectors that target non-stable parts (read-only)
   pick     Open the gallery, pick numbered demos, print their ids (e.g. #012 #045) for your AI
@@ -96,6 +99,10 @@ if (cmd === "init") {
 			? 0
 			: 1
 	);
+} else if (cmd === "migrate-react") {
+	const targets = args.length ? args : ["src"];
+	const files = targets.flatMap((t) => collect(resolve(t), /\.(svelte|tsx|jsx)$/));
+	process.exit(migrateReact(files, { write, cwd: process.cwd() }) ? 0 : 1);
 } else if (cmd === "workarounds") {
 	// Built to dist/bin/codeatlas-ui.js; the stable-parts list sits one level up in dist/.
 	const partsFile = join(dirname(fileURLToPath(import.meta.url)), "..", "parts.json");
@@ -143,15 +150,15 @@ if (cmd === "init") {
 	process.exit(cmd === "--help" || cmd === "-h" || !cmd ? 0 : 1);
 }
 
-function collect(path: string): string[] {
+function collect(path: string, pattern = /\.(svelte|ts|js|astro|mdx|css)$/): string[] {
 	if (!existsSync(path)) return [];
 	if (statSync(path).isFile()) return [path];
 	return readdirSync(path, { withFileTypes: true }).flatMap((e) =>
 		e.name === "node_modules" || e.name.startsWith(".")
 			? []
 			: e.isDirectory()
-				? collect(join(path, e.name))
-				: /\.(svelte|ts|js|astro|mdx|css)$/.test(e.name)
+				? collect(join(path, e.name), pattern)
+				: pattern.test(e.name)
 					? [join(path, e.name)]
 					: []
 	);
