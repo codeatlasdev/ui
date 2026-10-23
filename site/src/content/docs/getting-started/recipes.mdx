@@ -16,9 +16,10 @@ Every example is a SvelteKit route file with its imports, its data shape and its
 | A create or edit form | [Form page](#form-page) | `AppForm`, `FormSection`, `TextField`, `ChipGroup`, `Switch`, `useForm`, `toast` |
 | Workspace or account settings | [Settings page](#settings-page) | `AppSettings`, `FormSection`, `SettingItem`, `Switch` |
 | Sign in, sign up, password reset | [Auth pages](#auth-pages) | `AuthLayout` (`panelSide`, `panelBleed`, `header`), `AuthCard`, `TextField` (`revealable`, `below`), `Button` |
-| An overview with numbers and a chart | [Dashboard](#dashboard) | `PageShell`, `KpiGrid`, `KpiCard`, `Stat`, `Progress`, `Card`, `Surface`, `LineChart` |
-| A map the pages float over | [Map page](#map-page) | `AppShellLayout` `stage`, `MapStage`, `MapControls`, `PageFrame`, `stageInsets` |
-| A public marketing page | [Landing page](#landing-page) | `SiteHeader`, `LocaleSwitcher`, `Heading`, `Highlight`, `StrikeThrough`, `ThemeIsland`, `Container`, `Section`, `Grid`, `Seo` |
+| One screen with no shell: a single dashboard, board or map tool | [Standalone page](#standalone-page) | `SkipLink`, `<main id="main" tabindex="-1">`, `PageShell` |
+| An overview with numbers and a chart | [Dashboard](#dashboard) | `PageShell`, `KpiGrid`, `KpiCard`, `Stat`, `Sparkline`, `Card`, `Grid`, `BarChart`, `PieChart`, `LineChart`, `SimpleTable` |
+| A map the pages float over | [Map page](#map-page) | `AppShellLayout` `stage`, `MapStage`, `MapControls`, `PageFrame`, `stageInsets`, `mapColors`, `rgbaCss` |
+| A public marketing page | [Landing page](#landing-page) | `SiteHeader`, `NavigationMenu`, `Drawer`, `LocaleSwitcher`, `I18nProvider`, `Heading`, `Highlight`, `ThemeIsland`, `Container`, `Section`, `Grid`, `Seo` |
 | A brand color, fonts and radius | [Theming](#theming) | `ThemeOptions`, `caThemePlugin`, `caThemeHandle`, `setRouteTheme`, `ThemeIsland` |
 
 ## App shell
@@ -839,40 +840,91 @@ See also: [AuthLayout](/docs/layout/auth-layout/), [TextField](/docs/inputs/text
 
 ## Dashboard
 
-Use it for an overview page: a row of key numbers, then charts and tables in cards.
+Use it for an overview page: a row of key numbers (one with a sparkline), then charts and a table in cards.
+
+```ts
+// src/lib/messages.ts (the keys the dashboard reads)
+export const m = {
+  title: "Dashboard",
+  description: "Overview of this half year",
+  export: "Export",
+  revenue: "Revenue",
+  users: "Active users",
+  churn: "Churn",
+  churnHint: "Down is good",
+  seatsUsed: "Seats used",
+  revenueByRegion: "Revenue by region",
+  planMix: "Plan mix",
+  plansTotal: "Accounts",
+  revenueAndExpenses: "Revenue and expenses",
+  seriesRevenue: "Revenue",
+  seriesExpenses: "Expenses",
+  topAccounts: "Top accounts",
+  topAccountsCaption: "Top accounts by revenue",
+  account: "Account",
+  plan: "Plan",
+  mrr: "MRR",
+} as const;
+```
 
 ```svelte
 <!-- src/routes/(app)/dashboard/+page.svelte -->
 <script lang="ts">
-  import { Button, Card, Flex, KpiCard, KpiGrid, PageShell, Progress, Stat, Surface } from "@codeatlasdev/ui";
-  import { LineChart } from "@codeatlasdev/ui/charts";
-  import { Activity, ArrowUpRight, DollarSign, Users } from "@lucide/svelte";
+  import { Button, Card, Grid, KpiCard, KpiGrid, PageShell, Progress, SimpleTable, Stat } from "@codeatlasdev/ui";
+  import { BarChart, LineChart, PieChart, Sparkline } from "@codeatlasdev/ui/charts";
+  import { ArrowUpRight, DollarSign, Users } from "@lucide/svelte";
+  import { m } from "#lib/messages.ts";
 
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
   const revenue = [42000, 51000, 58000, 63000, 72000, 80000];
   const expenses = [31000, 36000, 42000, 45000, 51000, 55000];
+  const churn = [2.4, 2.3, 2.1, 2.2, 1.9, 1.7];
+  const regions = ["North", "South", "East", "West"];
+  const plans = [
+    { name: "Free", value: 640 },
+    { name: "Pro", value: 280 },
+    { name: "Team", value: 96 },
+  ];
+  const accounts = [
+    { id: "a1", name: "Acme", plan: "Team", mrr: "$4,200" },
+    { id: "a2", name: "Globex", plan: "Pro", mrr: "$1,900" },
+    { id: "a3", name: "Initech", plan: "Pro", mrr: "$1,450" },
+  ];
   const formatMoney = (value: number) => `$${(value / 1000).toFixed(0)}k`;
 </script>
 
-<PageShell title="Dashboard" description="Overview of this half year" maxWidth="1200px">
+<PageShell title={m.title} description={m.description} maxWidth="1200px">
   {#snippet actions()}
     <Button variant="ghost" size="sm">
       {#snippet leading()}<ArrowUpRight size={14} />{/snippet}
-      Export
+      {m.export}
     </Button>
   {/snippet}
 
   <KpiGrid>
-    <KpiCard title="Revenue" value="$80k" trend={11.1} icon={DollarSign} />
-    <KpiCard title="Active users" value="24.8k" trend={12.1} icon={Users} />
-    <KpiCard title="Uptime" value="99.9" unit="%" trend={0.1} icon={Activity} />
+    <KpiCard title={m.revenue} value="$80k" trend={11.1} icon={DollarSign} />
+    <KpiCard title={m.users} value="24.8k" trend={12.1} icon={Users} />
+    <!-- A KPI with a sparkline: KpiCard has no chart slot, so compose Card + Stat + Sparkline. -->
+    <Card gap="md">
+      <Stat label={m.churn} value="1.7" unit="%" trend={-0.2} trendTone="positive-down" hint={m.churnHint} />
+      <Sparkline data={churn} trend="up" />
+    </Card>
   </KpiGrid>
 
-  <Card title="Revenue and expenses">
+  <Grid columns={{ base: 1, lg: 2 }} gap="4">
+    <Card title={m.revenueByRegion}>
+      <BarChart series={[{ name: m.seriesRevenue, data: [32, 21, 18, 9] }]} categories={regions} height="240px" />
+    </Card>
+    <Card title={m.planMix}>
+      <PieChart data={plans} donut centerLabel={{ value: "1,016", label: m.plansTotal }} height="240px" />
+    </Card>
+  </Grid>
+
+  <Card title={m.revenueAndExpenses}>
     <LineChart
       series={[
-        { name: "Revenue", data: revenue },
-        { name: "Expenses", data: expenses },
+        { name: m.seriesRevenue, data: revenue },
+        { name: m.seriesExpenses, data: expenses },
       ]}
       categories={months}
       valueFormatter={formatMoney}
@@ -881,44 +933,96 @@ Use it for an overview page: a row of key numbers, then charts and tables in car
     />
   </Card>
 
-  <Card title="Plan usage" gap="md">
-    <Flex gap="6" wrap>
-      <Stat label="Seats" value="18" unit="of 25" hint="7 free" />
-      <Stat label="Storage" value="62" unit="GB" trend={-4.2} />
-      <Stat label="Churn" value="1.7" unit="%" trend={-0.2} trendTone="positive-down" />
-    </Flex>
-    <Progress value={72} label="Seats used" size="sm" />
+  <Card title={m.seatsUsed} gap="md">
+    <Progress value={72} label={m.seatsUsed} size="sm" />
   </Card>
 
-  <Surface grain p="5">
-    <Stat size="lg" label="Net revenue" value="$25k" hint="After expenses, this half year" />
-  </Surface>
+  <Card title={m.topAccounts} padding="none">
+    <SimpleTable>
+      <caption class="ca-sr-only">{m.topAccountsCaption}</caption>
+      <thead>
+        <tr><th>{m.account}</th><th>{m.plan}</th><th>{m.mrr}</th></tr>
+      </thead>
+      <tbody>
+        {#each accounts as account (account.id)}
+          <tr><td class="primary">{account.name}</td><td>{account.plan}</td><td>{account.mrr}</td></tr>
+        {/each}
+      </tbody>
+    </SimpleTable>
+  </Card>
 </PageShell>
 ```
 
 Rules:
 
-- Charts come from `@codeatlasdev/ui/charts` and need the `echarts` peer (`bun add echarts`). Pass data only (`series`, `categories`): there are no ECharts options, colors or styles to set, and the chart follows the theme.
-- A number tile is `KpiCard` inside a `KpiGrid`, with `trend` as a percentage and `icon` as a `@lucide/svelte` component. The arrow follows the sign of `trend` and the colour by default says up is good; for a metric where down is good (churn, latency, cost) pass `trendTone="positive-down"` (`"neutral"` to not judge it) instead of dropping `trend`. Do not build tiles from `Card` and a heading. A number that sits inside a card, a panel or a row without its own surface is `Stat` (`label`, `value`, `unit`, `hint`, `trend`, `trendTone`, `size`, `align`, `skeleton`): it has no border or padding and takes its color from the container.
-- `PageShell` is the page container: `title`, `description`, the `actions` snippet and the spacing between blocks. Its `gap` is a number in px, unlike `Flex`, `Stack` and `Grid`, which take spacing steps.
-- Wrap each chart or table in `Card` with a `title`. For side-by-side cards use `Grid columns={{ base: 1, lg: 2 }} gap="4"`. A card that holds several blocks (a `Stat` row, a `Progress`, a `TextField`) takes `gap="md"` (`sm`, `md` or `lg`) so they stack with space between them; without it inline controls sit side by side.
-- A thin bar is `Progress size="sm"` (4px; `md` is 6px and `lg`, the default, 8px). For another height set `--ca-progress-height`. `Surface grain` adds the paper-grain overlay to a panel that is not a `Card`, and `grain="animated"` shifts it.
-- Inside the app shell this page needs no extra wrapper. Charts render on the client, so SSR shows the card and the chart fills in after hydration.
+- Charts come from `@codeatlasdev/ui/charts` and need the `echarts` peer (`bun add echarts`). Pass data only (`series`, `categories`, `data`): there are no ECharts options, colors or styles to set, and the chart follows the theme. `PieChart` takes `donut` and a `centerLabel` for a total in the ring.
+- A number tile is `KpiCard` inside a `KpiGrid`, with `trend` as a percentage and `icon` as a `@lucide/svelte` component. The arrow follows the sign of `trend` and the colour by default says up is good; for a metric where down is good (churn, latency, cost) pass `trendTone="positive-down"` (`"neutral"` to not judge it) instead of dropping `trend`. A number that sits inside a card, a panel or a row without its own surface is `Stat` (`label`, `value`, `unit`, `hint`, `trend`, `trendTone`, `size`, `align`, `skeleton`): it has no border or padding and takes its color from the container.
+- A tile with a sparkline is `Card gap="md"` holding a `Stat` and a `Sparkline` (`data`, `trend="up" | "down" | "neutral"`, `variant="line" | "bar"`), placed inside the same `KpiGrid`. `KpiCard` has no chart slot, so the composed tile has no icon. The sparkline color comes from `trend` (success, error or neutral text): do not pass a hex `color`. It is independent of the `Stat`'s `trendTone`: for churn going down, give the `Sparkline` `trend="up"` (green) yourself.
+- Side-by-side cards are `Grid columns={{ base: 1, lg: 2 }} gap="4"` with one `Card` per cell. Do not write `:global(.grid-auto-...)` to size a grid: `columns` is the responsive API, and a template such as `repeat(auto-fill, minmax(...))` is a class in your own `<style>`.
+- Each chart or table goes in a `Card` with a `title`. A table that should touch the card edges is `Card padding="none"` around a `SimpleTable`; give it a `<caption class="ca-sr-only">`. A card that holds several blocks (a `Stat`, a `Progress`, a `TextField`) takes `gap="md"` so they stack with space between them.
+- `PageShell` is the page container: `title`, `description`, the `actions` snippet and the spacing between blocks. Its `gap` is a number in px, unlike `Flex`, `Stack` and `Grid`, which take spacing steps. A thin bar is `Progress size="sm"`; `Surface grain` adds the paper-grain overlay to a panel that is not a `Card`.
+- Inside the app shell this page needs no extra wrapper. Without a shell, follow [Standalone page](#standalone-page). Charts render on the client, so SSR shows the card and the chart fills in after hydration.
 
-See also: [PageShell](/docs/layout/page-shell/), [KpiGrid](/docs/layout/kpi-grid/), [KpiCard](/docs/layout/kpi-card/), [Card](/docs/surfaces/card/), [Line chart](/docs/charts/line/), [Charts](/docs/charts/).
+See also: [PageShell](/docs/layout/page-shell/), [KpiGrid](/docs/layout/kpi-grid/), [KpiCard](/docs/layout/kpi-card/), [Card](/docs/surfaces/card/), [Charts](/docs/charts/), [Sparklines](/docs/charts/sparklines/), [Pie](/docs/charts/pie/).
 
 ## Map page
 
-Use it when a live map (or canvas, video, 3D) is the page and the forms, lists and details float over it. `AppShellLayout` mounts the stage once, so the camera and the deck.gl layers survive every navigation; `PageFrame` lays the page out over the stage and reports what it covers. Install the peer: `bun add maplibre-gl` (or `mapbox-gl` with `engine="mapbox"` and an `accessToken`), and `@deck.gl/core @deck.gl/mapbox` for data layers.
+Use it when a live map (or canvas, video, 3D) is the page and the forms, lists and details float over it. `AppShellLayout` mounts the stage once, so the camera and the deck.gl layers survive every navigation; `PageFrame` lays the page out over the stage and reports what it covers. Install the peers: `bun add maplibre-gl` (or `mapbox-gl` with `engine="mapbox"` and an `accessToken`), and for data layers `@deck.gl/core @deck.gl/mapbox @deck.gl/layers`, all `@deck.gl/*` on the same minor.
+
+The layout holds the stage and the page holds the panel, so they share one small state module: the results, the selected id and the map handle.
+
+```ts
+// src/lib/map-state.svelte.ts
+import type { MapInstance } from "@codeatlasdev/ui/map";
+
+export interface Place {
+  id: string;
+  name: string;
+  coordinates: [number, number];
+}
+
+class MapState {
+  places = $state<Place[]>([]);
+  selectedId = $state<string | null>(null);
+  map = $state.raw<MapInstance | null>(null);
+
+  select(place: Place) {
+    this.selectedId = place.id;
+    // MapStage's own helper is not public: use the engine's map from `onmapready`.
+    const options = { center: place.coordinates, zoom: 12 };
+    const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduced) this.map?.jumpTo(options);
+    else this.map?.flyTo(options);
+  }
+}
+
+export const mapState = new MapState();
+```
+
+```ts
+// src/lib/messages.ts (the keys the map page reads)
+export const m = {
+  stageLabel: "Territory map",
+  panelLabel: "Territory",
+  title: "Territory",
+  search: "Search places",
+  count: (n: number) => `${n} places`,
+  legend: "Pins: open leads",
+  save: "Save territory",
+} as const;
+```
 
 ```svelte
 <!-- src/routes/(app)/+layout.svelte: the stage is mounted once, here -->
 <script lang="ts">
   import { AppShellLayout, stageInsets, type NavModule } from "@codeatlasdev/ui";
-  import { MapControls, MapStage } from "@codeatlasdev/ui/map";
+  import { MapControls, MapStage, mapColors, rgbaCss } from "@codeatlasdev/ui/map";
+  import { ScatterplotLayer } from "@deck.gl/layers";
   import { Compass, Map as MapIcon } from "@lucide/svelte";
   import { goto } from "$app/navigation";
   import { page } from "$app/state";
+  import { mapState, type Place } from "#lib/map-state.svelte.ts";
+  import { m } from "#lib/messages.ts";
 
   let { children }: { children?: import("svelte").Snippet } = $props();
 
@@ -927,20 +1031,52 @@ Use it when a live map (or canvas, video, 3D) is the page and the forms, lists a
     { id: "routes", label: "Routes", icon: Compass, basePath: "/routes", items: [] },
   ];
 
-  // One style per color scheme: the map swaps it when the theme changes and keeps its camera.
-  const styles = {
-    light: "https://demotiles.maplibre.org/style.json",
-    dark: "https://demotiles.maplibre.org/style.json",
-  };
+  // An offline basemap per scheme: a background painted with the theme's own surface token, so it
+  // follows the preset and the scheme. Never write a hex here. For tiles, pass a style URL instead.
+  const background = (color: string) => ({
+    version: 8 as const,
+    sources: {},
+    layers: [{ id: "bg", type: "background" as const, paint: { "background-color": color } }],
+  });
+  const styles = $derived({
+    light: background(rgbaCss(mapColors().surface)),
+    dark: background(rgbaCss(mapColors().surface)),
+  });
+
+  // Markers are a deck.gl layer in theme colors; `mapColors()` is reactive, so this re-runs on a theme change.
+  const layers = $derived.by(() => {
+    const c = mapColors();
+    return [
+      new ScatterplotLayer<Place>({
+        id: "places",
+        data: mapState.places,
+        getPosition: (d) => d.coordinates,
+        getRadius: (d) => (d.id === mapState.selectedId ? 900 : 500),
+        getFillColor: (d) => (d.id === mapState.selectedId ? c.brand : c.brandMuted),
+        getLineColor: c.brand,
+        stroked: true,
+        lineWidthMinPixels: 2,
+        pickable: true,
+        onClick: ({ object }) => object && mapState.select(object),
+        updateTriggers: { getRadius: mapState.selectedId, getFillColor: mapState.selectedId },
+      }),
+    ];
+  });
 
   // A full-page route (a report, a settings page) covers the stage: pause it, do not unmount it.
   const stageVisible = $derived(!page.url.pathname.startsWith("/reports"));
 </script>
 
 {#snippet stage()}
-  <MapStage {styles} label="Territory map" fit={[[-74, -34], [-34, 5]]}>
+  <MapStage
+    {styles}
+    {layers}
+    label={m.stageLabel}
+    fit={[[-74, -34], [-34, 5]]}
+    onmapready={(map) => (mapState.map = map)}
+  >
     <MapControls locate />
-    <p class="legend" style="--inset-left: {stageInsets.current.left}px">Pins: open leads</p>
+    <p class="legend" style="--inset-left: {stageInsets.current.left}px">{m.legend}</p>
   </MapStage>
 {/snippet}
 
@@ -971,40 +1107,179 @@ Use it when a live map (or canvas, video, 3D) is the page and the forms, lists a
 ```svelte
 <!-- src/routes/(app)/field/+page.svelte: the page floats over the stage -->
 <script lang="ts">
-  import { Button, PageFrame, TextField } from "@codeatlasdev/ui";
+  import { Button, PageFrame, Stack, TextField } from "@codeatlasdev/ui";
+  import { mapState, type Place } from "#lib/map-state.svelte.ts";
+  import { m } from "#lib/messages.ts";
 
   let query = $state("");
+  const results = $derived(
+    mapState.places.filter((p: Place) => p.name.toLowerCase().includes(query.toLowerCase())),
+  );
 </script>
 
-<PageFrame mode="map" side="left" width="md" sheet label="Territory" headerBorder>
+<PageFrame mode="map" side="left" width="md" sheet label={m.panelLabel} headerBorder>
   {#snippet header()}
-    <h2>Territory</h2>
+    <h2>{m.title}</h2>
   {/snippet}
   {#snippet toolbar()}
-    <TextField label="Search leads" bind:value={query} />
+    <TextField label={m.search} bind:value={query} />
   {/snippet}
 
-  <p>Results for "{query}" go here. This body is the only part that scrolls.</p>
+  <p>{m.count(results.length)}</p>
+  <!-- A selectable list with no list component: one ghost Button per row, aria-pressed for the selection. -->
+  <Stack as="ul" gap="1">
+    {#each results as place (place.id)}
+      <li>
+        <Button
+          variant="ghost"
+          tone="neutral"
+          align="between"
+          fullWidth
+          aria-pressed={place.id === mapState.selectedId}
+          onclick={() => mapState.select(place)}
+        >
+          {place.name}
+        </Button>
+      </li>
+    {/each}
+  </Stack>
 
   {#snippet footer()}
-    <Button variant="filled">Save territory</Button>
+    <Button variant="filled">{m.save}</Button>
   {/snippet}
 </PageFrame>
 ```
 
 Rules:
 
-- Mount `MapStage` in the shell's `stage` snippet, not in a page: a page mount would recreate the map on every navigation.
-- `MapStage` pads `fit` by what the frame covers, so it needs no `padding` prop. Read `stageInsets.current` (or `--ca-stage-inset-*` on `html`) for anything you position by hand, and never copy the panel widths.
+- Mount `MapStage` in the shell's `stage` snippet, not in a page: a page mount would recreate the map on every navigation. The layout and the page are different components, so they talk through a module-level `$state` class (`map-state.svelte.ts`, with the `.svelte.ts` extension so runes compile) or a context set in the layout: filters, the selection and the map handle live there.
+- The only public handle on the camera is `onmapready(map)`, the engine's map (`flyTo`, `jumpTo`, `easeTo`). Keep it in the shared state and call it from the result list to recenter. `MapContext.move`, which `MapStage` uses internally to fall back to `jumpTo`, is not exported, so check `prefers-reduced-motion` yourself as above. `onmapready` runs once after the first style loads: the map is `null` before that.
+- A pin that selects a row is a deck.gl layer with `pickable: true` and `onClick`; set `updateTriggers` for any accessor that reads the selection, or the layer keeps the old colors. Layers come from `@deck.gl/layers`: install it with `@deck.gl/core` and `@deck.gl/mapbox`.
+- An offline basemap is a style object with one `background` layer. Take its color from `mapColors().surface` through `rgbaCss`, inside a `$derived`, so it follows the theme; a hex in a style object fails `codeatlas-ui lint`. For real tiles pass a style URL per scheme.
+- `MapStage` pads `fit` by what the frame covers, so it needs no `padding` prop. Read `stageInsets.current` (or `--ca-stage-inset-*` on `html`) for anything you position by hand, and never copy the panel widths. A legend you place with `stageInsets.left` sits under the bottom sheet on a phone, where the insets are at the bottom: hide it below 900px or offset it by `stageInsets.current.bottom` too.
 - `mode="page"` (or `stageVisible={false}`) for a route that covers the map; `mode="split"` for a work area beside a map strip.
-- With `sheet`, the panel is a non-modal bottom sheet on phones: the map above it stays interactive. Do not wrap it in `Sheet`.
+- With `sheet`, the panel is a non-modal bottom sheet on phones: the map above it stays interactive and the `toolbar` snippet is hidden at the `peek` detent (it shows the header only). Do not wrap it in `Sheet`. `bind:detent` takes `"peek" | "half" | "full"`.
 - Colors for deck.gl layers come from `mapColors()` or `useMapTheme()` (both reactive), never from `getComputedStyle`. Empty areas of the page pass pointer events to the stage; give your own floating panels `class="ca-stage-panel"`.
+- A one-screen map with no other destinations does not need the shell: see [Map page without a shell](#map-page-without-a-shell).
+
+### Map page without a shell
+
+`PageFrame` does not need `AppShellLayout`: it fills its parent and floats the panel inside it, so any `position: relative` box with a height works as the stage host. For a single map screen, put `MapStage` and `PageFrame` in that host inside your own `<main>`, and share state with a plain module as above. There is no rail, panel or bottom navigation, so no one-icon rail either.
+
+```svelte
+<!-- src/routes/+page.svelte -->
+<script lang="ts">
+  import { PageFrame, SkipLink, TextField } from "@codeatlasdev/ui";
+  import { MapControls, MapStage } from "@codeatlasdev/ui/map";
+  import { mapState } from "#lib/map-state.svelte.ts";
+  import { m } from "#lib/messages.ts";
+
+  let query = $state("");
+</script>
+
+<SkipLink />
+<main id="main" tabindex="-1" class="host">
+  <MapStage
+    styles={{ light: "https://demotiles.maplibre.org/style.json", dark: "https://demotiles.maplibre.org/style.json" }}
+    label={m.stageLabel}
+    fit={[[-74, -34], [-34, 5]]}
+    onmapready={(map) => (mapState.map = map)}
+  >
+    <MapControls locate />
+  </MapStage>
+  <div class="frame">
+    <PageFrame mode="map" side="left" width="md" sheet label={m.panelLabel}>
+      {#snippet header()}
+        <h1>{m.title}</h1>
+      {/snippet}
+      {#snippet toolbar()}
+        <TextField label={m.search} bind:value={query} />
+      {/snippet}
+    </PageFrame>
+  </div>
+</main>
+
+<style>
+  .host {
+    position: relative;
+    height: var(--ca-vh);
+  }
+  .frame {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+</style>
+```
+
+- The host takes `height: var(--ca-vh)` (never `100vh`). `PageFrame` is already `pointer-events: none` outside its panel; the wrapper keeps that so the map stays draggable around it.
+- Here the panel carries the page `<h1>` (there is no `PageShell`), and `<main>` is yours.
 
 See also: [PageFrame](/docs/layout/page-frame/), [Map](/docs/map/), [AppShell](/docs/layout/app-shell/).
 
 ## Landing page
 
-Use it for a public page: a sticky header, a hero, a grid of feature cards and the metadata crawlers read. It lives outside the app shell.
+Use it for a public page: a sticky header with navigation, a hero, a grid of feature cards and the metadata crawlers read. It lives outside the app shell.
+
+```ts
+// src/lib/messages.ts (the keys the landing page reads, one table per language)
+export const messages = {
+  en: {
+    brand: "Acme",
+    metaDescription: "The boring parts of your product, shipped in a day.",
+    navLabel: "Main",
+    navProduct: "Product",
+    navPricing: "Pricing",
+    navDocs: "Docs",
+    menu: "Menu",
+    menuTitle: "Navigation",
+    signIn: "Sign in",
+    getStarted: "Get started",
+    introduction: "Introduction",
+    headline: "Ship the boring parts in a",
+    headlineWord: "day",
+    leadBefore: "Stop writing",
+    leadStruck: "auth, billing and settings",
+    leadAfter: "from scratch: Acme gives your team all three.",
+    startFree: "Start free",
+    readDocs: "Read the docs",
+    featuresTitle: "Everything in the box",
+    features: [
+      { title: "Fast by default", body: "Server-rendered pages that paint on the first frame." },
+      { title: "Themed in one file", body: "One brand color becomes light and dark tokens." },
+      { title: "Accessible", body: "Keyboard, focus and contrast handled in the components." },
+    ],
+  },
+  "pt-BR": {
+    brand: "Acme",
+    metaDescription: "As partes chatas do seu produto, prontas em um dia.",
+    navLabel: "Principal",
+    navProduct: "Produto",
+    navPricing: "Preços",
+    navDocs: "Documentação",
+    menu: "Menu",
+    menuTitle: "Navegação",
+    signIn: "Entrar",
+    getStarted: "Começar",
+    introduction: "Introdução",
+    headline: "Entregue as partes chatas em um",
+    headlineWord: "dia",
+    leadBefore: "Pare de escrever",
+    leadStruck: "login, cobrança e configurações",
+    leadAfter: "do zero: a Acme entrega os três ao seu time.",
+    startFree: "Começar grátis",
+    readDocs: "Ler a documentação",
+    featuresTitle: "Tudo na caixa",
+    features: [
+      { title: "Rápido por padrão", body: "Páginas renderizadas no servidor que aparecem no primeiro quadro." },
+      { title: "Tema em um arquivo", body: "Uma cor de marca vira tokens claros e escuros." },
+      { title: "Acessível", body: "Teclado, foco e contraste resolvidos nos componentes." },
+    ],
+  },
+} as const;
+
+export type Locale = keyof typeof messages;
+```
 
 ```svelte
 <!-- src/routes/(marketing)/+page.svelte -->
@@ -1013,11 +1288,16 @@ Use it for a public page: a sticky header, a hero, a grid of feature cards and t
     Button,
     Card,
     Container,
+    Drawer,
     Flex,
     Grid,
     Heading,
     Highlight,
+    I18nProvider,
+    IconButton,
     LocaleSwitcher,
+    NavigationMenu,
+    NavigationMenuLink,
     Section,
     SiteHeader,
     Stack,
@@ -1025,8 +1305,9 @@ Use it for a public page: a sticky header, a hero, a grid of feature cards and t
     ThemeIsland,
   } from "@codeatlasdev/ui";
   import { Seo } from "@codeatlasdev/ui/seo";
-  import { goto } from "$app/navigation";
+  import { Menu } from "@lucide/svelte";
   import { page } from "$app/state";
+  import { messages, type Locale } from "#lib/messages.ts";
 
   const origin = "https://acme.com";
 
@@ -1034,75 +1315,144 @@ Use it for a public page: a sticky header, a hero, a grid of feature cards and t
     { value: "en", label: "English" },
     { value: "pt-BR", label: "Português", short: "PT" },
   ];
-  let locale = $state("en");
 
-  const features = [
-    { title: "Fast by default", body: "Server-rendered pages that paint on the first frame." },
-    { title: "Themed in one file", body: "One brand color becomes light and dark tokens." },
-    { title: "Accessible", body: "Keyboard, focus and contrast handled in the components." },
-  ];
+  // In-page switching: `locale` is state, `m` follows it, and I18nProvider re-renders the
+  // package's own strings (aria-labels, the switcher) in the same language.
+  let locale = $state<Locale>("en");
+  const m = $derived(messages[locale]);
+
+  let menuOpen = $state(false);
 </script>
 
-<Seo
-  title="Acme"
-  description="The boring parts of your product, shipped in a day."
-  canonical={origin + page.url.pathname}
-/>
+<Seo title={m.brand} description={m.metaDescription} canonical={origin + page.url.pathname} />
 
 <!-- A light page inside a dark app. `document` also paints <html>, so overscroll and the browser bar match. -->
 <ThemeIsland scheme="light" document>
-  <SiteHeader>
-    {#snippet trailing()}
-      <LocaleSwitcher options={locales} bind:value={locale} onselect={(next) => goto(`/${next}`)} />
-      <Button variant="ghost" size="sm" href="/sign-in">Sign in</Button>
-      <Button variant="filled" size="sm" href="/sign-up">Get started</Button>
-    {/snippet}
-  </SiteHeader>
+  <I18nProvider {locale}>
+    <SiteHeader>
+      {#snippet trailing()}
+        <!-- Desktop navigation. It must be a direct child of `trailing`: below 600px the header hides it. -->
+        <NavigationMenu aria-label={m.navLabel}>
+          <NavigationMenuLink href="#features">{m.navProduct}</NavigationMenuLink>
+          <NavigationMenuLink href="/pricing">{m.navPricing}</NavigationMenuLink>
+          <NavigationMenuLink href="/docs">{m.navDocs}</NavigationMenuLink>
+        </NavigationMenu>
+        <!-- Phones: the same links in a Drawer, opened from a button that only exists below 600px. -->
+        <span class="mobile-menu">
+          <IconButton aria-label={m.menu} onclick={() => (menuOpen = true)}>
+            <Menu size={18} />
+          </IconButton>
+        </span>
+        <LocaleSwitcher options={locales} bind:value={locale} compact />
+        <Button variant="filled" size="sm" href="/sign-up">{m.getStarted}</Button>
+      {/snippet}
+    </SiteHeader>
 
-  <main id="main" tabindex="-1">
-    <Container size="lg">
-      <Section size="3" aria-label="Introduction">
-        <Stack gap="5" align="start">
-          <Heading level={1} size="display">
-            Ship the boring parts in a <Highlight animated>day</Highlight>
-          </Heading>
-          <p>
-            Stop writing <StrikeThrough animated>auth, billing and settings</StrikeThrough> from scratch: Acme gives your
-            team all three so you can build the part that matters.
-          </p>
-          <Flex gap="3" wrap>
-            <Button variant="filled" href="/sign-up">Start free</Button>
-            <Button variant="outlined" tone="neutral" href="/docs">Read the docs</Button>
-          </Flex>
-        </Stack>
-      </Section>
+    <Drawer bind:open={menuOpen} side="left" title={m.menuTitle}>
+      <Stack as="ul" gap="2">
+        <li><Button variant="ghost" tone="neutral" fullWidth href="#features" onclick={() => (menuOpen = false)}>{m.navProduct}</Button></li>
+        <li><Button variant="ghost" tone="neutral" fullWidth href="/pricing">{m.navPricing}</Button></li>
+        <li><Button variant="ghost" tone="neutral" fullWidth href="/docs">{m.navDocs}</Button></li>
+        <li><Button variant="outlined" tone="neutral" fullWidth href="/sign-in">{m.signIn}</Button></li>
+      </Stack>
+    </Drawer>
 
-      <Section aria-labelledby="features-title">
-        <Stack gap="6">
-          <h2 id="features-title">Everything in the box</h2>
-          <Grid columns={{ base: 1, md: 3 }} gap="4">
-            {#each features as feature (feature.title)}
-              <Card title={feature.title} headingLevel={3}>{feature.body}</Card>
-            {/each}
-          </Grid>
-        </Stack>
-      </Section>
-    </Container>
-  </main>
+    <main id="main" tabindex="-1">
+      <Container size="lg">
+        <Section size="3" aria-label={m.introduction}>
+          <Stack gap="5" align="start">
+            <Heading level={1} size="display">
+              {m.headline} <Highlight animated>{m.headlineWord}</Highlight>
+            </Heading>
+            <p>{m.leadBefore} <StrikeThrough animated>{m.leadStruck}</StrikeThrough> {m.leadAfter}</p>
+            <Flex gap="3" wrap>
+              <Button variant="filled" href="/sign-up">{m.startFree}</Button>
+              <Button variant="outlined" tone="neutral" href="/docs">{m.readDocs}</Button>
+            </Flex>
+          </Stack>
+        </Section>
+
+        <Section id="features" aria-labelledby="features-title">
+          <Stack gap="6">
+            <h2 id="features-title">{m.featuresTitle}</h2>
+            <Grid columns={{ base: 1, md: 3 }} gap="4">
+              {#each m.features as feature (feature.title)}
+                <Card title={feature.title} headingLevel={3}>{feature.body}</Card>
+              {/each}
+            </Grid>
+          </Stack>
+        </Section>
+      </Container>
+    </main>
+  </I18nProvider>
 </ThemeIsland>
+
+<style>
+  .mobile-menu {
+    display: contents;
+  }
+  @media (min-width: 600px) {
+    .mobile-menu {
+      display: none;
+    }
+  }
+</style>
 ```
 
 Rules:
 
-- A landing page is not an app page: no `AppShellLayout`, no `PageShell`. Put it in the root route or a `(marketing)` group, with its own `<main id="main" tabindex="-1">`.
-- Build the page from `Container` (width and gutter), `Section` (vertical rhythm, a real `<section>`: give it `aria-labelledby`) and `Stack`, `Flex`, `Grid` for arrangement. `Grid` takes `columns` (1 to 12, or a responsive object) and a step `gap`; for a template like `2fr 1fr`, write the `grid-template-columns` in a class.
-- `SiteHeader` is a sticky bar with a breadcrumb; the `trailing` snippet holds the actions on its right, including a `LocaleSwitcher` (`options`, `bind:value`, `onselect`; `compact` always shows the short code). `onselect` may return a promise: save the cookie and navigate there, and `value` only changes once it settles. Outside an app shell it has no panel toggle.
-- CTAs are `Button` with `href`: it renders a link, so no `onclick` navigation. One `filled` per view, the rest `outlined` or `ghost`; add `tone="neutral"` to an `outlined` or `ghost` button that sits beside the brand one.
-- The hero headline is `Heading size="display"`, never a styled `h1`. `level` sets the tag and `size` the look, and `Heading` takes no `id`, so name the section with `aria-label`. `display` on `PageShell`, `AuthCard` and `SiteHeader` gives their title the same role. `Highlight` and `StrikeThrough` take `animated` to play on mount; under reduced motion they render fully drawn.
+- A landing page is not an app page: no `AppShellLayout`. Put it in the root route or a `(marketing)` group, with its own `<main id="main" tabindex="-1">`. The `SkipLink` is yours too: put one before `SiteHeader` when the header is not inside a shell.
+- Build the page from `Container` (width and gutter), `Section` (vertical rhythm, a real `<section>`: give it `aria-labelledby`) and `Stack`, `Flex`, `Grid` for arrangement. `Grid` takes `columns` (1 to 12, or a responsive object) and a step `gap`; for a template like `2fr 1fr`, write the `grid-template-columns` in a class. A pricing table has no component of its own: a `Grid columns={{ base: 1, md: 3 }}` of `Card`s, the price in `Heading size="display-3"`, the features in `Stack as="ul"`, and `class="ca-pricing-cta"` on each `Button`.
+- `SiteHeader` is a sticky bar with a breadcrumb that is empty outside an app shell; the site navigation goes in its `trailing` snippet, which stays on the right. Put the `NavigationMenu` there as a direct child (not wrapped in a `div`): below 600px the header hides it, and a phone gets the same links from a `Drawer` opened by an `IconButton` that you show only below 600px. Keep at most the `LocaleSwitcher` and one CTA beside it in the bar: at 390px a second button does not fit. `LocaleSwitcher compact` always shows the short code.
+- Switching language inside the page needs no navigation: bind `LocaleSwitcher` to a `$state` locale, derive your copy from it (`messages[locale]`) and pass the same value to `I18nProvider locale={locale}`, which is reactive, so the package's own strings follow. To give each language its own URL, use ``onselect={(next) => goto(`/${next}`)}`` instead (it may return a promise; `value` changes once it settles) and read the locale from the route.
+- CTAs are `Button` with `href`: it renders a link, so no `onclick` navigation. One `filled` per view, the rest `outlined` or `ghost`; add `tone="neutral"` to an `outlined` or `ghost` button that sits beside the brand one. A tag on a card (a plan name, "New") is `Badge tone="brand" subtle`, not a `Chip`.
+- The hero headline is `Heading size="display"`, never a styled `h1`. `level` sets the tag and `size` the look, and `Heading` takes no `id`, so name the section with `aria-label`. `Highlight` and `StrikeThrough` take `animated` to play on mount; under reduced motion they render fully drawn.
 - `ThemeIsland` keeps this page in its own scheme (and `preset`) inside a dark app. Add `document` for a full page so `<html>` follows it and is restored on leaving, and set `setRouteTheme` on the server (see [Theming](#theming)) so the first paint is already right.
-- Put `Seo` on every public page with `title`, `description` and an absolute `canonical`. Use `noindex` on app and auth pages.
+- Put `Seo` on every public page with `title`, `description` and an absolute `canonical`. With in-page language switching the page has one URL, so keep one canonical; use `alternates` only when each language has its own. An FAQ section can add `faqPage` JSON-LD from `@codeatlasdev/ui/seo`. Use `noindex` on app and auth pages.
+- Static hosting (`adapter-static`): set `export const prerender = true;` in the root `+layout.ts` so `/` is built. SvelteKit fails the build when a prerendered page links to a route that does not exist yet (`/sign-up`, `/docs`): create the routes, or set `prerender: { handleHttpError: "warn" }` in the `sveltekit({ ... })` options until they exist. `adapter-static@4` needs Kit 3, so a Kit 2 app installs `@sveltejs/adapter-static@3`.
 
-See also: [Layout primitives](/docs/layout/layout-primitives/), [Card](/docs/surfaces/card/), [Button](/docs/inputs/button/), [SEO](/docs/getting-started/seo/).
+See also: [Layout primitives](/docs/layout/layout-primitives/), [Card](/docs/surfaces/card/), [Button](/docs/inputs/button/), [NavigationMenu](/docs/navigation/navigation-menu/), [Drawer](/docs/feedback/drawer/), [i18n](/docs/getting-started/i18n/), [SEO](/docs/getting-started/seo/).
+
+## Standalone page
+
+Use it when the whole app is one screen (a single dashboard, a board, a map tool) and there is no rail or bottom navigation to host. Do not mount `AppShellLayout` for it: with one module it still draws a one-icon rail, a mobile header and a bottom bar. The page owns its landmark instead.
+
+```ts
+// src/lib/messages.ts (the keys the standalone page reads)
+export const m = {
+  title: "Pipeline",
+  description: "Open deals by stage",
+  newDeal: "New deal",
+} as const;
+```
+
+```svelte
+<!-- src/routes/+page.svelte -->
+<script lang="ts">
+  import { Button, PageShell, SkipLink } from "@codeatlasdev/ui";
+  import { m } from "#lib/messages.ts";
+</script>
+
+<SkipLink />
+<main id="main" tabindex="-1">
+  <PageShell title={m.title} description={m.description} maxWidth="1200px">
+    {#snippet actions()}
+      <Button variant="filled" size="sm">{m.newDeal}</Button>
+    {/snippet}
+    <!-- the screen: KpiGrid, Grid of Cards, Kanban, ... -->
+  </PageShell>
+</main>
+```
+
+Rules:
+
+- `PageShell` never renders `<main>`: it assumes a shell or the page already has one. Without the wrapper axe reports `landmark-one-main`. Put one `<main id="main" tabindex="-1">` around it and a `SkipLink` before it (its `href` defaults to `#main`). One page, one `<main>`, one `id="main"`.
+- `AppShellLayout` is for apps with several destinations. If a one-page app uses it anyway, pass `mainId={null}` and render your own `<main id="main" tabindex="-1">`, or keep the default and render no `<main>` of your own. Never both.
+- A board or a table that must fill the screen needs a parent with a height. Give your own wrapper a class with `height: calc(var(--ca-vh) - 6rem)` (never `100vh`) rather than a `:global` rule on a `ca-*` class.
+- Add `<RouteAnnouncer />` (`@codeatlasdev/ui/kit`) once in the root layout if the app has more than one route, and `<Seo>` with a `canonical` (or `noindex`) on the page.
+- A map-first one-page screen is the same idea with a stage behind it: see [Map page without a shell](#map-page-without-a-shell).
+
+See also: [PageShell](/docs/layout/page-shell/), [SkipLink](/docs/layout/skip-link/), [Accessibility](/docs/getting-started/accessibility/#skip-link-and-landmarks).
 
 ## Theming
 
