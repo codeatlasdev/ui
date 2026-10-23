@@ -323,7 +323,6 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "490", path: "feedback/toast/Dedupe" },
 	{ id: "491", path: "display/table/Dense" },
 	{ id: "492", path: "feedback/toast/Actions" },
-	{ id: "492", path: "display/kanban/Pipeline" },
 	{ id: "530", path: "layout/app-shell/RailLabels" },
 	{ id: "531", path: "layout/app-shell/Stage" },
 	{ id: "600", path: "layout/page-shell/AsideReading" },
