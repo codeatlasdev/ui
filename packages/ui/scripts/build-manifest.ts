@@ -99,10 +99,10 @@ export interface ManifestComponent {
 	extends?: string;
 	/** Stable `ca-*` class names defined in the component `<style>` (the stable subset of `styling.parts`). */
 	classes: string[];
-	/** Component tokens: `--ca-<stem>-*` custom properties the `<style>` reads with a fallback (`var(--ca-btn-gap, …)`). Set them on `:root`, a wrapper or `ThemeOptions.components`. */
-	tokens: string[];
 	/** Everything an app may target to restyle this component, each part flagged stable or internal (#381). */
 	styling: ManifestStyling;
+	/** Component tokens: `--ca-<stem>-*` custom properties the `<style>` reads with a fallback (`var(--ca-btn-gap, …)`). Set them on `:root`, a wrapper or `ThemeOptions.components`. */
+	tokens: string[];
 	/** Generic parameters, e.g. `TData extends RowData`. */
 	generics?: string;
 }
@@ -405,14 +405,13 @@ function extractComponent(name: string, file: string, entry: string): ManifestCo
 		props: [],
 		snippets: [],
 		classes: [],
-		tokens: [],
 		styling: { parts: [], variables: [], data: [] },
+		tokens: [],
 	};
 	const css = componentCss(src, dirname(abs));
-	out.classes = extractClasses(css);
-	out.tokens = extractComponentTokens(css, out.classes);
-	out.styling = extractStyling(componentCss(src, dirname(abs)), src, globalTokens());
+	out.styling = extractStyling(css, src, globalTokens());
 	out.classes = out.styling.parts.filter((p) => p.stable).map((p) => p.name);
+	out.tokens = extractComponentTokens(css, out.classes);
 
 	const generics = src.match(/<script[^>]*\bgenerics="([^"]+)"/)?.[1];
 	if (generics) out.generics = generics;
@@ -483,17 +482,6 @@ export function extractClasses(css: string): string[] {
 	return [...classes].sort();
 }
 
-/**
- * Component tokens of a component's own CSS: `var(--ca-<stem>-…, fallback)` reads, where `<stem>` is
- * the stem of one of its classes (`ca-icon-btn--sm` → `icon-btn`). The fallback marks an override
- * hook: a token read without one is a global token owned elsewhere (`--ca-space-3`).
- */
-export function extractComponentTokens(css: string, classes: string[]): string[] {
-	const stems = new Set(classes.map((c) => c.slice(3).split(/--|__/)[0]));
-	const tokens = new Set<string>();
-	for (const m of css.replace(/\/\*[\s\S]*?\*\//g, "").matchAll(/var\((--ca-([a-z0-9-]+?))\s*,/g))
-		if ([...stems].some((s) => m[2] === s || m[2].startsWith(`${s}-`))) tokens.add(m[1]);
-	return [...tokens].sort();
 /** A private class: `ca-x-` prefix, so a reader sees it is not a hook (naming rule, #381). */
 const INTERNAL_CLASS = /^ca-x-/;
 
@@ -530,9 +518,11 @@ export function extractDataAttributes(css: string): ManifestDataAttribute[] {
 		.map(([name, values]) => ({ name, values: [...values].sort() }));
 }
 
+/**
  * The override surface of a component: classes (stable unless `ca-x-` or a `@keyframes` name), the
  * component-scoped custom properties it declares or reads (`tokens` are excluded: they live in tokens.json)
  * and the `data-*` attributes its CSS selects on.
+ */
 export function extractStyling(
 	css: string,
 	_source: string,
@@ -553,6 +543,19 @@ export function extractStyling(
 		),
 	].sort();
 	return { parts, variables, data: extractDataAttributes(css) };
+}
+
+/**
+ * Component tokens of a component's own CSS: `var(--ca-<stem>-…, fallback)` reads, where `<stem>` is
+ * the stem of one of its classes (`ca-icon-btn--sm` → `icon-btn`). The fallback marks an override
+ * hook: a token read without one is a global token owned elsewhere (`--ca-space-3`).
+ */
+export function extractComponentTokens(css: string, classes: string[]): string[] {
+	const stems = new Set(classes.map((c) => c.slice(3).split(/--|__/)[0]));
+	const tokens = new Set<string>();
+	for (const m of css.replace(/\/\*[\s\S]*?\*\//g, "").matchAll(/var\((--ca-([a-z0-9-]+?))\s*,/g))
+		if ([...stems].some((s) => m[2] === s || m[2].startsWith(`${s}-`))) tokens.add(m[1]);
+	return [...tokens].sort();
 }
 
 // ── non-component exports ─────────────────────────────────────────────────────
@@ -1386,9 +1389,8 @@ export function skillMarkdown(m: Manifest): string {
 				""
 			);
 		if (c.extends) out.push(`Also accepts: \`${cell(c.extends)}\``, "");
-		if (c.classes.length) out.push(`Classes: ${c.classes.map((x) => `\`${x}\``).join(" ")}`, "");
-		if (c.tokens.length) out.push(`Tokens: ${c.tokens.map((x) => `\`${x}\``).join(" ")}`, "");
 		out.push(...stylingLines(c.styling));
+		if (c.tokens.length) out.push(`Tokens: ${c.tokens.map((x) => `\`${x}\``).join(" ")}`, "");
 	}
 	out.push(
 		"# Non-component exports",

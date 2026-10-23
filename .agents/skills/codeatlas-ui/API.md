@@ -86,7 +86,11 @@ Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__action
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out`
 
-Data attributes: `data-state` (`closed` `open`)
+Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+
+Data attributes: `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
+
+Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
 
 ## AppForm
 
@@ -181,6 +185,8 @@ Variables: `--ca-main-ml` `--ca-panel-w-stored` `--ca-shell-inset-bottom` `--ca-
 
 Data attributes: `data-ca-hydrated`, `data-ca-panel` (`closed`)
 
+Tokens: `--ca-main-ml`
+
 ## AudioPlayer
 
 `import { AudioPlayer } from "@codeatlasdev/ui"`
@@ -232,6 +238,7 @@ AuthLayout: two-column layout for authentication pages.
 | `logoName?` | `string` |  | Name beside the mark. Defaults to "CodeAtlas UI" unless `brand` is set. |
 | `logoHref?` | `string` | `'/'` |  |
 | `mobileBrand?` | `boolean` | `true` | While the side panel is hidden, `true` shows a compact strip with the brand above the form. A `header` snippet replaces the strip. |
+| `panelTone?` | `'auto' \| 'brand' \| 'flat'` | `'auto'` | Panel background. `brand` is the brand gradient with animated blobs; `flat` is a solid `--ca-auth-panel-bg` with no blobs (design systems that forbid gradients); `auto` (default) is `flat` under the `flat` and `outlined` surface styles and `brand` otherwise. |
 | `panelSide?` | `'left' \| 'right'` | `'left'` | Which side the panel sits on. |
 | `panelBleed?` | `boolean` | `false` | `true` fills the panel edge to edge with the `panel` snippet: no padding, no logo, no decorative blobs. The panel sticks to the viewport height. |
 | `panelHidden?` | `'md' \| 'lg'` | `'md'` | Viewport width from which the panel shows: `md` 900px, `lg` 1200px. Below it only the form shows. |
@@ -243,7 +250,11 @@ Parts: `ca-auth` `ca-auth--right` `ca-auth__blob` `ca-auth__blob--a` `ca-auth__b
 
 Internal (may change in any release): `ca-auth-float`
 
-Data attributes: `data-panel-hidden` (`lg`)
+Variables: `--ca-auth-panel-bg` `--ca-auth-panel-fg`
+
+Data attributes: `data-panel-hidden` (`lg`), `data-panel-tone` (`auto` `flat`), `data-style` (`flat` `outlined`)
+
+Tokens: `--ca-auth-panel-bg`
 
 ## Avatar
 
@@ -264,11 +275,17 @@ Avatar: user identity display component.
 | `crossorigin?` | `'anonymous' \| 'use-credentials'` |  | Passed to the `<img>`. |
 | `onerror?` | `(event: Event) => void` |  | Called when the image fails; the fallback shows. Use it to refetch a signed URL. |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size, no image request, announced as busy. |
+| `tone?` | `Tone` | `'palette'` | Fallback colour: `'palette'` (default) derives a colour from the name, so each person keeps theirs; `'neutral'` draws every fallback the same, on `--ca-surface-overlay` with `--ca-text-secondary` and a hairline ring, for a dense list where coloured discs compete with the content. |
+| `decorative?` | `boolean` | `false` | The avatar repeats a name that is already visible next to it: hidden from assistive tech (no name, no image role, no status label) so a screen reader does not say the name twice. |
 | `class?` | `string` | `''` |  |
 
 Parts: `ca-avatar` `ca-avatar__fallback` `ca-avatar__fallback--covered` `ca-avatar__img` `ca-avatar__status` `ca-avatar__status--away` `ca-avatar__status--busy` `ca-avatar__status--offline` `ca-avatar__status--online`
 
-Variables: `--ca-bg-body`
+Variables: `--ca-avatar-fallback-bg` `--ca-avatar-fallback-color` `--ca-avatar-fallback-size` `--ca-avatar-fallback-weight` `--ca-avatar-lg-fallback-size` `--ca-avatar-lg-fallback-weight` `--ca-avatar-md-fallback-size` `--ca-avatar-md-fallback-weight` `--ca-avatar-sm-fallback-size` `--ca-avatar-sm-fallback-weight` `--ca-avatar-xl-fallback-size` `--ca-avatar-xl-fallback-weight` `--ca-avatar-xs-fallback-size` `--ca-avatar-xs-fallback-weight` `--ca-bg-body`
+
+Data attributes: `data-size` (`lg` `md` `sm` `xl` `xs`), `data-tone` (`neutral`)
+
+Tokens: `--ca-avatar-fallback-bg` `--ca-avatar-fallback-color` `--ca-avatar-fallback-size` `--ca-avatar-fallback-weight` `--ca-avatar-lg-fallback-size` `--ca-avatar-lg-fallback-weight` `--ca-avatar-md-fallback-size` `--ca-avatar-md-fallback-weight` `--ca-avatar-sm-fallback-size` `--ca-avatar-sm-fallback-weight` `--ca-avatar-xl-fallback-size` `--ca-avatar-xl-fallback-weight` `--ca-avatar-xs-fallback-size` `--ca-avatar-xs-fallback-weight`
 
 ## Badge
 
@@ -277,13 +294,18 @@ Variables: `--ca-bg-body`
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `count?` | `number` |  |  |
-| `dot?` | `boolean` | `false` |  |
-| `color?` | `'brand' \| 'success' \| 'error' \| 'warning'` | `'brand'` |  |
+| `dot?` | `boolean` | `false` | Anchored: a plain status dot on the corner. With `tone`: a leading dot inside the pill. |
+| `color?` | `'brand' \| 'success' \| 'error' \| 'warning'` | `'brand'` | Anchored badge colour (`error` is the same hue as `tone="danger"`). Ignored when `tone` is set. |
+| `tone?` | `Tone` |  | Renders an inline pill (in text flow, children are its label) instead of a corner indicator: `<Badge tone="danger" subtle dot>Overdue</Badge>`. |
+| `subtle?` | `boolean` | `false` | Pill only: translucent tinted background with tone-coloured text, instead of a solid fill. |
+| `size?` | `'sm' \| 'md'` | `'sm'` | Pill only: `sm` is 20px high, `md` 24px. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
 
-Parts: `ca-badge` `ca-badge--brand` `ca-badge--dot` `ca-badge--error` `ca-badge--success` `ca-badge--warning` `ca-badge-wrapper`
+Parts: `ca-badge` `ca-badge--brand` `ca-badge--danger` `ca-badge--dot` `ca-badge--error` `ca-badge--info` `ca-badge--inline` `ca-badge--md` `ca-badge--neutral` `ca-badge--subtle` `ca-badge--success` `ca-badge--warning` `ca-badge-wrapper` `ca-badge__dot`
+
+Variables: `--ca-badge-fill` `--ca-badge-on` `--ca-badge-tone`
 
 ## BarChart
 
@@ -361,6 +383,8 @@ Parts: `ca-breadcrumb__current` `ca-breadcrumb__item` `ca-breadcrumb__link` `ca-
 | `href?` | `string` |  | Renders an `<a>` styled as a button. Its attributes (`download`, `rel`, `hreflang`, `ping`, `referrerpolicy`) are then accepted. |
 | `target?` | `string` |  | Anchor target, used with `href`. `"_blank"` adds `noopener noreferrer` to any `rel` you pass. |
 | `class?` | `string` | `''` |  |
+| `trailingHint?` | `boolean` | `false` | Marks `trailing` as a keyboard hint (`<Kbd>`): it is hidden below `md` and on touch screens (`pointer: coarse`) and takes no space there, so the button is as wide as its label alone. |
+| `align?` | `Align` | `'center'` | `'between'` pins the label to the start and `trailing` to the end (use with `fullWidth` or a fixed width). The loading spinner stays in the leading slot. Default `'center'`. |
 | `onclick?` | `(e: MouseEvent) => void` |  |  |
 | `aria-label?` | `string` |  |  |
 
@@ -368,7 +392,11 @@ Snippets: `children`, `leading`, `trailing`
 
 Also accepts: `AnchorAttributes \| ButtonAttributes`
 
-Parts: `ca-btn` `ca-btn--destructive` `ca-btn--filled` `ca-btn--full-width` `ca-btn--ghost` `ca-btn--glass` `ca-btn--lg` `ca-btn--loading` `ca-btn--md` `ca-btn--neutral` `ca-btn--outlined` `ca-btn--sm` `ca-btn__leading` `ca-btn__trailing`
+Parts: `ca-btn` `ca-btn--between` `ca-btn--destructive` `ca-btn--filled` `ca-btn--full-width` `ca-btn--ghost` `ca-btn--glass` `ca-btn--lg` `ca-btn--loading` `ca-btn--md` `ca-btn--neutral` `ca-btn--outlined` `ca-btn--sm` `ca-btn__leading` `ca-btn__trailing` `ca-btn__trailing--hint`
+
+Variables: `--ca-btn-disabled-bg` `--ca-btn-font-weight` `--ca-btn-gap` `--ca-btn-ghost-border-width` `--ca-btn-letter-spacing` `--ca-btn-lg-font-size` `--ca-btn-lg-font-weight` `--ca-btn-lg-height` `--ca-btn-lg-letter-spacing` `--ca-btn-lg-padding-x` `--ca-btn-line-height` `--ca-btn-md-font-size` `--ca-btn-md-font-weight` `--ca-btn-md-height` `--ca-btn-md-letter-spacing` `--ca-btn-md-padding-x` `--ca-btn-sm-font-size` `--ca-btn-sm-font-weight` `--ca-btn-sm-height` `--ca-btn-sm-letter-spacing` `--ca-btn-sm-padding-x` `--ca-btn-touch-height`
+
+Tokens: `--ca-btn-disabled-bg` `--ca-btn-font-weight` `--ca-btn-gap` `--ca-btn-ghost-border-width` `--ca-btn-letter-spacing` `--ca-btn-lg-font-size` `--ca-btn-lg-font-weight` `--ca-btn-lg-height` `--ca-btn-lg-letter-spacing` `--ca-btn-lg-padding-x` `--ca-btn-line-height` `--ca-btn-md-font-size` `--ca-btn-md-font-weight` `--ca-btn-md-height` `--ca-btn-md-letter-spacing` `--ca-btn-md-padding-x` `--ca-btn-sm-font-size` `--ca-btn-sm-font-weight` `--ca-btn-sm-height` `--ca-btn-sm-letter-spacing` `--ca-btn-sm-padding-x` `--ca-btn-touch-height`
 
 ## Calendar
 
@@ -437,9 +465,11 @@ Also accepts: `Omit<ComponentProps<typeof Surface>, 'as' \| 'children'>`
 
 Parts: `ca-card` `ca-card--flush` `ca-card--full` `ca-card__header` `ca-card__header-actions` `ca-card__title`
 
-Variables: `--ca-card-gap`
+Variables: `--ca-card-bg` `--ca-card-border` `--ca-card-gap` `--ca-card-radius` `--ca-card-shadow`
 
 Data attributes: `data-gap` (`lg` `md` `sm`), `data-padding` (`lg` `md` `none` `sm`)
+
+Tokens: `--ca-card-bg` `--ca-card-border` `--ca-card-gap` `--ca-card-radius` `--ca-card-shadow`
 
 ## CardGrid
 
@@ -648,7 +678,11 @@ Parts: `ca-cmd-dialog` `ca-cmd-empty` `ca-cmd-error` `ca-cmd-group__label` `ca-c
 
 Internal (may change in any release): `ca-cmd-slide-in` `ca-cmd-slide-out` `ca-cmd-spin` `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out`
 
-Data attributes: `data-state` (`closed` `open`)
+Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+
+Data attributes: `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
+
+Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
 
 ## Container
 
@@ -671,6 +705,8 @@ Parts: `ca-container`
 Variables: `--ca-container-max`
 
 Data attributes: `data-lg-px`, `data-md-px`, `data-px`, `data-size` (`lg` `md` `sm` `xl`), `data-sm-px`, `data-xl-px`
+
+Tokens: `--ca-container-max`
 
 ## ConversationItem
 
@@ -938,6 +974,9 @@ Dialog: second-layer modal.
 | `description?` | `string` |  |  |
 | `size?` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'split'` | `'md'` | 'sm' = 400px \| 'md' = 480px (default) \| 'lg' = 600px \| 'xl' = 820px \| 'split' = 1100×720 two-column |
 | `chromeless?` | `boolean` | `false` | Omits header, description and actions; body has no padding. Pass `title` for the accessible name (visually hidden). |
+| `splitColumns?` | `string` |  | Column template of the `size="split"` body (CSS `grid-template-columns`), e.g. `'2fr 3fr'`. Default `'1fr 1fr'`. Sets `--ca-dialog-split-columns`. |
+| `splitSize?` | `{ width?: string; height?: string }` |  | Panel box of `size="split"`, any CSS length: `{ width: 'min(66vw, 80rem)', height: 'min(88svh, 56rem)' }`. Default 1100×720, capped to the viewport. Sets `--ca-dialog-split-width` / `--ca-dialog-split-height`. |
+| `fullscreenBelow?` | `'sm' \| 'md'` |  | Full screen below this breakpoint (`'sm'` = 600px, `'md'` = 900px), any `size`: exactly the viewport (`--ca-vh`), square corners, safe-area padding kept. Focus trap and Escape are unchanged. |
 | `class?` | `string` | `''` |  |
 | `onOpenChange?` | `(open: boolean) => void` |  |  |
 
@@ -947,7 +986,11 @@ Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__action
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out`
 
-Data attributes: `data-state` (`closed` `open`)
+Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+
+Data attributes: `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
+
+Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
 
 ## Divider
 
@@ -1002,7 +1045,11 @@ Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__action
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-docs-search-in` `ca-docs-search-out` `ca-docs-search-pop-in` `ca-docs-search-pop-out` `ca-overlay-in` `ca-overlay-out`
 
-Data attributes: `data-state` (`closed` `open`)
+Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+
+Data attributes: `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
+
+Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
 
 ## DocsShell
 
@@ -1053,7 +1100,11 @@ Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__action
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-drawer-bottom-in` `ca-drawer-bottom-out` `ca-drawer-left-in` `ca-drawer-left-out` `ca-drawer-right-in` `ca-drawer-right-out` `ca-overlay-in` `ca-overlay-out`
 
-Data attributes: `data-chromeless`, `data-full-bleed` (`lg` `md` `sm`), `data-state` (`closed` `open`)
+Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+
+Data attributes: `data-chromeless`, `data-full-bleed` (`lg` `md` `sm`), `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
+
+Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
 
 ## DropdownMenu
 
@@ -1210,11 +1261,17 @@ Data attributes: `data-highlighted`, `data-state` (`open`)
 | `variant?` | `'default' \| 'hero'` | `'default'` | 'default' = compact inline empty state. 'hero'    = larger brand-tinted icon tile with glow, bigger title; `actions` stack full-width on mobile (put the primary action first). |
 | `description?` | `string` |  |  |
 | `display?` | `boolean` | `false` | Display text role for the title: `--ca-display-tracking`, `--ca-display-leading` and the fluid `--ca-font-size-display-3`. |
+| `bare?` | `boolean` | `false` | No padding: an empty state inside a Card, a table or a pane that already insets its content. |
+| `actionsFill?` | `boolean` | `false` | Stacks `actions` full-width at every width (one wide button, an invite form). `variant="hero"` already does it in a narrow slot. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `actions`, `children`
 
-Parts: `ca-empty` `ca-empty--hero` `ca-empty__actions` `ca-empty__description` `ca-empty__icon` `ca-empty__title` `ca-empty__title--display`
+Parts: `ca-empty` `ca-empty--bare` `ca-empty--fill` `ca-empty--hero` `ca-empty__actions` `ca-empty__description` `ca-empty__icon` `ca-empty__title` `ca-empty__title--display`
+
+Variables: `--ca-empty-padding` `--ca-empty-title-size` `--ca-empty-title-weight`
+
+Tokens: `--ca-empty-padding` `--ca-empty-title-size` `--ca-empty-title-weight`
 
 ## ErrorPage
 
@@ -1474,6 +1531,8 @@ Internal (may change in any release): `ca-highlight-sweep`
 
 Variables: `--ca-highlight-color`
 
+Tokens: `--ca-highlight-color`
+
 ## I18nProvider
 
 `import { I18nProvider } from "@codeatlasdev/ui"`
@@ -1507,6 +1566,10 @@ Snippets: `children`
 Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class' \| 'children' \| 'onclick' \| 'aria-label'>`
 
 Parts: `ca-icon-btn` `ca-icon-btn--filled` `ca-icon-btn--glass` `ca-icon-btn--lg` `ca-icon-btn--loading` `ca-icon-btn--md` `ca-icon-btn--neutral` `ca-icon-btn--outlined` `ca-icon-btn--sm` `ca-icon-btn--text`
+
+Variables: `--ca-icon-btn-font-weight` `--ca-icon-btn-size-lg` `--ca-icon-btn-size-md` `--ca-icon-btn-size-sm` `--ca-icon-btn-touch-size`
+
+Tokens: `--ca-icon-btn-font-weight` `--ca-icon-btn-size-lg` `--ca-icon-btn-size-md` `--ca-icon-btn-size-sm` `--ca-icon-btn-touch-size`
 
 ## Image
 
@@ -1568,6 +1631,8 @@ Variables: `--ca-kanban-color`
 
 Data attributes: `data-dnd-over`, `data-fade` (`both` `end` `start`), `data-panning`
 
+Tokens: `--ca-kanban-color`
+
 ## Kbd
 
 `import { Kbd } from "@codeatlasdev/ui"`
@@ -1579,6 +1644,10 @@ Data attributes: `data-dnd-over`, `data-fade` (`both` `end` `start`), `data-pann
 Snippets: `children`
 
 Parts: `ca-kbd`
+
+Variables: `--ca-kbd-font-size` `--ca-kbd-line-height` `--ca-kbd-size`
+
+Tokens: `--ca-kbd-font-size` `--ca-kbd-line-height` `--ca-kbd-size`
 
 ## KpiCard
 
@@ -2093,6 +2162,22 @@ Parts: `ca-nav-item` `ca-nav-item--active` `ca-nav-item--grip` `ca-nav-item__act
 
 Variables: `--ca-nav-color`
 
+## PasswordStrength
+
+`import { PasswordStrength } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `value?` | `string` | `''` | The password being typed. It is only read to compute the score and never stored or sent. |
+| `score?` | `(value: string) => PasswordScore` | `passwordScore` | Replaces the built-in `passwordScore`. Return 0 (empty) to 3 (strong). |
+| `labels?` | `Partial<Record<'empty' \| 'weak' \| 'fair' \| 'strong', string>>` |  | Per-instance label text; unset keys use the i18n catalog. |
+| `id?` | `string` |  | Set it to point a field's `aria-describedby` at the meter. |
+| `class?` | `string` | `''` |  |
+
+Parts: `ca-pwstrength` `ca-pwstrength__bar` `ca-pwstrength__label` `ca-pwstrength__seg`
+
+Data attributes: `data-on`, `data-score` (`1` `2` `3`)
+
 ## PhoneField
 
 `import { PhoneField } from "@codeatlasdev/ui/forms"`
@@ -2194,6 +2279,8 @@ Internal (may change in any release): `ca-progress-shimmer`
 Variables: `--ca-progress-height`
 
 Data attributes: `data-size` (`lg` `md` `sm`)
+
+Tokens: `--ca-progress-height`
 
 ## RadarChart
 
@@ -2426,6 +2513,7 @@ Data attributes: `data-lg-py`, `data-md-py`, `data-py`, `data-size` (`1` `3`), `
 |---|---|---|---|
 | `section` | `NavSection` |  |  |
 | `pathname` | `string` |  |  |
+| `active?` | `(item: NavItem) => boolean` |  | Decides which link is current (the shell passes the module-wide winner); defaults to `isItemActive`. |
 | `class?` | `string` | `''` |  |
 
 Parts: `ca-section` `ca-section__chevron` `ca-section__chevron--open` `ca-section__header` `ca-section__label` `ca-section__trigger`
@@ -2447,7 +2535,11 @@ Parts: `ca-section` `ca-section__chevron` `ca-section__chevron--open` `ca-sectio
 
 Parts: `ca-seg` `ca-seg--md` `ca-seg--sm` `ca-seg__item` `ca-seg__thumb`
 
+Variables: `--ca-seg-item-font-size` `--ca-seg-item-line-height` `--ca-seg-item-padding-x` `--ca-seg-md-item-font-size` `--ca-seg-md-item-line-height` `--ca-seg-md-item-padding-x` `--ca-seg-sm-item-font-size` `--ca-seg-sm-item-line-height` `--ca-seg-sm-item-padding-x`
+
 Data attributes: `data-fullwidth`, `data-no-motion`, `data-state` (`on`)
+
+Tokens: `--ca-seg-item-font-size` `--ca-seg-item-line-height` `--ca-seg-item-padding-x` `--ca-seg-md-item-font-size` `--ca-seg-md-item-line-height` `--ca-seg-md-item-padding-x` `--ca-seg-sm-item-font-size` `--ca-seg-sm-item-line-height` `--ca-seg-sm-item-padding-x`
 
 ## Select
 
@@ -2527,7 +2619,11 @@ Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__action
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out` `ca-sheet-fade-in` `ca-sheet-fade-out` `ca-sheet-in` `ca-sheet-out`
 
-Data attributes: `data-state` (`closed` `open`)
+Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+
+Data attributes: `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
+
+Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
 
 ## SimpleTable
 
@@ -2642,6 +2738,24 @@ Parts: `ca-spinner` `ca-spinner__arc` `ca-spinner__track`
 
 Internal (may change in any release): `ca-spin`
 
+## SplashScreen
+
+`import { SplashScreen } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `ready?` | `boolean` | `true` | The app has finished booting. The splash waits for it, then for `minDuration`. |
+| `minDuration?` | `number` | `600` | Minimum time (ms) the splash stays, counted from when it first shows. |
+| `label?` | `string` |  | Accessible name. Defaults to a localised "Loading…". |
+| `ondone?` | `() => void` |  | Called once the splash is gone (or was skipped). |
+| `class?` | `string` | `''` |  |
+
+Snippets: `logo`
+
+Parts: `ca-splash` `ca-splash__logo`
+
+Internal (may change in any release): `ca-splash-in` `ca-splash-pulse`
+
 ## Stack
 
 `import { Stack } from "@codeatlasdev/ui"` (generic: `T extends ElementTag = 'div'`)
@@ -2746,6 +2860,8 @@ Internal (may change in any release): `ca-strike-draw`
 
 Variables: `--ca-strike-color`
 
+Tokens: `--ca-strike-color`
+
 ## Surface
 
 `import { Surface } from "@codeatlasdev/ui"`
@@ -2796,6 +2912,8 @@ Parts: `ca-swatch` `ca-swatch-group` `ca-swatch-group--sm`
 Variables: `--ca-swatch-color` `--ca-swatch-size`
 
 Data attributes: `data-state` (`on`)
+
+Tokens: `--ca-swatch-color`
 
 ## Switch
 
@@ -2972,6 +3090,10 @@ Also accepts: `Omit<HTMLTextareaAttributes, 'value' \| 'class' \| 'children' \| 
 
 Parts: `ca-ta` `ca-ta--disabled` `ca-ta__hint` `ca-ta__hint--error` `ca-ta__input` `ca-ta__label` `ca-ta__req` `ca-ta__wrap` `ca-ta__wrap--error` `ca-ta__wrap--focused`
 
+Variables: `--ca-field-gap` `--ca-field-label-leading` `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
+
+Tokens: `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
+
 ## TextField
 
 `import { TextField } from "@codeatlasdev/ui"`
@@ -3007,6 +3129,10 @@ Snippets: `leading`, `trailing`, `below`
 Also accepts: `Omit<HTMLInputAttributes, 'value' \| 'class' \| 'children' \| 'size' \| 'oninput' \| 'onchange' \| 'onfocus' \| 'onblur'>`
 
 Parts: `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__adorn` `ca-tf__adorn--trail` `ca-tf__below` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__reveal` `ca-tf__wrap` `ca-tf__wrap--error` `ca-tf__wrap--focused`
+
+Variables: `--ca-field-gap` `--ca-field-label-leading` `--ca-tf-gap` `--ca-tf-label-line-height`
+
+Tokens: `--ca-tf-gap` `--ca-tf-label-line-height`
 
 ## ThemeIsland
 
@@ -3122,6 +3248,29 @@ Parts: `ca-tooltip-content` `ca-tooltip__trigger`
 Internal (may change in any release): `ca-tooltip-in` `ca-tooltip-out`
 
 Data attributes: `data-state` (`closed`)
+
+## Turnstile
+
+`import { Turnstile } from "@codeatlasdev/ui/forms"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `siteKey?` | `string` |  | Public site key. Empty or unset: the component does nothing. |
+| `action?` | `string` |  | Label of the flow (`sign-in`), echoed back when you verify the token. |
+| `cData?` | `string` |  | Opaque data echoed back when you verify the token. |
+| `theme?` | `'auto' \| 'light' \| 'dark'` | `'auto'` | `auto` (default) follows the active colour scheme; `light` / `dark` force one. |
+| `language?` | `string` |  | Widget language tag. Defaults to the active UI locale (`pt-BR` becomes `pt-br`). |
+| `size?` | `'normal' \| 'flexible' \| 'compact'` |  |  |
+| `appearance?` | `'always' \| 'execute' \| 'interaction-only'` |  |  |
+| `handle?` | `TurnstileHandle` |  | `bind:` `bind:handle` for `getToken()` and `reset()`. |
+| `token?` | `string` |  | `bind:` `bind:token`: the current token, `undefined` while there is none. |
+| `onverify?` | `(token: string) => void` |  |  |
+| `onexpire?` | `() => void` |  |  |
+| `onerror?` | `(code: string) => void` |  | The widget could not run; `code` is Cloudflare's error code. |
+| `nonce?` | `string` |  | CSP nonce for the vendor script tag. |
+| `class?` | `string` | `''` |  |
+
+Parts: `ca-turnstile`
 
 ## UserCell
 
@@ -3431,11 +3580,21 @@ const elevation: {
 }
 ```
 
+### findActiveItem
+
+`import { findActiveItem } from "@codeatlasdev/ui"`
+
+The nav item that is active for `pathname` among one module's entries (sections flattened), or `undefined` when none matches. Like modules, the most specific match wins whatever the order: with items at `/a` and `/a/b`, `/a/b/1` is `/a/b` only and `/a/c` stays on `/a`. On a tie the first wins.
+
+```ts
+function findActiveItem(entries: ReadonlyArray<NavItem | NavSection>, pathname: string): NavItem | undefined
+```
+
 ### findActiveItemPath
 
 `import { findActiveItemPath } from "@codeatlasdev/ui"`
 
-Path of the nav item that is active for `pathname`, or `null` when none matches.
+Path of the nav item that is active for `pathname` (see `findActiveItem`), or `null` when none matches.
 
 ```ts
 function findActiveItemPath(modules: NavModule[], pathname: string): string | null
@@ -3749,6 +3908,26 @@ Subscribes to `layerchange`: fired on `document` whenever a layer opens or close
 function onLayerChange(listener: (change: LayerChange) => void): () => void
 ```
 
+### onTokensChange
+
+`import { onTokensChange } from "@codeatlasdev/ui"`
+
+Call `fn` after the scheme, preset or surface style of the page changes (the `class`, `data-preset` and `data-style` attributes of `<html>`). Returns the unsubscribe function. Server-side it does nothing. Svelte code usually reads `colorScheme` instead; this is for canvas, map and chart code outside a component.
+
+```ts
+function onTokensChange(fn: () => void): () => void
+```
+
+### passwordScore
+
+`import { passwordScore } from "@codeatlasdev/ui"`
+
+Pure, dependency-free strength estimate: unique characters and character classes, so a long repeat ("aaaa…") does not pass, and a passphrase of plain words does. A hint for the user, not a policy: enforce rules on the server.
+
+```ts
+function passwordScore(value: string): PasswordScore
+```
+
 ### radius
 
 `import { radius } from "@codeatlasdev/ui"`
@@ -4001,6 +4180,16 @@ Pretty-printed JSON array. With `columns`, each object keeps only those fields (
 function toJson<T extends object>(rows: readonly T[], columns?: readonly ExportColumn<T>[]): string
 ```
 
+### tokenRgba
+
+`import { tokenRgba } from "@codeatlasdev/ui"`
+
+A design token (`--ca-brand-main`), a domain token by name (`"status.new"` for `--ca-token-status-new`, also `"status.new-subtle"` / `"status.new-contrast"`) or any CSS color (`#f59e0b`, `oklch(...)`, `color-mix(...)`) as `[r, g, b, a]`. `alpha` (0-1) multiplies the color's own alpha. A token that is not declared is transparent black, and so is any call on the server. Read it inside a `$derived`/`$effect` together with `colorScheme.resolved` (or subscribe with `onTokensChange`) to follow scheme and preset changes.
+
+```ts
+function tokenRgba(token: CaTokenName | (string & {}), alpha?: number): Rgba
+```
+
 ### uid
 
 `import { uid } from "@codeatlasdev/ui"`
@@ -4095,11 +4284,19 @@ Types:
 | Type | Declaration | Notes |
 |---|---|---|
 | `Align` | `type Align = (typeof ALIGN)[number];` |  |
+| `AvatarTokens` | `interface AvatarTokens extends AvatarFallbackTokens { size?: Partial< Record< "xs" \| "sm" \| "md" \| "lg" \| "xl", Pick<AvatarFallbackTokens, "fallbackSize" \| "fallbackWeight"> > >; }` |  |
 | `BrandColors` | `interface BrandColors { main: string; light: string; dark: string; contrast: string; }` |  |
 | `Breakpoint` | `type Breakpoint = "xs" \| "sm" \| "md" \| "lg" \| "xl";` |  |
 | `BuiltinPresetId` | `type BuiltinPresetId = \| "amber" \| "ocean" \| "crimson" \| "cyan" \| "violet" \| "emerald" \| "rose" \| "slate";` | Presets shipped in global.css. |
+| `ButtonSizeTokens` | `interface ButtonSizeTokens { height?: CssValue; paddingX?: CssValue; fontSize?: CssValue; weight?: CssValue; tracking?: CssValue; }` | Typography and box tokens of one Button size. |
+| `ButtonTokens` | `interface ButtonTokens extends ButtonSizeTokens { weight?: CssValue; tracking?: CssValue; leading?: CssValue; gap?: CssValue; ghostBorderWidth?: CssValue; disabledBg?: CssValue; touchHeight?: CssValue; sm?: ButtonSizeTokens; md?: ButtonSizeTokens; lg?: ButtonSizeTokens; }` |  |
+| `CardTokens` | `interface CardTokens { bg?: CssValue; radius?: CssValue; border?: CssValue; shadow?: CssValue; }` |  |
+| `CaTokenName` | `type CaTokenName = keyof CaTokenRegistry extends never ? never : keyof CaTokenRegistry & string;` | Names declared through `CaTokenRegistry`, else any `group.name` string. |
+| `CaTokenRegistry` | `interface CaTokenRegistry {}` | Registry of domain tokens an app declares, for typed names. Augment it to get autocomplete in `tokenRgba("status.new")`: |
 | `ColorScheme` | `type ColorScheme = "light" \| "dark" \| "system";` |  |
+| `ColorValue` | `type ColorValue = string \| { color: string; alpha: number };` | One color: any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `color-mix(…)`, `rgb(…)`) or an explicit alpha form that keeps the color and the opacity apart. |
 | `Columns` | `type Columns = (typeof COLUMNS)[number] \| `${(typeof COLUMNS)[number]}`;` |  |
+| `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldTokens; textField?: FieldTokens; textArea?: TextAreaTokens; card?: CardTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
 | `DateRange` | `interface DateRange { start: DateValue \| undefined; end: DateValue \| undefined; }` | Value of RangeCalendar / DateRangePicker. Both ends are undefined until picked. |
 | `DeepPartial` | `type DeepPartial<T> = T extends (...args: never[]) => unknown ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;` |  |
 | `Density` | `type Density = "compact" \| "comfortable" \| "airy" \| number;` | Spacing density: a multiplier of the 4px unit, or a named step. |
@@ -4122,16 +4319,20 @@ Types:
 | `ElementTag` | `type ElementTag = keyof SvelteHTMLElements;` | Tags `as` can render: the HTML and SVG elements Svelte knows (`svelte:element`). |
 | `ElevationLevel` | `type ElevationLevel = keyof typeof elevation;` |  |
 | `ElevationModel` | `type ElevationModel = "soft" \| "none" \| "hard" \| "glow";` | Shadow model: how elevation is drawn. |
+| `EmptyStateTokens` | `interface EmptyStateTokens { padding?: CssValue; titleSize?: CssValue; titleWeight?: CssValue; }` |  |
 | `ExportColumn` | `interface ExportColumn<T extends object = Record<string, unknown>> { key: keyof T & string; header?: string; value?: (row: T) => unknown; }` |  |
 | `FieldState` | `interface FieldState { value: string; error: string \| undefined; touched: boolean; }` |  |
+| `FieldTokens` | `interface FieldTokens { gap?: CssValue; labelLeading?: CssValue; }` |  |
 | `FontDescriptor` | `interface FontDescriptor { family: string; src: string; weight?: number \| string; style?: "normal" \| "italic"; display?: "auto" \| "block" \| "swap" \| "fallback" \| "optional"; preload?: boolean; fallback?: string; fallbackMetrics?: FontFallbackMetrics; generic?: string; }` | A self-hosted web font. Emits `@font-face`, an optional preload and a metric-matched fallback face. |
 | `FontFallbackMetrics` | `interface FontFallbackMetrics { sizeAdjust?: string \| number; ascent?: string; descent?: string; lineGap?: string; }` | Metrics of the fallback face, from the font's own tables, so the swap does not shift layout. |
 | `FontSpec` | `type FontSpec = string \| FontDescriptor;` | A font stack string (existing behavior) or a self-hosted font descriptor. |
 | `FormState` | `interface FormState< K extends string, A extends Record<string, unknown> = Record<never, never>, > { fields: Record<K, FieldState>; arrays: { [N in keyof A]: FieldArrayState<A[N]> }; dirty: boolean; valid: boolean; submitting: boolean; touch(field: K): void; set(field: K, value: string): void; validate(): boolean; reset(): void; }` |  |
 | `HeadingLevel` | `type HeadingLevel = 2 \| 3 \| 4 \| 5 \| 6;` | Level of a rendered `<h2>`–`<h6>`. `<h1>` is reserved for the page title (`PageShell`). |
+| `IconButtonTokens` | `interface IconButtonTokens { weight?: CssValue; size?: { sm?: CssValue; md?: CssValue; lg?: CssValue }; touchSize?: CssValue; }` |  |
 | `IconComponent` | `type IconComponent = Component<IconProps>;` | Any Svelte 5 icon component accepting {@link IconProps}. Structural, so `@lucide/svelte` icons (and compatible libraries) fit. |
 | `IconProps` | `type IconProps = { size?: number \| string; class?: string; "stroke-width"?: number \| string; };` | Props the library passes to icon components. |
 | `Justify` | `type Justify = (typeof JUSTIFY)[number];` |  |
+| `KbdTokens` | `interface KbdTokens { size?: CssValue; fontSize?: CssValue; leading?: CssValue; }` |  |
 | `LayerChange` | `interface LayerChange { layers: LayerInfo[]; count: number; modal: boolean; }` | Detail of the `layerchange` event on `document`. |
 | `LayerInfo` | `interface LayerInfo { kind: LayerKind; rect: DOMRect; }` |  |
 | `LayerKind` | `type LayerKind = "modal" \| "popover" \| "hint";` | The single layer stack. Every overlay (dialog, sheet, menu, popover, tooltip) goes through `openLayer`, so there is one place for the top layer, Escape / outside press / focus-out, focus restoration, scroll lock and the `layerchange` event hosts listen to. |
@@ -4151,16 +4352,20 @@ Types:
 | `NeutralRamp` | `interface NeutralRamp { surfaceLight: SurfaceColors; surfaceDark: SurfaceColors; textLight: TextColors; textDark: TextColors; outlineLight: OutlineColors; outlineDark: OutlineColors; }` |  |
 | `OutlineColors` | `interface OutlineColors { subtle: string; default: string; strong: string; }` |  |
 | `Paper` | `type Paper = "mesh" \| "plain" \| "grid" \| "dots" \| "lines";` | Page background pattern. mesh = brand glow gradients (drawn by the glass and frosted materials); the rest are flat paper. |
+| `PasswordScore` | `type PasswordScore = 0 \| 1 \| 2 \| 3;` | 0 = empty, 1 = weak, 2 = fair, 3 = strong. |
 | `Politeness` | `type Politeness = "polite" \| "assertive";` |  |
 | `PolymorphicAttributes` | `type PolymorphicAttributes<T extends ElementTag, Own = object> = Omit< SvelteHTMLElements[T], "class" \| "children" \| "as" \| keyof Own > & Own;` | The tag's own attributes and event handlers, minus what the primitive declares itself (`Own`, `class`, `children`, `as`). |
 | `PolymorphicProps` | `type PolymorphicProps<T extends ElementTag, Own = object> = { as?: T; class?: string; children?: Snippet; } & PolymorphicAttributes<T, Own>;` | Props of a primitive that renders `as` an element: the tag's own attributes and event handlers (`as="form"` takes `novalidate`, `onsubmit` with `currentTarget: HTMLFormElement`), its token props, `class` and `children`. |
-| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
+| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; tokens?: PresetTokenGroups; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `PresetId` | `type PresetId = BuiltinPresetId \| (string & {});` | A built-in preset or a brand preset registered via `ThemeOptions.presets`. |
 | `PresetSizes` | `interface PresetSizes { inputFontSize?: string; }` |  |
+| `PresetTokenGroups` | `type PresetTokenGroups = Record<string, Record<string, TokenValue>>;` | `group → name → value`. Group and name are CSS identifier fragments (`[a-z][a-z0-9-]*`). |
 | `RadiusKey` | `type RadiusKey = keyof typeof radius;` |  |
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
 | `Responsive` | `type Responsive<T> = T \| ({ base?: T } & { [B in Breakpoint]?: T });` | A value, or one value per breakpoint: `{ base: "2", md: "6" }`. A breakpoint applies from its width up. |
-| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: string; brandFillHover?: string; brandContrast?: string; background?: string; sunken?: string; surface?: string; overlay?: string; text?: string; textSecondary?: string; textHint?: string; textDisabled?: string; borderSubtle?: string; border?: string; borderStrong?: string; success?: string; warning?: string; info?: string; error?: string; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. |
+| `Rgba` | `type Rgba = [number, number, number, number];` | `[r, g, b, a]`: r, g, b in 0-255, a in 0-1 (what `@deck.gl/core` `Color` expects, alpha scaled by the caller). |
+| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: ColorValue; brandFillHover?: ColorValue; brandContrast?: ColorValue; background?: ColorValue; sunken?: ColorValue; surface?: ColorValue; overlay?: ColorValue; text?: ColorValue; textSecondary?: ColorValue; textHint?: ColorValue; textDisabled?: ColorValue; borderSubtle?: ColorValue; border?: ColorValue; borderStrong?: ColorValue; success?: ColorValue; warning?: ColorValue; info?: ColorValue; error?: ColorValue; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it, and the build measures text roles after compositing it (see `presetContrastIssues`). |
+| `SegmentedTokens` | `interface SegmentedTokens extends SegmentedItemTokens { sm?: SegmentedItemTokens; md?: SegmentedItemTokens; }` |  |
 | `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
 | `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
 | `SortableOptions` | `interface SortableOptions { id: string; group?: string; getItems: () => readonly string[]; getLabel?: (id: string) => string; label?: string; axis?: "y" \| "x"; drop?: "position" \| "container"; handle?: string; disabled?: boolean; onDrop: (e: DndDropEvent) => void; }` |  |
@@ -4168,8 +4373,9 @@ Types:
 | `StageInsets` | `interface StageInsets { top: number; right: number; bottom: number; left: number; }` |  |
 | `SurfaceColors` | `interface SurfaceColors { sunken: string; base: string; raised: string; overlay: string; }` |  |
 | `SurfaceStyle` | `type SurfaceStyle = \| "glass" \| "frosted" \| "solid" \| "flat" \| "outlined" \| "neumorphic" \| "clay" \| "tonal" \| "chrome";` | Surface material. glass/frosted blur the backdrop; the rest are opaque. |
+| `TextAreaTokens` | `interface TextAreaTokens extends FieldTokens { minHeight?: CssValue; }` |  |
 | `TextColors` | `interface TextColors { primary: string; secondary: string; disabled: string; }` |  |
-| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
+| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; components: ComponentTokens; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
 | `ThemePreset` | `interface ThemePreset { id: BuiltinPresetId; label: string; swatchColor: string; hue: number; brandLight: BrandColors; brandDark: BrandColors; ramp: NeutralRamp; semanticLight: SemanticColors; semanticDark: SemanticColors; }` |  |
 | `Thickness` | `type Thickness = "ultra-thin" \| "thin" \| "regular" \| "thick" \| "chrome";` |  |
@@ -4177,6 +4383,7 @@ Types:
 | `ToastItem` | `interface ToastItem { id: string; message: string; variant: ToastVariant; duration: number; count?: number; description?: string; action?: ToastAction; }` |  |
 | `ToastOptions` | `interface ToastOptions { variant?: ToastVariant; duration?: number; id?: string; description?: string; action?: ToastAction; }` |  |
 | `ToastVariant` | `type ToastVariant = "default" \| "success" \| "error" \| "warning" \| "info";` |  |
+| `TokenValue` | `type TokenValue = string \| { light?: string; dark?: string };` | One domain token: a single color for both schemes, or one per scheme (a missing side uses the other). |
 | `TypographyOptions` | `interface TypographyOptions { scale?: number; weights?: Partial<Record<"regular" \| "medium" \| "semibold" \| "bold" \| "heading", number>>; headingTracking?: string; headingCase?: "none" \| "uppercase"; displayTracking?: string; displayLeading?: number; labelTracking?: string; labelCase?: "none" \| "uppercase"; lineHeight?: number; measure?: string; }` |  |
 | `UseDndOptions` | `interface UseDndOptions { messages?: Partial<DndMessages>; threshold?: number; holdMs?: number; edge?: number; id?: string; }` |  |
 | `UseListStateOptions` | `interface UseListStateOptions<T extends object> { data: T[]; perPage?: number; searchKeys?: (keyof T)[]; idKey?: keyof T; ofLabel?: string; }` | useListState — eliminates boilerplate state management in list/CRUD pages. |
@@ -4325,9 +4532,9 @@ Types:
 |---|---|---|
 | `DesignStyleId` | `type DesignStyleId = \| "default" \| "liquid" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
 | `Paper` | `type Paper = "mesh" \| "plain" \| "grid" \| "dots" \| "lines";` | Page background pattern. mesh = brand glow gradients (drawn by the glass and frosted materials); the rest are flat paper. |
-| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
+| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; tokens?: PresetTokenGroups; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `PresetSizes` | `interface PresetSizes { inputFontSize?: string; }` |  |
-| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: string; brandFillHover?: string; brandContrast?: string; background?: string; sunken?: string; surface?: string; overlay?: string; text?: string; textSecondary?: string; textHint?: string; textDisabled?: string; borderSubtle?: string; border?: string; borderStrong?: string; success?: string; warning?: string; info?: string; error?: string; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. |
+| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: ColorValue; brandFillHover?: ColorValue; brandContrast?: ColorValue; background?: ColorValue; sunken?: ColorValue; surface?: ColorValue; overlay?: ColorValue; text?: ColorValue; textSecondary?: ColorValue; textHint?: ColorValue; textDisabled?: ColorValue; borderSubtle?: ColorValue; border?: ColorValue; borderStrong?: ColorValue; success?: ColorValue; warning?: ColorValue; info?: ColorValue; error?: ColorValue; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it, and the build measures text roles after compositing it (see `presetContrastIssues`). |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
 
 ## @codeatlasdev/ui/charts
@@ -4639,10 +4846,10 @@ Types:
 | `DesignStyleId` | `type DesignStyleId = \| "default" \| "liquid" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
 | `IslandTheme` | `interface IslandTheme { preset?: string; scheme: IslandScheme; }` |  |
 | `NativeFeelOptions` | `interface NativeFeelOptions { blockZoom?: boolean; allowContextMenu?: (e: MouseEvent) => boolean; }` |  |
-| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
+| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; tokens?: PresetTokenGroups; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
 | `RouteThemes` | `type RouteThemes = Record<string, Partial<IslandTheme>>;` | Route id prefixes (`event.route.id`, e.g. `"/(marketing)"`) → the theme their pages use. Longest prefix wins. |
-| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
+| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; components: ComponentTokens; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
 | `ThemeHandleOptions` | `interface ThemeHandleOptions { routes?: RouteThemes; }` | Options of the second argument of `caThemeHandle`. |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
 
@@ -5311,6 +5518,16 @@ Neutral surface/text/outline ramp tinted with the given brand hue (OKLCH degrees
 function neutralRamp(hue: number): NeutralRamp
 ```
 
+### onTokensChange
+
+`import { onTokensChange } from "@codeatlasdev/ui/tokens"`
+
+Call `fn` after the scheme, preset or surface style of the page changes (the `class`, `data-preset` and `data-style` attributes of `<html>`). Returns the unsubscribe function. Server-side it does nothing. Svelte code usually reads `colorScheme` instead; this is for canvas, map and chart code outside a component.
+
+```ts
+function onTokensChange(fn: () => void): () => void
+```
+
 ### radius
 
 `import { radius } from "@codeatlasdev/ui/tokens"`
@@ -5387,6 +5604,16 @@ The built-in brand presets with their generated brand ramps, neutral ramp and se
 const THEME_PRESETS: ThemePreset[]
 ```
 
+### tokenRgba
+
+`import { tokenRgba } from "@codeatlasdev/ui/tokens"`
+
+A design token (`--ca-brand-main`), a domain token by name (`"status.new"` for `--ca-token-status-new`, also `"status.new-subtle"` / `"status.new-contrast"`) or any CSS color (`#f59e0b`, `oklch(...)`, `color-mix(...)`) as `[r, g, b, a]`. `alpha` (0-1) multiplies the color's own alpha. A token that is not declared is transparent black, and so is any call on the server. Read it inside a `$derived`/`$effect` together with `colorScheme.resolved` (or subscribe with `onTokensChange`) to follow scheme and preset changes.
+
+```ts
+function tokenRgba(token: CaTokenName | (string & {}), alpha?: number): Rgba
+```
+
 ### zIndex
 
 `import { zIndex } from "@codeatlasdev/ui/tokens"`
@@ -5419,6 +5646,7 @@ Types:
 | `OutlineColors` | `interface OutlineColors { subtle: string; default: string; strong: string; }` |  |
 | `PresetId` | `type PresetId = BuiltinPresetId \| (string & {});` | A built-in preset or a brand preset registered via `ThemeOptions.presets`. |
 | `RadiusKey` | `type RadiusKey = keyof typeof radius;` |  |
+| `Rgba` | `type Rgba = [number, number, number, number];` | `[r, g, b, a]`: r, g, b in 0-255, a in 0-1 (what `@deck.gl/core` `Color` expects, alpha scaled by the caller). |
 | `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
 | `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
 | `SurfaceColors` | `interface SurfaceColors { sunken: string; base: string; raised: string; overlay: string; }` |  |
@@ -5534,7 +5762,7 @@ Types:
 
 | Type | Declaration | Notes |
 |---|---|---|
-| `PresetTokens` | `interface PresetTokens { brandMain: string; brandLight: string; brandDark: string; brandContrast: string; brandFill: string; brandFillHover: string; surfaceSunken: string; surfaceBase: string; surfaceRaised: string; surfaceOverlay: string; textPrimary: string; textSecondary: string; textDisabled: string; textHint: string; outlineSubtle: string; outlineDefault: string; outlineStrong: string; outlineControl: string; focusRing: string; semanticErrorContrast: string; glassBg: string; glassTintUltraThin: string; glassTintThin: string; glassTint: string; glassTintThick: string; glassTintChrome: string; glassTintSolid: string; glassBorder: string; glassShadow: string; glowPrimary: string; glowPrimaryStrong: string; vibrancyLabel: string; vibrancySecondary: string; vibrancyTertiary: string; vibrancyFill: string; vibrancySeparator: string; scrimColor: string; tooltipFg: string; dark: { brandMain: string; brandLight: string; brandDark: string; brandContrast: string; brandFill: string; brandFillHover: string; surfaceSunken: string; surfaceBase: string; surfaceRaised: string; surfaceOverlay: string; textPrimary: string; textSecondary: string; textDisabled: string; textHint: string; outlineControl: string; focusRing: string; semanticErrorContrast: string; glassBg: string; glowPrimary: string; glowPrimaryStrong: string; vibrancyLabel: string; vibrancySecondary: string; vibrancyTertiary: string; vibrancyFill: string; vibrancySeparator: string; tooltipFg: string; }; }` |  |
+| `PresetTokens` | `interface PresetTokens { brandMain: string; brandLight: string; brandDark: string; brandContrast: string; brandText: string; brandFill: string; brandFillHover: string; surfaceSunken: string; surfaceBase: string; surfaceRaised: string; surfaceOverlay: string; textPrimary: string; textSecondary: string; textDisabled: string; textHint: string; outlineSubtle: string; outlineDefault: string; outlineStrong: string; outlineControl: string; focusRing: string; semanticErrorContrast: string; glassBg: string; glassTintUltraThin: string; glassTintThin: string; glassTint: string; glassTintThick: string; glassTintChrome: string; glassTintSolid: string; glassBorder: string; glassShadow: string; glowPrimary: string; glowPrimaryStrong: string; vibrancyLabel: string; vibrancySecondary: string; vibrancyTertiary: string; vibrancyFill: string; vibrancySeparator: string; scrimColor: string; tooltipFg: string; dark: { brandMain: string; brandLight: string; brandDark: string; brandContrast: string; brandText: string; brandFill: string; brandFillHover: string; surfaceSunken: string; surfaceBase: string; surfaceRaised: string; surfaceOverlay: string; textPrimary: string; textSecondary: string; textDisabled: string; textHint: string; outlineControl: string; focusRing: string; semanticErrorContrast: string; glassBg: string; glowPrimary: string; glowPrimaryStrong: string; vibrancyLabel: string; vibrancySecondary: string; vibrancyTertiary: string; vibrancyFill: string; vibrancySeparator: string; tooltipFg: string; }; }` |  |
 | `TokenMap` | `type TokenMap = Record<`--ca-${string}`, string>;` | CSS custom properties of one preset, per scheme. |
 
 ## @codeatlasdev/ui/vite
@@ -5733,9 +5961,9 @@ Types:
 | `FontSpec` | `type FontSpec = string \| FontDescriptor;` | A font stack string (existing behavior) or a self-hosted font descriptor. |
 | `GenerateBrandOptions` | `interface GenerateBrandOptions { mark: string; theme: ThemeOptions; outDir: string; base?: string; name?: string; shortName?: string; }` |  |
 | `OgCardOptions` | `interface OgCardOptions { title: string; description?: string; eyebrow?: string; siteName: string; mark: string; colors: { ink: string; spark: string; surface: string }; css?: string; fontFamily?: string; lang?: string; }` |  |
-| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
+| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; tokens?: PresetTokenGroups; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `PresetSizes` | `interface PresetSizes { inputFontSize?: string; }` |  |
 | `ResolvedBrand` | `interface ResolvedBrand { light: BrandColors; dark: BrandColors; }` |  |
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
-| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
+| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; components: ComponentTokens; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
