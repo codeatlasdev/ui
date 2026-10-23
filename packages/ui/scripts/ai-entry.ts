@@ -48,7 +48,10 @@ export function parseRecipes(markdown: string): Recipe[] {
 	const flush = () => {
 		if (!cur) return;
 		const body = cur.lines.join("\n").trim();
-		const fence = body.match(/```[a-z]*\n([\s\S]*?)\n```/);
+		// The example is the route file: the first svelte fence. A recipe may lead with a `ts` fence
+		// (its `src/lib/messages.ts`), which is not the screen.
+		const fence =
+			body.match(/```svelte[^\n]*\n([\s\S]*?)\n```/) ?? body.match(/```[a-z]*\n([\s\S]*?)\n```/);
 		if (fence)
 			out.push({ id: slugify(cur.title), title: cur.title, example: fence[1], markdown: body });
 		cur = undefined;

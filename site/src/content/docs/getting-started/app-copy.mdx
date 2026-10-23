@@ -1,0 +1,114 @@
+---
+title: App copy
+description: How an app keeps its own visible text, and why codeatlas-ui lint reports i18n-literal on literal copy in a template.
+group: Getting started
+order: 16
+---
+import { Callout } from "@codeatlasdev/ui";
+
+`codeatlas-ui lint` fails any `.svelte` template that carries visible words as a literal. The fix is one typed module for the app's own copy, read from `<script>`. The library's own strings (aria-labels, empty states, dialog buttons) already come from its [catalog](/docs/getting-started/i18n/); this page is about the text **you** write.
+
+## The rule: `i18n-literal`
+
+It reads the Svelte AST of every `.svelte` file and reports two things:
+
+| Flagged | Example |
+|---|---|
+| A text node with at least two letters in a row | `<Button>Save</Button>`, `<h2>Welcome back</h2>`, `<a href="/x">Billing</a>` |
+| A **plain string** value on one of these attributes: `label`, `title`, `placeholder`, `description`, `alt`, `aria-label`, `helperText`, `emptyText`, `confirmLabel`, `cancelLabel` | `<TextField label="Email" />`, `<img alt="Team photo" />` |
+
+Allowed, because they are not literal words:
+
+- Any expression: `label={m.email}`, `{m.save}`, `aria-label={m.selectRow(row.name)}`. The rule only looks at plain strings, never at what an expression returns.
+- Text with no word in it: numbers, symbols, punctuation (`{count}`, `/`, `·`, `→`).
+- Attributes that are not in the list above (`href`, `class`, `name`, `type`, `value`, `data-*`). A literal `placeholder` is flagged, a literal `name="email"` is not.
+- Everything inside `<script>` and `<style>`, and every `.ts` file. That is where the copy lives.
+- A line (or the line below a marker) with `ca-ui-workaround(#n)`, for the rare literal that must stay.
+
+The same run also reports `hex`, `px`, `inline-style` and `global-ca`; see [Installation](/docs/getting-started/installation/#lint-and-e2e-templates) for how to run it and wire it into CI.
+
+## The pattern: one typed `messages.ts`
+
+Put every visible string of the app in `src/lib/messages.ts`, as one `as const` object named `m`, and read it in the template. Values that carry data are functions.
+
+```ts
+// src/lib/messages.ts
+export const m = {
+  save: "Save changes",
+  cancel: "Cancel",
+  users: {
+    title: "Users",
+    empty: "No users match your search.",
+    selected: (count: number) => `${count} selected`,
+  },
+} as const;
+```
+
+```svelte
+<!-- src/routes/(app)/users/+page.svelte -->
+<script lang="ts">
+  import { Button, EmptyState } from "@codeatlasdev/ui";
+  import { m } from "#lib/messages.ts"; // SvelteKit 2: "$lib/messages"
+</script>
+
+<h1>{m.users.title}</h1>
+<Button variant="filled">{m.save}</Button>
+<EmptyState title={m.users.empty} />
+```
+
+Rules of the pattern:
+
+- **One module, one export.** Components import `m`; they never declare their own strings. Group by screen (`m.users.title`), not by component.
+- **`as const`, nested by screen.** A typo in `m.users.titel` is a type error, and `svelte-check` finds every template that read a key you removed.
+- **Functions for values.** Counts, names and dates become `(count: number) => string`, so each language controls word order and plurals. Never concatenate in the template (`{m.hello} {name}` breaks in languages that put the name first).
+- **Import path.** SvelteKit 3 has no `$lib`: use the `#lib/*` map from [Installation](/docs/getting-started/installation/) and write the extension (`#lib/messages.ts`). SvelteKit 2 uses `$lib/messages`. `codeatlas-ui init` writes this file for you.
+- **Component props that take `Snippet`s** (`{#snippet label()}{m.x}{/snippet}`) are text nodes too: put an expression inside, never words.
+- **Not for the library's strings.** Do not copy `Close`, `Search` or `Copy` into `messages.ts`: components fall back to their catalog when the prop is omitted, so leave it out and change the language with `setLocale`.
+
+## One language or many
+
+Most apps have one language: the object above is the whole solution. It adds no runtime and no dependency.
+
+For more than one, keep one object per language with the same shape, typed by the first, and pick it from the locale the library already tracks. `useLocale()` reads the active locale from the `I18nProvider` (or from `setLocale`), so the library's strings and yours switch together:
+
+```ts
+// src/lib/messages.ts
+import { useLocale } from "@codeatlasdev/ui";
+
+const en = {
+  save: "Save changes",
+  users: { title: "Users", selected: (count: number) => `${count} selected` },
+} as const;
+
+type Copy = { -readonly [K in keyof typeof en]: (typeof en)[K] extends string ? string : (typeof en)[K] };
+
+const ptBR: Copy = {
+  save: "Salvar alterações",
+  users: { title: "Usuários", selected: (count: number) => `${count} selecionados` },
+};
+
+const byLocale: Record<string, Copy> = { en, "pt-BR": ptBR };
+
+/** Call at the top level of a component `<script>`; returns the copy of the active locale. */
+export function useCopy(): () => Copy {
+  const locale = useLocale();
+  return () => byLocale[locale()] ?? byLocale[locale().split("-")[0] ?? "en"] ?? en;
+}
+```
+
+```svelte
+<script lang="ts">
+  import { useCopy } from "#lib/messages.ts";
+  const m = useCopy();
+</script>
+
+<h1>{m().users.title}</h1>
+```
+
+<Callout type="note">
+  `registerLocale` is for the library: its argument is a deep partial of the library's own catalog (`common`, `dialog`, `dataTable`, ...), so a key of your own is a type error and is never read by a component. Use it to translate or reword **component** strings; use `messages.ts` for **app** strings. The two meet only at the locale: `I18nProvider locale={...}` or `setLocale(...)` sets it once for both.
+</Callout>
+
+## Recipes
+
+Every code block of the [Recipes](/docs/getting-started/recipes/) page passes this rule: each one shows its `messages.ts` once and reads it from `<script>`, and a unit test runs the guard over all of them. Copy the messages module with the route file and edit the text there.

@@ -8,6 +8,8 @@ import { Callout } from "@codeatlasdev/ui";
 
 Every visible string the package generates (aria-labels, placeholders, empty states, "Copy", "On this page", toast and dialog buttons) comes from a message catalog. The default language is **English**; Brazilian Portuguese ships built in and any other language can be registered. There are two ways to choose the language.
 
+The catalog holds the **library's** strings only. The text your app writes (page titles, button labels, form copy) belongs in a typed `src/lib/messages.ts`, not in templates: see [App copy](/docs/getting-started/app-copy/), which also covers the `i18n-literal` rule of `codeatlas-ui lint`.
+
 ## SSR apps: `I18nProvider`
 
 On the server, wrap the tree in `I18nProvider`. The locale lives in Svelte context, so each request renders in its own language and concurrent requests never share state:

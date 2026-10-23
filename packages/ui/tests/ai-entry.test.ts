@@ -40,6 +40,20 @@ describe("parseRecipes", () => {
 	it("does not split on a heading inside a fence", () => {
 		expect(parseRecipes(md)[0].markdown).toContain("Rules.");
 	});
+
+	it("takes the svelte fence as the example when a ts fence leads (messages.ts, #474)", () => {
+		const lead = [
+			"## Form page",
+			"```ts",
+			"// src/lib/messages.ts",
+			"export const m = {} as const;",
+			"```",
+			"```svelte",
+			"<Button>{m.x}</Button>",
+			"```",
+		].join("\n");
+		expect(parseRecipes(lead)[0].example).toBe("<Button>{m.x}</Button>");
+	});
 });
 
 describe("llms.txt, the canonical entry (#384)", () => {
