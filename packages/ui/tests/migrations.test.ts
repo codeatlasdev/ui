@@ -190,6 +190,23 @@ describe("migrate --from --to (#382)", () => {
 		expect(r.read("src/routes/+layout.svelte")).toContain('setLocale("pt-BR")');
 	});
 
+	it("1.0 renames NavModule path/sections to basePath/items and leaves NavItem alone (#383)", () => {
+		const nav = `import type { NavModule } from "@codeatlasdev/ui";
+import { Map } from "lucide-svelte";
+export const modules: NavModule[] = [
+	{ id: "map", label: "Map", icon: Map, path: "/map", sections: [{ items: [{ id: "a", label: "A", icon: Map, path: "/map/a" }] }] },
+];
+export const route = { path: "/x", sections: ["a"] };
+`;
+		const r = run({ from: 0, to: 1, report: "json" }, { "src/nav.ts": nav });
+		const out = r.read("src/nav.ts");
+		expect(out).toContain(`path: "/map/a"`);
+		expect(out).toContain(`basePath: "/map"`);
+		expect(out).toContain("items: [{ items:");
+		expect(out).toContain(`{ path: "/x", sections: ["a"] }`);
+		expect(JSON.parse(r.out).changed).toEqual(["src/nav.ts"]);
+	});
+
 	it("--strict exits false when something is left, true when nothing is", () => {
 		expect(run({ from: 2, to: 4, strict: true }).ok).toBe(false);
 		const clean = run(

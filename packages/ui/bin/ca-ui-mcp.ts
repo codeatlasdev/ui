@@ -23,8 +23,8 @@ import type {
 	ManifestToken,
 	PartsFile,
 } from "../scripts/build-manifest.ts";
-import { type MigrationFile, migrationMarkdown } from "../src/cli/migrations.ts";
 import { type Equivalent, findEquivalent } from "../src/cli/equivalents.ts";
+import { type MigrationFile, migrationMarkdown } from "../src/cli/migrations.ts";
 import { buildReport } from "../src/cli/report.ts";
 
 // Built to dist/bin/ca-ui-mcp.js; the manifests sit one level up in dist/.

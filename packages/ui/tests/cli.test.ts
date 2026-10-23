@@ -722,3 +722,70 @@ describe("init leaves the next agent instructions (#384)", () => {
 		expect(read(root, "AGENTS.md")).toContain(START);
 	});
 });
+
+describe("init --with lint,e2e (#383)", () => {
+	const base = () => project({ "package.json": KIT_PKG, "vite.config.ts": VITE });
+	const withFlags = (root: string, features: string[], write = true) =>
+		init(root, { ...quiet, write, with: features });
+
+	it("without --with nothing about lint or e2e is written", () => {
+		const root = base();
+		init(root, { ...quiet, write: true });
+		expect(existsSync(join(root, "playwright.config.ts"))).toBe(false);
+		expect(JSON.parse(read(root, "package.json")).scripts).toBeUndefined();
+	});
+
+	it("lint adds the ui guard and ca-selector scripts, with no dependency the app lacks", () => {
+		const root = base();
+		expect(withFlags(root, ["lint"])).toBe(true);
+		const pkg = JSON.parse(read(root, "package.json"));
+		expect(pkg.scripts["lint:ui"]).toBe("codeatlas-ui lint src");
+		expect(pkg.scripts["check:ca"]).toBe("codeatlas-ui workarounds --strict src");
+		expect(read(root, "ui-guard.config.json")).toContain('"allow"');
+	});
+
+	it("e2e writes a playwright config with the 390/768/1280 matrix and an axe spec per route", () => {
+		const root = base();
+		expect(withFlags(root, ["e2e"])).toBe(true);
+		const cfg = read(root, "playwright.config.ts");
+		for (const w of ["390", "768", "1280"]) expect(cfg).toContain(w);
+		const spec = read(root, "e2e/a11y.spec.ts");
+		expect(spec).toContain("AxeBuilder");
+		expect(spec).toContain('"/"');
+		const pkg = JSON.parse(read(root, "package.json"));
+		expect(pkg.scripts["test:e2e"]).toBe("playwright test");
+		expect(pkg.devDependencies["@playwright/test"]).toBeDefined();
+		expect(pkg.devDependencies["@axe-core/playwright"]).toBeDefined();
+	});
+
+	it("is idempotent and never overwrites an existing script or file", () => {
+		const root = project({
+			"package.json": JSON.stringify({
+				devDependencies: { "@sveltejs/kit": "^2.0.0" },
+				scripts: { "lint:ui": "my-guard" },
+			}),
+			"vite.config.ts": VITE,
+			"playwright.config.ts": "// mine\n",
+		});
+		withFlags(root, ["lint", "e2e"]);
+		withFlags(root, ["lint", "e2e"]);
+		expect(JSON.parse(read(root, "package.json")).scripts["lint:ui"]).toBe("my-guard");
+		expect(read(root, "playwright.config.ts")).toBe("// mine\n");
+	});
+
+	it("rejects a feature it does not know instead of ignoring it", () => {
+		const root = base();
+		const lines: string[] = [];
+		expect(init(root, { write: true, with: ["lint", "nope"], log: (l) => lines.push(l) })).toBe(
+			false
+		);
+		expect(lines.join("\n")).toContain('unknown --with value "nope"');
+	});
+
+	it("without --write it only reports what it would add", () => {
+		const root = base();
+		withFlags(root, ["lint", "e2e"], false);
+		expect(existsSync(join(root, "playwright.config.ts"))).toBe(false);
+		expect(JSON.parse(read(root, "package.json")).scripts).toBeUndefined();
+	});
+});

@@ -131,6 +131,13 @@ Stable API, English strings, layered CSS, ThemeOptions.
 - **migrate**: yes (`brand-preset-to-preset-definition`)
 - **Why / notes**: `BrandPreset` was removed from the exports. `brandPresetCSS` output changed (theme islands) and the head style id is `ca-theme` (was `ca-brand-presets`).
 
+### `v1-navmodule-basepath-items`
+
+- **Before** (renamed): NavModule { path, sections }
+- **After**: NavModule { basePath, items }
+- **migrate**: yes (`nav-module-path-sections`)
+- **Why / notes**: A module owns a `basePath` and a flat list of `items` (`NavItem` or `NavSection`). The codemod renames the keys of an object literal that has an `icon` and a `sections` array; a `NavItem` keeps `path`, and a module built dynamically is left for you.
+
 ### `v1-themeoptions-partial-themedefinition`
 
 - **Before** (behavior): ThemeOptions

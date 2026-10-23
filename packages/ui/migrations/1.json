@@ -14,6 +14,16 @@
 			"note": "`BrandPreset` was removed from the exports. `brandPresetCSS` output changed (theme islands) and the head style id is `ca-theme` (was `ca-brand-presets`)."
 		},
 		{
+			"id": "v1-navmodule-basepath-items",
+			"kind": "rename",
+			"changesets": ["ef015e6"],
+			"selector": "NavModule { path, sections }",
+			"replacement": "NavModule { basePath, items }",
+			"codemod": "yes",
+			"codemodId": "nav-module-path-sections",
+			"note": "A module owns a `basePath` and a flat list of `items` (`NavItem` or `NavSection`). The codemod renames the keys of an object literal that has an `icon` and a `sections` array; a `NavItem` keeps `path`, and a module built dynamically is left for you."
+		},
+		{
 			"id": "v1-themeoptions-partial-themedefinition",
 			"kind": "behavior",
 			"changesets": ["ef015e6"],

@@ -35,9 +35,11 @@ Port in this order, whatever you picked: theme and shell, then one list page, on
 
    `init` writes the theme file, the Vite plugins, the server hook, the `global.css` import and a mobile-ready viewport meta. Details: [Installation](/docs/getting-started/installation/).
 
-3. **Install optional peers only for what you port.** `@tanstack/svelte-table` for `DataTable`, `echarts` for charts, `shiki` for code blocks.
+3. **Check the setup.** `bunx @codeatlasdev/ui doctor` lists missing peers and wiring with a one-line fix each, see [Installation](/docs/getting-started/installation/#check-an-existing-setup-with-doctor).
 
-4. **Give your agent the manifest.** `claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp`, see [AI agents](/docs/getting-started/ai-agents/). Tell it to call `get_component` before it writes any prop.
+4. **Install optional peers only for what you port.** `@tanstack/svelte-table` for `DataTable`, `echarts` for charts, `shiki` for code blocks.
+
+5. **Give your agent the manifest.** `claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp`, see [AI agents](/docs/getting-started/ai-agents/). Tell it to call `get_component` before it writes any prop.
 
 </Steps>
 
@@ -535,6 +537,10 @@ A module-level `$state` is created once per server process, so it is shared by e
 ```
 
 Your own strings keep using your catalog; `useLocale()` gives the current tag inside the tree for `Intl` formatting.
+
+## Compare the result with the old app
+
+`bunx @codeatlasdev/ui compare <oldUrl> <newUrl>` opens both in Chromium at 390 and 1280 px (`--viewport`), measures each `data-testid` element (or `--selector` CSS) and prints the differences sorted by size: box, computed styles (`--props`) and a pixel diff. A button that differs in weight and padding gives exactly those rows. Box deltas up to `--tolerance` px (0.5) are ignored; exit 1 on any difference, 2 without `playwright` in the project. In tests, `measure(el, props)` from `@codeatlasdev/ui/testing` gives the same data.
 
 ## Gaps and workarounds
 

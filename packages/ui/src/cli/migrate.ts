@@ -68,6 +68,31 @@ function isMemberName(n: TS.Identifier): boolean {
 }
 
 /**
+ * Before 1.0 a `NavModule` was `{ path, sections }`; it is `{ basePath, items }`. Only an object with an
+ * `icon` and a `sections` array is a module (a route table with a `path` is not), and only its own keys are
+ * renamed: the `NavItem`s inside keep `path`.
+ */
+const navModuleKeys: Rule["apply"] = (sf, s) => {
+	const visit = (n: TS.Node) => {
+		if (ts.isObjectLiteralExpression(n)) {
+			const named = (name: string) =>
+				n.properties.find(
+					(p): p is TS.PropertyAssignment =>
+						ts.isPropertyAssignment(p) && ts.isIdentifier(p.name) && p.name.text === name
+				);
+			const sections = named("sections");
+			if (sections && named("icon") && ts.isArrayLiteralExpression(sections.initializer)) {
+				const path = named("path");
+				if (path) s.overwrite(path.name.getStart(sf), path.name.getEnd(), "basePath");
+				s.overwrite(sections.name.getStart(sf), sections.name.getEnd(), "items");
+			}
+		}
+		ts.forEachChild(n, visit);
+	};
+	visit(sf);
+};
+
+/**
  * Rules in the order they shipped. Add one per breaking rename; never edit a released rule.
  * `migrations/<major>.json` names a rule by `id` (`codemodId`); a test fails when it names one that is missing.
  */
@@ -76,6 +101,11 @@ export const RULES: Rule[] = [
 		id: "brand-preset-to-preset-definition",
 		description: "`BrandPreset` was renamed to `PresetDefinition` ({ id, color, label? }).",
 		apply: renameImport("BrandPreset", "PresetDefinition"),
+	},
+	{
+		id: "nav-module-path-sections",
+		description: "`NavModule` `path`/`sections` became `basePath`/`items`.",
+		apply: navModuleKeys,
 	},
 ];
 
