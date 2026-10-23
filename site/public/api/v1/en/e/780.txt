@@ -1,0 +1,38 @@
+<!-- @codeatlasdev/ui demo #780 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/theme-island#scoped-block -->
+Element: #780 Scoped block (layout/theme-island)
+What it shows: ThemeIsland as a scoped block: a light ocean island inside a dark page.
+When to use: A section or card that must use another preset or scheme than the rest of the app, without touching <html>.
+Spec:
+- `<ThemeIsland preset="ocean" scheme="light"`
+- A light block inside the page, nothing mirrored to the document
+Tags: theme-island, preset, scheme, light, dark, scope
+Needs: @codeatlasdev/ui@4.5.0
+Components: Button, ThemeIsland
+Live demo: https://ui.codeatlas.com.br/docs/layout/theme-island#scoped-block
+
+<script lang="ts">
+  import { Button, ThemeIsland } from '@codeatlasdev/ui';
+</script>
+
+<!-- A light island inside whatever scheme the page uses. -->
+<ThemeIsland preset="ocean" scheme="light" class="island">
+  <div class="island-body">
+    <h3>Ink on cream</h3>
+    <p>This block is light even when the app is dark.</p>
+    <Button variant="filled" size="sm">Get started</Button>
+  </div>
+</ThemeIsland>
+
+<style>
+  :global(.island) {
+    min-height: 0;
+    border-radius: var(--ca-radius-lg);
+    overflow: hidden;
+  }
+  .island-body {
+    display: grid;
+    gap: var(--ca-space-3);
+    padding: var(--ca-space-6);
+    justify-items: start;
+  }
+</style>

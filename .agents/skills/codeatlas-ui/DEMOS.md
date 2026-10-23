@@ -318,5 +318,5 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 470 | Close on pick | navigation/popover | Popover, Button, Calendar |
 | 480 | Panel width | layout/app-shell | AppShellLayout, PageShell, Card |
 | 481 | Color, count, actions and reorder | layout/app-shell | AppShellLayout, DropdownMenuItem, NavItemMenu, NavReorder, PageShell, Card |
-| 760 | Scoped block | layout/theme-island | Button, ThemeIsland |
-| 761 | Full page | layout/theme-island | Button, ThemeIsland |
+| 780 | Scoped block | layout/theme-island | Button, ThemeIsland |
+| 781 | Full page | layout/theme-island | Button, ThemeIsland |

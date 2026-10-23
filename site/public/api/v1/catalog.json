@@ -35,7 +35,7 @@
 		{
 			"slug": "layout",
 			"first": "165",
-			"last": "761",
+			"last": "781",
 			"count": 32
 		},
 		{
@@ -14157,7 +14157,7 @@
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{
-			"id": "760",
+			"id": "780",
 			"group": "layout",
 			"page": "theme-island",
 			"variant": "Scoped",
@@ -14197,7 +14197,7 @@
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{
-			"id": "761",
+			"id": "781",
 			"group": "layout",
 			"page": "theme-island",
 			"variant": "FullPage",
