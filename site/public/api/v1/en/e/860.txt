@@ -86,4 +86,9 @@ Live demo: https://ui.codeatlas.com.br/docs/layout/domain-tokens#status-tokens
     width: 300px;
     height: 80px;
   }
+  .st__chart canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
 </style>
