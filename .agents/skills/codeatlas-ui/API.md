@@ -399,6 +399,7 @@ Card — a Surface with a header (`title`, `headerActions`), padding and an opti
 | `padding?` | `'none' \| 'sm' \| 'md' \| 'lg' \| (string & {}) \| number` |  | Content padding: `'none'`, `'sm'` (12px), `'md'` (20px, the default), `'lg'` (32px), or any CSS length (`'1.5rem'`) or number (px). It sets `--ca-card-padding` on this card only. `flush` is the alias of `'none'` and wins over `padding`. |
 | `flush?` | `boolean` | `false` | Removes all padding, for tables, images and code that touch the edges. |
 | `full?` | `boolean` | `false` | `width: 100%`. |
+| `gap?` | `'sm' \| 'md' \| 'lg' \| (string & {}) \| number` |  | Stacks the children in a column with this spacing: `'sm'` (8px), `'md'` (16px), `'lg'` (24px), or any CSS length / number (px). Omit for normal flow. Without it several inline controls (Checkbox, Switch, TextField) sit side by side with no space between them. |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded card (content keeps its layout, hidden), announced as busy. |
 | `class?` | `string` | `''` |  |
 

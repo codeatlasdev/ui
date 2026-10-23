@@ -101,6 +101,26 @@ describe("GlassCard", () => {
 		expect(screen.container.querySelector(".ca-glass-card__header")).toBeNull();
 	});
 
+	it("title shares the content's left edge and the padding applies once", async () => {
+		const screen = await render(Harness, { title: "Summary" });
+		const el = card(screen.container);
+		const title = el.querySelector(".ca-glass-card__title") as HTMLElement;
+		const content = el.querySelector("p:not(.ca-glass-card__title)") as HTMLElement;
+		expect(title.getBoundingClientRect().left).toBe(content.getBoundingClientRect().left);
+		const header = el.querySelector(".ca-glass-card__header") as HTMLElement;
+		expect(header.getBoundingClientRect().top - el.getBoundingClientRect().top).toBe(20);
+	});
+
+	it("flush keeps the header inset because the card has no padding", async () => {
+		const screen = await render(Harness, { title: "Summary", flush: true });
+		const el = card(screen.container);
+		const title = el.querySelector(".ca-glass-card__title") as HTMLElement;
+		const header = el.querySelector(".ca-glass-card__header") as HTMLElement;
+		expect(title.getBoundingClientRect().left - el.getBoundingClientRect().left).toBe(20);
+		expect(header.getBoundingClientRect().top - el.getBoundingClientRect().top).toBe(0);
+		expect(getComputedStyle(header).paddingTop).toBe("16px");
+	});
+
 	it("custom class is merged", async () => {
 		const screen = await render(GlassCard, { children: body, class: "extra" });
 		await expect.element(card(screen.container)).toHaveClass("extra");

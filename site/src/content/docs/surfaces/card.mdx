@@ -14,6 +14,8 @@ import Accents from "~/demos/surfaces/card/Accents.svelte";
 import AccentsSrc from "~/demos/surfaces/card/Accents.svelte?raw";
 import HeaderActions from "~/demos/surfaces/card/HeaderActions.svelte";
 import HeaderActionsSrc from "~/demos/surfaces/card/HeaderActions.svelte?raw";
+import Stacked from "~/demos/surfaces/card/Stacked.svelte";
+import StackedSrc from "~/demos/surfaces/card/Stacked.svelte?raw";
 import Link from "~/demos/surfaces/card/Link.svelte";
 import LinkSrc from "~/demos/surfaces/card/Link.svelte?raw";
 
@@ -31,12 +33,17 @@ Card is a [Surface](/docs/surfaces/surface/) with a header (`title`, `headerActi
 
 `title` is a paragraph unless you pass `headingLevel`, so adding a Card never changes a page outline by accident. Pass `headingLevel` to make the card a section under the page heading (a `PageShell` title is the `<h1>`, so cards start at `2`). Only the tag changes, never the look.
 
+The header sits inside the card's padding, so the title shares the content's left edge. A card with no padding (`flush` or `padding="none"`) insets its own header by 16px / 20px instead, so the title does not touch the edge.
+
+**Several controls need `gap`.** `Checkbox`, `Switch` and `TextField` are inline, so as direct children they sit next to each other with no space. Pass `gap` (`'sm'` 8px, `'md'` 16px, `'lg'` 24px, a CSS length or a number of pixels) and the card stacks its children in a column with that spacing, the header included. Do not wrap the controls in `Stack` or write a flex wrapper.
+
 With `href` the card is a single `<a>` and is interactive. The link name comes from the content, so give the card a `title`.
 
 <Demo title="Content card" description={"Text-heavy card with eyebrow, title, body and a link."} src={ContentCardSrc}><ContentCard /></Demo>
 <Demo title="Stat cards" description={"Compact metric display."} src={StatsSrc}><Stats /></Demo>
 <Demo title="Tone and glow" description={"`tone=\"brand\"` tints the fill. `glow` adds a halo that only shows under styles that keep one, such as `glass`."} src={AccentsSrc}><Accents /></Demo>
 <Demo title="Header and actions" description={"`title` and `headerActions` render a built-in header row."} src={HeaderActionsSrc}><HeaderActions /></Demo>
+<Demo title="Stacked controls" description={"`gap` stacks several controls in a column, aligned with the title."} src={StackedSrc}><Stacked /></Demo>
 <Demo title="Link card" description={"`href` renders the whole card as a link."} src={LinkSrc}><Link /></Demo>
 
 <Props rows={[
@@ -47,6 +54,7 @@ With `href` the card is a single `<a>` and is interactive. The link name comes f
   { name: "target", type: "string", default: "undefined", description: "Link target. `_blank` also sets `rel=\"noopener noreferrer\"`." },
   { name: "padding", type: "'none' | 'sm' | 'md' | 'lg' | string | number", default: "'md'", description: "Content padding: 0, 12px, 20px, 32px, or a CSS length / number of pixels. Sets `--ca-card-padding` on this card only." },
   { name: "flush", type: "boolean", default: "false", description: "Removes all padding. Alias of `padding=\"none\"`, and wins over `padding`." },
+  { name: "gap", type: "'sm' | 'md' | 'lg' | string | number", default: "undefined", description: "Stacks the children in a column with this spacing: 8px, 16px, 24px, or a CSS length / number of pixels. Omit for normal flow." },
   { name: "full", type: "boolean", default: "false", description: "Sets `width: 100%`." },
   { name: "elevation, material, tone, variant, radius, glow, interactive", type: "Surface props", default: "see Surface", description: "Passed to the underlying [Surface](/docs/surfaces/surface/)." },
   { name: "skeleton", type: "boolean", default: "false", description: "Loading placeholder: content keeps its layout but is hidden, so the card has the exact loaded size. See Skeleton." },

@@ -1,95 +1,26 @@
-<!-- @codeatlasdev/ui demo #482 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/app-shell#labels-search-slot-badges-and-more -->
-Element: #482 Labels, search slot, badges and More (layout/app-shell)
-What it shows: An app shell with captions under the rail icons, a search trigger on top of the rail, per-module badges and a More sheet on mobile.
-When to use: Apps with many modules, a command palette, per-module counters and role-based navigation.
+<!-- @codeatlasdev/ui demo #482 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/surfaces/card#stacked-controls -->
+Element: #482 Stacked controls (surfaces/card)
+What it shows: A glass Card titled Trending topics that stacks three Checkbox controls in a column with gap="sm", the title aligned with the controls.
+When to use: Settings and filter cards whose content is several inline controls (Checkbox, Switch, TextField) that need vertical spacing.
 Spec:
-- `<AppShellLayout {modules} filterModules={(m) => admin || m.id !== 'settings'} {pathname} onNavigate={(path) => (pathname = path)} railLabels persistPanel={false} mainId={null} skipLink={false}>` with `railTop` (a ghost search `Button`, aria-label 'Search, command K') and `bottomNavOverflow` (an outlined full-width 'Account' `Button`)
-- 7 modules: Inbox (`badge: 12`), Map (`badge: 'dot'`, `badgeLabel: 'Search running'`), People (`badge: 3`, `badgeLabel: '3 tasks pending'`), Alerts, Search, Home, Settings; below 900px the bar shows 4 modules plus a More tab that opens a sheet with the rest
-- `filterModules` is driven by an `admin` `$state`; a glass `Card` holds a hint and an outlined `Button` that toggles it
-- Page is `<PageShell title="Labeled rail" description={pathname}>`; stage height is `height: 440px`
-Tags: app-shell, rail, labels, badge, bottom-nav, overflow, filter-modules, search
+- `<Card material="glass" title="Trending topics" headingLevel={3} gap="sm" class="stacked">` with `max-width: 320px`
+- Three `<Checkbox label="Hacker News" />` children: Hacker News, Product Hunt, Lobsters
+- `gap="sm"` stacks the children in a column with 8px between them; the title shares the checkboxes' left edge
+Tags: card, gap, stack, checkbox, title, glass, settings
 Needs: @codeatlasdev/ui@4.5.0
-Components: AppShellLayout, Button, PageShell, Card
-Live demo: https://ui.codeatlas.com.br/docs/layout/app-shell#labels-search-slot-badges-and-more
+Components: Card, Checkbox
+Live demo: https://ui.codeatlas.com.br/docs/surfaces/card#stacked-controls
 
 <script lang="ts">
-  import { AppShellLayout, Button, PageShell, Card, type NavModule } from '@codeatlasdev/ui';
-  import { Bell, Inbox, Map as MapIcon, Search, Settings, Users, Home } from '@lucide/svelte';
-
-  // Role filter: the same list for everyone, filtered on the way in.
-  let admin = $state(true);
-
-  const modules: NavModule[] = [
-    { id: 'inbox', label: 'Inbox', icon: Inbox, basePath: '/inbox', badge: 12, items: [
-      { id: 'all', label: 'All', icon: Inbox, path: '/inbox/all' },
-      { id: 'sent', label: 'Sent', icon: Inbox, path: '/inbox/sent' },
-    ] },
-    { id: 'map', label: 'Map', icon: MapIcon, basePath: '/map', badge: 'dot', badgeLabel: 'Search running', items: [
-      { id: 'live', label: 'Live', icon: MapIcon, path: '/map/live' },
-      { id: 'saved', label: 'Saved', icon: MapIcon, path: '/map/saved' },
-    ] },
-    { id: 'people', label: 'People', icon: Users, basePath: '/people', badge: 3, badgeLabel: '3 tasks pending', items: [
-      { id: 'dir', label: 'Directory', icon: Users, path: '/people/dir' },
-    ] },
-    { id: 'alerts', label: 'Alerts', icon: Bell, basePath: '/alerts', items: [
-      { id: 'rules', label: 'Rules', icon: Bell, path: '/alerts/rules' },
-    ] },
-    { id: 'search', label: 'Search', icon: Search, basePath: '/search', items: [
-      { id: 'saved', label: 'Saved', icon: Search, path: '/search/saved' },
-    ] },
-    { id: 'home', label: 'Home', icon: Home, basePath: '/home', items: [
-      { id: 'start', label: 'Start', icon: Home, path: '/home/start' },
-    ] },
-    { id: 'settings', label: 'Settings', icon: Settings, basePath: '/settings', items: [
-      { id: 'gen', label: 'General', icon: Settings, path: '/settings/gen' },
-    ] },
-  ];
-
-  let pathname = $state('/inbox/all');
-
-  function intercept(e: MouseEvent) {
-    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
-    const a = (e.target as Element).closest('a[href^="/"]');
-    if (!a) return;
-    e.preventDefault();
-    pathname = a.getAttribute('href')!;
-  }
+  import { Card, Checkbox } from '@codeatlasdev/ui';
 </script>
 
-<!-- svelte-ignore a11y_no_static_element_interactions, a11y_click_events_have_key_events -->
-<div class="stage" onclick={intercept}>
-  <AppShellLayout {modules} filterModules={(m) => admin || m.id !== 'settings'} {pathname} onNavigate={(path) => (pathname = path)} railLabels persistPanel={false} mainId={null} skipLink={false}>
-    {#snippet railTop()}
-      <Button variant="ghost" size="sm" aria-label="Search, command K">
-        {#snippet leading()}<Search size={16} />{/snippet}
-      </Button>
-    {/snippet}
-    {#snippet bottomNavOverflow()}
-      <Button variant="outlined" fullWidth>Account</Button>
-    {/snippet}
-    <PageShell title="Labeled rail" description={pathname}>
-      <Card material="glass" full>
-        <p class="hint">Captions under the icons, a search trigger on top, badges with names, and a More sheet below 900px. The role filter hides Settings.</p>
-        <Button variant="outlined" onclick={() => (admin = !admin)}>{admin ? 'Hide Settings (member)' : 'Show Settings (admin)'}</Button>
-      </Card>
-    </PageShell>
-  </AppShellLayout>
-</div>
+<Card material="glass" title="Trending topics" headingLevel={3} gap="sm" class="stacked">
+  <Checkbox label="Hacker News" />
+  <Checkbox label="Product Hunt" />
+  <Checkbox label="Lobsters" />
+</Card>
 
 <style>
-  .stage {
-    --ca-vh: 440px;
-    position: relative;
-    width: 100%;
-    height: 440px;
-    contain: layout paint;
-    overflow: hidden;
-    border-radius: var(--ca-radius-lg);
-    box-shadow: inset 0 0 0 1px var(--ca-outline-subtle);
-  }
-  .hint {
-    margin: 0 0 var(--ca-space-3);
-    color: var(--ca-text-secondary);
-    font-size: var(--ca-font-size-body2);
-  }
+  :global(.stacked) { max-width: 320px; width: 100%; }
 </style>

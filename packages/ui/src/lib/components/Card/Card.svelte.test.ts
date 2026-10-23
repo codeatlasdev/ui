@@ -124,6 +124,49 @@ describe("Card", () => {
 		expect(screen.container.querySelector(".ca-card__header")).toBeNull();
 	});
 
+	it("title shares the content's left edge and the padding applies once", async () => {
+		const screen = await render(Card, { title: "Summary", children: body });
+		const el = card(screen.container);
+		const title = el.querySelector(".ca-card__title") as HTMLElement;
+		const content = screen.getByTestId("body").element() as HTMLElement;
+		expect(title.getBoundingClientRect().left).toBe(content.getBoundingClientRect().left);
+		const header = el.querySelector(".ca-card__header") as HTMLElement;
+		expect(header.getBoundingClientRect().top - el.getBoundingClientRect().top).toBe(20);
+	});
+
+	it("flush keeps the header inset because the card has no padding", async () => {
+		const screen = await render(Card, { title: "Summary", flush: true, children: body });
+		const el = card(screen.container);
+		const title = el.querySelector(".ca-card__title") as HTMLElement;
+		const header = el.querySelector(".ca-card__header") as HTMLElement;
+		expect(title.getBoundingClientRect().left - el.getBoundingClientRect().left).toBe(20);
+		expect(header.getBoundingClientRect().top - el.getBoundingClientRect().top).toBe(0);
+		expect(getComputedStyle(header).paddingTop).toBe("16px");
+	});
+
+	it("padding none insets the header like flush", async () => {
+		const screen = await render(Card, { title: "Summary", padding: "none", children: body });
+		const el = card(screen.container);
+		const title = el.querySelector(".ca-card__title") as HTMLElement;
+		expect(title.getBoundingClientRect().left - el.getBoundingClientRect().left).toBe(20);
+	});
+
+	it("gap stacks the children in a column with that spacing", async () => {
+		const screen = await render(Harness, { gap: "md", title: "Summary" });
+		const el = card(screen.container);
+		expect(getComputedStyle(el).display).toBe("flex");
+		expect(getComputedStyle(el).flexDirection).toBe("column");
+		const header = el.querySelector(".ca-card__header") as HTMLElement;
+		const content = el.querySelector("p:not(.ca-card__title)") as HTMLElement;
+		expect(content.getBoundingClientRect().top - header.getBoundingClientRect().bottom).toBe(16);
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("without gap the content flows as before", async () => {
+		const screen = await render(Card, { children: body });
+		expect(getComputedStyle(card(screen.container)).display).not.toBe("flex");
+	});
+
 	it("forwards Surface props", async () => {
 		const screen = await render(Card, {
 			material: "glass",

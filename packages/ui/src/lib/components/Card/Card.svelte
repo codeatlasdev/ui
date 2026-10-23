@@ -39,6 +39,12 @@
     flush?: boolean;
     /** `width: 100%`. */
     full?: boolean;
+    /**
+     * Stacks the children in a column with this spacing: `'sm'` (8px), `'md'` (16px), `'lg'` (24px),
+     * or any CSS length / number (px). Omit for normal flow. Without it several inline controls
+     * (Checkbox, Switch, TextField) sit side by side with no space between them.
+     */
+    gap?: 'sm' | 'md' | 'lg' | (string & {}) | number;
     /** Loading placeholder: same size as the loaded card (content keeps its layout, hidden), announced as busy. */
     skeleton?: boolean;
     class?: string;
@@ -53,6 +59,7 @@
     padding,
     flush = false,
     full = false,
+    gap,
     skeleton = false,
     class: className = '',
     style,
@@ -65,9 +72,16 @@
   const custom = $derived(
     flush || padding === undefined || step !== undefined ? undefined : typeof padding === 'number' ? `${padding}px` : padding
   );
-  // The only inline style is the custom property: the value is the consumer's, there is no class for it.
+  const GAPS = ['sm', 'md', 'lg'];
+  const gapStep = $derived(typeof gap === 'string' && GAPS.includes(gap) ? gap : undefined);
+  const gapCustom = $derived(
+    gap === undefined || gapStep !== undefined ? undefined : typeof gap === 'number' ? `${gap}px` : gap
+  );
+  // The only inline style is the custom properties: the values are the consumer's, there is no class for them.
   const styleAttr = $derived(
-    [custom ? `--ca-card-padding:${custom}` : '', style].filter(Boolean).join(';') || undefined
+    [custom ? `--ca-card-padding:${custom}` : '', gapCustom ? `--ca-card-gap:${gapCustom}` : '', style]
+      .filter(Boolean)
+      .join(';') || undefined
   );
 
   const cls = $derived(
@@ -101,6 +115,7 @@
   class={cls}
   style={styleAttr}
   data-padding={flush ? undefined : step}
+  data-gap={gap === undefined ? undefined : (gapStep ?? 'custom')}
   {@attach checkDoublePadding}
   data-skeleton={skeleton ? '' : undefined}
   aria-busy={skeleton ? 'true' : undefined}
@@ -133,12 +148,29 @@
     :global(.ca-card--flush) { padding: 0; }
     :global(.ca-card--full)  { width: 100%; }
 
+    :global(.ca-card[data-gap]) {
+      display: flex;
+      flex-direction: column;
+      gap: var(--ca-card-gap, var(--ca-space-4));
+    }
+    :global(.ca-card[data-gap='sm']) { gap: var(--ca-space-2); }
+    :global(.ca-card[data-gap='md']) { gap: var(--ca-space-4); }
+    :global(.ca-card[data-gap='lg']) { gap: var(--ca-space-6); }
+    /* The stack's gap replaces the header's own bottom margin. */
+    :global(.ca-card[data-gap]) .ca-card__title,
+    :global(.ca-card[data-gap]) .ca-card__header-actions { margin-bottom: 0; }
+
+    /* The card's own padding already insets the header. Only a card with no padding needs the inset. */
     .ca-card__header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: var(--ca-space-4) var(--ca-space-5) 0;
+      padding: 0;
       gap: var(--ca-space-3);
+    }
+    :global(.ca-card--flush) .ca-card__header,
+    :global(.ca-card[data-padding='none']) .ca-card__header {
+      padding: var(--ca-space-4) var(--ca-space-5) 0;
     }
 
     .ca-card__title {

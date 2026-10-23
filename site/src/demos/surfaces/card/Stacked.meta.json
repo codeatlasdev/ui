@@ -1,0 +1,11 @@
+{
+	"summary": "A glass Card titled Trending topics that stacks three Checkbox controls in a column with gap=\"sm\", the title aligned with the controls.",
+	"use": "Settings and filter cards whose content is several inline controls (Checkbox, Switch, TextField) that need vertical spacing.",
+	"spec": [
+		"`<Card material=\"glass\" title=\"Trending topics\" headingLevel={3} gap=\"sm\" class=\"stacked\">` with `max-width: 320px`",
+		"Three `<Checkbox label=\"Hacker News\" />` children: Hacker News, Product Hunt, Lobsters",
+		"`gap=\"sm\"` stacks the children in a column with 8px between them; the title shares the checkboxes' left edge"
+	],
+	"tags": ["card", "gap", "stack", "checkbox", "title", "glass", "settings"],
+	"shape": "tall"
+}

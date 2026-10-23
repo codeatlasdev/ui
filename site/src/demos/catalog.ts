@@ -319,6 +319,7 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "470", path: "navigation/popover/CloseOnPick" },
 	{ id: "480", path: "layout/app-shell/ResizablePanel" },
 	{ id: "481", path: "layout/app-shell/ItemExtras" },
+	{ id: "482", path: "surfaces/card/Stacked" },
 	{ id: "490", path: "feedback/toast/Dedupe" },
 	{ id: "492", path: "feedback/toast/Actions" },
 	{ id: "530", path: "layout/app-shell/RailLabels" },

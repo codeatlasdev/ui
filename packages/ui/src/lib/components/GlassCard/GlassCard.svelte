@@ -113,12 +113,16 @@
     :global(.ca-glass-card--flush) { padding: 0; }
     :global(.ca-glass-card--full)  { width: 100%; }
 
+    /* The card's own padding already insets the header. Only a flush card needs the inset. */
     .ca-glass-card__header {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: var(--ca-space-4) var(--ca-space-5) 0;
+      padding: 0;
       gap: var(--ca-space-3);
+    }
+    :global(.ca-glass-card--flush) .ca-glass-card__header {
+      padding: var(--ca-space-4) var(--ca-space-5) 0;
     }
 
     .ca-glass-card__title {
