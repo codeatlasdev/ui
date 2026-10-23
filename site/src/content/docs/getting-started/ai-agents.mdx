@@ -22,7 +22,7 @@ This site publishes its documentation in plain text for tools that cannot render
 | Resource | Content |
 |---|---|
 | [`/llms.txt`](/llms.txt) | The canonical entry: recipes, decision tables, workarounds, endpoints, then one line per documentation page. |
-| [`/llms-full.txt`](/llms-full.txt) | Every page as markdown, followed by the rules for an app that uses the package. It has no demo sources, so it stays small enough (under 450 KB) to paste whole. |
+| [`/llms-full.txt`](/llms-full.txt) | The pages an agent reads before it writes a screen in full (introduction, installation, recipes, choosing, workarounds, theming, mobile, i18n, this page, layout primitives), then a summary of every other page: its description and the names, types and defaults of its props. It stays under 350 KB however many pages there are, so it is safe to paste whole. Followed by the rules for an app that uses the package. |
 | `/llms/<group>/<slug>.txt` | One page with the complete source of its demos, for example [`/llms/layout/form-page.txt`](/llms/layout/form-page.txt). The slug is the docs URL path; every page in `llms-full.txt` links its own file. |
 | [`/api/v1/`](/api/v1/index.json) | The machine-readable endpoints that exist: demo catalog, demo source and the search index. Any other path under `/api/v1/` is a 404. |
 | [Contributor guide](https://github.com/codeatlasdev/ui/blob/main/AGENTS.md) | `AGENTS.md` in the repository: how to work on this package (issue workflow, tests). Not for apps that consume it. |

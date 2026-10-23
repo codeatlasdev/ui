@@ -114,7 +114,7 @@ export function buildLlmsIndex(i: {
 					title: "llms-full.txt",
 					href: `${SITE}/llms-full.txt`,
 					description:
-						"every docs page as markdown in one file (no demo sources: it is meant to be pasted whole)",
+						"the core pages in full and a summary (props tables) of every other page, in one file small enough to paste whole",
 				},
 				{
 					title: "Page with demo sources",
@@ -220,7 +220,7 @@ ${SITE}/llms.txt lists a recipe for every screen type (app shell, list, form, se
 - [Recipes](${SITE}/docs/${ENTRY_PAGES.recipes}/): complete pages to copy
 - [Choosing a component](${SITE}/docs/${ENTRY_PAGES.choosing}/): X vs Y decision tables
 - [Common workarounds](${SITE}/docs/${ENTRY_PAGES.workarounds}/): what you are about to write, and what to use instead
-- [llms-full.txt](${SITE}/llms-full.txt): all docs in one file
+- [llms-full.txt](${SITE}/llms-full.txt): the core docs in full and a summary of every other page, in one file
 - [Contributor guide](AGENTS.md): working on this repository (not for apps that consume the package)
 - [Source](packages/ui/src/lib/index.ts): public exports
 `;
