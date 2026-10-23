@@ -1,0 +1,65 @@
+---
+title: Upgrade between majors
+description: Move a project from one major of @codeatlasdev/ui to another. The migration guide per major, the `migrate --from --to` codemods and report, deprecation warnings and the release policy behind them.
+group: Getting started
+order: 15
+---
+import { Callout } from "@codeatlasdev/ui";
+
+Every breaking change since 1.0.0 is recorded once, in `migrations/<major>.json`: what to look for, what to write instead, why, and whether `migrate` rewrites it. That file generates [`MIGRATION.md`](https://github.com/codeatlasdev/ui/blob/main/packages/ui/MIGRATION.md), `dist/migrations.json` and the MCP tool `get_migration`, so the three never disagree.
+
+## Upgrade in four steps
+
+1. Read what changed between your major and the one you are moving to. In MCP: `get_migration({ from: 2, to: 4 })`. Without MCP: `node_modules/@codeatlasdev/ui/dist/MIGRATION.md`.
+2. Dry run. It prints a diff and a report, and changes nothing:
+
+   ```bash
+   bunx @codeatlasdev/ui migrate --from 2 --to 4 src
+   ```
+
+3. Apply the rewrites, then fix what the report lists:
+
+   ```bash
+   bunx @codeatlasdev/ui migrate --from 2 --to 4 --write src
+   ```
+
+4. Gate it in CI. `--strict` exits 1 while anything is left for a person:
+
+   ```bash
+   bunx @codeatlasdev/ui migrate --from 2 --to 4 --strict src
+   ```
+
+`--from` is the major your project is on, `--to` the one it moves to (default: the newest). Only the changes of the majors in `(from, to]` run and are reported, so a project already on 3 never gets the 3.0 rewrites. Without both flags every codemod runs, as before.
+
+## What the report says
+
+| Section | Meaning |
+|---|---|
+| `Rewritten` | Files the codemods changed (or would change without `--write`). |
+| `Left for you` | A usage the codemod found but could not rewrite, as `file:line id: what to do`. A `Grid cols="2fr 1fr"`, a `setLocale` call, a `.ca-overlay` selector, a `bits-ui` import. |
+| `Review by hand` | Changes with no greppable old usage (a default that changed, a landmark added). Read the entry, then check your pages. |
+
+`--report json` prints the same run as one document for a script or an agent, `--report md` as markdown for a PR description. A line may carry `ca-ui-migrated(...)` to be skipped by the scan once you have handled it.
+
+## What `migrate` covers
+
+Each entry has one of three verdicts in `MIGRATION.md`:
+
+- `yes`: rewritten. `GlassCard`, `GlassSurface`, `Row`, `BrandPreset`, the `.selectable` class.
+- `partial`: rewritten where the value is static, reported where it is not. `Grid` (`cols` to `columns`, pixel `gap` to a step), `Stack`, and `setLocale`, which is only flagged because the layout markup has to be wrapped in `<I18nProvider>` by hand.
+- `no`: yours to do, with the entry saying how. The modal DOM of 2.0.0, the sober default theme of 3.0.0, the `<main>` of `AppShellLayout` in 4.0.0.
+
+<Callout type="note">
+  `NavModule` has always been `basePath` and `items`. A `path` / `sections` shape in an old snippet never shipped, so there is no codemod for it: rename the fields by hand.
+</Callout>
+
+## Deprecation warnings
+
+A renamed or replaced API keeps working for one major and logs a `[ca-ui]` warning in development (never in production builds) that names the migration id, for example `migration v3-glasscard-to-card`. Look the id up in `MIGRATION.md` or `get_migration`.
+
+## For maintainers: the release policy
+
+- A `major` changeset must contain a `Migration: <id>` line naming an entry of `migrations/<major>.json`. `tests/migrations.test.ts` reads `.changeset/` and fails `bun run validate` otherwise.
+- Every bullet under a `### Major Changes` heading of `CHANGELOG.md` must be covered by an entry that lists its changeset hash, or carry a `Migration:` line.
+- An entry that claims `codemod: yes` or `partial` must name a `codemodId` that `migrate` implements. A test fails when the codemod does not exist.
+- `bun run --cwd packages/ui manifest -- --skill` regenerates `MIGRATION.md`.

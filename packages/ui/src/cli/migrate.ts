@@ -6,6 +6,7 @@ import { parse } from "svelte/compiler";
 // loaded by `migrate()` (from the project first), so loading this file never needs it.
 import type * as TS from "typescript";
 import { unifiedDiff } from "./diff.ts";
+import { loadMigrations, type MigrationFile, migrationsBetween } from "./migrations.ts";
 import { loadTypescript, MISSING_TYPESCRIPT, type TypeScript } from "./typescript.ts";
 
 let ts: TypeScript;
@@ -66,13 +67,47 @@ function isMemberName(n: TS.Identifier): boolean {
 	);
 }
 
-/** Rules in the order they shipped. Add one per breaking rename; never edit a released rule. */
+/**
+ * Rules in the order they shipped. Add one per breaking rename; never edit a released rule.
+ * `migrations/<major>.json` names a rule by `id` (`codemodId`); a test fails when it names one that is missing.
+ */
 export const RULES: Rule[] = [
 	{
 		id: "brand-preset-to-preset-definition",
 		description: "`BrandPreset` was renamed to `PresetDefinition` ({ id, color, label? }).",
 		apply: renameImport("BrandPreset", "PresetDefinition"),
 	},
+];
+
+/** `class="selectable"`, `class="a selectable b"` and `class:selectable` in markup, `.selectable` in a style block. */
+function renameSelectable(path: string, src: string): string {
+	if (!/\.(svelte|astro|mdx|css)$/.test(path) || !/\bselectable\b/.test(src)) return src;
+	const out = new MagicString(src);
+	for (const m of src.matchAll(/\bclass(=|:)(?:"([^"]*)"|'([^']*)'|selectable\b)/g)) {
+		if (m[1] === ":") {
+			out.overwrite(m.index, m.index + "class:selectable".length, "class:ca-selectable");
+			continue;
+		}
+		const value = m[2] ?? m[3];
+		if (value === undefined || !/(^|\s)selectable(\s|$)/.test(value)) continue;
+		const at = m.index + m[0].indexOf(value);
+		out.overwrite(
+			at,
+			at + value.length,
+			value.replace(/(^|\s)selectable(?=\s|$)/g, "$1ca-selectable")
+		);
+	}
+	for (const m of src.matchAll(/(^|[\s,>}])\.selectable(?![\w-])/gm))
+		out.overwrite(m.index + m[1].length, m.index + m[0].length, ".ca-selectable");
+	return out.toString();
+}
+
+/** Ids `migrations/*.json` may name. `layout-primitives` is the markup rewrite below (not a script `Rule`). */
+export const CODEMOD_IDS: readonly string[] = [
+	...RULES.map((r) => r.id),
+	"layout-primitives",
+	"selectable-to-ca-selectable",
+	"setlocale-to-i18nprovider",
 ];
 
 // ─── Component rewrites (markup + imports) ─────────────────────────────────────
@@ -622,15 +657,83 @@ export interface MigrateOptions {
 	strict?: boolean;
 	cwd?: string;
 	log?: (line: string) => void;
+	/** Major the project is on. With `to`, only the changes of the majors in (from, to] run and are reported. */
+	from?: number;
+	/** Major the project is moving to (default: the newest the registry knows). */
+	to?: number;
+	/** Print the run as one document instead of lines: `json` or `md`. */
+	report?: "json" | "md";
+	/** Registry to use (default: the shipped `migrations/`). */
+	migrations?: MigrationFile[];
+}
+
+/** A known breaking change the codemod cannot rewrite, located in the project (or the whole-project note). */
+export interface Leftover {
+	id: string;
+	file?: string;
+	line?: number;
+	/** `Component: reason (recipe)` for a usage a codemod left, else the replacement from the registry. */
+	note: string;
+	component?: string;
+}
+
+/** The registry entry a left component usage belongs to. */
+const COMPONENT_MIGRATION: Record<string, string> = {
+	Grid: "v3-grid-columns",
+	Stack: "v3-gap-step-scale",
+	Row: "v3-row-to-flex",
+	GlassCard: "v3-glasscard-to-card",
+	GlassSurface: "v3-glasssurface-to-surface",
+};
+
+const SCANNED = /\.(svelte|ts|js|mts|mjs|astro|css|mdx)$/;
+
+/** File:line of every greppable old usage the registry names, for the entries a codemod cannot finish. */
+function scanLeftovers(
+	files: string[],
+	files_: MigrationFile[],
+	cwd: string,
+	rewritten: Set<string>
+): Leftover[] {
+	const out: Leftover[] = [];
+	for (const e of files_.flatMap((m) => m.entries)) {
+		if (!e.detect || (e.codemod === "yes" && rewritten.has(e.codemodId ?? ""))) continue;
+		const re = new RegExp(e.detect);
+		for (const file of files.filter((f) => SCANNED.test(f))) {
+			const lines = readFileSync(file, "utf8").split("\n");
+			lines.forEach((text, i) => {
+				if (re.test(text) && !/ca-ui-migrated\(/.test(text))
+					out.push({ id: e.id, file: relative(cwd, file), line: i + 1, note: e.replacement });
+			});
+		}
+	}
+	return out;
+}
+
+/** The codemods of the majors in range; without a range, all of them (the historical behavior). */
+function activeIds(range: MigrationFile[] | undefined): Set<string> {
+	if (!range) return new Set(CODEMOD_IDS);
+	return new Set(
+		range.flatMap((m) => m.entries.flatMap((e) => (e.codemodId ? [e.codemodId] : [])))
+	);
 }
 
 /**
- * Apply every rule to `files`. Returns true when the run finished (changes found are not an error);
- * false when `typescript` cannot be found, or with `strict` when a usage was left for a human.
+ * Apply the codemods of the range to `files`. Returns true when the run finished (changes found are not
+ * an error); false when `typescript` cannot be found, or with `strict` when something was left for a human.
  */
 export function migrate(
 	files: string[],
-	{ write = false, strict = false, cwd = process.cwd(), log = console.log }: MigrateOptions = {}
+	{
+		write = false,
+		strict = false,
+		cwd = process.cwd(),
+		log = console.log,
+		from,
+		to,
+		report,
+		migrations,
+	}: MigrateOptions = {}
 ): boolean {
 	const loaded = loadTypescript(cwd);
 	if (!loaded) {
@@ -638,48 +741,148 @@ export function migrate(
 		return false;
 	}
 	ts = loaded;
+	const registry = migrations ?? loadMigrations();
+	const newest = Math.max(...registry.map((m) => m.major));
+	const ranged = from !== undefined || to !== undefined;
+	const range = ranged ? migrationsBetween(from ?? 0, to ?? newest, registry) : undefined;
+	const active = activeIds(range);
+	const scope = range ?? registry;
 	let changed = 0;
 	const skipped: Skipped[] = [];
+	const touched: string[] = [];
+	const applied = new Set<string>();
 	for (const file of files) {
 		const src = readFileSync(file, "utf8");
-		if (!src.includes("@codeatlasdev/ui")) continue;
 		let current = src;
-		try {
-			current = migrateComponents(file, src, skipped);
-		} catch (e) {
-			log(`  skip    ${relative(cwd, file)}: ${(e as Error).message}`);
-			continue;
-		}
-		const out = new MagicString(current);
-		try {
-			for (const sc of scripts(file, current)) {
-				const sf = ts.createSourceFile(file, sc.text, ts.ScriptTarget.ESNext, true, sc.kind);
-				// Rules edit a script-local MagicString; shift into file coordinates by editing via a slice view.
-				const local = new MagicString(sc.text);
-				for (const rule of RULES) rule.apply(sf, local);
-				if (local.hasChanged())
-					out.overwrite(sc.start, sc.start + sc.text.length, local.toString());
+		if (src.includes("@codeatlasdev/ui")) {
+			try {
+				if (active.has("layout-primitives")) current = migrateComponents(file, src, skipped);
+			} catch (e) {
+				log(`  skip    ${relative(cwd, file)}: ${(e as Error).message}`);
+				continue;
 			}
-		} catch (e) {
-			log(`  skip    ${relative(cwd, file)}: ${(e as Error).message}`);
-			continue;
 		}
+		if (active.has("selectable-to-ca-selectable")) current = renameSelectable(file, current);
+		const out = new MagicString(current);
+		if (src.includes("@codeatlasdev/ui"))
+			try {
+				for (const sc of scripts(file, current)) {
+					const sf = ts.createSourceFile(file, sc.text, ts.ScriptTarget.ESNext, true, sc.kind);
+					// Rules edit a script-local MagicString; shift into file coordinates by editing via a slice view.
+					const local = new MagicString(sc.text);
+					for (const rule of RULES) if (active.has(rule.id)) rule.apply(sf, local);
+					if (local.hasChanged())
+						out.overwrite(sc.start, sc.start + sc.text.length, local.toString());
+				}
+			} catch (e) {
+				log(`  skip    ${relative(cwd, file)}: ${(e as Error).message}`);
+				continue;
+			}
 		const next = out.toString();
 		if (next === src) continue;
 		changed++;
+		touched.push(relative(cwd, file));
+		for (const id of CODEMOD_IDS) if (active.has(id)) applied.add(id);
 		const rel = relative(cwd, file);
 		if (write) {
 			writeFileSync(file, next);
-			log(`  migrate ${rel}`);
-		} else log(`${unifiedDiff(rel, src, next)}\n`);
+			if (!report) log(`  migrate ${rel}`);
+		} else if (!report) log(`${unifiedDiff(rel, src, next)}\n`);
 	}
-	if (!changed) log("Nothing to migrate.");
-	else if (!write) log(`${changed} file(s) would change. Re-run with --write to apply.`);
-	if (skipped.length) {
-		log(`\nleft ${skipped.length} usage${skipped.length === 1 ? "" : "s"}:`);
-		for (const u of skipped)
-			log(`  ${relative(cwd, u.file)}:${u.line} ${u.component}: ${u.reason} (${u.recipe})`);
-		if (strict) return false;
+
+	// What no codemod finishes: the old usages the registry can still locate, then the notes without a locator.
+	const leftovers = scanLeftovers(files, scope, cwd, applied);
+	const manual = scope
+		.flatMap((m) => m.entries)
+		.filter((e) => e.codemod !== "yes" && !leftovers.some((l) => l.id === e.id))
+		.map((e) => ({ id: e.id, note: e.replacement }));
+	// A usage the component rewrite left is also a registry detection when its line matches: keep the richer note once.
+	const seen = new Set<string>();
+	const unmapped: Leftover[] = [
+		...skipped.map((u) => ({
+			id: COMPONENT_MIGRATION[u.component] ?? "v3-gap-step-scale",
+			file: relative(cwd, u.file),
+			line: u.line,
+			component: u.component,
+			note: `${u.reason} (${u.recipe})`,
+		})),
+		...leftovers,
+	].filter((l) => {
+		const key = `${l.id} ${l.file}:${l.line}`;
+		return seen.has(key) ? false : !!seen.add(key);
+	});
+
+	if (report === "json") {
+		log(
+			JSON.stringify(
+				{
+					from: from ?? null,
+					to: to ?? newest,
+					write,
+					changed: touched,
+					left: unmapped,
+					review: manual,
+				},
+				null,
+				"\t"
+			)
+		);
+	} else if (report === "md") {
+		log(reportMarkdown(from, to ?? newest, touched, unmapped, manual));
+	} else {
+		if (!changed)
+			log(
+				ranged
+					? `Nothing to rewrite for ${rangeLabel(from, to ?? newest)}: checked ${[...active].join(", ") || "no codemods"}.`
+					: `Nothing to rewrite: checked ${[...active].join(", ")}. Run with --from <major> --to <major> for the per-major report.`
+			);
+		else if (!write) log(`${changed} file(s) would change. Re-run with --write to apply.`);
+		if (unmapped.length) {
+			log(`\nleft ${unmapped.length} usage${unmapped.length === 1 ? "" : "s"}:`);
+			for (const u of unmapped)
+				log(
+					u.component
+						? `  ${u.file}:${u.line} ${u.component}: ${u.note} [${u.id}]`
+						: `  ${u.file}:${u.line} ${u.id}: ${u.note}`
+				);
+		}
+		if (ranged && manual.length) {
+			log(`\nreview by hand (${manual.length}), no usage found to point at:`);
+			for (const m of manual) log(`  ${m.id}: ${m.note}`);
+		}
 	}
-	return true;
+	return !(strict && unmapped.length);
+}
+
+const rangeLabel = (from: number | undefined, to: number) =>
+	from === undefined ? `majors up to ${to}` : `${from} -> ${to}`;
+
+function reportMarkdown(
+	from: number | undefined,
+	to: number,
+	touched: string[],
+	left: Leftover[],
+	review: { id: string; note: string }[]
+): string {
+	const out = [
+		`# Migration report ${rangeLabel(from, to)}`,
+		"",
+		`## Rewritten (${touched.length})`,
+		"",
+	];
+	out.push(...(touched.length ? touched.map((f) => `- ${f}`) : ["Nothing."]), "");
+	out.push(`## Left for you (${left.length})`, "");
+	out.push(
+		...(left.length
+			? left.map((u) =>
+					u.component
+						? `- \`${u.file}:${u.line}\` ${u.component}: ${u.note} [${u.id}]`
+						: `- \`${u.file}:${u.line}\` ${u.id}: ${u.note}`
+				)
+			: ["Nothing."]),
+		""
+	);
+	out.push(`## Review by hand (${review.length})`, "");
+	out.push(...(review.length ? review.map((m) => `- ${m.id}: ${m.note}`) : ["Nothing."]));
+	return out.join("\n");
 }

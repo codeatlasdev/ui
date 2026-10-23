@@ -3071,7 +3071,9 @@ Data attributes: `data-brand`, `data-state` (`active`), `data-variant` (`line`)
 
 Snippets: `children`
 
-Classes: `ca-text` `ca-text-body` `ca-text-caption` `ca-text-heading` `ca-text-label` `ca-text-num` `ca-text-title`
+Parts: `ca-text` `ca-text-body` `ca-text-caption` `ca-text-heading` `ca-text-label` `ca-text-num` `ca-text-title`
+
+Variables: `--ca-text-body-leading` `--ca-text-body-tracking` `--ca-text-body-weight` `--ca-text-caption-leading` `--ca-text-caption-tracking` `--ca-text-caption-weight` `--ca-text-heading-leading` `--ca-text-heading-size` `--ca-text-heading-tracking` `--ca-text-heading-weight` `--ca-text-label-leading` `--ca-text-label-weight` `--ca-text-num-leading` `--ca-text-num-size` `--ca-text-num-tracking` `--ca-text-num-weight` `--ca-text-title-leading` `--ca-text-title-size` `--ca-text-title-tracking` `--ca-text-title-weight`
 
 Tokens: `--ca-text-body-leading` `--ca-text-body-tracking` `--ca-text-body-weight` `--ca-text-caption-leading` `--ca-text-caption-tracking` `--ca-text-caption-weight` `--ca-text-heading-leading` `--ca-text-heading-size` `--ca-text-heading-tracking` `--ca-text-heading-weight` `--ca-text-label-leading` `--ca-text-label-weight` `--ca-text-num-leading` `--ca-text-num-size` `--ca-text-num-tracking` `--ca-text-num-weight` `--ca-text-title-leading` `--ca-text-title-size` `--ca-text-title-tracking` `--ca-text-title-weight`
 

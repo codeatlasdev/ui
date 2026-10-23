@@ -3,7 +3,7 @@
  * codeatlas-ui: project setup and migration.
  *
  *   bunx @codeatlasdev/ui init [--write] [--dir <path>]
- *   bunx @codeatlasdev/ui migrate [--write] [--strict] [paths...]
+ *   bunx @codeatlasdev/ui migrate [--from <major> --to <major>] [--report json|md] [--write] [--strict] [paths...]
  *   bunx @codeatlasdev/ui brand [--theme <file>] [--mark <svg>] [--out <dir>] ...
  *   bunx @codeatlasdev/ui workarounds [--strict] [paths...]
  *   bunx @codeatlasdev/ui pick [ids...] [--url <gallery>] [--timeout <seconds>]
@@ -38,6 +38,9 @@ const valueFlags = [
 	"short-name",
 	"url",
 	"timeout",
+	"from",
+	"to",
+	"report",
 ];
 const isFlagValue = (i: number) => valueFlags.some((f) => rest[i - 1] === `--${f}`);
 const args = rest.filter((a, i) => !a.startsWith("--") && !isFlagValue(i));
@@ -45,7 +48,7 @@ const args = rest.filter((a, i) => !a.startsWith("--") && !isFlagValue(i));
 const HELP = `codeatlas-ui <command>
 
   init     Wire @codeatlasdev/ui into a SvelteKit or Astro project
-  migrate  Rewrite code for renamed APIs (see the changelog)
+  migrate  Rewrite code for renamed APIs and report what is left, per major (--from 2 --to 4; see MIGRATION.md)
   brand    Render the brand icons and src/generated/brand.ts without a Vite run (type-check jobs)
   workarounds  List the ca-ui-workaround(#n) markers in src and which issues are closed; flag .ca-* selectors that target non-stable parts (read-only)
   pick     Open the gallery, pick numbered demos, print their ids (e.g. #012 #045) for your AI
@@ -67,7 +70,32 @@ if (cmd === "init") {
 } else if (cmd === "migrate") {
 	const targets = args.length ? args : ["src"];
 	const files = targets.flatMap((t) => collect(resolve(t)));
-	process.exit(migrate(files, { write, strict, cwd: process.cwd() }) ? 0 : 1);
+	const major = (name: string) => {
+		const v = flag(name);
+		if (v === undefined) return undefined;
+		if (!/^\d+$/.test(v)) {
+			process.stderr.write(`migrate: --${name} must be a major version number, got "${v}"\n`);
+			process.exit(1);
+		}
+		return Number(v);
+	};
+	const report = flag("report");
+	if (report !== undefined && report !== "json" && report !== "md") {
+		process.stderr.write(`migrate: --report must be json or md, got "${report}"\n`);
+		process.exit(1);
+	}
+	process.exit(
+		migrate(files, {
+			write,
+			strict,
+			cwd: process.cwd(),
+			from: major("from"),
+			to: major("to"),
+			report,
+		})
+			? 0
+			: 1
+	);
 } else if (cmd === "workarounds") {
 	// Built to dist/bin/codeatlas-ui.js; the stable-parts list sits one level up in dist/.
 	const partsFile = join(dirname(fileURLToPath(import.meta.url)), "..", "parts.json");
@@ -123,7 +151,7 @@ function collect(path: string): string[] {
 			? []
 			: e.isDirectory()
 				? collect(join(path, e.name))
-				: /\.(svelte|ts|js|astro|mdx)$/.test(e.name)
+				: /\.(svelte|ts|js|astro|mdx|css)$/.test(e.name)
 					? [join(path, e.name)]
 					: []
 	);

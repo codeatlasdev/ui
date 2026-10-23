@@ -57,7 +57,7 @@
   }: Props = $props();
 
   $effect.pre(() => {
-    devWarn('glass-card', '<GlassCard> is deprecated and removed in the next major. Use <Card> (thickness → elevation, tinted → tone="brand", glowing → glow); `bunx @codeatlasdev/ui migrate --write` rewrites usages.');
+    devWarn('glass-card', '<GlassCard> is deprecated and removed in the next major. Use <Card> (thickness → elevation, tinted → tone="brand", glowing → glow); `bunx @codeatlasdev/ui migrate --from 2 --to 4 --write` rewrites usages (migration v3-glasscard-to-card, see MIGRATION.md).');
   });
 
   const ELEVATION = { 'ultra-thin': 1, thin: 2, regular: 3, thick: 4, chrome: 5 } as const;

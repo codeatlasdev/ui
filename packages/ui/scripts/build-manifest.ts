@@ -23,6 +23,7 @@ import { createRequire } from "node:module";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import ts from "typescript";
+import { loadMigrations, migrationMarkdown } from "../src/cli/migrations.ts";
 import { STYLES, type SurfaceStyle } from "../src/lib/theme/define.ts";
 import { DESIGN_STYLES } from "../src/lib/theme/styles.ts";
 import { ENTRY_PAGES, parseRecipes, type Recipe } from "./ai-entry.ts";
@@ -1294,6 +1295,7 @@ export function demosMarkdown(demos: ManifestDemo[]): string {
 // ── agent skill reference ─────────────────────────────────────────────────────
 
 const SKILL_API = resolve(ROOT, "../../.agents/skills/codeatlas-ui/API.md");
+const MIGRATION_MD = resolve(ROOT, "MIGRATION.md");
 const SKILL_DEMOS = resolve(ROOT, "../../.agents/skills/codeatlas-ui/DEMOS.md");
 
 const cell = (v: string) => v.replace(/\|/g, "\\|");
@@ -1448,6 +1450,9 @@ if (import.meta.main) {
 		write("components.json", manifest);
 		write("tokens.json", { name: manifest.name, version: manifest.version, tokens });
 		write("parts.json", buildParts(manifest));
+		const migrations = loadMigrations();
+		write("migrations.json", { name: manifest.name, version: manifest.version, migrations });
+		writeFileSync(join(dist, "MIGRATION.md"), migrationMarkdown(migrations));
 		write("surfaces.json", {
 			name: manifest.name,
 			version: manifest.version,
@@ -1475,6 +1480,7 @@ if (import.meta.main) {
 		}
 		if (process.argv.includes("--skill")) {
 			writeFileSync(SKILL_API, skillMarkdown(manifest));
+			writeFileSync(MIGRATION_MD, migrationMarkdown(loadMigrations()));
 			if (demos.length) writeFileSync(SKILL_DEMOS, demosMarkdown(demos));
 		}
 		console.log(
