@@ -136,9 +136,17 @@
 <style>
 @layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
 @layer ca.components {
+    /* Appearance tokens, each falling back to the Surface variable it replaces, so a card with none
+       set paints exactly what .ca-surface paints (material, elevation, tone and variant still apply):
+       --ca-card-bg (a solid fill), --ca-card-radius, --ca-card-border (a full border shorthand),
+       --ca-card-shadow (a box-shadow, `none` for flat). */
     :global(.ca-card) {
       overflow: hidden;
       padding: var(--ca-card-padding);
+      background: var(--ca-surface-tint), var(--ca-card-bg, var(--ca-surface-fill));
+      border-radius: var(--ca-card-radius, var(--ca-surface-radius));
+      border: var(--ca-card-border, 0 solid transparent);
+      box-shadow: var(--ca-card-shadow, var(--ca-surface-shadow), var(--ca-surface-edge), var(--ca-surface-glow));
     }
 
     :global(.ca-card[data-padding='none']) { padding: 0; }

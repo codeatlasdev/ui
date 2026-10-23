@@ -152,16 +152,19 @@
       transition: color var(--ca-duration-fast) var(--ca-ease-standard);
     }
 
+    /* Item tokens: --ca-seg-<sm|md>-item-* (one size) beat --ca-seg-item-* (both); unset, the sizes below. */
     :global(.ca-seg--sm .ca-seg__item) {
       height: calc(var(--ca-space-6) + var(--ca-space-0-5));
-      padding: 0 var(--ca-space-3);
-      font-size: var(--ca-font-size-caption);
+      padding: 0 var(--ca-seg-sm-item-padding-x, var(--ca-seg-item-padding-x, var(--ca-space-3)));
+      font-size: var(--ca-seg-sm-item-font-size, var(--ca-seg-item-font-size, var(--ca-font-size-caption)));
+      line-height: var(--ca-seg-sm-item-line-height, var(--ca-seg-item-line-height, inherit));
     }
 
     :global(.ca-seg--md .ca-seg__item) {
       height: var(--ca-control-height-sm);
-      padding: 0 var(--ca-space-4);
-      font-size: var(--ca-font-size-body2);
+      padding: 0 var(--ca-seg-md-item-padding-x, var(--ca-seg-item-padding-x, var(--ca-space-4)));
+      font-size: var(--ca-seg-md-item-font-size, var(--ca-seg-item-font-size, var(--ca-font-size-body2)));
+      line-height: var(--ca-seg-md-item-line-height, var(--ca-seg-item-line-height, inherit));
     }
 
     :global(.ca-seg__item:hover:not([disabled])) {

@@ -345,3 +345,4 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 781 | Full page | layout/theme-island | Button, ThemeIsland |
 | 800 | Themed map | map/stage | MapControls, MapStage |
 | 880 | Component tokens | inputs/button | Button, IconButton, Kbd |
+| 881 | Dense CRM with component tokens | layout/empty-state | Avatar, Button, Card, EmptyState, SegmentedControl, TextArea, TextField |

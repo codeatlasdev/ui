@@ -20,6 +20,7 @@
   type Size   = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | number;
   type Shape  = 'circle' | 'rounded';
   type Status = 'online' | 'offline' | 'busy' | 'away';
+  type Tone   = 'palette' | 'neutral';
 
   interface Props {
     /** Image URL. Rendered as a real `<img>`; the fallback shows beneath it while it loads and after it fails. */
@@ -40,6 +41,12 @@
     onerror?:        (event: Event) => void;
     /** Loading placeholder: same size, no image request, announced as busy. */
     skeleton?: boolean;
+    /**
+     * Fallback colour: `'palette'` (default) derives a colour from the name, so each person keeps theirs;
+     * `'neutral'` draws every fallback the same, on `--ca-surface-overlay` with `--ca-text-secondary` and a
+     * hairline ring, for a dense list where coloured discs compete with the content.
+     */
+    tone?:     Tone;
     class?:    string;
   }
 
@@ -83,6 +90,7 @@
     crossorigin,
     onerror,
     skeleton = false,
+    tone     = 'palette',
     class: className = '',
   }: Props = $props();
 
@@ -108,9 +116,11 @@
 
 <span
   class="ca-avatar {className}"
+  data-tone={tone === 'neutral' ? 'neutral' : undefined}
+  data-size={typeof size === 'string' ? size : undefined}
   data-skeleton={skeleton ? '' : undefined}
   aria-busy={skeleton ? 'true' : undefined}
-  style="--av-size:{px}px;--av-radius:{radius};--av-bg:{palette.bg};--av-fg:{palette.fg};--av-fs:{fontSize}px;--av-dot:{dotSize}px;"
+  style="--av-size:{px}px;--av-radius:{radius};{tone === 'neutral' ? '' : `--av-bg:${palette.bg};--av-fg:${palette.fg};`}--av-fs:{fontSize}px;--av-dot:{dotSize}px;"
 >
   <!-- The fallback is always rendered beneath the <img>, so a slow or failed load never changes the box. -->
   <span class="ca-avatar__fallback" class:ca-avatar__fallback--covered={covered} aria-hidden={covered ? 'true' : undefined}>
@@ -178,14 +188,32 @@
       width: 100%;
       height: 100%;
       border-radius: inherit;
-      background: var(--av-bg);
-      color: var(--av-fg);
-      font-size: var(--av-fs);
-      font-weight: var(--ca-font-weight-semibold);
+      background: var(--ca-avatar-fallback-bg, var(--av-bg));
+      color: var(--ca-avatar-fallback-color, var(--av-fg));
+      font-size: var(--ca-avatar-fallback-size, var(--av-fs));
+      font-weight: var(--ca-avatar-fallback-weight, var(--ca-font-weight-semibold));
       letter-spacing: var(--ca-heading-tracking);
       line-height: 1;
       user-select: none;
     }
+
+    /* Neutral tone: one fallback for everyone, from neutral tokens, never the name palette (the
+       palette is not emitted inline for it). The hairline is an inset ring on the fallback, so it
+       adds no layout shift and sits under a loaded photo. */
+    :global(.ca-avatar[data-tone='neutral']) {
+      --av-bg: var(--ca-surface-overlay);
+      --av-fg: var(--ca-text-secondary);
+    }
+    :global(.ca-avatar[data-tone='neutral'] .ca-avatar__fallback) {
+      box-shadow: inset 0 0 0 var(--ca-border-width) var(--ca-outline-subtle);
+    }
+
+    /* Per avatar size, --ca-avatar-<xs|sm|md|lg|xl>-fallback-{size,weight} beat the all-sizes token. */
+    :global(.ca-avatar[data-size='xs'] .ca-avatar__fallback) { font-size: var(--ca-avatar-xs-fallback-size, var(--ca-avatar-fallback-size, var(--av-fs))); font-weight: var(--ca-avatar-xs-fallback-weight, var(--ca-avatar-fallback-weight, var(--ca-font-weight-semibold))); }
+    :global(.ca-avatar[data-size='sm'] .ca-avatar__fallback) { font-size: var(--ca-avatar-sm-fallback-size, var(--ca-avatar-fallback-size, var(--av-fs))); font-weight: var(--ca-avatar-sm-fallback-weight, var(--ca-avatar-fallback-weight, var(--ca-font-weight-semibold))); }
+    :global(.ca-avatar[data-size='md'] .ca-avatar__fallback) { font-size: var(--ca-avatar-md-fallback-size, var(--ca-avatar-fallback-size, var(--av-fs))); font-weight: var(--ca-avatar-md-fallback-weight, var(--ca-avatar-fallback-weight, var(--ca-font-weight-semibold))); }
+    :global(.ca-avatar[data-size='lg'] .ca-avatar__fallback) { font-size: var(--ca-avatar-lg-fallback-size, var(--ca-avatar-fallback-size, var(--av-fs))); font-weight: var(--ca-avatar-lg-fallback-weight, var(--ca-avatar-fallback-weight, var(--ca-font-weight-semibold))); }
+    :global(.ca-avatar[data-size='xl'] .ca-avatar__fallback) { font-size: var(--ca-avatar-xl-fallback-size, var(--ca-avatar-fallback-size, var(--av-fs))); font-weight: var(--ca-avatar-xl-fallback-weight, var(--ca-avatar-fallback-weight, var(--ca-font-weight-semibold))); }
 
     /* ── Status dot ─────────────────────────────────────────────── */
     :global(.ca-avatar__status) {

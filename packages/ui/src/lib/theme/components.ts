@@ -65,11 +65,87 @@ export interface KbdTokens {
 	leading?: CssValue;
 }
 
+export interface AvatarFallbackTokens {
+	/** `--ca-avatar-fallback-bg`. @default the name-derived palette (or `--ca-surface-overlay` with `tone="neutral"`) */
+	fallbackBg?: CssValue;
+	/** `--ca-avatar-fallback-color`. @default the palette ink (or `--ca-text-secondary` with `tone="neutral"`) */
+	fallbackColor?: CssValue;
+	/** `--ca-avatar-fallback-size`: initials font size. @default 36% of the avatar (42% for one letter) */
+	fallbackSize?: CssValue;
+	/** `--ca-avatar-fallback-weight`. @default 600 */
+	fallbackWeight?: CssValue;
+}
+
+export interface AvatarTokens extends AvatarFallbackTokens {
+	/** One avatar size (`xs`, `sm`, `md`, `lg`, `xl`): `--ca-avatar-<size>-fallback-{size,weight}`. */
+	size?: Partial<
+		Record<
+			"xs" | "sm" | "md" | "lg" | "xl",
+			Pick<AvatarFallbackTokens, "fallbackSize" | "fallbackWeight">
+		>
+	>;
+}
+
+export interface FieldTokens {
+	/** `--ca-<tf|ta|field>-gap`: space between label, box and hint. @default `--ca-space-1` */
+	gap?: CssValue;
+	/** `--ca-<tf|ta|field>-label-line-height`. @default `--ca-line-height-snug` */
+	labelLeading?: CssValue;
+}
+
+export interface TextAreaTokens extends FieldTokens {
+	/** `--ca-ta-min-height`: the height of the visible box, border included. @default rows-based */
+	minHeight?: CssValue;
+}
+
+export interface CardTokens {
+	/** `--ca-card-bg`: a solid fill. @default the material fill */
+	bg?: CssValue;
+	/** `--ca-card-radius`. @default the surface radius */
+	radius?: CssValue;
+	/** `--ca-card-border`: a full border shorthand, e.g. `1px solid var(--ca-outline-subtle)`. @default none */
+	border?: CssValue;
+	/** `--ca-card-shadow`: a `box-shadow`, `none` for flat. @default the material shadow */
+	shadow?: CssValue;
+}
+
+export interface SegmentedItemTokens {
+	/** `--ca-seg-item-padding-x`. @default `--ca-space-3` (sm) / `--ca-space-4` (md) */
+	itemPaddingX?: CssValue;
+	/** `--ca-seg-item-font-size`. @default `--ca-font-size-caption` (sm) / `--ca-font-size-body2` (md) */
+	itemFontSize?: CssValue;
+	/** `--ca-seg-item-line-height`. @default inherited */
+	itemLeading?: CssValue;
+}
+
+export interface SegmentedTokens extends SegmentedItemTokens {
+	/** One size: `--ca-seg-<sm|md>-item-*`. */
+	sm?: SegmentedItemTokens;
+	md?: SegmentedItemTokens;
+}
+
+export interface EmptyStateTokens {
+	/** `--ca-empty-padding`: a padding shorthand. @default `--ca-space-12 --ca-space-6` */
+	padding?: CssValue;
+	/** `--ca-empty-title-size`. @default `--ca-font-size-body1` (`--ca-font-size-h6` for `hero`) */
+	titleSize?: CssValue;
+	/** `--ca-empty-title-weight`. @default semibold (heading weight for `hero`) */
+	titleWeight?: CssValue;
+}
+
 /** `ThemeOptions.components`: component tokens, emitted on `:root`. */
 export interface ComponentTokens {
 	button?: ButtonTokens;
 	iconButton?: IconButtonTokens;
 	kbd?: KbdTokens;
+	avatar?: AvatarTokens;
+	/** `--ca-field-*`: shared by `TextField` and `TextArea`; the per-component keys win. */
+	field?: FieldTokens;
+	textField?: FieldTokens;
+	textArea?: TextAreaTokens;
+	card?: CardTokens;
+	segmented?: SegmentedTokens;
+	emptyState?: EmptyStateTokens;
 }
 
 const SIZES = ["sm", "md", "lg"] as const;
@@ -113,6 +189,70 @@ export function componentTokens(c: ComponentTokens | undefined): Record<string, 
 		put(out, "--ca-kbd-font-size", k.fontSize);
 		put(out, "--ca-kbd-line-height", k.leading);
 	}
+	const a = c.avatar;
+	if (a) {
+		put(out, "--ca-avatar-fallback-bg", a.fallbackBg);
+		put(out, "--ca-avatar-fallback-color", a.fallbackColor);
+		put(out, "--ca-avatar-fallback-size", a.fallbackSize);
+		put(out, "--ca-avatar-fallback-weight", a.fallbackWeight);
+		for (const [size, t] of Object.entries(a.size ?? {})) {
+			put(out, `--ca-avatar-${size}-fallback-size`, t.fallbackSize);
+			put(out, `--ca-avatar-${size}-fallback-weight`, t.fallbackWeight);
+		}
+	}
+	for (const [prefix, f] of [
+		["--ca-field", c.field],
+		["--ca-tf", c.textField],
+		["--ca-ta", c.textArea],
+	] as const) {
+		if (!f) continue;
+		put(out, `${prefix}-gap`, f.gap);
+		put(
+			out,
+			`${prefix}-${prefix === "--ca-field" ? "label-leading" : "label-line-height"}`,
+			f.labelLeading
+		);
+	}
+	put(out, "--ca-ta-min-height", c.textArea?.minHeight);
+	const card = c.card;
+	if (card) {
+		put(out, "--ca-card-bg", card.bg);
+		put(out, "--ca-card-radius", card.radius);
+		put(out, "--ca-card-border", card.border);
+		put(out, "--ca-card-shadow", card.shadow);
+	}
+	const seg = c.segmented;
+	if (seg) {
+		segmentedItem(out, "--ca-seg-item", seg);
+		for (const s of ["sm", "md"] as const)
+			if (seg[s]) segmentedItem(out, `--ca-seg-${s}-item`, seg[s]);
+	}
+	const e = c.emptyState;
+	if (e) {
+		put(out, "--ca-empty-padding", e.padding);
+		put(out, "--ca-empty-title-size", e.titleSize);
+		put(out, "--ca-empty-title-weight", e.titleWeight);
+	}
+	return out;
+}
+
+function segmentedItem(out: Record<string, string>, prefix: string, t: SegmentedItemTokens): void {
+	put(out, `${prefix}-padding-x`, t.itemPaddingX);
+	put(out, `${prefix}-font-size`, t.itemFontSize);
+	put(out, `${prefix}-line-height`, t.itemLeading);
+}
+
+type Nested = Record<string, unknown>;
+
+/** `b` over `a`, merging nested plain objects (avatar `size.sm`) instead of replacing them. */
+function mergeDeep(a: Nested, b: Nested): Nested {
+	const out: Nested = { ...a, ...b };
+	for (const k of Object.keys(b)) {
+		const x = a[k];
+		const y = b[k];
+		if (x && y && typeof x === "object" && typeof y === "object")
+			out[k] = mergeDeep(x as Nested, y as Nested);
+	}
 	return out;
 }
 
@@ -134,7 +274,7 @@ export function mergeComponents(
 				typeof x[nested] === "object" &&
 				typeof y[nested] === "object"
 			)
-				merged[nested] = { ...(x[nested] as object), ...(y[nested] as object) };
+				merged[nested] = mergeDeep(x[nested] as Nested, y[nested] as Nested);
 		out[key] = merged;
 	}
 	return out as ComponentTokens;

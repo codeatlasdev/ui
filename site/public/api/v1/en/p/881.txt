@@ -1,0 +1,15 @@
+Use @codeatlasdev/ui demo #881 "Dense CRM with component tokens" (layout/empty-state).
+What it shows: A dense CRM activity card whose Avatar, TextField, TextArea, Card, SegmentedControl and EmptyState are restyled only through component tokens declared on one wrapper: neutral avatars, tighter field gap, a 64px note box, a hairline flat card, compact segments and a bare empty state. When to use: Dense work screens (activity feed, notes composer, view switcher, empty and invite states) that need a different density than the defaults without selectors against internal parts.
+Spec:
+- Wrapper `.crm` declares only custom properties: `--ca-avatar-sm-fallback-size`, `--ca-avatar-fallback-weight`, `--ca-field-gap`, `--ca-field-label-leading`, `--ca-ta-min-height`, `--ca-card-bg`, `--ca-card-radius`, `--ca-card-border`, `--ca-card-shadow`, `--ca-seg-item-padding-x`, `--ca-seg-item-font-size`, `--ca-empty-title-size`, `--ca-empty-title-weight`
+- `<Card title="Activity" headingLevel={3}>` holds everything
+- Two `<Avatar alt="Ana Lima" tone="neutral" size="sm" />` style avatars (Ana Lima, Bruno Reis) beside a `<SegmentedControl` with `size="sm"` and the items Day, Week and Month
+- `<TextField label="Contact" placeholder="Search contacts" />` and `<TextArea label="Note" rows={1}` with a note placeholder
+- `<EmptyState bare icon={Inbox} title="No activity yet"` with an Inbox icon, the title No activity yet and a neutral outlined small Button labelled Log a call
+- No selector against a component class in the CSS
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #881 Dense CRM with component tokens → file, what changed, https://ui.codeatlas.com.br/docs/layout/empty-state#dense-crm-with-component-tokens; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/881.txt   Components API: ca-ui-mcp get_component(Avatar)

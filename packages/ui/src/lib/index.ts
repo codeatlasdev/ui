@@ -282,11 +282,15 @@ export type { ToastItem, ToastOptions, ToastVariant } from "./stores/toast.svelt
 export { toast } from "./stores/toast.svelte.js";
 export { viewport } from "./stores/viewport.svelte.js";
 export type {
+	AvatarTokens,
 	ButtonSizeTokens,
 	ButtonTokens,
+	CardTokens,
 	ComponentTokens,
 	Density,
 	ElevationModel,
+	EmptyStateTokens,
+	FieldTokens,
 	FontDescriptor,
 	FontFallbackMetrics,
 	FontSpec,
@@ -298,6 +302,8 @@ export type {
 	PresetSizes,
 	ResolvedTheme,
 	SchemeColors,
+	SegmentedTokens,
+	TextAreaTokens,
 	ThemeDefinition,
 	TypographyOptions,
 } from "./theme/define.js";

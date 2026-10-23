@@ -1,6 +1,6 @@
 {
 	"version": "4.5.0",
-	"count": 340,
+	"count": 341,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -35,8 +35,8 @@
 		{
 			"slug": "layout",
 			"first": "165",
-			"last": "781",
-			"count": 38
+			"last": "881",
+			"count": 39
 		},
 		{
 			"slug": "charts",
@@ -15316,7 +15316,7 @@
 			"variant": "ComponentTokens",
 			"slug": "component-tokens",
 			"title": "Component tokens",
-			"description": "Weight, tracking, line-height, gap, padding, ghost border and icon button size set on one wrapper, with no selector against a ca-* class.",
+			"description": "Weight, gap, padding, ghost border and icon size set on one wrapper.",
 			"summary": "A dense focus-mode toolbar that restyles Button, IconButton and Kbd with component tokens on one wrapper: tighter gap and line-height, a regular-weight large button, wider small padding, a borderless ghost button, a 36px icon button and a square keycap.",
 			"use": "A product whose design system fixes button weight, tracking, gap, padding and keycap size per context (public area, dashboard, focus mode), without writing selectors against ca-* classes.",
 			"spec": [
@@ -15355,6 +15355,63 @@
 			],
 			"interactive": false,
 			"demo": "https://ui.codeatlas.com.br/docs/inputs/button#component-tokens",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "881",
+			"group": "layout",
+			"page": "empty-state",
+			"variant": "DenseCrm",
+			"slug": "dense-crm-with-component-tokens",
+			"title": "Dense CRM with component tokens",
+			"description": "Six components restyled by tokens on one wrapper.",
+			"summary": "A dense CRM activity card whose Avatar, TextField, TextArea, Card, SegmentedControl and EmptyState are restyled only through component tokens declared on one wrapper: neutral avatars, tighter field gap, a 64px note box, a hairline flat card, compact segments and a bare empty state.",
+			"use": "Dense work screens (activity feed, notes composer, view switcher, empty and invite states) that need a different density than the defaults without selectors against internal parts.",
+			"spec": [
+				"Wrapper `.crm` declares only custom properties: `--ca-avatar-sm-fallback-size`, `--ca-avatar-fallback-weight`, `--ca-field-gap`, `--ca-field-label-leading`, `--ca-ta-min-height`, `--ca-card-bg`, `--ca-card-radius`, `--ca-card-border`, `--ca-card-shadow`, `--ca-seg-item-padding-x`, `--ca-seg-item-font-size`, `--ca-empty-title-size`, `--ca-empty-title-weight`",
+				"`<Card title=\"Activity\" headingLevel={3}>` holds everything",
+				"Two `<Avatar alt=\"Ana Lima\" tone=\"neutral\" size=\"sm\" />` style avatars (Ana Lima, Bruno Reis) beside a `<SegmentedControl` with `size=\"sm\"` and the items Day, Week and Month",
+				"`<TextField label=\"Contact\" placeholder=\"Search contacts\" />` and `<TextArea label=\"Note\" rows={1}` with a note placeholder",
+				"`<EmptyState bare icon={Inbox} title=\"No activity yet\"` with an Inbox icon, the title No activity yet and a neutral outlined small Button labelled Log a call",
+				"No selector against a component class in the CSS"
+			],
+			"tags": [
+				"avatar",
+				"text-field",
+				"text-area",
+				"card",
+				"segmented-control",
+				"empty-state",
+				"tokens",
+				"density",
+				"crm"
+			],
+			"shape": "wide",
+			"components": [
+				"Avatar",
+				"Button",
+				"Card",
+				"EmptyState",
+				"SegmentedControl",
+				"TextArea",
+				"TextField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Avatar",
+						"Button",
+						"Card",
+						"EmptyState",
+						"SegmentedControl",
+						"TextArea",
+						"TextField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/empty-state#dense-crm-with-component-tokens",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		}
 	]

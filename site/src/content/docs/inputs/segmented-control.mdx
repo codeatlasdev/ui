@@ -28,6 +28,10 @@ Unlike [ToggleGroup](/docs/inputs/toggle-group/), exactly one item is always sel
 <Demo title="Default" description="Text items, and text items with icons." src={DefaultSrc}><Default client:visible /></Demo>
 <Demo title="Small, full width, disabled item" src={SizesSrc}><Sizes client:visible /></Demo>
 
+## Tokens
+
+`size="sm" | "md"` picks the preset; `--ca-seg-item-{padding-x,font-size,line-height}` tune both, and `--ca-seg-{sm,md}-item-*` one size (it wins). No rule against `.ca-seg__item`.
+
 <Props rows={[
   { name: "value", type: "string", default: "first enabled item", description: "Bindable selected value." },
   { name: "items", type: "ToggleGroupItem[]", description: "{ value, label?, icon?, disabled?, 'aria-label'? }." },

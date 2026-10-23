@@ -109,7 +109,7 @@
     .ca-ta {
       display: flex;
       flex-direction: column;
-      gap: var(--ca-space-1);
+      gap: var(--ca-ta-gap, var(--ca-field-gap, var(--ca-space-1)));
       width: 100%;
     }
 
@@ -118,7 +118,7 @@
       font-size: var(--ca-font-size-label);
       font-weight: var(--ca-font-weight-medium);
       color: var(--ca-text-primary);
-      line-height: var(--ca-line-height-snug);
+      line-height: var(--ca-ta-label-line-height, var(--ca-field-label-leading, var(--ca-line-height-snug)));
       user-select: none;
     }
 
@@ -128,6 +128,10 @@
 
     /* ── Textarea wrapper ──────────────────────────────────────── */
     .ca-ta__wrap {
+      display: flex;
+      box-sizing: border-box;
+      /* --ca-ta-min-height is the visible box: the wrapper, border included. The input stretches to fill it. */
+      min-height: var(--ca-ta-min-height, 0);
       border-radius: var(--ca-radius-control);
       background: var(--ca-field-bg);
       border: var(--ca-border-width) solid var(--ca-field-border-color);
@@ -157,6 +161,8 @@
     /* ── Textarea ──────────────────────────────────────────────── */
     .ca-ta__input {
       display: block;
+      flex: 1;
+      min-width: 0;
       width: 100%;
       padding: var(--ca-space-2) var(--ca-space-2-5);
       background: transparent;

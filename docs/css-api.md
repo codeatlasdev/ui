@@ -467,3 +467,8 @@ A component token is a custom property a component reads before its default: `--
 - **Button** `--ca-btn-font-weight` `--ca-btn-letter-spacing` `--ca-btn-line-height` `--ca-btn-gap` `--ca-btn-{sm,md,lg}-height` `--ca-btn-{sm,md,lg}-padding-x` `--ca-btn-{sm,md,lg}-font-size` `--ca-btn-{sm,md,lg}-font-weight` `--ca-btn-{sm,md,lg}-letter-spacing` `--ca-btn-ghost-border-width` `--ca-btn-disabled-bg` `--ca-btn-touch-height`
 - **IconButton** `--ca-icon-btn-size-{sm,md,lg}` `--ca-icon-btn-font-weight` `--ca-icon-btn-touch-size`
 - **Kbd** `--ca-kbd-size` `--ca-kbd-font-size` `--ca-kbd-line-height`
+- **Avatar** `--ca-avatar-fallback-{bg,color,size,weight}` `--ca-avatar-{xs,sm,md,lg,xl}-fallback-{size,weight}`; prop `tone="neutral"` (`data-tone="neutral"` on `.ca-avatar`, `data-size` on named sizes)
+- **TextField / TextArea** `--ca-field-gap` `--ca-field-label-leading` `--ca-tf-gap` `--ca-tf-label-line-height` `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height` (the visible box, border included)
+- **Card** `--ca-card-bg` `--ca-card-radius` `--ca-card-border` `--ca-card-shadow` (`--ca-card-padding` and `--ca-card-gap` already existed)
+- **SegmentedControl** `--ca-seg-item-{padding-x,font-size,line-height}` `--ca-seg-{sm,md}-item-{padding-x,font-size,line-height}`
+- **EmptyState** `--ca-empty-padding` `--ca-empty-title-size` `--ca-empty-title-weight`; modifiers `.ca-empty--bare` (prop `bare`) and `.ca-empty--fill` (prop `actionsFill`)

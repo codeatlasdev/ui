@@ -246,9 +246,12 @@ Avatar: user identity display component.
 | `crossorigin?` | `'anonymous' \| 'use-credentials'` |  | Passed to the `<img>`. |
 | `onerror?` | `(event: Event) => void` |  | Called when the image fails; the fallback shows. Use it to refetch a signed URL. |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size, no image request, announced as busy. |
+| `tone?` | `Tone` | `'palette'` | Fallback colour: `'palette'` (default) derives a colour from the name, so each person keeps theirs; `'neutral'` draws every fallback the same, on `--ca-surface-overlay` with `--ca-text-secondary` and a hairline ring, for a dense list where coloured discs compete with the content. |
 | `class?` | `string` | `''` |  |
 
 Classes: `ca-avatar` `ca-avatar__fallback` `ca-avatar__fallback--covered` `ca-avatar__img` `ca-avatar__status` `ca-avatar__status--away` `ca-avatar__status--busy` `ca-avatar__status--offline` `ca-avatar__status--online`
+
+Tokens: `--ca-avatar-fallback-bg` `--ca-avatar-fallback-color` `--ca-avatar-fallback-size` `--ca-avatar-fallback-weight` `--ca-avatar-lg-fallback-size` `--ca-avatar-lg-fallback-weight` `--ca-avatar-md-fallback-size` `--ca-avatar-md-fallback-weight` `--ca-avatar-sm-fallback-size` `--ca-avatar-sm-fallback-weight` `--ca-avatar-xl-fallback-size` `--ca-avatar-xl-fallback-weight` `--ca-avatar-xs-fallback-size` `--ca-avatar-xs-fallback-weight`
 
 ## Badge
 
@@ -415,7 +418,7 @@ Also accepts: `Omit<ComponentProps<typeof Surface>, 'as' \| 'children'>`
 
 Classes: `ca-card` `ca-card--flush` `ca-card--full` `ca-card__header` `ca-card__header-actions` `ca-card__title`
 
-Tokens: `--ca-card-gap`
+Tokens: `--ca-card-bg` `--ca-card-border` `--ca-card-gap` `--ca-card-radius` `--ca-card-shadow`
 
 ## CardGrid
 
@@ -1124,11 +1127,15 @@ Classes: `ca-dropdown-item--sub-trigger` `ca-dropdown-item__chevron` `ca-dropdow
 | `variant?` | `'default' \| 'hero'` | `'default'` | 'default' = compact inline empty state. 'hero'    = larger brand-tinted icon tile with glow, bigger title; `actions` stack full-width on mobile (put the primary action first). |
 | `description?` | `string` |  |  |
 | `display?` | `boolean` | `false` | Display text role for the title: `--ca-display-tracking`, `--ca-display-leading` and the fluid `--ca-font-size-display-3`. |
+| `bare?` | `boolean` | `false` | No padding: an empty state inside a Card, a table or a pane that already insets its content. |
+| `actionsFill?` | `boolean` | `false` | Stacks `actions` full-width at every width (one wide button, an invite form). `variant="hero"` already does it in a narrow slot. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `actions`, `children`
 
-Classes: `ca-empty` `ca-empty--hero` `ca-empty__actions` `ca-empty__description` `ca-empty__icon` `ca-empty__title` `ca-empty__title--display`
+Classes: `ca-empty` `ca-empty--bare` `ca-empty--fill` `ca-empty--hero` `ca-empty__actions` `ca-empty__description` `ca-empty__icon` `ca-empty__title` `ca-empty__title--display`
+
+Tokens: `--ca-empty-padding` `--ca-empty-title-size` `--ca-empty-title-weight`
 
 ## ErrorPage
 
@@ -2303,6 +2310,8 @@ Classes: `ca-section` `ca-section__chevron` `ca-section__chevron--open` `ca-sect
 
 Classes: `ca-seg` `ca-seg--md` `ca-seg--sm` `ca-seg__item` `ca-seg__thumb`
 
+Tokens: `--ca-seg-item-font-size` `--ca-seg-item-line-height` `--ca-seg-item-padding-x` `--ca-seg-md-item-font-size` `--ca-seg-md-item-line-height` `--ca-seg-md-item-padding-x` `--ca-seg-sm-item-font-size` `--ca-seg-sm-item-line-height` `--ca-seg-sm-item-padding-x`
+
 ## Select
 
 `import { Select } from "@codeatlasdev/ui"`
@@ -2794,6 +2803,8 @@ Also accepts: `Omit<HTMLTextareaAttributes, 'value' \| 'class' \| 'children' \| 
 
 Classes: `ca-ta` `ca-ta--disabled` `ca-ta__hint` `ca-ta__hint--error` `ca-ta__input` `ca-ta__label` `ca-ta__req` `ca-ta__wrap` `ca-ta__wrap--error` `ca-ta__wrap--focused`
 
+Tokens: `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
+
 ## TextField
 
 `import { TextField } from "@codeatlasdev/ui"`
@@ -2829,6 +2840,8 @@ Snippets: `leading`, `trailing`, `below`
 Also accepts: `Omit<HTMLInputAttributes, 'value' \| 'class' \| 'children' \| 'size' \| 'oninput' \| 'onchange' \| 'onfocus' \| 'onblur'>`
 
 Classes: `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__adorn` `ca-tf__adorn--trail` `ca-tf__below` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__reveal` `ca-tf__wrap` `ca-tf__wrap--error` `ca-tf__wrap--focused`
+
+Tokens: `--ca-tf-gap` `--ca-tf-label-line-height`
 
 ## ThemeIsland
 
@@ -3905,14 +3918,16 @@ Types:
 | Type | Declaration | Notes |
 |---|---|---|
 | `Align` | `type Align = (typeof ALIGN)[number];` |  |
+| `AvatarTokens` | `interface AvatarTokens extends AvatarFallbackTokens { size?: Partial< Record< "xs" \| "sm" \| "md" \| "lg" \| "xl", Pick<AvatarFallbackTokens, "fallbackSize" \| "fallbackWeight"> > >; }` |  |
 | `BrandColors` | `interface BrandColors { main: string; light: string; dark: string; contrast: string; }` |  |
 | `Breakpoint` | `type Breakpoint = "xs" \| "sm" \| "md" \| "lg" \| "xl";` |  |
 | `BuiltinPresetId` | `type BuiltinPresetId = \| "amber" \| "ocean" \| "crimson" \| "cyan" \| "violet" \| "emerald" \| "rose" \| "slate";` | Presets shipped in global.css. |
 | `ButtonSizeTokens` | `interface ButtonSizeTokens { height?: CssValue; paddingX?: CssValue; fontSize?: CssValue; weight?: CssValue; tracking?: CssValue; }` | Typography and box tokens of one Button size. |
 | `ButtonTokens` | `interface ButtonTokens extends ButtonSizeTokens { weight?: CssValue; tracking?: CssValue; leading?: CssValue; gap?: CssValue; ghostBorderWidth?: CssValue; disabledBg?: CssValue; touchHeight?: CssValue; sm?: ButtonSizeTokens; md?: ButtonSizeTokens; lg?: ButtonSizeTokens; }` |  |
+| `CardTokens` | `interface CardTokens { bg?: CssValue; radius?: CssValue; border?: CssValue; shadow?: CssValue; }` |  |
 | `ColorScheme` | `type ColorScheme = "light" \| "dark" \| "system";` |  |
 | `Columns` | `type Columns = (typeof COLUMNS)[number] \| `${(typeof COLUMNS)[number]}`;` |  |
-| `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
+| `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldTokens; textField?: FieldTokens; textArea?: TextAreaTokens; card?: CardTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
 | `DateRange` | `interface DateRange { start: DateValue \| undefined; end: DateValue \| undefined; }` | Value of RangeCalendar / DateRangePicker. Both ends are undefined until picked. |
 | `DeepPartial` | `type DeepPartial<T> = T extends (...args: never[]) => unknown ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;` |  |
 | `Density` | `type Density = "compact" \| "comfortable" \| "airy" \| number;` | Spacing density: a multiplier of the 4px unit, or a named step. |
@@ -3935,8 +3950,10 @@ Types:
 | `ElementTag` | `type ElementTag = keyof SvelteHTMLElements;` | Tags `as` can render: the HTML and SVG elements Svelte knows (`svelte:element`). |
 | `ElevationLevel` | `type ElevationLevel = keyof typeof elevation;` |  |
 | `ElevationModel` | `type ElevationModel = "soft" \| "none" \| "hard" \| "glow";` | Shadow model: how elevation is drawn. |
+| `EmptyStateTokens` | `interface EmptyStateTokens { padding?: CssValue; titleSize?: CssValue; titleWeight?: CssValue; }` |  |
 | `ExportColumn` | `interface ExportColumn<T extends object = Record<string, unknown>> { key: keyof T & string; header?: string; value?: (row: T) => unknown; }` |  |
 | `FieldState` | `interface FieldState { value: string; error: string \| undefined; touched: boolean; }` |  |
+| `FieldTokens` | `interface FieldTokens { gap?: CssValue; labelLeading?: CssValue; }` |  |
 | `FontDescriptor` | `interface FontDescriptor { family: string; src: string; weight?: number \| string; style?: "normal" \| "italic"; display?: "auto" \| "block" \| "swap" \| "fallback" \| "optional"; preload?: boolean; fallback?: string; fallbackMetrics?: FontFallbackMetrics; generic?: string; }` | A self-hosted web font. Emits `@font-face`, an optional preload and a metric-matched fallback face. |
 | `FontFallbackMetrics` | `interface FontFallbackMetrics { sizeAdjust?: string \| number; ascent?: string; descent?: string; lineGap?: string; }` | Metrics of the fallback face, from the font's own tables, so the swap does not shift layout. |
 | `FontSpec` | `type FontSpec = string \| FontDescriptor;` | A font stack string (existing behavior) or a self-hosted font descriptor. |
@@ -3976,6 +3993,7 @@ Types:
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
 | `Responsive` | `type Responsive<T> = T \| ({ base?: T } & { [B in Breakpoint]?: T });` | A value, or one value per breakpoint: `{ base: "2", md: "6" }`. A breakpoint applies from its width up. |
 | `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: string; brandFillHover?: string; brandContrast?: string; background?: string; sunken?: string; surface?: string; overlay?: string; text?: string; textSecondary?: string; textHint?: string; textDisabled?: string; borderSubtle?: string; border?: string; borderStrong?: string; success?: string; warning?: string; info?: string; error?: string; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. |
+| `SegmentedTokens` | `interface SegmentedTokens extends SegmentedItemTokens { sm?: SegmentedItemTokens; md?: SegmentedItemTokens; }` |  |
 | `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
 | `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
 | `SortableOptions` | `interface SortableOptions { id: string; group?: string; getItems: () => readonly string[]; getLabel?: (id: string) => string; label?: string; axis?: "y" \| "x"; drop?: "position" \| "container"; handle?: string; disabled?: boolean; onDrop: (e: DndDropEvent) => void; }` |  |
@@ -3983,6 +4001,7 @@ Types:
 | `StageInsets` | `interface StageInsets { top: number; right: number; bottom: number; left: number; }` |  |
 | `SurfaceColors` | `interface SurfaceColors { sunken: string; base: string; raised: string; overlay: string; }` |  |
 | `SurfaceStyle` | `type SurfaceStyle = \| "glass" \| "frosted" \| "solid" \| "flat" \| "outlined" \| "neumorphic" \| "clay" \| "tonal" \| "chrome";` | Surface material. glass/frosted blur the backdrop; the rest are opaque. |
+| `TextAreaTokens` | `interface TextAreaTokens extends FieldTokens { minHeight?: CssValue; }` |  |
 | `TextColors` | `interface TextColors { primary: string; secondary: string; disabled: string; }` |  |
 | `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; components: ComponentTokens; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
