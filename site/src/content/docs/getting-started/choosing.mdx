@@ -167,6 +167,7 @@ All six render any element with `as` and take spacing as tokens, never inline st
 |---|---|---|
 | A secondary action beside a brand filled one | [`Button`](/docs/inputs/button/) `tone="neutral"` | Draws `outlined` and `ghost` in neutral label and border. Also on `IconButton`. Other variants ignore it. |
 | Related actions that read as one control (range switcher, formatting toolbar, split button) | [`ButtonGroup`](/docs/inputs/button-group/) | Attached `Button`/`IconButton`/`DropdownMenu` trigger, `role="group"`, `orientation`. A choice that stays selected is `SegmentedControl`. |
+| A field with fixed context or its own button inside the border (`https://`, `$`, a copy or Apply button) | [`TextField`](/docs/inputs/text-field/) `prefix` / `suffix` | A string is text read with the field; a snippet is a `Button`/`IconButton` with its own name. `leading`/`trailing` are bare icons. |
 | A hero or page title in the fluid editorial size | [`Heading`](/docs/display/heading/) `size="display"` | `display-2` and `display-3` are smaller steps. Plain `h1` keeps the h1 size. `PageShell`, `AuthCard`, `SiteHeader` and `EmptyState` take `display`, which uses `--ca-font-display`. |
 | A marker, a struck-out old value, a paper grain | `Highlight`, `StrikeThrough`, `Surface grain` | Editorial primitives. `Highlight animated` and `StrikeThrough animated` play once on mount. |
 

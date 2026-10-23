@@ -224,8 +224,7 @@
 		{
 			"shadcn": "Input Group",
 			"to": ["TextField"],
-			"gap": 432,
-			"workaround": "App markup around `TextField`."
+			"notes": "`prefix` and `suffix` on `TextField`: a string is text addon, a snippet is a `Button`/`IconButton`/select inside the border."
 		},
 		{
 			"shadcn": "Input OTP",

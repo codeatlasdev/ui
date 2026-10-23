@@ -229,7 +229,7 @@ One row per component on [ui.shadcn.com/docs/components](https://ui.shadcn.com/d
 | Field |  |  | `TextField`, `FormSection` | Label, `description` and `error` are props of each field; group fields with `FormSection`. |
 | Hover Card | `@radix-ui/react-hover-card` |  | `HoverCard` | `openDelay`, `closeDelay`; touch never opens it (use `Popover` for tap-to-open). |
 | Input |  | `TextField` | `TextField` | `label`, `description`, `error` (a string), `bind:value`. |
-| Input Group |  |  | none (gap #432): App markup around `TextField`. |  |
+| Input Group |  |  | `TextField` | `prefix` and `suffix` on `TextField`: a string is text addon, a snippet is a `Button`/`IconButton`/select inside the border. |
 | Input OTP |  |  | `PinInput` | `length`, `oncomplete`, `mask`. |
 | Item |  |  | `LinkCard`, `SettingItem` | A navigable row is `LinkCard`; a settings row is `SettingItem`. |
 | Kbd |  |  | `Kbd` |  |

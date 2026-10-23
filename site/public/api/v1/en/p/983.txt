@@ -1,0 +1,12 @@
+Use @codeatlasdev/ui demo #983 "Button addons" (inputs/text-field).
+What it shows: Two TextFields with a button inside the border: a read-only share link with a copy IconButton and a coupon code with an Apply button. When to use: A field with its own action: copy a value, apply a code, submit a search, with the button keeping its own name and Tab stop.
+Spec:
+- `label="Share link" readonly` with `suffix={copyBtn}`: a text-variant small IconButton named "Copy link" ("Link copied" after a click)
+- `label="Coupon code"` with `suffix={applyBtn}`: a ghost small Button "Apply", disabled while the field is empty
+- The fields are stacked in a column, `max-width: 24rem`, `gap: var(--ca-space-4)`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #983 Button addons → file, what changed, https://ui.codeatlas.com.br/docs/inputs/text-field#button-addons; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/983.txt   Components API: ca-ui-mcp get_component(Button)
