@@ -48,3 +48,44 @@ describe("Progress", () => {
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 });
+
+describe("Progress size (#358)", () => {
+	const track = (c: HTMLElement) => q<HTMLElement>(c, ".ca-progress__track");
+	const h = (c: HTMLElement) => track(c).getBoundingClientRect().height;
+
+	it("keeps the 8px default", async () => {
+		const screen = await render(Progress, { value: 50, label: "x" });
+		expect(h(screen.container)).toBe(8);
+	});
+
+	it.each([
+		["sm", 4],
+		["md", 6],
+		["lg", 8],
+	] as const)("size %s is %ipx tall, determinate and indeterminate", async (size, px) => {
+		const det = await render(Progress, { value: 50, size, label: "x" });
+		expect(h(det.container)).toBe(px);
+		expect(getComputedStyle(q(det.container, ".ca-progress__indicator")).height).toBe(`${px}px`);
+		const ind = await render(Progress, { indeterminate: true, size, label: "y" });
+		expect(h(ind.container)).toBe(px);
+		expect(await checkA11y(det.container)).toHaveNoViolations();
+	});
+
+	it("--ca-progress-height from the consumer wins and the ends stay pill-shaped", async () => {
+		const screen = await render(Progress, { value: 50, size: "sm", label: "x" });
+		const root = q<HTMLElement>(screen.container, ".ca-progress");
+		root.style.setProperty("--ca-progress-height", "12px");
+		expect(h(screen.container)).toBe(12);
+		expect(
+			parseFloat(getComputedStyle(track(screen.container)).borderTopLeftRadius)
+		).toBeGreaterThanOrEqual(6);
+	});
+
+	it("semantics and label are unchanged by size", async () => {
+		const screen = await render(Progress, { value: 40, size: "sm", label: "Weekly goal" });
+		const bar = screen.getByRole("progressbar", { name: "Weekly goal" });
+		await expect.element(bar).toHaveAttribute("aria-valuenow", "40");
+		await expect.element(bar).toHaveAttribute("aria-valuemin", "0");
+		await expect.element(bar).toHaveAttribute("aria-valuemax", "100");
+	});
+});

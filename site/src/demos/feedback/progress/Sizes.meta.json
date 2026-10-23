@@ -1,0 +1,13 @@
+{
+	"summary": "Four Progress bars at 60% showing size sm (4px), size md (6px) and the default lg (8px), plus an indeterminate sm bar.",
+	"use": "Picking the bar thickness: thin bars for dense cards and headers, the default 8px elsewhere.",
+	"spec": [
+		"`<Progress value={60} size=\"sm\" label=\"Small bar\" />`",
+		"`<Progress value={60} size=\"md\" label=\"Medium bar\" />`",
+		"`<Progress value={60} label=\"Default bar\" />` keeps the 8px height",
+		"`<Progress indeterminate size=\"sm\" label=\"Small indeterminate bar\" />` honours the height too",
+		"Stacked in a grid with `gap: var(--ca-space-4)`, `max-width: 360px`"
+	],
+	"tags": ["progress", "size", "height", "sm", "md", "lg", "indeterminate"],
+	"shape": "wide"
+}

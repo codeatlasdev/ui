@@ -1954,6 +1954,7 @@ Classes: `ca-popover-content` `ca-popover__trigger`
 | `indeterminate?` | `boolean` | `false` |  |
 | `class?` | `string` | `''` |  |
 | `label?` | `string` |  |  |
+| `size?` | `'sm' \| 'md' \| 'lg'` | `'lg'` | Bar height: `'sm'` (4px), `'md'` (6px) or `'lg'` (8px, the default). For another height set `--ca-progress-height` on the element or an ancestor; the ends stay pill-shaped. |
 
 Classes: `ca-progress` `ca-progress__indicator` `ca-progress__indicator--indeterminate` `ca-progress__track`
 

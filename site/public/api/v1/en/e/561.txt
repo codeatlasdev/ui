@@ -1,0 +1,29 @@
+<!-- @codeatlasdev/ui demo #561 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/progress#sizes -->
+Element: #561 Sizes (feedback/progress)
+What it shows: Four Progress bars at 60% showing size sm (4px), size md (6px) and the default lg (8px), plus an indeterminate sm bar.
+When to use: Picking the bar thickness: thin bars for dense cards and headers, the default 8px elsewhere.
+Spec:
+- `<Progress value={60} size="sm" label="Small bar" />`
+- `<Progress value={60} size="md" label="Medium bar" />`
+- `<Progress value={60} label="Default bar" />` keeps the 8px height
+- `<Progress indeterminate size="sm" label="Small indeterminate bar" />` honours the height too
+- Stacked in a grid with `gap: var(--ca-space-4)`, `max-width: 360px`
+Tags: progress, size, height, sm, md, lg, indeterminate
+Needs: @codeatlasdev/ui@4.5.0
+Components: Progress
+Live demo: https://ui.codeatlas.com.br/docs/feedback/progress#sizes
+
+<script lang="ts">
+  import { Progress } from '@codeatlasdev/ui';
+</script>
+
+<div class="stack">
+  <Progress value={60} size="sm" label="Small bar" />
+  <Progress value={60} size="md" label="Medium bar" />
+  <Progress value={60} label="Default bar" />
+  <Progress indeterminate size="sm" label="Small indeterminate bar" />
+</div>
+
+<style>
+  .stack { display: grid; gap: var(--ca-space-4); width: 100%; max-width: 360px; }
+</style>

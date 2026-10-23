@@ -10,6 +10,8 @@ import Determinate from "~/demos/feedback/progress/Determinate.svelte";
 import DeterminateSrc from "~/demos/feedback/progress/Determinate.svelte?raw";
 import Indeterminate from "~/demos/feedback/progress/Indeterminate.svelte";
 import IndeterminateSrc from "~/demos/feedback/progress/Indeterminate.svelte?raw";
+import Sizes from "~/demos/feedback/progress/Sizes.svelte";
+import SizesSrc from "~/demos/feedback/progress/Sizes.svelte?raw";
 import Animated from "~/demos/feedback/progress/Animated.svelte";
 import AnimatedSrc from "~/demos/feedback/progress/Animated.svelte?raw";
 
@@ -26,12 +28,16 @@ Renders `role="progressbar"` with `aria-valuenow`, `aria-valuemin` (always 0) an
 
 <Demo title="Determinate" description="An explicit value from 0 to max (100 by default)." src={DeterminateSrc}><Determinate /></Demo>
 <Demo title="Indeterminate" description="Use when progress cannot be determined." src={IndeterminateSrc}><Indeterminate /></Demo>
+<Demo title="Sizes" description={"`size` sets the bar height: `sm` 4px, `md` 6px, `lg` 8px (default). Both determinate and indeterminate bars honour it."} src={SizesSrc}><Sizes /></Demo>
 <Demo title="Animated" description="Start a simulated upload." src={AnimatedSrc}><Animated client:visible /></Demo>
+
+Use `size="sm"` or `"md"` for compact bars in cards and headers. For a height outside the three steps set the `--ca-progress-height` custom property on the bar or an ancestor (`.goal { --ca-progress-height: 10px }`); the ends stay fully rounded. Never override `.ca-progress__track` from the app.
 
 <Props for="Progress" rows={[
   { name: "value", type: "number", default: "0", description: "Current progress value." },
   { name: "max", type: "number", default: "100", description: "Maximum value, also exposed as `aria-valuemax`. The fill width is clamped between 0 and 100%." },
   { name: "indeterminate", type: "boolean", default: "false", description: "Plays the shimmer animation when progress is unknown." },
+  { name: "size", type: "'sm' | 'md' | 'lg'", default: "'lg'", description: "Bar height: 4px, 6px or 8px. `--ca-progress-height` overrides it." },
   { name: "label", type: "string", default: "undefined", description: "Accessible name, set as `aria-label`." },
   { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
 ]} />

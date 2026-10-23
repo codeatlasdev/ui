@@ -5,6 +5,11 @@
     indeterminate?: boolean;
     class?: string;
     label?: string;
+    /**
+     * Bar height: `'sm'` (4px), `'md'` (6px) or `'lg'` (8px, the default). For another height set
+     * `--ca-progress-height` on the element or an ancestor; the ends stay pill-shaped.
+     */
+    size?: 'sm' | 'md' | 'lg';
   }
 
   let {
@@ -13,6 +18,7 @@
     indeterminate = false,
     class: className = '',
     label,
+    size = 'lg',
   }: Props = $props();
 
   let pct = $derived(
@@ -22,6 +28,7 @@
 
 <div
   class="ca-progress {className}"
+  data-size={size}
   role="progressbar"
   aria-valuenow={indeterminate ? undefined : value}
   aria-valuemin={0}
@@ -42,10 +49,14 @@
     .ca-progress {
       width: 100%;
     }
+    /* A consumer's --ca-progress-height (on the element or an ancestor) wins over the size steps. */
+    .ca-progress[data-size='sm'] { --_h: var(--ca-space-1); }
+    .ca-progress[data-size='md'] { --_h: var(--ca-space-1-5); }
+    .ca-progress[data-size='lg'] { --_h: var(--ca-space-2); }
 
     .ca-progress__track {
       width: 100%;
-      height: var(--ca-space-2);
+      height: var(--ca-progress-height, var(--_h, var(--ca-space-2)));
       background: var(--ca-outline-default);
       border-radius: var(--ca-radius-pill);
       overflow: hidden;
