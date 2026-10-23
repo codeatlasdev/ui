@@ -6,6 +6,8 @@
 
   interface Props extends Omit<HTMLAnchorAttributes, 'class' | 'children'> {
     class?: string;
+    /** Link target. */
+    href?: string;
     /** The link is the current page: sets `aria-current="page"`. */
     current?: boolean;
     /** A second line under the title, part of the link's accessible name. Panel links only. */
@@ -13,7 +15,7 @@
     children?: Snippet;
   }
 
-  let { class: className = '', current = false, description, children, onclick, ...rest }: Props = $props();
+  let { class: className = '', href, current = false, description, children, onclick, ...rest }: Props = $props();
 
   const nav = getContext<NavMenuContext | undefined>(NAVMENU_CONTEXT);
   /** A link inside a panel (the panel is in the top layer, outside the list) is not a top-level roving item. */
@@ -23,6 +25,7 @@
 {#snippet anchor()}
   <a
     {...rest}
+    {href}
     class="ca-navmenu__link {className}"
     aria-current={current ? 'page' : undefined}
     data-ca-navmenu-item={inPanel ? undefined : ''}

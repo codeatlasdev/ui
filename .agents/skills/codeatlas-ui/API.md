@@ -2183,6 +2183,7 @@ Data attributes: `data-state` (`closed` `open`)
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `class?` | `string` | `''` |  |
+| `href?` | `string` |  | Link target. |
 | `current?` | `boolean` | `false` | The link is the current page: sets `aria-current="page"`. |
 | `description?` | `string` |  | A second line under the title, part of the link's accessible name. Panel links only. |
 
