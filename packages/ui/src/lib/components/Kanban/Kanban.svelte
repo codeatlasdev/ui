@@ -551,7 +551,7 @@
   }
   .ca-kanban__more:hover:not(:disabled) { background: var(--ca-action-hover); color: var(--ca-text-primary); }
   .ca-kanban__more:focus-visible { outline: 2px solid var(--ca-focus-ring); outline-offset: -2px; }
-  .ca-kanban__more:disabled { cursor: progress; opacity: 0.7; }
+  .ca-kanban__more:disabled { cursor: progress; color: var(--ca-text-hint); }
 
   /* ── Mobile: tab strip + one column ── */
   .ca-kanban__tabs {
