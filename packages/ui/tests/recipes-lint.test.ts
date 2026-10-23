@@ -81,3 +81,17 @@ describe("recipes.mdx code blocks pass the UI guard (#474)", () => {
 			expect(findings(b).length).toBeGreaterThan(0);
 		});
 });
+
+describe("list page recipe links (#507)", () => {
+	it("exports through downloadFile, not a link to a route the recipe never defines", () => {
+		const src = blocks
+			.filter((b) => b.section === "List page")
+			.map((b) => b.src)
+			.join("\n");
+		const defined = [
+			...readFileSync(RECIPES, "utf8").matchAll(/<!-- src\/routes\/(\S+)\/\+page\.svelte/g),
+		].map((m) => `/${m[1].replace(/\([^)]*\)\//g, "")}`);
+		const links = [...src.matchAll(/href="(\/[^"#]*)"/g)].map((m) => m[1]);
+		expect(links.filter((l) => !defined.includes(l))).toEqual([]);
+	});
+});
