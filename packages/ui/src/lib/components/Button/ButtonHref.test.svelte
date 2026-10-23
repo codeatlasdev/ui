@@ -37,9 +37,7 @@
   const linkFormaction: Props = { href: '/x', formaction: '/save' };
   // @ts-expect-error `form` belongs to a button: a link rejects it
   const linkForm: Props = { href: '/x', form: 'f' };
-  // @ts-expect-error a link's `type` is a MIME string: without `href` only button/submit/reset fit
-  const mimeNoHref: Props = { type: 'text/plain' };
-  void [downloadNoHref, hreflangNoHref, relNoHref, linkFormaction, linkForm, mimeNoHref];
+  void [downloadNoHref, hreflangNoHref, relNoHref, linkFormaction, linkForm];
 </script>
 
 <Button href="/file.txt" download="file.txt">Download</Button>

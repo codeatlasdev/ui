@@ -33,6 +33,26 @@ import SplitConfiguredSrc from "~/demos/feedback/dialog/SplitConfigured.svelte?r
 </Dialog>
 ```
 
+**Submitting a form from the footer.** The `actions` footer sits outside the dialog body, so a submit button there is not inside your `<form>`. Give the form an `id` and name it on the button with `form`: Enter in a field and the button then both submit it, with no `onclick` that repeats the handler.
+
+```svelte
+<script>
+  import { Dialog, Button } from "@codeatlasdev/ui";
+  let open = $state(false);
+  const add = (e) => { e.preventDefault(); open = false; };
+</script>
+
+<Dialog bind:open title="Add deal">
+  <form id="add-deal" onsubmit={add}>
+    <input name="title" aria-label="Title" />
+  </form>
+  {#snippet actions()}
+    <Button variant="ghost" onclick={() => (open = false)}>Cancel</Button>
+    <Button type="submit" form="add-deal">Add</Button>
+  {/snippet}
+</Dialog>
+```
+
 The dialog renders a native modal `<dialog>` opened with `showModal()`: the page behind is inert, focus is trapped, scrolling is locked and Escape closes it. Clicking the overlay closes it too. For decisions that need an explicit answer use [AlertDialog](/docs/feedback/alert-dialog/). On phones, prefer [Sheet](/docs/feedback/sheet/) for bottom-anchored content.
 
 <Demo title="Confirmation" description="The destructive confirm and cancel pattern." src={ConfirmationSrc}><Confirmation client:visible /></Demo>

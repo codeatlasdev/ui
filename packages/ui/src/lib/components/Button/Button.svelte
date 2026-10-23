@@ -24,8 +24,6 @@
     disabled?: boolean;
     /** Shows a spinner in place of `leading`, sets `aria-busy` and blocks interaction. Label is kept. */
     loading?: boolean;
-    /** Without `href` the button type (default `'button'`); with `href` the MIME type hint of the linked resource. */
-    type?: string;
     fullWidth?: boolean;
     /** Renders an `<a>` styled as a button. Its attributes (`download`, `rel`, `hreflang`, `ping`, `referrerpolicy`) are then accepted. */
     href?: string;
@@ -48,7 +46,7 @@
     onclick?: (e: MouseEvent) => void;
     'aria-label'?: string;
   }
-  type Overridden = keyof Own;
+  type Overridden = keyof Own | 'type' | 'form';
   // Attributes only one element has. The other branch types them `never`: TypeScript accepts an
   // excess property that exists in ANY union member until `href` narrows it, so without this
   // `<Button download>` (no href) would compile and then be spread on a <button>.
@@ -60,10 +58,27 @@
   type ButtonAttributes = Omit<HTMLButtonAttributes, Overridden> & Partial<Record<AnchorOnly, never>>;
 
   /** With `href` it renders an `<a>` and takes the anchor's attributes. */
-  type LinkProps = Own & AnchorAttributes & { href: string };
+  type LinkProps = Own & AnchorAttributes & {
+    href: string;
+    /** MIME type hint of the linked resource. */
+    type?: string;
+    form?: never;
+  };
 
   /** Without `href` it renders a `<button>` and takes the button's attributes. */
-  type ButtonProps = Own & ButtonAttributes & { href?: undefined; target?: undefined; type?: 'button' | 'submit' | 'reset' };
+  type ButtonProps = Own & ButtonAttributes & {
+    href?: undefined;
+    target?: undefined;
+    /**
+     * Button type, default `'button'`. A submit button outside its `<form>` (a Dialog `actions`
+     * footer) names it with `form="<form id>"`. The `string & {}` keeps the three values as
+     * suggestions and still accepts the widened `string` that svelte-check emits for a static
+     * `type="submit"` when the app has no `strict`; without it that call fails with `form: never`.
+     */
+    type?: 'button' | 'submit' | 'reset' | (string & {});
+    /** `id` of the `<form>` this button submits, for a button outside it (a Dialog `actions` footer, a sticky action bar). A link rejects it. */
+    form?: string;
+  };
 
   type Props = LinkProps | ButtonProps;
 
@@ -143,7 +158,7 @@
 {:else}
   <button
     {...rest}
-    type={(type as ButtonProps['type']) ?? 'button'}
+    type={(type as 'button' | 'submit' | 'reset' | undefined) ?? 'button'}
     disabled={isDisabled}
     class="ca-btn ca-btn--{variant} ca-btn--{size} {className}"
     class:ca-btn--neutral={neutral}
