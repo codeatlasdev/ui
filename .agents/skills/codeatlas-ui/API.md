@@ -3652,7 +3652,7 @@ Types:
 | `ThemePreset` | `interface ThemePreset { id: BuiltinPresetId; label: string; swatchColor: string; hue: number; brandLight: BrandColors; brandDark: BrandColors; ramp: NeutralRamp; semanticLight: SemanticColors; semanticDark: SemanticColors; }` |  |
 | `Thickness` | `type Thickness = "ultra-thin" \| "thin" \| "regular" \| "thick" \| "chrome";` |  |
 | `TimeValue` | `type TimeValue = Time \| CalendarDateTime \| ZonedDateTime;` | Accepted by TimeField `placeholder` / `minValue` / `maxValue`. |
-| `ToastItem` | `interface ToastItem { id: string; message: string; variant: ToastVariant; duration: number; count?: number; }` |  |
+| `ToastItem` | `interface ToastItem { id: string; message: string; variant: ToastVariant; duration: number; count: number; }` |  |
 | `ToastOptions` | `interface ToastOptions { variant?: ToastVariant; duration?: number; id?: string; }` |  |
 | `ToastVariant` | `type ToastVariant = "default" \| "success" \| "error" \| "warning" \| "info";` |  |
 | `TypographyOptions` | `interface TypographyOptions { scale?: number; weights?: Partial<Record<"regular" \| "medium" \| "semibold" \| "bold" \| "heading", number>>; headingTracking?: string; headingCase?: "none" \| "uppercase"; labelTracking?: string; labelCase?: "none" \| "uppercase"; lineHeight?: number; measure?: string; }` |  |
