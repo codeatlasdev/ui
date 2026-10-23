@@ -320,6 +320,7 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "480", path: "layout/app-shell/ResizablePanel" },
 	{ id: "481", path: "layout/app-shell/ItemExtras" },
 	{ id: "490", path: "feedback/toast/Dedupe" },
+	{ id: "492", path: "feedback/toast/Actions" },
 ];
 
 /**

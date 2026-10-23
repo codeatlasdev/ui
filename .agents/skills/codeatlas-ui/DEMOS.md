@@ -319,3 +319,4 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 480 | Panel width | layout/app-shell | AppShellLayout, PageShell, Card |
 | 481 | Color, count, actions and reorder | layout/app-shell | AppShellLayout, DropdownMenuItem, NavItemMenu, NavReorder, PageShell, Card |
 | 490 | Dedupe and replace by id | feedback/toast | Button, Toaster |
+| 492 | Description and action | feedback/toast | Button, Toaster |

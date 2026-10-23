@@ -104,4 +104,78 @@ describe("toast store", () => {
 			expect(toast.items).toHaveLength(0);
 		});
 	});
+
+	describe("description and action (#356)", () => {
+		it("accepts description and action in the options object of a shortcut", () => {
+			const onClick = vi.fn();
+			toast.success("Done", {
+				description: "Next step tomorrow",
+				action: { label: "Undo", onClick },
+				duration: 0,
+			});
+			expect(toast.items[0]).toMatchObject({
+				description: "Next step tomorrow",
+				action: { label: "Undo", onClick },
+			});
+		});
+
+		it("an actionable toast defaults to 8s, a plain one stays 4s", () => {
+			toast.info("plain");
+			toast.info("with action", { action: { label: "Go", onClick: () => {} } });
+			expect(toast.items.map((t) => t.duration)).toEqual([4000, 8000]);
+		});
+
+		it("an explicit duration wins over the actionable default", () => {
+			toast.info("x", { action: { label: "Go", onClick: () => {} }, duration: 1500 });
+			expect(toast.items[0]?.duration).toBe(1500);
+		});
+
+		it("positional duration keeps working next to the options object", () => {
+			toast.error("x", 5000);
+			expect(toast.items[0]).toMatchObject({ duration: 5000, variant: "error" });
+		});
+
+		it("same message with another description is a separate toast", () => {
+			toast.info("Saved", { description: "a", duration: 0 });
+			toast.info("Saved", { description: "b", duration: 0 });
+			toast.info("Saved", { description: "b", duration: 0 });
+			expect(toast.items.map((t) => [t.description, t.count])).toEqual([
+				["a", 1],
+				["b", 2],
+			]);
+		});
+
+		it("toasts with an action are never merged", () => {
+			const a = { label: "Go", onClick: () => {} };
+			toast.info("Saved", { action: a, duration: 0 });
+			toast.info("Saved", { action: a, duration: 0 });
+			expect(toast.items).toHaveLength(2);
+		});
+
+		it("pause stops the timer and resume restarts it with the time left", () => {
+			vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "Date", "performance"] });
+			const id = toast.info("x", 1000);
+			vi.advanceTimersByTime(400);
+			toast.pause(id);
+			vi.advanceTimersByTime(5000);
+			expect(toast.items).toHaveLength(1);
+			toast.resume(id);
+			vi.advanceTimersByTime(599);
+			expect(toast.items).toHaveLength(1);
+			vi.advanceTimersByTime(1);
+			expect(toast.items).toHaveLength(0);
+		});
+
+		it("a repeat while paused keeps it paused until resume", () => {
+			vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout", "Date", "performance"] });
+			const id = toast.info("x", 1000);
+			toast.pause(id);
+			toast.info("x", 1000);
+			vi.advanceTimersByTime(5000);
+			expect(toast.items).toHaveLength(1);
+			toast.resume(id);
+			vi.advanceTimersByTime(1000);
+			expect(toast.items).toHaveLength(0);
+		});
+	});
 });

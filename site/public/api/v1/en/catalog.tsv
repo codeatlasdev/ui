@@ -313,3 +313,4 @@ id	group	page	title	names	tags	summary
 480	layout	app-shell	Panel width		app-shell,panel-width,resizable,separator,sidebar,navigation	An app shell whose panel starts at 280px for long item names and has a drag handle on its edge.
 481	layout	app-shell	Color, count, actions and reorder		app-shell,nav-item,color,count,actions-menu,reorder,drag-and-drop,sidebar	App shell panel rows with a color dot, a neutral count, a per-row actions menu and drag-to-reorder.
 490	feedback	toast	Dedupe and replace by id		toast,toaster,dedupe,id,replace,notification,count	Two buttons: one fires the same error ten times and shows a single toast with a ×10 badge, the other replaces an uploading toast by id.
+492	feedback	toast	Description and action		toast,toaster,action,description,undo,notification	Three buttons that fire a toast with a description, with one inline action, and with both.

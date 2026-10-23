@@ -1,0 +1,13 @@
+{
+	"summary": "Three buttons that fire a toast with a description, with one inline action, and with both.",
+	"use": "A toast that needs a secondary line of detail or a single shortcut such as Undo, Open or Mark as qualified.",
+	"spec": [
+		"`<Toaster />` mounted once, `toast` imported from `@codeatlasdev/ui`",
+		"Description: `toast.success('Task completed', { description: 'Next step scheduled for tomorrow 09:00' })`",
+		"Action: `toast.warning('Sequence paused for Acme', {` with `action: { label: 'Mark as qualified'`, whose `onClick` runs and dismisses the toast; an actionable toast lasts 8 seconds",
+		"Both: `description` and `action` in the same options object",
+		"All triggers are `<Button variant=\"outlined\"`"
+	],
+	"tags": ["toast", "toaster", "action", "description", "undo", "notification"],
+	"shape": "wide"
+}

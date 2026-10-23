@@ -8,7 +8,12 @@
 
 <div class="ca-toaster" role="region" aria-live="polite" aria-label={t().toast.region}>
   {#each toast.items as item (item.id)}
-    <ToastItem {item} onclose={() => toast.remove(item.id)} />
+    <ToastItem
+      {item}
+      onclose={() => toast.remove(item.id)}
+      onpause={() => toast.pause(item.id)}
+      onresume={() => toast.resume(item.id)}
+    />
   {/each}
 </div>
 

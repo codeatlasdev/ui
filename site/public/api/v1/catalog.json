@@ -1,6 +1,6 @@
 {
 	"version": "4.5.0",
-	"count": 314,
+	"count": 315,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -17,8 +17,8 @@
 		{
 			"slug": "feedback",
 			"first": "080",
-			"last": "490",
-			"count": 31
+			"last": "492",
+			"count": 32
 		},
 		{
 			"slug": "display",
@@ -14198,6 +14198,50 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/feedback/toast#dedupe-and-replace-by-id",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "492",
+			"group": "feedback",
+			"page": "toast",
+			"variant": "Actions",
+			"slug": "description-and-action",
+			"title": "Description and action",
+			"description": "A description under the title, a single inline action, and both. The action is a real button reachable with Tab.",
+			"summary": "Three buttons that fire a toast with a description, with one inline action, and with both.",
+			"use": "A toast that needs a secondary line of detail or a single shortcut such as Undo, Open or Mark as qualified.",
+			"spec": [
+				"`<Toaster />` mounted once, `toast` imported from `@codeatlasdev/ui`",
+				"Description: `toast.success('Task completed', { description: 'Next step scheduled for tomorrow 09:00' })`",
+				"Action: `toast.warning('Sequence paused for Acme', {` with `action: { label: 'Mark as qualified'`, whose `onClick` runs and dismisses the toast; an actionable toast lasts 8 seconds",
+				"Both: `description` and `action` in the same options object",
+				"All triggers are `<Button variant=\"outlined\"`"
+			],
+			"tags": [
+				"toast",
+				"toaster",
+				"action",
+				"description",
+				"undo",
+				"notification"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"Toaster"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"Toaster",
+						"toast"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/toast#description-and-action",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		}
 	]

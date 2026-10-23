@@ -1,0 +1,14 @@
+Use @codeatlasdev/ui demo #492 "Description and action" (feedback/toast).
+What it shows: Three buttons that fire a toast with a description, with one inline action, and with both. When to use: A toast that needs a secondary line of detail or a single shortcut such as Undo, Open or Mark as qualified.
+Spec:
+- `<Toaster />` mounted once, `toast` imported from `@codeatlasdev/ui`
+- Description: `toast.success('Task completed', { description: 'Next step scheduled for tomorrow 09:00' })`
+- Action: `toast.warning('Sequence paused for Acme', {` with `action: { label: 'Mark as qualified'`, whose `onClick` runs and dismisses the toast; an actionable toast lasts 8 seconds
+- Both: `description` and `action` in the same options object
+- All triggers are `<Button variant="outlined"`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #492 Description and action → file, what changed, https://ui.codeatlas.com.br/docs/feedback/toast#description-and-action; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/492.txt   Components API: ca-ui-mcp get_component(Button)

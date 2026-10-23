@@ -8,6 +8,8 @@ import Demo from "~/components/docs/Demo.astro";
 import Props from "~/components/docs/Props.astro";
 import Toasts from "~/demos/feedback/toast/Toasts.svelte";
 import ToastsSrc from "~/demos/feedback/toast/Toasts.svelte?raw";
+import Actions from "~/demos/feedback/toast/Actions.svelte";
+import ActionsSrc from "~/demos/feedback/toast/Actions.svelte?raw";
 import Dedupe from "~/demos/feedback/toast/Dedupe.svelte";
 import DedupeSrc from "~/demos/feedback/toast/Dedupe.svelte?raw";
 
@@ -34,11 +36,15 @@ Then call `toast` from anywhere:
 <button onclick={() => toast.success("Changes saved.")}>Save</button>
 ```
 
-`toast` is a global store, so the calls need no component context. The Toaster is a polite live region (`role="region"`, `aria-live="polite"`) and each toast is a `role="status"` with a dismiss button. Toasts stack in the bottom right corner, up to 380px wide, in a fixed container layered with `--ca-z-snackbar` (they are not in the browser top layer, unlike dialogs and popovers). `toast.show` accepts `variant`, `duration` and `id` in its options; the shortcut methods take the duration or the same options object (without `variant`) as a second argument.
+`toast` is a global store, so the calls need no component context. The Toaster is a polite live region (`role="region"`, `aria-live="polite"`) and each toast is a `role="status"` (success, info, default) or `role="alert"` (error, warning) with a dismiss button. Toasts stack in the bottom right corner, up to 380px wide, in a fixed container layered with `--ca-z-snackbar` (they are not in the browser top layer, unlike dialogs and popovers). `toast.show` accepts `variant`, `duration`, `id`, `description` and `action` in its options; the shortcut methods take the duration or the same options object (without `variant`) as a second argument.
 
 Calling `toast` with the same variant and message again does not stack a copy: the existing toast restarts its timer and shows a `×N` count, so `toast.error("x")` ten times in a row leaves one toast. At most three toasts show at once and the oldest is dropped past that. Pass `id` to replace one specific toast in place (new text, variant and timer, count back to 1), for example an "Uploading…" toast that becomes "Uploaded". The demo below mounts its own `Toaster` because every demo is an independent island.
 
 <Demo title="Variants and duration" description="Five variants, plus persistent (duration 0) and custom durations. The default auto-dismiss is 4 seconds." src={ToastsSrc}><Toasts client:visible /></Demo>
+
+Add a secondary line with `description` and one inline button with `action: { label, onClick }`. Clicking the action runs `onClick` and dismisses the toast, and an actionable toast stays 8 seconds unless you pass `duration`. The description is part of the same live-region announcement as the message. The auto-dismiss timer pauses while the toast is hovered or holds focus (WCAG 2.2.1) and restarts with the time that was left; Escape dismisses the toast that has focus. Toasts with an action never merge as repeats, since each carries its own handler.
+
+<Demo title="Description and action" description="A description under the title, a single inline action, and both. The action is a real button reachable with Tab." src={ActionsSrc}><Actions client:visible /></Demo>
 
 <Demo title="Dedupe and replace by id" description="Ten identical errors collapse into one toast with a count; the upload toast is replaced in place by its id." src={DedupeSrc}><Dedupe client:visible /></Demo>
 
@@ -48,6 +54,9 @@ Calling `toast` with the same variant and message again does not stack a copy: t
   { name: "toast.error(message, durationOrOpts?)", type: "(message: string, duration?: number | Omit<ToastOptions, 'variant'>) => string", description: "Error toast." },
   { name: "toast.warning(message, durationOrOpts?)", type: "(message: string, duration?: number | Omit<ToastOptions, 'variant'>) => string", description: "Warning toast." },
   { name: "toast.info(message, durationOrOpts?)", type: "(message: string, duration?: number | Omit<ToastOptions, 'variant'>) => string", description: "Info toast." },
+  { name: "description", type: "string", description: "In `ToastOptions`: secondary, smaller line under the message (`--ca-text-secondary`)." },
+  { name: "action", type: "{ label: string; onClick: () => void }", description: "In `ToastOptions`: one inline button. Runs `onClick` and dismisses the toast. Sets the default duration to 8000 ms." },
+  { name: "toast.pause(id) / toast.resume(id)", type: "(id: string) => void", description: "Hold and restart the auto-dismiss timer with the time left. The Toaster calls them on hover and focus; call them yourself only for a custom renderer." },
   { name: "id", type: "string", description: "In `ToastOptions`: replaces the toast with this id in place (text, variant, timer, count 1), or creates it with this id. Returned by every call." },
   { name: "ToastItem.count", type: "number", description: "How many identical calls the toast stands for; the Toaster shows `×N` when above 1." },
   { name: "toast.remove(id)", type: "(id: string) => void", description: "Dismisses a toast by id." },

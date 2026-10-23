@@ -1,0 +1,43 @@
+<!-- @codeatlasdev/ui demo #492 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/toast#description-and-action -->
+Element: #492 Description and action (feedback/toast)
+What it shows: Three buttons that fire a toast with a description, with one inline action, and with both.
+When to use: A toast that needs a secondary line of detail or a single shortcut such as Undo, Open or Mark as qualified.
+Spec:
+- `<Toaster />` mounted once, `toast` imported from `@codeatlasdev/ui`
+- Description: `toast.success('Task completed', { description: 'Next step scheduled for tomorrow 09:00' })`
+- Action: `toast.warning('Sequence paused for Acme', {` with `action: { label: 'Mark as qualified'`, whose `onClick` runs and dismisses the toast; an actionable toast lasts 8 seconds
+- Both: `description` and `action` in the same options object
+- All triggers are `<Button variant="outlined"`
+Tags: toast, toaster, action, description, undo, notification
+Needs: @codeatlasdev/ui@4.5.0
+Components: Button, Toaster
+Live demo: https://ui.codeatlas.com.br/docs/feedback/toast#description-and-action
+
+<script lang="ts">
+  import { Button, Toaster, toast } from '@codeatlasdev/ui';
+</script>
+
+<Toaster />
+
+<Button variant="outlined" onclick={() => toast.success('Task completed', { description: 'Next step scheduled for tomorrow 09:00' })}>
+  With description
+</Button>
+<Button
+  variant="outlined"
+  onclick={() =>
+    toast.warning('Sequence paused for Acme', {
+      action: { label: 'Mark as qualified', onClick: () => toast.success('Marked as qualified.') },
+    })}
+>
+  With action
+</Button>
+<Button
+  variant="outlined"
+  onclick={() =>
+    toast.info('You have 7 tasks today', {
+      description: 'Three are due before noon.',
+      action: { label: 'Open Today', onClick: () => toast.success('Opening the queue…') },
+    })}
+>
+  Both
+</Button>
