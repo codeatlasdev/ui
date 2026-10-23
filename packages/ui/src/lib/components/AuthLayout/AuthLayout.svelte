@@ -396,7 +396,7 @@
       width: var(--ca-space-8);
       height: var(--ca-space-8);
       border-radius: var(--ca-radius-sm);
-      background: var(--ca-brand-main);
+      background: var(--ca-brand-fill);
       color: var(--ca-brand-contrast, oklch(1 0 0));
       display: flex;
       align-items: center;
