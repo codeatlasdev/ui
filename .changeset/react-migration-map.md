@@ -1,0 +1,5 @@
+---
+"@codeatlasdev/ui": minor
+---
+
+Migrating a React app is now data, not prose (#383). `equivalents/react-ui.json` maps every shadcn/ui component (66) to the Radix primitive, Base UI package and MUI component that mean the same thing, the `@codeatlasdev/ui` target with its import path and prop renames, and, for the nine components the library lacks, the gap issue (#432) and a workaround. It is served by the new MCP tool `get_equivalent("Dialog")`, shipped as `dist/equivalents.json`, and generated into the migration guide, so the page cannot drift from the data. `codeatlas-ui migrate-react` lists every shadcn, Radix, Base UI and MUI import of a `.tsx` app with its replacement, and in an already-ported `.svelte` file renames `className`, `onClick`, `htmlFor` and the shadcn `Button` variants, reporting with file:line the props it cannot rewrite safely (`onChange`, `onCheckedChange`, `asChild`, spreads). The guide gains a Tailwind map and the React patterns that change shape (context, data fetching, routing, forms, SSR global state, per-request i18n), each with a type-checked Svelte block.

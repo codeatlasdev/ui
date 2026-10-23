@@ -557,6 +557,105 @@ function sveltekitSteps(root: string): Step[] {
 	];
 }
 
+// ── Opt-in: lint and e2e templates (`init --with lint,e2e`) ──────────────────
+
+export const WITH_FEATURES = ["lint", "e2e"] as const;
+export type WithFeature = (typeof WITH_FEATURES)[number];
+
+const GUARD_CONFIG = `{
+\t"allow": []
+}
+`;
+
+const PLAYWRIGHT_CONFIG = `import { defineConfig, devices } from "@playwright/test";
+
+// One project per width: the library's breakpoints are 600/900/1200, so 390 is a phone,
+// 768 a tablet and 1280 a laptop.
+const widths = [390, 768, 1280];
+
+export default defineConfig({
+\ttestDir: "./e2e",
+\tfullyParallel: true,
+\tforbidOnly: !!process.env.CI,
+\tretries: process.env.CI ? 1 : 0,
+\treporter: process.env.CI ? "github" : "list",
+\tuse: { baseURL: "http://localhost:4173", trace: "retain-on-failure" },
+\twebServer: { command: "bun run build && bun run preview --port 4173", url: "http://localhost:4173", reuseExistingServer: !process.env.CI },
+\tprojects: widths.map((width) => ({
+\t\tname: \`w\${width}\`,
+\t\tuse: { ...devices["Desktop Chrome"], viewport: { width, height: width < 600 ? 844 : 800 }, hasTouch: width < 600 },
+\t})),
+});
+`;
+
+const A11Y_SPEC = `import AxeBuilder from "@axe-core/playwright";
+import { expect, test } from "@playwright/test";
+
+// Every route worth checking, in both schemes. Add the routes of your app.
+const routes = ["/"];
+
+for (const route of routes)
+\tfor (const scheme of ["light", "dark"] as const)
+\t\ttest(\`no axe violations: \${route} (\${scheme})\`, async ({ page }) => {
+\t\t\tawait page.emulateMedia({ colorScheme: scheme });
+\t\t\tawait page.goto(route);
+\t\t\tconst { violations } = await new AxeBuilder({ page }).analyze();
+\t\t\texpect(violations).toEqual([]);
+\t\t});
+`;
+
+/** Scripts and dev dependencies each feature adds; an existing key is never overwritten. */
+const WITH_PACKAGE: Record<
+	WithFeature,
+	{ scripts: Record<string, string>; devDependencies: Record<string, string> }
+> = {
+	lint: {
+		scripts: {
+			"lint:ui": "codeatlas-ui lint src",
+			"check:ca": "codeatlas-ui workarounds --strict src",
+		},
+		devDependencies: {},
+	},
+	e2e: {
+		scripts: { "test:e2e": "playwright test" },
+		devDependencies: { "@playwright/test": "^1.50.0", "@axe-core/playwright": "^4.10.0" },
+	},
+};
+
+function packagePatch(features: readonly WithFeature[]) {
+	return (src: string): string | null => {
+		const pkg = JSON.parse(src);
+		const scripts = { ...pkg.scripts };
+		const dev = { ...pkg.devDependencies };
+		for (const f of features) {
+			for (const [k, v] of Object.entries(WITH_PACKAGE[f].scripts)) scripts[k] ??= v;
+			for (const [k, v] of Object.entries(WITH_PACKAGE[f].devDependencies))
+				if (!pkg.dependencies?.[k]) dev[k] ??= v;
+		}
+		const next = { ...pkg, scripts, devDependencies: dev };
+		if (!Object.keys(scripts).length) delete next.scripts;
+		if (!Object.keys(dev).length) delete next.devDependencies;
+		const indent = src.match(/^(\s+)"/m)?.[1] ?? "\t";
+		return `${JSON.stringify(next, null, indent)}\n`;
+	};
+}
+
+function withSteps(features: readonly WithFeature[]): Step[] {
+	const steps: Step[] = [];
+	if (features.includes("lint")) steps.push({ path: "ui-guard.config.json", create: GUARD_CONFIG });
+	if (features.includes("e2e"))
+		steps.push(
+			{ path: "playwright.config.ts", create: PLAYWRIGHT_CONFIG },
+			{ path: "e2e/a11y.spec.ts", create: A11Y_SPEC }
+		);
+	steps.push({
+		path: "package.json",
+		patch: packagePatch(features),
+		manual: "Add the scripts and dev dependencies by hand.",
+	});
+	return steps;
+}
+
 // ── Astro ─────────────────────────────────────────────────────────────────────
 
 function astroConfigPatch(src: string, themeSpec: string): string | null {
@@ -669,14 +768,22 @@ function astroSteps(root: string): Step[] {
 export interface InitOptions {
 	/** Apply the setup. Without it nothing touches the disk: new files and diffs are only reported. */
 	write?: boolean;
+	/** Opt-in extras: `lint` (UI guard scripts) and `e2e` (Playwright matrix and axe spec). */
+	with?: string[];
 	log?: (line: string) => void;
 }
 
 /** Returns false when the project type is unknown or an existing file could not be patched. */
 export function init(
 	root: string,
-	{ write = false, log = console.log }: InitOptions = {}
+	{ write = false, with: extras = [], log = console.log }: InitOptions = {}
 ): boolean {
+	const unknown = extras.find((f) => !(WITH_FEATURES as readonly string[]).includes(f));
+	if (unknown) {
+		log(`unknown --with value "${unknown}" (expected: ${WITH_FEATURES.join(", ")})`);
+		return false;
+	}
+	const features = extras as WithFeature[];
 	const fw = detectFramework(root);
 	if (!fw) {
 		log(
@@ -689,7 +796,8 @@ export function init(
 	let ok = true;
 	let pending = 0;
 	let createdManifest = false;
-	for (const step of fw === "sveltekit" ? sveltekitSteps(root) : astroSteps(root)) {
+	const base = fw === "sveltekit" ? sveltekitSteps(root) : astroSteps(root);
+	for (const step of features.length ? [...base, ...withSteps(features)] : base) {
 		if (step.note) {
 			log(`  skip    ${step.path}: ${step.note}`);
 			continue;

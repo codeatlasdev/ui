@@ -148,7 +148,7 @@ Brand presets generated from a hex color use the same generator, so they keep th
 
 ## Testing
 
-`@codeatlasdev/ui/testing` is the helper the library uses on its own components: axe-core run after animations settle, with the library's known exceptions. It takes any `Element` or `Document`, so it works in Vitest browser mode, Playwright component tests or any DOM test environment. `axe-core` is an optional peer dependency: install it where you import the helper.
+`@codeatlasdev/ui/testing` is the helper the library uses on its own components: axe-core run after animations settle, with the library's known exceptions, plus `withTheme`, `coarsePointer` and `measure` for the theme matrix, touch devices and fidelity checks. It takes any `Element` or `Document`, so it works in Vitest browser mode, Playwright component tests or any DOM test environment. `axe-core` is an optional peer dependency: install it where you import the helper.
 
 ```bash
 bun add -d axe-core
@@ -166,6 +166,8 @@ it("has no axe violations", async () => {
 
 A violation rejects with the rule id, impact, help URL and every offending node. Run it in each state worth testing: open, error, empty, light and dark.
 
+A theme and viewport matrix is a loop around the same assertion: `withTheme({ scheme, preset })` per scheme, and the runner's own `page.viewport(390, 844)` or `setViewportSize` for the width, because a page cannot resize itself.
+
 | Export | Returns | Description |
 |---|---|---|
 | `expectNoA11yViolations(target?, options?)` | `Promise<void>` | Rejects with a formatted report when axe finds violations. `target` defaults to `document`. |
@@ -173,6 +175,9 @@ A violation rejects with the rule id, impact, help URL and every offending node.
 | `formatViolations(violations)` | `string` | The readable report used by `expectNoA11yViolations`. |
 | `settled(timeout?)` | `Promise<void>` | Resolves once no finite CSS animation or transition is running. |
 | `A11Y_EXCEPTIONS` | `RunOptions["rules"]` | The exceptions applied to every run: `region` is off, because a component rendered into an empty body is not a page. |
+| `withTheme({ scheme, preset, style })` | `() => void` | Applies a scheme, preset and surface style to `<html>` as the theme script does (`.dark`, `data-preset`, `data-style`); the returned function restores the page. Options left out stay as they are. The locale is not a page attribute: wrap the tree in `I18nProvider`. |
+| `coarsePointer()` | `() => void` | Makes `matchMedia` answer as a touch device (`(pointer: coarse)`, `(hover: none)`) for code that reads it from JavaScript; the returned function restores it. CSS media queries cannot be changed from a page, use the runner's emulation for those. |
+| `measure(el, props)` | `{ rect, styles }` | `getBoundingClientRect` plus the computed style properties you name. Measure the same element in two renderings and diff the results to find the exact property that differs. |
 
 `options` is the axe `RunOptions`; its `rules` are merged over the exceptions, so `{ rules: { region: { enabled: true } } }` re-enables one. `axe.run` is not reentrant: never run two checks concurrently. Contrast needs real layout and styles, so run in a browser rather than jsdom.
 

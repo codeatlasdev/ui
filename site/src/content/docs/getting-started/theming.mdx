@@ -105,6 +105,17 @@ Roles: `brand`, `brandFill`, `brandFillHover`, `brandContrast`, `background`, `s
 
 `caThemePlugin` and `caUI` print a warning at startup when a `text`, `textSecondary` or `textHint` you set is under 4.5:1 on any of the four surfaces **after compositing its alpha** over that surface. Colors the build cannot evaluate (`var()`, other keywords) are skipped. The generated palette guarantees AA; hand-picked roles are measured, not corrected.
 
+### Importing an existing design system
+
+`bunx @codeatlasdev/ui tokens import src/app.css --out src/lib/theme.ts` reads the custom properties of a CSS file (one rule per theme: `:root`, `.dark`, `[data-theme="paper"]`) or a `{ theme: { token: color } }` JSON, in hex, `rgb()`, `hsl()` or `oklch()` with or without alpha, and writes a `theme.ts` with one preset per theme. Presets take opaque `#rrggbb`, so a translucent token is composited over its theme's background, listed as flattened, and every text pair under 4.5:1 and outline under 3:1 is reported:
+
+```txt
+flattened app textSecondary: alpha 0.35 over background -> #5e6064
+app textSecondary on background: 2.98:1, below 4.5:1
+```
+
+`--map <json>` maps roles to token names (default: the shadcn names), `--out` refuses to overwrite without `--force`, `--strict` exits 1 on a failing pair. A role the source lacks is listed as `missing` and keeps the generated value; `var()` and `color-mix()` are listed as `unresolved`. A Tailwind config is JavaScript: export its colors to CSS or JSON first.
+
 ### Brand-colored buttons and field size
 
 The generated primary button darkens the brand until white text reaches AA. A product with a dark, brand-forward area can ask for the brand itself as the fill, with dark text, and a smaller field font, per preset. No app CSS and no repeated `[data-preset]` selectors: the roles are emitted with the same selectors as the other roles.

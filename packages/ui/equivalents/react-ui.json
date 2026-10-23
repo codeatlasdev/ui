@@ -1,0 +1,451 @@
+{
+	"rows": [
+		{
+			"shadcn": "Accordion",
+			"to": ["Accordion", "AccordionItem"],
+			"radix": "@radix-ui/react-accordion",
+			"baseUi": "@base-ui-components/react/accordion",
+			"mui": "Accordion",
+			"notes": "`type` is `single` or `multiple`; one `AccordionItem` per section."
+		},
+		{
+			"shadcn": "Alert",
+			"to": ["Alert"],
+			"mui": "Alert",
+			"props": {
+				"variant": "severity"
+			},
+			"notes": "`severity` is `success`, `warning`, `error` or `info`; `title`, `closable`."
+		},
+		{
+			"shadcn": "Alert Dialog",
+			"to": ["AlertDialog"],
+			"radix": "@radix-ui/react-alert-dialog",
+			"baseUi": "@base-ui-components/react/alert-dialog",
+			"notes": "`onconfirm`, `oncancel`, `destructive`, `confirmLabel`, `cancelLabel`, `pending`."
+		},
+		{
+			"shadcn": "Aspect Ratio",
+			"to": [],
+			"radix": "@radix-ui/react-aspect-ratio",
+			"gap": 432,
+			"workaround": "CSS `aspect-ratio` in a class."
+		},
+		{
+			"shadcn": "Attachment",
+			"to": ["FileUpload"],
+			"notes": "Upload flow with progress and removal; for a read-only file chip use `Chip`."
+		},
+		{
+			"shadcn": "Avatar",
+			"to": ["Avatar"],
+			"radix": "@radix-ui/react-avatar",
+			"baseUi": "@base-ui-components/react/avatar",
+			"mui": "Avatar",
+			"notes": "`src`, `alt`, `fallback`, `size`, `shape`, `status`."
+		},
+		{
+			"shadcn": "Badge",
+			"to": ["Badge", "Chip"],
+			"mui": "Badge",
+			"notes": "`Badge` is a count or dot on another element; `Chip` is a labelled pill."
+		},
+		{
+			"shadcn": "Breadcrumb",
+			"to": ["Breadcrumb"],
+			"mui": "Breadcrumbs",
+			"notes": "`items` array (`label`, `href`) instead of nested list parts."
+		},
+		{
+			"shadcn": "Bubble",
+			"to": ["MessageBubble"],
+			"notes": "Chat message bubble."
+		},
+		{
+			"shadcn": "Button",
+			"to": ["Button"],
+			"mui": "Button",
+			"props": {
+				"variant=default": "variant=filled",
+				"variant=outline": "variant=outlined",
+				"variant=secondary": "variant=outlined",
+				"variant=link": "variant=ghost",
+				"variant=contained": "variant=filled",
+				"variant=text": "variant=ghost"
+			},
+			"notes": "`variant` is `filled`, `outlined`, `ghost`, `glass` or `destructive`; `loading`, `fullWidth`, `href`."
+		},
+		{
+			"shadcn": "Button Group",
+			"to": [],
+			"gap": 432,
+			"workaround": "Adjacent `Button`s in a `Flex`; a single choice is `SegmentedControl`."
+		},
+		{
+			"shadcn": "Calendar",
+			"to": ["Calendar", "RangeCalendar"],
+			"mui": "DateCalendar",
+			"notes": "Values are `@internationalized/date` values, not `Date`."
+		},
+		{
+			"shadcn": "Card",
+			"to": ["Card"],
+			"mui": "Card",
+			"notes": "`CardHeader`/`CardTitle`/`CardContent`/`CardFooter` become `title`, children and `headerActions`."
+		},
+		{
+			"shadcn": "Carousel",
+			"to": [],
+			"gap": 432,
+			"workaround": "CSS scroll-snap in a class."
+		},
+		{
+			"shadcn": "Chart",
+			"to": [
+				"LineChart",
+				"BarChart",
+				"PieChart",
+				"ScatterChart",
+				"RadarChart",
+				"GaugeChart",
+				"HeatmapChart",
+				"Sparkline"
+			],
+			"notes": "Pass data only: no options object, no colors. Import from `@codeatlasdev/ui/charts`."
+		},
+		{
+			"shadcn": "Checkbox",
+			"to": ["Checkbox"],
+			"radix": "@radix-ui/react-checkbox",
+			"baseUi": "@base-ui-components/react/checkbox",
+			"mui": "Checkbox",
+			"props": {
+				"onCheckedChange": "onchange"
+			},
+			"notes": "`label` is built in; `bind:checked`."
+		},
+		{
+			"shadcn": "Code Block",
+			"to": ["CodeSnippet", "CodeTabs"],
+			"notes": "Needs the optional peer `shiki`."
+		},
+		{
+			"shadcn": "Collapsible",
+			"to": ["Collapsible"],
+			"radix": "@radix-ui/react-collapsible",
+			"baseUi": "@base-ui-components/react/collapsible",
+			"notes": "`title`, `bind:open`."
+		},
+		{
+			"shadcn": "Combobox",
+			"to": ["Combobox"],
+			"mui": "Autocomplete",
+			"notes": "`options`, `bind:value`, `emptyText`, `creatable`, `multiple`."
+		},
+		{
+			"shadcn": "Command",
+			"to": ["CommandPalette", "Combobox"],
+			"notes": "`CommandPalette` is app-wide navigation (`modules`); a searchable field is `Combobox`."
+		},
+		{
+			"shadcn": "Context Menu",
+			"to": ["DropdownMenu"],
+			"radix": "@radix-ui/react-context-menu",
+			"notes": "Controlled with `open` and `anchor` at the pointer.",
+			"gap": 432,
+			"workaround": "`DropdownMenu` opened at the pointer from a `contextmenu` handler."
+		},
+		{
+			"shadcn": "Data Table",
+			"to": ["DataTable"],
+			"notes": "`columns` and `data`; sorting, search and paging are built in. Needs `@tanstack/svelte-table`."
+		},
+		{
+			"shadcn": "Date Picker",
+			"to": ["DatePicker", "DateRangePicker"],
+			"mui": "DatePicker",
+			"notes": "Values are `@internationalized/date` values, not `Date`."
+		},
+		{
+			"shadcn": "Dialog",
+			"to": ["Dialog"],
+			"radix": "@radix-ui/react-dialog",
+			"baseUi": "@base-ui-components/react/dialog",
+			"mui": "Dialog",
+			"props": {
+				"onOpenChange": "onOpenChange"
+			},
+			"notes": "`bind:open`, `title`, `description`; no `DialogTrigger`: a `Button` sets `open = true`."
+		},
+		{
+			"shadcn": "Direction",
+			"to": ["I18nProvider"],
+			"notes": "Text direction follows the locale of `I18nProvider`."
+		},
+		{
+			"shadcn": "Drawer",
+			"to": ["Drawer", "Sheet"],
+			"mui": "Drawer",
+			"notes": "`Drawer` slides from a side (`side`); `Sheet` is the mobile bottom sheet."
+		},
+		{
+			"shadcn": "Dropdown Menu",
+			"to": ["DropdownMenu", "DropdownMenuItem"],
+			"radix": "@radix-ui/react-dropdown-menu",
+			"baseUi": "@base-ui-components/react/menu",
+			"mui": "Menu",
+			"notes": "Also `DropdownMenuLabel`, `DropdownMenuSeparator`, `DropdownMenuCheckboxItem`, `DropdownMenuRadioGroup`, `DropdownMenuSub`."
+		},
+		{
+			"shadcn": "Empty",
+			"to": ["EmptyState"],
+			"notes": "`title`, `description`, snippet `actions`."
+		},
+		{
+			"shadcn": "Field",
+			"to": ["TextField", "FormSection"],
+			"notes": "Label, `description` and `error` are props of each field; group fields with `FormSection`."
+		},
+		{
+			"shadcn": "Hover Card",
+			"to": ["Popover"],
+			"radix": "@radix-ui/react-hover-card",
+			"gap": 432,
+			"workaround": "`Popover` opened on hover and focus by the app."
+		},
+		{
+			"shadcn": "Input",
+			"to": ["TextField"],
+			"mui": "TextField",
+			"props": {
+				"onChange": "oninput",
+				"className": "class"
+			},
+			"notes": "`label`, `description`, `error` (a string), `bind:value`."
+		},
+		{
+			"shadcn": "Input Group",
+			"to": ["TextField"],
+			"gap": 432,
+			"workaround": "App markup around `TextField`."
+		},
+		{
+			"shadcn": "Input OTP",
+			"to": ["PinInput"],
+			"notes": "`length`, `oncomplete`, `mask`."
+		},
+		{
+			"shadcn": "Item",
+			"to": ["LinkCard", "SettingItem"],
+			"notes": "A navigable row is `LinkCard`; a settings row is `SettingItem`."
+		},
+		{
+			"shadcn": "Kbd",
+			"to": ["Kbd"]
+		},
+		{
+			"shadcn": "Label",
+			"to": ["TextField"],
+			"notes": "The label is a prop of the field; there is no standalone `Label`."
+		},
+		{
+			"shadcn": "Marker",
+			"to": ["Divider"],
+			"notes": "A labelled separator is `Divider`."
+		},
+		{
+			"shadcn": "Menubar",
+			"to": ["DropdownMenu"],
+			"radix": "@radix-ui/react-menubar",
+			"gap": 432,
+			"workaround": "One `DropdownMenu` per top-level entry."
+		},
+		{
+			"shadcn": "Message",
+			"to": ["MessageBubble", "ConversationItem"],
+			"notes": "Chat rows."
+		},
+		{
+			"shadcn": "Message Scroller",
+			"to": ["LiveList"],
+			"notes": "A list that follows appended items."
+		},
+		{
+			"shadcn": "Native Select",
+			"to": ["Select"],
+			"notes": "`options` array; it is a custom listbox, not a native `<select>`."
+		},
+		{
+			"shadcn": "Navigation Menu",
+			"to": ["DropdownMenu"],
+			"radix": "@radix-ui/react-navigation-menu",
+			"gap": 432,
+			"workaround": "`DropdownMenu` or `Popover` per entry in app markup."
+		},
+		{
+			"shadcn": "Pagination",
+			"to": ["Pagination"],
+			"mui": "Pagination",
+			"notes": "`count`, `perPage`, `bind:page`."
+		},
+		{
+			"shadcn": "Popover",
+			"to": ["Popover"],
+			"radix": "@radix-ui/react-popover",
+			"baseUi": "@base-ui-components/react/popover",
+			"mui": "Popover",
+			"notes": "Snippets `trigger` and `children`."
+		},
+		{
+			"shadcn": "Progress",
+			"to": ["Progress"],
+			"radix": "@radix-ui/react-progress",
+			"baseUi": "@base-ui-components/react/progress",
+			"mui": "LinearProgress",
+			"notes": "`value`, `max`, `indeterminate`."
+		},
+		{
+			"shadcn": "Questionnaire",
+			"to": ["Stepper"],
+			"notes": "A multi-step flow is `Stepper` with `FormSection`s."
+		},
+		{
+			"shadcn": "Radio Group",
+			"to": ["RadioGroup"],
+			"radix": "@radix-ui/react-radio-group",
+			"baseUi": "@base-ui-components/react/radio-group",
+			"mui": "RadioGroup",
+			"notes": "`items` array and `bind:value`."
+		},
+		{
+			"shadcn": "Resizable",
+			"to": [],
+			"radix": "react-resizable-panels",
+			"gap": 432,
+			"workaround": "A CSS grid with a drag handle in app code."
+		},
+		{
+			"shadcn": "Scroll Area",
+			"to": ["ScrollArea"],
+			"radix": "@radix-ui/react-scroll-area",
+			"baseUi": "@base-ui-components/react/scroll-area",
+			"notes": "`type`, `orientation`, `maxHeight`."
+		},
+		{
+			"shadcn": "Select",
+			"to": ["Select"],
+			"radix": "@radix-ui/react-select",
+			"baseUi": "@base-ui-components/react/select",
+			"mui": "Select",
+			"notes": "`options` array, not children; for search use `Combobox`."
+		},
+		{
+			"shadcn": "Separator",
+			"to": ["Divider"],
+			"radix": "@radix-ui/react-separator",
+			"baseUi": "@base-ui-components/react/separator",
+			"mui": "Divider",
+			"notes": "`orientation`."
+		},
+		{
+			"shadcn": "Sheet",
+			"to": ["Drawer", "Sheet"],
+			"notes": "`Drawer` for a side panel, `Sheet` for the mobile bottom sheet."
+		},
+		{
+			"shadcn": "Sidebar",
+			"to": ["AppShellLayout"],
+			"notes": "`modules`, `pathname`, `onNavigate`; only in signed-in route layouts."
+		},
+		{
+			"shadcn": "Skeleton",
+			"to": ["Skeleton"],
+			"mui": "Skeleton",
+			"notes": "`variant`, `rows`."
+		},
+		{
+			"shadcn": "Slider",
+			"to": ["Slider"],
+			"radix": "@radix-ui/react-slider",
+			"baseUi": "@base-ui-components/react/slider",
+			"mui": "Slider",
+			"notes": "`bind:value`, or `bind:values` for a range."
+		},
+		{
+			"shadcn": "Spinner",
+			"to": ["Spinner"],
+			"mui": "CircularProgress",
+			"notes": "`label` for assistive tech."
+		},
+		{
+			"shadcn": "Switch",
+			"to": ["Switch"],
+			"radix": "@radix-ui/react-switch",
+			"baseUi": "@base-ui-components/react/switch",
+			"mui": "Switch",
+			"props": {
+				"onCheckedChange": "onchange"
+			},
+			"notes": "`label`, `bind:checked`."
+		},
+		{
+			"shadcn": "Table",
+			"to": ["SimpleTable"],
+			"mui": "Table",
+			"notes": "Native `<thead>`/`<tbody>` markup inside; sorting and search: `DataTable`."
+		},
+		{
+			"shadcn": "Tabs",
+			"to": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
+			"radix": "@radix-ui/react-tabs",
+			"baseUi": "@base-ui-components/react/tabs",
+			"mui": "Tabs",
+			"notes": "`bind:value` on `Tabs`."
+		},
+		{
+			"shadcn": "Textarea",
+			"to": ["TextArea"],
+			"mui": "TextareaAutosize",
+			"notes": "`rows`, `resize`, `bind:value`."
+		},
+		{
+			"shadcn": "Toast",
+			"to": ["Toaster", "toast"],
+			"mui": "Snackbar",
+			"notes": "Mount `Toaster` once; call `toast.success(msg)`."
+		},
+		{
+			"shadcn": "Toggle",
+			"to": ["ToggleGroup"],
+			"radix": "@radix-ui/react-toggle",
+			"baseUi": "@base-ui-components/react/toggle",
+			"notes": "A single toggle is a `ToggleGroup` with one item."
+		},
+		{
+			"shadcn": "Toggle Group",
+			"to": ["ToggleGroup", "SegmentedControl"],
+			"radix": "@radix-ui/react-toggle-group",
+			"baseUi": "@base-ui-components/react/toggle-group",
+			"mui": "ToggleButtonGroup",
+			"notes": "`items` array; a single choice is `SegmentedControl`."
+		},
+		{
+			"shadcn": "Tooltip",
+			"to": ["Tooltip"],
+			"radix": "@radix-ui/react-tooltip",
+			"baseUi": "@base-ui-components/react/tooltip",
+			"mui": "Tooltip",
+			"notes": "`content` is a string."
+		},
+		{
+			"shadcn": "Trace",
+			"to": ["Timeline"],
+			"notes": "Ordered steps with status."
+		},
+		{
+			"shadcn": "Typography",
+			"to": ["Heading"],
+			"notes": "Headings; body text uses the `.ca-prose` class."
+		}
+	]
+}

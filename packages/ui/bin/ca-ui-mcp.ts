@@ -5,7 +5,7 @@
  *
  *   claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp
  *
- * Tools: get_recipe, list_components, get_component, get_export, list_parts, search_tokens, list_surfaces, get_guide,
+ * Tools: get_recipe, list_components, get_component, get_export, get_equivalent, list_parts, search_tokens, list_surfaces, get_guide,
  * search_demos, get_demo, report_issue (drafts a sanitized GitHub issue from a library problem; it never posts anything).
  */
 import { existsSync, readFileSync } from "node:fs";
@@ -23,6 +23,7 @@ import type {
 	ManifestToken,
 	PartsFile,
 } from "../scripts/build-manifest.ts";
+import { type Equivalent, findEquivalent } from "../src/cli/equivalents.ts";
 import { type MigrationFile, migrationMarkdown } from "../src/cli/migrations.ts";
 import { buildReport } from "../src/cli/report.ts";
 
@@ -39,6 +40,10 @@ const guides = load<{ guides: ManifestGuide[] }>("guides.json").guides;
 const partsFile = load<PartsFile>("parts.json");
 const migrations = load<{ migrations: MigrationFile[] }>("migrations.json").migrations;
 const surfaces = load<{ surfaces: ManifestSurface[] }>("surfaces.json").surfaces;
+// Like demos: a build from a tarball without equivalents/ must keep the other tools working.
+const equivalents = existsSync(join(DIST, "equivalents.json"))
+	? load<{ rows: (Equivalent & { imports: Record<string, string> })[] }>("equivalents.json").rows
+	: [];
 // Like demos: a build without the docs site has no recipes, and the other tools must keep working.
 const recipes = existsSync(join(DIST, "recipes.json"))
 	? load<{ recipes: Recipe[] }>("recipes.json").recipes
@@ -200,6 +205,40 @@ server.registerTool(
 			);
 		const range = migrations.filter((m) => m.major > from && m.major <= target);
 		return text(migrationMarkdown(range));
+	}
+);
+
+server.registerTool(
+	"get_equivalent",
+	{
+		description:
+			"What replaces a React UI component (shadcn/ui, Radix, Base UI or MUI) in @codeatlasdev/ui: the target components with their import path, the prop renames, and for a component the library lacks, the gap issue and the workaround. `name` is the shadcn component (`Dialog`), a Radix/Base UI package (`@radix-ui/react-dialog`) or an MUI name (`Autocomplete`), case-insensitive. Without `name`, lists every shadcn component. Use it before porting a component, then `get_component` for the props.",
+		inputSchema: { name: z.string().optional() },
+	},
+	({ name }) => {
+		if (!equivalents.length)
+			return fail("No equivalence table in this build (dist/equivalents.json is missing).");
+		if (!name)
+			return text(
+				equivalents
+					.map((r) => `- ${r.shadcn}: ${r.gap ? `no equivalent (gap #${r.gap})` : r.to.join(", ")}`)
+					.join("\n")
+			);
+		const row = findEquivalent(equivalents, name);
+		if (!row)
+			return fail(
+				`No row for "${name}". Call get_equivalent without a name to list the shadcn components, or search_demos / get_component with a description.`
+			);
+		const lines = [`${row.shadcn}${row.mui ? ` (MUI ${row.mui})` : ""}`];
+		if (row.gap)
+			lines.push(
+				`No equivalent component (gap #${row.gap}). The nearest building block: ${row.to.join(", ")}.`,
+				`workaround: ${row.workaround}`
+			);
+		else lines.push(...row.to.map((n) => `-> ${n} (${row.imports[n]})`));
+		for (const [from, to] of Object.entries(row.props ?? {})) lines.push(`prop ${from} -> ${to}`);
+		if (row.notes) lines.push(row.notes);
+		return text(lines.join("\n"));
 	}
 );
 

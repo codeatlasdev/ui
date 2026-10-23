@@ -15,6 +15,9 @@ function runCli(args: string[], project: Record<string, string> = {}) {
 	const cli = join(root, "cli");
 	mkdirSync(join(cli, "bin"), { recursive: true });
 	cpSync(join(pkgRoot, "src/cli"), join(cli, "src/cli"), { recursive: true });
+	// `doctor` and `tokens import` read the i18n catalog and the palette math; the bundle inlines them.
+	cpSync(join(pkgRoot, "src/lib/i18n"), join(cli, "src/lib/i18n"), { recursive: true });
+	cpSync(join(pkgRoot, "src/lib/utils"), join(cli, "src/lib/utils"), { recursive: true });
 	cpSync(join(pkgRoot, "bin/codeatlas-ui.ts"), join(cli, "bin/codeatlas-ui.ts"));
 	// The published bundle inlines magic-string and keeps svelte as a peer: only typescript is absent.
 	mkdirSync(join(cli, "node_modules"), { recursive: true });
