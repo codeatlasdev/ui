@@ -35,7 +35,7 @@
 		{
 			"slug": "layout",
 			"first": "165",
-			"last": "530",
+			"last": "601",
 			"count": 33
 		},
 		{
@@ -14245,6 +14245,55 @@
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{
+			"id": "530",
+			"group": "layout",
+			"page": "app-shell",
+			"variant": "RailLabels",
+			"slug": "labels-search-slot-badges-and-more",
+			"title": "Labels, search slot, badges and More",
+			"description": "railLabels, railTop, module badges, bottomNavOverflow and filterModules. Narrow the viewport below 900px to see the More sheet.",
+			"summary": "An app shell with captions under the rail icons, a search trigger on top of the rail, per-module badges and a More sheet on mobile.",
+			"use": "Apps with many modules, a command palette, per-module counters and role-based navigation.",
+			"spec": [
+				"`<AppShellLayout {modules} filterModules={(m) => admin || m.id !== 'settings'} {pathname} onNavigate={(path) => (pathname = path)} railLabels persistPanel={false} mainId={null} skipLink={false}>` with `railTop` (a ghost search `Button`, aria-label 'Search, command K') and `bottomNavOverflow` (an outlined full-width 'Account' `Button`)",
+				"7 modules: Inbox (`badge: 12`), Map (`badge: 'dot'`, `badgeLabel: 'Search running'`), People (`badge: 3`, `badgeLabel: '3 tasks pending'`), Alerts, Search, Home, Settings; below 900px the bar shows 4 modules plus a More tab that opens a sheet with the rest",
+				"`filterModules` is driven by an `admin` `$state`; a glass `Card` holds a hint and an outlined `Button` that toggles it",
+				"Page is `<PageShell title=\"Labeled rail\" description={pathname}>`; stage height is `height: 440px`"
+			],
+			"tags": [
+				"app-shell",
+				"rail",
+				"labels",
+				"badge",
+				"bottom-nav",
+				"overflow",
+				"filter-modules",
+				"search"
+			],
+			"shape": "wide",
+			"components": [
+				"AppShellLayout",
+				"Button",
+				"PageShell",
+				"Card"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AppShellLayout",
+						"Button",
+						"PageShell",
+						"Card",
+						"NavModule"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/app-shell#labels-search-slot-badges-and-more",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
 			"id": "600",
 			"group": "layout",
 			"page": "page-shell",
@@ -14334,55 +14383,6 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/layout/app-shell#short-panel",
-			"needs": "@codeatlasdev/ui@4.5.0"
-		},
-		{
-			"id": "530",
-			"group": "layout",
-			"page": "app-shell",
-			"variant": "RailLabels",
-			"slug": "labels-search-slot-badges-and-more",
-			"title": "Labels, search slot, badges and More",
-			"description": "railLabels, railTop, module badges, bottomNavOverflow and filterModules. Narrow the viewport below 900px to see the More sheet.",
-			"summary": "An app shell with captions under the rail icons, a search trigger on top of the rail, per-module badges and a More sheet on mobile.",
-			"use": "Apps with many modules, a command palette, per-module counters and role-based navigation.",
-			"spec": [
-				"`<AppShellLayout {modules} filterModules={(m) => admin || m.id !== 'settings'} {pathname} onNavigate={(path) => (pathname = path)} railLabels persistPanel={false} mainId={null} skipLink={false}>` with `railTop` (a ghost search `Button`, aria-label 'Search, command K') and `bottomNavOverflow` (an outlined full-width 'Account' `Button`)",
-				"7 modules: Inbox (`badge: 12`), Map (`badge: 'dot'`, `badgeLabel: 'Search running'`), People (`badge: 3`, `badgeLabel: '3 tasks pending'`), Alerts, Search, Home, Settings; below 900px the bar shows 4 modules plus a More tab that opens a sheet with the rest",
-				"`filterModules` is driven by an `admin` `$state`; a glass `Card` holds a hint and an outlined `Button` that toggles it",
-				"Page is `<PageShell title=\"Labeled rail\" description={pathname}>`; stage height is `height: 440px`"
-			],
-			"tags": [
-				"app-shell",
-				"rail",
-				"labels",
-				"badge",
-				"bottom-nav",
-				"overflow",
-				"filter-modules",
-				"search"
-			],
-			"shape": "wide",
-			"components": [
-				"AppShellLayout",
-				"Button",
-				"PageShell",
-				"Card"
-			],
-			"imports": [
-				{
-					"from": "@codeatlasdev/ui",
-					"names": [
-						"AppShellLayout",
-						"Button",
-						"PageShell",
-						"Card",
-						"NavModule"
-					]
-				}
-			],
-			"interactive": true,
-			"demo": "https://ui.codeatlas.com.br/docs/layout/app-shell#labels-search-slot-badges-and-more",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		}
 	]
