@@ -96,7 +96,28 @@ presets: [{
 }],
 ```
 
-Roles: `brand`, `background`, `sunken`, `surface`, `overlay`, `text`, `textSecondary`, `textHint`, `textDisabled`, `borderSubtle`, `border`, `borderStrong`, `success`, `warning`, `info`, `error`. Check contrast after overriding text or surfaces: the generated palette guarantees AA, hand-picked colors are yours to verify.
+Roles: `brand`, `brandFill`, `brandFillHover`, `brandContrast`, `background`, `sunken`, `surface`, `overlay`, `text`, `textSecondary`, `textHint`, `textDisabled`, `borderSubtle`, `border`, `borderStrong`, `success`, `warning`, `info`, `error`. Check contrast after overriding text or surfaces: the generated palette guarantees AA, hand-picked colors are yours to verify.
+
+### Brand-colored buttons and field size
+
+The generated primary button darkens the brand until white text reaches AA. A product with a dark, brand-forward area can ask for the brand itself as the fill, with dark text, and a smaller field font, per preset. No app CSS and no repeated `[data-preset]` selectors: the roles are emitted with the same selectors as the other roles.
+
+```ts
+presets: [{
+  id: "night",
+  color: "#f27636",
+  colors: {
+    dark: {
+      brandFill: "#f27636",       // Button variant="filled" background
+      brandFillHover: "#f5934f",  // hover and pressed
+      brandContrast: "#1a1208",   // text on brandFill
+    },
+  },
+  sizes: { inputFontSize: "0.875rem" }, // both schemes
+}],
+```
+
+`caThemePlugin` (SvelteKit, Vite) and `caUI` (Astro) print a warning at startup when `brandContrast` on `brandFill` is under 4.5:1 (a role left unset is measured from the generated one). `sizes.inputFontSize` takes a plain length (`px`, `rem`, `em`); touch devices and screens under 900px still get `max(16px, …)`, so iOS Safari does not zoom into focused fields, and the 44px touch targets do not change.
 
 ### Sketchbook style and hand-drawn marks
 

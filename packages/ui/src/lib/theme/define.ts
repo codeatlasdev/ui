@@ -4,6 +4,7 @@
 // themeHead before any stylesheet. No runtime style insertion per render.
 
 import {
+	contrastRatio,
 	cssBlock,
 	generatePreset,
 	hexToOklch,
@@ -61,6 +62,12 @@ export const BUILTIN_IDS: readonly string[] = BUILTIN_PRESETS.map((p) => p.id);
 export interface SchemeColors {
 	/** Brand for this scheme as `#rrggbb`; brand fills, text and glows are regenerated from it. */
 	brand?: `#${string}`;
+	/** Background of `Button variant="filled"` and other brand-filled controls (--ca-brand-fill). Defaults to a fill darkened until white text reaches AA. */
+	brandFill?: string;
+	/** Hover/pressed variant of `brandFill` (--ca-brand-fill-hover). */
+	brandFillHover?: string;
+	/** Text on `brandFill` (--ca-brand-contrast). The build warns when the pair is under 4.5:1. */
+	brandContrast?: string;
 	/** Page background (--ca-surface-base, also the browser chrome color): `#rrggbb` or `oklch()`. */
 	background?: string;
 	/** Wells, inputs, code blocks (--ca-surface-sunken). */
@@ -83,6 +90,9 @@ export interface SchemeColors {
 }
 
 const ROLE_TOKENS: Record<Exclude<keyof SchemeColors, "brand">, string> = {
+	brandFill: "--ca-brand-fill",
+	brandFillHover: "--ca-brand-fill-hover",
+	brandContrast: "--ca-brand-contrast",
 	background: "--ca-surface-base",
 	sunken: "--ca-surface-sunken",
 	surface: "--ca-surface-raised",
@@ -109,6 +119,13 @@ export interface PresetDefinition {
 	label?: string;
 	/** Per-scheme role colors on top of the generated palette. */
 	colors?: { light?: SchemeColors; dark?: SchemeColors };
+	/** Size roles for this preset, in both schemes. */
+	sizes?: PresetSizes;
+}
+
+export interface PresetSizes {
+	/** Text-entry font size (--ca-input-font-size), e.g. `"0.875rem"`. Touch and narrow screens still get `max(16px, …)` so iOS Safari does not zoom into focused fields. */
+	inputFontSize?: string;
 }
 
 /** Page background pattern. mesh = brand glow gradients (drawn by the glass and frosted materials); the rest are flat paper. */
@@ -226,6 +243,8 @@ export interface ResolvedTheme extends ThemeDefinition {
 }
 
 const HEX = /^#[0-9a-f]{6}$/i;
+/** A plain length (`14px`, `0.875rem`): it lands inside `max(16px, …)`, so no function or declaration syntax. */
+const CSS_LENGTH = /^\d*\.?\d+(px|rem|em)$/;
 
 /** Stylesheet defaults of the knobs below (tokens.css): a theme that keeps them emits no CSS for them. */
 const DEFAULT_RADIUS = 0.8;
@@ -334,6 +353,50 @@ function contrastTokens(src: BuiltinPresetSource | PresetDefinition, scheme: "li
 			};
 }
 
+export interface PresetContrastIssue {
+	preset: string;
+	scheme: "light" | "dark";
+	ratio: number;
+	message: string;
+}
+
+/** WCAG AA for normal text: the floor for a label on a brand fill. */
+const AA = 4.5;
+
+/**
+ * Brand presets whose `brandContrast` on `brandFill` is under 4.5:1. A role left unset is measured
+ * from the generated fill/contrast of that scheme, so a lone `brandContrast` is checked against the
+ * fill it will actually sit on. Colors the build cannot evaluate (`var()`, `color-mix()`) are skipped.
+ */
+export function presetContrastIssues(t: Pick<ResolvedTheme, "presets">): PresetContrastIssue[] {
+	const issues: PresetContrastIssue[] = [];
+	for (const p of t.presets) {
+		const tokens = presetTokens(p);
+		for (const scheme of ["light", "dark"] as const) {
+			const set = p.colors?.[scheme];
+			if (!set?.brandFill && !set?.brandContrast) continue;
+			const vars = tokens[scheme];
+			const fill = vars["--ca-brand-fill"];
+			const text = vars["--ca-brand-contrast"];
+			const ratio = fill && text ? contrastRatio(fill, text) : null;
+			if (ratio === null || ratio >= AA) continue;
+			issues.push({
+				preset: p.id,
+				scheme,
+				ratio,
+				message: `preset "${p.id}" (${scheme}): brandContrast ${text} on brandFill ${fill} is ${ratio.toFixed(2)}:1, under the 4.5:1 WCAG AA minimum for button text. Pick a darker/lighter pair.`,
+			});
+		}
+	}
+	return issues;
+}
+
+/** Print `presetContrastIssues` once per finding. Build tooling (`caThemePlugin`, `caUI`) calls it with the app's theme. */
+export function warnPresetContrast(t: Pick<ResolvedTheme, "presets">, tool: string): void {
+	for (const issue of presetContrastIssues(t))
+		console.warn(`\n[codeatlasdev/ui] ${tool}: ${issue.message}\n`);
+}
+
 /**
  * CSS for one preset. A preset applies on `<html>` or on any element (`data-preset`
  * islands), and `[data-theme-scope="light"|"dark"]` re-applies a scheme inside it.
@@ -380,7 +443,17 @@ export function presetCSS(
 	];
 	// prefers-contrast: more — same selectors, after the base blocks, so it wins at equal specificity.
 	const more = `@media (prefers-contrast: more) {\n${cssBlock(lightSel.join(",\n"), contrastTokens(src, "light"))}\n${cssBlock(darkSel.join(",\n"), contrastTokens(src, "dark"))}\n}`;
-	return `${cssBlock(lightSel.join(",\n"), light, docs)}\n${cssBlock(darkSel.join(",\n"), dark)}\n${more}`;
+	const input = !("hue" in src) ? src.sizes?.inputFontSize : undefined;
+	if (input) {
+		light["--ca-input-font-size"] = input;
+		dark["--ca-input-font-size"] = input;
+	}
+	// tokens.css raises the field font to >= 16px on touch and below 900px (iOS zoom); a preset value
+	// must keep that floor, so the same selectors restate it in the same media query, after the base.
+	const coarse = input
+		? `\n@media (pointer: coarse), (max-width: 899.98px) {\n${cssBlock([...lightSel, ...darkSel].join(",\n"), { "--ca-input-font-size": `max(16px, ${input})` })}\n}`
+		: "";
+	return `${cssBlock(lightSel.join(",\n"), light, docs)}\n${cssBlock(darkSel.join(",\n"), dark)}\n${more}${coarse}`;
 }
 
 /** Resolve a partial definition: fills defaults, validates ids, precomputes theme-color hexes. */
@@ -391,6 +464,11 @@ export function defineTheme(def: Partial<ThemeDefinition> = {}): ResolvedTheme {
 			throw new Error(`[codeatlasdev/ui] preset "${p.id}" clashes with a built-in preset`);
 		if (!HEX.test(p.color))
 			throw new Error(`[codeatlasdev/ui] preset "${p.id}": color must be #rrggbb`);
+		const size = p.sizes?.inputFontSize;
+		if (size !== undefined && !CSS_LENGTH.test(size))
+			throw new Error(
+				`[codeatlasdev/ui] preset "${p.id}": sizes.inputFontSize must be a CSS length like "0.875rem" or "14px"`
+			);
 	}
 	const known = [...BUILTIN_IDS, ...presets.map((p) => p.id)];
 	const defaultPreset = def.defaultPreset ?? "amber";

@@ -14,7 +14,13 @@
  * Import `@codeatlasdev/ui/styles/global.css` once in your base layout.
  */
 import type { AstroIntegration } from "astro";
-import { defineTheme, fontPreloads, SSR_NO_EXTERNAL, themeCSS } from "./theme/define.js";
+import {
+	defineTheme,
+	fontPreloads,
+	SSR_NO_EXTERNAL,
+	themeCSS,
+	warnPresetContrast,
+} from "./theme/define.js";
 import { type ThemeOptions, themeScript } from "./theme-script.js";
 
 /**
@@ -43,6 +49,7 @@ if(m)n.head.appendChild(m.cloneNode(true));
 /** Astro integration: injects the theme (preset CSS, fonts, init script) into every page `<head>` before first paint and bundles the ESM-only dependencies for SSR. Pass the same `ThemeOptions` as `defineTheme`. */
 export function caUI(options: ThemeOptions = {}): AstroIntegration {
 	const t = defineTheme(options);
+	warnPresetContrast(t, "caUI");
 	const css = themeCSS(t);
 	// head-inline content is emitted verbatim inside <script>; the CSS rides along as a string.
 	const style = css
@@ -66,7 +73,7 @@ export function caUI(options: ThemeOptions = {}): AstroIntegration {
 	};
 }
 
-export type { Paper, PresetDefinition, SchemeColors } from "./theme/define.js";
+export type { Paper, PresetDefinition, PresetSizes, SchemeColors } from "./theme/define.js";
 export type { DesignStyleId } from "./theme/styles.js";
 // Recipes are plain data: safe to import from astro.config (no Svelte runes on this path).
 export { DESIGN_STYLES, designStyle, mergeTheme } from "./theme/styles.js";

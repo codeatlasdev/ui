@@ -286,6 +286,27 @@ export function onFill(fillL: number, fillC: number, fillH: number): string {
 		: INK;
 }
 
+/** `#rrggbb` or opaque `oklch(L C H)` → OKLCH, or null for any other syntax (var(), color-mix(), names). */
+function parseColor(color: string): [number, number, number] | null {
+	const t = color.trim();
+	if (/^#[0-9a-f]{6}$/i.test(t)) {
+		const { l, c, h } = hexToOklch(t);
+		return [l, c, h];
+	}
+	const m = t.match(/^oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*\)$/);
+	return m ? [+m[1], +m[2], +m[3]] : null;
+}
+
+/**
+ * WCAG contrast ratio (1–21) between two opaque colours given as `#rrggbb` or `oklch(L C H)`.
+ * Null when either uses another syntax (the ratio cannot be known at build time).
+ */
+export function contrastRatio(a: string, b: string): number | null {
+	const [ca, cb] = [parseColor(a), parseColor(b)];
+	if (!ca || !cb) return null;
+	return ratioOf(encoded(...ca), encoded(...cb));
+}
+
 /** Static error fills (tokens.css): the same in both schemes. */
 const ERROR_FILL = { l: 0.52, c: 0.2, h: 22 };
 
