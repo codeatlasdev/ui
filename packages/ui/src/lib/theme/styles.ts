@@ -5,6 +5,7 @@
 // Taxonomy ids refer to the Atlas of interface aesthetics (DS001…DS269). Values are design
 // proposals, not measurements; contrast-sensitive styles keep text tokens AA by default.
 
+import { mergeComponents } from "./components.js";
 import type { ThemeDefinition } from "./define.js";
 
 export type DesignStyleId =
@@ -351,6 +352,9 @@ export function mergeTheme(
 		fonts: { ...a.fonts, ...b.fonts },
 		border: { ...a.border, ...b.border },
 		motion: { ...a.motion, ...b.motion },
+		...(a.components || b.components
+			? { components: mergeComponents(a.components, b.components) }
+			: {}),
 		typography: {
 			...a.typography,
 			...b.typography,

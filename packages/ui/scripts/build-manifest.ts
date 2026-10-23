@@ -99,6 +99,8 @@ export interface ManifestComponent {
 	extends?: string;
 	/** Public `ca-*` class names defined in the component `<style>`. */
 	classes: string[];
+	/** Component tokens: `--ca-<stem>-*` custom properties the `<style>` reads with a fallback (`var(--ca-btn-gap, …)`). Set them on `:root`, a wrapper or `ThemeOptions.components`. */
+	tokens: string[];
 	/** Generic parameters, e.g. `TData extends RowData`. */
 	generics?: string;
 }
@@ -379,8 +381,12 @@ function extractComponent(name: string, file: string, entry: string): ManifestCo
 		source: file,
 		props: [],
 		snippets: [],
-		classes: extractClasses(componentCss(src, dirname(abs))),
+		classes: [],
+		tokens: [],
 	};
+	const css = componentCss(src, dirname(abs));
+	out.classes = extractClasses(css);
+	out.tokens = extractComponentTokens(css, out.classes);
 
 	const generics = src.match(/<script[^>]*\bgenerics="([^"]+)"/)?.[1];
 	if (generics) out.generics = generics;
@@ -449,6 +455,19 @@ export function extractClasses(css: string): string[] {
 			for (const c of owned.matchAll(/\.(ca-[A-Za-z0-9_-]+)/g)) classes.add(c[1]);
 		}
 	return [...classes].sort();
+}
+
+/**
+ * Component tokens of a component's own CSS: `var(--ca-<stem>-…, fallback)` reads, where `<stem>` is
+ * the stem of one of its classes (`ca-icon-btn--sm` → `icon-btn`). The fallback marks an override
+ * hook: a token read without one is a global token owned elsewhere (`--ca-space-3`).
+ */
+export function extractComponentTokens(css: string, classes: string[]): string[] {
+	const stems = new Set(classes.map((c) => c.slice(3).split(/--|__/)[0]));
+	const tokens = new Set<string>();
+	for (const m of css.replace(/\/\*[\s\S]*?\*\//g, "").matchAll(/var\((--ca-([a-z0-9-]+?))\s*,/g))
+		if ([...stems].some((s) => m[2] === s || m[2].startsWith(`${s}-`))) tokens.add(m[1]);
+	return [...tokens].sort();
 }
 
 // ── non-component exports ─────────────────────────────────────────────────────
@@ -1227,6 +1246,7 @@ export function skillMarkdown(m: Manifest): string {
 			);
 		if (c.extends) out.push(`Also accepts: \`${cell(c.extends)}\``, "");
 		if (c.classes.length) out.push(`Classes: ${c.classes.map((x) => `\`${x}\``).join(" ")}`, "");
+		if (c.tokens.length) out.push(`Tokens: ${c.tokens.map((x) => `\`${x}\``).join(" ")}`, "");
 	}
 	out.push(
 		"# Non-component exports",

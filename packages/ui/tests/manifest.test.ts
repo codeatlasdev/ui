@@ -4,6 +4,7 @@ import {
 	buildTokens,
 	type ExportKind,
 	extractClasses,
+	extractComponentTokens,
 	extractTokens,
 	type ManifestToken,
 	skillMarkdown,
@@ -175,6 +176,28 @@ describe("extractClasses", () => {
 	it("collects own classes, drops :global() descendants and comments", () => {
 		const css = `/* .ca-comment */ .ca-a { } .ca-a:hover .ca-b { } :global(.ca-own) { } .ca-parent :global(.ca-foreign) { }`;
 		expect(extractClasses(css)).toEqual(["ca-a", "ca-b", "ca-own", "ca-parent"]);
+	});
+});
+
+describe("component tokens (#373)", () => {
+	it("keeps var(--ca-<stem>-*, fallback) reads of the component's own classes, not global tokens", () => {
+		const css = `.ca-icon-btn--sm { width: var(--ca-icon-btn-size-sm, var(--ca-space-8)); gap: var(--ca-space-2); } /* var(--ca-icon-btn-x, 1) */ .ca-icon-btn { color: var(--ca-icon-btn-font-weight, inherit) }`;
+		expect(extractComponentTokens(css, ["ca-icon-btn", "ca-icon-btn--sm"])).toEqual([
+			"--ca-icon-btn-font-weight",
+			"--ca-icon-btn-size-sm",
+		]);
+	});
+
+	it("get_component data lists Button, IconButton and Kbd tokens", () => {
+		expect(byName("Button")?.tokens).toContain("--ca-btn-font-weight");
+		expect(byName("Button")?.tokens).toContain("--ca-btn-sm-padding-x");
+		expect(byName("IconButton")?.tokens).toContain("--ca-icon-btn-size-sm");
+		expect(byName("Kbd")?.tokens).toEqual([
+			"--ca-kbd-font-size",
+			"--ca-kbd-line-height",
+			"--ca-kbd-size",
+		]);
+		expect(byName("Badge")?.tokens).not.toContain("--ca-space-1");
 	});
 });
 

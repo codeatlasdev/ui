@@ -1,12 +1,12 @@
 {
 	"version": "4.5.0",
-	"count": 340,
+	"count": 341,
 	"groups": [
 		{
 			"slug": "inputs",
 			"first": "001",
-			"last": "721",
-			"count": 73
+			"last": "880",
+			"count": 74
 		},
 		{
 			"slug": "surfaces",
@@ -15347,6 +15347,54 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/layout/domain-tokens#status-tokens",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "880",
+			"group": "inputs",
+			"page": "button",
+			"variant": "ComponentTokens",
+			"slug": "component-tokens",
+			"title": "Component tokens",
+			"description": "Weight, tracking, line-height, gap, padding, ghost border and icon button size set on one wrapper, with no selector against a ca-* class.",
+			"summary": "A dense focus-mode toolbar that restyles Button, IconButton and Kbd with component tokens on one wrapper: tighter gap and line-height, a regular-weight large button, wider small padding, a borderless ghost button, a 36px icon button and a square keycap.",
+			"use": "A product whose design system fixes button weight, tracking, gap, padding and keycap size per context (public area, dashboard, focus mode), without writing selectors against ca-* classes.",
+			"spec": [
+				"Wrapper `.dense` declares only custom properties: `--ca-btn-gap`, `--ca-btn-line-height`, `--ca-btn-letter-spacing`, `--ca-btn-lg-font-weight`, `--ca-btn-lg-font-size`, `--ca-btn-sm-padding-x`, `--ca-btn-sm-font-size`, `--ca-btn-ghost-border-width`, `--ca-icon-btn-size-sm`, `--ca-kbd-size`, `--ca-kbd-font-size`, `--ca-kbd-line-height`",
+				"`<Button variant=\"filled\" size=\"lg\">` labelled Call next lead",
+				"`<Button variant=\"outlined\" tone=\"neutral\" size=\"sm\">` labelled Snooze, a ghost neutral sm Skip and a disabled outlined neutral sm Reassign",
+				"`<IconButton variant=\"text\" size=\"sm\" aria-label=\"Close focus mode\">` with an X icon",
+				"`<Kbd>N</Kbd>` after the text Next lead in a `.hint` span",
+				"Flex `.dense` wrapper with `gap: var(--ca-space-3)`; the CSS has no selector against a component class"
+			],
+			"tags": [
+				"button",
+				"icon-button",
+				"kbd",
+				"tokens",
+				"density",
+				"typography",
+				"theming",
+				"focus-mode"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"IconButton",
+				"Kbd"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"IconButton",
+						"Kbd"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/button#component-tokens",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		}
 	]

@@ -346,6 +346,7 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "781", path: "layout/theme-island/FullPage" },
 	{ id: "800", path: "map/stage/ThemedMap" },
 	{ id: "860", path: "layout/domain-tokens/StatusTokens" },
+	{ id: "880", path: "inputs/button/ComponentTokens" },
 ];
 
 /**

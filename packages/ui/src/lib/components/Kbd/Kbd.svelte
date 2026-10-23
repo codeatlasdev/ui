@@ -24,9 +24,13 @@
       border-bottom-width: var(--ca-border-width-strong);
       background: color-mix(in oklab, var(--ca-text-primary) 6%, transparent);
       font-family: var(--ca-font-mono);
-      font-size: var(--ca-font-size-micro);
+      font-size: var(--ca-kbd-font-size, var(--ca-font-size-micro));
       color: var(--ca-text-secondary);
-      line-height: var(--ca-line-height-snug);
+      line-height: var(--ca-kbd-line-height, var(--ca-line-height-snug));
+      /* --ca-kbd-size draws a square keycap (min width and height); unset, the box hugs its label. */
+      min-width: var(--ca-kbd-size, 0);
+      height: var(--ca-kbd-size, auto);
+      box-sizing: border-box;
       white-space: nowrap;
       user-select: none;
     }

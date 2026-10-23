@@ -13,12 +13,21 @@ import {
 	type TokenMap,
 } from "../utils/palette-generator.js";
 import { BUILTIN_PRESETS, type BuiltinPresetSource } from "./builtins.js";
+import { type ComponentTokens, componentTokens } from "./components.js";
 import {
 	type ColorValue,
 	domainTokens,
 	type PresetTokenGroups,
 	roleColor,
 } from "./preset-tokens.js";
+
+export type {
+	ButtonSizeTokens,
+	ButtonTokens,
+	ComponentTokens,
+	IconButtonTokens,
+	KbdTokens,
+} from "./components.js";
 
 export type ColorScheme = "light" | "dark" | "system";
 /** Surface material. glass/frosted blur the backdrop; the rest are opaque. */
@@ -248,6 +257,12 @@ export interface ThemeDefinition {
 	noise: number;
 	/** Page background pattern. Flat patterns use --ca-outline-subtle, so they follow the preset. @default "plain" */
 	paper: Paper;
+	/**
+	 * Component tokens (`--ca-btn-*`, `--ca-icon-btn-*`, `--ca-kbd-*`): weight, tracking, line-height,
+	 * gap, padding and size per component, without a selector against a `.ca-*` class. Unset, a
+	 * component keeps its default look. Applied before `overrides`.
+	 */
+	components: ComponentTokens;
 	/** Raw token overrides per scheme. Applied last. */
 	overrides: { light?: TokenMap; dark?: TokenMap };
 }
@@ -484,6 +499,7 @@ export function defineTheme(def: Partial<ThemeDefinition> = {}): ResolvedTheme {
 		iconStroke: def.iconStroke ?? DEFAULT_ICON_STROKE,
 		noise: def.noise ?? 0,
 		paper: def.paper ?? "plain",
+		components: def.components ?? {},
 		overrides: def.overrides ?? {},
 		known,
 		themeColor,
@@ -659,7 +675,7 @@ export function themeCSS(t: ResolvedTheme): string {
 	if (t.fonts.body) root["--ca-font-sans"] = fontStack(t.fonts.body);
 	if (t.fonts.mono) root["--ca-font-mono"] = fontStack(t.fonts.mono);
 	if (t.fonts.display) root["--ca-font-display"] = fontStack(t.fonts.display);
-	Object.assign(root, designTokens(t));
+	Object.assign(root, designTokens(t), componentTokens(t.components));
 	Object.assign(root, withErrorContrast({ ...t.overrides.light }));
 	if (Object.keys(root).length) out.push(cssBlock(':root,\n[data-theme-scope="light"]', root));
 	if (t.overrides.dark && Object.keys(t.overrides.dark).length)

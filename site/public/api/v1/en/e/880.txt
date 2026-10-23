@@ -1,0 +1,52 @@
+<!-- @codeatlasdev/ui demo #880 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/button#component-tokens -->
+Element: #880 Component tokens (inputs/button)
+What it shows: A dense focus-mode toolbar that restyles Button, IconButton and Kbd with component tokens on one wrapper: tighter gap and line-height, a regular-weight large button, wider small padding, a borderless ghost button, a 36px icon button and a square keycap.
+When to use: A product whose design system fixes button weight, tracking, gap, padding and keycap size per context (public area, dashboard, focus mode), without writing selectors against ca-* classes.
+Spec:
+- Wrapper `.dense` declares only custom properties: `--ca-btn-gap`, `--ca-btn-line-height`, `--ca-btn-letter-spacing`, `--ca-btn-lg-font-weight`, `--ca-btn-lg-font-size`, `--ca-btn-sm-padding-x`, `--ca-btn-sm-font-size`, `--ca-btn-ghost-border-width`, `--ca-icon-btn-size-sm`, `--ca-kbd-size`, `--ca-kbd-font-size`, `--ca-kbd-line-height`
+- `<Button variant="filled" size="lg">` labelled Call next lead
+- `<Button variant="outlined" tone="neutral" size="sm">` labelled Snooze, a ghost neutral sm Skip and a disabled outlined neutral sm Reassign
+- `<IconButton variant="text" size="sm" aria-label="Close focus mode">` with an X icon
+- `<Kbd>N</Kbd>` after the text Next lead in a `.hint` span
+- Flex `.dense` wrapper with `gap: var(--ca-space-3)`; the CSS has no selector against a component class
+Tags: button, icon-button, kbd, tokens, density, typography, theming, focus-mode
+Needs: @codeatlasdev/ui@4.5.0
+Components: Button, IconButton, Kbd
+Live demo: https://ui.codeatlas.com.br/docs/inputs/button#component-tokens
+
+<script lang="ts">
+  import { Button, IconButton, Kbd } from '@codeatlasdev/ui';
+  import { X } from '@lucide/svelte';
+</script>
+
+<div class="dense">
+  <Button variant="filled" size="lg">Call next lead</Button>
+  <Button variant="outlined" tone="neutral" size="sm">Snooze</Button>
+  <Button variant="ghost" tone="neutral" size="sm">Skip</Button>
+  <Button variant="outlined" tone="neutral" size="sm" disabled>Reassign</Button>
+  <IconButton variant="text" size="sm" aria-label="Close focus mode"><X size={16} /></IconButton>
+  <span class="hint">Next lead <Kbd>N</Kbd></span>
+</div>
+
+<style>
+  /* Component tokens only: no selector against a ca-* class, defaults untouched outside this wrapper. */
+  .dense {
+    --ca-btn-gap: var(--ca-space-2);
+    --ca-btn-line-height: 1.25;
+    --ca-btn-letter-spacing: normal;
+    --ca-btn-lg-font-weight: 400;
+    --ca-btn-lg-font-size: var(--ca-font-size-button);
+    --ca-btn-sm-padding-x: var(--ca-space-3);
+    --ca-btn-sm-font-size: var(--ca-font-size-body2);
+    --ca-btn-ghost-border-width: 0px;
+    --ca-icon-btn-size-sm: 36px;
+    --ca-kbd-size: var(--ca-space-5);
+    --ca-kbd-font-size: var(--ca-font-size-caption);
+    --ca-kbd-line-height: 1;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--ca-space-3);
+  }
+  .hint { display: inline-flex; align-items: center; gap: var(--ca-space-1-5); color: var(--ca-text-secondary); }
+</style>

@@ -1,0 +1,15 @@
+Use @codeatlasdev/ui demo #880 "Component tokens" (inputs/button).
+What it shows: A dense focus-mode toolbar that restyles Button, IconButton and Kbd with component tokens on one wrapper: tighter gap and line-height, a regular-weight large button, wider small padding, a borderless ghost button, a 36px icon button and a square keycap. When to use: A product whose design system fixes button weight, tracking, gap, padding and keycap size per context (public area, dashboard, focus mode), without writing selectors against ca-* classes.
+Spec:
+- Wrapper `.dense` declares only custom properties: `--ca-btn-gap`, `--ca-btn-line-height`, `--ca-btn-letter-spacing`, `--ca-btn-lg-font-weight`, `--ca-btn-lg-font-size`, `--ca-btn-sm-padding-x`, `--ca-btn-sm-font-size`, `--ca-btn-ghost-border-width`, `--ca-icon-btn-size-sm`, `--ca-kbd-size`, `--ca-kbd-font-size`, `--ca-kbd-line-height`
+- `<Button variant="filled" size="lg">` labelled Call next lead
+- `<Button variant="outlined" tone="neutral" size="sm">` labelled Snooze, a ghost neutral sm Skip and a disabled outlined neutral sm Reassign
+- `<IconButton variant="text" size="sm" aria-label="Close focus mode">` with an X icon
+- `<Kbd>N</Kbd>` after the text Next lead in a `.hint` span
+- Flex `.dense` wrapper with `gap: var(--ca-space-3)`; the CSS has no selector against a component class
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #880 Component tokens → file, what changed, https://ui.codeatlas.com.br/docs/inputs/button#component-tokens; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/880.txt   Components API: ca-ui-mcp get_component(Button)

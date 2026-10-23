@@ -167,6 +167,8 @@ Snippets: `stage` (`Snippet<[{ hidden: boolean }]>`), `header`, `brand`, `railBo
 
 Classes: `ca-main` `ca-panel` `ca-shell` `ca-shell--stage` `ca-shell__body` `ca-shell__content` `ca-shell__desktop-header` `ca-shell__mobile-header` `ca-shell__stage` `ca-shell__stage--hidden` `ca-sidebar`
 
+Tokens: `--ca-main-ml`
+
 ## AudioPlayer
 
 `import { AudioPlayer } from "@codeatlasdev/ui"`
@@ -348,6 +350,8 @@ Also accepts: `AnchorAttributes \| ButtonAttributes`
 
 Classes: `ca-btn` `ca-btn--destructive` `ca-btn--filled` `ca-btn--full-width` `ca-btn--ghost` `ca-btn--glass` `ca-btn--lg` `ca-btn--loading` `ca-btn--md` `ca-btn--neutral` `ca-btn--outlined` `ca-btn--sm` `ca-btn__leading` `ca-btn__trailing`
 
+Tokens: `--ca-btn-disabled-bg` `--ca-btn-font-weight` `--ca-btn-gap` `--ca-btn-ghost-border-width` `--ca-btn-letter-spacing` `--ca-btn-lg-font-size` `--ca-btn-lg-font-weight` `--ca-btn-lg-height` `--ca-btn-lg-letter-spacing` `--ca-btn-lg-padding-x` `--ca-btn-line-height` `--ca-btn-md-font-size` `--ca-btn-md-font-weight` `--ca-btn-md-height` `--ca-btn-md-letter-spacing` `--ca-btn-md-padding-x` `--ca-btn-sm-font-size` `--ca-btn-sm-font-weight` `--ca-btn-sm-height` `--ca-btn-sm-letter-spacing` `--ca-btn-sm-padding-x` `--ca-btn-touch-height`
+
 ## Calendar
 
 `import { Calendar } from "@codeatlasdev/ui"`
@@ -410,6 +414,8 @@ Snippets: `headerActions`, `children`
 Also accepts: `Omit<ComponentProps<typeof Surface>, 'as' \| 'children'>`
 
 Classes: `ca-card` `ca-card--flush` `ca-card--full` `ca-card__header` `ca-card__header-actions` `ca-card__title`
+
+Tokens: `--ca-card-gap`
 
 ## CardGrid
 
@@ -619,6 +625,8 @@ Snippets: `children`
 Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>, Pick<LayoutProps, 'px' \| 'py'>`
 
 Classes: `ca-container`
+
+Tokens: `--ca-container-max`
 
 ## ConversationItem
 
@@ -1376,6 +1384,8 @@ Snippets: `children`
 
 Classes: `ca-highlight` `ca-highlight--animated`
 
+Tokens: `--ca-highlight-color`
+
 ## I18nProvider
 
 `import { I18nProvider } from "@codeatlasdev/ui"`
@@ -1409,6 +1419,8 @@ Snippets: `children`
 Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class' \| 'children' \| 'onclick' \| 'aria-label'>`
 
 Classes: `ca-icon-btn` `ca-icon-btn--filled` `ca-icon-btn--glass` `ca-icon-btn--lg` `ca-icon-btn--loading` `ca-icon-btn--md` `ca-icon-btn--neutral` `ca-icon-btn--outlined` `ca-icon-btn--sm` `ca-icon-btn--text`
+
+Tokens: `--ca-icon-btn-font-weight` `--ca-icon-btn-size-lg` `--ca-icon-btn-size-md` `--ca-icon-btn-size-sm` `--ca-icon-btn-touch-size`
 
 ## Image
 
@@ -1466,6 +1478,8 @@ Snippets: `card` (`Snippet<[T, KanbanCardState]>`), `empty` (`Snippet<[KanbanCol
 
 Classes: `ca-kanban` `ca-kanban--mobile` `ca-kanban__board` `ca-kanban__body` `ca-kanban__card` `ca-kanban__col` `ca-kanban__count` `ca-kanban__dot` `ca-kanban__empty` `ca-kanban__head` `ca-kanban__list` `ca-kanban__more` `ca-kanban__move` `ca-kanban__rail` `ca-kanban__skeleton` `ca-kanban__tab` `ca-kanban__tabs` `ca-kanban__title`
 
+Tokens: `--ca-kanban-color`
+
 ## Kbd
 
 `import { Kbd } from "@codeatlasdev/ui"`
@@ -1477,6 +1491,8 @@ Classes: `ca-kanban` `ca-kanban--mobile` `ca-kanban__board` `ca-kanban__body` `c
 Snippets: `children`
 
 Classes: `ca-kbd`
+
+Tokens: `--ca-kbd-font-size` `--ca-kbd-line-height` `--ca-kbd-size`
 
 ## KpiCard
 
@@ -2053,6 +2069,8 @@ Classes: `ca-popover-content` `ca-popover__trigger`
 
 Classes: `ca-progress` `ca-progress__indicator` `ca-progress__indicator--indeterminate` `ca-progress__track`
 
+Tokens: `--ca-progress-height`
+
 ## RadarChart
 
 `import { RadarChart } from "@codeatlasdev/ui/charts"`
@@ -2557,6 +2575,8 @@ Snippets: `children`
 
 Classes: `ca-strike` `ca-strike--animated`
 
+Tokens: `--ca-strike-color`
+
 ## Surface
 
 `import { Surface } from "@codeatlasdev/ui"`
@@ -2603,6 +2623,8 @@ Also accepts: `Omit<ComponentProps<typeof Surface>, 'as'>`
 | `onchange?` | `(value: string) => void` |  |  |
 
 Classes: `ca-swatch` `ca-swatch-group` `ca-swatch-group--sm`
+
+Tokens: `--ca-swatch-color`
 
 ## Switch
 
@@ -3917,11 +3939,14 @@ Types:
 | `BrandColors` | `interface BrandColors { main: string; light: string; dark: string; contrast: string; }` |  |
 | `Breakpoint` | `type Breakpoint = "xs" \| "sm" \| "md" \| "lg" \| "xl";` |  |
 | `BuiltinPresetId` | `type BuiltinPresetId = \| "amber" \| "ocean" \| "crimson" \| "cyan" \| "violet" \| "emerald" \| "rose" \| "slate";` | Presets shipped in global.css. |
+| `ButtonSizeTokens` | `interface ButtonSizeTokens { height?: CssValue; paddingX?: CssValue; fontSize?: CssValue; weight?: CssValue; tracking?: CssValue; }` | Typography and box tokens of one Button size. |
+| `ButtonTokens` | `interface ButtonTokens extends ButtonSizeTokens { weight?: CssValue; tracking?: CssValue; leading?: CssValue; gap?: CssValue; ghostBorderWidth?: CssValue; disabledBg?: CssValue; touchHeight?: CssValue; sm?: ButtonSizeTokens; md?: ButtonSizeTokens; lg?: ButtonSizeTokens; }` |  |
 | `CaTokenName` | `type CaTokenName = keyof CaTokenRegistry extends never ? never : keyof CaTokenRegistry & string;` | Names declared through `CaTokenRegistry`, else any `group.name` string. |
 | `CaTokenRegistry` | `interface CaTokenRegistry {}` | Registry of domain tokens an app declares, for typed names. Augment it to get autocomplete in `tokenRgba("status.new")`: |
 | `ColorScheme` | `type ColorScheme = "light" \| "dark" \| "system";` |  |
 | `ColorValue` | `type ColorValue = string \| { color: string; alpha: number };` | One color: any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `color-mix(…)`, `rgb(…)`) or an explicit alpha form that keeps the color and the opacity apart. |
 | `Columns` | `type Columns = (typeof COLUMNS)[number] \| `${(typeof COLUMNS)[number]}`;` |  |
+| `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
 | `DateRange` | `interface DateRange { start: DateValue \| undefined; end: DateValue \| undefined; }` | Value of RangeCalendar / DateRangePicker. Both ends are undefined until picked. |
 | `DeepPartial` | `type DeepPartial<T> = T extends (...args: never[]) => unknown ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;` |  |
 | `Density` | `type Density = "compact" \| "comfortable" \| "airy" \| number;` | Spacing density: a multiplier of the 4px unit, or a named step. |
@@ -3951,9 +3976,11 @@ Types:
 | `FontSpec` | `type FontSpec = string \| FontDescriptor;` | A font stack string (existing behavior) or a self-hosted font descriptor. |
 | `FormState` | `interface FormState< K extends string, A extends Record<string, unknown> = Record<never, never>, > { fields: Record<K, FieldState>; arrays: { [N in keyof A]: FieldArrayState<A[N]> }; dirty: boolean; valid: boolean; submitting: boolean; touch(field: K): void; set(field: K, value: string): void; validate(): boolean; reset(): void; }` |  |
 | `HeadingLevel` | `type HeadingLevel = 2 \| 3 \| 4 \| 5 \| 6;` | Level of a rendered `<h2>`–`<h6>`. `<h1>` is reserved for the page title (`PageShell`). |
+| `IconButtonTokens` | `interface IconButtonTokens { weight?: CssValue; size?: { sm?: CssValue; md?: CssValue; lg?: CssValue }; touchSize?: CssValue; }` |  |
 | `IconComponent` | `type IconComponent = Component<IconProps>;` | Any Svelte 5 icon component accepting {@link IconProps}. Structural, so `@lucide/svelte` icons (and compatible libraries) fit. |
 | `IconProps` | `type IconProps = { size?: number \| string; class?: string; "stroke-width"?: number \| string; };` | Props the library passes to icon components. |
 | `Justify` | `type Justify = (typeof JUSTIFY)[number];` |  |
+| `KbdTokens` | `interface KbdTokens { size?: CssValue; fontSize?: CssValue; leading?: CssValue; }` |  |
 | `LayerChange` | `interface LayerChange { layers: LayerInfo[]; count: number; modal: boolean; }` | Detail of the `layerchange` event on `document`. |
 | `LayerInfo` | `interface LayerInfo { kind: LayerKind; rect: DOMRect; }` |  |
 | `LayerKind` | `type LayerKind = "modal" \| "popover" \| "hint";` | The single layer stack. Every overlay (dialog, sheet, menu, popover, tooltip) goes through `openLayer`, so there is one place for the top layer, Escape / outside press / focus-out, focus restoration, scroll lock and the `layerchange` event hosts listen to. |
@@ -3993,7 +4020,7 @@ Types:
 | `SurfaceColors` | `interface SurfaceColors { sunken: string; base: string; raised: string; overlay: string; }` |  |
 | `SurfaceStyle` | `type SurfaceStyle = \| "glass" \| "frosted" \| "solid" \| "flat" \| "outlined" \| "neumorphic" \| "clay" \| "tonal" \| "chrome";` | Surface material. glass/frosted blur the backdrop; the rest are opaque. |
 | `TextColors` | `interface TextColors { primary: string; secondary: string; disabled: string; }` |  |
-| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
+| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; components: ComponentTokens; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
 | `ThemePreset` | `interface ThemePreset { id: BuiltinPresetId; label: string; swatchColor: string; hue: number; brandLight: BrandColors; brandDark: BrandColors; ramp: NeutralRamp; semanticLight: SemanticColors; semanticDark: SemanticColors; }` |  |
 | `Thickness` | `type Thickness = "ultra-thin" \| "thin" \| "regular" \| "thick" \| "chrome";` |  |
@@ -4467,7 +4494,7 @@ Types:
 | `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; tokens?: PresetTokenGroups; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
 | `RouteThemes` | `type RouteThemes = Record<string, Partial<IslandTheme>>;` | Route id prefixes (`event.route.id`, e.g. `"/(marketing)"`) → the theme their pages use. Longest prefix wins. |
-| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
+| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; components: ComponentTokens; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
 | `ThemeHandleOptions` | `interface ThemeHandleOptions { routes?: RouteThemes; }` | Options of the second argument of `caThemeHandle`. |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
 
@@ -5583,5 +5610,5 @@ Types:
 | `PresetSizes` | `interface PresetSizes { inputFontSize?: string; }` |  |
 | `ResolvedBrand` | `interface ResolvedBrand { light: BrandColors; dark: BrandColors; }` |  |
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
-| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
+| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; components: ComponentTokens; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
