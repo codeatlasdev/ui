@@ -114,13 +114,57 @@ test.describe("docs", () => {
 	});
 
 	const endpoints: [string, RegExp, RegExp[]][] = [
-		["/llms.txt", /^text\/plain/, [/CodeAtlas UI/i]],
-		// One fetch covers everything: the docs plus the agent guide (AGENTS.md) at the end.
-		["/llms-full.txt", /^text\/plain/, [/CodeAtlas UI/i, /^# AGENTS\.md: Guide for AI Agents$/m]],
+		[
+			"/llms.txt",
+			/^text\/plain/,
+			[
+				/CodeAtlas UI/i,
+				/^## Start here: build a screen$/m,
+				/\/docs\/getting-started\/recipes\/#list-page/,
+			],
+		],
+		// One fetch covers every page; the demo sources live in /llms/<slug>.txt, linked from each page.
+		[
+			"/llms-full.txt",
+			/^text\/plain/,
+			[
+				/^# CodeAtlas UI: full documentation$/m,
+				/Index: https:\/\/ui\.codeatlas\.com\.br\/llms\.txt/,
+				/^Complete page with demo sources: https:\/\/ui\.codeatlas\.com\.br\/llms\/layout\/form-page\.txt$/m,
+				/^# Using @codeatlasdev\/ui in this app$/m,
+			],
+		],
+		[
+			"/llms/layout/form-page.txt",
+			/^text\/plain/,
+			[/^# AppForm$/m, /```svelte\n<script lang="ts">/],
+		],
+		[
+			"/api/v1/index.json",
+			/^application\/json/,
+			[/"entry": "https:\/\/ui\.codeatlas\.com\.br\/llms\.txt"/],
+		],
 		["/robots.txt", /^text\/plain/, [/Sitemap: .*sitemap-index\.xml/]],
 		["/sitemap-index.xml", /^(application|text)\/xml/, [/<sitemapindex/]],
 		["/search-index.json", /^application\/json/, [/"href":"\/docs\//]],
 	];
+	test("a page listed in llms-full.txt has its own file with the demo source", async ({
+		request,
+	}) => {
+		const full = await (await request.get("/llms-full.txt")).text();
+		const links = [...full.matchAll(/^Complete page with demo sources: (\S+)$/gm)].map((m) => m[1]);
+		expect(links.length).toBeGreaterThan(100);
+		for (const url of [links[0], links[links.length >> 1], links.at(-1) as string]) {
+			const res = await request.get(new URL(url).pathname);
+			expect(res.status(), url).toBe(200);
+		}
+	});
+
+	test("an unknown path under /api/v1/ is a 404, not the home page", async ({ request }) => {
+		const res = await request.get("/api/v1/components.json");
+		expect(res.status()).toBe(404);
+	});
+
 	for (const [path, type, bodies] of endpoints) {
 		test(`${path} is served`, async ({ request }) => {
 			const res = await request.get(path);
