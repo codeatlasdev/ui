@@ -1,0 +1,27 @@
+<!-- @codeatlasdev/ui demo #985 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/kpi-card#sparkline -->
+Element: #985 Sparkline (layout/kpi-card)
+What it shows: Two KPI cards with an icon and a sparkline under the number: a line for active users and bars for churn, with a hint line.
+When to use: A metric tile that shows its recent history. The chart is a snippet, so the charts subpath stays out of the core entry.
+Spec:
+- `<KpiGrid>` with 2 `KpiCard` items
+- `<KpiCard title="Active users" value="24.8k" trend={12.1} icon={Users}>` with `{#snippet chart()}<Sparkline data={[18, 19, 21, 20, 23, 25]} trend="up" />{/snippet}`
+- `hint="Down from 2.4% in January"` on the churn card, whose chart is `<Sparkline data={[2.4, 2.3, 2.1, 2.2, 1.9, 1.7]} trend="up" variant="bar" />`: `trend="up"` is green because a falling churn is good
+Tags: kpi-card, sparkline, chart, snippet, hint, metrics, dashboard
+Needs: @codeatlasdev/ui@4.5.0 + echarts
+Components: KpiCard, KpiGrid, Sparkline
+Live demo: https://ui.codeatlas.com.br/docs/layout/kpi-card#sparkline
+
+<script lang="ts">
+  import { KpiCard, KpiGrid } from '@codeatlasdev/ui';
+  import { Sparkline } from '@codeatlasdev/ui/charts';
+  import { UserMinus, Users } from '@lucide/svelte';
+</script>
+
+<KpiGrid>
+  <KpiCard title="Active users" value="24.8k" trend={12.1} icon={Users}>
+    {#snippet chart()}<Sparkline data={[18, 19, 21, 20, 23, 25]} trend="up" />{/snippet}
+  </KpiCard>
+  <KpiCard title="Churn" value="1.7" unit="%" trend={-0.2} trendTone="positive-down" hint="Down from 2.4% in January" icon={UserMinus}>
+    {#snippet chart()}<Sparkline data={[2.4, 2.3, 2.1, 2.2, 1.9, 1.7]} trend="up" variant="bar" />{/snippet}
+  </KpiCard>
+</KpiGrid>

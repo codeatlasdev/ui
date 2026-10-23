@@ -1,4 +1,5 @@
 import { TrendingUp } from "@lucide/svelte";
+import { createRawSnippet } from "svelte";
 import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
@@ -129,5 +130,33 @@ describe("KpiCard", () => {
 		} finally {
 			warn.mockRestore();
 		}
+	});
+
+	it("renders a hint and a chart slot below the stat, inside the same card (#505)", async () => {
+		const chart = createRawSnippet(() => ({
+			render: () => `<div data-testid="spark" role="img" aria-label="Last 6 months">chart</div>`,
+		}));
+		const screen = await render(KpiCard, {
+			title: "Churn",
+			value: "1.7",
+			unit: "%",
+			hint: "Down from 2.4%",
+			icon: TrendingUp,
+			chart,
+		});
+		const card = q(screen.container, ".ca-kpi");
+		const slot = q(card, ".ca-kpi__chart");
+		expect(slot.querySelector('[data-testid="spark"]')).not.toBeNull();
+		expect(card.textContent).toContain("Down from 2.4%");
+		// stat, then chart: the chart sits after the number block
+		const stat = q(card, ".ca-kpi__inner");
+		expect(stat.compareDocumentPosition(slot) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+		expect(card.querySelector(".ca-kpi__icon")).not.toBeNull();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("has no chart wrapper without a chart snippet", async () => {
+		const screen = await render(KpiCard, { title: "x", value: 1 });
+		expect(screen.container.querySelector(".ca-kpi__chart")).toBeNull();
 	});
 });

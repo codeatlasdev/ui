@@ -1,6 +1,6 @@
 {
 	"version": "4.5.0",
-	"count": 374,
+	"count": 375,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -35,8 +35,8 @@
 		{
 			"slug": "layout",
 			"first": "165",
-			"last": "984",
-			"count": 44
+			"last": "985",
+			"count": 45
 		},
 		{
 			"slug": "charts",
@@ -16860,6 +16860,55 @@
 			"interactive": false,
 			"demo": "https://ui.codeatlas.com.br/docs/layout/kpi-card#trend-tone",
 			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "985",
+			"group": "layout",
+			"page": "kpi-card",
+			"variant": "Sparkline",
+			"slug": "sparkline",
+			"title": "Sparkline",
+			"description": "An icon and a recent-history chart in the same tile: the chart snippet takes a Sparkline.",
+			"summary": "Two KPI cards with an icon and a sparkline under the number: a line for active users and bars for churn, with a hint line.",
+			"use": "A metric tile that shows its recent history. The chart is a snippet, so the charts subpath stays out of the core entry.",
+			"spec": [
+				"`<KpiGrid>` with 2 `KpiCard` items",
+				"`<KpiCard title=\"Active users\" value=\"24.8k\" trend={12.1} icon={Users}>` with `{#snippet chart()}<Sparkline data={[18, 19, 21, 20, 23, 25]} trend=\"up\" />{/snippet}`",
+				"`hint=\"Down from 2.4% in January\"` on the churn card, whose chart is `<Sparkline data={[2.4, 2.3, 2.1, 2.2, 1.9, 1.7]} trend=\"up\" variant=\"bar\" />`: `trend=\"up\"` is green because a falling churn is good"
+			],
+			"tags": [
+				"kpi-card",
+				"sparkline",
+				"chart",
+				"snippet",
+				"hint",
+				"metrics",
+				"dashboard"
+			],
+			"shape": "wide",
+			"components": [
+				"KpiCard",
+				"KpiGrid",
+				"Sparkline"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"KpiCard",
+						"KpiGrid"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/charts",
+					"names": [
+						"Sparkline"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/kpi-card#sparkline",
+			"needs": "@codeatlasdev/ui@4.5.0 + echarts"
 		}
 	]
 }

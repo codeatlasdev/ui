@@ -1,6 +1,6 @@
 ---
 title: KpiCard
-description: A metric card with a title, a value, an optional unit, a trend and an icon.
+description: A metric card with a title, a value, an optional unit, a trend, an icon and a chart under the number.
 group: Layout
 order: 60
 ---
@@ -14,6 +14,8 @@ import NegativeTrend from "~/demos/layout/kpi-card/NegativeTrend.svelte";
 import NegativeTrendSrc from "~/demos/layout/kpi-card/NegativeTrend.svelte?raw";
 import TrendTone from "~/demos/layout/kpi-card/TrendTone.svelte";
 import TrendToneSrc from "~/demos/layout/kpi-card/TrendTone.svelte?raw";
+import SparklineDemo from "~/demos/layout/kpi-card/Sparkline.svelte";
+import SparklineSrc from "~/demos/layout/kpi-card/Sparkline.svelte?raw";
 
 ```svelte
 <script>
@@ -31,17 +33,22 @@ Put several cards in a [KpiGrid](/docs/layout/kpi-grid/) so a row never ends on 
 <Demo title="Basic metrics" src={MetricsSrc}><Metrics /></Demo>
 <Demo title="Without trend" description="Omit trend and the indicator disappears." src={NoTrendSrc}><NoTrend /></Demo>
 <Demo title="Negative trend" description={"A falling number that is good news: trendTone=\"positive-down\"."} src={NegativeTrendSrc}><NegativeTrend /></Demo>
+<Demo title="Sparkline" description="An icon and a recent-history chart in the same tile: the chart snippet takes a Sparkline." src={SparklineSrc}><SparklineDemo /></Demo>
 <Demo title="Trend tone" description="Down is good for churn and latency; a neutral tone shows the change without judging it." src={TrendToneSrc}><TrendTone /></Demo>
 
 `trend` is a relative percent change (`12.4` renders `+12.4%`), computed by you: a metric that went from 80 to 90 passes `12.5`, not `10`. By default a rise is green and a fall red. `trendTone="positive-down"` flips the colour for metrics where down is good (churn, cost, latency); the arrow still follows the sign and the accessible label says "better" or "worse". `trendTone="neutral"` judges neither way. Do not omit `trend` to avoid a wrong colour.
+
+`chart` is a snippet, usually `<Sparkline data={...} />` from `@codeatlasdev/ui/charts` (it needs the `echarts` peer). It is not a data prop because the charts subpath stays out of the core entry. The sparkline colour comes from its own `trend` (`"up"` is green), independent of `trendTone`: for a falling churn give the `Sparkline` `trend="up"`. Do not compose `Card` + `Stat` + `Sparkline` for this tile.
 
 <Props rows={[
   { name: "title", type: "string", description: "Metric name." },
   { name: "value", type: "string | number", description: "Main value." },
   { name: "unit", type: "string", description: "Unit shown after the value (%, s, users)." },
+  { name: "hint", type: "string", description: "Secondary caption below the value (\"Down from 2.4%\")." },
   { name: "trend", type: "number", description: "Percentage change. The arrow follows the sign; by default a rise is green, a fall red, zero neutral." },
   { name: "trendTone", type: "'positive-up' | 'positive-down' | 'neutral'", description: "Which direction of `trend` is good news. `'positive-down'` makes a fall green (churn, cost, latency); `'neutral'` judges neither. Adds \"better\" or \"worse\" to the accessible label." },
   { name: "icon", type: "IconComponent", description: "Lucide icon. Size and color are managed by the card." },
+  { name: "chart", type: "Snippet", description: "A chart under the number, usually a `Sparkline` from `@codeatlasdev/ui/charts`. Give it an accessible name when it carries information." },
   { name: "skeleton", type: "boolean", default: "false", description: "Loading placeholder with the exact size of the loaded card. See Skeleton." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />

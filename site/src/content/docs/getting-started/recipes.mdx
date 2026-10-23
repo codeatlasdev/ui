@@ -22,7 +22,7 @@ Every example is a SvelteKit route file with its imports, its data shape and its
 | Workspace or account settings | [Settings page](#settings-page) | `AppSettings`, `FormSection`, `SettingItem`, `Switch` |
 | Sign in, sign up, password reset | [Auth pages](#auth-pages) | `AuthLayout` (`panelSide`, `panelBleed`, `header`), `AuthCard`, `TextField` (`revealable`, `below`), `Button` |
 | One screen with no shell: a single dashboard, board or map tool | [Standalone page](#standalone-page) | `SkipLink`, `<main id="main" tabindex="-1">`, `PageShell` |
-| An overview with numbers and a chart | [Dashboard](#dashboard) | `PageShell`, `KpiGrid`, `KpiCard`, `Stat`, `Sparkline`, `Card`, `Grid`, `BarChart`, `PieChart`, `LineChart`, `SimpleTable` |
+| An overview with numbers and a chart | [Dashboard](#dashboard) | `PageShell`, `KpiGrid`, `KpiCard` (`chart`), `Sparkline`, `Card`, `Grid`, `BarChart`, `PieChart`, `LineChart`, `SimpleTable` |
 | A map the pages float over | [Map page](#map-page) | `AppShellLayout` `stage`, `MapStage`, `MapControls`, `PageFrame`, `stageInsets`, `mapColors`, `rgbaCss` |
 | A public marketing page | [Landing page](#landing-page) | `SiteHeader`, `NavigationMenu`, `Drawer`, `LocaleSwitcher`, `I18nProvider`, `Heading`, `Highlight`, `ThemeIsland`, `Container`, `Section`, `Grid`, `Seo` |
 | A brand color, fonts and radius | [Theming](#theming) | `ThemeOptions`, `caThemePlugin`, `caThemeHandle`, `setRouteTheme`, `ThemeIsland` |
@@ -953,9 +953,9 @@ export const m = {
 ```svelte
 <!-- src/routes/(app)/dashboard/+page.svelte -->
 <script lang="ts">
-  import { Button, Card, Grid, KpiCard, KpiGrid, PageShell, Progress, SimpleTable, Stat } from "@codeatlasdev/ui";
+  import { Button, Card, Grid, KpiCard, KpiGrid, PageShell, Progress, SimpleTable } from "@codeatlasdev/ui";
   import { BarChart, LineChart, PieChart, Sparkline } from "@codeatlasdev/ui/charts";
-  import { ArrowUpRight, DollarSign, Users } from "@lucide/svelte";
+  import { ArrowUpRight, DollarSign, UserMinus, Users } from "@lucide/svelte";
   import { m } from "#lib/messages.ts";
 
   const d = m.dashboard;
@@ -990,11 +990,9 @@ export const m = {
   <KpiGrid>
     <KpiCard title={d.revenue} value="$80k" trend={11.1} icon={DollarSign} />
     <KpiCard title={d.users} value="24.8k" trend={12.1} icon={Users} />
-    <!-- A KPI with a sparkline: KpiCard has no chart slot, so compose Card + Stat + Sparkline. -->
-    <Card gap="md">
-      <Stat label={d.churn} value="1.7" unit="%" trend={-0.2} trendTone="positive-down" hint={d.churnHint} />
-      <Sparkline data={churn} trend="up" />
-    </Card>
+    <KpiCard title={d.churn} value="1.7" unit="%" trend={-0.2} trendTone="positive-down" hint={d.churnHint} icon={UserMinus}>
+      {#snippet chart()}<Sparkline data={churn} trend="up" />{/snippet}
+    </KpiCard>
   </KpiGrid>
 
   <Grid columns={{ base: 1, lg: 2 }} gap="4">
@@ -1043,7 +1041,7 @@ Rules:
 
 - Charts come from `@codeatlasdev/ui/charts` and need the `echarts` peer (`bun add echarts`). Pass data only (`series`, `categories`, `data`): there are no ECharts options, colors or styles to set, and the chart follows the theme. `PieChart` takes `donut` and a `centerLabel` for a total in the ring.
 - A number tile is `KpiCard` inside a `KpiGrid`, with `trend` as a percentage and `icon` as a `@lucide/svelte` component. The arrow follows the sign of `trend` and the colour by default says up is good; for a metric where down is good (churn, latency, cost) pass `trendTone="positive-down"` (`"neutral"` to not judge it) instead of dropping `trend`. A number that sits inside a card, a panel or a row without its own surface is `Stat` (`label`, `value`, `unit`, `hint`, `trend`, `trendTone`, `size`, `align`, `skeleton`): it has no border or padding and takes its color from the container.
-- A tile with a sparkline is `Card gap="md"` holding a `Stat` and a `Sparkline` (`data`, `trend="up" | "down" | "neutral"`, `variant="line" | "bar"`), placed inside the same `KpiGrid`. `KpiCard` has no chart slot, so the composed tile has no icon. The sparkline color comes from `trend` (success, error or neutral text): do not pass a hex `color`. It is independent of the `Stat`'s `trendTone`: for churn going down, give the `Sparkline` `trend="up"` (green) yourself.
+- A tile with a sparkline is a `KpiCard` with a `chart` snippet holding a `Sparkline` (`data`, `trend="up" | "down" | "neutral"`, `variant="line" | "bar"`), with its `icon` and `hint` as on any tile. Do not compose `Card` + `Stat` + `Sparkline`. The sparkline color comes from `trend` (success, error or neutral text): do not pass a hex `color`. It is independent of the `trendTone` of the card: for churn going down, give the `Sparkline` `trend="up"` (green) yourself.
 - Side-by-side cards are `Grid columns={{ base: 1, lg: 2 }} gap="4"` with one `Card` per cell. Do not write `:global(.grid-auto-...)` to size a grid: `columns` is the responsive API, and a template such as `repeat(auto-fill, minmax(...))` is a class in your own `<style>`.
 - Each chart or table goes in a `Card` with a `title`. A table that should touch the card edges is `Card padding="none"` around a `SimpleTable`; give it a `<caption class="ca-sr-only">`. A card that holds several blocks (a `Stat`, a `Progress`, a `TextField`) takes `gap="md"` so they stack with space between them.
 - `PageShell` is the page container: `title`, `description`, the `actions` snippet and the spacing between blocks. Its `gap` is a number in px, unlike `Flex`, `Stack` and `Grid`, which take spacing steps. A thin bar is `Progress size="sm"`; `Surface grain` adds the paper-grain overlay to a panel that is not a `Card`.

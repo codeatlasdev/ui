@@ -1806,13 +1806,16 @@ Tokens: `--ca-kbd-font-size` `--ca-kbd-line-height` `--ca-kbd-size`
 | `title` | `string` |  |  |
 | `value` | `string \| number` |  |  |
 | `unit?` | `string` |  |  |
+| `hint?` | `string` |  | Secondary caption below the value ("Down from 2.4%"). |
 | `trend?` | `number` |  |  |
 | `trendTone?` | `'positive-up' \| 'positive-down' \| 'neutral'` |  | Which direction of `trend` is good news: `'positive-up'` (default colouring), `'positive-down'` (churn, cost, latency) or `'neutral'`. See Stat. |
 | `icon?` | `IconComponent` |  | Lucide icon component; size and color are managed by KpiCard |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded card, announced as busy. |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-kpi` `ca-kpi__icon` `ca-kpi__inner`
+Snippets: `chart`
+
+Parts: `ca-kpi` `ca-kpi__chart` `ca-kpi__icon` `ca-kpi__inner`
 
 ## KpiGrid
 
