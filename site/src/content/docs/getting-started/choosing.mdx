@@ -21,8 +21,27 @@ A route is one of these templates. They own the header, the scroll area, the foo
 | Sign in, sign up, password reset | [`AuthLayout`](/docs/layout/auth-layout/) | Renders the page `<main>`: do not add another. `AuthCard` holds the form. |
 | A 404, 403, 500 or 503 page | [`ErrorPage`](/docs/layout/error-page/) | Localized copy, home and back actions. |
 | A section or a list with nothing in it | [`EmptyState`](/docs/layout/empty-state/) | Icon, title, description, actions. In `AppList` use its `empty` snippet instead. |
+| A page with a side column, or a narrow form or settings page | [`PageShell`](/docs/layout/page-shell/) `aside` | `{#snippet aside()}` sits next to the content, `asideLabel` names it. `width="reading"` caps the column near 46rem. |
+| A map-first page with a floating panel | [`PageFrame`](/docs/layout/page-frame/) | `mode` `map`, `split` or `page`; `sheet` makes a bottom sheet on a phone. It tells the stage what it covers through `stageInsets`. |
+| A background that stays mounted across routes (map, canvas, video) | [`AppShellLayout`](/docs/layout/app-shell/) `stage` | `{#snippet stage({ hidden })}`; `stageVisible={false}` hides and pauses it on a full-page route. |
+| Rail captions, a search trigger, more than 5 modules | [`AppShellLayout`](/docs/layout/app-shell/) | `railLabels`, `{#snippet railTop()}` for a search or Cmd+K button, `bottomNavPrimary` and `moreSheet={NavMoreSheet}` for the mobile "More" sheet. `collapseShortPanel` closes the panel for a module with 2 destinations or fewer. |
+| A page or block in another preset or scheme | [`ThemeIsland`](/docs/layout/theme-island/) | `preset`, `scheme`, and `document` for a full page. `setRouteTheme` (from `@codeatlasdev/ui/kit`) sets it per route with SSR parity. `data-theme-scope` alone gives a local island with no SSR parity. |
+| A language picker in the header | [`LocaleSwitcher`](/docs/navigation/locale-switcher/) | `options` as data, `onselect`, `compact`. Put it in the `SiteHeader` `trailing` snippet. |
+| A sign in with the art on the right or full bleed | [`AuthLayout`](/docs/layout/auth-layout/) | `panelSide`, `panelBleed`, `align="start"`, `panelHidden`. A password field takes `revealable` on `TextField`. |
 
 Never: wrap a page in your own `div` with a title row and a footer bar. Never put `AppShellLayout` in public or auth routes, only in the signed-in layout.
+
+## Maps
+
+| If you need | Use | Why / the rule |
+|---|---|---|
+| An interactive map behind the page | [`MapStage`](/docs/map/) | From `@codeatlasdev/ui/map`. Needs the peer `maplibre-gl` (default, no token) or `mapbox-gl` (`accessToken`), plus `deck.gl` for `layers`. Basemap per scheme in `styles`. |
+| Zoom, compass and locate buttons | `MapControls` | Same entry. A child of `MapStage`. |
+| Your own layers in the theme colors | `useMapTheme` | Same entry. `theme.color(token)` returns an `Rgba` that follows the live preset. |
+| A panel that floats over the map | [`PageFrame`](/docs/layout/page-frame/) | It sets the map padding for you. Put `MapStage` in the `AppShellLayout` `stage` snippet so it survives navigation. |
+| A static place or an address | `Image` or a link to a map app | No `@codeatlasdev/ui/map` import: it pulls in a map engine. |
+
+Never: create a map in `onMount` yourself, or hand-measure the panel to offset the map.
 
 ## Overlay
 
@@ -40,8 +59,11 @@ Every overlay below is a native `<dialog>` or a `popover` element in the browser
 | A full-screen mobile drill-down (chat thread, detail) | [`MobilePane`](/docs/layout/mobile-pane/) | Fixed, safe-area aware, back button. Replaces a hand-made fixed panel. |
 | Photos or videos at full size | [`Lightbox`](/docs/feedback/lightbox/) | `src` and `alt` for one image, `items` for a gallery. `alt` is required. |
 | Jump to a route or run a command from the keyboard | [`CommandPalette`](/docs/navigation/command-palette/) | Opens with Cmd+K or Ctrl+K. Takes your `modules` and `onNavigate`. |
+| A side detail panel with its own header | [`Drawer`](/docs/feedback/drawer/) `chromeless` | No built-in header or padding. Add `fullBleedBelow` to fill the screen on a phone. |
 
 `Drawer` has two docs pages and one component. Use [Drawer in Feedback](/docs/feedback/drawer/) for the props table, the `bottom` side and the footer. [Drawer (navigation)](/docs/navigation/drawer/) only shows the left menu and right settings panel patterns of the same component.
+
+`Drawer chromeless` drops the header, close button and body padding for a side detail panel whose content brings its own header and scroll; name it with `title`, and add `fullBleedBelow="md"` to fill a phone screen. `Sheet` is modal. `PageFrame sheet` is a non-modal bottom sheet over a map, so the stage stays interactive.
 
 Never: build a fixed full-screen panel by hand, set `z-index` on an overlay, or use `Dialog` for a confirmation that needs an explicit answer.
 
@@ -56,6 +78,8 @@ Never: build a fixed full-screen panel by hand, set `z-index` on an overlay, or 
 | Rows that arrive over time (SSE, WebSocket, a bulk job) | [`LiveList`](/docs/display/live-list/) | Batched polite announcements, follow-the-tail that never steals focus. Needs `label`. |
 | A very long list, or chat history that loads older items at the top | [`VirtualList`](/docs/display/virtual-list/) | Windowed, keeps the scroll position when older rows load. |
 | Events in time order | [`Timeline`](/docs/display/timeline/) | Colored markers on a chronological list. |
+| Dense CRM-style list with pinned columns, row selection, groups and sort | [`SimpleTable`](/docs/display/table/) | `density="compact"`, `stickyColumns={1}`; rows are `TableRow` (`selected`, `onactivate`), sections `TableGroupRow` (`collapsible`, `bind:open`), headers `TableSortHeader` (`sort`, `onsort`). |
+| Cards in columns (pipeline, status board) | [`Kanban`](/docs/display/kanban/) | Drag between columns, keyboard "Move to…", `onmove`, per-column `onloadmore`, tabs on a phone. Needs `columns` and `getId`. |
 
 Never: hand-write a `<table>` with custom sticky CSS, or a mobile card view next to a table. `SimpleTable` does both.
 
@@ -63,7 +87,8 @@ Never: hand-write a `<table>` with custom sticky CSS, or a mobile card view next
 
 | If you need | Use | Why / the rule |
 |---|---|---|
-| A content section with a title and padding | [`Card`](/docs/surfaces/card/) | A `Surface` with a header, padding and an optional link. The default container. |
+| A content section with a title and padding | [`Card`](/docs/surfaces/card/) | A `Surface` with a header, padding and an optional link. The default container. The `title` header is aligned with the content padding; `gap="md"` stacks the children in a column. |
+| One metric inside a panel, no box around it | [`Stat`](/docs/layout/stat/) | Card-less: `label`, `value`, `unit`, `hint`, `trend`, `size`, `align`, `skeleton`. `KpiCard` is a `Stat` inside a `Card` with an icon. |
 | A painted panel with your own structure | [`Surface`](/docs/surfaces/surface/) | Elevation, material, tone, variant and radius as independent props. |
 | Spacing with no paint | [`Box`](/docs/layout/layout-primitives/) | A `div` with padding props. |
 | A page band with the page rhythm | [`Section`](/docs/layout/layout-primitives/) | A `<section>`, `size` `1` to `3`. |
@@ -113,6 +138,7 @@ All six render any element with `as` and take spacing as tokens, never inline st
 | A view or mode switch that always has a selection | [`SegmentedControl`](/docs/inputs/segmented-control/) | Sliding thumb. Not for form answers. |
 | A set of toggle buttons, single or multiple | [`ToggleGroup`](/docs/inputs/toggle-group/) | `type="single"` or `"multiple"`. Bind `value` as a string or an array. |
 | Filter chips above a list | [`FilterGroup`](/docs/inputs/filter-group/) | Adds an automatic "All". Single value. |
+| One value from many short options that wrap | [`ChipGroup`](/docs/inputs/chip-group/) | Single choice, chips wrap to new rows, `radiogroup` semantics, `bind:value`. `SegmentedControl` is one row for 2 to 5 options; `RadioGroup` shows long labels; `FilterGroup` is a list toolbar with "All". |
 | Switch between panels of content | [`Tabs`](/docs/navigation/tabs/) | Roving focus. Content changes, not a form value. |
 | A yes or no that is submitted with the form | [`Checkbox`](/docs/inputs/checkbox/) | Also indeterminate. |
 | A setting that applies as soon as it flips | [`Switch`](/docs/inputs/switch/) | `role="switch"`. Use `SettingItem` for a labeled row. |
@@ -125,11 +151,20 @@ All six render any element with `as` and take spacing as tokens, never inline st
 | A message that stays in the page (validation, a warning) | [`Alert`](/docs/display/alert/) | `severity`, optional `title` and `closable`. |
 | A decision the user must make | [`AlertDialog`](/docs/feedback/alert-dialog/) | See Overlay. |
 | A change a screen reader should hear with no visual element | `announce()` | From `@codeatlasdev/ui`. Do not build your own live region. |
+| A secondary line, one inline action, an update in place | `toast` options | `description` under the message, `action: { label, onClick }` (one button, dismisses), `id` to replace the toast with that id instead of stacking. Identical messages dedupe into one with a count. Max 3 visible, oldest dropped. |
 | A list of past events with an unread count | [`NotificationBell`](/docs/display/notification-bell/) | Bell with a badge that opens a notification center. |
-| Known progress, or work of unknown length in a bar | [`Progress`](/docs/feedback/progress/) | `value` and `max`, or `indeterminate`. Needs `label`. |
+| Known progress, or work of unknown length in a bar | [`Progress`](/docs/feedback/progress/) | `value` and `max`, or `indeterminate`. Needs `label`. `size` is `sm` (4px), `md` (6px) or `lg` (8px, default); another height: `--ca-progress-height`. |
 | Placeholder for content that is loading | [`Skeleton`](/docs/feedback/skeleton/) | Match the shape of the real content. |
 | A busy button, section or overlay | [`Spinner`](/docs/feedback/spinner/) | Inline indicator. |
 | A route or section that must not flash a loader | [`LoadingBoundary`](/docs/navigation/loading-boundary/) | Delays the loader, adds a top bar and pending links for SvelteKit navigations. |
+
+## Buttons and type
+
+| If you need | Use | Why / the rule |
+|---|---|---|
+| A secondary action beside a brand filled one | [`Button`](/docs/inputs/button/) `tone="neutral"` | Draws `outlined` and `ghost` in neutral label and border. Also on `IconButton`. Other variants ignore it. |
+| A hero or page title in the fluid editorial size | [`Heading`](/docs/display/heading/) `size="display"` | `display-2` and `display-3` are smaller steps. Plain `h1` keeps the h1 size. `PageShell`, `AuthCard`, `SiteHeader` and `EmptyState` take `display`, which uses `--ca-font-display`. |
+| A marker, a struck-out old value, a paper grain | `Highlight`, `StrikeThrough`, `Surface grain` | Editorial primitives. `Highlight animated` and `StrikeThrough animated` play once on mount. |
 
 ## Brazilian and formatted inputs
 
