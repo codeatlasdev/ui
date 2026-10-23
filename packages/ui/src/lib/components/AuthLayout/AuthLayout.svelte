@@ -51,7 +51,7 @@
      * no logo, no decorative blobs. The panel sticks to the viewport height.
      */
     panelBleed?: boolean;
-    /** Viewport width from which the panel shows: `md` 900px, `lg` 1024px. Below it only the form shows. */
+    /** Viewport width from which the panel shows: `md` 900px, `lg` 1200px. Below it only the form shows. */
     panelHidden?: 'md' | 'lg';
     /**
      * Bar across the top of the form column (logo, language switcher, CTA).
@@ -86,7 +86,7 @@
   // Server and first render keep it mounted (desktop), so there is no hydration mismatch.
   let panelShown = $state(true);
   $effect(() => {
-    const mq = matchMedia(`(min-width: ${panelHidden === 'lg' ? 1024 : 900}px)`);
+    const mq = matchMedia(`(min-width: ${panelHidden === 'lg' ? 1200 : 900}px)`);
     const sync = () => (panelShown = mq.matches);
     sync();
     mq.addEventListener('change', sync);
@@ -185,7 +185,7 @@
     @media (max-width: 899.98px) {
       .ca-auth__panel { display: none; }
     }
-    @media (max-width: 1023.98px) {
+    @media (max-width: 1199.98px) {
       .ca-auth[data-panel-hidden='lg'] .ca-auth__panel { display: none; }
     }
 
@@ -385,7 +385,7 @@
       }
       .ca-auth__mobile-brand { display: flex; }
     }
-    @media (max-width: 1023.98px) {
+    @media (max-width: 1199.98px) {
       .ca-auth[data-panel-hidden='lg'] .ca-auth__col:not(.ca-auth__col--framed) {
         padding-top: calc(var(--ca-space-10) + var(--ca-safe-top));
         padding-bottom: calc(var(--ca-space-10) + var(--ca-safe-bottom));

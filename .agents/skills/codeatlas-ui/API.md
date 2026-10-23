@@ -211,7 +211,7 @@ AuthLayout: two-column layout for authentication pages.
 | `mobileBrand?` | `boolean` | `true` | While the side panel is hidden, `true` shows a compact strip with the brand above the form. A `header` snippet replaces the strip. |
 | `panelSide?` | `'left' \| 'right'` | `'left'` | Which side the panel sits on. |
 | `panelBleed?` | `boolean` | `false` | `true` fills the panel edge to edge with the `panel` snippet: no padding, no logo, no decorative blobs. The panel sticks to the viewport height. |
-| `panelHidden?` | `'md' \| 'lg'` | `'md'` | Viewport width from which the panel shows: `md` 900px, `lg` 1024px. Below it only the form shows. |
+| `panelHidden?` | `'md' \| 'lg'` | `'md'` | Viewport width from which the panel shows: `md` 900px, `lg` 1200px. Below it only the form shows. |
 | `align?` | `'center' \| 'start'` | `'center'` | Horizontal alignment of the form: centered (default) or flush to the start. |
 
 Snippets: `brand`, `panel`, `header`, `children`

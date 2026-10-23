@@ -195,7 +195,7 @@ describe("AuthLayout layout options", () => {
 		window.scrollTo(0, 0);
 	});
 
-	it("panelHidden=lg hides the panel below 1024px, md keeps it from 900px", async () => {
+	it("panelHidden=lg hides the panel below 1200px, md keeps it from 900px", async () => {
 		const lg = await render(AuthLayout, { panelHidden: "lg", panel: mapPanel });
 		const md = await render(AuthLayout, { panel: mapPanel });
 		await page.viewport(960, 800);
@@ -203,7 +203,7 @@ describe("AuthLayout layout options", () => {
 			getComputedStyle(s.container.querySelector(".ca-auth__panel") as HTMLElement).display;
 		expect(shown(lg)).toBe("none");
 		expect(shown(md)).not.toBe("none");
-		await page.viewport(1100, 800);
+		await page.viewport(1280, 800);
 		expect(shown(lg)).not.toBe("none");
 	});
 

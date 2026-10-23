@@ -30,11 +30,11 @@ import Props from "~/components/docs/Props.astro";
 </AuthLayout>
 ```
 
-`AuthLayout` renders the page `<main id="main">`, so a route that uses it must not add another one. The `panel` snippet fills the side column; below 900px (`panelHidden="lg"`: 1024px) it is hidden and `mobileBrand` shows a compact brand strip above the form. The full pages live in the [sign in, sign up and forgot password templates](/templates/).
+`AuthLayout` renders the page `<main id="main">`, so a route that uses it must not add another one. The `panel` snippet fills the side column; below 900px (`panelHidden="lg"`: 1200px) it is hidden and `mobileBrand` shows a compact brand strip above the form. The full pages live in the [sign in, sign up and forgot password templates](/templates/).
 
 ## Form first, with a full-bleed map or image
 
-Put the panel on the right, fill it edge to edge, add a bar above the form and left-align the form. The panel is hidden below 1024px, and its snippet is not mounted there, so a map, video or image inside it is never fetched on mobile. The `header` snippet sticks to the top of the form column with the safe-area inset and replaces the mobile brand strip. See the [waitlist with map template](/templates/auth/sign-in-map/).
+Put the panel on the right, fill it edge to edge, add a bar above the form and left-align the form. The panel is hidden below 1200px, and its snippet is not mounted there, so a map, video or image inside it is never fetched on mobile. The `header` snippet sticks to the top of the form column with the safe-area inset and replaces the mobile brand strip. See the [waitlist with map template](/templates/auth/sign-in-map/).
 
 ```svelte
 <AuthLayout panelSide="right" panelBleed panelHidden="lg" align="start">
@@ -59,7 +59,7 @@ With `panelBleed` the panel has no padding, no logo and no blobs, sticks to the 
   { name: "panel", type: "Snippet", description: "Content of the side column." },
   { name: "panelSide", type: "'left' | 'right'", default: "'left'", description: "Which side the panel sits on." },
   { name: "panelBleed", type: "boolean", default: "false", description: "Fills the panel edge to edge with the `panel` snippet: no padding, no logo, no blobs. Sticky to the viewport height." },
-  { name: "panelHidden", type: "'md' | 'lg'", default: "'md'", description: "Width from which the panel shows: `md` 900px, `lg` 1024px. Below it only the form shows." },
+  { name: "panelHidden", type: "'md' | 'lg'", default: "'md'", description: "Width from which the panel shows: `md` 900px, `lg` 1200px. Below it only the form shows." },
   { name: "header", type: "Snippet", description: "Bar across the top of the form column (logo, language switcher, CTA). Sticky, honors the safe-area inset, and replaces the mobile brand strip." },
   { name: "align", type: "'center' | 'start'", default: "'center'", description: "Horizontal alignment of the form in its column." },
   { name: "children", type: "Snippet", description: "The form column, usually an AuthCard." },
