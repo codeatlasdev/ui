@@ -51,6 +51,7 @@ export {
 	isItemActive,
 	isNavSection,
 } from "./components/AppShell/types.js";
+export { default as AspectRatio } from "./components/AspectRatio/AspectRatio.svelte";
 export { default as AudioPlayer } from "./components/AudioPlayer/AudioPlayer.svelte";
 export { default as AuthCard } from "./components/AuthLayout/AuthCard.svelte";
 // ── AUTH LAYOUTS ───────────────────────────────────────────────────────────────

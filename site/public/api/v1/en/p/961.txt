@@ -1,0 +1,12 @@
+Use @codeatlasdev/ui demo #961 "Embed" (display/aspect-ratio).
+What it shows: An AspectRatio of 16/9 inside a 28rem frame holding a centred caption, standing in for a video or iframe. When to use: Embeds, maps and video players that have no intrinsic size but must hold a ratio while loading.
+Spec:
+- `<AspectRatio ratio={16 / 9}>` with one `<div class="slot">16 / 9: any child, one box</div>` child
+- Wrapper `.frame` is `max-width: 28rem` with `--ca-radius-md` and `overflow: hidden`
+- `.slot` is `height: 100%` on `--ca-surface-sunken` and centres its text
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #961 Embed → file, what changed, https://ui.codeatlas.com.br/docs/display/aspect-ratio#embed; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/961.txt   Components API: ca-ui-mcp get_component(AspectRatio)

@@ -48,6 +48,12 @@ Total: 836 unique classes across 84 components.
 
 Tokens: `--ca-auth-panel-bg` (any tone: overrides the panel background, a color or gradient) and `--ca-auth-panel-fg` (panel text base color; the slot's `--panel-*` vars derive from it). `data-panel-tone="auto|brand|flat"` on `.ca-auth` selects the tone.
 
+## AspectRatio
+
+`.ca-aspect`
+
+`--ca-aspect` (the ratio) is set inline from the `ratio` prop; `Image` writes the same property on `.ca-image--ratio` with `.ca-image--cover` or `.ca-image--contain`.
+
 ## Avatar
 
 `.ca-avatar` `.ca-avatar__fallback` `.ca-avatar__img` `.ca-avatar__status` `.ca-avatar__status--away` `.ca-avatar__status--busy` `.ca-avatar__status--offline` `.ca-avatar__status--online`

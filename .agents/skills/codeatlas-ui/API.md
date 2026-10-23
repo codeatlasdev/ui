@@ -187,6 +187,25 @@ Data attributes: `data-ca-hydrated`, `data-ca-panel` (`closed`)
 
 Tokens: `--ca-main-ml`
 
+## AspectRatio
+
+`import { AspectRatio } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `ratio` | `number` |  | Width divided by height: `16 / 9`, `1`, `4 / 3`. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children'>`
+
+Parts: `ca-aspect`
+
+Variables: `--ca-aspect`
+
+Tokens: `--ca-aspect`
+
 ## AudioPlayer
 
 `import { AudioPlayer } from "@codeatlasdev/ui"`
@@ -1583,13 +1602,17 @@ Tokens: `--ca-icon-btn-font-weight` `--ca-icon-btn-size-lg` `--ca-icon-btn-size-
 | `height` | `number` |  | Intrinsic height in pixels. |
 | `decorative?` | `boolean` | `false` | Marks the image as decoration: renders `alt=""` and hides it from assistive tech. |
 | `priority?` | `boolean` | `false` | Above-the-fold (LCP) image: eager, `fetchpriority="high"` and a preload link in <head>. |
+| `ratio?` | `number` |  | Crop the image to a box of this width / height (`16 / 9`, `1`). Unset: the picture keeps its own ratio. |
+| `fit?` | `'cover' \| 'contain'` | `'cover'` | How the picture fills the `ratio` box: `cover` crops, `contain` letterboxes. |
 | `loading?` | `'lazy' \| 'eager'` |  | Overrides the default (`lazy`, or `eager` with `priority`). |
 | `decoding?` | `'async' \| 'sync' \| 'auto'` | `'async'` |  |
 | `class?` | `string` | `''` |  |
 
 Also accepts: `Omit<HTMLImgAttributes, 'src' \| 'alt' \| 'width' \| 'height' \| 'class' \| 'loading' \| 'decoding' \| 'fetchpriority'>`
 
-Parts: `ca-image`
+Parts: `ca-image` `ca-image--contain` `ca-image--cover` `ca-image--ratio`
+
+Variables: `--ca-aspect`
 
 ## InstallPrompt
 

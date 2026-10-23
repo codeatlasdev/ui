@@ -1,0 +1,13 @@
+{
+	"summary": "One 4:3 gradient file rendered in three boxes: ratio 16/9 (cropped), ratio 1 (cropped) and ratio 1 with fit contain (letterboxed).",
+	"use": "Card covers, thumbnails and avatar grids where every picture must share one box whatever its own proportions.",
+	"spec": [
+		"`<Image {src} alt=\"Wide cover\" width={800} height={600} ratio={16 / 9} />`",
+		"`<Image {src} alt=\"Square cover\" width={800} height={600} ratio={1} />`",
+		"`<Image {src} alt=\"Contained\" width={800} height={600} ratio={1} fit=\"contain\" />`",
+		"`src` is an inlined 4:3 `data:image/svg+xml;utf8,` gradient with a circle",
+		"Each image sits in a `<figure>` with a `<figcaption>` naming its ratio"
+	],
+	"tags": ["image", "ratio", "aspect-ratio", "crop", "object-fit", "cover", "contain"],
+	"shape": "wide"
+}

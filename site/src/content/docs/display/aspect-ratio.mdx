@@ -1,0 +1,34 @@
+---
+title: AspectRatio
+description: A box that holds a width to height ratio for a video, an embed or any child with no size of its own.
+group: Display
+order: 7
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Embed from "~/demos/display/aspect-ratio/Embed.svelte";
+import EmbedSrc from "~/demos/display/aspect-ratio/Embed.svelte?raw";
+
+```svelte
+<script>
+  import { AspectRatio } from "@codeatlasdev/ui";
+</script>
+
+<AspectRatio ratio={16 / 9}>
+  <iframe title="Product tour" src="https://example.com/embed"></iframe>
+</AspectRatio>
+```
+
+`AspectRatio` is the replacement for Radix `AspectRatio`: a `width: 100%` box whose height follows `ratio` (`16 / 9`, `4 / 3`, `1`). A direct `img`, `video`, `iframe`, `canvas` or `svg` child fills it (images and video are cropped with `object-fit: cover`); any other child is a normal block you size with `height: 100%`. The box clips, so a tall child never pushes it past the ratio.
+
+For a plain picture you do not need it: `<Image ratio={16 / 9}>` crops the image to the ratio itself and keeps lazy loading and the no-layout-shift contract.
+
+<Demo title="Embed" description="The box holds 16:9 at any width." src={EmbedSrc}><Embed client:visible /></Demo>
+
+It is layout only: no role, no label. Name the content inside it (an `iframe` needs a `title`).
+
+<Props for="AspectRatio" rows={[
+  { name: "ratio", type: "number", description: "Width divided by height. Required." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+  { name: "children", type: "Snippet", default: "undefined", description: "The content held in the box." },
+]} />
