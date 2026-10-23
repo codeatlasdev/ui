@@ -230,6 +230,8 @@ Snippets: `brand`, `panel`, `header`, `children`
 
 Classes: `ca-auth` `ca-auth--right` `ca-auth__blob` `ca-auth__blob--a` `ca-auth__blob--b` `ca-auth__blob--c` `ca-auth__blobs` `ca-auth__col` `ca-auth__col--framed` `ca-auth__col--start` `ca-auth__header` `ca-auth__logo` `ca-auth__main` `ca-auth__mark` `ca-auth__mobile-brand` `ca-auth__mobile-mark` `ca-auth__mobile-name` `ca-auth__name` `ca-auth__panel` `ca-auth__panel--bleed` `ca-auth__panel-inner` `ca-auth__slot`
 
+Tokens: `--ca-auth-panel-bg`
+
 ## Avatar
 
 `import { Avatar } from "@codeatlasdev/ui"`
