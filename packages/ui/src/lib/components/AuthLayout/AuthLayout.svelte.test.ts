@@ -50,6 +50,24 @@ describe("AuthLayout", () => {
 		await expect.element(screen.getByRole("img", { name: "Logo SVG" })).toBeInTheDocument();
 	});
 
+	it("brand snippet alone renders no default logoName in either place", async () => {
+		const screen = await render(AuthLayout, {
+			brand: snip("<svg role='img' aria-label='Wordmark'></svg>"),
+		});
+		expect(screen.container.querySelector(".ca-auth__name")).toBeNull();
+		expect(screen.container.querySelector(".ca-auth__mobile-name")).toBeNull();
+		expect(screen.container.textContent).not.toContain("CodeAtlas UI");
+	});
+
+	it("brand snippet plus explicit logoName renders both", async () => {
+		const screen = await render(AuthLayout, {
+			brand: snip("<svg role='img' aria-label='Mark'></svg>"),
+			logoName: "Acme",
+		});
+		expect(screen.container.querySelector(".ca-auth__name")?.textContent).toBe("Acme");
+		expect(screen.container.querySelector(".ca-auth__mobile-name")?.textContent).toBe("Acme");
+	});
+
 	it("renders the decorative panel slot with its CSS variables", async () => {
 		const screen = await render(AuthLayout, { panel: snip("<blockquote>Quote</blockquote>") });
 		await expect.element(screen.getByText("Quote")).toBeVisible();

@@ -28,9 +28,13 @@
    */
 
   interface Props {
-    /** Logo replacing the text mark (e.g. an SVG). */
+    /**
+     * Replaces the whole logo (mark and name), e.g. an SVG wordmark. Pass
+     * `logoName` as well to render a name next to it.
+     */
     brand?:    Snippet;
     logoMark?: string;
+    /** Name beside the mark. Defaults to "CodeAtlas UI" unless `brand` is set. */
     logoName?: string;
     logoHref?: string;
     /**
@@ -47,12 +51,14 @@
   let {
     brand,
     logoMark = 'CA',
-    logoName = 'CodeAtlas UI',
+    logoName,
     logoHref = '/',
     mobileBrand = true,
     panel,
     children,
   }: Props = $props();
+
+  const name = $derived(logoName ?? (brand ? undefined : 'CodeAtlas UI'));
 </script>
 
 <SkipLink />
@@ -65,7 +71,7 @@
         {:else}
           <div class="ca-auth__mark" aria-hidden="true">{logoMark}</div>
         {/if}
-        <span class="ca-auth__name">{logoName}</span>
+        {#if name}<span class="ca-auth__name">{name}</span>{/if}
       </a>
 
       {#if panel}
@@ -100,7 +106,7 @@
         {:else}
           <div class="ca-auth__mobile-mark" aria-hidden="true">{logoMark}</div>
         {/if}
-        <span class="ca-auth__mobile-name">{logoName}</span>
+        {#if name}<span class="ca-auth__mobile-name">{name}</span>{/if}
       </a>
     {/if}
     {@render children?.()}

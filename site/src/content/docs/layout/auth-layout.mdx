@@ -34,10 +34,10 @@ import Props from "~/components/docs/Props.astro";
 
 <Props for="AuthLayout" title="AuthLayout props" rows={[
   { name: "logoMark", type: "string", default: "'CA'", description: "Text inside the logo square." },
-  { name: "logoName", type: "string", default: "'CodeAtlas UI'", description: "Product name next to the mark." },
+  { name: "logoName", type: "string", default: "'CodeAtlas UI' (none when brand is set)", description: "Product name next to the mark. With a `brand` snippet it renders only when you pass it." },
   { name: "logoHref", type: "string", default: "'/'", description: "Where the logo links to." },
   { name: "mobileBrand", type: "boolean", default: "true", description: "Shows the compact brand strip below 768px, where the side panel is hidden." },
-  { name: "brand", type: "Snippet", description: "Replaces the default logo." },
+  { name: "brand", type: "Snippet", description: "Replaces the whole logo, mark and name (an SVG wordmark). Pass `logoName` too if you want a name beside it." },
   { name: "panel", type: "Snippet", description: "Content of the side column." },
   { name: "children", type: "Snippet", description: "The form column, usually an AuthCard." },
 ]} />
