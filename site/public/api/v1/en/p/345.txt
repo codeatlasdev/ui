@@ -13,7 +13,7 @@ Motion:
 Names: Copy to check | Copy confirmation | Copiar e confirmar | Copier puis valider
 Reproduce the motion values exactly; do not guess timing or curves. Under prefers-reduced-motion render the final state.
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
-Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
 Report: #345 Copy to check → file, what changed, https://ui.codeatlas.com.br/docs/motion/micro#copy-to-check; what you could not check (light/dark, 375px, keyboard, reduced motion).

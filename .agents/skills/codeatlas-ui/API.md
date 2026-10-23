@@ -1515,6 +1515,40 @@ Snippets: `children`, `pending`
 
 Classes: `ca-loading-boundary` `ca-loading-boundary__content`
 
+## MapControls
+
+`import { MapControls } from "@codeatlasdev/ui/map"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `locate?` | `boolean` | `false` | Show the geolocate button (asks for the location permission on click). |
+| `class?` | `string` | `''` |  |
+
+Classes: `ca-map-controls` `ca-map-controls__needle`
+
+## MapStage
+
+`import { MapStage } from "@codeatlasdev/ui/map"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `engine?` | `"maplibre" \| "mapbox"` | `'maplibre'` | `"maplibre"` (default, no token) or `"mapbox"` (needs `accessToken`). The matching package is a peer you install. |
+| `accessToken?` | `string` |  | Mapbox access token. Required for `engine="mapbox"`. |
+| `styles` | `MapStyles` |  | Basemap style per color scheme. The map switches style when `colorScheme.resolved` changes, without being recreated. |
+| `layers?` | `unknown[]` |  | deck.gl layers drawn interleaved in the map. Needs `@deck.gl/core` and `@deck.gl/mapbox`. Replace the array to update. |
+| `fit?` | `MapBounds` |  | Bounds to fit, with `padding`. Changing it fits again. |
+| `padding?` | `Partial<MapPadding>` |  | Pixels covered by UI on each side (a sidebar, a bottom sheet), kept clear when fitting. Each side defaults to the active `PageFrame`'s `stageInsets`, or 0 without one. |
+| `center?` | `[number, number]` |  |  |
+| `zoom?` | `number` |  |  |
+| `label?` | `string` |  | Accessible name of the map region. |
+| `class?` | `string` | `''` |  |
+| `onmapready?` | `(map: MapInstance) => void` |  | Called once with the engine's map object after the first style loads. |
+| `mapOptions?` | `Record<string, unknown>` |  | Extra constructor options passed to the engine's `Map` (for example `maxZoom`, `projection`). |
+
+Snippets: `children`
+
+Classes: `ca-map` `ca-map__canvas` `ca-map__overlay`
+
 ## MaskedField
 
 `import { MaskedField } from "@codeatlasdev/ui/forms"`
@@ -4185,6 +4219,60 @@ Types:
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
 | `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
+
+## @codeatlasdev/ui/map
+
+### mapColors
+
+`import { mapColors } from "@codeatlasdev/ui/map"`
+
+Reads the theme at call time. Reading `colorScheme` registers the dependency, so a `$derived` or `$effect` that calls this re-runs on scheme, preset and surface-style changes.
+
+```ts
+function mapColors(): MapColors
+```
+
+### rgbaCss
+
+`import { rgbaCss } from "@codeatlasdev/ui/map"`
+
+`[r, g, b, a]` as a CSS `rgba()` string, for MapLibre/Mapbox paint properties.
+
+```ts
+function rgbaCss(options: Rgba): string
+```
+
+### tokenColor
+
+`import { tokenColor } from "@codeatlasdev/ui/map"`
+
+A design token (`--ca-brand-main`) or any CSS color (`#f59e0b`, `oklch(...)`, `color-mix(...)`) as `[r, g, b, a]` for deck.gl and map paint properties. `alpha` (0-1) multiplies the color's own alpha. An unset token is transparent black. Server-side it returns transparent black too.
+
+```ts
+function tokenColor(token: string, alpha?: number): Rgba
+```
+
+### useMapTheme
+
+`import { useMapTheme } from "@codeatlasdev/ui/map"`
+
+Reactive map theme for a component: `theme.scheme`, `theme.colors`, `theme.color(token, alpha?)`. Call it during component init.
+
+```ts
+function useMapTheme(): MapTheme
+```
+
+Types:
+
+| Type | Declaration | Notes |
+|---|---|---|
+| `MapBounds` | `type MapBounds = [[number, number], [number, number]];` | `[[west, south], [east, north]]` in lng/lat. |
+| `MapColors` | `interface MapColors { brand: Rgba; brandMuted: Rgba; surface: Rgba; text: Rgba; textMuted: Rgba; outline: Rgba; success: Rgba; warning: Rgba; error: Rgba; info: Rgba; }` | Semantic map colors as `[r, g, b, a]`, resolved from the live `--ca-*` tokens. |
+| `MapInstance` | `type MapInstance = import("maplibre-gl").Map;` | The map object of the engine in use (`maplibre-gl` `Map` or `mapbox-gl` `Map`). Both share the methods this entry uses: `setStyle`, `jumpTo`, `flyTo`, `fitBounds`, `zoomIn`, `zoomOut`, `resetNorth`, `getBearing`, `on`/`off`, `addControl`. |
+| `MapPadding` | `interface MapPadding { top: number; right: number; bottom: number; left: number; }` | Pixels the map keeps clear on each side when fitting (UI that covers the stage). |
+| `MapStyles` | `interface MapStyles<S = string \| object> { light: S; dark: S; }` | A style URL or an inline style object, for the light and dark scheme. |
+| `MapTheme` | `interface MapTheme { readonly scheme: "light" \| "dark"; readonly colors: MapColors; color: (token: string, alpha?: number) => Rgba; }` | Which basemap style to show and the matching palette. `scheme` is `"light"` or `"dark"`. |
+| `Rgba` | `type Rgba = [number, number, number, number];` | `[r, g, b, a]`: r, g, b in 0-255, a in 0-1 (what `@deck.gl/core` `Color` expects, alpha scaled by the caller). |
 
 ## @codeatlasdev/ui/seo
 

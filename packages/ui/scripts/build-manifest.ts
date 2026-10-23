@@ -9,7 +9,7 @@
  *
  *   bun scripts/build-manifest.ts [--check]
  *
- * How: every public entry (`.`, `./charts`, `./table`, `./code`, `./forms`) is
+ * How: every public entry (`.`, `./charts`, `./map`, `./table`, `./code`, `./forms`) is
  * parsed with the TypeScript compiler API to find `export { default as X } from
  * "*.svelte"`. Each component goes through svelte2tsx (valid TS for `lang="ts"`,
  * `generics`, runes), then the AST of that output gives the `$props()` type
@@ -37,6 +37,7 @@ const PKG = "@codeatlasdev/ui";
 const ENTRIES: Record<string, string> = {
 	[PKG]: "index.ts",
 	[`${PKG}/charts`]: "charts/index.ts",
+	[`${PKG}/map`]: "map/index.ts",
 	[`${PKG}/table`]: "components/DataTable/index.ts",
 	[`${PKG}/code`]: "components/CodeSnippet/index.ts",
 	[`${PKG}/forms`]: "forms/index.ts",
@@ -855,6 +856,7 @@ export const HELPERS = [
 ];
 const PEERS: Record<string, string> = {
 	[`${PKG}/charts`]: "echarts",
+	[`${PKG}/map`]: "maplibre-gl",
 	[`${PKG}/table`]: "@tanstack/svelte-table",
 	[`${PKG}/code`]: "shiki",
 };
@@ -1107,7 +1109,7 @@ export function buildDemos(
 					]
 				: []),
 			"Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?",
-			`Apply: import only from "${PKG}[/charts|/table|/code|/forms]"; keep component names, props and`,
+			`Apply: import only from "${PKG}[/charts|/map|/table|/code|/forms]"; keep component names, props and`,
 			"  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);",
 			"  replace sample data/copy with the project's; keep the first comment line.",
 			`Report: #${d.id} ${d.title} → file, what changed, ${d.demo}; what you could not check (light/dark, 375px, keyboard, reduced motion).`,

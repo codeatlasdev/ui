@@ -190,6 +190,7 @@ const LIB = join(import.meta.dir, "../src/lib");
 const ENTRY_FILES: Record<string, string> = {
 	"@codeatlasdev/ui": join(LIB, "index.ts"),
 	"@codeatlasdev/ui/charts": join(LIB, "charts/index.ts"),
+	"@codeatlasdev/ui/map": join(LIB, "map/index.ts"),
 	"@codeatlasdev/ui/table": join(LIB, "components/DataTable/index.ts"),
 	"@codeatlasdev/ui/code": join(LIB, "components/CodeSnippet/index.ts"),
 	"@codeatlasdev/ui/forms": join(LIB, "forms/index.ts"),

@@ -326,6 +326,7 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "600", path: "layout/page-shell/AsideReading" },
 	{ id: "601", path: "layout/app-shell/ShortPanel" },
 	{ id: "610", path: "layout/page-frame/Map" },
+	{ id: "800", path: "map/stage/ThemedMap" },
 ];
 
 /**

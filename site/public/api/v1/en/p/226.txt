@@ -6,7 +6,7 @@ Spec:
 - Each tier shows a `label` and a `desc`, for example Subtle background hint and Heaviest blur and fill
 - Backdrop gradient uses `var(--ca-brand-main) 0%`, `var(--ca-semantic-info) 50%` and `var(--ca-semantic-success) 100%`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
-Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
 Report: #226 Glass tiers → file, what changed, https://ui.codeatlas.com.br/docs/foundation/materials#glass-tiers; what you could not check (light/dark, 375px, keyboard, reduced motion).

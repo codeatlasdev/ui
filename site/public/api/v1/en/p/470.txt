@@ -6,7 +6,7 @@ Spec:
 - `{#snippet children({ close })}` renders `<Calendar bind:value label="Due date" locale="en-US" weekStartsOn={0} onchange={() => close()} />`
 - `close()` closes the popover and returns focus to the trigger
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
-Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
 Report: #470 Close on pick → file, what changed, https://ui.codeatlas.com.br/docs/navigation/popover#close-on-pick; what you could not check (light/dark, 375px, keyboard, reduced motion).

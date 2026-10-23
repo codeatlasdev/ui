@@ -53,6 +53,11 @@
 			"svelte": "./dist/charts/index.js",
 			"default": "./dist/charts/index.js"
 		},
+		"./map": {
+			"types": "./dist/map/index.d.ts",
+			"svelte": "./dist/map/index.js",
+			"default": "./dist/map/index.js"
+		},
 		"./table": {
 			"types": "./dist/components/DataTable/index.d.ts",
 			"svelte": "./dist/components/DataTable/index.js",
@@ -144,9 +149,13 @@
 		"esm-env": "1.2.2"
 	},
 	"devDependencies": {
+		"@deck.gl/core": "9.4.0",
+		"@deck.gl/mapbox": "9.4.0",
 		"@fontsource-variable/inter": "5.3.0",
 		"@fontsource-variable/jetbrains-mono": "5.3.0",
 		"@happy-dom/global-registrator": "21.0.1",
+		"@luma.gl/core": "9.4.2",
+		"@math.gl/web-mercator": "4.1.0",
 		"@modelcontextprotocol/sdk": "1.32.1",
 		"@resvg/resvg-js": "2.6.2",
 		"@sveltejs/kit": "3.0.1",
@@ -162,6 +171,7 @@
 		"esbuild": "0.28.2",
 		"happy-dom": "21.0.1",
 		"magic-string": "1.4.3",
+		"maplibre-gl": "6.15.0",
 		"playwright": "1.64.0",
 		"png-to-ico": "3.0.2",
 		"shiki": "4.5.0",
@@ -184,7 +194,11 @@
 		"astro": "^5.0.0 || ^6.0.0 || ^7.0.0",
 		"typescript": ">=5.0.0",
 		"@resvg/resvg-js": "^2.6.0",
-		"png-to-ico": "^3.0.0"
+		"png-to-ico": "^3.0.0",
+		"maplibre-gl": "^5.0.0 || ^6.0.0",
+		"mapbox-gl": "^3.0.0",
+		"@deck.gl/core": "~9.4.0",
+		"@deck.gl/mapbox": "~9.4.0"
 	},
 	"publishConfig": {
 		"registry": "https://registry.npmjs.org",
@@ -216,6 +230,18 @@
 			"optional": true
 		},
 		"typescript": {
+			"optional": true
+		},
+		"maplibre-gl": {
+			"optional": true
+		},
+		"mapbox-gl": {
+			"optional": true
+		},
+		"@deck.gl/core": {
+			"optional": true
+		},
+		"@deck.gl/mapbox": {
 			"optional": true
 		}
 	}

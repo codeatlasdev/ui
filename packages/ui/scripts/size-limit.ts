@@ -25,6 +25,12 @@ const ENTRIES: Entry[] = [
 	{ name: "root: Button only", js: `export { Button } from "./index.js";` },
 	{ name: "root: AppShellLayout", js: `export { AppShellLayout } from "./index.js";` },
 	{ name: "./seo", js: `export * from "./seo/index.js";`, requires: "seo/index.js" },
+	{
+		name: "./map",
+		js: `export * from "./map/index.js";`,
+		requires: "map/index.js",
+		external: ["maplibre-gl", "mapbox-gl", "@deck.gl/core", "@deck.gl/mapbox"],
+	},
 	{ name: "styles/core.css", css: "styles/core.css" },
 	{ name: "styles/global.css", css: "styles/global.css" },
 ];

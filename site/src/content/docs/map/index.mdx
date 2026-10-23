@@ -1,0 +1,64 @@
+---
+title: Map
+description: MapLibre or Mapbox with deck.gl layers that follow the theme. A themed stage, glass controls and token colors as RGBA.
+group: Map
+order: 0
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import ThemedMap from "~/demos/map/stage/ThemedMap.svelte";
+import ThemedMapSrc from "~/demos/map/stage/ThemedMap.svelte?raw";
+
+```svelte
+<script>
+  import { MapStage, MapControls, mapColors } from "@codeatlasdev/ui/map";
+  import { ScatterplotLayer } from "@deck.gl/layers";
+
+  const layers = $derived.by(() => {
+    const c = mapColors(); // reactive: re-runs on scheme or preset change
+    return [new ScatterplotLayer({ id: "pins", data, getPosition: (d) => d.xy, getFillColor: c.brand })];
+  });
+</script>
+
+<MapStage styles={{ light: "…/light.json", dark: "…/dark.json" }} {layers} fit={bounds}>
+  <MapControls />
+</MapStage>
+```
+
+The map lives in the `@codeatlasdev/ui/map` subpath and every engine is an optional peer, so install only what you use: `maplibre-gl` (default, no token) or `mapbox-gl` (`engine="mapbox"` and an `accessToken`), and for data layers `@deck.gl/core` plus `@deck.gl/mapbox`. Pin all `@deck.gl/*` packages to the same minor (`~9.4`): mixing `@luma.gl/core` 9.3 and 9.4 breaks the overlay at install time. Nothing is imported on the server: the engines load inside `onMount`, so `MapStage` and `MapControls` render in SSR (an empty stage with disabled controls) and hydrate on the client. In Astro, use `client:visible`.
+
+`MapStage` keeps the basemap in step with the theme: it passes `styles.light` or `styles.dark` for `colorScheme.resolved` and, when the scheme changes, calls `map.setStyle` on the same map. The camera, the deck.gl overlay and your event handlers survive. The overlay is a `MapboxOverlay` with `interleaved: true`, so layers sit between the basemap's labels like native ones, and replacing the `layers` array updates it. `fit` runs `fitBounds` with `padding`, the pixels your UI covers on each side. Behind a `PageFrame` you pass nothing: each side defaults to `stageInsets.current` and the map fits again when the frame moves. Under `prefers-reduced-motion`, `flyTo` becomes `jumpTo` and `fit` does not animate.
+
+## Colors for deck.gl
+
+deck.gl takes `[r, g, b, a]` and MapLibre paint wants `rgba()`, but the tokens are `oklch()` and `color-mix()`. `tokenColor(token, alpha?)` resolves any token or CSS color through a 1×1 canvas and caches by the resolved value, so a theme change needs no manual cache reset. `mapColors()` returns the semantic set, and reading it inside `$derived` or `$effect` subscribes to the scheme, preset and surface style. `rgbaCss(color)` turns a result into a string for paint properties.
+
+<Demo title="Themed map" description="An offline basemap per scheme, deck.gl circles in the brand color and glass controls. Toggle the theme: the basemap and the circles change, the map is not recreated." src={ThemedMapSrc}><ThemedMap client:visible /></Demo>
+
+<Props for="MapStage" rows={[
+  { name: "styles", type: "{ light: string | object; dark: string | object }", description: "Basemap style URL or style object per color scheme. Required." },
+  { name: "engine", type: "'maplibre' | 'mapbox'", default: "'maplibre'", description: "Which peer package draws the map." },
+  { name: "accessToken", type: "string", description: "Mapbox token. Required for engine 'mapbox'." },
+  { name: "layers", type: "Layer[]", description: "deck.gl layers, drawn interleaved. Replace the array to update." },
+  { name: "fit", type: "[[west, south], [east, north]]", description: "Bounds to fit. Changing it fits again." },
+  { name: "padding", type: "Partial<{ top: number; right: number; bottom: number; left: number }>", default: "stageInsets, else 0", description: "Pixels covered by UI on each side, used by fit. Each side defaults to the active PageFrame's `stageInsets`, so a map behind a PageFrame fits clear of the panel with no prop; a side you pass wins." },
+  { name: "center", type: "[lng, lat]", description: "Initial center." },
+  { name: "zoom", type: "number", description: "Initial zoom." },
+  { name: "label", type: "string", default: "'Map' (localized)", description: "Accessible name of the map region." },
+  { name: "mapOptions", type: "Record<string, unknown>", description: "Extra constructor options for the engine's Map (maxZoom, projection, …)." },
+  { name: "onmapready", type: "(map) => void", description: "Called once with the engine's map after the first style loads. Use it for engine-specific work (sources, events)." },
+  { name: "class", type: "string", description: "Extra classes on the stage." },
+  { name: "children", type: "Snippet", description: "Overlay content: MapControls, a legend." },
+]} />
+
+<Props for="MapControls" rows={[
+  { name: "locate", type: "boolean", default: "false", description: "Adds a geolocate button (asks for the location permission on click)." },
+  { name: "class", type: "string", description: "Extra classes on the control column." },
+]} />
+
+<Props for="none" title="Functions" rows={[
+  { name: "tokenColor(token, alpha?)", type: "(token: string, alpha?: number) => [number, number, number, number]", description: "A token (`--ca-brand-main`) or CSS color as [r, g, b, a] (a in 0-1). Transparent black for an unset token and on the server." },
+  { name: "mapColors()", type: "() => MapColors", description: "brand, brandMuted, surface, text, textMuted, outline, success, warning, error, info as RGBA, reactive to the theme." },
+  { name: "useMapTheme()", type: "() => { scheme; colors; color(token, alpha?) }", description: "The same, as a reactive object for component init." },
+  { name: "rgbaCss(color)", type: "(color: Rgba) => string", description: "An RGBA array as a CSS rgba() string." },
+]} />

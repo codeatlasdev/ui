@@ -12,6 +12,7 @@ export const GROUPS = [
 	"Layout",
 	"Motion",
 	"Charts",
+	"Map",
 	"Docs kit",
 ] as const;
 export type Group = (typeof GROUPS)[number];

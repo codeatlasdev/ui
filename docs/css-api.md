@@ -212,6 +212,10 @@ Total: 829 unique classes across 83 components.
 
 `.ca-loading-boundary` `.ca-loading-boundary__content` `.ca-loading-boundary__pending`
 
+## Map
+
+`.ca-map` `.ca-map__canvas` `.ca-map__overlay` `.ca-map-controls` `.ca-map-controls__needle`
+
 ## MediaGrid
 
 `.ca-media-grid` `.ca-media-grid__doc` `.ca-media-grid__doc-title` `.ca-media-grid__duration` `.ca-media-grid__failed` `.ca-media-grid__grid` `.ca-media-grid__grid--single` `.ca-media-grid__grid--wide` `.ca-media-grid__img` `.ca-media-grid__img--hidden` `.ca-media-grid__more` `.ca-media-grid__play` `.ca-media-grid__skeleton` `.ca-media-grid__tile`

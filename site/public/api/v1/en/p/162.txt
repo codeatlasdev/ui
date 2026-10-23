@@ -8,7 +8,7 @@ Spec:
 - Back is `<Button variant="ghost" disabled={step <= 0} onclick={() => step--}>`
 - Next is `<Button variant="filled" disabled={step >= steps.length - 1} onclick={() => step++}>` and reads Finish on the last step
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
-Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
 Report: #162 Horizontal stepper → file, what changed, https://ui.codeatlas.com.br/docs/navigation/stepper#horizontal-stepper; what you could not check (light/dark, 375px, keyboard, reduced motion).

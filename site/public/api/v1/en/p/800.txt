@@ -1,0 +1,14 @@
+Use @codeatlasdev/ui demo #800 "Themed map" (map/stage).
+What it shows: A map stage with an offline light and dark basemap, four deck.gl store circles in the brand color and glass zoom and compass controls. When to use: A map-first screen whose basemap and data layers must follow the app's light and dark theme.
+Spec:
+- `<MapStage` with `{styles}`, `{layers}`, `label="Store map"`, `padding={{ top: 24, right: 24, bottom: 24, left: 24 }}` and a `fit` of the southeast Brazil bounds
+- `styles` holds a `light` and a `dark` entry, each an inline style with one `background` layer, so the demo needs no tiles or token
+- `layers` is a `$derived.by` that calls `mapColors()` and returns a deck.gl `ScatterplotLayer` with `getFillColor: c.brandMuted` and `getLineColor: c.brand`, so it re-themes on scheme or preset change
+- `<MapControls />` as the child of `MapStage`
+- The stage box is `360px` high with `var(--ca-radius-lg)` corners
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #800 Themed map → file, what changed, https://ui.codeatlas.com.br/docs/map/stage#themed-map; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/800.txt   Components API: ca-ui-mcp get_component(MapControls)

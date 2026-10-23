@@ -5,7 +5,7 @@ Spec:
 - `<KpiCard title="Churn Rate" value="5.2" unit="%" trend={-1.8} icon={Activity} />`
 - `<KpiCard title="Response Time" value="1.4" unit="s" trend={-12.3} />` has no `icon`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
-Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
 Report: #176 Negative trend → file, what changed, https://ui.codeatlas.com.br/docs/layout/kpi-card#negative-trend; what you could not check (light/dark, 375px, keyboard, reduced motion).

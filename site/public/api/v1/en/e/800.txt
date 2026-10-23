@@ -1,0 +1,67 @@
+<!-- @codeatlasdev/ui demo #800 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/map/stage#themed-map -->
+Element: #800 Themed map (map/stage)
+What it shows: A map stage with an offline light and dark basemap, four deck.gl store circles in the brand color and glass zoom and compass controls.
+When to use: A map-first screen whose basemap and data layers must follow the app's light and dark theme.
+Spec:
+- `<MapStage` with `{styles}`, `{layers}`, `label="Store map"`, `padding={{ top: 24, right: 24, bottom: 24, left: 24 }}` and a `fit` of the southeast Brazil bounds
+- `styles` holds a `light` and a `dark` entry, each an inline style with one `background` layer, so the demo needs no tiles or token
+- `layers` is a `$derived.by` that calls `mapColors()` and returns a deck.gl `ScatterplotLayer` with `getFillColor: c.brandMuted` and `getLineColor: c.brand`, so it re-themes on scheme or preset change
+- `<MapControls />` as the child of `MapStage`
+- The stage box is `360px` high with `var(--ca-radius-lg)` corners
+Tags: map, deck.gl, maplibre, theme, dark-mode, controls
+Needs: @codeatlasdev/ui@4.5.0 + maplibre-gl
+Components: MapControls, MapStage
+Live demo: https://ui.codeatlas.com.br/docs/map/stage#themed-map
+
+<script lang="ts">
+  import { ScatterplotLayer } from '@deck.gl/layers';
+  import { MapControls, MapStage, mapColors } from '@codeatlasdev/ui/map';
+
+  // Offline basemaps (a background color per scheme): no tiles, no token.
+  const bg = (color: string) => ({
+    version: 8 as const,
+    sources: {},
+    layers: [{ id: 'bg', type: 'background' as const, paint: { 'background-color': color } }],
+  });
+  const styles = { light: bg('#eef1f5'), dark: bg('#12151b') };
+
+  const stores = [
+    { name: 'Sao Paulo', coordinates: [-46.63, -23.55], sales: 90 },
+    { name: 'Rio', coordinates: [-43.17, -22.91], sales: 70 },
+    { name: 'Belo Horizonte', coordinates: [-43.94, -19.92], sales: 45 },
+    { name: 'Curitiba', coordinates: [-49.27, -25.43], sales: 38 },
+  ];
+
+  // `mapColors()` reads the theme, so this re-runs when the scheme or preset changes.
+  const layers = $derived.by(() => {
+    const c = mapColors();
+    return [
+      new ScatterplotLayer({
+        id: 'stores',
+        data: stores,
+        getPosition: (d: (typeof stores)[number]) => d.coordinates as [number, number],
+        getRadius: (d: (typeof stores)[number]) => d.sales * 600,
+        getFillColor: c.brandMuted,
+        getLineColor: c.brand,
+        stroked: true,
+        lineWidthMinPixels: 2,
+      }),
+    ];
+  });
+</script>
+
+<div class="stage">
+  <MapStage
+    {styles}
+    {layers}
+    label="Store map"
+    fit={[[-50, -26], [-42, -19]]}
+    padding={{ top: 24, right: 24, bottom: 24, left: 24 }}
+  >
+    <MapControls />
+  </MapStage>
+</div>
+
+<style>
+  .stage { width: 100%; height: 360px; border-radius: var(--ca-radius-lg); overflow: hidden; }
+</style>

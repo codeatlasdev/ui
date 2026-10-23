@@ -15,6 +15,8 @@ export interface Entry {
 	css?: string;
 	/** Skipped when this path under dist does not exist (an entry that has not landed yet). */
 	requires?: string;
+	/** Optional peers the entry imports lazily: not part of the byte budget (the consumer installs them). */
+	external?: string[];
 }
 
 /** Compiles .svelte and .svelte.js/.ts files from dist the way vite-plugin-svelte would. */
@@ -56,7 +58,7 @@ export async function measure(
 		plugins: [sveltePlugin],
 		logLevel: "error",
 		// Remote/relative assets (fonts) are not part of the byte budget.
-		external: e.css ? ["*.woff2"] : [],
+		external: e.css ? ["*.woff2"] : (e.external ?? []),
 		// esm-env picks its production build from the "development" condition being absent.
 	});
 	// A CSS bundle yields one .css file; JS bundles yield one .js (esbuild extracts no css for stdin js).

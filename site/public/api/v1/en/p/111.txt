@@ -6,7 +6,7 @@ Spec:
 - Each avatar is wrapped in `<div class="item" style="--z:{people.length - i}">`
 - Overlap uses `.item { margin-left: -10px; position: relative; z-index: var(--z, 0); }`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
-Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
 Report: #111 Avatar stack → file, what changed, https://ui.codeatlas.com.br/docs/display/avatar#avatar-stack; what you could not check (light/dark, 375px, keyboard, reduced motion).
