@@ -164,7 +164,7 @@
 		"@tanstack/svelte-table": "9.3.1",
 		"@types/node": "24.19.2",
 		"@vitest/browser-playwright": "5.0.4",
-		"@vitest/ui": "5.0.4",
+		"@vitest/ui": "5.0.5",
 		"astro": "7.3.8",
 		"axe-core": "4.14.0",
 		"echarts": "6.1.0",
