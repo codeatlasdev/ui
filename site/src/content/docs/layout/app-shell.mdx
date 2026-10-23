@@ -121,15 +121,7 @@ Map-first products keep one live map behind every screen: the camera, the WebGL 
 
 ### Matching the page background to a nested preset
 
-`<html>` paints the page preset's surface, so a public screen wrapped in its own `data-preset` leaves the overscroll area and the mobile toolbar in the wrong color. Put the `paintRoot` action (`@codeatlasdev/ui/actions`) on that island: it copies the island's surface to `<html>` while it is mounted, follows scheme changes and restores the page color on destroy. It replaces an `html:has([data-preset]) { background-color: <hex> }` rule that duplicates the preset's color.
-
-```svelte
-<script lang="ts">
-  import { paintRoot } from "@codeatlasdev/ui/actions";
-</script>
-
-<div data-preset="ocean" use:paintRoot>…</div>
-```
+`<html>` paints the page preset's surface, so a public screen wrapped in its own preset would leave the overscroll area and the mobile toolbar in the wrong color. Use `<ThemeIsland preset scheme document>` (see [ThemeIsland](/docs/layout/theme-island/)): it mirrors the island's preset and scheme onto `<html>` while it is mounted, so the root background follows with no copied color.
 
 ## Panel width
 

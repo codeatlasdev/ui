@@ -3735,16 +3735,6 @@ Fires 'longpress' custom event after `duration` ms of pointer held.
 const longpress: Action<HTMLElement, number, { onlongpress?: (e: CustomEvent) => void; }>
 ```
 
-### paintRoot
-
-`import { paintRoot } from "@codeatlasdev/ui/actions"`
-
-Makes the page's `<html>` background (the overscroll area, the iOS/Android toolbar tint) match a NESTED preset. `<html>` owns the page preset through `colorScheme`, so while a public screen wrapped in `data-preset="x"` (or `data-theme-scope`) is mounted, the root would keep painting the page's own surface. The action copies the island's resolved `--ca-surface-base` to `--ca-root-surface` on `<html>` (read by `base.css`) and removes it on destroy, so the preset's color is never duplicated in the app. It follows scheme and preset changes on `<html>`.
-
-```ts
-function paintRoot(node: HTMLElement): { update: () => void; destroy(): void; }
-```
-
 ### primeKeyboard
 
 `import { primeKeyboard } from "@codeatlasdev/ui/actions"`

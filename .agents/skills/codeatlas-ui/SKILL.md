@@ -124,7 +124,6 @@ Import from the subpath, never copy the logic. Every export:
 | `primeKeyboard` | helper, not an action: call in the tap handler that opens a view with an autofocused field |
 | `focusTextField` | `focusTextField(el, force?)`: the focus logic behind `autofocus`, for imperative focus |
 | `keyboardAware` | `use:keyboardAware` on forms and composers: keeps the focused field above the on-screen keyboard |
-| `paintRoot` | `use:paintRoot` on a `data-preset` / `data-theme-scope` island: paints `<html>` (overscroll, mobile toolbar) with the island's surface while mounted |
 | `focusTrap` | `use:focusTrap={open}` on custom overlays (Dialog and Sheet already trap focus) |
 | `clickOutside` | `use:clickOutside={() => close()}` for custom popovers |
 | `clipboard` | `use:clipboard={text}` copies on click and fires `copy` (prefer `CopyButton`) |
