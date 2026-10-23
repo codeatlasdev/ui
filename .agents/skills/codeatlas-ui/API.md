@@ -252,6 +252,7 @@ Avatar: user identity display component.
 | `onerror?` | `(event: Event) => void` |  | Called when the image fails; the fallback shows. Use it to refetch a signed URL. |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size, no image request, announced as busy. |
 | `tone?` | `Tone` | `'palette'` | Fallback colour: `'palette'` (default) derives a colour from the name, so each person keeps theirs; `'neutral'` draws every fallback the same, on `--ca-surface-overlay` with `--ca-text-secondary` and a hairline ring, for a dense list where coloured discs compete with the content. |
+| `decorative?` | `boolean` | `false` | The avatar repeats a name that is already visible next to it: hidden from assistive tech (no name, no image role, no status label) so a screen reader does not say the name twice. |
 | `class?` | `string` | `''` |  |
 
 Classes: `ca-avatar` `ca-avatar__fallback` `ca-avatar__fallback--covered` `ca-avatar__img` `ca-avatar__status` `ca-avatar__status--away` `ca-avatar__status--busy` `ca-avatar__status--offline` `ca-avatar__status--online`
@@ -2009,6 +2010,20 @@ Classes: `ca-panel` `ca-panel__header` `ca-panel__nav` `ca-panel__title`
 
 Classes: `ca-nav-item` `ca-nav-item--active` `ca-nav-item--grip` `ca-nav-item__actions` `ca-nav-item__badge` `ca-nav-item__color` `ca-nav-item__count` `ca-nav-item__dot` `ca-nav-item__grip` `ca-nav-item__icon` `ca-nav-item__label` `ca-nav-item__leading` `ca-nav-item__link` `ca-nav-item__pip`
 
+## PasswordStrength
+
+`import { PasswordStrength } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `value?` | `string` | `''` | The password being typed. It is only read to compute the score and never stored or sent. |
+| `score?` | `(value: string) => PasswordScore` | `passwordScore` | Replaces the built-in `passwordScore`. Return 0 (empty) to 3 (strong). |
+| `labels?` | `Partial<Record<'empty' \| 'weak' \| 'fair' \| 'strong', string>>` |  | Per-instance label text; unset keys use the i18n catalog. |
+| `id?` | `string` |  | Set it to point a field's `aria-describedby` at the meter. |
+| `class?` | `string` | `''` |  |
+
+Classes: `ca-pwstrength` `ca-pwstrength__bar` `ca-pwstrength__label` `ca-pwstrength__seg`
+
 ## PhoneField
 
 `import { PhoneField } from "@codeatlasdev/ui/forms"`
@@ -2511,6 +2526,22 @@ Classes: `ca-slider` `ca-slider__range` `ca-slider__thumb` `ca-slider__track`
 
 Classes: `ca-spinner` `ca-spinner__arc` `ca-spinner__track`
 
+## SplashScreen
+
+`import { SplashScreen } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `ready?` | `boolean` | `true` | The app has finished booting. The splash waits for it, then for `minDuration`. |
+| `minDuration?` | `number` | `600` | Minimum time (ms) the splash stays, counted from when it first shows. |
+| `label?` | `string` |  | Accessible name. Defaults to a localised "Loading…". |
+| `ondone?` | `() => void` |  | Called once the splash is gone (or was skipped). |
+| `class?` | `string` | `''` |  |
+
+Snippets: `logo`
+
+Classes: `ca-splash` `ca-splash__logo`
+
 ## Stack
 
 `import { Stack } from "@codeatlasdev/ui"` (generic: `T extends ElementTag = 'div'`)
@@ -2971,6 +3002,29 @@ Classes: `ca-toggle-group` `ca-toggle-group--md` `ca-toggle-group--outlined` `ca
 Snippets: `children`, `triggerChild` (`Snippet<[Record<string, unknown>]>`)
 
 Classes: `ca-tooltip-content` `ca-tooltip__trigger`
+
+## Turnstile
+
+`import { Turnstile } from "@codeatlasdev/ui/forms"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `siteKey?` | `string` |  | Public site key. Empty or unset: the component does nothing. |
+| `action?` | `string` |  | Label of the flow (`sign-in`), echoed back when you verify the token. |
+| `cData?` | `string` |  | Opaque data echoed back when you verify the token. |
+| `theme?` | `'auto' \| 'light' \| 'dark'` | `'auto'` | `auto` (default) follows the active colour scheme; `light` / `dark` force one. |
+| `language?` | `string` |  | Widget language tag. Defaults to the active UI locale (`pt-BR` becomes `pt-br`). |
+| `size?` | `'normal' \| 'flexible' \| 'compact'` |  |  |
+| `appearance?` | `'always' \| 'execute' \| 'interaction-only'` |  |  |
+| `handle?` | `TurnstileHandle` |  | `bind:` `bind:handle` for `getToken()` and `reset()`. |
+| `token?` | `string` |  | `bind:` `bind:token`: the current token, `undefined` while there is none. |
+| `onverify?` | `(token: string) => void` |  |  |
+| `onexpire?` | `() => void` |  |  |
+| `onerror?` | `(code: string) => void` |  | The widget could not run; `code` is Cloudflare's error code. |
+| `nonce?` | `string` |  | CSP nonce for the vendor script tag. |
+| `class?` | `string` | `''` |  |
+
+Classes: `ca-turnstile`
 
 ## UserCell
 
@@ -3616,6 +3670,16 @@ Call `fn` after the scheme, preset or surface style of the page changes (the `cl
 function onTokensChange(fn: () => void): () => void
 ```
 
+### passwordScore
+
+`import { passwordScore } from "@codeatlasdev/ui"`
+
+Pure, dependency-free strength estimate: unique characters and character classes, so a long repeat ("aaaa…") does not pass, and a passphrase of plain words does. A hint for the user, not a policy: enforce rules on the server.
+
+```ts
+function passwordScore(value: string): PasswordScore
+```
+
 ### radius
 
 `import { radius } from "@codeatlasdev/ui"`
@@ -4040,6 +4104,7 @@ Types:
 | `NeutralRamp` | `interface NeutralRamp { surfaceLight: SurfaceColors; surfaceDark: SurfaceColors; textLight: TextColors; textDark: TextColors; outlineLight: OutlineColors; outlineDark: OutlineColors; }` |  |
 | `OutlineColors` | `interface OutlineColors { subtle: string; default: string; strong: string; }` |  |
 | `Paper` | `type Paper = "mesh" \| "plain" \| "grid" \| "dots" \| "lines";` | Page background pattern. mesh = brand glow gradients (drawn by the glass and frosted materials); the rest are flat paper. |
+| `PasswordScore` | `type PasswordScore = 0 \| 1 \| 2 \| 3;` | 0 = empty, 1 = weak, 2 = fair, 3 = strong. |
 | `Politeness` | `type Politeness = "polite" \| "assertive";` |  |
 | `PolymorphicAttributes` | `type PolymorphicAttributes<T extends ElementTag, Own = object> = Omit< SvelteHTMLElements[T], "class" \| "children" \| "as" \| keyof Own > & Own;` | The tag's own attributes and event handlers, minus what the primitive declares itself (`Own`, `class`, `children`, `as`). |
 | `PolymorphicProps` | `type PolymorphicProps<T extends ElementTag, Own = object> = { as?: T; class?: string; children?: Snippet; } & PolymorphicAttributes<T, Own>;` | Props of a primitive that renders `as` an element: the tag's own attributes and event handlers (`as="form"` takes `novalidate`, `onsubmit` with `currentTarget: HTMLFormElement`), its token props, `class` and `children`. |

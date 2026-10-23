@@ -1,0 +1,12 @@
+{
+	"summary": "A strength meter driven by your own length rule, with custom label text.",
+	"use": "Apps whose password policy is length-based or comes from a server rule.",
+	"spec": [
+		"`const byLength = (v: string) => (v.length === 0 ? 0 : v.length >= 12 ? 3 : v.length >= 8 ? 2 : 1)`",
+		"`value={password}` and `score={byLength}` on `<PasswordStrength`",
+		"`labels={{ empty: 'Type a passphrase', weak: 'Too short', fair: 'Almost there', strong: 'Good length' }}`",
+		"Field is `<TextField label=\"Passphrase\" type=\"password\" bind:value={password} />`"
+	],
+	"tags": ["password-strength", "score", "labels", "custom", "policy"],
+	"shape": "wide"
+}

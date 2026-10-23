@@ -1,12 +1,12 @@
 {
 	"version": "4.5.0",
-	"count": 347,
+	"count": 352,
 	"groups": [
 		{
 			"slug": "inputs",
 			"first": "001",
 			"last": "902",
-			"count": 76
+			"count": 79
 		},
 		{
 			"slug": "surfaces",
@@ -18,13 +18,13 @@
 			"slug": "feedback",
 			"first": "080",
 			"last": "910",
-			"count": 35
+			"count": 36
 		},
 		{
 			"slug": "display",
 			"first": "104",
 			"last": "900",
-			"count": 57
+			"count": 58
 		},
 		{
 			"slug": "navigation",
@@ -15355,6 +15355,220 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/layout/auth-layout#flat-panel",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "841",
+			"group": "inputs",
+			"page": "password-strength",
+			"variant": "Signup",
+			"slug": "sign-up-field",
+			"title": "Sign-up field",
+			"description": "",
+			"summary": "A password field with a 3-step strength meter and a polite text label under it.",
+			"use": "Sign-up and reset-password forms that need strength feedback that does not rely on colour alone.",
+			"spec": [
+				"`let password = $state('')` bound with `<TextField label=\"Password\" type=\"password\" bind:value={password} />`",
+				"`<PasswordStrength value={password} />` directly under the field",
+				"Column is `max-width: 20rem` with `gap: var(--ca-space-2)`"
+			],
+			"tags": [
+				"password-strength",
+				"password",
+				"meter",
+				"sign-up",
+				"text-field",
+				"aria-live"
+			],
+			"shape": "wide",
+			"components": [
+				"PasswordStrength",
+				"TextField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"PasswordStrength",
+						"TextField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/password-strength#sign-up-field",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "842",
+			"group": "inputs",
+			"page": "password-strength",
+			"variant": "Custom",
+			"slug": "your-own-rule",
+			"title": "Your own rule",
+			"description": "`score` and `labels` replace the built-in estimate and the catalog text.",
+			"summary": "A strength meter driven by your own length rule, with custom label text.",
+			"use": "Apps whose password policy is length-based or comes from a server rule.",
+			"spec": [
+				"`const byLength = (v: string) => (v.length === 0 ? 0 : v.length >= 12 ? 3 : v.length >= 8 ? 2 : 1)`",
+				"`value={password}` and `score={byLength}` on `<PasswordStrength`",
+				"`labels={{ empty: 'Type a passphrase', weak: 'Too short', fair: 'Almost there', strong: 'Good length' }}`",
+				"Field is `<TextField label=\"Passphrase\" type=\"password\" bind:value={password} />`"
+			],
+			"tags": [
+				"password-strength",
+				"score",
+				"labels",
+				"custom",
+				"policy"
+			],
+			"shape": "wide",
+			"components": [
+				"PasswordStrength",
+				"TextField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"PasswordStrength",
+						"TextField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/password-strength#your-own-rule",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "843",
+			"group": "inputs",
+			"page": "turnstile",
+			"variant": "SignIn",
+			"slug": "sign-in-form",
+			"title": "Sign-in form",
+			"description": "Cloudflare's always-pass test key.",
+			"summary": "A sign-in form with a Turnstile captcha: no token without the check, reset() after a submit.",
+			"use": "Public forms (sign-in, sign-up, waitlist, reset) that need a captcha token to verify on the server.",
+			"spec": [
+				"`import { Turnstile, type TurnstileHandle } from '@codeatlasdev/ui/forms'`",
+				"`const SITE_KEY = '1x00000000000000000000AA'` (Cloudflare's always-pass test key)",
+				"`<Turnstile siteKey={SITE_KEY} action=\"sign-in\" bind:handle />` between the Email field and the Sign in button",
+				"Submit reads `handle?.getToken()`, blocks with a message when it is empty, and calls `handle?.reset()` after sending"
+			],
+			"tags": [
+				"turnstile",
+				"captcha",
+				"forms",
+				"sign-in",
+				"token",
+				"cloudflare"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"Stack",
+				"TextField",
+				"Turnstile"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"Stack",
+						"TextField"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/forms",
+					"names": [
+						"Turnstile",
+						"TurnstileHandle"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/turnstile#sign-in-form",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "844",
+			"group": "feedback",
+			"page": "splash-screen",
+			"variant": "Boot",
+			"slug": "boot",
+			"title": "Boot",
+			"description": "At least 800 ms, then waits for the 1.2 s fake load.",
+			"summary": "A button that boots a fake app: the splash shows at least 800ms, waits for ready, then leaves and reports ondone.",
+			"use": "App shells that load a session or data before the first screen and must not flash the splash.",
+			"spec": [
+				"`<SplashScreen {ready} minDuration={800} ondone={() => seen++}>` with a `logo` snippet holding `<strong class=\"mark\">Acme</strong>`",
+				"`start()` sets `ready = false`, bumps `boot` and sets `ready = true` after `1200` ms",
+				"Wrapped in `{#key boot}` and rendered only once `boot > 0`",
+				"A caption shows `Splash screens shown: {seen}`"
+			],
+			"tags": [
+				"splash-screen",
+				"boot",
+				"loading",
+				"min-duration",
+				"reduced-motion",
+				"status"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"SplashScreen"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"SplashScreen"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/splash-screen#boot",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "845",
+			"group": "display",
+			"page": "avatar",
+			"variant": "Decorative",
+			"slug": "decorative",
+			"title": "Decorative",
+			"description": "",
+			"summary": "Avatars next to a visible name, marked decorative so a screen reader says the name once.",
+			"use": "Lists, headers and comment rows where the avatar repeats the name written beside it.",
+			"spec": [
+				"`<Avatar alt={name} size=\"sm\" decorative />` followed by `<span>{name}</span>` in each `<li>`",
+				"People are `Ada Lovelace` and `Grace Hopper` in a `ul` with `list-style: none`"
+			],
+			"tags": [
+				"avatar",
+				"decorative",
+				"aria-hidden",
+				"name",
+				"list",
+				"a11y"
+			],
+			"shape": "wide",
+			"components": [
+				"Avatar"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Avatar"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/avatar#decorative",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{

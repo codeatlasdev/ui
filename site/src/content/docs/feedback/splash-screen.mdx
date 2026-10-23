@@ -1,0 +1,32 @@
+---
+title: SplashScreen
+description: A brand screen for the app boot, with a minimum duration, skipped under reduced motion.
+group: Feedback
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Boot from "~/demos/feedback/splash-screen/Boot.svelte";
+import BootSrc from "~/demos/feedback/splash-screen/Boot.svelte?raw";
+
+```svelte
+<script>
+  import { SplashScreen } from "@codeatlasdev/ui";
+</script>
+
+<SplashScreen ready={session.loaded} minDuration={600}>
+  {#snippet logo()}<Wordmark />{/snippet}
+</SplashScreen>
+```
+
+A `role="status"` region named "Loading…". It leaves once `ready` is true **and** it has shown for `minDuration`, so a fast boot never flashes it (`LoadingBoundary` does the same for content). Under `prefers-reduced-motion: reduce` it is skipped: nothing renders and `ondone` fires at once.
+
+<Demo title="Boot" description="At least 800 ms, then waits for the 1.2 s fake load." src={BootSrc}><Boot client:visible /></Demo>
+
+<Props for="SplashScreen" rows={[
+  { name: "logo", type: "Snippet", default: "undefined", description: "Brand mark in the middle." },
+  { name: "ready", type: "boolean", default: "true", description: "The app finished booting; the splash then waits out `minDuration`." },
+  { name: "minDuration", type: "number", default: "600", description: "Minimum ms on screen, from first show." },
+  { name: "label", type: "string", default: "'Loading…' (localized)", description: "Accessible name." },
+  { name: "ondone", type: "() => void", default: "undefined", description: "Called when it is gone or skipped." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+]} />

@@ -49,16 +49,19 @@ import { numberField } from "./groups/numberField.js";
 import { pageFrame } from "./groups/pageFrame.js";
 import { pageShell } from "./groups/pageShell.js";
 import { pagination } from "./groups/pagination.js";
+import { passwordStrength } from "./groups/passwordStrength.js";
 import { select } from "./groups/select.js";
 import { sheet } from "./groups/sheet.js";
 import { skipLink } from "./groups/skipLink.js";
 import { slider } from "./groups/slider.js";
 import { spinner } from "./groups/spinner.js";
+import { splashScreen } from "./groups/splashScreen.js";
 import { stepper } from "./groups/stepper.js";
 import { table } from "./groups/table.js";
 import { textField } from "./groups/textField.js";
 import { themeToggle } from "./groups/themeToggle.js";
 import { toast } from "./groups/toast.js";
+import { turnstile } from "./groups/turnstile.js";
 import { virtualList } from "./groups/virtualList.js";
 
 export const groups = {
@@ -100,15 +103,18 @@ export const groups = {
 	pageShell,
 	pageFrame,
 	pagination,
+	passwordStrength,
 	table,
 	select,
 	sheet,
 	slider,
 	spinner,
+	splashScreen,
 	stepper,
 	textField,
 	themeToggle,
 	toast,
+	turnstile,
 	map,
 	chat,
 	audioPlayer,

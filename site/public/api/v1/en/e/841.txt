@@ -1,0 +1,27 @@
+<!-- @codeatlasdev/ui demo #841 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/password-strength#sign-up-field -->
+Element: #841 Sign-up field (inputs/password-strength)
+What it shows: A password field with a 3-step strength meter and a polite text label under it.
+When to use: Sign-up and reset-password forms that need strength feedback that does not rely on colour alone.
+Spec:
+- `let password = $state('')` bound with `<TextField label="Password" type="password" bind:value={password} />`
+- `<PasswordStrength value={password} />` directly under the field
+- Column is `max-width: 20rem` with `gap: var(--ca-space-2)`
+Tags: password-strength, password, meter, sign-up, text-field, aria-live
+Needs: @codeatlasdev/ui@4.5.0
+Components: PasswordStrength, TextField
+Live demo: https://ui.codeatlas.com.br/docs/inputs/password-strength#sign-up-field
+
+<script lang="ts">
+  import { PasswordStrength, TextField } from '@codeatlasdev/ui';
+
+  let password = $state('');
+</script>
+
+<div class="col">
+  <TextField label="Password" type="password" bind:value={password} />
+  <PasswordStrength value={password} />
+</div>
+
+<style>
+  .col { display: grid; gap: var(--ca-space-2); width: 100%; max-width: 20rem; }
+</style>

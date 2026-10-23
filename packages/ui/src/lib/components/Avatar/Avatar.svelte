@@ -15,6 +15,7 @@
    * <Avatar alt="Ana Lima" size="md" />
    * <Avatar alt="Ana Lima" size="md" status="online" />
    * <Avatar src="/photo.jpg" alt="Ana Lima" size="lg" shape="rounded" />
+   * <Avatar alt="Ana Lima" decorative />   next to the visible name
    */
 
   type Size   = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | number;
@@ -47,6 +48,11 @@
      * hairline ring, for a dense list where coloured discs compete with the content.
      */
     tone?:     Tone;
+    /**
+     * The avatar repeats a name that is already visible next to it: hidden from assistive tech
+     * (no name, no image role, no status label) so a screen reader does not say the name twice.
+     */
+    decorative?: boolean;
     class?:    string;
   }
 
@@ -91,6 +97,7 @@
     onerror,
     skeleton = false,
     tone     = 'palette',
+    decorative = false,
     class: className = '',
   }: Props = $props();
 
@@ -120,6 +127,7 @@
   data-size={typeof size === 'string' ? size : undefined}
   data-skeleton={skeleton ? '' : undefined}
   aria-busy={skeleton ? 'true' : undefined}
+  aria-hidden={decorative ? 'true' : undefined}
   style="--av-size:{px}px;--av-radius:{radius};{tone === 'neutral' ? '' : `--av-bg:${palette.bg};--av-fg:${palette.fg};`}--av-fs:{fontSize}px;--av-dot:{dotSize}px;"
 >
   <!-- The fallback is always rendered beneath the <img>, so a slow or failed load never changes the box. -->
@@ -133,7 +141,7 @@
   {#if showImg}
     <img
       {src}
-      {alt}
+      alt={decorative ? '' : alt}
       {loading}
       {referrerpolicy}
       {crossorigin}
@@ -146,8 +154,8 @@
   {#if status}
     <span
       class="ca-avatar__status ca-avatar__status--{status}"
-      aria-label={t().avatar.status[status]}
-      role="img"
+      aria-label={decorative ? undefined : t().avatar.status[status]}
+      role={decorative ? undefined : 'img'}
     ></span>
   {/if}
 </span>

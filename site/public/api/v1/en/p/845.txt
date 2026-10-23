@@ -1,0 +1,11 @@
+Use @codeatlasdev/ui demo #845 "Decorative" (display/avatar).
+What it shows: Avatars next to a visible name, marked decorative so a screen reader says the name once. When to use: Lists, headers and comment rows where the avatar repeats the name written beside it.
+Spec:
+- `<Avatar alt={name} size="sm" decorative />` followed by `<span>{name}</span>` in each `<li>`
+- People are `Ada Lovelace` and `Grace Hopper` in a `ul` with `list-style: none`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #845 Decorative → file, what changed, https://ui.codeatlas.com.br/docs/display/avatar#decorative; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/845.txt   Components API: ca-ui-mcp get_component(Avatar)

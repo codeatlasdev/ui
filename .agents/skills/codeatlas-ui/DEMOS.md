@@ -345,6 +345,11 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 781 | Full page | layout/theme-island | Button, ThemeIsland |
 | 800 | Themed map | map/stage | MapControls, MapStage |
 | 840 | Flat panel | layout/auth-layout | AuthLayout, AuthCard, Button, SegmentedControl, Stack |
+| 841 | Sign-up field | inputs/password-strength | PasswordStrength, TextField |
+| 842 | Your own rule | inputs/password-strength | PasswordStrength, TextField |
+| 843 | Sign-in form | inputs/turnstile | Button, Stack, TextField, Turnstile |
+| 844 | Boot | feedback/splash-screen | Button, SplashScreen |
+| 845 | Decorative | display/avatar | Avatar |
 | 860 | Status tokens | layout/domain-tokens |  |
 | 880 | Component tokens | inputs/button | Button, IconButton, Kbd |
 | 881 | Dense CRM with component tokens | layout/empty-state | Avatar, Button, Card, EmptyState, SegmentedControl, TextArea, TextField |

@@ -18,6 +18,8 @@ import ShapeStatus from "~/demos/display/avatar/ShapeStatus.svelte";
 import ShapeStatusSrc from "~/demos/display/avatar/ShapeStatus.svelte?raw";
 import Stack from "~/demos/display/avatar/Stack.svelte";
 import StackSrc from "~/demos/display/avatar/Stack.svelte?raw";
+import Decorative from "~/demos/display/avatar/Decorative.svelte";
+import DecorativeSrc from "~/demos/display/avatar/Decorative.svelte?raw";
 
 ```svelte
 <script>
@@ -35,6 +37,7 @@ Without `src`, or when the image fails to load, the avatar shows initials derive
 <Demo title="Sizes" description={"Named sizes `xs` to `xl`, or any number in pixels."} src={SizesSrc}><Sizes client:visible /></Demo>
 <Demo title="Shape and status" description={"`shape=\"rounded\"` and the presence dot."} src={ShapeStatusSrc}><ShapeStatus client:visible /></Demo>
 <Demo title="Avatar stack" description={"Overlap pattern common in collaboration UIs."} src={StackSrc}><Stack client:visible /></Demo>
+<Demo title="Decorative" description={"Hidden from screen readers next to a visible name."} src={DecorativeSrc}><Decorative client:visible /></Demo>
 
 ## Tokens
 
@@ -53,5 +56,6 @@ Without `src`, or when the image fails to load, the avatar shows initials derive
   { name: "onerror", type: "(event: Event) => void", default: "undefined", description: "Called when the image fails to load; the fallback shows. Refetch a signed URL here." },
   { name: "skeleton", type: "boolean", default: "false", description: "Loading placeholder with the exact avatar size; no image request is made. See Skeleton." },
   { name: "tone", type: "'palette' | 'neutral'", default: "'palette'", description: "Fallback colour. `palette` derives it from the name, so each person keeps theirs; `neutral` draws every fallback on `--ca-surface-overlay` with `--ca-text-secondary` text and a hairline ring." },
+  { name: "decorative", type: "boolean", default: "false", description: "A visible name sits beside it: `aria-hidden`, empty image `alt`, no status role or label." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />

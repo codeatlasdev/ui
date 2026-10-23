@@ -1,0 +1,40 @@
+---
+title: Turnstile
+description: Cloudflare's captcha widget that follows the theme and language, with getToken() and reset().
+group: Inputs
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import SignIn from "~/demos/inputs/turnstile/SignIn.svelte";
+import SignInSrc from "~/demos/inputs/turnstile/SignIn.svelte?raw";
+
+```svelte
+<script>
+  import { Turnstile } from "@codeatlasdev/ui/forms";
+  let handle = $state();
+</script>
+
+<Turnstile siteKey={PUBLIC_TURNSTILE_KEY} action="sign-in" bind:handle />
+<!-- submit: handle.getToken(); failed submit: handle.reset() -->
+```
+
+It lives in `@codeatlasdev/ui/forms`, adds no dependency and loads Cloudflare's script on demand, once per page (never on the server). It follows the colour scheme and UI language, re-renders when either changes and removes the widget on unmount. Without a `siteKey` it renders and loads nothing and `getToken()` is `undefined`. A token is single-use and only counts once your server verifies it: call `reset()` after a failed submit. Strict CSP: pass `nonce`, allow `challenges.cloudflare.com`.
+
+<Demo title="Sign-in form" description="Cloudflare's always-pass test key." src={SignInSrc}><SignIn client:visible /></Demo>
+
+<Props for="Turnstile" rows={[
+  { name: "siteKey", type: "string", default: "undefined", description: "Public site key. Unset: nothing renders or loads." },
+  { name: "action", type: "string", default: "undefined", description: "Flow label, echoed when you verify." },
+  { name: "cData", type: "string", default: "undefined", description: "Opaque data, echoed when you verify." },
+  { name: "theme", type: "'auto' | 'light' | 'dark'", default: "'auto'", description: "`auto` follows the active colour scheme." },
+  { name: "language", type: "string", default: "active locale", description: "Language tag; the UI locale in lower case (`pt-br`)." },
+  { name: "size", type: "'normal' | 'flexible' | 'compact'", default: "undefined", description: "Widget size." },
+  { name: "appearance", type: "'always' | 'execute' | 'interaction-only'", default: "undefined", description: "When it is visible." },
+  { name: "handle", type: "TurnstileHandle", default: "bindable", description: "`getToken()` and `reset()` (new challenge, clears the token)." },
+  { name: "token", type: "string", default: "bindable", description: "The current token, `undefined` while there is none." },
+  { name: "onverify", type: "(token: string) => void", default: "undefined", description: "Called when the check passes." },
+  { name: "onexpire", type: "() => void", default: "undefined", description: "Called when the token expires; the token is cleared." },
+  { name: "onerror", type: "(code: string) => void", default: "undefined", description: "Widget or script failed; `code` is Cloudflare's." },
+  { name: "nonce", type: "string", default: "undefined", description: "CSP nonce for the script tag." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+]} />

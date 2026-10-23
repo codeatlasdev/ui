@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #844 "Boot" (feedback/splash-screen).
+What it shows: A button that boots a fake app: the splash shows at least 800ms, waits for ready, then leaves and reports ondone. When to use: App shells that load a session or data before the first screen and must not flash the splash.
+Spec:
+- `<SplashScreen {ready} minDuration={800} ondone={() => seen++}>` with a `logo` snippet holding `<strong class="mark">Acme</strong>`
+- `start()` sets `ready = false`, bumps `boot` and sets `ready = true` after `1200` ms
+- Wrapped in `{#key boot}` and rendered only once `boot > 0`
+- A caption shows `Splash screens shown: {seen}`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #844 Boot → file, what changed, https://ui.codeatlas.com.br/docs/feedback/splash-screen#boot; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/844.txt   Components API: ca-ui-mcp get_component(Button)
