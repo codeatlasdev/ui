@@ -16,7 +16,9 @@
 
 import type { sequence } from "@sveltejs/kit/hooks";
 import { DEV } from "esm-env";
+import { defineTheme } from "../theme/define.js";
 import { CA_THEME_MARKER, type ThemeOptions, themeHead } from "../theme-script.js";
+import { applyRouteTheme, resolveRouteTheme, type ThemeHandleOptions } from "./theme-route.js";
 
 // `Handle` lives in "@sveltejs/kit" on Kit 2 and in "@sveltejs/kit/hooks" on Kit 3;
 // `sequence` is in "/hooks" on both, so derive the type from it.
@@ -52,9 +54,17 @@ const warned = new Set<number>();
  * already has the right preset and scheme.
  *
  * Idempotent: skips pages that already contain the init script.
+ *
+ * A full-page theme island (a light landing inside a dark app) reaches the browser with its preset,
+ * `data-theme-scope` and `dark` class already on `<html>`: declare it with `setRouteTheme(event, …)` in a
+ * `load`, or per route group with `{ routes: { "/(marketing)": { preset: "paper", scheme: "light" } } }`.
  */
-export function caThemeHandle(options: ThemeOptions = {}): Handle {
+export function caThemeHandle(
+	options: ThemeOptions = {},
+	{ routes }: ThemeHandleOptions = {}
+): Handle {
 	const head = themeHead(options);
+	const known = defineTheme(options).known;
 	return ({ event, resolve }) =>
 		resolve(event, {
 			transformPageChunk: ({ html, done }) => {
@@ -64,8 +74,12 @@ export function caThemeHandle(options: ThemeOptions = {}): Handle {
 						warned.add(i);
 						console.warn(`[ca-ui] caThemeHandle: ${check.message}`);
 					});
-				if (!done || html.includes(CA_THEME_MARKER)) return html;
-				return html.replace("<head>", `<head>${head}`);
+				if (!done) return html;
+				// Full-page theme island: the preset and scheme go on <html> in the response itself.
+				const route = resolveRouteTheme(event, routes);
+				const page = route ? applyRouteTheme(html, route, known) : html;
+				if (page.includes(CA_THEME_MARKER)) return page;
+				return page.replace("<head>", `<head>${head}`);
 			},
 		});
 }

@@ -1,0 +1,10 @@
+{
+	"summary": "ThemeIsland as a scoped block: a light ocean island inside a dark page.",
+	"use": "A section or card that must use another preset or scheme than the rest of the app, without touching <html>.",
+	"spec": [
+		"`<ThemeIsland preset=\"ocean\" scheme=\"light\"`",
+		"A light block inside the page, nothing mirrored to the document"
+	],
+	"tags": ["theme-island", "preset", "scheme", "light", "dark", "scope"],
+	"shape": "wide"
+}

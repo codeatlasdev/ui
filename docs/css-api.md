@@ -397,6 +397,10 @@ The `skeleton` prop of `Avatar`, `KpiCard`, `TextField`, `Table`, `Card` and `Gl
 
 `.ca-tf` `.ca-tf--disabled` `.ca-tf--error` `.ca-tf--sm` `.ca-tf__adorn` `.ca-tf__adorn--lead` `.ca-tf__adorn--trail` `.ca-tf__hint` `.ca-tf__hint--error` `.ca-tf__input` `.ca-tf__label` `.ca-tf__req` `.ca-tf__wrap` `.ca-tf__wrap--error` `.ca-tf__wrap--focused`
 
+## ThemeIsland
+
+`.ca-theme-island`
+
 ## ThemeToggle
 
 `.ca-rail-btn` `.ca-theme-toggle` `.ca-theme-toggle__icon` `.ca-theme-toggle__icon--dark` `.ca-theme-toggle__icon--light`

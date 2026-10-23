@@ -54,13 +54,16 @@ var scheme=g('ca-scheme',${JSON.stringify(["light", "dark", "system"])},${JSON.s
 var preset=g('ca-preset',R.known,${JSON.stringify(t.defaultPreset)});
 var style=g('ca-style',${JSON.stringify(STYLES)},${JSON.stringify(t.defaultStyle)});
 h.classList.add('ca-init');
+var isl=h.hasAttribute('data-ca-island');
+if(isl){h.setAttribute('data-ca-app-preset',preset);preset=h.getAttribute('data-preset')||preset}
 h.setAttribute('data-preset',preset);
 h.setAttribute('data-style',style);
 h.setAttribute('data-ca-scheme',${JSON.stringify(t.defaultScheme)});
 h.setAttribute('data-ca-style',${JSON.stringify(t.defaultStyle)});
 var m=w.matchMedia('(prefers-color-scheme: dark)');
 function a(){var d=scheme==='system'?m.matches:scheme==='dark';
-  h.classList.toggle('dark',d);
+  if(isl){h.setAttribute('data-ca-app-dark',d?'1':'0');d=h.classList.contains('dark')}
+  else h.classList.toggle('dark',d);
   var e=document.querySelector('meta[name="theme-color"]');
   if(!e){e=document.createElement('meta');e.name='theme-color';document.head.appendChild(e)}
   e.content=R.colors[preset][d?1:0]}

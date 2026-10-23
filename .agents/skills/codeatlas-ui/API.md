@@ -2757,6 +2757,21 @@ Also accepts: `Omit<HTMLInputAttributes, 'value' \| 'class' \| 'children' \| 'si
 
 Classes: `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__adorn` `ca-tf__adorn--trail` `ca-tf__below` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__reveal` `ca-tf__wrap` `ca-tf__wrap--error` `ca-tf__wrap--focused`
 
+## ThemeIsland
+
+`import { ThemeIsland } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `preset?` | `string` |  | `data-preset` of the island: a built-in or a brand preset of your theme. Omit to keep the page's preset and change only the scheme. |
+| `scheme` | `'light' \| 'dark'` |  | Scheme of the island, whatever the rest of the app uses. |
+| `document?` | `boolean` | `false` | Full-page island: also apply preset, scheme and `color-scheme` to `<html>` while mounted, and put the app's values back on unmount. Without it `html` and `body` keep painting the app preset (overscroll, behind the iOS toolbar, pages that do not scroll). |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Classes: `ca-theme-island`
+
 ## ThemeToggle
 
 `import { ThemeToggle } from "@codeatlasdev/ui"`
@@ -4225,7 +4240,7 @@ Types:
 SvelteKit `Handle` that puts the theme head (brand presets + init script) right after `<head>`, before any stylesheet or script, so the first paint already has the right preset and scheme.
 
 ```ts
-function caThemeHandle(options?: ThemeOptions): Handle
+function caThemeHandle(options?: ThemeOptions, options?: ThemeHandleOptions): Handle
 ```
 
 ### createErrorHandler
@@ -4308,6 +4323,16 @@ Attachment for `<a>`: while SvelteKit navigates to this link's `href`, it carrie
 function pendingLink(): Attachment<HTMLAnchorElement>
 ```
 
+### setRouteTheme
+
+`import { setRouteTheme } from "@codeatlasdev/ui/kit"`
+
+Declare the full-page theme of the route being loaded. Call it in `+page.server.ts` or `+layout.server.ts` `load`; `caThemeHandle` writes it on `<html>` (preset, `data-theme-scope`, `dark` class) in the server response, so the first paint already has it. Pair it with `<ThemeIsland document>` in the page so client navigation applies and restores the same values.
+
+```ts
+function setRouteTheme(event: { locals: object }, theme: IslandTheme): void
+```
+
 ### themeCSS
 
 `import { themeCSS } from "@codeatlasdev/ui/kit"`
@@ -4346,10 +4371,13 @@ Types:
 | `CreateErrorHandlerOptions` | `interface CreateErrorHandlerOptions { report?: (error: CaError, event: ErrorEvent) => void; defaultMessage?: string; locale?: Locale \| ((event: ErrorEvent) => Locale \| undefined); }` |  |
 | `DesignStyle` | `interface DesignStyle { id: DesignStyleId; label: string; description: string; taxonomy: string[]; theme: Partial<ThemeDefinition>; }` |  |
 | `DesignStyleId` | `type DesignStyleId = \| "default" \| "liquid" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
+| `IslandTheme` | `interface IslandTheme { preset?: string; scheme: IslandScheme; }` |  |
 | `NativeFeelOptions` | `interface NativeFeelOptions { blockZoom?: boolean; allowContextMenu?: (e: MouseEvent) => boolean; }` |  |
 | `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
+| `RouteThemes` | `type RouteThemes = Record<string, Partial<IslandTheme>>;` | Route id prefixes (`event.route.id`, e.g. `"/(marketing)"`) → the theme their pages use. Longest prefix wins. |
 | `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
+| `ThemeHandleOptions` | `interface ThemeHandleOptions { routes?: RouteThemes; }` | Options of the second argument of `caThemeHandle`. |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
 
 ## @codeatlasdev/ui/map

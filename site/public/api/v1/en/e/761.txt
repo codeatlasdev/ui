@@ -1,0 +1,48 @@
+<!-- @codeatlasdev/ui demo #761 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/theme-island#full-page -->
+Element: #761 Full page (layout/theme-island)
+What it shows: Full-page ThemeIsland with `document`: html and body take the island's preset and scheme while it is mounted.
+When to use: A public landing or auth page with its own preset and scheme inside an app that uses another one.
+Spec:
+- `<ThemeIsland preset="rose" scheme="light" document>` is the page root
+- Closing it restores the app preset and scheme
+Tags: theme-island, document, full-page, landing, overscroll, ssr
+Needs: @codeatlasdev/ui@4.5.0
+Components: Button, ThemeIsland
+Live demo: https://ui.codeatlas.com.br/docs/layout/theme-island#full-page
+
+<script lang="ts">
+  import { Button, ThemeIsland } from '@codeatlasdev/ui';
+
+  let open = $state(false);
+</script>
+
+<Button variant="outlined" size="sm" onclick={() => (open = true)}>Open full-page island</Button>
+
+{#if open}
+  <!-- `document` also paints <html> and <body> like the island and puts the app back on unmount. -->
+  <div class="overlay">
+    <ThemeIsland preset="rose" scheme="light" document>
+      <div class="page">
+        <h3>Full-page island</h3>
+        <p>The overscroll area and the browser chrome match this page. Close it to restore the app theme.</p>
+        <Button variant="filled" onclick={() => (open = false)}>Back to the app</Button>
+      </div>
+    </ThemeIsland>
+  </div>
+{/if}
+
+<style>
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--ca-z-modal);
+    overflow: auto;
+  }
+  .page {
+    display: grid;
+    gap: var(--ca-space-4);
+    justify-items: start;
+    padding: var(--ca-space-10) var(--ca-page-px);
+    max-width: 40rem;
+  }
+</style>

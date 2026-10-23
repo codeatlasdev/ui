@@ -1,0 +1,10 @@
+{
+	"summary": "Full-page ThemeIsland with `document`: html and body take the island's preset and scheme while it is mounted.",
+	"use": "A public landing or auth page with its own preset and scheme inside an app that uses another one.",
+	"spec": [
+		"`<ThemeIsland preset=\"rose\" scheme=\"light\" document>` is the page root",
+		"Closing it restores the app preset and scheme"
+	],
+	"tags": ["theme-island", "document", "full-page", "landing", "overscroll", "ssr"],
+	"shape": "wide"
+}

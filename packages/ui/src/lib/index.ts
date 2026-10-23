@@ -229,6 +229,7 @@ export { default as TabsList } from "./components/Tabs/TabsList.svelte";
 export { default as TabsTrigger } from "./components/Tabs/TabsTrigger.svelte";
 export { default as TextArea } from "./components/TextArea/TextArea.svelte";
 export { default as TextField } from "./components/TextField/TextField.svelte";
+export { default as ThemeIsland } from "./components/ThemeIsland/ThemeIsland.svelte";
 export { default as ThemeToggle } from "./components/ThemeToggle/ThemeToggle.svelte";
 export type { TimelineItem } from "./components/Timeline/Timeline.svelte";
 export { default as Timeline } from "./components/Timeline/Timeline.svelte";

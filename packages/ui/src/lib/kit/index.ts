@@ -10,5 +10,7 @@ export { default as NavigationProgress } from "./navigation-progress.svelte";
 export { pendingLink } from "./pending-link.svelte.js";
 export { default as RouteAnnouncer } from "./route-announcer.svelte";
 export { caThemeHandle } from "./theme-handle.js";
+export type { IslandTheme, RouteThemes, ThemeHandleOptions } from "./theme-route.js";
+export { setRouteTheme } from "./theme-route.js";
 export { useBreadcrumbs } from "./use-breadcrumbs.svelte.js";
 export { usePageTitle } from "./use-page-title.svelte.js";

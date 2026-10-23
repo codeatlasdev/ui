@@ -1,0 +1,87 @@
+---
+title: ThemeIsland
+description: A block or a whole page that uses another preset and scheme than the app, with the same first paint on the server. Mirrors them to html while mounted.
+group: Layout
+order: 13
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Scoped from "~/demos/layout/theme-island/Scoped.svelte";
+import ScopedSrc from "~/demos/layout/theme-island/Scoped.svelte?raw";
+import FullPage from "~/demos/layout/theme-island/FullPage.svelte";
+import FullPageSrc from "~/demos/layout/theme-island/FullPage.svelte?raw";
+
+```svelte
+<script>
+  import { ThemeIsland } from "@codeatlasdev/ui";
+</script>
+
+<ThemeIsland preset="paper" scheme="light" document>
+  …the page…
+</ThemeIsland>
+```
+
+`ThemeIsland` renders a wrapper with `data-preset` and `data-theme-scope`, so everything inside re-resolves its tokens (`--ca-surface-base`, text, brand, glass) and `color-scheme`. Without `document` that is all it does: a card or a section in another preset or scheme.
+
+<Demo title="Scoped block" description="A light ocean island inside the current page." src={ScopedSrc}><Scoped client:visible /></Demo>
+
+## Full-page islands
+
+`html` and `body` sit outside the wrapper, so on a full-page island they keep painting the app preset: visible in overscroll, behind the iOS toolbar and on pages that do not scroll. Add `document` to mirror `data-preset`, `data-theme-scope` and the `dark` class onto `<html>` while the island is mounted. `color-scheme`, the page canvas (`--ca-surface-base`) and the browser chrome follow. On unmount the app's values come back, with no reload.
+
+<Demo title="Full page" description="Opens a rose, light page over the app and restores the app on close." src={FullPageSrc}><FullPage client:visible /></Demo>
+
+- If the theme store changes the preset or scheme while the island is mounted (`colorScheme.setPreset`, `toggle`), the island stays and the app's new choice is what comes back on unmount.
+- Islands may overlap during a client navigation (the next page mounts before the previous one is destroyed) and restore in any order.
+- Pass only `scheme` to change the scheme and keep the app preset.
+- An app write that equals the island's own value (the store sets `paper` while the island is `paper`) is not distinguishable from the island, so it is not remembered.
+
+## First paint on the server
+
+`document` runs in the browser, so the server response would still start with the app theme and flash. Declare the theme of the route so `caThemeHandle` writes it on `<html>` in the response itself, next to a `data-ca-island` marker that makes the init script leave it alone (the stored app preset is kept aside and restored on navigation).
+
+```ts
+// src/routes/(marketing)/+layout.server.ts
+import { setRouteTheme } from "@codeatlasdev/ui/kit";
+
+export const load = (event) => {
+  setRouteTheme(event, { preset: "paper", scheme: "light" });
+};
+```
+
+`load` shares `event.locals` with the hook, which is how the declaration reaches `caThemeHandle`. For a whole route group you can list it once in the hook instead, by `event.route.id` prefix (the longest prefix wins, and `setRouteTheme` overrides it):
+
+```ts
+// src/hooks.server.ts
+export const handle = sequence(
+  caThemeHandle(theme, {
+    routes: { "/(marketing)": { preset: "paper", scheme: "light" } },
+  })
+);
+```
+
+The preset must exist in your theme (a brand preset or a built-in): an unknown id throws at request time instead of shipping an unthemed page. Render `<ThemeIsland document>` with the same values in the page, so client navigation applies and restores them too.
+
+On Astro, put the same attributes on `<html>` in the layout of that page (`data-preset`, `data-theme-scope`, `data-ca-island`, and `class="dark"` for a dark island). The `<ClientRouter />` swap carries the app preset across island and non-island pages.
+
+## Nested presets and `data-theme-scope`
+
+Presets and scopes can nest freely; the nearest one wins:
+
+| Markup | Result |
+|---|---|
+| `data-preset="a"` inside `html.dark` | preset `a`, dark |
+| `data-preset="a" data-theme-scope="light"` on one element | preset `a`, light |
+| `data-theme-scope="light"` inside a preset island | the island's preset, light |
+| `data-preset="b"` inside `data-theme-scope="light"` | preset `b`, light |
+| `data-theme-scope` inside a preset island nested in preset `a` | the nearest preset, the scope's scheme |
+
+Each preset ships its tokens once per scheme under a fixed list of selectors (`[data-preset="x"]`, `.dark [data-preset="x"]`, a scope inside it, a scope around it, …) and a scope inside a nested island of another preset is excluded from the outer one, so file order never decides. Three or more alternating scope levels around one preset, or one preset at two nesting levels with another between them, are not supported. You do not write these selectors: use `ThemeIsland` and read tokens with `var(--ca-*)`.
+
+<Props rows={[
+  { name: "scheme", type: "'light' | 'dark'", description: "Scheme of the island, whatever the app uses. Required." },
+  { name: "preset", type: "string", description: "`data-preset` of the island (built-in or brand preset). Omit to keep the page's preset." },
+  { name: "document", type: "boolean", default: "false", description: "Also apply preset, scheme and the `dark` class to `<html>` while mounted, and restore the app's on unmount." },
+  { name: "class", type: "string", default: "''", description: "Extra class names on the wrapper." },
+  { name: "children", type: "Snippet", description: "The island content." },
+]} />
