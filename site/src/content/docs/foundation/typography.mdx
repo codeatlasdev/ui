@@ -12,7 +12,7 @@ import HeadingsSrc from "~/demos/foundation/typography/Headings.svelte?raw";
 import Body from "~/demos/foundation/typography/Body.svelte";
 import BodySrc from "~/demos/foundation/typography/Body.svelte?raw";
 
-Type sizes are `rem` tokens multiplied by `--ca-font-scale`, so they follow the user's browser font size. `html` keeps the browser size: `--ca-font-size-body1` only sizes the text on `body`, so setting it to `0.875rem` for a dense dashboard does not rescale labels, inputs or buttons. Fonts are stacks: the defaults name Inter and JetBrains Mono but the kit does not load them, so load them yourself (for example with `@fontsource-variable`) or replace them in your theme. `--ca-font-display` defaults to `--ca-font-sans`.
+Type sizes are `rem` tokens multiplied by `--ca-font-scale`, so they follow the user's browser font size. `html` sets the kit's rem base, 15px at the default scale (`calc(0.9375rem * var(--ca-font-scale))`), independently of `--ca-font-size-body1`: body1 only sizes the text on `body`, so a denser body (`--ca-font-size-body1: 0.875rem`, 13.125px on that base; use `14px` for an exact size) does not rescale labels, inputs or buttons. Fonts are stacks: the defaults name Inter and JetBrains Mono but the kit does not load them, so load them yourself (for example with `@fontsource-variable`) or replace them in your theme. `--ca-font-display` defaults to `--ca-font-sans`.
 
 ```ts
 import { defineTheme } from "@codeatlasdev/ui";

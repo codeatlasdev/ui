@@ -6,7 +6,7 @@ import TextField from "../components/TextField/TextField.svelte";
 /**
  * #351: `:root { font-size: var(--ca-font-size-body1) }` made the body text size the root `rem`,
  * so a 14px body (`--ca-font-size-body1: 0.875rem`) shrank every rem token by 12.5%.
- * The root keeps the user-agent size; body1 only styles the text.
+ * The root keeps the kit's own rem base (15px at the default scale); body1 only styles the text.
  */
 afterEach(() => {
 	document.documentElement.style.removeProperty("--ca-font-size-body1");
@@ -27,6 +27,7 @@ describe("body text size is independent from the root rem (#351)", () => {
 		expect(px(document.documentElement)).toBe(before.root);
 		expect(px(label)).toBe(before.label);
 		expect(px(button)).toBe(before.button);
-		expect(px(document.body)).toBe("14px");
+		expect(before.root).toBe("15px");
+		expect(px(document.body)).toBe(`${0.875 * 15}px`);
 	});
 });

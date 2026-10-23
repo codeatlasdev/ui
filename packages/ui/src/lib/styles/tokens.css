@@ -151,8 +151,10 @@
   /* ── Base element defaults ───────────────────────────────────────────── */
   color: var(--ca-text-primary);
   font-family: var(--ca-font-sans);
-  /* No font-size here: the root stays at the user-agent size so every rem token keeps its
-   * meaning; --ca-font-size-body1 sizes the text on body (base.css, #351). */
+  /* The root size is the kit's own rem base (15px at the default scale), written out rather
+   * than read from --ca-font-size-body1: overriding body text size must not rescale every
+   * rem token (#351). Dropping it would move the base to the UA 16px and resize the kit. */
+  font-size: calc(0.9375rem * var(--ca-font-scale));
   line-height: var(--ca-line-height-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
