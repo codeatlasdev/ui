@@ -1,0 +1,35 @@
+<!-- @codeatlasdev/ui demo #902 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/button#align-between -->
+Element: #902 Align between (inputs/button)
+What it shows: A stack of three full-width outlined neutral Buttons with align="between": label at the start, a Kbd hint at the end; the last one is loading and keeps its spinner at the start.
+When to use: Action grids and menus of full-width buttons where the label is left-aligned and the shortcut sits on the right.
+Spec:
+- `.grid` with `gap: var(--ca-space-2)` and `max-width: 20rem`
+- Each `<Button variant="outlined" tone="neutral" align="between" fullWidth trailingHint>` with a `<Kbd>` in `trailing`: Open lead (O), Assign to me (A)
+- Third button Syncing (R) also has `loading`, so the spinner replaces the leading slot while the label stays left
+Tags: button, align, between, trailing, kbd, full-width, loading
+Needs: @codeatlasdev/ui@4.5.0
+Components: Button, Kbd
+Live demo: https://ui.codeatlas.com.br/docs/inputs/button#align-between
+
+<script lang="ts">
+  import { Button, Kbd } from '@codeatlasdev/ui';
+</script>
+
+<div class="grid">
+  <Button variant="outlined" tone="neutral" align="between" fullWidth trailingHint>
+    Open lead
+    {#snippet trailing()}<Kbd>O</Kbd>{/snippet}
+  </Button>
+  <Button variant="outlined" tone="neutral" align="between" fullWidth trailingHint>
+    Assign to me
+    {#snippet trailing()}<Kbd>A</Kbd>{/snippet}
+  </Button>
+  <Button variant="outlined" tone="neutral" align="between" fullWidth loading trailingHint>
+    Syncing
+    {#snippet trailing()}<Kbd>R</Kbd>{/snippet}
+  </Button>
+</div>
+
+<style>
+  .grid { display: grid; gap: var(--ca-space-2); max-width: 20rem; }
+</style>

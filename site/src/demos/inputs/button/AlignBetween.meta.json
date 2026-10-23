@@ -1,0 +1,11 @@
+{
+	"summary": "A stack of three full-width outlined neutral Buttons with align=\"between\": label at the start, a Kbd hint at the end; the last one is loading and keeps its spinner at the start.",
+	"use": "Action grids and menus of full-width buttons where the label is left-aligned and the shortcut sits on the right.",
+	"spec": [
+		"`.grid` with `gap: var(--ca-space-2)` and `max-width: 20rem`",
+		"Each `<Button variant=\"outlined\" tone=\"neutral\" align=\"between\" fullWidth trailingHint>` with a `<Kbd>` in `trailing`: Open lead (O), Assign to me (A)",
+		"Third button Syncing (R) also has `loading`, so the spinner replaces the leading slot while the label stays left"
+	],
+	"tags": ["button", "align", "between", "trailing", "kbd", "full-width", "loading"],
+	"shape": "wide"
+}

@@ -21,6 +21,10 @@ import FullWidth from "~/demos/inputs/button/FullWidth.svelte";
 import FullWidthSrc from "~/demos/inputs/button/FullWidth.svelte?raw";
 import ComponentTokens from "~/demos/inputs/button/ComponentTokens.svelte";
 import ComponentTokensSrc from "~/demos/inputs/button/ComponentTokens.svelte?raw";
+import TrailingHint from "~/demos/inputs/button/TrailingHint.svelte";
+import TrailingHintSrc from "~/demos/inputs/button/TrailingHint.svelte?raw";
+import AlignBetween from "~/demos/inputs/button/AlignBetween.svelte";
+import AlignBetweenSrc from "~/demos/inputs/button/AlignBetween.svelte?raw";
 
 ```svelte
 <script>
@@ -53,6 +57,11 @@ Weight, tracking, line-height, gap, padding and size are component tokens: set t
 - `--ca-btn-touch-height`, `--ca-icon-btn-touch-size`: the `pointer: coarse` minimum, 44px unless you set it.
 - `IconButton`: `--ca-icon-btn-size-{sm,md,lg}` (32/40/48px) and `--ca-icon-btn-font-weight`.
 
+**Keyboard hint: `trailingHint`.** Put a `<Kbd>` in `trailing` and add `trailingHint`: below `md` and on touch screens the slot is `display: none`, so it takes no space and the button is as wide as its label alone. Never hide `.ca-btn__trailing` with a media query in the app. **Label start, hint end: `align="between"`.** With `fullWidth` (or a fixed width) the label stays at the start and `trailing` goes to the end; the loading spinner stays in the leading slot. Do not write `justify-content: flex-start` plus `margin-left: auto` on `.ca-btn__trailing`.
+
+<Demo title="Responsive keyboard hint" description={"`trailingHint` hides the `Kbd` below md and on touch, without leaving a gap."} src={TrailingHintSrc}><TrailingHint /></Demo>
+<Demo title="Align between" description={"`align=\"between\"`: label at the start, hint at the end; the spinner keeps its place."} src={AlignBetweenSrc}><AlignBetween /></Demo>
+
 <Props rows={[
   { name: "variant", type: "'filled' | 'glass' | 'outlined' | 'ghost' | 'destructive'", default: "'filled'", description: "Visual style." },
   { name: "tone", type: "'brand' | 'neutral'", default: "'brand'", description: "`'neutral'` draws `outlined` and `ghost` with neutral label, border and hover fills (adds `ca-btn--neutral`). Other variants ignore it. `IconButton` has the same prop for its `outlined` variant (new, adds `ca-icon-btn--outlined`)." },
@@ -66,6 +75,8 @@ Weight, tracking, line-height, gap, padding and size are component tokens: set t
   { name: "children", type: "Snippet", description: "Button label." },
   { name: "leading", type: "Snippet", description: "Content before the label. Replaced by a spinner while loading." },
   { name: "trailing", type: "Snippet", description: "Content after the label." },
+  { name: "trailingHint", type: "boolean", default: "false", description: "Marks `trailing` as a keyboard hint: hidden below `md` and under `(pointer: coarse)`, with no reserved gap (adds `ca-btn__trailing--hint`)." },
+  { name: "align", type: "'center' | 'between'", default: "'center'", description: "`'between'` pins the label to the start and `trailing` to the end (adds `ca-btn--between`). The loading spinner stays in the leading slot." },
   { name: "onclick", type: "(e: MouseEvent) => void", description: "Click handler. Not called while disabled or loading." },
   { name: "aria-label", type: "string", description: "Accessible name for icon-only buttons." },
   { name: "class", type: "string", description: "Extra classes on the root element." },

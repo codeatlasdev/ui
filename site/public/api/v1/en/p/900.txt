@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #900 "Inline pill" (display/badge).
+What it shows: A follow-up list where each row has a title and an inline subtle Badge pill with a status dot: Overdue (danger), Due today (warning), Done (success) and a neutral Draft without a dot. When to use: Status pills next to a title in lists and queues. The pill sits in text flow; it is not anchored to a corner like a count badge.
+Spec:
+- Unstyled list with a grid and `gap: var(--ca-space-2)`; each `li` is a wrapping flex row
+- Title `span` in `--ca-text-primary`, followed by `<Badge tone="danger" subtle dot size="md">Overdue</Badge>`
+- `tone="warning"` Due today and `tone="success"` Done, both `subtle dot size="md"`
+- `tone="neutral" subtle size="md"` Draft with no dot
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #900 Inline pill → file, what changed, https://ui.codeatlas.com.br/docs/display/badge#inline-pill; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/900.txt   Components API: ca-ui-mcp get_component(Badge)

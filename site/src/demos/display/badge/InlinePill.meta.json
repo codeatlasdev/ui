@@ -1,0 +1,12 @@
+{
+	"summary": "A follow-up list where each row has a title and an inline subtle Badge pill with a status dot: Overdue (danger), Due today (warning), Done (success) and a neutral Draft without a dot.",
+	"use": "Status pills next to a title in lists and queues. The pill sits in text flow; it is not anchored to a corner like a count badge.",
+	"spec": [
+		"Unstyled list with a grid and `gap: var(--ca-space-2)`; each `li` is a wrapping flex row",
+		"Title `span` in `--ca-text-primary`, followed by `<Badge tone=\"danger\" subtle dot size=\"md\">Overdue</Badge>`",
+		"`tone=\"warning\"` Due today and `tone=\"success\"` Done, both `subtle dot size=\"md\"`",
+		"`tone=\"neutral\" subtle size=\"md\"` Draft with no dot"
+	],
+	"tags": ["badge", "tone", "subtle", "dot", "pill", "status", "overdue", "inline", "list"],
+	"shape": "wide"
+}
