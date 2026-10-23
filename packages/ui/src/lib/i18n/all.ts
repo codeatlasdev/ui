@@ -16,6 +16,7 @@ import { badge } from "./groups/badge.js";
 import { breadcrumb } from "./groups/breadcrumb.js";
 import { button } from "./groups/button.js";
 import { calendar } from "./groups/calendar.js";
+import { carousel } from "./groups/carousel.js";
 import { charts } from "./groups/charts.js";
 import { chat } from "./groups/chat.js";
 import { chip } from "./groups/chip.js";
@@ -118,6 +119,7 @@ export const groups = {
 	toast,
 	turnstile,
 	map,
+	carousel,
 	chat,
 	audioPlayer,
 	motionStage,

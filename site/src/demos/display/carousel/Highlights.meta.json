@@ -1,0 +1,12 @@
+{
+	"summary": "A four-slide carousel (Plan, Build, Ship, Learn) with arrows and dots, bound to an index shown in a caption.",
+	"use": "Feature highlights, onboarding steps or testimonials where one item shows at a time.",
+	"spec": [
+		"`<Carousel label=\"Product highlights\" bind:index>` over `{#each slides as title (title)}`",
+		"Each slide is `<CarouselItem><div class=\"slide\">{title}</div></CarouselItem>`",
+		"`slides` is `['Plan', 'Build', 'Ship', 'Learn']`",
+		"Caption `Slide {index + 1} of {slides.length}`"
+	],
+	"tags": ["carousel", "scroll-snap", "slides", "dots", "arrows", "bind-index"],
+	"shape": "wide"
+}

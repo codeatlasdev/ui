@@ -1,0 +1,11 @@
+{
+	"summary": "A looping three-quote carousel that advances every 4 seconds, with a Pause button and no arrows.",
+	"use": "Rotating testimonials or announcements; autoplay is opt-in and always stoppable.",
+	"spec": [
+		"`<Carousel label=\"Customer quotes\" autoplay={4000} loop arrows={false}>`",
+		"Each slide is `<CarouselItem><blockquote class=\"quote\">{quote}</blockquote></CarouselItem>`",
+		"`quotes` holds three short strings"
+	],
+	"tags": ["carousel", "autoplay", "pause", "testimonials", "reduced-motion"],
+	"shape": "wide"
+}
