@@ -19,7 +19,7 @@ Import from the path in each heading. Charts, DataTable, CodeSnippet and the `fo
 
 Snippets: `children`
 
-Classes: `ca-accordion`
+Parts: `ca-accordion`
 
 ## AccordionItem
 
@@ -33,7 +33,13 @@ Classes: `ca-accordion`
 
 Snippets: `children`
 
-Classes: `ca-accordion-item` `ca-accordion-item__body` `ca-accordion-item__chevron` `ca-accordion-item__content` `ca-accordion-item__header` `ca-accordion-item__title` `ca-accordion-item__trigger`
+Parts: `ca-accordion-item` `ca-accordion-item__body` `ca-accordion-item__chevron` `ca-accordion-item__content` `ca-accordion-item__header` `ca-accordion-item__title` `ca-accordion-item__trigger`
+
+Internal (may change in any release): `ca-accordion-down` `ca-accordion-up`
+
+Variables: `--ca-accordion-height`
+
+Data attributes: `data-state` (`closed` `open`)
 
 ## Alert
 
@@ -49,7 +55,7 @@ Classes: `ca-accordion-item` `ca-accordion-item__body` `ca-accordion-item__chevr
 
 Snippets: `children`
 
-Classes: `ca-alert` `ca-alert--error` `ca-alert--info` `ca-alert--success` `ca-alert--warning` `ca-alert__bar` `ca-alert__body` `ca-alert__close` `ca-alert__content` `ca-alert__icon` `ca-alert__title`
+Parts: `ca-alert` `ca-alert--error` `ca-alert--info` `ca-alert--success` `ca-alert--warning` `ca-alert__bar` `ca-alert__body` `ca-alert__close` `ca-alert__content` `ca-alert__icon` `ca-alert__title`
 
 ## AlertDialog
 
@@ -76,9 +82,11 @@ AlertDialog: confirmation that requires an explicit answer (role="alertdialog").
 
 Snippets: `children`
 
-Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
+Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
 
-Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out`
+
+Data attributes: `data-state` (`closed` `open`)
 
 ## AppForm
 
@@ -96,7 +104,7 @@ AppForm: page-level form layout.
 
 Snippets: `leading`, `trailing`, `footer`, `children`
 
-Classes: `ca-app-form` `ca-app-form__body` `ca-app-form__desc` `ca-app-form__footer` `ca-app-form__footer-inner` `ca-app-form__header` `ca-app-form__header-inner` `ca-app-form__inner` `ca-app-form__leading` `ca-app-form__meta` `ca-app-form__title` `ca-app-form__trailing`
+Parts: `ca-app-form` `ca-app-form__body` `ca-app-form__desc` `ca-app-form__footer` `ca-app-form__footer-inner` `ca-app-form__header` `ca-app-form__header-inner` `ca-app-form__inner` `ca-app-form__leading` `ca-app-form__meta` `ca-app-form__title` `ca-app-form__trailing`
 
 ## AppList
 
@@ -119,7 +127,7 @@ AppList: fullscreen CRUD/list layout.
 
 Snippets: `filters` (`Snippet<[ListCtx<T>]>`), `children` (`Snippet<[ListCtx<T>]> \| Snippet`), `actions`, `toolbar`, `empty` (`Snippet<[ListCtx<T>]> \| Snippet`), `footer`
 
-Classes: `ca-app-list` `ca-app-list__actions` `ca-app-list__body` `ca-app-list__clear` `ca-app-list__desc` `ca-app-list__empty` `ca-app-list__empty-msg` `ca-app-list__footer` `ca-app-list__header` `ca-app-list__meta` `ca-app-list__sel-label` `ca-app-list__spacer` `ca-app-list__title` `ca-app-list__toolbar` `ca-app-list__toolbar-sep`
+Parts: `ca-app-list` `ca-app-list__actions` `ca-app-list__body` `ca-app-list__clear` `ca-app-list__desc` `ca-app-list__empty` `ca-app-list__empty-msg` `ca-app-list__footer` `ca-app-list__header` `ca-app-list__meta` `ca-app-list__sel-label` `ca-app-list__spacer` `ca-app-list__title` `ca-app-list__toolbar` `ca-app-list__toolbar-sep`
 
 ## AppSettings
 
@@ -139,7 +147,7 @@ AppSettings: settings/preferences page layout.
 
 Snippets: `actions`, `children` (`Snippet<[string]>`)
 
-Classes: `ca-app-settings` `ca-app-settings__actions` `ca-app-settings__body` `ca-app-settings__content` `ca-app-settings__desc` `ca-app-settings__header` `ca-app-settings__meta` `ca-app-settings__nav` `ca-app-settings__nav-badge` `ca-app-settings__nav-icon` `ca-app-settings__nav-item` `ca-app-settings__nav-label` `ca-app-settings__title`
+Parts: `ca-app-settings` `ca-app-settings__actions` `ca-app-settings__body` `ca-app-settings__content` `ca-app-settings__desc` `ca-app-settings__header` `ca-app-settings__meta` `ca-app-settings__nav` `ca-app-settings__nav-badge` `ca-app-settings__nav-icon` `ca-app-settings__nav-item` `ca-app-settings__nav-label` `ca-app-settings__title`
 
 ## AppShellLayout
 
@@ -167,9 +175,11 @@ Classes: `ca-app-settings` `ca-app-settings__actions` `ca-app-settings__body` `c
 
 Snippets: `stage` (`Snippet<[{ hidden: boolean }]>`), `header`, `brand`, `railBottom`, `railTop`, `bottomNavOverflow`, `mobileHeaderActions`, `mobileTitle`, `children`
 
-Classes: `ca-main` `ca-panel` `ca-shell` `ca-shell--stage` `ca-shell__body` `ca-shell__content` `ca-shell__desktop-header` `ca-shell__mobile-header` `ca-shell__stage` `ca-shell__stage--hidden` `ca-sidebar`
+Parts: `ca-main` `ca-panel` `ca-shell` `ca-shell--stage` `ca-shell__body` `ca-shell__content` `ca-shell__desktop-header` `ca-shell__mobile-header` `ca-shell__stage` `ca-shell__stage--hidden` `ca-sidebar`
 
-Tokens: `--ca-main-ml`
+Variables: `--ca-main-ml` `--ca-panel-w-stored` `--ca-shell-inset-bottom` `--ca-shell-inset-left` `--ca-shell-inset-right` `--ca-shell-inset-top`
+
+Data attributes: `data-ca-hydrated`, `data-ca-panel` (`closed`)
 
 ## AudioPlayer
 
@@ -189,7 +199,9 @@ Tokens: `--ca-main-ml`
 | `onerror?` | `(e: Event) => void` |  | Called when the audio cannot be loaded or played. |
 | `class?` | `string` | `''` | Extra class on the root. |
 
-Classes: `ca-audio` `ca-audio__bar` `ca-audio__bar--played` `ca-audio__error` `ca-audio__meta` `ca-audio__rate` `ca-audio__scrub` `ca-audio__wave`
+Parts: `ca-audio` `ca-audio__bar` `ca-audio__bar--played` `ca-audio__error` `ca-audio__meta` `ca-audio__rate` `ca-audio__scrub` `ca-audio__wave`
+
+Variables: `--ca-audio-bar-gap` `--ca-audio-bar-w` `--ca-audio-wave-h`
 
 ## AuthCard
 
@@ -206,7 +218,7 @@ AuthCard: authentication form card.
 
 Snippets: `footer`, `children`
 
-Classes: `ca-auth-card` `ca-auth-card--plain` `ca-auth-card__body` `ca-auth-card__footer` `ca-auth-card__header` `ca-auth-card__subtitle` `ca-auth-card__title` `ca-auth-card__title--display`
+Parts: `ca-auth-card` `ca-auth-card--plain` `ca-auth-card__body` `ca-auth-card__footer` `ca-auth-card__header` `ca-auth-card__subtitle` `ca-auth-card__title` `ca-auth-card__title--display`
 
 ## AuthLayout
 
@@ -220,7 +232,6 @@ AuthLayout: two-column layout for authentication pages.
 | `logoName?` | `string` |  | Name beside the mark. Defaults to "CodeAtlas UI" unless `brand` is set. |
 | `logoHref?` | `string` | `'/'` |  |
 | `mobileBrand?` | `boolean` | `true` | While the side panel is hidden, `true` shows a compact strip with the brand above the form. A `header` snippet replaces the strip. |
-| `panelTone?` | `'auto' \| 'brand' \| 'flat'` | `'auto'` | Panel background. `brand` is the brand gradient with animated blobs; `flat` is a solid `--ca-auth-panel-bg` with no blobs (design systems that forbid gradients); `auto` (default) is `flat` under the `flat` and `outlined` surface styles and `brand` otherwise. |
 | `panelSide?` | `'left' \| 'right'` | `'left'` | Which side the panel sits on. |
 | `panelBleed?` | `boolean` | `false` | `true` fills the panel edge to edge with the `panel` snippet: no padding, no logo, no decorative blobs. The panel sticks to the viewport height. |
 | `panelHidden?` | `'md' \| 'lg'` | `'md'` | Viewport width from which the panel shows: `md` 900px, `lg` 1200px. Below it only the form shows. |
@@ -228,9 +239,11 @@ AuthLayout: two-column layout for authentication pages.
 
 Snippets: `brand`, `panel`, `header`, `children`
 
-Classes: `ca-auth` `ca-auth--right` `ca-auth__blob` `ca-auth__blob--a` `ca-auth__blob--b` `ca-auth__blob--c` `ca-auth__blobs` `ca-auth__col` `ca-auth__col--framed` `ca-auth__col--start` `ca-auth__header` `ca-auth__logo` `ca-auth__main` `ca-auth__mark` `ca-auth__mobile-brand` `ca-auth__mobile-mark` `ca-auth__mobile-name` `ca-auth__name` `ca-auth__panel` `ca-auth__panel--bleed` `ca-auth__panel-inner` `ca-auth__slot`
+Parts: `ca-auth` `ca-auth--right` `ca-auth__blob` `ca-auth__blob--a` `ca-auth__blob--b` `ca-auth__blob--c` `ca-auth__blobs` `ca-auth__col` `ca-auth__col--framed` `ca-auth__col--start` `ca-auth__header` `ca-auth__logo` `ca-auth__main` `ca-auth__mark` `ca-auth__mobile-brand` `ca-auth__mobile-mark` `ca-auth__mobile-name` `ca-auth__name` `ca-auth__panel` `ca-auth__panel--bleed` `ca-auth__panel-inner` `ca-auth__slot`
 
-Tokens: `--ca-auth-panel-bg`
+Internal (may change in any release): `ca-auth-float`
+
+Data attributes: `data-panel-hidden` (`lg`)
 
 ## Avatar
 
@@ -251,13 +264,11 @@ Avatar: user identity display component.
 | `crossorigin?` | `'anonymous' \| 'use-credentials'` |  | Passed to the `<img>`. |
 | `onerror?` | `(event: Event) => void` |  | Called when the image fails; the fallback shows. Use it to refetch a signed URL. |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size, no image request, announced as busy. |
-| `tone?` | `Tone` | `'palette'` | Fallback colour: `'palette'` (default) derives a colour from the name, so each person keeps theirs; `'neutral'` draws every fallback the same, on `--ca-surface-overlay` with `--ca-text-secondary` and a hairline ring, for a dense list where coloured discs compete with the content. |
-| `decorative?` | `boolean` | `false` | The avatar repeats a name that is already visible next to it: hidden from assistive tech (no name, no image role, no status label) so a screen reader does not say the name twice. |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-avatar` `ca-avatar__fallback` `ca-avatar__fallback--covered` `ca-avatar__img` `ca-avatar__status` `ca-avatar__status--away` `ca-avatar__status--busy` `ca-avatar__status--offline` `ca-avatar__status--online`
+Parts: `ca-avatar` `ca-avatar__fallback` `ca-avatar__fallback--covered` `ca-avatar__img` `ca-avatar__status` `ca-avatar__status--away` `ca-avatar__status--busy` `ca-avatar__status--offline` `ca-avatar__status--online`
 
-Tokens: `--ca-avatar-fallback-bg` `--ca-avatar-fallback-color` `--ca-avatar-fallback-size` `--ca-avatar-fallback-weight` `--ca-avatar-lg-fallback-size` `--ca-avatar-lg-fallback-weight` `--ca-avatar-md-fallback-size` `--ca-avatar-md-fallback-weight` `--ca-avatar-sm-fallback-size` `--ca-avatar-sm-fallback-weight` `--ca-avatar-xl-fallback-size` `--ca-avatar-xl-fallback-weight` `--ca-avatar-xs-fallback-size` `--ca-avatar-xs-fallback-weight`
+Variables: `--ca-bg-body`
 
 ## Badge
 
@@ -266,16 +277,13 @@ Tokens: `--ca-avatar-fallback-bg` `--ca-avatar-fallback-color` `--ca-avatar-fall
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `count?` | `number` |  |  |
-| `dot?` | `boolean` | `false` | Anchored: a plain status dot on the corner. With `tone`: a leading dot inside the pill. |
-| `color?` | `'brand' \| 'success' \| 'error' \| 'warning'` | `'brand'` | Anchored badge colour (`error` is the same hue as `tone="danger"`). Ignored when `tone` is set. |
-| `tone?` | `Tone` |  | Renders an inline pill (in text flow, children are its label) instead of a corner indicator: `<Badge tone="danger" subtle dot>Overdue</Badge>`. |
-| `subtle?` | `boolean` | `false` | Pill only: translucent tinted background with tone-coloured text, instead of a solid fill. |
-| `size?` | `'sm' \| 'md'` | `'sm'` | Pill only: `sm` is 20px high, `md` 24px. |
+| `dot?` | `boolean` | `false` |  |
+| `color?` | `'brand' \| 'success' \| 'error' \| 'warning'` | `'brand'` |  |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
 
-Classes: `ca-badge` `ca-badge--brand` `ca-badge--danger` `ca-badge--dot` `ca-badge--error` `ca-badge--info` `ca-badge--inline` `ca-badge--md` `ca-badge--neutral` `ca-badge--subtle` `ca-badge--success` `ca-badge--warning` `ca-badge-wrapper` `ca-badge__dot`
+Parts: `ca-badge` `ca-badge--brand` `ca-badge--dot` `ca-badge--error` `ca-badge--success` `ca-badge--warning` `ca-badge-wrapper`
 
 ## BarChart
 
@@ -306,7 +314,7 @@ Classes: `ca-badge` `ca-badge--brand` `ca-badge--danger` `ca-badge--dot` `ca-bad
 
 Snippets: `overflow`
 
-Classes: `ca-bottom-nav` `ca-bottom-nav__btn` `ca-bottom-nav__btn--active` `ca-bottom-nav__icon` `ca-bottom-nav__label`
+Parts: `ca-bottom-nav` `ca-bottom-nav__btn` `ca-bottom-nav__btn--active` `ca-bottom-nav__icon` `ca-bottom-nav__label`
 
 ## Box
 
@@ -323,7 +331,7 @@ Snippets: `children`
 
 Also accepts: `PolymorphicAttributes<T, Pick<LayoutProps, 'p' \| 'px' \| 'py'>>`
 
-Classes: `ca-box`
+Parts: `ca-box`
 
 ## Breadcrumb
 
@@ -335,7 +343,7 @@ Classes: `ca-box`
 | `separator?` | `string` | `'/'` |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-breadcrumb__current` `ca-breadcrumb__item` `ca-breadcrumb__link` `ca-breadcrumb__list` `ca-breadcrumb__sep`
+Parts: `ca-breadcrumb__current` `ca-breadcrumb__item` `ca-breadcrumb__link` `ca-breadcrumb__list` `ca-breadcrumb__sep`
 
 ## Button
 
@@ -353,8 +361,6 @@ Classes: `ca-breadcrumb__current` `ca-breadcrumb__item` `ca-breadcrumb__link` `c
 | `href?` | `string` |  | Renders an `<a>` styled as a button. Its attributes (`download`, `rel`, `hreflang`, `ping`, `referrerpolicy`) are then accepted. |
 | `target?` | `string` |  | Anchor target, used with `href`. `"_blank"` adds `noopener noreferrer` to any `rel` you pass. |
 | `class?` | `string` | `''` |  |
-| `trailingHint?` | `boolean` | `false` | Marks `trailing` as a keyboard hint (`<Kbd>`): it is hidden below `md` and on touch screens (`pointer: coarse`) and takes no space there, so the button is as wide as its label alone. |
-| `align?` | `Align` | `'center'` | `'between'` pins the label to the start and `trailing` to the end (use with `fullWidth` or a fixed width). The loading spinner stays in the leading slot. Default `'center'`. |
 | `onclick?` | `(e: MouseEvent) => void` |  |  |
 | `aria-label?` | `string` |  |  |
 
@@ -362,9 +368,7 @@ Snippets: `children`, `leading`, `trailing`
 
 Also accepts: `AnchorAttributes \| ButtonAttributes`
 
-Classes: `ca-btn` `ca-btn--between` `ca-btn--destructive` `ca-btn--filled` `ca-btn--full-width` `ca-btn--ghost` `ca-btn--glass` `ca-btn--lg` `ca-btn--loading` `ca-btn--md` `ca-btn--neutral` `ca-btn--outlined` `ca-btn--sm` `ca-btn__leading` `ca-btn__trailing` `ca-btn__trailing--hint`
-
-Tokens: `--ca-btn-disabled-bg` `--ca-btn-font-weight` `--ca-btn-gap` `--ca-btn-ghost-border-width` `--ca-btn-letter-spacing` `--ca-btn-lg-font-size` `--ca-btn-lg-font-weight` `--ca-btn-lg-height` `--ca-btn-lg-letter-spacing` `--ca-btn-lg-padding-x` `--ca-btn-line-height` `--ca-btn-md-font-size` `--ca-btn-md-font-weight` `--ca-btn-md-height` `--ca-btn-md-letter-spacing` `--ca-btn-md-padding-x` `--ca-btn-sm-font-size` `--ca-btn-sm-font-weight` `--ca-btn-sm-height` `--ca-btn-sm-letter-spacing` `--ca-btn-sm-padding-x` `--ca-btn-touch-height`
+Parts: `ca-btn` `ca-btn--destructive` `ca-btn--filled` `ca-btn--full-width` `ca-btn--ghost` `ca-btn--glass` `ca-btn--lg` `ca-btn--loading` `ca-btn--md` `ca-btn--neutral` `ca-btn--outlined` `ca-btn--sm` `ca-btn__leading` `ca-btn__trailing`
 
 ## Calendar
 
@@ -388,7 +392,11 @@ Tokens: `--ca-btn-disabled-bg` `--ca-btn-font-weight` `--ca-btn-gap` `--ca-btn-g
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap`
+
+Internal (may change in any release): `ca-date-in` `ca-date-out`
+
+Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
 ## Callout
 
@@ -402,7 +410,7 @@ Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__gri
 
 Snippets: `children`
 
-Classes: `ca-alert__content` `ca-callout`
+Parts: `ca-alert__content` `ca-callout`
 
 ## Card
 
@@ -427,9 +435,11 @@ Snippets: `headerActions`, `children`
 
 Also accepts: `Omit<ComponentProps<typeof Surface>, 'as' \| 'children'>`
 
-Classes: `ca-card` `ca-card--flush` `ca-card--full` `ca-card__header` `ca-card__header-actions` `ca-card__title`
+Parts: `ca-card` `ca-card--flush` `ca-card--full` `ca-card__header` `ca-card__header-actions` `ca-card__title`
 
-Tokens: `--ca-card-bg` `--ca-card-border` `--ca-card-gap` `--ca-card-radius` `--ca-card-shadow`
+Variables: `--ca-card-gap`
+
+Data attributes: `data-gap` (`lg` `md` `sm`), `data-padding` (`lg` `md` `none` `sm`)
 
 ## CardGrid
 
@@ -437,7 +447,7 @@ Tokens: `--ca-card-bg` `--ca-card-border` `--ca-card-gap` `--ca-card-radius` `--
 
 Snippets: `children`
 
-Classes: `ca-card-grid`
+Parts: `ca-card-grid`
 
 ## CepField
 
@@ -483,7 +493,9 @@ Also accepts: `Omit<
 			"checked" \| "class" \| "children" \| "onchange" \| "type" \| "value" \| "group" \| "aria-label" \| "aria-labelledby"
 		>`
 
-Classes: `ca-checkbox` `ca-checkbox-wrapper` `ca-checkbox__indicator` `ca-checkbox__input` `ca-checkbox__label` `ca-checkbox__label--disabled`
+Parts: `ca-checkbox` `ca-checkbox-wrapper` `ca-checkbox__indicator` `ca-checkbox__input` `ca-checkbox__label` `ca-checkbox__label--disabled`
+
+Data attributes: `data-disabled`, `data-state` (`checked` `indeterminate`)
 
 ## Chip
 
@@ -501,7 +513,7 @@ Classes: `ca-checkbox` `ca-checkbox-wrapper` `ca-checkbox__indicator` `ca-checkb
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-chip` `ca-chip--brand` `ca-chip--error` `ca-chip--info` `ca-chip--interactive` `ca-chip--selected` `ca-chip--sm` `ca-chip--success` `ca-chip--warning` `ca-chip__delete` `ca-chip__icon` `ca-chip__label`
+Parts: `ca-chip` `ca-chip--brand` `ca-chip--error` `ca-chip--info` `ca-chip--interactive` `ca-chip--selected` `ca-chip--sm` `ca-chip--success` `ca-chip--warning` `ca-chip__delete` `ca-chip__icon` `ca-chip__label`
 
 ## ChipGroup
 
@@ -522,7 +534,9 @@ Classes: `ca-chip` `ca-chip--brand` `ca-chip--error` `ca-chip--info` `ca-chip--i
 | `aria-label?` | `string` |  | Accessible name when there is no visible `label`. |
 | `onchange?` | `(value: string) => void` |  |  |
 
-Classes: `ca-chip-group` `ca-chip-group__check` `ca-chip-group__chip` `ca-chip-group__hint` `ca-chip-group__hint--error` `ca-chip-group__input` `ca-chip-group__label` `ca-chip-group__list` `ca-chip-group__req` `ca-chip-group__text`
+Parts: `ca-chip-group` `ca-chip-group__check` `ca-chip-group__chip` `ca-chip-group__hint` `ca-chip-group__hint--error` `ca-chip-group__input` `ca-chip-group__label` `ca-chip-group__list` `ca-chip-group__req` `ca-chip-group__text`
+
+Data attributes: `data-disabled`, `data-invalid`, `data-state` (`checked`)
 
 ## CodeSnippet
 
@@ -534,7 +548,7 @@ Classes: `ca-chip-group` `ca-chip-group__check` `ca-chip-group__chip` `ca-chip-g
 | `language?` | `string` | `'svelte'` |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-code-snippet` `ca-code-snippet__copy` `ca-code-snippet__lang` `ca-code-snippet__pre` `ca-code-snippet__pre--raw` `ca-code-snippet__toolbar`
+Parts: `ca-code-snippet` `ca-code-snippet__copy` `ca-code-snippet__lang` `ca-code-snippet__pre` `ca-code-snippet__pre--raw` `ca-code-snippet__toolbar`
 
 ## CodeTab
 
@@ -546,7 +560,7 @@ Classes: `ca-code-snippet` `ca-code-snippet__copy` `ca-code-snippet__lang` `ca-c
 
 Snippets: `children`
 
-Classes: `ca-codetab`
+Parts: `ca-codetab`
 
 ## CodeTabs
 
@@ -560,7 +574,7 @@ Classes: `ca-codetab`
 
 Snippets: `children`
 
-Classes: `ca-codetabs` `ca-codetabs__bar` `ca-codetabs__copy` `ca-codetabs__panels` `ca-codetabs__tab` `ca-codetabs__tabs`
+Parts: `ca-codetabs` `ca-codetabs__bar` `ca-codetabs__copy` `ca-codetabs__panels` `ca-codetabs__tab` `ca-codetabs__tabs`
 
 ## Collapsible
 
@@ -576,7 +590,13 @@ Classes: `ca-codetabs` `ca-codetabs__bar` `ca-codetabs__copy` `ca-codetabs__pane
 
 Snippets: `children`
 
-Classes: `ca-collapsible` `ca-collapsible__body` `ca-collapsible__chevron` `ca-collapsible__content` `ca-collapsible__title` `ca-collapsible__trigger`
+Parts: `ca-collapsible` `ca-collapsible__body` `ca-collapsible__chevron` `ca-collapsible__content` `ca-collapsible__title` `ca-collapsible__trigger`
+
+Internal (may change in any release): `ca-slide-down` `ca-slide-up`
+
+Variables: `--ca-collapsible-height`
+
+Data attributes: `data-state` (`closed` `open`)
 
 ## Combobox
 
@@ -602,7 +622,11 @@ Classes: `ca-collapsible` `ca-collapsible__body` `ca-collapsible__chevron` `ca-c
 | `oncreate?` | `(value: string) => void` |  | Called when a new tag is created via `creatable`. Receives the new value string. |
 | `creatable?` | `boolean` | `false` | Show a "Create …" option when the query doesn't match any existing option exactly. |
 
-Classes: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chevron` `ca-combobox__chip` `ca-combobox__chips` `ca-combobox__content` `ca-combobox__empty` `ca-combobox__hint` `ca-combobox__hint--error` `ca-combobox__input` `ca-combobox__item` `ca-combobox__item--create` `ca-combobox__item-check` `ca-combobox__label` `ca-combobox__req` `ca-combobox__search-wrap` `ca-combobox__trigger` `ca-combobox__trigger-count` `ca-combobox__trigger-label` `ca-combobox__viewport` `ca-validity-proxy`
+Parts: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chevron` `ca-combobox__chip` `ca-combobox__chips` `ca-combobox__content` `ca-combobox__empty` `ca-combobox__hint` `ca-combobox__hint--error` `ca-combobox__input` `ca-combobox__item` `ca-combobox__item--create` `ca-combobox__item-check` `ca-combobox__label` `ca-combobox__req` `ca-combobox__search-wrap` `ca-combobox__trigger` `ca-combobox__trigger-count` `ca-combobox__trigger-label` `ca-combobox__viewport` `ca-validity-proxy`
+
+Variables: `--ca-anchor-width`
+
+Data attributes: `data-disabled`, `data-highlighted`, `data-state` (`open`)
 
 ## CommandPalette
 
@@ -620,9 +644,11 @@ Classes: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chev
 | `searchDebounce?` | `number` | `200` | Debounce delay (ms) before `search` is called after the last keystroke. Default 200. |
 | `shortcut?` | `boolean` | `true` | Opens and closes on Mod+K (Cmd+K / Ctrl+K) anywhere in the window. Turn it off for every palette but one when a page has several, or when the app binds its own shortcut. |
 
-Classes: `ca-cmd-dialog` `ca-cmd-empty` `ca-cmd-error` `ca-cmd-group__label` `ca-cmd-item` `ca-cmd-item--active` `ca-cmd-item__icon` `ca-cmd-item__label` `ca-cmd-item__module` `ca-cmd-list` `ca-cmd-loading` `ca-cmd-overlay` `ca-cmd-search` `ca-cmd-search__hint` `ca-cmd-search__icon` `ca-cmd-search__input` `ca-cmd-search__spinner` `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
+Parts: `ca-cmd-dialog` `ca-cmd-empty` `ca-cmd-error` `ca-cmd-group__label` `ca-cmd-item` `ca-cmd-item--active` `ca-cmd-item__icon` `ca-cmd-item__label` `ca-cmd-item__module` `ca-cmd-list` `ca-cmd-loading` `ca-cmd-overlay` `ca-cmd-search` `ca-cmd-search__hint` `ca-cmd-search__icon` `ca-cmd-search__input` `ca-cmd-search__spinner` `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
 
-Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Internal (may change in any release): `ca-cmd-slide-in` `ca-cmd-slide-out` `ca-cmd-spin` `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out`
+
+Data attributes: `data-state` (`closed` `open`)
 
 ## Container
 
@@ -640,9 +666,11 @@ Snippets: `children`
 
 Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>, Pick<LayoutProps, 'px' \| 'py'>`
 
-Classes: `ca-container`
+Parts: `ca-container`
 
-Tokens: `--ca-container-max`
+Variables: `--ca-container-max`
+
+Data attributes: `data-lg-px`, `data-md-px`, `data-px`, `data-size` (`lg` `md` `sm` `xl`), `data-sm-px`, `data-xl-px`
 
 ## ConversationItem
 
@@ -664,7 +692,7 @@ Tokens: `--ca-container-max`
 
 Snippets: `previewIcon`, `avatar`
 
-Classes: `ca-conversation` `ca-conversation--active` `ca-conversation--unread` `ca-conversation__avatar` `ca-conversation__flags` `ca-conversation__line` `ca-conversation__main` `ca-conversation__preview` `ca-conversation__preview--typing` `ca-conversation__previewicon` `ca-conversation__previewrow` `ca-conversation__time` `ca-conversation__title` `ca-conversation__unread` `ca-conversation__unread--muted`
+Parts: `ca-conversation` `ca-conversation--active` `ca-conversation--unread` `ca-conversation__avatar` `ca-conversation__flags` `ca-conversation__line` `ca-conversation__main` `ca-conversation__preview` `ca-conversation__preview--typing` `ca-conversation__previewicon` `ca-conversation__previewrow` `ca-conversation__time` `ca-conversation__title` `ca-conversation__unread` `ca-conversation__unread--muted`
 
 ## CopyButton
 
@@ -713,7 +741,9 @@ Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class' \| 'children' \| 'oncli
 
 Snippets: `emptyState`, `children`, `groupLabel` (`Snippet<[{ group: string; count: number }]>`)
 
-Classes: `ca-datatable` `ca-datatable__clear` `ca-datatable__empty-panel` `ca-datatable__glass` `ca-datatable__grip` `ca-datatable__grip-cell` `ca-datatable__grip-col` `ca-datatable__group` `ca-datatable__group-count` `ca-datatable__group-row` `ca-datatable__group-toggle` `ca-datatable__no-results` `ca-datatable__no-results-icon` `ca-datatable__no-results-inner` `ca-datatable__no-results-sub` `ca-datatable__no-results-title` `ca-datatable__row--clickable` `ca-datatable__scroll` `ca-datatable__table` `ca-datatable__table--fixed` `ca-datatable__tbody` `ca-datatable__thead`
+Parts: `ca-datatable` `ca-datatable__clear` `ca-datatable__empty-panel` `ca-datatable__glass` `ca-datatable__grip` `ca-datatable__grip-cell` `ca-datatable__grip-col` `ca-datatable__group` `ca-datatable__group-count` `ca-datatable__group-row` `ca-datatable__group-toggle` `ca-datatable__no-results` `ca-datatable__no-results-icon` `ca-datatable__no-results-inner` `ca-datatable__no-results-sub` `ca-datatable__no-results-title` `ca-datatable__row--clickable` `ca-datatable__scroll` `ca-datatable__table` `ca-datatable__table--fixed` `ca-datatable__tbody` `ca-datatable__thead`
+
+Variables: `--ca-col-w` `--ca-datatable-w`
 
 ## DataTableColumnHeader
 
@@ -725,7 +755,7 @@ Classes: `ca-datatable` `ca-datatable__clear` `ca-datatable__empty-panel` `ca-da
 | `title` | `string` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-col-header` `ca-col-header__idle`
+Parts: `ca-col-header` `ca-col-header__idle`
 
 ## DataTableColumnResize
 
@@ -737,7 +767,7 @@ Classes: `ca-col-header` `ca-col-header__idle`
 | `label` | `string` |  | Accessible name, e.g. "Resize Title". |
 | `step?` | `number` | `10` | Keyboard step in px (Shift uses 4x). |
 
-Classes: `ca-datatable__resize` `ca-datatable__resize--active`
+Parts: `ca-datatable__resize` `ca-datatable__resize--active`
 
 ## DataTableColumnToggle
 
@@ -747,7 +777,7 @@ Classes: `ca-datatable__resize` `ca-datatable__resize--active`
 |---|---|---|---|
 | `table` | `CaTable<TData>` |  |  |
 
-Classes: `ca-col-toggle__check` `ca-col-toggle__content` `ca-col-toggle__item` `ca-col-toggle__trigger`
+Parts: `ca-col-toggle__check` `ca-col-toggle__content` `ca-col-toggle__item` `ca-col-toggle__trigger`
 
 ## DataTableFacetedFilter
 
@@ -761,7 +791,7 @@ Classes: `ca-col-toggle__check` `ca-col-toggle__content` `ca-col-toggle__item` `
 | `selected?` | `string[]` | `[]` |  |
 | `onSelectionChange` | `(values: string[]) => void` |  |  |
 
-Classes: `ca-facet__badge` `ca-facet__check` `ca-facet__clear` `ca-facet__content` `ca-facet__count` `ca-facet__empty` `ca-facet__footer` `ca-facet__item` `ca-facet__item--active` `ca-facet__item-label` `ca-facet__list` `ca-facet__sep` `ca-facet__trigger`
+Parts: `ca-facet__badge` `ca-facet__check` `ca-facet__clear` `ca-facet__content` `ca-facet__count` `ca-facet__empty` `ca-facet__footer` `ca-facet__item` `ca-facet__item--active` `ca-facet__item-label` `ca-facet__list` `ca-facet__sep` `ca-facet__trigger`
 
 ## DataTablePagination
 
@@ -772,7 +802,7 @@ Classes: `ca-facet__badge` `ca-facet__check` `ca-facet__clear` `ca-facet__conten
 | `table` | `CaTable<TData>` |  |  |
 | `total` | `number` |  |  |
 
-Classes: `ca-dt-pagination` `ca-dt-pagination__btn` `ca-dt-pagination__count` `ca-dt-pagination__label` `ca-dt-pagination__nav` `ca-dt-pagination__select` `ca-dt-pagination__size`
+Parts: `ca-dt-pagination` `ca-dt-pagination__btn` `ca-dt-pagination__count` `ca-dt-pagination__label` `ca-dt-pagination__nav` `ca-dt-pagination__select` `ca-dt-pagination__size`
 
 ## DataTableToolbar
 
@@ -791,7 +821,9 @@ Classes: `ca-dt-pagination` `ca-dt-pagination__btn` `ca-dt-pagination__count` `c
 
 Snippets: `children`
 
-Classes: `ca-dt-toolbar` `ca-dt-toolbar__count` `ca-dt-toolbar__export` `ca-dt-toolbar__input` `ca-dt-toolbar__left` `ca-dt-toolbar__right` `ca-dt-toolbar__search` `ca-dt-toolbar__search-icon` `ca-dt-toolbar__spinner`
+Parts: `ca-dt-toolbar` `ca-dt-toolbar__count` `ca-dt-toolbar__export` `ca-dt-toolbar__input` `ca-dt-toolbar__left` `ca-dt-toolbar__right` `ca-dt-toolbar__search` `ca-dt-toolbar__search-icon` `ca-dt-toolbar__spinner`
+
+Internal (may change in any release): `ca-spin`
 
 ## DateField
 
@@ -817,7 +849,11 @@ Classes: `ca-dt-toolbar` `ca-dt-toolbar__count` `ca-dt-toolbar__export` `ca-dt-t
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap`
+
+Internal (may change in any release): `ca-date-in` `ca-date-out`
+
+Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
 ## DatePicker
 
@@ -849,7 +885,11 @@ Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__gri
 | `onchange?` | `(value: DateValue \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap`
+
+Internal (may change in any release): `ca-date-in` `ca-date-out`
+
+Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
 ## DateRangePicker
 
@@ -879,7 +919,11 @@ Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__gri
 | `onchange?` | `(value: DateRange) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap`
+
+Internal (may change in any release): `ca-date-in` `ca-date-out`
+
+Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
 ## Dialog
 
@@ -894,17 +938,16 @@ Dialog: second-layer modal.
 | `description?` | `string` |  |  |
 | `size?` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'split'` | `'md'` | 'sm' = 400px \| 'md' = 480px (default) \| 'lg' = 600px \| 'xl' = 820px \| 'split' = 1100×720 two-column |
 | `chromeless?` | `boolean` | `false` | Omits header, description and actions; body has no padding. Pass `title` for the accessible name (visually hidden). |
-| `splitColumns?` | `string` |  | Column template of the `size="split"` body (CSS `grid-template-columns`), e.g. `'2fr 3fr'`. Default `'1fr 1fr'`. Sets `--ca-dialog-split-columns`. |
-| `splitSize?` | `{ width?: string; height?: string }` |  | Panel box of `size="split"`, any CSS length: `{ width: 'min(66vw, 80rem)', height: 'min(88svh, 56rem)' }`. Default 1100×720, capped to the viewport. Sets `--ca-dialog-split-width` / `--ca-dialog-split-height`. |
-| `fullscreenBelow?` | `'sm' \| 'md'` |  | Full screen below this breakpoint (`'sm'` = 600px, `'md'` = 900px), any `size`: exactly the viewport (`--ca-vh`), square corners, safe-area padding kept. Focus trap and Escape are unchanged. |
 | `class?` | `string` | `''` |  |
 | `onOpenChange?` | `(open: boolean) => void` |  |  |
 
 Snippets: `children`, `actions`
 
-Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
+Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
 
-Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out`
+
+Data attributes: `data-state` (`closed` `open`)
 
 ## Divider
 
@@ -915,7 +958,7 @@ Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-spli
 | `orientation?` | `'horizontal' \| 'vertical'` | `'horizontal'` |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-divider` `ca-divider--horizontal` `ca-divider--vertical`
+Parts: `ca-divider` `ca-divider--horizontal` `ca-divider--vertical`
 
 ## DndLayer
 
@@ -925,7 +968,9 @@ Classes: `ca-divider` `ca-divider--horizontal` `ca-divider--vertical`
 |---|---|---|---|
 | `dnd` | `Dnd` |  | The instance returned by `useDnd()`. |
 
-Classes: `ca-dnd-indicator` `ca-dnd-overlay`
+Parts: `ca-dnd-indicator` `ca-dnd-overlay`
+
+Data attributes: `data-axis` (`x` `y`), `data-dnd-active`, `data-dnd-dragging`, `data-dnd-item`, `data-dnd-over`, `data-dnd-pressing`, `data-dnd-zone`
 
 ## DocsNav
 
@@ -938,7 +983,7 @@ Classes: `ca-dnd-indicator` `ca-dnd-overlay`
 | `label?` | `string` |  |  |
 | `onNavigate?` | `() => void` |  | Called after a link is followed (closes the mobile Sheet). |
 
-Classes: `ca-docs-nav` `ca-docs-nav__label` `ca-docs-nav__link` `ca-docs-nav__title`
+Parts: `ca-docs-nav` `ca-docs-nav__label` `ca-docs-nav__link` `ca-docs-nav__title`
 
 ## DocsSearch
 
@@ -953,9 +998,11 @@ Classes: `ca-docs-nav` `ca-docs-nav__label` `ca-docs-nav__link` `ca-docs-nav__ti
 | `hint?` | `string` |  |  |
 | `class?` | `string` |  |  |
 
-Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-docs-search` `ca-docs-search__bar` `ca-docs-search__body` `ca-docs-search__cancel` `ca-docs-search__context` `ca-docs-search__empty` `ca-docs-search__enter` `ca-docs-search__esc` `ca-docs-search__icon` `ca-docs-search__input` `ca-docs-search__result` `ca-docs-search__result--on` `ca-docs-search__results` `ca-docs-search__text` `ca-docs-search__title` `ca-layer-close` `ca-overlay`
+Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-docs-search` `ca-docs-search__bar` `ca-docs-search__body` `ca-docs-search__cancel` `ca-docs-search__context` `ca-docs-search__empty` `ca-docs-search__enter` `ca-docs-search__esc` `ca-docs-search__icon` `ca-docs-search__input` `ca-docs-search__result` `ca-docs-search__result--on` `ca-docs-search__results` `ca-docs-search__text` `ca-docs-search__title` `ca-layer-close` `ca-overlay`
 
-Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-docs-search-in` `ca-docs-search-out` `ca-docs-search-pop-in` `ca-docs-search-pop-out` `ca-overlay-in` `ca-overlay-out`
+
+Data attributes: `data-state` (`closed` `open`)
 
 ## DocsShell
 
@@ -976,7 +1023,9 @@ Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-spli
 
 Snippets: `brand`, `actions`, `menuFooter`, `children`
 
-Classes: `ca-docs` `ca-docs--bare` `ca-docs-actions` `ca-docs-brand` `ca-docs-header` `ca-docs-header__inner` `ca-docs-icon` `ca-docs-main` `ca-docs-pager` `ca-docs-pager__link` `ca-docs-pager__link--next` `ca-docs-pager__text` `ca-docs-pager__title` `ca-docs-search-btn` `ca-docs-search-btn__label` `ca-docs-section` `ca-docs-sections` `ca-docs-sheet-sections` `ca-docs-sidebar` `ca-docs-spacer` `ca-docs-theme` `ca-docs-toc` `ca-docs-toc-inline` `ca-rail-btn`
+Parts: `ca-docs` `ca-docs--bare` `ca-docs-actions` `ca-docs-brand` `ca-docs-header` `ca-docs-header__inner` `ca-docs-icon` `ca-docs-main` `ca-docs-pager` `ca-docs-pager__link` `ca-docs-pager__link--next` `ca-docs-pager__text` `ca-docs-pager__title` `ca-docs-search-btn` `ca-docs-search-btn__label` `ca-docs-section` `ca-docs-sections` `ca-docs-sheet-sections` `ca-docs-sidebar` `ca-docs-spacer` `ca-docs-theme` `ca-docs-toc` `ca-docs-toc-inline` `ca-rail-btn`
+
+Variables: `--ca-docs-header-h` `--ca-docs-max-w` `--ca-docs-sidebar-w` `--ca-docs-toc-w`
 
 ## Drawer
 
@@ -1000,9 +1049,11 @@ Snippets: `children`, `actions`
 
 Also accepts: `Omit<HTMLDialogAttributes, 'children' \| 'open' \| 'title' \| 'class' \| 'role' \| 'onclose' \| 'oncancel'>`
 
-Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-drawer` `ca-drawer--bottom` `ca-drawer--left` `ca-drawer--right` `ca-drawer__actions` `ca-drawer__body` `ca-drawer__header` `ca-drawer__header--bare` `ca-drawer__title` `ca-layer-close` `ca-overlay`
+Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-drawer` `ca-drawer--bottom` `ca-drawer--left` `ca-drawer--right` `ca-drawer__actions` `ca-drawer__body` `ca-drawer__header` `ca-drawer__header--bare` `ca-drawer__title` `ca-layer-close` `ca-overlay`
 
-Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-drawer-bottom-in` `ca-drawer-bottom-out` `ca-drawer-left-in` `ca-drawer-left-out` `ca-drawer-right-in` `ca-drawer-right-out` `ca-overlay-in` `ca-overlay-out`
+
+Data attributes: `data-chromeless`, `data-full-bleed` (`lg` `md` `sm`), `data-state` (`closed` `open`)
 
 ## DropdownMenu
 
@@ -1020,7 +1071,13 @@ Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-spli
 
 Snippets: `trigger`, `triggerChild` (`Snippet<[Record<string, unknown>]>`), `children`
 
-Classes: `ca-dropdown-content` `ca-dropdown__point` `ca-dropdown__trigger`
+Parts: `ca-dropdown-content` `ca-dropdown__point` `ca-dropdown__trigger`
+
+Internal (may change in any release): `ca-dropdown-in` `ca-dropdown-out`
+
+Variables: `--ca-point-x` `--ca-point-y`
+
+Data attributes: `data-align` (`end`), `data-side` (`top`), `data-state` (`closed`)
 
 ## DropdownMenuCheckboxItem
 
@@ -1054,7 +1111,9 @@ Snippets: `icon`, `children`
 
 Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'onclick' \| 'role' \| 'tabindex'>`
 
-Classes: `ca-dropdown-item` `ca-dropdown-item--destructive` `ca-dropdown-item__icon` `ca-dropdown-item__indicator`
+Parts: `ca-dropdown-item` `ca-dropdown-item--destructive` `ca-dropdown-item__icon` `ca-dropdown-item__indicator`
+
+Data attributes: `data-brand`, `data-disabled`, `data-highlighted`
 
 ## DropdownMenuLabel
 
@@ -1066,7 +1125,7 @@ Classes: `ca-dropdown-item` `ca-dropdown-item--destructive` `ca-dropdown-item__i
 
 Snippets: `children`
 
-Classes: `ca-dropdown-label`
+Parts: `ca-dropdown-label`
 
 ## DropdownMenuRadioGroup
 
@@ -1101,7 +1160,7 @@ Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'on
 
 `import { DropdownMenuSeparator } from "@codeatlasdev/ui"`
 
-Classes: `ca-dropdown-sep`
+Parts: `ca-dropdown-sep`
 
 ## DropdownMenuSub
 
@@ -1121,7 +1180,7 @@ Classes: `ca-dropdown-sep`
 
 Snippets: `trigger`, `children`
 
-Classes: `ca-dropdown-sub`
+Parts: `ca-dropdown-sub`
 
 ## DropdownMenuSubTrigger
 
@@ -1135,7 +1194,9 @@ Snippets: `icon`, `children`
 
 Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'onclick' \| 'role' \| 'tabindex'>`
 
-Classes: `ca-dropdown-item--sub-trigger` `ca-dropdown-item__chevron` `ca-dropdown-item__label`
+Parts: `ca-dropdown-item--sub-trigger` `ca-dropdown-item__chevron` `ca-dropdown-item__label`
+
+Data attributes: `data-highlighted`, `data-state` (`open`)
 
 ## EmptyState
 
@@ -1149,15 +1210,11 @@ Classes: `ca-dropdown-item--sub-trigger` `ca-dropdown-item__chevron` `ca-dropdow
 | `variant?` | `'default' \| 'hero'` | `'default'` | 'default' = compact inline empty state. 'hero'    = larger brand-tinted icon tile with glow, bigger title; `actions` stack full-width on mobile (put the primary action first). |
 | `description?` | `string` |  |  |
 | `display?` | `boolean` | `false` | Display text role for the title: `--ca-display-tracking`, `--ca-display-leading` and the fluid `--ca-font-size-display-3`. |
-| `bare?` | `boolean` | `false` | No padding: an empty state inside a Card, a table or a pane that already insets its content. |
-| `actionsFill?` | `boolean` | `false` | Stacks `actions` full-width at every width (one wide button, an invite form). `variant="hero"` already does it in a narrow slot. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `actions`, `children`
 
-Classes: `ca-empty` `ca-empty--bare` `ca-empty--fill` `ca-empty--hero` `ca-empty__actions` `ca-empty__description` `ca-empty__icon` `ca-empty__title` `ca-empty__title--display`
-
-Tokens: `--ca-empty-padding` `--ca-empty-title-size` `--ca-empty-title-weight`
+Parts: `ca-empty` `ca-empty--hero` `ca-empty__actions` `ca-empty__description` `ca-empty__icon` `ca-empty__title` `ca-empty__title--display`
 
 ## ErrorPage
 
@@ -1171,7 +1228,7 @@ Tokens: `--ca-empty-padding` `--ca-empty-title-size` `--ca-empty-title-weight`
 | `hideActions?` | `boolean` | `false` | Hide the back/home action buttons |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-error-page` `ca-error-page__actions` `ca-error-page__bubble` `ca-error-page__hint` `ca-error-page__inner` `ca-error-page__status` `ca-error-page__title`
+Parts: `ca-error-page` `ca-error-page__actions` `ca-error-page__bubble` `ca-error-page__hint` `ca-error-page__inner` `ca-error-page__status` `ca-error-page__title`
 
 ## ExportMenu
 
@@ -1204,7 +1261,7 @@ Snippets: `children`
 
 Also accepts: `Omit<HTMLAnchorAttributes, 'class' \| 'children' \| 'target' \| 'rel' \| 'href'>`
 
-Classes: `ca-external-link`
+Parts: `ca-external-link`
 
 ## FileUpload
 
@@ -1228,7 +1285,7 @@ Snippets: `children`
 
 Also accepts: `Omit<HTMLInputAttributes, 'type' \| 'value' \| 'files' \| 'class' \| 'children' \| 'onchange' \| 'list'>`
 
-Classes: `ca-file-upload` `ca-file-upload--disabled` `ca-file-upload__errors` `ca-file-upload__file` `ca-file-upload__file-icon` `ca-file-upload__file-name` `ca-file-upload__file-size` `ca-file-upload__hint` `ca-file-upload__icon` `ca-file-upload__input` `ca-file-upload__label` `ca-file-upload__list` `ca-file-upload__remove` `ca-file-upload__zone` `ca-file-upload__zone--dragging`
+Parts: `ca-file-upload` `ca-file-upload--disabled` `ca-file-upload__errors` `ca-file-upload__file` `ca-file-upload__file-icon` `ca-file-upload__file-name` `ca-file-upload__file-size` `ca-file-upload__hint` `ca-file-upload__icon` `ca-file-upload__input` `ca-file-upload__label` `ca-file-upload__list` `ca-file-upload__remove` `ca-file-upload__zone` `ca-file-upload__zone--dragging`
 
 ## FilterGroup
 
@@ -1242,7 +1299,7 @@ Classes: `ca-file-upload` `ca-file-upload--disabled` `ca-file-upload__errors` `c
 | `onchange?` | `(value: string) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-filter-group` `ca-filter-group__item` `ca-filter-group__label`
+Parts: `ca-filter-group` `ca-filter-group__item` `ca-filter-group__label`
 
 ## Flex
 
@@ -1259,7 +1316,7 @@ Snippets: `children`
 
 Also accepts: `PolymorphicAttributes<T, Pick<LayoutProps, 'gap' \| 'p' \| 'px' \| 'py' \| 'align' \| 'justify' \| 'direction' \| 'wrap'>>`
 
-Classes: `ca-flex`
+Parts: `ca-flex`
 
 ## FormSection
 
@@ -1278,7 +1335,7 @@ FormSection: form section with a title, description and field layout.
 
 Snippets: `children`
 
-Classes: `ca-form-section` `ca-form-section--grid` `ca-form-section--list` `ca-form-section--stack` `ca-form-section__desc` `ca-form-section__fields` `ca-form-section__header` `ca-form-section__title`
+Parts: `ca-form-section` `ca-form-section--grid` `ca-form-section--list` `ca-form-section--stack` `ca-form-section__desc` `ca-form-section__fields` `ca-form-section__header` `ca-form-section__title`
 
 ## GaugeChart
 
@@ -1307,7 +1364,7 @@ Classes: `ca-form-section` `ca-form-section--grid` `ca-form-section--list` `ca-f
 
 Snippets: `children`, `leading`, `trailing`
 
-Classes: `ca-app-bar` `ca-app-bar__content` `ca-app-bar__leading` `ca-app-bar__trailing`
+Parts: `ca-app-bar` `ca-app-bar__content` `ca-app-bar__leading` `ca-app-bar__trailing`
 
 ## GlassCard
 
@@ -1332,7 +1389,7 @@ Classes: `ca-app-bar` `ca-app-bar__content` `ca-app-bar__leading` `ca-app-bar__t
 
 Snippets: `headerActions`, `children`
 
-Classes: `ca-glass-card` `ca-glass-card--flush` `ca-glass-card--full` `ca-glass-card__header` `ca-glass-card__header-actions` `ca-glass-card__title`
+Parts: `ca-glass-card` `ca-glass-card--flush` `ca-glass-card--full` `ca-glass-card__header` `ca-glass-card__header-actions` `ca-glass-card__title`
 
 ## GlassSurface
 
@@ -1366,7 +1423,7 @@ Snippets: `children`
 
 Also accepts: `PolymorphicAttributes<T, Pick<LayoutProps, 'columns' \| 'gap' \| 'p' \| 'px' \| 'py' \| 'align'>>`
 
-Classes: `ca-grid`
+Parts: `ca-grid`
 
 ## Heading
 
@@ -1380,7 +1437,7 @@ Classes: `ca-grid`
 
 Snippets: `children`
 
-Classes: `ca-heading` `ca-heading--display` `ca-heading--display-2` `ca-heading--display-3` `ca-heading--h1` `ca-heading--h2` `ca-heading--h3` `ca-heading--h4` `ca-heading--h5` `ca-heading--h6`
+Parts: `ca-heading` `ca-heading--display` `ca-heading--display-2` `ca-heading--display-3` `ca-heading--h1` `ca-heading--h2` `ca-heading--h3` `ca-heading--h4` `ca-heading--h5` `ca-heading--h6`
 
 ## HeatmapChart
 
@@ -1411,9 +1468,11 @@ Classes: `ca-heading` `ca-heading--display` `ca-heading--display-2` `ca-heading-
 
 Snippets: `children`
 
-Classes: `ca-highlight` `ca-highlight--animated`
+Parts: `ca-highlight` `ca-highlight--animated`
 
-Tokens: `--ca-highlight-color`
+Internal (may change in any release): `ca-highlight-sweep`
+
+Variables: `--ca-highlight-color`
 
 ## I18nProvider
 
@@ -1447,9 +1506,7 @@ Snippets: `children`
 
 Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class' \| 'children' \| 'onclick' \| 'aria-label'>`
 
-Classes: `ca-icon-btn` `ca-icon-btn--filled` `ca-icon-btn--glass` `ca-icon-btn--lg` `ca-icon-btn--loading` `ca-icon-btn--md` `ca-icon-btn--neutral` `ca-icon-btn--outlined` `ca-icon-btn--sm` `ca-icon-btn--text`
-
-Tokens: `--ca-icon-btn-font-weight` `--ca-icon-btn-size-lg` `--ca-icon-btn-size-md` `--ca-icon-btn-size-sm` `--ca-icon-btn-touch-size`
+Parts: `ca-icon-btn` `ca-icon-btn--filled` `ca-icon-btn--glass` `ca-icon-btn--lg` `ca-icon-btn--loading` `ca-icon-btn--md` `ca-icon-btn--neutral` `ca-icon-btn--outlined` `ca-icon-btn--sm` `ca-icon-btn--text`
 
 ## Image
 
@@ -1469,7 +1526,7 @@ Tokens: `--ca-icon-btn-font-weight` `--ca-icon-btn-size-lg` `--ca-icon-btn-size-
 
 Also accepts: `Omit<HTMLImgAttributes, 'src' \| 'alt' \| 'width' \| 'height' \| 'class' \| 'loading' \| 'decoding' \| 'fetchpriority'>`
 
-Classes: `ca-image`
+Parts: `ca-image`
 
 ## InstallPrompt
 
@@ -1484,7 +1541,7 @@ Classes: `ca-image`
 | `ondismiss?` | `() => void` |  | Called when the user closes the banner with the close button. |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-install` `ca-install__body` `ca-install__close` `ca-install__glyph` `ca-install__icon` `ca-install__steps` `ca-install__text` `ca-install__title`
+Parts: `ca-install` `ca-install__body` `ca-install__close` `ca-install__glyph` `ca-install__icon` `ca-install__steps` `ca-install__text` `ca-install__title`
 
 ## Kanban
 
@@ -1505,9 +1562,11 @@ Classes: `ca-install` `ca-install__body` `ca-install__close` `ca-install__glyph`
 
 Snippets: `card` (`Snippet<[T, KanbanCardState]>`), `empty` (`Snippet<[KanbanColumn<T>, { canMove: boolean }]>`), `header` (`Snippet<[KanbanColumn<T>]>`)
 
-Classes: `ca-kanban` `ca-kanban--mobile` `ca-kanban__board` `ca-kanban__body` `ca-kanban__card` `ca-kanban__col` `ca-kanban__count` `ca-kanban__dot` `ca-kanban__empty` `ca-kanban__head` `ca-kanban__list` `ca-kanban__more` `ca-kanban__move` `ca-kanban__rail` `ca-kanban__skeleton` `ca-kanban__tab` `ca-kanban__tabs` `ca-kanban__title`
+Parts: `ca-kanban` `ca-kanban--mobile` `ca-kanban__board` `ca-kanban__body` `ca-kanban__card` `ca-kanban__col` `ca-kanban__count` `ca-kanban__dot` `ca-kanban__empty` `ca-kanban__head` `ca-kanban__list` `ca-kanban__more` `ca-kanban__move` `ca-kanban__rail` `ca-kanban__skeleton` `ca-kanban__tab` `ca-kanban__tabs` `ca-kanban__title`
 
-Tokens: `--ca-kanban-color`
+Variables: `--ca-kanban-color`
+
+Data attributes: `data-dnd-over`, `data-fade` (`both` `end` `start`), `data-panning`
 
 ## Kbd
 
@@ -1519,9 +1578,7 @@ Tokens: `--ca-kanban-color`
 
 Snippets: `children`
 
-Classes: `ca-kbd`
-
-Tokens: `--ca-kbd-font-size` `--ca-kbd-line-height` `--ca-kbd-size`
+Parts: `ca-kbd`
 
 ## KpiCard
 
@@ -1537,7 +1594,7 @@ Tokens: `--ca-kbd-font-size` `--ca-kbd-line-height` `--ca-kbd-size`
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded card, announced as busy. |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-kpi` `ca-kpi__icon` `ca-kpi__inner`
+Parts: `ca-kpi` `ca-kpi__icon` `ca-kpi__inner`
 
 ## KpiGrid
 
@@ -1552,7 +1609,7 @@ KpiGrid: a row of KpiCards (or any equal-weight tiles) that never ends on a part
 
 Snippets: `children`
 
-Classes: `ca-kpi-grid` `ca-kpi-grid__grid`
+Parts: `ca-kpi-grid` `ca-kpi-grid__grid`
 
 ## Lightbox
 
@@ -1568,7 +1625,11 @@ Classes: `ca-kpi-grid` `ca-kpi-grid__grid`
 | `ondownload?` | `(item: LightboxItem, index: number) => void` |  | Called instead of the default `<a download>` when the user taps Download. |
 | `onclose?` | `() => void` |  |  |
 
-Classes: `ca-lightbox` `ca-lightbox__action` `ca-lightbox__caption` `ca-lightbox__caption-text` `ca-lightbox__close` `ca-lightbox__counter` `ca-lightbox__img` `ca-lightbox__meta` `ca-lightbox__nav` `ca-lightbox__nav--next` `ca-lightbox__nav--prev` `ca-lightbox__stage` `ca-lightbox__tools` `ca-lightbox__video`
+Parts: `ca-lightbox` `ca-lightbox__action` `ca-lightbox__caption` `ca-lightbox__caption-text` `ca-lightbox__close` `ca-lightbox__counter` `ca-lightbox__img` `ca-lightbox__meta` `ca-lightbox__nav` `ca-lightbox__nav--next` `ca-lightbox__nav--prev` `ca-lightbox__stage` `ca-lightbox__tools` `ca-lightbox__video`
+
+Internal (may change in any release): `ca-lightbox-in` `ca-lightbox-out`
+
+Data attributes: `data-state` (`closed` `open`)
 
 ## LineChart
 
@@ -1593,7 +1654,7 @@ Classes: `ca-lightbox` `ca-lightbox__action` `ca-lightbox__caption` `ca-lightbox
 | `description?` | `string` |  |  |
 | `href` | `string` |  |  |
 
-Classes: `ca-link-card` `ca-link-card__desc` `ca-link-card__title`
+Parts: `ca-link-card` `ca-link-card__desc` `ca-link-card__title`
 
 ## LiquidGlass
 
@@ -1622,7 +1683,9 @@ Classes: `ca-link-card` `ca-link-card__desc` `ca-link-card__title`
 
 Snippets: `item` (`Snippet<[T, number]>`), `empty`
 
-Classes: `ca-live-list` `ca-live-list__count` `ca-live-list__empty` `ca-live-list__frame` `ca-live-list__head` `ca-live-list__item` `ca-live-list__jump` `ca-live-list__list` `ca-live-list__scroller`
+Parts: `ca-live-list` `ca-live-list__count` `ca-live-list__empty` `ca-live-list__frame` `ca-live-list__head` `ca-live-list__item` `ca-live-list__jump` `ca-live-list__list` `ca-live-list__scroller`
+
+Variables: `--ca-live-list-h`
 
 ## LoadingBoundary
 
@@ -1638,7 +1701,7 @@ Classes: `ca-live-list` `ca-live-list__count` `ca-live-list__empty` `ca-live-lis
 
 Snippets: `children`, `pending`
 
-Classes: `ca-loading-boundary` `ca-loading-boundary__content`
+Parts: `ca-loading-boundary` `ca-loading-boundary__content`
 
 ## LocaleSwitcher
 
@@ -1655,7 +1718,7 @@ Classes: `ca-loading-boundary` `ca-loading-boundary__content`
 | `align?` | `'start' \| 'center' \| 'end'` | `'end'` |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-locale` `ca-locale--compact` `ca-locale__code` `ca-locale__name`
+Parts: `ca-locale` `ca-locale--compact` `ca-locale__code` `ca-locale__name`
 
 ## MapControls
 
@@ -1666,7 +1729,9 @@ Classes: `ca-locale` `ca-locale--compact` `ca-locale__code` `ca-locale__name`
 | `locate?` | `boolean` | `false` | Show the geolocate button (asks for the location permission on click). |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-map-controls` `ca-map-controls__needle`
+Parts: `ca-map-controls` `ca-map-controls__needle`
+
+Variables: `--ca-map-bearing`
 
 ## MapStage
 
@@ -1689,7 +1754,7 @@ Classes: `ca-map-controls` `ca-map-controls__needle`
 
 Snippets: `children`
 
-Classes: `ca-map` `ca-map__canvas` `ca-map__overlay`
+Parts: `ca-map` `ca-map__canvas` `ca-map__overlay`
 
 ## MaskedField
 
@@ -1718,7 +1783,7 @@ Classes: `ca-map` `ca-map__canvas` `ca-map__overlay`
 
 Snippets: `leading`, `trailing`
 
-Classes: `ca-masked`
+Parts: `ca-masked`
 
 ## MediaGrid
 
@@ -1734,7 +1799,9 @@ Classes: `ca-masked`
 | `ondownload?` | `(item: LightboxItem, index: number) => void` |  | Called instead of the default `<a download>` when the user taps Download in the gallery. |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-media-grid` `ca-media-grid__doc` `ca-media-grid__doc-title` `ca-media-grid__duration` `ca-media-grid__failed` `ca-media-grid__grid` `ca-media-grid__grid--single` `ca-media-grid__grid--wide` `ca-media-grid__img` `ca-media-grid__img--hidden` `ca-media-grid__more` `ca-media-grid__play` `ca-media-grid__tile`
+Parts: `ca-media-grid` `ca-media-grid__doc` `ca-media-grid__doc-title` `ca-media-grid__duration` `ca-media-grid__failed` `ca-media-grid__grid` `ca-media-grid__grid--single` `ca-media-grid__grid--wide` `ca-media-grid__img` `ca-media-grid__img--hidden` `ca-media-grid__more` `ca-media-grid__play` `ca-media-grid__tile`
+
+Variables: `--ca-media-grid-cols`
 
 ## MessageBubble
 
@@ -1752,7 +1819,11 @@ Classes: `ca-media-grid` `ca-media-grid__doc` `ca-media-grid__doc-title` `ca-med
 
 Snippets: `avatar`, `quote`, `children`, `footer`
 
-Classes: `ca-bubble` `ca-bubble--in` `ca-bubble--out` `ca-bubble-row` `ca-bubble-row--in` `ca-bubble-row--out` `ca-bubble-row--reacted` `ca-bubble-row__avatar` `ca-bubble__body` `ca-bubble__meta` `ca-bubble__quote` `ca-bubble__reaction` `ca-bubble__reaction--mine` `ca-bubble__reactions` `ca-bubble__sender` `ca-bubble__status` `ca-bubble__status--read`
+Parts: `ca-bubble` `ca-bubble--in` `ca-bubble--out` `ca-bubble-row` `ca-bubble-row--in` `ca-bubble-row--out` `ca-bubble-row--reacted` `ca-bubble-row__avatar` `ca-bubble__body` `ca-bubble__meta` `ca-bubble__quote` `ca-bubble__reaction` `ca-bubble__reaction--mine` `ca-bubble__reactions` `ca-bubble__sender` `ca-bubble__status` `ca-bubble__status--read`
+
+Variables: `--ca-bubble-avatar` `--ca-bubble-radius` `--ca-bubble-tail`
+
+Data attributes: `data-grouped` (`last` `middle` `single`)
 
 ## MethodBadge
 
@@ -1764,7 +1835,9 @@ Classes: `ca-bubble` `ca-bubble--in` `ca-bubble--out` `ca-bubble-row` `ca-bubble
 | `variant?` | `'pill' \| 'plain'` | `'pill'` |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-method` `ca-method--pill` `ca-method--plain`
+Parts: `ca-method` `ca-method--pill` `ca-method--plain`
+
+Data attributes: `data-method` (`DELETE` `PATCH` `POST` `PUT`)
 
 ## MobileHeader
 
@@ -1777,7 +1850,7 @@ Classes: `ca-method` `ca-method--pill` `ca-method--plain`
 
 Snippets: `leading`, `titleSlot`, `trailing`
 
-Classes: `ca-mobile-header` `ca-mobile-header__inner` `ca-mobile-header__leading` `ca-mobile-header__title` `ca-mobile-header__title--custom` `ca-mobile-header__trailing`
+Parts: `ca-mobile-header` `ca-mobile-header__inner` `ca-mobile-header__leading` `ca-mobile-header__title` `ca-mobile-header__title--custom` `ca-mobile-header__trailing`
 
 ## MobilePane
 
@@ -1793,7 +1866,7 @@ Classes: `ca-mobile-header` `ca-mobile-header__inner` `ca-mobile-header__leading
 
 Snippets: `children`, `actions`, `headerTitle`
 
-Classes: `ca-mobile-pane` `ca-mobile-pane__body` `ca-mobile-pane__body--fixed`
+Parts: `ca-mobile-pane` `ca-mobile-pane__body` `ca-mobile-pane__body--fixed`
 
 ## MoneyInput
 
@@ -1835,7 +1908,7 @@ Snippets: `leading`, `trailing`
 
 Snippets: `children` (`Snippet<[MotionCtx]>`)
 
-Classes: `ca-motion-stage` `ca-motion-stage__bar` `ca-motion-stage__canvas`
+Parts: `ca-motion-stage` `ca-motion-stage__bar` `ca-motion-stage__canvas`
 
 ## NavigationProgress
 
@@ -1847,7 +1920,9 @@ Classes: `ca-motion-stage` `ca-motion-stage__bar` `ca-motion-stage__canvas`
 | `label?` | `string` |  | Accessible name. Defaults to a localised "Loading…". |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-nav-progress` `ca-nav-progress__bar`
+Parts: `ca-nav-progress__bar`
+
+Internal (may change in any release): `ca-nav-progress`
 
 ## NavItemMenu
 
@@ -1874,7 +1949,7 @@ Snippets: `actions`
 
 Snippets: `overflow`
 
-Classes: `ca-bottom-nav__more` `ca-bottom-nav__more-btn` `ca-bottom-nav__more-btn--active` `ca-bottom-nav__more-extra` `ca-bottom-nav__more-icon` `ca-bottom-nav__more-label`
+Parts: `ca-bottom-nav__more` `ca-bottom-nav__more-btn` `ca-bottom-nav__more-btn--active` `ca-bottom-nav__more-extra` `ca-bottom-nav__more-icon` `ca-bottom-nav__more-label`
 
 ## NavReorder
 
@@ -1895,7 +1970,7 @@ Classes: `ca-bottom-nav__more` `ca-bottom-nav__more-btn` `ca-bottom-nav__more-bt
 
 Snippets: `children`
 
-Classes: `ca-notif-action` `ca-notif-actions` `ca-notif-bell` `ca-notif-empty` `ca-notif-header` `ca-notif-item` `ca-notif-item--unread` `ca-notif-item__body` `ca-notif-item__btn` `ca-notif-item__dot` `ca-notif-item__dot--default` `ca-notif-item__dot--error` `ca-notif-item__dot--info` `ca-notif-item__dot--success` `ca-notif-item__dot--warning` `ca-notif-item__text` `ca-notif-item__time` `ca-notif-item__title` `ca-notif-list` `ca-notif-panel` `ca-notif-title` `ca-notif-trigger`
+Parts: `ca-notif-action` `ca-notif-actions` `ca-notif-bell` `ca-notif-empty` `ca-notif-header` `ca-notif-item` `ca-notif-item--unread` `ca-notif-item__body` `ca-notif-item__btn` `ca-notif-item__dot` `ca-notif-item__dot--default` `ca-notif-item__dot--error` `ca-notif-item__dot--info` `ca-notif-item__dot--success` `ca-notif-item__dot--warning` `ca-notif-item__text` `ca-notif-item__time` `ca-notif-item__title` `ca-notif-list` `ca-notif-panel` `ca-notif-title` `ca-notif-trigger`
 
 ## NumberField
 
@@ -1917,7 +1992,7 @@ Classes: `ca-notif-action` `ca-notif-actions` `ca-notif-bell` `ca-notif-empty` `
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
 | `onchange?` | `(value: number) => void` |  |  |
 
-Classes: `ca-nf` `ca-nf--disabled` `ca-nf--sm` `ca-nf__btn` `ca-nf__hint` `ca-nf__hint--error` `ca-nf__input` `ca-nf__label` `ca-nf__req` `ca-nf__wrap` `ca-nf__wrap--error` `ca-nf__wrap--focused`
+Parts: `ca-nf` `ca-nf--disabled` `ca-nf--sm` `ca-nf__btn` `ca-nf__hint` `ca-nf__hint--error` `ca-nf__input` `ca-nf__label` `ca-nf__req` `ca-nf__wrap` `ca-nf__wrap--error` `ca-nf__wrap--focused`
 
 ## PageFrame
 
@@ -1939,7 +2014,11 @@ Classes: `ca-nf` `ca-nf--disabled` `ca-nf--sm` `ca-nf__btn` `ca-nf__hint` `ca-nf
 
 Snippets: `header`, `toolbar`, `footer`, `children`
 
-Classes: `ca-page-frame` `ca-page-frame__body` `ca-page-frame__footer` `ca-page-frame__grip` `ca-page-frame__handle` `ca-page-frame__header` `ca-page-frame__panel` `ca-page-frame__toolbar`
+Parts: `ca-page-frame` `ca-page-frame__body` `ca-page-frame__footer` `ca-page-frame__grip` `ca-page-frame__handle` `ca-page-frame__header` `ca-page-frame__panel` `ca-page-frame__toolbar`
+
+Variables: `--ca-bg-default` `--ca-focus-ring-color` `--ca-focus-ring-width` `--ca-frame-drag-h` `--ca-frame-gap` `--ca-frame-w`
+
+Data attributes: `data-bordered`, `data-detent` (`full` `peek`), `data-dragging`, `data-mode` (`page` `split`), `data-padded`, `data-sheet`, `data-side` (`left` `right`), `data-width` (`lg` `md` `sm` `xl`)
 
 ## PageShell
 
@@ -1958,7 +2037,9 @@ Classes: `ca-page-frame` `ca-page-frame__body` `ca-page-frame__footer` `ca-page-
 
 Snippets: `actions`, `aside`, `children`
 
-Classes: `ca-page-shell` `ca-page-shell__actions` `ca-page-shell__aside` `ca-page-shell__body` `ca-page-shell__description` `ca-page-shell__frame` `ca-page-shell__header` `ca-page-shell__layout` `ca-page-shell__layout--aside` `ca-page-shell__layout--reading` `ca-page-shell__meta` `ca-page-shell__title` `ca-page-shell__title--display`
+Parts: `ca-page-shell` `ca-page-shell__actions` `ca-page-shell__aside` `ca-page-shell__body` `ca-page-shell__description` `ca-page-shell__frame` `ca-page-shell__header` `ca-page-shell__layout` `ca-page-shell__layout--aside` `ca-page-shell__layout--reading` `ca-page-shell__meta` `ca-page-shell__title` `ca-page-shell__title--display`
+
+Variables: `--ca-aside-width` `--ca-reading-width`
 
 ## Pagination
 
@@ -1973,7 +2054,7 @@ Classes: `ca-page-shell` `ca-page-shell__actions` `ca-page-shell__aside` `ca-pag
 | `onPageChange?` | `(page: number) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-pagination` `ca-pagination__ellipsis` `ca-pagination__nav` `ca-pagination__page`
+Parts: `ca-pagination` `ca-pagination__ellipsis` `ca-pagination__nav` `ca-pagination__page`
 
 ## Panel
 
@@ -1993,7 +2074,7 @@ Classes: `ca-pagination` `ca-pagination__ellipsis` `ca-pagination__nav` `ca-pagi
 | `onResizing?` | `(resizing: boolean) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-panel` `ca-panel__header` `ca-panel__nav` `ca-panel__title`
+Parts: `ca-panel` `ca-panel__header` `ca-panel__nav` `ca-panel__title`
 
 ## PanelNavItem
 
@@ -2008,21 +2089,9 @@ Classes: `ca-panel` `ca-panel__header` `ca-panel__nav` `ca-panel__title`
 | `describedby?` | `string` |  | `id` of the node that describes the keyboard drag (`dnd.instructionsId`). |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-nav-item` `ca-nav-item--active` `ca-nav-item--grip` `ca-nav-item__actions` `ca-nav-item__badge` `ca-nav-item__color` `ca-nav-item__count` `ca-nav-item__dot` `ca-nav-item__grip` `ca-nav-item__icon` `ca-nav-item__label` `ca-nav-item__leading` `ca-nav-item__link` `ca-nav-item__pip`
+Parts: `ca-nav-item` `ca-nav-item--active` `ca-nav-item--grip` `ca-nav-item__actions` `ca-nav-item__badge` `ca-nav-item__color` `ca-nav-item__count` `ca-nav-item__dot` `ca-nav-item__grip` `ca-nav-item__icon` `ca-nav-item__label` `ca-nav-item__leading` `ca-nav-item__link` `ca-nav-item__pip`
 
-## PasswordStrength
-
-`import { PasswordStrength } from "@codeatlasdev/ui"`
-
-| Prop | Type | Default | Notes |
-|---|---|---|---|
-| `value?` | `string` | `''` | The password being typed. It is only read to compute the score and never stored or sent. |
-| `score?` | `(value: string) => PasswordScore` | `passwordScore` | Replaces the built-in `passwordScore`. Return 0 (empty) to 3 (strong). |
-| `labels?` | `Partial<Record<'empty' \| 'weak' \| 'fair' \| 'strong', string>>` |  | Per-instance label text; unset keys use the i18n catalog. |
-| `id?` | `string` |  | Set it to point a field's `aria-describedby` at the meter. |
-| `class?` | `string` | `''` |  |
-
-Classes: `ca-pwstrength` `ca-pwstrength__bar` `ca-pwstrength__label` `ca-pwstrength__seg`
+Variables: `--ca-nav-color`
 
 ## PhoneField
 
@@ -2059,7 +2128,7 @@ Snippets: `leading`, `trailing`
 | `height?` | `string` | `"300px"` |  |
 | `class?` | `string` | `""` |  |
 
-Classes: `ca-pie-center` `ca-pie-center__label` `ca-pie-center__value`
+Parts: `ca-pie-center` `ca-pie-center__label` `ca-pie-center__value`
 
 ## PinInput
 
@@ -2078,7 +2147,11 @@ Classes: `ca-pie-center` `ca-pie-center__label` `ca-pie-center__value`
 | `class?` | `string` | `''` |  |
 | `oncomplete?` | `(value: string) => void` |  |  |
 
-Classes: `ca-pin` `ca-pin--disabled` `ca-pin--error` `ca-pin__caret` `ca-pin__cell` `ca-pin__cells` `ca-pin__hint` `ca-pin__hint--error` `ca-pin__input` `ca-pin__label` `ca-pin__root`
+Parts: `ca-pin` `ca-pin--disabled` `ca-pin--error` `ca-pin__caret` `ca-pin__cell` `ca-pin__cells` `ca-pin__hint` `ca-pin__hint--error` `ca-pin__input` `ca-pin__label` `ca-pin__root`
+
+Internal (may change in any release): `ca-pin-blink`
+
+Data attributes: `data-active`
 
 ## Popover
 
@@ -2095,7 +2168,11 @@ Classes: `ca-pin` `ca-pin--disabled` `ca-pin--error` `ca-pin__caret` `ca-pin__ce
 
 Snippets: `trigger`, `triggerChild` (`Snippet<[Record<string, unknown>]>`), `children` (`Snippet<[{ close: () => void }]>`)
 
-Classes: `ca-popover-content` `ca-popover__trigger`
+Parts: `ca-popover-content` `ca-popover__trigger`
+
+Internal (may change in any release): `ca-popover-in` `ca-popover-out`
+
+Data attributes: `data-state` (`closed`)
 
 ## Progress
 
@@ -2110,9 +2187,13 @@ Classes: `ca-popover-content` `ca-popover__trigger`
 | `label?` | `string` |  |  |
 | `size?` | `'sm' \| 'md' \| 'lg'` | `'lg'` | Bar height: `'sm'` (4px), `'md'` (6px) or `'lg'` (8px, the default). For another height set `--ca-progress-height` on the element or an ancestor; the ends stay pill-shaped. |
 
-Classes: `ca-progress` `ca-progress__indicator` `ca-progress__indicator--indeterminate` `ca-progress__track`
+Parts: `ca-progress` `ca-progress__indicator` `ca-progress__indicator--indeterminate` `ca-progress__track`
 
-Tokens: `--ca-progress-height`
+Internal (may change in any release): `ca-progress-shimmer`
+
+Variables: `--ca-progress-height`
+
+Data attributes: `data-size` (`lg` `md` `sm`)
 
 ## RadarChart
 
@@ -2141,7 +2222,9 @@ Tokens: `--ca-progress-height`
 | `aria-label?` | `string` |  |  |
 | `onchange?` | `(value: string) => void` |  |  |
 
-Classes: `ca-radio-card` `ca-radio-card__desc` `ca-radio-card__head` `ca-radio-card__input` `ca-radio-card__label` `ca-radio-group` `ca-radio-group--cards` `ca-radio-group--horizontal` `ca-radio-group--vertical` `ca-radio-indicator` `ca-radio-input` `ca-radio-input__native` `ca-radio-item` `ca-radio-label` `ca-radio-label--disabled`
+Parts: `ca-radio-card` `ca-radio-card__desc` `ca-radio-card__head` `ca-radio-card__input` `ca-radio-card__label` `ca-radio-group` `ca-radio-group--cards` `ca-radio-group--horizontal` `ca-radio-group--vertical` `ca-radio-indicator` `ca-radio-input` `ca-radio-input__native` `ca-radio-item` `ca-radio-label` `ca-radio-label--disabled`
+
+Data attributes: `data-disabled`, `data-state` (`checked` `unchecked`)
 
 ## Rail
 
@@ -2157,7 +2240,7 @@ Classes: `ca-radio-card` `ca-radio-card__desc` `ca-radio-card__head` `ca-radio-c
 
 Snippets: `brand`, `top`, `bottom`
 
-Classes: `ca-rail` `ca-rail__bottom` `ca-rail__bottom-sep` `ca-rail__dock` `ca-rail__icon` `ca-rail__icon--active` `ca-rail__icon--labeled` `ca-rail__label` `ca-rail__logo` `ca-rail__logo-mark` `ca-rail__pip` `ca-rail__sep` `ca-rail__top`
+Parts: `ca-rail` `ca-rail__bottom` `ca-rail__bottom-sep` `ca-rail__dock` `ca-rail__icon` `ca-rail__icon--active` `ca-rail__icon--labeled` `ca-rail__label` `ca-rail__logo` `ca-rail__logo-mark` `ca-rail__pip` `ca-rail__sep` `ca-rail__top`
 
 ## RangeCalendar
 
@@ -2181,7 +2264,11 @@ Classes: `ca-rail` `ca-rail__bottom` `ca-rail__bottom-sep` `ca-rail__dock` `ca-r
 | `onchange?` | `(value: DateRange) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap`
+
+Internal (may change in any release): `ca-date-in` `ca-date-out`
+
+Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
 ## RecordCell
 
@@ -2196,7 +2283,7 @@ RecordCell: one column value of a `RecordRow`. `label` names it: it is kept for 
 
 Snippets: `children`
 
-Classes: `ca-record-cell`
+Parts: `ca-record-cell`
 
 ## RecordList
 
@@ -2214,7 +2301,11 @@ Snippets: `children`
 
 Also accepts: `Omit<HTMLAttributes<HTMLUListElement>, 'class' \| 'children'>`
 
-Classes: `ca-record-list` `ca-record-list__body` `ca-record-list__head`
+Parts: `ca-record-list` `ca-record-list__body` `ca-record-list__head`
+
+Variables: `--ca-record-columns`
+
+Data attributes: `data-column`
 
 ## RecordRow
 
@@ -2230,7 +2321,9 @@ Snippets: `identity`, `actions`, `children`
 
 Also accepts: `Omit<HTMLLiAttributes, 'class' \| 'children'>`
 
-Classes: `ca-record-row` `ca-record-row__actions` `ca-record-row__cells` `ca-record-row__identity`
+Parts: `ca-record-row` `ca-record-row__actions` `ca-record-row__cells` `ca-record-row__identity`
+
+Variables: `--ca-record-columns`
 
 ## RouteAnnouncer
 
@@ -2281,7 +2374,9 @@ Snippets: `children`
 
 Snippets: `light`, `dark`
 
-Classes: `ca-scheme-asset` `ca-scheme-asset__dark` `ca-scheme-asset__light`
+Parts: `ca-scheme-asset` `ca-scheme-asset__dark` `ca-scheme-asset__light`
+
+Data attributes: `data-theme-scope` (`dark` `light`)
 
 ## ScrollArea
 
@@ -2297,7 +2392,11 @@ Classes: `ca-scheme-asset` `ca-scheme-asset__dark` `ca-scheme-asset__light`
 
 Snippets: `children`
 
-Classes: `ca-scroll-area` `ca-scroll-area__scrollbar` `ca-scroll-area__scrollbar--h` `ca-scroll-area__scrollbar--v` `ca-scroll-area__thumb` `ca-scroll-area__viewport`
+Parts: `ca-scroll-area` `ca-scroll-area__scrollbar` `ca-scroll-area__scrollbar--h` `ca-scroll-area__scrollbar--v` `ca-scroll-area__thumb` `ca-scroll-area__viewport`
+
+Variables: `--ca-glass-tint-regular`
+
+Data attributes: `data-scroll-area-content`, `data-state` (`hidden`)
 
 ## Section
 
@@ -2315,7 +2414,9 @@ Snippets: `children`
 
 Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>, Pick<LayoutProps, 'px' \| 'py'>`
 
-Classes: `ca-layout-section`
+Parts: `ca-layout-section`
+
+Data attributes: `data-lg-py`, `data-md-py`, `data-py`, `data-size` (`1` `3`), `data-sm-py`, `data-xl-py`
 
 ## SectionGroup
 
@@ -2325,10 +2426,9 @@ Classes: `ca-layout-section`
 |---|---|---|---|
 | `section` | `NavSection` |  |  |
 | `pathname` | `string` |  |  |
-| `active?` | `(item: NavItem) => boolean` |  | Decides which link is current (the shell passes the module-wide winner); defaults to `isItemActive`. |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-section` `ca-section__chevron` `ca-section__chevron--open` `ca-section__header` `ca-section__label` `ca-section__trigger`
+Parts: `ca-section` `ca-section__chevron` `ca-section__chevron--open` `ca-section__header` `ca-section__label` `ca-section__trigger`
 
 ## SegmentedControl
 
@@ -2345,9 +2445,9 @@ Classes: `ca-section` `ca-section__chevron` `ca-section__chevron--open` `ca-sect
 | `aria-label?` | `string` |  |  |
 | `onchange?` | `(value: string) => void` |  |  |
 
-Classes: `ca-seg` `ca-seg--md` `ca-seg--sm` `ca-seg__item` `ca-seg__thumb`
+Parts: `ca-seg` `ca-seg--md` `ca-seg--sm` `ca-seg__item` `ca-seg__thumb`
 
-Tokens: `--ca-seg-item-font-size` `--ca-seg-item-line-height` `--ca-seg-item-padding-x` `--ca-seg-md-item-font-size` `--ca-seg-md-item-line-height` `--ca-seg-md-item-padding-x` `--ca-seg-sm-item-font-size` `--ca-seg-sm-item-line-height` `--ca-seg-sm-item-padding-x`
+Data attributes: `data-fullwidth`, `data-no-motion`, `data-state` (`on`)
 
 ## Select
 
@@ -2370,7 +2470,11 @@ Tokens: `--ca-seg-item-font-size` `--ca-seg-item-line-height` `--ca-seg-item-pad
 | `class?` | `string` | `''` |  |
 | `onchange?` | `(value: string) => void` |  |  |
 
-Classes: `ca-sel` `ca-sel--sm` `ca-sel__check` `ca-sel__content` `ca-sel__hint` `ca-sel__hint--error` `ca-sel__icon` `ca-sel__item` `ca-sel__item-label` `ca-sel__label` `ca-sel__req` `ca-sel__trigger` `ca-sel__value` `ca-sel__value--placeholder` `ca-validity-proxy`
+Parts: `ca-sel` `ca-sel--sm` `ca-sel__check` `ca-sel__content` `ca-sel__hint` `ca-sel__hint--error` `ca-sel__icon` `ca-sel__item` `ca-sel__item-label` `ca-sel__label` `ca-sel__req` `ca-sel__trigger` `ca-sel__value` `ca-sel__value--placeholder` `ca-validity-proxy`
+
+Variables: `--ca-anchor-width`
+
+Data attributes: `data-disabled`, `data-highlighted`, `data-selected`, `data-state` (`open`)
 
 ## Seo
 
@@ -2403,7 +2507,7 @@ Classes: `ca-sel` `ca-sel--sm` `ca-sel__check` `ca-sel__content` `ca-sel__hint` 
 
 Snippets: `children`
 
-Classes: `ca-setting-item` `ca-setting-item__control` `ca-setting-item__desc` `ca-setting-item__label` `ca-setting-item__text`
+Parts: `ca-setting-item` `ca-setting-item__control` `ca-setting-item__desc` `ca-setting-item__label` `ca-setting-item__text`
 
 ## Sheet
 
@@ -2419,9 +2523,11 @@ Classes: `ca-setting-item` `ca-setting-item__control` `ca-setting-item__desc` `c
 
 Snippets: `children`, `footer`
 
-Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay` `ca-sheet` `ca-sheet__body` `ca-sheet__close` `ca-sheet__description` `ca-sheet__footer` `ca-sheet__grab` `ca-sheet__grab--active` `ca-sheet__handle` `ca-sheet__header` `ca-sheet__meta` `ca-sheet__title`
+Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay` `ca-sheet` `ca-sheet__body` `ca-sheet__close` `ca-sheet__description` `ca-sheet__footer` `ca-sheet__grab` `ca-sheet__grab--active` `ca-sheet__handle` `ca-sheet__header` `ca-sheet__meta` `ca-sheet__title`
 
-Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out` `ca-sheet-fade-in` `ca-sheet-fade-out` `ca-sheet-in` `ca-sheet-out`
+
+Data attributes: `data-state` (`closed` `open`)
 
 ## SimpleTable
 
@@ -2440,7 +2546,11 @@ Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-spli
 
 Snippets: `children`
 
-Classes: `ca-table` `ca-table--bare` `ca-table--cards` `ca-table--compact` `ca-table--pinned` `ca-table--sentence` `ca-table-root` `ca-table-root--static`
+Parts: `ca-table` `ca-table--bare` `ca-table--cards` `ca-table--compact` `ca-table--pinned` `ca-table--sentence` `ca-table-root` `ca-table-root--static`
+
+Variables: `--ca-pin-1` `--ca-pin-2` `--ca-pin-3` `--ca-pin-4` `--ca-pin-5` `--ca-pin-6` `--ca-table-row-bg`
+
+Data attributes: `data-label`, `data-pin` (`1` `2` `3` `4` `5` `6`)
 
 ## SiteHeader
 
@@ -2453,7 +2563,7 @@ Classes: `ca-table` `ca-table--bare` `ca-table--cards` `ca-table--compact` `ca-t
 
 Snippets: `trailing`
 
-Classes: `ca-site-header` `ca-site-header__bc-sep` `ca-site-header__breadcrumb` `ca-site-header__current--display` `ca-site-header__inner` `ca-site-header__left` `ca-site-header__sep` `ca-site-header__toggle` `ca-site-header__trailing`
+Parts: `ca-site-header` `ca-site-header__bc-sep` `ca-site-header__breadcrumb` `ca-site-header__current--display` `ca-site-header__inner` `ca-site-header__left` `ca-site-header__sep` `ca-site-header__toggle` `ca-site-header__trailing`
 
 ## Skeleton
 
@@ -2467,7 +2577,9 @@ Classes: `ca-site-header` `ca-site-header__bc-sep` `ca-site-header__breadcrumb` 
 | `rows?` | `number` | `1` |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-skeleton` `ca-skeleton--circular` `ca-skeleton--rectangular` `ca-skeleton--rounded` `ca-skeleton--text` `ca-skeleton-rows`
+Parts: `ca-skeleton` `ca-skeleton--circular` `ca-skeleton--rectangular` `ca-skeleton--rounded` `ca-skeleton--text` `ca-skeleton-rows`
+
+Data attributes: `data-style` (`flat` `outlined` `solid`)
 
 ## SkipLink
 
@@ -2480,7 +2592,7 @@ Classes: `ca-skeleton` `ca-skeleton--circular` `ca-skeleton--rectangular` `ca-sk
 
 Snippets: `children`
 
-Classes: `ca-skip-link`
+Parts: `ca-skip-link`
 
 ## Slider
 
@@ -2499,7 +2611,9 @@ Slider — single or range value input.
 | `class?` | `string` | `''` |  |
 | `onchange?` | `(value: number[]) => void` |  | Called on change. Always receives array regardless of single/range mode. |
 
-Classes: `ca-slider` `ca-slider__range` `ca-slider__thumb` `ca-slider__track`
+Parts: `ca-slider` `ca-slider__range` `ca-slider__thumb` `ca-slider__track`
+
+Data attributes: `data-disabled`
 
 ## Sparkline
 
@@ -2524,23 +2638,9 @@ Classes: `ca-slider` `ca-slider__range` `ca-slider__thumb` `ca-slider__track`
 | `class?` | `string` | `''` |  |
 | `label?` | `string` |  |  |
 
-Classes: `ca-spinner` `ca-spinner__arc` `ca-spinner__track`
+Parts: `ca-spinner` `ca-spinner__arc` `ca-spinner__track`
 
-## SplashScreen
-
-`import { SplashScreen } from "@codeatlasdev/ui"`
-
-| Prop | Type | Default | Notes |
-|---|---|---|---|
-| `ready?` | `boolean` | `true` | The app has finished booting. The splash waits for it, then for `minDuration`. |
-| `minDuration?` | `number` | `600` | Minimum time (ms) the splash stays, counted from when it first shows. |
-| `label?` | `string` |  | Accessible name. Defaults to a localised "Loading…". |
-| `ondone?` | `() => void` |  | Called once the splash is gone (or was skipped). |
-| `class?` | `string` | `''` |  |
-
-Snippets: `logo`
-
-Classes: `ca-splash` `ca-splash__logo`
+Internal (may change in any release): `ca-spin`
 
 ## Stack
 
@@ -2557,7 +2657,7 @@ Snippets: `children`
 
 Also accepts: `PolymorphicAttributes<T, Pick<LayoutProps, 'gap' \| 'p' \| 'px' \| 'py' \| 'align' \| 'justify'>>`
 
-Classes: `ca-stack`
+Parts: `ca-stack`
 
 ## Stat
 
@@ -2577,7 +2677,11 @@ Stat — a card-less statistic: label, big number, optional unit, trend and hint
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded stat, announced as busy. |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-stat` `ca-stat__hint` `ca-stat__label` `ca-stat__trend` `ca-stat__trend--down` `ca-stat__trend--up` `ca-stat__unit` `ca-stat__value`
+Parts: `ca-stat` `ca-stat__hint` `ca-stat__label` `ca-stat__trend` `ca-stat__trend--down` `ca-stat__trend--up` `ca-stat__unit` `ca-stat__value`
+
+Variables: `--ca-stat-value-size`
+
+Data attributes: `data-align` (`center`), `data-size` (`lg` `md` `sm`)
 
 ## StatusChip
 
@@ -2589,7 +2693,7 @@ Classes: `ca-stat` `ca-stat__hint` `ca-stat__label` `ca-stat__trend` `ca-stat__t
 | `label` | `string` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-status-chip` `ca-status-chip--error` `ca-status-chip--info` `ca-status-chip--neutral` `ca-status-chip--success` `ca-status-chip--warning`
+Parts: `ca-status-chip` `ca-status-chip--error` `ca-status-chip--info` `ca-status-chip--neutral` `ca-status-chip--success` `ca-status-chip--warning`
 
 ## Stepper
 
@@ -2601,7 +2705,7 @@ Classes: `ca-status-chip` `ca-status-chip--error` `ca-status-chip--info` `ca-sta
 | `current?` | `number` | `0` | `bind:` |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-stepper` `ca-stepper__bubble` `ca-stepper__desc` `ca-stepper__label` `ca-stepper__line` `ca-stepper__line--done` `ca-stepper__step` `ca-stepper__step--active` `ca-stepper__step--done` `ca-stepper__text`
+Parts: `ca-stepper` `ca-stepper__bubble` `ca-stepper__desc` `ca-stepper__label` `ca-stepper__line` `ca-stepper__line--done` `ca-stepper__step` `ca-stepper__step--active` `ca-stepper__step--done` `ca-stepper__text`
 
 ## Steps
 
@@ -2609,7 +2713,7 @@ Classes: `ca-stepper` `ca-stepper__bubble` `ca-stepper__desc` `ca-stepper__label
 
 Snippets: `children`
 
-Classes: `ca-steps`
+Parts: `ca-steps`
 
 ## StickyActions
 
@@ -2623,7 +2727,7 @@ Classes: `ca-steps`
 
 Snippets: `children`
 
-Classes: `ca-sticky-actions` `ca-sticky-actions--end` `ca-sticky-actions--stretch` `ca-sticky-actions__inner`
+Parts: `ca-sticky-actions` `ca-sticky-actions--end` `ca-sticky-actions--stretch` `ca-sticky-actions__inner`
 
 ## StrikeThrough
 
@@ -2636,9 +2740,11 @@ Classes: `ca-sticky-actions` `ca-sticky-actions--end` `ca-sticky-actions--stretc
 
 Snippets: `children`
 
-Classes: `ca-strike` `ca-strike--animated`
+Parts: `ca-strike` `ca-strike--animated`
 
-Tokens: `--ca-strike-color`
+Internal (may change in any release): `ca-strike-draw`
+
+Variables: `--ca-strike-color`
 
 ## Surface
 
@@ -2685,9 +2791,11 @@ Also accepts: `Omit<ComponentProps<typeof Surface>, 'as'>`
 | `aria-label?` | `string` |  |  |
 | `onchange?` | `(value: string) => void` |  |  |
 
-Classes: `ca-swatch` `ca-swatch-group` `ca-swatch-group--sm`
+Parts: `ca-swatch` `ca-swatch-group` `ca-swatch-group--sm`
 
-Tokens: `--ca-swatch-color`
+Variables: `--ca-swatch-color` `--ca-swatch-size`
+
+Data attributes: `data-state` (`on`)
 
 ## Switch
 
@@ -2704,7 +2812,9 @@ Tokens: `--ca-swatch-color`
 | `class?` | `string` | `''` |  |
 | `onchange?` | `(checked: boolean) => void` |  |  |
 
-Classes: `ca-switch` `ca-switch-wrapper` `ca-switch__input` `ca-switch__label` `ca-switch__label--disabled` `ca-switch__thumb`
+Parts: `ca-switch` `ca-switch-wrapper` `ca-switch__input` `ca-switch__label` `ca-switch__label--disabled` `ca-switch__thumb`
+
+Data attributes: `data-disabled`, `data-state` (`checked`)
 
 ## Table
 
@@ -2714,7 +2824,7 @@ Snippets: `children`
 
 Also accepts: `HTMLTableAttributes`
 
-Classes: `ca-table` `ca-table-container` `ca-table-root`
+Parts: `ca-table` `ca-table-container` `ca-table-root`
 
 ## TableGroupRow
 
@@ -2740,7 +2850,7 @@ Snippets: `label`
 | `variant?` | `'rail' \| 'inline'` | `'rail'` |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-toc` `ca-toc--inline` `ca-toc--rail` `ca-toc__current` `ca-toc__label` `ca-toc__list` `ca-toc__sub` `ca-toc__summary-label`
+Parts: `ca-toc` `ca-toc--inline` `ca-toc--rail` `ca-toc__current` `ca-toc__label` `ca-toc__list` `ca-toc__sub` `ca-toc__summary-label`
 
 ## TableRow
 
@@ -2780,7 +2890,7 @@ Snippets: `children`
 
 Snippets: `children`
 
-Classes: `ca-tabs`
+Parts: `ca-tabs`
 
 ## TabsContent
 
@@ -2793,7 +2903,7 @@ Classes: `ca-tabs`
 
 Snippets: `children`
 
-Classes: `ca-tabs-content`
+Parts: `ca-tabs-content`
 
 ## TabsList
 
@@ -2808,7 +2918,9 @@ Snippets: `children`
 
 Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'role'>`
 
-Classes: `ca-tabs-list`
+Parts: `ca-tabs-list`
+
+Data attributes: `data-fade` (`both` `end` `start`), `data-variant` (`line`)
 
 ## TabsTrigger
 
@@ -2825,7 +2937,9 @@ Snippets: `icon`, `children`
 
 Also accepts: `Omit<HTMLButtonAttributes, 'class' \| 'children' \| 'value' \| 'type' \| 'role'>`
 
-Classes: `ca-tabs-trigger` `ca-tabs-trigger__icon`
+Parts: `ca-tabs-trigger` `ca-tabs-trigger__icon`
+
+Data attributes: `data-brand`, `data-state` (`active`), `data-variant` (`line`)
 
 ## TextArea
 
@@ -2856,9 +2970,7 @@ Classes: `ca-tabs-trigger` `ca-tabs-trigger__icon`
 
 Also accepts: `Omit<HTMLTextareaAttributes, 'value' \| 'class' \| 'children' \| 'rows' \| 'oninput' \| 'onchange' \| 'onfocus' \| 'onblur'>`
 
-Classes: `ca-ta` `ca-ta--disabled` `ca-ta__hint` `ca-ta__hint--error` `ca-ta__input` `ca-ta__label` `ca-ta__req` `ca-ta__wrap` `ca-ta__wrap--error` `ca-ta__wrap--focused`
-
-Tokens: `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
+Parts: `ca-ta` `ca-ta--disabled` `ca-ta__hint` `ca-ta__hint--error` `ca-ta__input` `ca-ta__label` `ca-ta__req` `ca-ta__wrap` `ca-ta__wrap--error` `ca-ta__wrap--focused`
 
 ## TextField
 
@@ -2894,9 +3006,7 @@ Snippets: `leading`, `trailing`, `below`
 
 Also accepts: `Omit<HTMLInputAttributes, 'value' \| 'class' \| 'children' \| 'size' \| 'oninput' \| 'onchange' \| 'onfocus' \| 'onblur'>`
 
-Classes: `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__adorn` `ca-tf__adorn--trail` `ca-tf__below` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__reveal` `ca-tf__wrap` `ca-tf__wrap--error` `ca-tf__wrap--focused`
-
-Tokens: `--ca-tf-gap` `--ca-tf-label-line-height`
+Parts: `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__adorn` `ca-tf__adorn--trail` `ca-tf__below` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__reveal` `ca-tf__wrap` `ca-tf__wrap--error` `ca-tf__wrap--focused`
 
 ## ThemeIsland
 
@@ -2911,7 +3021,7 @@ Tokens: `--ca-tf-gap` `--ca-tf-label-line-height`
 
 Snippets: `children`
 
-Classes: `ca-theme-island`
+Parts: `ca-theme-island`
 
 ## ThemeToggle
 
@@ -2923,7 +3033,7 @@ Classes: `ca-theme-island`
 | `size?` | `number` | `18` |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-theme-toggle__icon` `ca-theme-toggle__icon--dark` `ca-theme-toggle__icon--light`
+Parts: `ca-theme-toggle__icon` `ca-theme-toggle__icon--dark` `ca-theme-toggle__icon--light`
 
 ## TimeField
 
@@ -2949,7 +3059,11 @@ Classes: `ca-theme-toggle__icon` `ca-theme-toggle__icon--dark` `ca-theme-toggle_
 | `onchange?` | `(value: Time \| undefined) => void` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__sep` `ca-date__trigger` `ca-date__wrap`
+Parts: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__grid` `ca-cal__head-cell` `ca-cal__header` `ca-cal__heading` `ca-cal__months` `ca-cal__nav` `ca-date` `ca-date--disabled` `ca-date--error` `ca-date--sm` `ca-date__content` `ca-date__hint` `ca-date__hint--error` `ca-date__input` `ca-date__label` `ca-date__range-sep` `ca-date__req` `ca-date__segment` `ca-date__trigger` `ca-date__wrap`
+
+Internal (may change in any release): `ca-date-in` `ca-date-out`
+
+Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `data-placeholder`, `data-segment` (`literal`), `data-selected`, `data-selection-end`, `data-selection-start`, `data-state` (`closed` `open`), `data-today`, `data-unavailable`
 
 ## Timeline
 
@@ -2960,13 +3074,13 @@ Classes: `ca-cal` `ca-cal--standalone` `ca-cal__cell` `ca-cal__day` `ca-cal__gri
 | `items` | `TimelineItem[]` |  |  |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-timeline` `ca-timeline__connector` `ca-timeline__content` `ca-timeline__date` `ca-timeline__desc` `ca-timeline__dot` `ca-timeline__dot--default` `ca-timeline__dot--error` `ca-timeline__dot--info` `ca-timeline__dot--success` `ca-timeline__dot--warning` `ca-timeline__header` `ca-timeline__item` `ca-timeline__label` `ca-timeline__track`
+Parts: `ca-timeline` `ca-timeline__connector` `ca-timeline__content` `ca-timeline__date` `ca-timeline__desc` `ca-timeline__dot` `ca-timeline__dot--default` `ca-timeline__dot--error` `ca-timeline__dot--info` `ca-timeline__dot--success` `ca-timeline__dot--warning` `ca-timeline__header` `ca-timeline__item` `ca-timeline__label` `ca-timeline__track`
 
 ## Toaster
 
 `import { Toaster } from "@codeatlasdev/ui"`
 
-Classes: `ca-toaster`
+Parts: `ca-toaster`
 
 ## ToggleGroup
 
@@ -2986,7 +3100,9 @@ Classes: `ca-toaster`
 | `aria-label?` | `string` |  |  |
 | `onchange?` | `(value: string \| string[]) => void` |  |  |
 
-Classes: `ca-toggle-group` `ca-toggle-group--md` `ca-toggle-group--outlined` `ca-toggle-group--sm` `ca-toggle-group__item`
+Parts: `ca-toggle-group` `ca-toggle-group--md` `ca-toggle-group--outlined` `ca-toggle-group--sm` `ca-toggle-group__item`
+
+Data attributes: `data-orientation` (`vertical`), `data-state` (`on`)
 
 ## Tooltip
 
@@ -3001,30 +3117,11 @@ Classes: `ca-toggle-group` `ca-toggle-group--md` `ca-toggle-group--outlined` `ca
 
 Snippets: `children`, `triggerChild` (`Snippet<[Record<string, unknown>]>`)
 
-Classes: `ca-tooltip-content` `ca-tooltip__trigger`
+Parts: `ca-tooltip-content` `ca-tooltip__trigger`
 
-## Turnstile
+Internal (may change in any release): `ca-tooltip-in` `ca-tooltip-out`
 
-`import { Turnstile } from "@codeatlasdev/ui/forms"`
-
-| Prop | Type | Default | Notes |
-|---|---|---|---|
-| `siteKey?` | `string` |  | Public site key. Empty or unset: the component does nothing. |
-| `action?` | `string` |  | Label of the flow (`sign-in`), echoed back when you verify the token. |
-| `cData?` | `string` |  | Opaque data echoed back when you verify the token. |
-| `theme?` | `'auto' \| 'light' \| 'dark'` | `'auto'` | `auto` (default) follows the active colour scheme; `light` / `dark` force one. |
-| `language?` | `string` |  | Widget language tag. Defaults to the active UI locale (`pt-BR` becomes `pt-br`). |
-| `size?` | `'normal' \| 'flexible' \| 'compact'` |  |  |
-| `appearance?` | `'always' \| 'execute' \| 'interaction-only'` |  |  |
-| `handle?` | `TurnstileHandle` |  | `bind:` `bind:handle` for `getToken()` and `reset()`. |
-| `token?` | `string` |  | `bind:` `bind:token`: the current token, `undefined` while there is none. |
-| `onverify?` | `(token: string) => void` |  |  |
-| `onexpire?` | `() => void` |  |  |
-| `onerror?` | `(code: string) => void` |  | The widget could not run; `code` is Cloudflare's error code. |
-| `nonce?` | `string` |  | CSP nonce for the vendor script tag. |
-| `class?` | `string` | `''` |  |
-
-Classes: `ca-turnstile`
+Data attributes: `data-state` (`closed`)
 
 ## UserCell
 
@@ -3037,7 +3134,7 @@ Classes: `ca-turnstile`
 | `src?` | `string` |  |  |
 | `size?` | `'sm' \| 'md'` | `'sm'` |  |
 
-Classes: `ca-user-cell` `ca-user-cell__email` `ca-user-cell__info` `ca-user-cell__name`
+Parts: `ca-user-cell` `ca-user-cell__email` `ca-user-cell__info` `ca-user-cell__name`
 
 ## VirtualList
 
@@ -3060,7 +3157,9 @@ Classes: `ca-user-cell` `ca-user-cell__email` `ca-user-cell__info` `ca-user-cell
 
 Snippets: `item` (`Snippet<[T, number]>`), `empty`
 
-Classes: `ca-virtual-list` `ca-virtual-list__empty` `ca-virtual-list__head` `ca-virtual-list__item` `ca-virtual-list__list` `ca-virtual-list__loading` `ca-virtual-list__older` `ca-virtual-list__scroller`
+Parts: `ca-virtual-list` `ca-virtual-list__empty` `ca-virtual-list__head` `ca-virtual-list__item` `ca-virtual-list__list` `ca-virtual-list__loading` `ca-virtual-list__older` `ca-virtual-list__scroller`
+
+Variables: `--ca-virtual-list-h`
 
 # Non-component exports
 
@@ -3332,21 +3431,11 @@ const elevation: {
 }
 ```
 
-### findActiveItem
-
-`import { findActiveItem } from "@codeatlasdev/ui"`
-
-The nav item that is active for `pathname` among one module's entries (sections flattened), or `undefined` when none matches. Like modules, the most specific match wins whatever the order: with items at `/a` and `/a/b`, `/a/b/1` is `/a/b` only and `/a/c` stays on `/a`. On a tie the first wins.
-
-```ts
-function findActiveItem(entries: ReadonlyArray<NavItem | NavSection>, pathname: string): NavItem | undefined
-```
-
 ### findActiveItemPath
 
 `import { findActiveItemPath } from "@codeatlasdev/ui"`
 
-Path of the nav item that is active for `pathname` (see `findActiveItem`), or `null` when none matches.
+Path of the nav item that is active for `pathname`, or `null` when none matches.
 
 ```ts
 function findActiveItemPath(modules: NavModule[], pathname: string): string | null
@@ -3660,26 +3749,6 @@ Subscribes to `layerchange`: fired on `document` whenever a layer opens or close
 function onLayerChange(listener: (change: LayerChange) => void): () => void
 ```
 
-### onTokensChange
-
-`import { onTokensChange } from "@codeatlasdev/ui"`
-
-Call `fn` after the scheme, preset or surface style of the page changes (the `class`, `data-preset` and `data-style` attributes of `<html>`). Returns the unsubscribe function. Server-side it does nothing. Svelte code usually reads `colorScheme` instead; this is for canvas, map and chart code outside a component.
-
-```ts
-function onTokensChange(fn: () => void): () => void
-```
-
-### passwordScore
-
-`import { passwordScore } from "@codeatlasdev/ui"`
-
-Pure, dependency-free strength estimate: unique characters and character classes, so a long repeat ("aaaa…") does not pass, and a passphrase of plain words does. A hint for the user, not a policy: enforce rules on the server.
-
-```ts
-function passwordScore(value: string): PasswordScore
-```
-
 ### radius
 
 `import { radius } from "@codeatlasdev/ui"`
@@ -3932,16 +4001,6 @@ Pretty-printed JSON array. With `columns`, each object keeps only those fields (
 function toJson<T extends object>(rows: readonly T[], columns?: readonly ExportColumn<T>[]): string
 ```
 
-### tokenRgba
-
-`import { tokenRgba } from "@codeatlasdev/ui"`
-
-A design token (`--ca-brand-main`), a domain token by name (`"status.new"` for `--ca-token-status-new`, also `"status.new-subtle"` / `"status.new-contrast"`) or any CSS color (`#f59e0b`, `oklch(...)`, `color-mix(...)`) as `[r, g, b, a]`. `alpha` (0-1) multiplies the color's own alpha. A token that is not declared is transparent black, and so is any call on the server. Read it inside a `$derived`/`$effect` together with `colorScheme.resolved` (or subscribe with `onTokensChange`) to follow scheme and preset changes.
-
-```ts
-function tokenRgba(token: CaTokenName | (string & {}), alpha?: number): Rgba
-```
-
 ### uid
 
 `import { uid } from "@codeatlasdev/ui"`
@@ -4036,19 +4095,11 @@ Types:
 | Type | Declaration | Notes |
 |---|---|---|
 | `Align` | `type Align = (typeof ALIGN)[number];` |  |
-| `AvatarTokens` | `interface AvatarTokens extends AvatarFallbackTokens { size?: Partial< Record< "xs" \| "sm" \| "md" \| "lg" \| "xl", Pick<AvatarFallbackTokens, "fallbackSize" \| "fallbackWeight"> > >; }` |  |
 | `BrandColors` | `interface BrandColors { main: string; light: string; dark: string; contrast: string; }` |  |
 | `Breakpoint` | `type Breakpoint = "xs" \| "sm" \| "md" \| "lg" \| "xl";` |  |
 | `BuiltinPresetId` | `type BuiltinPresetId = \| "amber" \| "ocean" \| "crimson" \| "cyan" \| "violet" \| "emerald" \| "rose" \| "slate";` | Presets shipped in global.css. |
-| `ButtonSizeTokens` | `interface ButtonSizeTokens { height?: CssValue; paddingX?: CssValue; fontSize?: CssValue; weight?: CssValue; tracking?: CssValue; }` | Typography and box tokens of one Button size. |
-| `ButtonTokens` | `interface ButtonTokens extends ButtonSizeTokens { weight?: CssValue; tracking?: CssValue; leading?: CssValue; gap?: CssValue; ghostBorderWidth?: CssValue; disabledBg?: CssValue; touchHeight?: CssValue; sm?: ButtonSizeTokens; md?: ButtonSizeTokens; lg?: ButtonSizeTokens; }` |  |
-| `CardTokens` | `interface CardTokens { bg?: CssValue; radius?: CssValue; border?: CssValue; shadow?: CssValue; }` |  |
-| `CaTokenName` | `type CaTokenName = keyof CaTokenRegistry extends never ? never : keyof CaTokenRegistry & string;` | Names declared through `CaTokenRegistry`, else any `group.name` string. |
-| `CaTokenRegistry` | `interface CaTokenRegistry {}` | Registry of domain tokens an app declares, for typed names. Augment it to get autocomplete in `tokenRgba("status.new")`: |
 | `ColorScheme` | `type ColorScheme = "light" \| "dark" \| "system";` |  |
-| `ColorValue` | `type ColorValue = string \| { color: string; alpha: number };` | One color: any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `color-mix(…)`, `rgb(…)`) or an explicit alpha form that keeps the color and the opacity apart. |
 | `Columns` | `type Columns = (typeof COLUMNS)[number] \| `${(typeof COLUMNS)[number]}`;` |  |
-| `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldTokens; textField?: FieldTokens; textArea?: TextAreaTokens; card?: CardTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
 | `DateRange` | `interface DateRange { start: DateValue \| undefined; end: DateValue \| undefined; }` | Value of RangeCalendar / DateRangePicker. Both ends are undefined until picked. |
 | `DeepPartial` | `type DeepPartial<T> = T extends (...args: never[]) => unknown ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;` |  |
 | `Density` | `type Density = "compact" \| "comfortable" \| "airy" \| number;` | Spacing density: a multiplier of the 4px unit, or a named step. |
@@ -4071,20 +4122,16 @@ Types:
 | `ElementTag` | `type ElementTag = keyof SvelteHTMLElements;` | Tags `as` can render: the HTML and SVG elements Svelte knows (`svelte:element`). |
 | `ElevationLevel` | `type ElevationLevel = keyof typeof elevation;` |  |
 | `ElevationModel` | `type ElevationModel = "soft" \| "none" \| "hard" \| "glow";` | Shadow model: how elevation is drawn. |
-| `EmptyStateTokens` | `interface EmptyStateTokens { padding?: CssValue; titleSize?: CssValue; titleWeight?: CssValue; }` |  |
 | `ExportColumn` | `interface ExportColumn<T extends object = Record<string, unknown>> { key: keyof T & string; header?: string; value?: (row: T) => unknown; }` |  |
 | `FieldState` | `interface FieldState { value: string; error: string \| undefined; touched: boolean; }` |  |
-| `FieldTokens` | `interface FieldTokens { gap?: CssValue; labelLeading?: CssValue; }` |  |
 | `FontDescriptor` | `interface FontDescriptor { family: string; src: string; weight?: number \| string; style?: "normal" \| "italic"; display?: "auto" \| "block" \| "swap" \| "fallback" \| "optional"; preload?: boolean; fallback?: string; fallbackMetrics?: FontFallbackMetrics; generic?: string; }` | A self-hosted web font. Emits `@font-face`, an optional preload and a metric-matched fallback face. |
 | `FontFallbackMetrics` | `interface FontFallbackMetrics { sizeAdjust?: string \| number; ascent?: string; descent?: string; lineGap?: string; }` | Metrics of the fallback face, from the font's own tables, so the swap does not shift layout. |
 | `FontSpec` | `type FontSpec = string \| FontDescriptor;` | A font stack string (existing behavior) or a self-hosted font descriptor. |
 | `FormState` | `interface FormState< K extends string, A extends Record<string, unknown> = Record<never, never>, > { fields: Record<K, FieldState>; arrays: { [N in keyof A]: FieldArrayState<A[N]> }; dirty: boolean; valid: boolean; submitting: boolean; touch(field: K): void; set(field: K, value: string): void; validate(): boolean; reset(): void; }` |  |
 | `HeadingLevel` | `type HeadingLevel = 2 \| 3 \| 4 \| 5 \| 6;` | Level of a rendered `<h2>`–`<h6>`. `<h1>` is reserved for the page title (`PageShell`). |
-| `IconButtonTokens` | `interface IconButtonTokens { weight?: CssValue; size?: { sm?: CssValue; md?: CssValue; lg?: CssValue }; touchSize?: CssValue; }` |  |
 | `IconComponent` | `type IconComponent = Component<IconProps>;` | Any Svelte 5 icon component accepting {@link IconProps}. Structural, so `@lucide/svelte` icons (and compatible libraries) fit. |
 | `IconProps` | `type IconProps = { size?: number \| string; class?: string; "stroke-width"?: number \| string; };` | Props the library passes to icon components. |
 | `Justify` | `type Justify = (typeof JUSTIFY)[number];` |  |
-| `KbdTokens` | `interface KbdTokens { size?: CssValue; fontSize?: CssValue; leading?: CssValue; }` |  |
 | `LayerChange` | `interface LayerChange { layers: LayerInfo[]; count: number; modal: boolean; }` | Detail of the `layerchange` event on `document`. |
 | `LayerInfo` | `interface LayerInfo { kind: LayerKind; rect: DOMRect; }` |  |
 | `LayerKind` | `type LayerKind = "modal" \| "popover" \| "hint";` | The single layer stack. Every overlay (dialog, sheet, menu, popover, tooltip) goes through `openLayer`, so there is one place for the top layer, Escape / outside press / focus-out, focus restoration, scroll lock and the `layerchange` event hosts listen to. |
@@ -4104,20 +4151,16 @@ Types:
 | `NeutralRamp` | `interface NeutralRamp { surfaceLight: SurfaceColors; surfaceDark: SurfaceColors; textLight: TextColors; textDark: TextColors; outlineLight: OutlineColors; outlineDark: OutlineColors; }` |  |
 | `OutlineColors` | `interface OutlineColors { subtle: string; default: string; strong: string; }` |  |
 | `Paper` | `type Paper = "mesh" \| "plain" \| "grid" \| "dots" \| "lines";` | Page background pattern. mesh = brand glow gradients (drawn by the glass and frosted materials); the rest are flat paper. |
-| `PasswordScore` | `type PasswordScore = 0 \| 1 \| 2 \| 3;` | 0 = empty, 1 = weak, 2 = fair, 3 = strong. |
 | `Politeness` | `type Politeness = "polite" \| "assertive";` |  |
 | `PolymorphicAttributes` | `type PolymorphicAttributes<T extends ElementTag, Own = object> = Omit< SvelteHTMLElements[T], "class" \| "children" \| "as" \| keyof Own > & Own;` | The tag's own attributes and event handlers, minus what the primitive declares itself (`Own`, `class`, `children`, `as`). |
 | `PolymorphicProps` | `type PolymorphicProps<T extends ElementTag, Own = object> = { as?: T; class?: string; children?: Snippet; } & PolymorphicAttributes<T, Own>;` | Props of a primitive that renders `as` an element: the tag's own attributes and event handlers (`as="form"` takes `novalidate`, `onsubmit` with `currentTarget: HTMLFormElement`), its token props, `class` and `children`. |
-| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; tokens?: PresetTokenGroups; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
+| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `PresetId` | `type PresetId = BuiltinPresetId \| (string & {});` | A built-in preset or a brand preset registered via `ThemeOptions.presets`. |
 | `PresetSizes` | `interface PresetSizes { inputFontSize?: string; }` |  |
-| `PresetTokenGroups` | `type PresetTokenGroups = Record<string, Record<string, TokenValue>>;` | `group → name → value`. Group and name are CSS identifier fragments (`[a-z][a-z0-9-]*`). |
 | `RadiusKey` | `type RadiusKey = keyof typeof radius;` |  |
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
 | `Responsive` | `type Responsive<T> = T \| ({ base?: T } & { [B in Breakpoint]?: T });` | A value, or one value per breakpoint: `{ base: "2", md: "6" }`. A breakpoint applies from its width up. |
-| `Rgba` | `type Rgba = [number, number, number, number];` | `[r, g, b, a]`: r, g, b in 0-255, a in 0-1 (what `@deck.gl/core` `Color` expects, alpha scaled by the caller). |
-| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: ColorValue; brandFillHover?: ColorValue; brandContrast?: ColorValue; background?: ColorValue; sunken?: ColorValue; surface?: ColorValue; overlay?: ColorValue; text?: ColorValue; textSecondary?: ColorValue; textHint?: ColorValue; textDisabled?: ColorValue; borderSubtle?: ColorValue; border?: ColorValue; borderStrong?: ColorValue; success?: ColorValue; warning?: ColorValue; info?: ColorValue; error?: ColorValue; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it, and the build measures text roles after compositing it (see `presetContrastIssues`). |
-| `SegmentedTokens` | `interface SegmentedTokens extends SegmentedItemTokens { sm?: SegmentedItemTokens; md?: SegmentedItemTokens; }` |  |
+| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: string; brandFillHover?: string; brandContrast?: string; background?: string; sunken?: string; surface?: string; overlay?: string; text?: string; textSecondary?: string; textHint?: string; textDisabled?: string; borderSubtle?: string; border?: string; borderStrong?: string; success?: string; warning?: string; info?: string; error?: string; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. |
 | `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
 | `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
 | `SortableOptions` | `interface SortableOptions { id: string; group?: string; getItems: () => readonly string[]; getLabel?: (id: string) => string; label?: string; axis?: "y" \| "x"; drop?: "position" \| "container"; handle?: string; disabled?: boolean; onDrop: (e: DndDropEvent) => void; }` |  |
@@ -4125,9 +4168,8 @@ Types:
 | `StageInsets` | `interface StageInsets { top: number; right: number; bottom: number; left: number; }` |  |
 | `SurfaceColors` | `interface SurfaceColors { sunken: string; base: string; raised: string; overlay: string; }` |  |
 | `SurfaceStyle` | `type SurfaceStyle = \| "glass" \| "frosted" \| "solid" \| "flat" \| "outlined" \| "neumorphic" \| "clay" \| "tonal" \| "chrome";` | Surface material. glass/frosted blur the backdrop; the rest are opaque. |
-| `TextAreaTokens` | `interface TextAreaTokens extends FieldTokens { minHeight?: CssValue; }` |  |
 | `TextColors` | `interface TextColors { primary: string; secondary: string; disabled: string; }` |  |
-| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; components: ComponentTokens; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
+| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
 | `ThemePreset` | `interface ThemePreset { id: BuiltinPresetId; label: string; swatchColor: string; hue: number; brandLight: BrandColors; brandDark: BrandColors; ramp: NeutralRamp; semanticLight: SemanticColors; semanticDark: SemanticColors; }` |  |
 | `Thickness` | `type Thickness = "ultra-thin" \| "thin" \| "regular" \| "thick" \| "chrome";` |  |
@@ -4135,7 +4177,6 @@ Types:
 | `ToastItem` | `interface ToastItem { id: string; message: string; variant: ToastVariant; duration: number; count?: number; description?: string; action?: ToastAction; }` |  |
 | `ToastOptions` | `interface ToastOptions { variant?: ToastVariant; duration?: number; id?: string; description?: string; action?: ToastAction; }` |  |
 | `ToastVariant` | `type ToastVariant = "default" \| "success" \| "error" \| "warning" \| "info";` |  |
-| `TokenValue` | `type TokenValue = string \| { light?: string; dark?: string };` | One domain token: a single color for both schemes, or one per scheme (a missing side uses the other). |
 | `TypographyOptions` | `interface TypographyOptions { scale?: number; weights?: Partial<Record<"regular" \| "medium" \| "semibold" \| "bold" \| "heading", number>>; headingTracking?: string; headingCase?: "none" \| "uppercase"; displayTracking?: string; displayLeading?: number; labelTracking?: string; labelCase?: "none" \| "uppercase"; lineHeight?: number; measure?: string; }` |  |
 | `UseDndOptions` | `interface UseDndOptions { messages?: Partial<DndMessages>; threshold?: number; holdMs?: number; edge?: number; id?: string; }` |  |
 | `UseListStateOptions` | `interface UseListStateOptions<T extends object> { data: T[]; perPage?: number; searchKeys?: (keyof T)[]; idKey?: keyof T; ofLabel?: string; }` | useListState — eliminates boilerplate state management in list/CRUD pages. |
@@ -4284,9 +4325,9 @@ Types:
 |---|---|---|
 | `DesignStyleId` | `type DesignStyleId = \| "default" \| "liquid" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
 | `Paper` | `type Paper = "mesh" \| "plain" \| "grid" \| "dots" \| "lines";` | Page background pattern. mesh = brand glow gradients (drawn by the glass and frosted materials); the rest are flat paper. |
-| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; tokens?: PresetTokenGroups; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
+| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `PresetSizes` | `interface PresetSizes { inputFontSize?: string; }` |  |
-| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: ColorValue; brandFillHover?: ColorValue; brandContrast?: ColorValue; background?: ColorValue; sunken?: ColorValue; surface?: ColorValue; overlay?: ColorValue; text?: ColorValue; textSecondary?: ColorValue; textHint?: ColorValue; textDisabled?: ColorValue; borderSubtle?: ColorValue; border?: ColorValue; borderStrong?: ColorValue; success?: ColorValue; warning?: ColorValue; info?: ColorValue; error?: ColorValue; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it, and the build measures text roles after compositing it (see `presetContrastIssues`). |
+| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: string; brandFillHover?: string; brandContrast?: string; background?: string; sunken?: string; surface?: string; overlay?: string; text?: string; textSecondary?: string; textHint?: string; textDisabled?: string; borderSubtle?: string; border?: string; borderStrong?: string; success?: string; warning?: string; info?: string; error?: string; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
 
 ## @codeatlasdev/ui/charts
@@ -4598,10 +4639,10 @@ Types:
 | `DesignStyleId` | `type DesignStyleId = \| "default" \| "liquid" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
 | `IslandTheme` | `interface IslandTheme { preset?: string; scheme: IslandScheme; }` |  |
 | `NativeFeelOptions` | `interface NativeFeelOptions { blockZoom?: boolean; allowContextMenu?: (e: MouseEvent) => boolean; }` |  |
-| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; tokens?: PresetTokenGroups; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
+| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
 | `RouteThemes` | `type RouteThemes = Record<string, Partial<IslandTheme>>;` | Route id prefixes (`event.route.id`, e.g. `"/(marketing)"`) → the theme their pages use. Longest prefix wins. |
-| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; components: ComponentTokens; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
+| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
 | `ThemeHandleOptions` | `interface ThemeHandleOptions { routes?: RouteThemes; }` | Options of the second argument of `caThemeHandle`. |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
 
@@ -5270,16 +5311,6 @@ Neutral surface/text/outline ramp tinted with the given brand hue (OKLCH degrees
 function neutralRamp(hue: number): NeutralRamp
 ```
 
-### onTokensChange
-
-`import { onTokensChange } from "@codeatlasdev/ui/tokens"`
-
-Call `fn` after the scheme, preset or surface style of the page changes (the `class`, `data-preset` and `data-style` attributes of `<html>`). Returns the unsubscribe function. Server-side it does nothing. Svelte code usually reads `colorScheme` instead; this is for canvas, map and chart code outside a component.
-
-```ts
-function onTokensChange(fn: () => void): () => void
-```
-
 ### radius
 
 `import { radius } from "@codeatlasdev/ui/tokens"`
@@ -5356,16 +5387,6 @@ The built-in brand presets with their generated brand ramps, neutral ramp and se
 const THEME_PRESETS: ThemePreset[]
 ```
 
-### tokenRgba
-
-`import { tokenRgba } from "@codeatlasdev/ui/tokens"`
-
-A design token (`--ca-brand-main`), a domain token by name (`"status.new"` for `--ca-token-status-new`, also `"status.new-subtle"` / `"status.new-contrast"`) or any CSS color (`#f59e0b`, `oklch(...)`, `color-mix(...)`) as `[r, g, b, a]`. `alpha` (0-1) multiplies the color's own alpha. A token that is not declared is transparent black, and so is any call on the server. Read it inside a `$derived`/`$effect` together with `colorScheme.resolved` (or subscribe with `onTokensChange`) to follow scheme and preset changes.
-
-```ts
-function tokenRgba(token: CaTokenName | (string & {}), alpha?: number): Rgba
-```
-
 ### zIndex
 
 `import { zIndex } from "@codeatlasdev/ui/tokens"`
@@ -5398,7 +5419,6 @@ Types:
 | `OutlineColors` | `interface OutlineColors { subtle: string; default: string; strong: string; }` |  |
 | `PresetId` | `type PresetId = BuiltinPresetId \| (string & {});` | A built-in preset or a brand preset registered via `ThemeOptions.presets`. |
 | `RadiusKey` | `type RadiusKey = keyof typeof radius;` |  |
-| `Rgba` | `type Rgba = [number, number, number, number];` | `[r, g, b, a]`: r, g, b in 0-255, a in 0-1 (what `@deck.gl/core` `Color` expects, alpha scaled by the caller). |
 | `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
 | `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
 | `SurfaceColors` | `interface SurfaceColors { sunken: string; base: string; raised: string; overlay: string; }` |  |
@@ -5514,7 +5534,7 @@ Types:
 
 | Type | Declaration | Notes |
 |---|---|---|
-| `PresetTokens` | `interface PresetTokens { brandMain: string; brandLight: string; brandDark: string; brandContrast: string; brandText: string; brandFill: string; brandFillHover: string; surfaceSunken: string; surfaceBase: string; surfaceRaised: string; surfaceOverlay: string; textPrimary: string; textSecondary: string; textDisabled: string; textHint: string; outlineSubtle: string; outlineDefault: string; outlineStrong: string; outlineControl: string; focusRing: string; semanticErrorContrast: string; glassBg: string; glassTintUltraThin: string; glassTintThin: string; glassTint: string; glassTintThick: string; glassTintChrome: string; glassTintSolid: string; glassBorder: string; glassShadow: string; glowPrimary: string; glowPrimaryStrong: string; vibrancyLabel: string; vibrancySecondary: string; vibrancyTertiary: string; vibrancyFill: string; vibrancySeparator: string; scrimColor: string; tooltipFg: string; dark: { brandMain: string; brandLight: string; brandDark: string; brandContrast: string; brandText: string; brandFill: string; brandFillHover: string; surfaceSunken: string; surfaceBase: string; surfaceRaised: string; surfaceOverlay: string; textPrimary: string; textSecondary: string; textDisabled: string; textHint: string; outlineControl: string; focusRing: string; semanticErrorContrast: string; glassBg: string; glowPrimary: string; glowPrimaryStrong: string; vibrancyLabel: string; vibrancySecondary: string; vibrancyTertiary: string; vibrancyFill: string; vibrancySeparator: string; tooltipFg: string; }; }` |  |
+| `PresetTokens` | `interface PresetTokens { brandMain: string; brandLight: string; brandDark: string; brandContrast: string; brandFill: string; brandFillHover: string; surfaceSunken: string; surfaceBase: string; surfaceRaised: string; surfaceOverlay: string; textPrimary: string; textSecondary: string; textDisabled: string; textHint: string; outlineSubtle: string; outlineDefault: string; outlineStrong: string; outlineControl: string; focusRing: string; semanticErrorContrast: string; glassBg: string; glassTintUltraThin: string; glassTintThin: string; glassTint: string; glassTintThick: string; glassTintChrome: string; glassTintSolid: string; glassBorder: string; glassShadow: string; glowPrimary: string; glowPrimaryStrong: string; vibrancyLabel: string; vibrancySecondary: string; vibrancyTertiary: string; vibrancyFill: string; vibrancySeparator: string; scrimColor: string; tooltipFg: string; dark: { brandMain: string; brandLight: string; brandDark: string; brandContrast: string; brandFill: string; brandFillHover: string; surfaceSunken: string; surfaceBase: string; surfaceRaised: string; surfaceOverlay: string; textPrimary: string; textSecondary: string; textDisabled: string; textHint: string; outlineControl: string; focusRing: string; semanticErrorContrast: string; glassBg: string; glowPrimary: string; glowPrimaryStrong: string; vibrancyLabel: string; vibrancySecondary: string; vibrancyTertiary: string; vibrancyFill: string; vibrancySeparator: string; tooltipFg: string; }; }` |  |
 | `TokenMap` | `type TokenMap = Record<`--ca-${string}`, string>;` | CSS custom properties of one preset, per scheme. |
 
 ## @codeatlasdev/ui/vite
@@ -5713,9 +5733,9 @@ Types:
 | `FontSpec` | `type FontSpec = string \| FontDescriptor;` | A font stack string (existing behavior) or a self-hosted font descriptor. |
 | `GenerateBrandOptions` | `interface GenerateBrandOptions { mark: string; theme: ThemeOptions; outDir: string; base?: string; name?: string; shortName?: string; }` |  |
 | `OgCardOptions` | `interface OgCardOptions { title: string; description?: string; eyebrow?: string; siteName: string; mark: string; colors: { ink: string; spark: string; surface: string }; css?: string; fontFamily?: string; lang?: string; }` |  |
-| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; tokens?: PresetTokenGroups; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
+| `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `PresetSizes` | `interface PresetSizes { inputFontSize?: string; }` |  |
 | `ResolvedBrand` | `interface ResolvedBrand { light: BrandColors; dark: BrandColors; }` |  |
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
-| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; components: ComponentTokens; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
+| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |

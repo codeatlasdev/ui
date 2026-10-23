@@ -306,7 +306,7 @@ If your own CSS lives in a layer (for example Tailwind's `@layer components`), d
 For per-scheme overrides prefer `overrides` in the theme object, which is emitted for both `:root` and theme islands.
 
 <Callout type="note">
-  The `ca-*` BEM classes (`.ca-btn`, `.ca-dialog__body`, ...) are public API. Targeting them from app CSS is supported, and renaming one is a breaking change.
+  The `ca-*` BEM classes (`.ca-btn`, `.ca-dialog__body`, ...) are public API. Targeting them from app CSS is supported, and renaming one is a breaking change. Which ones, per component, along with its scoped variables and `data-*` hooks, is generated: `list_parts("Button")` in the MCP server, the `Parts` / `Variables` / `Data attributes` lines of `API.md`, or `dist/parts.json`. A `ca-x-*` class and every `@keyframes` name is internal. `bunx @codeatlasdev/ui workarounds --strict` exits 1 when your CSS selects a `.ca-*` name that is not a stable part.
 </Callout>
 
 ## Component tokens
