@@ -97,11 +97,17 @@ export function buildLlmsIndex(i: {
 		{
 			heading: "Start here: build a screen",
 			links: [
-				...i.recipes.map((r) => ({
-					title: r.title,
-					href: `${SITE}${llmsRecipePath(r.id)}`,
-					description: "complete copy-pasteable page",
-				})),
+				// Single-screen apps have no shell to supply <main>: Standalone page leads the list.
+				...[...i.recipes]
+					.sort((a, b) => +(b.id === "standalone-page") - +(a.id === "standalone-page"))
+					.map((r) => ({
+						title: r.title,
+						href: `${SITE}${llmsRecipePath(r.id)}`,
+						description:
+							r.id === "standalone-page"
+								? "one screen with no shell (single dashboard, board or map): owns its <main>; start here for single-screen apps"
+								: "complete copy-pasteable page",
+					})),
 				{
 					title: "All recipes",
 					href: `${SITE}${llmsPagePath(ENTRY_PAGES.recipes)}`,

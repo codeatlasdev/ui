@@ -6,6 +6,7 @@
   import { scrollFocusable } from '../../actions/scroll-focusable.js';
   import { stageInsets } from '../../stores/stage-insets.svelte.js';
   import { provideSectionHeadingLevel } from '../PageShell/heading-context.js';
+  import { warnNoMain } from '../../utils/warn-no-main.js';
 
   /**
    * PageFrame: the page container for a map-first app, where a live stage (map, canvas) sits
@@ -87,6 +88,8 @@
   let root = $state<HTMLElement>();
   let panel = $state<HTMLElement>();
   let mobile = $state(false);
+
+  $effect(() => warnNoMain(root, 'PageFrame'));
 
   // The same 900px the shell uses to swap rail for bottom navigation.
   $effect(() => {

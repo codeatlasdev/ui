@@ -4,6 +4,7 @@
   import { useMessages } from '../../i18n/state.svelte.js';
   import { pageShell } from '../../i18n/groups/pageShell.js';
   import { provideSectionHeadingLevel } from './heading-context.js';
+  import { warnNoMain } from '../../utils/warn-no-main.js';
   const t = useMessages(pageShell);
 
   interface Props {
@@ -36,6 +37,9 @@
   // The page <h1> is rendered above; titles inside the shell default to <h2>.
   provideSectionHeadingLevel();
 
+  let root = $state<HTMLElement>();
+  $effect(() => warnNoMain(root, 'PageShell'));
+
   // Only caller-supplied values become inline vars; the defaults live in the stylesheet as tokens.
   const rootStyle = $derived(
     [maxWidth ? `--ps-max:${maxWidth}` : '', gap !== undefined ? `--ps-gap:${gap}px` : ''].filter(Boolean).join(';') || undefined,
@@ -47,6 +51,7 @@
      stop after hydration when nothing overflows (axe scrollable-region-focusable). -->
 <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
 <div
+  bind:this={root}
   class="ca-page-shell {className}"
   style={rootStyle}
   role="region"
