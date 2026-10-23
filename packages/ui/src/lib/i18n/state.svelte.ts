@@ -13,6 +13,7 @@
 // English. Explicit component props always win over the catalog.
 
 import { getContext, hasContext, setContext } from "svelte";
+import { devWarn } from "../utils/dev-warn.js";
 import {
 	catalogVersion,
 	type Group,
@@ -41,11 +42,10 @@ const isServer = typeof window === "undefined";
  */
 export function setLocale(next: Locale, override?: MessagesOverride): void {
 	if (isServer) {
-		if (import.meta.env?.DEV) {
-			console.warn(
-				`[ca-ui] setLocale("${next}") ignored on the server: it would leak between concurrent requests. Use <I18nProvider locale={…}> in the root layout.`
-			);
-		}
+		devWarn(
+			"set-locale",
+			`setLocale("${next}") ignored on the server: it would leak between concurrent requests. Use <I18nProvider locale={…}> in the root layout (migration v2-setlocale-i18nprovider, see MIGRATION.md).`
+		);
 		return;
 	}
 	current = next;

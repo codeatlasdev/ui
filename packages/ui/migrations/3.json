@@ -1,0 +1,77 @@
+{
+	"major": 3,
+	"version": "3.0.0",
+	"title": "Sober default theme, surface engine, layout primitives, unified layers",
+	"entries": [
+		{
+			"id": "v3-liquid-glass-opt-in",
+			"kind": "behavior",
+			"changesets": ["a1d14f5"],
+			"selector": "default theme (glass, mesh, glow, 10px controls, 700 headings)",
+			"replacement": "designStyle(\"liquid\", { ...yourTheme }) from @codeatlasdev/ui/vite",
+			"codemod": "no",
+			"note": "The default is solid and neutral. To keep the old look use `designStyle(\"liquid\")` or set defaultStyle \"glass\", paper \"mesh\", radius 1, iconStroke 2 and heading weight 700. Apps that override `--ca-*` tokens are unaffected; apps that read `--ca-radius-*` or the shadow tokens get the new values."
+		},
+		{
+			"id": "v3-grid-columns",
+			"kind": "rename",
+			"changesets": ["1eeca1c"],
+			"selector": "<Grid cols={n}>, rowGap, colGap, template strings",
+			"replacement": "<Grid columns={n} gap=\"4\"> (1-12 or responsive); grid-template-columns in a class",
+			"detect": "<Grid\\b[^>]*\\b(cols|rowGap|colGap)=",
+			"codemod": "partial",
+			"codemodId": "layout-primitives",
+			"note": "`cols` becomes `columns`. `rowGap`, `colGap` and CSS template strings (`2fr 1fr`) are gone and are reported for you to write in a class."
+		},
+		{
+			"id": "v3-gap-step-scale",
+			"kind": "behavior",
+			"changesets": ["1eeca1c"],
+			"selector": "<Stack gap={16}>, <Grid gap={16}>, align/justify values",
+			"replacement": "gap=\"4\" (px / 4), align start|center|end|stretch|baseline, justify start|center|end|between|around|evenly",
+			"codemod": "partial",
+			"codemodId": "layout-primitives",
+			"note": "`gap` is a spacing step string, not pixels: an untouched `gap={16}` would silently become step 16. Static values on the scale are converted; dynamic or off-scale ones are reported."
+		},
+		{
+			"id": "v3-glasscard-to-card",
+			"kind": "rename",
+			"changesets": ["1eeca1c"],
+			"selector": "<GlassCard thickness tinted glowing padding>",
+			"replacement": "<Card material=\"glass\" elevation tone=\"brand\" glow p>",
+			"codemod": "yes",
+			"codemodId": "layout-primitives",
+			"note": "Deprecated in 3.0.0 (dev warning) and kept as a wrapper. `thickness` maps to `elevation` (thin 2, regular 3, thick 4); the default regular is written as elevation 3 so the fill, blur and rim stay. Dynamic props are left with their import."
+		},
+		{
+			"id": "v3-glasssurface-to-surface",
+			"kind": "rename",
+			"changesets": ["1eeca1c"],
+			"selector": "<GlassSurface thickness refraction tinted glowing>",
+			"replacement": "<Surface material=\"liquid\" | \"glass\" elevation tone glow>",
+			"codemod": "yes",
+			"codemodId": "layout-primitives",
+			"note": "`refraction` maps to material liquid (true) or glass (false)."
+		},
+		{
+			"id": "v3-row-to-flex",
+			"kind": "rename",
+			"changesets": ["1eeca1c"],
+			"selector": "<Row gap={8} align=\"center\">",
+			"replacement": "<Flex gap=\"2\" align=\"center\">",
+			"codemod": "yes",
+			"codemodId": "layout-primitives",
+			"note": "`Row` used to default to flex-start alignment; `Flex` leaves it to the browser (stretch), so a Row without `align` may need `align=\"start\"`."
+		},
+		{
+			"id": "v3-unified-layer-engine",
+			"kind": "behavior",
+			"changesets": ["49b2bf4"],
+			"selector": ".ca-floating wrapper div, .ca-date__float, --ca-z-dropdown / --ca-z-tooltip on overlays",
+			"replacement": ".ca-floating on the layer element itself; the top layer orders overlays",
+			"detect": "\\.ca-floating\\b|\\.ca-date__float\\b",
+			"codemod": "no",
+			"note": "Overlays live in the top layer, so stacking no longer depends on z-index. The wrapper div is gone and `.ca-date__float` was removed; the z tokens remain for your own in-flow UI."
+		}
+	]
+}

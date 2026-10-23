@@ -1,0 +1,72 @@
+{
+	"major": 1,
+	"version": "1.0.0",
+	"title": "Stable API, English strings, layered CSS, ThemeOptions",
+	"entries": [
+		{
+			"id": "v1-brandpreset-presetdefinition",
+			"kind": "rename",
+			"changesets": ["ef015e6"],
+			"selector": "BrandPreset",
+			"replacement": "PresetDefinition ({ id, color, label? })",
+			"codemod": "yes",
+			"codemodId": "brand-preset-to-preset-definition",
+			"note": "`BrandPreset` was removed from the exports. `brandPresetCSS` output changed (theme islands) and the head style id is `ca-theme` (was `ca-brand-presets`)."
+		},
+		{
+			"id": "v1-themeoptions-partial-themedefinition",
+			"kind": "behavior",
+			"changesets": ["ef015e6"],
+			"selector": "ThemeOptions",
+			"replacement": "Partial<ThemeDefinition> from defineTheme()",
+			"codemod": "no",
+			"note": "`ThemeOptions` is now `Partial<ThemeDefinition>`. Move custom tokens into `overrides` and brand colors into `presets`; there is no mechanical rewrite."
+		},
+		{
+			"id": "v1-english-default-strings",
+			"kind": "behavior",
+			"changesets": ["ef015e6"],
+			"selector": "default UI strings (label, placeholder, confirmLabel, emptyText...)",
+			"replacement": "catalog strings; setLocale(\"pt-BR\") once in the root layout",
+			"codemod": "no",
+			"note": "Defaults are English from a typed catalog (en, pt-BR). Portuguese apps call setLocale once; text props no longer have hardcoded defaults: omit them to use the catalog."
+		},
+		{
+			"id": "v1-layered-css",
+			"kind": "behavior",
+			"changesets": ["ef015e6"],
+			"selector": "global.css cascade",
+			"replacement": "@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.components, ca.materials, ca.utilities",
+			"codemod": "no",
+			"note": "The kit CSS is layered, so unlayered app CSS wins without !important. Delete `!important` and doubled-class overrides you added to beat the kit. Override a token by declaring `--ca-*` on `:root`."
+		},
+		{
+			"id": "v1-page-background-and-opaque-chrome",
+			"kind": "behavior",
+			"changesets": ["ef015e6"],
+			"selector": "html / body background, MobileHeader, BottomNav",
+			"replacement": "html paints --ca-surface-base, mesh on body::before, opaque --ca-chrome-surface",
+			"codemod": "no",
+			"note": "`body` is transparent now. MobileHeader and BottomNav are opaque so the browser status bar and toolbar match them."
+		},
+		{
+			"id": "v1-autofocus-touch-and-responsive-undefined",
+			"kind": "behavior",
+			"changesets": ["ef015e6"],
+			"selector": "autofocus on touch, responsive store",
+			"replacement": "primeKeyboard() in the opening tap, or { touch: true }; responsive width is undefined until init()",
+			"codemod": "no",
+			"note": "`autofocus` on touch devices only focuses when the keyboard was primed in the opening tap. `responsive` has an undefined width until `init()` runs; derived values treat it as desktop."
+		},
+		{
+			"id": "v1-ios-safe-input-class-removed",
+			"kind": "removed",
+			"changesets": ["ef015e6"],
+			"selector": ".ca-input-ios-safe, .ca-app input rule",
+			"replacement": "nothing: every text field is 16px globally",
+			"detect": "ca-input-ios-safe",
+			"codemod": "no",
+			"note": "Delete the class from your markup; the global 16px minimum covers every text field."
+		}
+	]
+}

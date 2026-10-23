@@ -128,7 +128,7 @@ Use the imperative mood in the subject line. Keep it under 72 characters.
 
 Publishing happens only in CI (`.github/workflows/release.yml`), triggered by a version tag. Nobody publishes from a laptop.
 
-1. Every PR that changes the published package adds a changeset: `bun changeset`, pick the bump, write the user-facing note.
+1. Every PR that changes the published package adds a changeset: `bun changeset`, pick the bump, write the user-facing note. A `major` changeset also adds the breaking change to `packages/ui/migrations/<major>.json` (before, after, why, `codemod: yes|partial|no`) and cites it with a `Migration: <id>` line; `bun run validate` fails without it. Regenerate `MIGRATION.md` with `bun run --cwd packages/ui manifest -- --skill`. A removal needs one release of a `devWarn` that names the migration id first.
 2. When it's time to ship, a maintainer runs `bun run release` on an up-to-date, clean `main` (`--dry-run` first to see what goes out). It applies the pending changesets (version + CHANGELOG), commits `chore(release): @codeatlasdev/ui@X.Y.Z`, tags it, pushes `main` and the tag atomically and watches the run.
 3. The tag starts the Release workflow: `scripts/release-meta.ts` checks the tag against the package version, `bun run validate` and the tarball smoke test run on the tagged commit (it does not depend on CI), then it publishes to npm with [provenance](https://docs.npmjs.com/generating-provenance-statements) through Trusted Publishing (OIDC, no npm token), creates the GitHub Release from the CHANGELOG and deploys the docs to ui.codeatlas.com.br.
 

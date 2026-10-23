@@ -23,6 +23,7 @@ import type {
 	ManifestToken,
 	PartsFile,
 } from "../scripts/build-manifest.ts";
+import { type MigrationFile, migrationMarkdown } from "../src/cli/migrations.ts";
 import { buildReport } from "../src/cli/report.ts";
 
 // Built to dist/bin/ca-ui-mcp.js; the manifests sit one level up in dist/.
@@ -36,6 +37,7 @@ const manifest = load<Manifest>("components.json");
 const tokens = load<{ tokens: ManifestToken[] }>("tokens.json").tokens;
 const guides = load<{ guides: ManifestGuide[] }>("guides.json").guides;
 const partsFile = load<PartsFile>("parts.json");
+const migrations = load<{ migrations: MigrationFile[] }>("migrations.json").migrations;
 const surfaces = load<{ surfaces: ManifestSurface[] }>("surfaces.json").surfaces;
 // Like demos: a build without the docs site has no recipes, and the other tools must keep working.
 const recipes = existsSync(join(DIST, "recipes.json"))
@@ -179,6 +181,16 @@ server.registerTool(
 				}),
 			].join("\n")
 		);
+	"get_migration",
+			"Breaking changes between two majors of @codeatlasdev/ui, as before -> after with why and whether `bunx @codeatlasdev/ui migrate --from <from> --to <to> --write` rewrites it (`yes`), rewrites part of it and reports the rest (`partial`) or leaves it to you (`no`). `from` is the major the project is on, `to` the one it moves to (default: the newest). Call it before upgrading a project that is not on the latest major.",
+		inputSchema: { from: z.number().int().min(0), to: z.number().int().min(1).optional() },
+	({ from, to }) => {
+		const newest = Math.max(...migrations.map((m) => m.major));
+		const target = to ?? newest;
+		if (from >= target)
+				`Nothing between ${from} and ${target}: \`from\` must be lower than \`to\` (newest major: ${newest}).`
+		const range = migrations.filter((m) => m.major > from && m.major <= target);
+		return text(migrationMarkdown(range));
 	}
 );
 

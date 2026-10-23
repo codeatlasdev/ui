@@ -1,0 +1,27 @@
+{
+	"major": 4,
+	"version": "4.0.0",
+	"title": "Main landmark in AppShellLayout, one selectable opt-out class",
+	"entries": [
+		{
+			"id": "v4-appshell-main-landmark",
+			"kind": "behavior",
+			"changesets": ["b99075a"],
+			"selector": "<main> inside <AppShellLayout> content",
+			"replacement": "remove your <main>, or pass mainId={null}",
+			"detect": "<main\\b",
+			"codemod": "no",
+			"note": "`AppShellLayout` renders its content region as `<main id=\"main\" tabindex=\"-1\">`. A page that already wraps its content in `<main>` now has two landmarks: remove yours or pass `mainId={null}` (the region becomes a plain div)."
+		},
+		{
+			"id": "v4-selectable-class",
+			"kind": "rename",
+			"changesets": ["fdb6798"],
+			"selector": ".selectable",
+			"replacement": ".ca-selectable",
+			"codemod": "yes",
+			"codemodId": "selectable-to-ca-selectable",
+			"note": "`nativeFeel()` has one opt-out class for the context menu and text selection. `.selectable` only existed in a JSDoc line; until it is renamed, right-click on that region is blocked. The codemod renames `class=\"selectable\"` and `class:selectable` in markup."
+		}
+	]
+}

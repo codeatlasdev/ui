@@ -24,7 +24,7 @@
   let { gap, align, justify, wrap = false, class: className = '', children }: Props = $props();
 
   $effect.pre(() => {
-    devWarn('row', '<Row> is deprecated and removed in the next major. Use <Flex> (direction defaults to row; gap is a spacing step: gap={8} → gap="2"); `bunx @codeatlasdev/ui migrate --write` rewrites usages.');
+    devWarn('row', '<Row> is deprecated and removed in the next major. Use <Flex> (direction defaults to row; gap is a spacing step: gap={8} → gap="2"); `bunx @codeatlasdev/ui migrate --from 2 --to 4 --write` rewrites usages (migration v3-row-to-flex, see MIGRATION.md).');
   });
 
   // Row used to default to flex-start alignment; Flex leaves it to the browser (stretch).

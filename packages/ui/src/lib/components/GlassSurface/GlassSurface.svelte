@@ -34,7 +34,7 @@
   }: Props = $props();
 
   $effect.pre(() => {
-    devWarn('glass-surface', '<GlassSurface> is deprecated and removed in the next major. Use <Surface> (thickness → elevation, tinted → tone="brand", glowing → glow, refraction → material="liquid"); `bunx @codeatlasdev/ui migrate --write` rewrites usages.');
+    devWarn('glass-surface', '<GlassSurface> is deprecated and removed in the next major. Use <Surface> (thickness → elevation, tinted → tone="brand", glowing → glow, refraction → material="liquid"); `bunx @codeatlasdev/ui migrate --from 2 --to 4 --write` rewrites usages (migration v3-glasssurface-to-surface, see MIGRATION.md).');
   });
 
   const ELEVATION = { 'ultra-thin': 1, thin: 2, regular: 3, thick: 4, chrome: 5 } as const;

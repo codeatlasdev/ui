@@ -1,0 +1,66 @@
+{
+	"major": 2,
+	"version": "2.0.0",
+	"title": "bits-ui removed, native dialogs",
+	"entries": [
+		{
+			"id": "v2-modal-overlay-dialog",
+			"kind": "behavior",
+			"changesets": ["dbb7193"],
+			"selector": ".ca-overlay (Dialog, AlertDialog, Sheet, Drawer, Lightbox, CommandPalette, DocsSearch)",
+			"replacement": "dialog.ca-overlay::backdrop for the scrim; .ca-overlay is the <dialog> itself",
+			"detect": "\\.ca-overlay\\b(?!::backdrop)",
+			"codemod": "no",
+			"note": "A modal is one native <dialog> moved to <body>, the scrim is its ::backdrop. CSS that targeted a separate overlay element or the old portal container no longer matches; a rule written for the old overlay now paints the panel."
+		},
+		{
+			"id": "v2-bits-ui-dependency",
+			"kind": "removed",
+			"changesets": ["dbb7193"],
+			"selector": "bits-ui",
+			"replacement": "add bits-ui to your own dependencies if you import it",
+			"detect": "from ['\"]bits-ui",
+			"codemod": "no",
+			"note": "bits-ui is no longer installed with the package, and `ssr.noExternal` for it is not needed."
+		},
+		{
+			"id": "v2-bits-css-hooks",
+			"kind": "removed",
+			"changesets": ["dbb7193"],
+			"selector": "--bits-* variables, data-bits-* attributes",
+			"replacement": "--ca-anchor-width, --ca-accordion-height, --ca-collapsible-height, data-ca-day",
+			"detect": "--bits-[a-z-]+|data-bits-[a-z-]+",
+			"codemod": "no",
+			"note": "Props, exported types, `ca-*` classes and `data-state` did not change; the `--bits-*` and `data-bits-*` hooks are gone."
+		},
+		{
+			"id": "v2-select-hidden-input",
+			"kind": "removed",
+			"changesets": ["dbb7193"],
+			"selector": "Select hidden <input> from bits-ui",
+			"replacement": "pass name to Select (4.0.0 renders a hidden input carrying the value)",
+			"codemod": "no",
+			"note": "`required` still blocks native form submit; a form that read the old hidden input must pass `name` on Select."
+		},
+		{
+			"id": "v2-setlocale-i18nprovider",
+			"kind": "behavior",
+			"changesets": ["d9087e8"],
+			"selector": "setLocale(x) in the root layout of an SSR app",
+			"replacement": "<I18nProvider locale={x}>…</I18nProvider>",
+			"detect": "\\bsetLocale\\(",
+			"codemod": "partial",
+			"codemodId": "setlocale-to-i18nprovider",
+			"note": "`setLocale` is a no-op on the server (with a dev warning) because module state was shared across concurrent requests. The codemod only flags the call (file:line) since the layout markup has to be wrapped by hand; client-only apps keep `setLocale`."
+		},
+		{
+			"id": "v2-locale-open-set",
+			"kind": "behavior",
+			"changesets": ["d9087e8"],
+			"selector": "setLocale(\"en\", fullOverride)",
+			"replacement": "registerLocale(\"es\", dictionary) then locale=\"es\"",
+			"codemod": "no",
+			"note": "`Locale` is a string now; a custom language is registered with a partial dictionary and falls back to English per key. `createErrorHandler()` takes `locale` for its fallback message."
+		}
+	]
+}
