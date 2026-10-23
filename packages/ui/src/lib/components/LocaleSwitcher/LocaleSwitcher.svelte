@@ -126,7 +126,7 @@
       outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
       outline-offset: calc(var(--ca-border-width-focus) * -1);
     }
-    .ca-locale:disabled { cursor: progress; opacity: 0.7; }
+    .ca-locale:disabled { cursor: progress; }
 
     .ca-locale__code { display: none; }
     .ca-locale--compact .ca-locale__name { display: none; }
