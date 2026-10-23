@@ -72,7 +72,9 @@ describe("AuthLayout", () => {
 		const screen = await render(AuthLayout, { panel: snip("<blockquote>Quote</blockquote>") });
 		await expect.element(screen.getByText("Quote")).toBeVisible();
 		const slot = screen.container.querySelector(".ca-auth__slot") as HTMLElement;
-		expect(slot.style.getPropertyValue("--panel-text-primary").trim()).toBe("oklch(1 0 0 / 0.95)");
+		expect(getComputedStyle(slot).getPropertyValue("--panel-text-primary").trim()).toBe(
+			"color-mix(in oklab, oklch(1 0 0) 95%, transparent)"
+		);
 	});
 
 	it("keeps blobs out of the accessibility tree", async () => {
@@ -292,5 +294,67 @@ describe("AuthCard variant", () => {
 			card.container.querySelector(".ca-auth-card")?.classList.contains("ca-auth-card--plain")
 		).toBe(true);
 		expect(await checkA11y(card.container)).toHaveNoViolations();
+	});
+});
+
+describe("AuthLayout panelTone", () => {
+	const panel = snip("<blockquote>Quote</blockquote>");
+	const bg = (el: Element | null) => getComputedStyle(el as HTMLElement).backgroundImage;
+
+	it("brand (default) paints the gradient and renders the blobs", async () => {
+		await page.viewport(1280, 800);
+		const screen = await render(AuthLayout, { panel });
+		const aside = screen.container.querySelector(".ca-auth__panel");
+		expect(bg(aside)).toContain("linear-gradient");
+		expect(screen.container.querySelector(".ca-auth__blobs")).not.toBeNull();
+	});
+
+	it("flat paints a solid --ca-auth-panel-bg and renders no blobs", async () => {
+		await page.viewport(1280, 800);
+		const screen = await render(AuthLayout, { panel, panelTone: "flat" });
+		const aside = screen.container.querySelector(".ca-auth__panel") as HTMLElement;
+		expect(bg(aside)).toBe("none");
+		expect(screen.container.querySelector(".ca-auth__blobs")).toBeNull();
+		aside.style.setProperty("--ca-auth-panel-bg", "rgb(1, 2, 3)");
+		expect(getComputedStyle(aside).backgroundColor).toBe("rgb(1, 2, 3)");
+	});
+
+	it("flat flips the panel text to the theme text color and has no axe violations", async () => {
+		await page.viewport(1280, 800);
+		const quote = snip("<p class='auth-quote__text'>Quote</p>");
+		const flat = await render(AuthLayout, { panel: quote, panelTone: "flat" });
+		const text = flat.container.querySelector(".auth-quote__text") as HTMLElement;
+		const rgb = getComputedStyle(text).color;
+		expect(await checkA11y(flat.container)).toHaveNoViolations();
+		flat.unmount();
+		const brand = await render(AuthLayout, { panel: quote });
+		const brandText = brand.container.querySelector(".auth-quote__text") as HTMLElement;
+		expect(getComputedStyle(brandText).color).not.toBe(rgb);
+	});
+
+	it("--ca-auth-panel-bg also overrides the brand gradient", async () => {
+		await page.viewport(1280, 800);
+		const screen = await render(AuthLayout, { panel });
+		const aside = screen.container.querySelector(".ca-auth__panel") as HTMLElement;
+		aside.style.setProperty("--ca-auth-panel-bg", "rgb(9, 8, 7)");
+		expect(getComputedStyle(aside).backgroundColor).toBe("rgb(9, 8, 7)");
+		expect(bg(aside)).toBe("none");
+	});
+
+	it("a flat surface style makes the unset tone flat; brand opts back in", async () => {
+		await page.viewport(1280, 800);
+		document.documentElement.dataset.style = "flat";
+		try {
+			const auto = await render(AuthLayout, { panel });
+			expect(bg(auto.container.querySelector(".ca-auth__panel"))).toBe("none");
+			const blobs = auto.container.querySelector(".ca-auth__blobs") as HTMLElement;
+			expect(getComputedStyle(blobs).display).toBe("none");
+			const brand = await render(AuthLayout, { panel, panelTone: "brand" });
+			expect(bg(brand.container.querySelector(".ca-auth__panel"))).toContain("linear-gradient");
+			const brandBlobs = brand.container.querySelector(".ca-auth__blobs") as HTMLElement;
+			expect(getComputedStyle(brandBlobs).display).not.toBe("none");
+		} finally {
+			delete document.documentElement.dataset.style;
+		}
 	});
 });

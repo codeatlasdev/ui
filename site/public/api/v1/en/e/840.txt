@@ -1,0 +1,56 @@
+<!-- @codeatlasdev/ui demo #840 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/auth-layout#flat-panel -->
+Element: #840 Flat panel (layout/auth-layout)
+What it shows: Full-page AuthLayout whose side panel is flat (solid surface, no gradient, no blobs) with a toggle back to the brand gradient.
+When to use: Sign-in pages in themes with a flat or outlined surface style, or design systems that forbid gradients.
+Spec:
+- `<AuthLayout logoName="Acme" panelTone={tone}>` with `let tone = $state<'brand' | 'flat'>('flat')`
+- `panel` snippet holds `<p class="auth-quote__text">Ship the boring parts in a day.</p>`
+- `<AuthCard title="Welcome back" subtitle="Panel tone: {tone}">` holds a `SegmentedControl` (Flat, Brand) bound to `tone` and a Close button
+- Opened by an outlined small Button inside an overlay with `position: fixed;` and `inset: 0;`
+Tags: auth-layout, panel-tone, flat, gradient, blobs, sign-in
+Needs: @codeatlasdev/ui@4.5.0
+Components: AuthLayout, AuthCard, Button, SegmentedControl, Stack
+Live demo: https://ui.codeatlas.com.br/docs/layout/auth-layout#flat-panel
+
+<script lang="ts">
+  import { AuthLayout, AuthCard, Button, SegmentedControl, Stack } from '@codeatlasdev/ui';
+
+  let open = $state(false);
+  let tone = $state<'brand' | 'flat'>('flat');
+</script>
+
+<Button variant="outlined" size="sm" onclick={() => (open = true)}>Open sign-in page</Button>
+
+{#if open}
+  <div class="overlay">
+    <AuthLayout logoName="Acme" panelTone={tone}>
+      {#snippet panel()}
+        <p class="auth-quote__text">Ship the boring parts in a day.</p>
+      {/snippet}
+
+      <AuthCard title="Welcome back" subtitle="Panel tone: {tone}">
+        <Stack gap="3">
+          <SegmentedControl
+            aria-label="Panel tone"
+            bind:value={tone}
+            items={[
+              { value: 'flat', label: 'Flat' },
+              { value: 'brand', label: 'Brand' },
+            ]}
+          />
+          <Button variant="outlined" onclick={() => (open = false)}>Close</Button>
+        </Stack>
+      </AuthCard>
+    </AuthLayout>
+  </div>
+{/if}
+
+<style>
+  .overlay {
+    position: fixed;
+    inset: 0;
+    z-index: var(--ca-z-modal);
+    overflow: auto;
+    background: var(--ca-surface-base);
+  }
+</style>

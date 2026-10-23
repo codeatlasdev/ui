@@ -220,6 +220,7 @@ AuthLayout: two-column layout for authentication pages.
 | `logoName?` | `string` |  | Name beside the mark. Defaults to "CodeAtlas UI" unless `brand` is set. |
 | `logoHref?` | `string` | `'/'` |  |
 | `mobileBrand?` | `boolean` | `true` | While the side panel is hidden, `true` shows a compact strip with the brand above the form. A `header` snippet replaces the strip. |
+| `panelTone?` | `'auto' \| 'brand' \| 'flat'` | `'auto'` | Panel background. `brand` is the brand gradient with animated blobs; `flat` is a solid `--ca-auth-panel-bg` with no blobs (design systems that forbid gradients); `auto` (default) is `flat` under the `flat` and `outlined` surface styles and `brand` otherwise. |
 | `panelSide?` | `'left' \| 'right'` | `'left'` | Which side the panel sits on. |
 | `panelBleed?` | `boolean` | `false` | `true` fills the panel edge to edge with the `panel` snippet: no padding, no logo, no decorative blobs. The panel sticks to the viewport height. |
 | `panelHidden?` | `'md' \| 'lg'` | `'md'` | Viewport width from which the panel shows: `md` 900px, `lg` 1200px. Below it only the form shows. |

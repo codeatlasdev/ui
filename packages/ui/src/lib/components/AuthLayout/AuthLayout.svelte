@@ -10,13 +10,18 @@
    *
    * Right column: light background, centers `children` (the form).
    *
-   * Inside the `panel` slot, use the CSS vars defined here:
-   *   --panel-text-primary   → oklch(1 0 0 / 0.95)
-   *   --panel-text-secondary → oklch(1 0 0 / 0.60)
-   *   --panel-text-tertiary  → oklch(1 0 0 / 0.35)
-   *   --panel-surface        → oklch(1 0 0 / 0.10)
-   *   --panel-surface-active → oklch(1 0 0 / 0.18)
-   *   --panel-border         → oklch(1 0 0 / 0.14)
+   * Panel tone: `panelTone="flat"` (or a `flat`/`outlined` surface style, with the default
+   * `auto`) paints a solid `--ca-auth-panel-bg` and drops the blobs. `--ca-auth-panel-bg`
+   * overrides the background in any tone.
+   *
+   * Inside the `panel` slot, use the CSS vars defined here (derived from `--ca-auth-panel-fg`,
+   * white by default on the brand gradient, `--ca-text-primary` on a flat panel):
+   *   --panel-text-primary   → fg at 95%
+   *   --panel-text-secondary → fg at 60%
+   *   --panel-text-tertiary  → fg at 35%
+   *   --panel-surface        → fg at 10%
+   *   --panel-surface-active → fg at 18%
+   *   --panel-border         → fg at 14%
    *
    * Usage:
    *   <AuthLayout logoMark="CA" logoName="My App">   (or {#snippet brand()} for an SVG logo)
@@ -42,6 +47,12 @@
      * brand above the form. A `header` snippet replaces the strip.
      */
     mobileBrand?: boolean;
+    /**
+     * Panel background. `brand` is the brand gradient with animated blobs; `flat` is a solid
+     * `--ca-auth-panel-bg` with no blobs (design systems that forbid gradients); `auto` (default)
+     * is `flat` under the `flat` and `outlined` surface styles and `brand` otherwise.
+     */
+    panelTone?: 'auto' | 'brand' | 'flat';
     /** Side column content: a quote, steps, or (with `panelBleed`) a map or image. */
     panel?:    Snippet;
     /** Which side the panel sits on. */
@@ -72,6 +83,7 @@
     mobileBrand = true,
     panel,
     panelSide = 'left',
+    panelTone = 'auto',
     panelBleed = false,
     panelHidden = 'md',
     header,
@@ -95,7 +107,12 @@
 </script>
 
 <SkipLink />
-<div class="ca-auth" class:ca-auth--right={panelSide === 'right'} data-panel-hidden={panelHidden}>
+<div
+  class="ca-auth"
+  class:ca-auth--right={panelSide === 'right'}
+  data-panel-hidden={panelHidden}
+  data-panel-tone={panelTone}
+>
   <aside class="ca-auth__panel" class:ca-auth__panel--bleed={panelBleed}>
     {#if panelBleed}
       {#if panelShown}{@render panel?.()}{/if}
@@ -111,26 +128,18 @@
         </a>
 
         {#if panel && panelShown}
-          <div
-            class="ca-auth__slot"
-            style="
-              --panel-text-primary:   oklch(1 0 0 / 0.95);
-              --panel-text-secondary: oklch(1 0 0 / 0.60);
-              --panel-text-tertiary:  oklch(1 0 0 / 0.35);
-              --panel-surface:        oklch(1 0 0 / 0.10);
-              --panel-surface-active: oklch(1 0 0 / 0.18);
-              --panel-border:         oklch(1 0 0 / 0.14);
-            "
-          >
+          <div class="ca-auth__slot">
             {@render panel()}
           </div>
         {/if}
 
-        <div class="ca-auth__blobs" aria-hidden="true">
-          <div class="ca-auth__blob ca-auth__blob--a"></div>
-          <div class="ca-auth__blob ca-auth__blob--b"></div>
-          <div class="ca-auth__blob ca-auth__blob--c"></div>
-        </div>
+        {#if panelTone !== 'flat'}
+          <div class="ca-auth__blobs" aria-hidden="true">
+            <div class="ca-auth__blob ca-auth__blob--a"></div>
+            <div class="ca-auth__blob ca-auth__blob--b"></div>
+            <div class="ca-auth__blob ca-auth__blob--c"></div>
+          </div>
+        {/if}
       </div>
     {/if}
   </aside>
@@ -171,14 +180,35 @@
       flex: 0 0 44%;
       position: relative;
       overflow: hidden;
-      background: linear-gradient(
+      /* --ca-auth-panel-bg overrides the whole background (a color or a gradient). */
+      background: var(--ca-auth-panel-bg, linear-gradient(
         145deg,
         color-mix(in oklab, var(--ca-brand-main) 60%, oklch(0.10 0 0)) 0%,
         color-mix(in oklab, var(--ca-brand-main) 30%, oklch(0.08 0 0)) 100%
-      );
+      ));
+      --ca-auth-panel-fg: oklch(1 0 0);
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+
+    /* Flat tone: a solid surface with a hairline, no gradient, no blobs. `auto` follows the
+       surface style; `flat` and `brand` are explicit. */
+    .ca-auth[data-panel-tone='flat'] .ca-auth__panel,
+    :global([data-style='flat']) .ca-auth[data-panel-tone='auto'] .ca-auth__panel,
+    :global([data-style='outlined']) .ca-auth[data-panel-tone='auto'] .ca-auth__panel {
+      background: var(--ca-auth-panel-bg, var(--ca-surface-raised));
+      --ca-auth-panel-fg: var(--ca-text-primary);
+      box-shadow: inset calc(var(--ca-border-width) * -1) 0 0 var(--ca-outline-subtle);
+    }
+    .ca-auth--right[data-panel-tone='flat'] .ca-auth__panel,
+    :global([data-style='flat']) .ca-auth--right[data-panel-tone='auto'] .ca-auth__panel,
+    :global([data-style='outlined']) .ca-auth--right[data-panel-tone='auto'] .ca-auth__panel {
+      box-shadow: inset var(--ca-border-width) 0 0 var(--ca-outline-subtle);
+    }
+    :global([data-style='flat']) .ca-auth[data-panel-tone='auto'] .ca-auth__blobs,
+    :global([data-style='outlined']) .ca-auth[data-panel-tone='auto'] .ca-auth__blobs {
+      display: none;
     }
 
     /* Same selector as the rule above: a :global() override loses to the scoped class. */
@@ -227,13 +257,13 @@
       width: var(--ca-control-height);
       height: var(--ca-control-height);
       border-radius: var(--ca-radius-md);
-      background: oklch(1 0 0 / 0.14);
+      background: color-mix(in oklab, var(--ca-auth-panel-fg) 14%, transparent);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: var(--ca-font-weight-bold);
       font-size: var(--ca-font-size-body2);
-      color: oklch(1 0 0 / 0.95);
+      color: color-mix(in oklab, var(--ca-auth-panel-fg) 95%, transparent);
       letter-spacing: var(--ca-heading-tracking);
       flex-shrink: 0;
     }
@@ -244,17 +274,17 @@
       font-weight: var(--ca-font-weight-heading);
       letter-spacing: var(--ca-heading-tracking);
       text-transform: var(--ca-heading-case);
-      color: oklch(1 0 0 / 0.90);
+      color: color-mix(in oklab, var(--ca-auth-panel-fg) 90%, transparent);
     }
 
     /* ── Slot: vars available to the decorative content ──────── */
     .ca-auth__slot {
-      --panel-text-primary:   oklch(1 0 0 / 0.95);
-      --panel-text-secondary: oklch(1 0 0 / 0.60);
-      --panel-text-tertiary:  oklch(1 0 0 / 0.35);
-      --panel-surface:        oklch(1 0 0 / 0.10);
-      --panel-surface-active: oklch(1 0 0 / 0.18);
-      --panel-border:         oklch(1 0 0 / 0.14);
+      --panel-text-primary:   color-mix(in oklab, var(--ca-auth-panel-fg) 95%, transparent);
+      --panel-text-secondary: color-mix(in oklab, var(--ca-auth-panel-fg) 60%, transparent);
+      --panel-text-tertiary:  color-mix(in oklab, var(--ca-auth-panel-fg) 35%, transparent);
+      --panel-surface:        color-mix(in oklab, var(--ca-auth-panel-fg) 10%, transparent);
+      --panel-surface-active: color-mix(in oklab, var(--ca-auth-panel-fg) 18%, transparent);
+      --panel-border:         color-mix(in oklab, var(--ca-auth-panel-fg) 14%, transparent);
     }
 
     /* ── Animated blobs ───────────────────────────────────────── */

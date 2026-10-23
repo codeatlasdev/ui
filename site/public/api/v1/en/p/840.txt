@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #840 "Flat panel" (layout/auth-layout).
+What it shows: Full-page AuthLayout whose side panel is flat (solid surface, no gradient, no blobs) with a toggle back to the brand gradient. When to use: Sign-in pages in themes with a flat or outlined surface style, or design systems that forbid gradients.
+Spec:
+- `<AuthLayout logoName="Acme" panelTone={tone}>` with `let tone = $state<'brand' | 'flat'>('flat')`
+- `panel` snippet holds `<p class="auth-quote__text">Ship the boring parts in a day.</p>`
+- `<AuthCard title="Welcome back" subtitle="Panel tone: {tone}">` holds a `SegmentedControl` (Flat, Brand) bound to `tone` and a Close button
+- Opened by an outlined small Button inside an overlay with `position: fixed;` and `inset: 0;`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #840 Flat panel → file, what changed, https://ui.codeatlas.com.br/docs/layout/auth-layout#flat-panel; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/840.txt   Components API: ca-ui-mcp get_component(AuthLayout)
