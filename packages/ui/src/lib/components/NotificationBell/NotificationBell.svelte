@@ -71,6 +71,11 @@
   let anchor = $state<HTMLElement | null>(null);
   let panel = $state<HTMLElement | null>(null);
 
+  // Restore focus before a closing panel removes its focused child.
+  $effect.pre(() => {
+    if (!open && panel?.contains(document.activeElement)) anchor?.focus({ preventScroll: true });
+  });
+
   function setOpen(next: boolean) {
     if (next === open) return;
     open = next;

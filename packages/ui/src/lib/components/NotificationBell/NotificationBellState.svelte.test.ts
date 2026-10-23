@@ -75,11 +75,16 @@ describe("NotificationBell state", () => {
 		await expect.element(page.getByText("7", { exact: true })).toBeVisible();
 		await screen.rerender({ count: 3 });
 		await expect.element(trigger()).toHaveAccessibleName("Notifications (3 unread)");
+		await expect.element(page.getByText("3", { exact: true })).toBeVisible();
 		await expect.poll(() => live()?.textContent).toBe("Notifications (3 unread)");
 		expect(live()?.getAttribute("aria-live")).toBe("polite");
 		await screen.rerender({ count: 0, open: true });
 		await expect.element(trigger()).toHaveAccessibleName("Notifications (0 unread)");
 		await expect.element(page.getByText("3", { exact: true })).not.toBeInTheDocument();
+		await expect.element(page.getByText("7", { exact: true })).not.toBeInTheDocument();
+		await expect
+			.element(page.getByRole("status", { name: /^\d+ notifications$/ }))
+			.not.toBeInTheDocument();
 		await expect
 			.element(page.getByRole("button", { name: "Mark all read" }))
 			.not.toBeInTheDocument();
@@ -136,5 +141,72 @@ describe("NotificationBell state", () => {
 		await screen.rerender({ notifications: [] });
 		await expect.element(trigger()).toHaveAccessibleName("Notifications (0 unread)");
 		await expect.element(page.getByText("No notifications", { exact: true })).toBeVisible();
+	});
+
+	it("parent close restores focus from a notification item", async () => {
+		const onOpenChange = vi.fn();
+		const screen = await render(Harness, { open: true, count: 7, items, onOpenChange });
+		const item = page.getByRole("button", { name: "New invoice" });
+		await expect.element(item).toBeVisible();
+		(item.element() as HTMLElement).focus();
+		await expect.element(item).toHaveFocus();
+		await screen.rerender({ open: false });
+		await expect.element(page.getByRole("dialog")).not.toBeInTheDocument();
+		expect(onOpenChange).not.toHaveBeenCalled();
+		await expect.element(trigger()).toHaveFocus();
+	});
+
+	it("parent close keeps focus already outside the panel", async () => {
+		const onOpenChange = vi.fn();
+		const screen = await render(Harness, { open: true, items, onOpenChange });
+		await expect.element(page.getByRole("dialog")).toBeVisible();
+		const outside = page.getByRole("button", { name: "Outside", exact: true });
+		(outside.element() as HTMLElement).focus();
+		await expect.element(outside).toHaveFocus();
+		await expect.element(bound()).toHaveTextContent("open");
+		await screen.rerender({ open: false });
+		await expect.element(page.getByRole("dialog")).not.toBeInTheDocument();
+		await expect.element(outside).toHaveFocus();
+		expect(onOpenChange).not.toHaveBeenCalled();
+	});
+
+	it("lazy user close does not restart loading", async () => {
+		const onOpenChange = vi.fn();
+		const screen = await render(Harness, { lazy: true, onOpenChange });
+		await trigger().click();
+		await expect.element(page.getByText("Loading notifications...", { exact: true })).toBeVisible();
+		await screen.rerender({ loading: false });
+		await expect.element(page.getByText("No notifications", { exact: true })).toBeVisible();
+		await trigger().click();
+		await expect.element(bound()).toHaveTextContent("closed");
+		expect(onOpenChange.mock.calls).toEqual([[true], [false]]);
+		await screen.rerender({ open: true });
+		await expect.element(page.getByText("No notifications", { exact: true })).toBeVisible();
+		await expect
+			.element(page.getByText("Loading notifications...", { exact: true }))
+			.not.toBeInTheDocument();
+		expect(onOpenChange.mock.calls).toEqual([[true], [false]]);
+	});
+
+	it("mark-all leaves the parent-owned count unchanged", async () => {
+		const onReadAll = vi.fn();
+		await render(Harness, { open: true, count: 7, lazy: false, onReadAll });
+		await page.getByRole("button", { name: "Mark all read" }).click();
+		expect(onReadAll).toHaveBeenCalledOnce();
+		await expect.element(trigger()).toHaveAccessibleName("Notifications (7 unread)");
+		await expect.element(page.getByText("7", { exact: true })).toBeVisible();
+	});
+
+	it("ending refresh clears loading with the same items", async () => {
+		const screen = await render(Harness, { open: true, items });
+		await expect.element(page.getByRole("button", { name: "New invoice" })).toBeVisible();
+		await screen.rerender({ loading: true });
+		await expect.element(page.getByText("Loading notifications...", { exact: true })).toBeVisible();
+		await expect.element(page.getByRole("button", { name: "New invoice" })).toBeVisible();
+		await screen.rerender({ loading: false });
+		await expect
+			.element(page.getByText("Loading notifications...", { exact: true }))
+			.not.toBeInTheDocument();
+		await expect.element(page.getByRole("button", { name: "New invoice" })).toBeVisible();
 	});
 });
