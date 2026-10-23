@@ -367,10 +367,13 @@ Box — the base layout element. Renders any element (`as`) with the token props
 |---|---|---|---|
 | `as?` | `T` | `'div' as T` | Element to render (default `div`). Its own attributes and event types become valid props. |
 | `class?` | `string` | `''` |  |
+| `p?` | `Responsive<Space>` |  | Padding on every side. |
+| `px?` | `Responsive<Space>` |  | Horizontal padding. |
+| `py?` | `Responsive<Space>` |  | Vertical padding. |
 
 Snippets: `children`
 
-Also accepts: `PolymorphicAttributes<T, Pick<LayoutProps, 'p' \| 'px' \| 'py'>>`
+Also accepts: `PolymorphicAttributes<T>`
 
 Parts: `ca-box`
 
@@ -770,13 +773,15 @@ Container — centered, width-capped column with the fluid page gutter.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
+| `px?` | `Responsive<Space>` |  | Horizontal padding. |
+| `py?` | `Responsive<Space>` |  | Vertical padding. |
 | `size?` | `'sm' \| 'md' \| 'lg' \| 'xl'` | `'lg'` | Max width: sm 40rem, md 56rem, lg 76rem (the content width), xl 90rem. |
 | `as?` | `string` | `'div'` | Element to render. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
 
-Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>, Pick<LayoutProps, 'px' \| 'py'>`
+Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>`
 
 Parts: `ca-container`
 
@@ -1469,10 +1474,18 @@ Flex — flex container. Token props become `data-*` attributes (no inline style
 |---|---|---|---|
 | `as?` | `T` | `'div' as T` | Element to render (default `div`). Its own attributes and event types become valid props. |
 | `class?` | `string` | `''` |  |
+| `gap?` | `Responsive<Space>` |  | Gap between children (a spacing step). |
+| `p?` | `Responsive<Space>` |  | Padding on every side. |
+| `px?` | `Responsive<Space>` |  | Horizontal padding. |
+| `py?` | `Responsive<Space>` |  | Vertical padding. |
+| `align?` | `Responsive<Align>` |  | `align-items`. |
+| `justify?` | `Responsive<Justify>` |  | `justify-content`. |
+| `direction?` | `Responsive<Direction>` |  | `flex-direction` (Flex only; Stack is always a column). |
+| `wrap?` | `Responsive<boolean>` |  | `flex-wrap: wrap`. |
 
 Snippets: `children`
 
-Also accepts: `PolymorphicAttributes<T, Pick<LayoutProps, 'gap' \| 'p' \| 'px' \| 'py' \| 'align' \| 'justify' \| 'direction' \| 'wrap'>>`
+Also accepts: `PolymorphicAttributes<T>`
 
 Parts: `ca-flex`
 
@@ -1576,10 +1589,16 @@ Grid — CSS grid with equal tracks. `columns` is 1–12 or a responsive object;
 |---|---|---|---|
 | `as?` | `T` | `'div' as T` | Element to render (default `div`). Its own attributes and event types become valid props. |
 | `class?` | `string` | `''` |  |
+| `columns?` | `Responsive<Columns>` |  | Equal grid tracks (Grid only). |
+| `gap?` | `Responsive<Space>` |  | Gap between children (a spacing step). |
+| `p?` | `Responsive<Space>` |  | Padding on every side. |
+| `px?` | `Responsive<Space>` |  | Horizontal padding. |
+| `py?` | `Responsive<Space>` |  | Vertical padding. |
+| `align?` | `Responsive<Align>` |  | `align-items`. |
 
 Snippets: `children`
 
-Also accepts: `PolymorphicAttributes<T, Pick<LayoutProps, 'columns' \| 'gap' \| 'p' \| 'px' \| 'py' \| 'align'>>`
+Also accepts: `PolymorphicAttributes<T>`
 
 Parts: `ca-grid`
 
@@ -2763,13 +2782,15 @@ Section — a page band with the fluid vertical rhythm (`--ca-section-gap`). A r
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
+| `px?` | `Responsive<Space>` |  | Horizontal padding. |
+| `py?` | `Responsive<Space>` |  | Vertical padding. |
 | `size?` | `'1' \| '2' \| '3'` | `'2'` | Vertical padding: 1 compact, 2 default (the section rhythm), 3 airy. A `py` token overrides it. |
 | `as?` | `string` | `'section'` | Element to render. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`
 
-Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>, Pick<LayoutProps, 'px' \| 'py'>`
+Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>`
 
 Parts: `ca-layout-section`
 
@@ -3036,10 +3057,16 @@ Stack — vertical flex layout (a Flex column). Token props are `data-*` attribu
 |---|---|---|---|
 | `as?` | `T` | `'div' as T` | Element to render (default `div`). Its own attributes and event types become valid props. |
 | `class?` | `string` | `''` |  |
+| `gap?` | `Responsive<Space>` |  | Gap between children (a spacing step). |
+| `p?` | `Responsive<Space>` |  | Padding on every side. |
+| `px?` | `Responsive<Space>` |  | Horizontal padding. |
+| `py?` | `Responsive<Space>` |  | Vertical padding. |
+| `align?` | `Responsive<Align>` |  | `align-items`. |
+| `justify?` | `Responsive<Justify>` |  | `justify-content`. |
 
 Snippets: `children`
 
-Also accepts: `PolymorphicAttributes<T, Pick<LayoutProps, 'gap' \| 'p' \| 'px' \| 'py' \| 'align' \| 'justify'>>`
+Also accepts: `PolymorphicAttributes<T>`
 
 Parts: `ca-stack`
 
@@ -3141,6 +3168,9 @@ Surface — the one painted container every card, panel and sheet is built on. I
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
+| `p?` | `Responsive<Space>` |  | Padding on every side. |
+| `px?` | `Responsive<Space>` |  | Horizontal padding. |
+| `py?` | `Responsive<Space>` |  | Vertical padding. |
 | `as?` | `string` | `'div'` | Element to render. Cards with an `href` render `a` through `Card`. |
 | `elevation?` | `0 \| 1 \| 2 \| 3 \| 4 \| 5` | `1` | Depth 0–5: drop shadow, and the blur/fill tier of the material (0 flat, 3 regular, 5 chrome). |
 | `material?` | `'auto' \| 'solid' \| 'frosted' \| 'glass' \| 'liquid'` | `'auto'` | `auto` follows `<html data-style>`; the others are absolute. `liquid` adds the SVG refraction layer. |
@@ -3154,7 +3184,7 @@ Surface — the one painted container every card, panel and sheet is built on. I
 
 Snippets: `children`
 
-Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>, Pick<LayoutProps, 'p' \| 'px' \| 'py'>`
+Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class'>`
 
 ## SurfacePanel
 

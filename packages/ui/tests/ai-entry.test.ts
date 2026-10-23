@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import { existsSync, readdirSync, readFileSync } from "node:fs";
-import { join } from "node:path";
+import { join, relative } from "node:path";
 import {
 	buildLlmsIndex,
 	buildRepoLlms,
@@ -8,6 +8,7 @@ import {
 	type DocLink,
 	ENTRY_PAGES,
 	llmsPagePath,
+	llmsRecipePath,
 	parseRecipes,
 	SITE,
 } from "../scripts/ai-entry.ts";
@@ -62,8 +63,8 @@ describe("llms.txt, the canonical entry (#384)", () => {
 		expect(out.indexOf("## Start here: build a screen")).toBeLessThan(
 			out.indexOf("## Docs: Inputs")
 		);
-		expect(out).toContain(`[App shell](${SITE}/docs/${ENTRY_PAGES.recipes}/#app-shell)`);
-		expect(out).toContain(`#form-page)`);
+		expect(out).toContain(`[App shell](${SITE}${llmsRecipePath("app-shell")})`);
+		expect(out).toContain(`${llmsRecipePath("form-page")})`);
 	});
 
 	it("lists the decision tables and the workarounds before the component pages", () => {
@@ -178,5 +179,80 @@ describe("llms.txt links the per-page files (#384)", () => {
 		const out = buildLlmsIndex({ docs: [], recipes: [], groups: [] });
 		expect(out).toContain(`${SITE}${llmsPagePath("layout/form-page")}`);
 		expect(out).toContain("/llms/<group>/<slug>.txt");
+	});
+});
+
+describe("llms.txt links the agent-readable .txt form of every page and recipe (#477)", () => {
+	// The real page list: every MDX under the docs dir. `charts/index.mdx` is the page `charts`, the root `index.mdx` is `index`.
+	const slugs: string[] = [];
+	const walk = (dir: string) => {
+		for (const e of readdirSync(dir, { withFileTypes: true })) {
+			if (e.isDirectory()) walk(join(dir, e.name));
+			else if (e.name.endsWith(".mdx"))
+				slugs.push(
+					relative(DOCS, join(dir, e.name))
+						.replace(/\.mdx$/, "")
+						.replace(/\/index$/, "")
+				);
+		}
+	};
+	walk(DOCS);
+	const docs: DocLink[] = slugs.map((slug) => ({
+		slug,
+		title: slug,
+		description: "d",
+		group: "Getting started",
+	}));
+	const recipes = buildRecipes(buildGuides());
+	const out = buildLlmsIndex({ docs, recipes, groups: ["Getting started"] });
+
+	it("maps a page slug to its file: index pages are /llms/<slug>.txt", () => {
+		expect(llmsPagePath("charts")).toBe("/llms/charts.txt");
+		expect(llmsPagePath("map")).toBe("/llms/map.txt");
+		expect(llmsPagePath("inputs/button")).toBe("/llms/inputs/button.txt");
+		expect(slugs).toContain("charts");
+		expect(slugs).toContain("map");
+	});
+
+	it("has a .txt link for every /docs/ link", () => {
+		const htmlLinks = [...out.matchAll(/(https:\/\/\S*\/docs\/[^\s)#]*)/g)].map((m) => m[1]);
+		expect(htmlLinks.length).toBeGreaterThan(20);
+		const txtLinks = new Set(
+			[...out.matchAll(/\]\((https:\/\/[^)]*\/llms\/[^)]*\.txt)\)/g)].map((m) => m[1])
+		);
+		for (const html of new Set(htmlLinks)) {
+			const slug = html.replace(`${SITE}/docs/`, "").replace(/\/$/, "") || "index";
+			expect(txtLinks.has(`${SITE}${llmsPagePath(slug)}`), `${html} has no .txt link`).toBe(true);
+		}
+	});
+
+	it("only links .txt files the site generates (one per docs page, one per recipe)", () => {
+		const known = new Set([
+			...slugs.map((s) => `${SITE}${llmsPagePath(s)}`),
+			...recipes.map((r) => `${SITE}${llmsRecipePath(r.id)}`),
+			`${SITE}/llms-full.txt`,
+		]);
+		for (const m of out.matchAll(/\]\((https:\/\/[^)]*\.txt)\)/g)) {
+			const url = m[1];
+			if (/\/(prompt|api\/v1\/)/.test(url) || url.endsWith("/llms.txt")) continue;
+			if (/<|\{/.test(url)) continue;
+			expect(known.has(url), url).toBe(true);
+		}
+	});
+
+	it("links each recipe to its own .txt, not to a #anchor that does not exist in a .txt", () => {
+		const start = out.split("## Start here: build a screen")[1].split("\n## ")[0];
+		for (const r of recipes) {
+			expect(start, r.id).toContain(`${SITE}${llmsRecipePath(r.id)}`);
+			expect(start, r.id).not.toContain(`#${r.id}`);
+		}
+		expect(start).toContain(`${SITE}${llmsPagePath(ENTRY_PAGES.recipes)}`);
+	});
+
+	it("states in one sentence at the top when to fetch HTML and when .txt", () => {
+		const head = out.split("\n## ")[0];
+		expect(head).toMatch(/\.txt/);
+		expect(head).toMatch(/HTML/);
+		expect(head).toContain("/llms/<group>/<slug>.txt");
 	});
 });

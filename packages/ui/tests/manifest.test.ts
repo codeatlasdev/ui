@@ -30,6 +30,34 @@ describe("components manifest", () => {
 		expect(button?.extends).toContain("ButtonAttributes");
 	});
 
+	it("lists the layout token props of the primitives, from their LayoutProps pick (#477)", () => {
+		const props = (n: string) => byName(n)?.props.map((p) => p.name) ?? [];
+		expect(props("Flex")).toEqual(
+			expect.arrayContaining(["gap", "p", "px", "py", "align", "justify", "direction", "wrap"])
+		);
+		expect(props("Stack")).toEqual(
+			expect.arrayContaining(["gap", "p", "px", "py", "align", "justify"])
+		);
+		expect(props("Stack")).not.toContain("direction");
+		expect(props("Grid")).toEqual(
+			expect.arrayContaining(["columns", "gap", "p", "px", "py", "align"])
+		);
+		expect(props("Box")).toEqual(expect.arrayContaining(["p", "px", "py"]));
+		for (const n of ["Container", "Section", "Surface"])
+			expect(props(n), n).toEqual(expect.arrayContaining(["px", "py"]));
+		const gap = byName("Flex")?.props.find((p) => p.name === "gap");
+		expect(gap).toMatchObject({ optional: true });
+		expect(gap?.type).toContain("Responsive<Space>");
+		expect(gap?.description).toContain("Gap between children");
+		// No duplicates, and the picked props are no longer reported as an unexpanded `extends`.
+		for (const n of ["Flex", "Stack", "Grid", "Box", "Container", "Section", "Surface"]) {
+			const names = props(n);
+			expect(new Set(names).size, n).toBe(names.length);
+			expect(byName(n)?.extends ?? "", n).not.toContain("LayoutProps");
+		}
+		expect(byName("Flex")?.extends).toContain("PolymorphicAttributes");
+	});
+
 	it("separates snippets from props", () => {
 		const names = byName("Button")?.snippets.map((s) => s.name);
 		expect(names).toEqual(["children", "leading", "trailing"]);

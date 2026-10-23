@@ -117,11 +117,7 @@ test.describe("docs", () => {
 		[
 			"/llms.txt",
 			/^text\/plain/,
-			[
-				/CodeAtlas UI/i,
-				/^## Start here: build a screen$/m,
-				/\/docs\/getting-started\/recipes\/#list-page/,
-			],
+			[/CodeAtlas UI/i, /^## Start here: build a screen$/m, /\/llms\/recipes\/list-page\.txt/],
 		],
 		// One fetch covers every page; the demo sources live in /llms/<slug>.txt, linked from each page.
 		[
@@ -157,6 +153,28 @@ test.describe("docs", () => {
 		for (const url of [links[0], links[links.length >> 1], links.at(-1) as string]) {
 			const res = await request.get(new URL(url).pathname);
 			expect(res.status(), url).toBe(200);
+		}
+	});
+
+	test("every page and recipe linked from llms.txt as .txt is served (#477)", async ({
+		request,
+	}) => {
+		const index = await (await request.get("/llms.txt")).text();
+		const txt = [...index.matchAll(/\]\((https:\/\/[^)]*\/llms\/[^)]*\.txt)\)/g)]
+			.map((m) => new URL(m[1]).pathname)
+			.filter((p) => !p.includes("<"));
+		const html = new Set(
+			[...index.matchAll(/(https:\/\/\S*\/docs\/[^\s)#]*)/g)].map((m) => new URL(m[1]).pathname)
+		);
+		expect(txt.length).toBeGreaterThan(100);
+		expect(html.size).toBeGreaterThan(100);
+		for (const path of html) {
+			const slug = path.replace(/^\/docs\//, "").replace(/\/$/, "") || "index";
+			expect(txt, `${path} has no .txt link`).toContain(`/llms/${slug}.txt`);
+		}
+		for (const path of txt) {
+			const res = await request.get(path);
+			expect(res.status(), path).toBe(200);
 		}
 	});
 

@@ -5,9 +5,9 @@
 https://ui.codeatlas.com.br/llms.txt lists a recipe for every screen type (app shell, list, form, settings, auth, landing, dashboard, theming), the decision tables, the common workarounds and the machine-readable endpoints. This file is generated from the same source and only points there.
 
 - [llms.txt](https://ui.codeatlas.com.br/llms.txt): the canonical entry
-- [Recipes](https://ui.codeatlas.com.br/docs/getting-started/recipes/): complete pages to copy
-- [Choosing a component](https://ui.codeatlas.com.br/docs/getting-started/choosing/): X vs Y decision tables
-- [Common workarounds](https://ui.codeatlas.com.br/docs/getting-started/workarounds/): what you are about to write, and what to use instead
+- [Recipes](https://ui.codeatlas.com.br/llms/getting-started/recipes.txt): complete pages to copy (one file per recipe: https://ui.codeatlas.com.br/llms/recipes/<id>.txt)
+- [Choosing a component](https://ui.codeatlas.com.br/llms/getting-started/choosing.txt): X vs Y decision tables
+- [Common workarounds](https://ui.codeatlas.com.br/llms/getting-started/workarounds.txt): what you are about to write, and what to use instead
 - [llms-full.txt](https://ui.codeatlas.com.br/llms-full.txt): the core docs in full and a summary of every other page, in one file
 - [Contributor guide](AGENTS.md): working on this repository (not for apps that consume the package)
 - [Source](packages/ui/src/lib/index.ts): public exports

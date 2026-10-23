@@ -75,25 +75,36 @@ export function buildLlmsIndex(i: {
 	version?: string;
 	counts?: { demos: number };
 }): string {
-	const href = i.href ?? ((slug: string) => `${SITE}/docs/${slug}/`);
+	const html = i.href ?? ((slug: string) => `${SITE}/docs/${slug}/`);
+	// Every page is listed by its agent-readable file; the HTML form follows in the description.
+	const href = (slug: string) => `${SITE}${llmsPagePath(slug)}`;
 	const bySlug = new Map(i.docs.map((d) => [d.slug, d]));
+	const withHtml = (slug: string, description?: string) =>
+		[description, `HTML: ${html(slug)}`].filter(Boolean).join(" ");
 	const page = (slug: string, fallback: string) => ({
 		title: bySlug.get(slug)?.title ?? fallback,
 		href: href(slug),
-		description: bySlug.get(slug)?.description,
+		description: withHtml(slug, bySlug.get(slug)?.description),
 	});
 	const deprecated = (d: DocLink) => /^deprecated\b/i.test(d.description);
 	const entry = new Set<string>(Object.values(ENTRY_PAGES));
 
-	const recipesHref = href(ENTRY_PAGES.recipes);
+	// A .txt has no anchors, so each recipe is its own file; the whole page stays one link away.
 	const sections = [
 		{
 			heading: "Start here: build a screen",
-			links: i.recipes.map((r) => ({
-				title: r.title,
-				href: `${recipesHref}#${r.id}`,
-				description: "complete copy-pasteable page",
-			})),
+			links: [
+				...i.recipes.map((r) => ({
+					title: r.title,
+					href: `${SITE}${llmsRecipePath(r.id)}`,
+					description: "complete copy-pasteable page",
+				})),
+				{
+					title: "All recipes",
+					href: `${SITE}${llmsPagePath(ENTRY_PAGES.recipes)}`,
+					description: "every recipe on one page, with the rules that apply to all",
+				},
+			],
 		},
 		{
 			heading: "Before you write a workaround",
@@ -119,7 +130,7 @@ export function buildLlmsIndex(i: {
 				{
 					title: "Page with demo sources",
 					href: `${SITE}${llmsPagePath("layout/form-page")}`,
-					description: `one docs page with the complete source of its demos: ${SITE}/llms/<group>/<slug>.txt, the slug is the docs URL path`,
+					description: `one docs page with the complete source of its demos: ${SITE}/llms/<group>/<slug>.txt, the slug is the docs URL path (an index page has none: ${SITE}/llms/charts.txt)`,
 				},
 				{
 					title: "Demo catalog",
@@ -147,13 +158,21 @@ export function buildLlmsIndex(i: {
 			heading: `Docs: ${heading}`,
 			links: i.docs
 				.filter((d) => d.group === heading && !entry.has(d.slug) && !deprecated(d))
-				.map((d) => ({ title: d.title, href: href(d.slug), description: d.description })),
+				.map((d) => ({
+					title: d.title,
+					href: href(d.slug),
+					description: withHtml(d.slug, d.description),
+				})),
 		})),
 		{
 			heading: "Deprecated (do not use in new code)",
 			links: i.docs
 				.filter((d) => deprecated(d))
-				.map((d) => ({ title: d.title, href: href(d.slug), description: d.description })),
+				.map((d) => ({
+					title: d.title,
+					href: href(d.slug),
+					description: withHtml(d.slug, d.description),
+				})),
 		},
 		{
 			heading: "Optional",
@@ -179,14 +198,33 @@ export function buildLlmsIndex(i: {
 				.replace(/\s+/g, " ")
 				.trim(),
 		intro: [
+			"Fetch the `.txt` links (`/llms/<group>/<slug>.txt`, index pages `/llms/<slug>.txt`, one recipe `/llms/recipes/<id>.txt`): they are plain markdown with the full demo sources and no anchors; the HTML pages (`/docs/...`) are for people and the only place the live demos run.",
 			'How to use this file: find the screen you are building under "Start here", copy that recipe whole, change only data, copy and theme. Before writing any CSS, wrapper or workaround, read "Choosing a component" and "Common workarounds". Never guess a prop: ask the ca-ui-mcp server (`get_component`, `get_recipe`) or read the installed package\'s `dist/components.json`; the installed version outranks every page here.',
 		],
 		sections,
 	});
 }
 
-/** Path of the complete, single-page file of a docs page: `layout/form-page` -> `/llms/layout/form-page.txt`. */
+/**
+ * Path of the complete, single-page file of a docs page: `layout/form-page` -> `/llms/layout/form-page.txt`.
+ * An index page's slug has no `/index` (`charts`, `map`), so it is `/llms/charts.txt`.
+ */
 export const llmsPagePath = (slug: string) => `/llms/${slug}.txt`;
+
+/** Path of the file of one recipe section: `list-page` -> `/llms/recipes/list-page.txt`. */
+export const llmsRecipePath = (id: string) => `/llms/recipes/${id}.txt`;
+
+/** One recipe as a standalone markdown file (a `.txt` has no anchors, so the section gets its own). */
+export function buildLlmsRecipe(i: { site: string; recipe: Recipe }): string {
+	return [
+		`# ${i.recipe.title}`,
+		"",
+		`Recipe of ${i.site}${llmsPagePath(ENTRY_PAGES.recipes)}. Index: ${i.site}/llms.txt`,
+		"",
+		i.recipe.markdown,
+		"",
+	].join("\n");
+}
 
 /** One docs page as markdown with the complete source of every demo: small enough to fetch alone. */
 export function buildLlmsPage(i: {
@@ -217,9 +255,9 @@ export function buildRepoLlms(): string {
 ${SITE}/llms.txt lists a recipe for every screen type (app shell, list, form, settings, auth, landing, dashboard, theming), the decision tables, the common workarounds and the machine-readable endpoints. This file is generated from the same source and only points there.
 
 - [llms.txt](${SITE}/llms.txt): the canonical entry
-- [Recipes](${SITE}/docs/${ENTRY_PAGES.recipes}/): complete pages to copy
-- [Choosing a component](${SITE}/docs/${ENTRY_PAGES.choosing}/): X vs Y decision tables
-- [Common workarounds](${SITE}/docs/${ENTRY_PAGES.workarounds}/): what you are about to write, and what to use instead
+- [Recipes](${SITE}${llmsPagePath(ENTRY_PAGES.recipes)}): complete pages to copy (one file per recipe: ${SITE}/llms/recipes/<id>.txt)
+- [Choosing a component](${SITE}${llmsPagePath(ENTRY_PAGES.choosing)}): X vs Y decision tables
+- [Common workarounds](${SITE}${llmsPagePath(ENTRY_PAGES.workarounds)}): what you are about to write, and what to use instead
 - [llms-full.txt](${SITE}/llms-full.txt): the core docs in full and a summary of every other page, in one file
 - [Contributor guide](AGENTS.md): working on this repository (not for apps that consume the package)
 - [Source](packages/ui/src/lib/index.ts): public exports
