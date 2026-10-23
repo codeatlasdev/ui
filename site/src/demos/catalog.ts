@@ -380,6 +380,7 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "982", path: "inputs/text-field/Addons" },
 	{ id: "983", path: "inputs/text-field/AddonButtons" },
 	{ id: "984", path: "layout/kpi-card/TrendTone" },
+	{ id: "985", path: "layout/kpi-card/Sparkline" },
 ];
 
 /**

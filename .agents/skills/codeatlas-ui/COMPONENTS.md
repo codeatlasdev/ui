@@ -302,6 +302,11 @@ import { LineChart, BarChart, PieChart, ScatterChart, HeatmapChart, GaugeChart, 
   icon={DollarSign}
 />
 <!-- trend: positive = green up, negative = red down -->
+
+<!-- icon + sparkline tile: the chart is a snippet (Sparkline from @codeatlasdev/ui/charts) -->
+<KpiCard title="Churn" value="1.7" unit="%" trend={-0.2} trendTone="positive-down" hint="Down from 2.4%" icon={UserMinus}>
+  {#snippet chart()}<Sparkline data={churn} trend="up" />{/snippet}
+</KpiCard>
 ```
 
 ## KpiGrid

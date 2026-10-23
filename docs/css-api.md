@@ -238,7 +238,7 @@ State attributes on `dialog.ca-drawer`: `data-chromeless` (body padding 0, no he
 
 ## KpiCard
 
-`.ca-kpi` `.ca-kpi__icon` `.ca-kpi__inner` `.ca-kpi__title` `.ca-kpi__trend` `.ca-kpi__trend--down` `.ca-kpi__trend--up` `.ca-kpi__unit` `.ca-kpi__value`
+`.ca-kpi` `.ca-kpi__chart` `.ca-kpi__icon` `.ca-kpi__inner` `.ca-kpi__title` `.ca-kpi__trend` `.ca-kpi__trend--down` `.ca-kpi__trend--up` `.ca-kpi__unit` `.ca-kpi__value`
 
 The trend element (`.ca-kpi__trend`, `.ca-stat__trend`) carries `data-tone="good|bad|neutral"`: the verdict behind its colour. `--up`/`--down` only say which way the number moved; with `trendTone="positive-down"` a `--down` trend is `good`. Target `data-tone` to restyle the colour, never `--up`/`--down`.
 
