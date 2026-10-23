@@ -385,7 +385,7 @@ The `skeleton` prop of `Avatar`, `KpiCard`, `TextField`, `Table`, `Card` and `Gl
 
 ## Toast
 
-`.ca-toast` `.ca-toast--error` `.ca-toast--info` `.ca-toast--success` `.ca-toast--visible` `.ca-toast--warning` `.ca-toast__close` `.ca-toast__icon` `.ca-toast__message` `.ca-toaster`
+`.ca-toast` `.ca-toast--error` `.ca-toast--info` `.ca-toast--success` `.ca-toast--visible` `.ca-toast--warning` `.ca-toast__close` `.ca-toast__count` `.ca-toast__icon` `.ca-toast__message` `.ca-toaster`
 
 ## ToggleGroup
 

@@ -318,3 +318,4 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 470 | Close on pick | navigation/popover | Popover, Button, Calendar |
 | 480 | Panel width | layout/app-shell | AppShellLayout, PageShell, Card |
 | 481 | Color, count, actions and reorder | layout/app-shell | AppShellLayout, DropdownMenuItem, NavItemMenu, NavReorder, PageShell, Card |
+| 490 | Dedupe and replace by id | feedback/toast | Button, Toaster |

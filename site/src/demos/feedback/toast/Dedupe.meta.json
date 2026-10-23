@@ -1,0 +1,12 @@
+{
+	"summary": "Two buttons: one fires the same error ten times and shows a single toast with a ×10 badge, the other replaces an uploading toast by id.",
+	"use": "Polling or parallel requests that fail with the same message, and progress toasts that turn into a result.",
+	"spec": [
+		"`<Toaster />` mounted once, `toast` imported from `@codeatlasdev/ui`",
+		"Dedupe: `toast.error('Too many requests, retry later.')` called in a loop of 10 keeps one toast, bumps its count badge and restarts its timer",
+		"Replace: `toast.info('Uploading report.pdf…', { id: 'upload', duration: 0 })` then `toast.success('report.pdf uploaded.', { id: 'upload' })` swaps the same toast in place",
+		"Both triggers are `<Button variant=\"outlined\"`"
+	],
+	"tags": ["toast", "toaster", "dedupe", "id", "replace", "notification", "count"],
+	"shape": "wide"
+}

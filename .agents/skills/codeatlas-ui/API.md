@@ -3448,17 +3448,17 @@ function throttle<T extends (...args: unknown[]) => unknown>(fn: T, limit: numbe
 
 `import { toast } from "@codeatlasdev/ui"`
 
-Toast queue: `toast.show(message, opts)` and the `success`/`error`/`warning`/`info` shortcuts push an item, `toast.remove(id)` drops it. Render the queue with `<Toaster />` once in the root layout.
+Toast queue: `toast.show(message, opts)` and the `success`/`error`/`warning`/`info` shortcuts push an item, `toast.remove(id)` drops it. An identical message and variant bumps `count` and restarts the timer instead of stacking, at most 3 show at once (the oldest goes), and `{ id }` replaces a specific toast in place. Render the queue with `<Toaster />` once in the root layout.
 
 ```ts
 const toast: {
   readonly items: ToastItem[];
   remove: (id: string) => void;
-  show: (message: string, opts?: { variant?: ToastVariant; duration?: number; }) => string;
-  success: (message: string, duration?: number) => string;
-  error: (message: string, duration?: number) => string;
-  warning: (message: string, duration?: number) => string;
-  info: (message: string, duration?: number) => string;
+  show: (message: string, o?: ToastOptions) => string;
+  success: (message: string, o?: number | ToastOptions) => string;
+  error: (message: string, o?: number | ToastOptions) => string;
+  warning: (message: string, o?: number | ToastOptions) => string;
+  info: (message: string, o?: number | ToastOptions) => string;
 }
 ```
 
@@ -3652,7 +3652,8 @@ Types:
 | `ThemePreset` | `interface ThemePreset { id: BuiltinPresetId; label: string; swatchColor: string; hue: number; brandLight: BrandColors; brandDark: BrandColors; ramp: NeutralRamp; semanticLight: SemanticColors; semanticDark: SemanticColors; }` |  |
 | `Thickness` | `type Thickness = "ultra-thin" \| "thin" \| "regular" \| "thick" \| "chrome";` |  |
 | `TimeValue` | `type TimeValue = Time \| CalendarDateTime \| ZonedDateTime;` | Accepted by TimeField `placeholder` / `minValue` / `maxValue`. |
-| `ToastItem` | `interface ToastItem { id: string; message: string; variant: ToastVariant; duration: number; }` |  |
+| `ToastItem` | `interface ToastItem { id: string; message: string; variant: ToastVariant; duration: number; count: number; }` |  |
+| `ToastOptions` | `interface ToastOptions { variant?: ToastVariant; duration?: number; id?: string; }` |  |
 | `ToastVariant` | `type ToastVariant = "default" \| "success" \| "error" \| "warning" \| "info";` |  |
 | `TypographyOptions` | `interface TypographyOptions { scale?: number; weights?: Partial<Record<"regular" \| "medium" \| "semibold" \| "bold" \| "heading", number>>; headingTracking?: string; headingCase?: "none" \| "uppercase"; labelTracking?: string; labelCase?: "none" \| "uppercase"; lineHeight?: number; measure?: string; }` |  |
 | `UseDndOptions` | `interface UseDndOptions { messages?: Partial<DndMessages>; threshold?: number; holdMs?: number; edge?: number; id?: string; }` |  |

@@ -68,4 +68,23 @@ describe("Toaster", () => {
 		await expect.element(screen.getByRole("status")).not.toBeInTheDocument();
 		expect(toast.items).toHaveLength(0);
 	});
+
+	it("repeats show one toast with a count badge and pass axe", async () => {
+		const screen = await render(Toaster, {});
+		for (let i = 0; i < 10; i++) toast.error("Too many requests", 0);
+		await expect.poll(() => screen.getByRole("status").elements().length).toBe(1);
+		const item = screen.getByRole("status");
+		await expect.element(item).toMatchTextContent("Too many requests");
+		await expect.element(screen.getByText("×10")).toBeVisible();
+		await expect.element(item).toMatchTextContent("Repeated 10 times");
+		await settled();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("a single toast has no count badge", async () => {
+		const screen = await render(Toaster, {});
+		toast.info("Once", 0);
+		await expect.element(screen.getByRole("status")).toBeVisible();
+		expect(screen.container.querySelector(".ca-toast__count")).toBeNull();
+	});
 });

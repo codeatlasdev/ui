@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #490 "Dedupe and replace by id" (feedback/toast).
+What it shows: Two buttons: one fires the same error ten times and shows a single toast with a ×10 badge, the other replaces an uploading toast by id. When to use: Polling or parallel requests that fail with the same message, and progress toasts that turn into a result.
+Spec:
+- `<Toaster />` mounted once, `toast` imported from `@codeatlasdev/ui`
+- Dedupe: `toast.error('Too many requests, retry later.')` called in a loop of 10 keeps one toast, bumps its count badge and restarts its timer
+- Replace: `toast.info('Uploading report.pdf…', { id: 'upload', duration: 0 })` then `toast.success('report.pdf uploaded.', { id: 'upload' })` swaps the same toast in place
+- Both triggers are `<Button variant="outlined"`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #490 Dedupe and replace by id → file, what changed, https://ui.codeatlas.com.br/docs/feedback/toast#dedupe-and-replace-by-id; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/490.txt   Components API: ca-ui-mcp get_component(Button)

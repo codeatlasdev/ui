@@ -251,7 +251,7 @@ export { colorScheme } from "./stores/color-scheme.svelte.js";
 export { reducedMotion, reducedTransparency } from "./stores/reduced-motion.svelte.js";
 export type { Breakpoint } from "./stores/responsive.svelte.js";
 export { responsive } from "./stores/responsive.svelte.js";
-export type { ToastItem, ToastVariant } from "./stores/toast.svelte.js";
+export type { ToastItem, ToastOptions, ToastVariant } from "./stores/toast.svelte.js";
 export { toast } from "./stores/toast.svelte.js";
 export { viewport } from "./stores/viewport.svelte.js";
 export type {

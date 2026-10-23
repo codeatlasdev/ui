@@ -21,6 +21,7 @@
   } as const;
 
   let Icon = $derived(icons[item.variant]);
+  let count = $derived(item.count ?? 1);
 
   // Enter/exit via CSS animation, no will-change: transform
   let visible = $state(false);
@@ -38,6 +39,10 @@
     <IconComponent size={18} class="ca-toast__icon" />
   {/if}
   <span class="ca-toast__message">{item.message}</span>
+  {#if count > 1}
+    <span class="ca-toast__count" aria-hidden="true">×{count}</span>
+    <span class="ca-sr-only">{t().toast.repeated(count)}</span>
+  {/if}
   <button
     class="ca-toast__close"
     type="button"
@@ -84,6 +89,16 @@
     .ca-toast__message {
       flex: 1;
       line-height: var(--ca-line-height-body);
+    }
+
+    .ca-toast__count {
+      flex-shrink: 0;
+      padding: 0 var(--ca-space-1-5);
+      border-radius: var(--ca-radius-pill);
+      background: var(--ca-outline-subtle);
+      color: var(--ca-text-secondary);
+      font-size: var(--ca-font-size-caption);
+      font-variant-numeric: tabular-nums;
     }
 
     .ca-toast__close {
