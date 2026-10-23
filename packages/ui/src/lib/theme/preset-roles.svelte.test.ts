@@ -2,7 +2,6 @@ import { afterEach, describe, expect, it } from "vitest";
 import { page } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../tests/a11y";
-import { movePointer, pointerAwayFrom } from "../../../tests/pointer";
 import { settled } from "../../../tests/settled";
 import { VIEWPORTS } from "../../../tests/viewports";
 import Button from "../components/Button/Button.svelte";
@@ -42,14 +41,10 @@ function inNight(container: HTMLElement) {
 
 describe("preset button and field roles (#354)", () => {
 	it("a filled Button inside the preset uses brandFill and brandContrast", async () => {
-		// An earlier test in the same page may have left the pointer where the Button renders (0,0).
-		await movePointer(10, 10);
 		const screen = await render(Button, { children: undefined, "aria-label": "Go" });
 		inNight(screen.container);
-		const btn = screen.container.querySelector(".ca-btn") as HTMLElement;
-		await pointerAwayFrom(btn);
 		await settled();
-		const cs = getComputedStyle(btn);
+		const cs = getComputedStyle(screen.container.querySelector(".ca-btn") as HTMLElement);
 		expect(cs.backgroundColor).toBe("rgb(242, 118, 54)");
 		expect(cs.color).toBe("rgb(26, 18, 8)");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
