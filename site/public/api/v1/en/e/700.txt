@@ -1,5 +1,5 @@
-<!-- @codeatlasdev/ui demo #560 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/drawer#chromeless-full-bleed-on-phones -->
-Element: #560 Chromeless, full bleed on phones (feedback/drawer)
+<!-- @codeatlasdev/ui demo #700 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/drawer#chromeless-full-bleed-on-phones -->
+Element: #700 Chromeless, full bleed on phones (feedback/drawer)
 What it shows: A chromeless drawer for a detail view with its own header, close button and scrolling list; full width and height on phones.
 When to use: Side detail panels on desktop that become full-screen panels on phones, where the view owns its header and scroll (no double close button, no 48px page strip).
 Spec:
