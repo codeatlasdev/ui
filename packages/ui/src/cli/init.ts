@@ -1,5 +1,6 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
+import { CONSUMER_GUIDE, GUIDE_END, GUIDE_START } from "./agent-guide.ts";
 import { unifiedDiff } from "./diff.ts";
 
 export type Framework = "sveltekit" | "astro";
@@ -500,6 +501,26 @@ function routeThemeSpec(lib: string, depth: number): string {
 	return lib.startsWith("./") ? `${"../".repeat(depth + 1)}${lib.slice(2)}` : lib;
 }
 
+/**
+ * AGENTS.md for the app's own agents: the consumer guide between markers. A file without the markers
+ * gets the block appended; one with them has only that block replaced, so the app's own rules stay.
+ */
+export function agentsStep(): Step {
+	const block = `${GUIDE_START}\n${CONSUMER_GUIDE.trim()}\n${GUIDE_END}\n`;
+	return {
+		path: "AGENTS.md",
+		create: block,
+		patch: (src) => {
+			const start = src.indexOf(GUIDE_START);
+			const end = src.indexOf(GUIDE_END);
+			if (start >= 0 && end > start) {
+				return `${src.slice(0, start)}${block.trimEnd()}${src.slice(end + GUIDE_END.length)}`;
+			}
+			return `${src.trimEnd()}\n\n${block}`;
+		},
+	};
+}
+
 function sveltekitSteps(root: string): Step[] {
 	const existing = existingThemeSpec(root, ["vite.config.ts", "src/hooks.server.ts"]);
 	const lib = existing ?? themeImport(root);
@@ -532,6 +553,7 @@ function sveltekitSteps(root: string): Step[] {
 			? { path: "src/service-worker/index.ts", create: SW_KIT3 }
 			: { path: "src/service-worker.ts", create: SW_KIT2 },
 		{ path: "src/app.html", patch: appHtmlPatch, manual: `Set the viewport meta to: ${VIEWPORT}` },
+		agentsStep(),
 	];
 }
 
@@ -638,6 +660,7 @@ function astroSteps(root: string): Step[] {
 					manual: `Import "@codeatlasdev/ui/styles/global.css", set the viewport to "${VIEWPORT}" and call colorScheme.init() in a client <script>.`,
 				}
 			: { path: "src/layouts/Base.astro", create: ASTRO_LAYOUT },
+		agentsStep(),
 	];
 }
 

@@ -10,7 +10,7 @@ export const AGENT_PROMPT = `Use CodeAtlas UI (@codeatlasdev/ui, Svelte 5) for a
    - Svelte app already here: run bunx @codeatlasdev/ui init --write in place.
    - React app: call get_guide with "migrate-react" and follow it.
 
-3. Build from references. Call search_demos to find a numbered demo, then get_demo to read it. Keep its components, props and motion; change only data, copy and theme. Use get_component before using any prop you are not sure about.
+3. Build from references. Start at https://ui.codeatlas.com.br/llms.txt: call get_recipe for the screen type (app shell, list, form, settings, auth, dashboard, landing, theming) and copy it whole. For a visual reference call search_demos, then get_demo. Keep the components, props and motion; change only data, copy and theme. Use get_component before using any prop you are not sure about, and read the "Common workarounds" page before writing CSS or a wrapper.
 
 4. If the library blocks you: write a workaround in my code marked "// ca-ui-workaround(#<issue>): <why>", then call report_issue with a minimal repro. Use neutral names only: no project, company, file paths, URLs, secrets or data.
 

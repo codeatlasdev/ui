@@ -673,3 +673,52 @@ describe("migrate: report of usages left for a human", () => {
 		expect(clean.out).not.toContain("left ");
 	});
 });
+
+describe("init leaves the next agent instructions (#384)", () => {
+	const START = "<!-- codeatlas-ui:start -->";
+	const END = "<!-- codeatlas-ui:end -->";
+
+	it("creates AGENTS.md with the consumer guide between markers", () => {
+		const root = project({ "package.json": KIT_PKG });
+		init(root, { ...quiet, write: true });
+		const md = read(root, "AGENTS.md");
+		expect(md).toContain(START);
+		expect(md).toContain("https://ui.codeatlas.com.br/llms.txt");
+		expect(md).toContain("get_component");
+		expect(md).not.toContain("bun run issue:start");
+		expect(md.indexOf(START)).toBeLessThan(md.indexOf(END));
+	});
+
+	it("appends the block to an existing AGENTS.md without touching the rest", () => {
+		const root = project({ "package.json": KIT_PKG, "AGENTS.md": "# Acme\n\nUse pnpm.\n" });
+		init(root, { ...quiet, write: true });
+		const md = read(root, "AGENTS.md");
+		expect(md.startsWith("# Acme\n\nUse pnpm.\n")).toBe(true);
+		expect(md).toContain(START);
+	});
+
+	it("is idempotent and replaces only what sits between the markers", () => {
+		const root = project({
+			"package.json": KIT_PKG,
+			"AGENTS.md": `# Acme\n\n${START}\nold text\n${END}\n\nKeep me.\n`,
+		});
+		init(root, { ...quiet, write: true });
+		const once = read(root, "AGENTS.md");
+		expect(once).not.toContain("old text");
+		expect(once).toContain("Keep me.");
+		init(root, { ...quiet, write: true });
+		expect(read(root, "AGENTS.md")).toBe(once);
+	});
+
+	it("is a dry run without --write", () => {
+		const root = project({ "package.json": KIT_PKG });
+		init(root, quiet);
+		expect(existsSync(join(root, "AGENTS.md"))).toBe(false);
+	});
+
+	it("writes it on Astro too", () => {
+		const root = project({ "package.json": JSON.stringify({ dependencies: { astro: "^5.0.0" } }) });
+		init(root, { ...quiet, write: true });
+		expect(read(root, "AGENTS.md")).toContain(START);
+	});
+});

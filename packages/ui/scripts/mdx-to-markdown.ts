@@ -1,4 +1,21 @@
 // MDX docs body to plain markdown (shared by the site's llms-full.txt and the MCP guide bundle).
+
+/**
+ * Raw `.svelte` demo sources by import name, for the `<Demo src={XSrc}>` examples of one MDX page.
+ * Pure: the caller supplies the lookup (`demoSourceLookup` in Node, `import.meta.glob` in Vite).
+ */
+export function demoSources(
+	mdx: string,
+	read: (demoPath: string) => string | undefined
+): Record<string, string> {
+	const out: Record<string, string> = {};
+	for (const m of mdx.matchAll(/^import\s+(\w+)\s+from\s+"~\/demos\/([^"]+\.svelte)\?raw"/gm)) {
+		const src = read(m[2]);
+		if (src !== undefined) out[m[1]] = src;
+	}
+	return out;
+}
+
 /** `<Props rows={[{ name: "x", type: "y", default: "z", description: "..." }]} />` to a markdown table. */
 function propsTable(heading: string, block: string): string {
 	const field = (row: string, key: string) =>
@@ -21,7 +38,7 @@ function propsTable(heading: string, block: string): string {
 }
 
 /** MDX body to plain markdown: drop imports and JSX, keep prose and code fences untouched. */
-export function mdxToMarkdown(mdx: string): string {
+export function mdxToMarkdown(mdx: string, sources: Record<string, string> = {}): string {
 	const out: string[] = [];
 	let inFence = false;
 	let fenceIndent = 0;
@@ -56,7 +73,13 @@ export function mdxToMarkdown(mdx: string): string {
 		if (/^import\s/.test(line)) continue;
 		const demo = line.match(/^<Demo\s+title="([^"]+)"(?:\s+description="([^"]*)")?/);
 		if (demo) {
-			out.push(`### ${demo[1]}`, "", ...(demo[2] ? [demo[2], ""] : []));
+			const src = sources[line.match(/\bsrc=\{(\w+)\}/)?.[1] ?? ""];
+			out.push(
+				`### ${demo[1]}`,
+				"",
+				...(demo[2] ? [demo[2], ""] : []),
+				...(src ? ["```svelte", src.trimEnd(), "```", ""] : [])
+			);
 			continue;
 		}
 		const props = line.match(/^<Props\b(?:\s+title="([^"]+)")?/);

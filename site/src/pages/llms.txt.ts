@@ -1,48 +1,30 @@
-import { llmsTxt } from "@codeatlasdev/ui/seo";
+import { CATALOG } from "~/demos/catalog";
+import { demoSource } from "~/lib/demo-source";
 import { loadDocs } from "~/lib/docs";
 import { docHref, GROUPS } from "~/lib/nav";
+import pkg from "../../../packages/ui/package.json";
+import { buildLlmsIndex, ENTRY_PAGES, parseRecipes } from "../../../packages/ui/scripts/ai-entry";
+import { demoSources, mdxToMarkdown } from "../../../packages/ui/scripts/mdx-to-markdown";
 
 const SITE = "https://ui.codeatlas.com.br";
 
 export async function GET() {
-	const { flat } = await loadDocs();
-	const body = llmsTxt({
-		title: "CodeAtlas UI",
-		summary:
-			"Open-source Svelte 5 component library (`@codeatlasdev/ui`): page templates, app shell, data tables, charts, forms and overlays, with a Liquid Glass material system, an OKLCH theme engine and native-feeling mobile behavior. Built on its own headless primitives layer. Install with `bun add @codeatlasdev/ui`.",
-		intro: [`Full documentation in one file: ${SITE}/llms-full.txt`],
-		sections: [
-			...GROUPS.map((heading) => ({
-				heading,
-				links: flat
-					.filter((d) => d.group === heading)
-					.map((d) => ({
-						title: d.title,
-						href: `${SITE}${docHref(d.slug)}`,
-						description: d.description,
-					})),
-			})),
-			{
-				heading: "Optional",
-				links: [
-					{
-						title: "Agent guide (AGENTS.md)",
-						href: "https://github.com/codeatlasdev/ui/blob/main/AGENTS.md",
-						description: "critical rules, tokens, page template patterns.",
-					},
-					{
-						title: "Source",
-						href: "https://github.com/codeatlasdev/ui",
-						description: "repository, issues and changelog.",
-					},
-					{
-						title: "npm",
-						href: "https://www.npmjs.com/package/@codeatlasdev/ui",
-						description: "published package.",
-					},
-				],
-			},
-		],
+	const { entries, flat } = await loadDocs();
+	const recipesEntry = entries.find((e) => e.id === ENTRY_PAGES.recipes);
+	const body = recipesEntry?.body ?? "";
+	const recipes = parseRecipes(mdxToMarkdown(body, demoSources(body, demoSource)));
+	const text = buildLlmsIndex({
+		docs: flat.map((d) => ({
+			slug: d.slug,
+			title: d.title,
+			description: d.description,
+			group: d.group,
+		})),
+		recipes,
+		groups: GROUPS,
+		href: (slug) => `${SITE}${docHref(slug)}`,
+		version: pkg.version,
+		counts: { demos: CATALOG.length },
 	});
-	return new Response(body, { headers: { "content-type": "text/plain; charset=utf-8" } });
+	return new Response(text, { headers: { "content-type": "text/plain; charset=utf-8" } });
 }

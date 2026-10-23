@@ -5,7 +5,7 @@
  *
  *   claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp
  *
- * Tools: list_components, get_component, get_export, search_tokens, list_surfaces, get_guide, search_demos,
+ * Tools: get_recipe, list_components, get_component, get_export, search_tokens, list_surfaces, get_guide, search_demos,
  * get_demo, report_issue (drafts a sanitized GitHub issue from a library problem; it never posts anything).
  */
 import { existsSync, readFileSync } from "node:fs";
@@ -14,6 +14,7 @@ import { fileURLToPath } from "node:url";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
+import type { Recipe } from "../scripts/ai-entry.ts";
 import type {
 	Manifest,
 	ManifestDemo,
@@ -34,6 +35,10 @@ const manifest = load<Manifest>("components.json");
 const tokens = load<{ tokens: ManifestToken[] }>("tokens.json").tokens;
 const guides = load<{ guides: ManifestGuide[] }>("guides.json").guides;
 const surfaces = load<{ surfaces: ManifestSurface[] }>("surfaces.json").surfaces;
+// Like demos: a build without the docs site has no recipes, and the other tools must keep working.
+const recipes = existsSync(join(DIST, "recipes.json"))
+	? load<{ recipes: Recipe[] }>("recipes.json").recipes
+	: [];
 // A build without site/ (from the published tarball) emits no demos: the other tools must keep working.
 const demos = existsSync(join(DIST, "demos.json")) ? load<ManifestDemo[]>("demos.json") : [];
 const noDemos = "No demo catalog in this build (dist/demos.json is missing).";
@@ -47,6 +52,25 @@ const squash = (s: string) => s.toLowerCase().replace(/[\s_-]/g, "");
 const server = new McpServer({ name: "codeatlas-ui", version: manifest.version });
 
 server.registerTool(
+	"get_recipe",
+	{
+		description:
+			"Complete copy-pasteable page for a screen type: app shell, list page, form page, settings page, auth pages, dashboard, landing page, theming. Call it first when asked to build a screen, then change only data, copy and theme. `name` is the recipe id or title (case-insensitive, forgives spaces and dashes). Without `name`, lists the recipes.",
+		inputSchema: { name: z.string().optional() },
+	},
+	({ name }) => {
+		if (!recipes.length) return fail("No recipes in this build (dist/recipes.json is missing).");
+		if (!name) return text(recipes.map((r) => `- ${r.id}: ${r.title}`).join("\n"));
+		const n = squash(name);
+		const hit =
+			recipes.find((r) => squash(r.id) === n || squash(r.title) === n) ??
+			recipes.find((r) => squash(r.id).includes(n) || squash(r.title).includes(n));
+		if (!hit) return fail(`No recipe "${name}". Recipes: ${recipes.map((r) => r.id).join(", ")}.`);
+		return text(`# ${hit.title}\n\n${hit.markdown}`);
+	}
+);
+
+server.registerTool(
 	"list_components",
 	{
 		description:
@@ -57,7 +81,10 @@ server.registerTool(
 		const q = query ? squash(query) : "";
 		const rows = manifest.components
 			.filter((c) => !q || squash(c.name).includes(q) || squash(c.description ?? "").includes(q))
-			.map((c) => `- ${c.name} (${c.import})${c.description ? `: ${c.description}` : ""}`);
+			.map(
+				(c) =>
+					`- ${c.name} (${c.import})${c.deprecated ? ` DEPRECATED: ${c.deprecated}` : c.description ? `: ${c.description}` : ""}`
+			);
 		return text(rows.length ? rows.join("\n") : `No component matches "${query}".`);
 	}
 );
@@ -66,7 +93,7 @@ server.registerTool(
 	"get_component",
 	{
 		description:
-			"Full API of one component: import path, props (type, default, bindable, docs), snippets and the public ca-* CSS classes. Name is case-insensitive.",
+			"Full API of one component: import path, props (type, default, bindable, docs), snippets and the public ca-* CSS classes. A deprecated component carries a `deprecated` field with its replacement. Name is case-insensitive.",
 		inputSchema: { name: z.string() },
 	},
 	({ name }) => {

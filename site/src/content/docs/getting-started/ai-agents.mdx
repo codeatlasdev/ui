@@ -11,15 +11,22 @@ The API is designed so a language model gets it right on the first try. A compon
 
 Typed props are the first source of truth. The package ships TypeScript declarations for every component, so an agent with editor or `svelte-check` feedback sees the exact prop names, unions and defaults.
 
+## Start here
+
+One entry point: [`/llms.txt`](/llms.txt). It opens with a [recipe](/docs/getting-started/recipes/) for every screen type (app shell, list, form, settings, auth, dashboard, landing, theming), then the [decision tables](/docs/getting-started/choosing/) and the [common workarounds](/docs/getting-started/workarounds/), and only then the page index. An agent asked to build a screen copies the recipe whole and changes data, copy and theme. Before it writes CSS, a wrapper, a `setTimeout` or a `// ca-ui-workaround`, it checks the two tables.
+
 ## Machine-readable docs
 
 This site publishes its documentation in plain text for tools that cannot render pages.
 
 | Resource | Content |
 |---|---|
-| [`/llms.txt`](/llms.txt) | Index: one line per documentation page with title, link and description. |
-| [`/llms-full.txt`](/llms-full.txt) | Every page concatenated as markdown, with code fences intact, followed by the full `AGENTS.md`. Paste it, or let a tool fetch it, when you want everything in one context. |
-| [Agent guide](https://github.com/codeatlasdev/ui/blob/main/AGENTS.md) | `AGENTS.md` in the repository: critical rules, spacing and token reference, page template patterns, store and theme setup. |
+| [`/llms.txt`](/llms.txt) | The canonical entry: recipes, decision tables, workarounds, endpoints, then one line per documentation page. |
+| [`/llms-full.txt`](/llms-full.txt) | Every page as markdown, with the complete source of each demo, followed by the rules for an app that uses the package. Paste it, or let a tool fetch it, when you want everything in one context. |
+| [`/api/v1/`](/api/v1/index.json) | The machine-readable endpoints that exist: demo catalog, demo source and the search index. Any other path under `/api/v1/` is a 404. |
+| [Contributor guide](https://github.com/codeatlasdev/ui/blob/main/AGENTS.md) | `AGENTS.md` in the repository: how to work on this package (issue workflow, tests). Not for apps that consume it. |
+
+An app gets its own rules file: `bunx @codeatlasdev/ui init --write` creates `AGENTS.md` (or adds a block between `<!-- codeatlas-ui:start -->` and `<!-- codeatlas-ui:end -->` to the one you have, leaving the rest alone) with the rules above and the link to `/llms.txt`. Run it again after an upgrade and only that block is replaced.
 
 Every page is also linked with `<link rel="alternate" type="text/plain" href="/llms.txt">` in its head.
 
@@ -29,12 +36,15 @@ Every page is also linked with `<link rel="alternate" type="text/plain" href="/l
 
 | Tool | Returns |
 |---|---|
-| `list_components` | Every component with its import path and a one-line description. Optional `query` filter. |
-| `get_component` | One component's import path, props (type, default, `bind:` or not, docs), snippets and public `ca-*` classes. The name is case-insensitive and forgives spaces, `-` and `_`: `get_component("app list")` finds `AppList`. |
+| `get_recipe` | A complete page for a screen type (`app-shell`, `list-page`, `form-page`, `settings-page`, `auth-pages`, `dashboard`, `landing-page`, `theming`) with its rules. Call it first when asked to build a screen. Without a name it lists the recipes. |
+| `list_components` | Every component with its import path and a one-line description; a deprecated one says `DEPRECATED` and what replaces it. Optional `query` filter. |
+| `get_component` | One component's import path, props (type, default, `bind:` or not, docs), snippets and public `ca-*` classes, plus `deprecated` (the replacement) when it is deprecated. The name is case-insensitive and forgives spaces, `-` and `_`: `get_component("app list")` finds `AppList`. |
 | `get_export` | Signature and summary of any non-component export: functions, stores, constants and types of every entry point (`setLocale`, `toast`, `caErrorPlugin` from `/vite`, `createErrorHandler` and `nativeFeel` from `/kit`, `primeKeyboard` from `/actions`). Without a name it lists them all with their import path. |
 | `search_tokens` | `--ca-*` design tokens matching a name, value or section, with light and dark values (the first 60 matches). |
 | `list_surfaces` | The surface styles (`<html data-style>`: `glass`, `frosted`, `solid`, `flat`, `outlined`, `neumorphic`, `clay`, `tonal`, `chrome`) with the blur each draws (`full`, `reduced`, `none`), the tokens it rewrites and the design recipes that default to it, generated from the `[data-style]` selectors in `materials.css`. Optional `query` filter. The answer also carries the per-platform `defaultStyle` note: backdrop blur on Tauri for Linux (WebKitGTK) is `[INFERENCE: validate with feature detection]`. |
-| `get_guide` | A documentation page as markdown, by slug (`getting-started/theming`) or title. Without a name it lists every guide. |
+| `get_guide` | A documentation page as markdown, with the complete source of its demos, by slug (`getting-started/theming`) or title. Without a name it lists every guide. |
+| `search_demos` | Numbered demos (#NNN) by motion name or alias, title, summary, tags or component. See [Pick a demo by number](#pick-a-demo-by-number). |
+| `get_demo` | The source and spec of up to 8 demos by id. |
 | `report_issue` | Drafts a sanitized GitHub issue when the library gets in the agent's way: markdown body, the redactions applied, a prefilled form link and a `gh issue create` command. It never posts. See [Reporting problems](/docs/getting-started/reporting/). |
 
 Prop names are never guessed: an agent asks the server and gets the types the compiler sees.
@@ -122,9 +132,12 @@ npx skills add codeatlasdev/ui
 1. **Claude Code.** Install the skills above, or add a line to your `CLAUDE.md`:
 
    ```md
-   This project uses @codeatlasdev/ui (Svelte 5). Docs for agents: https://ui.codeatlas.com.br/llms.txt
-   Read https://ui.codeatlas.com.br/llms-full.txt before writing UI. Never write layout CSS; use Grid, Flex, Stack and --ca-* tokens.
+   This project uses @codeatlasdev/ui (Svelte 5). Start at https://ui.codeatlas.com.br/llms.txt:
+   copy the recipe for the screen you build, check "Choosing a component" and "Common workarounds"
+   before writing CSS or a wrapper. Never write layout CSS; use Flex, Stack, Grid and --ca-* tokens.
    ```
+
+   `init --write` already puts this in the project's `AGENTS.md`.
 
 2. **Cursor.** Add `https://ui.codeatlas.com.br/llms-full.txt` as a custom doc source in Cursor's settings, or put the same instructions in a project rule so every chat starts with them.
 

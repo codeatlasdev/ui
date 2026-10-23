@@ -59,6 +59,7 @@ bunx @codeatlasdev/ui init [--write] [--dir <path>]
 | `diff    <file> (exists, not modified)` | The file exists and needs a change. A unified diff follows; nothing is written until you re-run with `--write`. |
 | `patch   <file>` | The change was applied (`--write`). |
 | `manual  <file>: could not patch safely.` | `init` could not edit the file safely (no `plugins: [...]` array, an existing `handle` of your own, no `</body>`). It says what to add by hand and exits with code 1. |
+| `create  AGENTS.md` / `patch   AGENTS.md` | The rules an agent needs to work in this app, between `<!-- codeatlas-ui:start -->` and `<!-- codeatlas-ui:end -->`. An existing `AGENTS.md` keeps everything outside the markers; running `init` again replaces only the block. |
 | `skip    <file> (not found)` | The file does not exist and `init` does not create it (`vite.config.ts`, `src/app.html` and the Astro config). |
 | `skip    <file>: the app already imports its theme from "<module>"` | `vite.config.ts`, `hooks.server.ts` (or the Astro config) already import `theme` from somewhere else, for example a shared workspace package. `init` does not create `src/lib/theme.ts` (`src/theme.ts` on Astro) and wires the files it adds to that import. |
 

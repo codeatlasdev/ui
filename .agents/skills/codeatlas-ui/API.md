@@ -1276,6 +1276,8 @@ Classes: `ca-app-bar` `ca-app-bar__content` `ca-app-bar__leading` `ca-app-bar__t
 
 `import { GlassCard } from "@codeatlasdev/ui"`
 
+**Deprecated. Use `<Card>`. `thickness` is `elevation` (ultra-thin 1, thin 2, regular 3, thick 4, chrome 5), `tinted` is `tone="brand"`, `glowing` is `glow`. Removed in the next major; `bunx @codeatlasdev/ui migrate --write` rewrites usages.**
+
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `thickness?` | `Thickness` | `'regular'` |  |
@@ -1298,6 +1300,8 @@ Classes: `ca-glass-card` `ca-glass-card--flush` `ca-glass-card--full` `ca-glass-
 ## GlassSurface
 
 `import { GlassSurface } from "@codeatlasdev/ui"`
+
+**Deprecated. Use `<Surface>`. `thickness` is `elevation` (ultra-thin 1, thin 2, regular 3, thick 4, chrome 5), `tinted` is `tone="brand"`, `glowing` is `glow`, `refraction` is `material="liquid"`. Removed in the next major; `bunx @codeatlasdev/ui migrate --write` rewrites usages.**
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -2178,6 +2182,8 @@ Classes: `ca-record-row` `ca-record-row__actions` `ca-record-row__cells` `ca-rec
 ## Row
 
 `import { Row } from "@codeatlasdev/ui"`
+
+**Deprecated. Use `<Flex>`: `<Row gap={8} align="center">` is `<Flex gap="2" align="center">` (the gap is a spacing step, 8px = step 2). Removed in the next major; `bunx @codeatlasdev/ui migrate --write` rewrites usages.**
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|

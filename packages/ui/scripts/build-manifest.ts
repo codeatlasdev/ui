@@ -25,7 +25,8 @@ import { fileURLToPath } from "node:url";
 import ts from "typescript";
 import { STYLES, type SurfaceStyle } from "../src/lib/theme/define.ts";
 import { DESIGN_STYLES } from "../src/lib/theme/styles.ts";
-import { mdxToMarkdown } from "./mdx-to-markdown.ts";
+import { ENTRY_PAGES, parseRecipes, type Recipe } from "./ai-entry.ts";
+import { demoSources, mdxToMarkdown } from "./mdx-to-markdown.ts";
 
 // CJS require keeps svelte2tsx out of Vite's transform pipeline (its sourceMappingURL points at a file it does not ship).
 const { svelte2tsx }: typeof import("svelte2tsx") = createRequire(import.meta.url)("svelte2tsx");
@@ -88,6 +89,8 @@ export interface ManifestComponent {
 	source: string;
 	/** First JSDoc/comment paragraph of the component, when present. */
 	description?: string;
+	/** Replacement text of a component-level `@deprecated` ("Use `<Flex>`: ..."). Absent on current components. */
+	deprecated?: string;
 	/** Own props. Inherited attributes (e.g. `HTMLAttributes`) are listed in `extends`. */
 	props: ManifestProp[];
 	/** Props typed as `Snippet`/`Snippet<[...]>`: the holes a caller fills. */
@@ -335,6 +338,38 @@ export function componentDoc(src: string): string | undefined {
 	return undefined;
 }
 
+/**
+ * Text after `@deprecated` in a top-level `/** ... *\/` block of a `<script>` (the replacement to use), or
+ * undefined. A `@deprecated` on a prop or declaration inside the component does not deprecate the component.
+ */
+export function componentDeprecated(src: string): string | undefined {
+	for (const script of src.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)) {
+		const body = script[1];
+		const sf = ts.createSourceFile("c.ts", body, ts.ScriptTarget.ESNext, true);
+		const first = sf.statements[0];
+		const ranges = ts.getLeadingCommentRanges(body, first ? first.getFullStart() : 0) ?? [];
+		for (const c of ranges) {
+			const text = body.slice(c.pos, c.end);
+			if (!text.startsWith("/**")) continue;
+			const lines = text
+				.replace(/^\/\*\*|\*\/$/g, "")
+				.split("\n")
+				.map((l) => l.replace(/^\s*\*?\s?/, "").trimEnd());
+			const at = lines.findIndex((l) => /^@deprecated\b/.test(l.trim()));
+			if (at < 0) continue;
+			const rest = lines.slice(at);
+			const end = rest.findIndex((l, i) => i > 0 && (/^@\w+/.test(l.trim()) || l.trim() === ""));
+			return rest
+				.slice(0, end < 0 ? undefined : end)
+				.join(" ")
+				.replace(/^@deprecated\s*/, "")
+				.replace(/\s+/g, " ")
+				.trim();
+		}
+	}
+	return undefined;
+}
+
 function extractComponent(name: string, file: string, entry: string): ManifestComponent {
 	const abs = join(LIB, file);
 	const src = readFileSync(abs, "utf8");
@@ -388,6 +423,8 @@ function extractComponent(name: string, file: string, entry: string): ManifestCo
 
 	const description = componentDoc(src);
 	if (description) out.description = description;
+	const deprecated = componentDeprecated(src);
+	if (deprecated) out.deprecated = deprecated;
 	return out;
 }
 
@@ -786,6 +823,13 @@ function mdxFiles(dir: string): string[] {
 	);
 }
 
+/** Raw demo source under site/src/demos, or undefined (also for paths that escape that folder). */
+function readDemo(demoPath: string): string | undefined {
+	const root = resolve(ROOT, "../../site/src/demos");
+	const file = resolve(root, demoPath);
+	return file.startsWith(`${root}/`) && existsSync(file) ? readFileSync(file, "utf8") : undefined;
+}
+
 export function buildGuides(): ManifestGuide[] {
 	if (!existsSync(DOCS_DIR)) return [];
 	return mdxFiles(DOCS_DIR)
@@ -801,10 +845,16 @@ export function buildGuides(): ManifestGuide[] {
 				title: field("title"),
 				group: field("group"),
 				description: field("description"),
-				markdown: mdxToMarkdown(fm ? raw.slice(fm[0].length) : raw),
+				markdown: mdxToMarkdown(fm ? raw.slice(fm[0].length) : raw, demoSources(raw, readDemo)),
 			};
 		})
 		.sort((a, b) => a.slug.localeCompare(b.slug));
+}
+
+/** Recipes of the "Recipes" docs page (one per `## ` section with an example), for the offline `get_recipe`. */
+export function buildRecipes(guides = buildGuides()): Recipe[] {
+	const page = guides.find((g) => g.slug === ENTRY_PAGES.recipes);
+	return page ? parseRecipes(page.markdown) : [];
 }
 
 // ── demos (ca-prompt catalog) ─────────────────────────────────────────────────
@@ -1160,6 +1210,7 @@ export function skillMarkdown(m: Manifest): string {
 			`\`import { ${c.name} } from "${c.import}"\`${c.generics ? ` (generic: \`${c.generics}\`)` : ""}`,
 			""
 		);
+		if (c.deprecated) out.push(`**Deprecated. ${c.deprecated}**`, "");
 		if (c.description) out.push(c.description, "");
 		if (c.props.length) {
 			out.push("| Prop | Type | Default | Notes |", "|---|---|---|---|");
@@ -1238,8 +1289,14 @@ if (import.meta.main) {
 			surfaces: buildSurfaces(),
 		});
 		// Docs live in the monorepo's site/; a build from a published tarball keeps the shipped file.
-		if (guides.length)
+		if (guides.length) {
 			write("guides.json", { name: manifest.name, version: manifest.version, guides });
+			write("recipes.json", {
+				name: manifest.name,
+				version: manifest.version,
+				recipes: buildRecipes(guides),
+			});
+		}
 		const { demos, files } = catalog.length
 			? buildDemos(manifest, catalog)
 			: { demos: [], files: {} };

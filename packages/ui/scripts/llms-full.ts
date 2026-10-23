@@ -1,4 +1,5 @@
-// Assembles the site's llms-full.txt: every doc page, then the repo AGENTS.md (one fetch covers everything).
+// Assembles the site's llms-full.txt: every doc page with its complete demo sources, then the consumer guide.
+import { CONSUMER_GUIDE } from "./ai-entry.ts";
 import { mdxToMarkdown } from "./mdx-to-markdown.ts";
 
 export interface LlmsFullDoc {
@@ -9,14 +10,11 @@ export interface LlmsFullDoc {
 	description: string;
 	/** Raw MDX body. */
 	body: string;
+	/** Raw demo sources by import name (`BasicSrc`), see `demoSources`. */
+	sources?: Record<string, string>;
 }
 
-export function buildLlmsFull(opts: {
-	site: string;
-	docs: LlmsFullDoc[];
-	/** Contents of the repo AGENTS.md, appended verbatim as the last section. */
-	agentsMd: string;
-}): string {
+export function buildLlmsFull(opts: { site: string; docs: LlmsFullDoc[] }): string {
 	const parts = [
 		"# CodeAtlas UI: full documentation",
 		"",
@@ -33,17 +31,10 @@ export function buildLlmsFull(opts: {
 			"",
 			d.description,
 			"",
-			mdxToMarkdown(d.body),
+			mdxToMarkdown(d.body, d.sources),
 			""
 		);
 	}
-	parts.push(
-		"---",
-		"",
-		"Agent guide: AGENTS.md from https://github.com/codeatlasdev/ui/blob/main/AGENTS.md",
-		"",
-		opts.agentsMd.trim(),
-		""
-	);
+	parts.push("---", "", CONSUMER_GUIDE.trim(), "");
 	return parts.join("\n");
 }

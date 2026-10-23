@@ -1,25 +1,34 @@
 import { describe, expect, it } from "bun:test";
-import { readFileSync } from "node:fs";
+import { CONSUMER_GUIDE } from "../scripts/ai-entry.ts";
 import { buildLlmsFull } from "../scripts/llms-full.ts";
-
-const agentsMd = readFileSync(new URL("../../../AGENTS.md", import.meta.url), "utf8");
 
 describe("llms-full.txt", () => {
 	const out = buildLlmsFull({
 		site: "https://ui.codeatlas.com.br",
-		docs: [{ group: "Components", title: "Button", url: "/u", description: "d", body: "body" }],
-		agentsMd,
+		docs: [
+			{
+				group: "Components",
+				title: "Button",
+				url: "/u",
+				description: "d",
+				body: '<Demo title="Basic" src={BasicSrc}><Basic /></Demo>',
+				sources: { BasicSrc: "<Button>ok</Button>" },
+			},
+		],
 	});
 
-	it("inlines the repo AGENTS.md so one fetch covers the agent guide", () => {
-		const heading = agentsMd.split("\n").find((l) => l.startsWith("# "));
-		expect(heading).toBeTruthy();
-		expect(out).toContain(heading as string);
-		expect(out).toContain("## Monorepo structure");
+	it("ends with the consumer guide, not the contributor AGENTS.md (#384)", () => {
+		expect(out).toContain(CONSUMER_GUIDE.trim());
+		expect(out).not.toContain("bun run issue:start");
+		expect(out).not.toContain("# AGENTS.md: Guide for AI Agents");
 	});
 
-	it("keeps the doc pages before the agent guide", () => {
+	it("keeps the doc pages before the consumer guide", () => {
 		expect(out.indexOf("# Button")).toBeGreaterThan(-1);
-		expect(out.indexOf("# Button")).toBeLessThan(out.indexOf("# AGENTS.md"));
+		expect(out.indexOf("# Button")).toBeLessThan(out.indexOf(CONSUMER_GUIDE.trim()));
+	});
+
+	it("carries the complete demo source of a page (#384)", () => {
+		expect(out).toContain("```svelte\n<Button>ok</Button>\n```");
 	});
 });

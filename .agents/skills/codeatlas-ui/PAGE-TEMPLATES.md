@@ -47,7 +47,7 @@ Fullscreen list layout. Built-in search, filters, pagination, empty state.
 
 ```svelte
 <script>
-  import { AppList, SimpleTable, UserCell, StatusChip, FilterGroup, Button } from '@codeatlasdev/ui';
+  import { AppList, SimpleTable, UserCell, StatusChip, FilterGroup, Button, Flex } from '@codeatlasdev/ui';
   import { Edit2, Trash2 } from '@lucide/svelte';
 
   const users = [...]; // full dataset
@@ -87,14 +87,14 @@ Fullscreen list layout. Built-in search, filters, pagination, empty state.
             <td>{user.role}</td>
             <td><StatusChip status={user.active ? 'success' : 'neutral'} /></td>
             <td>
-              <Row gap={4} class="ca-row-actions">
+              <Flex gap="1" class="ca-row-actions">
                 <Button variant="ghost" size="sm" href="/users/{user.id}/edit">
                   <Edit2 size={13} />
                 </Button>
                 <Button variant="ghost" size="sm" onclick={() => remove(user.id)}>
                   <Trash2 size={13} />
                 </Button>
-              </Row>
+              </Flex>
             </td>
           </tr>
         {/each}
@@ -232,8 +232,10 @@ Dashboard layout: normal scroll, free content.
     <KpiCard title="Users" value="24.8k" trend={12.1} />
   </KpiGrid>
 
-  <GlassCard title="Revenue vs Expenses">
+  <Card title="Revenue vs Expenses">
     <LineChart {series} {categories} area height="260px" />
-  </GlassCard>
+  </Card>
 </PageShell>
 ```
+
+`PageShell` `gap` is a number of pixels (`gap={24}`), unlike `Flex`, `Stack` and `Grid`, whose `gap` is a spacing step (`gap="4"`, see [LAYOUT.md](./LAYOUT.md)).

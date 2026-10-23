@@ -1,0 +1,168 @@
+---
+title: Choosing a component
+description: Decision tables for the pairs and groups of components that look alike, so you pick the right one before writing code.
+group: Getting started
+order: 3
+---
+import { Callout } from "@codeatlasdev/ui";
+
+Several components solve a similar problem and differ in one rule. Find your situation in the table, use the component in the second column, and read its page for props. If a row does not fit, call `get_component` or `search_demos` before writing a wrapper, see [Common workarounds](/docs/getting-started/workarounds/).
+
+## Page layout
+
+A route is one of these templates. They own the header, the scroll area, the footer and the mobile layout, so you fill snippets instead of building a wrapper.
+
+| If you need | Use | Why / the rule |
+|---|---|---|
+| A list or CRUD index with search, filters and paging | [`AppList`](/docs/layout/list-page/) | Takes `data`, `searchKeys`, `perPage`. Snippets: `actions`, `filters`, `toolbar`, `empty`, `footer`, `children`. |
+| Create or edit one entity | [`AppForm`](/docs/layout/form-page/) | Fixed header, scrolling body, sticky `footer` snippet for Cancel and Save. Fields go in `FormSection`. |
+| Settings with several sections | [`AppSettings`](/docs/layout/list-page/) | Tabbed sections built from `FormSection` and `SettingItem`. |
+| Any other content page (dashboard, detail) | [`PageShell`](/docs/layout/page-shell/) | `title`, `description`, `actions` snippet. `gap` is a number in px. |
+| Sign in, sign up, password reset | [`AuthLayout`](/docs/layout/auth-layout/) | Renders the page `<main>`: do not add another. `AuthCard` holds the form. |
+| A 404, 403, 500 or 503 page | [`ErrorPage`](/docs/layout/error-page/) | Localized copy, home and back actions. |
+| A section or a list with nothing in it | [`EmptyState`](/docs/layout/empty-state/) | Icon, title, description, actions. In `AppList` use its `empty` snippet instead. |
+
+Never: wrap a page in your own `div` with a title row and a footer bar. Never put `AppShellLayout` in public or auth routes, only in the signed-in layout.
+
+## Overlay
+
+Every overlay below is a native `<dialog>` or a `popover` element in the browser top layer, so none needs a `z-index`. Pick by how the user got there and what they must answer.
+
+| If you need | Use | Why / the rule |
+|---|---|---|
+| A modal for a form or information | [`Dialog`](/docs/feedback/dialog/) | `bind:open`, `title`, `actions` snippet. Escape and an overlay press close it. |
+| A yes or no the user must answer (delete, discard) | [`AlertDialog`](/docs/feedback/alert-dialog/) | `role="alertdialog"`, `onconfirm` may be async, `destructive`, `pending`. |
+| A second panel from the left or right edge (filters, details, settings) | [`Drawer`](/docs/feedback/drawer/) | `side`, `width`, `actions` footer. Left suits navigation. |
+| A mobile bottom panel with swipe to dismiss | [`Sheet`](/docs/feedback/sheet/) | Bottom sheet below 900px, centered dialog above. `footer` snippet. |
+| A small card anchored to a button (short content, a mini form) | [`Popover`](/docs/navigation/popover/) | `triggerChild` receives the trigger props; `children` receives `close`. |
+| A list of actions on a button or a right click | [`DropdownMenu`](/docs/navigation/menu/) | Items, checkbox and radio items, submenus. Sub-components are named exports, not dotted. |
+| A label on hover or focus | [`Tooltip`](/docs/display/tooltip/) | Text only. Never put a control or the only copy of a fact in it. |
+| A full-screen mobile drill-down (chat thread, detail) | [`MobilePane`](/docs/layout/mobile-pane/) | Fixed, safe-area aware, back button. Replaces a hand-made fixed panel. |
+| Photos or videos at full size | [`Lightbox`](/docs/feedback/lightbox/) | `src` and `alt` for one image, `items` for a gallery. `alt` is required. |
+| Jump to a route or run a command from the keyboard | [`CommandPalette`](/docs/navigation/command-palette/) | Opens with Cmd+K or Ctrl+K. Takes your `modules` and `onNavigate`. |
+
+`Drawer` has two docs pages and one component. Use [Drawer in Feedback](/docs/feedback/drawer/) for the props table, the `bottom` side and the footer. [Drawer (navigation)](/docs/navigation/drawer/) only shows the left menu and right settings panel patterns of the same component.
+
+Never: build a fixed full-screen panel by hand, set `z-index` on an overlay, or use `Dialog` for a confirmation that needs an explicit answer.
+
+## Table and lists
+
+| If you need | Use | Why / the rule |
+|---|---|---|
+| A plain table with your own markup | [`SimpleTable`](/docs/display/table/) | Sticky header, hover rows. `responsive="cards"` turns rows into cards in a narrow container. |
+| Sorting, column visibility, resizing, row groups, many columns | [`DataTable`](/docs/display/data-table/) | Import from `@codeatlasdev/ui/table`. Needs the optional peer `@tanstack/svelte-table`. |
+| Records as dense rows with identity, a few columns and a row menu | [`RecordList`](/docs/layout/record-list/) | Re-flows to a compact two-line row on a phone. |
+| A whole index page with search, filters and paging | [`AppList`](/docs/layout/list-page/) | A page template: it holds a table or a `RecordList` in its `children` snippet. |
+| Rows that arrive over time (SSE, WebSocket, a bulk job) | [`LiveList`](/docs/display/live-list/) | Batched polite announcements, follow-the-tail that never steals focus. Needs `label`. |
+| A very long list, or chat history that loads older items at the top | [`VirtualList`](/docs/display/virtual-list/) | Windowed, keeps the scroll position when older rows load. |
+| Events in time order | [`Timeline`](/docs/display/timeline/) | Colored markers on a chronological list. |
+
+Never: hand-write a `<table>` with custom sticky CSS, or a mobile card view next to a table. `SimpleTable` does both.
+
+## Container
+
+| If you need | Use | Why / the rule |
+|---|---|---|
+| A content section with a title and padding | [`Card`](/docs/surfaces/card/) | A `Surface` with a header, padding and an optional link. The default container. |
+| A painted panel with your own structure | [`Surface`](/docs/surfaces/surface/) | Elevation, material, tone, variant and radius as independent props. |
+| Spacing with no paint | [`Box`](/docs/layout/layout-primitives/) | A `div` with padding props. |
+| A page band with the page rhythm | [`Section`](/docs/layout/layout-primitives/) | A `<section>`, `size` `1` to `3`. |
+| A centered, width-capped column | [`Container`](/docs/layout/layout-primitives/) | `size` `sm`, `md`, `lg`, `xl` with a fluid gutter. |
+
+<Callout type="caution" title="GlassCard and GlassSurface are deprecated">
+
+Use `Card` and `Surface`. To rewrite an existing project in one pass, run `bunx @codeatlasdev/ui migrate` to see the diff, then `bunx @codeatlasdev/ui migrate --write`.
+
+</Callout>
+
+## Layout primitives
+
+All six render any element with `as` and take spacing as tokens, never inline style.
+
+| If you need | Use | Why / the rule |
+|---|---|---|
+| A row of items | [`Flex`](/docs/layout/layout-primitives/) | `direction`, `align`, `justify`, `wrap`, `gap`. |
+| A vertical stack of items | [`Stack`](/docs/layout/layout-primitives/) | A Flex column: `gap`, `align`, `justify`. |
+| Equal columns | [`Grid`](/docs/layout/layout-primitives/) | `columns` is 1 to 12 or a responsive object. There is no `cols` prop. |
+| A template like `2fr 1fr` or `repeat(auto-fill, minmax(200px, 1fr))` | `Grid` plus a class | Write `grid-template-columns` in a class with `--ca-space-*` gaps. |
+| Padding only | `Box` | `p`, `px`, `py`. |
+| A centered page column, a page band | `Container`, `Section` | See Container above. |
+
+`gap`, `p`, `px` and `py` take a spacing step as a string: `gap="4"` is `--ca-space-4`. A number such as `gap={16}` is the old API. `Row` is deprecated: use `Flex`. `PageShell gap` is the exception and takes a number in px.
+
+```svelte
+<script>
+  import { Container, Flex, Grid, Stack } from "@codeatlasdev/ui";
+</script>
+
+<Container size="md">
+  <Stack gap="4">
+    <Flex gap="2" align="center" justify="between">…</Flex>
+    <Grid columns={{ base: 1, md: 3 }} gap="4">…</Grid>
+  </Stack>
+</Container>
+```
+
+## Pick one of many
+
+| If you need | Use | Why / the rule |
+|---|---|---|
+| One value from a short list in a form | [`Select`](/docs/inputs/select/) | Label, hint, error state, keyboard navigation. |
+| One value from a long list, with search | [`Combobox`](/docs/inputs/combobox/) | A `Select` with built-in filtering. |
+| One value where every option should stay visible | [`RadioGroup`](/docs/inputs/radio/) | `variant="list"` or `"cards"`. |
+| A view or mode switch that always has a selection | [`SegmentedControl`](/docs/inputs/segmented-control/) | Sliding thumb. Not for form answers. |
+| A set of toggle buttons, single or multiple | [`ToggleGroup`](/docs/inputs/toggle-group/) | `type="single"` or `"multiple"`. Bind `value` as a string or an array. |
+| Filter chips above a list | [`FilterGroup`](/docs/inputs/filter-group/) | Adds an automatic "All". Single value. |
+| Switch between panels of content | [`Tabs`](/docs/navigation/tabs/) | Roving focus. Content changes, not a form value. |
+| A yes or no that is submitted with the form | [`Checkbox`](/docs/inputs/checkbox/) | Also indeterminate. |
+| A setting that applies as soon as it flips | [`Switch`](/docs/inputs/switch/) | `role="switch"`. Use `SettingItem` for a labeled row. |
+
+## Feedback
+
+| If you need | Use | Why / the rule |
+|---|---|---|
+| A short message after an action, gone in seconds | [`toast`](/docs/feedback/toast/) | Mount `Toaster` once, call `toast.success()` and friends from anywhere. |
+| A message that stays in the page (validation, a warning) | [`Alert`](/docs/display/alert/) | `severity`, optional `title` and `closable`. |
+| A decision the user must make | [`AlertDialog`](/docs/feedback/alert-dialog/) | See Overlay. |
+| A change a screen reader should hear with no visual element | `announce()` | From `@codeatlasdev/ui`. Do not build your own live region. |
+| A list of past events with an unread count | [`NotificationBell`](/docs/display/notification-bell/) | Bell with a badge that opens a notification center. |
+| Known progress, or work of unknown length in a bar | [`Progress`](/docs/feedback/progress/) | `value` and `max`, or `indeterminate`. Needs `label`. |
+| Placeholder for content that is loading | [`Skeleton`](/docs/feedback/skeleton/) | Match the shape of the real content. |
+| A busy button, section or overlay | [`Spinner`](/docs/feedback/spinner/) | Inline indicator. |
+| A route or section that must not flash a loader | [`LoadingBoundary`](/docs/navigation/loading-boundary/) | Delays the loader, adds a top bar and pending links for SvelteKit navigations. |
+
+## Brazilian and formatted inputs
+
+| If you need | Use | Why / the rule |
+|---|---|---|
+| Free text | [`TextField`](/docs/inputs/text-field/) | Label, helper, error, leading and trailing slots. |
+| CPF, CNPJ, dates or any pattern | [`MaskedField`](/docs/inputs/masked-field/) | From `@codeatlasdev/ui/forms`. Live formatting. |
+| Currency | [`MoneyInput`](/docs/inputs/money-input/) | From `@codeatlasdev/ui/forms`. The bound value is an integer in minor units (cents). BRL by default. |
+| A phone number | [`PhoneField`](/docs/inputs/masked-field/) | From `@codeatlasdev/ui/forms`. Binds E.164 while showing the mask. |
+| A postal code with address lookup | [`CepField`](/docs/inputs/masked-field/) | From `@codeatlasdev/ui/forms`. Calls the `onlookup` you pass; the package makes no requests. |
+| A date, a date range or a time | [`DatePicker`, `DateField`, `TimeField`](/docs/inputs/date-picker/) | Main import. Keyboard operable. |
+
+```svelte
+<script lang="ts">
+  import { TextField } from "@codeatlasdev/ui";
+  import { MoneyInput, PhoneField } from "@codeatlasdev/ui/forms";
+
+  let name = $state("");
+  let price = $state(0); // integer, minor unit
+  let phone = $state(""); // E.164, empty while incomplete
+</script>
+
+<TextField label="Name" bind:value={name} />
+<MoneyInput label="Price" bind:value={price} />
+<PhoneField label="Phone" bind:value={phone} />
+```
+
+## Setup path
+
+| If your app is | Do this | Why / the rule |
+|---|---|---|
+| SvelteKit 2 (`^2.12`) | [SvelteKit](/docs/getting-started/installation/#sveltekit), then `bunx @codeatlasdev/ui init --write` | `init` reads the Kit major and writes the right theme import. |
+| SvelteKit 3 | [SvelteKit 3](/docs/getting-started/installation/#sveltekit-3) | Config goes into `sveltekit({ ... })`, `$lib` becomes `#lib/*`. `init` prints a `note` for what it will not rewrite. |
+| Astro | [Astro](/docs/getting-started/installation/#astro) | Svelte components are islands: add a `client:*` directive. |
+| Plain Vite and Svelte | [Plain Vite](/docs/getting-started/installation/#plain-vite) | `init` does not support it: wire the CSS and the theme by hand. |
+| Not sure what is wired | `bunx @codeatlasdev/ui init` | A dry run. It prints `would create` lines and diffs and writes nothing until `--write`. |

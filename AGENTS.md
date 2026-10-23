@@ -1,5 +1,7 @@
 # AGENTS.md: Guide for AI Agents
 
+If you are building an app that uses `@codeatlasdev/ui` (not working on this repository), skip to "Critical rules" and the component sections; "Issue workflow" and "Tests" are for contributors. Recipes: https://ui.codeatlas.com.br/docs/getting-started/recipes/ . Choosing between components: https://ui.codeatlas.com.br/docs/getting-started/choosing/ . Common workarounds: https://ui.codeatlas.com.br/docs/getting-started/workarounds/
+
 This document covers everything an AI agent needs to know to work in this repository.
 
 ---
@@ -132,7 +134,7 @@ Reading failures: locators fail with an ARIA snapshot; traces are in `__traces__
 
 9. **No inline CSS**: never `style="padding: 20px"` or `style="max-width: 480px"`. Use CSS classes with tokens (`var(--ca-space-5)`). The only exception is dynamic CSS custom properties: `style="--bar-w:{pct}%"`.
 
-10. **No `Stack`/`Row` for field layout inside `FormSection`**: `FormSection` already has `layout="grid"` (default), `layout="list"` and `layout="stack"`. Do not wrap fields in `Stack gap={N}` as a layout workaround.
+10. **No `Stack`/`Flex` for field layout inside `FormSection`**: `FormSection` already has `layout="grid"` (default), `layout="list"` and `layout="stack"`. Do not wrap fields in `Stack gap="4"` as a layout workaround.
 
 11. **`ca-*` classes are a public contract**: consuming apps use the BEM classes (`.ca-btn`, `.ca-dialog__body`, …) as CSS targets. Renaming or removing a `ca-*` class listed in [`docs/css-api.md`](docs/css-api.md) is a **breaking change**. When you create or rename a component, update that file.
 
@@ -383,11 +385,13 @@ Behavior: fixed side nav on the left. The right content scrolls.
     <KpiCard title="Users"   value="24.8k" trend={12.1} icon={Users}      />
   </KpiGrid>
 
-  <GlassCard title="Revenue vs Expenses">
+  <Card title="Revenue vs Expenses">
     <LineChart series={[...]} categories={months} area height="260px" />
-  </GlassCard>
+  </Card>
 </PageShell>
 ```
+
+Units: `PageShell` `gap` is a number of pixels, and `KpiGrid` `gap` is a number of pixels or a CSS length. `Flex`, `Stack` and `Grid` take a spacing step instead (`gap="4"` is `--ca-space-4`, 16px) and `Grid` takes `columns`, not `cols`.
 
 ---
 
@@ -399,7 +403,7 @@ Behavior: fixed side nav on the left. The right content scrolls.
 | `"list"` | `Switch`, `SettingItem`, `Divider` | Single column, no gap between items |
 | `"stack"` | Composite blocks (Avatar + fields, groups) | Single column, `gap: 16px` |
 
-**Never** wrap fields in `<Stack gap={N}>` inside `FormSection`. Let `layout` do the work.
+**Never** wrap fields in `<Stack gap="4">` inside `FormSection`. Let `layout` do the work.
 
 ---
 
@@ -420,12 +424,14 @@ Behavior: fixed side nav on the left. The right content scrolls.
 |---|---|
 | `FormSection` | Form section: title, description, grid/list/stack of fields |
 | `SettingItem` | Settings row: label + description + control (Switch, Button) |
-| `GlassCard` | Generic glass container |
+| `Card` | Titled container: `title`, `headingLevel`, `padding`, `flush`, `full`, `skeleton`, `href`, `headerActions` |
+| `Surface` | Painted container: `elevation`, `material`, `tone`, `variant`, `radius`, `interactive`, `glow`, `p`/`px`/`py` |
 | `KpiCard` | Metric card: value, trend, icon |
 | `KpiGrid` | Row of KpiCards that never ends on an empty cell (counts the children; never use `Grid` auto-fill for KPIs) |
-| `Grid` | CSS grid with configurable `cols` and `gap` |
-| `Row` | Flex row with `gap`, `align`, `justify` |
-| `Stack` | Flex column with `gap` |
+| `Grid` | CSS grid with equal tracks: `columns` (1-12 or `{ base: 1, md: 3 }`), `gap` (spacing step). For `2fr 1fr` write `grid-template-columns` in a class |
+| `Flex` | Flex container with `gap` (spacing step), `align`, `justify`, `direction`, `wrap` |
+| `Stack` | Flex column with `gap` (spacing step) |
+| `Box`, `Container`, `Section` | Padding box, width-capped centered column, page band |
 | `EmptyState` | Empty state with icon, title, action |
 
 ### AppShell (app shell)
@@ -440,9 +446,11 @@ Behavior: fixed side nav on the left. The right content scrolls.
 ### Glass surfaces
 | Component | Use |
 |---|---|
-| `GlassSurface` | Generic glass container with configurable material and thickness |
-| `GlassCard` | Glass card with default padding, optional title, `flush`, `full` |
+| `Surface` | Generic container with configurable `material` (`auto`, `solid`, `frosted`, `glass`, `liquid`) and `elevation` |
+| `Card` | Surface with default padding, optional title, `flush`, `full` |
 | `LiquidGlass` | Liquid Glass effect with background distortion |
+
+`GlassCard`, `GlassSurface` and `Row` are deprecated: use `Card`, `Surface` and `Flex` (`bunx @codeatlasdev/ui migrate --write`).
 
 ### DataTable (TanStack Table v9)
 ```ts
@@ -741,10 +749,20 @@ setLocale("es");
 ## AppShell: usage pattern
 
 ```svelte
+<script>
+  import { AppShellLayout, NotificationBell, Avatar } from '@codeatlasdev/ui';
+  import { page } from '$app/state';
+  import { goto } from '$app/navigation';
+  import { MODULES } from '$lib/nav'; // Kit 3: '#lib/nav.ts'
+
+  let { children } = $props();
+  let notifications = $state([]);
+</script>
+
 <!-- In any authenticated app layout -->
 <AppShellLayout
   modules={MODULES}
-  pathname={$page.url.pathname}
+  pathname={page.url.pathname}
   persistPanel={false}
   onNavigate={(path) => goto(path)}
 >

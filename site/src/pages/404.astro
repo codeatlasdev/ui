@@ -1,0 +1,11 @@
+---
+import { ErrorPage } from "@codeatlasdev/ui";
+import Base from "~/layouts/Base.astro";
+---
+<Base
+	title="Page not found"
+	description="This page does not exist. The documentation index for people and agents is /llms.txt."
+	noindex
+>
+	<ErrorPage status={404} message="This page does not exist. Start from the docs index or /llms.txt." client:load />
+</Base>

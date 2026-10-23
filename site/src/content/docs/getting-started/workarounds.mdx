@@ -1,0 +1,56 @@
+---
+title: Common workarounds
+description: What agents rebuild by hand, and the component or rule that already replaces it.
+group: Getting started
+order: 4
+---
+import { Callout } from "@codeatlasdev/ui";
+
+If you are about to write CSS, a `setTimeout`, a wrapper `div`, a local copy of a component or a `// ca-ui-workaround`, check this table first. Every row below exists on `main` and has an open workaround in a real app behind it.
+
+Imports are from `@codeatlasdev/ui` unless the last column names a subpath.
+
+| You are about to write | Use this instead | Where |
+|---|---|---|
+| A hand-written `<a target="_blank" rel="noopener">` | `ExternalLink`: sets `rel`, shows the icon, adds a localized "opens in a new tab" | [ExternalLink](/docs/display/external-link/) |
+| A CSV or JSON download built with `Blob` and an anchor | `ExportMenu` for a button, or `toCsv`, `toJson` and `downloadFile` for your own trigger | [ExportMenu](/docs/inputs/export-menu/) |
+| `confirm()` or a hand-made confirm dialog | `AlertDialog`: `onconfirm` may be async, plus `destructive` and `pending` | [AlertDialog](/docs/feedback/alert-dialog/) |
+| Appending streamed rows (SSE, WebSocket, a bulk job) to an array and rendering them | `LiveList`: batched announcements, follow-the-tail that pauses on scroll, never moves focus | [LiveList](/docs/display/live-list/) |
+| `setTimeout(() => input.focus())` for a field in a new view | `primeKeyboard()` in the tap handler, then `use:autofocus` on the field | [Mobile](/docs/getting-started/mobile/#opening-the-keyboard-on-ios), `@codeatlasdev/ui/actions` |
+| `Stack gap="4"` around fields inside a form | `FormSection layout="grid"`, `"list"` or `"stack"` | [AppForm](/docs/layout/form-page/) |
+| A local brand strip on auth pages | `AuthLayout`: `logoMark`, `logoName` and `mobileBrand` | [AuthLayout](/docs/layout/auth-layout/) |
+| A `position: fixed` full-screen mobile view | `MobilePane` | [MobilePane](/docs/layout/mobile-pane/) |
+| A sticky save bar | `StickyActions`, or the `footer` snippet of `AppForm` | [StickyActions](/docs/layout/sticky-actions/) |
+| A custom "nothing here" paragraph | `EmptyState`, or the `empty` snippet of `AppList` | [EmptyState](/docs/layout/empty-state/) |
+| A hand-made loading flash or a spinner that blinks on fast loads | `LoadingBoundary` for a route or section, `Skeleton` for content shape | [LoadingBoundary](/docs/navigation/loading-boundary/) |
+| Your own copy-to-clipboard button | `CopyButton`: swaps to a check, announces the result | [CopyButton](/docs/inputs/copy-button/) |
+| Your own toast stack or `aria-live` region | `toast.success()` with one `Toaster`, or `announce()` for speech only | [Toast](/docs/feedback/toast/) |
+| `100vh` or `100dvh` | `height: var(--ca-vh)` | [Mobile](/docs/getting-started/mobile/#safe-areas-and-viewport-height) |
+| A `min-height: 44px` touch override | Nothing: controls grow to 44px under `(pointer: coarse)` | [Mobile](/docs/getting-started/mobile/#native-feel) |
+| `padding-bottom: env(safe-area-inset-bottom)` on fixed UI | `var(--ca-safe-bottom)` and the other `--ca-safe-*` tokens | [Mobile](/docs/getting-started/mobile/#safe-areas-and-viewport-height) |
+| A keyboard-padding hack for a form or composer | `use:keyboardAware` | [Mobile](/docs/getting-started/mobile/#the-on-screen-keyboard), `@codeatlasdev/ui/actions` |
+| Local dark mode state, a class toggle on `<html>` | `ThemeToggle` and the `colorScheme` store | [ThemeToggle](/docs/inputs/theme-toggle/), [Theming](/docs/getting-started/theming/) |
+| A wrapper that forces a dark or light island | `data-theme-scope="dark"` or `"light"` on the element | [Theming](/docs/getting-started/theming/) |
+| Inline `padding`, `margin` or `gap` in pixels | `Flex`, `Stack`, `Grid` and `Box` props (`gap="4"`), or `var(--ca-space-N)` in a class | [Layout primitives](/docs/layout/layout-primitives/) |
+| A raw hex, `rgb()` or `oklch()` color | A `--ca-*` token | [Theming](/docs/getting-started/theming/) |
+| Table rows rebuilt as cards on a phone | `SimpleTable responsive="cards"`; add `data-label` on a `td` only to change its caption | [SimpleTable](/docs/display/table/) |
+| A toolbar `div` with `flex: 1` spacers | `Flex`, the `toolbar` snippet of `AppList`, or the `ca-toolbar-spacer` class | [AppList](/docs/layout/list-page/) |
+| Visually hidden text with `display: none` or `clip` rules | The `ca-sr-only` class | [Accessibility](/docs/getting-started/accessibility/) |
+| `useState`, `useEffect`, `useMemo` ported line by line | `$state`, `$derived`, `$effect` | [Migrate from React](/docs/getting-started/migrate-react/#react-to-svelte-5-runes) |
+| `GlassCard`, `GlassSurface`, `Row`, `Grid cols=`, `gap={16}` | `Card`, `Surface`, `Flex`, `Grid columns=`, `gap="4"`. Run `bunx @codeatlasdev/ui migrate --write` | [Choosing a component](/docs/getting-started/choosing/#container) |
+
+<Callout type="note" title="Spacing units differ">
+
+`Flex`, `Stack`, `Grid` and `Box` take spacing steps as strings (`gap="4"`). `PageShell gap` is a number in px and `KpiGrid gap` takes a number or a string. Check the page of the component, or `get_component`, before you carry a value from one to another.
+
+</Callout>
+
+## Still stuck
+
+If nothing above fits, it may be a real gap in the library.
+
+1. Look the prop or component up: `get_component` for a name, `search_demos` for a task. A demo often shows the combination you need.
+2. If it is not there, write the smallest workaround and mark it with the issue number: `// ca-ui-workaround(#<issue>): <why>`. In markup use `<!-- ca-ui-workaround(#<issue>): <why> -->`.
+3. Call `report_issue` to draft the sanitized issue, and open it.
+
+Details and what never goes into a report: [Reporting problems](/docs/getting-started/reporting/).

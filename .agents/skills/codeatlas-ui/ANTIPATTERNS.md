@@ -11,7 +11,22 @@ Explicit don'ts. Each one has a correct alternative.
 <div style="display: flex; gap: 12px; align-items: center;">
 
 <!-- ✓ -->
-<Row gap={12} align="center">
+<Flex gap="3" align="center">
+```
+
+```svelte
+<!-- ✗ Removed props: pixel gap, `cols`, CSS values for align/justify -->
+<Stack gap={16}>
+<Grid cols={3} gap={16}>
+<Flex justify="space-between">
+
+<!-- ✓ Gap is a spacing step, Grid takes `columns`, align/justify are keywords -->
+<Stack gap="4">
+<Grid columns={3} gap="4">
+<Flex justify="between">
+
+<!-- `Row`, `GlassCard` and `GlassSurface` are deprecated: use `Flex`, `Card` and `Surface`.
+     bunx @codeatlasdev/ui migrate --write converts them. -->
 ```
 
 ```svelte
@@ -44,14 +59,14 @@ background: color-mix(in oklab, var(--ca-brand-main) 15%, var(--ca-glass-tint));
 
 ---
 
-## GlassCard
+## Card
 
 ```svelte
 <!-- ✗ Manual padding override -->
-<GlassCard style="padding: 0;">
+<Card style="padding: 0;">
 
 <!-- ✓ -->
-<GlassCard flush>
+<Card flush>
 
 <!-- ✗ will-change + backdrop-filter: kills glass blur -->
 <div style="will-change: transform; backdrop-filter: blur(12px);">
@@ -102,7 +117,7 @@ import { Button } from '@codeatlasdev/ui';
 ```svelte
 <!-- ✗ Stacking form fields manually inside FormSection -->
 <FormSection title="Account">
-  <Stack gap={16}>
+  <Stack gap="4">
     <TextField label="Name" />
     <TextField label="Email" />
   </Stack>
@@ -120,7 +135,7 @@ import { Button } from '@codeatlasdev/ui';
 <div class="flex items-center gap-3 mt-4 px-[17px]">
 
 <!-- ✓ Layout primitives + token gap values -->
-<Row gap={12} align="center">
+<Flex gap="3" align="center">
 ```
 
 ```svelte

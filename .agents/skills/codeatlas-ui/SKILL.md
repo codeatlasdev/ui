@@ -7,6 +7,14 @@ alwaysApply: false
 
 # @codeatlasdev/ui
 
+## Start here
+
+1. The installed `@codeatlasdev/ui` outranks this skill: check `node_modules/@codeatlasdev/ui/package.json` and trust what that package answers (details in "Look up the real API" below).
+2. Building a screen? Copy a complete recipe: https://ui.codeatlas.com.br/docs/getting-started/recipes/
+3. Unsure which component fits (overlay, table, container, select, page layout)? https://ui.codeatlas.com.br/docs/getting-started/choosing/
+4. About to hand-roll something (focus, `confirm()`, `target="_blank"`, CSV export)? Check https://ui.codeatlas.com.br/docs/getting-started/workarounds/ first.
+5. Call `get_component` (MCP) before writing any prop. Never guess one.
+
 Svelte 5 UI framework. Components are self-contained and prop-driven. Compose them like Lego, don't fight them with CSS.
 
 ## When to use
@@ -17,7 +25,7 @@ Svelte 5 UI framework. Components are self-contained and prop-driven. Compose th
 
 ## Non-negotiable rules
 
-1. **Never write layout CSS.** Use `Grid`, `Row`, `Stack` with gap/cols props.
+1. **Never write layout CSS.** Use `Flex`, `Stack`, `Grid` with token props: `gap="4"` is a spacing step (not pixels) and `Grid` takes `columns`, never `cols`. See [LAYOUT.md](./LAYOUT.md).
 2. **Never use arbitrary colors.** Use `--ca-*` semantic tokens or component variants.
 3. **Never add `padding:` or `margin:` inline.** Use component props or `--ca-space-N` tokens.
 4. **Never put AppShellLayout in a shared layout.** Only in authenticated route layouts (e.g. `painel/+layout.svelte`).
@@ -155,7 +163,7 @@ Call `get_guide("migrate-react")` before touching a React codebase and follow it
 
 ## Companion files
 
-- [LAYOUT.md](./LAYOUT.md): Grid, Row, Stack, all props and composition patterns
+- [LAYOUT.md](./LAYOUT.md): Flex, Stack, Grid, Box, Container, Section: token props (steps, not pixels), all props and composition patterns
 - [PAGE-TEMPLATES.md](./PAGE-TEMPLATES.md): AppList, AppForm, AppSettings, PageShell
 - [APPSHELL.md](./APPSHELL.md): navigation shell setup
 - [COMPONENTS.md](./COMPONENTS.md): Button, inputs, display, overlays, curated usage examples
