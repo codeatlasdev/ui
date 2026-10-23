@@ -47,7 +47,7 @@
 </div>
 
 <style>
-  .kb-demo { display: flex; height: 28rem; }
+  .kb-demo { display: flex; width: 100%; min-width: 0; max-width: 100%; height: 28rem; }
   .kb-demo__name { display: block; font-size: var(--ca-font-size-body2); color: var(--ca-text-primary); }
   .kb-demo__company { font-size: var(--ca-font-size-caption); color: var(--ca-text-secondary); }
 </style>
