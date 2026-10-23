@@ -14,8 +14,8 @@
 		railLabels?: boolean;
 		bottomNavPrimary?: number;
 		withOverflow?: boolean;
-		/** Opt in to the More sheet (default true; false = every module stays on the bar). */
-		sheet?: boolean;
+		/** "default": no prop passed (built-in More dialog); "sheet": the opt-in Sheet (NavMoreSheet). */
+		sheet?: "default" | "sheet";
 		withTop?: boolean;
 	}
 
@@ -27,7 +27,7 @@
 		railLabels = false,
 		bottomNavPrimary,
 		withOverflow = false,
-		sheet = true,
+		sheet = "sheet",
 		withTop = false,
 	}: Props = $props();
 
@@ -103,7 +103,7 @@
 	{onNavigate}
 	{railLabels}
 	{bottomNavPrimary}
-	moreSheet={sheet ? NavMoreSheet : undefined}
+	moreSheet={sheet === "sheet" ? NavMoreSheet : undefined}
 	filterModules={(m) => !hidden.includes(m.id)}
 	persistPanel={false}
 >

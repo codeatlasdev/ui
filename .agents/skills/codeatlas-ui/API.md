@@ -157,8 +157,8 @@ Classes: `ca-app-settings` `ca-app-settings__actions` `ca-app-settings__body` `c
 | `reorder?` | `NavExtras['reorder']` |  | Enables `onReorder` on sections and modules: pass the exported `NavReorder` component. Opt-in so the drag engine is only bundled by apps that reorder. |
 | `itemMenu?` | `NavExtras['itemMenu']` |  | Renders `NavItem.actions` as a "…" menu: pass the exported `NavItemMenu` component. Opt-in so DropdownMenu is only bundled by apps that use per-item menus. |
 | `railLabels?` | `boolean` | `false` | Shows each module's label as a caption under its rail icon. |
-| `bottomNavPrimary?` | `number` |  | Most tabs on the mobile bottom navigation. With `moreSheet` and more modules the first `bottomNavPrimary - 1` stay and the last tab is "More", a sheet with the rest. Default 5. |
-| `moreSheet?` | `Component<NavMoreSheetProps>` |  | Pass the exported `NavMoreSheet` to enable the "More" tab. Opt-in so the sheet is only bundled by apps with more modules than `bottomNavPrimary`; without it the bar shows the first `bottomNavPrimary` modules. |
+| `bottomNavPrimary?` | `number` |  | Most tabs on the mobile bottom navigation. With more modules the first `bottomNavPrimary - 1` stay and the last tab is "More", a dialog with the rest. Default 5. |
+| `moreSheet?` | `Component<NavMoreSheetProps>` |  | Replaces the built-in "More" dialog with another component: pass the exported `NavMoreSheet` for a full `Sheet` (swipe to dismiss, exit animation). Opt-in because `Sheet` adds about 10 kB gzip to the shell; the built-in dialog is a plain native `<dialog>` and costs about 1 kB. |
 | `mainId?` | `string \| null` | `'main'` | `id` given to the content region, the target of the skip link. By default the region is the page's `<main id tabindex="-1">` landmark. Pass `null` when your own `<main id="main" tabindex="-1">` is the target: the region then renders as a plain `div` so the page never gets two landmarks. |
 | `skipLink?` | `boolean` | `true` | Render the "Skip to content" link. Turn it off when the shell is embedded in a page that already has one (a framed demo, a preview), so the page does not get two. |
 
@@ -284,8 +284,8 @@ Classes: `ca-badge` `ca-badge--brand` `ca-badge--dot` `ca-badge--error` `ca-badg
 | `modules` | `NavModule[]` |  |  |
 | `activeIndex` | `number` |  |  |
 | `onSelect` | `(index: number) => void` |  |  |
-| `primary?` | `number` | `5` | Most tabs on the bar. With `moreSheet` and more modules than this, the first `primary - 1` stay and the last tab is "More", a sheet with the rest. Default 5 (4 modules + More once there are 6 or more). |
-| `moreSheet?` | `Component<NavMoreSheetProps>` |  | The exported `NavMoreSheet`. Opt-in so the sheet is only bundled by apps with more modules than `primary`; without it the bar shows the first `primary` modules and no "More" tab. |
+| `primary?` | `number` | `5` | Most tabs on the bar. With more modules than this, the first `primary - 1` stay and the last tab is "More", a sheet with the rest. Default 5 (4 modules + More once there are 6 or more). |
+| `moreSheet?` | `Component<NavMoreSheetProps>` |  | Swap the built-in "More" dialog for another component, e.g. the exported `NavMoreSheet` (a full `Sheet` with swipe-to-dismiss and an exit animation). Opt-in because `Sheet` adds about 10 kB gzip to the shell; the built-in dialog needs nothing the shell does not bundle. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `overflow`

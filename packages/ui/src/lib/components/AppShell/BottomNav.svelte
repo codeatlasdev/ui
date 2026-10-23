@@ -5,6 +5,7 @@
   import { appShell } from '../../i18n/groups/appShell.js';
   import NavModuleBadge from './NavModuleBadge.svelte';
   import type { Component } from 'svelte';
+  import { X } from '@lucide/svelte';
   import type { NavModule, NavMoreSheetProps } from './types.js';
   import { hasModuleBadge, moduleName } from './types.js';
   const t = useMessages(appShell);
@@ -14,13 +15,14 @@
     activeIndex: number;
     onSelect: (index: number) => void;
     /**
-     * Most tabs on the bar. With `moreSheet` and more modules than this, the first `primary - 1` stay and the last
+     * Most tabs on the bar. With more modules than this, the first `primary - 1` stay and the last
      * tab is "More", a sheet with the rest. Default 5 (4 modules + More once there are 6 or more).
      */
     primary?: number;
     /**
-     * The exported `NavMoreSheet`. Opt-in so the sheet is only bundled by apps with more modules
-     * than `primary`; without it the bar shows the first `primary` modules and no "More" tab.
+     * Swap the built-in "More" dialog for another component, e.g. the exported `NavMoreSheet`
+     * (a full `Sheet` with swipe-to-dismiss and an exit animation). Opt-in because `Sheet` adds
+     * about 10 kB gzip to the shell; the built-in dialog needs nothing the shell does not bundle.
      */
     moreSheet?: Component<NavMoreSheetProps>;
     /** Extra content in the "More" sheet under the modules (search, account, sign out). */
@@ -31,9 +33,8 @@
   let { modules, activeIndex, onSelect, primary = 5, moreSheet, overflow, class: className = '' }: Props = $props();
 
   let cap = $derived(Math.max(2, Math.floor(primary)));
-  let overflowing = $derived(!!moreSheet && modules.length > cap);
-  // Without `moreSheet` the bar holds `primary` modules and drops the rest, as it always did.
-  let visibleCount = $derived(overflowing ? cap - 1 : Math.min(modules.length, cap));
+  let overflowing = $derived(modules.length > cap);
+  let visibleCount = $derived(overflowing ? cap - 1 : modules.length);
   let visible = $derived(modules.slice(0, visibleCount));
   let rest = $derived(modules.slice(visibleCount));
   // The More tab is current when the active module lives in the sheet.
@@ -41,7 +42,20 @@
   let moreBadge = $derived(rest.some((m) => hasModuleBadge(m)));
 
   let moreOpen = $state(false);
+  const uid = $props.id();
+  const moreTitleId = `${uid}-more`;
   const name = (mod: NavModule) => moduleName(mod, { unread: t().appShell.unread, fresh: t().appShell.new });
+
+  /** showModal() on mount; the opener gets focus back when the dialog closes. */
+  function modal(dialog: HTMLElement) {
+    if (!(dialog instanceof HTMLDialogElement)) return;
+    const opener = document.activeElement as HTMLElement | null;
+    dialog.showModal();
+    return () => {
+      dialog.close();
+      opener?.focus();
+    };
+  }
 
   function pick(i: number) {
     moreOpen = false;
@@ -96,6 +110,49 @@
     {overflow}
     onPick={pick}
   />
+{:else if overflowing && moreOpen}
+  <!-- Built-in "More": a plain native modal <dialog>. The browser supplies the top layer, the inert
+       page, the focus trap, Escape (`close`) and focus restore; a click on the backdrop lands on the
+       dialog itself. No exit animation, no swipe, and none of the layer engine in the shell's
+       bundle: that is what NavMoreSheet adds. -->
+  <dialog
+    class="ca-bottom-nav__dialog"
+    aria-labelledby={moreTitleId}
+    {@attach modal}
+    onclose={() => (moreOpen = false)}
+    onclick={(e) => { if (e.target === e.currentTarget) moreOpen = false; }}
+  >
+    <div class="ca-bottom-nav__dialog-head">
+      <h2 id={moreTitleId} class="ca-bottom-nav__dialog-title">{t().appShell.more}</h2>
+      <button type="button" class="ca-bottom-nav__dialog-close" aria-label={t().appShell.closeMore} onclick={() => (moreOpen = false)}>
+        <X size={18} aria-hidden="true" />
+      </button>
+    </div>
+    <ul class="ca-bottom-nav__more" role="list">
+      {#each rest as mod, j}
+        {@const i = visibleCount + j}
+        <li>
+          <button
+            class="ca-bottom-nav__more-btn"
+            class:ca-bottom-nav__more-btn--active={i === activeIndex}
+            type="button"
+            aria-label={name(mod)}
+            aria-current={i === activeIndex ? 'page' : undefined}
+            onclick={() => pick(i)}
+          >
+            <span class="ca-bottom-nav__more-icon">
+              <mod.icon size={22} stroke-width={i === activeIndex ? 2 : 1.5} />
+              <NavModuleBadge module={mod} />
+            </span>
+            <span class="ca-bottom-nav__more-label">{mod.label}</span>
+          </button>
+        </li>
+      {/each}
+    </ul>
+    {#if overflow}
+      <div class="ca-bottom-nav__more-extra">{@render overflow()}</div>
+    {/if}
+  </dialog>
 {/if}
 
 <style>

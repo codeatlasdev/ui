@@ -61,9 +61,9 @@ The rail magnifies the module icon under the pointer, like a dock. Only the glyp
   { name: "filterModules", type: "(module: NavModule) => boolean", description: "Hides modules the user may not see (role, plan, flag). Rail, panel, bottom navigation and the active-module logic all use the filtered list, so a hidden module never shifts the indexes. Return `true` to keep one." },
   { name: "railLabels", type: "boolean", default: "false", description: "Shows each module's label as a caption under its rail icon. The button's accessible name is the same with or without it." },
   { name: "railTop", type: "Snippet", description: "Control between the brand and the modules in the rail, such as a search or ⌘K trigger that opens a `CommandPalette`." },
-  { name: "bottomNavPrimary", type: "number", default: "5", description: "Most tabs on the mobile bottom navigation. With `moreSheet` and more modules, the first `bottomNavPrimary - 1` stay and the last tab is More, a sheet with the rest. The More tab is current when the active module is inside the sheet." },
-  { name: "moreSheet", type: "Component", description: "Pass the exported `NavMoreSheet` to enable the More tab. Opt-in so the sheet is only bundled by apps with more modules than `bottomNavPrimary`; without it the bar shows the first `bottomNavPrimary` modules." },
-  { name: "bottomNavOverflow", type: "Snippet", description: "Extra content in the More sheet under the modules: search, account, sign out. Needs `moreSheet`." },
+  { name: "bottomNavPrimary", type: "number", default: "5", description: "Most tabs on the mobile bottom navigation. With more modules, the first `bottomNavPrimary - 1` stay and the last tab is More, a dialog with the rest, so no module is ever unreachable. The More tab is current when the active module is inside it." },
+  { name: "moreSheet", type: "Component", description: "Replaces the built-in More dialog. Pass the exported `NavMoreSheet` for a full `Sheet` with swipe to dismiss and an exit animation. Opt-in because `Sheet` adds about 10 kB gzip to the shell; the built-in dialog costs about 1 kB." },
+  { name: "bottomNavOverflow", type: "Snippet", description: "Extra content in the More dialog under the modules: search, account, sign out." },
   { name: "header", type: "Snippet", description: "Desktop header rendered above the page content. Hidden below 900px." },
   { name: "brand", type: "Snippet", description: "Logo shown at the top of the rail and in the mobile header." },
   { name: "railBottom", type: "Snippet", description: "Items pinned to the bottom of the rail, such as an avatar or notifications." },
@@ -76,7 +76,7 @@ The rail magnifies the module icon under the pointer, like a dock. Only the glyp
 
 ## Rail labels, search slot, badges and More
 
-`railLabels` adds a caption under each rail icon. `railTop` is a slot above the modules for a search trigger: render a `Button` that opens your `CommandPalette` (see [CommandPalette](/docs/navigation/command-palette/)). Below 900px the bottom navigation holds up to `bottomNavPrimary` tabs (5 by default). Pass `moreSheet={NavMoreSheet}` (opt-in, like `reorder` and `itemMenu`, so the sheet stays out of bundles that do not need it) and, with more modules, it keeps `bottomNavPrimary - 1` and adds a More tab whose sheet lists the rest plus whatever `bottomNavOverflow` renders (an account row, sign out).
+`railLabels` adds a caption under each rail icon. `railTop` is a slot above the modules for a search trigger: render a `Button` that opens your `CommandPalette` (see [CommandPalette](/docs/navigation/command-palette/)). Below 900px the bottom navigation holds up to `bottomNavPrimary` tabs (5 by default). With more modules it keeps `bottomNavPrimary - 1` and adds a More tab that opens a dialog with the rest plus whatever `bottomNavOverflow` renders (an account row, sign out): no module is hidden. The built-in dialog is a native `<dialog>` (focus trap, Escape and focus restore come from the browser) and adds about 1 kB gzip. For swipe to dismiss and an exit animation pass `moreSheet={NavMoreSheet}`, which swaps in a full `Sheet` (opt-in like `reorder` and `itemMenu`, because `Sheet` adds about 10 kB gzip).
 
 A module can carry a marker on its rail icon and tab:
 

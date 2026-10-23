@@ -1,6 +1,6 @@
 <script lang="ts">
-  // Opt-in: pass `moreSheet={NavMoreSheet}` to AppShellLayout to get the "More" tab when there are more
-  // modules than `bottomNavPrimary`. Shells that do not import it keep Sheet out of their bundle.
+  // Opt-in: pass `moreSheet={NavMoreSheet}` to AppShellLayout to swap the built-in "More" dialog for a
+  // full Sheet (swipe to dismiss, exit animation). Shells that do not import it keep Sheet out of their bundle.
   import type { Snippet } from 'svelte';
   import Sheet from '../Sheet/Sheet.svelte';
   import { useMessages } from '../../i18n/state.svelte.js';

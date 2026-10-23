@@ -8,6 +8,8 @@ export const appShell = defineGroup("appShell", {
 		new: "New",
 		/** Name of the bottom-nav tab that opens the sheet with the modules that do not fit. */
 		more: "More",
+		/** Name of the close button of the built-in "More" dialog. */
+		closeMore: "Close",
 		openNavigation: "Open navigation",
 		closeNavigation: "Close navigation",
 		resizePanel: "Resize navigation panel",
@@ -22,6 +24,7 @@ export const appShell = defineGroup("appShell", {
 		unread: (count) => `${count} ${count === 1 ? "não lida" : "não lidas"}`,
 		new: "Novo",
 		more: "Mais",
+		closeMore: "Fechar",
 		openNavigation: "Abrir navegação",
 		closeNavigation: "Fechar navegação",
 		resizePanel: "Redimensionar painel de navegação",

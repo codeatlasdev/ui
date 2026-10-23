@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from "vitest";
-import { page } from "vitest/browser";
+import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { VIEWPORTS } from "../../../../tests/viewports";
@@ -86,13 +86,6 @@ describe("BottomNav overflow (#346)", () => {
 		await expect.element(page.getByRole("dialog", { name: "More" })).not.toBeInTheDocument();
 	});
 
-	it("without the opt-in sheet the bar keeps the 5-tab cap, no More", async () => {
-		await page.viewport(...VIEWPORTS.mobile);
-		await render(Harness, { count: 7, sheet: false });
-		expect(tabbar().getByRole("button").elements()).toHaveLength(5);
-		expect(page.getByRole("button", { name: "More" }).elements()).toHaveLength(0);
-	});
-
 	it("keeps the More tab current when the active module is in the sheet", async () => {
 		await page.viewport(...VIEWPORTS.mobile);
 		await render(Harness, { count: 7, pathname: "/alerts/rules" });
@@ -106,6 +99,59 @@ describe("BottomNav overflow (#346)", () => {
 		await render(Harness, { count: 7, bottomNavPrimary: 3 });
 		// 2 modules + More
 		expect(tabbar().getByRole("button").elements()).toHaveLength(3);
+	});
+});
+
+describe("BottomNav overflow is the default (#346)", () => {
+	it("7 modules at 390px are all reachable with no overflow props", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		const onNavigate = vi.fn();
+		const screen = await render(Harness, { count: 7, onNavigate, sheet: "default" });
+		const bar = tabbar().getByRole("button").elements();
+		expect(bar).toHaveLength(5);
+
+		await tabbar().getByRole("button", { name: "More" }).click();
+		const dialog = page.getByRole("dialog", { name: "More" });
+		await expect.element(dialog).toBeVisible();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+		// 7 modules: 4 on the bar, the other 3 in the dialog, so every one is reachable
+		for (const name of ["Alerts", "Search", "Home"]) {
+			await expect.element(dialog.getByRole("button", { name })).toBeVisible();
+		}
+		await dialog.getByRole("button", { name: "Home" }).click();
+		expect(onNavigate).toHaveBeenCalledExactlyOnceWith("/home/start");
+		await expect.element(page.getByRole("dialog", { name: "More" })).not.toBeInTheDocument();
+	});
+
+	it("Escape closes the More dialog and returns focus to the tab", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		await render(Harness, { count: 7, sheet: "default" });
+		const more = tabbar().getByRole("button", { name: "More" });
+		await more.click();
+		await expect.element(page.getByRole("dialog", { name: "More" })).toBeVisible();
+		await userEvent.keyboard("{Escape}");
+		await expect.element(page.getByRole("dialog", { name: "More" })).not.toBeInTheDocument();
+		await expect.element(more).toHaveFocus();
+	});
+
+	it("a click on the backdrop closes the More dialog", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		await render(Harness, { count: 7, sheet: "default" });
+		await tabbar().getByRole("button", { name: "More" }).click();
+		const dialog = document.querySelector("dialog.ca-bottom-nav__dialog") as HTMLDialogElement;
+		expect(dialog.open).toBe(true);
+		// the dialog is a bottom sheet: the top edge of the screen is the backdrop
+		dialog.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+		await expect.element(page.getByRole("dialog", { name: "More" })).not.toBeInTheDocument();
+	});
+
+	it("the extra content slot shows in the default dialog", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		await render(Harness, { count: 7, sheet: "default", withOverflow: true });
+		await tabbar().getByRole("button", { name: "More" }).click();
+		await expect
+			.element(page.getByRole("dialog", { name: "More" }).getByRole("button", { name: "Account" }))
+			.toBeVisible();
 	});
 });
 

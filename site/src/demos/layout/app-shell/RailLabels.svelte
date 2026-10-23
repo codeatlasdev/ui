@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { AppShellLayout, Button, NavMoreSheet, PageShell, Card, type NavModule } from '@codeatlasdev/ui';
+  import { AppShellLayout, Button, PageShell, Card, type NavModule } from '@codeatlasdev/ui';
   import { Bell, Inbox, Map as MapIcon, Search, Settings, Users, Home } from '@lucide/svelte';
 
   // Role filter: the same list for everyone, filtered on the way in.
@@ -44,7 +44,7 @@
 
 <!-- svelte-ignore a11y_no_static_element_interactions, a11y_click_events_have_key_events -->
 <div class="stage" onclick={intercept}>
-  <AppShellLayout {modules} filterModules={(m) => admin || m.id !== 'settings'} {pathname} onNavigate={(path) => (pathname = path)} railLabels moreSheet={NavMoreSheet} persistPanel={false} mainId={null} skipLink={false}>
+  <AppShellLayout {modules} filterModules={(m) => admin || m.id !== 'settings'} {pathname} onNavigate={(path) => (pathname = path)} railLabels persistPanel={false} mainId={null} skipLink={false}>
     {#snippet railTop()}
       <Button variant="ghost" size="sm" aria-label="Search, command K">
         {#snippet leading()}<Search size={16} />{/snippet}

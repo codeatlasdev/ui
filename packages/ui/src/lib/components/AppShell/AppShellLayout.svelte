@@ -67,16 +67,17 @@
     /** Shows each module's label as a caption under its rail icon. */
     railLabels?:    boolean;
     /**
-     * Most tabs on the mobile bottom navigation. With `moreSheet` and more modules the first
-     * `bottomNavPrimary - 1` stay and the last tab is "More", a sheet with the rest. Default 5.
+     * Most tabs on the mobile bottom navigation. With more modules the first `bottomNavPrimary - 1`
+     * stay and the last tab is "More", a dialog with the rest. Default 5.
      */
     bottomNavPrimary?: number;
     /**
-     * Pass the exported `NavMoreSheet` to enable the "More" tab. Opt-in so the sheet is only bundled
-     * by apps with more modules than `bottomNavPrimary`; without it the bar shows the first `bottomNavPrimary` modules.
+     * Replaces the built-in "More" dialog with another component: pass the exported `NavMoreSheet`
+     * for a full `Sheet` (swipe to dismiss, exit animation). Opt-in because `Sheet` adds about 10 kB
+     * gzip to the shell; the built-in dialog is a plain native `<dialog>` and costs about 1 kB.
      */
     moreSheet?: Component<NavMoreSheetProps>;
-    /** Extra content in the "More" sheet under the modules (search, account, sign out). Needs `moreSheet`. */
+    /** Extra content in the "More" dialog under the modules (search, account, sign out). */
     bottomNavOverflow?: Snippet;
     /**
      * Compact controls rendered at the trailing edge of the single mobile header
