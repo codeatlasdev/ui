@@ -57,6 +57,21 @@
      * Opt-in so DropdownMenu is only bundled by apps that use per-item menus.
      */
     itemMenu?:      NavExtras['itemMenu'];
+    /**
+     * A persistent background layer (map, canvas, video, 3D scene) rendered ONCE, full-bleed under
+     * the content and beside the Rail / above the BottomNav, so it keeps its state (camera, GPU
+     * context, selection) while the pages change. The snippet receives `{ hidden }`: pause rendering
+     * while it is true. The content region passes pointer events through to the stage; give a page's
+     * panels `class="ca-stage-panel"` (or `pointer-events: auto`) to keep them interactive. The shell
+     * paints nothing behind the content when a stage is set, so the stage shows.
+     */
+    stage?:         Snippet<[{ hidden: boolean }]>;
+    /**
+     * `false` hides the stage (`visibility: hidden`, `inert`) and tells it to pause, without
+     * unmounting it: for a full-page route that covers it. A page can also set
+     * `data-ca-stage="hidden"` on `<html>` (what `PageFrame mode="page"` does).
+     */
+    stageVisible?:  boolean;
     header?:        Snippet;
     /** Brand mark (logo) shown at the top of the Rail and in the mobile header. */
     brand?:         Snippet;
@@ -117,6 +132,8 @@
     collapseShortPanel = false,
     reorder,
     itemMenu,
+    stage,
+    stageVisible = true,
     header,
     brand,
     railBottom,
@@ -237,6 +254,23 @@
     if (persistPanel && id) writeShellState({ module: id });
   });
 
+  // What the shell chrome covers, for anything laid out over or behind the content (a map's padding,
+  // a floating panel): rail + panel on desktop; 0 below 900px, where the CSS takes over top/bottom.
+  let insetLeft = $derived(RAIL_WIDTH + panelW.current);
+
+  // A page outside the component (PageFrame mode="page") can hide the stage through <html>.
+  let htmlHidden = $state(false);
+  $effect(() => {
+    if (!stage) return;
+    const root = document.documentElement;
+    const read = () => (htmlHidden = root.getAttribute('data-ca-stage') === 'hidden');
+    read();
+    const mo = new MutationObserver(read);
+    mo.observe(root, { attributes: true, attributeFilter: ['data-ca-stage'] });
+    return () => mo.disconnect();
+  });
+  let stageHidden = $derived(!stageVisible || htmlHidden);
+
   setContext<NavExtras>('appshell-nav-extras', {
     get reorder()  { return reorder; },
     get itemMenu() { return itemMenu; },
@@ -259,7 +293,7 @@
 {#if skipLink}
   <SkipLink href="#{mainId ?? 'main'}" />
 {/if}
-<div class="ca-shell">
+<div class="ca-shell" class:ca-shell--stage={!!stage} style="--ca-shell-inset-left: {insetLeft}px">
   <!-- Desktop only sidebar -->
   <div class="ca-sidebar">
     <Rail
@@ -308,6 +342,14 @@
     <div class="ca-shell__mobile-header">
       <MobileHeader leading={brand} title={pageTitle} titleSlot={mobileTitle} trailing={mobileHeaderActions} />
     </div>
+    <div class="ca-shell__body">
+    {#if stage}
+      <!-- Rendered once: it sits outside the content block, so a route change never remounts it.
+           inert while hidden: no focus, no clicks, not in the a11y tree. -->
+      <div class="ca-shell__stage" class:ca-shell__stage--hidden={stageHidden} inert={stageHidden || undefined}>
+        {@render stage({ hidden: stageHidden })}
+      </div>
+    {/if}
     <!-- Page content. Default: the <main> landmark and skip target (focus is programmatic only).
          mainId={null}: a plain div, the page owns <main>. -->
     {#if mainId}
@@ -319,6 +361,7 @@
         {@render children?.()}
       </div>
     {/if}
+    </div>
   </div>
 
   <!-- Mobile bottom nav -->
@@ -339,6 +382,12 @@
 @layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
 @layer ca.components {
     .ca-shell {
+      /* The space the shell chrome takes on each side of the content region. Desktop: the rail and
+         panel (left, inline style: it follows the spring) and the optional header (top).
+         Below 900px: the mobile header (top) and the bottom nav + home-indicator inset (bottom). */
+      --ca-shell-inset-top: 0px;
+      --ca-shell-inset-right: 0px;
+      --ca-shell-inset-bottom: 0px;
       display: block;
       height: var(--ca-vh);
       overflow: hidden;
@@ -394,6 +443,37 @@
       display: none !important;
     }
 
+    /* Holds the stage and the content; takes the flex slot the content used to own. */
+    .ca-shell__body {
+      position: relative;
+      flex: 1;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* The stage fills the body (so it already stops at the rail, under the headers and above the
+       bottom nav: --ca-main-ml and the main padding are the insets). */
+    .ca-shell__stage {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .ca-shell__stage--hidden {
+      visibility: hidden;
+    }
+
+    /* With a stage the content floats over it: the region is click-through, panels opt back in. */
+    .ca-shell--stage .ca-shell__content {
+      position: relative;
+      z-index: 1;
+      pointer-events: none;
+    }
+    .ca-shell--stage :global(.ca-stage-panel) {
+      pointer-events: auto;
+    }
+
     .ca-shell__content {
       flex: 1;
       min-height: 0;
@@ -404,6 +484,12 @@
     }
 
     @media (max-width: 899.98px) {
+      .ca-shell {
+        --ca-shell-inset-left: 0px !important;
+        --ca-shell-inset-top: calc(var(--ca-space-12) + var(--ca-safe-top));
+        --ca-shell-inset-bottom: calc(var(--ca-bottom-nav-h) + var(--ca-safe-bottom));
+      }
+
       .ca-sidebar {
         display: none;
       }

@@ -19,7 +19,7 @@ import LongpressSrc from "~/demos/navigation/actions/Longpress.svelte?raw";
 
 ```svelte
 <script>
-  import { clickOutside, focusTrap, autofocus, clipboard, longpress, scrollFocusable, keyboardAware, primeKeyboard, focusTextField } from "@codeatlasdev/ui/actions";
+  import { clickOutside, focusTrap, autofocus, clipboard, longpress, scrollFocusable, keyboardAware, paintRoot, primeKeyboard, focusTextField } from "@codeatlasdev/ui/actions";
 </script>
 
 <div use:clickOutside={() => (open = false)}>...</div>
@@ -40,6 +40,7 @@ Actions attach behavior to a plain element with `use:`. They are exported from `
   { name: "clipboard", type: "Action<HTMLElement, string>", description: "Copies the text to the clipboard on click and, once the copy succeeded, dispatches a copy CustomEvent with the text as detail. Nothing is dispatched when the Clipboard API is unavailable, for example on a non-HTTPS page." },
   { name: "longpress", type: "Action<HTMLElement, number>", description: "Dispatches a longpress CustomEvent after the pointer is held for the given milliseconds (default 500). Releasing or leaving the element cancels it." },
   { name: "scrollFocusable", type: "Action<HTMLElement>", description: "Makes a scroll container keyboard-reachable only while it overflows: sets tabindex=\"0\" when the content is wider or taller than the box and removes it otherwise. SimpleTable and ScrollArea use it." },
+  { name: "paintRoot", type: "Action<HTMLElement>", description: "Paints the page's `<html>` background (overscroll area, mobile toolbar tint) with a nested preset's surface while the element is mounted. Put it on the `data-preset` / `data-theme-scope` island of a public screen; it replaces an `html:has([data-preset]) { background-color: <hex> }` rule with the color duplicated. It follows scheme changes and restores the page color on destroy." },
   { name: "keyboardAware", type: "Action<HTMLElement>", description: "Pads the element's bottom by --ca-kb-inset and scrolls the focused field into view when the on-screen keyboard opens. Use on composers and sticky action bars." },
   { name: "primeKeyboard", type: "() => void", description: "Helper, not an action. Call synchronously in the tap handler that opens a view with an autofocused field so iOS and Android open the on-screen keyboard. No-op with a fine pointer." },
   { name: "focusTextField", type: "(el: HTMLElement | null | undefined, force?: boolean) => boolean", description: "Helper used by autofocus. Focuses the element with a fine pointer, or on touch only after primeKeyboard(). Returns whether it focused." },

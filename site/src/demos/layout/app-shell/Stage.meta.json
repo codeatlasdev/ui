@@ -1,0 +1,13 @@
+{
+	"summary": "An app shell with a persistent stage behind the pages: mounted once, click-through content, hide and pause.",
+	"use": "Map, canvas, video or 3D products where the pages float over one live layer that must keep its state across routes.",
+	"spec": [
+		"`<AppShellLayout {modules} {pathname} onNavigate={(path) => (pathname = path)} {stage} {stageVisible} persistPanel={false} mainId={null} skipLink={false}>` with `stage` a snippet that draws the map",
+		"The map is a draggable grid whose camera lives in `$state`; an attachment counts each mount in `mounts`, shown in the page",
+		"One module `id: 'field'` with 3 items: Leads, Routes, Report",
+		"The page is `<PageShell title=\"Floating over the stage\" description={pathname}>` with a `ca-stage-panel` wrapper around a glass `Card` that holds the mount count hint and an outlined `Button` toggling `stageVisible`",
+		"Stage frame height is `height: 440px`"
+	],
+	"tags": ["app-shell", "stage", "map", "canvas", "persistent", "pointer-events", "inset"],
+	"shape": "wide"
+}

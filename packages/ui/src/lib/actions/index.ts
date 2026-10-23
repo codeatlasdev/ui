@@ -4,4 +4,5 @@ export { clipboard } from "./clipboard.js";
 export { focusTrap } from "./focus-trap.js";
 export { keyboardAware } from "./keyboard-aware.js";
 export { longpress } from "./longpress.js";
+export { paintRoot } from "./paint-root.js";
 export { scrollFocusable } from "./scroll-focusable.js";

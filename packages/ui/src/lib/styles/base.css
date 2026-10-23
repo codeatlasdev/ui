@@ -21,7 +21,8 @@ a, button, input, select, textarea, label, summary, [role="button"], [role="tab"
  * Plain by default: only the glass and frosted materials (the `liquid` recipe) draw the
  * brand mesh, because blur needs something colorful behind it to read. */
 html {
-  background-color: var(--ca-surface-base);
+  /* --ca-root-surface: set by the `paintRoot` action while a nested preset island is mounted. */
+  background-color: var(--ca-root-surface, var(--ca-surface-base));
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   --ca-page-mesh: none;

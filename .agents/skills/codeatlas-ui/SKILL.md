@@ -21,6 +21,7 @@ Svelte 5 UI framework. Components are self-contained and prop-driven. Compose th
 2. **Never use arbitrary colors.** Use `--ca-*` semantic tokens or component variants.
 3. **Never add `padding:` or `margin:` inline.** Use component props or `--ca-space-N` tokens.
 4. **Never put AppShellLayout in a shared layout.** Only in authenticated route layouts (e.g. `painel/+layout.svelte`).
+4b. **A live map/canvas behind every screen goes in `AppShellLayout`'s `stage` snippet**, never in a hand-built `position: absolute` layer: it mounts once, is click-through (panels use `class="ca-stage-panel"`), and reads `--ca-shell-inset-*`. Hide and pause it with `stageVisible` or `data-ca-stage="hidden"` on `<html>`.
 5. **CSS imports go once, in the root layout only.**
 6. **Import from `@codeatlasdev/ui`**, never from internal paths like `../../../components/Button`.
 7. **Never combine `will-change: transform` with `backdrop-filter`.** Kills glass blur.
@@ -123,6 +124,7 @@ Import from the subpath, never copy the logic. Every export:
 | `primeKeyboard` | helper, not an action: call in the tap handler that opens a view with an autofocused field |
 | `focusTextField` | `focusTextField(el, force?)`: the focus logic behind `autofocus`, for imperative focus |
 | `keyboardAware` | `use:keyboardAware` on forms and composers: keeps the focused field above the on-screen keyboard |
+| `paintRoot` | `use:paintRoot` on a `data-preset` / `data-theme-scope` island: paints `<html>` (overscroll, mobile toolbar) with the island's surface while mounted |
 | `focusTrap` | `use:focusTrap={open}` on custom overlays (Dialog and Sheet already trap focus) |
 | `clickOutside` | `use:clickOutside={() => close()}` for custom popovers |
 | `clipboard` | `use:clipboard={text}` copies on click and fires `copy` (prefer `CopyButton`) |

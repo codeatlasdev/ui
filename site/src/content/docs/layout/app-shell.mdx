@@ -18,6 +18,8 @@ import ItemExtras from "~/demos/layout/app-shell/ItemExtras.svelte";
 import ItemExtrasSrc from "~/demos/layout/app-shell/ItemExtras.svelte?raw";
 import RailLabels from "~/demos/layout/app-shell/RailLabels.svelte";
 import RailLabelsSrc from "~/demos/layout/app-shell/RailLabels.svelte?raw";
+import Stage from "~/demos/layout/app-shell/Stage.svelte";
+import StageSrc from "~/demos/layout/app-shell/Stage.svelte?raw";
 
 ```svelte
 <script lang="ts">
@@ -64,6 +66,8 @@ The rail magnifies the module icon under the pointer, like a dock. Only the glyp
   { name: "bottomNavPrimary", type: "number", default: "5", description: "Most tabs on the mobile bottom navigation. With more modules, the first `bottomNavPrimary - 1` stay and the last tab is More, a dialog with the rest, so no module is ever unreachable. The More tab is current when the active module is inside it." },
   { name: "moreSheet", type: "Component", description: "Replaces the built-in More dialog. Pass the exported `NavMoreSheet` for a full `Sheet` with swipe to dismiss and an exit animation. Opt-in because `Sheet` adds about 10 kB gzip to the shell; the built-in dialog costs about 1 kB." },
   { name: "bottomNavOverflow", type: "Snippet", description: "Extra content in the More dialog under the modules: search, account, sign out." },
+  { name: "stage", type: "Snippet<[{ hidden: boolean }]>", description: "A persistent background layer (map, canvas, video, 3D) rendered once, full-bleed under the content, beside the rail and above the bottom navigation. It survives route changes. The snippet gets `{ hidden }`: pause rendering while it is true. Content passes pointer events through; mark panels with `class=\"ca-stage-panel\"`." },
+  { name: "stageVisible", type: "boolean", default: "true", description: "`false` hides the stage (`visibility: hidden`, `inert`) and passes `hidden: true` to it, without unmounting: for a full-page route that covers it. A page outside the component can set `data-ca-stage=\"hidden\"` on `<html>` for the same effect." },
   { name: "header", type: "Snippet", description: "Desktop header rendered above the page content. Hidden below 900px." },
   { name: "brand", type: "Snippet", description: "Logo shown at the top of the rail and in the mobile header." },
   { name: "railBottom", type: "Snippet", description: "Items pinned to the bottom of the rail, such as an avatar or notifications." },
@@ -90,6 +94,42 @@ The marker itself is decorative; the count is never announced separately from th
 `filterModules` is for role-based navigation: keep one module list and filter it. Because the shell resolves the active module, the panel and the bottom navigation against the filtered list, hiding an earlier module cannot make the wrong rail icon active. When the URL belongs to a hidden module, the first visible module is selected.
 
 <Demo title="Labels, search slot, badges and More" description="railLabels, railTop, module badges, bottomNavOverflow and filterModules. Narrow the viewport below 900px to see the More sheet." src={RailLabelsSrc} stage><RailLabels client:visible /></Demo>
+
+## A stage behind the pages
+
+Map-first products keep one live map behind every screen: the camera, the WebGL context and the selection must survive navigation. Pass the layer as the `stage` snippet. The shell renders it once, outside the page content, so a route change never remounts it.
+
+```svelte
+<AppShellLayout {modules} {pathname} {onNavigate} {stage}>
+  {@render children()}
+</AppShellLayout>
+
+{#snippet stage({ hidden })}
+  <MapView paused={hidden} />
+{/snippet}
+```
+
+| Behavior | How |
+|---|---|
+| Placement | Full-bleed in the content region: right of the rail and panel, under the headers, above the bottom navigation and the home-indicator inset. No offsets to write. |
+| Pointer events | The content region is click-through. Empty areas reach the stage; give each panel `class="ca-stage-panel"` (or `pointer-events: auto`) to keep it interactive. |
+| Background | With a stage the shell paints nothing behind the content, so the stage shows. |
+| Hide and pause | `stageVisible={false}`, or `data-ca-stage="hidden"` on `<html>`. The stage turns `visibility: hidden` and `inert`, stays mounted and receives `{ hidden: true }`: stop rendering there. |
+| Insets | `--ca-shell-inset-top`, `-right`, `-bottom` and `-left` on the shell hold what the chrome covers (desktop: rail plus panel on the left; below 900px: the mobile header on top and the bottom navigation plus safe area at the bottom). Use them for a map's padding or a floating panel. |
+
+<Demo title="Stage" description="A draggable stand-in for a map. Navigate with the panel: the mount count stays at 1 and the camera stays where you left it." src={StageSrc} stage><Stage client:visible /></Demo>
+
+### Matching the page background to a nested preset
+
+`<html>` paints the page preset's surface, so a public screen wrapped in its own `data-preset` leaves the overscroll area and the mobile toolbar in the wrong color. Put the `paintRoot` action (`@codeatlasdev/ui/actions`) on that island: it copies the island's surface to `<html>` while it is mounted, follows scheme changes and restores the page color on destroy. It replaces an `html:has([data-preset]) { background-color: <hex> }` rule that duplicates the preset's color.
+
+```svelte
+<script lang="ts">
+  import { paintRoot } from "@codeatlasdev/ui/actions";
+</script>
+
+<div data-preset="ocean" use:paintRoot>…</div>
+```
 
 ## Panel width
 
