@@ -11,6 +11,8 @@ import Headings from "~/demos/foundation/typography/Headings.svelte";
 import HeadingsSrc from "~/demos/foundation/typography/Headings.svelte?raw";
 import Body from "~/demos/foundation/typography/Body.svelte";
 import BodySrc from "~/demos/foundation/typography/Body.svelte?raw";
+import Roles from "~/demos/foundation/typography/Roles.svelte";
+import RolesSrc from "~/demos/foundation/typography/Roles.svelte?raw";
 
 Type sizes are `rem` tokens multiplied by `--ca-font-scale`, so they follow the user's browser font size. `html` sets the kit's rem base, 15px at the default scale (`calc(0.9375rem * var(--ca-font-scale))`), independently of `--ca-font-size-body1`: body1 only sizes the text on `body`, so a denser body (`--ca-font-size-body1: 0.875rem`, 13.125px on that base; use `14px` for an exact size) does not rescale labels, inputs or buttons. Fonts are stacks: the defaults name Inter and JetBrains Mono but the kit does not load them, so load them yourself (for example with `@fontsource-variable`) or replace them in your theme. `--ca-font-display` defaults to `--ca-font-sans`.
 The fluid `--ca-font-size-display-hero` (`clamp(3.75rem, min(15vw, 21dvh), 13.5rem)`) is the size of a one-screen editorial headline. `--ca-font-mono` starts with `ui-monospace` (SF Mono, Menlo, Consolas) and does not name a font the kit does not load.
@@ -23,6 +25,48 @@ export const theme = defineTheme({
   fonts: { body: "Geist, system-ui, sans-serif", mono: "Geist Mono, monospace", display: "Fraunces, serif" },
 });
 ```
+
+## Type roles
+
+A screen needs the same few text roles everywhere. Each role is a bundle of size, leading, tracking and weight, so you pick one name instead of four loose properties: `title`, `heading`, `body`, `label`, `caption` and `num` (counts, times and prices, with tabular digits).
+
+| Role | Size | Leading | Tracking | Weight | Use |
+|---|---|---|---|---|---|
+| `title` | 24px (`--ca-font-size-h3`) | `1.2` | `--ca-heading-tracking` | `--ca-font-weight-heading` | Page and section titles. |
+| `heading` | 17px (`--ca-font-size-h5`) | `1.2` | `--ca-heading-tracking` | `--ca-font-weight-heading` | Card and group headings. |
+| `body` | 15px (`--ca-font-size-body1`) | `1.55` | `normal` | `400` | Reading text. |
+| `label` | 13px (`--ca-font-size-label`) | `1.4` | `0.01em` | `500` | Field labels, buttons, nav items. |
+| `caption` | 12px (`--ca-font-size-caption`) | `1.4` | `normal` | `400` | Hints, timestamps, helper text. |
+| `num` | 13px | `1.2` | `normal` | `500` | A count, a clock, a price: `font-variant-numeric: tabular-nums`, so a ticking value never shifts its neighbours. |
+
+Sizes are `rem` tokens times `--ca-font-scale`, like the rest of the scale. Apply a role with the `Text` component, with a class (import `@codeatlasdev/ui/styles/type-roles.css` once; `Text` does not need it), or with the tokens:
+
+```svelte
+<Text role="label">Email</Text>
+<Text role="num" as="strong">1,284</Text>
+<span class="ca-text-caption">Updated 3 minutes ago</span>
+```
+
+```css
+.row-count { font: var(--ca-text-num); letter-spacing: var(--ca-text-num-tracking); }
+```
+
+The tokens are `--ca-text-<role>-size`, `-leading`, `-tracking`, `-weight`, and `--ca-text-<role>` is the `font` shorthand (weight, size, leading, family) and `.ca-text-<role>` sets it with the tracking; both ship in the opt-in `@codeatlasdev/ui/styles/type-roles.css`.
+
+Override a role for the whole app with `type` in the theme. Only the parts you set change:
+
+```ts
+export const theme: ThemeOptions = {
+  type: {
+    label: { size: "13px", leading: 1.25, tracking: "0", weight: 500 },
+    num: { weight: 600 },
+  },
+};
+```
+
+The library follows. The size tokens components already read (`--ca-font-size-label`, `-body1`, `-caption`) and `--ca-label-tracking` are derived from the roles, so `type.label` restyles field labels, button text and nav items without an override in the app. `size` is a CSS length and replaces the default, which scales with `typography.scale`. Unknown roles and values that are not a length, number or keyword throw at build time.
+
+<Demo title="Type roles" description="The six roles rendered with Text." src={RolesSrc}><Roles client:visible /></Demo>
 
 ## Display text role
 

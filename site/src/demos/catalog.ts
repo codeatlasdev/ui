@@ -352,6 +352,7 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "844", path: "feedback/splash-screen/Boot" },
 	{ id: "845", path: "display/avatar/Decorative" },
 	{ id: "860", path: "layout/domain-tokens/StatusTokens" },
+	{ id: "861", path: "foundation/typography/Roles" },
 	{ id: "880", path: "inputs/button/ComponentTokens" },
 	{ id: "881", path: "layout/empty-state/DenseCrm" },
 	{ id: "900", path: "display/badge/InlinePill" },

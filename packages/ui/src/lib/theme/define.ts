@@ -202,6 +202,29 @@ export type Density = "compact" | "comfortable" | "airy" | number;
 /** Shadow model: how elevation is drawn. */
 export type ElevationModel = "soft" | "none" | "hard" | "glow";
 
+/** The named type roles. Each is a size / leading / tracking / weight bundle. */
+export const TYPE_ROLES = ["title", "heading", "body", "label", "caption", "num"] as const;
+export type TypeRole = (typeof TYPE_ROLES)[number];
+
+/** One type role. Every part is optional: unset parts keep the default of the role. */
+export interface TypeRoleSpec {
+	/** Font size as a CSS length (`"13px"`, `"0.8125rem"`). It replaces the default, which scales with `typography.scale`. */
+	size?: string;
+	/** Line height: a unitless number (`1.25`) or a CSS length. */
+	leading?: number | string;
+	/** Letter spacing (`"0"`, `"0.01em"`). */
+	tracking?: string;
+	/** Font weight, 1 to 1000. */
+	weight?: number;
+}
+
+/**
+ * The type scale by role: `title`, `heading`, `body`, `label`, `caption` and `num` (counts and times,
+ * with tabular digits). Library components that read `--ca-font-size-label`, `-body1` and `-caption`
+ * or `--ca-label-tracking` follow, so one entry restyles the app.
+ */
+export type TypeScale = Partial<Record<TypeRole, TypeRoleSpec>>;
+
 export interface TypographyOptions {
 	/** Multiplier on the whole UI type scale. @default 1 */
 	scale?: number;
@@ -254,6 +277,8 @@ export interface ThemeDefinition {
 	/** Border weights in px. @default { width: 1, strong: 2 } */
 	border: { width?: number; strong?: number };
 	typography: TypographyOptions;
+	/** Named type scale by role (`label`, `num`, …): size, leading, tracking and weight, overriding the defaults everywhere. */
+	type: TypeScale;
 	/** How elevation is drawn. hard = offset shadows with no blur (Neobrutalism). @default "soft" */
 	elevation: ElevationModel;
 	motion: MotionOptions;
@@ -496,6 +521,7 @@ export function defineTheme(def: Partial<ThemeDefinition> = {}): ResolvedTheme {
 		controlRadius: def.controlRadius ?? "md",
 		density: def.density ?? "comfortable",
 		border: def.border ?? {},
+		type: typeScale(def.type),
 		typography: {
 			...def.typography,
 			weights: { heading: DEFAULT_HEADING_WEIGHT, ...def.typography?.weights },
@@ -615,6 +641,36 @@ function elevationTokens(model: ElevationModel): Record<string, string> {
 	return out;
 }
 
+/** A CSS length or keyword value for a type part: no declaration separators, braces or quotes. */
+const CSS_PART = /^[\w.%+\-() ,/*]+$/;
+
+/** Validate `ThemeOptions.type`: known roles, parts that cannot break out of a declaration. */
+function typeScale(type: TypeScale | undefined): TypeScale {
+	for (const [role, spec] of Object.entries(type ?? {})) {
+		if (!(TYPE_ROLES as readonly string[]).includes(role))
+			throw new Error(
+				`[codeatlasdev/ui] type.${role}: unknown role, expected one of ${TYPE_ROLES.join(", ")}`
+			);
+		const { size, leading, tracking, weight } = spec ?? {};
+		const bad = (part: string, value: unknown) =>
+			new Error(`[codeatlasdev/ui] type.${role}.${part}: invalid value ${JSON.stringify(value)}`);
+		if (size !== undefined && !(typeof size === "string" && CSS_PART.test(size)))
+			throw bad("size", size);
+		if (tracking !== undefined && !(typeof tracking === "string" && CSS_PART.test(tracking)))
+			throw bad("tracking", tracking);
+		if (
+			leading !== undefined &&
+			!(typeof leading === "number"
+				? leading > 0
+				: typeof leading === "string" && CSS_PART.test(leading))
+		)
+			throw bad("leading", leading);
+		if (weight !== undefined && !(typeof weight === "number" && weight >= 1 && weight <= 1000))
+			throw bad("weight", weight);
+	}
+	return type ?? {};
+}
+
 /** Design knobs → root custom properties. Only values that differ from the stylesheet defaults. */
 export function designTokens(
 	t: Pick<
@@ -624,6 +680,7 @@ export function designTokens(
 		| "density"
 		| "border"
 		| "typography"
+		| "type"
 		| "elevation"
 		| "motion"
 		| "iconStroke"
@@ -654,6 +711,9 @@ export function designTokens(
 		root["--ca-line-height-prose"] = String(ty.lineHeight);
 	}
 	if (ty.measure) root["--ca-measure"] = ty.measure;
+	for (const [role, spec] of Object.entries(t.type) as [TypeRole, TypeRoleSpec][])
+		for (const part of ["size", "leading", "tracking", "weight"] as const)
+			if (spec[part] !== undefined) root[`--ca-text-${role}-${part}`] = String(spec[part]);
 	Object.assign(root, elevationTokens(t.elevation));
 	if (t.motion.scale !== undefined && t.motion.scale !== 1)
 		root["--ca-motion-scale"] = String(t.motion.scale);

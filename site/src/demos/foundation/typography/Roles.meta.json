@@ -1,0 +1,12 @@
+{
+	"summary": "The six type roles (title, heading, body, label, caption, num) rendered with Text, one row each.",
+	"use": "Picking the text role of a line of UI: use the role instead of loose font-size, line-height and letter-spacing, so a theme `type` override restyles it.",
+	"spec": [
+		"`import { Text } from '@codeatlasdev/ui'`",
+		"One `<Text role={r.role}>` per role: `title`, `heading`, `body`, `label`, `caption` and `num`",
+		"The `num` sample is `1,284 leads, 18:42`, drawn with tabular digits",
+		"Rows are a `grid-template-columns: var(--ca-space-20) 1fr` with `gap: var(--ca-space-3)`"
+	],
+	"tags": ["typography", "text", "type-scale", "role", "tabular-nums"],
+	"shape": "wide"
+}

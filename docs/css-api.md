@@ -6,7 +6,7 @@ Conventions: BEM (`ca-block__element`, `ca-block--modifier`). CSS variables (`--
 
 Generated from `grep -o 'ca-[a-z0-9_-]*'` over `packages/ui/src/lib/components/<Component>/` (`.svelte`, `.css`, `.ts`), excluding custom properties and duplicates. When you add or rename components, rerun the command and update this file. Some listed names may be `@keyframes` or internal identifiers (e.g. `ca-accordion-down`) rather than classes; treat them as stable to be safe.
 
-Total: 829 unique classes across 83 components.
+Total: 836 unique classes across 84 components.
 
 ---
 
@@ -406,6 +406,12 @@ The `skeleton` prop of `Avatar`, `KpiCard`, `TextField`, `Table`, `Card` and `Gl
 ## templates
 
 `.ca-form-section` `.ca-form-section--grid` `.ca-form-section--list` `.ca-form-section--stack` `.ca-form-section__desc` `.ca-form-section__fields` `.ca-form-section__header` `.ca-form-section__title`
+
+## Text
+
+`.ca-text` `.ca-text-body` `.ca-text-caption` `.ca-text-heading` `.ca-text-label` `.ca-text-num` `.ca-text-title`
+
+The role classes are also an opt-in stylesheet (`@codeatlasdev/ui/styles/type-roles.css`, `ca.utilities` layer) for any element: `.ca-text-<role>` sets `font: var(--ca-text-<role>)` and the role's tracking; `.ca-text-num` adds `font-variant-numeric: tabular-nums`. Override the role with `ThemeOptions.type` or `--ca-text-<role>-{size,leading,tracking,weight}`.
 
 ## TextArea
 
