@@ -133,11 +133,22 @@ describe("CommandPalette async search (#293)", () => {
 	it("announces loading, the result count and the empty outcome through announce()", async () => {
 		const search = vi.fn(async (q: string) => (q === "none" ? [] : records));
 		await open({ search });
-		const live = () => document.querySelector('[data-ca-announcer="polite"]')?.textContent ?? "";
-		await input().fill("inv");
-		await expect.poll(live).toMatch(/3 results/);
-		await input().fill("none");
-		await expect.poll(live).toMatch(/No results/);
+		// Record every text the live region carries: a poll can miss a message the next announcement
+		// replaces before the poll runs, which happened under suite load (#466).
+		// The region is created on the first announce(), so watch the body for it.
+		const said: string[] = [];
+		const watch = new MutationObserver(() =>
+			said.push(document.querySelector('[data-ca-announcer="polite"]')?.textContent ?? "")
+		);
+		watch.observe(document.body, { childList: true, characterData: true, subtree: true });
+		try {
+			await input().fill("inv");
+			await expect.poll(() => said.join("\n")).toMatch(/3 results/);
+			await input().fill("none");
+			await expect.poll(() => said.join("\n")).toMatch(/No results/);
+		} finally {
+			watch.disconnect();
+		}
 	});
 
 	it("Enter on a server result navigates to its path, or calls onSelect when given", async () => {
