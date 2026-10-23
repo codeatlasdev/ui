@@ -181,6 +181,10 @@ export interface TypographyOptions {
 	/** Heading letter-spacing, e.g. "-0.02em" (tight) or "0.04em" (wide). */
 	headingTracking?: string;
 	headingCase?: "none" | "uppercase";
+	/** Display text role (`Heading size="display"`) letter-spacing, e.g. "-0.055em". @default the heading tracking */
+	displayTracking?: string;
+	/** Display text role line-height (unitless), e.g. 0.84. @default 1.05 */
+	displayLeading?: number;
 	labelTracking?: string;
 	labelCase?: "none" | "uppercase";
 	/** Body line-height. @default 1.55 */
@@ -642,6 +646,8 @@ export function designTokens(
 		if (k !== "heading" || v !== DEFAULT_HEADING_WEIGHT) root[`--ca-font-weight-${k}`] = String(v);
 	if (ty.headingTracking) root["--ca-heading-tracking"] = ty.headingTracking;
 	if (ty.headingCase) root["--ca-heading-case"] = ty.headingCase;
+	if (ty.displayTracking) root["--ca-display-tracking"] = ty.displayTracking;
+	if (ty.displayLeading !== undefined) root["--ca-display-leading"] = String(ty.displayLeading);
 	if (ty.labelTracking) root["--ca-label-tracking"] = ty.labelTracking;
 	if (ty.labelCase) root["--ca-label-case"] = ty.labelCase;
 	if (ty.lineHeight !== undefined) {

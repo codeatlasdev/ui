@@ -143,6 +143,7 @@ export { default as GlassCard } from "./components/GlassCard/GlassCard.svelte";
 export { default as GlassSurface } from "./components/GlassSurface/GlassSurface.svelte";
 // ── LAYOUT PRIMITIVES ─────────────────────────────────────────────────────────
 export { default as Grid } from "./components/Grid/Grid.svelte";
+export { default as Heading } from "./components/Heading/Heading.svelte";
 export { default as Image } from "./components/Image/Image.svelte";
 export { default as InstallPrompt } from "./components/InstallPrompt/InstallPrompt.svelte";
 export type {

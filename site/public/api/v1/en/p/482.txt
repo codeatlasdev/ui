@@ -1,12 +1,12 @@
-Use @codeatlasdev/ui demo #482 "Stacked controls" (surfaces/card).
-What it shows: A glass Card titled Trending topics that stacks three Checkbox controls in a column with gap="sm", the title aligned with the controls. When to use: Settings and filter cards whose content is several inline controls (Checkbox, Switch, TextField) that need vertical spacing.
+Use @codeatlasdev/ui demo #482 "Display role" (display/heading).
+What it shows: Three Heading samples: a fluid display headline, a smaller display-3 heading and an h2 element drawn at the h4 size. When to use: Rendering an editorial or marketing headline in the display font with its own tracking and leading, or decoupling a heading's look from its level.
 Spec:
-- `<Card material="glass" title="Trending topics" headingLevel={3} gap="sm" class="stacked">` with `max-width: 320px`
-- Three `<Checkbox label="Hacker News" />` children: Hacker News, Product Hunt, Lobsters
-- `gap="sm"` stacks the children in a column with 8px between them; the title shares the checkboxes' left edge
+- `<Heading level={1} size="display">` renders an h1 in the display text role
+- `<Heading level={2} size="display-3">` renders an h2 at the smallest fluid display size
+- `<Heading level={2} size="h4">` renders an h2 with the h4 look
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
-Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+Apply: import only from "@codeatlasdev/ui[/charts|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
-Report: #482 Stacked controls → file, what changed, https://ui.codeatlas.com.br/docs/surfaces/card#stacked-controls; what you could not check (light/dark, 375px, keyboard, reduced motion).
-Reference: https://ui.codeatlas.com.br/api/v1/en/e/482.txt   Components API: ca-ui-mcp get_component(Card)
+Report: #482 Display role → file, what changed, https://ui.codeatlas.com.br/docs/display/heading#display-role; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/482.txt   Components API: ca-ui-mcp get_component(Heading)

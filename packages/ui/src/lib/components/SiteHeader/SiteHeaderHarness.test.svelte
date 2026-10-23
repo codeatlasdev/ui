@@ -6,9 +6,10 @@
 		pathname?: string;
 		onToggle?: () => void;
 		panelOpen?: boolean;
+		display?: boolean;
 	}
 
-	let { pathname = "/painel/usuarios/novo-cadastro", onToggle, panelOpen = true }: Props = $props();
+	let { pathname = "/painel/usuarios/novo-cadastro", onToggle, panelOpen = true, display = false }: Props = $props();
 
 	setContext("appshell", {
 		get panelOpen() {
@@ -23,4 +24,4 @@
 	});
 </script>
 
-<SiteHeader />
+<SiteHeader {display} />

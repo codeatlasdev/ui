@@ -1,0 +1,11 @@
+{
+	"summary": "Three Heading samples: a fluid display headline, a smaller display-3 heading and an h2 element drawn at the h4 size.",
+	"use": "Rendering an editorial or marketing headline in the display font with its own tracking and leading, or decoupling a heading's look from its level.",
+	"spec": [
+		"`<Heading level={1} size=\"display\">` renders an h1 in the display text role",
+		"`<Heading level={2} size=\"display-3\">` renders an h2 at the smallest fluid display size",
+		"`<Heading level={2} size=\"h4\">` renders an h2 with the h4 look"
+	],
+	"tags": ["heading", "display", "typography", "headline", "hero", "font-display"],
+	"shape": "wide"
+}

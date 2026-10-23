@@ -44,7 +44,7 @@ Total: 829 unique classes across 83 components.
 
 ## AuthLayout
 
-`.ca-auth` `.ca-auth-card` `.ca-auth-card__body` `.ca-auth-card__footer` `.ca-auth-card__header` `.ca-auth-card__subtitle` `.ca-auth-card--plain` `.ca-auth-card__title` `.ca-auth-float` `.ca-auth__blob` `.ca-auth__blob--a` `.ca-auth__blob--b` `.ca-auth__blob--c` `.ca-auth__blobs` `.ca-auth--right` `.ca-auth__col` `.ca-auth__col--framed` `.ca-auth__col--start` `.ca-auth__header` `.ca-auth__logo` `.ca-auth__main` `.ca-auth__mark` `.ca-auth__mobile-brand` `.ca-auth__mobile-mark` `.ca-auth__mobile-name` `.ca-auth__name` `.ca-auth__panel` `.ca-auth__panel--bleed` `.ca-auth__panel-inner` `.ca-auth__slot`
+`.ca-auth` `.ca-auth--right` `.ca-auth-card` `.ca-auth-card--plain` `.ca-auth-card__body` `.ca-auth-card__footer` `.ca-auth-card__header` `.ca-auth-card__subtitle` `.ca-auth-card__title` `.ca-auth-card__title--display` `.ca-auth-float` `.ca-auth__blob` `.ca-auth__blob--a` `.ca-auth__blob--b` `.ca-auth__blob--c` `.ca-auth__blobs` `.ca-auth__col` `.ca-auth__col--framed` `.ca-auth__col--start` `.ca-auth__header` `.ca-auth__logo` `.ca-auth__main` `.ca-auth__mark` `.ca-auth__mobile-brand` `.ca-auth__mobile-mark` `.ca-auth__mobile-name` `.ca-auth__name` `.ca-auth__panel` `.ca-auth__panel--bleed` `.ca-auth__panel-inner` `.ca-auth__slot`
 
 ## Avatar
 
@@ -153,7 +153,7 @@ State attributes on `dialog.ca-drawer`: `data-chromeless` (body padding 0, no he
 
 ## EmptyState
 
-`.ca-empty` `.ca-empty--hero` `.ca-empty__actions` `.ca-empty__description` `.ca-empty__icon` `.ca-empty__title`
+`.ca-empty` `.ca-empty--hero` `.ca-empty__actions` `.ca-empty__description` `.ca-empty__icon` `.ca-empty__title` `.ca-empty__title--display`
 
 ## ErrorPage
 
@@ -195,6 +195,10 @@ State attributes on `dialog.ca-drawer`: `data-chromeless` (body padding 0, no he
 ## Grid
 
 `.ca-grid`
+
+## Heading
+
+`.ca-heading` `.ca-heading--display` `.ca-heading--display-2` `.ca-heading--display-3` `.ca-heading--h1` `.ca-heading--h2` `.ca-heading--h3` `.ca-heading--h4` `.ca-heading--h5` `.ca-heading--h6`
 
 ## InstallPrompt
 
@@ -262,7 +266,7 @@ State attributes on `.ca-motion-stage`: `data-playing`, `data-taken`, `data-redu
 
 ## PageShell
 
-`.ca-page-shell` `.ca-page-shell__actions` `.ca-page-shell__aside` `.ca-page-shell__body` `.ca-page-shell__description` `.ca-page-shell__frame` `.ca-page-shell__header` `.ca-page-shell__layout` `.ca-page-shell__layout--aside` `.ca-page-shell__layout--reading` `.ca-page-shell__main` `.ca-page-shell__meta` `.ca-page-shell__title` `.ca-shell__content`
+`.ca-page-shell` `.ca-page-shell__actions` `.ca-page-shell__aside` `.ca-page-shell__body` `.ca-page-shell__description` `.ca-page-shell__frame` `.ca-page-shell__header` `.ca-page-shell__layout` `.ca-page-shell__layout--aside` `.ca-page-shell__layout--reading` `.ca-page-shell__main` `.ca-page-shell__meta` `.ca-page-shell__title` `.ca-page-shell__title--display` `.ca-shell__content`
 
 ## Pagination
 
@@ -323,7 +327,7 @@ Re-flow: the list is a size container (`container-type: inline-size`), rows stac
 
 ## SiteHeader
 
-`.ca-site-header` `.ca-site-header__bc-sep` `.ca-site-header__breadcrumb` `.ca-site-header__inner` `.ca-site-header__left` `.ca-site-header__sep` `.ca-site-header__toggle` `.ca-site-header__trailing`
+`.ca-site-header` `.ca-site-header__bc-sep` `.ca-site-header__breadcrumb` `.ca-site-header__current--display` `.ca-site-header__inner` `.ca-site-header__left` `.ca-site-header__sep` `.ca-site-header__toggle` `.ca-site-header__trailing`
 
 ## Skeleton
 

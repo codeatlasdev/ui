@@ -19,12 +19,14 @@
      */
     variant?:     'default' | 'hero';
     description?: string;
+    /** Display text role for the title: `--ca-display-tracking`, `--ca-display-leading` and the fluid `--ca-font-size-display-3`. */
+    display?:     boolean;
     actions?:     Snippet;
     class?:       string;
     children?:    Snippet;
   }
 
-  let { icon: Icon, title, headingLevel, variant = 'default', description, actions, children, class: className = '' }: Props = $props();
+  let { icon: Icon, title, headingLevel, variant = 'default', description, display = false, actions, children, class: className = '' }: Props = $props();
 
   // Read once at init: context lookups are only valid during component initialisation.
   const inheritedLevel = sectionHeadingLevel(5);
@@ -37,7 +39,7 @@
       <Icon size={variant === 'hero' ? 32 : 24} stroke-width={1.5} />
     </div>
   {/if}
-  <svelte:element this={`h${level}`} class="ca-empty__title">{title}</svelte:element>
+  <svelte:element this={`h${level}`} class="ca-empty__title" class:ca-empty__title--display={display}>{title}</svelte:element>
   {#if description}
     <p class="ca-empty__description">{description}</p>
   {:else if children}
@@ -138,6 +140,12 @@
     .ca-empty--hero .ca-empty__title {
       font-size: var(--ca-font-size-h6);
       font-weight: var(--ca-font-weight-heading);
+    }
+
+    .ca-empty .ca-empty__title--display {
+      font-size: var(--ca-font-size-display-3);
+      letter-spacing: var(--ca-display-tracking);
+      line-height: var(--ca-display-leading);
     }
 
     .ca-empty--hero .ca-empty__description {

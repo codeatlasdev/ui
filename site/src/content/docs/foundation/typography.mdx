@@ -22,6 +22,10 @@ export const theme = defineTheme({
 });
 ```
 
+## Display text role
+
+Editorial and marketing headlines use the display role: `--ca-font-display` (the body font until `fonts.display` is set), `--ca-display-tracking` (defaults to `--ca-heading-tracking`), `--ca-display-leading` (`1.05`) and the fluid sizes `--ca-font-size-display-1`, `-2` and `-3`. Render it with [`<Heading size="display">`](/docs/display/heading/), or the `display` prop of `AuthCard`, `PageShell`, `EmptyState` and `SiteHeader`. Set it in the theme with `typography.displayTracking` and `typography.displayLeading`.
+
 `fonts.body`, `fonts.mono` and `fonts.display` set `--ca-font-sans`, `--ca-font-mono` and `--ca-font-display`. See [Theming](/docs/getting-started/theming/).
 
 Text-entry controls use `--ca-input-font-size`, which is raised to at least 16px on touch devices and below 900px so iOS Safari does not zoom into focused fields. See [Mobile](/docs/getting-started/mobile/).

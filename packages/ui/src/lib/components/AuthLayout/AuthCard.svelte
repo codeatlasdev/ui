@@ -21,18 +21,20 @@
     variant?:  'card' | 'plain';
     title?:    string;
     subtitle?: string;
+    /** Display text role for the title: `--ca-display-tracking`, `--ca-display-leading` and the fluid `--ca-font-size-display-3`. */
+    display?:  boolean;
     /** Content below the form: links, terms, etc. */
     footer?:   Snippet;
     children?: Snippet;
   }
 
-  let { variant = 'card', title, subtitle, footer, children }: Props = $props();
+  let { variant = 'card', title, subtitle, display = false, footer, children }: Props = $props();
 </script>
 
 <div class="ca-auth-card" class:ca-auth-card--plain={variant === 'plain'}>
   {#if title || subtitle}
     <div class="ca-auth-card__header">
-      {#if title}<h1 class="ca-auth-card__title">{title}</h1>{/if}
+      {#if title}<h1 class="ca-auth-card__title" class:ca-auth-card__title--display={display}>{title}</h1>{/if}
       {#if subtitle}<p class="ca-auth-card__subtitle">{subtitle}</p>{/if}
     </div>
   {/if}
@@ -82,6 +84,12 @@
       letter-spacing: var(--ca-heading-tracking);
       text-transform: var(--ca-heading-case);
       line-height: var(--ca-line-height-tight);
+    }
+
+    .ca-auth-card__title--display {
+      font-size: var(--ca-font-size-display-3);
+      letter-spacing: var(--ca-display-tracking);
+      line-height: var(--ca-display-leading);
     }
 
     .ca-auth-card__subtitle {

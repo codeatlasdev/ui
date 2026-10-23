@@ -16,6 +16,10 @@
   --ca-font-size-display-1: clamp(2.5rem, 1.6rem + 4.5vw, 5.5rem);
   --ca-font-size-display-2: clamp(2rem, 1.4rem + 3vw, 4rem);
   --ca-font-size-display-3: clamp(1.625rem, 1.25rem + 1.8vw, 2.75rem);
+  /* Display text role (Heading size="display"): its own tracking and leading. The family is
+   * --ca-font-display, which is the body font until the theme sets fonts.display. */
+  --ca-display-tracking: var(--ca-heading-tracking);
+  --ca-display-leading:  1.05;
 
   --ca-font-weight-regular:  400;
   --ca-font-weight-medium:   500;

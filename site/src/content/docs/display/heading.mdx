@@ -1,0 +1,33 @@
+---
+title: Heading
+description: A native heading whose look is chosen by size, including the display text role for editorial and marketing headlines.
+group: Display
+order: 9
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import DisplayDemo from "~/demos/display/heading/Display.svelte";
+import DisplaySrc from "~/demos/display/heading/Display.svelte?raw";
+
+```svelte
+<script>
+  import { Heading } from "@codeatlasdev/ui";
+</script>
+
+<Heading level={1} size="display">Ship the interface</Heading>
+```
+
+`Heading` renders a real `<h1>` to `<h6>` (`level`) and draws it at `size`, so the document outline and the look are decoupled. Without `size` it uses the size of its level.
+
+`size="display"` is the display text role. It reads `--ca-font-display` (the body font until the theme sets `fonts.display`), `--ca-display-tracking`, `--ca-display-leading` and the fluid `--ca-font-size-display-1`. `display-2` and `display-3` are the smaller steps of the same role. Set the knobs once in the theme: `defineTheme({ fonts: { display: "Fraunces, serif" }, typography: { displayTracking: "-0.055em", displayLeading: 0.84 } })`.
+
+Title-bearing components take the same role with a `display` prop: `AuthCard`, `PageShell`, `EmptyState` (title at `--ca-font-size-display-3`) and `SiteHeader` (the current crumb). Without it their titles keep the compact heading look.
+
+<Demo title="Display role" src={DisplaySrc}><DisplayDemo /></Demo>
+
+<Props rows={[
+  { name: "level", type: "1 | 2 | 3 | 4 | 5 | 6", default: "2", description: "The heading element. Only the tag changes, never the look." },
+  { name: "size", type: "'display' | 'display-2' | 'display-3' | 'h1' … 'h6'", description: "The look. Defaults to the size of `level`. `display` is `--ca-font-size-display-1`." },
+  { name: "class", type: "string", default: "''", description: "Extra classes on the heading element." },
+  { name: "children", type: "Snippet", description: "The heading content." },
+]} />
