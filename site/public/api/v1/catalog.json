@@ -1,6 +1,6 @@
 {
 	"version": "4.5.0",
-	"count": 365,
+	"count": 366,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -23,14 +23,14 @@
 		{
 			"slug": "display",
 			"first": "104",
-			"last": "961",
-			"count": 60
+			"last": "966",
+			"count": 63
 		},
 		{
 			"slug": "navigation",
 			"first": "146",
-			"last": "943",
-			"count": 35
+			"last": "941",
+			"count": 33
 		},
 		{
 			"slug": "layout",
@@ -16013,100 +16013,6 @@
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{
-			"id": "942",
-			"group": "navigation",
-			"page": "context-menu",
-			"variant": "Files",
-			"slug": "file-menu",
-			"title": "File menu",
-			"description": "Right-click, long-press or Shift+F10. Checkbox items keep the menu open, Move to opens a submenu, and Delete is destructive.",
-			"summary": "A dashed file area that opens a Rename, Pinned, Move to and Delete menu at the pointer on right-click, at the finger on a long touch press, or from the keyboard with Shift+F10.",
-			"use": "Context menus on rows, files or canvases that reuse the DropdownMenu items, including checkbox items and submenus, without wiring any event handler.",
-			"spec": [
-				"`<ContextMenu class=\"area\" role=\"group\" aria-label=\"Project file\">` wraps the region content and takes the items in a `{#snippet menu()}`",
-				"The menu holds `DropdownMenuItem`, a `<DropdownMenuCheckboxItem bind:checked={pinned}>`, a `DropdownMenuSub` with `DropdownMenuSubTrigger`, a `DropdownMenuSeparator` and a destructive Delete",
-				"Each action item calls `function pick(action: string)`, which sets `last` and calls `announce`",
-				"Pinned (yes or no) and the last action are shown below the area"
-			],
-			"tags": [
-				"context-menu",
-				"right-click",
-				"long-press",
-				"keyboard",
-				"dropdown-menu",
-				"submenu"
-			],
-			"shape": "wide",
-			"components": [
-				"ContextMenu",
-				"DropdownMenuCheckboxItem",
-				"DropdownMenuItem",
-				"DropdownMenuSeparator",
-				"DropdownMenuSub",
-				"DropdownMenuSubTrigger"
-			],
-			"imports": [
-				{
-					"from": "@codeatlasdev/ui",
-					"names": [
-						"announce",
-						"ContextMenu",
-						"DropdownMenuCheckboxItem",
-						"DropdownMenuItem",
-						"DropdownMenuSeparator",
-						"DropdownMenuSub",
-						"DropdownMenuSubTrigger"
-					]
-				}
-			],
-			"interactive": true,
-			"demo": "https://ui.codeatlas.com.br/docs/navigation/context-menu#file-menu",
-			"needs": "@codeatlasdev/ui@4.5.0"
-		},
-		{
-			"id": "943",
-			"group": "navigation",
-			"page": "context-menu",
-			"variant": "Rows",
-			"slug": "one-menu-per-row",
-			"title": "One menu per row",
-			"description": "Each row is its own region. Tab to a row and press Shift+F10, or long-press on touch.",
-			"summary": "Three invoice rows, each its own context menu with a label, Open and Send reminder, and a 400 ms long-press delay for touch.",
-			"use": "A menu per list row: each row is a focusable region, so keyboard users reach the same actions with Shift+F10.",
-			"spec": [
-				"`{#each rows as row (row)}` renders `<ContextMenu class=\"row\" role=\"group\" aria-label={row} longPressDelay={400}>` per row",
-				"The `menu` snippet starts with `<DropdownMenuLabel>{row}</DropdownMenuLabel>` and has Open and Send reminder items",
-				"Items set `last` to the action and the row name (Open or Send plus the invoice), shown under the list"
-			],
-			"tags": [
-				"context-menu",
-				"list",
-				"row",
-				"long-press",
-				"keyboard",
-				"label"
-			],
-			"shape": "wide",
-			"components": [
-				"ContextMenu",
-				"DropdownMenuItem",
-				"DropdownMenuLabel"
-			],
-			"imports": [
-				{
-					"from": "@codeatlasdev/ui",
-					"names": [
-						"ContextMenu",
-						"DropdownMenuItem",
-						"DropdownMenuLabel"
-					]
-				}
-			],
-			"interactive": true,
-			"demo": "https://ui.codeatlas.com.br/docs/navigation/context-menu#one-menu-per-row",
-			"needs": "@codeatlasdev/ui@4.5.0"
-		},
-		{
 			"id": "960",
 			"group": "display",
 			"page": "image",
@@ -16271,6 +16177,128 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/layout/resizable-panels#nested-and-saved",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "964",
+			"group": "display",
+			"page": "carousel",
+			"variant": "Highlights",
+			"slug": "highlights",
+			"title": "Highlights",
+			"description": "Arrows, dots and a bound index.",
+			"summary": "A four-slide carousel (Plan, Build, Ship, Learn) with arrows and dots, bound to an index shown in a caption.",
+			"use": "Feature highlights, onboarding steps or testimonials where one item shows at a time.",
+			"spec": [
+				"`<Carousel label=\"Product highlights\" bind:index>` over `{#each slides as title (title)}`",
+				"Each slide is `<CarouselItem><div class=\"slide\">{title}</div></CarouselItem>`",
+				"`slides` is `['Plan', 'Build', 'Ship', 'Learn']`",
+				"Caption `Slide {index + 1} of {slides.length}`"
+			],
+			"tags": [
+				"carousel",
+				"scroll-snap",
+				"slides",
+				"dots",
+				"arrows",
+				"bind-index"
+			],
+			"shape": "wide",
+			"components": [
+				"Carousel",
+				"CarouselItem"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Carousel",
+						"CarouselItem"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/carousel#highlights",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "965",
+			"group": "display",
+			"page": "carousel",
+			"variant": "Cards",
+			"slug": "several-per-view",
+			"title": "Several per view",
+			"description": "`perView` shows three cards; `loop` wraps at the ends.",
+			"summary": "Five plan cards shown three at a time in a looping carousel.",
+			"use": "Card rows that overflow: pricing tiers, related products, team members.",
+			"spec": [
+				"`<Carousel label=\"Plans\" perView={3} loop>` over five names",
+				"Each card is `<CarouselItem><div class=\"card\">{name}</div></CarouselItem>`",
+				"`cards` is `['Starter', 'Team', 'Business', 'Enterprise', 'Partner']`"
+			],
+			"tags": [
+				"carousel",
+				"per-view",
+				"loop",
+				"cards",
+				"scroll-snap"
+			],
+			"shape": "wide",
+			"components": [
+				"Carousel",
+				"CarouselItem"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Carousel",
+						"CarouselItem"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/carousel#several-per-view",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "966",
+			"group": "display",
+			"page": "carousel",
+			"variant": "Autoplay",
+			"slug": "autoplay",
+			"title": "Autoplay",
+			"description": "Every 4 seconds, with Pause.",
+			"summary": "A looping three-quote carousel that advances every 4 seconds, with a Pause button and no arrows.",
+			"use": "Rotating testimonials or announcements; autoplay is opt-in and always stoppable.",
+			"spec": [
+				"`<Carousel label=\"Customer quotes\" autoplay={4000} loop arrows={false}>`",
+				"Each slide is `<CarouselItem><blockquote class=\"quote\">{quote}</blockquote></CarouselItem>`",
+				"`quotes` holds three short strings"
+			],
+			"tags": [
+				"carousel",
+				"autoplay",
+				"pause",
+				"testimonials",
+				"reduced-motion"
+			],
+			"shape": "wide",
+			"components": [
+				"Carousel",
+				"CarouselItem"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Carousel",
+						"CarouselItem"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/carousel#autoplay",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{

@@ -366,6 +366,9 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 961 | Embed | display/aspect-ratio | AspectRatio |
 | 962 | Two panels | layout/resizable-panels | ResizableHandle, ResizablePanel, ResizablePanels |
 | 963 | Nested and saved | layout/resizable-panels | ResizableHandle, ResizablePanel, ResizablePanels |
+| 964 | Highlights | display/carousel | Carousel, CarouselItem |
+| 965 | Several per view | display/carousel | Carousel, CarouselItem |
+| 966 | Autoplay | display/carousel | Carousel, CarouselItem |
 | 980 | Text, icon and filled groups | inputs/button-group | Button, ButtonGroup, IconButton |
 | 981 | Split button and vertical | inputs/button-group | Button, ButtonGroup, DropdownMenu, DropdownMenuItem, IconButton |
 | 982 | Text addons | inputs/text-field | TextField |
