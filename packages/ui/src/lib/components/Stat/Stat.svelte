@@ -31,12 +31,6 @@
     /** Loading placeholder: same size as the loaded stat, announced as busy. */
     skeleton?: boolean;
     class?: string;
-    /**
-     * Prefix of an extra class set on every part (`<prefix>__title`, `__value`, `__unit`, `__trend`,
-     * `__trend--up`/`--down`), for a component built on Stat that keeps its own public classes
-     * (KpiCard uses `ca-kpi`). Apps do not need it.
-     */
-    legacyPrefix?: string;
   }
 
   let {
@@ -45,12 +39,10 @@
     align = 'start',
     skeleton = false,
     class: className = '',
-    legacyPrefix,
   }: Props = $props();
 
   const isUp   = $derived(trend !== undefined && trend > 0);
   const isDown = $derived(trend !== undefined && trend < 0);
-  const lc = (part: string) => (legacyPrefix ? ` ${legacyPrefix}__${part}` : '');
   const trendLabel = $derived(
     trend !== undefined ? `${trend > 0 ? '+' : ''}${trend.toFixed(1)}%` : null
   );
@@ -63,13 +55,15 @@
   data-skeleton={skeleton ? '' : undefined}
   aria-busy={skeleton ? 'true' : undefined}
 >
-  <dt class="ca-stat__label{lc('title')}">{label}</dt>
-  <dd class="ca-stat__value{lc('value')}">
-    {value}{#if unit}<span class="ca-stat__unit{lc('unit')}">{unit}</span>{/if}
+  <dt class="ca-stat__label">{label}</dt>
+  <dd class="ca-stat__value">
+    {value}{#if unit}<span class="ca-stat__unit">{unit}</span>{/if}
   </dd>
   {#if trendLabel}
     <dd
-      class="ca-stat__trend{lc('trend')}{isUp ? ` ca-stat__trend--up${lc('trend--up')}` : ''}{isDown ? ` ca-stat__trend--down${lc('trend--down')}` : ''}"
+      class="ca-stat__trend"
+      class:ca-stat__trend--up={isUp}
+      class:ca-stat__trend--down={isDown}
       aria-label={t().kpiCard.trend(trendLabel)}
     >
       {isUp ? '↑' : isDown ? '↓' : ''}{trendLabel}

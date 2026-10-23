@@ -2388,7 +2388,6 @@ Stat — a card-less statistic: label, big number, optional unit, trend and hint
 | `align?` | `'start' \| 'center'` | `'start'` | Text alignment inside the stat. |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded stat, announced as busy. |
 | `class?` | `string` | `''` |  |
-| `legacyPrefix?` | `string` |  | Prefix of an extra class set on every part (`<prefix>__title`, `__value`, `__unit`, `__trend`, `__trend--up`/`--down`), for a component built on Stat that keeps its own public classes (KpiCard uses `ca-kpi`). Apps do not need it. |
 
 Classes: `ca-stat` `ca-stat__hint` `ca-stat__label` `ca-stat__trend` `ca-stat__trend--down` `ca-stat__trend--up` `ca-stat__unit` `ca-stat__value`
 
