@@ -95,7 +95,6 @@ describe("React UI equivalence table (#383)", () => {
 
 	it("a gap row names its issue and a workaround; every other row has a target", () => {
 		const open = rows.filter((r) => r.gap !== undefined);
-		expect(open.length).toBeGreaterThan(0);
 		for (const r of open) {
 			expect(r.gap, r.shadcn).toBeGreaterThan(0);
 			expect(r.workaround, r.shadcn).toBeTruthy();
@@ -132,9 +131,10 @@ describe("React UI equivalence table (#383)", () => {
 	});
 
 	it("renders a table row per component, with the gap issue where there is no target", () => {
-		const md = equivalentsMarkdown(rows);
+		const gapRow = { shadcn: "Gapped", to: [], gap: 7, workaround: "app code" };
+		const md = equivalentsMarkdown([...rows, gapRow]);
 		expect(md).toContain("| `Dialog` |");
-		expect(md).toMatch(/\| Resizable \|[^\n]*gap #\d+/);
+		expect(md).toMatch(/\| Gapped \|[^\n]*gap #7\): app code/);
 		expect(md.split("\n").filter((l) => l.startsWith("| ")).length).toBeGreaterThanOrEqual(
 			SHADCN.length
 		);

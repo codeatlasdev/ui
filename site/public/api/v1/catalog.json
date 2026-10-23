@@ -35,8 +35,8 @@
 		{
 			"slug": "layout",
 			"first": "165",
-			"last": "881",
-			"count": 41
+			"last": "963",
+			"count": 43
 		},
 		{
 			"slug": "charts",
@@ -16090,6 +16090,93 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/display/aspect-ratio#embed",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "962",
+			"group": "layout",
+			"page": "resizable-panels",
+			"variant": "Workspace",
+			"slug": "two-panels",
+			"title": "Two panels",
+			"description": "Drag the line or focus it and press the arrow keys.",
+			"summary": "A two-panel horizontal group (Files 25%, Editor 75%) in a bordered frame with a caption showing the live percentages.",
+			"use": "Split views where the user sizes a side panel: file trees, inspectors, mail readers.",
+			"spec": [
+				"`<ResizablePanels label=\"Workspace\" onlayout={(s) => (sizes = s)}>`",
+				"`<ResizablePanel id=\"files\" defaultSize={25} minSize={15} maxSize={50}>` and `<ResizablePanel id=\"editor\" defaultSize={75}>`",
+				"`<ResizableHandle label=\"Resize files\" />` between them",
+				"Caption `Files {Math.round(sizes[0])}% · Editor {Math.round(sizes[1])}%`"
+			],
+			"tags": [
+				"resizable-panels",
+				"splitter",
+				"separator",
+				"keyboard",
+				"layout",
+				"onlayout"
+			],
+			"shape": "wide",
+			"components": [
+				"ResizableHandle",
+				"ResizablePanel",
+				"ResizablePanels"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"ResizableHandle",
+						"ResizablePanel",
+						"ResizablePanels"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/resizable-panels#two-panels",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "963",
+			"group": "layout",
+			"page": "resizable-panels",
+			"variant": "Nested",
+			"slug": "nested-and-saved",
+			"title": "Nested and saved",
+			"description": "A vertical group inside a horizontal one; the layout is kept in localStorage.",
+			"summary": "A persisted horizontal group (Folders, Main) whose Main panel holds a vertical group (Messages over Reader).",
+			"use": "Three-pane layouts (mail, issue trackers) where the layout survives a reload.",
+			"spec": [
+				"`<ResizablePanels label=\"Mail\" persist=\"ca-demo-mail-layout\">`",
+				"`<ResizablePanel id=\"folders\" defaultSize={20} minSize={12}>` and `<ResizablePanel id=\"main\" defaultSize={80}>`",
+				"`<ResizablePanels direction=\"vertical\" label=\"Message list and reader\">` inside `main` with `list` (40) and `reader` (60)",
+				"`<ResizableHandle label=\"Resize folders\" />` and `<ResizableHandle label=\"Resize message list\" />`"
+			],
+			"tags": [
+				"resizable-panels",
+				"nested",
+				"vertical",
+				"persist",
+				"three-pane"
+			],
+			"shape": "wide",
+			"components": [
+				"ResizableHandle",
+				"ResizablePanel",
+				"ResizablePanels"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"ResizableHandle",
+						"ResizablePanel",
+						"ResizablePanels"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/resizable-panels#nested-and-saved",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{

@@ -1,5 +1,5 @@
 import { afterAll, beforeAll, describe, expect, it } from "bun:test";
-import { existsSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
@@ -35,13 +35,25 @@ describe.skipIf(!built)("ca-ui-mcp get_equivalent (#383)", () => {
 		expect((await call({ name: "Autocomplete" })).text).toContain("Combobox");
 	});
 
-	it("says there is no equivalent, names the gap issue and the workaround", async () => {
-		const { error, text } = await call({ name: "Resizable" });
-		expect(error).toBe(false);
-		expect(text).toContain("No equivalent");
-		expect(text).toMatch(/gap #\d+/);
-		expect(text).toContain("workaround");
-	});
+	// The real table loses its gap rows as the gaps close; the answer for one is only checked while one exists.
+	const gap = built
+		? (
+				JSON.parse(readFileSync(join(import.meta.dir, "../dist/equivalents.json"), "utf8")) as {
+					rows: { shadcn: string; gap?: number }[];
+				}
+			).rows.find((r) => r.gap !== undefined)
+		: undefined;
+
+	it.skipIf(!gap)(
+		"says there is no equivalent, names the gap issue and the workaround",
+		async () => {
+			const { error, text } = await call({ name: gap?.shadcn ?? "" });
+			expect(error).toBe(false);
+			expect(text).toContain("No equivalent");
+			expect(text).toMatch(/gap #\d+/);
+			expect(text).toContain("workaround");
+		}
+	);
 
 	it("errors on an unknown name and lists the shadcn components without a name", async () => {
 		expect((await call({ name: "NoSuchThing" })).error).toBe(true);

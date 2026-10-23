@@ -1,0 +1,12 @@
+{
+	"summary": "A two-panel horizontal group (Files 25%, Editor 75%) in a bordered frame with a caption showing the live percentages.",
+	"use": "Split views where the user sizes a side panel: file trees, inspectors, mail readers.",
+	"spec": [
+		"`<ResizablePanels label=\"Workspace\" onlayout={(s) => (sizes = s)}>`",
+		"`<ResizablePanel id=\"files\" defaultSize={25} minSize={15} maxSize={50}>` and `<ResizablePanel id=\"editor\" defaultSize={75}>`",
+		"`<ResizableHandle label=\"Resize files\" />` between them",
+		"Caption `Files {Math.round(sizes[0])}% · Editor {Math.round(sizes[1])}%`"
+	],
+	"tags": ["resizable-panels", "splitter", "separator", "keyboard", "layout", "onlayout"],
+	"shape": "wide"
+}

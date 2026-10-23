@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #962 "Two panels" (layout/resizable-panels).
+What it shows: A two-panel horizontal group (Files 25%, Editor 75%) in a bordered frame with a caption showing the live percentages. When to use: Split views where the user sizes a side panel: file trees, inspectors, mail readers.
+Spec:
+- `<ResizablePanels label="Workspace" onlayout={(s) => (sizes = s)}>`
+- `<ResizablePanel id="files" defaultSize={25} minSize={15} maxSize={50}>` and `<ResizablePanel id="editor" defaultSize={75}>`
+- `<ResizableHandle label="Resize files" />` between them
+- Caption `Files {Math.round(sizes[0])}% · Editor {Math.round(sizes[1])}%`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #962 Two panels → file, what changed, https://ui.codeatlas.com.br/docs/layout/resizable-panels#two-panels; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/962.txt   Components API: ca-ui-mcp get_component(ResizableHandle)

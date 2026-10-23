@@ -316,10 +316,9 @@
 		},
 		{
 			"shadcn": "Resizable",
-			"to": [],
+			"to": ["ResizablePanels", "ResizablePanel", "ResizableHandle"],
 			"radix": "react-resizable-panels",
-			"gap": 432,
-			"workaround": "A CSS grid with a drag handle in app code."
+			"notes": "`direction`, `persist`, `onlayout`; each panel takes `id`, `defaultSize`, `minSize`, `maxSize` in percent."
 		},
 		{
 			"shadcn": "Scroll Area",

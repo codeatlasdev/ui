@@ -1,0 +1,57 @@
+---
+title: ResizablePanels
+description: Panels split by draggable window splitters with keyboard resize, min and max sizes and an optional saved layout.
+group: Layout
+order: 14
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Workspace from "~/demos/layout/resizable-panels/Workspace.svelte";
+import WorkspaceSrc from "~/demos/layout/resizable-panels/Workspace.svelte?raw";
+import Nested from "~/demos/layout/resizable-panels/Nested.svelte";
+import NestedSrc from "~/demos/layout/resizable-panels/Nested.svelte?raw";
+
+```svelte
+<script>
+  import { ResizableHandle, ResizablePanel, ResizablePanels } from "@codeatlasdev/ui";
+</script>
+
+<ResizablePanels label="Workspace" persist="workspace-layout">
+  <ResizablePanel id="files" defaultSize={25} minSize={15}>…</ResizablePanel>
+  <ResizableHandle label="Resize files" />
+  <ResizablePanel id="editor" defaultSize={75}>…</ResizablePanel>
+</ResizablePanels>
+```
+
+The replacement for `react-resizable-panels` / shadcn `Resizable`. Sizes are percentages of the group and always add up to 100; the group fills its container, so give the parent a height. Each `ResizableHandle` moves the boundary between its two neighbours only, and never past either panel's `minSize` / `maxSize`.
+
+<Demo title="Two panels" description="Drag the line or focus it and press the arrow keys." src={WorkspaceSrc}><Workspace client:visible /></Demo>
+<Demo title="Nested and saved" description="A vertical group inside a horizontal one; the layout is kept in localStorage." src={NestedSrc}><Nested client:visible /></Demo>
+
+## Keyboard
+
+A handle is a WAI-ARIA window splitter: `role="separator"`, focusable, with `aria-valuenow` the size of the panel before it, and `aria-valuemin` / `aria-valuemax` the reachable range. Arrows move 1% (Left and Right in a horizontal group, Up and Down in a vertical one, mirrored in RTL), Shift plus an arrow 10%, Home and End go to the limits. Name each handle after what it resizes.
+
+## Saving the layout
+
+`persist="key"` saves `{ panelId: percent }` in `localStorage` when a drag or key press settles and restores it on mount. A stored layout that does not name exactly the panels on screen is ignored, so adding a panel never breaks a returning user. Panel ids are therefore part of the key: keep them stable. `onlayout` receives the same sizes without storage, for your own persistence.
+
+<Props for="ResizablePanels" rows={[
+  { name: "direction", type: "'horizontal' | 'vertical'", default: "'horizontal'", description: "Side by side, or stacked." },
+  { name: "label", type: "string", default: "undefined", description: "Accessible name of the group." },
+  { name: "persist", type: "string", default: "undefined", description: "localStorage key for the layout." },
+  { name: "onlayout", type: "(sizes: number[]) => void", default: "undefined", description: "Sizes in percent, in panel order, when a drag or key press settles." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+]} />
+
+<Props for="ResizablePanel" rows={[
+  { name: "id", type: "string", description: "Stable key of the panel, unique in the group. Required." },
+  { name: "defaultSize", type: "number", default: "undefined", description: "Starting size in percent. Unset panels share what is left." },
+  { name: "minSize", type: "number", default: "10", description: "Smallest size in percent." },
+  { name: "maxSize", type: "number", default: "100", description: "Largest size in percent." },
+]} />
+
+<Props for="ResizableHandle" rows={[
+  { name: "label", type: "string", default: "'Resize panels' (localized)", description: "Accessible name; say what it resizes." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+]} />

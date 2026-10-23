@@ -1,0 +1,12 @@
+{
+	"summary": "A persisted horizontal group (Folders, Main) whose Main panel holds a vertical group (Messages over Reader).",
+	"use": "Three-pane layouts (mail, issue trackers) where the layout survives a reload.",
+	"spec": [
+		"`<ResizablePanels label=\"Mail\" persist=\"ca-demo-mail-layout\">`",
+		"`<ResizablePanel id=\"folders\" defaultSize={20} minSize={12}>` and `<ResizablePanel id=\"main\" defaultSize={80}>`",
+		"`<ResizablePanels direction=\"vertical\" label=\"Message list and reader\">` inside `main` with `list` (40) and `reader` (60)",
+		"`<ResizableHandle label=\"Resize folders\" />` and `<ResizableHandle label=\"Resize message list\" />`"
+	],
+	"tags": ["resizable-panels", "nested", "vertical", "persist", "three-pane"],
+	"shape": "wide"
+}
