@@ -845,25 +845,27 @@ Use it for an overview page: a row of key numbers (one with a sparkline), then c
 ```ts
 // src/lib/messages.ts (the keys the dashboard reads)
 export const m = {
-  title: "Dashboard",
-  description: "Overview of this half year",
-  export: "Export",
-  revenue: "Revenue",
-  users: "Active users",
-  churn: "Churn",
-  churnHint: "Down is good",
-  seatsUsed: "Seats used",
-  revenueByRegion: "Revenue by region",
-  planMix: "Plan mix",
-  plansTotal: "Accounts",
-  revenueAndExpenses: "Revenue and expenses",
-  seriesRevenue: "Revenue",
-  seriesExpenses: "Expenses",
-  topAccounts: "Top accounts",
-  topAccountsCaption: "Top accounts by revenue",
-  account: "Account",
-  plan: "Plan",
-  mrr: "MRR",
+  dashboard: {
+    title: "Dashboard",
+    description: "Overview of this half year",
+    export: "Export",
+    revenue: "Revenue",
+    users: "Active users",
+    churn: "Churn",
+    churnHint: "Down is good",
+    seatsUsed: "Seats used",
+    revenueByRegion: "Revenue by region",
+    planMix: "Plan mix",
+    plansTotal: "Accounts",
+    revenueAndExpenses: "Revenue and expenses",
+    seriesRevenue: "Revenue",
+    seriesExpenses: "Expenses",
+    topAccounts: "Top accounts",
+    topAccountsCaption: "Top accounts by revenue",
+    account: "Account",
+    plan: "Plan",
+    mrr: "MRR",
+  },
 } as const;
 ```
 
@@ -874,6 +876,8 @@ export const m = {
   import { BarChart, LineChart, PieChart, Sparkline } from "@codeatlasdev/ui/charts";
   import { ArrowUpRight, DollarSign, Users } from "@lucide/svelte";
   import { m } from "#lib/messages.ts";
+
+  const d = m.dashboard;
 
   const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
   const revenue = [42000, 51000, 58000, 63000, 72000, 80000];
@@ -893,38 +897,38 @@ export const m = {
   const formatMoney = (value: number) => `$${(value / 1000).toFixed(0)}k`;
 </script>
 
-<PageShell title={m.title} description={m.description} maxWidth="1200px">
+<PageShell title={d.title} description={d.description} maxWidth="1200px">
   {#snippet actions()}
     <Button variant="ghost" size="sm">
       {#snippet leading()}<ArrowUpRight size={14} />{/snippet}
-      {m.export}
+      {d.export}
     </Button>
   {/snippet}
 
   <KpiGrid>
-    <KpiCard title={m.revenue} value="$80k" trend={11.1} icon={DollarSign} />
-    <KpiCard title={m.users} value="24.8k" trend={12.1} icon={Users} />
+    <KpiCard title={d.revenue} value="$80k" trend={11.1} icon={DollarSign} />
+    <KpiCard title={d.users} value="24.8k" trend={12.1} icon={Users} />
     <!-- A KPI with a sparkline: KpiCard has no chart slot, so compose Card + Stat + Sparkline. -->
     <Card gap="md">
-      <Stat label={m.churn} value="1.7" unit="%" trend={-0.2} trendTone="positive-down" hint={m.churnHint} />
+      <Stat label={d.churn} value="1.7" unit="%" trend={-0.2} trendTone="positive-down" hint={d.churnHint} />
       <Sparkline data={churn} trend="up" />
     </Card>
   </KpiGrid>
 
   <Grid columns={{ base: 1, lg: 2 }} gap="4">
-    <Card title={m.revenueByRegion}>
-      <BarChart series={[{ name: m.seriesRevenue, data: [32, 21, 18, 9] }]} categories={regions} height="240px" />
+    <Card title={d.revenueByRegion}>
+      <BarChart series={[{ name: d.seriesRevenue, data: [32, 21, 18, 9] }]} categories={regions} height="240px" />
     </Card>
-    <Card title={m.planMix}>
-      <PieChart data={plans} donut centerLabel={{ value: "1,016", label: m.plansTotal }} height="240px" />
+    <Card title={d.planMix}>
+      <PieChart data={plans} donut centerLabel={{ value: "1,016", label: d.plansTotal }} height="240px" />
     </Card>
   </Grid>
 
-  <Card title={m.revenueAndExpenses}>
+  <Card title={d.revenueAndExpenses}>
     <LineChart
       series={[
-        { name: m.seriesRevenue, data: revenue },
-        { name: m.seriesExpenses, data: expenses },
+        { name: d.seriesRevenue, data: revenue },
+        { name: d.seriesExpenses, data: expenses },
       ]}
       categories={months}
       valueFormatter={formatMoney}
@@ -933,15 +937,15 @@ export const m = {
     />
   </Card>
 
-  <Card title={m.seatsUsed} gap="md">
-    <Progress value={72} label={m.seatsUsed} size="sm" />
+  <Card title={d.seatsUsed} gap="md">
+    <Progress value={72} label={d.seatsUsed} size="sm" />
   </Card>
 
-  <Card title={m.topAccounts} padding="none">
+  <Card title={d.topAccounts} padding="none">
     <SimpleTable>
-      <caption class="ca-sr-only">{m.topAccountsCaption}</caption>
+      <caption class="ca-sr-only">{d.topAccountsCaption}</caption>
       <thead>
-        <tr><th>{m.account}</th><th>{m.plan}</th><th>{m.mrr}</th></tr>
+        <tr><th>{d.account}</th><th>{d.plan}</th><th>{d.mrr}</th></tr>
       </thead>
       <tbody>
         {#each accounts as account (account.id)}
@@ -1002,13 +1006,15 @@ export const mapState = new MapState();
 ```ts
 // src/lib/messages.ts (the keys the map page reads)
 export const m = {
-  stageLabel: "Territory map",
-  panelLabel: "Territory",
-  title: "Territory",
-  search: "Search places",
-  count: (n: number) => `${n} places`,
-  legend: "Pins: open leads",
-  save: "Save territory",
+  map: {
+    stageLabel: "Territory map",
+    panelLabel: "Territory",
+    title: "Territory",
+    search: "Search places",
+    count: (n: number) => `${n} places`,
+    legend: "Pins: open leads",
+    save: "Save territory",
+  },
 } as const;
 ```
 
@@ -1023,6 +1029,8 @@ export const m = {
   import { page } from "$app/state";
   import { mapState, type Place } from "#lib/map-state.svelte.ts";
   import { m } from "#lib/messages.ts";
+
+  const t = m.map;
 
   let { children }: { children?: import("svelte").Snippet } = $props();
 
@@ -1071,12 +1079,12 @@ export const m = {
   <MapStage
     {styles}
     {layers}
-    label={m.stageLabel}
+    label={t.stageLabel}
     fit={[[-74, -34], [-34, 5]]}
     onmapready={(map) => (mapState.map = map)}
   >
     <MapControls locate />
-    <p class="legend" style="--inset-left: {stageInsets.current.left}px">{m.legend}</p>
+    <p class="legend" style="--inset-left: {stageInsets.current.left}px">{t.legend}</p>
   </MapStage>
 {/snippet}
 
@@ -1111,21 +1119,23 @@ export const m = {
   import { mapState, type Place } from "#lib/map-state.svelte.ts";
   import { m } from "#lib/messages.ts";
 
+  const t = m.map;
+
   let query = $state("");
   const results = $derived(
     mapState.places.filter((p: Place) => p.name.toLowerCase().includes(query.toLowerCase())),
   );
 </script>
 
-<PageFrame mode="map" side="left" width="md" sheet label={m.panelLabel} headerBorder>
+<PageFrame mode="map" side="left" width="md" sheet label={t.panelLabel} headerBorder>
   {#snippet header()}
-    <h2>{m.title}</h2>
+    <h2>{t.title}</h2>
   {/snippet}
   {#snippet toolbar()}
-    <TextField label={m.search} bind:value={query} />
+    <TextField label={t.search} bind:value={query} />
   {/snippet}
 
-  <p>{m.count(results.length)}</p>
+  <p>{t.count(results.length)}</p>
   <!-- A selectable list with no list component: one ghost Button per row, aria-pressed for the selection. -->
   <Stack as="ul" gap="1">
     {#each results as place (place.id)}
@@ -1145,7 +1155,7 @@ export const m = {
   </Stack>
 
   {#snippet footer()}
-    <Button variant="filled">{m.save}</Button>
+    <Button variant="filled">{t.save}</Button>
   {/snippet}
 </PageFrame>
 ```
@@ -1174,6 +1184,8 @@ Rules:
   import { mapState } from "#lib/map-state.svelte.ts";
   import { m } from "#lib/messages.ts";
 
+  const t = m.map;
+
   let query = $state("");
 </script>
 
@@ -1181,19 +1193,19 @@ Rules:
 <main id="main" tabindex="-1" class="host">
   <MapStage
     styles={{ light: "https://demotiles.maplibre.org/style.json", dark: "https://demotiles.maplibre.org/style.json" }}
-    label={m.stageLabel}
+    label={t.stageLabel}
     fit={[[-74, -34], [-34, 5]]}
     onmapready={(map) => (mapState.map = map)}
   >
     <MapControls locate />
   </MapStage>
   <div class="frame">
-    <PageFrame mode="map" side="left" width="md" sheet label={m.panelLabel}>
+    <PageFrame mode="map" side="left" width="md" sheet label={t.panelLabel}>
       {#snippet header()}
-        <h1>{m.title}</h1>
+        <h1>{t.title}</h1>
       {/snippet}
       {#snippet toolbar()}
-        <TextField label={m.search} bind:value={query} />
+        <TextField label={t.search} bind:value={query} />
       {/snippet}
     </PageFrame>
   </div>
@@ -1222,7 +1234,7 @@ See also: [PageFrame](/docs/layout/page-frame/), [Map](/docs/map/), [AppShell](/
 Use it for a public page: a sticky header with navigation, a hero, a grid of feature cards and the metadata crawlers read. It lives outside the app shell.
 
 ```ts
-// src/lib/messages.ts (the keys the landing page reads, one table per language)
+// src/lib/landing.ts (the landing copy: one table per language, kept apart from the app's messages.ts)
 export const messages = {
   en: {
     brand: "Acme",
@@ -1307,7 +1319,7 @@ export type Locale = keyof typeof messages;
   import { Seo } from "@codeatlasdev/ui/seo";
   import { Menu } from "@lucide/svelte";
   import { page } from "$app/state";
-  import { messages, type Locale } from "#lib/messages.ts";
+  import { messages, type Locale } from "#lib/landing.ts";
 
   const origin = "https://acme.com";
 
@@ -1420,9 +1432,11 @@ Use it when the whole app is one screen (a single dashboard, a board, a map tool
 ```ts
 // src/lib/messages.ts (the keys the standalone page reads)
 export const m = {
-  title: "Pipeline",
-  description: "Open deals by stage",
-  newDeal: "New deal",
+  standalone: {
+    title: "Pipeline",
+    description: "Open deals by stage",
+    newDeal: "New deal",
+  },
 } as const;
 ```
 
@@ -1431,13 +1445,15 @@ export const m = {
 <script lang="ts">
   import { Button, PageShell, SkipLink } from "@codeatlasdev/ui";
   import { m } from "#lib/messages.ts";
+
+  const p = m.standalone;
 </script>
 
 <SkipLink />
 <main id="main" tabindex="-1">
-  <PageShell title={m.title} description={m.description} maxWidth="1200px">
+  <PageShell title={p.title} description={p.description} maxWidth="1200px">
     {#snippet actions()}
-      <Button variant="filled" size="sm">{m.newDeal}</Button>
+      <Button variant="filled" size="sm">{p.newDeal}</Button>
     {/snippet}
     <!-- the screen: KpiGrid, Grid of Cards, Kanban, ... -->
   </PageShell>
