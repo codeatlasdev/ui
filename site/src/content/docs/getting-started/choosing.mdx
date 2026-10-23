@@ -18,6 +18,7 @@ A route is one of these templates. They own the header, the scroll area, the foo
 | Create or edit one entity | [`AppForm`](/docs/layout/form-page/) | Fixed header, scrolling body, sticky `footer` snippet for Cancel and Save. Fields go in `FormSection`. |
 | Settings with several sections | [`AppSettings`](/docs/layout/list-page/) | Tabbed sections built from `FormSection` and `SettingItem`. |
 | Any other content page (dashboard, detail) | [`PageShell`](/docs/layout/page-shell/) | `title`, `description`, `actions` snippet. `gap` is a number in px. |
+| A single-page app with no rail or bottom navigation | [`PageShell`](/docs/layout/page-shell/) in your own `<main id="main" tabindex="-1">` | `PageShell` never renders `<main>` and `AppShellLayout` with one module still draws a one-icon rail. Add a `SkipLink` first. See [Standalone page](/docs/getting-started/recipes/#standalone-page). |
 | Sign in, sign up, password reset | [`AuthLayout`](/docs/layout/auth-layout/) | Renders the page `<main>`: do not add another. `AuthCard` holds the form. |
 | A 404, 403, 500 or 503 page | [`ErrorPage`](/docs/layout/error-page/) | Localized copy, home and back actions. |
 | A section or a list with nothing in it | [`EmptyState`](/docs/layout/empty-state/) | Icon, title, description, actions. In `AppList` use its `empty` snippet instead. |
@@ -26,6 +27,7 @@ A route is one of these templates. They own the header, the scroll area, the foo
 | A background that stays mounted across routes (map, canvas, video) | [`AppShellLayout`](/docs/layout/app-shell/) `stage` | `{#snippet stage({ hidden })}`; `stageVisible={false}` hides and pauses it on a full-page route. |
 | Rail captions, a search trigger, more than 5 modules | [`AppShellLayout`](/docs/layout/app-shell/) | `railLabels`, `{#snippet railTop()}` for a search or Cmd+K button, `bottomNavPrimary` and `moreSheet={NavMoreSheet}` for the mobile "More" sheet. `collapseShortPanel` closes the panel for a module with 2 destinations or fewer. |
 | A page or block in another preset or scheme | [`ThemeIsland`](/docs/layout/theme-island/) | `preset`, `scheme`, and `document` for a full page. `setRouteTheme` (from `@codeatlasdev/ui/kit`) sets it per route with SSR parity. `data-theme-scope` alone gives a local island with no SSR parity. |
+| Site navigation in a marketing header, with a phone menu | [`NavigationMenu`](/docs/navigation/navigation-menu/) in the `SiteHeader` `trailing` snippet, a `Drawer` below 600px | `NavigationMenu` must be a direct child of `trailing`; the header hides it below 600px. Keep the `LocaleSwitcher` and one CTA in the bar. See [Landing page](/docs/getting-started/recipes/#landing-page). |
 | A language picker in the header | [`LocaleSwitcher`](/docs/navigation/locale-switcher/) | `options` as data, `onselect`, `compact`. Put it in the `SiteHeader` `trailing` snippet. |
 | A sign in with the art on the right or full bleed | [`AuthLayout`](/docs/layout/auth-layout/) | `panelSide`, `panelBleed`, `align="start"`, `panelHidden`. A password field takes `revealable` on `TextField`. |
 
@@ -39,6 +41,7 @@ Never: wrap a page in your own `div` with a title row and a footer bar. Never pu
 | Zoom, compass and locate buttons | `MapControls` | Same entry. A child of `MapStage`. |
 | Your own layers in the theme colors | `useMapTheme` | Same entry. `theme.color(token)` returns an `Rgba` that follows the live preset. |
 | A panel that floats over the map | [`PageFrame`](/docs/layout/page-frame/) | It sets the map padding for you. Put `MapStage` in the `AppShellLayout` `stage` snippet so it survives navigation. |
+| A list of places the user picks to recenter the map | `Button variant="ghost" tone="neutral" align="between" fullWidth` with `aria-pressed`, in `Stack as="ul"` | No list component has a row action: `RecordRow` has none, `TableRow` is for tables. Recenter with the map from `onmapready`. See [Map page](/docs/getting-started/recipes/#map-page). |
 | A static place or an address | `Image` or a link to a map app | No `@codeatlasdev/ui/map` import: it pulls in a map engine. |
 
 Never: create a map in `onMount` yourself, or hand-measure the panel to offset the map.
@@ -82,6 +85,7 @@ Never: build a fixed full-screen panel by hand, set `z-index` on an overlay, or 
 | Rows that arrive over time (SSE, WebSocket, a bulk job) | [`LiveList`](/docs/display/live-list/) | Batched polite announcements, follow-the-tail that never steals focus. Needs `label`. |
 | A very long list, or chat history that loads older items at the top | [`VirtualList`](/docs/display/virtual-list/) | Windowed, keeps the scroll position when older rows load. |
 | Events in time order | [`Timeline`](/docs/display/timeline/) | Colored markers on a chronological list. |
+| A list of rows the user picks one of (places, conversations, results) | `Button variant="ghost" tone="neutral" align="between" fullWidth` with `aria-pressed`, in `Stack as="ul"` | `RecordList` and `RecordRow` do not take a row click. Inside a table, `TableRow onactivate`. A chat thread list is `ConversationItem`. |
 | Dense CRM-style list with pinned columns, row selection, groups and sort | [`SimpleTable`](/docs/display/table/) | `density="compact"`, `stickyColumns={1}`; rows are `TableRow` (`selected`, `onactivate`), sections `TableGroupRow` (`collapsible`, `bind:open`), headers `TableSortHeader` (`sort`, `onsort`). |
 | Cards in columns (pipeline, status board) | [`Kanban`](/docs/display/kanban/) | Drag between columns, keyboard "Move to…", `onmove`, per-column `onloadmore`, tabs on a phone. Needs `columns` and `getId`. |
 
@@ -92,6 +96,8 @@ Never: hand-write a `<table>` with custom sticky CSS, or a mobile card view next
 | If you need | Use | Why / the rule |
 |---|---|---|
 | A content section with a title and padding | [`Card`](/docs/surfaces/card/) | A `Surface` with a header, padding and an optional link. The default container. The `title` header is aligned with the content padding; `gap="md"` stacks the children in a column. |
+| A tag or label on a card (a plan name, "New", a category) | [`Badge`](/docs/display/badge/) `tone="brand" subtle` | `Badge` is a pill with a `tone`. `Chip` is for filters and selection, `StatusChip` for a record status. |
+| A pricing table | `Grid` of [`Card`](/docs/surfaces/card/) | No pricing component: `Grid columns={{ base: 1, md: 3 }}`, the price in `Heading size="display-3"`, features in `Stack as="ul"`, `class="ca-pricing-cta"` on the `Button`. See [Landing page](/docs/getting-started/recipes/#landing-page). |
 | One metric inside a panel, no box around it | [`Stat`](/docs/layout/stat/) | Card-less: `label`, `value`, `unit`, `hint`, `trend`, `trendTone`, `size`, `align`, `skeleton`. `KpiCard` is a `Stat` inside a `Card` with an icon. |
 | A painted panel with your own structure | [`Surface`](/docs/surfaces/surface/) | Elevation, material, tone, variant and radius as independent props. |
 | Spacing with no paint | [`Box`](/docs/layout/layout-primitives/) | A `div` with padding props. |

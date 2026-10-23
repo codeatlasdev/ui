@@ -22,6 +22,21 @@ import AsideReadingSrc from "~/demos/layout/page-shell/AsideReading.svelte?raw";
 </PageShell>
 ```
 
+`PageShell` never renders `<main>`. Inside `AppShellLayout` the shell is the `<main id="main">` landmark; on a page with no shell (a one-screen app) wrap it yourself, with a skip link first, or axe reports `landmark-one-main`:
+
+```svelte
+<script>
+  import { PageShell, SkipLink } from "@codeatlasdev/ui";
+</script>
+
+<SkipLink />
+<main id="main" tabindex="-1">
+  <PageShell title="Pipeline">…</PageShell>
+</main>
+```
+
+A one-page app does not need `AppShellLayout` for this. See the [Standalone page](/docs/getting-started/recipes/#standalone-page) recipe.
+
 Below 900px the header stacks: the description leads and `actions` wrap onto their own row. `Button`s share that row full-width (large tap targets); everything else (`IconButton`, `ThemeToggle`, `StatusChip`, `Chip`, `Badge`, plain text) keeps its natural size and stays at the end of the row.
 
 The shell renders `title` as the page `<h1>`; below 900px inside an `AppShellLayout` it is hidden visually because the mobile header already shows it. Inside a `PageShell`, `AppSettings` or `AppForm`, `EmptyState` and `FormSection` titles default to `<h2>` (under the page `<h1>`). Pass `headingLevel` to `EmptyState`, `FormSection` or `Card` to pick the level explicitly.

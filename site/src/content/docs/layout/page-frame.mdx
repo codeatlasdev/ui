@@ -22,7 +22,7 @@ import MapSrc from "~/demos/layout/page-frame/Map.svelte?raw";
 </PageFrame>
 ```
 
-Use `PageFrame` when a live stage (a map, a canvas) sits behind the page content. `PageShell` and `AppList` own the whole content area; `PageFrame` lays the page out *over* the stage and tells the stage what it covers. Place it as the page content of `AppShellLayout`: it fills the content area and lays its panel out inside it, leaving the rail and panel alone.
+Use `PageFrame` when a live stage (a map, a canvas) sits behind the page content. `PageShell` and `AppList` own the whole content area; `PageFrame` lays the page out *over* the stage and tells the stage what it covers. Place it as the page content of `AppShellLayout`: it fills the content area and lays its panel out inside it, leaving the rail and panel alone. It does not need the shell: it fills any `position: relative` parent that has a height, so a one-screen map app puts the stage and the `PageFrame` in its own `<main id="main" tabindex="-1">` (`PageFrame` never renders `<main>`). See [Map page without a shell](/docs/getting-started/recipes/#map-page-without-a-shell).
 
 | `mode` | Desktop | Below 900px |
 |---|---|---|
