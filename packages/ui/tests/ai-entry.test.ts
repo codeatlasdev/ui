@@ -263,6 +263,21 @@ describe("llms.txt links the agent-readable .txt form of every page and recipe (
 		expect(start).toContain(`${SITE}${llmsPagePath(ENTRY_PAGES.recipes)}`);
 	});
 
+	it("lists Standalone page first for single-screen apps", () => {
+		const withStandalone = buildLlmsIndex({
+			docs,
+			recipes: parseRecipes(
+				"## App shell\n```svelte\n<AppShellLayout />\n```\n## Standalone page\n```svelte\n<main />\n```"
+			),
+			groups: ["Getting started"],
+		});
+		const start = withStandalone.split("## Start here: build a screen")[1].split("\n## ")[0];
+		const links = start.split("\n").filter((l) => l.startsWith("- ["));
+		expect(links[0]).toContain("[Standalone page]");
+		expect(links[0]).toMatch(/single-screen|one screen|no shell/i);
+		expect(links.filter((l) => l.includes("[Standalone page]"))).toHaveLength(1);
+	});
+
 	it("states in one sentence at the top when to fetch HTML and when .txt", () => {
 		const head = out.split("\n## ")[0];
 		expect(head).toMatch(/\.txt/);

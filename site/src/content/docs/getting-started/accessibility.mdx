@@ -78,6 +78,8 @@ Both live in the `ca.utilities` layer, so they are available wherever `global.cs
 | `AppShellLayout` | `<main id="main" tabindex="-1" class="ca-shell__content">`, the page landmark, so there is nothing to add. Pass `mainId={null}` when your page renders `<main id="main" tabindex="-1">` yourself: the content region becomes a plain `div`, never a second landmark. |
 | `PageShell`, `PageFrame` | Nobody: they never render `<main>`, so on their own axe reports `landmark-one-main`. Inside `AppShellLayout` the shell supplies it; on a standalone page wrap them in your own `<main id="main" tabindex="-1">` with a `SkipLink` before it. |
 
+In development, `PageShell` and `PageFrame` warn once in the console (`[ca-ui] <PageShell> is not inside a <main> landmark…`) when they mount with no `<main>` or `[role=main]` ancestor and none anywhere in the document. It stays silent inside `AppShellLayout`, `AuthLayout`, `DocsShell` or your own `<main>`, and in production builds.
+
 Never put a second `id="main"` or a second `<main>` on a page. When a shell is embedded in a page that already has a skip link (a framed demo, a preview), pass `skipLink={false}` to `AppShellLayout`.
 
 ```svelte

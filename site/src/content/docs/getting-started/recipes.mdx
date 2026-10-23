@@ -211,6 +211,7 @@ A page inside the shell. For a form or settings page, `width="reading"` caps the
   let slug = $state("acme");
 </script>
 
+<!-- Inside the app shell, which owns <main>. With no shell, see Standalone page. -->
 <PageShell
   title={m.workspaceSettings.title}
   description={m.workspaceSettings.description}
@@ -971,6 +972,7 @@ export const m = {
   const formatMoney = (value: number) => `$${(value / 1000).toFixed(0)}k`;
 </script>
 
+<!-- Inside the app shell, which owns <main>. With no shell, see Standalone page. -->
 <PageShell title={d.title} description={d.description} maxWidth="1200px">
   {#snippet actions()}
     <Button variant="ghost" size="sm">
@@ -1201,6 +1203,7 @@ export const m = {
   );
 </script>
 
+<!-- Inside the app shell, which owns <main>. With no shell, see Standalone page. -->
 <PageFrame mode="map" side="left" width="md" sheet label={t.panelLabel} headerBorder>
   {#snippet header()}
     <h2>{t.title}</h2>
