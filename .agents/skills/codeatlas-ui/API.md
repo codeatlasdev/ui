@@ -1813,7 +1813,7 @@ Tokens: `--ca-kbd-font-size` `--ca-kbd-line-height` `--ca-kbd-size`
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded card, announced as busy. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `chart`
+Snippets: `chart`: A chart under the number, usually `<Sparkline data={...} />` from `@codeatlasdev/ui/charts`. A snippet, not a data prop: the charts subpath (and the `echarts` peer) stays out of the core entry. Give the chart its own accessible name when it carries information.
 
 Parts: `ca-kpi` `ca-kpi__chart` `ca-kpi__icon` `ca-kpi__inner`
 
