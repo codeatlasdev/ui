@@ -10,6 +10,8 @@
     value:   string | number;
     unit?:   string;
     trend?:  number;
+    /** Which direction of `trend` is good news: `'positive-up'` (default colouring), `'positive-down'` (churn, cost, latency) or `'neutral'`. See Stat. */
+    trendTone?: 'positive-up' | 'positive-down' | 'neutral';
     /** Lucide icon component; size and color are managed by KpiCard */
     icon?:   IconComponent;
     /** Loading placeholder: same size as the loaded card, announced as busy. */
@@ -17,7 +19,7 @@
     class?:  string;
   }
 
-  let { title, value, unit, trend, icon: Icon, skeleton = false, class: className = '' }: Props = $props();
+  let { title, value, unit, trend, trendTone, icon: Icon, skeleton = false, class: className = '' }: Props = $props();
 
   // Stat renders the `.ca-kpi__*` classes apps target while it sits inside a KpiCard.
   setContext(KPI_CONTEXT, true);
@@ -26,7 +28,7 @@
 <!-- A KpiCard is a Stat inside a Card: the label, number and trend typography come from Stat. -->
 <Card elevation={3} class="ca-kpi {className}" {skeleton}>
   <div class="ca-kpi__inner">
-    <Stat label={title} {value} {unit} {trend} />
+    <Stat label={title} {value} {unit} {trend} {trendTone} />
     {#if Icon}
       <span class="ca-kpi__icon" aria-hidden="true">
         <Icon size={16} stroke-width={1.75} />

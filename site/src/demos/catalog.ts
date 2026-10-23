@@ -378,6 +378,7 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "981", path: "inputs/button-group/SplitMenu" },
 	{ id: "982", path: "inputs/text-field/Addons" },
 	{ id: "983", path: "inputs/text-field/AddonButtons" },
+	{ id: "984", path: "layout/kpi-card/TrendTone" },
 ];
 
 /**

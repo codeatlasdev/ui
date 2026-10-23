@@ -60,7 +60,8 @@ Imports are from `@codeatlasdev/ui` unless the last column names a subpath.
 | Own toast de-duplication or cap, or a second line or undo button in a toast | `toast` with `id` replaces in place; `description`, `action: { label, onClick }`. Identical messages already dedupe (count) and 3 show at most | [Toast](/docs/feedback/toast/) |
 | An outlined or ghost `Button` restyled neutral with local CSS | `tone="neutral"` on `Button` (`outlined`, `ghost`) and `IconButton` | [Button](/docs/inputs/button/) |
 | A thinner `Progress` by overriding the track CSS | `Progress size="sm"` or `"md"`, or `--ca-progress-height` for another height | [Progress](/docs/feedback/progress/) |
-| A card-less metric built from `KpiCard` with the border removed | `Stat`: `label`, `value`, `unit`, `hint`, `trend`, `size`, `align` | [Stat](/docs/layout/stat/) |
+| A card-less metric built from `KpiCard` with the border removed | `Stat`: `label`, `value`, `unit`, `hint`, `trend`, `trendTone`, `size`, `align` | [Stat](/docs/layout/stat/) |
+| `trend` dropped and the delta written in `hint` because down is good (churn, cost, latency) | `trendTone="positive-down"` on `Stat` and `KpiCard`; `"neutral"` to not judge the change | [Stat](/docs/layout/stat/), [KpiCard](/docs/layout/kpi-card/) |
 | Spreadsheet-like rows, a hand-pinned first column, group rows | `SimpleTable density="compact"`, `stickyColumns`, `TableGroupRow`, `TableRow onactivate` | [SimpleTable](/docs/display/table/#dense-records-screens) |
 | An own board with drag between columns | `Kanban`: `columns`, `getId`, `onmove`, `onloadmore` | [Kanban](/docs/display/kanban/) |
 | A side detail panel built by stripping the header and padding from a `Drawer` | `Drawer chromeless` (plus `fullBleedBelow` for a full-screen phone view) | [Drawer](/docs/feedback/drawer/) |

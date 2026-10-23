@@ -12,6 +12,8 @@ import NoTrend from "~/demos/layout/kpi-card/NoTrend.svelte";
 import NoTrendSrc from "~/demos/layout/kpi-card/NoTrend.svelte?raw";
 import NegativeTrend from "~/demos/layout/kpi-card/NegativeTrend.svelte";
 import NegativeTrendSrc from "~/demos/layout/kpi-card/NegativeTrend.svelte?raw";
+import TrendTone from "~/demos/layout/kpi-card/TrendTone.svelte";
+import TrendToneSrc from "~/demos/layout/kpi-card/TrendTone.svelte?raw";
 
 ```svelte
 <script>
@@ -28,13 +30,17 @@ Put several cards in a [KpiGrid](/docs/layout/kpi-grid/) so a row never ends on 
 
 <Demo title="Basic metrics" src={MetricsSrc}><Metrics /></Demo>
 <Demo title="Without trend" description="Omit trend and the indicator disappears." src={NoTrendSrc}><NoTrend /></Demo>
-<Demo title="Negative trend" src={NegativeTrendSrc}><NegativeTrend /></Demo>
+<Demo title="Negative trend" description={"A falling number that is good news: trendTone=\"positive-down\"."} src={NegativeTrendSrc}><NegativeTrend /></Demo>
+<Demo title="Trend tone" description="Down is good for churn and latency; a neutral tone shows the change without judging it." src={TrendToneSrc}><TrendTone /></Demo>
+
+By default a rise is green and a fall red. `trendTone="positive-down"` flips the colour for metrics where down is good (churn, cost, latency); the arrow still follows the sign and the accessible label says "better" or "worse". `trendTone="neutral"` judges neither way. Do not omit `trend` to avoid a wrong colour.
 
 <Props rows={[
   { name: "title", type: "string", description: "Metric name." },
   { name: "value", type: "string | number", description: "Main value." },
   { name: "unit", type: "string", description: "Unit shown after the value (%, s, users)." },
-  { name: "trend", type: "number", description: "Percentage change. Positive is green, negative is red, zero is neutral." },
+  { name: "trend", type: "number", description: "Percentage change. The arrow follows the sign; by default a rise is green, a fall red, zero neutral." },
+  { name: "trendTone", type: "'positive-up' | 'positive-down' | 'neutral'", description: "Which direction of `trend` is good news. `'positive-down'` makes a fall green (churn, cost, latency); `'neutral'` judges neither. Adds \"better\" or \"worse\" to the accessible label." },
   { name: "icon", type: "IconComponent", description: "Lucide icon. Size and color are managed by the card." },
   { name: "skeleton", type: "boolean", default: "false", description: "Loading placeholder with the exact size of the loaded card. See Skeleton." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },

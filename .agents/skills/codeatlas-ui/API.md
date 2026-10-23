@@ -1787,6 +1787,7 @@ Tokens: `--ca-kbd-font-size` `--ca-kbd-line-height` `--ca-kbd-size`
 | `value` | `string \| number` |  |  |
 | `unit?` | `string` |  |  |
 | `trend?` | `number` |  |  |
+| `trendTone?` | `'positive-up' \| 'positive-down' \| 'neutral'` |  | Which direction of `trend` is good news: `'positive-up'` (default colouring), `'positive-down'` (churn, cost, latency) or `'neutral'`. See Stat. |
 | `icon?` | `IconComponent` |  | Lucide icon component; size and color are managed by KpiCard |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded card, announced as busy. |
 | `class?` | `string` | `''` |  |
@@ -3054,17 +3055,18 @@ Stat — a card-less statistic: label, big number, optional unit, trend and hint
 | `value` | `string \| number` |  | The number (or short text). Tabular numerals, never wraps. |
 | `unit?` | `string` |  | Unit shown after the value (`%`, `ms`, `users`). |
 | `hint?` | `string` |  | Secondary caption below the value ("12 more than last week"). |
-| `trend?` | `number` |  | Percentage change. Positive is green with an up arrow, negative red with a down arrow, zero neutral. |
+| `trend?` | `number` |  | Percentage change. The arrow follows the sign (up, down, none for zero); the colour follows `trendTone`. |
+| `trendTone?` | `'positive-up' \| 'positive-down' \| 'neutral'` |  | Which direction of `trend` is good news. `'positive-up'` (the colouring without a tone): a rise is green, a fall red. `'positive-down'` (churn, cost, latency): a fall is green, a rise red. `'neutral'`: no judgement, both muted. Setting a tone also makes the accessible label say "better" or "worse"; a zero change is always neutral. |
 | `size?` | `'sm' \| 'md' \| 'lg'` | `'md'` | Value size: `'sm'` (17px), `'md'` (24px, the default), `'lg'` (36px). |
 | `align?` | `'start' \| 'center'` | `'start'` | Text alignment inside the stat. |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded stat, announced as busy. |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-stat` `ca-stat__hint` `ca-stat__label` `ca-stat__trend` `ca-stat__trend--down` `ca-stat__trend--up` `ca-stat__unit` `ca-stat__value`
+Parts: `ca-stat` `ca-stat__hint` `ca-stat__label` `ca-stat__trend` `ca-stat__unit` `ca-stat__value`
 
 Variables: `--ca-stat-value-size`
 
-Data attributes: `data-align` (`center`), `data-size` (`lg` `md` `sm`)
+Data attributes: `data-align` (`center`), `data-size` (`lg` `md` `sm`), `data-tone` (`bad` `good` `neutral`)
 
 ## StatusChip
 

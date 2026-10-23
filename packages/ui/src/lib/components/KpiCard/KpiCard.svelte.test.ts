@@ -49,6 +49,25 @@ describe("KpiCard", () => {
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
+	it("trendTone positive-down passes through: a fall is green and better", async () => {
+		const screen = await render(KpiCard, {
+			title: "Churn",
+			value: 5,
+			trend: -1.8,
+			trendTone: "positive-down",
+		});
+		const trend = q(screen.container, ".ca-kpi__trend");
+		const probe = document.createElement("span");
+		probe.style.color = "var(--ca-semantic-success)";
+		document.body.append(probe);
+		const success = getComputedStyle(probe).color;
+		probe.remove();
+		expect(getComputedStyle(trend).color).toBe(success);
+		expect(trend.classList.contains("ca-kpi__trend--down")).toBe(true);
+		expect(trend.getAttribute("aria-label")).toBe("Trend: -1.8%, better");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
 	it("zero trend renders neutral without arrow", async () => {
 		const screen = await render(KpiCard, { title: "Revenue", value: 1, trend: 0 });
 		const trend = q(screen.container, ".ca-kpi__trend");

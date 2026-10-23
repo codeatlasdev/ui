@@ -151,7 +151,7 @@ export function restoreShell(
 		h.setAttribute("data-ca-panel", panel ? "open" : "closed");
 		if (mod) h.setAttribute("data-ca-module", mod);
 		else h.removeAttribute("data-ca-module");
-		if (width) h.style.setProperty("--ca-panel-w-stored", width + "px");
+		if (width) h.style.setProperty("--ca-panel-w-stored", `${width}px`);
 		else h.style.removeProperty("--ca-panel-w-stored");
 		if (nav) {
 			try {

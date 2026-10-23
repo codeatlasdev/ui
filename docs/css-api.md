@@ -240,6 +240,8 @@ State attributes on `dialog.ca-drawer`: `data-chromeless` (body padding 0, no he
 
 `.ca-kpi` `.ca-kpi__icon` `.ca-kpi__inner` `.ca-kpi__title` `.ca-kpi__trend` `.ca-kpi__trend--down` `.ca-kpi__trend--up` `.ca-kpi__unit` `.ca-kpi__value`
 
+The trend element (`.ca-kpi__trend`, `.ca-stat__trend`) carries `data-tone="good|bad|neutral"`: the verdict behind its colour. `--up`/`--down` only say which way the number moved; with `trendTone="positive-down"` a `--down` trend is `good`. Target `data-tone` to restyle the colour, never `--up`/`--down`.
+
 ## Lightbox
 
 `.ca-lightbox` `.ca-lightbox-in` `.ca-lightbox-out` `.ca-lightbox__action` `.ca-lightbox__caption` `.ca-lightbox__caption-text` `.ca-lightbox__close` `.ca-lightbox__counter` `.ca-lightbox__img` `.ca-lightbox__meta` `.ca-lightbox__nav` `.ca-lightbox__nav--next` `.ca-lightbox__nav--prev` `.ca-lightbox__overlay` `.ca-lightbox__sr` `.ca-lightbox__stage` `.ca-lightbox__tools` `.ca-lightbox__video`
@@ -402,6 +404,8 @@ The `skeleton` prop of `Avatar`, `KpiCard`, `TextField`, `Table`, `Card` and `Gl
 ## Stat
 
 `.ca-stat` `.ca-stat__hint` `.ca-stat__label` `.ca-stat__trend` `.ca-stat__trend--down` `.ca-stat__trend--up` `.ca-stat__unit` `.ca-stat__value`
+
+`data-tone="good|bad|neutral"` on `.ca-stat__trend`: see KpiCard. The arrow and `--up`/`--down` follow the sign; the colour follows `trendTone`.
 
 ## StatusChip
 

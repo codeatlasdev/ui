@@ -24,8 +24,14 @@
     unit?: string;
     /** Secondary caption below the value ("12 more than last week"). */
     hint?: string;
-    /** Percentage change. Positive is green with an up arrow, negative red with a down arrow, zero neutral. */
+    /** Percentage change. The arrow follows the sign (up, down, none for zero); the colour follows `trendTone`. */
     trend?: number;
+    /**
+     * Which direction of `trend` is good news. `'positive-up'` (the colouring without a tone): a rise is green, a fall red.
+     * `'positive-down'` (churn, cost, latency): a fall is green, a rise red. `'neutral'`: no judgement, both muted.
+     * Setting a tone also makes the accessible label say "better" or "worse"; a zero change is always neutral.
+     */
+    trendTone?: 'positive-up' | 'positive-down' | 'neutral';
     /** Value size: `'sm'` (17px), `'md'` (24px, the default), `'lg'` (36px). */
     size?: 'sm' | 'md' | 'lg';
     /** Text alignment inside the stat. */
@@ -36,7 +42,7 @@
   }
 
   let {
-    label, value, unit, hint, trend,
+    label, value, unit, hint, trend, trendTone,
     size = 'md',
     align = 'start',
     skeleton = false,
@@ -51,6 +57,17 @@
   const isDown = $derived(trend !== undefined && trend < 0);
   const trendLabel = $derived(
     trend !== undefined ? `${trend > 0 ? '+' : ''}${trend.toFixed(1)}%` : null
+  );
+  // good / bad / neutral: the verdict the colour (and, once a tone is set, the label) expresses.
+  const verdict = $derived.by(() => {
+    if (trendTone === 'neutral' || (!isUp && !isDown)) return 'neutral';
+    return isUp === (trendTone !== 'positive-down') ? 'good' : 'bad';
+  });
+  const trendAria = $derived(
+    trendLabel === null ? undefined
+      : trendTone && verdict !== 'neutral'
+        ? t().kpiCard.trendJudged(trendLabel, verdict === 'good')
+        : t().kpiCard.trend(trendLabel)
   );
 </script>
 
@@ -72,7 +89,8 @@
       class:ca-stat__trend--down={isDown}
       class:ca-kpi__trend--up={kpi && isUp}
       class:ca-kpi__trend--down={kpi && isDown}
-      aria-label={t().kpiCard.trend(trendLabel)}
+      data-tone={verdict}
+      aria-label={trendAria}
     >
       {isUp ? '↑' : isDown ? '↓' : ''}{trendLabel}
     </dd>
@@ -150,8 +168,9 @@
       padding: var(--ca-space-0-5) var(--ca-space-2);
     }
     .ca-stat[data-align='center'] .ca-stat__trend { align-self: center; }
-    .ca-stat__trend--up   { color: var(--ca-semantic-success); background: color-mix(in oklab, var(--ca-semantic-success) 8%, transparent); }
-    .ca-stat__trend--down { color: var(--ca-semantic-error);   background: color-mix(in oklab, var(--ca-semantic-error)   8%, transparent); }
+    .ca-stat__trend[data-tone='good'] { color: var(--ca-semantic-success); background: color-mix(in oklab, var(--ca-semantic-success) 8%, transparent); }
+    .ca-stat__trend[data-tone='bad']  { color: var(--ca-semantic-error);   background: color-mix(in oklab, var(--ca-semantic-error)   8%, transparent); }
+    .ca-stat__trend[data-tone='neutral'] { color: inherit; }
 
     .ca-stat__hint {
       margin: 0;
