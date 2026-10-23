@@ -1,6 +1,7 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { setLocale } from "../../i18n/index.js";
 import FileUpload from "./FileUpload.svelte";
 import FileUploadHandle from "./FileUploadHandle.test.svelte";
 
@@ -219,5 +220,45 @@ describe("FileUpload", () => {
 			expect(screen.container.querySelector(".ca-file-upload__list")).toBeNull();
 			expect(screen.getByTestId("count")).toHaveTextContent("0");
 		});
+	});
+});
+
+describe("FileUpload accessible name (WCAG 2.5.3)", () => {
+	afterEach(() => setLocale("en"));
+
+	it("label and hint: the name contains the visible text", async () => {
+		const screen = await render(FileUpload, {
+			label: "Workspace logo",
+			hint: "PNG or SVG, up to 2 MB.",
+		});
+		await expect
+			.element(screen.getByRole("button", { name: "Workspace logo PNG or SVG, up to 2 MB." }))
+			.toBeVisible();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("label only", async () => {
+		const screen = await render(FileUpload, { label: "Workspace logo" });
+		await expect.element(screen.getByRole("button", { name: "Workspace logo" })).toBeVisible();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("accept falls back as the visible hint and is in the name", async () => {
+		const screen = await render(FileUpload, { label: "Avatar", accept: "image/*" });
+		await expect.element(screen.getByRole("button", { name: "Avatar image/*" })).toBeVisible();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("default pt-BR label with a hint", async () => {
+		setLocale("pt-BR");
+		const screen = await render(FileUpload, { hint: "PNG ou SVG, até 2 MB." });
+		await expect
+			.element(
+				screen.getByRole("button", {
+					name: "Solte arquivos aqui ou clique para procurar PNG ou SVG, até 2 MB.",
+				})
+			)
+			.toBeVisible();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 });

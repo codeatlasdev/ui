@@ -40,6 +40,11 @@
     ...rest
   }: Props = $props();
 
+  const uid = $props.id();
+  const labelId = `${uid}-label`;
+  const hintId = `${uid}-hint`;
+  const shownHint = $derived(hint ?? accept);
+
   let dragging = $state(false);
   let errors = $state<string[]>([]);
 
@@ -98,7 +103,8 @@
     class:ca-file-upload__zone--dragging={dragging}
     role="button"
     tabindex={disabled ? -1 : 0}
-    aria-label={label ?? t().fileUpload.label}
+    aria-label={children ? (label ?? t().fileUpload.label) : undefined}
+    aria-labelledby={children ? undefined : shownHint ? `${labelId} ${hintId}` : labelId}
     ondragover={(e) => { e.preventDefault(); if (!disabled) dragging = true; }}
     ondragleave={() => { dragging = false; }}
     ondrop={handleDrop}
@@ -109,11 +115,9 @@
       {@render children()}
     {:else}
       <Upload size={24} class="ca-file-upload__icon" />
-      <span class="ca-file-upload__label">{label ?? t().fileUpload.label}</span>
-      {#if hint}
-        <span class="ca-file-upload__hint">{hint}</span>
-      {:else if accept}
-        <span class="ca-file-upload__hint">{accept}</span>
+      <span id={labelId} class="ca-file-upload__label">{label ?? t().fileUpload.label}</span>
+      {#if shownHint}
+        <span id={hintId} class="ca-file-upload__hint">{shownHint}</span>
       {/if}
     {/if}
   </div>
