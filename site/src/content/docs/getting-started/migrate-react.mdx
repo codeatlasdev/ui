@@ -211,7 +211,7 @@ One row per component on [ui.shadcn.com/docs/components](https://ui.shadcn.com/d
 | Button Group |  | `ButtonGroup` | `ButtonGroup` | `orientation="vertical"` stacks; a split button is a `DropdownMenu` with a `triggerChild` as the last member. A single choice is `SegmentedControl`. |
 | Calendar |  | `DateCalendar` | `Calendar`, `RangeCalendar` | Values are `@internationalized/date` values, not `Date`. |
 | Card |  | `Card` | `Card` | `CardHeader`/`CardTitle`/`CardContent`/`CardFooter` become `title`, children and `headerActions`. |
-| Carousel |  |  | none (gap #432): CSS scroll-snap in a class. |  |
+| Carousel |  |  | `Carousel`, `CarouselItem` | Native scroll-snap, no Embla. `label` is required; `perView`, `loop`, `autoplay` (ms, opt in), `bind:index`. |
 | Chart |  |  | `LineChart`, `BarChart`, `PieChart`, `ScatterChart`, `RadarChart`, `GaugeChart`, `HeatmapChart`, `Sparkline` | Pass data only: no options object, no colors. Import from `@codeatlasdev/ui/charts`. |
 | Checkbox | `@radix-ui/react-checkbox`, `@base-ui-components/react/checkbox` | `Checkbox` | `Checkbox` | `label` is built in; `bind:checked`. |
 | Code Block |  |  | `CodeSnippet`, `CodeTabs` | Needs the optional peer `shiki`. |

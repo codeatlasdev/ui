@@ -1,0 +1,11 @@
+{
+	"summary": "Five plan cards shown three at a time in a looping carousel.",
+	"use": "Card rows that overflow: pricing tiers, related products, team members.",
+	"spec": [
+		"`<Carousel label=\"Plans\" perView={3} loop>` over five names",
+		"Each card is `<CarouselItem><div class=\"card\">{name}</div></CarouselItem>`",
+		"`cards` is `['Starter', 'Team', 'Business', 'Enterprise', 'Partner']`"
+	],
+	"tags": ["carousel", "per-view", "loop", "cards", "scroll-snap"],
+	"shape": "wide"
+}

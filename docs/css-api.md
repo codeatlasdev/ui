@@ -88,6 +88,12 @@ Tokens: `--ca-auth-panel-bg` (any tone: overrides the panel background, a color 
 
 `.ca-checkbox` `.ca-checkbox-wrapper` `.ca-checkbox__indicator` `.ca-checkbox__label` `.ca-checkbox__label--disabled`
 
+## Carousel
+
+`.ca-carousel` `.ca-carousel__controls` `.ca-carousel__dot` `.ca-carousel__dots` `.ca-carousel__item` `.ca-carousel__nav` `.ca-carousel__next` `.ca-carousel__play` `.ca-carousel__prev` `.ca-carousel__track` `.ca-carousel__viewport`
+
+`--ca-carousel-per-view` (slides visible at once) is set inline from `perView`; `aria-current="true"` marks the current `.ca-carousel__dot`.
+
 ## Chip
 
 `.ca-chip` `.ca-chip--brand` `.ca-chip--error` `.ca-chip--info` `.ca-chip--interactive` `.ca-chip--selected` `.ca-chip--sm` `.ca-chip--success` `.ca-chip--warning` `.ca-chip__delete` `.ca-chip__icon` `.ca-chip__label`

@@ -1,0 +1,54 @@
+---
+title: Carousel
+description: Scroll-snap slides with previous and next, dots and an opt-in autoplay that always has a Pause button.
+group: Display
+order: 24
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Highlights from "~/demos/display/carousel/Highlights.svelte";
+import HighlightsSrc from "~/demos/display/carousel/Highlights.svelte?raw";
+import Cards from "~/demos/display/carousel/Cards.svelte";
+import CardsSrc from "~/demos/display/carousel/Cards.svelte?raw";
+import Autoplay from "~/demos/display/carousel/Autoplay.svelte";
+import AutoplaySrc from "~/demos/display/carousel/Autoplay.svelte?raw";
+
+```svelte
+<script>
+  import { Carousel, CarouselItem } from "@codeatlasdev/ui";
+  let index = $state(0);
+</script>
+
+<Carousel label="Product highlights" bind:index>
+  <CarouselItem>…</CarouselItem>
+  <CarouselItem>…</CarouselItem>
+</Carousel>
+```
+
+The replacement for shadcn `Carousel` (Embla). The strip is native `scroll-snap`, so touch, trackpad and the browser's own scrolling work with no pointer code; the buttons and dots only move it, and a scroll by touch updates the dots. No JavaScript carousel engine, nothing to install.
+
+<Demo title="Highlights" description="Arrows, dots and a bound index." src={HighlightsSrc}><Highlights client:visible /></Demo>
+<Demo title="Several per view" description="`perView` shows three cards; `loop` wraps at the ends." src={CardsSrc}><Cards client:visible /></Demo>
+<Demo title="Autoplay" description="Every 4 seconds, with Pause." src={AutoplaySrc}><Autoplay client:visible /></Demo>
+
+## Accessibility
+
+It follows the WAI-ARIA carousel pattern. The carousel is a labelled `role="region"` with `aria-roledescription="carousel"`; each slide is a `role="group"` named "2 of 4". Slides outside the view are `inert`, so their links and buttons leave the tab order and the reading order. The dots are labelled buttons with `aria-current` on the current one (the slides are not tab panels, so they are not a tablist). With the carousel itself focused, Left and Right (mirrored in RTL), Home and End move the slides.
+
+## Autoplay
+
+Off unless you set `autoplay` (milliseconds). When on, a Pause / Start button appears, rotation stops while focus or the pointer is inside, and the strip is `aria-live="off"` while it rotates (a rotating live region would read every slide) and `polite` once it stops. A manual move stops it for good. Under `prefers-reduced-motion: reduce` it never runs, the button is not shown and scrolling is instant. Without `loop` it stops on the last slide.
+
+<Props for="Carousel" rows={[
+  { name: "label", type: "string", description: "Accessible name of the carousel. Required." },
+  { name: "index", type: "number", default: "0", description: "First visible slide, 0-based. Bindable." },
+  { name: "perView", type: "number", default: "1", description: "Slides visible at once." },
+  { name: "loop", type: "boolean", default: "false", description: "Wrap around at the ends." },
+  { name: "dots", type: "boolean", default: "true", description: "Show the dots." },
+  { name: "arrows", type: "boolean", default: "true", description: "Show previous and next." },
+  { name: "autoplay", type: "number", default: "undefined", description: "Milliseconds between slides; unset means no autoplay." },
+  { name: "onchange", type: "(index: number) => void", default: "undefined", description: "Called when the current slide changes." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+]} />
+
+`CarouselItem` takes only `class`; give it one child that carries the slide's size and look.

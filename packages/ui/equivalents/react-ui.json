@@ -94,9 +94,8 @@
 		},
 		{
 			"shadcn": "Carousel",
-			"to": [],
-			"gap": 432,
-			"workaround": "CSS scroll-snap in a class."
+			"to": ["Carousel", "CarouselItem"],
+			"notes": "Native scroll-snap, no Embla. `label` is required; `perView`, `loop`, `autoplay` (ms, opt in), `bind:index`."
 		},
 		{
 			"shadcn": "Chart",

@@ -515,6 +515,48 @@ Snippets: `children`
 
 Parts: `ca-card-grid`
 
+## Carousel
+
+`import { Carousel } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `label` | `string` |  | Accessible name of the carousel. |
+| `index?` | `number` | `0` | `bind:` The first visible slide (0-based). Bindable. |
+| `perView?` | `number` | `1` | Slides visible at once. |
+| `loop?` | `boolean` | `false` | Wrap around at the ends. |
+| `dots?` | `boolean` | `true` | Show the dots. |
+| `arrows?` | `boolean` | `true` | Show previous / next. |
+| `autoplay?` | `number` |  | Milliseconds between slides; unset = no autoplay. |
+| `onchange?` | `(index: number) => void` |  | Called when the current slide changes. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class' \| 'children' \| 'aria-label' \| 'role' \| 'onchange'>`
+
+Parts: `ca-carousel` `ca-carousel__controls` `ca-carousel__dot` `ca-carousel__dots` `ca-carousel__nav` `ca-carousel__play` `ca-carousel__track` `ca-carousel__viewport`
+
+Variables: `--ca-state-hover`
+
+## CarouselItem
+
+`import { CarouselItem } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'role'>`
+
+Parts: `ca-carousel__item`
+
+Variables: `--ca-carousel-per-view`
+
+Tokens: `--ca-carousel-per-view`
+
 ## CepField
 
 `import { CepField } from "@codeatlasdev/ui/forms"`

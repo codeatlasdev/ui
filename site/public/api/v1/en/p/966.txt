@@ -1,0 +1,12 @@
+Use @codeatlasdev/ui demo #966 "Autoplay" (display/carousel).
+What it shows: A looping three-quote carousel that advances every 4 seconds, with a Pause button and no arrows. When to use: Rotating testimonials or announcements; autoplay is opt-in and always stoppable.
+Spec:
+- `<Carousel label="Customer quotes" autoplay={4000} loop arrows={false}>`
+- Each slide is `<CarouselItem><blockquote class="quote">{quote}</blockquote></CarouselItem>`
+- `quotes` holds three short strings
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #966 Autoplay → file, what changed, https://ui.codeatlas.com.br/docs/display/carousel#autoplay; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/966.txt   Components API: ca-ui-mcp get_component(Carousel)
