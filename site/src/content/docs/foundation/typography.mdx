@@ -51,7 +51,7 @@ Sizes are `rem` tokens times `--ca-font-scale`, like the rest of the scale. Appl
 .row-count { font: var(--ca-text-num); letter-spacing: var(--ca-text-num-tracking); }
 ```
 
-The tokens are `--ca-text-<role>-size`, `-leading`, `-tracking`, `-weight`, and `--ca-text-<role>` is the `font` shorthand (weight, size, leading, family) and `.ca-text-<role>` sets it with the tracking; both ship in the opt-in `@codeatlasdev/ui/styles/type-roles.css`.
+The tokens are `--ca-text-<role>-leading`, `-weight`, `-tracking` and the size, where `body`, `label` and `caption` keep the tokens components already read (`--ca-font-size-body1`, `-label`, `-caption`, and `--ca-label-tracking`) and the others are `--ca-text-<role>-size`, and `--ca-text-<role>` is the `font` shorthand (weight, size, leading, family) and `.ca-text-<role>` sets it with the tracking; both ship in the opt-in `@codeatlasdev/ui/styles/type-roles.css`.
 
 Override a role for the whole app with `type` in the theme. Only the parts you set change:
 

@@ -25,62 +25,32 @@ const tokens = decls(tokensCss);
 const shorthands = decls(read("styles/type-roles.css"));
 
 describe("role tokens (#375)", () => {
-	it("declares size, leading, tracking and weight for every role", () => {
-		// body, caption and num track `normal`: the consumers fall back to it, so no token is shipped.
-		const unshipped = new Set([
-			"body-tracking",
-			"caption-tracking",
-			"num-tracking",
-			"title-leading",
-			"title-tracking",
-			"title-weight",
-			"heading-leading",
-			"heading-tracking",
-			"heading-weight",
-			"num-size",
-			"num-leading",
-			"num-weight",
-			"caption-leading",
-			"caption-weight",
-			"body-leading",
-			"body-weight",
-		]);
-		for (const role of ROLES)
-			for (const part of PARTS)
-				if (!unshipped.has(`${role}-${part}`))
-					expect(tokens[`--ca-text-${role}-${part}`], `${role}-${part}`).toBeDefined();
-	});
-
-	it("declares a font shorthand per role that reads the four parts", () => {
+	it("every part of every role resolves through a fallback or a legacy token", () => {
+		// No default is shipped as a `--ca-text-*` token: each part falls back to the token it equals,
+		// and body/label/caption size and label tracking are the tokens components already read.
+		const legacy: Record<string, string> = {
+			body: "--ca-font-size-body1",
+			label: "--ca-font-size-label",
+			caption: "--ca-font-size-caption",
+		};
 		for (const role of ROLES) {
-			const v = shorthands[`--ca-text-${role}`];
-			expect(v, role).toBeDefined();
-			expect(v).toContain(`var(--ca-text-${role}-weight`);
-			expect(v).toContain(`var(--ca-text-${role}-size`);
-			expect(v).toContain(`var(--ca-text-${role}-leading`);
+			const v = shorthands[`--ca-text-${role}`] ?? "";
+			const size = legacy[role]
+				? `var(${legacy[role]})`
+				: `var(--ca-text-${role}-size, var(--ca-font-size-`;
+			expect(v, `${role} size`).toContain(size);
+			for (const part of ["weight", "leading"])
+				expect(v, `${role} ${part}`).toContain(`var(--ca-text-${role}-${part}, var(--ca-`);
 		}
 	});
 
-	it("defaults reproduce the sizes components read today", () => {
-		// The legacy tokens are derived from the roles: one source, same default values.
-		expect(tokens["--ca-font-size-label"]).toBe("var(--ca-text-label-size)");
-		expect(tokens["--ca-font-size-caption"]).toBe("var(--ca-text-caption-size)");
-		expect(tokens["--ca-font-size-body1"]).toBe("var(--ca-text-body-size)");
-		expect(tokens["--ca-label-tracking"]).toBe("var(--ca-text-label-tracking)");
-		expect(tokens["--ca-text-label-size"]).toBe("calc(0.8125rem * var(--ca-font-scale))");
-		expect(tokens["--ca-text-caption-size"]).toBe("calc(0.75rem * var(--ca-font-scale))");
-		expect(tokens["--ca-text-body-size"]).toBe("calc(0.9375rem * var(--ca-font-scale))");
-		expect(tokens["--ca-text-label-tracking"]).toBe("0.01em");
-	});
-
-	it("the size tokens scale with --ca-font-scale, directly or through the size token they reuse", () => {
-		// num ships no size token: it falls back to --ca-font-size-body2, which carries the scale.
-		for (const role of ROLES.filter((r) => r !== "num")) {
-			let v = tokens[`--ca-text-${role}-size`] ?? "";
-			const ref = /^var\((--ca-font-size-[\w-]+)\)$/.exec(v)?.[1];
-			if (ref) v = tokens[ref] ?? "";
-			expect(v, role).toContain("--ca-font-scale");
-		}
+	it("the role override writes the token components already read, defaults unchanged", () => {
+		// No second source: the size of body, label and caption, and the label tracking, are the
+		// legacy tokens at their original values; `type.<role>` sets those same tokens.
+		expect(tokens["--ca-font-size-body1"]).toBe("calc(0.9375rem * var(--ca-font-scale))");
+		expect(tokens["--ca-font-size-label"]).toBe("calc(0.8125rem * var(--ca-font-scale))");
+		expect(tokens["--ca-font-size-caption"]).toBe("calc(0.75rem * var(--ca-font-scale))");
+		expect(tokens["--ca-label-tracking"]).toBe("0.01em");
 	});
 
 	it("num is tabular and has no leading shift: its utility sets tabular-nums", () => {
@@ -91,7 +61,9 @@ describe("role tokens (#375)", () => {
 		for (const role of ROLES) {
 			const rule = new RegExp(`\\.ca-text-${role}\\s*\\{([^}]*)\\}`).exec(utilitiesCss)?.[1] ?? "";
 			expect(rule, role).toContain(`font: var(--ca-text-${role})`);
-			expect(rule, role).toContain(`letter-spacing: var(--ca-text-${role}-tracking`);
+			expect(rule, role).toContain(
+				`letter-spacing: var(--ca-${role === "label" ? "label" : `text-${role}`}-tracking`
+			);
 		}
 	});
 });
@@ -108,18 +80,18 @@ describe("ThemeOptions.type (#375)", () => {
 				type: { label: { size: "13px", leading: 1.25, tracking: "0", weight: 500 } },
 			})
 		);
-		expect(css).toContain("--ca-text-label-size: 13px;");
+		expect(css).toContain("--ca-font-size-label: 13px;");
 		expect(css).toContain("--ca-text-label-leading: 1.25;");
-		expect(css).toContain("--ca-text-label-tracking: 0;");
+		expect(css).toContain("--ca-label-tracking: 0;");
 		expect(css).toContain("--ca-text-label-weight: 500;");
-		expect(css).not.toContain("--ca-text-caption");
+		expect(css).not.toContain("--ca-font-size-caption");
 		expect(css).toMatch(/^:root,\s*\n\[data-theme-scope="light"\] \{/);
 	});
 
 	it("a partial role keeps the other parts at their defaults", () => {
 		const css = themeCSS(defineTheme({ type: { caption: { tracking: "0.005em" } } }));
 		expect(css).toContain("--ca-text-caption-tracking: 0.005em;");
-		expect(css).not.toContain("--ca-text-caption-size");
+		expect(css).not.toContain("--ca-font-size-caption");
 	});
 
 	it("the size follows --ca-font-scale: a unit-less number is a rem multiple, a length is used as written", () => {
@@ -128,14 +100,18 @@ describe("ThemeOptions.type (#375)", () => {
 	});
 
 	it("rejects an unknown role and values that would break out of a declaration", () => {
-		expect(() => defineTheme({ type: { shout: { size: "1rem" } } as never })).toThrow(
+		expect(() => themeCSS(defineTheme({ type: { shout: { size: "1rem" } } as never }))).toThrow(
 			/type\.shout/
 		);
-		expect(() => defineTheme({ type: { label: { size: "1rem; color: red" } } })).toThrow(
+		expect(() => themeCSS(defineTheme({ type: { label: { size: "1rem; color: red" } } }))).toThrow(
 			/type\.label\.size/
 		);
-		expect(() => defineTheme({ type: { label: { weight: 0 } } })).toThrow(/type\.label\.weight/);
-		expect(() => defineTheme({ type: { label: { leading: -1 } } })).toThrow(/type\.label\.leading/);
+		expect(() => themeCSS(defineTheme({ type: { label: { weight: 0 } } }))).toThrow(
+			/type\.label\.weight/
+		);
+		expect(() => themeCSS(defineTheme({ type: { label: { leading: -1 } } }))).toThrow(
+			/type\.label\.leading/
+		);
 	});
 });
 

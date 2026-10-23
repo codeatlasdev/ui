@@ -521,7 +521,7 @@ export function defineTheme(def: Partial<ThemeDefinition> = {}): ResolvedTheme {
 		controlRadius: def.controlRadius ?? "md",
 		density: def.density ?? "comfortable",
 		border: def.border ?? {},
-		type: typeScale(def.type),
+		type: def.type ?? {},
 		typography: {
 			...def.typography,
 			weights: { heading: DEFAULT_HEADING_WEIGHT, ...def.typography?.weights },
@@ -641,33 +641,38 @@ function elevationTokens(model: ElevationModel): Record<string, string> {
 	return out;
 }
 
-/** A CSS length or keyword value for a type part: no declaration separators, braces or quotes. */
-const CSS_PART = /^[\w.%+\-() ,/*]+$/;
+/** Role parts whose token already existed: the role override writes it, so components that read it follow. */
+const LEGACY: Record<string, string> = {
+	"body-size": "--ca-font-size-body1",
+	"label-size": "--ca-font-size-label",
+	"caption-size": "--ca-font-size-caption",
+	"label-tracking": "--ca-label-tracking",
+};
+
+/** Allowed shape of each type part: a length/keyword with no declaration separators, a number, or a weight. */
+const TYPE_PART: Record<keyof TypeRoleSpec, (v: unknown) => boolean> = {
+	size: (v) => typeof v === "string" && /^[\w.%+\-() ,/*]+$/.test(v),
+	tracking: (v) => typeof v === "string" && /^[\w.%+\-() ,/*]+$/.test(v),
+	leading: (v) =>
+		typeof v === "number" ? v > 0 : typeof v === "string" && /^[\w.%+\-() ,/*]+$/.test(v),
+	weight: (v) => typeof v === "number" && v >= 1 && v <= 1000,
+};
 
 /** Validate `ThemeOptions.type`: known roles, parts that cannot break out of a declaration. */
 function typeScale(type: TypeScale | undefined): TypeScale {
-	for (const [role, spec] of Object.entries(type ?? {})) {
-		if (!(TYPE_ROLES as readonly string[]).includes(role))
-			throw new Error(
-				`[codeatlasdev/ui] type.${role}: unknown role, expected one of ${TYPE_ROLES.join(", ")}`
-			);
-		const { size, leading, tracking, weight } = spec ?? {};
-		const bad = (part: string, value: unknown) =>
-			new Error(`[codeatlasdev/ui] type.${role}.${part}: invalid value ${JSON.stringify(value)}`);
-		if (size !== undefined && !(typeof size === "string" && CSS_PART.test(size)))
-			throw bad("size", size);
-		if (tracking !== undefined && !(typeof tracking === "string" && CSS_PART.test(tracking)))
-			throw bad("tracking", tracking);
-		if (
-			leading !== undefined &&
-			!(typeof leading === "number"
-				? leading > 0
-				: typeof leading === "string" && CSS_PART.test(leading))
-		)
-			throw bad("leading", leading);
-		if (weight !== undefined && !(typeof weight === "number" && weight >= 1 && weight <= 1000))
-			throw bad("weight", weight);
-	}
+	for (const [role, spec] of Object.entries(type ?? {}))
+		for (const [part, value] of [["", role], ...Object.entries(spec ?? {})] as [
+			string,
+			unknown,
+		][]) {
+			const ok = part
+				? TYPE_PART[part as keyof TypeRoleSpec]?.(value)
+				: (TYPE_ROLES as readonly string[]).includes(role);
+			if (!ok)
+				throw new Error(
+					`[codeatlasdev/ui] type.${role}${part && `.${part}`}: invalid ${part ? `value ${JSON.stringify(value)}` : `role, expected ${TYPE_ROLES.join(", ")}`}`
+				);
+		}
 	return type ?? {};
 }
 
@@ -711,9 +716,11 @@ export function designTokens(
 		root["--ca-line-height-prose"] = String(ty.lineHeight);
 	}
 	if (ty.measure) root["--ca-measure"] = ty.measure;
-	for (const [role, spec] of Object.entries(t.type) as [TypeRole, TypeRoleSpec][])
+	for (const [role, spec] of Object.entries(typeScale(t.type)) as [TypeRole, TypeRoleSpec][])
 		for (const part of ["size", "leading", "tracking", "weight"] as const)
-			if (spec[part] !== undefined) root[`--ca-text-${role}-${part}`] = String(spec[part]);
+			if (spec[part] !== undefined) {
+				root[LEGACY[`${role}-${part}`] ?? `--ca-text-${role}-${part}`] = String(spec[part]);
+			}
 	Object.assign(root, elevationTokens(t.elevation));
 	if (t.motion.scale !== undefined && t.motion.scale !== 1)
 		root["--ca-motion-scale"] = String(t.motion.scale);

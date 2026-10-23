@@ -411,7 +411,7 @@ The `skeleton` prop of `Avatar`, `KpiCard`, `TextField`, `Table`, `Card` and `Gl
 
 `.ca-text` `.ca-text-body` `.ca-text-caption` `.ca-text-heading` `.ca-text-label` `.ca-text-num` `.ca-text-title`
 
-The role classes are also an opt-in stylesheet (`@codeatlasdev/ui/styles/type-roles.css`, `ca.utilities` layer) for any element: `.ca-text-<role>` sets `font: var(--ca-text-<role>)` and the role's tracking; `.ca-text-num` adds `font-variant-numeric: tabular-nums`. Override the role with `ThemeOptions.type` or `--ca-text-<role>-{size,leading,tracking,weight}`.
+The role classes are also an opt-in stylesheet (`@codeatlasdev/ui/styles/type-roles.css`, `ca.utilities` layer) for any element: `.ca-text-<role>` sets `font: var(--ca-text-<role>)` and the role's tracking; `.ca-text-num` adds `font-variant-numeric: tabular-nums`. Override the role with `ThemeOptions.type` or `--ca-text-<role>-{size,leading,tracking,weight}` (`body`, `label` and `caption` sizes are `--ca-font-size-body1`, `-label`, `-caption`, and the label tracking is `--ca-label-tracking`).
 
 ## TextArea
 

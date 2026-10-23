@@ -30,7 +30,7 @@
   --ca-font-weight-heading:  600;
   --ca-heading-tracking:     -0.02em;
   --ca-heading-case:         none;
-  --ca-label-tracking:       var(--ca-text-label-tracking);
+  --ca-label-tracking:       0.01em;
   --ca-label-case:           none;
   --ca-overline-tracking:    0.08em;
   --ca-line-height-tight:    1.2;
@@ -185,19 +185,10 @@
   --ca-font-size-h4:      calc(1.25rem * var(--ca-font-scale));    /* 20px */
   --ca-font-size-h5:      calc(1.0625rem * var(--ca-font-scale));  /* 17px */
   --ca-font-size-h6:      calc(0.9375rem * var(--ca-font-scale));  /* 15px */
-  --ca-font-size-body1:   var(--ca-text-body-size);                /* 15px */
+  --ca-font-size-body1:   calc(0.9375rem * var(--ca-font-scale));  /* 15px */
   --ca-font-size-body2:   calc(0.8125rem * var(--ca-font-scale));  /* 13px */
-  --ca-font-size-caption: var(--ca-text-caption-size);             /* 12px */
-  --ca-font-size-label:   var(--ca-text-label-size);               /* 13px */
-  /* Type roles (#375): size, leading, tracking, weight per role; the size tokens above derive from them. */
-  --ca-text-title-size:      var(--ca-font-size-h3);                   /* 24px */
-  --ca-text-heading-size:    var(--ca-font-size-h5);                   /* 17px */
-  --ca-text-body-size:       calc(0.9375rem * var(--ca-font-scale));   /* 15px */
-  --ca-text-label-size:      calc(0.8125rem * var(--ca-font-scale));   /* 13px */
-  --ca-text-label-leading:   var(--ca-line-height-snug);
-  --ca-text-label-tracking:  0.01em;
-  --ca-text-label-weight:    var(--ca-font-weight-medium);
-  --ca-text-caption-size:    calc(0.75rem * var(--ca-font-scale));     /* 12px */
+  --ca-font-size-caption: calc(0.75rem * var(--ca-font-scale));    /* 12px */
+  --ca-font-size-label:   calc(0.8125rem * var(--ca-font-scale));  /* 13px */
   --ca-font-size-button:  calc(0.875rem * var(--ca-font-scale));   /* 14px */
   --ca-font-size-micro:   calc(0.6875rem * var(--ca-font-scale));  /* 11px: badges, eyebrows, overlines */
   --ca-font-size-nano:    calc(0.625rem * var(--ca-font-scale));   /* 10px: badge counts, tiny labels */

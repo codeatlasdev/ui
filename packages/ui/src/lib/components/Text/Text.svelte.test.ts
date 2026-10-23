@@ -38,7 +38,7 @@ describe("Text defaults reproduce the sizes components use today", () => {
 		expect(cs.fontSize).toBe(legacy);
 		expect(cs.fontWeight).toBe("500");
 		expect(px(cs.letterSpacing)).toBeCloseTo(px(legacy) * 0.01, 1);
-		expect(root.getPropertyValue("--ca-text-label-tracking").trim()).toBe("0.01em");
+		expect(root.getPropertyValue("--ca-label-tracking").trim()).toBe("0.01em");
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 

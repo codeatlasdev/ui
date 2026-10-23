@@ -3,11 +3,11 @@
 /* Shorthand tokens: weight, size / leading, family. */
 :root,
 [data-ca-tokens] {
-  --ca-text-title:   var(--ca-text-title-weight, var(--ca-font-weight-heading)) var(--ca-text-title-size) / var(--ca-text-title-leading, var(--ca-line-height-tight)) var(--ca-font-display);
-  --ca-text-heading: var(--ca-text-heading-weight, var(--ca-font-weight-heading)) var(--ca-text-heading-size) / var(--ca-text-heading-leading, var(--ca-line-height-tight)) var(--ca-font-display);
-  --ca-text-body:    var(--ca-text-body-weight, var(--ca-font-weight-regular)) var(--ca-text-body-size) / var(--ca-text-body-leading, var(--ca-line-height-body)) var(--ca-font-sans);
-  --ca-text-label:   var(--ca-text-label-weight) var(--ca-text-label-size) / var(--ca-text-label-leading) var(--ca-font-sans);
-  --ca-text-caption: var(--ca-text-caption-weight, var(--ca-font-weight-regular)) var(--ca-text-caption-size) / var(--ca-text-caption-leading, var(--ca-line-height-snug)) var(--ca-font-sans);
+  --ca-text-title:   var(--ca-text-title-weight, var(--ca-font-weight-heading)) var(--ca-text-title-size, var(--ca-font-size-h3)) / var(--ca-text-title-leading, var(--ca-line-height-tight)) var(--ca-font-display);
+  --ca-text-heading: var(--ca-text-heading-weight, var(--ca-font-weight-heading)) var(--ca-text-heading-size, var(--ca-font-size-h5)) / var(--ca-text-heading-leading, var(--ca-line-height-tight)) var(--ca-font-display);
+  --ca-text-body:    var(--ca-text-body-weight, var(--ca-font-weight-regular)) var(--ca-font-size-body1) / var(--ca-text-body-leading, var(--ca-line-height-body)) var(--ca-font-sans);
+  --ca-text-label:   var(--ca-text-label-weight, var(--ca-font-weight-medium)) var(--ca-font-size-label) / var(--ca-text-label-leading, var(--ca-line-height-snug)) var(--ca-font-sans);
+  --ca-text-caption: var(--ca-text-caption-weight, var(--ca-font-weight-regular)) var(--ca-font-size-caption) / var(--ca-text-caption-leading, var(--ca-line-height-snug)) var(--ca-font-sans);
   --ca-text-num:     var(--ca-text-num-weight, var(--ca-font-weight-medium)) var(--ca-text-num-size, var(--ca-font-size-body2)) / var(--ca-text-num-leading, var(--ca-line-height-tight)) var(--ca-font-sans);
 }
 
@@ -19,7 +19,7 @@
 .ca-text-title   { font: var(--ca-text-title);   letter-spacing: var(--ca-text-title-tracking, var(--ca-heading-tracking)); }
 .ca-text-heading { font: var(--ca-text-heading); letter-spacing: var(--ca-text-heading-tracking, var(--ca-heading-tracking)); }
 .ca-text-body    { font: var(--ca-text-body);    letter-spacing: var(--ca-text-body-tracking, normal); }
-.ca-text-label   { font: var(--ca-text-label);   letter-spacing: var(--ca-text-label-tracking); }
+.ca-text-label   { font: var(--ca-text-label);   letter-spacing: var(--ca-label-tracking); }
 .ca-text-caption { font: var(--ca-text-caption); letter-spacing: var(--ca-text-caption-tracking, normal); }
 .ca-text-num {
   font: var(--ca-text-num);
