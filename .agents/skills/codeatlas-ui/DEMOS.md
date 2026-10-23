@@ -351,6 +351,7 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 844 | Boot | feedback/splash-screen | Button, SplashScreen |
 | 845 | Decorative | display/avatar | Avatar |
 | 860 | Status tokens | layout/domain-tokens |  |
+| 861 | Type roles | foundation/typography | Text |
 | 880 | Component tokens | inputs/button | Button, IconButton, Kbd |
 | 881 | Dense CRM with component tokens | layout/empty-state | Avatar, Button, Card, EmptyState, SegmentedControl, TextArea, TextField |
 | 900 | Inline pill | display/badge | Badge |

@@ -202,6 +202,29 @@ export type Density = "compact" | "comfortable" | "airy" | number;
 /** Shadow model: how elevation is drawn. */
 export type ElevationModel = "soft" | "none" | "hard" | "glow";
 
+/** The named type roles. Each is a size / leading / tracking / weight bundle. */
+export const TYPE_ROLES = ["title", "heading", "body", "label", "caption", "num"] as const;
+export type TypeRole = (typeof TYPE_ROLES)[number];
+
+/** One type role. Every part is optional: unset parts keep the default of the role. */
+export interface TypeRoleSpec {
+	/** Font size as a CSS length (`"13px"`, `"0.8125rem"`). It replaces the default, which scales with `typography.scale`. */
+	size?: string;
+	/** Line height: a unitless number (`1.25`) or a CSS length. */
+	leading?: number | string;
+	/** Letter spacing (`"0"`, `"0.01em"`). */
+	tracking?: string;
+	/** Font weight, 1 to 1000. */
+	weight?: number;
+}
+
+/**
+ * The type scale by role: `title`, `heading`, `body`, `label`, `caption` and `num` (counts and times,
+ * with tabular digits). Library components that read `--ca-font-size-label`, `-body1` and `-caption`
+ * or `--ca-label-tracking` follow, so one entry restyles the app.
+ */
+export type TypeScale = Partial<Record<TypeRole, TypeRoleSpec>>;
+
 export interface TypographyOptions {
 	/** Multiplier on the whole UI type scale. @default 1 */
 	scale?: number;
@@ -254,6 +277,8 @@ export interface ThemeDefinition {
 	/** Border weights in px. @default { width: 1, strong: 2 } */
 	border: { width?: number; strong?: number };
 	typography: TypographyOptions;
+	/** Named type scale by role (`label`, `num`, …): size, leading, tracking and weight, overriding the defaults everywhere. */
+	type: TypeScale;
 	/** How elevation is drawn. hard = offset shadows with no blur (Neobrutalism). @default "soft" */
 	elevation: ElevationModel;
 	motion: MotionOptions;
@@ -496,6 +521,7 @@ export function defineTheme(def: Partial<ThemeDefinition> = {}): ResolvedTheme {
 		controlRadius: def.controlRadius ?? "md",
 		density: def.density ?? "comfortable",
 		border: def.border ?? {},
+		type: def.type ?? {},
 		typography: {
 			...def.typography,
 			weights: { heading: DEFAULT_HEADING_WEIGHT, ...def.typography?.weights },
@@ -615,6 +641,41 @@ function elevationTokens(model: ElevationModel): Record<string, string> {
 	return out;
 }
 
+/** Role parts whose token already existed: the role override writes it, so components that read it follow. */
+const LEGACY: Record<string, string> = {
+	"body-size": "--ca-font-size-body1",
+	"label-size": "--ca-font-size-label",
+	"caption-size": "--ca-font-size-caption",
+	"label-tracking": "--ca-label-tracking",
+};
+
+/** Allowed shape of each type part: a length/keyword with no declaration separators, a number, or a weight. */
+const TYPE_PART: Record<keyof TypeRoleSpec, (v: unknown) => boolean> = {
+	size: (v) => typeof v === "string" && /^[\w.%+\-() ,/*]+$/.test(v),
+	tracking: (v) => typeof v === "string" && /^[\w.%+\-() ,/*]+$/.test(v),
+	leading: (v) =>
+		typeof v === "number" ? v > 0 : typeof v === "string" && /^[\w.%+\-() ,/*]+$/.test(v),
+	weight: (v) => typeof v === "number" && v >= 1 && v <= 1000,
+};
+
+/** Validate `ThemeOptions.type`: known roles, parts that cannot break out of a declaration. */
+function typeScale(type: TypeScale | undefined): TypeScale {
+	for (const [role, spec] of Object.entries(type ?? {}))
+		for (const [part, value] of [["", role], ...Object.entries(spec ?? {})] as [
+			string,
+			unknown,
+		][]) {
+			const ok = part
+				? TYPE_PART[part as keyof TypeRoleSpec]?.(value)
+				: (TYPE_ROLES as readonly string[]).includes(role);
+			if (!ok)
+				throw new Error(
+					`[codeatlasdev/ui] type.${role}${part && `.${part}`}: invalid ${part ? `value ${JSON.stringify(value)}` : `role, expected ${TYPE_ROLES.join(", ")}`}`
+				);
+		}
+	return type ?? {};
+}
+
 /** Design knobs → root custom properties. Only values that differ from the stylesheet defaults. */
 export function designTokens(
 	t: Pick<
@@ -624,6 +685,7 @@ export function designTokens(
 		| "density"
 		| "border"
 		| "typography"
+		| "type"
 		| "elevation"
 		| "motion"
 		| "iconStroke"
@@ -654,6 +716,11 @@ export function designTokens(
 		root["--ca-line-height-prose"] = String(ty.lineHeight);
 	}
 	if (ty.measure) root["--ca-measure"] = ty.measure;
+	for (const [role, spec] of Object.entries(typeScale(t.type)) as [TypeRole, TypeRoleSpec][])
+		for (const part of ["size", "leading", "tracking", "weight"] as const)
+			if (spec[part] !== undefined) {
+				root[LEGACY[`${role}-${part}`] ?? `--ca-text-${role}-${part}`] = String(spec[part]);
+			}
 	Object.assign(root, elevationTokens(t.elevation));
 	if (t.motion.scale !== undefined && t.motion.scale !== 1)
 		root["--ca-motion-scale"] = String(t.motion.scale);

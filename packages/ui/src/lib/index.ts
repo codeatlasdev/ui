@@ -235,6 +235,7 @@ export { default as Tabs } from "./components/Tabs/Tabs.svelte";
 export { default as TabsContent } from "./components/Tabs/TabsContent.svelte";
 export { default as TabsList } from "./components/Tabs/TabsList.svelte";
 export { default as TabsTrigger } from "./components/Tabs/TabsTrigger.svelte";
+export { default as Text } from "./components/Text/Text.svelte";
 export { default as TextArea } from "./components/TextArea/TextArea.svelte";
 export { default as TextField } from "./components/TextField/TextField.svelte";
 export { default as ThemeIsland } from "./components/ThemeIsland/ThemeIsland.svelte";
@@ -309,6 +310,9 @@ export type {
 	SegmentedTokens,
 	TextAreaTokens,
 	ThemeDefinition,
+	TypeRole,
+	TypeRoleSpec,
+	TypeScale,
 	TypographyOptions,
 } from "./theme/define.js";
 export { defineTheme, designTokens, themeCSS } from "./theme/define.js";

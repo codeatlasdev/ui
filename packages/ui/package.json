@@ -78,6 +78,7 @@
 		"./styles/presets/*.css": "./dist/styles/presets/*.css",
 		"./styles/materials.css": "./dist/styles/materials.css",
 		"./styles/marks.css": "./dist/styles/marks.css",
+		"./styles/type-roles.css": "./dist/styles/type-roles.css",
 		"./tokens": {
 			"types": "./dist/tokens/index.d.ts",
 			"default": "./dist/tokens/index.js"

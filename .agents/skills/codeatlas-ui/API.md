@@ -2827,6 +2827,22 @@ Also accepts: `Omit<HTMLButtonAttributes, 'class' \| 'children' \| 'value' \| 't
 
 Classes: `ca-tabs-trigger` `ca-tabs-trigger__icon`
 
+## Text
+
+`import { Text } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `role?` | `Role` | `'body'` | Type role. Defaults to `body`. |
+| `as?` | `'span' \| 'p' \| 'div' \| 'strong' \| 'em' \| 'small' \| 'label' \| 'dt' \| 'dd' \| 'li'` | `'span'` | Element to render. Only the tag changes, never the look. Defaults to `span`. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Classes: `ca-text` `ca-text-body` `ca-text-caption` `ca-text-heading` `ca-text-label` `ca-text-num` `ca-text-title`
+
+Tokens: `--ca-text-body-leading` `--ca-text-body-tracking` `--ca-text-body-weight` `--ca-text-caption-leading` `--ca-text-caption-tracking` `--ca-text-caption-weight` `--ca-text-heading-leading` `--ca-text-heading-size` `--ca-text-heading-tracking` `--ca-text-heading-weight` `--ca-text-label-leading` `--ca-text-label-weight` `--ca-text-num-leading` `--ca-text-num-size` `--ca-text-num-tracking` `--ca-text-num-weight` `--ca-text-title-leading` `--ca-text-title-size` `--ca-text-title-tracking` `--ca-text-title-weight`
+
 ## TextArea
 
 `import { TextArea } from "@codeatlasdev/ui"`
@@ -3265,7 +3281,7 @@ function designStyle(id: DesignStyleId, overrides?: Partial<ThemeDefinition>): P
 Design knobs → root custom properties. Only values that differ from the stylesheet defaults.
 
 ```ts
-function designTokens(t: Pick< ResolvedTheme, | "radius" | "controlRadius" | "density" | "border" | "typography" | "elevation" | "motion" | "iconStroke" | "noise" | "paper" | "defaultStyle" >): Record<string, string>
+function designTokens(t: Pick< ResolvedTheme, | "radius" | "controlRadius" | "density" | "border" | "typography" | "type" | "elevation" | "motion" | "iconStroke" | "noise" | "paper" | "defaultStyle" >): Record<string, string>
 ```
 
 ### downloadFile
@@ -4127,7 +4143,7 @@ Types:
 | `SurfaceStyle` | `type SurfaceStyle = \| "glass" \| "frosted" \| "solid" \| "flat" \| "outlined" \| "neumorphic" \| "clay" \| "tonal" \| "chrome";` | Surface material. glass/frosted blur the backdrop; the rest are opaque. |
 | `TextAreaTokens` | `interface TextAreaTokens extends FieldTokens { minHeight?: CssValue; }` |  |
 | `TextColors` | `interface TextColors { primary: string; secondary: string; disabled: string; }` |  |
-| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; components: ComponentTokens; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
+| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; type: TypeScale; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; components: ComponentTokens; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
 | `ThemePreset` | `interface ThemePreset { id: BuiltinPresetId; label: string; swatchColor: string; hue: number; brandLight: BrandColors; brandDark: BrandColors; ramp: NeutralRamp; semanticLight: SemanticColors; semanticDark: SemanticColors; }` |  |
 | `Thickness` | `type Thickness = "ultra-thin" \| "thin" \| "regular" \| "thick" \| "chrome";` |  |
@@ -4136,6 +4152,9 @@ Types:
 | `ToastOptions` | `interface ToastOptions { variant?: ToastVariant; duration?: number; id?: string; description?: string; action?: ToastAction; }` |  |
 | `ToastVariant` | `type ToastVariant = "default" \| "success" \| "error" \| "warning" \| "info";` |  |
 | `TokenValue` | `type TokenValue = string \| { light?: string; dark?: string };` | One domain token: a single color for both schemes, or one per scheme (a missing side uses the other). |
+| `TypeRole` | `type TypeRole = (typeof TYPE_ROLES)[number];` |  |
+| `TypeRoleSpec` | `interface TypeRoleSpec { size?: string; leading?: number \| string; tracking?: string; weight?: number; }` | One type role. Every part is optional: unset parts keep the default of the role. |
+| `TypeScale` | `type TypeScale = Partial<Record<TypeRole, TypeRoleSpec>>;` | The type scale by role: `title`, `heading`, `body`, `label`, `caption` and `num` (counts and times, with tabular digits). Library components that read `--ca-font-size-label`, `-body1` and `-caption` or `--ca-label-tracking` follow, so one entry restyles the app. |
 | `TypographyOptions` | `interface TypographyOptions { scale?: number; weights?: Partial<Record<"regular" \| "medium" \| "semibold" \| "bold" \| "heading", number>>; headingTracking?: string; headingCase?: "none" \| "uppercase"; displayTracking?: string; displayLeading?: number; labelTracking?: string; labelCase?: "none" \| "uppercase"; lineHeight?: number; measure?: string; }` |  |
 | `UseDndOptions` | `interface UseDndOptions { messages?: Partial<DndMessages>; threshold?: number; holdMs?: number; edge?: number; id?: string; }` |  |
 | `UseListStateOptions` | `interface UseListStateOptions<T extends object> { data: T[]; perPage?: number; searchKeys?: (keyof T)[]; idKey?: keyof T; ofLabel?: string; }` | useListState — eliminates boilerplate state management in list/CRUD pages. |
@@ -4515,7 +4534,7 @@ function designStyle(id: DesignStyleId, overrides?: Partial<ThemeDefinition>): P
 Design knobs → root custom properties. Only values that differ from the stylesheet defaults.
 
 ```ts
-function designTokens(t: Pick< ResolvedTheme, | "radius" | "controlRadius" | "density" | "border" | "typography" | "elevation" | "motion" | "iconStroke" | "noise" | "paper" | "defaultStyle" >): Record<string, string>
+function designTokens(t: Pick< ResolvedTheme, | "radius" | "controlRadius" | "density" | "border" | "typography" | "type" | "elevation" | "motion" | "iconStroke" | "noise" | "paper" | "defaultStyle" >): Record<string, string>
 ```
 
 ### mergeTheme
@@ -4601,7 +4620,7 @@ Types:
 | `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; tokens?: PresetTokenGroups; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
 | `RouteThemes` | `type RouteThemes = Record<string, Partial<IslandTheme>>;` | Route id prefixes (`event.route.id`, e.g. `"/(marketing)"`) → the theme their pages use. Longest prefix wins. |
-| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; components: ComponentTokens; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
+| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; type: TypeScale; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; components: ComponentTokens; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
 | `ThemeHandleOptions` | `interface ThemeHandleOptions { routes?: RouteThemes; }` | Options of the second argument of `caThemeHandle`. |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
 
@@ -5717,5 +5736,5 @@ Types:
 | `PresetSizes` | `interface PresetSizes { inputFontSize?: string; }` |  |
 | `ResolvedBrand` | `interface ResolvedBrand { light: BrandColors; dark: BrandColors; }` |  |
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
-| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; components: ComponentTokens; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
+| `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; type: TypeScale; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; components: ComponentTokens; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |

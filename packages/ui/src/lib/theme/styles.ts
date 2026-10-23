@@ -6,7 +6,7 @@
 // proposals, not measurements; contrast-sensitive styles keep text tokens AA by default.
 
 import { mergeComponents } from "./components.js";
-import type { ThemeDefinition } from "./define.js";
+import type { ThemeDefinition, TypeRole } from "./define.js";
 
 export type DesignStyleId =
 	| "default"
@@ -360,6 +360,12 @@ export function mergeTheme(
 			...b.typography,
 			weights: { ...a.typography?.weights, ...b.typography?.weights },
 		},
+		type: Object.fromEntries(
+			[...new Set([...Object.keys(a.type ?? {}), ...Object.keys(b.type ?? {})])].map((role) => [
+				role,
+				{ ...a.type?.[role as TypeRole], ...b.type?.[role as TypeRole] },
+			])
+		),
 		overrides: {
 			light: { ...a.overrides?.light, ...b.overrides?.light },
 			dark: { ...a.overrides?.dark, ...b.overrides?.dark },
