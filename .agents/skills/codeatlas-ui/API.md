@@ -3194,6 +3194,8 @@ Tokens: `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
 | `requiredIndicator?` | `boolean` | `true` | `false` hides the asterisk of a `required` field (the input stays `required`), for forms where nothing is optional. |
 | `readonly?` | `boolean` | `false` |  |
 | `autocomplete?` | `HTMLInputAttributes["autocomplete"]` |  |  |
+| `prefix?` | `string \| Snippet` |  | Addon before the input, inside the field border, set apart by a divider. A string is static text (`https://`, `$`): it is read after the label, as part of the field's description, and a click on it focuses the input. A snippet is interactive content (a `Button`, `IconButton` or select) that keeps its own name and Tab stop. |
+| `suffix?` | `string \| Snippet` |  | Addon after the input, same rules as `prefix`. |
 | `revealable?` | `boolean` | `false` | `type="password"` only: adds an eye button inside the field that shows or hides the value (`aria-pressed`, localized name). |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded field, disabled, announced as busy. |
@@ -3207,13 +3209,13 @@ Tokens: `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
 
 Snippets: `leading`, `trailing`, `below`
 
-Also accepts: `Omit<HTMLInputAttributes, 'value' \| 'class' \| 'children' \| 'size' \| 'oninput' \| 'onchange' \| 'onfocus' \| 'onblur'>`
+Also accepts: `Omit<HTMLInputAttributes, 'value' \| 'class' \| 'children' \| 'size' \| 'prefix' \| 'oninput' \| 'onchange' \| 'onfocus' \| 'onblur'>`
 
-Parts: `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__adorn` `ca-tf__adorn--trail` `ca-tf__below` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__reveal` `ca-tf__wrap` `ca-tf__wrap--error` `ca-tf__wrap--focused`
+Parts: `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__addon` `ca-tf__addon--prefix` `ca-tf__addon--suffix` `ca-tf__addon--text` `ca-tf__adorn` `ca-tf__adorn--trail` `ca-tf__below` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__reveal` `ca-tf__wrap` `ca-tf__wrap--addons` `ca-tf__wrap--error` `ca-tf__wrap--focused`
 
-Variables: `--ca-field-gap` `--ca-field-label-leading` `--ca-tf-gap` `--ca-tf-label-line-height`
+Variables: `--ca-field-gap` `--ca-field-label-leading` `--ca-tf-addon-bg` `--ca-tf-gap` `--ca-tf-label-line-height`
 
-Tokens: `--ca-tf-gap` `--ca-tf-label-line-height`
+Tokens: `--ca-tf-addon-bg` `--ca-tf-gap` `--ca-tf-label-line-height`
 
 ## ThemeIsland
 

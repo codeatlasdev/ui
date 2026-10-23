@@ -433,7 +433,7 @@ The role classes are also an opt-in stylesheet (`@codeatlasdev/ui/styles/type-ro
 
 ## TextField
 
-`.ca-tf` `.ca-tf--disabled` `.ca-tf--error` `.ca-tf--sm` `.ca-tf__adorn` `.ca-tf__adorn--lead` `.ca-tf__adorn--trail` `.ca-tf__hint` `.ca-tf__hint--error` `.ca-tf__input` `.ca-tf__label` `.ca-tf__req` `.ca-tf__wrap` `.ca-tf__wrap--error` `.ca-tf__wrap--focused`
+`.ca-tf` `.ca-tf--disabled` `.ca-tf--error` `.ca-tf--sm` `.ca-tf__addon` `.ca-tf__addon--prefix` `.ca-tf__addon--suffix` `.ca-tf__addon--text` `.ca-tf__adorn` `.ca-tf__adorn--lead` `.ca-tf__adorn--trail` `.ca-tf__hint` `.ca-tf__hint--error` `.ca-tf__input` `.ca-tf__label` `.ca-tf__req` `.ca-tf__wrap` `.ca-tf__wrap--addons` `.ca-tf__wrap--error` `.ca-tf__wrap--focused`
 
 ## ThemeIsland
 
@@ -504,7 +504,7 @@ A component token is a custom property a component reads before its default: `--
 - **IconButton** `--ca-icon-btn-size-{sm,md,lg}` `--ca-icon-btn-font-weight` `--ca-icon-btn-touch-size`
 - **Kbd** `--ca-kbd-size` `--ca-kbd-font-size` `--ca-kbd-line-height`
 - **Avatar** `--ca-avatar-fallback-{bg,color,size,weight}` `--ca-avatar-{xs,sm,md,lg,xl}-fallback-{size,weight}`; prop `tone="neutral"` (`data-tone="neutral"` on `.ca-avatar`, `data-size` on named sizes)
-- **TextField / TextArea** `--ca-field-gap` `--ca-field-label-leading` `--ca-tf-gap` `--ca-tf-label-line-height` `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height` (the visible box, border included)
+- **TextField / TextArea** `--ca-field-gap` `--ca-field-label-leading` `--ca-tf-gap` `--ca-tf-label-line-height` `--ca-tf-addon-bg` `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height` (the visible box, border included)
 - **Card** `--ca-card-bg` `--ca-card-radius` `--ca-card-border` `--ca-card-shadow` (`--ca-card-padding` and `--ca-card-gap` already existed)
 - **SegmentedControl** `--ca-seg-item-{padding-x,font-size,line-height}` `--ca-seg-{sm,md}-item-{padding-x,font-size,line-height}`
 - **EmptyState** `--ca-empty-padding` `--ca-empty-title-size` `--ca-empty-title-weight`; modifiers `.ca-empty--bare` (prop `bare`) and `.ca-empty--fill` (prop `actionsFill`)

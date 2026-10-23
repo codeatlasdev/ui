@@ -1,0 +1,34 @@
+<!-- @codeatlasdev/ui demo #982 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/text-field#text-addons -->
+Element: #982 Text addons (inputs/text-field)
+What it shows: Five TextFields with text addons inside the border: a URL (https:// and .com), a price ($ and USD), a small @handle, an error with a .dev suffix and a disabled one.
+When to use: Fields whose value needs fixed context: a URL scheme, a currency, a handle, a unit or a domain suffix.
+Spec:
+- `label="Website" prefix="https://" suffix=".com"` with a description
+- `label="Price" prefix="$" suffix="USD"` with `inputmode="decimal"`
+- `label="Handle" prefix="@" size="sm"`
+- `label="Domain" suffix=".dev" error="Already taken"`
+- `label="Disabled" prefix="https://" disabled`
+- The fields are stacked in a column, `max-width: 24rem`, `gap: var(--ca-space-4)`
+Tags: input-group, text-field, prefix, suffix, addon, text, currency, url
+Needs: @codeatlasdev/ui@4.5.0
+Components: TextField
+Live demo: https://ui.codeatlas.com.br/docs/inputs/text-field#text-addons
+
+<script lang="ts">
+  import { TextField } from '@codeatlasdev/ui';
+
+  let site = $state('acme');
+  let price = $state('49');
+</script>
+
+<div class="col">
+  <TextField label="Website" prefix="https://" suffix=".com" bind:value={site} description="Read with the label: https:// acme .com" />
+  <TextField label="Price" prefix="$" suffix="USD" bind:value={price} inputmode="decimal" />
+  <TextField label="Handle" prefix="@" size="sm" value="codeatlas" />
+  <TextField label="Domain" suffix=".dev" error="Already taken" value="acme" />
+  <TextField label="Disabled" prefix="https://" disabled value="locked" />
+</div>
+
+<style>
+  .col { display: grid; gap: var(--ca-space-4); width: 100%; max-width: 24rem; }
+</style>

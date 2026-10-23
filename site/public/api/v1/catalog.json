@@ -1,12 +1,12 @@
 {
 	"version": "4.5.0",
-	"count": 359,
+	"count": 361,
 	"groups": [
 		{
 			"slug": "inputs",
 			"first": "001",
-			"last": "981",
-			"count": 81
+			"last": "983",
+			"count": 83
 		},
 		{
 			"slug": "surfaces",
@@ -16182,6 +16182,95 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/inputs/button-group#split-button-and-vertical",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "982",
+			"group": "inputs",
+			"page": "text-field",
+			"variant": "Addons",
+			"slug": "text-addons",
+			"title": "Text addons",
+			"description": "",
+			"summary": "Five TextFields with text addons inside the border: a URL (https:// and .com), a price ($ and USD), a small @handle, an error with a .dev suffix and a disabled one.",
+			"use": "Fields whose value needs fixed context: a URL scheme, a currency, a handle, a unit or a domain suffix.",
+			"spec": [
+				"`label=\"Website\" prefix=\"https://\" suffix=\".com\"` with a description",
+				"`label=\"Price\" prefix=\"$\" suffix=\"USD\"` with `inputmode=\"decimal\"`",
+				"`label=\"Handle\" prefix=\"@\" size=\"sm\"`",
+				"`label=\"Domain\" suffix=\".dev\" error=\"Already taken\"`",
+				"`label=\"Disabled\" prefix=\"https://\" disabled`",
+				"The fields are stacked in a column, `max-width: 24rem`, `gap: var(--ca-space-4)`"
+			],
+			"tags": [
+				"input-group",
+				"text-field",
+				"prefix",
+				"suffix",
+				"addon",
+				"text",
+				"currency",
+				"url"
+			],
+			"shape": "wide",
+			"components": [
+				"TextField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"TextField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/text-field#text-addons",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "983",
+			"group": "inputs",
+			"page": "text-field",
+			"variant": "AddonButtons",
+			"slug": "button-addons",
+			"title": "Button addons",
+			"description": "",
+			"summary": "Two TextFields with a button inside the border: a read-only share link with a copy IconButton and a coupon code with an Apply button.",
+			"use": "A field with its own action: copy a value, apply a code, submit a search, with the button keeping its own name and Tab stop.",
+			"spec": [
+				"`label=\"Share link\" readonly` with `suffix={copyBtn}`: a text-variant small IconButton named \"Copy link\" (\"Link copied\" after a click)",
+				"`label=\"Coupon code\"` with `suffix={applyBtn}`: a ghost small Button \"Apply\", disabled while the field is empty",
+				"The fields are stacked in a column, `max-width: 24rem`, `gap: var(--ca-space-4)`"
+			],
+			"tags": [
+				"input-group",
+				"text-field",
+				"suffix",
+				"addon",
+				"button",
+				"icon-button",
+				"copy",
+				"coupon"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"IconButton",
+				"TextField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"IconButton",
+						"TextField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/text-field#button-addons",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		}
 	]

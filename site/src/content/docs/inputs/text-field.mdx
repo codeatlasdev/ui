@@ -15,6 +15,10 @@ import Password from "~/demos/inputs/text-field/Password.svelte";
 import PasswordSrc from "~/demos/inputs/text-field/Password.svelte?raw";
 import HiddenLabel from "~/demos/inputs/text-field/HiddenLabel.svelte";
 import HiddenLabelSrc from "~/demos/inputs/text-field/HiddenLabel.svelte?raw";
+import Addons from "~/demos/inputs/text-field/Addons.svelte";
+import AddonsSrc from "~/demos/inputs/text-field/Addons.svelte?raw";
+import AddonButtons from "~/demos/inputs/text-field/AddonButtons.svelte";
+import AddonButtonsSrc from "~/demos/inputs/text-field/AddonButtons.svelte?raw";
 
 ```svelte
 <script>
@@ -30,8 +34,19 @@ An `error` replaces the `description` and is announced to assistive tech. On tou
 <Demo title="Default" description="Basic text inputs with a label." src={DefaultSrc}><Default client:visible /></Demo>
 <Demo title="With icons" description="leading and trailing snippets. Interactive trailing content must be a real button with its own label; for a password reveal use revealable." src={IconsSrc}><Icons client:visible /></Demo>
 <Demo title="States" description="Helper text, error, required, read-only, disabled and the small size." src={StatesSrc}><States client:visible /></Demo>
+<Demo title="Text addons" description={"`prefix` and `suffix` as strings: fixed context inside the border, read with the label."} src={AddonsSrc}><Addons client:visible /></Demo>
+<Demo title="Button addons" description={"`prefix` and `suffix` as snippets: a Button or IconButton keeps its own name and Tab stop."} src={AddonButtonsSrc}><AddonButtons client:visible /></Demo>
 <Demo title="Password" description="revealable adds the show/hide eye, below holds the Forgot password link, requiredIndicator={false} drops the asterisk." src={PasswordSrc}><Password client:visible /></Demo>
 <Demo title="Hidden label" description="hideLabel keeps the label for assistive tech only; maxlength and ref reach the native input." src={HiddenLabelSrc}><HiddenLabel client:visible /></Demo>
+
+## Addons (input group)
+
+`prefix` and `suffix` put an addon inside the field border, flush with it and set apart from the input by a divider (shadcn's InputGroup). Differences from `leading` and `trailing`, which are bare icons inside the padding:
+
+- **A string is static text** (`https://`, `$`, `.com`, `USD`). It is part of the field's accessible description (read after the label, before the `description` or `error`) and a click on it focuses the input. It is not repeated as a label: name the field itself with `label`.
+- **A snippet is interactive content**: an `IconButton` (`variant="text" size="sm"`), a `Button` (`variant="ghost" size="sm"`) or a native `select`. It is not hidden from assistive tech, keeps its own accessible name and Tab stop (input first, then a suffix button, in reading order), and a button must have a visible text or an `aria-label`.
+- The focus ring wraps the whole group while the input or an addon button has focus; `error` and `disabled` reach the addons.
+- `--ca-tf-addon-bg` sets the addon fill (default `--ca-action-hover`).
 
 ## Tokens
 
@@ -55,6 +70,8 @@ An `error` replaces the `description` and is announced to assistive tech. On tou
   { name: "size", type: "'sm' | 'md'", default: "'md'", description: "Field height." },
   { name: "leading", type: "Snippet", description: "Icon or element before the input." },
   { name: "trailing", type: "Snippet", description: "Icon or element after the input." },
+  { name: "prefix", type: "string | Snippet", description: "Addon before the input, inside the border. A string is text read as part of the description; a snippet is interactive content (Button, IconButton, select)." },
+  { name: "suffix", type: "string | Snippet", description: "Addon after the input, same rules as `prefix`." },
   { name: "revealable", type: "boolean", default: "false", description: "With `type=\"password\"`: adds a show/hide eye button inside the field (`aria-pressed`, localized name, 44px on touch)." },
   { name: "below", type: "Snippet", description: "Content under the field and its hint or error: a link such as Forgot password, or a strength meter." },
   { name: "skeleton", type: "boolean", default: "false", description: "Loading placeholder with the exact size of the loaded field (disabled, `aria-busy`). See Skeleton." },

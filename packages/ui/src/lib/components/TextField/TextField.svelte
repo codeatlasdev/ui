@@ -8,7 +8,7 @@
   const t = useMessages(textField);
 
   interface Props
-    extends Omit<HTMLInputAttributes, 'value' | 'class' | 'children' | 'size' | 'oninput' | 'onchange' | 'onfocus' | 'onblur'> {
+    extends Omit<HTMLInputAttributes, 'value' | 'class' | 'children' | 'size' | 'prefix' | 'oninput' | 'onchange' | 'onfocus' | 'onblur'> {
     label?:        string;
     /** Keeps `label` for assistive tech only (`.ca-sr-only`), for inline fields in a list or toolbar. */
     hideLabel?:    boolean;
@@ -27,6 +27,15 @@
     autocomplete?: HTMLInputAttributes["autocomplete"];
     leading?:      Snippet;
     trailing?:     Snippet;
+    /**
+     * Addon before the input, inside the field border, set apart by a divider. A string is static text
+     * (`https://`, `$`): it is read after the label, as part of the field's description, and a click on
+     * it focuses the input. A snippet is interactive content (a `Button`, `IconButton` or select) that
+     * keeps its own name and Tab stop.
+     */
+    prefix?:       string | Snippet;
+    /** Addon after the input, same rules as `prefix`. */
+    suffix?:       string | Snippet;
     /** `type="password"` only: adds an eye button inside the field that shows or hides the value (`aria-pressed`, localized name). */
     revealable?:   boolean;
     /** Content under the field and its hint, such as a "Forgot password?" link or a strength meter. */
@@ -60,6 +69,8 @@
     autocomplete,
     leading,
     trailing,
+    prefix,
+    suffix,
     revealable   = false,
     below,
     size         = 'md',
@@ -77,6 +88,21 @@
   let focused = $state(false);
   const id    = uid('tf');
   const hint  = $derived(description ?? helperText);
+  // Text addons describe the field ("https://", ".com"), so they join the accessible description.
+  const prefixId = `${id}-pre`;
+  const suffixId = `${id}-suf`;
+  const describedBy = $derived(
+    [
+      typeof prefix === 'string' && prefix ? prefixId : '',
+      typeof suffix === 'string' && suffix ? suffixId : '',
+      error ? `${id}-err` : hint ? `${id}-hint` : '',
+    ].filter(Boolean).join(' ') || undefined
+  );
+
+  /** A click on a text addon is a click on the field: focus the input, like a label would. */
+  function focusInput(e: MouseEvent) {
+    if (e.target === e.currentTarget) ref?.focus();
+  }
   const canReveal = $derived(revealable && type === 'password');
   let revealed    = $state(false);
   const inputType = $derived(canReveal && revealed ? 'text' : type);
@@ -89,7 +115,15 @@
     </label>
   {/if}
 
-  <div class="ca-tf__wrap" class:ca-tf__wrap--focused={focused} class:ca-tf__wrap--error={!!error}>
+  <div class="ca-tf__wrap" class:ca-tf__wrap--focused={focused} class:ca-tf__wrap--error={!!error} class:ca-tf__wrap--addons={!!prefix || !!suffix}>
+    {#if prefix}
+      {#if typeof prefix === 'string'}
+        <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
+        <span id={prefixId} class="ca-tf__addon ca-tf__addon--prefix ca-tf__addon--text" aria-disabled={disabled || skeleton ? 'true' : undefined} onclick={focusInput}>{prefix}</span>
+      {:else}
+        <span class="ca-tf__addon ca-tf__addon--prefix">{@render prefix()}</span>
+      {/if}
+    {/if}
     {#if leading}
       <span class="ca-tf__adorn ca-tf__adorn--lead" aria-hidden="true">{@render leading()}</span>
     {/if}
@@ -107,7 +141,7 @@
       {autocomplete}
       bind:value
       class="ca-tf__input"
-      aria-describedby={error ? `${id}-err` : hint ? `${id}-hint` : undefined}
+      aria-describedby={describedBy}
       aria-invalid={error ? 'true' : undefined}
       onfocus={(e) => { focused = true; onfocus?.(e); }}
       onblur={(e) => { focused = false; onblur?.(e); }}
@@ -131,6 +165,15 @@
           </button>
         {/if}
       </span>
+    {/if}
+
+    {#if suffix}
+      {#if typeof suffix === 'string'}
+        <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
+        <span id={suffixId} class="ca-tf__addon ca-tf__addon--suffix ca-tf__addon--text" aria-disabled={disabled || skeleton ? 'true' : undefined} onclick={focusInput}>{suffix}</span>
+      {:else}
+        <span class="ca-tf__addon ca-tf__addon--suffix">{@render suffix()}</span>
+      {/if}
     {/if}
   </div>
 
@@ -185,7 +228,8 @@
         box-shadow   var(--ca-duration-fast) var(--ca-ease-standard);
     }
 
-    .ca-tf__wrap--focused {
+    .ca-tf__wrap--focused,
+    .ca-tf__wrap--addons:focus-within {
       border-color: var(--ca-focus-ring);
       box-shadow: 0 0 0 var(--ca-border-width-focus) var(--ca-focus-ring);
     }
@@ -271,6 +315,41 @@
     }
     .ca-tf__reveal:disabled { cursor: not-allowed; color: var(--ca-text-disabled); }
 
+    /* ── Addons (InputGroup): inside the border, full height, set apart by a divider ─────────── */
+    .ca-tf__wrap--addons { overflow: hidden; }
+
+    .ca-tf__addon {
+      display: flex;
+      align-items: center;
+      align-self: stretch;
+      flex-shrink: 0;
+      gap: var(--ca-space-1);
+      padding: 0 var(--ca-space-2);
+      background: var(--ca-tf-addon-bg, var(--ca-action-hover));
+      color: var(--ca-text-secondary);
+      font-size: var(--ca-input-font-size);
+      white-space: nowrap;
+    }
+    /* Pull the addon over the wrapper padding so it touches the border; the divider is an inset
+       shadow (no border on a surface that already has one). */
+    .ca-tf__addon--prefix {
+      margin-inline: calc(var(--ca-space-2-5) * -1) 0;
+      box-shadow: inset calc(var(--ca-border-width) * -1) 0 0 var(--ca-outline-control);
+    }
+    .ca-tf__addon--suffix {
+      margin-inline: 0 calc(var(--ca-space-2-5) * -1);
+      box-shadow: inset var(--ca-border-width) 0 0 var(--ca-outline-control);
+    }
+    .ca-tf__addon--text { cursor: text; user-select: none; }
+    /* A control in an addon is already as tall as the field minus its own padding. */
+    .ca-tf__addon:has(button, a, select) { padding: 0 var(--ca-space-1); }
+
+    .ca-tf--disabled .ca-tf__addon {
+      background: transparent;
+      color: var(--ca-text-disabled);
+      cursor: not-allowed;
+    }
+
     .ca-tf__below { font-size: var(--ca-font-size-caption); }
 
     /* ── Helper / error text ───────────────────────────────────── */
@@ -294,6 +373,12 @@
     .ca-tf--sm .ca-tf__input {
       font-size: var(--ca-input-font-size-sm);
     }
+
+    .ca-tf--sm .ca-tf__addon {
+      font-size: var(--ca-input-font-size-sm);
+    }
+    .ca-tf--sm .ca-tf__addon--prefix { margin-inline-start: calc(var(--ca-space-2) * -1); }
+    .ca-tf--sm .ca-tf__addon--suffix { margin-inline-end: calc(var(--ca-space-2) * -1); }
 
 }
 </style>

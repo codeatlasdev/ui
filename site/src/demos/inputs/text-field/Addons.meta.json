@@ -1,0 +1,14 @@
+{
+	"summary": "Five TextFields with text addons inside the border: a URL (https:// and .com), a price ($ and USD), a small @handle, an error with a .dev suffix and a disabled one.",
+	"use": "Fields whose value needs fixed context: a URL scheme, a currency, a handle, a unit or a domain suffix.",
+	"spec": [
+		"`label=\"Website\" prefix=\"https://\" suffix=\".com\"` with a description",
+		"`label=\"Price\" prefix=\"$\" suffix=\"USD\"` with `inputmode=\"decimal\"`",
+		"`label=\"Handle\" prefix=\"@\" size=\"sm\"`",
+		"`label=\"Domain\" suffix=\".dev\" error=\"Already taken\"`",
+		"`label=\"Disabled\" prefix=\"https://\" disabled`",
+		"The fields are stacked in a column, `max-width: 24rem`, `gap: var(--ca-space-4)`"
+	],
+	"tags": ["input-group", "text-field", "prefix", "suffix", "addon", "text", "currency", "url"],
+	"shape": "wide"
+}

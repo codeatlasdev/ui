@@ -365,6 +365,8 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "961", path: "display/aspect-ratio/Embed" },
 	{ id: "980", path: "inputs/button-group/Basic" },
 	{ id: "981", path: "inputs/button-group/SplitMenu" },
+	{ id: "982", path: "inputs/text-field/Addons" },
+	{ id: "983", path: "inputs/text-field/AddonButtons" },
 ];
 
 /**

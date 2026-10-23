@@ -5,6 +5,7 @@ import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { setLocale } from "../../i18n/index.js";
 import TextField from "./TextField.svelte";
+import TextFieldAddons from "./TextFieldAddons.test.svelte";
 import TextFieldRef from "./TextFieldRef.test.svelte";
 
 describe("TextField", () => {
@@ -217,5 +218,92 @@ describe("TextField requiredIndicator", () => {
 		});
 		expect(hidden.container.querySelector(".ca-tf__req")).toBeNull();
 		await expect.element(hidden.getByRole("textbox", { name: "Email" })).toBeRequired();
+	});
+});
+
+describe("TextField addons (InputGroup)", () => {
+	it("text addons sit inside the border, around the input, in reading order", async () => {
+		const screen = await render(TextFieldAddons);
+		const input = screen.getByLabelText("Website").element() as HTMLInputElement;
+		const wrap = input.closest(".ca-tf__wrap") as HTMLElement;
+		const pre = wrap.querySelector(".ca-tf__addon--prefix") as HTMLElement;
+		const suf = wrap.querySelector(".ca-tf__addon--suffix") as HTMLElement;
+		expect(pre.textContent?.trim()).toBe("https://");
+		expect(suf.textContent?.trim()).toBe(".com");
+		const w = wrap.getBoundingClientRect();
+		const i = input.getBoundingClientRect();
+		expect(pre.getBoundingClientRect().right).toBeLessThanOrEqual(i.left + 1);
+		expect(suf.getBoundingClientRect().left).toBeGreaterThanOrEqual(i.right - 1);
+		// Flush with the border: the addon touches the wrapper's top and bottom edges.
+		expect(pre.getBoundingClientRect().top).toBeGreaterThanOrEqual(w.top);
+		expect(pre.getBoundingClientRect().height).toBeGreaterThan(w.height - 4);
+	});
+
+	it("text addons are announced with the field, after its label", async () => {
+		const screen = await render(TextFieldAddons);
+		const input = screen.getByRole("textbox", { name: "Website" });
+		await expect.element(input).toHaveAccessibleDescription("https:// .com");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("an addon is announced together with the description and the error", async () => {
+		const screen = await render(TextField, {
+			label: "Price",
+			prefix: "$",
+			description: "Per seat",
+		});
+		await expect.element(screen.getByLabelText("Price")).toHaveAccessibleDescription("$ Per seat");
+		await screen.rerender({ label: "Price", prefix: "$", error: "Required" });
+		await expect.element(screen.getByLabelText("Price")).toHaveAccessibleDescription("$ Required");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("button addons keep their own name and click without moving the value", async () => {
+		const oncopy = vi.fn();
+		const onapply = vi.fn();
+		const screen = await render(TextFieldAddons, { oncopy, onapply });
+		await screen.getByRole("button", { name: "Copy address" }).click();
+		expect(oncopy).toHaveBeenCalledOnce();
+		await screen.getByRole("button", { name: "Apply" }).click();
+		expect(onapply).toHaveBeenCalledOnce();
+		await expect.element(screen.getByLabelText("Share link")).toHaveValue("ca.dev/x");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("Tab order follows the visual order and the focus ring wraps the whole group", async () => {
+		const screen = await render(TextFieldAddons);
+		await userEvent.tab();
+		await userEvent.tab();
+		await expect.element(screen.getByLabelText("Share link")).toHaveFocus();
+		await userEvent.tab();
+		await expect.element(screen.getByRole("button", { name: "Copy address" })).toHaveFocus();
+		const wrap = screen
+			.getByRole("button", { name: "Copy address" })
+			.element()
+			.closest(".ca-tf__wrap") as HTMLElement;
+		expect(getComputedStyle(wrap).boxShadow).not.toBe("none");
+		await userEvent.tab();
+		await expect.element(screen.getByRole("button", { name: "Apply" })).toHaveFocus();
+	});
+
+	it("clicking a text addon focuses the input", async () => {
+		const screen = await render(TextFieldAddons);
+		const pre = screen.container.querySelector(".ca-tf__addon--prefix") as HTMLElement;
+		pre.click();
+		await expect.element(screen.getByLabelText("Website")).toHaveFocus();
+	});
+
+	it("disabled and error states reach the addons; axe passes in both", async () => {
+		const off = await render(TextField, { label: "Site", prefix: "https://", disabled: true });
+		await expect.element(off.getByLabelText("Site")).toBeDisabled();
+		const addon = off.container.querySelector(".ca-tf__addon--prefix") as HTMLElement;
+		expect(getComputedStyle(addon).color).toBe(
+			getComputedStyle(off.getByLabelText("Site").element()).color
+		);
+		expect(await checkA11y(off.container)).toHaveNoViolations();
+		await off.unmount();
+		const bad = await render(TextField, { label: "Site", suffix: ".com", error: "Taken" });
+		await expect.element(bad.getByLabelText("Site")).toHaveAttribute("aria-invalid", "true");
+		expect(await checkA11y(bad.container)).toHaveNoViolations();
 	});
 });

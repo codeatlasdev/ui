@@ -1,0 +1,15 @@
+Use @codeatlasdev/ui demo #982 "Text addons" (inputs/text-field).
+What it shows: Five TextFields with text addons inside the border: a URL (https:// and .com), a price ($ and USD), a small @handle, an error with a .dev suffix and a disabled one. When to use: Fields whose value needs fixed context: a URL scheme, a currency, a handle, a unit or a domain suffix.
+Spec:
+- `label="Website" prefix="https://" suffix=".com"` with a description
+- `label="Price" prefix="$" suffix="USD"` with `inputmode="decimal"`
+- `label="Handle" prefix="@" size="sm"`
+- `label="Domain" suffix=".dev" error="Already taken"`
+- `label="Disabled" prefix="https://" disabled`
+- The fields are stacked in a column, `max-width: 24rem`, `gap: var(--ca-space-4)`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #982 Text addons → file, what changed, https://ui.codeatlas.com.br/docs/inputs/text-field#text-addons; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/982.txt   Components API: ca-ui-mcp get_component(TextField)
