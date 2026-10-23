@@ -146,20 +146,26 @@ Classes: `ca-app-settings` `ca-app-settings__actions` `ca-app-settings__body` `c
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `modules` | `NavModule[]` |  |  |
+| `filterModules?` | `(module: NavModule) => boolean` |  | Hides modules the current user may not see (role, plan, feature flag). Rail, panel, bottom navigation and the active-module logic all work on the filtered list, so indexes never point at a hidden module. Return `true` to keep a module. |
 | `pathname` | `string` |  |  |
 | `onNavigate?` | `(path: string) => void` |  |  |
 | `defaultModule?` | `number` | `0` |  |
 | `persistPanel?` | `boolean` | `true` | Keeps the shell across page loads: panel open/closed, selected module, expanded sections (localStorage) and the panel scroll (sessionStorage), restored before first paint. Turn it off for demos and embeds that must always start from the defaults. |
 | `panelWidth?` | `number` | `PANEL_WIDTH` | Width of the navigation panel in px, for lists with long labels. Held between 160 and 480. The content offset and the open/close animation follow it. With `resizablePanel` it is the width used until the user drags the edge. |
 | `resizablePanel?` | `boolean` | `false` | Adds a drag handle (a keyboard-operable separator) on the panel's trailing edge. The width the user picks is kept with `persistPanel`, like the open state, and restored before paint. |
+| `collapseShortPanel?` | `boolean` | `false` | Collapses the panel to the rail for a module with 2 destinations or fewer, so a short list does not reserve a whole column of empty background. Off by default: a 2-item panel stays open (a single-destination module never shows one either way). Opening the panel for a longer module still works. |
 | `reorder?` | `NavExtras['reorder']` |  | Enables `onReorder` on sections and modules: pass the exported `NavReorder` component. Opt-in so the drag engine is only bundled by apps that reorder. |
 | `itemMenu?` | `NavExtras['itemMenu']` |  | Renders `NavItem.actions` as a "…" menu: pass the exported `NavItemMenu` component. Opt-in so DropdownMenu is only bundled by apps that use per-item menus. |
+| `stageVisible?` | `boolean` | `true` | `false` hides the stage (`visibility: hidden`, `inert`) and tells it to pause, without unmounting it: for a full-page route that covers it. A page can also set `data-ca-stage="hidden"` on `<html>` (what `PageFrame mode="page"` does). |
+| `railLabels?` | `boolean` | `false` | Shows each module's label as a caption under its rail icon. |
+| `bottomNavPrimary?` | `number` |  | Most tabs on the mobile bottom navigation. With more modules the first `bottomNavPrimary - 1` stay and the last tab is "More", a dialog with the rest. Default 5. |
+| `moreSheet?` | `Component<NavMoreSheetProps>` |  | Replaces the built-in "More" dialog with another component: pass the exported `NavMoreSheet` for a full `Sheet` (swipe to dismiss, exit animation). Opt-in because `Sheet` adds about 10 kB gzip to the shell; the built-in dialog is a plain native `<dialog>` and costs about 1 kB. |
 | `mainId?` | `string \| null` | `'main'` | `id` given to the content region, the target of the skip link. By default the region is the page's `<main id tabindex="-1">` landmark. Pass `null` when your own `<main id="main" tabindex="-1">` is the target: the region then renders as a plain `div` so the page never gets two landmarks. |
 | `skipLink?` | `boolean` | `true` | Render the "Skip to content" link. Turn it off when the shell is embedded in a page that already has one (a framed demo, a preview), so the page does not get two. |
 
-Snippets: `header`, `brand`, `railBottom`, `mobileHeaderActions`, `mobileTitle`, `children`
+Snippets: `stage` (`Snippet<[{ hidden: boolean }]>`), `header`, `brand`, `railBottom`, `railTop`, `bottomNavOverflow`, `mobileHeaderActions`, `mobileTitle`, `children`
 
-Classes: `ca-main` `ca-panel` `ca-shell` `ca-shell__content` `ca-shell__desktop-header` `ca-shell__mobile-header` `ca-sidebar`
+Classes: `ca-main` `ca-panel` `ca-shell` `ca-shell--stage` `ca-shell__body` `ca-shell__content` `ca-shell__desktop-header` `ca-shell__mobile-header` `ca-shell__stage` `ca-shell__stage--hidden` `ca-sidebar`
 
 ## AudioPlayer
 
@@ -189,12 +195,13 @@ AuthCard: authentication form card.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
+| `variant?` | `'card' \| 'plain'` | `'card'` | `plain` drops the card width cap and sets `title` at display size, for a left-aligned form (`AuthLayout align="start"`). Default `card`. |
 | `title?` | `string` |  |  |
 | `subtitle?` | `string` |  |  |
 
 Snippets: `footer`, `children`
 
-Classes: `ca-auth-card` `ca-auth-card__body` `ca-auth-card__footer` `ca-auth-card__header` `ca-auth-card__subtitle` `ca-auth-card__title`
+Classes: `ca-auth-card` `ca-auth-card--plain` `ca-auth-card__body` `ca-auth-card__footer` `ca-auth-card__header` `ca-auth-card__subtitle` `ca-auth-card__title`
 
 ## AuthLayout
 
@@ -205,13 +212,17 @@ AuthLayout: two-column layout for authentication pages.
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `logoMark?` | `string` | `'CA'` |  |
-| `logoName?` | `string` | `'CodeAtlas UI'` |  |
+| `logoName?` | `string` |  | Name beside the mark. Defaults to "CodeAtlas UI" unless `brand` is set. |
 | `logoHref?` | `string` | `'/'` |  |
-| `mobileBrand?` | `boolean` | `true` | Below 768px the side panel is hidden; `true` shows a compact strip with the brand above the form. |
+| `mobileBrand?` | `boolean` | `true` | While the side panel is hidden, `true` shows a compact strip with the brand above the form. A `header` snippet replaces the strip. |
+| `panelSide?` | `'left' \| 'right'` | `'left'` | Which side the panel sits on. |
+| `panelBleed?` | `boolean` | `false` | `true` fills the panel edge to edge with the `panel` snippet: no padding, no logo, no decorative blobs. The panel sticks to the viewport height. |
+| `panelHidden?` | `'md' \| 'lg'` | `'md'` | Viewport width from which the panel shows: `md` 900px, `lg` 1200px. Below it only the form shows. |
+| `align?` | `'center' \| 'start'` | `'center'` | Horizontal alignment of the form: centered (default) or flush to the start. |
 
-Snippets: `brand`, `panel`, `children`
+Snippets: `brand`, `panel`, `header`, `children`
 
-Classes: `ca-auth` `ca-auth__blob` `ca-auth__blob--a` `ca-auth__blob--b` `ca-auth__blob--c` `ca-auth__blobs` `ca-auth__col` `ca-auth__logo` `ca-auth__mark` `ca-auth__mobile-brand` `ca-auth__mobile-mark` `ca-auth__mobile-name` `ca-auth__name` `ca-auth__panel` `ca-auth__panel-inner` `ca-auth__slot`
+Classes: `ca-auth` `ca-auth--right` `ca-auth__blob` `ca-auth__blob--a` `ca-auth__blob--b` `ca-auth__blob--c` `ca-auth__blobs` `ca-auth__col` `ca-auth__col--framed` `ca-auth__col--start` `ca-auth__header` `ca-auth__logo` `ca-auth__main` `ca-auth__mark` `ca-auth__mobile-brand` `ca-auth__mobile-mark` `ca-auth__mobile-name` `ca-auth__name` `ca-auth__panel` `ca-auth__panel--bleed` `ca-auth__panel-inner` `ca-auth__slot`
 
 ## Avatar
 
@@ -274,7 +285,11 @@ Classes: `ca-badge` `ca-badge--brand` `ca-badge--dot` `ca-badge--error` `ca-badg
 | `modules` | `NavModule[]` |  |  |
 | `activeIndex` | `number` |  |  |
 | `onSelect` | `(index: number) => void` |  |  |
+| `primary?` | `number` | `5` | Most tabs on the bar. With more modules than this, the first `primary - 1` stay and the last tab is "More", a sheet with the rest. Default 5 (4 modules + More once there are 6 or more). |
+| `moreSheet?` | `Component<NavMoreSheetProps>` |  | Swap the built-in "More" dialog for another component, e.g. the exported `NavMoreSheet` (a full `Sheet` with swipe-to-dismiss and an exit animation). Opt-in because `Sheet` adds about 10 kB gzip to the shell; the built-in dialog needs nothing the shell does not bundle. |
 | `class?` | `string` | `''` |  |
+
+Snippets: `overflow`
 
 Classes: `ca-bottom-nav` `ca-bottom-nav__btn` `ca-bottom-nav__btn--active` `ca-bottom-nav__icon` `ca-bottom-nav__label`
 
@@ -314,6 +329,7 @@ Classes: `ca-breadcrumb__current` `ca-breadcrumb__item` `ca-breadcrumb__link` `c
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `variant?` | `Variant` | `'filled'` |  |
+| `tone?` | `Tone` | `'brand'` | `'neutral'` draws `outlined` and `ghost` without brand colour (neutral label and border), for a secondary action beside a brand `filled` one. Other variants ignore it. |
 | `size?` | `Size` | `'md'` |  |
 | `disabled?` | `boolean` | `false` |  |
 | `loading?` | `boolean` | `false` | Shows a spinner in place of `leading`, sets `aria-busy` and blocks interaction. Label is kept. |
@@ -329,7 +345,7 @@ Snippets: `children`, `leading`, `trailing`
 
 Also accepts: `AnchorAttributes \| ButtonAttributes`
 
-Classes: `ca-btn` `ca-btn--destructive` `ca-btn--filled` `ca-btn--full-width` `ca-btn--ghost` `ca-btn--glass` `ca-btn--lg` `ca-btn--loading` `ca-btn--md` `ca-btn--outlined` `ca-btn--sm` `ca-btn__leading` `ca-btn__trailing`
+Classes: `ca-btn` `ca-btn--destructive` `ca-btn--filled` `ca-btn--full-width` `ca-btn--ghost` `ca-btn--glass` `ca-btn--lg` `ca-btn--loading` `ca-btn--md` `ca-btn--neutral` `ca-btn--outlined` `ca-btn--sm` `ca-btn__leading` `ca-btn__trailing`
 
 ## Calendar
 
@@ -384,6 +400,7 @@ Card — a Surface with a header (`title`, `headerActions`), padding and an opti
 | `padding?` | `'none' \| 'sm' \| 'md' \| 'lg' \| (string & {}) \| number` |  | Content padding: `'none'`, `'sm'` (12px), `'md'` (20px, the default), `'lg'` (32px), or any CSS length (`'1.5rem'`) or number (px). It sets `--ca-card-padding` on this card only. `flush` is the alias of `'none'` and wins over `padding`. |
 | `flush?` | `boolean` | `false` | Removes all padding, for tables, images and code that touch the edges. |
 | `full?` | `boolean` | `false` | `width: 100%`. |
+| `gap?` | `'sm' \| 'md' \| 'lg' \| (string & {}) \| number` |  | Stacks the children in a column with this spacing: `'sm'` (8px), `'md'` (16px), `'lg'` (24px), or any CSS length / number (px). Omit for normal flow. Without it several inline controls (Checkbox, Switch, TextField) sit side by side with no space between them. |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded card (content keeps its layout, hidden), announced as busy. |
 | `class?` | `string` | `''` |  |
 
@@ -464,6 +481,27 @@ Classes: `ca-checkbox` `ca-checkbox-wrapper` `ca-checkbox__indicator` `ca-checkb
 | `class?` | `string` | `''` |  |
 
 Classes: `ca-chip` `ca-chip--brand` `ca-chip--error` `ca-chip--info` `ca-chip--interactive` `ca-chip--selected` `ca-chip--sm` `ca-chip--success` `ca-chip--warning` `ca-chip__delete` `ca-chip__icon` `ca-chip__label`
+
+## ChipGroup
+
+`import { ChipGroup } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `value?` | `string` | `''` | `bind:` Selected value. `''` means nothing selected. |
+| `items` | `ChipGroupItem[]` |  |  |
+| `label?` | `string` |  | Visible title of the group; it is also the group's accessible name. |
+| `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`). |
+| `description?` | `string` |  |  |
+| `error?` | `string` |  | Field-level error: shown with `role="alert"`, sets `aria-invalid` and `aria-describedby` on the group. |
+| `name?` | `string` |  | Native `name` of the radios, so the value is part of `FormData` on a plain form submit. |
+| `required?` | `boolean` | `false` | Native `required`: a plain form blocks submit until a chip is picked. |
+| `disabled?` | `boolean` | `false` |  |
+| `class?` | `string` | `''` |  |
+| `aria-label?` | `string` |  | Accessible name when there is no visible `label`. |
+| `onchange?` | `(value: string) => void` |  |  |
+
+Classes: `ca-chip-group` `ca-chip-group__check` `ca-chip-group__chip` `ca-chip-group__hint` `ca-chip-group__hint--error` `ca-chip-group__input` `ca-chip-group__label` `ca-chip-group__list` `ca-chip-group__req` `ca-chip-group__text`
 
 ## CodeSnippet
 
@@ -920,7 +958,9 @@ Drawer: side panel, second layer.
 | `side?` | `'left' \| 'right' \| 'bottom'` | `'right'` |  |
 | `title?` | `string` |  | Heading of the default header, and the accessible name of the panel. |
 | `hideTitle?` | `boolean` | `false` | Keeps `title` as the accessible name but hides the heading visually; the header shrinks to the close button. |
+| `chromeless?` | `boolean` | `false` | Omits the header (and its close button) and the body padding: the content brings its own header, close button and scroll area. Name the panel with `title` (screen readers only), `aria-label` or `aria-labelledby`. |
 | `width?` | `string` | `'360px'` | Width (left/right). Default: 360px |
+| `fullBleedBelow?` | `'sm' \| 'md' \| 'lg'` |  | Below this breakpoint (`sm` 600px, `md` 900px, `lg` 1200px) a left/right panel is exactly the viewport width and height (`--ca-vh`), without radius, border or the page strip; safe-area padding is kept. |
 | `class?` | `string` | `''` |  |
 | `onOpenChange?` | `(open: boolean) => void` |  |  |
 
@@ -1323,6 +1363,7 @@ Snippets: `children`
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `variant?` | `Variant` | `'glass'` |  |
+| `tone?` | `Tone` | `'brand'` | `'neutral'` draws `outlined` without brand colour (neutral border and icon). `text` is always neutral. |
 | `size?` | `Size` | `'md'` |  |
 | `disabled?` | `boolean` | `false` |  |
 | `loading?` | `boolean` | `false` | Replaces the icon with a spinner, sets `aria-busy` and blocks interaction. |
@@ -1334,7 +1375,7 @@ Snippets: `children`
 
 Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class' \| 'children' \| 'onclick' \| 'aria-label'>`
 
-Classes: `ca-icon-btn` `ca-icon-btn--filled` `ca-icon-btn--glass` `ca-icon-btn--lg` `ca-icon-btn--loading` `ca-icon-btn--md` `ca-icon-btn--sm` `ca-icon-btn--text`
+Classes: `ca-icon-btn` `ca-icon-btn--filled` `ca-icon-btn--glass` `ca-icon-btn--lg` `ca-icon-btn--loading` `ca-icon-btn--md` `ca-icon-btn--neutral` `ca-icon-btn--outlined` `ca-icon-btn--sm` `ca-icon-btn--text`
 
 ## Image
 
@@ -1371,6 +1412,27 @@ Classes: `ca-image`
 
 Classes: `ca-install` `ca-install__body` `ca-install__close` `ca-install__glyph` `ca-install__icon` `ca-install__steps` `ca-install__text` `ca-install__title`
 
+## Kanban
+
+`import { Kanban } from "@codeatlasdev/ui"` (generic: `T`)
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `columns` | `KanbanColumn<T>[]` |  |  |
+| `getId` | `(card: T) => string` |  | Stable id of a card. |
+| `onmove?` | `(move: KanbanMove<T>) => void` |  | A card was moved (drag, keyboard or "Move to…"). Apply it to your data: `to.index` is always 0 with `drop="container"`. |
+| `onloadmore?` | `(columnId: string) => void` |  | A column wants its next page (its list scrolled near the end, or "Load more" was pressed). |
+| `canMove?` | `boolean` | `true` | Cards can be moved. `false` hides the menu and turns dragging off. Default true. |
+| `drop?` | `'container' \| 'position'` | `'container'` | `container` (default): the column is the drop target, no insertion line, `to.index` is 0: right for columns the server orders (newest first). `position`: the card lands between cards. |
+| `compact?` | `boolean` |  | Force the mobile layout (one column at a time, tab strip). Default: automatic below the `sm` breakpoint (600px) of the board's own width. |
+| `label?` | `string` |  | Accessible name of the board. |
+| `nearEnd?` | `number` | `240` | Distance from the end of a column list (px) at which `onloadmore` fires. Default 240. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `card` (`Snippet<[T, KanbanCardState]>`), `empty` (`Snippet<[KanbanColumn<T>, { canMove: boolean }]>`), `header` (`Snippet<[KanbanColumn<T>]>`)
+
+Classes: `ca-kanban` `ca-kanban--mobile` `ca-kanban__board` `ca-kanban__body` `ca-kanban__card` `ca-kanban__col` `ca-kanban__count` `ca-kanban__dot` `ca-kanban__empty` `ca-kanban__head` `ca-kanban__list` `ca-kanban__more` `ca-kanban__move` `ca-kanban__rail` `ca-kanban__skeleton` `ca-kanban__tab` `ca-kanban__tabs` `ca-kanban__title`
+
 ## Kbd
 
 `import { Kbd } from "@codeatlasdev/ui"`
@@ -1397,7 +1459,7 @@ Classes: `ca-kbd`
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded card, announced as busy. |
 | `class?` | `string` | `''` |  |
 
-Classes: `ca-kpi` `ca-kpi__icon` `ca-kpi__inner` `ca-kpi__title` `ca-kpi__top` `ca-kpi__trend` `ca-kpi__trend--down` `ca-kpi__trend--up` `ca-kpi__unit` `ca-kpi__value` `ca-kpi__value-row`
+Classes: `ca-kpi` `ca-kpi__icon` `ca-kpi__inner`
 
 ## KpiGrid
 
@@ -1516,6 +1578,40 @@ Classes: `ca-loading-boundary` `ca-loading-boundary__content`
 | `class?` | `string` | `''` |  |
 
 Classes: `ca-locale` `ca-locale--compact` `ca-locale__code` `ca-locale__name`
+
+## MapControls
+
+`import { MapControls } from "@codeatlasdev/ui/map"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `locate?` | `boolean` | `false` | Show the geolocate button (asks for the location permission on click). |
+| `class?` | `string` | `''` |  |
+
+Classes: `ca-map-controls` `ca-map-controls__needle`
+
+## MapStage
+
+`import { MapStage } from "@codeatlasdev/ui/map"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `engine?` | `"maplibre" \| "mapbox"` | `'maplibre'` | `"maplibre"` (default, no token) or `"mapbox"` (needs `accessToken`). The matching package is a peer you install. |
+| `accessToken?` | `string` |  | Mapbox access token. Required for `engine="mapbox"`. |
+| `styles` | `MapStyles` |  | Basemap style per color scheme. The map switches style when `colorScheme.resolved` changes, without being recreated. |
+| `layers?` | `unknown[]` |  | deck.gl layers drawn interleaved in the map. Needs `@deck.gl/core` and `@deck.gl/mapbox`. Replace the array to update. |
+| `fit?` | `MapBounds` |  | Bounds to fit, with `padding`. Changing it fits again. |
+| `padding?` | `Partial<MapPadding>` |  | Pixels covered by UI on each side (a sidebar, a bottom sheet), kept clear when fitting. Each side defaults to the active `PageFrame`'s `stageInsets`, or 0 without one. |
+| `center?` | `[number, number]` |  |  |
+| `zoom?` | `number` |  |  |
+| `label?` | `string` |  | Accessible name of the map region. |
+| `class?` | `string` | `''` |  |
+| `onmapready?` | `(map: MapInstance) => void` |  | Called once with the engine's map object after the first style loads. |
+| `mapOptions?` | `Record<string, unknown>` |  | Extra constructor options passed to the engine's `Map` (for example `maxZoom`, `projection`). |
+
+Snippets: `children`
+
+Classes: `ca-map` `ca-map__canvas` `ca-map__overlay`
 
 ## MaskedField
 
@@ -1685,6 +1781,23 @@ Classes: `ca-nav-progress` `ca-nav-progress__bar`
 
 Snippets: `actions`
 
+## NavMoreSheet
+
+`import { NavMoreSheet } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `open` | `boolean` | `false` | `bind:` |
+| `title` | `string` |  |  |
+| `rest` | `NavModule[]` |  | Modules that did not fit on the bar. |
+| `visibleCount` | `number` |  | Index of `rest[0]` inside the full module list. |
+| `activeIndex` | `number` |  |  |
+| `onPick` | `(index: number) => void` |  |  |
+
+Snippets: `overflow`
+
+Classes: `ca-bottom-nav__more` `ca-bottom-nav__more-btn` `ca-bottom-nav__more-btn--active` `ca-bottom-nav__more-extra` `ca-bottom-nav__more-icon` `ca-bottom-nav__more-label`
+
 ## NavReorder
 
 `import { NavReorder } from "@codeatlasdev/ui"`
@@ -1728,6 +1841,28 @@ Classes: `ca-notif-action` `ca-notif-actions` `ca-notif-bell` `ca-notif-empty` `
 
 Classes: `ca-nf` `ca-nf--disabled` `ca-nf--sm` `ca-nf__btn` `ca-nf__hint` `ca-nf__hint--error` `ca-nf__input` `ca-nf__label` `ca-nf__req` `ca-nf__wrap` `ca-nf__wrap--error` `ca-nf__wrap--focused`
 
+## PageFrame
+
+`import { PageFrame } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `mode?` | `'map' \| 'split' \| 'page'` | `'map'` | `map` (default): floating panel. `split`: work area plus stage strip. `page`: opaque full page, stage hidden. |
+| `side?` | `'left' \| 'right'` | `'left'` | Which edge the panel (or the split's work area) sits on. |
+| `width?` | `'sm' \| 'md' \| 'lg' \| 'xl'` | `'md'` | Panel width on desktop: `sm` 352px, `md` 416px, `lg` 544px, `xl` 704px. Ignored by `split` and `page`. |
+| `sheet?` | `boolean` | `false` | Below 900px, `mode="map"` becomes a non-modal bottom sheet (no backdrop, no focus trap, the stage above stays interactive) instead of a full-screen layer. |
+| `detent?` | `Detent` | `'half'` | `bind:` Sheet height step: `peek` (header only), `half` (~45% of the area, the default) or `full`. Bindable; dragging or the handle's arrow keys change it. |
+| `mobileStage?` | `boolean` | `false` | `mode="split"` below 900px: show the stage instead of the work area. |
+| `padded?` | `boolean` | `true` | Pads the body. Turn off for full-bleed tables and maps. |
+| `headerBorder?` | `boolean` | `false` | Draws a separator under the header. |
+| `publishInsets?` | `boolean` | `true` | Publish the covered rectangle on `stageInsets`. Turn off for a frame that is not over the stage. |
+| `label?` | `string` |  | Accessible name of the panel (it is a `region`). |
+| `class?` | `string` | `''` |  |
+
+Snippets: `header`, `toolbar`, `footer`, `children`
+
+Classes: `ca-page-frame` `ca-page-frame__body` `ca-page-frame__footer` `ca-page-frame__grip` `ca-page-frame__handle` `ca-page-frame__header` `ca-page-frame__panel` `ca-page-frame__toolbar`
+
 ## PageShell
 
 `import { PageShell } from "@codeatlasdev/ui"`
@@ -1738,11 +1873,13 @@ Classes: `ca-nf` `ca-nf--disabled` `ca-nf--sm` `ca-nf__btn` `ca-nf__hint` `ca-nf
 | `description?` | `string` |  |  |
 | `gap?` | `number` |  |  |
 | `maxWidth?` | `string` |  |  |
+| `width?` | `'reading' \| 'wide'` | `'wide'` | Caps the content column. `reading` is ~46rem (forms, settings: readable line length, inputs that do not stretch edge to edge); `wide` (default) uses the full shell width. With an `aside` the cap applies to the content column and the aside sits next to it. |
+| `asideLabel?` | `string` |  | Accessible name of the `<aside>` landmark. Defaults to "Page sidebar" (localized). |
 | `class?` | `string` | `''` |  |
 
-Snippets: `actions`, `children`
+Snippets: `actions`, `aside`, `children`
 
-Classes: `ca-page-shell` `ca-page-shell__actions` `ca-page-shell__body` `ca-page-shell__description` `ca-page-shell__header` `ca-page-shell__meta` `ca-page-shell__title`
+Classes: `ca-page-shell` `ca-page-shell__actions` `ca-page-shell__aside` `ca-page-shell__body` `ca-page-shell__description` `ca-page-shell__frame` `ca-page-shell__header` `ca-page-shell__layout` `ca-page-shell__layout--aside` `ca-page-shell__layout--reading` `ca-page-shell__meta` `ca-page-shell__title`
 
 ## Pagination
 
@@ -1878,6 +2015,7 @@ Classes: `ca-popover-content` `ca-popover__trigger`
 | `indeterminate?` | `boolean` | `false` |  |
 | `class?` | `string` | `''` |  |
 | `label?` | `string` |  |  |
+| `size?` | `'sm' \| 'md' \| 'lg'` | `'lg'` | Bar height: `'sm'` (4px), `'md'` (6px) or `'lg'` (8px, the default). For another height set `--ca-progress-height` on the element or an ancestor; the ends stay pill-shaped. |
 
 Classes: `ca-progress` `ca-progress__indicator` `ca-progress__indicator--indeterminate` `ca-progress__track`
 
@@ -1919,11 +2057,12 @@ Classes: `ca-radio-card` `ca-radio-card__desc` `ca-radio-card__head` `ca-radio-c
 | `modules` | `NavModule[]` |  |  |
 | `activeIndex` | `number` |  |  |
 | `onSelect` | `(index: number) => void` |  |  |
+| `labels?` | `boolean` | `false` | Shows the module label under each icon (small caption). The button's name is the same either way. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `brand`, `bottom`
+Snippets: `brand`, `top`, `bottom`
 
-Classes: `ca-rail` `ca-rail__bottom` `ca-rail__bottom-sep` `ca-rail__dock` `ca-rail__icon` `ca-rail__icon--active` `ca-rail__logo` `ca-rail__logo-mark` `ca-rail__pip` `ca-rail__sep`
+Classes: `ca-rail` `ca-rail__bottom` `ca-rail__bottom-sep` `ca-rail__dock` `ca-rail__icon` `ca-rail__icon--active` `ca-rail__icon--labeled` `ca-rail__label` `ca-rail__logo` `ca-rail__logo-mark` `ca-rail__pip` `ca-rail__sep` `ca-rail__top`
 
 ## RangeCalendar
 
@@ -2191,10 +2330,15 @@ Classes: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__acti
 | `class?` | `string` | `''` |  |
 | `responsive?` | `'scroll' \| 'cards'` | `'scroll'` | `scroll` (default): regular table. `cards`: when its own width is below the `sm` breakpoint (600px) each row becomes a card. Each cell's caption is its column header; set `data-label` on a `<td>` only to override it. |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: the table keeps its exact box (rows stay laid out, hidden) and is announced as busy. Pass the same rows you will show, or placeholder rows, so the height matches. |
+| `density?` | `'default' \| 'compact'` | `'default'` | `compact`: rows of at most 40px (spreadsheet-like, thousands of rows). `default` keeps the roomy rows. |
+| `frame?` | `boolean` | `true` | `false` drops the table's own border and radius, for a table inside an already framed panel. |
+| `scroll?` | `'x' \| 'none'` | `'x'` | `x` (default): the root is a focusable, horizontally scrolling region. `none`: the root is `overflow: visible` and the caller owns scrolling, so the sticky header sticks to the page or panel that scrolls vertically. |
+| `stickyColumns?` | `number` | `0` | Pins the first N columns to the left while the table scrolls horizontally (checkbox + primary column). Needs `scroll="none"` inside a scroller you own, or the default `x`. |
+| `headerCase?` | `'upper' \| 'sentence'` | `'upper'` | `upper` (default): micro uppercase labels. `sentence`: regular-size labels in their own case. |
 
 Snippets: `children`
 
-Classes: `ca-table` `ca-table--cards` `ca-table-root`
+Classes: `ca-table` `ca-table--bare` `ca-table--cards` `ca-table--compact` `ca-table--pinned` `ca-table--sentence` `ca-table-root` `ca-table-root--static`
 
 ## SiteHeader
 
@@ -2295,6 +2439,26 @@ Snippets: `children`
 Also accepts: `PolymorphicAttributes<T, Pick<LayoutProps, 'gap' \| 'p' \| 'px' \| 'py' \| 'align' \| 'justify'>>`
 
 Classes: `ca-stack`
+
+## Stat
+
+`import { Stat } from "@codeatlasdev/ui"`
+
+Stat — a card-less statistic: label, big number, optional unit, trend and hint. It has no surface, border or padding and inherits its colour from the container, so it sits inside a Card, a panel or a flex/grid row. `KpiCard` is a Stat inside a Card.
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `label` | `string` |  | What is measured. One line: truncates with an ellipsis when the container is narrow. |
+| `value` | `string \| number` |  | The number (or short text). Tabular numerals, never wraps. |
+| `unit?` | `string` |  | Unit shown after the value (`%`, `ms`, `users`). |
+| `hint?` | `string` |  | Secondary caption below the value ("12 more than last week"). |
+| `trend?` | `number` |  | Percentage change. Positive is green with an up arrow, negative red with a down arrow, zero neutral. |
+| `size?` | `'sm' \| 'md' \| 'lg'` | `'md'` | Value size: `'sm'` (17px), `'md'` (24px, the default), `'lg'` (36px). |
+| `align?` | `'start' \| 'center'` | `'start'` | Text alignment inside the stat. |
+| `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded stat, announced as busy. |
+| `class?` | `string` | `''` |  |
+
+Classes: `ca-stat` `ca-stat__hint` `ca-stat__label` `ca-stat__trend` `ca-stat__trend--down` `ca-stat__trend--up` `ca-stat__unit` `ca-stat__value`
 
 ## StatusChip
 
@@ -2415,6 +2579,19 @@ Also accepts: `HTMLTableAttributes`
 
 Classes: `ca-table` `ca-table-container` `ca-table-root`
 
+## TableGroupRow
+
+`import { TableGroupRow } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `colspan` | `number` |  | Number of columns to span (the table's column count). |
+| `collapsible?` | `boolean` | `false` | Renders the label as a toggle button with `aria-expanded`. Without it the row is a static section label. |
+| `open?` | `boolean` | `true` | `bind:` Expanded state, bindable. The rows below the group row are the caller's `{#if open}`. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `label`
+
 ## TableOfContents
 
 `import { TableOfContents } from "@codeatlasdev/ui"`
@@ -2427,6 +2604,31 @@ Classes: `ca-table` `ca-table-container` `ca-table-root`
 | `class?` | `string` | `''` |  |
 
 Classes: `ca-toc` `ca-toc--inline` `ca-toc--rail` `ca-toc__current` `ca-toc__label` `ca-toc__list` `ca-toc__sub` `ca-toc__summary-label`
+
+## TableRow
+
+`import { TableRow } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `selected?` | `boolean` |  | Marks the row `aria-selected` and paints the selected tint (pinned cells stay opaque). |
+| `onactivate?` | `(event: MouseEvent \| KeyboardEvent) => void` |  | Makes the row interactive: reachable by Tab, activates on click, Enter and Space, with an inset focus ring. Events from inline controls (checkbox, button, link, menu, input) never activate it. |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLAttributes<HTMLTableRowElement>, 'children' \| 'onclick' \| 'onkeydown'>`
+
+## TableSortHeader
+
+`import { TableSortHeader } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `sort?` | `'none' \| 'asc' \| 'desc'` | `'none'` | Current sort direction of this column. `none` renders the idle icon and no `aria-sort`. |
+| `onsort?` | `() => void` |  | Called when the header button is pressed; the caller owns the sort state and the next direction. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
 
 ## Tabs
 
@@ -2535,8 +2737,10 @@ Classes: `ca-ta` `ca-ta--disabled` `ca-ta__hint` `ca-ta__hint--error` `ca-ta__in
 | `helperText?` | `string` |  |  |
 | `disabled?` | `boolean` | `false` |  |
 | `required?` | `boolean` | `false` |  |
+| `requiredIndicator?` | `boolean` | `true` | `false` hides the asterisk of a `required` field (the input stays `required`), for forms where nothing is optional. |
 | `readonly?` | `boolean` | `false` |  |
 | `autocomplete?` | `HTMLInputAttributes["autocomplete"]` |  |  |
+| `revealable?` | `boolean` | `false` | `type="password"` only: adds an eye button inside the field that shows or hides the value (`aria-pressed`, localized name). |
 | `size?` | `'sm' \| 'md'` | `'md'` |  |
 | `skeleton?` | `boolean` | `false` | Loading placeholder: same size as the loaded field, disabled, announced as busy. |
 | `class?` | `string` | `''` |  |
@@ -2547,11 +2751,11 @@ Classes: `ca-ta` `ca-ta--disabled` `ca-ta__hint` `ca-ta__hint--error` `ca-ta__in
 | `onfocus?` | `(e: FocusEvent) => void` |  |  |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
 
-Snippets: `leading`, `trailing`
+Snippets: `leading`, `trailing`, `below`
 
 Also accepts: `Omit<HTMLInputAttributes, 'value' \| 'class' \| 'children' \| 'size' \| 'oninput' \| 'onchange' \| 'onfocus' \| 'onblur'>`
 
-Classes: `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__adorn` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__wrap` `ca-tf__wrap--error` `ca-tf__wrap--focused`
+Classes: `ca-tf` `ca-tf--disabled` `ca-tf--sm` `ca-tf__adorn` `ca-tf__adorn--trail` `ca-tf__below` `ca-tf__hint` `ca-tf__hint--error` `ca-tf__input` `ca-tf__label` `ca-tf__req` `ca-tf__reveal` `ca-tf__wrap` `ca-tf__wrap--error` `ca-tf__wrap--focused`
 
 ## ThemeToggle
 
@@ -3401,6 +3605,21 @@ const shadows: {
 }
 ```
 
+### stageInsets
+
+`import { stageInsets } from "@codeatlasdev/ui"`
+
+The rectangle the active `PageFrame` covers over the stage, in px from each stage edge. `stageInsets.current` is reactive and mirrored to `--ca-stage-inset-*` on `<html>`.
+
+```ts
+const stageInsets: {
+  readonly current: StageInsets;
+  set: (key: symbol, rect: StageInsets) => void;
+  clear: (key: symbol) => void;
+  reset: () => void;
+}
+```
+
 ### storageGet
 
 `import { storageGet } from "@codeatlasdev/ui"`
@@ -3465,17 +3684,19 @@ function throttle<T extends (...args: unknown[]) => unknown>(fn: T, limit: numbe
 
 `import { toast } from "@codeatlasdev/ui"`
 
-Toast queue: `toast.show(message, opts)` and the `success`/`error`/`warning`/`info` shortcuts push an item, `toast.remove(id)` drops it. Render the queue with `<Toaster />` once in the root layout.
+Toast queue: `toast.show(message, opts)` and the `success`/`error`/`warning`/`info` shortcuts push an item, `toast.remove(id)` drops it. An identical message and variant bumps `count` and restarts the timer instead of stacking, at most 3 show at once (the oldest goes), and `{ id }` replaces a specific toast in place. `description` adds a secondary line and `action: { label, onClick }` one inline button (8 s by default). `pause(id)`/`resume(id)` hold the auto-dismiss timer while a toast is hovered or focused. Render the queue with `<Toaster />` once in the root layout.
 
 ```ts
 const toast: {
   readonly items: ToastItem[];
   remove: (id: string) => void;
-  show: (message: string, opts?: { variant?: ToastVariant; duration?: number; }) => string;
-  success: (message: string, duration?: number) => string;
-  error: (message: string, duration?: number) => string;
-  warning: (message: string, duration?: number) => string;
-  info: (message: string, duration?: number) => string;
+  pause: (id: string) => void;
+  resume: (id: string) => void;
+  show: (message: string, o?: ToastOptions) => string;
+  success: (message: string, o?: number | ToastOptions) => string;
+  error: (message: string, o?: number | ToastOptions) => string;
+  warning: (message: string, o?: number | ToastOptions) => string;
+  info: (message: string, o?: number | ToastOptions) => string;
 }
 ```
 
@@ -3604,7 +3825,7 @@ Types:
 | `DesignStyle` | `interface DesignStyle { id: DesignStyleId; label: string; description: string; taxonomy: string[]; theme: Partial<ThemeDefinition>; }` |  |
 | `DesignStyleId` | `type DesignStyleId = \| "default" \| "liquid" \| "swiss" \| "brutalism" \| "neumorphism" \| "glassmorphism" \| "material" \| "fluent" \| "apple" \| "bento" \| "claymorphism" \| "y2k" \| "editorial" \| "terminal" \| "sketchbook";` |  |
 | `Direction` | `type Direction = (typeof DIRECTION)[number];` |  |
-| `Dnd` | `interface Dnd { readonly controller: DndController; readonly instructionsId: string; readonly instructions: string; readonly active: string \| null; sortable(getOptions: () => SortableOptions): (node: HTMLElement) => () => void; dropzone(getOptions: () => DropzoneOptions): (node: HTMLElement) => () => void; draggable<T>(getOptions: () => DraggableOptions<T>): (node: HTMLElement) => () => void; cancel(): void; }` |  |
+| `Dnd` | `interface Dnd { readonly controller: DndController; readonly instructionsId: string; readonly instructions: string; readonly active: string \| null; sortable(getOptions: () => SortableOptions): (node: HTMLElement) => () => void; dropzone(getOptions: () => DropzoneOptions): (node: HTMLElement) => () => void; scroller(getOptions?: () => ScrollerOptions): (node: HTMLElement) => () => void; draggable<T>(getOptions: () => DraggableOptions<T>): (node: HTMLElement) => () => void; cancel(): void; }` |  |
 | `DndDropEvent` | `interface DndDropEvent<T = unknown> { id: string; data: T \| undefined; from: DndPosition; to: DndPosition; }` |  |
 | `DndMessages` | `interface DndMessages { instructions: string; lifted: (label: string, position: number, total: number) => string; moved: (label: string, position: number, total: number, container?: string) => string; over: (label: string, zone: string) => string; dropped: (label: string, position: number, total: number, container?: string) => string; cancelled: (label: string) => string; }` | Screen reader strings. `i18n` fills them from the locale catalog; each is optional. |
 | `DndPosition` | `interface DndPosition { container: string; index: number; }` | Where an item sits: a container id and an index inside it (zones use index 0). |
@@ -3641,7 +3862,8 @@ Types:
 | `MotionOptions` | `interface MotionOptions { scale?: number; easing?: "standard" \| "emphasized" \| "spring" \| "linear" \| "steps"; enter?: "default" \| "none"; }` |  |
 | `NavExtras` | `interface NavExtras { reorder?: Component<NavReorderProps>; itemMenu?: Component<{ label: string; actions: Snippet }>; }` | Opt-in nav features passed to `AppShellLayout` (`reorder`, `itemMenu`), shared through context. |
 | `NavItem` | `interface NavItem { id: string; label: string; icon: IconComponent; path: string; badge?: number; count?: number; color?: string; leading?: Snippet; actions?: Snippet; isNew?: boolean; shortcut?: string; description?: string; }` |  |
-| `NavModule` | `interface NavModule { id: string; label: string; icon: IconComponent; basePath: string; pathPrefixes?: string[]; items: (NavItem \| NavSection)[]; onReorder?: (e: NavReorderEvent) => void; }` |  |
+| `NavModule` | `interface NavModule { id: string; label: string; icon: IconComponent; basePath: string; pathPrefixes?: string[]; items: (NavItem \| NavSection)[]; onReorder?: (e: NavReorderEvent) => void; badge?: number \| "dot"; badgeLabel?: string; }` |  |
+| `NavMoreSheetProps` | `interface NavMoreSheetProps { open: boolean; title: string; rest: NavModule[]; visibleCount: number; activeIndex: number; overflow?: Snippet; onPick: (index: number) => void; }` | Props of the opt-in `NavMoreSheet` (see `AppShellLayout.moreSheet`). |
 | `NavReorderEvent` | `interface NavReorderEvent { id: string; from: number; to: number; }` | A drop in a reorderable list: `id` of the item that moved, from and to indexes inside `items`. |
 | `NavReorderProps` | `interface NavReorderProps { items: NavItem[]; onReorder: (e: NavReorderEvent) => void; label: string; isActive: (item: NavItem) => boolean; }` | Props of the opt-in `NavReorder` list (see `NavExtras.reorder`). |
 | `NavSection` | `interface NavSection { label?: string; collapsible?: boolean; defaultOpen?: boolean; items: NavItem[]; onReorder?: (e: NavReorderEvent) => void; }` |  |
@@ -3659,8 +3881,9 @@ Types:
 | `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; background?: string; sunken?: string; surface?: string; overlay?: string; text?: string; textSecondary?: string; textHint?: string; textDisabled?: string; borderSubtle?: string; border?: string; borderStrong?: string; success?: string; warning?: string; info?: string; error?: string; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. |
 | `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
 | `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
-| `SortableOptions` | `interface SortableOptions { id: string; group?: string; getItems: () => readonly string[]; getLabel?: (id: string) => string; label?: string; axis?: "y" \| "x"; handle?: string; disabled?: boolean; onDrop: (e: DndDropEvent) => void; }` |  |
+| `SortableOptions` | `interface SortableOptions { id: string; group?: string; getItems: () => readonly string[]; getLabel?: (id: string) => string; label?: string; axis?: "y" \| "x"; drop?: "position" \| "container"; handle?: string; disabled?: boolean; onDrop: (e: DndDropEvent) => void; }` |  |
 | `Space` | `type Space = (typeof SPACE)[number] \| `${(typeof SPACE)[number]}`;` |  |
+| `StageInsets` | `interface StageInsets { top: number; right: number; bottom: number; left: number; }` |  |
 | `SurfaceColors` | `interface SurfaceColors { sunken: string; base: string; raised: string; overlay: string; }` |  |
 | `SurfaceStyle` | `type SurfaceStyle = \| "glass" \| "frosted" \| "solid" \| "flat" \| "outlined" \| "neumorphic" \| "clay" \| "tonal" \| "chrome";` | Surface material. glass/frosted blur the backdrop; the rest are opaque. |
 | `TextColors` | `interface TextColors { primary: string; secondary: string; disabled: string; }` |  |
@@ -3669,7 +3892,8 @@ Types:
 | `ThemePreset` | `interface ThemePreset { id: BuiltinPresetId; label: string; swatchColor: string; hue: number; brandLight: BrandColors; brandDark: BrandColors; ramp: NeutralRamp; semanticLight: SemanticColors; semanticDark: SemanticColors; }` |  |
 | `Thickness` | `type Thickness = "ultra-thin" \| "thin" \| "regular" \| "thick" \| "chrome";` |  |
 | `TimeValue` | `type TimeValue = Time \| CalendarDateTime \| ZonedDateTime;` | Accepted by TimeField `placeholder` / `minValue` / `maxValue`. |
-| `ToastItem` | `interface ToastItem { id: string; message: string; variant: ToastVariant; duration: number; }` |  |
+| `ToastItem` | `interface ToastItem { id: string; message: string; variant: ToastVariant; duration: number; count?: number; description?: string; action?: ToastAction; }` |  |
+| `ToastOptions` | `interface ToastOptions { variant?: ToastVariant; duration?: number; id?: string; description?: string; action?: ToastAction; }` |  |
 | `ToastVariant` | `type ToastVariant = "default" \| "success" \| "error" \| "warning" \| "info";` |  |
 | `TypographyOptions` | `interface TypographyOptions { scale?: number; weights?: Partial<Record<"regular" \| "medium" \| "semibold" \| "bold" \| "heading", number>>; headingTracking?: string; headingCase?: "none" \| "uppercase"; labelTracking?: string; labelCase?: "none" \| "uppercase"; lineHeight?: number; measure?: string; }` |  |
 | `UseDndOptions` | `interface UseDndOptions { messages?: Partial<DndMessages>; threshold?: number; holdMs?: number; edge?: number; id?: string; }` |  |
@@ -4125,6 +4349,60 @@ Types:
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
 | `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
+
+## @codeatlasdev/ui/map
+
+### mapColors
+
+`import { mapColors } from "@codeatlasdev/ui/map"`
+
+Reads the theme at call time. Reading `colorScheme` registers the dependency, so a `$derived` or `$effect` that calls this re-runs on scheme, preset and surface-style changes.
+
+```ts
+function mapColors(): MapColors
+```
+
+### rgbaCss
+
+`import { rgbaCss } from "@codeatlasdev/ui/map"`
+
+`[r, g, b, a]` as a CSS `rgba()` string, for MapLibre/Mapbox paint properties.
+
+```ts
+function rgbaCss(options: Rgba): string
+```
+
+### tokenColor
+
+`import { tokenColor } from "@codeatlasdev/ui/map"`
+
+A design token (`--ca-brand-main`) or any CSS color (`#f59e0b`, `oklch(...)`, `color-mix(...)`) as `[r, g, b, a]` for deck.gl and map paint properties. `alpha` (0-1) multiplies the color's own alpha. An unset token is transparent black. Server-side it returns transparent black too.
+
+```ts
+function tokenColor(token: string, alpha?: number): Rgba
+```
+
+### useMapTheme
+
+`import { useMapTheme } from "@codeatlasdev/ui/map"`
+
+Reactive map theme for a component: `theme.scheme`, `theme.colors`, `theme.color(token, alpha?)`. Call it during component init.
+
+```ts
+function useMapTheme(): MapTheme
+```
+
+Types:
+
+| Type | Declaration | Notes |
+|---|---|---|
+| `MapBounds` | `type MapBounds = [[number, number], [number, number]];` | `[[west, south], [east, north]]` in lng/lat. |
+| `MapColors` | `interface MapColors { brand: Rgba; brandMuted: Rgba; surface: Rgba; text: Rgba; textMuted: Rgba; outline: Rgba; success: Rgba; warning: Rgba; error: Rgba; info: Rgba; }` | Semantic map colors as `[r, g, b, a]`, resolved from the live `--ca-*` tokens. |
+| `MapInstance` | `type MapInstance = import("maplibre-gl").Map;` | The map object of the engine in use (`maplibre-gl` `Map` or `mapbox-gl` `Map`). Both share the methods this entry uses: `setStyle`, `jumpTo`, `flyTo`, `fitBounds`, `zoomIn`, `zoomOut`, `resetNorth`, `getBearing`, `on`/`off`, `addControl`. |
+| `MapPadding` | `interface MapPadding { top: number; right: number; bottom: number; left: number; }` | Pixels the map keeps clear on each side when fitting (UI that covers the stage). |
+| `MapStyles` | `interface MapStyles<S = string \| object> { light: S; dark: S; }` | A style URL or an inline style object, for the light and dark scheme. |
+| `MapTheme` | `interface MapTheme { readonly scheme: "light" \| "dark"; readonly colors: MapColors; color: (token: string, alpha?: number) => Rgba; }` | Which basemap style to show and the matching palette. `scheme` is `"light"` or `"dark"`. |
+| `Rgba` | `type Rgba = [number, number, number, number];` | `[r, g, b, a]`: r, g, b in 0-255, a in 0-1 (what `@deck.gl/core` `Color` expects, alpha scaled by the caller). |
 
 ## @codeatlasdev/ui/seo
 
