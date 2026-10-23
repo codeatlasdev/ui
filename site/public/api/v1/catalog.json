@@ -1,24 +1,24 @@
 {
 	"version": "4.5.0",
-	"count": 314,
+	"count": 325,
 	"groups": [
 		{
 			"slug": "inputs",
 			"first": "001",
-			"last": "421",
-			"count": 69
+			"last": "640",
+			"count": 70
 		},
 		{
 			"slug": "surfaces",
 			"first": "065",
-			"last": "079",
-			"count": 15
+			"last": "482",
+			"count": 16
 		},
 		{
 			"slug": "feedback",
 			"first": "080",
 			"last": "641",
-			"count": 31
+			"count": 33
 		},
 		{
 			"slug": "display",
@@ -35,8 +35,8 @@
 		{
 			"slug": "layout",
 			"first": "165",
-			"last": "481",
-			"count": 30
+			"last": "642",
+			"count": 36
 		},
 		{
 			"slug": "charts",
@@ -61,6 +61,12 @@
 			"first": "256",
 			"last": "386",
 			"count": 39
+		},
+		{
+			"slug": "map",
+			"first": "800",
+			"last": "800",
+			"count": 1
 		}
 	],
 	"elements": [
@@ -14157,6 +14163,422 @@
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{
+			"id": "482",
+			"group": "surfaces",
+			"page": "card",
+			"variant": "Stacked",
+			"slug": "stacked-controls",
+			"title": "Stacked controls",
+			"description": "",
+			"summary": "A glass Card titled Trending topics that stacks three Checkbox controls in a column with gap=\"sm\", the title aligned with the controls.",
+			"use": "Settings and filter cards whose content is several inline controls (Checkbox, Switch, TextField) that need vertical spacing.",
+			"spec": [
+				"`<Card material=\"glass\" title=\"Trending topics\" headingLevel={3} gap=\"sm\" class=\"stacked\">` with `max-width: 320px`",
+				"Three `<Checkbox label=\"Hacker News\" />` children: Hacker News, Product Hunt, Lobsters",
+				"`gap=\"sm\"` stacks the children in a column with 8px between them; the title shares the checkboxes' left edge"
+			],
+			"tags": [
+				"card",
+				"gap",
+				"stack",
+				"checkbox",
+				"title",
+				"glass",
+				"settings"
+			],
+			"shape": "tall",
+			"components": [
+				"Card",
+				"Checkbox"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card",
+						"Checkbox"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/surfaces/card#stacked-controls",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "490",
+			"group": "feedback",
+			"page": "toast",
+			"variant": "Dedupe",
+			"slug": "dedupe-and-replace-by-id",
+			"title": "Dedupe and replace by id",
+			"description": "Ten identical errors collapse into one toast with a count; the upload toast is replaced in place by its id.",
+			"summary": "Two buttons: one fires the same error ten times and shows a single toast with a ×10 badge, the other replaces an uploading toast by id.",
+			"use": "Polling or parallel requests that fail with the same message, and progress toasts that turn into a result.",
+			"spec": [
+				"`<Toaster />` mounted once, `toast` imported from `@codeatlasdev/ui`",
+				"Dedupe: `toast.error('Too many requests, retry later.')` called in a loop of 10 keeps one toast, bumps its count badge and restarts its timer",
+				"Replace: `toast.info('Uploading report.pdf…', { id: 'upload', duration: 0 })` then `toast.success('report.pdf uploaded.', { id: 'upload' })` swaps the same toast in place",
+				"Both triggers are `<Button variant=\"outlined\"`"
+			],
+			"tags": [
+				"toast",
+				"toaster",
+				"dedupe",
+				"id",
+				"replace",
+				"notification",
+				"count"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"Toaster"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"Toaster",
+						"toast"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/toast#dedupe-and-replace-by-id",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "492",
+			"group": "feedback",
+			"page": "toast",
+			"variant": "Actions",
+			"slug": "description-and-action",
+			"title": "Description and action",
+			"description": "A description under the title, a single inline action, and both. The action is a real button reachable with Tab.",
+			"summary": "Three buttons that fire a toast with a description, with one inline action, and with both.",
+			"use": "A toast that needs a secondary line of detail or a single shortcut such as Undo, Open or Mark as qualified.",
+			"spec": [
+				"`<Toaster />` mounted once, `toast` imported from `@codeatlasdev/ui`",
+				"Description: `toast.success('Task completed', { description: 'Next step scheduled for tomorrow 09:00' })`",
+				"Action: `toast.warning('Sequence paused for Acme', {` with `action: { label: 'Mark as qualified'`, whose `onClick` runs and dismisses the toast; an actionable toast lasts 8 seconds",
+				"Both: `description` and `action` in the same options object",
+				"All triggers are `<Button variant=\"outlined\"`"
+			],
+			"tags": [
+				"toast",
+				"toaster",
+				"action",
+				"description",
+				"undo",
+				"notification"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"Toaster"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"Toaster",
+						"toast"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/toast#description-and-action",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "530",
+			"group": "layout",
+			"page": "app-shell",
+			"variant": "RailLabels",
+			"slug": "labels-search-slot-badges-and-more",
+			"title": "Labels, search slot, badges and More",
+			"description": "railLabels, railTop, module badges, bottomNavOverflow and filterModules. Narrow the viewport below 900px to see the More sheet.",
+			"summary": "An app shell with captions under the rail icons, a search trigger on top of the rail, per-module badges and a More sheet on mobile.",
+			"use": "Apps with many modules, a command palette, per-module counters and role-based navigation.",
+			"spec": [
+				"`<AppShellLayout {modules} filterModules={(m) => admin || m.id !== 'settings'} {pathname} onNavigate={(path) => (pathname = path)} railLabels persistPanel={false} mainId={null} skipLink={false}>` with `railTop` (a ghost search `Button`, aria-label 'Search, command K') and `bottomNavOverflow` (an outlined full-width 'Account' `Button`)",
+				"7 modules: Inbox (`badge: 12`), Map (`badge: 'dot'`, `badgeLabel: 'Search running'`), People (`badge: 3`, `badgeLabel: '3 tasks pending'`), Alerts, Search, Home, Settings; below 900px the bar shows 4 modules plus a More tab that opens a sheet with the rest",
+				"`filterModules` is driven by an `admin` `$state`; a glass `Card` holds a hint and an outlined `Button` that toggles it",
+				"Page is `<PageShell title=\"Labeled rail\" description={pathname}>`; stage height is `height: 440px`"
+			],
+			"tags": [
+				"app-shell",
+				"rail",
+				"labels",
+				"badge",
+				"bottom-nav",
+				"overflow",
+				"filter-modules",
+				"search"
+			],
+			"shape": "wide",
+			"components": [
+				"AppShellLayout",
+				"Button",
+				"PageShell",
+				"Card"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AppShellLayout",
+						"Button",
+						"PageShell",
+						"Card",
+						"NavModule"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/app-shell#labels-search-slot-badges-and-more",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "531",
+			"group": "layout",
+			"page": "app-shell",
+			"variant": "Stage",
+			"slug": "stage",
+			"title": "Stage",
+			"description": "A draggable stand-in for a map. Navigate with the panel: the mount count stays at 1 and the camera stays where you left it.",
+			"summary": "An app shell with a persistent stage behind the pages: mounted once, click-through content, hide and pause.",
+			"use": "Map, canvas, video or 3D products where the pages float over one live layer that must keep its state across routes.",
+			"spec": [
+				"`<AppShellLayout {modules} {pathname} onNavigate={(path) => (pathname = path)} {stage} {stageVisible} persistPanel={false} mainId={null} skipLink={false}>` with `stage` a snippet that draws the map",
+				"The map is a draggable grid whose camera lives in `$state`; an attachment counts each mount in `mounts` with `untrack` (a tracked `+=` would loop), shown in the page",
+				"One module `id: 'field'` with 3 items: Leads, Routes, Report",
+				"The page is `<PageShell title=\"Floating over the stage\" description={pathname}>` with a `ca-stage-panel` wrapper around a glass `Card` that holds the mount count hint and an outlined `Button` toggling `stageVisible`",
+				"Stage frame height is `height: 440px`"
+			],
+			"tags": [
+				"app-shell",
+				"stage",
+				"map",
+				"canvas",
+				"persistent",
+				"pointer-events",
+				"inset"
+			],
+			"shape": "wide",
+			"components": [
+				"AppShellLayout",
+				"Button",
+				"Card",
+				"PageShell"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AppShellLayout",
+						"Button",
+						"Card",
+						"PageShell",
+						"NavModule"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/app-shell#stage",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "600",
+			"group": "layout",
+			"page": "page-shell",
+			"variant": "AsideReading",
+			"slug": "reading-width-with-an-aside",
+			"title": "Reading width with an aside",
+			"description": "width=&quot;reading&quot; plus an aside snippet holding a section index.",
+			"summary": "A PageShell with width=\"reading\" (form column capped at 46rem) and an aside snippet holding a section index, inside a fixed-height frame.",
+			"use": "Settings and form pages on wide screens that need a readable column plus a companion column (in-page index, summary, help, preview).",
+			"spec": [
+				"Frame is a 420px tall flex column with an inset outline",
+				"`<PageShell title=\"Workspace settings\" description=\"Reading width keeps the form at a comfortable line length.\" width=\"reading\" asideLabel=\"Sections\">`",
+				"`{#snippet aside()}` renders a glass `Card` with a nav (aria-label On this page) of three links: General, Billing, Danger zone",
+				"Body is a `Card material=\"glass\" full title=\"General\"` with a `Stack gap=\"4\"` of two `TextField`s: Name (Acme Inc.) and Slug (acme)"
+			],
+			"tags": [
+				"page-shell",
+				"aside",
+				"width",
+				"reading",
+				"settings",
+				"form",
+				"sticky",
+				"layout"
+			],
+			"shape": "wide",
+			"components": [
+				"PageShell",
+				"Card",
+				"TextField",
+				"Stack"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"PageShell",
+						"Card",
+						"TextField",
+						"Stack"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/page-shell#reading-width-with-an-aside",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "601",
+			"group": "layout",
+			"page": "app-shell",
+			"variant": "ShortPanel",
+			"slug": "short-panel",
+			"title": "Short panel",
+			"description": "collapseShortPanel: a module with two destinations shows only the rail.",
+			"summary": "An app shell with one module of two items and collapseShortPanel: only the rail shows, the page uses the full width.",
+			"use": "Small modules (settings, profile) where a 200px panel would hold two links and leave the rest empty.",
+			"spec": [
+				"`<AppShellLayout {modules} {pathname} collapseShortPanel persistPanel={false} mainId={null} skipLink={false}>` in a 320px tall frame",
+				"One module `id: 'settings'` (Settings icon) with two items: Profile and Billing",
+				"Page is `<PageShell title=\"Profile\" description=\"A two-item module needs no panel: the rail is enough.\">` with a glass `Card` hint"
+			],
+			"tags": [
+				"app-shell",
+				"panel",
+				"collapse",
+				"rail",
+				"sidebar",
+				"navigation"
+			],
+			"shape": "wide",
+			"components": [
+				"AppShellLayout",
+				"PageShell",
+				"Card"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AppShellLayout",
+						"PageShell",
+						"Card",
+						"NavModule"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/app-shell#short-panel",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "610",
+			"group": "layout",
+			"page": "page-frame",
+			"variant": "Map",
+			"slug": "map-split-and-page",
+			"title": "Map, split and page",
+			"description": "Switch the mode and side; the readout shows the pixels the frame reports on stageInsets.",
+			"summary": "A PageFrame floating a 352px panel over a stand-in map, with a mode switch (map, split, page), a side switch and a live readout of the covered pixels from stageInsets.",
+			"use": "Map-first screens where a panel sits over a live stage and the stage must keep pins and routes clear of what the panel covers.",
+			"spec": [
+				"A 380px tall frame holds a map stand-in and `<PageFrame mode={mode as 'map' | 'split' | 'page'} side={side as 'left' | 'right'} width=\"sm\" label=\"Territory\" headerBorder>`",
+				"`{#snippet header()}` has an h2 Territory and a line reading the covered px from `stageInsets.current`",
+				"`{#snippet toolbar()}` has a `TextField` labelled Search",
+				"Body holds two `SegmentedControl`s: Mode (Map, Split, Page) and Side (Left, Right)",
+				"`{#snippet footer()}` has a filled small `Button` Save",
+				"A pin on the map shifts with the covered area"
+			],
+			"tags": [
+				"page-frame",
+				"map",
+				"stage",
+				"stage-insets",
+				"panel",
+				"split",
+				"page",
+				"sheet",
+				"layout"
+			],
+			"shape": "wide",
+			"components": [
+				"PageFrame",
+				"Button",
+				"TextField",
+				"SegmentedControl"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"PageFrame",
+						"Button",
+						"TextField",
+						"SegmentedControl",
+						"stageInsets"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/page-frame#map-split-and-page",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "640",
+			"group": "inputs",
+			"page": "button",
+			"variant": "NeutralTone",
+			"slug": "neutral-tone",
+			"title": "Neutral tone",
+			"description": "",
+			"summary": "One brand filled Button beside secondary actions drawn with tone=\"neutral\": an outlined Button, a small ghost Button and an outlined IconButton.",
+			"use": "Dense work screens (queues, inboxes, CRMs) with one primary action and several secondary ones that must not compete with it.",
+			"spec": [
+				"`<Button variant=\"filled\">` labelled Send reply is the only brand-coloured control",
+				"`<Button variant=\"outlined\" tone=\"neutral\">` labelled Edit message",
+				"`<Button variant=\"ghost\" tone=\"neutral\" size=\"sm\">` labelled Snooze",
+				"`<IconButton variant=\"outlined\" tone=\"neutral\" aria-label=\"More actions\">` with a MoreHorizontal icon",
+				"Wrapping flex `.row` with `gap: var(--ca-space-3)`"
+			],
+			"tags": [
+				"button",
+				"icon-button",
+				"tone",
+				"neutral",
+				"secondary",
+				"outlined",
+				"ghost"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"IconButton"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"IconButton"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/button#neutral-tone",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
 			"id": "641",
 			"group": "feedback",
 			"page": "progress",
@@ -14197,6 +14619,95 @@
 			"interactive": false,
 			"demo": "https://ui.codeatlas.com.br/docs/feedback/progress#sizes",
 			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "642",
+			"group": "layout",
+			"page": "kpi-card",
+			"variant": "Stats",
+			"slug": "stats-in-a-card",
+			"title": "Stats in a card",
+			"description": "",
+			"summary": "A glass Card titled This week holding three card-less Stat blocks in a responsive grid: leads with a hint, reply rate with a unit, trend and hint, and booked calls with a positive trend.",
+			"use": "Plain statistics inside an existing card or panel, with no nested box, instead of several KpiCards.",
+			"spec": [
+				"`<Card material=\"glass\" title=\"This week\" headingLevel={3} class=\"stats-card\">` with `max-width: 640px`",
+				"`<Stat label=\"Leads this week\" value=\"128\" hint=\"12 more than last week\" />`",
+				"`<Stat label=\"Reply rate\" value=\"18\" unit=\"%\" trend={-2.4} hint=\"Goal: 25%\" />`",
+				"`<Stat label=\"Booked calls\" value=\"9\" trend={12.5} />`",
+				"The Stats sit in an auto-fit grid, `minmax(150px, 1fr)`, `gap: var(--ca-space-5)`"
+			],
+			"tags": [
+				"stat",
+				"kpi",
+				"metric",
+				"statistic",
+				"dashboard",
+				"card-less",
+				"hint",
+				"trend"
+			],
+			"shape": "wide",
+			"components": [
+				"Card",
+				"Stat"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Card",
+						"Stat"
+					]
+				}
+			],
+			"interactive": false,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/kpi-card#stats-in-a-card",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "800",
+			"group": "map",
+			"page": "stage",
+			"variant": "ThemedMap",
+			"slug": "themed-map",
+			"title": "Themed map",
+			"description": "An offline basemap per scheme, deck.gl circles in the brand color and glass controls. Toggle the theme: the basemap and the circles change, the map is not recreated.",
+			"summary": "A map stage with an offline light and dark basemap, four deck.gl store circles in the brand color and glass zoom and compass controls.",
+			"use": "A map-first screen whose basemap and data layers must follow the app's light and dark theme.",
+			"spec": [
+				"`<MapStage` with `{styles}`, `{layers}`, `label=\"Store map\"`, `padding={{ top: 24, right: 24, bottom: 24, left: 24 }}` and a `fit` of the southeast Brazil bounds",
+				"`styles` holds a `light` and a `dark` entry, each an inline style with one `background` layer, so the demo needs no tiles or token",
+				"`layers` is a `$derived.by` that calls `mapColors()` and returns a deck.gl `ScatterplotLayer` with `getFillColor: c.brandMuted` and `getLineColor: c.brand`, so it re-themes on scheme or preset change",
+				"`<MapControls />` as the child of `MapStage`",
+				"The stage box is `360px` high with `var(--ca-radius-lg)` corners"
+			],
+			"tags": [
+				"map",
+				"deck.gl",
+				"maplibre",
+				"theme",
+				"dark-mode",
+				"controls"
+			],
+			"shape": "wide",
+			"components": [
+				"MapControls",
+				"MapStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui/map",
+					"names": [
+						"MapControls",
+						"MapStage",
+						"mapColors"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/map/stage#themed-map",
+			"needs": "@codeatlasdev/ui@4.5.0 + maplibre-gl"
 		}
 	]
 }
