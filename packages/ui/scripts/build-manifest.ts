@@ -385,6 +385,60 @@ function findDeclDeep(sf: ts.SourceFile, name: string) {
 	return hit;
 }
 
+/** `'a' | 'b' | 2 | number`: a union whose members are all literals or the `string`/`number` keywords. */
+function literalUnionText(type: ts.TypeNode, sf: ts.SourceFile): string | undefined {
+	if (!ts.isUnionTypeNode(type)) return undefined;
+	const ok = type.types.every(
+		(t) =>
+			(ts.isLiteralTypeNode(t) && t.literal.kind !== ts.SyntaxKind.NullKeyword) ||
+			t.kind === ts.SyntaxKind.StringKeyword ||
+			t.kind === ts.SyntaxKind.NumberKeyword
+	);
+	return ok ? oneLine(type.getText(sf)) : undefined;
+}
+
+/** Declaration of `name` (an alias) in `sf` or, when it is imported from a relative module, in that file. */
+function findAliasType(
+	sf: ts.SourceFile,
+	dir: string,
+	name: string,
+	depth = 0
+): { type: ts.TypeNode; sf: ts.SourceFile } | undefined {
+	const local = findDeclDeep(sf, name);
+	if (local && ts.isTypeAliasDeclaration(local)) return { type: local.type, sf };
+	if (depth > 2) return undefined;
+	for (const st of sf.statements) {
+		if (!ts.isImportDeclaration(st) || !ts.isStringLiteral(st.moduleSpecifier)) continue;
+		const spec = st.moduleSpecifier.text;
+		if (!spec.startsWith(".")) continue;
+		const named = st.importClause?.namedBindings;
+		if (!named || !ts.isNamedImports(named)) continue;
+		const el = named.elements.find((e) => e.name.text === name);
+		if (!el) continue;
+		const base = resolve(dir, spec.replace(/\.js$/, ""));
+		const file = [`${base}.ts`, join(base, "index.ts")].find((f) => existsSync(f));
+		if (!file) return undefined;
+		const other = ts.createSourceFile(
+			file,
+			readFileSync(file, "utf8"),
+			ts.ScriptTarget.ESNext,
+			true
+		);
+		return findAliasType(other, dirname(file), (el.propertyName ?? el.name).text, depth + 1);
+	}
+	return undefined;
+}
+
+/**
+ * A prop typed with a bare alias (`shape?: Shape`) hides its values from the reader. When the alias
+ * is a union of literals, show the union. Objects, arrays, generics and external types stay as written.
+ */
+function expandLiteralAlias(sf: ts.SourceFile, dir: string, type: string): string {
+	if (!/^[A-Z]\w*$/.test(type)) return type;
+	const hit = findAliasType(sf, dir, type);
+	return (hit && literalUnionText(hit.type, hit.sf)) ?? type;
+}
+
 /** Prose of a `/** ... *\/` block before its first `@tag`, flattened to one paragraph. */
 function docProse(block: string): string | undefined {
 	const lines = block
@@ -499,7 +553,8 @@ function extractComponent(name: string, file: string, entry: string): ManifestCo
 
 	for (const m of members) {
 		if (!ts.isPropertySignature(m) || !m.name) continue;
-		const type = m.type?.getText(m.getSourceFile()).replace(/\s+/g, " ") ?? "unknown";
+		const written = m.type?.getText(m.getSourceFile()).replace(/\s+/g, " ") ?? "unknown";
+		const type = expandLiteralAlias(sf, dirname(abs), written);
 		const d = defaults.get(propName(m.name));
 		const prop: ManifestProp = {
 			name: propName(m.name),
@@ -1484,7 +1539,7 @@ export function skillMarkdown(m: Manifest): string {
 		}
 		if (c.snippets.length)
 			out.push(
-				`Snippets: ${c.snippets.map((x) => `\`${x.name}\`${x.type.includes("<") ? ` (\`${cell(x.type)}\`)` : ""}`).join(", ")}`,
+				`Snippets: ${c.snippets.map((x) => `\`${x.name}\`${x.type.includes("<") ? ` (\`${cell(x.type)}\`)` : ""}${x.description ? `: ${cell(x.description)}` : ""}`).join("; ")}`,
 				""
 			);
 		if (c.extends) out.push(`Also accepts: \`${cell(c.extends)}\``, "");
