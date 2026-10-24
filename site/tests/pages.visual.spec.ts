@@ -33,6 +33,11 @@ async function prepare(page: import("@playwright/test").Page, route: string) {
 	await waitIslands(page);
 	await page.mouse.move(-1, -1);
 	await settle(page);
+	// The first full-page capture reflows the page once (~27px on code-heavy docs pages: Chromium resolves
+	// the generic `monospace` line metrics differently after the first raster), then holds. Take that
+	// capture here, so the two compared shots both see the final layout.
+	await page.screenshot({ fullPage: true });
+	await settle(page);
 }
 
 for (const scheme of ["dark", "light"] as const) {
