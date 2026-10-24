@@ -97,30 +97,6 @@
 
 .ca-toolbar-spacer { flex: 1; }
 
-/* Vertical separator between toolbar groups */
-.ca-toolbar-sep {
-  width: 1px;
-  height: 20px;
-  background: var(--ca-outline-subtle);
-  flex-shrink: 0;
-}
-
-/* "Clear filters" button */
-.ca-clear-btn {
-  font-size: 12px;
-  font-weight: 500;
-  color: var(--ca-text-hint);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 2px 4px;
-  border-radius: var(--ca-radius-sm);
-  font-family: inherit;
-  transition: color var(--ca-duration-fast);
-  flex-shrink: 0;
-}
-.ca-clear-btn:hover { color: var(--ca-text-primary); }
-
 /* ─── AppList table ──────────────────────────────────────────────── */
 
 .ca-page-info {
@@ -149,14 +125,6 @@ tr:focus-within .ca-row-actions {
 
 /* Inline actions column (edit/delete buttons) */
 .ca-col-actions { width: 80px; }
-
-/* Row checkbox */
-.ca-row-check {
-  width: 15px;
-  height: 15px;
-  accent-color: var(--ca-brand-main);
-  cursor: pointer;
-}
 
 /* Selected row */
 .ca-row--selected td {
@@ -244,12 +212,6 @@ tr:focus-within .ca-row-actions {
 /* ─── Pricing card ───────────────────────────────────────────────── */
 
 .ca-pricing-cta { width: 100%; margin-top: auto; }
-
-/* ─── Semantic trend colors ─────────────────────────────────────── */
-
-.ca-trend-up   { color: var(--ca-semantic-success); }
-.ca-trend-down { color: var(--ca-semantic-error); }
-
 
 /* Bar: one height per row; lead truncates, actions never wrap, subtitle drops first. */
 .ca-bar{display:flex;align-items:center;gap:var(--ca-space-3);min-height:var(--ca-bar-h);padding-inline:var(--ca-space-4);border-bottom:var(--ca-border-width) solid var(--ca-outline-subtle);flex-shrink:0;min-width:0;container-type:inline-size}

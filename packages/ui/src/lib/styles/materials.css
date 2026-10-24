@@ -141,32 +141,9 @@
   z-index: var(--ca-z-nav, 100);
 }
 
-/* ── Scroll edge effects ─────────────────────────────────────────────────── */
-.glass-scroll-edge-bottom::after {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  bottom: -32px;
-  height: 32px;
-  background: linear-gradient(to bottom, var(--ca-glass-tint-chrome), transparent);
-  pointer-events: none;
-}
-.glass-scroll-edge-top::before {
-  content: "";
-  position: absolute;
-  inset-inline: 0;
-  top: -32px;
-  height: 32px;
-  background: linear-gradient(to top, var(--ca-glass-tint-chrome), transparent);
-  pointer-events: none;
-}
-
 /* ── Tint + Glow modifiers ───────────────────────────────────────────────── */
 .glass-tinted {
   background-image: linear-gradient(135deg, var(--ca-glow-primary) 0%, transparent 55%);
-}
-.glass-prominent {
-  background-image: linear-gradient(135deg, var(--ca-glow-primary-strong) 0%, transparent 55%);
 }
 .glass-glow::after {
   content: "";
@@ -220,18 +197,6 @@
 }
 .glass-btn-clear:hover { background-color: var(--ca-glass-tint-ultra-thin); }
 
-/* ── Concentric corner radius ────────────────────────────────────────────── */
-.glass-inner-sm { border-radius: max(0px, var(--ca-radius-inner, 0px) - 4px); }
-.glass-inner-md { border-radius: max(0px, var(--ca-radius-inner, 0px) - 6px); }
-.glass-inner-lg { border-radius: max(0px, var(--ca-radius-inner, 0px) - 8px); }
-
-/* ── Background extension ────────────────────────────────────────────────── */
-.glass-bg-extend {
-  -webkit-backdrop-filter: var(--ca-blur-regular);
-  backdrop-filter: var(--ca-blur-regular);
-  background-color: var(--ca-glass-tint);
-}
-
 /* ── Vibrancy label hierarchy ────────────────────────────────────────────── */
 .vibrancy-label     { color: var(--ca-vibrancy-label); }
 .vibrancy-secondary { color: var(--ca-vibrancy-secondary); }
@@ -242,7 +207,7 @@
 /* ── Reduced transparency fallback ──────────────────────────────────────── */
 @media (prefers-reduced-transparency: reduce) {
   .glass-ultra-thin, .glass-thin, .glass-regular,
-  .glass-thick, .glass-chrome, .glass-nav-layer, .glass-bg-extend {
+  .glass-thick, .glass-chrome, .glass-nav-layer {
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
     background-color: var(--ca-glass-tint-solid) !important;
@@ -383,7 +348,7 @@
 }
 
 /* ── Solid — no blur, opaque surfaces, no glow, hairline edge (the package default) ──
- *    Glow and rim are glass decoration: with them transparent, .glass-tinted, .glass-prominent,
+ *    Glow and rim are glass decoration: with them transparent, .glass-tinted,
  *    .glass-glow, .glass-active, .glass-btn-prominent and the nav pills lose their halo without a
  *    component edit. Selected states keep their brand bar. ── */
 [data-style="solid"] {
@@ -697,7 +662,7 @@
   }
 
   .glass, .glass-ultra-thin, .glass-thin, .glass-regular, .glass-thick, .glass-chrome,
-  .glass-nav-layer, .glass-bg-extend, .glass-btn, .glass-btn-prominent, .glass-btn-clear,
+  .glass-nav-layer, .glass-btn, .glass-btn-prominent, .glass-btn-clear,
   .glass-overlay, .glass-panel, .glass-chrome-layer, .glass-upload-zone {
     -webkit-backdrop-filter: none !important;
     backdrop-filter: none !important;
