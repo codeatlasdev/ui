@@ -342,8 +342,9 @@ describe("Kanban inside flex and grid parents (390px)", () => {
 			expect(doc.scrollWidth).toBeLessThanOrEqual(doc.clientWidth);
 			const root = document.querySelector(".ca-kanban") as HTMLElement;
 			expect(root.getBoundingClientRect().right).toBeLessThanOrEqual(doc.clientWidth);
-			// A parent with a definite width is filled; an auto-width wrapper only has to stay inside the page.
-			if (parent !== "nested") expect(root.getBoundingClientRect().width).toBeGreaterThan(200);
+			// A definite-width parent is filled; an auto-width wrapper (the docs' own shape) still gets a
+			// usable board, never a 0px sliver.
+			expect(root.getBoundingClientRect().width).toBeGreaterThan(200);
 		});
 	}
 

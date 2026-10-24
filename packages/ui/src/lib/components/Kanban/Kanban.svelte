@@ -421,8 +421,10 @@
     height: 100%;
     /* The columns scroll inside the board: they must never feed their width into a flex/grid parent's
        intrinsic size (an auto-width wrapper would otherwise widen the page). The board fills the width
-       its parent gives it. */
+       its parent gives it. In a shrink-to-fit parent (a flex item with no width) containment makes the
+       intrinsic width 0, so it gets one column of floor; a narrower parent still shrinks it. */
     contain: inline-size;
+    contain-intrinsic-inline-size: 15rem;
   }
 
   /* ── Board: horizontal scroller with an edge fade only where content is hidden ── */
