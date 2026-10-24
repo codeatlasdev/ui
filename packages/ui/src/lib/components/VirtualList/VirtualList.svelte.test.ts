@@ -1,3 +1,4 @@
+import { tick } from "svelte";
 import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
@@ -13,13 +14,9 @@ const rowOf = (c: Element, key: number) =>
 	c.querySelector(`[data-key="${key}"]`) as HTMLElement | null;
 const keys = (c: Element) =>
 	lis(c).map((li) => Number((li.querySelector("[data-key]") as HTMLElement).dataset.key));
-async function waitFor(fn: () => boolean, ms = 3000) {
-	const end = Date.now() + ms;
-	while (!fn()) {
-		if (Date.now() > end) throw new Error("waitFor timed out");
-		await new Promise((r) => setTimeout(r, 20));
-	}
-}
+// Awaits the condition with Vitest's poll (its timeout is the test's, not a fixed 3s that a starved
+// machine outruns), never a retry of the assertion that follows.
+const waitFor = (fn: () => boolean) => expect.poll(fn, { timeout: 30_000 }).toBe(true);
 const top = (el: HTMLElement) => el.getBoundingClientRect().top;
 
 describe("VirtualList", () => {
@@ -108,6 +105,33 @@ describe("VirtualList", () => {
 				Math.abs(top(rowOf(screen.container, key) as HTMLElement) - before)
 			).toBeLessThanOrEqual(1);
 		}
+	});
+
+	it("a scroll while the anchor restore is queued wins over the late restore (#544)", async () => {
+		const screen = await render(Harness, { props: { initial: 300 } });
+		await settle();
+		const el = scroller(screen.container);
+		el.scrollTop = 4000;
+		await settle();
+
+		// A starved machine runs the restore frame after the user's next scroll. Park the frames the
+		// prepend queues, scroll like the user, then release them in order.
+		const real = window.requestAnimationFrame;
+		const parked: FrameRequestCallback[] = [];
+		window.requestAnimationFrame = (cb) => parked.push(cb);
+		try {
+			screen.component.prepend(20);
+			await tick();
+			el.scrollTop = 0;
+			await tick();
+		} finally {
+			window.requestAnimationFrame = real;
+		}
+		expect(parked.length).toBeGreaterThan(0);
+		for (const cb of parked) cb(performance.now());
+		await settle();
+		// The bug dragged the list back to the anchor ~1000px down; row re-measuring moves it a few px.
+		expect(el.scrollTop).toBeLessThan(100);
 	});
 
 	it("calls onloadmore once near the top, not again until items change", async () => {
