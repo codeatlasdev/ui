@@ -23,7 +23,7 @@ Docs entry point for agents: ${SITE}/llms.txt (recipes for app shell, list, form
 
 1. Find the screen type in the recipes and copy it whole; change only data, copy and theme.
 2. Before writing CSS, a wrapper, a \`setTimeout\` or a local copy of a component, check ${SITE}/docs/${ENTRY_PAGES.choosing}/ and ${SITE}/docs/${ENTRY_PAGES.workarounds}/.
-3. Never guess a prop. Ask the \`ca-ui-mcp\` MCP server (\`get_component\`, \`get_recipe\`, \`search_demos\`) or read \`node_modules/@codeatlasdev/ui/dist/components.json\`. The installed version outranks every page and skill.
+3. Never guess a prop. Ask the \`ca-ui-mcp\` MCP server (\`get_component\`, \`get_recipe\`, \`search_demos\`) or read \`node_modules/@codeatlasdev/ui/dist/components.json\` (\`.components[]\`, one entry per component; other exports under \`.exports[]\`). The installed version outranks every page and skill.
 4. Pages are \`AppList\`, \`AppForm\`, \`AppSettings\`, \`PageShell\`, \`AuthLayout\`; \`AppShellLayout\` goes only in the layout of an authenticated route group, never in the root layout.
 5. Layout is \`Flex\`, \`Stack\`, \`Grid\` with a spacing step (\`gap="4"\`, \`columns={3}\`). No layout CSS, no inline padding or margin, no raw colors: use \`--ca-*\` tokens. \`Row\`, \`GlassCard\` and \`GlassSurface\` are deprecated (\`Flex\`, \`Card\`, \`Surface\`; \`bunx @codeatlasdev/ui migrate --write\`).
 6. Svelte 5 runes only. Import from \`@codeatlasdev/ui\`; charts, DataTable and CodeSnippet come from the \`/charts\`, \`/table\` and \`/code\` subpaths.

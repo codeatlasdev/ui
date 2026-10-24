@@ -73,6 +73,12 @@ describe("llms.txt, the canonical entry (#384)", () => {
 	);
 	const out = buildLlmsIndex({ docs, recipes, groups: ["Getting started", "Inputs", "Surfaces"] });
 
+	it("says where the props are inside components.json (#519)", () => {
+		expect(out).toContain(
+			"`dist/components.json` (`.components[]`, one entry per component; other exports under `.exports[]`)"
+		);
+	});
+
 	it("puts the recipes before every page index", () => {
 		expect(out.indexOf("## Start here: build a screen")).toBeLessThan(
 			out.indexOf("## Docs: Inputs")
