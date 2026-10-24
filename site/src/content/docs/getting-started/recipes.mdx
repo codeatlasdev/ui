@@ -1359,9 +1359,9 @@ export const messages = {
     ],
     pricingTitle: "Pricing",
     plans: [
-      { name: "Free", price: "$0", period: "/month", features: ["1 project", "Community support"], cta: "Start free", href: "/sign-up", featured: false },
-      { name: "Pro", price: "$29", period: "/month", features: ["Unlimited projects", "Email support", "Custom domain"], cta: "Choose Pro", href: "/sign-up?plan=pro", featured: true },
-      { name: "Team", price: "$99", period: "/month", features: ["Everything in Pro", "SSO", "Audit log"], cta: "Contact sales", href: "/sign-up?plan=team", featured: false },
+      { name: "Free", price: "$0", period: "/month", features: ["1 project", "Community support"], cta: "Start free", featured: false },
+      { name: "Pro", price: "$29", period: "/month", features: ["Unlimited projects", "Email support", "Custom domain"], cta: "Choose Pro", featured: true },
+      { name: "Team", price: "$99", period: "/month", features: ["Everything in Pro", "SSO", "Audit log"], cta: "Contact sales", featured: false },
     ],
     popular: "Most popular",
     faqTitle: "Questions",
@@ -1403,9 +1403,9 @@ export const messages = {
     ],
     pricingTitle: "Preços",
     plans: [
-      { name: "Grátis", price: "R$ 0", period: "/mês", features: ["1 projeto", "Suporte da comunidade"], cta: "Começar grátis", href: "/sign-up", featured: false },
-      { name: "Pro", price: "R$ 149", period: "/mês", features: ["Projetos ilimitados", "Suporte por email", "Domínio próprio"], cta: "Escolher Pro", href: "/sign-up?plan=pro", featured: true },
-      { name: "Time", price: "R$ 499", period: "/mês", features: ["Tudo do Pro", "SSO", "Log de auditoria"], cta: "Falar com vendas", href: "/sign-up?plan=team", featured: false },
+      { name: "Grátis", price: "R$ 0", period: "/mês", features: ["1 projeto", "Suporte da comunidade"], cta: "Começar grátis", featured: false },
+      { name: "Pro", price: "R$ 149", period: "/mês", features: ["Projetos ilimitados", "Suporte por email", "Domínio próprio"], cta: "Escolher Pro", featured: true },
+      { name: "Time", price: "R$ 499", period: "/mês", features: ["Tudo do Pro", "SSO", "Log de auditoria"], cta: "Falar com vendas", featured: false },
     ],
     popular: "Mais popular",
     faqTitle: "Perguntas",
@@ -1459,6 +1459,12 @@ export type Locale = keyof typeof messages;
 
   const origin = "https://acme.com";
 
+  // Where the sign-up and sign-in buttons go. They are anchors here so this page prerenders on
+  // its own (a link to a route that does not exist yet fails `vite build` with a 404). Once the
+  // Auth pages recipe is in the app, set them to "/sign-up" and "/sign-in".
+  const signUp = "#pricing";
+  const signIn = "#pricing";
+
   const locales = [
     { value: "en", label: "English" },
     { value: "pt-BR", label: "Português", short: "PT" },
@@ -1501,7 +1507,7 @@ export type Locale = keyof typeof messages;
           </IconButton>
         </span>
         <LocaleSwitcher options={locales} bind:value={locale} compact />
-        <Button variant="filled" size="sm" href="/sign-up">{m.getStarted}</Button>
+        <Button variant="filled" size="sm" href={signUp}>{m.getStarted}</Button>
       {/snippet}
     </SiteHeader>
 
@@ -1510,7 +1516,7 @@ export type Locale = keyof typeof messages;
         <li><Button variant="ghost" tone="neutral" fullWidth href="#features" onclick={() => (menuOpen = false)}>{m.navProduct}</Button></li>
         <li><Button variant="ghost" tone="neutral" fullWidth href="#pricing" onclick={() => (menuOpen = false)}>{m.navPricing}</Button></li>
         <li><Button variant="ghost" tone="neutral" fullWidth href="#faq" onclick={() => (menuOpen = false)}>{m.navFaq}</Button></li>
-        <li><Button variant="outlined" tone="neutral" fullWidth href="/sign-in">{m.signIn}</Button></li>
+        <li><Button variant="outlined" tone="neutral" fullWidth href={signIn}>{m.signIn}</Button></li>
       </Stack>
     </Drawer>
 
@@ -1523,7 +1529,7 @@ export type Locale = keyof typeof messages;
             </Heading>
             <p>{m.leadBefore} <StrikeThrough animated>{m.leadStruck}</StrikeThrough> {m.leadAfter}</p>
             <Flex gap="3" wrap>
-              <Button variant="filled" href="/sign-up">{m.startFree}</Button>
+              <Button variant="filled" href={signUp}>{m.startFree}</Button>
               <Button variant="outlined" tone="neutral" href="#pricing">{m.seePricing}</Button>
             </Flex>
           </Stack>
@@ -1558,7 +1564,7 @@ export type Locale = keyof typeof messages;
                       class="ca-pricing-cta"
                       variant={plan.featured ? "filled" : "outlined"}
                       tone={plan.featured ? undefined : "neutral"}
-                      href={plan.href}
+                      href={signUp}
                     >
                       {plan.cta}
                     </Button>
@@ -1626,7 +1632,7 @@ Rules:
 - The hero headline is `Heading size="display"`, never a styled `h1`. `level` sets the tag and `size` the look. `Heading` takes no `id` (see [Heading](/docs/display/heading/)), so the title that names a `Section` is a plain `<h2 id="features-title">` with `aria-labelledby` on the `Section`, as above; the hero names itself with `aria-label`. `Highlight` and `StrikeThrough` take `animated` to play on mount; under reduced motion they render fully drawn.
 - `ThemeIsland` keeps this page in its own scheme (and `preset`) inside a dark app. Add `document` for a full page so `<html>` follows it and is restored on leaving, and set `setRouteTheme` on the server (see [Theming](#theming)) so the first paint is already right.
 - Put `Seo` on every public page with `title`, `description` and an absolute `canonical`. With in-page language switching the page has one URL, so keep one canonical; use `alternates` only when each language has its own. The FAQ is an `Accordion type="single"` (one answer open at a time) and the same questions feed `faqPage(...)` into `jsonLd`, so the markup crawlers read is the text people see. Pass `lang` with an in-page language switch: `Seo` keeps `<html lang>` in step on the client and sets `og:locale`, which the `LocaleSwitcher` alone does not do. The `<html lang>` the server writes still belongs in `app.html`. Use `noindex` on app and auth pages.
-- Static hosting (`adapter-static`): set `export const prerender = true;` in the root `+layout.ts` so `/` is built. The recipe links only to in-page anchors (`#features`, `#pricing`, `#faq`) and to `/sign-up` and `/sign-in`, which the Auth pages recipe defines; every plan CTA goes to `/sign-up`, so copying the page whole prerenders. SvelteKit fails the build when a prerendered page links to a route that does not exist yet (a `/pricing` or `/docs` you add to the nav): create the routes, or set `prerender: { handleHttpError: "warn" }` in the `sveltekit({ ... })` options until they exist. `adapter-static@4` needs Kit 3, so a Kit 2 app installs `@sveltejs/adapter-static@3`.
+- Static hosting (`adapter-static`): set `export const prerender = true;` in the root `+layout.ts` so `/` is built. The recipe links only to in-page anchors (`#features`, `#pricing`, `#faq`): the sign-up and sign-in buttons use the `signUp` and `signIn` constants at the top of the page, which are anchors so the page prerenders on its own. Point them at `/sign-up` and `/sign-in` once the Auth pages recipe is in the app. SvelteKit fails the build when a prerendered page links to a route that does not exist yet (a `/pricing` or `/docs` you add to the nav): create the routes, or set `prerender: { handleHttpError: "warn" }` in the `sveltekit({ ... })` options until they exist. `adapter-static@4` needs Kit 3, so a Kit 2 app installs `@sveltejs/adapter-static@3`.
 
 See also: [Layout primitives](/docs/layout/layout-primitives/), [Card](/docs/surfaces/card/), [Accordion](/docs/surfaces/accordion/), [Heading](/docs/display/heading/), [Button](/docs/inputs/button/), [NavigationMenu](/docs/navigation/navigation-menu/), [Drawer](/docs/feedback/drawer/), [i18n](/docs/getting-started/i18n/), [SEO](/docs/getting-started/seo/).
 
