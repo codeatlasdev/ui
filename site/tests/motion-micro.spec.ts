@@ -70,6 +70,26 @@ test.describe("motion micro-interactions", () => {
 			await expect(stage.getByText(/^Pressed 1 time$/)).toBeVisible();
 		});
 
+		test("press spring: pausing mid autoplay press releases it (#535)", async ({ page }) => {
+			// The autoplay presses at 500ms and releases at 660ms of each cycle. Freeze the page clock
+			// inside that window, pause there, and the button must come back to rest, not stay at 0.94.
+			await page.clock.install();
+			await gotoReady(page, PAGE);
+			const stage = page.getByRole("group", { name: /^Press spring:/ });
+			await stage.scrollIntoViewIfNeeded();
+			await expect(stage).toHaveAttribute("data-playing", "true");
+			await page.clock.runFor(580);
+			const btn = stage.getByRole("button", { name: "Pay $48.00" });
+			await expect
+				.poll(() => btn.evaluate((el) => Number(el.style.getPropertyValue("--s"))))
+				.toBeLessThan(0.99);
+			await stage.getByRole("button", { name: "Pause" }).click();
+			await page.clock.runFor(2000);
+			await expect
+				.poll(() => btn.evaluate((el) => Number(el.style.getPropertyValue("--s"))))
+				.toBeGreaterThan(0.999);
+		});
+
 		test("morphing toggle: click flips aria-checked", async ({ page }, testInfo) => {
 			const stage = await prepare(page, /^Morphing toggle:/);
 			await expect(stage).toHaveAttribute("data-playing", "true");
