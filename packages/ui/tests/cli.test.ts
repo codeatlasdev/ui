@@ -1163,5 +1163,46 @@ describe("init scaffolds an app that builds and lints out of the box (#475)", ()
 			expect(read(root, "vite.config.ts")).toContain("sveltekit()");
 			expect(existsSync(join(root, "svelte.config.js"))).toBe(false);
 		});
+
+		describe("Kit 2 svelte.config.js with adapter-static (#516)", () => {
+			const STATIC2 = { "@sveltejs/kit": "^2.70.0", "@sveltejs/adapter-static": "^3.0.0" };
+
+			it("creates it with the adapter when the app has none", () => {
+				const root = project({ "package.json": pkg(STATIC2) });
+				run(root);
+				const cfg = read(root, "svelte.config.js");
+				expect(cfg).toContain('import adapter from "@sveltejs/adapter-static"');
+				expect(cfg).toContain("adapter: adapter()");
+				expect(cfg).toContain("vitePreprocess");
+				expect(read(root, "vite.config.ts")).toContain("sveltekit()");
+			});
+
+			it("patches an existing config that has no adapter, keeping the app's options", () => {
+				const root = project({
+					"package.json": pkg(STATIC2),
+					"svelte.config.js": `import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";\n\nexport default {\n\tpreprocess: vitePreprocess(),\n\tkit: {\n\t\talias: { $x: "src/x" },\n\t},\n};\n`,
+				});
+				run(root);
+				const cfg = read(root, "svelte.config.js");
+				expect(cfg).toContain('import adapter from "@sveltejs/adapter-static"');
+				expect(cfg).toMatch(/kit:\s*\{\s*adapter: adapter\(\),/);
+				expect(cfg).toContain('alias: { $x: "src/x" }');
+			});
+
+			it("leaves a config that already wires an adapter alone", () => {
+				const mine = `import adapter from "@sveltejs/adapter-static";\nexport default { kit: { adapter: adapter({ fallback: "200.html" }) } };\n`;
+				const root = project({ "package.json": pkg(STATIC2), "svelte.config.js": mine });
+				run(root);
+				expect(read(root, "svelte.config.js")).toBe(mine);
+			});
+
+			it("does not create one on Kit 3, which ignores it", () => {
+				const root = project({
+					"package.json": pkg({ ...KIT3, "@sveltejs/adapter-static": "^4.0.0" }),
+				});
+				run(root);
+				expect(existsSync(join(root, "svelte.config.js"))).toBe(false);
+			});
+		});
 	});
 });

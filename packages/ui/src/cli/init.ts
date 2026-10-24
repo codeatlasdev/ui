@@ -701,6 +701,34 @@ function tsconfigPatch(root: string, exclude: string[]) {
 	};
 }
 
+/** `svelte.config.js` for a Kit 2 app with adapter-static and none of its own: without it `vite build` runs with no adapter. */
+const SVELTE_CONFIG_NEW = `import adapter from "@sveltejs/adapter-static";
+import { vitePreprocess } from "@sveltejs/vite-plugin-svelte";
+
+/** @type {import('@sveltejs/kit').Config} */
+export default {
+\tpreprocess: vitePreprocess(),
+\tkit: {
+\t\tadapter: adapter(),
+\t},
+};
+`;
+
+/**
+ * Wires adapter-static into a Kit 2 `svelte.config.js` that has no adapter: the import, and
+ * `adapter: adapter()` as the first `kit` option. A config that already names an adapter is left
+ * alone; one without a `kit: {` object literal cannot be patched safely (`null`: reported).
+ */
+function svelteConfigPatch(src: string): string | null {
+	if (/\badapter\s*:/.test(src)) return src;
+	const kit = src.match(/\bkit\s*:\s*\{/);
+	if (!kit || kit.index === undefined) return null;
+	const at = kit.index + kit[0].length;
+	const indent = src.slice(0, kit.index).match(/([ \t]*)$/)?.[1] ?? "";
+	const withOption = `${src.slice(0, at)}\n${indent}\t\tadapter: adapter(),${src.slice(at)}`;
+	return addImport(withOption, 'import adapter from "@sveltejs/adapter-static";');
+}
+
 /** `src/routes/+layout.ts` for a static deploy: without `prerender` adapter-static emits only the SPA fallback. */
 function layoutTsPatch(src: string): string | null {
 	if (/export\s+const\s+prerender\b/.test(src)) return src;
@@ -779,6 +807,18 @@ function sveltekitSteps(root: string, pwa: boolean): Step[] {
 						path: "src/routes/+layout.ts",
 						create: LAYOUT_TS,
 						patch: layoutTsPatch,
+					},
+				]
+			: []),
+		// Kit 3 reads the adapter from vite.config (above); Kit 2 only from svelte.config.js.
+		...(adapter && !kit3
+			? [
+					{
+						path: "svelte.config.js",
+						create: SVELTE_CONFIG_NEW,
+						patch: svelteConfigPatch,
+						manual:
+							'Set `kit: { adapter: adapter() }` in svelte.config.js (`import adapter from "@sveltejs/adapter-static"`).',
 					},
 				]
 			: []),
