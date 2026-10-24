@@ -59,7 +59,7 @@ Item extras: `badge` (number), `isNew`, `shortcut`, `description`.
   import { AppShellLayout, NotificationBell, Avatar } from '@codeatlasdev/ui';
   import { page } from '$app/state';
   import { goto } from '$app/navigation';
-  import { MODULES } from '$lib/nav'; // Kit 3: '#lib/nav.ts' (see SKILL.md, SvelteKit 3)
+  import { MODULES } from '#lib/nav.ts';
 
   let { children } = $props();
   let notifications = $state([]);

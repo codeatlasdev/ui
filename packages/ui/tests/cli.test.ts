@@ -36,7 +36,7 @@ describe("init on SvelteKit", () => {
 		expect(init(root, { ...quiet, write: true })).toBe(true);
 		expect(read(root, "src/lib/theme.ts")).toContain("export const theme: ThemeOptions");
 		expect(read(root, "src/hooks.server.ts")).toContain("caThemeHandle(theme)");
-		expect(read(root, "src/hooks.server.ts")).toContain('from "$lib/theme"');
+		expect(read(root, "src/hooks.server.ts")).toContain('from "#lib/theme.ts"');
 		expect(read(root, "src/routes/+layout.svelte")).toContain("colorScheme.init()");
 	});
 
@@ -122,13 +122,14 @@ describe("init on SvelteKit", () => {
 		expect(hooks).toContain('from "#lib/theme.ts"');
 	});
 
-	it("keeps $lib on Kit 2, with a caret, tilde or exact pin", () => {
+	it("uses #lib on Kit 2 too (#515), with a caret, tilde or exact pin", () => {
 		for (const range of ["^2.12.0", "2.50.1", "~2.20.0"]) {
 			const root = project({
 				"package.json": JSON.stringify({ devDependencies: { "@sveltejs/kit": range } }),
 			});
 			init(root, { ...quiet, write: true });
-			expect(read(root, "src/hooks.server.ts")).toContain('from "$lib/theme"');
+			expect(read(root, "src/hooks.server.ts")).toContain('from "#lib/theme.ts"');
+			expect(JSON.parse(read(root, "package.json")).imports).toEqual({ "#lib/*": "./src/lib/*" });
 		}
 	});
 
@@ -830,11 +831,11 @@ describe("init scaffolds an app that builds and lints out of the box (#475)", ()
 			});
 		});
 
-		it("does not touch package.json imports on Kit 2 (it keeps $lib)", () => {
+		it("adds the #lib map on Kit 2 as well, so the recipes' #lib imports build (#515)", () => {
 			const root = project({ "package.json": pkg({ "@sveltejs/kit": "^2.70.0" }) });
 			run(root);
-			expect(JSON.parse(read(root, "package.json")).imports).toBeUndefined();
-			expect(read(root, "src/hooks.server.ts")).toContain('from "$lib/theme"');
+			expect(JSON.parse(read(root, "package.json")).imports).toEqual({ "#lib/*": "./src/lib/*" });
+			expect(read(root, "src/hooks.server.ts")).toContain('from "#lib/theme.ts"');
 		});
 
 		it("is a dry run without --write", () => {
@@ -945,10 +946,10 @@ describe("init scaffolds an app that builds and lints out of the box (#475)", ()
 			expect(read(root, "src/routes/offline/+page.svelte")).toContain("m.offline.title");
 		});
 
-		it("Kit 2 imports the messages through $lib", () => {
+		it("Kit 2 imports the messages through #lib (#515)", () => {
 			const root = project({ "package.json": pkg({ "@sveltejs/kit": "^2.70.0" }) });
 			run(root);
-			expect(read(root, "src/routes/+layout.svelte")).toContain('from "$lib/messages"');
+			expect(read(root, "src/routes/+layout.svelte")).toContain('from "#lib/messages.ts"');
 		});
 
 		it("keeps an existing messages module and a layout title the app wrote", () => {

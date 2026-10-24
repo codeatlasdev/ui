@@ -48,7 +48,7 @@ export const m = {
 <!-- src/routes/(app)/users/+page.svelte -->
 <script lang="ts">
   import { Button, EmptyState } from "@codeatlasdev/ui";
-  import { m } from "#lib/messages.ts"; // SvelteKit 2: "$lib/messages"
+  import { m } from "#lib/messages.ts";
 </script>
 
 <h1>{m.users.title}</h1>
@@ -61,7 +61,7 @@ Rules of the pattern:
 - **One module, one export.** Components import `m`; they never declare their own strings. Group by screen (`m.users.title`), not by component.
 - **`as const`, nested by screen.** A typo in `m.users.titel` is a type error, and `svelte-check` finds every template that read a key you removed.
 - **Functions for values.** Counts, names and dates become `(count: number) => string`, so each language controls word order and plurals. Never concatenate in the template (`{m.hello} {name}` breaks in languages that put the name first).
-- **Import path.** SvelteKit 3 has no `$lib`: use the `#lib/*` map from [Installation](/docs/getting-started/installation/) and write the extension (`#lib/messages.ts`). SvelteKit 2 uses `$lib/messages`. `codeatlas-ui init` writes this file for you.
+- **Import path.** Use the `#lib/*` map from [Installation](/docs/getting-started/installation/) and write the extension (`#lib/messages.ts`). It works on SvelteKit 2 and 3 (Kit 3 has no `$lib`); `codeatlas-ui init` adds the map to `package.json` and writes this file for you. An app that already imports through `$lib` on Kit 2 keeps working.
 - **Component props that take `Snippet`s** (`{#snippet label()}{m.x}{/snippet}`) are text nodes too: put an expression inside, never words.
 - **Not for the library's strings.** Do not copy `Close`, `Search` or `Copy` into `messages.ts`: components fall back to their catalog when the prop is omitted, so leave it out and change the language with `setLocale`.
 
