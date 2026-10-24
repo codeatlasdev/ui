@@ -43,7 +43,8 @@
 		"issue:status": "bun scripts/issue.ts status",
 		"issue:triage": "bun scripts/issue.ts triage",
 		"issue:done": "bun scripts/issue.ts done",
-		"test:vrt:update": "sh scripts/vrt-update-ci.sh",
+		"test:vrt:check": "sh scripts/vrt-docker.sh --check",
+		"test:vrt:update": "sh scripts/vrt-docker.sh --update",
 		"test:reap": "bun scripts/test-run.ts --reap",
 		"test:status": "bun scripts/test-run.ts --status"
 	},

@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # Land an issue PR: rebase its worktree on origin/main, regenerate generated files, validate,
-# regenerate visual baselines on CI, mark ready, wait for green checks, squash-merge, clean up.
+# check the visual baselines locally in Docker, mark ready, squash-merge, clean up.
 #   sh scripts/issue-land.sh <issue-number>
 set -e
 N="$1"
@@ -46,17 +46,10 @@ git diff --cached --quiet || git commit -qm "chore: regenerate lockfile and mani
 bun run validate
 git push -q --force-with-lease
 gh pr ready "$PR" >/dev/null 2>&1 || true
-# CI paused (ci.yml disabled, see AGENTS.md): the validate above is the gate, and baselines can only
-# be rendered on CI, so both CI steps are skipped until `gh workflow enable ci.yml`.
-if [ "$(gh api "repos/{owner}/{repo}/actions/workflows/ci.yml" -q .state 2>/dev/null)" = "active" ]; then
-	sh "$ROOT/scripts/vrt-update-ci.sh"
-	# The bot's baseline commit does not trigger CI: push an empty commit to run checks on the final head.
-	git commit -q --allow-empty -m "ci: run checks on final head" && git push -q
-	# Merge gate: checks reported for this exact head, none pending, all passed (scripts/pr-gate.ts).
-	bun "$ROOT/scripts/pr-gate.ts" "$PR" "$(git rev-parse HEAD)"
-else
-	echo "CI paused: validate is the gate; visual baselines not regenerated"
-fi
+# CI is paused (ci.yml disabled, see AGENTS.md): validate above plus the local visual check are the gate.
+# A mismatch means the change moved pixels: run `bun run test:vrt:update` in $WT, review the images,
+# commit them and rerun this script.
+sh "$WT/scripts/vrt-docker.sh" --check
 # No --delete-branch: gh would switch this worktree to main (checked out in $ROOT) and delete the
 # local branch (checked out here), failing after the merge (#103). `issue.ts done` removes both.
 # GitHub deletes the remote branch on merge (repo setting); the API call covers it being turned off.
