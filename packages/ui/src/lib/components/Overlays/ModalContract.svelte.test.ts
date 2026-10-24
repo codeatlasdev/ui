@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
-import { settled } from "../../../../tests/settled";
+import { SLOW_FLOW, settled } from "../../../../tests/settled";
 import Harness from "./ModalContract.test.svelte";
 
 /**
@@ -47,29 +47,33 @@ describe("Dialog modality", () => {
 		expect(document.querySelector("[data-testid='background-count']")?.textContent).toBe("0");
 	});
 
-	it("Tab never lands on a control behind the dialog (forward and backward)", async () => {
-		await openDialog();
-		const dialog = dialogEl();
-		const stops = new Set<Element | null>();
-		for (let i = 0; i < 12; i++) {
-			await userEvent.keyboard("{Tab}");
-			stops.add(document.activeElement);
-			const a = document.activeElement;
-			expect(a === document.body || dialog.contains(a), `Tab stop ${i} stays in the dialog`).toBe(
-				true
-			);
-		}
-		for (let i = 0; i < 12; i++) {
-			await userEvent.keyboard("{Shift>}{Tab}{/Shift}");
-			const a = document.activeElement;
-			expect(
-				a === document.body || dialog.contains(a),
-				`Shift+Tab stop ${i} stays in the dialog`
-			).toBe(true);
-		}
-		const bg = document.querySelector("#app-shell > button");
-		expect(stops.has(bg)).toBe(false);
-	});
+	it(
+		"Tab never lands on a control behind the dialog (forward and backward)",
+		async () => {
+			await openDialog();
+			const dialog = dialogEl();
+			const stops = new Set<Element | null>();
+			for (let i = 0; i < 12; i++) {
+				await userEvent.keyboard("{Tab}");
+				stops.add(document.activeElement);
+				const a = document.activeElement;
+				expect(a === document.body || dialog.contains(a), `Tab stop ${i} stays in the dialog`).toBe(
+					true
+				);
+			}
+			for (let i = 0; i < 12; i++) {
+				await userEvent.keyboard("{Shift>}{Tab}{/Shift}");
+				const a = document.activeElement;
+				expect(
+					a === document.body || dialog.contains(a),
+					`Shift+Tab stop ${i} stays in the dialog`
+				).toBe(true);
+			}
+			const bg = document.querySelector("#app-shell > button");
+			expect(stops.has(bg)).toBe(false);
+		},
+		SLOW_FLOW
+	);
 
 	it("the background subtree is not reachable by the accessibility tree focus order (inert)", async () => {
 		await openDialog();

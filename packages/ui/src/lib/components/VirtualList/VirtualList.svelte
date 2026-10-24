@@ -179,7 +179,7 @@
 
   // Anchor: the first row at/after the viewport top and its distance from it. Restoring it after
   // any layout change above (prepend, a row above re-measuring) keeps the content still.
-  let anchor: { key: string | number; delta: number } | null = null;
+  let anchor: { key: string | number; delta: number; at: number } | null = null;
   let restoring = false;
 
   function anchorBefore() {
@@ -187,7 +187,7 @@
     // Read the DOM, not `scrollTop` state: a scroll event may not have been delivered yet.
     const top = scroller.scrollTop;
     const i = indexAt(top, offsets);
-    anchor = { key: keys[i], delta: offsets[i] - top };
+    anchor = { key: keys[i], delta: offsets[i] - top, at: top };
   }
 
   async function restoreAnchor() {
@@ -197,7 +197,10 @@
     await tick();
     if (scroller) {
       const i = keys.indexOf(wanted.key);
-      if (i >= 0 && !(follow && atBottom)) {
+      // `at` is where the scroll was when the anchor was taken (or where we last put it). Anywhere
+      // else, the user scrolled while the restore was pending: their position wins (#544).
+      const userMoved = Math.abs(scroller.scrollTop - wanted.at) > 1;
+      if (i >= 0 && !userMoved && !(follow && atBottom)) {
         const next = offsets[i] - wanted.delta;
         if (Math.abs(next - scroller.scrollTop) > 0.5) scroller.scrollTop = next;
       }
