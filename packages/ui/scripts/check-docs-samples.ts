@@ -224,9 +224,19 @@ export interface SampleError {
 export async function checkDocsSamples(
 	extra: Record<string, string> = {},
 	/** Markdown with `// src/lib/<file>` fences; the extra fences import them as `#lib/<file>`. */
-	libFences?: string
+	libFences?: string,
+	/** `false` checks the way a Kit 2 app without `strict` does (#518): a prop union must still discriminate. */
+	strict = true
 ): Promise<{ checked: number; errors: SampleError[] }> {
 	const samples = extractSamples();
+	writeFileSync(
+		join(OUT, "tsconfig.json"),
+		JSON.stringify({
+			extends: "../../tsconfig.json",
+			compilerOptions: { strict },
+			include: ["./*.svelte", "./*.ts"],
+		})
+	);
 	// Extra fences (tests feed known-bad ones to prove the check can fail), reported under their own name.
 	const modules = libFences ? libModules(libFences, "extra") : [];
 	for (const mod of modules) writeFileSync(join(OUT, mod.file), mod.code);

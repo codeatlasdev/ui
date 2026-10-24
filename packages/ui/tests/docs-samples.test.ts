@@ -22,6 +22,16 @@ describe("docs code samples compile", () => {
 		expect(mine.join("\n")).toContain("Type '\"shiny\"' is not assignable");
 	}, 120_000);
 
+	it("a Button submits a form by id from a Dialog footer, with and without strict (#518)", async () => {
+		const sample =
+			'<script lang="ts">\n  import { Button, Dialog } from "@codeatlasdev/ui";\n</script>\n<Dialog open title="Add">\n  <form id="add-deal"></form>\n  {#snippet actions()}\n    <Button type="submit" form="add-deal">Add</Button>\n  {/snippet}\n</Dialog>\n<Button type="submit">Save</Button>';
+		for (const strict of [true, false]) {
+			const { errors } = await checkDocsSamples({ submit: sample }, undefined, strict);
+			const mine = errors.filter((e) => e.page === "submit").map((e) => e.message);
+			expect({ strict, mine }).toEqual({ strict, mine: [] });
+		}
+	}, 240_000);
+
 	it("resolves #lib/messages.ts from the page's messages.ts fence and checks the keys (#474)", async () => {
 		const good =
 			'<script lang="ts">\n  import { Button } from "@codeatlasdev/ui";\n  import { m } from "#lib/messages.ts";\n</script>\n<Button>{m.save}</Button>';
