@@ -10,8 +10,11 @@ export default defineConfig({
 	forbidOnly: !!process.env.CI,
 	failOnFlakyTests: !!process.env.CI,
 	retries: process.env.CI ? 1 : 0,
-	// Every core on CI runners (4 vCPU); shards split the suite across jobs. Locally a quarter.
-	workers: process.env.CI ? "100%" : "25%",
+	// Every core on GitHub's hosted runners (4 vCPU, nothing else running); shards split the suite
+	// across jobs. Anywhere else a quarter, even with CI=true: agent shells export it on a developer
+	// machine that other projects share, and 12 Chromium workers running axe there starved each other
+	// into random 30s timeouts on a different route every run, 3 workers passed 3 of 3 (#539).
+	workers: process.env.GITHUB_ACTIONS ? "100%" : "25%",
 	snapshotPathTemplate: "{testDir}/__screenshots__/{projectName}/{testFilePath}/{arg}{ext}",
 	expect: {
 		timeout: 5_000,

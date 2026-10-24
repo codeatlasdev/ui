@@ -68,7 +68,7 @@ Unit tests run on `bun test` (repo root, `bunfig.toml`); component and visual te
 - tears down the whole test process group on exit, Ctrl+C, SIGTERM or SIGHUP;
 - at the start of every run, kills browsers left by runs whose runner died (SIGKILL, closed terminal, killed agent job).
 
-Ownership is explicit: only processes carrying the tag of a dead run of this repo are touched. Other projects on the machine (`../ac`, …) share `~/Library/Caches/ms-playwright`; never kill Playwright browsers by name or path. To pass extra args: `bun run test:browser -- src/lib/components/Button`. Local runs use a quarter of the cores (`maxWorkers`, Playwright `workers: "25%"`); behavior tests use the headless shell. VRT only runs on Linux (the `vrt` project excludes everything else): on a Mac use `test:vrt:check`/`test:vrt:update`, never a bare `test:vrt`.
+Ownership is explicit: only processes carrying the tag of a dead run of this repo are touched. Other projects on the machine (`../ac`, …) share `~/Library/Caches/ms-playwright`; never kill Playwright browsers by name or path. To pass extra args: `bun run test:browser -- src/lib/components/Button`. Local runs use a quarter of the cores (`maxWorkers`, Playwright `workers: "25%"`, also when a shell exports `CI=true`: only `GITHUB_ACTIONS` gets every core, #539); behavior tests use the headless shell. VRT only runs on Linux (the `vrt` project excludes everything else): on a Mac use `test:vrt:check`/`test:vrt:update`, never a bare `test:vrt`.
 
 Naming conventions:
 - `*.test.ts` in `packages/ui/tests/`: unit test on `bun:test` (`mock`/`spyOn`/`jest.useFakeTimers`; DOM only through happy-dom's `GlobalRegistrator` inside that file; fresh module via `import("…?fresh=n")`). Types checked by `bun --check`.
