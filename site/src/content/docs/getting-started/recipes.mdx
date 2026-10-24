@@ -680,15 +680,15 @@ export const m = {
     {:else if tab === "notifications"}
       <FormSection title={s.email.title} description={s.email.description}>
         <SettingItem label={s.email.signup.label} description={s.email.signup.description}>
-          <Switch bind:checked={emailOnSignup} aria-label={s.email.signup.label} />
+          <Switch bind:checked={emailOnSignup} />
         </SettingItem>
         <Divider />
         <SettingItem label={s.email.payment.label} description={s.email.payment.description}>
-          <Switch bind:checked={emailOnPayment} aria-label={s.email.payment.label} />
+          <Switch bind:checked={emailOnPayment} />
         </SettingItem>
         <Divider />
         <SettingItem label={s.email.digest.label} description={s.email.digest.description}>
-          <Switch bind:checked={weeklyDigest} aria-label={s.email.digest.label} />
+          <Switch bind:checked={weeklyDigest} />
         </SettingItem>
       </FormSection>
     {/if}
@@ -701,7 +701,7 @@ Rules:
 - `tabs` is data: `{ value, label, icon?, badge?, danger? }`. The `children` snippet receives the active `value`, so branch on it with `{#if tab === "..."}`. Do not build a tab bar yourself.
 - A toggle row is `SettingItem` (label and description on the left) with a `Switch` as its child, not a hand-made flex row. Put a `Divider` between rows.
 - One Save button for the whole page goes in the `actions` snippet. A tab-local save belongs in that tab's content.
-- Give a `Switch` that sits in a `SettingItem` an `aria-label`, since the row text is not its label.
+- A `Switch` inside a `SettingItem` needs no `aria-label`: the row is a `<label>`, so its text names the switch and clicking the text toggles it. Add an `aria-label` only to a `Switch` that sits outside a `SettingItem` or a `label` prop.
 - To control the tab from the outside, `bind:activeTab` or listen with `onTabChange`.
 - The save confirmation is `toast.success(...)`, which needs a mounted `<Toaster />`: inside the [app shell](#app-shell) it is already there. `AppSettings` fills its parent, so a page outside the shell needs a parent with a height and its own `<Toaster />` in the layout.
 - A value built from data (`description={s.workspace.url(workspaceSlug)}`) is a function in `messages.ts`, so no template concatenates words around it.

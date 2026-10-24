@@ -117,3 +117,16 @@ describe("landing recipe links (#517)", () => {
 		expect([...new Set(links)].filter((l) => l !== "/" && !defined.includes(l))).toEqual([]);
 	});
 });
+
+describe("settings recipe Switch naming (#525)", () => {
+	// SettingItem is a wrapping <label>: it names the Switch inside it (SettingItem.svelte.test.ts).
+	// A recipe that adds an aria-label on top, or tells readers to, contradicts the SettingItem page.
+	it("does not tell a Switch inside a SettingItem to carry its own aria-label", () => {
+		const doc = readFileSync(RECIPES, "utf8");
+		const wrapped = [...doc.matchAll(/<SettingItem\b[\s\S]*?<\/SettingItem>/g)]
+			.map((m) => m[0])
+			.filter((s) => /<Switch\b[^>]*aria-label=/.test(s));
+		expect(wrapped).toEqual([]);
+		expect(doc).not.toMatch(/Switch[^.\n]*SettingItem[^.\n]*an `aria-label`/);
+	});
+});
