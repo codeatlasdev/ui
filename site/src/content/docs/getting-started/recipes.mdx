@@ -1338,7 +1338,7 @@ export const messages = {
     navLabel: "Main",
     navProduct: "Product",
     navPricing: "Pricing",
-    navDocs: "Docs",
+    navFaq: "FAQ",
     menu: "Menu",
     menuTitle: "Navigation",
     signIn: "Sign in",
@@ -1350,7 +1350,7 @@ export const messages = {
     leadStruck: "auth, billing and settings",
     leadAfter: "from scratch: Acme gives your team all three.",
     startFree: "Start free",
-    readDocs: "Read the docs",
+    seePricing: "See pricing",
     featuresTitle: "Everything in the box",
     features: [
       { title: "Fast by default", body: "Server-rendered pages that paint on the first frame." },
@@ -1361,7 +1361,7 @@ export const messages = {
     plans: [
       { name: "Free", price: "$0", period: "/month", features: ["1 project", "Community support"], cta: "Start free", href: "/sign-up", featured: false },
       { name: "Pro", price: "$29", period: "/month", features: ["Unlimited projects", "Email support", "Custom domain"], cta: "Choose Pro", href: "/sign-up?plan=pro", featured: true },
-      { name: "Team", price: "$99", period: "/month", features: ["Everything in Pro", "SSO", "Audit log"], cta: "Contact sales", href: "/contact", featured: false },
+      { name: "Team", price: "$99", period: "/month", features: ["Everything in Pro", "SSO", "Audit log"], cta: "Contact sales", href: "/sign-up?plan=team", featured: false },
     ],
     popular: "Most popular",
     faqTitle: "Questions",
@@ -1382,7 +1382,7 @@ export const messages = {
     navLabel: "Principal",
     navProduct: "Produto",
     navPricing: "Preços",
-    navDocs: "Documentação",
+    navFaq: "Perguntas",
     menu: "Menu",
     menuTitle: "Navegação",
     signIn: "Entrar",
@@ -1394,7 +1394,7 @@ export const messages = {
     leadStruck: "login, cobrança e configurações",
     leadAfter: "do zero: a Acme entrega os três ao seu time.",
     startFree: "Começar grátis",
-    readDocs: "Ler a documentação",
+    seePricing: "Ver preços",
     featuresTitle: "Tudo na caixa",
     features: [
       { title: "Rápido por padrão", body: "Páginas renderizadas no servidor que aparecem no primeiro quadro." },
@@ -1405,7 +1405,7 @@ export const messages = {
     plans: [
       { name: "Grátis", price: "R$ 0", period: "/mês", features: ["1 projeto", "Suporte da comunidade"], cta: "Começar grátis", href: "/sign-up", featured: false },
       { name: "Pro", price: "R$ 149", period: "/mês", features: ["Projetos ilimitados", "Suporte por email", "Domínio próprio"], cta: "Escolher Pro", href: "/sign-up?plan=pro", featured: true },
-      { name: "Time", price: "R$ 499", period: "/mês", features: ["Tudo do Pro", "SSO", "Log de auditoria"], cta: "Falar com vendas", href: "/contact", featured: false },
+      { name: "Time", price: "R$ 499", period: "/mês", features: ["Tudo do Pro", "SSO", "Log de auditoria"], cta: "Falar com vendas", href: "/sign-up?plan=team", featured: false },
     ],
     popular: "Mais popular",
     faqTitle: "Perguntas",
@@ -1491,8 +1491,8 @@ export type Locale = keyof typeof messages;
         <!-- Desktop navigation. It must be a direct child of `trailing`: below 600px the header hides it. -->
         <NavigationMenu aria-label={m.navLabel}>
           <NavigationMenuLink href="#features">{m.navProduct}</NavigationMenuLink>
-          <NavigationMenuLink href="/pricing">{m.navPricing}</NavigationMenuLink>
-          <NavigationMenuLink href="/docs">{m.navDocs}</NavigationMenuLink>
+          <NavigationMenuLink href="#pricing">{m.navPricing}</NavigationMenuLink>
+          <NavigationMenuLink href="#faq">{m.navFaq}</NavigationMenuLink>
         </NavigationMenu>
         <!-- Phones: the same links in a Drawer, opened from a button that only exists below 600px. -->
         <span class="mobile-menu">
@@ -1508,8 +1508,8 @@ export type Locale = keyof typeof messages;
     <Drawer bind:open={menuOpen} side="left" title={m.menuTitle}>
       <Stack as="ul" gap="2">
         <li><Button variant="ghost" tone="neutral" fullWidth href="#features" onclick={() => (menuOpen = false)}>{m.navProduct}</Button></li>
-        <li><Button variant="ghost" tone="neutral" fullWidth href="/pricing">{m.navPricing}</Button></li>
-        <li><Button variant="ghost" tone="neutral" fullWidth href="/docs">{m.navDocs}</Button></li>
+        <li><Button variant="ghost" tone="neutral" fullWidth href="#pricing" onclick={() => (menuOpen = false)}>{m.navPricing}</Button></li>
+        <li><Button variant="ghost" tone="neutral" fullWidth href="#faq" onclick={() => (menuOpen = false)}>{m.navFaq}</Button></li>
         <li><Button variant="outlined" tone="neutral" fullWidth href="/sign-in">{m.signIn}</Button></li>
       </Stack>
     </Drawer>
@@ -1524,7 +1524,7 @@ export type Locale = keyof typeof messages;
             <p>{m.leadBefore} <StrikeThrough animated>{m.leadStruck}</StrikeThrough> {m.leadAfter}</p>
             <Flex gap="3" wrap>
               <Button variant="filled" href="/sign-up">{m.startFree}</Button>
-              <Button variant="outlined" tone="neutral" href="/docs">{m.readDocs}</Button>
+              <Button variant="outlined" tone="neutral" href="#pricing">{m.seePricing}</Button>
             </Flex>
           </Stack>
         </Section>
@@ -1626,7 +1626,7 @@ Rules:
 - The hero headline is `Heading size="display"`, never a styled `h1`. `level` sets the tag and `size` the look. `Heading` takes no `id` (see [Heading](/docs/display/heading/)), so the title that names a `Section` is a plain `<h2 id="features-title">` with `aria-labelledby` on the `Section`, as above; the hero names itself with `aria-label`. `Highlight` and `StrikeThrough` take `animated` to play on mount; under reduced motion they render fully drawn.
 - `ThemeIsland` keeps this page in its own scheme (and `preset`) inside a dark app. Add `document` for a full page so `<html>` follows it and is restored on leaving, and set `setRouteTheme` on the server (see [Theming](#theming)) so the first paint is already right.
 - Put `Seo` on every public page with `title`, `description` and an absolute `canonical`. With in-page language switching the page has one URL, so keep one canonical; use `alternates` only when each language has its own. The FAQ is an `Accordion type="single"` (one answer open at a time) and the same questions feed `faqPage(...)` into `jsonLd`, so the markup crawlers read is the text people see. Pass `lang` with an in-page language switch: `Seo` keeps `<html lang>` in step on the client and sets `og:locale`, which the `LocaleSwitcher` alone does not do. The `<html lang>` the server writes still belongs in `app.html`. Use `noindex` on app and auth pages.
-- Static hosting (`adapter-static`): set `export const prerender = true;` in the root `+layout.ts` so `/` is built. SvelteKit fails the build when a prerendered page links to a route that does not exist yet (`/sign-up`, `/docs`): create the routes, or set `prerender: { handleHttpError: "warn" }` in the `sveltekit({ ... })` options until they exist. `adapter-static@4` needs Kit 3, so a Kit 2 app installs `@sveltejs/adapter-static@3`.
+- Static hosting (`adapter-static`): set `export const prerender = true;` in the root `+layout.ts` so `/` is built. The recipe links only to in-page anchors (`#features`, `#pricing`, `#faq`) and to `/sign-up` and `/sign-in`, which the Auth pages recipe defines; every plan CTA goes to `/sign-up`, so copying the page whole prerenders. SvelteKit fails the build when a prerendered page links to a route that does not exist yet (a `/pricing` or `/docs` you add to the nav): create the routes, or set `prerender: { handleHttpError: "warn" }` in the `sveltekit({ ... })` options until they exist. `adapter-static@4` needs Kit 3, so a Kit 2 app installs `@sveltejs/adapter-static@3`.
 
 See also: [Layout primitives](/docs/layout/layout-primitives/), [Card](/docs/surfaces/card/), [Accordion](/docs/surfaces/accordion/), [Heading](/docs/display/heading/), [Button](/docs/inputs/button/), [NavigationMenu](/docs/navigation/navigation-menu/), [Drawer](/docs/feedback/drawer/), [i18n](/docs/getting-started/i18n/), [SEO](/docs/getting-started/seo/).
 
