@@ -1,6 +1,5 @@
-import { describe, expect, it } from "bun:test";
-import { mkdirSync, mkdtempSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { afterAll, describe, expect, it } from "bun:test";
+import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { CODEMOD_IDS, migrate } from "../src/cli/migrate.ts";
 import {
@@ -10,6 +9,9 @@ import {
 	migrationMarkdown,
 	migrationsBetween,
 } from "../src/cli/migrations.ts";
+import { cleanTmp, tmpDir } from "./tmp";
+
+afterAll(cleanTmp);
 
 const ROOT = join(import.meta.dir, "../../..");
 const all = loadMigrations();
@@ -98,7 +100,7 @@ describe("release policy (#382)", () => {
 });
 
 function project(files: Record<string, string>): string {
-	const dir = mkdtempSync(join(tmpdir(), "ca-mig-"));
+	const dir = tmpDir("ca-mig-");
 	for (const [p, c] of Object.entries(files)) {
 		mkdirSync(dirname(join(dir, p)), { recursive: true });
 		writeFileSync(join(dir, p), c);

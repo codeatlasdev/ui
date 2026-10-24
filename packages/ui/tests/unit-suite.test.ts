@@ -17,4 +17,18 @@ describe("unit suite", () => {
 		);
 		expect(offenders).toEqual([]);
 	});
+
+	// #529: raw `mkdtempSync(join(tmpdir(), …))` left 51k directories in $TMPDIR. Use `tmpDir()` and
+	// `afterAll(cleanTmp)` from ./tmp, or remove the directory yourself with `rmSync`.
+	it("every test file that makes a temp directory removes it", () => {
+		const offenders = [...new Bun.Glob("*.{test,e2e}.ts").scanSync(import.meta.dir)].filter(
+			(file) => {
+				const src = readFileSync(join(import.meta.dir, file), "utf8");
+				if (file === import.meta.file || file === "tmp.ts") return false;
+				if (/\btmpDir\(/.test(src)) return !/\bafterAll\(cleanTmp\)/.test(src);
+				return /\bmkdtemp(?:Sync)?\(/.test(src) && !/\brmSync\(/.test(src);
+			}
+		);
+		expect(offenders).toEqual([]);
+	});
 });

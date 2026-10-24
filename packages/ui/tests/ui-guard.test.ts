@@ -1,8 +1,10 @@
-import { describe, expect, it } from "bun:test";
-import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { afterAll, describe, expect, it } from "bun:test";
+import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { guardSource, runGuard } from "../src/cli/ui-guard.ts";
+import { cleanTmp, tmpDir } from "./tmp";
+
+afterAll(cleanTmp);
 
 const rules = (file: string, src: string, allow: string[] = []) =>
 	guardSource(file, src, { allow }).map((v) => `${v.rule}:${v.line}`);
@@ -77,7 +79,7 @@ describe("ui guard: strings in markup", () => {
 
 describe("runGuard", () => {
 	const setup = (files: Record<string, string>) => {
-		const dir = mkdtempSync(join(tmpdir(), "ca-guard-"));
+		const dir = tmpDir("ca-guard-");
 		for (const [p, c] of Object.entries(files)) {
 			mkdirSync(dirname(join(dir, p)), { recursive: true });
 			writeFileSync(join(dir, p), c);

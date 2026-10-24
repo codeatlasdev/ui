@@ -1,11 +1,13 @@
-import { describe, expect, it } from "bun:test";
-import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { afterAll, describe, expect, it } from "bun:test";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { type Finding, runDoctor } from "../src/cli/doctor.ts";
+import { cleanTmp, tmpDir } from "./tmp";
+
+afterAll(cleanTmp);
 
 const project = (files: Record<string, string>) => {
-	const dir = mkdtempSync(join(tmpdir(), "ca-doctor-"));
+	const dir = tmpDir("ca-doctor-");
 	for (const [p, c] of Object.entries(files)) {
 		mkdirSync(dirname(join(dir, p)), { recursive: true });
 		writeFileSync(join(dir, p), c);
