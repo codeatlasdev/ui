@@ -77,24 +77,26 @@ export function kitMajor(root: string): number {
 
 /**
  * Import specifier for a module under `src/lib`, from a file in `src/`. Kit 3 removed `$lib` (using
- * it fails with `module_removed_lib`) in favor of the `#lib/*` package import: init adds that map to
- * package.json (`libImportsStep`) and uses it, written with the extension because neither the map
- * nor Node's native config loader add one. Kit 2 apps keep `$lib`.
+ * it is a build error), and Kit 2 resolves the same `#lib/*` subpath import (Vite and TypeScript's
+ * bundler resolution read `package.json#imports`), so init adds the `#lib/*` map to package.json
+ * (`kitPackagePatch`) on both and writes `#lib/<name>.ts`: one spelling, the one the recipes use.
+ * The extension is written because neither the map nor Node's native config loader add one. An
+ * existing Kit 2 app's own `$lib` imports keep working and are never rewritten.
  */
-function libImport(root: string, name: string): string {
-	return kitMajor(root) >= 3 ? `#lib/${name}.ts` : `$lib/${name}`;
+function libImport(_root: string, name: string): string {
+	return `#lib/${name}.ts`;
 }
 
 /**
  * package.json for a SvelteKit app. `scripts.prepare` runs `svelte-kit sync` after every install:
  * without the generated types svelte-check cannot resolve `$app/tsconfig` (Kit 3) or
- * `.svelte-kit/tsconfig.json` (Kit 2) on a fresh clone. Kit 3 also gets `imports["#lib/*"]`.
+ * `.svelte-kit/tsconfig.json` (Kit 2) on a fresh clone. Both also get `imports["#lib/*"]` (#515).
  * Anything the app already has is kept, never replaced.
  */
-function kitPackagePatch(kit3: boolean) {
+function kitPackagePatch() {
 	return (src: string): string | null => {
 		const pkg = JSON.parse(src);
-		const needImports = kit3 && !(pkg.imports && "#lib/*" in pkg.imports);
+		const needImports = !(pkg.imports && "#lib/*" in pkg.imports);
 		const needPrepare = !pkg.scripts?.prepare;
 		if (!needImports && !needPrepare) return src;
 		const next = { ...pkg };
@@ -772,8 +774,9 @@ function sveltekitSteps(root: string, pwa: boolean): Step[] {
 	const steps: Step[] = [
 		{
 			path: "package.json",
-			patch: kitPackagePatch(kit3),
-			manual: `Add \`"scripts": { "prepare": "svelte-kit sync" }\`${kit3 ? ' and `"imports": { "#lib/*": "./src/lib/*" }`' : ""} to package.json.`,
+			patch: kitPackagePatch(),
+			manual:
+				'Add `"scripts": { "prepare": "svelte-kit sync" }` and `"imports": { "#lib/*": "./src/lib/*" }` to package.json.',
 		},
 		themeStep("src/lib/theme.ts", THEME_TS, existing),
 		{ path: "src/lib/messages.ts", create: messagesNew(pwa), patch: messagesPatch(pwa) },

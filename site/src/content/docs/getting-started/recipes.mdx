@@ -11,7 +11,7 @@ Pick the recipe that matches the screen you are building and copy it whole. Chan
 Every example is a SvelteKit route file with its imports, its data shape and its state in view. Spacing props on `Flex`, `Stack` and `Grid` take steps of the spacing scale as strings (`gap="4"`), never pixels.
 
 <Callout type="note" title="Written for SvelteKit 3">
-  The recipes assume SvelteKit 3 (`@sveltejs/kit ^3`), the version `sv create` installs. Kit 3 has no `$lib`: the imports below read `#lib/messages.ts`, through the `imports` map `init` adds to `package.json`, with the extension. On SvelteKit 2 write the same import as `$lib/messages` (no extension), and likewise for every other `#lib/` import (`#lib/map-state.svelte.ts` is `$lib/map-state.svelte`). Nothing else in the recipes changes between the two majors, except that Kit 2 keeps its options in `svelte.config.js` instead of `sveltekit({ ... })`. See [Installation](/docs/getting-started/installation/#sveltekit-3).
+  The recipes run on SvelteKit 2 and 3. Their app imports read `#lib/messages.ts`: a Node subpath import, through the `"imports": { "#lib/*": "./src/lib/*" }` map in `package.json`, written with the extension. Kit 3 has no `$lib`, and Kit 2 resolves `#lib` the same way, so one spelling works on both; `codeatlas-ui init --write` adds the map on either (add it yourself if you scaffolded by hand). Nothing else in the recipes changes between the two majors, except that Kit 2 keeps its options in `svelte.config.js` instead of `sveltekit({ ... })`. See [Installation](/docs/getting-started/installation/#sveltekit-3).
 </Callout>
 
 | I am building | Recipe | Main components |
@@ -1720,7 +1720,7 @@ export default defineConfig({
 // src/hooks.server.ts
 import { sequence } from "@sveltejs/kit/hooks";
 import { caThemeHandle, createErrorHandler } from "@codeatlasdev/ui/kit";
-import { theme } from "$lib/theme";
+import { theme } from "#lib/theme.ts";
 
 export const handle = sequence(caThemeHandle(theme));
 export const handleError = createErrorHandler();
@@ -1746,7 +1746,7 @@ export const load = (event) => {
 ```ts
 // src/hooks.server.ts: or declare a whole route group once
 import { caThemeHandle, type RouteThemes } from "@codeatlasdev/ui/kit";
-import { theme } from "$lib/theme";
+import { theme } from "#lib/theme.ts";
 
 const routes: RouteThemes = { "/(marketing)": { preset: "acme", scheme: "light" } };
 

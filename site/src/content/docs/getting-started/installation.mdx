@@ -81,7 +81,7 @@ For each file below, `init` creates it when it is missing, or patches it when it
 
 | File | What `init` puts there | If the file exists |
 |---|---|---|
-| `package.json` | `"scripts": { "prepare": "svelte-kit sync" }` (Kit 2 and 3), and on Kit 3 `"imports": { "#lib/*": "./src/lib/*" }`, so the files below can import `#lib/theme.ts` and `#lib/messages.ts` (`$lib` was removed in Kit 3) | adds only what is missing: a `prepare` script you already have is kept as it is, and so is the rest of `imports` |
+| `package.json` | `"scripts": { "prepare": "svelte-kit sync" }` and `"imports": { "#lib/*": "./src/lib/*" }` (Kit 2 and 3), so the files below can import `#lib/theme.ts` and `#lib/messages.ts` (`$lib` was removed in Kit 3; Kit 2 resolves `#lib` too) | adds only what is missing: a `prepare` script you already have is kept as it is, and so is the rest of `imports` |
 | `src/lib/theme.ts` | the shared `theme` object (`defaultPreset: "amber"`, `defaultScheme: "system"`) | left alone |
 | `src/lib/messages.ts` | the app copy the scaffold shows (`export const m = { appTitle }`): templates read `{m.appTitle}`, so `codeatlas-ui lint` stays clean. `--with pwa` adds the `offline` keys the offline page reads. See [app copy](/docs/getting-started/app-copy/) | left alone; `--with pwa` adds `offline` only to the file `init` wrote itself |
 | `vite.config.ts` | `caThemePlugin(theme)` and `caErrorPlugin({ scaffold: true, theme })`, appended to `plugins`, in one `@codeatlasdev/ui/vite` import (plus `import { theme } from "./src/lib/theme.ts"`) | adds only the plugin that is missing |
@@ -118,10 +118,10 @@ The service worker, manifest, `robots.txt`, `sitemap.xml` and offline page are [
 2. **Inject the theme script and sanitize server errors in the server hook.** `caThemeHandle` puts the brand presets and the init script right after `<head>` of every SSR and prerendered page, so the first paint already has the right scheme and preset. `createErrorHandler` turns every unexpected server error into `{ message, code, id }` without leaking the message of a 5xx; [pass a `locale` or a `report` callback](/docs/getting-started/i18n/#server-errors) when you need them.
 
    ```ts
-   // src/hooks.server.ts (Kit 2; on Kit 3 import "#lib/theme.ts", see SvelteKit 3 below)
+   // src/hooks.server.ts
    import { sequence } from "@sveltejs/kit/hooks";
    import { caThemeHandle, createErrorHandler } from "@codeatlasdev/ui/kit";
-   import { theme } from "$lib/theme";
+   import { theme } from "#lib/theme.ts";
 
    export const handle = sequence(caThemeHandle(theme));
    export const handleError = createErrorHandler();
@@ -174,7 +174,7 @@ The service worker, manifest, `robots.txt`, `sitemap.xml` and offline page are [
 
 On a fresh Kit 3 app run `svelte-kit sync` (`bunx svelte-kit sync`) before `svelte-check`: `.svelte-kit/tsconfig.json` is no longer generated, and until the sync wrote `.svelte-kit/` `svelte-check` stops with `File '$app/tsconfig' not found`. `init` adds `"prepare": "svelte-kit sync"` to `package.json`, so the install step runs it for you; `vite dev` and `vite build` sync as well.
 
-Kit 3 changed three things this setup touches. `init` handles the third (`$lib` is gone): it adds the `#lib/*` map to `package.json` and imports through it. For the other two it prints a `note` line instead of rewriting `svelte.config.js` or an existing `tsconfig.json`: it reports `svelte.config.js`/`.ts`/`.mjs` when one exists, and a `tsconfig.json` that does not mention `$app/tsconfig`. On a clean Kit 3 run you get no `Done.` line while a note is pending.
+Kit 3 changed three things this setup touches. `init` handles the third (`$lib` is gone): it adds the `#lib/*` map to `package.json` (on Kit 2 too) and imports through it. For the other two it prints a `note` line instead of rewriting `svelte.config.js` or an existing `tsconfig.json`: it reports `svelte.config.js`/`.ts`/`.mjs` when one exists, and a `tsconfig.json` that does not mention `$app/tsconfig`. On a clean Kit 3 run you get no `Done.` line while a note is pending.
 
 1. **Configuration moves into the Vite plugin.** `svelte.config.js` is ignored (`config_file_unsupported`) and the `kit` namespace is gone (`config_kit_namespace`). Pass the options directly to `sveltekit()`, next to the two plugins:
 
@@ -208,7 +208,7 @@ Kit 3 changed three things this setup touches. `init` handles the third (`$lib` 
    import { theme } from "#lib/theme.ts";
    ```
 
-   Everything else (the layout, the stylesheet import, `colorScheme.init()` and the viewport meta) is identical to Kit 2. On Kit 2 `init` keeps `$lib` and does not touch `imports`.
+   Everything else (the layout, the stylesheet import, `colorScheme.init()` and the viewport meta) is identical to Kit 2. Kit 2 resolves the same `#lib/*` map, so `init` writes `#lib/...ts` imports there as well; an existing `$lib` import on Kit 2 is left as it is.
 
 ### A bare app: files `init` creates
 
