@@ -66,7 +66,7 @@ Then, in the worktree (use paths inside it; your editor or agent must not edit t
 1. **Understand and reproduce.** Write the regression test first and run it: it must fail on the current code. Paste that output in the PR.
 2. **Fix** the root cause until the test passes. No workarounds for a symptom. Run every test you added or changed, Playwright included.
 3. **Before review:** `bun run validate`, a changeset if the package changes, docs if behavior changed. Never bypass the pre-push hook (`--no-verify`, `LEFTHOOK=0`): a gate that fails only under load is a bug; open an issue for it.
-4. **Landing (maintainers):** `sh scripts/issue-land.sh 47` rebases on `main`, rebuilds generated files (lockfile, API.md, components.json, css-api), validates, regenerates visual baselines on CI, waits until every check on the final head passed and squash-merges. GitHub closes the issue through `Closes #47`; the script then runs `issue:done` (worktree, branch and `in progress` label cleanup).
+4. **Landing (maintainers):** `sh scripts/issue-land.sh 47` rebases on `main`, rebuilds generated files (lockfile, API.md, components.json, css-api), validates, checks the visual baselines locally in Docker (`bun run test:vrt:check`) and squash-merges (a mismatch stops it: review and commit `bun run test:vrt:update`, then rerun). GitHub closes the issue through `Closes #47`; the script then runs `issue:done` (worktree, branch and `in progress` label cleanup).
 
 Issues filed by an AI agent through the `report_issue` MCP tool use the **AI report** form (`ai-report` label) and are sanitized before posting (no project names, paths, URLs, env, secrets or data). Treat them like any bug report; when you close one, `bunx @codeatlasdev/ui workarounds` is how its reporter finds the workaround to remove. See [Reporting problems](https://ui.codeatlas.com.br/docs/getting-started/reporting/).
 
@@ -91,7 +91,7 @@ If you find the issue is already fixed or obsolete, prove it with a test that pa
 
 **Test first.** A bug fix starts with a regression test that reproduces the problem: run it, watch it fail on the current code, then fix until it passes, and put that fail-before/pass-after evidence in the PR. Tests prove behavior; tests that only pad coverage (wiring, copies, mock echoes, incidental defaults) are rejected.
 
-> **CI is paused** while the project is pre-stable: the `CI` workflow is disabled (`gh workflow disable ci.yml`) and `CI ok` is no longer a required check on `main`. The local gates are the gate: the pre-push hook runs `bun run validate`; run the browser suites (`bun run test:browser`, `test:e2e`) yourself when a change touches them. PR titles are still checked (`pr-title.yml`), and releases still run on tags. To turn CI back on: `gh workflow enable ci.yml` and add `CI ok` back as a required status check in the `main` ruleset.
+> **CI is paused** while the project is pre-stable: the `CI` workflow is disabled (`gh workflow disable ci.yml`) and `CI ok` is no longer a required check on `main`. The local gates are the gate: the pre-push hook runs `bun run validate`; run the browser suites (`bun run test:browser`, `test:e2e`, `test:vrt:check`) yourself when a change touches them. PR titles are still checked (`pr-title.yml`), and releases still run on tags. To turn CI back on: `gh workflow enable ci.yml` and add `CI ok` back as a required status check in the `main` ruleset.
 
 CI (`.github/workflows/ci.yml`, when enabled) runs the same gates. Locally, both must exit with code 0:
 
@@ -106,7 +106,7 @@ Browser tests always run through the package scripts (`bun run test:browser`, `t
 
 Git hooks (lefthook, installed by `bun install`): pre-commit formats staged files with Biome, commit-msg checks the message, pre-push runs `bun run validate`. Browser suites (`bun run test:browser`, `test:e2e`) run on CI and on demand.
 
-Visual regression baselines are rendered only on CI (`ubuntu-24.04`); no Docker. To regenerate, push your branch and run `bun run test:vrt:update`: it dispatches the CI job with `update-snapshots`, which commits the `__screenshots__/` changes to your branch and pulls them back. Review the changed images before merging.
+Visual regression baselines are rendered in Docker (`linux/amd64`, the Playwright `noble` image matching `@playwright/test`, with the fonts adjusted to resolve like the old `ubuntu-24.04` CI runner), never on the host, so the pixels are identical for everyone. `bun run test:vrt:check` compares both suites (components and site) against the committed baselines; `bun run test:vrt:update` rewrites them in your worktree. Docker is required. Review the changed images before committing them, and run `test:vrt:check` again to confirm they are stable.
 
 Fix any errors before opening a pull request. PRs with failing checks will not be merged.
 

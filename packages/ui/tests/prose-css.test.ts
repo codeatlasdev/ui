@@ -30,3 +30,14 @@ describe("release lists guide (#147)", () => {
 		expect(guide).toMatch(/aria-labelledby/);
 	});
 });
+
+describe("prose.css code inside a pre (#468)", () => {
+	// A fenced block is `<pre><code>`. The UA sheet gives `code` a bare `font-family: monospace`, which
+	// Chromium resolves through fontconfig differently from one lookup to the next (DejaVu Sans Mono
+	// before a full-page capture, Liberation Mono after), so a block changed height by a line-height
+	// step. Every `code` must carry the pinned stack itself.
+	it("gives every code, fences included, the pinned mono stack", () => {
+		const rule = prose.match(/\.ca-prose code,\s*\.ca-code code\s*\{([^}]*)\}/);
+		expect(rule?.[1]).toMatch(/font-family:\s*var\(--ca-font-mono\)/);
+	});
+});

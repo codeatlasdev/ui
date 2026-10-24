@@ -18,6 +18,13 @@ const PAGES = [
 	"/theme/",
 ];
 
+// A full-page shot is taken twice and compared (and written when updating). On a native 4-vCPU runner the
+// 5s expect and 30s test defaults are enough; under amd64 emulation (scripts/vrt-docker.sh on Apple Silicon)
+// the tallest pages (15k px) need longer. Per-call and per-test timeouts keep the rest of
+// `expect.toHaveScreenshot` (stylePath, threshold, ...) from the config.
+const SHOT_TIMEOUT = 30_000;
+test.describe.configure({ timeout: 120_000 });
+
 const slug = (p: string) => (p === "/" ? "home" : p.replace(/^\/|\/$/g, "").replaceAll("/", "-"));
 
 async function prepare(page: import("@playwright/test").Page, route: string) {
@@ -52,6 +59,7 @@ for (const scheme of ["dark", "light"] as const) {
 							? `${slug(route)}-${scheme}.webp`
 							: `${slug(route)}-${scheme}-${i + 1}.webp`;
 					await expect(page).toHaveScreenshot(name, {
+						timeout: SHOT_TIMEOUT,
 						fullPage: true,
 						clip: { x: 0, y, width, height: Math.min(SEGMENT, height - y) },
 						// No `mask`: Playwright places mask boxes from a layout read during the full-page
@@ -66,17 +74,23 @@ for (const scheme of ["dark", "light"] as const) {
 			await prepare(page, "/docs/feedback/dialog/");
 			await page.getByRole("button", { name: "View details" }).first().click();
 			await settle(page);
-			await expect(page.getByRole("dialog")).toHaveScreenshot(`dialog-${scheme}.webp`);
+			await expect(page.getByRole("dialog")).toHaveScreenshot(`dialog-${scheme}.webp`, {
+				timeout: SHOT_TIMEOUT,
+			});
 
 			await prepare(page, "/docs/feedback/sheet/");
 			await page.getByRole("button", { name: "Open sheet" }).first().click();
 			await settle(page);
-			await expect(page.getByRole("dialog")).toHaveScreenshot(`sheet-${scheme}.webp`);
+			await expect(page.getByRole("dialog")).toHaveScreenshot(`sheet-${scheme}.webp`, {
+				timeout: SHOT_TIMEOUT,
+			});
 
 			await prepare(page, "/docs/navigation/command-palette/");
 			await page.getByRole("button", { name: "Open command palette" }).first().click();
 			await settle(page);
-			await expect(page.getByRole("dialog")).toHaveScreenshot(`command-palette-${scheme}.webp`);
+			await expect(page.getByRole("dialog")).toHaveScreenshot(`command-palette-${scheme}.webp`, {
+				timeout: SHOT_TIMEOUT,
+			});
 		});
 	});
 }
