@@ -1,13 +1,15 @@
-import { describe, expect, it } from "bun:test";
-import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { afterAll, describe, expect, it } from "bun:test";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { loadEquivalents } from "../src/cli/equivalents.ts";
 import { migrateReact, scanReactImports } from "../src/cli/migrate-react.ts";
+import { cleanTmp, tmpDir } from "./tmp";
+
+afterAll(cleanTmp);
 
 const rows = loadEquivalents();
 const project = (files: Record<string, string>) => {
-	const dir = mkdtempSync(join(tmpdir(), "ca-react-"));
+	const dir = tmpDir("ca-react-");
 	for (const [p, c] of Object.entries(files)) {
 		mkdirSync(dirname(join(dir, p)), { recursive: true });
 		writeFileSync(join(dir, p), c);

@@ -1,21 +1,16 @@
-import { describe, expect, it } from "bun:test";
-import {
-	existsSync,
-	mkdirSync,
-	mkdtempSync,
-	readFileSync,
-	symlinkSync,
-	writeFileSync,
-} from "node:fs";
-import { tmpdir } from "node:os";
+import { afterAll, describe, expect, it } from "bun:test";
+import { existsSync, mkdirSync, readFileSync, symlinkSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { cleanTmp, tmpDir } from "./tmp";
+
+afterAll(cleanTmp);
 
 // The built bin, not the function: the file walk (`collect`) lives in the CLI entry. Needs `bun run build`.
 const bin = join(import.meta.dir, "../dist/bin/codeatlas-ui.js");
 const built = existsSync(bin);
 
 function app(files: Record<string, string>) {
-	const dir = mkdtempSync(join(tmpdir(), "ca-mig-cli-"));
+	const dir = tmpDir("ca-mig-cli-");
 	// `migrate` loads the project's typescript: borrow the repo's.
 	symlinkSync(join(import.meta.dir, "../../../node_modules"), join(dir, "node_modules"));
 	for (const [p, c] of Object.entries(files)) {

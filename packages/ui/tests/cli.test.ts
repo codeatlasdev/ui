@@ -1,20 +1,15 @@
-import { describe, expect, it } from "bun:test";
-import {
-	existsSync,
-	mkdirSync,
-	mkdtempSync,
-	readdirSync,
-	readFileSync,
-	writeFileSync,
-} from "node:fs";
-import { tmpdir } from "node:os";
+import { afterAll, describe, expect, it } from "bun:test";
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { init } from "../src/cli/init.ts";
 import { migrate } from "../src/cli/migrate.ts";
 import { guardSource } from "../src/cli/ui-guard.ts";
+import { cleanTmp, tmpDir } from "./tmp";
+
+afterAll(cleanTmp);
 
 function project(files: Record<string, string>): string {
-	const root = mkdtempSync(join(tmpdir(), "ca-cli-"));
+	const root = tmpDir("ca-cli-");
 	for (const [path, content] of Object.entries(files)) {
 		mkdirSync(dirname(join(root, path)), { recursive: true });
 		writeFileSync(join(root, path), content);

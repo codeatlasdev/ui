@@ -1,9 +1,11 @@
-import { describe, expect, it } from "bun:test";
-import { mkdirSync, mkdtempSync, readFileSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { afterAll, describe, expect, it } from "bun:test";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { importTokens, parseColor, runTokensImport, SHADCN_MAP } from "../src/cli/tokens-import.ts";
 import { defineTheme } from "../src/lib/theme/define.ts";
+import { cleanTmp, tmpDir } from "./tmp";
+
+afterAll(cleanTmp);
 
 /** Three themes, as a real design system writes them: dark app, dark public, light paper. */
 const CSS = `
@@ -111,7 +113,7 @@ describe("importTokens: three themes with alpha", () => {
 		expect(result.source).toContain("export const theme: ThemeOptions");
 		expect(result.source).toContain('id: "app"');
 		expect(result.source).toContain('defaultPreset: "app"');
-		const dir = mkdtempSync(join(tmpdir(), "ca-tok-"));
+		const dir = tmpDir("ca-tok-");
 		writeFileSync(
 			join(dir, "theme.mjs"),
 			result.source.replace(/^import type.*\n/m, "").replace(": ThemeOptions", "")
@@ -167,7 +169,7 @@ describe("importTokens: input formats and gaps", () => {
 
 describe("runTokensImport (CLI)", () => {
 	const setup = () => {
-		const dir = mkdtempSync(join(tmpdir(), "ca-tok-cli-"));
+		const dir = tmpDir("ca-tok-cli-");
 		mkdirSync(join(dir, "src"), { recursive: true });
 		writeFileSync(join(dir, "tokens.css"), CSS);
 		writeFileSync(join(dir, "map.json"), JSON.stringify(MAP));

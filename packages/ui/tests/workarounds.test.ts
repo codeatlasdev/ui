@@ -1,11 +1,13 @@
-import { describe, expect, it } from "bun:test";
-import { mkdirSync, mkdtempSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { afterAll, describe, expect, it } from "bun:test";
+import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { findMarkers, runWorkarounds } from "../src/cli/workarounds.ts";
+import { cleanTmp, tmpDir } from "./tmp";
+
+afterAll(cleanTmp);
 
 function project(files: Record<string, string>): string {
-	const root = mkdtempSync(join(tmpdir(), "ca-wk-"));
+	const root = tmpDir("ca-wk-");
 	for (const [path, content] of Object.entries(files)) {
 		mkdirSync(dirname(join(root, path)), { recursive: true });
 		writeFileSync(join(root, path), content);

@@ -1,7 +1,9 @@
-import { describe, expect, it } from "bun:test";
-import { cpSync, mkdirSync, mkdtempSync, realpathSync, symlinkSync, writeFileSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { afterAll, describe, expect, it } from "bun:test";
+import { cpSync, mkdirSync, realpathSync, symlinkSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
+import { cleanTmp, tmpDir } from "./tmp";
+
+afterAll(cleanTmp);
 
 const pkgRoot = join(import.meta.dir, "..");
 
@@ -11,7 +13,7 @@ const pkgRoot = join(import.meta.dir, "..");
  * Bun auto-installs the missing package on CI and the test never sees it missing.
  */
 function runCli(args: string[], project: Record<string, string> = {}) {
-	const root = mkdtempSync(join(tmpdir(), "ca-nots-"));
+	const root = tmpDir("ca-nots-");
 	const cli = join(root, "cli");
 	mkdirSync(join(cli, "bin"), { recursive: true });
 	cpSync(join(pkgRoot, "src/cli"), join(cli, "src/cli"), { recursive: true });

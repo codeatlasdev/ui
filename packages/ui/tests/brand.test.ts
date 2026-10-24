@@ -1,13 +1,5 @@
-import { describe, expect, it, spyOn } from "bun:test";
-import {
-	existsSync,
-	mkdirSync,
-	mkdtempSync,
-	readdirSync,
-	readFileSync,
-	writeFileSync,
-} from "node:fs";
-import { tmpdir } from "node:os";
+import { afterAll, describe, expect, it, spyOn } from "bun:test";
+import { existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { runBrandCommand } from "../src/cli/brand.ts";
 import {
@@ -19,6 +11,9 @@ import {
 	resvgOptions,
 } from "../src/lib/brand.js";
 import { iconLinks, ogCard } from "../src/lib/seo/index.js";
+import { cleanTmp, tmpDir } from "./tmp";
+
+afterAll(cleanTmp);
 
 const MARK =
 	'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><!-- note --><path stroke="{{ink}}" d="M2 2h28"/><path fill="{{spark}}" d="M10 10h8v8z"/></svg>';
@@ -63,7 +58,7 @@ describe("renderMark", () => {
 describe("generateBrand", () => {
 	it("writes the hashed icon set; inputs, not pixels, decide the hash", async () => {
 		const run = async (mark: string) => {
-			const outDir = mkdtempSync(join(tmpdir(), "brand-"));
+			const outDir = tmpDir("brand-");
 			const assets = await generateBrand({ mark, theme, outDir, name: "T" });
 			return { assets, outDir };
 		};
@@ -95,7 +90,7 @@ describe("generateBrand", () => {
 
 describe("generated web app manifest (#206)", () => {
 	const manifestOf = async (t: typeof theme & { defaultScheme?: "light" | "dark" | "system" }) => {
-		const outDir = mkdtempSync(join(tmpdir(), "brand-"));
+		const outDir = tmpDir("brand-");
 		const assets = await generateBrand({ mark: MARK, theme: t, outDir, name: "Tokyo App" });
 		return JSON.parse(readFileSync(join(outDir, `manifest.${assets.hash}.webmanifest`), "utf8"));
 	};
@@ -199,7 +194,7 @@ describe("recipes from the Node-safe vite entry (#148)", () => {
 
 describe("brand module on a fresh clone (#141)", () => {
 	const project = (files: Record<string, string>) => {
-		const root = mkdtempSync(join(tmpdir(), "brand-proj-"));
+		const root = tmpDir("brand-proj-");
 		for (const [path, content] of Object.entries(files)) {
 			mkdirSync(dirname(join(root, path)), { recursive: true });
 			writeFileSync(join(root, path), content);
@@ -210,7 +205,7 @@ describe("brand module on a fresh clone (#141)", () => {
 	it("brandUrls returns the URLs generateBrand writes, without rendering", async () => {
 		const o = { mark: MARK, theme, name: "T" };
 		const urls = brandUrls(o);
-		const assets = await generateBrand({ ...o, outDir: mkdtempSync(join(tmpdir(), "brand-")) });
+		const assets = await generateBrand({ ...o, outDir: tmpDir("brand-") });
 		expect(urls).toEqual(assets);
 	});
 

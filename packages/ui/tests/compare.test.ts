@@ -1,6 +1,4 @@
-import { describe, expect, it } from "bun:test";
-import { mkdtempSync } from "node:fs";
-import { tmpdir } from "node:os";
+import { afterAll, describe, expect, it } from "bun:test";
 import { join } from "node:path";
 import {
 	type CompareBrowser,
@@ -10,6 +8,9 @@ import {
 	type Measurements,
 	runCompare,
 } from "../src/cli/compare";
+import { cleanTmp, tmpDir } from "./tmp";
+
+afterAll(cleanTmp);
 
 const rect = (width = 100) => ({ x: 0, y: 0, width, height: 40 });
 const button = (over: Record<string, string> = {}, width = 100) => ({
@@ -204,7 +205,7 @@ describe("runCompare", () => {
 	it("exits 2 with an install hint when playwright cannot be resolved", async () => {
 		const lines: string[] = [];
 		const code = await runCompare("http://a", "http://b", {
-			cwd: mkdtempSync(join(tmpdir(), "ca-compare-")),
+			cwd: tmpDir("ca-compare-"),
 			resolve: () => null,
 			log: (l) => lines.push(l),
 		});
