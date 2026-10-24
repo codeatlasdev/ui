@@ -2272,11 +2272,15 @@ Parts: `ca-bottom-nav__more` `ca-bottom-nav__more-btn` `ca-bottom-nav__more-btn-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `notifications?` | `NotificationItem[]` | `[]` |  |
+| `open?` | `boolean` | `false` | `bind:` Bindable. Whether the panel is open. |
+| `onOpenChange?` | `(open: boolean) => void` |  | Called when the user opens or closes the panel, not when the parent sets open. |
+| `count?` | `number` |  | Unread total. Defaults to the unread notifications in the list. |
+| `loading?` | `boolean` | `false` | Shows loading text while keeping loaded notifications visible. |
 | `onRead?` | `(id: string) => void` |  |  |
 | `onReadAll?` | `() => void` |  |  |
 | `onClear?` | `() => void` |  |  |
 | `class?` | `string` | `''` |  |
-| `labels?` | `{ title?: string; markAll?: string; clear?: string; empty?: string; }` | `{}` | Label overrides for i18n. Defaults to English strings. |
+| `labels?` | `{ title?: string; markAll?: string; clear?: string; empty?: string; loading?: string; }` | `{}` | Label overrides for i18n. Defaults to English strings. |
 
 Snippets: `children`
 
