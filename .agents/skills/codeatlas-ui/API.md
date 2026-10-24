@@ -400,7 +400,6 @@ Parts: `ca-breadcrumb__current` `ca-breadcrumb__item` `ca-breadcrumb__link` `ca-
 | `size?` | `'sm' \| 'md' \| 'lg'` | `'md'` |  |
 | `disabled?` | `boolean` | `false` |  |
 | `loading?` | `boolean` | `false` | Shows a spinner in place of `leading`, sets `aria-busy` and blocks interaction. Label is kept. |
-| `type?` | `string` |  | Without `href` the button type (default `'button'`); with `href` the MIME type hint of the linked resource. |
 | `fullWidth?` | `boolean` | `false` |  |
 | `href?` | `string` |  | Renders an `<a>` styled as a button. Its attributes (`download`, `rel`, `hreflang`, `ping`, `referrerpolicy`) are then accepted. |
 | `target?` | `string` |  | Anchor target, used with `href`. `"_blank"` adds `noopener noreferrer` to any `rel` you pass. |
@@ -409,6 +408,8 @@ Parts: `ca-breadcrumb__current` `ca-breadcrumb__item` `ca-breadcrumb__link` `ca-
 | `align?` | `'center' \| 'between'` | `'center'` | `'between'` pins the label to the start and `trailing` to the end (use with `fullWidth` or a fixed width). The loading spinner stays in the leading slot. Default `'center'`. |
 | `onclick?` | `(e: MouseEvent) => void` |  |  |
 | `aria-label?` | `string` |  |  |
+| `type?` | `string` |  | MIME type hint of the linked resource. |
+| `form?` | `never` |  |  |
 
 Snippets: `children`; `leading`; `trailing`
 
