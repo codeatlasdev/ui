@@ -30,3 +30,14 @@ describe("release lists guide (#147)", () => {
 		expect(guide).toMatch(/aria-labelledby/);
 	});
 });
+
+describe("prose.css code inside a pre (#468)", () => {
+	// A fenced block is `<pre><code>`. The UA sheet gives `code` a bare `font-family: monospace`, which
+	// Chromium resolves through fontconfig differently from one lookup to the next (DejaVu Sans Mono
+	// before a full-page capture, Liberation Mono after), so a block changed height by a line-height
+	// step. The `code` must take the pinned stack from its `pre`.
+	it("makes code inherit the font of its pre", () => {
+		const rule = prose.match(/\.ca-prose pre code[^{]*\{([^}]*)\}/);
+		expect(rule?.[1]).toMatch(/font-family:\s*inherit/);
+	});
+});

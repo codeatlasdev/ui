@@ -239,6 +239,13 @@
   tab-size: 2;
 }
 
+/* `code` inside a fence takes the pinned stack of its `pre`: the UA sheet's bare `monospace` is resolved
+   through fontconfig per lookup and can change font (and line height) between two paints (#468). */
+.ca-prose pre code,
+.ca-code pre code {
+  font-family: inherit;
+}
+
 .ca-code pre:focus-visible {
   outline: 2px solid var(--ca-focus-ring);
   outline-offset: -2px;
