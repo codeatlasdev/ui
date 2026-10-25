@@ -5,10 +5,11 @@
   import type { DateValue } from '@internationalized/date';
   import { announce } from '../../utils/announce.js';
   import { uid } from '../../utils/index.js';
-  import CalendarBody from './CalendarBody.svelte';
+  import CalendarFrame from './CalendarFrame.svelte';
   import { CalendarState } from './calendar-state.svelte.js';
   import DateSegments from './DateSegments.svelte';
-  import { defaultDate, type WeekStart } from './date-utils.js';
+  import DateFieldShell from './DateFieldShell.svelte';
+  import { defaultDate, focusOwnDay, type WeekStart } from './date-utils.js';
   import { FieldState } from './field-state.svelte.js';
   import PickerPopover from './PickerPopover.svelte';
   import type { DateRange } from './types.js';
@@ -69,7 +70,6 @@
   }: Props = $props();
 
   const id = uid('drp');
-  const describedBy = $derived(error ? `${id}-err` : description ? `${id}-hint` : undefined);
 
   let wrap = $state<HTMLElement | null>(null);
   let triggerEl = $state<HTMLElement | null>(null);
@@ -146,81 +146,51 @@
     open = false;
     if (restoreFocus) triggerEl?.focus();
   }
-
-  /** See DatePicker: focus this popover's own day without scrolling the page. */
-  function focusOwnDay(content: HTMLElement) {
-    queueMicrotask(() => {
-      const day =
-        content.querySelector<HTMLElement>('[data-ca-day][data-focused]') ??
-        content.querySelector<HTMLElement>('[data-ca-day]:not([data-disabled])');
-      day?.focus({ preventScroll: true });
-    });
-  }
 </script>
 
-<div role="group" id={id}>
-  <div class="ca-date {className}" class:ca-date--sm={size === 'sm'} class:ca-date--error={!!error} class:ca-date--disabled={disabled}>
-    {#if label}
-      <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
-      <span class="ca-date__label" id="{id}-label" onclick={() => !disabled && startField.focusFirst()}>
-        {label}{#if required}<span class="ca-date__req" aria-hidden="true"> *</span>{/if}
-      </span>
-    {/if}
-
-    <div
-      class="ca-date__wrap"
-      role="group"
-      aria-label={label}
-      aria-describedby={describedBy}
-      bind:this={wrap}
-    >
-      <DateSegments
-        field={startField}
-        base="{id}-s"
-        tag="div"
-        role="presentation"
-        labelId={label ? `${id}-label` : undefined}
-        {disabled}
-        {readonly}
-        invalid={!!error}
-      />
-      <span class="ca-date__range-sep" aria-hidden="true">–</span>
-      <DateSegments
-        field={endFieldState}
-        base="{id}-e"
-        tag="div"
-        role="presentation"
-        labelId={label ? `${id}-label` : undefined}
-        {disabled}
-        {readonly}
-        invalid={!!error}
-      />
-      <button
-        type="button"
-        class="ca-date__trigger"
-        bind:this={triggerEl}
-        aria-label={triggerLabel ?? t().calendar.openCalendar}
-        aria-haspopup="dialog"
-        aria-expanded={open}
-        aria-controls={open ? `${id}-content` : undefined}
-        data-segment="trigger"
-        data-state={open ? 'open' : 'closed'}
-        {disabled}
-        onclick={() => {
-          if (!readonly) open = !open;
-        }}
-      >
-        <CalendarRange size={16} strokeWidth={2} aria-hidden="true" />
-      </button>
-    </div>
-
-    {#if error}
-      <p id="{id}-err" class="ca-date__hint ca-date__hint--error" role="alert">{error}</p>
-    {:else if description}
-      <p id="{id}-hint" class="ca-date__hint">{description}</p>
-    {/if}
-  </div>
-</div>
+<DateFieldShell
+  range
+  {id}
+  field={startField}
+  {label}
+  {description}
+  {error}
+  {disabled}
+  {readonly}
+  {required}
+  {size}
+  class={className}
+  {open}
+  triggerIcon={CalendarRange}
+  triggerLabel={triggerLabel ?? t().calendar.openCalendar}
+  bind:triggerEl
+  onToggle={() => (open = !open)}
+  bind:wrap
+>
+  {#snippet segments()}
+    <DateSegments
+      field={startField}
+      base="{id}-s"
+      tag="div"
+      role="presentation"
+      labelId={label ? `${id}-label` : undefined}
+      {disabled}
+      {readonly}
+      invalid={!!error}
+    />
+    <span class="ca-date__range-sep" aria-hidden="true">–</span>
+    <DateSegments
+      field={endFieldState}
+      base="{id}-e"
+      tag="div"
+      role="presentation"
+      labelId={label ? `${id}-label` : undefined}
+      {disabled}
+      {readonly}
+      invalid={!!error}
+    />
+  {/snippet}
+</DateFieldShell>
 
 <PickerPopover
   {open}
@@ -231,15 +201,5 @@
   onclose={() => close()}
   onopen={focusOwnDay}
 >
-  <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-<div
-    bind:this={cal.root}
-    class="ca-cal"
-    role="application"
-    aria-label={cal.fullLabel}
-    onkeydown={cal.onkeydown}
-  >
-    <div class="ca-sr-only"><div role="heading" aria-level="2">{cal.fullLabel}</div></div>
-    <CalendarBody state={cal} {disabled} {readonly} range />
-  </div>
+  <CalendarFrame state={cal} {disabled} {readonly} range />
 </PickerPopover>
