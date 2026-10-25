@@ -172,7 +172,6 @@
   border: 0.5px solid var(--ca-glass-border);
   box-shadow: inset 0 0.5px 0 var(--ca-glass-rim);
   color: var(--ca-vibrancy-label);
-  cursor: pointer;
 }
 .glass-btn:hover  { background-color: var(--ca-glass-tint); }
 .glass-btn:active { background-color: var(--ca-glass-tint-thick); }
@@ -184,7 +183,6 @@
   border: 0.5px solid var(--ca-glow-primary-strong);
   box-shadow: inset 0 0.5px 0 var(--ca-glass-rim), 0 0 0 1px var(--ca-glow-primary);
   color: var(--ca-vibrancy-label);
-  cursor: pointer;
 }
 
 .glass-btn-clear {
@@ -193,7 +191,6 @@
   backdrop-filter: var(--ca-blur-ultra-thin);
   border: 0.5px solid var(--ca-glass-border);
   color: var(--ca-vibrancy-label);
-  cursor: pointer;
 }
 .glass-btn-clear:hover { background-color: var(--ca-glass-tint-ultra-thin); }
 

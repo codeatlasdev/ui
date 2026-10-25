@@ -139,6 +139,8 @@ Reading failures: locators fail with an ARIA snapshot; traces are in `__traces__
 
 10. **Mobile**: heights use `var(--ca-vh)` (never `100vh`/`100dvh`); `fixed` UI uses `var(--ca-safe-*)`; a form with a keyboard uses `use:keyboardAware` (`@codeatlasdev/ui/actions`); a full-screen mobile view is `MobilePane`, an action bar is `StickyActions`; the 44px touch target is global under `(pointer: coarse)`, so do not write an override in the app. App viewport: `width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content`.
 
+10a. **Cursor**: never write `cursor: pointer` for a clickable element. The reset (`@layer ca.reset`) gives `pointer` to `button`, `a[href]`, `label[for]`, `summary`, `[role=button|tab|option|menuitem*]` and `not-allowed` to `:disabled` / `[aria-disabled=true]`; a custom clickable tile is `<button>` or carries a role from that list. Override it with an unlayered app rule.
+
 11. **Theme**: a single `ThemeOptions` in `src/lib/theme.ts` (plain object, `import type` only: `vite.config`/`astro.config` load the file in Node, where the package root does not evaluate `.svelte`), passed to `caThemeHandle` + `caThemePlugin` (SvelteKit) or `caUI` (Astro). `defaultStyle` (the surface material, `solid` by default) is one field of it, not a separate setup. Override a token by declaring `--ca-*` on `:root` in the app, without `!important`. Local islands: `data-theme-scope="dark|light"`. Automatic setup: `bunx @codeatlasdev/ui init`.
 
 12. **SEO**: a public page uses `<Seo>` from `@codeatlasdev/ui/seo` with a required `canonical`; a private page passes `noindex`.
