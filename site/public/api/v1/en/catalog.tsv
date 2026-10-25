@@ -374,3 +374,5 @@ id	group	page	title	names	tags	summary
 983	inputs	text-field	Button addons		input-group,text-field,suffix,addon,button,icon-button,copy,coupon	Two TextFields with a button inside the border: a read-only share link with a copy IconButton and a coupon code with an Apply button.
 984	layout	kpi-card	Trend tone		kpi-card,kpi-grid,trend-tone,positive-down,churn,latency,metrics	Three KPI cards where the trend colour follows what is good news: churn falling is green, response time rising is red, sessions are neutral.
 985	layout	kpi-card	Sparkline		kpi-card,sparkline,chart,snippet,hint,metrics,dashboard	Two KPI cards with an icon and a sparkline under the number: a line for active users and bars for churn, with a hint line.
+986	layout	preview-stage	Inline content		preview-stage,device-frame,responsive,width,showcase	A button pair inside a PreviewStage at 390 px, with a toolbar button that flips the content between light and dark.
+987	layout	preview-stage	A whole page		preview-stage,iframe,page,template,responsive	A whole page (the sign-in template) in a PreviewStage iframe, laid out at the chosen width with its own media queries.

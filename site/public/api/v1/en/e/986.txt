@@ -1,0 +1,29 @@
+<!-- @codeatlasdev/ui demo #986 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/preview-stage#inline-content -->
+Element: #986 Inline content (layout/preview-stage)
+What it shows: A button pair inside a PreviewStage at 390 px, with a toolbar button that flips the content between light and dark.
+When to use: Showcasing a component at phone, tablet and desktop width inside a docs page or a design review.
+Spec:
+- `<PreviewStage label="Button pair" bind:width {scheme} height={220}>`
+- `{#snippet toolbar()}` adds a Dark / Light toggle next to the width control
+- The content is themed in its own island: the page around the stage keeps its scheme
+Tags: preview-stage, device-frame, responsive, width, showcase
+Needs: @codeatlasdev/ui@4.5.0
+Components: Button, PreviewStage
+Live demo: https://ui.codeatlas.com.br/docs/layout/preview-stage#inline-content
+
+<script lang="ts">
+  import { Button, PreviewStage } from '@codeatlasdev/ui';
+
+  let width = $state<number | 'fill'>(390);
+  let scheme = $state<'light' | 'dark'>('light');
+</script>
+
+<PreviewStage label="Button pair" bind:width {scheme} height={220}>
+  <Button>Continue</Button>
+  <Button variant="outlined">Cancel</Button>
+  {#snippet toolbar()}
+    <Button size="sm" variant="ghost" onclick={() => (scheme = scheme === 'light' ? 'dark' : 'light')}>
+      {scheme === 'light' ? 'Dark' : 'Light'}
+    </Button>
+  {/snippet}
+</PreviewStage>

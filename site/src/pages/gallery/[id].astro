@@ -1,0 +1,29 @@
+---
+import GalleryViewer from "~/components/gallery/GalleryViewer.svelte";
+import SiteDocsShell from "~/components/docs/SiteDocsShell.svelte";
+import SiteFooter from "~/components/site/SiteFooter.astro";
+import Base from "~/layouts/Base.astro";
+import { ITEMS } from "~/lib/gallery-items";
+import { SECTIONS } from "~/lib/nav";
+import { THEME_PRESETS } from "@codeatlasdev/ui";
+
+export function getStaticPaths() {
+	return ITEMS.map((item) => ({ params: { id: item.id }, props: { item } }));
+}
+
+const { item } = Astro.props;
+const order = ITEMS.map((i) => i.id);
+const known = order;
+const presets = THEME_PRESETS.map((p) => ({ value: p.id, label: p.label }));
+const label = item.kind === "page" ? "Page" : `#${item.id}`;
+---
+<Base
+	title={`${label} ${item.title} · Gallery`}
+	description={item.summary}
+	skipLink={false}
+>
+	<SiteDocsShell client:load sections={SECTIONS} active="gallery" pathname={Astro.url.pathname}>
+		<GalleryViewer client:load {item} {order} {known} {presets} />
+	</SiteDocsShell>
+	<SiteFooter />
+</Base>

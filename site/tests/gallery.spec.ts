@@ -27,6 +27,34 @@ test.describe("gallery", () => {
 		await expect(page).not.toHaveURL(/pick=/);
 	});
 
+	test("pages are a category with thumbnail cards, beta marked", async ({ page }) => {
+		await gotoReady(page, "/gallery/");
+		await page.getByRole("radio", { name: "pages", exact: true }).click();
+		const cards = page.locator("article.gallery-card");
+		await expect(cards.first()).toBeVisible();
+		for (const group of await page.locator(".gallery-card__group").allTextContents())
+			expect(group).not.toMatch(/^\d/);
+		expect(await cards.count()).toBeGreaterThan(20);
+		await expect(page.locator(".gallery-card__beta").first()).toHaveText("beta");
+		await expect(page.locator("[id='page-admin-dashboard']")).toBeVisible();
+	});
+
+	test("a card is a large preview with a clamped summary and an Open link", async ({ page }) => {
+		await gotoReady(page, "/gallery/");
+		const card = page.locator("[id='001']");
+		const preview = card.locator(".gallery-card__preview");
+		expect((await preview.boundingBox())?.height).toBeGreaterThanOrEqual(300);
+		const lines = await card.locator(".gallery-card__summary").evaluate((el) => {
+			const lh = Number.parseFloat(getComputedStyle(el).lineHeight);
+			return el.getBoundingClientRect().height / lh;
+		});
+		expect(lines).toBeLessThanOrEqual(2.05);
+		const open = card.getByRole("link", { name: "Open Full width" });
+		await expect(open).toHaveAttribute("href", "/gallery/001/");
+		await open.focus();
+		await expect(card.locator(".gallery-card__open-label")).toHaveCSS("opacity", "1");
+	});
+
 	test("#010 deep link scrolls the card into view", async ({ page }) => {
 		await gotoReady(page, "/gallery/#010");
 		await expect(page.locator("[id='010']")).toBeInViewport();

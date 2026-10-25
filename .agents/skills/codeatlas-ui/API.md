@@ -2521,6 +2521,28 @@ Internal (may change in any release): `ca-popover-in` `ca-popover-out`
 
 Data attributes: `data-state` (`closed`)
 
+## PreviewStage
+
+`import { PreviewStage } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `width?` | `number \| 'fill'` | `'fill'` | `bind:` Frame width in CSS px, or `'fill'` for the whole stage. Bindable. |
+| `widths?` | `number[]` | `[390, 768, 1280]` | Width presets in px; `Fill` is always offered. |
+| `scheme?` | `'light' \| 'dark' \| 'inherit'` | `'inherit'` | Colour scheme of the content. `'inherit'` keeps the page's own. Bindable. |
+| `preset?` | `string` |  | `data-preset` of the content. Omit to keep the page's preset. |
+| `label` | `string` |  | Accessible name of the stage (what is shown). Required. |
+| `src?` | `string` |  | Same-origin URL of a page to show in an isolated `<iframe>`. Ignored when `children` is given. |
+| `height?` | `number` | `560` | Stage height in px. With `src` the frame is exactly this tall at the chosen width. |
+| `minWidth?` | `number` | `280` | Smallest width the splitter reaches, in px. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `toolbar`: Extra controls rendered in the toolbar, after the width control.; `children`: Inline content (instead of `src`).
+
+Parts: `ca-pstage` `ca-pstage__bar` `ca-pstage__canvas` `ca-pstage__content` `ca-pstage__frame` `ca-pstage__handle` `ca-pstage__iframe` `ca-pstage__loading` `ca-pstage__readout` `ca-pstage__viewport`
+
+Data attributes: `data-active`, `data-dragging`, `data-loaded`
+
 ## Progress
 
 `import { Progress } from "@codeatlasdev/ui"`

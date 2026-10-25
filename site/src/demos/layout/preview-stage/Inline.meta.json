@@ -1,0 +1,11 @@
+{
+	"summary": "A button pair inside a PreviewStage at 390 px, with a toolbar button that flips the content between light and dark.",
+	"use": "Showcasing a component at phone, tablet and desktop width inside a docs page or a design review.",
+	"spec": [
+		"`<PreviewStage label=\"Button pair\" bind:width {scheme} height={220}>`",
+		"`{#snippet toolbar()}` adds a Dark / Light toggle next to the width control",
+		"The content is themed in its own island: the page around the stage keeps its scheme"
+	],
+	"tags": ["preview-stage", "device-frame", "responsive", "width", "showcase"],
+	"shape": "wide"
+}

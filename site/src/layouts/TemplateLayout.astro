@@ -1,5 +1,6 @@
 ---
 // Full-screen template pages: Base head/SEO, no docs chrome, one island fills the viewport.
+import StageTheme from "~/components/gallery/StageTheme.svelte";
 import Base from "~/layouts/Base.astro";
 
 interface Props {
@@ -10,5 +11,7 @@ interface Props {
 const { title, description, noindex = false } = Astro.props;
 ---
 <Base title={title} description={description} noindex={noindex} skipLink={false}>
+	<!-- Inside the gallery viewer (?scheme=...) the page shows the stage's scheme and preset; on its own it renders nothing. -->
+	<StageTheme client:load />
 	<slot />
 </Base>
