@@ -3,7 +3,7 @@
   import { codeSnippet } from '../../i18n/groups/codeSnippet.js';
   import { Copy, Check } from '@lucide/svelte';
   import { copyToClipboard } from '../../utils/index.js';
-  import { getHighlighter } from '../../utils/highlighter.js';
+  import { highlight } from '../../utils/highlighter.js';
   import { scrollFocusable } from '../../actions/scroll-focusable.js';
   const t = useMessages(codeSnippet);
 
@@ -23,12 +23,9 @@
   $effect(() => {
     const lang = language;
     const src = code;
-    getHighlighter().then((hl) => {
-      highlightedHtml = hl.codeToHtml(src, {
-        lang,
-        themes: { light: 'github-light-high-contrast', dark: 'github-dark-high-contrast' },
-        defaultColor: false,
-      });
+    highlight(src, lang).then((html) => {
+      // A newer `code` or `language` may have started while this one loaded: keep the last request's result.
+      if (src === code && lang === language) highlightedHtml = html;
     });
   });
 

@@ -51,24 +51,37 @@ describe("style pages data (#583)", () => {
 
 	it("rejects a claim that rests on a source nobody read, or a heuristic with a source", () => {
 		const swiss = STYLES.swiss;
-		const bad = checkStyles({
-			swiss: {
-				...swiss,
-				pitfalls: [
-					{ ...swiss.pitfalls[0], claim: { ...swiss.pitfalls[0].claim, refs: ["E02"] } },
-					{
-						...swiss.pitfalls[0],
-						title: "h",
-						claim: { strength: "heuristic", refs: ["W04"], scope: "", text: "x" },
-					},
-					{
-						...swiss.pitfalls[0],
-						title: "u",
-						claim: { ...swiss.pitfalls[0].claim, refs: ["E99"] },
-					},
-				],
-			},
-		});
+		// Every record of the dataset is `claim-read` now: make E02 the source nobody read, then put it back.
+		const e02 = getReference("E02");
+		if (!e02) throw new Error("E02 is missing from the references");
+		const was = e02.verified.level;
+		e02.verified.level = "identity-only";
+		let bad: string[];
+		try {
+			bad = runBad();
+		} finally {
+			e02.verified.level = was;
+		}
+		function runBad() {
+			return checkStyles({
+				swiss: {
+					...swiss,
+					pitfalls: [
+						{ ...swiss.pitfalls[0], claim: { ...swiss.pitfalls[0].claim, refs: ["E02"] } },
+						{
+							...swiss.pitfalls[0],
+							title: "h",
+							claim: { strength: "heuristic", refs: ["W04"], scope: "", text: "x" },
+						},
+						{
+							...swiss.pitfalls[0],
+							title: "u",
+							claim: { ...swiss.pitfalls[0].claim, refs: ["E99"] },
+						},
+					],
+				},
+			});
+		}
 		expect(bad.some((e) => e.includes("was not read"))).toBe(true);
 		expect(bad.some((e) => e.includes("a heuristic has no sources"))).toBe(true);
 		expect(bad.some((e) => e.includes("unknown reference E99"))).toBe(true);

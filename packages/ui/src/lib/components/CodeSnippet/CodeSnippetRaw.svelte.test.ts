@@ -6,7 +6,7 @@ import CodeSnippet from "./CodeSnippet.svelte";
 // The highlighter never loads: the raw `<pre>` fallback is what the user sees (a slow network, a failed
 // chunk). It scrolls sideways on a long line, so it must be keyboard-reachable like any scroll region.
 vi.mock("../../utils/highlighter.js", () => ({
-	getHighlighter: () => new Promise(() => {}),
+	highlight: () => new Promise(() => {}),
 }));
 
 const LONG = `const configuration = { ${"someVeryLongPropertyName: 'a value that keeps going', ".repeat(8)} };`;
