@@ -1,9 +1,11 @@
-// GET /changelog/feed.xml -> Atom feed of the releases, from the same source and cache as the page.
+// GET /changelog/feed.xml -> Atom feed of the releases, from the same source and cache as the page. A release that has a
+// post carries the full post in its entry; the others carry the GitHub release body.
 import { atomFeed, renderRelease } from "../_lib/changelog";
-import { edgeHeaders, loadReleases } from "../_lib/edge";
+import { edgeHeaders, loadPosts, loadReleases } from "../_lib/edge";
 
 interface Env {
 	GITHUB_TOKEN?: string;
+	ASSETS?: { fetch(input: Request | string): Promise<Response> };
 }
 
 export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
@@ -12,7 +14,8 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, env }) => {
 			fresh: new URL(request.url).searchParams.get("fresh") === "1",
 			token: env.GITHUB_TOKEN,
 		});
-		return new Response(atomFeed(releases.map(renderRelease)), {
+		const posts = await loadPosts(request, env.ASSETS);
+		return new Response(atomFeed(releases.map((r) => renderRelease(r, posts[r.version]))), {
 			headers: edgeHeaders({ "content-type": "application/atom+xml; charset=utf-8" }, stale),
 		});
 	} catch (err) {

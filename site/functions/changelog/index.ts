@@ -26,7 +26,10 @@ export const onRequestGet: PagesFunction<Env> = async ({ request, next, env }) =
 			token: env.GITHUB_TOKEN,
 		});
 		// The build copy (between the markers) only matters when GitHub fails, so it is not parsed again here.
-		const body = changelogBody(releases.map(renderRelease), { stale });
+		const body = changelogBody(
+			releases.map((r) => renderRelease(r)),
+			{ stale }
+		);
 		return new Response(`${html.slice(0, a)}${body}${html.slice(b + CLOSE.length)}`, {
 			headers: edgeHeaders({ ...HTML, "x-changelog-latest": releases[0]?.version ?? "" }, stale),
 		});

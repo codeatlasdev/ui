@@ -204,7 +204,10 @@ describe("atomFeed", () => {
 		gh({ tag_name: `${TAG}3.0.0`, body: "- a <b>&</b>", published_at: "2026-10-15T03:07:23Z" }),
 		gh({ tag_name: `${TAG}2.3.2`, published_at: "2026-10-14T00:52:42Z" }),
 	]);
-	const xml = atomFeed(rels.map(renderRelease), "https://ui.codeatlas.com.br");
+	const xml = atomFeed(
+		rels.map((r) => renderRelease(r)),
+		"https://ui.codeatlas.com.br"
+	);
 	test("is an Atom feed with one entry per release, newest first", () => {
 		expect(xml.startsWith('<?xml version="1.0" encoding="utf-8"?>')).toBe(true);
 		expect(xml).toContain('<feed xmlns="http://www.w3.org/2005/Atom">');
@@ -218,5 +221,36 @@ describe("atomFeed", () => {
 	test("entry content is escaped, never raw markup", () => {
 		expect(xml).toContain('<content type="html">');
 		expect(xml).not.toMatch(/<content type="html">[^<]*<[^/]/);
+	});
+});
+
+describe("a release with a post", () => {
+	const [r] = parseGithubReleases([gh({ tag_name: `${TAG}4.6.0`, body: "- generated line" })]);
+	const post = {
+		headline: "The big one",
+		lede: "l",
+		html: "<h2>Theme Studio</h2><p>Full story.</p>",
+	};
+	test("the rendered release carries the full post in place of the generated list", () => {
+		const e = renderRelease(r, post, "https://ui.codeatlas.com.br");
+		expect(e.html).toBe(post.html);
+		expect(e.headline).toBe("The big one");
+		expect(e.post).toBe("https://ui.codeatlas.com.br/changelog/4.6.0/");
+	});
+	test("the feed entry links the post page and titles it with the headline", () => {
+		const xml = atomFeed(
+			[renderRelease(r, post, "https://ui.codeatlas.com.br")],
+			"https://ui.codeatlas.com.br"
+		);
+		expect(xml).toContain("<title>4.6.0: The big one</title>");
+		expect(xml).toContain(
+			'<link rel="alternate" href="https://ui.codeatlas.com.br/changelog/4.6.0/"/>'
+		);
+		expect(xml).toContain("Full story.");
+	});
+	test("a release without a post is unchanged", () => {
+		const e = renderRelease(r);
+		expect(e.headline).toBeUndefined();
+		expect(e.html).toContain("generated line");
 	});
 });

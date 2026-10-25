@@ -1,0 +1,54 @@
+---
+// Six design styles as page thumbnails told apart by shape language alone, feeding one designStyle("id") call.
+import Arrow from "../Arrow.astro";
+import Hatch from "../Hatch.astro";
+import Scene from "../Scene.astro";
+---
+<Scene
+	height={280}
+	title="Six design styles as thumbnails, applied through designStyle"
+	desc="Six small page thumbnails in a grid of three by two: Swiss with rule lines, Editorial with two columns, Brutalism with a hard offset shadow, Sketchbook with pencil hatching, Glassmorphism with translucent overlapping rectangles, and Terminal with a prompt cursor. One arrow leads from the grid to a box labelled designStyle with an id."
+>
+	<!-- Swiss: rules -->
+	<rect x="14" y="14" width="130" height="92" rx="2" class="cs-box" />
+	<path d="M26 34 H132 M26 52 H132 M26 70 H132" class="cs-line" />
+	<rect x="26" y="22" width="40" height="6" class="cs-brand" />
+	<text x="79" y="124" class="cs-mono cs-mid">Swiss</text>
+
+	<!-- Editorial: two columns -->
+	<rect x="164" y="14" width="130" height="92" rx="2" class="cs-box" />
+	<path d="M176 30 H282" class="cs-line" />
+	<path d="M176 44 H222 M176 56 H222 M176 68 H222 M176 80 H222 M236 44 H282 M236 56 H282 M236 68 H282 M236 80 H282" class="cs-line" />
+	<text x="229" y="124" class="cs-mono cs-mid">Editorial</text>
+
+	<!-- Brutalism: hard shadow -->
+	<rect x="322" y="22" width="122" height="84" class="cs-brand" />
+	<rect x="314" y="14" width="122" height="84" class="cs-box" style="stroke-width:3" />
+	<rect x="328" y="28" width="50" height="14" class="cs-brand" />
+	<path d="M328 62 H420 M328 78 H400" class="cs-line" />
+	<text x="379" y="124" class="cs-mono cs-mid">Brutalism</text>
+
+	<!-- Sketchbook: hatch -->
+	<rect x="14" y="146" width="130" height="92" rx="2" class="cs-box" />
+	<Hatch x={14} y={192} w={70} h={46} />
+	<path d="M26 166 H110 M26 182 H96" class="cs-line" />
+	<circle cx="130" cy="160" r="3" class="cs-brand" />
+	<text x="79" y="256" class="cs-mono cs-mid">Sketchbook</text>
+
+	<!-- Glassmorphism: translucent overlaps -->
+	<rect x="164" y="146" width="130" height="92" rx="2" class="cs-sunk" />
+	<rect x="176" y="158" width="70" height="52" rx="8" class="cs-soft" style="fill-opacity:0.5" />
+	<rect x="206" y="176" width="76" height="52" rx="8" class="cs-box" style="fill-opacity:0.55" />
+	<text x="229" y="256" class="cs-mono cs-mid">Glassmorphism</text>
+
+	<!-- Terminal: prompt -->
+	<rect x="314" y="146" width="130" height="92" rx="2" class="cs-sunk" />
+	<text x="328" y="176" class="cs-mono cs-strong">&gt;_</text>
+	<path d="M328 194 H410 M328 210 H390" class="cs-line" />
+	<text x="379" y="256" class="cs-mono cs-mid">Terminal</text>
+
+	<Arrow x1={452} y1={130} x2={490} y2={130} />
+	<rect x="492" y="100" width="136" height="60" rx="2" class="cs-soft" />
+	<text x="560" y="125" class="cs-mono cs-mid">designStyle</text>
+	<text x="560" y="144" class="cs-mono cs-mid">("id")</text>
+</Scene>

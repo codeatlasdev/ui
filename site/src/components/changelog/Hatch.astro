@@ -1,0 +1,25 @@
+---
+import { nextId } from "./ids";
+// Pencil shading inside a rectangle: diagonal strokes in the brand color, clipped to the box. Drawn as lines, with a
+// clip id of its own per instance, so a scene can place as many as it likes.
+interface Props {
+	x: number;
+	y: number;
+	w: number;
+	h: number;
+	gap?: number;
+	opacity?: number;
+}
+const { x, y, w, h, gap = 7, opacity = 0.6 } = Astro.props;
+// One id per instance: the same box drawn twice on a page (a card hero and the post hero) must not share an id.
+const clip = nextId(Astro.url.pathname, "csh");
+const lines: string[] = [];
+// 45-degree strokes covering the box: from the left/top edge to the bottom/right.
+for (let d = -h; d < w; d += gap) {
+	lines.push(`M${x + d} ${y + h} L${x + d + h} ${y}`);
+}
+---
+<clipPath id={clip}><rect x={x} y={y} width={w} height={h} /></clipPath>
+<g clip-path={`url(#${clip})`} style={`opacity:${opacity}`}>
+	{lines.map((d) => <path d={d} class="cs-hatch-line" />)}
+</g>

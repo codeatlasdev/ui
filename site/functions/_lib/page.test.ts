@@ -4,7 +4,7 @@ import { changelogBody } from "./page";
 
 const rels = parseChangelogMd(
 	"## 3.0.0\n\n- big\n\n## Special thanks\n\nTo A. 💛\n\n## 2.4.0-beta.1\n\n- b\n\n## 2.3.2\n\n- fix <b>x</b>\n"
-).map(renderRelease);
+).map((r) => renderRelease(r));
 
 describe("changelogBody", () => {
 	const html = changelogBody(rels, { stale: false });

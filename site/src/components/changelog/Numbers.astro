@@ -1,0 +1,56 @@
+---
+// The headline row of a post: a few numbers, each with what it counts and the condition it holds under. A number
+// without a note does not pass the content schema, so none is shown bare.
+import type { HeadlineNumber } from "~/lib/changelog/model";
+
+interface Props {
+	items: HeadlineNumber[];
+}
+const { items } = Astro.props;
+---
+{items.length > 0 && (
+	<dl class="nums" aria-label="Headline numbers">
+		{items.map((n) => (
+			<div class="nums__item">
+				<dt class="nums__label">{n.label}</dt>
+				<dd class="nums__value">{n.value}</dd>
+				<dd class="nums__note">{n.note}</dd>
+			</div>
+		))}
+	</dl>
+)}
+
+<style is:global>
+	.nums {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr));
+		gap: var(--ca-space-3);
+		margin: var(--ca-space-6) 0;
+	}
+	.nums__item {
+		display: grid;
+		align-content: start;
+		gap: var(--ca-space-1);
+		padding: var(--ca-space-4);
+		border: var(--ca-border-width) solid var(--ca-outline-strong);
+		border-radius: var(--ca-radius-md);
+		background: var(--ca-surface-raised);
+	}
+	.nums__label {
+		color: var(--ca-text-secondary);
+		font-size: var(--ca-font-size-body2);
+	}
+	.nums__value {
+		margin: 0;
+		font-family: var(--ca-font-mono);
+		font-size: var(--ca-font-size-h3);
+		font-weight: 700;
+		font-variant-numeric: tabular-nums;
+		line-height: 1.1;
+	}
+	.nums__note {
+		margin: 0;
+		color: var(--ca-text-secondary);
+		font-size: var(--ca-font-size-caption);
+	}
+</style>

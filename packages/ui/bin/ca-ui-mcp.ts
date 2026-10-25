@@ -6,7 +6,7 @@
  *   claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp
  *
  * Tools: get_recipe, list_components, get_component, get_export, get_equivalent, list_parts, search_tokens, list_surfaces, get_guide,
- * list_concepts, get_concept (the Concepts pages with their claims, limits and sources), search_terms, get_term, get_reference (the design atlas and its verified sources), search_demos, get_demo, get_style (a design style: traits, pitfalls with sources, the designStyle recipe), search_ui, list_facets, get_related, report_issue (drafts a sanitized GitHub issue from a library problem; it never posts anything).
+ * list_concepts, get_concept (the Concepts pages with their claims, limits and sources), search_terms, get_term, get_reference (the design atlas and its verified sources), search_demos, get_demo, get_style (a design style: traits, pitfalls with sources, the designStyle recipe), get_release (a release as a post: highlights, numbers with their conditions, behaviour changes, every change linked to its PR), search_ui, list_facets, get_related, report_issue (drafts a sanitized GitHub issue from a library problem; it never posts anything).
  */
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -24,6 +24,7 @@ import type {
 	ManifestToken,
 	PartsFile,
 } from "../scripts/build-manifest.ts";
+import type { ReleaseFile } from "../scripts/changelog-markdown.ts";
 import { indexEntries } from "../scripts/index-build.ts";
 import {
 	chipCounts,
@@ -70,6 +71,11 @@ const noDemos = "No demo catalog in this build (dist/demos.json is missing).";
 // Like demos: a build from the tarball has no site/ data, and the other tools must keep working.
 const styles = existsSync(join(DIST, "styles.json")) ? load<StyleFile>("styles.json") : undefined;
 const noStyles = "No design styles in this build (dist/styles.json is missing).";
+// Like styles: the posts live in site/, so a build from the tarball has none.
+const releases = existsSync(join(DIST, "releases.json"))
+	? load<ReleaseFile>("releases.json")
+	: undefined;
+const noReleases = "No release posts in this build (dist/releases.json is missing).";
 
 const text = (s: string) => ({ content: [{ type: "text" as const, text: s }] });
 const fail = (s: string) => ({ ...text(s), isError: true });
@@ -621,6 +627,27 @@ server.registerTool(
 			ids.find((id) => squash(id).includes(n) || squash(styles.names[id] ?? "").includes(n));
 		if (!hit) return fail(`No style "${name}". Styles: ${ids.join(", ")}.`);
 		return text(styles.styles[hit] ?? "");
+	}
+);
+
+server.registerTool(
+	"get_release",
+	{
+		description:
+			"A release of @codeatlasdev/ui as markdown: what changed and why, the headline numbers with the conditions each was measured under, the behaviour changes to check after upgrading, the upgrade command and every merged change grouped by area with its pull request and issue. `version` is `4.6.0` (a leading `v` is accepted). Without `version`, returns the digest of every release, newest first. Call it before upgrading, to know what moves. For breaking changes across majors use get_migration.",
+		inputSchema: { version: z.string().optional() },
+	},
+	({ version }) => {
+		if (!releases) return fail(noReleases);
+		if (!version) return text(releases.index);
+		const v = version
+			.trim()
+			.replace(/^v/i, "")
+			.replace(/^@codeatlasdev\/ui@/, "");
+		const hit = releases.releases[v];
+		return hit
+			? text(hit)
+			: fail(`No release "${version}". Releases: ${releases.versions.join(", ")}.`);
 	}
 );
 

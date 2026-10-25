@@ -1,0 +1,52 @@
+---
+// Theme Studio: ThemeOptions go through the real engine and come out as live previews and a shareable artifact.
+import Arrow from "../Arrow.astro";
+import Hatch from "../Hatch.astro";
+import Scene from "../Scene.astro";
+---
+<Scene
+	height={300}
+	title="Theme Studio: options, real engine, live previews, exports"
+	desc="A stack of four option rows, brand, style, radius and type, feeds a box called real engine. The engine drives a live preview of three screens at widths 390, 768 and 1280, each with a light half and a darker hatched half. A dashed arrow leads from the preview to a box named theme.ts plus CSS plus share URL."
+>
+	<rect x="14" y="40" width="150" height="160" rx="2" class="cs-box" />
+	<rect x="14" y="40" width="150" height="26" class="cs-brand" />
+	<text x="89" y="58" class="cs-mono cs-mid cs-onbrand">ThemeOptions</text>
+	<path d="M14 100 H164 M14 134 H164 M14 168 H164" class="cs-line" />
+	<text x="30" y="88" class="cs-mono">brand</text>
+	<text x="30" y="122" class="cs-mono">style</text>
+	<text x="30" y="156" class="cs-mono">radius</text>
+	<text x="30" y="190" class="cs-mono">type</text>
+
+	<Arrow x1={164} y1={120} x2={200} y2={120} />
+	<rect x="202" y="86" width="104" height="68" rx="2" class="cs-soft" />
+	<text x="254" y="116" class="cs-mid cs-strong">real</text>
+	<text x="254" y="134" class="cs-mid cs-strong">engine</text>
+	<Arrow x1={306} y1={120} x2={342} y2={120} />
+
+	<rect x="344" y="40" width="284" height="160" rx="2" class="cs-sunk" />
+	<text x="486" y="30" class="cs-cap cs-mid">live preview</text>
+
+	<rect x="354" y="92" width="52" height="86" rx="6" class="cs-box" />
+	<rect x="380" y="92" width="26" height="86" class="cs-sunk" />
+	<Hatch x={380} y={92} w={26} h={86} gap={6} />
+	<rect x="354" y="92" width="52" height="86" rx="6" class="cs-line" />
+	<text x="380" y="196" class="cs-mono cs-mid">390</text>
+
+	<rect x="422" y="72" width="88" height="106" rx="6" class="cs-box" />
+	<rect x="466" y="72" width="44" height="106" class="cs-sunk" />
+	<Hatch x={466} y={72} w={44} h={106} gap={6} />
+	<rect x="422" y="72" width="88" height="106" rx="6" class="cs-line" />
+	<text x="466" y="196" class="cs-mono cs-mid">768</text>
+
+	<rect x="524" y="52" width="94" height="126" rx="6" class="cs-box" />
+	<rect x="571" y="52" width="47" height="126" class="cs-sunk" />
+	<Hatch x={571} y={52} w={47} h={126} gap={6} />
+	<rect x="524" y="52" width="94" height="126" rx="6" class="cs-line" />
+	<text x="571" y="196" class="cs-mono cs-mid">1280</text>
+
+	<Arrow x1={486} y1={206} x2={486} y2={238} dashed />
+	<rect x="344" y="240" width="284" height="40" rx="2" class="cs-paper" />
+	<text x="486" y="265" class="cs-mono cs-mid">theme.ts + CSS + share URL</text>
+	<text x="14" y="262" class="cs-cap">Light and dark side by side.</text>
+</Scene>

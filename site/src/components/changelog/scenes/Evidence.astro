@@ -1,0 +1,40 @@
+---
+// The evidence chain: a claim is traced to a source, and the source either supports it or does not.
+import Arrow from "../Arrow.astro";
+import Scene from "../Scene.astro";
+---
+<Scene
+	height={300}
+	title="Evidence chain: claim, source, then supports or does not support"
+	desc="A box named Claim points to a box named Source that carries a DOI tag. From the source the chain splits into two outcomes: supports, drawn as a solid filled box, and does not support, drawn as a dashed box. Below, five strength tags read established, supported, preliminary, practice and heuristic. A note records 269 atlas terms and 45 sources read."
+>
+	<rect x="14" y="40" width="130" height="64" rx="2" class="cs-box" />
+	<text x="79" y="78" class="cs-mid cs-strong">Claim</text>
+	<Arrow x1={144} y1={72} x2={196} y2={72} />
+
+	<rect x="198" y="40" width="150" height="64" rx="2" class="cs-box" />
+	<text x="273" y="78" class="cs-mid cs-strong">Source</text>
+	<rect x="298" y="30" width="56" height="22" class="cs-brand" />
+	<text x="326" y="46" class="cs-mono cs-mid cs-onbrand">DOI</text>
+
+	<Arrow x1={348} y1={58} x2={412} y2={46} />
+	<Arrow x1={348} y1={86} x2={412} y2={110} dashed />
+	<rect x="414" y="22" width="214" height="48" rx="2" class="cs-brand" />
+	<text x="521" y="52" class="cs-mid cs-strong cs-onbrand">supports</text>
+	<rect x="414" y="88" width="214" height="48" rx="2" class="cs-box cs-dash" />
+	<text x="521" y="118" class="cs-mid cs-strong">does not support</text>
+
+	<text x="14" y="176" class="cs-cap">strength label</text>
+	<rect x="14" y="188" width="116" height="32" rx="16" class="cs-brand" />
+	<text x="72" y="209" class="cs-mono cs-mid cs-onbrand">established</text>
+	<rect x="136" y="188" width="108" height="32" rx="16" class="cs-soft" />
+	<text x="190" y="209" class="cs-mono cs-mid">supported</text>
+	<rect x="250" y="188" width="116" height="32" rx="16" class="cs-paper" />
+	<text x="308" y="209" class="cs-mono cs-mid">preliminary</text>
+	<rect x="372" y="188" width="84" height="32" rx="16" class="cs-paper" />
+	<text x="414" y="209" class="cs-mono cs-mid">practice</text>
+	<rect x="462" y="188" width="104" height="32" rx="16" class="cs-box cs-dash" />
+	<text x="514" y="209" class="cs-mono cs-mid">heuristic</text>
+
+	<text x="14" y="270" class="cs-cap">269 atlas terms, 45 sources read</text>
+</Scene>

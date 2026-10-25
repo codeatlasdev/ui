@@ -1,0 +1,47 @@
+---
+// The sound path: nothing is created until a user gesture; the recipe is synthesized and a profile picks the voice.
+import Arrow from "../Arrow.astro";
+import Scene from "../Scene.astro";
+---
+<Scene
+	height={280}
+	title="Sound path: gesture, AudioContext, recipe, profile, speaker"
+	desc="A user gesture, pointer or key, is the first step; a lock above the first arrow says off by default. The gesture creates the AudioContext, which runs an oscillator and noise recipe, which is shaped by one of four profiles, system, glass, brutal or terminal, and ends at a speaker. A note records 3.55 kB gzip of own code, no audio files, and the persisted key ca-sound."
+>
+	<rect x="10" y="90" width="92" height="64" rx="2" class="cs-box" />
+	<text x="56" y="118" class="cs-mid cs-strong">gesture</text>
+	<text x="56" y="138" class="cs-mono cs-mid">pointer/key</text>
+
+	<rect x="48" y="40" width="26" height="20" rx="2" class="cs-brand" />
+	<path d="M53 40 V32 A8 8 0 0 1 69 32 V40" class="cs-line" />
+	<text x="86" y="55" class="cs-mono">off by default</text>
+
+	<Arrow x1={102} y1={122} x2={146} y2={122} />
+	<rect x="148" y="90" width="132" height="64" rx="2" class="cs-soft" />
+	<text x="214" y="118" class="cs-mono cs-mid">AudioContext</text>
+	<text x="214" y="138" class="cs-mono cs-mid">created here</text>
+
+	<Arrow x1={280} y1={122} x2={322} y2={122} />
+	<rect x="324" y="90" width="124" height="64" rx="2" class="cs-box" />
+	<text x="386" y="118" class="cs-mono cs-mid">oscillator</text>
+	<text x="386" y="138" class="cs-mono cs-mid">+ noise recipe</text>
+
+	<Arrow x1={448} y1={122} x2={484} y2={122} />
+	<rect x="486" y="60" width="96" height="124" rx="2" class="cs-sunk" />
+	<text x="534" y="50" class="cs-cap cs-mid">profile</text>
+	<rect x="494" y="68" width="80" height="24" rx="12" class="cs-paper" />
+	<text x="534" y="85" class="cs-mono cs-mid">system</text>
+	<rect x="494" y="96" width="80" height="24" rx="12" class="cs-paper" />
+	<text x="534" y="113" class="cs-mono cs-mid">glass</text>
+	<rect x="494" y="124" width="80" height="24" rx="12" class="cs-paper" />
+	<text x="534" y="141" class="cs-mono cs-mid">brutal</text>
+	<rect x="494" y="152" width="80" height="24" rx="12" class="cs-paper" />
+	<text x="534" y="169" class="cs-mono cs-mid">terminal</text>
+
+	<Arrow x1={582} y1={122} x2={604} y2={122} head={6} />
+	<path d="M606 112 H612 L620 106 V138 L612 132 H606 Z" class="cs-box" />
+	<path d="M626 114 Q631 122 626 130" class="cs-line" />
+
+	<text x="10" y="226" class="cs-cap">3.55 kB gzip, own code. No audio files.</text>
+	<text x="10" y="250" class="cs-mono">persisted key: ca-sound</text>
+</Scene>

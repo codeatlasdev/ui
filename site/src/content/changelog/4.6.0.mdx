@@ -1,0 +1,344 @@
+---
+version: 4.6.0
+date: "2026-10-25"
+headline: "Interfaces with soul: Theme Studio, a UI index and a faster gate"
+lede: "4.6.0 is the biggest release so far: 111 changesets, 130 merged pull requests. You can now design a whole theme in a studio built on the real engine, search every demo and page by facet, read each design style as a live page, check every claim about users against a source, add opt-in sound, render overlays inside a themed preview, and trust that a hover panel never opens under a modal. It also ships a maplibre-gl 6 fix for a critical advisory and a test system that runs only what your change reaches."
+hero: hero-4-6-0
+description: "@codeatlasdev/ui 4.6.0: Theme Studio, the UI index, design style pages, the evidence atlas, opt-in sound, inline overlays, modal-aware hover, a diff-driven test gate and a maplibre-gl 6 security fix. Live examples, numbers with their conditions, and how to upgrade."
+highlights:
+  - id: theme-studio
+    title: Theme Studio
+    summary: Design a whole theme on the real engine, preview it on eight screens at three widths, and export the code.
+  - id: ui-index
+    title: The UI index and gallery viewer
+    summary: Every demo and page is searchable by facet, every filter is a shareable link, and every item opens on Preview, Code, Prompt and Anatomy.
+  - id: design-styles
+    title: Design style pages
+    summary: Six styles as live pages, each rendered in its own style, with before and after on real components.
+  - id: evidence
+    title: Evidence, atlas and concepts
+    summary: 269 design terms and 45 sources that were opened and read, with every claim labelled by how strong its support is.
+  - id: sound
+    title: Opt-in sound
+    summary: Synthesized interface sound in a separate entry, off by default and started only by a gesture.
+  - id: inline-overlays
+    title: Inline overlays
+    summary: Dialog, Sheet, Drawer, Popover, DropdownMenu and Toaster can render in place, inside a themed island.
+  - id: modal-hover
+    title: Hover that respects modals
+    summary: A new layers store keeps tooltips, hover cards and menus from opening under a dialog.
+  - id: components
+    title: A larger kit
+    summary: Carousel, ResizablePanels, Menubar, ContextMenu, HoverCard, NavigationMenu, ButtonGroup, Stat, Kanban and more.
+  - id: tests
+    title: A test system that runs what you changed
+    summary: Affected-only tests, one pass per route, a machine-wide lock and time budgets that fail a slow run.
+  - id: security
+    title: maplibre-gl 6 and the advisory
+    summary: MapStage works on maplibre-gl 6, which carries the fix for a critical XSS in the attribution sanitizer.
+  - id: accessibility
+    title: Accessibility fixes
+    summary: Fixes found by axe and by keyboard, from the label that must contain the visible text to scroll regions you can reach.
+headlineNumbers:
+  - value: "111"
+    label: Changesets
+    note: "59 minor and 52 patch, counted from .changeset/ at the commit this post was written on. No major."
+  - value: "130"
+    label: Merged pull requests
+    note: "Between the 4.5.0 tag and commit a73cb682, from git log; 62 fixes, 57 features, 11 docs, chores and tests."
+  - value: "28 s"
+    label: "Test run for a one-component edit"
+    note: "Fresh dist, load 15 on a 12-core machine: unit 0.4 s, components 4.6 s, screenshots 6.7 s, routes 16.6 s. Recorded in PR 547."
+  - value: "3.55 kB"
+    label: "Sound engine, gzip"
+    note: "Own code of the sound entry with Svelte external, hard limit 4096 B in size-limit.json. Core carries 0 engine bytes."
+behaviour:
+  - title: A page with no data-style now renders the solid default
+    body: "An app that does not use the theme plugin used to keep the glass tokens, so every blurred element (chips, tabs, toasts, rail, panels) blurred. Now it renders data-style solid: opaque surfaces, no blur, no glow."
+    fix: "Nothing, if you want the default. To keep glass, set data-style on html."
+  - title: Kanban column titles are h2 by default
+    body: "They were h3, which skipped a level under a page h1 and failed axe heading-order. Only the tag changes, never the look."
+    fix: "Pass headingLevel={3} to keep the old markup under an h2 of your own."
+  - title: Only the most specific nav item is active
+    body: "With items at /items and /items/a, visiting /items/a marks just Item A, and the mobile header shows its label. The overview item stays active on its other sub-paths."
+    fix: "Nothing, unless your own CSS relied on both being active."
+  - title: DocsHeader is opaque
+    body: "The bar was an 82% translucent fill with a blur, so scrolled content showed through. It is now a solid surface, and landing and template pages can use the same header."
+    fix: "Nothing."
+  - title: AuthLayout brand replaces the whole logo
+    body: "A brand snippet no longer renders the default CodeAtlas UI name beside it."
+    fix: "Pass logoName to show a name next to your brand."
+  - title: Identical toasts no longer stack
+    body: "toast.error with the same text ten times leaves one toast with a x10 badge; at most three show at once and the oldest is dropped."
+    fix: "Pass an id to replace a specific toast in place."
+  - title: Interactive shapes get a pointer cursor from the reset layer
+    body: "button, a[href], label[for], summary and the button, tab, option and menuitem roles get cursor pointer; disabled ones get not-allowed. nativeFeel no longer forces the arrow cursor back."
+    fix: "An unlayered cursor declaration in your own CSS wins, no important needed."
+  - title: Twelve unused utility classes left the stylesheet
+    body: ".glass-bg-extend, .glass-inner-sm|md|lg, .glass-prominent, .glass-scroll-edge-top|bottom, .ca-toolbar-sep, .ca-clear-btn, .ca-row-check and .ca-trend-up|down were never used by a component or a documented API. styles/global.css shrinks by 242 B gzip."
+    fix: "If you styled an element with one of them, keep that rule in your own CSS."
+---
+import Section from "~/components/changelog/Section.astro";
+import Live from "~/components/changelog/Live.astro";
+import Bench from "~/components/changelog/Bench.astro";
+import Compare from "~/components/changelog/Compare.astro";
+import Fig from "~/components/changelog/Fig.astro";
+import { CodeSnippet } from "@codeatlasdev/ui/code";
+import InlineOverlay from "~/demos-changelog/4.6.0/InlineOverlay.svelte";
+import InlineOverlaySrc from "~/demos-changelog/4.6.0/InlineOverlay.svelte?raw";
+import ModalHover from "~/demos-changelog/4.6.0/ModalHover.svelte";
+import ModalHoverSrc from "~/demos-changelog/4.6.0/ModalHover.svelte?raw";
+import SoundDemo from "~/demos-changelog/4.6.0/SoundDemo.svelte";
+import SoundDemoSrc from "~/demos-changelog/4.6.0/SoundDemo.svelte?raw";
+import StatTrendBefore from "~/demos-changelog/4.6.0/StatTrendBefore.svelte";
+import StatTrendAfter from "~/demos-changelog/4.6.0/StatTrendAfter.svelte";
+import StatTrendAfterSrc from "~/demos-changelog/4.6.0/StatTrendAfter.svelte?raw";
+import ToastDedupe from "~/demos-changelog/4.6.0/ToastDedupe.svelte";
+import ToastDedupeSrc from "~/demos-changelog/4.6.0/ToastDedupe.svelte?raw";
+import ThemeScopePreview from "~/demos-changelog/4.6.0/ThemeScopePreview.svelte";
+import ThemeScopePreviewSrc from "~/demos-changelog/4.6.0/ThemeScopePreview.svelte?raw";
+import ColorContrast from "~/demos-changelog/4.6.0/ColorContrast.svelte";
+import ColorContrastSrc from "~/demos-changelog/4.6.0/ColorContrast.svelte?raw";
+import ChipAndInput from "~/demos-changelog/4.6.0/ChipAndInput.svelte";
+import ChipAndInputSrc from "~/demos-changelog/4.6.0/ChipAndInput.svelte?raw";
+import NewComponents from "~/demos-changelog/4.6.0/NewComponents.svelte";
+import NewComponentsSrc from "~/demos-changelog/4.6.0/NewComponents.svelte?raw";
+
+<Section id="theme-studio" n={1} title="Theme Studio">
+
+The theme editor at [/theme/](/theme/) is now a studio built on the real engine. Every control maps one to one onto a `ThemeOptions` key; the studio invents nothing of its own, so what you see is what your app gets.
+
+<Fig id="theme-studio" />
+
+You start from one of 12 curated looks (or "Surprise me", which is seeded and always compiles), then shape it: the brand colour with an inline contrast report, 18 colour roles per scheme, nine surface materials, radius, density, fonts, the type scale by role and motion. The preview shows eight screens (dashboard, settings, list, sign in, landing, pricing, form and overlays) at 390, 768 and 1280 with light and dark side by side. It starts from `designDefaults()`, so it shows what a fresh app gets, not this site's sketchbook theme.
+
+The colour controls are in the library now. `ColorField` takes a hex, `rgb()` or `oklch()` value and shows the WCAG contrast of the pair as you type; `SliderField` pairs a slider with an editable number and a unit. Both are real components, so this is the same code the studio runs:
+
+<Live title="ColorField and SliderField" hint="Change the colour: the readout tells you whether the text on it passes." src={ColorContrastSrc} minHeight={200} minHeightMobile={260}>
+  <ColorContrast client:visible />
+</Live>
+
+The same stage that frames the studio's previews is exported as `PreviewStage`: a resizable device frame with a width control and a keyboard-operable splitter. Drag the splitter, or press an arrow key on it, and the components inside reflow at that width:
+
+<Live title="PreviewStage" hint="Pick 390, 768 or 1280, or drag the handle." src={ThemeScopePreviewSrc} minHeight={320} minHeightMobile={360}>
+  <ThemeScopePreview client:visible />
+</Live>
+
+When you are done, the Code tab gives you `theme.ts`, the compiled CSS, the SvelteKit and Astro wiring and a share URL that round-trips (`#t=v1...`). "Apply to site" writes the compiled CSS under a key of its own in your browser only, replayed by an inline script before first paint; "Reset" removes it. There is no account and no server.
+
+```ts
+import { defineTheme } from "@codeatlasdev/ui";
+
+export const theme = defineTheme({
+  preset: "ocean",
+  defaultStyle: "solid",
+  radius: 12,
+  type: { label: { size: "13px", leading: 1.25, tracking: "0", weight: 500 } },
+});
+```
+
+</Section>
+
+<Section id="ui-index" n={2} title="The UI index and gallery viewer">
+
+The gallery used to be a long list. It is now an index: every numbered demo and every page template carries a block of facets (what it is, how it moves, which style, which technique, what it costs) and the gallery filters on them.
+
+<Fig id="ui-index" />
+
+Chips for kind, subtype, style, motion, interaction, layout, colour mode, density, tech and cost narrow the cards as you click, show how many entries each value would match, and drop combinations that match nothing. Words match titles, aliases, tags and components. Facets, words and the group live in the URL, so `?kind=motion&style=aurora&q=fade` is a link you can share.
+
+An item opens on four tabs. **Preview** is a large resizable stage; **Code** is the source; **Prompt** is the text to hand an AI (the `get_demo` call, the library parts, the behaviour to keep, the exact motion timings and the reduced-motion and keyboard promises read from the index); **Anatomy** lists the components with their package and docs link, how the demo is built and its related items.
+
+<Fig id="item-viewer" />
+
+The index is the same data for agents. `ca-ui-mcp` gains `search_ui`, `list_facets` and `get_related`, and the build writes `api/v1/index.json` plus one markdown twin per item.
+
+There is a rule about what the index is allowed to say. A facet that a person read by hand reaches search only when the one-sided 95% upper bound of its error rate, on a seeded and folder-stratified audit, is at most 5%. 0 wrong of 73 reads is "at most about 4% wrong", never "0%". Today `industry` is withheld: 5 wrong of 73, an upper bound of about 14%. Only 203 of 385 entries were ever re-read by a person; the other 182 hold the first pass's value as corrected by rules, and we say so.
+
+```bash
+claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp
+# then ask: search_ui { "q": "fade", "motion": "subtle", "style": "aurora" }
+```
+
+</Section>
+
+<Section id="design-styles" n={3} title="Design style pages">
+
+[/styles/](/styles/) has six pages: Swiss, Editorial, Brutalism, Sketchbook, Glassmorphism and Terminal. Each page is rendered in the style it describes, so the type, corners, depth and motion you see are `designStyle("...")` applied to that page.
+
+<Fig id="design-styles" />
+
+Each page has the origin, the traits (type, colour, shape, depth, motion), do and don't, the accessibility pitfalls with their sources, the same components before and after, the recipe to copy and a prompt for your coding agent. A recipe is a proposal built from the library's design knobs, not a measurement of any named visual language, and no claim says one style performs better than another.
+
+"Apply to site" works here too: it wears the recipe in your browser only. `designDefaults()` is now exported, so a scoped preview can reset whatever an outer theme set. And the docs no longer present glass as the identity of the library: the default style is `solid`, and glass is one style among many.
+
+```ts
+import { defineTheme, designStyle } from "@codeatlasdev/ui";
+
+export const theme = defineTheme(designStyle("editorial"));
+```
+
+</Section>
+
+<Section id="evidence" n={4} title="Evidence, atlas and concepts">
+
+If a page says "people read faster with X", where does that come from? 4.6.0 adds a contract for exactly that, and the machinery to keep it.
+
+<Fig id="evidence" />
+
+The **design atlas** lists 269 terms (`DS001` to `DS269`) with category, definition, traits, sectors, UX risk and mitigation, three heuristic scales from 1 to 5, the status in 2026, a 2027 to 2030 trend (an editorial projection, not a forecast), how standard the term is and its references. You can browse it with facets at [/atlas/](/atlas/), and agents get `search_terms`, `get_term` and `get_reference`.
+
+The **evidence** layer holds 45 sources. Every one was opened on a recorded date, with the wording relied on kept as an excerpt and the route used to read it. A claim carries one of five labels (established, supported, preliminary, practice, heuristic), a scope (who or what was studied, which task, which context) and its sources. A standard counts as practice, a vendor study as preliminary. A reference also records what it does not support. Tests fail on a banned phrase, on a claim with no scope and on a citation to a source that was not read.
+
+The four Concepts pages (viewport-complete UX, motion that respects people, targets and focus, appeal is not usability) are written to that template, each with a dated Limits box.
+
+</Section>
+
+<Section id="sound" n={5} title="Opt-in sound">
+
+`@codeatlasdev/ui/sound` is a new optional entry: interface sound with no audio files. Every cue is a short oscillator and noise recipe, so the whole engine is small.
+
+<Fig id="sound" />
+
+Sound is off by default. One shared `AudioContext` is created only inside the first pointer or key event after the visitor turns sound on with `SoundToggle` (`aria-pressed`, an accessible name, an optional volume slider); the choice persists in `localStorage` under `ca-sound`. Four profiles (`system`, `glass`, `brutal`, `terminal`) follow the design style through `--ca-sound-profile`, and `--ca-sound-gain`, `--ca-sound-pitch` and `--ca-sound-brightness` tune them. Hover and slider tick cues are off under `prefers-reduced-motion`, sound is suspended while the tab is hidden or media plays, and sound is never the only signal.
+
+<Live title="Hear it" hint="Nothing plays until you turn sound on. That is the point." src={SoundDemoSrc} minHeight={150} minHeightMobile={200}>
+  <SoundDemo client:visible />
+</Live>
+
+<Bench title="Sound engine size" unit="kB gzip" lowerIsBetter rows={[{ label: "Own code of ./sound", value: 3.55, good: true, note: "limit 4096 B" }]} conditions="Own code of the ./sound entry with the Svelte runtime external, gzip, as measured for pull request 577; the limit is 4096 B in packages/ui/size-limit.json. Core is a no-op hook (soundBus), and a test fails if any core module imports the engine." />
+
+```svelte
+<script>
+  import { SoundToggle } from "@codeatlasdev/ui/sound";
+  import { Button } from "@codeatlasdev/ui";
+</script>
+
+<SoundToggle />
+<Button sound>Save</Button>
+```
+
+</Section>
+
+<Section id="inline-overlays" n={6} title="Inline overlays">
+
+Overlays live in the browser's top layer, which is the right place for a real dialog and the wrong place for a preview: a dialog opened inside a themed island escapes to `body` and loses the island's tokens. That is why the old Theme Studio overlays screen showed static replicas.
+
+<Fig id="inline-overlays" />
+
+`inline` on `Dialog`, `Sheet`, `Drawer`, `Popover`, `DropdownMenu` and `Toaster` renders the overlay in place: `position: absolute` inside its container, never moved to `body`, no `showModal()` or `showPopover()`, no scroll lock, no focus trap, no inert page and no global Escape or outside-press ownership (Escape closes it from inside). It resolves the tokens of its container, so it follows a `data-preset` or `data-theme-scope` island. `openLayer` takes the same option. The studio's overlays screen now shows the real components.
+
+<Live title="A dialog inside a dark island" hint="The page around it is whatever you chose. The dialog wears the island." src={InlineOverlaySrc} minHeight={300} minHeightMobile={340}>
+  <InlineOverlay client:visible />
+</Live>
+
+```svelte
+<ThemeIsland scheme="dark" preset="ocean">
+  <div style="position: relative; min-height: 240px">
+    <Dialog inline bind:open title="Invite a teammate">...</Dialog>
+  </div>
+</ThemeIsland>
+```
+
+</Section>
+
+<Section id="modal-hover" n={7} title="Hover that respects modals">
+
+A hover card that opens under a dialog is a bug you only see on a trackpad: you open the dialog, move the pointer, and a panel appears behind the scrim.
+
+<Fig id="modal-hover" />
+
+A new `layers` store has `layers.modalOpen`, reactive and true while a modal layer (`Dialog`, `AlertDialog`, `Drawer`, `Sheet`) is open, and `layers.blocks(trigger)`, which is the same but false for a trigger inside the topmost modal. `Tooltip`, `HoverCard` and `NavigationMenuItem` use it and no longer open on pointer movement while a modal is open. A tooltip that was open when its trigger opened a dialog also no longer leaves a stray second copy in the page after the dialog closes. Gate your own hover or edge UI with the same store.
+
+<Live title="Open the dialog, then hover" hint="The readout is layers.modalOpen." src={ModalHoverSrc} minHeight={150} minHeightMobile={190}>
+  <ModalHover client:visible />
+</Live>
+
+```svelte
+<script>
+  import { layers } from "@codeatlasdev/ui";
+  const hint = $derived(layers.modalOpen ? "paused" : "active");
+</script>
+```
+
+</Section>
+
+<Section id="components" n={8} title="A larger kit">
+
+Many of the 57 feature pull requests are components, driven by the work of moving real apps onto the library.
+
+<Live title="A tour" hint="Five new components in one place." src={NewComponentsSrc} minHeight={240} minHeightMobile={300}>
+  <NewComponents client:visible />
+</Live>
+
+New: `Carousel` (scroll-snap, WAI-ARIA carousel, autoplay opt-in and never under reduced motion), `ResizablePanels` (window splitters, arrow keys 1%, Shift 10%), `Menubar`, `ContextMenu` (right-click, long-press and Shift+F10), `HoverCard`, `NavigationMenu`, `ButtonGroup`, `AspectRatio`, `Kanban` (on the new `useDnd` primitive from 4.5.0, with cross-column moves and per-column infinite scroll), `Stat`, `ChipGroup`, `Heading`, `Highlight`, `StrikeThrough`, `LocaleSwitcher`, `PageFrame` and a map-first `AppShellLayout` stage, `Turnstile`, `PasswordStrength`, `SplashScreen` and `PreviewStage`. Extended: `Toast` gets descriptions, one inline action and dedupe, `TextField` gets a password reveal, a `below` slot and input-group addons, `Button` gets `tone="neutral"` and a trailing hint, `Badge` gets a subtle pill, and `Tabs`, `Progress`, `Drawer`, `Dialog` and `SimpleTable` gain the options real screens asked for.
+
+Theming reaches further too. `ThemeOptions.components` sets `--ca-btn-*`, `--ca-avatar-*`, `--ca-card-*` and other component tokens on one naming convention; `ThemeIsland` gives a block or a whole page its own preset and scheme with SSR parity; a named type scale by role (`title`, `heading`, `body`, `label`, `caption`, `num`) overrides any part for the whole app; presets can carry alpha colours and domain tokens (`--ca-token-status-new`).
+
+A small one worth seeing: a trend is not always good news when it goes up. `Stat` and `KpiCard` take `trendTone`, so a falling churn reads as good.
+
+<Compare id="trend" beforeLabel="Before: arrow up is good" afterLabel="After: trendTone" caption="Same data. Churn fell 1.8%; the second card says so in colour and in the accessible label.">
+  <StatTrendBefore slot="before" client:visible />
+  <StatTrendAfter slot="after" client:visible />
+</Compare>
+
+<CodeSnippet client:visible code={StatTrendAfterSrc.trim()} language="svelte" />
+
+<Live title="Toasts that do not pile up" hint="Fail ten times, then upload." src={ToastDedupeSrc} minHeight={140} minHeightMobile={180}>
+  <ToastDedupe client:visible />
+</Live>
+
+<Live title="Fields for real forms" hint="Reveal the password; pick a team size." src={ChipAndInputSrc} minHeight={320} minHeightMobile={400}>
+  <ChipAndInput client:visible />
+</Live>
+
+</Section>
+
+<Section id="tests" n={9} title="A test system that runs what you changed">
+
+The suites froze a 12-core machine: 2433 Playwright tests loaded all 182 docs routes four to six times, and visual tests ran in an emulated amd64 container. 4.6.0 changes the shape of testing, not just the speed.
+
+<Fig id="test-pipeline" />
+
+`bun run test` now runs only what the diff against `origin/main` affects. Component tests are chosen by a static import graph (`scripts/test-graph.ts`), because Vitest's own `--changed` selected 198 of 198 files for a one-line `Avatar` edit in browser mode. Routes are chosen by `scripts/route-impact.ts`, which fails safe: a shared path or a file it cannot place selects everything and says why. Every route is loaded once per project by three specs (smoke and layout, axe in dark, light and forced colors, and static HTML rules read from `dist` with no browser). Visual baselines are native per platform, the Docker path is gone, and a machine-wide lock lets one suite run at a time.
+
+Every command has a time budget that is enforced: a run over its budget fails and prints its 10 slowest tests. On an oversubscribed machine the verdict is printed as not enforced, because it would only measure the other processes.
+
+<Fig id="gate-before-after" />
+
+<Bench title="One-component edit, bun run test" unit="s" rows={[{ label: "Total", value: 28, good: true }, { label: "Routes", value: 16.6 }, { label: "Screenshots", value: 6.7 }, { label: "Components", value: 4.6 }, { label: "Unit", value: 0.4 }]} conditions="A one-component edit with a fresh dist, wall time on the maintainer's 12-core machine at load 15 (shared with other work), from the pull request that introduced the system (547). The budget for this command is 60 s." />
+
+<Bench title="Full sweeps, before and after" unit="s" rows={[{ label: "Route sweep, before", value: 467, display: "killed at 467 s" , note: "1998 tests" }, { label: "Route sweep, after", value: 168, good: true, note: "load 29" }, { label: "Components, before", value: 227, display: "178 to 227 s" }, { label: "Components, after", value: 109, good: true, note: "load 25" }]} conditions="Wall time, shared 12-core machine, load noted per row, from pull request 547. The old route sweep was killed at 467 s, so that bar is a floor, not a completion time. The numbers are comparable only because they were taken on the same machine in the same window; they are not a benchmark." />
+
+Later work held the land gate under its budget: with a shared change (every component test, 210 files) it measured 224.8 s with a cold social-card cache and 193.5 s with a warm one, at load 7 on 12 cores, against a 240 s budget (pull request 599). `bun run test:full` has a 300 s budget and, by the record in that same pull request, was not measured on a quiet machine: one run took 1092 s at load 50 and is not a result. We state it so you do not read the budget as a promise.
+
+</Section>
+
+<Section id="security" n={10} title="maplibre-gl 6 and the advisory">
+
+`maplibre-gl` 6.4.0 and earlier carry a critical XSS in the attribution sanitizer (GHSA-jrc7-96c5-q579), fixed in 6.4.1. `MapStage` now works on `maplibre-gl` 6, so the peer range is `^5.0.0 || ^6.0.0` again and you can take the fix.
+
+With `engine="maplibre"` the deck.gl `layers` go through `MapLibreOverlay` from the new optional peer `@deck.gl/maplibre` (`~9.4.0`, which supports `maplibre-gl` 4.5.1, 5 and 6), because `MapboxOverlay` throws `Cannot read properties of undefined (reading 'height')` on every frame there. `engine="mapbox"` keeps `@deck.gl/mapbox`. Fitting clear of a wide `PageFrame` no longer throws `Invalid LngLat object`: the padding was subtracted twice.
+
+```bash
+bun add maplibre-gl@^6.4.1 @deck.gl/maplibre@~9.4.0
+```
+
+On `maplibre-gl` 6 the app must also call `setWorkerUrl` once; the map docs show the Vite form.
+
+</Section>
+
+<Section id="accessibility" n={11} title="Accessibility fixes">
+
+The fixes came from running axe over every route, in dark, light and forced colors, and from using the keyboard.
+
+- `FileUpload`, `NotificationBell`: the accessible name now contains the visible text (WCAG 2.5.3, axe `label-content-name-mismatch`).
+- `Kanban` column titles are `h2` by default, so a board under a page `h1` passes `heading-order`.
+- `--ca-brand-text` is solved per preset and scheme: a light brand (lime, yellow, light cyan) no longer gets a 1.6:1 label on outlined buttons, links and active nav; it holds 4.5:1 on every surface. `tests/contrast.test.ts` measures every preset.
+- `AuthLayout`: the compact mobile mark holds 4.5:1 in dark on every preset (it failed on six of eight at 390px), and a flat panel's secondary text uses theme text levels (it measured 2.21:1 in light).
+- `Carousel`, `PreviewStage`, `ResizablePanel` and `CodeSnippet` scroll regions are keyboard-reachable while they overflow (`scrollable-region-focusable`); `Carousel` and `Menubar` reach the 44px touch target; `SegmentedControl` items are 44px wide too, and the password reveal button got its hit area back.
+- `NavigationMenu`: Enter or Space always toggles, also within 600 ms of a hover open.
+- `PageFrame` no longer overflows a 390px viewport by the frame gap, and `SiteHeader` no longer overflows at 390px.
+- `Switch` inside a `SettingItem` no longer needs a redundant `aria-label`: the row already names it.
+
+</Section>

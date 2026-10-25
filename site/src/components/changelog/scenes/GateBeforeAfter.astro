@@ -1,0 +1,35 @@
+---
+// Before/after of the gate on two lanes. Bar lengths are proportional to the recorded seconds at 1 px per second:
+// route sweep 467 s (killed) vs 168 s, components 227 s (top of 178 to 227 s) vs 109 s.
+import Scene from "../Scene.astro";
+
+const x0 = 120;
+---
+<Scene
+	height={320}
+	title="Gate wall time before and after, route sweep and components"
+	desc="Two pairs of horizontal bars, drawn to scale. For the route sweep the before bar is dashed and long, killed at 467 s over 1998 tests, and the after bar is solid and short, 168 s at load 29. For components the before bar is dashed, 178 to 227 s, and the after bar is solid, 109 s at load 25."
+>
+	<path d={`M${x0} 44 V150 M${x0} 174 V280`} class="cs-line" />
+
+	<text x="14" y="34" class="cs-strong">Route sweep</text>
+	<text x="14" y="78" class="cs-cap">before</text>
+	<rect x={x0} y="60" width="467" height="28" class="cs-bad" />
+	<text x={x0 + 10} y="79" class="cs-mono">killed at 467 s (1998 tests)</text>
+	<text x="14" y="122" class="cs-cap">after</text>
+	<rect x={x0} y="104" width="168" height="28" class="cs-good" />
+	<text x={x0 + 168 + 10} y="123" class="cs-mono">168 s</text>
+	<text x={x0 + 168 + 70} y="123" class="cs-cap">load 29</text>
+
+	<text x="14" y="164" class="cs-strong">Components</text>
+	<text x="14" y="208" class="cs-cap">before</text>
+	<rect x={x0} y="190" width="227" height="28" class="cs-bad" />
+	<text x={x0 + 227 + 10} y="209" class="cs-mono">178 to 227 s</text>
+	<text x="14" y="252" class="cs-cap">after</text>
+	<rect x={x0} y="234" width="109" height="28" class="cs-good" />
+	<text x={x0 + 109 + 10} y="253" class="cs-mono">109 s</text>
+	<text x={x0 + 109 + 70} y="253" class="cs-cap">load 25</text>
+
+	<text x="14" y="296" class="cs-cap">Wall time on a shared 12-core machine, load noted.</text>
+	<text x="14" y="312" class="cs-cap">See the numbers table below.</text>
+</Scene>

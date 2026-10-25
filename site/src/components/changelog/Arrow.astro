@@ -1,0 +1,19 @@
+---
+// A line with an explicit arrowhead, for scenes: markers cannot reference a per-instance id from a class, and an
+// explicit head keeps the stroke weight identical to every other line in the drawing.
+interface Props {
+	x1: number;
+	y1: number;
+	x2: number;
+	y2: number;
+	dashed?: boolean;
+	/** Arrowhead size in px. */
+	head?: number;
+}
+const { x1, y1, x2, y2, dashed = false, head = 7 } = Astro.props;
+const a = Math.atan2(y2 - y1, x2 - x1);
+const p = (da: number) =>
+	`${(x2 - head * Math.cos(a + da)).toFixed(1)} ${(y2 - head * Math.sin(a + da)).toFixed(1)}`;
+---
+<path d={`M${x1} ${y1} L${x2} ${y2}`} class:list={["cs-line", { "cs-dash": dashed }]} />
+<path d={`M${p(0.45)} L${x2} ${y2} L${p(-0.45)}`} class="cs-line" />

@@ -1,0 +1,121 @@
+---
+// Before and after for a behaviour that changed. Two named slots (`before`, `after`) and a three-way choice (After,
+// Before, Side by side) that is a real radio group styled with CSS, so it works with no JavaScript and the prerendered
+// page already shows the default. The stage keeps one height whichever panel shows (a grid with both stacked), so
+// switching never moves the page.
+interface Props {
+	/** Names the group for assistive tech and keeps two Compare blocks on a page apart. */
+	id: string;
+	beforeLabel?: string;
+	afterLabel?: string;
+	/** What the visitor is looking at, in one line. */
+	caption?: string;
+}
+const { id, beforeLabel = "Before", afterLabel = "After", caption } = Astro.props;
+---
+<figure class="cmp" data-cmp={id}>
+	<fieldset class="cmp__ctl">
+		<legend class="ca-sr-only">View</legend>
+		<input class="cmp__r" type="radio" name={`cmp-${id}`} id={`cmp-${id}-after`} value="after" checked />
+		<label for={`cmp-${id}-after`}>{afterLabel}</label>
+		<input class="cmp__r" type="radio" name={`cmp-${id}`} id={`cmp-${id}-before`} value="before" />
+		<label for={`cmp-${id}-before`}>{beforeLabel}</label>
+		<input class="cmp__r" type="radio" name={`cmp-${id}`} id={`cmp-${id}-both`} value="both" />
+		<label for={`cmp-${id}-both`}>Side by side</label>
+	</fieldset>
+	<div class="cmp__stage">
+		<section class="cmp__pane cmp__pane--before" aria-label={beforeLabel}>
+			<p class="cmp__tag">{beforeLabel}</p>
+			<div class="cmp__body"><slot name="before" /></div>
+		</section>
+		<section class="cmp__pane cmp__pane--after" aria-label={afterLabel}>
+			<p class="cmp__tag cmp__tag--after">{afterLabel}</p>
+			<div class="cmp__body"><slot name="after" /></div>
+		</section>
+	</div>
+	{caption && <figcaption class="cmp__cap sk-caption">{caption}</figcaption>}
+</figure>
+
+<style is:global>
+	.cmp {
+		margin: var(--ca-space-6) 0;
+	}
+	.cmp__ctl {
+		display: inline-flex;
+		gap: 0;
+		margin: 0 0 var(--ca-space-3);
+		padding: 0;
+		border: var(--ca-border-width) solid var(--ca-outline-strong);
+		border-radius: var(--ca-radius-md);
+		overflow: hidden;
+	}
+	.cmp__r {
+		position: absolute;
+		opacity: 0;
+		pointer-events: none;
+	}
+	.cmp__ctl label {
+		display: inline-flex;
+		align-items: center;
+		min-block-size: 44px;
+		padding-inline: var(--ca-space-4);
+		cursor: pointer;
+		font-size: var(--ca-font-size-body2);
+		color: var(--ca-text-secondary);
+	}
+	.cmp__ctl label + .cmp__r + label,
+	.cmp__ctl label + .cmp__r + label + .cmp__r + label {
+		border-inline-start: var(--ca-border-width) solid var(--ca-outline-strong);
+	}
+	.cmp__r:checked + label {
+		background: var(--ca-brand-fill);
+		color: var(--ca-brand-contrast);
+	}
+	.cmp__r:focus-visible + label {
+		outline: 2px solid var(--ca-focus-ring);
+		outline-offset: -3px;
+	}
+	/* One cell, both panes stacked in it: the stage is as tall as the taller pane whichever one shows. */
+	.cmp__stage {
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+	}
+	.cmp__pane {
+		grid-area: 1 / 1;
+		min-inline-size: 0;
+		padding: var(--ca-space-4);
+		border: var(--ca-border-width) solid var(--ca-outline-strong);
+		border-radius: var(--ca-radius-md);
+		background: var(--ca-surface-raised);
+	}
+	.cmp__tag {
+		margin: 0 0 var(--ca-space-3);
+		color: var(--ca-text-secondary);
+		font-family: var(--ca-font-mono);
+		font-size: var(--ca-font-size-caption);
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
+	}
+	.cmp__tag--after {
+		color: var(--ca-brand-text);
+	}
+	.cmp:has(input[value="after"]:checked) .cmp__pane--before,
+	.cmp:has(input[value="before"]:checked) .cmp__pane--after {
+		visibility: hidden;
+	}
+	.cmp:has(input[value="both"]:checked) .cmp__stage {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--ca-space-3);
+	}
+	.cmp:has(input[value="both"]:checked) .cmp__pane {
+		grid-area: auto;
+	}
+	@media (max-width: 899.98px) {
+		.cmp:has(input[value="both"]:checked) .cmp__stage {
+			grid-template-columns: minmax(0, 1fr);
+		}
+	}
+	.cmp__cap {
+		margin-top: var(--ca-space-2);
+	}
+</style>

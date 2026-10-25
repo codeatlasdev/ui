@@ -1,0 +1,29 @@
+---
+// A registered scene as a figure inside a post. The box reserves the scene's aspect ratio before anything paints, so
+// the diagram never shifts the text below it, and the scene is server-rendered SVG: it is on the page with no JS.
+import { isScene, SCENES } from "./scenes";
+
+interface Props {
+	id: string;
+}
+const { id } = Astro.props;
+if (!isScene(id)) throw new Error(`<Fig id="${id}">: not a registered scene (components/changelog/scenes/index.ts)`);
+const Scene = SCENES[id];
+---
+<figure class="fig" data-scene={id}>
+	<Scene />
+</figure>
+
+<style is:global>
+	.fig {
+		margin: var(--ca-space-6) 0;
+		padding: var(--ca-space-3);
+		border: var(--ca-border-width) solid var(--ca-outline-subtle);
+		border-radius: var(--ca-radius-md);
+		background: var(--ca-surface-raised);
+	}
+	.fig > svg {
+		max-block-size: 26rem;
+		margin-inline: auto;
+	}
+</style>

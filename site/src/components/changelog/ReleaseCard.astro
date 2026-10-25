@@ -1,0 +1,145 @@
+---
+// A release on the index: hero scene, version, date, headline, the three highlights and the counts. The whole card is
+// one link target (the headline's link stretches over it), so there is one tab stop per release.
+import { releasePath, type ReleasePage } from "~/lib/changelog/model";
+import { SCENES, isScene } from "./scenes";
+
+interface Props {
+	release: ReleasePage;
+	/** The newest release gets a larger card. */
+	featured?: boolean;
+}
+const { release: r, featured = false } = Astro.props;
+const Hero = SCENES[isScene(r.hero) ? r.hero : "generic"];
+const fmt = (iso: string) =>
+	iso
+		? new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric", timeZone: "UTC" })
+		: "";
+const top = r.highlights.slice(0, 3);
+---
+<article class:list={["rc", { "rc--feat": featured }]} data-version={r.version}>
+	<div class="rc__hero" aria-hidden="true"><Hero version={r.version} /></div>
+	<div class="rc__body">
+		<p class="rc__meta sk-eyebrow">
+			<span>{r.version}</span>
+			{r.date && <time datetime={r.date}>{fmt(r.date)}</time>}
+			{r.channel !== "latest" && <span>{r.channel}</span>}
+		</p>
+		<h2 class="rc__title"><a class="rc__link" href={releasePath(r.version)}>{r.headline}</a></h2>
+		{top.length > 0 && (
+			<ul class="rc__hl">
+				{top.map((h) => <li>{h.title}</li>)}
+			</ul>
+		)}
+		<p class="rc__counts">
+			{r.counts.changes > 0 ? (
+				<>
+					<span><strong>{r.counts.changes}</strong> changes</span>
+					<span><strong>{r.counts.features}</strong> features</span>
+					<span><strong>{r.counts.fixes}</strong> fixes</span>
+				</>
+			) : (
+				<span><strong>{r.counts.changesets}</strong> changesets</span>
+			)}
+			{!r.hasPost && <span class="rc__plain">release notes</span>}
+		</p>
+	</div>
+</article>
+
+<style is:global>
+	.rc {
+		position: relative;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr);
+		border: var(--ca-border-width-strong) solid var(--ca-outline-strong);
+		background: var(--ca-surface-raised);
+		box-shadow: var(--ca-shadow-sm);
+	}
+	.rc:hover,
+	.rc:focus-within {
+		box-shadow: var(--ca-shadow-md);
+	}
+	.rc__hero {
+		aspect-ratio: 16 / 9;
+		padding: var(--ca-space-3);
+		border-block-end: var(--ca-border-width) solid var(--ca-outline-subtle);
+		background: var(--ca-surface-sunken);
+	}
+	.rc__hero > svg {
+		block-size: 100%;
+	}
+	.rc__body {
+		display: grid;
+		align-content: start;
+		gap: var(--ca-space-3);
+		padding: var(--ca-space-4) var(--ca-space-5) var(--ca-space-5);
+	}
+	.rc__meta {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--ca-space-3);
+	}
+	.rc__title {
+		margin: 0;
+		font-size: var(--ca-font-size-h4);
+		line-height: 1.2;
+	}
+	/* The link stretches over the whole card: one tab stop, one big target. */
+	.rc__link {
+		color: inherit;
+		text-decoration: none;
+	}
+	.rc__link::after {
+		content: "";
+		position: absolute;
+		inset: 0;
+	}
+	.rc__link:focus-visible {
+		outline: none;
+	}
+	.rc:has(.rc__link:focus-visible) {
+		outline: 2px solid var(--ca-focus-ring);
+		outline-offset: 3px;
+	}
+	.rc__hl {
+		margin: 0;
+		padding-inline-start: var(--ca-space-5);
+		color: var(--ca-text-body);
+		font-size: var(--ca-font-size-body2);
+	}
+	.rc__counts {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--ca-space-1) var(--ca-space-4);
+		margin: 0;
+		color: var(--ca-text-secondary);
+		font-size: var(--ca-font-size-body2);
+		font-variant-numeric: tabular-nums;
+	}
+	.rc__counts strong {
+		color: var(--ca-text-primary);
+		font-family: var(--ca-font-mono);
+	}
+	.rc__plain {
+		font-style: italic;
+	}
+	@media (min-width: 900px) {
+		.rc--feat {
+			grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+		}
+		.rc--feat .rc__hero {
+			aspect-ratio: auto;
+			border-block-end: none;
+			border-inline-end: var(--ca-border-width) solid var(--ca-outline-subtle);
+		}
+		.rc--feat .rc__title {
+			font-size: var(--ca-font-size-h3);
+		}
+	}
+	@media (forced-colors: active) {
+		.rc {
+			border-color: CanvasText;
+			box-shadow: none;
+		}
+	}
+</style>

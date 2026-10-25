@@ -55,6 +55,29 @@ describe("route-impact", () => {
 		expect(s.reason).toContain(file);
 	});
 
+	it("maps a release post, its demos, scenes and data to that release's page, not to every page", () => {
+		expect(pick("site/src/content/changelog/4.6.0.mdx").routes).toEqual(["/changelog/4.6.0/"]);
+		expect(pick("site/src/data/changelog/4.6.0.json").routes).toEqual(["/changelog/4.6.0/"]);
+		expect(pick("site/src/demos-changelog/4.6.0/ToastDedupe.svelte").routes).toEqual([
+			"/changelog/4.6.0/",
+		]);
+		// A scene is reached through scenes/index.ts: the hero shows on the index card and on the post.
+		expect(pick("site/src/components/changelog/scenes/Hero460.astro").routes).toEqual([
+			"/changelog/",
+			"/changelog/4.6.0/",
+		]);
+		expect(pick("site/src/components/changelog/ReleaseCard.astro").routes).toEqual(["/changelog/"]);
+	});
+
+	it("every version the CHANGELOG lists is a changelog route, whether it has a post or not", () => {
+		const routes = [...impact.files.keys()].filter((r) => /^\/changelog\/\d/.test(r));
+		expect(routes).toContain("/changelog/4.5.0/");
+		expect(routes).toContain("/changelog/4.6.0/");
+		// The page template is not a route of its own.
+		expect([...impact.files.keys()].some((r) => r.startsWith("/changelog/["))).toBe(false);
+		expect(pick("site/src/pages/changelog/[version].astro").routes).toContain("/changelog/4.5.0/");
+	});
+
 	it("selects every route for a file it does not know, and names it", () => {
 		const s = pick("site/public/some-new-asset.svg");
 		expect(s.all).toBe(true);

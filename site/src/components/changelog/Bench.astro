@@ -1,0 +1,139 @@
+---
+// Measured numbers as horizontal bars. Rendered on the server as plain HTML (no JS, no layout shift: the box is
+// laid out before any script runs) with the figures in the text, so the chart is also a table for a screen reader.
+// `conditions` is required: a number is only published with how it was taken.
+interface Row {
+	label: string;
+	value: number;
+	/** Shown instead of `value` + unit when the number needs its own wording ("under 5 s"). */
+	display?: string;
+	/** Draw this bar in the brand color (the "after"). */
+	good?: boolean;
+	/** Text under the label, e.g. the command measured. */
+	note?: string;
+}
+interface Props {
+	title: string;
+	unit: string;
+	rows: Row[];
+	/** Machine, load, run count, what was measured and where the record is. Never omitted. */
+	conditions: string;
+	/** Lower is better (times, bytes): changes only the caption of the figure. */
+	lowerIsBetter?: boolean;
+}
+const { title, unit, rows, conditions, lowerIsBetter = true } = Astro.props;
+if (!conditions || conditions.length < 20) throw new Error(`<Bench "${title}">: conditions are required`);
+const max = Math.max(...rows.map((r) => r.value));
+const fmt = (n: number) => (Number.isInteger(n) ? String(n) : n.toFixed(2).replace(/0+$/, "").replace(/\.$/, ""));
+---
+<figure class="bench">
+	<figcaption class="bench__title">{title} <span class="bench__dir">{lowerIsBetter ? "lower is better" : "higher is better"}</span></figcaption>
+	<ol class="bench__rows">
+		{rows.map((r) => (
+			<li class="bench__row" data-good={r.good ? "" : undefined}>
+				<div class="bench__label">
+					<span>{r.label}</span>
+					{r.note && <span class="bench__note">{r.note}</span>}
+				</div>
+				<div class="bench__track" aria-hidden="true">
+					<span class="bench__bar" style={`inline-size:${Math.max(1.5, (r.value / max) * 100).toFixed(2)}%`}></span>
+				</div>
+				<div class="bench__value">{r.display ?? `${fmt(r.value)} ${unit}`}</div>
+			</li>
+		))}
+	</ol>
+	<p class="bench__cond"><strong>Conditions.</strong> {conditions}</p>
+</figure>
+
+<style is:global>
+	.bench {
+		margin: var(--ca-space-6) 0;
+		padding: var(--ca-space-4) var(--ca-space-5);
+		border: var(--ca-border-width) solid var(--ca-outline-strong);
+		border-radius: var(--ca-radius-md);
+		background: var(--ca-surface-raised);
+	}
+	.bench__title {
+		margin: 0 0 var(--ca-space-3);
+		font-weight: var(--ca-font-weight-semibold);
+	}
+	.bench__dir {
+		margin-inline-start: var(--ca-space-2);
+		color: var(--ca-text-secondary);
+		font-family: var(--ca-font-display);
+		font-style: italic;
+		font-weight: 400;
+		font-size: var(--ca-font-size-body2);
+	}
+	.bench__rows {
+		display: grid;
+		gap: var(--ca-space-3);
+		margin: 0;
+		padding: 0;
+		list-style: none;
+	}
+	.bench__row {
+		display: grid;
+		grid-template-columns: minmax(8rem, 14rem) minmax(0, 1fr) minmax(4.5rem, max-content);
+		align-items: center;
+		gap: var(--ca-space-3);
+	}
+	.bench__label {
+		display: grid;
+		min-inline-size: 0;
+	}
+	.bench__note {
+		color: var(--ca-text-secondary);
+		font-family: var(--ca-font-mono);
+		font-size: var(--ca-font-size-caption);
+		overflow-wrap: anywhere;
+	}
+	.bench__track {
+		block-size: 1.25rem;
+		background: var(--ca-surface-sunken);
+		border-radius: var(--ca-radius-sm);
+		overflow: hidden;
+	}
+	.bench__bar {
+		display: block;
+		block-size: 100%;
+		background: var(--ca-text-secondary);
+	}
+	.bench__row[data-good] .bench__bar {
+		background: var(--ca-brand-fill);
+	}
+	.bench__value {
+		font-family: var(--ca-font-mono);
+		font-variant-numeric: tabular-nums;
+		font-weight: var(--ca-font-weight-semibold);
+		text-align: end;
+	}
+	.bench__cond {
+		margin: var(--ca-space-4) 0 0;
+		color: var(--ca-text-secondary);
+		font-size: var(--ca-font-size-body2);
+	}
+	@media (max-width: 599.98px) {
+		.bench__row {
+			grid-template-columns: minmax(0, 1fr) max-content;
+			grid-template-areas: "label value" "track track";
+		}
+		.bench__label {
+			grid-area: label;
+		}
+		.bench__value {
+			grid-area: value;
+		}
+		.bench__track {
+			grid-area: track;
+		}
+	}
+	@media (forced-colors: active) {
+		.bench__bar {
+			background: CanvasText;
+		}
+		.bench__row[data-good] .bench__bar {
+			background: Highlight;
+		}
+	}
+</style>

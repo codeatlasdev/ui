@@ -1,0 +1,38 @@
+---
+// Top-layer overlays escape a themed island and lose its tokens; the inline variant renders in place and keeps them.
+import Hatch from "../Hatch.astro";
+import Scene from "../Scene.astro";
+---
+<Scene
+	height={300}
+	title="Top layer dialog escapes the themed island; inline stays inside"
+	desc="Two columns compare a dialog. On the left, Top layer: the dialog sits outside the dashed outline of the themed island and a cross marks that the tokens are lost. On the right, inline: the same dialog is drawn inside the island, with pencil hatching around it and a check marking that the tokens are kept."
+>
+	<path d="M320 24 V246" class="cs-dash" />
+
+	<!-- Left: top layer -->
+	<text x="160" y="30" class="cs-mid cs-strong">Top layer</text>
+	<rect x="24" y="44" width="272" height="180" rx="2" class="cs-box" />
+	<rect x="44" y="64" width="150" height="104" rx="2" class="cs-sunk cs-dash" />
+	<text x="54" y="82" class="cs-mono">island</text>
+	<rect x="150" y="124" width="132" height="84" rx="2" class="cs-paper" />
+	<rect x="150" y="124" width="132" height="22" class="cs-line" />
+	<path d="M164 164 H262 M164 180 H240" class="cs-line" />
+	<circle cx="268" cy="135" r="6" class="cs-line" />
+	<path d="M265 132 L271 138 M271 132 L265 138" class="cs-line" />
+	<text x="24" y="246" class="cs-mono">x tokens lost</text>
+
+	<!-- Right: inline -->
+	<text x="480" y="30" class="cs-mid cs-strong">inline</text>
+	<rect x="344" y="44" width="272" height="180" rx="2" class="cs-box" />
+	<rect x="364" y="64" width="232" height="140" rx="2" class="cs-sunk cs-dash" />
+	<Hatch x={364} y={64} w={232} h={140} gap={9} opacity={0.35} />
+	<text x="374" y="82" class="cs-mono">island</text>
+	<rect x="410" y="102" width="150" height="84" rx="2" class="cs-paper" />
+	<rect x="410" y="102" width="150" height="22" class="cs-brand" />
+	<path d="M424 142 H538 M424 158 H512" class="cs-line" />
+	<path d="M344 242 L350 248 L360 236" class="cs-line" />
+	<text x="368" y="246" class="cs-mono">tokens kept</text>
+
+	<text x="320" y="282" class="cs-cap cs-mid">inline renders in place, inside the island.</text>
+</Scene>

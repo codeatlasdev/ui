@@ -1,0 +1,57 @@
+---
+// The upgrade block: the command for each package manager, a copy button, and the dist-tag the version is under.
+// The commands are generated from the version, so a post never states a version that is not its own.
+import { CodeSnippet } from "@codeatlasdev/ui/code";
+import { channelOf } from "~/lib/changelog/model";
+
+interface Props {
+	version: string;
+}
+const { version } = Astro.props;
+const tag = channelOf(version);
+const managers = [
+	{ id: "bun", cmd: `bun add @codeatlasdev/ui@${version}` },
+	{ id: "npm", cmd: `npm install @codeatlasdev/ui@${version}` },
+	{ id: "pnpm", cmd: `pnpm add @codeatlasdev/ui@${version}` },
+	{ id: "yarn", cmd: `yarn add @codeatlasdev/ui@${version}` },
+];
+---
+<div class="install">
+	<p class="install__tag">Published under the <code>{tag}</code> dist-tag.</p>
+	{managers.map((m) => (
+		<div class="install__row">
+			<span class="install__mgr">{m.id}</span>
+			<CodeSnippet client:visible code={m.cmd} language="bash" />
+		</div>
+	))}
+</div>
+
+<style is:global>
+	.install {
+		display: grid;
+		gap: var(--ca-space-2);
+		margin: var(--ca-space-4) 0;
+	}
+	.install__tag {
+		margin: 0;
+		color: var(--ca-text-secondary);
+		font-size: var(--ca-font-size-body2);
+	}
+	.install__row {
+		display: grid;
+		grid-template-columns: 4rem minmax(0, 1fr);
+		align-items: center;
+		gap: var(--ca-space-3);
+	}
+	.install__mgr {
+		font-family: var(--ca-font-mono);
+		font-size: var(--ca-font-size-body2);
+		color: var(--ca-text-secondary);
+	}
+	@media (max-width: 599.98px) {
+		.install__row {
+			grid-template-columns: minmax(0, 1fr);
+			gap: var(--ca-space-1);
+		}
+	}
+</style>

@@ -1,0 +1,104 @@
+---
+// The frame of a live example: a real island of the library, mounted when it scrolls into view (`client:visible` is
+// set by the caller on the child), inside a box whose height is reserved up front so nothing below it moves when the
+// island hydrates. The example wears the visitor's theme (it inherits the page's tokens) and, when `scope` is set, is
+// isolated as a ThemeIsland by the child itself. `src` is the demo's source, shown behind a "Code" disclosure with a
+// copy button, so the example on screen is also the code to paste.
+import { CodeSnippet } from "@codeatlasdev/ui/code";
+
+interface Props {
+	title: string;
+	/** One line: what to try. */
+	hint?: string;
+	/** Source of the example (`?raw`). */
+	src?: string;
+	language?: string;
+	/** Reserved height in px at desktop width; the frame is at least this tall until the island is up. */
+	minHeight?: number;
+	/** Reserved height in px at 390px width (defaults to `minHeight`). */
+	minHeightMobile?: number;
+}
+const { title, hint, src, language = "svelte", minHeight = 160, minHeightMobile } = Astro.props;
+const mobile = minHeightMobile ?? minHeight;
+---
+<figure class="live" style={`--live-h:${minHeight}px;--live-h-m:${mobile}px`}>
+	<figcaption class="live__bar">
+		<span class="live__dot" aria-hidden="true"></span>
+		<span class="live__title">{title}</span>
+		<span class="live__tag">Live, real components</span>
+	</figcaption>
+	<div class="live__stage"><slot /></div>
+	{hint && <p class="live__hint sk-caption">{hint}</p>}
+	{src && (
+		<details class="live__code">
+			<summary>Code</summary>
+			<CodeSnippet client:visible code={src.trim()} language={language} />
+		</details>
+	)}
+</figure>
+
+<style is:global>
+	.live {
+		margin: var(--ca-space-6) 0;
+		border: var(--ca-border-width) solid var(--ca-outline-strong);
+		border-radius: var(--ca-radius-md);
+		background: var(--ca-surface-raised);
+		overflow: clip;
+	}
+	.live__bar {
+		display: flex;
+		align-items: center;
+		gap: var(--ca-space-2);
+		padding: var(--ca-space-2) var(--ca-space-4);
+		border-block-end: var(--ca-border-width) solid var(--ca-outline-subtle);
+		background: var(--ca-surface-sunken);
+		font-size: var(--ca-font-size-body2);
+	}
+	.live__dot {
+		inline-size: 0.5rem;
+		block-size: 0.5rem;
+		border-radius: var(--ca-radius-round, 999px);
+		background: var(--ca-brand-fill);
+	}
+	.live__title {
+		font-weight: var(--ca-font-weight-semibold);
+	}
+	.live__tag {
+		margin-inline-start: auto;
+		color: var(--ca-text-secondary);
+		font-family: var(--ca-font-mono);
+		font-size: var(--ca-font-size-caption);
+	}
+	.live__stage {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		justify-content: center;
+		gap: var(--ca-space-3);
+		min-block-size: var(--live-h);
+		padding: var(--ca-space-5) var(--ca-space-4);
+		/* The island may be wider than the frame on a phone: scroll inside, never widen the page. */
+		overflow-x: auto;
+	}
+	.live__hint {
+		margin: 0;
+		padding: 0 var(--ca-space-4) var(--ca-space-3);
+	}
+	.live__code {
+		border-block-start: var(--ca-border-width) solid var(--ca-outline-subtle);
+		padding: 0 var(--ca-space-4);
+	}
+	.live__code summary {
+		cursor: pointer;
+		min-block-size: 44px;
+		display: flex;
+		align-items: center;
+		color: var(--ca-text-secondary);
+		font-size: var(--ca-font-size-body2);
+	}
+	@media (max-width: 599.98px) {
+		.live__stage {
+			min-block-size: var(--live-h-m);
+		}
+	}
+</style>

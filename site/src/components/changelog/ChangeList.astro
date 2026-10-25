@@ -1,0 +1,121 @@
+---
+// The full list of a release: every merged pull request, grouped by area, each linking its PR and the issue it closed.
+// Generated from `data/changelog/<version>.json` (scripts/changelog-data.ts), never typed by hand. Collapsed per
+// area so the page stays short; every group is a real <details>, so it works with no JavaScript.
+import { groupByArea, issueUrl, prUrl, type Change } from "~/lib/changelog/model";
+
+interface Props {
+	changes: Change[];
+	/** Open the groups at load (the no-post page shows them all). */
+	open?: boolean;
+}
+const { changes, open = false } = Astro.props;
+const groups = groupByArea(changes);
+const KIND: Record<Change["kind"], string> = {
+	feat: "feature",
+	fix: "fix",
+	docs: "docs",
+	chore: "chore",
+	test: "test",
+	perf: "perf",
+};
+---
+<div class="chg">
+	{groups.map((g) => (
+		<details class="chg__group" open={open}>
+			<summary>
+				<span class="chg__name">{g.label}</span>
+				<span class="chg__count">{g.changes.length}</span>
+			</summary>
+			<ul class="chg__list">
+				{g.changes.map((c) => (
+					<li class="chg__item">
+						<span class="chg__kind" data-kind={c.kind}>{KIND[c.kind]}</span>
+						<span class="chg__title">{c.title}</span>
+						<span class="chg__refs">
+							<a href={prUrl(c.pr)} rel="noopener noreferrer">#{c.pr}</a>
+							{c.issue && c.issue !== c.pr && (<><span aria-hidden="true"> · </span><a href={issueUrl(c.issue)} rel="noopener noreferrer" aria-label={`Issue ${c.issue}`}>issue #{c.issue}</a></>)}
+						</span>
+					</li>
+				))}
+			</ul>
+		</details>
+	))}
+</div>
+
+<style is:global>
+	.chg {
+		display: grid;
+		gap: var(--ca-space-2);
+		margin: var(--ca-space-4) 0;
+	}
+	.chg__group {
+		border: var(--ca-border-width) solid var(--ca-outline-subtle);
+		border-radius: var(--ca-radius-md);
+		background: var(--ca-surface-raised);
+	}
+	.chg__group > summary {
+		display: flex;
+		align-items: center;
+		gap: var(--ca-space-3);
+		min-block-size: 44px;
+		padding-inline: var(--ca-space-4);
+		cursor: pointer;
+		font-weight: var(--ca-font-weight-semibold);
+	}
+	.chg__count {
+		margin-inline-start: auto;
+		color: var(--ca-text-secondary);
+		font-family: var(--ca-font-mono);
+		font-variant-numeric: tabular-nums;
+	}
+	.chg__list {
+		display: grid;
+		gap: 0;
+		margin: 0;
+		padding: 0 var(--ca-space-4) var(--ca-space-3);
+		list-style: none;
+	}
+	.chg__item {
+		display: grid;
+		grid-template-columns: 5.25rem minmax(0, 1fr) max-content;
+		gap: var(--ca-space-3);
+		align-items: baseline;
+		padding-block: var(--ca-space-2);
+		border-block-start: var(--ca-border-width) solid var(--ca-outline-subtle);
+		font-size: var(--ca-font-size-body2);
+	}
+	.chg__kind {
+		color: var(--ca-text-secondary);
+		font-family: var(--ca-font-mono);
+		font-size: var(--ca-font-size-caption);
+		text-transform: uppercase;
+		letter-spacing: 0.06em;
+	}
+	.chg__kind[data-kind="feat"] {
+		color: var(--ca-brand-text);
+	}
+	.chg__title {
+		overflow-wrap: anywhere;
+	}
+	.chg__refs {
+		font-family: var(--ca-font-mono);
+		font-size: var(--ca-font-size-caption);
+		white-space: nowrap;
+	}
+	.chg__refs a {
+		display: inline-flex;
+		align-items: center;
+		min-block-size: 24px;
+	}
+	@media (max-width: 599.98px) {
+		.chg__item {
+			grid-template-columns: minmax(0, 1fr);
+			gap: var(--ca-space-1);
+		}
+		.chg__refs a {
+			min-block-size: 44px;
+			padding-inline-end: var(--ca-space-3);
+		}
+	}
+</style>

@@ -1,0 +1,35 @@
+---
+// Hero of release 4.6.0: one big tabbed page on a desk, five cards (the five headline stories) tied to it.
+import Arrow from "../Arrow.astro";
+import Hatch from "../Hatch.astro";
+import Scene from "../Scene.astro";
+---
+<Scene
+	title="Release 4.6.0: one page tied to five feature cards"
+	desc="A large sketchbook page tabbed 4.6.0 sits in the middle of a desk with pencil hatching in its lower corner. Five small cards, Theme Studio, UI index, Design styles, Sound and Test gate, are joined to the page by dashed arrows."
+>
+	<rect x="215" y="52" width="210" height="226" rx="2" class="cs-box" />
+	<Hatch x={215} y={218} w={110} h={60} />
+	<rect x="335" y="48" width="78" height="26" class="cs-brand" />
+	<text x="374" y="66" class="cs-mono cs-mid cs-onbrand">4.6.0</text>
+	<path d="M240 110 H390 M240 136 H370 M240 162 H395 M240 188 H350" class="cs-line" />
+
+	<rect x="24" y="48" width="130" height="44" rx="2" class="cs-paper" />
+	<text x="89" y="75" class="cs-mid cs-strong">Theme Studio</text>
+	<rect x="24" y="152" width="130" height="44" rx="2" class="cs-paper" />
+	<text x="89" y="179" class="cs-mid cs-strong">UI index</text>
+	<rect x="24" y="250" width="130" height="44" rx="2" class="cs-paper" />
+	<text x="89" y="277" class="cs-mid cs-strong">Design styles</text>
+	<rect x="486" y="84" width="130" height="44" rx="2" class="cs-paper" />
+	<text x="551" y="111" class="cs-mid cs-strong">Sound</text>
+	<rect x="486" y="218" width="130" height="44" rx="2" class="cs-paper" />
+	<text x="551" y="245" class="cs-mid cs-strong">Test gate</text>
+
+	<Arrow x1={154} y1={72} x2={213} y2={120} dashed />
+	<Arrow x1={154} y1={174} x2={213} y2={165} dashed />
+	<Arrow x1={154} y1={266} x2={213} y2={225} dashed />
+	<Arrow x1={486} y1={106} x2={427} y2={125} dashed />
+	<Arrow x1={486} y1={240} x2={427} y2={215} dashed />
+
+	<text x="320" y="328" class="cs-cap cs-mid">One release, many stories.</text>
+</Scene>

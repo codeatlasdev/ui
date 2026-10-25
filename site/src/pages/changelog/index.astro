@@ -1,27 +1,33 @@
 ---
 import { readFileSync } from "node:fs";
 import { breadcrumbList, graph } from "@codeatlasdev/ui/seo";
+import ReleaseCard from "~/components/changelog/ReleaseCard.astro";
 import SiteDocsShell from "~/components/docs/SiteDocsShell.svelte";
 import SiteFooter from "~/components/site/SiteFooter.astro";
 import Base from "~/layouts/Base.astro";
+import { loadChangelog } from "~/lib/changelog/load";
 import { SECTIONS } from "~/lib/nav";
 import { THANKS } from "../../../../scripts/release-meta";
 import { parseChangelogMd, renderRelease } from "../../../functions/_lib/changelog";
 import { changelogBody } from "../../../functions/_lib/page";
 
-// Offline fallback: the same renderer the edge function uses, over the checkout's packages/ui/CHANGELOG.md. The edge
-// function (functions/changelog/index.ts) swaps everything between the CHANGELOG markers for the releases GitHub lists
-// right now. What is built here is correct as of the last deploy and never relied on.
-// Release bodies on GitHub close with the Special thanks section (scripts/release-meta.ts); the repo CHANGELOG does not, so it is added here.
+const { pages } = await loadChangelog();
+const [latest, ...rest] = pages;
+
+// The version list below the cards is the live one: the edge function (functions/changelog/index.ts) swaps everything
+// between the CHANGELOG markers for the releases GitHub lists right now, so a release cut after the last deploy shows
+// within a minute. What is built here is the same renderer over the checkout's CHANGELOG.md, correct as of the last
+// deploy and never relied on. Release bodies on GitHub close with the Special thanks section; the repo CHANGELOG does
+// not, so it is added here.
 const releases = parseChangelogMd(readFileSync("../packages/ui/CHANGELOG.md", "utf8")).map((r) => ({ ...r, body: `${r.body}\n\n${THANKS}` }));
-const body = changelogBody(releases.map(renderRelease), { stale: false, fallback: true });
+const body = changelogBody(releases.map((r) => renderRelease(r)), { stale: false, fallback: true });
 
 const SITE = "https://ui.codeatlas.com.br";
 const jsonLd = graph(breadcrumbList([{ name: "CodeAtlas UI", href: `${SITE}/` }, { name: "Changelog", href: `${SITE}/changelog/` }]));
 ---
 <Base
 	title="Changelog"
-	description="Every release of @codeatlasdev/ui: what changed, when, and how to migrate. Updated within a minute of each release."
+	description="Every release of @codeatlasdev/ui as a post: what changed and why, live examples of the real components, before and after, measured numbers with their conditions, and how to upgrade."
 	skipLink={false}
 	{jsonLd}
 >
@@ -31,11 +37,36 @@ const jsonLd = graph(breadcrumbList([{ name: "CodeAtlas UI", href: `${SITE}/` },
 			<p class="doc__eyebrow sk-eyebrow">Releases</p>
 			<h1>Changelog</h1>
 			<p class="doc__lead">
-				Every published version of <code>@codeatlasdev/ui</code>, newest first.
-				Follow it as <a href="/changelog/feed.xml">an Atom feed</a> or <a href="/changelog.json">JSON</a>.
+				One post per release of <code>@codeatlasdev/ui</code>, newest first. Follow it as <a href="/changelog/feed.xml">an Atom feed</a>{" "}
+				(each entry carries the full post) or <a href="/changelog.json">JSON</a>.
 			</p>
+			{latest && (
+				<div class="cl-cards">
+					<ReleaseCard release={latest} featured />
+					{rest.length > 0 && (
+						<div class="cl-grid">
+							{rest.map((r) => <ReleaseCard release={r} />)}
+						</div>
+					)}
+				</div>
+			)}
+			<h2 id="all-versions">All published versions</h2>
+			<p class="sk-caption">The list GitHub Releases shows right now, with every version's notes and anchors.</p>
 			<Fragment set:html="<!--CHANGELOG-->" /><Fragment set:html={body} /><Fragment set:html="<!--/CHANGELOG-->" />
 		</article>
 	</SiteDocsShell>
 	<SiteFooter />
 </Base>
+
+<style is:global>
+	.cl-cards {
+		display: grid;
+		gap: var(--ca-space-6);
+		margin: var(--ca-space-6) 0 var(--ca-space-10);
+	}
+	.cl-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fill, minmax(min(100%, 19rem), 1fr));
+		gap: var(--ca-space-6);
+	}
+</style>
