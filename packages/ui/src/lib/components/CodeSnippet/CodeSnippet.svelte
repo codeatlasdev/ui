@@ -109,7 +109,7 @@
       margin: 0;
       overflow-x: auto;
       font-size: var(--ca-font-size-caption);
-      line-height: var(--ca-line-height-prose);
+      line-height: var(--ca-code-line-height);
     }
 
     /* Shiki renders a <pre> with inline background, neutralise it so glass shows through */
@@ -120,6 +120,11 @@
       font-family: var(--ca-font-mono);
       font-size: inherit;
       line-height: inherit;
+    }
+
+    /* The UA sheet gives <code> a bare `monospace`, resolved per lookup: pin the stack (#468). */
+    .ca-code-snippet__pre :global(pre.shiki code) {
+      font: inherit;
     }
 
     .ca-code-snippet__pre :global(.shiki span) {

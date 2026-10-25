@@ -232,7 +232,7 @@
   border: var(--ca-border-width) solid var(--ca-outline-subtle);
   border-radius: var(--ca-radius-lg);
   background: var(--ca-surface-raised) !important;
-  font: var(--ca-font-size-body2) / var(--ca-line-height-prose) var(--ca-font-mono);
+  font: var(--ca-font-size-body2) / var(--ca-code-line-height) var(--ca-font-mono);
   tab-size: 2;
 }
 
@@ -241,7 +241,7 @@
   padding: 1rem 1.25rem;
   overflow-x: auto;
   background: transparent !important;
-  font: 0.8125rem / 1.7 var(--ca-font-mono);
+  font: 0.8125rem / var(--ca-code-line-height) var(--ca-font-mono);
   tab-size: 2;
 }
 
