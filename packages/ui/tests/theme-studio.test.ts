@@ -201,8 +201,10 @@ describe("looks", () => {
 	});
 
 	it("survives a share-code round trip", () => {
-		for (const l of LOOKS)
-			expect(decodeState(encodeState(l.state as StudioState))).toEqual(l.state);
+		for (const l of LOOKS) {
+			const full = l.state as StudioState;
+			expect(decodeState(encodeState(full))).toEqual(full);
+		}
 	});
 });
 

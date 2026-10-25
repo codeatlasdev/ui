@@ -11,8 +11,11 @@ const declared = (name: string) =>
 
 describe("designDefaults", () => {
 	it("equals the :root declaration of every token it names", () => {
-		for (const [name, value] of Object.entries(designDefaults()))
-			expect(value, name).toBe(declared(name));
+		for (const [name, value] of Object.entries(designDefaults())) {
+			const found = declared(name);
+			expect(found, `${name} is declared in tokens.css`).toBeDefined();
+			expect(value, name).toBe(found as string);
+		}
 	});
 
 	it("covers every token designTokens can write for the knobs it resets", () => {
