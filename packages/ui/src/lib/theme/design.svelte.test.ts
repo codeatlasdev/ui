@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, onTestFinished } from "vitest";
 
 // The stylesheet contract behind defineTheme's design knobs: derived tokens recompute where
 // a knob changes, and surface styles redraw the same material tiers.
@@ -66,6 +66,9 @@ describe("surface styles", () => {
 	});
 
 	it("glass keeps the backdrop blur", () => {
+		// Glass is the :root token set: it needs a glass page (a page with no data-style is solid, #564).
+		document.documentElement.setAttribute("data-style", "glass");
+		onTestFinished(() => document.documentElement.removeAttribute("data-style"));
 		const style = mount(`<div data-style="glass"><div id="s" class="glass-regular"></div></div>`);
 		// Chromium follows the OS (Windows "Transparency effects" off → reduce), where the
 		// materials.css fallback drops the blur on purpose.

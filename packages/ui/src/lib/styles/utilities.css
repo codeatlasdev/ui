@@ -255,10 +255,10 @@ tr:focus-within .ca-row-actions {
   transform: translateX(-100%);
   animation: ca-shimmer var(--ca-duration-loop) var(--ca-ease-standard) infinite;
 }
-:is([data-style='flat'], [data-style='solid'], [data-style='outlined']) [data-skeleton] {
+:is([data-style='flat'], [data-style='solid'], [data-style='outlined'], :root:not([data-style])) [data-skeleton] {
   animation: ca-skeleton-pulse var(--ca-duration-loop) var(--ca-ease-standard) infinite;
 }
-:is([data-style='flat'], [data-style='solid'], [data-style='outlined']) [data-skeleton]::after {
+:is([data-style='flat'], [data-style='solid'], [data-style='outlined'], :root:not([data-style])) [data-skeleton]::after {
   content: none;
   background: none;
   animation: none;
@@ -266,7 +266,7 @@ tr:focus-within .ca-row-actions {
 @media (prefers-reduced-motion: reduce) {
   [data-skeleton]::after { animation: none; }
   [data-skeleton] { opacity: 0.5; }
-  :is([data-style='flat'], [data-style='solid'], [data-style='outlined']) [data-skeleton] { animation: none; }
+  :is([data-style='flat'], [data-style='solid'], [data-style='outlined'], :root:not([data-style])) [data-skeleton] { animation: none; }
 }
 @media (forced-colors: active) {
   [data-skeleton]::before { background: Canvas; outline: 1px solid CanvasText; outline-offset: -1px; }

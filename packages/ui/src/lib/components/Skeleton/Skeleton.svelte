@@ -90,10 +90,10 @@
        `ca-shimmer` (global keyframes) lives in utilities.css, shared with the `skeleton` prop. */
     /* Plain styles (flat, solid, outlined) draw no gradient: the block pulses its opacity instead.
        `ca-skeleton-pulse` (global keyframes) lives in utilities.css, shared with the `skeleton` prop. */
-    :global(:is([data-style='flat'], [data-style='solid'], [data-style='outlined'])) .ca-skeleton {
+    :global(:is([data-style='flat'], [data-style='solid'], [data-style='outlined'], :root:not([data-style]))) .ca-skeleton {
       animation: ca-skeleton-pulse var(--ca-duration-loop) var(--ca-ease-standard) infinite;
     }
-    :global(:is([data-style='flat'], [data-style='solid'], [data-style='outlined'])) .ca-skeleton::after {
+    :global(:is([data-style='flat'], [data-style='solid'], [data-style='outlined'], :root:not([data-style]))) .ca-skeleton::after {
       content: none;
       background: none;
       animation: none;
@@ -101,7 +101,7 @@
     @media (prefers-reduced-motion: reduce) {
       .ca-skeleton { opacity: 0.5; }
       .ca-skeleton::after { animation: none; }
-      :global(:is([data-style='flat'], [data-style='solid'], [data-style='outlined'])) .ca-skeleton { animation: none; }
+      :global(:is([data-style='flat'], [data-style='solid'], [data-style='outlined'], :root:not([data-style]))) .ca-skeleton { animation: none; }
     }
 }
 </style>

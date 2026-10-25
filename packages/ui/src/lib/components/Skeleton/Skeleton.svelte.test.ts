@@ -1,5 +1,5 @@
 /// <reference types="@vitest/browser-playwright" />
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { cdp } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
@@ -12,6 +12,10 @@ afterEach(async () => {
 });
 
 describe("Skeleton", () => {
+	// The sweep is the glass look; a page with no data-style is solid (#564).
+	beforeEach(() => document.documentElement.setAttribute("data-style", "glass"));
+	afterEach(() => document.documentElement.removeAttribute("data-style"));
+
 	it("is hidden from assistive tech and passes axe", async () => {
 		const screen = await render(Skeleton, {});
 		const [el] = blocks(screen.container);

@@ -344,38 +344,22 @@
   --ca-chrome-blur:     blur(24px) saturate(185%);
 }
 
-/* ── Solid — no blur, opaque surfaces, no glow, hairline edge (the package default) ──
+/* ── Solid — no blur, opaque surfaces, no glow, hairline edge (the package default, also with no data-style on <html>) ──
  *    Glow and rim are glass decoration: with them transparent, .glass-tinted,
  *    .glass-glow, .glass-active, .glass-btn-prominent and the nav pills lose their halo without a
  *    component edit. Selected states keep their brand bar. ── */
-[data-style="solid"] {
+[data-style="solid"],
+:root:not([data-style]) {
   --ca-glow-primary:        transparent;
   --ca-glow-primary-strong: transparent;
   --ca-glass-rim:           transparent;
   --ca-mat-edge: inset 0 0 0 var(--ca-border-width) var(--ca-outline-subtle);
 
-  --ca-blur-ultra-thin: none;
-  --ca-blur-thin:       none;
-  --ca-blur-regular:    none;
-  --ca-blur-thick:      none;
-  --ca-blur-chrome:     none;
-
-  --ca-overlay-bg:      var(--ca-surface-overlay);
-  --ca-overlay-blur:    none;
   --ca-overlay-border:  var(--ca-outline-subtle);
   --ca-overlay-shadow:  0 4px 16px oklch(0 0 0 / 0.10), 0 1px 3px oklch(0 0 0 / 0.06);
-
-  --ca-panel-bg:        var(--ca-surface-overlay);
-  --ca-panel-blur:      none;
   --ca-panel-border:    var(--ca-outline-subtle);
   --ca-panel-shadow:    0 8px 32px oklch(0 0 0 / 0.12), 0 2px 6px oklch(0 0 0 / 0.06);
-
-  --ca-chrome-bg:       var(--ca-surface-raised);
-  --ca-chrome-blur:     none;
   --ca-chrome-border:   var(--ca-outline-subtle);
-
-  --ca-upload-bg:       var(--ca-surface-raised);
-  --ca-upload-blur:     none;
 
   /* glass tints → solid equivalents */
   --ca-glass-tint-ultra-thin: var(--ca-surface-raised);
@@ -391,28 +375,11 @@
   --ca-glow-primary-strong: transparent;
   --ca-glass-rim:           transparent;
   --ca-mat-edge: inset 0 0 0 var(--ca-border-width) var(--ca-outline-subtle);
-  --ca-blur-ultra-thin: none;
-  --ca-blur-thin:       none;
-  --ca-blur-regular:    none;
-  --ca-blur-thick:      none;
-  --ca-blur-chrome:     none;
-
-  --ca-overlay-bg:      var(--ca-surface-overlay);
-  --ca-overlay-blur:    none;
   --ca-overlay-border:  var(--ca-outline-default);
   --ca-overlay-shadow:  none;
-
-  --ca-panel-bg:        var(--ca-surface-overlay);
-  --ca-panel-blur:      none;
   --ca-panel-border:    var(--ca-outline-default);
   --ca-panel-shadow:    none;
-
-  --ca-chrome-bg:       var(--ca-surface-raised);
-  --ca-chrome-blur:     none;
   --ca-chrome-border:   var(--ca-outline-default);
-
-  --ca-upload-bg:       var(--ca-surface-raised);
-  --ca-upload-blur:     none;
 
   /* glass tints → flat solid */
   --ca-glass-tint-ultra-thin: var(--ca-surface-raised);
@@ -430,11 +397,13 @@
 }
 
 /* ── Opaque material styles: no blur anywhere, overlays on solid surfaces ── */
+[data-style="solid"],
+:root:not([data-style]),
+[data-style="flat"],
 [data-style="outlined"],
 [data-style="neumorphic"],
 [data-style="clay"],
 [data-style="tonal"] {
-  --ca-alert-surface:   var(--ca-surface-raised);
   --ca-blur-ultra-thin: none;
   --ca-blur-thin:       none;
   --ca-blur-regular:    none;
@@ -449,6 +418,10 @@
   --ca-chrome-bg:       var(--ca-surface-raised);
   --ca-upload-bg:       var(--ca-surface-raised);
 }
+[data-style="outlined"],
+[data-style="neumorphic"],
+[data-style="clay"],
+[data-style="tonal"] { --ca-alert-surface: var(--ca-surface-raised); }
 
 /* ── Outlined: border-defined surfaces, no elevation (Swiss, Brutalism, Terminal).
  *    Recipes raise --ca-border-width and swap --ca-mat-*-shadow for hard offsets. ── */
