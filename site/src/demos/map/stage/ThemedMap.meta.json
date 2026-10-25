@@ -14,7 +14,7 @@
 		"kind": "component",
 		"subtype": "map",
 		"industry": ["general"],
-		"style": ["default", "minimal"],
+		"style": ["default"],
 		"motion": "immersive",
 		"interaction": ["drag", "scroll", "press", "keyboard"],
 		"layout": "full-bleed",
@@ -29,6 +29,9 @@
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-23"
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

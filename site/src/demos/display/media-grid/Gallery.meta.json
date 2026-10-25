@@ -12,8 +12,8 @@
 	"index": {
 		"kind": "component",
 		"subtype": "display",
-		"industry": ["media", "saas"],
-		"style": ["bento"],
+		"industry": ["media"],
+		"style": ["default"],
 		"motion": "subtle",
 		"interaction": ["press", "hover", "keyboard"],
 		"layout": "grid",
@@ -28,6 +28,9 @@
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-16"
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

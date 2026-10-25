@@ -13,7 +13,7 @@
 	"index": {
 		"kind": "component",
 		"subtype": "input",
-		"industry": ["devtools"],
+		"industry": ["general"],
 		"style": ["default"],
 		"motion": "subtle",
 		"interaction": ["keyboard", "press"],
@@ -29,6 +29,9 @@
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-17"
+		"added": "2026-10-17",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

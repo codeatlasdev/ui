@@ -15,7 +15,7 @@ import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { CATALOG } from "../../../site/src/demos/catalog.ts";
 import { buildManifest, importedNames } from "./build-manifest.ts";
-import { type IndexFacets, SUBTYPES } from "./index-schema.ts";
+import { type IndexFacets, PENDING_FACETS, SUBTYPES } from "./index-schema.ts";
 
 const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 const DEMOS = join(ROOT, "site/src/demos");
@@ -126,6 +126,9 @@ if (import.meta.main) {
 			related: handFacets.related ?? prior.related ?? [],
 			a11y: { reducedMotion, keyboard: keyboard ?? prior.a11y?.keyboard ?? false },
 			added: prior.added ?? inferred.added,
+			...(PENDING_FACETS.length && {
+				review: Object.fromEntries(PENDING_FACETS.map((f) => [f, "pending"])),
+			}),
 		};
 		const { index: _drop, ...rest } = meta;
 		writeFileSync(file, `${JSON.stringify({ ...rest, index }, null, "\t")}\n`);

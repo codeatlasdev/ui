@@ -24,7 +24,7 @@
 		"kind": "component",
 		"subtype": "input",
 		"industry": ["saas"],
-		"style": ["default", "minimal"],
+		"style": ["default"],
 		"motion": "subtle",
 		"interaction": ["hover", "press", "keyboard"],
 		"layout": "single-column",
@@ -39,6 +39,9 @@
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-23"
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

@@ -30,8 +30,8 @@
 	"index": {
 		"kind": "motion",
 		"subtype": "ambient",
-		"industry": ["agency", "portfolio"],
-		"style": ["default", "minimal"],
+		"industry": ["agency"],
+		"style": ["default"],
 		"motion": "immersive",
 		"interaction": ["cursor"],
 		"layout": "single-column",
@@ -46,6 +46,9 @@
 			"reducedMotion": true,
 			"keyboard": false
 		},
-		"added": "2026-10-16"
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

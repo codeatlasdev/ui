@@ -21,7 +21,7 @@
 	"index": {
 		"kind": "motion",
 		"subtype": "basics",
-		"industry": ["saas", "fintech"],
+		"industry": ["fintech"],
 		"style": ["default"],
 		"motion": "expressive",
 		"interaction": ["none"],
@@ -37,6 +37,9 @@
 			"reducedMotion": true,
 			"keyboard": false
 		},
-		"added": "2026-10-16"
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

@@ -28,6 +28,9 @@
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-23"
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

@@ -14,8 +14,8 @@
 		"subtype": "display",
 		"industry": ["general"],
 		"style": ["default"],
-		"motion": "subtle",
-		"interaction": ["scroll", "drag", "keyboard"],
+		"motion": "none",
+		"interaction": ["scroll", "keyboard"],
 		"layout": "stack",
 		"colorMode": "both",
 		"density": "compact",
@@ -28,6 +28,9 @@
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-16"
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

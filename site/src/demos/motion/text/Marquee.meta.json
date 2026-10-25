@@ -45,12 +45,15 @@
 		"tech": ["css", "svelte-motion"],
 		"cost": "js-light",
 		"components": ["Button", "MotionStage"],
-		"aliases": ["ticker tape", "logo strip", "infinite scroll", "logo cloud", "carousel"],
+		"aliases": ["ticker tape", "logo strip", "infinite scroll", "logo cloud"],
 		"related": ["305", "300", "324"],
 		"a11y": {
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-16"
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

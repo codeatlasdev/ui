@@ -13,7 +13,7 @@
 		"kind": "component",
 		"subtype": "navigation",
 		"industry": ["general"],
-		"style": ["glassmorphism"],
+		"style": ["default"],
 		"motion": "subtle",
 		"interaction": ["press", "keyboard"],
 		"layout": "overlay",
@@ -28,6 +28,9 @@
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-16"
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

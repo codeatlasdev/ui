@@ -39,7 +39,7 @@
 	"index": {
 		"kind": "motion",
 		"subtype": "transition",
-		"industry": ["saas", "devtools"],
+		"industry": ["saas"],
 		"style": ["default"],
 		"motion": "expressive",
 		"interaction": ["press", "keyboard"],
@@ -55,6 +55,9 @@
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-16"
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

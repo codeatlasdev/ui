@@ -13,8 +13,8 @@
 	"index": {
 		"kind": "component",
 		"subtype": "chart",
-		"industry": ["saas", "e-commerce"],
-		"style": ["default", "minimal"],
+		"industry": ["e-commerce"],
+		"style": ["default"],
 		"motion": "subtle",
 		"interaction": ["hover"],
 		"layout": "stack",
@@ -29,6 +29,9 @@
 			"reducedMotion": true,
 			"keyboard": false
 		},
-		"added": "2026-10-16"
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

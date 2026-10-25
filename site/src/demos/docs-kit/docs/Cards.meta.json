@@ -12,7 +12,7 @@
 	"index": {
 		"kind": "component",
 		"subtype": "display",
-		"industry": ["devtools", "saas"],
+		"industry": ["devtools"],
 		"style": ["default"],
 		"motion": "subtle",
 		"interaction": ["hover", "press", "keyboard"],
@@ -28,6 +28,9 @@
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-16"
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

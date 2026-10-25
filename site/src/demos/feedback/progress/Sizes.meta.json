@@ -15,7 +15,7 @@
 		"subtype": "feedback",
 		"industry": ["general"],
 		"style": ["default"],
-		"motion": "expressive",
+		"motion": "subtle",
 		"interaction": ["none"],
 		"layout": "stack",
 		"colorMode": "both",
@@ -29,6 +29,9 @@
 			"reducedMotion": true,
 			"keyboard": false
 		},
-		"added": "2026-10-23"
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

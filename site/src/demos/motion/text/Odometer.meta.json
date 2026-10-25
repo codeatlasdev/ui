@@ -31,7 +31,7 @@
 	"index": {
 		"kind": "motion",
 		"subtype": "text",
-		"industry": ["fintech", "saas"],
+		"industry": ["fintech"],
 		"style": ["default"],
 		"motion": "expressive",
 		"interaction": ["keyboard"],
@@ -47,6 +47,9 @@
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-16"
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

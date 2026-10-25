@@ -12,7 +12,7 @@
 	"index": {
 		"kind": "component",
 		"subtype": "navigation",
-		"industry": ["devtools"],
+		"industry": ["general"],
 		"style": ["default"],
 		"motion": "none",
 		"interaction": ["keyboard"],
@@ -28,6 +28,9 @@
 			"reducedMotion": true,
 			"keyboard": false
 		},
-		"added": "2026-10-16"
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

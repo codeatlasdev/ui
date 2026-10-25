@@ -12,8 +12,8 @@
 	"index": {
 		"kind": "component",
 		"subtype": "surface",
-		"industry": ["saas", "devtools"],
-		"style": ["default", "bento"],
+		"industry": ["devtools"],
+		"style": ["default"],
 		"motion": "none",
 		"interaction": ["none"],
 		"layout": "grid",
@@ -28,6 +28,9 @@
 			"reducedMotion": true,
 			"keyboard": false
 		},
-		"added": "2026-10-16"
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

@@ -3,13 +3,21 @@ import { readFileSync } from "node:fs";
 import { join, resolve } from "node:path";
 import { CATALOG } from "../../../site/src/demos/catalog.ts";
 import { buildDemos, buildManifest, checkMeta, importedNames } from "../scripts/build-manifest.ts";
-import { buildIndexFiles, facetCounts, indexEntries } from "../scripts/index-build.ts";
 import {
+	buildIndexFiles,
+	facetCounts,
+	indexEntries,
+	publishedFacets,
+} from "../scripts/index-build.ts";
+import {
+	AUDIT,
 	checkIdRange,
 	checkIndexFacets,
 	ID_PATTERN,
 	ID_RANGES,
 	LEGACY_OUT_OF_RANGE,
+	MAX_ERROR_RATE,
+	PENDING_FACETS,
 	rangeOf,
 	SUBTYPES,
 } from "../scripts/index-schema.ts";
@@ -35,6 +43,7 @@ const ok = {
 	related: ["001"],
 	a11y: { reducedMotion: true, keyboard: true },
 	added: "2026-10-25",
+	review: Object.fromEntries(PENDING_FACETS.map((f) => [f, "pending"])),
 };
 const ctx = { known: new Set(["Button"]), ids: new Set(["001", "002"]), self: "002" };
 
@@ -204,6 +213,60 @@ describe("backfilled facets", () => {
 	});
 });
 
+describe("publishing gate", () => {
+	const files = buildIndexFiles(demos, manifest.version);
+	const index = JSON.parse(files["api/v1/index.json"]);
+
+	it("a field is published only when its audited error rate is at most 5%", () => {
+		for (const [field, a] of Object.entries(AUDIT.fields)) {
+			const rate = a.wrong / a.checked;
+			expect([field, rate <= MAX_ERROR_RATE ? "published" : "pending"]).toEqual([field, a.review]);
+		}
+	});
+
+	it("pending fields are in the sidecar, marked, and absent from every public output", () => {
+		expect(PENDING_FACETS.length).toBeGreaterThan(0);
+		for (const d of demos) {
+			for (const f of PENDING_FACETS) {
+				expect(d.index[f]).toBeDefined();
+				expect(d.index.review?.[f]).toBe("pending");
+				expect(publishedFacets(d.index)).not.toHaveProperty(f);
+			}
+		}
+		for (const e of index.entries) for (const f of PENDING_FACETS) expect(e).not.toHaveProperty(f);
+		for (const f of PENDING_FACETS) {
+			expect(index.facets).not.toHaveProperty(f);
+			expect(files["gallery/001.md"]).not.toContain(`- ${f[0].toUpperCase()}${f.slice(1)}:`);
+		}
+	});
+
+	it("published facets still reach the index and the twin", () => {
+		const e = index.entries[0];
+		for (const f of [
+			"style",
+			"motion",
+			"interaction",
+			"layout",
+			"colorMode",
+			"density",
+			"aliases",
+			"related",
+		])
+			expect(e).toHaveProperty(f);
+		expect(index.facets.style).toBeDefined();
+		expect(files["gallery/001.md"]).toContain("- Motion:");
+	});
+
+	it("the checker rejects a ledger that marks the wrong facets", () => {
+		expect(checkIndexFacets({ ...ok, review: {} }, ctx)[0]).toContain(
+			"must mark exactly the pending facets"
+		);
+		expect(checkIndexFacets({ ...ok, review: { style: "pending" } }, ctx)[0]).toContain(
+			"must mark exactly"
+		);
+	});
+});
+
 describe("index output", () => {
 	const files = buildIndexFiles(demos, manifest.version);
 	const index = JSON.parse(files["api/v1/index.json"]);
@@ -225,7 +288,7 @@ describe("index output", () => {
 		for (const facet of ["kind", "subtype", "motion", "layout", "colorMode", "density", "cost"])
 			expect(Object.values(counts[facet]).reduce((a, b) => a + b, 0)).toBe(demos.length);
 		expect(index.facets).toEqual(counts);
-		for (const facet of ["industry", "style", "interaction", "tech"])
+		for (const facet of ["style", "interaction", "tech"])
 			expect(Object.values(counts[facet]).reduce((a, b) => a + b, 0)).toBeGreaterThanOrEqual(
 				demos.length
 			);

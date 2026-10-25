@@ -211,7 +211,45 @@ export interface IndexFacets {
 	a11y: { reducedMotion: boolean; keyboard: boolean };
 	/** ISO date the demo entered the catalog. */
 	added: string;
+	/** Hand-read facets withheld from search until their audited error rate is at most 5% (see `AUDIT`). */
+	review?: Partial<Record<keyof typeof AUDIT.fields, "pending">>;
 }
+
+/**
+ * Publishing gate. A hand-read facet is exposed in `index.json`, the markdown twins and every filter only when
+ * its measured error rate on a seeded, folder-stratified audit is at most `MAX_ERROR_RATE`. A field above it stays
+ * in the sidecar (and is still validated) as `pending` and is hidden from search until it is corrected and
+ * re-audited. A confidently wrong filter is worse than none.
+ *
+ * Inferred facets (kind, subtype, components, tech, cost, added, a11y.reducedMotion) are derived from the code and
+ * are always published. Re-audit a pending field with a new seed, update `AUDIT`, and flip it to `published`.
+ */
+export const MAX_ERROR_RATE = 0.05;
+
+export type Review = "published" | "pending";
+
+/** The audited hand-read facets and their latest measured error rate (wrong / checked). */
+export const AUDIT = {
+	seeds: { first: 569, holdout: 1031 },
+	/** Entries read: `first` = 66 random + 64 immersive/expressive, `holdout` = 73 random entries unseen by `first`. */
+	checked: { first: 130, holdout: 73 },
+	fields: {
+		industry: { wrong: 5, checked: 73, review: "pending" as Review },
+		style: { wrong: 0, checked: 73, review: "published" as Review },
+		motion: { wrong: 0, checked: 73, review: "published" as Review },
+		interaction: { wrong: 0, checked: 73, review: "published" as Review },
+		layout: { wrong: 0, checked: 73, review: "published" as Review },
+		colorMode: { wrong: 0, checked: 73, review: "published" as Review },
+		density: { wrong: 0, checked: 73, review: "published" as Review },
+		aliases: { wrong: 0, checked: 73, review: "published" as Review },
+		related: { wrong: 0, checked: 73, review: "published" as Review },
+	},
+} as const;
+
+/** Hand-read facets withheld from every public output. */
+export const PENDING_FACETS: readonly (keyof typeof AUDIT.fields)[] = (
+	Object.keys(AUDIT.fields) as (keyof typeof AUDIT.fields)[]
+).filter((f) => AUDIT.fields[f].review === "pending");
 
 const FACET_KEYS = [
 	"kind",
@@ -230,6 +268,7 @@ const FACET_KEYS = [
 	"related",
 	"a11y",
 	"added",
+	"review",
 ] as const;
 
 const isStrings = (v: unknown): v is string[] =>
@@ -300,6 +339,16 @@ export function checkIndexFacets(
 		Number.isNaN(Date.parse(f.added))
 	)
 		errors.push("index.added: ISO date YYYY-MM-DD");
+	// The pending marker is the audit ledger written into the sidecar, never hand-edited.
+	const marked = Object.keys((f.review as object | undefined) ?? {})
+		.sort()
+		.join();
+	if (marked !== [...PENDING_FACETS].sort().join())
+		errors.push(
+			`index.review: must mark exactly the pending facets (${PENDING_FACETS.join(", ") || "none"})`
+		);
+	else if (f.review && Object.values(f.review as object).some((v) => v !== "pending"))
+		errors.push('index.review: values are "pending"');
 	// Consistency a reader would otherwise trip over.
 	if (f.motion === "none" && f.cost === "gpu")
 		errors.push('index: motion "none" cannot cost "gpu"');

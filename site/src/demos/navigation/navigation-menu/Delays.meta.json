@@ -12,7 +12,7 @@
 		"kind": "component",
 		"subtype": "navigation",
 		"industry": ["devtools"],
-		"style": ["glassmorphism"],
+		"style": ["default"],
 		"motion": "subtle",
 		"interaction": ["hover", "keyboard", "press"],
 		"layout": "stack",
@@ -27,6 +27,9 @@
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-23"
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

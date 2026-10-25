@@ -11,7 +11,7 @@
 	"index": {
 		"kind": "component",
 		"subtype": "feedback",
-		"industry": ["saas"],
+		"industry": ["general"],
 		"style": ["default"],
 		"motion": "expressive",
 		"interaction": ["none"],
@@ -27,6 +27,9 @@
 			"reducedMotion": true,
 			"keyboard": false
 		},
-		"added": "2026-10-16"
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

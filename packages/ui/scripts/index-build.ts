@@ -5,7 +5,7 @@
  *
  * Pure: takes the demo records, returns `{ path: body }`. The caller decides where the files go.
  */
-import type { IndexFacets } from "./index-schema.ts";
+import { type IndexFacets, PENDING_FACETS } from "./index-schema.ts";
 
 /** The fields of a demo record the index reads (a subset of `ManifestDemo`). */
 export interface IndexDemo {
@@ -26,7 +26,7 @@ export interface IndexDemo {
 	source: string;
 }
 
-export interface IndexEntry extends IndexFacets {
+export interface IndexEntry extends Partial<IndexFacets> {
 	id: string;
 	path: string;
 	title: string;
@@ -38,25 +38,32 @@ export interface IndexEntry extends IndexFacets {
 
 const SITE = "https://ui.codeatlas.com.br";
 
-/** Facets that are filter chips, and how to read their values off an entry. */
-const COUNTED = {
-	kind: (e: IndexEntry) => [e.kind],
-	subtype: (e: IndexEntry) => [`${e.kind}/${e.subtype}`],
-	industry: (e: IndexEntry) => e.industry,
-	style: (e: IndexEntry) => e.style,
-	motion: (e: IndexEntry) => [e.motion],
-	interaction: (e: IndexEntry) => e.interaction,
-	layout: (e: IndexEntry) => [e.layout],
-	colorMode: (e: IndexEntry) => [e.colorMode],
-	density: (e: IndexEntry) => [e.density],
-	tech: (e: IndexEntry) => e.tech,
-	cost: (e: IndexEntry) => [e.cost],
-	component: (e: IndexEntry) => e.components,
-} satisfies Record<string, (e: IndexEntry) => string[]>;
+/** Facets that are filter chips, and how to read their values off an entry. A pending facet is absent from the entry, so it has no counts. */
+const COUNTED: Record<string, (e: IndexEntry) => string[] | undefined> = {
+	kind: (e) => [e.kind as string],
+	subtype: (e) => [`${e.kind}/${e.subtype}`],
+	industry: (e) => e.industry,
+	style: (e) => e.style,
+	motion: (e) => e.motion && [e.motion],
+	interaction: (e) => e.interaction,
+	layout: (e) => e.layout && [e.layout],
+	colorMode: (e) => e.colorMode && [e.colorMode],
+	density: (e) => e.density && [e.density],
+	tech: (e) => e.tech,
+	cost: (e) => [e.cost as string],
+	component: (e) => e.components,
+};
+
+/** The facets of a demo without the ones still pending review (see `PENDING_FACETS`). */
+export function publishedFacets(index: IndexFacets): Partial<IndexFacets> {
+	const out: Partial<IndexFacets> = { ...index };
+	for (const f of PENDING_FACETS) delete out[f as keyof IndexFacets];
+	return out;
+}
 
 export function indexEntries(demos: readonly IndexDemo[]): IndexEntry[] {
 	return demos.map((d) => ({
-		...d.index,
+		...publishedFacets(d.index),
 		id: d.id,
 		path: `${d.group}/${d.page}/${d.variant}`,
 		title: d.title,
@@ -74,7 +81,8 @@ export function facetCounts(
 	const out: Record<string, Record<string, number>> = {};
 	for (const [facet, read] of Object.entries(COUNTED)) {
 		const counts: Record<string, number> = {};
-		for (const e of entries) for (const v of read(e)) counts[v] = (counts[v] ?? 0) + 1;
+		for (const e of entries) for (const v of read(e) ?? []) counts[v] = (counts[v] ?? 0) + 1;
+		if (Object.keys(counts).length === 0) continue;
 		out[facet] = Object.fromEntries(Object.entries(counts).sort(([a], [b]) => a.localeCompare(b)));
 	}
 	return out;
@@ -83,6 +91,7 @@ export function facetCounts(
 /** Markdown twin of one entry: what a person or an agent reads without loading the page. */
 export function entryMarkdown(d: IndexDemo): string {
 	const f = d.index;
+	const shown = (facet: string) => !(PENDING_FACETS as readonly string[]).includes(facet);
 	const list = (v: string[]) => (v.length ? v.join(", ") : "none");
 	return `${[
 		`<!-- @codeatlasdev/ui demo #${d.id} · MIT License (c) CodeAtlas · ${SITE}/gallery/${d.id}/ -->`,
@@ -95,17 +104,19 @@ export function entryMarkdown(d: IndexDemo): string {
 		"## Facets",
 		"",
 		`- Kind: ${f.kind} / ${f.subtype}`,
-		`- Industry: ${list(f.industry)}`,
-		`- Style: ${list(f.style)}`,
-		`- Motion: ${f.motion}`,
-		`- Interaction: ${list(f.interaction)}`,
-		`- Layout: ${f.layout}`,
-		`- Color mode: ${f.colorMode}`,
-		`- Density: ${f.density}`,
+		...(shown("industry") ? [`- Industry: ${list(f.industry)}`] : []),
+		...(shown("style") ? [`- Style: ${list(f.style)}`] : []),
+		...(shown("motion") ? [`- Motion: ${f.motion}`] : []),
+		...(shown("interaction") ? [`- Interaction: ${list(f.interaction)}`] : []),
+		...(shown("layout") ? [`- Layout: ${f.layout}`] : []),
+		...(shown("colorMode") ? [`- Color mode: ${f.colorMode}`] : []),
+		...(shown("density") ? [`- Density: ${f.density}`] : []),
 		`- Tech: ${list(f.tech)} (cost: ${f.cost})`,
 		`- Reduced motion: ${f.a11y.reducedMotion ? "handled" : "not handled"}; keyboard: ${f.a11y.keyboard ? "operable" : "not interactive"}`,
 		`- Components: ${list(d.components)}`,
-		...(f.aliases.length ? [`- Also searched as: ${f.aliases.join(", ")}`] : []),
+		...(shown("aliases") && f.aliases.length
+			? [`- Also searched as: ${f.aliases.join(", ")}`]
+			: []),
 		"",
 		"## Spec",
 		"",

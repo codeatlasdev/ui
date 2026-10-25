@@ -12,8 +12,8 @@
 	"index": {
 		"kind": "component",
 		"subtype": "chart",
-		"industry": ["devtools", "saas"],
-		"style": ["default", "bento"],
+		"industry": ["devtools"],
+		"style": ["default"],
 		"motion": "subtle",
 		"interaction": ["hover"],
 		"layout": "grid",
@@ -28,6 +28,9 @@
 			"reducedMotion": true,
 			"keyboard": false
 		},
-		"added": "2026-10-16"
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

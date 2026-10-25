@@ -13,7 +13,7 @@
 		"kind": "component",
 		"subtype": "layout",
 		"industry": ["saas"],
-		"style": ["default", "editorial"],
+		"style": ["default"],
 		"motion": "none",
 		"interaction": ["keyboard", "press"],
 		"layout": "split",
@@ -28,6 +28,9 @@
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-23"
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

@@ -30,7 +30,7 @@
 		"kind": "motion",
 		"subtype": "ambient",
 		"industry": ["saas"],
-		"style": ["default", "aurora"],
+		"style": ["default"],
 		"motion": "immersive",
 		"interaction": ["cursor"],
 		"layout": "grid",
@@ -45,6 +45,9 @@
 			"reducedMotion": true,
 			"keyboard": false
 		},
-		"added": "2026-10-16"
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

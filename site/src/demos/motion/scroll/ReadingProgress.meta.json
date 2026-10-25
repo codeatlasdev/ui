@@ -28,7 +28,7 @@
 		"kind": "motion",
 		"subtype": "scroll",
 		"industry": ["media", "education"],
-		"style": ["default", "editorial"],
+		"style": ["default"],
 		"motion": "expressive",
 		"interaction": ["scroll", "keyboard"],
 		"layout": "sticky",
@@ -43,6 +43,9 @@
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-16"
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

@@ -29,10 +29,10 @@
 	"index": {
 		"kind": "motion",
 		"subtype": "text",
-		"industry": ["saas", "fintech"],
+		"industry": ["saas"],
 		"style": ["default"],
 		"motion": "expressive",
-		"interaction": ["press"],
+		"interaction": ["press", "keyboard"],
 		"layout": "single-column",
 		"colorMode": "both",
 		"density": "regular",
@@ -45,6 +45,9 @@
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-16"
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

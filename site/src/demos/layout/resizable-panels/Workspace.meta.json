@@ -12,8 +12,8 @@
 	"index": {
 		"kind": "component",
 		"subtype": "layout",
-		"industry": ["devtools"],
-		"style": ["default", "minimal"],
+		"industry": ["general"],
+		"style": ["default"],
 		"motion": "subtle",
 		"interaction": ["drag", "keyboard", "hover"],
 		"layout": "split",
@@ -28,6 +28,9 @@
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-23"
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

@@ -12,7 +12,7 @@
 	"index": {
 		"kind": "component",
 		"subtype": "feedback",
-		"industry": ["media", "portfolio"],
+		"industry": ["media"],
 		"style": ["default"],
 		"motion": "subtle",
 		"interaction": ["press", "keyboard", "drag"],
@@ -28,6 +28,9 @@
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-16"
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

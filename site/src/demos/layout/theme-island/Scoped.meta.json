@@ -10,8 +10,8 @@
 	"index": {
 		"kind": "component",
 		"subtype": "layout",
-		"industry": ["agency", "saas"],
-		"style": ["default", "minimal"],
+		"industry": ["general"],
+		"style": ["default"],
 		"motion": "none",
 		"interaction": ["press", "keyboard"],
 		"layout": "single-column",
@@ -26,6 +26,9 @@
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-23"
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

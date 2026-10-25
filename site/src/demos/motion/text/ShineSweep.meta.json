@@ -29,7 +29,7 @@
 	"index": {
 		"kind": "motion",
 		"subtype": "text",
-		"industry": ["saas", "agency"],
+		"industry": ["agency"],
 		"style": ["default"],
 		"motion": "expressive",
 		"interaction": ["cursor", "keyboard"],
@@ -45,6 +45,9 @@
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-16"
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

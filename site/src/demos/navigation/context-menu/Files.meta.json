@@ -12,8 +12,8 @@
 	"index": {
 		"kind": "component",
 		"subtype": "navigation",
-		"industry": ["devtools", "saas"],
-		"style": ["glassmorphism"],
+		"industry": ["saas"],
+		"style": ["default"],
 		"motion": "subtle",
 		"interaction": ["cursor", "keyboard", "press"],
 		"layout": "overlay",
@@ -35,6 +35,9 @@
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-23"
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

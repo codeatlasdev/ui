@@ -11,7 +11,7 @@
 	"index": {
 		"kind": "component",
 		"subtype": "layout",
-		"industry": ["devtools", "agency"],
+		"industry": ["general"],
 		"style": ["default"],
 		"motion": "subtle",
 		"interaction": ["press", "keyboard"],
@@ -27,6 +27,9 @@
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-25"
+		"added": "2026-10-25",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

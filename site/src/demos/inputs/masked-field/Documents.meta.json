@@ -14,7 +14,7 @@
 	"index": {
 		"kind": "component",
 		"subtype": "input",
-		"industry": ["fintech"],
+		"industry": ["general"],
 		"style": ["default"],
 		"motion": "subtle",
 		"interaction": ["keyboard"],
@@ -30,6 +30,9 @@
 			"reducedMotion": true,
 			"keyboard": true
 		},
-		"added": "2026-10-16"
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }

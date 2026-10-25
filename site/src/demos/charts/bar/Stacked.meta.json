@@ -14,7 +14,7 @@
 	"index": {
 		"kind": "component",
 		"subtype": "chart",
-		"industry": ["saas", "fintech"],
+		"industry": ["fintech"],
 		"style": ["default"],
 		"motion": "subtle",
 		"interaction": ["hover"],
@@ -30,6 +30,9 @@
 			"reducedMotion": true,
 			"keyboard": false
 		},
-		"added": "2026-10-16"
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
 	}
 }
