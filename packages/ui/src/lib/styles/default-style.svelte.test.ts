@@ -49,7 +49,7 @@ async function targets() {
 		document.body.append(host);
 		out[`role-${role}`] = host;
 	}
-	for (const elevation of [0, 1, 2, 3, 4, 5]) {
+	for (const elevation of [0, 1, 2, 3, 4, 5] as const) {
 		const s = await render(Surface, { elevation, children: body });
 		out[`surface-${elevation}`] = s.container.firstElementChild as Element;
 	}
