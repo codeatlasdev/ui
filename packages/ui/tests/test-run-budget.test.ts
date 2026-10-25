@@ -1,5 +1,5 @@
 import { afterAll, describe, expect, it, spyOn } from "bun:test";
-import { writeFileSync } from "node:fs";
+import { readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { BUDGETS, report, slowest } from "../../../scripts/test-run";
 import { cleanTmp, tmpDir } from "./tmp";
@@ -15,17 +15,35 @@ const timings = (rows: { name: string; ms: number }[]) => {
 };
 
 describe("test-run budgets", () => {
-	it("the budgets are the agreed ones", () => {
-		expect(BUDGETS).toEqual({
-			changed: 60,
-			validate: 90,
-			land: 180,
-			landShared: 240,
-			full: 300,
-			e2e: 300,
-			routes: 300,
-			vrt: 180,
-		});
+	// AGENTS.md repeats the budgets in its Tests table. `BUDGETS` is the one source: the table is checked against
+	// it, so raising a budget in its own commit cannot leave the documented number behind (#648).
+	it("the AGENTS.md Tests table states the budgets of BUDGETS", () => {
+		const md = readFileSync(join(import.meta.dir, "../../../AGENTS.md"), "utf8");
+		// the Budget cell of the row whose first cell starts with `command`
+		const cell = (command: string) => {
+			const row = md.split("\n").find((l) => l.startsWith(`| \`${command}\``));
+			if (!row) throw new Error(`no AGENTS.md Tests row for ${command}`);
+			return row.split("|")[3];
+		};
+		const seconds = (c: string) => [...c.matchAll(/(\d+) s/g)].map((m) => Number(m[1]));
+		// every budget name, and the row whose budget cell carries it
+		const rows: Record<keyof typeof BUDGETS, [string, number]> = {
+			changed: ["bun run test", 0],
+			landShared: ["bun run test", 1],
+			land: ["bun scripts/test-changed.ts --land", 0],
+			validate: ["bun run validate", 0],
+			full: ["bun run test:full", 0],
+			e2e: ["bun run test:e2e", 0],
+			routes: ["bun run test:routes", 0],
+			vrt: ["bun run test:vrt", 0],
+		};
+		expect(Object.keys(rows).sort()).toEqual(Object.keys(BUDGETS).sort());
+		for (const [name, [command, at]] of Object.entries(rows))
+			expect(seconds(cell(command))[at], `${name} in the \`${command}\` row`).toBe(
+				BUDGETS[name as keyof typeof BUDGETS]
+			);
+		// the land row's second number is the shared-file budget
+		expect(seconds(cell("bun scripts/test-changed.ts --land"))[1]).toBe(BUDGETS.landShared);
 	});
 
 	it("slowest returns the n slowest, ignores unreadable lines", () => {
