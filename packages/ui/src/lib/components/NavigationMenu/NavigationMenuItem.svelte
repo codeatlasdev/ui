@@ -3,7 +3,7 @@
   import { getContext, setContext } from 'svelte';
   import { ChevronDown } from '@lucide/svelte';
   import { createAttachmentKey } from 'svelte/attachments';
-  import { focusables } from '../../primitives/index.js';
+  import { focusables, modalBlocks } from '../../primitives/index.js';
   import { uid } from '../../utils/index.js';
   import FloatingLayer from '../Popover/FloatingLayer.svelte';
   import { NAVMENU_CONTEXT, NAVMENU_PANEL_CONTEXT, type NavMenuContext } from './navmenu-context.js';
@@ -115,7 +115,7 @@
     {onclick}
     {onkeydown}
     onpointermove={(e) => {
-      if (e.pointerType === 'touch' || !armed) return;
+      if (e.pointerType === 'touch' || !armed || modalBlocks(button)) return;
       armed = false;
       if (!open) hoverOpenedAt = performance.now();
       nav.enter(id);

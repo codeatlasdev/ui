@@ -98,6 +98,22 @@ interface Entry {
  */
 const stack: Entry[] = [];
 let listening = false;
+/** Set by `layers.svelte.ts`: how the reactive store learns the stack changed. */
+let onStack: (() => void) | undefined;
+export function watchStack(fn: () => void) {
+	onStack = fn;
+}
+
+/**
+ * True while a modal layer (not one already closing) is open and `el` is not inside the topmost one:
+ * hover-opened UI (tooltips, hover cards, menus, edge peeks) must stay shut then, because the page
+ * behind a modal is inert and anything it opened would paint above or under the dialog the user is
+ * working in. A trigger that lives inside that modal is allowed.
+ */
+export function modalBlocks(el?: Element | null): boolean {
+	const host = topModal();
+	return host !== undefined && !(el && host.contains(el));
+}
 
 const isClosing = (e: Entry) => e.opts.closing?.() === true;
 
@@ -175,6 +191,7 @@ function announce() {
 		modal: stack.some((l) => l.kind === "modal"),
 	};
 	document.dispatchEvent(new CustomEvent<LayerChange>("layerchange", { detail }));
+	onStack?.();
 }
 
 /**

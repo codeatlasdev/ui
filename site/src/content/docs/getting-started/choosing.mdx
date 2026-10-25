@@ -63,6 +63,7 @@ Every overlay below is a native `<dialog>` or a `popover` element in the browser
 | A menu on right-click, long-press or Shift+F10 over a region | [`ContextMenu`](/docs/navigation/context-menu/) | The `menu` snippet takes the `DropdownMenu` items. Never the only way to reach an action. |
 | A rich preview of a link or person on hover and focus (touch: the link's own action) | [`HoverCard`](/docs/navigation/hover-card/) | `openDelay`, `closeDelay`, Tab reaches links inside. Tap-to-open content is `Popover`. |
 | A label on hover or focus | [`Tooltip`](/docs/display/tooltip/) | Text only. Never put a control or the only copy of a fact in it. |
+| Your own hover or edge UI that must not open under a dialog | [`layers`](/docs/feedback/dialog/) store | `layers.modalOpen`, `layers.blocks(trigger)`. Kit hover UI already obeys it. |
 | A full-screen mobile drill-down (chat thread, detail) | [`MobilePane`](/docs/layout/mobile-pane/) | Fixed, safe-area aware, back button. Replaces a hand-made fixed panel. |
 | Photos or videos at full size | [`Lightbox`](/docs/feedback/lightbox/) | `src` and `alt` for one image, `items` for a gallery. `alt` is required. |
 | Jump to a route or run a command from the keyboard | [`CommandPalette`](/docs/navigation/command-palette/) | Opens with Cmd+K or Ctrl+K. Takes your `modules` and `onNavigate`. |

@@ -7,6 +7,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import { createAttachmentKey } from 'svelte/attachments';
+  import { modalBlocks } from '../../primitives/index.js';
   import { uid } from '../../utils/index.js';
   import FloatingLayer from '../Popover/FloatingLayer.svelte';
 
@@ -55,7 +56,7 @@
     // cursor fires enter without the user doing anything. Touch never opens a hover tooltip.
     let armed = true;
     const onMove = (e: PointerEvent) => {
-      if (e.pointerType === 'touch' || !armed) return;
+      if (e.pointerType === 'touch' || !armed || modalBlocks(node)) return;
       armed = false;
       openIntent();
     };

@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import { createAttachmentKey } from 'svelte/attachments';
-  import { createHoverIntent } from '../../primitives/index.js';
+  import { createHoverIntent, modalBlocks } from '../../primitives/index.js';
   import { uid } from '../../utils/index.js';
   import FloatingLayer from '../Popover/FloatingLayer.svelte';
   import { tabIntoPopup } from '../Popover/trigger.js';
@@ -70,7 +70,7 @@
     let armed = true;
     let pointerFocus = false;
     const onMove = (e: PointerEvent) => {
-      if (e.pointerType === 'touch' || !armed) return;
+      if (e.pointerType === 'touch' || !armed || modalBlocks(node)) return;
       armed = false;
       intent.enter();
     };

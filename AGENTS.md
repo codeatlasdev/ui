@@ -150,6 +150,8 @@ Reading failures: locators fail with an ARIA snapshot; traces are in `__traces__
 
 10a. **Cursor**: never write `cursor: pointer` for a clickable element. The reset (`@layer ca.reset`) gives `pointer` to `button`, `a[href]`, `label[for]`, `summary`, `[role=button|tab|option|menuitem*]` and `not-allowed` to `:disabled` / `[aria-disabled=true]`; a custom clickable tile is `<button>` or carries a role from that list. Override it with an unlayered app rule.
 
+10b. **Hover UI under a modal**: never open a hover- or edge-triggered panel while a modal is open. `Tooltip`, `HoverCard` and `NavigationMenu` already check the layer stack; for your own, gate on `layers.modalOpen` (or `layers.blocks(trigger)`, false for a trigger inside the topmost modal) from `@codeatlasdev/ui`. Never fight it with `z-index`: it has no effect in the top layer.
+
 10c. **Code surfaces** (an editor, a line highlight, a gutter, a custom `pre`): `line-height: var(--ca-code-line-height)` (an integer px; a fractional one makes a caret and an active-line highlight drift apart) and `font-family: var(--ca-font-mono)` on every layer, `code` included. `CodeSnippet`, `.ca-code` and `.ca-prose pre` already do.
 
 11. **Theme**: a single `ThemeOptions` in `src/lib/theme.ts` (plain object, `import type` only: `vite.config`/`astro.config` load the file in Node, where the package root does not evaluate `.svelte`), passed to `caThemeHandle` + `caThemePlugin` (SvelteKit) or `caUI` (Astro). `defaultStyle` (the surface material, `solid` by default) is one field of it, not a separate setup. Override a token by declaring `--ca-*` on `:root` in the app, without `!important`. Local islands: `data-theme-scope="dark|light"`. Automatic setup: `bunx @codeatlasdev/ui init`.
