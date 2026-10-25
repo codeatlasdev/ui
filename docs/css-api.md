@@ -379,7 +379,7 @@ Re-flow: the list is a size container (`container-type: inline-size`), rows stac
 
 `.ca-shimmer` `.ca-skeleton` `.ca-skeleton--circular` `.ca-skeleton--rectangular` `.ca-skeleton--rounded` `.ca-skeleton--text` `.ca-skeleton-rows`
 
-The `skeleton` prop of `Avatar`, `KpiCard`, `TextField`, `Table`, `Card` and `GlassCard` sets `[data-skeleton]` (and `aria-busy="true"`) on the component's frame; the placeholder paint and the `ca-shimmer` and `ca-skeleton-pulse` keyframes live in `utilities.css`. Under `data-style` `flat`, `solid` or `outlined` the sweep is not drawn: the block pulses its opacity (`ca-skeleton-pulse`) instead.
+The `skeleton` prop of `Avatar`, `KpiCard`, `TextField`, `Table`, `Card` and `GlassCard` sets `[data-skeleton]` (and `aria-busy="true"`) on the component's frame; the placeholder paint and the `ca-shimmer` and `ca-skeleton-pulse` keyframes live in `utilities.css`. Under `data-style` `flat`, `solid` or `outlined` (or with no `data-style` at all, which is `solid`) the sweep is not drawn: the block pulses its opacity (`ca-skeleton-pulse`) instead.
 
 ## SkipLink
 
@@ -518,7 +518,7 @@ These attributes are part of the public contract too (an app can restyle one axi
 | `data-<bp>-<prop>` | the same, from `sm` (600) `md` (900) `lg` (1200) `xl` (1536) px up | layout primitives |
 | `data-size` | `sm` `md` `lg` `xl` (Container), `1` `2` `3` (Section) | `.ca-container`, `.ca-layout-section` |
 
-`data-ca-blur` is the only way a component blurs its backdrop: the filter is declared once per role in `surface.css` (`@layer ca.materials`) from the `--ca-blur-*`, `--ca-mat-*-filter`, `--ca-overlay-blur`, `--ca-chrome-blur` and `--ca-tooltip-blur` tokens, so `html[data-style]` turns every one of them off or down together. Override a single role with `[data-ca-blur="thick"] { --ca-blur-role: ... }` (unlayered app CSS wins). The modal scrim is `dialog.ca-overlay::backdrop` and reads `--ca-scrim-blur`.
+`data-ca-blur` is the only way a component blurs its backdrop: the filter is declared once per role in `surface.css` (`@layer ca.materials`) from the `--ca-blur-*`, `--ca-mat-*-filter`, `--ca-overlay-blur`, `--ca-chrome-blur` and `--ca-tooltip-blur` tokens, so `html[data-style]` turns every one of them off or down together. A page with no `data-style` attribute is `solid` (`:root:not([data-style])` shares the solid block), so no blur until `data-style` is `glass` or `frosted`. Override a single role with `[data-ca-blur="thick"] { --ca-blur-role: ... }` (unlayered app CSS wins). The modal scrim is `dialog.ca-overlay::backdrop` and reads `--ca-scrim-blur`.
 
 Surface and layout CSS variables (`--ca-surface-*`, `--ca-elevation-*`, `--ca-blur-role`) are tokens, not listed here.
 

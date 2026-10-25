@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import Avatar from "../Avatar/Avatar.svelte";
@@ -22,6 +22,10 @@ const size = (el: Element) => {
 	const r = el.getBoundingClientRect();
 	return [Math.round(r.width * 100) / 100, Math.round(r.height * 100) / 100];
 };
+
+// The sweep is the glass look; a page with no data-style is solid (#564).
+beforeEach(() => document.documentElement.setAttribute("data-style", "glass"));
+afterEach(() => document.documentElement.removeAttribute("data-style"));
 
 describe("skeleton prop", () => {
 	it.each(cases)("%s keeps its exact box while loading", async (_n, C, props, sel) => {

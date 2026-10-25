@@ -344,11 +344,12 @@
   --ca-chrome-blur:     blur(24px) saturate(185%);
 }
 
-/* ── Solid — no blur, opaque surfaces, no glow, hairline edge (the package default) ──
+/* ── Solid — no blur, opaque surfaces, no glow, hairline edge (the package default, also with no data-style on <html>) ──
  *    Glow and rim are glass decoration: with them transparent, .glass-tinted,
  *    .glass-glow, .glass-active, .glass-btn-prominent and the nav pills lose their halo without a
  *    component edit. Selected states keep their brand bar. ── */
-[data-style="solid"] {
+[data-style="solid"],
+:root:not([data-style]) {
   --ca-glow-primary:        transparent;
   --ca-glow-primary-strong: transparent;
   --ca-glass-rim:           transparent;
