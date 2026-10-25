@@ -16,6 +16,13 @@ import { scheduleChromeSync, startChromeSync } from "./chrome-sync.js";
 export type { ColorScheme, SurfaceStyle };
 
 const hasDOM = typeof document !== "undefined";
+
+/**
+ * Selector of the runtime-tokens rule. `:root` repeated raises the specificity to 0,3,0, above a brand
+ * preset's dark block (`.dark[data-preset]`, 0,2,0), so the tokens win in both schemes without
+ * `!important`. Keep this in step with the replay in `theme-script.ts`.
+ */
+const RUNTIME_TOKENS_SELECTOR = ":root:root:root";
 const runtime = (): ThemeRuntime | undefined => (hasDOM ? window.__caTheme : undefined);
 
 function resolveScheme(pref: ColorScheme): "light" | "dark" {
@@ -113,7 +120,7 @@ function createColorSchemeStore() {
 			el.id = "ca-runtime-tokens";
 			document.head.appendChild(el);
 		}
-		el.textContent = `:root{${Object.entries(clean)
+		el.textContent = `${RUNTIME_TOKENS_SELECTOR}{${Object.entries(clean)
 			.map(([k, v]) => `${k}:${v};`)
 			.join("")}}`;
 	}

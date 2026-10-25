@@ -6,23 +6,26 @@
  *   import { caUI } from "@codeatlasdev/ui/astro";
  *   export default defineConfig({ integrations: [svelte(), caUI(theme)] });
  *
- * - Paints the theme before first frame: brand preset CSS + init script go into an
- *   inline `<head>` script on every page (same output as caThemeHandle for SvelteKit).
+ * - Paints the theme before first frame: brand preset CSS + init script are the FIRST children of
+ *   `<head>` on every page, ahead of every bundled stylesheet (same output as caThemeHandle for SvelteKit).
+ *   Astro renders its own `<style>` tags before `injectScript("head-inline")` scripts, so this is done
+ *   by a middleware that rewrites the rendered page (`astro-middleware.js`).
  * - Keeps the theme across `<ClientRouter />` (View Transitions) navigations.
  * - Bundles the ESM-only/extensionless deps for SSR (tanstack table, shiki).
  *
  * Import `@codeatlasdev/ui/styles/global.css` once in your base layout.
  */
+import { fileURLToPath } from "node:url";
 import type { AstroIntegration } from "astro";
 import { warnPresetContrast } from "./theme/contrast.js";
-import { defineTheme, fontPreloads, SSR_NO_EXTERNAL, themeCSS } from "./theme/define.js";
-import { type ThemeOptions, themeScript } from "./theme-script.js";
+import { defineTheme, SSR_NO_EXTERNAL } from "./theme/define.js";
+import { type ThemeOptions, themeHead } from "./theme-script.js";
 
 /**
  * `<ClientRouter />` (View Transitions) replaces `<head>` and the `<html>` attributes with the next
  * document's, which only holds the head scripts, not what they created. Before each swap, copy the
  * live theme (style tags, theme-color meta, `<html>` theme attributes) onto the incoming document so
- * the swap keeps them. Registered once: head-inline scripts do not re-run on navigation.
+ * the swap keeps them. Registered once per page load.
  */
 const THEME_PERSIST_SCRIPT = /* js */ `(function(){
 if(window.__caThemePersist)return;window.__caThemePersist=1;
@@ -47,30 +50,61 @@ r.classList.toggle('ca-init',h.classList.contains('ca-init'));
   if(v===null)r.removeAttribute(a);else r.setAttribute(a,v)})
 })})();`;
 
-/** Astro integration: injects the theme (preset CSS, fonts, init script) into every page `<head>` before first paint and bundles the ESM-only dependencies for SSR. Pass the same `ThemeOptions` as `defineTheme`. */
-export function caUI(options: ThemeOptions = {}): AstroIntegration {
-	const t = defineTheme(options);
-	warnPresetContrast(t, "caUI");
-	const css = themeCSS(t);
-	// head-inline content is emitted verbatim inside <script>; the CSS rides along as a string.
-	const style = css
-		? `(function(){var s=document.createElement('style');s.id='ca-theme';s.textContent=${JSON.stringify(css).replace(/</g, "\\u003c")};document.head.appendChild(s)})();`
-		: "";
-	// A script cannot ship <link> tags verbatim: append them as markup. They start the font fetch
-	// before CSS parsing ends, but the preload scanner never sees them. For the fastest path put the
-	// same <link> in your layout head.
-	const preloads = fontPreloads(t);
-	const preload = preloads
-		? `document.head.insertAdjacentHTML('afterbegin',${JSON.stringify(preloads).replace(/</g, "\\u003c")});`
-		: "";
+/** Virtual module the middleware imports: the markup to put first in `<head>`. */
+const HEAD_MODULE = "virtual:codeatlas-ui/head";
+
+/**
+ * Markup for the start of `<head>`: font preloads, the theme `<style>`, the init script and the
+ * `<ClientRouter />` persistence script. The same pieces `caThemeHandle` emits for SvelteKit, plus
+ * the persistence script.
+ */
+export function astroHead(options: ThemeOptions = {}): string {
+	return `${themeHead(options)}<script id="ca-theme-persist">${THEME_PERSIST_SCRIPT}</script>`;
+}
+
+/**
+ * `caUI(theme, { head })`: extra markup (a site's own boot script) placed right after the theme
+ * markup, still ahead of every stylesheet. One middleware, one order, no second integration to race.
+ */
+export interface CaUIAstroOptions {
+	head?: string;
+}
+
+/** Registers `markup` to be inserted first in `<head>` of every page, ahead of any bundled CSS. */
+function headFirstHooks(markup: string) {
+	return ({
+		addMiddleware,
+		updateConfig,
+	}: Parameters<AstroIntegration["hooks"]["astro:config:setup"] & {}>[0]) => {
+		updateConfig({
+			vite: {
+				plugins: [
+					{
+						name: "@codeatlasdev/ui:head",
+						resolveId: (id) => (id === HEAD_MODULE ? `\0${HEAD_MODULE}` : null),
+						load: (id) =>
+							id === `\0${HEAD_MODULE}` ? `export default ${JSON.stringify(markup)};` : null,
+					},
+				],
+				ssr: { noExternal: SSR_NO_EXTERNAL },
+			},
+		});
+		addMiddleware({
+			order: "pre",
+			entrypoint: fileURLToPath(new URL("./astro-middleware.js", import.meta.url)),
+		});
+	};
+}
+
+/** Astro integration: puts the theme (preset CSS, fonts, init script) FIRST in every page `<head>`, ahead of every stylesheet, so the first paint wears the right theme, and bundles the ESM-only dependencies for SSR. Pass the same `ThemeOptions` as `defineTheme`. */
+export function caUI(
+	options: ThemeOptions = {},
+	{ head = "" }: CaUIAstroOptions = {}
+): AstroIntegration {
+	warnPresetContrast(defineTheme(options), "caUI");
 	return {
 		name: "@codeatlasdev/ui",
-		hooks: {
-			"astro:config:setup": ({ injectScript, updateConfig }) => {
-				injectScript("head-inline", preload + style + themeScript(t) + THEME_PERSIST_SCRIPT);
-				updateConfig({ vite: { ssr: { noExternal: SSR_NO_EXTERNAL } } });
-			},
-		},
+		hooks: { "astro:config:setup": headFirstHooks(astroHead(options) + head) },
 	};
 }
 

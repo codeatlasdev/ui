@@ -248,19 +248,24 @@ describe("caUI view-transition swap with islands (#352)", () => {
 
 	async function swapTo(next: string) {
 		const { caUI } = await import("../src/lib/astro.js");
-		let script = "";
+		let markup = "";
 		const hooks = caUI().hooks as unknown as {
 			"astro:config:setup": (o: {
-				injectScript: (stage: string, code: string) => void;
-				updateConfig: () => void;
+				addMiddleware: (m: unknown) => void;
+				updateConfig: (c: { vite: { plugins: { load: (id: string) => string | null }[] } }) => void;
 			}) => void;
 		};
 		hooks["astro:config:setup"]({
-			injectScript: (_stage, code) => {
-				script = code;
+			addMiddleware: () => {},
+			updateConfig: ({ vite }) => {
+				const exported = vite.plugins[0]?.load("\0virtual:codeatlas-ui/head") ?? "";
+				markup = JSON.parse(exported.replace(/^export default |;$/g, ""));
 			},
-			updateConfig: () => {},
 		});
+		// The page's own head scripts, as the browser runs them in order.
+		const script = [...markup.matchAll(/<script[^>]*>([\s\S]*?)<\/script>/g)]
+			.map((m) => m[1])
+			.join("\n");
 		window.matchMedia = (() => ({
 			matches: false,
 			addEventListener: () => {},

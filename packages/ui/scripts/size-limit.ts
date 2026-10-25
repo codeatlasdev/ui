@@ -8,6 +8,7 @@
 // The ratchet only moves down: --update never raises a limit, raise one by hand in a PR that explains why.
 import { existsSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
+import { gzipSync } from "node:zlib";
 import { dist, type Entry, foreignStrings, measure } from "./size-lib.js";
 
 const root = join(import.meta.dir, "..");
@@ -70,6 +71,39 @@ const limits: Record<string, number> = existsSync(limitsFile)
 const next: Record<string, number> = { ...limits };
 const kb = (n: number) => `${(n / 1024).toFixed(2)} kB`;
 let failed = 0;
+
+/**
+ * Inline scripts ship as text inside every HTML page, ahead of the first paint, so their cost is paid
+ * on the critical path of every navigation: raw bytes of the real emitted script, gzip as the metric.
+ */
+const INLINE = [
+	{
+		name: "inline: theme init script (default theme)",
+		requires: "theme-script.js",
+		script: async () => (await import(join(dist, "theme-script.js"))).themeScript() as string,
+	},
+];
+
+for (const e of INLINE) {
+	if (!existsSync(join(dist, e.requires))) {
+		console.log(`skip   ${e.name} (not built)`);
+		continue;
+	}
+	const size = gzipSync(await e.script(), { level: 9 }).length;
+	const limit = limits[e.name];
+	if (limit === undefined && mode === "check") {
+		console.error(`FAIL   ${e.name}: no limit recorded; run \`bun run size:update\``);
+		failed++;
+		continue;
+	}
+	const target = Math.ceil(size * HEADROOM);
+	if (mode === "init" || limit === undefined) next[e.name] = target;
+	else if (mode === "update") next[e.name] = Math.min(limit, target);
+	const shown = next[e.name] ?? limit ?? target;
+	const over = size > shown;
+	if (over) failed++;
+	console.log(`${over ? "FAIL  " : "ok    "} ${e.name}: ${size} B gzip (limit ${shown} B)`);
+}
 
 for (const e of ENTRIES) {
 	if (e.requires && !existsSync(join(dist, e.requires))) {

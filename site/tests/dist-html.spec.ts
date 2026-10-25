@@ -60,6 +60,18 @@ function problems(html: string): { problems: string[]; duplicateIds: string[] } 
 	for (const a of d.querySelectorAll('a[target="_blank"]'))
 		if (!/\bnoopener\b/.test(a.getAttribute("rel") ?? ""))
 			out.push(`noopener: <a href="${a.getAttribute("href")}" target=_blank> has no rel=noopener`);
+	// First paint: every theme script runs before the browser parses any stylesheet (a script behind the
+	// ~700 KB inlined CSS ran late and a slow link painted the wrong theme first). Read from the raw head.
+	const head = html.slice(0, html.search(/<body[\s>]/i));
+	const css = head.search(/<style(?![^>]*\bid=["']ca-)[\s>]|<link\b[^>]*\brel=["']?stylesheet/i);
+	for (const marker of ["__caTheme", "__caSiteBoot"]) {
+		const at = [...head.matchAll(/<script\b[^>]*>([\s\S]*?)<\/script>/g)].find((m) =>
+			m[1].includes(marker)
+		)?.index;
+		if (at === undefined) out.push(`theme-first: no ${marker} script in <head>`);
+		else if (css >= 0 && at > css)
+			out.push(`theme-first: ${marker} script at ${at}, after the first stylesheet at ${css}`);
+	}
 	const main = d.querySelectorAll("main").length;
 	if (main !== 1) out.push(`landmark-one-main: ${main} <main> elements`);
 	for (const img of d.querySelectorAll("img"))

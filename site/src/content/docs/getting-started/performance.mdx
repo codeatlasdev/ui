@@ -102,7 +102,7 @@ The resulting stack is `"Inter", "Inter Fallback", sans-serif`, assigned to `--c
 Get the metrics from the font's own tables. [Capsize](https://seek-oss.github.io/capsize/) and `fontaine` compute `sizeAdjust`, `ascent`, `descent` and `lineGap` for a font and a fallback.
 
 <Callout type="note" title="Astro and preload">
-  `caUI` injects the theme from a head script, so its preload link is added after parsing starts. For the fastest start in Astro, also put the same `<link rel="preload">` in your layout `<head>`.
+  `caUI` emits the preload links first in `<head>`, ahead of every stylesheet, so the font fetch starts before the CSS is parsed.
 </Callout>
 
 Self-host the files (same origin, long `Cache-Control`). The Google Fonts stylesheet is render-blocking and adds two connections; the [Fontsource](https://fontsource.org) packages give you the woff2 files without it.

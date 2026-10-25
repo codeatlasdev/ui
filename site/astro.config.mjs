@@ -6,13 +6,14 @@ import { defineConfig } from "astro/config";
 import { changelogPosts } from "./scripts/changelog-integration.ts";
 import { distScope } from "./scripts/scope-integration.ts";
 import { ogCards } from "./scripts/og-integration.ts";
+import { THEME_BOOT_HEAD } from "./scripts/theme-boot.ts";
 import { theme } from "./src/theme.ts";
 
 export default defineConfig({
 	site: "https://ui.codeatlas.com.br",
 	output: "static",
 	trailingSlash: "always",
-	integrations: [svelte(), mdx(), caUI(theme), sitemap(), ogCards(), changelogPosts(), distScope()],
+	integrations: [svelte(), mdx(), caUI(theme, { head: THEME_BOOT_HEAD }), sitemap(), ogCards(), changelogPosts(), distScope()],
 	markdown: {
 		shikiConfig: {
 			themes: { light: "github-light-high-contrast", dark: "github-dark-high-contrast" },
