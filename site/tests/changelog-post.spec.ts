@@ -55,8 +55,8 @@ test.describe("changelog 4.6.0", () => {
 		]);
 		await expect(page.locator(".post__tl li")).toHaveCount(ids.length);
 		await expect(page.locator(".post__upgrade")).toContainText("bun add @codeatlasdev/ui@4.6.0");
-		await expect(page.locator("#behaviour dt").first()).toBeVisible();
-		await expect(page.locator("#all-changes")).toContainText("130 merged pull requests");
+		await expect(page.locator(".post__bh dt").first()).toBeVisible();
+		await expect(page.locator(".post__all")).toContainText("130 merged pull requests");
 	});
 
 	test("every figure has an accessible name and a description", async ({ page }) => {
