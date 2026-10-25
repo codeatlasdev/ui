@@ -83,10 +83,18 @@
         return;
       }
       hold = true;
-      setTimeout(() => {
+      // A timer may fire a hair before `performance.now()` reaches the target: re-check the clock and
+      // re-arm for the remainder, so the hold is never shorter than `minDuration`.
+      const release = () => {
+        const remaining = minDuration - (performance.now() - shownAt);
+        if (remaining > 0) {
+          setTimeout(release, remaining);
+          return;
+        }
         hold = false;
         shown = false;
-      }, left);
+      };
+      setTimeout(release, left);
     };
   }
 </script>

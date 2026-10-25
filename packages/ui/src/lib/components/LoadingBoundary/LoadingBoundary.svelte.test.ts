@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import Harness from "./LoadingBoundary.test.svelte";
@@ -64,6 +64,28 @@ describe("LoadingBoundary", () => {
 		await expect.poll(() => stamps.unmounted, { timeout: 4000 }).toBeDefined();
 		expect((stamps.unmounted ?? 0) - (stamps.mounted ?? 0)).toBeGreaterThanOrEqual(400);
 		await expect.poll(() => content(screen.container)?.checkVisibility()).toBe(true);
+	});
+
+	it("holds the full `minDuration` even when the timer fires early", async () => {
+		// Timers may fire a fraction of a millisecond before `performance.now()` reaches the target
+		// (399.9 of 400 was seen under load). The hold re-checks the clock instead of trusting the timer.
+		const real = window.setTimeout;
+		const early = vi
+			.spyOn(window, "setTimeout")
+			.mockImplementation(((fn: TimerHandler, ms?: number, ...args: unknown[]) =>
+				real(fn, (ms ?? 0) > 100 ? ms - 1 : ms, ...args)) as typeof window.setTimeout);
+		try {
+			const stamps: { mounted?: number; unmounted?: number } = {};
+			const screen = await render(Harness, {
+				props: { delay: 20, minDuration: 400, stamps },
+			});
+			await expect.poll(() => stamps.mounted).toBeDefined();
+			release(screen);
+			await expect.poll(() => stamps.unmounted, { timeout: 4000 }).toBeDefined();
+			expect((stamps.unmounted ?? 0) - (stamps.mounted ?? 0)).toBeGreaterThanOrEqual(400);
+		} finally {
+			early.mockRestore();
+		}
 	});
 
 	it("renders a custom `pending` snippet instead of the skeleton", async () => {
