@@ -294,6 +294,7 @@ export type { LayerChange, LayerInfo, LayerKind } from "./primitives/layer.js";
 export { onLayerChange } from "./primitives/layer.js";
 export type { ColorScheme, SurfaceStyle } from "./stores/color-scheme.svelte.js";
 export { colorScheme } from "./stores/color-scheme.svelte.js";
+export { layers } from "./stores/layers.svelte.js";
 export { reducedMotion, reducedTransparency } from "./stores/reduced-motion.svelte.js";
 export type { Breakpoint } from "./stores/responsive.svelte.js";
 export { responsive } from "./stores/responsive.svelte.js";

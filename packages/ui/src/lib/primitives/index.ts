@@ -26,6 +26,7 @@ export {
 	type LayerKind,
 	type LayerOptions,
 	type LayerPositioning,
+	modalBlocks,
 	onLayerChange,
 	openLayer,
 } from "./layer.js";

@@ -4145,6 +4145,16 @@ Type guard: true for a `NavSection` (a titled group of items), false for a plain
 function isNavSection(item: NavItem | NavSection): item is NavSection
 ```
 
+### layers
+
+`import { layers } from "@codeatlasdev/ui"`
+
+Reactive state of the layer stack. `layers.modalOpen` is true while a dialog, drawer or sheet is open; `layers.blocks(el)` is false for a trigger inside the topmost modal.
+
+```ts
+const layers: { readonly modalOpen: boolean; blocks(trigger?: Element | null): boolean; }
+```
+
 ### letterSpacing
 
 `import { letterSpacing } from "@codeatlasdev/ui"`
