@@ -9,10 +9,11 @@ test.describe("gallery viewer", () => {
 		const stage = page.getByRole("group", { name: /^Full width at/ });
 		await expect(stage.getByRole("button", { name: "Continue" })).toBeVisible();
 
-		// Width presets: the frame is exactly that many CSS px.
+		// Width presets: the frame is laid out at exactly that many CSS px. A stage narrower than the frame
+		// (a phone) scales the whole viewport down, so the layout width is read, not the transformed box.
 		const frame = page.locator(".ca-pstage__frame");
 		await page.getByRole("radio", { name: "390", exact: true }).click();
-		await expect.poll(async () => Math.round((await frame.boundingBox())?.width ?? 0)).toBe(390);
+		await expect.poll(() => frame.evaluate((el) => (el as HTMLElement).offsetWidth)).toBe(390);
 		await expect(page).toHaveURL(/[?&]w=390/);
 
 		// Scheme is per stage: the page around it keeps its own.
@@ -55,7 +56,8 @@ test.describe("gallery viewer", () => {
 		await gotoReady(page, "/gallery/page-auth-sign-in/?w=390&scheme=light");
 		const iframe = page.locator("iframe.ca-pstage__iframe");
 		await expect(iframe).toHaveAttribute("title", /Sign in at 390 pixels/);
-		expect(Math.round((await iframe.boundingBox())?.width ?? 0)).toBe(390);
+		// Laid out at 390 CSS px even when the stage is narrower and scales the frame down to fit.
+		expect(await iframe.evaluate((el) => (el as HTMLElement).offsetWidth)).toBe(390);
 		const inner = page.frameLocator("iframe.ca-pstage__iframe");
 		await expect(inner.locator("html")).not.toHaveClass(/dark/);
 		await page.getByRole("radio", { name: "Dark" }).click();
