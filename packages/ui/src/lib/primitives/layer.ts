@@ -145,11 +145,18 @@ function rehost(entry: Entry) {
 		}
 		host.appendChild(el);
 	} else if (entry.home) {
-		if (entry.home.isConnected) entry.home.replaceWith(el);
-		else el.remove();
+		// The dialog hosting this layer was removed with the layer inside (the node is detached): its
+		// owner has already dropped or will drop it, and putting it back would resurrect it as a stray
+		// copy in the page's flow, with no `popover` (#324).
+		if (el.isConnected && entry.home.isConnected) entry.home.replaceWith(el);
+		else {
+			entry.home.remove();
+			el.remove();
+		}
 		entry.home = undefined;
 	} else return;
-	if (el.hasAttribute("popover") && !el.matches(":popover-open")) el.showPopover();
+	if (el.isConnected && el.hasAttribute("popover") && !el.matches(":popover-open"))
+		el.showPopover();
 }
 
 /**
