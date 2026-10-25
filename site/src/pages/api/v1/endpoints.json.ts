@@ -1,6 +1,6 @@
 const SITE = "https://ui.codeatlas.com.br";
 
-/** The real machine-readable endpoints: a guessed URL under /api/v1/ is a 404, this lists what exists. */
+/** The real machine-readable endpoints: a guessed URL under /api/v1/ is a 404, this lists what exists. (`index.json` itself is the generated gallery index, #570.) */
 export const GET = () =>
 	new Response(
 		JSON.stringify(
@@ -10,6 +10,7 @@ export const GET = () =>
 					"llms.txt": `${SITE}/llms.txt`,
 					"llms-full.txt": `${SITE}/llms-full.txt`,
 					"prompt.txt": `${SITE}/prompt.txt`,
+					"gallery index (json)": `${SITE}/api/v1/index.json`,
 					"demo catalog (json)": `${SITE}/api/v1/catalog.json`,
 					"demo catalog (tsv)": `${SITE}/api/v1/en/catalog.tsv`,
 					"demo source (text)": `${SITE}/api/v1/en/e/{id}.txt`,
