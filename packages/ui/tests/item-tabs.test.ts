@@ -37,10 +37,10 @@ describe("item prompt", () => {
 	});
 
 	it("states keyboard behaviour from the index, not a guess", () => {
-		const interactive = entries.find((e) => e.a11y.keyboard) as IndexEntry;
+		const interactive = entries.find((e) => e.a11y?.keyboard) as IndexEntry;
 		const rec = elements.find((e) => e.id === interactive.id) as ItemRecord;
 		expect(buildPrompt(rec, interactive)).toContain("Keyboard: operable");
-		const still = entries.find((e) => !e.a11y.keyboard) as IndexEntry;
+		const still = entries.find((e) => !e.a11y?.keyboard) as IndexEntry;
 		const rec2 = elements.find((e) => e.id === still.id) as ItemRecord;
 		expect(buildPrompt(rec2, still)).toContain("Keyboard: not an interactive control");
 	});
