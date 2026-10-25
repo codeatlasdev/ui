@@ -66,10 +66,15 @@ const VISUAL_ROUTES = new Set([
 	"/theme/",
 ]);
 
-/** A site spec that is not the route harness: it runs itself when it changed. */
+/**
+ * A site spec that is not the route harness: it runs itself when it changed. `no-flash.spec.ts` is not one of
+ * them: it paints real pages at 6x CPU on Slow 3G (~90 s for its cases), so it runs in `test:e2e` at release.
+ * What guards the same guarantee at land is `packages/ui/tests/theme-order.test.ts`, a unit test (2 s) that
+ * reads the built HTML and fails when a theme script comes after a stylesheet.
+ */
 const ownSpec = (f: string) =>
 	/^site\/tests\/[^/]+\.spec\.ts$/.test(f) &&
-	!/\/(routes|routes\.axe|dist-html|header)\.spec\.ts$/.test(f);
+	!/\/(routes|routes\.axe|dist-html|header|no-flash)\.spec\.ts$/.test(f);
 
 const land = process.argv.includes("--land");
 const git = (...args: string[]) =>
