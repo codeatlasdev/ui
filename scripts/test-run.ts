@@ -200,8 +200,12 @@ export const BUDGETS = {
 	validate: 90,
 	/** `issue-land.sh`: `test:changed --land` (affected tests, changed screenshots, the route canaries) */
 	land: 180,
-	/** `issue-land.sh` when a SHARED file changed: every component test and every route, no screenshots */
-	landShared: 300,
+	/**
+	 * `issue-land.sh` when a SHARED file changed: every component test and every route (the gallery through its
+	 * representatives), no screenshots. Measured at load 10: unit 5 s + components 109 s + builds 99 s + routes 132 s = 346 s;
+	 * the 300 s it started with was never measured (#546).
+	 */
+	landShared: 360,
 	/** `bun run test:full`: unit, every component test, every route, fixtures (release gate, part 1) */
 	full: 300,
 	/** `bun run test:vrt`: every component and site screenshot (release gate, part 2) */

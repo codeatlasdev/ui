@@ -45,7 +45,7 @@ git diff --cached --quiet || git commit -qm "chore: regenerate lockfile and mani
 [ -z "$(git status --porcelain --untracked-files=no)" ] || { git status --short; echo "uncommitted changes in $WT" >&2; exit 1; }
 # Budgeted gate, chosen by what the diff touches: the tests and screenshots it affects plus the route canaries
 # (`land`, 3 minutes), or, when a SHARED file changed (tokens, styles, theme, primitives, a test setup file),
-# every component test and every route without screenshots (`landShared`, 5 minutes). The screenshots of a
+# every component test and every route without screenshots (`landShared`, 6 minutes). The screenshots of a
 # shared change run at release (`bun run test:vrt`) and on demand. `validate` (90 s) runs on the push below, so
 # it is not run twice. The release gate is `test:full` plus `test:vrt`.
 BUDGET=$(bun scripts/test-changed.ts --land --print-budget)

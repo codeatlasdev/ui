@@ -71,7 +71,7 @@ describe("test-graph", () => {
 });
 
 // `issue-land.sh` picks the land budget from this: a shared change runs every component test and every route
-// (300 s, no screenshots), anything else the affected ones plus the canaries (180 s).
+// (360 s, no screenshots), anything else the affected ones plus the canaries (180 s).
 describe("landBudget", () => {
 	it("a component edit is under the 180 s budget", () => {
 		expect(landBudget([`${dir}/Avatar/Avatar.svelte`])).toBe("land");
@@ -87,7 +87,7 @@ describe("landBudget", () => {
 		"packages/ui/tests/setup.browser.ts",
 		"packages/ui/vite.config.ts",
 		"site/src/layouts/Base.astro",
-	])("%s is shared: the 300 s budget", (file) => {
+	])("%s is shared: the 360 s budget", (file) => {
 		expect(landBudget([file])).toBe("landShared");
 	});
 
