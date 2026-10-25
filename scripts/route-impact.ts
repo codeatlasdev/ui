@@ -107,6 +107,7 @@ const NO_ROUTE_IMPACT = [
 	/^(\.github|\.changeset|\.agents|\.vscode|docs)\//,
 	/^(llms\.txt|lefthook\.yml|biome\.json|bunfig\.toml|tsconfig\.json|\.editorconfig|\.gitignore|LICENSE|NOTICE|package\.json)$/,
 	/^scripts\//,
+	/^packages\/ui\/bin\//, // CLIs (codeatlas-ui, ca-ui-mcp): Node programs no page renders or imports
 	/^packages\/ui\/tests\//,
 	/^packages\/ui\/(vite\.config\.ts|svelte\.config\.js|tsconfig\.json|size-limit\.json|CHANGELOG\.md)$/,
 	/\.(svelte\.test|vrt\.test|ssr\.test)\.ts$|\.test\.svelte$|__screenshots__\//,
