@@ -52,6 +52,36 @@
     animation: ca-overlay-out var(--ca-enter-fast) var(--ca-ease-standard) both;
   }
 
+  /* ── Inline (`inline` prop): in place inside its container, outside the top layer ──
+     A non-modal <dialog> has no ::backdrop, so there is no scrim, no inert page and no scroll lock.
+     It is absolutely positioned against the nearest positioned ancestor (the island) and takes that
+     island's tokens. The selectors out-rank the per-panel placement (`dialog.ca-dialog`,
+     `dialog.ca-drawer--right`, `dialog.ca-sheet`) by one class. */
+  dialog.ca-overlay.ca-overlay--inline {
+    position: absolute;
+    z-index: var(--ca-z-modal);
+  }
+  dialog.ca-dialog.ca-overlay--inline {
+    max-height: 85%;
+    max-width: min(var(--dialog-max-w, 480px), calc(100% - 2 * var(--ca-space-4)));
+    width: calc(100% - 2 * var(--ca-space-4));
+  }
+  dialog.ca-drawer.ca-overlay--inline {
+    max-width: calc(100% - var(--ca-space-12));
+  }
+  dialog.ca-drawer--bottom.ca-overlay--inline {
+    max-height: 85%;
+  }
+  dialog.ca-sheet.ca-overlay--inline {
+    max-height: 88%;
+  }
+  @media (min-width: 900px) {
+    dialog.ca-sheet.ca-overlay--inline {
+      width: min(480px, calc(100% - 2 * var(--ca-space-4)));
+      max-height: 85%;
+    }
+  }
+
   /* ── Dialog panel ───────────────────────────────────────────── */
   dialog.ca-dialog {
     inset: 0;

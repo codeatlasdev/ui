@@ -14,4 +14,10 @@
     color: inherit;
     overflow: visible;
   }
+  /* `inline`: in place, absolute in the nearest positioned ancestor; the engine writes `translate`. */
+  .ca-floating--inline {
+    position: absolute;
+    z-index: var(--ca-z-dropdown);
+    max-width: calc(100% - 2 * var(--ca-space-2));
+  }
 }

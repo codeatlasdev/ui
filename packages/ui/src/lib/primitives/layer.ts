@@ -11,6 +11,10 @@ import { lockScroll } from "./scroll-lock.js";
  * - `popover` → `popover="manual"` + `showPopover()`: top layer, light dismiss handled by the stack.
  * - `hint`    → same element mode as `popover`, but it never takes Escape or outside presses
  *               (tooltips are closed by their trigger).
+ * - `inline`  → an option of any kind: the element renders in place, outside the stack: no move to
+ *               `<body>`, no `showModal()` / `showPopover()`, no focus trap, no scroll lock, no global
+ *               Escape or outside-press ownership. It stays in its container (a re-themed island) and
+ *               takes that container's tokens. Escape reports only while focus is inside it.
  *
  * The top layer replaces z-index: a layer opened later always paints above an earlier one, so a
  * menu inside a dialog is on top without any stacking contexts. `manual` (not `auto`) is
@@ -60,6 +64,12 @@ export interface LayerOptions {
 	restoreFocus?: boolean;
 	/** Leave a modal where it is declared. Default false: it is moved to `<body>` so it does not inherit typography. */
 	inPlace?: boolean;
+	/**
+	 * Render in place, outside the layer stack: no top layer, no scroll lock, no focus trap, no global
+	 * Escape or outside ownership (Escape pressed from inside the element still reports). For an island
+	 * with its own theme or a preview frame. A popover anchors with `position: absolute`. Default false.
+	 */
+	inline?: boolean;
 }
 
 export interface LayerHandle {
@@ -320,9 +330,96 @@ function anchorWithJs(node: HTMLElement, anchor: HTMLElement, o: LayerOptions): 
 	};
 }
 
+/**
+ * Anchors an in-place (non-top-layer) element. It is `position: absolute` in its container, so the
+ * position is the anchor's box relative to the node's offset parent, recomputed on resize/scroll.
+ * Flipping and shifting stay inside the container, not the viewport.
+ */
+function anchorInline(node: HTMLElement, anchor: HTMLElement, o: LayerOptions): Placement {
+	const { side = "bottom", align = "start", sideOffset = 0, flip = true, sameWidth = false } = o;
+	node.style.setProperty("position", "absolute");
+	node.style.setProperty("inset", "0 auto auto 0");
+	node.style.setProperty("margin", "0");
+	let frame = 0;
+	const place = () => {
+		const host = node.offsetParent instanceof HTMLElement ? node.offsetParent : document.body;
+		const h = host.getBoundingClientRect();
+		const a = anchor.getBoundingClientRect();
+		const n = node.getBoundingClientRect();
+		const room = {
+			top: a.top - h.top,
+			bottom: h.bottom - a.bottom,
+			left: a.left - h.left,
+			right: h.right - a.right,
+		};
+		const need = side === "top" || side === "bottom" ? n.height : n.width;
+		const wanted = room[side] - sideOffset;
+		const resolved: Side =
+			flip && wanted < need && room[OPPOSITE[side]] > room[side] ? OPPOSITE[side] : side;
+		const vertical = resolved === "top" || resolved === "bottom";
+		let x: number;
+		let y: number;
+		if (vertical) {
+			y =
+				resolved === "bottom"
+					? a.bottom - h.top + sideOffset
+					: a.top - h.top - n.height - sideOffset;
+			x =
+				align === "start"
+					? a.left - h.left
+					: align === "end"
+						? a.right - h.left - n.width
+						: a.left - h.left + (a.width - n.width) / 2;
+		} else {
+			x =
+				resolved === "right"
+					? a.right - h.left + sideOffset
+					: a.left - h.left - n.width - sideOffset;
+			y =
+				align === "start"
+					? a.top - h.top
+					: align === "end"
+						? a.bottom - h.top - n.height
+						: a.top - h.top + (a.height - n.height) / 2;
+		}
+		const maxX = Math.max(0, h.width - n.width);
+		const maxY = Math.max(0, h.height - n.height);
+		node.style.setProperty(
+			"translate",
+			`${Math.round(Math.min(Math.max(x, 0), maxX))}px ${Math.round(Math.min(Math.max(y, 0), maxY))}px`
+		);
+		node.style.setProperty("--ca-anchor-width", `${a.width}px`);
+		if (sameWidth) node.style.setProperty("width", "var(--ca-anchor-width)");
+		node.dataset.side = resolved;
+		node.dataset.align = align;
+	};
+	const sync = () => {
+		cancelAnimationFrame(frame);
+		frame = requestAnimationFrame(place);
+	};
+	place();
+	const ro = new ResizeObserver(sync);
+	ro.observe(anchor);
+	ro.observe(node);
+	addEventListener("scroll", sync, true);
+	addEventListener("resize", sync);
+	return {
+		update: sync,
+		stop() {
+			cancelAnimationFrame(frame);
+			ro.disconnect();
+			removeEventListener("scroll", sync, true);
+			removeEventListener("resize", sync);
+			for (const p of ["position", "inset", "margin", "translate", "width", "--ca-anchor-width"])
+				node.style.removeProperty(p);
+		},
+	};
+}
+
 function placeAnchored(node: HTMLElement, o: LayerOptions): Placement {
 	const anchor = o.anchor;
 	if (!(anchor instanceof HTMLElement)) return { update() {}, stop() {} };
+	if (o.inline) return anchorInline(node, anchor, o);
 	const mode = o.positioning ?? (supportsAnchor() ? "css" : "js");
 	return mode === "css" ? anchorWithCss(node, anchor, o) : anchorWithJs(node, anchor, o);
 }
@@ -346,6 +443,50 @@ function onScrim(dialog: HTMLElement, e: MouseEvent) {
 }
 
 /**
+ * The `inline` path of `openLayer`: shows `el` where it is declared and reports nothing globally.
+ * A `<dialog>` opens non-modally (`show()`), anything else is just positioned. Escape reports only
+ * while focus is inside the element (a keydown listener on it, never on `document`), and there is no
+ * outside-press or focus-out handling, no scroll lock, no trap and no `layerchange`.
+ */
+function openInline(el: HTMLElement, options: LayerOptions): LayerHandle {
+	const cleanups: Array<() => void> = [];
+	let closed = false;
+	if (el instanceof HTMLDialogElement) {
+		const dialog = el;
+		if (!dialog.open) dialog.show();
+		const { initialFocus = "first", onOpen } = options;
+		if (initialFocus instanceof HTMLElement) initialFocus.focus({ preventScroll: true });
+		else if (initialFocus === "container" || initialFocus === false)
+			dialog.focus({ preventScroll: true });
+		onOpen?.(dialog);
+		cleanups.push(() => {
+			if (dialog.open) dialog.close();
+		});
+	}
+	const placement = placeAnchored(el, options);
+	cleanups.push(placement.stop);
+	if (options.kind !== "hint" && options.escape !== false) {
+		const onKey = (e: KeyboardEvent) => {
+			if (e.key !== "Escape" || e.defaultPrevented || options.closing?.()) return;
+			e.stopPropagation();
+			options.onDismiss?.("escape");
+		};
+		el.addEventListener("keydown", onKey);
+		cleanups.push(() => el.removeEventListener("keydown", onKey));
+	}
+	return {
+		update() {
+			if (!closed) placement.update();
+		},
+		close() {
+			if (closed) return;
+			closed = true;
+			while (cleanups.length) cleanups.pop()?.();
+		},
+	};
+}
+
+/**
  * Opens `el` as a layer and returns its handle. The element must exist already (it is not created
  * here); a `<dialog>` for `modal`, any element for `popover` / `hint`.
  *
@@ -356,6 +497,7 @@ export function openLayer(el: HTMLElement, options: LayerOptions): LayerHandle {
 	// Server render, or a node its owner already removed (an effect re-running mid-teardown): nothing to show.
 	if (typeof document === "undefined" || !el.isConnected) return { update() {}, close() {} };
 	const { kind } = options;
+	if (options.inline) return openInline(el, options);
 	// Not `document.activeElement`: Safari leaves <body> or an ancestor focused after a tap on the opener.
 	const restoreTo = opener();
 	const cleanups: Array<() => void> = [];

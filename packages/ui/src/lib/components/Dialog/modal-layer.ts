@@ -12,6 +12,8 @@ export interface ModalLayerOptions {
 	onOpen?(dialog: HTMLDialogElement): void;
 	/** True from the moment the owner's `open` turns false until the dialog unmounts (the exit animation): the layer stops owning Escape and presses. */
 	closing?: boolean;
+	/** Render in place (no top layer, scroll lock, focus trap or global Escape): see `LayerOptions.inline`. */
+	inline?: boolean;
 }
 
 /**
@@ -26,9 +28,10 @@ export function modalLayer(options: () => ModalLayerOptions) {
 		if (!(dialog instanceof HTMLDialogElement)) return () => {};
 		// Attach-time reads are untracked: the attachment must not re-run (closing the layer and removing
 		// the dialog mid-exit) when the owner's reactive state, such as `open` for `closing`, changes.
-		const { initial, onOpen, outside } = untrack(options);
+		const { initial, onOpen, outside, inline } = untrack(options);
 		const layer = openLayer(dialog, {
 			kind: "modal",
+			inline,
 			initialFocus: initial,
 			onOpen: () => onOpen?.(dialog),
 			outside,

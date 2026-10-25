@@ -82,7 +82,7 @@ AlertDialog: confirmation that requires an explicit answer (role="alertdialog").
 
 Snippets: `children`: Body between the description and the buttons: a confirmation field or a choice.
 
-Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
+Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-drawer` `ca-drawer--bottom` `ca-layer-close` `ca-overlay` `ca-overlay--inline` `ca-sheet`
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out`
 
@@ -795,7 +795,7 @@ Data attributes: `data-disabled`, `data-highlighted`, `data-state` (`open`)
 | `searchDebounce?` | `number` | `200` | Debounce delay (ms) before `search` is called after the last keystroke. Default 200. |
 | `shortcut?` | `boolean` | `true` | Opens and closes on Mod+K (Cmd+K / Ctrl+K) anywhere in the window. Turn it off for every palette but one when a page has several, or when the app binds its own shortcut. |
 
-Parts: `ca-cmd-dialog` `ca-cmd-empty` `ca-cmd-error` `ca-cmd-group__label` `ca-cmd-item` `ca-cmd-item--active` `ca-cmd-item__icon` `ca-cmd-item__label` `ca-cmd-item__module` `ca-cmd-list` `ca-cmd-loading` `ca-cmd-overlay` `ca-cmd-search` `ca-cmd-search__hint` `ca-cmd-search__icon` `ca-cmd-search__input` `ca-cmd-search__spinner` `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
+Parts: `ca-cmd-dialog` `ca-cmd-empty` `ca-cmd-error` `ca-cmd-group__label` `ca-cmd-item` `ca-cmd-item--active` `ca-cmd-item__icon` `ca-cmd-item__label` `ca-cmd-item__module` `ca-cmd-list` `ca-cmd-loading` `ca-cmd-overlay` `ca-cmd-search` `ca-cmd-search__hint` `ca-cmd-search__icon` `ca-cmd-search__input` `ca-cmd-search__spinner` `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-drawer` `ca-drawer--bottom` `ca-layer-close` `ca-overlay` `ca-overlay--inline` `ca-sheet`
 
 Internal (may change in any release): `ca-cmd-slide-in` `ca-cmd-slide-out` `ca-cmd-spin` `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out`
 
@@ -1120,13 +1120,14 @@ Dialog: second-layer modal.
 | `splitColumns?` | `string` |  | Column template of the `size="split"` body (CSS `grid-template-columns`), e.g. `'2fr 3fr'`. Default `'1fr 1fr'`. Sets `--ca-dialog-split-columns`. |
 | `splitSize?` | `{ width?: string; height?: string }` |  | Panel box of `size="split"`, any CSS length: `{ width: 'min(66vw, 80rem)', height: 'min(88svh, 56rem)' }`. Default 1100×720, capped to the viewport. Sets `--ca-dialog-split-width` / `--ca-dialog-split-height`. |
 | `fullscreenBelow?` | `'sm' \| 'md'` |  | Full screen below this breakpoint (`'sm'` = 600px, `'md'` = 900px), any `size`: exactly the viewport (`--ca-vh`), square corners, safe-area padding kept. Focus trap and Escape are unchanged. |
+| `inline?` | `boolean` | `false` | Render inside its container instead of the top layer: `position: absolute` over the nearest positioned ancestor, no scrim over the page, no scroll lock, no focus trap, and Escape closes it only from inside. It takes the tokens of its container, so it follows a `data-preset` or `data-theme-scope` island (a preview frame, an embedded editor). Default false. |
 | `class?` | `string` | `''` |  |
 | `onOpenChange?` | `(open: boolean) => void` |  |  |
 | `sound?` | `SoundProp` |  | Plays `open` and `close` as the dialog opens and closes (a cue name replaces both) when `@codeatlasdev/ui/sound` is on. |
 
 Snippets: `children`; `actions`
 
-Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay`
+Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-drawer` `ca-drawer--bottom` `ca-layer-close` `ca-overlay` `ca-overlay--inline` `ca-sheet`
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out`
 
@@ -1206,7 +1207,7 @@ Parts: `ca-docs-nav` `ca-docs-nav__label` `ca-docs-nav__link` `ca-docs-nav__titl
 | `hint?` | `string` |  |  |
 | `class?` | `string` |  |  |
 
-Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-docs-search` `ca-docs-search__bar` `ca-docs-search__body` `ca-docs-search__cancel` `ca-docs-search__context` `ca-docs-search__empty` `ca-docs-search__enter` `ca-docs-search__esc` `ca-docs-search__icon` `ca-docs-search__input` `ca-docs-search__result` `ca-docs-search__result--on` `ca-docs-search__results` `ca-docs-search__text` `ca-docs-search__title` `ca-layer-close` `ca-overlay`
+Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-docs-search` `ca-docs-search__bar` `ca-docs-search__body` `ca-docs-search__cancel` `ca-docs-search__context` `ca-docs-search__empty` `ca-docs-search__enter` `ca-docs-search__esc` `ca-docs-search__icon` `ca-docs-search__input` `ca-docs-search__result` `ca-docs-search__result--on` `ca-docs-search__results` `ca-docs-search__text` `ca-docs-search__title` `ca-drawer` `ca-drawer--bottom` `ca-layer-close` `ca-overlay` `ca-overlay--inline` `ca-sheet`
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-docs-search-in` `ca-docs-search-out` `ca-docs-search-pop-in` `ca-docs-search-pop-out` `ca-overlay-in` `ca-overlay-out`
 
@@ -1254,6 +1255,7 @@ Drawer: side panel, second layer.
 | `chromeless?` | `boolean` | `false` | Omits the header (and its close button) and the body padding: the content brings its own header, close button and scroll area. Name the panel with `title` (screen readers only), `aria-label` or `aria-labelledby`. |
 | `width?` | `string` | `'360px'` | Width (left/right). Default: 360px |
 | `fullBleedBelow?` | `'sm' \| 'md' \| 'lg'` |  | Below this breakpoint (`sm` 600px, `md` 900px, `lg` 1200px) a left/right panel is exactly the viewport width and height (`--ca-vh`), without radius, border or the page strip; safe-area padding is kept. |
+| `inline?` | `boolean` | `false` | Render inside its container (absolute, no top layer, scroll lock or focus trap) so it follows a `data-preset` island. Default false. |
 | `class?` | `string` | `''` |  |
 | `onOpenChange?` | `(open: boolean) => void` |  |  |
 
@@ -1261,7 +1263,7 @@ Snippets: `children`; `actions`
 
 Also accepts: `Omit<HTMLDialogAttributes, 'children' \| 'open' \| 'title' \| 'class' \| 'role' \| 'onclose' \| 'oncancel'>`
 
-Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-drawer` `ca-drawer--bottom` `ca-drawer--left` `ca-drawer--right` `ca-drawer__actions` `ca-drawer__body` `ca-drawer__header` `ca-drawer__header--bare` `ca-drawer__title` `ca-layer-close` `ca-overlay`
+Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-drawer` `ca-drawer--bottom` `ca-drawer--left` `ca-drawer--right` `ca-drawer__actions` `ca-drawer__body` `ca-drawer__header` `ca-drawer__header--bare` `ca-drawer__title` `ca-layer-close` `ca-overlay` `ca-overlay--inline` `ca-sheet`
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-drawer-bottom-in` `ca-drawer-bottom-out` `ca-drawer-left-in` `ca-drawer-left-out` `ca-drawer-right-in` `ca-drawer-right-out` `ca-overlay-in` `ca-overlay-out`
 
@@ -1287,6 +1289,7 @@ Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-spli
 | `onmenukeydown?` | `(e: KeyboardEvent) => void` |  | Sees every key pressed on the menu itself (not inside a submenu) before the menu handles it. Call `preventDefault()` to take the key: the menu then ignores it. A `Menubar` takes ArrowLeft and ArrowRight here to move to the adjacent menu. |
 | `ontriggerkeydown?` | `(e: KeyboardEvent) => void` |  | Called with the trigger's keydown before the menu's own (Down/Up/Enter/Space open). `preventDefault()` takes the key. |
 | `openFocus?` | `'first' \| 'last' \| 'container'` |  | Where focus goes when the menu opens without a pointer: the first item, the last, or the menu container. |
+| `inline?` | `boolean` | `false` | Render inside its container (absolute, no top layer, no outside-press dismissal) so it follows a `data-preset` island. Escape closes it from inside. Default false. |
 
 Snippets: `trigger`: Non-interactive trigger content (text, icon). Wrapped in the menu's own button.; `triggerChild` (`Snippet<[Record<string, unknown>]>`): Interactive trigger (a Button/IconButton): receives the trigger `props` to spread onto it.; `children`
 
@@ -2552,6 +2555,7 @@ Data attributes: `data-active`
 | `side?` | `'top' \| 'right' \| 'bottom' \| 'left'` | `'bottom'` |  |
 | `align?` | `'start' \| 'center' \| 'end'` | `'center'` |  |
 | `sideOffset?` | `number` | `8` |  |
+| `inline?` | `boolean` | `false` | Render inside its container (absolute, no top layer, no outside-press dismissal) so it follows a `data-preset` island. Escape closes it from inside. Default false. |
 
 Snippets: `trigger`: Non-interactive trigger content (text, icon). Wrapped in the popover's own button.; `triggerChild` (`Snippet<[Record<string, unknown>]>`): Interactive trigger (a Button/IconButton): receives the trigger `props` to spread onto it.; `children` (`Snippet<[{ close: () => void }]>`): Popover content. Receives `close`, which closes the popover and returns focus to the trigger.
 
@@ -2991,10 +2995,11 @@ Parts: `ca-setting-item` `ca-setting-item__control` `ca-setting-item__desc` `ca-
 | `description?` | `string` |  |  |
 | `onclose?` | `() => void` |  |  |
 | `swipeToDismiss?` | `boolean` | `true` | Drag the handle/header down to dismiss (bottom-sheet layout only). Default: true. |
+| `inline?` | `boolean` | `false` | Render inside its container (absolute, no top layer, scroll lock or focus trap) so it follows a `data-preset` island. Default false. |
 
 Snippets: `children`; `footer`
 
-Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-layer-close` `ca-overlay` `ca-sheet` `ca-sheet__body` `ca-sheet__close` `ca-sheet__description` `ca-sheet__footer` `ca-sheet__grab` `ca-sheet__grab--active` `ca-sheet__handle` `ca-sheet__header` `ca-sheet__meta` `ca-sheet__title`
+Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__actions` `ca-dialog__body` `ca-dialog__description` `ca-dialog__header` `ca-dialog__title` `ca-drawer` `ca-drawer--bottom` `ca-layer-close` `ca-overlay` `ca-overlay--inline` `ca-sheet` `ca-sheet__body` `ca-sheet__close` `ca-sheet__description` `ca-sheet__footer` `ca-sheet__grab` `ca-sheet__grab--active` `ca-sheet__handle` `ca-sheet__header` `ca-sheet__meta` `ca-sheet__title`
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out` `ca-sheet-fade-in` `ca-sheet-fade-out` `ca-sheet-in` `ca-sheet-out`
 
@@ -3653,7 +3658,11 @@ Parts: `ca-timeline` `ca-timeline__connector` `ca-timeline__content` `ca-timelin
 
 `import { Toaster } from "@codeatlasdev/ui"`
 
-Parts: `ca-toaster`
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `inline?` | `boolean` | `false` | Stack inside the nearest positioned ancestor (`position: absolute`) instead of the viewport, so it follows a `data-preset` island. Default false. |
+
+Parts: `ca-toaster` `ca-toaster--inline`
 
 ## ToggleGroup
 

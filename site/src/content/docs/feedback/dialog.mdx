@@ -73,6 +73,7 @@ The dialog renders a native modal `<dialog>` opened with `showModal()`: the page
   { name: "splitSize", type: "{ width?: string; height?: string }", description: "size=\"split\" panel box, any CSS length. Default 1100 by 720 capped to the viewport. Sets --ca-dialog-split-width and --ca-dialog-split-height." },
   { name: "splitColumns", type: "string", default: "'1fr 1fr'", description: "size=\"split\" body grid-template-columns from 900px, for example '2fr 3fr'. Sets --ca-dialog-split-columns." },
   { name: "fullscreenBelow", type: "'sm' | 'md'", description: "Any size: below 600px (sm) or 900px (md) the dialog is exactly the viewport, square corners, safe-area padding kept. Focus trap and Escape unchanged." },
+  { name: "inline", type: "boolean", default: "false", description: "Render inside its container instead of the top layer: position: absolute over the nearest positioned ancestor, no scrim over the page, no scroll lock, no focus trap, no inert page; Escape closes it only from inside. Takes the tokens of its container, so it follows a data-preset or data-theme-scope island." },
   { name: "chromeless", type: "boolean", default: "false", description: "Omits header, description and actions; the body has no padding. title and description stay available to screen readers." },
   { name: "children", type: "Snippet", description: "Dialog body." },
   { name: "actions", type: "Snippet", description: "Footer buttons." },
@@ -81,6 +82,18 @@ The dialog renders a native modal `<dialog>` opened with `showModal()`: the page
 ]} />
 
 ## Layers
+
+**Inline layers.** `inline` on `Dialog`, `Sheet`, `Drawer`, `Popover`, `DropdownMenu` and `Toaster` renders the overlay where it is declared instead of in the top layer. It is `position: absolute` inside the nearest positioned ancestor (give the container `position: relative`), is never moved to `<body>`, never calls `showModal()` or `showPopover()`, never joins the layer stack, locks no scroll, traps no focus and makes nothing inert. Because it stays in the DOM subtree, it resolves the tokens of its container: put it inside a `data-preset="violet"` or `data-theme-scope="dark"` island (a theme preview, an embedded editor, a docs frame) and it wears that island's theme, which a top-layer overlay never can. A dialog has no scrim in this mode. Escape closes an inline layer only while focus is inside it; a press elsewhere never does, so the page behind stays fully interactive. Use it for contained surfaces, not for the app's real modals: a modal that must block the page stays the default.
+
+```svelte
+<div class="stage" data-preset="violet">
+  <Dialog inline bind:open title="Rename review">…</Dialog>
+  <Toaster inline />
+</div>
+<style>.stage { position: relative; overflow: hidden; }</style>
+```
+
+`openLayer(el, { kind, inline: true })` is the same switch for your own layers.
 
 Dialogs, sheets, drawers, menus, popovers and tooltips share one layer stack. Modals are native `<dialog>` elements opened with `showModal()`; menus, popovers and tooltips are `popover` elements. Both live in the browser's top layer, so a layer opened later is always on top: there is no `z-index` to manage, and a menu inside a dialog just works. Anchored layers use CSS anchor positioning where the browser supports it and fall back to Floating UI elsewhere.
 

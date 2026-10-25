@@ -36,6 +36,8 @@
 		footer?: Snippet;
 		/** Drag the handle/header down to dismiss (bottom-sheet layout only). Default: true. */
 		swipeToDismiss?: boolean;
+		/** Render inside its container (absolute, no top layer, scroll lock or focus trap) so it follows a `data-preset` island. Default false. */
+		inline?: boolean;
 	}
 
 	let {
@@ -46,6 +48,7 @@
 		children,
 		footer,
 		swipeToDismiss = true,
+		inline = false,
 	}: Props = $props();
 
 	const DISMISS_RATIO = 0.3;
@@ -113,15 +116,16 @@
 	<!-- svelte-ignore a11y_no_redundant_roles -->
 	<dialog
 		bind:this={panel}
-		class="ca-overlay ca-sheet__overlay ca-sheet"
+		class="ca-overlay ca-sheet__overlay ca-sheet {inline ? 'ca-overlay--inline' : ''}"
 		role="dialog"
 		aria-label={title ? undefined : t().sheet.panel}
 		aria-labelledby={title ? ids.part("title") : undefined}
 		aria-describedby={description ? ids.part("description") : undefined}
 		data-state={open ? "open" : "closed"}
+		data-inline={inline ? "" : undefined}
 		style={offset.current > 0 ? `translate: 0 ${offset.current}px` : undefined}
 		{@attach presence.ref}
-		{@attach modalLayer(() => ({ onDismiss: dismiss, closing: !open }))}
+		{@attach modalLayer(() => ({ onDismiss: dismiss, closing: !open, inline }))}
 	>
 		<!-- Pointer-only gesture surface; keyboard users dismiss with Escape or the close button. -->
 		<div

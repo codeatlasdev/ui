@@ -38,6 +38,8 @@
     dismiss?: boolean;
     /** Keep focus where it is on close (the caller moves it). Default: focus goes back to the anchor. */
     restoreFocus?: boolean;
+    /** Render in place, `position: absolute` in the nearest positioned ancestor, outside the top layer and the layer stack. */
+    inline?: boolean;
   }
 </script>
 
@@ -62,6 +64,7 @@
     onMounted,
     dismiss = true,
     restoreFocus,
+    inline = false,
     children,
     ...rest
   }: FloatingLayerProps = $props();
@@ -82,6 +85,7 @@
       sideOffset,
       sameWidth,
       focusOutside,
+      inline,
       exclude,
       // Read live: once `open` turns false the exit animation plays, and Escape / presses belong to the layer below.
       // Untracked: the stack calls this from document listeners and from other layers' effects, and a
@@ -106,7 +110,7 @@
   <div
     bind:this={ref}
     {@attach presence.ref}
-    class="ca-floating {className}"
+    class="ca-floating {inline ? 'ca-floating--inline' : ''} {className}"
     data-ca-blur={blur}
     data-state={open ? 'open' : 'closed'}
     data-side={side}

@@ -4,9 +4,15 @@
   import { toast } from '../../stores/toast.svelte.js';
   import ToastItem from './ToastItem.svelte';
   const t = useMessages(toastMessages);
+
+  interface Props {
+    /** Stack inside the nearest positioned ancestor (`position: absolute`) instead of the viewport, so it follows a `data-preset` island. Default false. */
+    inline?: boolean;
+  }
+  let { inline = false }: Props = $props();
 </script>
 
-<div class="ca-toaster" role="region" aria-live="polite" aria-label={t().toast.region}>
+<div class="ca-toaster" class:ca-toaster--inline={inline} role="region" aria-live="polite" aria-label={t().toast.region}>
   {#each toast.items as item (item.id)}
     <ToastItem
       {item}
@@ -31,6 +37,10 @@
       pointer-events: none;
       max-width: 380px;
       width: calc(100vw - 2 * var(--ca-space-6));
+    }
+    .ca-toaster.ca-toaster--inline {
+      position: absolute;
+      width: calc(100% - 2 * var(--ca-space-6));
     }
 }
 </style>

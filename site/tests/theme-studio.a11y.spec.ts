@@ -22,6 +22,20 @@ test.describe("theme studio a11y", () => {
 		await page.getByRole("button", { name: /Preview screen/ }).click();
 		await page.getByRole("option", { name: "Overlays" }).click();
 		await page.getByRole("switch", { name: "Light and dark side by side" }).click();
+		await settle(page);
 		await expectNoViolations(await makeAxe(page).analyze(), testInfo, "overlays-compare");
+
+		// The real overlays, one at a time in their settled open state (an opening animation is not a contrast sample).
+		for (const name of ["Dialog", "Drawer", "Sheet"]) {
+			await page.getByRole("button", { name, exact: true }).first().click();
+			await settle(page);
+			await expectNoViolations(
+				await makeAxe(page).analyze(),
+				testInfo,
+				`overlays-${name.toLowerCase()}`
+			);
+			await page.locator("dialog[open] .ca-layer-close").first().click();
+			await settle(page);
+		}
 	});
 });

@@ -157,6 +157,8 @@ Contrast state is exposed as `[data-pass]` and `[data-level]` on `.ca-color-fiel
 
 `.ca-overlay` is the modal `<dialog>` itself (`dialog.ca-overlay`), shared by Dialog, AlertDialog, Drawer, Sheet, CommandPalette and DocsSearch. The scrim is `dialog.ca-overlay::backdrop`, driven by `--ca-scrim-color` and `--ca-scrim-blur`. A `background` or `backdrop-filter` on `.ca-overlay` paints the panel, not the scrim.
 
+`.ca-overlay--inline` (with `data-inline` on the `<dialog>`) is the `inline` prop of Dialog, Sheet and Drawer: the panel is `position: absolute` inside the nearest positioned ancestor instead of in the top layer, with no scrim, scroll lock or focus trap, and resolves the tokens of its container (a `data-preset` / `data-theme-scope` island).
+
 ## Divider
 
 `.ca-divider` `.ca-divider--horizontal` `.ca-divider--vertical`
@@ -497,7 +499,7 @@ The role classes are also an opt-in stylesheet (`@codeatlasdev/ui/styles/type-ro
 
 ## Toast
 
-`.ca-toast` `.ca-toast--error` `.ca-toast--info` `.ca-toast--success` `.ca-toast--visible` `.ca-toast--warning` `.ca-toast__action` `.ca-toast__body` `.ca-toast__close` `.ca-toast__count` `.ca-toast__description` `.ca-toast__icon` `.ca-toast__message` `.ca-toaster`
+`.ca-toast` `.ca-toast--error` `.ca-toast--info` `.ca-toast--success` `.ca-toast--visible` `.ca-toast--warning` `.ca-toast__action` `.ca-toast__body` `.ca-toast__close` `.ca-toast__count` `.ca-toast__description` `.ca-toast__icon` `.ca-toast__message` `.ca-toaster` `.ca-toaster--inline`
 
 ## ToggleGroup
 
