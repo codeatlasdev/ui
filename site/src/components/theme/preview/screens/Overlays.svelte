@@ -15,6 +15,10 @@
 </script>
 
 <section class="ts-ov" aria-label="Overlays preview">
+  <div class="ts-ov__note"><Alert severity="info" title="Static preview">
+    Real dialogs, menus and toasts open in the page's top layer, outside this frame, so they would
+    not take your theme. These are the same classes and tokens, drawn in place.
+  </Alert></div>
   <div class="ts-ov__cell ts-ov__cell--wide">
     <Heading level={3} size="h6">Dialog</Heading>
     <div class="ts-ov__scrim">
@@ -39,7 +43,7 @@
 
   <div class="ts-ov__cell">
     <Heading level={3} size="h6">Menu</Heading>
-    <div class="ca-dropdown-content glass-overlay ts-menu" role="menu" aria-label="Review actions">
+    <div class="ca-dropdown-content ts-menu" role="menu" aria-label="Review actions">
       <DropdownMenuLabel>Review</DropdownMenuLabel>
       <DropdownMenuItem>
         {#snippet icon()}<Pencil size={16} />{/snippet}
@@ -84,7 +88,7 @@
   <div class="ts-ov__cell">
     <Heading level={3} size="h6">Popover and tooltip</Heading>
     <div class="ts-ov__stack">
-      <div class="ca-popover-content glass-overlay ts-popover">
+      <div class="ca-popover-content ts-popover">
         <Heading level={4} size="h6">Share this review</Heading>
         <p class="ts-popover__body">Anyone in your workspace can view it.</p>
         <Button size="sm" variant="outlined">Copy link</Button>
@@ -104,7 +108,7 @@
   }
   @container ts-island (min-width: 720px) {
     .ts-ov { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-    .ts-ov__cell--wide { grid-column: 1 / -1; }
+    .ts-ov__cell--wide, .ts-ov__note { grid-column: 1 / -1; }
   }
   .ts-ov__cell { display: grid; align-content: start; gap: var(--ca-space-2); min-width: 0; }
   .ts-ov__stack { display: grid; justify-items: start; gap: var(--ca-space-3); min-width: 0; }
@@ -129,6 +133,15 @@
     overflow: hidden;
   }
 
+  /* Static copies sit on a fixed backdrop, so they paint the opaque overlay token: the real, floating
+     ones are translucent only because they sit over live content. */
+  .ts-menu, .ts-popover {
+    background: var(--ca-surface-overlay);
+    border-radius: var(--ca-radius-md);
+    box-shadow: var(--ca-shadow-md), 0 0 0 var(--ca-border-width) var(--ca-outline-subtle);
+    padding: var(--ca-space-1);
+  }
+  .ts-popover { padding: var(--ca-space-3); }
   .ts-menu { width: 100%; max-width: 15rem; }
   .ts-popover { max-width: 18rem; display: grid; gap: var(--ca-space-2); justify-items: start; }
   .ts-popover__body { margin: 0; color: var(--ca-text-secondary); font-size: var(--ca-font-size-body2); }

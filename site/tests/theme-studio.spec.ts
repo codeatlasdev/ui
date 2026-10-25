@@ -89,7 +89,8 @@ test.describe("theme studio", () => {
 		);
 		expect(brand).not.toBe(pageBrand);
 
-		await page.getByRole("radio", { name: "Landing" }).click();
+		await page.getByRole("button", { name: /Preview screen/ }).click();
+		await page.getByRole("option", { name: "Landing" }).click();
 		await page.getByRole("radio", { name: "390" }).click();
 		const heading = island.locator(".ca-heading--display");
 		await expect(heading).toBeVisible();

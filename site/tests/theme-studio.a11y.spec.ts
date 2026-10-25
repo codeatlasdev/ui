@@ -1,4 +1,4 @@
-import { expectNoViolations, gotoReady, makeAxe, test } from "./fixtures";
+import { expectNoViolations, gotoReady, makeAxe, settle, test } from "./fixtures";
 
 // The generic route sweep sees /theme/ closed. These are the states it cannot reach.
 test.describe("theme studio a11y", () => {
@@ -16,9 +16,11 @@ test.describe("theme studio a11y", () => {
 		await page.getByRole("tab", { name: "Controls" }).click();
 		for (const name of ["Style", "Shape", "Type", "Motion and components"])
 			await page.getByRole("button", { name }).click();
+		await settle(page);
 		await expectNoViolations(await makeAxe(page).analyze(), testInfo, "all-groups-open");
 
-		await page.getByRole("radio", { name: "Overlays" }).click();
+		await page.getByRole("button", { name: /Preview screen/ }).click();
+		await page.getByRole("option", { name: "Overlays" }).click();
 		await page.getByRole("switch", { name: "Light and dark side by side" }).click();
 		await expectNoViolations(await makeAxe(page).analyze(), testInfo, "overlays-compare");
 	});
