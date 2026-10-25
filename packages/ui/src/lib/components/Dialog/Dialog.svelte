@@ -53,6 +53,13 @@
      * viewport (`--ca-vh`), square corners, safe-area padding kept. Focus trap and Escape are unchanged.
      */
     fullscreenBelow?: 'sm' | 'md';
+    /**
+     * Render inside its container instead of the top layer: `position: absolute` over the nearest
+     * positioned ancestor, no scrim over the page, no scroll lock, no focus trap, and Escape closes it
+     * only from inside. It takes the tokens of its container, so it follows a `data-preset` or
+     * `data-theme-scope` island (a preview frame, an embedded editor). Default false.
+     */
+    inline?:       boolean;
     class?:        string;
     children?:     Snippet;
     actions?:      Snippet;
@@ -70,6 +77,7 @@
     splitColumns,
     splitSize,
     fullscreenBelow,
+    inline      = false,
     class: className = '',
     children,
     actions,
@@ -111,18 +119,19 @@
   <!-- An explicit role keeps `[role="dialog"]` selectors (and every engine) seeing the dialog. -->
   <!-- svelte-ignore a11y_no_redundant_roles -->
   <dialog
-    class="ca-overlay ca-dialog ca-dialog--{size} {chromeless ? 'ca-dialog--chromeless' : ''} {className}"
+    class="ca-overlay ca-dialog ca-dialog--{size} {chromeless ? 'ca-dialog--chromeless' : ''} {inline ? 'ca-overlay--inline' : ''} {className}"
     role="dialog"
     aria-labelledby={title ? ids.part('title') : undefined}
     aria-describedby={description ? ids.part('description') : undefined}
     data-state={open ? 'open' : 'closed'}
     data-fullscreen-below={fullscreenBelow}
+    data-inline={inline ? '' : undefined}
     style:--dialog-max-w={maxW[size]}
     style:--ca-dialog-split-columns={splitColumns}
     style:--ca-dialog-split-width={splitSize?.width}
     style:--ca-dialog-split-height={splitSize?.height}
     {@attach presence.ref}
-    {@attach modalLayer(() => ({ onDismiss: () => change(false), closing: !open }))}
+    {@attach modalLayer(() => ({ onDismiss: () => change(false), closing: !open, inline }))}
   >
     {#if chromeless}
       {#if title}

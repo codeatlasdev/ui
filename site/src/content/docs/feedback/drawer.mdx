@@ -44,6 +44,7 @@ The panel needs a name. Pass `title` (add `hideTitle` to keep it for screen read
 
 <Props for="Drawer" rows={[
   { name: "open", type: "boolean", default: "false", description: "Bindable open state." },
+  { name: "inline", type: "boolean", default: "false", description: "Render inside its container instead of the top layer: position: absolute in the nearest positioned ancestor, no top layer, scroll lock or focus trap. Takes the tokens of its container, so it follows a data-preset or data-theme-scope island." },
   { name: "side", type: "'left' | 'right' | 'bottom'", default: "'right'", description: "Edge the panel slides from." },
   { name: "title", type: "string", description: "Header title and the panel's accessible name." },
   { name: "hideTitle", type: "boolean", default: "false", description: "Hides the title heading visually but keeps it as the accessible name; the header shrinks to the close button." },

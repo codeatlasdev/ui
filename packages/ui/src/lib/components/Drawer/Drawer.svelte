@@ -39,6 +39,8 @@
     width?:        string;
     /** Below this breakpoint (`sm` 600px, `md` 900px, `lg` 1200px) a left/right panel is exactly the viewport width and height (`--ca-vh`), without radius, border or the page strip; safe-area padding is kept. */
     fullBleedBelow?: 'sm' | 'md' | 'lg';
+    /** Render inside its container (absolute, no top layer, scroll lock or focus trap) so it follows a `data-preset` island. Default false. */
+    inline?:       boolean;
     class?:        string;
     children?:     Snippet;
     actions?:      Snippet;
@@ -56,6 +58,7 @@
     chromeless = false,
     width     = '360px',
     fullBleedBelow,
+    inline    = false,
     class: className = '',
     children,
     actions,
@@ -84,15 +87,16 @@
   <!-- svelte-ignore a11y_no_redundant_roles -->
   <dialog
     {...rest}
-    class="ca-overlay ca-overlay--drawer ca-drawer ca-drawer--{side} {className}"
+    class="ca-overlay ca-overlay--drawer ca-drawer ca-drawer--{side} {inline ? 'ca-overlay--inline' : ''} {className}"
     role="dialog"
     aria-labelledby={labelledby}
     data-state={open ? 'open' : 'closed'}
     data-chromeless={chromeless ? '' : undefined}
     data-full-bleed={fullBleedBelow}
+    data-inline={inline ? '' : undefined}
     style="--drawer-w:{width};{style ?? ''}"
     {@attach presence.ref}
-    {@attach modalLayer(() => ({ onDismiss: () => change(false), closing: !open }))}
+    {@attach modalLayer(() => ({ onDismiss: () => change(false), closing: !open, inline }))}
   >
     {#if chromeless}
       {#if title}

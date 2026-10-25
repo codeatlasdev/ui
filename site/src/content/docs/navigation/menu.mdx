@@ -84,6 +84,7 @@ A brand logo (a multi-color or fixed-color SVG) must not be recolored: set `bran
   { name: "children", type: "Snippet", description: "Menu content: items, labels, separators, checkbox and radio items and submenus." },
   { name: "open", type: "boolean", default: "false", description: "Bindable. Whether the menu is open. Set it from code to open or close the menu." },
   { name: "onOpenChange", type: "(open: boolean) => void", description: "Called when the user opens or closes the menu." },
+  { name: "inline", type: "boolean", default: "false", description: "Render inside its container instead of the top layer: position: absolute against the nearest positioned ancestor, no top layer, no outside-press dismissal; Escape closes it from inside. Takes the tokens of its container, so it follows a data-preset or data-theme-scope island." },
   { name: "anchor", type: "{ x: number; y: number } | null", default: "null", description: "Viewport point the menu opens at (a context menu). Changing it while open moves the menu. Omit `trigger` when you use it." },
   { name: "side", type: "'top' | 'right' | 'bottom' | 'left'", default: "'bottom'", description: "Preferred side of the trigger." },
   { name: "align", type: "'start' | 'center' | 'end'", default: "'start'", description: "Alignment against the trigger." },

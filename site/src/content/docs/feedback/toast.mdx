@@ -62,5 +62,6 @@ Add a secondary line with `description` and one inline button with `action: { la
   { name: "toast.remove(id)", type: "(id: string) => void", description: "Dismisses a toast by id." },
   { name: "toast.items", type: "ToastItem[]", description: "Reactive list of the visible toasts." },
   { name: "duration", type: "number", default: "4000", description: "Auto-dismiss delay in ms. 0 keeps the toast until dismissed." },
+  { name: "<Toaster inline />", type: "boolean", description: "Stacks inside the nearest positioned ancestor (position: absolute) instead of the viewport, so it takes the tokens of a data-preset island. Default false." },
   { name: "ToastVariant", type: "'default' | 'success' | 'error' | 'warning' | 'info'", description: "Accepted variants." },
 ]} />

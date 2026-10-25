@@ -38,6 +38,8 @@
     ontriggerkeydown?: (e: KeyboardEvent) => void;
     /** Where focus goes when the menu opens without a pointer: the first item, the last, or the menu container. */
     openFocus?: 'first' | 'last' | 'container';
+    /** Render inside its container (absolute, no top layer, no outside-press dismissal) so it follows a `data-preset` island. Escape closes it from inside. Default false. */
+    inline?: boolean;
   }
 
   let {
@@ -54,6 +56,7 @@
     onmenukeydown,
     ontriggerkeydown,
     openFocus,
+    inline = false,
   }: Props = $props();
 
   const id = uid('menu');
@@ -207,6 +210,7 @@
   {side}
   {align}
   sideOffset={sideOffset ?? (point ? 0 : 6)}
+  {inline}
   bind:ref={menu}
   id="{id}-content"
   role="menu"

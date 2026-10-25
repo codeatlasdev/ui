@@ -19,6 +19,8 @@
     side?:       'top' | 'right' | 'bottom' | 'left';
     align?:      'start' | 'center' | 'end';
     sideOffset?: number;
+    /** Render inside its container (absolute, no top layer, no outside-press dismissal) so it follows a `data-preset` island. Escape closes it from inside. Default false. */
+    inline?:     boolean;
   }
 
   let {
@@ -31,6 +33,7 @@
     side       = 'bottom',
     align      = 'center',
     sideOffset = 8,
+    inline     = false,
   }: Props = $props();
 
   const id = uid('pop');
@@ -69,6 +72,7 @@
   {side}
   {align}
   {sideOffset}
+  {inline}
   bind:ref={content}
   id="{id}-content"
   role="dialog"

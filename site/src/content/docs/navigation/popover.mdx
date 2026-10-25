@@ -51,5 +51,6 @@ To control it, `bind:open` reads and sets the open state, and `onOpenChange` fir
   { name: "side", type: "'top' | 'right' | 'bottom' | 'left'", default: "'bottom'", description: "Preferred side of the trigger." },
   { name: "align", type: "'start' | 'center' | 'end'", default: "'center'", description: "Alignment against the trigger." },
   { name: "sideOffset", type: "number", default: "8", description: "Distance from the trigger in pixels." },
+  { name: "inline", type: "boolean", default: "false", description: "Render inside its container instead of the top layer: position: absolute against the nearest positioned ancestor, no top layer, no outside-press dismissal; Escape closes it from inside. Takes the tokens of its container, so it follows a data-preset or data-theme-scope island." },
   { name: "class", type: "string", default: "''", description: "Extra CSS classes on the content." },
 ]} />

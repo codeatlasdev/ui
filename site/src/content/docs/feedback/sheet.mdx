@@ -32,6 +32,7 @@ Below 900px the sheet rises from the bottom edge with a drag handle, safe-area p
 
 <Props for="Sheet" rows={[
   { name: "open", type: "boolean", default: "false", description: "Bindable open state." },
+  { name: "inline", type: "boolean", default: "false", description: "Render inside its container instead of the top layer: position: absolute in the nearest positioned ancestor, no top layer, scroll lock or focus trap. Takes the tokens of its container, so it follows a data-preset or data-theme-scope island." },
   { name: "title", type: "string", description: "Header title. Without it the panel falls back to a localized generic aria-label." },
   { name: "description", type: "string", description: "Supporting text under the title." },
   { name: "swipeToDismiss", type: "boolean", default: "true", description: "Drag the handle or header down to dismiss in the bottom-sheet layout. Ignored under reduced motion and on desktop." },
