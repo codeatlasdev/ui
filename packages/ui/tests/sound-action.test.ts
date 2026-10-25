@@ -1,20 +1,31 @@
-import { afterAll, describe, expect, it } from "bun:test";
+import { afterAll, afterEach, describe, expect, it } from "bun:test";
 import { GlobalRegistrator } from "@happy-dom/global-registrator";
 
 GlobalRegistrator.register();
 afterAll(() => GlobalRegistrator.unregister());
 
+let n = 0;
+const live: { dispose(): void }[] = [];
+afterEach(() => {
+	for (const s of live.splice(0)) s.dispose();
+});
+// Fresh module per test (AGENTS.md `?fresh=n`): the engine owns the one bus listener.
+async function entry() {
+	const mod = await import(`../src/lib/sound/index.js?fresh=${n++}`);
+	live.push(mod.sound);
+	return mod;
+}
+
 describe("use:sound", () => {
-	it("the exported `sound` is itself the action and still carries the engine", async () => {
-		const mod = await import("../src/lib/sound/index.js?action");
-		const { sound, soundBus } = mod;
+	it("the exported `sound` is both the engine and the action", async () => {
+		const { sound, soundBus } = await entry();
 		expect(typeof sound).toBe("function");
 		expect(typeof sound.enable).toBe("function");
 		expect(typeof sound.play).toBe("function");
 		expect(sound.enabled).toBe(false);
 
 		const heard: string[] = [];
-		const off = soundBus.listen((c) => heard.push(c));
+		const off = soundBus.listen((c: string) => heard.push(c));
 		const el = document.createElement("div");
 		const act = sound(el, { on: "pointerenter", cue: "hover" });
 		el.dispatchEvent(new Event("pointerenter"));
@@ -27,24 +38,21 @@ describe("use:sound", () => {
 		el.dispatchEvent(new Event("click"));
 		expect(heard).toEqual(["hover", "tap"]);
 		off();
-		sound.dispose();
 	});
 
 	it("defaults to a press on click", async () => {
-		const { sound, soundBus } = await import("../src/lib/sound/index.js?action2");
+		const { sound, soundBus } = await entry();
 		const heard: string[] = [];
-		const off = soundBus.listen((c) => heard.push(c));
+		const off = soundBus.listen((c: string) => heard.push(c));
 		const el = document.createElement("button");
 		sound(el, undefined);
 		el.dispatchEvent(new Event("click"));
 		expect(heard).toEqual(["press"]);
 		off();
-		sound.dispose();
 	});
 
-	it("no `soundAction` alias remains", async () => {
-		const mod = (await import("../src/lib/sound/index.js?action3")) as Record<string, unknown>;
+	it("no `soundAction` alias is exported", async () => {
+		const mod = await entry();
 		expect(mod.soundAction).toBeUndefined();
-		(mod.sound as { dispose(): void }).dispose();
 	});
 });
