@@ -523,7 +523,7 @@ import { DataTable, createCaTable, createCaColumnHelper, caTableFeatures } from 
 `Tabs` · `TabsList` · `TabsTrigger` · `TabsContent` · `Breadcrumb` · `Pagination` · `Stepper`
 
 ### Docs (documentation sites)
-`DocsShell` (header + sidebar + page index; on mobile a compact header and menu in a `Sheet`) · `DocsNav` · `TableOfContents` (`variant="rail" | "inline"`) · `DocsSearch` + `searchDocs` · `CodeTabs`/`CodeTab` (copy, `sync` across groups) · `Callout` · `Steps` · `LinkCard` · `CardGrid` · `MethodBadge`. Markdown typography: wrap the HTML in `<div class="ca-prose">`; tables in `.ca-table-wrap`, code in `.ca-code` (shiki dual theme). Syntax highlighting is up to the consumer (shiki at build).
+`DocsShell` (header + sidebar + page index; on mobile a compact header and menu in a `Sheet`) · `DocsHeader` (that header alone, so a landing or template page shares one top bar with the docs; opaque, no `<main>`) · `DocsNav` · `TableOfContents` (`variant="rail" | "inline"`) · `DocsSearch` + `searchDocs` · `CodeTabs`/`CodeTab` (copy, `sync` across groups) · `Callout` · `Steps` · `LinkCard` · `CardGrid` · `MethodBadge`. Markdown typography: wrap the HTML in `<div class="ca-prose">`; tables in `.ca-table-wrap`, code in `.ca-code` (shiki dual theme). Syntax highlighting is up to the consumer (shiki at build).
 
 ```svelte
 <DocsShell {sections} active="api" {groups} {pathname} {headings}

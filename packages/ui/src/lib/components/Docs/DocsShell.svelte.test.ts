@@ -121,6 +121,52 @@ describe("DocsShell", () => {
 	});
 });
 
+describe("DocsHeader", () => {
+	it("renders the bar alone: brand, sections, search, theme; no main; passes axe", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		const screen = await render(DocsHarness, { kind: "header" });
+		await expect.element(screen.getByRole("banner")).toBeVisible();
+		await expect
+			.element(screen.getByRole("link", { name: "Atlas Docs" }))
+			.toHaveAttribute("href", "/");
+		await expect
+			.element(screen.getByRole("link", { name: "Guide", exact: true }))
+			.toHaveAttribute("aria-current", "page");
+		await expect
+			.element(screen.getByRole("button", { name: /Buscar na documentação/ }))
+			.toBeVisible();
+		expect(document.querySelector("main")).toBeNull();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("is opaque: the background has no alpha, so content never shows through", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(DocsHarness, { kind: "header" });
+		const header = document.querySelector(".ca-docs-header") as HTMLElement;
+		const style = getComputedStyle(header);
+		expect(style.backgroundColor).not.toMatch(/rgba|\/ /);
+		expect(style.backdropFilter === "none" || style.backdropFilter === "").toBe(true);
+	});
+
+	it("Ctrl+K opens search from the standalone bar", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(DocsHarness, { kind: "header" });
+		await userEvent.keyboard("{Control>}k{/Control}");
+		await expect
+			.element(page.getByRole("dialog", { name: "Buscar na documentação" }))
+			.toBeVisible();
+	});
+
+	it("on phones the menu button opens the section switcher in a Sheet", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		const screen = await render(DocsHarness, { kind: "header" });
+		await screen.getByRole("button", { name: "Abrir navegação" }).click();
+		const sheet = page.getByRole("dialog", { name: "Navegação" });
+		await expect.element(sheet).toBeVisible();
+		await expect.element(sheet.getByRole("link", { name: "API", exact: true })).toBeVisible();
+	});
+});
+
 // A docs site that reloads on every page (static MPA) must not throw the reader back to the top
 // of the sidebar: the position survives the load and the current page is always in view.
 describe("DocsShell sidebar position", () => {
