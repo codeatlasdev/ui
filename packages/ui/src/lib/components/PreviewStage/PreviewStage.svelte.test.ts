@@ -53,7 +53,7 @@ describe("PreviewStage scrolling", () => {
 		const screen = await render(Harness, { tall: true });
 		const f = frame(screen.container);
 		expect(f.scrollHeight).toBeGreaterThan(f.clientHeight);
-		expect(f.tabIndex).toBe(0);
+		await expect.poll(() => f.tabIndex).toBe(0);
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 });

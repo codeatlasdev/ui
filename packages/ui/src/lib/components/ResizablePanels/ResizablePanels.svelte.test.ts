@@ -51,7 +51,7 @@ describe("ResizablePanels scrolling", () => {
 		panel.style.width = "40px";
 		panel.style.flex = "none";
 		expect(panel.scrollWidth).toBeGreaterThan(panel.clientWidth);
-		expect(panel.tabIndex).toBe(0);
+		await expect.poll(() => panel.tabIndex).toBe(0);
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 });

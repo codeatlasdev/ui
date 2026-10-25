@@ -70,7 +70,8 @@
   .ti { width: 100%; max-width: 380px; }
   .ti__rail { display: inline-flex; max-inline-size: 100%; }
   /* The package trigger paints its own active pill; hand that job to the sliding one. */
-  .ti :global(.ca-tabs-trigger[data-state='active']) { background: transparent; position: relative; z-index: 1; }
+  .ti--ready :global(.ca-tabs-trigger[data-state='active']) { background: transparent; }
+  .ti :global(.ca-tabs-trigger[data-state='active']) { position: relative; z-index: 1; }
   .ti :global(.ca-tabs-list) { position: relative; }
   .ti__pill {
     position: absolute; inset-block: var(--ca-space-1); inset-inline-start: 0; z-index: 0;

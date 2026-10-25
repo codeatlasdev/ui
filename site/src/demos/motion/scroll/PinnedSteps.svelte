@@ -122,10 +122,10 @@
     gap: var(--ca-space-1);
     block-size: 13rem;
     padding: 0 var(--ca-space-4);
-    opacity: 0.4;
-    transition: opacity 320ms cubic-bezier(0.2, 0, 0, 1);
   }
-  .story__step--on { opacity: 1; }
-  .story__title { margin: 0; font-weight: var(--ca-font-weight-semibold); color: var(--ca-text-primary); }
+  /* The step in view is the loud one. Passed and upcoming steps drop to the secondary text colour
+     (AA on the stage), never to a lower opacity: opacity dims text below 4.5:1. */
+  .story__title { margin: 0; font-weight: var(--ca-font-weight-semibold); color: var(--ca-text-secondary); transition: color 320ms; }
   .story__body { margin: 0; font-size: var(--ca-font-size-body2); color: var(--ca-text-secondary); }
+  .story__step--on .story__title { color: var(--ca-text-primary); }
 </style>
