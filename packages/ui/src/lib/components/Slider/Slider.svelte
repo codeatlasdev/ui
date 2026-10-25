@@ -27,6 +27,8 @@
     step?:     number;
     disabled?: boolean;
     class?:    string;
+    /** Accessible name of the thumb(s). Without it a thumb is announced as "Value 40". A range appends "minimum"/"maximum". */
+    label?:    string;
     /** Called on change. Always receives array regardless of single/range mode. */
     onchange?: (value: number[]) => void;
     /** Plays `tick` for each step the user crosses (a cue name replaces it); off under reduced motion. Needs `@codeatlasdev/ui/sound`. */
@@ -41,6 +43,7 @@
     step     = 1,
     disabled = false,
     class: className = '',
+    label,
     onchange,
     sound,
   }: Props = $props();
@@ -202,7 +205,7 @@
       role="slider"
       tabindex={disabled ? -1 : 0}
       class="ca-slider__thumb"
-      aria-label={t().slider.value(v)}
+      aria-label={label ? (internal.length > 1 ? `${label} ${i === 0 ? t().slider.minimum : t().slider.maximum}` : label) : t().slider.value(v)}
       aria-valuemin={min}
       aria-valuemax={max}
       aria-valuenow={v}

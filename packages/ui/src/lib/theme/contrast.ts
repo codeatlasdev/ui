@@ -1,6 +1,7 @@
 // ─── Build-time contrast findings for hand-set preset roles ──────────────────
-// Used by caThemePlugin and caUI only (never by the runtime entries), so the color evaluation it
-// needs stays out of the bundles that import `defineTheme` for its defaults (seo/pwa.ts).
+// Used by caThemePlugin and caUI at build time, and by theme editors in the browser through the
+// package barrel. The runtime entries (seo/pwa.ts) never import it, so the color evaluation stays
+// out of the bundles that only need `defineTheme` for its defaults.
 
 import type { ParsedColor } from "../utils/css-color.js";
 import { compositeOver, evalColor } from "../utils/css-color-mix.js";

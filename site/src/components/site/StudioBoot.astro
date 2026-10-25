@@ -1,0 +1,21 @@
+---
+// Replays a theme the visitor applied from /theme/ ("Apply to site"). It only reads this
+// browser's localStorage key; with no key it does nothing, so every build and every first visit
+// renders sketchbook exactly as published. The CSS string was compiled by the studio when the
+// visitor applied it, so no library code runs here.
+---
+<script is:inline>
+	(function () {
+		try {
+			var t = JSON.parse(localStorage.getItem("ca-site-studio") || "null");
+			if (!t || t.v !== 1 || typeof t.css !== "string" || !t.css) return;
+			var s = document.createElement("style");
+			s.id = "ca-site-studio";
+			s.textContent = t.css;
+			document.head.appendChild(s);
+			var h = document.documentElement;
+			if (/^[\w-]+$/.test(t.preset)) h.setAttribute("data-preset", t.preset);
+			if (/^[\w-]+$/.test(t.style)) h.setAttribute("data-style", t.style);
+		} catch (e) {}
+	})();
+</script>
