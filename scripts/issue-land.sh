@@ -36,9 +36,10 @@ fi
 # A rebase can change bun.lock: plain install (not frozen), then restore the TypeScript link
 # svelte-package needs (an install can drop it).
 bun install >/dev/null && node scripts/fix-ts-symlink.js >/dev/null
-# Only generated files: never sweep stray worktree files into the commit.
+# Only generated files: never sweep stray worktree files into the commit. Untracked ones count: a new
+# demo makes the manifest create its site/public/api/v1 files for the first time (#589).
 bun run --cwd packages/ui manifest -- --skill >/dev/null
-for f in $(git status --porcelain --untracked-files=no | awk '{print $2}'); do
+for f in $(git status --porcelain --untracked-files=all | awk '{print $2}'); do
 	if is_generated "$f"; then git add -- "$f"; fi
 done
 git diff --cached --quiet || git commit -qm "chore: regenerate lockfile and manifest after rebase"

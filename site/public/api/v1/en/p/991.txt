@@ -1,0 +1,13 @@
+Use @codeatlasdev/ui demo #991 "Text color" (inputs/color-field).
+What it shows: Color field for a text color measured against a white page, with a sample line in that color. When to use: Choosing text colors that must reach WCAG AA.
+Spec:
+- `<ColorField` with `label="Body text"`, `bind:value={text}`, `against={page}`, `minRatio={4.5}` and `format="oklch"`
+- `page` is the constant `'#ffffff'`
+- Initial value is `$state('#6b7280')`
+- Below the field, a white box shows a sample sentence painted in the current color
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #991 Text color → file, what changed, https://ui.codeatlas.com.br/docs/inputs/color-field#text-color; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/991.txt   Components API: ca-ui-mcp get_component(ColorField)
