@@ -1,12 +1,14 @@
-Use @codeatlasdev/ui demo #990 "SliderField" (inputs/slider).
-What it shows: Two labelled sliders with an editable number and a unit: radius and type scale. When to use: Tuning a numeric setting where both scrubbing and typing an exact value matter.
+Use @codeatlasdev/ui demo #990 "Brand color" (inputs/color-field).
+What it shows: Color field with a swatch, a native picker, a text input and a live WCAG contrast readout against white. When to use: Picking a brand or accent color where contrast matters.
 Spec:
-- Two `<SliderField` stacked in a column
-- First: `label="Radius"`, `bind:value={radius}`, `min={0}`, `max={2}`, `step={0.05}`, `unit="x"`, initial `0.8`
-- Second: `label="Type scale"`, `bind:value={scale}`, `min={0.8}`, `max={1.3}`, `step={0.01}`, `unit="x"`, initial `1`, with a `description` Multiplies every font size.
+- `<ColorField` with `label="Brand color"` and `bind:value={brand}`
+- `against="#ffffff"`, `role="fill"` and `minRatio={3}` so the readout measures white on the color as a UI part
+- Has a `description`: Type #hex, rgb() or oklch(), or pick.
+- Initial value is `$state('#2b5fd9')`
+- Current value is shown as `value: {brand}`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
-Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
-Report: #990 SliderField → file, what changed, https://ui.codeatlas.com.br/docs/inputs/slider#sliderfield; what you could not check (light/dark, 375px, keyboard, reduced motion).
-Reference: https://ui.codeatlas.com.br/api/v1/en/e/990.txt   Components API: ca-ui-mcp get_component(SliderField)
+Report: #990 Brand color → file, what changed, https://ui.codeatlas.com.br/docs/inputs/color-field#brand-color; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/990.txt   Components API: ca-ui-mcp get_component(ColorField)

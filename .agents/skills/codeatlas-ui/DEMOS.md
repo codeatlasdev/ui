@@ -384,3 +384,6 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 987 | A whole page | layout/preview-stage | PreviewStage |
 | 988 | Hear it | feedback/sound | Button, SegmentedControl, SoundToggle |
 | 989 | Components | feedback/sound | Button, Dialog, Slider, Switch, Tabs, TabsList, TabsTrigger, SoundToggle |
+| 990 | Brand color | inputs/color-field | ColorField |
+| 991 | Text color | inputs/color-field | ColorField |
+| 992 | SliderField | inputs/slider | SliderField |

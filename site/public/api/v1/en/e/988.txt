@@ -1,40 +1,54 @@
-<!-- @codeatlasdev/ui demo #988 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/color-field#brand-color -->
-Element: #988 Brand color (inputs/color-field)
-What it shows: Color field with a swatch, a native picker, a text input and a live WCAG contrast readout against white.
-When to use: Picking a brand or accent color where contrast matters.
+<!-- @codeatlasdev/ui demo #988 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/sound#hear-it -->
+Element: #988 Hear it (feedback/sound)
+What it shows: A sound toggle with volume, a profile picker (system, glass, brutalism, terminal) and a board of buttons that each play one cue.
+When to use: Let people audition a sound profile before turning interface sound on in an app.
 Spec:
-- `<ColorField` with `label="Brand color"` and `bind:value={brand}`
-- `against="#ffffff"`, `role="fill"` and `minRatio={3}` so the readout measures white on the color as a UI part
-- Has a `description`: Type #hex, rgb() or oklch(), or pick.
-- Initial value is `$state('#2b5fd9')`
-- Current value is shown as `value: {brand}`
-Tags: color-field, color-picker, oklch, contrast, brand
+- `<SoundToggle volume />` next to a `SegmentedControl` bound to the profile
+- `$effect(() => sound.use(PROFILES[profile]))` pins the picked profile and `onDestroy` releases it
+- A `role="group"` board of outlined small `Button` items, each with `sound={cue}` for one cue name
+- The cues are `press`, `toggle-on`, `toggle-off`, `success`, `error`, `warning`, `open`, `close` and `tab`
+Tags: sound, audio, feedback, profile, toggle
 Needs: @codeatlasdev/ui@4.5.0
-Components: ColorField
-Live demo: https://ui.codeatlas.com.br/docs/inputs/color-field#brand-color
+Components: Button, SegmentedControl, SoundToggle
+Live demo: https://ui.codeatlas.com.br/docs/feedback/sound#hear-it
 
 <script lang="ts">
-  import { ColorField } from '@codeatlasdev/ui';
+  import { Button, SegmentedControl } from '@codeatlasdev/ui';
+  import { SoundToggle, brutal, glass, sound, system, terminal } from '@codeatlasdev/ui/sound';
+  import type { CueName } from '@codeatlasdev/ui';
+  import { onDestroy } from 'svelte';
 
-  let brand = $state('#2b5fd9');
+  const PROFILES = { system, glass, brutal, terminal };
+  const CUES: CueName[] = ['press', 'toggle-on', 'toggle-off', 'success', 'error', 'warning', 'open', 'close', 'tab'];
+
+  let profile = $state<keyof typeof PROFILES>('system');
+  $effect(() => sound.use(PROFILES[profile]));
+  onDestroy(() => sound.use(undefined));
 </script>
 
-<div class="col">
-  <ColorField label="Brand color" bind:value={brand} against="#ffffff" role="fill" minRatio={3} description="Type #hex, rgb() or oklch(), or pick." />
-  <p class="out">value: {brand}</p>
+<div class="hear">
+  <div class="hear__bar">
+    <SoundToggle volume />
+    <SegmentedControl
+      aria-label="Sound profile"
+      bind:value={profile}
+      items={[
+        { value: 'system', label: 'System' },
+        { value: 'glass', label: 'Glass' },
+        { value: 'brutal', label: 'Brutalism' },
+        { value: 'terminal', label: 'Terminal' },
+      ]}
+    />
+  </div>
+  <div class="hear__board" role="group" aria-label="Cue board">
+    {#each CUES as cue (cue)}
+      <Button variant="outlined" size="sm" sound={cue}>{cue}</Button>
+    {/each}
+  </div>
 </div>
 
 <style>
-  .col {
-    display: flex;
-    flex-direction: column;
-    gap: var(--ca-space-3);
-    max-inline-size: 22rem;
-  }
-
-  .out {
-    margin: 0;
-    font-size: var(--ca-font-size-caption);
-    color: var(--ca-text-secondary);
-  }
+  .hear { display: grid; gap: var(--ca-space-4); }
+  .hear__bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ca-space-3); }
+  .hear__board { display: flex; flex-wrap: wrap; gap: var(--ca-space-2); }
 </style>

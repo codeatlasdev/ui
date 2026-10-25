@@ -1,14 +1,13 @@
-Use @codeatlasdev/ui demo #988 "Brand color" (inputs/color-field).
-What it shows: Color field with a swatch, a native picker, a text input and a live WCAG contrast readout against white. When to use: Picking a brand or accent color where contrast matters.
+Use @codeatlasdev/ui demo #988 "Hear it" (feedback/sound).
+What it shows: A sound toggle with volume, a profile picker (system, glass, brutalism, terminal) and a board of buttons that each play one cue. When to use: Let people audition a sound profile before turning interface sound on in an app.
 Spec:
-- `<ColorField` with `label="Brand color"` and `bind:value={brand}`
-- `against="#ffffff"`, `role="fill"` and `minRatio={3}` so the readout measures white on the color as a UI part
-- Has a `description`: Type #hex, rgb() or oklch(), or pick.
-- Initial value is `$state('#2b5fd9')`
-- Current value is shown as `value: {brand}`
+- `<SoundToggle volume />` next to a `SegmentedControl` bound to the profile
+- `$effect(() => sound.use(PROFILES[profile]))` pins the picked profile and `onDestroy` releases it
+- A `role="group"` board of outlined small `Button` items, each with `sound={cue}` for one cue name
+- The cues are `press`, `toggle-on`, `toggle-off`, `success`, `error`, `warning`, `open`, `close` and `tab`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
-Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
-Report: #988 Brand color → file, what changed, https://ui.codeatlas.com.br/docs/inputs/color-field#brand-color; what you could not check (light/dark, 375px, keyboard, reduced motion).
-Reference: https://ui.codeatlas.com.br/api/v1/en/e/988.txt   Components API: ca-ui-mcp get_component(ColorField)
+Report: #988 Hear it → file, what changed, https://ui.codeatlas.com.br/docs/feedback/sound#hear-it; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/988.txt   Components API: ca-ui-mcp get_component(Button)

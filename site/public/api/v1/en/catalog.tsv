@@ -378,3 +378,6 @@ id	group	page	title	names	tags	summary
 987	layout	preview-stage	A whole page		preview-stage,iframe,page,template,responsive	A whole page (the sign-in template) in a PreviewStage iframe, laid out at the chosen width with its own media queries.
 988	feedback	sound	Hear it		sound,audio,feedback,profile,toggle	A sound toggle with volume, a profile picker (system, glass, brutalism, terminal) and a board of buttons that each play one cue.
 989	feedback	sound	Components		sound,button,switch,tabs,slider,toast,dialog	Button, Switch, Tabs, Slider, Toast and Dialog with their sound prop on, behind one sound toggle.
+990	inputs	color-field	Brand color		color-field,color-picker,oklch,contrast,brand	Color field with a swatch, a native picker, a text input and a live WCAG contrast readout against white.
+991	inputs	color-field	Text color		color-field,contrast,wcag,text,oklch	Color field for a text color measured against a white page, with a sample line in that color.
+992	inputs	slider	SliderField		slider-field,slider,number,settings,unit	Two labelled sliders with an editable number and a unit: radius and type scale.
