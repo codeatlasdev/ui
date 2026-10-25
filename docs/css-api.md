@@ -108,6 +108,12 @@ State attributes on `.ca-chip-group__chip`: `data-state="checked|unchecked"`, `d
 
 `.ca-code-snippet` `.ca-code-snippet__copy` `.ca-code-snippet__lang` `.ca-code-snippet__pre` `.ca-code-snippet__pre--raw` `.ca-code-snippet__toolbar`
 
+## ColorField
+
+`.ca-color-field` `.ca-color-field__contrast` `.ca-color-field__level` `.ca-color-field__native` `.ca-color-field__pick` `.ca-color-field__ratio` `.ca-color-field__swatch`
+
+Contrast state is exposed as `[data-pass]` and `[data-level]` on `.ca-color-field__contrast`.
+
 ## Collapsible
 
 `.ca-collapsible` `.ca-collapsible__body` `.ca-collapsible__chevron` `.ca-collapsible__content` `.ca-collapsible__title` `.ca-collapsible__trigger` `.ca-slide-down` `.ca-slide-up`
@@ -394,6 +400,14 @@ The `skeleton` prop of `Avatar`, `KpiCard`, `TextField`, `Table`, `Card` and `Gl
 ## Slider
 
 `.ca-slider` `.ca-slider__range` `.ca-slider__thumb` `.ca-slider__track`
+
+## SliderField
+
+`.ca-slider-field` `.ca-slider-field__head` `.ca-slider-field__hint` `.ca-slider-field__label` `.ca-slider-field__value`
+
+## SoundToggle
+
+`.ca-rail-btn` `.ca-sound-toggle` `.ca-sound-toggle__btn` `.ca-sound-toggle__volume`
 
 ## Spinner
 

@@ -107,6 +107,7 @@ const NO_ROUTE_IMPACT = [
 	/^(\.github|\.changeset|\.agents|\.vscode|docs)\//,
 	/^(llms\.txt|lefthook\.yml|biome\.json|bunfig\.toml|tsconfig\.json|\.editorconfig|\.gitignore|LICENSE|NOTICE|package\.json)$/,
 	/^scripts\//,
+	/^packages\/ui\/bin\//, // CLIs (codeatlas-ui, ca-ui-mcp): Node programs no page renders or imports
 	/^packages\/ui\/tests\//,
 	/^packages\/ui\/(vite\.config\.ts|svelte\.config\.js|tsconfig\.json|size-limit\.json|CHANGELOG\.md)$/,
 	/\.(svelte\.test|vrt\.test|ssr\.test)\.ts$|\.test\.svelte$|__screenshots__\//,
@@ -225,6 +226,62 @@ export const GALLERY_REPRESENTATIVES = [
 	"page-app-dashboard",
 	"page-auth-sign-in",
 ];
+
+/**
+ * `/atlas/<slug>/` is one template (`pages/atlas/[slug].astro`) over every term of the atlas, so the land gate
+ * audits the pages that stand for all of them and `test:full` every one (#595): a term with sources and style
+ * pages, a historical term without a style page, and the longest slug (wrapping).
+ */
+export const ATLAS_REPRESENTATIVES = ["brutalism", "bauhaus", "personal-operating-system-ui"];
+
+/**
+ * The docs routes that stand for all of them when a shared change (a stylesheet, a token, a primitive) reaches every
+ * page (#598). Every docs page is the same shell around its own MDX and demos, so what can differ between two pages is
+ * the set of components they render: a greedy set cover keeps the fewest routes that still render every component
+ * folder and every subpath (`@charts`, `@map`...) some docs route renders. A route that renders nothing from the package
+ * (prose only) is kept, since only the shell covers it and the shell is the thing that changed. Ties break on the route
+ * name, so two runs audit the same pages. `test:full` (release) audits every route.
+ */
+export function docsRepresentatives(impact: RouteImpact): string[] {
+	const tokens = (route: string) =>
+		new Set(
+			[...(impact.symbols.get(route) ?? [])].map((s) =>
+				s.startsWith("@") ? s : (impact.folders.get(s) ?? s)
+			)
+		);
+	const docs = [...impact.files.keys()].filter((r) => r.startsWith("/docs/")).sort();
+	const kept = docs.filter((r) => tokens(r).size === 0);
+	const left = new Set(docs.flatMap((r) => [...tokens(r)]));
+	const rest = docs.filter((r) => tokens(r).size > 0);
+	while (left.size) {
+		let best = "";
+		let gain = 0;
+		for (const r of rest) {
+			const n = [...tokens(r)].filter((t) => left.has(t)).length;
+			if (n > gain) {
+				best = r;
+				gain = n;
+			}
+		}
+		kept.push(best);
+		for (const t of tokens(best)) left.delete(t);
+	}
+	return kept.sort();
+}
+
+/**
+ * The routes each changed file maps to on its own, ignoring the files that select everything. `select` stops at the
+ * first file that does, so a diff of a stylesheet and an MDX page reports `all` and loses the page; the land gate thins
+ * a full sweep to representatives and must still audit the page that changed.
+ */
+export function ownRoutes(changed: string[], impact = buildImpact()): string[] {
+	const out = new Set<string>();
+	for (const f of changed) {
+		const one = select([f], impact);
+		if (!one.all) for (const r of one.routes) out.add(r);
+	}
+	return [...out].sort();
+}
 
 export function buildImpact(): RouteImpact {
 	const symbols = new Map<string, Set<string>>();

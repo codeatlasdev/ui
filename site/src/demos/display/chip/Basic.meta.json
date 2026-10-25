@@ -8,5 +8,29 @@
 		"No variant, size or handlers are set"
 	],
 	"tags": ["chip", "label", "tag", "basic"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Chip"],
+		"aliases": ["tag", "label", "pill"],
+		"related": ["120", "117", "119"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

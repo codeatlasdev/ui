@@ -282,3 +282,18 @@ describe("charts", () => {
 		expect(errors).not.toHaveBeenCalled();
 	});
 });
+
+describe("chart theme scope", () => {
+	it("charts inside a data-theme-scope island read that island's tokens, not :root", async () => {
+		const { default: ScopeHarness } = await import("./ChartScopeHarness.test.svelte");
+		const screen = await render(ScopeHarness);
+		const probe = (id: string) =>
+			screen.container.querySelector(`[data-testid="${id}"]`) as HTMLElement;
+		await expect.poll(() => probe("light").dataset.brand).toBeTruthy();
+		// Different presets and schemes in one page: a chart reading :root would see one value in both.
+		expect(probe("light").dataset.brand).not.toBe(probe("dark").dataset.brand);
+		// The palette follows the island's own preset (ocean vs violet lead colors).
+		expect(probe("light").dataset.palette).toBe("#0ea5e9");
+		expect(probe("dark").dataset.palette).toBe("#8b5cf6");
+	});
+});

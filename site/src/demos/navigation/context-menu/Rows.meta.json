@@ -7,5 +7,29 @@
 		"Items set `last` to the action and the row name (Open or Send plus the invoice), shown under the list"
 	],
 	"tags": ["context-menu", "list", "row", "long-press", "keyboard", "label"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["fintech"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["cursor", "keyboard", "press"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["ContextMenu", "DropdownMenuItem", "DropdownMenuLabel"],
+		"aliases": ["right click", "row actions", "long press"],
+		"related": ["942", "402", "158"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

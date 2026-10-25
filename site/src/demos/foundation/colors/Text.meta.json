@@ -6,5 +6,29 @@
 		"Tokens in order: `--ca-text-primary`, `--ca-text-secondary`, `--ca-text-hint`, `--ca-text-disabled`"
 	],
 	"tags": ["colors", "text", "typography", "tokens", "swatches", "contrast"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "foundation",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [],
+		"aliases": ["foreground colors", "font colors", "text contrast"],
+		"related": ["220", "221", "222", "223"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

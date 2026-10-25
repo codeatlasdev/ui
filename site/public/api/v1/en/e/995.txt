@@ -1,0 +1,47 @@
+<!-- @codeatlasdev/ui demo #995 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/concepts/viewport#a-form-with-the-keyboard-open -->
+Element: #995 A form with the keyboard open (concepts/viewport)
+What it shows: A scrollable account form with three TextFields (work email, company, role) and a StickyActions bar with a stretched Continue button, wrapped in the keyboardAware action.
+When to use: A form that stays operable with the on-screen keyboard open: the page scrolls, the focused field comes into view and the action bar rides above the keyboard and the safe area.
+Spec:
+- `<form` with `use:keyboardAware` (from `@codeatlasdev/ui/actions`), `max-height: 24rem` and `overflow-y: auto`
+- `<TextField label="Work email" type="email" bind:value={email} autocomplete="email" />`, then `Company` and `Role` fields with matching `autocomplete`
+- A filler `div` of at least `8rem` so the form scrolls
+- `<StickyActions align="stretch">` holds `<Button variant="filled" type="submit">` whose label becomes `Sent` after submit
+Tags: viewport, keyboard, keyboard-aware, sticky-actions, form, mobile, safe-area, concept
+Needs: @codeatlasdev/ui@4.5.0
+Components: Button, StickyActions, TextField
+Live demo: https://ui.codeatlas.com.br/docs/concepts/viewport#a-form-with-the-keyboard-open
+
+<script lang="ts">
+  import { Button, StickyActions, TextField } from '@codeatlasdev/ui';
+  import { keyboardAware } from '@codeatlasdev/ui/actions';
+
+  let email = $state('');
+  let sent = $state(false);
+</script>
+
+<form
+  class="form"
+  use:keyboardAware
+  onsubmit={(e) => {
+    e.preventDefault();
+    sent = true;
+  }}
+>
+  <h3 class="title">Create your account</h3>
+  <p class="hint">On a phone, focus a field: the page keeps scrolling, and the action bar stays above the keyboard and the home indicator.</p>
+  <TextField label="Work email" type="email" bind:value={email} autocomplete="email" />
+  <TextField label="Company" autocomplete="organization" />
+  <TextField label="Role" autocomplete="organization-title" />
+  <div class="filler">Terms, pricing note and what happens next sit here, reachable by scrolling.</div>
+  <StickyActions align="stretch">
+    <Button variant="filled" type="submit">{sent ? 'Sent' : 'Continue'}</Button>
+  </StickyActions>
+</form>
+
+<style>
+  .form { display: grid; gap: var(--ca-space-3); width: 100%; max-height: 24rem; overflow-y: auto; padding: var(--ca-space-4); }
+  .title { margin: 0; }
+  .hint { margin: 0; font-size: var(--ca-font-size-body2); color: var(--ca-text-secondary); }
+  .filler { min-block-size: 8rem; color: var(--ca-text-secondary); font-size: var(--ca-font-size-body2); }
+</style>

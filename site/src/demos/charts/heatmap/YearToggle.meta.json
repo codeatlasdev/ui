@@ -10,5 +10,29 @@
 		"`tooltipFormatter={(v) => `${v} commits`}` and `height=\"160px\"`"
 	],
 	"tags": ["heatmap-chart", "calendar", "year-toggle", "button", "state", "range"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "chart",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover", "press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "Flex", "Button", "HeatmapChart"],
+		"aliases": ["contribution graph", "switch year", "activity calendar"],
+		"related": ["198", "199", "205"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

@@ -13,7 +13,8 @@ export interface NativeFeelOptions {
  * - focus rings only while navigating with the keyboard (`html[data-kbd]`); WebKit
  *   treats programmatic focus (a dialog focusing its close button) as `:focus-visible`;
  * - no browser context menu and no text selection on chrome (buttons, nav, tabs),
- *   editable fields and `.ca-selectable` keep both;
+ *   editable fields and `.ca-selectable` keep both; clickable controls keep the pointer cursor
+ *   (the reset layer owns it, `nativeFeel` never forces the arrow);
  * - no dragging of links or images; optional zoom lock.
  * Sets `html[data-ca-native]`. Returns a cleanup function.
  */

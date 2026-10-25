@@ -59,6 +59,11 @@
 			"svelte": "./dist/map/index.js",
 			"default": "./dist/map/index.js"
 		},
+		"./sound": {
+			"types": "./dist/sound/index.d.ts",
+			"svelte": "./dist/sound/index.js",
+			"default": "./dist/sound/index.js"
+		},
 		"./table": {
 			"types": "./dist/components/DataTable/index.d.ts",
 			"svelte": "./dist/components/DataTable/index.js",
@@ -87,6 +92,10 @@
 		"./utils/palette-generator": {
 			"types": "./dist/utils/palette-generator.d.ts",
 			"default": "./dist/utils/palette-generator.js"
+		},
+		"./utils/color": {
+			"types": "./dist/utils/color.d.ts",
+			"default": "./dist/utils/color.js"
 		},
 		"./vite": {
 			"types": "./dist/vite-plugin.d.ts",

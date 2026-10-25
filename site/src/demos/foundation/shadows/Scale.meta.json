@@ -8,5 +8,29 @@
 		"Cards use `background: var(--ca-surface-base)` and `box-shadow: var(--card-shadow)`"
 	],
 	"tags": ["shadows", "elevation", "tokens", "scale", "box-shadow"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "foundation",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [],
+		"aliases": ["elevation", "drop shadow", "box shadow"],
+		"related": ["226", "223"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

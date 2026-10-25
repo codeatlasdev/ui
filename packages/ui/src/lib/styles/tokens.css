@@ -11,6 +11,10 @@
   --ca-font-mono: ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace;
   --ca-font-display: var(--ca-font-sans);
   --ca-font-scale: 1;
+  /* Code surfaces (CodeSnippet, .ca-code, prose pre, and any editor you build): an INTEGER px line
+     height. A fractional one (1.7 * 13px = 22.1px) rounds differently in a text layer and in the
+     overlay that paints the caret, active line or gutter, so they drift apart line by line. */
+  --ca-code-line-height: 20px;
 
   /* Fluid display tier for marketing/editorial headlines (viewport-scaled, rem-bounded). */
   --ca-font-size-display-1: clamp(2.5rem, 1.6rem + 4.5vw, 5.5rem);
@@ -294,7 +298,6 @@
   --ca-action-selected:    oklch(0.2 0 0 / 0.09);
   --ca-action-disabled:    oklch(0.2 0 0 / 0.30);
   --ca-action-disabled-bg: oklch(0.2 0 0 / 0.08);
-  --ca-action-focus:       oklch(0.2 0 0 / 0.12);
 
   /* ── Glass optical constants (light) ─────────────────────────────────── */
   --ca-glass-rim:         oklch(1 0 0 / 0.70);
@@ -335,7 +338,6 @@
   --ca-action-selected:    oklch(1 0 0 / 0.13);
   --ca-action-disabled:    oklch(1 0 0 / 0.30);
   --ca-action-disabled-bg: oklch(1 0 0 / 0.10);
-  --ca-action-focus:       oklch(1 0 0 / 0.14);
 
   /* Glass optical constants */
   --ca-glass-rim:         oklch(1 0 0 / 0.22);

@@ -6,5 +6,29 @@
 		"A light block inside the page, nothing mirrored to the document"
 	],
 	"tags": ["theme-island", "preset", "scheme", "light", "dark", "scope"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "light",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "ThemeIsland"],
+		"aliases": ["scoped theme", "light block", "forced scheme", "theme boundary"],
+		"related": ["781", "079"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

@@ -3,7 +3,8 @@
   import { codeSnippet } from '../../i18n/groups/codeSnippet.js';
   import { Copy, Check } from '@lucide/svelte';
   import { copyToClipboard } from '../../utils/index.js';
-  import { getHighlighter } from '../../utils/highlighter.js';
+  import { highlight } from '../../utils/highlighter.js';
+  import { scrollFocusable } from '../../actions/scroll-focusable.js';
   const t = useMessages(codeSnippet);
 
   interface Props {
@@ -22,12 +23,9 @@
   $effect(() => {
     const lang = language;
     const src = code;
-    getHighlighter().then((hl) => {
-      highlightedHtml = hl.codeToHtml(src, {
-        lang,
-        themes: { light: 'github-light-high-contrast', dark: 'github-dark-high-contrast' },
-        defaultColor: false,
-      });
+    highlight(src, lang).then((html) => {
+      // A newer `code` or `language` may have started while this one loaded: keep the last request's result.
+      if (src === code && lang === language) highlightedHtml = html;
     });
   });
 
@@ -57,9 +55,9 @@
     </button>
   </div>
   {#if highlightedHtml}
-    <div class="ca-code-snippet__pre">{@html highlightedHtml}</div>
+    <div class="ca-code-snippet__pre" use:scrollFocusable>{@html highlightedHtml}</div>
   {:else}
-    <pre class="ca-code-snippet__pre ca-code-snippet__pre--raw"><code>{code}</code></pre>
+    <pre class="ca-code-snippet__pre ca-code-snippet__pre--raw" use:scrollFocusable><code>{code}</code></pre>
   {/if}
 </div>
 
@@ -109,7 +107,7 @@
       margin: 0;
       overflow-x: auto;
       font-size: var(--ca-font-size-caption);
-      line-height: var(--ca-line-height-prose);
+      line-height: var(--ca-code-line-height);
     }
 
     /* Shiki renders a <pre> with inline background, neutralise it so glass shows through */
@@ -120,6 +118,11 @@
       font-family: var(--ca-font-mono);
       font-size: inherit;
       line-height: inherit;
+    }
+
+    /* The UA sheet gives <code> a bare `monospace`, resolved per lookup: pin the stack (#468). */
+    .ca-code-snippet__pre :global(pre.shiki code) {
+      font: inherit;
     }
 
     .ca-code-snippet__pre :global(.shiki span) {

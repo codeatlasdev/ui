@@ -10,5 +10,29 @@
 		"Reset button has `variant=\"outlined\"` and clears `result`"
 	],
 	"tags": ["use-form", "submit", "loading", "schema", "validation", "async"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard", "press"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "TextArea", "TextField"],
+		"aliases": ["async submit", "loading", "success message"],
+		"related": ["062", "064", "003"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

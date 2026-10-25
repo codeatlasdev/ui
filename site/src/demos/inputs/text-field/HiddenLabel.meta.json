@@ -8,5 +8,29 @@
 		"Column wrapper has `max-width: 400px`"
 	],
 	"tags": ["text-field", "hidelabel", "sr-only", "ref", "maxlength", "inline editing"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard", "press"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "TextField"],
+		"aliases": ["inline edit", "visually hidden label", "screen reader label"],
+		"related": ["056", "058", "982"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

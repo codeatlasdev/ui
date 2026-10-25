@@ -32,5 +32,29 @@
 			"easing": "steps(1, end)"
 		}
 	],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "motion",
+		"subtype": "text",
+		"industry": ["ai"],
+		"style": ["terminal", "default"],
+		"motion": "expressive",
+		"interaction": ["keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["MotionStage"],
+		"aliases": ["typing effect", "prompt", "chat input", "caret"],
+		"related": ["301", "300", "307"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

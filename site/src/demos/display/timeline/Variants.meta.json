@@ -10,5 +10,29 @@
 		"Wrapped in `.wrap` with `max-width: 440px`"
 	],
 	"tags": ["timeline", "variant", "success", "info", "order-tracking", "status"],
-	"shape": "tall"
+	"shape": "tall",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["e-commerce"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Timeline"],
+		"aliases": ["order tracking", "shipment status", "event log", "delivery steps"],
+		"related": ["140"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

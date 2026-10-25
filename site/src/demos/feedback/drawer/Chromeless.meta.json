@@ -15,5 +15,29 @@
 		"mobile",
 		"scroll"
 	],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["e-commerce"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "scroll", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Drawer", "Button"],
+		"aliases": ["detail panel", "order detail", "full screen mobile"],
+		"related": ["461", "089", "090"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

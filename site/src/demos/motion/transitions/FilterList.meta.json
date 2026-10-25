@@ -34,5 +34,29 @@
 			"easing": "cubicOut"
 		}
 	],
-	"shape": "tall"
+	"shape": "tall",
+	"index": {
+		"kind": "motion",
+		"subtype": "transition",
+		"industry": ["saas", "e-commerce"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["Chip", "MotionStage"],
+		"aliases": ["list filtering", "chips", "animated list", "exit enter"],
+		"related": ["361", "363", "362"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

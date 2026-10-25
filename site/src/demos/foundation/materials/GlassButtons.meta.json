@@ -8,5 +8,29 @@
 		"Backdrop is `linear-gradient(135deg, var(--ca-brand-main), var(--ca-semantic-info))`"
 	],
 	"tags": ["materials", "glass", "button", "glass-btn", "backdrop"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "foundation",
+		"industry": ["general"],
+		"style": ["glassmorphism", "aurora"],
+		"motion": "subtle",
+		"interaction": ["hover", "press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [],
+		"aliases": ["frosted button", "translucent button", "blur button"],
+		"related": ["226", "227"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

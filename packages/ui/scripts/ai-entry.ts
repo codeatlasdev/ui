@@ -128,6 +128,45 @@ export function buildLlmsIndex(i: {
 			links: [page(ENTRY_PAGES.install, "Installation"), page(ENTRY_PAGES.aiAgents, "AI agents")],
 		},
 		{
+			heading: "Concepts",
+			links: [
+				{
+					title: "Viewport-complete UX",
+					href: `${SITE}${llmsPagePath("concepts/viewport")}`,
+					description:
+						"the first screen, viewport units, safe areas, the keyboard, reflow and the cue that there is more below; every claim carries a strength label, scope and sources, or ask the MCP server (`list_concepts`, `get_concept`)",
+				},
+			],
+		},
+		{
+			heading: "Design atlas",
+			links: [
+				{
+					title: "Design atlas",
+					href: `${SITE}/llms/atlas.txt`,
+					description:
+						"269 terms for aesthetics, layouts, interaction patterns and design-system languages, by category; one file per term at /llms/atlas/<slug>.txt, or ask the MCP server (`search_terms`, `get_term`). The 1 to 5 scores are heuristic and an audience is a hypothesis",
+				},
+				{
+					title: "How we use evidence",
+					href: `${SITE}${llmsPagePath("concepts/evidence")}`,
+					description:
+						"the five strength labels and the rules every concept and atlas entry follows: read it before you quote a claim about users",
+				},
+			],
+		},
+		{
+			heading: "Design styles",
+			links: [
+				{
+					title: "Design styles",
+					href: `${SITE}/llms/styles.txt`,
+					description:
+						'six design-style recipes (Swiss, Editorial, Brutalism, Sketchbook, Glassmorphism, Terminal): traits, do and don\'t, accessibility pitfalls with their sources, the `designStyle("<id>")` recipe and a prompt; one file per style at /llms/styles/<id>.txt, or ask the MCP server (`get_style`). A recipe is a proposal, not a measurement, and no claim says a style performs better',
+				},
+			],
+		},
+		{
 			heading: "Machine-readable endpoints",
 			links: [
 				{

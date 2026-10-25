@@ -9,5 +9,29 @@
 		"Fixed uses `resize=\"none\"` and `rows={3}`"
 	],
 	"tags": ["text-area", "textarea", "error", "required", "readonly", "disabled"],
-	"shape": "tall"
+	"shape": "tall",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["TextArea"],
+		"aliases": ["validation", "readonly", "resize"],
+		"related": ["054", "058", "064"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

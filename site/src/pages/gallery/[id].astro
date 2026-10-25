@@ -6,6 +6,12 @@ import Base from "~/layouts/Base.astro";
 import { ITEMS } from "~/lib/gallery-items";
 import { SECTIONS } from "~/lib/nav";
 import { THEME_PRESETS } from "@codeatlasdev/ui";
+import { getCollection } from "astro:content";
+import type { IndexEntry } from "../../../../packages/ui/scripts/index-build";
+import { relatedEntries } from "../../../../packages/ui/scripts/index-search";
+import { buildAnatomy, type ItemRecord } from "~/lib/item-tabs";
+import catalog from "../../../public/api/v1/catalog.json";
+import index from "../../../public/api/v1/index.json";
 
 export function getStaticPaths() {
 	return ITEMS.map((item) => ({ params: { id: item.id }, props: { item } }));
@@ -15,6 +21,15 @@ const { item } = Astro.props;
 const order = ITEMS.map((i) => i.id);
 const known = order;
 const presets = THEME_PRESETS.map((p) => ({ value: p.id, label: p.label }));
+// A demo carries its catalog record and index entry; a page has neither.
+const record = catalog.elements.find((e) => e.id === item.id) as ItemRecord | undefined;
+const entries = index.entries as IndexEntry[];
+const entry = entries.find((e) => e.id === item.id);
+const docSlugs = new Map((await getCollection("docs")).map((d) => [d.id.split("/").pop() as string, d.id]));
+const anatomy = record ? buildAnatomy(record, docSlugs) : [];
+const related = record
+	? relatedEntries(entries, item.id, 6).map((e) => ({ id: e.id, title: e.title, subtype: `${e.kind}/${e.subtype}` }))
+	: [];
 const label = item.kind === "page" ? "Page" : `#${item.id}`;
 ---
 <Base
@@ -23,7 +38,7 @@ const label = item.kind === "page" ? "Page" : `#${item.id}`;
 	skipLink={false}
 >
 	<SiteDocsShell client:load sections={SECTIONS} active="gallery" pathname={Astro.url.pathname}>
-		<GalleryViewer client:load {item} {order} {known} {presets} />
+		<GalleryViewer client:load {item} {order} {known} {presets} {record} {entry} {anatomy} {related} />
 	</SiteDocsShell>
 	<SiteFooter />
 </Base>

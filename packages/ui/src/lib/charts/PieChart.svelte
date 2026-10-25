@@ -4,6 +4,7 @@
 	import ChartCanvas from "./ChartCanvas.svelte";
 	import { pieSeries } from "./series/pie.js";
 	import { withChartTheme } from "./theme.js";
+	import { chartTokens, useChartScope } from "./tokens.js";
 	import type { ChartSlice } from "./types.js";
 
 	interface Props {
@@ -19,6 +20,8 @@
 	}
 
 	let { data, donut = false, rose = false, centerLabel, height = "300px", class: className = "" }: Props = $props();
+	// Tokens come from the theme island this chart sits in (the page when there is none).
+	const scope = useChartScope();
 
 	const option = $derived<EChartsOption>(
 		withChartTheme({
@@ -31,9 +34,9 @@
 					roseType: rose ? "radius" : undefined,
 					label: rose ? { show: true, fontSize: 11 } : { show: false },
 					data,
-				}),
+				}, chartTokens(scope.el)),
 			],
-		}),
+		}, scope.el),
 	);
 </script>
 

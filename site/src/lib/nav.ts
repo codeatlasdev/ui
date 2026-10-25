@@ -3,6 +3,7 @@ import type { DocsNavGroup, DocsSection } from "@codeatlasdev/ui";
 /** Sidebar groups, in display order. A doc's frontmatter `group` must be one of these. */
 export const GROUPS = [
 	"Getting started",
+	"Concepts",
 	"Foundation",
 	"Surfaces",
 	"Inputs",
@@ -20,6 +21,7 @@ export type Group = (typeof GROUPS)[number];
 export const SECTIONS: DocsSection[] = [
 	{ id: "docs", label: "Docs", href: "/docs/" },
 	{ id: "gallery", label: "Gallery", href: "/gallery/" },
+	{ id: "styles", label: "Styles", href: "/styles/" },
 	{ id: "templates", label: "Templates", href: "/templates/" },
 	{ id: "theme", label: "Theme editor", href: "/theme/" },
 	{ id: "changelog", label: "Changelog", href: "/changelog/" },

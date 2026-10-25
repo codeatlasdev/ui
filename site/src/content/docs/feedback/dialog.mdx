@@ -88,6 +88,21 @@ Escape and outside presses go to the topmost layer only, so a menu inside a dial
 
 An open modal makes the rest of the page inert (no pointer, no Tab, no screen reader), and that includes top-layer popovers that live outside it. So a menu, select list, popover or tooltip is mounted inside the topmost open modal while it is open and goes back to where it was declared when it closes. This also holds when the modal opens after the popover (a shortcut opening a dialog over an open menu): the popover moves into the new modal and is shown again above it, and when a modal closes first its popovers are handed to the next modal or put back. Do not give a layer a `z-index` to fight this: it has no effect in the top layer.
 
+Hover-opened UI never opens under a modal. `Tooltip`, `HoverCard` and `NavigationMenuItem` ignore pointer movement while a modal layer is open, unless the trigger itself lives inside the topmost modal (a tooltip on a dialog button still works). One already open when the modal opens is adopted by it, as above. A menu submenu needs no gate: its trigger is inside a menu, and a menu open under a modal is adopted into it. Gate your own hover or edge UI (an edge peek, a rail flyout, a custom hover panel) with the `layers` store instead of a z-index:
+
+```svelte
+<script lang="ts">
+  import { layers } from "@codeatlasdev/ui";
+  let peek = $state(false);
+  // Never open under a dialog; close if one opens meanwhile.
+  $effect(() => { if (layers.modalOpen) peek = false; });
+</script>
+
+<div class="edge" onpointerenter={() => { if (!layers.modalOpen) peek = true; }}></div>
+```
+
+`layers.modalOpen` is reactive and true while a modal layer (not one already closing) is open. `layers.blocks(trigger)` is the same but false for a trigger inside the topmost modal, so a panel that lives in a dialog keeps working.
+
 A host that draws outside the DOM (a native view over a webview) can follow the stack with `onLayerChange`. It fires on every open and close with the open layers, bottom to top, and their rectangles, and returns the function that unsubscribes:
 
 ```ts

@@ -70,6 +70,53 @@ test.describe("gallery", () => {
 		expect(await cards.count()).toBeGreaterThan(0);
 	});
 
+	test("facet chips filter instantly, with counts, and the state lives in the URL", async ({
+		page,
+	}) => {
+		await gotoReady(page, "/gallery/");
+		const cards = page.locator("article.gallery-card");
+		const all = await cards.count();
+		// The facets sit behind a disclosure so the cards stay near the top.
+		await expect(page.getByRole("group", { name: "Kind" })).toHaveCount(0);
+		await page.getByRole("button", { name: "Filters" }).click();
+		const chip = page
+			.getByRole("group", { name: "Kind" })
+			.getByRole("button", { name: /^motion \(\d+\)$/ });
+		const count = Number((await chip.textContent())?.match(/\((\d+)\)/)?.[1]);
+		await chip.click();
+		await expect(chip).toHaveAttribute("aria-pressed", "true");
+		await expect(cards).toHaveCount(count);
+		expect(count).toBeLessThan(all);
+		await expect(page).toHaveURL(/[?&]kind=motion(&|$)/);
+		// A second facet narrows further.
+		await page.getByRole("group", { name: "Style" }).getByRole("button").first().click();
+		expect(await cards.count()).toBeLessThanOrEqual(count);
+		// Industry is not a published facet.
+		await expect(page.getByRole("group", { name: "Industry" })).toHaveCount(0);
+		await page.getByRole("button", { name: "Clear filters" }).click();
+		await expect(cards).toHaveCount(all);
+		await expect(page).not.toHaveURL(/kind=/);
+	});
+
+	test("a shared facet URL restores the filters and the query", async ({ page }) => {
+		await gotoReady(page, "/gallery/?kind=motion&q=fade");
+		await expect(
+			page.getByRole("group", { name: "Kind" }).getByRole("button", { name: /^motion / })
+		).toHaveAttribute("aria-pressed", "true");
+		await expect(page.getByRole("textbox", { name: /filter/i })).toHaveValue("fade");
+		await expect(page.locator("article.gallery-card").first()).toBeVisible();
+		for (const group of await page.locator(".gallery-card__group").allTextContents())
+			expect(group).toBe("motion");
+		await expect(page.locator("[id='256']")).toBeVisible();
+	});
+
+	test("an impossible facet combination shows the empty state with a way out", async ({ page }) => {
+		await gotoReady(page, "/gallery/?kind=component&motion=immersive&q=zzzqqq");
+		await expect(page.locator("article.gallery-card")).toHaveCount(0);
+		await page.getByRole("button", { name: "Clear the filters" }).click();
+		await expect(page.locator("article.gallery-card").first()).toBeVisible();
+	});
+
 	test("a motion group filter lists motion demos, and a card plays only while in view", async ({
 		page,
 	}) => {

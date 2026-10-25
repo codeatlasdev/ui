@@ -19,5 +19,29 @@
 			"spring": "stiffness: 0.1, damping: 0.6"
 		}
 	],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "motion",
+		"subtype": "micro",
+		"industry": ["fintech", "saas"],
+		"style": ["default"],
+		"motion": "immersive",
+		"interaction": ["cursor", "hover"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["MotionStage"],
+		"aliases": ["3d card", "perspective", "parallax card", "lean"],
+		"related": ["386", "340", "341"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

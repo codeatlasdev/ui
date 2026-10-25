@@ -201,11 +201,16 @@ export const BUDGETS = {
 	/** `issue-land.sh`: `test:changed --land` (affected tests, changed screenshots, the route canaries) */
 	land: 180,
 	/**
-	 * `issue-land.sh` when a SHARED file changed: every component test and every route (the gallery through its
-	 * representatives), no screenshots. Measured at load 10: unit 5 s + components 109 s + builds 99 s + routes 132 s = 346 s;
-	 * the 300 s it started with was never measured (#546).
+	 * `issue-land.sh` when a SHARED file changed: every component test, and the route sweep thinned to representatives
+	 * (gallery items, atlas terms, the docs pages that still render every component folder; the pages the diff changed
+	 * stay), no screenshots. It was 420 s (#596): unit 8 s + components 80 s + package 12 s + site 134 s + routes 148 s =
+	 * 382.5 s, which broke the rule that no test command takes 5 minutes. Now the social cards are cached and rendered
+	 * four at a time, the site build runs beside the unit and component tests, and the sweep is 649 tests instead of
+	 * 1044 (#598). Measured at load 7 on 12 cores, a shared change (components ALL 210 files): 224.8 s with a cold card
+	 * cache (package 11 s, then site build 125 s beside the tests, then routes 88 s) and 193.5 s with a warm one (site
+	 * build 94 s). The full sweep stays at release (`test:full`). Do not raise it again: make the run faster.
 	 */
-	landShared: 360,
+	landShared: 240,
 	/** `bun run test:full`: unit, every component test, every route, fixtures (release gate, part 1) */
 	full: 300,
 	/** `bun run test:vrt`: every component and site screenshot (release gate, part 2) */

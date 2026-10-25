@@ -9,5 +9,29 @@
 		"Small field uses `size=\"sm\"`"
 	],
 	"tags": ["text-field", "error", "required", "readonly", "disabled", "size", "description"],
-	"shape": "tall"
+	"shape": "tall",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["TextField"],
+		"aliases": ["validation", "helper text", "readonly", "disabled"],
+		"related": ["056", "057", "055"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

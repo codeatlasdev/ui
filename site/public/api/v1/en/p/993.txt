@@ -1,0 +1,14 @@
+Use @codeatlasdev/ui demo #993 "Viewport simulator" (concepts/viewport).
+What it shows: An interactive phone drawing with a device-shape selector, switches for collapsed browser bars and edge-to-edge drawing, a keyboard height slider and a keyboard resize mode, plus a table of what 100lvh, 100svh and 100dvh resolve to and how much of each is hidden. When to use: Teaching why a full-height block must be a floor (min-height) and not a fixed height, and how safe areas and the virtual keyboard change the usable height.
+Spec:
+- `import { DEVICE_PRESETS, hiddenBy, type PresetName, viewportHeights } from './model';` computes the numbers; the model is pure and unit-tested
+- `<SegmentedControl` with `aria-label="Device shape"` and `bind:value={preset}` offers four presets: narrow phone, typical phone, short phone, phone in landscape
+- `<Switch bind:checked={collapsed} label="Browser bars collapsed (after scrolling)" />` and `<Switch bind:checked={edgeToEdge} label="Page draws edge to edge (viewport-fit=cover)" />`
+- `<Slider bind:value={keyboard}` for the keyboard height (`step={10}`), plus a second `SegmentedControl` with `aria-label="Keyboard resize mode"` for `resizes-content` or `resizes-visual`
+- A to-scale phone `div` with `role="img"` and an `aria-label`, drawn with CSS custom properties (`--w`, `--h`, `--bar`, `--vis`, `--kb`), and a `<table class="sim__table">` with a screen-reader caption listing 100lvh, 100svh, 100dvh and the usable height
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #993 Viewport simulator → file, what changed, https://ui.codeatlas.com.br/docs/concepts/viewport#viewport-simulator; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/993.txt   Components API: ca-ui-mcp get_component(SegmentedControl)

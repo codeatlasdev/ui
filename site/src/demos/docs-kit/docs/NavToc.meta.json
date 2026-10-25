@@ -9,5 +9,29 @@
 		"`headings` typed `DocsHeading[]` has 4 entries with `id`, `text` and `depth` of 2 or 3"
 	],
 	"tags": ["docs-nav", "table-of-contents", "docs-kit", "sidebar", "navigation", "headings"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover", "press", "keyboard"],
+		"layout": "split",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["DocsNav", "TableOfContents"],
+		"aliases": ["docs sidebar", "table of contents", "outline", "page navigation"],
+		"related": ["235", "236", "232"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

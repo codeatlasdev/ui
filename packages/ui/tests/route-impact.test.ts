@@ -1,5 +1,13 @@
 import { describe, expect, it } from "bun:test";
-import { buildImpact, lockReachesRuntime, select } from "../../../scripts/route-impact";
+import {
+	ATLAS_REPRESENTATIVES,
+	buildImpact,
+	docsRepresentatives,
+	lockReachesRuntime,
+	ownRoutes,
+	select,
+} from "../../../scripts/route-impact";
+import { TERMS, termSlug } from "../../../site/src/data/atlas/atlas";
 
 // scripts/route-impact.ts decides which docs routes a diff has to retest. A route it misses is a hole
 // nobody sees, so the contract is: map what it knows, and for anything else select EVERY route.
@@ -53,6 +61,14 @@ describe("route-impact", () => {
 		expect(s.reason).toContain("site/public/some-new-asset.svg");
 		expect(pick("packages/ui/src/lib/new-top-level-module.ts").all).toBe(true);
 		expect(pick("site/src/templates/_shared/brand-new.ts").all).toBe(true);
+	});
+
+	it("a CLI source under packages/ui/bin renders nothing and selects no route (#593)", () => {
+		for (const file of ["packages/ui/bin/ca-ui-mcp.ts", "packages/ui/bin/codeatlas-ui.ts"]) {
+			const s = pick(file);
+			expect(s.all).toBe(false);
+			expect(s.routes).toEqual([]);
+		}
 	});
 
 	it("selects every route for a component the site shell renders on every page", () => {
@@ -138,6 +154,60 @@ describe("route-impact", () => {
 			const got = items(pick("packages/ui/src/lib/components/Avatar/Avatar.svelte").routes);
 			expect(got.length).toBeGreaterThan(0);
 			expect(got.length).toBeLessThanOrEqual(8);
+		});
+	});
+
+	// `/atlas/<slug>/` is one template over 269 terms (#595): the land gate sweeps a few, `test:full` all.
+	describe("atlas term pages", () => {
+		it("the representatives are a few real terms, so a renamed slug cannot shrink the sweep", () => {
+			const slugs = new Set(TERMS.map(termSlug));
+			expect(ATLAS_REPRESENTATIVES.length).toBeGreaterThan(0);
+			expect(ATLAS_REPRESENTATIVES.length).toBeLessThanOrEqual(5);
+			for (const slug of ATLAS_REPRESENTATIVES) expect(slugs.has(slug)).toBe(true);
+		});
+	});
+
+	// A shared change reaches every docs page through the same chrome, and each page differs only by the components
+	// its demos render. The land gate keeps the smallest set of docs routes that still renders every component folder
+	// and every subpath the docs use at least once; `test:full` audits all of them (#598).
+	describe("docs representatives", () => {
+		const docs = [...impact.files.keys()].filter((r) => r.startsWith("/docs/"));
+		const reps = docsRepresentatives(impact);
+		const folderOf = (route: string) =>
+			new Set(
+				[...(impact.symbols.get(route) ?? [])].map((s) =>
+					s.startsWith("@") ? s : (impact.folders.get(s) ?? s)
+				)
+			);
+
+		it("are real docs routes, and fewer than all of them", () => {
+			expect(reps.length).toBeGreaterThan(0);
+			expect(reps.length).toBeLessThan(docs.length);
+			for (const r of reps) expect(docs).toContain(r);
+		});
+
+		it("render every component folder and subpath that some docs route renders", () => {
+			const all = new Set(docs.flatMap((r) => [...folderOf(r)]));
+			const kept = new Set(reps.flatMap((r) => [...folderOf(r)]));
+			expect([...all].filter((f) => !kept.has(f))).toEqual([]);
+		});
+
+		it("are the same on every call, so two land runs audit the same pages", () => {
+			expect(docsRepresentatives(impact)).toEqual(reps);
+		});
+
+		it("keep a page that renders nothing from the package, which only the chrome covers", () => {
+			const prose = docs.filter((r) => !impact.symbols.get(r)?.size);
+			for (const r of prose) expect(reps).toContain(r);
+		});
+
+		it("a changed page is still audited when a shared file selects every route", () => {
+			const page = "site/src/content/docs/inputs/button.mdx";
+			expect(select([page, "packages/ui/src/lib/styles/base.css"], impact).all).toBe(true);
+			expect(ownRoutes([page, "packages/ui/src/lib/styles/base.css"], impact)).toEqual([
+				"/docs/inputs/button/",
+			]);
+			expect(ownRoutes(["packages/ui/src/lib/styles/base.css"], impact)).toEqual([]);
 		});
 	});
 

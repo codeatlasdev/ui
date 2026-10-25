@@ -10,5 +10,29 @@
 		"`<Grid columns={{ base: 1, sm: 3 }} gap=\"4\">` holds the 3 cards"
 	],
 	"tags": ["sparkline", "live", "realtime", "monitoring", "onmount", "grid"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "chart",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["hover"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "Grid", "Stack", "Flex", "Sparkline"],
+		"aliases": ["realtime monitor", "live metrics", "streaming sparkline"],
+		"related": ["204", "217", "219"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

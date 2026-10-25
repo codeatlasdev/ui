@@ -182,8 +182,8 @@
   let anchor: { key: string | number; delta: number; at: number } | null = null;
   let restoring = false;
 
-  function anchorBefore() {
-    if (!scroller || restoring || keys.length === 0) return;
+  function anchorBefore(force = false) {
+    if (!scroller || (restoring && !force) || keys.length === 0) return;
     // Read the DOM, not `scrollTop` state: a scroll event may not have been delivered yet.
     const top = scroller.scrollTop;
     const i = indexAt(top, offsets);
@@ -195,6 +195,10 @@
     const wanted = anchor;
     restoring = true;
     await tick();
+    // A prepend landed while this restore waited for its tick and took a newer anchor (`force`): the
+    // wanted one was taken against the old offsets and would drag the list to the old first row.
+    // The newer anchor has its own restore queued, which owns `restoring` and `anchor` from here.
+    if (anchor !== wanted) return;
     if (scroller) {
       const i = keys.indexOf(wanted.key);
       // `at` is where the scroll was when the anchor was taken (or where we last put it). Anywhere
@@ -301,7 +305,7 @@
           scrollTop = target;
         }
         // Rows above are estimates until measured: re-anchor once they are.
-        anchorBefore();
+        anchorBefore(true);
         requestAnimationFrame(() => void restoreAnchor());
       }
 

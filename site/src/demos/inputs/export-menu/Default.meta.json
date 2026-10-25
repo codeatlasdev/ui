@@ -9,5 +9,29 @@
 		"Idle status text is `Pick a format to download.`"
 	],
 	"tags": ["export-menu", "export", "download", "csv", "table", "columns"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["ExportMenu"],
+		"aliases": ["download", "csv", "xlsx", "dropdown"],
+		"related": ["981", "014", "012"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

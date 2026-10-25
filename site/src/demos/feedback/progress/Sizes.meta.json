@@ -9,5 +9,29 @@
 		"Stacked in a grid with `gap: var(--ca-space-4)`, `max-width: 360px`"
 	],
 	"tags": ["progress", "size", "height", "sm", "md", "lg", "indeterminate"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Progress"],
+		"aliases": ["bar height", "thickness"],
+		"related": ["093", "094", "092"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

@@ -10,5 +10,29 @@
 		"`stacked={mode === 'stacked'}` and `height=\"300px\"`"
 	],
 	"tags": ["bar-chart", "stacked", "grouped", "toggle", "button", "state", "flex"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "chart",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover", "press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "Flex", "Button", "BarChart"],
+		"aliases": ["grouped vs stacked", "switch view", "year over year"],
+		"related": ["191", "193", "190"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

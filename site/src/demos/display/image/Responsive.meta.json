@@ -9,5 +9,29 @@
 		"Wrapper is `<div style=\"max-width: 420px\">`"
 	],
 	"tags": ["image", "srcset", "sizes", "responsive", "alt", "width"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["media"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Image"],
+		"aliases": ["srcset", "responsive picture", "adaptive image"],
+		"related": ["127", "960"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

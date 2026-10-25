@@ -10,5 +10,38 @@
 		"`<StatusChip status={app.live ? 'success' : 'neutral'} label={app.live ? 'Live' : 'Draft'} />`; `{#snippet actions()}` holds a `<DropdownMenu align=\"end\">` with `Edit` and `Rotate secret` items"
 	],
 	"tags": ["record-list", "record-row", "table", "status-chip", "row-menu", "avatar", "responsive"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["devtools", "saas"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [
+			"Avatar",
+			"DropdownMenu",
+			"DropdownMenuItem",
+			"IconButton",
+			"RecordCell",
+			"RecordList",
+			"RecordRow",
+			"StatusChip"
+		],
+		"aliases": ["row list", "data rows", "responsive table"],
+		"related": ["246", "247", "183"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

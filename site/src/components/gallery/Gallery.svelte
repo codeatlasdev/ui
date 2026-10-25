@@ -3,6 +3,8 @@
 		announce,
 		Button,
 		Checkbox,
+		Chip,
+		Collapsible,
 		CopyButton,
 		StickyActions,
 		TextField,
@@ -10,6 +12,17 @@
 	} from "@codeatlasdev/ui";
 	import { ArrowUpRight } from "@lucide/svelte";
 	import { onMount } from "svelte";
+	import type { IndexEntry } from "../../../../packages/ui/scripts/index-build";
+	import {
+		FILTER_FACETS,
+		type FilterFacet,
+		type Filters,
+		chipCounts,
+		haystack,
+		parseFilters,
+		searchIndex,
+		writeFilters,
+	} from "../../../../packages/ui/scripts/index-search";
 	import type { GalleryItem } from "~/lib/gallery-items";
 	import { ensureDemoSession } from "./demo-session";
 	import GalleryPreview from "./GalleryPreview.svelte";
@@ -20,12 +33,31 @@
 	interface Props {
 		elements: GalleryItem[];
 		groups: string[];
+		/** `api/v1/index.json` entries: published facets only. Full pages have no entry. */
+		entries: IndexEntry[];
 	}
-	let { elements, groups }: Props = $props();
+	let { elements, groups, entries }: Props = $props();
+	const FACET_TITLES: Record<FilterFacet, string> = {
+		kind: "Kind",
+		subtype: "Subtype",
+		style: "Style",
+		motion: "Motion",
+		interaction: "Interaction",
+		layout: "Layout",
+		colorMode: "Colour mode",
+		density: "Density",
+		tech: "Tech",
+		cost: "Cost",
+		component: "Component",
+	};
+	/** `component` has ~200 values: it is reached through the search words, not chips. */
+	const CHIP_FACETS = FILTER_FACETS.filter((f) => f !== "component");
 	const pageCount = $derived(elements.filter((e) => e.kind === "page").length);
 
 	let query = $state("");
 	let group = $state("all");
+	let filters = $state<Filters>({});
+	let facetsOpen = $state(false);
 	let picks = $state<string[]>([]);
 	let callback = $state<string | null>(null);
 	let scheme = $state<"light" | "dark">("dark");
@@ -37,21 +69,34 @@
 		...groups.map((g) => ({ value: g, label: g })),
 	]);
 
-	const haystacks = $derived(
+	const entryHay = new Map(entries.map((e) => [e.id, haystack(e)]));
+	// Pages have no index entry; they match the words of their own card and no facet.
+	const pageHay = $derived(
 		new Map(
-			elements.map((e) => [
-				e.id,
-				`${e.id} ${e.title} ${e.summary} ${e.tags.join(" ")} ${e.components.join(" ")}`.toLowerCase(),
-			])
+			elements
+				.filter((e) => e.kind === "page")
+				.map((e) => [
+					e.id,
+					`${e.title} ${e.summary} ${e.tags.join(" ")} ${e.components.join(" ")}`.toLowerCase(),
+				])
 		)
 	);
+	const facetActive = $derived(FILTER_FACETS.some((f) => filters[f]?.length));
+	/** Entries that pass the words and every chosen facet, best match first. */
+	const hits = $derived(searchIndex(entries, { query, filters, haystacks: entryHay }));
+	const hitRank = $derived(new Map(hits.map((e, i) => [e.id, i])));
+	const counts = $derived(chipCounts(entries, { query, filters, haystacks: entryHay }));
 	const visible = $derived.by(() => {
 		const words = query.toLowerCase().split(/\s+/).filter(Boolean);
-		return elements.filter(
-			(e) =>
-				(group === "all" || e.group === group) &&
-				words.every((w) => haystacks.get(e.id)?.includes(w))
-		);
+		const list = elements.filter((e) => {
+			if (group !== "all" && e.group !== group) return false;
+			if (e.kind === "page") return !facetActive && words.every((w) => pageHay.get(e.id)?.includes(w));
+			return hitRank.has(e.id);
+		});
+		// With words the best match leads; without, the catalog order stays.
+		return words.length
+			? list.sort((a, b) => (hitRank.get(a.id) ?? -1) - (hitRank.get(b.id) ?? -1))
+			: list;
 	});
 	const sorted = $derived([...picks].sort());
 	const picked = $derived(new Set(picks));
@@ -73,6 +118,33 @@
 		history.replaceState(history.state, "", url);
 	}
 
+	/** Facets, words and group live in the URL, so every filter combination is a shareable link. */
+	function syncUrl() {
+		const url = new URL(location.href);
+		writeFilters(url.searchParams, filters);
+		if (query.trim()) url.searchParams.set("q", query.trim());
+		else url.searchParams.delete("q");
+		if (group !== "all") url.searchParams.set("group", group);
+		else url.searchParams.delete("group");
+		history.replaceState(history.state, "", url);
+	}
+
+	function toggleValue(facet: FilterFacet, value: string) {
+		const has = filters[facet] ?? [];
+		filters = {
+			...filters,
+			[facet]: has.includes(value) ? has.filter((v) => v !== value) : [...has, value],
+		};
+		syncUrl();
+	}
+
+	function clearAll() {
+		filters = {};
+		query = "";
+		group = "all";
+		syncUrl();
+	}
+
 	function sendToAi() {
 		if (callback) location.href = `${callback}${callback.includes("?") ? "&" : "?"}ids=${sorted.join(",")}`;
 	}
@@ -80,6 +152,11 @@
 	onMount(() => {
 		const params = new URLSearchParams(location.search);
 		picks = parsePicks(params.get("pick"), known);
+		filters = parseFilters(params);
+		facetsOpen = FILTER_FACETS.some((f) => filters[f]?.length);
+		query = params.get("q") ?? "";
+		const g = params.get("group");
+		if (g && groups.includes(g)) group = g;
 		callback = safeCallback(params.get("cb"));
 		// Thumbnails of the admin pages render signed in with the public demo account.
 		ensureDemoSession();
@@ -105,14 +182,43 @@
 	</aside>
 
 	<div class="gallery__filters">
-		<TextField label="Filter demos" placeholder="Search title, tag or component" bind:value={query} />
+		<TextField
+			label="Filter demos"
+			placeholder="Search title, alias, tag or component"
+			bind:value={query}
+			oninput={syncUrl}
+		/>
 		<ToggleGroup
 			type="single"
 			aria-label="Group"
 			items={groupItems}
 			value={group}
-			onchange={(v) => (group = (v as string) || "all")}
+			onchange={(v) => {
+				group = (v as string) || "all";
+				syncUrl();
+			}}
 		/>
+		<Collapsible title="Filters" bind:open={facetsOpen}>
+		{#each CHIP_FACETS as facet (facet)}
+			<!-- chipCounts lists only values that still match something, so an empty combination has no chip; a chosen value stays so it can be unchosen. -->
+			{@const values = [...new Set([...Object.keys(counts[facet]), ...(filters[facet] ?? [])])].sort()}
+			{#if values.length}
+				<div class="gallery__facet" role="group" aria-label={FACET_TITLES[facet]}>
+					<span class="gallery__facet-title sk-caption" aria-hidden="true">{FACET_TITLES[facet]}</span>
+					{#each values as value (value)}
+						<Chip
+							label={`${value} (${counts[facet][value] ?? 0})`}
+							selected={filters[facet]?.includes(value) ?? false}
+							onclick={() => toggleValue(facet, value)}
+						/>
+					{/each}
+				</div>
+			{/if}
+		{/each}
+		</Collapsible>
+		{#if facetActive || query || group !== "all"}
+			<Button variant="outlined" onclick={clearAll}>Clear filters</Button>
+		{/if}
 	</div>
 
 	<p class="gallery__count">{visible.length} of {elements.length} shown</p>
@@ -153,7 +259,9 @@
 	</ul>
 
 	{#if visible.length === 0}
-		<p class="gallery__empty">No demo matches. Clear the filter to see all {elements.length}.</p>
+		<p class="gallery__empty">
+			No demo matches. <button type="button" class="gallery__link" onclick={clearAll}>Clear the filters</button> to see all {elements.length}.
+		</p>
 	{/if}
 
 	<StickyActions show={picks.length > 0} align="end">
@@ -193,6 +301,24 @@
 	.gallery__filters {
 		display: grid;
 		gap: var(--ca-space-3);
+	}
+	.gallery__facet {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--ca-space-2);
+		align-items: center;
+	}
+	.gallery__facet-title {
+		min-width: 6rem;
+	}
+	.gallery__link {
+		background: none;
+		border: 0;
+		padding: 0;
+		color: var(--ca-text-primary);
+		text-decoration: underline;
+		cursor: pointer;
+		font: inherit;
 	}
 	.gallery__filters :global(.ca-toggle-group) {
 		flex-wrap: wrap;

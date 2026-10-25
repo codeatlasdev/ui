@@ -5,7 +5,7 @@ Spec:
 - `sizes` has 5 items: `1` Just me, `2-5` 2 to 5, `6-20` 6 to 20, `21-50` 21 to 50, `50+` 50+
 - `bind:value={size}` with initial `$state('2-5')`; the selected chip shows a check icon
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
-Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
 Report: #720 Wrapping chips → file, what changed, https://ui.codeatlas.com.br/docs/inputs/chip-group#wrapping-chips; what you could not check (light/dark, 375px, keyboard, reduced motion).

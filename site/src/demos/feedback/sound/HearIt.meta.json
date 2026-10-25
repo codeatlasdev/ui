@@ -1,0 +1,36 @@
+{
+	"summary": "A sound toggle with volume, a profile picker (system, glass, brutalism, terminal) and a board of buttons that each play one cue.",
+	"use": "Let people audition a sound profile before turning interface sound on in an app.",
+	"spec": [
+		"`<SoundToggle volume />` next to a `SegmentedControl` bound to the profile",
+		"`$effect(() => sound.use(PROFILES[profile]))` pins the picked profile and `onDestroy` releases it",
+		"A `role=\"group\"` board of outlined small `Button` items, each with `sound={cue}` for one cue name",
+		"The cues are `press`, `toggle-on`, `toggle-off`, `success`, `error`, `warning`, `open`, `close` and `tab`"
+	],
+	"tags": ["sound", "audio", "feedback", "profile", "toggle"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "SegmentedControl", "SoundToggle"],
+		"aliases": ["sound profile", "audio feedback", "ui sounds", "cue board"],
+		"related": ["989"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-25",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

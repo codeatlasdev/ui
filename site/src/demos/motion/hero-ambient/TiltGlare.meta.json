@@ -26,5 +26,29 @@
 			"spring": "{ stiffness: 0.12, damping: 0.55 }"
 		}
 	],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "motion",
+		"subtype": "ambient",
+		"industry": ["fintech", "e-commerce"],
+		"style": ["default", "skeuo"],
+		"motion": "immersive",
+		"interaction": ["cursor", "hover"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["MotionStage"],
+		"aliases": ["credit card", "holographic", "glare", "3d tilt"],
+		"related": ["347", "340", "380"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

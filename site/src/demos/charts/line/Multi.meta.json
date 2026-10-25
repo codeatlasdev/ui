@@ -9,5 +9,29 @@
 		"`height=\"300px\"` inside `<Card full>`"
 	],
 	"tags": ["line-chart", "multi-series", "revenue", "expenses", "time-series", "card"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "chart",
+		"industry": ["fintech"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "LineChart"],
+		"aliases": ["multi series", "profit and loss", "compare lines"],
+		"related": ["203", "201", "204"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

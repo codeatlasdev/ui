@@ -8,5 +8,29 @@
 		"`<p>Selected: {role}</p>` prints the current value"
 	],
 	"tags": ["filter-group", "filter", "options", "role", "bind", "category"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["FilterGroup"],
+		"aliases": ["chips", "category filter", "pill filter"],
+		"related": ["720", "060", "038"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

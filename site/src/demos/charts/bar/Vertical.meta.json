@@ -9,5 +9,29 @@
 		"`height=\"300px\"`"
 	],
 	"tags": ["bar-chart", "vertical", "revenue", "categories", "value-formatter", "card"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "chart",
+		"industry": ["fintech"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "BarChart"],
+		"aliases": ["column chart", "quarterly revenue", "histogram"],
+		"related": ["191", "192", "190"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

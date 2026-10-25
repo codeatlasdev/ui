@@ -8,5 +8,29 @@
 		"Wrapper `.col` has `max-width: 560px`"
 	],
 	"tags": ["alert", "title", "severity", "success", "error"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Alert"],
+		"aliases": ["titled callout", "error message", "success message"],
+		"related": ["105", "104"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

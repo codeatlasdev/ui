@@ -3,18 +3,30 @@
 // names each card after a hash of what it shows (template, mark, colors, title, description),
 // writes it to dist/brand/og/ and rewrites the placeholder in that page's HTML. One code path owns
 // the naming, so a page can never point at a card that was not rendered.
-import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { brandHash, ogCard, renderMark, renderOgImage, resolveBrand } from "@codeatlasdev/ui/vite";
 import { chromium } from "@playwright/test";
 import type { AstroIntegration } from "astro";
 import { theme } from "../src/theme.ts";
+import { placeCard, pruneCards } from "./og-cache.ts";
 
 /** Bump when the card template or its CSS changes: every card is renamed. */
 const TEMPLATE_VERSION = "2";
 const SITE_NAME = "CodeAtlas UI";
 const markFile = new URL("../src/brand/mark.svg", import.meta.url);
+/** Cards not served for this long are deleted from the shared cache. */
+const CACHE_DAYS = 30;
+/** Cards rendered at once (a Chromium page each). */
+const CARD_WORKERS = 4;
+/**
+ * Rendered cards live outside the checkout, like the test lock: every issue is its own worktree, so a cache inside
+ * the checkout would be cold at every land. The key is the card's full HTML plus the browser version, so sharing
+ * it across worktrees and branches is safe (see og-cache.ts). `CA_OG_CACHE_DIR` overrides it.
+ */
+const cacheDir = process.env.CA_OG_CACHE_DIR ?? join(tmpdir(), "ca-og-cards");
 const PLACEHOLDER = /\/brand\/og\/([a-z0-9-]+)\.png/;
 
 const decodeEntities = (s: string) =>
@@ -54,18 +66,24 @@ export function ogCards(): AstroIntegration {
 					.filter(({ html }) => PLACEHOLDER.test(html));
 
 				const browser = await chromium.launch();
+				const version = browser.version();
+				let hits = 0;
 				try {
-					for (const { file, html } of todo) {
-						const slug = html.match(PLACEHOLDER)?.[1] as string;
-						const title = decodeEntities(content(html, "property", "og:title") ?? SITE_NAME);
-						const description = decodeEntities(content(html, "property", "og:description") ?? "");
-						const eyebrow = slug.startsWith("docs")
-							? "Documentation"
-							: slug.startsWith("templates")
-								? "Template"
-								: undefined;
-						const name = `${slug}.${brandHash(TEMPLATE_VERSION, mark, JSON.stringify(colors), title, description, eyebrow ?? "")}.png`;
-						if (!existsSync(join(outDir, name))) {
+					// Chromium renders in its own processes: four at once cost 40 ms a card instead of 72 (measured), and
+					// only cards the cache lacks pay anything.
+					let next = 0;
+					const worker = async () => {
+						for (let i = next++; i < todo.length; i = next++) {
+							const { file, html } = todo[i];
+							const slug = html.match(PLACEHOLDER)?.[1] as string;
+							const title = decodeEntities(content(html, "property", "og:title") ?? SITE_NAME);
+							const description = decodeEntities(content(html, "property", "og:description") ?? "");
+							const eyebrow = slug.startsWith("docs")
+								? "Documentation"
+								: slug.startsWith("templates")
+									? "Template"
+									: undefined;
+							const name = `${slug}.${brandHash(TEMPLATE_VERSION, mark, JSON.stringify(colors), title, description, eyebrow ?? "")}.png`;
 							const card = ogCard({
 								title: title.replace(` · ${SITE_NAME}`, ""),
 								description,
@@ -74,17 +92,24 @@ export function ogCards(): AstroIntegration {
 								mark: filled,
 								colors,
 							});
+							const hit = await placeCard(cacheDir, version, card, join(outDir, name), (h) =>
+								renderOgImage(browser, h, { format: "png" })
+							);
+							if (hit) hits += 1;
 							writeFileSync(
-								join(outDir, name),
-								await renderOgImage(browser, card, { format: "png" })
+								file,
+								html.replaceAll(new RegExp(PLACEHOLDER, "g"), `/brand/og/${name}`)
 							);
 						}
-						writeFileSync(file, html.replaceAll(new RegExp(PLACEHOLDER, "g"), `/brand/og/${name}`));
-					}
+					};
+					await Promise.all(Array.from({ length: CARD_WORKERS }, worker));
 				} finally {
 					await browser.close();
 				}
-				logger.info(`${todo.length} social cards in ${relative(process.cwd(), outDir)}`);
+				const pruned = pruneCards(cacheDir, CACHE_DAYS);
+				logger.info(
+					`${todo.length} social cards in ${relative(process.cwd(), outDir)} (${hits} from the cache, ${pruned} stale ones pruned)`
+				);
 			},
 		},
 	};

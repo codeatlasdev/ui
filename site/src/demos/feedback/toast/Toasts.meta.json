@@ -9,5 +9,29 @@
 		"All triggers are `<Button variant=\"outlined\"` in two labelled groups, Variants and Duration"
 	],
 	"tags": ["toast", "toaster", "notification", "success", "error", "duration"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "Toaster"],
+		"aliases": ["snackbar", "notification", "alert message"],
+		"related": ["490", "492", "088"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

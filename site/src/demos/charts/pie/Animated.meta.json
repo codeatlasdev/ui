@@ -9,5 +9,29 @@
 		"`<PieChart {data} donut height=\"300px\" />` inside `<Card full>`"
 	],
 	"tags": ["pie-chart", "donut", "chip", "quarters", "state", "derived"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "chart",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["press", "hover", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "Flex", "Chip", "PieChart"],
+		"aliases": ["morphing donut", "switch period", "animated pie"],
+		"related": ["208", "207", "209"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

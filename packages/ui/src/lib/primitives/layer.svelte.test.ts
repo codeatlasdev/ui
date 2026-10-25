@@ -544,4 +544,22 @@ describe("openLayer: a11y per state", () => {
 		expect(document.documentElement.style.overflow).toBe("");
 		expect(document.body.style.overflow).toBe("");
 	});
+
+	it("a hint hosted in a modal that is removed with it is not put back in the page (#324)", () => {
+		const trigger = el("button", "Settings");
+		const tip = el("div", "Settings tip");
+		tip.setAttribute("role", "tooltip");
+		const hint = openLayer(tip, { kind: "hint", anchor: trigger, onDismiss: () => {} });
+		const dialog = modal();
+		const modalHandle = openLayer(dialog, { kind: "modal", onDismiss: () => {} });
+		expect(dialog.contains(tip)).toBe(true); // the modal took the open hint in
+
+		// The owner's framework removes the dialog from the document with the hint still inside, then
+		// closes the layers. The hint's own owner is gone with it: nothing may re-insert it.
+		dialog.remove();
+		modalHandle.close();
+		hint.close();
+		expect(document.body.contains(tip)).toBe(false);
+		expect(document.querySelectorAll('[role="tooltip"]').length).toBe(0);
+	});
 });

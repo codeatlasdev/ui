@@ -11,6 +11,7 @@ const appCss = document.createElement("style");
 afterEach(() => {
 	host.remove();
 	appCss.remove();
+	delete document.documentElement.dataset.caNative;
 });
 
 const cursor = (html: string) => {
@@ -72,5 +73,31 @@ describe("apps override the reset freely", () => {
 		appCss.textContent = `[role="button"] { cursor: grab; }`;
 		document.head.append(appCss);
 		expect(cursor(`<div role="button" tabindex="0">t</div>`)).toBe("grab");
+	});
+});
+
+describe("nativeFeel keeps the hand on clickable controls (#566)", () => {
+	// `html[data-ca-native]` (nativeFeel()) lives in ca.base, which outranks ca.reset: it used to force
+	// the arrow on every control, so an app shell (Atlas) never showed a pointer.
+	it("button and role=tab keep the pointer under html[data-ca-native]", () => {
+		document.documentElement.dataset.caNative = "";
+		expect(cursor(`<button type="button">b</button>`)).toBe("pointer");
+		expect(cursor(`<div role="tab">t</div>`)).toBe("pointer");
+		expect(cursor(`<div role="menuitem">m</div>`)).toBe("pointer");
+		expect(cursor(`<a href="/x">a</a>`)).toBe("pointer");
+	});
+
+	it("disabled controls stay not-allowed and chrome that is not clickable keeps the default", () => {
+		document.documentElement.dataset.caNative = "";
+		expect(cursor(`<button type="button" disabled>b</button>`)).toBe("not-allowed");
+		expect(cursor(`<nav>n</nav>`)).toBe("auto");
+		expect(cursor(`<header>h</header>`)).toBe("auto");
+	});
+
+	it("still blocks text selection on chrome", () => {
+		document.documentElement.dataset.caNative = "";
+		host.innerHTML = `<button type="button">b</button>`;
+		document.body.append(host);
+		expect(getComputedStyle(host.firstElementChild as Element).userSelect).toBe("none");
 	});
 });

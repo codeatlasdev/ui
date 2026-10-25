@@ -21,6 +21,7 @@ import { charts } from "./groups/charts.js";
 import { chat } from "./groups/chat.js";
 import { chip } from "./groups/chip.js";
 import { codeSnippet } from "./groups/codeSnippet.js";
+import { colorField } from "./groups/colorField.js";
 import { combobox } from "./groups/combobox.js";
 import { commandPalette } from "./groups/commandPalette.js";
 import { common } from "./groups/common.js";
@@ -57,6 +58,7 @@ import { select } from "./groups/select.js";
 import { sheet } from "./groups/sheet.js";
 import { skipLink } from "./groups/skipLink.js";
 import { slider } from "./groups/slider.js";
+import { soundToggle } from "./groups/soundToggle.js";
 import { spinner } from "./groups/spinner.js";
 import { splashScreen } from "./groups/splashScreen.js";
 import { stepper } from "./groups/stepper.js";
@@ -84,6 +86,7 @@ export const groups = {
 	calendar,
 	chip,
 	codeSnippet,
+	colorField,
 	combobox,
 	commandPalette,
 	copyButton,
@@ -109,6 +112,7 @@ export const groups = {
 	passwordStrength,
 	previewStage,
 	table,
+	soundToggle,
 	resizablePanels,
 	select,
 	sheet,

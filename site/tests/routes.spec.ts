@@ -86,13 +86,28 @@ for (const route of PAGES) {
 	});
 }
 
-// The theme editor shows one panel at a time below 900px: each must hold the same guarantees.
+// Below 900px the theme studio shows the preview and opens each panel in a sheet from a toolbar
+// button: each open panel must hold the same guarantees.
 for (const panel of ["Controls", "Code"]) {
 	test(`/theme/ (${panel} panel, mobile)`, async ({ page, isMobile }) => {
-		test.skip(!isMobile, "panels are tabs only on narrow screens");
+		test.skip(!isMobile, "panels are sheets only on narrow screens");
 		await page.setViewportSize({ width: 360, height: 780 });
 		await gotoReady(page, "/theme/");
-		await page.getByRole("tab", { name: panel }).click();
+		await page
+			.getByRole("toolbar", { name: "Theme studio actions" })
+			.getByRole("button", { name: panel, exact: true })
+			.click();
+		await expect(page.getByRole("dialog")).toBeVisible();
 		expect(await audit(page, isMobile)).toEqual([]);
 	});
 }
+
+// The gallery's facet panel is closed on load: check it open, where ten rows of chips must still fit.
+test("/gallery/ (filters open)", async ({ page, isMobile }) => {
+	if (isMobile) await page.setViewportSize({ width: 360, height: 780 });
+	await gotoReady(page, "/gallery/?kind=motion");
+	await expect(page.getByRole("group", { name: "Kind" })).toBeVisible();
+	// The cards put a stretched "Open" link over live demo content on purpose; this test is about the panel.
+	await page.addStyleTag({ content: ".gallery__grid { display: none !important }" });
+	expect(await audit(page, isMobile)).toEqual([]);
+});

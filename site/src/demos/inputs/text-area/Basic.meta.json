@@ -7,5 +7,29 @@
 		"`<TextArea label=\"Description\" bind:value={description} />` starts as `Some initial content here.`"
 	],
 	"tags": ["text-area", "textarea", "placeholder", "label", "bind-value"],
-	"shape": "tall"
+	"shape": "tall",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["TextArea"],
+		"aliases": ["multiline", "textarea", "message box"],
+		"related": ["055", "056", "064"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

@@ -9,5 +9,29 @@
 		"Wrapped in `.wrap` with `max-width: 560px`"
 	],
 	"tags": ["accordion", "accordion-item", "controlled", "bind", "single", "faq"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "surface",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Accordion", "AccordionItem"],
+		"aliases": ["bound state", "controlled disclosure"],
+		"related": ["067", "066", "074"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

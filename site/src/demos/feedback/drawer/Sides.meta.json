@@ -9,5 +9,29 @@
 		"Triggers are two `<Button variant=\"outlined\"` labelled Open left and Open bottom"
 	],
 	"tags": ["drawer", "left", "bottom", "navigation", "sort", "side-panel"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Drawer", "Button", "Stack"],
+		"aliases": ["bottom sheet", "side panel", "off canvas"],
+		"related": ["089", "157", "096"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

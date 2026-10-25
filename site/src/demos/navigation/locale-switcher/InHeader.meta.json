@@ -8,5 +8,29 @@
 		"The header sits in `<Card full flush>`"
 	],
 	"tags": ["locale-switcher", "site-header", "trailing", "cta", "language", "header"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "Card", "LocaleSwitcher", "SiteHeader"],
+		"aliases": ["language picker", "i18n", "site header"],
+		"related": ["501", "151"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

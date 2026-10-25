@@ -9,5 +9,29 @@
 		"Wrapper `.col` has `max-width: 320px`"
 	],
 	"tags": ["combobox", "search", "autocomplete", "options", "select", "form"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard", "press"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Combobox"],
+		"aliases": ["autocomplete", "typeahead", "searchable select"],
+		"related": ["011", "420", "040"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

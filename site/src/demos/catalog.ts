@@ -383,6 +383,14 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "985", path: "layout/kpi-card/Sparkline" },
 	{ id: "986", path: "layout/preview-stage/Inline" },
 	{ id: "987", path: "layout/preview-stage/Page" },
+	{ id: "988", path: "feedback/sound/HearIt" },
+	{ id: "989", path: "feedback/sound/Components" },
+	{ id: "990", path: "inputs/color-field/Brand" },
+	{ id: "991", path: "inputs/color-field/TextContrast" },
+	{ id: "992", path: "inputs/slider/Field" },
+	{ id: "993", path: "concepts/viewport/Simulator" },
+	{ id: "994", path: "concepts/viewport/Hero" },
+	{ id: "995", path: "concepts/viewport/Keyboard" },
 ];
 
 /**

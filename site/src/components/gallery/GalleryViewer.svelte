@@ -17,7 +17,9 @@
 	import { ArrowLeft, ArrowRight, ExternalLink, Moon, RotateCcw, Sun } from "@lucide/svelte";
 	import type { Component } from "svelte";
 	import { onMount } from "svelte";
+	import type { IndexEntry } from "../../../../packages/ui/scripts/index-build";
 	import type { GalleryItem } from "~/lib/gallery-items";
+	import { type AnatomyPart, buildPrompt, type ItemRecord } from "~/lib/item-tabs";
 	import { loadDemo, loadSource } from "./demo-loader";
 	import { ensureDemoSession } from "./demo-session";
 	import { copyText, parsePicks } from "./picks";
@@ -30,8 +32,17 @@
 		/** Known ids, for `?pick=`. */
 		known: string[];
 		presets: { value: string; label: string }[];
+		/** Catalog record of a demo (spec, imports, motion); pages have none. */
+		record?: ItemRecord;
+		/** Index facets of a demo that the Prompt tab reads (keyboard, reduced motion). */
+		entry?: IndexEntry;
+		/** Components of a demo with the package and docs link of each. */
+		anatomy?: AnatomyPart[];
+		/** Related demos: id, title and subtype. */
+		related?: { id: string; title: string; subtype: string }[];
 	}
-	let { item, order, known, presets }: Props = $props();
+	let { item, order, known, presets, record, entry, anatomy = [], related = [] }: Props = $props();
+	const TABS = ["preview", "code", "prompt", "anatomy"];
 
 	const WIDTHS = [390, 768, 1280];
 
@@ -56,7 +67,9 @@
 	const label = $derived(`${item.title} at ${width === "fill" ? "full width" : `${width} pixels`}`);
 
 	const prompt = $derived(
-		isPage
+		record
+			? buildPrompt(record, entry)
+			: isPage
 			? `Use the "${item.title}" page from the @codeatlasdev/ui gallery (${item.docs}) as the starting point for my screen. Keep the layout, components and tokens; replace the copy and data with mine.`
 			: `Use @codeatlasdev/ui demo #${item.id} "${item.title}" (${item.group}/${item.page}). Call get_demo({ ids: ["#${item.id}"] }), keep the components, props and tokens, and change only the data and copy.`
 	);
@@ -136,7 +149,7 @@
 		if (item.auth) ensureDemoSession();
 		if (isPage && item.route) src = stageUrl(item.route, { scheme, preset: preset || undefined });
 		const t = params.get("tab");
-		if (t === "code" && !isPage) tab = "code";
+		if (t && TABS.includes(t) && (!isPage || t === "preview" || t === "prompt")) tab = t;
 	});
 
 	// Keep the stage state in the URL so a view can be shared as is.
@@ -147,7 +160,7 @@
 		params.set("scheme", scheme);
 		if (preset) params.set("preset", preset);
 		else params.delete("preset");
-		if (tab === "code") params.set("tab", "code");
+		if (tab !== "preview") params.set("tab", tab);
 		else params.delete("tab");
 		history.replaceState(history.state, "", `${location.pathname}?${params}${location.hash}`);
 	});
@@ -219,6 +232,8 @@
 		<TabsList aria-label="View">
 			<TabsTrigger value="preview">Preview</TabsTrigger>
 			{#if !isPage}<TabsTrigger value="code">Code</TabsTrigger>{/if}
+			<TabsTrigger value="prompt">Prompt</TabsTrigger>
+			{#if !isPage}<TabsTrigger value="anatomy">Anatomy</TabsTrigger>{/if}
 		</TabsList>
 		<TabsContent value="preview">
 			<div bind:this={iframeHost}>
@@ -241,7 +256,43 @@
 				{/key}
 			</div>
 		</TabsContent>
+		<TabsContent value="prompt">
+			<div class="viewer__panel">
+				<p class="viewer__note">
+					Hand this to your AI. It names the exact library parts, timings and accessibility promises of this {isPage ? "page" : "demo"}.
+				</p>
+				<pre class="viewer__prompt" data-testid="viewer-prompt-text">{prompt}</pre>
+				<CopyButton value={prompt} label="Copy prompt" variant="outlined" size="sm" toast="Prompt copied" />
+			</div>
+		</TabsContent>
 		{#if !isPage}
+			<TabsContent value="anatomy">
+				<div class="viewer__panel">
+					<h2 class="viewer__h">Library parts</h2>
+					<ul class="viewer__parts">
+						{#each anatomy as p (p.name)}
+							<li>
+								{#if p.href}<a href={p.href}>{p.name}</a>{:else}<span>{p.name}</span>{/if}
+								<code>{p.from}</code>
+							</li>
+						{/each}
+					</ul>
+					{#if record?.spec.length}
+						<h2 class="viewer__h">How it is built</h2>
+						<ul class="viewer__spec">
+							{#each record.spec as line (line)}<li>{line}</li>{/each}
+						</ul>
+					{/if}
+					{#if related.length}
+						<h2 class="viewer__h">Related</h2>
+						<ul class="viewer__related">
+							{#each related as r (r.id)}
+								<li><a href={`/gallery/${r.id}/`}>#{r.id} {r.title}</a> <span class="sk-caption">{r.subtype}</span></li>
+							{/each}
+						</ul>
+					{/if}
+				</div>
+			</TabsContent>
 			<TabsContent value="code">
 				<div class="viewer__code">
 					{#if source}
@@ -344,6 +395,39 @@
 	/* Same height as the stage: the page never jumps when the stage mounts. */
 	.viewer__reserve {
 		height: calc(var(--reserve-h) + var(--ca-space-12));
+	}
+	.viewer__panel {
+		display: grid;
+		gap: var(--ca-space-3);
+		min-width: 0;
+	}
+	.viewer__h {
+		margin: var(--ca-space-3) 0 0;
+		font-size: var(--ca-font-size-h5);
+	}
+	.viewer__prompt {
+		margin: 0;
+		padding: var(--ca-space-4);
+		white-space: pre-wrap;
+		overflow-wrap: anywhere;
+		font-family: var(--ca-font-mono);
+		font-size: var(--ca-font-size-caption);
+		background: var(--ca-surface-container, transparent);
+		border-radius: var(--ca-radius-md);
+	}
+	.viewer__parts,
+	.viewer__spec,
+	.viewer__related {
+		display: grid;
+		gap: var(--ca-space-2);
+		margin: 0;
+		padding-inline-start: var(--ca-space-5);
+	}
+	.viewer__parts code {
+		margin-inline-start: var(--ca-space-2);
+		font-family: var(--ca-font-mono);
+		font-size: var(--ca-font-size-caption);
+		color: var(--ca-text-secondary);
 	}
 	.viewer__code {
 		min-height: 20rem;

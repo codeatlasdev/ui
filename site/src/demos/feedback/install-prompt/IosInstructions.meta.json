@@ -7,5 +7,29 @@
 		"No handlers or state in the demo, the prompt renders only after mounting in the browser"
 	],
 	"tags": ["install-prompt", "pwa", "ios", "banner", "install"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["InstallPrompt"],
+		"aliases": ["add to home screen", "pwa", "install banner"],
+		"related": ["244", "103"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

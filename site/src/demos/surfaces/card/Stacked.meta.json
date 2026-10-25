@@ -7,5 +7,29 @@
 		"`gap=\"sm\"` stacks the children in a column with 8px between them; the title shares the checkboxes' left edge"
 	],
 	"tags": ["card", "gap", "stack", "checkbox", "title", "settings"],
-	"shape": "tall"
+	"shape": "tall",
+	"index": {
+		"kind": "component",
+		"subtype": "surface",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "Checkbox"],
+		"aliases": ["checklist card", "titled form card", "stacked controls"],
+		"related": ["070", "069", "068"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

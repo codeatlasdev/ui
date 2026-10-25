@@ -13,6 +13,7 @@ import {
 	SITE,
 } from "../scripts/ai-entry.ts";
 import { buildGuides, buildRecipes } from "../scripts/build-manifest.ts";
+import { STYLES_INDEX_PATH } from "../scripts/styles-markdown.ts";
 
 const REPO = join(import.meta.dir, "../../..");
 const DOCS = join(REPO, "site/src/content/docs");
@@ -100,6 +101,15 @@ describe("llms.txt, the canonical entry (#384)", () => {
 		expect(deprecated).toBeGreaterThan(out.indexOf("## Docs: Inputs"));
 		expect(out.indexOf("[Glass Card]")).toBeGreaterThan(deprecated);
 		expect(out).not.toContain("## Docs: Surfaces");
+	});
+
+	it("points at the design-style digest and one file per style (#583)", () => {
+		expect(out).toContain("## Design styles");
+		expect(out).toContain(`${SITE}${STYLES_INDEX_PATH}`);
+		expect(out).toContain("`get_style`");
+		expect(out.indexOf("## Design styles")).toBeLessThan(
+			out.indexOf("## Machine-readable endpoints")
+		);
 	});
 
 	it("does not repeat an entry page in its docs group", () => {
@@ -251,6 +261,9 @@ describe("llms.txt links the agent-readable .txt form of every page and recipe (
 			...slugs.map((s) => `${SITE}${llmsPagePath(s)}`),
 			...recipes.map((r) => `${SITE}${llmsRecipePath(r.id)}`),
 			`${SITE}/llms-full.txt`,
+			`${SITE}/llms/atlas.txt`,
+			`${SITE}/llms/concepts/viewport.txt`,
+			`${SITE}${STYLES_INDEX_PATH}`,
 		]);
 		for (const m of out.matchAll(/\]\((https:\/\/[^)]*\.txt)\)/g)) {
 			const url = m[1];

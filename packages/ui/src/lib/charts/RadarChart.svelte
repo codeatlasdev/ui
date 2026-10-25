@@ -3,6 +3,7 @@
 	import type { EChartsOption } from "echarts";
 	import ChartCanvas from "./ChartCanvas.svelte";
 	import { withChartTheme } from "./theme.js";
+	import { useChartScope } from "./tokens.js";
 	import { chartTokens } from "./tokens.js";
 	import type { RadarIndicator, RadarSeries } from "./types.js";
 
@@ -14,9 +15,11 @@
 	}
 
 	let { indicators, series, height = "340px", class: className = "" }: Props = $props();
+	// Tokens come from the theme island this chart sits in (the page when there is none).
+	const scope = useChartScope();
 
 	const option = $derived.by<EChartsOption>(() => {
-		const t = chartTokens();
+		const t = chartTokens(scope.el);
 		return withChartTheme({
 			tooltip: { trigger: "item" },
 			legend: series.length > 1 ? { data: series.map((s) => s.name) } : undefined,
@@ -41,7 +44,7 @@
 					})),
 				},
 			],
-		});
+		}, scope.el);
 	});
 </script>
 

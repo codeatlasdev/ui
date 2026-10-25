@@ -2,6 +2,7 @@
   import { useMessages } from '../../i18n/state.svelte.js';
   import { toast } from '../../i18n/groups/toast.js';
   import type { ToastItem as ToastItemType } from '../../stores/toast.svelte.js';
+  import { cueFor, soundBus } from '../../utils/sound-bus.js';
   import { X, CheckCircle, XCircle, AlertTriangle, Info } from '@lucide/svelte';
   const t = useMessages(toast);
 
@@ -43,6 +44,12 @@
   } as const;
 
   let Icon = $derived(icons[item.variant]);
+
+  // success, error and warning have their own cue; the rest is a plain notification.
+  $effect(() => {
+    const cue = cueFor(item.sound, item.variant === 'success' || item.variant === 'error' || item.variant === 'warning' ? item.variant : 'notify');
+    if (cue) soundBus.emit(cue);
+  });
   let count = $derived(item.count ?? 1);
 
   // Enter/exit via CSS animation, no will-change: transform

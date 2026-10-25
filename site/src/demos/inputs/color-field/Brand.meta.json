@@ -1,0 +1,37 @@
+{
+	"summary": "Color field with a swatch, a native picker, a text input and a live WCAG contrast readout against white.",
+	"use": "Picking a brand or accent color where contrast matters.",
+	"spec": [
+		"`<ColorField` with `label=\"Brand color\"` and `bind:value={brand}`",
+		"`against=\"#ffffff\"`, `role=\"fill\"` and `minRatio={3}` so the readout measures white on the color as a UI part",
+		"Has a `description`: Type #hex, rgb() or oklch(), or pick.",
+		"Initial value is `$state('#2b5fd9')`",
+		"Current value is shown as `value: {brand}`"
+	],
+	"tags": ["color-field", "color-picker", "oklch", "contrast", "brand"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["ColorField"],
+		"aliases": ["brand color", "color picker", "contrast checker", "accent color"],
+		"related": ["991"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-25",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

@@ -1,0 +1,53 @@
+{
+	"summary": "An interactive phone drawing with a device-shape selector, switches for collapsed browser bars and edge-to-edge drawing, a keyboard height slider and a keyboard resize mode, plus a table of what 100lvh, 100svh and 100dvh resolve to and how much of each is hidden.",
+	"use": "Teaching why a full-height block must be a floor (min-height) and not a fixed height, and how safe areas and the virtual keyboard change the usable height.",
+	"spec": [
+		"`import { DEVICE_PRESETS, hiddenBy, type PresetName, viewportHeights } from './model';` computes the numbers; the model is pure and unit-tested",
+		"`<SegmentedControl` with `aria-label=\"Device shape\"` and `bind:value={preset}` offers four presets: narrow phone, typical phone, short phone, phone in landscape",
+		"`<Switch bind:checked={collapsed} label=\"Browser bars collapsed (after scrolling)\" />` and `<Switch bind:checked={edgeToEdge} label=\"Page draws edge to edge (viewport-fit=cover)\" />`",
+		"`<Slider bind:value={keyboard}` for the keyboard height (`step={10}`), plus a second `SegmentedControl` with `aria-label=\"Keyboard resize mode\"` for `resizes-content` or `resizes-visual`",
+		"A to-scale phone `div` with `role=\"img\"` and an `aria-label`, drawn with CSS custom properties (`--w`, `--h`, `--bar`, `--vis`, `--kb`), and a `<table class=\"sim__table\">` with a screen-reader caption listing 100lvh, 100svh, 100dvh and the usable height"
+	],
+	"tags": [
+		"viewport",
+		"svh",
+		"dvh",
+		"lvh",
+		"safe-area",
+		"keyboard",
+		"mobile",
+		"simulator",
+		"concept"
+	],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "foundation",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "drag", "keyboard"],
+		"layout": "split",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["SegmentedControl", "Switch", "Slider"],
+		"aliases": [
+			"viewport units",
+			"svh dvh lvh",
+			"safe area",
+			"virtual keyboard",
+			"phone simulator"
+		],
+		"related": ["994", "995"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-25",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

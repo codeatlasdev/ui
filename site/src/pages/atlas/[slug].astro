@@ -1,0 +1,143 @@
+---
+import { Callout, CopyButton } from "@codeatlasdev/ui";
+import SiteDocsShell from "~/components/docs/SiteDocsShell.svelte";
+import Limits from "~/components/docs/Limits.astro";
+import Refs from "~/components/docs/Refs.astro";
+import SiteFooter from "~/components/site/SiteFooter.astro";
+import {
+	ATLAS_LIMITS,
+	ATLAS_REVIEWED,
+	EVIDENCE_LABEL,
+	guidance,
+	SCORE_ENDS,
+	SCORE_LABEL,
+	SCORE_NAMES,
+	STANDARDIZATION_LABEL,
+	STATUS_LABEL,
+	STATUS_MEANING,
+	stylesFor,
+	TERMS,
+	termHref,
+	termPrompt,
+	termReferences,
+	termSlug,
+	TREND_LABEL,
+} from "~/data/atlas/atlas";
+import { STRENGTH_LABEL } from "~/data/evidence/references";
+import Base from "~/layouts/Base.astro";
+import { loadDocs } from "~/lib/docs";
+import { SECTIONS } from "~/lib/nav";
+
+export function getStaticPaths() {
+	return TERMS.map((term, i) => ({
+		params: { slug: termSlug(term) },
+		props: { term, prev: TERMS[i - 1], next: TERMS[i + 1] },
+	}));
+}
+
+const { term: t, prev, next } = Astro.props;
+const { groups } = await loadDocs();
+const g = guidance(t);
+const refs = termReferences(t);
+const styles = stylesFor(t.id);
+const prompt = termPrompt(t);
+const toc = [
+	{ id: "definition", text: "Definition", depth: 2 as const },
+	{ id: "traits", text: "Traits", depth: 2 as const },
+	{ id: "use-it", text: "When to use it, and when not", depth: 2 as const },
+	{ id: "risk", text: "UX risk and how to reduce it", depth: 2 as const },
+	{ id: "evidence", text: "Evidence", depth: 2 as const },
+	{ id: "scales", text: "Heuristic scales", depth: 2 as const },
+	{ id: "in-our-library", text: "In our library", depth: 2 as const },
+	{ id: "prompt", text: "Prompt for your AI", depth: 2 as const },
+	{ id: "references", text: "References", depth: 2 as const },
+];
+---
+<Base title={t.term} description={`${t.definition}. ${t.category}, ${t.subcategory}. Traits, UX risk, sources and the limits of what is known.`} skipLink={false}>
+	<SiteDocsShell client:load sections={SECTIONS} active="docs" {groups} pathname={Astro.url.pathname} headings={toc} pager={{ prev: prev && { href: termHref(prev), title: prev.term }, next: next && { href: termHref(next), title: next.term } }}>
+		<article class="ca-prose doc atlas-term">
+			<p class="doc__eyebrow sk-eyebrow"><a href="/atlas/">Atlas</a> · {t.id} · {t.category}: {t.subcategory}</p>
+			<h1>{t.term}</h1>
+			<p class="doc__lead">{t.definition}.</p>
+			<ul class="atlas-term__facts" aria-label="Facts">
+				<li><strong>Status in 2026:</strong> {STATUS_LABEL[t.status]}. {STATUS_MEANING[t.status]}</li>
+				<li><strong>Trend 2027 to 2030:</strong> {TREND_LABEL[t.trend]} (an editorial projection, not a forecast).</li>
+				<li><strong>The term:</strong> {STANDARDIZATION_LABEL[t.standardization]}.</li>
+			</ul>
+
+			<h2 id="definition">Definition</h2>
+			<p>{t.definition}.</p>
+
+			<h2 id="traits">Traits</h2>
+			<ul>{t.traits.map((x) => <li>{x}</li>)}</ul>
+			<p><strong>Typical settings:</strong> {t.sectors.join(", ")}.</p>
+
+			<h2 id="use-it">When to use it, and when not</h2>
+			<p>{g.whenToUse}</p>
+			<p>{g.whenNot}</p>
+			<Callout type="note" title="The audience is a hypothesis">
+				<p>"{t.audience}" describes a motivation, task or context for which this direction tends to be chosen. It was not measured, and it says nothing about any age, gender or other group.</p>
+			</Callout>
+
+			<h2 id="risk">UX risk and how to reduce it</h2>
+			<p><strong>Risk:</strong> {t.risk}.</p>
+			<p><strong>Mitigation and accessibility:</strong> {t.mitigation}.</p>
+			<p><strong>How to check:</strong> {g.validate}</p>
+
+			<h2 id="evidence">Evidence</h2>
+			<p><strong>{EVIDENCE_LABEL[t.evidence]}.</strong></p>
+			<p>The sources below support the principles that apply to this term. None of them shows that this style works better or is preferred.</p>
+			<ul>
+				{refs.map((r) => (
+					<li>
+						<a href={`#ref-${r.id}`}>{r.authors.split(",")[0]} {r.year}</a> ({STRENGTH_LABEL[r.strength]}): {r.topic}.
+					</li>
+				))}
+			</ul>
+
+			<h2 id="scales">Heuristic scales</h2>
+			<p>Relative editorial judgements from 1 to 5. They are not results of a study and not a measure of quality.</p>
+			<dl class="atlas-term__scales">
+				{SCORE_NAMES.map((n) => (
+					<>
+						<dt>{SCORE_LABEL[n]} <span class="atlas-term__heuristic">heuristic</span></dt>
+						<dd><span class="atlas-term__score" role="img" aria-label={`${t.scores[n]} out of 5`}>{t.scores[n]} / 5</span> <span class="atlas-term__ends">(1 is {SCORE_ENDS[n][0]}, 5 is {SCORE_ENDS[n][1]})</span></dd>
+					</>
+				))}
+			</dl>
+
+			<h2 id="in-our-library">In our library</h2>
+			{styles.length === 0 ? (
+				<p>No design-style recipe in <code>@codeatlasdev/ui</code> implements this term yet. You can still build it from the <code>--ca-*</code> tokens: see <a href="/docs/getting-started/theming/">Theming</a>.</p>
+			) : (
+				<>
+					<p>The library ships {styles.length === 1 ? "a design-style recipe" : "design-style recipes"} for this term. Each is a set of tokens, not a different component set.</p>
+					<ul>
+						{styles.map((s) => (
+							<li>
+								{s.href ? <a href={s.href}>{s.label}</a> : <strong>{s.label}</strong>}: {s.description}
+								<br /><code>{`designStyle("${s.id}")`}</code>
+							</li>
+						))}
+					</ul>
+				</>
+			)}
+
+			<h2 id="prompt">Prompt for your AI</h2>
+			<p>Paste this into a coding agent. It carries the trade-offs, and asks for a baseline to compare against.</p>
+			<pre class="atlas-term__prompt" tabindex="0" aria-label="Prompt text">{prompt}</pre>
+			<CopyButton client:visible value={prompt} label="Copy prompt" variant="outlined" toast="Prompt copied" />
+
+			<Limits reviewed={ATLAS_REVIEWED}>
+				<ul>{ATLAS_LIMITS.map((x) => <li>{x}</li>)}</ul>
+			</Limits>
+
+			<Refs ids={t.refs.join(",")} />
+			<footer class="doc__footer">
+				<a href={`/llms/atlas/${termSlug(t)}.txt`}>This term as plain text for an agent</a>
+				<a href="/docs/concepts/evidence/#how-to-read-the-design-atlas">How to read the atlas</a>
+			</footer>
+		</article>
+	</SiteDocsShell>
+	<SiteFooter />
+</Base>

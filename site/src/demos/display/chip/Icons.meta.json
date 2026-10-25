@@ -8,5 +8,29 @@
 		"`icon` receives the component itself imported from `@lucide/svelte`"
 	],
 	"tags": ["chip", "icon", "lucide", "label", "star"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Chip"],
+		"aliases": ["tag with icon", "icon label"],
+		"related": ["115", "120", "119"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

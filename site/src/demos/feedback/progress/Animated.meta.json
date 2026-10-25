@@ -10,5 +10,29 @@
 		"Column wrapper has `max-width: 480px`"
 	],
 	"tags": ["progress", "animated", "upload", "determinate", "button"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["press"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Progress", "Button"],
+		"aliases": ["upload progress", "progress bar"],
+		"related": ["093", "094", "641"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

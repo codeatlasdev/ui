@@ -7,5 +7,29 @@
 		"Only `count`, `perPage` and `siblingCount` are set, nothing is bound"
 	],
 	"tags": ["pagination", "siblings", "sibling-count", "many-pages", "navigation"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Pagination"],
+		"aliases": ["ellipsis pager", "sibling pages", "long pager"],
+		"related": ["133", "134"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

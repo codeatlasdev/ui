@@ -5,11 +5,14 @@
  *   dist/tokens.json      every `--ca-*` custom property (tokens.css + built-in presets + brand)
  *   dist/surfaces.json    every `<html data-style>` surface style, from materials.css (offline `list_surfaces`)
  *   dist/guides.json      the docs site pages as markdown (offline `get_guide`)
+ *   dist/atlas.json       the design atlas as one markdown text per term + the verified references (offline
+ *                         `search_terms`, `get_term`, `get_reference`); only in the monorepo (needs site/)
+ *   dist/styles.json      the design-style pages as markdown, one per style (offline `get_style`)
  *   --skill               also rewrites .agents/skills/codeatlas-ui/API.md (components, then non-component exports)
  *
  *   bun scripts/build-manifest.ts [--check]
  *
- * How: every public entry (`.`, `./charts`, `./map`, `./table`, `./code`, `./forms`) is
+ * How: every public entry (`.`, `./charts`, `./map`, `./sound`, `./table`, `./code`, `./forms`) is
  * parsed with the TypeScript compiler API to find `export { default as X } from
  * "*.svelte"`. Each component goes through svelte2tsx (valid TS for `lang="ts"`,
  * `generics`, runes), then the AST of that output gives the `$props()` type
@@ -27,7 +30,11 @@ import { loadMigrations, migrationMarkdown } from "../src/cli/migrations.ts";
 import { STYLES, type SurfaceStyle } from "../src/lib/theme/define.ts";
 import { DESIGN_STYLES } from "../src/lib/theme/styles.ts";
 import { ENTRY_PAGES, parseRecipes, type Recipe } from "./ai-entry.ts";
+import { buildAtlasFile } from "./atlas-markdown.ts";
+import { buildIndexFiles } from "./index-build.ts";
+import { checkIdRange, checkIndexFacets, ID_PATTERN, type IndexFacets } from "./index-schema.ts";
 import { demoSources, mdxToMarkdown } from "./mdx-to-markdown.ts";
+import { buildStyleFile } from "./styles-markdown.ts";
 
 // CJS require keeps svelte2tsx out of Vite's transform pipeline (its sourceMappingURL points at a file it does not ship).
 const { svelte2tsx }: typeof import("svelte2tsx") = createRequire(import.meta.url)("svelte2tsx");
@@ -40,6 +47,7 @@ const ENTRIES: Record<string, string> = {
 	[PKG]: "index.ts",
 	[`${PKG}/charts`]: "charts/index.ts",
 	[`${PKG}/map`]: "map/index.ts",
+	[`${PKG}/sound`]: "sound/index.ts",
 	[`${PKG}/table`]: "components/DataTable/index.ts",
 	[`${PKG}/code`]: "components/CodeSnippet/index.ts",
 	[`${PKG}/forms`]: "forms/index.ts",
@@ -55,6 +63,7 @@ const API_ENTRIES: Record<string, string> = {
 	[`${PKG}/seo`]: "seo/index.ts",
 	[`${PKG}/tokens`]: "tokens/index.ts",
 	[`${PKG}/utils/palette-generator`]: "utils/palette-generator.ts",
+	[`${PKG}/utils/color`]: "utils/color.ts",
 };
 
 export type ExportKind = "function" | "store" | "const" | "class" | "type";
@@ -1146,6 +1155,8 @@ export interface ManifestDemo {
 	/** Exact timing of the motion, printed in e/ and p/ so an AI never guesses it. */
 	motion?: ManifestMotion[];
 	shape: "square" | "wide" | "tall";
+	/** Index facets of the sidecar (`index.json`, `/gallery/<id>.md`). */
+	index: IndexFacets;
 	components: string[];
 	imports: { from: string; names: string[] }[];
 	interactive: boolean;
@@ -1195,7 +1206,7 @@ function demoUsages() {
 
 type DemoMeta = Pick<
 	ManifestDemo,
-	"summary" | "use" | "spec" | "tags" | "shape" | "names" | "motion"
+	"summary" | "use" | "spec" | "tags" | "shape" | "names" | "motion" | "index"
 >;
 
 const META_KEYS: Record<string, true> = {
@@ -1206,6 +1217,7 @@ const META_KEYS: Record<string, true> = {
 	shape: true,
 	names: true,
 	motion: true,
+	index: true,
 };
 const MOTION_REQUIRED = ["property", "duration", "easing"] as const;
 const MOTION_OPTIONAL = ["delay", "stagger", "spring"] as const;
@@ -1215,7 +1227,11 @@ const isLines = (v: unknown): v is string[] =>
 	Array.isArray(v) && v.every((s) => typeof s === "string" && s.trim() !== "");
 
 /** Problems of one sidecar against its demo source: shape of every field, and spec tokens quoted from the source. */
-export function checkMeta(meta: unknown, source: string): string[] {
+export function checkMeta(
+	meta: unknown,
+	source: string,
+	ctx: { known?: ReadonlySet<string>; ids?: ReadonlySet<string>; self?: string } = {}
+): string[] {
 	if (!meta || typeof meta !== "object" || Array.isArray(meta)) return ["not an object"];
 	const m = meta as Record<string, unknown>;
 	const errors = Object.keys(m)
@@ -1233,6 +1249,7 @@ export function checkMeta(meta: unknown, source: string): string[] {
 	if (typeof m.shape !== "string" || !SHAPES[m.shape]) errors.push("shape: square | wide | tall");
 	if ("names" in m && (!isLines(m.names) || m.names.length < 1))
 		errors.push("names: non-empty strings, at least one");
+	if ("index" in m) errors.push(...checkIndexFacets(m.index, ctx));
 	if ("motion" in m) {
 		if (!Array.isArray(m.motion) || m.motion.length < 1)
 			errors.push("motion: at least one entry when present");
@@ -1261,9 +1278,36 @@ export function checkMeta(meta: unknown, source: string): string[] {
 	return errors;
 }
 
-/** Problems that make the registry invalid: unregistered demos, missing files, duplicate ids/paths, missing or inaccurate sidecars. */
-export function checkCatalog(catalog: readonly { id: string; path: string }[]): string[] {
+/** Library exports a demo imports from the package (the `components` facet is derived from these, never hand-typed). */
+export function importedNames(source: string): string[] {
+	return [
+		...new Set(
+			[
+				...source.matchAll(/import\s*\{([^}]+)\}\s*from\s*["']@codeatlasdev\/ui[^"']*["']/g),
+			].flatMap(([, names]) =>
+				names
+					.split(",")
+					.map(
+						(n) =>
+							n
+								.trim()
+								.replace(/^type\s+/, "")
+								.split(/\s+as\s+/)[0]
+					)
+					.filter(Boolean)
+			)
+		),
+	];
+}
+
+/** Problems that make the registry invalid: unregistered demos, missing files, duplicate ids/paths, missing or inaccurate sidecars, missing or inconsistent index facets. */
+export function checkCatalog(
+	catalog: readonly { id: string; path: string }[],
+	components: readonly { name: string }[]
+): string[] {
 	const errors: string[] = [];
+	const ids = new Set(catalog.map((d) => d.id));
+	const known = new Set(components.map((c) => c.name));
 	const walk = (dir: string, ext: string): string[] =>
 		readdirSync(dir, { withFileTypes: true }).flatMap((e) =>
 			e.isDirectory()
@@ -1277,10 +1321,11 @@ export function checkCatalog(catalog: readonly { id: string; path: string }[]): 
 		if (!HELPERS.includes(p) && !paths.has(p)) errors.push(`demo without id: ${p}`);
 	for (const p of walk(DEMOS_DIR, ".meta.json"))
 		if (!paths.has(p)) errors.push(`sidecar without demo: ${p}.meta.json`);
-	const ids = new Set<string>();
+	const seen = new Set<string>();
 	for (const d of catalog) {
-		if (ids.has(d.id)) errors.push(`duplicate id: ${d.id}`);
-		ids.add(d.id);
+		if (seen.has(d.id)) errors.push(`duplicate id: ${d.id}`);
+		seen.add(d.id);
+		if (!ID_PATTERN.test(d.id)) errors.push(`#${d.id} id: 3 digits up to 999, 4 digits from 1000`);
 		if (!existsSync(join(DEMOS_DIR, `${d.path}.svelte`))) {
 			errors.push(`#${d.id} missing file: ${d.path}`);
 			continue;
@@ -1298,7 +1343,21 @@ export function checkCatalog(catalog: readonly { id: string; path: string }[]): 
 			continue;
 		}
 		const source = readFileSync(join(DEMOS_DIR, `${d.path}.svelte`), "utf8");
-		for (const e of checkMeta(meta, source)) errors.push(`#${d.id} ${d.path}.meta.json: ${e}`);
+		for (const e of checkMeta(meta, source, { known, ids, self: d.id }))
+			errors.push(`#${d.id} ${d.path}.meta.json: ${e}`);
+		const facets = (meta as { index?: IndexFacets }).index;
+		if (!facets) {
+			errors.push(`#${d.id} ${d.path}.meta.json: index: facets required (bun run index:backfill)`);
+			continue;
+		}
+		const range = checkIdRange(d.id, facets.kind, facets.subtype);
+		if (range) errors.push(`#${d.id} ${d.path}.meta.json: index: ${range}`);
+		const used = importedNames(source).filter((n) => known.has(n));
+		const listed = [...facets.components].sort().join();
+		if (listed !== [...used].sort().join())
+			errors.push(
+				`#${d.id} ${d.path}.meta.json: index.components must be the imports of the demo: ${used.join(", ") || "none"}`
+			);
 	}
 	if (paths.size !== catalog.length) errors.push("duplicate path in catalog");
 	return errors;
@@ -1357,6 +1416,7 @@ export function buildDemos(
 			...(meta.names && { names: meta.names }),
 			...(meta.motion && { motion: meta.motion }),
 			shape: meta.shape,
+			index: meta.index,
 			components,
 			imports,
 			interactive: use?.interactive ?? false,
@@ -1419,7 +1479,7 @@ export function buildDemos(
 					]
 				: []),
 			"Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?",
-			`Apply: import only from "${PKG}[/charts|/map|/table|/code|/forms]"; keep component names, props and`,
+			`Apply: import only from "${PKG}[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and`,
 			"  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);",
 			"  replace sample data/copy with the project's; keep the first comment line.",
 			`Report: #${d.id} ${d.title} → file, what changed, ${d.demo}; what you could not check (light/dark, 375px, keyboard, reduced motion).`,
@@ -1592,7 +1652,7 @@ if (import.meta.main) {
 		? (await import("../../../site/src/demos/catalog.ts")).CATALOG
 		: [];
 	// Every run (build included) refuses an invalid registry: a demo without an id must never ship.
-	const errors = catalog.length ? checkCatalog(catalog) : [];
+	const errors = catalog.length ? checkCatalog(catalog, manifest.components) : [];
 	if (errors.length) {
 		console.error(`demo catalog (site/src/demos/catalog.ts):\n  ${errors.join("\n  ")}`);
 		process.exit(1);
@@ -1627,11 +1687,20 @@ if (import.meta.main) {
 				recipes: buildRecipes(guides),
 			});
 		}
+		if (existsSync(DEMOS_DIR)) write("atlas.json", buildAtlasFile());
+		// The design-style pages need site/ (their data lives in site/src/data/styles): not in a tarball build.
+		if (existsSync(DEMOS_DIR)) write("styles.json", buildStyleFile());
 		const { demos, files } = catalog.length
 			? buildDemos(manifest, catalog)
 			: { demos: [], files: {} };
 		if (demos.length) {
 			write("demos.json", demos);
+			const indexFiles = buildIndexFiles(demos, manifest.version);
+			const siteRoot = resolve(ROOT, "../../site/public");
+			for (const [name, body] of Object.entries(indexFiles)) {
+				mkdirSync(dirname(join(siteRoot, name)), { recursive: true });
+				writeFileSync(join(siteRoot, name), body);
+			}
 			for (const base of [join(dist, "api/v1"), resolve(ROOT, "../../site/public/api/v1")])
 				for (const [name, body] of Object.entries(files)) {
 					mkdirSync(dirname(join(base, name)), { recursive: true });

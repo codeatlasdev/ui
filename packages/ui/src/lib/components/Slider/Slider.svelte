@@ -1,6 +1,7 @@
 <script lang="ts">
   import { useMessages } from '../../i18n/state.svelte.js';
   import { slider } from '../../i18n/groups/slider.js';
+  import { cueFor, soundBus, type SoundProp } from '../../utils/sound-bus.js';
   const t = useMessages(slider);
 
   /**
@@ -26,8 +27,12 @@
     step?:     number;
     disabled?: boolean;
     class?:    string;
+    /** Accessible name of the thumb(s). Without it a thumb is announced as "Value 40". A range appends "minimum"/"maximum". */
+    label?:    string;
     /** Called on change. Always receives array regardless of single/range mode. */
     onchange?: (value: number[]) => void;
+    /** Plays `tick` for each step the user crosses (a cue name replaces it); off under reduced motion. Needs `@codeatlasdev/ui/sound`. */
+    sound?:    SoundProp;
   }
 
   let {
@@ -38,7 +43,9 @@
     step     = 1,
     disabled = false,
     class: className = '',
+    label,
     onchange,
+    sound,
   }: Props = $props();
 
   /** Snap to the nearest `step` from `min`, clamped, without float drift (0.1 steps etc.). */
@@ -59,6 +66,8 @@
     if (next.length === internal.length && next.every((n, i) => n === internal[i])) return;
     if (values !== undefined) values = [next[0], next[1] ?? values[1]];
     else value = next[0];
+    const cue = cueFor(sound, 'tick');
+    if (cue) soundBus.emit(cue);
     onchange?.(next);
   }
 
@@ -196,7 +205,7 @@
       role="slider"
       tabindex={disabled ? -1 : 0}
       class="ca-slider__thumb"
-      aria-label={t().slider.value(v)}
+      aria-label={label ? (internal.length > 1 ? `${label} ${i === 0 ? t().slider.minimum : t().slider.maximum}` : label) : t().slider.value(v)}
       aria-valuemin={min}
       aria-valuemax={max}
       aria-valuenow={v}

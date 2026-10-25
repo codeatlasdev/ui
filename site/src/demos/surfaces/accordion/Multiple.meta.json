@@ -9,5 +9,29 @@
 		"Wrapped in `.wrap` with `max-width: 560px`"
 	],
 	"tags": ["accordion", "accordion-item", "multiple", "expand", "disclosure"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "surface",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Accordion", "AccordionItem"],
+		"aliases": ["multi open", "expand several"],
+		"related": ["067", "065", "073"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

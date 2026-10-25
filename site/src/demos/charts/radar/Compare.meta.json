@@ -9,5 +9,29 @@
 		"`height=\"340px\"` inside `<Card full>`"
 	],
 	"tags": ["radar-chart", "compare", "series", "indicators", "scores", "card"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "chart",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "RadarChart"],
+		"aliases": ["spider chart", "two teams", "skills comparison"],
+		"related": ["212", "211", "209"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

@@ -26,5 +26,29 @@
 			"stagger": "40ms"
 		}
 	],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "motion",
+		"subtype": "text",
+		"industry": ["general"],
+		"style": ["terminal"],
+		"motion": "expressive",
+		"interaction": ["hover", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["MotionStage"],
+		"aliases": ["decode", "glitch text", "hacker text", "cipher"],
+		"related": ["304", "300", "305"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

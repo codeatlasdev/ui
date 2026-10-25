@@ -8,5 +8,29 @@
 		"Chips sit in a `<div class=\"row\">` styled with `width: max-content` so the content overflows"
 	],
 	"tags": ["scroll-area", "horizontal", "scrollbar", "chip", "card", "overflow"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["scroll", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["ScrollArea", "Card", "Chip"],
+		"aliases": ["horizontal overflow", "custom scrollbar", "tag strip"],
+		"related": ["137", "139"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

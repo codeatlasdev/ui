@@ -7,5 +7,29 @@
 		"Cards are `title=\"Starter\"` (Up to 3 projects.) and `title=\"Team\"` (Unlimited projects and roles.)"
 	],
 	"tags": ["container", "section", "stack", "card", "layout", "page", "heading-level"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "airy",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Container", "Section", "Stack", "Card"],
+		"aliases": ["page container", "section wrapper", "pricing plans"],
+		"related": ["181", "182", "187"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

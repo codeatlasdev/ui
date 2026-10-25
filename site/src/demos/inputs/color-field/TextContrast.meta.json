@@ -1,0 +1,36 @@
+{
+	"summary": "Color field for a text color measured against a white page, with a sample line in that color.",
+	"use": "Choosing text colors that must reach WCAG AA.",
+	"spec": [
+		"`<ColorField` with `label=\"Body text\"`, `bind:value={text}`, `against={page}`, `minRatio={4.5}` and `format=\"oklch\"`",
+		"`page` is the constant `'#ffffff'`",
+		"Initial value is `$state('#6b7280')`",
+		"Below the field, a white box shows a sample sentence painted in the current color"
+	],
+	"tags": ["color-field", "contrast", "wcag", "text", "oklch"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["ColorField"],
+		"aliases": ["text color", "wcag contrast", "readable text", "ink color"],
+		"related": ["990"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-25",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

@@ -9,5 +9,29 @@
 		"Wrapper `.col` has `width: 100%`"
 	],
 	"tags": ["code-snippet", "code", "syntax-highlighting", "svelte", "typescript", "css"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["devtools"],
+		"style": ["terminal"],
+		"motion": "none",
+		"interaction": ["hover", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["CodeSnippet"],
+		"aliases": ["syntax highlighting", "code block", "copy code", "source listing"],
+		"related": ["129"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

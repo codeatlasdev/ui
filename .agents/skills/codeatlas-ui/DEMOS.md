@@ -382,3 +382,11 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 985 | Sparkline | layout/kpi-card | KpiCard, KpiGrid, Sparkline |
 | 986 | Inline content | layout/preview-stage | Button, PreviewStage |
 | 987 | A whole page | layout/preview-stage | PreviewStage |
+| 988 | Hear it | feedback/sound | Button, SegmentedControl, SoundToggle |
+| 989 | Components | feedback/sound | Button, Dialog, Slider, Switch, Tabs, TabsList, TabsTrigger, SoundToggle |
+| 990 | Brand color | inputs/color-field | ColorField |
+| 991 | Text color | inputs/color-field | ColorField |
+| 992 | Label and number | inputs/slider | SliderField |
+| 993 | Viewport simulator | concepts/viewport | SegmentedControl, Switch, Slider |
+| 994 | A hero that is a floor | concepts/viewport | Button, Switch |
+| 995 | A form with the keyboard open | concepts/viewport | Button, StickyActions, TextField |

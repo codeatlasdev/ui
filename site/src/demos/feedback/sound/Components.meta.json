@@ -1,0 +1,45 @@
+{
+	"summary": "Button, Switch, Tabs, Slider, Toast and Dialog with their sound prop on, behind one sound toggle.",
+	"use": "Show which components speak when the sound prop is set, and that they stay silent until the toggle is on.",
+	"spec": [
+		"`<SoundToggle />` on top, off until the user presses it",
+		"`<Button sound>`, `<Switch sound`, `<Tabs sound bind:value={tab}>`, `<Slider sound`",
+		"`toast.success('Saved', { sound: true })` from a Toast button",
+		"`<Dialog sound bind:open title=\"Sound on open and close\">`"
+	],
+	"tags": ["sound", "button", "switch", "tabs", "slider", "toast", "dialog"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "drag", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [
+			"Button",
+			"Dialog",
+			"Slider",
+			"Switch",
+			"Tabs",
+			"TabsList",
+			"TabsTrigger",
+			"SoundToggle"
+		],
+		"aliases": ["sound prop", "audible feedback", "interface sound", "sound on components"],
+		"related": ["988"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-25",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

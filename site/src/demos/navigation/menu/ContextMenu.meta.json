@@ -10,5 +10,29 @@
 		"Each item calls `function pick(action: string)`, which sets `last = action` and calls `announce`; `Last action: {last}` is shown below"
 	],
 	"tags": ["dropdown-menu", "context-menu", "right-click", "anchor", "bind-open", "keyboard"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["cursor", "keyboard", "press"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["DropdownMenu", "DropdownMenuItem", "DropdownMenuSeparator"],
+		"aliases": ["right click", "context actions"],
+		"related": ["942", "943", "158"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

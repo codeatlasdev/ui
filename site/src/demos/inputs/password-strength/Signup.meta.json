@@ -7,5 +7,29 @@
 		"Column is `max-width: 20rem` with `gap: var(--ca-space-2)`"
 	],
 	"tags": ["password-strength", "password", "meter", "sign-up", "text-field", "aria-live"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["PasswordStrength", "TextField"],
+		"aliases": ["password meter", "signup", "strength indicator"],
+		"related": ["842", "500", "843"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

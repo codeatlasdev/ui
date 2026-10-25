@@ -7,5 +7,29 @@
 		"`href=\"https://github.com/codeatlasdev/ui\"` with `target=\"_blank\"` renders an anchor"
 	],
 	"tags": ["button", "disabled", "destructive", "link", "href"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover", "press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button"],
+		"aliases": ["inactive", "danger", "link"],
+		"related": ["006", "003", "640"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

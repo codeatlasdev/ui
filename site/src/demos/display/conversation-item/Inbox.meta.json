@@ -8,5 +8,29 @@
 		"`{#snippet avatar()}<Avatar alt={row.title} size=\"lg\" />{/snippet}`"
 	],
 	"tags": ["conversation-item", "inbox", "chat", "unread", "avatar"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "hover", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Avatar", "ConversationItem"],
+		"aliases": ["chat list", "message inbox", "unread badge", "pinned chat", "typing indicator"],
+		"related": ["248", "250", "114"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

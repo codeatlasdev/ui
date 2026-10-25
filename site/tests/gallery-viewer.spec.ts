@@ -9,10 +9,11 @@ test.describe("gallery viewer", () => {
 		const stage = page.getByRole("group", { name: /^Full width at/ });
 		await expect(stage.getByRole("button", { name: "Continue" })).toBeVisible();
 
-		// Width presets: the frame is exactly that many CSS px.
+		// Width presets: the frame is laid out at exactly that many CSS px. A stage narrower than the frame
+		// (a phone) scales the whole viewport down, so the layout width is read, not the transformed box.
 		const frame = page.locator(".ca-pstage__frame");
 		await page.getByRole("radio", { name: "390", exact: true }).click();
-		await expect.poll(async () => Math.round((await frame.boundingBox())?.width ?? 0)).toBe(390);
+		await expect.poll(() => frame.evaluate((el) => (el as HTMLElement).offsetWidth)).toBe(390);
 		await expect(page).toHaveURL(/[?&]w=390/);
 
 		// Scheme is per stage: the page around it keeps its own.
@@ -37,6 +38,45 @@ test.describe("gallery viewer", () => {
 		await expect(page).toHaveURL(/\/gallery\/002\//);
 	});
 
+	test("Prompt and Anatomy tabs carry the exact parts, timings and links, and live in the URL", async ({
+		page,
+	}) => {
+		await gotoReady(page, "/gallery/256/");
+		await page.getByRole("tab", { name: "Prompt" }).click();
+		await expect(page).toHaveURL(/tab=prompt/);
+		const text = page.getByTestId("viewer-prompt-text");
+		await expect(text).toContainText('get_demo({ ids: ["#256"] })');
+		await expect(text).toContainText("opacity, transform: translateY: 420ms");
+		await expect(text).not.toContainText(/industry/i);
+		// The copy button copies the same text.
+		expect(await page.getByTestId("viewer-prompt").getAttribute("data-value")).toBe(
+			await text.textContent()
+		);
+
+		await page.getByRole("tab", { name: "Anatomy" }).click();
+		await expect(page).toHaveURL(/tab=anatomy/);
+		await expect(
+			page.locator(".viewer__parts").getByRole("link", { name: "Card", exact: true })
+		).toHaveAttribute("href", /^\/docs\/.+\/card\/$/);
+		await expect(page.locator(".viewer__parts").getByText("MotionStage")).toBeVisible();
+		await expect(page.getByRole("heading", { name: "Related" })).toBeVisible();
+		const related = page.locator(".viewer__related a").first();
+		await expect(related).toHaveAttribute("href", /^\/gallery\/\d+\/$/);
+
+		await gotoReady(page, "/gallery/256/?tab=anatomy");
+		await expect(page.getByRole("tab", { name: "Anatomy" })).toHaveAttribute(
+			"aria-selected",
+			"true"
+		);
+	});
+
+	test("a page has Preview and Prompt only", async ({ page }) => {
+		await gotoReady(page, "/gallery/page-auth-sign-in/");
+		await expect(page.getByRole("tab", { name: "Prompt" })).toBeVisible();
+		await expect(page.getByRole("tab", { name: "Code" })).toHaveCount(0);
+		await expect(page.getByRole("tab", { name: "Anatomy" })).toHaveCount(0);
+	});
+
 	test("Pick and Copy prompt", async ({ page }) => {
 		await gotoReady(page, "/gallery/005/");
 		await page.getByRole("button", { name: "Pick", exact: true }).click();
@@ -55,7 +95,8 @@ test.describe("gallery viewer", () => {
 		await gotoReady(page, "/gallery/page-auth-sign-in/?w=390&scheme=light");
 		const iframe = page.locator("iframe.ca-pstage__iframe");
 		await expect(iframe).toHaveAttribute("title", /Sign in at 390 pixels/);
-		expect(Math.round((await iframe.boundingBox())?.width ?? 0)).toBe(390);
+		// Laid out at 390 CSS px even when the stage is narrower and scales the frame down to fit.
+		expect(await iframe.evaluate((el) => (el as HTMLElement).offsetWidth)).toBe(390);
 		const inner = page.frameLocator("iframe.ca-pstage__iframe");
 		await expect(inner.locator("html")).not.toHaveClass(/dark/);
 		await page.getByRole("radio", { name: "Dark" }).click();

@@ -31,5 +31,29 @@
 			"easing": "cubic-bezier(0.2, 0, 0, 1)"
 		}
 	],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "motion",
+		"subtype": "text",
+		"industry": ["saas", "fintech"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["hover", "press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["Button", "MotionStage"],
+		"aliases": ["ticker tape", "logo strip", "infinite scroll", "logo cloud"],
+		"related": ["305", "300", "324"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

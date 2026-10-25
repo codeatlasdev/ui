@@ -1,0 +1,13 @@
+---
+interface Props {
+	/** ISO date (YYYY-MM-DD) of the last review of this page's evidence. */
+	reviewed: string;
+}
+const { reviewed } = Astro.props;
+if (!/^\d{4}-\d{2}-\d{2}$/.test(reviewed)) throw new Error(`<Limits reviewed="${reviewed}">: use YYYY-MM-DD`);
+---
+<aside class="limits" aria-labelledby="limits">
+	<h2 id="limits">Limits</h2>
+	<div class="limits__body"><slot /></div>
+	<p class="limits__reviewed">Last reviewed <time datetime={reviewed}>{reviewed}</time>.</p>
+</aside>

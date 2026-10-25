@@ -9,5 +9,29 @@
 		"The first cell uses `class=\"primary\"`"
 	],
 	"tags": ["table", "simple-table", "scroll", "overflow", "card", "users"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["scroll"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["SimpleTable", "Card"],
+		"aliases": ["overflow table", "horizontal scroll table", "member list"],
+		"related": ["138", "491", "123"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

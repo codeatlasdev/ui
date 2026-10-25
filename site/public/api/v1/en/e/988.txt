@@ -1,0 +1,54 @@
+<!-- @codeatlasdev/ui demo #988 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/sound#hear-it -->
+Element: #988 Hear it (feedback/sound)
+What it shows: A sound toggle with volume, a profile picker (system, glass, brutalism, terminal) and a board of buttons that each play one cue.
+When to use: Let people audition a sound profile before turning interface sound on in an app.
+Spec:
+- `<SoundToggle volume />` next to a `SegmentedControl` bound to the profile
+- `$effect(() => sound.use(PROFILES[profile]))` pins the picked profile and `onDestroy` releases it
+- A `role="group"` board of outlined small `Button` items, each with `sound={cue}` for one cue name
+- The cues are `press`, `toggle-on`, `toggle-off`, `success`, `error`, `warning`, `open`, `close` and `tab`
+Tags: sound, audio, feedback, profile, toggle
+Needs: @codeatlasdev/ui@4.5.0
+Components: Button, SegmentedControl, SoundToggle
+Live demo: https://ui.codeatlas.com.br/docs/feedback/sound#hear-it
+
+<script lang="ts">
+  import { Button, SegmentedControl } from '@codeatlasdev/ui';
+  import { SoundToggle, brutal, glass, sound, system, terminal } from '@codeatlasdev/ui/sound';
+  import type { CueName } from '@codeatlasdev/ui';
+  import { onDestroy } from 'svelte';
+
+  const PROFILES = { system, glass, brutal, terminal };
+  const CUES: CueName[] = ['press', 'toggle-on', 'toggle-off', 'success', 'error', 'warning', 'open', 'close', 'tab'];
+
+  let profile = $state<keyof typeof PROFILES>('system');
+  $effect(() => sound.use(PROFILES[profile]));
+  onDestroy(() => sound.use(undefined));
+</script>
+
+<div class="hear">
+  <div class="hear__bar">
+    <SoundToggle volume />
+    <SegmentedControl
+      aria-label="Sound profile"
+      bind:value={profile}
+      items={[
+        { value: 'system', label: 'System' },
+        { value: 'glass', label: 'Glass' },
+        { value: 'brutal', label: 'Brutalism' },
+        { value: 'terminal', label: 'Terminal' },
+      ]}
+    />
+  </div>
+  <div class="hear__board" role="group" aria-label="Cue board">
+    {#each CUES as cue (cue)}
+      <Button variant="outlined" size="sm" sound={cue}>{cue}</Button>
+    {/each}
+  </div>
+</div>
+
+<style>
+  .hear { display: grid; gap: var(--ca-space-4); }
+  .hear__bar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ca-space-3); }
+  .hear__board { display: flex; flex-wrap: wrap; gap: var(--ca-space-2); }
+</style>

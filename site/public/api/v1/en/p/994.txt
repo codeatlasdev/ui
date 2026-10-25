@@ -1,0 +1,14 @@
+Use @codeatlasdev/ui demo #994 "A hero that is a floor" (concepts/viewport).
+What it shows: A phone-sized scrollable frame holding a hero (eyebrow, heading, lead, filled Button) and a second section, with a switch for 200% text and a long translation and a switch for a continuation cue. When to use: Showing that a hero is a floor (min-height) so larger text grows it instead of clipping, and that without a visible cue the next section can read as the end of the page.
+Spec:
+- `<Switch bind:checked={large} label="Text at 200% and a long translation" />` swaps the title to the h2 token and the lead to a longer string
+- `<Switch bind:checked={cue} label="Continuation cue (peek at the next section)" />` toggles a `.is-peek` class on the second section
+- The frame is `inline-size: min(100%, 22rem)`, `block-size: 26rem`, `overflow-y: auto`, `tabindex="0"`, `role="region"` with an `aria-label`
+- `.hero` uses `min-block-size`, never `height`; `<Button variant="filled">See how it works</Button>` is the primary action
+- The second section is `<h4>How it works</h4>` with one paragraph, separated by a `border-block-start`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #994 A hero that is a floor → file, what changed, https://ui.codeatlas.com.br/docs/concepts/viewport#a-hero-that-is-a-floor; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/994.txt   Components API: ca-ui-mcp get_component(Button)

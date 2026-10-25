@@ -9,5 +9,29 @@
 		"`{#snippet actions()}` holds ghost Reset and filled Apply buttons"
 	],
 	"tags": ["drawer", "filters", "filter-group", "switch", "side-panel"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Drawer", "Button", "Switch", "Stack", "FilterGroup"],
+		"aliases": ["filter panel", "side panel"],
+		"related": ["088", "090", "461"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

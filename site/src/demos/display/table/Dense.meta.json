@@ -20,5 +20,29 @@
 		"crm"
 	],
 	"names": ["Dense table", "Compact table", "Tabela densa", "Pinned columns"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard", "hover"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["SimpleTable", "TableRow", "TableGroupRow", "TableSortHeader", "Checkbox"],
+		"aliases": ["crm table", "sticky columns", "collapsible groups", "leads list", "compact table"],
+		"related": ["138", "139", "433", "760"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

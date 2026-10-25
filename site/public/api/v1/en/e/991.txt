@@ -1,0 +1,47 @@
+<!-- @codeatlasdev/ui demo #991 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/color-field#text-color -->
+Element: #991 Text color (inputs/color-field)
+What it shows: Color field for a text color measured against a white page, with a sample line in that color.
+When to use: Choosing text colors that must reach WCAG AA.
+Spec:
+- `<ColorField` with `label="Body text"`, `bind:value={text}`, `against={page}`, `minRatio={4.5}` and `format="oklch"`
+- `page` is the constant `'#ffffff'`
+- Initial value is `$state('#6b7280')`
+- Below the field, a white box shows a sample sentence painted in the current color
+Tags: color-field, contrast, wcag, text, oklch
+Needs: @codeatlasdev/ui@4.5.0
+Components: ColorField
+Live demo: https://ui.codeatlas.com.br/docs/inputs/color-field#text-color
+
+<script lang="ts">
+  import { ColorField } from '@codeatlasdev/ui';
+
+  let text = $state('#6b7280');
+  const page = '#ffffff';
+</script>
+
+<div class="col">
+  <ColorField label="Body text" bind:value={text} against={page} minRatio={4.5} format="oklch" />
+  <div class="sample" style="--sample-ink:{text}">
+    <p class="sample__p">The quick brown fox jumps over the lazy dog.</p>
+  </div>
+</div>
+
+<style>
+  .col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--ca-space-3);
+    max-inline-size: 22rem;
+  }
+
+  .sample {
+    padding: var(--ca-space-3);
+    background: #ffffff;
+    border-radius: var(--ca-radius-md);
+  }
+
+  .sample__p {
+    margin: 0;
+    color: var(--sample-ink);
+  }
+</style>

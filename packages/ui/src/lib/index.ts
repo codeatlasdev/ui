@@ -75,6 +75,7 @@ export { default as Chip } from "./components/Chip/Chip.svelte";
 export type { ChipGroupItem } from "./components/ChipGroup/ChipGroup.svelte";
 export { default as ChipGroup } from "./components/ChipGroup/ChipGroup.svelte";
 export { default as Collapsible } from "./components/Collapsible/Collapsible.svelte";
+export { default as ColorField } from "./components/ColorField/ColorField.svelte";
 export type { ComboboxOption } from "./components/Combobox/Combobox.svelte";
 export { default as Combobox } from "./components/Combobox/Combobox.svelte";
 export type { CommandResult } from "./components/CommandPalette/CommandPalette.svelte";
@@ -225,6 +226,7 @@ export { default as SiteHeader } from "./components/SiteHeader/SiteHeader.svelte
 export { default as Skeleton } from "./components/Skeleton/Skeleton.svelte";
 export { default as SkipLink } from "./components/SkipLink/SkipLink.svelte";
 export { default as Slider } from "./components/Slider/Slider.svelte";
+export { default as SliderField } from "./components/SliderField/SliderField.svelte";
 export { default as Spinner } from "./components/Spinner/Spinner.svelte";
 export { default as SplashScreen } from "./components/SplashScreen/SplashScreen.svelte";
 export { default as Stack } from "./components/Stack/Stack.svelte";
@@ -294,6 +296,7 @@ export type { LayerChange, LayerInfo, LayerKind } from "./primitives/layer.js";
 export { onLayerChange } from "./primitives/layer.js";
 export type { ColorScheme, SurfaceStyle } from "./stores/color-scheme.svelte.js";
 export { colorScheme } from "./stores/color-scheme.svelte.js";
+export { layers } from "./stores/layers.svelte.js";
 export { reducedMotion, reducedTransparency } from "./stores/reduced-motion.svelte.js";
 export type { Breakpoint } from "./stores/responsive.svelte.js";
 export { responsive } from "./stores/responsive.svelte.js";
@@ -302,6 +305,10 @@ export { stageInsets } from "./stores/stage-insets.svelte.js";
 export type { ToastItem, ToastOptions, ToastVariant } from "./stores/toast.svelte.js";
 export { toast } from "./stores/toast.svelte.js";
 export { viewport } from "./stores/viewport.svelte.js";
+export type { BuiltinPresetSource } from "./theme/builtins.js";
+export { BUILTIN_PRESETS } from "./theme/builtins.js";
+export type { PresetContrastIssue } from "./theme/contrast.js";
+export { presetContrastIssues } from "./theme/contrast.js";
 export type {
 	AvatarTokens,
 	ButtonSizeTokens,
@@ -331,7 +338,13 @@ export type {
 	TypeScale,
 	TypographyOptions,
 } from "./theme/define.js";
-export { defineTheme, designTokens, themeCSS } from "./theme/define.js";
+export {
+	defineTheme,
+	designDefaults,
+	designTokens,
+	presetTokens,
+	themeCSS,
+} from "./theme/define.js";
 export type {
 	CaTokenName,
 	CaTokenRegistry,
@@ -350,6 +363,17 @@ export { THEME_PRESETS } from "./tokens/presets.js";
 export type { HeadingLevel, IconComponent, IconProps } from "./types.js";
 export type { Politeness } from "./utils/announce.js";
 export { announce } from "./utils/announce.js";
+export type { Oklch, PaletteColor, WcagLevel } from "./utils/color.js";
+export {
+	contrast,
+	extractPalette,
+	formatOklch,
+	parseColorInput,
+	pickBrand,
+	toHex,
+	toOklch,
+	wcagLevel,
+} from "./utils/color.js";
 export type {
 	ClassValue,
 	ExportColumn,
@@ -378,3 +402,5 @@ export {
 	useForm,
 	useListState,
 } from "./utils/index.js";
+export type { CueName, SoundProp } from "./utils/sound-bus.js";
+export { soundBus } from "./utils/sound-bus.js";

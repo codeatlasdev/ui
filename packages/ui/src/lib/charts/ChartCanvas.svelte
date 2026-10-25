@@ -8,6 +8,7 @@
 	import type { ECharts, EChartsOption } from "echarts";
 	import { chartGradient } from "./gradient.js";
 	import { chartPalette } from "./palette.js";
+	import { useChartScope } from "./tokens.js";
 
 	interface Props {
 		option: EChartsOption;
@@ -25,6 +26,7 @@
 
 	let { option, height = "320px", class: className = "", gradientSeries = [], overlay }: Props = $props();
 
+	const scope = useChartScope();
 	let container = $state<HTMLDivElement | null>(null);
 	let chart = $state<ECharts | null>(null);
 	// Module-level so onDestroy can disconnect even if onMount's async chain
@@ -36,7 +38,7 @@
 		if (!ec || !gradientSeries.length) return opt;
 		const series = Array.isArray(opt.series) ? [...opt.series] : [];
 		if (!series.length) return opt;
-		const palette = chartPalette();
+		const palette = chartPalette(scope.el);
 		const patched = series.map((s, i) => {
 			if (!gradientSeries.includes(i) || !s || typeof s !== "object") return s;
 			const row = s as Record<string, unknown>;

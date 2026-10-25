@@ -11,6 +11,8 @@ import Range from "~/demos/inputs/slider/Range.svelte";
 import RangeSrc from "~/demos/inputs/slider/Range.svelte?raw";
 import StepDisabled from "~/demos/inputs/slider/StepDisabled.svelte";
 import StepDisabledSrc from "~/demos/inputs/slider/StepDisabled.svelte?raw";
+import Field from "~/demos/inputs/slider/Field.svelte";
+import FieldSrc from "~/demos/inputs/slider/Field.svelte?raw";
 
 ```svelte
 <script>
@@ -23,7 +25,7 @@ import StepDisabledSrc from "~/demos/inputs/slider/StepDisabled.svelte?raw";
 <Slider bind:values={range} />
 ```
 
-`value` and `values` are independent: bind one or the other. The slider has no built-in label or value readout, so render those next to it as the demos do. Arrow keys move by `step`, Home and End jump to the bounds.
+`value` and `values` are independent: bind one or the other. The bare slider has no visible label or value readout: pass `label` so assistive tech hears "Radius" instead of "Value 40", and use [SliderField](/docs/inputs/slider/#sliderfield) when you want the label and an editable number built in. Arrow keys move by `step`, Home and End jump to the bounds.
 
 <Demo title="Single value" description="Binds a plain number. Default range is 0 to 100." src={SingleSrc}><Single client:visible /></Demo>
 <Demo title="Range" description="Bind a [min, max] tuple to values for two thumbs." src={RangeSrc}><Range client:visible /></Demo>
@@ -35,7 +37,38 @@ import StepDisabledSrc from "~/demos/inputs/slider/StepDisabled.svelte?raw";
   { name: "min", type: "number", default: "0", description: "Minimum value." },
   { name: "max", type: "number", default: "100", description: "Maximum value." },
   { name: "step", type: "number", default: "1", description: "Step increment." },
+  { name: "label", type: "string", description: "Accessible name of the thumb. Without it a thumb is announced as \"Value 40\". A range appends \"minimum\" and \"maximum\"." },
   { name: "disabled", type: "boolean", default: "false", description: "Disables the slider." },
   { name: "class", type: "string", description: "Extra classes on the root." },
   { name: "onchange", type: "(value: number[]) => void", description: "Called on change. Always receives an array: one number in single mode, two in range mode." },
+]} />
+
+## SliderField
+
+A labelled slider with an editable number and an optional unit, for settings where people scrub and also type an exact value.
+
+```svelte
+<script>
+  import { SliderField } from "@codeatlasdev/ui";
+  let radius = $state(0.8);
+</script>
+
+<SliderField label="Radius" bind:value={radius} min={0} max={2} step={0.05} unit="x" />
+```
+
+The slider scrubs, the number field types. Both write the same `value`. A typed value is clamped to the range and snapped to `step` when the field commits (Enter or blur), so `1.234` with `step={0.05}` becomes `1.25`. The label names both controls, and Arrow, Page and Home/End keys work on the slider.
+
+<Demo title="Label and number" description="Label, slider and an editable number with a unit." src={FieldSrc}><Field client:visible /></Demo>
+
+<Props for="SliderField" title="SliderField props" rows={[
+  { name: "label", type: "string", description: "Visible label and the accessible name of both controls." },
+  { name: "value", type: "number", default: "0", description: "Bindable value." },
+  { name: "min", type: "number", default: "0", description: "Minimum value." },
+  { name: "max", type: "number", default: "100", description: "Maximum value." },
+  { name: "step", type: "number", default: "1", description: "Step. Also sets the decimals shown." },
+  { name: "unit", type: "string", description: "Unit shown after the number (px, rem, deg, x)." },
+  { name: "description", type: "string", description: "Hint under the slider." },
+  { name: "disabled", type: "boolean", default: "false", description: "Disables both controls." },
+  { name: "class", type: "string", description: "Extra classes on the root." },
+  { name: "onchange", type: "(value: number) => void", description: "Called once per committed change of either control." },
 ]} />

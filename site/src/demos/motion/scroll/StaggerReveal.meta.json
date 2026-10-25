@@ -25,5 +25,29 @@
 			"stagger": "calc(var(--i) * 80ms)"
 		}
 	],
-	"shape": "tall"
+	"shape": "tall",
+	"index": {
+		"kind": "motion",
+		"subtype": "scroll",
+		"industry": ["saas", "fintech"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["scroll", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["Card", "MotionStage"],
+		"aliases": ["list entrance", "cascade", "scroll animation", "feed"],
+		"related": ["321", "256", "325"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

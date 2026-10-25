@@ -31,14 +31,28 @@ const ENTRIES: Entry[] = [
 		requires: "map/index.js",
 		external: ["maplibre-gl", "mapbox-gl", "@deck.gl/core", "@deck.gl/mapbox"],
 	},
+	{
+		name: "./sound",
+		js: `export * from "./sound/index.js";`,
+		requires: "sound/index.js",
+	},
+	// The spec budget (4 KB) is for our own bytes: the engine, profiles, `use:sound` and the toggle,
+	// without the Svelte runtime and icon every Svelte entry above also pays for.
+	{
+		name: "./sound (own code, Svelte external)",
+		js: `export * from "./sound/index.js";`,
+		requires: "sound/index.js",
+		external: ["svelte", "svelte/*", "@lucide/svelte", "@lucide/svelte/*"],
+	},
 	{ name: "styles/core.css", css: "styles/core.css" },
 	{ name: "styles/global.css", css: "styles/global.css" },
 ];
 
 /** Importing `Button` must not drag in other components, stores or the theme engine. */
-// announce: Button announces when `loading` ends (screen readers).
+// announce: Button announces when `loading` ends (screen readers). sound-bus: the no-op hook behind
+// the `sound` prop (a listener variable and one function; the engine lives in ./sound).
 const BUTTON_ALLOWED =
-	/^dist\/(index\.js|components\/(Button|Spinner)\/|i18n\/|utils\/announce\.js$)/;
+	/^dist\/(index\.js|components\/(Button|Spinner)\/|i18n\/|utils\/(announce|sound-bus)\.js$)/;
 
 if (!existsSync(join(dist, "index.js"))) {
 	console.error("dist/ not found: run `bun run build:pkg` first");

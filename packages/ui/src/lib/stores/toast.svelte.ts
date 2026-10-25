@@ -1,5 +1,6 @@
 // ─── Toast store ──────────────────────────────────────────────────────────────
 import { uid } from "../utils/index.js";
+import type { SoundProp } from "../utils/sound-bus.js";
 export type ToastVariant = "default" | "success" | "error" | "warning" | "info";
 
 export interface ToastItem {
@@ -13,6 +14,8 @@ export interface ToastItem {
 	description?: string;
 	/** One inline action; clicking it runs `onClick` and dismisses the toast. */
 	action?: ToastAction;
+	/** Plays `success`, `error` or `warning` by variant (`notify` otherwise; a cue name replaces it) when `@codeatlasdev/ui/sound` is on. */
+	sound?: SoundProp;
 }
 
 export interface ToastAction {
@@ -30,6 +33,8 @@ export interface ToastOptions {
 	description?: string;
 	/** One inline button (label + handler). Clicking it runs `onClick` and dismisses the toast. An actionable toast lasts 8000 ms unless `duration` says otherwise. */
 	action?: ToastAction;
+	/** Plays the cue of the variant (`success`, `error`, `warning`, else `notify`) when the toast appears; a cue name replaces it. Needs `@codeatlasdev/ui/sound`. */
+	sound?: SoundProp;
 }
 
 /** Most toasts on screen at once; the oldest is dropped past this. */
@@ -91,7 +96,7 @@ function createToastStore() {
 	}
 
 	function add(message: string, variant: ToastVariant, opts: ToastOptions = {}): string {
-		const { description, action } = opts;
+		const { description, action, sound } = opts;
 		const duration = opts.duration ?? (action ? ACTION_DURATION : DEFAULT_DURATION);
 		const byId = opts.id !== undefined;
 		// A toast with an action is never a repeat: each carries its own handler.
@@ -110,14 +115,16 @@ function createToastStore() {
 		if (existing) {
 			const count = byId ? 1 : (existing.count ?? 1) + 1;
 			items = items.map((t) =>
-				t === existing ? { id: t.id, message, variant, duration, count, description, action } : t
+				t === existing
+					? { id: t.id, message, variant, duration, count, description, action, sound }
+					: t
 			);
 			arm(existing.id, duration);
 			return existing.id;
 		}
 
 		const id = opts.id ?? uid("toast");
-		let next = [...items, { id, message, variant, duration, count: 1, description, action }];
+		let next = [...items, { id, message, variant, duration, count: 1, description, action, sound }];
 		for (const dropped of next.slice(0, Math.max(0, next.length - TOAST_MAX))) {
 			disarm(dropped.id);
 			paused.delete(dropped.id);

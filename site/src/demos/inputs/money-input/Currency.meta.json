@@ -8,5 +8,29 @@
 		"Labels: `Price (USD, en-US)`, `Price (JPY, no decimals)` and `Preis (EUR, de-DE)`"
 	],
 	"tags": ["money-input", "currency", "locale", "usd", "jpy", "eur", "forms"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["fintech"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["MoneyInput"],
+		"aliases": ["locale", "price input", "multi currency"],
+		"related": ["028", "026", "029"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

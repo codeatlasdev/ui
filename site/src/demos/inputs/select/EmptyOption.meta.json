@@ -8,5 +8,29 @@
 		"Current value is shown as `JSON.stringify(project)`"
 	],
 	"tags": ["select", "empty-option", "filter", "placeholder", "all"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Select"],
+		"aliases": ["all option", "filter dropdown", "reset option"],
+		"related": ["040", "042", "043"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

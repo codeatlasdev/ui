@@ -408,6 +408,7 @@ Parts: `ca-breadcrumb__current` `ca-breadcrumb__item` `ca-breadcrumb__link` `ca-
 | `align?` | `'center' \| 'between'` | `'center'` | `'between'` pins the label to the start and `trailing` to the end (use with `fullWidth` or a fixed width). The loading spinner stays in the leading slot. Default `'center'`. |
 | `onclick?` | `(e: MouseEvent) => void` |  |  |
 | `aria-label?` | `string` |  |  |
+| `sound?` | `SoundProp` |  | Plays `press` on pointer down and `release` on pointer up (a cue name replaces `press`) when the optional `@codeatlasdev/ui/sound` entry is imported and the user turned sound on. Never the only signal. |
 | `type?` | `string` |  | MIME type hint of the linked resource. |
 | `form?` | `never` |  |  |
 
@@ -583,6 +584,19 @@ Tokens: `--ca-carousel-per-view`
 | `name?` | `string` |  |  |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
 
+## ChartScope
+
+`import { ChartScope } from "@codeatlasdev/ui/charts"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `scope?` | `HTMLElement \| null` | `null` | The element to read tokens from. Omit to use the wrapper div this component renders. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Parts: `ca-chart-scope`
+
 ## Checkbox
 
 `import { Checkbox } from "@codeatlasdev/ui"`
@@ -711,6 +725,29 @@ Internal (may change in any release): `ca-slide-down` `ca-slide-up`
 Variables: `--ca-collapsible-height`
 
 Data attributes: `data-state` (`closed` `open`)
+
+## ColorField
+
+`import { ColorField } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `label` | `string` |  |  |
+| `value?` | `string` | `'#000000'` | `bind:` Committed color as a CSS string. Invalid input never reaches it. |
+| `format?` | `'hex' \| 'oklch'` | `'hex'` | What the native picker writes: `hex` (default) or `oklch`. |
+| `against?` | `string` |  | Background to measure contrast against (any CSS color). Omit to hide the readout. |
+| `role?` | `'text' \| 'fill'` | `'text'` | Role of `value` in the contrast pair: `text` (value on `against`) or `fill` (against on value). |
+| `minRatio?` | `number` | `4.5` | Minimum ratio that counts as passing. 4.5 for text, 3 for UI parts. |
+| `description?` | `string` |  |  |
+| `disabled?` | `boolean` | `false` |  |
+| `class?` | `string` | `''` |  |
+| `onchange?` | `(value: string) => void` |  |  |
+
+Parts: `ca-color-field` `ca-color-field__contrast` `ca-color-field__level` `ca-color-field__native` `ca-color-field__pick` `ca-color-field__ratio` `ca-color-field__swatch`
+
+Variables: `--ca-color-field-fill`
+
+Data attributes: `data-disabled`, `data-pass`
 
 ## Combobox
 
@@ -1085,6 +1122,7 @@ Dialog: second-layer modal.
 | `fullscreenBelow?` | `'sm' \| 'md'` |  | Full screen below this breakpoint (`'sm'` = 600px, `'md'` = 900px), any `size`: exactly the viewport (`--ca-vh`), square corners, safe-area padding kept. Focus trap and Escape are unchanged. |
 | `class?` | `string` | `''` |  |
 | `onOpenChange?` | `(open: boolean) => void` |  |  |
+| `sound?` | `SoundProp` |  | Plays `open` and `close` as the dialog opens and closes (a cue name replaces both) when `@codeatlasdev/ui/sound` is on. |
 
 Snippets: `children`; `actions`
 
@@ -3046,11 +3084,47 @@ Slider — single or range value input.
 | `step?` | `number` | `1` |  |
 | `disabled?` | `boolean` | `false` |  |
 | `class?` | `string` | `''` |  |
+| `label?` | `string` |  | Accessible name of the thumb(s). Without it a thumb is announced as "Value 40". A range appends "minimum"/"maximum". |
 | `onchange?` | `(value: number[]) => void` |  | Called on change. Always receives array regardless of single/range mode. |
+| `sound?` | `SoundProp` |  | Plays `tick` for each step the user crosses (a cue name replaces it); off under reduced motion. Needs `@codeatlasdev/ui/sound`. |
 
 Parts: `ca-slider` `ca-slider__range` `ca-slider__thumb` `ca-slider__track`
 
 Data attributes: `data-disabled`
+
+## SliderField
+
+`import { SliderField } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `label` | `string` |  | Visible label and the accessible name of both controls. |
+| `value?` | `number` | `0` | `bind:` |
+| `min?` | `number` | `0` |  |
+| `max?` | `number` | `100` |  |
+| `step?` | `number` | `1` |  |
+| `unit?` | `string` |  | Unit shown after the number (`px`, `rem`, `deg`, `x`). |
+| `description?` | `string` |  | Content under the control. |
+| `disabled?` | `boolean` | `false` |  |
+| `class?` | `string` | `''` |  |
+| `onchange?` | `(value: number) => void` |  |  |
+
+Parts: `ca-slider-field` `ca-slider-field__head` `ca-slider-field__hint` `ca-slider-field__label` `ca-slider-field__value`
+
+Data attributes: `data-disabled`
+
+## SoundToggle
+
+`import { SoundToggle } from "@codeatlasdev/ui/sound"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `label?` | `string` |  | Accessible name and tooltip. |
+| `size?` | `number` | `18` |  |
+| `volume?` | `boolean` | `false` | Adds a volume slider beside the button. |
+| `class?` | `string` | `''` |  |
+
+Parts: `ca-sound-toggle` `ca-sound-toggle__btn` `ca-sound-toggle__volume`
 
 ## Sparkline
 
@@ -3280,6 +3354,7 @@ Tokens: `--ca-swatch-color`
 | `aria-labelledby?` | `string` |  |  |
 | `class?` | `string` | `''` |  |
 | `onchange?` | `(checked: boolean) => void` |  |  |
+| `sound?` | `SoundProp` |  | Plays `toggle-on` / `toggle-off` on a user change (a cue name plays that cue both ways) when `@codeatlasdev/ui/sound` is on. |
 
 Parts: `ca-switch` `ca-switch-wrapper` `ca-switch__input` `ca-switch__label` `ca-switch__label--disabled` `ca-switch__thumb`
 
@@ -3356,6 +3431,7 @@ Snippets: `children`: Column label.
 | `onchange?` | `(v: string) => void` |  |  |
 | `variant?` | `"pill" \| "line"` | `'pill'` | `pill` fills the active tab on a glass list; `line` underlines it on a bare list (page headers). |
 | `class?` | `string` | `''` |  |
+| `sound?` | `SoundProp` |  | Plays `tab` when the user selects another tab (a cue name replaces it) when `@codeatlasdev/ui/sound` is on. |
 
 Snippets: `children`
 
@@ -3741,6 +3817,14 @@ Move `id` per a drop event inside plain arrays: the reorder/move helper apps usu
 function applyMove<T>(lists: Record<string, T[]>, e: DndDropEvent, key: (item: T) => string): Record<string, T[]>
 ```
 
+### BUILTIN_PRESETS
+
+`import { BUILTIN_PRESETS } from "@codeatlasdev/ui"`
+
+```ts
+const BUILTIN_PRESETS: BuiltinPresetSource[]
+```
+
 ### collectPaths
 
 `import { collectPaths } from "@codeatlasdev/ui"`
@@ -3772,6 +3856,16 @@ const colorScheme: {
   setTokens: (vars: Record<string, string>) => void;
   init: () => () => void;
 }
+```
+
+### contrast
+
+`import { contrast } from "@codeatlasdev/ui"`
+
+WCAG contrast ratio of `fg` on `bg`. A translucent `fg` is composited over `bg`, and a translucent `bg` over white, like a browser paints them. Null when either cannot be evaluated (`var()`, other keywords).
+
+```ts
+function contrast(fg: string, bg: string): number | null
 ```
 
 ### copyToClipboard
@@ -3867,6 +3961,16 @@ Design-style recipes by id (default, liquid, swiss, ... editorial, terminal): ea
 const DESIGN_STYLES: Record<DesignStyleId, DesignStyle>
 ```
 
+### designDefaults
+
+`import { designDefaults } from "@codeatlasdev/ui"`
+
+The stylesheet default (`tokens.css`) of every knob `designTokens` can write, so a scoped preview can reset what an outer theme set before it applies its own edits: `designTokens` leaves a value out when it equals the default, which lets the page's theme cascade into an island. Values here are exactly the declarations of `tokens.css`; `tests/theme-defaults.test.ts` keeps them in step.
+
+```ts
+function designDefaults(): Record<string, string>
+```
+
 ### designStyle
 
 `import { designStyle } from "@codeatlasdev/ui"`
@@ -3949,6 +4053,16 @@ const elevation: {
   thick: 12;
   chrome: 20;
 }
+```
+
+### extractPalette
+
+`import { extractPalette } from "@codeatlasdev/ui"`
+
+Dominant colors of an RGBA pixel buffer (`ImageData.data`), by k-means in OKLab so clusters are perceptual rather than channel-wise. Transparent pixels are ignored; the buffer is subsampled to at most `maxSamples` pixels. Deterministic (farthest-point seeding, no randomness). Result is sorted by `share`, largest first, and merged so no two entries sit within `minDistance` in OKLab.
+
+```ts
+function extractPalette(rgba: ArrayLike<number>, options?: { k?: number | undefined; maxSamples?: number | undefined; minDistance?: number | undefined; }): PaletteColor[]
 ```
 
 ### findActiveItem
@@ -4069,6 +4183,16 @@ Format a number with locale-aware thousands separator.
 function formatNumber(value: number, locale?: string, options?: Intl.NumberFormatOptions): string
 ```
 
+### formatOklch
+
+`import { formatOklch } from "@codeatlasdev/ui"`
+
+`oklch(L C H)` string with 3-decimal lightness/chroma and 1-decimal hue.
+
+```ts
+function formatOklch(options: Oklch): string
+```
+
 ### formatRelativeTime
 
 `import { formatRelativeTime } from "@codeatlasdev/ui"`
@@ -4143,6 +4267,16 @@ Type guard: true for a `NavSection` (a titled group of items), false for a plain
 
 ```ts
 function isNavSection(item: NavItem | NavSection): item is NavSection
+```
+
+### layers
+
+`import { layers } from "@codeatlasdev/ui"`
+
+Reactive state of the layer stack. `layers.modalOpen` is true while a dialog, drawer or sheet is open; `layers.blocks(el)` is false for a trigger inside the topmost modal.
+
+```ts
+const layers: { readonly modalOpen: boolean; blocks(trigger?: Element | null): boolean; }
 ```
 
 ### letterSpacing
@@ -4289,6 +4423,16 @@ Call `fn` after the scheme, preset or surface style of the page changes (the `cl
 function onTokensChange(fn: () => void): () => void
 ```
 
+### parseColorInput
+
+`import { parseColorInput } from "@codeatlasdev/ui"`
+
+Parse what a user types into a color field: `#rgb`, `#rrggbb`, `rgb()`, `oklch()`, `color-mix()`, `white`/`black`, or a bare `rrggbb`. Returns the canonical `#rrggbb` and OKLCH, or null.
+
+```ts
+function parseColorInput(input: string): { hex: string; oklch: Oklch; alpha: number; css: string } | null
+```
+
 ### passwordScore
 
 `import { passwordScore } from "@codeatlasdev/ui"`
@@ -4297,6 +4441,36 @@ Pure, dependency-free strength estimate: unique characters and character classes
 
 ```ts
 function passwordScore(value: string): PasswordScore
+```
+
+### pickBrand
+
+`import { pickBrand } from "@codeatlasdev/ui"`
+
+Pick the brand color of a palette: the most vivid cluster that is neither near-white nor near-black, weighted by how much of the image it covers. Falls back to the largest cluster for a grayscale image.
+
+```ts
+function pickBrand(palette: PaletteColor[]): PaletteColor | null
+```
+
+### presetContrastIssues
+
+`import { presetContrastIssues } from "@codeatlasdev/ui"`
+
+Hand-set roles of a brand preset that miss WCAG AA, as findings: - `brandContrast` on `brandFill` under 4.5:1 (a role left unset is measured from the generated fill/contrast of that scheme, so a lone `brandContrast` is checked against the fill it will sit on); - `text`, `textSecondary` or `textHint` under 4.5:1 on any of the four surfaces **after compositing their alpha** over that surface (a translucent role is only as readable as what is behind it). Surfaces a preset hand-sets are used as written; the rest are the generated ones. Colors the build cannot evaluate (`var()`, other keywords) are skipped, never guessed.
+
+```ts
+function presetContrastIssues(t: Pick<ResolvedTheme, "presets">): PresetContrastIssue[]
+```
+
+### presetTokens
+
+`import { presetTokens } from "@codeatlasdev/ui"`
+
+Light/dark token maps (with `color-scheme`) for a built-in or brand preset.
+
+```ts
+function presetTokens(src: BuiltinPresetSource | PresetDefinition): { light: Record<string, string>; dark: Record<string, string>; }
 ```
 
 ### radius
@@ -4436,6 +4610,14 @@ const shadows: {
 }
 ```
 
+### soundBus
+
+`import { soundBus } from "@codeatlasdev/ui"`
+
+```ts
+const soundBus: { emit(cue: CueName): void; listen(fn: Listener): () => void; }
+```
+
 ### stageInsets
 
 `import { stageInsets } from "@codeatlasdev/ui"`
@@ -4541,6 +4723,16 @@ RFC 4180 CSV (CRLF line ends, trailing newline). Columns default to the first ro
 function toCsv<T extends object>(rows: readonly T[], columns?: readonly ExportColumn<T>[]): string
 ```
 
+### toHex
+
+`import { toHex } from "@codeatlasdev/ui"`
+
+Opaque `#rrggbb` of any color the theme parser understands (alpha is dropped). Null if it cannot be evaluated.
+
+```ts
+function toHex(color: string): string | null
+```
+
 ### toJson
 
 `import { toJson } from "@codeatlasdev/ui"`
@@ -4559,6 +4751,16 @@ A design token (`--ca-brand-main`), a domain token by name (`"status.new"` for `
 
 ```ts
 function tokenRgba(token: CaTokenName | (string & {}), alpha?: number): Rgba
+```
+
+### toOklch
+
+`import { toOklch } from "@codeatlasdev/ui"`
+
+OKLCH of any evaluable CSS color (alpha dropped). Null if it cannot be evaluated.
+
+```ts
+function toOklch(color: string): Oklch | null
 ```
 
 ### uid
@@ -4629,6 +4831,16 @@ On-screen keyboard tracker: `viewport.keyboardInset` is the layout-viewport heig
 const viewport: { readonly keyboardInset: number; init: () => () => void; }
 ```
 
+### wcagLevel
+
+`import { wcagLevel } from "@codeatlasdev/ui"`
+
+WCAG level a ratio reaches for normal text: AAA 7, AA 4.5, AA-large 3 (large text and UI parts), else fail.
+
+```ts
+function wcagLevel(ratio: number): WcagLevel
+```
+
 ### zIndex
 
 `import { zIndex } from "@codeatlasdev/ui"`
@@ -4659,6 +4871,7 @@ Types:
 | `BrandColors` | `interface BrandColors { main: string; light: string; dark: string; contrast: string; }` |  |
 | `Breakpoint` | `type Breakpoint = "xs" \| "sm" \| "md" \| "lg" \| "xl";` |  |
 | `BuiltinPresetId` | `type BuiltinPresetId = \| "amber" \| "ocean" \| "crimson" \| "cyan" \| "violet" \| "emerald" \| "rose" \| "slate";` | Presets shipped in global.css. |
+| `BuiltinPresetSource` | `interface BuiltinPresetSource { id: "amber" \| "ocean" \| "crimson" \| "cyan" \| "violet" \| "emerald" \| "rose" \| "slate"; label: string; color: `#${string}`; hue: number; chroma: number; lightL: number; overrides: { light: TokenMap; dark: TokenMap }; }` |  |
 | `ButtonSizeTokens` | `interface ButtonSizeTokens { height?: CssValue; paddingX?: CssValue; fontSize?: CssValue; weight?: CssValue; tracking?: CssValue; }` | Typography and box tokens of one Button size. |
 | `ButtonTokens` | `interface ButtonTokens extends ButtonSizeTokens { weight?: CssValue; tracking?: CssValue; leading?: CssValue; gap?: CssValue; ghostBorderWidth?: CssValue; disabledBg?: CssValue; touchHeight?: CssValue; sm?: ButtonSizeTokens; md?: ButtonSizeTokens; lg?: ButtonSizeTokens; }` |  |
 | `CardTokens` | `interface CardTokens { bg?: CssValue; radius?: CssValue; border?: CssValue; shadow?: CssValue; }` |  |
@@ -4668,6 +4881,7 @@ Types:
 | `ColorValue` | `type ColorValue = string \| { color: string; alpha: number };` | One color: any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `color-mix(…)`, `rgb(…)`) or an explicit alpha form that keeps the color and the opacity apart. |
 | `Columns` | `type Columns = (typeof COLUMNS)[number] \| `${(typeof COLUMNS)[number]}`;` |  |
 | `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldTokens; textField?: FieldTokens; textArea?: TextAreaTokens; card?: CardTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
+| `CueName` | `type CueName = \| "press" \| "release" \| "tap" \| "toggle-on" \| "toggle-off" \| "select" \| "check" \| "success" \| "error" \| "warning" \| "notify" \| "open" \| "close" \| "forward" \| "back" \| "tab" \| "tick" \| "hover";` | Semantic cue names. Actions, not components: `press` is any button, `tab` any tab change. |
 | `DateRange` | `interface DateRange { start: DateValue \| undefined; end: DateValue \| undefined; }` | Value of RangeCalendar / DateRangePicker. Both ends are undefined until picked. |
 | `DeepPartial` | `type DeepPartial<T> = T extends (...args: never[]) => unknown ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;` |  |
 | `Density` | `type Density = "compact" \| "comfortable" \| "airy" \| number;` | Spacing density: a multiplier of the 4px unit, or a named step. |
@@ -4721,12 +4935,15 @@ Types:
 | `NavReorderProps` | `interface NavReorderProps { items: NavItem[]; onReorder: (e: NavReorderEvent) => void; label: string; isActive: (item: NavItem) => boolean; }` | Props of the opt-in `NavReorder` list (see `NavExtras.reorder`). |
 | `NavSection` | `interface NavSection { label?: string; collapsible?: boolean; defaultOpen?: boolean; items: NavItem[]; onReorder?: (e: NavReorderEvent) => void; }` |  |
 | `NeutralRamp` | `interface NeutralRamp { surfaceLight: SurfaceColors; surfaceDark: SurfaceColors; textLight: TextColors; textDark: TextColors; outlineLight: OutlineColors; outlineDark: OutlineColors; }` |  |
+| `Oklch` | `interface Oklch { l: number; c: number; h: number; }` |  |
 | `OutlineColors` | `interface OutlineColors { subtle: string; default: string; strong: string; }` |  |
+| `PaletteColor` | `interface PaletteColor { hex: string; oklch: Oklch; share: number; }` |  |
 | `Paper` | `type Paper = "mesh" \| "plain" \| "grid" \| "dots" \| "lines";` | Page background pattern. mesh = brand glow gradients (drawn by the glass and frosted materials); the rest are flat paper. |
 | `PasswordScore` | `type PasswordScore = 0 \| 1 \| 2 \| 3;` | 0 = empty, 1 = weak, 2 = fair, 3 = strong. |
 | `Politeness` | `type Politeness = "polite" \| "assertive";` |  |
 | `PolymorphicAttributes` | `type PolymorphicAttributes<T extends ElementTag, Own = object> = Omit< SvelteHTMLElements[T], "class" \| "children" \| "as" \| keyof Own > & Own;` | The tag's own attributes and event handlers, minus what the primitive declares itself (`Own`, `class`, `children`, `as`). |
 | `PolymorphicProps` | `type PolymorphicProps<T extends ElementTag, Own = object> = { as?: T; class?: string; children?: Snippet; } & PolymorphicAttributes<T, Own>;` | Props of a primitive that renders `as` an element: the tag's own attributes and event handlers (`as="form"` takes `novalidate`, `onsubmit` with `currentTarget: HTMLFormElement`), its token props, `class` and `children`. |
+| `PresetContrastIssue` | `interface PresetContrastIssue { preset: string; scheme: "light" \| "dark"; ratio: number; message: string; role?: TextRole; }` |  |
 | `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; tokens?: PresetTokenGroups; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `PresetId` | `type PresetId = BuiltinPresetId \| (string & {});` | A built-in preset or a brand preset registered via `ThemeOptions.presets`. |
 | `PresetSizes` | `interface PresetSizes { inputFontSize?: string; }` |  |
@@ -4740,6 +4957,7 @@ Types:
 | `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
 | `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
 | `SortableOptions` | `interface SortableOptions { id: string; group?: string; getItems: () => readonly string[]; getLabel?: (id: string) => string; label?: string; axis?: "y" \| "x"; drop?: "position" \| "container"; handle?: string; disabled?: boolean; onDrop: (e: DndDropEvent) => void; }` |  |
+| `SoundProp` | `type SoundProp = boolean \| CueName;` | What a component's `sound` prop accepts: `true` plays the component's own cue, a name overrides it. |
 | `Space` | `type Space = (typeof SPACE)[number] \| `${(typeof SPACE)[number]}`;` |  |
 | `StageInsets` | `interface StageInsets { top: number; right: number; bottom: number; left: number; }` |  |
 | `SurfaceColors` | `interface SurfaceColors { sunken: string; base: string; raised: string; overlay: string; }` |  |
@@ -4751,8 +4969,8 @@ Types:
 | `ThemePreset` | `interface ThemePreset { id: BuiltinPresetId; label: string; swatchColor: string; hue: number; brandLight: BrandColors; brandDark: BrandColors; ramp: NeutralRamp; semanticLight: SemanticColors; semanticDark: SemanticColors; }` |  |
 | `Thickness` | `type Thickness = "ultra-thin" \| "thin" \| "regular" \| "thick" \| "chrome";` |  |
 | `TimeValue` | `type TimeValue = Time \| CalendarDateTime \| ZonedDateTime;` | Accepted by TimeField `placeholder` / `minValue` / `maxValue`. |
-| `ToastItem` | `interface ToastItem { id: string; message: string; variant: ToastVariant; duration: number; count?: number; description?: string; action?: ToastAction; }` |  |
-| `ToastOptions` | `interface ToastOptions { variant?: ToastVariant; duration?: number; id?: string; description?: string; action?: ToastAction; }` |  |
+| `ToastItem` | `interface ToastItem { id: string; message: string; variant: ToastVariant; duration: number; count?: number; description?: string; action?: ToastAction; sound?: SoundProp; }` |  |
+| `ToastOptions` | `interface ToastOptions { variant?: ToastVariant; duration?: number; id?: string; description?: string; action?: ToastAction; sound?: SoundProp; }` |  |
 | `ToastVariant` | `type ToastVariant = "default" \| "success" \| "error" \| "warning" \| "info";` |  |
 | `TokenValue` | `type TokenValue = string \| { light?: string; dark?: string };` | One domain token: a single color for both schemes, or one per scheme (a missing side uses the other). |
 | `TypeRole` | `type TypeRole = (typeof TYPE_ROLES)[number];` |  |
@@ -4764,6 +4982,7 @@ Types:
 | `UseListStateReturn` | `interface UseListStateReturn<T> { get search(): string; set search(v: string); readonly filters: Record<string, string>; setFilter(key: string, value: string \| undefined): void; clearFilters(): void; readonly hasFilters: boolean; readonly filtered: T[]; readonly count: string; readonly rows: T[]; get page(): number; set page(v: number); readonly pageCount: number; readonly pageInfo: string; readonly selected: Set<T[keyof T]>; readonly allPageSelected: boolean; toggleAll(): void; toggleRow(id: T[keyof T]): void; clearSelection(): void; }` |  |
 | `ValidationSchema` | `type ValidationSchema<K extends string> = \| { parse?: (data: Record<K, string>) => unknown; safeParse?: (data: Record<K, string>) => { success: boolean; error?: { flatten?: () => { fieldErrors: Partial<Record<K, string[]>> } }; }; _run?: ( data: Record<K, string>, config: unknown ) => { output: unknown; issues?: Array<{ path: (string \| number)[]; message: string }>; }; } \| ((data: Record<K, string>) => Partial<Record<K, string>>);` |  |
 | `VibrancyLevel` | `type VibrancyLevel = "label" \| "secondary" \| "tertiary" \| "fill" \| "separator";` |  |
+| `WcagLevel` | `type WcagLevel = "AAA" \| "AA" \| "AA-large" \| "fail";` |  |
 | `ZIndexKey` | `type ZIndexKey = keyof typeof zIndex;` |  |
 
 #### AvatarTokens
@@ -4780,6 +4999,18 @@ Types:
 | `light` | `string` |  |
 | `dark` | `string` |  |
 | `contrast` | `string` |  |
+
+#### BuiltinPresetSource
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `"amber" \| "ocean" \| "crimson" \| "cyan" \| "violet" \| "emerald" \| "rose" \| "slate"` |  |
+| `label` | `string` |  |
+| `color` | ``#${string}`` | sRGB swatch for pickers and canvas. |
+| `hue` | `number` |  |
+| `chroma` | `number` |  |
+| `lightL` | `number` |  |
+| `overrides` | `{ light: TokenMap; dark: TokenMap }` |  |
 
 #### ButtonSizeTokens
 
@@ -5196,6 +5427,14 @@ Types:
 | `outlineLight` | `OutlineColors` |  |
 | `outlineDark` | `OutlineColors` |  |
 
+#### Oklch
+
+| Field | Type | Notes |
+|---|---|---|
+| `l` | `number` | Lightness, 0 to 1. |
+| `c` | `number` | Chroma, 0 to ~0.37 inside sRGB. |
+| `h` | `number` | Hue angle in degrees, 0 to 360. |
+
 #### OutlineColors
 
 | Field | Type | Notes |
@@ -5203,6 +5442,24 @@ Types:
 | `subtle` | `string` |  |
 | `default` | `string` |  |
 | `strong` | `string` |  |
+
+#### PaletteColor
+
+| Field | Type | Notes |
+|---|---|---|
+| `hex` | `string` |  |
+| `oklch` | `Oklch` |  |
+| `share` | `number` | Share of the sampled pixels in this cluster, 0 to 1. |
+
+#### PresetContrastIssue
+
+| Field | Type | Notes |
+|---|---|---|
+| `preset` | `string` |  |
+| `scheme` | `"light" \| "dark"` |  |
+| `ratio` | `number` |  |
+| `message` | `string` |  |
+| `role?` | `TextRole` | The role that fell short, when it is a hand-set text role (`brandContrast` issues leave it out). |
 
 #### PresetDefinition
 
@@ -5364,6 +5621,7 @@ Types:
 | `count?` | `number` | How many identical calls this toast stands for (`×3`). Absent or 1 for a fresh toast. |
 | `description?` | `string` | Secondary line under the message. |
 | `action?` | `ToastAction` | One inline action; clicking it runs `onClick` and dismisses the toast. |
+| `sound?` | `SoundProp` | Plays `success`, `error` or `warning` by variant (`notify` otherwise; a cue name replaces it) when `@codeatlasdev/ui/sound` is on. |
 
 #### ToastOptions
 
@@ -5374,6 +5632,7 @@ Types:
 | `id?` | `string` | Replaces the toast with this id in place (new text, variant and timer) instead of stacking a new one. |
 | `description?` | `string` | Secondary, smaller line under the message. |
 | `action?` | `ToastAction` | One inline button (label + handler). Clicking it runs `onClick` and dismisses the toast. An actionable toast lasts 8000 ms unless `duration` says otherwise. |
+| `sound?` | `SoundProp` | Plays the cue of the variant (`success`, `error`, `warning`, else `notify`) when the toast appears; a cue name replaces it. Needs `@codeatlasdev/ui/sound`. |
 
 #### TypeRoleSpec
 
@@ -5928,7 +6187,7 @@ function mergeTheme(a: Partial<ThemeDefinition>, b: Partial<ThemeDefinition>): P
 
 `import { nativeFeel } from "@codeatlasdev/ui/kit"`
 
-Make an app shell behave like a native app instead of a web page: - focus rings only while navigating with the keyboard (`html[data-kbd]`); WebKit treats programmatic focus (a dialog focusing its close button) as `:focus-visible`; - no browser context menu and no text selection on chrome (buttons, nav, tabs), editable fields and `.ca-selectable` keep both; - no dragging of links or images; optional zoom lock. Sets `html[data-ca-native]`. Returns a cleanup function.
+Make an app shell behave like a native app instead of a web page: - focus rings only while navigating with the keyboard (`html[data-kbd]`); WebKit treats programmatic focus (a dialog focusing its close button) as `:focus-visible`; - no browser context menu and no text selection on chrome (buttons, nav, tabs), editable fields and `.ca-selectable` keep both; clickable controls keep the pointer cursor (the reset layer owns it, `nativeFeel` never forces the arrow); - no dragging of links or images; optional zoom lock. Sets `html[data-ca-native]`. Returns a cleanup function.
 
 ```ts
 function nativeFeel(options?: NativeFeelOptions): () => void
@@ -6638,6 +6897,106 @@ Types:
 | `searchUrlTemplate?` | `string` | Sitelinks search box. `{query}` in the template is the search term placeholder, e.g. `https://example.com/search?q={query}`. |
 | `extra?` | `Extra` |  |
 
+## @codeatlasdev/ui/sound
+
+### brutal
+
+`import { brutal } from "@codeatlasdev/ui/sound"`
+
+```ts
+const brutal: SoundProfile
+```
+
+### glass
+
+`import { glass } from "@codeatlasdev/ui/sound"`
+
+```ts
+const glass: SoundProfile
+```
+
+### profileFor
+
+`import { profileFor } from "@codeatlasdev/ui/sound"`
+
+```ts
+function profileFor(id: string | null | undefined): SoundProfile
+```
+
+### profiles
+
+`import { profiles } from "@codeatlasdev/ui/sound"`
+
+The profiles by id.
+
+```ts
+const profiles: Record<string, SoundProfile>
+```
+
+### sound
+
+`import { sound } from "@codeatlasdev/ui/sound"`
+
+The engine and the action in one name: `sound.play("success")`, `sound.enable()`, and `<div use:sound={{ on: "click", cue: "press" }}>`. Silent until sound is on (`<SoundToggle />`).
+
+```ts
+const sound: Action<HTMLElement, SoundOptions | undefined, Record<never, any>> & { readonly enabled: boolean; readonly volume: number; readonly profile: SoundProfile; readonly unlocked: boolean; enable(on?: boolean): void; setVolume(v: number): void; use(profile: SoundProfile | undefined): void; play(cue: CueName): boolean; dispose(): void; subscribe(fn: () => void): () => void; }
+```
+
+### soundBus
+
+`import { soundBus } from "@codeatlasdev/ui/sound"`
+
+```ts
+const soundBus: { emit(cue: CueName): void; listen(fn: Listener): () => void; }
+```
+
+### system
+
+`import { system } from "@codeatlasdev/ui/sound"`
+
+```ts
+const system: SoundProfile
+```
+
+### terminal
+
+`import { terminal } from "@codeatlasdev/ui/sound"`
+
+```ts
+const terminal: SoundProfile
+```
+
+Types:
+
+| Type | Declaration | Notes |
+|---|---|---|
+| `CueName` | `type CueName = \| "press" \| "release" \| "tap" \| "toggle-on" \| "toggle-off" \| "select" \| "check" \| "success" \| "error" \| "warning" \| "notify" \| "open" \| "close" \| "forward" \| "back" \| "tab" \| "tick" \| "hover";` | Semantic cue names. Actions, not components: `press` is any button, `tab` any tab change. |
+| `SoundOptions` | `interface SoundOptions { on?: keyof HTMLElementEventMap; cue?: CueName; }` | What `use:sound` accepts. |
+| `SoundProfile` | `interface SoundProfile { id: string; wave: Wave; root: number; len: number; tone: number; grit: number; gain: number; detune: number; hover: boolean; }` |  |
+| `SoundProp` | `type SoundProp = boolean \| CueName;` | What a component's `sound` prop accepts: `true` plays the component's own cue, a name overrides it. |
+
+#### SoundOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `on?` | `keyof HTMLElementEventMap` | DOM event that plays the cue. @default "click" |
+| `cue?` | `CueName` | Cue to play. @default "press" |
+
+#### SoundProfile
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `string` |  |
+| `wave` | `Wave` | Oscillator for pitched cues. |
+| `root` | `number` | Root pitch in Hz; every pitched cue is an interval above it. |
+| `len` | `number` | Cue length multiplier (1 = 90 ms notes). Short and dry for hard styles, longer for soft ones. |
+| `tone` | `number` | Low-pass cutoff in Hz: low = muffled, high = bright. |
+| `grit` | `number` | Noise share of a press (0 = pure pitch, 1 = pure noise click). |
+| `gain` | `number` | Peak gain of the profile, 0-1, before the master volume. |
+| `detune` | `number` | Cent offset between the two oscillators of a cue (0 = clean, more = chorused or detuned). |
+| `hover` | `boolean` | Whether hover cues are part of the character. Hover is always off under reduced motion. |
+
 ## @codeatlasdev/ui/table
 
 ### caTableFeatures
@@ -7231,6 +7590,122 @@ Types:
 | `ramp` | `NeutralRamp` |  |
 | `semanticLight` | `SemanticColors` |  |
 | `semanticDark` | `SemanticColors` |  |
+
+## @codeatlasdev/ui/utils/color
+
+### contrast
+
+`import { contrast } from "@codeatlasdev/ui/utils/color"`
+
+WCAG contrast ratio of `fg` on `bg`. A translucent `fg` is composited over `bg`, and a translucent `bg` over white, like a browser paints them. Null when either cannot be evaluated (`var()`, other keywords).
+
+```ts
+function contrast(fg: string, bg: string): number | null
+```
+
+### extractPalette
+
+`import { extractPalette } from "@codeatlasdev/ui/utils/color"`
+
+Dominant colors of an RGBA pixel buffer (`ImageData.data`), by k-means in OKLab so clusters are perceptual rather than channel-wise. Transparent pixels are ignored; the buffer is subsampled to at most `maxSamples` pixels. Deterministic (farthest-point seeding, no randomness). Result is sorted by `share`, largest first, and merged so no two entries sit within `minDistance` in OKLab.
+
+```ts
+function extractPalette(rgba: ArrayLike<number>, options?: { k?: number | undefined; maxSamples?: number | undefined; minDistance?: number | undefined; }): PaletteColor[]
+```
+
+### formatOklch
+
+`import { formatOklch } from "@codeatlasdev/ui/utils/color"`
+
+`oklch(L C H)` string with 3-decimal lightness/chroma and 1-decimal hue.
+
+```ts
+function formatOklch(options: Oklch): string
+```
+
+### oklchHex
+
+`import { oklchHex } from "@codeatlasdev/ui/utils/color"`
+
+Opaque `#rrggbb` for an OKLCH triple (gamut-clipped).
+
+```ts
+function oklchHex(options: Oklch): string
+```
+
+### parseColorInput
+
+`import { parseColorInput } from "@codeatlasdev/ui/utils/color"`
+
+Parse what a user types into a color field: `#rgb`, `#rrggbb`, `rgb()`, `oklch()`, `color-mix()`, `white`/`black`, or a bare `rrggbb`. Returns the canonical `#rrggbb` and OKLCH, or null.
+
+```ts
+function parseColorInput(input: string): { hex: string; oklch: Oklch; alpha: number; css: string } | null
+```
+
+### pickBrand
+
+`import { pickBrand } from "@codeatlasdev/ui/utils/color"`
+
+Pick the brand color of a palette: the most vivid cluster that is neither near-white nor near-black, weighted by how much of the image it covers. Falls back to the largest cluster for a grayscale image.
+
+```ts
+function pickBrand(palette: PaletteColor[]): PaletteColor | null
+```
+
+### toHex
+
+`import { toHex } from "@codeatlasdev/ui/utils/color"`
+
+Opaque `#rrggbb` of any color the theme parser understands (alpha is dropped). Null if it cannot be evaluated.
+
+```ts
+function toHex(color: string): string | null
+```
+
+### toOklch
+
+`import { toOklch } from "@codeatlasdev/ui/utils/color"`
+
+OKLCH of any evaluable CSS color (alpha dropped). Null if it cannot be evaluated.
+
+```ts
+function toOklch(color: string): Oklch | null
+```
+
+### wcagLevel
+
+`import { wcagLevel } from "@codeatlasdev/ui/utils/color"`
+
+WCAG level a ratio reaches for normal text: AAA 7, AA 4.5, AA-large 3 (large text and UI parts), else fail.
+
+```ts
+function wcagLevel(ratio: number): WcagLevel
+```
+
+Types:
+
+| Type | Declaration | Notes |
+|---|---|---|
+| `Oklch` | `interface Oklch { l: number; c: number; h: number; }` |  |
+| `PaletteColor` | `interface PaletteColor { hex: string; oklch: Oklch; share: number; }` |  |
+| `WcagLevel` | `type WcagLevel = "AAA" \| "AA" \| "AA-large" \| "fail";` |  |
+
+#### Oklch
+
+| Field | Type | Notes |
+|---|---|---|
+| `l` | `number` | Lightness, 0 to 1. |
+| `c` | `number` | Chroma, 0 to ~0.37 inside sRGB. |
+| `h` | `number` | Hue angle in degrees, 0 to 360. |
+
+#### PaletteColor
+
+| Field | Type | Notes |
+|---|---|---|
+| `hex` | `string` |  |
+| `oklch` | `Oklch` |  |
+| `share` | `number` | Share of the sampled pixels in this cluster, 0 to 1. |
 
 ## @codeatlasdev/ui/utils/palette-generator
 

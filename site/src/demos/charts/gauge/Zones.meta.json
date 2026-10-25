@@ -8,5 +8,29 @@
 		"Each gauge sits in its own `<Card>` inside `<Grid columns={{ base: 1, sm: 3 }} gap=\"4\">`"
 	],
 	"tags": ["gauge-chart", "zones", "thresholds", "grid", "metrics", "card"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "chart",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "Grid", "GaugeChart"],
+		"aliases": ["thresholds", "health status", "system monitor", "traffic light"],
+		"related": ["196", "195", "194"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }
