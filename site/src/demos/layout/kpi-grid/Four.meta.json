@@ -9,5 +9,26 @@
 		"`<KpiCard title=\"Uptime\" value=\"99.9\" unit=\"%\" trend={0.1} icon={Activity} />`"
 	],
 	"tags": ["kpi-grid", "kpi-card", "dashboard", "metrics", "four-columns", "grid"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas", "fintech"],
+		"style": ["bento", "default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["KpiCard", "KpiGrid"],
+		"aliases": ["four metrics", "dashboard row", "stat grid"],
+		"related": ["179", "175", "187"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

@@ -8,5 +8,26 @@
 		"Item content is passed with `{#snippet children()}` using `<Share2 size={14} />` and `<Copy size={14} />`"
 	],
 	"tags": ["dropdown-menu", "menu", "icon-button", "overflow", "more-options", "align", "a11y"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["general"],
+		"style": ["glassmorphism"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["DropdownMenu", "DropdownMenuItem", "DropdownMenuLabel", "IconButton"],
+		"aliases": ["kebab", "more actions", "overflow menu"],
+		"related": ["158", "400"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

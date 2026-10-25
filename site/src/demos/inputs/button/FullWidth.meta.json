@@ -7,5 +7,26 @@
 		"Wrapper column is `max-width: 320px` with `gap: var(--ca-space-2)`"
 	],
 	"tags": ["button", "full-width", "stacked", "actions", "form"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover", "press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button"],
+		"aliases": ["block button", "stretch"],
+		"related": ["004", "006", "902"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

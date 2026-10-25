@@ -18,5 +18,26 @@
 		"status-chip",
 		"user-cell"
 	],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard", "press"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["AppList", "Button", "FilterGroup", "SimpleTable", "StatusChip", "UserCell"],
+		"aliases": ["users table", "searchable list", "admin list"],
+		"related": ["184", "185", "245"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

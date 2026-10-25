@@ -26,5 +26,26 @@
 			"easing": "ease-in-out"
 		}
 	],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "motion",
+		"subtype": "ambient",
+		"industry": ["fintech", "saas"],
+		"style": ["aurora", "default"],
+		"motion": "immersive",
+		"interaction": ["cursor"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["MotionStage"],
+		"aliases": ["mesh gradient", "animated background", "hero background", "color shift"],
+		"related": ["380", "386", "383"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

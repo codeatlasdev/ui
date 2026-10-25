@@ -8,5 +8,26 @@
 		"Two direct children: `<div class=\"map\">` labelled Map and `<div class=\"details\">` with a name and a filled Close `<Button variant=\"filled\" onclick={() => (open = false)}>`"
 	],
 	"tags": ["dialog", "split", "size", "columns", "fullscreen", "mobile", "modal"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["saas", "general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "airy",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Dialog", "Button", "Stack"],
+		"aliases": ["fullscreen mobile", "two pane modal"],
+		"related": ["087", "083", "085"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }

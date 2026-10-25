@@ -9,5 +9,26 @@
 		"Current value is shown as `value: {color}`"
 	],
 	"tags": ["swatch-group", "color-picker", "custom", "palette", "disabled"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["SwatchGroup"],
+		"aliases": ["color picker", "label color", "palette"],
+		"related": ["049", "034", "060"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

@@ -10,5 +10,26 @@
 		"Each row shows the dimension name and `{dims[i]}` in a `<Flex justify=\"between\">`"
 	],
 	"tags": ["radar-chart", "slider", "interactive", "derived", "state", "builder"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "chart",
+		"industry": ["saas", "devtools"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["drag", "keyboard", "hover"],
+		"layout": "split",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "Stack", "Flex", "Slider", "RadarChart"],
+		"aliases": ["skill builder", "editable radar", "slider controls"],
+		"related": ["212", "210", "195"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

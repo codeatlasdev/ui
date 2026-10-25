@@ -15,5 +15,26 @@
 		"Tabela agrupada",
 		"Tabla agrupada"
 	],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["devtools", "saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["drag", "keyboard", "press"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "DataTable", "DataTableColumnHeader"],
+		"aliases": ["grouped rows", "drag reorder", "sprint backlog", "resizable columns"],
+		"related": ["123", "122", "760"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

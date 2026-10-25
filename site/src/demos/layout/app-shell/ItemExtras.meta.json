@@ -20,5 +20,33 @@
 		"drag-and-drop",
 		"sidebar"
 	],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["drag", "press", "keyboard"],
+		"layout": "split",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [
+			"AppShellLayout",
+			"DropdownMenuItem",
+			"NavItemMenu",
+			"NavReorder",
+			"PageShell",
+			"Card"
+		],
+		"aliases": ["reorder nav", "row menu", "color dot", "badge count"],
+		"related": ["166", "530", "480"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-17"
+	}
 }

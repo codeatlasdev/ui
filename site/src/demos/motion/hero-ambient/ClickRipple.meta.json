@@ -26,5 +26,26 @@
 			"stagger": "70ms"
 		}
 	],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "motion",
+		"subtype": "ambient",
+		"industry": ["gaming", "agency"],
+		"style": ["default", "minimal"],
+		"motion": "expressive",
+		"interaction": ["press", "cursor"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["MotionStage"],
+		"aliases": ["wave", "dot grid", "click effect", "shockwave"],
+		"related": ["384", "380", "382"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

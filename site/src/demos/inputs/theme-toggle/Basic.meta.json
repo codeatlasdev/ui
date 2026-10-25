@@ -3,5 +3,26 @@
 	"use": "Letting users switch between light and dark appearance from a sidebar or header.",
 	"spec": ["`<ThemeToggle />` with no props", "Wrapped in `<div class=\"rail\">`"],
 	"tags": ["theme-toggle", "dark-mode", "theme", "appearance", "rail"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard", "hover"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["ThemeToggle"],
+		"aliases": ["dark mode", "light mode", "color scheme"],
+		"related": ["049", "050", "038"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

@@ -8,5 +8,26 @@
 		"No `label` prop on any of the three"
 	],
 	"tags": ["checkbox", "aria-label", "accessibility", "unlabelled", "indeterminate"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Checkbox"],
+		"aliases": ["unlabelled", "aria label only"],
+		"related": ["008", "007", "387"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

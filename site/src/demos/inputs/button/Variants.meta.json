@@ -9,5 +9,26 @@
 		"`variant=\"destructive\"` labelled Destructive"
 	],
 	"tags": ["button", "variant", "filled", "glass", "outlined", "ghost", "destructive"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default", "glassmorphism"],
+		"motion": "subtle",
+		"interaction": ["hover", "press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button"],
+		"aliases": ["button styles", "primary secondary"],
+		"related": ["004", "005", "640"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

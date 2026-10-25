@@ -8,5 +8,26 @@
 		"Footer line counts the selected rows"
 	],
 	"tags": ["checkbox", "shift", "range selection", "table", "list", "data-testid"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["fintech"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Checkbox"],
+		"aliases": ["bulk select", "multi select", "shift click"],
+		"related": ["008", "009", "007"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

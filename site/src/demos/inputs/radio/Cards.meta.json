@@ -8,5 +8,26 @@
 		"`bind:value={plan}` with initial `$state('pro')`"
 	],
 	"tags": ["radio-group", "radio", "cards", "plan", "disabled", "description"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["RadioGroup"],
+		"aliases": ["plan picker", "selectable cards", "pricing choice"],
+		"related": ["037", "036", "035"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

@@ -7,5 +7,26 @@
 		"No bound state"
 	],
 	"tags": ["switch", "disabled", "checked", "toggle", "state"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Switch"],
+		"aliases": ["inactive toggle"],
+		"related": ["050", "053", "052"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

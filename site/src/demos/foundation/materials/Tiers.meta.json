@@ -8,5 +8,26 @@
 		"Backdrop gradient uses `var(--ca-brand-main) 0%`, `var(--ca-semantic-info) 50%` and `var(--ca-semantic-success) 100%`"
 	],
 	"tags": ["materials", "glass", "surface", "elevation", "blur", "tiers"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "foundation",
+		"industry": ["general"],
+		"style": ["glassmorphism", "aurora"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Surface"],
+		"aliases": ["frosted glass", "blur levels", "translucent surface", "elevation scale"],
+		"related": ["227", "225", "223"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

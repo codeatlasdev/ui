@@ -8,5 +8,26 @@
 		"Other `aria-label` values: `aria-label=\"Favourite\"`, `aria-label=\"Boost\"`, `aria-label=\"Rate\"`"
 	],
 	"tags": ["tooltip", "icon-button", "icons", "aria-label", "toolbar", "lucide"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Tooltip", "IconButton"],
+		"aliases": ["icon hint", "icon label", "toolbar hint"],
+		"related": ["142", "143", "145"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

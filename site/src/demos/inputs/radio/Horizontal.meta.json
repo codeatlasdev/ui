@@ -7,5 +7,26 @@
 		"`bind:value={size}` with initial `$state('md')`"
 	],
 	"tags": ["radio-group", "radio", "horizontal", "orientation", "size"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["RadioGroup"],
+		"aliases": ["inline radio", "row"],
+		"related": ["037", "035", "034"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

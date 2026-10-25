@@ -9,5 +9,26 @@
 		"The stage box is `360px` high with `var(--ca-radius-lg)` corners"
 	],
 	"tags": ["map", "deck.gl", "maplibre", "theme", "dark-mode", "controls"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "map",
+		"industry": ["general"],
+		"style": ["default", "minimal"],
+		"motion": "immersive",
+		"interaction": ["drag", "scroll", "press", "keyboard"],
+		"layout": "full-bleed",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["MapControls", "MapStage"],
+		"aliases": ["store locator", "geo map", "webgl map", "dark map", "location data"],
+		"related": [],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }

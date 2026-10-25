@@ -7,5 +7,26 @@
 		"`<CopyButton value=\"https://ui.codeatlas.com.br\" label=\"Copy link\" toast=\"Link copied\" />`"
 	],
 	"tags": ["copy-button", "toast", "toaster", "icon-only", "clipboard", "label"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["CopyButton", "Toaster"],
+		"aliases": ["share link", "copied toast"],
+		"related": ["012", "014", "983"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

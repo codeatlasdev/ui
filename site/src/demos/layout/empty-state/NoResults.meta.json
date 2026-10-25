@@ -6,5 +6,26 @@
 		"`{#snippet actions()}` holds `<Button variant=\"outlined\" size=\"sm\">Clear filters</Button>`"
 	],
 	"tags": ["empty-state", "no-results", "search", "filters", "actions"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["EmptyState", "Button"],
+		"aliases": ["zero results", "search empty", "clear filters"],
+		"related": ["167", "171", "881"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

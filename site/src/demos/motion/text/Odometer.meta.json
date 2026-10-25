@@ -27,5 +27,26 @@
 			"stagger": "calc(var(--i) * 60ms)"
 		}
 	],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "motion",
+		"subtype": "text",
+		"industry": ["fintech", "saas"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["MotionStage"],
+		"aliases": ["rolling digits", "slot counter", "number roll", "ticker"],
+		"related": ["306", "326", "300"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

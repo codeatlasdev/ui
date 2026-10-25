@@ -8,5 +8,26 @@
 		"A second button flips `open` with `onclick={() => (open = !open)}`"
 	],
 	"tags": ["hover-card", "bind-open", "delay", "side", "align", "on-open-change"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["saas"],
+		"style": ["glassmorphism"],
+		"motion": "subtle",
+		"interaction": ["hover", "press", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "HoverCard"],
+		"aliases": ["preview card", "controlled tooltip"],
+		"related": ["940", "160"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }

@@ -8,5 +8,26 @@
 		"`{#snippet fallback()}<Bot size={22} aria-hidden=\"true\" />{/snippet}` renders the Bot icon"
 	],
 	"tags": ["avatar", "fallback", "snippet", "icon", "image-error", "lucide"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["ai", "saas"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Avatar"],
+		"aliases": ["icon placeholder", "broken image fallback", "bot avatar", "group avatar"],
+		"related": ["108", "107", "110"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

@@ -9,5 +9,26 @@
 		"`<StatusChip status=\"neutral\" label=\"Draft\" />`"
 	],
 	"tags": ["chip", "status-chip", "status", "success", "neutral", "state"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["StatusChip"],
+		"aliases": ["state label", "status pill", "active pending failed"],
+		"related": ["120", "900", "115"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

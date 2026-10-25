@@ -8,5 +8,26 @@
 		"`.backdrop` paints `linear-gradient(135deg` behind the tiles"
 	],
 	"tags": ["surface", "material", "glass", "frosted", "liquid", "solid"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "surface",
+		"industry": ["general"],
+		"style": ["glassmorphism", "aurora"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Surface"],
+		"aliases": ["translucency", "blur", "glass vs solid"],
+		"related": ["075", "076", "543"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

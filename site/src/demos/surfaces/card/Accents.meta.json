@@ -8,5 +8,26 @@
 		"Card content is a `.title` paragraph and a `.text` paragraph"
 	],
 	"tags": ["card", "tone", "brand", "glow", "accent"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "surface",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card"],
+		"aliases": ["highlight card", "featured card", "halo"],
+		"related": ["069", "076", "079"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

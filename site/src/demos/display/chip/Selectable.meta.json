@@ -7,5 +7,26 @@
 		"`<Chip label=\"Filter B\" selected={b} onclick={() => (b = !b)} />`"
 	],
 	"tags": ["chip", "selectable", "selected", "filter", "toggle", "onclick"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Chip"],
+		"aliases": ["filter chip", "toggle tag", "choice pill"],
+		"related": ["116", "115", "120"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

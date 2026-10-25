@@ -9,5 +9,26 @@
 		"`src=\"https://i.pravatar.cc/150?img=47\"` with `alt=\"David Kim\"`"
 	],
 	"tags": ["avatar", "image", "src", "alt", "profile-photo"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Avatar"],
+		"aliases": ["profile picture", "user photo"],
+		"related": ["108", "110", "111"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

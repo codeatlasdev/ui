@@ -8,5 +8,26 @@
 		"Backdrop gradient runs `var(--ca-brand-main) 0%` to `var(--ca-semantic-success) 100%`"
 	],
 	"tags": ["materials", "glass", "surface", "tone", "glow", "tinted"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "foundation",
+		"industry": ["general"],
+		"style": ["glassmorphism", "aurora"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Surface"],
+		"aliases": ["colored glass", "glow", "tinted surface"],
+		"related": ["226", "225"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

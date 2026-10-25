@@ -10,5 +10,26 @@
 		"Values are printed as `value: {align || '–'}` and `JSON.stringify(format)`"
 	],
 	"tags": ["toggle-group", "single", "required", "multiple", "icon", "toolbar", "aria-label"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["media"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["ToggleGroup"],
+		"aliases": ["text formatting", "alignment", "button group"],
+		"related": ["061", "038", "980"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

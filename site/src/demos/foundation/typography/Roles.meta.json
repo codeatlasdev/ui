@@ -8,5 +8,26 @@
 		"Rows are a `grid-template-columns: var(--ca-space-20) 1fr` with `gap: var(--ca-space-3)`"
 	],
 	"tags": ["typography", "text", "type-scale", "role", "tabular-nums"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "foundation",
+		"industry": ["saas"],
+		"style": ["default", "minimal"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Text"],
+		"aliases": ["text roles", "type roles", "semantic text"],
+		"related": ["229", "230", "231"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-23"
+	}
 }

@@ -14,5 +14,26 @@
 		"Zonas de soltar",
 		"Zonas para soltar"
 	],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "foundation",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["drag", "press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["DndLayer"],
+		"aliases": ["drop target", "scheduler", "assign by dragging", "calendar drop"],
+		"related": ["430", "431"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

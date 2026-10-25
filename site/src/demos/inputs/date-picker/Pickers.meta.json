@@ -9,5 +9,26 @@
 		"Wrappers: `.col` has `max-width: 400px`, `.col--wide` has `max-width: 460px`"
 	],
 	"tags": ["date-picker", "date-range-picker", "popover", "date", "date-range", "calendar"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["travel"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["DatePicker", "DateRangePicker"],
+		"aliases": ["calendar popover", "date range", "datepicker"],
+		"related": ["015", "016", "017"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

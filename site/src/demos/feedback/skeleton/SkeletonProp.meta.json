@@ -9,5 +9,26 @@
 		"Toggle `<Button variant=\"outlined\" size=\"sm\"` runs `onclick={() => (loading = !loading)}`"
 	],
 	"tags": ["skeleton", "loading", "avatar", "kpi-card", "text-field", "card"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["fintech", "saas"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["press"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Avatar", "Button", "Card", "Flex", "KpiCard", "Stack", "TextField"],
+		"aliases": ["loading state", "placeholder", "layout shift"],
+		"related": ["097", "098", "099", "255"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

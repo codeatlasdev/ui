@@ -7,5 +7,26 @@
 		"Body is one paragraph explaining `title` and `headerActions`"
 	],
 	"tags": ["card", "header-actions", "title", "snippet", "button"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "surface",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "Button"],
+		"aliases": ["panel header", "card toolbar", "titled panel"],
+		"related": ["069", "482", "072"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

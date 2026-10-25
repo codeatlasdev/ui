@@ -9,5 +9,26 @@
 		"Frame size is `height: 420px`"
 	],
 	"tags": ["page-shell", "dashboard", "kpi-grid", "kpi-card", "card", "list-page"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas", "fintech"],
+		"style": ["default", "bento"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["PageShell", "KpiCard", "KpiGrid", "Card"],
+		"aliases": ["dashboard page", "page header", "admin page"],
+		"related": ["187", "600", "178"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

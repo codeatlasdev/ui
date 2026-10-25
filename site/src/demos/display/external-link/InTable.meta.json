@@ -9,5 +9,26 @@
 		"`{#each rows as r (r.domain)}` renders one `<tr>` per row"
 	],
 	"tags": ["external-link", "link", "table", "simple-table", "responsive-cards", "outbound"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["keyboard", "press"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["ExternalLink", "SimpleTable", "Card"],
+		"aliases": ["outbound link", "new tab link", "domain list", "registrar"],
+		"related": ["138", "139"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

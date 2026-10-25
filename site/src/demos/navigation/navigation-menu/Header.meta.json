@@ -8,5 +8,26 @@
 		"`<NavigationMenuLink href=\"#pricing\" current>` marks the current page; Contact is a plain link"
 	],
 	"tags": ["navigation-menu", "header", "disclosure", "marketing", "links", "keyboard"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["saas"],
+		"style": ["glassmorphism"],
+		"motion": "subtle",
+		"interaction": ["hover", "keyboard", "press"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["NavigationMenu", "NavigationMenuItem", "NavigationMenuLink"],
+		"aliases": ["mega menu", "site header", "top nav"],
+		"related": ["947", "944", "151"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }

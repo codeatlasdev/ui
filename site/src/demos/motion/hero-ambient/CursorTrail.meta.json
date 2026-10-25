@@ -26,5 +26,26 @@
 			"stagger": "0.32"
 		}
 	],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "motion",
+		"subtype": "ambient",
+		"industry": ["agency", "portfolio"],
+		"style": ["default", "minimal"],
+		"motion": "immersive",
+		"interaction": ["cursor"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["MotionStage"],
+		"aliases": ["pointer follower", "dots", "mouse trail", "chain"],
+		"related": ["380", "381", "386"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

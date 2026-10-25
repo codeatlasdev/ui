@@ -8,5 +8,26 @@
 		"Body is a `Card full title=\"General\"` with a `Stack gap=\"4\"` of two `TextField`s: Name (Acme Inc.) and Slug (acme)"
 	],
 	"tags": ["page-shell", "aside", "width", "reading", "settings", "form", "sticky", "layout"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default", "editorial"],
+		"motion": "none",
+		"interaction": ["keyboard", "press"],
+		"layout": "split",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["PageShell", "Card", "TextField", "Stack"],
+		"aliases": ["settings page", "sidebar index", "narrow column", "table of contents"],
+		"related": ["185", "184", "187"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }

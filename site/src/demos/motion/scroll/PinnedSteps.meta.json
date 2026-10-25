@@ -28,5 +28,26 @@
 			"easing": "cubic-bezier(0.2, 0, 0, 1)"
 		}
 	],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "motion",
+		"subtype": "scroll",
+		"industry": ["saas", "fintech"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["scroll", "keyboard"],
+		"layout": "split",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["MotionStage"],
+		"aliases": ["scrollytelling", "sticky media", "story", "how it works"],
+		"related": ["324", "322", "320"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

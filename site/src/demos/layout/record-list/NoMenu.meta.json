@@ -9,5 +9,26 @@
 		"`<RecordCell label=\"Events\">` and `<RecordCell label=\"Delivered\">` follow; the row has no actions snippet and `columns` has no trailing action track"
 	],
 	"tags": ["record-list", "record-row", "table", "no-actions", "webhooks", "responsive"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["RecordCell", "RecordList", "RecordRow"],
+		"aliases": ["webhook list", "endpoint rows", "read only rows"],
+		"related": ["245", "247"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

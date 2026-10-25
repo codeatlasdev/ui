@@ -7,5 +7,26 @@
 		"Renders `<TypeRows {rows} heading />` with the `heading` flag for bold samples"
 	],
 	"tags": ["typography", "headings", "font-size", "tokens", "h1"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "foundation",
+		"industry": ["general"],
+		"style": ["default", "minimal"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [],
+		"aliases": ["heading sizes", "title scale", "h1 h6"],
+		"related": ["229", "230", "861"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

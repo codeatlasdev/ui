@@ -104,6 +104,18 @@ Reading failures: locators fail with an ARIA snapshot; traces are in `__traces__
 
 ---
 
+## The gallery index (demo facets)
+
+Every numbered demo (`site/src/demos/<group>/<page>/<Variant>.svelte`, id in `site/src/demos/catalog.ts`) has a `Variant.meta.json` sidecar, and the sidecar carries an `index` block: the facets the gallery filters and searches on. `bun run --cwd packages/ui manifest -- --check` (and every build) fails when the block is missing or wrong, so a new demo cannot ship without it.
+
+- **Facets:** `kind` + `subtype`, `industry[]`, `style[]` (a `designStyle` id or one of the planned recipes), `motion` (`none` state-free, `subtle` state change, `expressive` entrance/scroll/loop, `immersive` physics/3D/shader/cursor-driven scene), `interaction[]`, `layout`, `colorMode`, `density`, `tech[]`, `cost`, `components[]`, `aliases[]` (lowercase search synonyms), `related[]` (catalog ids), `a11y { reducedMotion, keyboard }`, `added` (ISO date). The closed vocabularies live in `packages/ui/scripts/index-schema.ts`; an unknown value fails the check.
+- **Inferred, never hand-typed:** `kind`, `subtype`, `components` (must equal the package imports of the demo), `tech`, `cost`, `added`. For a new demo run `bun packages/ui/scripts/index-backfill.ts` (it keeps every value already in a sidecar and fills these), then write `industry`, `style`, `motion`, `interaction`, `layout`, `colorMode`, `density`, `aliases`, `related` and `a11y.keyboard` by reading what the demo renders. Do not copy another demo's block.
+- **Id ranges:** ids stay append-only; 3 digits to 999, 4 digits from 1000. `ID_RANGES` in `index-schema.ts` reserves a block per kind (components 001-299 and 400-999, motion 300-399 by subtype, sections 1000-2999 in blocks of 100 per subtype, backgrounds 3000-3199, techniques 3200-3399, 3D 3400-3499, shaders 3500-3599, pages 4000-4499, templates 4500-4999). The check fails when an id sits outside the block of its `kind`/`subtype`. Four legacy ids (`256`, `387-389`) are exempt (`LEGACY_OUT_OF_RANGE`); a new id never is.
+- **Output:** the manifest build writes `site/public/api/v1/index.json` (every entry with its facets and per-facet counts) and one markdown twin per id at `site/public/gallery/<id>.md`. Both are generated: never edit them; commit the regenerated files.
+- **Originality:** write every title, summary, alias and prompt in our own words. Never name, link to or credit an external site or product in a demo, sidecar or generated file (`tests/demos-index.test.ts` scans the sidecars).
+
+---
+
 ## Critical rules
 
 0. **Test first, always.** Every bug fix and issue starts with a regression test that reproduces the problem. Run it and confirm it fails on the current code, then fix, then confirm it passes. A PR reports that fail-before/pass-after evidence. Tests exist to prove a behavior or a fix, never to pad coverage: no tests of wiring, copies, mock echoes or incidental defaults. If a test cannot fail for a plausible bug, delete it.

@@ -7,5 +7,26 @@
 		"Default delays: the pointer waits 700 ms to open, keyboard focus opens at once; Escape closes"
 	],
 	"tags": ["hover-card", "preview", "hover", "focus", "mention", "link"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["saas", "devtools"],
+		"style": ["glassmorphism"],
+		"motion": "subtle",
+		"interaction": ["hover", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Avatar", "HoverCard", "Stack"],
+		"aliases": ["profile preview", "mention card", "tooltip"],
+		"related": ["941", "160"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }

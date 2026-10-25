@@ -9,5 +9,34 @@
 		"`<RecordCell label=\"Prefix\">`, `<RecordCell label=\"Last used\">` and `<RecordCell label=\"Created\">`; `{#snippet actions()}` holds a `<DropdownMenu align=\"end\">` with a `Revoke` item"
 	],
 	"tags": ["record-list", "record-row", "table", "phone", "responsive", "container-width"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [
+			"Avatar",
+			"DropdownMenu",
+			"DropdownMenuItem",
+			"IconButton",
+			"RecordCell",
+			"RecordList",
+			"RecordRow"
+		],
+		"aliases": ["mobile rows", "stacked rows", "narrow container"],
+		"related": ["245", "246"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

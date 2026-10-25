@@ -17,5 +17,26 @@
 			"delay": "80ms"
 		}
 	],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "motion",
+		"subtype": "basics",
+		"industry": ["saas", "fintech"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["none"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["Card", "MotionStage"],
+		"aliases": ["entrance", "fade in", "slide up", "appear"],
+		"related": ["385", "320", "307"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

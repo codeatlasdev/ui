@@ -9,5 +9,26 @@
 		"`height=\"340px\"` inside `<Card full>`"
 	],
 	"tags": ["scatter-chart", "clusters", "segments", "multi-series", "palette", "card"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "chart",
+		"industry": ["saas", "e-commerce"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "ScatterChart"],
+		"aliases": ["segments", "grouped points", "customer tiers"],
+		"related": ["213", "214", "210"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

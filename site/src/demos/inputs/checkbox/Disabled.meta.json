@@ -8,5 +8,26 @@
 		"Three `<Checkbox` components, no bound state"
 	],
 	"tags": ["checkbox", "disabled", "checked", "indeterminate", "form"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Checkbox"],
+		"aliases": ["tick box"],
+		"related": ["008", "009", "387"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

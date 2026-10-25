@@ -8,5 +8,26 @@
 		"Overlap uses `.item { margin-left: -10px; position: relative; z-index: var(--z, 0); }`"
 	],
 	"tags": ["avatar", "stack", "avatar-group", "overlap", "overflow", "collaborators"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Avatar"],
+		"aliases": ["avatar group", "overlapping avatars", "team members", "facepile"],
+		"related": ["107", "110", "845"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

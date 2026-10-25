@@ -7,5 +7,26 @@
 		"Label is `{loading ? 'Saving…' : 'Save changes'}`"
 	],
 	"tags": ["spinner", "button", "loading", "save", "async"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button"],
+		"aliases": ["loading button", "busy button", "pending"],
+		"related": ["101", "102", "094"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

@@ -9,5 +9,26 @@
 		"Stage frame height is `height: 440px`"
 	],
 	"tags": ["app-shell", "stage", "map", "canvas", "persistent", "pointer-events", "inset"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["real-estate", "saas"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["drag", "press", "keyboard"],
+		"layout": "full-bleed",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["AppShellLayout", "Button", "Card", "PageShell"],
+		"aliases": ["map backdrop", "persistent canvas", "floating panel"],
+		"related": ["610", "166", "601"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }

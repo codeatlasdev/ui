@@ -8,5 +8,26 @@
 		"Each tile prints its tone and variant name"
 	],
 	"tags": ["surface", "tone", "variant", "filled", "outlined", "ghost"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "surface",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Surface"],
+		"aliases": ["status colors", "semantic tint", "emphasis variants"],
+		"related": ["076", "078", "068"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

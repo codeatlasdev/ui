@@ -8,5 +8,26 @@
 		"Trigger is `<Button variant=\"outlined\"` labelled Open sheet"
 	],
 	"tags": ["sheet", "swipe", "bottom-sheet", "account-switcher", "list", "mobile"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["drag", "press", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Sheet", "Button", "Stack"],
+		"aliases": ["bottom sheet", "swipe to dismiss", "account switcher"],
+		"related": ["095", "090"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

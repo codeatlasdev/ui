@@ -8,5 +8,26 @@
 		"A caption shows `Splash screens shown: {seen}`"
 	],
 	"tags": ["splash-screen", "boot", "loading", "min-duration", "reduced-motion", "status"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["press"],
+		"layout": "full-bleed",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "SplashScreen"],
+		"aliases": ["boot screen", "loading screen", "app launch"],
+		"related": ["094", "101", "255"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }

@@ -9,5 +9,26 @@
 		"Wrapper `.wide` uses `max-width: 420px`"
 	],
 	"tags": ["segmented-control", "size", "sm", "full-width", "disabled"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["SegmentedControl"],
+		"aliases": ["full width switch", "disabled segment"],
+		"related": ["038", "060", "980"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

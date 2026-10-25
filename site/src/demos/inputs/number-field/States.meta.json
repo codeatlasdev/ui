@@ -9,5 +9,26 @@
 		"`<Stack gap=\"4\">` wraps the four fields"
 	],
 	"tags": ["number-field", "error", "disabled", "required", "size", "description", "forms"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["NumberField", "Stack"],
+		"aliases": ["stepper", "validation", "seats"],
+		"related": ["030", "058", "055"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

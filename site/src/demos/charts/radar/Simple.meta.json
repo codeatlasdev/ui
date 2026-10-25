@@ -7,5 +7,26 @@
 		"`height=\"340px\"` inside `<Card full>`"
 	],
 	"tags": ["radar-chart", "simple", "indicators", "scores", "single-series", "card"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "chart",
+		"industry": ["saas", "devtools"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "RadarChart"],
+		"aliases": ["spider chart", "web chart", "skills profile"],
+		"related": ["210", "211", "209"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

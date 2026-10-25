@@ -8,5 +8,26 @@
 		"`<ResizableHandle label=\"Resize folders\" />` and `<ResizableHandle label=\"Resize message list\" />`"
 	],
 	"tags": ["resizable-panels", "nested", "vertical", "persist", "three-pane"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas", "devtools"],
+		"style": ["default", "minimal"],
+		"motion": "subtle",
+		"interaction": ["drag", "keyboard", "hover"],
+		"layout": "split",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["ResizableHandle", "ResizablePanel", "ResizablePanels"],
+		"aliases": ["three pane", "mail layout", "vertical split", "persisted layout"],
+		"related": ["962", "480", "610"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }

@@ -8,5 +8,26 @@
 		"Wrapped in `<Flex gap=\"6\" align=\"center\">`"
 	],
 	"tags": ["spinner", "size", "loading", "flex"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Spinner", "Flex"],
+		"aliases": ["loading", "busy", "sizes"],
+		"related": ["101", "100", "094"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

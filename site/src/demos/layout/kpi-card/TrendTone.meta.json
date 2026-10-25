@@ -8,5 +8,26 @@
 		"`<KpiCard title=\"Sessions\" value=\"3,847\" trend={-2.1} trendTone=\"neutral\" icon={Activity} />`: arrow only, no colour judgement"
 	],
 	"tags": ["kpi-card", "kpi-grid", "trend-tone", "positive-down", "churn", "latency", "metrics"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas", "fintech"],
+		"style": ["default", "bento"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["KpiCard", "KpiGrid"],
+		"aliases": ["good bad trend", "semantic delta", "neutral trend"],
+		"related": ["176", "175", "985"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-23"
+	}
 }

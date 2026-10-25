@@ -6,5 +6,26 @@
 		"Tokens in order: `--ca-outline-subtle`, `--ca-outline-default`, `--ca-outline-strong`"
 	],
 	"tags": ["colors", "outline", "border", "tokens", "swatches"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "foundation",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [],
+		"aliases": ["border colors", "stroke", "divider"],
+		"related": ["220", "222", "223", "224"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

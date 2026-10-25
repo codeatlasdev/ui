@@ -23,5 +23,26 @@
 			"easing": "linear"
 		}
 	],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "motion",
+		"subtype": "micro",
+		"industry": ["saas", "devtools"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["MotionStage"],
+		"aliases": ["long press", "destructive", "delete confirm", "progress ring"],
+		"related": ["345", "341", "343"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

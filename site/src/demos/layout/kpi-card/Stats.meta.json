@@ -9,5 +9,26 @@
 		"The Stats sit in an auto-fit grid, `minmax(150px, 1fr)`, `gap: var(--ca-space-5)`"
 	],
 	"tags": ["stat", "kpi", "metric", "statistic", "dashboard", "card-less", "hint", "trend"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default", "bento"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "Stat"],
+		"aliases": ["card-less stats", "inline metrics", "stat group"],
+		"related": ["072", "175", "178"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-23"
+	}
 }

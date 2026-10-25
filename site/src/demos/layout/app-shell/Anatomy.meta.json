@@ -9,5 +9,26 @@
 		"Diagram size is `height: 280px` and `width: 100%`"
 	],
 	"tags": ["app-shell", "anatomy", "rail", "panel", "layout", "diagram"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default", "minimal"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "split",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [],
+		"aliases": ["sidebar diagram", "navigation anatomy", "rail panel main"],
+		"related": ["166", "600", "481"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

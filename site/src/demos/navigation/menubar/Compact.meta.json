@@ -7,5 +7,26 @@
 		"A line reads \"A menu is\" followed by open or closed"
 	],
 	"tags": ["menubar", "on-open-change", "menu", "compact", "state", "hover"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["general"],
+		"style": ["glassmorphism"],
+		"motion": "subtle",
+		"interaction": ["keyboard", "press", "hover"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["DropdownMenuItem", "Menubar", "MenubarMenu"],
+		"aliases": ["menu bar", "toolbar menu"],
+		"related": ["944", "946"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }

@@ -7,5 +7,26 @@
 		"`bind:value={size}` with initial `$state('2-5')`; the selected chip shows a check icon"
 	],
 	"tags": ["chip-group", "chips", "radio", "single-choice", "wrap", "team-size", "mobile"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["ChipGroup"],
+		"aliases": ["choice chips", "pills", "team size"],
+		"related": ["721", "022", "038"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }

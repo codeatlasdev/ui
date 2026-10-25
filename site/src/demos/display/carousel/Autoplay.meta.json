@@ -7,5 +7,26 @@
 		"`quotes` holds three short strings"
 	],
 	"tags": ["carousel", "autoplay", "pause", "testimonials", "reduced-motion"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["saas", "e-commerce"],
+		"style": ["minimal"],
+		"motion": "expressive",
+		"interaction": ["drag", "keyboard", "hover"],
+		"layout": "carousel",
+		"colorMode": "both",
+		"density": "airy",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Carousel", "CarouselItem"],
+		"aliases": ["auto rotate", "testimonial slider", "quote rotator", "auto advance"],
+		"related": ["964", "965"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }

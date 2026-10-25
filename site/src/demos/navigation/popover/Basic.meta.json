@@ -7,5 +7,26 @@
 		"Paragraph text: This is a basic popover with some content inside."
 	],
 	"tags": ["popover", "trigger", "overlay", "confirm", "stack", "contextual"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["general"],
+		"style": ["glassmorphism"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Popover", "Button", "Stack"],
+		"aliases": ["floating panel", "tooltip panel"],
+		"related": ["161", "470", "940"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

@@ -8,5 +8,26 @@
 		"Trigger is `<Button variant=\"outlined\"` with an `<Info size={14} />` icon in `{#snippet leading()}`"
 	],
 	"tags": ["dialog", "info", "modal", "help", "rich-text"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Dialog", "Button"],
+		"aliases": ["modal", "info modal"],
+		"related": ["084", "083", "085"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

@@ -8,5 +8,26 @@
 		"`close()` closes the popover and returns focus to the trigger"
 	],
 	"tags": ["popover", "calendar", "bind-open", "close", "date", "overlay"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["saas"],
+		"style": ["glassmorphism"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Popover", "Button", "Calendar"],
+		"aliases": ["date picker", "close on select"],
+		"related": ["160", "161"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-17"
+	}
 }

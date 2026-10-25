@@ -10,5 +10,26 @@
 		"`valueFormatter={fmt}` and `height=\"300px\"`"
 	],
 	"tags": ["line-chart", "streaming", "live", "realtime", "onmount", "interval"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "chart",
+		"industry": ["fintech", "crypto"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["hover"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "LineChart"],
+		"aliases": ["realtime", "live ticker", "streaming data", "rolling window"],
+		"related": ["203", "218", "201"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

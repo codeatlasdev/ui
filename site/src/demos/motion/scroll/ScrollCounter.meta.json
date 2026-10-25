@@ -29,5 +29,26 @@
 			"easing": "linear"
 		}
 	],
-	"shape": "tall"
+	"shape": "tall",
+	"index": {
+		"kind": "motion",
+		"subtype": "scroll",
+		"industry": ["fintech", "saas"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["scroll", "keyboard"],
+		"layout": "sticky",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["MotionStage"],
+		"aliases": ["scroll linked number", "draw line", "scrub", "chart reveal"],
+		"related": ["306", "323", "302"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

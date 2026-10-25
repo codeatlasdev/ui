@@ -8,5 +8,26 @@
 		"`tone=\"neutral\" subtle size=\"md\"` Draft with no dot"
 	],
 	"tags": ["badge", "tone", "subtle", "dot", "pill", "status", "overdue", "inline", "list"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Badge"],
+		"aliases": ["status pill", "task status", "overdue label", "inline tag"],
+		"related": ["119", "112", "120"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-23"
+	}
 }

@@ -8,5 +8,26 @@
 		"`.tile` uses `min-width: 7rem` in a wrapping flex `.row`"
 	],
 	"tags": ["surface", "elevation", "shadow", "depth", "solid", "levels"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "surface",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Surface"],
+		"aliases": ["shadow depth", "z level", "drop shadow scale"],
+		"related": ["078", "079", "077"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

@@ -8,5 +8,26 @@
 		"No input component is rendered"
 	],
 	"tags": ["money-input", "helpers", "cents", "parse", "format", "currency"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["fintech"],
+		"style": ["minimal"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [],
+		"aliases": ["format", "parse", "utility"],
+		"related": ["028", "027", "026"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

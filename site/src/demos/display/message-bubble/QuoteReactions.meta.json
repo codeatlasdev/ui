@@ -7,5 +7,26 @@
 		"`{#snippet quote()}` holds a `<strong>You</strong>` label and the quoted text"
 	],
 	"tags": ["message-bubble", "chat", "quote", "reactions", "reply"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["MessageBubble"],
+		"aliases": ["reply quote", "emoji reaction", "quoted reply"],
+		"related": ["248", "249", "251"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

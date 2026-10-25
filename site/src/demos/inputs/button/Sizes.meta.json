@@ -7,5 +7,26 @@
 		"`size=\"lg\"` labelled Large"
 	],
 	"tags": ["button", "size", "sm", "md", "lg"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover", "press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button"],
+		"aliases": ["small medium large"],
+		"related": ["006", "001", "880"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

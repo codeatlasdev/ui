@@ -9,5 +9,26 @@
 		"Single level: `items={[{ label: 'Home' }]}` with no `href`"
 	],
 	"tags": ["breadcrumb", "navigation", "hierarchy", "levels", "path", "links"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Breadcrumb"],
+		"aliases": ["trail", "path", "hierarchy"],
+		"related": ["154"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

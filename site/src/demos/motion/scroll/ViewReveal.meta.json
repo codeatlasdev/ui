@@ -23,5 +23,26 @@
 			"delay": "animation-range: entry 0% entry 70%"
 		}
 	],
-	"shape": "tall"
+	"shape": "tall",
+	"index": {
+		"kind": "motion",
+		"subtype": "scroll",
+		"industry": ["e-commerce", "saas"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["scroll", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["Card", "MotionStage"],
+		"aliases": ["scroll timeline", "view timeline", "scroll linked", "animate on scroll"],
+		"related": ["320", "322", "323"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

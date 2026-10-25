@@ -8,5 +8,26 @@
 		"Body is plain text: The one painted container every card is built on"
 	],
 	"tags": ["card", "link", "href", "heading-level", "elevation", "solid"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "surface",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover", "press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card"],
+		"aliases": ["clickable card", "link tile", "navigation card"],
+		"related": ["069", "077", "070"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

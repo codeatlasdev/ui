@@ -8,5 +8,26 @@
 		"Output line prints `value = {value || '–'}`"
 	],
 	"tags": ["mask", "action", "input-mask", "cpf", "native-input", "forms"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["fintech"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [],
+		"aliases": ["input mask", "action", "format as you type"],
+		"related": ["023", "025", "056"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

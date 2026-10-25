@@ -8,5 +8,26 @@
 		"The card itself has no `href`, only the inner anchor is a link"
 	],
 	"tags": ["card", "content-card", "featured", "link", "promo"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "surface",
+		"industry": ["saas", "media"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card"],
+		"aliases": ["promo card", "feature card", "teaser"],
+		"related": ["071", "068", "070"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

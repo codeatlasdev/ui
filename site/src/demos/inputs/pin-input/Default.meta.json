@@ -7,5 +7,26 @@
 		"`<PinInput label=\"PIN\" length={4} mask bind:value={pin} />`"
 	],
 	"tags": ["pin-input", "otp", "verification-code", "mask", "oncomplete", "forms"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["PinInput"],
+		"aliases": ["otp", "verification code", "one time code", "passcode"],
+		"related": ["033", "843", "841"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

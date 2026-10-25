@@ -25,5 +25,26 @@
 			"easing": "cubic-bezier(0.4, 0, 0.2, 1)"
 		}
 	],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "motion",
+		"subtype": "text",
+		"industry": ["saas", "agency"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["cursor", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["MotionStage"],
+		"aliases": ["gradient text", "shimmer", "glint", "highlight sweep"],
+		"related": ["300", "307", "301"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

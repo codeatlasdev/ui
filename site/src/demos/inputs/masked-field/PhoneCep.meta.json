@@ -9,5 +9,26 @@
 		"Result line shows `Looking up…` while pending, then `logradouro`, `bairro`, `localidade` and `uf`"
 	],
 	"tags": ["phone-field", "cep-field", "lookup", "address", "brazil", "async", "forms"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["e-commerce"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["CepField", "PhoneField"],
+		"aliases": ["phone", "postal code", "address lookup", "zip"],
+		"related": ["023", "024", "056"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

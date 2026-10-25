@@ -7,5 +7,26 @@
 		"A paragraph renders `Current page: {page}` below the control"
 	],
 	"tags": ["pagination", "page", "bind", "count", "per-page", "navigation"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Pagination"],
+		"aliases": ["page numbers", "pager", "next previous"],
+		"related": ["134", "135"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

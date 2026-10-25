@@ -9,5 +9,26 @@
 		"`<Flex gap=\"4\" align=\"center\" wrap>` lays them out"
 	],
 	"tags": ["badge", "count", "dot", "overflow", "icon-button", "unread"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["saas", "e-commerce"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["keyboard", "press"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Badge", "IconButton", "Flex"],
+		"aliases": ["unread count", "cart counter", "dot indicator", "overflow count"],
+		"related": ["112", "114", "132"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

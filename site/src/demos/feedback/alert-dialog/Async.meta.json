@@ -9,5 +9,26 @@
 		"Result note uses `aria-live=\"polite\"` and shows when `{#if done}`"
 	],
 	"tags": ["alert-dialog", "destructive", "async", "confirm", "delete", "dialog"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["AlertDialog", "Button"],
+		"aliases": ["async confirm", "pending action"],
+		"related": ["081", "082", "462"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

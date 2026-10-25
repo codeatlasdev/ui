@@ -6,5 +6,26 @@
 		"Wrapped in `<Card full>`"
 	],
 	"tags": ["gauge-chart", "score", "value", "label", "card"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "chart",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "GaugeChart"],
+		"aliases": ["dial", "speedometer", "score meter"],
+		"related": ["195", "197", "194"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

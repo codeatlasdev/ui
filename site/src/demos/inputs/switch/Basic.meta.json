@@ -6,5 +6,26 @@
 		"`<Switch label=\"On by default\" bind:checked={notifications} />` with `$state(true)`"
 	],
 	"tags": ["switch", "toggle", "label", "checked", "boolean"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Switch"],
+		"aliases": ["toggle", "on off"],
+		"related": ["051", "053", "052"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

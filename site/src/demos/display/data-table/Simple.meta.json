@@ -9,5 +9,26 @@
 		"Wrapper `.wrap` has `width: 100%`"
 	],
 	"tags": ["data-table", "columns", "column-helper", "tanstack", "table", "basic"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard", "press", "hover"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["DataTable"],
+		"aliases": ["data grid", "sortable table", "user list"],
+		"related": ["122", "433", "139"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

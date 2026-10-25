@@ -9,5 +9,26 @@
 		"Stage height is `height: 360px`"
 	],
 	"tags": ["app-shell", "panel-width", "resizable", "separator", "sidebar", "navigation"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["drag", "keyboard", "hover"],
+		"layout": "split",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["AppShellLayout", "PageShell", "Card"],
+		"aliases": ["resize sidebar", "wide panel", "drag handle"],
+		"related": ["166", "962", "601"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-17"
+	}
 }

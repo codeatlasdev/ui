@@ -9,5 +9,26 @@
 		"Initial state: email `$state(true)`, dark and analytics `$state(false)`"
 	],
 	"tags": ["switch", "settings-list", "preferences", "aria-label", "toggle"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Switch"],
+		"aliases": ["preferences", "settings", "toggle list"],
+		"related": ["044", "050", "053"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

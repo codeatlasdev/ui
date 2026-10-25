@@ -10,5 +10,26 @@
 		"`function save()` sets `saving = true` and resets it with `setTimeout(() => (saving = false), 1400)`"
 	],
 	"tags": ["app-form", "form-section", "form", "text-field", "select", "switch", "footer"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard", "press"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["AppForm", "FormSection", "TextField", "Select", "Switch", "Button", "Divider"],
+		"aliases": ["create user", "settings form", "sectioned form"],
+		"related": ["174", "184", "183"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

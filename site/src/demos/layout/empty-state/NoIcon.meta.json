@@ -7,5 +7,26 @@
 		"Button has `{#snippet leading()}<Plus size={14} />{/snippet}` and the label Create item"
 	],
 	"tags": ["empty-state", "no-icon", "create", "leading-icon", "actions"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default", "minimal"],
+		"motion": "none",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["EmptyState", "Button"],
+		"aliases": ["text only empty", "nothing yet", "create first item"],
+		"related": ["167", "168", "170"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

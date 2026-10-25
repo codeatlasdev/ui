@@ -8,5 +8,26 @@
 		"Both buttons use the default size, with no size attribute"
 	],
 	"tags": ["empty-state", "hero", "onboarding", "first-run", "actions", "project"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "airy",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["EmptyState", "Button"],
+		"aliases": ["onboarding", "first run", "get started"],
+		"related": ["167", "169", "881"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

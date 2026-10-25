@@ -8,5 +8,26 @@
 		"`{#snippet footer()}` holds `<Button variant=\"filled\"` New session with a `<Plus size={15} />` icon"
 	],
 	"tags": ["sheet", "footer", "swipe-to-dismiss", "bottom-sheet", "mobile"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["drag", "press", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Sheet", "Button", "Stack"],
+		"aliases": ["bottom sheet", "action sheet"],
+		"related": ["096", "090", "089"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

@@ -9,5 +9,26 @@
 		"`height=\"320px\"` inside `<Card full>`"
 	],
 	"tags": ["scatter-chart", "basic", "points", "y-axis", "y-formatter", "card"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "chart",
+		"industry": ["saas", "e-commerce"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "ScatterChart"],
+		"aliases": ["correlation", "xy plot", "dot plot"],
+		"related": ["214", "215", "203"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

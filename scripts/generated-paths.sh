@@ -3,7 +3,7 @@
 # in site/src/demos/catalog.ts) are never here: their conflicts are resolved by a person.
 is_generated() {
 	case "$1" in
-	bun.lock | */API.md | */DEMOS.md | packages/ui/MIGRATION.md | */components.json | site/public/api/v1/*) return 0 ;;
+	bun.lock | */API.md | */DEMOS.md | packages/ui/MIGRATION.md | */components.json | site/public/api/v1/* | site/public/gallery/*.md) return 0 ;;
 	esac
 	return 1
 }

@@ -7,5 +7,26 @@
 		"The content is themed in its own island: the page around the stage keeps its scheme"
 	],
 	"tags": ["preview-stage", "device-frame", "responsive", "width", "showcase"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["devtools", "agency"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "PreviewStage"],
+		"aliases": ["device frame", "responsive preview", "theme toggle preview"],
+		"related": ["987", "181"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-25"
+	}
 }

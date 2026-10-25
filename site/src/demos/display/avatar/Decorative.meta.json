@@ -6,5 +6,26 @@
 		"People are `Ada Lovelace` and `Grace Hopper` in a `ul` with `list-style: none`"
 	],
 	"tags": ["avatar", "decorative", "aria-hidden", "name", "list", "a11y"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Avatar"],
+		"aliases": ["decorative image", "name beside avatar", "aria hidden avatar"],
+		"related": ["108", "111", "107"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-23"
+	}
 }

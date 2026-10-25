@@ -9,5 +9,26 @@
 		"Each trigger uses `{#snippet triggerChild(props)}` with `<Button variant=\"outlined\" {...props}>`"
 	],
 	"tags": ["tooltip", "side", "placement", "top", "bottom", "button"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Tooltip", "Button"],
+		"aliases": ["placement", "tooltip position", "popover side"],
+		"related": ["142", "143", "144"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

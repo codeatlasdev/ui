@@ -18,5 +18,39 @@
 		"scatter-chart",
 		"radar-chart"
 	],
-	"shape": "tall"
+	"shape": "tall",
+	"index": {
+		"kind": "component",
+		"subtype": "chart",
+		"industry": ["saas", "fintech"],
+		"style": ["default", "bento"],
+		"motion": "subtle",
+		"interaction": ["hover", "scroll"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [
+			"Card",
+			"Grid",
+			"KpiCard",
+			"KpiGrid",
+			"Stack",
+			"LineChart",
+			"BarChart",
+			"PieChart",
+			"ScatterChart",
+			"HeatmapChart",
+			"GaugeChart",
+			"RadarChart"
+		],
+		"aliases": ["analytics dashboard", "admin overview", "reporting", "kpi page"],
+		"related": ["217", "201", "191"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

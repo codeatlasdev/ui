@@ -9,5 +9,26 @@
 		"Wrapper `.col` uses `max-width: 320px`"
 	],
 	"tags": ["select", "dropdown", "options", "label", "bind-value"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Select"],
+		"aliases": ["dropdown", "picker", "listbox"],
+		"related": ["041", "042", "043"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

@@ -7,5 +7,26 @@
 		"`{#snippet footer()}` holds `<Button variant=\"ghost\">Cancel</Button>` and `<Button variant=\"filled\">Save</Button>`"
 	],
 	"tags": ["app-form", "form-section", "form", "no-header", "text-field", "footer"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default", "minimal"],
+		"motion": "none",
+		"interaction": ["keyboard", "press"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["AppForm", "FormSection", "TextField", "Button"],
+		"aliases": ["quick edit", "short form", "headerless form"],
+		"related": ["173", "184", "188"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

@@ -24,5 +24,26 @@
 			"stagger": "90ms"
 		}
 	],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "motion",
+		"subtype": "ambient",
+		"industry": ["saas", "ai"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["press"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["Button", "MotionStage"],
+		"aliases": ["landing hero", "staggered entrance", "above the fold", "intro"],
+		"related": ["256", "300", "307"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

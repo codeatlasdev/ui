@@ -26,5 +26,26 @@
 			"stagger": "calc(var(--i) * 70ms)"
 		}
 	],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "motion",
+		"subtype": "text",
+		"industry": ["saas", "fintech"],
+		"style": ["editorial", "default"],
+		"motion": "expressive",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["Button", "MotionStage"],
+		"aliases": ["word by word", "headline animation", "mask reveal", "stagger words"],
+		"related": ["307", "385", "304"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

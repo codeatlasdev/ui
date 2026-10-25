@@ -8,5 +8,26 @@
 		"`<KpiCard title=\"Conversion\" value=\"4.8\" unit=\"%\" trend={0.6} icon={TrendingUp} />`"
 	],
 	"tags": ["kpi-card", "kpi-grid", "metrics", "trend", "dashboard", "unit", "icon"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas", "fintech"],
+		"style": ["default", "bento"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["KpiCard", "KpiGrid"],
+		"aliases": ["metric card", "dashboard stat", "trend indicator"],
+		"related": ["176", "177", "178", "984"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

@@ -7,5 +7,26 @@
 		"`color=\"brand\"`, `color=\"success\"`, `color=\"warning\"` and `color=\"error\"` are the four variants"
 	],
 	"tags": ["badge", "color", "count", "icon-button", "notification", "flex"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Badge", "IconButton", "Flex"],
+		"aliases": ["notification count", "tone", "counter bubble"],
+		"related": ["113", "114", "900"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

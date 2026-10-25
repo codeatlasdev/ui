@@ -9,5 +9,26 @@
 		"Table columns: Field, Type, Description, with 2 rows for `to` and `text`"
 	],
 	"tags": ["prose", "callout", "steps", "docs-kit", "table", "api-docs"],
-	"shape": "tall"
+	"shape": "tall",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["devtools", "saas"],
+		"style": ["default", "editorial"],
+		"motion": "none",
+		"interaction": ["keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Callout", "Steps"],
+		"aliases": ["article", "documentation page", "callout", "markdown content", "steps"],
+		"related": ["233", "234", "232"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

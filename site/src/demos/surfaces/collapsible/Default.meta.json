@@ -8,5 +8,26 @@
 		"Nothing is bound to the open state, each panel manages its own"
 	],
 	"tags": ["collapsible", "faq", "stack", "disclosure", "expand", "title"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "surface",
+		"industry": ["saas", "education"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Collapsible", "Stack"],
+		"aliases": ["disclosure", "expand collapse", "help blocks"],
+		"related": ["074", "067", "066"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

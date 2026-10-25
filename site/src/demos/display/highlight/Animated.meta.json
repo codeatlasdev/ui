@@ -7,5 +7,26 @@
 		"The paragraph uses `--ca-font-size-h4`"
 	],
 	"tags": ["highlight", "mark", "marker", "animated", "reduced-motion", "editorial"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["agency", "media"],
+		"style": ["editorial"],
+		"motion": "expressive",
+		"interaction": ["none"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Highlight"],
+		"aliases": ["marker", "text emphasis", "highlighter sweep", "mark"],
+		"related": ["542", "540"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-23"
+	}
 }

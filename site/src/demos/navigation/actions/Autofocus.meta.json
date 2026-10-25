@@ -8,5 +8,26 @@
 		"`<Button onclick={() => key++}>Remount input</Button>` remounts the input so focus is applied again"
 	],
 	"tags": ["autofocus", "action", "focus", "input", "remount", "a11y"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["keyboard", "press"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button"],
+		"aliases": ["focus on mount", "auto focus"],
+		"related": ["149", "148"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

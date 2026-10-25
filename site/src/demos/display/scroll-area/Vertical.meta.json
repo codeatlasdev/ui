@@ -8,5 +8,26 @@
 		"Each row is a `<div class=\"item\">` rendered with `{#each items as item}`"
 	],
 	"tags": ["scroll-area", "vertical", "max-height", "scrollbar", "card", "list"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["scroll", "drag", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["ScrollArea", "Card"],
+		"aliases": ["vertical overflow", "custom scrollbar", "scrollable list", "max height"],
+		"related": ["136", "254"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

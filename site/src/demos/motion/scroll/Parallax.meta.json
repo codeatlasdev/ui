@@ -33,5 +33,26 @@
 			"easing": "linear"
 		}
 	],
-	"shape": "tall"
+	"shape": "tall",
+	"index": {
+		"kind": "motion",
+		"subtype": "scroll",
+		"industry": ["travel", "media"],
+		"style": ["default"],
+		"motion": "immersive",
+		"interaction": ["scroll", "keyboard"],
+		"layout": "sticky",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["MotionStage"],
+		"aliases": ["depth", "layers", "scroll depth", "hero parallax"],
+		"related": ["324", "325", "321"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

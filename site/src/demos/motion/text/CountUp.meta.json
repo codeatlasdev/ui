@@ -25,5 +25,26 @@
 			"easing": "1 - 2 ** (-10 * t)"
 		}
 	],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "motion",
+		"subtype": "text",
+		"industry": ["saas", "fintech"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["press"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["Button", "MotionStage"],
+		"aliases": ["number animation", "stat counter", "kpi", "tween number"],
+		"related": ["302", "326", "300"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

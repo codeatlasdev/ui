@@ -23,5 +23,26 @@
 			"easing": "linear"
 		}
 	],
-	"shape": "tall"
+	"shape": "tall",
+	"index": {
+		"kind": "motion",
+		"subtype": "scroll",
+		"industry": ["media", "education"],
+		"style": ["default", "editorial"],
+		"motion": "expressive",
+		"interaction": ["scroll", "keyboard"],
+		"layout": "sticky",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["MotionStage"],
+		"aliases": ["scroll progress", "article", "read indicator", "top bar"],
+		"related": ["326", "321", "325"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

@@ -8,5 +8,26 @@
 		"Both triggers are `<Button variant=\"outlined\"`"
 	],
 	"tags": ["toast", "toaster", "dedupe", "id", "replace", "notification", "count"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "Toaster"],
+		"aliases": ["deduplicate", "snackbar", "update in place"],
+		"related": ["103", "492"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }

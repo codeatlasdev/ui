@@ -7,5 +7,26 @@
 		"No `label` prop is passed"
 	],
 	"tags": ["switch", "aria-label", "without-label", "toggle", "a11y"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Switch"],
+		"aliases": ["unlabelled", "aria label only", "toggle"],
+		"related": ["050", "051", "052"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

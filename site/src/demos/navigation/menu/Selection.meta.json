@@ -8,5 +8,34 @@
 		"`aria-live=\"polite\"` note reports `Sorted by {sort}` and the two toggles"
 	],
 	"tags": ["dropdown-menu", "menu", "checkbox", "radio", "selection", "view-options", "bind"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["general"],
+		"style": ["glassmorphism"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [
+			"DropdownMenu",
+			"DropdownMenuCheckboxItem",
+			"DropdownMenuLabel",
+			"DropdownMenuRadioGroup",
+			"DropdownMenuRadioItem",
+			"DropdownMenuSeparator",
+			"Button"
+		],
+		"aliases": ["checkbox menu", "radio menu", "view options"],
+		"related": ["158", "401", "402"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

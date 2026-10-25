@@ -8,5 +8,26 @@
 		"All five use `size=\"lg\"`"
 	],
 	"tags": ["avatar", "initials", "fallback", "alt", "placeholder"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Avatar"],
+		"aliases": ["monogram", "name initials", "placeholder user"],
+		"related": ["107", "240", "110"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

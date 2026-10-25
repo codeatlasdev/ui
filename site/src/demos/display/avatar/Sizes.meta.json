@@ -10,5 +10,26 @@
 		"`size={80}` with `alt=\"Custom\"` is a numeric size"
 	],
 	"tags": ["avatar", "size", "xs", "xl", "custom-size"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Avatar"],
+		"aliases": ["avatar scale", "user icon size"],
+		"related": ["108", "107", "109"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

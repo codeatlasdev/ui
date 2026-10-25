@@ -9,5 +9,26 @@
 		"Button `Search records` opens the palette, `Selected:` shows the picked path"
 	],
 	"tags": ["command-palette", "async", "search", "server", "debounce", "abort", "loading"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["fintech", "saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard", "press"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["CommandPalette", "Button"],
+		"aliases": ["remote search", "server search", "spotlight"],
+		"related": ["156", "155"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-17"
+	}
 }

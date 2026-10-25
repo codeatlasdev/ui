@@ -8,5 +8,26 @@
 		"Opened by an outlined small Button inside an overlay with `position: fixed;` and `inset: 0;`"
 	],
 	"tags": ["auth-layout", "panel-tone", "flat", "gradient", "blobs", "sign-in"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default", "minimal"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "split",
+		"colorMode": "both",
+		"density": "airy",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["AuthLayout", "AuthCard", "Button", "SegmentedControl", "Stack"],
+		"aliases": ["login page", "sign in layout", "side panel", "auth screen"],
+		"related": ["172", "781"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }

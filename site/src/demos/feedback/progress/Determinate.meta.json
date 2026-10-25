@@ -8,5 +8,26 @@
 		"Column has `max-width: 480px`"
 	],
 	"tags": ["progress", "determinate", "value", "percent", "label"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Progress"],
+		"aliases": ["progress bar", "percent"],
+		"related": ["092", "094", "641"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

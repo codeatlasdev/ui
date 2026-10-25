@@ -8,5 +8,26 @@
 		"`tone(2)` builds a 2 second WAV blob as the source"
 	],
 	"tags": ["audio-player", "voice", "waveform", "chat", "scrub"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["saas", "media"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard", "drag"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["AudioPlayer"],
+		"aliases": ["voice message", "waveform", "audio message", "play pause"],
+		"related": ["248", "253"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

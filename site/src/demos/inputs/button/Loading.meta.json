@@ -8,5 +8,26 @@
 		"Label switches with state: `{saving ? 'Saving…' : 'Save (2s)'}`"
 	],
 	"tags": ["button", "loading", "spinner", "async", "submit"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button"],
+		"aliases": ["spinner", "pending", "busy"],
+		"related": ["005", "006", "063"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

@@ -9,5 +9,26 @@
 		"3 selects stacked in `.col` with `max-width: 320px`"
 	],
 	"tags": ["select", "error", "disabled", "description", "validation"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Select"],
+		"aliases": ["validation", "disabled option", "helper text"],
+		"related": ["040", "042", "011"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

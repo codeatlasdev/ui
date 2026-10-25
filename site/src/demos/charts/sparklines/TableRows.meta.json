@@ -9,5 +9,26 @@
 		"Columns: Product, Last 6 months, Trend"
 	],
 	"tags": ["sparkline", "table", "trend", "card", "flush", "rows"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "chart",
+		"industry": ["saas", "e-commerce"],
+		"style": ["default", "minimal"],
+		"motion": "subtle",
+		"interaction": ["hover"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "Sparkline"],
+		"aliases": ["inline trend", "table chart", "row sparkline"],
+		"related": ["217", "216", "218"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

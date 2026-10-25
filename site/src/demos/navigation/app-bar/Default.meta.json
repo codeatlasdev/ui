@@ -9,5 +9,26 @@
 		"Icons are `<Search size={18} />` and `<Bell size={18} />` from `@lucide/svelte`"
 	],
 	"tags": ["app-bar", "glass-app-bar", "header", "toolbar", "icon-button", "avatar"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["saas"],
+		"style": ["glassmorphism"],
+		"motion": "none",
+		"interaction": ["press", "keyboard"],
+		"layout": "sticky",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["GlassAppBar", "IconButton", "Avatar", "Card"],
+		"aliases": ["header", "top bar", "toolbar"],
+		"related": ["152", "502", "946"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

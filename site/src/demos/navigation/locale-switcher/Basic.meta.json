@@ -8,5 +8,26 @@
 		"The column is left-aligned with `gap: var(--ca-space-3)`"
 	],
 	"tags": ["locale-switcher", "language", "i18n", "dropdown", "async", "onselect"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["LocaleSwitcher"],
+		"aliases": ["language picker", "i18n", "translation"],
+		"related": ["502", "158"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }

@@ -24,5 +24,26 @@
 			"delay": "120ms"
 		}
 	],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "motion",
+		"subtype": "micro",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["MotionStage"],
+		"aliases": ["clipboard", "copy code", "install command", "success tick"],
+		"related": ["344", "342", "343"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

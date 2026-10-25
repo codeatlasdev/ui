@@ -8,5 +8,26 @@
 		"`<Flex gap=\"4\" align=\"center\" wrap>` lays them out"
 	],
 	"tags": ["badge", "avatar", "dot", "status", "presence"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Badge", "Avatar", "Flex"],
+		"aliases": ["status dot", "presence badge", "user status"],
+		"related": ["109", "112", "113"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

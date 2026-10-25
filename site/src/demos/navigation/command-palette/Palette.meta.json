@@ -10,5 +10,26 @@
 		"Result shown in `aria-live=\"polite\"` as `Selected: <code>{picked}</code>`"
 	],
 	"tags": ["command-palette", "search", "navigation", "modules", "keyboard", "kbd", "dialog"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["saas", "devtools"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard", "press"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["CommandPalette", "Button", "Kbd"],
+		"aliases": ["spotlight", "quick switcher", "cmd k"],
+		"related": ["422", "155"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

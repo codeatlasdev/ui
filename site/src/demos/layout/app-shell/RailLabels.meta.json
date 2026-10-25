@@ -17,5 +17,26 @@
 		"filter-modules",
 		"search"
 	],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "hover", "keyboard"],
+		"layout": "split",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["AppShellLayout", "Button", "PageShell", "Card"],
+		"aliases": ["icon captions", "labeled sidebar", "command search", "mobile more sheet"],
+		"related": ["166", "481", "601"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }

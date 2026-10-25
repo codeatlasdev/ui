@@ -6,5 +6,26 @@
 		"Closing it restores the app preset and scheme"
 	],
 	"tags": ["theme-island", "document", "full-page", "landing", "overscroll", "ssr"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["agency", "saas"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["press", "keyboard"],
+		"layout": "full-bleed",
+		"colorMode": "light",
+		"density": "airy",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "ThemeIsland"],
+		"aliases": ["page theme", "browser chrome color", "document theme"],
+		"related": ["780", "840"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }

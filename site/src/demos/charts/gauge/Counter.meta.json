@@ -10,5 +10,26 @@
 		"Interval is cleared when `value >= 94` and on unmount"
 	],
 	"tags": ["gauge-chart", "ring", "counter", "animation", "onmount", "score", "stack"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "chart",
+		"industry": ["devtools", "saas"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["hover"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "Stack", "GaugeChart"],
+		"aliases": ["animated score", "count up gauge", "progress ring"],
+		"related": ["195", "196", "197"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

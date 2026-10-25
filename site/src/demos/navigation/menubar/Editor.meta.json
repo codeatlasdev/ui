@@ -8,5 +8,37 @@
 		"Action items call `function pick(action: string)`, which sets `last` and calls `announce`"
 	],
 	"tags": ["menubar", "menu", "application", "keyboard", "dropdown-menu", "submenu"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["devtools"],
+		"style": ["glassmorphism"],
+		"motion": "subtle",
+		"interaction": ["keyboard", "press", "hover"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [
+			"DropdownMenuCheckboxItem",
+			"DropdownMenuItem",
+			"DropdownMenuLabel",
+			"DropdownMenuRadioGroup",
+			"DropdownMenuRadioItem",
+			"DropdownMenuSeparator",
+			"DropdownMenuSub",
+			"DropdownMenuSubTrigger",
+			"Menubar",
+			"MenubarMenu"
+		],
+		"aliases": ["menu bar", "application menu", "toolbar menu"],
+		"related": ["945", "946", "401"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }

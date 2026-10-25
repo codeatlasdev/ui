@@ -11,5 +11,26 @@
 	],
 	"tags": ["kanban", "board", "pipeline", "summary", "total", "money", "crm", "columns"],
 	"names": ["Kanban column total", "Pipeline totals", "Total por coluna", "Total por columna"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["saas", "fintech"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["drag", "keyboard", "press"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Kanban"],
+		"aliases": ["deal board", "column totals", "deal value sum", "sales pipeline"],
+		"related": ["760", "433"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }

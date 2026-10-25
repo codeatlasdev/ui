@@ -35,5 +35,26 @@
 			"easing": "cubic-bezier(0.2, 0, 0, 1)"
 		}
 	],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "motion",
+		"subtype": "transition",
+		"industry": ["saas", "devtools"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["press", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["Button", "MotionStage"],
+		"aliases": ["notifications", "snackbar", "alert stack", "depth cascade"],
+		"related": ["365", "363", "366"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

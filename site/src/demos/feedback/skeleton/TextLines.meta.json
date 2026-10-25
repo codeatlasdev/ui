@@ -7,5 +7,26 @@
 		"Body lines `<Skeleton rows={3} height=\"14px\" />` render three rows from one element"
 	],
 	"tags": ["skeleton", "text", "rows", "card", "loading"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Skeleton", "Card", "Stack"],
+		"aliases": ["placeholder", "text loading", "shimmer"],
+		"related": ["097", "098", "241"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

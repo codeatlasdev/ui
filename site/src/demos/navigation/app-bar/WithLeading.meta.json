@@ -9,5 +9,26 @@
 		"Trailing also has `<Avatar alt=\"Carlos M\" size=\"sm\" />`"
 	],
 	"tags": ["app-bar", "glass-app-bar", "leading", "trailing", "header", "menu-button"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["saas"],
+		"style": ["glassmorphism"],
+		"motion": "none",
+		"interaction": ["press", "keyboard"],
+		"layout": "sticky",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["GlassAppBar", "Button", "IconButton", "Avatar", "Card"],
+		"aliases": ["header", "top bar", "hamburger"],
+		"related": ["151", "502", "946"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

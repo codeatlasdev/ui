@@ -8,5 +8,26 @@
 		"A line below reads `Own header, own close button. The panel is still named by the heading above.`"
 	],
 	"tags": ["drawer", "aria-labelledby", "custom-header", "accessible-name", "detail-panel"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["devtools", "saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Drawer", "Button"],
+		"aliases": ["issue detail", "custom header"],
+		"related": ["700", "089", "090"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-17"
+	}
 }

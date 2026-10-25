@@ -6,5 +6,26 @@
 		"Tokens in order: `--ca-semantic-success`, `--ca-semantic-warning`, `--ca-semantic-error`, `--ca-semantic-info`"
 	],
 	"tags": ["colors", "semantic", "success", "warning", "error", "info", "tokens"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "foundation",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [],
+		"aliases": ["status colors", "success warning error", "feedback colors"],
+		"related": ["220", "221", "223", "224"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

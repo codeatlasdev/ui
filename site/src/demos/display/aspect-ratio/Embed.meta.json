@@ -7,5 +7,26 @@
 		"`.slot` is `height: 100%` on `--ca-surface-sunken` and centres its text"
 	],
 	"tags": ["aspect-ratio", "embed", "video", "iframe", "ratio"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["media"],
+		"style": ["minimal"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["AspectRatio"],
+		"aliases": ["16 9 box", "video frame", "responsive embed", "ratio box"],
+		"related": ["960", "127"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-23"
+	}
 }

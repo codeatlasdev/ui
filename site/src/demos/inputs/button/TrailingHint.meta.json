@@ -7,5 +7,26 @@
 		"Wrapping flex `.row` with `gap: var(--ca-space-3)`"
 	],
 	"tags": ["button", "trailing", "kbd", "shortcut", "hint", "responsive", "touch"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover", "press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "Kbd"],
+		"aliases": ["shortcut hint", "keycap"],
+		"related": ["902", "880", "002"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }

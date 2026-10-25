@@ -6,5 +6,26 @@
 		"`{#snippet actions()}` holds `<Button variant=\"outlined\" size=\"sm\">Retry</Button>` and `<Button variant=\"ghost\" size=\"sm\">Contact support</Button>`"
 	],
 	"tags": ["empty-state", "offline", "error", "retry", "network", "actions"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["EmptyState", "Button"],
+		"aliases": ["network error", "connection lost", "retry state"],
+		"related": ["170", "172", "167"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

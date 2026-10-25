@@ -8,5 +8,26 @@
 		"The pills sit in a wrapping flex row with `gap: var(--ca-space-2)` and `border-radius: var(--ca-radius-pill)`"
 	],
 	"tags": ["tokens", "preset", "domain", "status", "tokenrgba", "canvas", "theme"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas", "fintech"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "canvas2d"],
+		"cost": "js-light",
+		"components": [],
+		"aliases": ["custom tokens", "status colors", "canvas colors", "preset tokens"],
+		"related": ["079", "985"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-23"
+	}
 }

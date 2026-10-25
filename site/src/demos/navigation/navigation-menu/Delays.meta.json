@@ -7,5 +7,26 @@
 		"Each panel holds two `NavigationMenuLink`s"
 	],
 	"tags": ["navigation-menu", "delay", "hover", "align", "docs", "disclosure"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["devtools"],
+		"style": ["glassmorphism"],
+		"motion": "subtle",
+		"interaction": ["hover", "keyboard", "press"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["NavigationMenu", "NavigationMenuItem", "NavigationMenuLink"],
+		"aliases": ["hover delay", "top nav", "site header"],
+		"related": ["946", "944"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }

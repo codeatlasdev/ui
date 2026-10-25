@@ -7,5 +7,26 @@
 		"`<Chip label=\"Small\" size=\"sm\" />` shows the small size"
 	],
 	"tags": ["chip", "variant", "brand", "size", "sm", "color"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Chip"],
+		"aliases": ["color tags", "semantic pills", "tag sizes"],
+		"related": ["115", "119", "117"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

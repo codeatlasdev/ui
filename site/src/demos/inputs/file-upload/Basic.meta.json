@@ -10,5 +10,26 @@
 		"Wrapper `.wrap` has `max-width: 480px`"
 	],
 	"tags": ["file-upload", "dropzone", "multiple", "max-size", "files", "attachment"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "drag", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["FileUpload"],
+		"aliases": ["dropzone", "attachment", "drag and drop"],
+		"related": ["021", "388", "054"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

@@ -10,5 +10,26 @@
 		"Imports come from `@codeatlasdev/ui/forms`, each field uses `bind:value`"
 	],
 	"tags": ["masked-field", "cpf", "cnpj", "mask", "validation", "brazil", "forms"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["fintech"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["MaskedField"],
+		"aliases": ["cpf", "cnpj", "input mask", "id number"],
+		"related": ["024", "025", "028"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16"
+	}
 }

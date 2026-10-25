@@ -8,5 +8,26 @@
 		"Descriptions: `Filter by label or module name`, `Move through the results`, `Navigate to the selected item`, `Close the palette`"
 	],
 	"tags": ["kbd", "keyboard", "shortcuts", "command-palette", "hints", "legend"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Kbd"],
+		"aliases": ["shortcuts", "hotkeys", "cheat sheet"],
+		"related": ["156", "422"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16"
+	}
 }

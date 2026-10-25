@@ -7,5 +7,26 @@
 		"`cards` is `['Starter', 'Team', 'Business', 'Enterprise', 'Partner']`"
 	],
 	"tags": ["carousel", "per-view", "loop", "cards", "scroll-snap"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["drag", "press", "keyboard"],
+		"layout": "carousel",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Carousel", "CarouselItem"],
+		"aliases": ["multi item slider", "plan cards", "card row", "pricing slider"],
+		"related": ["964", "966"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23"
+	}
 }
