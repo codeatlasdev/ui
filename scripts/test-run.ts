@@ -30,6 +30,7 @@ import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync
 import { availableParallelism, loadavg, tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { evictAll } from "./caches.ts";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const runsDir = join(root, ".cache/test-runs");
@@ -294,6 +295,10 @@ async function run(cmd: string[], budget?: BudgetName): Promise<number> {
 			cwd: process.cwd(),
 			cmd,
 		});
+	// Holding the lock, nothing else is running: enforce every cache's age limit and size cap (scripts/caches.ts), so a
+	// store never outgrows its cap between two cleanups. The run that took the lock also drops the reports, traces and
+	// attachments of the previous one; a nested run (`test:changed` calling vitest and playwright) keeps its parent's.
+	evictAll(false, locked);
 
 	const t0 = performance.now();
 	// One timings file per top-level run; a nested run appends to its parent's.

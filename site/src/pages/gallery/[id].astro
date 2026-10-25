@@ -4,6 +4,7 @@ import SiteDocsShell from "~/components/docs/SiteDocsShell.svelte";
 import SiteFooter from "~/components/site/SiteFooter.astro";
 import Base from "~/layouts/Base.astro";
 import { ITEMS } from "~/lib/gallery-items";
+import { onlyRoutes } from "~/lib/only-routes";
 import { SECTIONS } from "~/lib/nav";
 import { THEME_PRESETS } from "@codeatlasdev/ui";
 import { getCollection } from "astro:content";
@@ -14,7 +15,7 @@ import catalog from "../../../public/api/v1/catalog.json";
 import index from "../../../public/api/v1/index.json";
 
 export function getStaticPaths() {
-	return ITEMS.map((item) => ({ params: { id: item.id }, props: { item } }));
+	return onlyRoutes(ITEMS, (item) => `/gallery/${item.id}/`).map((item) => ({ params: { id: item.id }, props: { item } }));
 }
 
 const { item } = Astro.props;

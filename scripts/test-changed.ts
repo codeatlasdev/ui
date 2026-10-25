@@ -35,7 +35,7 @@
 import { spawn, spawnSync } from "node:child_process";
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
-import { distStale } from "./dist-fresh.ts";
+import { distCovers, distStale, readScope } from "./dist-fresh.ts";
 import { lockReachesRuntime, ownRoutes, ROOT, select } from "./route-impact.ts";
 import {
 	affected,
@@ -118,6 +118,13 @@ const sweepAll = sel.all || (land && sharedFile !== undefined);
 const siteRun = sweepAll || routes.length > 0 || specs.length > 0;
 const visualRun = sel.all || sel.routes.some((r) => VISUAL_ROUTES.has(r));
 const routeRun = sweepAll || routes.length > 0;
+// A narrow site run builds only the pages it audits (`CA_SITE_ROUTES`, site/src/lib/only-routes.ts): a behaviour spec
+// visits arbitrary pages and a sweep audits all of them, so those need the whole site. 915 pages are ~80 s of the
+// page generation, 80 pages ~11 s.
+const builtRoutes: string[] | undefined =
+	!sweepAll && specs.length === 0
+		? [...new Set([...routes, ...(visualRun ? [...VISUAL_ROUTES] : [])])].sort()
+		: undefined;
 // Shared: everything that can reach every test runs, and screenshots are left to `test:vrt`.
 const shared = sel.all || sharedFile !== undefined;
 const widened = widenedBecause(changed);
@@ -231,7 +238,9 @@ const siteStale =
 			land,
 			exists: siteDist > 0,
 			changedAfter: newer(/^site\/(src|public|astro\.config\.mjs|package\.json)/, siteDist),
-		}));
+		}) ||
+		// a narrow build (or one of unknown scope) lacks pages this run audits
+		!distCovers(readScope(join(ROOT, "site/dist")), builtRoutes));
 // A build is ~80 s (package 12 s + site 70 s), more than the whole 60 s dev budget: only the land gate
 // builds. A dev run uses `site/dist` when it is fresh, and says so when it cannot.
 const buildHere = land && (pkgStale || siteStale);
@@ -247,8 +256,12 @@ const building =
 	buildHere && siteStale
 		? step(
 				"build site",
-				() => runAsync(["bun", "run", "--cwd", "site", "build"]),
-				", beside the tests"
+				() =>
+					runAsync(
+						["bun", "run", "--cwd", "site", "build"],
+						builtRoutes ? { CA_SITE_ROUTES: JSON.stringify(builtRoutes) } : {}
+					),
+				builtRoutes ? `, ${builtRoutes.length} routes, beside the tests` : ", beside the tests"
 			)
 		: undefined;
 await packageTests();

@@ -26,13 +26,15 @@ import {
 import { STRENGTH_LABEL } from "~/data/evidence/references";
 import Base from "~/layouts/Base.astro";
 import { loadDocs } from "~/lib/docs";
+import { onlyRoutes } from "~/lib/only-routes";
 import { SECTIONS } from "~/lib/nav";
 
 export function getStaticPaths() {
-	return TERMS.map((term, i) => ({
+	const paths = TERMS.map((term, i) => ({
 		params: { slug: termSlug(term) },
 		props: { term, prev: TERMS[i - 1], next: TERMS[i + 1] },
 	}));
+	return onlyRoutes(paths, (p) => `/atlas/${p.params.slug}/`);
 }
 
 const { term: t, prev, next } = Astro.props;

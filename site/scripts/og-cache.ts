@@ -3,10 +3,7 @@ import {
 	copyFileSync,
 	existsSync,
 	mkdirSync,
-	readdirSync,
 	renameSync,
-	rmSync,
-	statSync,
 	utimesSync,
 	writeFileSync,
 } from "node:fs";
@@ -47,24 +44,4 @@ export async function placeCard(
 	mkdirSync(dirname(target), { recursive: true });
 	copyFileSync(cached, target);
 	return hit;
-}
-
-/**
- * Deletes cards not served for `maxAgeDays`. Every template or copy change leaves ~880 cards (~115 MB) that nothing
- * will ask for again, and the directory is shared by every worktree of the machine. Only `<sha256>.png` files are
- * touched. Returns how many it removed.
- */
-export function pruneCards(cacheDir: string, maxAgeDays: number): number {
-	if (!existsSync(cacheDir)) return 0;
-	const limit = Date.now() - maxAgeDays * 86_400_000;
-	let removed = 0;
-	for (const name of readdirSync(cacheDir)) {
-		if (!/^[0-9a-f]{64}\.png$/.test(name)) continue;
-		const file = join(cacheDir, name);
-		if (statSync(file).mtimeMs < limit) {
-			rmSync(file, { force: true });
-			removed += 1;
-		}
-	}
-	return removed;
 }
