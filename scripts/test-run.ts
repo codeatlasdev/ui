@@ -213,9 +213,13 @@ export const BUDGETS = {
 	 * (95 s at load 10.5 on the happy-dom bump #588), over the 60 s `changed` budget that assumed a narrow selection.
 	 */
 	landShared: 240,
-	/** `bun run test:full`: unit, every component test, every route, fixtures (release gate, part 1) */
+	/** `bun run test:full`: package and site build, unit, every component test, fixtures (release gate, part 1 of 4) */
 	full: 300,
-	/** `bun run test:vrt`: every component and site screenshot (release gate, part 2) */
+	/** `bun run test:e2e`: the site's behaviour specs at both viewports, WebKit, a11y, the zero-browser HTML checks of every page (part 2 of 4) */
+	e2e: 300,
+	/** `bun run test:routes`: layout and axe on every page, the gallery items and atlas terms through representatives (part 3 of 4) */
+	routes: 300,
+	/** `bun run test:vrt`: every component and site screenshot (release gate, part 4 of 4) */
 	vrt: 180,
 } as const;
 type BudgetName = keyof typeof BUDGETS;

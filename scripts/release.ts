@@ -98,15 +98,20 @@ if (sh(["git", "rev-parse", "HEAD"]) !== sh(["git", "rev-parse", "origin/main"])
 	fail("HEAD differs from origin/main: pull first");
 }
 
-// The whole suite runs before anything is versioned or tagged, as two commands so each stays under its own
-// budget (5 minutes): `test:full` (unit, every component test, every route, fixtures) and `test:vrt` (every
-// component and site screenshot). A red run stops here with the tree untouched. `--dry-run` only reports.
+// The whole suite runs before anything is versioned or tagged, as four commands in order so each stays under its own
+// budget (5 minutes): `test:full` (package and site build, unit, every component test, fixtures), `test:e2e` (the site's
+// behaviour specs and the HTML checks of every page), `test:routes` (layout and axe on every page, the gallery items
+// and atlas terms through representatives) and `test:vrt` (every component and site screenshot). The two site
+// commands reuse the `site/dist` that `test:full` built (`E2E_PREBUILT`). A red command stops here with the tree
+// untouched. `--dry-run` only reports.
 if (!dry)
-	for (const script of ["test:full", "test:vrt"]) {
+	for (const script of ["test:full", "test:e2e", "test:routes", "test:vrt"]) {
 		console.log(`▶ bun run ${script}`);
 		if (
-			Bun.spawnSync(["bun", "run", script], { stdio: ["inherit", "inherit", "inherit"] })
-				.exitCode !== 0
+			Bun.spawnSync(["bun", "run", script], {
+				stdio: ["inherit", "inherit", "inherit"],
+				env: { ...process.env, E2E_PREBUILT: "1" },
+			}).exitCode !== 0
 		)
 			fail(`bun run ${script} failed: nothing was versioned or tagged`);
 	}

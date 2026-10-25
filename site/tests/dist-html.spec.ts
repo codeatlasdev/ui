@@ -2,16 +2,19 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { expect, test } from "@playwright/test";
 import { Window } from "happy-dom";
-import { DIST, ROUTES } from "./routes";
+import { ALL_ROUTES, DIST } from "./routes";
 
 /**
  * Page rules that are pure functions of the prerendered HTML, checked on `site/dist` with a DOM
- * parser and no browser (32 ms a page, the whole site in about a second). It adds to the axe project
- * and replaces none of it: axe checks what the browser renders; this checks what the server sent.
- * Rules that depend on client rendering are NOT here (`page-has-heading-one` is false on the app
- * templates, whose `<h1>` renders in the island).
+ * parser and no browser (about 7 ms a page, the whole site in ~6 s), on EVERY page, never a
+ * representative: the browser sweeps (routes.spec, routes.axe) audit one item and one term per template
+ * and rely on this for the rest. It adds to the axe project and replaces none of it: axe checks what the
+ * browser renders; this checks what the server sent. Rules that depend on client rendering are NOT here
+ * (`page-has-heading-one` is false on the app templates, whose `<h1>` renders in the island; an
+ * `aria-labelledby` may point into an island; a docs page embeds demos with their own headings and
+ * fragment links, so heading order and in-page links are not page rules either).
  */
-const PAGES = ROUTES.filter(
+const PAGES = ALL_ROUTES.filter(
 	(r) => !readFileSync(join(DIST, r, "index.html"), "utf8").includes('http-equiv="refresh"')
 );
 
@@ -43,6 +46,20 @@ function problems(html: string): { problems: string[]; duplicateIds: string[] } 
 	if (!d.title.trim()) out.push("document-title: empty <title>");
 	if (!d.documentElement.getAttribute("lang")) out.push("html-has-lang: <html> has no lang");
 	if (!d.querySelector('meta[name="viewport"]')) out.push("meta-viewport: no viewport meta");
+	if (!d.querySelector('meta[name="description"]')?.getAttribute("content")?.trim())
+		out.push("meta-description: no description");
+	if (!d.querySelector('link[rel="canonical"]')) out.push("canonical: no canonical link");
+	if (!d.querySelector('meta[property="og:title"]')) out.push("og:title: missing");
+	if (d.querySelector('a[href="#main"]') && !d.getElementById("main"))
+		out.push("skip-link: #main does not exist");
+	for (const b of d.querySelectorAll("button"))
+		if (!named(b)) out.push("button-name: a <button> has no name");
+	for (const f of d.querySelectorAll("iframe"))
+		if (!f.getAttribute("title"))
+			out.push(`frame-title: <iframe src="${f.getAttribute("src")}"> has no title`);
+	for (const a of d.querySelectorAll('a[target="_blank"]'))
+		if (!/\bnoopener\b/.test(a.getAttribute("rel") ?? ""))
+			out.push(`noopener: <a href="${a.getAttribute("href")}" target=_blank> has no rel=noopener`);
 	const main = d.querySelectorAll("main").length;
 	if (main !== 1) out.push(`landmark-one-main: ${main} <main> elements`);
 	for (const img of d.querySelectorAll("img"))

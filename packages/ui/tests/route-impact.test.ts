@@ -157,7 +157,7 @@ describe("route-impact", () => {
 		});
 	});
 
-	// `/atlas/<slug>/` is one template over 269 terms (#595): the land gate sweeps a few, `test:full` all.
+	// `/atlas/<slug>/` is one template over 269 terms (#595): the land gate and the release sweep a few in a browser (the HTML checks read all).
 	describe("atlas term pages", () => {
 		it("the representatives are a few real terms, so a renamed slug cannot shrink the sweep", () => {
 			const slugs = new Set(TERMS.map(termSlug));
@@ -169,7 +169,7 @@ describe("route-impact", () => {
 
 	// A shared change reaches every docs page through the same chrome, and each page differs only by the components
 	// its demos render. The land gate keeps the smallest set of docs routes that still renders every component folder
-	// and every subpath the docs use at least once; `test:full` audits all of them (#598).
+	// and every subpath the docs use at least once; `test:routes` audits all of them (#598).
 	describe("docs representatives", () => {
 		const docs = [...impact.files.keys()].filter((r) => r.startsWith("/docs/"));
 		const reps = docsRepresentatives(impact);

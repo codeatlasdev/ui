@@ -22,6 +22,8 @@ describe("test-run budgets", () => {
 			land: 180,
 			landShared: 240,
 			full: 300,
+			e2e: 300,
+			routes: 300,
 			vrt: 180,
 		});
 	});
