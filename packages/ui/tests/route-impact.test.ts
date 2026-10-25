@@ -55,6 +55,14 @@ describe("route-impact", () => {
 		expect(pick("site/src/templates/_shared/brand-new.ts").all).toBe(true);
 	});
 
+	it("a CLI source under packages/ui/bin renders nothing and selects no route (#593)", () => {
+		for (const file of ["packages/ui/bin/ca-ui-mcp.ts", "packages/ui/bin/codeatlas-ui.ts"]) {
+			const s = pick(file);
+			expect(s.all).toBe(false);
+			expect(s.routes).toEqual([]);
+		}
+	});
+
 	it("selects every route for a component the site shell renders on every page", () => {
 		// Which components the shell renders changes with the site (#556 moved Button out of it): read it
 		// from the map rather than naming one.
