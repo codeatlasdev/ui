@@ -5,7 +5,7 @@ When to use: Segmented controls, tab bars and filters where the eye should follo
 Spec:
 - `MotionStage` with `label="Tab indicator: a pill slides under the active tab"` and `loop={1800}`
 - `Tabs`, `TabsList`, `TabsTrigger` and `TabsContent` come from `@codeatlasdev/ui`, untouched
-- The active trigger's `offsetLeft` and `offsetWidth` are written to `--x` and `--w`; the pill reads `transform: translateX(var(--x))` and `inline-size: var(--w)`
+- The active trigger's `offsetLeft` and `offsetWidth` are written to `--ti-x` and `--ti-w`; the pill reads `transform: translateX(var(--ti-x))` and `inline-size: var(--ti-w)`
 - `transition: transform 360ms cubic-bezier(0.2, 0, 0, 1), inline-size 360ms cubic-bezier(0.2, 0, 0, 1)`; no transition before the first measure and under reduced motion
 - A `ResizeObserver` re-measures when the list resizes
 Motion:
@@ -68,7 +68,7 @@ Live demo: https://ui.codeatlas.com.br/docs/motion/transitions#tab-indicator
   {#snippet children(m)}
     <div class="ti" class:ti--ready={ready} class:ti--instant={m.reduced} {@attach () => { stage = m; }}>
       <Tabs bind:value>
-        <div class="ti__rail" bind:this={rail} style="--x:{x}px; --w:{w}px">
+        <div class="ti__rail" bind:this={rail} style="--ti-x:{x}px; --ti-w:{w}px">
           <TabsList>
             <span class="ti__pill" aria-hidden="true"></span>
             {#each tabs as t (t.value)}
@@ -93,8 +93,8 @@ Live demo: https://ui.codeatlas.com.br/docs/motion/transitions#tab-indicator
   .ti :global(.ca-tabs-list) { position: relative; }
   .ti__pill {
     position: absolute; inset-block: var(--ca-space-1); inset-inline-start: 0; z-index: 0;
-    inline-size: var(--w); border-radius: var(--ca-radius-pill); background: var(--ca-brand-fill);
-    transform: translateX(var(--x)); opacity: 0;
+    inline-size: var(--ti-w); border-radius: var(--ca-radius-pill); background: var(--ca-brand-fill);
+    transform: translateX(var(--ti-x)); opacity: 0;
   }
   .ti--ready .ti__pill { opacity: 1; transition: transform 360ms cubic-bezier(0.2, 0, 0, 1), inline-size 360ms cubic-bezier(0.2, 0, 0, 1); }
   .ti--instant .ti__pill { transition: none; }

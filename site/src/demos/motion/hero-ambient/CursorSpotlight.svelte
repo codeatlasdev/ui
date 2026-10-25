@@ -35,7 +35,7 @@
       class="spot"
       class:spot--run={!m.reduced}
       role="presentation"
-      style="--x:{m.reduced ? 50 : at.x}%; --y:{m.reduced ? 40 : at.y}%"
+      style="--spot-x:{m.reduced ? 50 : at.x}%; --spot-y:{m.reduced ? 40 : at.y}%"
       onpointermove={follow}
       onpointerleave={() => (pointer = null)}
     >
@@ -56,8 +56,8 @@
 </MotionStage>
 
 <style>
-  @property --x { syntax: '<percentage>'; inherits: true; initial-value: 50%; }
-  @property --y { syntax: '<percentage>'; inherits: true; initial-value: 40%; }
+  @property --spot-x { syntax: '<percentage>'; inherits: true; initial-value: 50%; }
+  @property --spot-y { syntax: '<percentage>'; inherits: true; initial-value: 40%; }
 
   .spot {
     position: relative;
@@ -69,9 +69,9 @@
     outline: 1px solid var(--ca-outline-subtle);
     touch-action: pan-y;
   }
-  /* The eased follow: --x and --y are registered, so the browser interpolates them. */
+  /* The eased follow: --spot-x and --spot-y are registered, so the browser interpolates them. */
   .spot--run {
-    transition: --x 520ms cubic-bezier(0.2, 0, 0, 1), --y 520ms cubic-bezier(0.2, 0, 0, 1);
+    transition: --spot-x 520ms cubic-bezier(0.2, 0, 0, 1), --spot-y 520ms cubic-bezier(0.2, 0, 0, 1);
   }
   .spot__grid {
     display: grid;
@@ -95,15 +95,15 @@
   .spot__glow,
   .spot__lines { position: absolute; inset: 0; pointer-events: none; }
   .spot__glow {
-    background: radial-gradient(circle 10rem at var(--x) var(--y), color-mix(in oklab, var(--ca-brand-fill) 22%, transparent), transparent 72%);
+    background: radial-gradient(circle 10rem at var(--spot-x) var(--spot-y), color-mix(in oklab, var(--ca-brand-fill) 22%, transparent), transparent 72%);
   }
   .spot__lines {
     background-image:
       linear-gradient(to right, var(--ca-brand-fill) 1px, transparent 1px),
       linear-gradient(to bottom, var(--ca-brand-fill) 1px, transparent 1px);
     background-size: 1.5rem 1.5rem;
-    -webkit-mask-image: radial-gradient(circle 8rem at var(--x) var(--y), #000, transparent 72%);
-    mask-image: radial-gradient(circle 8rem at var(--x) var(--y), #000, transparent 72%);
+    -webkit-mask-image: radial-gradient(circle 8rem at var(--spot-x) var(--spot-y), #000, transparent 72%);
+    mask-image: radial-gradient(circle 8rem at var(--spot-x) var(--spot-y), #000, transparent 72%);
     opacity: 0.35;
   }
   @media (pointer: coarse) {
