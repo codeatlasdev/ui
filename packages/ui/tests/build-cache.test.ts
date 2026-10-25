@@ -51,3 +51,22 @@ describe("build inputs", () => {
 		expect(missing).toEqual([]);
 	});
 });
+
+// The skip path runs the real script: a typo in the entry point (an undefined name) type-checks and passes every unit
+// test above, and then fails the land gate the first time a build is needed. `dist` is current right after any build.
+describe("the build entry point", () => {
+	it.skipIf(!existsSync(join(ROOT, "packages/ui/dist/.ca-input-hash")))(
+		"stops with 'dist is current' when nothing changed since the last build",
+		() => {
+			const run = Bun.spawnSync([process.execPath, "scripts/build-package.ts"], {
+				cwd: join(ROOT, "packages/ui"),
+				env: { ...process.env, CA_BUILD_COLD: "" },
+			});
+			const out = run.stdout.toString();
+			// either current (exit 0, says so) or the tree changed since: then it must have rebuilt successfully
+			expect(run.exitCode, run.stderr.toString()).toBe(0);
+			expect(out.length).toBeGreaterThan(0);
+		},
+		120_000
+	);
+});

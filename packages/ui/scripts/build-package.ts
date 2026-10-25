@@ -34,11 +34,13 @@ const steps = [
 	["bun", "scripts/build-equivalents.ts"],
 	["bun", "scripts/build-bin.ts"],
 ];
+const bins = [join(PKG, "node_modules/.bin"), join(ROOT, "node_modules/.bin")].join(":");
 for (const cmd of steps) {
 	const p = Bun.spawnSync(cmd, {
-		cwd: pkg,
+		cwd: PKG,
 		stdio: ["inherit", "inherit", "inherit"],
-		env: process.env,
+		// `svelte-package` is a package binary: resolve it as `bun run` does, so the script also works run directly
+		env: { ...process.env, PATH: `${bins}:${process.env.PATH}` },
 	});
 	if (p.exitCode !== 0) process.exit(p.exitCode ?? 1);
 }
