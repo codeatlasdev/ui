@@ -168,10 +168,20 @@
     .ca-chip--brand   { background: color-mix(in oklab, var(--ca-brand-main) 14%, transparent); color: var(--ca-brand-text);  border-color: color-mix(in oklab, var(--ca-brand-main) 30%, transparent); }
 
     /* Dark mode variants: raise L for legibility */
-    :global(.dark) .ca-chip--success { color: var(--ca-semantic-success); border-color: color-mix(in oklab, var(--ca-semantic-success) 35%, transparent); }
-    :global(.dark) .ca-chip--error   { color: var(--ca-semantic-error);   border-color: color-mix(in oklab, var(--ca-semantic-error)   35%, transparent); }
-    :global(.dark) .ca-chip--warning { color: var(--ca-semantic-warning); border-color: color-mix(in oklab, var(--ca-semantic-warning) 35%, transparent); }
-    :global(.dark) .ca-chip--info    { color: var(--ca-semantic-info);    border-color: color-mix(in oklab, var(--ca-semantic-info)    35%, transparent); }
+    :global(.dark) .ca-chip--success,
+    :global([data-theme-scope='dark']) .ca-chip--success { color: var(--ca-semantic-success); border-color: color-mix(in oklab, var(--ca-semantic-success) 35%, transparent); }
+    :global(.dark) .ca-chip--error,
+    :global([data-theme-scope='dark']) .ca-chip--error { color: var(--ca-semantic-error); border-color: color-mix(in oklab, var(--ca-semantic-error)   35%, transparent); }
+    :global(.dark) .ca-chip--warning,
+    :global([data-theme-scope='dark']) .ca-chip--warning { color: var(--ca-semantic-warning); border-color: color-mix(in oklab, var(--ca-semantic-warning) 35%, transparent); }
+    :global(.dark) .ca-chip--info,
+    :global([data-theme-scope='dark']) .ca-chip--info { color: var(--ca-semantic-info); border-color: color-mix(in oklab, var(--ca-semantic-info)    35%, transparent); }
+
+    /* A light island inside a dark page: back to the light-mode text of the variants above. */
+    :global([data-theme-scope='light']) .ca-chip--success { color: color-mix(in oklab, var(--ca-semantic-success) 65%, black); }
+    :global([data-theme-scope='light']) .ca-chip--error   { color: color-mix(in oklab, var(--ca-semantic-error)   65%, black); }
+    :global([data-theme-scope='light']) .ca-chip--warning { color: color-mix(in oklab, var(--ca-semantic-warning) 65%, black); }
+    :global([data-theme-scope='light']) .ca-chip--info    { color: color-mix(in oklab, var(--ca-semantic-info)    65%, black); }
 
     /* Size */
     .ca-chip--sm { font-size: var(--ca-font-size-micro); height: var(--ca-space-5); padding: 0 var(--ca-space-2); }
