@@ -298,7 +298,6 @@
   --ca-action-selected:    oklch(0.2 0 0 / 0.09);
   --ca-action-disabled:    oklch(0.2 0 0 / 0.30);
   --ca-action-disabled-bg: oklch(0.2 0 0 / 0.08);
-  --ca-action-focus:       oklch(0.2 0 0 / 0.12);
 
   /* ── Glass optical constants (light) ─────────────────────────────────── */
   --ca-glass-rim:         oklch(1 0 0 / 0.70);
@@ -339,7 +338,6 @@
   --ca-action-selected:    oklch(1 0 0 / 0.13);
   --ca-action-disabled:    oklch(1 0 0 / 0.30);
   --ca-action-disabled-bg: oklch(1 0 0 / 0.10);
-  --ca-action-focus:       oklch(1 0 0 / 0.14);
 
   /* Glass optical constants */
   --ca-glass-rim:         oklch(1 0 0 / 0.22);

@@ -232,8 +232,6 @@
   border: var(--ca-border-width) solid var(--ca-outline-subtle);
   border-radius: var(--ca-radius-lg);
   background: var(--ca-surface-raised) !important;
-  font: var(--ca-font-size-body2) / var(--ca-code-line-height) var(--ca-font-mono);
-  tab-size: 2;
 }
 
 .ca-code pre {
@@ -241,6 +239,10 @@
   padding: 1rem 1.25rem;
   overflow-x: auto;
   background: transparent !important;
+}
+
+.ca-prose > pre,
+.ca-code pre {
   font: 0.8125rem / var(--ca-code-line-height) var(--ca-font-mono);
   tab-size: 2;
 }
