@@ -135,7 +135,8 @@ describe("Menubar", () => {
 	it("once one is open, hovering another top-level item switches to it; hover alone opens nothing", async () => {
 		await render(Harness);
 		await top("Edit").hover();
-		await new Promise((r) => setTimeout(r, 120));
+		// No timer is involved (the pointer handler is synchronous): a settled frame is enough.
+		await settled();
 		await expect.element(menu()).not.toBeInTheDocument();
 		await top("File").click();
 		await expect.element(page.getByRole("menuitem", { name: "New" })).toBeVisible();

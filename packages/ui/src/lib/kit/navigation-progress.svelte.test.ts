@@ -25,17 +25,22 @@ const end = () => {
 };
 const bar = () => document.querySelector<HTMLElement>("[data-ca-nav-progress]");
 
-afterEach(end);
+afterEach(() => {
+	vi.useRealTimers();
+	end();
+});
 
 describe("NavigationProgress", () => {
 	it("stays hidden for a navigation that ends before `delay`", async () => {
-		// A long delay keeps this deterministic under CPU load: `end()` always wins the race.
-		await render(NavigationProgress, { props: { delay: 5000 } });
+		// The bar appears from a plain setTimeout(delay): a fake clock installed BEFORE render owns it, so
+		// the navigation ends at exactly 119 of 120 ms whatever the load, and the bar must never show.
+		vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+		await render(NavigationProgress, { props: { delay: 120 } });
 		start("/slow");
-		await new Promise((r) => setTimeout(r, 50));
+		await vi.advanceTimersByTimeAsync(119);
 		expect(bar()?.hidden).toBe(true);
 		end();
-		await new Promise((r) => setTimeout(r, 50));
+		await vi.advanceTimersByTimeAsync(1000);
 		expect(bar()?.hidden).toBe(true);
 		expect(document.documentElement.hasAttribute("data-ca-navigating")).toBe(false);
 	});

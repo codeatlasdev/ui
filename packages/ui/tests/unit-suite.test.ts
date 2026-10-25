@@ -18,6 +18,25 @@ describe("unit suite", () => {
 		expect(offenders).toEqual([]);
 	});
 
+	// #568: a fixed `setTimeout` sleep in a component test costs wall time on every run and flakes under
+	// load. Await a condition (`expect.poll`, `settled()`), or install a fake clock BEFORE render. A
+	// sleep that is truly needed carries `real-time:` and the reason on the line above it.
+	it("no component test sleeps on a real timer", () => {
+		const root = join(import.meta.dir, "../src");
+		const offenders: string[] = [];
+		for (const file of new Bun.Glob("**/*.svelte.test.ts").scanSync(root)) {
+			const lines = readFileSync(join(root, file), "utf8").split("\n");
+			lines.forEach((line, i) => {
+				if (
+					/new Promise\(\(?\w*\)? => setTimeout\(/.test(line) &&
+					!/real-time:/.test(lines[i - 1] ?? "")
+				)
+					offenders.push(`${file}:${i + 1}`);
+			});
+		}
+		expect(offenders).toEqual([]);
+	});
+
 	// #529: raw `mkdtempSync(join(tmpdir(), …))` left 51k directories in $TMPDIR. Use `tmpDir()` and
 	// `afterAll(cleanTmp)` from ./tmp, or remove the directory yourself with `rmSync`.
 	it("every test file that makes a temp directory removes it", () => {

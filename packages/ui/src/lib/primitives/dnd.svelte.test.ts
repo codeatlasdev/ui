@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../tests/a11y";
 import type { DndDropEvent } from "./dnd.js";
@@ -10,13 +10,9 @@ const grip = (c: Element, id: string) =>
 	c.querySelector(`[data-dnd-item="${id}"] .grip`) as HTMLElement;
 const row = (c: Element, id: string) => c.querySelector(`[data-dnd-item="${id}"]`) as HTMLElement;
 const frame = () => new Promise((r) => requestAnimationFrame(() => r(null)));
-async function waitFor(fn: () => boolean, ms = 3000) {
-	const end = Date.now() + ms;
-	while (!fn()) {
-		if (Date.now() > end) throw new Error("waitFor timed out");
-		await new Promise((r) => setTimeout(r, 15));
-	}
-}
+// Awaits the condition with Vitest's poll (its timeout is the test's, not a fixed deadline that a starved
+// machine outruns).
+const waitFor = (fn: () => boolean) => expect.poll(fn, { timeout: 30_000 }).toBe(true);
 const live = () =>
 	Array.from(document.querySelectorAll("[data-ca-announcer]"))
 		.map((el) => el.textContent)
@@ -148,16 +144,24 @@ describe("dnd sortable (pointer)", () => {
 	});
 });
 
+afterEach(() => {
+	vi.useRealTimers();
+});
+
 describe("dnd touch", () => {
 	it("press and hold starts the drag; an early move is a scroll and gives up", async () => {
 		const drops: DndDropEvent[] = [];
 		const screen = await render(Harness, { props: { drops } });
 		const c = screen.container;
 		const [x, y] = center(grip(c, "a1"));
+		// The 350 ms hold is a plain setTimeout armed at pointerdown: a fake clock installed before it
+		// owns it, so "an early move gives up for good" is proven by advancing far past the hold.
+		vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
 		pointer("pointerdown", x, y, "touch", grip(c, "a1"));
 		pointer("pointermove", x, y + 30, "touch");
-		await new Promise((r) => setTimeout(r, 200));
+		await vi.advanceTimersByTimeAsync(2000);
 		expect(document.querySelector(".ca-dnd-overlay")).toBeNull();
+		vi.useRealTimers();
 
 		pointer("pointerdown", x, y, "touch", grip(c, "a1"));
 		expect(row(c, "a1").hasAttribute("data-dnd-pressing")).toBe(true);

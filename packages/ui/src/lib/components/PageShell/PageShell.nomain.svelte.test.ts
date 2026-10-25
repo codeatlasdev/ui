@@ -1,5 +1,6 @@
 import { afterAll, beforeEach, describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-svelte";
+import { settled } from "../../../../tests/settled";
 import Harness from "./NoMainHarness.test.svelte";
 
 // devWarn prints once per key for the page's lifetime: every case that expects the warning
@@ -20,7 +21,8 @@ describe("page layouts without a <main> landmark", () => {
 		for (const frame of [false, true])
 			it(`${frame ? "PageFrame" : "PageShell"} stays silent: ${where}`, async () => {
 				await render(Harness, { where, frame });
-				await new Promise((r) => setTimeout(r, 50));
+				// The check runs in the mount effect; a frame is enough for "stays silent".
+				await settled();
 				expect(landmark()).toEqual([]);
 			});
 
@@ -30,7 +32,7 @@ describe("page layouts without a <main> landmark", () => {
 		expect(landmark()[0]).toContain("<PageShell>");
 		expect(landmark()[0]).toContain("#standalone-page");
 		await render(Harness, { where: "alone", frame: true });
-		await new Promise((r) => setTimeout(r, 50));
+		await settled();
 		expect(landmark()).toHaveLength(1);
 	});
 });

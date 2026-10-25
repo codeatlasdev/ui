@@ -13,7 +13,6 @@ const btn = (c: HTMLElement, name: RegExp) =>
 	[...c.querySelectorAll<HTMLButtonElement>("button")].find((b) =>
 		name.test(b.getAttribute("aria-label") ?? b.textContent ?? "")
 	) as HTMLButtonElement;
-const settle = () => new Promise((r) => setTimeout(r, 450));
 // The autoplay chain is plain setTimeout: a fake clock installed BEFORE render, advanced past several
 // of its intervals, proves "nothing rotates" with no wall time (a clock faked after render would not
 // own the component's timer and prove nothing).
@@ -123,10 +122,12 @@ describe("Carousel controls", () => {
 	it("bind:index follows the controls and drives the slide", async () => {
 		const screen = await render(Harness, { index: 2 });
 		await expect.poll(() => dots(screen.container)[2].getAttribute("aria-current")).toBe("true");
-		await settle();
 		const vp = viewport(screen.container);
 		const target = slides(screen.container)[2];
-		expect(Math.abs(target.offsetLeft - vp.scrollLeft - vp.offsetLeft)).toBeLessThan(4);
+		// The strip scrolls to the slide: wait for it to arrive, not for a guessed duration.
+		await expect
+			.poll(() => Math.abs(target.offsetLeft - vp.scrollLeft - vp.offsetLeft))
+			.toBeLessThan(4);
 	});
 
 	it("a scroll by touch updates the current dot", async () => {

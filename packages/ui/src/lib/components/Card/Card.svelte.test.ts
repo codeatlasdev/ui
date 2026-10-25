@@ -2,6 +2,7 @@ import { createRawSnippet } from "svelte";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { settled } from "../../../../tests/settled";
 import SurfacePanel from "../SurfacePanel/SurfacePanel.svelte";
 import Card from "./Card.svelte";
 import Harness from "./Card.test.svelte";
@@ -96,20 +97,26 @@ describe("Card", () => {
 		expect(getComputedStyle(card(screen.container)).paddingTop).toBe("0px");
 	});
 
-	it("warns once when a padded child doubles the card padding", async () => {
+	// devWarn prints once per key for the page's lifetime, so the silent cases must run BEFORE the case
+	// that warns: after it the key is spent and "no warning" would pass whatever the component does.
+	it("stays silent for a flush or unpadded card around a padded child", async () => {
 		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-		const screen = await render(PaddedChild, {});
-		await vi.waitFor(() =>
-			expect(warn).toHaveBeenCalledWith(expect.stringContaining("<Card> content is already padded"))
-		);
-		screen.unmount();
-		warn.mockClear();
 		for (const props of [{ flush: true }, { padding: "none" }]) {
 			const ok = await render(PaddedChild, props);
-			await new Promise((r) => setTimeout(r, 50));
+			// The check runs in the mount effect, which has flushed once render() resolved; a frame covers
+			// a layout-dependent re-check.
+			await settled();
 			ok.unmount();
 		}
 		expect(warn).not.toHaveBeenCalled();
+	});
+
+	it("warns once when a padded child doubles the card padding", async () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		await render(PaddedChild, {});
+		await vi.waitFor(() =>
+			expect(warn).toHaveBeenCalledWith(expect.stringContaining("<Card> content is already padded"))
+		);
 	});
 
 	it("headerActions render beside the title", async () => {

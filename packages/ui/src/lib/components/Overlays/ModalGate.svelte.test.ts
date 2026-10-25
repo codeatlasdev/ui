@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
+import { settled } from "../../../../tests/settled";
 import { layers } from "../../stores/layers.svelte.js";
 import Harness from "./ModalGate.test.svelte";
 
@@ -40,7 +41,9 @@ describe("hover UI stays shut under a modal", () => {
 	it("Tooltip behind the modal does not open on pointer movement", async () => {
 		await openModal();
 		moveOver(page.getByText("Behind", { exact: true }).element());
-		await new Promise((r) => setTimeout(r, 150));
+		// Every delay in the harness is 0: an open would run in the handler or the effect flush after it, so
+		// one settled frame is all "stays shut" needs.
+		await settled();
 		expect(
 			document.querySelector(".ca-tooltip-content[data-state=open], [role=tooltip]")
 		).toBeNull();
@@ -49,14 +52,18 @@ describe("hover UI stays shut under a modal", () => {
 	it("HoverCard behind the modal does not open", async () => {
 		await openModal();
 		moveOver(page.getByRole("link", { name: "@behind" }).element());
-		await new Promise((r) => setTimeout(r, 150));
+		// Every delay in the harness is 0: an open would run in the handler or the effect flush after it, so
+		// one settled frame is all "stays shut" needs.
+		await settled();
 		expect(document.querySelector(".ca-hovercard-content")).toBeNull();
 	});
 
 	it("NavigationMenu behind the modal does not open its panel", async () => {
 		await openModal();
 		moveOver(page.getByRole("button", { name: "Behind products" }).element());
-		await new Promise((r) => setTimeout(r, 150));
+		// Every delay in the harness is 0: an open would run in the handler or the effect flush after it, so
+		// one settled frame is all "stays shut" needs.
+		await settled();
 		expect(document.querySelector(".ca-navmenu-panel")).toBeNull();
 	});
 });

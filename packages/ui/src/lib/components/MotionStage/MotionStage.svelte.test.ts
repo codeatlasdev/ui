@@ -1,5 +1,5 @@
 /// <reference types="@vitest/browser-playwright" />
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { cdp, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
@@ -11,11 +11,31 @@ const emulate = (value: "reduce" | "no-preference") =>
 	});
 
 afterEach(async () => {
+	vi.useRealTimers();
 	await cdp().send("Emulation.setEmulatedMedia", { features: [] });
 });
 
 const stageOf = (c: Element) => c.querySelector(".ca-motion-stage") as HTMLElement;
 const cycle = (c: Element) => Number(stageOf(c).dataset.cycle);
+// The loop is a plain setInterval that lives only while playing. "Nothing ticks" is proven on a fake
+// clock installed BEFORE render (a clock faked later would not own the component's interval),
+// advanced past several loops: no wall time, and a leaked interval would tick on it. The
+// IntersectionObserver and the effects run on frames, which stay real; `until` waits for them
+// while the clock is advanced. Real timers are restored before polls, clicks and axe.
+const fakeClock = () => vi.useFakeTimers({ toFake: ["setInterval", "clearInterval"] });
+const LOOP = 150;
+const until = async (fn: () => boolean) => {
+	for (let i = 0; i < 200 && !fn(); i++) {
+		await vi.advanceTimersByTimeAsync(0);
+		await new Promise((r) => requestAnimationFrame(() => r(null)));
+	}
+	expect(fn()).toBe(true);
+};
+// An IntersectionObserver reports on a later frame than render: a negative asserted before it has
+// reported would pass whatever the component does. Frames are real (only timers are faked).
+const observed = async () => {
+	for (let i = 0; i < 6; i++) await new Promise((r) => requestAnimationFrame(() => r(null)));
+};
 const buttons = (c: Element) => [...c.querySelectorAll("button")].map((b) => b.textContent?.trim());
 
 describe("MotionStage", () => {
@@ -33,9 +53,6 @@ describe("MotionStage", () => {
 		pause.click();
 		await expect.poll(() => stageOf(container).dataset.playing).toBe("false");
 		expect(pause.getAttribute("aria-pressed")).toBe("true");
-		const stopped = cycle(container);
-		await new Promise((r) => setTimeout(r, 500));
-		expect(cycle(container)).toBe(stopped);
 		expect(await checkA11y(container)).toHaveNoViolations();
 
 		pause.click();
@@ -43,12 +60,30 @@ describe("MotionStage", () => {
 		expect(pause.getAttribute("aria-pressed")).toBe("false");
 	});
 
+	it("a paused stage does not loop", async () => {
+		await emulate("no-preference");
+		fakeClock();
+		const { container } = await render(Harness, { loop: LOOP });
+		await until(() => stageOf(container).dataset.playing === "true");
+		await vi.advanceTimersByTimeAsync(LOOP * 2);
+		expect(cycle(container)).toBeGreaterThan(1);
+		(container.querySelector("button") as HTMLButtonElement).click();
+		await until(() => stageOf(container).dataset.playing === "false");
+		const stopped = cycle(container);
+		await vi.advanceTimersByTimeAsync(LOOP * 4);
+		expect(cycle(container)).toBe(stopped);
+	});
+
 	it("does not play while out of view", async () => {
 		await emulate("no-preference");
-		const { container } = await render(Harness, { spacer: 4000 });
-		await new Promise((r) => setTimeout(r, 400));
+		fakeClock();
+		const { container } = await render(Harness, { spacer: 4000, loop: LOOP });
+		// The observer has reported by the time a frame has passed; the clock then runs several loops.
+		await observed();
+		await vi.advanceTimersByTimeAsync(LOOP * 4);
 		expect(stageOf(container).dataset.playing).toBe("false");
 		expect(cycle(container)).toBe(0);
+		vi.useRealTimers();
 		stageOf(container).scrollIntoView({ block: "center" });
 		await expect.poll(() => stageOf(container).dataset.playing).toBe("true");
 	});
@@ -64,8 +99,6 @@ describe("MotionStage", () => {
 		expect(stageOf(container).dataset.playing).toBe("false");
 		expect(buttons(container)).toEqual(["Pause", "Replay"]);
 		const taken = cycle(container);
-		await new Promise((r) => setTimeout(r, 500));
-		expect(cycle(container)).toBe(taken);
 		expect(await checkA11y(container)).toHaveNoViolations();
 
 		(container.querySelectorAll("button")[1] as HTMLButtonElement).click();
@@ -73,6 +106,18 @@ describe("MotionStage", () => {
 		expect(stageOf(container).dataset.playing).toBe("true");
 		expect(cycle(container)).toBeGreaterThan(taken);
 		expect(buttons(container)).toEqual(["Pause"]);
+	});
+
+	it("a takeover stops the loop", async () => {
+		await emulate("no-preference");
+		fakeClock();
+		const { container } = await render(Harness, { loop: LOOP });
+		await until(() => stageOf(container).dataset.playing === "true");
+		(container.querySelector("input") as HTMLInputElement).focus();
+		await until(() => stageOf(container).dataset.taken === "true");
+		const taken = cycle(container);
+		await vi.advanceTimersByTimeAsync(LOOP * 4);
+		expect(cycle(container)).toBe(taken);
 	});
 
 	it("pressing a key inside the demo is a takeover", async () => {
@@ -86,14 +131,17 @@ describe("MotionStage", () => {
 
 	it("under reduced motion it renders the final state and never plays", async () => {
 		await emulate("reduce");
-		const { container } = await render(Harness);
+		fakeClock();
+		const { container } = await render(Harness, { loop: LOOP });
+		await observed();
 		const stage = stageOf(container);
 		expect(stage.dataset.reduced).toBe("true");
 		expect(stage.dataset.playing).toBe("false");
 		expect((container.querySelector(".probe") as HTMLElement).dataset.final).toBe("true");
 		const before = cycle(container);
-		await new Promise((r) => setTimeout(r, 500));
+		await vi.advanceTimersByTimeAsync(LOOP * 4);
 		expect(cycle(container)).toBe(before);
+		vi.useRealTimers();
 		expect(buttons(container)).toEqual([]);
 		expect(await checkA11y(container)).toHaveNoViolations();
 	});
@@ -102,14 +150,17 @@ describe("MotionStage", () => {
 		await emulate("no-preference");
 		document.documentElement.style.setProperty("--ca-enter-scale", "0");
 		try {
-			const { container } = await render(Harness);
+			fakeClock();
+			const { container } = await render(Harness, { loop: LOOP });
 			const stage = stageOf(container);
-			await expect.poll(() => stage.dataset.reduced).toBe("true");
+			await until(() => stage.dataset.reduced === "true");
+			await observed();
 			expect(stage.dataset.playing).toBe("false");
 			expect((container.querySelector(".probe") as HTMLElement).dataset.final).toBe("true");
 			const before = cycle(container);
-			await new Promise((r) => setTimeout(r, 500));
+			await vi.advanceTimersByTimeAsync(LOOP * 4);
 			expect(cycle(container)).toBe(before);
+			vi.useRealTimers();
 			// the knob is live: switching entrances back on resumes autoplay
 			document.documentElement.style.removeProperty("--ca-enter-scale");
 			await expect.poll(() => stage.dataset.reduced).toBe("false");

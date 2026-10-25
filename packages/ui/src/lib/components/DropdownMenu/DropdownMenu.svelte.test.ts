@@ -412,8 +412,15 @@ describe("DropdownMenu submenu", () => {
 		await userEvent.hover(color());
 		const red = page.getByRole("menuitem", { name: "Red" });
 		await expect.element(red).toBeVisible();
-		await userEvent.hover(red);
-		await new Promise((r) => setTimeout(r, 400));
+		// The sub-trigger's leave arms a 200 ms close timer: faked from here (Playwright's pointer calls
+		// are CDP round trips, not page timers), advanced past it, so "still open" costs no wall time.
+		vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+		try {
+			await userEvent.hover(red);
+			await vi.advanceTimersByTimeAsync(1000);
+		} finally {
+			vi.useRealTimers();
+		}
 		await expect.element(red).toBeVisible();
 		await expect.element(color()).toHaveAttribute("aria-expanded", "true");
 	});
@@ -425,9 +432,14 @@ describe("DropdownMenu submenu", () => {
 		// Pointer events are off on a disabled item; the keyboard path must refuse too.
 		const el = move.element() as HTMLElement;
 		el.focus();
-		el.dispatchEvent(new PointerEvent("pointerenter", { bubbles: true }));
-		await userEvent.keyboard("{ArrowRight}");
-		await new Promise((r) => setTimeout(r, 400));
+		vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+		try {
+			el.dispatchEvent(new PointerEvent("pointerenter", { bubbles: true }));
+			await userEvent.keyboard("{ArrowRight}");
+			await vi.advanceTimersByTimeAsync(1000);
+		} finally {
+			vi.useRealTimers();
+		}
 		await expect.element(move).toHaveAttribute("aria-expanded", "false");
 		await expect.element(page.getByRole("menuitem", { name: "Inbox" })).not.toBeInTheDocument();
 	});

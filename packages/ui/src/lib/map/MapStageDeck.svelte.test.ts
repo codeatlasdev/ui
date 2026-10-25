@@ -40,12 +40,12 @@ describe("MapStage with a deck.gl layer", () => {
 				],
 			});
 			await vi.waitFor(() => expect(map?.isStyleLoaded()).toBe(true), { timeout: 10_000 });
-			// Let several frames render: the error fires per frame.
-			for (let i = 0; i < 5; i++) {
+			// The error fires per rendered frame: render a run of them, repainting each time, so no fixed
+			// wait is needed to give it a chance to appear.
+			for (let i = 0; i < 12; i++) {
 				map?.triggerRepaint();
 				await new Promise((r) => requestAnimationFrame(() => r(null)));
 			}
-			await new Promise((r) => setTimeout(r, 500));
 			expect(errors).toEqual([]);
 		} finally {
 			window.removeEventListener("error", onError);
