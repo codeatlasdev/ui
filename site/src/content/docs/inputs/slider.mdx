@@ -58,9 +58,9 @@ A labelled slider with an editable number and an optional unit, for settings whe
 
 The slider scrubs, the number field types. Both write the same `value`. A typed value is clamped to the range and snapped to `step` when the field commits (Enter or blur), so `1.234` with `step={0.05}` becomes `1.25`. The label names both controls, and Arrow, Page and Home/End keys work on the slider.
 
-<Demo title="SliderField" description="Label, slider and an editable number with a unit." src={FieldSrc}><Field client:visible /></Demo>
+<Demo title="Label and number" description="Label, slider and an editable number with a unit." src={FieldSrc}><Field client:visible /></Demo>
 
-<Props for="SliderField" rows={[
+<Props for="SliderField" title="SliderField props" rows={[
   { name: "label", type: "string", description: "Visible label and the accessible name of both controls." },
   { name: "value", type: "number", default: "0", description: "Bindable value." },
   { name: "min", type: "number", default: "0", description: "Minimum value." },
