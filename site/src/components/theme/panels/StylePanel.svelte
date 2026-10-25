@@ -51,7 +51,7 @@
           onclick={() => patch({ surface: s.id as SurfaceStyle })}
         >
           <span class="ts-thumb" data-style={s.id} data-preset={theme.preset} aria-hidden="true">
-            <span class="ts-thumb__card"></span>
+            <span class="ts-thumb__card" data-ca-blur="regular"></span>
           </span>
           <span class="ts-tile__name">{s.label}</span>
         </button>
@@ -141,7 +141,7 @@
     color: var(--ca-text-primary);
   }
   .ts-tile:focus-visible {
-    outline: 2px solid var(--ca-brand-main);
+    outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
     outline-offset: 2px;
   }
   .ts-tile__name {
@@ -162,8 +162,6 @@
     block-size: 55%;
     border-radius: var(--ca-radius-sm);
     background: var(--ca-mat-regular-fill, var(--ca-surface-raised));
-    -webkit-backdrop-filter: var(--ca-mat-regular-filter, none);
-    backdrop-filter: var(--ca-mat-regular-filter, none);
     box-shadow: var(--ca-mat-edge, none), var(--ca-mat-regular-shadow, none);
   }
 </style>

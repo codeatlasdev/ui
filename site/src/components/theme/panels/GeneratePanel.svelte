@@ -88,7 +88,7 @@
   }
 </script>
 
-<div class="ts-stack">
+<div class="ts-stack ts-gen">
   <section class="ts-section" aria-labelledby="{uid}-describe">
     <h4 id="{uid}-describe" class="ts-heading">Describe your theme</h4>
     <TextArea
@@ -231,7 +231,8 @@
     background: var(--ca-surface-sunken);
     box-shadow: inset 0 0 0 1px var(--ca-outline-default);
   }
-  @media (max-width: 26rem) {
+  .ts-gen { container-type: inline-size; }
+  @container (max-width: 26rem) {
     .ts-image {
       grid-template-columns: minmax(0, 1fr);
     }

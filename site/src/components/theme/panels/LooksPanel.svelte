@@ -153,7 +153,7 @@
   }
   .ts-card:focus-visible,
   .ts-preset:focus-visible {
-    outline: var(--ca-border-width-focus) solid var(--ca-brand-main);
+    outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
     outline-offset: 2px;
   }
   .ts-dots {
