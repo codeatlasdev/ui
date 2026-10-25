@@ -142,6 +142,25 @@ export const DEFAULT_STATE: StudioState = {
 	iconStroke: 1.75,
 };
 
+/**
+ * The state of a bare design recipe, for pages that apply a recipe to the site ("Apply to site" on
+ * a style page). It compiles to exactly `designStyle(id)`: the recipe's own `defaultStyle` is kept
+ * (`recipeSurface`, the recipe's `theme.defaultStyle`), and no custom brand is injected, so the
+ * visitor keeps the site's built-in brand (`preset`, default `amber`) under the recipe.
+ */
+export function stateFromRecipe(
+	id: DesignStyleId,
+	recipeSurface: SurfaceStyle | undefined,
+	preset = "amber"
+): StudioState {
+	return {
+		...clone(DEFAULT_STATE),
+		base: id,
+		preset,
+		surface: recipeSurface ?? DEFAULT_STATE.surface,
+	};
+}
+
 export const clone = <T>(v: T): T => structuredClone(v);
 
 const HEX = /^#[0-9a-f]{6}$/i;

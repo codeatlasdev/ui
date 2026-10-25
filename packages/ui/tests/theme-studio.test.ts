@@ -32,11 +32,13 @@ import {
 	STUDIO_PRESET,
 	type StudioState,
 	sanitizeState,
+	stateFromRecipe,
 	toThemeOptions,
 	undo,
 } from "../../../site/src/components/theme/studio-state.js";
 import { BUILTIN_PRESETS } from "../src/lib/theme/builtins.js";
 import { defineTheme, themeCSS } from "../src/lib/theme/define.js";
+import { DESIGN_STYLES, designStyle } from "../src/lib/theme/styles.js";
 
 const edit = (p: Partial<StudioState>): StudioState => ({
 	...structuredClone(DEFAULT_STATE),
@@ -278,4 +280,21 @@ describe("extractCode", () => {
 		for (const input of ["", "hello", "https://x/theme/", "v1."])
 			expect(extractCode(input), input).toBeNull();
 	});
+});
+
+describe("stateFromRecipe", () => {
+	// A style page applies a recipe to the site. The state must compile to the recipe itself:
+	// the studio's own surface/scheme/brand defaults may not overwrite what the recipe sets.
+	for (const id of Object.keys(DESIGN_STYLES) as (keyof typeof DESIGN_STYLES)[]) {
+		it(`${id}: compiles to designStyle(${id})`, () => {
+			const recipe = DESIGN_STYLES[id].theme;
+			const s = stateFromRecipe(id, recipe.defaultStyle);
+			const mine = toThemeOptions(s);
+			const flat = id === "default" ? mine : designStyle(id, mine);
+			expect(flat.defaultStyle).toBe(recipe.defaultStyle ?? "solid");
+			expect(flat.presets).toBeUndefined();
+			expect(s.base).toBe(id);
+			expect(s.preset).not.toBe(STUDIO_PRESET);
+		});
+	}
 });
