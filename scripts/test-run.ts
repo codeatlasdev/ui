@@ -203,9 +203,11 @@ export const BUDGETS = {
 	/**
 	 * `issue-land.sh` when a SHARED file changed: every component test and every route (the gallery through its
 	 * representatives), no screenshots. Measured at load 10: unit 5 s + components 109 s + builds 99 s + routes 132 s = 346 s;
-	 * the 300 s it started with was never measured (#546).
+	 * the 300 s it started with was never measured (#546). Since then the land gate always rebuilds (#591) and the atlas,
+	 * concepts, styles and index pages added routes: measured at load 7.5 on #583, unit 8 s + components 80 s + package 12 s +
+	 * site 134 s + routes 148 s = 382.5 s with nothing failing, so 420 s (#596).
 	 */
-	landShared: 360,
+	landShared: 420,
 	/** `bun run test:full`: unit, every component test, every route, fixtures (release gate, part 1) */
 	full: 300,
 	/** `bun run test:vrt`: every component and site screenshot (release gate, part 2) */

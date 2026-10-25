@@ -8,7 +8,7 @@
  * A SHARED change (a shared component file, or a route-wide one: styles, tokens, theme, primitives, the
  * site layout, a test setup file, or a file the route map cannot place) runs every component test and, when
  * it reaches the site, every route, and NO screenshots: those run at release (`test:vrt`) and on demand.
- * `--print-budget` prints the budget this selection runs under (`land`, 180 s, or `landShared`, 360 s).
+ * `--print-budget` prints the budget this selection runs under (`land`, 180 s, or `landShared`, 420 s).
  *
  *   unit        `bun test --changed <base>` (module graph);
  *   components  the component tests whose imports reach a changed file (scripts/test-graph.ts; Vitest's
