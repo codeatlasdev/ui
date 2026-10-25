@@ -47,9 +47,14 @@ interface Frontmatter {
 export function readPost(source: string): Frontmatter {
 	const m = /^---\n([\s\S]*?)\n---\n?([\s\S]*)$/.exec(source);
 	if (!m) throw new Error("changelog post has no frontmatter");
-	const meta = Bun.YAML.parse(m[1] as string) as Frontmatter["meta"];
+	// The two list fields are optional in the frontmatter (the content schema defaults them to empty).
+	const raw = Bun.YAML.parse(m[1] as string) as Omit<
+		Frontmatter["meta"],
+		"behaviour" | "headlineNumbers"
+	> &
+		Partial<Pick<Frontmatter["meta"], "behaviour" | "headlineNumbers">>;
 	return {
-		meta: { behaviour: [], headlineNumbers: [], ...meta },
+		meta: { ...raw, behaviour: raw.behaviour ?? [], headlineNumbers: raw.headlineNumbers ?? [] },
 		prose: mdxToProse(m[2] as string),
 	};
 }
