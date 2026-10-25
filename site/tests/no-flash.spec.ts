@@ -1,7 +1,11 @@
-import { mkdirSync, writeFileSync } from "node:fs";
+import { once } from "node:events";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { createServer } from "node:http";
+import type { AddressInfo } from "node:net";
 import { join } from "node:path";
 import type { Page } from "@playwright/test";
 import { expect, gotoReady, test } from "./fixtures";
+import { DIST } from "./routes";
 
 // Zero flash of the wrong theme. The owner's two reports, measured on a slow device and a slow link:
 //  1. `/theme/#t=v1.<state>` painted the default theme, then the shared one.
@@ -174,6 +178,70 @@ test.describe("no flash of the wrong theme", () => {
 			0.001
 		);
 		await ctx.close();
+	});
+
+	test("the order matters: the same built page with its theme scripts late paints the wrong theme first", async ({
+		page,
+		browser,
+	}) => {
+		const rec = await appliedRecord(page);
+		const target = await page.evaluate(() =>
+			getComputedStyle(document.documentElement).getPropertyValue("--ca-brand-main").trim()
+		);
+		// The reordered copy is served by a real server: `route.fulfill` bypasses the network throttle, so the
+		// page would arrive whole and unthrottled and the order would not matter.
+		const html = readFileSync(join(DIST, "docs/inputs/color-field/index.html"), "utf8");
+		const moved = [
+			...html.matchAll(
+				/<script\b(?![^>]*\bsrc=)[^>]*>(?:(?!<\/script>)[\s\S])*?(__caTheme|__caSiteBoot|__caThemePersist)[\s\S]*?<\/script>/g
+			),
+		].map((m) => m[0]);
+		expect(moved, "the build carries the three theme scripts").toHaveLength(3);
+		const late = moved
+			.reduce((h, m) => h.replace(m, ""), html)
+			.replace("</body>", `${moved.join("")}</body>`);
+		const origin = new URL(page.url()).origin;
+		const server = createServer(async (req, res) => {
+			if (req.url === "/docs/inputs/color-field/") {
+				res.writeHead(200, { "content-type": "text/html" }).end(late);
+				return;
+			}
+			const upstream = await fetch(origin + req.url);
+			res.writeHead(upstream.status, {
+				"content-type": upstream.headers.get("content-type") ?? "",
+			});
+			res.end(Buffer.from(await upstream.arrayBuffer()));
+		}).listen(0);
+		await once(server, "listening");
+		const base = `http://localhost:${(server.address() as AddressInfo).port}`;
+		const paint = async (url: string) => {
+			const ctx = await browser.newContext({ colorScheme: "dark", locale: "pt-BR" });
+			await ctx.addInitScript(
+				([k, v]) => {
+					if (!sessionStorage.getItem("__seeded")) {
+						localStorage.setItem(k as string, v as string);
+						sessionStorage.setItem("__seeded", "1");
+					}
+				},
+				[KEY, rec]
+			);
+			const p = await ctx.newPage();
+			await record(p);
+			await throttle(p);
+			await p.goto(url, { waitUntil: "load" });
+			const seen = looks(await frames(p));
+			await ctx.close();
+			return seen;
+		};
+		const path = "/docs/inputs/color-field/";
+		expect(await paint(path), "as built: one look, the visitor's").toEqual([`${target} | -`]);
+		const seenLate = await paint(`${base}${path}`);
+		server.close();
+		expect(
+			seenLate.length,
+			`scripts late: the frames differ (${seenLate.join(" ; ")})`
+		).toBeGreaterThan(1);
+		expect(seenLate[0]).not.toBe(`${target} | -`);
 	});
 
 	/** Brand of the shared code, as the preview compiles it: read once from a settled load. */

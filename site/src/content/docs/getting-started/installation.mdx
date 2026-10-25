@@ -265,7 +265,7 @@ See [SEO](/docs/getting-started/seo/) and [PWA](/docs/getting-started/pwa/).
 
 ## Astro
 
-Use the integration together with `@astrojs/svelte`. `caUI` injects the theme into the `<head>` of every page and handles the SSR bundling. `bunx @codeatlasdev/ui init` sets this up for an Astro project:
+Use the integration together with `@astrojs/svelte`. `caUI` puts the theme (font preloads, `<style id="ca-theme">`, the init script) as the first children of the `<head>` of every page, ahead of every bundled stylesheet, and handles the SSR bundling. Astro renders its own `<style>` tags before any script an integration injects, so the integration rewrites the rendered page instead; pass extra first-paint markup of your own (a boot script) as `caUI(theme, { head })` so it sits in the same place. `bunx @codeatlasdev/ui init` sets this up for an Astro project:
 
 | File | What `init` puts there | If the file exists |
 |---|---|---|

@@ -5,24 +5,29 @@ import { build } from "astro";
 import type { Server } from "bun";
 import { type Browser, type BrowserContext, chromium, type Page } from "playwright";
 import { caThemeHandle } from "../src/lib/kit/theme-handle.ts";
-import { THEME_SCRIPT, themeHead, themeScript } from "../src/lib/theme-script.ts";
+import {
+	THEME_SCRIPT,
+	type ThemeOptions,
+	themeHead,
+	themeScript,
+} from "../src/lib/theme-script.ts";
 
 // The zero-flash guarantee of the theme engine, for every way a consumer ships it, measured in a real
 // browser on a slow device and a slow link (6x CPU, Slow 3G). A frame is "painted" once the browser
 // reported first-paint; from then on EVERY frame must already wear the target theme: its brand token,
 // its surface (the canvas colour), its `dark` class and `data-preset`/`data-style`.
 //
-// Every document here pulls a large stylesheet (~600 KB) before `</head>`, the shape that exposed the
+// Every document here carries a large INLINE stylesheet (~100 KB) before `</head>`, the shape that exposed the
 // site bug (a theme script placed after the bundler's CSS ran only after that download, and the page
 // painted the wrong theme in between).
 
 const PKG = join(import.meta.dir, "..");
 const ASTRO_ENTRY = join(PKG, "src/lib/astro.ts");
-const THEME = {
+const THEME: ThemeOptions = {
 	presets: [{ id: "brand", color: "#e8590c" }],
 	defaultPreset: "brand",
 	defaultScheme: "dark",
-} as const;
+};
 const THEME_OPTIONS = JSON.stringify(THEME);
 
 /** 6x CPU and Slow 3G (400 kbit/s, 400 ms RTT). */
@@ -32,9 +37,9 @@ const SLOW = {
 	uploadThroughput: (400 * 1024) / 8,
 };
 
-/** ~600 KB of rules the page needs before it can paint, so a late script is visible. */
+/** ~100 KB of rules the page needs before it can paint, so a late script is visible. */
 const BIG_CSS = Array.from(
-	{ length: 9000 },
+	{ length: 1500 },
 	(_, i) => `.x${i}{margin:${i % 7}px;padding:${i % 5}px}`
 ).join("");
 const TOKENS_CSS = `html{background:var(--ca-surface-base,#fff);color:var(--ca-text-primary,#000)}`;
@@ -62,17 +67,20 @@ let root = "";
 let astroDist = "";
 const servers: Server<unknown>[] = [];
 
-/** `<head>` extras and body of a document; the CSS link is deliberately slow and large. */
+/**
+ * A document whose bundled CSS is INLINED in the HTML (what Astro does with `inlineStylesheets: "always"`, and
+ * what a bundler's critical-CSS step does). The browser parses inline CSS as the bytes arrive and may paint
+ * part-way, so a theme script placed after it runs late and a frame of the wrong theme is painted. A
+ * `<link rel="stylesheet">` would not show this: it blocks rendering until it has loaded.
+ */
 const doc = (head: string, body = "<h1>hello</h1>") =>
-	`<!doctype html><html lang="en"><head><meta charset="utf-8"><title>t</title>${head}<link rel="stylesheet" href="/big.css"></head><body>${body}</body></html>`;
+	`<!doctype html><html lang="en"><head><meta charset="utf-8"><title>t</title>${head}<style>${TOKENS_CSS}${BIG_CSS}</style></head><body>${body}</body></html>`;
 
 function serve(handler: (path: string) => string | undefined) {
 	const s = Bun.serve({
 		port: 0,
 		fetch(req) {
 			const p = new URL(req.url).pathname;
-			if (p === "/big.css")
-				return new Response(`${TOKENS_CSS}${BIG_CSS}`, { headers: { "content-type": "text/css" } });
 			const html = handler(p);
 			return html === undefined
 				? new Response("nf", { status: 404 })
@@ -189,7 +197,7 @@ import { caUI } from ${JSON.stringify(ASTRO_ENTRY)};
 export default defineConfig({ integrations: [caUI(${THEME_OPTIONS})], devToolbar: { enabled: false }, build: { inlineStylesheets: "always" } });
 `
 	);
-	const bigRules = Array.from({ length: 9000 }, (_, i) => `.x${i}{margin:${i % 7}px}`).join("");
+	const bigRules = Array.from({ length: 1500 }, (_, i) => `.x${i}{margin:${i % 7}px}`).join("");
 	const page = (title: string, href: string) => `---
 import { ClientRouter } from "astro:transitions";
 ---
@@ -292,14 +300,11 @@ describe("zero flash of the wrong theme, every consumer path (6x CPU, Slow 3G)",
 		await blocked.close();
 	}, 90_000);
 
-	it("the init script is synchronous, first in <head>, tiny and CSP-nonce friendly", async () => {
+	it("the init script is synchronous, tiny and CSP-nonce friendly", () => {
 		const head = themeHead(THEME);
 		expect(head).not.toMatch(/\b(async|defer)\b|type="module"/);
-		expect(head.indexOf('<script id="ca-theme-init">')).toBeGreaterThan(head.indexOf("<style"));
 		// Nothing in it needs `eval` or an inline event handler, so a nonce/hash on the one tag is enough.
 		expect(THEME_SCRIPT).not.toMatch(/\beval\(|new Function|onload=|javascript:/);
-		const html = await kitHtml(doc(""));
-		expect(html.indexOf("ca-theme-init")).toBeLessThan(html.indexOf('rel="stylesheet"'));
 		// Same body whatever the options: the scripts differ only by their JSON data.
 		expect(themeScript(THEME).length).toBeLessThan(2200);
 	});
@@ -333,6 +338,26 @@ describe("zero flash of the wrong theme, every consumer path (6x CPU, Slow 3G)",
 		expect(after).toHaveLength(1);
 		expect(after[0]).toContain("brand/flat/light");
 		await ctx.close();
+	}, 120_000);
+
+	it("the order is what protects the first frame: the same built Astro page with its theme scripts late paints the wrong theme", async () => {
+		const html = await Bun.file(join(astroDist, "index.html")).text();
+		const scripts = [...html.matchAll(/<script\b(?![^>]*\bsrc=)[^>]*>[\s\S]*?<\/script>/g)]
+			.map((m) => m[0])
+			.filter((m) => /__caTheme|__caThemePersist/.test(m));
+		expect(scripts.length, "caUI emits its scripts").toBeGreaterThan(0);
+		const late = scripts
+			.reduce((h, m) => h.replace(m, ""), html)
+			.replace("</body>", `${scripts.join("")}</body>`);
+		const storage = { "ca-scheme": '"light"', "ca-style": '"flat"' };
+		const early = await context({ storage });
+		const ok = await firstFrames(early, `${serve(() => html)}/`);
+		await early.close();
+		const lateCtx = await context({ storage });
+		const bad = await firstFrames(lateCtx, `${serve(() => late)}/`);
+		await lateCtx.close();
+		expect(ok.looks, "as built").toHaveLength(1);
+		expect(bad.looks.length, `late scripts: ${bad.looks.join(" ; ")}`).toBeGreaterThan(1);
 	}, 120_000);
 
 	it("a runtime switch changes preset, style and scheme in one frame, never a mixed state", async () => {

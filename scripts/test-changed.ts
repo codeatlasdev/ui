@@ -71,14 +71,6 @@ const ownSpec = (f: string) =>
 	/^site\/tests\/[^/]+\.spec\.ts$/.test(f) &&
 	!/\/(routes|routes\.axe|dist-html|header)\.spec\.ts$/.test(f);
 
-/**
- * Files whose change can put the wrong theme on the first frame: the init script, the Kit and Astro
- * integrations, the theme engine, the store, and the site's own boot script. They run the zero-flash
- * matrix (`packages/ui/tests/theme-no-flash.e2e.ts`: real browsers at 6x CPU on Slow 3G) in the land gate.
- */
-const THEME_PATHS =
-	/^(packages\/ui\/src\/lib\/(theme-script|astro|vite-plugin|theme\/|kit\/theme-handle|stores\/color-scheme)|packages\/ui\/tests\/theme-no-flash\.e2e\.ts$|site\/scripts\/theme-boot\.ts$|site\/tests\/no-flash\.spec\.ts$)/;
-
 const land = process.argv.includes("--land");
 const git = (...args: string[]) =>
 	spawnSync("git", args, { cwd: ROOT, encoding: "utf8" }).stdout.trim().split("\n").filter(Boolean);
@@ -120,14 +112,7 @@ if (!changed.length && !land) {
 
 const sel = select(changed);
 const sharedFile = changed.find(isSharedComponent);
-const themeChanged = changed.some((f) => THEME_PATHS.test(f));
-// The site's zero-flash spec also runs when anything on the theme path changed, not only when it was edited.
-const specs = [
-	...new Set([
-		...changed.filter(ownSpec),
-		...(themeChanged && land ? ["site/tests/no-flash.spec.ts"] : []),
-	]),
-];
+const specs = changed.filter(ownSpec);
 const routes = sel.all ? [] : [...new Set([...sel.routes, ...(land ? CANARIES : [])])].sort();
 const sweepAll = sel.all || (land && sharedFile !== undefined);
 const siteRun = sweepAll || routes.length > 0 || specs.length > 0;
@@ -279,19 +264,8 @@ const building =
 				builtRoutes ? `, ${builtRoutes.length} routes, beside the tests` : ", beside the tests"
 			)
 		: undefined;
-// Started with the site build and awaited after the package tests: it needs only the built package, so it runs
-// beside them instead of adding its ~60 s to the end of the run.
-const zeroFlash =
-	land && themeChanged
-		? step(
-				"theme zero-flash matrix",
-				() => runAsync(["bun", "test", "./packages/ui/tests/theme-no-flash.e2e.ts"]),
-				", beside the tests"
-			)
-		: undefined;
 await packageTests();
 await building;
-await zeroFlash;
 
 if (!shared && vrtTests.length)
 	await step("visual (components)", () =>

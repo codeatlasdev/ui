@@ -1,10 +1,11 @@
-// Astro integration: the visitor's own theme, replayed before the first paint.
+// Head boot script: the visitor's own theme, replayed before the first paint.
 //
-// Why an integration and not a `<script>` in the layout: Astro places every bundled `<style>` of a
-// page (here 709 KB of inlined CSS) BEFORE the layout's own head markup, and only `injectScript
-// ("head-inline")` lands ahead of it. A script after that stylesheet runs only once the browser has
-// downloaded all of it; on a slow link the browser paints in between, and the visitor sees the
-// published theme first (measured: first paint 14.7 s, theme applied 20 s, Slow 3G + 6x CPU).
+// Why it goes through `caUI(theme, { head })` and not a `<script>` in the layout or `injectScript`:
+// Astro places every bundled `<style>` of a page (here 709 KB of inlined CSS) BEFORE the layout's own
+// head markup AND before head-inline scripts. A script after that stylesheet runs only once the browser
+// has parsed all of it; on a slow link the browser paints in between, and the visitor sees the
+// published theme first (measured: first paint 14.7 s, theme applied 20 s, Slow 3G + 6x CPU). `caUI`
+// rewrites the rendered page so this script is a first child of `<head>`, after the package's own.
 //
 // Two jobs, both synchronous and both reading only storage or the URL:
 //  1. "Apply to site": the compiled CSS the studio stored under `ca-site-studio` goes into
@@ -18,8 +19,6 @@
 //
 // `<ClientRouter />`: the swap replaces `<head>`, so the visitor style is copied onto the incoming
 // document first (`astro:before-swap`), exactly as `caUI` does for its own style tags.
-import type { AstroIntegration } from "astro";
-
 /** Storage keys shared with `src/components/theme/apply-site.ts` and `ThemeStudio.svelte`. */
 export const SITE_KEY = "ca-site-studio";
 export const ISLAND_CACHE_PREFIX = "ca-studio-island:";
@@ -44,13 +43,5 @@ d.addEventListener('astro:before-swap',function(e){
   ['data-preset','data-style'].forEach(function(a){var v=h.getAttribute(a);if(v!==null)n.documentElement.setAttribute(a,v)})})}
 }catch(e){}})();`;
 
-export function themeBoot(): AstroIntegration {
-	return {
-		name: "codeatlas-theme-boot",
-		hooks: {
-			"astro:config:setup": ({ injectScript }) => {
-				injectScript("head-inline", THEME_BOOT);
-			},
-		},
-	};
-}
+/** The markup `caUI(theme, { head })` places right after the theme, ahead of every stylesheet. */
+export const THEME_BOOT_HEAD = `<script id="ca-site-boot">${THEME_BOOT}</script>`;
