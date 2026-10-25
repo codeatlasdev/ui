@@ -45,8 +45,10 @@ export function propsSummary(markdown: string): string {
 		.split(/\n(?=### )/)
 		.filter((block) => /^### [^\n]*\n\n\| Prop \|/.test(block))
 		.map((block) =>
+			// The heading and the table only: prose and examples after the table are in the page's file.
 			block
 				.split("\n")
+				.filter((line, i) => i < 2 || line.startsWith("|"))
 				.map((line) => {
 					if (!line.startsWith("|")) return line;
 					// Cells are split on `|` that is not escaped as `\|` (a union type in a cell).
@@ -60,15 +62,11 @@ export function propsSummary(markdown: string): string {
 
 /**
  * What a concept page contributes to llms-full.txt: its definition (the text before the first `## `) and the
- * sections an agent acts on, in page order. The evidence, demos, limits and references stay in the page's own
- * file (linked from the section), so a concept costs a few KB and the file does not grow with every page.
+ * sections an agent acts on, in page order: the contract and the paste-in prompt. The evidence, anti-patterns,
+ * checklist, demos, limits and references stay in the page's own file (linked from the section), so a concept
+ * costs about 3 KB and the file stays under its cap as concepts are added.
  */
-export const CONCEPT_DIGEST_SECTIONS: readonly string[] = [
-	"The contract",
-	"Anti-patterns",
-	"Checklist",
-	"Prompt for your AI",
-];
+export const CONCEPT_DIGEST_SECTIONS: readonly string[] = ["The contract", "Prompt for your AI"];
 
 /** The digest of a concept page's markdown: the lead and the `CONCEPT_DIGEST_SECTIONS`. */
 export function conceptDigest(markdown: string): string {

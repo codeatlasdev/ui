@@ -65,16 +65,17 @@ describe("a concept page in llms-full.txt", () => {
 		"- [E01] A source.",
 	].join("\n");
 
-	it("keeps the lead, the contract, the checklist and the prompt, and drops evidence and references", () => {
+	it("keeps the lead, the contract and the prompt, and drops evidence, checklist and references", () => {
 		const d = conceptDigest(body);
-		for (const kept of [
-			"Lead paragraph",
-			"## The contract",
-			"## Checklist",
-			"## Prompt for your AI",
-		])
+		for (const kept of ["Lead paragraph", "## The contract", "## Prompt for your AI"])
 			expect(d).toContain(kept);
-		for (const dropped of ["## Evidence", "## References", "A long evidence section"])
+		for (const dropped of [
+			"## Evidence",
+			"## Checklist",
+			"## References",
+			"A long evidence section",
+			"Reflows at 320 CSS px",
+		])
 			expect(d).not.toContain(dropped);
 	});
 

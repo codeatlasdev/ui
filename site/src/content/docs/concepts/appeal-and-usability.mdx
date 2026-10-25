@@ -1,0 +1,122 @@
+---
+title: Appeal is not usability
+description: What visual appeal can and cannot tell you about whether an interface works. The aesthetic-usability effect, the studies on quick judgements, why group preferences do not predict a person, and how to test a style before you commit.
+group: Concepts
+order: 5
+---
+import { Callout } from "@codeatlasdev/ui";
+import Claim from "~/components/docs/Claim.astro";
+import Limits from "~/components/docs/Limits.astro";
+import Refs from "~/components/docs/Refs.astro";
+
+"People prefer clean, minimal interfaces" and "a beautiful interface feels easier to use" are repeated often and carry more certainty than the sources behind them. This page reads what those sources measured, so a choice of style rests on a test with your users and not on a slogan.
+
+## Definition and vocabulary
+
+| Term | What it means here |
+|---|---|
+| Visual appeal | How attractive a person rates what they see. A rating, not a behavior. |
+| Usability | Whether people complete tasks, quickly, correctly and with little friction. Measured by tasks, not by taste. |
+| Pragmatic and hedonic qualities | Pragmatic: it helps me do the task. Hedonic: it interests me, or it says something about who I am. Related to appeal and to usability, but not the same as either. |
+| Aesthetic-usability effect | A tendency to find an appealing interface easier to use than it is. |
+| Prototypicality | How much a design looks like the typical member of its category. |
+| Preference | A stated choice. Keep it apart from performance. |
+
+## Evidence
+
+<Claim strength="supported" refs="E05" scope="Three studies in which participants rated the visual appeal of web homepages shown for 50 ms and 500 ms. The measure is a rating of appeal for a set of homepages in a lab.">
+Ratings of visual appeal were highly correlated between 50 ms and 500 ms exposures. Appeal ratings form quickly and stay consistent. This does not show that people decide to stay, trust or buy in 50 ms, and it is not behavior on a live site.
+</Claim>
+
+<Claim strength="supported" refs="E01" scope="Two lab experiments with screenshots of real websites (119 in the first), rated for aesthetics at presentation times from 17 ms to 1000 ms. The measure is an aesthetic rating, not comprehension or task success.">
+Visual complexity and prototypicality both affected aesthetic ratings, within the first 50 ms in the first study and down to 17 ms in the second. Complexity and familiarity of the composition show up early in how a page is rated. They say nothing about whether the page is understood.
+</Claim>
+
+<Claim strength="supported" refs="E04" scope="Two studies with four skins of one kind of MP3 player. Other products, tasks and populations were not tested.">
+Perceived goodness (satisfaction) depended on perceived usability and on hedonic attributes, while perceived beauty largely depended on identification, a hedonic attribute. Beauty and goodness were related but not the same thing.
+</Claim>
+
+<Claim strength="practice" refs="E19" scope="An NN/g practitioner synthesis. Its example is a single participant on one e-commerce site; it reports no effect size.">
+Users are more tolerant of minor usability problems in an interface they find appealing, and this can mask problems during usability testing. A good-looking prototype that tests well on preference may still have task problems.
+</Claim>
+
+<Claim strength="supported" refs="E03" scope="About 2.4 million ratings of website screenshots from nearly 40 thousand participants. The finding concerns groups of raters, rated on appeal, and does not predict an individual.">
+The level of colorfulness and visual complexity at which appeal is highest varies between groups. A group average is not a person: it does not support assigning a style to an age, a gender or any other group.
+</Claim>
+
+<Claim strength="heuristic">
+None of these sources shows that a named style (minimal, brutalist, glass, editorial) is preferred by anyone or performs better at anything. They concern complexity, familiarity, usability and appeal in general. Style claims in our atlas rest on that indirect evidence and are labelled so.
+</Claim>
+
+## The contract
+
+<Claim strength="heuristic">
+**Measure tasks and preference separately.** A vote for the nicer prototype is a preference. Completion, time, errors and comprehension are the usability result. Report both and never let one stand for the other.
+</Claim>
+
+<Claim strength="heuristic">
+**Expect appeal to flatter the test.** When two designs differ in polish, assume the polished one will be forgiven some friction in a short test. Equalize fidelity or look for the friction deliberately.
+</Claim>
+
+<Claim strength="heuristic">
+**Choose a style by task and context, not by who you imagine the user is.** Say what the person is doing, how often, under what pressure and with what repertoire. Never write an audience as an age, a gender or a generation.
+</Claim>
+
+<Claim strength="heuristic">
+**Compare against a plain baseline.** The same content and behavior in a functional version, an expressive version and a hybrid. Differences in outcome then belong to the style and not to the content.
+</Claim>
+
+<Claim strength="heuristic">
+**Do not quote a time as a threshold.** "50 ms" is a presentation time in particular lab studies. It is not how long users take to decide.
+</Claim>
+
+## How the library implements it
+
+| Need | In `@codeatlasdev/ui` |
+|---|---|
+| Try a style on the same content | `defaultStyle` and the `designStyle(...)` recipes change tokens, not components, so a baseline and a variant share all behavior. See [Theming](/docs/getting-started/theming/). |
+| A plain baseline | The default `solid` style: opaque paper, no blur, no ornament. |
+| Compare at several widths | [PreviewStage](/docs/layout/preview-stage/) renders a component or page at real widths in an isolated theme. |
+| Browse styles with their caveats | The [design atlas](/atlas/): each term states its risk, the sources and what they do not support, and labels its scores heuristic. |
+| Ask from an agent | `search_terms`, `get_term` and `get_reference` in `ca-ui-mcp`. |
+
+## Anti-patterns
+
+| Anti-pattern | Why it fails | Instead |
+|---|---|---|
+| "Users prefer minimal" with no source | Nothing in these studies says so. | State the task and test it. |
+| Picking the style by the audience's age or gender | A group average does not describe a person. | Describe the task, frequency and context. |
+| Shipping the prototype people liked most without task data | Appeal can mask friction. | Run the same tasks on both. |
+| Comparing a polished design with a rough one | Polish changes tolerance. | Equalize fidelity. |
+| Citing "50 ms" as how long users take to decide | It is a presentation time for appeal ratings. | Cite what was measured. |
+| Treating a platform guide as proof | It is the owner's guidance, not a study. | Cite it as guidance and test the outcome. |
+
+## Checklist
+
+- The decision names the task, the frequency and the context, not a demographic.
+- Task completion, time and errors are measured, with preference kept separate.
+- The prototypes share content and behavior and differ only in the style under test.
+- Fidelity is equal across the options being compared.
+- Frequent and occasional users, and people with accessibility needs, are in the sample.
+- No number from a lab study is quoted without its conditions.
+
+## Prompt for your AI
+
+```text
+Help choose a visual style without overclaiming. Treat appeal as a rating, not as usability. Do not say a style is preferred by, or suited to, an age, a gender or a generation; describe the task, how often it happens, the pressure and the person's repertoire.
+
+Build three prototypes with the same content and behavior: a plain baseline (the default solid style in @codeatlasdev/ui), an expressive variation and a hybrid, using designStyle recipes and --ca-* tokens only. Equalize fidelity. Propose a test that measures completion, time, errors, comprehension and preference separately, with frequent and occasional users and people with accessibility needs.
+
+Do not quote 50 ms or any lab figure as a threshold; say what was measured. Label any claim about a style as indirect evidence.
+```
+
+<Limits reviewed="2026-10-25">
+- E05, E01 and E04 are laboratory studies of ratings. They show that appeal forms fast and that beauty and usability are different judgements; they do not measure behavior on a live site.
+- E04 used four skins of one product type. Do not read it as a result for all interfaces.
+- E19 is a practitioner synthesis built on one example. It is a caution to test, not an effect size.
+- E03 compares groups of raters on screenshots. It is cited to block stereotypes, not to predict taste.
+- No source here shows that any named style performs better, so style choices remain a hypothesis for you to test.
+- This page covers visual style for screens, not voice or spatial interfaces.
+</Limits>
+
+<Refs ids="E05, E01, E04, E19, E03" />

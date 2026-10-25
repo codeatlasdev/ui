@@ -388,6 +388,9 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "990", path: "inputs/color-field/Brand" },
 	{ id: "991", path: "inputs/color-field/TextContrast" },
 	{ id: "992", path: "inputs/slider/Field" },
+	{ id: "993", path: "concepts/viewport/Simulator" },
+	{ id: "994", path: "concepts/viewport/Hero" },
+	{ id: "995", path: "concepts/viewport/Keyboard" },
 ];
 
 /**

@@ -128,6 +128,17 @@ export function buildLlmsIndex(i: {
 			links: [page(ENTRY_PAGES.install, "Installation"), page(ENTRY_PAGES.aiAgents, "AI agents")],
 		},
 		{
+			heading: "Concepts",
+			links: [
+				{
+					title: "Viewport-complete UX",
+					href: `${SITE}${llmsPagePath("concepts/viewport")}`,
+					description:
+						"the first screen, viewport units, safe areas, the keyboard, reflow and the cue that there is more below; every claim carries a strength label, scope and sources, or ask the MCP server (`list_concepts`, `get_concept`)",
+				},
+			],
+		},
+		{
 			heading: "Design atlas",
 			links: [
 				{

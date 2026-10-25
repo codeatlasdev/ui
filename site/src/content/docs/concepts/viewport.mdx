@@ -1,0 +1,220 @@
+---
+title: Viewport-complete UX
+description: Make the first screen say what the product is, who it is for and what to do next, without trapping people in a fixed height. Viewport units, safe areas, the keyboard, reflow and the cue that tells people there is more below.
+group: Concepts
+order: 2
+---
+import { Callout } from "@codeatlasdev/ui";
+import Claim from "~/components/docs/Claim.astro";
+import Demo from "~/components/docs/Demo.astro";
+import Limits from "~/components/docs/Limits.astro";
+import Refs from "~/components/docs/Refs.astro";
+import Simulator from "~/demos/concepts/viewport/Simulator.svelte";
+import SimulatorSrc from "~/demos/concepts/viewport/Simulator.svelte?raw";
+import Hero from "~/demos/concepts/viewport/Hero.svelte";
+import HeroSrc from "~/demos/concepts/viewport/Hero.svelte?raw";
+import Keyboard from "~/demos/concepts/viewport/Keyboard.svelte";
+import KeyboardSrc from "~/demos/concepts/viewport/Keyboard.svelte?raw";
+
+A full-height hero solves a geometry problem: the block uses the visible space. A good first screen solves a communication problem: a visitor can tell what this is, whether it is for them and what to do next. `100dvh` is a way to size a box. It says nothing about whether the box communicates, and it does not mean there is nothing below.
+
+This page is about the second problem, and about doing it without breaking the first: people who zoom, rotate, open the keyboard or read in another language still need the whole page.
+
+## Definition and vocabulary
+
+**Viewport-complete UX** is our working name for one idea: arrange the first visible region so it carries purpose, relevance, trust and the next action, and keep the rest of the page reachable. It is a label for a combination of established principles. It is not a method with validation of its own, and nothing on this page tests it as one.
+
+| Term | What it means here |
+|---|---|
+| Above the fold | Content visible before scrolling. Its size changes with the device, the window and the browser bars. |
+| Layout viewport | The area the page lays out in. |
+| Visual viewport | The part a person can actually see now. Pinch zoom and the keyboard can shrink it without shrinking the layout viewport. |
+| `vh`, `svh`, `lvh`, `dvh` | Viewport heights: `lvh` is the large viewport (browser bars collapsed) and `vh` equals it; `svh` is the small one (bars shown); `dvh` follows the bars as they move. |
+| Safe area | The region clear of notches, rounded corners and gesture bars, read with `env(safe-area-inset-*)`. |
+| False floor | A page that looks finished while more content exists below. Also called the illusion of completeness. |
+| Progressive disclosure | Showing the essential first and making the rest discoverable on demand. |
+
+Four first-view outcomes are worth telling apart, because they describe different screens:
+
+1. **Complete:** the whole task fits, legible and operable (a login, a confirmation, a kiosk step).
+2. **Understand:** the meaning and the main action fit; supporting material follows below.
+3. **Intent:** on a very small screen, at least the purpose and the way forward are visible; the full explanation needs scrolling.
+4. **Flow:** in an operational app, the active task and its controls come first, not the pitch.
+
+When goals collide, we order them: understanding, then operability, then accessibility, then discovering the next step, then visual balance, and last the absence of scrolling.
+
+## Evidence
+
+<Claim strength="preliminary" refs="N01" scope="One NN/g eyetracking study on its own pages and sample; the article notes the analysis ignores page length.">
+In that study people spent about 57% of their page-viewing time above the fold and 74% in the first two screenfuls. It supports putting the value proposition and the main action early. It does not show that a page should be one screen, and the percentages are not a benchmark for another audience, device or year.
+</Claim>
+
+<Claim strength="preliminary" refs="N02" scope="One qualitative NN/g usability study of eight users on one page.">
+Six of eight users did not realize a page could scroll. It illustrates how a layout can read as complete, and it is not a rate that applies to other sites.
+</Claim>
+
+<Claim strength="supported" refs="E05, E01" scope="Lab studies that collected ratings of visual appeal for homepages or website screenshots shown for 17 to 500 ms. The measure is a rating, not comprehension or behavior on a live site.">
+Visual appeal ratings correlate between 50 ms and 500 ms exposures, and visual complexity and prototypicality affect aesthetic ratings that early. Organization and the priority of elements matter at a glance. Nothing here shows that anyone understands a value proposition in that time.
+</Claim>
+
+<Claim strength="practice" refs="N06" scope="An NN/g practitioner article about mobile-first layouts viewed on desktop; it also lists benefits of dispersed content.">
+Generous empty space and enlarged elements can spread content across long pages and make it harder to consume. That is a reason to use space to group and separate, and to measure comprehension instead of assuming that more space reads as more premium.
+</Claim>
+
+<Claim strength="practice" refs="N04" scope="A 2006 practitioner article. It does not license hiding prices, limits or frequent actions.">
+Deferring advanced or rarely needed features makes an application easier to learn and less error-prone. The essential stays visible; the rest must be named, discoverable and reachable by keyboard and touch.
+</Claim>
+
+<Claim strength="practice" refs="N05" scope="A practitioner analysis with examples, not a measured rate.">
+Changing the pace or direction of scrolling can break expectations of control and cause disorientation. Native scrolling is the default to keep.
+</Claim>
+
+<Claim strength="practice" refs="M01" scope="MDN's description of the units; browser support and rendering should be checked in compatibility data before relying on a unit.">
+`vh` is equivalent to `lvh`, so a `100vh` block can sit partly under the browser's own interface while it is expanded. `svh` is the height with the bars shown and `dvh` follows them.
+</Claim>
+
+<Claim strength="practice" refs="M02, M03, M05" scope="MDN API pages. They describe what the interfaces do, not when to use them. The VirtualKeyboard API is marked limited availability (not Baseline).">
+The visual viewport can differ from the layout viewport (zoom, keyboard). `env(safe-area-inset-*)` is zero unless the page opts into edge-to-edge drawing with `viewport-fit=cover`. Taking control of the keyboard with the VirtualKeyboard API is not available in every widely used browser.
+</Claim>
+
+<Claim strength="practice" refs="W01, W02, W03, W07" scope="WCAG 2.2 Understanding documents. They state what content must do, not what people prefer.">
+Content must reflow to a width equivalent to 320 CSS pixels without two-dimensional scrolling, text must resize to 200% without loss, the page must tolerate user-set text spacing, and it must not lock a single orientation unless one is essential. A layout fixed to one height cannot satisfy these.
+</Claim>
+
+<Claim strength="practice" refs="W04, W05, W06, M06" scope="WCAG 2.2 Understanding documents and MDN. 44 px is a larger recommendation and is not what 2.5.8 requires.">
+Meaningful visual cues need 3:1 contrast (thin hairlines can lose contrast to anti-aliasing), a focused control must not be entirely hidden by author content such as a sticky bar, pointer targets are at least 24 by 24 CSS px with exceptions, and non-essential motion should respect the reduced-motion setting.
+</Claim>
+
+<Claim strength="practice" refs="D01" scope="web.dev's description of the field thresholds at the 75th percentile. Meeting them is not shown to improve conversion.">
+Good Core Web Vitals thresholds are 2.5 s for Largest Contentful Paint, 200 ms for Interaction to Next Paint and 0.1 for Cumulative Layout Shift.
+</Claim>
+
+## The contract
+
+The principles below are ours. Each follows from the evidence above or from a standard; none is a finding.
+
+<Claim strength="heuristic">
+**The first screen answers four questions:** what is this, who or which situation is it for, what is the main benefit, and what do I do now. If a person cannot answer them from what you show first, add words before you add motion.
+</Claim>
+
+<Claim strength="heuristic">
+**A full-height block is a floor, never a ceiling.** Use `min-height`, never `height`, on anything that holds content. If the content grows because of zoom, a longer translation or a larger font, the block grows and the page scrolls.
+</Claim>
+
+<Claim strength="heuristic">
+**Start from the small viewport.** On phones use `min-height: var(--ca-vh-min)` (the small viewport, so a hero never hides its action behind browser UI) and keep `--ca-vh` for views that must follow the bars. Never write a literal `100vh` or `100dvh`.
+</Claim>
+
+<Claim strength="heuristic">
+**Never fake a no-scroll page.** `overflow: hidden` on the document, a script that measures `innerHeight` on every resize, or absolutely positioned regions that pretend nothing is below all trade accessibility for a look.
+</Claim>
+
+<Claim strength="heuristic">
+**Show that there is more.** If important content continues below, let a visible cue say so (a peeking section, a link such as "How it works") and do not rely on an animated arrow alone. A hero that fills exactly the viewport leaves no room for a peek: choose a shorter hero or an explicit link and accept the trade-off.
+</Claim>
+
+<Claim strength="heuristic">
+**Zero scroll is legitimate in short, bounded steps** (install, confirm, sign in, choose a mode, a kiosk) when every option is visible or explicitly revealable, keyboard and zoom work, and errors and help can expand. It is a property of those screens, not a goal for every page.
+</Claim>
+
+<Claim strength="heuristic">
+**Respond to the container, not the device.** Use media queries for the page's macro structure and container queries for reusable modules, so the same preview works in a sidebar, a modal or a split pane. Do not branch on `isMobile` or a phone model.
+</Claim>
+
+## How the library implements it
+
+| Need | In `@codeatlasdev/ui` |
+|---|---|
+| Heights that survive browser bars | `--ca-vh` (`100vh`, upgraded to `100dvh`) and `--ca-vh-min` (`100svh`) in `tokens.css`. |
+| Safe areas | `--ca-safe-top`, `--ca-safe-right`, `--ca-safe-bottom`, `--ca-safe-left`, from `env(safe-area-inset-*, 0px)`. They are non-zero only with `viewport-fit=cover`; see [Mobile](/docs/getting-started/mobile/). |
+| The keyboard | `viewport.keyboardInset` and `--ca-kb-inset`, computed from `visualViewport` against the document height (never from `window.innerHeight`). The `keyboardAware` action pads the bottom and scrolls the focused field into view. |
+| A bar that stays reachable | [StickyActions](/docs/layout/sticky-actions/): sticks to the bottom of the scroll container with safe-area padding and keyboard awareness, and becomes an inline row from 900px. |
+| A full-screen drill-down | [MobilePane](/docs/layout/mobile-pane/): own scroll, safe areas on every side, keyboard awareness, focus in and back out. |
+| Page structure | [PageShell](/docs/layout/page-shell/) never emits `<main>`; `AppShellLayout` provides the one `<main id="main">`. |
+| Container-driven modules | Container queries, as in the components that size to their parent instead of the viewport. |
+| Target size | The 44px touch target is global under `(pointer: coarse)`, above the 24px WCAG minimum; do not write an override. |
+| Viewport meta | `width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content`. Never `maximum-scale` or `user-scalable=no`. |
+
+<Demo title="Viewport simulator" description="Change the device shape, collapse the browser bars, draw edge to edge and raise a keyboard: see what each unit resolves to and what is hidden." src={SimulatorSrc}><Simulator client:visible /></Demo>
+
+<Demo title="A hero that is a floor" description="Turn on 200% text and a longer translation: the hero grows and the page scrolls. Turn off the cue and the next section disappears from view." src={HeroSrc}><Hero client:visible /></Demo>
+
+<Demo title="A form with the keyboard open" description="On a phone, focus a field. The page scrolls and the action bar stays above the keyboard." src={KeyboardSrc}><Keyboard client:visible /></Demo>
+
+```css
+/* A hero that can grow. min-height is the floor; the small viewport keeps the action clear of the browser UI. */
+.hero {
+  min-height: var(--ca-vh-min);
+  padding-block: calc(var(--ca-space-8) + var(--ca-safe-top)) var(--ca-space-8);
+  display: grid;
+  align-content: center;
+}
+/* Fluid type with a rem component, so Resize Text still works. Not vw alone. */
+.hero h1 { font-size: clamp(2rem, 1.2rem + 3vw, 3.5rem); max-width: 22ch; }
+/* A reusable preview that reacts to the space it is given, not to the device. */
+.preview-host { container-type: inline-size; }
+@container (min-width: 36rem) { .preview { grid-template-columns: 1fr 1fr; } }
+```
+
+## Anti-patterns
+
+| Anti-pattern | Why it fails | Instead |
+|---|---|---|
+| `html, body { overflow: hidden }` on a marketing page | Blocks content, zoom and recovery. | Native scroll, `min-height`, a clear priority of content. |
+| `height: 100dvh` around a lot of content | Clips when the content grows. | `min-height`, natural flow. |
+| A hero that looks like a footer | A false floor: people stop. | A real peek, a continuation link, a clear top navigation. |
+| 11px text on mobile so it fits | Hurts reading and fails resize. | Cut the copy, drop ornament, allow scrolling. |
+| Headline and action revealed only after an animation | Delays the meaning and breaks reduced motion. | A readable initial state; animation is an extra. |
+| A giant product preview on a phone | Takes the space of the message and the action. | A smaller thumbnail, a poster, or content after the action. |
+| Everything inside a carousel | Discovery and keyboard access often fail. | Explicit sections or accessible controls. |
+| Essential content only in a modal | Hides context and adds friction. | A section in the document, then progressive disclosure. |
+| A sticky bar nobody measured | Covers content and the focused control. | Measure its height, add `scroll-padding`, keep safe-area padding, test on a device. |
+| `font-size` in `vw` only | Resize Text can fail and the size is hard to predict. | `clamp()` with a `rem` part. |
+| A design that works only on the designer's phone | Fails on other devices, at low height and under zoom. | A test matrix by condition, not by model. |
+
+## Checklist
+
+- The heading, the explanation and the main action are in the DOM and do not wait for an animation script.
+- No critical content is cut by a fixed height or `overflow: hidden`.
+- At 200% text, content and functions remain.
+- At a width equivalent to 320 CSS px there is no loss and no horizontal scroll (except content that needs two dimensions).
+- Pointer targets are at least 24 by 24 CSS px (WCAG 2.5.8), with the larger touch target where the library supplies it.
+- Keyboard focus is visible and never entirely hidden by a sticky bar.
+- Mobile menus and modals manage focus; Escape closes a dialog and focus returns.
+- The page works in portrait and landscape.
+- With the keyboard open, a form can still be finished, including a validation error.
+- Safe areas never cover an action.
+- With reduced motion on, nothing essential is lost.
+- No scroll-hijacking is needed to reach essential content.
+- Below the first screen there is a visible cue that more exists.
+
+Test conditions to cover, as samples and not a distribution of devices: 320 by 640, 390 by 844, 360 by 568, 844 by 390, 768 by 1024, a 500 to 700 px split window, 1024 by 768 and 1440 by 900, at 200% and 400% zoom, with larger text and a longer translation, with the keyboard and a validation error, on a real device with a notch and a slow network.
+
+## Prompt for your AI
+
+```text
+Design the first screen with the viewport-complete approach (our working name for a combination of known principles, not a validated method):
+make the product, the audience, the main benefit and the next action understandable from the first visible region, without sacrificing legibility, discovery, accessibility or essential content to force a full-height layout.
+
+Use min-height, never a fixed height, on anything that holds content. In @codeatlasdev/ui use min-height: var(--ca-vh-min) for a hero and var(--ca-vh) only for views that must follow the browser bars; never write 100vh or 100dvh. Pad fixed UI with var(--ca-safe-*). Wrap forms in use:keyboardAware and use StickyActions or MobilePane instead of hand-built fixed bars. Never put overflow: hidden on the document and never measure window.innerHeight on resize to fake a no-scroll page.
+
+Let content scroll whenever there is zoom, larger text, a long translation, landscape or an open keyboard. Below the first screen show a visible cue that there is more (a peeking section or a link), not an animation alone. Use container queries for reusable modules and media queries for page structure.
+
+Meet WCAG 2.2 AA: reflow at 320 CSS px, 200% text, text spacing, visible focus not hidden by sticky UI, 24 px targets, contrast for borders that identify controls, reduced motion. Do not claim that removing scroll raises conversion or that any layout is proven better; validate with comprehension, first-click, task success, errors and Core Web Vitals on real devices.
+```
+
+<Callout type="note" title="For AI agents">
+  This page is plain markdown at `/llms/concepts/viewport.txt`. The `ca-ui-mcp` server returns it with `get_concept("viewport")`, and `list_concepts` lists every concept with its last-reviewed date.
+</Callout>
+
+<Limits reviewed="2026-10-25">
+- The sources support the principles behind this page. They do not validate "viewport-complete UX" as a method, and none of them measures whether the approach raises comprehension or conversion.
+- NN/g figures come from single studies on their own pages and samples: the percentages and the six-of-eight count are illustrations, not rates for your audience.
+- The 50 ms and 17 ms results are ratings of visual appeal in a lab. They say nothing about understanding a message that quickly.
+- Browser behavior moves: viewport units, keyboard resize modes, `viewport-segment-*` and the VirtualKeyboard API vary by browser and version. Check compatibility data and test real devices.
+- The simulator is an illustrative model with round numbers, not a browser.
+- The test matrix lists engineering samples, not the distribution of devices in use.
+- A checklist here does not replace a WCAG audit.
+</Limits>
+
+<Refs ids="N01, N02, E05, E01, N06, N04, N05, M01, M02, M03, M05, W01, W02, W03, W07, W04, W05, W06, M06, D01" />

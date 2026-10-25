@@ -2,7 +2,7 @@ import { describe, expect, it } from "bun:test";
 import { readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative } from "node:path";
 import { buildLlmsPage, llmsPagePath } from "../scripts/ai-entry.ts";
-import { buildLlmsFull, CORE_PAGES } from "../scripts/llms-full.ts";
+import { buildLlmsFull, CORE_PAGES, propsSummary } from "../scripts/llms-full.ts";
 import { demoSources, mdxToMarkdown } from "../scripts/mdx-to-markdown.ts";
 
 // llms-full.txt is the file an agent pastes whole into its context window, so its size is a hard limit of
@@ -99,6 +99,26 @@ describe("llms-full.txt has a fixed shape (#436)", () => {
 		expect(s).toContain("| Prop | Type | Default |");
 		expect(s).toMatch(/\| `variant` \| `[^\n]+` \| 'filled' \|/);
 		expect(s).not.toContain("| Description |");
+	});
+
+	it("a props table keeps only the table: the prose that follows it stays in the page's file", () => {
+		const md = [
+			"### Props",
+			"",
+			"| Prop | Type | Default | Description |",
+			"|---|---|---|---|",
+			"| `title` | `string` | required | The page title. |",
+			"",
+			"A paragraph that explains the table and belongs to the page, not to the summary.",
+			"",
+			"```svelte",
+			"<Seo title='x' />",
+			"```",
+		].join("\n");
+		const out = propsSummary(md);
+		expect(out).toContain("| `title` | `string` | required |");
+		expect(out).not.toContain("A paragraph that explains");
+		expect(out).not.toContain("<Seo");
 	});
 
 	describe("a page costs its summary, not its size", () => {

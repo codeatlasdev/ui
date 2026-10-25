@@ -6,7 +6,7 @@
  *   claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp
  *
  * Tools: get_recipe, list_components, get_component, get_export, get_equivalent, list_parts, search_tokens, list_surfaces, get_guide,
- * search_terms, get_term, get_reference (the design atlas and its verified sources), search_demos, get_demo, search_ui, list_facets, get_related, report_issue (drafts a sanitized GitHub issue from a library problem; it never posts anything).
+ * list_concepts, get_concept (the Concepts pages with their claims, limits and sources), search_terms, get_term, get_reference (the design atlas and its verified sources), search_demos, get_demo, search_ui, list_facets, get_related, report_issue (drafts a sanitized GitHub issue from a library problem; it never posts anything).
  */
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -475,6 +475,50 @@ server.registerTool(
 		return rel.length
 			? text(rel.map(entryLine).join("\n"))
 			: fail(`No related entries for #${want.id}.`);
+	}
+);
+
+/** The Concepts docs group: pages whose claims about users carry a strength label, a scope and a review date. */
+const concepts = guides.filter((g) => g.group === "Concepts" && g.slug !== "concepts/index");
+const conceptId = (g: ManifestGuide) => g.slug.replace(/^concepts\//, "");
+const reviewedOf = (g: ManifestGuide) =>
+	g.markdown.match(/Last reviewed (\d{4}-\d{2}-\d{2})\./)?.[1];
+
+server.registerTool(
+	"list_concepts",
+	{
+		description:
+			"List the concept pages (why interfaces are built a certain way): id, title, last-reviewed date and what each covers. Each claim in a concept carries a strength label (established, supported, preliminary, practice, heuristic), its scope and its sources. Read `evidence` first for the rules. Get one with get_concept.",
+		inputSchema: {},
+	},
+	() =>
+		text(
+			concepts
+				.map(
+					(g) =>
+						`- ${conceptId(g)}: ${g.title}${reviewedOf(g) ? ` (reviewed ${reviewedOf(g)})` : ""}. ${g.description}`
+				)
+				.join("\n") || "No concepts in this build."
+		)
+);
+
+server.registerTool(
+	"get_concept",
+	{
+		description:
+			"One concept page as markdown with its definition, evidence claims (strength label, sources, scope), the contract, library implementation, anti-patterns, checklist, a prompt for your AI, limits with the last-reviewed date, and references with what each does not support. `id` is from list_concepts (viewport, evidence).",
+		inputSchema: { id: z.string() },
+	},
+	({ id }) => {
+		const n = squash(id.replace(/^concepts\//, ""));
+		const hit =
+			concepts.find((g) => squash(conceptId(g)) === n) ??
+			concepts.find((g) => squash(g.title) === n);
+		if (!hit)
+			return fail(
+				`No concept "${id}". Concepts: ${concepts.map(conceptId).join(", ") || "none in this build"}.`
+			);
+		return text(`# ${hit.title}\n\n${hit.description}\n\n${hit.markdown}`);
 	}
 );
 

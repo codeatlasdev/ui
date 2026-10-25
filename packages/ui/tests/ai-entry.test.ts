@@ -252,6 +252,7 @@ describe("llms.txt links the agent-readable .txt form of every page and recipe (
 			...recipes.map((r) => `${SITE}${llmsRecipePath(r.id)}`),
 			`${SITE}/llms-full.txt`,
 			`${SITE}/llms/atlas.txt`,
+			`${SITE}/llms/concepts/viewport.txt`,
 		]);
 		for (const m of out.matchAll(/\]\((https:\/\/[^)]*\.txt)\)/g)) {
 			const url = m[1];
