@@ -1,0 +1,29 @@
+---
+import { getReference, parseRefIds, STRENGTH_LABEL, STRENGTH_MEANING, type Strength } from "~/data/evidence/references";
+
+interface Props {
+	/** established | supported | preliminary | practice | heuristic. Describes this claim only. */
+	strength: Strength;
+	/** Reference ids (`"E01, E06"`). Required unless the strength is `heuristic`. */
+	refs?: string;
+	/** Who or what was studied, which task, which context. Required unless the strength is `heuristic`. */
+	scope?: string;
+}
+const { strength, refs = "", scope } = Astro.props;
+const ids = parseRefIds(refs);
+const sources = ids.map((id) => {
+	const ref = getReference(id);
+	if (!ref) throw new Error(`<Claim>: unknown reference id "${id}"`);
+	return ref;
+});
+if (strength === "heuristic" ? ids.length > 0 : ids.length === 0 || !scope)
+	throw new Error(`<Claim strength="${strength}">: ${strength === "heuristic" ? "a heuristic has no sources" : "needs refs and scope"}`);
+---
+<div class="claim" data-strength={strength}>
+	<p class="claim__label">
+		<span class="claim__badge" title={STRENGTH_MEANING[strength]}>{STRENGTH_LABEL[strength]}</span>
+		{sources.map((r, i) => (<>{i > 0 && ", "}<a href={`#ref-${r.id}`}>{r.authors.split(",")[0]} {r.year}</a></>))}
+	</p>
+	<div class="claim__body"><slot /></div>
+	{scope && <p class="claim__scope"><strong>Scope:</strong> {scope}</p>}
+</div>

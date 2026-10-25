@@ -1,0 +1,860 @@
+{
+	"$comment": "Primary sources cited by the Concepts and the design atlas. Every entry was opened on `verified.date`; `verified.excerpt` is wording read at that source (abstract, summary or page text), `verified.level` says how much was read. Rules: site/src/content/docs/concepts/evidence.mdx. Ids E01-E22 keep the numbering of the owner's source list; EXX = added after.",
+	"references": [
+		{
+			"id": "E01",
+			"authors": "Tuch, Presslaber, Stöcklin, Opwis, Bargas-Avila",
+			"year": 2012,
+			"title": "The role of visual complexity and prototypicality regarding first impression of websites: Working towards understanding aesthetic judgments",
+			"venue": "International Journal of Human-Computer Studies",
+			"kind": "peer-reviewed",
+			"url": "https://doi.org/10.1016/j.ijhcs.2012.06.003",
+			"topic": "Visual complexity and prototypicality in first impressions",
+			"supports": "Two lab experiments with screenshots of real websites (119 in the first) found that visual complexity and prototypicality affected aesthetic ratings at presentation times of 50 ms and, in the second study, down to 17 ms.",
+			"doesNotSupport": "That people understand a value proposition in that time, or that any named style is preferred. The measure is a rating of aesthetics, not comprehension or task success.",
+			"strength": "supported",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Abstract on the publisher-listed Google Research record, reached from the DOI",
+				"excerpt": "119 screenshots of real websites varying in VC (low vs. medium vs. high) and PT (low vs. high) were rated on perceived aesthetics. Screenshot presentation time was varied as a between-subject factor (50 ms vs. 500 ms vs. 1000 ms). Results reveal that VC and PT affect participants' aesthetics ratings within the first 50 ms of exposure."
+			}
+		},
+		{
+			"id": "E02",
+			"authors": "Lavie, Tractinsky",
+			"year": 2004,
+			"title": "Assessing dimensions of perceived visual aesthetics of web sites",
+			"venue": "International Journal of Human-Computer Studies",
+			"kind": "peer-reviewed",
+			"url": "https://doi.org/10.1016/j.ijhcs.2003.09.002",
+			"topic": "Dimensions of perceived web aesthetics",
+			"supports": "Bibliographic identity only: a peer-reviewed paper on how perceived visual aesthetics of web sites can be assessed along dimensions.",
+			"doesNotSupport": "Any specific finding. The paper text could not be opened (publisher captcha), so no claim may rest on it until it is read.",
+			"strength": "supported",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "identity-only",
+				"how": "Crossref record for the DOI (title, authors, year, venue); full text not reachable",
+				"excerpt": "Assessing dimensions of perceived visual aesthetics of web sites. Lavie, Tractinsky. International Journal of Human-Computer Studies, 2004."
+			}
+		},
+		{
+			"id": "E03",
+			"authors": "Reinecke, Gajos",
+			"year": 2014,
+			"title": "Quantifying visual preferences around the world",
+			"venue": "Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI '14), pp. 11-20",
+			"kind": "peer-reviewed",
+			"url": "https://doi.org/10.1145/2556288.2557052",
+			"topic": "Visual preferences across groups",
+			"supports": "About 2.4 million ratings of the visual appeal of websites from nearly 40 thousand participants: the level of colorfulness and visual complexity at which appeal is highest varies between groups.",
+			"doesNotSupport": "Predicting one person's taste from a group label. Group differences in ratings of website screenshots do not justify stereotypes or per-style audience claims.",
+			"strength": "supported",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Abstract from the OpenAlex record of the DOI",
+				"excerpt": "we collected 2.4 million ratings of the visual appeal of websites from nearly 40 thousand participants of diverse backgrounds. [...] the level of colorfulness and visual complexity at which visual appeal is highest strongly varies"
+			}
+		},
+		{
+			"id": "E04",
+			"authors": "Hassenzahl",
+			"year": 2004,
+			"title": "The Interplay of Beauty, Goodness, and Usability in Interactive Products",
+			"venue": "Human-Computer Interaction, 19(4)",
+			"kind": "peer-reviewed",
+			"url": "https://doi.org/10.1207/s15327051hci1904_2",
+			"topic": "Pragmatic and hedonic qualities",
+			"supports": "Two studies with four MP3-player skins: goodness depended on perceived usability and hedonic attributes, while beauty largely depended on identification, a hedonic attribute. Beauty and goodness were related but not the same.",
+			"doesNotSupport": "Results for other products, tasks or populations. The products were four skins of one kind of player.",
+			"strength": "supported",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Abstract from the OpenAlex record of the DOI",
+				"excerpt": "Two studies considered the interplay between user-perceived usability (i.e., pragmatic attributes), hedonic attributes (e.g., stimulation, identification), goodness (i.e., satisfaction), and beauty of 4 different MP3-player skins."
+			}
+		},
+		{
+			"id": "E05",
+			"authors": "Lindgaard, Fernandes, Dudek, Brown",
+			"year": 2006,
+			"title": "Attention web designers: You have 50 milliseconds to make a good first impression!",
+			"venue": "Behaviour & Information Technology",
+			"kind": "peer-reviewed",
+			"url": "https://doi.org/10.1080/01449290500330448",
+			"topic": "Speed of visual-appeal judgments",
+			"supports": "In three studies, ratings of the visual appeal of web homepages were highly correlated between exposures of 50 ms and 500 ms.",
+			"doesNotSupport": "That people decide whether to stay, trust or buy in 50 ms. The measure is a rating of visual appeal for a set of homepages in a lab, not behavior on a live site.",
+			"strength": "supported",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Abstract from the OpenAlex record of the DOI",
+				"excerpt": "visual appeal ratings were highly correlated from one phase to the next as were the correlations between the 50 ms and 500 ms conditions."
+			}
+		},
+		{
+			"id": "E06",
+			"authors": "Wagemans, Elder, Kubovy, Palmer, Peterson, Singh, von der Heydt",
+			"year": 2012,
+			"title": "A century of Gestalt psychology in visual perception: I. Perceptual grouping and figure-ground organization",
+			"venue": "Psychological Bulletin, 138(6)",
+			"kind": "review",
+			"url": "https://doi.org/10.1037/a0029333",
+			"topic": "Perceptual grouping and figure-ground",
+			"supports": "A review of the grouping principles (proximity, similarity, common fate and others) and of figure-ground organization in contemporary perception research.",
+			"doesNotSupport": "Any claim about interface styles. It is a review of perception, not of screens, and says nothing about preference.",
+			"strength": "established",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Abstract from the OpenAlex record of the DOI",
+				"excerpt": "we review the principles of grouping, both classical (e.g., proximity, similarity, common fate, good con[tinuation]) [...] and figure-ground organization."
+			}
+		},
+		{
+			"id": "E07",
+			"authors": "W3C Web Accessibility Initiative",
+			"year": 2023,
+			"title": "WCAG 2.2: How to Meet WCAG (Quick Reference)",
+			"venue": "W3C Recommendation",
+			"kind": "standard",
+			"url": "https://www.w3.org/WAI/WCAG22/quickref/",
+			"topic": "Accessibility requirements",
+			"supports": "What conformant content must do: contrast, keyboard operation, focus, target size, reflow, text spacing and more, each as a testable success criterion.",
+			"doesNotSupport": "What users prefer or what performs better. A standard says what is required, not what is popular.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page title and content of the W3C quick reference",
+				"excerpt": "How to Meet WCAG (Quickref Reference)"
+			}
+		},
+		{
+			"id": "E08",
+			"authors": "W3C Web Accessibility Initiative",
+			"year": 2021,
+			"title": "WCAG 2 supplemental guidance",
+			"venue": "W3C WAI",
+			"kind": "guideline",
+			"url": "https://www.w3.org/WAI/WCAG2/supplemental/",
+			"topic": "Cognitive accessibility guidance",
+			"supports": "W3C WAI lists supplemental guidance for improving accessibility beyond what WCAG 2 requires, including a cognitive accessibility guidance set.",
+			"doesNotSupport": "Normative requirements: supplemental guidance is advisory, not required for conformance. This page is an index; a specific recommendation needs the linked document.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "This pages lists supplemental guidance for improving accessibility beyond what is required by Web Content Accessibility Guidelines WCAG 2. Cognitive Accessibility Guidance"
+			}
+		},
+		{
+			"id": "E09",
+			"authors": "W3C Web Accessibility Initiative",
+			"year": 2023,
+			"title": "Understanding Success Criterion 2.3.3: Animation from Interactions",
+			"venue": "W3C WAI, WCAG 2.2 Understanding (Level AAA)",
+			"kind": "standard",
+			"url": "https://www.w3.org/WAI/WCAG22/Understanding/animation-from-interactions",
+			"topic": "Motion and vestibular disorders",
+			"supports": "Non-essential motion triggered by interaction, such as parallax scrolling, can trigger vestibular disorders (dizziness, nausea, headaches); content should let users turn it off. The criterion is Level AAA.",
+			"doesNotSupport": "A prevalence figure, or that all animation is harmful. Essential motion is excepted, and the criterion is above the AA level most programs target.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text of the W3C Understanding document",
+				"excerpt": "Support user preferences for motion, and eliminate unnecessary motion effects. [...] it can trigger vestibular disorders. Vestibular (inner ear) disorder reactions include dizziness, nausea and headaches."
+			}
+		},
+		{
+			"id": "E10",
+			"authors": "Elliot, Maier",
+			"year": 2014,
+			"title": "Color Psychology: Effects of Perceiving Color on Psychological Functioning in Humans",
+			"venue": "Annual Review of Psychology, 65",
+			"kind": "review",
+			"url": "https://doi.org/10.1146/annurev-psych-010213-115035",
+			"topic": "Color and psychological functioning",
+			"supports": "A review that sets the history and methodological problems of earlier color research and covers newer work on color in achievement and affiliation contexts, consumer behavior and food.",
+			"doesNotSupport": "A fixed color-to-emotion mapping. The review stresses methodological limits; do not read it as 'blue means trust'.",
+			"strength": "established",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Abstract from the OpenAlex record of the DOI",
+				"excerpt": "we review theoretical and empirical work that looks beyond color aesthetics to the link between color and psychological functioning in humans. We begin by setting a historical context for research in this area, particularly highlighting methodological issues that hampered earlier empirical work."
+			}
+		},
+		{
+			"id": "E11",
+			"authors": "Google Design",
+			"year": 2025,
+			"title": "Expressive Design: Google's UX Research",
+			"venue": "design.google",
+			"kind": "vendor-research",
+			"url": "https://design.google/library/expressive-material-design-google-research",
+			"topic": "Material 3 Expressive",
+			"supports": "The vendor reports 46 research studies and more than 18,000 participants behind Material 3 Expressive.",
+			"doesNotSupport": "Independent replication. The studies are the vendor's, the data are not published on this page, and the result concerns their own design system.",
+			"strength": "preliminary",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Through 46 separate research studies with hundreds of designs, and more than 18,000 participants from around the world"
+			}
+		},
+		{
+			"id": "E12",
+			"authors": "Apple",
+			"year": 2025,
+			"title": "Materials, Human Interface Guidelines",
+			"venue": "Apple Developer Documentation",
+			"kind": "guideline",
+			"url": "https://developer.apple.com/design/human-interface-guidelines/materials",
+			"topic": "Liquid Glass and materials",
+			"supports": "Platform guidance: Liquid Glass forms a distinct functional layer for controls and navigation that floats above the content layer, establishing a clear visual hierarchy between functional elements and content.",
+			"doesNotSupport": "Evidence of better outcomes for users. It is the platform owner's design guidance, not a study.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page content from Apple's documentation data endpoint for this page",
+				"excerpt": "Liquid Glass forms a distinct functional layer for controls and navigation elements, like tab bars and sidebars, that floats above the content layer, establishing a clear visual hierarchy between functional elements and content."
+			}
+		},
+		{
+			"id": "E13",
+			"authors": "Apple",
+			"year": 2025,
+			"title": "Spatial layout, Human Interface Guidelines",
+			"venue": "Apple Developer Documentation",
+			"kind": "guideline",
+			"url": "https://developer.apple.com/design/human-interface-guidelines/spatial-layout/",
+			"topic": "Layout for spatial computing",
+			"supports": "Platform guidance for Apple Vision Pro: field of view is the space a person can see without moving their head, and depth is conveyed with cues such as distance, occlusion and shadow.",
+			"doesNotSupport": "Layout for flat screens, or evidence of outcomes. It is device-specific platform guidance.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page content from Apple's documentation data endpoint for this page",
+				"excerpt": "A person's field of view is the space they can see without moving their head. [...] People rely on visual cues like distance, occlusion, and shadow to perceive depth"
+			}
+		},
+		{
+			"id": "E14",
+			"authors": "Baymard Institute",
+			"year": 2025,
+			"title": "Product List UX 2025: 8 Common Pitfalls & Best Practices",
+			"venue": "Baymard Institute research article (updated Sep 9, 2025)",
+			"kind": "applied-research",
+			"url": "https://baymard.com/research-articles/current-state-product-list-and-filtering",
+			"topic": "Product lists and filters in e-commerce",
+			"supports": "From Baymard's own benchmark and usability testing of e-commerce sites: two-thirds of the sites they scored perform 'mediocre' or worse on product-list usability, and some test participants overlooked an 'All Filters' button.",
+			"doesNotSupport": "Anything outside e-commerce product lists, or any visual style. The sample is Baymard's chosen sites and the scoring is theirs.",
+			"strength": "preliminary",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "two-thirds of ecommerce sites perform \"mediocre\" or worse when it comes to product list usability."
+			}
+		},
+		{
+			"id": "E15",
+			"authors": "Baymard Institute",
+			"year": 2025,
+			"title": "Checkout UX Best Practices 2025",
+			"venue": "Baymard Institute research article",
+			"kind": "applied-research",
+			"url": "https://baymard.com/research-articles/current-state-of-checkout-ux",
+			"topic": "Checkout flows in e-commerce",
+			"supports": "From Baymard's benchmark and 16 years of checkout usability testing: about 64% of desktop sites score 'mediocre' or worse on checkout UX, and they report checkout design as frequently the sole cause of cart abandonment in their tests.",
+			"doesNotSupport": "Abandonment rates for any particular site, or conclusions outside e-commerce checkout. The scoring and sample are Baymard's.",
+			"strength": "preliminary",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "64% of Desktop sites have a \"mediocre\" or worse Checkout UX performance"
+			}
+		},
+		{
+			"id": "E16",
+			"authors": "Aljabri, Hijazi, Al-Salamin, Khemaja",
+			"year": 2026,
+			"title": "AI-MDD Approaches for Generating Adaptive and Intelligent UIs: A Systematic Literature Review",
+			"venue": "Journal of Advanced Computational Intelligence and Intelligent Informatics, 30",
+			"kind": "peer-reviewed",
+			"url": "https://doi.org/10.20965/jaciii.2026.p1620",
+			"topic": "Adaptive UI generated with AI and model-driven development",
+			"supports": "A bibliometric analysis and systematic review that narrowed 3,335 Scopus records to 51 studies and reports rapid growth of research on AI and model-driven generation of adaptive UIs.",
+			"doesNotSupport": "That adaptive generated UIs perform better for users. It maps the literature; the abstract read here does not report user outcomes.",
+			"strength": "supported",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Abstract from the OpenAlex record of the DOI",
+				"excerpt": "Based on an initial set of 3,335 records retrieved from Scopus, a structured filtering process following PRISMA guidelines resulted in 51 relevant studies for in-depth analysis."
+			}
+		},
+		{
+			"id": "E17",
+			"authors": "Lee",
+			"year": 2025,
+			"title": "Towards a Working Definition of Designing Generative User Interfaces",
+			"venue": "arXiv preprint 2505.15049",
+			"kind": "preprint",
+			"url": "https://arxiv.org/abs/2505.15049",
+			"topic": "Definition of generative UI",
+			"supports": "A multi-method qualitative study (systematic review of 127 publications, 18 expert interviews, 12 case studies) that proposes a working definition of generative UI as an iterative, co-creative process.",
+			"doesNotSupport": "Effectiveness of generative UI. It is a definitional, qualitative study and a preprint.",
+			"strength": "preliminary",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Abstract on arXiv",
+				"excerpt": "a systematic literature review of 127 publications, expert interviews with 18 participants, and analyses of 12 case studies"
+			}
+		},
+		{
+			"id": "E18",
+			"authors": "Luera, Rossi, Siu, Dernoncourt, Yu, Kim, Zhang, Chen, Salehy, Lipka, Basu, Mathur, Zhao",
+			"year": 2025,
+			"title": "Survey on User Interface Design and Interactions for Generative AI Applications",
+			"venue": "Foundations and Trends in Human-Computer Interaction",
+			"kind": "peer-reviewed",
+			"url": "https://doi.org/10.1561/1100000106",
+			"topic": "Interaction patterns for generative AI",
+			"supports": "Bibliographic identity only: a peer-reviewed survey monograph on UI design and interactions for generative AI applications.",
+			"doesNotSupport": "Any specific finding. Only the title, authors and venue were read; no claim may rest on it until its text is read.",
+			"strength": "supported",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "identity-only",
+				"how": "Crossref record (title, authors, year, venue) and the Adobe Research listing; abstract not retrievable",
+				"excerpt": "Survey on User Interface Design and Interactions for Generative AI Applications. Foundations and Trends in Human-Computer Interaction, 2025."
+			}
+		},
+		{
+			"id": "E19",
+			"authors": "Nielsen Norman Group",
+			"year": 2026,
+			"title": "The Aesthetic-Usability Effect",
+			"venue": "NN/g article (revised 2026)",
+			"kind": "applied-research",
+			"url": "https://www.nngroup.com/articles/aesthetic-usability-effect/",
+			"topic": "Appeal and perceived usability",
+			"supports": "Users are more tolerant of minor usability issues in an interface they find visually appealing, and this can mask problems during usability testing; illustrated with a single test participant on one e-commerce site.",
+			"doesNotSupport": "An effect size, or that appeal improves task performance. The article's example is one participant; it is a practitioner synthesis, not a controlled study.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Users are more tolerant of minor usability issues when they find an interface visually appealing, and this effect can mask UI problems during usability testing."
+			}
+		},
+		{
+			"id": "E20",
+			"authors": "Google Research",
+			"year": 2026,
+			"title": "Self-Evolving Systems: Moving Beyond Deterministic Interfaces to Adaptive Generative Interfaces",
+			"venue": "Google Research publication",
+			"kind": "vendor-research",
+			"url": "https://research.google/pubs/self-evolving-systems-moving-beyond-deterministic-interfaces-to-adaptive-generative-interfaces/",
+			"topic": "Adaptive generative interfaces",
+			"supports": "Introduces the concept of adaptive generative interfaces that expand their own feature sets at runtime through directed synthesis, inferred synthesis and real-time adaptation.",
+			"doesNotSupport": "That such interfaces are usable or safe. The page presents a concept, not user outcomes.",
+			"strength": "preliminary",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Abstract on the publication page",
+				"excerpt": "We introduce the concept of Adaptive generative interfaces that move beyond static artifacts to autonomously expand their own feature sets at runtime."
+			}
+		},
+		{
+			"id": "E21",
+			"authors": "Romero, Wiese, Balancieiri and others",
+			"year": 2026,
+			"title": "Usable but Conventional: An Empirical Study on the UX of AI-Generated Interface Prototypes",
+			"venue": "arXiv preprint 2605.15124",
+			"kind": "preprint",
+			"url": "https://arxiv.org/abs/2605.15124",
+			"topic": "UX of AI-generated prototypes",
+			"supports": "A survey of 92 participants who rated AI-generated and human-created prototypes without knowing authorship, measured with the UEQ-S: positive on pragmatic aspects, neutral or negative on hedonic aspects such as originality.",
+			"doesNotSupport": "A general verdict on AI-generated interfaces: one survey, particular prototypes and tools, and a preprint.",
+			"strength": "preliminary",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Abstract on arXiv",
+				"excerpt": "An empirical survey with 92 participants evaluated AI-generated and human-created prototypes without prior identification of authorship. [...] positive evaluations in pragmatic aspects [...] and neutral or negative evaluations in hedonic aspects, including originality and innovation."
+			}
+		},
+		{
+			"id": "E22",
+			"authors": "Chen, Zhang, Zhang and others",
+			"year": 2025,
+			"title": "Generative Interfaces for Language Models",
+			"venue": "arXiv preprint 2508.19227",
+			"kind": "preprint",
+			"url": "https://arxiv.org/abs/2508.19227",
+			"topic": "LLM-generated user interfaces",
+			"supports": "Proposes a paradigm in which language models respond to queries by generating task-specific user interfaces, with a framework of structured interface representations and iterative refinement, and reports an evaluation.",
+			"doesNotSupport": "That generated interfaces beat conversation in general. The abstract read here is a proposal and a preprint; its evaluation was not examined.",
+			"strength": "preliminary",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Abstract on arXiv",
+				"excerpt": "we propose Generative Interfaces for Language Models, a paradigm in which LLMs respond to user queries by proactively generating user interfaces (UIs) that enable more adaptive and interactive engagement."
+			}
+		},
+		{
+			"id": "N01",
+			"authors": "Fessenden",
+			"year": 2018,
+			"title": "Scrolling and Attention",
+			"venue": "Nielsen Norman Group, April 15, 2018",
+			"kind": "applied-research",
+			"url": "https://www.nngroup.com/articles/scrolling-and-attention/",
+			"topic": "Attention above and below the fold",
+			"supports": "In NN/g's eyetracking study, users spent about 57% of page-viewing time above the fold and 74% in the first two screenfuls; the second screenful got about 17%.",
+			"doesNotSupport": "A universal split. The figures are from one study on its own pages, sample and devices; the article itself notes the analysis disregards page length.",
+			"strength": "preliminary",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "In our most recent study, users spent about 57% of their page-viewing time above the fold. 74% of the viewing time was spent in the first two screenfuls"
+			}
+		},
+		{
+			"id": "N02",
+			"authors": "Flaherty",
+			"year": 2016,
+			"title": "The Illusion of Completeness: What It Is and How to Avoid It",
+			"venue": "Nielsen Norman Group, January 17, 2016",
+			"kind": "applied-research",
+			"url": "https://www.nngroup.com/articles/illusion-of-completeness/",
+			"topic": "False floor and scroll discovery",
+			"supports": "Users can think they see the entire page although more content exists off-screen. In one NN/g usability study, six out of eight users did not realize they could scroll a particular page.",
+			"doesNotSupport": "A rate for any other site. It is one qualitative study of eight users on one page.",
+			"strength": "preliminary",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Six out of eight users did not realize they could scroll down this page."
+			}
+		},
+		{
+			"id": "N03",
+			"authors": "Paul",
+			"year": 2023,
+			"title": "Scroll Fading 101",
+			"venue": "Nielsen Norman Group, December 8, 2023",
+			"kind": "applied-research",
+			"url": "https://www.nngroup.com/articles/scroll-fading-101/",
+			"topic": "Elements that appear on scroll",
+			"supports": "Whether scroll fading helps or distracts depends on its persistence, responsiveness and how sparingly it is applied.",
+			"doesNotSupport": "A ban on the pattern. NN/g reports it can also improve perception and loading when used well.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page summary",
+				"excerpt": "Whether scroll fading is more distracting than usable depends on the following factors: its persistence, responsiveness, and how sparingly it is applied to elements on the page."
+			}
+		},
+		{
+			"id": "N04",
+			"authors": "Nielsen",
+			"year": 2006,
+			"title": "Progressive Disclosure",
+			"venue": "Nielsen Norman Group, December 3, 2006",
+			"kind": "applied-research",
+			"url": "https://www.nngroup.com/articles/progressive-disclosure/",
+			"topic": "Deferring advanced features",
+			"supports": "Progressive disclosure defers advanced or rarely used features to a secondary screen, which Nielsen argues makes applications easier to learn and less error-prone.",
+			"doesNotSupport": "That hiding things always helps. It is a practitioner article from 2006; it does not license hiding prices, limits or frequent actions.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page summary",
+				"excerpt": "Progressive disclosure defers advanced or rarely used features to a secondary screen, making applications easier to learn and less error-prone."
+			}
+		},
+		{
+			"id": "N05",
+			"authors": "Paul",
+			"year": 2023,
+			"title": "Scrolljacking 101",
+			"venue": "Nielsen Norman Group, August 6, 2023",
+			"kind": "applied-research",
+			"url": "https://www.nngroup.com/articles/scrolljacking-101/",
+			"topic": "Altered scroll behavior",
+			"supports": "NN/g reports that altering the normal pace or direction of scrolling can contradict user expectations, control and freedom, and generate disorientation.",
+			"doesNotSupport": "A measured rate of disorientation. It is a practitioner analysis with examples.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Altering the normal pace or direction of scrolling can contradict user expectations, control, and freedom."
+			}
+		},
+		{
+			"id": "N06",
+			"authors": "Nielsen Norman Group",
+			"year": 2023,
+			"title": "The Negative Impact of Mobile-First Web Design on Desktop (content dispersion)",
+			"venue": "Nielsen Norman Group, October 13, 2023",
+			"kind": "applied-research",
+			"url": "https://www.nngroup.com/articles/content-dispersion/",
+			"topic": "Content dispersion on desktop",
+			"supports": "NN/g reports that mobile-first designs viewed on desktop can disperse content across long pages with expansive white space and enlarged images and fonts, making it harder to consume and understand.",
+			"doesNotSupport": "That white space is bad in general. The article also lists positive effects of dispersed content; the finding is about mobile-first layouts on desktop.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page summary",
+				"excerpt": "Content becomes overly dispersed across long scrolling pages with expansive white space and enlarged images and fonts, making it difficult for users to consume and understand the information."
+			}
+		},
+		{
+			"id": "N07",
+			"authors": "Budiu",
+			"year": 2015,
+			"title": "Progress in Mobile User Experience",
+			"venue": "Nielsen Norman Group, March 22, 2015",
+			"kind": "applied-research",
+			"url": "https://www.nngroup.com/articles/mobile-usability-update/",
+			"topic": "State of mobile usability in 2015",
+			"supports": "NN/g's 2015 research reported an improvement in mobile UX as responsive design led sites to prioritize content over UI elements.",
+			"doesNotSupport": "Current mobile problems. The article is from 2015 and reports improvement; it does not document the problems of orientation or page length on its own.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page summary",
+				"excerpt": "Our newest research on mobile usability shows an improvement in mobile UX."
+			}
+		},
+		{
+			"id": "W01",
+			"authors": "W3C WAI",
+			"year": 2023,
+			"title": "Understanding SC 1.4.10: Reflow",
+			"venue": "W3C WAI, WCAG 2.2 Understanding (Level AA)",
+			"kind": "standard",
+			"url": "https://www.w3.org/WAI/WCAG22/Understanding/reflow.html",
+			"topic": "Reflow at 320 CSS pixels",
+			"supports": "Content must be presentable without loss of information or functionality and without scrolling in two dimensions for vertical-scrolling content at a width equivalent to 320 CSS pixels, with exceptions for content that needs two-dimensional layout.",
+			"doesNotSupport": "A list of device models or breakpoints. The criterion is a width equivalent, not a phone.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "without requiring scrolling in two dimensions for: Vertical scrolling content at a width equivalent to 320 CSS pixels"
+			}
+		},
+		{
+			"id": "W02",
+			"authors": "W3C WAI",
+			"year": 2023,
+			"title": "Understanding SC 1.4.4: Resize Text",
+			"venue": "W3C WAI, WCAG 2.2 Understanding (Level AA)",
+			"kind": "standard",
+			"url": "https://www.w3.org/WAI/WCAG22/Understanding/resize-text.html",
+			"topic": "Text resized to 200 percent",
+			"supports": "Text can be resized without assistive technology up to 200 percent without loss of content or functionality.",
+			"doesNotSupport": "Behavior of page zoom versus text-only zoom in a given browser; check the criterion text for what counts.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "text can be resized without assistive technology up to 200 percent without loss of content or functionality."
+			}
+		},
+		{
+			"id": "W03",
+			"authors": "W3C WAI",
+			"year": 2023,
+			"title": "Understanding SC 1.4.12: Text Spacing",
+			"venue": "W3C WAI, WCAG 2.2 Understanding (Level AA)",
+			"kind": "standard",
+			"url": "https://www.w3.org/WAI/WCAG22/Understanding/text-spacing.html",
+			"topic": "Text spacing overrides",
+			"supports": "No loss of content or functionality occurs when a user sets line height to at least 1.5 times the font size, spacing after paragraphs to 2 times, letter spacing to 0.12 times and word spacing to 0.16 times, changing no other style property.",
+			"doesNotSupport": "A requirement that the page itself uses those values; it must tolerate them when the user applies them. Languages and scripts that do not use a property are excepted.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Line height (line spacing) to at least 1.5 times the font size; Spacing following paragraphs to at least 2 times the font size; Letter spacing (tracking) to at least 0.12 times the font size; Word spacing to at least 0.16 times the font size."
+			}
+		},
+		{
+			"id": "W04",
+			"authors": "W3C WAI",
+			"year": 2023,
+			"title": "Understanding SC 1.4.11: Non-text Contrast",
+			"venue": "W3C WAI, WCAG 2.2 Understanding (Level AA)",
+			"kind": "standard",
+			"url": "https://www.w3.org/WAI/WCAG22/Understanding/non-text-contrast.html",
+			"topic": "Contrast of controls and graphics",
+			"supports": "Meaningful visual cues must achieve 3:1 against the background. The document notes authors do not control font smoothing and anti-aliasing, so evaluation uses the colors obtained from the user agent or the markup.",
+			"doesNotSupport": "That thin lines are always inadequate. The document does not set a minimum line width.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Ensure meaningful visual cues achieve 3:1 against the background."
+			}
+		},
+		{
+			"id": "W05",
+			"authors": "W3C WAI",
+			"year": 2023,
+			"title": "Understanding SC 2.4.11: Focus Not Obscured (Minimum)",
+			"venue": "W3C WAI, WCAG 2.2 Understanding (Level AA)",
+			"kind": "standard",
+			"url": "https://www.w3.org/WAI/WCAG22/Understanding/focus-not-obscured-minimum",
+			"topic": "Focused elements hidden by sticky content",
+			"supports": "When a user interface component receives keyboard focus, it is not entirely hidden due to author-created content.",
+			"doesNotSupport": "That partly hidden focus is fine: the minimum level only forbids it being entirely hidden.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "the component is not entirely hidden due to author-created content."
+			}
+		},
+		{
+			"id": "W06",
+			"authors": "W3C WAI",
+			"year": 2023,
+			"title": "Understanding SC 2.5.8: Target Size (Minimum)",
+			"venue": "W3C WAI, WCAG 2.2 Understanding (Level AA)",
+			"kind": "standard",
+			"url": "https://www.w3.org/WAI/WCAG22/Understanding/target-size-minimum",
+			"topic": "Pointer target size",
+			"supports": "The target for pointer inputs is at least 24 by 24 CSS pixels, except where spacing, equivalence, inline, user-agent or essential exceptions apply.",
+			"doesNotSupport": "That 44 px is required. 44 px is a larger recommendation, not this criterion.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "The size of the target for pointer inputs is at least 24 by 24 CSS pixels, except when:"
+			}
+		},
+		{
+			"id": "W07",
+			"authors": "W3C WAI",
+			"year": 2023,
+			"title": "Understanding SC 1.3.4: Orientation",
+			"venue": "W3C WAI, WCAG 2.2 Understanding (Level AA)",
+			"kind": "standard",
+			"url": "https://www.w3.org/WAI/WCAG22/Understanding/orientation.html",
+			"topic": "Not locking portrait or landscape",
+			"supports": "Content must not restrict its view to a single orientation unless a specific orientation is essential; people may have devices mounted in a fixed orientation.",
+			"doesNotSupport": "A requirement to design every screen for both orientations when one is essential (for example a piano keyboard).",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Don't lock content to either portrait or landscape presentation."
+			}
+		},
+		{
+			"id": "W08",
+			"authors": "W3C WAI-ARIA",
+			"year": 2024,
+			"title": "Dialog (Modal) Pattern, ARIA Authoring Practices Guide",
+			"venue": "W3C WAI-ARIA APG",
+			"kind": "guideline",
+			"url": "https://www.w3.org/WAI/ARIA/apg/patterns/dialog-modal/",
+			"topic": "Keyboard and focus in modal dialogs",
+			"supports": "In a modal dialog focus moves into the dialog on open, Tab and Shift+Tab stay inside, and Escape closes it.",
+			"doesNotSupport": "A requirement: the APG documents recommended patterns, not conformance criteria.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Escape: Closes the dialog. [...] Tab and Shift + Tab do not move focus outside the dialog."
+			}
+		},
+		{
+			"id": "M01",
+			"authors": "MDN contributors",
+			"year": 2026,
+			"title": "CSS values and units: length (viewport units)",
+			"venue": "MDN Web Docs",
+			"kind": "guideline",
+			"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/length",
+			"topic": "svh, lvh and dvh",
+			"supports": "The viewport-percentage units for small, large and dynamic viewport sizes are svh, lvh and dvh; vh is equivalent to lvh. Using the large size can obscure content while the browser interface is expanded.",
+			"doesNotSupport": "Support or rendering in a given browser version; check compatibility data before relying on it.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "The viewport-percentage units for small, large, and dynamic viewport sizes are svh, lvh, and dvh. vh is equivalent to lvh"
+			}
+		},
+		{
+			"id": "M02",
+			"authors": "MDN contributors",
+			"year": 2026,
+			"title": "VisualViewport API",
+			"venue": "MDN Web Docs",
+			"kind": "guideline",
+			"url": "https://developer.mozilla.org/en-US/docs/Web/API/VisualViewport",
+			"topic": "Visual viewport versus layout viewport",
+			"supports": "The VisualViewport interface represents the visual viewport of a window and exposes its offset from the layout viewport, among other properties.",
+			"doesNotSupport": "That scripts should replace CSS. The page describes the API, not when to use it.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "The VisualViewport interface of the CSSOM view API represents the visual viewport for a given window."
+			}
+		},
+		{
+			"id": "M03",
+			"authors": "MDN contributors",
+			"year": 2026,
+			"title": "env() CSS function",
+			"venue": "MDN Web Docs",
+			"kind": "guideline",
+			"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Values/env",
+			"topic": "Safe-area insets and viewport segments",
+			"supports": "env() reads user-agent environment variables including safe-area-inset-* and viewport-segment-* with an optional fallback.",
+			"doesNotSupport": "Non-zero insets by default: insets are only non-zero when the page opts into edge-to-edge drawing (viewport-fit=cover).",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "env(safe-area-inset-top); [...] env(viewport-segment-right 0 0); /* With a fallback value */ env(safe-area-inset-right, 1em);"
+			}
+		},
+		{
+			"id": "M04",
+			"authors": "MDN contributors",
+			"year": 2026,
+			"title": "CSS container queries",
+			"venue": "MDN Web Docs",
+			"kind": "guideline",
+			"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Guides/Containment/Container_queries",
+			"topic": "Components that respond to their container",
+			"supports": "Container queries apply styles to an element based on attributes of its container (its name, its size, its styles or scroll-state), and are an alternative to media queries, which key on viewport size or other device characteristics.",
+			"doesNotSupport": "Which container sizes to choose, or browser support for the non-size query types; those are design and compatibility decisions.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Container queries enable you to apply styles to an element based on certain attributes of its container: The container-name. The container's size. [...] Container queries are an alternative to media queries, which apply styles to elements based on viewport size or other device characteristics."
+			}
+		},
+		{
+			"id": "M05",
+			"authors": "MDN contributors",
+			"year": 2026,
+			"title": "VirtualKeyboard API",
+			"venue": "MDN Web Docs",
+			"kind": "guideline",
+			"url": "https://developer.mozilla.org/en-US/docs/Web/API/VirtualKeyboard_API",
+			"topic": "Controlling the on-screen keyboard from script",
+			"supports": "The API is marked limited availability (not Baseline). Setting navigator.virtualKeyboard.overlaysContent to true stops the browser resizing the viewport for the keyboard so it overlays content.",
+			"doesNotSupport": "Cross-browser availability. MDN marks it as not working in some of the most widely used browsers.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Limited availability. This feature is not Baseline because it does not work in some of the most widely-used browsers."
+			}
+		},
+		{
+			"id": "M06",
+			"authors": "MDN contributors",
+			"year": 2026,
+			"title": "prefers-reduced-motion",
+			"venue": "MDN Web Docs",
+			"kind": "guideline",
+			"url": "https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/At-rules/@media/prefers-reduced-motion",
+			"topic": "Detecting a reduced-motion preference",
+			"supports": "The media feature detects whether a user enabled a device setting to minimize non-essential motion.",
+			"doesNotSupport": "What counts as essential motion; that is a design decision.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "The prefers-reduced-motion CSS media feature is used to detect if a user has enabled a setting on their device to minimize the amount of non-essential motion."
+			}
+		},
+		{
+			"id": "D01",
+			"authors": "Google web.dev",
+			"year": 2025,
+			"title": "How the Core Web Vitals metric thresholds were defined",
+			"venue": "web.dev",
+			"kind": "guideline",
+			"url": "https://web.dev/articles/defining-core-web-vitals-thresholds",
+			"topic": "Core Web Vitals thresholds",
+			"supports": "Good thresholds at the 75th percentile: Largest Contentful Paint at most 2500 ms, Interaction to Next Paint at most 200 ms, Cumulative Layout Shift at most 0.1.",
+			"doesNotSupport": "That meeting them improves conversion or satisfaction for your product.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Largest Contentful Paint ≤2500 ms >4000 ms 75 Interaction to Next Paint ≤200 ms >500 ms 75 Cumulative Layout Shift ≤0.1 >0.25 75"
+			}
+		},
+		{
+			"id": "D02",
+			"authors": "Google web.dev",
+			"year": 2025,
+			"title": "Typography, Learn Design",
+			"venue": "web.dev",
+			"kind": "guideline",
+			"url": "https://web.dev/learn/design/typography",
+			"topic": "Responsive type",
+			"supports": "Tying font size to viewport width (the vw unit) makes text grow and shrink with the browser width but makes the size hard to predict at a given width.",
+			"doesNotSupport": "A specific clamp() recipe; the page explains the trade-off.",
+			"strength": "practice",
+			"verified": {
+				"date": "2026-10-25",
+				"level": "claim-read",
+				"how": "Page text",
+				"excerpt": "Connecting font sizes to the viewport's width means that the text will grow and shrink in proportion to the browser width. This makes it difficult to predict what the text size will be at any specific width"
+			}
+		}
+	]
+}

@@ -54,3 +54,40 @@
 /* Build-time shiki output (dual themes): pick the palette from the context's color-scheme. */
 .shiki span { color: light-dark(var(--shiki-light), var(--shiki-dark)); }
 .shiki { background: transparent !important; padding: var(--ca-space-4); overflow-x: auto; font-family: var(--ca-font-mono); font-size: var(--ca-font-size-body2); }
+
+/* ── Evidence blocks (Claim, Refs, Limits) ────────────────────────────── */
+.claim {
+	margin: var(--ca-space-5) 0;
+	padding: var(--ca-space-3) var(--ca-space-4);
+	border-inline-start: var(--ca-space-1) solid var(--ca-outline-strong);
+	background: var(--ca-surface-sunken);
+	border-radius: var(--ca-radius-sm);
+}
+.claim[data-strength="heuristic"] { border-inline-start-style: dashed; }
+.claim__label { margin: 0 0 var(--ca-space-2); font-size: var(--ca-font-size-body2); color: var(--ca-text-secondary); }
+.claim__badge {
+	display: inline-block;
+	margin-inline-end: var(--ca-space-2);
+	padding: 0 var(--ca-space-2);
+	border: var(--ca-border-width) solid var(--ca-outline-strong);
+	border-radius: var(--ca-radius-sm);
+	font-size: var(--ca-font-size-caption);
+	font-weight: 600;
+	color: var(--ca-text-primary);
+}
+.claim__body > :first-child { margin-top: 0; }
+.claim__body > :last-child { margin-bottom: 0; }
+.claim__scope { margin: var(--ca-space-2) 0 0; font-size: var(--ca-font-size-body2); color: var(--ca-text-secondary); }
+.refs__list { padding-inline-start: 0; list-style: none; display: grid; gap: var(--ca-space-4); }
+.refs__item { padding-bottom: var(--ca-space-4); border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle); }
+.refs__item p { margin: 0 0 var(--ca-space-1); }
+.refs__line { font-size: var(--ca-font-size-body2); color: var(--ca-text-body); }
+.refs__verified { color: var(--ca-text-secondary); font-size: var(--ca-font-size-caption); }
+.limits {
+	margin: var(--ca-space-8) 0;
+	padding: var(--ca-space-4) var(--ca-space-5);
+	border: var(--ca-border-width) solid var(--ca-outline-strong);
+	border-radius: var(--ca-radius-md);
+}
+.limits > h2 { margin-top: 0; }
+.limits__reviewed { margin: var(--ca-space-3) 0 0; font-size: var(--ca-font-size-caption); color: var(--ca-text-secondary); }

@@ -1,0 +1,37 @@
+---
+title: Concepts
+description: "Why interfaces are built the way they are: each concept follows one template, labels every claim about users with its source and strength, and links to the components that implement it."
+group: Concepts
+order: 0
+---
+import { Callout, CardGrid, LinkCard } from "@codeatlasdev/ui";
+
+The component pages tell you what to call. The concept pages tell you what to build and why, so a person or an AI agent can make the call that no prop table answers: how tall a first screen should be, where an action bar goes when the keyboard is open, when to hide detail.
+
+<CardGrid>
+  <LinkCard title="How we use evidence" href="/docs/concepts/evidence/">The five strength labels, the nine rules and how to validate before you commit. Read this first.</LinkCard>
+</CardGrid>
+
+## How a concept page is built
+
+Every concept uses the same nine parts in the same order.
+
+| Part | What it holds |
+|---|---|
+| Definition and vocabulary | The terms, and what each means and does not mean. |
+| Evidence | Claims about users, each with a source, a [strength label](/docs/concepts/evidence/#the-five-strength-labels) and its scope. |
+| The contract | The principles we derive. Kept apart from the evidence so a finding is never confused with a rule of thumb. |
+| How the library implements it | Tokens, components and live demos. |
+| Anti-patterns | What goes wrong, and the alternative. |
+| Checklist | Things you can verify. |
+| Prompt for your AI | A paste-in instruction that carries the contract into a coding agent. |
+| Limits | What we do not know and the date of the last review. |
+| References | Every source cited, with what it supports and what it does not. |
+
+## Writing a concept
+
+Add `site/src/content/docs/concepts/<id>.mdx` with `group: Concepts`. Wrap each claim about users in `<Claim strength="…" refs="…" scope="…">`, close with `<Limits reviewed="YYYY-MM-DD">` and `<Refs ids="…">`, and add any new source to `site/src/data/evidence/references.json` only after opening it and recording the wording you relied on. The rules are on [How we use evidence](/docs/concepts/evidence/); `bun test packages/ui/tests/evidence-rules.test.ts` checks them.
+
+<Callout type="note" title="For AI agents">
+  Each page is also plain markdown at `/llms/concepts/<id>.txt`, with its claims, scope, limits and references intact. The `ca-ui-mcp` server returns it with `get_guide`.
+</Callout>
