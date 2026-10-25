@@ -77,10 +77,13 @@ describe("release policy (#382)", () => {
 	it("every pending changeset in .changeset/ passes the policy", () => {
 		const dir = join(ROOT, ".changeset");
 		const ids = new Set(entries.map((e) => e.id));
+		// An empty directory is valid: `bun run release` consumes every changeset, and the release commit
+		// must still pass the pre-push validate (#641).
 		const files = readdirSync(dir).filter((f) => f.endsWith(".md") && f !== "README.md");
-		expect(files.length).toBeGreaterThan(0);
-		for (const f of files)
-			expect(checkChangeset(readFileSync(join(dir, f), "utf8"), ids), f).toBeUndefined();
+		const failures = files
+			.map((f) => [f, checkChangeset(readFileSync(join(dir, f), "utf8"), ids)])
+			.filter(([, problem]) => problem !== undefined);
+		expect(failures).toEqual([]);
 	});
 
 	it("every breaking line of a released major links a migration id", () => {
