@@ -1,0 +1,32 @@
+---
+// The hero of a release with no hand-drawn scene: a stack of sketchbook pages with the version tab, in the same
+// drawing language as every other scene. Nothing in it is specific to a feature, so it never claims one.
+import Hatch from "../Hatch.astro";
+import Scene from "../Scene.astro";
+
+interface Props {
+	decorative?: boolean;
+	version?: string;
+}
+const { version = "", decorative = false } = Astro.props;
+---
+<Scene
+	{decorative}
+	title={version ? `Release ${version}` : "A release"}
+	desc="Three sketchbook pages stacked and slightly fanned, the front one tabbed with the version number and shaded with pencil hatching in the corner."
+>
+	<g transform="rotate(-5 320 190)">
+		<rect x="150" y="62" width="340" height="240" rx="2" class="cs-sunk" />
+	</g>
+	<g transform="rotate(3 320 190)">
+		<rect x="150" y="62" width="340" height="240" rx="2" class="cs-box" />
+	</g>
+	<rect x="150" y="62" width="340" height="240" rx="2" class="cs-box" />
+	<Hatch x={150} y={232} w={150} h={70} />
+	<g>
+		{Array.from({ length: 7 }, (_, i) => <circle cx="168" cy={86 + i * 32} r="3" class="cs-brand" />)}
+	</g>
+	<rect x="380" y="58" width="92" height="26" class="cs-brand" />
+	<text x="426" y="76" class="cs-mono cs-mid cs-onbrand">{version || "release"}</text>
+	<path d="M200 130 H430 M200 160 H400 M200 190 H440 M200 220 H360" class="cs-line" />
+</Scene>

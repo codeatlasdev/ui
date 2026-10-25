@@ -1,0 +1,56 @@
+---
+// The faceted UI index: facets filter a grid of items, and the same result is served as a page, a markdown twin and an MCP search.
+import Arrow from "../Arrow.astro";
+import Scene from "../Scene.astro";
+
+interface Props {
+	version?: string;
+	decorative?: boolean;
+}
+const { decorative = false } = Astro.props;
+---
+<Scene
+	{decorative}
+	height={300}
+	title="UI index: facets filter items into a page, a twin and MCP search"
+	desc="Four facet chips, kind, motion, style and tech, sit on the left, with the counts 346 next to kind and 39 next to motion. A filter arrow leads to a grid of six item cards, two of them highlighted. The result flows on to three outputs: a page, a markdown twin and the MCP search_ui tool."
+>
+	<text x="14" y="30" class="cs-cap">facets</text>
+	<rect x="14" y="40" width="120" height="34" rx="17" class="cs-soft" />
+	<text x="30" y="62" class="cs-mono">kind</text>
+	<text x="120" y="62" class="cs-mono cs-end">346</text>
+	<rect x="14" y="86" width="120" height="34" rx="17" class="cs-paper" />
+	<text x="30" y="108" class="cs-mono">motion</text>
+	<text x="120" y="108" class="cs-mono cs-end">39</text>
+	<rect x="14" y="132" width="120" height="34" rx="17" class="cs-paper" />
+	<text x="30" y="154" class="cs-mono">style</text>
+	<rect x="14" y="178" width="120" height="34" rx="17" class="cs-paper" />
+	<text x="30" y="200" class="cs-mono">tech</text>
+
+	<Arrow x1={140} y1={126} x2={200} y2={126} />
+	<text x="170" y="116" class="cs-mono cs-mid">filter</text>
+
+	<g>
+		<rect x="206" y="52" width="90" height="62" rx="2" class="cs-paper" />
+		<rect x="306" y="52" width="90" height="62" rx="2" class="cs-brand" />
+		<rect x="406" y="52" width="90" height="62" rx="2" class="cs-paper" />
+		<rect x="206" y="126" width="90" height="62" rx="2" class="cs-brand" />
+		<rect x="306" y="126" width="90" height="62" rx="2" class="cs-paper" />
+		<rect x="406" y="126" width="90" height="62" rx="2" class="cs-paper" />
+		<path d="M218 72 H280 M218 88 H260 M318 72 H380 M318 88 H360 M418 72 H480 M418 88 H460" class="cs-line" />
+		<path d="M218 146 H280 M218 162 H260 M318 146 H380 M318 162 H360 M418 146 H480 M418 162 H460" class="cs-line" />
+	</g>
+
+	<Arrow x1={502} y1={120} x2={534} y2={120} />
+	<rect x="536" y="52" width="92" height="38" rx="2" class="cs-box" />
+	<text x="582" y="76" class="cs-mono cs-mid">page</text>
+	<rect x="536" y="102" width="92" height="38" rx="2" class="cs-box" />
+	<text x="582" y="126" class="cs-mono cs-mid">.md twin</text>
+	<rect x="536" y="152" width="92" height="38" rx="2" class="cs-soft" />
+	<text x="582" y="170" class="cs-mono cs-mid">MCP</text>
+	<text x="582" y="184" class="cs-mono cs-mid">search_ui</text>
+
+	<text x="14" y="248" class="cs-cap">Every filter is a shareable URL.</text>
+	<path d="M14 262 H298" class="cs-dash" />
+	<text x="14" y="282" class="cs-mono">same filters, same link</text>
+</Scene>

@@ -26,6 +26,13 @@ export interface Release {
 	url: string;
 }
 
+/** A hand-written post for a release (`/changelog/posts.json`, written at build): the full article HTML. */
+export interface Post {
+	headline: string;
+	lede: string;
+	html: string;
+}
+
 export interface RenderedRelease {
 	version: string;
 	id: string;
@@ -37,6 +44,10 @@ export interface RenderedRelease {
 	html: string;
 	/** Plain text of the Special thanks section ("" when the release has none) */
 	thanks: string;
+	/** Headline of the post, when the release has one. */
+	headline?: string;
+	/** Link to the post page, when the release has one. */
+	post?: string;
 }
 
 export const versionId = (v: string) =>
@@ -213,9 +224,11 @@ export function renderMarkdown(md: string, scope = ""): string {
 	return marked.parse(md, { renderer, gfm: true, async: false }) as string;
 }
 
-export function renderRelease(r: Release): RenderedRelease {
+/** `releases` with each hand-written post carried in place of the generated list: the feed and the JSON hold the full article. */
+export function renderRelease(r: Release, post?: Post, site = SITE): RenderedRelease {
 	const { changes, thanks } = splitThanks(r.body);
 	return {
+		...(post ? { headline: post.headline, post: `${site}/changelog/${r.version}/` } : {}),
 		version: r.version,
 		id: r.id,
 		date: r.date,
@@ -223,7 +236,7 @@ export function renderRelease(r: Release): RenderedRelease {
 		channel: r.channel,
 		url: r.url,
 		npm: `https://www.npmjs.com/package/@codeatlasdev/ui/v/${r.version}`,
-		html: renderMarkdown(changes, r.id),
+		html: post ? post.html : renderMarkdown(changes, r.id),
 		thanks,
 	};
 }
@@ -237,8 +250,8 @@ export function atomFeed(releases: RenderedRelease[], site = SITE): string {
 			return [
 				"<entry>",
 				`<id>tag:ui.codeatlas.com.br,2026:${esc(r.version)}</id>`,
-				`<title>${esc(`@codeatlasdev/ui ${r.version}`)}</title>`,
-				`<link rel="alternate" href="${esc(`${site}/changelog/#${r.id}`)}"/>`,
+				`<title>${esc(r.headline ? `${r.version}: ${r.headline}` : `@codeatlasdev/ui ${r.version}`)}</title>`,
+				`<link rel="alternate" href="${esc(r.post ?? `${site}/changelog/#${r.id}`)}"/>`,
 				`<published>${esc(when)}</published>`,
 				`<updated>${esc(when)}</updated>`,
 				`<category term="${esc(r.channel)}"/>`,

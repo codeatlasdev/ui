@@ -1,0 +1,168 @@
+---
+// The frame every changelog illustration is drawn in: one viewBox, one set of drawing classes, one accessible name.
+// A scene is the <slot /> (SVG elements in a 640x360 box) and uses only the `.cs-*` classes below, so the hero of a
+// release and the diagram of a feature read as one hand. Colors are the active theme's tokens or `currentColor`:
+// the scene re-themes with the visitor's preset and scheme, and has no fixed color of its own.
+import { nextId } from "./ids";
+
+interface Props {
+	/** Accessible name (`<title>`). Short: what the picture shows. */
+	title: string;
+	/** Longer description (`<desc>`): what a person who cannot see it needs to know. */
+	desc: string;
+	/** Natural aspect box. Heroes are wide; section diagrams are shorter. */
+	height?: number;
+	class?: string;
+	/** The same picture sits next to its own text (an index card): hidden from assistive tech, no name, no description. */
+	decorative?: boolean;
+}
+const { title, desc, height = 360, class: className = "", decorative = false } = Astro.props;
+const uid = nextId(Astro.url.pathname, "cs");
+---
+<svg
+	class:list={["cs", className]}
+	viewBox={`0 0 640 ${height}`}
+	role={decorative ? undefined : "img"}
+	aria-labelledby={decorative ? undefined : `${uid}-t ${uid}-d`}
+	aria-hidden={decorative ? "true" : undefined}
+	xmlns="http://www.w3.org/2000/svg"
+	preserveAspectRatio="xMidYMid meet"
+>
+	{!decorative && <title id={`${uid}-t`}>{title}</title>}
+	{!decorative && <desc id={`${uid}-d`}>{desc}</desc>}
+	<slot />
+</svg>
+
+<style is:global>
+	/* ── The sketchbook drawing language ───────────────────────────────────────────────────────────────────
+	 * Line: --ca-outline-strong, round caps. Fill: paper (raised surface) or sunken. Accent: the brand. Hatch: the
+	 * pencil shading the site uses on its pages. Text: the display italic for captions, mono for code. */
+	.cs {
+		display: block;
+		inline-size: 100%;
+		block-size: auto;
+		color: var(--ca-text-primary);
+		overflow: visible;
+	}
+	.cs text {
+		font-family: var(--ca-font-body, inherit);
+		font-size: 13px;
+		fill: var(--ca-text-primary);
+		paint-order: normal;
+	}
+	.cs .cs-cap {
+		font-family: var(--ca-font-display, inherit);
+		font-style: italic;
+		font-size: 13px;
+		fill: var(--ca-text-secondary);
+	}
+	.cs .cs-mono {
+		font-family: var(--ca-font-mono);
+		font-size: 12px;
+	}
+	.cs .cs-num {
+		font-family: var(--ca-font-mono);
+		font-size: 20px;
+		font-weight: 700;
+		fill: var(--ca-text-primary);
+	}
+	.cs .cs-strong {
+		font-weight: 700;
+	}
+	.cs .cs-brandtext {
+		fill: var(--ca-brand-text);
+	}
+	.cs .cs-onbrand {
+		fill: var(--ca-brand-contrast);
+	}
+	.cs .cs-mid {
+		text-anchor: middle;
+	}
+	.cs .cs-end {
+		text-anchor: end;
+	}
+
+	.cs-line,
+	.cs-box,
+	.cs-paper,
+	.cs-sunk,
+	.cs-brand,
+	.cs-soft,
+	.cs-dash,
+	.cs-arrow {
+		stroke: var(--ca-outline-strong);
+		stroke-width: 1.75;
+		stroke-linecap: round;
+		stroke-linejoin: round;
+		fill: none;
+	}
+	.cs-box,
+	.cs-paper {
+		fill: var(--ca-surface-raised);
+	}
+	.cs-sunk {
+		fill: var(--ca-surface-sunken);
+	}
+	.cs-brand {
+		fill: var(--ca-brand-fill);
+		stroke: var(--ca-brand-fill);
+	}
+	.cs-soft {
+		fill: color-mix(in oklab, var(--ca-brand-main) 18%, var(--ca-surface-raised));
+		stroke: var(--ca-brand-main);
+	}
+	.cs-dash {
+		stroke-dasharray: 5 4;
+		stroke: var(--ca-text-secondary);
+	}
+	.cs-hatch-line {
+		stroke: color-mix(in oklab, var(--ca-brand-main) 55%, transparent);
+		stroke-width: 1.5;
+	}
+	.cs-shade {
+		stroke: none;
+		opacity: 0.5;
+	}
+	.cs-good {
+		fill: var(--ca-brand-fill);
+		stroke: none;
+	}
+	.cs-bad {
+		fill: var(--ca-surface-sunken);
+		stroke: var(--ca-outline-strong);
+		stroke-width: 1.75;
+		stroke-dasharray: 5 4;
+	}
+	.cs-bar {
+		stroke: none;
+	}
+	.cs-bar--a {
+		fill: var(--ca-text-secondary);
+	}
+	.cs-bar--b {
+		fill: var(--ca-brand-fill);
+	}
+
+	@media (forced-colors: active) {
+		.cs text,
+		.cs .cs-cap {
+			fill: CanvasText;
+		}
+		.cs-line,
+		.cs-box,
+		.cs-paper,
+		.cs-sunk,
+		.cs-soft,
+		.cs-dash {
+			stroke: CanvasText;
+		}
+		.cs-brand,
+		.cs-good {
+			fill: Highlight;
+			stroke: Highlight;
+		}
+		.cs .cs-onbrand {
+			fill: HighlightText;
+		}
+	}
+</style>

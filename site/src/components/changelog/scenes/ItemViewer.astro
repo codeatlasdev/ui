@@ -1,0 +1,42 @@
+---
+// An index item page: four tabs, the Preview tab open on a stage that resizes to three widths.
+import Hatch from "../Hatch.astro";
+import Scene from "../Scene.astro";
+
+interface Props {
+	version?: string;
+	decorative?: boolean;
+}
+const { decorative = false } = Astro.props;
+---
+<Scene
+	{decorative}
+	height={280}
+	title="Item page with four tabs and a resizable preview stage"
+	desc="An item page shows four tabs, Preview, Code, Prompt and Anatomy, with Preview active. Under it a framed stage has a splitter handle in the middle of its right edge, and three width marks, 390, 768 and 1280, sit below the frame."
+>
+	<rect x="40" y="36" width="560" height="196" rx="2" class="cs-box" />
+	<rect x="40" y="36" width="118" height="30" class="cs-brand" />
+	<text x="99" y="56" class="cs-mono cs-mid cs-onbrand">Preview</text>
+	<rect x="158" y="36" width="118" height="30" class="cs-sunk" />
+	<text x="217" y="56" class="cs-mono cs-mid">Code</text>
+	<rect x="276" y="36" width="118" height="30" class="cs-sunk" />
+	<text x="335" y="56" class="cs-mono cs-mid">Prompt</text>
+	<rect x="394" y="36" width="118" height="30" class="cs-sunk" />
+	<text x="453" y="56" class="cs-mono cs-mid">Anatomy</text>
+
+	<rect x="64" y="82" width="440" height="110" rx="2" class="cs-sunk" />
+	<Hatch x={64} y={152} w={80} h={40} />
+	<rect x="96" y="102" width="200" height="14" rx="2" class="cs-paper" />
+	<rect x="96" y="128" width="140" height="14" rx="2" class="cs-paper" />
+	<rect x="96" y="154" width="90" height="22" rx="11" class="cs-soft" />
+	<rect x="494" y="122" width="20" height="30" rx="5" class="cs-brand" />
+	<path d="M501 130 V144 M507 130 V144" class="cs-line" style="stroke:var(--ca-brand-contrast)" />
+
+	<path d="M64 206 V216 M284 206 V216 M504 206 V216" class="cs-line" />
+	<text x="64" y="228" class="cs-mono cs-mid">390</text>
+	<text x="284" y="228" class="cs-mono cs-mid">768</text>
+	<text x="504" y="228" class="cs-mono cs-mid">1280</text>
+
+	<text x="320" y="264" class="cs-cap cs-mid">Prompt is the text to hand your AI.</text>
+</Scene>

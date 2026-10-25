@@ -1,0 +1,200 @@
+---
+import { render } from "astro:content";
+import { article, breadcrumbList, graph } from "@codeatlasdev/ui/seo";
+import ChangeList from "~/components/changelog/ChangeList.astro";
+import Install from "~/components/changelog/Install.astro";
+import Numbers from "~/components/changelog/Numbers.astro";
+import { SCENES, isScene } from "~/components/changelog/scenes";
+import SiteDocsShell from "~/components/docs/SiteDocsShell.svelte";
+import SiteFooter from "~/components/site/SiteFooter.astro";
+import Base from "~/layouts/Base.astro";
+import { loadChangelog } from "~/lib/changelog/load";
+import { channelOf, llmsPath, releaseUrl, SITE, REPO } from "~/lib/changelog/model";
+import { SECTIONS } from "~/lib/nav";
+
+export async function getStaticPaths() {
+	const { pages, posts } = await loadChangelog();
+	return pages.map((page, i) => ({
+		params: { version: page.version },
+		props: { page, entry: posts.get(page.version), newer: pages[i - 1], older: pages[i + 1] },
+	}));
+}
+
+const { page, entry, newer, older } = Astro.props;
+const Hero = SCENES[isScene(page.hero) ? page.hero : "generic"];
+const rendered = entry ? await render(entry) : undefined;
+const Body = rendered?.Content;
+
+const fmt = (iso: string) =>
+	iso
+		? new Date(`${iso}T00:00:00Z`).toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" })
+		: "";
+const toc = [
+	...(page.highlights.length ? [{ id: "tldr", text: "In short", depth: 2 as const }] : []),
+	...(page.hasPost ? page.highlights.map((h) => ({ id: h.id, text: h.title, depth: 2 as const })) : []),
+	{ id: "upgrade", text: "Upgrade", depth: 2 as const },
+	...(page.behaviour.length ? [{ id: "behaviour", text: "Behaviour changes", depth: 2 as const }] : []),
+	...(page.data ? [{ id: "all-changes", text: "All changes", depth: 2 as const }] : []),
+];
+const url = releaseUrl(page.version);
+const jsonLd = graph(
+	breadcrumbList([
+		{ name: "CodeAtlas UI", href: `${SITE}/` },
+		{ name: "Changelog", href: `${SITE}/changelog/` },
+		{ name: page.version, href: url },
+	]),
+	article({
+		type: "TechArticle",
+		headline: page.headline,
+		description: page.lede,
+		url,
+		datePublished: page.date ? `${page.date}T00:00:00Z` : "2026-01-01T00:00:00Z",
+		author: { name: "CodeAtlas", url: `https://github.com/${REPO}` },
+		inLanguage: "en",
+	})
+);
+const title = page.hasPost ? `${page.version}: ${page.headline}` : `${page.version} release notes`;
+---
+<Base title={title} description={page.lede} skipLink={false} {jsonLd}>
+	<link slot="head" rel="alternate" type="application/atom+xml" title="CodeAtlas UI changelog" href="/changelog/feed.xml" />
+	<link slot="head" rel="alternate" type="text/plain" href={llmsPath(page.version)} title={`Release ${page.version} for agents`} />
+	<SiteDocsShell client:load sections={SECTIONS} active="changelog" pathname={Astro.url.pathname} headings={toc} pager={{ prev: older && { href: `/changelog/${older.version}/`, title: older.version }, next: newer && { href: `/changelog/${newer.version}/`, title: newer.version } }}>
+		<article class="ca-prose doc post" data-version={page.version} data-has-post={page.hasPost ? "" : undefined}>
+			<p class="doc__eyebrow sk-eyebrow"><a href="/changelog/">Changelog</a> · {channelOf(page.version)}</p>
+			<h1>{page.headline}</h1>
+			<p class="post__meta">
+				{page.date && <time datetime={page.date}>{fmt(page.date)}</time>}
+				<span aria-hidden="true">·</span>
+				<code>@codeatlasdev/ui@{page.version}</code>
+				<a href={`https://www.npmjs.com/package/@codeatlasdev/ui/v/${page.version}`} rel="noopener noreferrer">npm</a>
+				<a href={`https://github.com/${REPO}/releases/tag/${encodeURIComponent(`@codeatlasdev/ui@${page.version}`)}`} rel="noopener noreferrer">GitHub release</a>
+				<a href={llmsPath(page.version)}>For agents</a>
+			</p>
+			<p class="doc__lead">{page.lede}</p>
+
+			<div class="post__hero"><Hero version={page.version} /></div>
+
+			<Numbers items={page.headlineNumbers} />
+
+			{page.highlights.length > 0 && (
+				<section aria-labelledby="tldr" class="post__tldr">
+					<h2 id="tldr">In short</h2>
+					<ol class="post__tl">
+						{page.highlights.map((h) => (
+							<li>
+								{page.hasPost ? <a href={`#${h.id}`}><strong>{h.title}.</strong></a> : <strong>{h.title}</strong>} {h.summary}
+							</li>
+						))}
+					</ol>
+				</section>
+			)}
+
+			{Body && <Body />}
+
+			<section aria-labelledby="upgrade" class="post__upgrade">
+				<h2 id="upgrade">Upgrade</h2>
+				<Install version={page.version} />
+				<p>
+					Then run your checks. Moving between majors? <code>bunx @codeatlasdev/ui migrate --from &lt;major&gt; --to &lt;major&gt;</code> lists
+					what to change, and agents get the same data from the MCP tool <code>get_migration</code>. The migration notes per major are in
+					<a href="/docs/getting-started/upgrading/">Upgrading</a>.
+				</p>
+			</section>
+
+			{page.behaviour.length > 0 && (
+				<section aria-labelledby="behaviour" class="post__behaviour">
+					<h2 id="behaviour">Behaviour changes</h2>
+					<p>
+						{page.data && page.data.changesets.major === 0
+							? "This release carries no major changeset: the new APIs are additive. These are the changes you can observe in an app that did nothing, with what to do about each."
+							: "The changes you can observe in an app that did nothing, with what to do about each."}
+					</p>
+					<dl class="post__bh">
+						{page.behaviour.map((b) => (
+							<div class="post__bh-item">
+								<dt>{b.title}</dt>
+								<dd>{b.body}</dd>
+								<dd class="post__bh-fix"><strong>What to do.</strong> {b.fix}</dd>
+							</div>
+						))}
+					</dl>
+				</section>
+			)}
+
+			{!page.hasPost && page.changelogMd && (
+				<section aria-labelledby="changesets">
+					<h2 id="changesets">Changesets</h2>
+					<pre class="post__md">{page.changelogMd}</pre>
+				</section>
+			)}
+
+			{page.data && (
+				<section aria-labelledby="all-changes" class="post__all">
+					<h2 id="all-changes">All changes</h2>
+					<p class="sk-caption">
+						{page.counts.changes} merged pull requests between <code>{page.data.from.replace("@codeatlasdev/ui@", "")}</code> and <code>{page.data.to}</code>,
+						grouped by area. Generated from git: <code>bun scripts/changelog-data.ts {page.version}</code>.
+					</p>
+					<ChangeList changes={page.data.changes} open={!page.hasPost} />
+				</section>
+			)}
+		</article>
+	</SiteDocsShell>
+	<SiteFooter />
+</Base>
+
+<style is:global>
+	.post__meta {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: var(--ca-space-2) var(--ca-space-3);
+		color: var(--ca-text-secondary);
+		font-size: var(--ca-font-size-body2);
+	}
+	.post__meta a {
+		display: inline-flex;
+		align-items: center;
+		min-block-size: 44px;
+	}
+	.post__hero {
+		margin: var(--ca-space-6) 0;
+		/* Reserve the scene's box before it paints: 640 x 360 */
+		aspect-ratio: 16 / 9;
+		border: var(--ca-border-width) solid var(--ca-outline-strong);
+		border-radius: var(--ca-radius-md);
+		background: var(--ca-surface-raised);
+		padding: var(--ca-space-3);
+	}
+	.post__hero > svg {
+		block-size: 100%;
+	}
+	.post__tl {
+		display: grid;
+		gap: var(--ca-space-3);
+		padding-inline-start: var(--ca-space-6);
+	}
+	.post__bh {
+		display: grid;
+		gap: var(--ca-space-3);
+	}
+	.post__bh-item {
+		padding: var(--ca-space-3) var(--ca-space-4);
+		border: var(--ca-border-width) solid var(--ca-outline-subtle);
+		border-radius: var(--ca-radius-md);
+		background: var(--ca-surface-raised);
+	}
+	.post__bh-item dt {
+		font-weight: var(--ca-font-weight-semibold);
+	}
+	.post__bh-item dd {
+		margin: var(--ca-space-1) 0 0;
+	}
+	.post__bh-fix {
+		color: var(--ca-text-secondary);
+	}
+	.post__md {
+		white-space: pre-wrap;
+		overflow-wrap: anywhere;
+	}
+</style>

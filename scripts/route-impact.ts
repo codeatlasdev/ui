@@ -315,11 +315,53 @@ export function buildImpact(): RouteImpact {
 		add(route, file, src);
 		for (const m of src.matchAll(/(?:from|import)\s+["'](~\/[^"']+\.(?:svelte|astro|ts))["']/g))
 			if (!m[1].includes("/pages/")) followImports(route, demoFile(m[1]));
+		// The changelog's scenes and figures import each other and `./scenes` by relative path.
+		if (file.includes("/components/changelog/"))
+			for (const m of src.matchAll(/(?:from|import)\s+["'](\.{1,2}\/[^"']+)["']/g)) {
+				const target = join(dirname(file), m[1]);
+				const found = [target, `${target}.astro`, `${target}.ts`, join(target, "index.ts")].find(
+					(c) => existsSync(c) && statSync(c).isFile()
+				);
+				if (found) followImports(route, found);
+			}
 	};
 	for (const page of walk(join(SITE, "pages"), /\.astro$/)) {
-		if (page.includes("[...slug]") || page.includes("/llms/") || page.includes("/gallery/[id]"))
+		if (
+			page.includes("[...slug]") ||
+			page.includes("/llms/") ||
+			page.includes("/gallery/[id]") ||
+			page.includes("/changelog/[version]")
+		)
 			continue;
 		followImports(pageRoute(page), page);
+	}
+	// `/changelog/<version>/` is one real route per release. A post is its MDX plus the demos, scenes and components it
+	// pulls in; the generated data file and the page template belong to the version (or to all of them).
+	const releasePage = join(SITE, "pages/changelog/[version].astro");
+	const versions = [
+		...walk(join(SITE, "content/changelog"), /\.mdx$/).map((f) =>
+			relative(join(SITE, "content/changelog"), f).replace(/\.mdx$/, "")
+		),
+		...walk(join(SITE, "data/changelog"), /\.json$/).map((f) =>
+			relative(join(SITE, "data/changelog"), f).replace(/\.json$/, "")
+		),
+	];
+	const listed = [
+		...read(join(ROOT, "packages/ui/CHANGELOG.md")).matchAll(/^## (\d+\.\d+\.\d+[^\s]*)\s*$/gm),
+	].map((m) => m[1]);
+	for (const version of new Set([...versions, ...listed])) {
+		const route = `/changelog/${version}/`;
+		followImports(route, releasePage);
+		const data = join(SITE, "data/changelog", `${version}.json`);
+		if (existsSync(data)) bucket(files, route).add(rel(data));
+		const post = join(SITE, "content/changelog", `${version}.mdx`);
+		if (!existsSync(post)) continue;
+		const src = read(post);
+		add(route, post, src);
+		for (const m of src.matchAll(/from\s+["'](~\/[^"']+\.(?:svelte|astro|ts))(?:\?raw)?["']/g)) {
+			const file = demoFile(m[1]);
+			if (existsSync(file)) followImports(route, file);
+		}
 	}
 	// `/gallery/<id>/` is one real route per item (the template route is not one). An item is its demo plus
 	// the viewer chrome every item shares, so a demo selects exactly its item and the chrome selects the

@@ -6,7 +6,7 @@
 //              GITHUB_TOKEN binding, when configured, lifts the limit.
 //   outage     if GitHub is down, slow or rate-limited, the last good copy is served (kept for a week) and flagged
 //              `stale`; with nothing cached the error surfaces, and the page serves its own build-time body.
-import { isRelease, parseGithubReleases, REPO, type Release } from "./changelog";
+import { isRelease, type Post, parseGithubReleases, REPO, type Release } from "./changelog";
 
 export const TTL = 60;
 const KEEP = 86400 * 7;
@@ -85,4 +85,36 @@ export function edgeHeaders(extra: Record<string, string> = {}, stale = false): 
 	h.set("cache-control", stale ? "public, max-age=15, stale-while-revalidate=60" : CACHE_CONTROL);
 	h.set("x-changelog-source", stale ? "stale-last-good" : "github-releases");
 	return h;
+}
+
+/** Where the build wrote the hand-written posts (scripts/changelog-integration.ts). */
+export const POSTS_PATH = "/changelog/posts.json";
+
+/**
+ * The hand-written posts by version, from this deploy's own static assets. A post is part of the deploy, not of GitHub,
+ * so a missing or malformed file only means "no posts": the feed and the JSON fall back to the release bodies.
+ */
+export async function loadPosts(
+	request: Request,
+	assets: { fetch(input: Request | string): Promise<Response> } | undefined
+): Promise<Record<string, Post>> {
+	if (!assets) return {};
+	try {
+		const res = await assets.fetch(new Request(new URL(POSTS_PATH, request.url).href));
+		if (!res.ok) return {};
+		const raw: unknown = await res.json();
+		if (!raw || typeof raw !== "object") return {};
+		return Object.fromEntries(
+			Object.entries(raw).filter(
+				(e): e is [string, Post] =>
+					!!e[1] &&
+					typeof e[1] === "object" &&
+					["headline", "lede", "html"].every(
+						(k) => typeof (e[1] as Record<string, unknown>)[k] === "string"
+					)
+			)
+		);
+	} catch {
+		return {};
+	}
 }

@@ -8,6 +8,7 @@
  *   dist/atlas.json       the design atlas as one markdown text per term + the verified references (offline
  *                         `search_terms`, `get_term`, `get_reference`); only in the monorepo (needs site/)
  *   dist/styles.json      the design-style pages as markdown, one per style (offline `get_style`)
+ *   dist/releases.json    every release as markdown, newest first (offline `get_release`)
  *   --skill               also rewrites .agents/skills/codeatlas-ui/API.md (components, then non-component exports)
  *
  *   bun scripts/build-manifest.ts [--check]
@@ -31,6 +32,7 @@ import { STYLES, type SurfaceStyle } from "../src/lib/theme/define.ts";
 import { DESIGN_STYLES } from "../src/lib/theme/styles.ts";
 import { ENTRY_PAGES, parseRecipes, type Recipe } from "./ai-entry.ts";
 import { buildAtlasFile } from "./atlas-markdown.ts";
+import { buildReleaseFile } from "./changelog-markdown.ts";
 import { buildIndexFiles } from "./index-build.ts";
 import { checkIdRange, checkIndexFacets, ID_PATTERN, type IndexFacets } from "./index-schema.ts";
 import { demoSources, mdxToMarkdown } from "./mdx-to-markdown.ts";
@@ -1690,6 +1692,8 @@ if (import.meta.main) {
 		if (existsSync(DEMOS_DIR)) write("atlas.json", buildAtlasFile());
 		// The design-style pages need site/ (their data lives in site/src/data/styles): not in a tarball build.
 		if (existsSync(DEMOS_DIR)) write("styles.json", buildStyleFile());
+		// The release posts live in site/src/content/changelog: not in a tarball build either.
+		if (existsSync(DEMOS_DIR)) write("releases.json", buildReleaseFile());
 		const { demos, files } = catalog.length
 			? buildDemos(manifest, catalog)
 			: { demos: [], files: {} };

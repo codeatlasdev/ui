@@ -13,6 +13,7 @@ import {
 	SITE,
 } from "../scripts/ai-entry.ts";
 import { buildGuides, buildRecipes } from "../scripts/build-manifest.ts";
+import { CHANGELOG_INDEX_PATH } from "../scripts/changelog-markdown.ts";
 import { STYLES_INDEX_PATH } from "../scripts/styles-markdown.ts";
 
 const REPO = join(import.meta.dir, "../../..");
@@ -101,6 +102,12 @@ describe("llms.txt, the canonical entry (#384)", () => {
 		expect(deprecated).toBeGreaterThan(out.indexOf("## Docs: Inputs"));
 		expect(out.indexOf("[Glass Card]")).toBeGreaterThan(deprecated);
 		expect(out).not.toContain("## Docs: Surfaces");
+	});
+
+	it("points at the changelog digest and the MCP tool that serves a release (#620)", () => {
+		expect(out).toContain("## Releases");
+		expect(out).toContain(`${SITE}${CHANGELOG_INDEX_PATH}`);
+		expect(out).toContain("`get_release`");
 	});
 
 	it("points at the design-style digest and one file per style (#583)", () => {
@@ -264,6 +271,7 @@ describe("llms.txt links the agent-readable .txt form of every page and recipe (
 			`${SITE}/llms/atlas.txt`,
 			`${SITE}/llms/concepts/viewport.txt`,
 			`${SITE}${STYLES_INDEX_PATH}`,
+			`${SITE}${CHANGELOG_INDEX_PATH}`,
 		]);
 		for (const m of out.matchAll(/\]\((https:\/\/[^)]*\.txt)\)/g)) {
 			const url = m[1];

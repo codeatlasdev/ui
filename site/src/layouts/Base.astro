@@ -21,7 +21,8 @@ const { title, description, noindex = false, jsonLd, skipLink = true } = Astro.p
 const canonical = new URL(Astro.url.pathname, Astro.site).href;
 // Placeholder: the og-cards integration renders this page's card after the build and rewrites the
 // URL to its hashed name (scripts/og-integration.ts).
-const slug = Astro.url.pathname.replace(/^\/|\/$/g, "").replace(/\//g, "-") || "home";
+// A version path has dots (`/changelog/4.6.0/`): the card name keeps only [a-z0-9-], one card per page.
+const slug = Astro.url.pathname.replace(/^\/|\/$/g, "").replace(/[^a-zA-Z0-9]+/g, "-").toLowerCase() || "home";
 const ogImage = new URL(`/brand/og/${slug}.png`, Astro.site).href;
 const fullTitle = title === "CodeAtlas UI" ? title : `${title} · CodeAtlas UI`;
 const ld = jsonLd && serializeJsonLd(jsonLd);

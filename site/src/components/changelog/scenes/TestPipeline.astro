@@ -1,0 +1,59 @@
+---
+// Test pipeline architecture: the diff selects lanes, a machine-wide lock serializes suites, a budget fails slow runs.
+import Arrow from "../Arrow.astro";
+import Scene from "../Scene.astro";
+
+interface Props {
+	version?: string;
+	decorative?: boolean;
+}
+const { decorative = false } = Astro.props;
+---
+<Scene
+	{decorative}
+	height={380}
+	title="Test pipeline: diff selects lanes, one lock, a time budget"
+	desc="A git diff feeds an import graph and route map, which selects three lanes, unit, components and routes, labelled only what the diff reaches. The lanes pass a lock gate, one suite at a time with a machine-wide lock, and then a clock box, time budget, fails over. A second row shows the release path: test:full, then test:vrt. A note says native baselines per platform."
+>
+	<text x="14" y="26" class="cs-cap">on every change</text>
+	<rect x="14" y="38" width="100" height="56" rx="2" class="cs-box" />
+	<text x="64" y="70" class="cs-mono cs-mid">git diff</text>
+	<Arrow x1={114} y1={66} x2={146} y2={66} />
+	<rect x="148" y="38" width="170" height="56" rx="2" class="cs-soft" />
+	<text x="233" y="62" class="cs-mono cs-mid">import graph</text>
+	<text x="233" y="80" class="cs-mono cs-mid">+ route map</text>
+
+	<Arrow x1={318} y1={66} x2={350} y2={66} />
+	<rect x="352" y="22" width="276" height="148" rx="2" class="cs-sunk" />
+	<rect x="368" y="38" width="244" height="30" rx="2" class="cs-paper" />
+	<text x="490" y="58" class="cs-mono cs-mid">unit</text>
+	<rect x="368" y="76" width="244" height="30" rx="2" class="cs-paper" />
+	<text x="490" y="96" class="cs-mono cs-mid">components</text>
+	<rect x="368" y="114" width="244" height="30" rx="2" class="cs-paper" />
+	<text x="490" y="134" class="cs-mono cs-mid">routes</text>
+	<text x="490" y="162" class="cs-cap cs-mid">only what the diff reaches</text>
+
+	<Arrow x1={490} y1={170} x2={490} y2={196} />
+	<rect x="352" y="198" width="276" height="56" rx="2" class="cs-box" />
+	<rect x="352" y="198" width="34" height="56" class="cs-brand" />
+	<rect x="361" y="230" width="16" height="12" class="cs-line" style="stroke:var(--ca-brand-contrast)" />
+	<path d="M364 230 V224 A5 5 0 0 1 374 224 V230" class="cs-line" style="stroke:var(--ca-brand-contrast)" />
+	<text x="507" y="222" class="cs-mono cs-mid">one suite at a time</text>
+	<text x="507" y="240" class="cs-mono cs-mid">(machine-wide lock)</text>
+
+	<Arrow x1={490} y1={254} x2={490} y2={280} />
+	<rect x="352" y="282" width="276" height="48" rx="2" class="cs-soft" />
+	<circle cx="378" cy="306" r="11" class="cs-line" />
+	<path d="M378 299 V306 L384 309" class="cs-line" />
+	<text x="505" y="311" class="cs-mono cs-mid">time budget, fails over</text>
+
+	<text x="14" y="150" class="cs-cap">native baselines</text>
+	<text x="14" y="168" class="cs-cap">per platform</text>
+
+	<text x="14" y="214" class="cs-strong">release</text>
+	<rect x="14" y="226" width="130" height="44" rx="2" class="cs-box" />
+	<text x="79" y="253" class="cs-mono cs-mid">test:full</text>
+	<Arrow x1={144} y1={248} x2={186} y2={248} />
+	<rect x="188" y="226" width="130" height="44" rx="2" class="cs-box" />
+	<text x="253" y="253" class="cs-mono cs-mid">test:vrt</text>
+</Scene>

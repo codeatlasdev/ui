@@ -1,0 +1,1050 @@
+{
+	"version": "4.6.0",
+	"from": "@codeatlasdev/ui@4.5.0",
+	"to": "a73cb682",
+	"date": "2026-10-25",
+	"changes": [
+		{
+			"title": "inline (non-modal, non-top-layer) mode for overlays, for theme previews and showcases",
+			"kind": "feat",
+			"area": "overlays",
+			"pr": 608,
+			"issue": 563,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "replace the remaining real-time sleeps in component tests with conditions or a fake clock",
+			"kind": "test",
+			"area": "tests",
+			"pr": 603,
+			"issue": 568,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "bump @vitest/ui from 5.0.4 to 5.0.5 in /packages/ui",
+			"kind": "chore",
+			"area": "deps",
+			"pr": 435,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "budget of test:changed follows the selection scope",
+			"kind": "fix",
+			"area": "tests",
+			"pr": 605,
+			"issue": 604,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "map: MapStage on maplibre-gl 6 (critical XSS GHSA-jrc7-96c5-q579): use deck.gl MapLibreOverlay",
+			"kind": "fix",
+			"area": "map",
+			"pr": 602,
+			"issue": 601,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "bump happy-dom from 21.0.1 to 21.0.4 in /site",
+			"kind": "chore",
+			"area": "deps",
+			"pr": 588,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "14 pages emit the same heading id more than once (e.g. id=\"props\" ×4 on /docs/display/table/)",
+			"kind": "fix",
+			"area": "agents",
+			"pr": 600,
+			"issue": 548,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "bump happy-dom from 21.0.1 to 21.0.4 in /packages/ui",
+			"kind": "chore",
+			"area": "deps",
+			"pr": 541,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "land gate: bring landShared back under 4 minutes",
+			"kind": "fix",
+			"area": "tests",
+			"pr": 599,
+			"issue": 598,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "design style pages: /styles/ index and six pages rendered in their own style (brutalism, editorial, sketchbo",
+			"kind": "feat",
+			"area": "styles",
+			"pr": 584,
+			"issue": 583,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "test budget: landShared 360 s cannot hold components ALL + routes ALL + the mandatory rebuild",
+			"kind": "fix",
+			"area": "tests",
+			"pr": 597,
+			"issue": 596,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "concepts viewport, motion, targets and focus, appeal",
+			"kind": "docs",
+			"area": "styles",
+			"pr": 586,
+			"issue": 573,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "design atlas, 269 terms with browse, term pages and MCP search_terms",
+			"kind": "feat",
+			"area": "styles",
+			"pr": 578,
+			"issue": 572,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "route-impact: a CLI source under packages/ui/bin selects every docs route",
+			"kind": "fix",
+			"area": "tests",
+			"pr": 594,
+			"issue": 593,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "evidence foundation, verified references, concept template",
+			"kind": "docs",
+			"area": "styles",
+			"pr": 576,
+			"issue": 571,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "the index, phase 2b: item page tabs Preview, Code, Prompt, Anatomy",
+			"kind": "feat",
+			"area": "index",
+			"pr": 587,
+			"issue": 580,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "the index, phase 2a: faceted gallery search with URL state and instant filtering",
+			"kind": "feat",
+			"area": "index",
+			"pr": 585,
+			"issue": 579,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "test:changed --land: dist counts as fresh when it predates the rebase",
+			"kind": "fix",
+			"area": "tests",
+			"pr": 592,
+			"issue": 591,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "the index, phase 2c: MCP search_ui, list_facets, get_related",
+			"kind": "feat",
+			"area": "index",
+			"pr": 582,
+			"issue": 581,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "the index, phase 1: facet schema, 4-digit id ranges, backfill of every demo, index.json and .md twins",
+			"kind": "feat",
+			"area": "index",
+			"pr": 570,
+			"issue": 569,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "issue-land: new generated files (demo e/ and p/ api/v1 files) are never committed",
+			"kind": "fix",
+			"area": "tests",
+			"pr": 590,
+			"issue": 589,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "theme studio: presets, colour roles, live preview, apply to site",
+			"kind": "feat",
+			"area": "theme",
+			"pr": 562,
+			"issue": 560,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "@codeatlasdev/ui/sound: synthesized, opt-in UI sound engine (phase 3)",
+			"kind": "feat",
+			"area": "sound",
+			"pr": 577,
+			"issue": 575,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "nativeFeel keeps the arrow cursor on buttons, tabs and menu items (beats the ca.reset pointer)",
+			"kind": "fix",
+			"area": "components",
+			"pr": 567,
+			"issue": 566,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "layers.modalOpen store and hover UI that never opens under a modal",
+			"kind": "feat",
+			"area": "overlays",
+			"pr": 553,
+			"issue": 550,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "code surfaces guide and --ca-code-line-height token (integer px line-height)",
+			"kind": "docs",
+			"area": "theme",
+			"pr": 554,
+			"issue": 551,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "lighter suites: one pass per route, targeted local runs, machine-wide lock, native VRT",
+			"kind": "test",
+			"area": "tests",
+			"pr": 547,
+			"issue": 546,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "gallery viewer: big resizable stage, pages (templates) as a category, better cards, lib PreviewStage",
+			"kind": "feat",
+			"area": "index",
+			"pr": 558,
+			"issue": 557,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "without data-style on <html> the page renders glass blur instead of the solid default",
+			"kind": "fix",
+			"area": "theme",
+			"pr": 565,
+			"issue": 564,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "reset layer gives every clickable control a pointer cursor (and not-allowed when disabled)",
+			"kind": "feat",
+			"area": "components",
+			"pr": 552,
+			"issue": 549,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "site: landing and templates render a different top header than docs, changelog and gallery",
+			"kind": "fix",
+			"area": "index",
+			"pr": 556,
+			"issue": 555,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "glass reads as the lib's identity and default; present it as one style among many",
+			"kind": "fix",
+			"area": "agents",
+			"pr": 561,
+			"issue": 559,
+			"date": "2026-10-25"
+		},
+		{
+			"title": "browser tests fail intermittently under machine load (Menubar, VirtualList, NestedLayers)",
+			"kind": "fix",
+			"area": "tests",
+			"pr": 545,
+			"issue": 544,
+			"date": "2026-10-24"
+		},
+		{
+			"title": "bring styles/global.css back under 17450 B",
+			"kind": "fix",
+			"area": "tests",
+			"pr": 543,
+			"issue": 542,
+			"date": "2026-10-24"
+		},
+		{
+			"title": "playwright config picks 100% workers whenever CI is set, so agent shells on a shared machine get random 30s t",
+			"kind": "fix",
+			"area": "tests",
+			"pr": 540,
+			"issue": 539,
+			"date": "2026-10-24"
+		},
+		{
+			"title": "motion demo: Press spring stays pressed (scale 0.94) when Pause lands during the autoplay press",
+			"kind": "fix",
+			"area": "components",
+			"pr": 536,
+			"issue": 535,
+			"date": "2026-10-24"
+		},
+		{
+			"title": "a11y routes spec times out on /docs/getting-started/recipes/ (10k DOM nodes) and on light pages under load",
+			"kind": "fix",
+			"area": "tests",
+			"pr": 534,
+			"issue": 533,
+			"date": "2026-10-24"
+		},
+		{
+			"title": "unit tests leave their temporary project directories behind in the system temp directory",
+			"kind": "fix",
+			"area": "tests",
+			"pr": 532,
+			"issue": 529,
+			"date": "2026-10-24"
+		},
+		{
+			"title": "kanban: board collapses to 0px wide in an auto-width flex wrapper (documented usage), layout audit fails on mobile",
+			"kind": "fix",
+			"area": "shell",
+			"pr": 531,
+			"issue": 530,
+			"date": "2026-10-24"
+		},
+		{
+			"title": "render visual baselines locally in Docker while CI is paused",
+			"kind": "fix",
+			"area": "tests",
+			"pr": 469,
+			"issue": 468,
+			"date": "2026-10-24"
+		},
+		{
+			"title": "landing recipe copied alone fails prerender on /sign-up",
+			"kind": "fix",
+			"area": "agents",
+			"pr": 528,
+			"issue": 526,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "settings recipe tells Switch in SettingItem to add aria-label, SettingItem names it",
+			"kind": "fix",
+			"area": "a11y",
+			"pr": 527,
+			"issue": 525,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "recipes import #lib which only exists on Kit 3, no Kit 2 form shown",
+			"kind": "fix",
+			"area": "agents",
+			"pr": 520,
+			"issue": 515,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "landing recipe hrefs 404 on prerender when copied whole",
+			"kind": "fix",
+			"area": "agents",
+			"pr": 522,
+			"issue": 517,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "init: Kit 2 gets no svelte.config.js with the detected adapter",
+			"kind": "fix",
+			"area": "cli",
+			"pr": 521,
+			"issue": 516,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "button: form and type passthrough to submit from a Dialog actions footer",
+			"kind": "feat",
+			"area": "forms",
+			"pr": 523,
+			"issue": 518,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "llms.txt should say components.json is { components: [] }",
+			"kind": "fix",
+			"area": "agents",
+			"pr": 524,
+			"issue": 519,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "KpiCard: chart slot / sparkline prop so an icon + sparkline tile needs no Card+Stat+Sparkline composition",
+			"kind": "feat",
+			"area": "components",
+			"pr": 510,
+			"issue": 505,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "manifest: union prop values missing from props tables (Avatar shape, SkipLink props)",
+			"kind": "fix",
+			"area": "agents",
+			"pr": 514,
+			"issue": 509,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "manifest: NavModule and NavItem fields missing from components.json/API.md (get_export/get_component)",
+			"kind": "fix",
+			"area": "agents",
+			"pr": 513,
+			"issue": 508,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "list-page recipe Export link 404s on prerender",
+			"kind": "fix",
+			"area": "agents",
+			"pr": 512,
+			"issue": 507,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "templates: Billing uses :global(.grid-auto-180) instead of Grid props (templates are what AIs copy)",
+			"kind": "fix",
+			"area": "agents",
+			"pr": 511,
+			"issue": 506,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "map recipe offline basemap in the shell-less variant, scatterplot radius units, centsToDisplay options",
+			"kind": "fix",
+			"area": "agents",
+			"pr": 504,
+			"issue": 502,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "kanban: column title is a hard-coded h3, so a board under a PageShell h1 fails axe heading-order (no headingLevel p",
+			"kind": "fix",
+			"area": "a11y",
+			"pr": 503,
+			"issue": 501,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "kanban: per-column money total without losing the colour rail, title and count (header snippet replaces all three)",
+			"kind": "feat",
+			"area": "shell",
+			"pr": 498,
+			"issue": 496,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "pageShell: dev warning when there is no <main> landmark (docs-only agents ship pages without one)",
+			"kind": "feat",
+			"area": "agents",
+			"pr": 499,
+			"issue": 495,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "installation says nothing about the TypeScript major Kit 3 needs (ERESOLVE with typescript 5)",
+			"kind": "fix",
+			"area": "agents",
+			"pr": 500,
+			"issue": 497,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "fresh Kit 3 app needs svelte-kit sync before svelte-check; init leaves a root <Seo> and PWA-only keys in mess",
+			"kind": "fix",
+			"area": "cli",
+			"pr": 494,
+			"issue": 491,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "fileUpload: drop zone aria-label omits the visible hint (axe label-content-name-mismatch)",
+			"kind": "fix",
+			"area": "a11y",
+			"pr": 493,
+			"issue": 490,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "pageFrame: bottom sheet overflows the viewport by the frame gap on mobile (side=left keeps left:12px with width:100",
+			"kind": "fix",
+			"area": "shell",
+			"pr": 492,
+			"issue": 489,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "init: Kit 3 scaffold does not build/lint out of the box (tsconfig exclude build, #lib map, PWA optional, prerender,",
+			"kind": "fix",
+			"area": "cli",
+			"pr": 478,
+			"issue": 475,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "standalone single-page app (no AppShellLayout) has no recipe; PageShell alone has no <main>",
+			"kind": "fix",
+			"area": "agents",
+			"pr": 481,
+			"issue": 473,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "docs+lint: i18n-literal rule is undocumented and every recipe fails it; app copy pattern missing",
+			"kind": "fix",
+			"area": "agents",
+			"pr": 484,
+			"issue": 474,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "llms.txt: links point at HTML pages; the readable /llms/<group>/<slug>.txt form and index pages are not discoverabl",
+			"kind": "fix",
+			"area": "agents",
+			"pr": 482,
+			"issue": 477,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "map: deck.gl overlay throws on maplibre-gl 6 (`reading 'height'`) on every frame",
+			"kind": "fix",
+			"area": "map",
+			"pr": 479,
+			"issue": 470,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "SiteHeader overflows at 390px with nav + LocaleSwitcher + 2 buttons; no marketing-header recipe",
+			"kind": "fix",
+			"area": "agents",
+			"pr": 485,
+			"issue": 476,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "stat, KpiCard: trend colour assumes up is good (churn, cost, latency need down is good)",
+			"kind": "feat",
+			"area": "components",
+			"pr": 487,
+			"issue": 486,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "notificationBell: trigger label does not contain its visible unread count (axe label-content-name-mismatch)",
+			"kind": "fix",
+			"area": "a11y",
+			"pr": 480,
+			"issue": 471,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "authLayout: mobile brand mark fails color contrast in dark at 390px",
+			"kind": "fix",
+			"area": "a11y",
+			"pr": 483,
+			"issue": 472,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "HoverCard closeDelay and CommandPalette announce tests fail intermittently in the full browser suite",
+			"kind": "fix",
+			"area": "tests",
+			"pr": 467,
+			"issue": 466,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "site e2e gate fails on carousel, image, text-field and menubar (a11y, mobile overflow, touch targets)",
+			"kind": "fix",
+			"area": "tests",
+			"pr": 465,
+			"issue": 464,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "site build fails on button-group.mdx (escaped quote in a JSX attribute)",
+			"kind": "fix",
+			"area": "agents",
+			"pr": 463,
+			"issue": 462,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "navigationmenu: disclosure navigation for marketing headers",
+			"kind": "feat",
+			"area": "overlays",
+			"pr": 461,
+			"issue": 457,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "menubar: APG menubar reusing the DropdownMenu items",
+			"kind": "feat",
+			"area": "overlays",
+			"pr": 460,
+			"issue": 456,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "Carousel: scroll-snap slides with prev/next, dots and optional autoplay",
+			"kind": "feat",
+			"area": "components",
+			"pr": 451,
+			"issue": 445,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "contextmenu: right-click, long-press and Shift+F10 menu",
+			"kind": "feat",
+			"area": "overlays",
+			"pr": 459,
+			"issue": 455,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "ResizablePanels: panel group with separator role and keyboard resize",
+			"kind": "feat",
+			"area": "shell",
+			"pr": 449,
+			"issue": 444,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "inputgroup: prefix and suffix addons inside the textfield border",
+			"kind": "feat",
+			"area": "forms",
+			"pr": 450,
+			"issue": 447,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "hovercard: hover and focus preview card with open/close delays",
+			"kind": "feat",
+			"area": "overlays",
+			"pr": 458,
+			"issue": 454,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "buttonGroup: attached buttons with role=group and orientation",
+			"kind": "feat",
+			"area": "components",
+			"pr": 452,
+			"issue": 448,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "Image: ratio prop and AspectRatio wrapper",
+			"kind": "feat",
+			"area": "components",
+			"pr": 453,
+			"issue": 446,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "check: bun --check (check:native) reports 10 type errors that validate does not run",
+			"kind": "fix",
+			"area": "tests",
+			"pr": 443,
+			"issue": 441,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "authLayout: flat panel text levels fail color-contrast (--panel-text-secondary/tertiary are alpha mixes of the fg)",
+			"kind": "fix",
+			"area": "a11y",
+			"pr": 442,
+			"issue": 440,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "migration tooling: help teams move an existing app (React/Tailwind/shadcn) onto @codeatlasdev/ui",
+			"kind": "feat",
+			"area": "cli",
+			"pr": 430,
+			"issue": 383,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "teach the 4.6 APIs in recipes, choosing and workarounds",
+			"kind": "docs",
+			"area": "agents",
+			"pr": 416,
+			"issue": 415,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "release: migration changelog per major, codemods for known breaking changes and deprecation warnings",
+			"kind": "feat",
+			"area": "cli",
+			"pr": 429,
+			"issue": 382,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "dX: official list of stable .ca-* parts, variables and data attributes for overrides (API.md, manifest, MCP)",
+			"kind": "feat",
+			"area": "agents",
+			"pr": 425,
+			"issue": 381,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "typography: named type scale by role (title, heading, body, label, caption, mono-num) with tracking and line-heigh",
+			"kind": "feat",
+			"area": "theme",
+			"pr": 433,
+			"issue": 375,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "auth building blocks: Turnstile, PasswordStrength, decorative Avatar and SplashScreen",
+			"kind": "feat",
+			"area": "forms",
+			"pr": 426,
+			"issue": 379,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "authLayout: panel background is a fixed brand gradient with blobs, no token or prop for a flat panel",
+			"kind": "feat",
+			"area": "theme",
+			"pr": 423,
+			"issue": 409,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "dialog split: configurable size, columns and mobile full-screen; Dnd: container-target mode without insertion line",
+			"kind": "feat",
+			"area": "overlays",
+			"pr": 428,
+			"issue": 377,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "badge: subtle tone with dot for inline pills; Button: responsive trailing hint and label/trailing alignment",
+			"kind": "feat",
+			"area": "components",
+			"pr": 422,
+			"issue": 378,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "density tokens for Avatar, TextArea, TextField, Card, SegmentedControl and EmptyState (no selectors against intern",
+			"kind": "feat",
+			"area": "theme",
+			"pr": 431,
+			"issue": 373,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "button / IconButton / Kbd: weight, tracking, line-height, gap and padding as component tokens",
+			"kind": "feat",
+			"area": "theme",
+			"pr": 421,
+			"issue": 373,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "site build fails: StatusTokens demo canvas role=img (a11y_no_interactive_element_to_noninteractive_role)",
+			"kind": "fix",
+			"area": "tests",
+			"pr": 439,
+			"issue": 438,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "give llms-full.txt a fixed shape instead of a growing byte budget",
+			"kind": "fix",
+			"area": "agents",
+			"pr": 437,
+			"issue": 436,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "theme presets: colors with alpha/OKLCH and extensible domain tokens (status, tier, channel) per preset and scheme",
+			"kind": "feat",
+			"area": "theme",
+			"pr": 427,
+			"issue": 374,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "theme: light brand presets get a --ca-brand-text that fails contrast in the light scheme (~1.6:1)",
+			"kind": "fix",
+			"area": "a11y",
+			"pr": 420,
+			"issue": 410,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "appShellLayout: a nav item stays active on its sub-paths, so an overview item and a more specific sibling are both",
+			"kind": "fix",
+			"area": "shell",
+			"pr": 424,
+			"issue": 408,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "mobile motion e2e flakes in settle, scroll takeover, ripple (#411)",
+			"kind": "fix",
+			"area": "tests",
+			"pr": 434,
+			"issue": 411,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "full browser suite poisoned by an unresolved site-demo import (#407)",
+			"kind": "fix",
+			"area": "tests",
+			"pr": 419,
+			"issue": 407,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "touch-target list in base.css fused into a descendant selector (.glass-btn-clear .ca-tf__reveal)",
+			"kind": "fix",
+			"area": "a11y",
+			"pr": 418,
+			"issue": 417,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "make the site and skill one-shot friendly for AI agents",
+			"kind": "docs",
+			"area": "agents",
+			"pr": 386,
+			"issue": 384,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "editorial primitives: display scale, out-expo/quart easings, animated highlight/strike, paper grain",
+			"kind": "feat",
+			"area": "theme",
+			"pr": 394,
+			"issue": 353,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "typography: display font role for marketing/auth headlines (`--ca-font-display`) used by components",
+			"kind": "feat",
+			"area": "theme",
+			"pr": 370,
+			"issue": 350,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "theme island: full-page preset/scheme override with SSR parity (light landing inside a dark app)",
+			"kind": "feat",
+			"area": "theme",
+			"pr": 399,
+			"issue": 352,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "theme presets: override primary-button fill/contrast and field font size per preset",
+			"kind": "feat",
+			"area": "theme",
+			"pr": 390,
+			"issue": 354,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "locale switcher component (and a SiteHeader slot for it)",
+			"kind": "feat",
+			"area": "components",
+			"pr": 404,
+			"issue": 349,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "textField: password reveal toggle, and a field-level trailing link slot (\"Forgot password?\")",
+			"kind": "feat",
+			"area": "forms",
+			"pr": 396,
+			"issue": 348,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "chipGroup: single-choice chips that wrap (radiogroup, roving tabindex, check icon)",
+			"kind": "feat",
+			"area": "forms",
+			"pr": 365,
+			"issue": 355,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "kanban/Board: columns with cross-column drag, board pan, per-column infinite scroll and mobile stage tabs",
+			"kind": "feat",
+			"area": "shell",
+			"pr": 393,
+			"issue": 361,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "table: dense mode, pinned columns, group rows and interactive rows for CRM-style lists",
+			"kind": "feat",
+			"area": "shell",
+			"pr": 372,
+			"issue": 360,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "drawer: chromeless/full-bleed mode (no header, no body padding, full width) for side detail panels",
+			"kind": "feat",
+			"area": "overlays",
+			"pr": 391,
+			"issue": 362,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "progress: configurable bar height (size prop or --ca-progress-height), currently fixed at 8px",
+			"kind": "feat",
+			"area": "components",
+			"pr": 395,
+			"issue": 358,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "button: neutral/secondary tone for outlined and ghost (no brand-coloured label or border)",
+			"kind": "feat",
+			"area": "components",
+			"pr": 389,
+			"issue": 357,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "stat: card-less statistic primitive (label, value, hint, trend) sharing KpiCard typography",
+			"kind": "feat",
+			"area": "components",
+			"pr": 397,
+			"issue": 359,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "glassCard: header padding stacks on card padding, so title is misaligned with content",
+			"kind": "fix",
+			"area": "components",
+			"pr": 368,
+			"issue": 341,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "map integration entry (`@codeatlasdev/ui/map`): Mapbox GL / MapLibre + deck.gl that follow the theme",
+			"kind": "feat",
+			"area": "map",
+			"pr": 403,
+			"issue": 345,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "page frame primitive for map-first apps: floating panel / split / full page, non-modal bottom sheet on mobile, and",
+			"kind": "feat",
+			"area": "shell",
+			"pr": 402,
+			"issue": 344,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "appShellLayout: persistent background stage (map, canvas, video) that survives route changes, with pass-through co",
+			"kind": "feat",
+			"area": "shell",
+			"pr": 401,
+			"issue": 343,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "navigation: Rail labels and a search/⌘K trigger, plus a BottomNav overflow (\"More\") for more than 5 modules, with",
+			"kind": "feat",
+			"area": "shell",
+			"pr": 364,
+			"issue": 346,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "pageShell/AppShellLayout: no aside column and panel always open, leaving dead space on wide screens",
+			"kind": "feat",
+			"area": "shell",
+			"pr": 388,
+			"issue": 342,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "pageShell: mobile actions stretch StatusChip/Chip/Badge to full width",
+			"kind": "fix",
+			"area": "shell",
+			"pr": 366,
+			"issue": 339,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "authLayout: panel side, full-bleed custom panel (live map), header slot and form-first layout",
+			"kind": "feat",
+			"area": "shell",
+			"pr": 387,
+			"issue": 347,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "authLayout: brand snippet still renders logoName (defaults to \"CodeAtlas UI\")",
+			"kind": "fix",
+			"area": "shell",
+			"pr": 369,
+			"issue": 340,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "toast: optional description and a single inline action (label + handler)",
+			"kind": "feat",
+			"area": "overlays",
+			"pr": 392,
+			"issue": 356,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "raise styles/global.css budget for the 4.6 component batch",
+			"kind": "chore",
+			"area": "tests",
+			"pr": 414,
+			"issue": 413,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "toast: mensagens idênticas empilham sem limite (sem dedupe nem teto)",
+			"kind": "fix",
+			"area": "overlays",
+			"pr": 367,
+			"issue": 363,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "theme: body text size is also the root font-size, so changing it rescales every rem token",
+			"kind": "fix",
+			"area": "theme",
+			"pr": 371,
+			"issue": 351,
+			"date": "2026-10-23"
+		},
+		{
+			"title": "check:native fails on main: implicit-any in build-manifest.ts and strict errors in two tests",
+			"kind": "fix",
+			"area": "tests",
+			"pr": 400,
+			"issue": 398,
+			"date": "2026-10-23"
+		}
+	],
+	"changesets": {
+		"major": 0,
+		"minor": 59,
+		"patch": 52
+	}
+}

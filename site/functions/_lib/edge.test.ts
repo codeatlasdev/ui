@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
-import { CACHE_CONTROL, loadReleases, TTL } from "./edge";
+import { CACHE_CONTROL, loadPosts, loadReleases, TTL } from "./edge";
 
 // In-memory Cache API + scripted GitHub, so the freshness and outage rules are tested without a network.
 const store = new Map<string, Response>();
@@ -100,5 +100,30 @@ describe("CACHE_CONTROL", () => {
 		expect(TTL).toBe(60);
 		expect(CACHE_CONTROL).toContain("s-maxage=60");
 		expect(CACHE_CONTROL).toContain("stale-while-revalidate");
+	});
+});
+
+describe("loadPosts", () => {
+	const assets = (body: unknown, ok = true) => ({
+		fetch: async () => (ok ? Response.json(body) : new Response("nope", { status: 404 })),
+	});
+	const req = new Request("https://ui.codeatlas.com.br/changelog/feed.xml");
+	const good = { headline: "h", lede: "l", html: "<p>x</p>" };
+	test("returns the posts the build wrote, keyed by version", async () => {
+		expect(await loadPosts(req, assets({ "4.6.0": good }))).toEqual({ "4.6.0": good });
+	});
+	test("drops an entry that is not a post and survives a missing or broken file", async () => {
+		expect(await loadPosts(req, assets({ "4.6.0": good, "4.5.0": { headline: "h" } }))).toEqual({
+			"4.6.0": good,
+		});
+		expect(await loadPosts(req, assets({}, false))).toEqual({});
+		expect(
+			await loadPosts(req, {
+				fetch: async () => {
+					throw new Error("boom");
+				},
+			})
+		).toEqual({});
+		expect(await loadPosts(req, undefined)).toEqual({});
 	});
 });

@@ -1,0 +1,69 @@
+---
+// A registered scene as a figure inside a post. The box reserves the scene's aspect ratio before anything paints, so
+// the diagram never shifts the text below it, and the scene is server-rendered SVG: it is on the page with no JS.
+import { isScene, SCENES } from "./scenes";
+
+interface Props {
+	id: string;
+}
+const { id } = Astro.props;
+if (!isScene(id)) throw new Error(`<Fig id="${id}">: not a registered scene (components/changelog/scenes/index.ts)`);
+const Scene = SCENES[id];
+---
+<figure class="fig" data-scene={id}>
+	<Scene />
+</figure>
+
+<style is:global>
+	.fig {
+		margin: var(--ca-space-6) 0;
+		padding: var(--ca-space-3);
+		border: var(--ca-border-width) solid var(--ca-outline-subtle);
+		border-radius: var(--ca-radius-md);
+		background: var(--ca-surface-raised);
+	}
+	.fig > svg {
+		max-block-size: 26rem;
+		margin-inline: auto;
+	}
+	/* A 640-wide drawing at 390px is 0.56x: the 13px labels read as 7px. Inside a post, on a narrow screen, the figure
+	 * keeps a readable size and scrolls inside its own frame (a drawn diagram cannot reflow), so the page itself never
+	 * gets a horizontal scrollbar. Heroes and card images are not figures and keep scaling to fit. */
+	@media (max-width: 599.98px) {
+		.fig {
+			overflow-x: auto;
+		}
+		.fig > svg {
+			min-inline-size: 30rem;
+			max-block-size: none;
+		}
+	}
+</style>
+
+<script>
+	// A figure that overflows on a narrow screen scrolls inside its frame. A scroll region needs a tab stop and a name
+	// (WCAG 2.1.1, axe `scrollable-region-focusable`); add both only while it overflows, so a figure that fits has none.
+	const sync = (fig: HTMLElement) => {
+		const over = fig.scrollWidth > fig.clientWidth + 1;
+		if (over) {
+			fig.tabIndex = 0;
+			fig.setAttribute("role", "group");
+			const t = fig.querySelector("svg title")?.textContent;
+			if (t) fig.setAttribute("aria-label", `${t} (scrolls sideways)`);
+		} else {
+			fig.removeAttribute("tabindex");
+			fig.removeAttribute("role");
+			fig.removeAttribute("aria-label");
+		}
+	};
+	const figs = document.querySelectorAll<HTMLElement>("figure.fig");
+	if (figs.length) {
+		const ro = new ResizeObserver((entries) => {
+			for (const e of entries) sync(e.target as HTMLElement);
+		});
+		for (const f of figs) {
+			sync(f);
+			ro.observe(f);
+		}
+	}
+</script>

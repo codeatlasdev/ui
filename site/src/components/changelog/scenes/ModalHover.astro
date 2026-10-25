@@ -1,0 +1,47 @@
+---
+// Layer stack: a hover panel on the page is blocked while a modal is open; a trigger inside the modal still works.
+import Arrow from "../Arrow.astro";
+import Hatch from "../Hatch.astro";
+import Scene from "../Scene.astro";
+
+interface Props {
+	version?: string;
+	decorative?: boolean;
+}
+const { decorative = false } = Astro.props;
+---
+<Scene
+	{decorative}
+	height={280}
+	title="Hover trigger on the page is blocked by an open modal"
+	desc="A page holds a hover card trigger, with a scrim and a modal dialog stacked above it. A pointer arrow aimed at the page trigger stops at a barrier labelled layers.modalOpen. A second pointer aimed at a trigger inside the dialog passes through and is marked with a check."
+>
+	<rect x="190" y="30" width="440" height="200" rx="2" class="cs-box" />
+	<text x="206" y="50" class="cs-cap">page</text>
+	<rect x="214" y="64" width="116" height="34" rx="17" class="cs-soft" />
+	<text x="272" y="86" class="cs-mono cs-mid">hover card</text>
+
+	<rect x="190" y="30" width="440" height="200" rx="2" class="cs-sunk" style="fill-opacity:0.65" />
+	<Hatch x={190} y={30} w={440} h={200} gap={12} opacity={0.25} />
+
+	<rect x="372" y="86" width="230" height="124" rx="2" class="cs-paper" />
+	<rect x="372" y="86" width="230" height="24" class="cs-brand" />
+	<text x="487" y="103" class="cs-mono cs-mid cs-onbrand">modal dialog</text>
+	<rect x="396" y="130" width="116" height="34" rx="17" class="cs-soft" />
+	<text x="454" y="152" class="cs-mono cs-mid">hover card</text>
+	<text x="206" y="218" class="cs-cap">scrim</text>
+
+	<!-- Blocked pointer -->
+	<Arrow x1={30} y1={81} x2={122} y2={81} />
+	<path d="M150 56 V106" class="cs-line" style="stroke-width:4" />
+	<path d="M138 70 L162 92 M162 70 L138 92" class="cs-line" />
+	<text x="14" y="56" class="cs-mono">layers.modalOpen</text>
+	<path d="M170 81 H212" class="cs-dash" />
+
+	<!-- Passing pointer -->
+	<Arrow x1={30} y1={147} x2={392} y2={147} />
+	<path d="M20 190 L28 198 L42 180" class="cs-line" />
+	<text x="52" y="194" class="cs-mono">passes: trigger inside the modal</text>
+
+	<text x="320" y="264" class="cs-cap cs-mid">A hover panel never opens under a modal.</text>
+</Scene>

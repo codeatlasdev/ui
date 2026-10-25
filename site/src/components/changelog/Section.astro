@@ -1,0 +1,40 @@
+---
+// One highlight of a post: a numbered sketchbook page with the title as its heading and the id as its anchor.
+// `id` and `n` must match the post's frontmatter `highlights` (position and id); `changelog.test.ts` fails the
+// build when a highlight has no section or a section names an unknown id, so the TOC, the card and the page agree.
+interface Props {
+	id: string;
+	/** Position (1-based) in the post's highlight list. */
+	n: number;
+	title: string;
+}
+const { id, n, title } = Astro.props;
+---
+<section class="post-sec sk-page" id={id} aria-labelledby={`${id}-h`}>
+	<span class="sk-page__num">{String(n).padStart(2, "0")}</span>
+	<h2 id={`${id}-h`}><a class="post-sec__anchor" href={`#${id}`}>{title}</a></h2>
+	<slot />
+</section>
+
+<style is:global>
+	.post-sec {
+		margin-block: var(--ca-space-12);
+		padding: var(--ca-space-8) var(--ca-space-6) var(--ca-space-6) calc(var(--sk-spiral) + var(--ca-space-5));
+		scroll-margin-block-start: var(--ca-space-20);
+	}
+	.post-sec > h2 {
+		margin-block-start: 0;
+	}
+	.post-sec__anchor {
+		color: inherit;
+		text-decoration: none;
+	}
+	.post-sec__anchor:hover {
+		text-decoration: underline;
+	}
+	@media (max-width: 599.98px) {
+		.post-sec {
+			padding-inline-end: var(--ca-space-4);
+		}
+	}
+</style>
