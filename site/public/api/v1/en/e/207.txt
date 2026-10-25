@@ -6,7 +6,7 @@ Spec:
 - `<PieChart data={marketData} donut`
 - `centerLabel={{ value: '$2.4M', label: 'Total Revenue' }}`
 - `marketData` has 5 items: Cloud Services `38`, Enterprise SW `24`, SaaS Tools `18`, Infrastructure `12`, Other `8`
-- `height="300px"` inside `<Card material="glass" full>`
+- `height="300px"` inside `<Card full>`
 Tags: pie-chart, donut, center-label, total, market-share, card
 Needs: @codeatlasdev/ui@4.5.0 + echarts
 Components: Card, PieChart
@@ -25,6 +25,6 @@ Live demo: https://ui.codeatlas.com.br/docs/charts/pie#donut-with-center-kpi
   ];
 </script>
 
-<Card material="glass" full>
+<Card full>
   <PieChart data={marketData} donut centerLabel={{ value: '$2.4M', label: 'Total Revenue' }} height="300px" />
 </Card>

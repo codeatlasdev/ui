@@ -2,7 +2,7 @@
 	"summary": "A vertical bar chart of one Revenue series across four quarters.",
 	"use": "Comparing a single metric across a few time periods, such as quarterly revenue.",
 	"spec": [
-		"`<BarChart` inside `<Card material=\"glass\" full>`",
+		"`<BarChart` inside `<Card full>`",
 		"One series `{ name: 'Revenue', data: [38400, 54200, 71600, 89800] }`",
 		"`categories={['Q1', 'Q2', 'Q3', 'Q4']}`",
 		"`valueFormatter={fmt}` renders `$${(v / 1000).toFixed(0)}k`",

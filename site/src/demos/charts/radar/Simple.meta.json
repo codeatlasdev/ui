@@ -4,7 +4,7 @@
 	"spec": [
 		"`const indicators` maps 6 names (Speed, Quality, Reliability, Innovation, Support, Coverage) to `{ name, max: 100 }`",
 		"`<RadarChart {indicators} series={[{ name: 'Team Alpha', values: [88, 92, 76, 85, 94, 79] }]}`",
-		"`height=\"340px\"` inside `<Card material=\"glass\" full>`"
+		"`height=\"340px\"` inside `<Card full>`"
 	],
 	"tags": ["radar-chart", "simple", "indicators", "scores", "single-series", "card"],
 	"shape": "square"

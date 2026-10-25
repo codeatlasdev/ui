@@ -6,7 +6,7 @@ Spec:
 - `<AppShellLayout {modules} {pathname} onNavigate={(path) => (pathname = path)} {stage} {stageVisible} persistPanel={false} mainId={null} skipLink={false}>` with `stage` a snippet that draws the map
 - The map is a draggable grid whose camera lives in `$state`; an attachment counts each mount in `mounts` with `untrack` (a tracked `+=` would loop), shown in the page
 - One module `id: 'field'` with 3 items: Leads, Routes, Report
-- The page is `<PageShell title="Floating over the stage" description={pathname}>` with a `ca-stage-panel` wrapper around a glass `Card` that holds the mount count hint and an outlined `Button` toggling `stageVisible`
+- The page is `<PageShell title="Floating over the stage" description={pathname}>` with a `ca-stage-panel` wrapper around a `Card` that holds the mount count hint and an outlined `Button` toggling `stageVisible`
 - Stage frame height is `height: 440px`
 Tags: app-shell, stage, map, canvas, persistent, pointer-events, inset
 Needs: @codeatlasdev/ui@4.5.0
@@ -71,7 +71,7 @@ Live demo: https://ui.codeatlas.com.br/docs/layout/app-shell#stage
   <AppShellLayout {modules} {pathname} onNavigate={(path) => (pathname = path)} {stage} {stageVisible} persistPanel={false} mainId={null} skipLink={false}>
     <PageShell title="Floating over the stage" description={pathname}>
       <div class="ca-stage-panel panel">
-        <Card material="glass" full>
+        <Card full>
           <p class="hint">Stage mounted {mounts} time(s). Navigate the panel: the count stays at 1. Drag the stage behind this card; empty areas pass clicks through.</p>
           <Button variant="outlined" onclick={() => (stageVisible = !stageVisible)}>{stageVisible ? 'Hide and pause stage' : 'Show stage'}</Button>
         </Card>

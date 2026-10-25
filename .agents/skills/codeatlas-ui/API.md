@@ -395,7 +395,7 @@ Parts: `ca-breadcrumb__current` `ca-breadcrumb__item` `ca-breadcrumb__link` `ca-
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `variant?` | `'filled' \| 'glass' \| 'outlined' \| 'ghost' \| 'destructive'` | `'filled'` |  |
+| `variant?` | `'filled' \| 'glass' \| 'outlined' \| 'ghost' \| 'destructive'` | `'filled'` | `filled` (default) is the primary action; `glass` is a tinted surface button (blur only under the glass and frosted styles). |
 | `tone?` | `'brand' \| 'neutral'` | `'brand'` | `'neutral'` draws `outlined` and `ghost` without brand colour (neutral label and border), for a secondary action beside a brand `filled` one. Other variants ignore it. |
 | `size?` | `'sm' \| 'md' \| 'lg'` | `'md'` |  |
 | `disabled?` | `boolean` | `false` |  |
@@ -484,7 +484,7 @@ Parts: `ca-alert__content` `ca-callout`
 
 `import { Card } from "@codeatlasdev/ui"`
 
-Card — a Surface with a header (`title`, `headerActions`), padding and an optional link. Every Surface prop (`elevation`, `material`, `tone`, `variant`, `radius`, `glow`) passes through.
+Card — a Surface with a header (`title`, `headerActions`), padding and an optional link. Every Surface prop (`elevation`, `material`, `tone`, `variant`, `radius`, `glow`) passes through; `material` defaults to `auto`, which follows the theme.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
@@ -3178,7 +3178,7 @@ Surface — the one painted container every card, panel and sheet is built on. I
 | `py?` | `Responsive<Space>` |  | Vertical padding. |
 | `as?` | `string` | `'div'` | Element to render. Cards with an `href` render `a` through `Card`. |
 | `elevation?` | `0 \| 1 \| 2 \| 3 \| 4 \| 5` | `1` | Depth 0–5: drop shadow, and the blur/fill tier of the material (0 flat, 3 regular, 5 chrome). |
-| `material?` | `'auto' \| 'solid' \| 'frosted' \| 'glass' \| 'liquid'` | `'auto'` | `auto` follows `<html data-style>`; the others are absolute. `liquid` adds the SVG refraction layer. |
+| `material?` | `'auto' \| 'solid' \| 'frosted' \| 'glass' \| 'liquid'` | `'auto'` | `auto` follows `<html data-style>`; `solid`, `frosted`, `glass` and `liquid` are absolute. `liquid` adds the SVG refraction layer. |
 | `tone?` | `'neutral' \| 'brand' \| 'success' \| 'warning' \| 'error' \| 'info'` | `'neutral'` | Semantic tint over the fill (and the outline color of `variant="outlined"`). |
 | `variant?` | `'filled' \| 'outlined' \| 'ghost'` | `'filled'` | `filled` (default), `outlined` (edge, no fill) or `ghost` (no fill, no edge). |
 | `radius?` | `'none' \| 'sm' \| 'md' \| 'lg' \| 'xl' \| 'pill'` |  | Corner radius; omit for the large radius. |
@@ -4698,7 +4698,7 @@ Types:
 | `Space` | `type Space = (typeof SPACE)[number] \| `${(typeof SPACE)[number]}`;` |  |
 | `StageInsets` | `interface StageInsets { top: number; right: number; bottom: number; left: number; }` |  |
 | `SurfaceColors` | `interface SurfaceColors { sunken: string; base: string; raised: string; overlay: string; }` |  |
-| `SurfaceStyle` | `type SurfaceStyle = \| "glass" \| "frosted" \| "solid" \| "flat" \| "outlined" \| "neumorphic" \| "clay" \| "tonal" \| "chrome";` | Surface material. glass/frosted blur the backdrop; the rest are opaque. |
+| `SurfaceStyle` | `type SurfaceStyle = \| "glass" \| "frosted" \| "solid" \| "flat" \| "outlined" \| "neumorphic" \| "clay" \| "tonal" \| "chrome";` | Surface material, the `defaultStyle` knob of the theme (default `solid`). glass/frosted blur the backdrop and are opt-in; the rest are opaque. |
 | `TextAreaTokens` | `interface TextAreaTokens extends FieldTokens { minHeight?: CssValue; }` |  |
 | `TextColors` | `interface TextColors { primary: string; secondary: string; disabled: string; }` |  |
 | `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; type: TypeScale; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; components: ComponentTokens; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |

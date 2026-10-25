@@ -65,12 +65,12 @@ id	group	page	title	names	tags	summary
 064	inputs	use-form	With schema		use-form,schema,validation,text-area,character-count	Form using a schema for username length and bio length, with a live character count.
 065	surfaces	accordion	Controlled		accordion,accordion-item,controlled,bind,single,faq	A single-open Accordion with its open item bound to state and the current value printed below.
 066	surfaces	accordion	Multiple		accordion,accordion-item,multiple,expand,disclosure	An Accordion that lets several of its three items stay open at once.
-067	surfaces	accordion	Single		accordion,accordion-item,single,faq,disclosure	A single-open Accordion with three Liquid Glass FAQ questions, where opening one closes the others.
-068	surfaces	card	Tone and glow		card,glass,tone,brand,glow,accent	Two glass Cards side by side: one with a brand tint and one with a brand glow, each with a title and one line of text.
-069	surfaces	card	Content card		card,glass,content-card,featured,link,promo	A single glass Card with a Featured eyebrow, a heading, a description and an Explore materials link.
-070	surfaces	card	Header and actions		card,header-actions,title,snippet,button,glass	A glass Card with a built-in Team members header and an Invite button supplied through a headerActions snippet.
+067	surfaces	accordion	Single		accordion,accordion-item,single,faq,disclosure	A single-open Accordion with three FAQ questions about theming, where opening one closes the others.
+068	surfaces	card	Tone and glow		card,tone,brand,glow,accent	Two Cards side by side: one with a brand tint and one with a brand glow, each with a title and one line of text.
+069	surfaces	card	Content card		card,content-card,featured,link,promo	A single Card with a Featured eyebrow, a heading, a description and an Explore materials link.
+070	surfaces	card	Header and actions		card,header-actions,title,snippet,button	A Card with a built-in Team members header and an Invite button supplied through a headerActions snippet.
 071	surfaces	card	Link card		card,link,href,heading-level,elevation,solid	A solid Card that is a link as a whole, with a Surface heading and a one line description.
-072	surfaces	card	Stat cards		card,stats,kpi,dashboard,glass,metrics	Three glass stat Cards in a flex row, each with a label, a large value and a delta line.
+072	surfaces	card	Stat cards		card,stats,kpi,dashboard,metrics	Three stat Cards in a flex row, each with a label, a large value and a delta line.
 073	surfaces	collapsible	Default (closed)		collapsible,faq,stack,disclosure,expand,title	Three independent Collapsible FAQ panels stacked with a small gap, all closed initially.
 074	surfaces	collapsible	Open by default		collapsible,open,bind,expanded,controlled	A Collapsible that starts expanded with its open state bound and printed below it.
 075	surfaces	liquid-glass	Refraction layer		liquid-glass,glass-optics,refraction,glass,material,preset	A LiquidGlass refraction layer using the regular optics preset behind a line of text in a padded frame.
@@ -95,11 +95,11 @@ id	group	page	title	names	tags	summary
 094	feedback	progress	Indeterminate		progress,indeterminate,loading,sync,label	Two indeterminate progress bars labelled Loading and Syncing for work of unknown length.
 095	feedback	sheet	Footer and swipeToDismiss		sheet,footer,swipe-to-dismiss,bottom-sheet,mobile	A bottom sheet titled Sessions with a footer button, opened with swipe to dismiss on or off.
 096	feedback	sheet	Swipe to dismiss		sheet,swipe,bottom-sheet,account-switcher,list,mobile	A sheet titled Switch session with a description and a list of eight accounts that close it on click.
-097	feedback	skeleton	Card layout		skeleton,card,loading,avatar,placeholder	A glass card skeleton with a circular avatar placeholder beside three text lines of different widths.
-098	feedback	skeleton	Image placeholder		skeleton,image,card,flush,loading,placeholder	A flush glass card skeleton with a 180px rectangular image placeholder above two caption lines.
-099	feedback	skeleton	Text lines		skeleton,text,rows,card,loading	A glass card skeleton with a 60% wide heading line above a block of three text lines.
+097	feedback	skeleton	Card layout		skeleton,card,loading,avatar,placeholder	A card skeleton with a circular avatar placeholder beside three text lines of different widths.
+098	feedback	skeleton	Image placeholder		skeleton,image,card,flush,loading,placeholder	A flush card skeleton with a 180px rectangular image placeholder above two caption lines.
+099	feedback	skeleton	Text lines		skeleton,text,rows,card,loading	A card skeleton with a 60% wide heading line above a block of three text lines.
 100	feedback	spinner	In a button		spinner,button,loading,save,async	A Button that shows its loading spinner for two seconds after click and changes its label to Saving.
-101	feedback	spinner	Section loader		spinner,loader,card,section,loading	A glass card with a centered 40px spinner and a Loading data text.
+101	feedback	spinner	Section loader		spinner,loader,card,section,loading	A card with a centered 40px spinner and a Loading data text.
 102	feedback	spinner	Sizes		spinner,size,loading,flex	Three spinners side by side at 16, 24 and 40 pixels.
 103	feedback	toast	Variants and duration		toast,toaster,notification,success,error,duration	Eight buttons that trigger toasts: five variants and three duration cases, with one Toaster mounted.
 104	display	alert	Closable		alert,closable,dismiss,onclose,notice,severity	Two dismissible alerts, an info one with a title and a warning one, that are replaced by a short dismissed note once closed.
@@ -122,8 +122,8 @@ id	group	page	title	names	tags	summary
 121	display	code-snippet	Languages		code-snippet,code,syntax-highlighting,svelte,typescript,css	Three CodeSnippet blocks highlighting Svelte, TypeScript and CSS sources.
 122	display	data-table	Controlled mode		data-table,controlled,pagination,sorting,global-filter,server-side,tanstack	A DataTable driven from outside: filter, sort and pagination state live in the page, which slices 12 users into pages of 5.
 123	display	data-table	Simple mode		data-table,columns,column-helper,tanstack,table,basic	A DataTable with five columns and 12 user rows, passing only `columns` and `data`.
-124	display	divider	Horizontal		divider,horizontal,separator,card,stack	Three stacked text sections inside a glass card separated by horizontal dividers.
-125	display	divider	Vertical		divider,vertical,orientation,separator,flex	Three text items in a row inside a glass card separated by vertical dividers.
+124	display	divider	Horizontal		divider,horizontal,separator,card,stack	Three stacked text sections inside a card separated by horizontal dividers.
+125	display	divider	Vertical		divider,vertical,orientation,separator,flex	Three text items in a row inside a card separated by vertical dividers.
 126	display	external-link	In a results table		external-link,link,table,simple-table,responsive-cards,outbound	A table of three domains where each row ends with an ExternalLink to a registrar URL.
 127	display	image	Fixed ratio		image,alt,width,height,aspect-ratio,placeholder	An Image with an inline 4:3 gradient SVG, constrained to a 360px wrapper.
 128	display	image	srcset and sizes		image,srcset,sizes,responsive,alt,width	An Image with a two-rendition `srcset` (400w and 800w) and a `sizes` hint, in a 420px wrapper.
@@ -134,14 +134,14 @@ id	group	page	title	names	tags	summary
 133	display	pagination	Basic		pagination,page,bind,count,per-page,navigation	Pagination for 100 items at 10 per page, with the current page bound to state and printed below.
 134	display	pagination	Few items		pagination,few-pages,count,per-page,uncontrolled	Pagination with 30 items at 10 per page and no bound state.
 135	display	pagination	More siblings		pagination,siblings,sibling-count,many-pages,navigation	Pagination for 200 items at 10 per page with two sibling pages shown on each side of the current page.
-136	display	scroll-area	Horizontal scroll		scroll-area,horizontal,scrollbar,chip,card,overflow	A horizontal ScrollArea with an always visible scrollbar holding a row of 24 Tag chips inside a glass card.
-137	display	scroll-area	Vertical scroll		scroll-area,vertical,max-height,scrollbar,card,list	A vertical ScrollArea capped at 220px tall containing 20 Lorem ipsum rows inside a glass card.
-138	display	table	Cards on narrow containers		table,simple-table,responsive,cards,mobile,data-label	A SimpleTable that turns each row into a stacked card on narrow screens, listing three users in a flush glass card.
-139	display	table	Default (scroll)		table,simple-table,scroll,overflow,card,users	A default SimpleTable listing three users with name, email, role and status in a flush glass card.
+136	display	scroll-area	Horizontal scroll		scroll-area,horizontal,scrollbar,chip,card,overflow	A horizontal ScrollArea with an always visible scrollbar holding a row of 24 Tag chips inside a card.
+137	display	scroll-area	Vertical scroll		scroll-area,vertical,max-height,scrollbar,card,list	A vertical ScrollArea capped at 220px tall containing 20 Lorem ipsum rows inside a card.
+138	display	table	Cards on narrow containers		table,simple-table,responsive,cards,mobile,data-label	A SimpleTable that turns each row into a stacked card on narrow screens, listing three users in a flush card.
+139	display	table	Default (scroll)		table,simple-table,scroll,overflow,card,users	A default SimpleTable listing three users with name, email, role and status in a flush card.
 140	display	timeline	Simple		timeline,milestones,roadmap,history,dates	A basic Timeline of four project milestones, each with a label and a date.
 141	display	timeline	With variants		timeline,variant,success,info,order-tracking,status	A Timeline of an order's five tracking events, coloured by variant, with descriptions and timestamps.
 142	display	tooltip	Text trigger		tooltip,children,inline,text-trigger,hover,focus	A Tooltip wrapping plain inline text, which becomes the hover and focus trigger.
-143	display	tooltip	Custom delay		tooltip,delay,button,hover,timing	Three tooltips with different open delays on glass buttons: instant, default and slow.
+143	display	tooltip	Custom delay		tooltip,delay,button,hover,timing	Three tooltips with different open delays on buttons: instant, default and slow.
 144	display	tooltip	On icon buttons		tooltip,icon-button,icons,aria-label,toolbar,lucide	Four icon-only buttons (Info, Heart, Zap, Star) that each reveal a Tooltip describing the action.
 145	display	tooltip	All sides		tooltip,side,placement,top,bottom,button	Four outlined buttons whose tooltips open on the top, right, bottom and left side.
 146	navigation	actions	autofocus		autofocus,action,focus,input,remount,a11y	An input that receives focus on mount, with a button that remounts it through a keyed block.
@@ -149,8 +149,8 @@ id	group	page	title	names	tags	summary
 148	navigation	actions	clipboard		clipboard,copy,action,button,feedback,install-command	A native button that copies an install command to the clipboard and shows a Copied! label for two seconds.
 149	navigation	actions	focusTrap		focus-trap,action,keyboard,a11y,modal,tab-order	A button that opens a box where Tab stays trapped among three buttons until Close is pressed.
 150	navigation	actions	longpress		longpress,action,touch,gesture,button,hold	A native button that fires a long-press handler after an 800ms hold and shows Long press! for 1.5 seconds.
-151	navigation	app-bar	Default		app-bar,glass-app-bar,header,toolbar,icon-button,avatar	A glass app bar with a title on the left and search, notifications and avatar on the right, inside a flush glass card.
-152	navigation	app-bar	With leading icon		app-bar,glass-app-bar,leading,trailing,header,menu-button	A glass app bar with a menu button in the leading slot and an Upgrade button plus avatar in the trailing slot.
+151	navigation	app-bar	Default		app-bar,glass-app-bar,header,toolbar,icon-button,avatar	An app bar with a title on the left and search, notifications and avatar on the right, inside a flush card.
+152	navigation	app-bar	With leading icon		app-bar,glass-app-bar,leading,trailing,header,menu-button	An app bar with a menu button in the leading slot and an Upgrade button plus avatar in the trailing slot.
 153	navigation	breadcrumb	Levels		breadcrumb,navigation,hierarchy,levels,path,links	Four stacked breadcrumbs with 2, 3, 5 and 1 levels, where the last item is the current page without a link.
 154	navigation	breadcrumb	Custom separator		breadcrumb,separator,navigation,custom,path	A breadcrumb with a custom separator character between three items.
 155	navigation	command-palette	Keyboard		kbd,keyboard,shortcuts,command-palette,hints,legend	A static list of four keyboard hints for the command palette, each pairing a Kbd key with a description.
@@ -160,7 +160,7 @@ id	group	page	title	names	tags	summary
 159	navigation	menu	Icon trigger		dropdown-menu,menu,icon-button,overflow,more-options,align,a11y	A dropdown menu opened by a three-dot icon button, with Share and Copy link items aligned to the end.
 160	navigation	popover	Basic		popover,trigger,overlay,confirm,stack,contextual	A popover opened from a button, containing a sentence of text and a Confirm button.
 161	navigation	popover	Form		popover,form,text-field,inline-edit,side,align,overlay	A popover anchored below-start of a button that holds a text field with Cancel and Save buttons.
-162	navigation	stepper	Horizontal stepper		stepper,wizard,steps,progress,onboarding,back-next,card	A four-step horizontal stepper inside a glass card with Back and Next buttons that advance the step.
+162	navigation	stepper	Horizontal stepper		stepper,wizard,steps,progress,onboarding,back-next,card	A four-step horizontal stepper inside a card with Back and Next buttons that advance the step.
 163	navigation	tabs	Controlled		tabs,controlled,bind-value,state,tabs-list,tabs-content	Tabs bound to a state variable with a line below showing the active tab value.
 164	navigation	tabs	Default		tabs,uncontrolled,tabs-list,tabs-content,sections,default	An uncontrolled tab set of Overview, Props and Examples, each with a short paragraph of documentation text.
 165	layout	app-shell	Anatomy		app-shell,anatomy,rail,panel,layout,diagram	A labelled diagram of the app shell showing a 52px rail, a 200px panel and the main content area.
@@ -183,9 +183,9 @@ id	group	page	title	names	tags	summary
 182	layout	layout-primitives	Flex, Stack and Box		stack,flex,box,spacing,gap,layout,primitives	A Stack with a wrapping Flex row of three chips above a single padded Box.
 183	layout	list-page	AppList		app-list,list-page,search,filter-group,simple-table,status-chip,user-cell	A searchable, filterable users list with a New user action, a role filter and a table with user cell and status chip.
 184	layout	list-page	AppSettings		app-settings,settings,tabs,form-section,switch,text-field,list-page	A settings page with General and Security tabs, a Save action and form sections with text fields and switches.
-185	layout	list-page	PageShell		page-shell,dashboard,kpi-grid,kpi-card,card,glass,list-page	A dashboard page shell with four KPI cards and a placeholder glass card for a chart or table.
+185	layout	list-page	PageShell		page-shell,dashboard,kpi-grid,kpi-card,card,list-page	A dashboard page shell with four KPI cards and a placeholder card for a chart or table.
 186	layout	mobile-pane	Chat		mobile-pane,chat,mobile,icon-button,text-field,conversation	A button that opens a full-screen mobile pane titled Maria Souza with a message list, a header action and a composer.
-187	layout	page-shell	Dashboard page		page-shell,dashboard,kpi-grid,card,glass,actions,header	A page shell inside a flush glass card with a title, description, New report action, four KPI cards and a placeholder card.
+187	layout	page-shell	Dashboard page		page-shell,dashboard,kpi-grid,card,actions,header	A page shell inside a flush card with a title, description, New report action, four KPI cards and a placeholder card.
 188	layout	sticky-actions	End aligned		sticky-actions,dirty,form,save-bar,scroll,text-field	A scrolling form whose sticky Cancel and Save bar only appears once the Name field has text.
 189	layout	sticky-actions	Stretch		sticky-actions,stretch,wizard,action-bar,scroll,align	A scrolling area with a sticky bar whose Back and Continue buttons stretch across the width.
 190	charts	bar	Horizontal bars		bar-chart,horizontal,ranking,categories,value-formatter,card	A horizontal bar chart ranking eight products by a single Sales series, with values formatted as thousands.
@@ -224,7 +224,7 @@ id	group	page	title	names	tags	summary
 223	foundation	colors	Surfaces		colors,surface,background,tokens,swatches,elevation	Four swatches for the surface tokens from sunken to overlay, drawn with a border.
 224	foundation	colors	Text		colors,text,typography,tokens,swatches,contrast	Four swatches for the text color tokens: primary, secondary, hint and disabled.
 225	foundation	materials	Button glass variants		materials,glass,button,glass-btn,backdrop	Three native buttons using the glass button classes over a brand to info gradient backdrop.
-226	foundation	materials	Glass tiers		materials,glass,surface,elevation,blur,tiers	Five glass surfaces at elevations 1 to 5, from Ultra thin to Chrome, over a three color gradient.
+226	foundation	materials	Material tiers		materials,glass,surface,elevation,blur,tiers	Five glass surfaces at elevations 1 to 5, from Ultra thin to Chrome, over a three color gradient.
 227	foundation	materials	Tinted and glowing		materials,glass,surface,tone,glow,tinted	Three glass surfaces over a gradient: tinted, glowing, and tinted with glow.
 228	foundation	shadows	Shadow scale		shadows,elevation,tokens,scale,box-shadow	Five cards, each with one shadow token from xs to xl, labelled with its name and CSS variable.
 229	foundation	typography	Body and UI scale		typography,body,font-size,tokens,caption,label	Seven body text size tokens from Body 1 to Nano, each rendered as a sample line.
@@ -312,7 +312,7 @@ id	group	page	title	names	tags	summary
 470	navigation	popover	Close on pick		popover,calendar,bind-open,close,date,overlay	A button showing the chosen date that opens a popover holding a calendar; picking a day closes the popover.
 480	layout	app-shell	Panel width		app-shell,panel-width,resizable,separator,sidebar,navigation	An app shell whose panel starts at 280px for long item names and has a drag handle on its edge.
 481	layout	app-shell	Color, count, actions and reorder		app-shell,nav-item,color,count,actions-menu,reorder,drag-and-drop,sidebar	App shell panel rows with a color dot, a neutral count, a per-row actions menu and drag-to-reorder.
-482	surfaces	card	Stacked controls		card,gap,stack,checkbox,title,glass,settings	A glass Card titled Trending topics that stacks three Checkbox controls in a column with gap="sm", the title aligned with the controls.
+482	surfaces	card	Stacked controls		card,gap,stack,checkbox,title,settings	A Card titled Trending topics that stacks three Checkbox controls in a column with gap="sm", the title aligned with the controls.
 490	feedback	toast	Dedupe and replace by id		toast,toaster,dedupe,id,replace,notification,count	Two buttons: one fires the same error ten times and shows a single toast with a ×10 badge, the other replaces an uploading toast by id.
 491	display	table	Dense, pinned and grouped	Dense table | Compact table | Tabela densa | Pinned columns	table,simple-table,dense,compact,sticky-columns,group-row,sortable,interactive-row,crm	A dense SimpleTable of leads inside an already framed, horizontally scrolling panel: compact rows, two pinned columns, collapsible stage groups, a sortable Name header and clickable rows.
 492	feedback	toast	Description and action		toast,toaster,action,description,undo,notification	Three buttons that fire a toast with a description, with one inline action, and with both.
@@ -330,7 +330,7 @@ id	group	page	title	names	tags	summary
 610	layout	page-frame	Map, split and page		page-frame,map,stage,stage-insets,panel,split,page,sheet,layout	A PageFrame floating a 352px panel over a stand-in map, with a mode switch (map, split, page), a side switch and a live readout of the covered pixels from stageInsets.
 640	inputs	button	Neutral tone		button,icon-button,tone,neutral,secondary,outlined,ghost	One brand filled Button beside secondary actions drawn with tone="neutral": an outlined Button, a small ghost Button and an outlined IconButton.
 641	feedback	progress	Sizes		progress,size,height,sm,md,lg,indeterminate	Four Progress bars at 60% showing size sm (4px), size md (6px) and the default lg (8px), plus an indeterminate sm bar.
-642	layout	kpi-card	Stats in a card		stat,kpi,metric,statistic,dashboard,card-less,hint,trend	A glass Card titled This week holding three card-less Stat blocks in a responsive grid: leads with a hint, reply rate with a unit, trend and hint, and booked calls with a positive trend.
+642	layout	kpi-card	Stats in a card		stat,kpi,metric,statistic,dashboard,card-less,hint,trend	A Card titled This week holding three card-less Stat blocks in a responsive grid: leads with a hint, reply rate with a unit, trend and hint, and booked calls with a positive trend.
 700	feedback	drawer	Chromeless, full bleed on phones		drawer,chromeless,full-bleed,fullbleedbelow,detail-panel,mobile,scroll	A chromeless drawer for a detail view with its own header, close button and scrolling list; full width and height on phones.
 720	inputs	chip-group	Wrapping chips		chip-group,chips,radio,single-choice,wrap,team-size,mobile	Single-choice chips for a sales team size: five short options that wrap to two rows on a phone.
 721	inputs	chip-group	Required choice with error		chip-group,form,error,required,name,validation	ChipGroup inside a native form with a required choice and a field error shown after submitting without a selection.
@@ -338,7 +338,7 @@ id	group	page	title	names	tags	summary
 761	display	kanban	Money total per column	Kanban column total | Pipeline totals | Total por coluna | Total por columna	kanban,board,pipeline,summary,total,money,crm,columns	A deals pipeline board that shows the money total of each column next to its count, keeping the stage colour rail, title and count that a custom header would replace.
 780	layout	theme-island	Scoped block		theme-island,preset,scheme,light,dark,scope	ThemeIsland as a scoped block: a light ocean island inside a dark page.
 781	layout	theme-island	Full page		theme-island,document,full-page,landing,overscroll,ssr	Full-page ThemeIsland with `document`: html and body take the island's preset and scheme while it is mounted.
-800	map	stage	Themed map		map,deck.gl,maplibre,theme,dark-mode,controls	A map stage with an offline light and dark basemap, four deck.gl store circles in the brand color and glass zoom and compass controls.
+800	map	stage	Themed map		map,deck.gl,maplibre,theme,dark-mode,controls	A map stage with an offline light and dark basemap, four deck.gl store circles in the brand color and zoom and compass controls.
 840	layout	auth-layout	Flat panel		auth-layout,panel-tone,flat,gradient,blobs,sign-in	Full-page AuthLayout whose side panel is flat (solid surface, no gradient, no blobs) with a toggle back to the brand gradient.
 841	inputs	password-strength	Sign-up field		password-strength,password,meter,sign-up,text-field,aria-live	A password field with a 3-step strength meter and a polite text label under it.
 842	inputs	password-strength	Your own rule		password-strength,score,labels,custom,policy	A strength meter driven by your own length rule, with custom label text.

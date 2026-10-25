@@ -5,7 +5,7 @@
   const steps = [{ label: 'Account' }, { label: 'Profile' }, { label: 'Billing' }, { label: 'Review' }];
 </script>
 
-<Card material="glass" p="6" full>
+<Card p="6" full>
   <Stack gap="6">
     <Stepper {steps} bind:current={step} />
     <div class="body">

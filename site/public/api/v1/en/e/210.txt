@@ -7,7 +7,7 @@ Spec:
 - `<RadarChart` with `{indicators}` and 2 series
 - `{ name: 'Team A', values: [88, 92, 76, 85, 94, 79] }`
 - `{ name: 'Team B', values: [74, 68, 90, 72, 81, 83] }`
-- `height="340px"` inside `<Card material="glass" full>`
+- `height="340px"` inside `<Card full>`
 Tags: radar-chart, compare, series, indicators, scores, card
 Needs: @codeatlasdev/ui@4.5.0 + echarts
 Components: Card, RadarChart
@@ -20,7 +20,7 @@ Live demo: https://ui.codeatlas.com.br/docs/charts/radar#comparison
   const indicators = ['Speed', 'Quality', 'Reliability', 'Innovation', 'Support', 'Coverage'].map((name) => ({ name, max: 100 }));
 </script>
 
-<Card material="glass" full>
+<Card full>
   <RadarChart
     {indicators}
     series={[

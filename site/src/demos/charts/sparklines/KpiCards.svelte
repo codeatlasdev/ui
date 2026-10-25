@@ -12,7 +12,7 @@
 
 <Grid columns={{ base: 1, sm: 2, lg: 4 }} gap="4">
   {#each kpis as k}
-    <Card material="glass">
+    <Card>
       <Stack gap="2">
         <span class="meta">{k.label}</span>
         <span class="value">{k.value}</span>

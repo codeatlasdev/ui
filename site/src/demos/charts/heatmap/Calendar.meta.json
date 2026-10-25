@@ -6,7 +6,7 @@
 		"`data` is `CalendarHeatmapPoint[]` built with `Array.from({ length: 258 }` as `[ 'YYYY-MM-DD', value ]` pairs",
 		"`range={['2026-01-01', '2026-09-15']}`",
 		"`tooltipFormatter={(v) => `${v} commits`}`",
-		"`height=\"160px\"` inside `<Card material=\"glass\" full>`"
+		"`height=\"160px\"` inside `<Card full>`"
 	],
 	"tags": ["heatmap-chart", "calendar", "activity", "range", "tooltip-formatter", "card"],
 	"shape": "wide"

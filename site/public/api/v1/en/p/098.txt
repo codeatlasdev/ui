@@ -1,7 +1,7 @@
 Use @codeatlasdev/ui demo #098 "Image placeholder" (feedback/skeleton).
-What it shows: A flush glass card skeleton with a 180px rectangular image placeholder above two caption lines. When to use: Loading placeholder for media cards such as products, posts or galleries.
+What it shows: A flush card skeleton with a 180px rectangular image placeholder above two caption lines. When to use: Loading placeholder for media cards such as products, posts or galleries.
 Spec:
-- `<Card material="glass" flush full>`
+- `<Card flush full>`
 - `<Skeleton variant="rectangular" height="180px" />` fills the top of the card
 - Caption in `<Stack gap="2">`: `height="16px" width="50%"` and `height="13px" width="80%"`
 - Caption wrapper `<div class="caption">` has `padding: 16px`

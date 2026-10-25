@@ -36,7 +36,7 @@ Arrow keys move between tabs, Home and End jump to the first and last, and focus
 
 `TabsList` keeps the width of its tabs (it never stretches across the column) and, when the tabs do not fit, scrolls sideways on its own with the scrollbar hidden. The selected tab is scrolled into view on mount and whenever it changes. The leading `icon` snippet and brand logos are covered on the [Dropdown Menu](/docs/navigation/menu/) page too (same `icon` / `brandIcon` pair). Add `fade` to mask the edge that still has tabs to reveal. No wrapper element or CSS is needed for 7 tabs on a phone.
 
-`variant="line"` drops the glass pill: bare text tabs with a hairline under the strip and a 2px underline on the active tab, the usual look in a page header. Tabs that only switch a view (no `TabsContent`) are fine: a trigger points `aria-controls` at its panel only while a `TabsContent` with the same `value` is mounted, so nothing references a missing element. Name the strip with `aria-label` (or `aria-labelledby`) on `TabsList`; `TabsList` and `TabsTrigger` forward any other attribute (`data-*`, `id`, `aria-*`, event handlers) to their element.
+`variant="line"` drops the pill list: bare text tabs with a hairline under the strip and a 2px underline on the active tab, the usual look in a page header. Tabs that only switch a view (no `TabsContent`) are fine: a trigger points `aria-controls` at its panel only while a `TabsContent` with the same `value` is mounted, so nothing references a missing element. Name the strip with `aria-label` (or `aria-labelledby`) on `TabsList`; `TabsList` and `TabsTrigger` forward any other attribute (`data-*`, `id`, `aria-*`, event handlers) to their element.
 
 `TabsTrigger` forwards any other button attribute (`data-testid`, `id`, `aria-*`, `onclick`, `onfocus`) to its `<button role="tab">`, and `TabsList` forwards `data-*`, `id` and `aria-*` to the `role="tablist"` element. `role`, `type` and the roving `tabindex` stay owned by the component.
 
@@ -50,7 +50,7 @@ Arrow keys move between tabs, Home and End jump to the first and last, and focus
 <Props for="Tabs" title="Tabs" rows={[
   { name: "value", type: "string", description: "Bindable active tab value." },
   { name: "onchange", type: "(v: string) => void", description: "Fires when the active tab changes by click or keyboard." },
-  { name: "variant", type: "'pill' | 'line'", default: "'pill'", description: "`pill` fills the active tab on a glass list. `line` is bare text with an underline on the active tab, for page headers." },
+  { name: "variant", type: "'pill' | 'line'", default: "'pill'", description: "`pill` fills the active tab on a filled list. `line` is bare text with an underline on the active tab, for page headers." },
   { name: "children", type: "Snippet", description: "`TabsList` and `TabsContent` children." },
   { name: "class", type: "string", default: "''", description: "Extra classes on the root." },
 ]} />

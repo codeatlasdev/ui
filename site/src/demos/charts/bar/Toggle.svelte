@@ -11,7 +11,7 @@
     <Button variant={mode === 'grouped' ? 'filled' : 'glass'} size="sm" onclick={() => (mode = 'grouped')}>Grouped</Button>
     <Button variant={mode === 'stacked' ? 'filled' : 'glass'} size="sm" onclick={() => (mode = 'stacked')}>Stacked</Button>
   </Flex>
-  <Card material="glass" full>
+  <Card full>
     <BarChart
       series={[
         { name: '2025', data: [44200, 58600, 67400, 81200] },

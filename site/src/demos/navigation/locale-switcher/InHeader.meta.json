@@ -5,7 +5,7 @@
 		"`<SiteHeader>` with a `{#snippet trailing()}` holding the end of the bar",
 		"`<LocaleSwitcher {options} bind:value={locale} />` with `pt-BR` (`Português`, `short: 'PT'`) and `en` (`English`)",
 		"A small filled `Button` labelled `Sign up` follows the switcher",
-		"The header sits in `<Card material=\"glass\" full flush>`"
+		"The header sits in `<Card full flush>`"
 	],
 	"tags": ["locale-switcher", "site-header", "trailing", "cta", "language", "header"],
 	"shape": "wide"

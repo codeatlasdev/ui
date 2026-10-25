@@ -4,7 +4,7 @@ Spec:
 - `kpis` has 4 items: Monthly Revenue `$112k`, Active Users `24.8k`, Churn Rate `2.3%`, Avg Session `4m 12s`
 - Each item has `label`, `value`, `change`, `trend` and 9 `data` values
 - `<Sparkline data={k.data} trend={k.trend} height="32px" />`
-- `<Grid columns={{ base: 1, sm: 2, lg: 4 }} gap="4">` with each KPI in `<Card material="glass">`
+- `<Grid columns={{ base: 1, sm: 2, lg: 4 }} gap="4">` with each KPI in `<Card>`
 - `class:up={k.trend === 'up'}` and `class:down={k.trend === 'down'}` colour the change text
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and

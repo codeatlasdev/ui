@@ -31,7 +31,7 @@ const THEME_BODY = `/**
  *
  * Keep this a plain object and import only from \`@codeatlasdev/ui/vite\` (or \`/astro\`): vite.config
  * loads it in Node, where the package root (which imports .svelte files) cannot be evaluated. That
- * entry also exports \`designStyle("liquid", { ... })\` for a design recipe.
+ * entry also exports \`designStyle("swiss", { ... })\` (or another id) for a design recipe.
  */
 export const theme: ThemeOptions = {
 	defaultPreset: "amber",

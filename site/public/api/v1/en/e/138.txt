@@ -1,9 +1,9 @@
 <!-- @codeatlasdev/ui demo #138 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/table#cards-on-narrow-containers -->
 Element: #138 Cards on narrow containers (display/table)
-What it shows: A SimpleTable that turns each row into a stacked card on narrow screens, listing three users in a flush glass card.
+What it shows: A SimpleTable that turns each row into a stacked card on narrow screens, listing three users in a flush card.
 When to use: Data tables that must stay readable on phones without horizontal scrolling.
 Spec:
-- `<Card material="glass" flush full>` wraps the table
+- `<Card flush full>` wraps the table
 - `<SimpleTable responsive="cards">` with plain `thead` and `tbody`
 - Header columns: Name, Email, Role, Status
 - 3 rows from `rows` with `name`, `email`, `role`, `status`
@@ -24,7 +24,7 @@ Live demo: https://ui.codeatlas.com.br/docs/display/table#cards-on-narrow-contai
   ];
 </script>
 
-<Card material="glass" flush full>
+<Card flush full>
   <SimpleTable responsive="cards">
     <thead>
       <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr>

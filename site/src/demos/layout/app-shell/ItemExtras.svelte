@@ -72,7 +72,7 @@
 <div class="stage" onclick={intercept}>
   <AppShellLayout {modules} {pathname} reorder={NavReorder} itemMenu={NavItemMenu} persistPanel={false} mainId={null} skipLink={false}>
     <PageShell title="Workspaces" description={pathname}>
-      <Card material="glass" full>
+      <Card full>
         <p class="hint">{log}</p>
       </Card>
     </PageShell>

@@ -32,7 +32,7 @@ Svelte 5 UI framework. Components are self-contained and prop-driven. Compose th
 4b. **A live map/canvas behind every screen goes in `AppShellLayout`'s `stage` snippet**, never in a hand-built `position: absolute` layer: it mounts once, is click-through (panels use `class="ca-stage-panel"`), and reads `--ca-shell-inset-*`. Hide and pause it with `stageVisible` or `data-ca-stage="hidden"` on `<html>`.
 5. **CSS imports go once, in the root layout only.**
 6. **Import from `@codeatlasdev/ui`**, never from internal paths like `../../../components/Button`.
-7. **Never combine `will-change: transform` with `backdrop-filter`.** Kills glass blur.
+7. **Write for the default style.** The theme decides how things look (`ThemeOptions`, `defaultStyle` defaults to `solid`: opaque, no blur). Do not add `material="glass"`, `variant="glass"` or blur CSS to look finished; glass is one opt-in style, see "Glass and frosted styles" below.
 
 ## Setup (root layout, once)
 
@@ -117,10 +117,18 @@ Never guess a prop name. This skill and `API.md` track the `main` branch, which 
 - **Mobile.** Heights use `var(--ca-vh)`, never `100vh`/`100dvh`. Fixed UI pads with `var(--ca-safe-*)`. Keyboard-aware forms use `use:keyboardAware`. Full-screen mobile screens are `MobilePane`, sticky form bars are `StickyActions`. Never write a 44px touch override: it is global under `(pointer: coarse)`.
 - **Opening a view with a text field (dialog, sheet, search).** iOS only opens the keyboard for `focus()` called synchronously inside the tap. In the tap handler call `primeKeyboard()` first, then open the view, and mark the real field `use:autofocus`: `<Button onclick={() => { primeKeyboard(); open = true; }}>`. On touch, `autofocus` and `focusTextField` only focus after `primeKeyboard()` (no half-focused field without a keyboard); pass `{ touch: true }` to force it. No-op with a mouse. Never hand-roll `setTimeout(() => input.focus())`.
 - **Streaming, external links, export.** Rows arriving over time are a `LiveList` (polite batched announcements, follow-the-tail that pauses when the user scrolls up, never moves focus; no `StatusChip`/live regions inside rows). External links are `ExternalLink` (rel, icon, localised "opens in a new tab"), not a hand-written `target="_blank"`. A CSV/JSON download is `ExportMenu` or `toCsv`/`toJson`/`downloadFile`.
-- **Theme.** One `ThemeOptions` object in `src/lib/theme.ts`, passed to `caThemeHandle`/`caThemePlugin` (SvelteKit) or `caUI` (Astro). Keep it a plain object with a type-only import so config files can load it in Node. Override tokens by declaring `--ca-*` on `:root`, no `!important`. Local dark/light islands: `data-theme-scope="dark|light"`.
+- **Theme.** The theme drives the whole look: one `ThemeOptions` object in `src/lib/theme.ts` (preset color, scheme, `defaultStyle`, radius, density, fonts, paper), passed to `caThemeHandle`/`caThemePlugin` (SvelteKit) or `caUI` (Astro). Keep it a plain object with a type-only import so config files can load it in Node. Override tokens by declaring `--ca-*` on `:root`, no `!important`. Local dark/light islands: `data-theme-scope="dark|light"`.
 - **Setup.** `bunx @codeatlasdev/ui init` wires all of the above into a fresh SvelteKit or Astro app and is a dry run unless `--write` is passed (it prints `would create` and diffs, never overwrites a file, and keeps a `theme` the app already imports from elsewhere).
 - **SEO.** Public pages use `<Seo>` from `@codeatlasdev/ui/seo` with `canonical`; private pages pass `noindex`.
 - **A11y tests.** `await expectNoA11yViolations(container)` from `@codeatlasdev/ui/testing` in every state (open, error, empty, light, dark); needs the optional peer `axe-core`.
+
+## Glass and frosted styles
+
+`glass`, `frosted` and the `liquid` design recipe are opt-in values of `defaultStyle` / `<html data-style>` (as are `solid`, `flat`, `outlined`, `tonal`, `clay`, `neumorphic`, `chrome`). `Surface`/`Card` `material` is `auto` (follows the theme) unless you need one explicit `solid | frosted | glass | liquid` surface. These rules apply only when blur is used:
+
+- **Never combine `will-change: transform` with `backdrop-filter`** on the same element or an ancestor: it kills the blur.
+- Never put `backdrop-filter` in app or component CSS: a component sets `data-ca-blur="<role>"` (or is a `.ca-surface`) and `html[data-style]` drives the blur.
+- Never put `isolation: isolate` on a parent of a blurred surface: it captures the isolated context, not the page behind.
 
 ## Actions (`@codeatlasdev/ui/actions`)
 

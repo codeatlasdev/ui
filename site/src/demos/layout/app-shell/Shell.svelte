@@ -58,7 +58,7 @@
         <KpiCard title="Revenue" value="$118k" trend={23.4} />
         <KpiCard title="Users" value="24.8k" trend={8.1} />
       </KpiGrid>
-      <Card material="glass" full>
+      <Card full>
         <p class="hint">Click a rail icon or a panel item. The demo keeps the pathname in local state.</p>
       </Card>
     </PageShell>

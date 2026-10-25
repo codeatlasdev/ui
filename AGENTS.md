@@ -10,6 +10,8 @@ This document covers everything an AI agent needs to know to work in this reposi
 
 `@codeatlasdev/ui` is CodeAtlas's UI package. It is a Svelte 5 library published publicly on npm. Every company frontend imports components, tokens and styles from here.
 
+It is theme-driven: one `ThemeOptions` object (preset color, scheme, `defaultStyle`, radius, density, fonts, paper) decides how every component looks. `defaultStyle` is one knob of that object and defaults to `solid` (opaque paper, no blur); `flat`, `outlined`, `tonal`, `clay`, `neumorphic`, `frosted`, `glass` and `chrome` are the other options. Glass is opt-in, never the default and never the identity: write examples and screens for the default style, and read "Glass and frosted styles" below only when blur is in play.
+
 ---
 
 ## Monorepo structure
@@ -84,7 +86,7 @@ Accessibility rules (package and apps):
 - A page has exactly one `<main>` and one `id="main"`. `DocsShell` and `AuthLayout` already provide them; `AppShellLayout` renders `<main id="main" tabindex="-1" class="ca-shell__content">` as the `SkipLink` target (pass `mainId={null}` if the page renders its own `<main id="main" tabindex="-1">`: the region becomes a plain `div`, and `skipLink={false}` when embedding the shell in a page that already has a skip link). `PageShell` never emits `<main>`.
 - Screen reader announcements go through `announce(msg, politeness)` (one shared live region); do not create a new local `role="status"`. In SvelteKit, mount `RouteAnnouncer` (`@codeatlasdev/ui/kit`) once in the root layout.
 - An `aria-label` on a button must contain the visible text (WCAG 2.5.3); compose with `aria-labelledby` as `Combobox` does with `ariaLabel`.
-- New surface CSS with glass/shadow/`border: none` needs an entry in the `@media (forced-colors: active)` block of `materials.css` (`CanvasText` border). Contrast tokens (`prefers-contrast: more`) come from `themeCSS`/`presetCSS`; `tests/contrast.test.ts` measures 7:1 for text and 3:1 for outlines in every preset.
+- New surface CSS that blurs, adds a shadow or sets `border: none` needs an entry in the `@media (forced-colors: active)` block of `materials.css` (`CanvasText` border). Contrast tokens (`prefers-contrast: more`) come from `themeCSS`/`presetCSS`; `tests/contrast.test.ts` measures 7:1 for text and 3:1 for outlines in every preset.
 - `site/tests/routes.a11y.spec.ts` runs axe in dark, light and `forcedColors: "active"` on every route, and ensures at most one `#main`, one `<main>` and one skip link per page. Its timeout is sized per route from the page's node count (axe walks every node, three passes), never a hand-kept list of slow routes; `A11Y_CPU_THROTTLE=<n>` (CDP CPU throttling) reproduces a loaded machine deterministically.
 
 The browser setup (`tests/setup.browser.ts`) parks the Playwright pointer outside the viewport before every test: the pointer is page state, so without it a test that hovers leaves `:hover` active on whatever the next file renders at the top-left (a filled Button reads its hover fill, a tooltip is already open) and results depend on file order. A test that needs a pointer moves it itself (`userEvent.hover`); `src/lib/testing/pointer-reset.svelte.test.ts` guards the hook.
@@ -119,37 +121,42 @@ Reading failures: locators fail with an ARIA snapshot; traces are in `__traces__
    ```
    SvelteKit 3 (`@sveltejs/kit ^3`): config goes into `sveltekit({ adapter, ... })` (no `svelte.config.js`, no `kit` namespace), `tsconfig.json` extends `$app/tsconfig`, `$lib` is removed in favor of `#lib/*` (with the `.ts` extension), and `vite.config.ts` imports the theme with its `.ts` extension. `bunx @codeatlasdev/ui init` detects the Kit version. Details: the SvelteKit 3 section of `.agents/skills/codeatlas-ui/SKILL.md`.
 
-2. **`backdrop-filter` + `will-change: transform`**: never combine the two on the same element or an ancestor. It kills the glass blur. `backdrop-filter` is declared in `styles/surface.css` and `styles/materials.css` only: a component sets `data-ca-blur="<role>"` (roles: `ultra-thin`, `thin`, `regular`, `thick`, `chrome`, `mat-thin`, `mat-regular`, `overlay`, `chrome-layer`, `tooltip`; `FloatingLayer` takes it as `blur="overlay"|"tooltip"`), or is a `.ca-surface`, so `html[data-style]` drives every blur. The role rules write `-webkit-backdrop-filter` first. `data-ca-blur-wide-off` drops it from 900px up (an inline layout); `.ca-btn--glass` and `.ca-icon-btn--glass` are the `regular` role through their own class and lose it while disabled. The modal scrim is `dialog.ca-overlay::backdrop` in `surface.css`. New blurred element: add the attribute, never the property; the migration is guarded by `src/lib/theme/surface-migration.svelte.test.ts` (computed styles against `surface-migration.baseline.json`).
+2. **Svelte 5 runes**: all code uses runes (`$state`, `$derived`, `$effect`, `$props`). Never use legacy `writable`/`readable`.
 
-3. **`isolation: isolate`**: `backdrop-filter` inside an `isolation: isolate` parent captures the isolated context, not the real backdrop.
+3. **`{@const}`**: valid only as an immediate child of `{#each}`, `{#if}`, `{#snippet}`, `{:else}`, or `Component`. Never inside `<div>` or another element.
 
-4. **Svelte 5 runes**: all code uses runes (`$state`, `$derived`, `$effect`, `$props`). Never use legacy `writable`/`readable`.
+4. **`svelte:component`**: deprecated in runes mode. Use `{@const Icon = X}<Icon />` or `<X />` directly.
 
-5. **`{@const}`**: valid only as an immediate child of `{#each}`, `{#if}`, `{#snippet}`, `{:else}`, or `Component`. Never inside `<div>` or another element.
+5. **Sub-components**: `DropdownMenuItem` etc. are separate `.svelte` files exported by name; there are no dotted namespaces.
 
-6. **`svelte:component`**: deprecated in runes mode. Use `{@const Icon = X}<Icon />` or `<X />` directly.
+6. **OKLCH**: the whole color palette uses OKLCH. MUI does not accept OKLCH directly; if you integrate with MUI, convert to hex.
 
-7. **Sub-components**: `DropdownMenuItem` etc. are separate `.svelte` files exported by name; there are no dotted namespaces.
+7. **No inline CSS**: never `style="padding: 20px"` or `style="max-width: 480px"`. Use CSS classes with tokens (`var(--ca-space-5)`). The only exception is dynamic CSS custom properties: `style="--bar-w:{pct}%"`.
 
-8. **OKLCH**: the whole color palette uses OKLCH. MUI does not accept OKLCH directly; if you integrate with MUI, convert to hex.
+8. **No `Stack`/`Flex` for field layout inside `FormSection`**: `FormSection` already has `layout="grid"` (default), `layout="list"` and `layout="stack"`. Do not wrap fields in `Stack gap="4"` as a layout workaround.
 
-9. **No inline CSS**: never `style="padding: 20px"` or `style="max-width: 480px"`. Use CSS classes with tokens (`var(--ca-space-5)`). The only exception is dynamic CSS custom properties: `style="--bar-w:{pct}%"`.
+9. **`ca-*` classes are a public contract**: consuming apps use the BEM classes (`.ca-btn`, `.ca-dialog__body`, …) as CSS targets. Renaming or removing a `ca-*` class listed in [`docs/css-api.md`](docs/css-api.md) is a **breaking change**. When you create or rename a component, update that file. The stable parts, scoped variables and `data-*` hooks of every component are generated from its CSS into `API.md`, `dist/parts.json` and the MCP `list_parts`; a class a component only uses internally is named `ca-x-*` (never a hook), and `@keyframes` names are internal. `codeatlas-ui workarounds --strict` fails when an app selector targets anything else.
 
-10. **No `Stack`/`Flex` for field layout inside `FormSection`**: `FormSection` already has `layout="grid"` (default), `layout="list"` and `layout="stack"`. Do not wrap fields in `Stack gap="4"` as a layout workaround.
+10. **Mobile**: heights use `var(--ca-vh)` (never `100vh`/`100dvh`); `fixed` UI uses `var(--ca-safe-*)`; a form with a keyboard uses `use:keyboardAware` (`@codeatlasdev/ui/actions`); a full-screen mobile view is `MobilePane`, an action bar is `StickyActions`; the 44px touch target is global under `(pointer: coarse)`, so do not write an override in the app. App viewport: `width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content`.
 
-11. **`ca-*` classes are a public contract**: consuming apps use the BEM classes (`.ca-btn`, `.ca-dialog__body`, …) as CSS targets. Renaming or removing a `ca-*` class listed in [`docs/css-api.md`](docs/css-api.md) is a **breaking change**. When you create or rename a component, update that file. The stable parts, scoped variables and `data-*` hooks of every component are generated from its CSS into `API.md`, `dist/parts.json` and the MCP `list_parts`; a class a component only uses internally is named `ca-x-*` (never a hook), and `@keyframes` names are internal. `codeatlas-ui workarounds --strict` fails when an app selector targets anything else.
+11. **Theme**: a single `ThemeOptions` in `src/lib/theme.ts` (plain object, `import type` only: `vite.config`/`astro.config` load the file in Node, where the package root does not evaluate `.svelte`), passed to `caThemeHandle` + `caThemePlugin` (SvelteKit) or `caUI` (Astro). `defaultStyle` (the surface material, `solid` by default) is one field of it, not a separate setup. Override a token by declaring `--ca-*` on `:root` in the app, without `!important`. Local islands: `data-theme-scope="dark|light"`. Automatic setup: `bunx @codeatlasdev/ui init`.
 
-12. **Mobile**: heights use `var(--ca-vh)` (never `100vh`/`100dvh`); `fixed` UI uses `var(--ca-safe-*)`; a form with a keyboard uses `use:keyboardAware` (`@codeatlasdev/ui/actions`); a full-screen mobile view is `MobilePane`, an action bar is `StickyActions`; the 44px touch target is global under `(pointer: coarse)`, so do not write an override in the app. App viewport: `width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content`.
-
-13. **Theme**: a single `ThemeOptions` in `src/lib/theme.ts` (plain object, `import type` only: `vite.config`/`astro.config` load the file in Node, where the package root does not evaluate `.svelte`), passed to `caThemeHandle` + `caThemePlugin` (SvelteKit) or `caUI` (Astro). Override a token by declaring `--ca-*` on `:root` in the app, without `!important`. Local islands: `data-theme-scope="dark|light"`. Automatic setup: `bunx @codeatlasdev/ui init`.
-
-14. **SEO**: a public page uses `<Seo>` from `@codeatlasdev/ui/seo` with a required `canonical`; a private page passes `noindex`.
+12. **SEO**: a public page uses `<Seo>` from `@codeatlasdev/ui/seo` with a required `canonical`; a private page passes `noindex`.
 
     **A11y tests**: test every state (open, error, empty, light, dark) with `await expectNoA11yViolations(container)` from `@codeatlasdev/ui/testing` (needs the optional peer `axe-core`). Inside this repo `packages/ui/tests/a11y.ts` re-exports the same `checkA11y`; never fork the axe options.
 
-15. **Discovering the API**: never guess a prop. Use the `ca-ui-mcp` MCP server (`get_component`, `get_export`, `get_equivalent`, `list_components`, `list_parts`, `get_migration`, `search_tokens`, `list_surfaces`, `get_guide`) or `.agents/skills/codeatlas-ui/API.md`; both cover components and every non-component export (stores, `kit`, `vite`, `astro`, `actions`, `seo`, `forms`, `tokens`: signature + summary) and are generated from the code by `packages/ui/scripts/build-manifest.ts` (runs on `build`). `[ca-ui]` dev warnings (via `devWarn`, `esm-env`) flag an `IconButton` without `aria-label` and a `Dialog` without `title`.
+13. **Discovering the API**: never guess a prop. Use the `ca-ui-mcp` MCP server (`get_component`, `get_export`, `get_equivalent`, `list_components`, `list_parts`, `get_migration`, `search_tokens`, `list_surfaces`, `get_guide`) or `.agents/skills/codeatlas-ui/API.md`; both cover components and every non-component export (stores, `kit`, `vite`, `astro`, `actions`, `seo`, `forms`, `tokens`: signature + summary) and are generated from the code by `packages/ui/scripts/build-manifest.ts` (runs on `build`). `[ca-ui]` dev warnings (via `devWarn`, `esm-env`) flag an `IconButton` without `aria-label` and a `Dialog` without `title`.
 
-16. **Agent skills layout** (`npx skills add codeatlasdev/ui`): one folder per skill under `.agents/skills/`, named exactly like the `name:` in its `SKILL.md` (`codeatlas-ui`, `codeatlas-dx`, `codeatlas-writing`). Never put a `SKILL.md` directly in `.agents/skills/` (the CLI then treats the directory as a single skill and lists nothing else), and quote any `description:` that contains `: ` (an unquoted one is a YAML error and the CLI silently skips the skill). `packages/ui/tests/skills.test.ts` enforces this.
+14. **Agent skills layout** (`npx skills add codeatlasdev/ui`): one folder per skill under `.agents/skills/`, named exactly like the `name:` in its `SKILL.md` (`codeatlas-ui`, `codeatlas-dx`, `codeatlas-writing`). Never put a `SKILL.md` directly in `.agents/skills/` (the CLI then treats the directory as a single skill and lists nothing else), and quote any `description:` that contains `: ` (an unquoted one is a YAML error and the CLI silently skips the skill). `packages/ui/tests/skills.test.ts` enforces this.
+
+---
+
+## Glass and frosted styles
+
+`glass`, `frosted` and the `liquid` recipe are opt-in surface styles (the package default is `solid`: opaque, no blur). The rules below apply only when blur is used: `html[data-style]` is `glass` or `frosted`, a component sets `data-ca-blur`, or a surface has `material="glass" | "frosted" | "liquid"`. An app on the default style never needs them, and a new example must not add `material="glass"` just to look finished.
+
+- **`backdrop-filter` + `will-change: transform`**: never combine the two on the same element or an ancestor. It kills the glass blur. `backdrop-filter` is declared in `styles/surface.css` and `styles/materials.css` only: a component sets `data-ca-blur="<role>"` (roles: `ultra-thin`, `thin`, `regular`, `thick`, `chrome`, `mat-thin`, `mat-regular`, `overlay`, `chrome-layer`, `tooltip`; `FloatingLayer` takes it as `blur="overlay"|"tooltip"`), or is a `.ca-surface`, so `html[data-style]` drives every blur. The role rules write `-webkit-backdrop-filter` first. `data-ca-blur-wide-off` drops it from 900px up (an inline layout); `.ca-btn--glass` and `.ca-icon-btn--glass` are the `regular` role through their own class and lose it while disabled. The modal scrim is `dialog.ca-overlay::backdrop` in `surface.css`. New blurred element: add the attribute, never the property; the migration is guarded by `src/lib/theme/surface-migration.svelte.test.ts` (computed styles against `surface-migration.baseline.json`).
+- **`isolation: isolate`**: `backdrop-filter` inside an `isolation: isolate` parent captures the isolated context, not the real backdrop.
 
 ---
 
@@ -418,7 +425,7 @@ Units: `PageShell` `gap` is a number of pixels, and `KpiGrid` `gap` is a number 
 | `AppSettings` | Settings: side nav + scrollable content |
 | `PageShell` | Dashboard/content: normal scroll, max-width, configurable gap |
 | `MobilePane` | Full screen above the shell on mobile (chat thread, history, detail): header with back, Escape closes, focus enters/returns, safe-area and virtual keyboard |
-| `StickyActions` | Form action bar stuck to the end of the scroll (`align="end" \| "stretch"`, `show`): glass, safe-area and virtual keyboard |
+| `StickyActions` | Form action bar stuck to the end of the scroll (`align="end" \| "stretch"`, `show`): themed bar chrome, safe-area and virtual keyboard |
 
 ### Content layout
 | Component | Use |
@@ -444,14 +451,14 @@ Units: `PageShell` `gap` is a number of pixels, and `KpiGrid` `gap` is a number 
 | `BottomNav` | Bottom navigation for mobile |
 | `MobileHeader` | Mobile header |
 
-### Glass surfaces
+### Surfaces
 | Component | Use |
 |---|---|
-| `Surface` | Generic container with configurable `material` (`auto`, `solid`, `frosted`, `glass`, `liquid`) and `elevation` |
+| `Surface` | Generic container with `material` (`auto` follows the theme; `solid`, `frosted`, `glass`, `liquid` are explicit), `elevation`, `tone`, `variant`, `radius` |
 | `Card` | Surface with default padding, optional title, `flush`, `full` |
-| `LiquidGlass` | Liquid Glass effect with background distortion |
+| `LiquidGlass` | The SVG refraction layer `Surface` paints for `material="liquid"`; rarely used directly |
 
-`GlassCard`, `GlassSurface` and `Row` are deprecated: use `Card`, `Surface` and `Flex` (`bunx @codeatlasdev/ui migrate --write`).
+`GlassCard`, `GlassSurface` and `Row` are deprecated and not for new code: use `Card`, `Surface` and `Flex` (`bunx @codeatlasdev/ui migrate --write`).
 
 ### DataTable (TanStack Table v9)
 ```ts
@@ -477,7 +484,7 @@ import { DataTable, createCaTable, createCaColumnHelper, caTableFeatures } from 
   ```
 - **Touch target**: `--ca-touch-target: 44px` (`tokens.css`). Under `@media (pointer: coarse)` it becomes `min-height`/`min-width` of `IconButton`, the `Select` trigger, `TabsTrigger`, `ToggleGroup`, `SegmentedControl`, `PinInput` and calendar cells. It is a media query, not a prop: do not write 44px overrides in the app.
 
-### Inputs (own primitives with glass tokens)
+### Inputs (own primitives, themed by tokens)
 `Button` · `IconButton` · `TextField` · `TextArea` · `Select` · `Combobox` · `Checkbox` · `Switch` · `Slider` · `NumberField` · `FileUpload` · `ToggleGroup` · `SegmentedControl` · `SwatchGroup` · `PinInput` · `CopyButton` · `DatePicker` · `DateRangePicker` · `DateField` · `TimeField` · `Calendar` · `RangeCalendar`
 
 - **`Button` / `IconButton` `loading`**: swaps `leading` (Button) or the icon (IconButton) for a `Spinner`, applies `aria-busy="true"`, disables the click (`onclick` does not fire) and keeps the label. Class: `ca-btn--loading`.
@@ -609,7 +616,7 @@ import {
 --ca-ease-standard / decelerate / accelerate / spring
 --ca-duration-fast / base / slow
 
-/* Glass */
+/* Surface fill and blur (every style rewrites these; they are translucent only under glass and frosted) */
 --ca-glass-bg / --ca-glass-separator / --ca-glass-tint-* / --ca-glass-border
 --ca-blur-ultra-thin / thin / regular / thick / chrome
 
@@ -656,7 +663,7 @@ export const theme: ThemeOptions = {
   presets: [{ id: "acme", color: "#2563eb" }],
   defaultPreset: "acme",   // used until the user picks another
   defaultScheme: "system", // "light" | "dark" | "system"
-  defaultStyle: "glass",   // "glass" | "frosted" | "solid" | "flat"
+  defaultStyle: "solid",   // the default; also "flat" | "outlined" | "tonal" | "clay" | "neumorphic" | "frosted" | "glass" | "chrome"
   fonts: { body: "Geist, system-ui, sans-serif" },
   radius: 1,               // multiplier of the radius scale
   density: "comfortable",  // or "compact"

@@ -1,7 +1,7 @@
 Use @codeatlasdev/ui demo #191 "Stacked bars" (charts/bar).
 What it shows: A stacked bar chart splitting six months of revenue into four acquisition channels. When to use: Showing how a total is composed of channels or segments over time.
 Spec:
-- `<BarChart` inside `<Card material="glass" full>`
+- `<BarChart` inside `<Card full>`
 - 4 series in `series`: Organic, Paid, Referral, Direct, each with 6 values
 - `categories={months}` with `'Jan'` to `'Jun'`
 - `stacked` prop

@@ -2,7 +2,7 @@
   import { Card, Stat } from '@codeatlasdev/ui';
 </script>
 
-<Card material="glass" title="This week" headingLevel={3} class="stats-card">
+<Card title="This week" headingLevel={3} class="stats-card">
   <div class="row">
     <Stat label="Leads this week" value="128" hint="12 more than last week" />
     <Stat label="Reply rate" value="18" unit="%" trend={-2.4} hint="Goal: 25%" />

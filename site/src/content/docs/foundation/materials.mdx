@@ -1,6 +1,6 @@
 ---
 title: Materials
-description: The five material tiers behind every surface, from ultra-thin translucency to chrome, and how the surface style changes them.
+description: The five material tiers behind every surface, from ultra-thin to chrome, and how the surface style (solid by default, blurred under glass and frosted) changes them.
 group: Foundation
 order: 4
 ---
@@ -13,22 +13,24 @@ import GlassButtonsSrc from "~/demos/foundation/materials/GlassButtons.svelte?ra
 import Tinted from "~/demos/foundation/materials/Tinted.svelte";
 import TintedSrc from "~/demos/foundation/materials/Tinted.svelte?raw";
 
-Materials are CSS classes (`glass-ultra-thin`, `glass-thin`, `glass-regular`, `glass-thick`, `glass-chrome`) that read `--ca-mat-<tier>-*` tokens (blur, fill and shadow). [Surface](/docs/surfaces/surface/) paints the same five tiers for you from its `material` and `elevation` props (elevation 1 to 5 maps to ultra-thin to chrome), and adds the refraction layer for `material="liquid"`. Use the classes only for markup that is not a Surface.
+Materials are CSS classes (`glass-ultra-thin`, `glass-thin`, `glass-regular`, `glass-thick`, `glass-chrome`) that read `--ca-mat-<tier>-*` tokens (blur, fill and shadow). [Surface](/docs/surfaces/surface/) paints the same five tiers for you from its `elevation` prop (and `material`, when you pin one) (elevation 1 to 5 maps to ultra-thin to chrome), and adds the refraction layer for `material="liquid"`. Use the classes only for markup that is not a Surface.
 
 ```svelte
 <script>
   import { Surface } from "@codeatlasdev/ui";
 </script>
 
-<Surface material="glass" elevation={4} tone="brand">Content</Surface>
+<Surface elevation={4} tone="brand">Content</Surface>
 ```
 
-The surface style on `<html data-style>` rewrites the `--ca-mat-*` tokens, so every material changes at once. `solid` is the default: no blur, opaque fills, no glow, hairline edges, so the tiers below differ only by fill and shadow. `flat` also drops the shadows, `frosted` keeps a lighter blur, and `glass` (the opt-in `liquid` look) has the full blur, mesh and glow. The demos on this page use `material="glass"`, so they look the same under any style. Switch the style with `colorScheme.setStyle()`, see [Theming](/docs/getting-started/theming/#surface-styles). Browsers with `prefers-reduced-transparency: reduce` get opaque surfaces.
-
-Components that blur but are not a Surface (the Tabs list, Chip, Toast, Rail, Panel, the DataTable menus) set `data-ca-blur="<role>"` on their element instead of declaring `backdrop-filter`, so `<html data-style>` drives them exactly like a `material="auto"` Surface. Roles are `ultra-thin`, `thin`, `regular`, `thick`, `chrome`, `mat-thin`, `mat-regular`, `overlay`, `chrome-layer` and `tooltip`; Use it the same way on your own elements, and never add `will-change` or `isolation: isolate` around them. `list_surfaces` in the [MCP server](/docs/getting-started/ai-agents/#mcp-server) lists the styles and which ones draw a blur.
+The surface style on `<html data-style>` rewrites the `--ca-mat-*` tokens, so every material changes at once. `solid` is the default: no blur, opaque fills, no glow, hairline edges, so the tiers below differ only by fill and shadow. `flat` also drops the shadows, `frosted` keeps a lighter blur, and `glass` (the opt-in `liquid` look) has the full blur, mesh and glow. The tier demos on this page pin `material="glass"` so every tier shows its blur whatever the app's style. Switch the style with `colorScheme.setStyle()`, see [Theming](/docs/getting-started/theming/#surface-styles). Browsers with `prefers-reduced-transparency: reduce` get opaque surfaces.
 
 The modal scrim (the `::backdrop` of Dialog, AlertDialog, Sheet, Drawer, CommandPalette and DocsSearch) reads `--ca-scrim-blur`, which defaults to `blur(4px) saturate(180%)` under every style. Set `--ca-scrim-blur: none` on `:root` to drop the blur on all of them at once, for example in a WKWebView window that is transparent over a native view.
 
-<Demo title="Glass tiers" description="All five thickness levels on a gradient backdrop." src={TiersSrc}><Tiers /></Demo>
+## Glass and frosted styles: blur rules
+
+The rules below apply only when blur is used (`glass`, `frosted`, or a `data-ca-blur` element). Components that blur but are not a Surface (the Tabs list, Chip, Toast, Rail, Panel, the DataTable menus) set `data-ca-blur="<role>"` on their element instead of declaring `backdrop-filter`, so `<html data-style>` drives them exactly like a `material="auto"` Surface. Roles are `ultra-thin`, `thin`, `regular`, `thick`, `chrome`, `mat-thin`, `mat-regular`, `overlay`, `chrome-layer` and `tooltip`; Use it the same way on your own elements, and never add `will-change` or `isolation: isolate` around them. `list_surfaces` in the [MCP server](/docs/getting-started/ai-agents/#mcp-server) lists the styles and which ones draw a blur.
+
+<Demo title="Material tiers" description="All five thickness levels, pinned to glass, on a gradient backdrop." src={TiersSrc}><Tiers /></Demo>
 <Demo title="Button glass variants" description="glass-btn, glass-btn-prominent and glass-btn-clear for custom controls. They follow `data-style`, so the halo and blur disappear under `solid`." src={GlassButtonsSrc}><GlassButtons /></Demo>
 <Demo title="Tinted and glowing" description={"`tone=\"brand\"` tints the fill, `glow` adds a halo that only shows under styles that keep one."} src={TintedSrc}><Tinted /></Demo>

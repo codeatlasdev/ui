@@ -27,7 +27,7 @@ import LinkSrc from "~/demos/surfaces/card/Link.svelte?raw";
 <Card title="Team" headingLevel={2} tone="brand">…</Card>
 ```
 
-Card is a [Surface](/docs/surfaces/surface/) with a header (`title`, `headerActions`), padding from `--ca-card-padding` and an optional link. Every Surface prop passes through (`elevation`, `material`, `tone`, `variant`, `radius`, `glow`, `interactive`), and `material="auto"` follows the theme: opaque under the default solid style, glass under `liquid`. The demos below set `material="glass"` so they look the same under any style. Use `flush` for content that touches the edges, such as tables, images and code.
+Card is a [Surface](/docs/surfaces/surface/) with a header (`title`, `headerActions`), padding from `--ca-card-padding` and an optional link. Every Surface prop passes through (`elevation`, `material`, `tone`, `variant`, `radius`, `glow`, `interactive`), and `material="auto"` (the default) follows the theme: opaque under the default solid style, and whatever `defaultStyle` says under any other (`outlined`, `tonal`, `frosted`, `glass`, ...). Leave `material` unset; set it only to pin one card to `solid`, `frosted`, `glass` or `liquid`. Use `flush` for content that touches the edges, such as tables, images and code.
 
 **The content is already padded.** Card pads its children with `--ca-card-padding` (20px). A wrapper that adds its own padding (`<Card><div class="box">…</div></Card>` with `.box { padding: 1.25rem }`) doubles it to 40px, the usual cause of an oversized card. Remove the wrapper padding, pick a density with `padding` (`'none'`, `'sm'`, `'md'`, `'lg'`, a CSS length or a number of pixels), or use `flush` when you bring your own layout. In development a `[ca-ui]` warning names the mistake when the first child is padded. To change the default for the whole app, override `--ca-card-padding` on `:root`.
 
@@ -41,7 +41,7 @@ With `href` the card is a single `<a>` and is interactive. The link name comes f
 
 <Demo title="Content card" description={"Text-heavy card with eyebrow, title, body and a link."} src={ContentCardSrc}><ContentCard /></Demo>
 <Demo title="Stat cards" description={"Compact metric display."} src={StatsSrc}><Stats /></Demo>
-<Demo title="Tone and glow" description={"`tone=\"brand\"` tints the fill. `glow` adds a halo that only shows under styles that keep one, such as `glass`."} src={AccentsSrc}><Accents /></Demo>
+<Demo title="Tone and glow" description={"`tone=\"brand\"` tints the fill. `glow` adds a halo that only shows under styles that keep one (`glass`, `frosted`, `chrome`)."} src={AccentsSrc}><Accents /></Demo>
 <Demo title="Header and actions" description={"`title` and `headerActions` render a built-in header row."} src={HeaderActionsSrc}><HeaderActions /></Demo>
 <Demo title="Stacked controls" description={"`gap` stacks several controls in a column, aligned with the title."} src={StackedSrc}><Stacked /></Demo>
 <Demo title="Link card" description={"`href` renders the whole card as a link."} src={LinkSrc}><Link /></Demo>

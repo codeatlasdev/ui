@@ -7,7 +7,7 @@ Spec:
 - `{#each quarters as q}` renders `<Chip label={q} selected={selected === q}` with `variant="brand"` and `size="sm"`
 - `onclick={() => (selected = q)}` changes the quarter
 - `qData` has 4 items per quarter: Cloud, Enterprise, SaaS, Other
-- `<PieChart {data} donut height="300px" />` inside `<Card material="glass" full>`
+- `<PieChart {data} donut height="300px" />` inside `<Card full>`
 Tags: pie-chart, donut, chip, quarters, state, derived
 Needs: @codeatlasdev/ui@4.5.0 + echarts
 Components: Card, Flex, Chip, PieChart
@@ -35,7 +35,7 @@ Live demo: https://ui.codeatlas.com.br/docs/charts/pie#animated-proportions
       <Chip label={q} selected={selected === q} onclick={() => (selected = q)} variant="brand" size="sm" />
     {/each}
   </Flex>
-  <Card material="glass" full><PieChart {data} donut height="300px" /></Card>
+  <Card full><PieChart {data} donut height="300px" /></Card>
 </div>
 
 <style>

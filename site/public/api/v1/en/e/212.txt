@@ -5,7 +5,7 @@ When to use: Showing a single score profile across several attributes.
 Spec:
 - `const indicators` maps 6 names (Speed, Quality, Reliability, Innovation, Support, Coverage) to `{ name, max: 100 }`
 - `<RadarChart {indicators} series={[{ name: 'Team Alpha', values: [88, 92, 76, 85, 94, 79] }]}`
-- `height="340px"` inside `<Card material="glass" full>`
+- `height="340px"` inside `<Card full>`
 Tags: radar-chart, simple, indicators, scores, single-series, card
 Needs: @codeatlasdev/ui@4.5.0 + echarts
 Components: Card, RadarChart
@@ -18,6 +18,6 @@ Live demo: https://ui.codeatlas.com.br/docs/charts/radar#simple-radar
   const indicators = ['Speed', 'Quality', 'Reliability', 'Innovation', 'Support', 'Coverage'].map((name) => ({ name, max: 100 }));
 </script>
 
-<Card material="glass" full>
+<Card full>
   <RadarChart {indicators} series={[{ name: 'Team Alpha', values: [88, 92, 76, 85, 94, 79] }]} height="340px" />
 </Card>

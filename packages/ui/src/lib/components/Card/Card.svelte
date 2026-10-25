@@ -1,7 +1,8 @@
 <script lang="ts">
   /**
    * Card — a Surface with a header (`title`, `headerActions`), padding and an optional link.
-   * Every Surface prop (`elevation`, `material`, `tone`, `variant`, `radius`, `glow`) passes through.
+   * Every Surface prop (`elevation`, `material`, `tone`, `variant`, `radius`, `glow`) passes through;
+   * `material` defaults to `auto`, which follows the theme.
    *
    *   <Card title="Revenue" headingLevel={2} elevation={2}>…</Card>
    *   <Card href="/docs" title="Docs" interactive>…</Card>

@@ -8,7 +8,7 @@ Spec:
 - `categories={months}` with `'Jan'` to `'Sep'`
 - `area` prop
 - `valueFormatter={fmt}` renders `$${(v / 1000).toFixed(0)}k`
-- `height="360px"` inside `<Card material="glass" full>`
+- `height="360px"` inside `<Card full>`
 Tags: line-chart, area, revenue, time-series, value-formatter, card
 Needs: @codeatlasdev/ui@4.5.0 + echarts
 Components: Card, LineChart
@@ -23,6 +23,6 @@ Live demo: https://ui.codeatlas.com.br/docs/charts/line#area-with-gradient-fill
   const fmt = (v: number) => `$${(v / 1000).toFixed(0)}k`;
 </script>
 
-<Card material="glass" full>
+<Card full>
   <LineChart series={[{ name: 'Revenue', data: revenue }]} categories={months} valueFormatter={fmt} area height="360px" />
 </Card>

@@ -3,7 +3,7 @@
   import { TrendingUp, Users, DollarSign, Activity } from '@lucide/svelte';
 </script>
 
-<Card material="glass" flush full>
+<Card flush full>
   <PageShell title="Dashboard" description="Overview of this month">
     {#snippet actions()}<Button variant="filled" size="sm">New report</Button>{/snippet}
 
@@ -15,7 +15,7 @@
         <KpiCard title="Uptime" value="99.9%" trend={0.1} icon={Activity} />
       </KpiGrid>
 
-      <Card material="glass" full>
+      <Card full>
         <p class="placeholder">Chart or data table goes here</p>
       </Card>
     </Stack>

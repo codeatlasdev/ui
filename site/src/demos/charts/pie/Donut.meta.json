@@ -4,7 +4,7 @@
 	"spec": [
 		"`<PieChart data={marketData} donut height=\"300px\" />`",
 		"`marketData` has 5 items with `value` and `name`: Cloud Services `38`, Enterprise SW `24`, SaaS Tools `18`, Infrastructure `12`, Other `8`",
-		"Wrapped in `<Card material=\"glass\" full>`"
+		"Wrapped in `<Card full>`"
 	],
 	"tags": ["pie-chart", "donut", "market-share", "proportions", "card"],
 	"shape": "square"

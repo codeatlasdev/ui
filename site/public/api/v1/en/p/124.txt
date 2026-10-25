@@ -1,7 +1,7 @@
 Use @codeatlasdev/ui demo #124 "Horizontal" (display/divider).
-What it shows: Three stacked text sections inside a glass card separated by horizontal dividers. When to use: Separating sections of content inside a card or panel.
+What it shows: Three stacked text sections inside a card separated by horizontal dividers. When to use: Separating sections of content inside a card or panel.
 Spec:
-- `<Card material="glass" p="6" full>` wraps the content
+- `<Card p="6" full>` wraps the content
 - `<Stack gap="4">` stacks Section A, B and C paragraphs
 - `<Divider />` is placed between them with no props
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?

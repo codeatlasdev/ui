@@ -20,7 +20,7 @@
       <Chip label={q} selected={selected === q} onclick={() => (selected = q)} variant="brand" size="sm" />
     {/each}
   </Flex>
-  <Card material="glass" full><PieChart {data} donut height="300px" /></Card>
+  <Card full><PieChart {data} donut height="300px" /></Card>
 </div>
 
 <style>

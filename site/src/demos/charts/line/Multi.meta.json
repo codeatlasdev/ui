@@ -6,7 +6,7 @@
 		"`const profit = revenue.map((r, i) => r - expenses[i])` derives the third series",
 		"`categories={months}` with `'Jan'` to `'Sep'`",
 		"`valueFormatter={fmt}` renders `$${(v / 1000).toFixed(0)}k`",
-		"`height=\"300px\"` inside `<Card material=\"glass\" full>`"
+		"`height=\"300px\"` inside `<Card full>`"
 	],
 	"tags": ["line-chart", "multi-series", "revenue", "expenses", "time-series", "card"],
 	"shape": "wide"

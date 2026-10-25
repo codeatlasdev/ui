@@ -73,7 +73,7 @@ colorScheme.presets; // every valid id: built-ins plus your brand presets
 
 ### Brand preset from a hex color
 
-Give the library your logo color and it derives hue, chroma and lightness in OKLCH, then emits the complete light and dark token set (brand, surfaces, text, outlines, glass tints). Charts use the hex as their first series color.
+Give the library your logo color and it derives hue, chroma and lightness in OKLCH, then emits the complete light and dark token set (brand, surfaces, text, outlines, surface tints). Charts use the hex as their first series color.
 
 ```ts
 export const theme: ThemeOptions = {
@@ -209,7 +209,7 @@ colorScheme.toggle();   // flips resolved light and dark
 | `solid` | Default. No blur, opaque surfaces, plain page, hairline edges, no glow. Keeps soft neutral shadows. |
 | `flat` | No blur, no mesh, no glow, no drop shadows: separation comes from borders. |
 | `frosted` | Less blur, calmer mesh background. |
-| `glass` | Liquid Glass: strong blur and saturation, translucent tints, brand mesh, glow and rim light. Opt-in. |
+| `glass` | Opt-in. Strong blur and saturation, translucent tints, brand mesh, glow and rim light (the look of the `liquid` recipe). |
 | `outlined` | Border-defined opaque surfaces with no elevation. Used by the `swiss`, `brutalism`, `terminal` and `sketchbook` recipes. |
 | `neumorphic` | One base color extruded by paired light and dark shadows. Low contrast: use it for showcases, not dense data UIs. |
 | `clay` | Soft, inflated opaque surfaces. |
@@ -222,7 +222,7 @@ colorScheme.setStyle("glass");
 
 ### The liquid recipe
 
-Earlier versions looked like Liquid Glass: glass surfaces over a three-hue mesh, glow on selected states, round corners (10px controls), 2px icons, bold headings and hue-tinted shadows. That look is now the opt-in `liquid` recipe:
+`liquid` is one of the design recipes: glass surfaces over a three-hue mesh, glow on selected states, round corners (10px controls), 2px icons, bold headings and hue-tinted shadows. It is what earlier versions looked like and is opt-in:
 
 ```ts
 import { designStyle } from "@codeatlasdev/ui/vite";
@@ -235,7 +235,7 @@ export const theme: ThemeOptions = designStyle("liquid", {
 });
 ```
 
-`designStyle("default")` is the sober default. `designStyle`, `DESIGN_STYLES` and `mergeTheme` are plain data, so a `theme.ts` shared with `vite.config` imports them in Node from `@codeatlasdev/ui/vite` (`@codeatlasdev/ui/astro` exports them too). The root and `@codeatlasdev/ui/kit` also export them, but they pull in Svelte files that `vite.config` cannot load. To migrate an app that relied on the old defaults, use `designStyle("liquid", { ... })`, or set `defaultStyle: "glass"` yourself.
+`designStyle("default")` is the default recipe (solid). `designStyle`, `DESIGN_STYLES` and `mergeTheme` are plain data, so a `theme.ts` shared with `vite.config` imports them in Node from `@codeatlasdev/ui/vite` (`@codeatlasdev/ui/astro` exports them too). The root and `@codeatlasdev/ui/kit` also export them, but they pull in Svelte files that `vite.config` cannot load. To migrate an app that relied on the old defaults, use `designStyle("liquid", { ... })`, or set `defaultStyle: "glass"` yourself.
 
 ### Other design styles
 
@@ -371,9 +371,9 @@ dialog.ca-overlay::backdrop { background: rgb(0 0 0 / .3); }
 
 `--ca-scrim-color` is set per preset and scheme; `--ca-scrim-blur: none` drops the blur on every modal at once. Search your app CSS for `.ca-overlay` when upgrading from 1.x and move each rule to `::backdrop` (scrim) or to the panel class (`.ca-dialog`, `.ca-drawer`) if it was meant for the surface.
 
-## Do not break the glass
+## Glass and frosted styles: blur rules
 
-Two CSS properties silently kill `backdrop-filter` on glass surfaces:
+Only the `glass` and `frosted` styles (and `material="glass" | "frosted" | "liquid"` surfaces) blur. When you do blur, two CSS properties silently kill `backdrop-filter`:
 
 - `will-change: transform` on the same element or an ancestor.
 - `position: absolute` children inside an `isolation: isolate` parent.

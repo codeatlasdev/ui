@@ -32,7 +32,7 @@
 <div class="stage" onclick={intercept}>
   <AppShellLayout {modules} {pathname} panelWidth={280} resizablePanel persistPanel={false} mainId={null} skipLink={false}>
     <PageShell title="Wider panel" description="Drag the panel edge, or focus it and use the arrow keys.">
-      <Card material="glass" full>
+      <Card full>
         <p class="hint">The panel starts at 280px and holds between 160px and 480px.</p>
       </Card>
     </PageShell>

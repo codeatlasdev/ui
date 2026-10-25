@@ -144,5 +144,5 @@ Always gate non-essential motion on `reducedMotion` from the package (or `@media
 | Only the presets you reach are imported | [CSS](#css-load-only-the-presets-you-use) |
 | One `priority` image, every image has `width` and `height` | [Images](#images) |
 | Fonts self-hosted, above-the-fold font preloaded, fallback metrics set | [Fonts](#fonts) |
-| No `will-change` on glass, no literal `100vh` | `bun run --cwd packages/ui lint:tokens` guards this in the package; follow the same rules in app CSS |
+| No `will-change` on a blurred surface (`glass`, `frosted`), no literal `100vh` | `bun run --cwd packages/ui lint:tokens` guards this in the package; follow the same rules in app CSS |
 | Heavy features imported from subpaths | [JavaScript budget](#javascript-budget) |

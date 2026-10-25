@@ -11,6 +11,6 @@
   ];
 </script>
 
-<Card material="glass" full>
+<Card full>
   <PieChart data={marketData} donut centerLabel={{ value: '$2.4M', label: 'Total Revenue' }} height="300px" />
 </Card>

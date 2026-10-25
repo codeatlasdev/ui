@@ -8,7 +8,7 @@
   ];
 </script>
 
-<Card material="glass" flush full>
+<Card flush full>
   <SimpleTable responsive="cards">
     <thead>
       <tr><th>Domain</th><th>Price</th><th>Registrar</th></tr>

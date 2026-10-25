@@ -8,7 +8,7 @@
   let locale = $state('pt-BR');
 </script>
 
-<Card material="glass" full flush>
+<Card full flush>
   <SiteHeader>
     {#snippet trailing()}
       <LocaleSwitcher {options} bind:value={locale} />

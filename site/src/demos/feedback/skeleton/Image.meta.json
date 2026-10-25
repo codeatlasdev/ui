@@ -1,8 +1,8 @@
 {
-	"summary": "A flush glass card skeleton with a 180px rectangular image placeholder above two caption lines.",
+	"summary": "A flush card skeleton with a 180px rectangular image placeholder above two caption lines.",
 	"use": "Loading placeholder for media cards such as products, posts or galleries.",
 	"spec": [
-		"`<Card material=\"glass\" flush full>`",
+		"`<Card flush full>`",
 		"`<Skeleton variant=\"rectangular\" height=\"180px\" />` fills the top of the card",
 		"Caption in `<Stack gap=\"2\">`: `height=\"16px\" width=\"50%\"` and `height=\"13px\" width=\"80%\"`",
 		"Caption wrapper `<div class=\"caption\">` has `padding: 16px`"

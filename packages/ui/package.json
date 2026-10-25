@@ -24,7 +24,8 @@
 		"ai-friendly",
 		"sveltekit",
 		"oklch",
-		"liquid-glass",
+		"theming",
+		"design-tokens",
 		"datatable",
 		"appshell"
 	],

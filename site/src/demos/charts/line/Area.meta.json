@@ -7,7 +7,7 @@
 		"`categories={months}` with `'Jan'` to `'Sep'`",
 		"`area` prop",
 		"`valueFormatter={fmt}` renders `$${(v / 1000).toFixed(0)}k`",
-		"`height=\"360px\"` inside `<Card material=\"glass\" full>`"
+		"`height=\"360px\"` inside `<Card full>`"
 	],
 	"tags": ["line-chart", "area", "revenue", "time-series", "value-formatter", "card"],
 	"shape": "wide"

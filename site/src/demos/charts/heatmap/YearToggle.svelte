@@ -27,7 +27,7 @@
     <Button variant={year === 2026 ? 'filled' : 'glass'} size="sm" onclick={() => (year = 2026)}>2026</Button>
     <Button variant={year === 2025 ? 'filled' : 'glass'} size="sm" onclick={() => (year = 2025)}>2025</Button>
   </Flex>
-  <Card material="glass" full>
+  <Card full>
     <HeatmapChart variant="calendar" data={data[year]} range={ranges[year]} tooltipFormatter={(v) => `${v} commits`} height="160px" />
   </Card>
 </div>

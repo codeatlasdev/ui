@@ -28,7 +28,7 @@
 
 <Grid columns={{ base: 1, sm: 3 }} gap="4">
   {#each metrics as m}
-    <Card material="glass">
+    <Card>
       <Stack gap="1">
         <Flex justify="between">
           <span class="label">{m.label}</span>

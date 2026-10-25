@@ -4,7 +4,7 @@ What it shows: Three independent Collapsible FAQ panels stacked with a small gap
 When to use: Short FAQ or help blocks where each answer expands on its own.
 Spec:
 - `<Stack gap="2" class="collapsible-faq">` with `max-width: 560px`
-- 3 `<Collapsible` items with a `title`: What is a glass surface?, How do presets work?, Is dark mode automatic?
+- 3 `<Collapsible` items with a `title`: What is a surface style?, How do presets work?, Is dark mode automatic?
 - Each body is a `<p>` child, two of them include a `<code>` token
 - Nothing is bound to the open state, each panel manages its own
 Tags: collapsible, faq, stack, disclosure, expand, title
@@ -17,8 +17,8 @@ Live demo: https://ui.codeatlas.com.br/docs/surfaces/collapsible#default-closed
 </script>
 
 <Stack gap="2" class="collapsible-faq">
-  <Collapsible title="What is a glass surface?">
-    <p>A glass surface uses backdrop-filter blur and a translucent tint to create a layered depth effect that reacts to the content behind it.</p>
+  <Collapsible title="What is a surface style?">
+    <p>A surface style is one knob of the theme. It decides whether cards are solid paper, outlined, tonal or blurred, and every component follows it.</p>
   </Collapsible>
   <Collapsible title="How do presets work?">
     <p>Presets remap the brand hue token. Switching preset updates every component that reads from <code>--ca-brand-*</code> without any JS.</p>

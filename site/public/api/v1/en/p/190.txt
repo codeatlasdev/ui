@@ -1,7 +1,7 @@
 Use @codeatlasdev/ui demo #190 "Horizontal bars" (charts/bar).
 What it shows: A horizontal bar chart ranking eight products by a single Sales series, with values formatted as thousands. When to use: Ranking items by one metric, such as top products or top accounts, when category labels are long.
 Spec:
-- `<BarChart` inside `<Card material="glass" full>`
+- `<BarChart` inside `<Card full>`
 - One series `{ name: 'Sales', data: [9840, 8720, 7650, 6430, 5980, 4810, 3920, 3140] }`
 - `categories={products}` with 8 product names
 - `horizontal` prop

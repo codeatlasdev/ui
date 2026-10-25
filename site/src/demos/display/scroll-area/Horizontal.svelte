@@ -4,7 +4,7 @@
   const tags = Array.from({ length: 24 }, (_, i) => `Tag ${i + 1}`);
 </script>
 
-<Card material="glass" p="2" full>
+<Card p="2" full>
   <ScrollArea orientation="horizontal" type="always">
     <div class="row">
       {#each tags as tag}<Chip label={tag} />{/each}

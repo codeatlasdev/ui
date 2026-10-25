@@ -46,15 +46,15 @@ Explicit don'ts. Each one has a correct alternative.
 <div style="background: #1e293b; color: #f8fafc;">
 
 <!-- ✓ Semantic token -->
-<div style="background: var(--ca-glass-bg); color: var(--ca-text-primary);">
+<div style="background: var(--ca-surface-raised); color: var(--ca-text-primary);">
 ```
 
 ```css
 /* ✗ Tint in OKLCH: gray tokens have hue 0°, so blue drifts to purple/pink */
-background: color-mix(in oklch, var(--ca-brand-main) 15%, var(--ca-glass-tint));
+background: color-mix(in oklch, var(--ca-brand-main) 15%, var(--ca-surface-raised));
 
 /* ✓ Mix a color with a neutral (gray token, black, white, transparent) in OKLab */
-background: color-mix(in oklab, var(--ca-brand-main) 15%, var(--ca-glass-tint));
+background: color-mix(in oklab, var(--ca-brand-main) 15%, var(--ca-surface-raised));
 ```
 
 ---
@@ -68,7 +68,7 @@ background: color-mix(in oklab, var(--ca-brand-main) 15%, var(--ca-glass-tint));
 <!-- ✓ -->
 <Card flush>
 
-<!-- ✗ will-change + backdrop-filter: kills glass blur -->
+<!-- ✗ will-change + backdrop-filter (only when you blur: glass/frosted styles): kills the blur -->
 <div style="will-change: transform; backdrop-filter: blur(12px);">
 
 <!-- ✓ Never combine these two on the same element or its ancestors -->

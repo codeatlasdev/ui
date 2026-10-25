@@ -15,7 +15,7 @@
   });
 </script>
 
-<Card material="glass" full>
+<Card full>
   <Stack gap="3">
     <GaugeChart {value} variant="ring" formatter={(v) => String(Math.round(v))} height="260px" />
     <p class="label">{label}</p>

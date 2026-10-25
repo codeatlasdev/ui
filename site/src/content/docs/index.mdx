@@ -1,6 +1,6 @@
 ---
 title: Introduction
-description: CodeAtlas UI is an open-source Svelte 5 component library with a sober solid default, opt-in glass materials, an OKLCH theme engine and native-feeling mobile behavior.
+description: CodeAtlas UI is an open-source Svelte 5 component library with a theme engine (one object sets the color, surface style, radius, density and fonts), a sober solid default, an OKLCH palette and native-feeling mobile behavior.
 group: Getting started
 order: 0
 ---
@@ -26,8 +26,8 @@ That is a whole users page: header, search, pagination and empty state, with no 
 ## What you get
 
 - Page templates instead of primitives: `AppList`, `AppForm`, `AppSettings`, `PageShell` and `AppShellLayout` bring layout, spacing and empty states.
-- Sober by default, glass on request: surfaces are solid and opaque out of the box. The `liquid` recipe (or `defaultStyle: "glass"`) brings back Liquid Glass, with five material tiers over a real `backdrop-filter` and opaque fallbacks for reduced transparency.
-- A theme engine with eight OKLCH presets, brand presets from one hex color, nine surface styles, fifteen design-style recipes and no flash on load.
+- Theme-driven: one `ThemeOptions` object decides how every component looks. Surfaces are solid paper by default; `defaultStyle` switches the whole app to `flat`, `outlined`, `tonal`, `clay`, `neumorphic`, `frosted`, `glass` or `chrome`, and blurred styles fall back to opaque for reduced transparency.
+- A theme engine with eight OKLCH presets, brand presets from one hex color, nine surface styles (`style` is one knob among radius, density, fonts, paper and motion), fifteen design-style recipes and no flash on load.
 - Native feel on mobile: safe areas, keyboard handling, 44px touch targets, bottom sheets with swipe to dismiss and a browser chrome color that follows the page.
 - Accessibility: WAI-ARIA keyboard and focus behavior, axe-tested components, reduced motion and reduced transparency support.
 - Small bundles: Charts, DataTable and CodeSnippet are separate entry points with optional peers, so they stay out of your bundle unless imported.
@@ -57,7 +57,7 @@ That is a whole users page: header, search, pagination and empty state, with no 
 
 <CardGrid>
   <LinkCard title="Colors" href="/docs/foundation/colors/" description="Brand, surface, text, outline and semantic tokens." />
-  <LinkCard title="Materials" href="/docs/foundation/materials/" description="Glass tiers, tint, glow and button variants." />
+  <LinkCard title="Materials" href="/docs/foundation/materials/" description="The five surface tiers, tint, glow and how the surface style changes them." />
   <LinkCard title="Inputs" href="/docs/inputs/button/" description="Buttons, fields, selects and pickers." />
   <LinkCard title="Templates" href="/templates/" description="Full-app pages built with the library." />
   <LinkCard title="Theme editor" href="/theme/" description="Tune a preset and export it as a theme." />

@@ -4,7 +4,7 @@
   const items = Array.from({ length: 20 }, (_, i) => `Item ${i + 1}: Lorem ipsum dolor sit amet`);
 </script>
 
-<Card material="glass" full>
+<Card full>
   <ScrollArea maxHeight="220px">
     {#each items as item}
       <div class="item">{item}</div>

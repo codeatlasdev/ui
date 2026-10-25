@@ -4,11 +4,12 @@
    * orthogonal: `elevation` (shadow + depth), `material` (what it is made of), `tone`, `variant`,
    * `radius`. Each one is a `data-*` attribute read by a single `.ca-surface` rule (no inline style).
    *
-   * `material="auto"` follows the theme (`<html data-style>`: glass blurs, solid is opaque...). The
-   * explicit materials look the same under every style, so one surface can be glass in a solid app.
+   * `material="auto"` (the default) follows the theme (`<html data-style>`: solid is opaque paper, flat,
+   * outlined, tonal... each paint their own; glass and frosted blur). Leave it unset; the explicit
+   * materials (`solid | frosted | glass | liquid`) look the same under every style, to pin one surface.
    *
    *   <Surface elevation={2} tone="brand" p="4">…</Surface>
-   *   <Surface as="section" material="glass" elevation={4} interactive>…</Surface>
+   *   <Surface as="section" elevation={4} interactive>…</Surface>
    */
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
@@ -21,7 +22,7 @@
     as?: string;
     /** Depth 0–5: drop shadow, and the blur/fill tier of the material (0 flat, 3 regular, 5 chrome). */
     elevation?: 0 | 1 | 2 | 3 | 4 | 5;
-    /** `auto` follows `<html data-style>`; the others are absolute. `liquid` adds the SVG refraction layer. */
+    /** `auto` follows `<html data-style>`; `solid`, `frosted`, `glass` and `liquid` are absolute. `liquid` adds the SVG refraction layer. */
     material?: 'auto' | 'solid' | 'frosted' | 'glass' | 'liquid';
     /** Semantic tint over the fill (and the outline color of `variant="outlined"`). */
     tone?: 'neutral' | 'brand' | 'success' | 'warning' | 'error' | 'info';

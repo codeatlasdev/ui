@@ -38,18 +38,18 @@
   </KpiGrid>
 
   <Grid class="grid-wide-narrow" gap="5">
-    <Card material="glass" title="Revenue vs Expenses">
+    <Card title="Revenue vs Expenses">
       <LineChart
         series={[{name:'Revenue',data:revenue},{name:'Expenses',data:expenses}]}
         categories={months} valueFormatter={fmt} area height="260px"
       />
     </Card>
-    <Card material="glass" title="Traffic Sources">
+    <Card title="Traffic Sources">
       <PieChart data={pieData} donut centerLabel={{value:'100%',label:'All channels'}} height="260px" />
     </Card>
   </Grid>
 
-  <Card material="glass" title="Recent Signups" flush full>
+  <Card title="Recent Signups" flush full>
     {#snippet headerActions()}
       <Button variant="ghost" size="sm" href="/templates/app/users/">View all →</Button>
     {/snippet}

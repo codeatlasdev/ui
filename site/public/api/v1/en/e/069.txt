@@ -1,13 +1,13 @@
 <!-- @codeatlasdev/ui demo #069 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/surfaces/card#content-card -->
 Element: #069 Content card (surfaces/card)
-What it shows: A single glass Card with a Featured eyebrow, a heading, a description and an Explore materials link.
+What it shows: A single Card with a Featured eyebrow, a heading, a description and an Explore materials link.
 When to use: Promo or feature cards in a landing page or dashboard that lead to a detail page.
 Spec:
-- `<Card material="glass" class="content-card">` with `max-width: 360px`
-- Body is a `<div class="body">` with an eyebrow paragraph, `<h3>Liquid Glass materials</h3>`, a description paragraph and a link
+- `<Card class="content-card">` with `max-width: 360px`
+- Body is a `<div class="body">` with an eyebrow paragraph, `<h3>Surface materials</h3>`, a description paragraph and a link
 - Link is `<a href="/docs/foundation/materials/">Explore materials →</a>`
 - The card itself has no `href`, only the inner anchor is a link
-Tags: card, glass, content-card, featured, link, promo
+Tags: card, content-card, featured, link, promo
 Needs: @codeatlasdev/ui@4.5.0
 Components: Card
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/card#content-card
@@ -16,12 +16,12 @@ Live demo: https://ui.codeatlas.com.br/docs/surfaces/card#content-card
   import { Card } from '@codeatlasdev/ui';
 </script>
 
-<Card material="glass" class="content-card">
+<Card class="content-card">
   <div class="body">
     <p class="eyebrow">Featured</p>
-    <h3>Liquid Glass materials</h3>
+    <h3>Surface materials</h3>
     <p class="text">
-      Depth and clarity for UI surfaces through real-time backdrop blur and optical refraction.
+      Five depth tiers for every surface, drawn by the theme: solid by default, frosted or glass on request.
     </p>
     <a href="/docs/foundation/materials/">Explore materials →</a>
   </div>

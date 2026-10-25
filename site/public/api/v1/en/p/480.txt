@@ -4,7 +4,7 @@ Spec:
 - `<AppShellLayout {modules} {pathname} panelWidth={280} resizablePanel persistPanel={false} mainId={null} skipLink={false}>`
 - One module `id: 'projects'` with 3 items whose labels are long (Quarterly revenue forecast and planning, Customer onboarding experience redesign, Infrastructure cost review)
 - A second module `id: 'other'` with `items: []`
-- Page is `<PageShell title="Wider panel" description="Drag the panel edge, or focus it and use the arrow keys.">` with one glass `Card` hint about the 160px to 480px range
+- Page is `<PageShell title="Wider panel" description="Drag the panel edge, or focus it and use the arrow keys.">` with one `Card` hint about the 160px to 480px range
 - Stage height is `height: 360px`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and

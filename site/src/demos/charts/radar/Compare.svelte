@@ -5,7 +5,7 @@
   const indicators = ['Speed', 'Quality', 'Reliability', 'Innovation', 'Support', 'Coverage'].map((name) => ({ name, max: 100 }));
 </script>
 
-<Card material="glass" full>
+<Card full>
   <RadarChart
     {indicators}
     series={[

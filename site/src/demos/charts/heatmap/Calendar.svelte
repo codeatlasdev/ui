@@ -13,6 +13,6 @@
   });
 </script>
 
-<Card material="glass" full>
+<Card full>
   <HeatmapChart variant="calendar" {data} range={['2026-01-01', '2026-09-15']} tooltipFormatter={(v) => `${v} commits`} height="160px" />
 </Card>

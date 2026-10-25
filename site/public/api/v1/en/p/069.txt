@@ -1,8 +1,8 @@
 Use @codeatlasdev/ui demo #069 "Content card" (surfaces/card).
-What it shows: A single glass Card with a Featured eyebrow, a heading, a description and an Explore materials link. When to use: Promo or feature cards in a landing page or dashboard that lead to a detail page.
+What it shows: A single Card with a Featured eyebrow, a heading, a description and an Explore materials link. When to use: Promo or feature cards in a landing page or dashboard that lead to a detail page.
 Spec:
-- `<Card material="glass" class="content-card">` with `max-width: 360px`
-- Body is a `<div class="body">` with an eyebrow paragraph, `<h3>Liquid Glass materials</h3>`, a description paragraph and a link
+- `<Card class="content-card">` with `max-width: 360px`
+- Body is a `<div class="body">` with an eyebrow paragraph, `<h3>Surface materials</h3>`, a description paragraph and a link
 - Link is `<a href="/docs/foundation/materials/">Explore materials →</a>`
 - The card itself has no `href`, only the inner anchor is a link
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?

@@ -6,7 +6,7 @@
 		"Each series uses `cluster(30,` to generate 30 `[number, number]` points",
 		"`color` is optional on a series, omitted here so the palette assigns one per series",
 		"`<ScatterChart {series} yName=\"Conversion %\"` with `yFormatter={(v) => `${v.toFixed(1)}%`}`",
-		"`height=\"340px\"` inside `<Card material=\"glass\" full>`"
+		"`height=\"340px\"` inside `<Card full>`"
 	],
 	"tags": ["scatter-chart", "clusters", "segments", "multi-series", "palette", "card"],
 	"shape": "wide"

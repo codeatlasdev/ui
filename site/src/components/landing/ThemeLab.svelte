@@ -75,7 +75,7 @@ export const theme: ThemeOptions = {
 
 	<div class="lab__island" data-preset={custom ? undefined : preset} data-style={style}>
 		<div class="lab__preview" data-theme-scope={dark ? "dark" : "light"} style={brandStyle}>
-		<Card material="glass" elevation={4} title="Storage">
+		<Card elevation={4} title="Storage">
 			<p class="lab__copy">Plan usage resets in 9 days.</p>
 			<Progress value={progress} label="Storage used" />
 			<div class="lab__row">

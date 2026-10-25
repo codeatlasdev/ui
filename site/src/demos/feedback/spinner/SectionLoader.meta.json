@@ -1,8 +1,8 @@
 {
-	"summary": "A glass card with a centered 40px spinner and a Loading data text.",
+	"summary": "A card with a centered 40px spinner and a Loading data text.",
 	"use": "Loader for a whole section or panel while its data is fetched.",
 	"spec": [
-		"`<Card material=\"glass\" p=\"10\" full>`",
+		"`<Card p=\"10\" full>`",
 		"`<Stack align=\"center\" gap=\"3\">` centers the spinner and text",
 		"`<Spinner size={40} />` above `<span class=\"text\">Loading data…</span>`"
 	],

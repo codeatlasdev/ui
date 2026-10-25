@@ -55,7 +55,7 @@ export const theme = defineTheme({
 ```
 
 every token derives from it, light and dark, on the first frame.
-want a vibe? `designStyle('liquid')`, `'swiss'`, `'brutalism'`, `'sketchbook'`… same components, new language.
+want a vibe? `designStyle('swiss')`, `'brutalism'`, `'sketchbook'`, `'liquid'` (the glass one)… same components, new language.
 
 <br>
 
@@ -65,7 +65,7 @@ want a vibe? `designStyle('liquid')`, `'swiss'`, `'brutalism'`, `'sketchbook'`�
 |---|---|
 | 🧱 **pages, not bricks** | `AppList` `AppForm` `AppSettings` `AppShellLayout` `AuthLayout` `DocsShell` |
 | 🎨 **tokens all the way down** | no raw px in components, a lint fails the build if one sneaks in |
-| 🪟 **glass is a material, not a component** | `<Surface material="glass">`, or `auto` to follow the theme |
+| 🪟 **style is a theme knob** | `defaultStyle` picks solid (default), flat, outlined, tonal, clay, frosted, glass…; `<Surface material="auto">` follows it |
 | 🧭 **real layers** | native `<dialog>` + popover top layer, no z-index wars |
 | ♿ **boring stuff, guaranteed** | aa/aaa contrast, 44px touch targets, no sideways scroll. tested |
 | 🤖 **agent-native** | skills, `llms.txt` and an MCP server (`ca-ui-mcp`) generated from the code |

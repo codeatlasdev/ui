@@ -7,7 +7,7 @@
 		"`xCategories={hours}` built from `String(i).padStart(2, '0') + ':00'` (24 labels)",
 		"`yCategories={days}` with `'Mon'` to `'Sun'`",
 		"`tooltipFormatter={(v) => `${v} tasks`}`",
-		"`height=\"320px\"` inside `<Card material=\"glass\" full>`"
+		"`height=\"320px\"` inside `<Card full>`"
 	],
 	"tags": ["heatmap-chart", "matrix", "hours", "weekdays", "tooltip-formatter", "card"],
 	"shape": "wide"

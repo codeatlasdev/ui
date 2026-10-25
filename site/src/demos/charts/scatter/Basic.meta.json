@@ -6,7 +6,7 @@
 		"`data` is 80 `[number, number]` pairs from `Array.from({ length: 80 }`",
 		"`yName=\"Conversion %\"`",
 		"`yFormatter={(v) => `${v.toFixed(1)}%`}`",
-		"`height=\"320px\"` inside `<Card material=\"glass\" full>`"
+		"`height=\"320px\"` inside `<Card full>`"
 	],
 	"tags": ["scatter-chart", "basic", "points", "y-axis", "y-formatter", "card"],
 	"shape": "wide"

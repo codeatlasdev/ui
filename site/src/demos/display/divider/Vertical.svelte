@@ -2,7 +2,7 @@
   import { Divider, Card, Flex } from '@codeatlasdev/ui';
 </script>
 
-<Card material="glass" p="6" full>
+<Card p="6" full>
   <Flex gap="6" align="center">
     <p>Left</p>
     <Divider orientation="vertical" />

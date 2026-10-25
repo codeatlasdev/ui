@@ -21,7 +21,7 @@ import FullPageSrc from "~/demos/layout/theme-island/FullPage.svelte?raw";
 </ThemeIsland>
 ```
 
-`ThemeIsland` renders a wrapper with `data-preset` and `data-theme-scope`, so everything inside re-resolves its tokens (`--ca-surface-base`, text, brand, glass) and `color-scheme`. Without `document` that is all it does: a card or a section in another preset or scheme.
+`ThemeIsland` renders a wrapper with `data-preset` and `data-theme-scope`, so everything inside re-resolves its tokens (`--ca-surface-base`, text, brand, surface fills) and `color-scheme`. Without `document` that is all it does: a card or a section in another preset or scheme.
 
 <Demo title="Scoped block" description="A light ocean island inside the current page." src={ScopedSrc}><Scoped client:visible /></Demo>
 

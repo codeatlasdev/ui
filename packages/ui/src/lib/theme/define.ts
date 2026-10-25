@@ -36,7 +36,7 @@ export type {
 } from "./components.js";
 
 export type ColorScheme = "light" | "dark" | "system";
-/** Surface material. glass/frosted blur the backdrop; the rest are opaque. */
+/** Surface material, the `defaultStyle` knob of the theme (default `solid`). glass/frosted blur the backdrop and are opt-in; the rest are opaque. */
 export type SurfaceStyle =
 	| "glass"
 	| "frosted"

@@ -1,9 +1,9 @@
 <!-- @codeatlasdev/ui demo #097 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/feedback/skeleton#card-layout -->
 Element: #097 Card layout (feedback/skeleton)
-What it shows: A glass card skeleton with a circular avatar placeholder beside three text lines of different widths.
+What it shows: A card skeleton with a circular avatar placeholder beside three text lines of different widths.
 When to use: Loading placeholder for a profile or list card so layout does not jump when data arrives.
 Spec:
-- `<Card material="glass" p="5" full>`
+- `<Card p="5" full>`
 - `<Skeleton variant="circular" width="48px" height="48px" />` inside `<Flex gap="4" align="start">`
 - Three lines in `<Stack gap="2">`: `height="16px" width="40%"`, `height="13px" width="70%"`, `height="13px" width="55%"`
 Tags: skeleton, card, loading, avatar, placeholder
@@ -15,7 +15,7 @@ Live demo: https://ui.codeatlas.com.br/docs/feedback/skeleton#card-layout
   import { Skeleton, Card, Stack, Flex } from '@codeatlasdev/ui';
 </script>
 
-<Card material="glass" p="5" full>
+<Card p="5" full>
   <Flex gap="4" align="start">
     <Skeleton variant="circular" width="48px" height="48px" />
     <Stack gap="2">

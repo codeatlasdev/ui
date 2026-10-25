@@ -2,7 +2,7 @@
   import { Spinner, Card, Stack } from '@codeatlasdev/ui';
 </script>
 
-<Card material="glass" p="10" full>
+<Card p="10" full>
   <Stack align="center" gap="3">
     <Spinner size={40} />
     <span class="text">Loading data…</span>

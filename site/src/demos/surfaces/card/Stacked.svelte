@@ -2,7 +2,7 @@
   import { Card, Checkbox } from '@codeatlasdev/ui';
 </script>
 
-<Card material="glass" title="Trending topics" headingLevel={3} gap="sm" class="stacked">
+<Card title="Trending topics" headingLevel={3} gap="sm" class="stacked">
   <Checkbox label="Hacker News" />
   <Checkbox label="Product Hunt" />
   <Checkbox label="Lobsters" />

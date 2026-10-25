@@ -10,7 +10,7 @@
 
 <div class="grid">
   {#each stats as s}
-    <Card material="glass" class="stat">
+    <Card class="stat">
       <p class="label">{s.label}</p>
       <p class="value">{s.value}</p>
       <p class="delta">{s.delta}</p>

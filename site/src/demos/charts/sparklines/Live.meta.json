@@ -6,7 +6,7 @@
 		"`setInterval` in `onMount` every `600` ms replaces each array through `next(`",
 		"`const metrics = $derived([` maps to labels CPU, Memory, Network",
 		"`{m.data[m.data.length - 1].toFixed(0)}%` shows the latest value",
-		"`<Sparkline data={m.data} height=\"40px\" />` in a `<Card material=\"glass\">`",
+		"`<Sparkline data={m.data} height=\"40px\" />` in a `<Card>`",
 		"`<Grid columns={{ base: 1, sm: 3 }} gap=\"4\">` holds the 3 cards"
 	],
 	"tags": ["sparkline", "live", "realtime", "monitoring", "onmount", "grid"],

@@ -5,7 +5,7 @@ Spec:
 - `const profit = revenue.map((r, i) => r - expenses[i])` derives the third series
 - `categories={months}` with `'Jan'` to `'Sep'`
 - `valueFormatter={fmt}` renders `$${(v / 1000).toFixed(0)}k`
-- `height="300px"` inside `<Card material="glass" full>`
+- `height="300px"` inside `<Card full>`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

@@ -7,7 +7,7 @@ Spec:
 - `data` is 80 `[number, number]` pairs from `Array.from({ length: 80 }`
 - `yName="Conversion %"`
 - `yFormatter={(v) => `${v.toFixed(1)}%`}`
-- `height="320px"` inside `<Card material="glass" full>`
+- `height="320px"` inside `<Card full>`
 Tags: scatter-chart, basic, points, y-axis, y-formatter, card
 Needs: @codeatlasdev/ui@4.5.0 + echarts
 Components: Card, ScatterChart
@@ -23,6 +23,6 @@ Live demo: https://ui.codeatlas.com.br/docs/charts/scatter#basic-scatter
   ]);
 </script>
 
-<Card material="glass" full>
+<Card full>
   <ScatterChart series={[{ name: 'Data points', data }]} yName="Conversion %" yFormatter={(v) => `${v.toFixed(1)}%`} height="320px" />
 </Card>

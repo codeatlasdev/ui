@@ -6,7 +6,7 @@ Spec:
 - `xCategories={hours}` built from `String(i).padStart(2, '0') + ':00'` (24 labels)
 - `yCategories={days}` with `'Mon'` to `'Sun'`
 - `tooltipFormatter={(v) => `${v} tasks`}`
-- `height="320px"` inside `<Card material="glass" full>`
+- `height="320px"` inside `<Card full>`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
