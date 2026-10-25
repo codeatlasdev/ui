@@ -111,6 +111,8 @@ describe("Menubar", () => {
 		await render(Harness);
 		await focusFirst();
 		await userEvent.keyboard("{ArrowDown}");
+		// Focus moves into the menu a frame after it opens; a Tab before that never reaches the menu.
+		await expect.element(page.getByRole("menuitem", { name: "New" })).toHaveFocus();
 		await userEvent.tab();
 		await expect.element(menu()).not.toBeInTheDocument();
 		await expect.element(page.getByRole("button", { name: "After" })).toHaveFocus();
