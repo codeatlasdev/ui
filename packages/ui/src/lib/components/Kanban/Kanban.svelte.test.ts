@@ -16,6 +16,9 @@ const ids = (c: string) =>
 	[...col(c).querySelectorAll("[data-dnd-item]")].map((e) => e.getAttribute("data-dnd-item"));
 const live = () =>
 	[...document.querySelectorAll("[data-ca-announcer]")].map((e) => e.textContent).join("|");
+// announce() writes its region a frame after the call and the text outlives a test (5 s), so a read
+// right after an action can see the previous test's message: wait for the one being asserted.
+const announced = (text: string) => expect.poll(live, { timeout: 30_000 }).toContain(text);
 const center = (el: HTMLElement) => {
 	const r = el.getBoundingClientRect();
 	return [r.left + r.width / 2, r.top + r.height / 2] as const;
@@ -109,15 +112,15 @@ describe("Kanban board (desktop)", () => {
 		const handle = card("c2").querySelector("button, [tabindex]") as HTMLElement;
 		handle.focus();
 		await key(handle, " ");
-		expect(live()).toContain("Lifted");
+		await announced("Lifted");
 		await key(handle, "ArrowRight");
 		await key(handle, "ArrowRight");
-		expect(live()).toContain("Won");
+		await announced("Won");
 		await key(handle, "Enter");
 		await waitFor(() => moves.length === 1);
 		expect(moves[0].to).toEqual({ column: "won", index: 0 });
 		await waitFor(() => ids("won").join() === "c2");
-		expect(live()).toContain("Dropped");
+		await announced("Dropped");
 	});
 
 	it("Escape cancels a keyboard move", async () => {
@@ -131,7 +134,7 @@ describe("Kanban board (desktop)", () => {
 		await key(handle, "Escape");
 		await frame();
 		expect(moves).toHaveLength(0);
-		expect(live()).toContain("Cancelled");
+		await announced("Cancelled");
 	});
 
 	it("canMove=false turns the drag off", async () => {
@@ -160,7 +163,7 @@ describe("Kanban board (desktop)", () => {
 		await screen.getByRole("menuitem", { name: "Talking" }).click();
 		await waitFor(() => moves.length === 1);
 		expect(moves[0].to.column).toBe("talk");
-		expect(live()).toContain("Ana Souza moved to Talking.");
+		await announced("Ana Souza moved to Talking.");
 	});
 
 	it("onloadmore fires near the end of a column list and the fallback button works", async () => {
