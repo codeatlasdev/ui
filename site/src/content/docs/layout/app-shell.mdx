@@ -125,7 +125,7 @@ Map-first products keep one live map behind every screen: the camera, the WebGL 
 
 `<html>` paints the page preset's surface, so a public screen wrapped in its own preset would leave the overscroll area and the mobile toolbar in the wrong color. Use `<ThemeIsland preset scheme document>` (`ThemeIsland`, from the theme work in #352): it mirrors the island's preset and scheme onto `<html>` while it is mounted, so the root background follows with no copied color.
 
-## Panel width
+## Resizing the panel
 
 The panel is 200px by default. For lists with long names pass `panelWidth` (px, held between 160 and 480): the content offset and the open and close animation follow it, so the page never misaligns. Add `resizablePanel` to let people choose: a handle sits on the panel's trailing edge and is a keyboard-operable separator (`role="separator"` with `aria-valuenow`, `aria-valuemin` and `aria-valuemax`). Arrow keys move it by 8px, Shift by 32px, Home and End jump to the bounds. While the pointer holds the edge the panel follows it with no spring in between. With `persistPanel` the width is stored with the open state and restored before the first paint; `panelWidth` is the width used until the user picks one. A stored width is ignored when `resizablePanel` is off, so the prop stays the contract.
 

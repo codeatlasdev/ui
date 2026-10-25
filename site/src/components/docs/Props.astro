@@ -1,5 +1,6 @@
 ---
 import { SimpleTable } from "@codeatlasdev/ui";
+import { headingId } from "../../lib/heading-ids";
 
 interface Row {
 	name: string;
@@ -12,7 +13,7 @@ interface Props {
 	title?: string;
 }
 const { rows, title = "Props" } = Astro.props;
-const id = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+const id = headingId(Astro.url.pathname, title);
 ---
 <section class="demo" aria-labelledby={id}>
 	<h2 id={id}>{title}</h2>

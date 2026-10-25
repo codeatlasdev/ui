@@ -4,6 +4,7 @@ import SiteDocsShell from "~/components/docs/SiteDocsShell.svelte";
 import SiteFooter from "~/components/site/SiteFooter.astro";
 import Base from "~/layouts/Base.astro";
 import { loadDocs } from "~/lib/docs";
+import { startPage } from "~/lib/heading-ids";
 import { docHref, SECTIONS } from "~/lib/nav";
 
 export async function getStaticPaths() {
@@ -14,6 +15,8 @@ export async function getStaticPaths() {
 const { entry } = Astro.props;
 const { groups, flat } = await loadDocs();
 const { Content, headings } = await render(entry);
+// <Demo> and <Props> draw their heading ids from this registry while <Content /> renders.
+startPage(Astro.url.pathname, headings.map((h) => h.slug), entry.body ?? "");
 const toc = headings
 	.filter((h) => h.depth === 2 || h.depth === 3)
 	.map((h) => ({ id: h.slug, text: h.text, depth: h.depth as 2 | 3 }));

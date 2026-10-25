@@ -1,6 +1,7 @@
 ---
 import { CodeSnippet } from "@codeatlasdev/ui/code";
 import catalog from "../../../public/api/v1/catalog.json";
+import { headingId, slugOf } from "../../lib/heading-ids";
 
 interface Props {
 	title: string;
@@ -11,11 +12,13 @@ interface Props {
 	stage?: boolean;
 }
 const { title, description, src, stage = false } = Astro.props;
-// Same transform as the catalog slug (packages/ui/scripts/build-manifest.ts): heading id = catalog slug.
-const id = title.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+// The catalog slug (packages/ui/scripts/build-manifest.ts) is slugOf(title); the heading id is that slug
+// unless the page already uses it (see lib/heading-ids.ts).
+const slug = slugOf(title);
+const id = headingId(Astro.url.pathname, title, true);
 // `/docs/<group>/<page>/` identifies the page; with the slug it identifies the numbered demo.
 const [, , group, page] = Astro.url.pathname.split("/");
-const num = catalog.elements.find((e) => e.group === group && e.page === page && e.slug === id)?.id;
+const num = catalog.elements.find((e) => e.group === group && e.page === page && e.slug === slug)?.id;
 ---
 <section class="demo sk-page" aria-labelledby={id}>
 	{num && <span class="sk-page__num">#{num}</span>}

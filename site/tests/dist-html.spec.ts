@@ -15,34 +15,6 @@ const PAGES = ROUTES.filter(
 	(r) => !readFileSync(join(DIST, r, "index.html"), "utf8").includes('http-equiv="refresh"')
 );
 
-/**
- * Duplicate ids that exist today: a docs heading and a demo section slug to the same anchor, so the
- * in-page link and the table of contents point at the first of the two. axe never reported them (its
- * `duplicate-id` rules are outside the WCAG tag set the axe project runs). Listed so a NEW duplicate
- * fails; remove an entry when its page is fixed. A fixed page still listed also fails. Fixing all of
- * them and emptying this list is tracked in #548.
- */
-const KNOWN_DUPLICATE_IDS: Record<string, string[]> = {
-	"/docs/display/carousel/": ["autoplay"],
-	"/docs/display/table/": ["props"],
-	"/docs/docs-kit/docs/": ["docssearch"],
-	"/docs/feedback/skeleton/": ["the-skeleton-prop"],
-	"/docs/foundation/drag-and-drop/": ["drop-zones"],
-	"/docs/foundation/typography/": ["type-roles"],
-	"/docs/layout/app-shell/": ["panel-width"],
-	"/docs/layout/resizable-panels/": ["props"],
-	"/docs/map/": ["props"],
-	"/docs/navigation/command-palette/": ["async-results"],
-	"/docs/navigation/loading-boundary/": ["props"],
-	"/docs/navigation/menu/": [
-		"checkbox-and-radio-items",
-		"submenus",
-		"leading-icons-and-brand-logos",
-	],
-	"/docs/navigation/menubar/": ["props"],
-	"/docs/navigation/navigation-menu/": ["props"],
-};
-
 // happy-dom's nodes are not the DOM lib's `Element`: type only what is read.
 type Named = {
 	textContent: string | null;
@@ -93,9 +65,8 @@ test.describe("prerendered HTML", () => {
 				readFileSync(join(DIST, route, "index.html"), "utf8")
 			);
 			expect(found).toEqual([]);
-			expect(duplicateIds, "duplicate ids (known ones are listed in this file)").toEqual(
-				KNOWN_DUPLICATE_IDS[route] ?? []
-			);
+			// Heading ids come from one per-page registry (src/lib/heading-ids.ts, #548).
+			expect(duplicateIds, "duplicate ids").toEqual([]);
 		});
 	}
 });
