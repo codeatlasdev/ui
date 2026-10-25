@@ -45,8 +45,10 @@ export function propsSummary(markdown: string): string {
 		.split(/\n(?=### )/)
 		.filter((block) => /^### [^\n]*\n\n\| Prop \|/.test(block))
 		.map((block) =>
+			// The heading and the table only: prose and examples after the table are in the page's file.
 			block
 				.split("\n")
+				.filter((line, i) => i < 2 || line.startsWith("|"))
 				.map((line) => {
 					if (!line.startsWith("|")) return line;
 					// Cells are split on `|` that is not escaped as `\|` (a union type in a cell).
