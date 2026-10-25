@@ -312,6 +312,8 @@ Every command has a time budget that is enforced: a run over its budget fails an
 
 Later work held the land gate under its budget: with a shared change (every component test, 210 files) it measured 224.8 s with a cold social-card cache and 193.5 s with a warm one, at load 7 on 12 cores, against a 240 s budget (pull request 599). `bun run test:full` has a 300 s budget and, by the record in that same pull request, was not measured on a quiet machine: one run took 1092 s at load 50 and is not a result. We state it so you do not read the budget as a promise.
 
+Three dev-tooling targets were not met in this release. A shared-change land (every component test) took 255 s against a 120 s target. Our own tooling peaks at 8 cores in one land against a 4-core cap, and that cap is not enforced yet (issue 632). The warm `bun run test` still takes 11 to 13 s against a 10 s target. The enforced budgets above hold; these targets are what we are still working toward, and the numbers are wall time on the maintainer's shared 12-core machine.
+
 </Section>
 
 <Section id="security" n={10} title="maplibre-gl 6 and the advisory">
