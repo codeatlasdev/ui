@@ -4,6 +4,7 @@
   import { Copy, Check } from '@lucide/svelte';
   import { copyToClipboard } from '../../utils/index.js';
   import { getHighlighter } from '../../utils/highlighter.js';
+  import { scrollFocusable } from '../../actions/scroll-focusable.js';
   const t = useMessages(codeSnippet);
 
   interface Props {
@@ -57,9 +58,9 @@
     </button>
   </div>
   {#if highlightedHtml}
-    <div class="ca-code-snippet__pre">{@html highlightedHtml}</div>
+    <div class="ca-code-snippet__pre" use:scrollFocusable>{@html highlightedHtml}</div>
   {:else}
-    <pre class="ca-code-snippet__pre ca-code-snippet__pre--raw"><code>{code}</code></pre>
+    <pre class="ca-code-snippet__pre ca-code-snippet__pre--raw" use:scrollFocusable><code>{code}</code></pre>
   {/if}
 </div>
 
