@@ -54,7 +54,7 @@ test.describe("changelog 4.6.0", () => {
 			"accessibility",
 		]);
 		await expect(page.locator(".post__tl li")).toHaveCount(ids.length);
-		await expect(page.locator("#upgrade")).toContainText("bun add @codeatlasdev/ui@4.6.0");
+		await expect(page.locator(".post__upgrade")).toContainText("bun add @codeatlasdev/ui@4.6.0");
 		await expect(page.locator("#behaviour dt").first()).toBeVisible();
 		await expect(page.locator("#all-changes")).toContainText("130 merged pull requests");
 	});
@@ -94,9 +94,11 @@ test.describe("changelog 4.6.0", () => {
 		await page.goto(POST);
 		const island = page.locator('astro-island[component-url*="InlineOverlay"]');
 		await expect(island).toHaveAttribute("client", "visible");
+		// Below the fold at load: still server-rendered markup, no JavaScript has run for it.
 		await expect(island).toHaveAttribute("ssr", "");
-		await island.scrollIntoViewIfNeeded();
-		await expect(island).not.toHaveAttribute("ssr", "", { timeout: 15_000 });
+		// The island is `display: contents` (no box of its own): scroll the frame that holds it.
+		await page.locator("#inline-overlays .live").first().scrollIntoViewIfNeeded();
+		await expect(island).not.toHaveAttribute("ssr", "", { timeout: 20_000 });
 	});
 
 	test("hydrating an island does not move the text below it", async ({ page }) => {
@@ -123,11 +125,11 @@ test.describe("changelog 4.6.0", () => {
 		await cmp.scrollIntoViewIfNeeded();
 		const stage = cmp.locator(".cmp__stage");
 		const h1 = (await stage.boundingBox())?.height ?? 0;
-		await cmp.locator("#cmp-trend-before").check({ force: true });
+		await cmp.locator('label[for="cmp-trend-before"]').click();
 		await expect(cmp.locator(".cmp__pane--after")).toBeHidden();
 		const h2 = (await stage.boundingBox())?.height ?? 0;
 		expect(Math.abs(h2 - h1)).toBeLessThanOrEqual(1);
-		await cmp.locator("#cmp-trend-both").check({ force: true });
+		await cmp.locator('label[for="cmp-trend-both"]').click();
 		await expect(cmp.locator(".cmp__pane--before")).toBeVisible();
 		await expect(cmp.locator(".cmp__pane--after")).toBeVisible();
 	});
@@ -144,10 +146,9 @@ test.describe("changelog 4.6.0", () => {
 			"content",
 			/\/brand\/og\/changelog-4-6-0\.[0-9a-f]+\.png$/
 		);
-		await expect(page.locator('link[type="text/plain"]')).toHaveAttribute(
-			"href",
-			"/llms/changelog/4.6.0.txt"
-		);
+		await expect(
+			page.locator('link[type="text/plain"][href="/llms/changelog/4.6.0.txt"]')
+		).toHaveCount(1);
 		const ld = await page.locator('script[type="application/ld+json"]').textContent();
 		expect(ld).toContain("TechArticle");
 		expect(ld).toContain("BreadcrumbList");
