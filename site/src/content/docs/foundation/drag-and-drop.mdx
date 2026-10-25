@@ -58,7 +58,7 @@ Lists that share a `group` accept each other's items. `applyMove` applies a drop
 
 <Demo title="Board" description="Cards reorder inside a column and move between columns. With the keyboard, Space lifts, the arrows move and Enter drops." src={BoardSrc}><Board client:visible /></Demo>
 
-## Drop zones
+## Drop targets
 
 A drop zone is a target that is not a sortable list: a calendar day, a folder, a trash can. A standalone item uses `dnd.draggable`; the zone gets `data-dnd-over` while an item is above it. Return `false` from `accepts` to refuse an item.
 

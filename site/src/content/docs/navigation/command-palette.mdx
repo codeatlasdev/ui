@@ -28,7 +28,7 @@ The palette searches the same `NavModule[]` you pass to [AppShellLayout](/docs/l
 <Demo title="Open the palette" description="Click the button or press Cmd+K / Ctrl+K while this page is focused. Picking an item shows its path instead of navigating." src={PaletteSrc}><Palette client:visible /></Demo>
 <Demo title="Keyboard" description="Type to filter across every module. Queries shorter than minQueryLength keep the full grouped list." src={KeysSrc}><Keys /></Demo>
 
-## Async results
+## Server-side search
 
 Pass `search` to add server-side results under the local matches. It runs once the user stops typing for `searchDebounce` ms, receives the trimmed query and an `AbortSignal`, and returns `CommandResult[]` (`{ id, label, group?, path }`). A newer query, closing the palette or unmounting aborts the pending call, so forward the signal to `fetch` and never apply a stale answer. While it runs the list is `aria-busy` and a "Searching…" row shows; a rejection shows "Search failed" without hiding local matches; the empty state appears only after the search settles. Progress, the result count and failures are announced through `announce()`.
 

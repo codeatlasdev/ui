@@ -41,7 +41,7 @@ import SelectionSrc from "~/demos/navigation/menu/Selection.svelte?raw";
 
 Keyboard support follows the WAI-ARIA menu pattern: Enter, Space or ArrowDown opens the menu on the first item, ArrowUp opens it on the last, arrows then move, Enter or Space selects, Escape closes and focus returns to the trigger. Tab closes the menu. Selecting an item closes it. The menu is a popover layer in the browser top layer, positioned with CSS anchor positioning where supported, so it stays on top of a dialog it is opened from. Pass an interactive trigger (`Button`, `IconButton`) through `triggerChild` and spread the received `props` on it. Use `trigger` only for non-interactive content such as text or an icon. Use `DropdownMenuLabel` for a non-interactive group heading and `DropdownMenuSeparator` for a divider.
 
-### Checkbox and radio items
+### Checkable items
 
 `DropdownMenuCheckboxItem` renders `role="menuitemcheckbox"` with `aria-checked` and a check indicator; bind `checked` or listen to `onCheckedChange`. `DropdownMenuRadioGroup` wraps `DropdownMenuRadioItem`s (`role="menuitemradio"`): bind the group's `value`, each item sets it with its own `value`. Enter, Space or a click toggles the item and the menu stays open so several options can be set in one visit (the WAI-ARIA menu pattern); pass `closeOnSelect` to close after one pick. Arrow keys, Home, End and typeahead reach these items like any other, and disabled ones are skipped. Give the group an `aria-label` or put a `DropdownMenuLabel` first and the group is named for screen readers.
 
@@ -49,11 +49,11 @@ Keyboard support follows the WAI-ARIA menu pattern: Enter, Space or ArrowDown op
 
 `bind:open` and `onOpenChange` control the menu from outside: set `open = true` from any handler and it opens; `onOpenChange` fires for user-driven changes (a trigger press, Escape, an outside press, picking an item), like `Dialog`. For a right-click menu use [ContextMenu](/docs/navigation/context-menu/), which wires right-click, long-press and Shift+F10 for you. To wire it yourself, pass `anchor={{ x, y }}` (viewport coordinates) together with `open = true` and leave out `trigger`: the menu opens at that point on the first item and focus returns to the element that had it when the menu closes. Setting `anchor` again while the menu is open moves it instead of toggling it, so a second right-click relocates the menu. Handle Shift+F10 and the ContextMenu key in your own `onkeydown` the same way (the demo shows both); on the built-in trigger they open the menu on its first item.
 
-### Submenus
+### Nested menus
 
 Put a `DropdownMenuSub` among the items. Its `trigger` snippet holds a `DropdownMenuSubTrigger` (an item with a chevron, `aria-haspopup="menu"` and `aria-expanded`) and its children are the submenu's items, labels and further `DropdownMenuSub`s, nested to any depth. ArrowRight, Enter or Space on the trigger opens the submenu with focus on its first enabled item; ArrowLeft or Escape closes only that level and returns focus to the trigger; arrows, Home, End and typeahead stay inside the open level. Hovering the trigger opens it after `openDelay` (120 ms) and it stays open for `closeDelay` (200 ms) after the pointer leaves, so the pointer can cross the gap. Selecting any item closes every level and returns focus to the root trigger. A disabled sub-trigger neither opens nor takes ArrowRight. In a right-to-left layout use `side="left"` on the sub, and the chevron mirrors.
 
-### Leading icons and brand logos
+### Item icons
 
 Pass a leading icon with the `icon` snippet instead of placing it in `children`: it gets a fixed 14px box, the standard gap and `aria-hidden` (the label stays the accessible name), so icon size and alignment never drift between menus. Any `svg` or `img` inside the box fills it, including one wrapped in `SchemeAsset`, whatever `width` or `height` the asset declares. A plain icon (Lucide, any `currentColor` glyph) follows the item's text color, including the highlighted, disabled and destructive states.
 
