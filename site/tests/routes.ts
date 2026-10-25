@@ -1,7 +1,7 @@
 import { existsSync, readdirSync, statSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
-import { GALLERY_REPRESENTATIVES } from "../../scripts/route-impact";
+import { ATLAS_REPRESENTATIVES, GALLERY_REPRESENTATIVES } from "../../scripts/route-impact";
 
 export const DIST =
 	process.env.E2E_DIST ?? join(dirname(fileURLToPath(import.meta.url)), "../dist");
@@ -33,9 +33,14 @@ const only: string[] | undefined = process.env.E2E_ROUTES
 const items =
 	process.env.E2E_GALLERY === "representatives" ? new Set(GALLERY_REPRESENTATIVES) : undefined;
 const isItem = (p: string) => /^\/gallery\/[^/]+\/$/.test(p);
+// The same for the atlas: one template over every term, a few of them stand for all at land.
+const terms =
+	process.env.E2E_GALLERY === "representatives" ? new Set(ATLAS_REPRESENTATIVES) : undefined;
+const isTerm = (p: string) => /^\/atlas\/[^/]+\/$/.test(p);
 export const ROUTES: string[] = walk(DIST)
 	.map((file) => relative(DIST, dirname(file)))
 	.map((p) => (p === "" ? "/" : `/${p}/`))
 	.filter((p) => !p.startsWith("/landing-embed/") && (!only || only.includes(p)))
 	.filter((p) => !items || !isItem(p) || items.has(p.split("/")[2]))
+	.filter((p) => !terms || !isTerm(p) || terms.has(p.split("/")[2]))
 	.sort();

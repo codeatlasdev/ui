@@ -1,5 +1,11 @@
 import { describe, expect, it } from "bun:test";
-import { buildImpact, lockReachesRuntime, select } from "../../../scripts/route-impact";
+import {
+	ATLAS_REPRESENTATIVES,
+	buildImpact,
+	lockReachesRuntime,
+	select,
+} from "../../../scripts/route-impact";
+import { TERMS, termSlug } from "../../../site/src/data/atlas/atlas";
 
 // scripts/route-impact.ts decides which docs routes a diff has to retest. A route it misses is a hole
 // nobody sees, so the contract is: map what it knows, and for anything else select EVERY route.
@@ -146,6 +152,16 @@ describe("route-impact", () => {
 			const got = items(pick("packages/ui/src/lib/components/Avatar/Avatar.svelte").routes);
 			expect(got.length).toBeGreaterThan(0);
 			expect(got.length).toBeLessThanOrEqual(8);
+		});
+	});
+
+	// `/atlas/<slug>/` is one template over 269 terms (#595): the land gate sweeps a few, `test:full` all.
+	describe("atlas term pages", () => {
+		it("the representatives are a few real terms, so a renamed slug cannot shrink the sweep", () => {
+			const slugs = new Set(TERMS.map(termSlug));
+			expect(ATLAS_REPRESENTATIVES.length).toBeGreaterThan(0);
+			expect(ATLAS_REPRESENTATIVES.length).toBeLessThanOrEqual(5);
+			for (const slug of ATLAS_REPRESENTATIVES) expect(slugs.has(slug)).toBe(true);
 		});
 	});
 

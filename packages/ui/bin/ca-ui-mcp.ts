@@ -6,7 +6,7 @@
  *   claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp
  *
  * Tools: get_recipe, list_components, get_component, get_export, get_equivalent, list_parts, search_tokens, list_surfaces, get_guide,
- * search_demos, get_demo, search_ui, list_facets, get_related, report_issue (drafts a sanitized GitHub issue from a library problem; it never posts anything).
+ * search_terms, get_term, get_reference (the design atlas and its verified sources), search_demos, get_demo, search_ui, list_facets, get_related, report_issue (drafts a sanitized GitHub issue from a library problem; it never posts anything).
  */
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -15,6 +15,7 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
 import type { Recipe } from "../scripts/ai-entry.ts";
+import type { AtlasFile } from "../scripts/atlas-markdown.ts";
 import type {
 	Manifest,
 	ManifestDemo,
@@ -61,6 +62,9 @@ const recipes = existsSync(join(DIST, "recipes.json"))
 const demos = existsSync(join(DIST, "demos.json")) ? load<ManifestDemo[]>("demos.json") : [];
 // The published facets only (a facet still under review is never searchable), same entries as api/v1/index.json.
 const entries = indexEntries(demos);
+// Like demos: a build from the tarball has no site/ data, and the other tools must keep working.
+const atlas = existsSync(join(DIST, "atlas.json")) ? load<AtlasFile>("atlas.json") : undefined;
+const noAtlas = "No design atlas in this build (dist/atlas.json is missing).";
 const noDemos = "No demo catalog in this build (dist/demos.json is missing).";
 
 const text = (s: string) => ({ content: [{ type: "text" as const, text: s }] });
@@ -471,6 +475,84 @@ server.registerTool(
 		return rel.length
 			? text(rel.map(entryLine).join("\n"))
 			: fail(`No related entries for #${want.id}.`);
+	}
+);
+
+server.registerTool(
+	"search_terms",
+	{
+		description:
+			"Search the design atlas: 269 terms for aesthetics, layouts, interaction patterns and design-system languages. Matches term, category, definition, traits and sectors (every word of the query must match). Returns one line per term with its status and the three 1-5 scales, which are heuristic editorial judgements, not study results. Use get_term for the full entry.",
+		inputSchema: { query: z.string().optional(), category: z.string().optional() },
+	},
+	({ query, category }) => {
+		if (!atlas) return fail(noAtlas);
+		const words = (query ?? "").toLowerCase().split(/\s+/).filter(Boolean);
+		const cat = category ? squash(category) : "";
+		const hits = atlas.terms.filter(
+			(t) => (!cat || squash(t.category) === cat) && words.every((w) => t.search.includes(w))
+		);
+		if (!hits.length)
+			return fail(
+				`No atlas term matches "${query ?? ""}"${category ? ` in "${category}"` : ""}. Categories: ${[...new Set(atlas.terms.map((t) => t.category))].join(", ")}.`
+			);
+		return text(
+			`${hits.length} of ${atlas.terms.length} terms${hits.length > 40 ? " (first 40)" : ""}:\n${hits
+				.slice(0, 40)
+				.map((t) => t.line)
+				.join("\n")}`
+		);
+	}
+);
+
+server.registerTool(
+	"get_term",
+	{
+		description:
+			"One design atlas term as markdown: definition, traits, when to use it and when not, UX risk and mitigation, evidence with what the sources do not support, the limits, the heuristic scales, our design-style recipes and a prompt for your AI. `id` is DS001 to DS269, a slug (swiss-style) or the term's name.",
+		inputSchema: { id: z.string() },
+	},
+	({ id }) => {
+		if (!atlas) return fail(noAtlas);
+		const n = squash(id);
+		const hit = atlas.terms.find(
+			(t) =>
+				t.id.toLowerCase() === id.trim().toLowerCase() ||
+				squash(t.slug) === n ||
+				squash(t.term) === n
+		);
+		if (!hit) {
+			const near = atlas.terms.filter((t) => squash(t.term).includes(n)).slice(0, 8);
+			return fail(
+				`No atlas term "${id}".${near.length ? ` Did you mean: ${near.map((t) => `${t.id} ${t.term}`).join(", ")}?` : " Use search_terms."}`
+			);
+		}
+		return text(hit.text);
+	}
+);
+
+server.registerTool(
+	"get_reference",
+	{
+		description:
+			"One verified source behind the atlas and the concept pages (ids E01-E22, N, W, M, D): citation, kind, strength label, what it supports, what it does not support, the date it was opened and the wording read. Without `id`, lists every source.",
+		inputSchema: { id: z.string().optional() },
+	},
+	({ id }) => {
+		if (!atlas) return fail(noAtlas);
+		if (!id)
+			return text(
+				atlas.references
+					.map((r) => {
+						const [head] = r.text.split("\n");
+						return `- ${head.replace(/^# /, "")}`;
+					})
+					.join("\n")
+			);
+		const hit = atlas.references.find((r) => r.id.toLowerCase() === id.trim().toLowerCase());
+		return hit
+			? text(hit.text)
+			: fail(`No reference "${id}". Call get_reference without an id to list them.`);
 	}
 );
 
