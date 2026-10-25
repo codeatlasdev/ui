@@ -44,14 +44,18 @@ export function chartTooltip(t: ChartTokens = chartTokens()): EChartsOption["too
 
 export type AxisPointerType = "line" | "shadow" | "none";
 
-export function chartAxisPointer(type: AxisPointerType, t: ChartTokens = chartTokens()): object {
+export function chartAxisPointer(
+	type: AxisPointerType,
+	t: ChartTokens = chartTokens(),
+	scope: Element | null = null
+): object {
 	if (type === "none") return {};
 	if (type === "shadow") {
 		return { type: "shadow", shadowStyle: { color: "rgba(150,150,150,0.06)" } };
 	}
 	return {
 		type: "line",
-		lineStyle: { color: withAlphaFirst(t), type: "dashed", width: 1 },
+		lineStyle: { color: withAlphaFirst(t, scope), type: "dashed", width: 1 },
 		label: {
 			backgroundColor: t.glassBg,
 			borderColor: t.glassBorder,
@@ -64,8 +68,8 @@ export function chartAxisPointer(type: AxisPointerType, t: ChartTokens = chartTo
 	};
 }
 
-function withAlphaFirst(_t: ChartTokens): string {
-	const [first] = chartPalette();
+function withAlphaFirst(_t: ChartTokens, scope: Element | null = null): string {
+	const [first] = chartPalette(scope);
 	return hexToRgba(first, 0.45);
 }
 
@@ -120,8 +124,9 @@ export function chartLegend(t: ChartTokens = chartTokens()): EChartsOption["lege
  *   - any series with `type: 'bar'` → shadow
  *   - everything else → line crosshair
  */
-export function withChartTheme(option: EChartsOption): EChartsOption {
-	const t = chartTokens();
+export function withChartTheme(option: EChartsOption, scope: Element | null = null): EChartsOption {
+	const t = chartTokens(scope);
+	const palette = chartPalette(scope);
 	const ax = chartAxis(t);
 
 	const callerTrigger = (option.tooltip as Record<string, unknown> | undefined)?.trigger;
@@ -156,11 +161,11 @@ export function withChartTheme(option: EChartsOption): EChartsOption {
 
 	const base: EChartsOption = {
 		backgroundColor: "transparent",
-		color: chartPalette(),
+		color: palette,
 		textStyle: { fontFamily: t.fontSans, fontSize: 12, color: t.textPrimary },
 		tooltip: isItemTrigger
 			? { ...chartTooltip(t), trigger: "item" }
-			: { ...chartTooltip(t), trigger: "axis", axisPointer: chartAxisPointer(apType, t) },
+			: { ...chartTooltip(t), trigger: "axis", axisPointer: chartAxisPointer(apType, t, scope) },
 		legend: chartLegend(t),
 		...cartesianDefaults,
 	};

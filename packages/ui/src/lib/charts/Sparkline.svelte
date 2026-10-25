@@ -5,6 +5,7 @@
 	import { lineSeries } from "./series/line.js";
 	import { barSeries } from "./series/bar.js";
 	import { withChartTheme } from "./theme.js";
+	import { useChartScope } from "./tokens.js";
 	import { chartTokens } from "./tokens.js";
 	import type { SparklineTrend } from "./types.js";
 
@@ -18,9 +19,11 @@
 	}
 
 	let { data, variant = "line", trend, color, height = "48px", class: className = "" }: Props = $props();
+	// Tokens come from the theme island this chart sits in (the page when there is none).
+	const scope = useChartScope();
 
 	const option = $derived.by<EChartsOption>(() => {
-		const t = chartTokens();
+		const t = chartTokens(scope.el);
 		const resolvedColor =
 			color ?? (trend === "up" ? t.success : trend === "down" ? t.error : t.textSecondary);
 
@@ -48,7 +51,7 @@
 			tooltip: { show: false },
 			legend: { show: false },
 			series: [series],
-		});
+		}, scope.el);
 	});
 </script>
 

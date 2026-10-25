@@ -20,14 +20,16 @@ const PRESET_PALETTES: Record<BuiltinPresetId, string[]> = {
 const BRAND_REST = ["#f59e0b", "#22c55e", "#ef4444", "#a78bfa", "#06b6d4", "#f97316", "#84cc16"];
 
 /** 8-color hex palette for the active preset: series colors, gradients, visualMap stops. */
-export function chartPalette(): string[] {
+export function chartPalette(scope: Element | null = null): string[] {
 	if (typeof document === "undefined") return PRESET_PALETTES.amber;
 	trackTheme();
-	const html = document.documentElement;
-	const builtin = PRESET_PALETTES[html.getAttribute("data-preset") as BuiltinPresetId];
+	const el = scope ?? document.documentElement;
+	// The nearest `data-preset` wins, like the CSS: an island's own preset, else the page's.
+	const preset = el.closest("[data-preset]")?.getAttribute("data-preset") ?? "";
+	const builtin = PRESET_PALETTES[preset as BuiltinPresetId];
 	if (builtin) return builtin;
 	// Brand presets (ThemeOptions.presets) publish their hex as --ca-chart-brand.
-	const brand = getComputedStyle(html).getPropertyValue("--ca-chart-brand").trim();
+	const brand = getComputedStyle(el).getPropertyValue("--ca-chart-brand").trim();
 	return brand ? [brand, ...BRAND_REST] : PRESET_PALETTES.amber;
 }
 

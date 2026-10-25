@@ -1,4 +1,5 @@
 <script lang="ts">
+  import { ChartScope } from '@codeatlasdev/ui/charts';
   import { ISLAND, islandCSS } from '../studio-output';
   import { familyOf, loadFont } from '../fonts';
   import type { StudioState } from '../studio-state';
@@ -67,7 +68,8 @@
             data-style={theme.surface}
             data-testid="te-island"
           >
-            <Current />
+            <!-- Charts are canvas: they read tokens from this island, not from <html>. -->
+            <ChartScope><Current /></ChartScope>
           </div>
         </div>
         <figcaption class="ts-caption">

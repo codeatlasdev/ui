@@ -73,4 +73,29 @@ test.describe("theme studio", () => {
 		await page.getByRole("button", { name: "Redo" }).click();
 		await expect(code).toContainText("radius: 1");
 	});
+
+	test("the landing hero fits a 390px frame and charts use the island's brand", async ({
+		page,
+	}) => {
+		await gotoReady(page, "/theme/#t=v1.eyJicmFuZCI6IiM3YzNhZWQifQ");
+		const island = page.locator('[data-testid="te-island"]');
+		// Dashboard charts are canvas: they must read the island's violet, not the page's blue.
+		await expect(island.locator("canvas").first()).toBeVisible();
+		const brand = await island.evaluate((e) =>
+			getComputedStyle(e).getPropertyValue("--ca-brand-main").trim()
+		);
+		const pageBrand = await page.evaluate(() =>
+			getComputedStyle(document.documentElement).getPropertyValue("--ca-brand-main").trim()
+		);
+		expect(brand).not.toBe(pageBrand);
+
+		await page.getByRole("radio", { name: "Landing" }).click();
+		await page.getByRole("radio", { name: "390" }).click();
+		const heading = island.locator(".ca-heading--display");
+		await expect(heading).toBeVisible();
+		const fits = await island.evaluate((e) => e.scrollWidth <= e.clientWidth);
+		expect(fits).toBe(true);
+		const box = await heading.boundingBox();
+		expect(box?.width ?? 999).toBeLessThanOrEqual(390);
+	});
 });

@@ -2,7 +2,32 @@
 // Reads the live design system (dark/light + 8 presets) at call time so every
 // chart option is always in sync with the current theme. Internal only.
 
+import { getContext, setContext } from "svelte";
 import { colorScheme } from "../stores/color-scheme.svelte.js";
+
+// ─── Theme scope ──────────────────────────────────────────────────────────────
+// Charts are canvas: they cannot use CSS variables, so tokens are read once per option build with
+// getComputedStyle. Read from `:root`, a chart inside a `data-theme-scope` / `data-preset` island
+// painted the page's colors instead of the island's. A scope is the element whose computed style
+// holds the tokens; `ThemeIsland` (and `ChartScope`) provide theirs by context, and every public
+// chart reads it at init. No scope means `<html>`, exactly as before.
+
+const SCOPE = Symbol("ca-chart-scope");
+
+/** Reactive holder of the element charts read tokens from. */
+export interface ChartScopeRef {
+	el: HTMLElement | null;
+}
+
+/** Provide `ref` to every chart rendered below the calling component. Call during component init. */
+export function setChartScope(ref: ChartScopeRef): void {
+	setContext(SCOPE, ref);
+}
+
+/** The scope provided above this component, or an empty one (`el: null` = the page). Call during init. */
+export function useChartScope(): ChartScopeRef {
+	return getContext<ChartScopeRef | undefined>(SCOPE) ?? { el: null };
+}
 
 /**
  * CSS vars aren't reactive. Reading the scheme here makes any `$derived` that builds a chart
@@ -14,10 +39,14 @@ export function trackTheme(): void {
 	void colorScheme.style;
 }
 
-function v(name: string, fallback = ""): string {
+function v(name: string, fallback: string, scope: Element | null): string {
 	if (typeof document === "undefined") return fallback;
 	trackTheme();
-	return getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
+	return (
+		getComputedStyle(scope ?? document.documentElement)
+			.getPropertyValue(name)
+			.trim() || fallback
+	);
 }
 
 export interface ChartTokens {
@@ -41,26 +70,31 @@ export interface ChartTokens {
 	fontSans: string;
 }
 
-export function chartTokens(): ChartTokens {
+/** Token snapshot read from `scope` (an island) or, without one, from `<html>`. */
+export function chartTokens(scope: Element | null = null): ChartTokens {
 	return {
-		brand: v("--ca-brand-main", "#f59e0b"),
-		brandLight: v("--ca-brand-light", "#fcd34d"),
-		textPrimary: v("--ca-text-primary", "#0f172a"),
-		textSecondary: v("--ca-text-secondary", "#475569"),
-		textDisabled: v("--ca-text-disabled", "#94a3b8"),
-		success: v("--ca-semantic-success", "#22c55e"),
-		error: v("--ca-semantic-error", "#ef4444"),
-		warning: v("--ca-semantic-warning", "#f59e0b"),
-		info: v("--ca-semantic-info", "#3b82f6"),
-		glassBg: v("--ca-glass-bg", "rgba(255,255,255,0.55)"),
-		glassBorder: v("--ca-glass-border", "rgba(255,255,255,0.25)"),
-		glassShadow: v("--ca-glass-shadow", "0 8px 32px rgba(0,0,0,0.12)"),
-		blur: v("--ca-blur-regular", "blur(16px)"),
-		outlineSubtle: v("--ca-outline-subtle", "rgba(0,0,0,0.07)"),
-		actionHover: v("--ca-action-hover", "rgba(0,0,0,0.04)"),
-		radiusMd: v("--ca-radius-md", "12px"),
-		radiusLg: v("--ca-radius-lg", "16px"),
-		fontSans: v("--ca-font-sans", "Inter,system-ui,-apple-system,BlinkMacSystemFont,sans-serif"),
+		brand: v("--ca-brand-main", "#f59e0b", scope),
+		brandLight: v("--ca-brand-light", "#fcd34d", scope),
+		textPrimary: v("--ca-text-primary", "#0f172a", scope),
+		textSecondary: v("--ca-text-secondary", "#475569", scope),
+		textDisabled: v("--ca-text-disabled", "#94a3b8", scope),
+		success: v("--ca-semantic-success", "#22c55e", scope),
+		error: v("--ca-semantic-error", "#ef4444", scope),
+		warning: v("--ca-semantic-warning", "#f59e0b", scope),
+		info: v("--ca-semantic-info", "#3b82f6", scope),
+		glassBg: v("--ca-glass-bg", "rgba(255,255,255,0.55)", scope),
+		glassBorder: v("--ca-glass-border", "rgba(255,255,255,0.25)", scope),
+		glassShadow: v("--ca-glass-shadow", "0 8px 32px rgba(0,0,0,0.12)", scope),
+		blur: v("--ca-blur-regular", "blur(16px)", scope),
+		outlineSubtle: v("--ca-outline-subtle", "rgba(0,0,0,0.07)", scope),
+		actionHover: v("--ca-action-hover", "rgba(0,0,0,0.04)", scope),
+		radiusMd: v("--ca-radius-md", "12px", scope),
+		radiusLg: v("--ca-radius-lg", "16px", scope),
+		fontSans: v(
+			"--ca-font-sans",
+			"Inter,system-ui,-apple-system,BlinkMacSystemFont,sans-serif",
+			scope
+		),
 	};
 }
 

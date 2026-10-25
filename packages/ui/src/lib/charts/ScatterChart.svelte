@@ -4,6 +4,7 @@
 	import ChartCanvas from "./ChartCanvas.svelte";
 	import { scatterSeries, bubbleSymbolSize } from "./series/scatter.js";
 	import { withChartTheme } from "./theme.js";
+	import { useChartScope } from "./tokens.js";
 	import type { ScatterSeries } from "./types.js";
 
 	interface Props {
@@ -19,6 +20,8 @@
 
 	let { series, xName, yName, xFormatter, yFormatter, valueFormatter, height = "320px", class: className = "" }: Props =
 		$props();
+	// Tokens come from the theme island this chart sits in (the page when there is none).
+	const scope = useChartScope();
 
 	const option = $derived.by<EChartsOption>(() => {
 		// Auto-detect bubble mode from any point with a 3rd dimension
@@ -60,7 +63,7 @@
 					...(isBubble ? { symbolSize: bubbleSymbolSize(6, 40, maxSize) } : {}),
 				}),
 			),
-		});
+		}, scope.el);
 	});
 </script>
 
