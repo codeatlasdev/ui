@@ -134,7 +134,7 @@
 		"!dist/**/*.spec.*"
 	],
 	"scripts": {
-		"build": "svelte-package -i src/lib && node ../../scripts/prune-dist.js dist && bun scripts/build-manifest.ts && bun scripts/build-equivalents.ts && bun scripts/build-bin.ts",
+		"build": "bun scripts/build-package.ts",
 		"check": "svelte-check --tsconfig ./tsconfig.json --fail-on-warnings",
 		"build:watch": "svelte-package -i src/lib --watch",
 		"test": "bun run test:unit && bun ../../scripts/test-run.ts vitest run",
