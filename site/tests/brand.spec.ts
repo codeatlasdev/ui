@@ -3,7 +3,7 @@ import { join } from "node:path";
 import { resolveBrand } from "@codeatlasdev/ui/vite";
 import { expect, test } from "@playwright/test";
 import { theme } from "../src/theme.ts";
-import { DIST, ROUTES } from "./routes";
+import { ALL_ROUTES, DIST } from "./routes";
 
 /**
  * Brand assets: every page ships its own hashed og:image, the favicon follows the theme
@@ -11,7 +11,7 @@ import { DIST, ROUTES } from "./routes";
  * Pure file checks on `dist/`; no browser.
  */
 
-const PAGES = ROUTES.filter((r) => r !== "/404/" && r !== "/500/");
+const PAGES = ALL_ROUTES.filter((r) => r !== "/404/" && r !== "/500/");
 const html = (route: string) => readFileSync(join(DIST, route, "index.html"), "utf8");
 const attr = (doc: string, tag: string, key: string, val: string, out: string) => {
 	const m = doc.match(new RegExp(`<${tag}[^>]*\\b${key}="${val}"[^>]*>`));

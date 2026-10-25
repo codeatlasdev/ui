@@ -32,25 +32,34 @@ function walk(dir: string): string[] {
 const only: string[] | undefined = process.env.E2E_ROUTES
 	? JSON.parse(process.env.E2E_ROUTES)
 	: undefined;
-// `E2E_GALLERY=representatives` (the land gate, on a full sweep) keeps the gallery's item pages to the
-// representatives: they are one viewer chrome around ~400 demos, each audited on its docs route and on its
-// own item when it changes. `bun run test:full` (release) leaves it unset and audits every item.
+// Two thinning modes for the browser sweeps (routes.spec, routes.axe), because `/gallery/<id>/` and `/atlas/<slug>/`
+// are one template each over ~400 and ~270 pages (one viewer chrome around a demo; one term layout):
+//  - `E2E_SWEEP=templates` (`bun run test:full`, the release gate): the item and term pages are audited through their
+//    representatives; every other page (docs, templates, styles, concepts, the app pages) in full. What differs between
+//    two items is their content, which the static checks (`dist-html.spec.ts`, every page) and the demo's own docs route
+//    cover; `tests/template-sweep.spec.ts` proves the representatives catch a regression in either template.
+//  - `E2E_GALLERY=representatives` (the land gate, on a full sweep) also thins the docs to the fewest pages that still
+//    render every component folder (#598).
+const templates = process.env.E2E_SWEEP === "templates";
 const thin = process.env.E2E_GALLERY === "representatives";
-const items = thin ? new Set(GALLERY_REPRESENTATIVES) : undefined;
+const items = thin || templates ? new Set(GALLERY_REPRESENTATIVES) : undefined;
 const isItem = (p: string) => /^\/gallery\/[^/]+\/$/.test(p);
-// The same for the atlas: one template over every term, a few of them stand for all at land.
-const terms = thin ? new Set(ATLAS_REPRESENTATIVES) : undefined;
+const terms = thin || templates ? new Set(ATLAS_REPRESENTATIVES) : undefined;
 const isTerm = (p: string) => /^\/atlas\/[^/]+\/$/.test(p);
-// And for the docs: the fewest pages that still render every component folder and subpath (#598).
 const docs = thin ? new Set(docsRepresentatives(buildImpact())) : undefined;
 const isDoc = (p: string) => p.startsWith("/docs/");
 // A page the diff itself changed is audited even when the thinning would drop it (`E2E_KEEP`, from test:changed).
 const keep = new Set<string>(process.env.E2E_KEEP ? JSON.parse(process.env.E2E_KEEP) : []);
-export const ROUTES: string[] = walk(DIST)
+const pages = walk(DIST)
 	.map((file) => relative(DIST, dirname(file)))
 	.map((p) => (p === "" ? "/" : `/${p}/`))
-	.filter((p) => !p.startsWith("/landing-embed/") && (!only || only.includes(p)))
+	.filter((p) => !p.startsWith("/landing-embed/"))
+	.sort();
+/** Every prerendered page, never thinned: the zero-browser checks of `dist-html.spec.ts` run on all of them. */
+export const ALL_ROUTES: string[] = pages;
+/** The pages the browser sweeps load. */
+export const ROUTES: string[] = pages
+	.filter((p) => !only || only.includes(p))
 	.filter((p) => keep.has(p) || !items || !isItem(p) || items.has(p.split("/")[2]))
 	.filter((p) => keep.has(p) || !terms || !isTerm(p) || terms.has(p.split("/")[2]))
-	.filter((p) => keep.has(p) || !docs || !isDoc(p) || docs.has(p))
-	.sort();
+	.filter((p) => keep.has(p) || !docs || !isDoc(p) || docs.has(p));

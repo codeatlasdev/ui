@@ -292,14 +292,15 @@ if (siteRun) {
 		"test",
 		...(routeRun
 			? [
-					"--project=desktop",
-					"--project=mobile",
+					"--project=routes-desktop",
+					"--project=routes-mobile",
 					"--project=axe",
+					"--project=static",
 					"routes.spec",
 					"routes.axe",
 					"dist-html",
 				]
-			: ["--project=desktop", "--project=mobile"]),
+			: ["--project=desktop", "--project=mobile", "--project=static"]),
 		...specs.map((f) => f.replace("site/tests/", "")),
 	];
 	await step("site", () => run(args, env, join(ROOT, "site")));

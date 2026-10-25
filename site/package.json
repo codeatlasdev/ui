@@ -12,7 +12,8 @@
 		"preview": "astro preview --port 4321 --force",
 		"check": "astro check --minimumFailingSeverity warning && tsc -p functions/tsconfig.json && tsc -p functions/tsconfig.test.json",
 		"test:unit": "bun test ./functions",
-		"test:e2e": "bun ../scripts/test-run.ts playwright test",
+		"test:e2e": "bun ../scripts/test-run.ts playwright test --project=desktop --project=mobile --project=iphone --project=a11y --project=static",
+		"test:routes": "E2E_SWEEP=templates bun ../scripts/test-run.ts playwright test --project=routes-desktop --project=routes-mobile --project=axe",
 		"test:a11y": "bun ../scripts/test-run.ts playwright test --project=a11y",
 		"test:vrt": "bun ../scripts/test-run.ts playwright test --project=visual-desktop --project=visual-mobile",
 		"test:vrt:update": "bun ../scripts/test-run.ts playwright test --project=visual-desktop --project=visual-mobile --update-snapshots"
