@@ -3,6 +3,7 @@
 	import type { EChartsOption } from "echarts";
 	import ChartCanvas from "./ChartCanvas.svelte";
 	import { withChartTheme } from "./theme.js";
+	import { useChartScope } from "./tokens.js";
 	import { chartTokens, resolveZoneColor } from "./tokens.js";
 	import type { GaugeZone } from "./types.js";
 
@@ -37,9 +38,11 @@
 		height = "280px",
 		class: className = "",
 	}: Props = $props();
+	// Tokens come from the theme island this chart sits in (the page when there is none).
+	const scope = useChartScope();
 
 	const option = $derived.by<EChartsOption>(() => {
-		const t = chartTokens();
+		const t = chartTokens(scope.el);
 		const fmt = formatter ?? ((v: number) => `${v}%`);
 
 		const seriesBase = {
@@ -83,7 +86,7 @@
 						detail: { ...detail, fontSize: 36, fontWeight: "bold", offsetCenter: [0, 0] },
 					},
 				],
-			});
+			}, scope.el);
 		}
 
 		return withChartTheme({
@@ -113,7 +116,7 @@
 						: {}),
 				},
 			],
-		});
+		}, scope.el);
 	});
 </script>
 

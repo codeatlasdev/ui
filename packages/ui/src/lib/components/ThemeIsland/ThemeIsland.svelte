@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
+  import { setChartScope, type ChartScopeRef } from '../../charts/tokens.js';
   import { mirrorIsland } from '../../theme/island.js';
 
   interface Props {
@@ -20,6 +21,14 @@
 
   let { preset, scheme, document: mirror = false, class: className = '', children }: Props = $props();
 
+  // Charts below this island read their tokens from it, not from `<html>`.
+  let root = $state<HTMLElement | null>(null);
+  const chartScope: ChartScopeRef = $state({ el: null });
+  $effect(() => {
+    chartScope.el = root;
+  });
+  setChartScope(chartScope);
+
   // `document` is a mount-time decision per island; preset/scheme changes re-mirror.
   $effect(() => {
     if (!mirror) return;
@@ -30,6 +39,7 @@
 <!-- The attributes are on the element itself: SSR already carries them, so the island paints right
      on the first frame. The theme tokens (`[data-theme-scope]`, `[data-preset]`) re-resolve inside. -->
 <div
+  bind:this={root}
   class="ca-theme-island {className}"
   data-preset={preset}
   data-theme-scope={scheme}

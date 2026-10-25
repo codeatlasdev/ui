@@ -1,12 +1,12 @@
 {
 	"version": "4.5.0",
-	"count": 379,
+	"count": 382,
 	"groups": [
 		{
 			"slug": "inputs",
 			"first": "001",
-			"last": "983",
-			"count": 83
+			"last": "992",
+			"count": 86
 		},
 		{
 			"slug": "surfaces",
@@ -17093,6 +17093,123 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/feedback/sound#components",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "990",
+			"group": "inputs",
+			"page": "color-field",
+			"variant": "Brand",
+			"slug": "brand-color",
+			"title": "Brand color",
+			"description": "Contrast of white on the color, as a UI part (3:1).",
+			"summary": "Color field with a swatch, a native picker, a text input and a live WCAG contrast readout against white.",
+			"use": "Picking a brand or accent color where contrast matters.",
+			"spec": [
+				"`<ColorField` with `label=\"Brand color\"` and `bind:value={brand}`",
+				"`against=\"#ffffff\"`, `role=\"fill\"` and `minRatio={3}` so the readout measures white on the color as a UI part",
+				"Has a `description`: Type #hex, rgb() or oklch(), or pick.",
+				"Initial value is `$state('#2b5fd9')`",
+				"Current value is shown as `value: {brand}`"
+			],
+			"tags": [
+				"color-field",
+				"color-picker",
+				"oklch",
+				"contrast",
+				"brand"
+			],
+			"shape": "wide",
+			"components": [
+				"ColorField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"ColorField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/color-field#brand-color",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "991",
+			"group": "inputs",
+			"page": "color-field",
+			"variant": "TextContrast",
+			"slug": "text-color",
+			"title": "Text color",
+			"description": "Text on a white page, oklch output from the picker, 4.5:1.",
+			"summary": "Color field for a text color measured against a white page, with a sample line in that color.",
+			"use": "Choosing text colors that must reach WCAG AA.",
+			"spec": [
+				"`<ColorField` with `label=\"Body text\"`, `bind:value={text}`, `against={page}`, `minRatio={4.5}` and `format=\"oklch\"`",
+				"`page` is the constant `'#ffffff'`",
+				"Initial value is `$state('#6b7280')`",
+				"Below the field, a white box shows a sample sentence painted in the current color"
+			],
+			"tags": [
+				"color-field",
+				"contrast",
+				"wcag",
+				"text",
+				"oklch"
+			],
+			"shape": "wide",
+			"components": [
+				"ColorField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"ColorField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/color-field#text-color",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "992",
+			"group": "inputs",
+			"page": "slider",
+			"variant": "Field",
+			"slug": "label-and-number",
+			"title": "Label and number",
+			"description": "Label, slider and an editable number with a unit.",
+			"summary": "Two labelled sliders with an editable number and a unit: radius and type scale.",
+			"use": "Tuning a numeric setting where both scrubbing and typing an exact value matter.",
+			"spec": [
+				"Two `<SliderField` stacked in a column",
+				"First: `label=\"Radius\"`, `bind:value={radius}`, `min={0}`, `max={2}`, `step={0.05}`, `unit=\"x\"`, initial `0.8`",
+				"Second: `label=\"Type scale\"`, `bind:value={scale}`, `min={0.8}`, `max={1.3}`, `step={0.01}`, `unit=\"x\"`, initial `1`, with a `description` Multiplies every font size."
+			],
+			"tags": [
+				"slider-field",
+				"slider",
+				"number",
+				"settings",
+				"unit"
+			],
+			"shape": "wide",
+			"components": [
+				"SliderField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"SliderField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/slider#label-and-number",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		}
 	]

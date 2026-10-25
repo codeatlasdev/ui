@@ -7,6 +7,7 @@
 	import ChartCanvas from "./ChartCanvas.svelte";
 	import { lineSeries } from "./series/line.js";
 	import { withChartTheme } from "./theme.js";
+	import { useChartScope } from "./tokens.js";
 	import type { ChartSeries } from "./types.js";
 
 	interface Props {
@@ -23,6 +24,8 @@
 	}
 
 	let { series, categories, valueFormatter, area = false, height = "320px", class: className = "" }: Props = $props();
+	// Tokens come from the theme island this chart sits in (the page when there is none).
+	const scope = useChartScope();
 
 	const option = $derived<EChartsOption>(
 		withChartTheme({
@@ -42,7 +45,7 @@
 					...(area ? { areaStyle: {} } : {}),
 				}),
 			),
-		}),
+		}, scope.el),
 	);
 
 	const gradientSeries = $derived(area ? series.map((_, i) => i) : []);

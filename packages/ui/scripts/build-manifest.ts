@@ -56,6 +56,7 @@ const API_ENTRIES: Record<string, string> = {
 	[`${PKG}/seo`]: "seo/index.ts",
 	[`${PKG}/tokens`]: "tokens/index.ts",
 	[`${PKG}/utils/palette-generator`]: "utils/palette-generator.ts",
+	[`${PKG}/utils/color`]: "utils/color.ts",
 };
 
 export type ExportKind = "function" | "store" | "const" | "class" | "type";

@@ -21,6 +21,7 @@ import { charts } from "./groups/charts.js";
 import { chat } from "./groups/chat.js";
 import { chip } from "./groups/chip.js";
 import { codeSnippet } from "./groups/codeSnippet.js";
+import { colorField } from "./groups/colorField.js";
 import { combobox } from "./groups/combobox.js";
 import { commandPalette } from "./groups/commandPalette.js";
 import { common } from "./groups/common.js";
@@ -85,6 +86,7 @@ export const groups = {
 	calendar,
 	chip,
 	codeSnippet,
+	colorField,
 	combobox,
 	commandPalette,
 	copyButton,

@@ -64,6 +64,22 @@ The preset must exist in your theme (a brand preset or a built-in): an unknown i
 
 On Astro, put the same attributes on `<html>` in the layout of that page (`data-preset`, `data-theme-scope`, `data-ca-island`, and `class="dark"` for a dark island). The `<ClientRouter />` swap carries the app preset across island and non-island pages.
 
+## Charts inside an island
+
+Charts are canvas, so they cannot use CSS variables: they read their colors once with `getComputedStyle`. A chart inside `<ThemeIsland>` reads the island's tokens, so it paints the island's brand, text and surface, not the page's. The island provides that scope to every chart below it.
+
+For a scope you build yourself (an element with `data-preset` or `data-theme-scope`), wrap the content in `ChartScope` from `@codeatlasdev/ui/charts`; it reads tokens from the nearest scoped ancestor, and from `<html>` when there is none.
+
+```svelte
+<script>
+  import { ChartScope, LineChart } from "@codeatlasdev/ui/charts";
+</script>
+
+<div data-preset="violet" data-theme-scope="light">
+  <ChartScope><LineChart series={series} categories={months} /></ChartScope>
+</div>
+```
+
 ## Nested presets and `data-theme-scope`
 
 Presets and scopes can nest freely; the nearest one wins:

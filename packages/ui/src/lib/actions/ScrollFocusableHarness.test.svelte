@@ -1,14 +1,12 @@
 <script lang="ts">
 	import { scrollFocusable } from "./scroll-focusable.js";
 
-	let { later = false }: { later?: boolean } = $props();
 	let show = $state(false);
-	// Well after the action's first measurement and the first frame.
-	$effect(() => {
-		if (!later) return;
-		const t = setTimeout(() => (show = true), 300);
-		return () => clearTimeout(t);
-	});
+	// The test decides when the overflowing content mounts (after its first assertion), not a timer
+	// a slow machine can outrun. A test that never calls this renders a scroller with nothing in it.
+	export function reveal() {
+		show = true;
+	}
 </script>
 
 <!-- The scroller holds a fixed-height wrapper (like the stage's island); the content that

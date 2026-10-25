@@ -4,6 +4,7 @@
 	import ChartCanvas from "./ChartCanvas.svelte";
 	import { barSeries } from "./series/bar.js";
 	import { withChartTheme } from "./theme.js";
+	import { useChartScope } from "./tokens.js";
 	import type { ChartSeries } from "./types.js";
 
 	interface Props {
@@ -27,6 +28,8 @@
 		height = "320px",
 		class: className = "",
 	}: Props = $props();
+	// Tokens come from the theme island this chart sits in (the page when there is none).
+	const scope = useChartScope();
 
 	const option = $derived<EChartsOption>(
 		withChartTheme({
@@ -45,7 +48,7 @@
 					...(s.color ? { itemStyle: { color: s.color, borderRadius: [6, 6, 0, 0] } } : {}),
 				}),
 			),
-		}),
+		}, scope.el),
 	);
 </script>
 

@@ -5,6 +5,7 @@
 	import type { EChartsOption } from "echarts";
 	import ChartCanvas from "./ChartCanvas.svelte";
 	import { withChartTheme } from "./theme.js";
+	import { useChartScope } from "./tokens.js";
 	import { chartPalette, withAlpha } from "./palette.js";
 	import { chartTokens } from "./tokens.js";
 	import type { CalendarHeatmapPoint, MatrixHeatmapPoint } from "./types.js";
@@ -40,6 +41,8 @@
 		height = "240px",
 		class: className = "",
 	}: Props = $props();
+	// Tokens come from the theme island this chart sits in (the page when there is none).
+	const scope = useChartScope();
 
 	function buildCalendarOption(
 		t: ReturnType<typeof chartTokens>,
@@ -82,7 +85,7 @@
 					data,
 				},
 			],
-		});
+		}, scope.el);
 	}
 
 	function buildMatrixOption(
@@ -145,12 +148,12 @@
 					animationDelay: (idx: number) => idx * 2,
 				},
 			],
-		});
+		}, scope.el);
 	}
 
 	const option = $derived.by<EChartsOption>(() => {
-		const t = chartTokens();
-		const palette = chartPalette();
+		const t = chartTokens(scope.el);
+		const palette = chartPalette(scope.el);
 		return variant === "calendar"
 			? buildCalendarOption(t, palette)
 			: buildMatrixOption(t, palette);

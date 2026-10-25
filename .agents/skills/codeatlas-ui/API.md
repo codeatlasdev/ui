@@ -584,6 +584,19 @@ Tokens: `--ca-carousel-per-view`
 | `name?` | `string` |  |  |
 | `onblur?` | `(e: FocusEvent) => void` |  |  |
 
+## ChartScope
+
+`import { ChartScope } from "@codeatlasdev/ui/charts"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `scope?` | `HTMLElement \| null` | `null` | The element to read tokens from. Omit to use the wrapper div this component renders. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Parts: `ca-chart-scope`
+
 ## Checkbox
 
 `import { Checkbox } from "@codeatlasdev/ui"`
@@ -712,6 +725,29 @@ Internal (may change in any release): `ca-slide-down` `ca-slide-up`
 Variables: `--ca-collapsible-height`
 
 Data attributes: `data-state` (`closed` `open`)
+
+## ColorField
+
+`import { ColorField } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `label` | `string` |  |  |
+| `value?` | `string` | `'#000000'` | `bind:` Committed color as a CSS string. Invalid input never reaches it. |
+| `format?` | `'hex' \| 'oklch'` | `'hex'` | What the native picker writes: `hex` (default) or `oklch`. |
+| `against?` | `string` |  | Background to measure contrast against (any CSS color). Omit to hide the readout. |
+| `role?` | `'text' \| 'fill'` | `'text'` | Role of `value` in the contrast pair: `text` (value on `against`) or `fill` (against on value). |
+| `minRatio?` | `number` | `4.5` | Minimum ratio that counts as passing. 4.5 for text, 3 for UI parts. |
+| `description?` | `string` |  |  |
+| `disabled?` | `boolean` | `false` |  |
+| `class?` | `string` | `''` |  |
+| `onchange?` | `(value: string) => void` |  |  |
+
+Parts: `ca-color-field` `ca-color-field__contrast` `ca-color-field__level` `ca-color-field__native` `ca-color-field__pick` `ca-color-field__ratio` `ca-color-field__swatch`
+
+Variables: `--ca-color-field-fill`
+
+Data attributes: `data-disabled`, `data-pass`
 
 ## Combobox
 
@@ -3048,10 +3084,32 @@ Slider — single or range value input.
 | `step?` | `number` | `1` |  |
 | `disabled?` | `boolean` | `false` |  |
 | `class?` | `string` | `''` |  |
+| `label?` | `string` |  | Accessible name of the thumb(s). Without it a thumb is announced as "Value 40". A range appends "minimum"/"maximum". |
 | `onchange?` | `(value: number[]) => void` |  | Called on change. Always receives array regardless of single/range mode. |
 | `sound?` | `SoundProp` |  | Plays `tick` for each step the user crosses (a cue name replaces it); off under reduced motion. Needs `@codeatlasdev/ui/sound`. |
 
 Parts: `ca-slider` `ca-slider__range` `ca-slider__thumb` `ca-slider__track`
+
+Data attributes: `data-disabled`
+
+## SliderField
+
+`import { SliderField } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `label` | `string` |  | Visible label and the accessible name of both controls. |
+| `value?` | `number` | `0` | `bind:` |
+| `min?` | `number` | `0` |  |
+| `max?` | `number` | `100` |  |
+| `step?` | `number` | `1` |  |
+| `unit?` | `string` |  | Unit shown after the number (`px`, `rem`, `deg`, `x`). |
+| `description?` | `string` |  | Content under the control. |
+| `disabled?` | `boolean` | `false` |  |
+| `class?` | `string` | `''` |  |
+| `onchange?` | `(value: number) => void` |  |  |
+
+Parts: `ca-slider-field` `ca-slider-field__head` `ca-slider-field__hint` `ca-slider-field__label` `ca-slider-field__value`
 
 Data attributes: `data-disabled`
 
@@ -3759,6 +3817,14 @@ Move `id` per a drop event inside plain arrays: the reorder/move helper apps usu
 function applyMove<T>(lists: Record<string, T[]>, e: DndDropEvent, key: (item: T) => string): Record<string, T[]>
 ```
 
+### BUILTIN_PRESETS
+
+`import { BUILTIN_PRESETS } from "@codeatlasdev/ui"`
+
+```ts
+const BUILTIN_PRESETS: BuiltinPresetSource[]
+```
+
 ### collectPaths
 
 `import { collectPaths } from "@codeatlasdev/ui"`
@@ -3790,6 +3856,16 @@ const colorScheme: {
   setTokens: (vars: Record<string, string>) => void;
   init: () => () => void;
 }
+```
+
+### contrast
+
+`import { contrast } from "@codeatlasdev/ui"`
+
+WCAG contrast ratio of `fg` on `bg`. A translucent `fg` is composited over `bg`, and a translucent `bg` over white, like a browser paints them. Null when either cannot be evaluated (`var()`, other keywords).
+
+```ts
+function contrast(fg: string, bg: string): number | null
 ```
 
 ### copyToClipboard
@@ -3885,6 +3961,16 @@ Design-style recipes by id (default, liquid, swiss, ... editorial, terminal): ea
 const DESIGN_STYLES: Record<DesignStyleId, DesignStyle>
 ```
 
+### designDefaults
+
+`import { designDefaults } from "@codeatlasdev/ui"`
+
+The stylesheet default (`tokens.css`) of every knob `designTokens` can write, so a scoped preview can reset what an outer theme set before it applies its own edits: `designTokens` leaves a value out when it equals the default, which lets the page's theme cascade into an island. Values here are exactly the declarations of `tokens.css`; `tests/theme-defaults.test.ts` keeps them in step.
+
+```ts
+function designDefaults(): Record<string, string>
+```
+
 ### designStyle
 
 `import { designStyle } from "@codeatlasdev/ui"`
@@ -3967,6 +4053,16 @@ const elevation: {
   thick: 12;
   chrome: 20;
 }
+```
+
+### extractPalette
+
+`import { extractPalette } from "@codeatlasdev/ui"`
+
+Dominant colors of an RGBA pixel buffer (`ImageData.data`), by k-means in OKLab so clusters are perceptual rather than channel-wise. Transparent pixels are ignored; the buffer is subsampled to at most `maxSamples` pixels. Deterministic (farthest-point seeding, no randomness). Result is sorted by `share`, largest first, and merged so no two entries sit within `minDistance` in OKLab.
+
+```ts
+function extractPalette(rgba: ArrayLike<number>, options?: { k?: number | undefined; maxSamples?: number | undefined; minDistance?: number | undefined; }): PaletteColor[]
 ```
 
 ### findActiveItem
@@ -4085,6 +4181,16 @@ Format a number with locale-aware thousands separator.
 
 ```ts
 function formatNumber(value: number, locale?: string, options?: Intl.NumberFormatOptions): string
+```
+
+### formatOklch
+
+`import { formatOklch } from "@codeatlasdev/ui"`
+
+`oklch(L C H)` string with 3-decimal lightness/chroma and 1-decimal hue.
+
+```ts
+function formatOklch(options: Oklch): string
 ```
 
 ### formatRelativeTime
@@ -4317,6 +4423,16 @@ Call `fn` after the scheme, preset or surface style of the page changes (the `cl
 function onTokensChange(fn: () => void): () => void
 ```
 
+### parseColorInput
+
+`import { parseColorInput } from "@codeatlasdev/ui"`
+
+Parse what a user types into a color field: `#rgb`, `#rrggbb`, `rgb()`, `oklch()`, `color-mix()`, `white`/`black`, or a bare `rrggbb`. Returns the canonical `#rrggbb` and OKLCH, or null.
+
+```ts
+function parseColorInput(input: string): { hex: string; oklch: Oklch; alpha: number; css: string } | null
+```
+
 ### passwordScore
 
 `import { passwordScore } from "@codeatlasdev/ui"`
@@ -4325,6 +4441,36 @@ Pure, dependency-free strength estimate: unique characters and character classes
 
 ```ts
 function passwordScore(value: string): PasswordScore
+```
+
+### pickBrand
+
+`import { pickBrand } from "@codeatlasdev/ui"`
+
+Pick the brand color of a palette: the most vivid cluster that is neither near-white nor near-black, weighted by how much of the image it covers. Falls back to the largest cluster for a grayscale image.
+
+```ts
+function pickBrand(palette: PaletteColor[]): PaletteColor | null
+```
+
+### presetContrastIssues
+
+`import { presetContrastIssues } from "@codeatlasdev/ui"`
+
+Hand-set roles of a brand preset that miss WCAG AA, as findings: - `brandContrast` on `brandFill` under 4.5:1 (a role left unset is measured from the generated fill/contrast of that scheme, so a lone `brandContrast` is checked against the fill it will sit on); - `text`, `textSecondary` or `textHint` under 4.5:1 on any of the four surfaces **after compositing their alpha** over that surface (a translucent role is only as readable as what is behind it). Surfaces a preset hand-sets are used as written; the rest are the generated ones. Colors the build cannot evaluate (`var()`, other keywords) are skipped, never guessed.
+
+```ts
+function presetContrastIssues(t: Pick<ResolvedTheme, "presets">): PresetContrastIssue[]
+```
+
+### presetTokens
+
+`import { presetTokens } from "@codeatlasdev/ui"`
+
+Light/dark token maps (with `color-scheme`) for a built-in or brand preset.
+
+```ts
+function presetTokens(src: BuiltinPresetSource | PresetDefinition): { light: Record<string, string>; dark: Record<string, string>; }
 ```
 
 ### radius
@@ -4577,6 +4723,16 @@ RFC 4180 CSV (CRLF line ends, trailing newline). Columns default to the first ro
 function toCsv<T extends object>(rows: readonly T[], columns?: readonly ExportColumn<T>[]): string
 ```
 
+### toHex
+
+`import { toHex } from "@codeatlasdev/ui"`
+
+Opaque `#rrggbb` of any color the theme parser understands (alpha is dropped). Null if it cannot be evaluated.
+
+```ts
+function toHex(color: string): string | null
+```
+
 ### toJson
 
 `import { toJson } from "@codeatlasdev/ui"`
@@ -4595,6 +4751,16 @@ A design token (`--ca-brand-main`), a domain token by name (`"status.new"` for `
 
 ```ts
 function tokenRgba(token: CaTokenName | (string & {}), alpha?: number): Rgba
+```
+
+### toOklch
+
+`import { toOklch } from "@codeatlasdev/ui"`
+
+OKLCH of any evaluable CSS color (alpha dropped). Null if it cannot be evaluated.
+
+```ts
+function toOklch(color: string): Oklch | null
 ```
 
 ### uid
@@ -4665,6 +4831,16 @@ On-screen keyboard tracker: `viewport.keyboardInset` is the layout-viewport heig
 const viewport: { readonly keyboardInset: number; init: () => () => void; }
 ```
 
+### wcagLevel
+
+`import { wcagLevel } from "@codeatlasdev/ui"`
+
+WCAG level a ratio reaches for normal text: AAA 7, AA 4.5, AA-large 3 (large text and UI parts), else fail.
+
+```ts
+function wcagLevel(ratio: number): WcagLevel
+```
+
 ### zIndex
 
 `import { zIndex } from "@codeatlasdev/ui"`
@@ -4695,6 +4871,7 @@ Types:
 | `BrandColors` | `interface BrandColors { main: string; light: string; dark: string; contrast: string; }` |  |
 | `Breakpoint` | `type Breakpoint = "xs" \| "sm" \| "md" \| "lg" \| "xl";` |  |
 | `BuiltinPresetId` | `type BuiltinPresetId = \| "amber" \| "ocean" \| "crimson" \| "cyan" \| "violet" \| "emerald" \| "rose" \| "slate";` | Presets shipped in global.css. |
+| `BuiltinPresetSource` | `interface BuiltinPresetSource { id: "amber" \| "ocean" \| "crimson" \| "cyan" \| "violet" \| "emerald" \| "rose" \| "slate"; label: string; color: `#${string}`; hue: number; chroma: number; lightL: number; overrides: { light: TokenMap; dark: TokenMap }; }` |  |
 | `ButtonSizeTokens` | `interface ButtonSizeTokens { height?: CssValue; paddingX?: CssValue; fontSize?: CssValue; weight?: CssValue; tracking?: CssValue; }` | Typography and box tokens of one Button size. |
 | `ButtonTokens` | `interface ButtonTokens extends ButtonSizeTokens { weight?: CssValue; tracking?: CssValue; leading?: CssValue; gap?: CssValue; ghostBorderWidth?: CssValue; disabledBg?: CssValue; touchHeight?: CssValue; sm?: ButtonSizeTokens; md?: ButtonSizeTokens; lg?: ButtonSizeTokens; }` |  |
 | `CardTokens` | `interface CardTokens { bg?: CssValue; radius?: CssValue; border?: CssValue; shadow?: CssValue; }` |  |
@@ -4758,12 +4935,15 @@ Types:
 | `NavReorderProps` | `interface NavReorderProps { items: NavItem[]; onReorder: (e: NavReorderEvent) => void; label: string; isActive: (item: NavItem) => boolean; }` | Props of the opt-in `NavReorder` list (see `NavExtras.reorder`). |
 | `NavSection` | `interface NavSection { label?: string; collapsible?: boolean; defaultOpen?: boolean; items: NavItem[]; onReorder?: (e: NavReorderEvent) => void; }` |  |
 | `NeutralRamp` | `interface NeutralRamp { surfaceLight: SurfaceColors; surfaceDark: SurfaceColors; textLight: TextColors; textDark: TextColors; outlineLight: OutlineColors; outlineDark: OutlineColors; }` |  |
+| `Oklch` | `interface Oklch { l: number; c: number; h: number; }` |  |
 | `OutlineColors` | `interface OutlineColors { subtle: string; default: string; strong: string; }` |  |
+| `PaletteColor` | `interface PaletteColor { hex: string; oklch: Oklch; share: number; }` |  |
 | `Paper` | `type Paper = "mesh" \| "plain" \| "grid" \| "dots" \| "lines";` | Page background pattern. mesh = brand glow gradients (drawn by the glass and frosted materials); the rest are flat paper. |
 | `PasswordScore` | `type PasswordScore = 0 \| 1 \| 2 \| 3;` | 0 = empty, 1 = weak, 2 = fair, 3 = strong. |
 | `Politeness` | `type Politeness = "polite" \| "assertive";` |  |
 | `PolymorphicAttributes` | `type PolymorphicAttributes<T extends ElementTag, Own = object> = Omit< SvelteHTMLElements[T], "class" \| "children" \| "as" \| keyof Own > & Own;` | The tag's own attributes and event handlers, minus what the primitive declares itself (`Own`, `class`, `children`, `as`). |
 | `PolymorphicProps` | `type PolymorphicProps<T extends ElementTag, Own = object> = { as?: T; class?: string; children?: Snippet; } & PolymorphicAttributes<T, Own>;` | Props of a primitive that renders `as` an element: the tag's own attributes and event handlers (`as="form"` takes `novalidate`, `onsubmit` with `currentTarget: HTMLFormElement`), its token props, `class` and `children`. |
+| `PresetContrastIssue` | `interface PresetContrastIssue { preset: string; scheme: "light" \| "dark"; ratio: number; message: string; role?: TextRole; }` |  |
 | `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; tokens?: PresetTokenGroups; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `PresetId` | `type PresetId = BuiltinPresetId \| (string & {});` | A built-in preset or a brand preset registered via `ThemeOptions.presets`. |
 | `PresetSizes` | `interface PresetSizes { inputFontSize?: string; }` |  |
@@ -4802,6 +4982,7 @@ Types:
 | `UseListStateReturn` | `interface UseListStateReturn<T> { get search(): string; set search(v: string); readonly filters: Record<string, string>; setFilter(key: string, value: string \| undefined): void; clearFilters(): void; readonly hasFilters: boolean; readonly filtered: T[]; readonly count: string; readonly rows: T[]; get page(): number; set page(v: number); readonly pageCount: number; readonly pageInfo: string; readonly selected: Set<T[keyof T]>; readonly allPageSelected: boolean; toggleAll(): void; toggleRow(id: T[keyof T]): void; clearSelection(): void; }` |  |
 | `ValidationSchema` | `type ValidationSchema<K extends string> = \| { parse?: (data: Record<K, string>) => unknown; safeParse?: (data: Record<K, string>) => { success: boolean; error?: { flatten?: () => { fieldErrors: Partial<Record<K, string[]>> } }; }; _run?: ( data: Record<K, string>, config: unknown ) => { output: unknown; issues?: Array<{ path: (string \| number)[]; message: string }>; }; } \| ((data: Record<K, string>) => Partial<Record<K, string>>);` |  |
 | `VibrancyLevel` | `type VibrancyLevel = "label" \| "secondary" \| "tertiary" \| "fill" \| "separator";` |  |
+| `WcagLevel` | `type WcagLevel = "AAA" \| "AA" \| "AA-large" \| "fail";` |  |
 | `ZIndexKey` | `type ZIndexKey = keyof typeof zIndex;` |  |
 
 #### AvatarTokens
@@ -4818,6 +4999,18 @@ Types:
 | `light` | `string` |  |
 | `dark` | `string` |  |
 | `contrast` | `string` |  |
+
+#### BuiltinPresetSource
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `"amber" \| "ocean" \| "crimson" \| "cyan" \| "violet" \| "emerald" \| "rose" \| "slate"` |  |
+| `label` | `string` |  |
+| `color` | ``#${string}`` | sRGB swatch for pickers and canvas. |
+| `hue` | `number` |  |
+| `chroma` | `number` |  |
+| `lightL` | `number` |  |
+| `overrides` | `{ light: TokenMap; dark: TokenMap }` |  |
 
 #### ButtonSizeTokens
 
@@ -5234,6 +5427,14 @@ Types:
 | `outlineLight` | `OutlineColors` |  |
 | `outlineDark` | `OutlineColors` |  |
 
+#### Oklch
+
+| Field | Type | Notes |
+|---|---|---|
+| `l` | `number` | Lightness, 0 to 1. |
+| `c` | `number` | Chroma, 0 to ~0.37 inside sRGB. |
+| `h` | `number` | Hue angle in degrees, 0 to 360. |
+
 #### OutlineColors
 
 | Field | Type | Notes |
@@ -5241,6 +5442,24 @@ Types:
 | `subtle` | `string` |  |
 | `default` | `string` |  |
 | `strong` | `string` |  |
+
+#### PaletteColor
+
+| Field | Type | Notes |
+|---|---|---|
+| `hex` | `string` |  |
+| `oklch` | `Oklch` |  |
+| `share` | `number` | Share of the sampled pixels in this cluster, 0 to 1. |
+
+#### PresetContrastIssue
+
+| Field | Type | Notes |
+|---|---|---|
+| `preset` | `string` |  |
+| `scheme` | `"light" \| "dark"` |  |
+| `ratio` | `number` |  |
+| `message` | `string` |  |
+| `role?` | `TextRole` | The role that fell short, when it is a hand-set text role (`brandContrast` issues leave it out). |
 
 #### PresetDefinition
 
@@ -7371,6 +7590,122 @@ Types:
 | `ramp` | `NeutralRamp` |  |
 | `semanticLight` | `SemanticColors` |  |
 | `semanticDark` | `SemanticColors` |  |
+
+## @codeatlasdev/ui/utils/color
+
+### contrast
+
+`import { contrast } from "@codeatlasdev/ui/utils/color"`
+
+WCAG contrast ratio of `fg` on `bg`. A translucent `fg` is composited over `bg`, and a translucent `bg` over white, like a browser paints them. Null when either cannot be evaluated (`var()`, other keywords).
+
+```ts
+function contrast(fg: string, bg: string): number | null
+```
+
+### extractPalette
+
+`import { extractPalette } from "@codeatlasdev/ui/utils/color"`
+
+Dominant colors of an RGBA pixel buffer (`ImageData.data`), by k-means in OKLab so clusters are perceptual rather than channel-wise. Transparent pixels are ignored; the buffer is subsampled to at most `maxSamples` pixels. Deterministic (farthest-point seeding, no randomness). Result is sorted by `share`, largest first, and merged so no two entries sit within `minDistance` in OKLab.
+
+```ts
+function extractPalette(rgba: ArrayLike<number>, options?: { k?: number | undefined; maxSamples?: number | undefined; minDistance?: number | undefined; }): PaletteColor[]
+```
+
+### formatOklch
+
+`import { formatOklch } from "@codeatlasdev/ui/utils/color"`
+
+`oklch(L C H)` string with 3-decimal lightness/chroma and 1-decimal hue.
+
+```ts
+function formatOklch(options: Oklch): string
+```
+
+### oklchHex
+
+`import { oklchHex } from "@codeatlasdev/ui/utils/color"`
+
+Opaque `#rrggbb` for an OKLCH triple (gamut-clipped).
+
+```ts
+function oklchHex(options: Oklch): string
+```
+
+### parseColorInput
+
+`import { parseColorInput } from "@codeatlasdev/ui/utils/color"`
+
+Parse what a user types into a color field: `#rgb`, `#rrggbb`, `rgb()`, `oklch()`, `color-mix()`, `white`/`black`, or a bare `rrggbb`. Returns the canonical `#rrggbb` and OKLCH, or null.
+
+```ts
+function parseColorInput(input: string): { hex: string; oklch: Oklch; alpha: number; css: string } | null
+```
+
+### pickBrand
+
+`import { pickBrand } from "@codeatlasdev/ui/utils/color"`
+
+Pick the brand color of a palette: the most vivid cluster that is neither near-white nor near-black, weighted by how much of the image it covers. Falls back to the largest cluster for a grayscale image.
+
+```ts
+function pickBrand(palette: PaletteColor[]): PaletteColor | null
+```
+
+### toHex
+
+`import { toHex } from "@codeatlasdev/ui/utils/color"`
+
+Opaque `#rrggbb` of any color the theme parser understands (alpha is dropped). Null if it cannot be evaluated.
+
+```ts
+function toHex(color: string): string | null
+```
+
+### toOklch
+
+`import { toOklch } from "@codeatlasdev/ui/utils/color"`
+
+OKLCH of any evaluable CSS color (alpha dropped). Null if it cannot be evaluated.
+
+```ts
+function toOklch(color: string): Oklch | null
+```
+
+### wcagLevel
+
+`import { wcagLevel } from "@codeatlasdev/ui/utils/color"`
+
+WCAG level a ratio reaches for normal text: AAA 7, AA 4.5, AA-large 3 (large text and UI parts), else fail.
+
+```ts
+function wcagLevel(ratio: number): WcagLevel
+```
+
+Types:
+
+| Type | Declaration | Notes |
+|---|---|---|
+| `Oklch` | `interface Oklch { l: number; c: number; h: number; }` |  |
+| `PaletteColor` | `interface PaletteColor { hex: string; oklch: Oklch; share: number; }` |  |
+| `WcagLevel` | `type WcagLevel = "AAA" \| "AA" \| "AA-large" \| "fail";` |  |
+
+#### Oklch
+
+| Field | Type | Notes |
+|---|---|---|
+| `l` | `number` | Lightness, 0 to 1. |
+| `c` | `number` | Chroma, 0 to ~0.37 inside sRGB. |
+| `h` | `number` | Hue angle in degrees, 0 to 360. |
+
+#### PaletteColor
+
+| Field | Type | Notes |
+|---|---|---|
+| `hex` | `string` |  |
+| `oklch` | `Oklch` |  |
+| `share` | `number` | Share of the sampled pixels in this cluster, 0 to 1. |
 
 ## @codeatlasdev/ui/utils/palette-generator
 

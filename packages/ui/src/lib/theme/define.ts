@@ -736,6 +736,46 @@ export function designTokens(
 }
 
 /**
+ * The stylesheet default (`tokens.css`) of every knob `designTokens` can write, so a scoped preview
+ * can reset what an outer theme set before it applies its own edits: `designTokens` leaves a value
+ * out when it equals the default, which lets the page's theme cascade into an island. Values here
+ * are exactly the declarations of `tokens.css`; `tests/theme-defaults.test.ts` keeps them in step.
+ */
+export function designDefaults(): Record<string, string> {
+	return {
+		"--ca-radius-scale": String(DEFAULT_RADIUS),
+		"--ca-radius-control": "var(--ca-radius-md)",
+		"--ca-density": "1",
+		"--ca-border-width": "1px",
+		"--ca-border-width-strong": "2px",
+		"--ca-font-sans": "Inter, system-ui, -apple-system, BlinkMacSystemFont, sans-serif",
+		"--ca-font-mono":
+			'ui-monospace, "SFMono-Regular", Menlo, Consolas, "Liberation Mono", monospace',
+		"--ca-font-display": "var(--ca-font-sans)",
+		"--ca-font-scale": "1",
+		"--ca-font-weight-regular": "400",
+		"--ca-font-weight-medium": "500",
+		"--ca-font-weight-semibold": "600",
+		"--ca-font-weight-bold": "700",
+		"--ca-font-weight-heading": String(DEFAULT_HEADING_WEIGHT),
+		"--ca-heading-tracking": "-0.02em",
+		"--ca-heading-case": "none",
+		"--ca-display-tracking": "var(--ca-heading-tracking)",
+		"--ca-display-leading": "1.05",
+		"--ca-label-tracking": "0.01em",
+		"--ca-label-case": "none",
+		"--ca-line-height-body": "1.55",
+		"--ca-line-height-prose": "1.6",
+		"--ca-measure": "68ch",
+		"--ca-motion-scale": "1",
+		"--ca-enter-scale": "1",
+		"--ca-ease-standard": EASING.standard,
+		"--ca-icon-stroke": String(DEFAULT_ICON_STROKE),
+		"--ca-noise-opacity": "0",
+	};
+}
+
+/**
  * Compile a resolved theme to CSS: brand presets, @font-face rules, design knobs and raw
  * overrides. Deterministic: same theme → same string. Empty when every value is a default.
  * Preload links for descriptor fonts come from `fontPreloads`.
