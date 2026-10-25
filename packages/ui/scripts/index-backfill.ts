@@ -39,6 +39,8 @@ const COMPONENT_SUBTYPE: Record<string, string> = {
 	foundation: "foundation",
 	map: "map",
 	"docs-kit": "display",
+	// The Concepts pages' simulators teach a design foundation (viewport, motion, targets).
+	concepts: "foundation",
 };
 
 /** `kind` and `subtype` from the demo's folder. */

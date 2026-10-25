@@ -17,5 +17,29 @@
 		"safe-area",
 		"concept"
 	],
-	"shape": "tall"
+	"shape": "tall",
+	"index": {
+		"kind": "component",
+		"subtype": "foundation",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["scroll", "keyboard", "press"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "StickyActions", "TextField"],
+		"aliases": ["on-screen keyboard", "sticky action bar", "keyboard aware form", "mobile form"],
+		"related": ["993", "994"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-25",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

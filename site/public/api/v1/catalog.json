@@ -1,6 +1,6 @@
 {
 	"version": "4.5.0",
-	"count": 382,
+	"count": 385,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -67,6 +67,12 @@
 			"first": "800",
 			"last": "800",
 			"count": 1
+		},
+		{
+			"slug": "concepts",
+			"first": "993",
+			"last": "995",
+			"count": 3
 		}
 	],
 	"elements": [
@@ -34024,6 +34030,289 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/inputs/slider#label-and-number",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "993",
+			"group": "concepts",
+			"page": "viewport",
+			"variant": "Simulator",
+			"slug": "viewport-simulator",
+			"title": "Viewport simulator",
+			"description": "Change the device shape, collapse the browser bars, draw edge to edge and raise a keyboard: see what each unit resolves to and what is hidden.",
+			"summary": "An interactive phone drawing with a device-shape selector, switches for collapsed browser bars and edge-to-edge drawing, a keyboard height slider and a keyboard resize mode, plus a table of what 100lvh, 100svh and 100dvh resolve to and how much of each is hidden.",
+			"use": "Teaching why a full-height block must be a floor (min-height) and not a fixed height, and how safe areas and the virtual keyboard change the usable height.",
+			"spec": [
+				"`import { DEVICE_PRESETS, hiddenBy, type PresetName, viewportHeights } from './model';` computes the numbers; the model is pure and unit-tested",
+				"`<SegmentedControl` with `aria-label=\"Device shape\"` and `bind:value={preset}` offers four presets: narrow phone, typical phone, short phone, phone in landscape",
+				"`<Switch bind:checked={collapsed} label=\"Browser bars collapsed (after scrolling)\" />` and `<Switch bind:checked={edgeToEdge} label=\"Page draws edge to edge (viewport-fit=cover)\" />`",
+				"`<Slider bind:value={keyboard}` for the keyboard height (`step={10}`), plus a second `SegmentedControl` with `aria-label=\"Keyboard resize mode\"` for `resizes-content` or `resizes-visual`",
+				"A to-scale phone `div` with `role=\"img\"` and an `aria-label`, drawn with CSS custom properties (`--w`, `--h`, `--bar`, `--vis`, `--kb`), and a `<table class=\"sim__table\">` with a screen-reader caption listing 100lvh, 100svh, 100dvh and the usable height"
+			],
+			"tags": [
+				"viewport",
+				"svh",
+				"dvh",
+				"lvh",
+				"safe-area",
+				"keyboard",
+				"mobile",
+				"simulator",
+				"concept"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "foundation",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"press",
+					"drag",
+					"keyboard"
+				],
+				"layout": "split",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"SegmentedControl",
+					"Switch",
+					"Slider"
+				],
+				"aliases": [
+					"viewport units",
+					"svh dvh lvh",
+					"safe area",
+					"virtual keyboard",
+					"phone simulator"
+				],
+				"related": [
+					"994",
+					"995"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-10-25",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"SegmentedControl",
+				"Switch",
+				"Slider"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"SegmentedControl",
+						"Switch",
+						"Slider"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/concepts/viewport#viewport-simulator",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "994",
+			"group": "concepts",
+			"page": "viewport",
+			"variant": "Hero",
+			"slug": "a-hero-that-is-a-floor",
+			"title": "A hero that is a floor",
+			"description": "Turn on 200% text and a longer translation: the hero grows and the page scrolls. Turn off the cue and the next section disappears from view.",
+			"summary": "A phone-sized scrollable frame holding a hero (eyebrow, heading, lead, filled Button) and a second section, with a switch for 200% text and a long translation and a switch for a continuation cue.",
+			"use": "Showing that a hero is a floor (min-height) so larger text grows it instead of clipping, and that without a visible cue the next section can read as the end of the page.",
+			"spec": [
+				"`<Switch bind:checked={large} label=\"Text at 200% and a long translation\" />` swaps the title to the h2 token and the lead to a longer string",
+				"`<Switch bind:checked={cue} label=\"Continuation cue (peek at the next section)\" />` toggles a `.is-peek` class on the second section",
+				"The frame is `inline-size: min(100%, 22rem)`, `block-size: 26rem`, `overflow-y: auto`, `tabindex=\"0\"`, `role=\"region\"` with an `aria-label`",
+				"`.hero` uses `min-block-size`, never `height`; `<Button variant=\"filled\">See how it works</Button>` is the primary action",
+				"The second section is `<h4>How it works</h4>` with one paragraph, separated by a `border-block-start`"
+			],
+			"tags": [
+				"viewport",
+				"hero",
+				"min-height",
+				"false-floor",
+				"scroll-cue",
+				"reflow",
+				"concept"
+			],
+			"shape": "tall",
+			"index": {
+				"kind": "component",
+				"subtype": "foundation",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"press",
+					"scroll",
+					"keyboard"
+				],
+				"layout": "stack",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"Button",
+					"Switch"
+				],
+				"aliases": [
+					"full height hero",
+					"min-height floor",
+					"first screen",
+					"text scaling",
+					"continuation cue"
+				],
+				"related": [
+					"993",
+					"995"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-10-25",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"Button",
+				"Switch"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"Switch"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/concepts/viewport#a-hero-that-is-a-floor",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "995",
+			"group": "concepts",
+			"page": "viewport",
+			"variant": "Keyboard",
+			"slug": "a-form-with-the-keyboard-open",
+			"title": "A form with the keyboard open",
+			"description": "On a phone, focus a field. The page scrolls and the action bar stays above the keyboard.",
+			"summary": "A scrollable account form with three TextFields (work email, company, role) and a StickyActions bar with a stretched Continue button, wrapped in the keyboardAware action.",
+			"use": "A form that stays operable with the on-screen keyboard open: the page scrolls, the focused field comes into view and the action bar rides above the keyboard and the safe area.",
+			"spec": [
+				"`<form` with `use:keyboardAware` (from `@codeatlasdev/ui/actions`), `max-height: 24rem` and `overflow-y: auto`",
+				"`<TextField label=\"Work email\" type=\"email\" bind:value={email} autocomplete=\"email\" />`, then `Company` and `Role` fields with matching `autocomplete`",
+				"A filler `div` of at least `8rem` so the form scrolls",
+				"`<StickyActions align=\"stretch\">` holds `<Button variant=\"filled\" type=\"submit\">` whose label becomes `Sent` after submit"
+			],
+			"tags": [
+				"viewport",
+				"keyboard",
+				"keyboard-aware",
+				"sticky-actions",
+				"form",
+				"mobile",
+				"safe-area",
+				"concept"
+			],
+			"shape": "tall",
+			"index": {
+				"kind": "component",
+				"subtype": "foundation",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "none",
+				"interaction": [
+					"scroll",
+					"keyboard",
+					"press"
+				],
+				"layout": "single-column",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"Button",
+					"StickyActions",
+					"TextField"
+				],
+				"aliases": [
+					"on-screen keyboard",
+					"sticky action bar",
+					"keyboard aware form",
+					"mobile form"
+				],
+				"related": [
+					"993",
+					"994"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-10-25",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"Button",
+				"StickyActions",
+				"TextField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"StickyActions",
+						"TextField"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/actions",
+					"names": [
+						"keyboardAware"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/concepts/viewport#a-form-with-the-keyboard-open",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		}
 	]

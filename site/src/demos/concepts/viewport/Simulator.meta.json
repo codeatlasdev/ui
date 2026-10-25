@@ -19,5 +19,35 @@
 		"simulator",
 		"concept"
 	],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "foundation",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "drag", "keyboard"],
+		"layout": "split",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["SegmentedControl", "Switch", "Slider"],
+		"aliases": [
+			"viewport units",
+			"svh dvh lvh",
+			"safe area",
+			"virtual keyboard",
+			"phone simulator"
+		],
+		"related": ["994", "995"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-25",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

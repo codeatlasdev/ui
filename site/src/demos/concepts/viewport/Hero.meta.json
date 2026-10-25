@@ -9,5 +9,35 @@
 		"The second section is `<h4>How it works</h4>` with one paragraph, separated by a `border-block-start`"
 	],
 	"tags": ["viewport", "hero", "min-height", "false-floor", "scroll-cue", "reflow", "concept"],
-	"shape": "tall"
+	"shape": "tall",
+	"index": {
+		"kind": "component",
+		"subtype": "foundation",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "scroll", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "Switch"],
+		"aliases": [
+			"full height hero",
+			"min-height floor",
+			"first screen",
+			"text scaling",
+			"continuation cue"
+		],
+		"related": ["993", "995"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-25",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }
