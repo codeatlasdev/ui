@@ -3,6 +3,7 @@ import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
 import Harness from "./ThemeIsland.test.svelte";
+import Surfaces from "./ThemeIslandSurfaces.test.svelte";
 
 const html = document.documentElement;
 const bg = (el: Element) => getComputedStyle(el).backgroundColor;
@@ -69,4 +70,25 @@ describe("ThemeIsland (#352)", () => {
 		expect(html.getAttribute("data-preset")).toBe("amber");
 		expect(html.hasAttribute("data-theme-scope")).toBe(false);
 	});
+
+	it.each([
+		["dark", false],
+		["light", true],
+	] as const)(
+		"a %s island on the opposite page keeps AA and its own surfaces",
+		async (scheme, pageDark) => {
+			html.classList.toggle("dark", pageDark);
+			const screen = await render(Surfaces, { scheme });
+			const island = screen.container.querySelector(".ca-theme-island") as HTMLElement;
+			const zone = screen.container.querySelector(".ca-file-upload__zone") as HTMLElement;
+			// The default style is solid: the zone is the raised surface of the island, not the page's.
+			const probe = document.createElement("div");
+			probe.style.backgroundColor = "var(--ca-surface-raised)";
+			island.append(probe);
+			const raised = bg(probe);
+			probe.remove();
+			expect(bg(zone)).toBe(raised);
+			expect(await checkA11y(screen.container)).toHaveNoViolations();
+		}
+	);
 });

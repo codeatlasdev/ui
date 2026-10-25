@@ -27,7 +27,10 @@ export const A11Y_EXCEPTIONS: NonNullable<RunOptions["rules"]> = {
 /**
  * Resolves once no CSS animation or transition is running, so axe reads final colours (overlays
  * fade in; contrast measured mid-fade is a false positive). Infinite animations (spinners,
- * shimmers) have no final state and are ignored.
+ * shimmers) have no final state and are ignored. Each running animation is jumped to its end
+ * state rather than waited out: the end state is what is checked, and sitting through a 150 ms
+ * entrance transition in real time tells axe nothing more (it was ~150 ms per check, on the
+ * ~430 checks of the component suite).
  */
 export async function settled(timeout = 3_000): Promise<void> {
 	const frame = () => {
@@ -38,12 +41,18 @@ export async function settled(timeout = 3_000): Promise<void> {
 	const running = () =>
 		document
 			.getAnimations()
-			.filter((a) => a.playState === "running" && a.effect?.getTiming().iterations !== Infinity)
-			.length;
+			.filter((a) => a.playState === "running" && a.effect?.getTiming().iterations !== Infinity);
 	await frame();
 	const deadline = Date.now() + timeout;
-	while (running() > 0) {
-		if (Date.now() > deadline) throw new Error(`${running()} animation(s) still running`);
+	for (let now = running(); now.length > 0; now = running()) {
+		if (Date.now() > deadline) throw new Error(`${now.length} animation(s) still running`);
+		for (const animation of now) {
+			try {
+				animation.finish();
+			} catch {
+				// not finishable (zero playback rate): fall through to the next frame and the deadline
+			}
+		}
 		await frame();
 	}
 }

@@ -18,13 +18,13 @@ export const scrollFocusable: Action<HTMLElement> = (node) => {
 		ro.observe(node);
 		for (const child of node.children) ro.observe(child);
 	};
-	// Children rendered after mount (hydration, async data, route content) change the
-	// overflow too: watch them as they arrive.
+	// Content rendered after mount (hydration, async data, a lazily loaded demo) changes the
+	// overflow too, at any depth: a fixed-height wrapper never resizes when what it holds grows.
 	const mo = new MutationObserver(() => {
 		watch();
 		update();
 	});
-	mo.observe(node, { childList: true });
+	mo.observe(node, { childList: true, subtree: true });
 	watch();
 	update();
 	return {

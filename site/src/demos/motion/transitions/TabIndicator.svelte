@@ -50,7 +50,7 @@
   {#snippet children(m)}
     <div class="ti" class:ti--ready={ready} class:ti--instant={m.reduced} {@attach () => { stage = m; }}>
       <Tabs bind:value>
-        <div class="ti__rail" bind:this={rail} style="--x:{x}px; --w:{w}px">
+        <div class="ti__rail" bind:this={rail} style="--ti-x:{x}px; --ti-w:{w}px">
           <TabsList>
             <span class="ti__pill" aria-hidden="true"></span>
             {#each tabs as t (t.value)}
@@ -70,12 +70,13 @@
   .ti { width: 100%; max-width: 380px; }
   .ti__rail { display: inline-flex; max-inline-size: 100%; }
   /* The package trigger paints its own active pill; hand that job to the sliding one. */
-  .ti :global(.ca-tabs-trigger[data-state='active']) { background: transparent; position: relative; z-index: 1; }
+  .ti--ready :global(.ca-tabs-trigger[data-state='active']) { background: transparent; }
+  .ti :global(.ca-tabs-trigger[data-state='active']) { position: relative; z-index: 1; }
   .ti :global(.ca-tabs-list) { position: relative; }
   .ti__pill {
     position: absolute; inset-block: var(--ca-space-1); inset-inline-start: 0; z-index: 0;
-    inline-size: var(--w); border-radius: var(--ca-radius-pill); background: var(--ca-brand-fill);
-    transform: translateX(var(--x)); opacity: 0;
+    inline-size: var(--ti-w); border-radius: var(--ca-radius-pill); background: var(--ca-brand-fill);
+    transform: translateX(var(--ti-x)); opacity: 0;
   }
   .ti--ready .ti__pill { opacity: 1; transition: transform 360ms cubic-bezier(0.2, 0, 0, 1), inline-size 360ms cubic-bezier(0.2, 0, 0, 1); }
   .ti--instant .ti__pill { transition: none; }

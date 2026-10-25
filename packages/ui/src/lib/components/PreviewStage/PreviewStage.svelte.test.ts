@@ -48,6 +48,16 @@ describe("PreviewStage width", () => {
 	});
 });
 
+describe("PreviewStage scrolling", () => {
+	it("a demo taller than the stage scrolls by keyboard, and axe passes", async () => {
+		const screen = await render(Harness, { tall: true });
+		const f = frame(screen.container);
+		expect(f.scrollHeight).toBeGreaterThan(f.clientHeight);
+		await expect.poll(() => f.tabIndex).toBe(0);
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});
+
 describe("PreviewStage theming", () => {
 	it("a scheme scopes the content to its own island", async () => {
 		const screen = await render(Harness, { scheme: "dark", preset: "ocean" });

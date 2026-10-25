@@ -36,9 +36,13 @@ describe("CommandPalette under 40x CPU throttle — minQueryLength (#97)", () =>
 });
 
 // ArrowDown: both 40x and 150x exercise the selection-state race.
-// Wall time at 150x scales with throttle; 30 s gives 2× margin over the 40x median × (150/40).
-describe.each([40, 150])("CommandPalette under %dx CPU throttle — ArrowDown (#97)", (rate) => {
-	const budget = rate >= 150 ? 30_000 : 15_000;
+// Wall time at 150x scales with throttle (see the budget below).
+// A short title: Vitest names the trace file with the full title and a name over 255 bytes fails with
+// ENAMETOOLONG, losing the trace exactly when the test fails.
+describe.each([40, 150])("CommandPalette %dx throttle, ArrowDown (#97)", (rate) => {
+	// The limit is a hang detector, not an assertion: at 150x this test takes ~19 s on a quiet machine and 26 s
+	// at load 45, so 30 s failed it whenever other suites shared the machine (#546).
+	const budget = rate >= 150 ? 90_000 : 30_000;
 
 	beforeEach(async () => {
 		await cdp().send("Emulation.setCPUThrottlingRate", { rate });
@@ -48,7 +52,7 @@ describe.each([40, 150])("CommandPalette under %dx CPU throttle — ArrowDown (#
 	});
 
 	it(
-		"ArrowDown/ArrowUp move aria-selected under load (#97)",
+		"ArrowDown/ArrowUp move aria-selected",
 		async () => {
 			// Minimal: one Down + one Up proves selection moves without rAF race.
 			// Full clamping coverage lives in CommandPalette.svelte.test.ts (no throttle).

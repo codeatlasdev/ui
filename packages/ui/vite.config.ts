@@ -1,8 +1,26 @@
+import { realpathSync } from "node:fs";
 import { availableParallelism } from "node:os";
 import { fileURLToPath } from "node:url";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { playwright } from "@vitest/browser-playwright";
+import { searchForWorkspaceRoot } from "vite";
 import { defaultExclude, defineConfig } from "vitest/config";
+import TimingReporter from "./tests/timing-reporter.ts";
+
+// The self-hosted typefaces of the screenshot setup (tests/setup.vrt.ts). A package manager that links
+// `node_modules` into a store outside the workspace (bun's global cache) puts their .woff2 files outside
+// the directories Vite serves, and every screenshot test then fails with a NetworkError: allow them.
+const fontDirs = ["inter", "jetbrains-mono"].flatMap((name) => {
+	try {
+		return [
+			realpathSync(
+				fileURLToPath(new URL(`./node_modules/@fontsource-variable/${name}`, import.meta.url))
+			),
+		];
+	} catch {
+		return [];
+	}
+});
 
 const browserPattern = "src/**/*.svelte.test.ts";
 const vrtPattern = "src/**/*.vrt.test.ts";
@@ -25,6 +43,7 @@ const browserBase = (channel?: "chromium") => ({
 
 export default defineConfig({
 	plugins: [svelte()],
+	server: { fs: { allow: [searchForWorkspaceRoot(process.cwd()), ...fontDirs] } },
 	// Pre-bundle lazily imported deps so the first browser run doesn't trigger an optimizer reload.
 	optimizeDeps: { include: ["echarts", "@tanstack/svelte-table", "shiki", "axe-core"] },
 	test: {
@@ -32,8 +51,8 @@ export default defineConfig({
 		// Locally: a quarter of the cores (each worker is a browser tab in one Chromium). CI keeps the default.
 		maxWorkers: process.env.CI ? undefined : Math.max(2, Math.floor(availableParallelism() / 4)),
 		reporters: process.env.CI
-			? ["default", "github-actions", ["html", { singleFile: true }]]
-			: ["default"],
+			? ["default", "github-actions", ["html", { singleFile: true }], new TimingReporter()]
+			: ["default", new TimingReporter()],
 		projects: [
 			{
 				// SvelteKit-only modules used by kit/*.svelte (`$app/navigation`, `$app/state`); tests override it with vi.mock.
@@ -76,9 +95,11 @@ export default defineConfig({
 				test: {
 					name: "vrt",
 					include: [vrtPattern],
-					// Baselines are rendered only on CI (ubuntu-24.04). An empty `include` would fall
-					// back to Vitest's defaults, so exclude everything elsewhere instead.
-					exclude: process.platform === "linux" ? defaultExclude : ["**/*"],
+					// Baselines are rendered natively and carry the platform in their name
+					// (`Name-dark-glass-chromium-darwin.png`), so a platform is only ever compared with its own.
+					// An empty `include` would fall back to Vitest's defaults, so exclude everything on a
+					// platform without baselines instead.
+					exclude: ["darwin", "linux"].includes(process.platform) ? defaultExclude : ["**/*"],
 					setupFiles: ["./tests/setup.browser.ts", "./tests/setup.vrt.ts"],
 					browser: {
 						...browserBase("chromium"),

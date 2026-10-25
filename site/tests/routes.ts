@@ -1,6 +1,7 @@
 import { existsSync, readdirSync, statSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import { GALLERY_REPRESENTATIVES } from "../../scripts/route-impact";
 
 export const DIST =
 	process.env.E2E_DIST ?? join(dirname(fileURLToPath(import.meta.url)), "../dist");
@@ -18,9 +19,23 @@ function walk(dir: string): string[] {
 	return out;
 }
 
-/** Every prerendered page, derived from `dist/**\/index.html`. Embeds (`/landing-embed/`) are excluded. */
+/**
+ * Every prerendered page, derived from `dist/**\/index.html`. Embeds (`/landing-embed/`) are excluded.
+ * `E2E_ROUTES` (a JSON array of routes, set by `bun run test:changed`) narrows it to the routes a diff
+ * affects; every route spec follows it.
+ */
+const only: string[] | undefined = process.env.E2E_ROUTES
+	? JSON.parse(process.env.E2E_ROUTES)
+	: undefined;
+// `E2E_GALLERY=representatives` (the land gate, on a full sweep) keeps the gallery's item pages to the
+// representatives: they are one viewer chrome around ~400 demos, each audited on its docs route and on its
+// own item when it changes. `bun run test:full` (release) leaves it unset and audits every item.
+const items =
+	process.env.E2E_GALLERY === "representatives" ? new Set(GALLERY_REPRESENTATIVES) : undefined;
+const isItem = (p: string) => /^\/gallery\/[^/]+\/$/.test(p);
 export const ROUTES: string[] = walk(DIST)
 	.map((file) => relative(DIST, dirname(file)))
 	.map((p) => (p === "" ? "/" : `/${p}/`))
-	.filter((p) => !p.startsWith("/landing-embed/"))
+	.filter((p) => !p.startsWith("/landing-embed/") && (!only || only.includes(p)))
+	.filter((p) => !items || !isItem(p) || items.has(p.split("/")[2]))
 	.sort();

@@ -243,7 +243,8 @@
  *     --ca-overlay-blur: none;
  *   }
  * ─────────────────────────────────────────────────────────────────────────── */
-:root {
+:root,
+[data-theme-scope] {
   /* ── Overlay (Popover, DropdownMenu, pickers) ──
    * Carries primary text, so it is near-opaque by construction: the contrast of its labels must not
    * depend on the page behind. The blur stays for the glass look. --ca-overlay-bg-glass is the old
@@ -349,7 +350,8 @@
  *    .glass-glow, .glass-active, .glass-btn-prominent and the nav pills lose their halo without a
  *    component edit. Selected states keep their brand bar. ── */
 [data-style="solid"],
-:root:not([data-style]) {
+:root:not([data-style]),
+:root:not([data-style]) [data-theme-scope] {
   --ca-glow-primary:        transparent;
   --ca-glow-primary-strong: transparent;
   --ca-glass-rim:           transparent;
@@ -399,6 +401,7 @@
 /* ── Opaque material styles: no blur anywhere, overlays on solid surfaces ── */
 [data-style="solid"],
 :root:not([data-style]),
+:root:not([data-style]) [data-theme-scope],
 [data-style="flat"],
 [data-style="outlined"],
 [data-style="neumorphic"],

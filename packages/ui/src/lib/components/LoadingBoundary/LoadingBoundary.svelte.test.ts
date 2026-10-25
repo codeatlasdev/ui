@@ -41,11 +41,26 @@ describe("LoadingBoundary", () => {
 			props: { delay: 20, minDuration: 400, stamps, stall: 120 },
 		});
 		await expect.poll(() => stamps.mounted).toBeDefined();
+		// Observe the region instead of polling it: on a stalled machine a poll can first run after the
+		// 400 ms hold is over and read "ready", which says nothing about the hold. The observer callback
+		// runs at the DOM change itself, so what it records is what the user would have seen.
+		const states: string[] = [];
+		let atHolding: { placeholderGone: boolean; contentVisible: boolean } | undefined;
+		const observer = new MutationObserver(() => {
+			const state = busy(screen.container)?.getAttribute("data-state") ?? "ready";
+			if (states.at(-1) !== state) states.push(state);
+			if (state === "holding" && !atHolding)
+				atHolding = {
+					placeholderGone: stamps.unmounted !== undefined,
+					contentVisible: content(screen.container)?.checkVisibility() ?? false,
+				};
+		});
+		observer.observe(screen.container, { subtree: true, childList: true, attributes: true });
 		release(screen);
 		// Resolved already, but the boundary holds: no flash of content.
-		await expect.poll(() => busy(screen.container)?.getAttribute("data-state")).toBe("holding");
-		expect(stamps.unmounted).toBeUndefined();
-		expect(content(screen.container)?.checkVisibility()).toBe(false);
+		await expect.poll(() => states.includes("holding")).toBe(true);
+		observer.disconnect();
+		expect(atHolding).toEqual({ placeholderGone: false, contentVisible: false });
 		await expect.poll(() => stamps.unmounted, { timeout: 4000 }).toBeDefined();
 		expect((stamps.unmounted ?? 0) - (stamps.mounted ?? 0)).toBeGreaterThanOrEqual(400);
 		await expect.poll(() => content(screen.container)?.checkVisibility()).toBe(true);

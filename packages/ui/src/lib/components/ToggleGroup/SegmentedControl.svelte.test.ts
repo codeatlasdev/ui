@@ -4,6 +4,7 @@ import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { reducedMotion } from "../../stores/reduced-motion.svelte";
 import SegmentedControlHarness from "./SegmentedControlHarness.test.svelte";
+import SegmentedControlNarrow from "./SegmentedControlNarrow.test.svelte";
 
 const segIndex = (el: Element) => (el as HTMLElement).style.getPropertyValue("--seg-index");
 
@@ -72,6 +73,21 @@ describe("SegmentedControl", () => {
 			await cdp().send("Emulation.setEmulatedMedia", {
 				features: [{ name: "prefers-reduced-motion", value: "no-preference" }],
 			});
+		}
+	});
+
+	it("every item is at least 44px wide and tall under a coarse pointer", async () => {
+		await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
+		try {
+			const screen = await render(SegmentedControlNarrow);
+			expect(matchMedia("(pointer: coarse)").matches).toBe(true);
+			for (const item of screen.container.querySelectorAll(".ca-seg__item")) {
+				const r = item.getBoundingClientRect();
+				expect(r.width, "item width").toBeGreaterThanOrEqual(44);
+				expect(r.height, "item height").toBeGreaterThanOrEqual(44);
+			}
+		} finally {
+			await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: false });
 		}
 	});
 });

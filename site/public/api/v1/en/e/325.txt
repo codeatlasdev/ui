@@ -1,17 +1,17 @@
 <!-- @codeatlasdev/ui demo #325 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/motion/scroll#pinned-step-story -->
 Element: #325 Pinned step story (motion/scroll)
-What it shows: A pinned media panel on the left changes its figure and caption as each step on the right scrolls through the middle of the frame; inactive steps dim to 40%.
+What it shows: A pinned media panel on the left changes its figure and caption as each step on the right scrolls through the middle of the frame; the step in view has the primary title colour, the others the secondary one.
 When to use: Explaining a product flow: connect, sort, review. One visual stays on screen while the copy advances.
 Spec:
 - `MotionStage` from `@codeatlasdev/ui` with `loop={5600}`: autoplay scrolls the container, a wheel or touch scroll takes over
 - `.story__media` is `position: sticky;` with `inset-block-start: 0;` and pins the media while the steps list scrolls past
 - `IntersectionObserver` with `rootMargin: '-45% 0px -45% 0px'` makes the step crossing the middle 10% band the active one
 - Figure transition: `opacity 320ms cubic-bezier(0.2, 0, 0, 1)` and a `translateY(12px) scale(0.96)` start state
-- Inactive steps use `opacity: 0.4`, the active step `opacity: 1`
+- The active step title is `var(--ca-text-primary)`, the others `var(--ca-text-secondary)` (a colour change, never a lower opacity, so every state stays AA)
 - Under reduced motion the last step is active and nothing scrolls by itself
 Motion:
 - opacity, transform: translateY, scale (media figure): 320ms cubic-bezier(0.2, 0, 0, 1)
-- opacity (step copy 0.4 to 1): 320ms cubic-bezier(0.2, 0, 0, 1)
+- color (step title, secondary to primary): 320ms cubic-bezier(0.2, 0, 0, 1)
 Names: Pinned step story | Sticky scrollytelling | Scrollytelling fixo por etapas | Récit épinglé par étapes
 Tags: motion, scroll, pinned, sticky, steps, storytelling
 Needs: @codeatlasdev/ui@4.5.0
@@ -142,10 +142,10 @@ Live demo: https://ui.codeatlas.com.br/docs/motion/scroll#pinned-step-story
     gap: var(--ca-space-1);
     block-size: 13rem;
     padding: 0 var(--ca-space-4);
-    opacity: 0.4;
-    transition: opacity 320ms cubic-bezier(0.2, 0, 0, 1);
   }
-  .story__step--on { opacity: 1; }
-  .story__title { margin: 0; font-weight: var(--ca-font-weight-semibold); color: var(--ca-text-primary); }
+  /* The step in view is the loud one. Passed and upcoming steps drop to the secondary text colour
+     (AA on the stage), never to a lower opacity: opacity dims text below 4.5:1. */
+  .story__title { margin: 0; font-weight: var(--ca-font-weight-semibold); color: var(--ca-text-secondary); transition: color 320ms; }
   .story__body { margin: 0; font-size: var(--ca-font-size-body2); color: var(--ca-text-secondary); }
+  .story__step--on .story__title { color: var(--ca-text-primary); }
 </style>

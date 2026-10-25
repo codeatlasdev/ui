@@ -13,7 +13,9 @@
 		"check": "astro check --minimumFailingSeverity warning && tsc -p functions/tsconfig.json && tsc -p functions/tsconfig.test.json",
 		"test:unit": "bun test ./functions",
 		"test:e2e": "bun ../scripts/test-run.ts playwright test",
-		"test:a11y": "bun ../scripts/test-run.ts playwright test --project=a11y"
+		"test:a11y": "bun ../scripts/test-run.ts playwright test --project=a11y",
+		"test:vrt": "bun ../scripts/test-run.ts playwright test --project=visual-desktop --project=visual-mobile",
+		"test:vrt:update": "bun ../scripts/test-run.ts playwright test --project=visual-desktop --project=visual-mobile --update-snapshots"
 	},
 	"dependencies": {
 		"@astrojs/mdx": "8.0.3",
@@ -45,6 +47,7 @@
 		"@astrojs/check": "0.9.10",
 		"@axe-core/playwright": "4.13.0",
 		"@playwright/test": "1.64.0",
+		"happy-dom": "21.0.1",
 		"typescript": "6.0.3",
 		"wrangler": "4.149.0"
 	}

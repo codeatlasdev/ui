@@ -153,7 +153,7 @@ Live demo: https://ui.codeatlas.com.br/docs/motion/hero-ambient#before-and-after
     font-size: var(--ca-font-size-caption);
     font-family: var(--ca-font-sans);
   }
-  .cmp__pane--before .cmp__tag { background: var(--ca-outline-strong); color: var(--ca-surface-raised); }
+  .cmp__pane--before .cmp__tag { background: var(--ca-text-secondary); color: var(--ca-surface-raised); }
   .cmp__title { margin: 0; font-size: var(--ca-font-size-body2); overflow-wrap: anywhere; }
   .cmp__amount { margin: 0; font-size: var(--ca-font-size-h3); font-weight: var(--ca-font-weight-semibold); }
   .cmp__meta { margin: 0; font-size: var(--ca-font-size-caption); }

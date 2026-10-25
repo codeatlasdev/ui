@@ -4,6 +4,7 @@ import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
 import { setLocale } from "../../i18n/index.js";
+import { withTheme } from "../../testing";
 import CodeSnippet from "./CodeSnippet.svelte";
 
 const CODE = "const answer: number = 42;\nconsole.log(answer);";
@@ -48,6 +49,26 @@ describe("CodeSnippet", () => {
 		// label reverts after the 2s timeout
 		await expect.element(screen.getByRole("button", { name: "Copiar código" })).toBeInTheDocument();
 	});
+
+	// The docs site checks contrast outside <pre> only (a page holds thousands of token spans), so the
+	// highlighted palette is proven here, once, in both schemes.
+	it.each(["dark", "light"] as const)(
+		"highlighted tokens keep their contrast in %s",
+		async (scheme) => {
+			const restore = withTheme({ scheme });
+			try {
+				const screen = await render(CodeSnippet, { code: CODE, language: "typescript" });
+				await vi.waitFor(() => expect(screen.container.querySelector("pre.shiki")).not.toBeNull(), {
+					timeout: 15_000,
+				});
+				expect(
+					await checkA11y(screen.container, { runOnly: ["color-contrast"] })
+				).toHaveNoViolations();
+			} finally {
+				restore();
+			}
+		}
+	);
 
 	it("token colours follow the colour scheme of their context without re-highlighting", async () => {
 		const screen = await render(CodeSnippet, { code: CODE, language: "typescript" });

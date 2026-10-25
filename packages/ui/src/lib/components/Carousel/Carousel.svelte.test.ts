@@ -14,6 +14,10 @@ const btn = (c: HTMLElement, name: RegExp) =>
 		name.test(b.getAttribute("aria-label") ?? b.textContent ?? "")
 	) as HTMLButtonElement;
 const settle = () => new Promise((r) => setTimeout(r, 450));
+// The autoplay chain is plain setTimeout: a fake clock installed BEFORE render, advanced past several
+// of its intervals, proves "nothing rotates" with no wall time (a clock faked after render would not
+// own the component's timer and prove nothing).
+const fakeClock = () => vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
 
 beforeEach(() => {
 	vi.useRealTimers();
@@ -135,30 +139,38 @@ describe("Carousel controls", () => {
 
 describe("Carousel autoplay (opt in, always stoppable)", () => {
 	it("does not rotate and shows no play control unless autoplay is set", async () => {
+		fakeClock();
 		const screen = await render(Harness, {});
 		expect(q(screen.container, ".ca-carousel").querySelector(".ca-carousel__play")).toBeNull();
-		await new Promise((r) => setTimeout(r, 700));
+		await vi.advanceTimersByTimeAsync(700);
 		expect(dots(screen.container)[0].getAttribute("aria-current")).toBe("true");
 	});
 
 	it("rotates on its own, offers Pause, and stops when paused", async () => {
+		fakeClock();
 		const screen = await render(Harness, { autoplay: 300, loop: true });
 		const play = q<HTMLButtonElement>(screen.container, ".ca-carousel__play");
 		expect(play.getAttribute("aria-label")).toBe("Pause autoplay");
-		await expect.poll(() => dots(screen.container)[1].getAttribute("aria-current")).toBe("true");
-		await play.click();
+		await vi.advanceTimersByTimeAsync(300);
+		expect(dots(screen.container)[1].getAttribute("aria-current")).toBe("true");
+		// Dispatch the click directly: the clock stays the one that owns the autoplay timer, and a
+		// Playwright click (its own round trips) would need real timers.
+		play.click();
+		await vi.advanceTimersByTimeAsync(0);
 		expect(play.getAttribute("aria-label")).toBe("Start autoplay");
 		const at = dots(screen.container).findIndex((d) => d.hasAttribute("aria-current"));
-		await new Promise((r) => setTimeout(r, 900));
+		await vi.advanceTimersByTimeAsync(900);
 		expect(dots(screen.container).findIndex((d) => d.hasAttribute("aria-current"))).toBe(at);
+		vi.useRealTimers();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
 	it("pauses while focus is inside and while the pointer is over it", async () => {
+		fakeClock();
 		const screen = await render(Harness, { autoplay: 300, loop: true });
 		btn(screen.container, /slide 1 action/i).focus();
 		const at = dots(screen.container).findIndex((d) => d.hasAttribute("aria-current"));
-		await new Promise((r) => setTimeout(r, 900));
+		await vi.advanceTimersByTimeAsync(900);
 		expect(dots(screen.container).findIndex((d) => d.hasAttribute("aria-current"))).toBe(at);
 	});
 
@@ -184,10 +196,12 @@ describe("Carousel reduced motion", () => {
 					} as unknown as MediaQueryList)
 				: real(q)) as typeof window.matchMedia;
 		try {
+			fakeClock();
 			const screen = await render(Harness, { autoplay: 200, loop: true });
 			expect(screen.container.querySelector(".ca-carousel__play")).toBeNull();
-			await new Promise((r) => setTimeout(r, 700));
+			await vi.advanceTimersByTimeAsync(700);
 			expect(dots(screen.container)[0].getAttribute("aria-current")).toBe("true");
+			vi.useRealTimers();
 			expect(await checkA11y(screen.container)).toHaveNoViolations();
 		} finally {
 			window.matchMedia = real;
