@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it } from "vitest";
-import { coarsePointer, measure, withTheme } from "./index";
+import { coarsePointer, measure, settled, withTheme } from "./index";
 
 const mounted: HTMLElement[] = [];
 function mount(html: string): HTMLElement {
@@ -113,5 +113,35 @@ describe("coarsePointer", () => {
 		await Promise.resolve();
 		restore();
 		expect(seen).toEqual([true]);
+	});
+});
+
+describe("settled", () => {
+	// axe must read the colours a transition ends on. It used to sit through the transition in real
+	// time (150 ms on every check, a 5 s one hit the 3 s deadline); it now jumps to the end state.
+	it("resolves at once, with a running transition at its end state", async () => {
+		const el = mount(
+			'<p id="t" style="opacity:0;transition:opacity 5s linear;margin:0">faded in</p>'
+		);
+		const p = el.querySelector("#t") as HTMLElement;
+		p.getBoundingClientRect();
+		p.style.opacity = "1";
+		expect(document.getAnimations().length).toBeGreaterThan(0);
+		const start = performance.now();
+		await settled();
+		expect(performance.now() - start).toBeLessThan(1_000);
+		expect(getComputedStyle(p).opacity).toBe("1");
+		expect(document.getAnimations().filter((a) => a.playState === "running")).toHaveLength(0);
+	});
+
+	it("leaves an infinite animation alone and still resolves", async () => {
+		const el = mount(
+			'<style>@keyframes zz-spin{to{transform:rotate(1turn)}}</style><i id="s" style="display:inline-block;animation:zz-spin 1s linear infinite">o</i>'
+		);
+		await settled();
+		expect(getComputedStyle(el.querySelector("#s") as HTMLElement).animationIterationCount).toBe(
+			"infinite"
+		);
+		expect(document.getAnimations().some((a) => a.playState === "running")).toBe(true);
 	});
 });

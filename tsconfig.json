@@ -19,6 +19,9 @@
 	},
 	"include": [
 		"scripts/**/*.js",
+		"scripts/route-impact.ts",
+		"scripts/test-run.ts",
+		"scripts/test-changed.ts",
 		"packages/ui/scripts/**/*.ts",
 		"packages/ui/tests/setup.unit.ts",
 		"packages/ui/tests/stub-global.ts",

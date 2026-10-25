@@ -2,9 +2,11 @@
 // on each other. Output of each step is buffered and printed only if it fails.
 //
 //   phase 0: package build (svelte-check self-imports resolve to dist/)
-//   phase 1 (parallel): generated themes, token lint, Biome, unit tests, test/config type check, package type check
-//   phase 2 (parallel, needs dist/): site type check, size budget
-// Locally at most 4 steps run at once; CI runs each phase fully in parallel.
+//   phase 1 (parallel, needs dist/ for the last two): generated themes, token lint, Biome, unit tests,
+//     test/config type check, package type check, site type check, size budget
+// The slowest step (unit tests, ~30 s) is queued first so it starts at once; nothing else waits for it.
+// Locally at most 4 steps run at once; CI runs the whole phase in parallel. `bun run validate` has a 90 s
+// budget (scripts/test-run.ts).
 
 type Step = { name: string; cmd: string[]; cwd?: string };
 
@@ -13,15 +15,13 @@ const phase0: Step[] = [
 ];
 
 const phase1: Step[] = [
+	{ name: "unit tests", cmd: ["bun", "run", "test:unit"] },
+	{ name: "types (package)", cmd: ["bun", "run", "check"], cwd: "packages/ui" },
+	{ name: "types (site)", cmd: ["bun", "run", "check"], cwd: "site" },
 	{ name: "themes up to date", cmd: ["bun", "run", "themes:check"], cwd: "packages/ui" },
 	{ name: "token lint", cmd: ["bun", "run", "lint:tokens"], cwd: "packages/ui" },
 	{ name: "biome", cmd: ["bun", "run", "lint"] },
-	{ name: "unit tests", cmd: ["bun", "run", "test:unit"] },
 	{ name: "types (tests, configs)", cmd: ["bun", "run", "check:native"] },
-	{ name: "types (package)", cmd: ["bun", "run", "check"], cwd: "packages/ui" },
-];
-const phase2: Step[] = [
-	{ name: "types (site)", cmd: ["bun", "run", "check"], cwd: "site" },
 	{ name: "size budget", cmd: ["bun", "run", "size"], cwd: "packages/ui" },
 ];
 
@@ -59,7 +59,7 @@ async function runPhase(phase: Step[]): Promise<boolean> {
 	return ok;
 }
 
-for (const phase of [phase0, phase1, phase2]) {
+for (const phase of [phase0, phase1]) {
 	if (!(await runPhase(phase))) process.exit(1);
 }
 console.log(`validate ok in ${((performance.now() - start) / 1000).toFixed(1)}s`);

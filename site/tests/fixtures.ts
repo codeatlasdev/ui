@@ -1,4 +1,7 @@
-import AxeBuilder from "@axe-core/playwright";
+import { readFileSync } from "node:fs";
+import { createRequire } from "node:module";
+import { dirname, join } from "node:path";
+import type AxeBuilder from "@axe-core/playwright";
 import { test as base, expect, type Page, type TestInfo } from "@playwright/test";
 
 export interface ThemeOptions {
@@ -39,11 +42,73 @@ export const test = base.extend<{ theme: ThemeOptions; consoleErrors: string[] }
 
 export { expect };
 
-export function makeAxe(page: Page) {
-	return new AxeBuilder({ page })
-		.withTags(["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"])
-		.exclude("canvas");
+const AXE_TAGS = ["wcag2a", "wcag2aa", "wcag21a", "wcag21aa", "wcag22aa"];
+
+// The axe-core build @axe-core/playwright pins, read once: injected into the page like the builder
+// does, but only once per page and frame instead of once per run.
+const AXE_SOURCE = readFileSync(
+	join(
+		dirname(
+			createRequire(createRequire(import.meta.url).resolve("@axe-core/playwright")).resolve(
+				"axe-core"
+			)
+		),
+		"axe.min.js"
+	),
+	"utf8"
+);
+
+/**
+ * axe over the page with the WCAG 2.x A/AA tag set, `<canvas>` excluded, run by calling
+ * `axe.run` in the page. `@axe-core/playwright`'s `AxeBuilder` does the same run but re-injects axe
+ * and wires up every frame on each `analyze()`: measured on a quiet machine that is 568 ms against
+ * 155 ms on a 1,027-node docs page and 3,661 ms against 514 ms on /gallery/ (6.2k nodes), so a page
+ * checked three times (dark, light, forced colors) spent most of its time outside axe. Same
+ * builder-style API, so a caller reads the same: `makeAxe(page).exclude("pre").analyze()`.
+ */
+class Axe {
+	#exclude = ["canvas"];
+	#off: string[] = [];
+	constructor(private page: Page) {}
+
+	exclude(selector: string) {
+		this.#exclude.push(selector);
+		return this;
+	}
+
+	disableRules(ids: string[]) {
+		this.#off.push(...ids);
+		return this;
+	}
+
+	async analyze(): Promise<AxeResults> {
+		// A frame is audited too: axe in the top frame asks the axe in each frame over postMessage, and
+		// trusts only the origins it is configured with (a `srcdoc` frame's origin is `null`).
+		// A frame that cannot be scripted (cross-origin) is skipped.
+		for (const frame of this.page.frames()) {
+			const injected = await frame.evaluate(() => "axe" in window).catch(() => true);
+			if (injected) continue;
+			await frame
+				.evaluate(`${AXE_SOURCE};axe.configure({ allowedOrigins: ["<unsafe_all_origins>"] })`)
+				.catch(() => {});
+		}
+		return this.page.evaluate(
+			({ tags, off, exclude }) =>
+				// biome-ignore lint/suspicious/noExplicitAny: `axe` is the global the injected source defines
+				(window as any).axe.run(
+					{ exclude: exclude.map((selector) => [selector]) },
+					{
+						runOnly: { type: "tag", values: tags },
+						rules: Object.fromEntries(off.map((id) => [id, { enabled: false }])),
+						resultTypes: ["violations"],
+					}
+				),
+			{ tags: AXE_TAGS, off: this.#off, exclude: this.#exclude }
+		) as Promise<AxeResults>;
+	}
 }
+
+export const makeAxe = (page: Page) => new Axe(page);
 
 type AxeResults = Awaited<ReturnType<AxeBuilder["analyze"]>>;
 
@@ -67,10 +132,14 @@ export async function expectNoViolations(results: AxeResults, testInfo: TestInfo
 
 /**
  * Waits until the islands matching `selector` (default: all) have hydrated. Astro removes the
- * `ssr` attribute from an `<astro-island>` once its component is mounted. `client:visible`
- * islands only hydrate after entering the viewport, so pending ones are scrolled to first; the
- * scroll position is restored afterwards. Islands inside a closed `<details>` (the demo "Code"
- * panels) are never rendered, so they never intersect and are ignored.
+ * `ssr` attribute from an `<astro-island>` once its component is mounted and then fires
+ * `astro:hydrate` on it, so the wait wakes on that event instead of polling a timer. The event does
+ * not bubble and a nested island is re-created by its parent's hydration, so it is listened for in
+ * the capture phase on `document`. `client:visible` islands only hydrate after entering the
+ * viewport: the next pending one is scrolled to (nested ones become pending once their parent
+ * hydrated), and the scroll position is restored afterwards. Islands inside a closed `<details>`
+ * (the demo "Code" panels) are never rendered, so they never intersect and are ignored. The 50ms
+ * timeout is only a safety net for a hydration that finished between two checks.
  */
 export async function waitIslands(page: Page, selector = "astro-island") {
 	await page.evaluate(async (sel) => {
@@ -78,19 +147,19 @@ export async function waitIslands(page: Page, selector = "astro-island") {
 		const rendered = (el: HTMLElement) => !el.closest("details:not([open])");
 		const pending = () =>
 			[...document.querySelectorAll<HTMLElement>(`${sel}[ssr]`)].filter(rendered);
-		for (const el of pending()) {
-			if (el.getAttribute("client") !== "visible") continue;
+		let wake = () => {};
+		const onHydrate = () => wake();
+		document.addEventListener("astro:hydrate", onHydrate, true);
+		for (let p = pending(); p.length; p = pending()) {
+			const next = p.find((el) => el.getAttribute("client") === "visible");
 			// `astro-island` is `display: contents` (no box), so scroll its first rendered child.
-			(el.firstElementChild ?? el).scrollIntoView({ block: "center" });
+			if (next) (next.firstElementChild ?? next).scrollIntoView({ block: "center" });
 			await new Promise<void>((resolve) => {
-				const t = setInterval(() => {
-					if (el.hasAttribute("ssr")) return;
-					clearInterval(t);
-					resolve();
-				}, 25);
+				wake = resolve;
+				setTimeout(resolve, 50);
 			});
 		}
-		while (pending().length) await new Promise((r) => setTimeout(r, 25));
+		document.removeEventListener("astro:hydrate", onHydrate, true);
 		scrollTo(0, y);
 	}, selector);
 }
@@ -102,11 +171,11 @@ export async function gotoReady(page: Page, path: string) {
 }
 
 /**
- * Waits until the page is visually final: fonts loaded, finite animations done, async code
- * highlighting swapped in, and document height unchanged for 500ms (late reflows would otherwise
- * make full-page screenshots differ by a pixel row between captures).
+ * Waits until computed styles are final: fonts loaded, finite animations done, async code
+ * highlighting swapped in. Enough for axe (`color-contrast` reads computed colors, so a color
+ * transition in flight would be measured mid-way) and for DOM geometry audits. No time-based wait.
  */
-export async function settle(page: Page) {
+export async function settleDom(page: Page) {
 	await page.evaluate(async () => {
 		await document.fonts.ready;
 		// Infinite animations (spinners, blobs) never finish; only wait for finite ones. Poll `playState`
@@ -132,8 +201,16 @@ export async function settle(page: Page) {
 				(el) => !el.closest("details:not([open])")
 			)
 	);
-	// Page height AND chart canvas boxes must hold for 500ms: canvases are masked in visual
-	// snapshots, and a chart that mounts late moves its canvas between the two compared shots.
+}
+
+/**
+ * `settleDom` plus: page height AND chart canvas boxes unchanged for 500ms. Canvases are hidden in
+ * visual snapshots, and a chart that mounts late moves its canvas between the two compared shots;
+ * late reflows would otherwise make screenshots differ by a pixel row between captures. The 500ms is
+ * a real stability window, so only screenshots pay for it.
+ */
+export async function settle(page: Page) {
+	await settleDom(page);
 	await page.waitForFunction(
 		() =>
 			new Promise<boolean>((resolve) => {

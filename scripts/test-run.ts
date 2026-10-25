@@ -3,9 +3,21 @@
  * Runs a browser test command so it can never leave browsers behind, and cleans up after runs
  * that were killed hard (SIGKILL, closed terminal, killed agent job).
  *
- *   bun scripts/test-run.ts <command> [args...]   run a test command under a tracked run
+ *   bun scripts/test-run.ts [--budget=<name>] <command> [args...]   run a test command under a tracked run
  *   bun scripts/test-run.ts --reap                 only clean up dead runs of THIS repo
  *   bun scripts/test-run.ts --status               list live/dead runs and their browsers
+ *
+ * One suite at a time per machine: a run takes the lock in `$TMPDIR/ca-test-lock` (`CA_TEST_LOCK_DIR` overrides; shared by every
+ * worktree and checkout) and a second run waits, printing who holds it, instead of starting more
+ * browsers on top of the first. A lock whose holder died is taken over. Set CA_TEST_LOCK=0 to skip
+ * (CI runners are single-tenant).
+ *
+ * Time budgets: `--budget=<name>` gives the command a wall-time budget (BUDGETS below, the one place
+ * they live). When it ends, the 10 slowest tests are printed (runners append `{name, ms}` lines to
+ * `CA_TEST_TIMINGS`: tests/timing-reporter.ts for Playwright, packages/ui/tests/timing-reporter.ts for
+ * Vitest), and a run over its budget FAILS, so slowness is caught like any other regression. The
+ * clock starts after the lock is taken: time spent waiting for another suite is not this suite's.
+ * A budget is raised only in its own commit, with the measured reason.
  *
  * Ownership is explicit, never guessed: every run gets an id, written to
  * `.cache/test-runs/<id>.json` with the runner's pid, and exported as CA_TEST_RUN. The Vitest and
@@ -15,6 +27,7 @@
  */
 import { spawn, spawnSync } from "node:child_process";
 import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { availableParallelism, loadavg, tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -109,6 +122,8 @@ export function reap(): number {
 }
 
 function status() {
+	const h = holder();
+	console.log(h && alive(h.pid) ? `test lock: ${describeHolder(h)}` : "test lock: free");
 	const rs = records();
 	if (!rs.length) return console.log("no recorded test runs");
 	for (const r of rs) {
@@ -119,10 +134,156 @@ function status() {
 	}
 }
 
-async function run(cmd: string[]): Promise<number> {
+const lockDir = process.env.CA_TEST_LOCK_DIR ?? join(tmpdir(), "ca-test-lock");
+const holderFile = join(lockDir, "holder.json");
+
+interface Holder {
+	pid: number;
+	started: string;
+	cwd: string;
+	cmd: string[];
+}
+
+const holder = (): Holder | undefined => {
+	try {
+		return JSON.parse(readFileSync(holderFile, "utf8")) as Holder;
+	} catch {
+		return undefined;
+	}
+};
+
+const describeHolder = (h: Holder) =>
+	`pid ${h.pid}, since ${h.started.slice(11, 19)}Z, ${h.cmd.join(" ")} (${h.cwd})`;
+
+/**
+ * Takes the machine-wide lock, waiting while a live run holds it. `mkdir` is the atomic step: it
+ * fails when the directory exists. A directory without a live holder (crash between `mkdir` and the
+ * holder file, or a dead pid) is taken over.
+ */
+export async function acquireLock(me: Holder, poll = 2_000): Promise<void> {
+	let announced = 0;
+	for (;;) {
+		try {
+			mkdirSync(lockDir);
+			writeFileSync(holderFile, JSON.stringify(me));
+			return;
+		} catch (e) {
+			if ((e as NodeJS.ErrnoException).code !== "EEXIST") throw e;
+		}
+		const h = holder();
+		if (h && alive(h.pid)) {
+			if (announced !== h.pid) {
+				console.error(`test-run: waiting for the test lock held by ${describeHolder(h)}`);
+				announced = h.pid;
+			}
+		} else {
+			// Holder gone (or never written): a run that died takes the lock down with it only if it
+			// got to clean up, so reclaim it. Re-check right before removing so two waiters do not
+			// both delete a lock the first one has just retaken.
+			const again = holder();
+			if (!again || !alive(again.pid)) rmSync(lockDir, { recursive: true, force: true });
+			continue;
+		}
+		await new Promise((r) => setTimeout(r, poll));
+	}
+}
+
+export function releaseLock(pid: number) {
+	if (holder()?.pid === pid) rmSync(lockDir, { recursive: true, force: true });
+}
+
+/** Wall-time budget in seconds of each command. Raise one only in its own commit, with the measured reason. */
+export const BUDGETS = {
+	/** `bun run test` / `test:changed`: what the diff against origin/main affects */
+	changed: 60,
+	/** `bun run validate`: build, types, lint, unit tests, size */
+	validate: 90,
+	/** `issue-land.sh`: `test:changed --land` (affected tests, changed screenshots, the route canaries) */
+	land: 180,
+	/** `issue-land.sh` when a SHARED file changed: every component test and every route, no screenshots */
+	landShared: 300,
+	/** `bun run test:full`: unit, every component test, every route, fixtures (release gate, part 1) */
+	full: 300,
+	/** `bun run test:vrt`: every component and site screenshot (release gate, part 2) */
+	vrt: 180,
+} as const;
+type BudgetName = keyof typeof BUDGETS;
+
+/** The slowest `n` tests recorded in `file` (JSON lines `{name, ms}` appended by the runners). */
+export function slowest(file: string, n = 10): { name: string; ms: number }[] {
+	if (!existsSync(file)) return [];
+	return readFileSync(file, "utf8")
+		.split("\n")
+		.flatMap((l) => {
+			try {
+				return l ? [JSON.parse(l) as { name: string; ms: number }] : [];
+			} catch {
+				return [];
+			}
+		})
+		.sort((a, b) => b.ms - a.ms)
+		.slice(0, n);
+}
+
+/**
+ * Prints the slowest tests and the budget verdict; returns the exit code the budget adds.
+ * A budget is wall time, so on a machine that is oversubscribed (load average above its cores: other
+ * suites, builds, other projects) a correct run takes several times longer for no reason in the code, and
+ * failing it would make the gate a lottery. The verdict is then printed, with the slowest tests, but does
+ * not fail the run: rerun on a quiet machine. `load` is injectable for the unit test.
+ */
+export function report(
+	budget: BudgetName | undefined,
+	seconds: number,
+	timings: string | undefined,
+	load = loadavg()[0],
+	cores = availableParallelism()
+): number {
+	const top = timings ? slowest(timings) : [];
+	const over = budget !== undefined && seconds > BUDGETS[budget];
+	if (top.length && (over || process.env.CA_TEST_SLOWEST === "1")) {
+		console.error("test-run: slowest tests");
+		for (const t of top) console.error(`  ${(t.ms / 1000).toFixed(1).padStart(6)}s  ${t.name}`);
+	}
+	if (budget === undefined) return 0;
+	const line = `${budget} ${seconds.toFixed(1)}s of ${BUDGETS[budget]}s (load average ${load.toFixed(1)} on ${cores} cores)`;
+	if (!over) {
+		console.error(`test-run: within budget: ${line}`);
+		return 0;
+	}
+	if (load > cores) {
+		console.error(
+			`test-run: OVER BUDGET, NOT ENFORCED: ${line}. The machine is oversubscribed, so this time says nothing about the code: rerun when load is below ${cores}.`
+		);
+		return 0;
+	}
+	console.error(
+		`test-run: OVER BUDGET: ${line}. A budget is a regression gate: make the run faster, or raise it in its own commit with the measured reason.`
+	);
+	return 1;
+}
+
+async function run(cmd: string[], budget?: BudgetName): Promise<number> {
 	const reaped = reap();
 	if (reaped)
 		console.error(`test-run: cleaned ${reaped} browser process(es) left by an interrupted run`);
+
+	// A nested run (`test:changed` runs vitest and playwright through test-run too) reuses the lock its
+	// parent holds instead of waiting for it forever.
+	const parent = Number(process.env.CA_TEST_LOCK_HELD);
+	const locked = process.env.CA_TEST_LOCK !== "0" && !(parent && alive(parent));
+	if (locked)
+		await acquireLock({
+			pid: process.pid,
+			started: new Date().toISOString(),
+			cwd: process.cwd(),
+			cmd,
+		});
+
+	const t0 = performance.now();
+	// One timings file per top-level run; a nested run appends to its parent's.
+	const timings = process.env.CA_TEST_TIMINGS ?? join(tmpdir(), `ca-timings-${process.pid}.jsonl`);
+	rmSync(process.env.CA_TEST_TIMINGS ? "/nonexistent" : timings, { force: true });
 
 	mkdirSync(runsDir, { recursive: true });
 	const id = `${Date.now().toString(36)}-${process.pid}`;
@@ -148,7 +309,13 @@ async function run(cmd: string[]): Promise<number> {
 	const child = spawn(cmd[0], cmd.slice(1), {
 		stdio: "inherit",
 		detached: true,
-		env: { ...process.env, PATH, CA_TEST_RUN: id },
+		env: {
+			...process.env,
+			PATH,
+			CA_TEST_RUN: id,
+			CA_TEST_TIMINGS: timings,
+			CA_TEST_LOCK_HELD: String(locked ? process.pid : parent || ""),
+		},
 	});
 
 	let finished = false;
@@ -160,6 +327,7 @@ async function run(cmd: string[]): Promise<number> {
 		} catch {}
 		killAll(taggedTree(id));
 		rmSync(file, { force: true });
+		if (locked) releaseLock(process.pid);
 	};
 	for (const sig of ["SIGINT", "SIGTERM", "SIGHUP"] as const)
 		process.on(sig, () => {
@@ -176,11 +344,16 @@ async function run(cmd: string[]): Promise<number> {
 		});
 	});
 	cleanup();
-	return code;
+	const verdict = report(budget, (performance.now() - t0) / 1000, timings);
+	if (!process.env.CA_TEST_TIMINGS_KEEP && timings.includes(`ca-timings-${process.pid}`))
+		rmSync(timings, { force: true });
+	return code || verdict;
 }
 
 const args = process.argv.slice(2);
-if (args[0] === "--reap") {
+if (!import.meta.main) {
+	// imported by tests: no CLI
+} else if (args[0] === "--reap") {
 	const n = reap();
 	console.log(
 		n ? `test-run: cleaned ${n} browser process(es) from dead runs` : "test-run: nothing to clean"
@@ -188,8 +361,16 @@ if (args[0] === "--reap") {
 } else if (args[0] === "--status") {
 	status();
 } else if (args.length) {
-	process.exit(await run(args));
+	const flag = args[0].startsWith("--budget=") ? args.shift() : undefined;
+	const name = flag?.slice("--budget=".length) as BudgetName | undefined;
+	if (name !== undefined && !(name in BUDGETS)) {
+		console.error(`test-run: unknown budget "${name}" (${Object.keys(BUDGETS).join(", ")})`);
+		process.exit(2);
+	}
+	process.exit(await run(args, name));
 } else {
-	console.error("usage: bun scripts/test-run.ts <command...> | --reap | --status");
+	console.error(
+		"usage: bun scripts/test-run.ts [--budget=<name>] <command...> | --reap | --status"
+	);
 	process.exit(2);
 }

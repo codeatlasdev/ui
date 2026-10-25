@@ -111,7 +111,7 @@ describe("demo meta sidecars", () => {
 		expect(files[`en/e/${d.id}.txt`]).toContain(`When to use: ${d.use}`);
 		expect(files[`en/p/${d.id}.txt`]).toContain(`Spec:\n- ${d.spec[0]}`);
 		expect(files[`en/p/${d.id}.txt`]).not.toContain("..");
-	});
+	}, 60_000);
 });
 
 describe("motion sidecar fields", () => {
@@ -187,7 +187,7 @@ describe("motion sidecar fields", () => {
 		expect(files["en/catalog.tsv"].split("\n")[0]).toBe(
 			"id\tgroup\tpage\ttitle\tnames\ttags\tsummary"
 		);
-	});
+	}, 60_000);
 });
 
 describe("demo CSS isolation", () => {

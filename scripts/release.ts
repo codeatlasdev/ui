@@ -98,6 +98,19 @@ if (sh(["git", "rev-parse", "HEAD"]) !== sh(["git", "rev-parse", "origin/main"])
 	fail("HEAD differs from origin/main: pull first");
 }
 
+// The whole suite runs before anything is versioned or tagged, as two commands so each stays under its own
+// budget (5 minutes): `test:full` (unit, every component test, every route, fixtures) and `test:vrt` (every
+// component and site screenshot). A red run stops here with the tree untouched. `--dry-run` only reports.
+if (!dry)
+	for (const script of ["test:full", "test:vrt"]) {
+		console.log(`▶ bun run ${script}`);
+		if (
+			Bun.spawnSync(["bun", "run", script], { stdio: ["inherit", "inherit", "inherit"] })
+				.exitCode !== 0
+		)
+			fail(`bun run ${script} failed: nothing was versioned or tagged`);
+	}
+
 const pending = readdirSync(".changeset").filter((f) => f.endsWith(".md") && f !== "README.md");
 const current = `${PREFIX}${version()}`;
 if (pending.length === 0) {

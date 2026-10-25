@@ -1,29 +1,21 @@
 import { expect, settle, test, waitIslands } from "./fixtures";
 
+// The pages whose own composition is what a screenshot can show: the landing, the templates and the theme
+// editor, at the visible viewport (the first screen a visitor sees). Every docs page is a stack of component
+// demos that the component baselines (packages/ui `*.vrt.test.ts`) already compare one by one, and the layout
+// audit (routes.spec.ts) checks their geometry on every route, so a tall full-page docs shot added only the
+// slowest and flakiest copy of both.
 const PAGES = [
 	"/",
-	"/docs/",
-	"/docs/foundation/colors/",
-	"/docs/inputs/button/",
-	"/docs/inputs/text-field/",
-	"/docs/inputs/date-picker/",
-	"/docs/feedback/dialog/",
-	"/docs/navigation/app-bar/",
-	"/docs/display/data-table/",
-	"/docs/display/table/",
-	"/docs/layout/app-shell/",
+	"/templates/",
 	"/templates/app/dashboard/",
 	"/templates/auth/sign-in/",
-	"/templates/",
 	"/theme/",
 ];
 
-// A full-page shot is taken twice and compared (and written when updating). On a native 4-vCPU runner the
-// 5s expect and 30s test defaults are enough; under amd64 emulation (scripts/vrt-docker.sh on Apple Silicon)
-// the tallest pages (15k px) need longer. Per-call and per-test timeouts keep the rest of
-// `expect.toHaveScreenshot` (stylePath, threshold, ...) from the config.
+// Per-test timeout: a viewport shot is taken twice and compared (and written when updating); the
+// 5 s expect and 30 s test defaults are enough on a native machine, so only the shot itself is bounded.
 const SHOT_TIMEOUT = 30_000;
-test.describe.configure({ timeout: 120_000 });
 
 const slug = (p: string) => (p === "/" ? "home" : p.replace(/^\/|\/$/g, "").replaceAll("/", "-"));
 
@@ -42,55 +34,13 @@ for (const scheme of ["dark", "light"] as const) {
 		for (const route of PAGES) {
 			test(route, async ({ page }) => {
 				await prepare(page, route);
-				// Layout heights are fractional (e.g. 2054.86px); a bare fullPage capture rounds them
-				// differently between the two shots Playwright compares. Pin an integer clip once.
-				const { width, height } = await page.evaluate(() => {
-					const r = document.documentElement.getBoundingClientRect();
-					return { width: Math.floor(r.width), height: Math.floor(r.height) };
+				// Visible viewport only: no `fullPage`, so no layout-height rounding between the two compared
+				// shots. No `mask`: Playwright places mask boxes from a layout read during the capture, and they
+				// drift between the shots; canvases are hidden in-layout by tests/screenshot.css (stylePath).
+				await expect(page).toHaveScreenshot(`${slug(route)}-${scheme}.webp`, {
+					timeout: SHOT_TIMEOUT,
 				});
-				// WebP stops at 16383 px per side (#336: /docs/display/data-table/ is 17488 px on
-				// mobile). Taller pages are captured in segments; a page that fits keeps one file.
-				const SEGMENT = 16000;
-				const parts = Math.ceil(height / SEGMENT);
-				for (let i = 0; i < parts; i++) {
-					const y = i * SEGMENT;
-					const name =
-						parts === 1
-							? `${slug(route)}-${scheme}.webp`
-							: `${slug(route)}-${scheme}-${i + 1}.webp`;
-					await expect(page).toHaveScreenshot(name, {
-						timeout: SHOT_TIMEOUT,
-						fullPage: true,
-						clip: { x: 0, y, width, height: Math.min(SEGMENT, height - y) },
-						// No `mask`: Playwright places mask boxes from a layout read during the full-page
-						// capture, and they drift between the two compared shots (seen as a 23px shift on
-						// `/`). Canvases are hidden in-layout by tests/screenshot.css (stylePath) instead.
-					});
-				}
 			});
 		}
-
-		test("overlays open", async ({ page }) => {
-			await prepare(page, "/docs/feedback/dialog/");
-			await page.getByRole("button", { name: "View details" }).first().click();
-			await settle(page);
-			await expect(page.getByRole("dialog")).toHaveScreenshot(`dialog-${scheme}.webp`, {
-				timeout: SHOT_TIMEOUT,
-			});
-
-			await prepare(page, "/docs/feedback/sheet/");
-			await page.getByRole("button", { name: "Open sheet" }).first().click();
-			await settle(page);
-			await expect(page.getByRole("dialog")).toHaveScreenshot(`sheet-${scheme}.webp`, {
-				timeout: SHOT_TIMEOUT,
-			});
-
-			await prepare(page, "/docs/navigation/command-palette/");
-			await page.getByRole("button", { name: "Open command palette" }).first().click();
-			await settle(page);
-			await expect(page.getByRole("dialog")).toHaveScreenshot(`command-palette-${scheme}.webp`, {
-				timeout: SHOT_TIMEOUT,
-			});
-		});
 	});
 }

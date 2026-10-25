@@ -1,6 +1,6 @@
 #!/usr/bin/env sh
 # Land an issue PR: rebase its worktree on origin/main, regenerate generated files, validate,
-# check the visual baselines locally in Docker, mark ready, squash-merge, clean up.
+# run the land gate (affected tests, canaries and changed screenshots, 3 min budget; validate runs on the push), mark ready, squash-merge, clean up.
 #   sh scripts/issue-land.sh <issue-number>
 set -e
 N="$1"
@@ -43,13 +43,19 @@ for f in $(git status --porcelain --untracked-files=no | awk '{print $2}'); do
 done
 git diff --cached --quiet || git commit -qm "chore: regenerate lockfile and manifest after rebase"
 [ -z "$(git status --porcelain --untracked-files=no)" ] || { git status --short; echo "uncommitted changes in $WT" >&2; exit 1; }
-bun run validate
+# Budgeted gate, chosen by what the diff touches: the tests and screenshots it affects plus the route canaries
+# (`land`, 3 minutes), or, when a SHARED file changed (tokens, styles, theme, primitives, a test setup file),
+# every component test and every route without screenshots (`landShared`, 5 minutes). The screenshots of a
+# shared change run at release (`bun run test:vrt`) and on demand. `validate` (90 s) runs on the push below, so
+# it is not run twice. The release gate is `test:full` plus `test:vrt`.
+BUDGET=$(bun scripts/test-changed.ts --land --print-budget)
+bun scripts/test-run.ts --budget="$BUDGET" bun scripts/test-changed.ts --land
 git push -q --force-with-lease
 gh pr ready "$PR" >/dev/null 2>&1 || true
-# CI is paused (ci.yml disabled, see AGENTS.md): validate above plus the local visual check are the gate.
-# A mismatch means the change moved pixels: run `bun run test:vrt:update` in $WT, review the images,
-# commit them and rerun this script.
-sh "$WT/scripts/vrt-docker.sh" --check
+# CI is paused (ci.yml disabled, see AGENTS.md): the budgeted gate above and `validate` on the push are the
+# gate. Unless a shared file changed, the gate includes the screenshots of the changed components and pages,
+# rendered natively. A mismatch means the change moved pixels: run `bun run test:vrt:update` in $WT, review the images, commit them and
+# rerun this script.
 # No --delete-branch: gh would switch this worktree to main (checked out in $ROOT) and delete the
 # local branch (checked out here), failing after the merge (#103). `issue.ts done` removes both.
 # GitHub deletes the remote branch on merge (repo setting); the API call covers it being turned off.
