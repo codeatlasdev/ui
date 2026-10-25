@@ -304,6 +304,8 @@ The suites froze a 12-core machine: 2433 Playwright tests loaded all 182 docs ro
 
 Every command has a time budget that is enforced: a run over its budget fails and prints its 10 slowest tests. On an oversubscribed machine the verdict is printed as not enforced, because it would only measure the other processes.
 
+One gate runs without a budget: the GitHub Release workflow's verify step runs every check of `validate` but not its 90 s clock, because a 4-core hosted runner took 110.6 s for this release while every check passed (issue 643). The four release commands above run with their budgets on the maintainer's machine before any tag is created.
+
 <Fig id="gate-before-after" />
 
 <Bench title="One-component edit, bun run test" unit="s" rows={[{ label: "Total", value: 28, good: true }, { label: "Routes", value: 16.6 }, { label: "Screenshots", value: 6.7 }, { label: "Components", value: 4.6 }, { label: "Unit", value: 0.4 }]} conditions="A one-component edit with a fresh dist, wall time on the maintainer's 12-core machine at load 15 (shared with other work), from the pull request that introduced the system (547). The budget for this command is 60 s." />
