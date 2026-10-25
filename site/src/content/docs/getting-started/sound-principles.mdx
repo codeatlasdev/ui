@@ -1,0 +1,43 @@
+---
+title: Sound principles
+description: "The rules the sound entry enforces in code, and why: off by default, no sound before a gesture, subtle, never the only signal."
+group: Getting started
+order: 18
+---
+import { Callout } from "@codeatlasdev/ui";
+
+Interface sound is decoration over accessible feedback. It confirms something that already happened, and it can be removed without losing information. These rules are not advice: the engine in `@codeatlasdev/ui/sound` enforces each one, and a test fails when it stops.
+
+## 1. Off by default
+
+Sound runs only after the user turns it on with a visible control (`SoundToggle`). The choice is persisted in `localStorage` under `ca-sound` as `{ enabled, volume }`, so it survives a reload and nobody has to turn it on twice. A page that surprises people with noise teaches them to mute the tab, and then your real alerts go unheard.
+
+## 2. Nothing before a user gesture
+
+Browsers block audio until the user acts, and an `AudioContext` created earlier is suspended and logs a warning. The engine creates its single shared context only inside the first pointer or key event after sound is on. Until then no `AudioContext` exists at all, which a unit test asserts.
+
+## 3. Subtle and short
+
+The master volume defaults to `0.25`. Every cue is short (most are under 150 ms), nothing loops, and a compressor on the master bus keeps stacked cues from clipping. A cue the user stops noticing is working; one they notice every time is too loud.
+
+## 4. Never the only signal
+
+Every cue duplicates something visible or announced: the pressed state, the toast text, the live region, the focus ring. Never use sound to carry the only copy of an error, a result or a status. Someone who is deaf, on mute, in a meeting or using a screen reader must lose nothing. `SoundToggle` itself exposes its state with `aria-pressed` and has an accessible name.
+
+## 5. Respect reduced motion and context
+
+Under `prefers-reduced-motion: reduce`, hover and slider `tick` cues are off; feedback cues still play if the user enabled sound. Sound is suspended while the tab is hidden, cut off when the page unloads, and skipped while a `<video>` or `<audio>` element is playing.
+
+## 6. Throttle and dedupe
+
+One cue per name per 40 ms, and at most four voices at once (the oldest is stolen). A fast typist or a dragged slider never turns into a buzz.
+
+## 7. The sound matches the style
+
+A cue is part of the look. The profile follows the design style: brutalism is dry and hard, glass is soft and bright, terminal is square-wave beeps. Do not mix a chime into a brutalist screen; pick the profile that fits, or tune `--ca-sound-gain`, `--ca-sound-pitch` and `--ca-sound-brightness`.
+
+<Callout type="tip" title="Check before you ship">
+Turn the sound off and use the screen. If any information disappeared, the sound was carrying it: add a visible or announced signal first.
+</Callout>
+
+See [Sound](/docs/feedback/sound/) for the API and a live demo of every profile.

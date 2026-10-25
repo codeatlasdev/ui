@@ -6,7 +6,7 @@ Spec:
 - `<KpiCard title="Response Time" value="1.4" unit="s" trend={12.3} trendTone="positive-down" icon={Gauge} />`: a rise is red, announced "worse"
 - `<KpiCard title="Sessions" value="3,847" trend={-2.1} trendTone="neutral" icon={Activity} />`: arrow only, no colour judgement
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
-Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
 Report: #984 Trend tone → file, what changed, https://ui.codeatlas.com.br/docs/layout/kpi-card#trend-tone; what you could not check (light/dark, 375px, keyboard, reduced motion).

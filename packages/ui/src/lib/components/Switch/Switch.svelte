@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { cueFor, soundBus, type SoundProp } from '../../utils/sound-bus.js';
+
   interface Props {
     checked?: boolean;
     disabled?: boolean;
@@ -10,6 +12,8 @@
     'aria-labelledby'?: string;
     class?: string;
     onchange?: (checked: boolean) => void;
+    /** Plays `toggle-on` / `toggle-off` on a user change (a cue name plays that cue both ways) when `@codeatlasdev/ui/sound` is on. */
+    sound?: SoundProp;
   }
 
   let {
@@ -21,6 +25,7 @@
     'aria-labelledby': ariaLabelledby,
     class: className = '',
     onchange,
+    sound,
   }: Props = $props();
 
   const switchId = $props.id();
@@ -43,6 +48,8 @@
       aria-labelledby={label ? undefined : ariaLabelledby}
       onchange={(e) => {
         checked = e.currentTarget.checked;
+        const cue = cueFor(sound, checked ? 'toggle-on' : 'toggle-off');
+        if (cue) soundBus.emit(cue);
         onchange?.(checked);
       }}
       onkeydown={(e) => {

@@ -373,6 +373,14 @@ export function mergeTheme(
 	};
 }
 
+/** Sound profile each design style plays when `@codeatlasdev/ui/sound` is on (`--ca-sound-profile`); the rest use `system`. */
+const SOUND_PROFILE: Partial<Record<DesignStyleId, string>> = {
+	brutalism: "brutal",
+	glassmorphism: "glass",
+	liquid: "glass",
+	terminal: "terminal",
+};
+
 /**
  * A design style recipe with your overrides on top, ready for `defineTheme`/`caThemeHandle`.
  *
@@ -382,5 +390,10 @@ export function designStyle(
 	id: DesignStyleId,
 	overrides: Partial<ThemeDefinition> = {}
 ): Partial<ThemeDefinition> {
-	return mergeTheme(DESIGN_STYLES[id].theme, overrides);
+	const profile = SOUND_PROFILE[id];
+	const base = DESIGN_STYLES[id].theme;
+	return mergeTheme(
+		profile ? mergeTheme(base, { overrides: { light: { "--ca-sound-profile": profile } } }) : base,
+		overrides
+	);
 }

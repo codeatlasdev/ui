@@ -1,6 +1,6 @@
 {
 	"version": "4.5.0",
-	"count": 377,
+	"count": 379,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -17,8 +17,8 @@
 		{
 			"slug": "feedback",
 			"first": "080",
-			"last": "910",
-			"count": 36
+			"last": "989",
+			"count": 38
 		},
 		{
 			"slug": "display",
@@ -16979,6 +16979,120 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/layout/preview-stage#a-whole-page",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "988",
+			"group": "feedback",
+			"page": "sound",
+			"variant": "HearIt",
+			"slug": "hear-it",
+			"title": "Hear it",
+			"description": "Pick a profile and press the cues. Turn the toggle on first: sound is off by default.",
+			"summary": "A sound toggle with volume, a profile picker (system, glass, brutalism, terminal) and a board of buttons that each play one cue.",
+			"use": "Let people audition a sound profile before turning interface sound on in an app.",
+			"spec": [
+				"`<SoundToggle volume />` next to a `SegmentedControl` bound to the profile",
+				"`$effect(() => sound.use(PROFILES[profile]))` pins the picked profile and `onDestroy` releases it",
+				"A `role=\"group\"` board of outlined small `Button` items, each with `sound={cue}` for one cue name",
+				"The cues are `press`, `toggle-on`, `toggle-off`, `success`, `error`, `warning`, `open`, `close` and `tab`"
+			],
+			"tags": [
+				"sound",
+				"audio",
+				"feedback",
+				"profile",
+				"toggle"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"SegmentedControl",
+				"SoundToggle"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"SegmentedControl"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/sound",
+					"names": [
+						"SoundToggle",
+						"brutal",
+						"glass",
+						"sound",
+						"system",
+						"terminal"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/sound#hear-it",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "989",
+			"group": "feedback",
+			"page": "sound",
+			"variant": "Components",
+			"slug": "components",
+			"title": "Components",
+			"description": "Each control with its sound prop on, behind one toggle.",
+			"summary": "Button, Switch, Tabs, Slider, Toast and Dialog with their sound prop on, behind one sound toggle.",
+			"use": "Show which components speak when the sound prop is set, and that they stay silent until the toggle is on.",
+			"spec": [
+				"`<SoundToggle />` on top, off until the user presses it",
+				"`<Button sound>`, `<Switch sound`, `<Tabs sound bind:value={tab}>`, `<Slider sound`",
+				"`toast.success('Saved', { sound: true })` from a Toast button",
+				"`<Dialog sound bind:open title=\"Sound on open and close\">`"
+			],
+			"tags": [
+				"sound",
+				"button",
+				"switch",
+				"tabs",
+				"slider",
+				"toast",
+				"dialog"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"Dialog",
+				"Slider",
+				"Switch",
+				"Tabs",
+				"TabsList",
+				"TabsTrigger",
+				"SoundToggle"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"Dialog",
+						"Slider",
+						"Switch",
+						"Tabs",
+						"TabsList",
+						"TabsTrigger",
+						"toast"
+					]
+				},
+				{
+					"from": "@codeatlasdev/ui/sound",
+					"names": [
+						"SoundToggle"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/feedback/sound#components",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		}
 	]

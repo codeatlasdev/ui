@@ -408,6 +408,7 @@ Parts: `ca-breadcrumb__current` `ca-breadcrumb__item` `ca-breadcrumb__link` `ca-
 | `align?` | `'center' \| 'between'` | `'center'` | `'between'` pins the label to the start and `trailing` to the end (use with `fullWidth` or a fixed width). The loading spinner stays in the leading slot. Default `'center'`. |
 | `onclick?` | `(e: MouseEvent) => void` |  |  |
 | `aria-label?` | `string` |  |  |
+| `sound?` | `SoundProp` |  | Plays `press` on pointer down and `release` on pointer up (a cue name replaces `press`) when the optional `@codeatlasdev/ui/sound` entry is imported and the user turned sound on. Never the only signal. |
 | `type?` | `string` |  | MIME type hint of the linked resource. |
 | `form?` | `never` |  |  |
 
@@ -1085,6 +1086,7 @@ Dialog: second-layer modal.
 | `fullscreenBelow?` | `'sm' \| 'md'` |  | Full screen below this breakpoint (`'sm'` = 600px, `'md'` = 900px), any `size`: exactly the viewport (`--ca-vh`), square corners, safe-area padding kept. Focus trap and Escape are unchanged. |
 | `class?` | `string` | `''` |  |
 | `onOpenChange?` | `(open: boolean) => void` |  |  |
+| `sound?` | `SoundProp` |  | Plays `open` and `close` as the dialog opens and closes (a cue name replaces both) when `@codeatlasdev/ui/sound` is on. |
 
 Snippets: `children`; `actions`
 
@@ -3047,10 +3049,24 @@ Slider — single or range value input.
 | `disabled?` | `boolean` | `false` |  |
 | `class?` | `string` | `''` |  |
 | `onchange?` | `(value: number[]) => void` |  | Called on change. Always receives array regardless of single/range mode. |
+| `sound?` | `SoundProp` |  | Plays `tick` for each step the user crosses (a cue name replaces it); off under reduced motion. Needs `@codeatlasdev/ui/sound`. |
 
 Parts: `ca-slider` `ca-slider__range` `ca-slider__thumb` `ca-slider__track`
 
 Data attributes: `data-disabled`
+
+## SoundToggle
+
+`import { SoundToggle } from "@codeatlasdev/ui/sound"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `label?` | `string` |  | Accessible name and tooltip. |
+| `size?` | `number` | `18` |  |
+| `volume?` | `boolean` | `false` | Adds a volume slider beside the button. |
+| `class?` | `string` | `''` |  |
+
+Parts: `ca-sound-toggle` `ca-sound-toggle__btn` `ca-sound-toggle__volume`
 
 ## Sparkline
 
@@ -3280,6 +3296,7 @@ Tokens: `--ca-swatch-color`
 | `aria-labelledby?` | `string` |  |  |
 | `class?` | `string` | `''` |  |
 | `onchange?` | `(checked: boolean) => void` |  |  |
+| `sound?` | `SoundProp` |  | Plays `toggle-on` / `toggle-off` on a user change (a cue name plays that cue both ways) when `@codeatlasdev/ui/sound` is on. |
 
 Parts: `ca-switch` `ca-switch-wrapper` `ca-switch__input` `ca-switch__label` `ca-switch__label--disabled` `ca-switch__thumb`
 
@@ -3356,6 +3373,7 @@ Snippets: `children`: Column label.
 | `onchange?` | `(v: string) => void` |  |  |
 | `variant?` | `"pill" \| "line"` | `'pill'` | `pill` fills the active tab on a glass list; `line` underlines it on a bare list (page headers). |
 | `class?` | `string` | `''` |  |
+| `sound?` | `SoundProp` |  | Plays `tab` when the user selects another tab (a cue name replaces it) when `@codeatlasdev/ui/sound` is on. |
 
 Snippets: `children`
 
@@ -4446,6 +4464,14 @@ const shadows: {
 }
 ```
 
+### soundBus
+
+`import { soundBus } from "@codeatlasdev/ui"`
+
+```ts
+const soundBus: { emit(cue: CueName): void; listen(fn: Listener): () => void; }
+```
+
 ### stageInsets
 
 `import { stageInsets } from "@codeatlasdev/ui"`
@@ -4678,6 +4704,7 @@ Types:
 | `ColorValue` | `type ColorValue = string \| { color: string; alpha: number };` | One color: any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `color-mix(…)`, `rgb(…)`) or an explicit alpha form that keeps the color and the opacity apart. |
 | `Columns` | `type Columns = (typeof COLUMNS)[number] \| `${(typeof COLUMNS)[number]}`;` |  |
 | `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldTokens; textField?: FieldTokens; textArea?: TextAreaTokens; card?: CardTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
+| `CueName` | `type CueName = \| "press" \| "release" \| "tap" \| "toggle-on" \| "toggle-off" \| "select" \| "check" \| "success" \| "error" \| "warning" \| "notify" \| "open" \| "close" \| "forward" \| "back" \| "tab" \| "tick" \| "hover";` | Semantic cue names. Actions, not components: `press` is any button, `tab` any tab change. |
 | `DateRange` | `interface DateRange { start: DateValue \| undefined; end: DateValue \| undefined; }` | Value of RangeCalendar / DateRangePicker. Both ends are undefined until picked. |
 | `DeepPartial` | `type DeepPartial<T> = T extends (...args: never[]) => unknown ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;` |  |
 | `Density` | `type Density = "compact" \| "comfortable" \| "airy" \| number;` | Spacing density: a multiplier of the 4px unit, or a named step. |
@@ -4750,6 +4777,7 @@ Types:
 | `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
 | `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
 | `SortableOptions` | `interface SortableOptions { id: string; group?: string; getItems: () => readonly string[]; getLabel?: (id: string) => string; label?: string; axis?: "y" \| "x"; drop?: "position" \| "container"; handle?: string; disabled?: boolean; onDrop: (e: DndDropEvent) => void; }` |  |
+| `SoundProp` | `type SoundProp = boolean \| CueName;` | What a component's `sound` prop accepts: `true` plays the component's own cue, a name overrides it. |
 | `Space` | `type Space = (typeof SPACE)[number] \| `${(typeof SPACE)[number]}`;` |  |
 | `StageInsets` | `interface StageInsets { top: number; right: number; bottom: number; left: number; }` |  |
 | `SurfaceColors` | `interface SurfaceColors { sunken: string; base: string; raised: string; overlay: string; }` |  |
@@ -4761,8 +4789,8 @@ Types:
 | `ThemePreset` | `interface ThemePreset { id: BuiltinPresetId; label: string; swatchColor: string; hue: number; brandLight: BrandColors; brandDark: BrandColors; ramp: NeutralRamp; semanticLight: SemanticColors; semanticDark: SemanticColors; }` |  |
 | `Thickness` | `type Thickness = "ultra-thin" \| "thin" \| "regular" \| "thick" \| "chrome";` |  |
 | `TimeValue` | `type TimeValue = Time \| CalendarDateTime \| ZonedDateTime;` | Accepted by TimeField `placeholder` / `minValue` / `maxValue`. |
-| `ToastItem` | `interface ToastItem { id: string; message: string; variant: ToastVariant; duration: number; count?: number; description?: string; action?: ToastAction; }` |  |
-| `ToastOptions` | `interface ToastOptions { variant?: ToastVariant; duration?: number; id?: string; description?: string; action?: ToastAction; }` |  |
+| `ToastItem` | `interface ToastItem { id: string; message: string; variant: ToastVariant; duration: number; count?: number; description?: string; action?: ToastAction; sound?: SoundProp; }` |  |
+| `ToastOptions` | `interface ToastOptions { variant?: ToastVariant; duration?: number; id?: string; description?: string; action?: ToastAction; sound?: SoundProp; }` |  |
 | `ToastVariant` | `type ToastVariant = "default" \| "success" \| "error" \| "warning" \| "info";` |  |
 | `TokenValue` | `type TokenValue = string \| { light?: string; dark?: string };` | One domain token: a single color for both schemes, or one per scheme (a missing side uses the other). |
 | `TypeRole` | `type TypeRole = (typeof TYPE_ROLES)[number];` |  |
@@ -5374,6 +5402,7 @@ Types:
 | `count?` | `number` | How many identical calls this toast stands for (`×3`). Absent or 1 for a fresh toast. |
 | `description?` | `string` | Secondary line under the message. |
 | `action?` | `ToastAction` | One inline action; clicking it runs `onClick` and dismisses the toast. |
+| `sound?` | `SoundProp` | Plays `success`, `error` or `warning` by variant (`notify` otherwise; a cue name replaces it) when `@codeatlasdev/ui/sound` is on. |
 
 #### ToastOptions
 
@@ -5384,6 +5413,7 @@ Types:
 | `id?` | `string` | Replaces the toast with this id in place (new text, variant and timer) instead of stacking a new one. |
 | `description?` | `string` | Secondary, smaller line under the message. |
 | `action?` | `ToastAction` | One inline button (label + handler). Clicking it runs `onClick` and dismisses the toast. An actionable toast lasts 8000 ms unless `duration` says otherwise. |
+| `sound?` | `SoundProp` | Plays the cue of the variant (`success`, `error`, `warning`, else `notify`) when the toast appears; a cue name replaces it. Needs `@codeatlasdev/ui/sound`. |
 
 #### TypeRoleSpec
 
@@ -6647,6 +6677,106 @@ Types:
 | `publisher?` | `JsonLdRef` |  |
 | `searchUrlTemplate?` | `string` | Sitelinks search box. `{query}` in the template is the search term placeholder, e.g. `https://example.com/search?q={query}`. |
 | `extra?` | `Extra` |  |
+
+## @codeatlasdev/ui/sound
+
+### brutal
+
+`import { brutal } from "@codeatlasdev/ui/sound"`
+
+```ts
+const brutal: SoundProfile
+```
+
+### glass
+
+`import { glass } from "@codeatlasdev/ui/sound"`
+
+```ts
+const glass: SoundProfile
+```
+
+### profileFor
+
+`import { profileFor } from "@codeatlasdev/ui/sound"`
+
+```ts
+function profileFor(id: string | null | undefined): SoundProfile
+```
+
+### profiles
+
+`import { profiles } from "@codeatlasdev/ui/sound"`
+
+The profiles by id.
+
+```ts
+const profiles: Record<string, SoundProfile>
+```
+
+### sound
+
+`import { sound } from "@codeatlasdev/ui/sound"`
+
+The engine and the action in one name: `sound.play("success")`, `sound.enable()`, and `<div use:sound={{ on: "click", cue: "press" }}>`. Silent until sound is on (`<SoundToggle />`).
+
+```ts
+const sound: Action<HTMLElement, SoundOptions | undefined, Record<never, any>> & { readonly enabled: boolean; readonly volume: number; readonly profile: SoundProfile; readonly unlocked: boolean; enable(on?: boolean): void; setVolume(v: number): void; use(profile: SoundProfile | undefined): void; play(cue: CueName): boolean; dispose(): void; subscribe(fn: () => void): () => void; }
+```
+
+### soundBus
+
+`import { soundBus } from "@codeatlasdev/ui/sound"`
+
+```ts
+const soundBus: { emit(cue: CueName): void; listen(fn: Listener): () => void; }
+```
+
+### system
+
+`import { system } from "@codeatlasdev/ui/sound"`
+
+```ts
+const system: SoundProfile
+```
+
+### terminal
+
+`import { terminal } from "@codeatlasdev/ui/sound"`
+
+```ts
+const terminal: SoundProfile
+```
+
+Types:
+
+| Type | Declaration | Notes |
+|---|---|---|
+| `CueName` | `type CueName = \| "press" \| "release" \| "tap" \| "toggle-on" \| "toggle-off" \| "select" \| "check" \| "success" \| "error" \| "warning" \| "notify" \| "open" \| "close" \| "forward" \| "back" \| "tab" \| "tick" \| "hover";` | Semantic cue names. Actions, not components: `press` is any button, `tab` any tab change. |
+| `SoundOptions` | `interface SoundOptions { on?: keyof HTMLElementEventMap; cue?: CueName; }` | What `use:sound` accepts. |
+| `SoundProfile` | `interface SoundProfile { id: string; wave: Wave; root: number; len: number; tone: number; grit: number; gain: number; detune: number; hover: boolean; }` |  |
+| `SoundProp` | `type SoundProp = boolean \| CueName;` | What a component's `sound` prop accepts: `true` plays the component's own cue, a name overrides it. |
+
+#### SoundOptions
+
+| Field | Type | Notes |
+|---|---|---|
+| `on?` | `keyof HTMLElementEventMap` | DOM event that plays the cue. @default "click" |
+| `cue?` | `CueName` | Cue to play. @default "press" |
+
+#### SoundProfile
+
+| Field | Type | Notes |
+|---|---|---|
+| `id` | `string` |  |
+| `wave` | `Wave` | Oscillator for pitched cues. |
+| `root` | `number` | Root pitch in Hz; every pitched cue is an interval above it. |
+| `len` | `number` | Cue length multiplier (1 = 90 ms notes). Short and dry for hard styles, longer for soft ones. |
+| `tone` | `number` | Low-pass cutoff in Hz: low = muffled, high = bright. |
+| `grit` | `number` | Noise share of a press (0 = pure pitch, 1 = pure noise click). |
+| `gain` | `number` | Peak gain of the profile, 0-1, before the master volume. |
+| `detune` | `number` | Cent offset between the two oscillators of a cue (0 = clean, more = chorused or detuned). |
+| `hover` | `boolean` | Whether hover cues are part of the character. Hover is always off under reduced motion. |
 
 ## @codeatlasdev/ui/table
 

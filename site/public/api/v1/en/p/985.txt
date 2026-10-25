@@ -5,7 +5,7 @@ Spec:
 - `<KpiCard title="Active users" value="24.8k" trend={12.1} icon={Users}>` with `{#snippet chart()}<Sparkline data={[18, 19, 21, 20, 23, 25]} trend="up" />{/snippet}`
 - `hint="Down from 2.4% in January"` on the churn card, whose chart is `<Sparkline data={[2.4, 2.3, 2.1, 2.2, 1.9, 1.7]} trend="up" variant="bar" />`: `trend="up"` is green because a falling churn is good
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
-Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
 Report: #985 Sparkline → file, what changed, https://ui.codeatlas.com.br/docs/layout/kpi-card#sparkline; what you could not check (light/dark, 375px, keyboard, reduced motion).

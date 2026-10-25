@@ -8,6 +8,7 @@
   import { createPresence } from '../../primitives/index.js';
   import { createIds } from '../../primitives/index.js';
   import { modalLayer } from './modal-layer.js';
+  import { cueFor, soundBus, type SoundProp } from '../../utils/sound-bus.js';
   const t = useMessages(dialog);
 
   /**
@@ -56,6 +57,8 @@
     children?:     Snippet;
     actions?:      Snippet;
     onOpenChange?: (open: boolean) => void;
+    /** Plays `open` and `close` as the dialog opens and closes (a cue name replaces both) when `@codeatlasdev/ui/sound` is on. */
+    sound?:        SoundProp;
   }
 
   let {
@@ -71,7 +74,19 @@
     children,
     actions,
     onOpenChange,
+    sound,
   }: Props = $props();
+
+  // `open` is bindable and can flip from outside: follow the value, not the handlers. The first run is
+  // the initial state, not a transition.
+  let seen = open;
+  $effect(() => {
+    const now = open;
+    if (now === seen) return;
+    seen = now;
+    const cue = cueFor(sound, now ? 'open' : 'close');
+    if (cue) soundBus.emit(cue);
+  });
 
   // The panel is labelled by its title; without `title` it has no accessible name.
   $effect(() => {

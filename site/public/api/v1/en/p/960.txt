@@ -7,7 +7,7 @@ Spec:
 - `src` is an inlined 4:3 `data:image/svg+xml;utf8,` gradient with a circle
 - Each image sits in a `<figure>` with a `<figcaption>` naming its ratio
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
-Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
 Report: #960 ratio and fit → file, what changed, https://ui.codeatlas.com.br/docs/display/image#ratio-and-fit; what you could not check (light/dark, 375px, keyboard, reduced motion).

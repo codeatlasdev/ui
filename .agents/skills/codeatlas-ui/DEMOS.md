@@ -382,3 +382,5 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 985 | Sparkline | layout/kpi-card | KpiCard, KpiGrid, Sparkline |
 | 986 | Inline content | layout/preview-stage | Button, PreviewStage |
 | 987 | A whole page | layout/preview-stage | PreviewStage |
+| 988 | Hear it | feedback/sound | Button, SegmentedControl, SoundToggle |
+| 989 | Components | feedback/sound | Button, Dialog, Slider, Switch, Tabs, TabsList, TabsTrigger, SoundToggle |

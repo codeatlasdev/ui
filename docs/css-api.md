@@ -395,6 +395,10 @@ The `skeleton` prop of `Avatar`, `KpiCard`, `TextField`, `Table`, `Card` and `Gl
 
 `.ca-slider` `.ca-slider__range` `.ca-slider__thumb` `.ca-slider__track`
 
+## SoundToggle
+
+`.ca-rail-btn` `.ca-sound-toggle` `.ca-sound-toggle__btn` `.ca-sound-toggle__volume`
+
 ## Spinner
 
 `.ca-spin` `.ca-spinner` `.ca-spinner__arc` `.ca-spinner__track`
