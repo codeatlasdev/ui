@@ -189,6 +189,7 @@
     @media (pointer: coarse) {
       :global(.ca-seg__item) {
         min-height: var(--ca-touch-target);
+        min-width: var(--ca-touch-target);
       }
     }
 }
