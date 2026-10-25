@@ -8,5 +8,29 @@
 		"Below the field, a white box shows a sample sentence painted in the current color"
 	],
 	"tags": ["color-field", "contrast", "wcag", "text", "oklch"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["ColorField"],
+		"aliases": ["text color", "wcag contrast", "readable text", "ink color"],
+		"related": ["990"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-25",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

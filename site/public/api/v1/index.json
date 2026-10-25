@@ -1,6 +1,6 @@
 {
 	"version": "4.5.0",
-	"count": 377,
+	"count": 382,
 	"urls": {
 		"page": "https://ui.codeatlas.com.br/gallery/{id}/",
 		"markdown": "https://ui.codeatlas.com.br/gallery/{id}.md",
@@ -8,15 +8,15 @@
 	},
 	"facets": {
 		"kind": {
-			"component": 338,
+			"component": 343,
 			"motion": 39
 		},
 		"subtype": {
 			"component/chart": 30,
 			"component/display": 69,
-			"component/feedback": 36,
+			"component/feedback": 38,
 			"component/foundation": 16,
-			"component/input": 83,
+			"component/input": 86,
 			"component/layout": 47,
 			"component/map": 1,
 			"component/navigation": 39,
@@ -31,7 +31,7 @@
 		"style": {
 			"aurora": 5,
 			"bento": 10,
-			"default": 360,
+			"default": 365,
 			"editorial": 5,
 			"glassmorphism": 14,
 			"liquid": 1,
@@ -41,16 +41,16 @@
 		"motion": {
 			"expressive": 51,
 			"immersive": 9,
-			"none": 97,
-			"subtle": 220
+			"none": 99,
+			"subtle": 223
 		},
 		"interaction": {
 			"cursor": 12,
-			"drag": 29,
+			"drag": 31,
 			"hover": 79,
-			"keyboard": 257,
+			"keyboard": 262,
 			"none": 78,
-			"press": 218,
+			"press": 222,
 			"scroll": 19
 		},
 		"layout": {
@@ -58,28 +58,28 @@
 			"full-bleed": 6,
 			"grid": 36,
 			"overlay": 50,
-			"single-column": 122,
+			"single-column": 124,
 			"split": 12,
-			"stack": 140,
+			"stack": 143,
 			"sticky": 7
 		},
 		"colorMode": {
-			"both": 375,
+			"both": 380,
 			"light": 2
 		},
 		"density": {
 			"airy": 12,
 			"compact": 48,
-			"regular": 317
+			"regular": 322
 		},
 		"tech": {
 			"canvas2d": 1,
-			"css": 377,
+			"css": 382,
 			"svelte-motion": 39,
 			"view-transitions": 1
 		},
 		"cost": {
-			"css": 337,
+			"css": 342,
 			"js-light": 40
 		},
 		"component": {
@@ -100,7 +100,7 @@
 			"BarChart": 5,
 			"Box": 2,
 			"Breadcrumb": 2,
-			"Button": 102,
+			"Button": 104,
 			"ButtonGroup": 2,
 			"Calendar": 2,
 			"Callout": 1,
@@ -116,6 +116,7 @@
 			"CodeTab": 1,
 			"CodeTabs": 1,
 			"Collapsible": 2,
+			"ColorField": 2,
 			"Combobox": 4,
 			"CommandPalette": 2,
 			"Container": 1,
@@ -127,7 +128,7 @@
 			"DateField": 2,
 			"DatePicker": 2,
 			"DateRangePicker": 1,
-			"Dialog": 6,
+			"Dialog": 7,
 			"Divider": 3,
 			"DndLayer": 3,
 			"DocsNav": 1,
@@ -212,14 +213,16 @@
 			"SchemeAsset": 2,
 			"ScrollArea": 2,
 			"Section": 1,
-			"SegmentedControl": 5,
+			"SegmentedControl": 6,
 			"Select": 6,
 			"SettingItem": 1,
 			"Sheet": 2,
 			"SimpleTable": 5,
 			"SiteHeader": 1,
 			"Skeleton": 3,
-			"Slider": 5,
+			"Slider": 6,
+			"SliderField": 1,
+			"SoundToggle": 2,
 			"Sparkline": 5,
 			"Spinner": 2,
 			"SplashScreen": 1,
@@ -232,15 +235,15 @@
 			"StrikeThrough": 1,
 			"Surface": 7,
 			"SwatchGroup": 2,
-			"Switch": 8,
+			"Switch": 9,
 			"TableGroupRow": 1,
 			"TableOfContents": 1,
 			"TableRow": 1,
 			"TableSortHeader": 1,
-			"Tabs": 6,
+			"Tabs": 7,
 			"TabsContent": 5,
-			"TabsList": 6,
-			"TabsTrigger": 6,
+			"TabsList": 7,
+			"TabsTrigger": 7,
 			"Text": 1,
 			"TextArea": 5,
 			"TextField": 26,
@@ -526,7 +529,7 @@
 		{"kind":"motion","subtype":"scroll","style":["default"],"motion":"immersive","interaction":["scroll","keyboard"],"layout":"sticky","colorMode":"both","density":"regular","tech":["css","svelte-motion"],"cost":"js-light","components":["MotionStage"],"aliases":["depth","layers","scroll depth","hero parallax"],"related":["324","325","321"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-16","review":{"industry":"pending"},"id":"322","path":"motion/scroll/Parallax","title":"Parallax","summary":"Three layers (sky, ridge, foreground) plus a caption move at different speeds while the container scrolls, so the scene gains depth. Native scroll timeline, with a scroll listener fallback.","use":"Hero images, editorial headers, product storytelling: any pinned scene where background should move slower than foreground.","tags":["motion","scroll","parallax","layers","depth","hero"],"names":["Parallax","Parallax layers","Paralaxe","Parallaxe"]},
 		{"kind":"motion","subtype":"scroll","style":["default"],"motion":"expressive","interaction":["scroll","keyboard"],"layout":"sticky","colorMode":"both","density":"regular","tech":["css","svelte-motion"],"cost":"js-light","components":["MotionStage"],"aliases":["scroll progress","article","read indicator","top bar"],"related":["326","321","325"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-16","review":{"industry":"pending"},"id":"323","path":"motion/scroll/ReadingProgress","title":"Reading progress bar","summary":"A 4px bar stuck to the top of an article fills from left to right as it is read, with a percentage readout, tied directly to scroll position.","use":"Long articles, docs and legal pages where the reader wants to know how far they are.","tags":["motion","scroll","progress","reading","article","scroll-driven"],"names":["Reading progress bar","Scroll progress","Barra de progresso de leitura","Barre de progression de lecture"]},
 		{"kind":"motion","subtype":"scroll","style":["default"],"motion":"expressive","interaction":["scroll","keyboard"],"layout":"carousel","colorMode":"both","density":"regular","tech":["css","svelte-motion"],"cost":"js-light","components":["MotionStage"],"aliases":["pinned","sideways","slides","scrollytelling"],"related":["325","322","303"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-16","review":{"industry":"pending"},"id":"324","path":"motion/scroll/HorizontalScroll","title":"Horizontal scroll section","summary":"Vertical scrolling inside a pinned frame slides a row of four step cards sideways, with a progress bar underneath. The page scrolls down; the content moves across.","use":"Onboarding steps, feature tours and case-study timelines where a sequence reads better left to right than stacked.","tags":["motion","scroll","horizontal","pinned","sticky","steps"],"names":["Horizontal scroll section","Scroll-jacked horizontal","Rolagem horizontal por scroll vertical","Défilement horizontal"]},
-		{"kind":"motion","subtype":"scroll","style":["default"],"motion":"expressive","interaction":["scroll","keyboard"],"layout":"split","colorMode":"both","density":"regular","tech":["css","svelte-motion"],"cost":"js-light","components":["MotionStage"],"aliases":["scrollytelling","sticky media","story","how it works"],"related":["324","322","320"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-16","review":{"industry":"pending"},"id":"325","path":"motion/scroll/PinnedSteps","title":"Pinned step story","summary":"A pinned media panel on the left changes its figure and caption as each step on the right scrolls through the middle of the frame; inactive steps dim to 40%.","use":"Explaining a product flow: connect, sort, review. One visual stays on screen while the copy advances.","tags":["motion","scroll","pinned","sticky","steps","storytelling"],"names":["Pinned step story","Sticky scrollytelling","Scrollytelling fixo por etapas","Récit épinglé par étapes"]},
+		{"kind":"motion","subtype":"scroll","style":["default"],"motion":"expressive","interaction":["scroll","keyboard"],"layout":"split","colorMode":"both","density":"regular","tech":["css","svelte-motion"],"cost":"js-light","components":["MotionStage"],"aliases":["scrollytelling","sticky media","story","how it works"],"related":["324","322","320"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-16","review":{"industry":"pending"},"id":"325","path":"motion/scroll/PinnedSteps","title":"Pinned step story","summary":"A pinned media panel on the left changes its figure and caption as each step on the right scrolls through the middle of the frame; the step in view has the primary title colour, the others the secondary one.","use":"Explaining a product flow: connect, sort, review. One visual stays on screen while the copy advances.","tags":["motion","scroll","pinned","sticky","steps","storytelling"],"names":["Pinned step story","Sticky scrollytelling","Scrollytelling fixo por etapas","Récit épinglé par étapes"]},
 		{"kind":"motion","subtype":"scroll","style":["default"],"motion":"expressive","interaction":["scroll","keyboard"],"layout":"sticky","colorMode":"both","density":"regular","tech":["css","svelte-motion"],"cost":"js-light","components":["MotionStage"],"aliases":["scroll linked number","draw line","scrub","chart reveal"],"related":["306","323","302"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-16","review":{"industry":"pending"},"id":"326","path":"motion/scroll/ScrollCounter","title":"Scroll-linked counter and chart draw","summary":"A revenue figure counts up from $0 to $48,210 while a line chart draws itself, both tied to the container's scroll position; scrolling back reverses them.","use":"KPI headers, report sections and pricing pages where a number and its trend should build as the reader reaches them.","tags":["motion","scroll","counter","chart","draw","scroll-driven"],"names":["Scroll-linked counter and chart draw","Count-up on scroll","Contador e gráfico ligados ao scroll","Compteur lié au défilement"]},
 		{"kind":"motion","subtype":"micro","style":["default"],"motion":"immersive","interaction":["cursor","hover","keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css","svelte-motion"],"cost":"js-light","components":["MotionStage"],"aliases":["magnet","attract","cta button","pull to cursor"],"related":["341","347","386"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-16","review":{"industry":"pending"},"id":"340","path":"motion/micro/MagneticButton","title":"Magnetic button","summary":"A pill button that leans toward the pointer inside a 72px range, pulled by a Spring and released on leave.","use":"Primary call to action on a landing page or hero where the button should feel attracted to the cursor.","tags":["motion","magnetic","button","hover","spring","pointer"],"names":["Magnetic button","Botão magnético","Bouton magnétique"]},
 		{"kind":"motion","subtype":"micro","style":["default"],"motion":"expressive","interaction":["press","keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css","svelte-motion"],"cost":"js-light","components":["MotionStage"],"aliases":["click feedback","bounce","scale on press","tactile"],"related":["348","340","342"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-16","review":{"industry":"pending"},"id":"341","path":"motion/micro/PressSpring","title":"Press spring","summary":"A button that scales to 0.94 on press and overshoots past 1 on release before settling, driven by a Spring.","use":"Any tappable surface (pay, send, buy) that needs a physical press feel without a color change.","tags":["motion","press","button","spring","tap","feedback"],"names":["Press spring","Press scale","Efeito de pressionar","Pression élastique"]},
@@ -633,6 +636,11 @@
 		{"kind":"component","subtype":"layout","style":["default","bento"],"motion":"none","interaction":["none"],"layout":"grid","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["KpiCard","KpiGrid"],"aliases":["good bad trend","semantic delta","neutral trend"],"related":["176","175","985"],"a11y":{"reducedMotion":true,"keyboard":false},"added":"2026-10-23","review":{"industry":"pending"},"id":"984","path":"layout/kpi-card/TrendTone","title":"Trend tone","summary":"Three KPI cards where the trend colour follows what is good news: churn falling is green, response time rising is red, sessions are neutral.","use":"Metrics where down is good (churn, cost, latency) or where a change is not a judgement, with an accurate better/worse screen reader label.","tags":["kpi-card","kpi-grid","trend-tone","positive-down","churn","latency","metrics"],"names":[]},
 		{"kind":"component","subtype":"layout","style":["default","bento"],"motion":"subtle","interaction":["hover"],"layout":"grid","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["KpiCard","KpiGrid","Sparkline"],"aliases":["mini chart","trend line","inline chart"],"related":["984","175","178"],"a11y":{"reducedMotion":true,"keyboard":false},"added":"2026-10-23","review":{"industry":"pending"},"id":"985","path":"layout/kpi-card/Sparkline","title":"Sparkline","summary":"Two KPI cards with an icon and a sparkline under the number: a line for active users and bars for churn, with a hint line.","use":"A metric tile that shows its recent history. The chart is a snippet, so the charts subpath stays out of the core entry.","tags":["kpi-card","sparkline","chart","snippet","hint","metrics","dashboard"],"names":[]},
 		{"kind":"component","subtype":"layout","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Button","PreviewStage"],"aliases":["device frame","responsive preview","theme toggle preview"],"related":["987","181"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-25","review":{"industry":"pending"},"id":"986","path":"layout/preview-stage/Inline","title":"Inline content","summary":"A button pair inside a PreviewStage at 390 px, with a toolbar button that flips the content between light and dark.","use":"Showcasing a component at phone, tablet and desktop width inside a docs page or a design review.","tags":["preview-stage","device-frame","responsive","width","showcase"],"names":[]},
-		{"kind":"component","subtype":"layout","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["PreviewStage"],"aliases":["iframe preview","template viewer","viewport width switch"],"related":["986","840"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-25","review":{"industry":"pending"},"id":"987","path":"layout/preview-stage/Page","title":"A whole page","summary":"A whole page (the sign-in template) in a PreviewStage iframe, laid out at the chosen width with its own media queries.","use":"Showing a full page or a template at real phone, tablet and desktop widths with isolated styles.","tags":["preview-stage","iframe","page","template","responsive"],"names":[]}
+		{"kind":"component","subtype":"layout","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["PreviewStage"],"aliases":["iframe preview","template viewer","viewport width switch"],"related":["986","840"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-25","review":{"industry":"pending"},"id":"987","path":"layout/preview-stage/Page","title":"A whole page","summary":"A whole page (the sign-in template) in a PreviewStage iframe, laid out at the chosen width with its own media queries.","use":"Showing a full page or a template at real phone, tablet and desktop widths with isolated styles.","tags":["preview-stage","iframe","page","template","responsive"],"names":[]},
+		{"kind":"component","subtype":"feedback","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Button","SegmentedControl","SoundToggle"],"aliases":["sound profile","audio feedback","ui sounds","cue board"],"related":["989"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-25","review":{"industry":"pending"},"id":"988","path":"feedback/sound/HearIt","title":"Hear it","summary":"A sound toggle with volume, a profile picker (system, glass, brutalism, terminal) and a board of buttons that each play one cue.","use":"Let people audition a sound profile before turning interface sound on in an app.","tags":["sound","audio","feedback","profile","toggle"],"names":[]},
+		{"kind":"component","subtype":"feedback","style":["default"],"motion":"subtle","interaction":["press","drag","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Button","Dialog","Slider","Switch","Tabs","TabsList","TabsTrigger","SoundToggle"],"aliases":["sound prop","audible feedback","interface sound","sound on components"],"related":["988"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-25","review":{"industry":"pending"},"id":"989","path":"feedback/sound/Components","title":"Components","summary":"Button, Switch, Tabs, Slider, Toast and Dialog with their sound prop on, behind one sound toggle.","use":"Show which components speak when the sound prop is set, and that they stay silent until the toggle is on.","tags":["sound","button","switch","tabs","slider","toast","dialog"],"names":[]},
+		{"kind":"component","subtype":"input","style":["default"],"motion":"none","interaction":["press","keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["ColorField"],"aliases":["brand color","color picker","contrast checker","accent color"],"related":["991"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-25","review":{"industry":"pending"},"id":"990","path":"inputs/color-field/Brand","title":"Brand color","summary":"Color field with a swatch, a native picker, a text input and a live WCAG contrast readout against white.","use":"Picking a brand or accent color where contrast matters.","tags":["color-field","color-picker","oklch","contrast","brand"],"names":[]},
+		{"kind":"component","subtype":"input","style":["default"],"motion":"none","interaction":["press","keyboard"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["ColorField"],"aliases":["text color","wcag contrast","readable text","ink color"],"related":["990"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-25","review":{"industry":"pending"},"id":"991","path":"inputs/color-field/TextContrast","title":"Text color","summary":"Color field for a text color measured against a white page, with a sample line in that color.","use":"Choosing text colors that must reach WCAG AA.","tags":["color-field","contrast","wcag","text","oklch"],"names":[]},
+		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["drag","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["SliderField"],"aliases":["labelled slider","slider with number","settings slider","editable value"],"related":["046","047"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-25","review":{"industry":"pending"},"id":"992","path":"inputs/slider/Field","title":"Label and number","summary":"Two labelled sliders with an editable number and a unit: radius and type scale.","use":"Tuning a numeric setting where both scrubbing and typing an exact value matter.","tags":["slider-field","slider","number","settings","unit"],"names":[]}
 	]
 }

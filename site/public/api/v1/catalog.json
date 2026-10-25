@@ -33598,6 +33598,50 @@
 				"toggle"
 			],
 			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "feedback",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"press",
+					"keyboard"
+				],
+				"layout": "stack",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"Button",
+					"SegmentedControl",
+					"SoundToggle"
+				],
+				"aliases": [
+					"sound profile",
+					"audio feedback",
+					"ui sounds",
+					"cue board"
+				],
+				"related": [
+					"989"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-10-25",
+				"review": {
+					"industry": "pending"
+				}
+			},
 			"components": [
 				"Button",
 				"SegmentedControl",
@@ -33653,6 +33697,56 @@
 				"dialog"
 			],
 			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "feedback",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"press",
+					"drag",
+					"keyboard"
+				],
+				"layout": "stack",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"Button",
+					"Dialog",
+					"Slider",
+					"Switch",
+					"Tabs",
+					"TabsList",
+					"TabsTrigger",
+					"SoundToggle"
+				],
+				"aliases": [
+					"sound prop",
+					"audible feedback",
+					"interface sound",
+					"sound on components"
+				],
+				"related": [
+					"988"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-10-25",
+				"review": {
+					"industry": "pending"
+				}
+			},
 			"components": [
 				"Button",
 				"Dialog",
@@ -33713,6 +33807,48 @@
 				"brand"
 			],
 			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "input",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "none",
+				"interaction": [
+					"press",
+					"keyboard"
+				],
+				"layout": "single-column",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"ColorField"
+				],
+				"aliases": [
+					"brand color",
+					"color picker",
+					"contrast checker",
+					"accent color"
+				],
+				"related": [
+					"991"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-10-25",
+				"review": {
+					"industry": "pending"
+				}
+			},
 			"components": [
 				"ColorField"
 			],
@@ -33752,6 +33888,48 @@
 				"oklch"
 			],
 			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "input",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "none",
+				"interaction": [
+					"press",
+					"keyboard"
+				],
+				"layout": "single-column",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"ColorField"
+				],
+				"aliases": [
+					"text color",
+					"wcag contrast",
+					"readable text",
+					"ink color"
+				],
+				"related": [
+					"990"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-10-25",
+				"review": {
+					"industry": "pending"
+				}
+			},
 			"components": [
 				"ColorField"
 			],
@@ -33790,6 +33968,49 @@
 				"unit"
 			],
 			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "input",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"drag",
+					"keyboard"
+				],
+				"layout": "stack",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"SliderField"
+				],
+				"aliases": [
+					"labelled slider",
+					"slider with number",
+					"settings slider",
+					"editable value"
+				],
+				"related": [
+					"046",
+					"047"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-10-25",
+				"review": {
+					"industry": "pending"
+				}
+			},
 			"components": [
 				"SliderField"
 			],
