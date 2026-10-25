@@ -54,10 +54,14 @@ describe("route-impact", () => {
 	});
 
 	it("selects every route for a component the site shell renders on every page", () => {
-		expect(impact.globalFolders.has("Button")).toBe(true);
-		const s = pick("packages/ui/src/lib/components/Button/Button.svelte");
-		expect(s.all).toBe(true);
-		expect(s.reason).toContain("every page");
+		// Which components the shell renders changes with the site (#556 moved Button out of it): read it
+		// from the map rather than naming one.
+		expect(impact.globalFolders.size).toBeGreaterThan(0);
+		for (const folder of impact.globalFolders) {
+			const s = pick(`packages/ui/src/lib/components/${folder}/${folder}.svelte`);
+			expect(s.all).toBe(true);
+			expect(s.reason).toContain("every page");
+		}
 	});
 
 	it("ignores files that cannot change a rendered route", () => {
