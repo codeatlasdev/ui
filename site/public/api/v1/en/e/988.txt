@@ -1,33 +1,40 @@
-<!-- @codeatlasdev/ui demo #988 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/slider#sliderfield -->
-Element: #988 SliderField (inputs/slider)
-What it shows: Two labelled sliders with an editable number and a unit: radius and type scale.
-When to use: Tuning a numeric setting where both scrubbing and typing an exact value matter.
+<!-- @codeatlasdev/ui demo #988 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/color-field#brand-color -->
+Element: #988 Brand color (inputs/color-field)
+What it shows: Color field with a swatch, a native picker, a text input and a live WCAG contrast readout against white.
+When to use: Picking a brand or accent color where contrast matters.
 Spec:
-- Two `<SliderField` stacked in a column
-- First: `label="Radius"`, `bind:value={radius}`, `min={0}`, `max={2}`, `step={0.05}`, `unit="x"`, initial `0.8`
-- Second: `label="Type scale"`, `bind:value={scale}`, `min={0.8}`, `max={1.3}`, `step={0.01}`, `unit="x"`, initial `1`, with a `description` Multiplies every font size.
-Tags: slider-field, slider, number, settings, unit
+- `<ColorField` with `label="Brand color"` and `bind:value={brand}`
+- `against="#ffffff"`, `role="fill"` and `minRatio={3}` so the readout measures white on the color as a UI part
+- Has a `description`: Type #hex, rgb() or oklch(), or pick.
+- Initial value is `$state('#2b5fd9')`
+- Current value is shown as `value: {brand}`
+Tags: color-field, color-picker, oklch, contrast, brand
 Needs: @codeatlasdev/ui@4.5.0
-Components: SliderField
-Live demo: https://ui.codeatlas.com.br/docs/inputs/slider#sliderfield
+Components: ColorField
+Live demo: https://ui.codeatlas.com.br/docs/inputs/color-field#brand-color
 
 <script lang="ts">
-  import { SliderField } from '@codeatlasdev/ui';
+  import { ColorField } from '@codeatlasdev/ui';
 
-  let radius = $state(0.8);
-  let scale = $state(1);
+  let brand = $state('#2b5fd9');
 </script>
 
 <div class="col">
-  <SliderField label="Radius" bind:value={radius} min={0} max={2} step={0.05} unit="x" />
-  <SliderField label="Type scale" bind:value={scale} min={0.8} max={1.3} step={0.01} unit="x" description="Multiplies every font size." />
+  <ColorField label="Brand color" bind:value={brand} against="#ffffff" role="fill" minRatio={3} description="Type #hex, rgb() or oklch(), or pick." />
+  <p class="out">value: {brand}</p>
 </div>
 
 <style>
   .col {
     display: flex;
     flex-direction: column;
-    gap: var(--ca-space-4);
+    gap: var(--ca-space-3);
     max-inline-size: 22rem;
+  }
+
+  .out {
+    margin: 0;
+    font-size: var(--ca-font-size-caption);
+    color: var(--ca-text-secondary);
   }
 </style>
