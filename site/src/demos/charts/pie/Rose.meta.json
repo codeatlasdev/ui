@@ -4,7 +4,7 @@
 	"spec": [
 		"`<PieChart data={roseData} rose height=\"340px\" />`",
 		"`roseData` has 6 items with `value` and `name`: Analytics `72`, Automation `58`, Security `45`, Integrations `38`, Storage `30`, Support `22`",
-		"Wrapped in `<Card material=\"glass\" full>`"
+		"Wrapped in `<Card full>`"
 	],
 	"tags": ["pie-chart", "rose", "nightingale", "categories", "card"],
 	"shape": "square"

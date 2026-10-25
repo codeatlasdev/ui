@@ -31,7 +31,7 @@
 <AuthLayout logoMark="CA" logoName="CodeAtlas UI" logoHref="/templates/">
   {#snippet panel()}
     <div class="panel-copy">
-      <h2 class="panel-copy__title">The glass-first<br />design system</h2>
+      <h2 class="panel-copy__title">One theme,<br />every surface</h2>
       <p class="panel-copy__sub">Built for Svelte 5. Every surface, token, and component aligned to one cohesive system.</p>
     </div>
     <div class="panel-hint">

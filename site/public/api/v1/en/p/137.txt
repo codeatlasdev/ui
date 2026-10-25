@@ -1,7 +1,7 @@
 Use @codeatlasdev/ui demo #137 "Vertical scroll" (display/scroll-area).
-What it shows: A vertical ScrollArea capped at 220px tall containing 20 Lorem ipsum rows inside a glass card. When to use: Bounded panels such as activity logs or long option lists that scroll inside a fixed height.
+What it shows: A vertical ScrollArea capped at 220px tall containing 20 Lorem ipsum rows inside a card. When to use: Bounded panels such as activity logs or long option lists that scroll inside a fixed height.
 Spec:
-- `<Card material="glass" full>` wraps the area
+- `<Card full>` wraps the area
 - `<ScrollArea maxHeight="220px">`
 - `Array.from({ length: 20 }, (_, i) =>` builds items labelled Item 1 to Item 20: Lorem ipsum dolor sit amet
 - Each row is a `<div class="item">` rendered with `{#each items as item}`

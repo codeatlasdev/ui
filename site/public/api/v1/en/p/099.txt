@@ -1,7 +1,7 @@
 Use @codeatlasdev/ui demo #099 "Text lines" (feedback/skeleton).
-What it shows: A glass card skeleton with a 60% wide heading line above a block of three text lines. When to use: Loading placeholder for an article or description block.
+What it shows: A card skeleton with a 60% wide heading line above a block of three text lines. When to use: Loading placeholder for an article or description block.
 Spec:
-- `<Card material="glass" p="5" full>` with `<Stack gap="3">`
+- `<Card p="5" full>` with `<Stack gap="3">`
 - Heading line `<Skeleton height="20px" width="60%" />`
 - Body lines `<Skeleton rows={3} height="14px" />` render three rows from one element
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?

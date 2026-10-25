@@ -3,7 +3,7 @@ Element: #219 Table row sparklines (charts/sparklines)
 What it shows: A table of four products with an inline sparkline per row and a text trend label.
 When to use: Adding a mini trend line to table rows, such as revenue history per product.
 Spec:
-- `<Card material="glass" flush full>` wraps a plain `<table>`
+- `<Card flush full>` wraps a plain `<table>`
 - `rows` has 4 products: Atlas Pro, Nova Suite, Relay SDK, Mesh API, each with 6 `revenue` values and a `trend`
 - `<Sparkline data={row.revenue} trend={row.trend} height="32px" />` in each row
 - `labels` maps `up`, `down` and `neutral` to `'▲ Growing'`, `'▼ Declining'` and `'→ Stable'`
@@ -26,7 +26,7 @@ Live demo: https://ui.codeatlas.com.br/docs/charts/sparklines#table-row-sparklin
   const labels = { up: '▲ Growing', down: '▼ Declining', neutral: '→ Stable' };
 </script>
 
-<Card material="glass" flush full>
+<Card flush full>
   <table>
     <thead>
       <tr><th>Product</th><th>Last 6 months</th><th class="right">Trend</th></tr>

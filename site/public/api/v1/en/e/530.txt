@@ -5,7 +5,7 @@ When to use: Apps with many modules, a command palette, per-module counters and 
 Spec:
 - `<AppShellLayout {modules} filterModules={(m) => admin || m.id !== 'settings'} {pathname} onNavigate={(path) => (pathname = path)} railLabels persistPanel={false} mainId={null} skipLink={false}>` with `railTop` (a ghost search `Button`, aria-label 'Search, command K') and `bottomNavOverflow` (an outlined full-width 'Account' `Button`)
 - 7 modules: Inbox (`badge: 12`), Map (`badge: 'dot'`, `badgeLabel: 'Search running'`), People (`badge: 3`, `badgeLabel: '3 tasks pending'`), Alerts, Search, Home, Settings; below 900px the bar shows 4 modules plus a More tab that opens a sheet with the rest
-- `filterModules` is driven by an `admin` `$state`; a glass `Card` holds a hint and an outlined `Button` that toggles it
+- `filterModules` is driven by an `admin` `$state`; a `Card` holds a hint and an outlined `Button` that toggles it
 - Page is `<PageShell title="Labeled rail" description={pathname}>`; stage height is `height: 440px`
 Tags: app-shell, rail, labels, badge, bottom-nav, overflow, filter-modules, search
 Needs: @codeatlasdev/ui@4.5.0
@@ -68,7 +68,7 @@ Live demo: https://ui.codeatlas.com.br/docs/layout/app-shell#labels-search-slot-
       <Button variant="outlined" fullWidth>Account</Button>
     {/snippet}
     <PageShell title="Labeled rail" description={pathname}>
-      <Card material="glass" full>
+      <Card full>
         <p class="hint">Captions under the icons, a search trigger on top, badges with names, and a More sheet below 900px. The role filter hides Settings.</p>
         <Button variant="outlined" onclick={() => (admin = !admin)}>{admin ? 'Hide Settings (member)' : 'Show Settings (admin)'}</Button>
       </Card>

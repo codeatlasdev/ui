@@ -17,7 +17,7 @@
 
 <Grid columns={{ base: 1, sm: 3 }} gap="4">
   {#each metrics as m}
-    <Card material="glass">
+    <Card>
       <p class="label">{m.label}</p>
       <GaugeChart value={m.value} {zones} height="200px" />
     </Card>

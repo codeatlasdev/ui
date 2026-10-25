@@ -2,7 +2,7 @@
   import { Skeleton, Card, Stack } from '@codeatlasdev/ui';
 </script>
 
-<Card material="glass" flush full>
+<Card flush full>
   <Skeleton variant="rectangular" height="180px" />
   <div class="caption">
     <Stack gap="2">

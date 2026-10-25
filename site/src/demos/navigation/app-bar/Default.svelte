@@ -3,7 +3,7 @@
   import { Search, Bell } from '@lucide/svelte';
 </script>
 
-<Card material="glass" full flush>
+<Card full flush>
   <GlassAppBar>
     <span class="title">My Application</span>
     {#snippet trailing()}

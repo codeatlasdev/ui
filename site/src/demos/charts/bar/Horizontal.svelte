@@ -5,7 +5,7 @@
   const products = ['Atlas Pro', 'Nova Suite', 'Relay SDK', 'Mesh API', 'Drift UI', 'Pulse DB', 'Forge CI', 'Orbit ML'];
 </script>
 
-<Card material="glass" full>
+<Card full>
   <BarChart
     series={[{ name: 'Sales', data: [9840, 8720, 7650, 6430, 5980, 4810, 3920, 3140] }]}
     categories={products}

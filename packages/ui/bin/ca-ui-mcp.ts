@@ -274,7 +274,7 @@ server.registerTool(
 	"list_surfaces",
 	{
 		description:
-			"List the surface styles (<html data-style>, colorScheme.setStyle): glass, frosted, solid, flat, outlined, neumorphic, clay, tonal, chrome. Each has its blur behaviour (full/reduced/none), the tokens it rewrites and the design recipes that default to it. Generated from the [data-style] selectors in materials.css. Optional query filters by id, description, token or recipe.",
+			"List the surface styles, one knob of the theme (<html data-style>, colorScheme.setStyle, ThemeOptions.defaultStyle; the package default is solid, glass and frosted are opt-in): glass, frosted, solid, flat, outlined, neumorphic, clay, tonal, chrome. Each has its blur behaviour (full/reduced/none), the tokens it rewrites and the design recipes that default to it. Generated from the [data-style] selectors in materials.css. Optional query filters by id, description, token or recipe.",
 		inputSchema: { query: z.string().optional() },
 	},
 	({ query }) => {

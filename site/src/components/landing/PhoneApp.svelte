@@ -68,7 +68,7 @@
 				{/each}
 			</ul>
 		{:else if active === 2}
-			<Card material="glass" title="This week">
+			<Card title="This week">
 				<div class="app__chips">
 					<Chip label="Mon" size="sm" selected />
 					<Chip label="Tue" size="sm" />
@@ -76,7 +76,7 @@
 				</div>
 			</Card>
 		{:else}
-			<Card material="glass" title="Profile">
+			<Card title="Profile">
 				<TextField
 					label="Display name"
 					bind:value={name}
@@ -86,7 +86,7 @@
 					<Switch label="Push notifications" onchange={() => (dirty = true)} />
 				</div>
 			</Card>
-			<Card material="glass" title="Workspace">
+			<Card title="Workspace">
 				<p class="app__sheet">Edit the name: the save bar pins above the tab bar and follows the keyboard.</p>
 			</Card>
 			<div class="app__spacer" aria-hidden="true"></div>

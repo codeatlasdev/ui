@@ -6,7 +6,7 @@
 		"`<RadarChart` with `{indicators}` and 2 series",
 		"`{ name: 'Team A', values: [88, 92, 76, 85, 94, 79] }`",
 		"`{ name: 'Team B', values: [74, 68, 90, 72, 81, 83] }`",
-		"`height=\"340px\"` inside `<Card material=\"glass\" full>`"
+		"`height=\"340px\"` inside `<Card full>`"
 	],
 	"tags": ["radar-chart", "compare", "series", "indicators", "scores", "card"],
 	"shape": "square"

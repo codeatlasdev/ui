@@ -1,7 +1,7 @@
 Use @codeatlasdev/ui demo #126 "In a results table" (display/external-link).
 What it shows: A table of three domains where each row ends with an ExternalLink to a registrar URL. When to use: Table cells that link out to a third-party site, with the external-link affordance.
 Spec:
-- `<Card material="glass" flush full>` wraps `<SimpleTable responsive="cards">`
+- `<Card flush full>` wraps `<SimpleTable responsive="cards">`
 - `const rows` has 3 entries with `domain`, `price` and `url`
 - Header cells are Domain, Price and Registrar
 - `<ExternalLink href={r.url}>Buy at registrar</ExternalLink>` is rendered in each last cell

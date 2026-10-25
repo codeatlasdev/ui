@@ -2,12 +2,12 @@
   import { Card } from '@codeatlasdev/ui';
 </script>
 
-<Card material="glass" class="content-card">
+<Card class="content-card">
   <div class="body">
     <p class="eyebrow">Featured</p>
-    <h3>Liquid Glass materials</h3>
+    <h3>Surface materials</h3>
     <p class="text">
-      Depth and clarity for UI surfaces through real-time backdrop blur and optical refraction.
+      Five depth tiers for every surface, drawn by the theme: solid by default, frosted or glass on request.
     </p>
     <a href="/docs/foundation/materials/">Explore materials →</a>
   </div>

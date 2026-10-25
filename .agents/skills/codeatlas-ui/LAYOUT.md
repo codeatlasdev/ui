@@ -295,5 +295,5 @@ Pass token steps to layout primitives, not raw CSS: `<Flex gap="4">` is correct.
 <div style="background: #1a1a2e; color: #e2e8f0;">…</div>
 
 <!-- ✓ Correct -->
-<div style="background: var(--ca-glass-bg); color: var(--ca-text-primary);">…</div>
+<div style="background: var(--ca-surface-raised); color: var(--ca-text-primary);">…</div>
 ```

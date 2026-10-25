@@ -54,7 +54,7 @@
       <Button variant="outlined" fullWidth>Account</Button>
     {/snippet}
     <PageShell title="Labeled rail" description={pathname}>
-      <Card material="glass" full>
+      <Card full>
         <p class="hint">Captions under the icons, a search trigger on top, badges with names, and a More sheet below 900px. The role filter hides Settings.</p>
         <Button variant="outlined" onclick={() => (admin = !admin)}>{admin ? 'Hide Settings (member)' : 'Show Settings (admin)'}</Button>
       </Card>

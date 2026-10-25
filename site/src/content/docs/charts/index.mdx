@@ -1,6 +1,6 @@
 ---
 title: Charts overview
-description: Apache ECharts wrapped by the design system. Pass data only; themes, animation and glass tooltips are automatic.
+description: Apache ECharts wrapped by the design system. Pass data only; themes, animation and tooltips are automatic.
 group: Charts
 order: 0
 ---
@@ -32,7 +32,7 @@ Charts live in the `@codeatlasdev/ui/charts` subpath and need the optional peer 
 
 All chart components also accept `height` (CSS length, each chart has its own default) and `class`.
 
-<Demo title="Dashboard" description="Every chart type together inside glass cards." src={DashboardSrc}><Dashboard client:visible /></Demo>
+<Demo title="Dashboard" description="Every chart type together inside cards." src={DashboardSrc}><Dashboard client:visible /></Demo>
 
 <Props for="LineChart, BarChart, PieChart, ScatterChart, RadarChart, GaugeChart, HeatmapChart, Sparkline" title="Shared props" rows={[
   { name: "height", type: "string", description: "CSS height of the chart. Defaults differ per chart (320px for line, bar and scatter; 300px for pie; 340px for radar; 280px for gauge; 240px for heatmap; 48px for sparkline)." },

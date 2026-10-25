@@ -17,6 +17,6 @@
   }
 </script>
 
-<Card material="glass" full>
+<Card full>
   <HeatmapChart variant="matrix" {matrixData} xCategories={hours} yCategories={days} tooltipFormatter={(v) => `${v} tasks`} height="320px" />
 </Card>

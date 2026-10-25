@@ -1,11 +1,11 @@
 <!-- @codeatlasdev/ui demo #162 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/navigation/stepper#horizontal-stepper -->
 Element: #162 Horizontal stepper (navigation/stepper)
-What it shows: A four-step horizontal stepper inside a glass card with Back and Next buttons that advance the step.
+What it shows: A four-step horizontal stepper inside a card with Back and Next buttons that advance the step.
 When to use: Multi-step flows such as onboarding or checkout where the user moves through ordered stages.
 Spec:
 - `<Stepper {steps} bind:current={step} />` with `let step = $state(0)`
 - `const steps` has 4 entries with a `label` field: Account, Profile, Billing, Review
-- Wrapper is `<Card material="glass" p="6" full>` with `<Stack gap="6">`
+- Wrapper is `<Card p="6" full>` with `<Stack gap="6">`
 - Body shows `Step {step + 1}: {steps[step].label}`
 - Back is `<Button variant="ghost" disabled={step <= 0} onclick={() => step--}>`
 - Next is `<Button variant="filled" disabled={step >= steps.length - 1} onclick={() => step++}>` and reads Finish on the last step
@@ -21,7 +21,7 @@ Live demo: https://ui.codeatlas.com.br/docs/navigation/stepper#horizontal-steppe
   const steps = [{ label: 'Account' }, { label: 'Profile' }, { label: 'Billing' }, { label: 'Review' }];
 </script>
 
-<Card material="glass" p="6" full>
+<Card p="6" full>
   <Stack gap="6">
     <Stepper {steps} bind:current={step} />
     <div class="body">

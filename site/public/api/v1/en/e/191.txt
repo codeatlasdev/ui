@@ -3,7 +3,7 @@ Element: #191 Stacked bars (charts/bar)
 What it shows: A stacked bar chart splitting six months of revenue into four acquisition channels.
 When to use: Showing how a total is composed of channels or segments over time.
 Spec:
-- `<BarChart` inside `<Card material="glass" full>`
+- `<BarChart` inside `<Card full>`
 - 4 series in `series`: Organic, Paid, Referral, Direct, each with 6 values
 - `categories={months}` with `'Jan'` to `'Jun'`
 - `stacked` prop
@@ -22,7 +22,7 @@ Live demo: https://ui.codeatlas.com.br/docs/charts/bar#stacked-bars
   const fmt = (v: number) => `$${(v / 1000).toFixed(0)}k`;
 </script>
 
-<Card material="glass" full>
+<Card full>
   <BarChart
     series={[
       { name: 'Organic', data: [12400, 14800, 18200, 16600, 21200, 24800] },

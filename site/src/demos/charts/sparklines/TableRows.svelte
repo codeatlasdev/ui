@@ -11,7 +11,7 @@
   const labels = { up: '▲ Growing', down: '▼ Declining', neutral: '→ Stable' };
 </script>
 
-<Card material="glass" flush full>
+<Card flush full>
   <table>
     <thead>
       <tr><th>Product</th><th>Last 6 months</th><th class="right">Trend</th></tr>

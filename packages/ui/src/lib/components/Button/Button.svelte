@@ -14,6 +14,7 @@
 
   /** Own props, shared by both renderings. */
   interface Own {
+    /** `filled` (default) is the primary action; `glass` is a tinted surface button (blur only under the glass and frosted styles). */
     variant?: Variant;
     /**
      * `'neutral'` draws `outlined` and `ghost` without brand colour (neutral label and border), for a

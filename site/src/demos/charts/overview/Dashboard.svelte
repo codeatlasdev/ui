@@ -27,12 +27,12 @@
     <KpiCard title="Uptime" value="99.9%" trend={0.1} icon={Activity} />
   </KpiGrid>
 
-  <Card material="glass" full>
+  <Card full>
     <LineChart series={[{ name: 'Revenue', data: revenue }, { name: 'Expenses', data: expenses }]} categories={months} valueFormatter={fmt} area height="280px" />
   </Card>
 
   <Grid columns={{ base: 1, md: 2 }} gap="4">
-    <Card material="glass">
+    <Card>
       <BarChart
         series={[
           { name: 'Organic', data: [12400, 18200, 22600, 28800] },
@@ -46,7 +46,7 @@
         height="260px"
       />
     </Card>
-    <Card material="glass">
+    <Card>
       <PieChart
         data={[
           { value: 38, name: 'Product A' },
@@ -61,20 +61,20 @@
     </Card>
   </Grid>
 
-  <Card material="glass" full>
+  <Card full>
     <ScatterChart series={[{ name: 'Accounts', data: scatter }]} yName="Conversion %" yFormatter={(v) => `${v.toFixed(1)}%`} height="260px" />
   </Card>
 
   <Grid columns={{ base: 1, md: 2 }} gap="4">
-    <Card material="glass">
+    <Card>
       <HeatmapChart variant="calendar" data={calDays} range={['2026-03-01', '2026-09-18']} height="140px" />
     </Card>
-    <Card material="glass">
+    <Card>
       <GaugeChart value={84} label="Score" height="220px" />
     </Card>
   </Grid>
 
-  <Card material="glass" full>
+  <Card full>
     <RadarChart
       indicators={['Speed', 'Quality', 'Reliability', 'Innovation', 'Support'].map((name) => ({ name, max: 100 }))}
       series={[

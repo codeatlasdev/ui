@@ -1,5 +1,5 @@
 {
-	"summary": "Three tooltips with different open delays on glass buttons: instant, default and slow.",
+	"summary": "Three tooltips with different open delays on buttons: instant, default and slow.",
 	"use": "Tuning how quickly a tooltip appears, instant for dense toolbars and slower for hints that should not flash.",
 	"spec": [
 		"`delay={0}` on the Instant button with `content=\"No delay (delay=0)\"`",

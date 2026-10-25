@@ -134,7 +134,7 @@
 
     <!-- ── Members ──────────────────────────────────────────────── -->
     {#if tab === 'members'}
-      <Card material="glass" flush full>
+      <Card flush full>
         {#snippet headerActions()}
           <Button variant="filled" size="sm">Invite member</Button>
         {/snippet}
@@ -197,7 +197,7 @@
         {/if}
       </FormSection>
 
-      <Card material="glass" title="Active Sessions" flush full>
+      <Card title="Active Sessions" flush full>
         {#each [
           { device: 'Chrome on macOS',  ip: '192.168.1.42',  last: 'Now',           current: true  },
           { device: 'Safari on iPhone', ip: '192.168.1.100', last: '2 hr ago',       current: false },

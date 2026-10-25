@@ -79,7 +79,7 @@
 
   <Grid columns={{ base: 2, md: 4 }} gap="4">
     {#each stats as s}
-      <Card material="glass">
+      <Card>
         <p class="stat-label">{s.label}</p>
         <p class="stat-value">{s.value}</p>
       </Card>
@@ -87,11 +87,11 @@
   </Grid>
 
   <Grid class="grid-main-side" gap="5">
-    <Card material="glass" title="Event Timeline">
+    <Card title="Event Timeline">
       <Timeline items={timelineItems} />
     </Card>
 
-    <Card material="glass" title="Recent Logins" flush>
+    <Card title="Recent Logins" flush>
       <SimpleTable>
         <thead>
           <tr><th>User</th><th>Location</th><th>Status</th></tr>

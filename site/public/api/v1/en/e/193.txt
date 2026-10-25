@@ -3,7 +3,7 @@ Element: #193 Vertical bars (charts/bar)
 What it shows: A vertical bar chart of one Revenue series across four quarters.
 When to use: Comparing a single metric across a few time periods, such as quarterly revenue.
 Spec:
-- `<BarChart` inside `<Card material="glass" full>`
+- `<BarChart` inside `<Card full>`
 - One series `{ name: 'Revenue', data: [38400, 54200, 71600, 89800] }`
 - `categories={['Q1', 'Q2', 'Q3', 'Q4']}`
 - `valueFormatter={fmt}` renders `$${(v / 1000).toFixed(0)}k`
@@ -20,6 +20,6 @@ Live demo: https://ui.codeatlas.com.br/docs/charts/bar#vertical-bars
   const fmt = (v: number) => `$${(v / 1000).toFixed(0)}k`;
 </script>
 
-<Card material="glass" full>
+<Card full>
   <BarChart series={[{ name: 'Revenue', data: [38400, 54200, 71600, 89800] }]} categories={['Q1', 'Q2', 'Q3', 'Q4']} valueFormatter={fmt} height="300px" />
 </Card>

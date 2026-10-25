@@ -5,8 +5,8 @@ When to use: Settings and form pages on wide screens that need a readable column
 Spec:
 - Frame is a 420px tall flex column with an inset outline
 - `<PageShell title="Workspace settings" description="Reading width keeps the form at a comfortable line length." width="reading" asideLabel="Sections">`
-- `{#snippet aside()}` renders a glass `Card` with a nav (aria-label On this page) of three links: General, Billing, Danger zone
-- Body is a `Card material="glass" full title="General"` with a `Stack gap="4"` of two `TextField`s: Name (Acme Inc.) and Slug (acme)
+- `{#snippet aside()}` renders a `Card` with a nav (aria-label On this page) of three links: General, Billing, Danger zone
+- Body is a `Card full title="General"` with a `Stack gap="4"` of two `TextField`s: Name (Acme Inc.) and Slug (acme)
 Tags: page-shell, aside, width, reading, settings, form, sticky, layout
 Needs: @codeatlasdev/ui@4.5.0
 Components: PageShell, Card, TextField, Stack
@@ -22,7 +22,7 @@ Live demo: https://ui.codeatlas.com.br/docs/layout/page-shell#reading-width-with
 <div class="stage">
   <PageShell title="Workspace settings" description="Reading width keeps the form at a comfortable line length." width="reading" asideLabel="Sections">
     {#snippet aside()}
-      <Card material="glass" full>
+      <Card full>
         <nav class="index" aria-label="On this page">
           <a href="#general">General</a>
           <a href="#billing">Billing</a>
@@ -31,7 +31,7 @@ Live demo: https://ui.codeatlas.com.br/docs/layout/page-shell#reading-width-with
       </Card>
     {/snippet}
 
-    <Card material="glass" full title="General">
+    <Card full title="General">
       <Stack gap="4">
         <TextField label="Name" bind:value={name} />
         <TextField label="Slug" bind:value={slug} />

@@ -38,7 +38,7 @@ import AlignBetweenSrc from "~/demos/inputs/button/AlignBetween.svelte?raw";
 
 On touch devices every size grows to a 44px target and presses scale down slightly, like a native control.
 
-<Demo title="Variants" description="filled, glass, outlined, ghost and destructive." src={VariantsSrc}><Variants /></Demo>
+<Demo title="Variants" description="filled, glass (a tinted surface button that follows the theme: opaque under solid), outlined, ghost and destructive." src={VariantsSrc}><Variants /></Demo>
 <Demo title="Sizes" src={SizesSrc}><Sizes /></Demo>
 <Demo title="With icons" description="Leading and trailing snippets." src={IconsSrc}><Icons /></Demo>
 <Demo title="Loading" description="Swaps the leading icon for a spinner, sets aria-busy and blocks clicks while keeping the label." src={LoadingSrc}><Loading client:visible /></Demo>
@@ -63,7 +63,7 @@ Weight, tracking, line-height, gap, padding and size are component tokens: set t
 <Demo title="Align between" description={"`align=\"between\"`: label at the start, hint at the end; the spinner keeps its place."} src={AlignBetweenSrc}><AlignBetween /></Demo>
 
 <Props rows={[
-  { name: "variant", type: "'filled' | 'glass' | 'outlined' | 'ghost' | 'destructive'", default: "'filled'", description: "Visual style." },
+  { name: "variant", type: "'filled' | 'glass' | 'outlined' | 'ghost' | 'destructive'", default: "'filled'", description: "Visual style. `filled` is the primary action; `glass` is a tinted surface button whose blur only shows under the `glass` and `frosted` styles." },
   { name: "tone", type: "'brand' | 'neutral'", default: "'brand'", description: "`'neutral'` draws `outlined` and `ghost` with neutral label, border and hover fills (adds `ca-btn--neutral`). Other variants ignore it. `IconButton` has the same prop for its `outlined` variant (new, adds `ca-icon-btn--outlined`)." },
   { name: "size", type: "'sm' | 'md' | 'lg'", default: "'md'", description: "Height, padding and font size." },
   { name: "disabled", type: "boolean", default: "false", description: "Prevents interaction." },

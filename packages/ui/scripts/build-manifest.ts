@@ -1030,10 +1030,10 @@ export function extractSurfaces(
 	});
 }
 
-/** Styles with no `[data-style]` block: glass is the `:root` token set every other style rewrites. */
+/** Styles with no `[data-style]` block: glass is the `:root` token set every other style rewrites (it is opt-in; the package default is solid). */
 const GLASS_DESCRIPTION: Partial<Record<SurfaceStyle, string>> = {
 	glass:
-		"Glass: the :root tokens untouched, full blur, translucent tints, glow and rim (the opt-in liquid look)",
+		"Glass (opt-in): the :root tokens untouched, full blur, translucent tints, glow and rim (the look of the liquid recipe)",
 };
 
 /**

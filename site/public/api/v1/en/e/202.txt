@@ -7,7 +7,7 @@ Spec:
 - `const profit = revenue.map((r, i) => r - expenses[i])` derives the third series
 - `categories={months}` with `'Jan'` to `'Sep'`
 - `valueFormatter={fmt}` renders `$${(v / 1000).toFixed(0)}k`
-- `height="300px"` inside `<Card material="glass" full>`
+- `height="300px"` inside `<Card full>`
 Tags: line-chart, multi-series, revenue, expenses, time-series, card
 Needs: @codeatlasdev/ui@4.5.0 + echarts
 Components: Card, LineChart
@@ -24,7 +24,7 @@ Live demo: https://ui.codeatlas.com.br/docs/charts/line#multi-line-comparison
   const fmt = (v: number) => `$${(v / 1000).toFixed(0)}k`;
 </script>
 
-<Card material="glass" full>
+<Card full>
   <LineChart
     series={[
       { name: 'Revenue', data: revenue },

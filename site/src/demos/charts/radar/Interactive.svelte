@@ -9,7 +9,7 @@
   const series = $derived([{ name: 'My team', values: [...dims] }]);
 </script>
 
-<Card material="glass" full>
+<Card full>
   <div class="builder">
     <RadarChart {indicators} {series} height="320px" />
     <Stack gap="3">

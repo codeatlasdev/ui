@@ -268,7 +268,7 @@
 			"variant": "Variants",
 			"slug": "variants",
 			"title": "Variants",
-			"description": "filled, glass, outlined, ghost and destructive.",
+			"description": "filled, glass (a tinted surface button that follows the theme: opaque under solid), outlined, ghost and destructive.",
 			"summary": "All five button variants in a row: filled, glass, outlined, ghost and destructive.",
 			"use": "Picking the emphasis of an action: filled for primary, outlined or ghost for secondary, destructive for irreversible.",
 			"spec": [
@@ -2768,12 +2768,12 @@
 			"slug": "single",
 			"title": "Single",
 			"description": "",
-			"summary": "A single-open Accordion with three Liquid Glass FAQ questions, where opening one closes the others.",
+			"summary": "A single-open Accordion with three FAQ questions about theming, where opening one closes the others.",
 			"use": "FAQ sections where only one answer should be visible at a time.",
 			"spec": [
 				"`<Accordion type=\"single\">`",
-				"3 items: `<AccordionItem value=\"a1\" title=\"What is Liquid Glass?\">`, `value=\"a2\"` and `value=\"a3\"`",
-				"Item titles: What is Liquid Glass?, Which browsers support backdrop-filter?, Can I nest a Surface inside a Card?",
+				"3 items: `<AccordionItem value=\"a1\" title=\"What is a surface style?\">`, `value=\"a2\"` and `value=\"a3\"`",
+				"Item titles: What is a surface style?, Do I need to change components to restyle the app?, Can I nest a Surface inside a Card?",
 				"The accordion is uncontrolled, nothing is bound",
 				"Wrapped in `.wrap` with `max-width: 560px`"
 			],
@@ -2810,17 +2810,16 @@
 			"slug": "tone-and-glow",
 			"title": "Tone and glow",
 			"description": "",
-			"summary": "Two glass Cards side by side: one with a brand tint and one with a brand glow, each with a title and one line of text.",
+			"summary": "Two Cards side by side: one with a brand tint and one with a brand glow, each with a title and one line of text.",
 			"use": "Highlighting a featured or selected card without changing its content layout.",
 			"spec": [
-				"`<Card material=\"glass\" tone=\"brand\" class=\"accent\">` titled Tinted",
-				"`<Card material=\"glass\" glow class=\"accent\">` titled Glowing",
+				"`<Card tone=\"brand\" class=\"accent\">` titled Tinted",
+				"`<Card glow class=\"accent\">` titled Glowing",
 				"Both cards share `class=\"accent\"` styled with `flex: 1` and `min-width: 200px`",
 				"Card content is a `.title` paragraph and a `.text` paragraph"
 			],
 			"tags": [
 				"card",
-				"glass",
 				"tone",
 				"brand",
 				"glow",
@@ -2850,17 +2849,16 @@
 			"slug": "content-card",
 			"title": "Content card",
 			"description": "",
-			"summary": "A single glass Card with a Featured eyebrow, a heading, a description and an Explore materials link.",
+			"summary": "A single Card with a Featured eyebrow, a heading, a description and an Explore materials link.",
 			"use": "Promo or feature cards in a landing page or dashboard that lead to a detail page.",
 			"spec": [
-				"`<Card material=\"glass\" class=\"content-card\">` with `max-width: 360px`",
-				"Body is a `<div class=\"body\">` with an eyebrow paragraph, `<h3>Liquid Glass materials</h3>`, a description paragraph and a link",
+				"`<Card class=\"content-card\">` with `max-width: 360px`",
+				"Body is a `<div class=\"body\">` with an eyebrow paragraph, `<h3>Surface materials</h3>`, a description paragraph and a link",
 				"Link is `<a href=\"/docs/foundation/materials/\">Explore materials →</a>`",
 				"The card itself has no `href`, only the inner anchor is a link"
 			],
 			"tags": [
 				"card",
-				"glass",
 				"content-card",
 				"featured",
 				"link",
@@ -2890,10 +2888,10 @@
 			"slug": "header-and-actions",
 			"title": "Header and actions",
 			"description": "",
-			"summary": "A glass Card with a built-in Team members header and an Invite button supplied through a headerActions snippet.",
+			"summary": "A Card with a built-in Team members header and an Invite button supplied through a headerActions snippet.",
 			"use": "Panels whose header needs a title and an action, such as team, billing or settings sections.",
 			"spec": [
-				"`<Card material=\"glass\" title=\"Team members\" class=\"titled\">` with `max-width: 420px`",
+				"`<Card title=\"Team members\" class=\"titled\">` with `max-width: 420px`",
 				"`{#snippet headerActions()}` renders `<Button size=\"sm\" variant=\"outlined\">Invite</Button>`",
 				"Body is one paragraph explaining `title` and `headerActions`"
 			],
@@ -2902,8 +2900,7 @@
 				"header-actions",
 				"title",
 				"snippet",
-				"button",
-				"glass"
+				"button"
 			],
 			"shape": "wide",
 			"components": [
@@ -2971,10 +2968,10 @@
 			"slug": "stat-cards",
 			"title": "Stat cards",
 			"description": "",
-			"summary": "Three glass stat Cards in a flex row, each with a label, a large value and a delta line.",
+			"summary": "Three stat Cards in a flex row, each with a label, a large value and a delta line.",
 			"use": "Dashboard KPI strips showing a metric, its value and a short qualifier.",
 			"spec": [
-				"`{#each stats as s}` renders `<Card material=\"glass\" class=\"stat\">` once per stat",
+				"`{#each stats as s}` renders `<Card class=\"stat\">` once per stat",
 				"3 stats with `label`, `value`, `delta`: Components 70+, Presets 8, Tokens 80+",
 				"Each card has three paragraphs: `{s.label}`, `{s.value}` and `{s.delta}`",
 				"`.stat` uses `min-width: 140px` inside a wrapping flex `.grid`"
@@ -2984,7 +2981,6 @@
 				"stats",
 				"kpi",
 				"dashboard",
-				"glass",
 				"metrics"
 			],
 			"shape": "wide",
@@ -3015,7 +3011,7 @@
 			"use": "Short FAQ or help blocks where each answer expands on its own.",
 			"spec": [
 				"`<Stack gap=\"2\" class=\"collapsible-faq\">` with `max-width: 560px`",
-				"3 `<Collapsible` items with a `title`: What is a glass surface?, How do presets work?, Is dark mode automatic?",
+				"3 `<Collapsible` items with a `title`: What is a surface style?, How do presets work?, Is dark mode automatic?",
 				"Each body is a `<p>` child, two of them include a `<code>` token",
 				"Nothing is bound to the open state, each panel manages its own"
 			],
@@ -4025,10 +4021,10 @@
 			"slug": "card-layout",
 			"title": "Card layout",
 			"description": "",
-			"summary": "A glass card skeleton with a circular avatar placeholder beside three text lines of different widths.",
+			"summary": "A card skeleton with a circular avatar placeholder beside three text lines of different widths.",
 			"use": "Loading placeholder for a profile or list card so layout does not jump when data arrives.",
 			"spec": [
-				"`<Card material=\"glass\" p=\"5\" full>`",
+				"`<Card p=\"5\" full>`",
 				"`<Skeleton variant=\"circular\" width=\"48px\" height=\"48px\" />` inside `<Flex gap=\"4\" align=\"start\">`",
 				"Three lines in `<Stack gap=\"2\">`: `height=\"16px\" width=\"40%\"`, `height=\"13px\" width=\"70%\"`, `height=\"13px\" width=\"55%\"`"
 			],
@@ -4069,10 +4065,10 @@
 			"slug": "image-placeholder",
 			"title": "Image placeholder",
 			"description": "",
-			"summary": "A flush glass card skeleton with a 180px rectangular image placeholder above two caption lines.",
+			"summary": "A flush card skeleton with a 180px rectangular image placeholder above two caption lines.",
 			"use": "Loading placeholder for media cards such as products, posts or galleries.",
 			"spec": [
-				"`<Card material=\"glass\" flush full>`",
+				"`<Card flush full>`",
 				"`<Skeleton variant=\"rectangular\" height=\"180px\" />` fills the top of the card",
 				"Caption in `<Stack gap=\"2\">`: `height=\"16px\" width=\"50%\"` and `height=\"13px\" width=\"80%\"`",
 				"Caption wrapper `<div class=\"caption\">` has `padding: 16px`"
@@ -4113,10 +4109,10 @@
 			"slug": "text-lines",
 			"title": "Text lines",
 			"description": "With rows, the last line is shortened to 60% for a natural paragraph.",
-			"summary": "A glass card skeleton with a 60% wide heading line above a block of three text lines.",
+			"summary": "A card skeleton with a 60% wide heading line above a block of three text lines.",
 			"use": "Loading placeholder for an article or description block.",
 			"spec": [
-				"`<Card material=\"glass\" p=\"5\" full>` with `<Stack gap=\"3\">`",
+				"`<Card p=\"5\" full>` with `<Stack gap=\"3\">`",
 				"Heading line `<Skeleton height=\"20px\" width=\"60%\" />`",
 				"Body lines `<Skeleton rows={3} height=\"14px\" />` render three rows from one element"
 			],
@@ -4193,10 +4189,10 @@
 			"slug": "section-loader",
 			"title": "Section loader",
 			"description": "",
-			"summary": "A glass card with a centered 40px spinner and a Loading data text.",
+			"summary": "A card with a centered 40px spinner and a Loading data text.",
 			"use": "Loader for a whole section or panel while its data is fetched.",
 			"spec": [
-				"`<Card material=\"glass\" p=\"10\" full>`",
+				"`<Card p=\"10\" full>`",
 				"`<Stack align=\"center\" gap=\"3\">` centers the spinner and text",
 				"`<Spinner size={40} />` above `<span class=\"text\">Loading data…</span>`"
 			],
@@ -5136,10 +5132,10 @@
 			"slug": "horizontal",
 			"title": "Horizontal",
 			"description": "",
-			"summary": "Three stacked text sections inside a glass card separated by horizontal dividers.",
+			"summary": "Three stacked text sections inside a card separated by horizontal dividers.",
 			"use": "Separating sections of content inside a card or panel.",
 			"spec": [
-				"`<Card material=\"glass\" p=\"6\" full>` wraps the content",
+				"`<Card p=\"6\" full>` wraps the content",
 				"`<Stack gap=\"4\">` stacks Section A, B and C paragraphs",
 				"`<Divider />` is placed between them with no props"
 			],
@@ -5178,10 +5174,10 @@
 			"slug": "vertical",
 			"title": "Vertical",
 			"description": "",
-			"summary": "Three text items in a row inside a glass card separated by vertical dividers.",
+			"summary": "Three text items in a row inside a card separated by vertical dividers.",
 			"use": "Separating inline items in a toolbar or meta row.",
 			"spec": [
-				"`<Card material=\"glass\" p=\"6\" full>` wraps the content",
+				"`<Card p=\"6\" full>` wraps the content",
 				"`<Flex gap=\"6\" align=\"center\">` lays out Left, Center and Right",
 				"`<Divider orientation=\"vertical\" />` is placed between them"
 			],
@@ -5223,7 +5219,7 @@
 			"summary": "A table of three domains where each row ends with an ExternalLink to a registrar URL.",
 			"use": "Table cells that link out to a third-party site, with the external-link affordance.",
 			"spec": [
-				"`<Card material=\"glass\" flush full>` wraps `<SimpleTable responsive=\"cards\">`",
+				"`<Card flush full>` wraps `<SimpleTable responsive=\"cards\">`",
 				"`const rows` has 3 entries with `domain`, `price` and `url`",
 				"Header cells are Domain, Price and Registrar",
 				"`<ExternalLink href={r.url}>Buy at registrar</ExternalLink>` is rendered in each last cell",
@@ -5629,10 +5625,10 @@
 			"slug": "horizontal-scroll",
 			"title": "Horizontal scroll",
 			"description": "",
-			"summary": "A horizontal ScrollArea with an always visible scrollbar holding a row of 24 Tag chips inside a glass card.",
+			"summary": "A horizontal ScrollArea with an always visible scrollbar holding a row of 24 Tag chips inside a card.",
 			"use": "Overflowing chip, tag or filter rows that should scroll sideways instead of wrapping.",
 			"spec": [
-				"`<Card material=\"glass\" p=\"2\" full>` wraps the area",
+				"`<Card p=\"2\" full>` wraps the area",
 				"`<ScrollArea orientation=\"horizontal\" type=\"always\">`",
 				"`{ length: 24 }` builds 24 tags labelled Tag 1 to Tag 24, each rendered as `<Chip label={tag} />`",
 				"Chips sit in a `<div class=\"row\">` styled with `width: max-content` so the content overflows"
@@ -5673,10 +5669,10 @@
 			"slug": "vertical-scroll",
 			"title": "Vertical scroll",
 			"description": "",
-			"summary": "A vertical ScrollArea capped at 220px tall containing 20 Lorem ipsum rows inside a glass card.",
+			"summary": "A vertical ScrollArea capped at 220px tall containing 20 Lorem ipsum rows inside a card.",
 			"use": "Bounded panels such as activity logs or long option lists that scroll inside a fixed height.",
 			"spec": [
-				"`<Card material=\"glass\" full>` wraps the area",
+				"`<Card full>` wraps the area",
 				"`<ScrollArea maxHeight=\"220px\">`",
 				"`Array.from({ length: 20 }, (_, i) =>` builds items labelled Item 1 to Item 20: Lorem ipsum dolor sit amet",
 				"Each row is a `<div class=\"item\">` rendered with `{#each items as item}`"
@@ -5715,10 +5711,10 @@
 			"slug": "cards-on-narrow-containers",
 			"title": "Cards on narrow containers",
 			"description": "",
-			"summary": "A SimpleTable that turns each row into a stacked card on narrow screens, listing three users in a flush glass card.",
+			"summary": "A SimpleTable that turns each row into a stacked card on narrow screens, listing three users in a flush card.",
 			"use": "Data tables that must stay readable on phones without horizontal scrolling.",
 			"spec": [
-				"`<Card material=\"glass\" flush full>` wraps the table",
+				"`<Card flush full>` wraps the table",
 				"`<SimpleTable responsive=\"cards\">` with plain `thead` and `tbody`",
 				"Header columns: Name, Email, Role, Status",
 				"3 rows from `rows` with `name`, `email`, `role`, `status`",
@@ -5759,10 +5755,10 @@
 			"slug": "default-scroll",
 			"title": "Default (scroll)",
 			"description": "",
-			"summary": "A default SimpleTable listing three users with name, email, role and status in a flush glass card.",
+			"summary": "A default SimpleTable listing three users with name, email, role and status in a flush card.",
 			"use": "Compact read-only tables that keep their columns and scroll horizontally when space runs out.",
 			"spec": [
-				"`<Card material=\"glass\" flush full>` wraps the table",
+				"`<Card flush full>` wraps the table",
 				"`<SimpleTable>` with no props, plain `thead` and `tbody`",
 				"Header columns: Name, Email, Role, Status",
 				"3 rows from `rows` with `name`, `email`, `role`, `status`",
@@ -5922,7 +5918,7 @@
 			"slug": "custom-delay",
 			"title": "Custom delay",
 			"description": "",
-			"summary": "Three tooltips with different open delays on glass buttons: instant, default and slow.",
+			"summary": "Three tooltips with different open delays on buttons: instant, default and slow.",
 			"use": "Tuning how quickly a tooltip appears, instant for dense toolbars and slower for hints that should not flash.",
 			"spec": [
 				"`delay={0}` on the Instant button with `content=\"No delay (delay=0)\"`",
@@ -6254,10 +6250,10 @@
 			"slug": "default",
 			"title": "Default",
 			"description": "Content in the middle and actions in the trailing slot.",
-			"summary": "A glass app bar with a title on the left and search, notifications and avatar on the right, inside a flush glass card.",
+			"summary": "An app bar with a title on the left and search, notifications and avatar on the right, inside a flush card.",
 			"use": "Top bar of a page or panel with a product title and a few global quick actions.",
 			"spec": [
-				"`<Card material=\"glass\" full flush>` wraps the bar",
+				"`<Card full flush>` wraps the bar",
 				"`GlassAppBar` content is `<span class=\"title\">My Application</span>`",
 				"`{#snippet trailing()}` holds two `IconButton` items with `aria-label=\"Search\"` and `aria-label=\"Notifications\"`",
 				"Trailing also has `<Avatar alt=\"Ada L\" size=\"sm\" />`",
@@ -6301,10 +6297,10 @@
 			"slug": "with-leading-icon",
 			"title": "With leading icon",
 			"description": "A menu button in the leading slot.",
-			"summary": "A glass app bar with a menu button in the leading slot and an Upgrade button plus avatar in the trailing slot.",
+			"summary": "An app bar with a menu button in the leading slot and an Upgrade button plus avatar in the trailing slot.",
 			"use": "Mobile or dashboard headers that need a menu toggle on the left and a primary call to action on the right.",
 			"spec": [
-				"`<Card material=\"glass\" full flush>` wraps the bar",
+				"`<Card full flush>` wraps the bar",
 				"`GlassAppBar` content is `<span class=\"title\">Dashboard</span>`",
 				"`{#snippet leading()}` holds `<IconButton aria-label=\"Open menu\">` with `<Menu size={20} />`",
 				"`{#snippet trailing()}` holds `<Button size=\"sm\" variant=\"filled\">Upgrade</Button>`",
@@ -6748,12 +6744,12 @@
 			"slug": "horizontal-stepper",
 			"title": "Horizontal stepper",
 			"description": "Four steps with Back and Next controls.",
-			"summary": "A four-step horizontal stepper inside a glass card with Back and Next buttons that advance the step.",
+			"summary": "A four-step horizontal stepper inside a card with Back and Next buttons that advance the step.",
 			"use": "Multi-step flows such as onboarding or checkout where the user moves through ordered stages.",
 			"spec": [
 				"`<Stepper {steps} bind:current={step} />` with `let step = $state(0)`",
 				"`const steps` has 4 entries with a `label` field: Account, Profile, Billing, Review",
-				"Wrapper is `<Card material=\"glass\" p=\"6\" full>` with `<Stack gap=\"6\">`",
+				"Wrapper is `<Card p=\"6\" full>` with `<Stack gap=\"6\">`",
 				"Body shows `Step {step + 1}: {steps[step].label}`",
 				"Back is `<Button variant=\"ghost\" disabled={step <= 0} onclick={() => step--}>`",
 				"Next is `<Button variant=\"filled\" disabled={step >= steps.length - 1} onclick={() => step++}>` and reads Finish on the last step"
@@ -7760,13 +7756,13 @@
 			"slug": "pageshell",
 			"title": "PageShell",
 			"description": "A scrollable container for dashboards and non-CRUD pages.",
-			"summary": "A dashboard page shell with four KPI cards and a placeholder glass card for a chart or table.",
+			"summary": "A dashboard page shell with four KPI cards and a placeholder card for a chart or table.",
 			"use": "The base page layout of a dashboard: title, headline metrics and a main content area.",
 			"spec": [
 				"`<PageShell title=\"Dashboard\">` is the root, with no description or actions",
 				"`<KpiGrid>` holds 4 `KpiCard` items: Revenue `$118k`, Users `24.8k`, Growth `34%`, Uptime `99.9%`",
 				"Each card has a `trend` and an `icon`, for example `trend={23.4} icon={DollarSign}`",
-				"`<Card material=\"glass\" full>` holds the text Chart or data table goes here",
+				"`<Card full>` holds the text Chart or data table goes here",
 				"Frame size is `height: 420px`"
 			],
 			"tags": [
@@ -7775,7 +7771,6 @@
 				"kpi-grid",
 				"kpi-card",
 				"card",
-				"glass",
 				"list-page"
 			],
 			"shape": "wide",
@@ -7855,12 +7850,12 @@
 			"slug": "dashboard-page",
 			"title": "Dashboard page",
 			"description": "KPI cards and a content card inside a PageShell.",
-			"summary": "A page shell inside a flush glass card with a title, description, New report action, four KPI cards and a placeholder card.",
+			"summary": "A page shell inside a flush card with a title, description, New report action, four KPI cards and a placeholder card.",
 			"use": "Dashboard pages with a header, a primary action, headline metrics and a content area.",
 			"spec": [
-				"`<Card material=\"glass\" flush full>` wraps `<PageShell title=\"Dashboard\" description=\"Overview of this month\">`",
+				"`<Card flush full>` wraps `<PageShell title=\"Dashboard\" description=\"Overview of this month\">`",
 				"`{#snippet actions()}<Button variant=\"filled\" size=\"sm\">New report</Button>{/snippet}`",
-				"`<Stack gap=\"6\">` holds a `KpiGrid` and a `<Card material=\"glass\" full>`",
+				"`<Stack gap=\"6\">` holds a `KpiGrid` and a `<Card full>`",
 				"`KpiGrid` has 4 `KpiCard` items: Revenue `$118k`, Users `24.8k`, Growth `34%`, Uptime `99.9%`",
 				"Placeholder card text is Chart or data table goes here"
 			],
@@ -7869,7 +7864,6 @@
 				"dashboard",
 				"kpi-grid",
 				"card",
-				"glass",
 				"actions",
 				"header"
 			],
@@ -7997,7 +7991,7 @@
 			"summary": "A horizontal bar chart ranking eight products by a single Sales series, with values formatted as thousands.",
 			"use": "Ranking items by one metric, such as top products or top accounts, when category labels are long.",
 			"spec": [
-				"`<BarChart` inside `<Card material=\"glass\" full>`",
+				"`<BarChart` inside `<Card full>`",
 				"One series `{ name: 'Sales', data: [9840, 8720, 7650, 6430, 5980, 4810, 3920, 3140] }`",
 				"`categories={products}` with 8 product names",
 				"`horizontal` prop",
@@ -8046,7 +8040,7 @@
 			"summary": "A stacked bar chart splitting six months of revenue into four acquisition channels.",
 			"use": "Showing how a total is composed of channels or segments over time.",
 			"spec": [
-				"`<BarChart` inside `<Card material=\"glass\" full>`",
+				"`<BarChart` inside `<Card full>`",
 				"4 series in `series`: Organic, Paid, Referral, Direct, each with 6 values",
 				"`categories={months}` with `'Jan'` to `'Jun'`",
 				"`stacked` prop",
@@ -8149,7 +8143,7 @@
 			"summary": "A vertical bar chart of one Revenue series across four quarters.",
 			"use": "Comparing a single metric across a few time periods, such as quarterly revenue.",
 			"spec": [
-				"`<BarChart` inside `<Card material=\"glass\" full>`",
+				"`<BarChart` inside `<Card full>`",
 				"One series `{ name: 'Revenue', data: [38400, 54200, 71600, 89800] }`",
 				"`categories={['Q1', 'Q2', 'Q3', 'Q4']}`",
 				"`valueFormatter={fmt}` renders `$${(v / 1000).toFixed(0)}k`",
@@ -8252,7 +8246,7 @@
 				"`let value = $state(65)` shared by gauge and slider",
 				"`<GaugeChart {value} variant=\"ring\" height=\"260px\" />`",
 				"`<Slider bind:value min={0} max={100} step={1} />`",
-				"`<Stack gap=\"5\">` stacks gauge and slider inside `<Card material=\"glass\" full>`"
+				"`<Stack gap=\"5\">` stacks gauge and slider inside `<Card full>`"
 			],
 			"tags": [
 				"gauge-chart",
@@ -8301,7 +8295,7 @@
 			"use": "Showing one headline score or health percentage in a compact card.",
 			"spec": [
 				"`<GaugeChart value={78} label=\"Score\" height=\"280px\" />`",
-				"Wrapped in `<Card material=\"glass\" full>`"
+				"Wrapped in `<Card full>`"
 			],
 			"tags": [
 				"gauge-chart",
@@ -8347,7 +8341,7 @@
 				"`const zones: GaugeZone[]` with 3 entries: `{ until: 0.5, color: 'success' }`, `{ until: 0.8, color: 'warning' }`, `{ until: 1, color: 'error' }`",
 				"`const metrics` with 3 items: CPU `67`, Memory `82`, Disk `45`, fields `label` and `value`",
 				"`{#each metrics as m}` renders `<GaugeChart value={m.value} {zones} height=\"200px\" />`",
-				"Each gauge sits in its own `<Card material=\"glass\">` inside `<Grid columns={{ base: 1, sm: 3 }} gap=\"4\">`"
+				"Each gauge sits in its own `<Card>` inside `<Grid columns={{ base: 1, sm: 3 }} gap=\"4\">`"
 			],
 			"tags": [
 				"gauge-chart",
@@ -8398,7 +8392,7 @@
 				"`data` is `CalendarHeatmapPoint[]` built with `Array.from({ length: 258 }` as `[ 'YYYY-MM-DD', value ]` pairs",
 				"`range={['2026-01-01', '2026-09-15']}`",
 				"`tooltipFormatter={(v) => `${v} commits`}`",
-				"`height=\"160px\"` inside `<Card material=\"glass\" full>`"
+				"`height=\"160px\"` inside `<Card full>`"
 			],
 			"tags": [
 				"heatmap-chart",
@@ -8448,7 +8442,7 @@
 				"`xCategories={hours}` built from `String(i).padStart(2, '0') + ':00'` (24 labels)",
 				"`yCategories={days}` with `'Mon'` to `'Sun'`",
 				"`tooltipFormatter={(v) => `${v} tasks`}`",
-				"`height=\"320px\"` inside `<Card material=\"glass\" full>`"
+				"`height=\"320px\"` inside `<Card full>`"
 			],
 			"tags": [
 				"heatmap-chart",
@@ -8552,7 +8546,7 @@
 				"`categories={months}` with `'Jan'` to `'Sep'`",
 				"`area` prop",
 				"`valueFormatter={fmt}` renders `$${(v / 1000).toFixed(0)}k`",
-				"`height=\"360px\"` inside `<Card material=\"glass\" full>`"
+				"`height=\"360px\"` inside `<Card full>`"
 			],
 			"tags": [
 				"line-chart",
@@ -8600,7 +8594,7 @@
 				"`const profit = revenue.map((r, i) => r - expenses[i])` derives the third series",
 				"`categories={months}` with `'Jan'` to `'Sep'`",
 				"`valueFormatter={fmt}` renders `$${(v / 1000).toFixed(0)}k`",
-				"`height=\"300px\"` inside `<Card material=\"glass\" full>`"
+				"`height=\"300px\"` inside `<Card full>`"
 			],
 			"tags": [
 				"line-chart",
@@ -8648,7 +8642,7 @@
 				"`revenue` has 9 values from `42000` to `112000`",
 				"`categories={months}` with `'Jan'` to `'Sep'`",
 				"`valueFormatter={fmt}` renders `$${(v / 1000).toFixed(0)}k`",
-				"`height=\"300px\"` inside `<Card material=\"glass\" full>`"
+				"`height=\"300px\"` inside `<Card full>`"
 			],
 			"tags": [
 				"line-chart",
@@ -8737,7 +8731,7 @@
 			"variant": "Dashboard",
 			"slug": "dashboard",
 			"title": "Dashboard",
-			"description": "Every chart type together inside glass cards.",
+			"description": "Every chart type together inside cards.",
 			"summary": "An analytics dashboard combining four KPI cards with line, stacked bar, donut, scatter, calendar heatmap, gauge and radar charts.",
 			"use": "Building an overview page that puts headline KPIs and several chart types on one screen.",
 			"spec": [
@@ -8816,7 +8810,7 @@
 				"`{#each quarters as q}` renders `<Chip label={q} selected={selected === q}` with `variant=\"brand\"` and `size=\"sm\"`",
 				"`onclick={() => (selected = q)}` changes the quarter",
 				"`qData` has 4 items per quarter: Cloud, Enterprise, SaaS, Other",
-				"`<PieChart {data} donut height=\"300px\" />` inside `<Card material=\"glass\" full>`"
+				"`<PieChart {data} donut height=\"300px\" />` inside `<Card full>`"
 			],
 			"tags": [
 				"pie-chart",
@@ -8867,7 +8861,7 @@
 				"`<PieChart data={marketData} donut`",
 				"`centerLabel={{ value: '$2.4M', label: 'Total Revenue' }}`",
 				"`marketData` has 5 items: Cloud Services `38`, Enterprise SW `24`, SaaS Tools `18`, Infrastructure `12`, Other `8`",
-				"`height=\"300px\"` inside `<Card material=\"glass\" full>`"
+				"`height=\"300px\"` inside `<Card full>`"
 			],
 			"tags": [
 				"pie-chart",
@@ -8913,7 +8907,7 @@
 			"spec": [
 				"`<PieChart data={marketData} donut height=\"300px\" />`",
 				"`marketData` has 5 items with `value` and `name`: Cloud Services `38`, Enterprise SW `24`, SaaS Tools `18`, Infrastructure `12`, Other `8`",
-				"Wrapped in `<Card material=\"glass\" full>`"
+				"Wrapped in `<Card full>`"
 			],
 			"tags": [
 				"pie-chart",
@@ -8958,7 +8952,7 @@
 			"spec": [
 				"`<PieChart data={roseData} rose height=\"340px\" />`",
 				"`roseData` has 6 items with `value` and `name`: Analytics `72`, Automation `58`, Security `45`, Integrations `38`, Storage `30`, Support `22`",
-				"Wrapped in `<Card material=\"glass\" full>`"
+				"Wrapped in `<Card full>`"
 			],
 			"tags": [
 				"pie-chart",
@@ -9005,7 +8999,7 @@
 				"`<RadarChart` with `{indicators}` and 2 series",
 				"`{ name: 'Team A', values: [88, 92, 76, 85, 94, 79] }`",
 				"`{ name: 'Team B', values: [74, 68, 90, 72, 81, 83] }`",
-				"`height=\"340px\"` inside `<Card material=\"glass\" full>`"
+				"`height=\"340px\"` inside `<Card full>`"
 			],
 			"tags": [
 				"radar-chart",
@@ -9106,7 +9100,7 @@
 			"spec": [
 				"`const indicators` maps 6 names (Speed, Quality, Reliability, Innovation, Support, Coverage) to `{ name, max: 100 }`",
 				"`<RadarChart {indicators} series={[{ name: 'Team Alpha', values: [88, 92, 76, 85, 94, 79] }]}`",
-				"`height=\"340px\"` inside `<Card material=\"glass\" full>`"
+				"`height=\"340px\"` inside `<Card full>`"
 			],
 			"tags": [
 				"radar-chart",
@@ -9154,7 +9148,7 @@
 				"`data` is 80 `[number, number]` pairs from `Array.from({ length: 80 }`",
 				"`yName=\"Conversion %\"`",
 				"`yFormatter={(v) => `${v.toFixed(1)}%`}`",
-				"`height=\"320px\"` inside `<Card material=\"glass\" full>`"
+				"`height=\"320px\"` inside `<Card full>`"
 			],
 			"tags": [
 				"scatter-chart",
@@ -9202,7 +9196,7 @@
 				"The third value of each point is the bubble size",
 				"`<ScatterChart series={[{ name: 'Accounts', data }]}`",
 				"`yName=\"Conversion %\"` and `yFormatter={(v) => `${v.toFixed(1)}%`}`",
-				"`height=\"340px\"` inside `<Card material=\"glass\" full>`"
+				"`height=\"340px\"` inside `<Card full>`"
 			],
 			"tags": [
 				"scatter-chart",
@@ -9250,7 +9244,7 @@
 				"Each series uses `cluster(30,` to generate 30 `[number, number]` points",
 				"`color` is optional on a series, omitted here so the palette assigns one per series",
 				"`<ScatterChart {series} yName=\"Conversion %\"` with `yFormatter={(v) => `${v.toFixed(1)}%`}`",
-				"`height=\"340px\"` inside `<Card material=\"glass\" full>`"
+				"`height=\"340px\"` inside `<Card full>`"
 			],
 			"tags": [
 				"scatter-chart",
@@ -9347,7 +9341,7 @@
 				"`kpis` has 4 items: Monthly Revenue `$112k`, Active Users `24.8k`, Churn Rate `2.3%`, Avg Session `4m 12s`",
 				"Each item has `label`, `value`, `change`, `trend` and 9 `data` values",
 				"`<Sparkline data={k.data} trend={k.trend} height=\"32px\" />`",
-				"`<Grid columns={{ base: 1, sm: 2, lg: 4 }} gap=\"4\">` with each KPI in `<Card material=\"glass\">`",
+				"`<Grid columns={{ base: 1, sm: 2, lg: 4 }} gap=\"4\">` with each KPI in `<Card>`",
 				"`class:up={k.trend === 'up'}` and `class:down={k.trend === 'down'}` colour the change text"
 			],
 			"tags": [
@@ -9402,7 +9396,7 @@
 				"`setInterval` in `onMount` every `600` ms replaces each array through `next(`",
 				"`const metrics = $derived([` maps to labels CPU, Memory, Network",
 				"`{m.data[m.data.length - 1].toFixed(0)}%` shows the latest value",
-				"`<Sparkline data={m.data} height=\"40px\" />` in a `<Card material=\"glass\">`",
+				"`<Sparkline data={m.data} height=\"40px\" />` in a `<Card>`",
 				"`<Grid columns={{ base: 1, sm: 3 }} gap=\"4\">` holds the 3 cards"
 			],
 			"tags": [
@@ -9453,7 +9447,7 @@
 			"summary": "A table of four products with an inline sparkline per row and a text trend label.",
 			"use": "Adding a mini trend line to table rows, such as revenue history per product.",
 			"spec": [
-				"`<Card material=\"glass\" flush full>` wraps a plain `<table>`",
+				"`<Card flush full>` wraps a plain `<table>`",
 				"`rows` has 4 products: Atlas Pro, Nova Suite, Relay SDK, Mesh API, each with 6 `revenue` values and a `trend`",
 				"`<Sparkline data={row.revenue} trend={row.trend} height=\"32px\" />` in each row",
 				"`labels` maps `up`, `down` and `neutral` to `'▲ Growing'`, `'▼ Declining'` and `'→ Stable'`",
@@ -9671,9 +9665,9 @@
 			"group": "foundation",
 			"page": "materials",
 			"variant": "Tiers",
-			"slug": "glass-tiers",
-			"title": "Glass tiers",
-			"description": "All five thickness levels on a gradient backdrop.",
+			"slug": "material-tiers",
+			"title": "Material tiers",
+			"description": "All five thickness levels, pinned to glass, on a gradient backdrop.",
 			"summary": "Five glass surfaces at elevations 1 to 5, from Ultra thin to Chrome, over a three color gradient.",
 			"use": "Choosing the glass tier by how much blur and fill a panel needs over its background.",
 			"spec": [
@@ -9703,7 +9697,7 @@
 				}
 			],
 			"interactive": false,
-			"demo": "https://ui.codeatlas.com.br/docs/foundation/materials#glass-tiers",
+			"demo": "https://ui.codeatlas.com.br/docs/foundation/materials#material-tiers",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		},
 		{
@@ -14071,7 +14065,7 @@
 				"`<AppShellLayout {modules} {pathname} panelWidth={280} resizablePanel persistPanel={false} mainId={null} skipLink={false}>`",
 				"One module `id: 'projects'` with 3 items whose labels are long (Quarterly revenue forecast and planning, Customer onboarding experience redesign, Infrastructure cost review)",
 				"A second module `id: 'other'` with `items: []`",
-				"Page is `<PageShell title=\"Wider panel\" description=\"Drag the panel edge, or focus it and use the arrow keys.\">` with one glass `Card` hint about the 160px to 480px range",
+				"Page is `<PageShell title=\"Wider panel\" description=\"Drag the panel edge, or focus it and use the arrow keys.\">` with one `Card` hint about the 160px to 480px range",
 				"Stage height is `height: 360px`"
 			],
 			"tags": [
@@ -14168,10 +14162,10 @@
 			"slug": "stacked-controls",
 			"title": "Stacked controls",
 			"description": "",
-			"summary": "A glass Card titled Trending topics that stacks three Checkbox controls in a column with gap=\"sm\", the title aligned with the controls.",
+			"summary": "A Card titled Trending topics that stacks three Checkbox controls in a column with gap=\"sm\", the title aligned with the controls.",
 			"use": "Settings and filter cards whose content is several inline controls (Checkbox, Switch, TextField) that need vertical spacing.",
 			"spec": [
-				"`<Card material=\"glass\" title=\"Trending topics\" headingLevel={3} gap=\"sm\" class=\"stacked\">` with `max-width: 320px`",
+				"`<Card title=\"Trending topics\" headingLevel={3} gap=\"sm\" class=\"stacked\">` with `max-width: 320px`",
 				"Three `<Checkbox label=\"Hacker News\" />` children: Hacker News, Product Hunt, Lobsters",
 				"`gap=\"sm\"` stacks the children in a column with 8px between them; the title shares the checkboxes' left edge"
 			],
@@ -14181,7 +14175,6 @@
 				"stack",
 				"checkbox",
 				"title",
-				"glass",
 				"settings"
 			],
 			"shape": "tall",
@@ -14444,7 +14437,7 @@
 				"`<SiteHeader>` with a `{#snippet trailing()}` holding the end of the bar",
 				"`<LocaleSwitcher {options} bind:value={locale} />` with `pt-BR` (`Português`, `short: 'PT'`) and `en` (`English`)",
 				"A small filled `Button` labelled `Sign up` follows the switcher",
-				"The header sits in `<Card material=\"glass\" full flush>`"
+				"The header sits in `<Card full flush>`"
 			],
 			"tags": [
 				"locale-switcher",
@@ -14489,7 +14482,7 @@
 			"spec": [
 				"`<AppShellLayout {modules} filterModules={(m) => admin || m.id !== 'settings'} {pathname} onNavigate={(path) => (pathname = path)} railLabels persistPanel={false} mainId={null} skipLink={false}>` with `railTop` (a ghost search `Button`, aria-label 'Search, command K') and `bottomNavOverflow` (an outlined full-width 'Account' `Button`)",
 				"7 modules: Inbox (`badge: 12`), Map (`badge: 'dot'`, `badgeLabel: 'Search running'`), People (`badge: 3`, `badgeLabel: '3 tasks pending'`), Alerts, Search, Home, Settings; below 900px the bar shows 4 modules plus a More tab that opens a sheet with the rest",
-				"`filterModules` is driven by an `admin` `$state`; a glass `Card` holds a hint and an outlined `Button` that toggles it",
+				"`filterModules` is driven by an `admin` `$state`; a `Card` holds a hint and an outlined `Button` that toggles it",
 				"Page is `<PageShell title=\"Labeled rail\" description={pathname}>`; stage height is `height: 440px`"
 			],
 			"tags": [
@@ -14539,7 +14532,7 @@
 				"`<AppShellLayout {modules} {pathname} onNavigate={(path) => (pathname = path)} {stage} {stageVisible} persistPanel={false} mainId={null} skipLink={false}>` with `stage` a snippet that draws the map",
 				"The map is a draggable grid whose camera lives in `$state`; an attachment counts each mount in `mounts` with `untrack` (a tracked `+=` would loop), shown in the page",
 				"One module `id: 'field'` with 3 items: Leads, Routes, Report",
-				"The page is `<PageShell title=\"Floating over the stage\" description={pathname}>` with a `ca-stage-panel` wrapper around a glass `Card` that holds the mount count hint and an outlined `Button` toggling `stageVisible`",
+				"The page is `<PageShell title=\"Floating over the stage\" description={pathname}>` with a `ca-stage-panel` wrapper around a `Card` that holds the mount count hint and an outlined `Button` toggling `stageVisible`",
 				"Stage frame height is `height: 440px`"
 			],
 			"tags": [
@@ -14746,8 +14739,8 @@
 			"spec": [
 				"Frame is a 420px tall flex column with an inset outline",
 				"`<PageShell title=\"Workspace settings\" description=\"Reading width keeps the form at a comfortable line length.\" width=\"reading\" asideLabel=\"Sections\">`",
-				"`{#snippet aside()}` renders a glass `Card` with a nav (aria-label On this page) of three links: General, Billing, Danger zone",
-				"Body is a `Card material=\"glass\" full title=\"General\"` with a `Stack gap=\"4\"` of two `TextField`s: Name (Acme Inc.) and Slug (acme)"
+				"`{#snippet aside()}` renders a `Card` with a nav (aria-label On this page) of three links: General, Billing, Danger zone",
+				"Body is a `Card full title=\"General\"` with a `Stack gap=\"4\"` of two `TextField`s: Name (Acme Inc.) and Slug (acme)"
 			],
 			"tags": [
 				"page-shell",
@@ -14794,7 +14787,7 @@
 			"spec": [
 				"`<AppShellLayout {modules} {pathname} collapseShortPanel persistPanel={false} mainId={null} skipLink={false}>` in a 320px tall frame",
 				"One module `id: 'settings'` (Settings icon) with two items: Profile and Billing",
-				"Page is `<PageShell title=\"Profile\" description=\"A two-item module needs no panel: the rail is enough.\">` with a glass `Card` hint"
+				"Page is `<PageShell title=\"Profile\" description=\"A two-item module needs no panel: the rail is enough.\">` with a `Card` hint"
 			],
 			"tags": [
 				"app-shell",
@@ -14971,10 +14964,10 @@
 			"slug": "stats-in-a-card",
 			"title": "Stats in a card",
 			"description": "",
-			"summary": "A glass Card titled This week holding three card-less Stat blocks in a responsive grid: leads with a hint, reply rate with a unit, trend and hint, and booked calls with a positive trend.",
+			"summary": "A Card titled This week holding three card-less Stat blocks in a responsive grid: leads with a hint, reply rate with a unit, trend and hint, and booked calls with a positive trend.",
 			"use": "Plain statistics inside an existing card or panel, with no nested box, instead of several KpiCards.",
 			"spec": [
-				"`<Card material=\"glass\" title=\"This week\" headingLevel={3} class=\"stats-card\">` with `max-width: 640px`",
+				"`<Card title=\"This week\" headingLevel={3} class=\"stats-card\">` with `max-width: 640px`",
 				"`<Stat label=\"Leads this week\" value=\"128\" hint=\"12 more than last week\" />`",
 				"`<Stat label=\"Reply rate\" value=\"18\" unit=\"%\" trend={-2.4} hint=\"Goal: 25%\" />`",
 				"`<Stat label=\"Booked calls\" value=\"9\" trend={12.5} />`",
@@ -15324,8 +15317,8 @@
 			"variant": "ThemedMap",
 			"slug": "themed-map",
 			"title": "Themed map",
-			"description": "An offline basemap per scheme, deck.gl circles in the brand color and glass controls. Toggle the theme: the basemap and the circles change, the map is not recreated.",
-			"summary": "A map stage with an offline light and dark basemap, four deck.gl store circles in the brand color and glass zoom and compass controls.",
+			"description": "An offline basemap per scheme, deck.gl circles in the brand color and themed controls. Toggle the theme: the basemap and the circles change, the map is not recreated.",
+			"summary": "A map stage with an offline light and dark basemap, four deck.gl store circles in the brand color and zoom and compass controls.",
 			"use": "A map-first screen whose basemap and data layers must follow the app's light and dark theme.",
 			"spec": [
 				"`<MapStage` with `{styles}`, `{layers}`, `label=\"Store map\"`, `padding={{ top: 24, right: 24, bottom: 24, left: 24 }}` and a `fit` of the southeast Brazil bounds",

@@ -6,7 +6,7 @@
   const fmt = (v: number) => `$${(v / 1000).toFixed(0)}k`;
 </script>
 
-<Card material="glass" full>
+<Card full>
   <BarChart
     series={[
       { name: 'Organic', data: [12400, 14800, 18200, 16600, 21200, 24800] },

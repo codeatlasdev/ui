@@ -3,7 +3,7 @@
   import { Menu } from '@lucide/svelte';
 </script>
 
-<Card material="glass" full flush>
+<Card full flush>
   <GlassAppBar>
     <span class="title">Dashboard</span>
     {#snippet leading()}<IconButton aria-label="Open menu"><Menu size={20} /></IconButton>{/snippet}

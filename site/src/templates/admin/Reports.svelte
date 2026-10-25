@@ -72,7 +72,7 @@
   </KpiGrid>
 
   <!-- Revenue chart tabs -->
-  <Card material="glass" full>
+  <Card full>
     <Tabs value="revenue">
       <div class="chart-header">
         <TabsList>
@@ -123,7 +123,7 @@
 
   <!-- Channel + Plan breakdown -->
   <Grid columns={{ base: 1, md: 2 }} gap="5">
-    <Card material="glass" title="Revenue by Channel">
+    <Card title="Revenue by Channel">
       <BarChart
         series={[{ name: 'Revenue', data: channelData.map(d => d.value) }]}
         categories={channelData.map(d => d.name)}
@@ -133,7 +133,7 @@
       />
     </Card>
 
-    <Card material="glass" title="Plan Distribution">
+    <Card title="Plan Distribution">
       <div class="plan-bars">
         {#each planData as p}
           <div class="plan-row">
@@ -155,7 +155,7 @@
   </Grid>
 
   <!-- Top pages table -->
-  <Card material="glass" title="Top Pages" flush full>
+  <Card title="Top Pages" flush full>
     {#snippet headerActions()}
       <Chip label="By conversions" size="sm" variant="brand" />
     {/snippet}

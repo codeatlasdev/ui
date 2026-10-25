@@ -11,7 +11,7 @@
       <KpiCard title="Growth" value="34%" trend={5.6} icon={TrendingUp} />
       <KpiCard title="Uptime" value="99.9%" trend={0.1} icon={Activity} />
     </KpiGrid>
-    <Card material="glass" full>
+    <Card full>
       <p class="placeholder">Chart or data table goes here</p>
     </Card>
   </PageShell>

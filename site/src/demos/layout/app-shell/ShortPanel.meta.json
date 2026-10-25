@@ -4,7 +4,7 @@
 	"spec": [
 		"`<AppShellLayout {modules} {pathname} collapseShortPanel persistPanel={false} mainId={null} skipLink={false}>` in a 320px tall frame",
 		"One module `id: 'settings'` (Settings icon) with two items: Profile and Billing",
-		"Page is `<PageShell title=\"Profile\" description=\"A two-item module needs no panel: the rail is enough.\">` with a glass `Card` hint"
+		"Page is `<PageShell title=\"Profile\" description=\"A two-item module needs no panel: the rail is enough.\">` with a `Card` hint"
 	],
 	"tags": ["app-shell", "panel", "collapse", "rail", "sidebar", "navigation"],
 	"shape": "wide"

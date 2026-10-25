@@ -5,7 +5,7 @@ When to use: Small modules (settings, profile) where a 200px panel would hold tw
 Spec:
 - `<AppShellLayout {modules} {pathname} collapseShortPanel persistPanel={false} mainId={null} skipLink={false}>` in a 320px tall frame
 - One module `id: 'settings'` (Settings icon) with two items: Profile and Billing
-- Page is `<PageShell title="Profile" description="A two-item module needs no panel: the rail is enough.">` with a glass `Card` hint
+- Page is `<PageShell title="Profile" description="A two-item module needs no panel: the rail is enough.">` with a `Card` hint
 Tags: app-shell, panel, collapse, rail, sidebar, navigation
 Needs: @codeatlasdev/ui@4.5.0
 Components: AppShellLayout, PageShell, Card
@@ -43,7 +43,7 @@ Live demo: https://ui.codeatlas.com.br/docs/layout/app-shell#short-panel
 <div class="stage" onclick={intercept}>
   <AppShellLayout {modules} {pathname} collapseShortPanel persistPanel={false} mainId={null} skipLink={false}>
     <PageShell title="Profile" description="A two-item module needs no panel: the rail is enough.">
-      <Card material="glass" full>
+      <Card full>
         <p class="hint">With collapseShortPanel the content takes the width a two-link panel would waste.</p>
       </Card>
     </PageShell>

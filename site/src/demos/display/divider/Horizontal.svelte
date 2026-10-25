@@ -2,7 +2,7 @@
   import { Divider, Card, Stack } from '@codeatlasdev/ui';
 </script>
 
-<Card material="glass" p="6" full>
+<Card p="6" full>
   <Stack gap="4">
     <p>Section A content</p>
     <Divider />

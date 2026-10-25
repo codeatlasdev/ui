@@ -3,8 +3,8 @@
 </script>
 
 <Stack gap="2" class="collapsible-faq">
-  <Collapsible title="What is a glass surface?">
-    <p>A glass surface uses backdrop-filter blur and a translucent tint to create a layered depth effect that reacts to the content behind it.</p>
+  <Collapsible title="What is a surface style?">
+    <p>A surface style is one knob of the theme. It decides whether cards are solid paper, outlined, tonal or blurred, and every component follows it.</p>
   </Collapsible>
   <Collapsible title="How do presets work?">
     <p>Presets remap the brand hue token. Switching preset updates every component that reads from <code>--ca-brand-*</code> without any JS.</p>

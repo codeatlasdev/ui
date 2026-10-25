@@ -10,6 +10,6 @@
   ]);
 </script>
 
-<Card material="glass" full>
+<Card full>
   <ScatterChart series={[{ name: 'Accounts', data }]} yName="Conversion %" yFormatter={(v) => `${v.toFixed(1)}%`} height="340px" />
 </Card>

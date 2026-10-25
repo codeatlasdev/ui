@@ -6,7 +6,7 @@
 		"The third value of each point is the bubble size",
 		"`<ScatterChart series={[{ name: 'Accounts', data }]}`",
 		"`yName=\"Conversion %\"` and `yFormatter={(v) => `${v.toFixed(1)}%`}`",
-		"`height=\"340px\"` inside `<Card material=\"glass\" full>`"
+		"`height=\"340px\"` inside `<Card full>`"
 	],
 	"tags": ["scatter-chart", "bubble", "size", "three-dimensions", "accounts", "card"],
 	"shape": "wide"

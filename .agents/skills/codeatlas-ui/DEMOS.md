@@ -230,7 +230,7 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 223 | Surfaces | foundation/colors |  |
 | 224 | Text | foundation/colors |  |
 | 225 | Button glass variants | foundation/materials |  |
-| 226 | Glass tiers | foundation/materials | Surface |
+| 226 | Material tiers | foundation/materials | Surface |
 | 227 | Tinted and glowing | foundation/materials | Surface |
 | 228 | Shadow scale | foundation/shadows |  |
 | 229 | Body and UI scale | foundation/typography |  |

@@ -30,7 +30,7 @@
 <div class="stage" onclick={intercept}>
   <AppShellLayout {modules} {pathname} collapseShortPanel persistPanel={false} mainId={null} skipLink={false}>
     <PageShell title="Profile" description="A two-item module needs no panel: the rail is enough.">
-      <Card material="glass" full>
+      <Card full>
         <p class="hint">With collapseShortPanel the content takes the width a two-link panel would waste.</p>
       </Card>
     </PageShell>

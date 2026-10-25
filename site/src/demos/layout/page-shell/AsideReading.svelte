@@ -8,7 +8,7 @@
 <div class="stage">
   <PageShell title="Workspace settings" description="Reading width keeps the form at a comfortable line length." width="reading" asideLabel="Sections">
     {#snippet aside()}
-      <Card material="glass" full>
+      <Card full>
         <nav class="index" aria-label="On this page">
           <a href="#general">General</a>
           <a href="#billing">Billing</a>
@@ -17,7 +17,7 @@
       </Card>
     {/snippet}
 
-    <Card material="glass" full title="General">
+    <Card full title="General">
       <Stack gap="4">
         <TextField label="Name" bind:value={name} />
         <TextField label="Slug" bind:value={slug} />

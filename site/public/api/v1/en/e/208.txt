@@ -5,7 +5,7 @@ When to use: Showing the proportional split of a total, such as revenue by produ
 Spec:
 - `<PieChart data={marketData} donut height="300px" />`
 - `marketData` has 5 items with `value` and `name`: Cloud Services `38`, Enterprise SW `24`, SaaS Tools `18`, Infrastructure `12`, Other `8`
-- Wrapped in `<Card material="glass" full>`
+- Wrapped in `<Card full>`
 Tags: pie-chart, donut, market-share, proportions, card
 Needs: @codeatlasdev/ui@4.5.0 + echarts
 Components: Card, PieChart
@@ -24,4 +24,4 @@ Live demo: https://ui.codeatlas.com.br/docs/charts/pie#basic-donut
   ];
 </script>
 
-<Card material="glass" full><PieChart data={marketData} donut height="300px" /></Card>
+<Card full><PieChart data={marketData} donut height="300px" /></Card>

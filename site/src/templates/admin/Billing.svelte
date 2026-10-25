@@ -159,7 +159,7 @@
     <FormSection title="Choose your plan" description="Upgrade or downgrade at any time." layout="stack">
       <Grid columns={{ base: 1, md: 3 }} gap="4">
         {#each plans as p}
-          <Card material="glass" tone={p.current ? "brand" : "neutral"} p="6">
+          <Card tone={p.current ? "brand" : "neutral"} p="6">
             <div class="pricing-card">
               <div class="pricing-name">
                 {p.name}
@@ -192,7 +192,7 @@
 
   <!-- FATURAS -->
   {#if tab === 'invoices'}
-    <Card material="glass" flush full>
+    <Card flush full>
       <SimpleTable>
         <thead>
           <tr><th>Invoice</th><th>Date</th><th>Amount</th><th>Status</th><th></th></tr>

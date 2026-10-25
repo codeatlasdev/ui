@@ -9,7 +9,7 @@
   const fmt = (v: number) => `$${(v / 1000).toFixed(0)}k`;
 </script>
 
-<Card material="glass" full>
+<Card full>
   <LineChart
     series={[
       { name: 'Revenue', data: revenue },

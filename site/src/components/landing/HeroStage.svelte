@@ -167,7 +167,7 @@
 			<KpiCard title="Revenue" value={revenue.toFixed(1)} unit="k" trend={12.4} icon={Gauge} />
 			<KpiCard title="Active teams" value={fmt.format(teams)} trend={4.1} icon={Users} />
 
-			<Card material="glass" elevation={4} class="stage__chart">
+			<Card elevation={4} class="stage__chart">
 				<div class="stage__chart-head">
 					<p class="stage__chart-title">Weekly growth</p>
 					<SegmentedControl
@@ -191,7 +191,7 @@
 				</svg>
 			</Card>
 
-			<Card material="glass" class="stage__controls" title="Release">
+			<Card class="stage__controls" title="Release">
 				<div class="stage__row">
 					<Chip label="v2 rollout" icon={Rocket} variant="brand" size="sm" />
 					<Chip label="Beta" icon={Boxes} size="sm" />

@@ -12,4 +12,4 @@
   ];
 </script>
 
-<Card material="glass" full><PieChart data={roseData} rose height="340px" /></Card>
+<Card full><PieChart data={roseData} rose height="340px" /></Card>

@@ -1,5 +1,5 @@
 {
-	"summary": "A map stage with an offline light and dark basemap, four deck.gl store circles in the brand color and glass zoom and compass controls.",
+	"summary": "A map stage with an offline light and dark basemap, four deck.gl store circles in the brand color and zoom and compass controls.",
 	"use": "A map-first screen whose basemap and data layers must follow the app's light and dark theme.",
 	"spec": [
 		"`<MapStage` with `{styles}`, `{layers}`, `label=\"Store map\"`, `padding={{ top: 24, right: 24, bottom: 24, left: 24 }}` and a `fit` of the southeast Brazil bounds",

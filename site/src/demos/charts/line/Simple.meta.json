@@ -6,7 +6,7 @@
 		"`revenue` has 9 values from `42000` to `112000`",
 		"`categories={months}` with `'Jan'` to `'Sep'`",
 		"`valueFormatter={fmt}` renders `$${(v / 1000).toFixed(0)}k`",
-		"`height=\"300px\"` inside `<Card material=\"glass\" full>`"
+		"`height=\"300px\"` inside `<Card full>`"
 	],
 	"tags": ["line-chart", "simple", "revenue", "time-series", "value-formatter", "card"],
 	"shape": "wide"

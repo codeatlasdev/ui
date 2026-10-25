@@ -8,7 +8,7 @@
   ];
 </script>
 
-<Card material="glass" flush full>
+<Card flush full>
   <SimpleTable>
     <thead>
       <tr><th>Name</th><th>Email</th><th>Role</th><th>Status</th></tr>

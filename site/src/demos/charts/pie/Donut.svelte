@@ -11,4 +11,4 @@
   ];
 </script>
 
-<Card material="glass" full><PieChart data={marketData} donut height="300px" /></Card>
+<Card full><PieChart data={marketData} donut height="300px" /></Card>

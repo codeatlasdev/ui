@@ -5,7 +5,7 @@
   let value = $state(65);
 </script>
 
-<Card material="glass" full>
+<Card full>
   <Stack gap="5">
     <GaugeChart {value} variant="ring" height="260px" />
     <div class="slider"><Slider bind:value min={0} max={100} step={1} /></div>

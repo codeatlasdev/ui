@@ -4,8 +4,8 @@
 	"spec": [
 		"Frame is a 420px tall flex column with an inset outline",
 		"`<PageShell title=\"Workspace settings\" description=\"Reading width keeps the form at a comfortable line length.\" width=\"reading\" asideLabel=\"Sections\">`",
-		"`{#snippet aside()}` renders a glass `Card` with a nav (aria-label On this page) of three links: General, Billing, Danger zone",
-		"Body is a `Card material=\"glass\" full title=\"General\"` with a `Stack gap=\"4\"` of two `TextField`s: Name (Acme Inc.) and Slug (acme)"
+		"`{#snippet aside()}` renders a `Card` with a nav (aria-label On this page) of three links: General, Billing, Danger zone",
+		"Body is a `Card full title=\"General\"` with a `Stack gap=\"4\"` of two `TextField`s: Name (Acme Inc.) and Slug (acme)"
 	],
 	"tags": ["page-shell", "aside", "width", "reading", "settings", "form", "sticky", "layout"],
 	"shape": "wide"

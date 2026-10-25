@@ -20,7 +20,7 @@
   });
 </script>
 
-<Card material="glass" full>
+<Card full>
   <LineChart
     series={[{ name: 'Live revenue', data: streamData }]}
     categories={streamData.map((_, i) => String(i))}

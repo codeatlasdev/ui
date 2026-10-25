@@ -3,7 +3,7 @@ What it shows: An app shell with one module of two items and collapseShortPanel:
 Spec:
 - `<AppShellLayout {modules} {pathname} collapseShortPanel persistPanel={false} mainId={null} skipLink={false}>` in a 320px tall frame
 - One module `id: 'settings'` (Settings icon) with two items: Profile and Billing
-- Page is `<PageShell title="Profile" description="A two-item module needs no panel: the rail is enough.">` with a glass `Card` hint
+- Page is `<PageShell title="Profile" description="A two-item module needs no panel: the rail is enough.">` with a `Card` hint
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);

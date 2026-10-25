@@ -133,7 +133,7 @@
 
     <!-- MEMBROS -->
     {#if tab === 'members'}
-      <Card material="glass" flush full>
+      <Card flush full>
         {#snippet headerActions()}
           <Button variant="filled" size="sm">Convidar membro</Button>
         {/snippet}
@@ -198,7 +198,7 @@
         {/if}
       </FormSection>
 
-      <Card material="glass" title="Active sessions" flush full>
+      <Card title="Active sessions" flush full>
         {#each [
           { device: 'Chrome no macOS',  ip: '192.168.1.42',  last: 'Agora',         current: true  },
           { device: 'Safari on iPhone', ip: '192.168.1.100', last: '2 hr ago',    current: false },

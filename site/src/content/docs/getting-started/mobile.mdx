@@ -116,7 +116,7 @@ Mobile browsers tint their status bar and toolbar from the page. The package fee
 - Safari 26 ignores `theme-color` and instead samples the background of the root and of fixed or sticky elements at the screen edges. Because those are solid colors, both paths show the same result.
 
 <Callout type="caution" title="Keep edge elements opaque">
-  A translucent glass header at the top edge cannot be sampled correctly. Use `--ca-chrome-surface` (or any opaque color) for fixed bars on the top and bottom edges, and keep `backdrop-filter` for surfaces inside the page.
+  A translucent (blurred) header at the top edge cannot be sampled correctly. Use `--ca-chrome-surface` (or any opaque color) for fixed bars on the top and bottom edges, and keep `backdrop-filter` for surfaces inside the page.
 </Callout>
 
 ## Layout components
@@ -145,7 +145,7 @@ Use `scroll={false}` when the body has its own scroll area and a fixed composer 
 
 ### StickyActions
 
-A bar for form actions that sticks to the bottom of the scroll container, with glass chrome, safe-area padding and keyboard awareness. From 900px up it becomes an inline row with no chrome.
+A bar for form actions that sticks to the bottom of the scroll container, with themed chrome, safe-area padding and keyboard awareness. From 900px up it becomes an inline row with no chrome.
 
 ```svelte
 <StickyActions align="stretch" show={dirty}>

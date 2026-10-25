@@ -3,7 +3,7 @@
 	"use": "Showing one headline score or health percentage in a compact card.",
 	"spec": [
 		"`<GaugeChart value={78} label=\"Score\" height=\"280px\" />`",
-		"Wrapped in `<Card material=\"glass\" full>`"
+		"Wrapped in `<Card full>`"
 	],
 	"tags": ["gauge-chart", "score", "value", "label", "card"],
 	"shape": "square"

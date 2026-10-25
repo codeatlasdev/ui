@@ -1,6 +1,6 @@
 ---
 title: Map
-description: MapLibre or Mapbox with deck.gl layers that follow the theme. A themed stage, glass controls and token colors as RGBA.
+description: MapLibre or Mapbox with deck.gl layers that follow the theme. A themed stage, themed controls and token colors as RGBA.
 group: Map
 order: 0
 ---
@@ -39,7 +39,7 @@ The map lives in the `@codeatlasdev/ui/map` subpath and every engine is an optio
 
 deck.gl takes `[r, g, b, a]` and MapLibre paint wants `rgba()`, but the tokens are `oklch()` and `color-mix()`. `tokenColor(token, alpha?)` resolves any token or CSS color through a 1×1 canvas and caches by the resolved value, so a theme change needs no manual cache reset. `mapColors()` returns the semantic set, and reading it inside `$derived` or `$effect` subscribes to the scheme, preset and surface style. `rgbaCss(color)` turns a result into a string for paint properties.
 
-<Demo title="Themed map" description="An offline basemap per scheme, deck.gl circles in the brand color and glass controls. Toggle the theme: the basemap and the circles change, the map is not recreated." src={ThemedMapSrc}><ThemedMap client:visible /></Demo>
+<Demo title="Themed map" description="An offline basemap per scheme, deck.gl circles in the brand color and themed controls. Toggle the theme: the basemap and the circles change, the map is not recreated." src={ThemedMapSrc}><ThemedMap client:visible /></Demo>
 
 <Props for="MapStage" rows={[
   { name: "styles", type: "{ light: string | object; dark: string | object }", description: "Basemap style URL or style object per color scheme. Required." },

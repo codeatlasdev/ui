@@ -113,7 +113,7 @@ A real `radiogroup` (roving tab stop, arrows/Home/End/Space/Enter), check icon o
 
 ## Card / Surface
 
-`Card` is the container for titled content. `Surface` is the painted container underneath it (elevation, material, tone, variant, radius) for panels and custom blocks that are not a titled card. `GlassCard`, `GlassSurface` and `Row` are deprecated: use `Card`, `Surface` and `Flex` (`bunx @codeatlasdev/ui migrate --write`).
+`Card` is the container for titled content. `Surface` is the painted container underneath it (elevation, material, tone, variant, radius) for panels and custom blocks that are not a titled card. Leave `material` unset (`auto`): it follows the theme. `GlassCard`, `GlassSurface` and `Row` are deprecated and not for new code: use `Card`, `Surface` and `Flex` (`bunx @codeatlasdev/ui migrate --write`).
 
 ```svelte
 <Card title="Revenue">
@@ -137,7 +137,7 @@ A real `radiogroup` (roving tab stop, arrows/Home/End/Space/Enter), check icon o
 
 `Card` props: `title?: string`, `headingLevel?: 2-6` (renders `title` as a real heading; omit for a `<p>`), `padding?: 'none' | 'sm' | 'md' | 'lg' | <css length> | <number in px>`, `flush?: boolean` (no padding, wins over `padding`), `gap?: 'sm' | 'md' | 'lg' | <css length> | <number in px>` (stacks children in a column), `full?: boolean`, `skeleton?: boolean`, `href?: string` (renders a link card). Snippets: `children`, `headerActions`.
 
-`Surface` props: `elevation` (0-5), `material` (`auto | solid | frosted | glass | liquid`), `tone` (`neutral | brand | success | warning | error | info`), `variant` (`filled | outlined | ghost`), `radius`, `interactive`, `glow`, `grain`, `as`, plus the `p`, `px`, `py` spacing steps.
+`Surface` props: `elevation` (0-5), `material` (`auto` follows the theme, the default; `solid | frosted | glass | liquid` force one material), `tone` (`neutral | brand | success | warning | error | info`), `variant` (`filled | outlined | ghost`), `radius`, `interactive`, `glow`, `grain`, `as`, plus the `p`, `px`, `py` spacing steps.
 
 Under a page `<h1>`, give card titles and `EmptyState` titles a valid level (`EmptyState` inside `PageShell` defaults to `<h2>`) so axe `heading-order` passes.
 

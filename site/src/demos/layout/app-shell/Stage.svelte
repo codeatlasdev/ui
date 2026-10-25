@@ -56,7 +56,7 @@
   <AppShellLayout {modules} {pathname} onNavigate={(path) => (pathname = path)} {stage} {stageVisible} persistPanel={false} mainId={null} skipLink={false}>
     <PageShell title="Floating over the stage" description={pathname}>
       <div class="ca-stage-panel panel">
-        <Card material="glass" full>
+        <Card full>
           <p class="hint">Stage mounted {mounts} time(s). Navigate the panel: the count stays at 1. Drag the stage behind this card; empty areas pass clicks through.</p>
           <Button variant="outlined" onclick={() => (stageVisible = !stageVisible)}>{stageVisible ? 'Hide and pause stage' : 'Show stage'}</Button>
         </Card>

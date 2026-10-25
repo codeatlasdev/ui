@@ -5,7 +5,7 @@ Spec:
 - `data` is 80 `[number, number]` pairs from `Array.from({ length: 80 }`
 - `yName="Conversion %"`
 - `yFormatter={(v) => `${v.toFixed(1)}%`}`
-- `height="320px"` inside `<Card material="glass" full>`
+- `height="320px"` inside `<Card full>`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
 Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
