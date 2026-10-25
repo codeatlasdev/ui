@@ -18,7 +18,8 @@
   }
 </script>
 
-<ContextMenu class="area" role="group" aria-label="Project file">
+<div class="cm-file">
+<ContextMenu class="cm-area" role="group" aria-label="Project file">
   <span>quarterly-report.pdf. Right-click, long-press, or focus it and press Shift+F10.</span>
   {#snippet menu()}
     <DropdownMenuItem onclick={() => pick('Rename')}>Rename</DropdownMenuItem>
@@ -32,11 +33,13 @@
     <DropdownMenuItem variant="destructive" onclick={() => pick('Delete')}>Delete</DropdownMenuItem>
   {/snippet}
 </ContextMenu>
+</div>
 
 <span class="note">Pinned: {pinned ? 'yes' : 'no'}{last ? `. Last action: ${last}` : ''}</span>
 
 <style>
-  :global(.area) {
+  /* Scoped under this demo's wrapper: a bare global `.area` would restyle every other demo's `.area`. */
+  .cm-file :global(.cm-area) {
     display: grid;
     place-items: center;
     min-block-size: 8rem;

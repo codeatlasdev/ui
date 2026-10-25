@@ -3,7 +3,7 @@ Element: #943 One menu per row (navigation/context-menu)
 What it shows: Three invoice rows, each its own context menu with a label, Open and Send reminder, and a 400 ms long-press delay for touch.
 When to use: A menu per list row: each row is a focusable region, so keyboard users reach the same actions with Shift+F10.
 Spec:
-- `{#each rows as row (row)}` renders `<ContextMenu class="row" role="group" aria-label={row} longPressDelay={400}>` per row
+- `{#each rows as row (row)}` renders `<ContextMenu class="cm-row" role="group" aria-label={row} longPressDelay={400}>` per row
 - The `menu` snippet starts with `<DropdownMenuLabel>{row}</DropdownMenuLabel>` and has Open and Send reminder items
 - Items set `last` to the action and the row name (Open or Send plus the invoice), shown under the list
 Tags: context-menu, list, row, long-press, keyboard, label
@@ -18,10 +18,10 @@ Live demo: https://ui.codeatlas.com.br/docs/navigation/context-menu#one-menu-per
   let last = $state('');
 </script>
 
-<ul class="rows">
+<ul class="cm-rows">
   {#each rows as row (row)}
     <li>
-      <ContextMenu class="row" role="group" aria-label={row} longPressDelay={400}>
+      <ContextMenu class="cm-row" role="group" aria-label={row} longPressDelay={400}>
         <span>{row}</span>
         {#snippet menu()}
           <DropdownMenuLabel>{row}</DropdownMenuLabel>
@@ -35,13 +35,15 @@ Live demo: https://ui.codeatlas.com.br/docs/navigation/context-menu#one-menu-per
 <span class="note">{last ? `Last action: ${last}` : 'Tab to a row and press Shift+F10, or long-press on touch.'}</span>
 
 <style>
-  .rows { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--ca-space-1); }
-  :global(.row) {
+  .cm-rows { list-style: none; margin: 0; padding: 0; display: grid; gap: var(--ca-space-1); }
+  /* The class goes through ContextMenu's `class` prop onto its own element, so it is reached with
+     :global, but only under this demo's list: a bare global `.row` would restyle every other demo's `.row`. */
+  .cm-rows :global(.cm-row) {
     padding: var(--ca-space-2) var(--ca-space-3);
     border-radius: var(--ca-radius-sm);
     font-size: var(--ca-font-size-body2);
     color: var(--ca-text-primary);
   }
-  :global(.row:hover), :global(.row[data-state='open']) { background: var(--ca-action-hover); }
+  .cm-rows :global(.cm-row:hover), .cm-rows :global(.cm-row[data-state='open']) { background: var(--ca-action-hover); }
   .note { font-size: var(--ca-font-size-body2); color: var(--ca-text-secondary); }
 </style>

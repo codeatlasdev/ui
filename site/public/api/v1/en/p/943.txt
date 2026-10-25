@@ -1,7 +1,7 @@
 Use @codeatlasdev/ui demo #943 "One menu per row" (navigation/context-menu).
 What it shows: Three invoice rows, each its own context menu with a label, Open and Send reminder, and a 400 ms long-press delay for touch. When to use: A menu per list row: each row is a focusable region, so keyboard users reach the same actions with Shift+F10.
 Spec:
-- `{#each rows as row (row)}` renders `<ContextMenu class="row" role="group" aria-label={row} longPressDelay={400}>` per row
+- `{#each rows as row (row)}` renders `<ContextMenu class="cm-row" role="group" aria-label={row} longPressDelay={400}>` per row
 - The `menu` snippet starts with `<DropdownMenuLabel>{row}</DropdownMenuLabel>` and has Open and Send reminder items
 - Items set `last` to the action and the row name (Open or Send plus the invoice), shown under the list
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?

@@ -192,3 +192,43 @@ describe("motion sidecar fields", () => {
 		);
 	});
 });
+
+describe("demo CSS isolation", () => {
+	// The gallery bundles every demo into one page set, so an unscoped `:global(.x)` rule reaches every
+	// demo that names a local class `.x` too (a context-menu `:global(.row)` padded the button page's `.row`).
+	const files = svelteFiles(DEMOS).map((p) => ({
+		p,
+		css:
+			readFileSync(join(DEMOS, `${p}.svelte`), "utf8").match(
+				/<style[^>]*>([\s\S]*?)<\/style>/
+			)?.[1] ?? "",
+	}));
+	const bare = (css: string) =>
+		[...css.matchAll(/(?:^|[,}\s])(?<![\w-]\s)(?<![>+~]\s):global\(\.([\w-]+)[^)]*\)/gm)]
+			// Only a selector that starts with the global (nothing local in front of it) is bare.
+			.filter((m) => {
+				const before =
+					css
+						.slice(0, m.index! + 1)
+						.split(/[{},]/)
+						.pop() ?? "";
+				return before.trim() === "" || /^\s*$/.test(before);
+			})
+			.map((m) => m[1]);
+	const local = (css: string) =>
+		new Set([...css.matchAll(/(?:^|[\s,}>+~])\.([\w-]+)/gm)].map((m) => m[1]));
+
+	it("no demo declares a bare :global(.x) that another demo uses as a local class", () => {
+		const locals = new Map<string, string[]>();
+		for (const f of files)
+			for (const c of local(f.css.replace(/:global\([^)]*\)/g, "")))
+				locals.set(c, [...(locals.get(c) ?? []), f.p]);
+		const leaks: string[] = [];
+		for (const f of files)
+			for (const c of new Set(bare(f.css)))
+				for (const other of locals.get(c) ?? [])
+					if (other !== f.p)
+						leaks.push(`${f.p}: :global(.${c}) also styles the local .${c} of ${other}`);
+		expect(leaks).toEqual([]);
+	});
+});
