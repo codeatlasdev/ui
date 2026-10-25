@@ -5,6 +5,8 @@
  *   dist/tokens.json      every `--ca-*` custom property (tokens.css + built-in presets + brand)
  *   dist/surfaces.json    every `<html data-style>` surface style, from materials.css (offline `list_surfaces`)
  *   dist/guides.json      the docs site pages as markdown (offline `get_guide`)
+ *   dist/atlas.json       the design atlas as one markdown text per term + the verified references (offline
+ *                         `search_terms`, `get_term`, `get_reference`); only in the monorepo (needs site/)
  *   --skill               also rewrites .agents/skills/codeatlas-ui/API.md (components, then non-component exports)
  *
  *   bun scripts/build-manifest.ts [--check]
@@ -29,6 +31,7 @@ import { DESIGN_STYLES } from "../src/lib/theme/styles.ts";
 import { ENTRY_PAGES, parseRecipes, type Recipe } from "./ai-entry.ts";
 import { buildIndexFiles } from "./index-build.ts";
 import { checkIdRange, checkIndexFacets, ID_PATTERN, type IndexFacets } from "./index-schema.ts";
+import { buildAtlasFile } from "./atlas-markdown.ts";
 import { demoSources, mdxToMarkdown } from "./mdx-to-markdown.ts";
 
 // CJS require keeps svelte2tsx out of Vite's transform pipeline (its sourceMappingURL points at a file it does not ship).
@@ -1682,6 +1685,7 @@ if (import.meta.main) {
 				recipes: buildRecipes(guides),
 			});
 		}
+		if (existsSync(DEMOS_DIR)) write("atlas.json", buildAtlasFile());
 		const { demos, files } = catalog.length
 			? buildDemos(manifest, catalog)
 			: { demos: [], files: {} };

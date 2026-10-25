@@ -91,3 +91,35 @@
 }
 .limits > h2 { margin-top: 0; }
 .limits__reviewed { margin: var(--ca-space-3) 0 0; font-size: var(--ca-font-size-caption); color: var(--ca-text-secondary); }
+
+/* ── Atlas ────────────────────────────────────────────────────────────── */
+.atlas { display: grid; gap: var(--ca-space-6); }
+.atlas__head h1 { margin: var(--ca-space-1) 0; }
+.atlas__how { margin: 0; color: var(--ca-text-body); max-width: 70ch; }
+.atlas-term__facts { display: grid; gap: var(--ca-space-1); padding-inline-start: var(--ca-space-5); font-size: var(--ca-font-size-body2); }
+.atlas-term__scales { display: grid; grid-template-columns: max-content 1fr; gap: var(--ca-space-2) var(--ca-space-4); }
+.atlas-term__scales dd { margin: 0; }
+.atlas-term__heuristic {
+	margin-inline-start: var(--ca-space-1);
+	padding: 0 var(--ca-space-2);
+	border: var(--ca-border-width) dashed var(--ca-outline-strong);
+	border-radius: var(--ca-radius-sm);
+	font-size: var(--ca-font-size-caption);
+	font-weight: 600;
+}
+.atlas-term__score { font-weight: 600; font-variant-numeric: tabular-nums; }
+.atlas-term__ends { color: var(--ca-text-secondary); font-size: var(--ca-font-size-body2); }
+.atlas-term__prompt {
+	margin: var(--ca-space-3) 0;
+	padding: var(--ca-space-4);
+	border: var(--ca-border-width) solid var(--ca-outline-subtle);
+	border-radius: var(--ca-radius-md);
+	background: var(--ca-surface-sunken);
+	font-family: var(--ca-font-mono);
+	font-size: var(--ca-font-size-body2);
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+}
+@media (max-width: 40rem) {
+	.atlas-term__scales { grid-template-columns: 1fr; }
+}

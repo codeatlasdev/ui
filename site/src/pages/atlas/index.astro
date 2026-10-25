@@ -1,0 +1,38 @@
+---
+import AtlasBrowser from "~/components/atlas/AtlasBrowser.svelte";
+import Limits from "~/components/docs/Limits.astro";
+import SiteDocsShell from "~/components/docs/SiteDocsShell.svelte";
+import SiteFooter from "~/components/site/SiteFooter.astro";
+import { ATLAS_LIMITS, ATLAS_REVIEWED, TERMS, termHref } from "~/data/atlas/atlas";
+import Base from "~/layouts/Base.astro";
+import { loadDocs } from "~/lib/docs";
+import { SECTIONS } from "~/lib/nav";
+
+const { groups } = await loadDocs();
+const hrefs = Object.fromEntries(TERMS.map((t) => [t.id, termHref(t)]));
+---
+<Base
+	title="Design atlas"
+	description="269 terms for aesthetics, layouts, interaction patterns and design-system languages, each with its traits, risk, sources and the limits of what is known."
+	skipLink={false}
+>
+	<SiteDocsShell client:load sections={SECTIONS} active="docs" {groups} pathname={Astro.url.pathname}>
+		<article class="atlas">
+			<header class="atlas__head">
+				<p class="sk-eyebrow">Atlas</p>
+				<h1>Design atlas</h1>
+				<p class="doc__lead">
+					A broad, living catalogue of {TERMS.length} terms: historical movements, aesthetics, design-system languages, layouts, interaction patterns and principles. It is not every style that exists, and the classes overlap.
+				</p>
+				<p class="atlas__how">
+					Read it as a map, not a verdict. The 1 to 5 scales are <strong>heuristic</strong> editorial judgements, an audience is a <strong>hypothesis</strong> about motivation and task that was never measured, and the sources behind a term support underlying principles, not the style itself. <a href="/docs/concepts/evidence/#how-to-read-the-design-atlas">How to read the atlas</a>.
+				</p>
+			</header>
+			<AtlasBrowser client:load terms={TERMS} {hrefs} />
+			<Limits reviewed={ATLAS_REVIEWED}>
+				<ul>{ATLAS_LIMITS.map((x) => <li>{x}</li>)}</ul>
+			</Limits>
+		</article>
+	</SiteDocsShell>
+	<SiteFooter />
+</Base>
