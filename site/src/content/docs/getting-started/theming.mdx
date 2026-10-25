@@ -261,6 +261,8 @@ All choices persist in `localStorage` (`ca-scheme`, `ca-preset`, `ca-style`). St
 
 `setTokens` writes your `--ca-*` variables to a single `<style id="ca-runtime-tokens">`, persists them and replays them in the init script before first paint. Use it for user-defined themes such as an imported editor theme. Keys must match `--ca-*`; values containing `{`, `}`, `<` or `;` are dropped.
 
+The init script is one synchronous inline `<script>` (under 1 kB gzip) that reads storage with every access guarded: a blocked, full or corrupt `localStorage` falls back to the theme's defaults on the first frame, never an unthemed page. It sets `ca-init` on `<html>` (transitions off) and removes it two frames after the first paint, so nothing animates on load. It carries no `eval` or inline handler, so a CSP nonce or hash on that one tag is enough.
+
 ```ts
 colorScheme.setTokens({ "--ca-brand-main": "#ff5500", "--ca-radius-md": "14px" });
 colorScheme.setTokens({}); // clear

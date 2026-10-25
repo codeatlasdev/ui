@@ -1,6 +1,6 @@
 // ─── "Apply to site": a design style worn by this browser only ────────────────────────────────────
 // The recipe is compiled to CSS once and stored under the visitor-only key the Theme Studio uses
-// (`ca-site-studio`). A tiny inline script in the layout (`StudioBoot.astro`) replays it before the
+// (`ca-site-studio`). A tiny inline head script (`scripts/theme-boot.ts`) replays it before the
 // first paint. Nothing here touches the published theme, the build output or the package defaults:
 // remove the key and the site is exactly what ships. The visitor's own scheme and preset are never
 // changed; only the surface material and the recipe's tokens are.
@@ -18,7 +18,7 @@ import {
 	themeCSS,
 } from "@codeatlasdev/ui";
 
-/** The visitor-only storage key. The boot script in `StudioBoot.astro` reads the same one. */
+/** The visitor-only storage key. The boot script in `scripts/theme-boot.ts` reads the same one. */
 export const SITE_KEY = "ca-site-studio";
 export const STYLE_ID = "ca-site-studio";
 

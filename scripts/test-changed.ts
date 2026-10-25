@@ -71,6 +71,14 @@ const ownSpec = (f: string) =>
 	/^site\/tests\/[^/]+\.spec\.ts$/.test(f) &&
 	!/\/(routes|routes\.axe|dist-html|header)\.spec\.ts$/.test(f);
 
+/**
+ * Files whose change can put the wrong theme on the first frame: the init script, the Kit and Astro
+ * integrations, the theme engine, the store, and the site's own boot script. They run the zero-flash
+ * matrix (`packages/ui/tests/theme-no-flash.e2e.ts`: real browsers at 6x CPU on Slow 3G) in the land gate.
+ */
+const THEME_PATHS =
+	/^(packages\/ui\/src\/lib\/(theme-script|astro|vite-plugin|theme\/|kit\/theme-handle|stores\/color-scheme)|packages\/ui\/tests\/theme-no-flash\.e2e\.ts$|site\/scripts\/theme-boot\.ts$|site\/tests\/no-flash\.spec\.ts$)/;
+
 const land = process.argv.includes("--land");
 const git = (...args: string[]) =>
 	spawnSync("git", args, { cwd: ROOT, encoding: "utf8" }).stdout.trim().split("\n").filter(Boolean);
@@ -112,7 +120,14 @@ if (!changed.length && !land) {
 
 const sel = select(changed);
 const sharedFile = changed.find(isSharedComponent);
-const specs = changed.filter(ownSpec);
+const themeChanged = changed.some((f) => THEME_PATHS.test(f));
+// The site's zero-flash spec also runs when anything on the theme path changed, not only when it was edited.
+const specs = [
+	...new Set([
+		...changed.filter(ownSpec),
+		...(themeChanged && land ? ["site/tests/no-flash.spec.ts"] : []),
+	]),
+];
 const routes = sel.all ? [] : [...new Set([...sel.routes, ...(land ? CANARIES : [])])].sort();
 const sweepAll = sel.all || (land && sharedFile !== undefined);
 const siteRun = sweepAll || routes.length > 0 || specs.length > 0;
@@ -266,6 +281,11 @@ const building =
 		: undefined;
 await packageTests();
 await building;
+
+if (land && themeChanged)
+	await step("theme zero-flash matrix", () =>
+		run(["bun", "scripts/test-run.ts", "bun", "test", "./packages/ui/tests/theme-no-flash.e2e.ts"])
+	);
 
 if (!shared && vrtTests.length)
 	await step("visual (components)", () =>

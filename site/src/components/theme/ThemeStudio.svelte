@@ -17,6 +17,7 @@
     clone, commit, createHistory, DEFAULT_STATE, decodeState, encodeState, redo, sanitizeState,
     type History, type StudioState, undo,
   } from './studio-state';
+  import { islandCSS } from './studio-output';
 
   interface Props {
     /** The site's own default preset id: a custom brand rides on it for "apply to site". */
@@ -25,18 +26,43 @@
   let { sitePreset }: Props = $props();
 
   const EDITOR_KEY = 'ca-studio-editor';
+  /** Same prefix `scripts/theme-boot.ts` replays before first paint: compiled preview CSS by share code. */
+  const ISLAND_CACHE = 'ca-studio-island:';
 
-  // SSR and the first client render use the default; the URL or storage replaces it on mount.
-  let hist = $state<History>(createHistory(clone(DEFAULT_STATE)));
+  /** The state the URL or storage holds, read in the browser only; the server and a bare visit start from the default. */
+  function startState(): StudioState | null {
+    if (typeof location === 'undefined') return null;
+    const fromUrl = /[#&]t=(v\d+\.[\w-]+)/.exec(location.hash)?.[1];
+    const shared = fromUrl ? decodeState(fromUrl) : null;
+    if (shared) return shared;
+    try {
+      const raw = localStorage.getItem(EDITOR_KEY);
+      return raw ? sanitizeState(JSON.parse(raw)) : null;
+    } catch {
+      return null; // corrupt or private mode: fall back to the default
+    }
+  }
+
+  // Hydration starts from the state the page is already wearing: the first client render is the
+  // shared theme, never the default one followed by a swap in `onMount`.
+  let hist = $state<History>(createHistory(startState() ?? clone(DEFAULT_STATE)));
   const theme = $derived(hist.present);
   let ready = $state(false);
 
-  // Hydration-safe: false (stacked layout) until measured.
+  // Content of the side columns, which only exists at the wide layout: false until measured (the grid itself is CSS).
   let wide = $state(false);
   let studioEl = $state<HTMLElement>();
-  // Vertical space above the studio (site header, banners): measured, never hardcoded, so the
-  // columns fill exactly the rest of the viewport and the page itself never scrolls on desktop.
-  let top = $state(0);
+  // Vertical space above the studio (site header, banners), so the columns fill exactly the rest of the
+  // viewport and the page itself never scrolls on desktop. `null` until measured: the stylesheet's own
+  // default (the docs header plus the content padding above the first block) is what the server and the
+  // first client frame use, so the measurement only refines it and nothing moves when it lands.
+  let top = $state<number | null>(null);
+  /**
+   * The side panels live in the columns until a narrow screen is measured, then in the sheets. The
+   * condition is true on the server and on the first client render (`ready` is false), so hydration
+   * adopts the server's nodes instead of tearing them down and building new ones.
+   */
+  const showColumns = $derived(!ready || wide);
   let controlsOpen = $state(false);
   let codeOpen = $state(false);
 
@@ -100,7 +126,7 @@
   onMount(() => {
     const mq = matchMedia('(min-width: 900px)');
     const measure = () => {
-      if (studioEl) top = Math.max(0, studioEl.getBoundingClientRect().top + scrollY);
+      if (studioEl) top = Math.max(0, Math.round(studioEl.getBoundingClientRect().top + scrollY));
     };
     const sync = () => {
       wide = mq.matches;
@@ -110,18 +136,9 @@
     mq.addEventListener('change', sync);
     addEventListener('resize', measure);
 
-    const fromUrl = /[#&]t=(v\d+\.[\w-]+)/.exec(location.hash)?.[1];
-    let start: StudioState | null = fromUrl ? decodeState(fromUrl) : null;
-    if (!start) {
-      try {
-        const raw = localStorage.getItem(EDITOR_KEY);
-        if (raw) start = sanitizeState(JSON.parse(raw));
-      } catch {
-        /* corrupt or private mode: fall back to the default */
-      }
-    }
-    if (start) hist = createHistory(start);
     ready = true;
+    // The preview now wears the real state: lift the boot script's hold on it.
+    document.documentElement.removeAttribute('data-ts-code');
 
     const onKey = (e: KeyboardEvent) => {
       if (!(e.metaKey || e.ctrlKey) || e.key.toLowerCase() !== 'z') return;
@@ -152,8 +169,22 @@
       const code = encodeState(theme);
       const hash = code === encodeState(DEFAULT_STATE) ? '' : `#t=${code}`;
       writeHash(hash);
+      cacheIsland(code, hash !== '');
     });
   });
+
+  /** Keep the compiled preview CSS of the open share code, so the next visit paints it from the first frame. Only the open one is kept. */
+  function cacheIsland(code: string, shared: boolean) {
+    try {
+      for (let i = localStorage.length - 1; i >= 0; i--) {
+        const k = localStorage.key(i);
+        if (k?.startsWith(ISLAND_CACHE) && k !== ISLAND_CACHE + code) localStorage.removeItem(k);
+      }
+      if (shared) localStorage.setItem(ISLAND_CACHE + code, islandCSS(theme));
+    } catch {
+      /* quota or private mode */
+    }
+  }
 
   function writeHash(hash: string) {
     const url = location.pathname + location.search + hash;
@@ -179,12 +210,12 @@
 
 {#snippet toolbar()}
   <div class="ts-toolbar" role="toolbar" aria-label="Theme studio actions">
-    {#if !wide}
+    <span class="ts-narrow">
       <Button variant="outlined" size="sm" onclick={() => (controlsOpen = true)}>
         {#snippet leading()}<SlidersHorizontal size={16} />{/snippet}
         Controls
       </Button>
-    {/if}
+    </span>
     <IconButton aria-label="Undo" variant="ghost" size="sm" disabled={!canUndo} onclick={doUndo}><Undo2 size={16} /></IconButton>
     <IconButton aria-label="Redo" variant="ghost" size="sm" disabled={!canRedo} onclick={doRedo}><Redo2 size={16} /></IconButton>
     <IconButton aria-label="Reset the theme" variant="ghost" size="sm" onclick={reset}><RotateCcw size={16} /></IconButton>
@@ -193,9 +224,9 @@
       Surprise me
     </Button>
     <span class="ts-spacer"></span>
-    {#if !wide}
+    <span class="ts-narrow">
       <Button variant="filled" size="sm" onclick={() => (codeOpen = true)}>Code</Button>
-    {/if}
+    </span>
   </div>
 {/snippet}
 
@@ -244,22 +275,24 @@
   </div>
 {/snippet}
 
-<div class="ts-studio" data-testid="theme-studio" bind:this={studioEl} style="--ts-top:{top}px">
+<!-- One grid at every width: it is the same on the server and on the first client render, and CSS (not a
+     measured flag) collapses it under 900px. The side columns are in the server HTML so a wide screen
+     paints them from the first frame; once the browser has measured a narrow screen they are removed and
+     the sheets (a modal with focus trap and swipe) hold the same panels, never both at once. -->
+<div class="ts-studio" data-testid="theme-studio" bind:this={studioEl} style={top === null ? undefined : `--ts-top:${top}px`}>
   {@render toolbar()}
-  {#if wide}
-    <div class="ts-wide">
-      <section class="ts-col ts-col--left" aria-label="Controls">
-        <div class="ts-scroll">{@render left()}</div>
-      </section>
-      <section class="ts-col" aria-label="Preview">
-        <div class="ts-scroll">{@render stage()}</div>
-      </section>
-      <section class="ts-col ts-col--right" aria-label="Code">
-        <div class="ts-scroll">{@render code()}</div>
-      </section>
-    </div>
-  {:else}
-    {@render stage()}
+  <div class="ts-wide">
+    <section class="ts-col ts-col--left" aria-label="Controls">
+      <div class="ts-scroll">{#if showColumns}{@render left()}{/if}</div>
+    </section>
+    <section class="ts-col ts-col--stage" aria-label="Preview">
+      <div class="ts-scroll">{@render stage()}</div>
+    </section>
+    <section class="ts-col ts-col--right" aria-label="Code">
+      <div class="ts-scroll">{#if showColumns}{@render code()}{/if}</div>
+    </section>
+  </div>
+  {#if ready && !wide}
     <Sheet bind:open={controlsOpen} title="Theme controls">{@render left()}</Sheet>
     <Sheet bind:open={codeOpen} title="Code and apply">{@render code()}</Sheet>
   {/if}
@@ -274,7 +307,11 @@
   /* Desktop: the studio is exactly the viewport below the site header, toolbar on top, columns
      filling the rest and scrolling on their own. */
   @media (min-width: 900px) {
-    .ts-studio { block-size: calc(var(--ca-vh) - var(--ts-top, 0px)); }
+    .ts-studio {
+      block-size: calc(
+        var(--ca-vh) - var(--ts-top, calc(var(--ca-docs-header-h) + var(--ca-safe-top) + var(--ca-border-width) + var(--ca-space-8)))
+      );
+    }
   }
   .ts-toolbar {
     display: flex;
@@ -285,11 +322,20 @@
     border-block-end: var(--ca-border-width) solid var(--ca-outline-subtle);
   }
   .ts-spacer { flex: 1; }
+  .ts-narrow { display: contents; }
   .ts-wide {
     display: grid;
     flex: 1;
     min-block-size: 0;
-    grid-template-columns: minmax(20rem, 24rem) minmax(0, 1fr) minmax(20rem, 26rem);
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .ts-col--left, .ts-col--right { display: none; }
+  .ts-col--stage { border-inline-end: 0; }
+  @media (min-width: 900px) {
+    .ts-wide { grid-template-columns: minmax(20rem, 24rem) minmax(0, 1fr) minmax(20rem, 26rem); }
+    .ts-col--left, .ts-col--right { display: flex; }
+    .ts-col--stage { border-inline-end: var(--ca-border-width) solid var(--ca-outline-subtle); }
+    .ts-narrow { display: none; }
   }
   .ts-col {
     display: flex;
@@ -298,7 +344,7 @@
     min-height: 0;
     border-inline-end: var(--ca-border-width) solid var(--ca-outline-subtle);
   }
-  .ts-col:last-child { border-inline-end: 0; }
+  .ts-col--right { border-inline-end: 0; }
   .ts-scroll { flex: 1; min-width: 0; min-height: 0; overflow: hidden auto; padding: var(--ca-space-3); }
   .ts-stage { display: flex; flex-direction: column; gap: var(--ca-space-3); min-width: 0; padding: var(--ca-space-3); }
   .ts-stagebar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ca-space-2) var(--ca-space-3); }

@@ -33,7 +33,10 @@ export interface ThemeRuntime {
  * style before any CSS/JS loads, so the page never flashes the wrong theme.
  * Stored values that are not valid for this theme are discarded. It also sets
  * `<meta name="theme-color">`, follows the OS scheme while `system` is active
- * (until the colorScheme store takes over) and replays runtime tokens.
+ * (until the colorScheme store takes over) and replays runtime tokens. Those are written as
+ * `:root:root:root{…}` (specificity 0,3,0): a brand preset's dark block is `.dark[data-preset]`
+ * (0,2,0), so a plain `:root{…}` lost to it whatever the source order, and the tokens silently did
+ * nothing in dark mode. Keep this in step with `RUNTIME_TOKENS_SELECTOR` in color-scheme.svelte.ts.
  *
  * Storage keys must stay in sync with color-scheme.svelte.ts.
  */
@@ -46,10 +49,12 @@ export function themeScript(options: ThemeOptions | ResolvedTheme = {}): string 
 		),
 	};
 	return /* js */ `(function(){try{
-var w=window,h=document.documentElement,ls=localStorage,R=${JSON.stringify(rt)};
+var w=window,h=document.documentElement,ls=null,R=${JSON.stringify(rt)};
+try{ls=w.localStorage}catch(e){}
 w.__caTheme=R;
-function g(k,ok,d){var r=ls.getItem(k),v;try{v=JSON.parse(r)}catch(e){}
-  if(ok.indexOf(v)<0){if(r!==null)ls.removeItem(k);return d}return v}
+function rd(k){try{return ls.getItem(k)}catch(e){return null}}
+function g(k,ok,d){var r=rd(k),v;try{v=JSON.parse(r)}catch(e){}
+  if(ok.indexOf(v)<0){if(r!==null)try{ls.removeItem(k)}catch(e){}return d}return v}
 var scheme=g('ca-scheme',${JSON.stringify(["light", "dark", "system"])},${JSON.stringify(t.defaultScheme)});
 var preset=g('ca-preset',R.known,${JSON.stringify(t.defaultPreset)});
 var style=g('ca-style',${JSON.stringify(STYLES)},${JSON.stringify(t.defaultStyle)});
@@ -69,9 +74,9 @@ function a(){var d=scheme==='system'?m.matches:scheme==='dark';
   e.content=R.colors[preset][d?1:0]}
 a();
 if(scheme==='system')m.addEventListener('change',function(){if(!h.hasAttribute('data-ca-live'))a()});
-try{var x=JSON.parse(ls.getItem('ca-runtime-tokens')),c='';
+try{var x=JSON.parse(rd('ca-runtime-tokens')),c='';
   for(var k in x)if(/^--ca-[\\w-]+$/.test(k)&&!/[{}<;]/.test(x[k]))c+=k+':'+x[k]+';';
-  if(c){var s=document.createElement('style');s.id='ca-runtime-tokens';s.textContent=':root{'+c+'}';document.head.appendChild(s)}
+  if(c){var s=document.createElement('style');s.id='ca-runtime-tokens';s.textContent=':root:root:root{'+c+'}';document.head.appendChild(s)}
 }catch(e){}
 requestAnimationFrame(function(){requestAnimationFrame(function(){h.classList.remove('ca-init')})});
 }catch(e){}})();`;

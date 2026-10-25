@@ -7,5 +7,6 @@
 	"./seo": 32190,
 	"./map": 34977,
 	"./sound": 31700,
-	"./sound (own code, Svelte external)": 4096
+	"./sound (own code, Svelte external)": 4096,
+	"inline: theme init script (default theme)": 1000
 }

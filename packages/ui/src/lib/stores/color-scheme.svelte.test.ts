@@ -98,4 +98,32 @@ describe("colorScheme store", () => {
 		expect(html.classList.contains("dark")).toBe(false);
 		expect(html.getAttribute("data-preset")).toBe("crimson");
 	});
+
+	it("setTokens wins over a preset's dark block, in dark and in light", () => {
+		// What a brand preset emits: a light block on [data-preset] and a dark one on .dark[data-preset] (0,2,0).
+		const preset = document.createElement("style");
+		preset.textContent =
+			'[data-preset="tokens-test"]{--ca-brand-main:rgb(10,10,10)}.dark[data-preset="tokens-test"]{--ca-brand-main:rgb(20,20,20)}';
+		document.head.appendChild(preset);
+		const brand = () => getComputedStyle(html).getPropertyValue("--ca-brand-main").trim();
+		try {
+			html.setAttribute("data-preset", "tokens-test");
+			colorScheme.setPreference("dark");
+			html.setAttribute("data-preset", "tokens-test");
+			expect(brand()).toBe("rgb(20,20,20)");
+
+			colorScheme.setTokens({ "--ca-brand-main": "rgb(1,2,3)" });
+			expect(brand()).toBe("rgb(1,2,3)");
+
+			colorScheme.setPreference("light");
+			html.setAttribute("data-preset", "tokens-test");
+			expect(brand()).toBe("rgb(1,2,3)");
+
+			colorScheme.setTokens({});
+			expect(brand()).toBe("rgb(10,10,10)");
+		} finally {
+			colorScheme.setTokens({});
+			preset.remove();
+		}
+	});
 });

@@ -1,13 +1,13 @@
 // ─── "Apply to site": the visitor's own theme, for this browser only ─────────
 // The edited theme is compiled to CSS once, stored under the site's own key and replayed by a tiny
-// inline script (`StudioBoot.astro`) before first paint. Nothing here touches the published theme,
+// inline head script (`scripts/theme-boot.ts`) before first paint. Nothing here touches the published theme,
 // the build output or the package defaults: clear the key and the site is sketchbook again.
 
 import { colorScheme } from "@codeatlasdev/ui";
 import { siteCSS } from "./studio-output";
 import { encodeState, type StudioState } from "./studio-state";
 
-/** The site's own storage key. The boot script in `StudioBoot.astro` reads the same one. */
+/** The site's own storage key. The boot script in `scripts/theme-boot.ts` reads the same one. */
 export const SITE_KEY = "ca-site-studio";
 export const STYLE_ID = "ca-site-studio";
 

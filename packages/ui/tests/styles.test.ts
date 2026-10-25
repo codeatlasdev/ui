@@ -173,7 +173,7 @@ describe("the site wires the pages in (#583)", () => {
 	it("applies to the site through the Studio's visitor-only key, never the published theme", () => {
 		const src = read("src/lib/visitor-theme.ts");
 		expect(src).toContain('SITE_KEY = "ca-site-studio"');
-		expect(read("src/components/site/StudioBoot.astro")).toContain("ca-site-studio");
+		expect(read("scripts/theme-boot.ts")).toContain('SITE_KEY = "ca-site-studio"');
 		// Nothing writes the build's own theme or the shared scheme/preset keys directly.
 		expect(src).not.toMatch(/writeFile|ca-theme-def|"ca-preset"|"ca-scheme"/);
 	});

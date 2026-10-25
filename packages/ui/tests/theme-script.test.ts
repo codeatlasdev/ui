@@ -9,6 +9,8 @@ afterAll(() => GlobalRegistrator.unregister());
 
 const acme: ThemeOptions = { defaultPreset: "acme", presets: [{ id: "acme", color: "#2563EB" }] };
 const html = document.documentElement;
+/** The rule runtime tokens are written as: `:root` repeated, so it beats every preset block (see theme-script.ts). */
+const RUNTIME_RULE = (decls: string) => `:root:root:root{${decls}}`;
 let dark = false;
 const listeners: Array<() => void> = [];
 
@@ -77,7 +79,68 @@ describe("theme init script", () => {
 		);
 		run();
 		expect(document.getElementById("ca-runtime-tokens")?.textContent).toBe(
-			":root{--ca-brand-main:#ff0000;}"
+			RUNTIME_RULE("--ca-brand-main:#ff0000;")
+		);
+	});
+
+	it("emits a rule that out-ranks a brand preset's dark block (.dark[data-preset], 0,2,0)", () => {
+		localStorage.setItem("ca-runtime-tokens", JSON.stringify({ "--ca-brand-main": "#ff0000" }));
+		run();
+		const rule = document.getElementById("ca-runtime-tokens")?.textContent ?? "";
+		const selector = rule.slice(0, rule.indexOf("{"));
+		// Specificity of a compound of `:root` (pseudo-class, 0,1,0 each): needs strictly more than 0,2,0.
+		expect(selector.split(":root").length - 1).toBeGreaterThanOrEqual(3);
+	});
+});
+
+describe("theme init script robustness", () => {
+	const blockStorage = () => {
+		const real = Object.getOwnPropertyDescriptor(window, "localStorage");
+		Object.defineProperty(window, "localStorage", {
+			configurable: true,
+			get() {
+				throw new DOMException("denied", "SecurityError");
+			},
+		});
+		return () => {
+			if (real) Object.defineProperty(window, "localStorage", real);
+		};
+	};
+
+	it("still paints the default theme when storage is blocked (private mode, cookies off)", () => {
+		const restore = blockStorage();
+		try {
+			run({ ...acme, defaultScheme: "dark", defaultStyle: "flat" });
+		} finally {
+			restore();
+		}
+		expect(html.getAttribute("data-preset")).toBe("acme");
+		expect(html.getAttribute("data-style")).toBe("flat");
+		expect(html.classList.contains("dark")).toBe(true);
+	});
+
+	it("still paints the stored theme when removing a corrupt entry throws", () => {
+		localStorage.setItem("ca-preset", '"gone"');
+		localStorage.setItem("ca-style", '"solid"');
+		const remove = Storage.prototype.removeItem;
+		Storage.prototype.removeItem = () => {
+			throw new DOMException("quota", "QuotaExceededError");
+		};
+		try {
+			run();
+		} finally {
+			Storage.prototype.removeItem = remove;
+		}
+		expect(html.getAttribute("data-preset")).toBe("acme");
+		expect(html.getAttribute("data-style")).toBe("solid");
+	});
+
+	it("replays runtime tokens even when an earlier stored value is corrupt", () => {
+		localStorage.setItem("ca-scheme", "{not json");
+		localStorage.setItem("ca-runtime-tokens", JSON.stringify({ "--ca-brand-main": "#ff0000" }));
+		run();
+		expect(document.getElementById("ca-runtime-tokens")?.textContent).toBe(
+			RUNTIME_RULE("--ca-brand-main:#ff0000;")
 		);
 	});
 });

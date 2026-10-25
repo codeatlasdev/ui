@@ -50,9 +50,9 @@
   });
 </script>
 
-<svelte:head>
-  {@html `<style data-te-island>${css}</style>`}
-</svelte:head>
+<!-- In the stage, not in `svelte:head`: Astro's island SSR drops head content, which left the
+     server-rendered preview with no theme CSS at all until hydration. -->
+{@html `<style data-te-island>${css}</style>`}
 
 <div class="ts-stage" data-compare={compare ? '' : undefined}>
   <div class="ts-grid">
@@ -118,6 +118,11 @@
     max-width: none;
     margin-inline: auto;
   }
+
+  /* A share link whose compiled preview CSS this browser has not seen yet (`scripts/theme-boot.ts`
+     sets `data-ts-code` and replays the cache): the server-rendered preview is the default theme, so
+     it stays invisible, space reserved, until the studio hydrates with the shared state. */
+  :global(html[data-ts-code]:not(:has(#ca-island-boot))) .ts-island { visibility: hidden; }
 
   .ts-island {
     container-type: inline-size;

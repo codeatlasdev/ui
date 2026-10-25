@@ -4,7 +4,6 @@ import "@fontsource-variable/jetbrains-mono";
 import { iconLinks, serializeJsonLd } from "@codeatlasdev/ui/seo";
 import "@codeatlasdev/ui/styles/global.css";
 import "@codeatlasdev/ui/styles/marks.css";
-import StudioBoot from "~/components/site/StudioBoot.astro";
 import { brand } from "~/generated/brand";
 import "~/styles/site.css";
 import "~/styles/sketch.css";
@@ -55,7 +54,6 @@ const ld = jsonLd && serializeJsonLd(jsonLd);
 		<link rel="alternate" type="text/plain" href="/llms.txt" title="LLM-readable docs" />
 		{ld && <script type="application/ld+json" set:html={ld} />}
 		<slot name="head" />
-		<StudioBoot />
 	</head>
 	<body>
 		{skipLink && <a class="skip-link" href="#main">Skip to content</a>}
