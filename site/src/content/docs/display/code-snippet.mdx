@@ -26,6 +26,29 @@ The theme switches between a light and a dark high-contrast Shiki theme when the
 
 <Demo title="Languages" description={"Svelte, TypeScript and CSS."} src={LanguagesSrc}><Languages client:visible /></Demo>
 
+## Code surfaces: integer line-height, one font stack
+
+CodeSnippet is read-only: it ships no editor and no active-line highlight. If you build one (a textarea over a highlighted `pre`, an active-line band, a line-number gutter, a caret you paint yourself), every layer of it has to agree on two things, or the caret and the highlighted line drift apart a little more on every line:
+
+1. **An integer px line height.** `line-height: 1.7` on 13px text is 22.1px. The text layer and the overlay each round that value on their own, so the highlight slips by a fraction of a pixel per line and is a whole line off by line 50. Use `var(--ca-code-line-height)` (20px) on the text layer, on the overlay and on the gutter, and size the highlight band to the same token.
+2. **One font stack.** Set `font-family: var(--ca-font-mono)` on the `pre`, the `code` inside it, the textarea and the gutter. The UA default for `<code>` is a bare `monospace`, which the browser resolves separately from the stack on its parent and can resolve to a font with different metrics.
+
+```css
+.editor-text,
+.editor-overlay,
+.editor-gutter {
+  font: var(--ca-font-size-body2) / var(--ca-code-line-height) var(--ca-font-mono);
+  tab-size: 2;
+  letter-spacing: 0;
+}
+.editor-active-line {
+  block-size: var(--ca-code-line-height);
+  inset-block-start: calc(var(--line) * var(--ca-code-line-height));
+}
+```
+
+`CodeSnippet`, `.ca-code pre` and a bare Markdown fence inside `.ca-prose` already use both. Override the token on `:root` (or on one editor) to change the density, and keep it an integer px value: `--ca-code-line-height: 24px`.
+
 <Props rows={[
   { name: "code", type: "string", description: "Source code to display. Required." },
   { name: "language", type: "string", default: "'svelte'", description: "Shiki language identifier." },
