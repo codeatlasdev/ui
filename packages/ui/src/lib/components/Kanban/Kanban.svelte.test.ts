@@ -42,13 +42,9 @@ const key = (el: HTMLElement, k: string) => {
 	el.dispatchEvent(new KeyboardEvent("keydown", { key: k, bubbles: true, cancelable: true }));
 	return frame();
 };
-async function waitFor(fn: () => boolean, ms = 3000) {
-	const end = Date.now() + ms;
-	while (!fn()) {
-		if (Date.now() > end) throw new Error("waitFor timed out");
-		await new Promise((r) => setTimeout(r, 15));
-	}
-}
+// Awaits the condition with Vitest's poll (its timeout is the test's, not a fixed deadline that a starved
+// machine outruns).
+const waitFor = (fn: () => boolean) => expect.poll(fn, { timeout: 30_000 }).toBe(true);
 
 describe("Kanban board (desktop)", () => {
 	it("renders a fixed header per column and independently scrolling lists", async () => {

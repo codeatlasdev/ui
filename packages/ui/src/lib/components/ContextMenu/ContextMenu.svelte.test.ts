@@ -1,9 +1,16 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
 import Harness from "./ContextMenu.test.svelte";
+
+// The long press is a plain setTimeout in the component: a fake clock installed BEFORE render owns it,
+// so "not open yet" / "never opens" are proven by advancing it, with no wall time.
+const fakeClock = () => vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+afterEach(() => {
+	vi.useRealTimers();
+});
 
 const area = () => page.getByTestId("area");
 const menu = () => document.querySelector('[role="menu"]') as HTMLElement;
@@ -113,10 +120,13 @@ describe("ContextMenu", () => {
 	});
 
 	it("a long touch press opens it at the finger and swallows the native contextmenu", async () => {
+		fakeClock();
 		await render(Harness, { longPressDelay: 80 });
 		touch("pointerdown", 50, 60);
-		await new Promise((r) => setTimeout(r, 30));
-		await expect.element(page.getByRole("menu")).not.toBeInTheDocument();
+		await vi.advanceTimersByTimeAsync(79);
+		expect(menu()).toBeNull();
+		await vi.advanceTimersByTimeAsync(1);
+		vi.useRealTimers();
 		await expect.element(page.getByRole("menu")).toBeVisible();
 		const e = rightClick(50, 60);
 		expect(e.e.defaultPrevented).toBe(true);
@@ -126,12 +136,13 @@ describe("ContextMenu", () => {
 	});
 
 	it("a touch that lifts early or drags away never opens it", async () => {
+		fakeClock();
 		await render(Harness, { longPressDelay: 120 });
 		touch("pointerdown", 50, 60);
 		touch("pointerup", 50, 60);
 		touch("pointerdown", 50, 60);
 		touch("pointermove", 120, 140);
-		await new Promise((r) => setTimeout(r, 250));
+		await vi.advanceTimersByTimeAsync(500);
 		expect(document.querySelector('[role="menu"]')).toBeNull();
 	});
 

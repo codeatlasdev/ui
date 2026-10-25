@@ -6,13 +6,9 @@ import Harness from "./LiveList.test.svelte";
 const scroller = (c: Element) => c.querySelector(".ca-live-list__scroller") as HTMLElement;
 const frame = () => new Promise((r) => requestAnimationFrame(() => r(null)));
 const announcer = () => document.querySelector('[data-ca-announcer="polite"]')?.textContent ?? "";
-async function waitFor(fn: () => boolean, ms = 2000) {
-	const end = Date.now() + ms;
-	while (!fn()) {
-		if (Date.now() > end) throw new Error("waitFor timed out");
-		await new Promise((r) => setTimeout(r, 25));
-	}
-}
+// Awaits the condition with Vitest's poll (its timeout is the test's, not a fixed deadline that a starved
+// machine outruns).
+const waitFor = (fn: () => boolean) => expect.poll(fn, { timeout: 30_000 }).toBe(true);
 
 describe("LiveList", () => {
 	it("renders rows through the item snippet inside a named log region", async () => {

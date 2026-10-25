@@ -2,6 +2,7 @@ import { createRawSnippet } from "svelte";
 import { describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { settled } from "../../../../tests/settled";
 import Button from "./Button.svelte";
 
 const label = (text: string) => createRawSnippet(() => ({ render: () => `<span>${text}</span>` }));
@@ -29,7 +30,8 @@ describe("Button", () => {
 	it("announces when loading finishes, but not on mount or while loading", async () => {
 		const polite = () => document.querySelector('[data-ca-announcer="polite"]')?.textContent ?? "";
 		const screen = await render(Button, { children: label("Save"), loading: true });
-		await new Promise((r) => setTimeout(r, 100));
+		// The announcement is an effect on the loading->done edge: a frame covers the mount effects.
+		await settled();
 		expect(polite()).toBe("");
 		await screen.rerender({ loading: false });
 		await expect.poll(polite).toBe("Finished loading");

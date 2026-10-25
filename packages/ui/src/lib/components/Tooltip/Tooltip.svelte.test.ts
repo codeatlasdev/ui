@@ -1,9 +1,13 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
 import Harness from "./Tooltip.test.svelte";
+
+afterEach(() => {
+	vi.useRealTimers();
+});
 
 describe("Tooltip", () => {
 	it("is hidden until the trigger receives keyboard focus, then role=tooltip describes it", async () => {
@@ -51,13 +55,17 @@ describe("Tooltip", () => {
 	});
 
 	it("does not open from pointerenter alone or from touch, only from real mouse movement", async () => {
+		// The open delay is a plain setTimeout: a fake clock installed BEFORE render owns it, so "never
+		// opens" is proven by advancing past the delay, not by sitting through it.
+		vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
 		const screen = await render(Harness);
 		const trigger = screen.getByRole("button", { name: "Save" }).element();
 		// A cursor resting where the trigger mounts (or layout moving it under the cursor) fires enter only.
 		trigger.dispatchEvent(new PointerEvent("pointerenter", { pointerType: "mouse" }));
 		trigger.dispatchEvent(new PointerEvent("pointermove", { pointerType: "touch", bubbles: true }));
-		await new Promise((r) => setTimeout(r, 50));
+		await vi.advanceTimersByTimeAsync(5000);
 		expect(document.querySelector('[role="tooltip"]')).toBeNull();
+		vi.useRealTimers();
 		trigger.dispatchEvent(new PointerEvent("pointermove", { pointerType: "mouse", bubbles: true }));
 		await expect.element(page.getByRole("tooltip")).toBeVisible();
 	});

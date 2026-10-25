@@ -1,4 +1,4 @@
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
@@ -8,6 +8,10 @@ import Harness from "./HoverCard.test.svelte";
 const card = () => document.querySelector<HTMLElement>(".ca-hovercard-content");
 const trigger = (screen: Awaited<ReturnType<typeof render>>) =>
 	screen.getByRole("link", { name: "@ada" });
+
+afterEach(() => {
+	vi.useRealTimers();
+});
 
 describe("HoverCard", () => {
 	it("is closed until hovered, then shows the card and describes the trigger", async () => {
@@ -35,14 +39,18 @@ describe("HoverCard", () => {
 	});
 
 	it("waits openDelay for the pointer, and a pointer that leaves first cancels it", async () => {
+		// The open timer is a plain setTimeout: a fake clock installed BEFORE render owns it, so the
+		// pointer round trips take any time under load and "still closed" is not a race.
+		vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
 		const screen = await render(Harness, { openDelay: 250 });
 		const t = trigger(screen);
 		await t.hover();
-		await new Promise((r) => setTimeout(r, 100));
+		await vi.advanceTimersByTimeAsync(249);
 		expect(card()).toBeNull();
 		await userEvent.unhover(t);
-		await new Promise((r) => setTimeout(r, 300));
+		await vi.advanceTimersByTimeAsync(1000);
 		expect(card()).toBeNull();
+		vi.useRealTimers();
 		await t.hover();
 		await expect.element(page.getByText("Ada Lovelace")).toBeVisible();
 	});
@@ -94,11 +102,12 @@ describe("HoverCard", () => {
 	});
 
 	it("touch never opens it, so a tap only does the trigger's own action", async () => {
+		vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
 		const screen = await render(Harness);
 		const el = trigger(screen).element();
 		for (const type of ["pointerenter", "pointermove", "pointerdown"])
 			el.dispatchEvent(new PointerEvent(type, { pointerType: "touch", bubbles: true }));
-		await new Promise((r) => setTimeout(r, 80));
+		await vi.advanceTimersByTimeAsync(2000);
 		expect(card()).toBeNull();
 	});
 

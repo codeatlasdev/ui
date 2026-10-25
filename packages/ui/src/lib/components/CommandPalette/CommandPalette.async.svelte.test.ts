@@ -177,7 +177,8 @@ describe("CommandPalette async search (#293)", () => {
 		const screen = await open({ search, minQueryLength: 3 });
 		await input().fill("in");
 		await expect.element(screen.getByTestId("query")).toHaveTextContent("in");
-		await new Promise((r) => setTimeout(r, 120));
+		// The harness debounce is 0 ms: a search that was going to fire would have by the next frame.
+		await settled();
 		expect(search).not.toHaveBeenCalled();
 		await input().fill("inv");
 		await expect.element(page.getByRole("option", { name: /Invoice 1042/ })).toBeVisible();

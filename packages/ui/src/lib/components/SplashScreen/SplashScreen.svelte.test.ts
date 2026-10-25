@@ -1,5 +1,5 @@
 import { createRawSnippet } from "svelte";
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import SplashScreen from "./SplashScreen.svelte";
@@ -8,6 +8,10 @@ const logo = createRawSnippet(() => ({
 	render: () => '<svg aria-hidden="true" data-testid="logo"></svg>',
 }));
 const splash = (c: HTMLElement) => c.querySelector<HTMLElement>(".ca-splash");
+
+afterEach(() => {
+	vi.useRealTimers();
+});
 
 describe("SplashScreen", () => {
 	it("is a polite status region with a localised accessible name", async () => {
@@ -35,13 +39,18 @@ describe("SplashScreen", () => {
 
 	it("waits for ready after minDuration has passed, then leaves", async () => {
 		let done = 0;
+		// minDuration is a plain setTimeout: a fake clock installed BEFORE render owns it, so "still here
+		// well past minDuration while not ready" costs no wall time.
+		vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
 		const screen = await render(SplashScreen, {
 			minDuration: 50,
 			ready: false,
 			ondone: () => done++,
 		});
-		await new Promise((r) => setTimeout(r, 200));
+		await vi.advanceTimersByTimeAsync(5000);
 		expect(splash(screen.container)).not.toBeNull();
+		expect(done).toBe(0);
+		vi.useRealTimers();
 		await screen.rerender({ ready: true });
 		await expect.poll(() => splash(screen.container)).toBeNull();
 		expect(done).toBe(1);

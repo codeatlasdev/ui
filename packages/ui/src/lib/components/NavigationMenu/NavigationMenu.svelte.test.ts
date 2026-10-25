@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
@@ -11,6 +11,10 @@ const gotoNav = async () => {
 	await userEvent.tab(); // Skip
 	await userEvent.tab(); // Products
 };
+
+afterEach(() => {
+	vi.useRealTimers();
+});
 
 describe("NavigationMenu", () => {
 	it("is a labelled nav landmark with a list, disclosure buttons and no menu roles", async () => {
@@ -118,18 +122,51 @@ describe("NavigationMenu", () => {
 		await expect.element(link("Analytics")).not.toBeInTheDocument();
 	});
 
-	it("hover delays, switches once open, closes after closeDelay", async () => {
+	it("hover opens only after openDelay", async () => {
+		// The open timer is a plain setTimeout: a fake clock installed BEFORE render owns it.
+		vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
 		await render(Harness, { openDelay: 150, closeDelay: 150 });
 		await trigger("Products").hover();
-		await new Promise((r) => setTimeout(r, 60));
+		await vi.advanceTimersByTimeAsync(149);
 		expect(document.querySelector(".ca-navmenu-panel")).toBeNull();
+		await vi.advanceTimersByTimeAsync(1);
+		vi.useRealTimers();
+		await expect.element(link("Analytics")).toBeVisible();
+	});
+
+	it("leaving the trigger closes the panel only after closeDelay", async () => {
+		await render(Harness, { openDelay: 0, closeDelay: 150 });
+		await trigger("Products").hover();
+		await expect.element(link("Analytics")).toBeVisible();
+		// The close timer is armed by the leave, inside the faked window, so the clock owns it.
+		vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
+		// A synthetic leave: a real unhover parks the pointer where it may cross into the panel, which
+		// (rightly) cancels the close and is not what this test is about.
+		trigger("Products")
+			.element()
+			.dispatchEvent(new PointerEvent("pointerleave", { pointerType: "mouse" }));
+		await vi.advanceTimersByTimeAsync(149);
+		// Aria-expanded is the source of truth: the panel element can outlive its close for the exit.
+		expect(trigger("Products").element().getAttribute("aria-expanded")).toBe("true");
+		await vi.advanceTimersByTimeAsync(1);
+		expect(trigger("Products").element().getAttribute("aria-expanded")).toBe("false");
+		vi.useRealTimers();
+		await expect.element(link("Analytics")).not.toBeInTheDocument();
+	});
+
+	it("switches once open and closes after closeDelay", async () => {
+		await render(Harness, { openDelay: 0, closeDelay: 150 });
+		await trigger("Products").hover();
 		await expect.element(link("Analytics")).toBeVisible();
 		await trigger("Resources").hover();
 		await expect.element(link("Docs")).toBeVisible();
 		await expect.element(link("Analytics")).not.toBeInTheDocument();
+		// Pointer inside the panel cancels the close timer; faked from here so the wait costs nothing.
+		vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
 		await userEvent.hover(link("Docs"));
-		await new Promise((r) => setTimeout(r, 300));
-		await expect.element(link("Docs")).toBeVisible();
+		await vi.advanceTimersByTimeAsync(1000);
+		expect(link("Docs").element()).toBeVisible();
+		vi.useRealTimers();
 		await userEvent.unhover(link("Docs"));
 		await expect.element(link("Docs")).not.toBeInTheDocument();
 	});

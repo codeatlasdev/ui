@@ -40,12 +40,13 @@ describe("MapStage with a deck.gl layer", () => {
 				],
 			});
 			await vi.waitFor(() => expect(map?.isStyleLoaded()).toBe(true), { timeout: 10_000 });
-			// Let several frames render: the error fires per frame.
+			// The error fires per rendered frame: render a run of them, and the map's own `idle` event says
+			// the last repaint finished, with no fixed wait.
 			for (let i = 0; i < 5; i++) {
 				map?.triggerRepaint();
 				await new Promise((r) => requestAnimationFrame(() => r(null)));
 			}
-			await new Promise((r) => setTimeout(r, 500));
+			await new Promise<void>((resolve) => map?.once("idle", () => resolve()));
 			expect(errors).toEqual([]);
 		} finally {
 			window.removeEventListener("error", onError);

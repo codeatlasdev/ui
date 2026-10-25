@@ -1,5 +1,6 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-svelte";
+import { settled } from "../../../tests/settled";
 
 type Nav = { type: string };
 const callbacks: Array<(nav: Nav) => void> = [];
@@ -36,7 +37,8 @@ describe("RouteAnnouncer", () => {
 		await render(RouteAnnouncer, {});
 		document.title = "Home";
 		navigate("enter");
-		await new Promise((r) => setTimeout(r, 150));
+		// A navigation announces from one requestAnimationFrame; once a frame has passed it would have.
+		await settled();
 		expect(polite()).toBeUndefined();
 	});
 

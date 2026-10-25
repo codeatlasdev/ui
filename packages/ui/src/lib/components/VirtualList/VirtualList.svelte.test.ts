@@ -1,5 +1,5 @@
 import { tick } from "svelte";
-import { describe, expect, it, vi } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { SLOW_FLOW } from "../../../../tests/settled";
@@ -19,6 +19,10 @@ const keys = (c: Element) =>
 // machine outruns), never a retry of the assertion that follows.
 const waitFor = (fn: () => boolean) => expect.poll(fn, { timeout: 30_000 }).toBe(true);
 const top = (el: HTMLElement) => el.getBoundingClientRect().top;
+
+afterEach(() => {
+	vi.useRealTimers();
+});
 
 describe("VirtualList", () => {
 	it("renders a named, focusable region with a list inside", async () => {
@@ -191,7 +195,6 @@ describe("VirtualList", () => {
 		await settle();
 		scroller(a.container).scrollTop = 0;
 		await settle();
-		await new Promise((r) => setTimeout(r, 100));
 		expect(loading).not.toHaveBeenCalled();
 
 		const none = vi.fn();
@@ -199,7 +202,6 @@ describe("VirtualList", () => {
 		await settle();
 		scroller(b.container).scrollTop = 0;
 		await settle();
-		await new Promise((r) => setTimeout(r, 100));
 		expect(none).not.toHaveBeenCalled();
 	});
 
@@ -282,13 +284,21 @@ describe("VirtualList", () => {
 		async () => {
 			const announcer = () =>
 				document.querySelector('[data-ca-announcer="polite"]')?.textContent ?? "";
+			// The announcement is a 600 ms debounce on a plain setTimeout: a fake clock installed BEFORE
+			// render proves "a prepend is never announced" with no wall time. `announce` writes the text on
+			// the next real frame (and clears it 5 s later on the same clock), so each advance is followed by
+			// a settled frame BEFORE the assertion; without it "not announced" would pass for any input.
+			vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
 			const screen = await render(Harness, { props: { initial: 20 } });
 			await settle();
 			screen.component.prepend(7);
-			await new Promise((r) => setTimeout(r, 900));
+			await vi.advanceTimersByTimeAsync(900);
+			await settle();
 			expect(announcer()).not.toContain("7 items");
 			screen.component.append(2);
 			screen.component.append(3);
+			await vi.advanceTimersByTimeAsync(900);
+			vi.useRealTimers();
 			await waitFor(() => announcer().includes("5 items"));
 		},
 		SLOW_FLOW

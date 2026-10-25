@@ -2,8 +2,27 @@ import { flushSync } from "svelte";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { page } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
+import { settled } from "../../../tests/settled";
 import PresenceBlock from "./PresenceBlock.test.svelte";
 import { createPresence } from "./presence.svelte.js";
+
+const frame = () => new Promise((r) => requestAnimationFrame(() => r(null)));
+const exiting = (el: Element) => el.getAnimations().filter((a) => a.playState === "running");
+// Holds the exit animation still, so "stays present while it plays" is a property of the animation
+// being unfinished, not of how long the machine takes to reach a timer. The primitive looks at the
+// running animations in ONE requestAnimationFrame after the close and then awaits `finished`; ours is
+// registered after it (frame callbacks run in registration order), so the animation is paused only
+// once the primitive has attached to it. Call right after the close.
+async function holdExit(el: Element) {
+	await frame();
+	const running = exiting(el);
+	expect(running.length).toBeGreaterThan(0);
+	for (const a of running) a.pause();
+	for (let i = 0; i < 3; i++) await frame();
+}
+const release = (el: Element) => {
+	for (const a of el.getAnimations()) a.play();
+};
 
 const cleanups: Array<() => void> = [];
 afterEach(() => {
@@ -33,6 +52,7 @@ function harness(animation: boolean) {
 	});
 	cleanups.push(stop, () => release());
 	return {
+		node,
 		presence,
 		setOpen(v: boolean) {
 			open = v;
@@ -44,12 +64,13 @@ function harness(animation: boolean) {
 
 describe("createPresence", () => {
 	it("stays present until the exit animation ends", async () => {
-		const { presence, setOpen } = harness(true);
+		const { node, presence, setOpen } = harness(true);
 		expect(presence.present).toBe(true);
 		setOpen(false);
 		expect(presence.present).toBe(true);
-		await new Promise((r) => setTimeout(r, 60));
+		await holdExit(node);
 		expect(presence.present).toBe(true);
+		release(node);
 		await expect.poll(() => presence.present, { timeout: 2000 }).toBe(false);
 	});
 
@@ -63,7 +84,10 @@ describe("createPresence", () => {
 		const { presence, setOpen } = harness(true);
 		setOpen(false);
 		setOpen(true);
-		await new Promise((r) => setTimeout(r, 250));
+		// What could flip it is the exit's frame callback; it was cancelled by the reopen. Let the frames
+		// that would have run it, and the 150 ms exit animation if one had started, play out.
+		for (let i = 0; i < 4; i++) await frame();
+		await settled();
 		expect(presence.present).toBe(true);
 	});
 });
@@ -76,8 +100,9 @@ describe("createPresence in a template", () => {
 		// Not removed in the flush that flips `open`: the exit animation has to play.
 		expect(node.isConnected).toBe(true);
 		expect(node.dataset.state).toBe("closed");
-		await new Promise((r) => setTimeout(r, 150));
+		await holdExit(node);
 		expect(node.isConnected).toBe(true);
+		release(node);
 		await expect.poll(() => node.isConnected, { timeout: 2000 }).toBe(false);
 	});
 
