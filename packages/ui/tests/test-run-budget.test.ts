@@ -20,7 +20,7 @@ describe("test-run budgets", () => {
 			changed: 60,
 			validate: 90,
 			land: 180,
-			landShared: 360,
+			landShared: 420,
 			full: 300,
 			vrt: 180,
 		});
