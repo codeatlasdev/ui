@@ -29,9 +29,9 @@ import { loadMigrations, migrationMarkdown } from "../src/cli/migrations.ts";
 import { STYLES, type SurfaceStyle } from "../src/lib/theme/define.ts";
 import { DESIGN_STYLES } from "../src/lib/theme/styles.ts";
 import { ENTRY_PAGES, parseRecipes, type Recipe } from "./ai-entry.ts";
+import { buildAtlasFile } from "./atlas-markdown.ts";
 import { buildIndexFiles } from "./index-build.ts";
 import { checkIdRange, checkIndexFacets, ID_PATTERN, type IndexFacets } from "./index-schema.ts";
-import { buildAtlasFile } from "./atlas-markdown.ts";
 import { demoSources, mdxToMarkdown } from "./mdx-to-markdown.ts";
 
 // CJS require keeps svelte2tsx out of Vite's transform pipeline (its sourceMappingURL points at a file it does not ship).
