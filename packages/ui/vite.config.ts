@@ -45,7 +45,9 @@ export default defineConfig({
 	plugins: [svelte()],
 	server: { fs: { allow: [searchForWorkspaceRoot(process.cwd()), ...fontDirs] } },
 	// Pre-bundle lazily imported deps so the first browser run doesn't trigger an optimizer reload.
-	optimizeDeps: { include: ["echarts", "@tanstack/svelte-table", "shiki", "axe-core"] },
+	optimizeDeps: {
+		include: ["echarts", "@tanstack/svelte-table", "shiki", "axe-core", "@deck.gl/maplibre"],
+	},
 	test: {
 		expect: { requireAssertions: true },
 		// Locally: a quarter of the cores (each worker is a browser tab in one Chromium). CI keeps the default.

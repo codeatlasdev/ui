@@ -29,7 +29,7 @@ const ENTRIES: Entry[] = [
 		name: "./map",
 		js: `export * from "./map/index.js";`,
 		requires: "map/index.js",
-		external: ["maplibre-gl", "mapbox-gl", "@deck.gl/core", "@deck.gl/mapbox"],
+		external: ["maplibre-gl", "mapbox-gl", "@deck.gl/core", "@deck.gl/mapbox", "@deck.gl/maplibre"],
 	},
 	{
 		name: "./sound",
