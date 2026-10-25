@@ -15,7 +15,8 @@
  */
 import { existsSync, readdirSync, rmSync, statSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
+import { fileURLToPath } from "node:url";
 
 export interface Store {
 	name: string;
@@ -31,7 +32,8 @@ export interface Store {
 }
 
 const MB = 1024 * 1024;
-const root = join(import.meta.dir, "..");
+// `import.meta.url`, not Bun's `import.meta.dir`: the site build loads this file through Vite on Node
+const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const tmp = process.env.TMPDIR ? process.env.TMPDIR : tmpdir();
 
 /** The one table. Raise a cap only with the measured reason. */
@@ -155,7 +157,7 @@ export function evictAll(dryRun = false, newRun = false): { removed: number; fre
 	});
 }
 
-if (import.meta.main) {
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
 	const clean = process.argv.includes("--clean");
 	const mb = (n: number) => `${(n / MB).toFixed(1)} MB`;
 	for (const s of STORES) {
