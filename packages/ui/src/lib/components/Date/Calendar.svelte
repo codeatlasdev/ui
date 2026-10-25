@@ -3,7 +3,7 @@
   import { calendar } from '../../i18n/groups/calendar.js';
   import type { DateValue } from '@internationalized/date';
   import { announce } from '../../utils/announce.js';
-  import CalendarBody from './CalendarBody.svelte';
+  import CalendarFrame from './CalendarFrame.svelte';
   import { CalendarState } from './calendar-state.svelte.js';
   import type { WeekStart } from './date-utils.js';
   import './date.css';
@@ -80,16 +80,4 @@
   });
 </script>
 
-<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-<div
-  bind:this={cal.root}
-  class="ca-cal ca-cal--standalone {className}"
-  role="application"
-  aria-label={cal.fullLabel}
-  data-disabled={disabled ? '' : undefined}
-  data-readonly={readonly ? '' : undefined}
-  onkeydown={cal.onkeydown}
->
-  <div class="ca-sr-only"><div role="heading" aria-level="2">{cal.fullLabel}</div></div>
-  <CalendarBody state={cal} {disabled} {readonly} />
-</div>
+<CalendarFrame state={cal} {disabled} {readonly} standalone class={className} />

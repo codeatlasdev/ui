@@ -5,10 +5,10 @@
   import type { DateValue } from '@internationalized/date';
   import { announce } from '../../utils/announce.js';
   import { uid } from '../../utils/index.js';
-  import CalendarBody from './CalendarBody.svelte';
+  import CalendarFrame from './CalendarFrame.svelte';
   import { CalendarState } from './calendar-state.svelte.js';
-  import DateSegments from './DateSegments.svelte';
-  import { defaultDate, type WeekStart } from './date-utils.js';
+  import DateFieldShell from './DateFieldShell.svelte';
+  import { defaultDate, focusOwnDay, type WeekStart } from './date-utils.js';
   import { FieldState } from './field-state.svelte.js';
   import PickerPopover from './PickerPopover.svelte';
   import './date.css';
@@ -74,7 +74,6 @@
   }: Props = $props();
 
   const id = uid('dp');
-  const describedBy = $derived(error ? `${id}-err` : description ? `${id}-hint` : undefined);
 
   let wrap = $state<HTMLElement | null>(null);
   let triggerEl = $state<HTMLElement | null>(null);
@@ -134,84 +133,28 @@
     open = false;
     if (restoreFocus) triggerEl?.focus();
   }
-
-  /**
-   * Focus goes to this popover's own active day, without scrolling the page (other calendars may
-   * sit further down).
-   */
-  function focusOwnDay(content: HTMLElement) {
-    queueMicrotask(() => {
-      const day =
-        content.querySelector<HTMLElement>('[data-ca-day][data-focused]') ??
-        content.querySelector<HTMLElement>('[data-ca-day]:not([data-disabled])');
-      day?.focus({ preventScroll: true });
-    });
-  }
 </script>
 
-<div class="ca-date {className}" class:ca-date--sm={size === 'sm'} class:ca-date--error={!!error} class:ca-date--disabled={disabled}>
-  {#if label}
-    <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
-    <div class="ca-date__label" id="{id}-label" onclick={() => !disabled && field.focusFirst()}>
-      {label}{#if required}<span class="ca-date__req" aria-hidden="true"> *</span>{/if}
-    </div>
-  {/if}
-
-  <div
-    class="ca-date__wrap"
-    role="group"
-    bind:this={wrap}
-    aria-labelledby={label ? `${id}-label` : undefined}
-    aria-describedby={describedBy}
-    aria-disabled={disabled}
-    data-invalid={error || field.invalid ? '' : undefined}
-    data-disabled={disabled ? '' : undefined}
-    data-state={open ? 'open' : undefined}
-  >
-    <DateSegments
-      {field}
-      base={id}
-      labelId={label ? `${id}-label` : undefined}
-      {disabled}
-      {readonly}
-      invalid={!!error || field.invalid}
-    />
-    <button
-      type="button"
-      class="ca-date__trigger"
-      bind:this={triggerEl}
-      aria-label={triggerLabel ?? t().calendar.openCalendar}
-      aria-haspopup="dialog"
-      aria-expanded={open}
-      aria-controls={open ? `${id}-content` : undefined}
-      data-segment="trigger"
-      data-state={open ? 'open' : 'closed'}
-      {disabled}
-      onclick={() => {
-        if (!readonly) open = !open;
-      }}
-    >
-      <CalendarDays size={16} strokeWidth={2} aria-hidden="true" />
-    </button>
-  </div>
-  {#if name}
-    <input
-      {name}
-      value={value?.toString() ?? ''}
-      {required}
-      tabindex="-1"
-      aria-hidden="true"
-      class="ca-sr-only"
-      style="transform:translateX(-100%)"
-    />
-  {/if}
-
-  {#if error}
-    <p id="{id}-err" class="ca-date__hint ca-date__hint--error" role="alert">{error}</p>
-  {:else if description}
-    <p id="{id}-hint" class="ca-date__hint">{description}</p>
-  {/if}
-</div>
+<DateFieldShell
+  {id}
+  {field}
+  {label}
+  {description}
+  {error}
+  {disabled}
+  {readonly}
+  {required}
+  {size}
+  class={className}
+  {open}
+  triggerIcon={CalendarDays}
+  triggerLabel={triggerLabel ?? t().calendar.openCalendar}
+  bind:triggerEl
+  onToggle={() => (open = !open)}
+  {name}
+  formValue={value?.toString()}
+  bind:wrap
+/>
 
 <PickerPopover
   {open}
@@ -222,15 +165,5 @@
   onclose={() => close()}
   onopen={focusOwnDay}
 >
-  <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-<div
-    bind:this={cal.root}
-    class="ca-cal"
-    role="application"
-    aria-label={cal.fullLabel}
-    onkeydown={cal.onkeydown}
-  >
-    <div class="ca-sr-only"><div role="heading" aria-level="2">{cal.fullLabel}</div></div>
-    <CalendarBody state={cal} {disabled} {readonly} />
-  </div>
+  <CalendarFrame state={cal} {disabled} {readonly} />
 </PickerPopover>

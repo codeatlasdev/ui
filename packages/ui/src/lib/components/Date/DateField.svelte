@@ -2,7 +2,7 @@
   import type { DateValue } from '@internationalized/date';
   import { announce } from '../../utils/announce.js';
   import { uid } from '../../utils/index.js';
-  import DateSegments from './DateSegments.svelte';
+  import DateFieldShell from './DateFieldShell.svelte';
   import { defaultDate } from './date-utils.js';
   import { FieldState } from './field-state.svelte.js';
   import './date.css';
@@ -53,7 +53,6 @@
 
   const id = uid('df');
 
-  const describedBy = $derived(error ? `${id}-err` : description ? `${id}-hint` : undefined);
   let wrap = $state<HTMLElement | null>(null);
 
   // Empty field: the placeholder decides the segment format and the base for typed values.
@@ -84,48 +83,18 @@
   $effect(() => field.sync(value));
 </script>
 
-<div class="ca-date {className}" class:ca-date--sm={size === 'sm'} class:ca-date--error={!!error} class:ca-date--disabled={disabled}>
-  {#if label}
-    <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
-    <div class="ca-date__label" id="{id}-label" onclick={() => !disabled && field.focusFirst()}>
-      {label}{#if required}<span class="ca-date__req" aria-hidden="true"> *</span>{/if}
-    </div>
-  {/if}
-
-  <div
-    class="ca-date__wrap"
-    role="group"
-    bind:this={wrap}
-    aria-labelledby={label ? `${id}-label` : undefined}
-    aria-describedby={describedBy}
-    aria-disabled={disabled}
-    data-invalid={error || field.invalid ? '' : undefined}
-    data-disabled={disabled ? '' : undefined}
-  >
-    <DateSegments
-      {field}
-      base={id}
-      labelId={label ? `${id}-label` : undefined}
-      {disabled}
-      {readonly}
-      invalid={!!error || field.invalid}
-    />
-  </div>
-  {#if name}
-    <input
-      {name}
-      value={value?.toString() ?? ''}
-      {required}
-      tabindex="-1"
-      aria-hidden="true"
-      class="ca-sr-only"
-      style="transform:translateX(-100%)"
-    />
-  {/if}
-
-  {#if error}
-    <p id="{id}-err" class="ca-date__hint ca-date__hint--error" role="alert">{error}</p>
-  {:else if description}
-    <p id="{id}-hint" class="ca-date__hint">{description}</p>
-  {/if}
-</div>
+<DateFieldShell
+  {id}
+  {field}
+  {label}
+  {description}
+  {error}
+  {disabled}
+  {readonly}
+  {required}
+  {size}
+  class={className}
+  {name}
+  formValue={value?.toString()}
+  bind:wrap
+/>

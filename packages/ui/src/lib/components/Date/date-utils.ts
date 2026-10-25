@@ -216,3 +216,16 @@ export function placeholderFor(part: string, locale: string): string {
 	if (part === "hour" || part === "minute" || part === "second") return "––";
 	return "";
 }
+
+/**
+ * Moves focus to a picker popover's own active day, without scrolling the page (other calendars
+ * may sit further down).
+ */
+export function focusOwnDay(content: HTMLElement): void {
+	queueMicrotask(() => {
+		const day =
+			content.querySelector<HTMLElement>("[data-ca-day][data-focused]") ??
+			content.querySelector<HTMLElement>("[data-ca-day]:not([data-disabled])");
+		day?.focus({ preventScroll: true });
+	});
+}
