@@ -156,6 +156,10 @@ test.describe("design styles (#583)", () => {
 	for (const id of IDS) {
 		test(`/styles/${id}/ has no axe violations in light and dark`, async ({ page }, testInfo) => {
 			await gotoReady(page, `/styles/${id}/`);
+			// CodeSnippet shows a raw <pre> until shiki resolves; axe must see the final highlighted block.
+			await page.waitForFunction(
+				() => !document.querySelector(".ca-code-snippet__pre--raw:not(details:not([open]) *)")
+			);
 			for (const scheme of ["Light", "Dark"]) {
 				await page.getByRole("radio", { name: scheme, exact: true }).click();
 				await expectNoViolations(await makeAxe(page).analyze(), testInfo, `${id}-${scheme}`);

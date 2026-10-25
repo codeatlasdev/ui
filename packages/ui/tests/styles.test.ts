@@ -29,9 +29,16 @@ describe("style pages data (#583)", () => {
 	});
 
 	it("covers the six requested styles, each a real designStyle recipe", () => {
-		expect([...STYLE_PAGE_IDS].sort()).toEqual(
-			["brutalism", "editorial", "glassmorphism", "sketchbook", "swiss", "terminal"].sort()
-		);
+		const wanted: string[] = [
+			"brutalism",
+			"editorial",
+			"glassmorphism",
+			"sketchbook",
+			"swiss",
+			"terminal",
+		];
+		const have: string[] = [...STYLE_PAGE_IDS];
+		expect(have.sort()).toEqual(wanted.sort());
 		for (const id of STYLE_PAGE_IDS) expect(DESIGN_STYLES[id].id).toBe(id);
 	});
 
