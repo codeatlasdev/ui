@@ -194,7 +194,7 @@ export function releaseLock(pid: number) {
 
 /** Wall-time budget in seconds of each command. Raise one only in its own commit, with the measured reason. */
 export const BUDGETS = {
-	/** `bun run test` / `test:changed`: what the diff against origin/main affects */
+	/** `bun run test` / `test:changed` with a NARROW selection (one that widens to every component test runs under `landShared`, scripts/test-graph.ts `resolveBudget`) */
 	changed: 60,
 	/** `bun run validate`: build, types, lint, unit tests, size */
 	validate: 90,
@@ -209,6 +209,8 @@ export const BUDGETS = {
 	 * 1044 (#598). Measured at load 7 on 12 cores, a shared change (components ALL 210 files): 224.8 s with a cold card
 	 * cache (package 11 s, then site build 125 s beside the tests, then routes 88 s) and 193.5 s with a warm one (site
 	 * build 94 s). The full sweep stays at release (`test:full`). Do not raise it again: make the run faster.
+	 * A dev run (`bun run test`) widened to every component test gets it too: the full component set alone is ~80 s
+	 * (95 s at load 10.5 on the happy-dom bump #588), over the 60 s `changed` budget that assumed a narrow selection.
 	 */
 	landShared: 240,
 	/** `bun run test:full`: unit, every component test, every route, fixtures (release gate, part 1) */

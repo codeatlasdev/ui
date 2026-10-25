@@ -1,5 +1,11 @@
 import { describe, expect, it } from "bun:test";
-import { affected, buildGraph, isSharedComponent, landBudget } from "../../../scripts/test-graph";
+import {
+	affected,
+	buildGraph,
+	isSharedComponent,
+	resolveBudget,
+	widenedBecause,
+} from "../../../scripts/test-graph";
 
 // scripts/test-graph.ts selects component tests by a static import graph, because Vitest's `--changed`
 // selects every file in browser mode. Too wide a selection defeats it; too narrow hides a regression.
@@ -70,13 +76,21 @@ describe("test-graph", () => {
 	});
 });
 
-// `issue-land.sh` picks the land budget from this: a shared change runs every component test and every route
-// (360 s, no screenshots), anything else the affected ones plus the canaries (180 s).
-describe("landBudget", () => {
-	it("a component edit is under the 180 s budget", () => {
-		expect(landBudget([`${dir}/Avatar/Avatar.svelte`])).toBe("land");
-		expect(landBudget([`${dir}/Avatar/Avatar.svelte.test.ts`, "AGENTS.md"])).toBe("land");
-		expect(landBudget([])).toBe("land");
+// The budget follows the scope of the selection. A dependency bump (happy-dom, #588) correctly selects every
+// component test, and the full set alone is ~80 s (95 s at load 10.5), over the 60 s `changed` budget that
+// assumed a narrow selection. Widened to all components: `landShared`; narrow: `changed` (dev) or `land`.
+describe("resolveBudget", () => {
+	const narrow = [`${dir}/Avatar/Avatar.svelte`];
+
+	it("a narrow selection keeps its budget and has no widening reason", () => {
+		expect(resolveBudget(narrow, false)).toBe("changed");
+		expect(resolveBudget([`${dir}/Avatar/Avatar.svelte.test.ts`, "AGENTS.md"], false)).toBe(
+			"changed"
+		);
+		expect(resolveBudget([], false)).toBe("changed");
+		expect(resolveBudget(narrow, true)).toBe("land");
+		expect(resolveBudget([], true)).toBe("land");
+		expect(widenedBecause(narrow)).toBeUndefined();
 	});
 
 	it.each([
@@ -86,16 +100,18 @@ describe("landBudget", () => {
 		"packages/ui/src/lib/primitives/presence.svelte.ts",
 		"packages/ui/tests/setup.browser.ts",
 		"packages/ui/vite.config.ts",
+		"packages/ui/package.json",
 		"site/src/layouts/Base.astro",
-	])("%s is shared: the 360 s budget", (file) => {
-		expect(landBudget([file])).toBe("landShared");
+	])("%s widens to all components: landShared, dev run and land gate", (file) => {
+		for (const land of [false, true])
+			expect(resolveBudget([...narrow, file], land)).toBe("landShared");
+		expect(widenedBecause([...narrow, file])).toBe(file);
 	});
 
-	it("one shared file among ordinary ones is enough, and a file the route map does not know is shared", () => {
-		expect(landBudget([`${dir}/Avatar/Avatar.svelte`, "packages/ui/src/lib/styles/base.css"])).toBe(
-			"landShared"
-		);
-		expect(landBudget(["site/public/some-new-asset.svg"])).toBe("landShared");
+	it("a file the route map does not know widens too, and the reason names it", () => {
+		const file = "site/public/some-new-asset.svg";
+		expect(resolveBudget([file], false)).toBe("landShared");
+		expect(widenedBecause([...narrow, file])).toBe(file);
 	});
 
 	it("isSharedComponent only flags what every component test renders through", () => {
