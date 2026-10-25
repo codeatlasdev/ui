@@ -1,0 +1,192 @@
+---
+import { CodeSnippet } from "@codeatlasdev/ui/code";
+import type { GetStaticPaths } from "astro";
+import Claim from "~/components/docs/Claim.astro";
+import Limits from "~/components/docs/Limits.astro";
+import Refs from "~/components/docs/Refs.astro";
+import SiteFooter from "~/components/site/SiteFooter.astro";
+import SiteHeader from "~/components/site/SiteHeader.svelte";
+import ApplyStyle from "~/components/styles/ApplyStyle.svelte";
+import Fits from "~/components/styles/Fits.svelte";
+import Showcase from "~/components/styles/Showcase.svelte";
+import StyleView from "~/components/styles/StyleView.svelte";
+import {
+	recipeKnobs,
+	recipeSource,
+	STYLE_LIST,
+	type StyleDoc,
+	stylePrompt,
+	styleHref,
+	styleReferences,
+	TRAIT_AXES,
+} from "~/data/styles/styles";
+import Base from "~/layouts/Base.astro";
+import { SECTIONS } from "~/lib/nav";
+import { DESIGN_STYLES } from "@codeatlasdev/ui";
+
+export const getStaticPaths = (() =>
+	STYLE_LIST.map((doc) => ({ params: { id: doc.id }, props: { doc } }))) satisfies GetStaticPaths;
+
+const { doc } = Astro.props as { doc: StyleDoc };
+const recipe = DESIGN_STYLES[doc.id].theme;
+const material = recipe.defaultStyle ?? "solid";
+const scheme = recipe.defaultScheme === "dark" ? "dark" : "light";
+const refs = styleReferences(doc);
+const AXIS_LABEL = { type: "Type", colour: "Colour", shape: "Shape", depth: "Depth", motion: "Motion" } as const;
+const others = STYLE_LIST.filter((s) => s.id !== doc.id);
+---
+<Base
+	title={`${doc.name} style`}
+	description={`${doc.tagline} Origin, traits, do and don't, accessibility pitfalls, before and after on real components, the ThemeOptions recipe and a prompt for your AI. This page is rendered in the ${doc.name} style.`}
+>
+	<SiteHeader client:load sections={SECTIONS} active="styles" pathname={Astro.url.pathname} />
+	<StyleView client:load id={doc.id} material={material} scheme={scheme}>
+		<main id="main" tabindex="-1" class="sx">
+			<header class="sx__head">
+				<p class="sx__crumb"><a href="/styles/">&larr; Design styles</a></p>
+				<h1>{doc.name}</h1>
+				<p class="sx__lead">{doc.tagline}</p>
+				<p class="sx__meta">
+					Rendered in <code>designStyle("{doc.id}")</code>.{" "}
+					Atlas terms: {doc.atlas.map((a, i) => (<>{i > 0 && ", "}<code>{a}</code></>))}.
+				</p>
+			</header>
+
+			<section aria-labelledby="origin" class="sx__sec">
+				<h2 id="origin">Where it comes from</h2>
+				{doc.origin.map((p) => <p>{p}</p>)}
+				<p class="sx__note">Written by us, in our own words, as background. It is not a claim about users.</p>
+			</section>
+
+			<section aria-labelledby="traits" class="sx__sec">
+				<h2 id="traits">Traits</h2>
+				<dl class="sx__traits">
+					{TRAIT_AXES.map((axis) => (
+						<div class="sx__trait">
+							<dt>{AXIS_LABEL[axis]}</dt>
+							<dd>
+								<p>{doc.traits[axis].summary}</p>
+								<p class="sx__tokens">{doc.traits[axis].tokens.map((t, i) => (<>{i > 0 && " "}<code>{t}</code></>))}</p>
+							</dd>
+						</div>
+					))}
+				</dl>
+			</section>
+
+			<section aria-labelledby="show" class="sx__sec">
+				<h2 id="show">Before and after, on real components</h2>
+				<p>
+					The same components twice: with the package default and with this style. Use the toggle to flip between them or put them side by side.
+				</p>
+				<Showcase client:visible id={doc.id} material={material} showcases={doc.showcases} elevation={doc.cardElevation ?? 1} />
+			</section>
+
+			<section aria-labelledby="dos" class="sx__sec">
+				<h2 id="dos">Do and don't</h2>
+				<div class="sx__dd">
+					<div>
+						<h3>Do</h3>
+						<ul>{doc.dos.map((d) => <li>{d}</li>)}</ul>
+					</div>
+					<div>
+						<h3>Don't</h3>
+						<ul>{doc.donts.map((d) => <li>{d}</li>)}</ul>
+					</div>
+				</div>
+				<p class="sx__note">These are our own guidance for using the recipe well. The accessibility items below carry their sources.</p>
+			</section>
+
+			<section aria-labelledby="a11y" class="sx__sec">
+				<h2 id="a11y">Accessibility pitfalls</h2>
+				<p>Each item names what goes wrong, what the library already does about it and what is left to you.</p>
+				{doc.pitfalls.map((p) => (
+					<>
+						<h3>{p.title}</h3>
+						<Claim strength={p.claim.strength} refs={p.claim.refs.join(", ")} scope={p.claim.scope || undefined}>
+							<p>{p.claim.text}</p>
+						</Claim>
+						<p><strong>What to do.</strong> {p.fix}</p>
+					</>
+				))}
+			</section>
+
+			<section aria-labelledby="fits" class="sx__sec">
+				<h2 id="fits">Components that fit</h2>
+				<p>{doc.fitsWhen}</p>
+				<p><strong>Avoid it when:</strong> {doc.avoidWhen}</p>
+				<p class="sx__note">Where it fits is our judgement from using the recipe, not a measured result.</p>
+				<ul class="sx__fitlist">
+					{doc.fits.map((f) => <li><a href={f.href}><code>{f.component}</code></a>: {f.why}</li>)}
+				</ul>
+				<Fits client:visible names={doc.fits.map((f) => f.component)} />
+				<p class="sx__note">Overlays such as Dialog and Tooltip render in the page body, outside this style's subtree, so they are not shown here. Apply the style to the whole site to see them wear it.</p>
+			</section>
+
+			<section aria-labelledby="recipe" class="sx__sec">
+				<h2 id="recipe">The ThemeOptions recipe</h2>
+				<p>One call in <code>src/lib/theme.ts</code>. Everything below is what the recipe sets; override any of it on top.</p>
+				<CodeSnippet client:visible language="ts" code={recipeSource(doc.id)} />
+				<p>With your own brand colour on top:</p>
+				<CodeSnippet client:visible language="ts" code={recipeSource(doc.id, true)} />
+				<details class="sx__knobs">
+					<summary>Every knob this recipe sets</summary>
+					<CodeSnippet client:visible language="json" code={recipeKnobs(doc.id)} />
+				</details>
+				<h3>Try it on this site</h3>
+				<ApplyStyle client:load id={doc.id} name={doc.name} />
+			</section>
+
+			<section aria-labelledby="prompt" class="sx__sec">
+				<h2 id="prompt">Prompt for your AI</h2>
+				<p>Paste this into a coding agent. It carries the recipe, the limits and the accessibility rules.</p>
+				<CodeSnippet client:visible language="markdown" code={stylePrompt(doc.id)} />
+			</section>
+
+			<Limits reviewed={doc.reviewed}>
+				<ul>{doc.limits.map((l) => <li>{l}</li>)}</ul>
+			</Limits>
+
+			<Refs ids={refs.map((r) => r.id).join(", ")} />
+
+			<nav class="sx__more" aria-label="Other styles">
+				<h2>Other styles</h2>
+				<ul>
+					{others.map((s) => <li><a href={styleHref(s.id)}>{s.name}</a></li>)}
+				</ul>
+			</nav>
+		</main>
+	</StyleView>
+	<SiteFooter />
+</Base>
+
+<style is:global>
+	.sx {
+		max-inline-size: var(--lp-max);
+		margin-inline: auto;
+		padding: var(--ca-space-6) var(--lp-gutter) var(--ca-space-16);
+		display: grid;
+		gap: var(--ca-space-8);
+		outline: none;
+	}
+	.sx__head h1 { margin: 0; }
+	.sx__crumb { margin: 0 0 var(--ca-space-2); }
+	.sx__lead { max-inline-size: var(--ca-measure); font-size: var(--ca-font-size-lg); color: var(--ca-text-body); }
+	.sx__meta, .sx__note { color: var(--ca-text-secondary); font-size: var(--ca-font-size-body2); }
+	.sx__sec { display: grid; gap: var(--ca-space-3); min-inline-size: 0; }
+	.sx__sec > h2 { margin: 0; }
+	.sx__sec > p { max-inline-size: var(--ca-measure); margin: 0; }
+	.sx__traits { display: grid; gap: var(--ca-space-4); margin: 0; }
+	.sx__trait { display: grid; gap: var(--ca-space-1); padding-block-end: var(--ca-space-4); border-block-end: var(--ca-border-width) solid var(--ca-outline-subtle); }
+	@media (min-width: 900px) { .sx__trait { grid-template-columns: 9rem minmax(0, 1fr); gap: var(--ca-space-5); } }
+	.sx__trait dt { font-weight: var(--ca-font-weight-semibold); text-transform: var(--ca-label-case); letter-spacing: var(--ca-label-tracking); font-size: var(--ca-font-size-label); }
+	.sx__trait dd { margin: 0; max-inline-size: var(--ca-measure); }
+	.sx__trait p { margin: 0 0 var(--ca-space-2); }
+	.sx__tokens { color: var(--ca-text-secondary); font-size: var(--ca-font-size-caption); display: flex; flex-wrap: wrap; gap: var(--ca-space-1) var(--ca-space-2); }
+	.sx__dd { display: grid; gap: var(--ca-space-5); }
+	@media (min-width: 900px) { .sx__dd { grid-template-columns: 1fr 1fr; } }
+	.sx__dd h3 { margin: 0 0 var(--ca-space-2); }
+	.sx__dd ul, .sx__fitlist { margin: 0; padding-inline-start: var(--ca-space-5); display: grid; gap: var(--ca-space-2); }
+	.sx__knobs summary { cursor: pointer; min-block-size: 44px; display: flex; align-items: center; }
+	.sx__more ul { display: flex; flex-wrap: wrap; gap: var(--ca-space-2) var(--ca-space-5); padding: 0; list-style: none; }
+	.sx__more a { display: inline-flex; align-items: center; min-block-size: 44px; }
+</style>

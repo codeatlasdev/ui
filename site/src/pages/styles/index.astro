@@ -1,0 +1,51 @@
+---
+import { CardGrid, LinkCard } from "@codeatlasdev/ui";
+import SiteFooter from "~/components/site/SiteFooter.astro";
+import SiteHeader from "~/components/site/SiteHeader.svelte";
+import { STYLE_LIST, styleHref } from "~/data/styles/styles";
+import Base from "~/layouts/Base.astro";
+import { SECTIONS } from "~/lib/nav";
+---
+<Base
+	title="Design styles"
+	description="Six design styles as live pages: Swiss, Editorial, Brutalism, Sketchbook, Glassmorphism and Terminal. Each page is rendered in its own style, with before and after on real components, the ThemeOptions recipe, accessibility pitfalls and a prompt for your AI."
+>
+	<SiteHeader client:load sections={SECTIONS} active="styles" pathname={Astro.url.pathname} />
+	<main id="main" tabindex="-1" class="styles-index">
+		<header class="styles-index__head">
+			<p class="sk-eyebrow">Design styles</p>
+			<h1>One theme object, six languages</h1>
+			<p class="styles-index__lead">
+				Every page below is rendered in the style it describes: open it and the type, corners, depth and motion you see are
+				<code>designStyle("&hellip;")</code> applied to that page. Each one shows the same components before and after, the recipe to copy, what goes wrong for accessibility and a prompt for your coding agent.
+			</p>
+		</header>
+		<CardGrid>
+			{STYLE_LIST.map((s) => (
+				<LinkCard title={s.name} href={styleHref(s.id) as string}>{s.tagline}</LinkCard>
+			))}
+		</CardGrid>
+		<section class="styles-index__more" aria-labelledby="how">
+			<h2 id="how">How to read these pages</h2>
+			<ul>
+				<li>The recipes are proposals built from the library's design knobs, not measurements of any named visual language.</li>
+				<li>Claims about accessibility cite the standard or source they rest on, with a strength label. None of them says a style performs better than another. <a href="/docs/concepts/evidence/">How we use evidence</a>.</li>
+				<li>Want the broader map? The <a href="/atlas/">design atlas</a> lists the terms these recipes implement.</li>
+				<li>Agents: <a href="/llms/styles.txt">/llms/styles.txt</a> is the digest, and the MCP server has <code>get_style</code>.</li>
+			</ul>
+		</section>
+	</main>
+	<SiteFooter />
+</Base>
+
+<style>
+	.styles-index {
+		max-inline-size: var(--lp-max);
+		margin-inline: auto;
+		padding: var(--ca-space-10) var(--lp-gutter) var(--ca-space-16);
+		display: grid;
+		gap: var(--ca-space-8);
+	}
+	.styles-index__lead { max-inline-size: 62ch; color: var(--ca-text-body); }
+	.styles-index__more ul { padding-inline-start: var(--ca-space-5); display: grid; gap: var(--ca-space-2); max-inline-size: 68ch; }
+</style>

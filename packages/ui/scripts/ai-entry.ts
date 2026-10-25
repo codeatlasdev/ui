@@ -156,6 +156,17 @@ export function buildLlmsIndex(i: {
 			],
 		},
 		{
+			heading: "Design styles",
+			links: [
+				{
+					title: "Design styles",
+					href: `${SITE}/llms/styles.txt`,
+					description:
+						'six design-style recipes (Swiss, Editorial, Brutalism, Sketchbook, Glassmorphism, Terminal): traits, do and don\'t, accessibility pitfalls with their sources, the `designStyle("<id>")` recipe and a prompt; one file per style at /llms/styles/<id>.txt, or ask the MCP server (`get_style`). A recipe is a proposal, not a measurement, and no claim says a style performs better',
+				},
+			],
+		},
+		{
 			heading: "Machine-readable endpoints",
 			links: [
 				{
