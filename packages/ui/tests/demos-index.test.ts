@@ -235,7 +235,7 @@ describe("publishing gate", () => {
 
 	it("the audit counts add up and say how many entries were never re-read", () => {
 		expect(AUDIT.read.first + AUDIT.read.holdout).toBe(AUDIT.read.total);
-		expect(AUDIT.read.catalog).toBe(CATALOG.length);
+		expect<number>(AUDIT.read.catalog).toBe(CATALOG.length);
 		expect(AUDIT.read.catalog - AUDIT.read.total).toBe(AUDIT.read.unread);
 	});
 
