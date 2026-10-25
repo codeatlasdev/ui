@@ -202,7 +202,10 @@
 {#snippet stageBar()}
   <div class="ts-stagebar">
     {#if wide}
-      <SegmentedControl aria-label="Preview screen" size="sm" items={SCREENS.map((s) => ({ value: s.id, label: s.label }))} bind:value={screen} />
+      <!-- Eight labels do not fit the middle column: the picker scrolls instead of clipping them. -->
+      <div class="ts-screen-scroll">
+        <SegmentedControl aria-label="Preview screen" size="sm" items={SCREENS.map((s) => ({ value: s.id, label: s.label }))} bind:value={screen} />
+      </div>
     {:else}
       <div class="ts-screen-select">
         <Select aria-label="Preview screen" options={SCREENS.map((s) => ({ value: s.id, label: s.label }))} bind:value={screen} />
@@ -305,5 +308,7 @@
   .ts-stage { display: flex; flex-direction: column; gap: var(--ca-space-3); min-width: 0; padding: var(--ca-space-3); }
   .ts-stagebar { display: flex; flex-wrap: wrap; align-items: center; gap: var(--ca-space-2) var(--ca-space-3); }
   .ts-preview { min-width: 0; }
+  .ts-screen-scroll { max-inline-size: 100%; min-inline-size: 0; overflow-x: auto; overscroll-behavior-x: contain; }
+  .ts-screen-scroll :global(.ca-seg) { min-inline-size: max-content; }
   .ts-screen-select { inline-size: 100%; max-inline-size: 16rem; }
 </style>
