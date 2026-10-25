@@ -49,9 +49,9 @@ test.describe("hero and ambient motion", () => {
 			await page.mouse.down();
 			await page.mouse.up();
 			await expect(stage).toHaveAttribute("data-taken", "true");
-			await expect(spot).toHaveAttribute("style", /--x: (8[5-9]|9\d)(\.\d+)?%/);
+			await expect(spot).toHaveAttribute("style", /--spot-x: (8[5-9]|9\d)(\.\d+)?%/);
 			await page.mouse.move(box.x + box.width * 0.1, box.y + box.height * 0.2);
-			await expect(spot).toHaveAttribute("style", /--x: (\d|1\d)(\.\d+)?%/);
+			await expect(spot).toHaveAttribute("style", /--spot-x: (\d|1\d)(\.\d+)?%/);
 		});
 
 		test("Grid ripple: a click restarts the wave from the clicked dot", async ({ page }) => {
