@@ -10,6 +10,10 @@ The component pages tell you what to call. The concept pages tell you what to bu
 
 <CardGrid>
   <LinkCard title="How we use evidence" href="/docs/concepts/evidence/">The five strength labels, the nine rules and how to validate before you commit. Read this first.</LinkCard>
+  <LinkCard title="Viewport-complete UX" href="/docs/concepts/viewport/">The first screen, viewport units, safe areas, the keyboard and the cue that there is more below.</LinkCard>
+  <LinkCard title="Motion that respects people" href="/docs/concepts/reduced-motion/">When motion helps, when it hurts, and how to honor the reduced-motion setting without losing meaning.</LinkCard>
+  <LinkCard title="Targets and focus" href="/docs/concepts/targets-and-focus/">Target size, focus that is visible and never hidden, and modal dialogs that manage focus.</LinkCard>
+  <LinkCard title="Appeal is not usability" href="/docs/concepts/appeal-and-usability/">What visual appeal can and cannot say about whether an interface works, and how to test a style.</LinkCard>
 </CardGrid>
 
 ## How a concept page is built
@@ -35,3 +39,30 @@ Add `site/src/content/docs/concepts/<id>.mdx` with `group: Concepts`. Wrap each 
 <Callout type="note" title="For AI agents">
   Each page is also plain markdown at `/llms/concepts/<id>.txt`, with its claims, scope, limits and references intact. The `ca-ui-mcp` server returns it with `get_guide`.
 </Callout>
+
+## The backlog
+
+Twenty concepts we plan to write, ordered by how often a coding agent gets them wrong when nothing tells it better. Each is written in full with the template above only after its sources are opened and recorded. Until a concept is written there is no page and no claim.
+
+| # | Concept | Scope in one line |
+|---|---|---|
+| 1 | Viewport-complete UX | Written. The first screen, viewport units, safe areas, keyboard, reflow. |
+| 2 | Targets and focus | Written. Target size, visible focus, focus not hidden, modal focus. |
+| 3 | Motion that respects people | Written. Essential and non-essential motion, the reduced-motion setting. |
+| 4 | Appeal is not usability | Written. What appeal ratings do and do not show. |
+| 5 | Color is never the only signal | State, error and status carried by more than hue. |
+| 6 | Contrast across themes | Text and outline contrast in light, dark and high-contrast, and in every preset. |
+| 7 | Forms that finish | Labels, errors, autocomplete, input types and recovery from a mistake. |
+| 8 | Empty, loading and error states | What a screen shows before, between and after data. |
+| 9 | Progressive disclosure, honestly | What may be hidden and what must stay visible: prices, limits, frequent actions. |
+| 10 | Navigation and orientation | Where am I, where can I go, how do I get back, on a phone and a desktop. |
+| 11 | Dense data and tables | Scanning, alignment, sorting, row actions and mobile fallbacks. |
+| 12 | Text that reads | Measure, line height, scale, truncation and what survives a long translation. |
+| 13 | Internationalization in layout | Length growth, right-to-left, numbers, dates and currency. |
+| 14 | Overlays and layers | Dialogs, popovers, tooltips and toasts: which one, and how they stack. |
+| 15 | Touch, pointer and hover | Designing for coarse pointers without breaking the mouse, and no hover-only actions. |
+| 16 | Performance as experience | Loading, layout shift, interaction latency and what the thresholds measure. |
+| 17 | Offline and slow networks | What a screen does with no connection, and what it promises. |
+| 18 | Trust and confirmation | Destructive actions, undo, confirmation wording and honest defaults. |
+| 19 | Notifications and interruption | When to interrupt, how often and how to let people turn it off. |
+| 20 | Adaptive and generated interfaces | Auditability, reversal and unwanted surprise when an interface changes itself. |

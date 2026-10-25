@@ -1,0 +1,124 @@
+<script lang="ts">
+  import { SegmentedControl, Switch, Slider } from '@codeatlasdev/ui';
+  import { DEVICE_PRESETS, hiddenBy, type PresetName, viewportHeights } from './model';
+
+  let preset = $state<string>('Typical phone (390 x 844)');
+  let collapsed = $state(false);
+  let keyboard = $state(0);
+  let edgeToEdge = $state(true);
+  let mode = $state('resizes-content');
+
+  const device = $derived(DEVICE_PRESETS[preset as PresetName]);
+  const state = $derived({
+    screen: device.screen,
+    bars: device.bars,
+    safe: edgeToEdge ? device.safe : { top: 0, bottom: 0 },
+    keyboard,
+    collapsed,
+    keyboardMode: mode === 'resizes-visual' ? ('resizes-visual' as const) : ('resizes-content' as const),
+  });
+  const h = $derived(viewportHeights(state));
+  const rows = $derived(
+    (['lvh', 'svh', 'dvh'] as const).map((unit) => ({
+      unit,
+      px: h[unit],
+      hidden: hiddenBy(unit, state),
+    }))
+  );
+  const SCALE = 0.32;
+</script>
+
+<div class="sim">
+  <div class="sim__controls">
+    <SegmentedControl
+      aria-label="Device shape"
+      bind:value={preset}
+      items={Object.keys(DEVICE_PRESETS).map((k) => ({ value: k, label: k }))}
+    />
+    <Switch bind:checked={collapsed} label="Browser bars collapsed (after scrolling)" />
+    <Switch bind:checked={edgeToEdge} label="Page draws edge to edge (viewport-fit=cover)" />
+    <label class="sim__slider">
+      <span>Keyboard height: {keyboard} px</span>
+      <Slider bind:value={keyboard} min={0} max={Math.round(device.screen * 0.5)} step={10} />
+    </label>
+    <SegmentedControl
+      aria-label="Keyboard resize mode"
+      bind:value={mode}
+      items={[
+        { value: 'resizes-content', label: 'Resizes content' },
+        { value: 'resizes-visual', label: 'Resizes visual only' },
+      ]}
+    />
+  </div>
+
+  <div class="sim__stage">
+    <div
+      class="sim__phone"
+      role="img"
+      aria-label="Phone drawing: browser bars, the visible area, the safe areas and the keyboard, to scale"
+      style="--w:{device.width * SCALE}px; --h:{device.screen * SCALE}px"
+    >
+      <div class="sim__bar sim__bar--top" class:is-off={collapsed} style="--bar:{(device.bars / 2) * SCALE}px"></div>
+      <div class="sim__visible" style="--top:{collapsed ? 0 : (device.bars / 2) * SCALE}px; --vis:{h.visible * SCALE}px">
+        {#if state.safe.top}<div class="sim__safe sim__safe--top" style="--s:{state.safe.top * SCALE}px"></div>{/if}
+        <p class="sim__label">{h.visible}px visible</p>
+        {#if state.safe.bottom && keyboard === 0}<div class="sim__safe sim__safe--bottom" style="--s:{state.safe.bottom * SCALE}px"></div>{/if}
+      </div>
+      <div class="sim__bar sim__bar--bottom" class:is-off={collapsed} style="--bar:{(device.bars / 2) * SCALE}px"></div>
+      {#if keyboard}<div class="sim__keyboard" style="--kb:{keyboard * SCALE}px">keyboard</div>{/if}
+    </div>
+
+    <table class="sim__table">
+      <caption class="ca-sr-only">Height each unit resolves to in the chosen state</caption>
+      <thead><tr><th scope="col">Unit</th><th scope="col">Height</th><th scope="col">Hidden under UI</th></tr></thead>
+      <tbody>
+        {#each rows as r (r.unit)}
+          <tr>
+            <th scope="row"><code>100{r.unit}</code></th>
+            <td>{r.px}px</td>
+            <td>{r.hidden ? `${r.hidden}px` : 'none'}</td>
+          </tr>
+        {/each}
+        <tr>
+          <th scope="row">Usable by content</th>
+          <td>{h.usable}px</td>
+          <td>{h.keyboardInset ? `inset ${h.keyboardInset}px` : 'no inset'}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="sim__note">An illustrative model with round numbers. Real bar heights and keyboard behavior differ by browser and version: test on devices.</p>
+</div>
+
+<style>
+  .sim { display: grid; gap: var(--ca-space-4); width: 100%; padding: var(--ca-space-4); }
+  .sim__controls { display: grid; gap: var(--ca-space-3); }
+  .sim__slider { display: grid; gap: var(--ca-space-1); font-size: var(--ca-font-size-body2); }
+  .sim__stage { display: flex; flex-wrap: wrap; gap: var(--ca-space-5); align-items: flex-start; }
+  .sim__phone {
+    position: relative; inline-size: var(--w); block-size: var(--h); flex: none; overflow: hidden;
+    border: var(--ca-border-width) solid var(--ca-outline-strong); border-radius: var(--ca-radius-lg);
+    background: var(--ca-surface-sunken);
+  }
+  .sim__bar { position: absolute; inset-inline: 0; block-size: var(--bar); background: var(--ca-outline-subtle); }
+  .sim__bar--top { inset-block-start: 0; }
+  .sim__bar--bottom { inset-block-end: 0; }
+  .sim__bar.is-off { display: none; }
+  .sim__visible {
+    position: absolute; inset-inline: 0; inset-block-start: var(--top); block-size: var(--vis);
+    background: var(--ca-surface-base); display: grid; place-items: center;
+  }
+  .sim__label { margin: 0; font-size: var(--ca-font-size-caption); color: var(--ca-text-secondary); }
+  .sim__safe { position: absolute; inset-inline: 0; block-size: var(--s); background: var(--ca-warning-container, var(--ca-outline-subtle)); }
+  .sim__safe--top { inset-block-start: 0; }
+  .sim__safe--bottom { inset-block-end: 0; }
+  .sim__keyboard {
+    position: absolute; inset-inline: 0; inset-block-end: 0; block-size: var(--kb);
+    display: grid; place-items: center; background: var(--ca-outline-strong); color: var(--ca-surface-base);
+    font-size: var(--ca-font-size-caption);
+  }
+  .sim__table { border-collapse: collapse; font-size: var(--ca-font-size-body2); }
+  .sim__table th, .sim__table td { padding: var(--ca-space-1) var(--ca-space-3); text-align: start; }
+  .sim__table tbody tr { border-block-start: var(--ca-border-width) solid var(--ca-outline-subtle); }
+  .sim__note { margin: 0; font-size: var(--ca-font-size-caption); color: var(--ca-text-secondary); }
+</style>

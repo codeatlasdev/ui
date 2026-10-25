@@ -1,0 +1,21 @@
+{
+	"summary": "A scrollable account form with three TextFields (work email, company, role) and a StickyActions bar with a stretched Continue button, wrapped in the keyboardAware action.",
+	"use": "A form that stays operable with the on-screen keyboard open: the page scrolls, the focused field comes into view and the action bar rides above the keyboard and the safe area.",
+	"spec": [
+		"`<form` with `use:keyboardAware` (from `@codeatlasdev/ui/actions`), `max-height: 24rem` and `overflow-y: auto`",
+		"`<TextField label=\"Work email\" type=\"email\" bind:value={email} autocomplete=\"email\" />`, then `Company` and `Role` fields with matching `autocomplete`",
+		"A filler `div` of at least `8rem` so the form scrolls",
+		"`<StickyActions align=\"stretch\">` holds `<Button variant=\"filled\" type=\"submit\">` whose label becomes `Sent` after submit"
+	],
+	"tags": [
+		"viewport",
+		"keyboard",
+		"keyboard-aware",
+		"sticky-actions",
+		"form",
+		"mobile",
+		"safe-area",
+		"concept"
+	],
+	"shape": "tall"
+}

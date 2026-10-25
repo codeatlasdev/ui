@@ -1,0 +1,129 @@
+---
+title: Targets and focus
+description: How big a control must be, how to keep keyboard focus visible and never hidden by sticky UI, and how modal dialogs manage focus. The WCAG minimums, the larger sizes we choose, and how the library applies them.
+group: Concepts
+order: 4
+---
+import { Callout } from "@codeatlasdev/ui";
+import Claim from "~/components/docs/Claim.astro";
+import Limits from "~/components/docs/Limits.astro";
+import Refs from "~/components/docs/Refs.astro";
+
+A control people cannot hit, a focus ring they cannot see, and a dialog that lets focus escape are three of the most common ways an interface stops working for someone. The standards say what is required. This page says what they require, what they do not, and where our defaults go further.
+
+## Definition and vocabulary
+
+| Term | What it means here |
+|---|---|
+| Target | The area that responds to a pointer: the whole clickable region, which may be larger than what is drawn. |
+| CSS pixel | The unit of the criteria. It is not a physical pixel and not a device model. |
+| Minimum level | WCAG's AA threshold. A floor for conformance, not a design target. |
+| Focus indicator | The visible mark on the control that has keyboard focus. |
+| Obscured focus | Focus on a control that author content, such as a sticky bar, covers. |
+| Modal dialog | A window that makes the page behind it unavailable until it closes. |
+
+## Evidence
+
+<Claim strength="practice" refs="W06" scope="WCAG 2.2 Understanding document for 2.5.8, Level AA. It lists exceptions for spacing, equivalent controls, inline text, user-agent controls and essential sizes.">
+The target for pointer inputs is at least 24 by 24 CSS pixels, unless an exception applies. The criterion does not require 44 pixels. 44 is a larger size some platforms recommend, and it is the size our touch default uses.
+</Claim>
+
+<Claim strength="practice" refs="W05" scope="WCAG 2.2 Understanding document for 2.4.11, Level AA. The minimum level forbids focus being entirely hidden; partly hidden focus is not covered.">
+When a control receives keyboard focus, it must not be entirely hidden by author-created content. A sticky header or an action bar that covers the focused field breaks it.
+</Claim>
+
+<Claim strength="practice" refs="W04" scope="WCAG 2.2 Understanding document for 1.4.11. It notes that authors do not control anti-aliasing and sets no minimum line width.">
+Visual cues needed to identify a control or its state must reach 3:1 against the background. A hairline border that identifies a field is a cue; a decorative one is not. Thin lines can lose perceived contrast to anti-aliasing, so measure the ones that carry meaning.
+</Claim>
+
+<Claim strength="practice" refs="W02" scope="WCAG 2.2 Understanding document for 1.4.4, Level AA. It says text, not pages: check the criterion for what counts as resizing.">
+Text can be resized up to 200 percent without assistive technology and without loss of content or functionality. A control with a fixed pixel height that clips its label fails when the text grows.
+</Claim>
+
+<Claim strength="practice" refs="W08" scope="The ARIA Authoring Practices Guide: a recommended pattern, not a conformance criterion.">
+In a modal dialog focus moves in on open, Tab and Shift+Tab stay inside, and Escape closes it.
+</Claim>
+
+## The contract
+
+<Claim strength="heuristic">
+**Draw small, hit big.** A control may look as small as the design wants, as long as its hit area reaches the size for the input. On touch, aim for 44 CSS px; treat 24 as the floor you must not go below.
+</Claim>
+
+<Claim strength="heuristic">
+**Make spacing count.** Two small targets with enough room between them can meet the minimum where one cramped pair cannot. Check the neighbors, not only the control.
+</Claim>
+
+<Claim strength="heuristic">
+**Pad for what you pin.** Any sticky or fixed bar declares its height so scrolling and focus leave room for it. Focus must never land under it.
+</Claim>
+
+<Claim strength="heuristic">
+**A visible, high-contrast ring is not decoration.** Show focus for keyboard users every time, in a color that passes 3:1 on every surface the control can sit on.
+</Claim>
+
+<Claim strength="heuristic">
+**Use the platform dialog.** A modal either uses the native dialog or a component that traps focus, and closes on Escape. Write no hand-rolled version.
+</Claim>
+
+## How the library implements it
+
+| Need | In `@codeatlasdev/ui` |
+|---|---|
+| 44px touch size | `--ca-touch-target` (44px). Under `(pointer: coarse)` control heights grow to it, and small controls (switch, checkbox, radio, icon buttons, pagers, chips) get an invisible 44 by 44 hit area centred on them. |
+| Do not write an override | The coarse-pointer rules are global; an app does not add its own. |
+| Focus ring | `:focus-visible` with `--ca-focus-ring` and `--ca-focus-ring-offset`; in `nativeFeel()` shells it shows only while the person navigates by keyboard (`html[data-kbd]`). |
+| Focus never under sticky UI | `scroll-padding-block` on `:root` reserves `--ca-sticky-top` (default the header height) plus the safe area at the top and `--ca-sticky-bottom` plus the safe area at the bottom. An app with taller chrome sets those two variables. |
+| Modal dialogs | Native dialog overlays portaled to the body, with the page behind made inert; focus moves in, Tab stays inside and Escape closes. See [Dialog](/docs/feedback/dialog/). |
+| Keyboard with a pinned bar | [StickyActions](/docs/layout/sticky-actions/) and [MobilePane](/docs/layout/mobile-pane/) add safe-area padding and keyboard awareness. |
+| Contrast of outlines | `tests/contrast.test.ts` measures 3:1 for outlines in every preset. |
+
+```css
+/* An app whose sticky header is taller than the default tells the page so. */
+:root {
+  --ca-sticky-top: 72px;
+  --ca-sticky-bottom: 64px;
+}
+```
+
+## Anti-patterns
+
+| Anti-pattern | Why it fails | Instead |
+|---|---|---|
+| An 18px icon button with no extra hit area | Below the minimum, hard to hit. | Keep the look, enlarge the hit area. |
+| `outline: none` with no replacement | Keyboard users lose their place. | `:focus-visible` with the ring token. |
+| A sticky footer that covers the focused field | Focus is entirely hidden. | Reserve its height in `--ca-sticky-bottom`. |
+| A 1px pale border as the only sign of an input | A cue that can fall under 3:1. | A border or fill that measures 3:1 against the background. |
+| `height: 36px` on a button whose label can wrap | Clips at 200% text. | `min-height`, padding in `rem`. |
+| A custom modal with no focus trap | Focus escapes to the page behind. | The library's `Dialog`, `Sheet` or `MobilePane`. |
+| Two tiny targets side by side | Mis-taps, and may fail the spacing exception. | Add space or enlarge one. |
+
+## Checklist
+
+- Every pointer target is at least 24 by 24 CSS px, or has an exception you can name.
+- On touch, primary controls reach 44 px.
+- Focus is visible on every control, in light, dark and high-contrast.
+- Tab through the page: focus never ends up entirely under a sticky bar.
+- Controls that identify a field or state measure 3:1 against their background.
+- At 200% text no label is clipped.
+- Open each dialog: focus moves in, Tab stays inside and Escape closes.
+
+## Prompt for your AI
+
+```text
+Make every control reachable and visible. Pointer targets are at least 24 by 24 CSS px (WCAG 2.5.8) and primary touch controls 44 px; draw small controls small but give them a 44 px hit area. Use @codeatlasdev/ui controls: the coarse-pointer sizing is global, so write no override and no cursor: pointer.
+
+Never remove the focus outline without replacing it; use :focus-visible with --ca-focus-ring. If a header or bar is sticky or fixed, set --ca-sticky-top or --ca-sticky-bottom so scroll-padding keeps focus clear of it. Any border or fill that identifies a control or state must reach 3:1 contrast.
+
+Use Dialog, Sheet or MobilePane for modals so focus moves in, stays inside and Escape closes. Use min-height and rem padding on controls so text at 200% does not clip. Treat 44 px as our default and 24 px as the standard's minimum, and do not say the standard requires 44.
+```
+
+<Limits reviewed="2026-10-25">
+- The sources are standards and the ARIA Authoring Practices Guide: they say what must hold, not what people prefer or what performs better.
+- 44 px is a platform-style recommendation and our default; WCAG 2.2 AA requires 24 px with exceptions.
+- Level AA forbids focus being *entirely* hidden. A partly hidden ring passes the minimum and is still a bad experience.
+- The criteria cannot be checked by a unit test alone: they need a keyboard pass and a device pass.
+- The Understanding documents change over time; the review date is the day we read them.
+</Limits>
+
+<Refs ids="W06, W05, W04, W02, W08" />

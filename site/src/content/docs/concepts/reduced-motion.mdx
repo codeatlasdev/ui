@@ -1,0 +1,133 @@
+---
+title: Motion that respects people
+description: When motion helps, when it hurts, and how to honor the reduced-motion setting without losing meaning. What the standards ask for, what the evidence does not say, and how MotionStage and the motion tokens implement it.
+group: Concepts
+order: 3
+---
+import { Callout } from "@codeatlasdev/ui";
+import Claim from "~/components/docs/Claim.astro";
+import Limits from "~/components/docs/Limits.astro";
+import Refs from "~/components/docs/Refs.astro";
+
+Motion is a language: a panel that slides in tells you where it came from, a button that presses tells you it heard you. It is also a hazard for some people and a cost for everyone on a slow device. This page separates what the standards require from what is taste, and states what nobody has measured.
+
+## Definition and vocabulary
+
+| Term | What it means here |
+|---|---|
+| Essential motion | Motion without which the content or function is lost (a progress indicator, a drag that is the interaction). |
+| Non-essential motion | Decoration or polish: parallax, entrance flourishes, ambient loops. |
+| Reduced-motion setting | The operating-system preference that `@media (prefers-reduced-motion: reduce)` reads. It asks you to minimize non-essential motion. It does not ask you to remove all change. |
+| Vestibular disorder | A condition of the inner ear. Motion on screen can trigger dizziness, nausea or headaches in some people with it. |
+| Final state | What the interface looks like when a motion ends. Under reduced motion we render this directly. |
+
+## Evidence
+
+<Claim strength="practice" refs="E09" scope="WCAG 2.2 Understanding document for 2.3.3, a Level AAA criterion: above the level most conformance programs target. It states a requirement and a rationale, and gives no prevalence figure.">
+Non-essential motion triggered by interaction, such as parallax scrolling, can trigger vestibular disorders, so content should let people turn it off or honor their setting. Essential motion is excepted.
+</Claim>
+
+<Claim strength="practice" refs="M06" scope="MDN's description of the media feature. What counts as essential motion is left to the designer.">
+`prefers-reduced-motion` detects whether a person asked their device to minimize non-essential motion. It is the supported way to read that choice from CSS.
+</Claim>
+
+<Claim strength="practice" refs="N05" scope="An NN/g practitioner analysis with examples, not a measured rate of disorientation.">
+Changing the pace or direction of scrolling can break people's expectation of control and cause disorientation. This is a separate concern from vestibular triggers: it applies to everyone.
+</Claim>
+
+<Claim strength="practice" refs="N03" scope="An NN/g practitioner article. It also reports that scroll fading can improve perception and loading when used well.">
+Whether a scroll effect distracts or helps depends on how persistent and responsive it is and how sparingly it is applied. It is not a ban on the pattern.
+</Claim>
+
+<Claim strength="heuristic">
+Nothing cited here measures whether animation raises comprehension, delight or conversion. When we recommend motion for feedback or orientation, that is our design judgement.
+</Claim>
+
+## The contract
+
+<Claim strength="heuristic">
+**Motion explains or it goes.** Keep an animation when it shows where something came from, what changed or that an action registered. Remove it when it only fills time.
+</Claim>
+
+<Claim strength="heuristic">
+**Reduced motion keeps the meaning and drops the movement.** Under the setting, show the final state at once. Do not hide content, delay it or turn a transition into a blank. A cross-fade of a few tens of milliseconds can still tell people that something changed.
+</Claim>
+
+<Claim strength="heuristic">
+**Never let content wait for an animation.** The heading, the explanation and the main action are in the page from the start; a script that reveals them late fails when it errors, loads slowly or the setting is on.
+</Claim>
+
+<Claim strength="heuristic">
+**Give control to motion that runs on its own.** Anything that moves for more than a few seconds needs a pause control. Ambient loops sit behind content and carry no meaning.
+</Claim>
+
+<Claim strength="heuristic">
+**Leave native scroll alone.** No scroll-jacking for essential content.
+</Claim>
+
+## How the library implements it
+
+| Need | In `@codeatlasdev/ui` |
+|---|---|
+| Read the setting in code | `reducedMotion` store: `reducedMotion.value` (call `reducedMotion.init()` once in the root layout; it returns a cleanup). |
+| Read it in CSS | `@media (prefers-reduced-motion: reduce)`: the library's own surface, token and utility styles already include it. |
+| A motion theme with no entrance | `motion: { enter: "none" }` sets `--ca-enter-scale: 0`, which `MotionStage` treats like the setting. |
+| A frame that plays only in view | [MotionStage](/docs/motion/motion-stage/): starts when half is in view, stops when it leaves, hands control to the user on touch, always offers Pause, and renders the final state under reduced motion (`m.reduced`). |
+| Motion vocabulary and exact timing | The [Motion](/docs/motion/) section: each demo states its duration, easing and delay, so no agent guesses them. |
+| Bottom sheets | `Sheet` disables swipe-to-dismiss when the setting is on. |
+
+```svelte
+<script>
+  import { reducedMotion } from "@codeatlasdev/ui";
+</script>
+
+<div class:rise={!reducedMotion.value}>Invoice paid</div>
+```
+
+```css
+.card { transition: transform var(--ca-duration-base) var(--ca-ease-standard); }
+@media (prefers-reduced-motion: reduce) {
+  .card { transition: none; }
+}
+```
+
+## Anti-patterns
+
+| Anti-pattern | Why it fails | Instead |
+|---|---|---|
+| Hiding content until a reveal animation runs | Blank page if the script fails or the setting is on. | Render the content visible; animate only the extra. |
+| `animation: none` and `opacity: 0` left in place | Removes the movement and the content together. | Set the final state, not the start state. |
+| Parallax and scroll-linked movement as the default | A known vestibular trigger. | Offer it only when the setting is off, or drop it. |
+| Auto-playing loop with no pause | Takes control away from the person. | A Pause control, or no loop. |
+| Reading the setting once at load | The person can change it while the page is open. | `reducedMotion.value` is reactive; the media query updates live. |
+| Treating the setting as a switch for all change | People still need to see that state changed. | Keep short fades and color changes; drop travel and scale. |
+| Scroll-jacking to stage a story | Disorients, and breaks keyboard and assistive technology. | Native scroll with in-view effects that respect the setting. |
+
+## Checklist
+
+- With the setting on, no element travels, scales or loops, and every piece of content is visible.
+- Nothing essential is hidden behind a script-driven reveal.
+- Anything that keeps moving on its own can be paused.
+- The setting is read live, not only at load.
+- Scroll behaves natively; no hijacked wheel or touch.
+- State changes are still visible without motion (color, icon, text).
+
+## Prompt for your AI
+
+```text
+Add motion that explains and respects the reduced-motion setting. Keep an animation only when it shows origin, change or acknowledgement. Render content in its final, visible state first; animate only the extra. Under prefers-reduced-motion: reduce show the final state at once, with no travel, scale or loop; keep short fades or color changes so state changes stay visible.
+
+In @codeatlasdev/ui read reducedMotion.value (call reducedMotion.init() once in the root layout), wrap demos and ambient effects in MotionStage, and use the --ca-duration-* and --ca-ease-* tokens. Give anything that moves longer than a few seconds a Pause control. Never reveal the heading, the explanation or the main action with a script, and never alter native scrolling.
+
+Do not claim that animation improves comprehension or conversion; none of the cited sources measures that.
+```
+
+<Limits reviewed="2026-10-25">
+- Criterion 2.3.3 is Level AAA, above the level most programs target. Honoring the setting is still our baseline, but it is not what an AA audit checks.
+- No prevalence figure for vestibular triggers is cited; the standard gives the rationale, not a rate.
+- The sources are standards and practitioner articles. None measures whether motion helps or harms comprehension, delight or conversion, so the "motion explains" rules are our judgement.
+- "Essential" is a design decision. Two teams can draw the line in different places.
+- The Understanding documents change over time; the review date is the day we read them.
+</Limits>
+
+<Refs ids="E09, M06, N05, N03" />
