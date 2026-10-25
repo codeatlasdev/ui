@@ -49,6 +49,8 @@ if (args.has("--smoke")) {
 	step("Type check packages/ui");
 	tryRun("svelte-check", "bun", ["run", "--cwd", "packages/ui", "check"]);
 	step("Build package");
+	// a release is never built from a cache (packages/ui/scripts/build-package.ts)
+	process.env.CA_BUILD_COLD = "1";
 	tryRun("bun run build:pkg", "bun", ["run", "build:pkg"]);
 	step("Tarball smoke test");
 	smokeTest();

@@ -22,7 +22,8 @@ import { fileURLToPath } from "node:url";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const testRun = (cmd: string[]) => [join(ROOT, "scripts/test-run.ts"), ...cmd];
-const env = { ...process.env, E2E_PREBUILT: "1" };
+// the release gate builds the package from scratch, never from the input-hash skip (packages/ui/scripts/build-package.ts)
+const env = { ...process.env, E2E_PREBUILT: "1", CA_BUILD_COLD: "1" };
 const run = (cmd: string[], cwd = ROOT) =>
 	spawnSync(process.execPath, testRun(cmd), { cwd, stdio: "inherit", env }).status ?? 1;
 const runAsync = (cmd: string[], cwd = ROOT) => {
