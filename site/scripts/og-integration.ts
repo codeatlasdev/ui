@@ -10,15 +10,14 @@ import { fileURLToPath } from "node:url";
 import { brandHash, ogCard, renderMark, renderOgImage, resolveBrand } from "@codeatlasdev/ui/vite";
 import { chromium } from "@playwright/test";
 import type { AstroIntegration } from "astro";
+import { evict, STORES, type Store } from "../../scripts/caches.ts";
 import { theme } from "../src/theme.ts";
-import { placeCard, pruneCards } from "./og-cache.ts";
+import { placeCard } from "./og-cache.ts";
 
 /** Bump when the card template or its CSS changes: every card is renamed. */
 const TEMPLATE_VERSION = "2";
 const SITE_NAME = "CodeAtlas UI";
 const markFile = new URL("../src/brand/mark.svg", import.meta.url);
-/** Cards not served for this long are deleted from the shared cache. */
-const CACHE_DAYS = 30;
 /** Cards rendered at once (a Chromium page each). */
 const CARD_WORKERS = 4;
 /**
@@ -106,7 +105,8 @@ export function ogCards(): AstroIntegration {
 				} finally {
 					await browser.close();
 				}
-				const pruned = pruneCards(cacheDir, CACHE_DAYS);
+				// age and size cap come from the one table of caches (scripts/caches.ts)
+				const pruned = evict(STORES.find((s) => s.name === "og cards") as Store).removed;
 				logger.info(
 					`${todo.length} social cards in ${relative(process.cwd(), outDir)} (${hits} from the cache, ${pruned} stale ones pruned)`
 				);

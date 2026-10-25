@@ -4,12 +4,13 @@ import SiteDocsShell from "~/components/docs/SiteDocsShell.svelte";
 import SiteFooter from "~/components/site/SiteFooter.astro";
 import Base from "~/layouts/Base.astro";
 import { loadDocs } from "~/lib/docs";
+import { onlyRoutes } from "~/lib/only-routes";
 import { startPage } from "~/lib/heading-ids";
 import { docHref, SECTIONS } from "~/lib/nav";
 
 export async function getStaticPaths() {
 	const { entries } = await loadDocs();
-	return entries.map((entry) => ({ params: { slug: entry.id === "index" ? undefined : entry.id }, props: { entry } }));
+	return onlyRoutes(entries, (entry) => (entry.id === "index" ? "/docs/" : `/docs/${entry.id}/`)).map((entry) => ({ params: { slug: entry.id === "index" ? undefined : entry.id }, props: { entry } }));
 }
 
 const { entry } = Astro.props;

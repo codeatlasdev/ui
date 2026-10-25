@@ -48,6 +48,7 @@
 		"issue:done": "bun scripts/issue.ts done",
 		"test:vrt": "bun scripts/test-run.ts --budget=vrt sh -c 'bun run --cwd packages/ui test:vrt && bun run --cwd site test:vrt'",
 		"test:vrt:update": "bun scripts/test-run.ts sh -c 'bun run --cwd packages/ui test:vrt:update && bun run --cwd site test:vrt:update'",
+		"clean:caches": "bun scripts/caches.ts",
 		"test:reap": "bun scripts/test-run.ts --reap",
 		"test:status": "bun scripts/test-run.ts --status"
 	},

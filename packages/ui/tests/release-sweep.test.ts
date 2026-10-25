@@ -1,6 +1,7 @@
 import { describe, expect, it } from "bun:test";
 import { readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { readScope } from "../../../scripts/dist-fresh";
 import { ATLAS_REPRESENTATIVES, GALLERY_REPRESENTATIVES } from "../../../scripts/route-impact";
 
 // The release gate (`test:routes`, `E2E_SWEEP=templates`) loads gallery items and atlas terms in a browser through
@@ -32,7 +33,9 @@ const sweep = async (env: Record<string, string>) => {
 	};
 };
 
-describe.skipIf(!Bun.file(join(DIST, "index.html")).size)("release route sweep", () => {
+// A narrow build (`CA_SITE_ROUTES`, a land run of one component) holds only the pages that diff reaches: the sweep
+// rules below are about the whole site, so they run on a full build only.
+describe.skipIf(readScope(DIST) !== "all")("release route sweep", () => {
 	it("ALL_ROUTES is every prerendered page, whatever the sweep mode", async () => {
 		const built = new Set(pagesOf(DIST).filter((p) => !p.startsWith("/landing-embed/")));
 		const { ALL_ROUTES } = await sweep({ E2E_SWEEP: "templates" });

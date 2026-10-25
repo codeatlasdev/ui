@@ -1,7 +1,8 @@
 import { afterAll, describe, expect, it } from "bun:test";
 import { existsSync, readdirSync, readFileSync, utimesSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
-import { cardKey, placeCard, pruneCards } from "../../../site/scripts/og-cache";
+import { evict, STORES, type Store } from "../../../scripts/caches";
+import { cardKey, placeCard } from "../../../site/scripts/og-cache";
 import { cleanTmp, tmpDir } from "./tmp";
 
 // The site build renders ~880 social cards (63 s of a 135 s build). The land gate rebuilds the site after every
@@ -68,6 +69,11 @@ describe("og card cache pruning", () => {
 		const t = new Date(Date.now() - days * DAY);
 		utimesSync(path, t, t);
 	};
+	// the store the build prunes with (scripts/caches.ts), pointed at a scratch directory
+	const store = (dir: string): Store => ({
+		...(STORES.find((s) => s.name === "og cards") as Store),
+		dir,
+	});
 
 	it("drops cards unused for longer than the limit and keeps the rest", async () => {
 		const dir = tmpDir("ca-og-");
@@ -77,7 +83,7 @@ describe("og card cache pruning", () => {
 		await placeCard(cache, "v", "new", join(dir, "n.png"), png);
 		age(join(cache, `${cardKey("v", "old")}.png`), 40);
 
-		expect(pruneCards(cache, 30)).toBe(1);
+		expect(evict(store(cache)).removed).toBe(1);
 		expect(readdirSync(cache)).toEqual([`${cardKey("v", "new")}.png`]);
 	});
 
@@ -89,15 +95,15 @@ describe("og card cache pruning", () => {
 		age(join(cache, `${cardKey("v", "card")}.png`), 40);
 		await placeCard(cache, "v", "card", join(dir, "b.png"), png);
 
-		expect(pruneCards(cache, 30)).toBe(0);
+		expect(evict(store(cache)).removed).toBe(0);
 	});
 
 	it("leaves files that are not cards alone, and a missing directory is fine", () => {
 		const dir = tmpDir("ca-og-");
 		writeFileSync(join(dir, "notes.txt"), "x");
 		age(join(dir, "notes.txt"), 400);
-		expect(pruneCards(dir, 30)).toBe(0);
+		expect(evict(store(dir)).removed).toBe(0);
 		expect(existsSync(join(dir, "notes.txt"))).toBe(true);
-		expect(pruneCards(join(dir, "missing"), 30)).toBe(0);
+		expect(evict(store(join(dir, "missing"))).removed).toBe(0);
 	});
 });
