@@ -386,4 +386,4 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 989 | Components | feedback/sound | Button, Dialog, Slider, Switch, Tabs, TabsList, TabsTrigger, SoundToggle |
 | 990 | Brand color | inputs/color-field | ColorField |
 | 991 | Text color | inputs/color-field | ColorField |
-| 992 | SliderField | inputs/slider | SliderField |
+| 992 | Label and number | inputs/slider | SliderField |

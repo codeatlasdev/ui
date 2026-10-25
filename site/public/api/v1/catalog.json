@@ -17179,8 +17179,8 @@
 			"group": "inputs",
 			"page": "slider",
 			"variant": "Field",
-			"slug": "sliderfield",
-			"title": "SliderField",
+			"slug": "label-and-number",
+			"title": "Label and number",
 			"description": "Label, slider and an editable number with a unit.",
 			"summary": "Two labelled sliders with an editable number and a unit: radius and type scale.",
 			"use": "Tuning a numeric setting where both scrubbing and typing an exact value matter.",
@@ -17209,7 +17209,7 @@
 				}
 			],
 			"interactive": true,
-			"demo": "https://ui.codeatlas.com.br/docs/inputs/slider#sliderfield",
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/slider#label-and-number",
 			"needs": "@codeatlasdev/ui@4.5.0"
 		}
 	]

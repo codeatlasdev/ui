@@ -380,4 +380,4 @@ id	group	page	title	names	tags	summary
 989	feedback	sound	Components		sound,button,switch,tabs,slider,toast,dialog	Button, Switch, Tabs, Slider, Toast and Dialog with their sound prop on, behind one sound toggle.
 990	inputs	color-field	Brand color		color-field,color-picker,oklch,contrast,brand	Color field with a swatch, a native picker, a text input and a live WCAG contrast readout against white.
 991	inputs	color-field	Text color		color-field,contrast,wcag,text,oklch	Color field for a text color measured against a white page, with a sample line in that color.
-992	inputs	slider	SliderField		slider-field,slider,number,settings,unit	Two labelled sliders with an editable number and a unit: radius and type scale.
+992	inputs	slider	Label and number		slider-field,slider,number,settings,unit	Two labelled sliders with an editable number and a unit: radius and type scale.
