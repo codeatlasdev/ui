@@ -19,11 +19,11 @@ import { type ThemeOptions, themeHead } from "../src/lib/theme-script.ts";
 // The first paint wears the right theme only if every theme script has RUN before the browser parses
 // any CSS: a script after a stylesheet waits for it, and a slow link paints the wrong theme in between.
 // This is the deterministic half of that guarantee (no browser, no timing): in the BUILT HTML of every
-// consumer path, each theme script comes before the first `<style>` or `<link rel="stylesheet">`.
+// consumer path (Kit, Vite, Astro), each theme script comes before the first `<style>` or `<link rel="stylesheet">`.
+// The site's own pages are checked with the same rule in `site/tests/dist-html.spec.ts` (every page, after the build).
 // `theme-no-flash.e2e.ts` paints the same pages on a slow device to show what a violation looks like.
 
 const PKG = join(import.meta.dir, "..");
-const SITE_DIST = join(PKG, "../../site/dist");
 const THEME: ThemeOptions = {
 	presets: [{ id: "brand", color: "#e8590c" }],
 	defaultPreset: "brand",
@@ -137,29 +137,5 @@ export default defineConfig({ integrations: [caUI(${JSON.stringify(THEME)}, { he
 		const html = readFileSync(join(dist(), "index.html"), "utf8");
 		expect(firstCss(headOf(html))).toBeGreaterThan(0);
 		expect(orderProblems(html, SCRIPTS(true))).toEqual([]);
-	});
-});
-
-describe("the built site: every page", () => {
-	const pages: string[] = [];
-	const walk = (dir: string) => {
-		for (const name of readdirSync(dir)) {
-			const full = join(dir, name);
-			if (statSync(full).isDirectory()) walk(full);
-			else if (name === "index.html") pages.push(full);
-		}
-	};
-	if (existsSync(SITE_DIST)) walk(SITE_DIST);
-
-	it.skipIf(pages.length === 0)("carries the theme scripts before the first stylesheet", () => {
-		const bad: string[] = [];
-		for (const file of pages) {
-			const html = readFileSync(file, "utf8");
-			// Redirect stubs and standalone embeds have no theme head of their own.
-			if (html.includes('http-equiv="refresh"')) continue;
-			const problems = orderProblems(html, SCRIPTS(true));
-			if (problems.length) bad.push(`${file.slice(SITE_DIST.length)}: ${problems.join("; ")}`);
-		}
-		expect(bad.slice(0, 10)).toEqual([]);
 	});
 });
