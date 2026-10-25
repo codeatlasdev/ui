@@ -120,6 +120,6 @@
 	white-space: pre-wrap;
 	overflow-wrap: anywhere;
 }
-@media (max-width: 40rem) {
+@media (max-width: 599.98px) {
 	.atlas-term__scales { grid-template-columns: 1fr; }
 }
