@@ -1,5 +1,5 @@
 import { describe, expect, it } from "bun:test";
-import { buildImpact, select } from "../../../scripts/route-impact";
+import { buildImpact, lockReachesRuntime, select } from "../../../scripts/route-impact";
 
 // scripts/route-impact.ts decides which docs routes a diff has to retest. A route it misses is a hole
 // nobody sees, so the contract is: map what it knows, and for anything else select EVERY route.
@@ -7,9 +7,11 @@ const impact = buildImpact();
 const pick = (...files: string[]) => select(files, impact);
 
 describe("route-impact", () => {
-	it("maps a demo and its MDX to the route that renders them", () => {
+	it("maps a demo and its MDX to the routes that render them", () => {
+		// The demo renders on its docs page and on its own gallery item.
 		expect(pick("site/src/demos/inputs/button/Sizes.svelte").routes).toEqual([
 			"/docs/inputs/button/",
+			"/gallery/004/",
 		]);
 		expect(pick("site/src/content/docs/inputs/button.mdx").routes).toEqual([
 			"/docs/inputs/button/",
@@ -82,8 +84,109 @@ describe("route-impact", () => {
 		}
 	});
 
+	it("a test or harness in a shared directory is not itself shared", () => {
+		for (const f of [
+			"packages/ui/src/lib/actions/scroll-focusable.svelte.test.ts",
+			"packages/ui/src/lib/actions/ScrollFocusableHarness.test.svelte",
+			"packages/ui/src/lib/styles/default-style.svelte.test.ts",
+			"packages/ui/src/lib/stores/color-scheme.svelte.test.ts",
+		]) {
+			const s = pick(f);
+			expect(s.all).toBe(false);
+			expect(s.routes).toEqual([]);
+		}
+	});
+
 	it("a changed test file next to a component still records the component folder for the visual run", () => {
 		const s = pick("packages/ui/src/lib/components/Button/Button.vrt.test.ts");
 		expect([...s.folders]).toEqual(["Button"]);
+	});
+
+	// The gallery has one page per item (`/gallery/<id>/`, ~400). Every page is the same viewer chrome
+	// around a different demo, so the map must say which items a diff touches, not "all" or "none".
+	describe("gallery items", () => {
+		const items = (r: string[]) => r.filter((x) => /^\/gallery\/[^/]+\/$/.test(x));
+
+		it("a demo selects its own item page and its docs route, not the other items", () => {
+			const s = pick("site/src/demos/inputs/button/Sizes.svelte");
+			expect(s.routes).toContain("/docs/inputs/button/");
+			expect(items(s.routes)).toEqual(["/gallery/004/"]);
+		});
+
+		it("the gallery routes are real routes, never the template literal", () => {
+			const s = pick("site/src/components/gallery/GalleryViewer.svelte");
+			expect(s.routes.some((r) => r.includes("["))).toBe(false);
+			expect(items(s.routes).length).toBeGreaterThan(0);
+		});
+
+		it("a change to the viewer chrome selects a fixed handful of items, one per kind", () => {
+			for (const f of [
+				"site/src/components/gallery/GalleryViewer.svelte",
+				"packages/ui/src/lib/components/PreviewStage/PreviewStage.svelte",
+				"packages/ui/src/lib/components/ToggleGroup/SegmentedControl.svelte",
+			]) {
+				const got = items(pick(f).routes);
+				expect(got.length).toBeGreaterThanOrEqual(3);
+				expect(got.length).toBeLessThanOrEqual(8);
+				// A static demo, a motion demo and a whole page.
+				expect(got.some((r) => r.startsWith("/gallery/page-"))).toBe(true);
+				expect(got.some((r) => /^\/gallery\/\d{3}\/$/.test(r))).toBe(true);
+			}
+		});
+
+		it("a component selects the items whose demo uses it, capped at the representatives", () => {
+			const got = items(pick("packages/ui/src/lib/components/Avatar/Avatar.svelte").routes);
+			expect(got.length).toBeGreaterThan(0);
+			expect(got.length).toBeLessThanOrEqual(8);
+		});
+	});
+
+	// bun.lock is shared by every page because a runtime dependency can change what a page renders. A
+	// lock change that only touches a workspace's devDependencies (a test tool) cannot.
+	describe("lockfile", () => {
+		const lock = (dev: string[], run = ['"svelte": "5.57.2"']) => `{
+  "workspaces": {
+    "site": {
+      "name": "site",
+      "dependencies": {
+        ${run.join(",\n        ")},
+      },
+      "devDependencies": {
+        ${dev.join(",\n        ")},
+      },
+    },
+  },
+  "packages": {
+    "svelte": ["svelte@5.57.2", "", {}, "sha-a"],
+  },
+}
+`;
+		const before = lock(['"typescript": "6.0.3"']);
+
+		it("a devDependency added to a workspace does not reach a page", () => {
+			const after = lock(['"happy-dom": "21.0.1"', '"typescript": "6.0.3"']);
+			expect(lockReachesRuntime(before, after)).toBe(false);
+		});
+
+		it("a runtime dependency added, bumped or removed does", () => {
+			expect(
+				lockReachesRuntime(before, lock(['"typescript": "6.0.3"'], ['"svelte": "5.58.0"']))
+			).toBe(true);
+			expect(
+				lockReachesRuntime(
+					before,
+					lock(['"typescript": "6.0.3"'], ['"svelte": "5.57.2"', '"clsx": "2.1.1"'])
+				)
+			).toBe(true);
+		});
+
+		it("a changed resolved package entry does", () => {
+			const after = before.replace("sha-a", "sha-b");
+			expect(lockReachesRuntime(before, after)).toBe(true);
+		});
+
+		it("an unreadable lock counts as reaching (fail safe)", () => {
+			expect(lockReachesRuntime(before, "not a lockfile")).toBe(true);
+		});
 	});
 });

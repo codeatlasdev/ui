@@ -14,7 +14,7 @@
  */
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
-import { ROOT, select } from "./route-impact.ts";
+import { isTestFile, ROOT, select } from "./route-impact.ts";
 
 const PKG = join(ROOT, "packages/ui");
 const SRC = join(PKG, "src");
@@ -202,7 +202,8 @@ const SHARED_COMPONENT = [
 	/^bun\.lock$/,
 ];
 
-export const isSharedComponent = (file: string) => SHARED_COMPONENT.some((re) => re.test(file));
+export const isSharedComponent = (file: string) =>
+	!isTestFile(file) && SHARED_COMPONENT.some((re) => re.test(file));
 
 /**
  * The budget `issue-land.sh` runs the land gate under: a SHARED change (a shared component file, or one the

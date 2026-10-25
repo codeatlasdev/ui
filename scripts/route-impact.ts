@@ -55,6 +55,48 @@ const GLOBAL = [
 	/^bun\.lock$/,
 ];
 
+interface Lock {
+	workspaces?: Record<string, Record<string, unknown>>;
+	packages?: Record<string, unknown>;
+}
+
+/**
+ * Does the change from lockfile text `before` to `after` reach a page? `bun.lock` is in GLOBAL because a
+ * runtime dependency can change what every page renders; a change that only adds, bumps or drops a
+ * workspace's `devDependencies` (a test tool) and leaves every other entry as it was cannot. Anything this
+ * cannot read counts as reaching: a wrong "no" is a hole, a wrong "yes" is only a full sweep.
+ */
+export function lockReachesRuntime(before: string, after: string): boolean {
+	const parse = (text: string): Lock | undefined => {
+		try {
+			// bun.lock is JSON with trailing commas.
+			return JSON.parse(text.replace(/,(\s*[}\]])/g, "$1")) as Lock;
+		} catch {
+			return undefined;
+		}
+	};
+	const a = parse(before);
+	const b = parse(after);
+	if (!a?.workspaces || !b?.workspaces) return true;
+	const strip = (l: Lock) =>
+		JSON.stringify(
+			Object.fromEntries(
+				Object.entries(l.workspaces ?? {}).map(([ws, def]) => [
+					ws,
+					Object.fromEntries(Object.entries(def).filter(([k]) => k !== "devDependencies")),
+				])
+			)
+		);
+	if (strip(a) !== strip(b)) return true;
+	// Resolved packages: nothing may change or go away (a bumped runtime dependency changes its entry);
+	// a dev tool only adds entries.
+	const pa = a.packages ?? {};
+	const pb = b.packages ?? {};
+	return Object.entries(pa).some(
+		([name, entry]) => JSON.stringify(pb[name]) !== JSON.stringify(entry)
+	);
+}
+
 /**
  * Files that cannot change what a docs route renders or how it is checked: test files other than the
  * route harness, tooling, docs, CI and repo config. Everything else must map to a route (below) or it
@@ -71,6 +113,10 @@ const NO_ROUTE_IMPACT = [
 	/^site\/functions\//,
 	/^site\/tests\//,
 ];
+
+/** A test or harness: it runs in a test, it is never rendered by a page or shipped (also under shared dirs). */
+export const isTestFile = (f: string) =>
+	/\.(svelte\.test|vrt\.test|ssr\.test)\.ts$|\.test\.svelte$|__screenshots__\//.test(f);
 
 const walk = (dir: string, ext: RegExp, out: string[] = []): string[] => {
 	if (!existsSync(dir)) return out;
@@ -152,6 +198,34 @@ const pageRoute = (page: string) =>
 		.replace(/\.astro$/, "")
 		.replace(/(^|\/)index$/, "")}/`.replace("//", "/");
 
+/** The numbered demos (`src/demos/catalog.ts`), the single source of the `#NNN` ids. */
+function demoCatalog(): { id: string; path: string }[] {
+	return [
+		...read(join(SITE, "demos/catalog.ts")).matchAll(/\{\s*id:\s*"(\d+)",\s*path:\s*"([^"]+)"/g),
+	].map((m) => ({ id: m[1], path: m[2] }));
+}
+
+/** Gallery page items (`page-*`): the slugs of `PAGE_SPECS` in `site/src/lib/gallery-items.ts`. */
+const GALLERY_PAGE_ITEMS: string[] = [
+	...read(join(SITE, "lib/gallery-items.ts")).matchAll(/^\t\{\s*\n\t\tslug: "([^"]+)"/gm),
+].map((m) => `page-${m[1]}`);
+
+/**
+ * The item pages that stand for all of them when the shared viewer chrome (or a component the viewer renders)
+ * changes: every `/gallery/<id>/` is the same header, width bar, stage frame and pager around a demo, and a
+ * demo's own content is audited by its docs route and by its own item when it changes. One static demo, one
+ * motion demo, one demo taller than the stage (a scrolling frame), one narrow control row and two whole pages
+ * (an app page in an iframe, a plain template).
+ */
+export const GALLERY_REPRESENTATIVES = [
+	"001",
+	"172",
+	"325",
+	"962",
+	"page-app-dashboard",
+	"page-auth-sign-in",
+];
+
 export function buildImpact(): RouteImpact {
 	const symbols = new Map<string, Set<string>>();
 	const files = new Map<string, Set<string>>();
@@ -186,9 +260,21 @@ export function buildImpact(): RouteImpact {
 			if (!m[1].includes("/pages/")) followImports(route, demoFile(m[1]));
 	};
 	for (const page of walk(join(SITE, "pages"), /\.astro$/)) {
-		if (page.includes("[...slug]") || page.includes("/llms/")) continue;
+		if (page.includes("[...slug]") || page.includes("/llms/") || page.includes("/gallery/[id]"))
+			continue;
 		followImports(pageRoute(page), page);
 	}
+	// `/gallery/<id>/` is one real route per item (the template route is not one). An item is its demo plus
+	// the viewer chrome every item shares, so a demo selects exactly its item and the chrome selects the
+	// representatives (GALLERY_REPRESENTATIVES), never all ~400.
+	const viewer = join(SITE, "pages/gallery/[id].astro");
+	for (const { id, path } of demoCatalog()) {
+		const route = `/gallery/${id}/`;
+		followImports(route, viewer);
+		const file = join(SITE, "demos", `${path}.svelte`);
+		if (existsSync(file)) add(route, file, read(file));
+	}
+	for (const id of GALLERY_PAGE_ITEMS) followImports(`/gallery/${id}/`, viewer);
 	// A package component rendered by the site's own shell (not by a demo) is on every page.
 	const folders = symbolFolders();
 	const globalFolders = new Set<string>();
@@ -206,15 +292,30 @@ export function buildImpact(): RouteImpact {
 	return { symbols, files, folders, globalFolders };
 }
 
-/** Routes whose source is `file` (a docs MDX, a demo, a page, a template). */
+const isItem = (route: string) => /^\/gallery\/[^/]+\/$/.test(route);
+
+/**
+ * A change that reaches the gallery through shared code (a component, the viewer chrome) selects the
+ * representative items, not every item: they are the same chrome around different demos.
+ */
+function representatives(routes: string[]): string[] {
+	const items = routes.filter(isItem);
+	const rest = routes.filter((r) => !isItem(r));
+	return items.length ? [...rest, ...GALLERY_REPRESENTATIVES.map((id) => `/gallery/${id}/`)] : rest;
+}
+
+/** Routes whose source is `file` (a docs MDX, a demo, a page, a template). A demo keeps its exact item. */
 function routesOfSite(impact: RouteImpact, file: string): string[] {
-	return [...impact.files].filter(([, fs]) => fs.has(file)).map(([r]) => r);
+	const routes = [...impact.files].filter(([, fs]) => fs.has(file)).map(([r]) => r);
+	return file.startsWith("site/src/demos/") ? routes : representatives(routes);
 }
 
 /** Routes that use a symbol exported from `components/<folder>/`. */
 function routesOfFolder(impact: RouteImpact, folder: string): string[] {
 	const names = new Set([...impact.folders].filter(([, f]) => f === folder).map(([n]) => n));
-	return [...impact.symbols].filter(([, s]) => [...s].some((n) => names.has(n))).map(([r]) => r);
+	return representatives(
+		[...impact.symbols].filter(([, s]) => [...s].some((n) => names.has(n))).map(([r]) => r)
+	);
 }
 
 export interface Selection {
@@ -248,6 +349,11 @@ export function select(changed: string[], impact = buildImpact()): Selection {
 		folders,
 	});
 	for (const f of changed) {
+		if (isTestFile(f)) {
+			const own = f.match(/^packages\/ui\/src\/lib\/components\/([^/]+)\//);
+			if (own) folders.add(own[1]);
+			continue;
+		}
 		if (GLOBAL.some((re) => re.test(f))) return everything(f, "shared by every page");
 		const comp = f.match(/^packages\/ui\/src\/lib\/components\/([^/]+)\//);
 		if (comp) {

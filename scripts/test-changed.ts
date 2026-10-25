@@ -28,9 +28,9 @@
  * Extra args go to Vitest: `bun run test:changed -- --reporter=minimal`.
  */
 import { spawnSync } from "node:child_process";
-import { existsSync, statSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
-import { ROOT, select } from "./route-impact.ts";
+import { lockReachesRuntime, ROOT, select } from "./route-impact.ts";
 import { affected, buildGraph, isSharedComponent, landBudget } from "./test-graph.ts";
 
 if (!import.meta.main) throw new Error("scripts/test-changed.ts is a command, not a module");
@@ -69,12 +69,21 @@ if (!base) {
 	console.error("test:changed: no base commit (run `git fetch origin main`, or set CA_TEST_BASE)");
 	process.exit(2);
 }
+// A lockfile change that only touches a workspace's devDependencies cannot change a page or a component:
+// it does not widen the run to every route and every component test (route-impact `lockReachesRuntime`).
+const lockIsDevOnly = () => {
+	const before = spawnSync("git", ["show", `${base}:bun.lock`], { cwd: ROOT, encoding: "utf8" });
+	return (
+		before.status === 0 &&
+		!lockReachesRuntime(before.stdout, readFileSync(join(ROOT, "bun.lock"), "utf8"))
+	);
+};
 const changed = [
 	...new Set([
 		...git("diff", "--name-only", base),
 		...git("ls-files", "--others", "--exclude-standard"),
 	]),
-];
+].filter((f) => f !== "bun.lock" || !lockIsDevOnly());
 const short = base.slice(0, 8);
 if (!changed.length && !land) {
 	console.log(`test:changed: no changes against origin/main (${short}), nothing to run`);
@@ -213,6 +222,8 @@ if (siteRun) {
 	const env = {
 		E2E_PREBUILT: "1",
 		...(routeRun && !sweepAll ? { E2E_ROUTES: JSON.stringify(routes) } : {}),
+		// A full sweep at land audits the gallery through its representatives; `test:full` audits every item.
+		...(land && sweepAll ? { E2E_GALLERY: "representatives" } : {}),
 	};
 	const args = [
 		"playwright",

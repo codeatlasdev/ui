@@ -102,4 +102,14 @@ describe("landBudget", () => {
 		expect(isSharedComponent("packages/ui/src/lib/styles/base.css")).toBe(true);
 		expect(isSharedComponent(`${dir}/Avatar/Avatar.svelte`)).toBe(false);
 	});
+
+	it("a test or harness in a shared directory is not itself shared", () => {
+		for (const f of [
+			"packages/ui/src/lib/actions/scroll-focusable.svelte.test.ts",
+			"packages/ui/src/lib/actions/ScrollFocusableHarness.test.svelte",
+			"packages/ui/src/lib/styles/default-style.svelte.test.ts",
+		])
+			expect(isSharedComponent(f)).toBe(false);
+		expect(isSharedComponent("packages/ui/src/lib/actions/scroll-focusable.ts")).toBe(true);
+	});
 });
