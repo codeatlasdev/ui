@@ -167,6 +167,17 @@ export function buildLlmsIndex(i: {
 			],
 		},
 		{
+			heading: "Releases",
+			links: [
+				{
+					title: "Changelog",
+					href: `${SITE}/llms/changelog.txt`,
+					description:
+						"every release newest first: highlights, numbers with the conditions they were measured under, behaviour changes and every merged change with its pull request; one file per release at /llms/changelog/<version>.txt, or ask the MCP server (`get_release`)",
+				},
+			],
+		},
+		{
 			heading: "Machine-readable endpoints",
 			links: [
 				{
