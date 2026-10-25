@@ -83,6 +83,13 @@ describe("site content never presents opinion as proof", () => {
 	});
 });
 
+describe("concept checklists", () => {
+	it("are plain lists: a GFM task list renders checkboxes with no label (axe: critical)", () => {
+		const hits = pages.filter((p) => /^\s*[-*] \[[ xX]\] /m.test(markup(p.src))).map((p) => p.slug);
+		expect(hits).toEqual([]);
+	});
+});
+
 describe("every claim on a page is sourced", () => {
 	const tag = (src: string, name: string) =>
 		[...markup(src).matchAll(new RegExp(`<${name}\\b[^>]*>`, "g"))].map((m) => m[0]);
