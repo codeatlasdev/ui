@@ -30,6 +30,7 @@
 import { spawnSync } from "node:child_process";
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
+import { distStale } from "./dist-fresh.ts";
 import { lockReachesRuntime, ROOT, select } from "./route-impact.ts";
 import { affected, buildGraph, isSharedComponent, landBudget } from "./test-graph.ts";
 
@@ -203,11 +204,18 @@ if (siteRun) {
 	const siteDist = mtime(join(ROOT, "site/dist/index.html"));
 	const newer = (re: RegExp, than: number) =>
 		changed.some((f) => re.test(f) && mtime(join(ROOT, f)) > than);
-	const pkgStale = !pkgDist || newer(/^packages\/ui\/(src|scripts|package\.json)/, pkgDist);
+	const pkgStale = distStale({
+		land,
+		exists: pkgDist > 0,
+		changedAfter: newer(/^packages\/ui\/(src|scripts|package\.json)/, pkgDist),
+	});
 	const siteStale =
-		!siteDist ||
 		pkgStale ||
-		newer(/^site\/(src|public|astro\.config\.mjs|package\.json)/, siteDist);
+		distStale({
+			land,
+			exists: siteDist > 0,
+			changedAfter: newer(/^site\/(src|public|astro\.config\.mjs|package\.json)/, siteDist),
+		});
 	// A build is ~75 s (package 17 s + site 58 s), more than the whole 60 s dev budget: only the land gate
 	// builds. A dev run uses `site/dist` when it is fresh, and says so when it cannot.
 	if ((pkgStale || siteStale) && !land) {
