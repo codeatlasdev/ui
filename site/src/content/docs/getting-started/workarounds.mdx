@@ -36,6 +36,7 @@ Imports are from `@codeatlasdev/ui` unless the last column names a subpath.
 | `@media (max-width: 767px) { .ca-btn__trailing { display: none } }` to hide a `Kbd` hint | `<Button trailingHint>` with the `Kbd` in `trailing` | [Button](/docs/inputs/button/) |
 | `justify-content: flex-start` and `margin-left: auto` on `.ca-btn__trailing` | `<Button align="between" fullWidth>` | [Button](/docs/inputs/button/) |
 | `100vh` or `100dvh` | `height: var(--ca-vh)` | [Mobile](/docs/getting-started/mobile/#safe-areas-and-viewport-height) |
+| `cursor: pointer` on a clickable `div role="button"`, `summary` or `label for`, or `cursor: not-allowed` on a disabled one | Nothing: the reset layer (`@layer ca.reset`) already sets `pointer` on `button`, `a[href]`, `label[for]`, `summary` and `[role=button\|tab\|option\|menuitem*]`, and `not-allowed` on `:disabled` and `[aria-disabled=true]`. An unlayered app rule such as `.tile { cursor: grab }` overrides it with no `!important` | [Theming](/docs/getting-started/theming/#cascade-and-overriding-tokens) |
 | A `min-height: 44px` touch override | Nothing: controls grow to 44px under `(pointer: coarse)` | [Mobile](/docs/getting-started/mobile/#native-feel) |
 | `padding-bottom: env(safe-area-inset-bottom)` on fixed UI | `var(--ca-safe-bottom)` and the other `--ca-safe-*` tokens | [Mobile](/docs/getting-started/mobile/#safe-areas-and-viewport-height) |
 | A keyboard-padding hack for a form or composer | `use:keyboardAware` | [Mobile](/docs/getting-started/mobile/#the-on-screen-keyboard), `@codeatlasdev/ui/actions` |

@@ -143,7 +143,6 @@
    * scripts/lint-tokens.ts rejects any other breakpoint value. Fluid gutter and section
    * rhythm are derived below. */
   --ca-content-max: 76rem;
-  --ca-grid-columns: 12;
 
   /* ── Component roles ─────────────────────────────────────────────────── */
   --ca-control-height:   36px;

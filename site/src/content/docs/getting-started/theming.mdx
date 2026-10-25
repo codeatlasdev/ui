@@ -307,7 +307,14 @@ Every component stylesheet is wrapped in `@layer ca.components`, the last kit la
 .ca-dialog__body { padding: 0; }
 ```
 
-`ca.reset` is the first layer and holds one rule: `button, input, select, textarea { font: inherit }`, so native controls use the page font instead of the browser's (Arial on Chromium/Windows). Every component and every app rule outranks it.
+`ca.reset` is the first layer and holds three rules. Native controls use the page font instead of the browser's (Arial on Chromium/Windows): `button, input, select, textarea { font: inherit }`. Every interactive shape gets a pointer cursor: `button`, `a[href]`, `label[for]`, `summary`, `[role=button]`, `[role=tab]`, `[role=option]` and `[role=menuitem*]`, so a custom clickable tile never shows the arrow. `:disabled` and `[aria-disabled=true]` get `not-allowed`. Every component and every app rule outranks all three, so `.tile { cursor: grab }` just works:
+
+```css
+/* app.css: a tile that is not a button */
+.tile { cursor: grab; }
+```
+
+Give a clickable tile `role="button"` (or make it a `<button>`) rather than a bare `div` with `onclick`: it gets the pointer, the keyboard contract and the right role at once.
 
 If your own CSS lives in a layer (for example Tailwind's `@layer components`), declare it after the kit's order statement so it ranks higher: `@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components, app;`.
 
