@@ -203,17 +203,10 @@ describe("demo CSS isolation", () => {
 				/<style[^>]*>([\s\S]*?)<\/style>/
 			)?.[1] ?? "",
 	}));
+	// A selector is bare when nothing but whitespace precedes its `:global(.x)` inside the selector.
 	const bare = (css: string) =>
-		[...css.matchAll(/(?:^|[,}\s])(?<![\w-]\s)(?<![>+~]\s):global\(\.([\w-]+)[^)]*\)/gm)]
-			// Only a selector that starts with the global (nothing local in front of it) is bare.
-			.filter((m) => {
-				const before =
-					css
-						.slice(0, m.index! + 1)
-						.split(/[{},]/)
-						.pop() ?? "";
-				return before.trim() === "" || /^\s*$/.test(before);
-			})
+		[...css.matchAll(/:global\(\.([\w-]+)[^)]*\)/g)]
+			.filter((m) => css.slice(0, m.index).split(/[{},]/).pop()?.trim() === "")
 			.map((m) => m[1]);
 	const local = (css: string) =>
 		new Set([...css.matchAll(/(?:^|[\s,}>+~])\.([\w-]+)/gm)].map((m) => m[1]));
