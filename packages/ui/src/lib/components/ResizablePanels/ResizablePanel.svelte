@@ -2,6 +2,7 @@
   import { getContext, onMount } from 'svelte';
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
+  import { scrollFocusable } from '../../actions/scroll-focusable.js';
   import { SPLITTER_KEY, type SplitterContext } from './splitter.js';
 
   /** One panel of a `ResizablePanels` group. Sizes are percentages of the group. */
@@ -41,6 +42,7 @@
   data-panel-id={id}
   class="ca-resizable__panel {className}"
   style:--ca-panel-size={size}
+  use:scrollFocusable
 >
   {@render children?.()}
 </div>

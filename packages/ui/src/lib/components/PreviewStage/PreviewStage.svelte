@@ -4,6 +4,7 @@
   import { useMessages } from '../../i18n/state.svelte.js';
   import { previewStage } from '../../i18n/groups/previewStage.js';
   import { colorScheme } from '../../stores/color-scheme.svelte.js';
+  import { scrollFocusable } from '../../actions/scroll-focusable.js';
   import { reducedMotion } from '../../stores/reduced-motion.svelte.js';
   import SegmentedControl from '../ToggleGroup/SegmentedControl.svelte';
   import ThemeIsland from '../ThemeIsland/ThemeIsland.svelte';
@@ -153,7 +154,7 @@
 
   <div class="ca-pstage__canvas" bind:this={canvas} style="--pstage-h:{frameHeight}px;--pstage-w:{shown}px;--pstage-scale:{scale}">
     <div class="ca-pstage__viewport" data-scaled={scaled ? '' : undefined}>
-      <div class="ca-pstage__frame" id="{splitId}-frame" role="group" aria-label={label}>
+      <div class="ca-pstage__frame" id="{splitId}-frame" role="group" aria-label={label} use:scrollFocusable>
         {#if children}
           {#if scheme === 'inherit' && !preset}
             <div class="ca-pstage__content">{@render children()}</div>

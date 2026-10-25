@@ -44,6 +44,18 @@ describe("ResizablePanels layout", () => {
 	});
 });
 
+describe("ResizablePanels scrolling", () => {
+	it("a panel whose content overflows scrolls by keyboard, and axe passes", async () => {
+		const screen = await render(Harness, { wide: true, min: 5 });
+		const panel = q(screen.container, ".ca-resizable__panel");
+		panel.style.width = "40px";
+		panel.style.flex = "none";
+		expect(panel.scrollWidth).toBeGreaterThan(panel.clientWidth);
+		expect(panel.tabIndex).toBe(0);
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});
+
 describe("ResizablePanels window splitter (APG)", () => {
 	it("separator exposes the size of the panel before it, with min and max", async () => {
 		const screen = await render(Harness, { min: 20, max: 80 });
