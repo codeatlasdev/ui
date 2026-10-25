@@ -183,8 +183,6 @@ export function extractPalette(
 		else merged.push({ ...c });
 	}
 	return merged.map(({ lab, n }) => {
-		const c = Math.hypot(lab[1], lab[2]);
-		const h = c < 1e-4 ? 0 : ((Math.atan2(lab[2], lab[1]) * 180) / Math.PI + 360) % 360;
 		// The hex comes from the unrounded center so a single-color cluster returns its exact color.
 		const hex = `#${oklabToRgb(lab[0], lab[1], lab[2]).map(hex2).join("")}`;
 		return { hex, oklch: hexToOklch(hex), share: n / px.length };

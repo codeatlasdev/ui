@@ -40,9 +40,10 @@ function writeStyle(css: string) {
 	if (!el) {
 		el = document.createElement("style");
 		el.id = STYLE_ID;
-		document.head.appendChild(el);
 	}
 	el.textContent = css;
+	// Always last in the head: the site's own theme and component styles share these selectors.
+	document.head.appendChild(el);
 }
 
 /**

@@ -3,14 +3,15 @@
 // and the contrast findings. All pure functions of the state.
 
 import {
+	BUILTIN_PRESETS,
 	contrast,
 	type DesignStyleId,
 	defineTheme,
+	designDefaults,
 	designStyle,
 	type PresetContrastIssue,
 	presetContrastIssues,
 	presetTokens,
-	THEME_PRESETS,
 	type ThemeOptions,
 	themeCSS,
 } from "./engine";
@@ -34,14 +35,22 @@ export function resolveOptions(s: StudioState): ThemeOptions {
 /**
  * CSS for a preview island. `themeCSS` targets `:root` (knobs, raw overrides) and brand presets keyed
  * on `[data-preset]`; the `:root` selectors are rewritten to the island so the page never changes.
+ *
+ * The engine leaves a knob out when it equals the package default, so on its own a "default" island
+ * would inherit whatever the page's theme set (this site's sketchbook: square corners, serif display,
+ * 2px borders). The island therefore starts from `designDefaults()` and the theme is layered on top:
+ * what the preview shows is exactly what a fresh app with this `theme.ts` gets.
  */
 export function islandCSS(s: StudioState): string {
-	return themeCSS(defineTheme(resolveOptions(s)))
+	const reset = Object.entries(designDefaults())
+		.map(([k, v]) => `${k}:${v};`)
+		.join("");
+	return `.${ISLAND}{${reset}}\n${themeCSS(defineTheme(resolveOptions(s)))
 		.replace(':root,\n[data-theme-scope="light"] {', `.${ISLAND} {`)
 		.replace(
 			':root.dark,\n:root [data-theme-scope="dark"] {',
 			`.${ISLAND}[data-theme-scope="dark"] {`
-		);
+		)}`;
 }
 
 /** CSS that restyles the whole page (the "apply to site" payload). Same text a real app would ship. */
@@ -163,9 +172,9 @@ export function contrastReport(s: StudioState): ContrastFinding[] {
 	const src =
 		s.preset === STUDIO_PRESET
 			? (resolveOptions(s).presets ?? []).find((p) => p.id === STUDIO_PRESET)
-			: THEME_PRESETS.find((p) => p.id === s.preset);
+			: BUILTIN_PRESETS.find((p) => p.id === s.preset);
 	if (!src) return [];
-	const tokens = presetTokens("hue" in src ? src : (src as Parameters<typeof presetTokens>[0]));
+	const tokens = presetTokens(src);
 	const out: ContrastFinding[] = [];
 	for (const scheme of ["light", "dark"] as const) {
 		const vars = tokens[scheme];

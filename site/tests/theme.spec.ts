@@ -71,30 +71,6 @@ test.describe("theme", () => {
 		});
 	});
 
-	test("/theme editor restyles only its preview, never the page", async ({ page, isMobile }) => {
-		await gotoReady(page, "/theme/");
-		if (isMobile) await page.getByRole("tab", { name: "Controls" }).click();
-		const island = page.getByTestId("te-island");
-		const brand = () =>
-			island.evaluate((e) => getComputedStyle(e).getPropertyValue("--ca-brand-main").trim());
-		const pageBefore = await page.locator("html").getAttribute("data-preset");
-		const pageBrand = await page.evaluate(() =>
-			getComputedStyle(document.documentElement).getPropertyValue("--ca-brand-main").trim()
-		);
-		const before = await brand();
-		await page
-			.getByRole("button", { name: /^(Ocean|Crimson|Violet|Emerald)$/ })
-			.first()
-			.click();
-		await expect.poll(brand).not.toBe(before);
-		expect(await page.locator("html").getAttribute("data-preset")).toBe(pageBefore);
-		expect(
-			await page.evaluate(() =>
-				getComputedStyle(document.documentElement).getPropertyValue("--ca-brand-main").trim()
-			)
-		).toBe(pageBrand);
-	});
-
 	test("reducedMotion disables SegmentedControl thumb transition", async ({ page }) => {
 		await gotoReady(page, "/docs/inputs/segmented-control/");
 		const thumb = page.locator(".ca-seg__thumb, [class*='seg'][class*='thumb']").first();

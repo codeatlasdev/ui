@@ -93,6 +93,10 @@
 			"types": "./dist/utils/palette-generator.d.ts",
 			"default": "./dist/utils/palette-generator.js"
 		},
+		"./utils/color": {
+			"types": "./dist/utils/color.d.ts",
+			"default": "./dist/utils/color.js"
+		},
 		"./vite": {
 			"types": "./dist/vite-plugin.d.ts",
 			"default": "./dist/vite-plugin.js"

@@ -1,6 +1,25 @@
 import { describe, expect, it } from "bun:test";
+import { plugin } from "bun";
+import { toOklch } from "../src/lib/utils/color.js";
+
+// The site imports the package by name. Unit tests run without a built `dist`, so the Svelte-free
+// subpath the studio uses is pointed at its source for this file only.
+const color = await import("../src/lib/utils/color.js");
+const styles = await import("../src/lib/theme/styles.js");
+plugin({
+	name: "studio-package-alias",
+	setup(build) {
+		build.module("@codeatlasdev/ui/utils/color", () => ({ exports: color, loader: "object" }));
+		build.module("@codeatlasdev/ui/astro", () => ({ exports: styles, loader: "object" }));
+	},
+});
+const { randomLook, themeFromPrompt } = await import(
+	"../../../site/src/components/theme/generate.js"
+);
+
 import { FONTS, familyOf, stackOf } from "../../../site/src/components/theme/fonts.js";
 import { LOOKS } from "../../../site/src/components/theme/looks.js";
+import { extractCode } from "../../../site/src/components/theme/panels/output-model.js";
 import {
 	BUILTIN_PRESETS_IDS,
 	COALESCE_MS,
@@ -192,5 +211,69 @@ describe("fonts", () => {
 		for (const f of FONTS) expect(familyOf(stackOf(f))?.id).toBe(f.id);
 		expect(familyOf("Comic Sans MS, cursive")).toBeNull();
 		expect(familyOf(undefined)).toBeNull();
+	});
+});
+
+describe("generate", () => {
+	it("maps colour and mood words onto knobs", () => {
+		const { state, matched } = themeFromPrompt("dark blue rounded");
+		expect(state.scheme).toBe("dark");
+		expect(state.brand).toMatch(/^#[0-9a-f]{6}$/);
+		const { h } = toOklch(state.brand as string) as { h: number };
+		expect(h).toBeGreaterThan(230);
+		expect(h).toBeLessThan(290);
+		expect(state.radius as number).toBeGreaterThan(0.8);
+		expect(matched.length).toBeGreaterThanOrEqual(3);
+	});
+
+	it("understands a hex colour and Portuguese", () => {
+		expect(themeFromPrompt("brand #e8590c").state.brand).toBe("#e8590c");
+		expect(themeFromPrompt("tema escuro verde").state.scheme).toBe("dark");
+	});
+
+	it("returns the default for text it does not understand and never throws on junk", () => {
+		expect(themeFromPrompt("").matched).toEqual([]);
+		expect(themeFromPrompt("zzz qqq").state).toEqual(DEFAULT_STATE);
+		expect(() => themeFromPrompt("x; } body{display:none} #zzzzzz".repeat(50))).not.toThrow();
+	});
+
+	it("every prompt result compiles through the real engine", () => {
+		for (const p of [
+			"retro terminal green phosphor",
+			"brutalist yellow loud",
+			"calm editorial paper",
+			"neon cyberpunk",
+			"soft pastel playful",
+		])
+			expect(
+				() => themeCSS(defineTheme(toThemeOptions(themeFromPrompt(p).state as StudioState))),
+				p
+			).not.toThrow();
+	});
+
+	it("randomLook is deterministic per seed, varies across seeds and always compiles", () => {
+		expect(randomLook(7)).toEqual(randomLook(7));
+		expect(
+			new Set([1, 2, 3, 4, 5, 6].map((n) => JSON.stringify(randomLook(n)))).size
+		).toBeGreaterThan(3);
+		for (let n = 0; n < 40; n++)
+			expect(() => themeCSS(defineTheme(toThemeOptions(randomLook(n))))).not.toThrow();
+	});
+});
+
+describe("extractCode", () => {
+	it("pulls the code out of a URL, a fragment and a bare code", () => {
+		for (const input of [
+			"https://x/theme/#t=v1.abc_-9",
+			"#t=v1.abc_-9",
+			"t=v1.abc_-9",
+			"  v1.abc_-9\n",
+		])
+			expect(extractCode(input), input).toBe("v1.abc_-9");
+	});
+
+	it("is null for anything else", () => {
+		for (const input of ["", "hello", "https://x/theme/", "v1."])
+			expect(extractCode(input), input).toBeNull();
 	});
 });

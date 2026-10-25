@@ -69,7 +69,7 @@ export const FONTS: FontFamily[] = [
 		id: "nunito",
 		family: "Nunito",
 		roles: ["body", "display"],
-		generic: "ui-rounded, " + SANS,
+		generic: `ui-rounded, ${SANS}`,
 		google: "Nunito:wght@400;600;700",
 		feel: "rounded",
 	},

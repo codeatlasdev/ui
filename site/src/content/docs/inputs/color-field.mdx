@@ -1,0 +1,42 @@
+---
+title: ColorField
+description: Color input with a swatch, a native picker, hex, rgb() and oklch() text entry, and a live WCAG contrast readout.
+group: Inputs
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Brand from "~/demos/inputs/color-field/Brand.svelte";
+import BrandSrc from "~/demos/inputs/color-field/Brand.svelte?raw";
+import TextContrast from "~/demos/inputs/color-field/TextContrast.svelte";
+import TextContrastSrc from "~/demos/inputs/color-field/TextContrast.svelte?raw";
+
+```svelte
+<script>
+  import { ColorField } from "@codeatlasdev/ui";
+  let brand = $state("#2b5fd9");
+</script>
+
+<ColorField label="Brand color" bind:value={brand} against="#ffffff" role="fill" minRatio={3} />
+```
+
+The swatch shows the color, the chip at the end opens the native picker, and the text field accepts `#rgb`, `#rrggbb`, a bare `rrggbb`, `rgb()`, `oklch()` and `color-mix()`. `value` keeps the notation the person typed, so an `oklch()` stays `oklch()`; `format` only decides what the picker writes. An invalid entry shows an error and never reaches `value`.
+
+With `against` the field shows the WCAG contrast ratio and says in words whether it passes (`Passes AA`, `Below 4.5:1`), so the verdict never rests on color alone. Use `role="text"` (default) to measure the color as text on `against`, or `role="fill"` to measure `against` as the label on the color. Translucent colors are composited over the background before measuring, and the verdict follows the real ratio, not the rounded one shown.
+
+The color helpers behind it are public: `parseColorInput`, `contrast`, `wcagLevel`, `toHex`, `toOklch`, `formatOklch`, and `extractPalette` with `pickBrand` for deriving a brand from the pixels of a logo.
+
+<Demo title="Brand color" description="Contrast of white on the color, as a UI part (3:1)." src={BrandSrc}><Brand client:visible /></Demo>
+<Demo title="Text color" description="Text on a white page, oklch output from the picker, 4.5:1." src={TextContrastSrc}><TextContrast client:visible /></Demo>
+
+<Props for="ColorField" rows={[
+  { name: "label", type: "string", description: "Visible label and accessible name of the text field." },
+  { name: "value", type: "string", default: "'#000000'", description: "Bindable committed color, as typed." },
+  { name: "format", type: "'hex' | 'oklch'", default: "'hex'", description: "What the native picker writes back." },
+  { name: "against", type: "string", description: "Background to measure contrast against (any CSS color). Omit to hide the readout." },
+  { name: "role", type: "'text' | 'fill'", default: "'text'", description: "`text`: value on `against`. `fill`: `against` on value." },
+  { name: "minRatio", type: "number", default: "4.5", description: "Ratio that counts as passing. 3 for UI parts." },
+  { name: "description", type: "string", description: "Hint under the field." },
+  { name: "disabled", type: "boolean", default: "false", description: "Disables the field and the picker." },
+  { name: "class", type: "string", description: "Extra classes on the root." },
+  { name: "onchange", type: "(value: string) => void", description: "Called when a valid color is committed (Enter, blur or the picker)." },
+]} />

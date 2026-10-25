@@ -42,9 +42,9 @@ describe("ColorField", () => {
 	it("the native picker writes hex and the field follows", async () => {
 		const screen = await render(ColorFieldHarness);
 		const native = screen.container.querySelector<HTMLInputElement>('input[type="color"]');
-		expect(native).not.toBeNull();
-		native!.value = "#ff0000";
-		native!.dispatchEvent(new Event("input", { bubbles: true }));
+		if (!native) throw new Error("native color input missing");
+		native.value = "#ff0000";
+		native.dispatchEvent(new Event("input", { bubbles: true }));
 		await expect.element(screen.getByTestId("bound")).toHaveTextContent("#ff0000");
 		await expect.element(screen.getByRole("textbox", { name: "Brand" })).toHaveValue("#ff0000");
 	});

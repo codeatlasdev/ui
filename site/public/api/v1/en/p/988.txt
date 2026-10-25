@@ -1,13 +1,12 @@
-Use @codeatlasdev/ui demo #988 "Hear it" (feedback/sound).
-What it shows: A sound toggle with volume, a profile picker (system, glass, brutalism, terminal) and a board of buttons that each play one cue. When to use: Let people audition a sound profile before turning interface sound on in an app.
+Use @codeatlasdev/ui demo #988 "SliderField" (inputs/slider).
+What it shows: Two labelled sliders with an editable number and a unit: radius and type scale. When to use: Tuning a numeric setting where both scrubbing and typing an exact value matter.
 Spec:
-- `<SoundToggle volume />` next to a `SegmentedControl` bound to the profile
-- `$effect(() => sound.use(PROFILES[profile]))` pins the picked profile and `onDestroy` releases it
-- A `role="group"` board of outlined small `Button` items, each with `sound={cue}` for one cue name
-- The cues are `press`, `toggle-on`, `toggle-off`, `success`, `error`, `warning`, `open`, `close` and `tab`
+- Two `<SliderField` stacked in a column
+- First: `label="Radius"`, `bind:value={radius}`, `min={0}`, `max={2}`, `step={0.05}`, `unit="x"`, initial `0.8`
+- Second: `label="Type scale"`, `bind:value={scale}`, `min={0.8}`, `max={1.3}`, `step={0.01}`, `unit="x"`, initial `1`, with a `description` Multiplies every font size.
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
-Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
-Report: #988 Hear it → file, what changed, https://ui.codeatlas.com.br/docs/feedback/sound#hear-it; what you could not check (light/dark, 375px, keyboard, reduced motion).
-Reference: https://ui.codeatlas.com.br/api/v1/en/e/988.txt   Components API: ca-ui-mcp get_component(Button)
+Report: #988 SliderField → file, what changed, https://ui.codeatlas.com.br/docs/inputs/slider#sliderfield; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/988.txt   Components API: ca-ui-mcp get_component(SliderField)

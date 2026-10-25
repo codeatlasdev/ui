@@ -12,9 +12,11 @@ export type {
 	ThemeOptions,
 } from "@codeatlasdev/ui";
 export {
+	BUILTIN_PRESETS,
 	contrast,
 	DESIGN_STYLES,
 	defineTheme,
+	designDefaults,
 	designStyle,
 	presetContrastIssues,
 	presetTokens,

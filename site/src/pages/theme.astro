@@ -1,17 +1,18 @@
 ---
-import ThemeEditor from "~/components/theme/ThemeEditor.svelte";
 import SiteDocsShell from "~/components/docs/SiteDocsShell.svelte";
 import SiteFooter from "~/components/site/SiteFooter.astro";
+import ThemeStudio from "~/components/theme/ThemeStudio.svelte";
 import Base from "~/layouts/Base.astro";
 import { SECTIONS } from "~/lib/nav";
+import { theme } from "~/theme";
 ---
 <Base
-	title="Theme editor"
-	description="Pick a brand color, tune radius, blur and surface style, preview every component live, and export the CSS tokens for @codeatlasdev/ui."
+	title="Theme Studio"
+	description="Design a theme for @codeatlasdev/ui: pick a brand color, surfaces, shape, fonts and motion, preview a whole app, then copy theme.ts, share a link or hand it to an AI agent."
 	skipLink={false}
 >
 	<SiteDocsShell client:load sections={SECTIONS} active="theme" pathname={Astro.url.pathname}>
-		<ThemeEditor client:load />
+		<ThemeStudio client:load sitePreset={theme.defaultPreset ?? "amber"} />
 	</SiteDocsShell>
 	<SiteFooter />
 </Base>

@@ -305,6 +305,8 @@ export { stageInsets } from "./stores/stage-insets.svelte.js";
 export type { ToastItem, ToastOptions, ToastVariant } from "./stores/toast.svelte.js";
 export { toast } from "./stores/toast.svelte.js";
 export { viewport } from "./stores/viewport.svelte.js";
+export type { BuiltinPresetSource } from "./theme/builtins.js";
+export { BUILTIN_PRESETS } from "./theme/builtins.js";
 export type { PresetContrastIssue } from "./theme/contrast.js";
 export { presetContrastIssues } from "./theme/contrast.js";
 export type {
@@ -336,7 +338,13 @@ export type {
 	TypeScale,
 	TypographyOptions,
 } from "./theme/define.js";
-export { defineTheme, designTokens, presetTokens, themeCSS } from "./theme/define.js";
+export {
+	defineTheme,
+	designDefaults,
+	designTokens,
+	presetTokens,
+	themeCSS,
+} from "./theme/define.js";
 export type {
 	CaTokenName,
 	CaTokenRegistry,
