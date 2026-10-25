@@ -58,6 +58,27 @@ export function propsSummary(markdown: string): string {
 		.join("\n\n");
 }
 
+/**
+ * What a concept page contributes to llms-full.txt: its definition (the text before the first `## `) and the
+ * sections an agent acts on, in page order. The evidence, demos, limits and references stay in the page's own
+ * file (linked from the section), so a concept costs a few KB and the file does not grow with every page.
+ */
+export const CONCEPT_DIGEST_SECTIONS: readonly string[] = [
+	"The contract",
+	"Anti-patterns",
+	"Checklist",
+	"Prompt for your AI",
+];
+
+/** The digest of a concept page's markdown: the lead and the `CONCEPT_DIGEST_SECTIONS`. */
+export function conceptDigest(markdown: string): string {
+	const [lead, ...sections] = markdown.split(/\n(?=## )/);
+	const keep = sections.filter((s) =>
+		CONCEPT_DIGEST_SECTIONS.includes(s.match(/^## (.+)$/m)?.[1]?.trim() ?? "")
+	);
+	return [lead, ...keep].join("\n\n").trim();
+}
+
 export function buildLlmsFull(opts: { site: string; docs: LlmsFullDoc[] }): string {
 	const parts = [
 		"# CodeAtlas UI: full documentation",
@@ -67,7 +88,8 @@ export function buildLlmsFull(opts: { site: string; docs: LlmsFullDoc[] }): stri
 	];
 	for (const d of opts.docs) {
 		const markdown = mdxToMarkdown(d.body);
-		const props = CORE_PAGES.includes(d.slug) ? "" : propsSummary(markdown);
+		const props =
+			CORE_PAGES.includes(d.slug) || d.group === "Concepts" ? "" : propsSummary(markdown);
 		parts.push(
 			"---",
 			"",
@@ -79,7 +101,11 @@ export function buildLlmsFull(opts: { site: string; docs: LlmsFullDoc[] }): stri
 			"",
 			d.description,
 			"",
-			CORE_PAGES.includes(d.slug) ? markdown : props,
+			CORE_PAGES.includes(d.slug)
+				? markdown
+				: d.group === "Concepts"
+					? conceptDigest(markdown)
+					: props,
 			""
 		);
 	}

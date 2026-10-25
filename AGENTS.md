@@ -179,6 +179,20 @@ Every numbered demo (`site/src/demos/<group>/<page>/<Variant>.svelte`, id in `si
 
 ---
 
+## Writing the Concepts and the atlas (evidence rules)
+
+Concept pages (`site/src/content/docs/concepts/`) and the design atlas (`site/src/data/atlas/`) make claims about users. Full text: https://ui.codeatlas.com.br/docs/concepts/evidence/. Binding for every page, dataset entry and agent answer you write:
+
+1. **Never brand as science.** The section is "Evidence", the atlas is a "design atlas". Never write "scientifically proven", "science says", "science-based", "studies show", "research proves" or "research says" (`BANNED_PHRASES` in `site/src/data/evidence/references.ts`; `packages/ui/tests/evidence-rules.test.ts` fails on them).
+2. **Claim-level sourcing.** Every empirical claim about users is a `<Claim strength="established|supported|preliminary|practice|heuristic" refs="E01" scope="who, which task, which context">`. No verified source: `heuristic` (no `refs`) or cut it.
+3. **Scope with every claim**: who was studied, the task, the context ("brief exposures in a lab; no preference for any style"). Never generalize beyond it.
+4. **Standards are not evidence of preference.** WCAG, specs and platform guides are `practice`: what is required or recommended.
+5. **No causal or demographic claims about taste.** An audience is a labelled hypothesis.
+6. **Each concept page ends with `<Limits reviewed="YYYY-MM-DD">` and `<Refs ids="…">`**, in the template order: definition and vocabulary, evidence, contract, how the library implements it, anti-patterns, checklist, prompt for your AI, limits, references.
+7. **Verify before publishing.** Open the DOI or URL, read the wording you rely on, and record `verified.date`, `verified.level` (`claim-read`, or `identity-only` when the text was not reachable: then no `<Claim>` may cite it) and the `excerpt` in `site/src/data/evidence/references.json`. Unverifiable sources are not added. A source's kind caps its strength (`checkReferences`): a standard or guideline is `practice`, a preprint or a vendor study is `preliminary`.
+8. **No number you cannot trace.** A figure goes with its study and its conditions, or it does not go in.
+9. Design inspiration sites are never named; science and standards are cited by name where they are primary sources.
+
 ## Glass and frosted styles
 
 `glass`, `frosted` and the `liquid` recipe are opt-in surface styles (the package default is `solid`: opaque, no blur; a page with no `data-style` on `<html>` is `solid` too). The rules below apply only when blur is used: `html[data-style]` is `glass` or `frosted`, a component sets `data-ca-blur`, or a surface has `material="glass" | "frosted" | "liquid"`. An app on the default style never needs them, and a new example must not add `material="glass"` just to look finished.

@@ -1,0 +1,104 @@
+---
+title: How we use evidence
+description: The strength labels, the limits and the rules every concept page and every atlas entry follows, so a claim about users always comes with its source, its scope and what it does not show.
+group: Concepts
+order: 1
+---
+import { Callout } from "@codeatlasdev/ui";
+import Claim from "~/components/docs/Claim.astro";
+import Limits from "~/components/docs/Limits.astro";
+import Refs from "~/components/docs/Refs.astro";
+
+The Concepts section explains why interfaces are built the way they are. A claim about users carries weight: people ship products and write accessibility policy from it. This page is the contract that keeps the claims honest, for readers and for the AI agents that quote these pages.
+
+## What a concept page is
+
+Every concept follows the same order, so you can jump to the part you need:
+
+1. **Definition and vocabulary.** The terms, with what each one does and does not mean.
+2. **Evidence.** The claims about users, each next to its source, a strength label and its scope.
+3. **The contract.** The principles we derive, kept apart from the evidence so you can tell a finding from a rule of thumb.
+4. **How the library implements it.** The tokens, components and live demos that apply the principle.
+5. **Anti-patterns.** What goes wrong, and what to do instead.
+6. **Checklist.** Things you can verify.
+7. **Prompt for your AI.** A paste-in instruction that carries the contract into a coding agent.
+8. **Limits.** What we do not know, and the date the page was last reviewed.
+9. **References.** Every source cited, with what it supports and what it does not.
+
+## The five strength labels
+
+A label belongs to one claim, never to a whole page. The same page can hold a standard, a single study and our own opinion; each says which it is.
+
+<Claim strength="established" refs="E06" scope="A review of perception research on grouping and figure-ground; it concerns perception, not interface styles.">
+Replicated findings, or a meta-analysis or authoritative review of them. Few claims about interface design reach this level.
+</Claim>
+
+<Claim strength="supported" refs="E05" scope="Three lab studies in which participants rated homepages shown for 50 ms and 500 ms; the measure is a rating of visual appeal.">
+One or more peer-reviewed studies. Read the scope before you generalize.
+</Claim>
+
+<Claim strength="preliminary" refs="E21" scope="One survey of 92 participants rating AI-generated and human-created prototypes; a preprint.">
+A single or small study, a preprint, or a vendor reporting its own research.
+</Claim>
+
+<Claim strength="practice" refs="W06" scope="WCAG 2.2 criterion 2.5.8, Level AA: it states what content must do, not what users prefer.">
+WCAG, a specification, a platform guide or a practitioner article. It says what is required or recommended. It is not evidence of what users prefer or what performs better.
+</Claim>
+
+<Claim strength="heuristic">
+A rule of thumb we use, with no source behind it. Test it with your own users before you rely on it.
+</Claim>
+
+## The rules
+
+These are binding on every page in this section and on every entry in the [design atlas](/atlas/). Tests enforce the ones a machine can check.
+
+1. **No branding as science.** This section is called Evidence, and the atlas is a design atlas. We do not write "scientifically proven", "studies show" or "research says": they tell you to stop checking. The banned phrases are listed in `site/src/data/evidence/references.ts` and a test fails the build if one appears.
+2. **Every empirical claim is claim-level.** It sits next to its source and carries one of the labels above. A claim with no verified source is labelled *our judgement*, or it is cut.
+3. **The scope travels with the claim.** Who was studied, on which task, in which context. "Brief exposures in a lab; it does not show a preference for any style." We never generalize beyond it.
+4. **Standards are not evidence of preference.** WCAG and specifications say what is required. We cite them as standards.
+5. **No causal or demographic claims about taste.** The audience listed for an atlas entry is a hypothesis about motivation, task and context. It is not measured and it is not a statement about age, gender or any group.
+6. **Limits and a review date.** Each concept page ends with a Limits box: what we do not know, and when the page was last reviewed.
+7. **Verified before published.** Each source was opened on the date recorded in the [references dataset](https://github.com/codeatlasdev/ui/blob/main/site/src/data/evidence/references.json), with the wording we relied on kept as an excerpt. A source whose text we could not read is marked *record only* and no claim may rest on it. Anything we cannot verify is excluded.
+8. **No number we cannot trace.** A figure appears only with its study and its conditions. "50 ms" is a presentation time in particular lab studies, not "how long users take to decide".
+9. **Tests.** A unit test fails if a banned phrase appears in site content, and another fails if a claim names a source that is missing or was not read.
+
+<Callout type="note" title="Why a strength label is not a score">
+  The labels order how much to trust a claim, not how important it is. A *Standard or guideline* claim can be a hard requirement of your accessibility policy, while an *Established* one may not change your design at all.
+</Callout>
+
+## How to read the design atlas
+
+The [design atlas](/atlas/) is a broad, living catalogue of aesthetics, layouts, interaction patterns and design-system languages. It is not the list of every style that exists: no authority enumerates them, and new or local terms keep appearing.
+
+- **Terms belong to different classes.** A historical movement, an aesthetic, a design-system language, a layout, an interaction pattern and a UX principle are different kinds of thing. Categories and subcategories overlap, so do not read them as exclusive alternatives.
+- **The sources support the principle, not the style.** The references behind an entry support underlying principles: visual complexity, aggregate visual preference, legibility, accessibility, grouping, platform conventions, technologies under study. They do not show that a particular aesthetic works.
+- **Scores are heuristic.** The 1 to 5 scales for complexity, expressiveness and density are relative editorial judgements. They are not results from a study and not a measure of quality.
+- **Audience is a hypothesis.** It describes the motivation, task, context and likely repertoire for which a style tends to be chosen. No audience in the atlas is shown to prefer its style.
+- **The trend is an editorial projection.** The 2027 to 2030 column is a judgement, not a forecast.
+- **How standard is the term.** Swiss Style or Bauhaus are well documented; "post-brutalism" or "hairline UI" are informal labels. The atlas states which.
+
+## How to validate before you commit
+
+An atlas entry or a concept page tells you what to consider. Your users decide.
+
+1. Pick styles whose task and motivation match your product.
+2. Build three prototypes with the same content and behavior: a functional baseline, an expressive variation and a hybrid.
+3. Test with a representative sample, including frequent and occasional users and people with accessibility needs.
+4. Measure task success, time, errors, calibrated confidence, recall, satisfaction and preference, and keep preference apart from performance.
+5. For agents and adaptive interfaces, add auditability, reversibility, unwanted surprise and unexpected state change.
+6. Do not decide on a preference vote alone: check the real flow, the devices and the critical scenarios.
+
+<Claim strength="practice" refs="E19" scope="A practitioner article whose example is one participant on one e-commerce site; it reports no effect size.">
+Appeal can mask problems. Users are more tolerant of minor usability issues in an interface they find visually appealing, so a preference result is not a usability result.
+</Claim>
+
+<Limits reviewed="2026-10-25">
+- Most studies behind the sources are laboratory studies with screenshots or short tasks. They show that a factor matters; they do not show how much it matters in your product.
+- Several sources are preprints, vendor reports or practitioner articles. They are labelled as such and none is labelled stronger than its kind.
+- For some sources we read the abstract or summary, not the full text (a paywalled article, or the preprint of a published survey). The record says which, in its `how` field, and no claim goes beyond the wording we read.
+- A checked source can change after the date we checked it. If a page no longer says what we quote, open an issue.
+- This section covers interface design for screens. It says little about voice, spatial or physical interfaces.
+</Limits>
+
+<Refs ids="E05, E06, E19, E21, W06" />

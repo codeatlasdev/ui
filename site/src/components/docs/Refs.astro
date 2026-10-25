@@ -1,0 +1,33 @@
+---
+import { getReference, parseRefIds, STRENGTH_LABEL } from "~/data/evidence/references";
+
+interface Props {
+	/** Reference ids used on the page (`"E01, E06"`). */
+	ids: string;
+	title?: string;
+}
+const { ids, title = "References" } = Astro.props;
+const refs = parseRefIds(ids).map((id) => {
+	const ref = getReference(id);
+	if (!ref) throw new Error(`<Refs>: unknown reference id "${id}"`);
+	return ref;
+});
+---
+<section class="refs" aria-labelledby="references">
+	<h2 id="references">{title}</h2>
+	<ol class="refs__list">
+		{refs.map((r) => (
+			<li id={`ref-${r.id}`} class="refs__item">
+				<p class="refs__cite">
+					{r.authors} ({r.year}). <a href={r.url} rel="noopener">{r.title}</a>. <em>{r.venue}</em>.
+					<span class="claim__badge">{STRENGTH_LABEL[r.strength]}</span>
+				</p>
+				<p class="refs__line"><strong>Supports:</strong> {r.supports}</p>
+				<p class="refs__line"><strong>Does not support:</strong> {r.doesNotSupport}</p>
+				<p class="refs__line refs__verified">
+					Checked {r.verified.date}{r.verified.level === "identity-only" ? " (record only; text not read)" : ""}.
+				</p>
+			</li>
+		))}
+	</ol>
+</section>

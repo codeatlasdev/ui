@@ -1,6 +1,6 @@
 import { describe, expect, it } from "bun:test";
 import { CONSUMER_GUIDE } from "../scripts/ai-entry.ts";
-import { buildLlmsFull } from "../scripts/llms-full.ts";
+import { buildLlmsFull, conceptDigest } from "../scripts/llms-full.ts";
 
 describe("llms-full.txt", () => {
 	const out = buildLlmsFull({
@@ -37,5 +37,63 @@ describe("llms-full.txt", () => {
 		expect(out).toContain(
 			"Complete page with demo sources: https://ui.codeatlas.com.br/llms/getting-started/installation.txt"
 		);
+	});
+});
+
+describe("a concept page in llms-full.txt", () => {
+	const body = [
+		"Lead paragraph that defines the concept.",
+		"",
+		"## Evidence",
+		"",
+		"A long evidence section with sources that stays in the page's own file.",
+		"",
+		"## The contract",
+		"",
+		"Use min-height, never a fixed height.",
+		"",
+		"## Checklist",
+		"",
+		"- [ ] Reflows at 320 CSS px",
+		"",
+		"## Prompt for your AI",
+		"",
+		"Build it with min-height.",
+		"",
+		"## References",
+		"",
+		"- [E01] A source.",
+	].join("\n");
+
+	it("keeps the lead, the contract, the checklist and the prompt, and drops evidence and references", () => {
+		const d = conceptDigest(body);
+		for (const kept of [
+			"Lead paragraph",
+			"## The contract",
+			"## Checklist",
+			"## Prompt for your AI",
+		])
+			expect(d).toContain(kept);
+		for (const dropped of ["## Evidence", "## References", "A long evidence section"])
+			expect(d).not.toContain(dropped);
+	});
+
+	it("is what the dump carries, with the link to the complete file", () => {
+		const out = buildLlmsFull({
+			site: "https://ui.codeatlas.com.br",
+			docs: [
+				{
+					group: "Concepts",
+					title: "Viewport",
+					url: "/docs/concepts/viewport/",
+					slug: "concepts/viewport",
+					description: "d",
+					body,
+				},
+			],
+		});
+		expect(out).toContain("Use min-height, never a fixed height.");
+		expect(out).not.toContain("A long evidence section");
+		expect(out).toContain("https://ui.codeatlas.com.br/llms/concepts/viewport.txt");
 	});
 });
