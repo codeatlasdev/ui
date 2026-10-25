@@ -11,7 +11,7 @@ Spec:
 - `{#snippet empty(column, { canMove })}` fills the empty Won column
 Names: Kanban board | Pipeline board | Quadro de funil | Tablero de embudo
 Tags: kanban, board, pipeline, crm, drag, columns, infinite-scroll, mobile
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Kanban
 Live demo: https://ui.codeatlas.com.br/docs/display/kanban#leads-pipeline
 

@@ -9,7 +9,7 @@ Spec:
 - `<Slider bind:value={keyboard}` for the keyboard height (`step={10}`), plus a second `SegmentedControl` with `aria-label="Keyboard resize mode"` for `resizes-content` or `resizes-visual`
 - A to-scale phone `div` with `role="img"` and an `aria-label`, drawn with CSS custom properties (`--w`, `--h`, `--bar`, `--vis`, `--kb`), and a `<table class="sim__table">` with a screen-reader caption listing 100lvh, 100svh, 100dvh and the usable height
 Tags: viewport, svh, dvh, lvh, safe-area, keyboard, mobile, simulator, concept
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: SegmentedControl, Switch, Slider
 Live demo: https://ui.codeatlas.com.br/docs/concepts/viewport#viewport-simulator
 

@@ -6,7 +6,7 @@ Spec:
 - `<ThemeIsland preset="rose" scheme="light" document>` is the page root
 - Closing it restores the app preset and scheme
 Tags: theme-island, document, full-page, landing, overscroll, ssr
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Button, ThemeIsland
 Live demo: https://ui.codeatlas.com.br/docs/layout/theme-island#full-page
 

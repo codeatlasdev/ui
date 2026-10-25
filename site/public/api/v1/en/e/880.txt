@@ -10,7 +10,7 @@ Spec:
 - `<Kbd>N</Kbd>` after the text Next lead in a `.hint` span
 - Flex `.dense` wrapper with `gap: var(--ca-space-3)`; the CSS has no selector against a component class
 Tags: button, icon-button, kbd, tokens, density, typography, theming, focus-mode
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Button, IconButton, Kbd
 Live demo: https://ui.codeatlas.com.br/docs/inputs/button#component-tokens
 

@@ -8,7 +8,7 @@ Spec:
 - A `<canvas` of `width="300" height="80"` whose `$effect` reads `colorScheme.resolved` and `colorScheme.preset`, then fills one bar per status with ``tokenRgba(`status.${s.name}`)``
 - The pills sit in a wrapping flex row with `gap: var(--ca-space-2)` and `border-radius: var(--ca-radius-pill)`
 Tags: tokens, preset, domain, status, tokenrgba, canvas, theme
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: none
 Live demo: https://ui.codeatlas.com.br/docs/layout/domain-tokens#status-tokens
 

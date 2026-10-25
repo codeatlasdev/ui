@@ -8,7 +8,7 @@ Spec:
 - `splitSize={{ width: 'min(66vw, 80rem)', height: 'min(88svh, 56rem)' }}`
 - Two direct children: `<div class="map">` labelled Map and `<div class="details">` with a name and a filled Close `<Button variant="filled" onclick={() => (open = false)}>`
 Tags: dialog, split, size, columns, fullscreen, mobile, modal
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Dialog, Button, Stack
 Live demo: https://ui.codeatlas.com.br/docs/feedback/dialog#configured-split
 

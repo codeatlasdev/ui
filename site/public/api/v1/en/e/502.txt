@@ -8,7 +8,7 @@ Spec:
 - A small filled `Button` labelled `Sign up` follows the switcher
 - The header sits in `<Card full flush>`
 Tags: locale-switcher, site-header, trailing, cta, language, header
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Button, Card, LocaleSwitcher, SiteHeader
 Live demo: https://ui.codeatlas.com.br/docs/navigation/locale-switcher#in-header
 

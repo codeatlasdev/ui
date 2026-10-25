@@ -9,7 +9,7 @@ Spec:
 - `<IconButton variant="outlined" tone="neutral" aria-label="More actions">` with a MoreHorizontal icon
 - Wrapping flex `.row` with `gap: var(--ca-space-3)`
 Tags: button, icon-button, tone, neutral, secondary, outlined, ghost
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Button, IconButton
 Live demo: https://ui.codeatlas.com.br/docs/inputs/button#neutral-tone
 

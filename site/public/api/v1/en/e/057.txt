@@ -7,7 +7,7 @@ Spec:
 - Password field is `type="password"` with `revealable`: the component renders the show/hide eye button
 - No local reveal state in the demo
 Tags: text-field, icon, leading, trailing, password, search, snippet
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/text-field#with-icons
 

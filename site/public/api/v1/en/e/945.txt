@@ -7,7 +7,7 @@ Spec:
 - `onOpenChange` fires when the bar goes from none open to one open and back, not when the pointer or arrows switch between menus
 - A line reads "A menu is" followed by open or closed
 Tags: menubar, on-open-change, menu, compact, state, hover
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: DropdownMenuItem, Menubar, MenubarMenu
 Live demo: https://ui.codeatlas.com.br/docs/navigation/menubar#bar-open-state
 

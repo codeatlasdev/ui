@@ -8,7 +8,7 @@ Spec:
 - A `role="group"` board of outlined small `Button` items, each with `sound={cue}` for one cue name
 - The cues are `press`, `toggle-on`, `toggle-off`, `success`, `error`, `warning`, `open`, `close` and `tab`
 Tags: sound, audio, feedback, profile, toggle
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Button, SegmentedControl, SoundToggle
 Live demo: https://ui.codeatlas.com.br/docs/feedback/sound#hear-it
 

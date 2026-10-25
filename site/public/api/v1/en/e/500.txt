@@ -8,7 +8,7 @@ Spec:
 - `{#snippet below()}` renders `<a href="/forgot-password">Forgot password?</a>` under the field, after any error or description
 - Column wrapper has `max-width: 400px`
 Tags: text-field, password, revealable, show-password, below, required, login, forgot-password
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/text-field#password
 

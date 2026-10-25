@@ -8,7 +8,7 @@ Spec:
 - Initial value is `$state('#6b7280')`
 - Below the field, a white box shows a sample sentence painted in the current color
 Tags: color-field, contrast, wcag, text, oklch
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: ColorField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/color-field#text-color
 

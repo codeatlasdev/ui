@@ -9,7 +9,7 @@ Spec:
 - Initial value is `$state('#2b5fd9')`
 - Current value is shown as `value: {brand}`
 Tags: color-field, color-picker, oklch, contrast, brand
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: ColorField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/color-field#brand-color
 

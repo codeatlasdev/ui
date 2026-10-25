@@ -10,7 +10,7 @@ Spec:
 - `<DropdownMenu bind:open anchor={point}>` has no trigger; items Rename, Duplicate and a destructive Delete after `<DropdownMenuSeparator />`
 - Each item calls `function pick(action: string)`, which sets `last = action` and calls `announce`; `Last action: {last}` is shown below
 Tags: dropdown-menu, context-menu, right-click, anchor, bind-open, keyboard
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: DropdownMenu, DropdownMenuItem, DropdownMenuSeparator
 Live demo: https://ui.codeatlas.com.br/docs/navigation/menu#context-menu
 

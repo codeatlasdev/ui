@@ -8,7 +8,7 @@ Spec:
 - `<KpiCard title="Response Time" value="1.4" unit="s" trend={12.3} trendTone="positive-down" icon={Gauge} />`: a rise is red, announced "worse"
 - `<KpiCard title="Sessions" value="3,847" trend={-2.1} trendTone="neutral" icon={Activity} />`: arrow only, no colour judgement
 Tags: kpi-card, kpi-grid, trend-tone, positive-down, churn, latency, metrics
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: KpiCard, KpiGrid
 Live demo: https://ui.codeatlas.com.br/docs/layout/kpi-card#trend-tone
 

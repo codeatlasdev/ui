@@ -8,7 +8,7 @@ Spec:
 - `<AuthCard title="Welcome back" subtitle="Panel tone: {tone}">` holds a `SegmentedControl` (Flat, Brand) bound to `tone` and a Close button
 - Opened by an outlined small Button inside an overlay with `position: fixed;` and `inset: 0;`
 Tags: auth-layout, panel-tone, flat, gradient, blobs, sign-in
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: AuthLayout, AuthCard, Button, SegmentedControl, Stack
 Live demo: https://ui.codeatlas.com.br/docs/layout/auth-layout#flat-panel
 

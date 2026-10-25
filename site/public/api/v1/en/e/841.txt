@@ -7,7 +7,7 @@ Spec:
 - `<PasswordStrength value={password} />` directly under the field
 - Column is `max-width: 20rem` with `gap: var(--ca-space-2)`
 Tags: password-strength, password, meter, sign-up, text-field, aria-live
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: PasswordStrength, TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/password-strength#sign-up-field
 

@@ -8,7 +8,7 @@ Spec:
 - `toast.success('Saved', { sound: true })` from a Toast button
 - `<Dialog sound bind:open title="Sound on open and close">`
 Tags: sound, button, switch, tabs, slider, toast, dialog
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Button, Dialog, Slider, Switch, Tabs, TabsList, TabsTrigger, SoundToggle
 Live demo: https://ui.codeatlas.com.br/docs/feedback/sound#components
 

@@ -7,7 +7,7 @@ Spec:
 - `<Heading level={2} size="display-3">` renders an h2 at the smallest fluid display size
 - `<Heading level={2} size="h4">` renders an h2 with the h4 look
 Tags: heading, display, typography, headline, hero, font-display
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Heading
 Live demo: https://ui.codeatlas.com.br/docs/display/heading#display-role
 

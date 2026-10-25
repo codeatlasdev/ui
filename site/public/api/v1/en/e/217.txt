@@ -9,7 +9,7 @@ Spec:
 - `<Grid columns={{ base: 1, sm: 2, lg: 4 }} gap="4">` with each KPI in `<Card>`
 - `class:up={k.trend === 'up'}` and `class:down={k.trend === 'down'}` colour the change text
 Tags: sparkline, kpi, card, trend, dashboard, grid
-Needs: @codeatlasdev/ui@4.5.0 + echarts
+Needs: @codeatlasdev/ui@4.6.0 + echarts
 Components: Card, Grid, Stack, Flex, Sparkline
 Live demo: https://ui.codeatlas.com.br/docs/charts/sparklines#kpi-cards-with-trend-lines
 

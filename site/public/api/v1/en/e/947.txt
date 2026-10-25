@@ -7,7 +7,7 @@ Spec:
 - `<NavigationMenuItem label="Guides" align="start">` and `<NavigationMenuItem label="Reference" align="end">` align their panels to the button
 - Each panel holds two `NavigationMenuLink`s
 Tags: navigation-menu, delay, hover, align, docs, disclosure
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: NavigationMenu, NavigationMenuItem, NavigationMenuLink
 Live demo: https://ui.codeatlas.com.br/docs/navigation/navigation-menu#delays-and-alignment
 

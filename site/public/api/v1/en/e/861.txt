@@ -8,7 +8,7 @@ Spec:
 - The `num` sample is `1,284 leads, 18:42`, drawn with tabular digits
 - Rows are a `grid-template-columns: var(--ca-space-20) 1fr` with `gap: var(--ca-space-3)`
 Tags: typography, text, type-scale, role, tabular-nums
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Text
 Live demo: https://ui.codeatlas.com.br/docs/foundation/typography#type-roles
 

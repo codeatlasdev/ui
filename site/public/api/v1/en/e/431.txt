@@ -9,7 +9,7 @@ Spec:
 - Each card is `<li data-dnd-item={card.id}` with a focusable `button`
 Names: Kanban board | Drag between lists | Cards between columns | Quadro kanban | Tablero kanban
 Tags: drag, drop, kanban, board, move, lists
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: DndLayer
 Live demo: https://ui.codeatlas.com.br/docs/foundation/drag-and-drop#board
 

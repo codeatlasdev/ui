@@ -8,7 +8,7 @@ Spec:
 - `tone="warning"` Due today and `tone="success"` Done, both `subtle dot size="md"`
 - `tone="neutral" subtle size="md"` Draft with no dot
 Tags: badge, tone, subtle, dot, pill, status, overdue, inline, list
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Badge
 Live demo: https://ui.codeatlas.com.br/docs/display/badge#inline-pill
 

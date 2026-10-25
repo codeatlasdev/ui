@@ -7,7 +7,7 @@ Spec:
 - `<Highlight animated>one-shot components</Highlight>` follows as the replacement
 - The paragraph uses `--ca-font-size-h4`
 Tags: strike-through, del, rewrite, animated, reduced-motion, editorial, highlight
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Highlight, StrikeThrough
 Live demo: https://ui.codeatlas.com.br/docs/display/strike-through#strike-and-rewrite
 

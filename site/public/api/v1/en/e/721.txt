@@ -10,7 +10,7 @@ Spec:
 - `onchange` clears the error
 - `<Button type="submit" variant="filled">Continue</Button>` submits the form
 Tags: chip-group, form, error, required, name, validation
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Button, ChipGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/chip-group#required-choice-with-error
 

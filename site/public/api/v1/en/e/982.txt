@@ -10,7 +10,7 @@ Spec:
 - `label="Disabled" prefix="https://" disabled`
 - The fields are stacked in a column, `max-width: 24rem`, `gap: var(--ca-space-4)`
 Tags: input-group, text-field, prefix, suffix, addon, text, currency, url
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/text-field#text-addons
 

@@ -11,7 +11,7 @@ Spec:
 - `c.items.reduce(`
 Names: Kanban column total | Pipeline totals | Total por coluna | Total por columna
 Tags: kanban, board, pipeline, summary, total, money, crm, columns
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Kanban
 Live demo: https://ui.codeatlas.com.br/docs/display/kanban#money-total-per-column
 

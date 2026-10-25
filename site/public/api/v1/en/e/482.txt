@@ -7,7 +7,7 @@ Spec:
 - Three `<Checkbox label="Hacker News" />` children: Hacker News, Product Hunt, Lobsters
 - `gap="sm"` stacks the children in a column with 8px between them; the title shares the checkboxes' left edge
 Tags: card, gap, stack, checkbox, title, settings
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Card, Checkbox
 Live demo: https://ui.codeatlas.com.br/docs/surfaces/card#stacked-controls
 

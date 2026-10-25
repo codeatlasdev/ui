@@ -8,7 +8,7 @@ Spec:
 - `<DropdownMenuSeparator />` then `<DropdownMenuRadioGroup bind:value={sort} aria-label="Sort by">` with a `DropdownMenuLabel` and radio items name, date, size
 - `aria-live="polite"` note reports `Sorted by {sort}` and the two toggles
 Tags: dropdown-menu, menu, checkbox, radio, selection, view-options, bind
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, Button
 Live demo: https://ui.codeatlas.com.br/docs/navigation/menu#checkbox-and-radio-items
 

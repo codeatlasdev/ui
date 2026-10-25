@@ -10,7 +10,7 @@ Spec:
 - Output line `Selected:` joins the array with `, ` or shows `none`
 - Wrapper `.col` has `max-width: 360px`
 Tags: combobox, multiple, multi-select, chips, tags, search, form
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Combobox
 Live demo: https://ui.codeatlas.com.br/docs/inputs/combobox#multiple
 

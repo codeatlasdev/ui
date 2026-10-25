@@ -9,7 +9,7 @@ Spec:
 - `.hero` uses `min-block-size`, never `height`; `<Button variant="filled">See how it works</Button>` is the primary action
 - The second section is `<h4>How it works</h4>` with one paragraph, separated by a `border-block-start`
 Tags: viewport, hero, min-height, false-floor, scroll-cue, reflow, concept
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Button, Switch
 Live demo: https://ui.codeatlas.com.br/docs/concepts/viewport#a-hero-that-is-a-floor
 

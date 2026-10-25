@@ -9,7 +9,7 @@ Spec:
 - `<MapControls />` as the child of `MapStage`
 - The stage box is `360px` high with `var(--ca-radius-lg)` corners
 Tags: map, deck.gl, maplibre, theme, dark-mode, controls
-Needs: @codeatlasdev/ui@4.5.0 + maplibre-gl
+Needs: @codeatlasdev/ui@4.6.0 + maplibre-gl
 Components: MapControls, MapStage
 Live demo: https://ui.codeatlas.com.br/docs/map/stage#themed-map
 

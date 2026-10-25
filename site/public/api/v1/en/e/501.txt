@@ -8,7 +8,7 @@ Spec:
 - Before any pick the note reads `Pick a language: the switcher stays busy until onselect resolves.`
 - The column is left-aligned with `gap: var(--ca-space-3)`
 Tags: locale-switcher, language, i18n, dropdown, async, onselect
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: LocaleSwitcher
 Live demo: https://ui.codeatlas.com.br/docs/navigation/locale-switcher#basic
 

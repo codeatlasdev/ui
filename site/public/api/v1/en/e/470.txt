@@ -8,7 +8,7 @@ Spec:
 - `{#snippet children({ close })}` renders `<Calendar bind:value label="Due date" locale="en-US" weekStartsOn={0} onchange={() => close()} />`
 - `close()` closes the popover and returns focus to the trigger
 Tags: popover, calendar, bind-open, close, date, overlay
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Popover, Button, Calendar
 Live demo: https://ui.codeatlas.com.br/docs/navigation/popover#close-on-pick
 

@@ -7,7 +7,7 @@ Spec:
 - `sizes` has 5 items: `1` Just me, `2-5` 2 to 5, `6-20` 6 to 20, `21-50` 21 to 50, `50+` 50+
 - `bind:value={size}` with initial `$state('2-5')`; the selected chip shows a check icon
 Tags: chip-group, chips, radio, single-choice, wrap, team-size, mobile
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: ChipGroup
 Live demo: https://ui.codeatlas.com.br/docs/inputs/chip-group#wrapping-chips
 

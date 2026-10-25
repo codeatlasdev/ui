@@ -9,7 +9,7 @@ Spec:
 - `<Progress indeterminate size="sm" label="Small indeterminate bar" />` honours the height too
 - Stacked in a grid with `gap: var(--ca-space-4)`, `max-width: 360px`
 Tags: progress, size, height, sm, md, lg, indeterminate
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Progress
 Live demo: https://ui.codeatlas.com.br/docs/feedback/progress#sizes
 

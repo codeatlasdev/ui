@@ -7,7 +7,7 @@ Spec:
 - `<KpiCard title="Active users" value="24.8k" trend={12.1} icon={Users}>` with `{#snippet chart()}<Sparkline data={[18, 19, 21, 20, 23, 25]} trend="up" />{/snippet}`
 - `hint="Down from 2.4% in January"` on the churn card, whose chart is `<Sparkline data={[2.4, 2.3, 2.1, 2.2, 1.9, 1.7]} trend="up" variant="bar" />`: `trend="up"` is green because a falling churn is good
 Tags: kpi-card, sparkline, chart, snippet, hint, metrics, dashboard
-Needs: @codeatlasdev/ui@4.5.0 + echarts
+Needs: @codeatlasdev/ui@4.6.0 + echarts
 Components: KpiCard, KpiGrid, Sparkline
 Live demo: https://ui.codeatlas.com.br/docs/layout/kpi-card#sparkline
 

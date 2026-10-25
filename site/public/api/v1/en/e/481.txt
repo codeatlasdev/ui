@@ -11,7 +11,7 @@ Spec:
 - A second module `id: 'other'` with `items: []`
 - Stage height is `height: 360px`
 Tags: app-shell, nav-item, color, count, actions-menu, reorder, drag-and-drop, sidebar
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: AppShellLayout, DropdownMenuItem, NavItemMenu, NavReorder, PageShell, Card
 Live demo: https://ui.codeatlas.com.br/docs/layout/app-shell#color-count-actions-and-reorder
 

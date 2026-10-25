@@ -8,7 +8,7 @@ Spec:
 - `<ButtonGroup aria-label="Pages" orientation="vertical">` with two outlined neutral IconButtons (Previous page, Next page)
 - Both groups sit in a wrapping row with `gap: var(--ca-space-6)`
 Tags: button-group, split-button, dropdown-menu, vertical, orientation, icon-button
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Button, ButtonGroup, DropdownMenu, DropdownMenuItem, IconButton
 Live demo: https://ui.codeatlas.com.br/docs/inputs/button-group#split-button-and-vertical
 

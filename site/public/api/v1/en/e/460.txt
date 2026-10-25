@@ -9,7 +9,7 @@ Spec:
 - A line below the tabs reads `Showing the {view} view.`
 - Wrapper is `.wrap` with `max-width: 420px`
 Tags: tabs, line, variant, view-switcher, aria-label, tabs-list
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Tabs, TabsList, TabsTrigger
 Live demo: https://ui.codeatlas.com.br/docs/navigation/tabs#line
 

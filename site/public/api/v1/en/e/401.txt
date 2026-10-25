@@ -10,7 +10,7 @@ Spec:
 - `<DropdownMenuSeparator />` precedes the destructive Delete item
 - `let last = $state('')` is set per item and shown as `Last action: {last}` with `aria-live="polite"`
 Tags: dropdown-menu, menu, submenu, nested, actions, destructive
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: DropdownMenu, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubTrigger, Button
 Live demo: https://ui.codeatlas.com.br/docs/navigation/menu#submenus
 

@@ -8,7 +8,7 @@ Spec:
 - `slides` is `['Plan', 'Build', 'Ship', 'Learn']`
 - Caption `Slide {index + 1} of {slides.length}`
 Tags: carousel, scroll-snap, slides, dots, arrows, bind-index
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Carousel, CarouselItem
 Live demo: https://ui.codeatlas.com.br/docs/display/carousel#highlights
 

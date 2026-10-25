@@ -9,7 +9,7 @@ Spec:
 - `renderComponent(Button, {` puts a Button in a cell; clicking it does not fire `onRowClick`
 Names: Grouped table | Resizable columns | Reorderable rows | Tabela agrupada | Tabla agrupada
 Tags: data-table, groups, resize, reorder, drag, interactive-cells
-Needs: @codeatlasdev/ui@4.5.0 + @tanstack/svelte-table
+Needs: @codeatlasdev/ui@4.6.0 + @tanstack/svelte-table
 Components: Button, DataTable, DataTableColumnHeader
 Live demo: https://ui.codeatlas.com.br/docs/display/data-table#groups
 

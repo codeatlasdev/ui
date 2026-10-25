@@ -9,7 +9,7 @@ Spec:
 - `<DndLayer {dnd} />` renders the keyboard instructions (`dnd.instructionsId`) and the drag styles once; every step is announced to screen readers
 Names: Sortable list | Drag to reorder | Reorderable list | Lista ordenável | Lista reordenable
 Tags: drag, drop, sortable, reorder, list, keyboard
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: DndLayer
 Live demo: https://ui.codeatlas.com.br/docs/foundation/drag-and-drop#sortable-list
 

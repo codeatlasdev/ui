@@ -7,7 +7,7 @@ Spec:
 - `<Highlight>static marks</Highlight>` is drawn fully with no animation
 - The paragraph uses `--ca-font-size-h4`
 Tags: highlight, mark, marker, animated, reduced-motion, editorial
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Highlight
 Live demo: https://ui.codeatlas.com.br/docs/display/highlight#animated-and-static
 

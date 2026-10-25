@@ -8,7 +8,7 @@ Spec:
 - `bind:ref` gives the `HTMLInputElement`; a text `Button` calls `first?.focus()`
 - Column wrapper has `max-width: 400px`
 Tags: text-field, hidelabel, sr-only, ref, maxlength, inline editing
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Button, TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/text-field#hidden-label
 

@@ -9,7 +9,7 @@ Spec:
 - `<Stat label="Booked calls" value="9" trend={12.5} />`
 - The Stats sit in an auto-fit grid, `minmax(150px, 1fr)`, `gap: var(--ca-space-5)`
 Tags: stat, kpi, metric, statistic, dashboard, card-less, hint, trend
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Card, Stat
 Live demo: https://ui.codeatlas.com.br/docs/layout/kpi-card#stats-in-a-card
 

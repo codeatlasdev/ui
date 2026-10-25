@@ -9,7 +9,7 @@ Spec:
 - The page is `<PageShell title="Floating over the stage" description={pathname}>` with a `ca-stage-panel` wrapper around a `Card` that holds the mount count hint and an outlined `Button` toggling `stageVisible`
 - Stage frame height is `height: 440px`
 Tags: app-shell, stage, map, canvas, persistent, pointer-events, inset
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: AppShellLayout, Button, Card, PageShell
 Live demo: https://ui.codeatlas.com.br/docs/layout/app-shell#stage
 

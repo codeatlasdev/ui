@@ -10,7 +10,7 @@ Spec:
 - `{#snippet footer()}` has a filled small `Button` Save
 - A pin on the map shifts with the covered area
 Tags: page-frame, map, stage, stage-insets, panel, split, page, sheet, layout
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: PageFrame, Button, TextField, SegmentedControl
 Live demo: https://ui.codeatlas.com.br/docs/layout/page-frame#map-split-and-page
 

@@ -7,7 +7,7 @@ Spec:
 - Each slide is `<CarouselItem><blockquote class="quote">{quote}</blockquote></CarouselItem>`
 - `quotes` holds three short strings
 Tags: carousel, autoplay, pause, testimonials, reduced-motion
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Carousel, CarouselItem
 Live demo: https://ui.codeatlas.com.br/docs/display/carousel#autoplay
 

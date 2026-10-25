@@ -8,7 +8,7 @@ Spec:
 - A filler `div` of at least `8rem` so the form scrolls
 - `<StickyActions align="stretch">` holds `<Button variant="filled" type="submit">` whose label becomes `Sent` after submit
 Tags: viewport, keyboard, keyboard-aware, sticky-actions, form, mobile, safe-area, concept
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Button, StickyActions, TextField
 Live demo: https://ui.codeatlas.com.br/docs/concepts/viewport#a-form-with-the-keyboard-open
 

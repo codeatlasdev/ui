@@ -6,7 +6,7 @@ Spec:
 - `<Avatar alt={name} size="sm" decorative />` followed by `<span>{name}</span>` in each `<li>`
 - People are `Ada Lovelace` and `Grace Hopper` in a `ul` with `list-style: none`
 Tags: avatar, decorative, aria-hidden, name, list, a11y
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Avatar
 Live demo: https://ui.codeatlas.com.br/docs/display/avatar#decorative
 

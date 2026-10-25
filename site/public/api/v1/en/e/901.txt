@@ -7,7 +7,7 @@ Spec:
 - A second one labelled Snooze with `<Kbd>S</Kbd>`
 - Wrapping flex `.row` with `gap: var(--ca-space-3)`
 Tags: button, trailing, kbd, shortcut, hint, responsive, touch
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Button, Kbd
 Live demo: https://ui.codeatlas.com.br/docs/inputs/button#responsive-keyboard-hint
 

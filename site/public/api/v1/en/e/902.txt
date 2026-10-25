@@ -7,7 +7,7 @@ Spec:
 - Each `<Button variant="outlined" tone="neutral" align="between" fullWidth trailingHint>` with a `<Kbd>` in `trailing`: Open lead (O), Assign to me (A)
 - Third button Syncing (R) also has `loading`, so the spinner replaces the leading slot while the label stays left
 Tags: button, align, between, trailing, kbd, full-width, loading
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Button, Kbd
 Live demo: https://ui.codeatlas.com.br/docs/inputs/button#align-between
 

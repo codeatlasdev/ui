@@ -7,7 +7,7 @@ Spec:
 - `{#snippet toolbar()}` adds a Dark / Light toggle next to the width control
 - The content is themed in its own island: the page around the stage keeps its scheme
 Tags: preview-stage, device-frame, responsive, width, showcase
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Button, PreviewStage
 Live demo: https://ui.codeatlas.com.br/docs/layout/preview-stage#inline-content
 

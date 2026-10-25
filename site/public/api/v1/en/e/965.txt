@@ -7,7 +7,7 @@ Spec:
 - Each card is `<CarouselItem><div class="card">{name}</div></CarouselItem>`
 - `cards` is `['Starter', 'Team', 'Business', 'Enterprise', 'Partner']`
 Tags: carousel, per-view, loop, cards, scroll-snap
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Carousel, CarouselItem
 Live demo: https://ui.codeatlas.com.br/docs/display/carousel#several-per-view
 

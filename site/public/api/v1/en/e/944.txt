@@ -8,7 +8,7 @@ Spec:
 - View has `<DropdownMenuCheckboxItem bind:checked={wrap}>` and a `<DropdownMenuRadioGroup bind:value={zoom} aria-label="Zoom">` with 100% and 150%
 - Action items call `function pick(action: string)`, which sets `last` and calls `announce`
 Tags: menubar, menu, application, keyboard, dropdown-menu, submenu
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: DropdownMenuCheckboxItem, DropdownMenuItem, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubTrigger, Menubar, MenubarMenu
 Live demo: https://ui.codeatlas.com.br/docs/navigation/menubar#editor-menu-bar
 

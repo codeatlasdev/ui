@@ -7,7 +7,7 @@ Spec:
 - `widths={[390, 768, 1280]}` are the presets next to Fill
 - The page renders in an isolated iframe: real viewport width, real media queries, no style leakage
 Tags: preview-stage, iframe, page, template, responsive
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: PreviewStage
 Live demo: https://ui.codeatlas.com.br/docs/layout/preview-stage#a-whole-page
 

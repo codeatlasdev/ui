@@ -8,7 +8,7 @@ Spec:
 - `labels={{ empty: 'Type a passphrase', weak: 'Too short', fair: 'Almost there', strong: 'Good length' }}`
 - Field is `<TextField label="Passphrase" type="password" bind:value={password} />`
 Tags: password-strength, score, labels, custom, policy
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: PasswordStrength, TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/password-strength#your-own-rule
 

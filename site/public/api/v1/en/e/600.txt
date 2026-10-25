@@ -8,7 +8,7 @@ Spec:
 - `{#snippet aside()}` renders a `Card` with a nav (aria-label On this page) of three links: General, Billing, Danger zone
 - Body is a `Card full title="General"` with a `Stack gap="4"` of two `TextField`s: Name (Acme Inc.) and Slug (acme)
 Tags: page-shell, aside, width, reading, settings, form, sticky, layout
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: PageShell, Card, TextField, Stack
 Live demo: https://ui.codeatlas.com.br/docs/layout/page-shell#reading-width-with-an-aside
 

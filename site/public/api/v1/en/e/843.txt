@@ -8,7 +8,7 @@ Spec:
 - `<Turnstile siteKey={SITE_KEY} action="sign-in" bind:handle />` between the Email field and the Sign in button
 - Submit reads `handle?.getToken()`, blocks with a message when it is empty, and calls `handle?.reset()` after sending
 Tags: turnstile, captcha, forms, sign-in, token, cloudflare
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Button, Stack, TextField, Turnstile
 Live demo: https://ui.codeatlas.com.br/docs/inputs/turnstile#sign-in-form
 

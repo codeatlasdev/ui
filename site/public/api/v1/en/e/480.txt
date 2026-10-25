@@ -9,7 +9,7 @@ Spec:
 - Page is `<PageShell title="Wider panel" description="Drag the panel edge, or focus it and use the arrow keys.">` with one `Card` hint about the 160px to 480px range
 - Stage height is `height: 360px`
 Tags: app-shell, panel-width, resizable, separator, sidebar, navigation
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: AppShellLayout, PageShell, Card
 Live demo: https://ui.codeatlas.com.br/docs/layout/app-shell#panel-width
 

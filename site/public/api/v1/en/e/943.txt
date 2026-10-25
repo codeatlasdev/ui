@@ -7,7 +7,7 @@ Spec:
 - The `menu` snippet starts with `<DropdownMenuLabel>{row}</DropdownMenuLabel>` and has Open and Send reminder items
 - Items set `last` to the action and the row name (Open or Send plus the invoice), shown under the list
 Tags: context-menu, list, row, long-press, keyboard, label
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: ContextMenu, DropdownMenuItem, DropdownMenuLabel
 Live demo: https://ui.codeatlas.com.br/docs/navigation/context-menu#one-menu-per-row
 

@@ -8,7 +8,7 @@ Spec:
 - `function onOpenChange(o: boolean)` sets `log` to `opened by the user` or `closed by the user`; the code button toggles `open` and does not touch `log`
 - A second button flips `open` with `onclick={() => (open = !open)}`
 Tags: hover-card, bind-open, delay, side, align, on-open-change
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Button, HoverCard
 Live demo: https://ui.codeatlas.com.br/docs/navigation/hover-card#delays-side-and-bind-open
 

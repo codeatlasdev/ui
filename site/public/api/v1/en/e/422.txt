@@ -9,7 +9,7 @@ Spec:
 - Local `modules` items (Dashboard, Settings) filter instantly and stay above server results
 - Button `Search records` opens the palette, `Selected:` shows the picked path
 Tags: command-palette, async, search, server, debounce, abort, loading
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: CommandPalette, Button
 Live demo: https://ui.codeatlas.com.br/docs/navigation/command-palette#async-results
 

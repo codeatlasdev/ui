@@ -8,7 +8,7 @@ Spec:
 - `<ResizablePanels direction="vertical" label="Message list and reader">` inside `main` with `list` (40) and `reader` (60)
 - `<ResizableHandle label="Resize folders" />` and `<ResizableHandle label="Resize message list" />`
 Tags: resizable-panels, nested, vertical, persist, three-pane
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: ResizableHandle, ResizablePanel, ResizablePanels
 Live demo: https://ui.codeatlas.com.br/docs/layout/resizable-panels#nested-and-saved
 

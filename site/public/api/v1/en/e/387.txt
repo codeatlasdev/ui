@@ -8,7 +8,7 @@ Spec:
 - `data-testid="row-{i}"` lands on the native input
 - Footer line counts the selected rows
 Tags: checkbox, shift, range selection, table, list, data-testid
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Checkbox
 Live demo: https://ui.codeatlas.com.br/docs/inputs/checkbox#shift-range-selection
 

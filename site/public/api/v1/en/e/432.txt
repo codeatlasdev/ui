@@ -8,7 +8,7 @@ Spec:
 - Keyboard: Space lifts a chip, the arrows pick the day, Enter drops; the zone name is announced to screen readers
 Names: Drop zones | Drag onto a day | Calendar drop target | Zonas de soltar | Zonas para soltar
 Tags: drag, drop, dropzone, calendar, schedule
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: DndLayer
 Live demo: https://ui.codeatlas.com.br/docs/foundation/drag-and-drop#drop-zones
 

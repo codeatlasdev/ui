@@ -10,7 +10,7 @@ Spec:
 - Body is `<TextField label="Type {key} to confirm" bind:value={typed} />`
 - `onconfirm` sets `deleted = true`, which shows `{key} deleted.` in a `<span class="out" aria-live="polite">`
 Tags: alert-dialog, type-to-confirm, confirm-disabled, destructive, children, confirm-props
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: AlertDialog, Button, TextField
 Live demo: https://ui.codeatlas.com.br/docs/feedback/alert-dialog#type-to-confirm
 

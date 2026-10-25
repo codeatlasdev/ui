@@ -7,7 +7,7 @@ Spec:
 - Wrapper `.frame` is `max-width: 28rem` with `--ca-radius-md` and `overflow: hidden`
 - `.slot` is `height: 100%` on `--ca-surface-sunken` and centres its text
 Tags: aspect-ratio, embed, video, iframe, ratio
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: AspectRatio
 Live demo: https://ui.codeatlas.com.br/docs/display/aspect-ratio#embed
 

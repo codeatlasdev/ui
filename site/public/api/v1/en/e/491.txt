@@ -10,7 +10,7 @@ Spec:
 - The first two columns (checkbox, name) stay pinned while the panel scrolls sideways
 Names: Dense table | Compact table | Tabela densa | Pinned columns
 Tags: table, simple-table, dense, compact, sticky-columns, group-row, sortable, interactive-row, crm
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: SimpleTable, TableRow, TableGroupRow, TableSortHeader, Checkbox
 Live demo: https://ui.codeatlas.com.br/docs/display/table#dense-pinned-and-grouped
 

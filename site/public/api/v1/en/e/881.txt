@@ -10,7 +10,7 @@ Spec:
 - `<EmptyState bare icon={Inbox} title="No activity yet"` with an Inbox icon, the title No activity yet and a neutral outlined small Button labelled Log a call
 - No selector against a component class in the CSS
 Tags: avatar, text-field, text-area, card, segmented-control, empty-state, tokens, density, crm
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Avatar, Button, Card, EmptyState, SegmentedControl, TextArea, TextField
 Live demo: https://ui.codeatlas.com.br/docs/layout/empty-state#dense-crm-with-component-tokens
 

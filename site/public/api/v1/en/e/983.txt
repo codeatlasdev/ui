@@ -7,7 +7,7 @@ Spec:
 - `label="Coupon code"` with `suffix={applyBtn}`: a ghost small Button "Apply", disabled while the field is empty
 - The fields are stacked in a column, `max-width: 24rem`, `gap: var(--ca-space-4)`
 Tags: input-group, text-field, suffix, addon, button, icon-button, copy, coupon
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Button, IconButton, TextField
 Live demo: https://ui.codeatlas.com.br/docs/inputs/text-field#button-addons
 

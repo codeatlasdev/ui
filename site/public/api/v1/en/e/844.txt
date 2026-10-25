@@ -8,7 +8,7 @@ Spec:
 - Wrapped in `{#key boot}` and rendered only once `boot > 0`
 - A caption shows `Splash screens shown: {seen}`
 Tags: splash-screen, boot, loading, min-duration, reduced-motion, status
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Button, SplashScreen
 Live demo: https://ui.codeatlas.com.br/docs/feedback/splash-screen#boot
 

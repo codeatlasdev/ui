@@ -8,7 +8,7 @@ Spec:
 - `<ResizableHandle label="Resize files" />` between them
 - Caption `Files {Math.round(sizes[0])}% · Editor {Math.round(sizes[1])}%`
 Tags: resizable-panels, splitter, separator, keyboard, layout, onlayout
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: ResizableHandle, ResizablePanel, ResizablePanels
 Live demo: https://ui.codeatlas.com.br/docs/layout/resizable-panels#two-panels
 

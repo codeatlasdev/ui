@@ -8,7 +8,7 @@ Spec:
 - Each action item calls `function pick(action: string)`, which sets `last` and calls `announce`
 - Pinned (yes or no) and the last action are shown below the area
 Tags: context-menu, right-click, long-press, keyboard, dropdown-menu, submenu
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: ContextMenu, DropdownMenuCheckboxItem, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuSub, DropdownMenuSubTrigger
 Live demo: https://ui.codeatlas.com.br/docs/navigation/context-menu#file-menu
 

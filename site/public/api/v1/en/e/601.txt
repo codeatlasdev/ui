@@ -7,7 +7,7 @@ Spec:
 - One module `id: 'settings'` (Settings icon) with two items: Profile and Billing
 - Page is `<PageShell title="Profile" description="A two-item module needs no panel: the rail is enough.">` with a `Card` hint
 Tags: app-shell, panel, collapse, rail, sidebar, navigation
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: AppShellLayout, PageShell, Card
 Live demo: https://ui.codeatlas.com.br/docs/layout/app-shell#short-panel
 

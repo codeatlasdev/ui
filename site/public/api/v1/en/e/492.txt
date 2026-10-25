@@ -9,7 +9,7 @@ Spec:
 - Both: `description` and `action` in the same options object
 - All triggers are `<Button variant="outlined"`
 Tags: toast, toaster, action, description, undo, notification
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Button, Toaster
 Live demo: https://ui.codeatlas.com.br/docs/feedback/toast#description-and-action
 

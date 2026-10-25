@@ -8,7 +8,7 @@ Spec:
 - Products links pass `description` for a second line that is part of the link name
 - `<NavigationMenuLink href="#pricing" current>` marks the current page; Contact is a plain link
 Tags: navigation-menu, header, disclosure, marketing, links, keyboard
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: NavigationMenu, NavigationMenuItem, NavigationMenuLink
 Live demo: https://ui.codeatlas.com.br/docs/navigation/navigation-menu#marketing-header
 

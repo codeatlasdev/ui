@@ -7,7 +7,7 @@ Spec:
 - Content is `<Stack gap="2">` with a strong name, a secondary line and `<a class="more" href="#ada-profile">View profile</a>`
 - Default delays: the pointer waits 700 ms to open, keyboard focus opens at once; Escape closes
 Tags: hover-card, preview, hover, focus, mention, link
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Avatar, HoverCard, Stack
 Live demo: https://ui.codeatlas.com.br/docs/navigation/hover-card#profile-mention
 

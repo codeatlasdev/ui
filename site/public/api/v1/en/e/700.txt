@@ -7,7 +7,7 @@ Spec:
 - A column `.detail` with `<header class="head">` holding `<h2 id="detail-title" class="name">Order 1042</h2>` and a ghost small button with `aria-label="Close detail"` that sets `open = false`
 - A `.scroll` area with `flex: 1; min-height: 0; overflow-y: auto` listing 24 `Line item` rows
 Tags: drawer, chromeless, full-bleed, fullbleedbelow, detail-panel, mobile, scroll
-Needs: @codeatlasdev/ui@4.5.0
+Needs: @codeatlasdev/ui@4.6.0
 Components: Drawer, Button
 Live demo: https://ui.codeatlas.com.br/docs/feedback/drawer#chromeless-full-bleed-on-phones
 
