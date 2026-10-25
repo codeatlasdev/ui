@@ -206,10 +206,22 @@ export const isSharedComponent = (file: string) =>
 	!isTestFile(file) && SHARED_COMPONENT.some((re) => re.test(file));
 
 /**
- * The budget `issue-land.sh` runs the land gate under: a SHARED change (a shared component file, or one the
- * route map says reaches every page or does not know) runs every component test and every route and gets
- * `landShared`; any other change runs what it affects plus the canaries under `land`.
+ * Why a selection widens to EVERY component test: the first shared file, or the file the route map says reaches
+ * every page or does not know. `undefined` when the selection is narrow.
  */
-export function landBudget(changed: string[]): "land" | "landShared" {
-	return changed.some(isSharedComponent) || select(changed).all ? "landShared" : "land";
+export function widenedBecause(changed: string[]): string | undefined {
+	const shared = changed.find(isSharedComponent);
+	if (shared !== undefined) return shared;
+	const sel = select(changed);
+	return sel.all ? sel.reason.split(":")[0] : undefined;
+}
+
+/**
+ * The budget a run gets, from the scope of its selection (the budget assumed a narrow one: a dependency bump
+ * selects every component test, ~80 s alone, 95 s at load 10.5 in #588). Widened to all components: `landShared`
+ * (dev run and land gate alike). Narrow: `changed` (60 s) for a dev run, `land` (180 s) with the canaries.
+ */
+export function resolveBudget(changed: string[], land: boolean): "changed" | "land" | "landShared" {
+	if (widenedBecause(changed) !== undefined) return "landShared";
+	return land ? "land" : "changed";
 }

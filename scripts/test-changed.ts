@@ -8,7 +8,10 @@
  * A SHARED change (a shared component file, or a route-wide one: styles, tokens, theme, primitives, the
  * site layout, a test setup file, or a file the route map cannot place) runs every component test and, when
  * it reaches the site, every route, and NO screenshots: those run at release (`test:vrt`) and on demand.
- * `--print-budget` prints the budget this selection runs under (`land`, 180 s, or `landShared`, 240 s).
+ * `--print-budget` prints the budget this selection runs under: `changed` (60 s) for a narrow dev run, `land`
+ * (180 s) for a narrow land run, `landShared` (240 s) for either when the selection widens to every component
+ * test (a shared file or a test-runtime dependency such as happy-dom); the run then prints
+ * "widened to all components because <file>".
  *
  *   unit        `bun test --changed <base>` (module graph);
  *   components  the component tests whose imports reach a changed file (scripts/test-graph.ts; Vitest's
@@ -34,7 +37,14 @@ import { existsSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { distStale } from "./dist-fresh.ts";
 import { lockReachesRuntime, ownRoutes, ROOT, select } from "./route-impact.ts";
-import { affected, buildGraph, isSharedComponent, landBudget } from "./test-graph.ts";
+import {
+	affected,
+	buildGraph,
+	isSharedComponent,
+	resolveBudget,
+	widenedBecause,
+} from "./test-graph.ts";
+import { BUDGETS } from "./test-run.ts";
 
 if (!import.meta.main) throw new Error("scripts/test-changed.ts is a command, not a module");
 
@@ -88,6 +98,13 @@ const changed = [
 	]),
 ].filter((f) => f !== "bun.lock" || !lockIsDevOnly());
 const short = base.slice(0, 8);
+// The budget follows the selection's scope (scripts/test-graph.ts `resolveBudget`): scripts/test-changed.sh and
+// `issue-land.sh` read it from here before the clock starts.
+const budget = resolveBudget(changed, land);
+if (process.argv.includes("--print-budget")) {
+	console.log(budget);
+	process.exit(0);
+}
 if (!changed.length && !land) {
 	console.log(`test:changed: no changes against origin/main (${short}), nothing to run`);
 	process.exit(0);
@@ -103,10 +120,11 @@ const visualRun = sel.all || sel.routes.some((r) => VISUAL_ROUTES.has(r));
 const routeRun = sweepAll || routes.length > 0;
 // Shared: everything that can reach every test runs, and screenshots are left to `test:vrt`.
 const shared = sel.all || sharedFile !== undefined;
-if (process.argv.includes("--print-budget")) {
-	console.log(land ? landBudget(changed) : "changed");
-	process.exit(0);
-}
+const widened = widenedBecause(changed);
+if (widened !== undefined)
+	console.log(
+		`test:changed: widened to all components because ${widened}, so the ${budget} budget applies (${BUDGETS[budget]} s)`
+	);
 
 console.log(
 	`test:changed${land ? " --land" : ""}: ${changed.length} changed file(s) against ${short}`
