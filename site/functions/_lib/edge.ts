@@ -100,7 +100,7 @@ export async function loadPosts(
 ): Promise<Record<string, Post>> {
 	if (!assets) return {};
 	try {
-		const res = await assets.fetch(new Request(new URL(POSTS_PATH, request.url)));
+		const res = await assets.fetch(new Request(new URL(POSTS_PATH, request.url).href));
 		if (!res.ok) return {};
 		const raw: unknown = await res.json();
 		if (!raw || typeof raw !== "object") return {};
