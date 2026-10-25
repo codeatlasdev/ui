@@ -279,13 +279,19 @@ const building =
 				builtRoutes ? `, ${builtRoutes.length} routes, beside the tests` : ", beside the tests"
 			)
 		: undefined;
+// Started with the site build and awaited after the package tests: it needs only the built package, so it runs
+// beside them instead of adding its ~60 s to the end of the run.
+const zeroFlash =
+	land && themeChanged
+		? step(
+				"theme zero-flash matrix",
+				() => runAsync(["bun", "test", "./packages/ui/tests/theme-no-flash.e2e.ts"]),
+				", beside the tests"
+			)
+		: undefined;
 await packageTests();
 await building;
-
-if (land && themeChanged)
-	await step("theme zero-flash matrix", () =>
-		run(["bun", "scripts/test-run.ts", "bun", "test", "./packages/ui/tests/theme-no-flash.e2e.ts"])
-	);
+await zeroFlash;
 
 if (!shared && vrtTests.length)
 	await step("visual (components)", () =>
