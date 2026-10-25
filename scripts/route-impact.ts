@@ -229,7 +229,7 @@ export const GALLERY_REPRESENTATIVES = [
 
 /**
  * `/atlas/<slug>/` is one template (`pages/atlas/[slug].astro`) over every term of the atlas, so the land gate
- * audits the pages that stand for all of them and `test:full` every one (#595): a term with sources and style
+ * audits the pages that stand for all of them, and so does the release sweep (`test:routes`, #613); the HTML checks read every one (#595): a term with sources and style
  * pages, a historical term without a style page, and the longest slug (wrapping).
  */
 export const ATLAS_REPRESENTATIVES = ["brutalism", "bauhaus", "personal-operating-system-ui"];
@@ -240,7 +240,7 @@ export const ATLAS_REPRESENTATIVES = ["brutalism", "bauhaus", "personal-operatin
  * the set of components they render: a greedy set cover keeps the fewest routes that still render every component
  * folder and every subpath (`@charts`, `@map`...) some docs route renders. A route that renders nothing from the package
  * (prose only) is kept, since only the shell covers it and the shell is the thing that changed. Ties break on the route
- * name, so two runs audit the same pages. `test:full` (release) audits every route.
+ * name, so two runs audit the same pages. The release (`test:routes`) audits every docs route.
  */
 export function docsRepresentatives(impact: RouteImpact): string[] {
 	const tokens = (route: string) =>

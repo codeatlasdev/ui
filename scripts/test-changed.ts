@@ -2,8 +2,8 @@
 /**
  * `bun run test` / `bun run test:changed`: run what the diff against origin/main affects, say what was
  * selected and why, and stay inside the `changed` time budget (scripts/test-run.ts). `--land` is the
- * same selection plus the route canaries, the gate `issue-land.sh` runs. `bun run test:full` runs the
- * whole suite and `bun run test:vrt` every screenshot; both run at release.
+ * same selection plus the route canaries, the gate `issue-land.sh` runs. `bun run test:full`, `test:e2e`
+ * and `test:routes` run the whole suite and `bun run test:vrt` every screenshot; all four run at release.
  *
  * A SHARED change (a shared component file, or a route-wide one: styles, tokens, theme, primitives, the
  * site layout, a test setup file, or a file the route map cannot place) runs every component test and, when
@@ -282,7 +282,7 @@ if (siteRun) {
 		E2E_PREBUILT: "1",
 		...(routeRun && !sweepAll ? { E2E_ROUTES: JSON.stringify(routes) } : {}),
 		// A full sweep at land audits the gallery, the atlas and the docs through representatives (plus the pages the
-		// diff itself changed); `test:full` audits every one.
+		// diff itself changed); the release sweep (`test:routes`) thins only items and terms.
 		...(land && sweepAll
 			? { E2E_GALLERY: "representatives", E2E_KEEP: JSON.stringify(ownRoutes(changed)) }
 			: {}),

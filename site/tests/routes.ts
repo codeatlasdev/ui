@@ -34,10 +34,11 @@ const only: string[] | undefined = process.env.E2E_ROUTES
 	: undefined;
 // Two thinning modes for the browser sweeps (routes.spec, routes.axe), because `/gallery/<id>/` and `/atlas/<slug>/`
 // are one template each over ~400 and ~270 pages (one viewer chrome around a demo; one term layout):
-//  - `E2E_SWEEP=templates` (`bun run test:full`, the release gate): the item and term pages are audited through their
+//  - `E2E_SWEEP=templates` (`bun run test:routes`, release gate part 3): the item and term pages are audited through their
 //    representatives; every other page (docs, templates, styles, concepts, the app pages) in full. What differs between
 //    two items is their content, which the static checks (`dist-html.spec.ts`, every page) and the demo's own docs route
-//    cover; `tests/template-sweep.spec.ts` proves the representatives catch a regression in either template.
+//    cover; `packages/ui/tests/release-sweep.test.ts` fails when this cut drops any other page, and AGENTS.md records the injected
+//    regression that the representatives caught in each template (#613).
 //  - `E2E_GALLERY=representatives` (the land gate, on a full sweep) also thins the docs to the fewest pages that still
 //    render every component folder (#598).
 const templates = process.env.E2E_SWEEP === "templates";

@@ -5,6 +5,9 @@ test.describe("theme studio a11y", () => {
 	test("default, every panel tab and the overlays screen have no violations", async ({
 		page,
 	}, testInfo) => {
+		// Eight axe passes and three overlay openings in one test: 23 to 29 s measured, and the default 30 s lost to a
+		// loaded machine in the release run (axe walks every node, so the budget follows the work, as in routes.axe).
+		test.setTimeout(90_000);
 		await gotoReady(page, "/theme/");
 		await expectNoViolations(await makeAxe(page).analyze(), testInfo, "default");
 
