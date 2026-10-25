@@ -227,6 +227,13 @@ export const GALLERY_REPRESENTATIVES = [
 	"page-auth-sign-in",
 ];
 
+/**
+ * `/atlas/<slug>/` is one template (`pages/atlas/[slug].astro`) over every term of the atlas, so the land gate
+ * audits the pages that stand for all of them and `test:full` every one (#595): a term with sources and style
+ * pages, a historical term without a style page, and the longest slug (wrapping).
+ */
+export const ATLAS_REPRESENTATIVES = ["brutalism", "bauhaus", "personal-operating-system-ui"];
+
 export function buildImpact(): RouteImpact {
 	const symbols = new Map<string, Set<string>>();
 	const files = new Map<string, Set<string>>();
