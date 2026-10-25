@@ -109,6 +109,7 @@ export { default as Callout } from "./components/Docs/Callout.svelte";
 export { default as CardGrid } from "./components/Docs/CardGrid.svelte";
 export { default as CodeTab } from "./components/Docs/CodeTab.svelte";
 export { type CodeTabItem, default as CodeTabs } from "./components/Docs/CodeTabs.svelte";
+export { default as DocsHeader } from "./components/Docs/DocsHeader.svelte";
 export { default as DocsNav } from "./components/Docs/DocsNav.svelte";
 export { default as DocsSearch } from "./components/Docs/DocsSearch.svelte";
 export { default as DocsShell } from "./components/Docs/DocsShell.svelte";

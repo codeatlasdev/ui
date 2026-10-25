@@ -1,5 +1,6 @@
 <script lang="ts">
   import { createRawSnippet } from 'svelte';
+  import DocsHeader from './DocsHeader.svelte';
   import DocsShell from './DocsShell.svelte';
   import CodeTabs from './CodeTabs.svelte';
   import CodeTab from './CodeTab.svelte';
@@ -15,7 +16,7 @@
     searchIndex,
     ...rest
   }: {
-    kind: 'shell' | 'codetabs' | 'codetabs-pair' | 'steps' | 'callout' | 'cardgrid';
+    kind: 'shell' | 'header' | 'codetabs' | 'codetabs-pair' | 'steps' | 'callout' | 'cardgrid';
     onnavigate?: (href: string) => void;
     searchIndex?: DocsSearchEntry[] | (() => Promise<DocsSearchEntry[]>);
     [k: string]: unknown;
@@ -29,7 +30,18 @@
   const brand = createRawSnippet(() => ({ render: () => `<span>Atlas Docs</span>` }));
 </script>
 
-{#if kind === 'shell'}
+{#if kind === 'header'}
+  <DocsHeader
+    sections={[{ id: 'guide', label: 'Guide', href: '/guide' }, { id: 'api', label: 'API', href: '/api' }]}
+    active="guide"
+    pathname="/guide/start"
+    searchIndex={searchIndex ?? index}
+    {onnavigate}
+    {brand}
+    {...rest}
+  />
+  <div style="height:2000px">page</div>
+{:else if kind === 'shell'}
   <DocsShell
     sections={[{ id: 'guide', label: 'Guide', href: '/guide' }, { id: 'api', label: 'API', href: '/api' }]}
     active="guide"

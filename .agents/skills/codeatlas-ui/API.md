@@ -1119,6 +1119,27 @@ Parts: `ca-dnd-indicator` `ca-dnd-overlay`
 
 Data attributes: `data-axis` (`x` `y`), `data-dnd-active`, `data-dnd-dragging`, `data-dnd-item`, `data-dnd-over`, `data-dnd-pressing`, `data-dnd-zone`
 
+## DocsHeader
+
+`import { DocsHeader } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `sections` | `DocsSection[]` |  |  |
+| `active?` | `string` |  | `id` of the current section. |
+| `groups?` | `DocsNavGroup[]` | `[]` | Sidebar tree of the current section, shown in the phone menu. |
+| `pathname` | `string` |  | Current pathname, to mark the current page in the phone menu tree. |
+| `searchIndex` | `DocsSearchEntry[] \| (() => Promise<DocsSearchEntry[]>)` |  |  |
+| `onnavigate` | `(href: string) => void` |  |  |
+| `brandHref?` | `string` | `'/'` | Link target of the brand (default "/"). |
+| `brandLabel?` | `string` |  |  |
+
+Snippets: `brand`: Brand mark + name inside the header link.; `actions`: Extra header actions on the right (e.g. a GitHub link). Keep to 1–2 icon buttons.; `menuFooter`: Content below the sidebar tree inside the mobile Sheet (e.g. external links).
+
+Parts: `ca-docs-actions` `ca-docs-brand` `ca-docs-header` `ca-docs-header__inner` `ca-docs-icon` `ca-docs-search-btn` `ca-docs-search-btn__label` `ca-docs-section` `ca-docs-sections` `ca-docs-sheet-sections` `ca-docs-spacer` `ca-docs-theme` `ca-rail-btn`
+
+Variables: `--ca-docs-header-h` `--ca-docs-max-w`
+
 ## DocsNav
 
 `import { DocsNav } from "@codeatlasdev/ui"`
@@ -1174,7 +1195,7 @@ Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-spli
 
 Snippets: `brand`: Brand mark + name inside the header link.; `actions`: Extra header actions on the right (e.g. a GitHub link). Keep to 1–2 icon buttons.; `menuFooter`: Content below the sidebar tree inside the mobile Sheet (e.g. external links).; `children`
 
-Parts: `ca-docs` `ca-docs--bare` `ca-docs-actions` `ca-docs-brand` `ca-docs-header` `ca-docs-header__inner` `ca-docs-icon` `ca-docs-main` `ca-docs-pager` `ca-docs-pager__link` `ca-docs-pager__link--next` `ca-docs-pager__text` `ca-docs-pager__title` `ca-docs-search-btn` `ca-docs-search-btn__label` `ca-docs-section` `ca-docs-sections` `ca-docs-sheet-sections` `ca-docs-sidebar` `ca-docs-spacer` `ca-docs-theme` `ca-docs-toc` `ca-docs-toc-inline` `ca-rail-btn`
+Parts: `ca-docs` `ca-docs--bare` `ca-docs-main` `ca-docs-pager` `ca-docs-pager__link` `ca-docs-pager__link--next` `ca-docs-pager__text` `ca-docs-pager__title` `ca-docs-sidebar` `ca-docs-toc` `ca-docs-toc-inline`
 
 Variables: `--ca-docs-header-h` `--ca-docs-max-w` `--ca-docs-sidebar-w` `--ca-docs-toc-w`
 

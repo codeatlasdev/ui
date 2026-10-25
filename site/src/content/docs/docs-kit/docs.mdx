@@ -17,7 +17,7 @@ import NavTocSrc from "~/demos/docs-kit/docs/NavToc.svelte?raw";
 import Search from "~/demos/docs-kit/docs/Search.svelte";
 import SearchSrc from "~/demos/docs-kit/docs/Search.svelte?raw";
 
-This site is built with these primitives. The kit covers `DocsShell` (header, sidebar, page index and a mobile Sheet menu), `DocsNav`, `TableOfContents`, `DocsSearch`, `CodeTabs`, `Callout`, `Steps`, `LinkCard`, `CardGrid`, `MethodBadge` and the `ca-prose` typography.
+This site is built with these primitives. The kit covers `DocsShell` (header, sidebar, page index and a mobile Sheet menu), `DocsHeader` (that header on its own), `DocsNav`, `TableOfContents`, `DocsSearch`, `CodeTabs`, `Callout`, `Steps`, `LinkCard`, `CardGrid`, `MethodBadge` and the `ca-prose` typography.
 
 ```svelte
 <script>
@@ -32,6 +32,14 @@ This site is built with these primitives. The kit covers `DocsShell` (header, si
   {#snippet brand()}<Logo /> Acme Docs{/snippet}
   <article class="ca-prose">...</article>
 </DocsShell>
+```
+
+`DocsShell` renders its top bar through `DocsHeader`, which you can render alone. Use it on the pages of a site that are not a docs frame (a landing page, a template gallery) so every page shares one header: the same height, container width, brand position, section tabs with an underline for the current one, search, theme toggle and phone menu. The bar is opaque, so content scrolled under it never shows through. It renders no `<main>` and no skip link: the page keeps its own `<main id="main">`.
+
+```svelte
+<DocsHeader {sections} active="gallery" {pathname} {searchIndex} onnavigate={(href) => (location.href = href)}>
+  {#snippet brand()}<Logo /> Acme{/snippet}
+</DocsHeader>
 ```
 
 `DocsShell` is a full-page frame, so it is not embedded here. The page you are reading is the reference integration: see `SiteDocsShell.svelte` in the `site/` workspace. On desktop (1024px and up) it is a sticky header over a three-column grid: sidebar, content and a "On this page" rail from 1280px. Below 1024px it becomes one compact header, the menu opens a bottom Sheet and the page index turns into an inline disclosure. `Cmd+K`, `Ctrl+K` and `/` open the search.
