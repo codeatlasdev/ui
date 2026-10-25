@@ -50,7 +50,9 @@ jobs:
       - if: steps.meta.outputs.channel == 'latest'
         name: Stable tags must be on main
         run: git merge-base --is-ancestor HEAD origin/main || { echo "::error::stable tag must point to a commit on main"; exit 1; }
-      - run: bun run validate
+      # The checks, not the wall-time budget: budgets are calibrated on the dev machine (scripts/test-run.ts)
+      # and a 4-core runner overruns them while every check passes (#643).
+      - run: bun scripts/validate.ts
       - run: node scripts/release.js --smoke
       - name: Pack
         working-directory: packages/ui
