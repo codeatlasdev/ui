@@ -29,14 +29,14 @@
 			"kind": "peer-reviewed",
 			"url": "https://doi.org/10.1016/j.ijhcs.2003.09.002",
 			"topic": "Dimensions of perceived web aesthetics",
-			"supports": "Bibliographic identity only: a peer-reviewed paper on how perceived visual aesthetics of web sites can be assessed along dimensions.",
-			"doesNotSupport": "Any specific finding. The paper text could not be opened (publisher captcha), so no claim may rest on it until it is read.",
+			"supports": "Four studies developed a measurement instrument for perceived web site aesthetics. Exploratory and confirmatory factor analyses found two main dimensions of users' perceptions: classical aesthetics (orderly, clear design, closely related to many usability design rules) and expressive aesthetics (designers' creativity and originality, breaking conventions). They are clearly distinguishable, each measured by a five-item scale.",
+			"doesNotSupport": "That either dimension is preferred, or that a named style is classical or expressive. It measures how people perceive aesthetics, in 2003-era web sites, not task success or the effect of any style.",
 			"strength": "supported",
 			"verified": {
 				"date": "2026-10-25",
-				"level": "identity-only",
-				"how": "Crossref record for the DOI (title, authors, year, venue); full text not reachable",
-				"excerpt": "Assessing dimensions of perceived visual aesthetics of web sites. Lavie, Tractinsky. International Journal of Human-Computer Studies, 2004."
+				"level": "claim-read",
+				"how": "Abstract on the first page of the author-hosted copy of the published article (Ben-Gurion University), reached from the DOI record",
+				"excerpt": "users' perceptions consist of two main dimensions, which we termed \"classical aesthetics\" and \"expressive aesthetics\". The classical aesthetics dimension pertains to aesthetic notions that presided from antiquity until the 18th century. These notions emphasize orderly and clear design and are closely related to many of the design rules advocated by usability experts. The expressive aesthetics dimension is manifested by the designers' creativity and originality and by the ability to break design conventions."
 			}
 		},
 		{
@@ -124,14 +124,14 @@
 			"kind": "standard",
 			"url": "https://www.w3.org/WAI/WCAG22/quickref/",
 			"topic": "Accessibility requirements",
-			"supports": "What conformant content must do: contrast, keyboard operation, focus, target size, reflow, text spacing and more, each as a testable success criterion.",
+			"supports": "What conformant content must do, as testable success criteria with a level (A, AA, AAA): for example 1.4.10 Reflow (no two-dimensional scrolling at a width equivalent to 320 CSS pixels, except content that needs two-dimensional layout), 2.4.11 Focus Not Obscured (Minimum) and 2.5.8 Target Size (Minimum) (at least 24 by 24 CSS pixels, with listed exceptions).",
 			"doesNotSupport": "What users prefer or what performs better. A standard says what is required, not what is popular.",
 			"strength": "practice",
 			"verified": {
 				"date": "2026-10-25",
 				"level": "claim-read",
-				"how": "Page title and content of the W3C quick reference",
-				"excerpt": "How to Meet WCAG (Quickref Reference)"
+				"how": "Full page of the W3C quick reference, read for the criteria the library and the concept pages rely on",
+				"excerpt": "1.4.10 Reflow (Level AA): Content can be presented without loss of information or functionality, and without requiring scrolling in two dimensions for: Vertical scrolling content at a width equivalent to 320 CSS pixels. 2.5.8 Target Size (Minimum) (Level AA): The size of the target for pointer inputs is at least 24 by 24 CSS pixels, except when: Spacing, Equivalent, Inline, User Agent Control, Essential. 2.4.11 Focus Not Obscured (Minimum) (Level AA): When a user interface component receives keyboard focus, the component is not entirely hidden due to author-created content."
 			}
 		},
 		{
@@ -333,14 +333,14 @@
 			"kind": "peer-reviewed",
 			"url": "https://doi.org/10.1561/1100000106",
 			"topic": "Interaction patterns for generative AI",
-			"supports": "Bibliographic identity only: a peer-reviewed survey monograph on UI design and interactions for generative AI applications.",
-			"doesNotSupport": "Any specific finding. Only the title, authors and venue were read; no claim may rest on it until its text is read.",
+			"supports": "A survey that presents taxonomies of how a human interacts with AI and of the user-interaction patterns designed for a variety of generative AI use cases, as a reference for designers and developers. It focuses primarily on user-guided interactions, those the user initiates.",
+			"doesNotSupport": "That any pattern works better, or that a generative interface should act without the user's direction: the survey leaves out implicit signals from the user and reports no outcome comparison. The abstract read is the arXiv version of the same survey (earlier title); the published monograph's own text was not reachable.",
 			"strength": "supported",
 			"verified": {
 				"date": "2026-10-25",
-				"level": "identity-only",
-				"how": "Crossref record (title, authors, year, venue) and the Adobe Research listing; abstract not retrievable",
-				"excerpt": "Survey on User Interface Design and Interactions for Generative AI Applications. Foundations and Trends in Human-Computer Interaction, 2025."
+				"level": "claim-read",
+				"how": "Abstract of the arXiv version (2410.22370, 'Survey of User Interface Design and Interaction Techniques in Generative AI Applications') of the survey published as the monograph; the published page is paywalled",
+				"excerpt": "we present a survey that comprehensively presents taxonomies of how a human interacts with AI and the user interaction patterns designed to meet the needs of a variety of relevant use cases. We focus primarily on user-guided interactions, surveying interactions that are initiated by the user and do not include any implicit signals given by the user."
 			}
 		},
 		{

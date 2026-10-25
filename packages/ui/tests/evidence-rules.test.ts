@@ -47,10 +47,12 @@ describe("references dataset", () => {
 		expect(bad.some((e) => e.includes("excerpt is empty"))).toBe(true);
 	});
 
-	it("records only sources whose text was read as support for a finding", () => {
-		// An identity-only record has no claim a page may lean on: its `supports` says so.
-		for (const r of REFERENCES.filter((x) => x.verified.level === "identity-only"))
-			expect(r.supports.toLowerCase()).toContain("bibliographic identity only");
+	it("has read the wording of every source it records", () => {
+		const unread = REFERENCES.filter((r) => r.verified.level !== "claim-read").map((r) => r.id);
+		expect(unread).toEqual([]);
+		// An excerpt is the wording relied on, so it is never a bare citation line.
+		const thin = REFERENCES.filter((r) => r.verified.excerpt.trim().length < 60).map((r) => r.id);
+		expect(thin).toEqual([]);
 	});
 });
 
