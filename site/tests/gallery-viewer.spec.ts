@@ -38,6 +38,45 @@ test.describe("gallery viewer", () => {
 		await expect(page).toHaveURL(/\/gallery\/002\//);
 	});
 
+	test("Prompt and Anatomy tabs carry the exact parts, timings and links, and live in the URL", async ({
+		page,
+	}) => {
+		await gotoReady(page, "/gallery/256/");
+		await page.getByRole("tab", { name: "Prompt" }).click();
+		await expect(page).toHaveURL(/tab=prompt/);
+		const text = page.getByTestId("viewer-prompt-text");
+		await expect(text).toContainText('get_demo({ ids: ["#256"] })');
+		await expect(text).toContainText("opacity, transform: translateY: 420ms");
+		await expect(text).not.toContainText(/industry/i);
+		// The copy button copies the same text.
+		expect(await page.getByTestId("viewer-prompt").getAttribute("data-value")).toBe(
+			await text.textContent()
+		);
+
+		await page.getByRole("tab", { name: "Anatomy" }).click();
+		await expect(page).toHaveURL(/tab=anatomy/);
+		await expect(
+			page.locator(".viewer__parts").getByRole("link", { name: "Card", exact: true })
+		).toHaveAttribute("href", /^\/docs\/.+\/card\/$/);
+		await expect(page.locator(".viewer__parts").getByText("MotionStage")).toBeVisible();
+		await expect(page.getByRole("heading", { name: "Related" })).toBeVisible();
+		const related = page.locator(".viewer__related a").first();
+		await expect(related).toHaveAttribute("href", /^\/gallery\/\d+\/$/);
+
+		await gotoReady(page, "/gallery/256/?tab=anatomy");
+		await expect(page.getByRole("tab", { name: "Anatomy" })).toHaveAttribute(
+			"aria-selected",
+			"true"
+		);
+	});
+
+	test("a page has Preview and Prompt only", async ({ page }) => {
+		await gotoReady(page, "/gallery/page-auth-sign-in/");
+		await expect(page.getByRole("tab", { name: "Prompt" })).toBeVisible();
+		await expect(page.getByRole("tab", { name: "Code" })).toHaveCount(0);
+		await expect(page.getByRole("tab", { name: "Anatomy" })).toHaveCount(0);
+	});
+
 	test("Pick and Copy prompt", async ({ page }) => {
 		await gotoReady(page, "/gallery/005/");
 		await page.getByRole("button", { name: "Pick", exact: true }).click();
