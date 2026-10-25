@@ -73,7 +73,7 @@ describe("LoadingBoundary", () => {
 		const early = vi
 			.spyOn(window, "setTimeout")
 			.mockImplementation(((fn: TimerHandler, ms?: number, ...args: unknown[]) =>
-				real(fn, (ms ?? 0) > 100 ? ms - 1 : ms, ...args)) as typeof window.setTimeout);
+				real(fn, ms !== undefined && ms > 100 ? ms - 1 : ms, ...args)) as typeof window.setTimeout);
 		try {
 			const stamps: { mounted?: number; unmounted?: number } = {};
 			const screen = await render(Harness, {
