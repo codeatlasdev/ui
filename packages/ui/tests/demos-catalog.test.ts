@@ -22,6 +22,10 @@ function svelteFiles(dir: string): string[] {
 	);
 }
 
+// The manifest scan is the slow part (every component and demo); build it once for the file.
+const manifest = buildManifest();
+const { demos, files } = buildDemos(manifest, CATALOG);
+
 describe("demo catalog", () => {
 	it("ids are unique, 3-digit and strictly increasing", () => {
 		const ids = CATALOG.map((d) => d.id);
@@ -36,9 +40,6 @@ describe("demo catalog", () => {
 		expect(files.filter((f) => !paths.includes(f))).toEqual([]);
 		for (const p of paths) expect(existsSync(join(DEMOS, `${p}.svelte`))).toBe(true);
 	});
-
-	const manifest = buildManifest();
-	const { demos, files } = buildDemos(manifest, CATALOG);
 
 	it("emits one licensed reference per demo with real components", () => {
 		expect(demos.length).toBe(CATALOG.length);
@@ -104,8 +105,6 @@ describe("demo meta sidecars", () => {
 	});
 
 	it("emits spec lines, use and summary into the e/ and p/ files", () => {
-		const manifest = buildManifest();
-		const { demos, files } = buildDemos(manifest, CATALOG);
 		const d = demos[0];
 		expect(d.spec.length).toBeGreaterThan(0);
 		expect(files[`en/e/${d.id}.txt`]).toContain(`Spec:\n- ${d.spec[0]}`);
@@ -166,8 +165,6 @@ describe("motion sidecar fields", () => {
 	});
 
 	it("emits Names and Motion in e/ and p/, and the exact-values line only with motion", () => {
-		const manifest = buildManifest();
-		const { demos, files } = buildDemos(manifest, CATALOG);
 		const plain = demos[0];
 		expect(files[`en/e/${plain.id}.txt`]).not.toContain("Motion:");
 		expect(files[`en/p/${plain.id}.txt`]).not.toContain("Reproduce the motion values exactly");
