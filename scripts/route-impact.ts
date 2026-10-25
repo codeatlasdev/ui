@@ -228,6 +228,20 @@ export const GALLERY_REPRESENTATIVES = [
 ];
 
 /**
+ * The pages `site/tests/pages.visual.spec.ts` captures at the viewport: the landing, the templates and the theme
+ * editor. Every docs page is a stack of component demos that the component baselines already compare one by one, and
+ * the layout audit checks their geometry on every route. The land gate rebuilds exactly these when a diff reaches one
+ * (`test-changed.ts`), and the spec imports the same list (#651).
+ */
+export const VISUAL_ROUTES = [
+	"/",
+	"/templates/",
+	"/templates/app/dashboard/",
+	"/templates/auth/sign-in/",
+	"/theme/",
+];
+
+/**
  * `/atlas/<slug>/` is one template (`pages/atlas/[slug].astro`) over every term of the atlas, so the land gate
  * audits the pages that stand for all of them, and so does the release sweep (`test:routes`, #613); the HTML checks read every one (#595): a term with sources and style
  * pages, a historical term without a style page, and the longest slug (wrapping).
