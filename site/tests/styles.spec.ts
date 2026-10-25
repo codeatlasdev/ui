@@ -1,5 +1,5 @@
 import type { Page } from "@playwright/test";
-import { expect, expectNoViolations, gotoReady, makeAxe, test } from "./fixtures";
+import { expect, expectNoViolations, gotoReady, makeAxe, settleDom, test } from "./fixtures";
 
 const SITE_KEY = "ca-site-studio";
 const IDS = ["swiss", "editorial", "brutalism", "sketchbook", "glassmorphism", "terminal"] as const;
@@ -162,6 +162,8 @@ test.describe("design styles (#583)", () => {
 			);
 			for (const scheme of ["Light", "Dark"]) {
 				await page.getByRole("radio", { name: scheme, exact: true }).click();
+				// The scheme change transitions colors: axe must read the final ones, not a frame in flight.
+				await settleDom(page);
 				await expectNoViolations(await makeAxe(page).analyze(), testInfo, `${id}-${scheme}`);
 			}
 		});
