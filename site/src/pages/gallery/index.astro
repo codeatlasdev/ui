@@ -6,6 +6,7 @@ import Base from "~/layouts/Base.astro";
 import { ITEMS } from "~/lib/gallery-items";
 import { SECTIONS } from "~/lib/nav";
 import catalog from "../../../public/api/v1/catalog.json";
+import type { IndexEntry } from "../../../../packages/ui/scripts/index-build";
 import index from "../../../public/api/v1/index.json";
 
 // Only what a card renders: the full catalog (imports, needs, spec, ...) stays in the API.
@@ -18,7 +19,7 @@ const groups = ["pages", ...catalog.groups.map((g) => g.slug)];
 	skipLink={false}
 >
 	<SiteDocsShell client:load sections={SECTIONS} active="gallery" pathname={Astro.url.pathname}>
-		<Gallery client:load elements={ITEMS} {groups} entries={index.entries} />
+		<Gallery client:load elements={ITEMS} {groups} entries={index.entries as IndexEntry[]} />
 	</SiteDocsShell>
 	<SiteFooter />
 </Base>
