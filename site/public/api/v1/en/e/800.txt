@@ -15,7 +15,12 @@ Live demo: https://ui.codeatlas.com.br/docs/map/stage#themed-map
 
 <script lang="ts">
   import { ScatterplotLayer } from '@deck.gl/layers';
+  import { setWorkerUrl } from 'maplibre-gl';
+  import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
   import { MapControls, MapStage, mapColors, rgbaCss } from '@codeatlasdev/ui/map';
+
+  // maplibre-gl 6 loads its worker from a separate file a bundler cannot locate: wire it once.
+  setWorkerUrl(workerUrl);
 
   // Offline basemap: one background layer painted with the surface token, so no tiles, no token and
   // no hex. `mapColors()` reads the theme, so the style is rebuilt when the scheme or preset changes.

@@ -2025,7 +2025,7 @@ Variables: `--ca-map-bearing`
 | `engine?` | `"maplibre" \| "mapbox"` | `'maplibre'` | `"maplibre"` (default, no token) or `"mapbox"` (needs `accessToken`). The matching package is a peer you install. |
 | `accessToken?` | `string` |  | Mapbox access token. Required for `engine="mapbox"`. |
 | `styles` | `MapStyles` |  | Basemap style per color scheme. The map switches style when `colorScheme.resolved` changes, without being recreated. |
-| `layers?` | `unknown[]` |  | deck.gl layers drawn interleaved in the map. Needs `@deck.gl/core` and `@deck.gl/mapbox`. Replace the array to update. |
+| `layers?` | `unknown[]` |  | deck.gl layers drawn interleaved in the map. Needs `@deck.gl/core` plus `@deck.gl/maplibre` (`engine="maplibre"`) or `@deck.gl/mapbox` (`engine="mapbox"`). Replace the array to update. |
 | `fit?` | `MapBounds` |  | Bounds to fit, with `padding`. Changing it fits again. |
 | `padding?` | `Partial<MapPadding>` |  | Pixels covered by UI on each side (a sidebar, a bottom sheet), kept clear when fitting. Each side defaults to the active `PageFrame`'s `stageInsets`, or 0 without one. |
 | `center?` | `[number, number]` |  |  |

@@ -2,7 +2,11 @@
   // Harness: MapStage + MapControls with an offline style per scheme, exposing the map handle.
   import MapStage from './MapStage.svelte';
   import MapControls from './MapControls.svelte';
-  import type { Map as GlMap } from 'maplibre-gl';
+  import { setWorkerUrl, type Map as GlMap } from 'maplibre-gl';
+  // maplibre-gl 6 ships its worker as a separate module and cannot find it once a bundler moves the
+  // package: the app wires it once (`setWorkerUrl`), as every bundler recipe in its docs does.
+  import workerUrl from 'maplibre-gl/dist/maplibre-gl-worker.mjs?worker&url';
+  setWorkerUrl(workerUrl);
 
   let { onready, ...rest }: { onready?: (m: GlMap) => void; [k: string]: unknown } = $props();
 

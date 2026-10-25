@@ -18,7 +18,7 @@
     accessToken?: string;
     /** Basemap style per color scheme. The map switches style when `colorScheme.resolved` changes, without being recreated. */
     styles: MapStyles;
-    /** deck.gl layers drawn interleaved in the map. Needs `@deck.gl/core` and `@deck.gl/mapbox`. Replace the array to update. */
+    /** deck.gl layers drawn interleaved in the map. Needs `@deck.gl/core` plus `@deck.gl/maplibre` (`engine="maplibre"`) or `@deck.gl/mapbox` (`engine="mapbox"`). Replace the array to update. */
     layers?: unknown[];
     /** Bounds to fit, with `padding`. Changing it fits again. */
     fit?: MapBounds;
@@ -137,7 +137,7 @@
       return;
     }
     let cancelled = false;
-    loadDeckOverlay(current)
+    loadDeckOverlay(current, engine)
       .then((o) => {
         if (cancelled) return o.finalize();
         overlay = o;
