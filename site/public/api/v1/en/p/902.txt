@@ -5,7 +5,7 @@ Spec:
 - Each `<Button variant="outlined" tone="neutral" align="between" fullWidth trailingHint>` with a `<Kbd>` in `trailing`: Open lead (O), Assign to me (A)
 - Third button Syncing (R) also has `loading`, so the spinner replaces the leading slot while the label stays left
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
-Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
 Report: #902 Align between → file, what changed, https://ui.codeatlas.com.br/docs/inputs/button#align-between; what you could not check (light/dark, 375px, keyboard, reduced motion).

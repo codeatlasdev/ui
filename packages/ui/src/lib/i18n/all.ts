@@ -57,6 +57,7 @@ import { select } from "./groups/select.js";
 import { sheet } from "./groups/sheet.js";
 import { skipLink } from "./groups/skipLink.js";
 import { slider } from "./groups/slider.js";
+import { soundToggle } from "./groups/soundToggle.js";
 import { spinner } from "./groups/spinner.js";
 import { splashScreen } from "./groups/splashScreen.js";
 import { stepper } from "./groups/stepper.js";
@@ -109,6 +110,7 @@ export const groups = {
 	passwordStrength,
 	previewStage,
 	table,
+	soundToggle,
 	resizablePanels,
 	select,
 	sheet,

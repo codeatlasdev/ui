@@ -1,6 +1,7 @@
 <script lang="ts">
   import { useMessages } from '../../i18n/state.svelte.js';
   import { slider } from '../../i18n/groups/slider.js';
+  import { cueFor, soundBus, type SoundProp } from '../../utils/sound-bus.js';
   const t = useMessages(slider);
 
   /**
@@ -28,6 +29,8 @@
     class?:    string;
     /** Called on change. Always receives array regardless of single/range mode. */
     onchange?: (value: number[]) => void;
+    /** Plays `tick` for each step the user crosses (a cue name replaces it); off under reduced motion. Needs `@codeatlasdev/ui/sound`. */
+    sound?:    SoundProp;
   }
 
   let {
@@ -39,6 +42,7 @@
     disabled = false,
     class: className = '',
     onchange,
+    sound,
   }: Props = $props();
 
   /** Snap to the nearest `step` from `min`, clamped, without float drift (0.1 steps etc.). */
@@ -59,6 +63,8 @@
     if (next.length === internal.length && next.every((n, i) => n === internal[i])) return;
     if (values !== undefined) values = [next[0], next[1] ?? values[1]];
     else value = next[0];
+    const cue = cueFor(sound, 'tick');
+    if (cue) soundBus.emit(cue);
     onchange?.(next);
   }
 

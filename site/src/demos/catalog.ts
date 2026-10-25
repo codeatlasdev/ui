@@ -383,6 +383,8 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "985", path: "layout/kpi-card/Sparkline" },
 	{ id: "986", path: "layout/preview-stage/Inline" },
 	{ id: "987", path: "layout/preview-stage/Page" },
+	{ id: "988", path: "feedback/sound/HearIt" },
+	{ id: "989", path: "feedback/sound/Components" },
 ];
 
 /**

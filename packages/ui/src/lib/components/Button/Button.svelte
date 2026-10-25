@@ -5,6 +5,7 @@
   import { useMessages } from '../../i18n/state.svelte.js';
   import { button } from '../../i18n/groups/button.js';
   import { announce } from '../../utils/announce.js';
+  import { cueFor, soundBus, type SoundProp } from '../../utils/sound-bus.js';
   const t = useMessages(button);
 
   type Variant = 'filled' | 'glass' | 'outlined' | 'ghost' | 'destructive';
@@ -46,6 +47,11 @@
     align?: Align;
     onclick?: (e: MouseEvent) => void;
     'aria-label'?: string;
+    /**
+     * Plays `press` on pointer down and `release` on pointer up (a cue name replaces `press`) when the
+     * optional `@codeatlasdev/ui/sound` entry is imported and the user turned sound on. Never the only signal.
+     */
+    sound?: SoundProp;
   }
   type Overridden = keyof Own | 'type' | 'form';
   // Attributes only one element has. The other branch types them `never`: TypeScript accepts an
@@ -101,6 +107,7 @@
     align = 'center',
     onclick,
     'aria-label': ariaLabel,
+    sound,
     ...restProps
   }: Props = $props();
 
@@ -121,6 +128,18 @@
     if (wasLoading && !loading) announce(t().button.loaded);
     wasLoading = loading;
   });
+  const pressCue = $derived(cueFor(sound, 'press'));
+  // The cues chain after the caller's own pointer handlers instead of replacing them. The handler
+  // types differ per element (<a> or <button>), so `rest` is read through the common shape.
+  type Pointer = (e: PointerEvent) => void;
+  const down = (e: PointerEvent) => {
+    (rest.onpointerdown as Pointer | undefined)?.(e);
+    if (pressCue && !isDisabled) soundBus.emit(pressCue);
+  };
+  const up = (e: PointerEvent) => {
+    (rest.onpointerup as Pointer | undefined)?.(e);
+    if (pressCue && !isDisabled) soundBus.emit('release');
+  };
   const spinnerSize = $derived(size === 'lg' ? 18 : size === 'md' ? 16 : 14);
 </script>
 
@@ -149,6 +168,8 @@
     tabindex={isDisabled ? -1 : undefined}
     aria-label={ariaLabel}
     onclick={isDisabled ? (e) => e.preventDefault() : onclick}
+    onpointerdown={down}
+    onpointerup={up}
   >
     {@render leadingSlot()}
     {@render children?.()}
@@ -170,6 +191,8 @@
     aria-busy={loading || undefined}
     {onclick}
     aria-label={ariaLabel}
+    onpointerdown={down}
+    onpointerup={up}
   >
     {@render leadingSlot()}
     {@render children?.()}

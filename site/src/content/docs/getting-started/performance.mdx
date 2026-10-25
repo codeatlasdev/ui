@@ -35,7 +35,7 @@ Cascade order is the same in every entry (`@layer ca.reset, ca.tokens, ca.themes
 
 ## JavaScript budget
 
-`bun run size` in the package bundles each entry with esbuild (minified, ESM, tree-shaken) and fails when the gzip size passes the limit in `size-limit.json`. The limits are a ratchet: they only go down. Importing `Button` alone pulls the Svelte runtime, the button and its spinner, and the small i18n catalog; it does not pull the app shell, charts, tables or any other component. Heavy features stay behind subpath imports (`/charts`, `/table`, `/code`), so an app that does not use them never ships ECharts, TanStack Table or Shiki.
+`bun run size` in the package bundles each entry with esbuild (minified, ESM, tree-shaken) and fails when the gzip size passes the limit in `size-limit.json`. The limits are a ratchet: they only go down. Importing `Button` alone pulls the Svelte runtime, the button and its spinner, and the small i18n catalog; it does not pull the app shell, charts, tables or any other component. Heavy features stay behind subpath imports (`/charts`, `/table`, `/code`), so an app that does not use them never ships ECharts, TanStack Table or Shiki. `/sound` is the same: the core carries only a no-op `soundBus` hook, and the synthesized engine (under 4 KB gzip, no audio files) ships only to apps that import it.
 
 Import from the package root and let the bundler tree-shake:
 

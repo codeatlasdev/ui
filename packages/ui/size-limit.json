@@ -5,5 +5,7 @@
 	"styles/core.css": 14500,
 	"styles/global.css": 17250,
 	"./seo": 32190,
-	"./map": 34977
+	"./map": 34977,
+	"./sound": 31700,
+	"./sound (own code, Svelte external)": 4096
 }

@@ -108,6 +108,16 @@ describe("NavigationMenu", () => {
 		await expect.element(link("Docs")).not.toBeInTheDocument();
 	});
 
+	it("Enter right after a hover opened the panel still closes it", async () => {
+		await render(Harness, { openDelay: 0 });
+		await trigger("Products").hover();
+		await expect.element(link("Analytics")).toBeVisible();
+		// Within the click grace of a hover open: a pointer click would confirm it, a key must toggle.
+		trigger("Products").element().focus();
+		await userEvent.keyboard("{Enter}");
+		await expect.element(link("Analytics")).not.toBeInTheDocument();
+	});
+
 	it("hover delays, switches once open, closes after closeDelay", async () => {
 		await render(Harness, { openDelay: 150, closeDelay: 150 });
 		await trigger("Products").hover();

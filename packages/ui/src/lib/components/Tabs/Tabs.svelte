@@ -2,6 +2,7 @@
   import { type Snippet, untrack } from 'svelte';
   import { SvelteMap } from 'svelte/reactivity';
   import { createIds, setTabsContext, type TabsVariant } from './tabs-context.js';
+  import { cueFor, soundBus, type SoundProp } from '../../utils/sound-bus.js';
 
   interface Props {
     value?:    string;
@@ -10,9 +11,11 @@
     variant?:  TabsVariant;
     class?:    string;
     children?: Snippet;
+    /** Plays `tab` when the user selects another tab (a cue name replaces it) when `@codeatlasdev/ui/sound` is on. */
+    sound?:    SoundProp;
   }
 
-  let { value = $bindable(), onchange, variant = 'pill', class: className = '', children }: Props = $props();
+  let { value = $bindable(), onchange, variant = 'pill', class: className = '', children, sound }: Props = $props();
 
   const base = $props.id();
   const ids = createIds(base);
@@ -42,6 +45,8 @@
     select(next) {
       if (value === next) return;
       value = next;
+      const cue = cueFor(sound, 'tab');
+      if (cue) soundBus.emit(cue);
       onchange?.(next);
     },
   });

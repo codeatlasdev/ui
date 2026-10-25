@@ -6,7 +6,7 @@ Spec:
 - A `<canvas` of `width="300" height="80"` whose `$effect` reads `colorScheme.resolved` and `colorScheme.preset`, then fills one bar per status with ``tokenRgba(`status.${s.name}`)``
 - The pills sit in a wrapping flex row with `gap: var(--ca-space-2)` and `border-radius: var(--ca-radius-pill)`
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
-Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
 Report: #860 Status tokens → file, what changed, https://ui.codeatlas.com.br/docs/layout/domain-tokens#status-tokens; what you could not check (light/dark, 375px, keyboard, reduced motion).

@@ -379,3 +379,5 @@ export {
 	useForm,
 	useListState,
 } from "./utils/index.js";
+export type { CueName, SoundProp } from "./utils/sound-bus.js";
+export { soundBus } from "./utils/sound-bus.js";

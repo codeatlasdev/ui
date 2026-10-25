@@ -1,0 +1,81 @@
+---
+title: Sound
+description: Opt-in interface sound, synthesized in the browser. Off until the user turns it on, silent before their first gesture, and always a second signal.
+group: Feedback
+order: 12
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import HearIt from "~/demos/feedback/sound/HearIt.svelte";
+import HearItSrc from "~/demos/feedback/sound/HearIt.svelte?raw";
+import Components from "~/demos/feedback/sound/Components.svelte";
+import ComponentsSrc from "~/demos/feedback/sound/Components.svelte?raw";
+
+Sound lives in its own entry, `@codeatlasdev/ui/sound`, so the core stays silent and weightless. Components only announce what happened through a no-op `soundBus`; importing the entry registers the one listener that turns those announcements into short synthesized cues. There are no audio files: every cue is a few oscillators, a noise burst and an envelope, built when it plays. The whole entry (engine, four profiles, the `use:sound` action and `SoundToggle`) is under 4 KB gzip.
+
+```svelte
+<script>
+  import { Button, Switch } from "@codeatlasdev/ui";
+  import { SoundToggle } from "@codeatlasdev/ui/sound";
+  let on = $state(false);
+</script>
+
+<SoundToggle />                      <!-- off by default; the choice is saved in localStorage -->
+<Button sound>Save</Button>          <!-- press and release -->
+<Switch sound bind:checked={on} />   <!-- toggle-on / toggle-off -->
+```
+
+Nothing plays until the user presses `SoundToggle`, and even then the browser's audio context is only created inside their next pointer or key event. Read the [principles](/docs/getting-started/sound-principles/) before adding sound to a screen.
+
+<Demo title="Hear it" description="Pick a profile and press the cues. Turn the toggle on first: sound is off by default." src={HearItSrc}><HearIt client:visible /></Demo>
+
+## Profiles
+
+A profile is a handful of numbers (waveform, root pitch, cue length, filter, noise share, gain), not a set of recordings. The profile follows the active design style, so a brutalist theme clicks and a glass theme chimes with no extra setup.
+
+| Profile | Design style | Character |
+|---|---|---|
+| `system` | default, material, swiss, ... | neutral, short, low-gain sine blips |
+| `glass` | `glassmorphism`, `liquid` | soft sine chimes with a high shimmer and a short tail |
+| `brutal` | `brutalism` | dry square-wave and noise clicks, hard stops |
+| `terminal` | `terminal` | square-wave beeps and keyboard-like ticks |
+
+`designStyle("brutalism")` writes `--ca-sound-profile: brutal` on `:root`, and the engine reads it per cue. Without it the engine falls back to the surface material (`<html data-style>`), then to `system`. Pin one yourself with `sound.use(profile)` (and `sound.use(undefined)` to follow the style again).
+
+Tune a profile from CSS, read once per cue:
+
+| Token | Effect |
+|---|---|
+| `--ca-sound-profile` | which profile plays (`system`, `glass`, `brutal`, `terminal`) |
+| `--ca-sound-gain` | multiplies the profile level, default `1` |
+| `--ca-sound-pitch` | multiplies the root pitch, default `1` |
+| `--ca-sound-brightness` | multiplies the filter cutoff, default `1` |
+
+## On components
+
+Every component takes the same prop. `sound` is `true` for the component's own cue, or a cue name to play that cue instead. Without the sound entry the prop does nothing.
+
+<Demo title="Components" description="Each control with its sound prop on, behind one toggle." src={ComponentsSrc}><Components client:visible /></Demo>
+
+<Props for="none" title="The sound prop" rows={[
+  { name: "Button", type: "boolean | CueName", default: "false", description: "`press` on pointer down, `release` on pointer up. A disabled or loading button stays silent." },
+  { name: "Switch", type: "boolean | CueName", default: "false", description: "`toggle-on` or `toggle-off` when the user changes it." },
+  { name: "Toast / toast.*(msg, { sound })", type: "boolean | CueName", default: "false", description: "`success`, `error` or `warning` by variant, `notify` otherwise, when the toast appears." },
+  { name: "Dialog", type: "boolean | CueName", default: "false", description: "`open` and `close` as `open` changes, including from outside through `bind:open`." },
+  { name: "Tabs", type: "boolean | CueName", default: "false", description: "`tab` when the selected tab changes." },
+  { name: "Slider", type: "boolean | CueName", default: "false", description: "`tick` per step the user crosses. Off under reduced motion." },
+]} />
+
+For any other element use the action: `<div use:sound={{ on: "pointerenter", cue: "hover" }}>`. `hover` only plays in profiles that opt in (`glass`) and never under reduced motion.
+
+<Props for="none" title="API" rows={[
+  { name: "SoundToggle", type: "{ label?, size?, volume?, class? }", description: "A speaker button with `aria-pressed`, an accessible name and the persisted choice. `volume` adds a slider while sound is on. It uses the `ca-rail-btn` look, so it sits next to `ThemeToggle` in the AppShell `railBottom`." },
+  { name: "sound.enabled / sound.volume", type: "boolean / number", description: "Persisted under `localStorage` key `ca-sound` as `{ enabled, volume }`. Off and `0.25` by default." },
+  { name: "sound.enable(on?) / sound.setVolume(v)", type: "(boolean) => void / (number) => void", description: "Turn sound on or off, set the master volume from 0 to 1." },
+  { name: "sound.play(cue)", type: "(CueName) => boolean", description: "Play a cue now. Returns whether it played (false when off, locked, hidden, throttled or suppressed)." },
+  { name: "sound.profile / sound.use(profile)", type: "SoundProfile / (SoundProfile | undefined) => void", description: "The profile in force, and a way to pin one." },
+  { name: "soundBus.emit(cue)", type: "(CueName) => void", description: "Exported from the root package. A no-op until the sound entry is imported. Use it to give your own components a cue." },
+  { name: "use:sound", type: "Action<HTMLElement, { on?, cue? }>", description: "The `sound` export is also the action: `use:sound={{ on: 'click', cue: 'press' }}` for any element." },
+]} />
+
+Cues are `press`, `release`, `tap`, `toggle-on`, `toggle-off`, `select`, `check`, `success`, `error`, `warning`, `notify`, `open`, `close`, `forward`, `back`, `tab`, `tick` and `hover`.

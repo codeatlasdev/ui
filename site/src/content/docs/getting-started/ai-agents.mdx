@@ -153,7 +153,7 @@ npx skills add codeatlasdev/ui
 
 These come from the agent guide and prevent the most common mistakes:
 
-- Import everything from `@codeatlasdev/ui`, never from internal paths. Charts, DataTable and CodeSnippet come from the `/charts`, `/table` and `/code` subpaths.
+- Import everything from `@codeatlasdev/ui`, never from internal paths. Charts, DataTable and CodeSnippet come from the `/charts`, `/table` and `/code` subpaths. Interface sound is opt-in: `sound` props do nothing until the app imports `@codeatlasdev/ui/sound` and shows `SoundToggle`; never use sound as the only signal.
 - Import `global.css` once, in the root layout, and call `colorScheme.init()` there.
 - No layout CSS and no hardcoded colors. Use `Grid`, `Flex` and `Stack` with a numeric `gap`, and `--ca-*` tokens.
 - No inline `padding` or `margin`. Inline styles are only for dynamic custom properties such as `style="--bar-w:{pct}%"`.

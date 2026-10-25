@@ -95,11 +95,13 @@
 
   // Hover opens only on real pointer movement: a panel that mounts under a resting cursor stays shut. Touch uses the click.
   let armed = true;
-  // A click that lands right after hover opened this panel confirms it instead of toggling it shut.
+  // A pointer click that lands right after hover opened this panel confirms it instead of toggling it shut.
+  // A keyboard activation (Enter/Space synthesize a click with `detail` 0) always toggles: it never
+  // follows a hover, and swallowing it leaves a keyboard user unable to close the panel.
   let hoverOpenedAt = 0;
   const HOVER_CLICK_GRACE_MS = 600;
-  function onclick() {
-    if (open && performance.now() - hoverOpenedAt < HOVER_CLICK_GRACE_MS) {
+  function onclick(e: MouseEvent) {
+    if (e.detail > 0 && open && performance.now() - hoverOpenedAt < HOVER_CLICK_GRACE_MS) {
       hoverOpenedAt = 0;
       return;
     }

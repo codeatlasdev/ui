@@ -8,7 +8,7 @@ Spec:
 - `<EmptyState bare icon={Inbox} title="No activity yet"` with an Inbox icon, the title No activity yet and a neutral outlined small Button labelled Log a call
 - No selector against a component class in the CSS
 Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
-Apply: import only from "@codeatlasdev/ui[/charts|/map|/table|/code|/forms]"; keep component names, props and
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
   variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
   replace sample data/copy with the project's; keep the first comment line.
 Report: #881 Dense CRM with component tokens → file, what changed, https://ui.codeatlas.com.br/docs/layout/empty-state#dense-crm-with-component-tokens; what you could not check (light/dark, 375px, keyboard, reduced motion).
