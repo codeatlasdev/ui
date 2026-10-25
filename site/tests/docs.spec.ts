@@ -136,10 +136,15 @@ test.describe("docs", () => {
 			[/^# AppForm$/m, /```svelte\n<script lang="ts">/],
 		],
 		[
-			"/api/v1/index.json",
+			"/api/v1/endpoints.json",
 			/^application\/json/,
-			[/"entry": "https:\/\/ui\.codeatlas\.com\.br\/llms\.txt"/],
+			[
+				/"entry": "https:\/\/ui\.codeatlas\.com\.br\/llms\.txt"/,
+				/"gallery index \(json\)": "https:\/\/ui\.codeatlas\.com\.br\/api\/v1\/index\.json"/,
+			],
 		],
+		// The gallery index (#570) owns this name: a route of the same name would be shadowed by the file.
+		["/api/v1/index.json", /^application\/json/, [/"count": \d+/, /"facets": \{/]],
 		["/robots.txt", /^text\/plain/, [/Sitemap: .*sitemap-index\.xml/]],
 		["/sitemap-index.xml", /^(application|text)\/xml/, [/<sitemapindex/]],
 		["/search-index.json", /^application\/json/, [/"href":"\/docs\//]],
