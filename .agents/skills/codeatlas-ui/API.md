@@ -627,6 +627,8 @@ Data attributes: `data-disabled`, `data-state` (`checked` `indeterminate`)
 
 Parts: `ca-chip` `ca-chip--brand` `ca-chip--error` `ca-chip--info` `ca-chip--interactive` `ca-chip--selected` `ca-chip--sm` `ca-chip--success` `ca-chip--warning` `ca-chip__delete` `ca-chip__icon` `ca-chip__label`
 
+Data attributes: `data-theme-scope` (`dark` `light`)
+
 ## ChipGroup
 
 `import { ChipGroup } from "@codeatlasdev/ui"`
