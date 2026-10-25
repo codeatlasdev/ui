@@ -1,6 +1,7 @@
 import { afterAll, describe, expect, it } from "vitest";
 import { page } from "vitest/browser";
 import { VIEWPORTS } from "../../../tests/viewports";
+import { BREAKPOINTS } from "../components/Layout/layout.js";
 import { responsive } from "./responsive.svelte.js";
 
 responsive.init();
@@ -51,7 +52,8 @@ describe("responsive store", () => {
 		expect(responsive.down("lg")).toBe(false);
 	});
 
-	it("exposes the breakpoint table", () => {
-		expect(responsive.BREAKPOINTS).toEqual({ xs: 0, sm: 600, md: 900, lg: 1200, xl: 1536 });
+	// layout.ts owns the scale (#649): the store adds `xs` (0) to it and nothing else.
+	it("exposes the breakpoint table of layout.ts plus xs", () => {
+		expect(responsive.BREAKPOINTS).toEqual({ xs: 0, ...BREAKPOINTS });
 	});
 });

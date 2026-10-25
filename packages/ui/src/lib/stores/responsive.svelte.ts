@@ -1,14 +1,11 @@
 // ─── Responsive breakpoint store (Svelte 5 runes) ────────────────────────────
 
-export type Breakpoint = "xs" | "sm" | "md" | "lg" | "xl";
+import { BREAKPOINTS as SCALE } from "../components/Layout/layout.js";
 
-const BREAKPOINTS: Record<Breakpoint, number> = {
-	xs: 0,
-	sm: 600,
-	md: 900,
-	lg: 1200,
-	xl: 1536,
-};
+export type Breakpoint = "xs" | keyof typeof SCALE;
+
+// The scale is owned by components/Layout/layout.ts; the store adds the `xs` floor.
+const BREAKPOINTS: Record<Breakpoint, number> = { xs: 0, ...SCALE };
 
 function createResponsiveStore() {
 	// undefined on the server and on the first client render (no hydration mismatch);

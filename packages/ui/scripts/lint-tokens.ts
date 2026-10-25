@@ -22,6 +22,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import { BREAKPOINTS } from "../src/lib/components/Layout/layout.ts";
 
 export interface Violation {
 	file: string;
@@ -57,8 +58,22 @@ const BACKDROP_OWNERS = /(^|[\\/])styles[\\/](surface|materials)\.css$/;
 const INPUT_SELECTOR =
 	/(^|[\s,>+~(])(input|textarea|select)\b|\[contenteditable|-input\b|__input\b/;
 
-/** Allowed width breakpoints (px) for min-width; max-width uses the same minus 0.02. */
-const BREAKPOINTS = [600, 900, 1200, 1536];
+/** Allowed width breakpoints (px) for min-width; max-width uses the same minus 0.02. The scale is owned by layout.ts. */
+export const BREAKPOINT_WIDTHS: number[] = Object.values(BREAKPOINTS);
+
+/** The message when a width is off the shared scale, else undefined. */
+function offScale(
+	kind: string,
+	value: string,
+	unit: string,
+	text = `(${kind}-width: ${value}${unit})`
+) {
+	const px = Number(value) * (unit === "px" ? 1 : 16);
+	const ok = BREAKPOINT_WIDTHS.some((b) => (kind === "min" ? px === b : px === b - 0.02));
+	return ok
+		? undefined
+		: `${text}: use the breakpoint scale (min-width ${BREAKPOINT_WIDTHS.join("/")}px, max-width N-0.02px) or a container query`;
+}
 
 /** Pure: lint one file's source. Test harnesses skip the viewport-unit and breakpoint rules. */
 export function lintSource(file: string, source: string): Violation[] {
@@ -104,6 +119,15 @@ export function lintSource(file: string, source: string): Violation[] {
 						'backdrop-filter belongs to styles/surface.css: set data-ca-blur="<role>" on the element (tiers: ultra-thin, thin, regular, thick, chrome, mat-thin, mat-regular, overlay, chrome-layer, tooltip) or use .ca-surface',
 				});
 
+	// A width in a `matchMedia("(max-width: …)")` string is the same viewport scale as one in a stylesheet.
+	if (!isHarness && /\.(ts|js|astro|svelte)$/.test(file))
+		for (const m of src.matchAll(
+			/matchMedia\(\s*["'`][^"'`]*?\((min|max)-width:\s*([\d.]+)(px|rem|em)\)/g
+		)) {
+			const bad = offScale(m[1], m[2], m[3]);
+			if (bad) v.push({ file, line: lineOf(src, m.index ?? 0), rule: "breakpoint", message: bad });
+		}
+
 	for (const r of regions) {
 		if (!isHarness && !/styles[\\/]tokens\.css$/.test(file))
 			for (const m of r.text.matchAll(/(?<![\w.-])100(?:vh|dvh|svh|lvh)\b/g))
@@ -118,14 +142,13 @@ export function lintSource(file: string, source: string): Violation[] {
 			for (const m of r.text.matchAll(
 				/(?<=@media[^{;]*)\((min|max)-width:\s*([\d.]+)(px|rem|em)\)/g
 			)) {
-				const px = Number(m[2]) * (m[3] === "px" ? 1 : 16);
-				const ok = BREAKPOINTS.some((b) => (m[1] === "min" ? px === b : px === b - 0.02));
-				if (!ok)
+				const bad = offScale(m[1], m[2], m[3], m[0]);
+				if (bad)
 					v.push({
 						file,
 						line: lineOf(src, r.offset + (m.index ?? 0)),
 						rule: "breakpoint",
-						message: `${m[0]}: use the breakpoint scale (min-width ${BREAKPOINTS.join("/")}px, max-width N-0.02px) or a container query`,
+						message: bad,
 					});
 			}
 
@@ -189,7 +212,7 @@ function* walk(dir: string): Generator<string> {
 		const p = join(dir, e.name);
 		if (e.isDirectory()) {
 			if (e.name !== "node_modules" && e.name !== "__screenshots__") yield* walk(p);
-		} else if (/\.(css|svelte)$/.test(e.name)) yield p;
+		} else if (/\.(css|svelte|astro|ts|js)$/.test(e.name)) yield p;
 	}
 }
 
