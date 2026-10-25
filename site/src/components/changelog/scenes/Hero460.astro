@@ -3,8 +3,15 @@
 import Arrow from "../Arrow.astro";
 import Hatch from "../Hatch.astro";
 import Scene from "../Scene.astro";
+
+interface Props {
+	version?: string;
+	decorative?: boolean;
+}
+const { decorative = false } = Astro.props;
 ---
 <Scene
+	{decorative}
 	title="Release 4.6.0: one page tied to five feature cards"
 	desc="A large sketchbook page tabbed 4.6.0 sits in the middle of a desk with pencil hatching in its lower corner. Five small cards, Theme Studio, UI index, Design styles, Sound and Test gate, are joined to the page by dashed arrows."
 >

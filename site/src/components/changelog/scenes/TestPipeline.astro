@@ -2,8 +2,15 @@
 // Test pipeline architecture: the diff selects lanes, a machine-wide lock serializes suites, a budget fails slow runs.
 import Arrow from "../Arrow.astro";
 import Scene from "../Scene.astro";
+
+interface Props {
+	version?: string;
+	decorative?: boolean;
+}
+const { decorative = false } = Astro.props;
 ---
 <Scene
+	{decorative}
 	height={380}
 	title="Test pipeline: diff selects lanes, one lock, a time budget"
 	desc="A git diff feeds an import graph and route map, which selects three lanes, unit, components and routes, labelled only what the diff reaches. The lanes pass a lock gate, one suite at a time with a machine-wide lock, and then a clock box, time budget, fails over. A second row shows the release path: test:full, then test:vrt. A note says native baselines per platform."

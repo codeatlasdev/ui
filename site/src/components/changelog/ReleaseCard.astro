@@ -18,7 +18,7 @@ const fmt = (iso: string) =>
 const top = r.highlights.slice(0, 3);
 ---
 <article class:list={["rc", { "rc--feat": featured }]} data-version={r.version}>
-	<div class="rc__hero" aria-hidden="true"><Hero version={r.version} /></div>
+	<div class="rc__hero"><Hero version={r.version} decorative /></div>
 	<div class="rc__body">
 		<p class="rc__meta sk-eyebrow">
 			<span>{r.version}</span>

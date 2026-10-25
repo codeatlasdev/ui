@@ -3,8 +3,15 @@
 import Arrow from "../Arrow.astro";
 import Hatch from "../Hatch.astro";
 import Scene from "../Scene.astro";
+
+interface Props {
+	version?: string;
+	decorative?: boolean;
+}
+const { decorative = false } = Astro.props;
 ---
 <Scene
+	{decorative}
 	height={280}
 	title="Hover trigger on the page is blocked by an open modal"
 	desc="A page holds a hover card trigger, with a scrim and a modal dialog stacked above it. A pointer arrow aimed at the page trigger stops at a barrier labelled layers.modalOpen. A second pointer aimed at a trigger inside the dialog passes through and is marked with a check."

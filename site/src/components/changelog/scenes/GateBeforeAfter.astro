@@ -4,8 +4,15 @@
 import Scene from "../Scene.astro";
 
 const x0 = 120;
+
+interface Props {
+	version?: string;
+	decorative?: boolean;
+}
+const { decorative = false } = Astro.props;
 ---
 <Scene
+	{decorative}
 	height={320}
 	title="Gate wall time before and after, route sweep and components"
 	desc="Two pairs of horizontal bars, drawn to scale. For the route sweep the before bar is dashed and long, killed at 467 s over 1998 tests, and the after bar is solid and short, 168 s at load 29. For components the before bar is dashed, 178 to 227 s, and the after bar is solid, 109 s at load 25."

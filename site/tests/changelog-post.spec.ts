@@ -16,7 +16,8 @@ test.describe("changelog index", () => {
 			"href",
 			POST
 		);
-		await expect(card.locator("svg[role=img]")).toHaveCount(0); // the hero is decorative here (aria-hidden)
+		await expect(card.locator("svg[aria-hidden=true]")).toHaveCount(1); // the hero is decorative next to its own text
+		await expect(card.locator("svg[role=img], svg title")).toHaveCount(0);
 		await expect(card.locator(".rc__hl li")).toHaveCount(3);
 		await expect(card.locator(".rc__counts")).toContainText("130");
 		await expect(page.locator(".rc")).not.toHaveCount(1); // older releases get cards too
@@ -52,7 +53,7 @@ test.describe("changelog 4.6.0", () => {
 			"security",
 			"accessibility",
 		]);
-		await expect(page.locator("#tldr li")).toHaveCount(ids.length);
+		await expect(page.locator(".post__tl li")).toHaveCount(ids.length);
 		await expect(page.locator("#upgrade")).toContainText("bun add @codeatlasdev/ui@4.6.0");
 		await expect(page.locator("#behaviour dt").first()).toBeVisible();
 		await expect(page.locator("#all-changes")).toContainText("130 merged pull requests");
@@ -91,7 +92,7 @@ test.describe("changelog 4.6.0", () => {
 
 	test("live examples mount when they scroll into view, not before", async ({ page }) => {
 		await page.goto(POST);
-		const island = page.locator("#inline-overlays astro-island").first();
+		const island = page.locator('astro-island[component-url*="InlineOverlay"]');
 		await expect(island).toHaveAttribute("client", "visible");
 		await expect(island).toHaveAttribute("ssr", "");
 		await island.scrollIntoViewIfNeeded();
@@ -100,16 +101,20 @@ test.describe("changelog 4.6.0", () => {
 
 	test("hydrating an island does not move the text below it", async ({ page }) => {
 		await page.goto(POST);
-		const next = page.locator("#modal-hover h2");
+		const island = page.locator('astro-island[component-url*="InlineOverlay"]');
 		const frame = page.locator("#inline-overlays .live").first();
+		const next = page.locator("#modal-hover");
 		await frame.scrollIntoViewIfNeeded();
-		const before = await frame.boundingBox();
-		await expect(frame.locator(".ca-dialog, .ca-theme-island").first()).toBeAttached({
-			timeout: 15_000,
-		});
-		const after = await frame.boundingBox();
-		expect(Math.abs((after?.height ?? 0) - (before?.height ?? 0))).toBeLessThanOrEqual(2);
-		await expect(next).toBeAttached();
+		// Measured before hydration (the island still has `ssr`) and after it, relative to the frame itself.
+		const y = async (l: typeof next) => (await l.boundingBox())?.y ?? 0;
+		const gapNow = async () => (await y(next)) - (await y(frame));
+		const before = (await frame.boundingBox())?.height ?? 0;
+		const gap = await gapNow();
+		await expect(island).not.toHaveAttribute("ssr", "", { timeout: 15_000 });
+		await expect(island.locator("button").first()).toBeVisible();
+		const after = (await frame.boundingBox())?.height ?? 0;
+		expect(Math.abs(after - before), `frame ${before} -> ${after}`).toBeLessThanOrEqual(2);
+		expect(Math.abs((await gapNow()) - gap)).toBeLessThanOrEqual(2);
 	});
 
 	test("the before/after control switches without moving the page", async ({ page }) => {
@@ -118,11 +123,11 @@ test.describe("changelog 4.6.0", () => {
 		await cmp.scrollIntoViewIfNeeded();
 		const stage = cmp.locator(".cmp__stage");
 		const h1 = (await stage.boundingBox())?.height ?? 0;
-		await cmp.getByLabel("Before: arrow up is good").check({ force: true });
+		await cmp.locator("#cmp-trend-before").check({ force: true });
 		await expect(cmp.locator(".cmp__pane--after")).toBeHidden();
 		const h2 = (await stage.boundingBox())?.height ?? 0;
 		expect(Math.abs(h2 - h1)).toBeLessThanOrEqual(1);
-		await cmp.getByLabel("Side by side").check({ force: true });
+		await cmp.locator("#cmp-trend-both").check({ force: true });
 		await expect(cmp.locator(".cmp__pane--before")).toBeVisible();
 		await expect(cmp.locator(".cmp__pane--after")).toBeVisible();
 	});

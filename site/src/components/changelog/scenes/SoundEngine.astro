@@ -2,8 +2,15 @@
 // The sound path: nothing is created until a user gesture; the recipe is synthesized and a profile picks the voice.
 import Arrow from "../Arrow.astro";
 import Scene from "../Scene.astro";
+
+interface Props {
+	version?: string;
+	decorative?: boolean;
+}
+const { decorative = false } = Astro.props;
 ---
 <Scene
+	{decorative}
 	height={280}
 	title="Sound path: gesture, AudioContext, recipe, profile, speaker"
 	desc="A user gesture, pointer or key, is the first step; a lock above the first arrow says off by default. The gesture creates the AudioContext, which runs an oscillator and noise recipe, which is shaped by one of four profiles, system, glass, brutal or terminal, and ends at a speaker. A note records 3.55 kB gzip of own code, no audio files, and the persisted key ca-sound."

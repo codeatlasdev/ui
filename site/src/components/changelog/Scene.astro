@@ -13,20 +13,23 @@ interface Props {
 	/** Natural aspect box. Heroes are wide; section diagrams are shorter. */
 	height?: number;
 	class?: string;
+	/** The same picture sits next to its own text (an index card): hidden from assistive tech, no name, no description. */
+	decorative?: boolean;
 }
-const { title, desc, height = 360, class: className = "" } = Astro.props;
+const { title, desc, height = 360, class: className = "", decorative = false } = Astro.props;
 const uid = nextId(Astro.url.pathname, "cs");
 ---
 <svg
 	class:list={["cs", className]}
 	viewBox={`0 0 640 ${height}`}
-	role="img"
-	aria-labelledby={`${uid}-t ${uid}-d`}
+	role={decorative ? undefined : "img"}
+	aria-labelledby={decorative ? undefined : `${uid}-t ${uid}-d`}
+	aria-hidden={decorative ? "true" : undefined}
 	xmlns="http://www.w3.org/2000/svg"
 	preserveAspectRatio="xMidYMid meet"
 >
-	<title id={`${uid}-t`}>{title}</title>
-	<desc id={`${uid}-d`}>{desc}</desc>
+	{!decorative && <title id={`${uid}-t`}>{title}</title>}
+	{!decorative && <desc id={`${uid}-d`}>{desc}</desc>}
 	<slot />
 </svg>
 

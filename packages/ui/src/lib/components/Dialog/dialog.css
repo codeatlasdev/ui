@@ -250,6 +250,22 @@
     outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
     outline-offset: var(--ca-focus-ring-offset);
   }
+  /* The close button is drawn 28px; a coarse pointer gets the invisible 44px hit area every small control gets
+     (base.css "Touch hit area"), so Dialog, AlertDialog, Drawer, Sheet and their inline mode meet the target (#620). */
+  @media (pointer: coarse) {
+    .ca-layer-close {
+      position: relative;
+    }
+    .ca-layer-close::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: max(100%, var(--ca-touch-target));
+      height: max(100%, var(--ca-touch-target));
+      translate: -50% -50%;
+    }
+  }
 
   /* ── Keyframes ──────────────────────────────────────────────── */
   @keyframes ca-overlay-in {

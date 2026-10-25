@@ -2,8 +2,15 @@
 // Top-layer overlays escape a themed island and lose its tokens; the inline variant renders in place and keeps them.
 import Hatch from "../Hatch.astro";
 import Scene from "../Scene.astro";
+
+interface Props {
+	version?: string;
+	decorative?: boolean;
+}
+const { decorative = false } = Astro.props;
 ---
 <Scene
+	{decorative}
 	height={300}
 	title="Top layer dialog escapes the themed island; inline stays inside"
 	desc="Two columns compare a dialog. On the left, Top layer: the dialog sits outside the dashed outline of the themed island and a cross marks that the tokens are lost. On the right, inline: the same dialog is drawn inside the island, with pencil hatching around it and a check marking that the tokens are kept."

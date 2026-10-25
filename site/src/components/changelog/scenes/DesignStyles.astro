@@ -3,8 +3,15 @@
 import Arrow from "../Arrow.astro";
 import Hatch from "../Hatch.astro";
 import Scene from "../Scene.astro";
+
+interface Props {
+	version?: string;
+	decorative?: boolean;
+}
+const { decorative = false } = Astro.props;
 ---
 <Scene
+	{decorative}
 	height={280}
 	title="Six design styles as thumbnails, applied through designStyle"
 	desc="Six small page thumbnails in a grid of three by two: Swiss with rule lines, Editorial with two columns, Brutalism with a hard offset shadow, Sketchbook with pencil hatching, Glassmorphism with translucent overlapping rectangles, and Terminal with a prompt cursor. One arrow leads from the grid to a box labelled designStyle with an id."

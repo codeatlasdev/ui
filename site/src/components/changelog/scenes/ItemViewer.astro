@@ -2,8 +2,15 @@
 // An index item page: four tabs, the Preview tab open on a stage that resizes to three widths.
 import Hatch from "../Hatch.astro";
 import Scene from "../Scene.astro";
+
+interface Props {
+	version?: string;
+	decorative?: boolean;
+}
+const { decorative = false } = Astro.props;
 ---
 <Scene
+	{decorative}
 	height={280}
 	title="Item page with four tabs and a resizable preview stage"
 	desc="An item page shows four tabs, Preview, Code, Prompt and Anatomy, with Preview active. Under it a framed stage has a splitter handle in the middle of its right edge, and three width marks, 390, 768 and 1280, sit below the frame."

@@ -5,11 +5,13 @@ import Hatch from "../Hatch.astro";
 import Scene from "../Scene.astro";
 
 interface Props {
+	decorative?: boolean;
 	version?: string;
 }
-const { version = "" } = Astro.props;
+const { version = "", decorative = false } = Astro.props;
 ---
 <Scene
+	{decorative}
 	title={version ? `Release ${version}` : "A release"}
 	desc="Three sketchbook pages stacked and slightly fanned, the front one tabbed with the version number and shaded with pencil hatching in the corner."
 >

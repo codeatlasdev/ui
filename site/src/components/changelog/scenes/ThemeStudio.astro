@@ -3,8 +3,15 @@
 import Arrow from "../Arrow.astro";
 import Hatch from "../Hatch.astro";
 import Scene from "../Scene.astro";
+
+interface Props {
+	version?: string;
+	decorative?: boolean;
+}
+const { decorative = false } = Astro.props;
 ---
 <Scene
+	{decorative}
 	height={300}
 	title="Theme Studio: options, real engine, live previews, exports"
 	desc="A stack of four option rows, brand, style, radius and type, feeds a box called real engine. The engine drives a live preview of three screens at widths 390, 768 and 1280, each with a light half and a darker hatched half. A dashed arrow leads from the preview to a box named theme.ts plus CSS plus share URL."

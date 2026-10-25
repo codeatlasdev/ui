@@ -2,8 +2,15 @@
 // The faceted UI index: facets filter a grid of items, and the same result is served as a page, a markdown twin and an MCP search.
 import Arrow from "../Arrow.astro";
 import Scene from "../Scene.astro";
+
+interface Props {
+	version?: string;
+	decorative?: boolean;
+}
+const { decorative = false } = Astro.props;
 ---
 <Scene
+	{decorative}
 	height={300}
 	title="UI index: facets filter items into a page, a twin and MCP search"
 	desc="Four facet chips, kind, motion, style and tech, sit on the left, with the counts 346 next to kind and 39 next to motion. A filter arrow leads to a grid of six item cards, two of them highlighted. The result flows on to three outputs: a page, a markdown twin and the MCP search_ui tool."
