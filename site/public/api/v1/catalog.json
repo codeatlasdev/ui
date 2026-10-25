@@ -1,6 +1,6 @@
 {
 	"version": "4.5.0",
-	"count": 375,
+	"count": 377,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -35,8 +35,8 @@
 		{
 			"slug": "layout",
 			"first": "165",
-			"last": "985",
-			"count": 45
+			"last": "987",
+			"count": 47
 		},
 		{
 			"slug": "charts",
@@ -16069,7 +16069,7 @@
 			"summary": "A dashed file area that opens a Rename, Pinned, Move to and Delete menu at the pointer on right-click, at the finger on a long touch press, or from the keyboard with Shift+F10.",
 			"use": "Context menus on rows, files or canvases that reuse the DropdownMenu items, including checkbox items and submenus, without wiring any event handler.",
 			"spec": [
-				"`<ContextMenu class=\"area\" role=\"group\" aria-label=\"Project file\">` wraps the region content and takes the items in a `{#snippet menu()}`",
+				"`<ContextMenu class=\"cm-area\" role=\"group\" aria-label=\"Project file\">` wraps the region content and takes the items in a `{#snippet menu()}`",
 				"The menu holds `DropdownMenuItem`, a `<DropdownMenuCheckboxItem bind:checked={pinned}>`, a `DropdownMenuSub` with `DropdownMenuSubTrigger`, a `DropdownMenuSeparator` and a destructive Delete",
 				"Each action item calls `function pick(action: string)`, which sets `last` and calls `announce`",
 				"Pinned (yes or no) and the last action are shown below the area"
@@ -16120,7 +16120,7 @@
 			"summary": "Three invoice rows, each its own context menu with a label, Open and Send reminder, and a 400 ms long-press delay for touch.",
 			"use": "A menu per list row: each row is a focusable region, so keyboard users reach the same actions with Shift+F10.",
 			"spec": [
-				"`{#each rows as row (row)}` renders `<ContextMenu class=\"row\" role=\"group\" aria-label={row} longPressDelay={400}>` per row",
+				"`{#each rows as row (row)}` renders `<ContextMenu class=\"cm-row\" role=\"group\" aria-label={row} longPressDelay={400}>` per row",
 				"The `menu` snippet starts with `<DropdownMenuLabel>{row}</DropdownMenuLabel>` and has Open and Send reminder items",
 				"Items set `last` to the action and the row name (Open or Send plus the invoice), shown under the list"
 			],
@@ -16902,6 +16902,84 @@
 			"interactive": false,
 			"demo": "https://ui.codeatlas.com.br/docs/layout/kpi-card#sparkline",
 			"needs": "@codeatlasdev/ui@4.5.0 + echarts"
+		},
+		{
+			"id": "986",
+			"group": "layout",
+			"page": "preview-stage",
+			"variant": "Inline",
+			"slug": "inline-content",
+			"title": "Inline content",
+			"description": "A component at phone width with a light and dark toggle in the toolbar.",
+			"summary": "A button pair inside a PreviewStage at 390 px, with a toolbar button that flips the content between light and dark.",
+			"use": "Showcasing a component at phone, tablet and desktop width inside a docs page or a design review.",
+			"spec": [
+				"`<PreviewStage label=\"Button pair\" bind:width {scheme} height={220}>`",
+				"`{#snippet toolbar()}` adds a Dark / Light toggle next to the width control",
+				"The content is themed in its own island: the page around the stage keeps its scheme"
+			],
+			"tags": [
+				"preview-stage",
+				"device-frame",
+				"responsive",
+				"width",
+				"showcase"
+			],
+			"shape": "wide",
+			"components": [
+				"Button",
+				"PreviewStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Button",
+						"PreviewStage"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/preview-stage#inline-content",
+			"needs": "@codeatlasdev/ui@4.5.0"
+		},
+		{
+			"id": "987",
+			"group": "layout",
+			"page": "preview-stage",
+			"variant": "Page",
+			"slug": "a-whole-page",
+			"title": "A whole page",
+			"description": "A template in an isolated iframe; switch the width to see its media queries.",
+			"summary": "A whole page (the sign-in template) in a PreviewStage iframe, laid out at the chosen width with its own media queries.",
+			"use": "Showing a full page or a template at real phone, tablet and desktop widths with isolated styles.",
+			"spec": [
+				"`<PreviewStage label=\"Sign in template\" src=\"/templates/auth/sign-in/\" height={420}`",
+				"`widths={[390, 768, 1280]}` are the presets next to Fill",
+				"The page renders in an isolated iframe: real viewport width, real media queries, no style leakage"
+			],
+			"tags": [
+				"preview-stage",
+				"iframe",
+				"page",
+				"template",
+				"responsive"
+			],
+			"shape": "wide",
+			"components": [
+				"PreviewStage"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"PreviewStage"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/preview-stage#a-whole-page",
+			"needs": "@codeatlasdev/ui@4.5.0"
 		}
 	]
 }

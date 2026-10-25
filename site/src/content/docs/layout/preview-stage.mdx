@@ -1,0 +1,48 @@
+---
+title: PreviewStage
+description: A resizable device frame for showing a component or a whole page at 390, 768, 1280 or any width, themed in its own light or dark island.
+group: Layout
+order: 15
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Inline from "~/demos/layout/preview-stage/Inline.svelte";
+import InlineSrc from "~/demos/layout/preview-stage/Inline.svelte?raw";
+import Page from "~/demos/layout/preview-stage/Page.svelte";
+import PageSrc from "~/demos/layout/preview-stage/Page.svelte?raw";
+
+```svelte
+<script>
+  import { PreviewStage } from "@codeatlasdev/ui";
+  let width = $state("fill");
+</script>
+
+<PreviewStage label="Pricing" bind:width scheme="dark">
+  <Pricing />
+</PreviewStage>
+<PreviewStage label="Dashboard" src="/templates/app/dashboard/" height={720} />
+```
+
+For your own showcases, design reviews and docs. A width control (presets plus a draggable splitter) sets the frame width in CSS pixels. When the stage is narrower than the chosen width, the whole frame is scaled down, so a 1280 px page still lays out at 1280 px. The stage has a fixed height up front, so content that loads late never shifts what is below it.
+
+Two modes. With `children` the content is inline and themed in its own `ThemeIsland` (`scheme`, `preset`), so a light or dark switch never touches the page around it. With `src` a same-origin page loads in an `<iframe>`: isolated styles, real viewport width, real media queries. Use `src` for full pages.
+
+<Demo title="Inline content" description="A component at phone width with a light and dark toggle in the toolbar." src={InlineSrc}><Inline client:visible /></Demo>
+<Demo title="A whole page" description="A template in an isolated iframe; switch the width to see its media queries." src={PageSrc}><Page client:visible /></Demo>
+
+## Keyboard
+
+The splitter on the frame's trailing edge is a WAI-ARIA window splitter (`role="separator"`, focusable): `aria-valuenow` is the width in px. Arrows move 10 px, Shift plus an arrow 100 px, Home and End go to the smallest and largest width.
+
+<Props for="PreviewStage" rows={[
+  { name: "label", type: "string", description: "Accessible name of the stage (what it shows). Required." },
+  { name: "width", type: "number | 'fill'", default: "'fill'", description: "Frame width in px, or the whole stage. Bindable." },
+  { name: "widths", type: "number[]", default: "[390, 768, 1280]", description: "Width presets; Fill is always offered." },
+  { name: "scheme", type: "'light' | 'dark' | 'inherit'", default: "'inherit'", description: "Scheme of inline content. `inherit` keeps the page's." },
+  { name: "preset", type: "string", default: "undefined", description: "`data-preset` of inline content." },
+  { name: "src", type: "string", default: "undefined", description: "Same-origin page to show in an iframe. Ignored when `children` is given." },
+  { name: "height", type: "number", default: "560", description: "Stage height in px." },
+  { name: "minWidth", type: "number", default: "280", description: "Smallest width the splitter reaches." },
+  { name: "toolbar", type: "Snippet", default: "undefined", description: "Extra controls after the width control." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+]} />

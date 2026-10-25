@@ -1,0 +1,18 @@
+<!-- @codeatlasdev/ui demo #987 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/layout/preview-stage#a-whole-page -->
+Element: #987 A whole page (layout/preview-stage)
+What it shows: A whole page (the sign-in template) in a PreviewStage iframe, laid out at the chosen width with its own media queries.
+When to use: Showing a full page or a template at real phone, tablet and desktop widths with isolated styles.
+Spec:
+- `<PreviewStage label="Sign in template" src="/templates/auth/sign-in/" height={420}`
+- `widths={[390, 768, 1280]}` are the presets next to Fill
+- The page renders in an isolated iframe: real viewport width, real media queries, no style leakage
+Tags: preview-stage, iframe, page, template, responsive
+Needs: @codeatlasdev/ui@4.5.0
+Components: PreviewStage
+Live demo: https://ui.codeatlas.com.br/docs/layout/preview-stage#a-whole-page
+
+<script lang="ts">
+  import { PreviewStage } from '@codeatlasdev/ui';
+</script>
+
+<PreviewStage label="Sign in template" src="/templates/auth/sign-in/" height={420} widths={[390, 768, 1280]} />

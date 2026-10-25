@@ -204,6 +204,7 @@ export type { PasswordScore } from "./components/PasswordStrength/score.js";
 export { passwordScore } from "./components/PasswordStrength/score.js";
 export { default as PinInput } from "./components/PinInput/PinInput.svelte";
 export { default as Popover } from "./components/Popover/Popover.svelte";
+export { default as PreviewStage } from "./components/PreviewStage/PreviewStage.svelte";
 export { default as Progress } from "./components/Progress/Progress.svelte";
 export type { RadioItem } from "./components/RadioGroup/RadioGroup.svelte";
 export { default as RadioGroup } from "./components/RadioGroup/RadioGroup.svelte";

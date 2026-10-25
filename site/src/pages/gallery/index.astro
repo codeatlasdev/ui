@@ -1,0 +1,23 @@
+---
+import Gallery from "~/components/gallery/Gallery.svelte";
+import SiteDocsShell from "~/components/docs/SiteDocsShell.svelte";
+import SiteFooter from "~/components/site/SiteFooter.astro";
+import Base from "~/layouts/Base.astro";
+import { ITEMS } from "~/lib/gallery-items";
+import { SECTIONS } from "~/lib/nav";
+import catalog from "../../../public/api/v1/catalog.json";
+
+// Only what a card renders: the full catalog (imports, needs, spec, ...) stays in the API.
+// Pages lead the category list: they are the first thing an owner looks for.
+const groups = ["pages", ...catalog.groups.map((g) => g.slug)];
+---
+<Base
+	title="Gallery"
+	description="The sketchbook: every numbered demo and full page, live and large. Open, resize, pick, copy, hand to your AI."
+	skipLink={false}
+>
+	<SiteDocsShell client:load sections={SECTIONS} active="gallery" pathname={Astro.url.pathname}>
+		<Gallery client:load elements={ITEMS} {groups} />
+	</SiteDocsShell>
+	<SiteFooter />
+</Base>

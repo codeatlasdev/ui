@@ -22,6 +22,10 @@ function svelteFiles(dir: string): string[] {
 	);
 }
 
+// The manifest scan is the slow part (every component and demo); build it once for the file.
+const manifest = buildManifest();
+const { demos, files } = buildDemos(manifest, CATALOG);
+
 describe("demo catalog", () => {
 	it("ids are unique, 3-digit and strictly increasing", () => {
 		const ids = CATALOG.map((d) => d.id);
@@ -36,9 +40,6 @@ describe("demo catalog", () => {
 		expect(files.filter((f) => !paths.includes(f))).toEqual([]);
 		for (const p of paths) expect(existsSync(join(DEMOS, `${p}.svelte`))).toBe(true);
 	});
-
-	const manifest = buildManifest();
-	const { demos, files } = buildDemos(manifest, CATALOG);
 
 	it("emits one licensed reference per demo with real components", () => {
 		expect(demos.length).toBe(CATALOG.length);
@@ -104,8 +105,6 @@ describe("demo meta sidecars", () => {
 	});
 
 	it("emits spec lines, use and summary into the e/ and p/ files", () => {
-		const manifest = buildManifest();
-		const { demos, files } = buildDemos(manifest, CATALOG);
 		const d = demos[0];
 		expect(d.spec.length).toBeGreaterThan(0);
 		expect(files[`en/e/${d.id}.txt`]).toContain(`Spec:\n- ${d.spec[0]}`);
@@ -166,8 +165,6 @@ describe("motion sidecar fields", () => {
 	});
 
 	it("emits Names and Motion in e/ and p/, and the exact-values line only with motion", () => {
-		const manifest = buildManifest();
-		const { demos, files } = buildDemos(manifest, CATALOG);
 		const plain = demos[0];
 		expect(files[`en/e/${plain.id}.txt`]).not.toContain("Motion:");
 		expect(files[`en/p/${plain.id}.txt`]).not.toContain("Reproduce the motion values exactly");
@@ -190,5 +187,38 @@ describe("motion sidecar fields", () => {
 		expect(files["en/catalog.tsv"].split("\n")[0]).toBe(
 			"id\tgroup\tpage\ttitle\tnames\ttags\tsummary"
 		);
+	});
+});
+
+describe("demo CSS isolation", () => {
+	// The gallery bundles every demo into one page set, so an unscoped `:global(.x)` rule reaches every
+	// demo that names a local class `.x` too (a context-menu `:global(.row)` padded the button page's `.row`).
+	const files = svelteFiles(DEMOS).map((p) => ({
+		p,
+		css:
+			readFileSync(join(DEMOS, `${p}.svelte`), "utf8").match(
+				/<style[^>]*>([\s\S]*?)<\/style>/
+			)?.[1] ?? "",
+	}));
+	// A selector is bare when nothing but whitespace precedes its `:global(.x)` inside the selector.
+	const bare = (css: string) =>
+		[...css.matchAll(/:global\(\.([\w-]+)[^)]*\)/g)]
+			.filter((m) => css.slice(0, m.index).split(/[{},]/).pop()?.trim() === "")
+			.map((m) => m[1]);
+	const local = (css: string) =>
+		new Set([...css.matchAll(/(?:^|[\s,}>+~])\.([\w-]+)/gm)].map((m) => m[1]));
+
+	it("no demo declares a bare :global(.x) that another demo uses as a local class", () => {
+		const locals = new Map<string, string[]>();
+		for (const f of files)
+			for (const c of local(f.css.replace(/:global\([^)]*\)/g, "")))
+				locals.set(c, [...(locals.get(c) ?? []), f.p]);
+		const leaks: string[] = [];
+		for (const f of files)
+			for (const c of new Set(bare(f.css)))
+				for (const other of locals.get(c) ?? [])
+					if (other !== f.p)
+						leaks.push(`${f.p}: :global(.${c}) also styles the local .${c} of ${other}`);
+		expect(leaks).toEqual([]);
 	});
 });

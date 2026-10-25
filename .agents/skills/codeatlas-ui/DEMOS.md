@@ -380,3 +380,5 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 983 | Button addons | inputs/text-field | Button, IconButton, TextField |
 | 984 | Trend tone | layout/kpi-card | KpiCard, KpiGrid |
 | 985 | Sparkline | layout/kpi-card | KpiCard, KpiGrid, Sparkline |
+| 986 | Inline content | layout/preview-stage | Button, PreviewStage |
+| 987 | A whole page | layout/preview-stage | PreviewStage |

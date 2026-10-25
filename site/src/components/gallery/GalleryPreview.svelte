@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { Component } from "svelte";
 	import { onMount } from "svelte";
+	import { loadDemo } from "./demo-loader";
 
 	interface Props {
 		/** `<group>/<page>/<Variant>`, relative to `src/demos`. */
@@ -9,28 +10,27 @@
 	}
 	let { path, title }: Props = $props();
 
-	// One lazy chunk per demo: nothing is fetched until its card nears the viewport.
-	const demos = import.meta.glob<{ default: Component }>("/src/demos/**/*.svelte");
-
 	let host = $state<HTMLElement>();
 	let Demo = $state<Component | null>(null);
 	let failed = $state(false);
 
+	// Mounted only while the card is near the viewport, and unmounted again far away: 370+ live
+	// demos never exist at once (a long grid stays light), and the fixed box keeps layout still.
 	onMount(() => {
-		const load = demos[`/src/demos/${path}.svelte`];
-		if (!host || !load) {
-			failed = true;
-			return;
-		}
+		if (!host) return;
 		const io = new IntersectionObserver(
 			(entries) => {
-				if (!entries.some((e) => e.isIntersecting)) return;
-				io.disconnect();
-				load()
-					.then((m) => (Demo = m.default))
-					.catch(() => (failed = true));
+				const near = entries.some((e) => e.isIntersecting);
+				if (!near) {
+					Demo = null;
+					return;
+				}
+				if (Demo) return;
+				loadDemo(path)
+					?.then((m) => (Demo = m.default))
+					.catch(() => (failed = true)) ?? (failed = true);
 			},
-			{ rootMargin: "200px" }
+			{ rootMargin: "300px" }
 		);
 		io.observe(host);
 		return () => io.disconnect();
@@ -41,7 +41,7 @@
 	{#if Demo}
 		<Demo />
 	{:else if failed}
-		<span class="preview__note">Preview unavailable. Open the docs link.</span>
+		<span class="preview__note">Preview unavailable. Open it to see the demo.</span>
 	{/if}
 </div>
 
@@ -50,8 +50,10 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
+		justify-content: center;
 		gap: var(--ca-space-3);
 		width: 100%;
+		height: 100%;
 		min-width: 0;
 	}
 	.preview__note {

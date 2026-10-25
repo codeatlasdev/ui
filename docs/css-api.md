@@ -320,6 +320,12 @@ State attributes on `.ca-motion-stage`: `data-playing`, `data-taken`, `data-redu
 
 `.ca-popover-content` `.ca-popover-in` `.ca-popover-out` `.ca-popover__trigger`
 
+## PreviewStage
+
+`.ca-pstage` `.ca-pstage__bar` `.ca-pstage__canvas` `.ca-pstage__content` `.ca-pstage__frame` `.ca-pstage__handle` `.ca-pstage__iframe` `.ca-pstage__island` `.ca-pstage__loading` `.ca-pstage__readout` `.ca-pstage__viewport`
+
+`data-dragging` on `.ca-pstage` and `data-active` on the handle while it holds the pointer; `data-scaled` on the viewport when the frame is scaled down to fit. `--pstage-w`, `--pstage-h` and `--pstage-scale` are set inline on the canvas.
+
 ## Progress
 
 `.ca-progress` `.ca-progress-shimmer` `.ca-progress__indicator` `.ca-progress__indicator--indeterminate` `.ca-progress__track`

@@ -2,7 +2,7 @@
 	"summary": "A dashed file area that opens a Rename, Pinned, Move to and Delete menu at the pointer on right-click, at the finger on a long touch press, or from the keyboard with Shift+F10.",
 	"use": "Context menus on rows, files or canvases that reuse the DropdownMenu items, including checkbox items and submenus, without wiring any event handler.",
 	"spec": [
-		"`<ContextMenu class=\"area\" role=\"group\" aria-label=\"Project file\">` wraps the region content and takes the items in a `{#snippet menu()}`",
+		"`<ContextMenu class=\"cm-area\" role=\"group\" aria-label=\"Project file\">` wraps the region content and takes the items in a `{#snippet menu()}`",
 		"The menu holds `DropdownMenuItem`, a `<DropdownMenuCheckboxItem bind:checked={pinned}>`, a `DropdownMenuSub` with `DropdownMenuSubTrigger`, a `DropdownMenuSeparator` and a destructive Delete",
 		"Each action item calls `function pick(action: string)`, which sets `last` and calls `announce`",
 		"Pinned (yes or no) and the last action are shown below the area"

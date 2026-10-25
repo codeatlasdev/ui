@@ -51,6 +51,7 @@ import { pageFrame } from "./groups/pageFrame.js";
 import { pageShell } from "./groups/pageShell.js";
 import { pagination } from "./groups/pagination.js";
 import { passwordStrength } from "./groups/passwordStrength.js";
+import { previewStage } from "./groups/previewStage.js";
 import { resizablePanels } from "./groups/resizablePanels.js";
 import { select } from "./groups/select.js";
 import { sheet } from "./groups/sheet.js";
@@ -106,6 +107,7 @@ export const groups = {
 	pageFrame,
 	pagination,
 	passwordStrength,
+	previewStage,
 	table,
 	resizablePanels,
 	select,
