@@ -10,7 +10,7 @@ const items = [
 	{ id: "a", title: "New invoice" },
 	{ id: "b", title: "Read receipt", read: true },
 ];
-const trigger = () => page.getByRole("button", { name: /^Notifications/ });
+const trigger = () => page.getByRole("button", { name: /notifications$/i });
 const bound = () => page.getByRole("status", { name: "Bound open" });
 const live = () => document.querySelector('[data-ca-announcer="polite"]');
 
@@ -21,14 +21,14 @@ afterEach(() => {
 describe("NotificationBell state", () => {
 	for (const mode of ["parent", "click"] as const) {
 		it.each([
-			{ count: 7, loading: true, items: [], label: "Notifications (7 unread)" },
-			{ count: 7, loading: false, items: [], label: "Notifications (7 unread)" },
-			{ count: 7, loading: true, items, label: "Notifications (7 unread)" },
-			{ count: 7, loading: false, items, label: "Notifications (7 unread)" },
-			{ count: undefined, loading: true, items: [], label: "Notifications (0 unread)" },
-			{ count: undefined, loading: false, items: [], label: "Notifications (0 unread)" },
-			{ count: undefined, loading: true, items, label: "Notifications (1 unread)" },
-			{ count: undefined, loading: false, items, label: "Notifications (1 unread)" },
+			{ count: 7, loading: true, items: [], label: "7 unread notifications" },
+			{ count: 7, loading: false, items: [], label: "7 unread notifications" },
+			{ count: 7, loading: true, items, label: "7 unread notifications" },
+			{ count: 7, loading: false, items, label: "7 unread notifications" },
+			{ count: undefined, loading: true, items: [], label: "Notifications" },
+			{ count: undefined, loading: false, items: [], label: "Notifications" },
+			{ count: undefined, loading: true, items, label: "1 unread notifications" },
+			{ count: undefined, loading: false, items, label: "1 unread notifications" },
 		])(`${mode}: combination %#`, async (row) => {
 			const onOpenChange = vi.fn();
 			const screen = await render(Harness, { ...row, onOpenChange });
@@ -71,15 +71,15 @@ describe("NotificationBell state", () => {
 
 	it("parent updates count, including zero, and announces politely", async () => {
 		const screen = await render(Harness, { count: 7, items });
-		await expect.element(trigger()).toHaveAccessibleName("Notifications (7 unread)");
+		await expect.element(trigger()).toHaveAccessibleName("7 unread notifications");
 		await expect.element(page.getByText("7", { exact: true })).toBeVisible();
 		await screen.rerender({ count: 3 });
-		await expect.element(trigger()).toHaveAccessibleName("Notifications (3 unread)");
+		await expect.element(trigger()).toHaveAccessibleName("3 unread notifications");
 		await expect.element(page.getByText("3", { exact: true })).toBeVisible();
-		await expect.poll(() => live()?.textContent).toBe("Notifications (3 unread)");
+		await expect.poll(() => live()?.textContent).toBe("3 unread notifications");
 		expect(live()?.getAttribute("aria-live")).toBe("polite");
 		await screen.rerender({ count: 0, open: true });
-		await expect.element(trigger()).toHaveAccessibleName("Notifications (0 unread)");
+		await expect.element(trigger()).toHaveAccessibleName("Notifications");
 		await expect.element(page.getByText("3", { exact: true })).not.toBeInTheDocument();
 		await expect.element(page.getByText("7", { exact: true })).not.toBeInTheDocument();
 		await expect
@@ -88,7 +88,7 @@ describe("NotificationBell state", () => {
 		await expect
 			.element(page.getByRole("button", { name: "Mark all read" }))
 			.not.toBeInTheDocument();
-		await expect.poll(() => live()?.textContent).toBe("Notifications (0 unread)");
+		await expect.poll(() => live()?.textContent).toBe("Notifications");
 	});
 
 	it("user opens a lazy list, marks read, and finishes loading", async () => {
@@ -106,7 +106,7 @@ describe("NotificationBell state", () => {
 			.not.toBeInTheDocument();
 		await page.getByRole("button", { name: "Mark all read" }).click();
 		expect(onReadAll).toHaveBeenCalledOnce();
-		await expect.element(trigger()).toHaveAccessibleName("Notifications (0 unread)");
+		await expect.element(trigger()).toHaveAccessibleName("Notifications");
 		await settled();
 		expect(
 			await checkA11y(document.querySelector(".ca-notif-panel") as HTMLElement)
@@ -134,12 +134,12 @@ describe("NotificationBell state", () => {
 	it("omitted props keep list counts, callbacks, and empty state", async () => {
 		const onRead = vi.fn();
 		const screen = await render(NotificationBell, { notifications: items, onRead });
-		await expect.element(trigger()).toHaveAccessibleName("Notifications (1 unread)");
+		await expect.element(trigger()).toHaveAccessibleName("1 unread notifications");
 		await trigger().click();
 		await page.getByRole("button", { name: "New invoice" }).click();
 		expect(onRead).toHaveBeenCalledExactlyOnceWith("a");
 		await screen.rerender({ notifications: [] });
-		await expect.element(trigger()).toHaveAccessibleName("Notifications (0 unread)");
+		await expect.element(trigger()).toHaveAccessibleName("Notifications");
 		await expect.element(page.getByText("No notifications", { exact: true })).toBeVisible();
 	});
 
@@ -193,7 +193,7 @@ describe("NotificationBell state", () => {
 		await render(Harness, { open: true, count: 7, lazy: false, onReadAll });
 		await page.getByRole("button", { name: "Mark all read" }).click();
 		expect(onReadAll).toHaveBeenCalledOnce();
-		await expect.element(trigger()).toHaveAccessibleName("Notifications (7 unread)");
+		await expect.element(trigger()).toHaveAccessibleName("7 unread notifications");
 		await expect.element(page.getByText("7", { exact: true })).toBeVisible();
 	});
 
