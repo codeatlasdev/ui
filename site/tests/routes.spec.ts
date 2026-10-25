@@ -101,3 +101,13 @@ for (const panel of ["Controls", "Code"]) {
 		expect(await audit(page, isMobile)).toEqual([]);
 	});
 }
+
+// The gallery's facet panel is closed on load: check it open, where ten rows of chips must still fit.
+test("/gallery/ (filters open)", async ({ page, isMobile }) => {
+	if (isMobile) await page.setViewportSize({ width: 360, height: 780 });
+	await gotoReady(page, "/gallery/?kind=motion");
+	await expect(page.getByRole("group", { name: "Kind" })).toBeVisible();
+	// The cards put a stretched "Open" link over live demo content on purpose; this test is about the panel.
+	await page.addStyleTag({ content: ".gallery__grid { display: none !important }" });
+	expect(await audit(page, isMobile)).toEqual([]);
+});
