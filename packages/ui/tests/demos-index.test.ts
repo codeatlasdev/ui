@@ -13,6 +13,7 @@ import {
 	AUDIT,
 	checkIdRange,
 	checkIndexFacets,
+	errorUpperBound,
 	ID_PATTERN,
 	ID_RANGES,
 	LEGACY_OUT_OF_RANGE,
@@ -217,11 +218,25 @@ describe("publishing gate", () => {
 	const files = buildIndexFiles(demos, manifest.version);
 	const index = JSON.parse(files["api/v1/index.json"]);
 
-	it("a field is published only when its audited error rate is at most 5%", () => {
+	it("a field is published only when the upper bound of its error rate is at most 5%", () => {
 		for (const [field, a] of Object.entries(AUDIT.fields)) {
-			const rate = a.wrong / a.checked;
-			expect([field, rate <= MAX_ERROR_RATE ? "published" : "pending"]).toEqual([field, a.review]);
+			const bound = errorUpperBound(a.wrong, a.checked);
+			expect([field, bound <= MAX_ERROR_RATE ? "published" : "pending"]).toEqual([field, a.review]);
 		}
+	});
+
+	it("0 errors in 73 reads is an upper bound of about 4%, never 0%", () => {
+		expect(errorUpperBound(0, 73)).toBeGreaterThan(0.039);
+		expect(errorUpperBound(0, 73)).toBeLessThan(0.041);
+		expect(errorUpperBound(0, 73)).toBeCloseTo(1 - 0.05 ** (1 / 73), 4);
+		expect(errorUpperBound(5, 73)).toBeGreaterThan(0.13);
+		expect(errorUpperBound(1, 73)).toBeGreaterThan(MAX_ERROR_RATE);
+	});
+
+	it("the audit counts add up and say how many entries were never re-read", () => {
+		expect(AUDIT.read.first + AUDIT.read.holdout).toBe(AUDIT.read.total);
+		expect(AUDIT.read.catalog).toBe(CATALOG.length);
+		expect(AUDIT.read.catalog - AUDIT.read.total).toBe(AUDIT.read.unread);
 	});
 
 	it("pending fields are in the sidecar, marked, and absent from every public output", () => {

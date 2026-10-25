@@ -216,23 +216,53 @@ export interface IndexFacets {
 }
 
 /**
- * Publishing gate. A hand-read facet is exposed in `index.json`, the markdown twins and every filter only when
- * its measured error rate on a seeded, folder-stratified audit is at most `MAX_ERROR_RATE`. A field above it stays
- * in the sidecar (and is still validated) as `pending` and is hidden from search until it is corrected and
+ * Publishing gate. A hand-read facet is exposed in `index.json`, the markdown twins and every filter only when the
+ * one-sided 95% UPPER BOUND of its error rate on a seeded, folder-stratified audit is at most `MAX_ERROR_RATE`.
+ * The bound, not the point estimate: 0 wrong of 73 reads is not "0% wrong", it is "at most ~4% wrong". A field
+ * above the limit stays in the sidecar (validated) as `pending` and is hidden from search until it is corrected and
  * re-audited. A confidently wrong filter is worse than none.
  *
  * Inferred facets (kind, subtype, components, tech, cost, added, a11y.reducedMotion) are derived from the code and
  * are always published. Re-audit a pending field with a new seed, update `AUDIT`, and flip it to `published`.
+ *
+ * What the audit does NOT cover: only the entries in `AUDIT.read` were re-read by a person; every other entry holds
+ * the value the first pass and the correction rules gave it, and is unverified beyond those rules.
  */
 export const MAX_ERROR_RATE = 0.05;
 
 export type Review = "published" | "pending";
 
-/** The audited hand-read facets and their latest measured error rate (wrong / checked). */
+/** One-sided 95% upper confidence bound of a rate with `wrong` errors in `checked` reads (exact binomial, Clopper-Pearson). */
+export function errorUpperBound(wrong: number, checked: number): number {
+	if (wrong >= checked) return 1;
+	const cdf = (p: number) => {
+		let term = (1 - p) ** checked;
+		let sum = term;
+		for (let i = 1; i <= wrong; i++) {
+			term *= ((checked - i + 1) / i) * (p / (1 - p));
+			sum += term;
+		}
+		return sum;
+	};
+	let lo = wrong / checked;
+	let hi = 1;
+	for (let i = 0; i < 60; i++) {
+		const mid = (lo + hi) / 2;
+		if (cdf(mid) > 0.05) lo = mid;
+		else hi = mid;
+	}
+	return hi;
+}
+
+/** The audited hand-read facets: errors found among the entries of the holdout (`wrong` of `checked`). */
 export const AUDIT = {
 	seeds: { first: 569, holdout: 1031 },
-	/** Entries read: `first` = 66 random + 64 immersive/expressive, `holdout` = 73 random entries unseen by `first`. */
-	checked: { first: 130, holdout: 73 },
+	/**
+	 * Distinct entries a person read: `first` = 66 random + 64 immersive/expressive (their errors were fixed, then rules
+	 * were applied to all entries), `holdout` = 73 random entries not in `first`. `catalog` is the total; the rest,
+	 * `catalog - read`, were never re-read.
+	 */
+	read: { first: 130, holdout: 73, total: 203, catalog: 377, unread: 174 },
 	fields: {
 		industry: { wrong: 5, checked: 73, review: "pending" as Review },
 		style: { wrong: 0, checked: 73, review: "published" as Review },
