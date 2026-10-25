@@ -6,7 +6,7 @@
  *   claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp
  *
  * Tools: get_recipe, list_components, get_component, get_export, get_equivalent, list_parts, search_tokens, list_surfaces, get_guide,
- * search_demos, get_demo, report_issue (drafts a sanitized GitHub issue from a library problem; it never posts anything).
+ * search_demos, get_demo, search_ui, list_facets, get_related, report_issue (drafts a sanitized GitHub issue from a library problem; it never posts anything).
  */
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -23,6 +23,15 @@ import type {
 	ManifestToken,
 	PartsFile,
 } from "../scripts/build-manifest.ts";
+import { indexEntries } from "../scripts/index-build.ts";
+import {
+	chipCounts,
+	FILTER_FACETS,
+	type FilterFacet,
+	type Filters,
+	relatedEntries,
+	searchIndex,
+} from "../scripts/index-search.ts";
 import { type Equivalent, findEquivalent } from "../src/cli/equivalents.ts";
 import { type MigrationFile, migrationMarkdown } from "../src/cli/migrations.ts";
 import { buildReport } from "../src/cli/report.ts";
@@ -50,6 +59,8 @@ const recipes = existsSync(join(DIST, "recipes.json"))
 	: [];
 // A build without site/ (from the published tarball) emits no demos: the other tools must keep working.
 const demos = existsSync(join(DIST, "demos.json")) ? load<ManifestDemo[]>("demos.json") : [];
+// The published facets only (a facet still under review is never searchable), same entries as api/v1/index.json.
+const entries = indexEntries(demos);
 const noDemos = "No demo catalog in this build (dist/demos.json is missing).";
 
 const text = (s: string) => ({ content: [{ type: "text" as const, text: s }] });
@@ -390,6 +401,76 @@ server.registerTool(
 			out.push(readFileSync(join(DIST, `api/v1/en/e/${hit.id}.txt`), "utf8"));
 		}
 		return text(out.join("\n\n---\n\n"));
+	}
+);
+
+const entryLine = (e: (typeof entries)[number]) =>
+	`#${e.id} ${e.title} — ${e.kind}/${e.subtype} — ${e.summary}`;
+
+server.registerTool(
+	"search_ui",
+	{
+		description:
+			"Search the gallery index: words (title, summary, aliases, components) plus facet filters. Several values of one facet are alternatives, different facets all apply. Facets: kind, subtype (`kind/subtype`), style, motion, interaction, layout, colorMode, density, tech, cost, component. Call list_facets for the values that exist. Returns `#id title — kind/subtype — summary`, best match first. Fetch the source with get_demo.",
+		inputSchema: {
+			query: z.string().default(""),
+			filters: z.partialRecord(z.enum(FILTER_FACETS), z.array(z.string())).default({}),
+			limit: z.number().int().min(1).max(50).default(10),
+		},
+	},
+	({ query, filters, limit }) => {
+		const hits = searchIndex(entries, { query, filters: filters as Filters });
+		if (!hits.length) return fail(entries.length ? "No entry matches." : noDemos);
+		const shown = hits.slice(0, limit).map(entryLine);
+		return text(`${hits.length} match${hits.length === 1 ? "" : "es"}\n${shown.join("\n")}`);
+	}
+);
+
+server.registerTool(
+	"list_facets",
+	{
+		description:
+			"Every filter facet of the gallery index with its values and entry counts, for search_ui. Pass a query or filters to get the counts for that selection (a facet's own choice is ignored, so its siblings stay listed). A value with count 0 would match nothing.",
+		inputSchema: {
+			query: z.string().default(""),
+			filters: z.partialRecord(z.enum(FILTER_FACETS), z.array(z.string())).default({}),
+		},
+	},
+	({ query, filters }) => {
+		if (!entries.length) return fail(noDemos);
+		const counts = chipCounts(entries, { query, filters: filters as Filters });
+		return text(
+			(FILTER_FACETS as readonly FilterFacet[])
+				.filter((f) => Object.keys(counts[f]).length)
+				.map(
+					(f) =>
+						`${f}: ${Object.entries(counts[f])
+							.sort(([a], [b]) => a.localeCompare(b))
+							.map(([v, n]) => `${v} (${n})`)
+							.join(", ")}`
+				)
+				.join("\n")
+		);
+	}
+);
+
+server.registerTool(
+	"get_related",
+	{
+		description:
+			"Entries related to a numbered demo: the ones its sidecar names first, then those sharing its subtype, styles and components. Ids as `12`, `012` or `#012`. Returns `#id title — kind/subtype — summary`.",
+		inputSchema: { id: z.string(), limit: z.number().int().min(1).max(20).default(8) },
+	},
+	({ id, limit }) => {
+		const num = id.match(/^#?(\d{1,4})$/)?.[1];
+		const want =
+			num &&
+			(entries.find((e) => e.id === num.padStart(3, "0")) ?? entries.find((e) => e.id === num));
+		if (!want) return fail(entries.length ? `Unknown demo id "${id}"; use search_ui.` : noDemos);
+		const rel = relatedEntries(entries, want.id, limit);
+		return rel.length
+			? text(rel.map(entryLine).join("\n"))
+			: fail(`No related entries for #${want.id}.`);
 	}
 );
 
