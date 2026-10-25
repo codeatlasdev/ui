@@ -8,5 +8,29 @@
 		"Foreground text: Refraction layer behind this text."
 	],
 	"tags": ["liquid-glass", "glass-optics", "refraction", "glass", "material", "preset"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "surface",
+		"industry": ["general"],
+		"style": ["liquid", "glassmorphism"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "airy",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["LiquidGlass"],
+		"aliases": ["refraction", "lens", "frosted lens"],
+		"related": ["078", "543", "076"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

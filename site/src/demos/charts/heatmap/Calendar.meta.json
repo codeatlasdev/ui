@@ -9,5 +9,29 @@
 		"`height=\"160px\"` inside `<Card full>`"
 	],
 	"tags": ["heatmap-chart", "calendar", "activity", "range", "tooltip-formatter", "card"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "chart",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "HeatmapChart"],
+		"aliases": ["contribution graph", "activity calendar", "commit history"],
+		"related": ["200", "199", "205"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

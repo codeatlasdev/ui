@@ -10,5 +10,29 @@
 		"Next is `<Button variant=\"filled\" disabled={step >= steps.length - 1} onclick={() => step++}>` and reads Finish on the last step"
 	],
 	"tags": ["stepper", "wizard", "steps", "progress", "onboarding", "back-next", "card"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Stepper", "Button", "Card", "Stack", "Flex"],
+		"aliases": ["wizard", "multi step", "progress steps"],
+		"related": ["164"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

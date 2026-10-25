@@ -7,5 +7,29 @@
 		"The page renders in an isolated iframe: real viewport width, real media queries, no style leakage"
 	],
 	"tags": ["preview-stage", "iframe", "page", "template", "responsive"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["PreviewStage"],
+		"aliases": ["iframe preview", "template viewer", "viewport width switch"],
+		"related": ["986", "840"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-25",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

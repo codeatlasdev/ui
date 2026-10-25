@@ -26,5 +26,29 @@
 			"spring": "{ stiffness: 0.14, damping: 0.62 }"
 		}
 	],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "motion",
+		"subtype": "ambient",
+		"industry": ["saas", "agency"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["drag", "keyboard", "press"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["MotionStage"],
+		"aliases": ["before after", "image comparison", "slider reveal", "redesign"],
+		"related": ["382", "384", "380"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

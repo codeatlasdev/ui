@@ -6,5 +6,29 @@
 		"Only the `status` prop and `hideActions` are passed, no custom title or actions"
 	],
 	"tags": ["error-page", "404", "not-found", "status", "error"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "full-bleed",
+		"colorMode": "both",
+		"density": "airy",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["ErrorPage"],
+		"aliases": ["404", "not found", "status page"],
+		"related": ["171", "167", "840"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

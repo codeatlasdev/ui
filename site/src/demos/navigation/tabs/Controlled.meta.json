@@ -9,5 +9,29 @@
 		"Wrapper is `.wrap` with `max-width: 480px`"
 	],
 	"tags": ["tabs", "controlled", "bind-value", "state", "tabs-list", "tabs-content"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard", "press"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Tabs", "TabsList", "TabsTrigger", "TabsContent"],
+		"aliases": ["tab state", "bound tabs"],
+		"related": ["164", "460", "237"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

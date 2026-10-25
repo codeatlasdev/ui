@@ -9,5 +9,29 @@
 		"Trigger is `<Button variant=\"destructive\"` with a `<Trash2 size={14} />` icon in `{#snippet leading()}`"
 	],
 	"tags": ["dialog", "confirmation", "destructive", "delete", "actions"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Dialog", "Button"],
+		"aliases": ["delete confirm", "modal"],
+		"related": ["081", "086", "085"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

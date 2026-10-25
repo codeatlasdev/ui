@@ -6,5 +6,29 @@
 		"`{#snippet actions()}` holds `<Button variant=\"filled\" size=\"sm\">Compose message</Button>`"
 	],
 	"tags": ["empty-state", "inbox", "icon", "actions", "placeholder"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "airy",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["EmptyState", "Button"],
+		"aliases": ["blank slate", "no data", "inbox zero"],
+		"related": ["170", "171", "168", "169"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

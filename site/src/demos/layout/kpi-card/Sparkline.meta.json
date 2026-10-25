@@ -7,5 +7,29 @@
 		"`hint=\"Down from 2.4% in January\"` on the churn card, whose chart is `<Sparkline data={[2.4, 2.3, 2.1, 2.2, 1.9, 1.7]} trend=\"up\" variant=\"bar\" />`: `trend=\"up\"` is green because a falling churn is good"
 	],
 	"tags": ["kpi-card", "sparkline", "chart", "snippet", "hint", "metrics", "dashboard"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas", "fintech"],
+		"style": ["default", "bento"],
+		"motion": "subtle",
+		"interaction": ["hover"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["KpiCard", "KpiGrid", "Sparkline"],
+		"aliases": ["mini chart", "trend line", "inline chart"],
+		"related": ["984", "175", "178"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

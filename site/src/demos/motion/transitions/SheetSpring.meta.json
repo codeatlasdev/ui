@@ -25,5 +25,29 @@
 			"spring": "{ stiffness: 0.2, damping: 0.75 }"
 		}
 	],
-	"shape": "tall"
+	"shape": "tall",
+	"index": {
+		"kind": "motion",
+		"subtype": "transition",
+		"industry": ["travel"],
+		"style": ["default"],
+		"motion": "immersive",
+		"interaction": ["drag", "press", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css", "svelte-motion"],
+		"cost": "js-light",
+		"components": ["Button", "MotionStage"],
+		"aliases": ["drawer", "modal sheet", "drag to dismiss", "mobile sheet"],
+		"related": ["364", "360", "362"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

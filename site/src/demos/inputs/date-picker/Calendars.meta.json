@@ -9,5 +9,29 @@
 		"Output lines show `fmt(value)`, `fmt(range.start)` and `fmt(range.end)`, with `–` when unset"
 	],
 	"tags": ["calendar", "range-calendar", "date", "date-range", "inline", "locale"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Calendar", "RangeCalendar"],
+		"aliases": ["month grid", "date range", "inline calendar"],
+		"related": ["018", "016", "017"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

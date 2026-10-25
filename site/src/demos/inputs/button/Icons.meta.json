@@ -7,5 +7,29 @@
 		"Variants shown: `variant=\"filled\"`, `variant=\"outlined\"`, `variant=\"ghost\"`"
 	],
 	"tags": ["button", "icon", "leading", "trailing", "snippet"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover", "press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button"],
+		"aliases": ["icon button", "button with icon"],
+		"related": ["006", "004", "901"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

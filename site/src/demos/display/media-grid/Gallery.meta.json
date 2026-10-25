@@ -8,5 +8,29 @@
 		"`const art = (hue: number, label: string)` builds inline SVG images"
 	],
 	"tags": ["media-grid", "gallery", "chat", "lightbox", "attachments"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["media"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "hover", "keyboard"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["MediaGrid"],
+		"aliases": ["photo grid", "attachments", "media gallery", "image collage"],
+		"related": ["127", "252", "964"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

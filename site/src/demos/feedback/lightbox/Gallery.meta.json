@@ -8,5 +8,29 @@
 		"Trigger resets `index = 0; open = true;` and is labelled `Open gallery ({items.length})`"
 	],
 	"tags": ["lightbox", "gallery", "video", "caption", "carousel", "media"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["media"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard", "drag"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "Lightbox"],
+		"aliases": ["image gallery", "media viewer", "video viewer"],
+		"related": ["091", "083"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

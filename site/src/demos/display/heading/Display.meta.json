@@ -7,5 +7,29 @@
 		"`<Heading level={2} size=\"h4\">` renders an h2 with the h4 look"
 	],
 	"tags": ["heading", "display", "typography", "headline", "hero", "font-display"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["editorial"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "airy",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Heading"],
+		"aliases": ["hero title", "fluid type", "display type", "headline"],
+		"related": ["541", "542"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

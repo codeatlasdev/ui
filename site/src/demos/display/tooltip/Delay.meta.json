@@ -8,5 +8,29 @@
 		"Each trigger uses `{#snippet triggerChild(props)}` with `<Button variant=\"glass\" {...props}>`"
 	],
 	"tags": ["tooltip", "delay", "button", "hover", "timing"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["glassmorphism"],
+		"motion": "subtle",
+		"interaction": ["hover", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Tooltip", "Button"],
+		"aliases": ["hover delay", "instant hint", "show delay"],
+		"related": ["142", "145", "144"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

@@ -7,5 +7,29 @@
 		"`<KpiCard title=\"Response Time\" value=\"1.4\" unit=\"s\" trend={-12.3} trendTone=\"positive-down\" />` has no `icon`"
 	],
 	"tags": ["kpi-card", "kpi-grid", "negative-trend", "metrics", "churn", "unit"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default", "bento"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["KpiCard", "KpiGrid"],
+		"aliases": ["falling is good", "churn metric", "inverted trend"],
+		"related": ["984", "175", "177"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

@@ -9,5 +9,29 @@
 		"Composer is `<TextField label=\"Message\" placeholder=\"Write something…\" />`"
 	],
 	"tags": ["mobile-pane", "chat", "mobile", "icon-button", "text-field", "conversation"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["MobilePane", "Button", "IconButton", "TextField"],
+		"aliases": ["full screen sheet", "conversation view", "slide in pane"],
+		"related": ["166", "188"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

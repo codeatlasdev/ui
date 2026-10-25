@@ -7,5 +7,29 @@
 		"Wrapped in `.wrap` with `max-width: 440px`"
 	],
 	"tags": ["timeline", "milestones", "roadmap", "history", "dates"],
-	"shape": "tall"
+	"shape": "tall",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Timeline"],
+		"aliases": ["milestones", "roadmap", "history", "release log"],
+		"related": ["141"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

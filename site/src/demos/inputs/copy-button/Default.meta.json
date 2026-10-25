@@ -6,5 +6,29 @@
 		"Only the `value` prop is set, no other props"
 	],
 	"tags": ["copy-button", "clipboard", "copy", "install", "command"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["CopyButton"],
+		"aliases": ["clipboard", "copy to clipboard"],
+		"related": ["013", "014", "983"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

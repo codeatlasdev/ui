@@ -7,5 +7,29 @@
 		"Wrapper `.wrap` stacks both with `max-width: 480px`"
 	],
 	"tags": ["file-upload", "dropzone", "accept", "image", "disabled", "label"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "drag", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["FileUpload"],
+		"aliases": ["image upload", "drop area"],
+		"related": ["020", "388", "054"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

@@ -9,6 +9,7 @@ import {
 	checkMeta,
 	HELPERS,
 } from "../scripts/build-manifest.ts";
+import { ID_PATTERN } from "../scripts/index-schema.ts";
 
 const DEMOS = resolve(import.meta.dir, "../../../site/src/demos");
 
@@ -27,9 +28,9 @@ const manifest = buildManifest();
 const { demos, files } = buildDemos(manifest, CATALOG);
 
 describe("demo catalog", () => {
-	it("ids are unique, 3-digit and strictly increasing", () => {
+	it("ids are unique, 3 or 4 digits and strictly increasing", () => {
 		const ids = CATALOG.map((d) => d.id);
-		for (const id of ids) expect(id).toMatch(/^\d{3}$/);
+		for (const id of ids) expect(id).toMatch(ID_PATTERN);
 		for (let i = 1; i < ids.length; i++) expect(Number(ids[i])).toBeGreaterThan(Number(ids[i - 1]));
 	});
 
@@ -70,7 +71,7 @@ describe("demo catalog", () => {
 
 describe("demo meta sidecars", () => {
 	it("every registered demo has an accurate sidecar and none is orphaned", () => {
-		expect(checkCatalog(CATALOG)).toEqual([]);
+		expect(checkCatalog(CATALOG, manifest.components)).toEqual([]);
 	});
 
 	const source = '<Button variant="outlined" fullWidth>Cancel</Button>';

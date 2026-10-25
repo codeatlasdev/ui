@@ -8,5 +8,29 @@
 		"`<MessageBubble direction=\"out\" time=\"14:32\" status=\"read\">`"
 	],
 	"tags": ["message-bubble", "chat", "avatar", "grouped", "delivery-status"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Avatar", "MessageBubble"],
+		"aliases": ["chat thread", "grouped messages", "inbound outbound", "chat bubbles"],
+		"related": ["249", "250", "251"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

@@ -10,5 +10,29 @@
 		"`start()` pushes one item with `domain` and `free` every 150ms with `setInterval` and sets `status = 'done'` at `TOTAL`"
 	],
 	"tags": ["live-list", "stream", "progress", "chip", "bulk", "status", "real-time"],
-	"shape": "tall"
+	"shape": "tall",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["press", "scroll", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["LiveList", "Button", "Chip"],
+		"aliases": ["streaming list", "live feed", "progress stream", "bulk check results"],
+		"related": ["254", "137"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

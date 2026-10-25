@@ -8,5 +8,29 @@
 		"`.stat` uses `min-width: 140px` inside a wrapping flex `.grid`"
 	],
 	"tags": ["card", "stats", "kpi", "dashboard", "metrics"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "surface",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card"],
+		"aliases": ["metric tiles", "stat strip", "numbers row"],
+		"related": ["642", "178", "175"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

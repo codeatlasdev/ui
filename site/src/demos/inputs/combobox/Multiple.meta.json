@@ -10,5 +10,29 @@
 		"Wrapper `.col` has `max-width: 360px`"
 	],
 	"tags": ["combobox", "multiple", "multi-select", "chips", "tags", "search", "form"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard", "press"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Combobox"],
+		"aliases": ["multi select", "tags", "chips"],
+		"related": ["421", "010", "011"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-17",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

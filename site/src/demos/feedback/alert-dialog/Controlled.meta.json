@@ -8,5 +8,29 @@
 		"Trigger is `<Button variant=\"outlined\"` labelled Open controlled"
 	],
 	"tags": ["alert-dialog", "controlled", "pending", "async", "publish"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["AlertDialog", "Button"],
+		"aliases": ["pending state", "busy confirm"],
+		"related": ["080", "081", "462"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

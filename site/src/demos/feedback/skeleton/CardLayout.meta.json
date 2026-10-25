@@ -7,5 +7,29 @@
 		"Three lines in `<Stack gap=\"2\">`: `height=\"16px\" width=\"40%\"`, `height=\"13px\" width=\"70%\"`, `height=\"13px\" width=\"55%\"`"
 	],
 	"tags": ["skeleton", "card", "loading", "avatar", "placeholder"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Skeleton", "Card", "Stack", "Flex"],
+		"aliases": ["placeholder", "shimmer", "profile card loading"],
+		"related": ["098", "099", "241"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

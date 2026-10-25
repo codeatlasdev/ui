@@ -8,5 +8,36 @@
 		"Pinned (yes or no) and the last action are shown below the area"
 	],
 	"tags": ["context-menu", "right-click", "long-press", "keyboard", "dropdown-menu", "submenu"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["cursor", "keyboard", "press"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [
+			"ContextMenu",
+			"DropdownMenuCheckboxItem",
+			"DropdownMenuItem",
+			"DropdownMenuSeparator",
+			"DropdownMenuSub",
+			"DropdownMenuSubTrigger"
+		],
+		"aliases": ["right click", "long press", "file menu"],
+		"related": ["402", "943", "401"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

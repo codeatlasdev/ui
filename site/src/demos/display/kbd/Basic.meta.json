@@ -7,5 +7,29 @@
 		"Each key is plain text children of `Kbd`, no props"
 	],
 	"tags": ["kbd", "keyboard", "shortcut", "key", "command-palette", "hint"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Kbd"],
+		"aliases": ["keyboard shortcut", "key cap", "hotkey hint"],
+		"related": ["121"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

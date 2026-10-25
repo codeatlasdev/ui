@@ -8,5 +8,29 @@
 		"`<KpiCard title=\"Error Rate\" value=\"0.03\" unit=\"%\" />`"
 	],
 	"tags": ["kpi-card", "kpi-grid", "no-trend", "metrics", "counters", "unit"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["e-commerce", "saas"],
+		"style": ["default", "bento"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["KpiCard", "KpiGrid"],
+		"aliases": ["plain metric", "value only", "stat without delta"],
+		"related": ["175", "179", "642"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

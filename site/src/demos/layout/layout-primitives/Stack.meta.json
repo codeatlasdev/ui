@@ -8,5 +8,29 @@
 		"A last `<Box class=\"chip\" p=\"4\">` reads Stack gap 4, Box padding 4"
 	],
 	"tags": ["stack", "flex", "box", "spacing", "gap", "layout", "primitives"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Stack", "Flex", "Box"],
+		"aliases": ["flexbox", "vertical rhythm", "gap spacing"],
+		"related": ["181", "180", "189"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

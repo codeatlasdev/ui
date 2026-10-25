@@ -8,5 +8,29 @@
 		"Wrapped in `<div class=\"stage\">` with `min-height: calc(var(--ca-space-8) * 3)`"
 	],
 	"tags": ["install-prompt", "pwa", "native", "beforeinstallprompt", "banner"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["InstallPrompt"],
+		"aliases": ["add to home screen", "pwa", "install banner"],
+		"related": ["243", "103"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

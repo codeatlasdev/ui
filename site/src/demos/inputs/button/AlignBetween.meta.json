@@ -7,5 +7,29 @@
 		"Third button Syncing (R) also has `loading`, so the spinner replaces the leading slot while the label stays left"
 	],
 	"tags": ["button", "align", "between", "trailing", "kbd", "full-width", "loading"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover", "press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "Kbd"],
+		"aliases": ["menu row", "space between"],
+		"related": ["901", "001", "880"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

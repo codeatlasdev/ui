@@ -6,5 +6,29 @@
 		"`separator=\"›\"` sets a single character as the separator"
 	],
 	"tags": ["breadcrumb", "separator", "navigation", "custom", "path"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Breadcrumb"],
+		"aliases": ["trail", "path", "separator"],
+		"related": ["153"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

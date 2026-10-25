@@ -6,5 +6,29 @@
 		"`{#each states as status}` renders `<MessageBubble direction=\"out\" time=\"09:41\" {status}>`"
 	],
 	"tags": ["message-bubble", "chat", "status", "delivery", "ticks"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["MessageBubble"],
+		"aliases": ["delivery receipt", "read receipt", "sent delivered read", "message state"],
+		"related": ["248", "250"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

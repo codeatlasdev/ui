@@ -9,5 +9,29 @@
 		"`<span class=\"picked\" aria-live=\"polite\">` shows Selected plus the chosen href"
 	],
 	"tags": ["docs-search", "search", "docs-kit", "dialog", "command-palette", "index"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "DocsSearch"],
+		"aliases": ["docs search", "site search", "find in docs"],
+		"related": ["234", "235"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

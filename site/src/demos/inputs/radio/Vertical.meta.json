@@ -8,5 +8,29 @@
 		"Selected value is shown in `<code>{fruit}</code>` under the group"
 	],
 	"tags": ["radio-group", "radio", "vertical", "single-choice", "bind-value"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["RadioGroup"],
+		"aliases": ["option list", "single choice"],
+		"related": ["036", "035", "034"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

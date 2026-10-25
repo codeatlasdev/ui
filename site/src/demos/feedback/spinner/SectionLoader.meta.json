@@ -7,5 +7,29 @@
 		"`<Spinner size={40} />` above `<span class=\"text\">Loading data…</span>`"
 	],
 	"tags": ["spinner", "loader", "card", "section", "loading"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["none"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "airy",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Spinner", "Card", "Stack"],
+		"aliases": ["loading", "busy"],
+		"related": ["102", "100", "097"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

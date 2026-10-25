@@ -9,5 +9,29 @@
 		"Placeholder card text is Chart or data table goes here"
 	],
 	"tags": ["page-shell", "dashboard", "kpi-grid", "card", "actions", "header"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas", "fintech"],
+		"style": ["default", "bento"],
+		"motion": "none",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["PageShell", "KpiCard", "KpiGrid", "Card", "Stack", "Button"],
+		"aliases": ["overview page", "report page", "admin dashboard"],
+		"related": ["185", "600", "178"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

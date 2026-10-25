@@ -8,5 +8,29 @@
 		"Scroller uses `max-height: 280px` and `overflow-y: auto`"
 	],
 	"tags": ["sticky-actions", "dirty", "form", "save-bar", "scroll", "text-field"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard", "scroll", "press"],
+		"layout": "sticky",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["StickyActions", "Button", "TextField", "Stack"],
+		"aliases": ["unsaved changes", "save bar", "floating footer"],
+		"related": ["189", "173", "174"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

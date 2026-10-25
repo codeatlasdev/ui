@@ -7,5 +7,29 @@
 		"`ms = 100; run++;` is the fast case and `ms = 1500; run++;` the slow one"
 	],
 	"tags": ["loading-boundary", "skeleton", "suspense", "pending", "delay"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["fintech"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["press"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "LoadingBoundary", "Stack"],
+		"aliases": ["suspense", "async boundary", "delayed loader"],
+		"related": ["241", "097", "101"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

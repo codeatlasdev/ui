@@ -20,5 +20,37 @@
 		"density",
 		"crm"
 	],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["keyboard", "press"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [
+			"Avatar",
+			"Button",
+			"Card",
+			"EmptyState",
+			"SegmentedControl",
+			"TextArea",
+			"TextField"
+		],
+		"aliases": ["crm card", "component tokens", "tight form", "activity feed empty"],
+		"related": ["167", "170", "169"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

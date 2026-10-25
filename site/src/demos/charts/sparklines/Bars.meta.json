@@ -8,5 +8,29 @@
 		"`<Flex gap=\"6\" wrap align=\"center\">` lays out the items, each in a `<Stack gap=\"1.5\">` with a label"
 	],
 	"tags": ["sparkline", "bar", "trend", "inline-metrics", "flex", "stack"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "chart",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Flex", "Stack", "Sparkline"],
+		"aliases": ["mini bars", "inline chart", "tiny columns"],
+		"related": ["217", "219", "218"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

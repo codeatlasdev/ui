@@ -6,5 +6,29 @@
 		"`{#each [1, 2, 3, 4, 5, 6, 7, 8] as n (n)}` renders 8 `<Box class=\"cell\" p=\"4\">` cells labelled by `{n}`"
 	],
 	"tags": ["grid", "responsive", "columns", "gap", "breakpoints", "box", "layout"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Grid", "Box"],
+		"aliases": ["breakpoints", "responsive columns", "media query grid"],
+		"related": ["180", "182", "178"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

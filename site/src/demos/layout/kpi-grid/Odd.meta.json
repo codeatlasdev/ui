@@ -8,5 +8,29 @@
 		"`<KpiCard title=\"Growth\" value=\"34\" unit=\"%\" trend={5.6} icon={TrendingUp} />`"
 	],
 	"tags": ["kpi-grid", "kpi-card", "odd", "three-columns", "dashboard", "grid"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas", "fintech"],
+		"style": ["bento", "default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["KpiCard", "KpiGrid"],
+		"aliases": ["three metrics", "odd count", "uneven grid"],
+		"related": ["178", "175", "177"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

@@ -9,5 +9,29 @@
 		"Wrapping flex `.row` with `gap: var(--ca-space-3)`"
 	],
 	"tags": ["button", "icon-button", "tone", "neutral", "secondary", "outlined", "ghost"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover", "press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "IconButton"],
+		"aliases": ["secondary action", "muted button"],
+		"related": ["006", "880", "980"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

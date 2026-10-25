@@ -10,5 +10,36 @@
 		"`let last = $state('')` is set per item and shown as `Last action: {last}` with `aria-live=\"polite\"`"
 	],
 	"tags": ["dropdown-menu", "menu", "submenu", "nested", "actions", "destructive"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["general"],
+		"style": ["glassmorphism"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard", "hover"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [
+			"DropdownMenu",
+			"DropdownMenuItem",
+			"DropdownMenuSeparator",
+			"DropdownMenuSub",
+			"DropdownMenuSubTrigger",
+			"Button"
+		],
+		"aliases": ["nested menu", "cascading menu"],
+		"related": ["158", "400", "402"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

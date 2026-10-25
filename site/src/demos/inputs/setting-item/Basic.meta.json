@@ -8,5 +8,29 @@
 		"Initial state: `$state(true)` for email, `$state(false)` for digest"
 	],
 	"tags": ["setting-item", "switch", "settings", "preferences", "notifications"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["SettingItem", "Switch"],
+		"aliases": ["preference row", "settings row", "toggle row"],
+		"related": ["052", "050", "053"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

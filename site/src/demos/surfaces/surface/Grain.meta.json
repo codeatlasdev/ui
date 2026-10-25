@@ -7,5 +7,29 @@
 		"The third tile has no `grain` prop"
 	],
 	"tags": ["surface", "grain", "paper", "noise", "texture", "editorial"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "surface",
+		"industry": ["general"],
+		"style": ["default", "skeuo"],
+		"motion": "subtle",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Surface"],
+		"aliases": ["paper texture", "noise", "film grain"],
+		"related": ["076", "078", "075"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

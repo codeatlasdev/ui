@@ -8,5 +8,29 @@
 		"`fruits` has 3 items: Apple, Banana, Cherry"
 	],
 	"tags": ["radio-group", "radio", "disabled", "horizontal", "form"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["RadioGroup"],
+		"aliases": ["inactive options"],
+		"related": ["036", "037", "034"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

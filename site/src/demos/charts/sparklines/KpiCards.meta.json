@@ -9,5 +9,29 @@
 		"`class:up={k.trend === 'up'}` and `class:down={k.trend === 'down'}` colour the change text"
 	],
 	"tags": ["sparkline", "kpi", "card", "trend", "dashboard", "grid"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "chart",
+		"industry": ["saas", "fintech"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "Grid", "Stack", "Flex", "Sparkline"],
+		"aliases": ["stat cards", "metric tiles", "trend cards"],
+		"related": ["205", "219", "218"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

@@ -8,5 +8,29 @@
 		"Trigger is `<Button variant=\"outlined\"` labelled Open chromeless"
 	],
 	"tags": ["dialog", "chromeless", "modal", "preview", "media"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Dialog", "Button"],
+		"aliases": ["modal", "edge to edge"],
+		"related": ["086", "087", "084"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

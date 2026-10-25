@@ -9,5 +9,29 @@
 		"Two `value:` output lines print `birthday.toString()` and `time.toString()`"
 	],
 	"tags": ["date-field", "time-field", "granularity", "hour-cycle", "segmented", "form"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["DateField", "TimeField"],
+		"aliases": ["segmented date", "time input", "12 hour 24 hour"],
+		"related": ["016", "018", "015"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

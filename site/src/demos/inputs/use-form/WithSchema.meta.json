@@ -10,5 +10,29 @@
 		"Footer prints `valid: {form.valid}`"
 	],
 	"tags": ["use-form", "schema", "validation", "text-area", "character-count"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard", "press"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Button", "TextArea", "TextField"],
+		"aliases": ["schema validation", "character count"],
+		"related": ["062", "063", "055"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

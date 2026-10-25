@@ -9,5 +9,29 @@
 		"Current value is shown as `value: {brand}`"
 	],
 	"tags": ["color-field", "color-picker", "oklch", "contrast", "brand"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["ColorField"],
+		"aliases": ["brand color", "color picker", "contrast checker", "accent color"],
+		"related": ["991"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-25",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

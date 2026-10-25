@@ -8,5 +8,29 @@
 		"Wrapper `.row` uses `max-width: 480px`"
 	],
 	"tags": ["slider", "range", "two-thumb", "price", "filter"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["drag", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Slider"],
+		"aliases": ["price range", "dual thumb", "range input"],
+		"related": ["046", "047", "030"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

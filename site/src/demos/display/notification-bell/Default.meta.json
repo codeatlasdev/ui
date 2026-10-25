@@ -8,5 +8,29 @@
 		"No callback props are passed to either bell"
 	],
 	"tags": ["notification-bell", "notifications", "empty-state", "unread", "badge", "header"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard", "hover"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["NotificationBell", "Flex"],
+		"aliases": ["alerts popover", "bell icon", "empty notifications"],
+		"related": ["131", "113"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

@@ -7,5 +7,29 @@
 		"Scroller uses `max-height: 280px` and `overflow-y: auto`"
 	],
 	"tags": ["sticky-actions", "stretch", "wizard", "action-bar", "scroll", "align"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["scroll", "press", "keyboard"],
+		"layout": "sticky",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["StickyActions", "Button"],
+		"aliases": ["pinned footer", "wizard buttons", "bottom bar"],
+		"related": ["188", "173", "182"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

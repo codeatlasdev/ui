@@ -8,5 +8,29 @@
 		"Icons come from `@lucide/svelte`"
 	],
 	"tags": ["segmented-control", "tabs", "icon", "view-switch", "period"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["SegmentedControl"],
+		"aliases": ["tabs switch", "view toggle", "period selector"],
+		"related": ["039", "060", "980"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

@@ -7,5 +7,29 @@
 		"`<Divider orientation=\"vertical\" />` is placed between them"
 	],
 	"tags": ["divider", "vertical", "orientation", "separator", "flex"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Divider", "Card", "Flex"],
+		"aliases": ["separator", "vertical rule", "inline separator"],
+		"related": ["124"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

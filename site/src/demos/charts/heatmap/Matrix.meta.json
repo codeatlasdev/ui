@@ -10,5 +10,29 @@
 		"`height=\"320px\"` inside `<Card full>`"
 	],
 	"tags": ["heatmap-chart", "matrix", "hours", "weekdays", "tooltip-formatter", "card"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "chart",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Card", "HeatmapChart"],
+		"aliases": ["hour by day", "density map", "activity matrix"],
+		"related": ["198", "200", "205"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

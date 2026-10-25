@@ -11,5 +11,29 @@
 	],
 	"tags": ["kanban", "board", "pipeline", "crm", "drag", "columns", "infinite-scroll", "mobile"],
 	"names": ["Kanban board", "Pipeline board", "Quadro de funil", "Tablero de embudo"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["drag", "keyboard", "scroll"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Kanban"],
+		"aliases": ["crm pipeline", "sales board", "drag and drop columns", "lead stages", "load more"],
+		"related": ["761", "433"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

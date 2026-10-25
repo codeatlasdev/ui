@@ -9,5 +9,29 @@
 		"Each image sits in a `<figure>` with a `<figcaption>` naming its ratio"
 	],
 	"tags": ["image", "ratio", "aspect-ratio", "crop", "object-fit", "cover", "contain"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["media"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Image"],
+		"aliases": ["aspect ratio crop", "cover crop", "object fit", "thumbnail"],
+		"related": ["127", "128", "961"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

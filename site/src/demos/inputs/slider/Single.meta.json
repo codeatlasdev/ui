@@ -8,5 +8,29 @@
 		"Wrapper `.col` uses `max-width: 480px`"
 	],
 	"tags": ["slider", "single", "volume", "brightness", "bind-value"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["drag", "keyboard"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Slider"],
+		"aliases": ["volume", "brightness", "range input"],
+		"related": ["047", "045", "030"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

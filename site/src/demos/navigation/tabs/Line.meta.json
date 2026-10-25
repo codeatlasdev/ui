@@ -9,5 +9,29 @@
 		"Wrapper is `.wrap` with `max-width: 420px`"
 	],
 	"tags": ["tabs", "line", "variant", "view-switcher", "aria-label", "tabs-list"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard", "press"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Tabs", "TabsList", "TabsTrigger"],
+		"aliases": ["view switcher", "underline tabs"],
+		"related": ["164", "163", "237"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-17",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

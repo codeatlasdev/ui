@@ -8,5 +8,29 @@
 		"Caption `Slide {index + 1} of {slides.length}`"
 	],
 	"tags": ["carousel", "scroll-snap", "slides", "dots", "arrows", "bind-index"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["saas", "media"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["drag", "press", "keyboard"],
+		"layout": "carousel",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Carousel", "CarouselItem"],
+		"aliases": ["slider", "slideshow", "swipe", "product tour"],
+		"related": ["965", "966"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-23",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

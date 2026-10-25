@@ -8,5 +8,29 @@
 		"Other badges: `method=\"POST\"`, `method=\"PUT\"`, `method=\"PATCH\"`, `method=\"DELETE\"`"
 	],
 	"tags": ["card-grid", "link-card", "method-badge", "docs-kit", "http-method", "api-docs"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["devtools"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover", "press", "keyboard"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["CardGrid", "LinkCard", "MethodBadge"],
+		"aliases": ["link cards", "http method badge", "api verbs", "docs landing"],
+		"related": ["234", "235"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

@@ -18,5 +18,29 @@
 		"router-agnostic",
 		"page-shell"
 	],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["saas"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "hover", "keyboard"],
+		"layout": "split",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["AppShellLayout", "PageShell", "KpiCard", "KpiGrid", "Card"],
+		"aliases": ["sidebar navigation", "admin layout", "dashboard frame"],
+		"related": ["165", "601", "530", "480"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

@@ -8,5 +8,29 @@
 		"Current value is shown as `value: {preset}`"
 	],
 	"tags": ["swatch-group", "presets", "theme", "accent", "swatch"],
-	"shape": "square"
+	"shape": "square",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["SwatchGroup"],
+		"aliases": ["accent color", "theme picker", "color chooser"],
+		"related": ["048", "059", "034"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

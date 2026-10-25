@@ -7,5 +7,29 @@
 		"`<Divider />` is placed between them with no props"
 	],
 	"tags": ["divider", "horizontal", "separator", "card", "stack"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Divider", "Card", "Stack"],
+		"aliases": ["separator", "horizontal rule", "hr"],
+		"related": ["125"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

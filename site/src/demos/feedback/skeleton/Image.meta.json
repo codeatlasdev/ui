@@ -8,5 +8,29 @@
 		"Caption wrapper `<div class=\"caption\">` has `padding: 16px`"
 	],
 	"tags": ["skeleton", "image", "card", "flush", "loading", "placeholder"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "feedback",
+		"industry": ["media"],
+		"style": ["default"],
+		"motion": "expressive",
+		"interaction": ["none"],
+		"layout": "stack",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Skeleton", "Card", "Stack"],
+		"aliases": ["placeholder", "image loading", "shimmer"],
+		"related": ["097", "099", "241"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

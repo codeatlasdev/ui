@@ -10,5 +10,35 @@
 		"Each item sets `last` through `onclick`, shown as `Opened: {last}` with `aria-live=\"polite\"`"
 	],
 	"tags": ["dropdown-menu", "menu", "brand-icon", "scheme-asset", "dark-mode", "icon", "disabled"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "navigation",
+		"industry": ["ai"],
+		"style": ["glassmorphism"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [
+			"DropdownMenu",
+			"DropdownMenuItem",
+			"DropdownMenuLabel",
+			"SchemeAsset",
+			"Button"
+		],
+		"aliases": ["logo menu", "brand mark", "dark mode icon"],
+		"related": ["238", "158", "401"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

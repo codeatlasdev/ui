@@ -6,5 +6,29 @@
 		"Tokens in order: `--ca-surface-sunken`, `--ca-surface-base`, `--ca-surface-raised`, `--ca-surface-overlay`"
 	],
 	"tags": ["colors", "surface", "background", "tokens", "swatches", "elevation"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "foundation",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["none"],
+		"layout": "grid",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [],
+		"aliases": ["background colors", "elevation colors", "layers"],
+		"related": ["220", "221", "224", "226"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": false
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }

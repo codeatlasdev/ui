@@ -8,5 +8,29 @@
 		"Placed inside a paragraph after the sentence Static text can be a trigger too:"
 	],
 	"tags": ["tooltip", "children", "inline", "text-trigger", "hover", "focus"],
-	"shape": "wide"
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["hover", "keyboard"],
+		"layout": "overlay",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Tooltip"],
+		"aliases": ["hint", "inline help", "text trigger"],
+		"related": ["143", "144", "145"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
 }
