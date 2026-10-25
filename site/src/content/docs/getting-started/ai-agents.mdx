@@ -52,6 +52,7 @@ Every page is also linked with `<link rel="alternate" type="text/plain" href="/l
 | `list_facets` | Every filter facet with its values and counts; pass a query or filters to see the counts for that selection. |
 | `get_related` | Entries related to a numbered demo: named relations first, then shared subtype, style and components. |
 | `get_demo` | The source and spec of up to 8 demos by id. |
+| `get_style` | A design style as markdown by id or title (`swiss`, `editorial`, `brutalism`, `sketchbook`, `glassmorphism`, `terminal`): origin, traits, do and don't, accessibility pitfalls with their sources and strength labels, where it fits, the `designStyle("<id>")` recipe and a prompt. Without a name it returns the digest of every style. The same text is at [/llms/styles.txt](/llms/styles.txt); the pages are at [/styles/](/styles/). |
 | `report_issue` | Drafts a sanitized GitHub issue when the library gets in the agent's way: markdown body, the redactions applied, a prefilled form link and a `gh issue create` command. It never posts. See [Reporting problems](/docs/getting-started/reporting/). |
 
 Prop names are never guessed: an agent asks the server and gets the types the compiler sees.

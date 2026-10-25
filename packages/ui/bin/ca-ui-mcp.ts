@@ -6,7 +6,7 @@
  *   claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp
  *
  * Tools: get_recipe, list_components, get_component, get_export, get_equivalent, list_parts, search_tokens, list_surfaces, get_guide,
- * list_concepts, get_concept (the Concepts pages with their claims, limits and sources), search_terms, get_term, get_reference (the design atlas and its verified sources), search_demos, get_demo, search_ui, list_facets, get_related, report_issue (drafts a sanitized GitHub issue from a library problem; it never posts anything).
+ * list_concepts, get_concept (the Concepts pages with their claims, limits and sources), search_terms, get_term, get_reference (the design atlas and its verified sources), search_demos, get_demo, get_style (a design style: traits, pitfalls with sources, the designStyle recipe), search_ui, list_facets, get_related, report_issue (drafts a sanitized GitHub issue from a library problem; it never posts anything).
  */
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -33,6 +33,7 @@ import {
 	relatedEntries,
 	searchIndex,
 } from "../scripts/index-search.ts";
+import type { StyleFile } from "../scripts/styles-markdown.ts";
 import { type Equivalent, findEquivalent } from "../src/cli/equivalents.ts";
 import { type MigrationFile, migrationMarkdown } from "../src/cli/migrations.ts";
 import { buildReport } from "../src/cli/report.ts";
@@ -66,6 +67,9 @@ const entries = indexEntries(demos);
 const atlas = existsSync(join(DIST, "atlas.json")) ? load<AtlasFile>("atlas.json") : undefined;
 const noAtlas = "No design atlas in this build (dist/atlas.json is missing).";
 const noDemos = "No demo catalog in this build (dist/demos.json is missing).";
+// Like demos: a build from the tarball has no site/ data, and the other tools must keep working.
+const styles = existsSync(join(DIST, "styles.json")) ? load<StyleFile>("styles.json") : undefined;
+const noStyles = "No design styles in this build (dist/styles.json is missing).";
 
 const text = (s: string) => ({ content: [{ type: "text" as const, text: s }] });
 const fail = (s: string) => ({ ...text(s), isError: true });
@@ -597,6 +601,26 @@ server.registerTool(
 		return hit
 			? text(hit.text)
 			: fail(`No reference "${id}". Call get_reference without an id to list them.`);
+	}
+);
+
+server.registerTool(
+	"get_style",
+	{
+		description:
+			'A design style of the library as markdown: where it comes from, its traits (type, colour, shape, depth, motion), do and don\'t, accessibility pitfalls with their sources and strength labels, where it fits, the `designStyle("<id>")` ThemeOptions recipe and a prompt. `name` is the style id or title (swiss, editorial, brutalism, sketchbook, glassmorphism, terminal; case-insensitive, forgives spaces and dashes). Without `name`, returns the digest of every style. A recipe is a proposal, not a measurement, and no claim says a style performs better.',
+		inputSchema: { name: z.string().optional() },
+	},
+	({ name }) => {
+		if (!styles) return fail(noStyles);
+		if (!name) return text(styles.index);
+		const n = squash(name);
+		const ids = Object.keys(styles.styles);
+		const hit =
+			ids.find((id) => squash(id) === n || squash(styles.names[id] ?? "") === n) ??
+			ids.find((id) => squash(id).includes(n) || squash(styles.names[id] ?? "").includes(n));
+		if (!hit) return fail(`No style "${name}". Styles: ${ids.join(", ")}.`);
+		return text(styles.styles[hit] ?? "");
 	}
 );
 

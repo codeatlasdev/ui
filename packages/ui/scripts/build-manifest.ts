@@ -7,6 +7,7 @@
  *   dist/guides.json      the docs site pages as markdown (offline `get_guide`)
  *   dist/atlas.json       the design atlas as one markdown text per term + the verified references (offline
  *                         `search_terms`, `get_term`, `get_reference`); only in the monorepo (needs site/)
+ *   dist/styles.json      the design-style pages as markdown, one per style (offline `get_style`)
  *   --skill               also rewrites .agents/skills/codeatlas-ui/API.md (components, then non-component exports)
  *
  *   bun scripts/build-manifest.ts [--check]
@@ -33,6 +34,7 @@ import { buildAtlasFile } from "./atlas-markdown.ts";
 import { buildIndexFiles } from "./index-build.ts";
 import { checkIdRange, checkIndexFacets, ID_PATTERN, type IndexFacets } from "./index-schema.ts";
 import { demoSources, mdxToMarkdown } from "./mdx-to-markdown.ts";
+import { buildStyleFile } from "./styles-markdown.ts";
 
 // CJS require keeps svelte2tsx out of Vite's transform pipeline (its sourceMappingURL points at a file it does not ship).
 const { svelte2tsx }: typeof import("svelte2tsx") = createRequire(import.meta.url)("svelte2tsx");
@@ -1686,6 +1688,8 @@ if (import.meta.main) {
 			});
 		}
 		if (existsSync(DEMOS_DIR)) write("atlas.json", buildAtlasFile());
+		// The design-style pages need site/ (their data lives in site/src/data/styles): not in a tarball build.
+		if (existsSync(DEMOS_DIR)) write("styles.json", buildStyleFile());
 		const { demos, files } = catalog.length
 			? buildDemos(manifest, catalog)
 			: { demos: [], files: {} };

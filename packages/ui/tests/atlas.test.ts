@@ -15,6 +15,7 @@ import {
 	termSlug,
 } from "../../../site/src/data/atlas/atlas.ts";
 import { BANNED_PHRASES } from "../../../site/src/data/evidence/references.ts";
+import { STYLE_PAGE_IDS } from "../../../site/src/data/styles/styles.ts";
 import { DESIGN_STYLES } from "../src/lib/theme/styles.ts";
 
 // The design atlas dataset: the schema, the labelled caveats and the links to references and design styles.
@@ -91,6 +92,15 @@ describe("atlas links", () => {
 			expect(href === null || (STYLE_PAGES.has(s.id) && href === `/styles/${s.id}/`)).toBe(true);
 		}
 		expect(styleHref("not-a-style")).toBeNull();
+	});
+
+	it("every design style that has a page is linked to it from the atlas", () => {
+		expect(STYLE_PAGE_IDS.length).toBeGreaterThan(0);
+		for (const id of STYLE_PAGE_IDS) {
+			expect(STYLE_PAGES.has(id)).toBe(true);
+			expect(styleHref(id)).toBe(`/styles/${id}/`);
+		}
+		expect(STYLE_PAGES.size).toBe(STYLE_PAGE_IDS.length);
 	});
 
 	it("resolves every term to full references with a read source", () => {

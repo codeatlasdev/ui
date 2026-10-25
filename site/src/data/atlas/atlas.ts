@@ -4,6 +4,7 @@
 // site/src/content/docs/concepts/evidence.mdx.
 import { DESIGN_STYLES } from "../../../../packages/ui/src/lib/theme/styles.ts";
 import { getReference, type Reference } from "../evidence/references.ts";
+import { STYLE_PAGE_IDS } from "../styles/styles.ts";
 import data from "./terms.json";
 
 export const CATEGORIES = [
@@ -182,7 +183,7 @@ export function termReferences(t: Term): Reference[] {
 // ── Our design styles, as live examples ───────────────────────────────────────
 
 /** Pages that exist for a design style. A style gets a link only when its page is listed here. */
-export const STYLE_PAGES: ReadonlySet<string> = new Set<string>();
+export const STYLE_PAGES: ReadonlySet<string> = new Set<string>(STYLE_PAGE_IDS);
 
 /** `/styles/<id>/` for a design style that has a page; `null` otherwise, so a term never links to a 404. */
 export const styleHref = (styleId: string): string | null =>

@@ -70,6 +70,7 @@ for (const [name, width, height] of [
 				expect(ref.nav.map((n) => n.text)).toEqual([
 					"Docs",
 					"Gallery",
+					"Styles",
 					"Templates",
 					"Theme editor",
 					"Changelog",
@@ -99,6 +100,7 @@ test("the current section is underlined on its own page and nowhere else", async
 		["/docs/", "Docs"],
 		["/changelog/", "Changelog"],
 		["/gallery/", "Gallery"],
+		["/styles/", "Styles"],
 	];
 	for (const [route, label] of current) {
 		await gotoReady(page, route);
