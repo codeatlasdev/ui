@@ -1,6 +1,7 @@
 // The design-style pages as plain markdown for agents: one file per style (`/llms/styles/<id>.txt`), a digest of all
 // of them (`/llms/styles.txt`) and the file the MCP `get_style` tool serves offline (`dist/styles.json`). Pure functions
 // over the same data the pages render, so the site endpoints, the MCP build and the tests share one text.
+
 import { STRENGTH_LABEL } from "../../../site/src/data/evidence/references.ts";
 import {
 	recipeKnobs,
@@ -11,8 +12,7 @@ import {
 	styleReferences,
 	TRAIT_AXES,
 } from "../../../site/src/data/styles/styles.ts";
-
-export const SITE = "https://ui.codeatlas.com.br";
+import { SITE } from "../src/cli/agent-guide.ts";
 
 /** Path of the digest of every style. */
 export const STYLES_INDEX_PATH = "/llms/styles.txt";

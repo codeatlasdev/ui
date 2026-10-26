@@ -5,6 +5,7 @@
  *
  * Pure: takes the demo records, returns `{ path: body }`. The caller decides where the files go.
  */
+import { API_DIR, API_PATHS, apiUrl, SITE } from "../src/cli/agent-guide.ts";
 import { type IndexFacets, PENDING_FACETS } from "./index-schema.ts";
 
 /** The fields of a demo record the index reads (a subset of `ManifestDemo`). */
@@ -35,8 +36,6 @@ export interface IndexEntry extends Partial<IndexFacets> {
 	tags: string[];
 	names: string[];
 }
-
-const SITE = "https://ui.codeatlas.com.br";
 
 /** Facets that are filter chips, and how to read their values off an entry. A pending facet is absent from the entry, so it has no counts. */
 const COUNTED: Record<string, (e: IndexEntry) => string[] | undefined> = {
@@ -124,7 +123,7 @@ export function entryMarkdown(d: IndexDemo): string {
 		"",
 		`Needs: ${d.needs}`,
 		`Live demo: ${d.demo}`,
-		`Reference: ${SITE}/api/v1/en/e/${d.id}.txt`,
+		`Reference: ${apiUrl(API_PATHS.demoSource(d.id))}`,
 		"",
 		"## Source",
 		"",
@@ -143,7 +142,7 @@ function indexJson(entries: readonly IndexEntry[], version: string): string {
 			urls: {
 				page: `${SITE}/gallery/{id}/`,
 				markdown: `${SITE}/gallery/{id}.md`,
-				reference: `${SITE}/api/v1/en/e/{id}.txt`,
+				reference: apiUrl(API_PATHS.demoSource("{id}")),
 			},
 			facets: facetCounts(entries),
 		},
@@ -160,7 +159,7 @@ export function buildIndexFiles(
 ): Record<string, string> {
 	const entries = indexEntries(demos);
 	const files: Record<string, string> = {
-		"api/v1/index.json": indexJson(entries, version),
+		[`${API_DIR}/${API_PATHS.index}`]: indexJson(entries, version),
 	};
 	for (const d of demos) files[`gallery/${d.id}.md`] = entryMarkdown(d);
 	return files;

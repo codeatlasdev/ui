@@ -31,7 +31,7 @@ import { buildIndexFiles } from "./index-build.ts";
 import { buildManifest } from "./manifest/components.ts";
 import { buildDemos, checkCatalog } from "./manifest/demos.ts";
 import { buildGuides, buildRecipes } from "./manifest/guides.ts";
-import { DEMOS_DIR, ROOT } from "./manifest/paths.ts";
+import { API_DIR, DEMOS_DIR, ROOT } from "./manifest/paths.ts";
 import { buildSurfaces, buildTokens } from "./manifest/tokens.ts";
 import { buildParts, demosMarkdown, skillMarkdown } from "./manifest/writers.ts";
 import { buildStyleFile } from "./styles-markdown.ts";
@@ -121,7 +121,7 @@ if (import.meta.main) {
 				mkdirSync(dirname(join(siteRoot, name)), { recursive: true });
 				writeFileSync(join(siteRoot, name), body);
 			}
-			for (const base of [join(dist, "api/v1"), resolve(ROOT, "../../site/public/api/v1")])
+			for (const base of [join(dist, API_DIR), resolve(ROOT, "../../site/public", API_DIR)])
 				for (const [name, body] of Object.entries(files)) {
 					mkdirSync(dirname(join(base, name)), { recursive: true });
 					writeFileSync(join(base, name), body);

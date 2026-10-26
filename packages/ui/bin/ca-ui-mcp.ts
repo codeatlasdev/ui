@@ -35,6 +35,7 @@ import {
 	searchIndex,
 } from "../scripts/index-search.ts";
 import type { StyleFile } from "../scripts/styles-markdown.ts";
+import { API_DIR, API_PATHS } from "../src/cli/agent-guide.ts";
 import { type Equivalent, findEquivalent } from "../src/cli/equivalents.ts";
 import { type MigrationFile, migrationMarkdown } from "../src/cli/migrations.ts";
 import { buildReport } from "../src/cli/report.ts";
@@ -412,7 +413,7 @@ server.registerTool(
 				? demos.find((d) => d.id === num.padStart(3, "0"))
 				: demos.find((d) => raw.endsWith(d.demo.slice(d.demo.indexOf("/docs/"))));
 			if (!hit) return fail(demos.length ? `Unknown demo id "${raw}"; use search_demos.` : noDemos);
-			out.push(readFileSync(join(DIST, `api/v1/en/e/${hit.id}.txt`), "utf8"));
+			out.push(readFileSync(join(DIST, API_DIR, API_PATHS.demoSource(hit.id)), "utf8"));
 		}
 		return text(out.join("\n\n---\n\n"));
 	}

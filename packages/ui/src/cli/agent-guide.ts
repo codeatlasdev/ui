@@ -2,6 +2,24 @@
 // src/cli so the CLI stays self-contained; scripts/ai-entry.ts re-exports it for the site and MCP.
 export const SITE = "https://ui.codeatlas.com.br";
 
+/** Where the machine-readable endpoints live under the site root (and under `dist/` and `site/public/`). */
+export const API_DIR = "api/v1";
+
+/** Base URL of the machine-readable endpoints. */
+export const API = `${SITE}/${API_DIR}`;
+
+/** Endpoint paths under `API_DIR`, relative to it (the manifest writes the same paths to `dist/` and `site/public/`). */
+export const API_PATHS = {
+	catalog: "catalog.json",
+	catalogTsv: "en/catalog.tsv",
+	index: "index.json",
+	/** The source of one demo as plain text; `{id}` stays literal in a template. */
+	demoSource: (id: string) => `en/e/${id}.txt`,
+} as const;
+
+/** The absolute URL of an `API_PATHS` entry. */
+export const apiUrl = (path: string) => `${API}/${path}`;
+
 /** Docs pages an agent opens first, in this order. The slugs are checked against the real pages by a test. */
 export const ENTRY_PAGES = {
 	recipes: "getting-started/recipes",
