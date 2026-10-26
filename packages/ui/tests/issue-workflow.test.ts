@@ -20,6 +20,7 @@ import {
 	removeWorktree,
 	worktrees,
 } from "../../../scripts/issue-lib.ts";
+import { API_PATHS } from "../src/cli/agent-guide.ts";
 
 // Real data from #87/#88: a first-time contributor opened PRs from a fork before `issue:start` ran.
 const fork = (number: number, headRefName: string): PrRef => ({
@@ -174,7 +175,7 @@ describe("issue-land.sh", () => {
 		for (const out of TREE_OUTPUTS) {
 			// a directory stands for the files under it: probe a file the manifest really writes there
 			const probe = out.endsWith("/")
-				? `${out}${out.includes("gallery") ? "001.md" : "catalog.json"}`
+				? `${out}${out.includes("gallery") ? "001.md" : API_PATHS.catalog}`
 				: out;
 			expect(generated(probe), probe).toBe(true);
 		}

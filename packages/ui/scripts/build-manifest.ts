@@ -70,7 +70,7 @@ export const TREE_OUTPUTS = [
 	relative(resolve(ROOT, "../.."), SKILL_API),
 	relative(resolve(ROOT, "../.."), SKILL_DEMOS),
 	relative(resolve(ROOT, "../.."), MIGRATION_MD),
-	"site/public/api/v1/",
+	`site/public/${API_DIR}/`,
 	"site/public/gallery/",
 ];
 
