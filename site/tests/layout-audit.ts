@@ -1,5 +1,7 @@
 import type { Page } from "@playwright/test";
 
+import { touchTarget } from "./touch-target";
+
 /**
  * Layout integrity on every prerendered page (desktop + mobile projects):
  * - the page never scrolls sideways (wide content scrolls in its own region);

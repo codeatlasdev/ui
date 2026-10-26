@@ -1,4 +1,5 @@
 import { expect, gotoReady, test } from "./fixtures";
+import { touchTarget } from "./touch-target";
 
 // Runs only in the `iphone` project (WebKit, iPhone 15): iOS viewport, safe areas, zoom-on-focus.
 
