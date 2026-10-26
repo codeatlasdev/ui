@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { touchTarget } from "../../../../tests/touch-target";
 import { VIEWPORTS } from "../../../../tests/viewports";
 import type { KanbanMove } from "./Kanban.svelte";
 import Harness from "./Kanban.test.svelte";
@@ -274,7 +275,7 @@ describe("Kanban mobile (390px)", () => {
 		const tabs = screen.getByRole("tab");
 		expect(tabs.elements()).toHaveLength(5);
 		for (const t of tabs.elements())
-			expect(t.getBoundingClientRect().height).toBeGreaterThanOrEqual(44);
+			expect(t.getBoundingClientRect().height).toBeGreaterThanOrEqual(touchTarget());
 		await expect
 			.element(screen.getByRole("tab", { name: /New/ }))
 			.toHaveAttribute("aria-selected", "true");
@@ -317,7 +318,7 @@ describe("Kanban mobile (390px)", () => {
 			.element(screen.getByRole("tab", { name: /New/ }))
 			.toHaveAttribute("aria-selected", "true");
 		const btn = screen.getByRole("button", { name: "Move Ana Souza to…" });
-		expect(btn.element().getBoundingClientRect().height).toBeGreaterThanOrEqual(44);
+		expect(btn.element().getBoundingClientRect().height).toBeGreaterThanOrEqual(touchTarget());
 		await btn.click();
 		await screen.getByRole("menuitem", { name: "Won" }).click();
 		await waitFor(() => moves.length === 1);

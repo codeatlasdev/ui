@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { touchTarget } from "../../../../tests/touch-target";
 import ChipGroupHarness from "./ChipGroupHarness.test.svelte";
 
 const radio = (screen: Awaited<ReturnType<typeof render>>, name: string) =>
@@ -125,7 +126,7 @@ describe("ChipGroup", () => {
 		const screen = await render(ChipGroupHarness, { initial: "1" });
 		const group = screen.getByRole("radiogroup").element() as HTMLElement;
 		for (const label of group.querySelectorAll<HTMLElement>(".ca-chip-group__chip")) {
-			expect(label.getBoundingClientRect().height).toBeGreaterThanOrEqual(44);
+			expect(label.getBoundingClientRect().height).toBeGreaterThanOrEqual(touchTarget());
 		}
 		expect(group.scrollWidth).toBeLessThanOrEqual(group.clientWidth);
 		const root = document.documentElement;

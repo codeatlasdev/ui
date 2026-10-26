@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { cdp, page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { touchTarget } from "../../../../tests/touch-target";
 import { VIEWPORTS } from "../../../../tests/viewports";
 import Harness from "./TableDense.test.svelte";
 
@@ -172,7 +173,7 @@ describe("SimpleTable touch targets (#360)", () => {
 				const el = document.querySelector(sel) as HTMLElement;
 				expect(el, sel).not.toBeNull();
 				const [w, h] = hit(el);
-				expect(Math.min(w, h), `${sel} ${w}x${h}`).toBeGreaterThanOrEqual(44);
+				expect(Math.min(w, h), `${sel} ${w}x${h}`).toBeGreaterThanOrEqual(touchTarget());
 			}
 		} finally {
 			await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: false });

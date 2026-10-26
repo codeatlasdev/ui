@@ -5,6 +5,7 @@ import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
+import { touchTarget } from "../../../../tests/touch-target";
 import { VIEWPORTS } from "../../../../tests/viewports";
 import BottomNav from "./BottomNav.svelte";
 import MobileHeader from "./MobileHeader.svelte";
@@ -274,7 +275,7 @@ describe("BottomNav", () => {
 			.getByRole("button", { name: "Application" })
 			.element()
 			.getBoundingClientRect();
-		expect(rect.height).toBeGreaterThanOrEqual(44);
+		expect(rect.height).toBeGreaterThanOrEqual(touchTarget());
 	});
 });
 

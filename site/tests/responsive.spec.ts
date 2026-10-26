@@ -1,4 +1,5 @@
 import { expect, gotoReady, test } from "./fixtures";
+import { touchTarget } from "./touch-target";
 
 test.describe("responsive (mobile)", () => {
 	test.skip(({ isMobile }) => !isMobile, "mobile-only");
@@ -34,19 +35,20 @@ test.describe("responsive (mobile)", () => {
 		expect(cols).toBe(1);
 	});
 
-	test("touch targets are at least 44px", async ({ page }) => {
+	test("touch targets meet --ca-touch-target", async ({ page }) => {
 		await gotoReady(page, "/docs/inputs/button/");
+		const min = await touchTarget(page);
 		const lg = page.locator(".ca-btn--lg").first();
 		await expect(lg).toBeVisible();
-		expect((await lg.boundingBox())?.height).toBeGreaterThanOrEqual(44);
+		expect((await lg.boundingBox())?.height).toBeGreaterThanOrEqual(min);
 
 		const icon = page.locator(".ca-icon-btn, .ca-btn--icon").first();
-		if (await icon.count()) expect((await icon.boundingBox())?.height).toBeGreaterThanOrEqual(44);
+		if (await icon.count()) expect((await icon.boundingBox())?.height).toBeGreaterThanOrEqual(min);
 
 		await gotoReady(page, "/docs/navigation/tabs/");
 		const tab = page.getByRole("tab").first();
 		await expect(tab).toBeVisible();
-		expect((await tab.boundingBox())?.height).toBeGreaterThanOrEqual(44);
+		expect((await tab.boundingBox())?.height).toBeGreaterThanOrEqual(min);
 	});
 
 	test("TabsList scrolls on its own with the active tab in view", async ({ page }) => {

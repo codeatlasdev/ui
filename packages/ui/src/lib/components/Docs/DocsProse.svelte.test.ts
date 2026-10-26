@@ -1,6 +1,7 @@
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { touchTarget } from "../../../../tests/touch-target";
 import { setLocale } from "../../i18n/index.js";
 import DocsHarness from "./DocsHarness.test.svelte";
 
@@ -51,7 +52,7 @@ describe("CardGrid / LinkCard", () => {
 	it("link cards are at least 44px tall (touch target)", async () => {
 		const screen = await render(DocsHarness, { kind: "cardgrid" });
 		for (const a of screen.getByRole("link").elements()) {
-			expect(a.getBoundingClientRect().height).toBeGreaterThanOrEqual(44);
+			expect(a.getBoundingClientRect().height).toBeGreaterThanOrEqual(touchTarget());
 		}
 	});
 });

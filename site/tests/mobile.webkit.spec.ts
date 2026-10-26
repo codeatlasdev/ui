@@ -35,13 +35,14 @@ test("text-entry controls are at least 16px so iOS does not zoom on focus", asyn
 	}
 });
 
-test("buttons meet the 44px touch target", async ({ page }) => {
+test("buttons meet --ca-touch-target", async ({ page }) => {
 	await gotoReady(page, "/templates/app/dashboard/");
 	const heights = await page
 		.locator(".ca-btn:visible")
 		.evaluateAll((els) => els.map((el) => el.getBoundingClientRect().height));
 	expect(heights.length).toBeGreaterThan(0);
-	for (const h of heights) expect(h).toBeGreaterThanOrEqual(44);
+	const min = await touchTarget(page);
+	for (const h of heights) expect(h).toBeGreaterThanOrEqual(min);
 });
 
 test("theme-color follows the opaque chrome at the top edge", async ({ page }) => {

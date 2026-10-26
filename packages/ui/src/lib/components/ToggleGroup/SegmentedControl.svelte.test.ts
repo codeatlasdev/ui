@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from "vitest";
 import { cdp, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { touchTarget } from "../../../../tests/touch-target";
 import { reducedMotion } from "../../stores/reduced-motion.svelte";
 import SegmentedControlHarness from "./SegmentedControlHarness.test.svelte";
 import SegmentedControlNarrow from "./SegmentedControlNarrow.test.svelte";
@@ -83,8 +84,8 @@ describe("SegmentedControl", () => {
 			expect(matchMedia("(pointer: coarse)").matches).toBe(true);
 			for (const item of screen.container.querySelectorAll(".ca-seg__item")) {
 				const r = item.getBoundingClientRect();
-				expect(r.width, "item width").toBeGreaterThanOrEqual(44);
-				expect(r.height, "item height").toBeGreaterThanOrEqual(44);
+				expect(r.width, "item width").toBeGreaterThanOrEqual(touchTarget());
+				expect(r.height, "item height").toBeGreaterThanOrEqual(touchTarget());
 			}
 		} finally {
 			await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: false });

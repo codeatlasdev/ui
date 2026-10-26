@@ -3,6 +3,7 @@ import { cdp, page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
+import { touchTarget } from "../../../../tests/touch-target";
 import { VIEWPORTS } from "../../../../tests/viewports";
 import Harness from "./Menubar.test.svelte";
 
@@ -193,7 +194,9 @@ describe("Menubar touch (#464)", () => {
 				const overlay = a.content !== "none" && a.position === "absolute";
 				const w = Math.max(r.width, overlay ? Number.parseFloat(a.width) || 0 : 0);
 				const h = Math.max(r.height, overlay ? Number.parseFloat(a.height) || 0 : 0);
-				expect(Math.min(w, h), `${el.textContent?.trim()} ${w}x${h}`).toBeGreaterThanOrEqual(44);
+				expect(Math.min(w, h), `${el.textContent?.trim()} ${w}x${h}`).toBeGreaterThanOrEqual(
+					touchTarget()
+				);
 			}
 		} finally {
 			await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: false });
