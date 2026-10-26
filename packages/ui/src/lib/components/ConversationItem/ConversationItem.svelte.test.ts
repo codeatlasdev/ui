@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { touchTarget } from "../../../../tests/touch-target";
 import Harness from "./ConversationItem.test.svelte";
 
 const item = (c: Element) => c.querySelector(".ca-conversation") as HTMLElement;
@@ -94,9 +95,13 @@ describe("ConversationItem", () => {
 
 	it("keeps a 44px minimum height for the whole row", async () => {
 		const screen = await render(Harness, { props: { preview: "Hi" } });
-		expect(item(screen.container).getBoundingClientRect().height).toBeGreaterThanOrEqual(44);
+		expect(item(screen.container).getBoundingClientRect().height).toBeGreaterThanOrEqual(
+			touchTarget()
+		);
 		const link = await render(Harness, { props: { href: "/x" } });
-		expect(item(link.container).getBoundingClientRect().height).toBeGreaterThanOrEqual(44);
+		expect(item(link.container).getBoundingClientRect().height).toBeGreaterThanOrEqual(
+			touchTarget()
+		);
 	});
 
 	it("calls onclick on click", async () => {

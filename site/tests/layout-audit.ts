@@ -1,5 +1,7 @@
 import type { Page } from "@playwright/test";
 
+import { touchTarget } from "./touch-target";
+
 /**
  * Layout integrity on every prerendered page (desktop + mobile projects):
  * - the page never scrolls sideways (wide content scrolls in its own region);
@@ -102,8 +104,9 @@ export async function audit(page: Page, isMobile: boolean): Promise<string[]> {
 		return out.slice(0, 10);
 	}, INTENTIONAL);
 	if (isMobile) {
-		// Touch targets: every visible control in the content is at least 44×44 (WCAG 2.5.5 / HIG).
-		const small = await page.evaluate(() => {
+		// Touch targets: every visible control in the content is at least --ca-touch-target square (WCAG 2.5.5 / HIG).
+		const min = await touchTarget(page);
+		const small = await page.evaluate((min) => {
 			// Effective hit area: the element, its expanded ::after overlay, or (for a bare text
 			// input) the field box that receives the tap.
 			const hitArea = (e: Element): [number, number] => {
@@ -133,15 +136,15 @@ export async function audit(page: Page, isMobile: boolean): Promise<string[]> {
 					if (s.visibility === "hidden" || s.display === "none" || Number(s.opacity) < 0.05)
 						return false;
 					const [w, h] = hitArea(e);
-					return Math.min(w, h) < 43.5;
+					return Math.min(w, h) < min - 0.5;
 				})
 				.slice(0, 8)
 				.map((e) => {
 					const [w, h] = hitArea(e);
 					return `${e.tagName.toLowerCase()}.${e.classList[0] ?? ""} ${Math.round(w)}×${Math.round(h)}`;
 				});
-		});
-		issues.push(...small.map((x) => `touch target < 44px: ${x}`));
+		}, min);
+		issues.push(...small.map((x) => `touch target < ${min}px: ${x}`));
 	}
 	return issues;
 }

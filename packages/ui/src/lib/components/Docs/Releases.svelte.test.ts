@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { touchTarget } from "../../../../tests/touch-target";
 import Releases from "./Releases.test.svelte";
 
 const css = (el: Element, prop: string) => getComputedStyle(el).getPropertyValue(prop);
@@ -25,7 +26,7 @@ describe("ca-release (changelog markup inside .ca-prose)", () => {
 		expect(css(meta, "display")).toBe("flex");
 		expect(css(meta, "flex-wrap")).toBe("wrap");
 		for (const a of meta.querySelectorAll("a")) {
-			expect(a.getBoundingClientRect().height).toBeGreaterThanOrEqual(44);
+			expect(a.getBoundingClientRect().height).toBeGreaterThanOrEqual(touchTarget());
 		}
 	});
 
@@ -35,7 +36,7 @@ describe("ca-release (changelog markup inside .ca-prose)", () => {
 		expect(css(list, "display")).toBe("flex");
 		expect(css(list, "list-style-type")).toBe("none");
 		for (const a of screen.container.querySelectorAll(".ca-release-jump a")) {
-			expect(a.getBoundingClientRect().height).toBeGreaterThanOrEqual(44);
+			expect(a.getBoundingClientRect().height).toBeGreaterThanOrEqual(touchTarget());
 		}
 	});
 

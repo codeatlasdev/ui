@@ -3,6 +3,7 @@ import { page } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
+import { touchTarget } from "../../../../tests/touch-target";
 import type { MediaGridItem } from "./MediaGrid.svelte";
 import Harness from "./MediaGrid.test.svelte";
 
@@ -68,8 +69,8 @@ describe("MediaGrid", () => {
 		const screen = await render(Harness, { props: { items: images(4) } });
 		for (const t of tiles(screen.container)) {
 			const r = t.getBoundingClientRect();
-			expect(r.width).toBeGreaterThanOrEqual(44);
-			expect(r.height).toBeGreaterThanOrEqual(44);
+			expect(r.width).toBeGreaterThanOrEqual(touchTarget());
+			expect(r.height).toBeGreaterThanOrEqual(touchTarget());
 		}
 	});
 

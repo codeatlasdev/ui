@@ -2,6 +2,7 @@ import { describe, expect, it } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { q } from "../../../../tests/dom";
+import { touchTarget } from "../../../../tests/touch-target";
 import Harness from "./RecordListHarness.test.svelte";
 
 /** True when the element is painted (not display:none, not visually hidden to a 1px box). */
@@ -72,8 +73,8 @@ describe("RecordList (wide)", () => {
 	it("the actions cell is at least 44px wide and tall", async () => {
 		const screen = await render(Harness, { width: 900 });
 		const box = q(screen.container, ".ca-record-row__actions").getBoundingClientRect();
-		expect(box.width).toBeGreaterThanOrEqual(44);
-		expect(box.height).toBeGreaterThanOrEqual(44);
+		expect(box.width).toBeGreaterThanOrEqual(touchTarget());
+		expect(box.height).toBeGreaterThanOrEqual(touchTarget());
 	});
 
 	it("has no axe violations", async () => {
@@ -118,8 +119,8 @@ describe("RecordList (narrow container)", () => {
 	it("the actions cell stays a 44px target", async () => {
 		const screen = await render(Harness, { width: 360 });
 		const box = q(screen.container, ".ca-record-row__actions").getBoundingClientRect();
-		expect(box.width).toBeGreaterThanOrEqual(44);
-		expect(box.height).toBeGreaterThanOrEqual(44);
+		expect(box.width).toBeGreaterThanOrEqual(touchTarget());
+		expect(box.height).toBeGreaterThanOrEqual(touchTarget());
 	});
 
 	it("nothing overflows the container", async () => {

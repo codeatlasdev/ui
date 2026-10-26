@@ -3,6 +3,7 @@ import { cdp, page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { q } from "../../../../tests/dom";
+import { touchTarget } from "../../../../tests/touch-target";
 import { VIEWPORTS } from "../../../../tests/viewports";
 import Harness from "./CarouselHarness.test.svelte";
 
@@ -247,7 +248,7 @@ describe("Carousel scroller and touch (#464)", () => {
 			for (const sel of [".ca-carousel__nav", ".ca-carousel__play", ".ca-carousel__dot"]) {
 				const el = q(screen.container, sel);
 				const [w, h] = hit(el);
-				expect(Math.min(w, h), `${sel} ${w}x${h}`).toBeGreaterThanOrEqual(44);
+				expect(Math.min(w, h), `${sel} ${w}x${h}`).toBeGreaterThanOrEqual(touchTarget());
 			}
 		} finally {
 			await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: false });
