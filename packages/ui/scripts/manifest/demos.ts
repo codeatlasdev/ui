@@ -4,7 +4,7 @@ import { join, relative } from "node:path";
 import { checkIdRange, checkIndexFacets, ID_PATTERN, type IndexFacets } from "../index-schema.ts";
 import type { Manifest } from "./components.ts";
 import { mdxFiles } from "./guides.ts";
-import { API, DEMOS_DIR, DOCS_DIR, PKG, SITE } from "./paths.ts";
+import { API_PATHS, apiUrl, DEMOS_DIR, DOCS_DIR, PKG, SITE } from "./paths.ts";
 
 /** One animated property of a motion demo: literal values, each of which must appear verbatim in the demo source. */
 export interface ManifestMotion {
@@ -305,8 +305,8 @@ export function buildDemos(
 		return { slug, first: g[0].id, last: g[g.length - 1].id, count: g.length };
 	});
 	const files: Record<string, string> = {
-		"catalog.json": `${JSON.stringify({ version: manifest.version, count: demos.length, groups, elements: demos.map(({ source: _, ...d }) => d) }, null, "\t")}\n`,
-		"en/catalog.tsv": `${["id\tgroup\tpage\ttitle\tnames\ttags\tsummary", ...demos.map((d) => [d.id, d.group, d.page, d.title, (d.names ?? []).join(" | "), d.tags.join(","), d.summary].map((v) => v.replace(/[\t\n]/g, " ")).join("\t"))].join("\n")}\n`,
+		[API_PATHS.catalog]: `${JSON.stringify({ version: manifest.version, count: demos.length, groups, elements: demos.map(({ source: _, ...d }) => d) }, null, "\t")}\n`,
+		[API_PATHS.catalogTsv]: `${["id\tgroup\tpage\ttitle\tnames\ttags\tsummary", ...demos.map((d) => [d.id, d.group, d.page, d.title, (d.names ?? []).join(" | "), d.tags.join(","), d.summary].map((v) => v.replace(/[\t\n]/g, " ")).join("\t"))].join("\n")}\n`,
 	};
 	const motionLines = (d: ManifestDemo) =>
 		d.motion?.length
@@ -340,7 +340,7 @@ export function buildDemos(
 			`Components: ${d.components.join(", ") || "none"}`,
 			`Live demo: ${d.demo}`,
 		];
-		files[`en/e/${d.id}.txt`] = `${header.join("\n")}\n\n${d.source}`;
+		files[API_PATHS.demoSource(d.id)] = `${header.join("\n")}\n\n${d.source}`;
 		files[`en/p/${d.id}.txt`] = `${[
 			`Use ${PKG} demo #${d.id} "${d.title}" (${d.group}/${d.page}).`,
 			`What it shows: ${d.summary.replace(/\.$/, "")}. When to use: ${d.use.replace(/\.$/, "")}.`,
@@ -358,7 +358,7 @@ export function buildDemos(
 			"  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);",
 			"  replace sample data/copy with the project's; keep the first comment line.",
 			`Report: #${d.id} ${d.title} → file, what changed, ${d.demo}; what you could not check (light/dark, 375px, keyboard, reduced motion).`,
-			`Reference: ${API}/en/e/${d.id}.txt   Components API: ca-ui-mcp get_component(${d.components[0] ?? "…"})`,
+			`Reference: ${apiUrl(API_PATHS.demoSource(d.id))}   Components API: ca-ui-mcp get_component(${d.components[0] ?? "…"})`,
 		].join("\n")}\n`;
 	}
 	return { demos, files };

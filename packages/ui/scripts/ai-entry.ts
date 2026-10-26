@@ -12,7 +12,7 @@ export {
 	SITE,
 } from "../src/cli/agent-guide.ts";
 
-import { ENTRY_PAGES, SITE } from "../src/cli/agent-guide.ts";
+import { API_PATHS, apiUrl, ENTRY_PAGES, SITE } from "../src/cli/agent-guide.ts";
 
 export interface DocLink {
 	slug: string;
@@ -193,17 +193,17 @@ export function buildLlmsIndex(i: {
 				},
 				{
 					title: "Demo catalog",
-					href: `${SITE}/api/v1/catalog.json`,
+					href: apiUrl(API_PATHS.catalog),
 					description: "every numbered demo (#NNN): id, page, components, summary",
 				},
 				{
 					title: "Demo source",
-					href: `${SITE}/api/v1/en/e/001.txt`,
+					href: apiUrl(API_PATHS.demoSource("001")),
 					description: "one demo as text: swap 001 for any id from the catalog",
 				},
 				{
 					title: "Demo index (TSV)",
-					href: `${SITE}/api/v1/en/catalog.tsv`,
+					href: apiUrl(API_PATHS.catalogTsv),
 					description: "id, group, page, title, tags, summary: grep it",
 				},
 				{

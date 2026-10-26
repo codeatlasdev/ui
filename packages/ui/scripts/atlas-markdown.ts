@@ -1,6 +1,7 @@
 // The atlas as plain markdown for agents: one file per term (`/llms/atlas/<slug>.txt`), an index of all terms
 // (`/llms/atlas.txt`) and the compact line the MCP `search_terms` returns. Pure functions over the dataset, so the
 // site endpoints, the MCP build and the tests share one text.
+
 import {
 	ATLAS_LIMITS,
 	ATLAS_REVIEWED,
@@ -24,8 +25,7 @@ import {
 	type Reference,
 	STRENGTH_LABEL,
 } from "../../../site/src/data/evidence/references.ts";
-
-export const SITE = "https://ui.codeatlas.com.br";
+import { SITE } from "../src/cli/agent-guide.ts";
 
 /** Path of a term's markdown twin. */
 export const atlasTermPath = (t: Pick<Term, "term">) => `/llms/atlas/${termSlug(t)}.txt`;

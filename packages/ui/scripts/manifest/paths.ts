@@ -7,8 +7,7 @@ export const LIB = join(ROOT, "src/lib");
 export const PKG = "@codeatlasdev/ui";
 export const DOCS_DIR = resolve(ROOT, "../../site/src/content/docs");
 export const DEMOS_DIR = resolve(ROOT, "../../site/src/demos");
-export const SITE = "https://ui.codeatlas.com.br";
-export const API = `${SITE}/api/v1`;
+export { API, API_DIR, API_PATHS, apiUrl, SITE } from "../../src/cli/agent-guide.ts";
 
 /** Public entry points: import specifier → entry file under src/lib. */
 export const ENTRIES: Record<string, string> = {
