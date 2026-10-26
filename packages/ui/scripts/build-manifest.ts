@@ -23,7 +23,7 @@
  * `Program` over the entry files and reported with its signature and JSDoc summary.
  */
 import { existsSync, mkdirSync, writeFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { dirname, join, relative, resolve } from "node:path";
 import { loadMigrations, migrationMarkdown } from "../src/cli/migrations.ts";
 import { buildAtlasFile } from "./atlas-markdown.ts";
 import { buildReleaseFile } from "./changelog-markdown.ts";
@@ -60,6 +60,19 @@ export { buildParts, demosMarkdown, partsMarkdown, skillMarkdown } from "./manif
 const SKILL_API = resolve(ROOT, "../../.agents/skills/codeatlas-ui/API.md");
 const MIGRATION_MD = resolve(ROOT, "MIGRATION.md");
 const SKILL_DEMOS = resolve(ROOT, "../../.agents/skills/codeatlas-ui/DEMOS.md");
+
+/**
+ * What a manifest run writes into the git tree, as repo-relative paths (directories end in `/`). The land gate
+ * (`scripts/generated-paths.sh`, the one list of generated files) must accept every one of them, or a rebase
+ * would take a side of a file the manifest rebuilds; `tests/issue-workflow.test.ts` checks it (#653).
+ */
+export const TREE_OUTPUTS = [
+	relative(resolve(ROOT, "../.."), SKILL_API),
+	relative(resolve(ROOT, "../.."), SKILL_DEMOS),
+	relative(resolve(ROOT, "../.."), MIGRATION_MD),
+	`site/public/${API_DIR}/`,
+	"site/public/gallery/",
+];
 
 if (import.meta.main) {
 	const manifest = buildManifest();
