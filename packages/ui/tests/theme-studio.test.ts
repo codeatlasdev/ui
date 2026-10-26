@@ -21,7 +21,6 @@ import { FONTS, familyOf, stackOf } from "../../../site/src/components/theme/fon
 import { LOOKS } from "../../../site/src/components/theme/looks.js";
 import { extractCode } from "../../../site/src/components/theme/panels/output-model.js";
 import {
-	BUILTIN_PRESETS_IDS,
 	COALESCE_MS,
 	commit,
 	createHistory,
@@ -36,7 +35,6 @@ import {
 	toThemeOptions,
 	undo,
 } from "../../../site/src/components/theme/studio-state.js";
-import { BUILTIN_PRESETS } from "../src/lib/theme/builtins.js";
 import { defineTheme, themeCSS } from "../src/lib/theme/define.js";
 import { DESIGN_STYLES, designStyle } from "../src/lib/theme/styles.js";
 
@@ -46,10 +44,6 @@ const edit = (p: Partial<StudioState>): StudioState => ({
 });
 
 describe("studio state → ThemeOptions", () => {
-	it("keeps the built-in preset ids in lockstep with the package", () => {
-		expect(BUILTIN_PRESETS_IDS).toEqual(BUILTIN_PRESETS.map((p) => p.id));
-	});
-
 	it("maps each control onto its ThemeOptions key and compiles through the real engine", () => {
 		const s = edit({
 			brand: "#e8590c",

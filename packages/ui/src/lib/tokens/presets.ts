@@ -7,16 +7,8 @@ import { generatePreset } from "../utils/palette-generator.js";
 import type { BrandColors, NeutralRamp, SemanticColors } from "./colors.js";
 import { neutralRamp } from "./colors.js";
 
-/** Presets shipped in global.css. */
-export type BuiltinPresetId =
-	| "amber"
-	| "ocean"
-	| "crimson"
-	| "cyan"
-	| "violet"
-	| "emerald"
-	| "rose"
-	| "slate";
+/** Presets shipped in global.css: the ids of `BUILTIN_PRESETS` (theme/builtins.ts). */
+export type BuiltinPresetId = (typeof BUILTIN_PRESETS)[number]["id"];
 
 /** A built-in preset or a brand preset registered via `ThemeOptions.presets`. */
 export type PresetId = BuiltinPresetId | (string & {});

@@ -3,6 +3,7 @@
 // `ThemeOptions`; nothing in the studio invents a knob the engine does not have. Pure and DOM-free,
 // so the codec, the history and the mapping are unit-testable.
 
+import { BUILTIN_PRESETS } from "../../../../packages/ui/src/lib/theme/builtins";
 import type {
 	ColorScheme,
 	Density,
@@ -14,20 +15,10 @@ import type {
 } from "./engine";
 
 /**
- * Ids of the built-in presets. Kept literal so this module has no runtime import of the package
- * barrel (it pulls Svelte components) and stays testable under plain `bun test`; `studio.test.ts`
- * asserts it equals the package's own `THEME_PRESETS` ids, so a new built-in cannot drift.
+ * Ids of the built-in presets, derived from the package's one list. Imported from `theme/builtins` rather than the
+ * barrel (which pulls Svelte components) so this module stays testable under plain `bun test`.
  */
-export const BUILTIN_PRESETS_IDS = [
-	"amber",
-	"ocean",
-	"crimson",
-	"cyan",
-	"violet",
-	"emerald",
-	"rose",
-	"slate",
-];
+export const BUILTIN_PRESETS_IDS: string[] = BUILTIN_PRESETS.map((p) => p.id);
 
 /** Preset id the studio gives the user's own brand. Never clashes with a built-in. */
 export const STUDIO_PRESET = "studio";

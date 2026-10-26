@@ -3,7 +3,8 @@
 import type { TokenMap } from "../utils/palette-generator.js";
 
 export interface BuiltinPresetSource {
-	id: "amber" | "ocean" | "crimson" | "cyan" | "violet" | "emerald" | "rose" | "slate";
+	/** The one declaration of the built-in ids: `BuiltinPresetId` (tokens/presets.ts) is derived from the data below. */
+	id: string;
 	label: string;
 	/** sRGB swatch for pickers and canvas. */
 	color: `#${string}`;
@@ -13,7 +14,10 @@ export interface BuiltinPresetSource {
 	overrides: { light: TokenMap; dark: TokenMap };
 }
 
-export const BUILTIN_PRESETS: BuiltinPresetSource[] = [
+/** Keeps each `id` a literal type (`BuiltinPresetId` is derived from it) while checking the shape. */
+const presets = <const T extends readonly BuiltinPresetSource[]>(list: T): T => list;
+
+export const BUILTIN_PRESETS = presets([
 	{
 		id: "amber",
 		label: "Amber",
@@ -146,4 +150,4 @@ export const BUILTIN_PRESETS: BuiltinPresetSource[] = [
 			dark: {},
 		},
 	},
-];
+]);
