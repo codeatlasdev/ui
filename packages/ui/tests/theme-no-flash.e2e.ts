@@ -91,6 +91,37 @@ function serve(handler: (path: string) => string | undefined) {
 	return `http://localhost:${s.port}`;
 }
 
+/**
+ * Serves `head` now and `rest` once `release()` is called: a response whose last part is late, so the browser
+ * can paint what it has before the late part runs. The negative control below needs that order to be a fact,
+ * not a race against the parser: at low priority (#632) the parser reached the late script before any paint.
+ */
+function serveSplit(head: string, rest: string) {
+	let release = () => {};
+	const gate = new Promise<void>((r) => {
+		release = r;
+	});
+	const s = Bun.serve({
+		port: 0,
+		fetch() {
+			const enc = new TextEncoder();
+			return new Response(
+				new ReadableStream({
+					async start(c) {
+						c.enqueue(enc.encode(head));
+						await gate;
+						c.enqueue(enc.encode(rest));
+						c.close();
+					},
+				}),
+				{ headers: { "content-type": "text/html" } }
+			);
+		},
+	});
+	servers.push(s);
+	return { url: `http://localhost:${s.port}`, release };
+}
+
 /** What `caThemeHandle` does to a SvelteKit response, with the real handle. */
 async function kitHtml(html: string, opts = THEME): Promise<string> {
 	let out = "";
@@ -180,6 +211,15 @@ const looks = (f: Frame[]) =>
 async function firstFrames(ctx: BrowserContext, url: string) {
 	const p = await recorded(ctx);
 	await p.goto(url, { waitUntil: "load" });
+	// Poll for the first painted frame, then let a few more land: a fixed 300 ms saw none when the browser
+	// ran at low priority (#632), and "no frame" is a slow machine, not a flash.
+	await p.waitForFunction(
+		() => ((window as unknown as { __f?: unknown[] }).__f?.length ?? 0) > 0,
+		null,
+		{
+			timeout: 15_000,
+		}
+	);
 	await p.waitForTimeout(300);
 	const f = await frames(p);
 	expect(f.length, "the recorder saw painted frames").toBeGreaterThan(0);
@@ -354,7 +394,22 @@ describe("zero flash of the wrong theme, every consumer path (6x CPU, Slow 3G)",
 		const ok = await firstFrames(early, `${serve(() => html)}/`);
 		await early.close();
 		const lateCtx = await context({ storage });
-		const bad = await firstFrames(lateCtx, `${serve(() => late)}/`);
+		// the scripts sit just before </body>: everything before the first of them is the part painted alone
+		const cut = late.indexOf(scripts[0]);
+		expect(cut, "the late scripts are in the document").toBeGreaterThan(0);
+		const split = serveSplit(late.slice(0, cut), late.slice(cut));
+		const lp = await recorded(lateCtx);
+		const nav = lp.goto(`${split.url}/`, { waitUntil: "load" });
+		// the first frame is painted from the head alone; only then does the late script arrive
+		await lp.waitForFunction(
+			() => (window as unknown as { __painted?: boolean }).__painted === true,
+			null,
+			{ timeout: 15_000 }
+		);
+		split.release();
+		await nav;
+		await lp.waitForTimeout(300);
+		const bad = { looks: looks(await frames(lp)) };
 		await lateCtx.close();
 		expect(ok.looks, "as built").toHaveLength(1);
 		expect(bad.looks.length, `late scripts: ${bad.looks.join(" ; ")}`).toBeGreaterThan(1);

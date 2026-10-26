@@ -1,5 +1,7 @@
 import { expect, it } from "bun:test";
+import { availableParallelism } from "node:os";
 import { join } from "node:path";
+import { cpuCap } from "../../../scripts/cpu-cap";
 
 // #539: `workers: process.env.CI ? "100%" : "25%"` gave 12 Chromium workers to every shell that
 // exports CI=true (agent shells do), on a machine other projects share: random 30s timeouts on a
@@ -17,8 +19,9 @@ const workers = (env: Record<string, string>) => {
 	return run.stdout.toString().trim();
 };
 
-it("a CI=true shell on a developer machine gets a quarter of the cores", () => {
-	expect(workers({ CI: "true" })).toBe("25%");
+it("a CI=true shell on a developer machine gets the tooling's worker cap, not every core", () => {
+	expect(workers({ CI: "true" })).toBe(String(cpuCap({}, availableParallelism())));
+	expect(workers({ CI: "true", CA_CPU_CAP: "2" })).toBe("2");
 });
 
 it("GitHub Actions gets every core", () => {

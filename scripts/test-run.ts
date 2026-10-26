@@ -31,6 +31,7 @@ import { availableParallelism, loadavg, tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { evictAll } from "./caches.ts";
+import { cpuCap, lowPriority } from "./cpu-cap.ts";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const runsDir = join(root, ".cache/test-runs");
@@ -326,7 +327,10 @@ async function run(cmd: string[], budget?: BudgetName): Promise<number> {
 	const PATH = [...bins, process.env.PATH ?? ""].join(":");
 
 	// Own process group, so a signal or exit tears down the whole test tree (workers, servers).
-	const child = spawn(cmd[0], cmd.slice(1), {
+	// The whole tree runs at low priority (scripts/cpu-cap.ts, #632): `taskpolicy`/`nice` exec the command, so the
+	// pid, the process group and the signals below are the command's own.
+	const launch = lowPriority(cmd);
+	const child = spawn(launch[0], launch.slice(1), {
 		stdio: "inherit",
 		detached: true,
 		env: {

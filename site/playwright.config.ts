@@ -1,4 +1,5 @@
 import { defineConfig, devices } from "@playwright/test";
+import { cpuCap } from "../scripts/cpu-cap.ts";
 
 // One port per checkout, derived from its path: 4321 is what every Astro project on a developer machine
 // defaults to, and a run that silently reused ANOTHER project's server compared that site against this one's
@@ -22,10 +23,10 @@ export default defineConfig({
 	failOnFlakyTests: !!process.env.CI,
 	retries: process.env.CI ? 1 : 0,
 	// Every core on GitHub's hosted runners (4 vCPU, nothing else running); shards split the suite
-	// across jobs. Anywhere else a quarter, even with CI=true: agent shells export it on a developer
+	// across jobs. Anywhere else the tooling's worker cap (scripts/cpu-cap.ts), even with CI=true: agent shells export it on a developer
 	// machine that other projects share, and 12 Chromium workers running axe there starved each other
 	// into random 30s timeouts on a different route every run, 3 workers passed 3 of 3 (#539).
-	workers: process.env.E2E_WORKERS ?? (process.env.GITHUB_ACTIONS ? "100%" : "25%"),
+	workers: process.env.E2E_WORKERS ?? (process.env.GITHUB_ACTIONS ? "100%" : cpuCap()),
 	// The platform is part of the file name (`home-dark-darwin.webp`), like Vitest's `-chromium-darwin.png`: a baseline
 	// is only ever compared on the platform that rendered it, so each platform keeps its own set side by side.
 	snapshotPathTemplate:

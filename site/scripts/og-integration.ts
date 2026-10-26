@@ -11,6 +11,7 @@ import { brandHash, ogCard, renderMark, renderOgImage, resolveBrand } from "@cod
 import { chromium } from "@playwright/test";
 import type { AstroIntegration } from "astro";
 import { evict, STORES, type Store } from "../../scripts/caches.ts";
+import { cpuCap } from "../../scripts/cpu-cap.ts";
 import { theme } from "../src/theme.ts";
 import { placeCard } from "./og-cache.ts";
 
@@ -19,7 +20,7 @@ const TEMPLATE_VERSION = "2";
 const SITE_NAME = "CodeAtlas UI";
 const markFile = new URL("../src/brand/mark.svg", import.meta.url);
 /** Cards rendered at once (a Chromium page each). */
-const CARD_WORKERS = 4;
+const CARD_WORKERS = cpuCap();
 /**
  * Rendered cards live outside the checkout, like the test lock: every issue is its own worktree, so a cache inside
  * the checkout would be cold at every land. The key is the card's full HTML plus the browser version, so sharing
