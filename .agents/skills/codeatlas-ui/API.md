@@ -3831,7 +3831,48 @@ function applyMove<T>(lists: Record<string, T[]>, e: DndDropEvent, key: (item: T
 `import { BUILTIN_PRESETS } from "@codeatlasdev/ui"`
 
 ```ts
-const BUILTIN_PRESETS: BuiltinPresetSource[]
+const BUILTIN_PRESETS: {
+  0: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; readonly hue: 55; reado…;
+  1: { readonly id: "ocean"; readonly label: "Ocean"; readonly color: "#2b5fd9"; readonly hue: 260; read…;
+  2: { readonly id: "crimson"; readonly label: "Crimson"; readonly color: "#c00020"; readonly hue: 26; r…;
+  3: { readonly id: "cyan"; readonly label: "Cyan"; readonly color: "#0094a8"; readonly hue: 193; readon…;
+  4: { readonly id: "violet"; readonly label: "Violet"; readonly color: "#8b3ec8"; readonly hue: 295; re…;
+  5: { readonly id: "emerald"; readonly label: "Emerald"; readonly color: "#1a7a50"; readonly hue: 152; …;
+  6: { readonly id: "rose"; readonly label: "Rose"; readonly color: "#c8405a"; readonly hue: 350; readon…;
+  7: { readonly id: "slate"; readonly label: "Slate"; readonly color: "#3c5a8a"; readonly hue: 220; read…;
+  length: 8;
+  toString: () => string;
+  toLocaleString: { (): string; (locales: string | string[], options?: Intl.NumberFormatOptions & Intl.DateTimeFormat…;
+  concat: { (...items: ConcatArray<{ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"…;
+  join: (separator?: string) => string;
+  slice: (start?: number, end?: number) => ({ readonly id: "amber"; readonly label: "Amber"; readonly color:…;
+  indexOf: (searchElement: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; readonl…;
+  lastIndexOf: (searchElement: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; readonl…;
+  every: { <S extends { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; readonly h…;
+  some: (predicate: (value: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
+  forEach: (callbackfn: (value: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; re…;
+  map: <U>(callbackfn: (value: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15";…;
+  filter: { <S extends { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; readonly h…;
+  reduce: { (callbackfn: (previousValue: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c…;
+  reduceRight: { (callbackfn: (previousValue: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c…;
+  find: { <S extends { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; readonly h…;
+  findIndex: (predicate: (value: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
+  entries: () => ArrayIterator<[number, { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47…;
+  keys: () => ArrayIterator<number>;
+  values: () => ArrayIterator<{ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
+  includes: (searchElement: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; readonl…;
+  flatMap: <U, This = undefined>(callback: (this: This, value: { readonly id: "amber"; readonly label: "Amber"…;
+  flat: <A, D extends number = 1>(this: A, depth?: D | undefined) => FlatArray<A, D>[];
+  at: (index: number) => { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; read…;
+  findLast: { <S extends { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; readonly h…;
+  findLastIndex: (predicate: (value: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
+  toReversed: () => ({ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; readonly hue: 55…;
+  toSorted: (compareFn?: ((a: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; reado…;
+  toSpliced: { (start: number, deleteCount: number, ...items: ({ readonly id: "amber"; readonly label: "Amber"; …;
+  with: (index: number, value: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; …;
+  __@iterator@288: () => ArrayIterator<{ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
+  readonly __@unscopables@290: { readonly [x: number]: boolean | undefined; readonly length?: boolean | undefined; toString?: bool…;
+}
 ```
 
 ### collectPaths
@@ -4879,8 +4920,8 @@ Types:
 | `AvatarTokens` | `interface AvatarTokens extends AvatarFallbackTokens { size?: Partial< Record< "xs" \| "sm" \| "md" \| "lg" \| "xl", Pick<AvatarFallbackTokens, "fallbackSize" \| "fallbackWeight"> > >; }` |  |
 | `BrandColors` | `interface BrandColors { main: string; light: string; dark: string; contrast: string; }` |  |
 | `Breakpoint` | `type Breakpoint = "xs" \| keyof typeof SCALE;` |  |
-| `BuiltinPresetId` | `type BuiltinPresetId = \| "amber" \| "ocean" \| "crimson" \| "cyan" \| "violet" \| "emerald" \| "rose" \| "slate";` | Presets shipped in global.css. |
-| `BuiltinPresetSource` | `interface BuiltinPresetSource { id: "amber" \| "ocean" \| "crimson" \| "cyan" \| "violet" \| "emerald" \| "rose" \| "slate"; label: string; color: `#${string}`; hue: number; chroma: number; lightL: number; overrides: { light: TokenMap; dark: TokenMap }; }` |  |
+| `BuiltinPresetId` | `type BuiltinPresetId = (typeof BUILTIN_PRESETS)[number]["id"];` | Presets shipped in global.css: the ids of `BUILTIN_PRESETS` (theme/builtins.ts). |
+| `BuiltinPresetSource` | `interface BuiltinPresetSource { id: string; label: string; color: `#${string}`; hue: number; chroma: number; lightL: number; overrides: { light: TokenMap; dark: TokenMap }; }` |  |
 | `ButtonSizeTokens` | `interface ButtonSizeTokens { height?: CssValue; paddingX?: CssValue; fontSize?: CssValue; weight?: CssValue; tracking?: CssValue; }` | Typography and box tokens of one Button size. |
 | `ButtonTokens` | `interface ButtonTokens extends ButtonSizeTokens { weight?: CssValue; tracking?: CssValue; leading?: CssValue; gap?: CssValue; ghostBorderWidth?: CssValue; disabledBg?: CssValue; touchHeight?: CssValue; sm?: ButtonSizeTokens; md?: ButtonSizeTokens; lg?: ButtonSizeTokens; }` |  |
 | `CardTokens` | `interface CardTokens { bg?: CssValue; radius?: CssValue; border?: CssValue; shadow?: CssValue; }` |  |
@@ -5013,7 +5054,7 @@ Types:
 
 | Field | Type | Notes |
 |---|---|---|
-| `id` | `"amber" \| "ocean" \| "crimson" \| "cyan" \| "violet" \| "emerald" \| "rose" \| "slate"` |  |
+| `id` | `string` | The one declaration of the built-in ids: `BuiltinPresetId` (tokens/presets.ts) is derived from the data below. |
 | `label` | `string` |  |
 | `color` | ``#${string}`` | sRGB swatch for pickers and canvas. |
 | `hue` | `number` |  |
@@ -7532,7 +7573,7 @@ Types:
 | Type | Declaration | Notes |
 |---|---|---|
 | `BrandColors` | `interface BrandColors { main: string; light: string; dark: string; contrast: string; }` |  |
-| `BuiltinPresetId` | `type BuiltinPresetId = \| "amber" \| "ocean" \| "crimson" \| "cyan" \| "violet" \| "emerald" \| "rose" \| "slate";` | Presets shipped in global.css. |
+| `BuiltinPresetId` | `type BuiltinPresetId = (typeof BUILTIN_PRESETS)[number]["id"];` | Presets shipped in global.css: the ids of `BUILTIN_PRESETS` (theme/builtins.ts). |
 | `ElevationLevel` | `type ElevationLevel = keyof typeof elevation;` |  |
 | `NeutralRamp` | `interface NeutralRamp { surfaceLight: SurfaceColors; surfaceDark: SurfaceColors; textLight: TextColors; textDark: TextColors; outlineLight: OutlineColors; outlineDark: OutlineColors; }` |  |
 | `OutlineColors` | `interface OutlineColors { subtle: string; default: string; strong: string; }` |  |
