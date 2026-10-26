@@ -1,4 +1,6 @@
 import { describe, expect, it } from "bun:test";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import {
 	ATLAS_REPRESENTATIVES,
 	buildImpact,
@@ -6,6 +8,7 @@ import {
 	lockReachesRuntime,
 	ownRoutes,
 	select,
+	VISUAL_ROUTES,
 } from "../../../scripts/route-impact";
 import { TERMS, termSlug } from "../../../site/src/data/atlas/atlas";
 
@@ -281,5 +284,25 @@ describe("route-impact", () => {
 		it("an unreadable lock counts as reaching (fail safe)", () => {
 			expect(lockReachesRuntime(before, "not a lockfile")).toBe(true);
 		});
+	});
+});
+
+// The land gate rebuilds and retests the pages `pages.visual.spec.ts` captures from `VISUAL_ROUTES`. Two copies
+// kept "in step" by a comment let a page get a baseline that no land ever rebuilt (#651): one list, imported.
+describe("VISUAL_ROUTES", () => {
+	const spec = readFileSync(
+		join(import.meta.dir, "../../../site/tests/pages.visual.spec.ts"),
+		"utf8"
+	);
+	it("is the list the visual spec captures, not a copy of it", () => {
+		expect(spec).toMatch(
+			/import \{[^}]*\bVISUAL_ROUTES\b[^}]*\} from "..\/..\/scripts\/route-impact"/
+		);
+		expect(spec).not.toMatch(/^\s*"\/templates\//m);
+	});
+	it("lists real, distinct routes", () => {
+		expect(VISUAL_ROUTES.length).toBeGreaterThan(0);
+		expect(new Set(VISUAL_ROUTES).size).toBe(VISUAL_ROUTES.length);
+		for (const r of VISUAL_ROUTES) expect(r).toMatch(/^\/(.*\/)?$/);
 	});
 });

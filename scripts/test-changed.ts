@@ -36,7 +36,7 @@ import { spawn, spawnSync } from "node:child_process";
 import { existsSync, readFileSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { distCovers, distStale, readScope } from "./dist-fresh.ts";
-import { lockReachesRuntime, ownRoutes, ROOT, select } from "./route-impact.ts";
+import { lockReachesRuntime, ownRoutes, ROOT, select, VISUAL_ROUTES } from "./route-impact.ts";
 import {
 	affected,
 	buildGraph,
@@ -56,15 +56,6 @@ const CANARIES = [
 	"/templates/app/dashboard/",
 	"/theme/",
 ];
-
-/** The routes `pages.visual.spec.ts` captures (keep in step with its PAGES). */
-const VISUAL_ROUTES = new Set([
-	"/",
-	"/templates/",
-	"/templates/app/dashboard/",
-	"/templates/auth/sign-in/",
-	"/theme/",
-]);
 
 /**
  * A site spec that is not the route harness: it runs itself when it changed. `no-flash.spec.ts` is not one of
@@ -121,14 +112,14 @@ const specs = changed.filter(ownSpec);
 const routes = sel.all ? [] : [...new Set([...sel.routes, ...(land ? CANARIES : [])])].sort();
 const sweepAll = sel.all || (land && sharedFile !== undefined);
 const siteRun = sweepAll || routes.length > 0 || specs.length > 0;
-const visualRun = sel.all || sel.routes.some((r) => VISUAL_ROUTES.has(r));
+const visualRun = sel.all || sel.routes.some((r) => VISUAL_ROUTES.includes(r));
 const routeRun = sweepAll || routes.length > 0;
 // A narrow site run builds only the pages it audits (`CA_SITE_ROUTES`, site/src/lib/only-routes.ts): a behaviour spec
 // visits arbitrary pages and a sweep audits all of them, so those need the whole site. 915 pages are ~80 s of the
 // page generation, 80 pages ~11 s.
 const builtRoutes: string[] | undefined =
 	!sweepAll && specs.length === 0
-		? [...new Set([...routes, ...(visualRun ? [...VISUAL_ROUTES] : [])])].sort()
+		? [...new Set([...routes, ...(visualRun ? VISUAL_ROUTES : [])])].sort()
 		: undefined;
 // Shared: everything that can reach every test runs, and screenshots are left to `test:vrt`.
 const shared = sel.all || sharedFile !== undefined;
