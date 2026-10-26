@@ -19,17 +19,41 @@ import ControlledSrc from "~/demos/display/notification-bell/Controlled.svelte?r
 <NotificationBell notifications={items} onRead={markRead} onReadAll={markAll} onClear={clear} />
 ```
 
-The unread count is derived from `notifications` where `read` is falsy. The component is controlled: update your list in `onRead`, `onReadAll` and `onClear`. Every visible string can be replaced through `labels`. The panel is a popover layer anchored below the bell, aligned to its end edge, and closes on Escape or an outside press.
+The unread count defaults to the number of `notifications` where `read` is falsy. Pass `count` to show an independent unread total, including zero, while loading only part of the list. Update your list in `onRead`, `onReadAll` and `onClear`. Every visible string can be replaced through `labels`. The panel is a popover layer anchored below the bell, aligned to its end edge, and closes on Escape or an outside press. Escape returns focus to the trigger.
+
+Use `bind:open` to enable your list query only while the panel is open, and refresh `count` independently in the background. `onOpenChange` runs when the user opens or closes the panel; assigning `open` from code does not call it. Count changes update the trigger's accessible name and are announced politely.
+
+```svelte
+<script>
+  import { NotificationBell } from "@codeatlasdev/ui";
+
+  let open = $state(false);
+</script>
+
+<NotificationBell
+  bind:open
+  count={unread}
+  notifications={items}
+  loading={list.isFetching}
+  onOpenChange={(isOpen) => isOpen && refresh()}
+/>
+```
+
+While `loading` is true, the panel shows loading text instead of the empty state. Any loaded notifications remain visible during a refresh.
 
 <Demo title="Default" description={"With notifications and with an empty list."} src={DefaultSrc}><Default client:visible /></Demo>
 <Demo title="Controlled" description={"Mark items as read, mark all as read and clear the list."} src={ControlledSrc}><Controlled client:visible /></Demo>
 
 <Props rows={[
   { name: "notifications", type: "NotificationItem[]", default: "[]", description: "Items shown in the panel: `{ id, title, body?, time?, read?, variant? }`. `variant` is `'default' | 'info' | 'success' | 'warning' | 'error'`." },
+  { name: "open", type: "boolean", default: "false", description: "Bindable panel visibility." },
+  { name: "onOpenChange", type: "(open: boolean) => void", default: "undefined", description: "Called when the user opens or closes the panel, including dismissal. Not called for parent assignments." },
+  { name: "count", type: "number", default: "derived from notifications", description: "Independent unread total for the badge, accessible name and mark-all action. Zero overrides the list count." },
+  { name: "loading", type: "boolean", default: "false", description: "Shows loading text, suppresses the empty state and keeps loaded notifications visible." },
   { name: "onRead", type: "(id: string) => void", default: "undefined", description: "Called when an unread item is clicked. Items already read do not call it." },
   { name: "onReadAll", type: "() => void", default: "undefined", description: "Called by the mark all as read action." },
   { name: "onClear", type: "() => void", default: "undefined", description: "Called by the clear action." },
-  { name: "labels", type: "{ title?, markAll?, clear?, empty? }", default: "{}", description: "String overrides for i18n." },
+  { name: "labels", type: "{ title?, markAll?, clear?, empty?, loading? }", default: "{}", description: "String overrides for i18n." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
   { name: "children", type: "Snippet", default: "undefined", description: "Custom trigger content." },
 ]} />
