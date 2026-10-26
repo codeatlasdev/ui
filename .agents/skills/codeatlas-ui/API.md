@@ -4878,7 +4878,7 @@ Types:
 | `Align` | `type Align = (typeof ALIGN)[number];` |  |
 | `AvatarTokens` | `interface AvatarTokens extends AvatarFallbackTokens { size?: Partial< Record< "xs" \| "sm" \| "md" \| "lg" \| "xl", Pick<AvatarFallbackTokens, "fallbackSize" \| "fallbackWeight"> > >; }` |  |
 | `BrandColors` | `interface BrandColors { main: string; light: string; dark: string; contrast: string; }` |  |
-| `Breakpoint` | `type Breakpoint = "xs" \| "sm" \| "md" \| "lg" \| "xl";` |  |
+| `Breakpoint` | `type Breakpoint = "xs" \| keyof typeof SCALE;` |  |
 | `BuiltinPresetId` | `type BuiltinPresetId = \| "amber" \| "ocean" \| "crimson" \| "cyan" \| "violet" \| "emerald" \| "rose" \| "slate";` | Presets shipped in global.css. |
 | `BuiltinPresetSource` | `interface BuiltinPresetSource { id: "amber" \| "ocean" \| "crimson" \| "cyan" \| "violet" \| "emerald" \| "rose" \| "slate"; label: string; color: `#${string}`; hue: number; chroma: number; lightL: number; overrides: { light: TokenMap; dark: TokenMap }; }` |  |
 | `ButtonSizeTokens` | `interface ButtonSizeTokens { height?: CssValue; paddingX?: CssValue; fontSize?: CssValue; weight?: CssValue; tracking?: CssValue; }` | Typography and box tokens of one Button size. |

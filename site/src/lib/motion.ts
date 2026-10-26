@@ -15,7 +15,7 @@ ScrollTrigger.config({ ignoreMobileResize: true });
 export const reduced = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 /** Phones and tablets: native scroll only. Mirrors the `touch` class set by the inline script in index.astro. */
 export const touch = () =>
-	matchMedia("(pointer: coarse)").matches || matchMedia("(max-width: 900px)").matches;
+	matchMedia("(pointer: coarse)").matches || matchMedia("(max-width: 899.98px)").matches;
 export { gsap, ScrollTrigger };
 
 let lenis: Lenis | undefined;

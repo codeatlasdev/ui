@@ -1,5 +1,6 @@
 import { describe, expect, it } from "bun:test";
-import { lintSource } from "../scripts/lint-tokens.ts";
+import { BREAKPOINT_WIDTHS, lintSource } from "../scripts/lint-tokens.ts";
+import { BREAKPOINTS } from "../src/lib/components/Layout/layout.ts";
 
 const rules = (file: string, src: string) => lintSource(file, src).map((v) => v.rule);
 
@@ -127,6 +128,23 @@ describe("lint-tokens", () => {
 		const v = lintSource("x.css", css).filter((x) => x.rule === "breakpoint");
 		expect(v.map((x) => x.message.split(":")[0])).toEqual(["(max-width", "(min-width"]);
 		expect(lintSource("x.test.css", css).filter((x) => x.rule === "breakpoint")).toEqual([]);
+	});
+
+	// One owner of the scale (#649): layout.ts. The lint derives from it (the store: responsive.svelte.test.ts), so a new step is one edit.
+	it("the lint takes its scale from layout.ts", () => {
+		expect(BREAKPOINT_WIDTHS).toEqual(Object.values(BREAKPOINTS));
+	});
+
+	it("flags an off-scale width in a .astro <style> block and in a matchMedia string", () => {
+		const astro = "<div/>\n<style>\n@media (max-width: 900px) { .a { gap: 0 } }\n</style>";
+		expect(rules("Foo.astro", astro)).toEqual(["breakpoint"]);
+		expect(rules("Foo.astro", astro.replace("900px", "899.98px"))).toEqual([]);
+		const ts = 'const small = matchMedia("(max-width: 900px)").matches;';
+		expect(rules("motion.ts", ts)).toEqual(["breakpoint"]);
+		expect(rules("motion.ts", 'matchMedia("(max-width: 899.98px)")')).toEqual([]);
+		expect(rules("motion.ts", 'matchMedia("(pointer: coarse)")')).toEqual([]);
+		const inline = '<script is:inline>if (matchMedia("(max-width: 900px)").matches) go();</script>';
+		expect(rules("index.astro", inline)).toEqual(["breakpoint"]);
 	});
 
 	it("allows any width in a container query: it measures a box, not the viewport scale", () => {
