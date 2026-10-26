@@ -2,10 +2,10 @@
 	// Theme chapter: pick any built-in preset or paste a hex; the preview below is a real set of
 	// package components re-themed on its own wrapper. Brand presets are generated in the browser
 	// with the package's own palette generator, the same function defineTheme() uses at build time.
-	import { Button, Chip, Card, Progress, SegmentedControl, SwatchGroup, Switch } from "@codeatlasdev/ui";
+	import { BUILTIN_PRESETS, Button, Chip, Card, Progress, SegmentedControl, SwatchGroup, Switch } from "@codeatlasdev/ui";
 	import { generatePreset, hexToOklch, presetVars } from "@codeatlasdev/ui/utils/palette-generator";
 
-	const BUILTIN = ["amber", "ocean", "crimson", "cyan", "violet", "emerald", "rose", "slate"] as const;
+	const BUILTIN = BUILTIN_PRESETS.map((p) => p.id);
 	const STYLES = ["glass", "frosted", "solid", "flat"] as const;
 
 	let preset = $state<string>("ocean");

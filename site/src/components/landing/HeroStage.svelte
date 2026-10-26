@@ -17,12 +17,14 @@
 		Toaster,
 		colorScheme,
 		toast,
+		type BuiltinPresetId,
 		type SurfaceStyle,
 	} from "@codeatlasdev/ui";
 	import { Activity, Boxes, Gauge, Layers, Rocket, Users } from "@lucide/svelte";
 	import { onMount } from "svelte";
 
-	const PRESETS = ["ocean", "violet", "emerald", "rose", "cyan", "amber"] as const;
+	// A curated order of six built-ins for the hero, not the full set: a rename of one fails the type check.
+	const PRESETS = ["ocean", "violet", "emerald", "rose", "cyan", "amber"] as const satisfies readonly BuiltinPresetId[];
 	const STYLES: SurfaceStyle[] = ["glass", "frosted", "solid", "flat"];
 
 	let presetIdx = $state(0);
