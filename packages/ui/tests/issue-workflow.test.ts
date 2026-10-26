@@ -167,6 +167,19 @@ describe("issue-land.sh", () => {
 			"sh",
 			path,
 		]).exitCode === 0;
+	// One list (#653): every path a manifest run writes into the tree is accepted by `is_generated`, the list the land
+	// reads, so a new generated output cannot be left out of it (and `release.ts` stages whatever the manifest wrote).
+	it("accepts every path the manifest writes into the tree (#653)", async () => {
+		const { TREE_OUTPUTS } = await import("../scripts/build-manifest.ts");
+		for (const out of TREE_OUTPUTS) {
+			// a directory stands for the files under it: probe a file the manifest really writes there
+			const probe = out.endsWith("/")
+				? `${out}${out.includes("gallery") ? "001.md" : "catalog.json"}`
+				: out;
+			expect(generated(probe), probe).toBe(true);
+		}
+	});
+
 	it("rebuilds generated files and never picks a side of hand-written ones (#241)", () => {
 		for (const p of [
 			"bun.lock",

@@ -7,9 +7,10 @@ export const PREFIX = "@codeatlasdev/ui@";
 
 /**
  * Commands `bun run release` runs to turn pending changesets into the release commit. The bump
- * stamps the new version into the generated catalog (API.md, DEMOS.md, site/public/api/v1:
- * "Needs: @codeatlasdev/ui@<version>"), so they are regenerated before `git add -A`; otherwise
- * main keeps the previous stamp until an unrelated PR rebuilds them.
+ * stamps the new version into the generated catalog ("Needs: @codeatlasdev/ui@<version>"), so the
+ * manifest is rebuilt before `git add -A`; otherwise main keeps the previous stamp until an unrelated PR
+ * rebuilds it. Which files that covers is `TREE_OUTPUTS` (packages/ui/scripts/build-manifest.ts), checked
+ * against `scripts/generated-paths.sh`, the one list of generated files.
  */
 export function versionSteps(): string[][] {
 	return [
