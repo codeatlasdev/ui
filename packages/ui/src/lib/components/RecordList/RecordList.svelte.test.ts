@@ -192,8 +192,15 @@ describe("RecordList actions track (#731)", () => {
 
 	it("does not warn when `actions` appends the track", async () => {
 		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
-		await render(Harness, { width: 900, actionsProp: true, columns: "minmax(0,1fr) 5rem" });
-		await new Promise((r) => setTimeout(r, 50));
+		const screen = await render(Harness, {
+			width: 900,
+			actionsProp: true,
+			columns: "minmax(0,1fr) 5rem",
+		});
+		// The check runs in an effect after layout: wait for the row to be laid out, then assert silence.
+		await expect
+			.poll(() => getComputedStyle(q(screen.container, ".ca-record-row")).gridTemplateColumns)
+			.toContain(`${touchTarget()}px`);
 		expect(warn.mock.calls.filter((c) => String(c[0]).includes("RecordList"))).toEqual([]);
 		warn.mockRestore();
 	});
