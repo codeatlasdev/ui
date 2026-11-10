@@ -207,3 +207,41 @@ describe("DocsShell sidebar position", () => {
 		expect(inSidebarView(next.getByRole("link", { name: "Page 30" }).element())).toBe(true);
 	});
 });
+
+describe("DocsShell page surface (#743)", () => {
+	// The mesh is a fixed `body::before` layer drawn by the glass and frosted styles. An opaque docs
+	// header over it leaves a gradient strip with a hard edge under the nav, and nothing on a
+	// reading page blurs. The shell flags <html> while mounted so the page behind it is flat.
+	const meshOf = () => getComputedStyle(document.body, "::before").backgroundImage;
+	const html = document.documentElement;
+
+	afterEach(() => {
+		html.removeAttribute("data-style");
+		html.classList.remove("dark");
+	});
+
+	it.each(["glass", "frosted"])(
+		"paints no mesh under data-style=%s while mounted, and restores it on unmount",
+		async (style) => {
+			await page.viewport(...VIEWPORTS.desktop);
+			html.dataset.style = style;
+			html.classList.add("dark");
+			expect(meshOf()).not.toBe("none");
+			const screen = await render(DocsHarness, { kind: "shell" });
+			await expect.poll(meshOf).toBe("none");
+			expect(html.hasAttribute("data-ca-reading")).toBe(true);
+			screen.unmount();
+			await expect.poll(() => html.hasAttribute("data-ca-reading")).toBe(false);
+			expect(meshOf()).not.toBe("none");
+		}
+	);
+
+	it('surface="inherit" keeps the mesh', async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		html.dataset.style = "glass";
+		html.classList.add("dark");
+		await render(DocsHarness, { kind: "shell", surface: "inherit" });
+		expect(html.hasAttribute("data-ca-reading")).toBe(false);
+		expect(meshOf()).not.toBe("none");
+	});
+});

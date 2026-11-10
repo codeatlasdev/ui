@@ -57,6 +57,12 @@
      * action bar on narrow ones, so reading flows header → content → actions like an e-book.
      */
     pager?: { prev?: DocsPagerLink; next?: DocsPagerLink };
+    /**
+     * Page surface behind the shell. `flat` (default) paints no mesh or grain: the header is opaque
+     * and nothing on a reading page blurs, so a glass/frosted mesh would only show as a hard-edged
+     * band under the nav. `inherit` keeps the theme's page mesh.
+     */
+    surface?: 'flat' | 'inherit';
     children: Snippet;
   }
 
@@ -74,6 +80,7 @@
     actions,
     menuFooter,
     pager,
+    surface = 'flat',
     children,
   }: Props = $props();
 
@@ -86,6 +93,14 @@
   let sidebar = $state<HTMLElement>();
   const sidebarKey = $derived(`ca-docs-sidebar:${active ?? ''}`);
   const save = () => sidebar && saveSidebar(sidebar, sidebarKey);
+
+  // The mesh is a fixed `body::before` layer of <html>, so the flag lives on <html> while mounted.
+  $effect(() => {
+    if (surface !== 'flat') return;
+    const root = document.documentElement;
+    root.setAttribute('data-ca-reading', '');
+    return () => root.removeAttribute('data-ca-reading');
+  });
 
   $effect(() => {
     void pathname;
@@ -151,6 +166,10 @@
 <style>
 @layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
 @layer ca.components {
+    :global(html[data-ca-reading]) {
+      --ca-page-mesh: none;
+    }
+
     :root {
       --ca-docs-sidebar-w: 272px;
       --ca-docs-toc-w: 232px;
