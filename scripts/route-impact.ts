@@ -186,6 +186,8 @@ export interface RouteImpact {
 	folders: Map<string, string>;
 	/** component folders the site's own shell code (layouts, docs shell, site chrome) renders on every page */
 	globalFolders: Set<string>;
+	/** subpath entries (`@seo`, `@kit`…) the site's own shell imports: on every page */
+	globalSubpaths: Set<string>;
 }
 
 const docRoute = (mdx: string) =>
@@ -391,6 +393,7 @@ export function buildImpact(): RouteImpact {
 	// A package component rendered by the site's own shell (not by a demo) is on every page.
 	const folders = symbolFolders();
 	const globalFolders = new Set<string>();
+	const globalSubpaths = new Set<string>();
 	const shell = [
 		...walk(join(SITE, "layouts"), /\.(astro|svelte|ts)$/),
 		...walk(join(SITE, "lib"), /\.(astro|svelte|ts)$/),
@@ -399,10 +402,11 @@ export function buildImpact(): RouteImpact {
 	];
 	for (const file of shell)
 		for (const sym of uiSymbols(read(file))) {
+			if (sym.startsWith("@")) globalSubpaths.add(sym);
 			const folder = folders.get(sym);
 			if (folder) globalFolders.add(folder);
 		}
-	return { symbols, files, folders, globalFolders };
+	return { symbols, files, folders, globalFolders, globalSubpaths };
 }
 
 const isItem = (route: string) => /^\/gallery\/[^/]+\/$/.test(route);
@@ -479,6 +483,9 @@ export function select(changed: string[], impact = buildImpact()): Selection {
 		}
 		const sub = f.match(/^packages\/ui\/src\/lib\/(charts|map|forms|seo|kit|i18n|testing)\//);
 		if (sub) {
+			// A subpath the site's own layout imports (`seo`: every page's head) reaches every page.
+			if (impact.globalSubpaths.has(`@${sub[1]}`))
+				return everything(f, `${sub[1]} is imported by the site shell on every page`);
 			pick(
 				[...impact.symbols].filter(([, s]) => s.has(`@${sub[1]}`)).map(([r]) => r),
 				f

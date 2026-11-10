@@ -108,6 +108,20 @@ describe("route-impact", () => {
 		}
 	});
 
+	it("selects every route for a package subpath the site layout imports on every page (seo: the head)", () => {
+		// `Base.astro` imports `@codeatlasdev/ui/seo`, so a change under `lib/seo/` can alter every page. Read
+		// it from the map, like the components above: a leaf file there must not run as a narrow selection
+		// that still audits ~480 routes unthinned (the land gate went 418 s over its 180 s budget).
+		expect(impact.globalSubpaths.has("@seo")).toBe(true);
+		for (const sub of impact.globalSubpaths) {
+			// Only the subpaths `select` maps (the others already fall through to "every route").
+			if (!/^@(charts|map|forms|seo|kit|i18n|testing)$/.test(sub)) continue;
+			const s = pick(`packages/ui/src/lib/${sub.slice(1)}/x.ts`);
+			expect(s.all).toBe(true);
+			expect(s.reason).toContain("every page");
+		}
+	});
+
 	it("ignores files that cannot change a rendered route", () => {
 		for (const f of [
 			"README.md",
