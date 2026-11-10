@@ -379,6 +379,9 @@ export function oklchToHex(color: string): string {
 		.join("")}`;
 }
 
+/** How much lighter the dark scheme's brand main is than the light one (so it reads on dark surfaces). */
+export const DARK_BRAND_LIFT = 0.09;
+
 /**
  * Generate a complete @codeatlas/ui preset from a single primary colour.
  *
@@ -395,7 +398,7 @@ export function generatePreset(hue: number, chroma = 0.21, lightL = 0.54): Prese
 	const lightFill = brandFillPair(L, c, h);
 
 	// ── Dark-mode brand (brighter so it reads on dark bg) ───────
-	const darkL = r(cl(L + 0.09));
+	const darkL = r(cl(L + DARK_BRAND_LIFT));
 	const darkC = r(c * 0.98);
 	// Fill chroma matches brand-main; text on the fill is chosen by real WCAG contrast.
 	const darkFill = brandFillPair(darkL, darkC, h);

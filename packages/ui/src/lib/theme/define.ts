@@ -5,6 +5,7 @@
 
 import {
 	cssBlock,
+	DARK_BRAND_LIFT,
 	generatePreset,
 	hexToOklch,
 	oklchToHex,
@@ -82,7 +83,7 @@ export const BUILTIN_IDS: readonly string[] = BUILTIN_PRESETS.map((p) => p.id);
  * and the build measures text roles after compositing it (see `presetContrastIssues`).
  */
 export interface SchemeColors {
-	/** Brand for this scheme as `#rrggbb`; brand fills, text and glows are regenerated from it. */
+	/** Brand for this scheme as `#rrggbb`; brand fills, text and glows are regenerated from it for this scheme (the dark ramp is solved against the dark surfaces, not copied from the light one). */
 	brand?: `#${string}`;
 	/** Background of `Button variant="filled"` and other brand-filled controls (--ca-brand-fill). Defaults to a fill darkened until white text reaches AA. */
 	brandFill?: ColorValue;
@@ -373,8 +374,12 @@ function roleTokens(src: PresetDefinition, scheme: "light" | "dark"): TokenMap {
 				`[codeatlasdev/ui] preset "${src.id}": colors.${scheme}.brand must be #rrggbb`
 			);
 		const { l, c, h } = hexToOklch(colors.brand);
-		// Generated with the brand as the light anchor: take that side's brand/glow ramp.
-		const g = presetVars(generatePreset(h, c, l)).light;
+		// The pinned brand anchors the ramp of ITS scheme: the light side takes it as `brand-main`; the
+		// generator's dark main is the light anchor + DARK_BRAND_LIFT, so the dark side is generated from
+		// the anchor minus that lift and lands on the pinned colour, with text and fill solved against
+		// the dark surfaces (a light-scheme ramp in dark leaves the text at ~2:1 on a near-black page).
+		const anchor = scheme === "dark" ? Math.max(0, l - DARK_BRAND_LIFT) : l;
+		const g = presetVars(generatePreset(h, c, anchor))[scheme];
 		for (const [k, v] of Object.entries(g) as [keyof TokenMap, string][])
 			if (k.startsWith("--ca-brand-") || k.startsWith("--ca-glow-")) out[k] = v;
 		if (scheme === "light") out["--ca-chart-brand"] = colors.brand;
