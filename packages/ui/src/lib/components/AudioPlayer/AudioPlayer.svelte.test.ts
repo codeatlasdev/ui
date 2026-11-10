@@ -275,6 +275,10 @@ describe("AudioPlayer", () => {
 		const peaks = Array.from({ length: 500 }, (_, i) => (i === 250 ? 1 : 0.1));
 		const screen = await render(AudioPlayer, { props: { src: wav(), duration: 5, peaks } });
 		const s = slider(screen.container);
+		// A fixed starting width: the wave shares a wrapping row with the controls, so its default width
+		// depends on the platform's fonts (on Linux CI it already sat on its own narrow row).
+		const player = screen.container.querySelector(".ca-audio") as HTMLElement;
+		player.style.width = "600px";
 		await waitFor(() => bars(screen.container) > 0);
 		const n = bars(screen.container);
 		expect(n).toBeGreaterThan(5);
@@ -286,7 +290,7 @@ describe("AudioPlayer", () => {
 		expect(Math.max(...heights)).toBeCloseTo(1, 2);
 		expect(heights.filter((h) => h > 0.5).length).toBe(1);
 		// Narrower container: fewer bars.
-		(screen.container.querySelector(".ca-audio") as HTMLElement).style.width = "160px";
+		player.style.width = "160px";
 		await waitFor(() => bars(screen.container) < n);
 	});
 
