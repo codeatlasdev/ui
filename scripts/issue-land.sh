@@ -1,6 +1,7 @@
 #!/usr/bin/env sh
-# Land an issue PR: rebase its worktree on origin/main, regenerate generated files, validate,
-# run the land gate (affected tests, canaries and changed screenshots, 3 min budget; validate runs on the push), mark ready, squash-merge, clean up.
+# Land an issue PR: rebase its worktree on origin/main, regenerate generated files, run the short local
+# check (validate + the tests the diff affects), push, and hand the PR to the merge queue (#822): CI is the gate,
+# and the queue tests queued PRs together, so two PRs that pass alone cannot break main. Waits for the merge, cleans up.
 #   sh scripts/issue-land.sh <issue-number>
 set -e
 N="$1"
@@ -44,24 +45,33 @@ for f in $(git status --porcelain --untracked-files=all | awk '{print $2}'); do
 done
 git diff --cached --quiet || git commit -qm "chore: regenerate lockfile and manifest after rebase"
 [ -z "$(git status --porcelain --untracked-files=no)" ] || { git status --short; echo "uncommitted changes in $WT" >&2; exit 1; }
-# Budgeted gate, chosen by what the diff touches: the tests and screenshots it affects plus the route canaries
-# (`land`, 3 minutes), or, when a SHARED file changed (tokens, styles, theme, primitives, a test setup file),
-# every component test and the route sweep thinned to representatives (gallery items, atlas terms and the docs pages
-# that still render every component; the pages the diff changed always stay) without screenshots (`landShared`,
-# 4 minutes). The full sweep and the screenshots of a shared change run at release (`test:full`, `bun run test:vrt`)
-# and on demand. `validate` (90 s) runs on the push below, so it is not run twice.
-BUDGET=$(bun scripts/test-changed.ts --land --print-budget)
-bun scripts/test-run.ts --budget="$BUDGET" bun scripts/test-changed.ts --land
+# Short local check: `validate` (it marks the tree, so the pre-push hook below does not run it again) and the
+# unit, component and screenshot tests the diff affects (`bun run test`; it never builds the site). The site build,
+# the route sweep and every browser suite run on CI in the merge queue. A screenshot mismatch means the change moved
+# pixels: run `bun run test:vrt:update` in $WT, review the images, commit them and rerun this script.
+# `bun scripts/test-changed.ts --land` is still the offline gate when CI is unavailable.
+bun run validate
+sh scripts/test-changed.sh
 git push -q --force-with-lease
 gh pr ready "$PR" >/dev/null 2>&1 || true
-# CI is paused (ci.yml disabled, see AGENTS.md): the budgeted gate above and `validate` on the push are the
-# gate. Unless a shared file changed, the gate includes the screenshots of the changed components and pages,
-# rendered natively. A mismatch means the change moved pixels: run `bun run test:vrt:update` in $WT, review the images, commit them and
-# rerun this script.
 # No --delete-branch: gh would switch this worktree to main (checked out in $ROOT) and delete the
 # local branch (checked out here), failing after the merge (#103). `issue.ts done` removes both.
 # GitHub deletes the remote branch on merge (repo setting); the API call covers it being turned off.
-gh pr merge "$PR" --squash >/dev/null
+gh pr merge "$PR" --squash --auto >/dev/null
+# The queue merges when CI passes on the combined tree, or removes the PR when it fails.
+DEADLINE=$(( $(date +%s) + 45 * 60 ))
+while :; do
+	# OPEN with neither auto-merge armed nor a queue entry: CI failed on the PR or in the queue, which dropped it.
+	STATE=$(gh api graphql -F n="$PR" -f query='query($n:Int!){repository(owner:"codeatlasdev",name:"ui"){pullRequest(number:$n){state isInMergeQueue autoMergeRequest{enabledAt}}}}' \
+		-q '.data.repository.pullRequest | if .state != "OPEN" then .state elif .isInMergeQueue or .autoMergeRequest then "WAITING" else "DROPPED" end')
+	[ "$STATE" = MERGED ] && break
+	if [ "$STATE" != WAITING ] || [ "$(date +%s)" -gt "$DEADLINE" ]; then
+		gh pr checks "$PR" || true
+		echo "#$N did not merge (state $STATE): see the checks above" >&2
+		exit 1
+	fi
+	sleep 20
+done
 gh api -X DELETE "repos/{owner}/{repo}/git/refs/heads/$BRANCH" >/dev/null 2>&1 || true
 cd "$ROOT" && git fetch -q origin main && bun scripts/issue.ts done "$N"
 echo "#$N landed"
