@@ -261,3 +261,81 @@ describe("Combobox single creatable (#295)", () => {
 		await expect.element(screen.getByRole("listbox")).not.toBeInTheDocument();
 	});
 });
+
+describe("Combobox search field (#720)", () => {
+	const STATES = [
+		{ value: "go", label: "Goiás" },
+		{ value: "sp", label: "São Paulo" },
+		{ value: "mg", label: "Minas Gerais" },
+	];
+
+	it("typing a name that starts with an option's initial keeps every letter", async () => {
+		const screen = await render(ComboboxHarness, { label: "State", options: STATES });
+		await screen.getByRole("button", { name: "State" }).click();
+		await expect.element(screen.getByRole("listbox")).toBeVisible();
+		await userEvent.keyboard("grande");
+		await expect.element(screen.getByRole("combobox", { name: "Search…" })).toHaveValue("grande");
+	});
+
+	it("filtering ignores accents and case", async () => {
+		const screen = await render(ComboboxHarness, { label: "State", options: STATES });
+		await screen.getByRole("button", { name: "State" }).click();
+		await screen.getByRole("combobox", { name: "Search…" }).fill("sao");
+		await expect.element(screen.getByRole("option", { name: "São Paulo" })).toBeVisible();
+		await expect.element(screen.getByRole("option", { name: "Goiás" })).not.toBeInTheDocument();
+		await screen.getByRole("combobox", { name: "Search…" }).fill("GOIAS");
+		await expect.element(screen.getByRole("option", { name: "Goiás" })).toBeVisible();
+	});
+
+	it("word-start matches rank before mid-word matches", async () => {
+		const screen = await render(ComboboxHarness, {
+			label: "State",
+			options: [
+				{ value: "a", label: "Bacia" },
+				{ value: "b", label: "Acre" },
+				{ value: "c", label: "Rio de Acre" },
+			],
+		});
+		await screen.getByRole("button", { name: "State" }).click();
+		await screen.getByRole("combobox", { name: "Search…" }).fill("ac");
+		await settled();
+		const labels = screen
+			.getByRole("option")
+			.elements()
+			.map((el) => el.textContent?.trim());
+		expect(labels).toEqual(["Acre", "Rio de Acre", "Bacia"]);
+	});
+
+	it("the matched text is highlighted", async () => {
+		const screen = await render(ComboboxHarness, { label: "State", options: STATES });
+		await screen.getByRole("button", { name: "State" }).click();
+		await screen.getByRole("combobox", { name: "Search…" }).fill("sao");
+		await expect
+			.poll(() => document.querySelector(".ca-combobox__item mark")?.textContent)
+			.toBe("São");
+	});
+});
+
+describe("Combobox multiple trigger (#735)", () => {
+	it("keeps the placeholder in the trigger when chips are shown", async () => {
+		const screen = await render(MultiHarness, {
+			label: "Labels",
+			placeholder: "Add tag…",
+			initial: ["bug", "docs"],
+		});
+		const trigger = screen.getByRole("button", { name: /^Labels/ });
+		await expect.element(trigger).toHaveTextContent("Add tag…");
+		await expect.element(trigger).not.toHaveTextContent("selected");
+	});
+
+	it("showCount opts back into the count", async () => {
+		const screen = await render(MultiHarness, {
+			label: "Labels",
+			showCount: true,
+			initial: ["bug", "docs"],
+		});
+		await expect
+			.element(screen.getByRole("button", { name: /^Labels/ }))
+			.toHaveTextContent("2 selected");
+	});
+});
