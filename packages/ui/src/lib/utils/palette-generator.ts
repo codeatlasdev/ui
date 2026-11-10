@@ -526,7 +526,11 @@ export type TokenMap = Record<`--ca-${string}`, string>;
 // camelCase PresetTokens key → --ca-kebab-case
 const cssVar = (k: string) => `--ca-${k.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)}` as const;
 
-/** Neutral dark tokens re-declared in every dark block so light preset values never cascade in. */
+/**
+ * Neutral dark tokens re-declared in every dark block so light preset values never cascade in. The
+ * glass edge and shadow are the exception in the built-in files (`SHARED_NEUTRALS`, theme/define.ts):
+ * no light preset block declares them, so `.dark` already wins by inheritance and a copy is dead bytes.
+ */
 export const NEUTRAL_DARK: TokenMap = {
 	"--ca-outline-subtle": "oklch(1 0 0 / 0.08)",
 	"--ca-outline-default": "oklch(1 0 0 / 0.14)",

@@ -33,8 +33,6 @@
   --ca-glass-tint-thick: oklch(0.975 0.003 350 / 0.52);
   --ca-glass-tint-chrome: oklch(0.980 0.002 350 / 0.72);
   --ca-glass-tint-solid: oklch(0.960 0.004 350);
-  --ca-glass-border: oklch(0.700 0 0 / 0.28);
-  --ca-glass-shadow: 0 2px 8px oklch(0 0 0 / 0.06);
   --ca-glow-primary: oklch(0.5 0.22 350 / 0.12);
   --ca-glow-primary-strong: oklch(0.5 0.22 350 / 0.22);
   --ca-vibrancy-label: oklch(0.18 0.010 350 / 0.85);
@@ -87,8 +85,6 @@
   --ca-glass-tint-thick: oklch(0.20 0 0 / 0.65);
   --ca-glass-tint-chrome: oklch(0.16 0 0 / 0.85);
   --ca-glass-tint-solid: oklch(0.18 0 0);
-  --ca-glass-border: oklch(1 0 0 / 0.18);
-  --ca-glass-shadow: 0 4px 16px oklch(0 0 0 / 0.35);
   --ca-scrim-color: oklch(0 0 0 / 0.50);
 }
 @media (prefers-contrast: more) {
