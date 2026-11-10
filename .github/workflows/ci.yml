@@ -23,6 +23,8 @@ concurrency:
 permissions:
   contents: read
 
+# Browser suites run once per land, in the merge queue (and on push to main): a PR run checks Validate + build only,
+# because the queue tests the combined tree that actually merges (#838).
 jobs:
   changes:
     name: Changed areas
@@ -86,7 +88,7 @@ jobs:
   components:
     name: Component tests (${{ matrix.shard }}/2)
     needs: changes
-    if: ${{ !inputs.update-snapshots && needs.changes.outputs.package == 'true' }}
+    if: ${{ github.event_name != 'pull_request' && !inputs.update-snapshots && needs.changes.outputs.package == 'true' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     strategy:
@@ -114,7 +116,10 @@ jobs:
   throttled:
     name: Component tests (CPU throttled)
     needs: changes
-    if: ${{ !inputs.update-snapshots && needs.changes.outputs.package == 'true' }}
+    # After merge (push to main) and on demand, not in the queue: CDP throttling multiplies the runner's own slowness,
+    # and in the queue these slow-host simulations dropped three batches in one day (a timeout, then a 15 min hang).
+    # A red run on main is still the signal; it opens an issue instead of blocking every PR.
+    if: ${{ (github.event_name == 'push' || github.event_name == 'workflow_dispatch') && !inputs.update-snapshots && needs.changes.outputs.package == 'true' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -124,13 +129,14 @@ jobs:
           browsers: chromium
       - run: bun run build:pkg
       # One worker: the throttled page is the only load on the runner, as on a developer machine.
-      - run: bun run --cwd packages/ui test:browser throttled --maxWorkers=1
+      # A hang fails the test that hangs (and names it) long before the job timeout.
+      - run: bun run --cwd packages/ui test:browser throttled --maxWorkers=1 --hookTimeout=120000 --teardownTimeout=60000 --reporter=verbose
 
   site:
     name: Site ${{ matrix.suite }} (${{ matrix.shard }}/${{ matrix.total }})
     needs: [changes, build]
     # Docs-only or repo-meta changes (AGENTS.md, skills, issue templates) skip the browser suites.
-    if: ${{ !inputs.update-snapshots && (needs.changes.outputs.package == 'true' || needs.changes.outputs.site == 'true') }}
+    if: ${{ github.event_name != 'pull_request' && !inputs.update-snapshots && (needs.changes.outputs.package == 'true' || needs.changes.outputs.site == 'true') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
@@ -250,7 +256,7 @@ jobs:
     name: CI ok
     # The single required check. Skipped jobs (path filters) count as passing; failures don't.
     if: ${{ always() }}
-    needs: [build, components, throttled, site]
+    needs: [build, components, site]
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:

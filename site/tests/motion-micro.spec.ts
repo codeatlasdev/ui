@@ -71,18 +71,22 @@ test.describe("motion micro-interactions", () => {
 		});
 
 		test("press spring: pausing mid autoplay press releases it (#535)", async ({ page }) => {
-			// The autoplay presses at 500ms and releases at 660ms of each cycle. Freeze the page clock
-			// inside that window, pause there, and the button must come back to rest, not stay at 0.94.
+			// The autoplay presses at 500ms and releases at 660ms of each cycle. Pause there and the button must
+			// come back to rest, not stay at 0.94. `install()` lets fake time flow with the wall clock, so on a slow
+			// runner the cycle phase at a fixed offset was random (#833): freeze it, then step until the press shows.
 			await page.clock.install();
 			await gotoReady(page, PAGE);
 			const stage = page.getByRole("group", { name: /^Press spring:/ });
 			await stage.scrollIntoViewIfNeeded();
 			await expect(stage).toHaveAttribute("data-playing", "true");
-			await page.clock.runFor(580);
+			// pauseAt must be ahead of the page clock, which keeps flowing until then: 10 ms was in the past on CI. Any
+			// phase works, the loop below steps through a whole cycle.
+			await page.clock.pauseAt((await page.evaluate(() => Date.now())) + 2000);
 			const btn = stage.getByRole("button", { name: "Pay $48.00" });
-			await expect
-				.poll(() => btn.evaluate((el) => Number(el.style.getPropertyValue("--s"))))
-				.toBeLessThan(0.99);
+			const scale = () => btn.evaluate((el) => Number(el.style.getPropertyValue("--s")));
+			// At most one cycle of 20 ms steps until the button is mid-press.
+			for (let t = 0; t < 3000 && (await scale()) >= 0.99; t += 20) await page.clock.runFor(20);
+			expect(await scale()).toBeLessThan(0.99);
 			await stage.getByRole("button", { name: "Pause" }).click();
 			await page.clock.runFor(2000);
 			await expect

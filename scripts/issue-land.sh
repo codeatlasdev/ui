@@ -61,9 +61,12 @@ gh pr merge "$PR" --squash --auto >/dev/null
 # The queue merges when CI passes on the combined tree, or removes the PR when it fails.
 DEADLINE=$(( $(date +%s) + 45 * 60 ))
 while :; do
-	# OPEN with neither auto-merge armed nor a queue entry: CI failed on the PR or in the queue, which dropped it.
-	STATE=$(gh api graphql -F n="$PR" -f query='query($n:Int!){repository(owner:"codeatlasdev",name:"ui"){pullRequest(number:$n){state isInMergeQueue autoMergeRequest{enabledAt}}}}' \
-		-q '.data.repository.pullRequest | if .state != "OPEN" then .state elif .isInMergeQueue or .autoMergeRequest then "WAITING" else "DROPPED" end')
+	# DROPPED: the queue removed it (neither auto-merge armed nor a queue entry), or the PR's own `CI ok` failed:
+	# GitHub then keeps auto-merge armed and would wait forever.
+	STATE=$(gh api graphql -F n="$PR" -f query='query($n:Int!){repository(owner:"codeatlasdev",name:"ui"){pullRequest(number:$n){state isInMergeQueue autoMergeRequest{enabledAt} commits(last:1){nodes{commit{checkSuites(first:20){nodes{checkRuns(first:1,filterBy:{checkName:"CI ok"}){nodes{conclusion}}}}}}}}}}' \
+		-q '.data.repository.pullRequest | if .state != "OPEN" then .state
+			elif ([.commits.nodes[0].commit.checkSuites.nodes[].checkRuns.nodes[].conclusion] | index("FAILURE")) and (.isInMergeQueue | not) then "DROPPED"
+			elif .isInMergeQueue or .autoMergeRequest then "WAITING" else "DROPPED" end')
 	[ "$STATE" = MERGED ] && break
 	if [ "$STATE" != WAITING ] || [ "$(date +%s)" -gt "$DEADLINE" ]; then
 		gh pr checks "$PR" || true

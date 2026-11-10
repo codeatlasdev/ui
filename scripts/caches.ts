@@ -101,6 +101,13 @@ export const STORES: Store[] = [
 		maxBytes: 128 * MB,
 	},
 	{ name: "run records", dir: join(root, ".cache/test-runs"), maxAgeHours: 24, maxBytes: 1 * MB },
+	// Extracted docs samples (packages/ui/scripts/check-docs-samples.ts), one directory per process.
+	{
+		name: "docs samples",
+		dir: join(root, "site/.cache/docs-samples"),
+		maxAgeHours: 1,
+		maxBytes: 16 * MB,
+	},
 	// `bun run test:history` (scripts/test-run.ts): one line per top-level run, shared by every worktree.
 	{
 		name: "run history",

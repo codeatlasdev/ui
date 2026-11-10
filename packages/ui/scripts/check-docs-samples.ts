@@ -21,7 +21,9 @@ import { fileURLToPath } from "node:url";
 
 const REPO = resolve(dirname(fileURLToPath(import.meta.url)), "../../..");
 const DOCS = join(REPO, "site/src/content/docs");
-const OUT = join(REPO, "site/.cache/docs-samples");
+// One directory per process: `validate` runs `docs-samples.slow.ts` beside the unit suite, whose
+// ai-pages-coverage test extracts samples too, and a shared directory was emptied under it (ENOENT on CI).
+const OUT = join(REPO, `site/.cache/docs-samples/${process.pid}`);
 const SVELTE_CHECK = join(REPO, "packages/ui/node_modules/.bin/svelte-check");
 
 export interface Sample {
@@ -209,7 +211,7 @@ export function extractSamples(): Sample[] {
 	}
 	writeFileSync(
 		join(OUT, "tsconfig.json"),
-		JSON.stringify({ extends: "../../tsconfig.json", include: ["./*.svelte", "./*.ts"] })
+		JSON.stringify({ extends: "../../../tsconfig.json", include: ["./*.svelte", "./*.ts"] })
 	);
 	return samples;
 }
@@ -232,7 +234,7 @@ export async function checkDocsSamples(
 	writeFileSync(
 		join(OUT, "tsconfig.json"),
 		JSON.stringify({
-			extends: "../../tsconfig.json",
+			extends: "../../../tsconfig.json",
 			compilerOptions: { strict },
 			include: ["./*.svelte", "./*.ts"],
 		})
