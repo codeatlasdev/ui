@@ -11,6 +11,8 @@
 		indeterminate?: boolean;
 		disabled?: boolean;
 		label?: string;
+		/** Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. */
+		hideLabel?: boolean;
 		/** Native `name`, so the checkbox is part of `FormData` on a plain form submit (value `on`). */
 		name?: string;
 		/** Accessible name when no visible `label` is rendered. */
@@ -28,6 +30,7 @@
 		indeterminate = false,
 		disabled = false,
 		label,
+		hideLabel = false,
 		name,
 		"aria-label": ariaLabel,
 		"aria-labelledby": ariaLabelledby,
@@ -73,7 +76,7 @@
 		</span>
 	</span>
 	{#if label}
-		<label for={checkId} class="ca-checkbox__label" class:ca-checkbox__label--disabled={disabled}>
+		<label for={checkId} class="ca-checkbox__label" class:ca-checkbox__label--disabled={disabled} class:ca-sr-only={hideLabel}>
 			{label}
 		</label>
 	{/if}

@@ -19,6 +19,8 @@
     options:       Option[];
     disabled?:     boolean;
     label?:        string;
+    /** Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. */
+    hideLabel?:    boolean;
     description?:  string;
     error?:        string;
     required?:     boolean;
@@ -39,6 +41,7 @@
     options,
     disabled    = false,
     label,
+    hideLabel   = false,
     description,
     error,
     required    = false,
@@ -115,7 +118,7 @@
 
 <div class="ca-sel {className}" class:ca-sel--sm={size === 'sm'} class:ca-sel--error={!!error} class:ca-sel--disabled={disabled}>
   {#if label}
-    <label for={id} class="ca-sel__label">
+    <label for={id} class="ca-sel__label" class:ca-sr-only={hideLabel}>
       {label}{#if required}<span class="ca-sel__req" aria-hidden="true"> *</span><span class="ca-sr-only"> ({t().select.required})</span>{/if}
     </label>
   {/if}

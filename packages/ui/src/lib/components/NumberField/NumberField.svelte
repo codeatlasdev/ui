@@ -11,6 +11,8 @@
     max?:         number;
     step?:        number;
     label?:       string;
+    /** Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. */
+    hideLabel?:   boolean;
     disabled?:    boolean;
     class?:       string;
     error?:       string;
@@ -27,6 +29,7 @@
     max,
     step     = 1,
     label,
+    hideLabel = false,
     disabled = false,
     class: className = '',
     error,
@@ -71,7 +74,7 @@
   class:ca-nf--disabled={disabled}
 >
   {#if label}
-    <label for={inputId} class="ca-nf__label">
+    <label for={inputId} class="ca-nf__label" class:ca-sr-only={hideLabel}>
       {label}{#if required}<span class="ca-nf__req" aria-hidden="true"> *</span>{/if}
     </label>
   {/if}

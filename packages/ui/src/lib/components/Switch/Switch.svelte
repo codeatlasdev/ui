@@ -5,6 +5,8 @@
     checked?: boolean;
     disabled?: boolean;
     label?: string;
+    /** Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. */
+    hideLabel?: boolean;
     /** Native `name`, so the switch is part of `FormData` on a plain form submit (value `on` when checked). */
     name?: string;
     /** Accessible name when no visible `label` is rendered. */
@@ -20,6 +22,7 @@
     checked = $bindable(false),
     disabled = false,
     label,
+    hideLabel = false,
     name,
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledby,
@@ -63,7 +66,7 @@
     <span class="ca-switch__thumb" aria-hidden="true"></span>
   </span>
   {#if label}
-    <label for={switchId} class="ca-switch__label" class:ca-switch__label--disabled={disabled}>
+    <label for={switchId} class="ca-switch__label" class:ca-switch__label--disabled={disabled} class:ca-sr-only={hideLabel}>
       {label}
     </label>
   {/if}

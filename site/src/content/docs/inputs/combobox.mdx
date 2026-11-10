@@ -47,6 +47,7 @@ Add `creatable` to offer a `Create "text"` row when the query matches no option 
   { name: "oncreate", type: "(value: string) => void", description: "Called with the new text when the create row is chosen." },
   { name: "options", type: "ComboboxOption[]", description: "Options: { value, label, disabled? }." },
   { name: "label", type: "string", description: "Visible label above the trigger." },
+  { name: "hideLabel", type: "boolean", default: "false", description: "Renders the label with `.ca-sr-only`: read by screen readers, not shown. For a field in a toolbar, table or grid that already shows its name." },
   { name: "ariaLabel", type: "string", description: "Accessible name when there is no visible `label`. The trigger is named `ariaLabel` followed by its current value. Without either, it is named only by its current value." },
   { name: "placeholder", type: "string", default: "'Select…' (localized)", description: "Trigger text when nothing is selected. Default comes from the active i18n catalog." },
   { name: "searchPlaceholder", type: "string", default: "'Search…' (localized)", description: "Placeholder and accessible name of the search input." },

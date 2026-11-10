@@ -35,6 +35,7 @@ Without a visible `label`, always pass `aria-label` (or `aria-labelledby`) so th
   { name: "disabled", type: "boolean", default: "false", description: "Disables interaction." },
   { name: "name", type: "string", description: "Native name, so the switch is in FormData on a plain form submit (value `on` when checked, absent when not)." },
   { name: "label", type: "string", description: "Visible label rendered beside the switch." },
+  { name: "hideLabel", type: "boolean", default: "false", description: "Renders the label with `.ca-sr-only`: read by screen readers, not shown. For a field in a toolbar, table or grid that already shows its name." },
   { name: "aria-label", type: "string", description: "Accessible name used when no visible label is rendered." },
   { name: "aria-labelledby", type: "string", description: "Id of an element that names the switch. Ignored when label is set." },
   { name: "class", type: "string", description: "Extra classes on the wrapper." },

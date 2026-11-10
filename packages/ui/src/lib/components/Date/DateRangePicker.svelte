@@ -18,6 +18,8 @@
 
   interface Props {
     label?:        string;
+    /** Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. */
+    hideLabel?:    boolean;
     description?:  string;
     error?:        string;
     disabled?:     boolean;
@@ -47,6 +49,7 @@
 
   let {
     label,
+    hideLabel    = false,
     description,
     error,
     disabled     = false,
@@ -153,6 +156,7 @@
   {id}
   field={startField}
   {label}
+  {hideLabel}
   {description}
   {error}
   {disabled}
