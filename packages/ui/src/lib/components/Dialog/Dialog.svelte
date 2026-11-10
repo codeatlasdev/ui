@@ -7,7 +7,7 @@
   import { devWarn } from '../../utils/dev-warn.js';
   import { createPresence } from '../../primitives/index.js';
   import { createIds } from '../../primitives/index.js';
-  import { modalLayer } from './modal-layer.js';
+  import { modalLayer } from './modal-layer.svelte.js';
   import { cueFor, soundBus, type SoundProp } from '../../utils/sound-bus.js';
   const t = useMessages(dialog);
 

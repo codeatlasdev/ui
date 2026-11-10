@@ -3,7 +3,7 @@
   import { alertDialog } from '../../i18n/groups/alertDialog.js';
   import type { Snippet } from 'svelte';
   import { createIds, createPresence } from '../../primitives/index.js';
-  import { modalLayer } from '../Dialog/modal-layer.js';
+  import { modalLayer } from '../Dialog/modal-layer.svelte.js';
   import Button from '../Button/Button.svelte';
   import '../Dialog/dialog.css';
   const t = useMessages(alertDialog);

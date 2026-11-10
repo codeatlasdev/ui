@@ -81,6 +81,10 @@ The dialog renders a native modal `<dialog>` opened with `showModal()`: the page
   { name: "class", type: "string", default: "''", description: "Extra classes on the panel." },
 ]} />
 
+## Closing
+
+Setting `open = false` is safe in the same tick as changing the screen the opener lives on. The exit animation plays, but from that moment the dialog is no longer modal: the page behind answers pointer and keyboard at once (the closing panel is `inert` and out of hit-testing), scroll is unlocked and focus returns to the opener. If the opener was removed meanwhile (a "Lose" button replaced by "Reopen"), focus goes to its nearest focusable ancestor, else to `#main`. No need to delay the follow-up work by the animation time. The same holds for `AlertDialog`, `Drawer`, `Sheet` and `CommandPalette`.
+
 ## Layers
 
 **Inline layers.** `inline` on `Dialog`, `Sheet`, `Drawer`, `Popover`, `DropdownMenu` and `Toaster` renders the overlay where it is declared instead of in the top layer. It is `position: absolute` inside the nearest positioned ancestor (give the container `position: relative`), is never moved to `<body>`, never calls `showModal()` or `showPopover()`, never joins the layer stack, locks no scroll, traps no focus and makes nothing inert. Because it stays in the DOM subtree, it resolves the tokens of its container: put it inside a `data-preset="violet"` or `data-theme-scope="dark"` island (a theme preview, an embedded editor, a docs frame) and it wears that island's theme, which a top-layer overlay never can. A dialog has no scrim in this mode. Escape closes an inline layer only while focus is inside it; a press elsewhere never does, so the page behind stays fully interactive. Use it for contained surfaces, not for the app's real modals: a modal that must block the page stays the default.

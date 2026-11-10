@@ -563,3 +563,29 @@ describe("openLayer: a11y per state", () => {
 		expect(document.querySelectorAll('[role="tooltip"]').length).toBe(0);
 	});
 });
+
+describe("modal release (#732)", () => {
+	it("release ends modality at once and close still removes the dialog", () => {
+		const dialog = el("dialog");
+		const layer = openLayer(dialog, { kind: "modal" });
+		open.push(layer);
+		expect(dialog.matches(":modal")).toBe(true);
+		layer.release?.();
+		expect(dialog.matches(":modal")).toBe(false);
+		expect(dialog.inert).toBe(true);
+		expect(dialog.isConnected).toBe(true);
+		layer.close();
+		expect(dialog.isConnected).toBe(false);
+	});
+
+	it("announces the layer leaving once, at release", () => {
+		const counts: number[] = [];
+		const stop = onLayerChange((d) => counts.push(d.count));
+		const layer = openLayer(el("dialog"), { kind: "modal" });
+		open.push(layer);
+		layer.release?.();
+		layer.close();
+		stop();
+		expect(counts).toEqual([1, 0]);
+	});
+});

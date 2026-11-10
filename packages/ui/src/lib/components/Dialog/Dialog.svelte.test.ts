@@ -7,6 +7,7 @@ import { settled } from "../../../../tests/settled";
 import { VIEWPORTS } from "../../../../tests/viewports";
 import Dialog from "./Dialog.svelte";
 import Harness from "./Dialog.test.svelte";
+import DialogClosing from "./DialogClosing.test.svelte";
 
 describe("Dialog", () => {
 	it("opens from the trigger with accessible name and description, no axe violations", async () => {
@@ -108,5 +109,36 @@ describe("Dialog", () => {
 		await expect.element(page.getByRole("dialog")).toBeVisible();
 		expect(warn).toHaveBeenCalledWith(expect.stringMatching(/^\[ca-ui\] <Dialog> has no `title`/));
 		warn.mockRestore();
+	});
+});
+
+describe("Dialog closing (#732)", () => {
+	it("a button revealed by closing is clickable at once, not after the exit animation", async () => {
+		const screen = await render(DialogClosing);
+		await screen.getByRole("button", { name: "Lose" }).click();
+		await expect.element(page.getByRole("dialog")).toBeVisible();
+		await settled();
+		await page.getByRole("button", { name: "Confirm" }).click();
+		const reopen = screen.getByRole("button", { name: "Reopen" });
+		await expect.element(reopen).toBeInTheDocument();
+		// The dialog is still mounted for its exit: the page must already receive the pointer.
+		const dialog = document.querySelector<HTMLElement>("dialog.ca-overlay");
+		expect(dialog?.dataset.state).toBe("closed");
+		const r = reopen.element().getBoundingClientRect();
+		const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
+		expect(hit && reopen.element().contains(hit)).toBe(true);
+		const started = performance.now();
+		await reopen.click();
+		expect(performance.now() - started).toBeLessThan(50 + 250);
+		await expect.element(screen.getByTestId("clicks")).toHaveTextContent("1");
+	});
+
+	it("focus lands on #main when the opener was removed during the exit", async () => {
+		const screen = await render(DialogClosing);
+		await screen.getByRole("button", { name: "Lose" }).click();
+		await settled();
+		await page.getByRole("button", { name: "Confirm" }).click();
+		await expect.poll(() => document.activeElement?.id).toBe("main");
+		void screen;
 	});
 });

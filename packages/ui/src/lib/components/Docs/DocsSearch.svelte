@@ -4,7 +4,7 @@
   import { useMessages } from '../../i18n/state.svelte.js';
   import { docs } from '../../i18n/groups/docs.js';
   import { createIds, createPresence } from '../../primitives/index.js';
-  import { modalLayer } from '../Dialog/modal-layer.js';
+  import { modalLayer } from '../Dialog/modal-layer.svelte.js';
   import { CornerDownLeft, FileText, Hash, Search } from '@lucide/svelte';
   import Kbd from '../Kbd/Kbd.svelte';
   import '../Dialog/dialog.css';

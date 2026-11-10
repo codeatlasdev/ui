@@ -20,7 +20,7 @@
 	import { useMessages } from '../../i18n/state.svelte.js';
 	import { lightbox } from '../../i18n/groups/lightbox.js';
 	import { createIds, createPresence } from "../../primitives/index.js";
-	import { modalLayer } from "../Dialog/modal-layer.js";
+	import { modalLayer } from "../Dialog/modal-layer.svelte.js";
 	const t = useMessages(lightbox);
 
 	/**

@@ -3,7 +3,7 @@
   import { sheet } from '../../i18n/groups/sheet.js';
 	import { X } from "@lucide/svelte";
 	import { createIds, createPresence } from "../../primitives/index.js";
-	import { modalLayer } from "../Dialog/modal-layer.js";
+	import { modalLayer } from "../Dialog/modal-layer.svelte.js";
 	import type { Snippet } from "svelte";
 	import { Spring } from "svelte/motion";
 	import { reducedMotion } from "../../stores/reduced-motion.svelte";

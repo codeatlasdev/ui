@@ -51,6 +51,11 @@
   dialog.ca-overlay[data-state='closed']::backdrop {
     animation: ca-overlay-out var(--ca-enter-fast) var(--ca-ease-standard) both;
   }
+  /* Closing: still painted for the exit, but out of hit-testing so the page behind answers at once (#732). */
+  dialog.ca-overlay[data-state='closed'],
+  dialog.ca-overlay[data-state='closed']::backdrop {
+    pointer-events: none;
+  }
 
   /* ── Inline (`inline` prop): in place inside its container, outside the top layer ──
      A non-modal <dialog> has no ::backdrop, so there is no scrim, no inert page and no scroll lock.
