@@ -37,7 +37,7 @@
 				? { type: "value", axisLabel: valueFormatter ? { formatter: (v: number) => valueFormatter(v) } : undefined }
 				: { type: "category", data: categories },
 			yAxis: horizontal
-				? { type: "category", data: categories }
+				? { type: "category", data: categories, inverse: true }
 				: { type: "value", axisLabel: valueFormatter ? { formatter: (v: number) => valueFormatter(v) } : undefined },
 			tooltip: valueFormatter ? { valueFormatter: (v) => valueFormatter(v as number) } : undefined,
 			series: series.map((s) =>
