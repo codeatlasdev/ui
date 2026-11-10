@@ -7,6 +7,8 @@
   import { createListbox } from '../../primitives/index.js';
   import FloatingLayer from '../Popover/FloatingLayer.svelte';
   import { ChevronDown, Check, X } from '@lucide/svelte';
+  import Highlight from '../Highlight/Highlight.svelte';
+  import { fold, rankMatches, splitMatch } from './match.js';
   const t = useMessages(chip, combobox);
 
   export interface ComboboxOption {
@@ -37,6 +39,8 @@
     oncreate?:          (value: string) => void;
     /** Show a "Create …" option when the query doesn't match any existing option exactly. */
     creatable?:         boolean;
+    /** Multiple mode: show "N selected" in the trigger instead of the placeholder. Default `false` (the chips already list the selection). */
+    showCount?:         boolean;
   }
 
   let {
@@ -57,6 +61,7 @@
     onchange,
     oncreate,
     creatable         = false,
+    showCount         = false,
   }: Props = $props();
 
   // ── Selection ──────────────────────────────────────────────────────────────
@@ -95,24 +100,20 @@
   // ── Label for the trigger (single mode) ──────────────────────────────────
   let selectedLabel = $derived(
     multiple
-      ? (selectedValues.length === 0 ? (placeholder ?? t().combobox.placeholder) : '')
+      ? (placeholder ?? t().combobox.placeholder)
       : (options.find(o => o.value === (value as string))?.label ?? placeholder ?? t().combobox.placeholder)
   );
 
   // ── Filtered options ──────────────────────────────────────────────────────
-  let trimmedQuery = $derived(query.trim().toLowerCase());
+  let trimmedQuery = $derived(fold(query.trim()));
 
-  let filtered = $derived(
-    trimmedQuery === ''
-      ? options
-      : options.filter(o => o.label.toLowerCase().includes(trimmedQuery))
-  );
+  let filtered = $derived(rankMatches(options, query, o => o.label));
 
   // Show "Create …" row when creatable, query is non-empty, and no exact match
   let showCreate = $derived(
     !!creatable &&
     trimmedQuery !== '' &&
-    !options.some(o => o.label.toLowerCase() === trimmedQuery)
+    !options.some(o => fold(o.label) === trimmedQuery)
   );
 
   // All items fed into the listbox: filtered options + optional create row
@@ -196,6 +197,8 @@
       removeChip(selectedValues[selectedValues.length - 1]);
       return;
     }
+    // Printable keys belong to the field (it filters by text); only navigation keys reach the listbox.
+    if (e.key.length === 1 && !e.ctrlKey && !e.metaKey && !e.altKey) return;
     listbox.onkeydown(e);
   }
 </script>
@@ -251,7 +254,7 @@
   >
     {#if !label && ariaLabel}<span id="{triggerId}-name" hidden>{ariaLabel}</span>{/if}
     <span id="{triggerId}-value" class="ca-combobox__trigger-label">
-      {#if multiple && selectedValues.length > 0}
+      {#if multiple && showCount && selectedValues.length > 0}
         <span class="ca-combobox__trigger-count" aria-hidden="true">{t().combobox.selectedCount(selectedValues.length)}</span>
       {:else}
         {selectedLabel}
@@ -315,6 +318,7 @@
       {#each rows as row, i (row.value)}
         {@const isCreate = '_create' in row && row._create}
         {@const selected = !isCreate && isSelected((row as ComboboxOption).value)}
+        {@const parts = isCreate ? null : splitMatch(row.label, query)}
         <!-- svelte-ignore a11y_interactive_supports_focus, a11y_click_events_have_key_events -->
         <div
           id="{triggerId}-opt-{i}"
@@ -329,7 +333,7 @@
           onclick={() => choose(row)}
           onpointermove={() => !(row as ComboboxOption).disabled && listbox.highlight(i)}
         >
-          <span class="ca-combobox__item-label">{row.label}</span>
+          <span class="ca-combobox__item-label">{#if parts}{parts[0]}<Highlight>{parts[1]}</Highlight>{parts[2]}{:else}{row.label}{/if}</span>
           {#if selected}
             <Check size={14} class="ca-combobox__item-check" />
           {/if}

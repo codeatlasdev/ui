@@ -23,14 +23,14 @@ import CreatableSrc from "~/demos/inputs/combobox/Creatable.svelte?raw";
 <Combobox label="Framework" options={[{ value: "svelte", label: "Svelte" }]} bind:value />
 ```
 
-Typing in the popup filters options by label, and opening the list moves focus to the search input. Pass a `label` (or `ariaLabel`) so the trigger and listbox have an accessible name. It has no `name` prop and does not submit with a native form (unlike `Select`): read `value` instead.
+Typing in the popup filters options by label, ignoring case and accents (`sao` finds "São Paulo"), ranks matches at the start of a word first and highlights the matched text. Printable keys always go to the search field. Opening the list moves focus to the search input. Pass a `label` (or `ariaLabel`) so the trigger and listbox have an accessible name. It has no `name` prop and does not submit with a native form (unlike `Select`): read `value` instead.
 
 <Demo title="Basic" description="Search a list of options and bind the selected value." src={BasicSrc}><Basic client:visible /></Demo>
 <Demo title="States" description="Description, custom search placeholder and empty text, disabled option, error and disabled." src={StatesSrc}><States client:visible /></Demo>
 
 ## Multiple selection
 
-Set `multiple` and bind `value` to a `string[]`. The popup becomes a `listbox` with `aria-multiselectable`, each pick toggles its option (`aria-selected`) and the list stays open so you can keep picking. Selected values show as removable chips above the trigger, and the trigger shows the count. With the search input focused, `Enter` toggles the highlighted option and `Backspace` on an empty query removes the last chip.
+Set `multiple` and bind `value` to a `string[]`. The popup becomes a `listbox` with `aria-multiselectable`, each pick toggles its option (`aria-selected`) and the list stays open so you can keep picking. Selected values show as removable chips above the trigger, and the trigger keeps the placeholder so it still reads as the place to add more; set `showCount` to show "N selected" there instead. With the search input focused, `Enter` toggles the highlighted option and `Backspace` on an empty query removes the last chip.
 
 Add `creatable` to offer a `Create "text"` row when the query matches no option exactly. Choosing it appends the text to `value` and calls `oncreate(text)`: add it to `options` there if you want it to stay selectable. In single mode `creatable` sets `value` to the new text and closes the list.
 
@@ -40,6 +40,7 @@ Add `creatable` to offer a `Create "text"` row when the query matches no option 
 <Props rows={[
   { name: "value", type: "string | string[]", default: "'' (or [] when multiple)", description: "Bindable selected value. A `string[]` when `multiple` is set." },
   { name: "multiple", type: "boolean", default: "false", description: "Multi-select: `value` is `string[]`, the list stays open after each pick, selections render as removable chips." },
+  { name: "showCount", type: "boolean", default: "false", description: "With `multiple`, shows \"N selected\" in the trigger instead of the placeholder. The chips already list the selection, so it is off by default." },
   { name: "creatable", type: "boolean", default: "false", description: "Offers a `Create \"query\"` row when the query matches no option label exactly." },
   { name: "oncreate", type: "(value: string) => void", description: "Called with the new text when the create row is chosen." },
   { name: "options", type: "ComboboxOption[]", description: "Options: { value, label, disabled? }." },
