@@ -1,0 +1,42 @@
+{
+	"summary": "A pipeline-stages editor: four rows that reorder by grip or menu, each collapsing to a summary on a narrow screen and opening a name, kind and stale-days form.",
+	"use": "Settings screens that edit an ordered list of records (stages, tags, loss reasons, quick replies) with inline fields.",
+	"spec": [
+		"`<SortableList items={stages} getId={(s) => s.id} getLabel={(s) => s.name} onreorder={reorder} label=\"Pipeline stages\">` owns the grip, the drag and the reorder menu",
+		"`async function reorder({ from, to }: SortableListReorder)` applies the move, saves it and restores `before` when the save fails",
+		"`<EditableRow label={stage.name}>` holds the `TextField`, `Select` and `NumberField` and collapses when its own width is narrow"
+	],
+	"tags": ["sortable-list", "editable-row", "reorder", "settings", "drag", "stages"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["drag", "press", "keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": [
+			"EditableRow",
+			"IconButton",
+			"NumberField",
+			"Select",
+			"SortableList",
+			"TextField"
+		],
+		"aliases": ["reorderable list", "settings list editor", "stage editor"],
+		"related": ["118"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-11-10",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

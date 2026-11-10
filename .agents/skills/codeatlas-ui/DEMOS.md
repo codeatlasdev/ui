@@ -391,3 +391,4 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 994 | A hero that is a floor | concepts/viewport | Button, Switch |
 | 995 | A form with the keyboard open | concepts/viewport | Button, StickyActions, TextField |
 | 996 | Scrolling filter row | display/chip | Chip, ChipRow |
+| 997 | Pipeline stages editor | layout/sortable-list | EditableRow, IconButton, NumberField, Select, SortableList, TextField |

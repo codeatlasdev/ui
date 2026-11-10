@@ -242,6 +242,12 @@ State attributes on `dialog.ca-drawer`: `data-chromeless` (body padding 0, no he
 
 `.ca-install` `.ca-install-dismissed` `.ca-install-title` `.ca-install__body` `.ca-install__close` `.ca-install__glyph` `.ca-install__icon` `.ca-install__steps` `.ca-install__text` `.ca-install__title`
 
+## EditableRow
+
+`.ca-editable-row` `.ca-editable-row__actions` `.ca-editable-row__fields` `.ca-editable-row__summary` `.ca-editable-row__toggle`
+
+State attribute on the root: `data-open` (fields open while collapsed). The row is a container (`ca-editable-row`): it switches layout at 36rem of its own width. Token: `--ca-field-min` (minimum field width in the wide layout, default 10rem).
+
 ## Kbd
 
 `.ca-kbd`
@@ -428,6 +434,12 @@ The `skeleton` prop of `Avatar`, `KpiCard`, `TextField`, `Table`, `Card` and `Gl
 ## Stack
 
 `.ca-stack`
+
+## SortableList
+
+`.ca-sortable` `.ca-sortable__content` `.ca-sortable__grip` `.ca-sortable__menu` `.ca-sortable__row`
+
+State attribute on a row: `data-dragging`. Each row carries `data-dnd-item="<id>"`.
 
 ## Stat
 
