@@ -39,6 +39,10 @@ export function modalLayer(options: () => ModalLayerOptions) {
 			onDismiss: (reason: LayerDismissReason) =>
 				options().onDismiss(reason === "escape" ? "escape" : "outside"),
 		});
+		// The owner's `open` turned false: the exit animation plays, but the page must answer at once (#732).
+		$effect(() => {
+			if (options().closing === true) layer.release?.();
+		});
 		return () => layer.close();
 	};
 }

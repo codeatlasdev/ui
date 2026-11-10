@@ -75,6 +75,12 @@ export interface LayerOptions {
 export interface LayerHandle {
 	/** Re-run positioning (content size changed). */
 	update(): void;
+	/**
+	 * Modal only: the owner started the exit animation. The layer leaves the stack and stops being modal
+	 * at once (the page is interactive, scroll unlocked, focus handed back) while the node stays painted
+	 * and inert until `close()` removes it. Idempotent; `close()` still has to be called.
+	 */
+	release?(): void;
 	/** Remove the layer from the stack and the top layer. Idempotent. */
 	close(): void;
 }
@@ -500,8 +506,14 @@ export function openLayer(el: HTMLElement, options: LayerOptions): LayerHandle {
 	if (options.inline) return openInline(el, options);
 	// Not `document.activeElement`: Safari leaves <body> or an ancestor focused after a tap on the opener.
 	const restoreTo = opener();
+	// The opener's nearest focusable ancestor, read now: once the opener is removed it has no parent to ask.
+	const fallbackFocus = restoreTo?.parentElement?.closest<HTMLElement>(
+		"[tabindex], a[href], button, input, select, textarea"
+	);
 	const cleanups: Array<() => void> = [];
 	let closed = false;
+	let released = false;
+	let releaseModal: (() => void) | undefined;
 
 	const entry: Entry = {
 		node: el,
@@ -541,9 +553,21 @@ export function openLayer(el: HTMLElement, options: LayerOptions): LayerHandle {
 				marker.remove();
 			});
 		}
-		cleanups.push(lockScroll());
+		const unlock = lockScroll();
 		// Capture focus before showModal() moves it; restoration is ours, not the trap's.
-		cleanups.push(trapFocus(dialog, { initial: false, restore: false }));
+		const untrap = trapFocus(dialog, { initial: false, restore: false });
+		releaseModal = () => {
+			unlock();
+			untrap();
+			// Back to a plain, non-modal dialog: the top-layer modality (and the inert page) ends here,
+			// the panel keeps painting for its exit but takes no pointer or focus.
+			if (dialog.open) {
+				dialog.close();
+				dialog.inert = true;
+				dialog.show();
+			}
+		};
+		cleanups.push(unlock, untrap);
 		if (!dialog.open) dialog.showModal();
 		if (initialFocus === "container" || initialFocus === false)
 			dialog.focus({ preventScroll: true });
@@ -601,24 +625,47 @@ export function openLayer(el: HTMLElement, options: LayerOptions): LayerHandle {
 	listen(true);
 	announce();
 
+	/** Out of the stack (and out of the document listeners when it was the last layer). */
+	function leave() {
+		const i = stack.indexOf(entry);
+		if (i >= 0) stack.splice(i, 1);
+		if (!stack.length) listen(false);
+		// Popovers hosted in this modal go to the next modal (or home) before it is removed with them inside.
+		if (kind === "modal") for (const other of stack) if (other.kind !== "modal") rehost(other);
+	}
+
+	/**
+	 * Focus returns to the opener. When the opener is gone (the screen it lived on changed while the
+	 * layer closed) it goes to the nearest focusable ancestor the opener had, else the page's `#main`.
+	 */
+	function giveFocusBack() {
+		if (options.restoreFocus === false) return;
+		const target = kind === "modal" ? restoreTo : (options.anchor ?? restoreTo);
+		if (!(target instanceof HTMLElement)) return;
+		if (target.isConnected) return target.focus({ preventScroll: true });
+		if (kind !== "modal") return;
+		const fallback = fallbackFocus?.isConnected ? fallbackFocus : document.getElementById("main");
+		fallback?.focus({ preventScroll: true });
+	}
+
 	return {
 		update() {
 			if (!closed) update();
 		},
+		release() {
+			if (closed || released || !releaseModal) return;
+			released = true;
+			leave();
+			releaseModal();
+			giveFocusBack();
+			announce();
+		},
 		close() {
 			if (closed) return;
 			closed = true;
-			const i = stack.indexOf(entry);
-			if (i >= 0) stack.splice(i, 1);
-			if (!stack.length) listen(false);
-			// Popovers hosted in this modal go to the next modal (or home) before it is removed with them inside.
-			if (kind === "modal") for (const other of stack) if (other.kind !== "modal") rehost(other);
+			if (!released) leave();
 			while (cleanups.length) cleanups.pop()?.();
-			if (options.restoreFocus !== false) {
-				const target = kind === "modal" ? restoreTo : (options.anchor ?? restoreTo);
-				if (target instanceof HTMLElement && target.isConnected)
-					target.focus({ preventScroll: true });
-			}
+			if (!released) giveFocusBack();
 			announce();
 		},
 	};

@@ -4,7 +4,7 @@
   import { useMessages } from '../../i18n/state.svelte.js';
   import { commandPalette } from '../../i18n/groups/commandPalette.js';
   import { createPresence } from '../../primitives/index.js';
-  import { modalLayer } from '../Dialog/modal-layer.js';
+  import { modalLayer } from '../Dialog/modal-layer.svelte.js';
   import '../Dialog/dialog.css';
   import { Search, Loader } from '@lucide/svelte';
   import type { NavModule, NavItem } from '../AppShell/types.js';

@@ -4,7 +4,7 @@
   import type { Snippet } from 'svelte';
   import type { HTMLDialogAttributes } from 'svelte/elements';
   import { createIds, createPresence } from '../../primitives/index.js';
-  import { modalLayer } from '../Dialog/modal-layer.js';
+  import { modalLayer } from '../Dialog/modal-layer.svelte.js';
   import { X } from '@lucide/svelte';
   import '../Dialog/dialog.css';
   const t = useMessages(drawer);
