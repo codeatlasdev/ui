@@ -22,7 +22,11 @@ const { CA_TEST_LOCK_HELD, CA_TEST_TIMINGS, CA_TEST_RUN, ...inherited } = proces
 
 const run = (lockDir: string, args: string[]) => {
 	const p = Bun.spawn([process.execPath, SCRIPT, ...args], {
-		env: { ...inherited, CA_TEST_LOCK_DIR: lockDir },
+		env: {
+			...inherited,
+			CA_TEST_LOCK_DIR: lockDir,
+			CA_TEST_HISTORY: join(lockDir, "..", "history.jsonl"),
+		},
 		stdout: "pipe",
 		stderr: "pipe",
 	});

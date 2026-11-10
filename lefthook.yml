@@ -13,4 +13,4 @@ commit-msg:
 pre-push:
   jobs:
     - name: validate (themes, types, lint, unit, build, size)
-      run: bun run validate
+      run: bun scripts/pre-push.ts

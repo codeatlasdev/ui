@@ -1,7 +1,7 @@
 /**
  * The Tailwind map and the React-pattern sections of the migration guide (#383) cite tokens and APIs.
  * A name that does not exist sends an agent hunting for something that is not there, so each one is
- * checked against the generated manifest; the Svelte fences are type-checked by docs-samples.test.ts.
+ * checked against the generated manifest; the Svelte fences are type-checked by docs-samples.slow.ts.
  */
 import { describe, expect, it } from "bun:test";
 import { readFileSync } from "node:fs";
