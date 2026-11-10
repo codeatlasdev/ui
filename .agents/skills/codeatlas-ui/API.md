@@ -1318,6 +1318,10 @@ Snippets: `children`
 
 Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'onclick' \| 'role' \| 'tabindex'>`
 
+Parts: `ca-dropdown-item` `ca-dropdown-item--destructive` `ca-dropdown-item__icon` `ca-dropdown-item__indicator`
+
+Data attributes: `data-brand`, `data-disabled`, `data-highlighted`
+
 ## DropdownMenuItem
 
 `import { DropdownMenuItem } from "@codeatlasdev/ui"`
@@ -1379,6 +1383,10 @@ Snippets: `children`
 
 Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'onclick' \| 'role' \| 'tabindex'>`
 
+Parts: `ca-dropdown-item` `ca-dropdown-item--destructive` `ca-dropdown-item__icon` `ca-dropdown-item__indicator`
+
+Data attributes: `data-brand`, `data-disabled`, `data-highlighted`
+
 ## DropdownMenuSeparator
 
 `import { DropdownMenuSeparator } from "@codeatlasdev/ui"`
@@ -1417,9 +1425,9 @@ Snippets: `icon`: Leading icon in a fixed box (`aria-hidden`, so the label stays
 
 Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'onclick' \| 'role' \| 'tabindex'>`
 
-Parts: `ca-dropdown-item--sub-trigger` `ca-dropdown-item__chevron` `ca-dropdown-item__label`
+Parts: `ca-dropdown-item` `ca-dropdown-item--destructive` `ca-dropdown-item--sub-trigger` `ca-dropdown-item__chevron` `ca-dropdown-item__icon` `ca-dropdown-item__indicator` `ca-dropdown-item__label`
 
-Data attributes: `data-highlighted`, `data-state` (`open`)
+Data attributes: `data-brand`, `data-disabled`, `data-highlighted`, `data-state` (`open`)
 
 ## EmptyState
 
