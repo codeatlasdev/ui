@@ -733,7 +733,7 @@ plugins: [sveltekit(), caThemePlugin(theme)]
 - The init script discards saved values the app does not know (old preset, invalid scheme/style) and falls back to the default.
 - Sets `<meta name="theme-color">` to the preset surface and follows the OS in `system` before JS loads.
 - Charts use the brand hex as the first series.
-- `colorScheme` inherits the defaults: `colorScheme.preset` starts at `"acme"`.
+- `colorScheme` inherits the defaults on the client and on the server: `colorScheme.preset` starts at `"acme"`, `preference` at `defaultScheme`, `style` at `defaultStyle`. `caThemeHandle` and `caUI` register the theme for the server render (`setThemeDefaults(theme)` from `@codeatlasdev/ui/kit` does it for a custom server), so markup bound to the store does not ship the built-in amber. Prefer CSS that inherits from `<html>` over re-reading the store in markup.
 
 ### Cascade and overriding tokens
 

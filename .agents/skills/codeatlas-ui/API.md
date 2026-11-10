@@ -6293,6 +6293,16 @@ Declare the full-page theme of the route being loaded. Call it in `+page.server.
 function setRouteTheme(event: { locals: object }, theme: IslandTheme): void
 ```
 
+### setThemeDefaults
+
+`import { setThemeDefaults } from "@codeatlasdev/ui/kit"`
+
+Registers the app's theme as the server-side starting point of `colorScheme`.
+
+```ts
+function setThemeDefaults(options: ThemeOptions): void
+```
+
 ### themeCSS
 
 `import { themeCSS } from "@codeatlasdev/ui/kit"`
