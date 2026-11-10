@@ -93,7 +93,7 @@ describe("AppShellLayout: persisted state", () => {
 
 describe("shellScript: runs before hydration", () => {
 	/** Parses the markup the server emits and executes the inline script in this document. */
-	function runInline(ids: string[]) {
+	function runInline() {
 		const host = document.createElement("div");
 		host.innerHTML = `<aside><nav class="ca-panel__nav"></nav></aside>`;
 		document.body.append(host);
@@ -101,7 +101,7 @@ describe("shellScript: runs before hydration", () => {
 		Object.defineProperty(nav, "scrollHeight", { value: 1000, configurable: true });
 		nav.style.cssText = "height:100px;overflow:auto";
 		nav.innerHTML = `<div style="height:1000px"></div>`;
-		const tag = shellScript(ids);
+		const tag = shellScript();
 		const body = tag.slice("<script>".length, -"</script>".length);
 		// document.currentScript is the real <script> element when it is inserted into the page.
 		const script = document.createElement("script");
@@ -113,21 +113,38 @@ describe("shellScript: runs before hydration", () => {
 	it("sets data-ca-panel, data-ca-module and the nav scroll", () => {
 		localStorage.setItem(SHELL_KEY, JSON.stringify({ panel: false, module: "cfg" }));
 		sessionStorage.setItem(SHELL_SCROLL_KEY, JSON.stringify({ cfg: 25 }));
-		const { nav, host } = runInline(["app", "cfg"]);
+		const { nav, host } = runInline();
 		expect(html.getAttribute("data-ca-panel")).toBe("closed");
 		expect(html.getAttribute("data-ca-module")).toBe("cfg");
 		expect(nav.scrollTop).toBe(25);
 		host.remove();
 	});
 
-	it("falls back to the default when storage is empty, invalid or names another shell's module", () => {
-		localStorage.setItem(SHELL_KEY, JSON.stringify({ panel: "x", module: "other" }));
+	it("falls back to the default when storage is empty or invalid", () => {
+		localStorage.setItem(SHELL_KEY, JSON.stringify({ panel: "x", module: 7 }));
 		sessionStorage.setItem(SHELL_SCROLL_KEY, JSON.stringify({ app: -5 }));
-		const { nav, host } = runInline(["app", "cfg"]);
+		const { nav, host } = runInline();
 		expect(html.getAttribute("data-ca-panel")).toBe("open");
 		expect(html.hasAttribute("data-ca-module")).toBe(false);
 		expect(nav.scrollTop).toBe(0);
 		host.remove();
+	});
+
+	it("does not depend on the module list: the script text is constant (#728)", () => {
+		// `{@html shellScript(...)}` must render the same string on the server and the client.
+		expect(shellScript()).toBe(shellScript(false));
+		expect(shellScript(true)).toBe(shellScript(true));
+		expect(shellScript.length).toBeLessThanOrEqual(1);
+	});
+
+	it("a stored module that is not in the final list is cleared after hydration (#728)", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		localStorage.setItem(SHELL_KEY, JSON.stringify({ module: "gone" }));
+		// what the inline script does before paint: it writes the stored id unvalidated
+		html.setAttribute("data-ca-module", "gone");
+		await render(Harness, { persist: true });
+		await expect.poll(() => html.hasAttribute("data-ca-hydrated")).toBe(true);
+		expect(html.getAttribute("data-ca-module")).toBe("app");
 	});
 
 	it("is a self-contained function (no imports leak into the inline script)", () => {
@@ -135,7 +152,7 @@ describe("shellScript: runs before hydration", () => {
 		expect(src).not.toMatch(/\b(SHELL_KEY|readShellState|parseObject)\b/);
 	});
 
-	it("escapes </script> inside module ids", () => {
-		expect(shellScript(["a</script><b"])).not.toContain("</script><b");
+	it("embeds nothing but constants (no user-controlled text in the script)", () => {
+		expect(shellScript().match(/<\/script>/g)).toHaveLength(1);
 	});
 });

@@ -235,7 +235,10 @@
     const root = document.documentElement;
     root.setAttribute('data-ca-panel', panelOpen ? 'open' : 'closed');
     const id = modules[selectedIndex]?.id;
+    // The inline script wrote the stored module without knowing this shell's modules: keep it only
+    // when it is one of them (`id` is the module that is live now).
     if (id) root.setAttribute('data-ca-module', id);
+    else root.removeAttribute('data-ca-module');
     root.setAttribute('data-ca-hydrated', '');
   });
   $effect(() => () => document.documentElement.removeAttribute('data-ca-hydrated'));
@@ -317,7 +320,7 @@
       onResizing={(v) => (resizing = v)}
     />
   </div>
-  {#if persistPanel}{@html shellScript(modules.map((m) => m.id), resizablePanel)}{/if}
+  {#if persistPanel}{@html shellScript(resizablePanel)}{/if}
 
   <!-- Main area -->
   <div

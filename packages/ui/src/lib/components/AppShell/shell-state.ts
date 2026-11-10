@@ -111,11 +111,12 @@ export function saveShellScroll(moduleId: string, top: number): void {
  *    stored panel width (clamped to `min`..`max`) so the panel and the content offset paint at
  *    that width before hydration;
  * 3. restores the scroll of `.ca-panel__nav` (the node is already parsed: the script sits right
- *    after the sidebar markup).
- * `ids` are the module ids of this shell; a stored module that is not one of them is ignored.
+ *    after the sidebar markup) for the stored module.
+ * The script does not know the shell's modules (they may differ between the server and the
+ * client, and the `{@html}` text must not): the stored module is written unvalidated and the
+ * component clears it after hydration when it is not one of its modules.
  */
 export function restoreShell(
-	ids: string[],
 	keys: [string, string, string],
 	nav: Element | null,
 	resize: [number, number] | null
@@ -133,8 +134,7 @@ export function restoreShell(
 			} catch {}
 			if (typeof v === "object" && v !== null && !Array.isArray(v)) {
 				if ("panel" in v && typeof v.panel === "boolean") panel = v.panel;
-				if ("module" in v && typeof v.module === "string" && ids.indexOf(v.module) >= 0)
-					mod = v.module;
+				if ("module" in v && typeof v.module === "string") mod = v.module;
 				if (
 					resize &&
 					"panelWidth" in v &&
@@ -157,9 +157,7 @@ export function restoreShell(
 			try {
 				const s: unknown = JSON.parse(sessionStorage.getItem(keys[1]) as string);
 				const top =
-					typeof s === "object" && s !== null
-						? (s as Record<string, unknown>)[mod || ids[0]]
-						: null;
+					mod && typeof s === "object" && s !== null ? (s as Record<string, unknown>)[mod] : null;
 				if (typeof top === "number" && Number.isFinite(top) && top >= 0 && nav.scrollTop === 0)
 					nav.scrollTop = top;
 			} catch {}
@@ -172,10 +170,9 @@ export function restoreShell(
  * component's markup: Vite's dependency scan would read a `<script>` there as a script block
  * (tests/svelte-script-tags.test.ts).
  */
-export function shellScript(ids: string[], resizable = false): string {
+export function shellScript(resizable = false): string {
 	const keys = [SHELL_KEY, SHELL_SCROLL_KEY, LEGACY_PANEL_KEY];
 	const resize = resizable ? [PANEL_MIN_WIDTH, PANEL_MAX_WIDTH] : null;
 	const nav = `document.currentScript.previousElementSibling.querySelector(".ca-panel__nav")`;
-	const args = [ids, keys].map((v) => JSON.stringify(v).replace(/</g, "\\u003c")).join(",");
-	return `<script>(${restoreShell})(${args},${nav},${JSON.stringify(resize)})</script>`;
+	return `<script>(${restoreShell})(${JSON.stringify(keys)},${nav},${JSON.stringify(resize)})</script>`;
 }
