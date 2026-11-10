@@ -34320,8 +34320,8 @@
 			"group": "display",
 			"page": "chip",
 			"variant": "Row",
-			"slug": "chiprow",
-			"title": "ChipRow",
+			"slug": "scrolling-filter-row",
+			"title": "Scrolling filter row",
 			"description": "",
 			"summary": "A row of eight filter chips that scrolls sideways inside a narrow frame, with a fade where more chips are hidden.",
 			"use": "A filter or message-type row on a phone that must scroll without clipping the 44px touch area of its chips.",
@@ -34397,7 +34397,7 @@
 				}
 			],
 			"interactive": true,
-			"demo": "https://ui.codeatlas.com.br/docs/display/chip#chiprow",
+			"demo": "https://ui.codeatlas.com.br/docs/display/chip#scrolling-filter-row",
 			"needs": "@codeatlasdev/ui@4.6.0"
 		}
 	]
