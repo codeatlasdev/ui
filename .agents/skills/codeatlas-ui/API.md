@@ -2969,6 +2969,21 @@ Data attributes: `data-disabled`, `data-highlighted`, `data-selected`, `data-sta
 
 `import { Seo } from "@codeatlasdev/ui/seo"`
 
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `title` | `SeoProps['title']` |  |  |
+| `titleTemplate?` | `SeoProps['titleTemplate']` |  | `%s` is replaced by `title`. Skipped when the title already equals the site name. |
+| `description?` | `SeoProps['description']` |  |  |
+| `canonical?` | `SeoProps['canonical']` |  | Absolute URL of this page. Required on indexable pages. |
+| `robots?` | `SeoProps['robots']` |  |  |
+| `noindex?` | `SeoProps['noindex']` |  | Shorthand for `robots="noindex,nofollow"`. |
+| `alternates?` | `SeoProps['alternates']` |  | Translations of this page, including itself and an `x-default` entry. |
+| `og?` | `SeoProps['og']` |  |  |
+| `twitter?` | `SeoProps['twitter']` |  |  |
+| `jsonLd?` | `SeoProps['jsonLd']` |  | One node, an array, or a `graph()` document. |
+| `manifest?` | `SeoProps['manifest']` |  | Link to the web app manifest, e.g. `"/manifest.webmanifest"`. |
+| `lang?` | `SeoProps['lang']` |  | BCP 47 language of the page, e.g. `"pt-BR"`. Sets `og:locale` and keeps `<html lang>` in sync on the client. |
+
 ## SettingItem
 
 `import { SettingItem } from "@codeatlasdev/ui"`
