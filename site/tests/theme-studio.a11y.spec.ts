@@ -7,7 +7,8 @@ test.describe("theme studio a11y", () => {
 	}, testInfo) => {
 		// Eight axe passes and three overlay openings in one test: 23 to 29 s measured, and the default 30 s lost to a
 		// loaded machine in the release run (axe walks every node, so the budget follows the work, as in routes.axe).
-		test.setTimeout(90_000);
+		// On the 4-vCPU CI runner the same work, with a settle after each tab, ran past 90 s (#822).
+		test.setTimeout(180_000);
 		await gotoReady(page, "/theme/");
 		await expectNoViolations(await makeAxe(page).analyze(), testInfo, "default");
 
