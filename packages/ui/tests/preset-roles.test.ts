@@ -1,6 +1,7 @@
 import { describe, expect, it, spyOn } from "bun:test";
 import { presetContrastIssues } from "../src/lib/theme/contrast.js";
-import { defineTheme, themeCSS } from "../src/lib/theme/define.js";
+import { defineTheme, presetTokens, themeCSS } from "../src/lib/theme/define.js";
+import { contrastRatio, hexToOklch } from "../src/lib/utils/palette-generator.js";
 import { caThemePlugin } from "../src/lib/vite-plugin.js";
 
 // #354: a preset owns the primary-button roles and the field font size, emitted with the same
@@ -104,5 +105,57 @@ describe("brandContrast on brandFill warns under 4.5:1 (#354)", () => {
 		} finally {
 			warn.mockRestore();
 		}
+	});
+});
+
+// #687: `colors.<scheme>.brand` regenerates the brand ramp for THAT scheme. The dark scheme used to
+// receive the light ramp (dark text shades meant for a light surface, ~2:1 on a near-black page).
+describe("colors.<scheme>.brand regenerates the ramp for its own scheme (#687)", () => {
+	const base = { id: "acme", color: "#EA6F2F" as const };
+	const surfaces = [
+		"--ca-surface-sunken",
+		"--ca-surface-base",
+		"--ca-surface-raised",
+		"--ca-surface-overlay",
+	];
+	const L = (v: string) => Number(v.match(/oklch\(([\d.]+)/)?.[1]);
+
+	for (const scheme of ["light", "dark"] as const) {
+		it(`${scheme}: --ca-brand-text clears 4.5:1 on every surface with a pinned brand`, () => {
+			const t = presetTokens({ ...base, colors: { [scheme]: { brand: "#f27636" } } })[scheme];
+			const text = t["--ca-brand-text"] as string;
+			for (const s of surfaces) {
+				const ratio = contrastRatio(text, t[s] as string);
+				expect(ratio, `${s}`).not.toBeNull();
+				expect(ratio as number, `${s}`).toBeGreaterThanOrEqual(4.5);
+			}
+		});
+	}
+
+	it("dark: the brand text is lighter than the dark surfaces, as without the pin", () => {
+		const free = presetTokens(base).dark;
+		const pinned = presetTokens({ ...base, colors: { dark: { brand: "#f27636" } } }).dark;
+		expect(L(pinned["--ca-brand-text"] as string)).toBeGreaterThan(
+			L(pinned["--ca-surface-overlay"] as string)
+		);
+		expect(L(pinned["--ca-brand-text"] as string)).toBeGreaterThan(0.7);
+		expect(L(free["--ca-brand-text"] as string)).toBeGreaterThan(0.7);
+	});
+
+	it("dark: the pinned colour is the dark brand main, glows follow it", () => {
+		const pinned = presetTokens({ ...base, colors: { dark: { brand: "#f27636" } } }).dark;
+		const { l, h } = hexToOklch("#f27636");
+		expect(Math.abs(L(pinned["--ca-brand-main"] as string) - l)).toBeLessThan(0.01);
+		expect(pinned["--ca-glow-primary"]).toContain(String(Math.round(l * 100) / 100).slice(0, 4));
+		expect(h).toBeGreaterThan(0);
+	});
+
+	it("pinning the dark brand leaves the light scheme untouched, and the other way round", () => {
+		const free = presetTokens(base);
+		expect(presetTokens({ ...base, colors: { dark: { brand: "#f27636" } } }).light).toEqual(
+			free.light
+		);
+		const lightPinned = presetTokens({ ...base, colors: { light: { brand: "#f27636" } } });
+		expect(lightPinned.dark).toEqual(free.dark);
 	});
 });
