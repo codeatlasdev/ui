@@ -21055,7 +21055,7 @@
 			"summary": "A record list of three apps with an avatar identity, scopes, install count, status chip, created date and a row menu.",
 			"use": "Admin tables of API apps, integrations or projects where each row needs a name, a few facts, a status and per-row actions.",
 			"spec": [
-				"`<RecordList` with `columns=\"minmax(0,1.3fr) minmax(0,1.8fr) 4.5rem 5.5rem 6.5rem 2.75rem\"`",
+				"`<RecordList` with `columns=\"minmax(0,1.3fr) minmax(0,1.8fr) 4.5rem 5.5rem 6.5rem\"` and `actions`",
 				"`labels={['App', 'Scopes', 'Installs', 'Status', 'Created']}` and `aria-label=\"Apps\"`",
 				"3 rows from `apps` (Billing, Support desk, Analytics exporter), each a `<RecordRow>` keyed by `app.id`",
 				"`{#snippet identity()}` holds `<Avatar alt={app.name} size=\"sm\" />` and the name in `<strong>`",
@@ -21252,7 +21252,7 @@
 			"use": "Checking how a dense record list reads on a phone before shipping it, without resizing the browser.",
 			"spec": [
 				"Wrapper `<div class=\"slot\">` with `inline-size: min(100%, 21.5rem)`",
-				"`<RecordList` with `columns=\"minmax(0,1.3fr) minmax(0,1fr) 7rem 7rem 2.75rem\"`",
+				"`<RecordList` with `columns=\"minmax(0,1.3fr) minmax(0,1fr) 7rem 7rem\"` and `actions`",
 				"`labels={['Key', 'Prefix', 'Last used', 'Created']}` and `aria-label=\"API keys\"`",
 				"2 rows from `keys` (Production key, CI pipeline) with `<Avatar alt={key.name} size=\"sm\" />` in `{#snippet identity()}`",
 				"`<RecordCell label=\"Prefix\">`, `<RecordCell label=\"Last used\">` and `<RecordCell label=\"Created\">`; `{#snippet actions()}` holds a `<DropdownMenu align=\"end\">` with a `Revoke` item"
