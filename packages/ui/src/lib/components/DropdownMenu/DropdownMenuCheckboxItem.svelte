@@ -3,6 +3,7 @@
   import { getContext } from 'svelte';
   import { Check } from '@lucide/svelte';
   import type { HTMLAttributes } from 'svelte/elements';
+  import './dropdown-item.css';
   import { MENU_CONTEXT, type MenuContext } from './menu-context.js';
 
   interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'class' | 'children' | 'onclick' | 'role' | 'tabindex'> {

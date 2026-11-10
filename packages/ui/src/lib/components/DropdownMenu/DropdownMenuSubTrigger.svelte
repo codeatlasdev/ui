@@ -4,6 +4,7 @@
   import { createAttachmentKey } from 'svelte/attachments';
   import { ChevronRight } from '@lucide/svelte';
   import type { HTMLAttributes } from 'svelte/elements';
+  import './dropdown-item.css';
   import { SUB_MENU_CONTEXT, type SubMenuContext } from './menu-context.js';
 
   interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'class' | 'children' | 'onclick' | 'role' | 'tabindex'> {

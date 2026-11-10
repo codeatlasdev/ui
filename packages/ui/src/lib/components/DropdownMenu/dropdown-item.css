@@ -1,0 +1,67 @@
+/*
+ * Shared item styles for every menu row: DropdownMenuItem, DropdownMenuRadioItem,
+ * DropdownMenuCheckboxItem and DropdownMenuSubTrigger each import this file, so a route that
+ * mounts only one of them (a LocaleSwitcher is all radio items) still gets padded, highlighted
+ * rows with the indicator column. Public `ca-dropdown-item*` class contract.
+ */
+
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+  .ca-dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: var(--ca-space-2);
+    height: var(--ca-control-height);
+    padding: 0 var(--ca-space-3);
+    border-radius: var(--ca-radius-sm);
+    font-size: var(--ca-font-size-body2);
+    color: var(--ca-text-primary);
+    cursor: pointer;
+    outline: none;
+    user-select: none;
+  }
+  .ca-dropdown-item[data-highlighted] {
+    background: var(--ca-action-hover);
+    color: var(--ca-text-primary);
+  }
+  .ca-dropdown-item[data-disabled] {
+    color: var(--ca-text-disabled);
+    cursor: default;
+    pointer-events: none;
+  }
+  /* Fixed icon box: size, gap and alignment never drift between menus. A brand mark keeps its
+     own colors (data-brand): no state color reaches it, so it is never tinted or dimmed. */
+  .ca-dropdown-item__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    inline-size: var(--ca-space-3-5);
+    block-size: var(--ca-space-3-5);
+  }
+  .ca-dropdown-item__icon :is(svg, img) {
+    inline-size: 100%;
+    block-size: 100%;
+  }
+  .ca-dropdown-item__icon[data-brand] {
+    color: initial;
+    opacity: 1;
+  }
+  /* Checkbox and radio items reserve the same indicator column, so labels line up checked or not. */
+  .ca-dropdown-item__indicator {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    inline-size: var(--ca-space-3-5);
+    block-size: var(--ca-space-3-5);
+    color: var(--ca-brand-text);
+  }
+  .ca-dropdown-item--destructive {
+    color: var(--ca-semantic-error);
+  }
+  .ca-dropdown-item--destructive[data-highlighted] {
+    background: color-mix(in oklab, var(--ca-semantic-error) 10%, transparent);
+    color: color-mix(in oklab, var(--ca-semantic-error) 65%, black);
+  }
+}

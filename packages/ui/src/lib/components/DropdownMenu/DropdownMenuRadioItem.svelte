@@ -3,6 +3,7 @@
   import { getContext } from 'svelte';
   import { Circle } from '@lucide/svelte';
   import type { HTMLAttributes } from 'svelte/elements';
+  import './dropdown-item.css';
   import {
     MENU_CONTEXT,
     RADIO_GROUP_CONTEXT,
