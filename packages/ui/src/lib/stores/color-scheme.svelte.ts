@@ -2,16 +2,11 @@
 // Persists to localStorage. Applies .dark class + data-preset + data-style to <html>.
 // Storage keys and validation must stay in sync with theme-script.ts.
 
-import {
-	BUILTIN_IDS,
-	type ColorScheme,
-	SCHEMES,
-	STYLES,
-	type SurfaceStyle,
-} from "../theme/define.js";
+import { type ColorScheme, SCHEMES, STYLES, type SurfaceStyle } from "../theme/define.js";
 import type { ThemeRuntime } from "../theme-script.js";
 import type { PresetId } from "../tokens/presets.js";
 import { scheduleChromeSync, startChromeSync } from "./chrome-sync.js";
+import { themeDefaults } from "./theme-defaults.js";
 
 export type { ColorScheme, SurfaceStyle };
 
@@ -27,7 +22,7 @@ const runtime = (): ThemeRuntime | undefined => (hasDOM ? window.__caTheme : und
 
 function resolveScheme(pref: ColorScheme): "light" | "dark" {
 	if (pref !== "system") return pref;
-	if (!hasDOM) return "dark";
+	if (!hasDOM) return themeDefaults().scheme === "light" ? "light" : "dark";
 	return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
 }
 
@@ -68,13 +63,17 @@ const attr = (name: string, fallback: string) =>
 
 // ── Svelte 5 reactive store ───────────────────────────────────────────────────
 function createColorSchemeStore() {
-	const known = runtime()?.known ?? [...BUILTIN_IDS];
+	// Server: the theme the app registered (`setThemeDefaults`). Client: `<html>` and storage.
+	const fallback = themeDefaults();
+	const known = runtime()?.known ?? fallback.known;
 	let preference = $state<ColorScheme>(
-		readStorage("ca-scheme", SCHEMES, attr("data-ca-scheme", "dark") as ColorScheme)
+		readStorage("ca-scheme", SCHEMES, attr("data-ca-scheme", fallback.scheme) as ColorScheme)
 	);
-	let preset = $state<PresetId>(readStorage("ca-preset", known, attr("data-preset", "amber")));
+	let preset = $state<PresetId>(
+		readStorage("ca-preset", known, attr("data-preset", fallback.preset))
+	);
 	let style = $state<SurfaceStyle>(
-		readStorage("ca-style", STYLES, attr("data-ca-style", "solid") as SurfaceStyle)
+		readStorage("ca-style", STYLES, attr("data-ca-style", fallback.style) as SurfaceStyle)
 	);
 
 	// Bumped whenever the OS scheme may have changed so `resolved` re-reads matchMedia.

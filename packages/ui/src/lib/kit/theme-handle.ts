@@ -16,6 +16,7 @@
 
 import type { sequence } from "@sveltejs/kit/hooks";
 import { DEV } from "esm-env";
+import { setThemeDefaults } from "../stores/theme-defaults.js";
 import { defineTheme } from "../theme/define.js";
 import { CA_THEME_MARKER, type ThemeOptions, themeHead } from "../theme-script.js";
 import { applyRouteTheme, resolveRouteTheme, type ThemeHandleOptions } from "./theme-route.js";
@@ -64,6 +65,8 @@ export function caThemeHandle(
 	{ routes }: ThemeHandleOptions = {}
 ): Handle {
 	const head = themeHead(options);
+	// The server-side `colorScheme` starts from this theme (#729).
+	setThemeDefaults(options);
 	const known = defineTheme(options).known;
 	return ({ event, resolve }) =>
 		resolve(event, {

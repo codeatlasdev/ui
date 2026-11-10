@@ -71,7 +71,7 @@ export interface CaUIAstroOptions {
 }
 
 /** Registers `markup` to be inserted first in `<head>` of every page, ahead of any bundled CSS. */
-function headFirstHooks(markup: string) {
+function headFirstHooks(markup: string, themeOptions: ThemeOptions) {
 	return ({
 		addMiddleware,
 		updateConfig,
@@ -82,8 +82,12 @@ function headFirstHooks(markup: string) {
 					{
 						name: "@codeatlasdev/ui:head",
 						resolveId: (id) => (id === HEAD_MODULE ? `\0${HEAD_MODULE}` : null),
+						// `defaults` is read by the middleware (it runs in the SSR graph, where
+						// `colorScheme` lives; this config runs in another one): see `setThemeDefaults`.
 						load: (id) =>
-							id === `\0${HEAD_MODULE}` ? `export default ${JSON.stringify(markup)};` : null,
+							id === `\0${HEAD_MODULE}`
+								? `export default ${JSON.stringify(markup)};\nexport const defaults = ${JSON.stringify(themeOptions)};`
+								: null,
 					},
 				],
 				ssr: { noExternal: SSR_NO_EXTERNAL },
@@ -104,7 +108,7 @@ export function caUI(
 	warnPresetContrast(defineTheme(options), "caUI");
 	return {
 		name: "@codeatlasdev/ui",
-		hooks: { "astro:config:setup": headFirstHooks(astroHead(options) + head) },
+		hooks: { "astro:config:setup": headFirstHooks(astroHead(options) + head, options) },
 	};
 }
 

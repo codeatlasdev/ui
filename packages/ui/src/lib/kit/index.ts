@@ -1,3 +1,4 @@
+export { setThemeDefaults } from "../stores/theme-defaults.js";
 export type { PresetDefinition, ResolvedTheme, ThemeDefinition } from "../theme/define.js";
 export { defineTheme, designTokens, themeCSS } from "../theme/define.js";
 export type { DesignStyle, DesignStyleId } from "../theme/styles.js";

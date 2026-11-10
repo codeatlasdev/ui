@@ -71,6 +71,8 @@ colorScheme.setPreset("violet");
 colorScheme.presets; // every valid id: built-ins plus your brand presets
 ```
 
+During SSR the store starts from your theme (`defaultPreset`, `defaultScheme`, `defaultStyle`), which `caThemeHandle` (SvelteKit) and `caUI` (Astro) register, so `data-preset={colorScheme.preset}` renders your brand in the server HTML. On a custom server, call `setThemeDefaults(theme)` from `@codeatlasdev/ui/kit` once at startup. A user's stored choice still wins on the client after hydration; for an island that should simply follow the page, omit `data-preset` and let it inherit from `<html>`.
+
 ### Brand preset from a hex color
 
 Give the library your logo color and it derives hue, chroma and lightness in OKLCH, then emits the complete light and dark token set (brand, surfaces, text, outlines, surface tints). Charts use the hex as their first series color.

@@ -259,7 +259,7 @@ describe("caUI view-transition swap with islands (#352)", () => {
 			addMiddleware: () => {},
 			updateConfig: ({ vite }) => {
 				const exported = vite.plugins[0]?.load("\0virtual:codeatlas-ui/head") ?? "";
-				markup = JSON.parse(exported.replace(/^export default |;$/g, ""));
+				markup = JSON.parse(exported.split(";\n")[0].replace(/^export default /, ""));
 			},
 		});
 		// The page's own head scripts, as the browser runs them in order.
