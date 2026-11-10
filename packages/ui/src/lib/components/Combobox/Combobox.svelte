@@ -4,6 +4,7 @@
   import { chip } from '../../i18n/groups/chip.js';
   import { combobox } from '../../i18n/groups/combobox.js';
   import { uid } from '../../utils/index.js';
+  import { fieldWidth, type FieldWidth } from '../../utils/field-width.js';
   import { createListbox } from '../../primitives/index.js';
   import FloatingLayer from '../Popover/FloatingLayer.svelte';
   import { ChevronDown, Check, X } from '@lucide/svelte';
@@ -28,6 +29,8 @@
     label?:             string;
     /** Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. */
     hideLabel?:         boolean;
+    /** `full` (default) fills the row; `auto` and `fit` size to the content; any CSS length sets the width. Written to `--ca-field-width`, so a `Toolbar` sets it for every field inside. */
+    width?:               FieldWidth;
     /** Accessible name when there is no visible `label`. */
     ariaLabel?:         string;
     class?:             string;
@@ -54,6 +57,7 @@
     disabled          = false,
     label,
     hideLabel         = false,
+    width,
     ariaLabel,
     class: className  = '',
     error,
@@ -206,7 +210,7 @@
   }
 </script>
 
-<div class={rootClass}>
+<div class={rootClass} style:--ca-field-width={fieldWidth(width)}>
   {#if label}
     <label for={triggerId} class="ca-combobox__label" class:ca-sr-only={hideLabel}>
       {label}{#if required}<span class="ca-combobox__req" aria-hidden="true"> *</span>{/if}
@@ -357,7 +361,8 @@
       display: flex;
       flex-direction: column;
       gap: var(--ca-cb-gap, var(--ca-field-gap, var(--ca-space-1)));
-      width: 100%;
+      width: var(--ca-field-width, 100%);
+      min-width: var(--ca-field-min-width, 0);
     }
 
     /* ── Label ─────────────────────────────────────────────────── */

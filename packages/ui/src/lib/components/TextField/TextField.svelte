@@ -3,6 +3,7 @@
   import type { HTMLInputAttributes } from 'svelte/elements';
   import { Eye, EyeOff } from '@lucide/svelte';
   import { uid } from '../../utils/index.js';
+  import { fieldWidth, type FieldWidth } from '../../utils/field-width.js';
   import { useMessages } from '../../i18n/state.svelte.js';
   import { textField } from '../../i18n/groups/textField.js';
   const t = useMessages(textField);
@@ -41,6 +42,8 @@
     /** Content under the field and its hint, such as a "Forgot password?" link or a strength meter. */
     below?:        Snippet;
     size?:         'sm' | 'md';
+    /** `full` (default) fills the row; `auto` and `fit` size to the content; any CSS length sets the width. Written to `--ca-field-width`, so a `Toolbar` sets it for every field inside. */
+    width?:         FieldWidth;
     /** Loading placeholder: same size as the loaded field, disabled, announced as busy. */
     skeleton?:     boolean;
     class?:        string;
@@ -74,6 +77,7 @@
     revealable   = false,
     below,
     size         = 'md',
+    width,
     skeleton     = false,
     class: className = '',
     name,
@@ -108,7 +112,7 @@
   const inputType = $derived(canReveal && revealed ? 'text' : type);
 </script>
 
-<div class="ca-tf {className}" aria-busy={skeleton ? 'true' : undefined} data-skeleton={skeleton ? '' : undefined} class:ca-tf--sm={size === 'sm'} class:ca-tf--error={!!error} class:ca-tf--disabled={disabled}>
+<div class="ca-tf {className}" style:--ca-field-width={fieldWidth(width)} aria-busy={skeleton ? 'true' : undefined} data-skeleton={skeleton ? '' : undefined} class:ca-tf--sm={size === 'sm'} class:ca-tf--error={!!error} class:ca-tf--disabled={disabled}>
   {#if label}
     <label for={id} class="ca-tf__label" class:ca-sr-only={hideLabel}>
       {label}{#if required && requiredIndicator}<span class="ca-tf__req" aria-hidden="true"> *</span>{/if}
@@ -196,9 +200,9 @@
       display: flex;
       flex-direction: column;
       gap: var(--ca-tf-gap, var(--ca-field-gap, var(--ca-space-1)));
-      width: 100%;
+      width: var(--ca-field-width, 100%);
       /* As a grid or flex item it may shrink below the input's intrinsic width (size="20"). */
-      min-width: 0;
+      min-width: var(--ca-field-min-width, 0);
     }
 
     /* ── Label ─────────────────────────────────────────────────── */

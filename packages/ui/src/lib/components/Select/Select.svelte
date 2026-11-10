@@ -2,6 +2,7 @@
   import { useMessages } from '../../i18n/state.svelte.js';
   import { select } from '../../i18n/groups/select.js';
   import { uid } from '../../utils/index.js';
+  import { fieldWidth, type FieldWidth } from '../../utils/field-width.js';
   import { createListbox } from '../../primitives/index.js';
   import FloatingLayer from '../Popover/FloatingLayer.svelte';
   import { ChevronDown, Check } from '@lucide/svelte';
@@ -21,6 +22,8 @@
     label?:        string;
     /** Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. */
     hideLabel?:    boolean;
+    /** `full` (default) fills the row; `auto` and `fit` size to the content; any CSS length sets the width. Written to `--ca-field-width`, so a `Toolbar` sets it for every field inside. */
+    width?:        FieldWidth;
     description?:  string;
     error?:        string;
     required?:     boolean;
@@ -42,6 +45,7 @@
     disabled    = false,
     label,
     hideLabel   = false,
+    width,
     description,
     error,
     required    = false,
@@ -116,7 +120,7 @@
   }
 </script>
 
-<div class="ca-sel {className}" class:ca-sel--sm={size === 'sm'} class:ca-sel--error={!!error} class:ca-sel--disabled={disabled}>
+<div class="ca-sel {className}" class:ca-sel--sm={size === 'sm'} class:ca-sel--error={!!error} class:ca-sel--disabled={disabled} style:--ca-field-width={fieldWidth(width)}>
   {#if label}
     <label for={id} class="ca-sel__label" class:ca-sr-only={hideLabel}>
       {label}{#if required}<span class="ca-sel__req" aria-hidden="true"> *</span><span class="ca-sr-only"> ({t().select.required})</span>{/if}
@@ -144,7 +148,7 @@
     onclick={() => (open ? close() : openList())}
     onkeydown={onTriggerKeydown}
   >
-    <span id="{id}-value" class="ca-sel__value" class:ca-sel__value--placeholder={!selected}>
+    <span id="{id}-value" class="ca-sel__value" class:ca-sel__value--placeholder={!selected} title={selected?.label}>
       {selected ? selected.label : (placeholder ?? t().select.placeholder)}
     </span>
     <span class="ca-sel__icon" aria-hidden="true">
@@ -226,7 +230,8 @@
       display: flex;
       flex-direction: column;
       gap: var(--ca-sel-gap, var(--ca-field-gap, var(--ca-space-1)));
-      width: 100%;
+      width: var(--ca-field-width, 100%);
+      min-width: var(--ca-field-min-width, 0);
     }
 
     /* ── Label ─────────────────────────────────────────────────── */

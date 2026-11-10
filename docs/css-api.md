@@ -79,6 +79,10 @@ Tokens: `--ca-auth-panel-bg` (any tone: overrides the panel background, a color 
 
 `.ca-btn-group`; `data-orientation="horizontal|vertical"` on the root. Members are its direct children (`.ca-btn`, `.ca-icon-btn`), which lose their inner corner radius and overlap by one `--ca-border-width`; the hovered, open or `:focus-visible` member gets `z-index` 1 or 2.
 
+## Toolbar
+
+`.ca-toolbar` (`role="toolbar"`, a wrapping flex row; `--ca-toolbar-gap`, default `--ca-space-2`). It sets `--ca-field-width: auto` on itself, so fields inside size to their content. `--ca-field-width` (root width of a field, written by the `width` prop; default `100%`) and `--ca-field-min-width` (default `0`) are the sizing contract of TextField, Select, Combobox, NumberField, ColorField and the date fields. `.ca-toolbar-spacer` (a utility) pushes what follows to the end.
+
 ## Card
 
 

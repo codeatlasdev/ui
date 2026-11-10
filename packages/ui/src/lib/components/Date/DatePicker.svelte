@@ -7,6 +7,7 @@
   import { uid } from '../../utils/index.js';
   import CalendarFrame from './CalendarFrame.svelte';
   import { CalendarState } from './calendar-state.svelte.js';
+  import { fieldWidth, type FieldWidth } from '../../utils/field-width.js';
   import DateFieldShell from './DateFieldShell.svelte';
   import { defaultDate, focusOwnDay, type WeekStart } from './date-utils.js';
   import { FieldState } from './field-state.svelte.js';
@@ -18,6 +19,8 @@
     label?:        string;
     /** Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. */
     hideLabel?:    boolean;
+    /** `full` (default), `auto`, `fit` or a CSS length (`--ca-field-width`). */
+    width?:        FieldWidth;
     description?:  string;
     error?:        string;
     disabled?:     boolean;
@@ -52,6 +55,7 @@
   let {
     label,
     hideLabel    = false,
+    width,
     description,
     error,
     disabled     = false,
@@ -143,6 +147,7 @@
   {field}
   {label}
   {hideLabel}
+  width={fieldWidth(width)}
   {description}
   {error}
   {disabled}
