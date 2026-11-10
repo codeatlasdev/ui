@@ -3,6 +3,7 @@ import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { settled } from "../../../../tests/settled";
+import { withTheme } from "../../testing";
 import Harness from "./DropdownMenu.test.svelte";
 import AnchorHarness from "./DropdownMenuAnchor.test.svelte";
 import AttrsHarness from "./DropdownMenuAttrs.test.svelte";
@@ -572,4 +573,24 @@ describe("DropdownMenu opened at a point", () => {
 		await settled();
 		expect(await checkA11y(menu())).toHaveNoViolations();
 	});
+});
+
+// #718: the highlighted destructive row mixed its label toward `black` (about 2:1 on a dark surface).
+describe("DropdownMenu destructive item, highlighted", () => {
+	it.each(["light", "dark"] as const)(
+		"keeps its label readable (axe color-contrast) in %s",
+		async (scheme) => {
+			const restore = withTheme({ scheme });
+			try {
+				const { menu } = await openByKeyboard();
+				const del = page.getByRole("menuitem", { name: "Delete" });
+				(del.element() as HTMLElement).focus();
+				await expect.element(del).toHaveAttribute("data-highlighted", "");
+				await settled();
+				expect(await checkA11y(menu.element() as HTMLElement)).toHaveNoViolations();
+			} finally {
+				restore();
+			}
+		}
+	);
 });
