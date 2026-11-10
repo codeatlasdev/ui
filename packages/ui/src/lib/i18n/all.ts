@@ -45,6 +45,7 @@ import { lightbox } from "./groups/lightbox.js";
 import { liveList } from "./groups/liveList.js";
 import { localeSwitcher } from "./groups/localeSwitcher.js";
 import { map } from "./groups/map.js";
+import { masterDetail } from "./groups/masterDetail.js";
 import { mediaGrid } from "./groups/mediaGrid.js";
 import { mobilePane } from "./groups/mobilePane.js";
 import { motionStage } from "./groups/motionStage.js";
@@ -108,6 +109,7 @@ export const groups = {
 	forms,
 	installPrompt,
 	lightbox,
+	masterDetail,
 	mobilePane,
 	notificationBell,
 	numberField,

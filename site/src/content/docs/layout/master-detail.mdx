@@ -1,0 +1,43 @@
+---
+title: MasterDetail
+description: A list and the detail of the selected row: two columns when wide, a full-screen pane with a back button on a phone, from one mount and one container query.
+group: Layout
+order: 21
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Inbox from "~/demos/layout/master-detail/Inbox.svelte";
+import InboxSrc from "~/demos/layout/master-detail/Inbox.svelte?raw";
+
+```svelte
+<script>
+  import { MasterDetail, EmptyState } from "@codeatlasdev/ui";
+  let id = $state(null);
+</script>
+
+<MasterDetail bind:selected={id} detailTitle={name}>
+  {#snippet master()}<ConversationList />{/snippet}
+  {#snippet detail()}<Thread />{/snippet}
+  {#snippet empty()}<EmptyState title="Select a conversation" />{/snippet}
+</MasterDetail>
+```
+
+Wide: the master next to the detail, with `empty` until a row is selected. Narrow: the master fills the container and the detail becomes a full-screen modal layer while `selected` is set. Escape and the back button close it, focus returns to the row, and with the [overlay-history bridge](/docs/getting-started/mobile/#back-button-on-mobile) the browser's Back closes it too.
+
+The detail is one DOM node and the split is a container query, so the first paint is right (no squeezed desktop layout flashing before hydration) and a draft in the composer survives crossing the breakpoint. The breakpoint is measured on the component's own width, so it works inside a shell with a panel.
+
+<Demo title="Inbox" description="Narrow the window below 900px to see the detail become a full-screen pane." src={InboxSrc}><Inbox client:visible /></Demo>
+
+<Props rows={[
+  { name: "selected", type: "string | null", default: "null", description: "Id of the selected row (bindable). The back button and Escape set it to null." },
+  { name: "breakpoint", type: "'sm' | 'md' | 'lg'", default: "'md'", description: "Container width from which the two columns show: 600, 900 or 1200px." },
+  { name: "listWidth", type: "string", default: "'22rem'", description: "Width of the master column when wide." },
+  { name: "detailTitle", type: "string", description: "Header title and accessible name of the narrow pane." },
+  { name: "onback", type: "() => void", description: "Called after the back button or Escape closes the narrow pane." },
+  { name: "resizable", type: "boolean", default: "false", description: "Wide only: a splitter between the columns (drag, or Left and Right arrow keys)." },
+  { name: "history", type: "boolean", default: "true", description: "Give the narrow pane a browser-history entry under the overlay-history bridge." },
+  { name: "masterLabel", type: "string", description: "Accessible name of the master region." },
+  { name: "master", type: "Snippet", description: "Required. The list." },
+  { name: "detail", type: "Snippet", description: "Required. The detail of the selected row." },
+  { name: "empty", type: "Snippet", description: "Wide only: shown while nothing is selected." },
+]} />

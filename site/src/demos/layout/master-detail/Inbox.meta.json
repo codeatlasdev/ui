@@ -1,0 +1,35 @@
+{
+	"summary": "A MasterDetail inbox: a conversation list and the selected thread side by side, with an empty state until a row is picked.",
+	"use": "Inboxes and any list where a row opens a detail: two columns when wide, a full-screen pane with Back on a phone.",
+	"spec": [
+		"`<MasterDetail bind:selected detailTitle={current?.name ?? ''} listWidth=\"16rem\">`",
+		"`{#snippet empty()}` holds `<EmptyState title=\"Select a conversation\" />`",
+		"`const threads` has 3 conversations"
+	],
+	"tags": ["master-detail", "inbox", "conversation", "list", "responsive", "split"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "layout",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["press", "keyboard"],
+		"layout": "split",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["EmptyState", "MasterDetail"],
+		"aliases": ["split view", "list and detail", "inbox layout"],
+		"related": ["186"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-10-16",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

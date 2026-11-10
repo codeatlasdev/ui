@@ -288,6 +288,12 @@ The trend element (`.ca-kpi__trend`, `.ca-stat__trend`) carries `data-tone="good
 
 `.ca-locale` `.ca-locale--compact` `.ca-locale__code` `.ca-locale__name` `.ca-map` `.ca-map-controls` `.ca-map-controls__needle` `.ca-map__canvas` `.ca-map__overlay`
 
+## MasterDetail
+
+`.ca-md` `.ca-md--lg` `.ca-md--md` `.ca-md--resizable` `.ca-md--sm` `.ca-md__body` `.ca-md__detail` `.ca-md__grid` `.ca-md__header` `.ca-md__master` `.ca-md__split` `.ca-md__title`
+
+Token: `--ca-md-list` (master column width, set from `listWidth`). The detail is a `<dialog>` with `data-state="inline"` (wide) or `data-state="modal"` (narrow, full-screen layer).
+
 ## MediaGrid
 
 `.ca-media-grid` `.ca-media-grid__doc` `.ca-media-grid__doc-title` `.ca-media-grid__duration` `.ca-media-grid__failed` `.ca-media-grid__grid` `.ca-media-grid__grid--single` `.ca-media-grid__grid--wide` `.ca-media-grid__img` `.ca-media-grid__img--hidden` `.ca-media-grid__more` `.ca-media-grid__play` `.ca-media-grid__skeleton` `.ca-media-grid__tile`
