@@ -772,6 +772,7 @@ Data attributes: `data-disabled`, `data-pass`
 | `onchange?` | `(value: string \| string[]) => void` |  |  |
 | `oncreate?` | `(value: string) => void` |  | Called when a new tag is created via `creatable`. Receives the new value string. |
 | `creatable?` | `boolean` | `false` | Show a "Create …" option when the query doesn't match any existing option exactly. |
+| `showCount?` | `boolean` | `false` | Multiple mode: show "N selected" in the trigger instead of the placeholder. Default `false` (the chips already list the selection). |
 
 Parts: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chevron` `ca-combobox__chip` `ca-combobox__chips` `ca-combobox__content` `ca-combobox__empty` `ca-combobox__hint` `ca-combobox__hint--error` `ca-combobox__input` `ca-combobox__item` `ca-combobox__item--create` `ca-combobox__item-check` `ca-combobox__label` `ca-combobox__req` `ca-combobox__search-wrap` `ca-combobox__trigger` `ca-combobox__trigger-count` `ca-combobox__trigger-label` `ca-combobox__viewport` `ca-validity-proxy`
 
