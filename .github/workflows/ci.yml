@@ -23,6 +23,8 @@ concurrency:
 permissions:
   contents: read
 
+# Browser suites run once per land, in the merge queue (and on push to main): a PR run checks Validate + build only,
+# because the queue tests the combined tree that actually merges (#838).
 jobs:
   changes:
     name: Changed areas
@@ -86,7 +88,7 @@ jobs:
   components:
     name: Component tests (${{ matrix.shard }}/2)
     needs: changes
-    if: ${{ !inputs.update-snapshots && needs.changes.outputs.package == 'true' }}
+    if: ${{ github.event_name != 'pull_request' && !inputs.update-snapshots && needs.changes.outputs.package == 'true' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     strategy:
@@ -114,7 +116,7 @@ jobs:
   throttled:
     name: Component tests (CPU throttled)
     needs: changes
-    if: ${{ !inputs.update-snapshots && needs.changes.outputs.package == 'true' }}
+    if: ${{ github.event_name != 'pull_request' && !inputs.update-snapshots && needs.changes.outputs.package == 'true' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -130,7 +132,7 @@ jobs:
     name: Site ${{ matrix.suite }} (${{ matrix.shard }}/${{ matrix.total }})
     needs: [changes, build]
     # Docs-only or repo-meta changes (AGENTS.md, skills, issue templates) skip the browser suites.
-    if: ${{ !inputs.update-snapshots && (needs.changes.outputs.package == 'true' || needs.changes.outputs.site == 'true') }}
+    if: ${{ github.event_name != 'pull_request' && !inputs.update-snapshots && (needs.changes.outputs.package == 'true' || needs.changes.outputs.site == 'true') }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     env:
