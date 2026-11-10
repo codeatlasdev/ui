@@ -1,6 +1,6 @@
 {
 	"version": "4.6.0",
-	"count": 385,
+	"count": 386,
 	"urls": {
 		"page": "https://ui.codeatlas.com.br/gallery/{id}/",
 		"markdown": "https://ui.codeatlas.com.br/gallery/{id}.md",
@@ -8,12 +8,12 @@
 	},
 	"facets": {
 		"kind": {
-			"component": 346,
+			"component": 347,
 			"motion": 39
 		},
 		"subtype": {
 			"component/chart": 30,
-			"component/display": 69,
+			"component/display": 70,
 			"component/feedback": 38,
 			"component/foundation": 19,
 			"component/input": 86,
@@ -31,7 +31,7 @@
 		"style": {
 			"aurora": 5,
 			"bento": 10,
-			"default": 368,
+			"default": 369,
 			"editorial": 5,
 			"glassmorphism": 14,
 			"liquid": 1,
@@ -41,45 +41,45 @@
 		"motion": {
 			"expressive": 51,
 			"immersive": 9,
-			"none": 100,
+			"none": 101,
 			"subtle": 225
 		},
 		"interaction": {
 			"cursor": 12,
 			"drag": 32,
 			"hover": 79,
-			"keyboard": 265,
+			"keyboard": 266,
 			"none": 78,
-			"press": 225,
-			"scroll": 21
+			"press": 226,
+			"scroll": 22
 		},
 		"layout": {
 			"carousel": 4,
 			"full-bleed": 6,
 			"grid": 36,
 			"overlay": 50,
-			"single-column": 125,
+			"single-column": 126,
 			"split": 13,
 			"stack": 144,
 			"sticky": 7
 		},
 		"colorMode": {
-			"both": 383,
+			"both": 384,
 			"light": 2
 		},
 		"density": {
 			"airy": 12,
-			"compact": 48,
+			"compact": 49,
 			"regular": 325
 		},
 		"tech": {
 			"canvas2d": 1,
-			"css": 385,
+			"css": 386,
 			"svelte-motion": 39,
 			"view-transitions": 1
 		},
 		"cost": {
-			"css": 345,
+			"css": 346,
 			"js-light": 40
 		},
 		"component": {
@@ -110,8 +110,9 @@
 			"CarouselItem": 3,
 			"CepField": 1,
 			"Checkbox": 6,
-			"Chip": 9,
+			"Chip": 10,
 			"ChipGroup": 2,
+			"ChipRow": 1,
 			"CodeSnippet": 1,
 			"CodeTab": 1,
 			"CodeTabs": 1,
@@ -644,6 +645,7 @@
 		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["drag","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["SliderField"],"aliases":["labelled slider","slider with number","settings slider","editable value"],"related":["046","047"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-25","review":{"industry":"pending"},"id":"992","path":"inputs/slider/Field","title":"Label and number","summary":"Two labelled sliders with an editable number and a unit: radius and type scale.","use":"Tuning a numeric setting where both scrubbing and typing an exact value matter.","tags":["slider-field","slider","number","settings","unit"],"names":[]},
 		{"kind":"component","subtype":"foundation","style":["default"],"motion":"subtle","interaction":["press","drag","keyboard"],"layout":"split","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["SegmentedControl","Switch","Slider"],"aliases":["viewport units","svh dvh lvh","safe area","virtual keyboard","phone simulator"],"related":["994","995"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-25","review":{"industry":"pending"},"id":"993","path":"concepts/viewport/Simulator","title":"Viewport simulator","summary":"An interactive phone drawing with a device-shape selector, switches for collapsed browser bars and edge-to-edge drawing, a keyboard height slider and a keyboard resize mode, plus a table of what 100lvh, 100svh and 100dvh resolve to and how much of each is hidden.","use":"Teaching why a full-height block must be a floor (min-height) and not a fixed height, and how safe areas and the virtual keyboard change the usable height.","tags":["viewport","svh","dvh","lvh","safe-area","keyboard","mobile","simulator","concept"],"names":[]},
 		{"kind":"component","subtype":"foundation","style":["default"],"motion":"subtle","interaction":["press","scroll","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Button","Switch"],"aliases":["full height hero","min-height floor","first screen","text scaling","continuation cue"],"related":["993","995"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-25","review":{"industry":"pending"},"id":"994","path":"concepts/viewport/Hero","title":"A hero that is a floor","summary":"A phone-sized scrollable frame holding a hero (eyebrow, heading, lead, filled Button) and a second section, with a switch for 200% text and a long translation and a switch for a continuation cue.","use":"Showing that a hero is a floor (min-height) so larger text grows it instead of clipping, and that without a visible cue the next section can read as the end of the page.","tags":["viewport","hero","min-height","false-floor","scroll-cue","reflow","concept"],"names":[]},
-		{"kind":"component","subtype":"foundation","style":["default"],"motion":"none","interaction":["scroll","keyboard","press"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Button","StickyActions","TextField"],"aliases":["on-screen keyboard","sticky action bar","keyboard aware form","mobile form"],"related":["993","994"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-25","review":{"industry":"pending"},"id":"995","path":"concepts/viewport/Keyboard","title":"A form with the keyboard open","summary":"A scrollable account form with three TextFields (work email, company, role) and a StickyActions bar with a stretched Continue button, wrapped in the keyboardAware action.","use":"A form that stays operable with the on-screen keyboard open: the page scrolls, the focused field comes into view and the action bar rides above the keyboard and the safe area.","tags":["viewport","keyboard","keyboard-aware","sticky-actions","form","mobile","safe-area","concept"],"names":[]}
+		{"kind":"component","subtype":"foundation","style":["default"],"motion":"none","interaction":["scroll","keyboard","press"],"layout":"single-column","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Button","StickyActions","TextField"],"aliases":["on-screen keyboard","sticky action bar","keyboard aware form","mobile form"],"related":["993","994"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-10-25","review":{"industry":"pending"},"id":"995","path":"concepts/viewport/Keyboard","title":"A form with the keyboard open","summary":"A scrollable account form with three TextFields (work email, company, role) and a StickyActions bar with a stretched Continue button, wrapped in the keyboardAware action.","use":"A form that stays operable with the on-screen keyboard open: the page scrolls, the focused field comes into view and the action bar rides above the keyboard and the safe area.","tags":["viewport","keyboard","keyboard-aware","sticky-actions","form","mobile","safe-area","concept"],"names":[]},
+		{"kind":"component","subtype":"display","style":["default"],"motion":"none","interaction":["press","keyboard","scroll"],"layout":"single-column","colorMode":"both","density":"compact","tech":["css"],"cost":"css","components":["Chip","ChipRow"],"aliases":["filter row","scrolling chips","chip scroller"],"related":["118","115"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-10","review":{"industry":"pending"},"id":"996","path":"display/chip/Row","title":"Scrolling filter row","summary":"A row of eight filter chips that scrolls sideways inside a narrow frame, with a fade where more chips are hidden.","use":"A filter or message-type row on a phone that must scroll without clipping the 44px touch area of its chips.","tags":["chip","chip-row","filter","scroll","touch","horizontal"],"names":[]}
 	]
 }

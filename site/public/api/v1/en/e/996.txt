@@ -1,0 +1,31 @@
+<!-- @codeatlasdev/ui demo #996 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/display/chip#scrolling-filter-row -->
+Element: #996 Scrolling filter row (display/chip)
+What it shows: A row of eight filter chips that scrolls sideways inside a narrow frame, with a fade where more chips are hidden.
+When to use: A filter or message-type row on a phone that must scroll without clipping the 44px touch area of its chips.
+Spec:
+- `<ChipRow label="Filter chats" fade>` wraps the chips in one scrolling group
+- `const filters = ['All', 'Unread', 'Groups', 'Archived', 'Starred', 'Muted', 'Mentions', 'Drafts']` lists the eight filters
+- `<Chip label={f} selected={active === f} onclick={() => (active = f)} />` makes each one a toggle
+Tags: chip, chip-row, filter, scroll, touch, horizontal
+Needs: @codeatlasdev/ui@4.6.0
+Components: Chip, ChipRow
+Live demo: https://ui.codeatlas.com.br/docs/display/chip#scrolling-filter-row
+
+<script lang="ts">
+  import { Chip, ChipRow } from '@codeatlasdev/ui';
+
+  const filters = ['All', 'Unread', 'Groups', 'Archived', 'Starred', 'Muted', 'Mentions', 'Drafts'];
+  let active = $state('All');
+</script>
+
+<div class="frame">
+  <ChipRow label="Filter chats" fade>
+    {#each filters as f (f)}
+      <Chip label={f} selected={active === f} onclick={() => (active = f)} />
+    {/each}
+  </ChipRow>
+</div>
+
+<style>
+  .frame { width: min(100%, 22rem); }
+</style>

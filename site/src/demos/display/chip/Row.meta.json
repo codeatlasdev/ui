@@ -1,0 +1,35 @@
+{
+	"summary": "A row of eight filter chips that scrolls sideways inside a narrow frame, with a fade where more chips are hidden.",
+	"use": "A filter or message-type row on a phone that must scroll without clipping the 44px touch area of its chips.",
+	"spec": [
+		"`<ChipRow label=\"Filter chats\" fade>` wraps the chips in one scrolling group",
+		"`const filters = ['All', 'Unread', 'Groups', 'Archived', 'Starred', 'Muted', 'Mentions', 'Drafts']` lists the eight filters",
+		"`<Chip label={f} selected={active === f} onclick={() => (active = f)} />` makes each one a toggle"
+	],
+	"tags": ["chip", "chip-row", "filter", "scroll", "touch", "horizontal"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "display",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "none",
+		"interaction": ["press", "keyboard", "scroll"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "compact",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Chip", "ChipRow"],
+		"aliases": ["filter row", "scrolling chips", "chip scroller"],
+		"related": ["118", "115"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-11-10",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

@@ -390,3 +390,4 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 993 | Viewport simulator | concepts/viewport | SegmentedControl, Switch, Slider |
 | 994 | A hero that is a floor | concepts/viewport | Button, Switch |
 | 995 | A form with the keyboard open | concepts/viewport | Button, StickyActions, TextField |
+| 996 | Scrolling filter row | display/chip | Chip, ChipRow |

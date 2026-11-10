@@ -98,6 +98,12 @@ Tokens: `--ca-auth-panel-bg` (any tone: overrides the panel background, a color 
 
 `.ca-chip` `.ca-chip--brand` `.ca-chip--error` `.ca-chip--info` `.ca-chip--interactive` `.ca-chip--selected` `.ca-chip--sm` `.ca-chip--success` `.ca-chip--warning` `.ca-chip__delete` `.ca-chip__icon` `.ca-chip__label`
 
+## ChipRow
+
+`.ca-chip-row` `.ca-chip-row--fade` `.ca-chip-row--sm` `.ca-chip-row--wrap`
+
+Tokens: `--ca-chip-row-h` (height of the row's chips; `md` by default, `sm` with `size="sm"`).
+
 ## ChipGroup
 
 `.ca-chip-group` `.ca-chip-group__check` `.ca-chip-group__chip` `.ca-chip-group__hint` `.ca-chip-group__hint--error` `.ca-chip-group__input` `.ca-chip-group__label` `.ca-chip-group__list` `.ca-chip-group__req` `.ca-chip-group__text`
