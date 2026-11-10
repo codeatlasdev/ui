@@ -40,7 +40,9 @@ afterAll(() => setLocale("en"));
 // #97: the same flow as DocsSearch.svelte.test.ts under CDP CPU throttling, so the slow-CI behaviour
 // (every Playwright step costing hundreds of ms) is reproduced on demand.
 describe.each([40, 150])("DocsSearch under %dx CPU throttle (#97)", (rate) => {
-	const budget = rate >= 150 ? 30_000 : 15_000;
+	// Throttling multiplies the host's speed: ~13 s here at 150x, and on the 4-vCPU CI runner, alone in its job with one
+	// worker, one run passed and one hit 30 s (#833). The timeout bounds the run; what is asserted is the selection.
+	const budget = rate >= 150 ? 90_000 : 15_000;
 
 	beforeEach(async () => {
 		await cdp().send("Emulation.setCPUThrottlingRate", { rate });
