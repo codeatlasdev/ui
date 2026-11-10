@@ -140,6 +140,7 @@ export { default as DropdownMenuRadioItem } from "./components/DropdownMenu/Drop
 export { default as DropdownMenuSeparator } from "./components/DropdownMenu/DropdownMenuSeparator.svelte";
 export { default as DropdownMenuSub } from "./components/DropdownMenu/DropdownMenuSub.svelte";
 export { default as DropdownMenuSubTrigger } from "./components/DropdownMenu/DropdownMenuSubTrigger.svelte";
+export { default as EditableRow } from "./components/EditableRow/EditableRow.svelte";
 export { default as EmptyState } from "./components/EmptyState/EmptyState.svelte";
 export { default as ErrorPage } from "./components/ErrorPage/ErrorPage.svelte";
 export { default as ExportMenu } from "./components/ExportMenu/ExportMenu.svelte";
@@ -228,6 +229,11 @@ export { default as Skeleton } from "./components/Skeleton/Skeleton.svelte";
 export { default as SkipLink } from "./components/SkipLink/SkipLink.svelte";
 export { default as Slider } from "./components/Slider/Slider.svelte";
 export { default as SliderField } from "./components/SliderField/SliderField.svelte";
+export type {
+	SortableListReorder,
+	SortableListRowState,
+} from "./components/SortableList/SortableList.svelte";
+export { default as SortableList } from "./components/SortableList/SortableList.svelte";
 export { default as Spinner } from "./components/Spinner/Spinner.svelte";
 export { default as SplashScreen } from "./components/SplashScreen/SplashScreen.svelte";
 export { default as Stack } from "./components/Stack/Stack.svelte";

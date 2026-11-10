@@ -1,0 +1,57 @@
+---
+title: SortableList and EditableRow
+description: An ordered list the user reorders by grip, keyboard or menu, and a row that collapses to a summary on a narrow screen: the building blocks of a settings editor.
+group: Layout
+order: 63
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Stages from "~/demos/layout/sortable-list/Stages.svelte";
+import StagesSrc from "~/demos/layout/sortable-list/Stages.svelte?raw";
+
+```svelte
+<script>
+  import { EditableRow, SortableList } from "@codeatlasdev/ui";
+</script>
+
+<SortableList items={stages} getId={(s) => s.id} onreorder={reorder} label="Pipeline stages">
+  {#snippet item(stage)}
+    <EditableRow label={stage.name}>
+      {#snippet summary()}{stage.name}{/snippet}
+      <TextField label="Name" bind:value={stage.name} />
+      {#snippet actions()}<IconButton aria-label="Delete {stage.name}">…</IconButton>{/snippet}
+    </EditableRow>
+  {/snippet}
+</SortableList>
+```
+
+Settings screens are mostly editable lists: pipeline stages, loss reasons, tags, quick replies. Each row is a small form plus a way to reorder and a delete button. `SortableList` owns the reordering and `EditableRow` owns the row layout; the fields are the components you already use.
+
+<Demo title="Pipeline stages editor" description="Drag the grip, lift a row with Space and move it with the arrows, or use the menu on the row. Narrow the window below 36rem of row width and each row collapses to its name with an Edit button." src={StagesSrc}><Stages client:visible /></Demo>
+
+## Reordering
+
+Every row has a grip (a button, so it is reachable and named: "Move Novo") and a "Reorder" menu with Move up, Move down, Move to the top and Move to the bottom. The menu is the path that needs no drag, for touch and screen readers, and announces the result. A pointer drags from the grip only, so the fields inside a row stay editable, and a touch on the grip starts the drag at once, with no hold. `onreorder({ id, from, to })` reports the move; the list never reorders `items` itself, so you can persist first and put the old order back on failure (the demo does, optimistically).
+
+## EditableRow
+
+The row measures its own width, not the viewport's, so it stacks inside a narrow column on a wide screen too. From 36rem it lays summary, fields and actions on one line, the fields in an auto-fit grid (`--ca-field-min`, default 10rem); below that the summary and actions stay on one line and the fields open under an Edit button (`bind:open` to control it). Give the row a `label` for that button.
+
+<Props for="SortableList" rows={[
+  { name: "items", type: "T[]", default: "required", description: "The rows, in order." },
+  { name: "getId", type: "(item: T) => string", default: "required", description: "Stable id of a row." },
+  { name: "onreorder", type: "(move: { id, from, to }) => void", default: "required", description: "A row moved by drag, keyboard or the menu. Apply it to your data." },
+  { name: "label", type: "string", default: "required", description: "Accessible name of the list." },
+  { name: "getLabel", type: "(item: T) => string", default: "row text", description: "Name of a row for the grip, the menu and the announcements." },
+  { name: "item", type: "Snippet<[T, { dragging, index, count }]>", default: "required", description: "Row content. The grip and the reorder menu are the list's." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+]} />
+
+<Props for="EditableRow" rows={[
+  { name: "summary", type: "Snippet", default: "required", description: "What the row is, in one line. Always visible." },
+  { name: "children", type: "Snippet", default: "required", description: "The fields." },
+  { name: "actions", type: "Snippet", default: "undefined", description: "Right-aligned actions (delete). Always visible." },
+  { name: "label", type: "string", default: "required", description: "Name of the row for the Edit button." },
+  { name: "open", type: "boolean", default: "false", description: "Bindable. Whether the fields are open while the row is collapsed." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+]} />

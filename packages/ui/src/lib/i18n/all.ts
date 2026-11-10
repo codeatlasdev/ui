@@ -30,6 +30,7 @@ import { dataTable } from "./groups/dataTable.js";
 import { dialog } from "./groups/dialog.js";
 import { docs } from "./groups/docs.js";
 import { drawer } from "./groups/drawer.js";
+import { editableRow } from "./groups/editableRow.js";
 import { errorPage } from "./groups/errorPage.js";
 import { exportMenu } from "./groups/exportMenu.js";
 import { externalLink } from "./groups/externalLink.js";
@@ -58,6 +59,7 @@ import { select } from "./groups/select.js";
 import { sheet } from "./groups/sheet.js";
 import { skipLink } from "./groups/skipLink.js";
 import { slider } from "./groups/slider.js";
+import { sortableList } from "./groups/sortableList.js";
 import { soundToggle } from "./groups/soundToggle.js";
 import { spinner } from "./groups/spinner.js";
 import { splashScreen } from "./groups/splashScreen.js";
@@ -117,6 +119,8 @@ export const groups = {
 	select,
 	sheet,
 	slider,
+	sortableList,
+	editableRow,
 	spinner,
 	splashScreen,
 	stepper,

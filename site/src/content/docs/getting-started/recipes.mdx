@@ -708,6 +708,56 @@ Rules:
 
 See also: [Page layouts (AppSettings)](/docs/layout/list-page/), [SettingItem](/docs/inputs/setting-item/), [Switch](/docs/inputs/switch/), [App copy](/docs/getting-started/app-copy/).
 
+### Settings editor
+
+A settings tab that edits an ordered list (pipeline stages, tags, loss reasons) is `SortableList` around `EditableRow`s. Do not build the grip, the up and down buttons or the collapsing grid by hand.
+
+```svelte
+<script lang="ts">
+  import { EditableRow, IconButton, NumberField, Select, SortableList, TextField, toast } from "@codeatlasdev/ui";
+  import type { SortableListReorder } from "@codeatlasdev/ui";
+  import { Trash2 } from "@lucide/svelte";
+  import { m } from "#lib/messages.ts";
+
+  let { data } = $props();
+  let stages = $state(data.stages);
+
+  // Optimistic: show the new order, save it, put the old one back when the save fails.
+  async function reorder({ from, to }: SortableListReorder) {
+    const before = stages;
+    const next = [...stages];
+    next.splice(to, 0, ...next.splice(from, 1));
+    stages = next;
+    const res = await fetch("/api/stages/order", { method: "PUT", body: JSON.stringify(next.map((s) => s.id)) });
+    if (!res.ok) {
+      stages = before;
+      toast.error(m.stages.reorderFailed);
+    }
+  }
+</script>
+
+<SortableList items={stages} getId={(s) => s.id} getLabel={(s) => s.name} onreorder={reorder} label={m.stages.title}>
+  {#snippet item(stage)}
+    <EditableRow label={stage.name}>
+      {#snippet summary()}{stage.name}{/snippet}
+      <TextField label={m.stages.name} bind:value={stage.name} />
+      <Select label={m.stages.kind} options={m.stages.kinds} bind:value={stage.kind} />
+      <NumberField label={m.stages.staleDays} bind:value={stage.staleDays} min={0} />
+      {#snippet actions()}
+        <IconButton variant="text" aria-label={m.stages.delete(stage.name)} onclick={() => remove(stage.id)}><Trash2 size={16} /></IconButton>
+      {/snippet}
+    </EditableRow>
+  {/snippet}
+</SortableList>
+```
+
+- `onreorder` reports `{ id, from, to }` and the list does not move `items` itself: that is what makes the rollback above possible.
+- The row stacks by its own width, so the same markup works in a 330px phone column and in a wide settings pane.
+- A list with no reordering (loss reasons, tags) is the same `EditableRow`s in a plain `<ul>`; keep `SortableList` for lists whose order matters.
+
+See also: [SortableList and EditableRow](/docs/layout/sortable-list/).
+
+
 ## Auth pages
 
 Use it for sign in, sign up and password reset: a brand panel on one side and a card with the form on the other.
