@@ -20,6 +20,12 @@ export interface PresetContrastIssue {
 /** WCAG AA for normal text: the floor for a label on a brand fill. */
 const AA = 4.5;
 
+/** Label roles on a solid fill, measured as a pair at 4.5:1. `fallback`: the stylesheet fill when the preset sets only the label. */
+const FILL_PAIRS = [
+	{ fill: "brandFill", label: "brandContrast", use: "button", fallback: "" },
+	{ fill: "errorFill", label: "errorContrast", use: "button", fallback: "oklch(0.52 0.200 22)" },
+] as const;
+
 /** Text roles the build measures on their surfaces, after compositing alpha. */
 const TEXT_ROLES = ["text", "textSecondary", "textHint"] as const;
 type TextRole = (typeof TEXT_ROLES)[number];
@@ -55,16 +61,17 @@ export function presetContrastIssues(t: Pick<ResolvedTheme, "presets">): PresetC
 		for (const scheme of ["light", "dark"] as const) {
 			const set = p.colors?.[scheme];
 			const vars = tokens[scheme];
-			if (set?.brandFill || set?.brandContrast) {
-				const fill = vars["--ca-brand-fill"];
-				const text = vars["--ca-brand-contrast"];
+			for (const pair of FILL_PAIRS) {
+				if (!set?.[pair.fill] && !set?.[pair.label]) continue;
+				const fill = vars[ROLE_TOKENS[pair.fill]] ?? pair.fallback;
+				const text = vars[ROLE_TOKENS[pair.label]];
 				const ratio = fill && text ? contrastRatio(fill, text) : null;
 				if (ratio !== null && ratio < AA)
 					issues.push({
 						preset: p.id,
 						scheme,
 						ratio,
-						message: `preset "${p.id}" (${scheme}): brandContrast ${text} on brandFill ${fill} is ${ratio.toFixed(2)}:1, under the 4.5:1 WCAG AA minimum for button text. Pick a darker/lighter pair.`,
+						message: `preset "${p.id}" (${scheme}): ${pair.label} ${text} on ${pair.fill} ${fill} is ${ratio.toFixed(2)}:1, under the 4.5:1 WCAG AA minimum for ${pair.use} text. Pick a darker/lighter pair.`,
 					});
 			}
 			if (!set) continue;

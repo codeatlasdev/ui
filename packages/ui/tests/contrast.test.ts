@@ -486,3 +486,29 @@ describe("--ca-brand-text (#410)", () => {
 		expect(resolve(t, "--ca-brand-text")).toMatch(/^oklch\(\S+ 0\.[1-9]\S* 12\d/);
 	});
 });
+
+// #706: hand-set solid error roles reach the dark scheme intact (the portal-inherited rule), and the
+// generated label for a lone fill holds 4.5:1.
+describe("preset errorFill / errorContrast (#706)", () => {
+	const css = themeCSS(
+		defineTheme({
+			presets: [
+				{
+					id: "ported",
+					color: "#0f766e",
+					colors: { dark: { error: "oklch(0.72 0.16 25)", errorFill: "oklch(0.5 0.19 25)" } },
+				},
+			],
+		})
+	);
+	it("keeps the light error text colour and the dark solid fill apart", () => {
+		expect(css).toMatch(/--ca-semantic-error:\s*oklch\(0\.72 0\.16 25\)/);
+		expect(css).toMatch(/--ca-semantic-error-fill:\s*oklch\(0\.5 0\.19 25\)/);
+	});
+	it("derives a label >= 4.5:1 on the hand-set fill", () => {
+		const label = css.match(/--ca-semantic-error-contrast:\s*(oklch\([^)]*\))/)?.[1] ?? "";
+		expect(
+			ratio(rgb(oklchToHex(label)), rgb(oklchToHex("oklch(0.5 0.19 25)")))
+		).toBeGreaterThanOrEqual(4.5);
+	});
+});
