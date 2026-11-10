@@ -317,17 +317,24 @@ const DEFAULT_HEADING_WEIGHT = 600;
 /** Materials whose stylesheet draws the page mesh (base.css); `paper: "plain"` must switch it off there. */
 const MESH_STYLES: readonly SurfaceStyle[] = ["glass", "frosted"];
 
+/** Tones whose solid fill carries a label of its own: `--ca-semantic-<tone>-fill` + `-contrast`. */
+const SOLID_TONES = ["error", "success", "warning", "info"] as const;
+
 /**
- * `--ca-semantic-error-contrast` for a map that sets `--ca-semantic-error-fill` to a colour of its
+ * `--ca-semantic-<tone>-contrast` for a map that sets `--ca-semantic-<tone>-fill` to a colour of its
  * own: white or ink, whichever reads better on it, like `--ca-brand-contrast` for the brand fill.
- * Maps that leave the fill alone keep the preset's pair.
+ * Maps that leave the fill alone keep the stylesheet's pair.
  */
-function withErrorContrast<T extends Record<string, string>>(vars: T): T {
-	const fill = vars["--ca-semantic-error-fill"];
-	if (!fill || "--ca-semantic-error-contrast" in vars) return vars;
-	const m = fill.match(/oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)/);
-	if (!m) return vars;
-	return { ...vars, "--ca-semantic-error-contrast": onFill(+m[1], +m[2], +m[3]) };
+function withSemanticContrast<T extends Record<string, string>>(vars: T): T {
+	let out: Record<string, string> = vars;
+	for (const tone of SOLID_TONES) {
+		const fill = vars[`--ca-semantic-${tone}-fill`];
+		const key = `--ca-semantic-${tone}-contrast`;
+		if (!fill || key in vars) continue;
+		const m = fill.match(/oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)/);
+		if (m) out = { ...out, [key]: onFill(+m[1], +m[2], +m[3]) };
+	}
+	return out as T;
 }
 
 /** Light/dark token maps (with `color-scheme`) for a built-in or brand preset. */
@@ -336,8 +343,8 @@ export function presetTokens(src: BuiltinPresetSource | PresetDefinition) {
 	if ("hue" in src) {
 		const g = presetVars(generatePreset(src.hue, src.chroma, src.lightL));
 		vars = {
-			light: { ...g.light, ...withErrorContrast({ ...src.overrides.light }) },
-			dark: { ...g.dark, ...withErrorContrast({ ...src.overrides.dark }) },
+			light: { ...g.light, ...withSemanticContrast({ ...src.overrides.light }) },
+			dark: { ...g.dark, ...withSemanticContrast({ ...src.overrides.dark }) },
 		};
 	} else {
 		if (!HEX.test(src.color))
@@ -348,9 +355,9 @@ export function presetTokens(src: BuiltinPresetSource | PresetDefinition) {
 			light: {
 				"--ca-chart-brand": src.color,
 				...g.light,
-				...withErrorContrast(roleTokens(src, "light")),
+				...withSemanticContrast(roleTokens(src, "light")),
 			},
-			dark: { ...g.dark, ...withErrorContrast(roleTokens(src, "dark")) },
+			dark: { ...g.dark, ...withSemanticContrast(roleTokens(src, "dark")) },
 		};
 	}
 	const tokens = "hue" in src ? undefined : domainTokens(src.id, src.tokens);
@@ -392,10 +399,12 @@ function roleTokens(src: PresetDefinition, scheme: "light" | "dark"): TokenMap {
 		if (raw === undefined || raw === "") continue;
 		out[token] = roleColor(src.id, `colors.${scheme}.${role}`, raw);
 	}
-	// A hand-picked error colour also owns the destructive fill, so its label is derived with it.
-	const error = out["--ca-semantic-error"];
-	if (error && /^oklch\(/.test(error) && !error.includes("/"))
-		out["--ca-semantic-error-fill"] = error;
+	// A hand-picked tone colour also owns its solid fill, so its label is derived with it.
+	for (const tone of SOLID_TONES) {
+		const color = out[`--ca-semantic-${tone}` as keyof TokenMap];
+		if (color && /^oklch\(/.test(color) && !color.includes("/"))
+			out[`--ca-semantic-${tone}-fill` as keyof TokenMap] = color;
+	}
 	return out;
 }
 
@@ -794,13 +803,13 @@ export function themeCSS(t: ResolvedTheme): string {
 	if (t.fonts.mono) root["--ca-font-mono"] = fontStack(t.fonts.mono);
 	if (t.fonts.display) root["--ca-font-display"] = fontStack(t.fonts.display);
 	Object.assign(root, designTokens(t), componentTokens(t.components));
-	Object.assign(root, withErrorContrast({ ...t.overrides.light }));
+	Object.assign(root, withSemanticContrast({ ...t.overrides.light }));
 	if (Object.keys(root).length) out.push(cssBlock(':root,\n[data-theme-scope="light"]', root));
 	if (t.overrides.dark && Object.keys(t.overrides.dark).length)
 		out.push(
 			cssBlock(
 				':root.dark,\n:root [data-theme-scope="dark"]',
-				withErrorContrast({ ...t.overrides.dark })
+				withSemanticContrast({ ...t.overrides.dark })
 			)
 		);
 	return out.join("\n");

@@ -84,7 +84,9 @@
    * reduced-motion stops them in the components themselves. */
   --ca-duration-loop: 1.4s;
   --ca-duration-spin: 0.8s;
-  --ca-on-semantic: oklch(1 0 0);
+  /* Label on a solid semantic fill, kept for existing apps: the error pair's label. New code reads the
+   * per-tone --ca-semantic-<tone>-contrast. */
+  --ca-on-semantic: var(--ca-semantic-error-contrast);
   --ca-ease-standard:   cubic-bezier(0.4, 0, 0.2, 1);
   --ca-ease-decelerate: cubic-bezier(0, 0, 0.2, 1);
   --ca-ease-accelerate: cubic-bezier(0.4, 0, 1, 1);
@@ -290,6 +292,14 @@
   --ca-semantic-error:     oklch(0.52 0.200 22);
   /* Solid fill that carries white text (error itself is lightened in dark mode for use as text). */
   --ca-semantic-error-fill: oklch(0.52 0.200 22);
+  /* Solid fills and their labels for the other tones, the pair design of error-fill/error-contrast: each
+   * label is >= 4.5:1 on its fill (tests/contrast.test.ts). defineTheme derives both from colors.*.success|warning|info. */
+  --ca-semantic-success-fill: oklch(0.44 0.155 150);
+  --ca-semantic-success-contrast: oklch(1 0 0);
+  --ca-semantic-warning-fill: oklch(0.51 0.155 88);
+  --ca-semantic-warning-contrast: oklch(1 0 0);
+  --ca-semantic-info-fill: oklch(0.47 0.140 235);
+  --ca-semantic-info-contrast: oklch(1 0 0);
   /* Text on --ca-semantic-error-fill (>= 4.5:1), like --ca-brand-contrast on --ca-brand-fill. Emitted by
    * presets; if you re-theme the fill, set this alongside it (defineTheme derives it from colors.*.error). */
 
@@ -332,6 +342,13 @@
   --ca-semantic-info:      oklch(0.74 0.145 235);
   --ca-semantic-error:     oklch(0.78 0.190 22);
   --ca-semantic-error-fill: oklch(0.52 0.200 22);
+  /* In dark the tones are the light variants (text on a dark surface), so their labels are ink. */
+  --ca-semantic-success-fill: oklch(0.73 0.165 150);
+  --ca-semantic-success-contrast: oklch(0.10 0 0);
+  --ca-semantic-warning-fill: oklch(0.86 0.155 88);
+  --ca-semantic-warning-contrast: oklch(0.10 0 0);
+  --ca-semantic-info-fill: oklch(0.74 0.145 235);
+  --ca-semantic-info-contrast: oklch(0.10 0 0);
 
   /* Action states */
   --ca-action-hover:       oklch(1 0 0 / 0.075);

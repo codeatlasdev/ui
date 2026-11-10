@@ -2,7 +2,9 @@ import { createRawSnippet } from "svelte";
 import { describe, expect, it } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { withTheme } from "../../testing";
 import Badge from "./Badge.svelte";
+import BadgeSolidTones from "./BadgeSolidTones.test.svelte";
 
 const child = createRawSnippet(() => ({ render: () => `<button type="button">Inbox</button>` }));
 
@@ -125,4 +127,19 @@ describe("Badge", () => {
 			expect(getComputedStyle(status).position).toBe("absolute");
 		});
 	});
+});
+
+// #749: solid semantic fills drew white (--ca-on-semantic) on the light dark-scheme tones (1.5 to 2.3:1).
+describe("Badge solid fills hold 4.5:1 in both schemes (#749)", () => {
+	for (const scheme of ["light", "dark"] as const)
+		it(`counter and inline pills pass axe color-contrast (${scheme})`, async () => {
+			const restore = withTheme({ scheme });
+			try {
+				const screen = await render(BadgeSolidTones);
+				await expect.element(screen.getByText("info pill")).toBeVisible();
+				expect(await checkA11y(screen.container)).toHaveNoViolations();
+			} finally {
+				restore();
+			}
+		});
 });

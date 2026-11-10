@@ -104,18 +104,18 @@
     }
 
     .ca-badge--success {
-      background: var(--ca-semantic-success);
-      color: var(--ca-on-semantic);
+      background: var(--ca-semantic-success-fill);
+      color: var(--ca-semantic-success-contrast);
     }
 
     .ca-badge--error {
-      background: var(--ca-semantic-error);
-      color: var(--ca-on-semantic);
+      background: var(--ca-semantic-error-fill);
+      color: var(--ca-semantic-error-contrast);
     }
 
     .ca-badge--warning {
-      background: var(--ca-semantic-warning);
-      color: var(--ca-on-semantic);
+      background: var(--ca-semantic-warning-fill);
+      color: var(--ca-semantic-warning-contrast);
     }
 
     /* Inline pill: in flow, label from children. Tone sets --ca-badge-tone (the text/dot colour in
@@ -139,10 +139,10 @@
       font-size: var(--ca-font-size-body2);
     }
     .ca-badge--inline.ca-badge--brand { --ca-badge-tone: var(--ca-brand-text); --ca-badge-fill: var(--ca-brand-fill); --ca-badge-on: var(--ca-brand-contrast); }
-    .ca-badge--inline.ca-badge--success { --ca-badge-tone: var(--ca-semantic-success); --ca-badge-fill: var(--ca-semantic-success); --ca-badge-on: var(--ca-on-semantic); }
-    .ca-badge--inline.ca-badge--danger { --ca-badge-tone: var(--ca-semantic-error); --ca-badge-fill: var(--ca-semantic-error-fill); --ca-badge-on: var(--ca-semantic-error-contrast, var(--ca-on-semantic)); }
-    .ca-badge--inline.ca-badge--warning { --ca-badge-tone: var(--ca-semantic-warning); --ca-badge-fill: var(--ca-semantic-warning); --ca-badge-on: var(--ca-on-semantic); }
-    .ca-badge--inline.ca-badge--info { --ca-badge-tone: var(--ca-semantic-info); --ca-badge-fill: var(--ca-semantic-info); --ca-badge-on: var(--ca-on-semantic); }
+    .ca-badge--inline.ca-badge--success { --ca-badge-tone: var(--ca-semantic-success); --ca-badge-fill: var(--ca-semantic-success-fill); --ca-badge-on: var(--ca-semantic-success-contrast); }
+    .ca-badge--inline.ca-badge--danger { --ca-badge-tone: var(--ca-semantic-error); --ca-badge-fill: var(--ca-semantic-error-fill); --ca-badge-on: var(--ca-semantic-error-contrast); }
+    .ca-badge--inline.ca-badge--warning { --ca-badge-tone: var(--ca-semantic-warning); --ca-badge-fill: var(--ca-semantic-warning-fill); --ca-badge-on: var(--ca-semantic-warning-contrast); }
+    .ca-badge--inline.ca-badge--info { --ca-badge-tone: var(--ca-semantic-info); --ca-badge-fill: var(--ca-semantic-info-fill); --ca-badge-on: var(--ca-semantic-info-contrast); }
     .ca-badge--inline.ca-badge--neutral { --ca-badge-tone: var(--ca-text-secondary); --ca-badge-fill: var(--ca-text-secondary); --ca-badge-on: var(--ca-surface-base); }
     .ca-badge--inline {
       background: var(--ca-badge-fill);
