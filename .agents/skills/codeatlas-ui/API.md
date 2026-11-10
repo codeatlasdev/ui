@@ -1234,6 +1234,7 @@ Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-spli
 | `brandHref?` | `string` | `'/'` | Link target of the brand (default "/"). |
 | `brandLabel?` | `string` |  |  |
 | `pager?` | `{ prev?: DocsPagerLink; next?: DocsPagerLink }` |  | Previous/next pages. Cards at the end of the article on wide screens; a fixed bottom action bar on narrow ones, so reading flows header → content → actions like an e-book. |
+| `surface?` | `'flat' \| 'inherit'` | `'flat'` | Page surface behind the shell. `flat` (default) paints no mesh or grain: the header is opaque and nothing on a reading page blurs, so a glass/frosted mesh would only show as a hard-edged band under the nav. `inherit` keeps the theme's page mesh. |
 
 Snippets: `brand`: Brand mark + name inside the header link.; `actions`: Extra header actions on the right (e.g. a GitHub link). Keep to 1–2 icon buttons.; `menuFooter`: Content below the sidebar tree inside the mobile Sheet (e.g. external links).; `children`
 
