@@ -81,6 +81,12 @@ export interface SortableOptions {
 	 * grip with `touch-action: none`, which cannot scroll anyway.
 	 */
 	touchHold?: boolean;
+	/**
+	 * CSS selector of elements inside an item whose touch drags start at once (no hold), while the rest of
+	 * the item keeps the press and hold. Use it for a grip with `touch-action: none` on an item that must
+	 * still scroll or swipe by its body.
+	 */
+	instantTouch?: string;
 	disabled?: boolean;
 	/** Commit the move (same container: reorder; another container: move). */
 	onDrop: (e: DndDropEvent) => void;
@@ -906,7 +912,8 @@ export function createDnd(options: DndOptions = {}): DndController {
 				e,
 				el,
 				() => begin(el.getAttribute(ATTR_ITEM) as string, undefined, c, el, "pointer", e.pointerId),
-				opts.touchHold !== false
+				opts.touchHold !== false &&
+					!(opts.instantTouch && e.target instanceof Element && e.target.closest(opts.instantTouch))
 			);
 		};
 		const keydown = (e: KeyboardEvent) => {

@@ -404,10 +404,97 @@ describe("Kanban flat, dense and hooks (#682)", () => {
 	});
 });
 
+describe("Kanban mobile swipe, grip and snap (#742)", () => {
+	const board = () => document.querySelector(".ca-kanban__board") as HTMLElement;
+	const grip = (id: string) => card(id).querySelector(".ca-kanban__grip") as HTMLElement | null;
+
+	it("is a snap track of full-width columns and a swipe changes the stage tab", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		const screen = await render(Harness);
+		const b = board();
+		expect(getComputedStyle(b).scrollSnapType).toContain("x");
+		expect(document.querySelectorAll("[data-kanban-column][hidden]")).toHaveLength(0);
+		const w = b.clientWidth;
+		expect(b.scrollWidth).toBeGreaterThan(w * 4);
+		b.scrollTo({ left: w, behavior: "instant" });
+		await expect
+			.element(screen.getByRole("tab", { name: /Talking/ }))
+			.toHaveAttribute("aria-selected", "true");
+		b.scrollTo({ left: 0, behavior: "instant" });
+		await expect
+			.element(screen.getByRole("tab", { name: /New/ }))
+			.toHaveAttribute("aria-selected", "true");
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("a tab click scrolls its column into view", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		const screen = await render(Harness);
+		await screen.getByRole("tab", { name: /Won/ }).click();
+		const won = document.querySelector("[data-kanban-column='won']") as HTMLElement;
+		await expect
+			.poll(
+				() => Math.abs(won.getBoundingClientRect().left - board().getBoundingClientRect().left),
+				{
+					timeout: 5000,
+				}
+			)
+			.toBeLessThan(24);
+	});
+
+	it("swipeStages=false keeps one visible column and a board that does not scroll", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		await render(Harness, { swipeStages: false });
+		expect(document.querySelectorAll("[data-kanban-column]:not([hidden])")).toHaveLength(1);
+		expect(board().scrollWidth).toBeLessThanOrEqual(board().clientWidth + 1);
+	});
+
+	it("a grip drags a card to the next stage with no hold, by pressing the right edge", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		const moves: KanbanMove<Card>[] = [];
+		await render(Harness, { moves, dragHandle: "always" });
+		const g = grip("c1") as HTMLElement;
+		expect(g.getAttribute("aria-label")).toBe("Move Ana Souza");
+		const [x, y] = center(g);
+		pointer("pointerdown", x, y, g, "touch");
+		pointer("pointermove", x + 12, y, g, "touch");
+		await frame();
+		expect(document.querySelector(".ca-dnd-overlay")).not.toBeNull();
+		// Holding at the right edge scrolls the board one stage over (edge zone 48px).
+		const r = board().getBoundingClientRect();
+		// The scroller advances while the pointer stays near the edge: keep reporting it there.
+		await expect
+			.poll(
+				() => {
+					pointer("pointermove", r.right - 8, y, g, "touch");
+					return board().scrollLeft;
+				},
+				{ timeout: 10_000 }
+			)
+			.toBeGreaterThan(board().clientWidth * 0.5);
+		pointer("pointerup", r.right - 8, y, g, "touch");
+	});
+
+	it("dragHandle: auto shows the grip only under a coarse pointer, none never", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		await render(Harness, { dragHandle: "none" });
+		expect(grip("c1")).toBeNull();
+	});
+
+	it("snap=columns snaps the desktop board to columns, the default does not", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		const a = await render(Harness);
+		expect(getComputedStyle(board()).scrollSnapType).toBe("none");
+		a.unmount();
+		await render(Harness, { snap: "columns" });
+		expect(getComputedStyle(board()).scrollSnapType).toContain("x");
+	});
+});
+
 describe("Kanban mobile (390px)", () => {
 	it("is a tablist, one column at a time, with 44px targets and no board scroll", async () => {
 		await page.viewport(...VIEWPORTS.mobile);
-		const screen = await render(Harness);
+		const screen = await render(Harness, { swipeStages: false });
 		await expect.element(screen.getByRole("tab", { name: /New/ })).toBeInTheDocument();
 		const tabs = screen.getByRole("tab");
 		expect(tabs.elements()).toHaveLength(5);
