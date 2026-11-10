@@ -268,7 +268,9 @@ test.describe("no flash of the wrong theme", () => {
 			await record(p);
 			await throttle(p);
 			await p.goto(`/theme/${SHARE}`, { waitUntil: "load" });
-			await expect(p.locator('[data-testid="te-island"]')).toBeVisible();
+			// Slow 3G plus 6x CPU: the island waits for the studio, which on the 4-vCPU CI runner took longer than the
+			// default 5 s (#847). Same condition, a bound that fits the throttled load.
+			await expect(p.locator('[data-testid="te-island"]')).toBeVisible({ timeout: 30_000 });
 			await expect(p.locator("html")).not.toHaveAttribute("data-ts-code", /.+/);
 			await p.waitForTimeout(500);
 			const f = await frames(p);
