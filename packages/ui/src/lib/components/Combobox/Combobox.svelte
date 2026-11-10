@@ -353,7 +353,7 @@
       position: relative;
       display: flex;
       flex-direction: column;
-      gap: var(--ca-space-1);
+      gap: var(--ca-cb-gap, var(--ca-field-gap, var(--ca-space-1)));
       width: 100%;
     }
 
@@ -363,12 +363,13 @@
       font-size: var(--ca-font-size-label);
       font-weight: var(--ca-font-weight-medium);
       color: var(--ca-text-primary);
-      line-height: var(--ca-line-height-snug);
+      line-height: var(--ca-cb-label-line-height, var(--ca-field-label-leading, var(--ca-line-height-snug)));
+      letter-spacing: var(--ca-cb-label-tracking, var(--ca-field-label-tracking, inherit));
       user-select: none;
     }
 
     :global(.ca-combobox__req) {
-      color: var(--ca-semantic-error);
+      color: var(--ca-field-required-color, var(--ca-semantic-error));
     }
 
     /* ── Chips row (multiple mode) ──────────────────────────────── */
@@ -392,6 +393,8 @@
       box-shadow: var(--ca-field-shadow);
       cursor: pointer;
       font-size: var(--ca-input-font-size);
+      letter-spacing: var(--ca-cb-letter-spacing, var(--ca-input-letter-spacing, inherit));
+      line-height: var(--ca-cb-line-height, var(--ca-input-line-height, inherit));
       color: var(--ca-text-primary);
       font-family: inherit;
       text-align: left;
@@ -447,9 +450,10 @@
     /* ── Helper / error text ───────────────────────────────────── */
     :global(.ca-combobox__hint) {
       font-size: var(--ca-font-size-caption);
-      color: var(--ca-text-secondary);
+      color: var(--ca-field-hint-color, var(--ca-text-secondary));
       margin: 0;
-      line-height: var(--ca-line-height-snug);
+      line-height: var(--ca-cb-hint-leading, var(--ca-field-hint-leading, var(--ca-line-height-snug)));
+      letter-spacing: var(--ca-cb-hint-tracking, var(--ca-field-hint-tracking, inherit));
     }
 
     :global(.ca-combobox__hint--error) {

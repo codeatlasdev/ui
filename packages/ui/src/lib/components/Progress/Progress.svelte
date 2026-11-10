@@ -57,7 +57,7 @@
     .ca-progress__track {
       width: 100%;
       height: var(--ca-progress-height, var(--_h, var(--ca-space-2)));
-      background: var(--ca-outline-default);
+      background: var(--ca-progress-track, var(--ca-outline-default));
       border-radius: var(--ca-radius-pill);
       overflow: hidden;
       position: relative;
@@ -65,7 +65,7 @@
 
     .ca-progress__indicator {
       height: 100%;
-      background: var(--ca-brand-main);
+      background: var(--ca-progress-bar, var(--ca-brand-main));
       border-radius: var(--ca-radius-pill);
       transition: width var(--ca-duration-base) var(--ca-ease-standard);
     }

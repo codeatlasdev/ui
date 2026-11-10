@@ -21,6 +21,8 @@ import StatesSrc from "~/demos/inputs/number-field/States.svelte?raw";
 
 The plus and minus buttons stop at `min` and `max`. Typing a value does not clamp it, so validate on your side if a typed value can leave the range.
 
+Spacing, label and hint typography and the typed text come from the shared field tokens (`--ca-field-gap`, `--ca-field-label-leading`, `--ca-field-label-tracking`, `--ca-field-hint-leading`, `--ca-field-hint-tracking`, `--ca-input-letter-spacing`, `--ca-input-line-height`); `--ca-nf-*` (and `components.numberField`) set this component only and win. See [Field tokens](/docs/getting-started/theming/#field-tokens).
+
 <Demo title="Basic" description="Integer and decimal steps with bounds." src={BasicSrc}><Basic client:visible /></Demo>
 <Demo title="States" description="Helper text, error, disabled and the small size." src={StatesSrc}><States client:visible /></Demo>
 

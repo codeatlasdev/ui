@@ -154,6 +154,57 @@ describe("design knobs → tokens", () => {
 			expect(css).toContain(decl);
 	});
 
+	it("components.field/select/combobox/numberField/textField/progress/iconButton emit the field token family (#709 #705 #713 #702 #717)", () => {
+		const css = themeCSS(
+			defineTheme({
+				components: {
+					field: {
+						gap: "8px",
+						labelLeading: 1.25,
+						labelTracking: "0",
+						hintLeading: 1.4,
+						hintTracking: "0.005em",
+						letterSpacing: "-0.006em",
+						lineHeight: 1.5,
+					},
+					select: { gap: "6px", labelLeading: 1.1 },
+					combobox: { gap: "5px" },
+					numberField: { gap: "7px", letterSpacing: "normal" },
+					textField: {
+						revealSize: "44px",
+						revealRadius: "var(--ca-radius-control)",
+						revealIconSize: "20px",
+						errorRing: "none",
+					},
+					progress: { track: "var(--ca-surface-overlay)", bar: "var(--ca-brand-fill)" },
+					iconButton: { tracking: "normal" },
+				},
+			})
+		);
+		for (const decl of [
+			"--ca-field-gap: 8px;",
+			"--ca-field-label-leading: 1.25;",
+			"--ca-field-label-tracking: 0;",
+			"--ca-field-hint-leading: 1.4;",
+			"--ca-field-hint-tracking: 0.005em;",
+			"--ca-input-letter-spacing: -0.006em;",
+			"--ca-input-line-height: 1.5;",
+			"--ca-sel-gap: 6px;",
+			"--ca-sel-label-line-height: 1.1;",
+			"--ca-cb-gap: 5px;",
+			"--ca-nf-gap: 7px;",
+			"--ca-nf-letter-spacing: normal;",
+			"--ca-tf-reveal-size: 44px;",
+			"--ca-tf-reveal-radius: var(--ca-radius-control);",
+			"--ca-tf-reveal-icon-size: 20px;",
+			"--ca-tf-error-ring: none;",
+			"--ca-progress-track: var(--ca-surface-overlay);",
+			"--ca-progress-bar: var(--ca-brand-fill);",
+			"--ca-icon-btn-letter-spacing: normal;",
+		])
+			expect(css).toContain(decl);
+	});
+
 	it("mergeTheme merges components per block", () => {
 		const merged = mergeTheme(
 			{ components: { button: { weight: 600, sm: { paddingX: "8px" } } } },

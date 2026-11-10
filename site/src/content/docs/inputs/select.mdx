@@ -25,6 +25,8 @@ import StatesSrc from "~/demos/inputs/select/States.svelte?raw";
 
 For long lists that need filtering, use [Combobox](/docs/inputs/combobox/). Without a `label`, pass `aria-label` (or `aria-labelledby`) to name the trigger: the accessible name is that text followed by the current value, so it still contains the visible text. With neither, the `placeholder` names it. Arrow keys, Enter and Space open the list from the trigger, and Escape closes it. Pass `name` to submit the selected value with a native form (a hidden input; nothing is sent while no option is selected or the field is disabled). `required` blocks native form submission while nothing is selected. Text inside inputs stays at 16px or more on touch screens, so iOS Safari never zooms on focus.
 
+Spacing, label and hint typography and the typed text come from the shared field tokens (`--ca-field-gap`, `--ca-field-label-leading`, `--ca-field-label-tracking`, `--ca-field-hint-leading`, `--ca-field-hint-tracking`, `--ca-input-letter-spacing`, `--ca-input-line-height`); `--ca-sel-*` (and `components.select`) set this component only and win. See [Field tokens](/docs/getting-started/theming/#field-tokens).
+
 <Demo title="Basic" description="Controlled select with a pre-selected value." src={BasicSrc}><Basic client:visible /></Demo>
 <Demo title="Placeholder" description="No initial value: the placeholder shows until the user picks an option." src={PlaceholderSrc}><Placeholder client:visible /></Demo>
 <Demo title="Empty-value option" description="An option with value '' (such as 'All projects') is a real selection: the trigger shows its label, not the placeholder. Use it for filters instead of a sentinel value." src={EmptyOptionSrc}><EmptyOption client:visible /></Demo>

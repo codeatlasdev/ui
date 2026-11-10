@@ -55,7 +55,7 @@ Weight, tracking, line-height, gap, padding and size are component tokens: set t
 - One size, `--ca-btn-{sm,md,lg}-`: `height`, `padding-x`, `font-size`, `font-weight`, `letter-spacing`.
 - `--ca-btn-ghost-border-width`: `0px` makes a ghost button as wide as a text one. `--ca-btn-disabled-bg`: e.g. `var(--ca-brand-fill)`.
 - `--ca-btn-touch-height`, `--ca-icon-btn-touch-size`: the `pointer: coarse` minimum, 44px unless you set it.
-- `IconButton`: `--ca-icon-btn-size-{sm,md,lg}` (32/40/48px) and `--ca-icon-btn-font-weight`.
+- `IconButton`: `--ca-icon-btn-size-{sm,md,lg}` (32/40/48px), `--ca-icon-btn-font-weight` and `--ca-icon-btn-letter-spacing` (inherited by default).
 
 **Keyboard hint: `trailingHint`.** Put a `<Kbd>` in `trailing` and add `trailingHint`: below `md` and on touch screens the slot is `display: none`, so it takes no space and the button is as wide as its label alone. Never hide `.ca-btn__trailing` with a media query in the app. **Label start, hint end: `align="between"`.** With `fullWidth` (or a fixed width) the label stays at the start and `trailing` goes to the end; the loading spinner stays in the leading slot. Do not write `justify-content: flex-start` plus `margin-left: auto` on `.ca-btn__trailing`.
 
