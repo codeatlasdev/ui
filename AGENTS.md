@@ -679,7 +679,7 @@ import {
 --ca-surface-base / raised / sunken / overlay
 --ca-outline-subtle / default / strong / control   (control = field and control edge, >= 3:1; subtle = dividers only)
 --ca-focus-ring / --ca-state-indicator   (>= 3:1 on every surface and on hover/selected fills; components read these, never --ca-brand-main)
---ca-semantic-error-fill / --ca-semantic-error-contrast   (pair, like brand-fill / brand-contrast)
+--ca-semantic-<error|success|warning|info>-fill / -contrast   (pairs, like brand-fill / brand-contrast; a solid semantic fill takes its own -contrast, never --ca-on-semantic)
 --ca-action-hover / selected / disabled / disabled-bg   (disabled controls use tokens, never opacity)
 --ca-overlay-bg / --ca-panel-bg   (near-opaque by default; --ca-overlay-bg-glass / --ca-panel-bg-glass are the see-through tints)
 

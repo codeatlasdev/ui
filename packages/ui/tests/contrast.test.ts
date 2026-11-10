@@ -179,6 +179,49 @@ describe("--ca-semantic-error-contrast (#22)", () => {
 	});
 });
 
+// #749: every solid semantic fill has a label of its own, in every preset and scheme (the way
+// error does), so Badge and counters stop drawing white on the light dark-scheme tones.
+describe("solid semantic fill/contrast pairs (#749)", () => {
+	const TONES = ["success", "warning", "info", "error"] as const;
+	for (const src of sources)
+		for (const scheme of ["light", "dark"] as const)
+			for (const tone of TONES)
+				it(`${src.id} ${scheme}: ${tone} label >= 4.5:1 on its fill`, () => {
+					const t = resolved(src, scheme);
+					// The fill is the tone itself unless a theme sets `-fill` (Badge: `var(-fill, var(tone))`).
+					const fill = surfaceRgb(
+						t,
+						t[`--ca-semantic-${tone}-fill`] ? `--ca-semantic-${tone}-fill` : `--ca-semantic-${tone}`
+					);
+					const fg = rgb(oklchToHex(resolve(t, `--ca-semantic-${tone}-contrast`)));
+					expect(ratio(fg, fill)).toBeGreaterThanOrEqual(4.5);
+				});
+
+	it("--ca-on-semantic stays, as the error contrast", () => {
+		expect(tokensCss).toMatch(/--ca-on-semantic:\s*var\(--ca-semantic-error-contrast\)/);
+	});
+
+	it("a theme that owns a light success colour derives its fill and a readable contrast", () => {
+		const css = themeCSS(
+			defineTheme({
+				presets: [
+					{ id: "pale", color: "#0f766e", colors: { light: { success: "oklch(0.85 0.15 150)" } } },
+				],
+			})
+		);
+		expect(css).toMatch(/--ca-semantic-success-fill:\s*oklch\(0\.85 0\.15 150\)/);
+		expect(css).toMatch(/--ca-semantic-success-contrast:\s*oklch\(0\.1/);
+	});
+
+	it("solid Badge reads the pairs, not the fixed on-semantic white", () => {
+		const badge = readFileSync(new URL("components/Badge/Badge.svelte", LIB), "utf8");
+		for (const tone of ["success", "warning", "info", "error"])
+			expect(badge).toContain(`var(--ca-semantic-${tone}-contrast`);
+		expect(badge).not.toMatch(/color:\s*var\(--ca-on-semantic\)/);
+		expect(badge).not.toMatch(/--ca-badge-on:\s*var\(--ca-on-semantic\)/);
+	});
+});
+
 describe("overlay surfaces (#23)", () => {
 	const overlayBg = declsOf(materialsCss, /^:root$/)["--ca-overlay-bg"];
 	for (const src of sources)

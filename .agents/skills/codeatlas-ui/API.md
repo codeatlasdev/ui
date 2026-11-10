@@ -324,7 +324,7 @@ Snippets: `children`
 
 Parts: `ca-badge` `ca-badge--brand` `ca-badge--danger` `ca-badge--dot` `ca-badge--error` `ca-badge--info` `ca-badge--inline` `ca-badge--md` `ca-badge--neutral` `ca-badge--subtle` `ca-badge--success` `ca-badge--warning` `ca-badge-wrapper` `ca-badge__dot`
 
-Variables: `--ca-badge-fill` `--ca-badge-on` `--ca-badge-tone`
+Variables: `--ca-badge-fill` `--ca-badge-on` `--ca-badge-tone` `--ca-semantic-info-fill` `--ca-semantic-success-fill` `--ca-semantic-warning-fill`
 
 ## BarChart
 
