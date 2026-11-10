@@ -51,7 +51,14 @@ git diff --cached --quiet || git commit -qm "chore: regenerate lockfile and mani
 # pixels: run `bun run test:vrt:update` in $WT, review the images, commit them and rerun this script.
 # `bun scripts/test-changed.ts --land` is still the offline gate when CI is unavailable.
 bun run validate
-sh scripts/test-changed.sh
+# A shared file (tokens, styles, theme, primitives, a test setup file) widens the affected set to every component
+# test, ~2,300 browser tests: locally that run hit a different timing test on most lands, and the merge queue runs the
+# same set on a clean runner anyway. So a shared change is gated by CI only; a local change runs its tests here.
+if [ "$(bun scripts/test-changed.ts --print-budget)" = landShared ]; then
+	echo "shared change: every component test runs in the merge queue, not here"
+else
+	sh scripts/test-changed.sh
+fi
 git push -q --force-with-lease
 gh pr ready "$PR" >/dev/null 2>&1 || true
 # No --delete-branch: gh would switch this worktree to main (checked out in $ROOT) and delete the
