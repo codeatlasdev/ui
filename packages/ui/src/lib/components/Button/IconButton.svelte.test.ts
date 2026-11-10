@@ -122,3 +122,27 @@ describe("IconButton tone=neutral (#357)", () => {
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 });
+
+// #708: IconButton has the same four disabled tokens as Button (`--ca-icon-btn-disabled-*`).
+describe("IconButton configurable disabled look (#708)", () => {
+	const css = (el: Element, prop: string) => getComputedStyle(el).getPropertyValue(prop);
+
+	it("defaults to no dimming; the tokens set opacity, colour and border", async () => {
+		const screen = await render(IconButton, {
+			"aria-label": "Favourite",
+			children: icon,
+			variant: "outlined",
+			disabled: true,
+		});
+		const btn = screen.container.querySelector("button") as HTMLElement;
+		expect(css(btn, "opacity")).toBe("1");
+		btn.style.setProperty("--ca-icon-btn-disabled-opacity", "0.5");
+		btn.style.setProperty("--ca-icon-btn-disabled-color", "rgb(1, 2, 3)");
+		btn.style.setProperty("--ca-icon-btn-disabled-border-color", "rgb(4, 5, 6)");
+		btn.style.setProperty("--ca-icon-btn-disabled-border-width", "3px");
+		expect(css(btn, "opacity")).toBe("0.5");
+		expect(css(btn, "color")).toBe("rgb(1, 2, 3)");
+		expect(css(btn, "border-top-color")).toBe("rgb(4, 5, 6)");
+		expect(css(btn, "border-top-width")).toBe("3px");
+	});
+});

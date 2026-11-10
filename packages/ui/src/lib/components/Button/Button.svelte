@@ -378,9 +378,10 @@
        loading is excluded (busy, not unavailable). */
     .ca-btn:disabled:not(.ca-btn--loading),
     .ca-btn[aria-disabled='true']:not(.ca-btn--loading) {
-      color: var(--ca-text-disabled);
+      color: var(--ca-btn-disabled-color, var(--ca-text-disabled));
       background: var(--ca-btn-disabled-bg, var(--ca-action-disabled-bg));
-      border-color: var(--ca-outline-default);
+      border-color: var(--ca-btn-disabled-border-color, var(--ca-outline-default));
+      opacity: var(--ca-btn-disabled-opacity, 1);
       box-shadow: none;
     }
     .ca-btn--filled:disabled:not(.ca-btn--loading),
@@ -391,7 +392,7 @@
     .ca-btn--glass[aria-disabled='true']:not(.ca-btn--loading),
     .ca-btn--outlined:disabled:not(.ca-btn--loading),
     .ca-btn--outlined[aria-disabled='true']:not(.ca-btn--loading) {
-      border: var(--ca-border-width) solid var(--ca-outline-default);
+      border: var(--ca-btn-disabled-border-width, var(--ca-border-width)) solid var(--ca-btn-disabled-border-color, var(--ca-outline-default));
     }
     .ca-btn--ghost:disabled:not(.ca-btn--loading),
     .ca-btn--ghost[aria-disabled='true']:not(.ca-btn--loading) {
