@@ -56,6 +56,7 @@ An `error` replaces the `description` and is announced to assistive tech. On tou
   { name: "label", type: "string", description: "Label text." },
   { name: "hideLabel", type: "boolean", default: "false", description: "Renders the label with `.ca-sr-only`: read by screen readers, not shown." },
   { name: "width", type: "'full' | 'auto' | 'fit' | string", default: "'full'", description: "`auto` and `fit` size to the content, a CSS length sets the width (`--ca-field-width`). A `Toolbar` sets `auto` for every field inside." },
+  { name: "variant", type: "'outlined' | 'filled' | 'underline'", default: "theme", description: "How the field is drawn (`data-ca-field`). Default follows `components.field.variant`, else the surface style." },
   { name: "placeholder", type: "string", default: "''", description: "Input placeholder." },
   { name: "value", type: "string", default: "''", description: "Bindable input value." },
   { name: "type", type: "string", default: "'text'", description: "HTML input type." },

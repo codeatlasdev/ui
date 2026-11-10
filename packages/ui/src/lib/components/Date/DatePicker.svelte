@@ -8,6 +8,7 @@
   import CalendarFrame from './CalendarFrame.svelte';
   import { CalendarState } from './calendar-state.svelte.js';
   import { fieldWidth, type FieldWidth } from '../../utils/field-width.js';
+  import type { FieldVariant } from '../../theme/components.js';
   import DateFieldShell from './DateFieldShell.svelte';
   import { defaultDate, focusOwnDay, type WeekStart } from './date-utils.js';
   import { FieldState } from './field-state.svelte.js';
@@ -44,6 +45,8 @@
     isDateUnavailable?: (date: DateValue) => boolean;
     closeOnDateSelect?: boolean;
     size?:         'sm' | 'md';
+    /** How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). */
+    variant?:         FieldVariant;
     /** Name for the hidden input (ISO string) in native forms. */
     name?:         string;
     /** aria-label of the calendar button. */
@@ -74,6 +77,7 @@
     isDateUnavailable,
     closeOnDateSelect = true,
     size         = 'md',
+    variant,
     name,
     triggerLabel,
     onchange,
@@ -154,6 +158,7 @@
   {readonly}
   {required}
   {size}
+  {variant}
   class={className}
   {open}
   triggerIcon={CalendarDays}

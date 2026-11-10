@@ -1,0 +1,10 @@
+/* Borderless field variants (`filled`, `underline`): the hover, open and error states of a control re-paint
+   its border. For these two variants the border stays transparent and the state shows through the inset
+   line or ring. A field's own `data-ca-field` wins over the one on <html> (the theme's variant). */
+@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
+@layer ca.components {
+  :is(.ca-tf, .ca-sel, .ca-combobox, .ca-nf, .ca-date):is([data-ca-field="filled"], [data-ca-field="underline"]) :is(.ca-tf__wrap, .ca-sel__trigger, .ca-combobox__trigger, .ca-nf__wrap, .ca-date__wrap),
+  :is(html[data-ca-field="filled"], html[data-ca-field="underline"]) :is(.ca-tf, .ca-sel, .ca-combobox, .ca-nf, .ca-date):not([data-ca-field]) :is(.ca-tf__wrap, .ca-sel__trigger, .ca-combobox__trigger, .ca-nf__wrap, .ca-date__wrap) {
+    border-color: transparent !important;
+  }
+}

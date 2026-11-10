@@ -88,6 +88,9 @@ export interface AvatarTokens extends AvatarFallbackTokens {
 	>;
 }
 
+/** How a field is drawn, independent of the surface style. `outlined` is the style's own field. */
+export type FieldVariant = "outlined" | "filled" | "underline";
+
 export interface FieldTokens {
 	/** `--ca-<prefix>-gap`: space between label, box and hint. @default `--ca-space-1` */
 	gap?: CssValue;
@@ -103,6 +106,18 @@ export interface FieldTokens {
 	letterSpacing?: CssValue;
 	/** `--ca-<prefix>-line-height` (`--ca-input-line-height` on `components.field`): the text typed in the control. @default 1 */
 	lineHeight?: CssValue;
+}
+
+/** `components.field`: the shared field tokens plus the shape of every field. */
+export interface FieldThemeTokens extends FieldTokens {
+	/** `--ca-control-height`: height of every field and button. @default 36px */
+	height?: CssValue;
+	/** `--ca-radius-control`: corner of every field and button. @default `--ca-radius-md` (a field's `underline` variant squares only the field) */
+	radius?: CssValue;
+	/** `--ca-field-border-width`: border of every field. @default `--ca-border-width` */
+	borderWidth?: CssValue;
+	/** Look of every field (`data-ca-field` on `<html>`); a field's own `variant` prop wins. `outlined` writes nothing. @default "outlined" */
+	variant?: FieldVariant;
 }
 
 export interface TextFieldTokens extends FieldTokens {
@@ -170,7 +185,7 @@ export interface ComponentTokens {
 	kbd?: KbdTokens;
 	avatar?: AvatarTokens;
 	/** `--ca-field-*`: shared by TextField, TextArea, Select, Combobox, NumberField and the date fields; the per-component keys win. */
-	field?: FieldTokens;
+	field?: FieldThemeTokens;
 	textField?: TextFieldTokens;
 	textArea?: TextAreaTokens;
 	select?: FieldTokens;
@@ -259,6 +274,12 @@ export function componentTokens(c: ComponentTokens | undefined): Record<string, 
 		["--ca-nf", c.numberField],
 	] as const)
 		if (f) fieldTokens(out, prefix, f);
+	const fd = c.field;
+	if (fd) {
+		put(out, "--ca-control-height", fd.height);
+		put(out, "--ca-radius-control", fd.radius);
+		put(out, "--ca-field-border-width", fd.borderWidth);
+	}
 	const tf = c.textField;
 	if (tf) {
 		put(out, "--ca-tf-reveal-size", tf.revealSize);

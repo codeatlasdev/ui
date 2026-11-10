@@ -385,7 +385,25 @@ function mulberry32(seed: number): () => number {
 const RADII: StudioState["controlRadius"][] = ["xs", "sm", "md", "lg", "xl"];
 const RADIUS_STEPS = [0, 0.4, 0.8, 1.2, 1.8];
 const DENSITIES: StudioState["density"][] = ["compact", "comfortable", "comfortable", "airy"];
-const SURFACES: StudioState["surface"][] = ["solid", "solid", "flat", "outlined", "tonal", "glass"];
+const SURFACES: StudioState["surface"][] = [
+	"glass",
+	"frosted",
+	"solid",
+	"flat",
+	"outlined",
+	"neumorphic",
+	"clay",
+	"tonal",
+	"chrome",
+];
+const FIELD_VARIANTS: NonNullable<StudioState["fieldVariant"]>[] = [
+	"outlined",
+	"filled",
+	"underline",
+];
+const BORDER_WIDTHS = [1, 1, 2];
+const BUTTON_WEIGHTS = [500, 600, 700];
+const BUTTON_TRACKING = ["0", "0.01em", "0.04em"];
 const ELEVATIONS: StudioState["elevation"][] = ["soft", "soft", "none", "hard", "glow"];
 
 /** A seeded, tasteful theme: same seed, same state. */
@@ -409,5 +427,11 @@ export function randomLook(seed: number): StudioState {
 		density: pick(DENSITIES),
 		elevation: pick(ELEVATIONS),
 		fonts: pairFonts((pick(PAIRS) as (typeof PAIRS)[number]).id),
+		fieldVariant: pick(FIELD_VARIANTS),
+		borderWidth: pick(BORDER_WIDTHS),
+		buttonWeight: pick(BUTTON_WEIGHTS),
+		buttonTracking: pick(BUTTON_TRACKING),
+		headingCase: rnd() < 0.2 ? "uppercase" : "none",
+		headingTracking: pick(["-0.02em", "0", "0.02em"]),
 	});
 }

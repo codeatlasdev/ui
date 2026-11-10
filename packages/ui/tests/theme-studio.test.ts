@@ -37,6 +37,7 @@ import {
 } from "../../../site/src/components/theme/studio-state.js";
 import { defineTheme, themeCSS } from "../src/lib/theme/define.js";
 import { DESIGN_STYLES, designStyle } from "../src/lib/theme/styles.js";
+import { themeScript } from "../src/lib/theme-script.js";
 
 const edit = (p: Partial<StudioState>): StudioState => ({
 	...structuredClone(DEFAULT_STATE),
@@ -256,6 +257,34 @@ describe("generate", () => {
 		).toBeGreaterThan(3);
 		for (let n = 0; n < 40; n++)
 			expect(() => themeCSS(defineTheme(toThemeOptions(randomLook(n))))).not.toThrow();
+	});
+
+	it("randomLook varies the field variant, border, button weight and surface, and the variant reaches the theme (#763)", () => {
+		const looks = Array.from({ length: 60 }, (_, n) => randomLook(n + 1));
+		for (const key of ["fieldVariant", "borderWidth", "buttonWeight", "surface"] as const)
+			expect(new Set(looks.map((l) => l[key])).size, key).toBeGreaterThan(1);
+		expect(new Set(looks.map((l) => l.surface))).toEqual(
+			new Set([
+				"glass",
+				"frosted",
+				"solid",
+				"flat",
+				"outlined",
+				"neumorphic",
+				"clay",
+				"tonal",
+				"chrome",
+			])
+		);
+		const underline = looks.find((l) => l.fieldVariant === "underline");
+		expect(underline).toBeDefined();
+		const opts = toThemeOptions(underline as NonNullable<typeof underline>);
+		expect(opts.components?.field?.variant).toBe("underline");
+		const outlined = looks.find((l) => l.fieldVariant === "outlined");
+		expect(themeScript(toThemeOptions(outlined as NonNullable<typeof outlined>))).not.toContain(
+			"data-ca-field"
+		);
+		expect(themeScript(opts)).toContain("data-ca-field");
 	});
 });
 

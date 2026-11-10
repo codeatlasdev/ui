@@ -151,6 +151,30 @@ describe("--ca-outline-control (#20)", () => {
 			});
 });
 
+describe("field variants (#763)", () => {
+	const variant = (v: string) =>
+		materialsCss.match(new RegExp(`\\[data-ca-field="${v}"\\]\\s*\\{([^}]*)\\}`))?.[1] ?? "";
+
+	it("underline draws its edge with --ca-outline-control, the token held at >= 3:1 above", () => {
+		expect(variant("underline")).toMatch(/--ca-field-shadow:[^;]*var\(--ca-outline-control\)/);
+	});
+
+	for (const src of sources)
+		for (const scheme of ["light", "dark"] as const)
+			it(`${src.id} ${scheme}: the filled fill keeps text >= 4.5:1 and the field edge-less fill is a 6% text tint`, () => {
+				const t = resolved(src, scheme);
+				for (const s of SURFACES) {
+					const bg = surfaceRgb(t, s);
+					const text = rgb(oklchToHex(resolve(t, "--ca-text-primary")));
+					const fill = over(
+						`oklch(${/oklch\(([^)/]+)/.exec(resolve(t, "--ca-text-primary"))![1]} / 0.06)`,
+						bg
+					);
+					expect(ratio(text, fill), s).toBeGreaterThanOrEqual(4.5);
+				}
+			});
+});
+
 describe("--ca-semantic-error-contrast (#22)", () => {
 	for (const src of sources)
 		for (const scheme of ["light", "dark"] as const)

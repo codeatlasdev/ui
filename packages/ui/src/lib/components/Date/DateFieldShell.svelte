@@ -7,6 +7,8 @@
    */
   import type { Component, Snippet } from 'svelte';
   import DateSegments from './DateSegments.svelte';
+  import type { FieldVariant } from '../../theme/components.js';
+  import '../field-variant.css';
   import type { FieldState } from './field-state.svelte.js';
 
   interface Props {
@@ -25,6 +27,7 @@
     readonly: boolean;
     required: boolean;
     size: 'sm' | 'md';
+    variant?: FieldVariant;
     class: string;
     /** Popover state of a picker: marks the group `data-state="open"`. */
     open?: boolean;
@@ -60,6 +63,7 @@
     readonly,
     required,
     size,
+    variant,
     class: className,
     open,
     triggerIcon: TriggerIcon,
@@ -78,7 +82,7 @@
 </script>
 
 {#snippet body()}
-  <div class="ca-date {className}" style:--ca-field-width={width} class:ca-date--sm={size === 'sm'} class:ca-date--error={!!error} class:ca-date--disabled={disabled}>
+  <div class="ca-date {className}" style:--ca-field-width={width} data-ca-field={variant} class:ca-date--sm={size === 'sm'} class:ca-date--error={!!error} class:ca-date--disabled={disabled}>
     {#if label}
       <!-- svelte-ignore a11y_click_events_have_key_events, a11y_no_static_element_interactions -->
       <svelte:element this={range ? 'span' : 'div'} class="ca-date__label" class:ca-sr-only={hideLabel} id="{id}-label" onclick={focusFirst}>

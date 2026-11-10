@@ -2,6 +2,7 @@ import { describe, expect, it } from "bun:test";
 import { readFileSync } from "node:fs";
 import { defineTheme, STYLES, themeCSS } from "../src/lib/theme/define.js";
 import { DESIGN_STYLES, designStyle, mergeTheme } from "../src/lib/theme/styles.js";
+import { themeScript } from "../src/lib/theme-script.js";
 
 describe("design knobs → tokens", () => {
 	it("defaults emit nothing", () => {
@@ -203,6 +204,43 @@ describe("design knobs → tokens", () => {
 			"--ca-icon-btn-letter-spacing: normal;",
 		])
 			expect(css).toContain(decl);
+	});
+
+	it("components.field emits height, radius, border width and the variant (#763)", () => {
+		const css = themeCSS(
+			defineTheme({
+				components: {
+					field: { height: "44px", radius: "var(--ca-radius-lg)", borderWidth: "2px" },
+				},
+			})
+		);
+		for (const decl of [
+			"--ca-control-height: 44px;",
+			"--ca-radius-control: var(--ca-radius-lg);",
+			"--ca-field-border-width: 2px;",
+		])
+			expect(css).toContain(decl);
+		expect(themeCSS(defineTheme({ components: { field: { variant: "outlined" } } }))).toBe("");
+	});
+
+	it("a non-outlined field variant puts data-ca-field on <html> through the init script (#763)", () => {
+		const underline = themeScript({ components: { field: { variant: "underline" } } });
+		expect(underline).toContain("data-ca-field");
+		expect(underline).toContain("underline");
+		expect(themeScript({})).not.toContain("data-ca-field");
+		expect(themeScript({ components: { field: { variant: "outlined" } } })).not.toContain(
+			"data-ca-field"
+		);
+	});
+
+	it("the variant blocks exist in materials.css with the documented tokens (#763)", () => {
+		const css = readFileSync(new URL("../src/lib/styles/materials.css", import.meta.url), "utf8");
+		const block = (v: string) =>
+			css.match(new RegExp(`\\[data-ca-field="${v}"\\]\\s*\\{([^}]*)\\}`))?.[1] ?? "";
+		expect(block("filled")).toContain("--ca-field-border-color: transparent");
+		expect(block("underline")).toContain("--ca-field-bg:           transparent");
+		expect(block("underline")).toContain("inset 0 calc(-1 *");
+		expect(block("underline")).toContain("--ca-field-radius:       0");
 	});
 
 	it("mergeTheme merges components per block", () => {
