@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
+  import { longpress, type LongpressDetail } from '../../actions/longpress.js';
   import DropdownMenu from '../DropdownMenu/DropdownMenu.svelte';
 
   interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'class' | 'children' | 'oncontextmenu' | 'onkeydown'> {
@@ -73,27 +74,13 @@
   }
 
   // Touch has no right button: a press that stays put for `longPressDelay` opens the menu at the finger.
-  let timer: ReturnType<typeof setTimeout> | undefined;
-  let start: { x: number; y: number } | null = null;
-  const MOVE_SLOP = 10;
-  const cancel = () => {
-    clearTimeout(timer);
-    start = null;
-  };
-  function onpointerdown(e: PointerEvent) {
-    if (disabled || e.pointerType !== 'touch' || native(e.target)) return;
-    cancel();
-    start = { x: e.clientX, y: e.clientY };
-    const { clientX: x, clientY: y } = e;
-    timer = setTimeout(() => {
-      start = null;
-      show(x, y);
-    }, longPressDelay);
+  // The press target decides, not the event target (the action fires on the region): a press that began in
+  // a text field keeps the browser's menu.
+  let pressNative = false;
+  const onpointerdown = (e: PointerEvent) => (pressNative = native(e.target));
+  function onlongpress(e: CustomEvent<LongpressDetail>) {
+    if (!disabled && !pressNative) show(e.detail.x, e.detail.y);
   }
-  function onpointermove(e: PointerEvent) {
-    if (start && Math.hypot(e.clientX - start.x, e.clientY - start.y) > MOVE_SLOP) cancel();
-  }
-  $effect(() => () => clearTimeout(timer));
 </script>
 
 <!-- A region with a context menu: right-click, long press and Shift+F10 / the ContextMenu key. The role is the
@@ -108,9 +95,8 @@
   {oncontextmenu}
   {onkeydown}
   {onpointerdown}
-  {onpointermove}
-  onpointerup={cancel}
-  onpointercancel={cancel}
+  use:longpress={{ duration: longPressDelay, pointerTypes: ['touch'] }}
+  {onlongpress}
 >
   {@render children?.()}
 </div>
