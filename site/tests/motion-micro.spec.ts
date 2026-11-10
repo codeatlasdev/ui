@@ -79,7 +79,9 @@ test.describe("motion micro-interactions", () => {
 			const stage = page.getByRole("group", { name: /^Press spring:/ });
 			await stage.scrollIntoViewIfNeeded();
 			await expect(stage).toHaveAttribute("data-playing", "true");
-			await page.clock.pauseAt((await page.evaluate(() => Date.now())) + 10);
+			// pauseAt must be ahead of the page clock, which keeps flowing until then: 10 ms was in the past on CI. Any
+			// phase works, the loop below steps through a whole cycle.
+			await page.clock.pauseAt((await page.evaluate(() => Date.now())) + 2000);
 			const btn = stage.getByRole("button", { name: "Pay $48.00" });
 			const scale = () => btn.evaluate((el) => Number(el.style.getPropertyValue("--s")));
 			// At most one cycle of 20 ms steps until the button is mid-press.
