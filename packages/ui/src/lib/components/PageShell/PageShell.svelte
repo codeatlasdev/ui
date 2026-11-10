@@ -1,4 +1,5 @@
 <script lang="ts">
+  import PageBack from './PageBack.svelte';
   import type { Snippet } from 'svelte';
   import { scrollFocusable } from '../../actions/scroll-focusable.js';
   import { useMessages } from '../../i18n/state.svelte.js';
@@ -21,6 +22,12 @@
      */
     width?: 'reading' | 'wide';
     actions?: Snippet;
+    /** Renders the standard back link before the title. */
+    backHref?: string;
+    /** Accessible name of the back link. Default: 'Back' (localized). */
+    backLabel?: string;
+    /** Runs when the back link is clicked, before it navigates. Call `e.preventDefault()` to take over. */
+    onback?: (e: MouseEvent) => void;
     /**
      * Companion column (in-page index, summary, help, preview). Next to the content (sticky) when
      * the shell is wide enough, after the content below that. Rendered as `<aside>`.
@@ -32,7 +39,7 @@
     children?: Snippet;
   }
 
-  let { title, display = false, description, gap, maxWidth, width = 'wide', actions, aside, asideLabel, class: className = '', children }: Props = $props();
+  let { title, display = false, description, gap, maxWidth, width = 'wide', actions, backHref, backLabel, onback, aside, asideLabel, class: className = '', children }: Props = $props();
   const titleId = $props.id();
   // The page <h1> is rendered above; titles inside the shell default to <h2>.
   provideSectionHeadingLevel();
@@ -59,8 +66,9 @@
   tabindex="0"
   use:scrollFocusable
 >
-  {#if title || description || actions}
+  {#if title || description || actions || backHref}
     <div class="ca-page-shell__header">
+      {#if backHref}<div class="ca-page-shell__leading"><PageBack href={backHref} label={backLabel} {onback} /></div>{/if}
       <div class="ca-page-shell__meta">
         {#if title}
           <h1 class="ca-page-shell__title ca-sr-only--shell" class:ca-page-shell__title--display={display} id={titleId}>{title}</h1>
@@ -113,6 +121,8 @@
       gap: var(--ca-space-4);
       margin-bottom: var(--ps-gap, var(--ca-space-7));
     }
+
+    .ca-page-shell__leading { flex-shrink: 0; }
 
     .ca-page-shell__meta { flex: 1; min-width: 0; }
 

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { useMessages } from '../../i18n/state.svelte.js';
   import { appSettings } from '../../i18n/groups/appSettings.js';
+  import PageBack from '../PageShell/PageBack.svelte';
   /**
    * AppSettings: settings/preferences page layout.
    *
@@ -71,6 +72,12 @@
     onTabChange?:  (value: string) => void;
     /** Top-right slot: save / cancel buttons */
     actions?:      Snippet;
+    /** Renders the standard back link before the title. */
+    backHref?:     string;
+    /** Accessible name of the back link. Default: 'Back' (localized). */
+    backLabel?:    string;
+    /** Runs when the back link is clicked, before it navigates. Call `e.preventDefault()` to take over. */
+    onback?:       (e: MouseEvent) => void;
     class?:        string;
     /** Receives the active tab value as its first argument */
     children?:     Snippet<[string]>;
@@ -84,6 +91,9 @@
     activeTab = $bindable(defaultTab ?? tabs[0]?.value ?? ''),
     onTabChange,
     actions,
+    backHref,
+    backLabel,
+    onback,
     class: className = '',
     children,
   }: Props = $props();
@@ -97,8 +107,9 @@
 <div class="ca-app-settings {className}">
 
   <!-- ── Header ─────────────────────────────────────────────────── -->
-  {#if title || description || actions}
+  {#if title || description || actions || backHref}
     <div class="ca-app-settings__header">
+      {#if backHref}<div class="ca-app-settings__leading"><PageBack href={backHref} label={backLabel} {onback} /></div>{/if}
       <div class="ca-app-settings__meta">
         {#if title}<h1 class="ca-app-settings__title ca-sr-only--shell">{title}</h1>{/if}
         {#if description}<p class="ca-app-settings__desc">{description}</p>{/if}
@@ -179,6 +190,8 @@
       flex-shrink: 0;
       border-bottom: var(--ca-border-width) solid var(--ca-outline-subtle);
     }
+
+    .ca-app-settings__leading { flex-shrink: 0; }
 
     .ca-app-settings__meta { flex: 1; min-width: 0; }
 

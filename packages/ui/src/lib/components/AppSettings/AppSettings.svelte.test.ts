@@ -24,6 +24,12 @@ describe("AppSettings", () => {
 		expect(document.querySelector(".ca-app-settings__header")).not.toBeNull();
 	});
 
+	it("a back link alone still renders the header (#758 with #777)", async () => {
+		const screen = await render(Harness, { headless: true, backHref: "/" });
+		await expect.element(screen.getByRole("link", { name: /back/i })).toBeVisible();
+		expect(document.querySelector(".ca-app-settings__header")).not.toBeNull();
+	});
+
 	it("selects the first tab by default and passes it to children", async () => {
 		const screen = await render(Harness);
 		await expect

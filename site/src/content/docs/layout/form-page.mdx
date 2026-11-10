@@ -39,6 +39,7 @@ AppForm fills its parent, so give the parent a height. It replaces the removed F
   { name: "description", type: "string", description: "Subtitle under the title." },
   { name: "backHref", type: "string", description: "Renders a back-arrow button linking here. Ignored when leading is provided." },
   { name: "backLabel", type: "string", default: "'Back'", description: "Accessible label of the automatic back button." },
+  { name: "onback", type: "(e: MouseEvent) => void", description: "Runs when the back link is clicked, before it navigates. Call `e.preventDefault()` to take over, for example with the history-aware `back(fallback)` from `@codeatlasdev/ui/kit`." },
   { name: "leading", type: "Snippet", description: "Left side of the header, such as a back button or breadcrumb. Overrides backHref." },
   { name: "trailing", type: "Snippet", description: "Right side of the header, such as a status chip or secondary actions." },
   { name: "footer", type: "Snippet", description: "Sticky bottom bar for cancel, save and delete buttons." },
