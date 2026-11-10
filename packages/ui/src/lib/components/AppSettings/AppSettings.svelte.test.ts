@@ -15,6 +15,15 @@ describe("AppSettings", () => {
 			.toBeVisible();
 	});
 
+	it("renders no header box when there is no title, description or actions (#758)", async () => {
+		const screen = await render(Harness, { headless: true });
+		await expect.element(screen.getByRole("tab", { name: "General" })).toBeVisible();
+		expect(document.querySelector(".ca-app-settings__header")).toBeNull();
+		const full = await render(Harness);
+		await expect.element(full.getByRole("heading", { level: 1 })).toBeVisible();
+		expect(document.querySelector(".ca-app-settings__header")).not.toBeNull();
+	});
+
 	it("selects the first tab by default and passes it to children", async () => {
 		const screen = await render(Harness);
 		await expect

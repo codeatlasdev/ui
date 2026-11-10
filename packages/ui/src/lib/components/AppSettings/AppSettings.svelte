@@ -97,15 +97,17 @@
 <div class="ca-app-settings {className}">
 
   <!-- ── Header ─────────────────────────────────────────────────── -->
-  <div class="ca-app-settings__header">
-    <div class="ca-app-settings__meta">
-      {#if title}<h1 class="ca-app-settings__title ca-sr-only--shell">{title}</h1>{/if}
-      {#if description}<p class="ca-app-settings__desc">{description}</p>{/if}
+  {#if title || description || actions}
+    <div class="ca-app-settings__header">
+      <div class="ca-app-settings__meta">
+        {#if title}<h1 class="ca-app-settings__title ca-sr-only--shell">{title}</h1>{/if}
+        {#if description}<p class="ca-app-settings__desc">{description}</p>{/if}
+      </div>
+      {#if actions}
+        <div class="ca-app-settings__actions">{@render actions()}</div>
+      {/if}
     </div>
-    {#if actions}
-      <div class="ca-app-settings__actions">{@render actions()}</div>
-    {/if}
-  </div>
+  {/if}
 
   <!-- ── Body ───────────────────────────────────────────────────── -->
   <div class="ca-app-settings__body">

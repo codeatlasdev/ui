@@ -8,9 +8,11 @@
 		/** When set, the harness controls the tab externally via bind:activeTab. */
 		controlled?: string;
 		onTabChange?: (v: string) => void;
+		/** No title, description or actions: the page already has its own heading. */
+		headless?: boolean;
 	}
 
-	let { defaultTab, controlled, onTabChange }: Props = $props();
+	let { defaultTab, controlled, onTabChange, headless = false }: Props = $props();
 
 	let external = $state(untrack(() => controlled ?? ""));
 
@@ -29,7 +31,9 @@
 {/snippet}
 
 <main>
-	{#if controlled !== undefined}
+	{#if headless}
+		<AppSettings {tabs} children={content} />
+	{:else if controlled !== undefined}
 		<AppSettings
 			title="Settings"
 			description="Manage the workspace"
