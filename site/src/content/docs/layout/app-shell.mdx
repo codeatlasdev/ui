@@ -72,6 +72,8 @@ The rail magnifies the module icon under the pointer, like a dock. Only the glyp
   { name: "stageVisible", type: "boolean", default: "true", description: "`false` hides the stage (`visibility: hidden`, `inert`) and passes `hidden: true` to it, without unmounting: for a full-page route that covers it. A page outside the component can set `data-ca-stage=\"hidden\"` on `<html>` for the same effect." },
   { name: "header", type: "Snippet", description: "Desktop header rendered above the page content. Hidden below 900px." },
   { name: "brand", type: "Snippet", description: "Logo shown at the top of the rail and in the mobile header." },
+  { name: "brandHref", type: "string", description: "Makes the brand a link home. The shell wraps `brand` in one `<a>` in the rail and one in the mobile header, with a 44px hit area on a coarse pointer (an overhang: the logo keeps its size) and the library focus ring. Do not put your own `<a>` inside `brand` when you set it." },
+  { name: "brandLabel", type: "string", description: "Accessible name of the brand link (`brandHref`), for example `Acme, home`." },
   { name: "railBottom", type: "Snippet", description: "Items pinned to the bottom of the rail, such as an avatar or notifications." },
   { name: "mobileHeaderActions", type: "Snippet", description: "Controls at the trailing edge of the mobile header. Use it for anything that must stay reachable below 900px." },
   { name: "mobileTitle", type: "Snippet", description: "Replaces the plain page title in the mobile header, for example a tappable title that opens a sheet." },

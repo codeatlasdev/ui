@@ -6,6 +6,8 @@
   import type { NavExtras, NavModule, NavMoreSheetProps } from './types.js';
   import { clampPanelWidth, findActiveItem, firstModulePath, isNavSection, matchModuleIndex, PANEL_WIDTH, RAIL_WIDTH } from './types.js';
   import { readShellState, shellScript, writeShellState } from './shell-state.js';
+  import ShellBrand from './ShellBrand.svelte';
+  import { warnSmallBrand } from '../../utils/warn-small-brand.js';
   import Rail from './Rail.svelte';
   import Panel from './Panel.svelte';
   import MobileHeader from './MobileHeader.svelte';
@@ -75,6 +77,14 @@
     header?:        Snippet;
     /** Brand mark (logo) shown at the top of the Rail and in the mobile header. */
     brand?:         Snippet;
+    /**
+     * Makes the brand a link home: the shell wraps `brand` in one `<a>` in the Rail and one in the
+     * mobile header, with a 44px hit area on a coarse pointer (an overhang, the logo keeps its size).
+     * Do not put your own `<a>` inside `brand` when you set it.
+     */
+    brandHref?:     string;
+    /** Accessible name of the brand link (`brandHref`). */
+    brandLabel?:    string;
     /** Items pinned to the bottom of the Rail (avatar, notifications…) */
     railBottom?:    Snippet;
     /** Control between the brand and the modules in the Rail, e.g. a search / ⌘K trigger. */
@@ -136,6 +146,8 @@
     stageVisible = true,
     header,
     brand,
+    brandHref,
+    brandLabel,
     railBottom,
     railTop,
     railLabels = false,
@@ -278,7 +290,17 @@
     togglePanel: () => setPanelOpen(!panelOpen),
     navigate: (path: string) => onNavigate?.(path),
   });
+  // Dev only: an interactive `brand` under the touch target on a coarse pointer (set `brandHref` instead).
+  $effect(() => {
+    if (brandHref || !brand) return;
+    warnSmallBrand(document.querySelectorAll('.ca-rail__logo, .ca-mobile-header__leading'));
+  });
+  const linkedBrand = $derived(brandHref && brand ? linkedBrandView : brand);
 </script>
+
+{#snippet linkedBrandView()}
+  <ShellBrand href={brandHref ?? '/'} label={brandLabel}>{@render brand?.()}</ShellBrand>
+{/snippet}
 
 <!--
   Sidebar is fixed-position; main content shifts right via margin-left.
@@ -294,7 +316,7 @@
     <Rail
       {modules}
       activeIndex={selectedIndex}
-      {brand}
+      brand={linkedBrand}
       top={railTop}
       labels={railLabels}
       bottom={railBottom}
@@ -335,7 +357,7 @@
     {/if}
     <!-- Mobile header -->
     <div class="ca-shell__mobile-header">
-      <MobileHeader leading={brand} title={pageTitle} titleSlot={mobileTitle} trailing={mobileHeaderActions} />
+      <MobileHeader leading={linkedBrand} title={pageTitle} titleSlot={mobileTitle} trailing={mobileHeaderActions} />
     </div>
     <div class="ca-shell__body">
     {#if stage}

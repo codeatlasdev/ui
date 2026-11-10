@@ -171,6 +171,8 @@ Parts: `ca-app-settings` `ca-app-settings__actions` `ca-app-settings__body` `ca-
 | `reorder?` | `NavExtras['reorder']` |  | Enables `onReorder` on sections and modules: pass the exported `NavReorder` component. Opt-in so the drag engine is only bundled by apps that reorder. |
 | `itemMenu?` | `NavExtras['itemMenu']` |  | Renders `NavItem.actions` as a "…" menu: pass the exported `NavItemMenu` component. Opt-in so DropdownMenu is only bundled by apps that use per-item menus. |
 | `stageVisible?` | `boolean` | `true` | `false` hides the stage (`visibility: hidden`, `inert`) and tells it to pause, without unmounting it: for a full-page route that covers it. A page can also set `data-ca-stage="hidden"` on `<html>` (what `PageFrame mode="page"` does). |
+| `brandHref?` | `string` |  | Makes the brand a link home: the shell wraps `brand` in one `<a>` in the Rail and one in the mobile header, with a 44px hit area on a coarse pointer (an overhang, the logo keeps its size). Do not put your own `<a>` inside `brand` when you set it. |
+| `brandLabel?` | `string` |  | Accessible name of the brand link (`brandHref`). |
 | `railLabels?` | `boolean` | `false` | Shows each module's label as a caption under its rail icon. |
 | `bottomNavPrimary?` | `number` |  | Most tabs on the mobile bottom navigation. With more modules the first `bottomNavPrimary - 1` stay and the last tab is "More", a dialog with the rest. Default 5. |
 | `moreSheet?` | `Component<NavMoreSheetProps>` |  | Replaces the built-in "More" dialog with another component: pass the exported `NavMoreSheet` for a full `Sheet` (swipe to dismiss, exit animation). Opt-in because `Sheet` adds about 10 kB gzip to the shell; the built-in dialog is a plain native `<dialog>` and costs about 1 kB. |
