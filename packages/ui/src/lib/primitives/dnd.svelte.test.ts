@@ -174,6 +174,34 @@ describe("dnd touch", () => {
 	});
 });
 
+describe("dnd touch handle without hold (#742)", () => {
+	it("touchHold: false starts a touch drag from the handle after the threshold, no hold", async () => {
+		const drops: DndDropEvent[] = [];
+		const screen = await render(Harness, { props: { drops, handle: true, touchHold: false } });
+		const c = screen.container;
+		const [x, y] = center(grip(c, "a1"));
+		pointer("pointerdown", x, y, "touch", grip(c, "a1"));
+		expect(row(c, "a1").hasAttribute("data-dnd-pressing")).toBe(false);
+		pointer("pointermove", x, y + 30, "touch");
+		expect(document.querySelector(".ca-dnd-overlay")).not.toBeNull();
+		const [, y3] = center(row(c, "a3"));
+		pointer("pointermove", x, y3 + 12, "touch");
+		pointer("pointerup", x, y3 + 12, "touch");
+		await frame();
+		expect(order(c)).toBe("a:a2,a3,a1 | b:b1,b2");
+	});
+
+	it("the default still needs the hold: an early move is a scroll", async () => {
+		const screen = await render(Harness, { props: { handle: true } });
+		const c = screen.container;
+		const [x, y] = center(grip(c, "a1"));
+		pointer("pointerdown", x, y, "touch", grip(c, "a1"));
+		pointer("pointermove", x, y + 30, "touch");
+		expect(document.querySelector(".ca-dnd-overlay")).toBeNull();
+		pointer("pointerup", x, y + 30, "touch");
+	});
+});
+
 describe("dnd keyboard", () => {
 	it("Space lifts, arrows move, Enter drops, with announcements", async () => {
 		const drops: DndDropEvent[] = [];
