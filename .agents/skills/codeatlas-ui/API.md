@@ -7934,7 +7934,7 @@ function hexToOklch(hex: string): { l: number; c: number; h: number }
 
 `import { NEUTRAL_DARK } from "@codeatlasdev/ui/utils/palette-generator"`
 
-Neutral dark tokens re-declared in every dark block so light preset values never cascade in.
+Neutral dark tokens re-declared in every dark block so light preset values never cascade in. The glass edge and shadow are the exception in the built-in files (`SHARED_NEUTRALS`, theme/define.ts): no light preset block declares them, so `.dark` already wins by inheritance and a copy is dead bytes.
 
 ```ts
 const NEUTRAL_DARK: TokenMap

@@ -434,6 +434,9 @@ function contrastTokens(src: BuiltinPresetSource | PresetDefinition, scheme: "li
 			};
 }
 
+/** Neutral glass edge and shadow: identical in all built-in presets (per scheme), no `SchemeColors` role. */
+const SHARED_NEUTRALS = ["--ca-glass-border", "--ca-glass-shadow"];
+
 /**
  * CSS for one preset. A preset applies on `<html>` or on any element (`data-preset`
  * islands), and `[data-theme-scope="light"|"dark"]` re-applies a scheme inside it.
@@ -454,6 +457,15 @@ export function presetCSS(
 	docs?: Record<string, string>
 ): string {
 	const { light, dark } = presetTokens(src);
+	// A built-in file leaves out what no preset role can set and what is the same in all eight
+	// presets: `:root` / `.dark` (amber's blocks, same layer, earlier) already carry them for the
+	// scheme, and inheritance gives every `[data-preset]` element the nearest scheme's value. Brand
+	// presets are unlayered and keep every token.
+	if (kind === "builtin")
+		for (const k of SHARED_NEUTRALS) {
+			delete light[k];
+			delete dark[k];
+		}
 	const P = `[data-preset="${src.id}"]`;
 	const L = '[data-theme-scope="light"]';
 	const D = '[data-theme-scope="dark"]';
