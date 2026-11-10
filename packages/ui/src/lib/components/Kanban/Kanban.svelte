@@ -525,7 +525,7 @@
     margin: 0;
     padding: var(--ca-space-2);
     overflow-y: auto;
-    overscroll-behavior: contain;
+    overscroll-behavior-y: contain;
     list-style: none;
     border-radius: var(--ca-radius-md);
   }

@@ -334,7 +334,7 @@
       flex: 1;
       min-height: 0;
       overflow-y: auto;
-      overscroll-behavior: contain;
+      overscroll-behavior-y: contain;
       padding: 0;
     }
     .ca-page-frame__body[data-padded] {

@@ -105,3 +105,12 @@ describe("LiveList", () => {
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 });
+
+describe("LiveList scroll chaining (#711)", () => {
+	it("contains vertical overscroll only, horizontal swipes chain to the page", async () => {
+		const screen = await render(Harness, { props: { initial: 3 } });
+		const style = getComputedStyle(scroller(screen.container));
+		expect(style.overscrollBehaviorY).toBe("contain");
+		expect(style.overscrollBehaviorX).not.toBe("contain");
+	});
+});

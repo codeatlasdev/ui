@@ -414,7 +414,7 @@
       position: relative;
       height: var(--ca-virtual-list-h);
       overflow-y: auto;
-      overscroll-behavior: contain;
+      overscroll-behavior-y: contain;
       /* Anchoring is done by hand (keyed): the browser heuristic fights absolute rows. */
       overflow-anchor: none;
       border: var(--ca-border-width) solid var(--ca-outline-subtle);
