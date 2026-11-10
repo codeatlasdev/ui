@@ -712,15 +712,48 @@ See also: [Page layouts (AppSettings)](/docs/layout/list-page/), [SettingItem](/
 
 A settings tab that edits an ordered list (pipeline stages, tags, loss reasons) is `SortableList` around `EditableRow`s. Do not build the grip, the up and down buttons or the collapsing grid by hand.
 
+```ts
+// src/lib/messages.ts (the keys the stages editor reads)
+export const m = {
+  stages: {
+    title: "Pipeline stages",
+    name: "Name",
+    kind: "Kind",
+    kinds: [
+      { value: "open", label: "Open" },
+      { value: "won", label: "Won" },
+      { value: "lost", label: "Lost" },
+    ],
+    staleDays: "Stale after (days)",
+    delete: (name: string) => `Delete ${name}`,
+    reorderFailed: "The new order was not saved.",
+  },
+};
+```
+
 ```svelte
 <script lang="ts">
-  import { EditableRow, IconButton, NumberField, Select, SortableList, TextField, toast } from "@codeatlasdev/ui";
-  import type { SortableListReorder } from "@codeatlasdev/ui";
+  import {
+    EditableRow,
+    IconButton,
+    NumberField,
+    Select,
+    SortableList,
+    type SortableListReorder,
+    TextField,
+    toast,
+  } from "@codeatlasdev/ui";
   import { Trash2 } from "@lucide/svelte";
   import { m } from "#lib/messages.ts";
 
-  let { data } = $props();
+  type Stage = { id: string; name: string; kind: string; staleDays: number };
+  let { data }: { data: { stages: Stage[] } } = $props();
   let stages = $state(data.stages);
+
+  async function remove(id: string) {
+    stages = stages.filter((s) => s.id !== id);
+    await fetch(`/api/stages/${id}`, { method: "DELETE" });
+  }
 
   // Optimistic: show the new order, save it, put the old one back when the save fails.
   async function reorder({ from, to }: SortableListReorder) {
@@ -741,7 +774,7 @@ A settings tab that edits an ordered list (pipeline stages, tags, loss reasons) 
     <EditableRow label={stage.name}>
       {#snippet summary()}{stage.name}{/snippet}
       <TextField label={m.stages.name} bind:value={stage.name} />
-      <Select label={m.stages.kind} options={m.stages.kinds} bind:value={stage.kind} />
+      <Select label={m.stages.kind} options={[...m.stages.kinds]} bind:value={stage.kind} />
       <NumberField label={m.stages.staleDays} bind:value={stage.staleDays} min={0} />
       {#snippet actions()}
         <IconButton variant="text" aria-label={m.stages.delete(stage.name)} onclick={() => remove(stage.id)}><Trash2 size={16} /></IconButton>
