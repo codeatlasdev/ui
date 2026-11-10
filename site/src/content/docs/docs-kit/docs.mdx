@@ -46,6 +46,8 @@ This site is built with these primitives. The kit covers `DocsShell` (header, si
 
 The sidebar keeps its place between pages, also on a static site where every link loads a new document. Its scroll position is saved per section in `sessionStorage` and restored by a small inline script right after the sidebar, before the first paint. The current page is scrolled into the sidebar's view when it is outside it; the window scroll and focus are never touched. Under a Content Security Policy that blocks inline scripts, the position is restored on hydration instead.
 
+Tables in `.ca-prose` (a bare `<table>`, or one inside `.ca-table-wrap`) size their cells to their content, so a column of `string` or `true` stays narrow and the description column gets the rest. Mark a cell that holds a long run of text with `data-prose` to give it a readable measure of `--ca-prose-cell-min` (default `12rem`).
+
 <Demo title="ca-prose, Callout and Steps" description="Wrap rendered markdown in .ca-prose. Callout is an Alert vocabulary (note, tip, caution, danger); keep two per page. Steps turns an ordered list into a numbered rail." src={ProseSrc}><Prose /></Demo>
 <Demo title="CodeTabs" description="Language tabs with a copy button. Groups that share a sync key follow each other and persist the choice in localStorage. Highlighting stays with you: wrap each block in .ca-code." src={CodeTabsSrc}><CodeTabsDemo client:visible /></Demo>
 <Demo title="LinkCard, CardGrid and MethodBadge" src={CardsSrc}><Cards /></Demo>
