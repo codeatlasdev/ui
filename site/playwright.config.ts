@@ -26,7 +26,10 @@ export default defineConfig({
 	// across jobs. Anywhere else the tooling's worker cap (scripts/cpu-cap.ts), even with CI=true: agent shells export it on a developer
 	// machine that other projects share, and 12 Chromium workers running axe there starved each other
 	// into random 30s timeouts on a different route every run, 3 workers passed 3 of 3 (#539).
-	workers: process.env.E2E_WORKERS ?? (process.env.GITHUB_ACTIONS ? "100%" : cpuCap()),
+	// `E2E_WORKERS=3` arrives as a string, which Playwright accepts only as a percentage ("50%").
+	workers: /^\d+$/.test(process.env.E2E_WORKERS ?? "")
+		? Number(process.env.E2E_WORKERS)
+		: (process.env.E2E_WORKERS ?? (process.env.GITHUB_ACTIONS ? "100%" : cpuCap())),
 	// The platform is part of the file name (`home-dark-darwin.webp`), like Vitest's `-chromium-darwin.png`: a baseline
 	// is only ever compared on the platform that rendered it, so each platform keeps its own set side by side.
 	snapshotPathTemplate:
