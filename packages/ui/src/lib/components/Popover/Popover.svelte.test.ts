@@ -98,3 +98,14 @@ describe("Popover bind:open", () => {
 		expect(onOpenChange).toHaveBeenLastCalledWith(false);
 	});
 });
+
+describe("Popover window blur (#663)", () => {
+	it("stays open when the window loses focus: it can hold a form", async () => {
+		const { trigger } = await setup();
+		await trigger.click();
+		await expect.element(page.getByText("Popover content")).toBeVisible();
+		window.dispatchEvent(new Event("blur"));
+		await settled();
+		await expect.element(page.getByText("Popover content")).toBeVisible();
+	});
+});

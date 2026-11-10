@@ -154,6 +154,7 @@
   {align}
   {sideOffset}
   dismiss={false}
+  onDismiss={() => intent.set(false)}
   bind:ref={card}
   id="{id}-content"
   role="group"

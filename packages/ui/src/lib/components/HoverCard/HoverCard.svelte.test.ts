@@ -129,3 +129,13 @@ describe("HoverCard", () => {
 		expect(await checkA11y(card() as HTMLElement)).toHaveNoViolations();
 	});
 });
+
+describe("HoverCard window dismissal (#663)", () => {
+	it("closes when the window loses focus", async () => {
+		const screen = await render(Harness);
+		await trigger(screen).hover();
+		await expect.element(page.getByText("Ada Lovelace")).toBeVisible();
+		window.dispatchEvent(new Event("blur"));
+		await expect.element(page.getByText("Ada Lovelace")).not.toBeInTheDocument();
+	});
+});

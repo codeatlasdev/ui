@@ -23,7 +23,7 @@ import ControlledSrc from "~/demos/navigation/hover-card/Controlled.svelte?raw";
 </HoverCard>
 ```
 
-The card previews more about its trigger (a person, a link target, a record). The trigger stays the primary action: it is a real link or button that works without the card. The card opens when the pointer rests on the trigger for `openDelay` (700 ms) and when the trigger receives keyboard focus, at once. It stays open while the pointer crosses into it and closes `closeDelay` (300 ms) after the pointer or focus leaves, on Escape, and on blur. The trigger gets `aria-describedby` pointing at the card while it is open. Tab from the trigger moves into the card, so a link inside it is reachable from the keyboard; Escape inside the card closes it and returns focus to the trigger.
+The card previews more about its trigger (a person, a link target, a record). The trigger stays the primary action: it is a real link or button that works without the card. The card opens when the pointer rests on the trigger for `openDelay` (700 ms) and when the trigger receives keyboard focus, at once. It stays open while the pointer crosses into it and closes `closeDelay` (300 ms) after the pointer or focus leaves, on Escape, on blur, and at once when the window loses focus or the page is hidden. The trigger gets `aria-describedby` pointing at the card while it is open. Tab from the trigger moves into the card, so a link inside it is reachable from the keyboard; Escape inside the card closes it and returns focus to the trigger.
 
 It is a hint layer: it never takes Escape or outside presses from a dialog or menu underneath. The card is a popover element in the browser top layer, positioned with CSS anchor positioning where supported.
 
