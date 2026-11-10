@@ -111,7 +111,7 @@
       padding: var(--ca-space-3) var(--ca-space-4);
       border-radius: var(--ca-radius-md);
       border: var(--ca-border-width) solid var(--ca-outline-subtle);
-      background: var(--ca-glass-bg);
+      background: var(--ca-surface-floating, var(--ca-glass-bg));
       box-shadow: var(--ca-shadow-md);
       pointer-events: all;
       font-size: var(--ca-font-size-body2);

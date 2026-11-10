@@ -109,6 +109,16 @@ export interface SchemeColors {
 	borderStrong?: ColorValue;
 	/** Edge of a field or control (--ca-outline-control: neutral outlined Button, TextField, Select, Checkbox box). Measured at 3:1 on every surface after compositing alpha (WCAG 1.4.11). Defaults to a value generated from the brand hue. */
 	borderControl?: ColorValue;
+	/** Brand-coloured text: outlined and ghost labels, links, active nav (--ca-brand-text). Measured at 4.5:1 on every surface. Defaults to a value solved from the brand. */
+	brandText?: ColorValue;
+	/** Keyboard focus ring (--ca-focus-ring). Measured at 3:1 on every surface (WCAG 1.4.11). Defaults to a value solved from the brand. */
+	focusRing?: ColorValue;
+	/** Hover fill of rows, items and ghost controls (--ca-action-hover); may be translucent. Text is measured over it. */
+	hover?: ColorValue;
+	/** Selected fill (--ca-action-selected); may be translucent. Text is measured over it. */
+	selected?: ColorValue;
+	/** Fourth surface step above `overlay`: Popover, DropdownMenu, Select, Combobox, Dialog and Toast (--ca-surface-floating). Unset keeps `overlay`. */
+	floating?: ColorValue;
 	success?: ColorValue;
 	warning?: ColorValue;
 	info?: ColorValue;
@@ -135,6 +145,11 @@ export const ROLE_TOKENS: Record<Exclude<keyof SchemeColors, "brand">, string> =
 	border: "--ca-outline-default",
 	borderStrong: "--ca-outline-strong",
 	borderControl: "--ca-outline-control",
+	brandText: "--ca-brand-text",
+	focusRing: "--ca-focus-ring",
+	hover: "--ca-action-hover",
+	selected: "--ca-action-selected",
+	floating: "--ca-surface-floating",
 	success: "--ca-semantic-success",
 	warning: "--ca-semantic-warning",
 	info: "--ca-semantic-info",
