@@ -1448,6 +1448,24 @@ Parts: `ca-dropdown-item` `ca-dropdown-item--destructive` `ca-dropdown-item--sub
 
 Data attributes: `data-brand`, `data-disabled`, `data-highlighted`, `data-state` (`open`)
 
+## EditableRow
+
+`import { EditableRow } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `label` | `string` |  | Name of the row for the expand button ("Edit Lost"). Required when the fields collapse. |
+| `open?` | `boolean` | `false` | `bind:` Bindable. The fields are open while the row is collapsed. Has no effect from `sm`, where they always show. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `summary`: What the row is, in one line (a name, a colour dot). Always visible.; `children`: The fields. Beside the summary from `sm` of the row's own width; below it they open under an Edit button.; `actions`: Right-aligned actions (delete, duplicate). Always visible.
+
+Parts: `ca-editable-row` `ca-editable-row__actions` `ca-editable-row__fields` `ca-editable-row__summary` `ca-editable-row__toggle`
+
+Variables: `--ca-field-min`
+
+Data attributes: `data-open`
+
 ## EmptyState
 
 `import { EmptyState } from "@codeatlasdev/ui"`
@@ -3151,6 +3169,25 @@ Parts: `ca-slider-field` `ca-slider-field__head` `ca-slider-field__hint` `ca-sli
 
 Data attributes: `data-disabled`
 
+## SortableList
+
+`import { SortableList } from "@codeatlasdev/ui"` (generic: `T`)
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `items` | `T[]` |  |  |
+| `getId` | `(item: T) => string` |  | Stable id of an item. |
+| `onreorder` | `(move: SortableListReorder) => void` |  | A row moved (drag, keyboard or the "Reorder" menu). Apply it to your data: the list does not reorder `items` itself, so you can persist first and roll back on failure. |
+| `label` | `string` |  | Accessible name of the list. |
+| `getLabel?` | `(item: T) => string` |  | Name of a row, for the handle, the menu and the announcements. Default: the row's text. |
+| `class?` | `string` | `''` | Heading level is the app's: the list renders none. |
+
+Snippets: `item` (`Snippet<[T, SortableListRowState]>`): Row content. The grip and the reorder menu are the list's.
+
+Parts: `ca-sortable` `ca-sortable__content` `ca-sortable__grip` `ca-sortable__menu` `ca-sortable__row`
+
+Data attributes: `data-dragging`
+
 ## SoundToggle
 
 `import { SoundToggle } from "@codeatlasdev/ui/sound"`
@@ -3903,8 +3940,8 @@ const BUILTIN_PRESETS: {
   toSorted: (compareFn?: ((a: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; reado…;
   toSpliced: { (start: number, deleteCount: number, ...items: ({ readonly id: "amber"; readonly label: "Amber"; …;
   with: (index: number, value: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; …;
-  __@iterator@288: () => ArrayIterator<{ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
-  readonly __@unscopables@290: { readonly [x: number]: boolean | undefined; readonly length?: boolean | undefined; toString?: bool…;
+  __@iterator@290: () => ArrayIterator<{ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
+  readonly __@unscopables@292: { readonly [x: number]: boolean | undefined; readonly length?: boolean | undefined; toString?: bool…;
 }
 ```
 
