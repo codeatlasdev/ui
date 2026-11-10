@@ -46,4 +46,5 @@ The media is contained in the viewport and respects the device safe areas. Escap
   { name: "index", type: "number", default: "0", description: "Bindable current item." },
   { name: "ondownload", type: "(item: LightboxItem, index: number) => void", description: "Replaces the default download link. The Download button shows for `items` galleries." },
   { name: "onclose", type: "() => void", description: "Called after the viewer closes." },
+  { name: "history", type: "boolean", default: "true", description: "Give the layer a browser-history entry under the overlay-history bridge, so Back closes it. Nothing changes until the app mounts the bridge (see Back button on mobile)." },
 ]} />

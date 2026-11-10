@@ -477,6 +477,7 @@ interface LayoutOpts {
 const layoutNew = ({ messagesSpec, pwa }: LayoutOpts) => `<script lang="ts">
 	import "@codeatlasdev/ui/styles/global.css";
 	import { colorScheme } from "@codeatlasdev/ui";
+	import { OverlayHistory } from "@codeatlasdev/ui/kit";
 	import { Seo } from "@codeatlasdev/ui/seo";
 	import { page } from "$app/state";
 	import { onMount } from "svelte";
@@ -488,6 +489,8 @@ const layoutNew = ({ messagesSpec, pwa }: LayoutOpts) => `<script lang="ts">
 </script>
 
 ${seoTag(pwa)}
+
+<OverlayHistory />
 
 {@render children()}
 `;
@@ -519,10 +522,11 @@ function layoutPatch({ messagesSpec, pwa }: LayoutOpts) {
 		const needCss = !out.includes("@codeatlasdev/ui/styles/global.css");
 		const needScheme = !/colorScheme\s*\.\s*init\s*\(/.test(out);
 		const needSeo = !/<Seo\b/.test(out);
-		if (!needCss && !needScheme && !needSeo) return out;
+		const needHistory = !/<OverlayHistory\b/.test(out);
+		if (!needCss && !needScheme && !needSeo && !needHistory) return out;
 		const script = out.match(/<script\b[^>]*>/);
 		if (!script || script.index === undefined) {
-			return `<script lang="ts">\n\timport "@codeatlasdev/ui/styles/global.css";\n\timport { colorScheme } from "@codeatlasdev/ui";\n${seoImports(out, messagesSpec).join("\n")}\n\timport { onMount } from "svelte";\n\n\tonMount(() => colorScheme.init());\n</script>\n\n${seoTag(pwa)}\n\n${out}`;
+			return `<script lang="ts">\n\timport "@codeatlasdev/ui/styles/global.css";\n\timport { colorScheme } from "@codeatlasdev/ui";\n\timport { OverlayHistory } from "@codeatlasdev/ui/kit";\n${seoImports(out, messagesSpec).join("\n")}\n\timport { onMount } from "svelte";\n\n\tonMount(() => colorScheme.init());\n</script>\n\n${seoTag(pwa)}\n\n<OverlayHistory />\n\n${out}`;
 		}
 		const insertAt = script.index + script[0].length;
 		const lines: string[] = [];
@@ -530,6 +534,7 @@ function layoutPatch({ messagesSpec, pwa }: LayoutOpts) {
 		if (!/import\s*\{[^}]*\bcolorScheme\b[^}]*\}\s*from\s*["']@codeatlasdev\/ui["']/.test(out))
 			lines.push('\timport { colorScheme } from "@codeatlasdev/ui";');
 		if (needSeo) lines.push(...seoImports(out, messagesSpec));
+		if (needHistory) lines.push('\timport { OverlayHistory } from "@codeatlasdev/ui/kit";');
 		if (!/import\s*\{[^}]*\bonMount\b[^}]*\}\s*from\s*["']svelte["']/.test(out))
 			lines.push('\timport { onMount } from "svelte";');
 		out = `${out.slice(0, insertAt)}\n${lines.join("\n")}${out.slice(insertAt)}`;
@@ -540,6 +545,10 @@ function layoutPatch({ messagesSpec, pwa }: LayoutOpts) {
 		if (needSeo) {
 			const close = out.indexOf("</script>") + "</script>".length;
 			out = `${out.slice(0, close)}\n\n${seoTag(pwa)}${out.slice(close)}`;
+		}
+		if (needHistory) {
+			const close = out.indexOf("</script>") + "</script>".length;
+			out = `${out.slice(0, close)}\n\n<OverlayHistory />${out.slice(close)}`;
 		}
 		return out;
 	};
@@ -995,8 +1004,10 @@ import "@codeatlasdev/ui/styles/global.css";
 		<slot />
 		<script>
 			// One store instance for the page: theme switches and OS scheme changes stay in sync.
-			import { colorScheme } from "@codeatlasdev/ui";
+			import { bridgeOverlaysToHistory, colorScheme } from "@codeatlasdev/ui";
 			colorScheme.init();
+			// Back closes the topmost Dialog, Sheet or Drawer instead of leaving the page.
+			bridgeOverlaysToHistory();
 		</script>
 	</body>
 </html>
@@ -1015,9 +1026,15 @@ function astroLayoutPatch(src: string): string | null {
 		if (m) out = out.replace(m[0], `<meta name="viewport" content="${VIEWPORT}" />`);
 	}
 	if (!/colorScheme\s*\.\s*init\s*\(/.test(out)) {
-		const script = `\t\t<script>\n\t\t\timport { colorScheme } from "@codeatlasdev/ui";\n\t\t\tcolorScheme.init();\n\t\t</script>\n`;
+		const script = `\t\t<script>\n\t\t\timport { bridgeOverlaysToHistory, colorScheme } from "@codeatlasdev/ui";\n\t\t\tcolorScheme.init();\n\t\t\tbridgeOverlaysToHistory();\n\t\t</script>\n`;
 		if (!out.includes("</body>")) return null;
 		out = out.replace("</body>", `${script}\t</body>`);
+	} else if (!/bridgeOverlaysToHistory/.test(out)) {
+		// An existing client script that already calls colorScheme.init(): add the bridge beside it.
+		out = out.replace(
+			/(import\s*\{)([^}]*\bcolorScheme\b[^}]*)(\}\s*from\s*["']@codeatlasdev\/ui["'];?)([\s\S]*?colorScheme\s*\.\s*init\s*\(\s*\);?)/,
+			"$1 bridgeOverlaysToHistory,$2$3$4\n\t\t\tbridgeOverlaysToHistory();"
+		);
 	}
 	return out;
 }

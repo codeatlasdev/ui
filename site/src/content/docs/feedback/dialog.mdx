@@ -74,6 +74,7 @@ The dialog renders a native modal `<dialog>` opened with `showModal()`: the page
   { name: "splitColumns", type: "string", default: "'1fr 1fr'", description: "size=\"split\" body grid-template-columns from 900px, for example '2fr 3fr'. Sets --ca-dialog-split-columns." },
   { name: "fullscreenBelow", type: "'sm' | 'md'", description: "Any size: below 600px (sm) or 900px (md) the dialog is exactly the viewport, square corners, safe-area padding kept. Focus trap and Escape unchanged." },
   { name: "inline", type: "boolean", default: "false", description: "Render inside its container instead of the top layer: position: absolute over the nearest positioned ancestor, no scrim over the page, no scroll lock, no focus trap, no inert page; Escape closes it only from inside. Takes the tokens of its container, so it follows a data-preset or data-theme-scope island." },
+  { name: "history", type: "boolean", default: "true", description: "Give the layer a browser-history entry under the overlay-history bridge, so Back closes it. Nothing changes until the app mounts the bridge (see Back button on mobile)." },
   { name: "chromeless", type: "boolean", default: "false", description: "Omits header, description and actions; the body has no padding. title and description stay available to screen readers." },
   { name: "children", type: "Snippet", description: "Dialog body." },
   { name: "actions", type: "Snippet", description: "Footer buttons." },

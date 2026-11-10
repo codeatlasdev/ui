@@ -3,8 +3,9 @@
   import { mobilePane } from '../../i18n/groups/mobilePane.js';
   import type { Snippet } from 'svelte';
   import { ArrowLeft } from '@lucide/svelte';
-  import { tick } from 'svelte';
-  import { keyboardAware } from '../../actions/keyboard-aware.js';
+    import { keyboardAware } from '../../actions/keyboard-aware.js';
+  import { createPresence } from '../../primitives/index.js';
+  import { modalLayer } from '../Dialog/modal-layer.svelte.js';
   import IconButton from '../Button/IconButton.svelte';
   import MobileHeader from '../AppShell/MobileHeader.svelte';
   const t = useMessages(mobilePane);
@@ -14,8 +15,10 @@
    * (chat thread, history, detail). Replaces a hand-rolled `position: fixed`.
    *
    * Header with a back button, a body with its own scroll (`overscroll-behavior: contain`),
-   * safe-area insets on every side and virtual keyboard awareness. Escape closes; focus
-   * moves into the pane on open and returns to the previous element on close.
+   * safe-area insets on every side and virtual keyboard awareness. The pane is a modal layer
+   * (a native `<dialog>` in the top layer, on the shared layer stack): Escape closes, focus
+   * moves into it on open and returns to the opener on close, and with the overlay-history
+   * bridge (`bridgeOverlaysToHistory`, `<OverlayHistory />`) the browser's Back closes it.
    *
    * Usage:
    *   <MobilePane bind:open title="Maria" onback={() => (chatId = null)}>
@@ -40,6 +43,8 @@
      * for layouts with their own scrollable area and a fixed composer (chat).
      */
     scroll?: boolean;
+    /** Give the pane a browser-history entry under the overlay-history bridge (Back closes it). Default `true`. */
+    history?: boolean;
     class?: string;
   }
 
@@ -51,43 +56,28 @@
     actions,
     headerTitle,
     scroll = true,
+    history = true,
     class: className = '',
   }: Props = $props();
 
-  let pane = $state<HTMLElement>();
-  let previous: HTMLElement | null = null;
+  const presence = createPresence(() => open);
 
   function close() {
     open = false;
     onback?.();
   }
-
-  function onkeydown(e: KeyboardEvent) {
-    if (e.key !== 'Escape' || e.defaultPrevented) return;
-    e.preventDefault();
-    close();
-  }
-
-  // Focus moves in on open and returns to the previous element on close/unmount.
-  $effect(() => {
-    if (!open) return;
-    previous = document.activeElement instanceof HTMLElement ? document.activeElement : null;
-    tick().then(() => pane?.focus({ preventScroll: true }));
-    return () => {
-      if (previous?.isConnected) previous.focus({ preventScroll: true });
-      previous = null;
-    };
-  });
 </script>
 
-{#if open}
-  <div
-    bind:this={pane}
+{#if presence.present}
+  <!-- An explicit role keeps `[role="dialog"]` selectors (and every engine) seeing the dialog. -->
+  <!-- svelte-ignore a11y_no_redundant_roles -->
+  <dialog
     class="ca-mobile-pane {className}"
     role="dialog"
     aria-label={title}
-    tabindex="-1"
-    {onkeydown}
+    data-state={open ? 'open' : 'closed'}
+    {@attach presence.ref}
+    {@attach modalLayer(() => ({ onDismiss: close, outside: false, initial: 'container', closing: !open, history }))}
     use:keyboardAware
   >
     <MobileHeader class="ca-mobile-pane__header" title={title} titleSlot={headerTitle}>
@@ -104,21 +94,31 @@
     <div class="ca-mobile-pane__body" class:ca-mobile-pane__body--fixed={!scroll}>
       {@render children()}
     </div>
-  </div>
+  </dialog>
 {/if}
 
 <style>
 @layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
 @layer ca.components {
+    /* A modal <dialog> in the top layer: reset the UA box (margin, border, max size, padding). */
     .ca-mobile-pane {
       position: fixed;
       inset: 0;
-      z-index: var(--ca-z-fixed);
+      margin: 0;
+      padding: 0;
+      border: 0;
+      width: 100%;
+      max-width: none;
+      max-height: none;
       height: var(--ca-vh);
-      display: flex;
-      flex-direction: column;
+      color: inherit;
       background: var(--ca-surface-base);
       outline: none;
+    }
+
+    .ca-mobile-pane[open] {
+      display: flex;
+      flex-direction: column;
     }
 
     /* The header already adds --ca-safe-top/left/right. Inside a flex column it must not grow. */

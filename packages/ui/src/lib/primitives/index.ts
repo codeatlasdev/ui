@@ -19,6 +19,7 @@ export { focusables, focusFirst, type TrapFocusOptions, trapFocus } from "./focu
 export { createHoverIntent, type HoverIntent, type HoverIntentOptions } from "./hover-intent.js";
 export { createIds, type Ids } from "./ids.js";
 export {
+	dismissTopLayer,
 	type LayerChange,
 	type LayerDismissReason,
 	type LayerHandle,

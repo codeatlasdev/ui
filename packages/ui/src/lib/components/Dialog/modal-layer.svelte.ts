@@ -14,6 +14,8 @@ export interface ModalLayerOptions {
 	closing?: boolean;
 	/** Render in place (no top layer, scroll lock, focus trap or global Escape): see `LayerOptions.inline`. */
 	inline?: boolean;
+	/** Give the layer a browser-history entry under the overlay-history bridge (Back closes it). Default true. */
+	history?: boolean;
 }
 
 /**
@@ -28,10 +30,11 @@ export function modalLayer(options: () => ModalLayerOptions) {
 		if (!(dialog instanceof HTMLDialogElement)) return () => {};
 		// Attach-time reads are untracked: the attachment must not re-run (closing the layer and removing
 		// the dialog mid-exit) when the owner's reactive state, such as `open` for `closing`, changes.
-		const { initial, onOpen, outside, inline } = untrack(options);
+		const { initial, onOpen, outside, inline, history } = untrack(options);
 		const layer = openLayer(dialog, {
 			kind: "modal",
 			inline,
+			history,
 			initialFocus: initial,
 			onOpen: () => onOpen?.(dialog),
 			outside,

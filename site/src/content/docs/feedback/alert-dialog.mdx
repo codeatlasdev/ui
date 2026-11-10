@@ -55,4 +55,5 @@ Unlike [Dialog](/docs/feedback/dialog/), there is no close button and a click ou
   { name: "onconfirm", type: "() => void | Promise<void>", description: "Required. Closes the dialog when it resolves; if it throws, the dialog stays open and the error propagates." },
   { name: "oncancel", type: "() => void", description: "Fires on Cancel or Escape. Never fires while pending." },
   { name: "class", type: "string", default: "''", description: "Extra classes on the panel." },
+  { name: "history", type: "boolean", default: "true", description: "Give the layer a browser-history entry under the overlay-history bridge, so Back closes it. Nothing changes until the app mounts the bridge (see Back button on mobile)." },
 ]} />

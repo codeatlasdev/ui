@@ -300,7 +300,7 @@ export type {
 } from "./primitives/index.js";
 export { applyMove, useDnd } from "./primitives/index.js";
 export type { LayerChange, LayerInfo, LayerKind } from "./primitives/layer.js";
-export { onLayerChange } from "./primitives/layer.js";
+export { dismissTopLayer, onLayerChange } from "./primitives/layer.js";
 export type { ColorScheme, SurfaceStyle } from "./stores/color-scheme.svelte.js";
 export { colorScheme } from "./stores/color-scheme.svelte.js";
 export { layers } from "./stores/layers.svelte.js";
@@ -409,5 +409,7 @@ export {
 	useForm,
 	useListState,
 } from "./utils/index.js";
+export type { OverlayBridge, OverlayHistoryAdapter } from "./utils/overlay-history.js";
+export { bridgeOverlaysToHistory, overlayStep } from "./utils/overlay-history.js";
 export type { CueName, SoundProp } from "./utils/sound-bus.js";
 export { soundBus } from "./utils/sound-bus.js";

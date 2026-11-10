@@ -47,6 +47,8 @@
      * palette but one when a page has several, or when the app binds its own shortcut.
      */
     shortcut?: boolean;
+    /** Give the layer a browser-history entry under the overlay-history bridge, so Back closes it. Default true. */
+    history?: boolean;
   }
 
   let {
@@ -59,6 +61,7 @@
     search: searchFn,
     searchDebounce     = 200,
     shortcut           = true,
+    history            = true,
   }: Props = $props();
 
   let selectedIndex = $state(0);
@@ -276,6 +279,7 @@
     {@attach modalLayer(() => ({
       onDismiss: () => (open = false),
       closing: !open,
+      history,
       initial: false,
       onOpen: () => {
         const force = openedByKeyboard;
