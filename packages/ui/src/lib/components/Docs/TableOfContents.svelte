@@ -189,7 +189,7 @@
     .ca-toc--inline a {
       display: flex;
       align-items: center;
-      min-height: var(--ca-space-10);
+      min-height: var(--ca-touch-target);
       padding: 0 var(--ca-space-2-5);
       border-radius: var(--ca-radius-sm);
     }
