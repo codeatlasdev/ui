@@ -49,6 +49,7 @@ import { mobilePane } from "./groups/mobilePane.js";
 import { motionStage } from "./groups/motionStage.js";
 import { notificationBell } from "./groups/notificationBell.js";
 import { numberField } from "./groups/numberField.js";
+import { pageBack } from "./groups/pageBack.js";
 import { pageFrame } from "./groups/pageFrame.js";
 import { pageShell } from "./groups/pageShell.js";
 import { pagination } from "./groups/pagination.js";
@@ -108,6 +109,7 @@ export const groups = {
 	mobilePane,
 	notificationBell,
 	numberField,
+	pageBack,
 	pageShell,
 	pageFrame,
 	pagination,

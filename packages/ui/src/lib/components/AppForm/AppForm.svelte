@@ -31,9 +31,8 @@
    *   </AppForm>
    */
   import type { Snippet } from 'svelte';
-  import Button from '../Button/Button.svelte';
+  import PageBack from '../PageShell/PageBack.svelte';
   import { provideSectionHeadingLevel } from '../PageShell/heading-context.js';
-  import { ArrowLeft } from '@lucide/svelte';
   const t = useMessages(appForm);
 
   interface Props {
@@ -44,6 +43,9 @@
     backHref?:    string;
     /** Accessible label for the auto-rendered back button. Default: 'Back' */
     backLabel?:   string;
+    /** Runs when the back link is clicked, before it navigates. Call `e.preventDefault()` to take over
+     *  (a history-aware `back(fallback)` from `@codeatlasdev/ui/kit`). */
+    onback?:      (e: MouseEvent) => void;
     /** Left side of header: back button, breadcrumb.
      *  When present, overrides backHref. */
     leading?:     Snippet;
@@ -63,6 +65,7 @@
     description,
     backHref,
     backLabel,
+    onback,
     leading,
     trailing,
     footer,
@@ -86,9 +89,7 @@
           <div class="ca-app-form__leading">{@render leading()}</div>
         {:else if backHref}
           <div class="ca-app-form__leading">
-            <Button variant="ghost" size="sm" href={backHref} aria-label={backLabel ?? t().appForm.back}>
-              {#snippet leading()}<ArrowLeft size={15} />{/snippet}
-            </Button>
+            <PageBack href={backHref} label={backLabel} {onback} />
           </div>
         {/if}
         <div class="ca-app-form__meta">

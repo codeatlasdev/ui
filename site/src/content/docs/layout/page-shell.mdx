@@ -60,8 +60,23 @@ Pass an `aside` snippet for a companion column (in-page index, summary, help, pr
   { name: "maxWidth", type: "string", default: "undefined", description: "Maximum width of the content column, any CSS length. Omit for 80rem (1280px at the default 4px spacing unit)." },
   { name: "width", type: "'reading' | 'wide'", default: "'wide'", description: "`reading` caps the content column at 46rem (forms, settings). `wide` fills the shell up to `maxWidth`." },
   { name: "actions", type: "Snippet", description: "Right side of the page header." },
+  { name: "backHref", type: "string", description: "Renders the standard back link before the title." },
+  { name: "backLabel", type: "string", default: "'Back'", description: "Accessible label of the back link." },
+  { name: "onback", type: "(e: MouseEvent) => void", description: "Runs when the back link is clicked, before it navigates. Call `e.preventDefault()` to take over, for example with the history-aware `back(fallback)` from `@codeatlasdev/ui/kit`." },
   { name: "aside", type: "Snippet", description: "Companion column rendered as `<aside>`: beside the content (sticky, ~17rem) when the shell is at least 60rem wide, after the content below that." },
   { name: "asideLabel", type: "string", default: "'Page sidebar'", description: "Accessible name of the `<aside>` landmark (localized default)." },
   { name: "children", type: "Snippet", description: "Page content." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />
+
+## Back button
+
+`AppForm`, `AppSettings` and `PageShell` share one contract: `backHref` renders the standard back link in the leading position, and `onback(e)` may `preventDefault()` to take over. In a SvelteKit app with `<OverlayHistory />` mounted, use `back(fallback)` so Back returns to the previous in-app page, and to `fallback` when the page was the entry point (a deep link or a reload):
+
+```svelte
+<script>
+  import { back } from "@codeatlasdev/ui/kit";
+</script>
+
+<AppForm title="Edit user" backHref="/users" onback={(e) => { e.preventDefault(); back("/users"); }}>
+```
