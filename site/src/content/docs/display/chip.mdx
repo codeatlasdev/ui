@@ -16,6 +16,8 @@ import Selectable from "~/demos/display/chip/Selectable.svelte";
 import SelectableSrc from "~/demos/display/chip/Selectable.svelte?raw";
 import Deletable from "~/demos/display/chip/Deletable.svelte";
 import DeletableSrc from "~/demos/display/chip/Deletable.svelte?raw";
+import Row from "~/demos/display/chip/Row.svelte";
+import RowSrc from "~/demos/display/chip/Row.svelte?raw";
 import Status from "~/demos/display/chip/Status.svelte";
 import StatusSrc from "~/demos/display/chip/Status.svelte?raw";
 
@@ -35,8 +37,21 @@ A chip becomes a keyboard-focusable toggle button when `onclick` is set: Enter a
 <Demo title="With icons" description={"Pass any Lucide icon component to `icon`."} src={IconsSrc}><Icons /></Demo>
 <Demo title="Selectable" description={"Set `onclick` to make the chip a toggle."} src={SelectableSrc}><Selectable client:visible /></Demo>
 <Demo title="Deletable" description={"Click the \u00d7 button to remove a tag."} src={DeletableSrc}><Deletable client:visible /></Demo>
+<Demo title="ChipRow" description={"A scrolling filter row. On a touch screen it keeps the chips' 44px hit area unclipped."} src={RowSrc}><Row client:visible /></Demo>
 <Demo title="StatusChip" description={"Semantic status indicators with dot and label."} src={StatusSrc}><Status /></Demo>
 
+
+## ChipRow
+
+A chip is 28px tall and gets its 44px touch target from an invisible overhang. Any scroller clips that overhang (`overflow-x: auto` makes `overflow-y` clip too), so the taps just above and below a chip in a horizontally scrolling row miss. `ChipRow` is that row: `role="group"` with your `label`, children that never shrink, no scrollbar, `overscroll-behavior-x: contain`, and under `pointer: coarse` it pads the scroller by `(--ca-touch-target - chip height) / 2` and cancels it with a negative margin, so the hit area is whole and the layout height is the chips'. Use `size="sm"` for `sm` chips, `fade` for an edge fade, `wrap` to wrap instead of scroll. It suits any row of chip-sized controls, `ToggleGroup` items included.
+
+<Props for="ChipRow" title="ChipRow props" rows={[
+  { name: "label", type: "string", description: "Accessible name of the group. Required." },
+  { name: "size", type: "'sm' | 'md'", default: "'md'", description: "Size of the chips in the row; sets the hit-area room." },
+  { name: "wrap", type: "boolean", default: "false", description: "Wrap onto several lines instead of scrolling sideways." },
+  { name: "fade", type: "boolean", default: "false", description: "Fade the edges. Ignored with `wrap`." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+]} />
 
 <Props for="Chip" title="Chip props" rows={[
   { name: "label", type: "string", description: "Text content of the chip. Required." },

@@ -72,6 +72,7 @@ export { default as Carousel } from "./components/Carousel/Carousel.svelte";
 export { default as CarouselItem } from "./components/Carousel/CarouselItem.svelte";
 export { default as Checkbox } from "./components/Checkbox/Checkbox.svelte";
 export { default as Chip } from "./components/Chip/Chip.svelte";
+export { default as ChipRow } from "./components/Chip/ChipRow.svelte";
 export type { ChipGroupItem } from "./components/ChipGroup/ChipGroup.svelte";
 export { default as ChipGroup } from "./components/ChipGroup/ChipGroup.svelte";
 export { default as Collapsible } from "./components/Collapsible/Collapsible.svelte";

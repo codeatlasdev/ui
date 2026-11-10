@@ -391,6 +391,7 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "993", path: "concepts/viewport/Simulator" },
 	{ id: "994", path: "concepts/viewport/Hero" },
 	{ id: "995", path: "concepts/viewport/Keyboard" },
+	{ id: "996", path: "display/chip/Row" },
 ];
 
 /**
