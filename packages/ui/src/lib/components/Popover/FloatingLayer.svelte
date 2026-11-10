@@ -5,8 +5,8 @@
     /** Element the layer is positioned against. */
     anchor: HTMLElement | null | undefined;
     open: boolean;
-    /** Called when Escape / an outside press asks to close. */
-    onDismiss?: (reason: 'escape' | 'outside' | 'focus-outside') => void;
+    /** Called when Escape / an outside press asks to close. Hints (`dismiss` false) also report `'window'` when the window loses focus or the page is hidden. */
+    onDismiss?: (reason: 'escape' | 'outside' | 'focus-outside' | 'window') => void;
     side?: Side;
     align?: Align;
     sideOffset?: number;
@@ -95,6 +95,21 @@
       onDismiss: (reason) => onDismiss?.(reason),
     });
     return () => layer.close();
+  });
+
+  // A hint (tooltip, hover card) rests on a pointer position or a focus the window just lost (Cmd-Tab, another
+  // Space, minimize): none of its own close events fire, so it would still be there on return. Popovers and
+  // menus stay: they can hold a form.
+  $effect(() => {
+    if (dismiss || !open) return;
+    const away = () => onDismiss?.('window');
+    const hidden = () => document.visibilityState === 'hidden' && away();
+    window.addEventListener('blur', away);
+    document.addEventListener('visibilitychange', hidden);
+    return () => {
+      window.removeEventListener('blur', away);
+      document.removeEventListener('visibilitychange', hidden);
+    };
   });
 
   // The returned cleanup runs when the layer closes or unmounts, so work deferred from `onMounted`

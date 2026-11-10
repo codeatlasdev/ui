@@ -70,3 +70,25 @@ describe("Tooltip", () => {
 		await expect.element(page.getByRole("tooltip")).toBeVisible();
 	});
 });
+
+describe("Tooltip window dismissal (#663)", () => {
+	it("closes when the window loses focus", async () => {
+		const screen = await render(Harness);
+		await userEvent.unhover(screen.getByRole("button", { name: "Save" }));
+		await userEvent.tab();
+		await expect.element(page.getByRole("tooltip")).toBeVisible();
+		window.dispatchEvent(new Event("blur"));
+		await expect.element(page.getByRole("tooltip")).not.toBeInTheDocument();
+	});
+
+	it("closes when the document becomes hidden", async () => {
+		const screen = await render(Harness);
+		await userEvent.unhover(screen.getByRole("button", { name: "Save" }));
+		await userEvent.tab();
+		await expect.element(page.getByRole("tooltip")).toBeVisible();
+		const spy = vi.spyOn(document, "visibilityState", "get").mockReturnValue("hidden");
+		document.dispatchEvent(new Event("visibilitychange"));
+		spy.mockRestore();
+		await expect.element(page.getByRole("tooltip")).not.toBeInTheDocument();
+	});
+});

@@ -123,6 +123,7 @@
   align="center"
   sideOffset={6}
   dismiss={false}
+  onDismiss={closeIntent}
   {id}
   role="tooltip"
   class="ca-tooltip-content {className}"
