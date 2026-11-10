@@ -208,9 +208,10 @@
  * content width and the table scrolls instead of crushing them or pushing the page sideways. */
 .ca-prose > table { display: block; width: max-content; min-width: 100%; max-width: 100%; }
 
-/* Wide tables keep a readable minimum so columns never collapse to one word per line. */
-.ca-table-wrap td,
-.ca-prose > table td { min-width: 7rem; }
+/* Cells hug their content: a column of `string` or `true` takes what it needs and the description
+ * column gets the rest. A cell marked `data-prose` (a long run of text) keeps a readable measure,
+ * `--ca-prose-cell-min` (default 12rem). */
+:is(.ca-table-wrap, .ca-prose > table) td[data-prose] { min-width: var(--ca-prose-cell-min, 12rem); }
 
 /* ── Code blocks (shiki dual theme: --shiki-light / --shiki-dark) ───────── */
 
