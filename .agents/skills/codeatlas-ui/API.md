@@ -5828,10 +5828,10 @@ function keyboardAware(node: HTMLElement): { destroy(): void; }
 
 `import { longpress } from "@codeatlasdev/ui/actions"`
 
-Fires 'longpress' custom event after `duration` ms of pointer held.
+Fires a `longpress` CustomEvent after the pointer is held still for `duration` ms. A move beyond `slop`, `pointerup`, `pointerleave` or `pointercancel` (the browser took the gesture to scroll) cancels it; touch and pen only unless `pointerTypes` says otherwise; the click that follows a fired press is swallowed once. `detail` is `{ x, y, pointerType }`, so a menu can open under the finger.
 
 ```ts
-const longpress: Action<HTMLElement, number, { onlongpress?: (e: CustomEvent) => void; }>
+const longpress: Action<HTMLElement, number | LongpressOptions | undefined, { onlongpress?: (e: CustomEvent<LongpressDetail>) => void; }>
 ```
 
 ### primeKeyboard

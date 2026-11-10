@@ -12602,7 +12602,7 @@
 			"variant": "Longpress",
 			"slug": "longpress",
 			"title": "longpress",
-			"description": "Dispatches a longpress event (listen with `onlongpress`) after the pointer is held for the given duration.",
+			"description": "Dispatches a longpress event (listen with `onlongpress`) after a touch or pen is held still for the given duration. A scroll, a drag beyond `slop` or `pointercancel` cancels it; `detail` is `{ x, y, pointerType }`.",
 			"summary": "A native button that fires a long-press handler after an 800ms hold and shows Long press! for 1.5 seconds.",
 			"use": "Touch and desktop shortcuts for secondary actions, such as selecting a row or opening a context menu.",
 			"spec": [
