@@ -154,7 +154,9 @@ describe("RecordList actions track (#731)", () => {
 		"with `actions` the cell is flush with the row edge at a %ipx root",
 		async (root) => {
 			document.documentElement.style.fontSize = `${root}px`;
-			onTestFinished(() => document.documentElement.style.removeProperty("font-size"));
+			onTestFinished(() => {
+				document.documentElement.style.removeProperty("font-size");
+			});
 			const screen = await render(Harness, {
 				width: 900,
 				actionsProp: true,
