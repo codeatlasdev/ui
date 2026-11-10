@@ -1,11 +1,12 @@
 import { describe, expect, it, vi } from "vitest";
+import type { ThemeOptions } from "../theme-script.js";
 
-const theme = {
+const theme: ThemeOptions = {
 	presets: [{ id: "brand", color: "#00afea" }],
 	defaultPreset: "brand",
 	defaultScheme: "light",
 	defaultStyle: "flat",
-} as const;
+};
 
 describe("colorScheme on the server (#729)", () => {
 	it("is the library built-ins until the app registers its theme", async () => {
@@ -40,6 +41,7 @@ describe("colorScheme on the server (#729)", () => {
 	it("the Astro middleware module registers the theme of the head module", async () => {
 		vi.resetModules();
 		vi.doMock("virtual:codeatlas-ui/head", () => ({ default: "<head-markup>", defaults: theme }));
+		// @ts-expect-error plain .js module without a declaration file
 		await import("../astro-middleware.js");
 		const { colorScheme } = await import("./color-scheme.svelte.js");
 		expect(colorScheme.preset).toBe("brand");
