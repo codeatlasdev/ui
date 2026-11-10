@@ -93,9 +93,9 @@ describe("AppShellLayout: persisted state", () => {
 
 describe("shellScript: runs before hydration", () => {
 	/** Parses the markup the server emits and executes the inline script in this document. */
-	function runInline() {
+	function runInline(rendered = "app") {
 		const host = document.createElement("div");
-		host.innerHTML = `<aside><nav class="ca-panel__nav"></nav></aside>`;
+		host.innerHTML = `<aside><nav class="ca-panel__nav" data-ca-module="${rendered}"></nav></aside>`;
 		document.body.append(host);
 		const nav = host.querySelector(".ca-panel__nav") as HTMLElement;
 		Object.defineProperty(nav, "scrollHeight", { value: 1000, configurable: true });
@@ -117,6 +117,14 @@ describe("shellScript: runs before hydration", () => {
 		expect(html.getAttribute("data-ca-panel")).toBe("closed");
 		expect(html.getAttribute("data-ca-module")).toBe("cfg");
 		expect(nav.scrollTop).toBe(25);
+		host.remove();
+	});
+
+	it("with no stored module, restores the scroll of the module the server rendered (#826)", () => {
+		sessionStorage.setItem(SHELL_SCROLL_KEY, JSON.stringify({ app: 20 }));
+		const { nav, host } = runInline("app");
+		expect(html.hasAttribute("data-ca-module")).toBe(false);
+		expect(nav.scrollTop).toBe(20);
 		host.remove();
 	});
 

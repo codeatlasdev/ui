@@ -156,8 +156,10 @@ export function restoreShell(
 		if (nav) {
 			try {
 				const s: unknown = JSON.parse(sessionStorage.getItem(keys[1]) as string);
+				// Nothing stored: the module the server rendered (`data-ca-module` on the nav, #826).
+				const key = mod || nav.getAttribute("data-ca-module");
 				const top =
-					mod && typeof s === "object" && s !== null ? (s as Record<string, unknown>)[mod] : null;
+					key && typeof s === "object" && s !== null ? (s as Record<string, unknown>)[key] : null;
 				if (typeof top === "number" && Number.isFinite(top) && top >= 0 && nav.scrollTop === 0)
 					nav.scrollTop = top;
 			} catch {}
