@@ -94,12 +94,18 @@
   const sidebarKey = $derived(`ca-docs-sidebar:${active ?? ''}`);
   const save = () => sidebar && saveSidebar(sidebar, sidebarKey);
 
-  // The mesh is a fixed `body::before` layer of <html>, so the flag lives on <html> while mounted.
+  // The mesh is a fixed `body::before` layer of <html> (`background: var(--ca-page-mesh)`), so the
+  // shell flags <html> and blanks the token there while mounted (inline: global.css has no spare bytes
+  // for a rule, and an inline value beats the `html[data-style]` selectors that define the mesh).
   $effect(() => {
     if (surface !== 'flat') return;
     const root = document.documentElement;
     root.setAttribute('data-ca-reading', '');
-    return () => root.removeAttribute('data-ca-reading');
+    root.style.setProperty('--ca-page-mesh', 'none');
+    return () => {
+      root.removeAttribute('data-ca-reading');
+      root.style.removeProperty('--ca-page-mesh');
+    };
   });
 
   $effect(() => {
@@ -166,10 +172,6 @@
 <style>
 @layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
 @layer ca.components {
-    :global(html[data-ca-reading]) {
-      --ca-page-mesh: none;
-    }
-
     :root {
       --ca-docs-sidebar-w: 272px;
       --ca-docs-toc-w: 232px;
