@@ -15,14 +15,17 @@
 		none?: boolean;
 		/** Wraps the list in a box of this width (px) to test the container, not the viewport. */
 		width?: number;
+		/** Passes the list's `actions` prop (it appends the actions track to `columns`). */
+		actionsProp?: boolean;
 	}
 
 	let {
 		count = 3,
-		columns = 'minmax(0,1.2fr) minmax(0,1.6fr) 5rem 6.5rem 2.75rem',
+		columns = 'minmax(0,1.2fr) minmax(0,1.6fr) 5rem 6.5rem var(--ca-touch-target)',
 		header = true,
 		none = false,
 		width,
+		actionsProp = false,
 	}: Props = $props();
 
 	const apps = $derived(
@@ -40,7 +43,7 @@
 	{#if none}
 		<p>No apps yet</p>
 	{:else}
-		<RecordList {columns} labels={header ? ['App', 'Scopes', 'Installs', 'Created'] : undefined} aria-label="Apps">
+		<RecordList {columns} actions={actionsProp} labels={header ? ['App', 'Scopes', 'Installs', 'Created'] : undefined} aria-label="Apps">
 			{#each apps as app (app.id)}
 				<RecordRow>
 					{#snippet identity()}<strong>{app.name}</strong>{/snippet}

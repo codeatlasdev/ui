@@ -5,7 +5,7 @@
 	import RecordList from "./RecordList.svelte";
 	import RecordRow from "./RecordRow.svelte";
 
-	const COLUMNS = "minmax(0,1.2fr) minmax(0,1.6fr) 5rem 6.5rem 2.75rem";
+	const COLUMNS = "minmax(0,1.2fr) minmax(0,1.6fr) 5rem 6.5rem var(--ca-touch-target)";
 	const LABELS = ["App", "Scopes", "Installs", "Created"];
 	const APPS = [
 		{ name: "Billing", scopes: "read:invoices write:invoices", installs: 128, created: "2026-03-14" },

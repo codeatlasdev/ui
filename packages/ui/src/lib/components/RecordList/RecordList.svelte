@@ -4,7 +4,7 @@
    * two-line stacked row on a phone. It owns the flush container, the row separators, the shared
    * column template of the header and every row, the re-flow and the 44px actions cell.
    *
-   *   <RecordList columns="minmax(0,1.2fr) minmax(0,1.6fr) 5rem 2.75rem" labels={['App', 'Scopes', 'Installs']} aria-label="Apps">
+   *   <RecordList columns="minmax(0,1.2fr) minmax(0,1.6fr) 5rem" actions labels={['App', 'Scopes', 'Installs']} aria-label="Apps">
    *     {#each apps as app (app.id)}
    *       <RecordRow>
    *         {#snippet identity()}{app.name}{/snippet}
@@ -15,8 +15,10 @@
    *     {/each}
    *   </RecordList>
    *
-   * `columns` is one `grid-template-columns` value: identity first, one track per `RecordCell`,
-   * the actions track last. `labels` are the column headers of the identity and the cells (not the
+   * `columns` is one `grid-template-columns` value: identity first, one track per `RecordCell`.
+   * With `actions` the list appends the actions track (`var(--ca-touch-target)`, the width of the
+   * actions cell); without it, write that track yourself as the last one, as `var(--ca-touch-target)`,
+   * never a rem size (`2.75rem` is 41px at this library's 15px root). `labels` are the column headers of the identity and the cells (not the
    * actions): wide, they are an `aria-hidden` header row; stacked, the header is gone and each
    * `RecordCell` paints its own `label`. The re-flow follows the list's own width (container query,
    * 36rem), not the viewport, so it behaves the same in a narrow card or beside a sidebar.
@@ -24,10 +26,13 @@
    */
   import type { Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
+  import { devWarn } from '../../utils/dev-warn.js';
 
   interface Props extends Omit<HTMLAttributes<HTMLUListElement>, 'class' | 'children'> {
-    /** `grid-template-columns` shared by the header and every row: identity, one track per cell, then actions. */
+    /** `grid-template-columns` shared by the header and every row: identity, then one track per cell (and the actions track unless `actions` is set). */
     columns: string;
+    /** Appends the actions track (`var(--ca-touch-target)`) to `columns` for the header and every row. Set it when the rows pass `actions`. */
+    actions?: boolean;
     /** Column headers for the identity and each cell, in order. Omit for no header row. */
     labels?: string[];
     class?: string;
@@ -35,10 +40,30 @@
     children?: Snippet;
   }
 
-  let { columns, labels, class: className = '', children, ...rest }: Props = $props();
+  let { columns, actions = false, labels, class: className = '', children, ...rest }: Props = $props();
+
+  const template = $derived(actions ? `${columns} var(--ca-touch-target)` : columns);
+
+  // A last track narrower than the actions cell does not error: the cell overflows it by a few px.
+  let root = $state<HTMLElement>();
+  $effect(() => {
+    void template;
+    const row = root?.querySelector<HTMLElement>('.ca-record-row:has(.ca-record-row__actions)');
+    if (!row) return;
+    const cell = row.querySelector<HTMLElement>('.ca-record-row__actions')!;
+    const tracks = getComputedStyle(row).gridTemplateColumns.split(' ');
+    const last = Number.parseFloat(tracks[tracks.length - 1] ?? '');
+    // Stacked rows (container query) use their own two-track template: nothing to check there.
+    if (tracks.length < 2 || getComputedStyle(row).gridTemplateAreas !== 'none') return;
+    if (last + 0.5 < cell.getBoundingClientRect().width)
+      devWarn(
+        'record-list-actions-track',
+        '<RecordList> last column is narrower than the actions cell (--ca-touch-target). Pass `actions` and drop the last track from `columns`, or end `columns` with var(--ca-touch-target); a rem size such as 2.75rem is 41px at this library\'s 15px root.'
+      );
+  });
 </script>
 
-<div class="ca-record-list {className}" style:--ca-record-columns={columns}>
+<div bind:this={root} class="ca-record-list {className}" style:--ca-record-columns={template}>
   {#if labels?.length}
     <div class="ca-record-list__head" aria-hidden="true">
       {#each labels as label (label)}

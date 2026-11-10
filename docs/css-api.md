@@ -346,7 +346,7 @@ State attributes on `.ca-motion-stage`: `data-playing`, `data-taken`, `data-redu
 
 `.ca-record-cell` `.ca-record-list` `.ca-record-list__body` `.ca-record-list__head` `.ca-record-row` `.ca-record-row__actions` `.ca-record-row__cells` `.ca-record-row__identity`
 
-Re-flow: the list is a size container (`container-type: inline-size`), rows stack below 36rem of the list's own width. `--ca-record-columns` (set from the `columns` prop) is the shared `grid-template-columns` of the header and every row.
+Re-flow: the list is a size container (`container-type: inline-size`), rows stack below 36rem of the list's own width. `--ca-record-columns` (set from the `columns` prop) is the shared `grid-template-columns` of the header and every row; with `actions` the list appends `var(--ca-touch-target)` (the actions track) to it. Write the actions track as the token, never in rem (`2.75rem` is 41px at the 15px root).
 
 ## Row
 

@@ -14,7 +14,8 @@
      exactly like the real thing, whatever the browser window is. -->
 <div class="slot">
   <RecordList
-    columns="minmax(0,1.3fr) minmax(0,1fr) 7rem 7rem 2.75rem"
+    columns="minmax(0,1.3fr) minmax(0,1fr) 7rem 7rem"
+    actions
     labels={['Key', 'Prefix', 'Last used', 'Created']}
     aria-label="API keys"
   >
