@@ -2,6 +2,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { touchTarget } from "../../../../tests/touch-target";
 import { setLocale } from "../../i18n/index.js";
 import TableOfContents from "./TableOfContents.svelte";
 
@@ -68,6 +69,22 @@ describe("TableOfContents", () => {
 		screen.container.addEventListener("click", (e) => e.preventDefault());
 		await screen.getByRole("link", { name: "Installation" }).click();
 		expect(screen.container.querySelector("details")?.open).toBe(false);
+	});
+
+	it("inline: every link is as tall as the summary and follows --ca-touch-target", async () => {
+		const screen = await render(TableOfContents, { headings, variant: "inline" });
+		await screen.getByText("Nesta página", { exact: true }).click();
+		const root = screen.container.querySelector(".ca-toc--inline") as HTMLElement;
+		const links = [...root.querySelectorAll("nav a")] as HTMLElement[];
+		expect(links).toHaveLength(headings.length);
+		expect(root.querySelector(".ca-toc__sub a")).not.toBeNull();
+		const heights = () => links.map((a) => a.getBoundingClientRect().height);
+		expect(Math.min(...heights())).toBeGreaterThanOrEqual(touchTarget());
+		root.style.setProperty("--ca-touch-target", "56px");
+		expect(Math.min(...heights())).toBeGreaterThanOrEqual(56);
+		expect(root.querySelector("summary")?.getBoundingClientRect().height).toBeGreaterThanOrEqual(
+			56
+		);
 	});
 
 	it("inline: summary toggles by keyboard", async () => {
