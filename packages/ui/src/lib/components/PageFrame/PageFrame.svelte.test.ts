@@ -324,3 +324,12 @@ describe("PageFrame mobile stays inside the viewport (#489)", () => {
 		});
 	}
 });
+
+describe("PageFrame scroll chaining (#711)", () => {
+	it("contains vertical overscroll only, horizontal swipes chain to the page", async () => {
+		await mount();
+		const style = getComputedStyle(q(".ca-page-frame__body"));
+		expect(style.overscrollBehaviorY).toBe("contain");
+		expect(style.overscrollBehaviorX).not.toBe("contain");
+	});
+});

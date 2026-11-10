@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { page, userEvent } from "vitest/browser";
+import { cdp, page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { touchTarget } from "../../../../tests/touch-target";
@@ -46,6 +46,39 @@ const key = (el: HTMLElement, k: string) => {
 // Awaits the condition with Vitest's poll (its timeout is the test's, not a fixed deadline that a starved
 // machine outruns).
 const waitFor = (fn: () => boolean) => expect.poll(fn, { timeout: 30_000 }).toBe(true);
+
+// A real wheel event through CDP: the path a trackpad swipe takes (#711).
+const wheel = (x: number, y: number, deltaX: number, deltaY: number) =>
+	cdp().send("Input.dispatchMouseEvent", { type: "mouseWheel", x, y, deltaX, deltaY });
+
+describe("Kanban horizontal wheel (#711)", () => {
+	it("pans the board over a card, a scrolling list, an empty list and a gap", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(Harness);
+		const board = document.querySelector(".ca-kanban__board") as HTMLElement;
+		expect(board.scrollWidth).toBeGreaterThan(board.clientWidth + 100);
+		const empty = document.querySelector(
+			"[data-kanban-column='won'] .ca-kanban__list"
+		) as HTMLElement;
+		const first = document.querySelector("[data-kanban-column='new']") as HTMLElement;
+		const second = document.querySelector("[data-kanban-column='talk']") as HTMLElement;
+		const gapX = (first.getBoundingClientRect().right + second.getBoundingClientRect().left) / 2;
+		const targets: [string, number, number][] = [
+			["card", ...center(card("c1"))],
+			["scrolling list", ...center(col("new"))],
+			["empty list", ...center(empty)],
+			["gap", gapX, first.getBoundingClientRect().top + 120],
+		];
+		for (const [name, x, y] of targets) {
+			board.scrollLeft = 0;
+			await frame();
+			for (let i = 0; i < 6; i++) await wheel(x, y, 60, 0);
+			await expect
+				.poll(() => board.scrollLeft, { timeout: 2500, message: name })
+				.toBeGreaterThan(100);
+		}
+	});
+});
 
 describe("Kanban board (desktop)", () => {
 	it("renders a fixed header per column and independently scrolling lists", async () => {

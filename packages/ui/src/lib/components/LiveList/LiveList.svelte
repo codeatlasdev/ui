@@ -212,7 +212,7 @@
     .ca-live-list__scroller {
       height: var(--ca-live-list-h);
       overflow-y: auto;
-      overscroll-behavior: contain;
+      overscroll-behavior-y: contain;
       /* Keep the viewport still when rows are added above it; never fight the user's scroll. */
       overflow-anchor: auto;
       border: var(--ca-border-width) solid var(--ca-outline-subtle);

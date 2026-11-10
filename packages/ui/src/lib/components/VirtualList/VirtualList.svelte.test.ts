@@ -322,3 +322,12 @@ describe("VirtualList", () => {
 		expect(await checkA11y(loading.container)).toHaveNoViolations();
 	});
 });
+
+describe("VirtualList scroll chaining (#711)", () => {
+	it("contains vertical overscroll only, horizontal swipes chain to the page", async () => {
+		const screen = await render(Harness, { props: { initial: 5 } });
+		const style = getComputedStyle(scroller(screen.container));
+		expect(style.overscrollBehaviorY).toBe("contain");
+		expect(style.overscrollBehaviorX).not.toBe("contain");
+	});
+});
