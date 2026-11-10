@@ -221,9 +221,10 @@
       --panel-text-tertiary:  var(--ca-text-hint);
     }
 
-    /* Same selector as the rule above: a :global() override loses to the scoped class. */
+    /* Same selector as the rule above: a :global() override loses to the scoped class. The `.ca-auth`
+       prefix keeps the hide rule above `.ca-auth__panel--bleed { display: block }` below (#730). */
     @media (max-width: 899.98px) {
-      .ca-auth__panel { display: none; }
+      .ca-auth .ca-auth__panel { display: none; }
     }
     @media (max-width: 1199.98px) {
       .ca-auth[data-panel-hidden='lg'] .ca-auth__panel { display: none; }

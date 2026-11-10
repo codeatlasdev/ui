@@ -210,6 +210,35 @@ describe("AuthLayout layout options", () => {
 		expect(shown(lg)).not.toBe("none");
 	});
 
+	it("panelBleed still hides the panel below panelHidden and gives the form the full width (#730)", async () => {
+		await page.viewport(390, 780);
+		const screen = await render(AuthLayout, {
+			panelBleed: true,
+			panelHidden: "md",
+			panel: mapPanel,
+			children: snip("<h1>Sign in</h1>"),
+		});
+		const aside = screen.container.querySelector(".ca-auth__panel") as HTMLElement;
+		expect(getComputedStyle(aside).display).toBe("none");
+		const col = rect(screen.container.querySelector(".ca-auth__col"));
+		expect(Math.round(col.width)).toBe(390);
+		await page.viewport(1280, 800);
+		expect(getComputedStyle(aside).display).toBe("block");
+	});
+
+	it("panelBleed with panelHidden=lg hides the panel below 1200px (#730)", async () => {
+		await page.viewport(960, 800);
+		const screen = await render(AuthLayout, {
+			panelBleed: true,
+			panelHidden: "lg",
+			panel: mapPanel,
+		});
+		const aside = screen.container.querySelector(".ca-auth__panel") as HTMLElement;
+		expect(getComputedStyle(aside).display).toBe("none");
+		await page.viewport(1280, 800);
+		expect(getComputedStyle(aside).display).toBe("block");
+	});
+
 	it("does not mount the panel snippet while the panel is hidden", async () => {
 		await page.viewport(390, 800);
 		const screen = await render(AuthLayout, {
