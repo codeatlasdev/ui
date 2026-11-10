@@ -30,10 +30,16 @@ describe("SplashScreen", () => {
 
 	it("stays at least minDuration after mount even when ready at once, then calls ondone", async () => {
 		let done = 0;
+		// A fake clock installed BEFORE render owns minDuration: on the real clock a loaded run spent the 300 ms
+		// before the first assertion (#852).
+		vi.useFakeTimers({ toFake: ["setTimeout", "clearTimeout"] });
 		const screen = await render(SplashScreen, { minDuration: 300, ondone: () => done++ });
+		await vi.advanceTimersByTimeAsync(299);
 		expect(splash(screen.container)).not.toBeNull();
 		expect(done).toBe(0);
-		await expect.poll(() => splash(screen.container), { timeout: 2000 }).toBeNull();
+		await vi.advanceTimersByTimeAsync(1);
+		vi.useRealTimers();
+		await expect.poll(() => splash(screen.container)).toBeNull();
 		expect(done).toBe(1);
 	});
 
