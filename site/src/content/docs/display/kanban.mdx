@@ -71,7 +71,7 @@ By default a column is the drop target as a whole (`drop="container"`): it is hi
 
 ## Cards that are links
 
-`cardHref={(card) => `/leads/${card.id}`}` renders the card body as an `<a href>` instead of `div[role=button]`, so a card that navigates has no nested interactive control (axe `nested-interactive`). Enter follows the link and Space lifts the card; the "Move to…" menu stays.
+``cardHref={(card) => `/leads/${card.id}`}`` renders the card body as an `<a href>` instead of `div[role=button]`, so a card that navigates has no nested interactive control (axe `nested-interactive`). Enter follows the link and Space lifts the card; the "Move to…" menu stays.
 
 ## Hooks for tests and automation
 
