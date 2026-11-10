@@ -321,20 +321,18 @@ const MESH_STYLES: readonly SurfaceStyle[] = ["glass", "frosted"];
 const SOLID_TONES = "error success warning info".split(" ");
 
 /**
- * `--ca-semantic-<tone>-contrast` for a map that sets `--ca-semantic-<tone>-fill` to a colour of its
- * own: white or ink, whichever reads better on it, like `--ca-brand-contrast` for the brand fill.
- * Maps that leave the fill alone keep the stylesheet's pair. With `own`, a hand-picked opaque tone
- * colour (`colors.<scheme>.success`) also becomes that tone's solid fill.
+ * Solid fill and label for each tone of a hand-set map: an opaque `--ca-semantic-<tone>` colour (or an
+ * explicit `-fill`) becomes that tone's fill, and `-contrast` is white or ink, whichever reads better
+ * on it, like `--ca-brand-contrast` for the brand fill. A map that sets neither keeps the stylesheet's pair.
  */
-function withSemanticContrast<T extends Record<string, string>>(vars?: T, own?: 1): T {
-	const v: Record<string, string> = vars ?? {};
-	const out: Record<string, string> = { ...v };
+function withSemanticContrast<T extends Record<string, string>>(vars?: T): T {
+	const out: Record<string, string> = { ...vars };
 	for (const t of SOLID_TONES) {
 		const k = `--ca-semantic-${t}`;
-		const c = (own && /^oklch\([^/]*$/.test(v[k] ?? "") && v[k]) || v[`${k}-fill`];
-		const m = c?.match(/oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)/);
+		const c = out[`${k}-fill`] ?? out[k] ?? "";
+		const m = c.match(/^oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*\)/);
 		if (m) {
-			out[`${k}-fill`] = c as string;
+			out[`${k}-fill`] = c;
 			out[`${k}-contrast`] ??= onFill(+m[1], +m[2], +m[3]);
 		}
 	}
@@ -359,9 +357,9 @@ export function presetTokens(src: BuiltinPresetSource | PresetDefinition) {
 			light: {
 				"--ca-chart-brand": src.color,
 				...g.light,
-				...withSemanticContrast(roleTokens(src, "light"), 1),
+				...withSemanticContrast(roleTokens(src, "light")),
 			},
-			dark: { ...g.dark, ...withSemanticContrast(roleTokens(src, "dark"), 1) },
+			dark: { ...g.dark, ...withSemanticContrast(roleTokens(src, "dark")) },
 		};
 	}
 	const tokens = "hue" in src ? undefined : domainTokens(src.id, src.tokens);
