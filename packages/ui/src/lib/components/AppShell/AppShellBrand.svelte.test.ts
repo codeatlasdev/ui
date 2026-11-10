@@ -73,15 +73,15 @@ describe("AppShellLayout brandHref (#733)", () => {
 		await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
 		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
 		try {
+			// The silent case first: devWarn prints once per key per page, so after the warning case a silent result
+			// would prove nothing. The check runs on a frame after mount: settled() waits for it, no fixed sleep.
+			await render(Harness, { brandHref: "/app/dashboard", brandLabel: "Acme, home" });
+			await settled();
+			expect(warn.mock.calls.filter((c) => String(c[0]).includes("brandHref"))).toHaveLength(0);
 			await render(Harness, { ownLink: true });
 			await expect
 				.poll(() => warn.mock.calls.filter((c) => String(c[0]).includes("brandHref")).length)
 				.toBe(1);
-			warn.mockClear();
-			await render(Harness, { brandHref: "/app/dashboard", brandLabel: "Acme, home" });
-			// The check runs on a frame after mount: wait for it instead of a fixed sleep.
-			await settled();
-			expect(warn.mock.calls.filter((c) => String(c[0]).includes("brandHref"))).toHaveLength(0);
 		} finally {
 			warn.mockRestore();
 		}
