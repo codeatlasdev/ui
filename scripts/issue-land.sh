@@ -51,7 +51,14 @@ git diff --cached --quiet || git commit -qm "chore: regenerate lockfile and mani
 # pixels: run `bun run test:vrt:update` in $WT, review the images, commit them and rerun this script.
 # `bun scripts/test-changed.ts --land` is still the offline gate when CI is unavailable.
 bun run validate
-sh scripts/test-changed.sh
+# A shared file (tokens, styles, theme, primitives, a test setup file) widens the affected set to every component
+# test, ~2,300 browser tests: locally that run hit a different timing test on most lands, and the merge queue runs the
+# same set on a clean runner anyway. So a shared change is gated by CI only; a local change runs its tests here.
+if [ "$(bun scripts/test-changed.ts --print-budget)" = landShared ]; then
+	echo "shared change: every component test runs in the merge queue, not here"
+else
+	sh scripts/test-changed.sh
+fi
 git push -q --force-with-lease
 gh pr ready "$PR" >/dev/null 2>&1 || true
 # No --delete-branch: gh would switch this worktree to main (checked out in $ROOT) and delete the
@@ -59,14 +66,24 @@ gh pr ready "$PR" >/dev/null 2>&1 || true
 # GitHub deletes the remote branch on merge (repo setting); the API call covers it being turned off.
 gh pr merge "$PR" --squash --auto >/dev/null
 # The queue merges when CI passes on the combined tree, or removes the PR when it fails.
-DEADLINE=$(( $(date +%s) + 45 * 60 ))
-while :; do
-	# DROPPED: the queue removed it (neither auto-merge armed nor a queue entry), or the PR's own `CI ok` failed:
-	# GitHub then keeps auto-merge armed and would wait forever.
-	STATE=$(gh api graphql -F n="$PR" -f query='query($n:Int!){repository(owner:"codeatlasdev",name:"ui"){pullRequest(number:$n){state isInMergeQueue autoMergeRequest{enabledAt} commits(last:1){nodes{commit{checkSuites(first:20){nodes{checkRuns(first:1,filterBy:{checkName:"CI ok"}){nodes{conclusion}}}}}}}}}}' \
+# DROPPED: the queue removed it (neither auto-merge armed nor a queue entry), or the PR's own `CI ok` failed:
+# GitHub then keeps auto-merge armed and would wait forever.
+# MERGED, WAITING, or DROPPED: the queue removed it (neither auto-merge armed nor a queue entry), or the PR's own
+# `CI ok` failed (GitHub then keeps auto-merge armed and would wait forever).
+pr_state() {
+	gh api graphql -F n="$PR" -f query='query($n:Int!){repository(owner:"codeatlasdev",name:"ui"){pullRequest(number:$n){state isInMergeQueue autoMergeRequest{enabledAt} commits(last:1){nodes{commit{checkSuites(first:20){nodes{checkRuns(first:1,filterBy:{checkName:"CI ok"}){nodes{conclusion}}}}}}}}}}' \
 		-q '.data.repository.pullRequest | if .state != "OPEN" then .state
 			elif ([.commits.nodes[0].commit.checkSuites.nodes[].checkRuns.nodes[].conclusion] | index("FAILURE")) and (.isInMergeQueue | not) then "DROPPED"
-			elif .isInMergeQueue or .autoMergeRequest then "WAITING" else "DROPPED" end')
+			elif .isInMergeQueue or .autoMergeRequest then "WAITING" else "DROPPED" end'
+}
+DEADLINE=$(( $(date +%s) + 45 * 60 ))
+while :; do
+	STATE=$(pr_state)
+	# The queue removes a PR about a second before GitHub marks it merged: confirm a drop once (#854).
+	if [ "$STATE" = DROPPED ]; then
+		sleep 15
+		STATE=$(pr_state)
+	fi
 	[ "$STATE" = MERGED ] && break
 	if [ "$STATE" != WAITING ] || [ "$(date +%s)" -gt "$DEADLINE" ]; then
 		gh pr checks "$PR" || true
