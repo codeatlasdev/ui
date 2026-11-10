@@ -93,7 +93,8 @@
     </div>
 
     <!-- Nav items with top/bottom fade mask -->
-    <nav class="ca-panel__nav" bind:this={nav}>
+    <!-- data-ca-module: the inline shell script restores this module's scroll when none is stored (#826) -->
+    <nav class="ca-panel__nav" data-ca-module={activeModule?.id} bind:this={nav}>
       {#if activeModule}
         {#each runs as run, r (r)}
           {#if run.section}
