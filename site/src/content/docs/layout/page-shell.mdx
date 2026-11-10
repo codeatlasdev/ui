@@ -71,12 +71,22 @@ Pass an `aside` snippet for a companion column (in-page index, summary, help, pr
 
 ## Back button
 
-`AppForm`, `AppSettings` and `PageShell` share one contract: `backHref` renders the standard back link in the leading position, and `onback(e)` may `preventDefault()` to take over. In a SvelteKit app with `<OverlayHistory />` mounted, use `back(fallback)` so Back returns to the previous in-app page, and to `fallback` when the page was the entry point (a deep link or a reload):
+`AppForm`, `AppSettings` and `PageShell` share one contract: `backHref` renders the standard back link in the leading position, and `onback(e)` may `preventDefault()` to take over, for example to return to the previous in-app page instead of `backHref` when there is one:
 
 ```svelte
-<script>
-  import { back } from "@codeatlasdev/ui/kit";
+<script lang="ts">
+  import { AppForm } from "@codeatlasdev/ui";
+
+  function onback(e: MouseEvent) {
+    // A page opened from inside the app goes back; a deep link or a reload follows backHref.
+    if (document.referrer.startsWith(location.origin)) {
+      e.preventDefault();
+      history.back();
+    }
+  }
 </script>
 
-<AppForm title="Edit user" backHref="/users" onback={(e) => { e.preventDefault(); back("/users"); }}>
+<AppForm title="Edit user" backHref="/users" {onback}>
+  <p>Form fields</p>
+</AppForm>
 ```
