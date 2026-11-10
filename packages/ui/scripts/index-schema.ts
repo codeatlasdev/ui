@@ -262,7 +262,7 @@ export const AUDIT = {
 	 * were applied to all entries), `holdout` = 73 random entries not in `first`. `catalog` is the total; the rest,
 	 * `catalog - read`, were never re-read.
 	 */
-	read: { first: 130, holdout: 73, total: 203, catalog: 386, unread: 183 },
+	read: { first: 130, holdout: 73, total: 203, catalog: 387, unread: 184 },
 	fields: {
 		industry: { wrong: 5, checked: 73, review: "pending" as Review },
 		style: { wrong: 0, checked: 73, review: "published" as Review },
