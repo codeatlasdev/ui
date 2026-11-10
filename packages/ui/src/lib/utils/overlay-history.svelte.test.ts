@@ -22,7 +22,12 @@ beforeEach(async () => {
 	await page.viewport(VIEWPORTS.mobile[0], VIEWPORTS.mobile[1]);
 	stop = bridgeOverlaysToHistory();
 });
-afterEach(() => stop());
+// A close calls history.go, whose popstate arrives later: tearing the bridge down before it lands let the next test's
+// bridge read it as a Back, and its own go(-1) then stepped past the start and unloaded the test page (#725).
+afterEach(async () => {
+	await settle();
+	stop();
+});
 
 describe("bridgeOverlaysToHistory", () => {
 	it("Back closes a Sheet, stays on the route and restores focus to the opener", async () => {
