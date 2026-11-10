@@ -5552,7 +5552,7 @@ Types:
 
 | Field | Type | Notes |
 |---|---|---|
-| `brand?` | ``#${string}`` | Brand for this scheme as `#rrggbb`; brand fills, text and glows are regenerated from it. |
+| `brand?` | ``#${string}`` | Brand for this scheme as `#rrggbb`; brand fills, text and glows are regenerated from it for this scheme (the dark ramp is solved against the dark surfaces, not copied from the light one). |
 | `brandFill?` | `ColorValue` | Background of `Button variant="filled"` and other brand-filled controls (--ca-brand-fill). Defaults to a fill darkened until white text reaches AA. |
 | `brandFillHover?` | `ColorValue` | Hover/pressed variant of `brandFill` (--ca-brand-fill-hover). |
 | `brandContrast?` | `ColorValue` | Text on `brandFill` (--ca-brand-contrast). The build warns when the pair is under 4.5:1. |
@@ -5943,7 +5943,7 @@ Types:
 
 | Field | Type | Notes |
 |---|---|---|
-| `brand?` | ``#${string}`` | Brand for this scheme as `#rrggbb`; brand fills, text and glows are regenerated from it. |
+| `brand?` | ``#${string}`` | Brand for this scheme as `#rrggbb`; brand fills, text and glows are regenerated from it for this scheme (the dark ramp is solved against the dark surfaces, not copied from the light one). |
 | `brandFill?` | `ColorValue` | Background of `Button variant="filled"` and other brand-filled controls (--ca-brand-fill). Defaults to a fill darkened until white text reaches AA. |
 | `brandFillHover?` | `ColorValue` | Hover/pressed variant of `brandFill` (--ca-brand-fill-hover). |
 | `brandContrast?` | `ColorValue` | Text on `brandFill` (--ca-brand-contrast). The build warns when the pair is under 4.5:1. |
@@ -7817,6 +7817,16 @@ Render one CSS rule from a declaration map.
 
 ```ts
 function cssBlock(selector: string, vars: Record<string, string>, docs?: Record<string, string>): string
+```
+
+### DARK_BRAND_LIFT
+
+`import { DARK_BRAND_LIFT } from "@codeatlasdev/ui/utils/palette-generator"`
+
+How much lighter the dark scheme's brand main is than the light one (so it reads on dark surfaces).
+
+```ts
+const DARK_BRAND_LIFT: 0.09
 ```
 
 ### generatePreset
