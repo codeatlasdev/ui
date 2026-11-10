@@ -104,6 +104,7 @@ AppForm: page-level form layout.
 | `description?` | `string` |  |  |
 | `backHref?` | `string` |  | Convenience prop: renders a back-arrow button linking to this href. Ignored when a `leading` snippet is provided. |
 | `backLabel?` | `string` |  | Accessible label for the auto-rendered back button. Default: 'Back' |
+| `onback?` | `(e: MouseEvent) => void` |  | Runs when the back link is clicked, before it navigates. Call `e.preventDefault()` to take over (a history-aware `back(fallback)` from `@codeatlasdev/ui/kit`). |
 | `class?` | `string` | `''` |  |
 
 Snippets: `leading`: Left side of header: back button, breadcrumb. When present, overrides backHref.; `trailing`: Right side of header: status chip, secondary actions; `footer`: Sticky bottom bar: cancel / save / delete; `children`
@@ -147,11 +148,14 @@ AppSettings: settings/preferences page layout.
 | `defaultTab?` | `string` |  | Initial active tab. Defaults to first tab's value. |
 | `activeTab?` | `string` | `defaultTab ?? tabs[0]?.value ?? ''` | `bind:` Bindable for external control. If omitted, state is managed internally. |
 | `onTabChange?` | `(value: string) => void` |  | Optional callback when tab changes |
+| `backHref?` | `string` |  | Renders the standard back link before the title. |
+| `backLabel?` | `string` |  | Accessible name of the back link. Default: 'Back' (localized). |
+| `onback?` | `(e: MouseEvent) => void` |  | Runs when the back link is clicked, before it navigates. Call `e.preventDefault()` to take over. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `actions`: Top-right slot: save / cancel buttons; `children` (`Snippet<[string]>`): Receives the active tab value as its first argument
 
-Parts: `ca-app-settings` `ca-app-settings__actions` `ca-app-settings__body` `ca-app-settings__content` `ca-app-settings__desc` `ca-app-settings__header` `ca-app-settings__meta` `ca-app-settings__nav` `ca-app-settings__nav-badge` `ca-app-settings__nav-icon` `ca-app-settings__nav-item` `ca-app-settings__nav-label` `ca-app-settings__title`
+Parts: `ca-app-settings` `ca-app-settings__actions` `ca-app-settings__body` `ca-app-settings__content` `ca-app-settings__desc` `ca-app-settings__header` `ca-app-settings__leading` `ca-app-settings__meta` `ca-app-settings__nav` `ca-app-settings__nav-badge` `ca-app-settings__nav-icon` `ca-app-settings__nav-item` `ca-app-settings__nav-label` `ca-app-settings__title`
 
 ## AppShellLayout
 
@@ -2459,12 +2463,15 @@ Data attributes: `data-bordered`, `data-detent` (`full` `peek`), `data-dragging`
 | `gap?` | `number` |  |  |
 | `maxWidth?` | `string` |  |  |
 | `width?` | `'reading' \| 'wide'` | `'wide'` | Caps the content column. `reading` is ~46rem (forms, settings: readable line length, inputs that do not stretch edge to edge); `wide` (default) uses the full shell width. With an `aside` the cap applies to the content column and the aside sits next to it. |
+| `backHref?` | `string` |  | Renders the standard back link before the title. |
+| `backLabel?` | `string` |  | Accessible name of the back link. Default: 'Back' (localized). |
+| `onback?` | `(e: MouseEvent) => void` |  | Runs when the back link is clicked, before it navigates. Call `e.preventDefault()` to take over. |
 | `asideLabel?` | `string` |  | Accessible name of the `<aside>` landmark. Defaults to "Page sidebar" (localized). |
 | `class?` | `string` | `''` |  |
 
 Snippets: `actions`; `aside`: Companion column (in-page index, summary, help, preview). Next to the content (sticky) when the shell is wide enough, after the content below that. Rendered as `<aside>`.; `children`
 
-Parts: `ca-page-shell` `ca-page-shell__actions` `ca-page-shell__aside` `ca-page-shell__body` `ca-page-shell__description` `ca-page-shell__frame` `ca-page-shell__header` `ca-page-shell__layout` `ca-page-shell__layout--aside` `ca-page-shell__layout--reading` `ca-page-shell__meta` `ca-page-shell__title` `ca-page-shell__title--display`
+Parts: `ca-page-shell` `ca-page-shell__actions` `ca-page-shell__aside` `ca-page-shell__body` `ca-page-shell__description` `ca-page-shell__frame` `ca-page-shell__header` `ca-page-shell__layout` `ca-page-shell__layout--aside` `ca-page-shell__layout--reading` `ca-page-shell__leading` `ca-page-shell__meta` `ca-page-shell__title` `ca-page-shell__title--display`
 
 Variables: `--ca-aside-width` `--ca-reading-width`
 
