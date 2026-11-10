@@ -1,6 +1,7 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { cdp, page } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
+import { settled } from "../../../../tests/settled";
 import { touchTarget } from "../../../../tests/touch-target";
 import Harness from "./AppShellBrand.test.svelte";
 
@@ -78,7 +79,8 @@ describe("AppShellLayout brandHref (#733)", () => {
 				.toBe(1);
 			warn.mockClear();
 			await render(Harness, { brandHref: "/app/dashboard", brandLabel: "Acme, home" });
-			await new Promise((r) => setTimeout(r, 100));
+			// The check runs on a frame after mount: wait for it instead of a fixed sleep.
+			await settled();
 			expect(warn.mock.calls.filter((c) => String(c[0]).includes("brandHref"))).toHaveLength(0);
 		} finally {
 			warn.mockRestore();
