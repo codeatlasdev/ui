@@ -577,4 +577,15 @@ describe("modal release (#732)", () => {
 		layer.close();
 		expect(dialog.isConnected).toBe(false);
 	});
+
+	it("announces the layer leaving once, at release", () => {
+		const counts: number[] = [];
+		const stop = onLayerChange((d) => counts.push(d.count));
+		const layer = openLayer(el("dialog"), { kind: "modal" });
+		open.push(layer);
+		layer.release?.();
+		layer.close();
+		stop();
+		expect(counts).toEqual([1, 0]);
+	});
 });

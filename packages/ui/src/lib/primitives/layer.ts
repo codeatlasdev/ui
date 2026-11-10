@@ -665,8 +665,11 @@ export function openLayer(el: HTMLElement, options: LayerOptions): LayerHandle {
 			closed = true;
 			if (!released) leave();
 			while (cleanups.length) cleanups.pop()?.();
-			if (!released) giveFocusBack();
-			announce();
+			// Already left the stack and announced by `release()`: one `layerchange` per layer more or less.
+			if (!released) {
+				giveFocusBack();
+				announce();
+			}
 		},
 	};
 }
