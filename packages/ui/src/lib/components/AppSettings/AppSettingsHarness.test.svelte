@@ -10,9 +10,11 @@
 		onTabChange?: (v: string) => void;
 		/** No title, description or actions: the page already has its own heading. */
 		headless?: boolean;
+		/** With `headless`: only a back link in the header. */
+		backHref?: string;
 	}
 
-	let { defaultTab, controlled, onTabChange, headless = false }: Props = $props();
+	let { defaultTab, controlled, onTabChange, headless = false, backHref }: Props = $props();
 
 	let external = $state(untrack(() => controlled ?? ""));
 
@@ -32,7 +34,7 @@
 
 <main>
 	{#if headless}
-		<AppSettings {tabs} children={content} />
+		<AppSettings {tabs} {backHref} children={content} />
 	{:else if controlled !== undefined}
 		<AppSettings
 			title="Settings"
