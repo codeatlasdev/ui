@@ -281,6 +281,25 @@ describe("charts", () => {
 		await vi.waitFor(() => expect(document.querySelector("canvas")).toBeNull());
 		expect(errors).not.toHaveBeenCalled();
 	});
+
+	it("horizontal BarChart lists the first category at the top; vertical keeps its axis untouched", async () => {
+		type Axis = { inverse?: boolean; type?: string }[];
+		const axes = async (props: { horizontal: boolean }) => {
+			const screen = await render(BarChart, { series, categories, ...props });
+			await mountedCanvas(screen.container);
+			const host = screen.container.querySelector(".ca-chart-container") as HTMLElement;
+			const applied = echarts.getInstanceByDom(host)?.getOption() as unknown as {
+				xAxis: Axis;
+				yAxis: Axis;
+			};
+			return applied;
+		};
+		const horizontal = await axes({ horizontal: true });
+		expect(horizontal.yAxis[0].type).toBe("category");
+		expect(horizontal.yAxis[0].inverse).toBe(true);
+		const vertical = await axes({ horizontal: false });
+		expect(vertical.xAxis[0].inverse).toBeFalsy();
+	});
 });
 
 describe("chart theme scope", () => {

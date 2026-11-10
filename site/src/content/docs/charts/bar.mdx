@@ -34,7 +34,7 @@ Multiple series render grouped by default. Set `stacked` to stack them into one 
   { name: "series", type: "ChartSeries[]", description: "Named series sharing one category axis. Each is { name, data: number[], color? }." },
   { name: "categories", type: "string[]", description: "Category labels, one per bar group." },
   { name: "valueFormatter", type: "(value: number) => string", description: "Formats value-axis ticks and tooltip values." },
-  { name: "horizontal", type: "boolean", default: "false", description: "Renders bars horizontally." },
+  { name: "horizontal", type: "boolean", default: "false", description: "Renders bars horizontally. The first category is at the top." },
   { name: "stacked", type: "boolean", default: "false", description: "Stacks all series into one column per category." },
   { name: "height", type: "string", default: "'320px'", description: "CSS height of the chart." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
