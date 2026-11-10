@@ -127,9 +127,9 @@ describe("Dialog closing (#732)", () => {
 		const r = reopen.element().getBoundingClientRect();
 		const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
 		expect(hit && reopen.element().contains(hit)).toBe(true);
-		const started = performance.now();
+		// The hit test above is the contract (#732). A wall-clock bound on the click measured Playwright's round-trip
+		// instead: 408 ms under a loaded run (#850).
 		await reopen.click();
-		expect(performance.now() - started).toBeLessThan(50 + 250);
 		await expect.element(screen.getByTestId("clicks")).toHaveTextContent("1");
 	});
 

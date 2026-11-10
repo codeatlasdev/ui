@@ -223,16 +223,19 @@ describe("AudioPlayer", () => {
 		await startAndLoad(screen.container);
 		playBtn(screen.container).click();
 		await waitFor(() => audio.paused);
-		const r = s.getBoundingClientRect();
-		const at = (f: number) => ({
-			bubbles: true,
-			pointerId: 1,
-			pointerType: "mouse",
-			isPrimary: true,
-			button: 0,
-			clientX: r.left + r.width * f,
-			clientY: r.top + r.height / 2,
-		});
+		// The live rect, like the component: under load the wave can still lay out after a rect read once (#850).
+		const at = (f: number) => {
+			const r = s.getBoundingClientRect();
+			return {
+				bubbles: true,
+				pointerId: 1,
+				pointerType: "mouse",
+				isPrimary: true,
+				button: 0,
+				clientX: r.left + r.width * f,
+				clientY: r.top + r.height / 2,
+			};
+		};
 		s.dispatchEvent(new PointerEvent("pointerdown", at(0.25)));
 		await frame();
 		expect(audio.currentTime).toBeCloseTo(10, 0);
