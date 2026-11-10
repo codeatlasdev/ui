@@ -13,6 +13,8 @@ test.describe("theme studio a11y", () => {
 
 		for (const tab of ["Looks", "Generate"]) {
 			await page.getByRole("tab", { name: tab }).click();
+			// The tab left behind fades out of its selected colours: axe mid-fade measured it at a failing ratio (CI).
+			await settle(page);
 			await expectNoViolations(await makeAxe(page).analyze(), testInfo, tab.toLowerCase());
 		}
 

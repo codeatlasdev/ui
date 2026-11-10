@@ -275,11 +275,11 @@ describe("AudioPlayer", () => {
 		const peaks = Array.from({ length: 500 }, (_, i) => (i === 250 ? 1 : 0.1));
 		const screen = await render(AudioPlayer, { props: { src: wav(), duration: 5, peaks } });
 		const s = slider(screen.container);
-		// A fixed starting width: the wave shares a wrapping row with the controls, so its default width
-		// depends on the platform's fonts (on Linux CI it already sat on its own narrow row).
-		const player = screen.container.querySelector(".ca-audio") as HTMLElement;
-		player.style.width = "600px";
-		await waitFor(() => bars(screen.container) > 0);
+		// The bar count follows the wave's own width. Size the wave, not the player: the player is capped at 288px
+		// and wraps, so narrowing it moved the wave only 113 -> 108px (one bar here, none with Linux CI's fonts).
+		const wave = screen.container.querySelector(".ca-audio__wave") as HTMLElement;
+		wave.style.flex = "0 0 240px";
+		await waitFor(() => bars(screen.container) > 40);
 		const n = bars(screen.container);
 		expect(n).toBeGreaterThan(5);
 		expect(n).toBeLessThan(peaks.length);
@@ -289,9 +289,9 @@ describe("AudioPlayer", () => {
 		);
 		expect(Math.max(...heights)).toBeCloseTo(1, 2);
 		expect(heights.filter((h) => h > 0.5).length).toBe(1);
-		// Narrower container: fewer bars.
-		player.style.width = "160px";
-		await waitFor(() => bars(screen.container) < n);
+		// Narrower wave: fewer bars.
+		wave.style.flex = "0 0 60px";
+		await waitFor(() => bars(screen.container) < n / 2);
 	});
 
 	it("draws a flat placeholder of low bars when peaks are absent", async () => {
