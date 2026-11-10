@@ -35,6 +35,8 @@ import AsideReadingSrc from "~/demos/layout/page-shell/AsideReading.svelte?raw";
 </main>
 ```
 
+Inside `AppShellLayout` the full-width content region is the scroll container and `PageShell` is only the centred column, so the scrollbar sits at the window edge. Outside a shell `PageShell` scrolls itself.
+
 A one-page app does not need `AppShellLayout` for this. See the [Standalone page](/docs/getting-started/recipes/#standalone-page) recipe.
 
 Below 900px the header stacks: the description leads and `actions` wrap onto their own row. `Button`s share that row full-width (large tap targets); everything else (`IconButton`, `ThemeToggle`, `StatusChip`, `Chip`, `Badge`, plain text) keeps its natural size and stays at the end of the row.

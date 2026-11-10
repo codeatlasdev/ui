@@ -472,11 +472,19 @@
     .ca-shell__content {
       flex: 1;
       min-height: 0;
+      /* Contains absolutely positioned descendants (a visually hidden label, a native checkbox), which
+         would otherwise use the initial containing block and add a second, document-level scrollbar. */
+      position: relative;
       /* AppList/AppForm use flex:1 here: overflow:hidden to contain their scroll */
       display: flex;
       flex-direction: column;
       overflow: hidden;
     }
+    /* A PageShell is the centred column; the full-width region scrolls, so the scrollbar sits at the
+       window edge instead of beside the content (#673). Pages that fill the region themselves (AppList,
+       AppForm, AppSettings) keep overflow:hidden. */
+    .ca-shell__content:has(> :global(.ca-page-shell)) { overflow-y: auto; }
+    .ca-shell__content > :global(.ca-page-shell) { flex: 1 0 auto; overflow: visible; }
 
     @media (max-width: 899.98px) {
       .ca-shell {
