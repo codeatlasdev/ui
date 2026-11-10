@@ -25,5 +25,5 @@ runs:
         path: ~/.cache/ms-playwright
         key: pw-${{ runner.os }}-${{ hashFiles('site/package.json') }}-${{ inputs.browsers }}
     - if: inputs.browsers != ''
-      run: cd site && bunx playwright install --with-deps ${{ inputs.browsers }}
+      run: bun run --cwd site playwright install --with-deps ${{ inputs.browsers }}
       shell: bash

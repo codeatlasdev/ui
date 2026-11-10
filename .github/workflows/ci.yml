@@ -1,11 +1,12 @@
 name: CI
-# PAUSED while the project is pre-stable: disabled in GitHub (gh workflow enable ci.yml to resume,
-# then re-add "CI ok" as a required check in the main ruleset). See CONTRIBUTING.md.
+# The land gate (#822): "CI ok" is required on main and PRs merge through the merge queue
+# (merge_group), which tests queued PRs together so two PRs that pass alone cannot break main.
 # Runner-native (ubuntu-24.04, no containers): one build shared through artifacts, browser suites
 # sharded, jobs skipped when the files they cover did not change. Branch rules require only
 # "CI ok", so shards can change without touching repository settings. Runs on fork PRs too.
 on:
   pull_request:
+  merge_group:
   push:
     branches: [main]
   workflow_dispatch:
@@ -30,11 +31,13 @@ jobs:
     permissions:
       pull-requests: read
     outputs:
-      package: ${{ steps.filter.outputs.package }}
-      site: ${{ steps.filter.outputs.site }}
+      # A queue run tests the combined tree of several PRs: run everything.
+      package: ${{ github.event_name == 'merge_group' || steps.filter.outputs.package == 'true' }}
+      site: ${{ github.event_name == 'merge_group' || steps.filter.outputs.site == 'true' }}
     steps:
       - uses: actions/checkout@v7
       - id: filter
+        if: github.event_name != 'merge_group'
         uses: dorny/paths-filter@v4
         with:
           # Anything shared (lockfile, root config, CI) counts as a package change: run everything.
@@ -67,8 +70,9 @@ jobs:
         # OG cards are rendered with Chromium at build time.
         with:
           browsers: chromium
-      # Builds the package first (phase 0), then types, lint, unit, size.
-      - run: bun run validate
+      # Builds the package first (phase 0), then types, lint, unit, size. No wall-time budget on hosted
+      # runners (budgets are measured on the owner's machine), same as the Release workflow's Verify.
+      - run: bun scripts/validate.ts
       - run: bun run --cwd site build
       - uses: actions/upload-artifact@v7
         with:
@@ -95,7 +99,9 @@ jobs:
         with:
           browsers: chromium
       - run: bun run build:pkg
-      - run: bun run --cwd packages/ui test:browser --shard=${{ matrix.shard }}/2
+      # CPU-throttled tests (`*.throttled.svelte.test.ts`) run in their own job: throttling multiplies the
+      # runner's speed, and sharing its 4 cores with a full shard turned 150x into a timeout.
+      - run: bun run --cwd packages/ui test:browser --shard=${{ matrix.shard }}/2 --exclude='**/*.throttled.svelte.test.ts'
       - uses: actions/upload-artifact@v7
         if: ${{ failure() }}
         with:
@@ -104,6 +110,21 @@ jobs:
           path: |
             packages/ui/.vitest/
             packages/ui/src/**/__traces__/
+
+  throttled:
+    name: Component tests (CPU throttled)
+    needs: changes
+    if: ${{ !inputs.update-snapshots && needs.changes.outputs.package == 'true' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ./.github/actions/setup
+        with:
+          browsers: chromium
+      - run: bun run build:pkg
+      # One worker: the throttled page is the only load on the runner, as on a developer machine.
+      - run: bun run --cwd packages/ui test:browser throttled --maxWorkers=1
 
   site:
     name: Site ${{ matrix.suite }} (${{ matrix.shard }}/${{ matrix.total }})
@@ -135,7 +156,7 @@ jobs:
         with:
           name: build
       - working-directory: site
-        run: bunx playwright test ${{ matrix.projects }} --shard=${{ matrix.shard }}/${{ matrix.total }}
+        run: node_modules/.bin/playwright test ${{ matrix.projects }} --shard=${{ matrix.shard }}/${{ matrix.total }}
       - uses: actions/upload-artifact@v7
         if: ${{ failure() }}
         with:
@@ -150,7 +171,9 @@ jobs:
     needs: [changes, build]
     # Pixels only change when code, styles or the site change; always run when regenerating.
     # Baselines are rendered only here (ubuntu-24.04 pinned: fonts/libs come from the image).
-    if: ${{ inputs.update-snapshots || needs.changes.outputs.package == 'true' || needs.changes.outputs.site == 'true' }}
+    # On demand only: baselines are native darwin renders compared locally and at release (AGENTS.md "Tests"); the
+    # linux set is regenerated here when someone wants it, so it is never a PR or queue check.
+    if: ${{ github.event_name == 'workflow_dispatch' }}
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     permissions:
@@ -173,7 +196,7 @@ jobs:
         run: bun run --cwd packages/ui test:vrt ${{ inputs.update-snapshots && '--update' || '' }}
       - if: ${{ matrix.suite == 'site' }}
         working-directory: site
-        run: bunx playwright test --project=visual-desktop --project=visual-mobile ${{ inputs.update-snapshots && '--update-snapshots' || '' }}
+        run: node_modules/.bin/playwright test --project=visual-desktop --project=visual-mobile ${{ inputs.update-snapshots && '--update-snapshots' || '' }}
       - uses: actions/upload-artifact@v7
         if: ${{ failure() }}
         with:
@@ -227,7 +250,7 @@ jobs:
     name: CI ok
     # The single required check. Skipped jobs (path filters) count as passing; failures don't.
     if: ${{ always() }}
-    needs: [build, components, site, visual]
+    needs: [build, components, throttled, site]
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
