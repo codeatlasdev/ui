@@ -1,0 +1,12 @@
+Use @codeatlasdev/ui demo #996 "ChipRow" (display/chip).
+What it shows: A row of eight filter chips that scrolls sideways inside a narrow frame, with a fade where more chips are hidden. When to use: A filter or message-type row on a phone that must scroll without clipping the 44px touch area of its chips.
+Spec:
+- `<ChipRow label="Filter chats" fade>` wraps the chips in one scrolling group
+- `const filters = ['All', 'Unread', 'Groups', 'Archived', 'Starred', 'Muted', 'Mentions', 'Drafts']` lists the eight filters
+- `<Chip label={f} selected={active === f} onclick={() => (active = f)} />` makes each one a toggle
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #996 ChipRow → file, what changed, https://ui.codeatlas.com.br/docs/display/chip#chiprow; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/996.txt   Components API: ca-ui-mcp get_component(Chip)

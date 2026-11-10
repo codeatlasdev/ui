@@ -1,6 +1,6 @@
 {
 	"version": "4.6.0",
-	"count": 385,
+	"count": 386,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -23,8 +23,8 @@
 		{
 			"slug": "display",
 			"first": "104",
-			"last": "966",
-			"count": 64
+			"last": "996",
+			"count": 65
 		},
 		{
 			"slug": "navigation",
@@ -34313,6 +34313,91 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/concepts/viewport#a-form-with-the-keyboard-open",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "996",
+			"group": "display",
+			"page": "chip",
+			"variant": "Row",
+			"slug": "chiprow",
+			"title": "ChipRow",
+			"description": "",
+			"summary": "A row of eight filter chips that scrolls sideways inside a narrow frame, with a fade where more chips are hidden.",
+			"use": "A filter or message-type row on a phone that must scroll without clipping the 44px touch area of its chips.",
+			"spec": [
+				"`<ChipRow label=\"Filter chats\" fade>` wraps the chips in one scrolling group",
+				"`const filters = ['All', 'Unread', 'Groups', 'Archived', 'Starred', 'Muted', 'Mentions', 'Drafts']` lists the eight filters",
+				"`<Chip label={f} selected={active === f} onclick={() => (active = f)} />` makes each one a toggle"
+			],
+			"tags": [
+				"chip",
+				"chip-row",
+				"filter",
+				"scroll",
+				"touch",
+				"horizontal"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "display",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "none",
+				"interaction": [
+					"press",
+					"keyboard",
+					"scroll"
+				],
+				"layout": "single-column",
+				"colorMode": "both",
+				"density": "compact",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"Chip",
+					"ChipRow"
+				],
+				"aliases": [
+					"filter row",
+					"scrolling chips",
+					"chip scroller"
+				],
+				"related": [
+					"118",
+					"115"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-11-10",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"Chip",
+				"ChipRow"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Chip",
+						"ChipRow"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/display/chip#chiprow",
 			"needs": "@codeatlasdev/ui@4.6.0"
 		}
 	]

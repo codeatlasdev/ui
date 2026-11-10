@@ -666,6 +666,24 @@ Parts: `ca-chip-group` `ca-chip-group__check` `ca-chip-group__chip` `ca-chip-gro
 
 Data attributes: `data-disabled`, `data-invalid`, `data-state` (`checked`)
 
+## ChipRow
+
+`import { ChipRow } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `label` | `string` |  | Accessible name of the group ("Filter chats"). |
+| `wrap?` | `boolean` | `false` | Wrap onto several lines instead of scrolling sideways. No scroller, so nothing clips. |
+| `size?` | `'sm' \| 'md'` | `'md'` | Size of the chips in the row (their hit-area room is computed from it). Default `md`. |
+| `fade?` | `boolean` | `false` | Fade the edges where more chips are hidden. Ignored with `wrap`. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Parts: `ca-chip-row` `ca-chip-row--fade` `ca-chip-row--sm` `ca-chip-row--wrap`
+
+Variables: `--ca-chip-row-h`
+
 ## CodeSnippet
 
 `import { CodeSnippet } from "@codeatlasdev/ui/code"`
