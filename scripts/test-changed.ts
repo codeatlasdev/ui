@@ -27,7 +27,7 @@
  *
  * `CA_TEST_BASE=<ref>` compares against another ref (`CA_TEST_BASE=HEAD`: only what is not committed yet).
  *
- * Steps run under scripts/test-run.ts (machine-wide lock, 25% browser cap). At land the site build runs
+ * Steps run under scripts/test-run.ts (machine-wide lock, low priority and the worker cap of scripts/cpu-cap.ts). At land the site build runs
  * beside the unit and component tests (after the package build, which the unit tests read); everything
  * else is sequential, and the screenshots and the route sweep never share the machine with another run.
  * Extra args go to Vitest: `bun run test:changed -- --reporter=minimal`.
@@ -243,8 +243,8 @@ const buildHere = land && (pkgStale || siteStale);
 
 // The unit tests that read `packages/ui/dist` (the CLIs, the MCP server) need the package built first; the
 // component tests render from `src` and the site build reads only the built package. So the package builds
-// first, then the site build (mostly one busy core) runs beside the package tests, which hold their own quarter
-// of the cores: ~50 s of a land run that used to wait for each in turn.
+// first, then the site build (mostly one busy core) runs beside the package tests, which hold their own workers
+// (scripts/cpu-cap.ts): ~50 s of a land run that used to wait for each in turn.
 if (buildHere && pkgStale)
 	await step("build package", () => run(["bun", "run", "--cwd", "packages/ui", "build"]));
 // Started now, awaited after the package tests: it runs beside them.
@@ -265,18 +265,7 @@ await building;
 
 if (!shared && vrtTests.length)
 	await step("visual (components)", () =>
-		run(
-			[
-				"vitest",
-				"run",
-				"--project",
-				"vrt",
-				"--maxWorkers=2",
-				...(sharedFile ? [] : inPkg(vrtTests)),
-			],
-			{},
-			pkgDir
-		)
+		run(["vitest", "run", "--project", "vrt", ...(sharedFile ? [] : inPkg(vrtTests))], {}, pkgDir)
 	);
 
 if (!land && (pkgStale || siteStale)) {

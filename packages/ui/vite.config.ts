@@ -1,10 +1,10 @@
 import { realpathSync } from "node:fs";
-import { availableParallelism } from "node:os";
 import { fileURLToPath } from "node:url";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { playwright } from "@vitest/browser-playwright";
 import { searchForWorkspaceRoot } from "vite";
 import { defaultExclude, defineConfig } from "vitest/config";
+import { cpuCap } from "../../scripts/cpu-cap.ts";
 import TimingReporter from "./tests/timing-reporter.ts";
 
 // The self-hosted typefaces of the screenshot setup (tests/setup.vrt.ts). A package manager that links
@@ -50,8 +50,8 @@ export default defineConfig({
 	},
 	test: {
 		expect: { requireAssertions: true },
-		// Locally: a quarter of the cores (each worker is a browser tab in one Chromium). CI keeps the default.
-		maxWorkers: process.env.CI ? undefined : Math.max(2, Math.floor(availableParallelism() / 4)),
+		// Locally: the tooling's worker cap (scripts/cpu-cap.ts; each worker is a browser tab in one Chromium). CI keeps the default.
+		maxWorkers: process.env.CI ? undefined : cpuCap(),
 		reporters: process.env.CI
 			? ["default", "github-actions", ["html", { singleFile: true }], new TimingReporter()]
 			: ["default", new TimingReporter()],
