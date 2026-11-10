@@ -1,4 +1,4 @@
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, onTestFinished, vi } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { q } from "../../../../tests/dom";
@@ -132,6 +132,79 @@ describe("RecordList (narrow container)", () => {
 	it("has no axe violations", async () => {
 		const screen = await render(Harness, { width: 360 });
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});
+
+describe("RecordList actions track (#731)", () => {
+	// The documented template used to end in `2.75rem`: 41.25px at this library's 15px root, narrower
+	// than the 44px actions cell, which then overflowed the track by ~3px on every row.
+	const edges = (container: Element) => {
+		const rows = [...container.querySelectorAll(".ca-record-row")];
+		const body = q(container, ".ca-record-list__body").getBoundingClientRect();
+		const pad = parseFloat(getComputedStyle(rows[0]).paddingRight);
+		return {
+			overflow: rows.map(
+				(r) => q(r, ".ca-record-row__actions").getBoundingClientRect().right - (body.right - pad)
+			),
+			cell: q(rows[0], ".ca-record-row__actions").getBoundingClientRect().width,
+		};
+	};
+
+	it.each([15, 16])(
+		"with `actions` the cell is flush with the row edge at a %ipx root",
+		async (root) => {
+			document.documentElement.style.fontSize = `${root}px`;
+			onTestFinished(() => {
+				document.documentElement.style.removeProperty("font-size");
+			});
+			const screen = await render(Harness, {
+				width: 900,
+				actionsProp: true,
+				columns: "minmax(0,1.2fr) minmax(0,1.6fr) 5rem 6.5rem",
+			});
+			const { overflow, cell } = edges(screen.container);
+			expect(cell).toBeGreaterThanOrEqual(touchTarget());
+			for (const o of overflow) expect(Math.abs(o)).toBeLessThan(0.5);
+		}
+	);
+
+	it("the header and every row share the appended track", async () => {
+		const screen = await render(Harness, {
+			width: 900,
+			actionsProp: true,
+			columns: "minmax(0,1.2fr) minmax(0,1.6fr) 5rem 6.5rem",
+		});
+		const tracks = (el: Element) => getComputedStyle(el).gridTemplateColumns.split(" ");
+		const head = tracks(q(screen.container, ".ca-record-list__head"));
+		const row = tracks(q(screen.container, ".ca-record-row"));
+		expect(head).toHaveLength(5);
+		expect(row).toEqual(head);
+		expect(parseFloat(head[4])).toBe(touchTarget());
+	});
+
+	it("warns once, naming the list, when the last track is narrower than the actions cell", async () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		await render(Harness, { width: 900, columns: "minmax(0,1fr) minmax(0,1fr) 5rem 2.75rem" });
+		await vi.waitFor(() => expect(warn).toHaveBeenCalled());
+		const msgs = warn.mock.calls.map((c) => String(c[0]));
+		expect(msgs.filter((m) => m.includes("RecordList"))).toHaveLength(1);
+		expect(msgs.join("")).toContain("--ca-touch-target");
+		warn.mockRestore();
+	});
+
+	it("does not warn when `actions` appends the track", async () => {
+		const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+		const screen = await render(Harness, {
+			width: 900,
+			actionsProp: true,
+			columns: "minmax(0,1fr) 5rem",
+		});
+		// The check runs in an effect after layout: wait for the row to be laid out, then assert silence.
+		await expect
+			.poll(() => getComputedStyle(q(screen.container, ".ca-record-row")).gridTemplateColumns)
+			.toContain(`${touchTarget()}px`);
+		expect(warn.mock.calls.filter((c) => String(c[0]).includes("RecordList"))).toEqual([]);
+		warn.mockRestore();
 	});
 });
 

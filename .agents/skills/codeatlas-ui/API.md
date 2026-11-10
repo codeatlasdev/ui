@@ -2721,7 +2721,8 @@ RecordList: records as dense rows (identity | a few columns | row menu) that re-
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `columns` | `string` |  | `grid-template-columns` shared by the header and every row: identity, one track per cell, then actions. |
+| `columns` | `string` |  | `grid-template-columns` shared by the header and every row: identity, then one track per cell (and the actions track unless `actions` is set). |
+| `actions?` | `boolean` | `false` | Appends the actions track (`var(--ca-touch-target)`) to `columns` for the header and every row. Set it when the rows pass `actions`. |
 | `labels?` | `string[]` |  | Column headers for the identity and each cell, in order. Omit for no header row. |
 | `class?` | `string` | `''` |  |
 

@@ -12,7 +12,8 @@
 </script>
 
 <RecordList
-  columns="minmax(0,1.3fr) minmax(0,1.8fr) 4.5rem 5.5rem 6.5rem 2.75rem"
+  columns="minmax(0,1.3fr) minmax(0,1.8fr) 4.5rem 5.5rem 6.5rem"
+  actions
   labels={['App', 'Scopes', 'Installs', 'Status', 'Created']}
   aria-label="Apps"
 >

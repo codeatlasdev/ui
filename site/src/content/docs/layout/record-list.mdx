@@ -18,7 +18,7 @@ import NoMenuSrc from "~/demos/layout/record-list/NoMenu.svelte?raw";
   import { RecordList, RecordRow, RecordCell } from "@codeatlasdev/ui";
 </script>
 
-<RecordList columns="minmax(0,1.2fr) minmax(0,1.6fr) 5rem 2.75rem" labels={["App", "Scopes", "Installs"]} aria-label="Apps">
+<RecordList columns="minmax(0,1.2fr) minmax(0,1.6fr) 5rem" actions labels={["App", "Scopes", "Installs"]} aria-label="Apps">
   {#each apps as app (app.id)}
     <RecordRow>
       {#snippet identity()}{app.name}{/snippet}
@@ -32,7 +32,7 @@ import NoMenuSrc from "~/demos/layout/record-list/NoMenu.svelte?raw";
 
 The usual dashboard list is neither a table nor a card per record. `Table` with `responsive="cards"` makes each row three or four times taller on a phone, and a `Card` per record repeats the chrome. `RecordList` owns what every app hand-rolls around that shape: the flush container, the separators, one column template shared by the header and every row, the re-flow below a width, and a 44px actions cell.
 
-`columns` is one `grid-template-columns` value: the identity first, one track per `RecordCell`, the actions track last. `labels` are the column headers of the identity and the cells. A row without `actions` simply leaves the last track out of `columns`.
+`columns` is one `grid-template-columns` value: the identity first, then one track per `RecordCell`. Set `actions` when the rows have an actions slot: the list appends the actions track (`var(--ca-touch-target)`) for the header and every row. Without `actions` on the list, write that track yourself as the last one: `var(--ca-touch-target)`, never `2.75rem`, which is 41px at this library's 15px root and leaves the 44px cell overflowing its track. A list that does it anyway logs one dev warning. `labels` are the column headers of the identity and the cells.
 
 ## Wide and stacked
 
@@ -49,7 +49,8 @@ With no rows, render your own [empty state](/docs/layout/empty-state/) instead o
 The list is a real `<ul>` with one `<li>` per record: give it an `aria-label`. Per-cell labels are `dt`/`dd` pairs inside a `dl`, so they are announced with their value in both layouts. Put an `aria-label` that names the record on every action button ("Actions for Billing"), because the visible column header is hidden from assistive technology.
 
 <Props title="RecordList props" rows={[
-  { name: "columns", type: "string", description: "`grid-template-columns` shared by the header and every row: identity, one track per cell, then actions." },
+  { name: "columns", type: "string", description: "`grid-template-columns` shared by the header and every row: identity, then one track per cell (and the actions track unless `actions` is set)." },
+  { name: "actions", type: "boolean", default: "false", description: "Appends the actions track (`var(--ca-touch-target)`) to `columns` for the header and every row. Set it when the rows pass `actions`." },
   { name: "labels", type: "string[]", description: "Column headers for the identity and each cell, in order. Omit for no header row." },
   { name: "class", type: "string", default: "''", description: "Extra class names on the wrapper." },
   { name: "children", type: "Snippet", description: "The RecordRows." },
