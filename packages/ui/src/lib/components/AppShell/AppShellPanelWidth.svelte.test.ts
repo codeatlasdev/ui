@@ -259,7 +259,7 @@ describe("panel width storage", () => {
 		host.innerHTML = `<aside><nav class="ca-panel__nav"></nav></aside>`;
 		document.body.append(host);
 		const script = document.createElement("script");
-		script.textContent = shellScript(["app"], true).slice("<script>".length, -"</script>".length);
+		script.textContent = shellScript(true).slice("<script>".length, -"</script>".length);
 		host.querySelector("aside")?.after(script);
 		expect(html.style.getPropertyValue("--ca-panel-w-stored")).toBe("320px");
 		host.remove();
@@ -271,7 +271,7 @@ describe("panel width storage", () => {
 		host.innerHTML = `<aside><nav class="ca-panel__nav"></nav></aside>`;
 		document.body.append(host);
 		const script = document.createElement("script");
-		script.textContent = shellScript(["app"], false).slice("<script>".length, -"</script>".length);
+		script.textContent = shellScript(false).slice("<script>".length, -"</script>".length);
 		host.querySelector("aside")?.after(script);
 		expect(html.style.getPropertyValue("--ca-panel-w-stored")).toBe("");
 		host.remove();
