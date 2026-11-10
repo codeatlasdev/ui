@@ -16,9 +16,9 @@ afterAll(() => {
 });
 
 // `bun run validate` runs this suite under test-run.ts itself, which exports the markers of ITS lock and
-// timings file. The CLIs started here must behave like a top-level run: inheriting CA_TEST_LOCK_HELD makes
-// them reuse that lock instead of waiting on the one under test.
-const { CA_TEST_LOCK_HELD, CA_TEST_TIMINGS, CA_TEST_RUN, ...inherited } = process.env;
+// timings file, and `CA_TEST_LOCK=0` (validate takes no lock). The CLIs started here must behave like a
+// top-level run that locks: inheriting either makes them skip or reuse a lock instead of the one under test.
+const { CA_TEST_LOCK, CA_TEST_LOCK_HELD, CA_TEST_TIMINGS, CA_TEST_RUN, ...inherited } = process.env;
 
 const run = (lockDir: string, args: string[]) => {
 	const p = Bun.spawn([process.execPath, SCRIPT, ...args], {
