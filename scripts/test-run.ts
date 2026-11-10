@@ -26,12 +26,27 @@
  * repo that are still alive) are never touched, even though they share ~/Library/Caches/ms-playwright.
  */
 import { spawn, spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+	appendFileSync,
+	existsSync,
+	mkdirSync,
+	readdirSync,
+	readFileSync,
+	rmSync,
+	writeFileSync,
+} from "node:fs";
 import { availableParallelism, loadavg, tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { evictAll } from "./caches.ts";
 import { cpuCap, lowPriority } from "./cpu-cap.ts";
+import { ensureBrowsers } from "./ensure-browsers.ts";
+import { gitCommonDir } from "./gated.ts";
+
+/** One JSON line per top-level run (`bun run test:history`), shared by every worktree; capped in scripts/caches.ts.
+ * `CA_TEST_HISTORY` moves it (the lock tests drive the real CLI and must not write here). */
+export const historyFile = () =>
+	process.env.CA_TEST_HISTORY ?? join(gitCommonDir(root), "ca-test-history.jsonl");
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const runsDir = join(root, ".cache/test-runs");
@@ -244,17 +259,18 @@ export function slowest(file: string, n = 10): { name: string; ms: number }[] {
 
 /**
  * Prints the slowest tests and the budget verdict; returns the exit code the budget adds.
- * A budget is wall time, so on a machine that is oversubscribed (load average above its cores: other
- * suites, builds, other projects) a correct run takes several times longer for no reason in the code, and
- * failing it would make the gate a lottery. The verdict is then printed, with the slowest tests, but does
- * not fail the run: rerun on a quiet machine. `load` is injectable for the unit test.
+ * A budget is wall time, so on a loaded machine (other suites, builds, other projects) a correct run takes several
+ * times longer for no reason in the code, and failing it would make the gate a lottery (#793). When the 1-minute load
+ * at the start or the end of the run is above 3/4 of the cores, the verdict is printed, with the slowest tests, but
+ * does not fail the run. `load`/`startLoad` are injectable for the unit test.
  */
 export function report(
 	budget: BudgetName | undefined,
 	seconds: number,
 	timings: string | undefined,
 	load = loadavg()[0],
-	cores = availableParallelism()
+	cores = availableParallelism(),
+	startLoad = load
 ): number {
 	const top = timings ? slowest(timings) : [];
 	const over = budget !== undefined && seconds > BUDGETS[budget];
@@ -263,14 +279,15 @@ export function report(
 		for (const t of top) console.error(`  ${(t.ms / 1000).toFixed(1).padStart(6)}s  ${t.name}`);
 	}
 	if (budget === undefined) return 0;
-	const line = `${budget} ${seconds.toFixed(1)}s of ${BUDGETS[budget]}s (load average ${load.toFixed(1)} on ${cores} cores)`;
+	const peak = Math.max(load, startLoad);
+	const line = `${budget} ${seconds.toFixed(1)}s of ${BUDGETS[budget]}s (load average ${peak.toFixed(1)} on ${cores} cores)`;
 	if (!over) {
 		console.error(`test-run: within budget: ${line}`);
 		return 0;
 	}
-	if (load > cores) {
+	if (peak > cores * 0.75) {
 		console.error(
-			`test-run: OVER BUDGET, NOT ENFORCED: ${line}. The machine is oversubscribed, so this time says nothing about the code: rerun when load is below ${cores}.`
+			`test-run: OVER BUDGET, NOT ENFORCED: ${line}. The machine is loaded, so this time says nothing about the code: rerun when load is below ${cores * 0.75}.`
 		);
 		return 0;
 	}
@@ -288,7 +305,8 @@ async function run(cmd: string[], budget?: BudgetName): Promise<number> {
 	// A nested run (`test:changed` runs vitest and playwright through test-run too) reuses the lock its
 	// parent holds instead of waiting for it forever.
 	const parent = Number(process.env.CA_TEST_LOCK_HELD);
-	const locked = process.env.CA_TEST_LOCK !== "0" && !(parent && alive(parent));
+	const topLevel = !(parent && alive(parent));
+	const locked = process.env.CA_TEST_LOCK !== "0" && topLevel;
 	if (locked)
 		await acquireLock({
 			pid: process.pid,
@@ -300,7 +318,9 @@ async function run(cmd: string[], budget?: BudgetName): Promise<number> {
 	// store never outgrows its cap between two cleanups. The run that took the lock also drops the reports, traces and
 	// attachments of the previous one; a nested run (`test:changed` calling vitest and playwright) keeps its parent's.
 	evictAll(false, locked);
+	if (/vitest|playwright|test-changed|test-full/.test(cmd.join(" "))) ensureBrowsers();
 
+	const startLoad = loadavg()[0];
 	const t0 = performance.now();
 	// One timings file per top-level run; a nested run appends to its parent's.
 	const timings = process.env.CA_TEST_TIMINGS ?? join(tmpdir(), `ca-timings-${process.pid}.jsonl`);
@@ -338,7 +358,7 @@ async function run(cmd: string[], budget?: BudgetName): Promise<number> {
 			PATH,
 			CA_TEST_RUN: id,
 			CA_TEST_TIMINGS: timings,
-			CA_TEST_LOCK_HELD: String(locked ? process.pid : parent || ""),
+			CA_TEST_LOCK_HELD: String(topLevel ? process.pid : parent),
 		},
 	});
 
@@ -368,9 +388,24 @@ async function run(cmd: string[], budget?: BudgetName): Promise<number> {
 		});
 	});
 	cleanup();
-	const verdict = report(budget, (performance.now() - t0) / 1000, timings);
+	const seconds = (performance.now() - t0) / 1000;
+	const verdict = report(budget, seconds, timings, loadavg()[0], availableParallelism(), startLoad);
 	if (!process.env.CA_TEST_TIMINGS_KEEP && timings.includes(`ca-timings-${process.pid}`))
 		rmSync(timings, { force: true });
+	// Top-level runs only: a nested run is part of its parent's line.
+	if (topLevel) {
+		const load = Math.round(Math.max(startLoad, loadavg()[0]) * 10) / 10;
+		const entry = {
+			date: new Date().toISOString(),
+			cmd: cmd.join(" "),
+			budget,
+			seconds: Math.round(seconds * 10) / 10,
+			load,
+			code: code || verdict,
+			cwd: process.cwd(),
+		};
+		appendFileSync(historyFile(), `${JSON.stringify(entry)}\n`);
+	}
 	return code || verdict;
 }
 
@@ -384,6 +419,22 @@ if (!import.meta.main) {
 	);
 } else if (args[0] === "--status") {
 	status();
+} else if (args[0] === "--history") {
+	const file = historyFile();
+	const lines = existsSync(file) ? readFileSync(file, "utf8").split("\n").filter(Boolean) : [];
+	for (const l of lines.slice(-30)) {
+		const r = JSON.parse(l) as {
+			date: string;
+			seconds: number;
+			load: number;
+			code: number;
+			cmd: string;
+		};
+		const verdict = r.code ? "FAIL" : "ok  ";
+		console.log(
+			`${r.date.slice(0, 16)}  ${String(r.seconds).padStart(6)}s  ${String(r.load).padStart(5)}  ${verdict}  ${r.cmd}`
+		);
+	}
 } else if (args.length) {
 	const flag = args[0].startsWith("--budget=") ? args.shift() : undefined;
 	const name = flag?.slice("--budget=".length) as BudgetName | undefined;
@@ -394,7 +445,7 @@ if (!import.meta.main) {
 	process.exit(await run(args, name));
 } else {
 	console.error(
-		"usage: bun scripts/test-run.ts [--budget=<name>] <command...> | --reap | --status"
+		"usage: bun scripts/test-run.ts [--budget=<name>] <command...> | --reap | --status | --history"
 	);
 	process.exit(2);
 }

@@ -17,6 +17,7 @@ import { existsSync, readdirSync, rmSync, statSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { gitCommonDir } from "./gated.ts";
 
 export interface Store {
 	name: string;
@@ -100,6 +101,14 @@ export const STORES: Store[] = [
 		maxBytes: 128 * MB,
 	},
 	{ name: "run records", dir: join(root, ".cache/test-runs"), maxAgeHours: 24, maxBytes: 1 * MB },
+	// `bun run test:history` (scripts/test-run.ts): one line per top-level run, shared by every worktree.
+	{
+		name: "run history",
+		dir: gitCommonDir(root),
+		prefix: "ca-test-history.jsonl",
+		maxAgeHours: 90 * 24,
+		maxBytes: 2 * MB,
+	},
 ];
 
 /** Bytes under `path` (a file counts as itself). */

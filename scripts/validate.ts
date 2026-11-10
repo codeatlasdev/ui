@@ -1,3 +1,5 @@
+import { isClean, markGated, treeOf } from "./gated.ts";
+
 // `bun run validate`: every gate CI's validate job runs, in parallel where they don't depend
 // on each other. Output of each step is buffered and printed only if it fails.
 //
@@ -16,6 +18,9 @@ const phase0: Step[] = [
 
 const phase1: Step[] = [
 	{ name: "unit tests", cmd: ["bun", "run", "test:unit"] },
+	// The two slowest unit files (16 s and 14 s, #821) run beside the rest instead of inside it.
+	{ name: "build cache guard", cmd: ["bun", "test", "./packages/ui/tests/build-cache.slow.ts"] },
+	{ name: "docs samples", cmd: ["bun", "test", "./packages/ui/tests/docs-samples.slow.ts"] },
 	{ name: "types (package)", cmd: ["bun", "run", "check"], cwd: "packages/ui" },
 	{ name: "types (site)", cmd: ["bun", "run", "check"], cwd: "site" },
 	{ name: "themes up to date", cmd: ["bun", "run", "themes:check"], cwd: "packages/ui" },
@@ -63,3 +68,5 @@ for (const phase of [phase0, phase1]) {
 	if (!(await runPhase(phase))) process.exit(1);
 }
 console.log(`validate ok in ${((performance.now() - start) / 1000).toFixed(1)}s`);
+// A clean tree that passed is not validated again by the pre-push hook (scripts/pre-push.ts).
+if (isClean()) markGated(treeOf());

@@ -27,6 +27,7 @@
 		"packages/ui/tests/stub-global.ts",
 		"packages/ui/tests/*.test.ts",
 		"packages/ui/tests/*.e2e.ts",
+		"packages/ui/tests/*.slow.ts",
 		"site/tests/**/*.ts"
 	],
 	"exclude": ["**/node_modules", "**/dist", "**/build"]

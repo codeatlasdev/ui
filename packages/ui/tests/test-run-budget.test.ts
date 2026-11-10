@@ -76,11 +76,12 @@ describe("test-run budgets", () => {
 			// no budget, no verdict
 			expect(report(undefined, 9999, file, 3, 12)).toBe(0);
 
-			// an oversubscribed machine: reported loudly, not failed
+			// a loaded machine (above 3/4 of the cores at the start or the end of the run): reported, not failed (#793)
 			err.mockClear();
-			expect(report("changed", 61, file, 40, 12)).toBe(0);
+			expect(report("changed", 61, file, 9.1, 12)).toBe(0);
 			expect(err.mock.calls.flat().join("\n")).toContain("OVER BUDGET, NOT ENFORCED");
-			expect(report("changed", 61, file, 12, 12)).toBe(1);
+			expect(report("changed", 61, file, 3, 12, 9.5)).toBe(0);
+			expect(report("changed", 61, file, 9, 12, 2)).toBe(1);
 		} finally {
 			err.mockRestore();
 		}
