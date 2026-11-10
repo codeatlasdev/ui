@@ -2,6 +2,7 @@
   import type { Snippet } from 'svelte';
   import { getContext } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
+  import './dropdown-item.css';
   import { MENU_CONTEXT, type MenuContext } from './menu-context.js';
 
   interface Props extends Omit<HTMLAttributes<HTMLDivElement>, 'class' | 'children' | 'onclick' | 'role' | 'tabindex'> {
@@ -62,66 +63,3 @@
   {/if}
   {@render children?.()}
 </div>
-
-<style>
-@layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
-@layer ca.components {
-    :global(.ca-dropdown-item) {
-      display: flex;
-      align-items: center;
-      gap: var(--ca-space-2);
-      height: var(--ca-control-height);
-      padding: 0 var(--ca-space-3);
-      border-radius: var(--ca-radius-sm);
-      font-size: var(--ca-font-size-body2);
-      color: var(--ca-text-primary);
-      cursor: pointer;
-      outline: none;
-      user-select: none;
-    }
-    :global(.ca-dropdown-item[data-highlighted]) {
-      background: var(--ca-action-hover);
-      color: var(--ca-text-primary);
-    }
-    :global(.ca-dropdown-item[data-disabled]) {
-      color: var(--ca-text-disabled);
-      cursor: default;
-      pointer-events: none;
-    }
-    /* Fixed icon box: size, gap and alignment never drift between menus. A brand mark keeps its
-       own colors (data-brand): no state color reaches it, so it is never tinted or dimmed. */
-    :global(.ca-dropdown-item__icon) {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex: none;
-      inline-size: var(--ca-space-3-5);
-      block-size: var(--ca-space-3-5);
-    }
-    :global(.ca-dropdown-item__icon :is(svg, img)) {
-      inline-size: 100%;
-      block-size: 100%;
-    }
-    :global(.ca-dropdown-item__icon[data-brand]) {
-      color: initial;
-      opacity: 1;
-    }
-    /* Checkbox and radio items reserve the same indicator column, so labels line up checked or not. */
-    :global(.ca-dropdown-item__indicator) {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex: none;
-      inline-size: var(--ca-space-3-5);
-      block-size: var(--ca-space-3-5);
-      color: var(--ca-brand-text);
-    }
-    :global(.ca-dropdown-item--destructive) {
-      color: var(--ca-semantic-error);
-    }
-    :global(.ca-dropdown-item--destructive[data-highlighted]) {
-      background: color-mix(in oklab, var(--ca-semantic-error) 10%, transparent);
-      color: color-mix(in oklab, var(--ca-semantic-error) 65%, black);
-    }
-}
-</style>
