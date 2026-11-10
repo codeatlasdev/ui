@@ -12,6 +12,7 @@ import Props from "~/components/docs/Props.astro";
 ```ts
 import {
   Seo, // component
+  seoHead, seoTags, // the same head as a string / as data, for layouts that are not Svelte
   organization, website, softwareApplication, product, faqPage, breadcrumbList, article, graph, // JSON-LD
   sitemapXml, robotsTxt, // crawler files
   llmsTxt, markdownNegotiation, // AI readers
@@ -70,6 +71,43 @@ Place one `Seo` per page, in the route or layout that knows the page's data.
 <Callout type="info" title="Where the dev warnings come from">
   In development `Seo` warns when an indexable page has no `canonical`, and `caThemeHandle` warns once per problem when the final HTML has no `viewport-fit=cover`, a viewport meta that blocks zoom (`user-scalable=no`, `maximum-scale=1`) or no `lang` on `<html>`. Production builds stay silent.
 </Callout>
+
+## Seo in Astro
+
+`<Seo>` writes through `<svelte:head>`, and `@astrojs/svelte` renders a component to its body only: in an `.astro` page the head tags are dropped, with no error. Use `seoHead` there. It takes the same props as `Seo`, is built by the same function (`seoTags`), and returns the head as a string, so the two cannot drift.
+
+```astro
+---
+// src/layouts/Base.astro
+import { seoHead, organization, website, graph } from "@codeatlasdev/ui/seo";
+
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).href;
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <Fragment
+      set:html={seoHead({
+        title,
+        titleTemplate: "%s · Acme",
+        description,
+        canonical,
+        og: { defaultImage: new URL("/og/default.png", Astro.site).href, siteName: "Acme" },
+        jsonLd: graph(organization({ name: "Acme", url: Astro.site!.href })),
+      })}
+    />
+  </head>
+  <body><slot /></body>
+</html>
+```
+
+`seoHead` returns `<title>`, the meta and link tags and the JSON-LD script, with every attribute escaped and `<` escaped inside the JSON. `seoTags(props)` returns the same thing as data (`{ title, tags: [{ tag, attrs }], jsonLd, indexable }`) for a framework that builds its head from objects. Neither warns about a missing `canonical`: pass it, or `noindex`.
+
+### Per-page social cards on a static site
+
+`ogImageRoute` needs a Node server. A static Astro site renders its cards after the build with `ogCard` and `renderOgImage` (see "One card per page" below), writes them to `dist/og/<hash>.png`, and passes that URL as `og.image` (the 1200x630 size is the default, so `imageWidth` and `imageHeight` need no value).
 
 ## Structured data
 

@@ -30,3 +30,5 @@ export { appleMeta, manifest } from "./pwa.js";
 export { default as Seo } from "./Seo.svelte";
 export type { RobotsOptions, SitemapEntry } from "./sitemap.js";
 export { robotsTxt, sitemapXml } from "./sitemap.js";
+export type { SeoOpenGraph, SeoProps, SeoTag, SeoTags, SeoTwitter } from "./tags.js";
+export { seoHead, seoTags } from "./tags.js";

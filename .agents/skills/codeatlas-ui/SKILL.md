@@ -119,7 +119,7 @@ Never guess a prop name. This skill and `API.md` track the `main` branch, which 
 - **Streaming, external links, export.** Rows arriving over time are a `LiveList` (polite batched announcements, follow-the-tail that pauses when the user scrolls up, never moves focus; no `StatusChip`/live regions inside rows). External links are `ExternalLink` (rel, icon, localised "opens in a new tab"), not a hand-written `target="_blank"`. A CSV/JSON download is `ExportMenu` or `toCsv`/`toJson`/`downloadFile`.
 - **Theme.** The theme drives the whole look: one `ThemeOptions` object in `src/lib/theme.ts` (preset color, scheme, `defaultStyle`, radius, density, fonts, paper), passed to `caThemeHandle`/`caThemePlugin` (SvelteKit) or `caUI` (Astro). Keep it a plain object with a type-only import so config files can load it in Node. Override tokens by declaring `--ca-*` on `:root`, no `!important`. Local dark/light islands: `data-theme-scope="dark|light"`.
 - **Setup.** `bunx @codeatlasdev/ui init` wires all of the above into a fresh SvelteKit or Astro app and is a dry run unless `--write` is passed (it prints `would create` and diffs, never overwrites a file, and keeps a `theme` the app already imports from elsewhere).
-- **SEO.** Public pages use `<Seo>` from `@codeatlasdev/ui/seo` with `canonical`; private pages pass `noindex`.
+- **SEO.** Public pages use `<Seo>` from `@codeatlasdev/ui/seo` with `canonical`; private pages pass `noindex`. In `.astro` use `seoHead(props)` with `<Fragment set:html>` (`<Seo>` renders nothing there).
 - **A11y tests.** `await expectNoA11yViolations(container)` from `@codeatlasdev/ui/testing` in every state (open, error, empty, light, dark); needs the optional peer `axe-core`.
 
 ## Glass and frosted styles

@@ -2969,21 +2969,6 @@ Data attributes: `data-disabled`, `data-highlighted`, `data-selected`, `data-sta
 
 `import { Seo } from "@codeatlasdev/ui/seo"`
 
-| Prop | Type | Default | Notes |
-|---|---|---|---|
-| `title` | `string` |  |  |
-| `titleTemplate?` | `string` | `'%s'` | `%s` is replaced by `title`. Skipped when the title already equals the site name. |
-| `description?` | `string` |  |  |
-| `canonical?` | `string` |  | Absolute URL of this page. Required on indexable pages. |
-| `robots?` | `string` | `'index,follow'` |  |
-| `noindex?` | `boolean` | `false` | Shorthand for `robots="noindex,nofollow"`. |
-| `alternates?` | `{ hreflang: string; href: string }[]` |  | Translations of this page, including itself and an `x-default` entry. |
-| `og?` | `OpenGraph` |  |  |
-| `twitter?` | `Twitter` |  |  |
-| `jsonLd?` | `object \| object[]` |  | One node, an array, or a `graph()` document. |
-| `manifest?` | `string` |  | Link to the web app manifest, e.g. `"/manifest.webmanifest"`. |
-| `lang?` | `string` |  | BCP 47 language of the page, e.g. `"pt-BR"`. Sets `og:locale` (`pt_BR`) when `og.locale` is not given and keeps `<html lang>` in sync on the client. The server-rendered `<html lang>` belongs in `app.html`. |
-
 ## SettingItem
 
 `import { SettingItem } from "@codeatlasdev/ui"`
@@ -6703,6 +6688,26 @@ Builds a `robots.txt` that allows everything except `disallow`.
 function robotsTxt(o?: RobotsOptions): string
 ```
 
+### seoHead
+
+`import { seoHead } from "@codeatlasdev/ui/seo"`
+
+The same head as `<Seo>`, as an HTML string, for layouts that are not Svelte. In Astro: `<Fragment set:html={seoHead({ title, canonical })} />` inside `<head>`.
+
+```ts
+function seoHead(props: SeoProps): string
+```
+
+### seoTags
+
+`import { seoTags } from "@codeatlasdev/ui/seo"`
+
+Head tags for a page, from the same props `<Seo>` takes. Pure: no DOM, no Svelte.
+
+```ts
+function seoTags(props: SeoProps): SeoTags
+```
+
 ### serializeJsonLd
 
 `import { serializeJsonLd } from "@codeatlasdev/ui/seo"`
@@ -6766,6 +6771,11 @@ Types:
 | `ProductOffer` | `interface ProductOffer { price: number \| string; priceCurrency: string; availability?: \| "InStock" \| "OutOfStock" \| "PreOrder" \| "BackOrder" \| "SoldOut" \| "Discontinued" \| "LimitedAvailability"; url?: string; priceValidUntil?: string; itemCondition?: "NewCondition" \| "UsedCondition" \| "RefurbishedCondition"; }` |  |
 | `RenderOgOptions` | `interface RenderOgOptions { format?: "jpeg" \| "png"; quality?: number; }` |  |
 | `RobotsOptions` | `interface RobotsOptions { sitemap?: string \| string[]; disallow?: string[]; allow?: string[]; }` |  |
+| `SeoOpenGraph` | `interface SeoOpenGraph { type?: string; image?: string; defaultImage?: string; imageAlt?: string; imageType?: string; imageWidth?: number; imageHeight?: number; locale?: string; localeAlternates?: string[]; siteName?: string; }` |  |
+| `SeoProps` | `interface SeoProps { title: string; titleTemplate?: string; description?: string; canonical?: string; robots?: string; noindex?: boolean; alternates?: { hreflang: string; href: string }[]; og?: SeoOpenGraph; twitter?: SeoTwitter; jsonLd?: object \| object[]; manifest?: string; lang?: string; }` |  |
+| `SeoTag` | `interface SeoTag { tag: "meta" \| "link"; attrs: Record<string, string>; }` | A `<meta>` or `<link>` of the head, as data. |
+| `SeoTags` | `interface SeoTags { title: string; tags: SeoTag[]; jsonLd?: string; indexable: boolean; }` |  |
+| `SeoTwitter` | `interface SeoTwitter { card?: "summary" \| "summary_large_image"; site?: string; }` |  |
 | `SitemapEntry` | `interface SitemapEntry { loc: string; lastmod?: string \| Date; alternates?: { hreflang: string; href: string }[]; }` |  |
 | `SoftwareApplicationInput` | `interface SoftwareApplicationInput { name: string; description?: string; url?: string; applicationCategory: string; operatingSystem?: string; offer?: { price: string; priceCurrency: string }; rating?: { value: number; count: number }; id?: string; extra?: Extra; }` |  |
 | `WebsiteInput` | `interface WebsiteInput { name: string; url: string; description?: string; inLanguage?: string; id?: string; publisher?: JsonLdRef; searchUrlTemplate?: string; extra?: Extra; }` |  |
@@ -6952,6 +6962,61 @@ Types:
 | `sitemap?` | `string \| string[]` | Absolute sitemap URL(s). |
 | `disallow?` | `string[]` | Paths blocked for every crawler. |
 | `allow?` | `string[]` | Paths explicitly allowed (useful to carve exceptions out of `disallow`). @default ["/"] when nothing is disallowed |
+
+#### SeoOpenGraph
+
+| Field | Type | Notes |
+|---|---|---|
+| `type?` | `string` |  |
+| `image?` | `string` | Absolute image URL, 1200x630. |
+| `defaultImage?` | `string` | Used when `image` is not set: the site-wide card, passed once from the root layout. |
+| `imageAlt?` | `string` |  |
+| `imageType?` | `string` |  |
+| `imageWidth?` | `number` |  |
+| `imageHeight?` | `number` |  |
+| `locale?` | `string` | e.g. `"pt_BR"`. |
+| `localeAlternates?` | `string[]` |  |
+| `siteName?` | `string` |  |
+
+#### SeoProps
+
+| Field | Type | Notes |
+|---|---|---|
+| `title` | `string` |  |
+| `titleTemplate?` | `string` | `%s` is replaced by `title`. Skipped when the title already equals the site name. @default "%s" |
+| `description?` | `string` |  |
+| `canonical?` | `string` | Absolute URL of this page. Required on indexable pages. |
+| `robots?` | `string` |  |
+| `noindex?` | `boolean` | Shorthand for `robots="noindex,nofollow"`. |
+| `alternates?` | `{ hreflang: string; href: string }[]` | Translations of this page, including itself and an `x-default` entry. |
+| `og?` | `SeoOpenGraph` |  |
+| `twitter?` | `SeoTwitter` |  |
+| `jsonLd?` | `object \| object[]` | One node, an array, or a `graph()` document. |
+| `manifest?` | `string` | Link to the web app manifest, e.g. `"/manifest.webmanifest"`. |
+| `lang?` | `string` | BCP 47 language of the page, e.g. `"pt-BR"`. Sets `og:locale` (`pt_BR`) when `og.locale` is not given and keeps `<html lang>` in sync on the client. The server-rendered `<html lang>` belongs in `app.html` (SvelteKit) or the layout's `<html lang>` (Astro). |
+
+#### SeoTag
+
+| Field | Type | Notes |
+|---|---|---|
+| `tag` | `"meta" \| "link"` |  |
+| `attrs` | `Record<string, string>` |  |
+
+#### SeoTags
+
+| Field | Type | Notes |
+|---|---|---|
+| `title` | `string` | The final `<title>` text. |
+| `tags` | `SeoTag[]` | Everything else, in the order it is emitted. |
+| `jsonLd?` | `string` | Serialized JSON-LD (`<` already escaped), to go inside `<script type="application/ld+json">`. |
+| `indexable` | `boolean` | `false` when the page carries `noindex`: no canonical is expected. |
+
+#### SeoTwitter
+
+| Field | Type | Notes |
+|---|---|---|
+| `card?` | `"summary" \| "summary_large_image"` |  |
+| `site?` | `string` | `@handle` of the site. |
 
 #### SitemapEntry
 
