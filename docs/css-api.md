@@ -254,7 +254,9 @@ State attribute on the root: `data-open` (fields open while collapsed). The row 
 
 ## Kanban
 
-`.ca-kanban` `.ca-kanban--mobile` `.ca-kanban__body` `.ca-kanban__board` `.ca-kanban__card` `.ca-kanban__col` `.ca-kanban__count` `.ca-kanban__dot` `.ca-kanban__empty` `.ca-kanban__head` `.ca-kanban__list` `.ca-kanban__more` `.ca-kanban__move` `.ca-kanban__rail` `.ca-kanban__skeleton` `.ca-kanban__summary` `.ca-kanban__summary--row` `.ca-kanban__tab` `.ca-kanban__tab-label` `.ca-kanban__tabs` `.ca-kanban__title`
+`.ca-kanban` `.ca-kanban--bare` `.ca-kanban--flat` `.ca-kanban--mobile` `.ca-kanban__body` `.ca-kanban__board` `.ca-kanban__card` `.ca-kanban__col` `.ca-kanban__count` `.ca-kanban__dot` `.ca-kanban__empty` `.ca-kanban__head` `.ca-kanban__list` `.ca-kanban__more` `.ca-kanban__move` `.ca-kanban__rail` `.ca-kanban__skeleton` `.ca-kanban__summary` `.ca-kanban__summary--row` `.ca-kanban__tab` `.ca-kanban__tab-label` `.ca-kanban__tabs` `.ca-kanban__title`
+
+Tokens: `--ca-kanban-col-width` (column width, default `clamp(15rem, 22vw, 20rem)`), `--ca-kanban-gap` (gap between columns, default `var(--ca-space-3)`). Stable hooks: `data-kanban-column="<column id>"` on each column, `data-card-id="<card id>"` on each card (`li`). With `cardHref` the `.ca-kanban__body` is an `<a>`.
 
 ## KpiCard
 

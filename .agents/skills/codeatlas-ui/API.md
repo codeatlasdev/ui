@@ -1877,6 +1877,9 @@ Parts: `ca-install` `ca-install__body` `ca-install__close` `ca-install__glyph` `
 | `canMove?` | `boolean` | `true` | Cards can be moved. `false` hides the menu and turns dragging off. Default true. |
 | `drop?` | `'container' \| 'position'` | `'container'` | `container` (default): the column is the drop target, no insertion line, `to.index` is 0: right for columns the server orders (newest first). `position`: the card lands between cards. |
 | `compact?` | `boolean` |  | Force the mobile layout (one column at a time, tab strip). Default: automatic below the `sm` breakpoint (600px) of the board's own width. |
+| `variant?` | `'card' \| 'flat'` | `'card'` | `card` (default): each column is a framed, tinted panel. `flat`: no column surface or border (the board draws only the cards). |
+| `cardChrome?` | `'box' \| 'none'` | `'box'` | `box` (default): the board draws the card's border and background. `none`: the `card` snippet owns its chrome. |
+| `cardHref?` | `(card: T) => string \| undefined` |  | Link target of a card. With it the card body is an `<a href>` (Enter follows the link, Space lifts the card) instead of `div[role=button]`, so a card that is a link has no nested interactive control. |
 | `label?` | `string` |  | Accessible name of the board. |
 | `headingLevel?` | `2 \| 3 \| 4 \| 5 \| 6` |  | Heading level of the column titles (2–6). Only the tag changes, never the look. Default 2 (inside a `PageShell` the page's section level), so a board under the page `<h1>` keeps the heading order; pass 3 when the board sits under an `<h2>`. The mobile tab layout renders no column headings. |
 | `nearEnd?` | `number` | `240` | Distance from the end of a column list (px) at which `onloadmore` fires. Default 240. |
@@ -1884,13 +1887,13 @@ Parts: `ca-install` `ca-install__body` `ca-install__close` `ca-install__glyph` `
 
 Snippets: `card` (`Snippet<[T, KanbanCardState]>`): Card content. The card wrapper, handle, drag state and "Move to…" button are the board's.; `empty` (`Snippet<[KanbanColumn<T>, { canMove: boolean }]>`): Shown in an empty column.; `header` (`Snippet<[KanbanColumn<T>]>`): Replaces the column title row (colour rail, title, count).; `summary` (`Snippet<[KanbanColumn<T>]>`): Extra content for each column, rendered after the count (a money total, a weight, a progress hint) while the colour rail, title and count stay. On the mobile tab layout it shows as a row above the active column's cards. Ignored when `header` replaces the title row.
 
-Parts: `ca-kanban` `ca-kanban--mobile` `ca-kanban__board` `ca-kanban__body` `ca-kanban__card` `ca-kanban__col` `ca-kanban__count` `ca-kanban__dot` `ca-kanban__empty` `ca-kanban__head` `ca-kanban__list` `ca-kanban__more` `ca-kanban__move` `ca-kanban__rail` `ca-kanban__skeleton` `ca-kanban__summary` `ca-kanban__summary--row` `ca-kanban__tab` `ca-kanban__tabs` `ca-kanban__title`
+Parts: `ca-kanban` `ca-kanban--bare` `ca-kanban--flat` `ca-kanban--mobile` `ca-kanban__board` `ca-kanban__body` `ca-kanban__card` `ca-kanban__col` `ca-kanban__count` `ca-kanban__dot` `ca-kanban__empty` `ca-kanban__head` `ca-kanban__list` `ca-kanban__more` `ca-kanban__move` `ca-kanban__rail` `ca-kanban__skeleton` `ca-kanban__summary` `ca-kanban__summary--row` `ca-kanban__tab` `ca-kanban__tabs` `ca-kanban__title`
 
-Variables: `--ca-kanban-color`
+Variables: `--ca-kanban-col-width` `--ca-kanban-color` `--ca-kanban-gap`
 
 Data attributes: `data-dnd-over`, `data-fade` (`both` `end` `start`), `data-panning`
 
-Tokens: `--ca-kanban-color`
+Tokens: `--ca-kanban-col-width` `--ca-kanban-color` `--ca-kanban-gap`
 
 ## Kbd
 
@@ -5076,7 +5079,7 @@ Types:
 | `SegmentedTokens` | `interface SegmentedTokens extends SegmentedItemTokens { sm?: SegmentedItemTokens; md?: SegmentedItemTokens; }` |  |
 | `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
 | `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
-| `SortableOptions` | `interface SortableOptions { id: string; group?: string; getItems: () => readonly string[]; getLabel?: (id: string) => string; label?: string; axis?: "y" \| "x"; drop?: "position" \| "container"; handle?: string; disabled?: boolean; onDrop: (e: DndDropEvent) => void; }` |  |
+| `SortableOptions` | `interface SortableOptions { id: string; group?: string; getItems: () => readonly string[]; getLabel?: (id: string) => string; label?: string; axis?: "y" \| "x"; drop?: "position" \| "container"; handle?: string; liftKeys?: readonly string[]; disabled?: boolean; onDrop: (e: DndDropEvent) => void; }` |  |
 | `SoundProp` | `type SoundProp = boolean \| CueName;` | What a component's `sound` prop accepts: `true` plays the component's own cue, a name overrides it. |
 | `Space` | `type Space = (typeof SPACE)[number] \| `${(typeof SPACE)[number]}`;` |  |
 | `StageInsets` | `interface StageInsets { top: number; right: number; bottom: number; left: number; }` |  |
@@ -5658,6 +5661,7 @@ Types:
 | `axis?` | `"y" \| "x"` |  |
 | `drop?` | `"position" \| "container"` | `position` (default): the drop lands at an index between cards and an insertion line shows it. `container`: the whole list is the target (a column ordered by a server-side rule): no line, the list is highlighted (`data-dnd-over`) and `to.index` is always 0. |
 | `handle?` | `string` | CSS selector of the handle inside an item. Without it the whole item drags. |
+| `liftKeys?` | `readonly string[]` | Keys that lift the focused handle. Default `[" ", "Enter"]`. A handle that is also a link keeps Enter for itself: pass `[" "]`. |
 | `disabled?` | `boolean` |  |
 | `onDrop` | `(e: DndDropEvent) => void` | Commit the move (same container: reorder; another container: move). |
 
