@@ -188,7 +188,11 @@ describe("solid semantic fill/contrast pairs (#749)", () => {
 			for (const tone of TONES)
 				it(`${src.id} ${scheme}: ${tone} label >= 4.5:1 on its fill`, () => {
 					const t = resolved(src, scheme);
-					const fill = surfaceRgb(t, `--ca-semantic-${tone}-fill`);
+					// The fill is the tone itself unless a theme sets `-fill` (Badge: `var(-fill, var(tone))`).
+					const fill = surfaceRgb(
+						t,
+						t[`--ca-semantic-${tone}-fill`] ? `--ca-semantic-${tone}-fill` : `--ca-semantic-${tone}`
+					);
 					const fg = rgb(oklchToHex(resolve(t, `--ca-semantic-${tone}-contrast`)));
 					expect(ratio(fg, fill)).toBeGreaterThanOrEqual(4.5);
 				});
