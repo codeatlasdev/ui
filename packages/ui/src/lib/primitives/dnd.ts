@@ -70,6 +70,11 @@ export interface SortableOptions {
 	drop?: "position" | "container";
 	/** CSS selector of the handle inside an item. Without it the whole item drags. */
 	handle?: string;
+	/**
+	 * Keys that lift the focused handle. Default `[" ", "Enter"]`. A handle that is also a link keeps Enter
+	 * for itself: pass `[" "]`.
+	 */
+	liftKeys?: readonly string[];
 	disabled?: boolean;
 	/** Commit the move (same container: reorder; another container: move). */
 	onDrop: (e: DndDropEvent) => void;
@@ -889,7 +894,7 @@ export function createDnd(options: DndOptions = {}): DndController {
 			);
 		};
 		const keydown = (e: KeyboardEvent) => {
-			if (opts.disabled || session || (e.key !== " " && e.key !== "Enter")) return;
+			if (opts.disabled || session || !(opts.liftKeys ?? [" ", "Enter"]).includes(e.key)) return;
 			const el = itemOf(c, e.target);
 			if (!el) return;
 			const focused = e.target as HTMLElement;

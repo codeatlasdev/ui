@@ -66,6 +66,15 @@
      * breakpoint (600px) of the board's own width.
      */
     compact?: boolean;
+    /** `card` (default): each column is a framed, tinted panel. `flat`: no column surface or border (the board draws only the cards). */
+    variant?: 'card' | 'flat';
+    /** `box` (default): the board draws the card's border and background. `none`: the `card` snippet owns its chrome. */
+    cardChrome?: 'box' | 'none';
+    /**
+     * Link target of a card. With it the card body is an `<a href>` (Enter follows the link, Space lifts the
+     * card) instead of `div[role=button]`, so a card that is a link has no nested interactive control.
+     */
+    cardHref?: (card: T) => string | undefined;
     /** Accessible name of the board. */
     label?: string;
     /**
@@ -100,6 +109,9 @@
     canMove = true,
     drop = 'container',
     compact,
+    variant = 'card',
+    cardChrome = 'box',
+    cardHref,
     label,
     headingLevel,
     nearEnd = 240,
@@ -253,6 +265,41 @@
     onloadmore?.(c.id);
   }
 
+  // ── Arrow navigation between cards (nothing lifted) ───────────────────────
+  // Once a card is lifted the drag engine owns the arrows (they move the card); before that, Up and Down
+  // move focus inside a column and Left and Right to the same index of the neighbouring column.
+  function onBoardKeydown(e: KeyboardEvent) {
+    if (e.defaultPrevented || dnd.active !== null || e.altKey || e.ctrlKey || e.metaKey || e.shiftKey) return;
+    if (!['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'].includes(e.key)) return;
+    const body = (e.target as Element).closest<HTMLElement>('.ca-kanban__body');
+    if (!body || e.target !== body) return;
+    const list = body.closest<HTMLElement>('.ca-kanban__list');
+    const section = body.closest<HTMLElement>('[data-kanban-column]');
+    if (!list || !section) return;
+    const bodies = (l: Element) => [...l.querySelectorAll<HTMLElement>('.ca-kanban__body')];
+    const mine = bodies(list);
+    const at = mine.indexOf(body);
+    let next: HTMLElement | undefined;
+    if (e.key === 'ArrowDown') next = mine[at + 1];
+    else if (e.key === 'ArrowUp') next = mine[at - 1];
+    else {
+      const sections = [...(root?.querySelectorAll<HTMLElement>('[data-kanban-column]:not([hidden])') ?? [])];
+      let i = sections.indexOf(section) + (e.key === 'ArrowRight' ? 1 : -1);
+      // Skip columns with no card to land on.
+      while (i >= 0 && i < sections.length) {
+        const cards = bodies(sections[i]);
+        if (cards.length) {
+          next = cards[Math.min(at, cards.length - 1)];
+          break;
+        }
+        i += e.key === 'ArrowRight' ? 1 : -1;
+      }
+    }
+    e.preventDefault();
+    e.stopPropagation();
+    next?.focus();
+  }
+
   // ── Tab strip (mobile) ────────────────────────────────────────────────────
   function tabsRoving(node: HTMLElement) {
     return rovingFocus(node, { selector: '[role="tab"]', orientation: 'horizontal' });
@@ -266,6 +313,8 @@
   bind:this={root}
   class="ca-kanban {className}"
   class:ca-kanban--mobile={mobile}
+  class:ca-kanban--flat={variant === 'flat'}
+  class:ca-kanban--bare={cardChrome === 'none'}
   role="region"
   aria-label={label ?? t().kanban.board}
   data-fade={fade}
@@ -294,7 +343,9 @@
     </div>
   {/if}
 
-  <div bind:this={board} class="ca-kanban__board" {@attach pan} {@attach dnd.scroller(() => ({ axis: 'x', disabled: mobile }))} onscroll={measureFade}>
+  <!-- Delegated arrow keys for the focusable card bodies inside; the board itself is not a control. -->
+  <!-- svelte-ignore a11y_no_static_element_interactions -->
+  <div bind:this={board} class="ca-kanban__board" {@attach pan} {@attach dnd.scroller(() => ({ axis: 'x', disabled: mobile }))} onscroll={measureFade} onkeydown={onBoardKeydown}>
     {#each columns as c (c.id)}
       <section
         class="ca-kanban__col"
@@ -332,6 +383,10 @@
             group: 'kanban',
             label: c.label,
             drop,
+            // A link card keeps Enter for the link (Space lifts); the body is then the handle, because an
+            // anchor is neither the item nor a button.
+            handle: cardHref ? '.ca-kanban__body' : undefined,
+            liftKeys: cardHref ? [' '] : undefined,
             disabled: !canMove,
             getItems: () => c.items.map(getId),
             getLabel: cardName,
@@ -345,8 +400,13 @@
           {:else}
             {#each c.items as item (getId(item))}
               {@const id = getId(item)}
+              {@const href = cardHref?.(item)}
               <li class="ca-kanban__card" data-dnd-item={id} data-card-id={id}>
-                {#if canMove}
+                {#if canMove && href}
+                  <a class="ca-kanban__body" {href} aria-describedby={dnd.instructionsId} draggable="false">
+                    {@render card(item, { dragging: dnd.active === id, active: dnd.active !== null })}
+                  </a>
+                {:else if canMove}
                   <div
                     class="ca-kanban__body"
                     tabindex="0"
@@ -355,6 +415,10 @@
                   >
                     {@render card(item, { dragging: dnd.active === id, active: dnd.active !== null })}
                   </div>
+                {:else if href}
+                  <a class="ca-kanban__body" {href} draggable="false">
+                    {@render card(item, { dragging: false, active: false })}
+                  </a>
                 {:else}
                   <div class="ca-kanban__body">
                     {@render card(item, { dragging: false, active: false })}
@@ -431,7 +495,7 @@
   .ca-kanban__board {
     display: flex;
     flex: 1;
-    gap: var(--ca-space-3);
+    gap: var(--ca-kanban-gap, var(--ca-space-3));
     min-height: 0;
     padding: var(--ca-space-1);
     overflow-x: auto;
@@ -460,7 +524,7 @@
     display: flex;
     flex: none;
     flex-direction: column;
-    width: clamp(15rem, 22vw, 20rem);
+    width: var(--ca-kanban-col-width, clamp(15rem, 22vw, 20rem));
     min-height: 0;
     border: var(--ca-border-width) solid var(--ca-outline-subtle);
     border-radius: var(--ca-radius-lg);
@@ -468,6 +532,10 @@
     cursor: auto;
   }
   .ca-kanban__col[hidden] { display: none; }
+  /* Flat: no column panel, the cards sit straight on the page. */
+  .ca-kanban--flat .ca-kanban__col { border-color: transparent; border-width: 0; background: transparent; border-radius: 0; }
+  /* Bare cards: the card snippet draws its own box. */
+  .ca-kanban--bare .ca-kanban__card { border-width: 0; background: transparent; border-radius: 0; }
   .ca-kanban__head {
     display: flex;
     align-items: center;
@@ -551,6 +619,7 @@
     border-radius: var(--ca-radius-md);
     cursor: grab;
   }
+  a.ca-kanban__body { display: block; color: inherit; text-decoration: none; }
   .ca-kanban__body:focus-visible { outline: 2px solid var(--ca-focus-ring); outline-offset: 2px; }
   .ca-kanban__move {
     all: unset;

@@ -300,6 +300,110 @@ describe("Kanban board (desktop)", () => {
 	});
 });
 
+describe("Kanban flat, dense and hooks (#682)", () => {
+	const body = (id: string) => card(id).querySelector(".ca-kanban__body") as HTMLElement;
+
+	it("variant=flat drops the column surface and border; cardChrome=none drops the card box", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(Harness, { variant: "flat", cardChrome: "none" });
+		const c = getComputedStyle(document.querySelector("[data-kanban-column='new']") as HTMLElement);
+		expect(c.borderTopWidth).toBe("0px");
+		expect(c.backgroundColor).toBe("rgba(0, 0, 0, 0)");
+		const k = getComputedStyle(card("c1"));
+		expect(k.borderTopWidth).toBe("0px");
+		expect(k.backgroundColor).toBe("rgba(0, 0, 0, 0)");
+	});
+
+	it("the default is still the framed column and the boxed card", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(Harness);
+		const c = getComputedStyle(document.querySelector("[data-kanban-column='new']") as HTMLElement);
+		expect(Number.parseFloat(c.borderTopWidth)).toBeGreaterThan(0);
+		expect(Number.parseFloat(getComputedStyle(card("c1")).borderTopWidth)).toBeGreaterThan(0);
+	});
+
+	it("--ca-kanban-col-width sets the column width and --ca-kanban-gap the gap", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(Harness);
+		const root = document.querySelector(".ca-kanban") as HTMLElement;
+		root.style.setProperty("--ca-kanban-col-width", "208px");
+		root.style.setProperty("--ca-kanban-gap", "0px");
+		const a = (
+			document.querySelector("[data-kanban-column='new']") as HTMLElement
+		).getBoundingClientRect();
+		const b = (
+			document.querySelector("[data-kanban-column='talk']") as HTMLElement
+		).getBoundingClientRect();
+		expect(a.width).toBe(208);
+		expect(b.left - a.right).toBe(0);
+	});
+
+	it("cardHref renders the body as a link, with no nested interactive control", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		const screen = await render(Harness, { hrefs: true });
+		const a = body("c1");
+		expect(a.tagName).toBe("A");
+		expect(a.getAttribute("href")).toBe("/lead/c1");
+		expect(a.getAttribute("role")).toBeNull();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("with cardHref Space still lifts the card and Enter follows the link", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		const moves: KanbanMove<Card>[] = [];
+		await render(Harness, { moves, hrefs: true });
+		const a = body("c2");
+		let followed = 0;
+		a.addEventListener("click", (e) => {
+			e.preventDefault();
+			followed++;
+		});
+		a.focus();
+		await userEvent.keyboard("{Enter}");
+		expect(followed).toBe(1);
+		await key(a, " ");
+		await announced("Lifted");
+		await key(a, "ArrowRight");
+		await key(a, "Enter");
+		await waitFor(() => moves.length === 1);
+		expect(moves[0].to.column).toBe("talk");
+	});
+
+	it("arrow keys move focus between cards when nothing is lifted", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(Harness);
+		body("c1").focus();
+		await key(body("c1"), "ArrowDown");
+		expect(document.activeElement).toBe(body("c2"));
+		await key(body("c2"), "ArrowUp");
+		expect(document.activeElement).toBe(body("c1"));
+		await key(body("c1"), "ArrowRight");
+		expect(document.activeElement).toBe(body("c4"));
+		await key(body("c4"), "ArrowLeft");
+		expect(document.activeElement).toBe(body("c1"));
+	});
+
+	it("Left/Right keep the index clamped and skip empty columns' absent cards", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(Harness);
+		body("c3").focus();
+		await key(body("c3"), "ArrowRight");
+		expect(document.activeElement).toBe(body("c4"));
+		await key(body("c4"), "ArrowDown");
+		expect(document.activeElement).toBe(body("c4"));
+		await key(body("c4"), "ArrowRight");
+		expect(document.activeElement).toBe(body("c4"));
+	});
+
+	it("exposes data-kanban-column and data-card-id as the stable hooks", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(Harness);
+		expect(
+			document.querySelector("[data-kanban-column='talk'] [data-card-id='c4']")
+		).not.toBeNull();
+	});
+});
+
 describe("Kanban mobile (390px)", () => {
 	it("is a tablist, one column at a time, with 44px targets and no board scroll", async () => {
 		await page.viewport(...VIEWPORTS.mobile);

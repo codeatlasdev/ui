@@ -56,8 +56,26 @@ By default a column is the drop target as a whole (`drop="container"`): it is hi
 |---|---|
 | Mouse and pen | Press a card and move 4px. The empty board background pans sideways; a vertical wheel over the gaps scrolls the board sideways; a trackpad swipe, Shift+wheel or horizontal wheel pans the board from anywhere, over a card list included (only vertical scrolling is contained in a list). |
 | Touch | Press and hold, then drag. Near the left or right edge the board scrolls, faster the closer you are. |
-| Keyboard | Focus a card, Space lifts it, Left and Right move it to the same index of the neighbouring column (an empty column receives it), Up, Down, Home and End move inside a column (with `drop="position"`), Enter drops, Escape cancels. Every step is announced. |
+| Keyboard | Focus a card: Up and Down move focus between the cards of a column, Left and Right to the same position (clamped) in the neighbouring column. Space lifts it, Left and Right move it to the same index of the neighbouring column (an empty column receives it), Up, Down, Home and End move inside a column (with `drop="position"`), Enter drops, Escape cancels. Every step is announced. |
 | Menu | Every card has a "Move to…" button that opens a menu of the other columns. It is the touch and screen reader alternative to dragging and announces the result. |
+
+## Frameless and dense boards
+
+`variant="flat"` removes the column panel (its border and tint) and `cardChrome="none"` removes the card's own box, so the `card` snippet draws all of the chrome. Two tokens size the board, set them on the board or any ancestor: `--ca-kanban-col-width` (default `clamp(15rem, 22vw, 20rem)`) and `--ca-kanban-gap` (default `var(--ca-space-3)`).
+
+```svelte
+<div style="--ca-kanban-col-width: 13rem; --ca-kanban-gap: 0">
+  <Kanban {columns} getId={(c) => c.id} variant="flat" cardChrome="none" {card} />
+</div>
+```
+
+## Cards that are links
+
+`cardHref={(card) => `/leads/${card.id}`}` renders the card body as an `<a href>` instead of `div[role=button]`, so a card that navigates has no nested interactive control (axe `nested-interactive`). Enter follows the link and Space lifts the card; the "Move to…" menu stays.
+
+## Hooks for tests and automation
+
+Every column is `[data-kanban-column="<column id>"]` and every card `[data-card-id="<card id>"]`; both are stable and documented, so an end-to-end test needs no selector on `.ca-kanban*` classes.
 
 ## Loading more
 
@@ -78,6 +96,9 @@ Below 600px of its own width (or with `compact`) the board shows one column at a
   { name: "onloadmore", type: "(columnId: string) => void", default: "undefined", description: "A column wants its next page." },
   { name: "canMove", type: "boolean", default: "true", description: "`false` turns dragging off and hides the menu." },
   { name: "drop", type: "'container' | 'position'", default: "'container'", description: "Whole-column drop (index 0, no line) or positional drop." },
+  { name: "variant", type: "'card' | 'flat'", default: "'card'", description: "`flat` removes the column panel (border, tint)." },
+  { name: "cardChrome", type: "'box' | 'none'", default: "'box'", description: "`none` removes the card's border and background: the `card` snippet owns its chrome." },
+  { name: "cardHref", type: "(card: T) => string | undefined", default: "undefined", description: "Link target of a card: its body becomes an `<a href>`. Enter follows the link, Space lifts." },
   { name: "compact", type: "boolean", default: "undefined", description: "Force the mobile tab layout. Default: automatic below 600px of the board's width." },
   { name: "label", type: "string", default: "'Board'", description: "Accessible name of the board region." },
   { name: "headingLevel", type: "2 | 3 | 4 | 5 | 6", default: "2", description: "Heading level of the column titles; only the tag changes. 2 under a page `<h1>`, 3 under an `<h2>`. Not used by a custom `header` or the mobile tab layout." },
