@@ -977,7 +977,7 @@ Container — centered, width-capped column with the fluid page gutter.
 |---|---|---|---|
 | `px?` | `Responsive<Space>` |  | Horizontal padding. |
 | `py?` | `Responsive<Space>` |  | Vertical padding. |
-| `size?` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'default' \| 'wide' \| 'full'` | `'lg'` | Max width. `default` (= `lg`) is `--ca-content-max` (76rem, what PageShell and the App* pages use); `wide` (= `xl`) is `--ca-content-max-wide` (90rem); `full` fills the viewport up to `--ca-content-max-full` (120rem), so a very wide screen still gets a centred column. `sm` 40rem and `md` 56rem are the narrow reading sizes. |
+| `size?` | `'sm' \| 'md' \| 'lg' \| 'xl' \| 'default' \| 'wide' \| 'full'` | `'lg'` | Max width. `default` (= `lg`) is `--ca-content-max` (76rem); `wide` (= `xl`) is `--ca-content-max-wide` (90rem); `full` fills the viewport up to `--ca-content-max-full` (120rem), so a very wide screen still gets a centred column. PageShell caps at its own `--ca-page-max` (80rem) and the App* pages fill their area. `sm` 40rem and `md` 56rem are the narrow reading sizes. |
 | `as?` | `string` | `'div'` | Element to render. |
 | `class?` | `string` | `''` |  |
 
