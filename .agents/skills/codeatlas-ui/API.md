@@ -2177,9 +2177,15 @@ Parts: `ca-loading-boundary` `ca-loading-boundary__content`
 | `compact?` | `boolean` | `false` | `true` always shows the short code. Default shows the name from 600px and the code below. |
 | `label?` | `string` |  | Accessible name prefix. Default "Language" (localized). |
 | `align?` | `'start' \| 'center' \| 'end'` | `'end'` |  |
+| `size?` | `'sm' \| 'md'` | `'md'` | `sm` is the compact trigger for a dense bar: `--ca-control-height-sm` and the caption size. Every `--ca-locale-*` token still wins. Default `md`. |
+| `icon?` | `IconComponent` | `Globe` | Leading icon, any component that renders an `svg` (a Lucide icon). Default `Globe`. |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-locale` `ca-locale--compact` `ca-locale__code` `ca-locale__name`
+Parts: `ca-locale` `ca-locale--compact` `ca-locale--sm` `ca-locale__code` `ca-locale__name`
+
+Variables: `--ca-locale-chevron-size` `--ca-locale-font-weight` `--ca-locale-gap` `--ca-locale-height` `--ca-locale-icon-size` `--ca-locale-padding-x`
+
+Tokens: `--ca-locale-chevron-size` `--ca-locale-font-weight` `--ca-locale-gap` `--ca-locale-height` `--ca-locale-icon-size` `--ca-locale-padding-x`
 
 ## MapControls
 
@@ -5292,7 +5298,7 @@ Types:
 | `ColorScheme` | `type ColorScheme = "light" \| "dark" \| "system";` |  |
 | `ColorValue` | `type ColorValue = string \| { color: string; alpha: number };` | One color: any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `color-mix(…)`, `rgb(…)`) or an explicit alpha form that keeps the color and the opacity apart. |
 | `Columns` | `type Columns = (typeof COLUMNS)[number] \| `${(typeof COLUMNS)[number]}`;` |  |
-| `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldThemeTokens; textField?: TextFieldTokens; textArea?: TextAreaTokens; select?: FieldTokens; combobox?: FieldTokens; numberField?: FieldTokens; progress?: ProgressTokens; card?: CardTokens; popover?: PopoverTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; passwordStrength?: PasswordStrengthTokens; switch?: SwitchTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
+| `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldThemeTokens; textField?: TextFieldTokens; textArea?: TextAreaTokens; select?: FieldTokens; combobox?: FieldTokens; numberField?: FieldTokens; progress?: ProgressTokens; card?: CardTokens; popover?: PopoverTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; passwordStrength?: PasswordStrengthTokens; switch?: SwitchTokens; localeSwitcher?: LocaleSwitcherTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
 | `CueName` | `type CueName = \| "press" \| "release" \| "tap" \| "toggle-on" \| "toggle-off" \| "select" \| "check" \| "success" \| "error" \| "warning" \| "notify" \| "open" \| "close" \| "forward" \| "back" \| "tab" \| "tick" \| "hover";` | Semantic cue names. Actions, not components: `press` is any button, `tab` any tab change. |
 | `DateRange` | `interface DateRange { start: DateValue \| undefined; end: DateValue \| undefined; }` | Value of RangeCalendar / DateRangePicker. Both ends are undefined until picked. |
 | `DeepPartial` | `type DeepPartial<T> = T extends (...args: never[]) => unknown ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;` |  |
@@ -5485,6 +5491,7 @@ Types:
 | `emptyState?` | `EmptyStateTokens` |  |
 | `passwordStrength?` | `PasswordStrengthTokens` |  |
 | `switch?` | `SwitchTokens` |  |
+| `localeSwitcher?` | `LocaleSwitcherTokens` |  |
 
 #### DateRange
 
