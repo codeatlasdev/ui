@@ -169,3 +169,18 @@ describe("EmptyState tokens (#707)", () => {
 		).toBe("0px");
 	});
 });
+
+describe("EmptyState title leading (#1005)", () => {
+	it("keeps its heading's line-height until --ca-empty-title-leading is set", async () => {
+		const screen = await render(EmptyState, { title: "No data", headingLevel: 5 });
+		const title = q(screen.container, ".ca-empty__title");
+		// The h5 rule in base.css: an `inherit` fallback took the body leading and grew every state by 10px.
+		expect(Number.parseFloat(getComputedStyle(title).lineHeight)).toBeCloseTo(
+			Number.parseFloat(getComputedStyle(title).fontSize) * 1.3
+		);
+		title.closest<HTMLElement>(".ca-empty")?.style.setProperty("--ca-empty-title-leading", "2");
+		expect(Number.parseFloat(getComputedStyle(title).lineHeight)).toBeCloseTo(
+			Number.parseFloat(getComputedStyle(title).fontSize) * 2
+		);
+	});
+});
