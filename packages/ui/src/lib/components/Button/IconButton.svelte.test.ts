@@ -167,11 +167,14 @@ describe("IconButton link form (#686)", () => {
 	});
 
 	it('target="_blank" adds noopener noreferrer', async () => {
+		// `target` is also a render option, so the props go under `props`.
 		const screen = await render(IconButton, {
-			"aria-label": "Open in maps",
-			href: "https://maps.example.com/?q=1",
-			target: "_blank",
-			children: phone,
+			props: {
+				"aria-label": "Open in maps",
+				href: "https://maps.example.com/?q=1",
+				target: "_blank",
+				children: phone,
+			},
 		});
 		const rel = screen.getByRole("link").element().getAttribute("rel") ?? "";
 		expect(rel).toContain("noopener");
