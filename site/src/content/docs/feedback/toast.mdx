@@ -65,3 +65,7 @@ Add a secondary line with `description` and one inline button with `action: { la
   { name: "<Toaster inline />", type: "boolean", description: "Stacks inside the nearest positioned ancestor (position: absolute) instead of the viewport, so it takes the tokens of a data-preset island. Default false." },
   { name: "ToastVariant", type: "'default' | 'success' | 'error' | 'warning' | 'info'", description: "Accepted variants." },
 ]} />
+
+## Above the bottom navigation
+
+On a phone with a `BottomNav` the toast stack sits above the bar on its own (its height plus the home-indicator inset). `--ca-toaster-bottom` sets the offset yourself, for a fixed footer of your own.

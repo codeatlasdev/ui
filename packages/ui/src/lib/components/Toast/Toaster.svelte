@@ -28,7 +28,9 @@
 @layer ca.components {
     .ca-toaster {
       position: fixed;
-      bottom: var(--ca-space-6);
+      /* --ca-toaster-bottom moves the stack (a fixed footer of your own); a phone with a BottomNav lifts it above
+         the bar on its own (#722). */
+      bottom: var(--ca-toaster-bottom, var(--ca-space-6));
       right: var(--ca-space-6);
       z-index: var(--ca-z-snackbar);
       display: flex;
@@ -37,6 +39,11 @@
       pointer-events: none;
       max-width: 380px;
       width: calc(100vw - 2 * var(--ca-space-6));
+    }
+    @media (max-width: 899.98px) {
+      :global(body:has(.ca-bottom-nav)) .ca-toaster {
+        bottom: var(--ca-toaster-bottom, calc(var(--ca-bottom-nav-h) + var(--ca-safe-bottom) + var(--ca-space-3)));
+      }
     }
     .ca-toaster.ca-toaster--inline {
       position: absolute;

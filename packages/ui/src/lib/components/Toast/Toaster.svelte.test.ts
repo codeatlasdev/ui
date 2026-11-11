@@ -202,3 +202,29 @@ describe("Toaster", () => {
 		});
 	});
 });
+
+describe("Toaster above the BottomNav (#722)", () => {
+	afterEach(() => document.querySelector("[data-test-nav]")?.remove());
+
+	it("on a phone with a BottomNav, sits above it", async () => {
+		await page.viewport(390, 844);
+		const nav = document.createElement("nav");
+		nav.className = "ca-bottom-nav";
+		nav.setAttribute("data-test-nav", "");
+		document.body.append(nav);
+		const screen = await render(Toaster, {});
+		const el = screen.container.ownerDocument.querySelector(".ca-toaster") as HTMLElement;
+		const navH = Number.parseFloat(
+			getComputedStyle(document.documentElement).getPropertyValue("--ca-bottom-nav-h")
+		);
+		expect(window.innerHeight - el.getBoundingClientRect().bottom).toBeGreaterThanOrEqual(navH);
+	});
+
+	it("--ca-toaster-bottom sets the offset", async () => {
+		await page.viewport(1280, 800);
+		const screen = await render(Toaster, {});
+		const el = screen.container.ownerDocument.querySelector(".ca-toaster") as HTMLElement;
+		el.style.setProperty("--ca-toaster-bottom", "100px");
+		expect(getComputedStyle(el).bottom).toBe("100px");
+	});
+});
