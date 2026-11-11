@@ -4238,14 +4238,18 @@ Data attributes: `data-orientation` (`vertical`), `data-state` (`on`)
 | `aria-label?` | `string` |  | Names the toolbar for assistive tech. Required: a toolbar without a name is a dev warning. |
 | `aria-labelledby?` | `string` |  |  |
 | `class?` | `string` | `''` |  |
+| `overflow?` | `'wrap' \| 'scroll' \| 'menu'` | `'wrap'` | What happens when the items do not fit. `'wrap'` (default) breaks onto more lines. `'scroll'` keeps one line and scrolls sideways, with no visible scrollbar. `'menu'` keeps one line and moves the items that do not fit into a "More" menu at the end; an item with `data-priority="primary"` never moves, and `data-overflow="Label"` names its menu entry (default: its `aria-label`, then its text). |
+| `moreLabel?` | `string` |  | Accessible name of the "More" button of `overflow="menu"`. Default: the localized "More". |
 
 Snippets: `children`: Fields (`TextField`, `Select`, `Combobox`, `NumberField`), buttons, `ButtonGroup`s and `ca-toolbar-spacer`.
 
 Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children' \| 'role'>`
 
-Parts: `ca-toolbar`
+Parts: `ca-toolbar` `ca-toolbar__more`
 
 Variables: `--ca-field-width` `--ca-toolbar-gap`
+
+Data attributes: `data-measuring`, `data-overflow` (`menu` `scroll`), `data-overflowed`, `data-shown`
 
 Tokens: `--ca-toolbar-gap`
 

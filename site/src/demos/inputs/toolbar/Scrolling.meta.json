@@ -1,0 +1,35 @@
+{
+	"summary": "A row of small outlined filter buttons that stays on one line and scrolls sideways, with no scrollbar drawn.",
+	"use": "A quick-filter strip above a list where every option must stay reachable and none should be hidden in a menu.",
+	"spec": [
+		"`<Toolbar aria-label=\"Deal filters\" overflow=\"scroll\">`",
+		"Eight small outlined neutral `Button`s generated from a list",
+		"`overflow=\"scroll\"` keeps the row on one line and scrolls it sideways with no scrollbar drawn; the buttons keep their size"
+	],
+	"tags": ["toolbar", "overflow", "scroll", "filter-strip", "quick-filters"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Toolbar", "Button"],
+		"aliases": ["filter strip", "scrolling toolbar", "chip row"],
+		"related": ["5001"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-11-11",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

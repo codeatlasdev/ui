@@ -1,0 +1,35 @@
+{
+	"summary": "A message action bar that stays on one line: icon buttons move into a More menu when the row is narrow, and Send never leaves.",
+	"use": "A composer, reply box or list header whose controls must not wrap and push the primary action out of view on a phone.",
+	"spec": [
+		"`<Toolbar aria-label=\"Message actions\" overflow=\"menu\">`",
+		"Five text `IconButton`s (Attach, Templates, Emoji, Bold, Italic), each with an `aria-label`",
+		"`<span class=\"ca-toolbar-spacer\">` then a filled `Send` button carrying `data-priority=\"primary\"`, which never moves into the menu"
+	],
+	"tags": ["toolbar", "overflow", "more-menu", "action-bar", "composer", "icon-button", "priority"],
+	"shape": "wide",
+	"index": {
+		"kind": "component",
+		"subtype": "input",
+		"industry": ["general"],
+		"style": ["default"],
+		"motion": "subtle",
+		"interaction": ["keyboard"],
+		"layout": "single-column",
+		"colorMode": "both",
+		"density": "regular",
+		"tech": ["css"],
+		"cost": "css",
+		"components": ["Toolbar", "IconButton", "Button"],
+		"aliases": ["action bar", "composer bar", "overflow menu"],
+		"related": ["5001"],
+		"a11y": {
+			"reducedMotion": true,
+			"keyboard": true
+		},
+		"added": "2026-11-11",
+		"review": {
+			"industry": "pending"
+		}
+	}
+}

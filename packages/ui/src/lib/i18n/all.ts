@@ -75,6 +75,7 @@ import { textField } from "./groups/textField.js";
 import { themeToggle } from "./groups/themeToggle.js";
 import { toast } from "./groups/toast.js";
 import { tour } from "./groups/tour.js";
+import { toolbar } from "./groups/toolbar.js";
 import { turnstile } from "./groups/turnstile.js";
 import { virtualList } from "./groups/virtualList.js";
 
@@ -141,6 +142,7 @@ export const groups = {
 	textField,
 	themeToggle,
 	toast,
+	toolbar,
 	turnstile,
 	map,
 	carousel,

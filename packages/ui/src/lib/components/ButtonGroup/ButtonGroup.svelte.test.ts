@@ -86,4 +86,15 @@ describe("ButtonGroup", () => {
 		await expect.element(screen.getByRole("button", { name: "More save options" })).toBeDisabled();
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
+
+	it("is a flex item that can shrink below its content (min-width: 0, #914)", async () => {
+		const screen = await render(Harness);
+		const group = screen.getByRole("group", { name: "Document actions" }).element() as HTMLElement;
+		expect(getComputedStyle(group).minWidth).toBe("0px");
+		const host = document.createElement("div");
+		host.style.cssText = "display:flex;width:60px";
+		group.replaceWith(host);
+		host.append(group);
+		expect(group.getBoundingClientRect().width).toBeLessThanOrEqual(60);
+	});
 });

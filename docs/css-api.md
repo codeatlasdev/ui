@@ -87,11 +87,11 @@ Tokens: `--ca-auth-panel-bg` (any tone: overrides the panel background, a color 
 
 ## ButtonGroup
 
-`.ca-btn-group`; `data-orientation="horizontal|vertical"` on the root. Members are its direct children (`.ca-btn`, `.ca-icon-btn`), which lose their inner corner radius and overlap by one `--ca-border-width`; the hovered, open or `:focus-visible` member gets `z-index` 1 or 2.
+`.ca-btn-group` (`min-width: 0`, so inside a flex row it shrinks below its buttons); `data-orientation="horizontal|vertical"` on the root. Members are its direct children (`.ca-btn`, `.ca-icon-btn`), which lose their inner corner radius and overlap by one `--ca-border-width`; the hovered, open or `:focus-visible` member gets `z-index` 1 or 2.
 
 ## Toolbar
 
-`.ca-toolbar` (`role="toolbar"`, a wrapping flex row; `--ca-toolbar-gap`, default `--ca-space-2`). It sets `--ca-field-width: auto` on itself, so fields inside size to their content. `--ca-field-width` (root width of a field, written by the `width` prop; default `100%`) and `--ca-field-min-width` (default `0`) are the sizing contract of TextField, Select, Combobox, NumberField, ColorField and the date fields. `.ca-toolbar-spacer` (a utility) pushes what follows to the end.
+`.ca-toolbar` (`role="toolbar"`, a wrapping flex row; `--ca-toolbar-gap`, default `--ca-space-2`). It sets `--ca-field-width: auto` on itself, so fields inside size to their content. `--ca-field-width` (root width of a field, written by the `width` prop; default `100%`) and `--ca-field-min-width` (default `0`) are the sizing contract of TextField, Select, Combobox, NumberField, ColorField and the date fields. `.ca-toolbar-spacer` (a utility) pushes what follows to the end. `data-overflow="wrap|scroll|menu"` on the root is the `overflow` prop (`wrap` is the default). `scroll`: one line, `overflow-x: auto`, no scrollbar drawn, items `flex: none`. `menu`: one line; `.ca-toolbar__more` wraps the "More" `IconButton` (`ca-icon-btn`) and is shown (`data-shown`) only while an item is hidden; a hidden item carries `data-overflowed` and `display: none` (it stays in the DOM, and its menu entry clicks it). On an item, `data-priority="primary"` keeps it in the row and `data-overflow="Label"` names its menu entry (default: `aria-label`, then its text).
 
 ## CenteredPage
 

@@ -32,6 +32,8 @@
       flex-direction: row;
       align-items: stretch;
       vertical-align: middle;
+      /* A flex item may shrink below its content (a Toolbar row), so the row decides, not the buttons. */
+      min-width: 0;
     }
     .ca-btn-group[data-orientation='vertical'] {
       flex-direction: column;
