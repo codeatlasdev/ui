@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, realpathSync } from "node:fs";
+import { existsSync, globSync, readFileSync, realpathSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { playwright } from "@vitest/browser-playwright";
@@ -39,12 +39,22 @@ function browserDeps(): string[] {
 		string,
 		Record<string, string>
 	>;
-	return [
+	const deps = [
 		...Object.keys(pkg.dependencies ?? {}),
 		...Object.keys(pkg.peerDependencies ?? {}),
 	].filter(
 		(d) => !NODE_ONLY_PEERS.includes(d) && existsSync(`${here}node_modules/${d}/package.json`)
 	);
+	// Vite pre-bundles each imported subpath as its own entry (`echarts/core`), so list them too (#1007).
+	const subpaths = new Set<string>();
+	for (const file of globSync("src/lib/**/*.{ts,svelte}", { cwd: here })) {
+		if (/\.test\.(ts|svelte)$/.test(file)) continue;
+		for (const m of readFileSync(`${here}${file}`, "utf8").matchAll(
+			/from\s+["']([^"'.][^"']*)["']/g
+		))
+			if (deps.some((d) => m[1].startsWith(`${d}/`))) subpaths.add(m[1]);
+	}
+	return [...deps, ...subpaths];
 }
 
 const browserPattern = "src/**/*.svelte.test.ts";

@@ -58,4 +58,23 @@ describe("the browser Vite server pre-bundles every runtime dependency (#959)", 
 		for (const d of reachable)
 			expect(include.has(d), `${d} is not in optimizeDeps.include`).toBe(true);
 	});
+
+	// Vite pre-bundles each imported subpath as its own entry: `echarts` in the list did not cover
+	// `echarts/core`, so the first chart test re-optimised and reloaded every page mid-run (#1007).
+	it("includes every subpath of a dependency that the package source imports", () => {
+		const deps = Object.keys({ ...pkg.dependencies, ...pkg.peerDependencies }).filter(
+			(d) => !NODE_ONLY_PEERS.includes(d)
+		);
+		const specifiers = new Set<string>();
+		for (const file of new Bun.Glob("src/lib/**/*.{ts,svelte}").scanSync(ROOT)) {
+			if (/\.(test|vrt\.test|ssr\.test)\.ts$|\.test\.svelte$/.test(file)) continue;
+			for (const m of readFileSync(join(ROOT, file), "utf8").matchAll(
+				/from\s+["']([^"'.][^"']*)["']/g
+			))
+				if (deps.some((d) => m[1].startsWith(`${d}/`))) specifiers.add(m[1]);
+		}
+		expect(specifiers.has("echarts/core")).toBe(true);
+		for (const s of specifiers)
+			expect(include.has(s), `${s} is not in optimizeDeps.include`).toBe(true);
+	});
 });
