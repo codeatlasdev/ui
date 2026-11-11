@@ -24,6 +24,8 @@ import WithLeadingSrc from "~/demos/navigation/app-bar/WithLeading.svelte?raw";
 
 Renders a `<header>`. Icon-only buttons inside it need an `aria-label`. Inside [AppShell](/docs/layout/app-shell/) use the shell's own header; this bar is for standalone pages.
 
+The blur is painted by a `::before` layer behind the content (`data-ca-blur-layer="chrome"`), never by the `<header>` itself. A `backdrop-filter`, `filter` or `transform` on an element makes it the containing block of its `position: fixed` descendants, so a mobile menu panel (`fixed; inset: 56px 0 0`) rendered inside a glass bar would measure the bar and collapse. Here it measures the viewport. If you build your own header, put the blur on a `::before`/`::after` layer too, or render the menu in the top layer (`Sheet`, `Drawer`, a `popover`) outside the header.
+
 <Demo title="Default" description="Content in the middle and actions in the trailing slot." src={DefaultSrc}><Default /></Demo>
 <Demo title="With leading icon" description="A menu button in the leading slot." src={WithLeadingSrc}><WithLeading /></Demo>
 

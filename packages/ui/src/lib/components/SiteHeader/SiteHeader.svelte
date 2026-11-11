@@ -35,7 +35,7 @@
   });
 </script>
 
-<header class="ca-site-header {className}" data-ca-blur="mat-regular">
+<header class="ca-site-header {className}" data-ca-blur-layer="mat-regular">
   <div class="ca-site-header__inner">
     <!-- Left: panel toggle + separator + breadcrumb -->
     <div class="ca-site-header__left">

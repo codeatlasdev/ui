@@ -269,6 +269,37 @@ dialog.ca-overlay::backdrop {
 @media (min-width: 900px) {
   [data-ca-blur][data-ca-blur-wide-off] { --ca-blur-role: none; }
 }
+/* ── Blur layer: glass on an element that contains overlays (#842) ─────────────────
+ * A `backdrop-filter` (like `filter`, `transform`, `contain: paint`) makes its element the containing
+ * block of every `position: fixed` descendant: a mobile menu panel `fixed; inset: <top> 0 0` inside a
+ * glass header would measure the header box and collapse to its height. A header, top bar or nav that
+ * can hold such a panel sets `data-ca-blur-layer="<role>"` instead of `data-ca-blur`: the same roles,
+ * but the filter is painted by an absolutely positioned `::before` behind the content, so the element
+ * itself stays free of a containing block. The element keeps its own fill, shadow and radius (the layer
+ * inherits the radius). It must be `position: relative|sticky|fixed|absolute` and must not use
+ * `isolation` or `z-index: auto` tricks of its own: the layer sits at `z-index: -1` in the element's stacking
+ * context, which a `z-index` on the element (every header sets one) creates. */
+[data-ca-blur-layer] {
+  --ca-blur-role: none;
+}
+[data-ca-blur-layer]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  -webkit-backdrop-filter: var(--ca-blur-role);
+  backdrop-filter: var(--ca-blur-role);
+}
+[data-ca-blur-layer="ultra-thin"] { --ca-blur-role: var(--ca-blur-ultra-thin); }
+[data-ca-blur-layer="thin"] { --ca-blur-role: var(--ca-blur-thin); }
+[data-ca-blur-layer="regular"] { --ca-blur-role: var(--ca-blur-regular); }
+[data-ca-blur-layer="thick"] { --ca-blur-role: var(--ca-blur-thick); }
+[data-ca-blur-layer="chrome"] { --ca-blur-role: var(--ca-blur-chrome); }
+[data-ca-blur-layer="mat-thin"] { --ca-blur-role: var(--ca-mat-thin-filter); }
+[data-ca-blur-layer="mat-regular"] { --ca-blur-role: var(--ca-mat-regular-filter); }
+[data-ca-blur-layer="chrome-layer"] { --ca-blur-role: var(--ca-chrome-blur); }
 /* A disabled glass button is unavailable, not busy: a loading one keeps its blur. */
 :is(.ca-btn--glass:not(.ca-btn--loading), .ca-icon-btn--glass:not(.ca-icon-btn--loading)):is(:disabled, [aria-disabled="true"]) { --ca-blur-role: none; }
 
@@ -281,6 +312,9 @@ dialog.ca-overlay::backdrop {
     --ca-surface-filter: none;
     --ca-surface-fill: var(--ca-glass-tint-solid);
   }
+  /* A blur layer has no blur without transparency; GlassAppBar's fill goes opaque like the `.glass-*` classes. */
+  [data-ca-blur-layer] { --ca-blur-role: none; }
+  .ca-app-bar[data-ca-blur-layer] { background-color: var(--ca-glass-tint-solid); }
 }
 
 /* ── Forced colors: no blur, no shadow, a real border ─────────────────────────── */
@@ -296,4 +330,6 @@ dialog.ca-overlay::backdrop {
   }
   .ca-surface[data-variant="ghost"] { border-color: transparent; }
   .ca-surface[data-interactive]:focus-visible { outline-color: Highlight; }
+  [data-ca-blur-layer] { --ca-blur-role: none; }
+  .ca-app-bar[data-ca-blur-layer] { background-color: Canvas; box-shadow: none; }
 }

@@ -11,7 +11,7 @@
   let { class: className = '', children, leading, trailing }: Props = $props();
 </script>
 
-<header class="ca-app-bar glass-nav-layer {className}">
+<header class="ca-app-bar {className}" data-ca-blur-layer="chrome">
   <div class="ca-app-bar__leading">
     {@render leading?.()}
   </div>
@@ -38,6 +38,10 @@
       padding: 0 var(--ca-space-4);
       z-index: var(--ca-z-nav);
       width: 100%;
+      background-color: var(--ca-glass-tint-chrome);
+      box-shadow:
+        inset 0 0.5px 0 var(--ca-glass-rim),
+        inset 0 -0.5px 0 var(--ca-glass-border);
     }
 
     .ca-app-bar__leading,

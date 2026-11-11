@@ -37,6 +37,8 @@ To control it, `bind:open` reads and sets the open state, and `onOpenChange` fir
 </Popover>
 ```
 
+A `Popover` panel lives in the top layer, so it is not clipped or re-anchored by its ancestors. A hand-made `position: fixed` menu is different: it is placed against the nearest ancestor that has a `backdrop-filter`, `filter`, `transform`, `perspective`, `will-change: transform` or `contain: layout|paint`, so inside a glass header it collapses to the header box. Keep overlays out of such ancestors: use `Popover`, `Sheet` or `Drawer`, or give the header's glass to a `::before` layer (`data-ca-blur-layer`, see [GlassAppBar](/docs/navigation/app-bar/)).
+
 <Demo title="Basic" description="Text and an action inside the popover." src={BasicSrc}><Basic client:visible /></Demo>
 <Demo title="Form" description="A small form anchored to its trigger, aligned to the start." src={FormSrc}><Form client:visible /></Demo>
 
