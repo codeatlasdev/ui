@@ -36,7 +36,8 @@ The group is a real `radiogroup` of native radios. Tab enters on the selected ch
 
 <Props for="ChipGroup" rows={[
   { name: "items", type: "ChipGroupItem[]", description: "Options: { value, label, disabled? }." },
-  { name: "value", type: "string", default: "''", description: "Bindable selected value. '' means nothing selected." },
+  { name: "value", type: "string | string[]", default: "''", description: "Bindable selected value. '' means nothing selected; with `multiple`, the array of selected values." },
+  { name: "multiple", type: "boolean", default: "false", description: "Any number of chips can be on: native checkboxes in a labelled group, each selected value its own FormData entry under `name`." },
   { name: "label", type: "string", description: "Visible title and accessible name of the group." },
   { name: "hideLabel", type: "boolean", default: "false", description: "Keeps label for assistive tech only." },
   { name: "description", type: "string", description: "Helper text under the group (aria-describedby)." },
@@ -46,5 +47,5 @@ The group is a real `radiogroup` of native radios. Tab enters on the selected ch
   { name: "disabled", type: "boolean", default: "false", description: "Disables the whole group." },
   { name: "aria-label", type: "string", description: "Accessible name when there is no visible label." },
   { name: "class", type: "string", description: "Extra classes on the root." },
-  { name: "onchange", type: "(value: string) => void", description: "Called when the selection changes." },
+  { name: "onchange", type: "(value: string | string[]) => void", description: "Called when the selection changes; with `multiple`, receives the array." },
 ]} />

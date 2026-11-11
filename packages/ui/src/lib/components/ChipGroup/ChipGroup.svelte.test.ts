@@ -4,6 +4,7 @@ import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { touchTarget } from "../../../../tests/touch-target";
 import ChipGroupHarness from "./ChipGroupHarness.test.svelte";
+import Multi from "./ChipGroupMulti.test.svelte";
 
 const radio = (screen: Awaited<ReturnType<typeof render>>, name: string) =>
 	screen.getByRole("radio", { name });
@@ -137,5 +138,33 @@ describe("ChipGroup", () => {
 			)
 		);
 		expect(rows.size).toBe(2);
+	});
+});
+
+describe("ChipGroup multiple (#678)", () => {
+	it("toggles chips as checkboxes in a labelled group; value and onchange are arrays", async () => {
+		const onchange = vi.fn();
+		const screen = await render(Multi, { onchange });
+		await expect.element(screen.getByRole("group", { name: "Specialties" })).toBeVisible();
+		const a = screen.getByRole("checkbox", { name: "Dentists" });
+		const b = screen.getByRole("checkbox", { name: "Lawyers" });
+		await expect.element(b).toBeChecked();
+		await a.click();
+		await expect.element(screen.getByTestId("bound")).toHaveTextContent("b,a");
+		expect(onchange).toHaveBeenLastCalledWith(["b", "a"]);
+		await b.click();
+		await expect.element(screen.getByTestId("bound")).toHaveTextContent("a");
+		await expect.element(screen.getByRole("checkbox", { name: "Doctors" })).toBeDisabled();
+		const data = new FormData(screen.getByTestId("form").element() as HTMLFormElement);
+		expect(data.getAll("spec")).toEqual(["a"]);
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("Space toggles the focused chip", async () => {
+		const screen = await render(Multi, {});
+		const a = screen.getByRole("checkbox", { name: "Dentists" });
+		(a.element() as HTMLInputElement).focus();
+		await userEvent.keyboard(" ");
+		await expect.element(a).toBeChecked();
 	});
 });

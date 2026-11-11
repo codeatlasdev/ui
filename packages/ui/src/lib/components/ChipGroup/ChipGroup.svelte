@@ -1,15 +1,16 @@
-<script lang="ts">
-  import { Check } from '@lucide/svelte';
-
+<script lang="ts" module>
   export interface ChipGroupItem {
     value: string;
     label: string;
     disabled?: boolean;
   }
+</script>
 
-  interface Props {
-    /** Selected value. `''` means nothing selected. */
-    value?: string;
+<script lang="ts" generics="M extends boolean = false">
+  import { Check } from '@lucide/svelte';
+
+
+  interface Common {
     items: ChipGroupItem[];
     /** Visible title of the group; it is also the group's accessible name. */
     label?: string;
@@ -26,11 +27,20 @@
     class?: string;
     /** Accessible name when there is no visible `label`. */
     'aria-label'?: string;
-    onchange?: (value: string) => void;
+  }
+  /** `string` for one chip, `string[]` with `multiple`. */
+  type Value = M extends true ? string[] : string;
+  interface Props extends Common {
+    /** Any number of chips can be on: checkboxes in a `role="group"`; `value` and `onchange` are `string[]`. */
+    multiple?: M;
+    /** Selected value: a string (`''` = none), or `string[]` with `multiple`. */
+    value?: Value;
+    onchange?: (value: Value) => void;
   }
 
   let {
-    value = $bindable(''),
+    value = $bindable('' as Value),
+    multiple = false as M,
     items,
     label,
     hideLabel = false,
@@ -50,10 +60,16 @@
   const groupName = $derived(name ?? uid);
   const describedBy = $derived(error ? `${uid}-err` : description ? `${uid}-hint` : undefined);
 
+  const picked = $derived<string[]>(Array.isArray(value) ? value : value ? [value as string] : []);
   function select(v: string) {
     if (v === value) return;
-    value = v;
-    onchange?.(v);
+    value = v as Value;
+    onchange?.(v as Value);
+  }
+  function toggle(v: string) {
+    const next = picked.includes(v) ? picked.filter((x) => x !== v) : [...picked, v];
+    value = next as Value;
+    onchange?.(next as Value);
   }
 
   // Native radios already move focus + selection on the arrows, select on Space and make Tab land
@@ -90,7 +106,7 @@
   {/if}
 
   <div
-    role="radiogroup"
+    role={multiple ? 'group' : 'radiogroup'}
     class="ca-chip-group__list"
     aria-labelledby={label ? `${uid}-label` : undefined}
     aria-label={label ? undefined : ariaLabel}
@@ -101,7 +117,7 @@
     {@attach keys}
   >
     {#each items as item (item.value)}
-      {@const checked = value === item.value}
+      {@const checked = multiple ? picked.includes(item.value) : value === item.value}
       {@const off = disabled || !!item.disabled}
       <label
         class="ca-chip-group__chip"
@@ -109,14 +125,14 @@
         data-disabled={off ? '' : undefined}
       >
         <input
-          type="radio"
+          type={multiple ? 'checkbox' : 'radio'}
           class="ca-chip-group__input"
-          name={groupName}
+          name={multiple ? name : groupName}
           value={item.value}
           {checked}
-          {required}
+          required={multiple ? undefined : required}
           disabled={off}
-          onchange={() => select(item.value)}
+          onchange={() => (multiple ? toggle(item.value) : select(item.value))}
         />
         {#if checked}
           <Check class="ca-chip-group__check" size={16} stroke-width={2.5} aria-hidden="true" />
