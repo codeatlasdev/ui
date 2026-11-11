@@ -33,6 +33,16 @@ describe("Badge", () => {
 		await expect.element(status).toHaveTextContent("99+");
 	});
 
+	it("max moves the cap: 12 with max 9 reads 9+, 9 stays 9", async () => {
+		const capped = await render(Badge, { count: 12, max: 9, children: child });
+		await expect
+			.element(capped.getByRole("status", { name: "12 notifications" }))
+			.toHaveTextContent("9+");
+		capped.unmount();
+		const exact = await render(Badge, { count: 9, max: 9, children: child });
+		await expect.element(exact.getByRole("status")).toHaveTextContent("9");
+	});
+
 	it("shows 99 as-is", async () => {
 		const screen = await render(Badge, { count: 99, children: child });
 		await expect.element(screen.getByRole("status")).toHaveTextContent("99");

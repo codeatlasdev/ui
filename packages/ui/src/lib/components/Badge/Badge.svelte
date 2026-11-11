@@ -8,6 +8,8 @@
 
   interface Props {
     count?: number;
+    /** Anchored badge: counts above `max` show as `max+` (the label keeps the real count). Default 99. */
+    max?: number;
     /** Anchored: a plain status dot on the corner. With `tone`: a leading dot inside the pill. */
     dot?: boolean;
     /**
@@ -31,6 +33,7 @@
 
   let {
     count,
+    max = 99,
     dot = false,
     color = 'brand',
     tone,
@@ -41,7 +44,7 @@
   }: Props = $props();
 
   let showBadge = $derived(dot || (count !== undefined && count > 0));
-  let label = $derived(count !== undefined && count > 99 ? '99+' : String(count ?? ''));
+  let label = $derived(count !== undefined && count > max ? `${max}+` : String(count ?? ''));
 </script>
 
 {#if tone}

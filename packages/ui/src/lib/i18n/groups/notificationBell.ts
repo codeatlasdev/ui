@@ -9,6 +9,9 @@ export const notificationBell = defineGroup("notificationBell", {
 		clear: "Clear",
 		empty: "No notifications",
 		loading: "Loading notifications...",
+		error: "Could not load notifications",
+		retry: "Try again",
+		markRead: (title: string) => `Mark ${title} as read`,
 	},
 	"pt-BR": {
 		label: (unread) =>
@@ -20,5 +23,8 @@ export const notificationBell = defineGroup("notificationBell", {
 		clear: "Limpar",
 		empty: "Nenhuma notificação",
 		loading: "Carregando notificações...",
+		error: "Não foi possível carregar as notificações",
+		retry: "Tentar de novo",
+		markRead: (title) => `Marcar ${title} como lida`,
 	},
 });

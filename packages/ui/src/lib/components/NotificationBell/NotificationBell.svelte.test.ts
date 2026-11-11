@@ -73,7 +73,10 @@ describe("NotificationBell", () => {
 	});
 
 	it("hides 'Mark all read' when everything is read", async () => {
-		await openByKeyboard({ items: [{ id: "2", title: "Backup completed", read: true }] });
+		await openByKeyboard({
+			items: [{ id: "2", title: "Backup completed", read: true }],
+			onClear: () => {},
+		});
 		await expect.element(page.getByRole("button", { name: "Clear" })).toBeVisible();
 		await expect
 			.element(page.getByRole("button", { name: "Mark all read" }))
