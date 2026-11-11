@@ -1907,6 +1907,9 @@ Snippets: `children`
 | `disabled?` | `boolean` | `false` |  |
 | `loading?` | `boolean` | `false` | Replaces the icon with a spinner, sets `aria-busy` and blocks interaction. |
 | `aria-label` | `string` |  |  |
+| `href?` | `string` |  | Renders an `<a>` with the icon button look, for icon-only links (`tel:`, a maps app, an external page). |
+| `target?` | `string` |  | Anchor target, used with `href`. `"_blank"` adds `noopener noreferrer` to any `rel` you pass. |
+| `rel?` | `string` |  | Anchor `rel`, used with `href`. |
 | `class?` | `string` | `''` |  |
 | `onclick?` | `(e: MouseEvent) => void` |  |  |
 
