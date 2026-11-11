@@ -96,7 +96,14 @@ describe("createPresence in a template", () => {
 	it("keeps the node mounted through its exit when an {#if} reads `present`", async () => {
 		await render(PresenceBlock, {});
 		const node = document.getElementById("presence-node") as HTMLElement;
-		await page.getByRole("button", { name: "toggle" }).click();
+		// A DOM click flushed in this task: a Playwright click is a round trip that, under load, outlasted the
+		// 400 ms exit before holdExit could pause it (#856).
+		flushSync(() =>
+			page
+				.getByRole("button", { name: "toggle" })
+				.element()
+				.dispatchEvent(new MouseEvent("click", { bubbles: true }))
+		);
 		// Not removed in the flush that flips `open`: the exit animation has to play.
 		expect(node.isConnected).toBe(true);
 		expect(node.dataset.state).toBe("closed");
