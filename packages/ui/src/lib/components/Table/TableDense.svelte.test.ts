@@ -180,3 +180,33 @@ describe("SimpleTable touch targets (#360)", () => {
 		}
 	});
 });
+
+describe("compact table knobs (#683)", () => {
+	it("--ca-table-row-h sets the compact row height", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(Harness);
+		(document.querySelector("table") as HTMLElement).style.setProperty("--ca-table-row-h", "36px");
+		const row = document.querySelector("tbody tr[data-row]") as HTMLElement;
+		expect(Math.round(row.getBoundingClientRect().height)).toBe(36);
+	});
+
+	it("TableGroupRow accent draws a rail at the start of the row", async () => {
+		await render(Harness);
+		expect(css(document.querySelector("tr.ca-table-group > th") as HTMLElement, "box-shadow")).toBe(
+			"none"
+		);
+		await render(Harness, { accent: "rgb(1, 2, 3)" });
+		const ths = document.querySelectorAll("tr.ca-table-group > th");
+		expect(css(ths[ths.length - 1] as HTMLElement, "box-shadow")).toContain("rgb(1, 2, 3)");
+	});
+
+	it("TableSortHeader align=end puts the label at the end of the cell", async () => {
+		await render(Harness, { alignValue: true });
+		const th = [...document.querySelectorAll("thead th")].at(-1) as HTMLElement;
+		const btn = th.querySelector(".ca-table-sort") as HTMLElement;
+		expect(css(th, "text-align")).toBe("end");
+		expect(
+			Math.abs(th.getBoundingClientRect().right - btn.getBoundingClientRect().right)
+		).toBeLessThan(16);
+	});
+});

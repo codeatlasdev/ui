@@ -73,3 +73,9 @@ For a CRM-style list (thousands of rows, ~10 columns) set `density="compact"` (r
 ## Sort arrows only on the sorted column
 
 `TableSortHeader idleIcon={false}` draws no arrow while a column is unsorted, so the header is only its label and only the sorted column shows a direction arrow.
+
+## Compact rows, group rails and numeric headers
+
+- `--ca-table-row-h` (and `--ca-table-cell-py`) on a `density="compact"` table set an exact row height, such as 36px.
+- `TableGroupRow accent="var(--ca-semantic-success)"` draws a status rail at the start of the group row.
+- `TableSortHeader align="end"` puts the label and its arrow at the end of the cell, aligned with right-aligned numbers.

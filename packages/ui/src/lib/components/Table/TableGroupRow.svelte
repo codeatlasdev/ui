@@ -11,12 +11,14 @@
     open?: boolean;
     /** Group title and count. */
     label?: Snippet;
+    /** Colour of a rail at the start of the row (a stage or status colour, e.g. `var(--ca-semantic-success)`). */
+    accent?: string;
     class?: string;
   }
-  let { colspan, collapsible = false, open = $bindable(true), label, class: className = '' }: Props = $props();
+  let { colspan, collapsible = false, open = $bindable(true), label, accent, class: className = '' }: Props = $props();
 </script>
 
-<tr class="ca-table-group {className}">
+<tr class="ca-table-group {className}" data-accent={accent ? '' : undefined} style:--ca-table-group-accent={accent}>
   <th scope="rowgroup" {colspan}>
     {#if collapsible}
       <button type="button" class="ca-table-group__toggle" aria-expanded={open} onclick={() => (open = !open)}>
