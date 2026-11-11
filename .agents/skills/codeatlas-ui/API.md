@@ -2147,6 +2147,7 @@ Variables: `--ca-map-bearing`
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `engine?` | `"maplibre" \| "mapbox"` | `'maplibre'` | `"maplibre"` (default, no token) or `"mapbox"` (needs `accessToken`). The matching package is a peer you install. |
+| `engineModule?` | `EngineLoader` |  | Your own import of the engine package, required for `engine="mapbox"`: `engineModule={() => import("mapbox-gl")}`. Written in your app, so your bundler includes the package; the library cannot import an optional peer by name for you. Also pins a specific build of `maplibre-gl`. |
 | `accessToken?` | `string` |  | Mapbox access token. Required for `engine="mapbox"`. |
 | `styles` | `MapStyles` |  | Basemap style per color scheme. The map switches style when `colorScheme.resolved` changes, without being recreated. |
 | `layers?` | `unknown[]` |  | deck.gl layers drawn interleaved in the map. Needs `@deck.gl/core` plus `@deck.gl/maplibre` (`engine="maplibre"`) or `@deck.gl/mapbox` (`engine="mapbox"`). Replace the array to update. |
@@ -6762,6 +6763,7 @@ Types:
 
 | Type | Declaration | Notes |
 |---|---|---|
+| `EngineLoader` | `type EngineLoader = () => Promise<unknown>;` | The app's own import of the engine, for example `() => import("mapbox-gl")`. The library cannot name an optional peer for the bundler (apps without it would fail to build), and hiding the import from Vite left a bare specifier in the client chunk that browsers cannot resolve (#712). A loader written in the app is bundled by the app's bundler. |
 | `MapBounds` | `type MapBounds = [[number, number], [number, number]];` | `[[west, south], [east, north]]` in lng/lat. |
 | `MapColors` | `interface MapColors { brand: Rgba; brandMuted: Rgba; surface: Rgba; text: Rgba; textMuted: Rgba; outline: Rgba; success: Rgba; warning: Rgba; error: Rgba; info: Rgba; }` | Semantic map colors as `[r, g, b, a]`, resolved from the live `--ca-*` tokens. |
 | `MapInstance` | `type MapInstance = import("maplibre-gl").Map;` | The map object of the engine in use (`maplibre-gl` `Map` or `mapbox-gl` `Map`). Both share the methods this entry uses: `setStyle`, `jumpTo`, `flyTo`, `fitBounds`, `zoomIn`, `zoomOut`, `resetNorth`, `getBearing`, `on`/`off`, `addControl`. |
