@@ -32,6 +32,8 @@ Use `PageFrame` when a live stage (a map, a canvas) sits behind the page content
 
 `header`, `toolbar` and `footer` stay fixed; only the body scrolls (`overscroll-behavior: contain`). The body is keyboard-scrollable while it overflows.
 
+`mode="page"` also takes an `aside` snippet: a companion column (preview, help, status) beside the body from a 1280px page, `asideWidth` wide (default 20rem) and sticky at the top, after the content below that. It renders as `<aside>` named "Page sidebar" (`asideLabel` renames it) and is ignored by the other modes.
+
 ## Covered area
 
 The frame publishes the rectangle it covers, in px from each edge of the stage, on `stageInsets`. It updates on resize, `mode`, `side`, `width` and every sheet height, and resets to zero when the frame unmounts. When two frames are mounted the newest one wins and the previous one takes over when it leaves.
@@ -79,6 +81,9 @@ With `sheet`, `mode="map"` below 900px is a bottom sheet, not a `Sheet`: it is *
   { name: "header", type: "Snippet", description: "Title, description and actions. Fixed." },
   { name: "toolbar", type: "Snippet", description: "Fixed row under the header: search, filters, tabs." },
   { name: "footer", type: "Snippet", description: "Fixed row at the bottom: primary actions." },
+  { name: "aside", type: "Snippet", description: "`mode=\"page\"` only. Companion column rendered as `<aside>`: beside the content (sticky at the top, `asideWidth` wide) on a 1280px page, after the content below that." },
+  { name: "asideLabel", type: "string", default: "'Page sidebar'", description: "Accessible name of the `<aside>` landmark (localized default)." },
+  { name: "asideWidth", type: "string", default: "'20rem'", description: "Width of the aside column, any CSS length." },
   { name: "children", type: "Snippet", description: "Scrolling body." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />

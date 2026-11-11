@@ -1,0 +1,14 @@
+Use @codeatlasdev/ui demo #5017 "Form with a preview and help aside" (layout/form-page).
+What it shows: A workspace form with a side column: a live preview, the plan's seat count and a completion checklist beside the fields. When to use: Settings and edit pages on wide screens that should fill the width with context (preview, help, status) instead of stretching the fields.
+Spec:
+- `<AppForm title="Workspace" description="Name, address and plan." asideLabel="Preview and help">` with `<FormSection title="General" description="How the workspace appears to your team.">` holding `<TextField label="Name" bind:value={name} />`, `<TextField label="Address" bind:value={slug} />` and `<Select label="Plan" bind:value={plan} options={planOptions} />`
+- `planOptions` has 3 entries: Free, Team, Business, with `let plan = $state('team')`; `seats` is 3, 25 or 250 by plan
+- `{#snippet aside()}` holds three Cards with `headingLevel={2}`: Preview (name in `<strong>` and `app.example.com/{slug || '…'}`), Plan (`<Stat label="Seats included" value={seats} size="sm" />`) and Checklist (`<Stepper {steps} current={Math.min(done, steps.length - 1)} />` with 3 steps)
+- `{#snippet footer()}` has Cancel with `variant="ghost"` and Save with `variant="filled"`
+- Frame size is `height: 560px`
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #5017 Form with a preview and help aside → file, what changed, https://ui.codeatlas.com.br/docs/layout/form-page#form-with-a-preview-and-help-aside; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/5017.txt   Components API: ca-ui-mcp get_component(AppForm)

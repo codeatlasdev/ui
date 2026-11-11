@@ -55,6 +55,15 @@
     toolbar?: Snippet;
     /** Fixed row at the bottom: primary actions. */
     footer?: Snippet;
+    /**
+     * `mode="page"` only: companion column (preview, help, status). Beside the content from a
+     * 1280px-wide page (sticky at the top), after it below that. Rendered as `<aside>`.
+     */
+    aside?: Snippet;
+    /** Accessible name of the `<aside>` landmark. Defaults to "Page sidebar" (localized). */
+    asideLabel?: string;
+    /** Width of the aside column (any CSS length). Default `20rem`. */
+    asideWidth?: string;
     class?: string;
     /** Scrolling body. */
     children?: Snippet;
@@ -74,6 +83,9 @@
     header,
     toolbar,
     footer,
+    aside,
+    asideLabel,
+    asideWidth,
     class: className = '',
     children,
   }: Props = $props();
@@ -246,8 +258,15 @@
       <div class="ca-page-frame__toolbar">{@render toolbar()}</div>
     {/if}
     <!-- Keyboard-scrollable while it overflows (scrollFocusable); named so the tab stop is announced. -->
-    <div class="ca-page-frame__body" data-padded={padded ? '' : undefined} role="group" aria-label={labelText} use:scrollFocusable>
-      {@render children?.()}
+    <div class="ca-page-frame__body" data-padded={padded ? '' : undefined} data-aside={mode === 'page' && aside ? '' : undefined} role="group" aria-label={labelText} use:scrollFocusable>
+      {#if mode === 'page' && aside}
+        <div class="ca-x-aside-layout" style:--ca-aside-width={asideWidth}>
+          <div class="ca-x-aside-main">{@render children?.()}</div>
+          <aside class="ca-page-frame__aside" aria-label={asideLabel ?? t().pageFrame.aside}>{@render aside()}</aside>
+        </div>
+      {:else}
+        {@render children?.()}
+      {/if}
     </div>
     {#if footer}
       <div class="ca-page-frame__footer">{@render footer()}</div>
@@ -339,6 +358,20 @@
     }
     .ca-page-frame__body[data-padded] {
       padding: var(--ca-frame-pad-y, var(--ca-space-2)) var(--ca-frame-pad-x, var(--ca-space-5)) var(--ca-frame-pad-y, var(--ca-space-5));
+    }
+    /* The body is the container: the aside sits beside the content once the area holds 64rem (a 1280px page). */
+    .ca-page-frame__body[data-aside] { container-type: inline-size; }
+    .ca-x-aside-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: var(--ca-page-gap);
+      align-items: start;
+    }
+    .ca-x-aside-main, .ca-page-frame__aside { min-width: 0; }
+    .ca-page-frame__aside { display: flex; flex-direction: column; gap: var(--ca-space-4); }
+    @container (min-width: 64rem) {
+      .ca-x-aside-layout { grid-template-columns: minmax(0, 1fr) var(--ca-aside-width, 20rem); }
+      .ca-page-frame__aside { position: sticky; top: 0; }
     }
 
     .ca-page-frame__footer {

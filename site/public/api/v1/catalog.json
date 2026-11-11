@@ -1,6 +1,6 @@
 {
 	"version": "4.6.0",
-	"count": 398,
+	"count": 399,
 	"groups": [
 		{
 			"slug": "inputs",
@@ -35,8 +35,8 @@
 		{
 			"slug": "layout",
 			"first": "165",
-			"last": "5005",
-			"count": 52
+			"last": "5017",
+			"count": 53
 		},
 		{
 			"slug": "charts",
@@ -35436,6 +35436,113 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/display/avatar#group-sizes",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5017",
+			"group": "layout",
+			"page": "form-page",
+			"variant": "WithAside",
+			"slug": "form-with-a-preview-and-help-aside",
+			"title": "Form with a preview and help aside",
+			"description": "Preview, a Stat and a Stepper checklist in the aside. Beside the form from 1280px, after it on a phone.",
+			"summary": "A workspace form with a side column: a live preview, the plan's seat count and a completion checklist beside the fields.",
+			"use": "Settings and edit pages on wide screens that should fill the width with context (preview, help, status) instead of stretching the fields.",
+			"spec": [
+				"`<AppForm title=\"Workspace\" description=\"Name, address and plan.\" asideLabel=\"Preview and help\">` with `<FormSection title=\"General\" description=\"How the workspace appears to your team.\">` holding `<TextField label=\"Name\" bind:value={name} />`, `<TextField label=\"Address\" bind:value={slug} />` and `<Select label=\"Plan\" bind:value={plan} options={planOptions} />`",
+				"`planOptions` has 3 entries: Free, Team, Business, with `let plan = $state('team')`; `seats` is 3, 25 or 250 by plan",
+				"`{#snippet aside()}` holds three Cards with `headingLevel={2}`: Preview (name in `<strong>` and `app.example.com/{slug || '…'}`), Plan (`<Stat label=\"Seats included\" value={seats} size=\"sm\" />`) and Checklist (`<Stepper {steps} current={Math.min(done, steps.length - 1)} />` with 3 steps)",
+				"`{#snippet footer()}` has Cancel with `variant=\"ghost\"` and Save with `variant=\"filled\"`",
+				"Frame size is `height: 560px`"
+			],
+			"tags": [
+				"app-form",
+				"aside",
+				"side-column",
+				"preview",
+				"stat",
+				"stepper",
+				"card",
+				"settings"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "layout",
+				"industry": [
+					"saas"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"keyboard",
+					"press"
+				],
+				"layout": "split",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"AppForm",
+					"Button",
+					"Card",
+					"FormSection",
+					"Select",
+					"Stat",
+					"Stepper",
+					"TextField"
+				],
+				"aliases": [
+					"form with preview",
+					"side panel form",
+					"settings with help column"
+				],
+				"related": [
+					"173",
+					"174",
+					"5006"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-11-11",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"AppForm",
+				"Button",
+				"Card",
+				"FormSection",
+				"Select",
+				"Stat",
+				"Stepper",
+				"TextField"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"AppForm",
+						"Button",
+						"Card",
+						"FormSection",
+						"Select",
+						"Stat",
+						"Stepper",
+						"TextField"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/layout/form-page#form-with-a-preview-and-help-aside",
 			"needs": "@codeatlasdev/ui@4.6.0"
 		}
 	]

@@ -476,11 +476,13 @@ Units: `PageShell` `gap` is a number of pixels, and `KpiGrid` `gap` is a number 
 | Component | Use |
 |---|---|
 | `AppList` | Fullscreen list: table with internal scroll, fixed pagination |
-| `AppForm` | Form: header + scrolling body + sticky footer |
-| `AppSettings` | Settings: side nav + scrollable content |
+| `AppForm` | Form: header + scrolling body + sticky footer; `aside` snippet for a companion column |
+| `AppSettings` | Settings: side nav + scrollable content; `aside` snippet for a companion column |
 | `PageShell` | Dashboard/content: normal scroll, max-width, configurable gap |
 | `MobilePane` | Full screen above the shell on mobile (chat thread, history, detail): header with back, Escape closes, focus enters/returns, safe-area and virtual keyboard |
 | `StickyActions` | Form action bar stuck to the end of the scroll (`align="end" \| "stretch"`, `show`): themed bar chrome, safe-area and virtual keyboard |
+
+**Never leave the usable width empty.** A page capped at a reading measure on a wide desktop fills the rest with an `aside` snippet (`AppForm`, `AppSettings`, `PageFrame mode="page"`, `PageShell`: preview, help, status, a checklist; beside the content from a 1280px page, `asideWidth` 20rem, sticky; after the content on a phone) or with more columns (`CardGrid minItemWidth`, auto-fill). Never stretch a text field past its reading measure. Compose aside content from `Card`, `Stat` and `Stepper`.
 
 ### Content layout
 | Component | Use |

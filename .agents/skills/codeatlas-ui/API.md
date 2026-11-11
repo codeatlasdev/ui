@@ -111,10 +111,16 @@ AppForm: page-level form layout.
 | `onback?` | `(e: MouseEvent) => void` |  | Runs when the back link is clicked, before it navigates. Call `e.preventDefault()` to take over (a history-aware `back(fallback)` from `@codeatlasdev/ui/kit`). |
 | `embedded?` | `boolean` | `false` | Inside a page that already has its own gutter and header (a `PageShell`): no header of its own and no horizontal or top page padding, so the form aligns with the shell's content. |
 | `class?` | `string` | `''` |  |
+| `asideLabel?` | `string` |  | Accessible name of the `<aside>` landmark. Default: 'Page sidebar' (localized). |
+| `asideWidth?` | `string` |  | Width of the aside column (any CSS length). Default `20rem`. |
 
-Snippets: `leading`: Left side of header: back button, breadcrumb. When present, overrides backHref.; `trailing`: Right side of header: status chip, secondary actions; `footer`: Sticky bottom bar: cancel / save / delete; `children`
+Snippets: `leading`: Left side of header: back button, breadcrumb. When present, overrides backHref.; `trailing`: Right side of header: status chip, secondary actions; `footer`: Sticky bottom bar: cancel / save / delete; `aside`: Companion column (preview, help, status). Beside the form from a 1280px-wide page (sticky at the top), after it below that. Rendered as `<aside>`.; `children`
 
-Parts: `ca-app-form` `ca-app-form--embedded` `ca-app-form__body` `ca-app-form__desc` `ca-app-form__footer` `ca-app-form__footer-inner` `ca-app-form__header` `ca-app-form__header-inner` `ca-app-form__inner` `ca-app-form__leading` `ca-app-form__meta` `ca-app-form__title` `ca-app-form__trailing`
+Parts: `ca-app-form` `ca-app-form--embedded` `ca-app-form__aside` `ca-app-form__body` `ca-app-form__desc` `ca-app-form__footer` `ca-app-form__footer-inner` `ca-app-form__header` `ca-app-form__header-inner` `ca-app-form__inner` `ca-app-form__leading` `ca-app-form__meta` `ca-app-form__title` `ca-app-form__trailing`
+
+Internal (may change in any release): `ca-x-aside-split`
+
+Variables: `--ca-aside-width`
 
 ## AppList
 
@@ -158,11 +164,17 @@ AppSettings: settings/preferences page layout.
 | `backLabel?` | `string` |  | Accessible name of the back link. Default: 'Back' (localized). |
 | `onback?` | `(e: MouseEvent) => void` |  | Runs when the back link is clicked, before it navigates. Call `e.preventDefault()` to take over. |
 | `embedded?` | `boolean` | `false` | Inside a page that already has its own gutter and header (a `PageShell`): no header of its own and no horizontal or top page padding, so the content aligns with the shell's. |
+| `asideLabel?` | `string` |  | Accessible name of the `<aside>` landmark. Default: 'Page sidebar' (localized). |
+| `asideWidth?` | `string` |  | Width of the aside column (any CSS length). Default `20rem`. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `actions`: Top-right slot: save / cancel buttons; `children` (`Snippet<[string]>`): Receives the active tab value as its first argument
+Snippets: `actions`: Top-right slot: save / cancel buttons; `aside`: Companion column (preview, help, status). Beside the content from a 1280px-wide page (sticky at the top), after it below that. Rendered as `<aside>`.; `children` (`Snippet<[string]>`): Receives the active tab value as its first argument
 
-Parts: `ca-app-settings` `ca-app-settings--embedded` `ca-app-settings__actions` `ca-app-settings__body` `ca-app-settings__content` `ca-app-settings__desc` `ca-app-settings__header` `ca-app-settings__leading` `ca-app-settings__meta` `ca-app-settings__nav` `ca-app-settings__nav-badge` `ca-app-settings__nav-icon` `ca-app-settings__nav-item` `ca-app-settings__nav-label` `ca-app-settings__title`
+Parts: `ca-app-settings` `ca-app-settings--embedded` `ca-app-settings__actions` `ca-app-settings__aside` `ca-app-settings__body` `ca-app-settings__content` `ca-app-settings__desc` `ca-app-settings__header` `ca-app-settings__leading` `ca-app-settings__meta` `ca-app-settings__nav` `ca-app-settings__nav-badge` `ca-app-settings__nav-icon` `ca-app-settings__nav-item` `ca-app-settings__nav-label` `ca-app-settings__title`
+
+Internal (may change in any release): `ca-x-aside-main` `ca-x-aside-split`
+
+Variables: `--ca-aside-width`
 
 ## AppShellLayout
 
@@ -573,9 +585,17 @@ Tokens: `--ca-card-bg` `--ca-card-border` `--ca-card-gap` `--ca-card-radius` `--
 
 `import { CardGrid } from "@codeatlasdev/ui"`
 
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `minItemWidth?` | `string` |  |  |
+
 Snippets: `children`
 
 Parts: `ca-card-grid`
+
+Variables: `--ca-card-grid-min`
+
+Tokens: `--ca-card-grid-min`
 
 ## Carousel
 
@@ -2755,15 +2775,19 @@ Tokens: `--ca-nf-gap` `--ca-nf-hint-leading` `--ca-nf-hint-tracking` `--ca-nf-la
 | `headerBorder?` | `boolean` | `false` | Draws a separator under the header. |
 | `publishInsets?` | `boolean` | `true` | Publish the covered rectangle on `stageInsets`. Turn off for a frame that is not over the stage. |
 | `label?` | `string` |  | Accessible name of the panel (it is a `region`). |
+| `asideLabel?` | `string` |  | Accessible name of the `<aside>` landmark. Defaults to "Page sidebar" (localized). |
+| `asideWidth?` | `string` |  | Width of the aside column (any CSS length). Default `20rem`. |
 | `class?` | `string` | `''` |  |
 
-Snippets: `header`: Title, description and actions.; `toolbar`: Fixed row under the header: search, filters, tabs.; `footer`: Fixed row at the bottom: primary actions.; `children`: Scrolling body.
+Snippets: `header`: Title, description and actions.; `toolbar`: Fixed row under the header: search, filters, tabs.; `footer`: Fixed row at the bottom: primary actions.; `aside`: `mode="page"` only: companion column (preview, help, status). Beside the content from a 1280px-wide page (sticky at the top), after it below that. Rendered as `<aside>`.; `children`: Scrolling body.
 
-Parts: `ca-page-frame` `ca-page-frame__body` `ca-page-frame__footer` `ca-page-frame__grip` `ca-page-frame__handle` `ca-page-frame__header` `ca-page-frame__panel` `ca-page-frame__toolbar`
+Parts: `ca-page-frame` `ca-page-frame__aside` `ca-page-frame__body` `ca-page-frame__footer` `ca-page-frame__grip` `ca-page-frame__handle` `ca-page-frame__header` `ca-page-frame__panel` `ca-page-frame__toolbar`
 
-Variables: `--ca-bg-default` `--ca-focus-ring-color` `--ca-focus-ring-width` `--ca-frame-border-width` `--ca-frame-drag-h` `--ca-frame-gap` `--ca-frame-pad-x` `--ca-frame-pad-y` `--ca-frame-w`
+Internal (may change in any release): `ca-x-aside-layout` `ca-x-aside-main`
 
-Data attributes: `data-bordered`, `data-detent` (`full` `peek`), `data-dragging`, `data-mode` (`page` `split`), `data-padded`, `data-sheet`, `data-side` (`left` `right`), `data-width` (`lg` `md` `sm` `xl`)
+Variables: `--ca-aside-width` `--ca-bg-default` `--ca-focus-ring-color` `--ca-focus-ring-width` `--ca-frame-border-width` `--ca-frame-drag-h` `--ca-frame-gap` `--ca-frame-pad-x` `--ca-frame-pad-y` `--ca-frame-w`
+
+Data attributes: `data-aside`, `data-bordered`, `data-detent` (`full` `peek`), `data-dragging`, `data-mode` (`page` `split`), `data-padded`, `data-sheet`, `data-side` (`left` `right`), `data-width` (`lg` `md` `sm` `xl`)
 
 ## PageShell
 

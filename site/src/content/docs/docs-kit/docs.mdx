@@ -103,7 +103,8 @@ Tables in `.ca-prose` (a bare `<table>`, or one inside `.ca-table-wrap`) size th
   { name: "Callout.title", type: "string", description: "Overrides the default localized title." },
   { name: "Steps", type: "Snippet", description: "Wraps an ordered list; each top-level item becomes a numbered step." },
   { name: "LinkCard.title / description / href", type: "string", description: "Whole-card link. title and href are required; the minimum height is 44px." },
-  { name: "CardGrid", type: "Snippet", description: "Responsive auto-fill grid for LinkCard: 16rem minimum, one column on phones." },
+  { name: "CardGrid.minItemWidth", type: "string", default: "'16rem'", description: "Narrowest a column gets, any CSS length. The grid is auto-fill: a wide area holds more columns, a phone one." },
+  { name: "CardGrid", type: "Snippet", description: "Responsive auto-fill grid for LinkCard or any cards: `minItemWidth` minimum, one column on phones." },
   { name: "MethodBadge.method", type: "string", description: "HTTP method label: GET, POST, PUT, PATCH or DELETE." },
   { name: "MethodBadge.variant", type: "'pill' | 'plain'", default: "'pill'", description: "plain drops the tinted pill, for tight lists like a sidebar." },
 ]} />

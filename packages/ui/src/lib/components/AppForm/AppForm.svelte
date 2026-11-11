@@ -59,6 +59,12 @@
      */
     embedded?:    boolean;
     class?:       string;
+    /** Companion column (preview, help, status). Beside the form from a 1280px-wide page (sticky at the top), after it below that. Rendered as `<aside>`. */
+    aside?:       Snippet;
+    /** Accessible name of the `<aside>` landmark. Default: 'Page sidebar' (localized). */
+    asideLabel?:  string;
+    /** Width of the aside column (any CSS length). Default `20rem`. */
+    asideWidth?:  string;
     children?:    Snippet;
   }
 
@@ -75,6 +81,9 @@
     trailing,
     footer,
     embedded = false,
+    aside,
+    asideLabel,
+    asideWidth,
     class: className = '',
     children,
   }: Props = $props();
@@ -111,9 +120,18 @@
 
   <!-- Body: the only scrollable block -->
   <div class="ca-app-form__body">
-    <div class="ca-app-form__inner">
-      {@render children?.()}
-    </div>
+    {#if aside}
+      <div class="ca-x-aside-split" style:--ca-aside-width={asideWidth}>
+        <div class="ca-app-form__inner">
+          {@render children?.()}
+        </div>
+        <aside class="ca-app-form__aside" aria-label={asideLabel ?? t().appForm.aside}>{@render aside()}</aside>
+      </div>
+    {:else}
+      <div class="ca-app-form__inner">
+        {@render children?.()}
+      </div>
+    {/if}
   </div>
 
   <!-- Sticky footer with glass blur -->
@@ -207,6 +225,33 @@
       gap: var(--ca-page-gap);
       box-sizing: border-box;
       width: 100%;
+    }
+
+    /* The body is the container: the aside sits beside the form once the area holds 64rem of content (a 1280px page). */
+    .ca-app-form__body:has(> .ca-x-aside-split) { container-type: inline-size; }
+    .ca-x-aside-split {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
+    }
+    .ca-app-form__aside {
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--ca-space-4);
+      padding: 0 var(--ca-page-px) var(--ca-space-10);
+    }
+    .ca-x-aside-split > .ca-app-form__inner { min-width: 0; }
+    @container (min-width: 64rem) {
+      .ca-x-aside-split { grid-template-columns: minmax(0, 1fr) var(--ca-aside-width, 20rem); }
+      .ca-app-form__aside {
+        position: sticky;
+        top: 0;
+        padding: var(--ca-space-6) var(--ca-page-px) 0 0;
+      }
+    }
+    @media (max-width: 599.98px) {
+      .ca-app-form__aside { padding-inline: var(--ca-page-px-sm); }
     }
 
     /* ── Footer sticky ─────────────────────────────────────────────── */
