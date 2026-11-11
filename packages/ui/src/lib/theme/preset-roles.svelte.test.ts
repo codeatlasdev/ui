@@ -5,6 +5,7 @@ import { checkA11y } from "../../../tests/a11y";
 import { settled } from "../../../tests/settled";
 import { VIEWPORTS } from "../../../tests/viewports";
 import Button from "../components/Button/Button.svelte";
+import Select from "../components/Select/Select.svelte";
 import TextField from "../components/TextField/TextField.svelte";
 import { defineTheme, themeCSS } from "./define.js";
 
@@ -28,6 +29,12 @@ style.textContent = themeCSS(
 						errorContrast: "oklch(0.985 0.005 25)",
 						// #695: a neutral edge that is not the brand-hued generated one.
 						borderControl: "oklch(0.55 0.015 255)",
+						// #688
+						brandText: "oklch(0.76 0.16 46)",
+						focusRing: "oklch(0.76 0.16 46)",
+						hover: "oklch(1 0 0 / 0.045)",
+						selected: "oklch(0.76 0.16 46 / 0.14)",
+						floating: "oklch(0.275 0.015 255)",
 					},
 				},
 				sizes: { inputFontSize: "0.875rem" },
@@ -37,6 +44,7 @@ style.textContent = themeCSS(
 );
 
 afterEach(async () => {
+	html.removeAttribute("data-preset");
 	style.remove();
 	html.classList.remove("dark");
 	await page.viewport(...VIEWPORTS.desktop);
@@ -124,5 +132,45 @@ describe("preset borderControl (#695)", () => {
 		await settled();
 		const wrap = screen.container.querySelector(".ca-tf__wrap") as HTMLElement;
 		expect(getComputedStyle(wrap).borderTopColor).toBe(probe("oklch(0.55 0.015 255)"));
+	});
+});
+
+// #688: brand text, focus ring, hover, selected and the floating surface reach the components.
+describe("preset brandText, focusRing, hover, selected and floating (#688)", () => {
+	const probe = (c: string) => {
+		const el = document.createElement("i");
+		el.style.color = c;
+		document.body.append(el);
+		const out = getComputedStyle(el).color;
+		el.remove();
+		return out;
+	};
+
+	it("the five tokens resolve to the configured values in the dark scheme", async () => {
+		const screen = await render(Button, { "aria-label": "Go" });
+		inNight(screen.container);
+		await settled();
+		const cs = getComputedStyle(screen.container);
+		const tok = (n: string) => cs.getPropertyValue(n).trim();
+		expect(tok("--ca-brand-text")).toBe("oklch(0.76 0.16 46)");
+		expect(tok("--ca-focus-ring")).toBe("oklch(0.76 0.16 46)");
+		expect(tok("--ca-action-hover")).toBe("oklch(1 0 0 / 0.045)");
+		expect(tok("--ca-action-selected")).toBe("oklch(0.76 0.16 46 / 0.14)");
+		expect(tok("--ca-surface-floating")).toBe("oklch(0.275 0.015 255)");
+	});
+
+	it("an open Select list paints the floating surface", async () => {
+		const screen = await render(Select, {
+			label: "Open",
+			value: "a",
+			options: [{ value: "a", label: "Alpha" }],
+		});
+		inNight(screen.container);
+		html.setAttribute("data-preset", "night"); // the list is portaled to <body>
+		await settled();
+		(screen.container.querySelector("button, [role=combobox]") as HTMLElement).click();
+		await settled();
+		const list = document.querySelector(".ca-sel__content") as HTMLElement;
+		expect(getComputedStyle(list).backgroundColor).toBe(probe("oklch(0.275 0.015 255)"));
 	});
 });

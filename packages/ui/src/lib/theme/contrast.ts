@@ -31,9 +31,14 @@ const MEASURED_ROLES = [
 	{ role: "text", min: AA, use: "text" },
 	{ role: "textSecondary", min: AA, use: "text" },
 	{ role: "textHint", min: AA, use: "text" },
+	{ role: "brandText", min: AA, use: "brand text" },
 	{ role: "borderControl", min: 3, use: "a control edge" },
+	{ role: "focusRing", min: 3, use: "a focus ring" },
 ] as const;
-type TextRole = Exclude<(typeof MEASURED_ROLES)[number]["role"], "borderControl">;
+type TextRole = "text" | "textSecondary" | "textHint";
+
+/** Fills text sits on: the text roles are measured over each of them, composited over each surface. */
+const FILL_ROLES = ["hover", "selected"] as const;
 const SURFACE_TOKENS = [
 	"--ca-surface-sunken",
 	"--ca-surface-base",
@@ -92,9 +97,29 @@ export function presetContrastIssues(t: Pick<ResolvedTheme, "presets">): PresetC
 				issues.push({
 					preset: p.id,
 					scheme,
-					...(role === "borderControl" ? {} : { role }),
+					...(role === "text" || role === "textSecondary" || role === "textHint" ? { role } : {}),
 					ratio: worst,
 					message: `preset "${p.id}" (${scheme}): ${role} ${vars[ROLE_TOKENS[role]]} is ${worst.toFixed(2)}:1 on its surface after compositing alpha, under the ${min}:1 WCAG minimum for ${use}. Raise its opacity or lighten/darken it.`,
+				});
+			}
+			// A hover or selected fill sits between a surface and the text drawn on it.
+			for (const role of FILL_ROLES) {
+				if (set[role] === undefined) continue;
+				const fill = evalColor(vars[ROLE_TOKENS[role]] ?? "");
+				const text = evalColor(vars["--ca-text-primary"] ?? "");
+				if (!fill || !text || surfaces.length === 0) continue;
+				const worst = Math.min(
+					...surfaces.map((s) => {
+						const bg = compositeOver(fill, s);
+						return rgbRatio(compositeOver(text, bg), bg);
+					})
+				);
+				if (worst >= AA) continue;
+				issues.push({
+					preset: p.id,
+					scheme,
+					ratio: worst,
+					message: `preset "${p.id}" (${scheme}): text on the ${role} fill ${vars[ROLE_TOKENS[role]]} is ${worst.toFixed(2)}:1 after compositing alpha, under the 4.5:1 WCAG AA minimum. Lower its opacity or pick a quieter color.`,
 				});
 			}
 		}

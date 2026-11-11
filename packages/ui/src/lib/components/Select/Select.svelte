@@ -331,7 +331,7 @@
       min-width: var(--ca-anchor-width);
       max-height: 280px;
       overflow-y: auto;
-      background: var(--ca-surface-overlay);
+      background: var(--ca-surface-floating, var(--ca-surface-overlay));
       border: var(--ca-border-width) solid var(--ca-outline-subtle);
       border-radius: var(--ca-radius-control);
       box-shadow: var(--ca-shadow-lg);

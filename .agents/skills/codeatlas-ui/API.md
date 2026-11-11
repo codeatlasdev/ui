@@ -87,7 +87,7 @@ Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__action
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out`
 
-Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-surface-floating`
 
 Data attributes: `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
 
@@ -811,7 +811,7 @@ Data attributes: `data-disabled`, `data-pass`
 
 Parts: `ca-combobox` `ca-combobox--error` `ca-combobox--sm` `ca-combobox__chevron` `ca-combobox__chip` `ca-combobox__chips` `ca-combobox__content` `ca-combobox__empty` `ca-combobox__hint` `ca-combobox__hint--error` `ca-combobox__input` `ca-combobox__item` `ca-combobox__item--create` `ca-combobox__item-check` `ca-combobox__label` `ca-combobox__req` `ca-combobox__search-wrap` `ca-combobox__trigger` `ca-combobox__trigger-count` `ca-combobox__trigger-label` `ca-combobox__viewport` `ca-date` `ca-date__wrap` `ca-nf` `ca-nf__wrap` `ca-sel` `ca-sel__trigger` `ca-tf` `ca-tf__wrap` `ca-validity-proxy`
 
-Variables: `--ca-anchor-width` `--ca-cb-gap` `--ca-cb-hint-leading` `--ca-cb-hint-tracking` `--ca-cb-label-line-height` `--ca-cb-label-tracking` `--ca-cb-letter-spacing` `--ca-cb-line-height` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height`
+Variables: `--ca-anchor-width` `--ca-cb-gap` `--ca-cb-hint-leading` `--ca-cb-hint-tracking` `--ca-cb-label-line-height` `--ca-cb-label-tracking` `--ca-cb-letter-spacing` `--ca-cb-line-height` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-surface-floating`
 
 Data attributes: `data-ca-field` (`filled` `underline`), `data-disabled`, `data-highlighted`, `data-state` (`open`)
 
@@ -836,7 +836,7 @@ Parts: `ca-cmd-dialog` `ca-cmd-empty` `ca-cmd-error` `ca-cmd-group__label` `ca-c
 
 Internal (may change in any release): `ca-cmd-slide-in` `ca-cmd-slide-out` `ca-cmd-spin` `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out`
 
-Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-surface-floating`
 
 Data attributes: `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
 
@@ -1217,7 +1217,7 @@ Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__action
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out`
 
-Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-surface-floating`
 
 Data attributes: `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
 
@@ -1297,7 +1297,7 @@ Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__action
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-docs-search-in` `ca-docs-search-out` `ca-docs-search-pop-in` `ca-docs-search-pop-out` `ca-overlay-in` `ca-overlay-out`
 
-Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-surface-floating`
 
 Data attributes: `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
 
@@ -1355,7 +1355,7 @@ Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__action
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-drawer-bottom-in` `ca-drawer-bottom-out` `ca-drawer-left-in` `ca-drawer-left-out` `ca-drawer-right-in` `ca-drawer-right-out` `ca-overlay-in` `ca-overlay-out`
 
-Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-surface-floating`
 
 Data attributes: `data-chromeless`, `data-full-bleed` (`lg` `md` `sm`), `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
 
@@ -3098,7 +3098,7 @@ Tokens: `--ca-seg-item-font-size` `--ca-seg-item-line-height` `--ca-seg-item-pad
 
 Parts: `ca-combobox` `ca-combobox__trigger` `ca-date` `ca-date__wrap` `ca-nf` `ca-nf__wrap` `ca-sel` `ca-sel--sm` `ca-sel__check` `ca-sel__content` `ca-sel__hint` `ca-sel__hint--error` `ca-sel__icon` `ca-sel__item` `ca-sel__item-label` `ca-sel__label` `ca-sel__req` `ca-sel__trigger` `ca-sel__value` `ca-sel__value--placeholder` `ca-tf` `ca-tf__wrap` `ca-validity-proxy`
 
-Variables: `--ca-anchor-width` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-sel-gap` `--ca-sel-hint-leading` `--ca-sel-hint-tracking` `--ca-sel-label-line-height` `--ca-sel-label-tracking` `--ca-sel-letter-spacing` `--ca-sel-line-height`
+Variables: `--ca-anchor-width` `--ca-field-border-width` `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading` `--ca-field-hint-tracking` `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-min-width` `--ca-field-required-color` `--ca-field-width` `--ca-input-letter-spacing` `--ca-input-line-height` `--ca-sel-gap` `--ca-sel-hint-leading` `--ca-sel-hint-tracking` `--ca-sel-label-line-height` `--ca-sel-label-tracking` `--ca-sel-letter-spacing` `--ca-sel-line-height` `--ca-surface-floating`
 
 Data attributes: `data-ca-field` (`filled` `underline`), `data-disabled`, `data-highlighted`, `data-selected`, `data-state` (`open`)
 
@@ -3157,7 +3157,7 @@ Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__action
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out` `ca-sheet-fade-in` `ca-sheet-fade-out` `ca-sheet-in` `ca-sheet-out`
 
-Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-surface-floating`
 
 Data attributes: `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
 
@@ -5240,7 +5240,7 @@ Types:
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
 | `Responsive` | `type Responsive<T> = T \| ({ base?: T } & { [B in Breakpoint]?: T });` | A value, or one value per breakpoint: `{ base: "2", md: "6" }`. A breakpoint applies from its width up. |
 | `Rgba` | `type Rgba = [number, number, number, number];` | `[r, g, b, a]`: r, g, b in 0-255, a in 0-1 (what `@deck.gl/core` `Color` expects, alpha scaled by the caller). |
-| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: ColorValue; brandFillHover?: ColorValue; brandContrast?: ColorValue; background?: ColorValue; sunken?: ColorValue; surface?: ColorValue; overlay?: ColorValue; text?: ColorValue; textSecondary?: ColorValue; textHint?: ColorValue; textDisabled?: ColorValue; borderSubtle?: ColorValue; border?: ColorValue; borderStrong?: ColorValue; borderControl?: ColorValue; success?: ColorValue; warning?: ColorValue; info?: ColorValue; error?: ColorValue; errorFill?: ColorValue; errorContrast?: ColorValue; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it, and the build measures text roles after compositing it (see `presetContrastIssues`). |
+| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: ColorValue; brandFillHover?: ColorValue; brandContrast?: ColorValue; background?: ColorValue; sunken?: ColorValue; surface?: ColorValue; overlay?: ColorValue; text?: ColorValue; textSecondary?: ColorValue; textHint?: ColorValue; textDisabled?: ColorValue; borderSubtle?: ColorValue; border?: ColorValue; borderStrong?: ColorValue; borderControl?: ColorValue; brandText?: ColorValue; focusRing?: ColorValue; hover?: ColorValue; selected?: ColorValue; floating?: ColorValue; success?: ColorValue; warning?: ColorValue; info?: ColorValue; error?: ColorValue; errorFill?: ColorValue; errorContrast?: ColorValue; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it, and the build measures text roles after compositing it (see `presetContrastIssues`). |
 | `SegmentedTokens` | `interface SegmentedTokens extends SegmentedItemTokens { sm?: SegmentedItemTokens; md?: SegmentedItemTokens; }` |  |
 | `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
 | `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
@@ -5818,6 +5818,11 @@ Types:
 | `border?` | `ColorValue` |  |
 | `borderStrong?` | `ColorValue` |  |
 | `borderControl?` | `ColorValue` | Edge of a field or control (--ca-outline-control: neutral outlined Button, TextField, Select, Checkbox box). Measured at 3:1 on every surface after compositing alpha (WCAG 1.4.11). Defaults to a value generated from the brand hue. |
+| `brandText?` | `ColorValue` | Brand-coloured text: outlined and ghost labels, links, active nav (--ca-brand-text). Measured at 4.5:1 on every surface. Defaults to a value solved from the brand. |
+| `focusRing?` | `ColorValue` | Keyboard focus ring (--ca-focus-ring). Measured at 3:1 on every surface (WCAG 1.4.11). Defaults to a value solved from the brand. |
+| `hover?` | `ColorValue` | Hover fill of rows, items and ghost controls (--ca-action-hover); may be translucent. Text is measured over it. |
+| `selected?` | `ColorValue` | Selected fill (--ca-action-selected); may be translucent. Text is measured over it. |
+| `floating?` | `ColorValue` | Fourth surface step above `overlay`: Popover, DropdownMenu, Select, Combobox, Dialog and Toast (--ca-surface-floating). Unset keeps `overlay`. |
 | `success?` | `ColorValue` |  |
 | `warning?` | `ColorValue` |  |
 | `info?` | `ColorValue` |  |
@@ -6169,7 +6174,7 @@ Types:
 | `Paper` | `type Paper = "mesh" \| "plain" \| "grid" \| "dots" \| "lines";` | Page background pattern. mesh = brand glow gradients (drawn by the glass and frosted materials); the rest are flat paper. |
 | `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; tokens?: PresetTokenGroups; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `PresetSizes` | `interface PresetSizes { inputFontSize?: string; }` |  |
-| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: ColorValue; brandFillHover?: ColorValue; brandContrast?: ColorValue; background?: ColorValue; sunken?: ColorValue; surface?: ColorValue; overlay?: ColorValue; text?: ColorValue; textSecondary?: ColorValue; textHint?: ColorValue; textDisabled?: ColorValue; borderSubtle?: ColorValue; border?: ColorValue; borderStrong?: ColorValue; borderControl?: ColorValue; success?: ColorValue; warning?: ColorValue; info?: ColorValue; error?: ColorValue; errorFill?: ColorValue; errorContrast?: ColorValue; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it, and the build measures text roles after compositing it (see `presetContrastIssues`). |
+| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: ColorValue; brandFillHover?: ColorValue; brandContrast?: ColorValue; background?: ColorValue; sunken?: ColorValue; surface?: ColorValue; overlay?: ColorValue; text?: ColorValue; textSecondary?: ColorValue; textHint?: ColorValue; textDisabled?: ColorValue; borderSubtle?: ColorValue; border?: ColorValue; borderStrong?: ColorValue; borderControl?: ColorValue; brandText?: ColorValue; focusRing?: ColorValue; hover?: ColorValue; selected?: ColorValue; floating?: ColorValue; success?: ColorValue; warning?: ColorValue; info?: ColorValue; error?: ColorValue; errorFill?: ColorValue; errorContrast?: ColorValue; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it, and the build measures text roles after compositing it (see `presetContrastIssues`). |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
 
 #### CaUIAstroOptions
@@ -6215,6 +6220,11 @@ Types:
 | `border?` | `ColorValue` |  |
 | `borderStrong?` | `ColorValue` |  |
 | `borderControl?` | `ColorValue` | Edge of a field or control (--ca-outline-control: neutral outlined Button, TextField, Select, Checkbox box). Measured at 3:1 on every surface after compositing alpha (WCAG 1.4.11). Defaults to a value generated from the brand hue. |
+| `brandText?` | `ColorValue` | Brand-coloured text: outlined and ghost labels, links, active nav (--ca-brand-text). Measured at 4.5:1 on every surface. Defaults to a value solved from the brand. |
+| `focusRing?` | `ColorValue` | Keyboard focus ring (--ca-focus-ring). Measured at 3:1 on every surface (WCAG 1.4.11). Defaults to a value solved from the brand. |
+| `hover?` | `ColorValue` | Hover fill of rows, items and ghost controls (--ca-action-hover); may be translucent. Text is measured over it. |
+| `selected?` | `ColorValue` | Selected fill (--ca-action-selected); may be translucent. Text is measured over it. |
+| `floating?` | `ColorValue` | Fourth surface step above `overlay`: Popover, DropdownMenu, Select, Combobox, Dialog and Toast (--ca-surface-floating). Unset keeps `overlay`. |
 | `success?` | `ColorValue` |  |
 | `warning?` | `ColorValue` |  |
 | `info?` | `ColorValue` |  |

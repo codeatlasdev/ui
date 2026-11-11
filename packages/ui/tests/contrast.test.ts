@@ -104,9 +104,17 @@ function resolved(src: Parameters<typeof presetCSS>[0], scheme: "light" | "dark"
 
 /** Resolve `var(--x)` chains and `color-mix(in oklab, A p%, transparent)` to an `oklch(... / a)` string. */
 function resolve(tokens: Record<string, string>, name: string): string {
-	let v = tokens[name];
-	for (let i = 0; i < 8 && v?.startsWith("var("); i++) v = tokens[v.match(/var\((--[\w-]+)\)/)![1]];
+	const v = expr(tokens, tokens[name]);
 	if (!v) throw new Error(`token ${name} missing`);
+	return v;
+}
+/** `var(--a)` and `var(--a, fallback)`, as the browser reads them: the fallback when `--a` is unset (#688). */
+function expr(tokens: Record<string, string>, v: string | undefined): string | undefined {
+	for (let i = 0; i < 8 && v?.startsWith("var("); i++) {
+		const m = /^var\((--[\w-]+)(?:,\s*(.+))?\)$/.exec(v);
+		if (!m) break;
+		v = tokens[m[1]] ?? m[2];
+	}
 	return v;
 }
 
@@ -253,9 +261,9 @@ describe("overlay surfaces (#23)", () => {
 			it(`${src.id} ${scheme}: text on --ca-overlay-bg >= 4.5:1 over white, black and gray`, () => {
 				const t = resolved(src, scheme);
 				const bgColor = resolve(t, "--ca-overlay-bg");
-				const layer = /color-mix\(in oklab, var\((--[\w-]+)\) (\d+)%, transparent\)/.exec(bgColor);
+				const layer = /color-mix\(in oklab, (var\(.+\)) (\d+)%, transparent\)/.exec(bgColor);
 				const colour = layer
-					? `${resolve(t, layer[1]).replace(/\)$/, "")} / ${Number(layer[2]) / 100})`
+					? `${expr(t, layer[1])?.replace(/\)$/, "")} / ${Number(layer[2]) / 100})`
 					: bgColor;
 				for (const backdrop of [
 					[1, 1, 1],

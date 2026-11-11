@@ -476,7 +476,7 @@
     /* ── Dropdown content ──────────────────────────────────────── */
     :global(.ca-combobox__content) {
       border-radius: var(--ca-radius-lg);
-      background: var(--ca-surface-overlay);
+      background: var(--ca-surface-floating, var(--ca-surface-overlay));
       border: var(--ca-border-width) solid var(--ca-outline-subtle);
       box-shadow: var(--ca-shadow-lg);
       overflow: hidden;

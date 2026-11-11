@@ -249,7 +249,7 @@
    * Carries primary text, so it is near-opaque by construction: the contrast of its labels must not
    * depend on the page behind. The blur stays for the glass look. --ca-overlay-bg-glass is the old
    * see-through tint, for demos and decorative layers only. */
-  --ca-overlay-bg:          color-mix(in oklab, var(--ca-surface-overlay) 94%, transparent);
+  --ca-overlay-bg:          color-mix(in oklab, var(--ca-surface-floating, var(--ca-surface-overlay)) 94%, transparent);
   --ca-overlay-bg-glass:    var(--ca-glass-tint-thin);
   --ca-overlay-blur:        var(--ca-blur-thin);
   --ca-overlay-border:      var(--ca-glass-border);
@@ -416,7 +416,7 @@
   --ca-panel-blur:      none;
   --ca-chrome-blur:     none;
   --ca-upload-blur:     none;
-  --ca-overlay-bg:      var(--ca-surface-overlay);
+  --ca-overlay-bg:      var(--ca-surface-floating, var(--ca-surface-overlay));
   --ca-panel-bg:        var(--ca-surface-overlay);
   --ca-chrome-bg:       var(--ca-surface-raised);
   --ca-upload-bg:       var(--ca-surface-raised);

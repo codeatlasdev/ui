@@ -1,4 +1,5 @@
 import { describe, expect, it, spyOn } from "bun:test";
+import { readFileSync } from "node:fs";
 import { presetContrastIssues } from "../src/lib/theme/contrast.js";
 import { defineTheme, presetTokens, themeCSS } from "../src/lib/theme/define.js";
 import { contrastRatio, hexToOklch } from "../src/lib/utils/palette-generator.js";
@@ -253,5 +254,62 @@ describe("borderControl is a preset role (#695)", () => {
 		expect(issues("oklch(0.3 0.01 255)")).toHaveLength(1);
 		expect(issues("oklch(1 0 0 / 0.05)")[0]?.message).toContain("borderControl");
 		expect(issues(set)).toEqual([]);
+	});
+});
+
+// #688: brand text, focus ring, hover, selected and a fourth (floating) surface are preset roles.
+describe("brandText, focusRing, hover, selected and floating are preset roles (#688)", () => {
+	const dark = {
+		brandText: "oklch(0.76 0.16 46)",
+		focusRing: "oklch(0.76 0.16 46)",
+		hover: "oklch(1 0 0 / 0.045)",
+		selected: "color-mix(in oklab, oklch(0.76 0.16 46) 14%, transparent)",
+		floating: "oklch(0.275 0.015 255)",
+	};
+
+	it("emits one token per role for the scheme that sets it", () => {
+		const t = presetTokens({ id: "x", color: "#f27636", colors: { dark } });
+		expect(t.dark["--ca-brand-text"]).toBe(dark.brandText);
+		expect(t.dark["--ca-focus-ring"]).toBe(dark.focusRing);
+		expect(t.dark["--ca-action-hover"]).toBe(dark.hover);
+		expect(t.dark["--ca-action-selected"]).toBe(dark.selected);
+		expect(t.dark["--ca-surface-floating"]).toBe(dark.floating);
+		const free = presetTokens({ id: "x", color: "#f27636" });
+		expect(t.light).toEqual(free.light);
+		expect(free.dark["--ca-surface-floating"]).toBeUndefined();
+	});
+
+	it("reaches themeCSS in the dark selectors", () => {
+		const css = themeCSS(preset({ colors: { dark } }));
+		expect(selectorOf(css, "--ca-surface-floating: oklch(0.275 0.015 255)")).toContain(".dark");
+	});
+
+	it("measures brandText at 4.5:1 and focusRing at 3:1 on every surface", () => {
+		const issues = (colors: object) => presetContrastIssues(preset({ colors: { dark: colors } }));
+		expect(issues({ brandText: "oklch(0.35 0.1 46)" })[0]?.message).toContain("brandText");
+		expect(issues({ focusRing: "oklch(0.3 0.05 46)" })[0]?.message).toContain("focusRing");
+		expect(issues({ brandText: dark.brandText, focusRing: dark.focusRing })).toEqual([]);
+	});
+
+	it("measures text on the hover and selected fills, composited over each surface", () => {
+		const issues = (colors: object) => presetContrastIssues(preset({ colors: { dark: colors } }));
+		const found = issues({ hover: "oklch(1 0 0 / 0.9)" });
+		expect(found.some((i) => i.message.includes("hover"))).toBe(true);
+		expect(issues({ hover: dark.hover, selected: dark.selected })).toEqual([]);
+	});
+
+	it("Popover, Select, Combobox and Dialog read the floating surface, falling back to overlay", () => {
+		for (const f of [
+			"components/Select/Select.svelte",
+			"components/Combobox/Combobox.svelte",
+			"components/Dialog/dialog.css",
+		])
+			expect(readFileSync(new URL(`../src/lib/${f}`, import.meta.url), "utf8")).toContain(
+				"var(--ca-surface-floating, var(--ca-surface-overlay))"
+			);
+		const mat = readFileSync(new URL("../src/lib/styles/materials.css", import.meta.url), "utf8");
+		expect(mat).toMatch(
+			/--ca-overlay-bg:\s*color-mix\(in oklab, var\(--ca-surface-floating, var\(--ca-surface-overlay\)\)/
+		);
 	});
 });
