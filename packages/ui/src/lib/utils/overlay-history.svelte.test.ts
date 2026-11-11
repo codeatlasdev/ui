@@ -35,15 +35,29 @@ afterEach(async () => {
 });
 
 describe("bridgeOverlaysToHistory", () => {
+	it("opens and closes on Back also when the tab starts one entry back (#1018)", async () => {
+		// What a slow runner left behind: a forward entry the next push replaces.
+		history.pushState({ ...history.state }, "");
+		await back();
+		const screen = await render(Harness);
+		const url = location.href;
+		await screen.getByRole("button", { name: "Open sheet" }).click();
+		await expect.element(page.getByRole("dialog", { name: "Filters" })).toBeVisible();
+		await expect.poll(() => history.state?.caOverlays).toBe(1);
+		await back();
+		expect(state().sheet).toBe(false);
+		expect(location.href).toBe(url);
+	});
+
 	it("Back closes a Sheet, stays on the route and restores focus to the opener", async () => {
 		const screen = await render(Harness);
 		const url = location.href;
-		const length = history.length;
 		const opener = screen.getByRole("button", { name: "Open sheet" });
 		await opener.click();
 		await expect.element(page.getByRole("dialog", { name: "Filters" })).toBeVisible();
-		// The entry is pushed after the dialog shows; read at once it was 3 vs 4 on the CI runner (#1013).
-		await expect.poll(() => history.length).toBe(length + 1);
+		// The current entry is the overlay's. Not history.length: when the tab is still one entry back (a traversal
+		// from the previous test landing late), the push replaces the forward entry and the length stays (#1018).
+		await expect.poll(() => history.state?.caOverlays).toBe(1);
 		await back();
 		expect(state().sheet).toBe(false);
 		expect(location.href).toBe(url);
