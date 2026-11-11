@@ -576,6 +576,27 @@ Variables: `--ca-carousel-per-view`
 
 Tokens: `--ca-carousel-per-view`
 
+## CenteredPage
+
+`import { CenteredPage } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `maxWidth?` | `'sm' \| 'md' \| 'lg' \| (string & {})` | `'md'` | Column width cap: `sm` 24rem, `md` 28rem (default), `lg` 36rem or any CSS length. |
+| `brandHref?` | `string` | `'/'` |  |
+| `brandLabel?` | `string` |  | Accessible name of the brand link (a logo alone has none). |
+| `mainId?` | `string \| null` | `'main'` | `id` of the `<main>`, the target of the skip link. `null` renders a plain `div` and no skip link: the page owns `<main>`. |
+| `surface?` | `'base' \| 'mesh'` | `'base'` | `mesh` lets the style's page paint show through instead of the flat base surface. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `brand`: Rendered above the column, linked to `brandHref`. The library draws no default logo.; `children`
+
+Parts: `ca-centered` `ca-centered__brand` `ca-centered__column`
+
+Variables: `--ca-centered-width`
+
+Data attributes: `data-surface` (`mesh`)
+
 ## CepField
 
 `import { CepField } from "@codeatlasdev/ui/forms"`

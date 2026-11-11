@@ -1,0 +1,42 @@
+---
+title: CenteredPage
+description: "A transactional page outside the app shell (invite, OAuth consent, notices): one narrow column centred both ways, with the landmark, skip link, viewport height and safe areas done."
+group: Layout
+order: 105
+---
+import Props from "~/components/docs/Props.astro";
+import Demo from "~/components/docs/Demo.astro";
+import InviteConsent from "~/demos/layout/centered-page/InviteConsent.svelte";
+import InviteConsentSrc from "~/demos/layout/centered-page/InviteConsent.svelte?raw";
+
+```svelte
+<script>
+  import { AuthCard, Button, CenteredPage } from "@codeatlasdev/ui";
+</script>
+
+<CenteredPage maxWidth="sm">
+  {#snippet brand()}<img src="/logo.svg" alt="" width="32" height="32" />{/snippet}
+  <AuthCard title="Join Acme" subtitle="Ana invited you to the Design workspace.">
+    <Button fullWidth>Accept invite</Button>
+  </AuthCard>
+</CenteredPage>
+```
+
+It renders the skip link and `<main id="main" tabindex="-1">`, so the page has exactly one landmark. The column is `min(100%, maxWidth)` wide and centred both ways inside a `--ca-vh` tall page (the mobile browser chrome does not clip it), with at least `--ca-space-5` of padding on every side and the device's safe area where it is larger (the notch and the home indicator). Content taller than the viewport scrolls the page, not the column. The background is `--ca-surface-base`; `surface="mesh"` lets the style's page paint through.
+
+The library draws no logo: pass the `brand` snippet (linked to `brandHref`, default `/`; give it `brandLabel` when the logo has no text). `mainId={null}` renders neither the `id` nor the skip link, for a page inside another landmark.
+
+<Demo title="Invite and consent" description="Opens a full-page invite; switch to Consent for an OAuth screen." src={InviteConsentSrc}><InviteConsent client:visible /></Demo>
+
+For a sign in with a brand panel use [AuthLayout](/docs/layout/auth-layout/); for an error use [ErrorPage](/docs/layout/error-page/); for a page with a header and actions use [PageShell](/docs/layout/page-shell/).
+
+<Props for="CenteredPage" rows={[
+  { name: "maxWidth", type: "'sm' | 'md' | 'lg' | string", default: "'md'", description: "Column cap: `sm` 24rem, `md` 28rem, `lg` 36rem or any CSS length." },
+  { name: "brand", type: "Snippet", description: "Rendered above the column. No default logo." },
+  { name: "brandHref", type: "string", default: "'/'", description: "Where the brand links." },
+  { name: "brandLabel", type: "string", description: "Accessible name of the brand link." },
+  { name: "mainId", type: "string | null", default: "'main'", description: "`id` of the `<main>` and the skip link target. `null` renders neither." },
+  { name: "surface", type: "'base' | 'mesh'", default: "'base'", description: "`mesh` shows the style's page paint instead of the flat base surface." },
+  { name: "children", type: "Snippet", description: "The column content, usually a `Card` or `AuthCard`." },
+  { name: "class", type: "string", default: "''", description: "Extra class names." },
+]} />

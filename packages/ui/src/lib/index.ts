@@ -70,6 +70,7 @@ export { default as ButtonGroup } from "./components/ButtonGroup/ButtonGroup.sve
 export { default as Card } from "./components/Card/Card.svelte";
 export { default as Carousel } from "./components/Carousel/Carousel.svelte";
 export { default as CarouselItem } from "./components/Carousel/CarouselItem.svelte";
+export { default as CenteredPage } from "./components/CenteredPage/CenteredPage.svelte";
 export { default as Checkbox } from "./components/Checkbox/Checkbox.svelte";
 export { default as Chip } from "./components/Chip/Chip.svelte";
 export { default as ChipRow } from "./components/Chip/ChipRow.svelte";
