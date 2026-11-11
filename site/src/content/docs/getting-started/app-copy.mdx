@@ -25,7 +25,7 @@ Allowed, because they are not literal words:
 - Everything inside `<script>` and `<style>`, and every `.ts` file. That is where the copy lives.
 - A line (or the line below a marker) with `ca-ui-workaround(#n)`, for the rare literal that must stay.
 
-The same run also reports `hex`, `px`, `inline-style` and `global-ca`; see [Installation](/docs/getting-started/installation/#lint-and-e2e-templates) for how to run it and wire it into CI.
+The same run also reports `hex`, `px`, `inline-style`, `global-ca` and the layout rules (`layout-css`, `breakpoint`, `vh-offset`, `fixed-width-row`, `nested-surface`; [layout principles](/docs/getting-started/layout-principles/#lint-rules)); see [Installation](/docs/getting-started/installation/#lint-and-e2e-templates) for how to run it and wire it into CI.
 
 ## The pattern: one typed `messages.ts`
 

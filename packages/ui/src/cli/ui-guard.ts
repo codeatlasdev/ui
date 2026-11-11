@@ -19,6 +19,7 @@
 import { existsSync, readdirSync, readFileSync, statSync } from "node:fs";
 import { join, relative, resolve } from "node:path";
 import { parse } from "svelte/compiler";
+import { BREAKPOINTS } from "../lib/components/Layout/layout.ts";
 
 export const GUARD_RULES = [
 	"hex",
@@ -120,6 +121,33 @@ function templateText(src: string): { index: number; text: string }[] {
 	return out;
 }
 
+const SURFACES = new Set(["Card", "Surface"]);
+
+/** Offsets of a Card/Surface whose first child is another Card/Surface (`<Card skeleton />` has none). */
+function nestedSurfaces(src: string): number[] {
+	const out: number[] = [];
+	const walk = (node: unknown) => {
+		if (!node || typeof node !== "object") return;
+		if (Array.isArray(node)) return void node.forEach(walk);
+		const n = node as TemplateNode;
+		if (n.type === "Component" && SURFACES.has(n.name ?? "")) {
+			const first = (n.fragment as { nodes: TemplateNode[] }).nodes.find(
+				(c) => c.type !== "Text" || c.data?.trim()
+			);
+			if (first?.type === "Component" && SURFACES.has(first.name ?? "")) out.push(first.start);
+		}
+		for (const key of Object.keys(n)) {
+			if (key === "parent" || key === "expression" || key === "attributes") continue;
+			const v = n[key];
+			if (v && typeof v === "object") walk(v);
+		}
+	};
+	walk(parse(src, { modern: true }).fragment);
+	return out;
+}
+
+const scale: number[] = Object.values(BREAKPOINTS);
+
 export function guardSource(
 	file: string,
 	src: string,
@@ -155,24 +183,24 @@ export function guardSource(
 					`raw size ${px[0]}: use a --ca-space-* or radius token`
 				);
 		}
-		// The scale (600 / 900 / 1200 / 1536); max-width sits 0.02px below a step so both sides never
+		// The scale from BREAKPOINTS; max-width sits 0.02px below a step so both sides never
 		// match at the exact width (#916): `max-width: 899.98px`, `min-width: 900px`.
-		const scale = [600, 900, 1200, 1536];
-		for (const m of text.matchAll(/@media[^{]*?\((max|min)-width:\s*([0-9.]+)px\)/g)) {
-			const w = Number(m[2]);
-			const ok =
-				m[1] === "max" ? scale.some((s) => Math.abs(w - (s - 0.02)) < 0.001) : scale.includes(w);
-			if (ok) continue;
-			const near = scale.reduce((a, b) => (Math.abs(b - w) < Math.abs(a - w) ? b : a));
-			const fix = m[1] === "max" ? `${near - 0.02}px` : `${near}px`;
-			add(
-				offset + (m.index ?? 0),
-				"breakpoint",
-				`@media ${m[1]}-width ${m[2]}px: use ${m[1]}-width ${fix} (the 600 / 900 / 1200 / 1536 scale, max-width 0.02px below), or @container`
-			);
-		}
+		for (const q of text.matchAll(/@media[^{]*/g))
+			for (const m of q[0].matchAll(/\((max|min)-width:\s*([0-9.]+)px\)/g)) {
+				const w = Number(m[2]);
+				const ok =
+					m[1] === "max" ? scale.some((s) => Math.abs(w - (s - 0.02)) < 0.001) : scale.includes(w);
+				if (ok) continue;
+				const near = scale.reduce((a, b) => (Math.abs(b - w) < Math.abs(a - w) ? b : a));
+				const fix = m[1] === "max" ? `${near - 0.02}px` : `${near}px`;
+				add(
+					offset + (q.index ?? 0) + (m.index ?? 0),
+					"breakpoint",
+					`@media ${m[1]}-width ${m[2]}px: use ${m[1]}-width ${fix} (the ${scale.join(" / ")} scale, max-width 0.02px below), or @container`
+				);
+			}
 		for (const decl of values.matchAll(
-			/(padding|margin|gap|row-gap|column-gap)(?:-[a-z-]+)?\s*:\s*([^;{}]+)[;}]?/g
+			/(?<![\w-])(padding|margin|gap|row-gap|column-gap)(?:-[a-z-]+)?\s*:\s*([^;{}]+)[;}]?/g
 		)) {
 			const value = decl[2].replace(/var\([^)]*\)/g, "");
 			if (/(?<![\w.-])\d*\.?\d+(rem|em)\b/.test(value))
@@ -193,7 +221,9 @@ export function guardSource(
 			if (
 				/white-space\s*:\s*nowrap/.test(body) &&
 				/flex\s*:\s*1\b|flex-grow\s*:\s*[1-9]/.test(body) &&
-				!/min-width\s*:\s*0/.test(body)
+				!/min-width\s*:\s*0/.test(body) &&
+				// overflow other than visible makes the automatic minimum width 0 already.
+				!/overflow(?:-x)?\s*:\s*(?:hidden|auto|scroll|clip)/.test(body)
 			)
 				add(
 					offset + (block.index ?? 0),
@@ -228,14 +258,21 @@ export function guardSource(
 					"inline style: use a class with tokens (only --custom-properties may be inline)"
 				);
 		}
-	}
-	if (/\.(svelte|astro)$/.test(file)) {
-		const markup = bare.replace(/<style\b[\s\S]*?<\/style>|<script\b[\s\S]*?<\/script>/g, (c) =>
-			c.replace(/[^\n]/g, " ")
-		);
-		for (const m of markup.matchAll(/<(?:Card|Surface)\b[^>]*>\s*(<(?:Card|Surface)\b)/g))
+		// .astro has no Svelte AST: an opening tag, minus `=>` in attributes, not self-closing.
+		let nested: number[] = [];
+		if (file.endsWith(".svelte"))
+			try {
+				nested = nestedSurfaces(src);
+			} catch {
+				// A file svelte cannot parse is the compiler's error to report, not the guard's.
+			}
+		else
+			nested = [
+				...markup.matchAll(/<(?:Card|Surface)\b(?:[^>]|=>)*?(?<!\/)>\s*(<(?:Card|Surface)\b)/g),
+			].map((m) => (m.index ?? 0) + m[0].lastIndexOf(m[1] ?? "<"));
+		for (const index of nested)
 			add(
-				(m.index ?? 0) + m[0].lastIndexOf(m[1] ?? "<"),
+				index,
 				"nested-surface",
 				"a surface directly inside another: separate with a divider or spacing, one frame per group"
 			);

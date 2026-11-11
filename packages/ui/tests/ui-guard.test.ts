@@ -1,7 +1,7 @@
 import { afterAll, describe, expect, it } from "bun:test";
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
-import { guardSource, runGuard } from "../src/cli/ui-guard.ts";
+import { GUARD_RULES, guardSource, runGuard } from "../src/cli/ui-guard.ts";
 import { cleanTmp, tmpDir } from "./tmp";
 
 afterAll(cleanTmp);
@@ -118,6 +118,14 @@ describe("ui guard: layout rules (#920)", () => {
 		expect(rules("app.css", ".a { width: 2rem; }")).toEqual([]);
 	});
 
+	it("layout-css: a property that only contains the word is not spacing", () => {
+		expect(rules("app.css", ".a { --card-padding: 1.5rem; }")).toEqual([]);
+		expect(rules("app.css", ".a { scroll-margin-top: 4rem; }")).toEqual([]);
+		expect(rules("app.css", ".a { scroll-padding: 2rem; }")).toEqual([]);
+		expect(rules("app.css", ".a { margin-top: 4rem; }")).toEqual(["layout-css:1"]);
+		expect(rules("app.css", ".a { padding-inline: 1.3rem; }")).toEqual(["layout-css:1"]);
+	});
+
 	it("breakpoint: a media width off the 600/900/1200/1536 scale", () => {
 		expect(rules("app.css", "@media (max-width: 768px) { .a { color: red } }")).toEqual([
 			"breakpoint:1",
@@ -130,6 +138,17 @@ describe("ui guard: layout rules (#920)", () => {
 		).toEqual([]);
 		// A container query answers the component's own width: any threshold is fine.
 		expect(rules("app.css", "@container (min-width: 37rem) { .a {} }")).toEqual([]);
+	});
+
+	it("breakpoint: every width condition of one query is checked, not only the first", () => {
+		const out = rules("app.css", "@media (min-width: 600px) and (max-width: 900px) { .a {} }");
+		expect(out).toEqual(["breakpoint:1"]);
+		expect(
+			rules("app.css", "@media (min-width: 600px) and (max-width: 899.98px) { .a {} }")
+		).toEqual([]);
+		expect(rules("app.css", "@media (min-width: 700px) and (max-width: 1000px) { .a {} }")).toEqual(
+			["breakpoint:1", "breakpoint:1"]
+		);
 	});
 
 	it("vh-offset: a magic offset subtracted from the viewport height", () => {
@@ -147,6 +166,19 @@ describe("ui guard: layout rules (#920)", () => {
 		expect(rules("app.css", ".t { white-space: nowrap; }")).toEqual([]);
 	});
 
+	it("fixed-width-row: overflow hidden, auto or scroll already lets the item shrink", () => {
+		for (const o of ["hidden", "auto", "scroll"])
+			expect(
+				rules(
+					"app.css",
+					`.t { flex: 1; white-space: nowrap; overflow: ${o}; text-overflow: ellipsis; }`
+				)
+			).toEqual([]);
+		expect(rules("app.css", ".t { flex: 1; white-space: nowrap; overflow: visible; }")).toEqual([
+			"fixed-width-row:1",
+		]);
+	});
+
 	it("nested-surface: a Card or Surface directly inside another", () => {
 		const nested =
 			'<script>import { Card } from "@codeatlasdev/ui";</script>\n<Card>\n  <Card>x</Card>\n</Card>';
@@ -155,6 +187,25 @@ describe("ui guard: layout rules (#920)", () => {
 		]);
 		const ok = "<Card>\n  <section><p>{t.a}</p></section>\n</Card>";
 		expect(rules("A.svelte", ok).filter((r) => r.startsWith("nested-surface"))).toEqual([]);
+	});
+
+	it("nested-surface: sibling self-closing surfaces are not nesting", () => {
+		const siblings = "<Card skeleton />\n<Card skeleton />";
+		expect(rules("A.svelte", siblings)).toEqual([]);
+		const inner = "<Card>\n  <Card skeleton />\n</Card>";
+		expect(rules("A.svelte", inner)).toEqual(["nested-surface:2"]);
+	});
+
+	it("nested-surface: an arrow function in an attribute does not hide real nesting", () => {
+		const src = "<Card onclick={() => go()}>\n  <Card>x</Card>\n</Card>";
+		expect(rules("A.svelte", src)).toEqual(["nested-surface:2"]);
+	});
+
+	it("nested-surface: .astro markup gets the same two cases", () => {
+		expect(rules("A.astro", "<Card skeleton />\n<Card skeleton />")).toEqual([]);
+		expect(rules("A.astro", "<Card onclick={() => go()}>\n  <Card>x</Card>\n</Card>")).toEqual([
+			"nested-surface:2",
+		]);
 	});
 
 	it("rules can be chosen", () => {
@@ -177,5 +228,25 @@ describe("ui guard: breakpoint convention (#916)", () => {
 			rules("app.css", "@media (max-width: 899.98px) { .a {} } @media (min-width: 900px) { .b {} }")
 		).toEqual([]);
 		expect(rules("app.css", "@media (min-width: 899.98px) { .a {} }")).toEqual(["breakpoint:1"]);
+	});
+});
+
+describe("codeatlas-ui lint --rules (#920)", () => {
+	const bin = join(import.meta.dir, "../bin/codeatlas-ui.ts");
+	const lint = (...args: string[]) => {
+		const r = Bun.spawnSync(["bun", bin, "lint", ...args], { cwd: tmpDir("ca-guard-cli-") });
+		return { code: r.exitCode, out: r.stdout.toString(), err: r.stderr.toString() };
+	};
+
+	it("a bare --rules lists every rule and exits 0", () => {
+		const r = lint("--rules");
+		expect(r.code).toBe(0);
+		for (const rule of GUARD_RULES) expect(r.out).toContain(rule);
+	});
+
+	it("an unknown rule exits 2 and names it", () => {
+		const r = lint("--rules", "hex,nope");
+		expect(r.code).toBe(2);
+		expect(r.err).toContain("unknown rule: nope");
 	});
 });
