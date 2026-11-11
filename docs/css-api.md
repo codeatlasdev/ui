@@ -568,6 +568,7 @@ These attributes are part of the public contract too (an app can restyle one axi
 | `data-material` | `auto` `solid` `frosted` `glass` `liquid` | `.ca-surface` |
 | `data-tone` | `neutral` `brand` `success` `warning` `error` `info` | `.ca-surface` |
 | `data-variant` | `filled` `outlined` `ghost` | `.ca-surface` |
+| `data-fill` | (present) | `.ca-tabs-list` (the `fill` prop of `Tabs`: the list spans its container) |
 | `data-variant` | `pill` `line` | `.ca-tabs`, `.ca-tabs-list`, `.ca-tabs-trigger` (the `variant` prop of `Tabs`) |
 | `data-radius` | `none` `sm` `md` `lg` `xl` `pill` | `.ca-surface` |
 | `data-interactive`, `data-glow` | present or absent | `.ca-surface` |
@@ -598,6 +599,7 @@ A component token is a custom property a component reads before its default: `--
 
 - **Button** `--ca-btn-font-weight` `--ca-btn-letter-spacing` `--ca-btn-line-height` `--ca-btn-gap` `--ca-btn-{sm,md,lg}-height` `--ca-btn-{sm,md,lg}-padding-x` `--ca-btn-{sm,md,lg}-font-size` `--ca-btn-{sm,md,lg}-font-weight` `--ca-btn-{sm,md,lg}-letter-spacing` `--ca-btn-{sm,md,lg}-gap` `--ca-btn-ghost-border-width` `--ca-btn-disabled-bg` `--ca-btn-disabled-color` `--ca-btn-disabled-border-color` `--ca-btn-disabled-border-width` `--ca-btn-disabled-opacity` `--ca-btn-touch-height`
 - **IconButton** `--ca-icon-btn-size-{sm,md,lg}` `--ca-icon-btn-font-weight` `--ca-icon-btn-letter-spacing` `--ca-icon-btn-touch-size` `--ca-icon-btn-disabled-color` `--ca-icon-btn-disabled-border-color` `--ca-icon-btn-disabled-border-width` `--ca-icon-btn-disabled-opacity`
+- **Tabs** `--ca-tabs-trigger-height` (default `--ca-control-height-sm`) `--ca-tabs-trigger-padding-x` (default `--ca-space-3-5`) `--ca-tabs-trigger-radius` (default `--ca-radius-pill`; `--ca-radius-sm` for `variant="line"`) `--ca-tabs-trigger-font-size` (default `--ca-font-size-body2`) `--ca-tabs-trigger-line-height` (default inherited); `data-fill` on `.ca-tabs-list` is the `fill` prop of `Tabs`
 - **Toaster** `--ca-toaster-bottom` (default `--ca-space-6`; above the `BottomNav` on a phone)
 - **Slider** `--ca-slider-height` `--ca-slider-track-height` `--ca-slider-thumb-size`; `.ca-slider--sm` (`size="sm"`)
 - **SimpleTable** `--ca-table-row-h` `--ca-table-cell-py` (compact density); `data-accent` + `--ca-table-group-accent` on a group row (`TableGroupRow accent`); `.ca-table-sort-th--end` (`TableSortHeader align="end"`)

@@ -69,6 +69,7 @@
   aria-orientation="horizontal"
   data-orientation="horizontal"
   data-variant={tabs.variant}
+  data-fill={tabs.fill ? '' : undefined}
   data-fade={fade ? hidden : undefined}
   class="ca-tabs-list {className}"
   data-ca-blur={tabs.variant === 'line' ? undefined : 'ultra-thin'}
@@ -114,6 +115,11 @@
       border-radius: 0;
       background: transparent;
       box-shadow: inset 0 calc(-1 * var(--ca-border-width)) 0 var(--ca-outline-subtle);
+    }
+
+    /* fill: the list spans the container; the hairline (a box-shadow on the list) spans with it. */
+    :global(.ca-tabs-list[data-fill]) {
+      align-self: stretch;
     }
 
     :global(.ca-tabs-list::-webkit-scrollbar) {

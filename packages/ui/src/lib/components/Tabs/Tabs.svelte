@@ -9,13 +9,15 @@
     onchange?: (v: string) => void;
     /** `pill` fills the active tab on a glass list; `line` underlines it on a bare list (page headers). */
     variant?:  TabsVariant;
+    /** The list stretches across its container and its hairline spans it (default: it hugs its tabs). */
+    fill?:     boolean;
     class?:    string;
     children?: Snippet;
     /** Plays `tab` when the user selects another tab (a cue name replaces it) when `@codeatlasdev/ui/sound` is on. */
     sound?:    SoundProp;
   }
 
-  let { value = $bindable(), onchange, variant = 'pill', class: className = '', children, sound }: Props = $props();
+  let { value = $bindable(), onchange, variant = 'pill', fill = false, class: className = '', children, sound }: Props = $props();
 
   const base = $props.id();
   const ids = createIds(base);
@@ -29,6 +31,9 @@
     },
     get variant() {
       return variant;
+    },
+    get fill() {
+      return fill;
     },
     hasPanel: (v) => panels.has(v),
     // Called from TabsContent's $effect: read-modify-write untracked, or the effect would depend
