@@ -2771,14 +2771,19 @@ Data attributes: `data-active`
 | `align?` | `'start' \| 'center' \| 'end'` | `'center'` |  |
 | `sideOffset?` | `number` | `8` |  |
 | `inline?` | `boolean` | `false` | Render inside its container (absolute, no top layer, no outside-press dismissal) so it follows a `data-preset` island. Escape closes it from inside. Default false. |
+| `density?` | `'default' \| 'compact'` | `'default'` | `compact` sets 8px padding for menu-like content (`--ca-popover-padding` still wins). Default `default`. |
 
 Snippets: `trigger`: Non-interactive trigger content (text, icon). Wrapped in the popover's own button.; `triggerChild` (`Snippet<[Record<string, unknown>]>`): Interactive trigger (a Button/IconButton): receives the trigger `props` to spread onto it.; `children` (`Snippet<[{ close: () => void }]>`): Popover content. Receives `close`, which closes the popover and returns focus to the trigger.
 
-Parts: `ca-popover-content` `ca-popover__trigger`
+Parts: `ca-popover-content` `ca-popover-content--compact` `ca-popover__trigger`
 
 Internal (may change in any release): `ca-popover-in` `ca-popover-out`
 
+Variables: `--ca-popover-bg` `--ca-popover-max-width` `--ca-popover-padding` `--ca-popover-radius`
+
 Data attributes: `data-state` (`closed`)
+
+Tokens: `--ca-popover-bg` `--ca-popover-max-width` `--ca-popover-padding` `--ca-popover-radius`
 
 ## PreviewStage
 
@@ -5259,7 +5264,7 @@ Types:
 | `ColorScheme` | `type ColorScheme = "light" \| "dark" \| "system";` |  |
 | `ColorValue` | `type ColorValue = string \| { color: string; alpha: number };` | One color: any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `color-mix(…)`, `rgb(…)`) or an explicit alpha form that keeps the color and the opacity apart. |
 | `Columns` | `type Columns = (typeof COLUMNS)[number] \| `${(typeof COLUMNS)[number]}`;` |  |
-| `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldThemeTokens; textField?: TextFieldTokens; textArea?: TextAreaTokens; select?: FieldTokens; combobox?: FieldTokens; numberField?: FieldTokens; progress?: ProgressTokens; card?: CardTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; passwordStrength?: PasswordStrengthTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
+| `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldThemeTokens; textField?: TextFieldTokens; textArea?: TextAreaTokens; select?: FieldTokens; combobox?: FieldTokens; numberField?: FieldTokens; progress?: ProgressTokens; card?: CardTokens; popover?: PopoverTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; passwordStrength?: PasswordStrengthTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
 | `CueName` | `type CueName = \| "press" \| "release" \| "tap" \| "toggle-on" \| "toggle-off" \| "select" \| "check" \| "success" \| "error" \| "warning" \| "notify" \| "open" \| "close" \| "forward" \| "back" \| "tab" \| "tick" \| "hover";` | Semantic cue names. Actions, not components: `press` is any button, `tab` any tab change. |
 | `DateRange` | `interface DateRange { start: DateValue \| undefined; end: DateValue \| undefined; }` | Value of RangeCalendar / DateRangePicker. Both ends are undefined until picked. |
 | `DeepPartial` | `type DeepPartial<T> = T extends (...args: never[]) => unknown ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;` |  |
@@ -5445,6 +5450,7 @@ Types:
 | `numberField?` | `FieldTokens` |  |
 | `progress?` | `ProgressTokens` |  |
 | `card?` | `CardTokens` |  |
+| `popover?` | `PopoverTokens` |  |
 | `segmented?` | `SegmentedTokens` |  |
 | `emptyState?` | `EmptyStateTokens` |  |
 | `passwordStrength?` | `PasswordStrengthTokens` |  |

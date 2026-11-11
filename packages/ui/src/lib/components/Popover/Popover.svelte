@@ -21,6 +21,8 @@
     sideOffset?: number;
     /** Render inside its container (absolute, no top layer, no outside-press dismissal) so it follows a `data-preset` island. Escape closes it from inside. Default false. */
     inline?:     boolean;
+    /** `compact` sets 8px padding for menu-like content (`--ca-popover-padding` still wins). Default `default`. */
+    density?:    'default' | 'compact';
   }
 
   let {
@@ -34,6 +36,7 @@
     align      = 'center',
     sideOffset = 8,
     inline     = false,
+    density    = 'default',
   }: Props = $props();
 
   const id = uid('pop');
@@ -78,7 +81,7 @@
   role="dialog"
   tabindex={-1}
   aria-labelledby="{id}-trigger"
-  class="ca-popover-content glass-overlay {className}"
+  class="ca-popover-content glass-overlay {density === 'compact' ? 'ca-popover-content--compact' : ''} {className}"
   onDismiss={(reason) => close(reason === 'escape')}
 >
   {@render children?.({ close: () => close(true) })}
@@ -95,12 +98,19 @@
       cursor: pointer;
     }
 
+    /* Tokens (all optional): --ca-popover-padding, --ca-popover-radius, --ca-popover-max-width, --ca-popover-bg.
+       The fill falls back to the material's --ca-overlay-bg, so reduced transparency still wins. */
     :global(.ca-popover-content) {
-      border-radius: var(--ca-radius-lg);
-      padding: var(--ca-space-4);
-      max-width: 320px;
+      border-radius: var(--ca-popover-radius, var(--ca-radius-lg));
+      padding: var(--ca-popover-padding, var(--ca-space-4));
+      max-width: var(--ca-popover-max-width, 320px);
+      background-color: var(--ca-popover-bg, var(--ca-overlay-bg));
       outline: none;
       animation: ca-popover-in var(--ca-enter-fast) var(--ca-ease-decelerate);
+    }
+
+    :global(.ca-popover-content--compact) {
+      padding: var(--ca-popover-padding, var(--ca-space-2));
     }
 
     :global(.ca-popover-content[data-state='closed']) {

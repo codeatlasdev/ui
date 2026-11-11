@@ -156,6 +156,17 @@ export interface CardTokens {
 	shadow?: CssValue;
 }
 
+export interface PopoverTokens {
+	/** `--ca-popover-padding`. @default `--ca-space-4` (`--ca-space-2` with `density="compact"`) */
+	padding?: CssValue;
+	/** `--ca-popover-radius`. @default `--ca-radius-lg` */
+	radius?: CssValue;
+	/** `--ca-popover-max-width`. @default 320px */
+	maxWidth?: CssValue;
+	/** `--ca-popover-bg`: a solid fill. @default the overlay material fill (`--ca-overlay-bg`) */
+	bg?: CssValue;
+}
+
 export interface SegmentedItemTokens {
 	/** `--ca-seg-item-padding-x`. @default `--ca-space-3` (sm) / `--ca-space-4` (md) */
 	itemPaddingX?: CssValue;
@@ -226,6 +237,7 @@ export interface ComponentTokens {
 	numberField?: FieldTokens;
 	progress?: ProgressTokens;
 	card?: CardTokens;
+	popover?: PopoverTokens;
 	segmented?: SegmentedTokens;
 	emptyState?: EmptyStateTokens;
 	passwordStrength?: PasswordStrengthTokens;
@@ -331,6 +343,13 @@ export function componentTokens(c: ComponentTokens | undefined): Record<string, 
 		put(out, "--ca-card-radius", card.radius);
 		put(out, "--ca-card-border", card.border);
 		put(out, "--ca-card-shadow", card.shadow);
+	}
+	const pop = c.popover;
+	if (pop) {
+		put(out, "--ca-popover-padding", pop.padding);
+		put(out, "--ca-popover-radius", pop.radius);
+		put(out, "--ca-popover-max-width", pop.maxWidth);
+		put(out, "--ca-popover-bg", pop.bg);
 	}
 	const seg = c.segmented;
 	if (seg) {
