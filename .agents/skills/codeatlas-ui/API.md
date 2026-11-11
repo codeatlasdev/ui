@@ -3293,6 +3293,7 @@ Slider — single or range value input.
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
+| `size?` | `'sm' \| 'md'` | `'md'` | `sm`: a 6px control and track and a 16px thumb, for a dense form. The touch target stays 44px under a coarse pointer. |
 | `value?` | `number` |  | `bind:` Single-value mode — binds a plain number. |
 | `values?` | `[number, number]` |  | `bind:` Range mode — binds a [min, max] tuple. |
 | `min?` | `number` | `0` |  |
@@ -3304,9 +3305,13 @@ Slider — single or range value input.
 | `onchange?` | `(value: number[]) => void` |  | Called on change. Always receives array regardless of single/range mode. |
 | `sound?` | `SoundProp` |  | Plays `tick` for each step the user crosses (a cue name replaces it); off under reduced motion. Needs `@codeatlasdev/ui/sound`. |
 
-Parts: `ca-slider` `ca-slider__range` `ca-slider__thumb` `ca-slider__track`
+Parts: `ca-slider` `ca-slider--sm` `ca-slider__range` `ca-slider__thumb` `ca-slider__track`
+
+Variables: `--ca-slider-height` `--ca-slider-thumb-size` `--ca-slider-track-height`
 
 Data attributes: `data-disabled`
+
+Tokens: `--ca-slider-height` `--ca-slider-thumb-size` `--ca-slider-track-height`
 
 ## SliderField
 
