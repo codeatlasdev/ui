@@ -118,19 +118,35 @@ describe("Dialog closing (#732)", () => {
 		await screen.getByRole("button", { name: "Lose" }).click();
 		await expect.element(page.getByRole("dialog")).toBeVisible();
 		await settled();
+		// Stretch the exit (#1009): at its real length it could end before the checks below on a loaded
+		// machine, and the dialog was already gone ("expected undefined to be 'closed'").
+		const slow = document.createElement("style");
+		slow.textContent =
+			'dialog.ca-overlay[data-state="closed"], dialog.ca-overlay[data-state="closed"] * { animation-duration: 60s !important; transition-duration: 60s !important; }';
+		document.head.append(slow);
+		const dialog = document.querySelector<HTMLElement>("dialog.ca-overlay");
 		await page.getByRole("button", { name: "Confirm" }).click();
 		const reopen = screen.getByRole("button", { name: "Reopen" });
 		await expect.element(reopen).toBeInTheDocument();
 		// The dialog is still mounted for its exit: the page must already receive the pointer.
-		const dialog = document.querySelector<HTMLElement>("dialog.ca-overlay");
+		expect(dialog?.isConnected).toBe(true);
 		expect(dialog?.dataset.state).toBe("closed");
 		const r = reopen.element().getBoundingClientRect();
 		const hit = document.elementFromPoint(r.left + r.width / 2, r.top + r.height / 2);
 		expect(hit && reopen.element().contains(hit)).toBe(true);
-		// The hit test above is the contract (#732). A wall-clock bound on the click measured Playwright's round-trip
+		// Where the closing dialog is still painted, the page answers, not the dialog (#732). The button
+		// above sits outside the dialog box, so that check alone passed with the dialog catching clicks (#1009).
+		const d = dialog?.getBoundingClientRect();
+		expect(d?.width).toBeGreaterThan(0);
+		const under = d && document.elementFromPoint(d.left + d.width / 2, d.top + d.height / 2);
+		expect(under).not.toBeNull();
+		expect(dialog?.contains(under ?? null)).toBe(false);
+		// The hit tests above are the contract (#732). A wall-clock bound on the click measured Playwright's round-trip
 		// instead: 408 ms under a loaded run (#850).
 		await reopen.click();
 		await expect.element(screen.getByTestId("clicks")).toHaveTextContent("1");
+		for (const a of dialog?.getAnimations({ subtree: true }) ?? []) a.finish();
+		slow.remove();
 	});
 
 	it("focus lands on #main when the opener was removed during the exit", async () => {
