@@ -27,6 +27,21 @@ The surface style on `<html data-style>` rewrites the `--ca-mat-*` tokens, so ev
 
 The modal scrim (the `::backdrop` of Dialog, AlertDialog, Sheet, Drawer, CommandPalette and DocsSearch) reads `--ca-scrim-blur`, which defaults to `blur(4px) saturate(180%)` under every style. Set `--ca-scrim-blur: none` on `:root` to drop the blur on all of them at once, for example in a WKWebView window that is transparent over a native view.
 
+## A neutral flat theme
+
+`defaultStyle: "flat"` has no blur, no glass fill and no material shadow: surfaces are separated by hairlines, dividers darken on hover and take the brand colour only while dragged or focused. `paper: "mesh"` draws only under `glass` and `frosted`, so keep `paper: "plain"` here. For a neutral look, an off-white light scheme and a graphite (not navy) dark one, set the surfaces and keep the brand for actions and focus:
+
+```ts
+export const theme: ThemeOptions = {
+  defaultStyle: "flat",
+  paper: "plain",
+  overrides: {
+    light: { "--ca-surface-base": "oklch(0.985 0.002 90)", "--ca-surface-raised": "oklch(1 0 0)" },
+    dark: { "--ca-surface-base": "oklch(0.21 0.004 260)", "--ca-surface-raised": "oklch(0.25 0.004 260)" },
+  },
+};
+```
+
 ## Glass and frosted styles: blur rules
 
 The rules below apply only when blur is used (`glass`, `frosted`, or a `data-ca-blur` element). Components that blur but are not a Surface (the Tabs list, Chip, Toast, Rail, Panel, the DataTable menus) set `data-ca-blur="<role>"` on their element instead of declaring `backdrop-filter`, so `<html data-style>` drives them exactly like a `material="auto"` Surface. Roles are `ultra-thin`, `thin`, `regular`, `thick`, `chrome`, `mat-thin`, `mat-regular`, `overlay`, `chrome-layer` and `tooltip`; Use it the same way on your own elements, and never add `will-change` or `isolation: isolate` around them. `list_surfaces` in the [MCP server](/docs/getting-started/ai-agents/#mcp-server) lists the styles and which ones draw a blur.
