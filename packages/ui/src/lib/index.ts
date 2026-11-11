@@ -149,6 +149,9 @@ export { default as EmptyState } from "./components/EmptyState/EmptyState.svelte
 export { default as ErrorPage } from "./components/ErrorPage/ErrorPage.svelte";
 export { default as ExportMenu } from "./components/ExportMenu/ExportMenu.svelte";
 export { default as ExternalLink } from "./components/ExternalLink/ExternalLink.svelte";
+export { default as Field, type FieldControlProps } from "./components/Field/Field.svelte";
+export { default as Fieldset } from "./components/Field/Fieldset.svelte";
+export { default as Label } from "./components/Field/Label.svelte";
 export { default as FileUpload } from "./components/FileUpload/FileUpload.svelte";
 export { default as FilterGroup } from "./components/FilterGroup/FilterGroup.svelte";
 export { default as Flex } from "./components/Flex/Flex.svelte";

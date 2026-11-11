@@ -1,0 +1,35 @@
+---
+title: Field, Fieldset, Label
+description: Label, description and error wiring for a custom control, a named group of controls, and the bare field label.
+group: Inputs
+---
+import Props from "~/components/docs/Props.astro";
+
+The library's fields (`TextField`, `Select`, `Combobox`…) wire their own label, hint and error. Use these for a control the library does not ship: a third-party picker, a native element with custom styling, your own widget.
+
+`Field` passes the wiring to its child: spread it onto the element that takes the value, and the control gets its accessible name from `label`, its description from `description` and `error`, and `aria-invalid` / `aria-required`.
+
+```svelte
+<Field label="Plan code" description="Six letters." error={errors.code} required>
+  {#snippet children(control)}<CodeInput {...control} bind:value={code} />{/snippet}
+</Field>
+```
+
+`Fieldset` names a group of controls with a `<legend>`; `disabled` disables every control inside it. `Label` is the field label alone, for a layout `Field` does not fit.
+
+<Props for="Field" rows={[
+  { name: "label", type: "string", description: "Visible label, tied to the control by for/id." },
+  { name: "description", type: "string", description: "Help text, read as the control's description." },
+  { name: "error", type: "string", description: "Error text (role=alert); marks the control aria-invalid." },
+  { name: "required", type: "boolean", default: "false", description: "Required marker and aria-required." },
+  { name: "hideLabel", type: "boolean", default: "false", description: "Keeps the label for assistive tech only." },
+  { name: "children", type: "Snippet<[FieldControlProps]>", description: "The control; spread { id, aria-describedby, aria-invalid, aria-required } onto it." },
+]} />
+
+<Props for="Fieldset" rows={[
+  { name: "legend", type: "string", description: "Name of the group." },
+  { name: "description", type: "string", description: "Help text for the group." },
+  { name: "error", type: "string", description: "Group-level error (role=alert)." },
+  { name: "disabled", type: "boolean", default: "false", description: "Disables every control inside." },
+  { name: "hideLegend", type: "boolean", default: "false", description: "Keeps the legend for assistive tech only." },
+]} />
