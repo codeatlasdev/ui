@@ -132,6 +132,8 @@ if (pending.length === 0) {
 	}
 	for (const step of versionSteps()) act(step);
 }
+// The "Not provided yet" list of llms.txt reflects the issues open at this release (#941).
+act(["bun", "scripts/not-provided.ts", "--write"]);
 const tag = `${PREFIX}${version()}`;
 if (onOrigin(tag)) fail(`tag ${tag} already exists on origin`);
 if (sh(["git", "status", "--porcelain"]) !== "") {

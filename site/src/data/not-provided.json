@@ -1,0 +1,218 @@
+[
+	{
+		"number": 662,
+		"title": "Native-safe defaults: stale frames, overlay lifecycle and native-view coexistence for webview apps (Tauri/WKWebView, WebKitGTK, WebView2)"
+	},
+	{
+		"number": 664,
+		"title": "WindowTitleBar and WindowControls for desktop shells (Tauri/Electron), with drag region and per-OS controls"
+	},
+	{
+		"number": 665,
+		"title": "performance mode (data-ca-perf auto/high/low) that drops backdrop-filter, big shadows and animated gradients on weak GPUs (WebKitGTK, WebView2)"
+	},
+	{
+		"number": 666,
+		"title": "MessageComposer (auto-grow, send keys, drafts, reply/edit banner, attachments, @mention and :emoji: triggers) and TypingIndicator"
+	},
+	{
+		"number": 667,
+		"title": "team-chat timeline: VirtualList scrollToKey/at-bottom/separators and a flat MessageRow (hover actions, reactions, compact groups)"
+	},
+	{
+		"number": 668,
+		"title": "voice/video room primitives: StageGrid (best-fit 16:9), StageTile with speaking ring, CallControls, fullscreen/PiP helpers"
+	},
+	{
+		"number": 669,
+		"title": "EmojiPicker (search, categories, recents, skin tones, custom emoji, virtualized) and ReactionBar"
+	},
+	{
+		"number": 670,
+		"title": "imperative, data-driven context menu (createMenu/MenuHost) and a shortcut hint on menu items"
+	},
+	{
+		"number": 671,
+		"title": "community app shell: squircle rail with pill indicator and groups, richer toasts (avatar, position, promise), and a hotkeys registry"
+	},
+	{
+		"number": 672,
+		"title": "adoption path for desktop/web SPAs (plain Vite, Tauri): compact density preset, theme import from existing tokens, engine compat floors"
+	},
+	{
+		"number": 677,
+		"title": "Theming from an existing design system: public token list, alias helper and a single radius knob"
+	},
+	{
+		"number": 678,
+		"title": "ChipGroup: multi-select mode (toggle chips that wrap, aria-pressed, check icon, 28px chip with 44px hit area)"
+	},
+	{
+		"number": 680,
+		"title": "AppShellLayout and PageFrame: rail width, mobile header, frame spacing and solid material are not configurable (map-first apps need local overrides)"
+	},
+	{
+		"number": 681,
+		"title": "MapStage: tooltip and picking hooks, canvas size vs mapbox-gl CSS, rest props and MapControls position/size"
+	},
+	{
+		"number": 684,
+		"title": "Stat label placement/case/font and Badge custom (domain) tone; toast missing from API.md"
+	},
+	{
+		"number": 685,
+		"title": "polygon drawing mode and map click event on MapStage (vertex add/undo/cancel, draft layer, edit)"
+	},
+	{
+		"number": 689,
+		"title": "NotificationBell: placement, width, rich rows, loading/error states and a controlled unread badge"
+	},
+	{
+		"number": 690,
+		"title": "LocaleSwitcher: size, icon and component tokens (height, weight, icon sizes) for a compact public-header trigger"
+	},
+	{
+		"number": 716,
+		"title": "Dialog: top placement with a fixed offset, free width and radius tokens (palette / quick-switcher dialogs)"
+	},
+	{
+		"number": 719,
+		"title": "Layout: usar a área útil do desktop (slot aside padrão + regra de não deixar espaço vazio)"
+	},
+	{
+		"number": 720,
+		"title": "Combobox: search input UX (async loadOptions, virtualized list, Sheet on coarse pointer)"
+	},
+	{
+		"number": 721,
+		"title": "VideoPlayer (controles próprios, capítulos, legendas .vtt, vertical imersivo) e VideoCard"
+	},
+	{
+		"number": 736,
+		"title": "AppShellLayout: no top-navigation mode and no overflow behaviour for the mobile top bar actions"
+	},
+	{
+		"number": 746,
+		"title": "AuthLayout hero panel: no docs or helpers for a lazy WebGL scene (reduced-motion / Save-Data / low-power), no panelTone none, no frosted form card"
+	},
+	{
+		"number": 748,
+		"title": "AudioPlayer: no way to sit on a brand-filled MessageBubble (played bars and play button are the bubble colour); add tone=\"inherit\", a voice variant and public size tokens"
+	},
+	{
+		"number": 753,
+		"title": "Marketing sites: no static (zero-JS) blocks for hero, card grid, team, logo grid, gallery, contact cards, FAQ, footer, video facade"
+	},
+	{
+		"number": 754,
+		"title": "Static marketing header: no no-JS dropdown/mobile menu primitive or recipe (NavigationMenu and SiteHeader both need hydration)"
+	},
+	{
+		"number": 755,
+		"title": "Forms without hydration: no static form markup recipe or framework-free enhancer (validation messages, focus, announce) for Astro/static pages"
+	},
+	{
+		"number": 764,
+		"title": "Field, Fieldset, Label components"
+	},
+	{
+		"number": 765,
+		"title": "InputGroup component"
+	},
+	{
+		"number": 766,
+		"title": "Toggle component"
+	},
+	{
+		"number": 767,
+		"title": "Rating component"
+	},
+	{
+		"number": 768,
+		"title": "AvatarGroup component"
+	},
+	{
+		"number": 770,
+		"title": "TreeView component"
+	},
+	{
+		"number": 771,
+		"title": "ColorPicker component"
+	},
+	{
+		"number": 772,
+		"title": "TimePicker and MonthPicker"
+	},
+	{
+		"number": 773,
+		"title": "Tour component"
+	},
+	{
+		"number": 774,
+		"title": "EventCalendar (@codeatlasdev/ui/calendar)"
+	},
+	{
+		"number": 775,
+		"title": "DataTable: pinning, reorder, virtualization, inline edit"
+	},
+	{
+		"number": 776,
+		"title": "Charts: Treemap, Sankey, Funnel, Candlestick"
+	},
+	{
+		"number": 801,
+		"title": "Infinite canvas foundation (@codeatlasdev/ui/canvas): engine, renderers, primitives, FlowEditor and Whiteboard kits"
+	},
+	{
+		"number": 811,
+		"title": "Button align=\"start\", Timeline item meta/icon, NumberField unit companion and grouped options (gaps from a node-graph editor)"
+	},
+	{
+		"number": 820,
+		"title": "AppShellLayout Rail: height-aware overflow (\"More\"), groups, scroll affordances and arrow-key navigation"
+	},
+	{
+		"number": 829,
+		"title": "Theme: guaranteed contrast and comfort for every token pair (WCAG AA + APCA, OKLCH-derived on-colours, theme check)"
+	},
+	{
+		"number": 835,
+		"title": "form error summary, scroll/focus first invalid field, and disabled-reason on Button"
+	},
+	{
+		"number": 912,
+		"title": "Collapsible/Accordion: variante plana (sem caixa, sem vidro) para uso dentro de painéis"
+	},
+	{
+		"number": 914,
+		"title": "Toolbar: estratégia de overflow (menu \"mais\" / rolagem) em vez de só quebrar linha"
+	},
+	{
+		"number": 915,
+		"title": "Tokens: raio concêntrico para superfícies aninhadas"
+	},
+	{
+		"number": 916,
+		"title": "Tokens: breakpoints e limiares de container como fonte única (CSS + TS + lint)"
+	},
+	{
+		"number": 918,
+		"title": "PageShell: cabeçalho responsivo com prioridade de ações"
+	},
+	{
+		"number": 920,
+		"title": "Lint: regras de layout no codeatlas-ui lint"
+	},
+	{
+		"number": 929,
+		"title": "ship the layout audit as auditLayout(page, { mobile })"
+	},
+	{
+		"number": 935,
+		"title": "PageShell: scroll={false} mode, shell-inset bottom clearance and --ca-page-max token"
+	},
+	{
+		"number": 942,
+		"title": "MCP: search_issues tool (known issues for a component or prop)"
+	}
+]

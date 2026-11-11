@@ -77,6 +77,8 @@ export function buildLlmsIndex(i: {
 	href?: (slug: string) => string;
 	version?: string;
 	counts?: { demos: number };
+	/** Open feature requests (`site/src/data/not-provided.json`, from `scripts/not-provided.ts`), #941. */
+	notProvided?: { number: number; title: string }[];
 }): string {
 	const html = i.href ?? ((slug: string) => `${SITE}/docs/${slug}/`);
 	// Every page is listed by its agent-readable file; the HTML form follows in the description.
@@ -123,6 +125,19 @@ export function buildLlmsIndex(i: {
 				{ ...page(ENTRY_PAGES.reporting, "Reporting problems") },
 			],
 		},
+		// What an agent would otherwise search the whole catalog for: comment on the issue instead of rebuilding it.
+		...(i.notProvided?.length
+			? [
+					{
+						heading: "Not provided yet",
+						links: i.notProvided.map((r) => ({
+							title: r.title,
+							href: `https://github.com/codeatlasdev/ui/issues/${r.number}`,
+							description: "open request: comment there with your use case",
+						})),
+					},
+				]
+			: []),
 		{
 			heading: "Setup",
 			links: [page(ENTRY_PAGES.install, "Installation"), page(ENTRY_PAGES.aiAgents, "AI agents")],
