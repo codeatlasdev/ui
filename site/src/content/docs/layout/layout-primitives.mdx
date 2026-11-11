@@ -80,9 +80,10 @@ What the codemod cannot map is left as it was and listed at the end with file, l
 
 ## Truncate and clamp
 
-`.ca-truncate` puts text on one line with an ellipsis and includes the `min-width: 0` a flex or grid child needs to shrink, so a long name never pushes a phone page sideways. `.ca-clamp` cuts after `--ca-clamp` lines (default 2); text that fits shows whole.
+`.ca-truncate` puts text on one line with an ellipsis and includes the `min-width: 0` a flex or grid child needs to shrink, so a long name never pushes a phone page sideways. `.ca-clamp` cuts after `--ca-clamp` lines (default 2); text that fits shows whole. Both live in an opt-in stylesheet, so apps that do not use them pay nothing:
 
 ```svelte
+<!-- once, next to global.css: import "@codeatlasdev/ui/styles/text.css"; -->
 <span class="ca-truncate">{conversation.title}</span>
 <p class="ca-clamp" style="--ca-clamp: 3">{message.preview}</p>
 ```

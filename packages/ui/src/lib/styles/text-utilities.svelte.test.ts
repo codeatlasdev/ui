@@ -1,3 +1,4 @@
+import "./text.css";
 import { afterEach, describe, expect, it } from "vitest";
 import { page } from "vitest/browser";
 

@@ -5,28 +5,6 @@
  * Zero configuration needed.
  */
 
-/* ─── Truncate and clamp (#724) ───────────────────────────────── */
-
-/* One line with an ellipsis. min-width: 0 lets it shrink as a flex or grid child (the usual cause of
-   sideways scroll on a phone); max-inline-size keeps it inside its parent. */
-.ca-truncate {
-  min-width: 0;
-  max-inline-size: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/* N lines (--ca-clamp, default 2) then an ellipsis; text that fits shows whole. */
-.ca-clamp {
-  min-width: 0;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: var(--ca-clamp, 2);
-  line-clamp: var(--ca-clamp, 2);
-  overflow: hidden;
-}
-
 /* ─── Visually hidden (screen-reader only) ───────────────────────── */
 
 /* No visible box, still read by assistive tech and kept in the document outline. Use it for a

@@ -588,7 +588,7 @@ Surface and layout CSS variables (`--ca-surface-*`, `--ca-elevation-*`, `--ca-bl
 
 ## Text utilities
 
-`.ca-truncate` (one line, ellipsis, `min-width: 0`) and `.ca-clamp` (`--ca-clamp` lines, default 2), in `ca.utilities` (#724).
+`.ca-truncate` (one line, ellipsis, `min-width: 0`) and `.ca-clamp` (`--ca-clamp` lines, default 2), in `ca.utilities`, opt-in via `@codeatlasdev/ui/styles/text.css` (#724).
 
 ---
 
