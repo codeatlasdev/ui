@@ -27,6 +27,25 @@ The native `<audio controls>` is unstyled and differs in dark mode and on iOS. T
   { name: "duration", type: "number", description: "Seconds, shown before metadata loads." },
   { name: "rates", type: "number[]", default: "[1, 1.5, 2]", description: "Playback speeds the rate button cycles through." },
   { name: "preload", type: "'none' | 'metadata'", default: "'none'", description: "Load nothing, or only metadata, before the first play." },
+  { name: "tone", type: "'brand' | 'inherit'", default: "'brand'", description: "`inherit` draws from the surrounding text colour (for a brand-filled bubble)." },
+  { name: "variant", type: "'default' | 'voice'", default: "'default'", description: "`voice` draws a round filled play button." },
   { name: "label", type: "string", description: "Accessible name of the player." },
   { name: "onplay / onpause / onended / onerror", type: "(e: Event) => void", description: "Media events." },
 ]} />
+
+## On a chat bubble
+
+Inside a bubble pass `tone="inherit"`: bars, chips and time come from the bubble's text colour and hold 3:1 (bars) and 4.5:1 (glyph, time) on both bubbles, light and dark. `variant="voice"` draws the glyph in `--ca-audio-surface`, which `MessageBubble` sets to its own background.
+
+## Tokens
+
+Set on the player or an ancestor; the bar count follows the live values and resizes.
+
+- `--ca-audio-bar-w`: bar width, default `3px`.
+- `--ca-audio-bar-gap`: gap between bars, default `2px`.
+- `--ca-audio-wave-h`: waveform height, default `var(--ca-space-8)`.
+- `--ca-audio-max-w`: largest player width, default `calc(var(--ca-space-24) * 3)`; `100%` fits the bubble.
+- `--ca-audio-min-w`: smallest player width, default `0px`.
+- `--ca-audio-surface`: surface behind a `voice` glyph; `MessageBubble` sets it.
+
+WhatsApp peaks (base64, bytes 0 to 100): `Array.from(atob(b64), (c) => c.charCodeAt(0) / 100)`.

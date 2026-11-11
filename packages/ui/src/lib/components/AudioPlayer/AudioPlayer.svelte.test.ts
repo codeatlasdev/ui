@@ -1,8 +1,10 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { withTheme } from "../../testing";
 import AudioPlayer from "./AudioPlayer.svelte";
 import Pair from "./AudioPlayer.test.svelte";
+import OnBubble from "./AudioPlayerBubble.test.svelte";
 
 /** A silent 16-bit mono PCM WAV of `seconds` length, as a blob URL the real <audio> can decode. */
 function wavUrl(seconds = 1, rate = 8000): string {
@@ -420,5 +422,231 @@ describe("AudioPlayer", () => {
 			props: { src: wav(), duration: 12, peaks: [0.1, 0.9, 0.4, 0.7, 0.3] },
 		});
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});
+
+// #748: the player on a brand-filled MessageBubble.
+type Rgba = [number, number, number, number];
+const ctx2d = document.createElement("canvas").getContext("2d", { willReadFrequently: true })!;
+/** Any computed CSS colour (oklch, oklab, color-mix result) as sRGB 0-255 plus alpha, via the canvas. */
+function rgba(css: string): Rgba {
+	ctx2d.clearRect(0, 0, 1, 1);
+	ctx2d.fillStyle = "#000";
+	ctx2d.fillStyle = css;
+	ctx2d.fillRect(0, 0, 1, 1);
+	const d = ctx2d.getImageData(0, 0, 1, 1).data;
+	return [d[0]!, d[1]!, d[2]!, d[3]! / 255];
+}
+const over = (top: Rgba, base: Rgba): Rgba => [
+	top[0] * top[3] + base[0] * (1 - top[3]),
+	top[1] * top[3] + base[1] * (1 - top[3]),
+	top[2] * top[3] + base[2] * (1 - top[3]),
+	1,
+];
+const lin = (v: number) => {
+	const x = v / 255;
+	return x <= 0.03928 ? x / 12.92 : ((x + 0.055) / 1.055) ** 2.4;
+};
+const lum = (c: Rgba) => 0.2126 * lin(c[0]) + 0.7152 * lin(c[1]) + 0.0722 * lin(c[2]);
+/** WCAG ratio of `fg` painted on `bg`; a translucent fg is composited over bg first. */
+function ratio(fg: Rgba, bg: Rgba): number {
+	const [hi, lo] = [lum(over(fg, bg)), lum(bg)].sort((a, b) => b - a);
+	return (hi! + 0.05) / (lo! + 0.05);
+}
+const cs = (el: Element) => getComputedStyle(el);
+const paint = (el: Element, prop: "backgroundColor" | "color" | "outlineColor") =>
+	rgba(cs(el)[prop]);
+/** The opaque colour a control sits on: its own translucent background over the bubble. */
+const onSurface = (el: Element, surface: Rgba) => over(paint(el, "backgroundColor"), surface);
+const barSel = (played: boolean) =>
+	played ? ".ca-audio__bar--played" : ".ca-audio__bar:not(.ca-audio__bar--played)";
+const bothKinds = (c: Element) =>
+	c.querySelector(barSel(true)) !== null && c.querySelector(barSel(false)) !== null;
+const halfway = (c: Element) => {
+	for (let i = 0; i < 2; i++)
+		slider(c).dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }));
+};
+/** Bars animate their colour (fast transition): read the settled value. */
+const settledBars = async () => {
+	await vi.waitFor(() => {
+		if (document.getAnimations().some((a) => a.playState === "running"))
+			throw new Error("animating");
+	});
+};
+
+describe("AudioPlayer tone (#748)", () => {
+	for (const direction of ["out", "in"] as const)
+		for (const scheme of ["light", "dark"] as const)
+			it(`inherit on ${direction} bubble holds contrast (${scheme})`, async () => {
+				const restore = withTheme({ scheme });
+				try {
+					const screen = await render(OnBubble, { props: { src: wav(20), direction } });
+					const c = screen.container;
+					halfway(c);
+					await waitFor(() => bothKinds(c));
+					await settledBars();
+					const bubble = c.querySelector(".ca-bubble") as HTMLElement;
+					const surface = paint(bubble, "backgroundColor");
+					const bar = (played: boolean) =>
+						paint(c.querySelector(barSel(played))!, "backgroundColor");
+					expect(ratio(bar(true), surface), "played bars").toBeGreaterThanOrEqual(3);
+					expect(ratio(bar(false), surface), "unplayed bars").toBeGreaterThanOrEqual(3);
+					expect(ratio(bar(true), surface), "played stronger").toBeGreaterThan(
+						ratio(bar(false), surface)
+					);
+					const btn = playBtn(c);
+					const btnSurface = onSurface(btn, surface);
+					expect(
+						ratio(paint(btn.querySelector("svg")!, "color"), btnSurface),
+						"play glyph"
+					).toBeGreaterThanOrEqual(4.5);
+					const time = c.querySelector(".ca-audio__time") as HTMLElement;
+					expect(ratio(paint(time, "color"), surface), "time").toBeGreaterThanOrEqual(4.5);
+					const rate = rateBtn(c);
+					expect(
+						ratio(paint(rate, "color"), onSurface(rate, surface)),
+						"rate chip"
+					).toBeGreaterThanOrEqual(4.5);
+					expect(await checkA11y(c)).toHaveNoViolations();
+				} finally {
+					restore();
+				}
+			});
+
+	it("the default tone keeps the brand fill on played bars and the play button", async () => {
+		const screen = await render(AudioPlayer, {
+			props: { src: wav(20), duration: 20, peaks: [0.5, 0.5, 0.5, 0.5] },
+		});
+		const c = screen.container;
+		halfway(c);
+		await waitFor(() => bothKinds(c));
+		await settledBars();
+		expect(c.querySelector(".ca-audio")!.classList.contains("ca-audio--inherit")).toBe(false);
+		const played = paint(c.querySelector(barSel(true))!, "backgroundColor");
+		const btn = paint(playBtn(c), "backgroundColor");
+		expect(played).toEqual(btn);
+		expect(played).not.toEqual(paint(c.querySelector(barSel(false))!, "backgroundColor"));
+	});
+
+	for (const direction of ["out", "in"] as const)
+		it(`voice is a round filled play button with a visible focus ring (${direction})`, async () => {
+			const screen = await render(OnBubble, {
+				props: { src: wav(20), direction, variant: "voice" },
+			});
+			const c = screen.container;
+			const btn = playBtn(c);
+			const r = btn.getBoundingClientRect();
+			expect(r.width).toBe(r.height);
+			expect(parseFloat(cs(btn).borderTopLeftRadius)).toBeGreaterThanOrEqual(r.width / 2);
+			const bubble = c.querySelector(".ca-bubble") as HTMLElement;
+			const surface = paint(bubble, "backgroundColor");
+			// Filled with the bubble's text colour, the glyph in the bubble's own surface colour.
+			expect(paint(btn, "backgroundColor")).toEqual(paint(bubble, "color"));
+			expect(
+				ratio(paint(btn.querySelector("svg")!, "color"), paint(btn, "backgroundColor"))
+			).toBeGreaterThanOrEqual(4.5);
+			btn.focus();
+			await frame();
+			expect(cs(btn).outlineStyle).toBe("solid");
+			expect(parseFloat(cs(btn).outlineWidth)).toBeGreaterThan(0);
+			expect(
+				ratio(paint(btn, "outlineColor"), surface),
+				"focus ring on the bubble"
+			).toBeGreaterThanOrEqual(3);
+			expect(await checkA11y(c)).toHaveNoViolations();
+		});
+
+	it("a standalone voice player is round and filled too", async () => {
+		const screen = await render(AudioPlayer, {
+			props: { src: wav(20), duration: 20, variant: "voice" },
+		});
+		const btn = playBtn(screen.container);
+		expect(parseFloat(cs(btn).borderTopLeftRadius)).toBeGreaterThanOrEqual(
+			btn.getBoundingClientRect().width / 2
+		);
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("bubbles publish --ca-audio-surface as their own fill", async () => {
+		for (const direction of ["out", "in"] as const) {
+			const screen = await render(OnBubble, { props: { src: wav(20), direction } });
+			const c = screen.container;
+			const probe = document.createElement("i");
+			probe.style.background = cs(c.querySelector(".ca-audio")!).getPropertyValue(
+				"--ca-audio-surface"
+			);
+			c.appendChild(probe);
+			expect(paint(probe, "backgroundColor")).toEqual(
+				paint(c.querySelector(".ca-bubble")!, "backgroundColor")
+			);
+		}
+	});
+});
+
+// #748: the sizing tokens are public: the bar count follows the computed values.
+describe("AudioPlayer tokens (#748)", () => {
+	const count = (c: Element) => c.querySelectorAll(".ca-audio__bar").length;
+
+	it("bar width and gap tokens change the bar count", async () => {
+		const screen = await render(AudioPlayer, {
+			props: { src: wav(20), duration: 20, peaks: [0.5, 0.6, 0.7] },
+		});
+		const c = screen.container;
+		const root = c.querySelector(".ca-audio") as HTMLElement;
+		await waitFor(() => count(c) > 4);
+		const before = count(c);
+		root.style.setProperty("--ca-audio-bar-w", "6px");
+		await waitFor(() => count(c) < before);
+		const wide = count(c);
+		root.style.setProperty("--ca-audio-bar-gap", "8px");
+		await waitFor(() => count(c) < wide);
+		root.style.removeProperty("--ca-audio-bar-w");
+		root.style.removeProperty("--ca-audio-bar-gap");
+		await waitFor(() => count(c) === before);
+	});
+
+	it("a token set on an ancestor reaches the bars", async () => {
+		const screen = await render(AudioPlayer, { props: { src: wav(20), duration: 20 } });
+		const c = screen.container;
+		await waitFor(() => count(c) > 4);
+		const before = count(c);
+		c.style.setProperty("--ca-audio-bar-w", "9px");
+		await waitFor(() => count(c) < before);
+	});
+
+	it("the bar count fills the waveform width", async () => {
+		const screen = await render(AudioPlayer, { props: { src: wav(20), duration: 20 } });
+		const c = screen.container;
+		const root = c.querySelector(".ca-audio") as HTMLElement;
+		root.style.setProperty("--ca-audio-bar-w", "5px");
+		root.style.setProperty("--ca-audio-bar-gap", "3px");
+		const wave = c.querySelector(".ca-audio__wave") as HTMLElement;
+		await waitFor(() => {
+			const n = count(c);
+			return n > 1 && n * 8 - 3 <= wave.clientWidth && (n + 1) * 8 - 3 > wave.clientWidth;
+		});
+	});
+
+	it("max and min width tokens size the root", async () => {
+		const screen = await render(AudioPlayer, { props: { src: wav(20), duration: 20 } });
+		const root = screen.container.querySelector(".ca-audio") as HTMLElement;
+		expect(root.getBoundingClientRect().width).toBeLessThanOrEqual(288);
+		root.style.setProperty("--ca-audio-max-w", "200px");
+		await frame();
+		expect(root.getBoundingClientRect().width).toBe(200);
+		root.style.setProperty("--ca-audio-max-w", "100%");
+		root.style.setProperty("--ca-audio-min-w", "240px");
+		root.parentElement!.style.width = "100px";
+		await frame();
+		expect(root.getBoundingClientRect().width).toBeGreaterThanOrEqual(240);
+	});
+
+	it("the wave height token sets the waveform height", async () => {
+		const screen = await render(AudioPlayer, { props: { src: wav(20), duration: 20 } });
+		const root = screen.container.querySelector(".ca-audio") as HTMLElement;
+		root.style.setProperty("--ca-audio-wave-h", "64px");
+		await frame();
+		const scrub = screen.container.querySelector(".ca-audio__scrub") as HTMLElement;
+		expect(scrub.getBoundingClientRect().height).toBe(64);
 	});
 });
