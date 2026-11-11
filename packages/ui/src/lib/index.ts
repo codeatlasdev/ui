@@ -284,6 +284,7 @@ export type { ToggleGroupItem } from "./components/ToggleGroup/ToggleGroup.svelt
 export { default as ToggleGroup } from "./components/ToggleGroup/ToggleGroup.svelte";
 export { default as Toolbar } from "./components/Toolbar/Toolbar.svelte";
 export { default as Tooltip } from "./components/Tooltip/Tooltip.svelte";
+export { default as Tour, type TourStep } from "./components/Tour/Tour.svelte";
 export { default as TreeView, type TreeNode } from "./components/TreeView/TreeView.svelte";
 // Form sections and items
 export { default as FormSection } from "./components/templates/FormSection.svelte";

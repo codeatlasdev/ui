@@ -73,6 +73,7 @@ import { table } from "./groups/table.js";
 import { textField } from "./groups/textField.js";
 import { themeToggle } from "./groups/themeToggle.js";
 import { toast } from "./groups/toast.js";
+import { tour } from "./groups/tour.js";
 import { turnstile } from "./groups/turnstile.js";
 import { virtualList } from "./groups/virtualList.js";
 
@@ -93,6 +94,7 @@ export const groups = {
 	breadcrumb,
 	calendar,
 	chip,
+	tour,
 	codeSnippet,
 	colorField,
 	colorPicker,
