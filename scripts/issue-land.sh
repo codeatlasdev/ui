@@ -73,7 +73,18 @@ gh pr ready "$PR" >/dev/null 2>&1 || true
 # GitHub deletes the remote branch on merge (repo setting); the API call covers it being turned off.
 # Merged at once (#859): the gate is the local one above, on a tree rebased onto the latest main. The full suites run
 # on main after the merge (ci.yml, push); a red main is fixed forward.
-gh pr merge "$PR" --squash >/dev/null
+# GitHub can answer "Base branch was modified" for a few seconds after the push, while it computes mergeability, and
+# main can really have moved: retry, re-rebasing if main changed (#881). A real conflict still stops the rebase.
+for TRY in 1 2 3 4; do
+	if gh pr merge "$PR" --squash >/dev/null 2>"$WT/.merge-err"; then rm -f "$WT/.merge-err"; break; fi
+	cat "$WT/.merge-err" >&2
+	[ "$TRY" = 4 ] && { rm -f "$WT/.merge-err"; exit 1; }
+	sleep 10
+	git fetch -q origin main
+	if ! git merge-base --is-ancestor origin/main HEAD; then
+		git rebase -q origin/main && git push -q --force-with-lease
+	fi
+done
 gh api -X DELETE "repos/{owner}/{repo}/git/refs/heads/$BRANCH" >/dev/null 2>&1 || true
 cd "$ROOT" && git fetch -q origin main && bun scripts/issue.ts done "$N"
 echo "#$N landed"
