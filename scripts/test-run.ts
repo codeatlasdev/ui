@@ -315,9 +315,10 @@ async function run(cmd: string[], budget?: BudgetName): Promise<number> {
 			cmd,
 		});
 	// Holding the lock, nothing else is running: enforce every cache's age limit and size cap (scripts/caches.ts), so a
-	// store never outgrows its cap between two cleanups. The run that took the lock also drops the reports, traces and
-	// attachments of the previous one; a nested run (`test:changed` calling vitest and playwright) keeps its parent's.
-	evictAll(false, locked);
+	// store never outgrows its cap between two cleanups, and drop the reports, traces and attachments of the previous
+	// run. Only the run that took the lock: a nested run keeps its parent's, and a run without the lock (`validate`,
+	// CA_TEST_LOCK=0) would delete the files of the browser run that holds it (#873).
+	if (locked) evictAll(false, true);
 	if (/vitest|playwright|test-changed|test-full/.test(cmd.join(" "))) ensureBrowsers();
 
 	const startLoad = loadavg()[0];
