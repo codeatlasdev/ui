@@ -210,11 +210,14 @@ describe("MessageBubble", () => {
 		expect(getComputedStyle(body).overflowWrap).toBe("break-word");
 	});
 
-	it("keeps a short message on one line inside a shrinking flex item (#837)", async () => {
-		const screen = await render(Harness, { props: { text: "oie", shrink: true } });
-		const body = screen.container.querySelector(".ca-bubble__body") as HTMLElement;
-		const lineHeight = Number.parseFloat(getComputedStyle(body).lineHeight);
-		expect(body.getBoundingClientRect().height).toBeLessThan(lineHeight * 1.5);
+	it("keeps a short message on one line when the row is sized by min-content (#837)", async () => {
+		for (const text of ["oie", "Alô?"]) {
+			const screen = await render(Harness, { props: { text, shrink: true, minContent: true } });
+			const body = screen.container.querySelector(".ca-bubble__body") as HTMLElement;
+			const lineHeight = Number.parseFloat(getComputedStyle(body).lineHeight);
+			expect(body.getBoundingClientRect().height).toBeLessThan(lineHeight * 1.5);
+			expect(body.getBoundingClientRect().width).toBeGreaterThan(12);
+		}
 	});
 
 	it("still wraps a long unbroken word inside the bubble (#837)", async () => {
