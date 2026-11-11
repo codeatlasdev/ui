@@ -54,6 +54,14 @@ describe("design knobs → tokens", () => {
 			expect(css).toContain(decl);
 	});
 
+	it("components.button.<size>.gap emits --ca-btn-<size>-gap (#697)", () => {
+		const css = themeCSS(
+			defineTheme({ components: { button: { gap: "8px", sm: { gap: "6px" } } } })
+		);
+		expect(css).toContain("--ca-btn-gap: 8px;");
+		expect(css).toContain("--ca-btn-sm-gap: 6px;");
+	});
+
 	it("components.button/iconButton/kbd emit the --ca-btn-*, --ca-icon-btn-* and --ca-kbd-* tokens (#373)", () => {
 		const css = themeCSS(
 			defineTheme({

@@ -249,6 +249,7 @@
     /* Sizes: md aligns with TextField/Select height (--ca-control-height). Every value reads a
        component token first (--ca-btn-<size>-*, then --ca-btn-*): unset, it is the 4.5.0 look. */
     .ca-btn--sm {
+      gap: var(--ca-btn-sm-gap, var(--ca-btn-gap, var(--ca-space-1-5)));
       height: var(--ca-btn-sm-height, var(--ca-control-height-sm));
       padding: 0 var(--ca-btn-sm-padding-x, var(--ca-space-2-5));
       font-size: var(--ca-btn-sm-font-size, var(--ca-font-size-body2));
@@ -256,6 +257,7 @@
       letter-spacing: var(--ca-btn-sm-letter-spacing, var(--ca-btn-letter-spacing, var(--ca-label-tracking)));
     }
     .ca-btn--md {
+      gap: var(--ca-btn-md-gap, var(--ca-btn-gap, var(--ca-space-1-5)));
       height: var(--ca-btn-md-height, var(--ca-control-height));
       padding: 0 var(--ca-btn-md-padding-x, var(--ca-control-px));
       font-size: var(--ca-btn-md-font-size, var(--ca-font-size-button));
@@ -263,6 +265,7 @@
       letter-spacing: var(--ca-btn-md-letter-spacing, var(--ca-btn-letter-spacing, var(--ca-label-tracking)));
     }
     .ca-btn--lg {
+      gap: var(--ca-btn-lg-gap, var(--ca-btn-gap, var(--ca-space-1-5)));
       height: var(--ca-btn-lg-height, var(--ca-control-height-lg));
       padding: 0 var(--ca-btn-lg-padding-x, var(--ca-space-5));
       font-size: var(--ca-btn-lg-font-size, var(--ca-font-size-dialog));

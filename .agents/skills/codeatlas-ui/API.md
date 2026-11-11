@@ -427,9 +427,9 @@ Also accepts: `AnchorAttributes \| ButtonAttributes`
 
 Parts: `ca-btn` `ca-btn--between` `ca-btn--danger` `ca-btn--destructive` `ca-btn--filled` `ca-btn--full-width` `ca-btn--ghost` `ca-btn--glass` `ca-btn--lg` `ca-btn--loading` `ca-btn--md` `ca-btn--neutral` `ca-btn--outlined` `ca-btn--sm` `ca-btn__leading` `ca-btn__trailing` `ca-btn__trailing--hint`
 
-Variables: `--ca-btn-disabled-bg` `--ca-btn-disabled-border-color` `--ca-btn-disabled-border-width` `--ca-btn-disabled-color` `--ca-btn-disabled-opacity` `--ca-btn-font-weight` `--ca-btn-gap` `--ca-btn-ghost-border-width` `--ca-btn-letter-spacing` `--ca-btn-lg-font-size` `--ca-btn-lg-font-weight` `--ca-btn-lg-height` `--ca-btn-lg-letter-spacing` `--ca-btn-lg-padding-x` `--ca-btn-line-height` `--ca-btn-md-font-size` `--ca-btn-md-font-weight` `--ca-btn-md-height` `--ca-btn-md-letter-spacing` `--ca-btn-md-padding-x` `--ca-btn-sm-font-size` `--ca-btn-sm-font-weight` `--ca-btn-sm-height` `--ca-btn-sm-letter-spacing` `--ca-btn-sm-padding-x` `--ca-btn-touch-height`
+Variables: `--ca-btn-disabled-bg` `--ca-btn-disabled-border-color` `--ca-btn-disabled-border-width` `--ca-btn-disabled-color` `--ca-btn-disabled-opacity` `--ca-btn-font-weight` `--ca-btn-gap` `--ca-btn-ghost-border-width` `--ca-btn-letter-spacing` `--ca-btn-lg-font-size` `--ca-btn-lg-font-weight` `--ca-btn-lg-gap` `--ca-btn-lg-height` `--ca-btn-lg-letter-spacing` `--ca-btn-lg-padding-x` `--ca-btn-line-height` `--ca-btn-md-font-size` `--ca-btn-md-font-weight` `--ca-btn-md-gap` `--ca-btn-md-height` `--ca-btn-md-letter-spacing` `--ca-btn-md-padding-x` `--ca-btn-sm-font-size` `--ca-btn-sm-font-weight` `--ca-btn-sm-gap` `--ca-btn-sm-height` `--ca-btn-sm-letter-spacing` `--ca-btn-sm-padding-x` `--ca-btn-touch-height`
 
-Tokens: `--ca-btn-disabled-bg` `--ca-btn-disabled-border-color` `--ca-btn-disabled-border-width` `--ca-btn-disabled-color` `--ca-btn-disabled-opacity` `--ca-btn-font-weight` `--ca-btn-gap` `--ca-btn-ghost-border-width` `--ca-btn-letter-spacing` `--ca-btn-lg-font-size` `--ca-btn-lg-font-weight` `--ca-btn-lg-height` `--ca-btn-lg-letter-spacing` `--ca-btn-lg-padding-x` `--ca-btn-line-height` `--ca-btn-md-font-size` `--ca-btn-md-font-weight` `--ca-btn-md-height` `--ca-btn-md-letter-spacing` `--ca-btn-md-padding-x` `--ca-btn-sm-font-size` `--ca-btn-sm-font-weight` `--ca-btn-sm-height` `--ca-btn-sm-letter-spacing` `--ca-btn-sm-padding-x` `--ca-btn-touch-height`
+Tokens: `--ca-btn-disabled-bg` `--ca-btn-disabled-border-color` `--ca-btn-disabled-border-width` `--ca-btn-disabled-color` `--ca-btn-disabled-opacity` `--ca-btn-font-weight` `--ca-btn-gap` `--ca-btn-ghost-border-width` `--ca-btn-letter-spacing` `--ca-btn-lg-font-size` `--ca-btn-lg-font-weight` `--ca-btn-lg-gap` `--ca-btn-lg-height` `--ca-btn-lg-letter-spacing` `--ca-btn-lg-padding-x` `--ca-btn-line-height` `--ca-btn-md-font-size` `--ca-btn-md-font-weight` `--ca-btn-md-gap` `--ca-btn-md-height` `--ca-btn-md-letter-spacing` `--ca-btn-md-padding-x` `--ca-btn-sm-font-size` `--ca-btn-sm-font-weight` `--ca-btn-sm-gap` `--ca-btn-sm-height` `--ca-btn-sm-letter-spacing` `--ca-btn-sm-padding-x` `--ca-btn-touch-height`
 
 ## ButtonGroup
 
@@ -5190,7 +5190,7 @@ Types:
 | `Breakpoint` | `type Breakpoint = "xs" \| keyof typeof SCALE;` |  |
 | `BuiltinPresetId` | `type BuiltinPresetId = (typeof BUILTIN_PRESETS)[number]["id"];` | Presets shipped in global.css: the ids of `BUILTIN_PRESETS` (theme/builtins.ts). |
 | `BuiltinPresetSource` | `interface BuiltinPresetSource { id: string; label: string; color: `#${string}`; hue: number; chroma: number; lightL: number; overrides: { light: TokenMap; dark: TokenMap }; }` |  |
-| `ButtonSizeTokens` | `interface ButtonSizeTokens { height?: CssValue; paddingX?: CssValue; fontSize?: CssValue; weight?: CssValue; tracking?: CssValue; }` | Typography and box tokens of one Button size. |
+| `ButtonSizeTokens` | `interface ButtonSizeTokens { height?: CssValue; paddingX?: CssValue; fontSize?: CssValue; weight?: CssValue; tracking?: CssValue; gap?: CssValue; }` | Typography and box tokens of one Button size. |
 | `ButtonTokens` | `interface ButtonTokens extends ButtonSizeTokens { weight?: CssValue; tracking?: CssValue; leading?: CssValue; gap?: CssValue; ghostBorderWidth?: CssValue; disabledBg?: CssValue; touchHeight?: CssValue; sm?: ButtonSizeTokens; md?: ButtonSizeTokens; lg?: ButtonSizeTokens; }` |  |
 | `CardTokens` | `interface CardTokens { bg?: CssValue; radius?: CssValue; border?: CssValue; shadow?: CssValue; }` |  |
 | `CaTokenName` | `type CaTokenName = keyof CaTokenRegistry extends never ? never : keyof CaTokenRegistry & string;` | Names declared through `CaTokenRegistry`, else any `group.name` string. |
@@ -5342,6 +5342,7 @@ Types:
 | `fontSize?` | `CssValue` | `--ca-btn-<size>-font-size`. |
 | `weight?` | `CssValue` | `--ca-btn-<size>-font-weight`. |
 | `tracking?` | `CssValue` | `--ca-btn-<size>-letter-spacing`. |
+| `gap?` | `CssValue` | `--ca-btn-<size>-gap`: space between the icon or trailing slot and the label, this size only (#697). |
 
 #### ButtonTokens
 
