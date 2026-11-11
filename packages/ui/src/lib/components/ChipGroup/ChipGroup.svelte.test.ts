@@ -1,8 +1,10 @@
 import { describe, expect, it, vi } from "vitest";
-import { page, userEvent } from "vitest/browser";
+import { cdp, page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { q } from "../../../../tests/dom";
 import { touchTarget } from "../../../../tests/touch-target";
+import { VIEWPORTS } from "../../../../tests/viewports";
 import ChipGroupHarness from "./ChipGroupHarness.test.svelte";
 import Multi from "./ChipGroupMulti.test.svelte";
 
@@ -166,5 +168,72 @@ describe("ChipGroup multiple (#678)", () => {
 		(a.element() as HTMLInputElement).focus();
 		await userEvent.keyboard(" ");
 		await expect.element(a).toBeChecked();
+	});
+
+	it("Enter toggles the focused chip on and off", async () => {
+		const screen = await render(Multi, { initial: [] });
+		const a = screen.getByRole("checkbox", { name: "Dentists" });
+		(a.element() as HTMLInputElement).focus();
+		await userEvent.keyboard("{Enter}");
+		await expect.element(a).toBeChecked();
+		await expect.element(screen.getByTestId("bound")).toHaveTextContent("a");
+		await userEvent.keyboard("{Enter}");
+		await expect.element(a).not.toBeChecked();
+	});
+
+	it("`required` needs one pick, not all: valid once any chip is on; axe passes", async () => {
+		const screen = await render(Multi, { initial: [], required: true });
+		const form = screen.getByTestId("form").element() as HTMLFormElement;
+		expect(form.checkValidity()).toBe(false);
+		await screen.getByRole("checkbox", { name: "Dentists" }).click();
+		expect(form.checkValidity()).toBe(true);
+		await screen.getByRole("checkbox", { name: "Dentists" }).click();
+		expect(form.checkValidity()).toBe(false);
+		const group = screen.getByRole("group", { name: /Specialties/ }).element();
+		expect(group.hasAttribute("aria-required")).toBe(false);
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+});
+
+describe("ChipGroup size sm (#678)", () => {
+	it("md stays the default; sm is a 28px pill", async () => {
+		const md = await render(Multi, {});
+		const root = q(md.container, ".ca-chip-group");
+		expect(root.hasAttribute("data-size")).toBe(false);
+		expect(q(root, ".ca-chip-group__chip").getBoundingClientRect().height).toBeGreaterThanOrEqual(
+			touchTarget()
+		);
+		await md.unmount();
+		const sm = await render(Multi, { size: "sm" });
+		const chip = q(sm.container, ".ca-chip-group__chip");
+		expect(q(sm.container, ".ca-chip-group").getAttribute("data-size")).toBe("sm");
+		expect(chip.getBoundingClientRect().height).toBeCloseTo(28, 0);
+		const probe = document.createElement("span");
+		probe.style.fontSize = "var(--ca-font-size-caption)";
+		document.body.append(probe);
+		expect(getComputedStyle(chip).fontSize).toBe(getComputedStyle(probe).fontSize);
+		probe.remove();
+	});
+
+	it("on a coarse pointer the hit area grows to the touch target without growing the row", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
+		try {
+			const screen = await render(Multi, { size: "sm" });
+			const list = q(screen.container, ".ca-chip-group__list");
+			const chip = q(list, ".ca-chip-group__chip");
+			expect(matchMedia("(pointer: coarse)").matches).toBe(true);
+			const r = chip.getBoundingClientRect();
+			expect(r.height).toBeCloseTo(28, 0);
+			expect(list.getBoundingClientRect().height).toBeLessThan(r.height + 1);
+			const gap = (touchTarget() - r.height) / 2;
+			expect(gap).toBeGreaterThan(4);
+			for (const dy of [-(gap - 1), r.height + gap - 1]) {
+				const hit = document.elementFromPoint(r.left + r.width / 2, r.top + dy);
+				expect(!!hit && chip.contains(hit)).toBe(true);
+			}
+		} finally {
+			await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: false });
+		}
 	});
 });

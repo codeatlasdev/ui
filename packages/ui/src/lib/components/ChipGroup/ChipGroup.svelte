@@ -9,7 +9,6 @@
 <script lang="ts" generics="M extends boolean = false">
   import { Check } from '@lucide/svelte';
 
-
   interface Common {
     items: ChipGroupItem[];
     /** Visible title of the group; it is also the group's accessible name. */
@@ -21,8 +20,10 @@
     error?: string;
     /** Native `name` of the radios, so the value is part of `FormData` on a plain form submit. */
     name?: string;
-    /** Native `required`: a plain form blocks submit until a chip is picked. */
+    /** Native `required`: a plain form blocks submit until a chip is picked (with `multiple`, until at least one is). */
     required?: boolean;
+    /** `sm`: a 28px pill with caption text, for dense rows; the touch hit area stays 44px on coarse pointers. */
+    size?: 'md' | 'sm';
     disabled?: boolean;
     class?: string;
     /** Accessible name when there is no visible `label`. */
@@ -48,6 +49,7 @@
     error,
     name,
     required = false,
+    size = 'md',
     disabled = false,
     class: className = '',
     'aria-label': ariaLabel,
@@ -98,7 +100,7 @@
   }
 </script>
 
-<div class="ca-chip-group {className}" data-disabled={disabled ? '' : undefined} data-invalid={error ? '' : undefined}>
+<div class="ca-chip-group {className}" data-size={size === 'sm' ? 'sm' : undefined} data-disabled={disabled ? '' : undefined} data-invalid={error ? '' : undefined}>
   {#if label}
     <span id="{uid}-label" class="ca-chip-group__label" class:ca-sr-only={hideLabel}>
       {label}{#if required}<span class="ca-chip-group__req" aria-hidden="true"> *</span>{/if}
@@ -112,7 +114,7 @@
     aria-label={label ? undefined : ariaLabel}
     aria-describedby={describedBy}
     aria-invalid={error ? 'true' : undefined}
-    aria-required={required ? 'true' : undefined}
+    aria-required={required && !multiple ? 'true' : undefined}
     aria-disabled={disabled ? 'true' : undefined}
     {@attach keys}
   >
@@ -130,7 +132,7 @@
           name={multiple ? name : groupName}
           value={item.value}
           {checked}
-          required={multiple ? undefined : required}
+          required={multiple ? required && picked.length === 0 : required}
           disabled={off}
           onchange={() => (multiple ? toggle(item.value) : select(item.value))}
         />
@@ -213,6 +215,14 @@
         background var(--ca-duration-fast) var(--ca-ease-standard);
     }
 
+    /* Compact: a 28px pill. Not --ca-control-height-sm, which is 44px on coarse pointers. */
+    :global(.ca-chip-group[data-size='sm'] .ca-chip-group__chip) {
+      min-height: var(--ca-space-7);
+      padding-inline: var(--ca-space-3);
+      border-radius: var(--ca-radius-pill);
+      font-size: var(--ca-font-size-caption);
+    }
+
     :global(.ca-chip-group__chip:hover:not([data-disabled])) {
       border-color: var(--ca-outline-default);
     }
@@ -242,6 +252,18 @@
       margin: 0;
       opacity: 0;
       cursor: inherit;
+    }
+
+    /* Touch: the hit area grows to the touch target around a compact chip, the row keeps its height. */
+    @media (pointer: coarse) {
+      :global(.ca-chip-group[data-size='sm'] .ca-chip-group__input) {
+        inset: auto;
+        top: 50%;
+        left: 50%;
+        width: max(100%, var(--ca-touch-target));
+        height: max(100%, var(--ca-touch-target));
+        translate: -50% -50%;
+      }
     }
 
     :global(.ca-chip-group__chip:has(.ca-chip-group__input:focus-visible)) {
