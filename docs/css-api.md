@@ -607,4 +607,4 @@ A component token is a custom property a component reads before its default: `--
 - **Progress** `--ca-progress-track` `--ca-progress-bar` (theme key `components.progress`)
 - **Card** `--ca-card-bg` `--ca-card-radius` `--ca-card-border` `--ca-card-shadow` (`--ca-card-padding` and `--ca-card-gap` already existed)
 - **SegmentedControl** `--ca-seg-item-{padding-x,font-size,line-height}` `--ca-seg-{sm,md}-item-{padding-x,font-size,line-height}`
-- **EmptyState** `--ca-empty-padding` `--ca-empty-title-size` `--ca-empty-title-weight`; modifiers `.ca-empty--bare` (prop `bare`) and `.ca-empty--fill` (prop `actionsFill`)
+- **EmptyState** `--ca-empty-padding` `--ca-empty-title-size` `--ca-empty-title-weight` `--ca-empty-title-leading` `--ca-empty-title-tracking` `--ca-empty-title-gap` `--ca-empty-icon-{bg,border,radius}` `--ca-empty-description-{size,leading,max-width}` `--ca-empty-actions-margin`; modifiers `.ca-empty--bare` (prop `bare`) and `.ca-empty--fill` (prop `actionsFill`)

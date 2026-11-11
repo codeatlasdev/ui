@@ -127,3 +127,45 @@ describe("EmptyState", () => {
 		});
 	});
 });
+
+describe("EmptyState tokens (#707)", () => {
+	it("the tokens restyle the tile, title gap, description and actions; unset they change nothing", async () => {
+		const actions = createRawSnippet(() => ({ render: () => "<a href='/'>Go</a>" }));
+		const props = {
+			icon: Inbox,
+			title: "Invitation unavailable",
+			description: "Ask for a new link.",
+			actions,
+		};
+		const plain = await render(EmptyState, props);
+		const p = plain.container.querySelector(".ca-empty") as HTMLElement;
+		const gap = (root: HTMLElement) =>
+			(root.querySelector(".ca-empty__description") as HTMLElement).getBoundingClientRect().top -
+			(root.querySelector(".ca-empty__title") as HTMLElement).getBoundingClientRect().bottom;
+		expect(Math.round(gap(p))).toBe(12);
+
+		const screen = await render(EmptyState, props);
+		const root = screen.container.querySelectorAll(".ca-empty")[0] as HTMLElement;
+		for (const [k, v] of Object.entries({
+			"--ca-empty-icon-bg": "rgb(1, 2, 3)",
+			"--ca-empty-icon-border": "1px solid rgb(4, 5, 6)",
+			"--ca-empty-icon-radius": "12px",
+			"--ca-empty-title-gap": "4px",
+			"--ca-empty-description-size": "14px",
+			"--ca-empty-description-max-width": "none",
+			"--ca-empty-actions-margin": "0px",
+		}))
+			root.style.setProperty(k, v);
+		const icon = root.querySelector(".ca-empty__icon") as HTMLElement;
+		expect(getComputedStyle(icon).backgroundColor).toBe("rgb(1, 2, 3)");
+		expect(getComputedStyle(icon).borderTopColor).toBe("rgb(4, 5, 6)");
+		expect(getComputedStyle(icon).borderTopLeftRadius).toBe("12px");
+		expect(Math.round(gap(root))).toBe(4);
+		const desc = root.querySelector(".ca-empty__description") as HTMLElement;
+		expect(getComputedStyle(desc).fontSize).toBe("14px");
+		expect(getComputedStyle(desc).maxWidth).toBe("none");
+		expect(
+			getComputedStyle(root.querySelector(".ca-empty__actions") as HTMLElement).marginTop
+		).toBe("0px");
+	});
+});

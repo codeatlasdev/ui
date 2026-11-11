@@ -77,8 +77,9 @@
       justify-content: center;
       width: var(--ca-space-12);
       height: var(--ca-space-12);
-      border-radius: var(--ca-radius-lg);
-      background: var(--ca-action-hover);
+      border-radius: var(--ca-empty-icon-radius, var(--ca-radius-lg));
+      background: var(--ca-empty-icon-bg, var(--ca-action-hover));
+      border: var(--ca-empty-icon-border, none);
       color: var(--ca-text-secondary);
       flex-shrink: 0;
     }
@@ -89,16 +90,22 @@
       font-weight: var(--ca-empty-title-weight, var(--ca-font-weight-semibold));
       color: var(--ca-text-primary);
       margin: 0;
-      letter-spacing: var(--ca-heading-tracking);
+      line-height: var(--ca-empty-title-leading, inherit);
+      letter-spacing: var(--ca-empty-title-tracking, var(--ca-heading-tracking));
       text-transform: var(--ca-heading-case);
     }
 
     .ca-empty__description {
-      font-size: var(--ca-font-size-body2);
+      font-size: var(--ca-empty-description-size, var(--ca-font-size-body2));
       color: var(--ca-text-secondary);
       margin: 0;
-      max-width: calc(var(--ca-space-unit) * 85);
-      line-height: var(--ca-line-height-body);
+      max-width: var(--ca-empty-description-max-width, calc(var(--ca-space-unit) * 85));
+      line-height: var(--ca-empty-description-leading, var(--ca-line-height-body));
+    }
+    /* The title-to-description space alone (#707): the row gap is one value for every pair, so the description
+       pulls itself up by the difference; unset, the margin is 0. */
+    .ca-empty__title + .ca-empty__description {
+      margin-top: calc(var(--ca-empty-title-gap, var(--ca-space-3)) - var(--ca-space-3));
     }
 
     .ca-empty__actions {
@@ -108,7 +115,7 @@
       align-items: center;
       flex-wrap: wrap;
       justify-content: center;
-      margin-top: var(--ca-space-1);
+      margin-top: var(--ca-empty-actions-margin, var(--ca-space-1));
     }
 
     /* ── Hero ──────────────────────────────────────────────────── */

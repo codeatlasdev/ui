@@ -62,6 +62,40 @@ describe("design knobs → tokens", () => {
 		expect(css).toContain("--ca-btn-sm-gap: 6px;");
 	});
 
+	it("components.emptyState emits the icon, title, description and actions tokens (#707)", () => {
+		const css = themeCSS(
+			defineTheme({
+				components: {
+					emptyState: {
+						iconBg: "var(--ca-field-bg)",
+						iconBorder: "1px solid var(--ca-outline-subtle)",
+						iconRadius: "12px",
+						titleGap: "4px",
+						titleLeading: "1.3",
+						titleTracking: "-0.01em",
+						descriptionSize: "14px",
+						descriptionLeading: "1.5",
+						descriptionMaxWidth: "none",
+						actionsMargin: "8px",
+					},
+				},
+			})
+		);
+		for (const decl of [
+			"--ca-empty-icon-bg: var(--ca-field-bg);",
+			"--ca-empty-icon-border: 1px solid var(--ca-outline-subtle);",
+			"--ca-empty-icon-radius: 12px;",
+			"--ca-empty-title-gap: 4px;",
+			"--ca-empty-title-leading: 1.3;",
+			"--ca-empty-title-tracking: -0.01em;",
+			"--ca-empty-description-size: 14px;",
+			"--ca-empty-description-leading: 1.5;",
+			"--ca-empty-description-max-width: none;",
+			"--ca-empty-actions-margin: 8px;",
+		])
+			expect(css).toContain(decl);
+	});
+
 	it("components.button/iconButton/kbd emit the --ca-btn-*, --ca-icon-btn-* and --ca-kbd-* tokens (#373)", () => {
 		const css = themeCSS(
 			defineTheme({
