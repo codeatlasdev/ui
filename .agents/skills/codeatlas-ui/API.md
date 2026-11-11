@@ -405,7 +405,7 @@ Parts: `ca-breadcrumb__current` `ca-breadcrumb__item` `ca-breadcrumb__link` `ca-
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `variant?` | `'filled' \| 'glass' \| 'outlined' \| 'ghost' \| 'destructive'` | `'filled'` | `filled` (default) is the primary action; `glass` is a tinted surface button (blur only under the glass and frosted styles). |
-| `tone?` | `'brand' \| 'neutral'` | `'brand'` | `'neutral'` draws `outlined` and `ghost` without brand colour (neutral label and border), for a secondary action beside a brand `filled` one. Other variants ignore it. |
+| `tone?` | `'brand' \| 'neutral' \| 'danger'` | `'brand'` | `'neutral'` draws `outlined` and `ghost` without brand colour (neutral label and border), for a secondary action beside a brand `filled` one. `'danger'` draws them in the error colour, for a quiet destructive action (Remove, Disconnect) where the filled `destructive` is too loud. Other variants ignore it. |
 | `size?` | `'sm' \| 'md' \| 'lg'` | `'md'` |  |
 | `disabled?` | `boolean` | `false` |  |
 | `loading?` | `boolean` | `false` | Shows a spinner in place of `leading`, sets `aria-busy` and blocks interaction. Label is kept. |
@@ -425,7 +425,7 @@ Snippets: `children`; `leading`; `trailing`
 
 Also accepts: `AnchorAttributes \| ButtonAttributes`
 
-Parts: `ca-btn` `ca-btn--between` `ca-btn--destructive` `ca-btn--filled` `ca-btn--full-width` `ca-btn--ghost` `ca-btn--glass` `ca-btn--lg` `ca-btn--loading` `ca-btn--md` `ca-btn--neutral` `ca-btn--outlined` `ca-btn--sm` `ca-btn__leading` `ca-btn__trailing` `ca-btn__trailing--hint`
+Parts: `ca-btn` `ca-btn--between` `ca-btn--danger` `ca-btn--destructive` `ca-btn--filled` `ca-btn--full-width` `ca-btn--ghost` `ca-btn--glass` `ca-btn--lg` `ca-btn--loading` `ca-btn--md` `ca-btn--neutral` `ca-btn--outlined` `ca-btn--sm` `ca-btn__leading` `ca-btn__trailing` `ca-btn__trailing--hint`
 
 Variables: `--ca-btn-disabled-bg` `--ca-btn-disabled-border-color` `--ca-btn-disabled-border-width` `--ca-btn-disabled-color` `--ca-btn-disabled-opacity` `--ca-btn-font-weight` `--ca-btn-gap` `--ca-btn-ghost-border-width` `--ca-btn-letter-spacing` `--ca-btn-lg-font-size` `--ca-btn-lg-font-weight` `--ca-btn-lg-height` `--ca-btn-lg-letter-spacing` `--ca-btn-lg-padding-x` `--ca-btn-line-height` `--ca-btn-md-font-size` `--ca-btn-md-font-weight` `--ca-btn-md-height` `--ca-btn-md-letter-spacing` `--ca-btn-md-padding-x` `--ca-btn-sm-font-size` `--ca-btn-sm-font-weight` `--ca-btn-sm-height` `--ca-btn-sm-letter-spacing` `--ca-btn-sm-padding-x` `--ca-btn-touch-height`
 
@@ -1880,7 +1880,7 @@ Snippets: `children`
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `variant?` | `'glass' \| 'filled' \| 'outlined' \| 'text'` | `'glass'` |  |
-| `tone?` | `'brand' \| 'neutral'` | `'brand'` | `'neutral'` draws `outlined` without brand colour (neutral border and icon). `text` is always neutral. |
+| `tone?` | `'brand' \| 'neutral' \| 'danger'` | `'brand'` | `'neutral'` draws `outlined` without brand colour (neutral border and icon). `text` is always neutral. |
 | `size?` | `'sm' \| 'md' \| 'lg'` | `'md'` |  |
 | `disabled?` | `boolean` | `false` |  |
 | `loading?` | `boolean` | `false` | Replaces the icon with a spinner, sets `aria-busy` and blocks interaction. |
@@ -1892,7 +1892,7 @@ Snippets: `children`
 
 Also accepts: `Omit<HTMLAttributes<HTMLElement>, 'class' \| 'children' \| 'onclick' \| 'aria-label'>`
 
-Parts: `ca-icon-btn` `ca-icon-btn--filled` `ca-icon-btn--glass` `ca-icon-btn--lg` `ca-icon-btn--loading` `ca-icon-btn--md` `ca-icon-btn--neutral` `ca-icon-btn--outlined` `ca-icon-btn--sm` `ca-icon-btn--text`
+Parts: `ca-icon-btn` `ca-icon-btn--danger` `ca-icon-btn--filled` `ca-icon-btn--glass` `ca-icon-btn--lg` `ca-icon-btn--loading` `ca-icon-btn--md` `ca-icon-btn--neutral` `ca-icon-btn--outlined` `ca-icon-btn--sm` `ca-icon-btn--text`
 
 Variables: `--ca-icon-btn-disabled-border-color` `--ca-icon-btn-disabled-border-width` `--ca-icon-btn-disabled-color` `--ca-icon-btn-disabled-opacity` `--ca-icon-btn-font-weight` `--ca-icon-btn-letter-spacing` `--ca-icon-btn-size-lg` `--ca-icon-btn-size-md` `--ca-icon-btn-size-sm` `--ca-icon-btn-touch-size`
 

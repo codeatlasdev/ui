@@ -10,7 +10,7 @@
 
   type Variant = 'glass' | 'filled' | 'outlined' | 'text';
   type Size = 'sm' | 'md' | 'lg';
-  type Tone = 'brand' | 'neutral';
+  type Tone = 'brand' | 'neutral' | 'danger';
 
   interface Props extends Omit<HTMLAttributes<HTMLElement>, 'class' | 'children' | 'onclick' | 'aria-label'> {
     variant?: Variant;
@@ -63,6 +63,7 @@
   aria-label={ariaLabel}
   class="ca-icon-btn ca-icon-btn--{variant} ca-icon-btn--{size} {className}"
   class:ca-icon-btn--neutral={tone === 'neutral' && variant === 'outlined'}
+  class:ca-icon-btn--danger={tone === 'danger' && (variant === 'outlined' || variant === 'text')}
   class:ca-icon-btn--loading={loading}
   aria-disabled={isDisabled}
   aria-busy={loading || undefined}
@@ -170,6 +171,20 @@
     }
     .ca-icon-btn--neutral:active:not(:disabled) {
       background: var(--ca-action-selected);
+    }
+
+    /* Danger tone (outlined, text): error border and icon, tints capped at 10% (#700). */
+    .ca-icon-btn--danger.ca-icon-btn--outlined {
+      border-color: var(--ca-semantic-error);
+    }
+    .ca-icon-btn--danger {
+      color: var(--ca-semantic-error);
+    }
+    .ca-icon-btn--danger:hover:not(:disabled) {
+      background: color-mix(in oklab, var(--ca-semantic-error) 6%, transparent);
+    }
+    .ca-icon-btn--danger:active:not(:disabled) {
+      background: color-mix(in oklab, var(--ca-semantic-error) 10%, transparent);
     }
 
     /* Text */

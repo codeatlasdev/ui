@@ -84,3 +84,11 @@ Weight, tracking, line-height, gap, padding and size are component tokens: set t
   { name: "aria-label", type: "string", description: "Accessible name for icon-only buttons." },
   { name: "class", type: "string", description: "Extra classes on the root element." },
 ]} />
+
+## Danger tone
+
+`tone="danger"` draws `outlined` and `ghost` in the error colour, with a tinted hover: a quiet destructive action in a row or a card (Remove, Disconnect), where the filled `destructive` variant is too loud. The label keeps 4.5:1 on the page and on its hover and pressed tints in every preset. `IconButton` takes it on `outlined` and `text`.
+
+```svelte
+<Button variant="ghost" tone="danger">Disconnect</Button>
+```

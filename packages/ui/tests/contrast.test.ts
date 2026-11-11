@@ -538,6 +538,40 @@ describe("Button tone=neutral (#357)", () => {
 			});
 });
 
+describe("Button tone=danger (#700)", () => {
+	const RAISED = ["--ca-surface-base", "--ca-surface-raised", "--ca-surface-overlay"];
+	const btn = readFileSync(new URL("components/Button/Button.svelte", LIB), "utf8");
+	const iconBtn = readFileSync(new URL("components/Button/IconButton.svelte", LIB), "utf8");
+
+	it("draws the label, border and tints from the error semantic, never the brand", () => {
+		for (const src of [btn, iconBtn]) {
+			const rules = [...src.matchAll(/([^{}]*--danger[^{}]*)\{([^{}]*)\}/g)]
+				.map((m) => m[2])
+				.join("\n");
+			expect(rules).toContain("--ca-semantic-error");
+			expect(rules).not.toContain("--ca-brand");
+		}
+	});
+
+	for (const src of sources)
+		for (const scheme of ["light", "dark"] as const)
+			it(`${src.id} ${scheme}: error label >= 4.5:1 on the surfaces and its 6%/10% tints`, () => {
+				const t = resolved(src, scheme);
+				const label = resolve(t, "--ca-semantic-error");
+				const [l, c, h] = /oklch\(([\d.]+)\s+([\d.]+)\s+([\d.]+)/.exec(label)!.slice(1);
+				for (const s of RAISED) {
+					const bg = surfaceRgb(t, s);
+					for (const pct of [0, 6, 10]) {
+						const fill = pct ? over(`oklch(${l} ${c} ${h} / ${pct / 100})`, bg) : bg;
+						expect(
+							ratio(rgb(oklchToHex(label)), fill),
+							`label on ${pct}% tint over ${s}`
+						).toBeGreaterThanOrEqual(4.5);
+					}
+				}
+			});
+});
+
 // ── --ca-brand-text (#410) ───────────────────────────────────────────────────
 // Brand-coloured text (outlined/ghost labels, links, active nav) must hold AA on every surface and
 // on the hover/selected fills it sits on, for every built-in preset and for any brand a theme
