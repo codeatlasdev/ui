@@ -3106,6 +3106,32 @@ Data attributes: `data-disabled`, `data-highlighted`, `data-outside-month`, `dat
 
 Tokens: `--ca-date-gap` `--ca-date-hint-leading` `--ca-date-hint-tracking` `--ca-date-label-line-height` `--ca-date-label-tracking` `--ca-date-letter-spacing`
 
+## Rating
+
+`import { Rating } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `value?` | `number` | `0` | `bind:` Bindable value, 0 = none. |
+| `max?` | `number` | `5` | Number of stars. |
+| `step?` | `1 \| 0.5` | `1` | 1 for whole stars, 0.5 for half steps. |
+| `label` | `string` |  | Visible label and the group's accessible name. |
+| `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only. |
+| `name?` | `string` |  | Native `name`: the value is part of FormData on a plain submit. |
+| `readonly?` | `boolean` | `false` | Shows the value only: one image with a text alternative, no inputs. |
+| `disabled?` | `boolean` | `false` |  |
+| `size?` | `'sm' \| 'md'` | `'md'` | Star size: `md` 24px, `sm` 18px. |
+| `class?` | `string` | `''` |  |
+| `onchange?` | `(value: number) => void` |  |  |
+
+Parts: `ca-rating` `ca-rating--md` `ca-rating--readonly` `ca-rating--sm` `ca-rating__glyph` `ca-rating__input` `ca-rating__label` `ca-rating__option` `ca-rating__option--half` `ca-rating__star` `ca-rating__stars`
+
+Variables: `--ca-rating-color` `--ca-rating-empty` `--ca-rating-fill` `--ca-rating-size`
+
+Data attributes: `data-disabled`, `data-on`
+
+Tokens: `--ca-rating-color` `--ca-rating-empty` `--ca-rating-size`
+
 ## RecordCell
 
 `import { RecordCell } from "@codeatlasdev/ui"`

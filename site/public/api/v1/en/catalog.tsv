@@ -398,3 +398,4 @@ id	group	page	title	names	tags	summary
 5007	display	avatar	Avatar group		avatar,avatar-group,overlap,overflow,max,collaborators	A labelled group of six overlapping avatars: three photos and three initials, capped at four with an overflow chip counting the other two.
 5008	display	avatar	Group sizes		avatar,avatar-group,sizes,rounded,overflow	Five avatar groups at sizes `xs` to `xl` and a rounded one, each capped at three with a `+2` chip.
 5017	layout	form-page	Form with a preview and help aside		app-form,aside,side-column,preview,stat,stepper,card,settings	A workspace form with a side column: a live preview, the plan's seat count and a completion checklist beside the fields.
+5018	inputs	rating	Rating		rating,stars,review,score,radiogroup,half steps	Star ratings: an editable whole-star rating, a half-step rating and a small read-only average.

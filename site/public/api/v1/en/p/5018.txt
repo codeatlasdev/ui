@@ -1,0 +1,12 @@
+Use @codeatlasdev/ui demo #5018 "Rating" (inputs/rating).
+What it shows: Star ratings: an editable whole-star rating, a half-step rating and a small read-only average. When to use: Collecting or showing a score out of five, such as service or product reviews.
+Spec:
+- A `Rating` labelled `Service` bound to 4
+- A `Rating` labelled `Food` with `step={0.5}` bound to 3.5
+- A `readonly` `size="sm"` `Rating` labelled `Average` showing 4.5
+Check first: Svelte 5 + @codeatlasdev/ui installed? theme in src/lib/theme.ts? Kit 2 or 3?
+Apply: import only from "@codeatlasdev/ui[/charts|/map|/sound|/table|/code|/forms]"; keep component names, props and
+  variants of the reference as they are; no layout CSS, --ca-* tokens only (SKILL.md rules);
+  replace sample data/copy with the project's; keep the first comment line.
+Report: #5018 Rating → file, what changed, https://ui.codeatlas.com.br/docs/inputs/rating#rating; what you could not check (light/dark, 375px, keyboard, reduced motion).
+Reference: https://ui.codeatlas.com.br/api/v1/en/e/5018.txt   Components API: ca-ui-mcp get_component(Rating)

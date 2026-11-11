@@ -1,0 +1,28 @@
+---
+title: Rating
+description: Star rating as a labelled radiogroup of native radios, with half steps, a read-only display and a form value.
+group: Inputs
+---
+import Demo from "~/components/docs/Demo.astro";
+import Props from "~/components/docs/Props.astro";
+import Default from "~/demos/inputs/rating/Default.svelte";
+import DefaultSrc from "~/demos/inputs/rating/Default.svelte?raw";
+
+Each star is a native radio in a labelled group, so arrow keys move by one step, Home and End jump to the ends, and the value is part of the form under `name`. `step={0.5}` adds half steps. `readonly` draws the value as one image whose name says it ("Average: 4.5 of 5 stars"), with no inputs.
+
+<Demo title="Rating" description="Editable whole and half steps, and a read-only average." src={DefaultSrc}><Default client:visible /></Demo>
+
+Tokens: `--ca-rating-size`, `--ca-rating-color` (default `--ca-semantic-warning`), `--ca-rating-empty`. Under a coarse pointer a whole star is `--ca-touch-target` wide.
+
+<Props for="Rating" rows={[
+  { name: "label", type: "string", description: "Visible label and the group's accessible name." },
+  { name: "value", type: "number", default: "0", description: "Bindable value; 0 means none." },
+  { name: "max", type: "number", default: "5", description: "Number of stars." },
+  { name: "step", type: "1 | 0.5", default: "1", description: "Whole or half steps." },
+  { name: "readonly", type: "boolean", default: "false", description: "Shows the value as one image with a text alternative." },
+  { name: "disabled", type: "boolean", default: "false", description: "Disables every star." },
+  { name: "name", type: "string", description: "Native name: the value is part of FormData." },
+  { name: "size", type: "'sm' | 'md'", default: "'md'", description: "Star size." },
+  { name: "hideLabel", type: "boolean", default: "false", description: "Keeps the label for assistive tech only." },
+  { name: "onchange", type: "(value: number) => void", description: "Called when the user picks a value." },
+]} />

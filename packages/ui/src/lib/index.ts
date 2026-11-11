@@ -220,6 +220,7 @@ export { default as PreviewStage } from "./components/PreviewStage/PreviewStage.
 export { default as Progress } from "./components/Progress/Progress.svelte";
 export type { RadioItem } from "./components/RadioGroup/RadioGroup.svelte";
 export { default as RadioGroup } from "./components/RadioGroup/RadioGroup.svelte";
+export { default as Rating } from "./components/Rating/Rating.svelte";
 export { default as RecordCell } from "./components/RecordList/RecordCell.svelte";
 export { default as RecordList } from "./components/RecordList/RecordList.svelte";
 export { default as RecordRow } from "./components/RecordList/RecordRow.svelte";
