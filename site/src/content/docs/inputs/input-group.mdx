@@ -1,0 +1,23 @@
+---
+title: InputGroup
+description: A field and its buttons joined into one control, with one seam, squared inner corners and equal height.
+group: Inputs
+---
+import Props from "~/components/docs/Props.astro";
+
+`InputGroup` joins one field (`TextField`, `Select` or `NumberField`) with `Button` or `IconButton` members: a single row, aligned to the field box, inner corners squared and one border between neighbours. It is a `role="group"` and needs a name.
+
+```svelte
+<InputGroup aria-label="Invite a teammate">
+  <TextField label="Email" type="email" bind:value={email} />
+  <Button variant="filled" onclick={invite}>Send invite</Button>
+</InputGroup>
+```
+
+Put a field's hint or error message outside the group: text below the field box would shift the alignment. For a button inside the field box itself (a "copy" or "show" action), use `TextField`'s `prefix` / `suffix` addons.
+
+<Props for="InputGroup" rows={[
+  { name: "aria-label", type: "string", description: "Accessible name of the group (or aria-labelledby). Required." },
+  { name: "children", type: "Snippet", description: "One field and its Button / IconButton members." },
+  { name: "class", type: "string", description: "Extra classes on the group." },
+]} />

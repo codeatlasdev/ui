@@ -647,3 +647,7 @@ A component token is a custom property a component reads before its default: `--
 - **SegmentedControl** `--ca-seg-item-{padding-x,font-size,line-height}` `--ca-seg-{sm,md}-item-{padding-x,font-size,line-height}` `--ca-seg-gap` (space between segments, default `0`); prop `sizing="content"` (`data-sizing="content"` on `.ca-seg`: segments as wide as their label, thumb placed from the measured segment, track scrolls on x when wider than its container)
 - **EmptyState** `--ca-empty-padding` `--ca-empty-title-size` `--ca-empty-title-weight`; modifiers `.ca-empty--bare` (prop `bare`) and `.ca-empty--fill` (prop `actionsFill`)
 - **Breadcrumb** `--ca-breadcrumb-size` (default `--ca-font-size-caption`) `--ca-breadcrumb-line-height` (default inherited) `--ca-breadcrumb-tracking` (default inherited) `--ca-breadcrumb-link-radius` (default `0`); a `link` snippet's anchor is styled like `.ca-breadcrumb__link`
+
+## InputGroup
+
+`.ca-input-group`: joins a field (TextField, Select, NumberField) and Button / IconButton members into one row; inner corners squared, a one-border seam.
