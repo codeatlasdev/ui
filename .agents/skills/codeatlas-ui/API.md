@@ -837,6 +837,9 @@ Data attributes: `data-state` (`closed` `open`)
 | `against?` | `string` |  | Background to measure contrast against (any CSS color). Omit to hide the readout. |
 | `role?` | `'text' \| 'fill'` | `'text'` | Role of `value` in the contrast pair: `text` (value on `against`) or `fill` (against on value). |
 | `minRatio?` | `number` | `4.5` | Minimum ratio that counts as passing. 4.5 for text, 3 for UI parts. |
+| `picker?` | `boolean` | `false` | Open a `ColorPicker` in a Popover from the chip instead of the native picker. Writes in `format`. |
+| `alpha?` | `boolean` | `false` | With `picker`: adds the opacity slider, so `value` can carry alpha. |
+| `swatches?` | `string[]` |  | With `picker`: colors to pick from. |
 | `description?` | `string` |  |  |
 | `width?` | `FieldWidth` |  | `full`, `auto`, `fit` or a CSS length (`--ca-field-width`). Default: the width its content needs. |
 | `variant?` | `"outlined" \| "filled" \| "underline"` |  | `outlined`, `filled` or `underline`; default follows the theme. |
@@ -844,11 +847,36 @@ Data attributes: `data-state` (`closed` `open`)
 | `class?` | `string` | `''` |  |
 | `onchange?` | `(value: string) => void` |  |  |
 
-Parts: `ca-color-field` `ca-color-field__contrast` `ca-color-field__level` `ca-color-field__native` `ca-color-field__pick` `ca-color-field__ratio` `ca-color-field__swatch`
+Parts: `ca-color-field` `ca-color-field__contrast` `ca-color-field__level` `ca-color-field__native` `ca-color-field__pick` `ca-color-field__popover` `ca-color-field__ratio` `ca-color-field__swatch`
 
-Variables: `--ca-color-field-fill` `--ca-field-width`
+Variables: `--ca-color-field-fill` `--ca-color-field-popover-width` `--ca-field-width`
 
 Data attributes: `data-disabled`, `data-pass`
+
+Tokens: `--ca-color-field-popover-width`
+
+## ColorPicker
+
+`import { ColorPicker } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `label` | `string` |  | Names the color area ("Brand color") and groups the controls. |
+| `value?` | `string` | `'oklch(0.6 0.15 250)'` | `bind:` Bindable CSS color. A string that is not a color is ignored. |
+| `format?` | `'oklch' \| 'hex'` | `'oklch'` | What `value` is written as. |
+| `alpha?` | `boolean` | `false` | Adds the opacity slider; `value` then carries alpha. |
+| `swatches?` | `string[]` |  | Colors to pick from, any CSS color. The one equal to `value` shows as checked. |
+| `disabled?` | `boolean` | `false` |  |
+| `class?` | `string` | `''` |  |
+| `onchange?` | `(value: string) => void` |  |  |
+
+Parts: `ca-color-picker` `ca-color-picker__alpha` `ca-color-picker__area` `ca-color-picker__hue` `ca-color-picker__slice` `ca-color-picker__thumb` `ca-color-picker__track`
+
+Variables: `--ca-color-picker-color` `--ca-color-picker-gap` `--ca-color-picker-pos` `--ca-color-picker-radius` `--ca-color-picker-ratio` `--ca-color-picker-thumb-size` `--ca-color-picker-top` `--ca-color-picker-track-height` `--ca-color-picker-width` `--ca-color-picker-x` `--ca-color-picker-y`
+
+Data attributes: `data-disabled`, `data-dragging`
+
+Tokens: `--ca-color-picker-gap` `--ca-color-picker-pos` `--ca-color-picker-radius` `--ca-color-picker-ratio` `--ca-color-picker-thumb-size` `--ca-color-picker-top` `--ca-color-picker-track-height` `--ca-color-picker-width`
 
 ## Combobox
 
@@ -4651,6 +4679,16 @@ Font weights: light 300, regular 400, medium 500, bold 600.
 const fontWeight: { readonly light: 300; readonly regular: 400; readonly medium: 500; readonly bold: 600; }
 ```
 
+### formatColor
+
+`import { formatColor } from "@codeatlasdev/ui"`
+
+A CSS color string for an OKLCH triple and alpha: `oklch(L C H)` (with `/ alpha` only when translucent) or `#rrggbb` (`#rrggbbaa` when translucent, gamut-clipped).
+
+```ts
+function formatColor(color: Oklch, alpha: number, format: "oklch" | "hex"): string
+```
+
 ### formatCurrency
 
 `import { formatCurrency } from "@codeatlasdev/ui"`
@@ -4879,6 +4917,16 @@ const MATERIAL_BLUR_VARS: Record<Thickness, string>
 
 ```ts
 const MATERIAL_CSS_VARS: Record<Thickness, string>
+```
+
+### maxChroma
+
+`import { maxChroma } from "@codeatlasdev/ui"`
+
+The largest chroma that still fits the sRGB gamut at lightness `l` and hue `h` (0 at black and white), found by bisection to 0.0005. A color picker draws its chroma axis up to it so the area never offers a color the screen would clip.
+
+```ts
+function maxChroma(l: number, h: number): number
 ```
 
 ### mergeTheme
@@ -8349,6 +8397,16 @@ Dominant colors of an RGBA pixel buffer (`ImageData.data`), by k-means in OKLab 
 function extractPalette(rgba: ArrayLike<number>, options?: { k?: number | undefined; maxSamples?: number | undefined; minDistance?: number | undefined; }): PaletteColor[]
 ```
 
+### formatColor
+
+`import { formatColor } from "@codeatlasdev/ui/utils/color"`
+
+A CSS color string for an OKLCH triple and alpha: `oklch(L C H)` (with `/ alpha` only when translucent) or `#rrggbb` (`#rrggbbaa` when translucent, gamut-clipped).
+
+```ts
+function formatColor(color: Oklch, alpha: number, format: "oklch" | "hex"): string
+```
+
 ### formatOklch
 
 `import { formatOklch } from "@codeatlasdev/ui/utils/color"`
@@ -8357,6 +8415,16 @@ function extractPalette(rgba: ArrayLike<number>, options?: { k?: number | undefi
 
 ```ts
 function formatOklch(options: Oklch): string
+```
+
+### maxChroma
+
+`import { maxChroma } from "@codeatlasdev/ui/utils/color"`
+
+The largest chroma that still fits the sRGB gamut at lightness `l` and hue `h` (0 at black and white), found by bisection to 0.0005. A color picker draws its chroma axis up to it so the area never offers a color the screen would clip.
+
+```ts
+function maxChroma(l: number, h: number): number
 ```
 
 ### oklchHex
@@ -8369,6 +8437,16 @@ Opaque `#rrggbb` for an OKLCH triple (gamut-clipped).
 function oklchHex(options: Oklch): string
 ```
 
+### oklchSlice
+
+`import { oklchSlice } from "@codeatlasdev/ui/utils/color"`
+
+RGBA pixels (row-major, `width * height * 4`) of the OKLCH slice at hue `h`: lightness 1 on the top row to 0 on the bottom, chroma 0 on the left column to `cmax` on the right. A pixel outside the sRGB gamut is fully transparent, so the area shows only colors the screen can display.
+
+```ts
+function oklchSlice(h: number, width: number, height: number, cmax: number): Uint8ClampedArray<ArrayBuffer>
+```
+
 ### parseColorInput
 
 `import { parseColorInput } from "@codeatlasdev/ui/utils/color"`
@@ -8377,6 +8455,16 @@ Parse what a user types into a color field: `#rgb`, `#rrggbb`, `rgb()`, `oklch()
 
 ```ts
 function parseColorInput(input: string): { hex: string; oklch: Oklch; alpha: number; css: string } | null
+```
+
+### peakChroma
+
+`import { peakChroma } from "@codeatlasdev/ui/utils/color"`
+
+The highest chroma any lightness reaches at hue `h` inside sRGB (the tip of its gamut triangle).
+
+```ts
+function peakChroma(h: number): number
 ```
 
 ### pickBrand

@@ -133,9 +133,15 @@ State attributes on `.ca-chip-group__chip`: `data-state="checked|unchecked"`, `d
 
 ## ColorField
 
-`.ca-color-field` `.ca-color-field__contrast` `.ca-color-field__level` `.ca-color-field__native` `.ca-color-field__pick` `.ca-color-field__ratio` `.ca-color-field__swatch`
+`.ca-color-field` `.ca-color-field__contrast` `.ca-color-field__level` `.ca-color-field__native` `.ca-color-field__pick` `.ca-color-field__popover` `.ca-color-field__ratio` `.ca-color-field__swatch`
 
 Contrast state is exposed as `[data-pass]` and `[data-level]` on `.ca-color-field__contrast`.
+
+## ColorPicker
+
+`.ca-color-picker` `.ca-color-picker__alpha` `.ca-color-picker__area` `.ca-color-picker__slice` `.ca-color-picker__hue` `.ca-color-picker__thumb` `.ca-color-picker__track`
+
+`[data-disabled]` on the root, `[data-dragging]` on the area. Tokens: `--ca-color-picker-width`, `--ca-color-picker-gap`, `--ca-color-picker-radius`, `--ca-color-picker-ratio`, `--ca-color-picker-track-height`, `--ca-color-picker-thumb-size`. With `ColorField picker` the popover content also carries `.ca-color-field__popover` (`--ca-color-field-popover-width`).
 
 ## Collapsible
 

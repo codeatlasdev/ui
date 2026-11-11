@@ -79,6 +79,7 @@ export type { ChipGroupItem } from "./components/ChipGroup/ChipGroup.svelte";
 export { default as ChipGroup } from "./components/ChipGroup/ChipGroup.svelte";
 export { default as Collapsible } from "./components/Collapsible/Collapsible.svelte";
 export { default as ColorField } from "./components/ColorField/ColorField.svelte";
+export { default as ColorPicker } from "./components/ColorPicker/ColorPicker.svelte";
 export type { ComboboxOption } from "./components/Combobox/Combobox.svelte";
 export { default as Combobox } from "./components/Combobox/Combobox.svelte";
 export type { CommandResult } from "./components/CommandPalette/CommandPalette.svelte";
@@ -384,7 +385,9 @@ export type { Oklch, PaletteColor, WcagLevel } from "./utils/color.js";
 export {
 	contrast,
 	extractPalette,
+	formatColor,
 	formatOklch,
+	maxChroma,
 	parseColorInput,
 	pickBrand,
 	toHex,

@@ -44,6 +44,87 @@ export function oklchHex({ l, c, h }: Oklch): string {
 	return oklchToHex(`oklch(${l.toFixed(5)} ${c.toFixed(5)} ${h.toFixed(3)})`);
 }
 
+/** Linear sRGB of an OKLCH triple, not clamped: a channel outside 0..1 is outside the sRGB gamut. */
+function linearRgb({ l, c, h }: Oklch): [number, number, number] {
+	const a = c * Math.cos((h * Math.PI) / 180);
+	const b = c * Math.sin((h * Math.PI) / 180);
+	const L = (l + 0.3963377774 * a + 0.2158037573 * b) ** 3;
+	const M = (l - 0.1055613458 * a - 0.0638541728 * b) ** 3;
+	const S = (l - 0.0894841775 * a - 1.291485548 * b) ** 3;
+	return [
+		4.0767416621 * L - 3.3077115913 * M + 0.2309699292 * S,
+		-1.2684380046 * L + 2.6097574011 * M - 0.3413193965 * S,
+		-0.0041960863 * L - 0.7034186147 * M + 1.707614701 * S,
+	];
+}
+
+/**
+ * The largest chroma that still fits the sRGB gamut at lightness `l` and hue `h` (0 at black and
+ * white), found by bisection to 0.0005. A color picker draws its chroma axis up to it so the area
+ * never offers a color the screen would clip.
+ */
+export function maxChroma(l: number, h: number): number {
+	if (l <= 0 || l >= 1) return 0;
+	const inside = (c: number) => linearRgb({ l, c, h }).every((v) => v >= -1e-4 && v <= 1 + 1e-4);
+	let lo = 0;
+	let hi = 0.5;
+	while (hi - lo > 0.0005) {
+		const mid = (lo + hi) / 2;
+		if (inside(mid)) lo = mid;
+		else hi = mid;
+	}
+	return lo;
+}
+
+/** The highest chroma any lightness reaches at hue `h` inside sRGB (the tip of its gamut triangle). */
+export function peakChroma(h: number): number {
+	let best = 0;
+	for (let l = 0.05; l < 1; l += 0.05) best = Math.max(best, maxChroma(l, h));
+	return best;
+}
+
+/**
+ * RGBA pixels (row-major, `width * height * 4`) of the OKLCH slice at hue `h`: lightness 1 on the top
+ * row to 0 on the bottom, chroma 0 on the left column to `cmax` on the right. A pixel outside the
+ * sRGB gamut is fully transparent, so the area shows only colors the screen can display.
+ */
+export function oklchSlice(
+	h: number,
+	width: number,
+	height: number,
+	cmax: number
+): Uint8ClampedArray<ArrayBuffer> {
+	const out = new Uint8ClampedArray(new ArrayBuffer(width * height * 4));
+	for (let y = 0; y < height; y++) {
+		const l = 1 - (y + 0.5) / height;
+		for (let x = 0; x < width; x++) {
+			const rgb = linearRgb({ l, c: ((x + 0.5) / width) * cmax, h });
+			if (rgb.some((v) => v < -1e-4 || v > 1 + 1e-4)) continue;
+			const i = (y * width + x) * 4;
+			for (let k = 0; k < 3; k++) {
+				const v = Math.min(1, Math.max(0, rgb[k] ?? 0));
+				out[i + k] = Math.round(
+					(v <= 0.0031308 ? 12.92 * v : 1.055 * v ** (1 / 2.4) - 0.055) * 255
+				);
+			}
+			out[i + 3] = 255;
+		}
+	}
+	return out;
+}
+
+/**
+ * A CSS color string for an OKLCH triple and alpha: `oklch(L C H)` (with `/ alpha` only when
+ * translucent) or `#rrggbb` (`#rrggbbaa` when translucent, gamut-clipped).
+ */
+export function formatColor(color: Oklch, alpha: number, format: "oklch" | "hex"): string {
+	const a = round(Math.min(1, Math.max(0, alpha)), 2);
+	if (format === "hex") {
+		return a < 1 ? `${oklchHex(color)}${hex2(a)}` : oklchHex(color);
+	}
+	return a < 1 ? formatOklch(color).replace(/\)$/, ` / ${a})`) : formatOklch(color);
+}
+
 /**
  * Parse what a user types into a color field: `#rgb`, `#rrggbb`, `rgb()`, `oklch()`, `color-mix()`,
  * `white`/`black`, or a bare `rrggbb`. Returns the canonical `#rrggbb` and OKLCH, or null.
