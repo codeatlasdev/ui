@@ -50,6 +50,27 @@ defineTheme({ components: { popover: { padding: "var(--ca-space-2)" } } });
 
 <Demo title="Close on pick" description="A calendar inside a popover that closes itself when a day is chosen." src={CloseOnPickSrc}><CloseOnPick client:visible /></Demo>
 
+## Animating your own popover or dialog
+
+`Popover`, `Dialog` and `Sheet` already handle their own entrance and exit. If you write a native `[popover]` or `<dialog>` yourself and animate its exit with `display … allow-discrete`, put its layout on the element's base rule, never on `:popover-open` or `[open]`. During the exit transition the element is already closed, so a layout declared only for the open state is dropped first: a grid falls back to `display: block` and the content rearranges for the length of the fade, before it disappears.
+
+```css
+.card-popover {
+  display: grid; /* layout in the base rule: it holds while the exit plays */
+  grid-template-columns: 64px 1fr;
+  gap: var(--ca-space-3);
+  opacity: 1;
+  scale: 1;
+  transition: opacity var(--ca-duration-base), scale var(--ca-duration-base),
+    display var(--ca-duration-base) allow-discrete, overlay var(--ca-duration-base) allow-discrete;
+}
+.card-popover:not(:popover-open) { display: none; opacity: 0; scale: 0.96; }
+@starting-style { .card-popover:popover-open { opacity: 0; scale: 0.96; } }
+@media (prefers-reduced-motion: reduce) { .card-popover { transition: none; } }
+```
+
+Animate only `opacity` and `scale` (plus `display` and `overlay` as discrete), so nothing reflows while it plays. For a `<dialog>`, write the same rules with `[open]` instead of `:popover-open`.
+
 <Props for="Popover" rows={[
   { name: "triggerChild", type: "Snippet<[Record<string, unknown>]>", description: "Interactive trigger. Receives the trigger props to spread onto your Button or IconButton." },
   { name: "trigger", type: "Snippet", description: "Non-interactive trigger content (text, icon), wrapped in the popover's own button." },
