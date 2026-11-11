@@ -195,3 +195,55 @@ describe("Button tone=neutral (#357)", () => {
 		await expect.element(btn).toHaveAttribute("aria-haspopup", "menu");
 	});
 });
+
+// #708: the disabled look is token-driven; the AA contrast look stays the default.
+describe("configurable disabled look (#708)", () => {
+	const css = (el: Element, prop: string) => getComputedStyle(el).getPropertyValue(prop);
+	const probe = (c: string) => {
+		const p = document.createElement("i");
+		p.style.color = c;
+		document.body.append(p);
+		const out = getComputedStyle(p).color;
+		p.remove();
+		return out;
+	};
+
+	it("defaults: the contrast label, the default outline, no dimming", async () => {
+		const screen = await render(Button, {
+			children: label("Off"),
+			variant: "outlined",
+			tone: "neutral",
+			disabled: true,
+		});
+		const btn = screen.container.querySelector("button") as HTMLElement;
+		expect(css(btn, "color")).toBe(probe("var(--ca-text-disabled)"));
+		expect(css(btn, "border-top-color")).toBe(probe("var(--ca-outline-default)"));
+		expect(css(btn, "opacity")).toBe("1");
+	});
+
+	it("the four tokens reproduce a dimmed disabled button with no .ca-btn selector", async () => {
+		const screen = await render(Button, {
+			children: label("Off"),
+			variant: "outlined",
+			tone: "neutral",
+			disabled: true,
+		});
+		const btn = screen.container.querySelector("button") as HTMLElement;
+		const enabled = await render(Button, {
+			children: label("On"),
+			variant: "outlined",
+			tone: "neutral",
+		});
+		const on = enabled.container.querySelector("button") as HTMLElement;
+		btn.style.setProperty("--ca-btn-disabled-color", css(on, "color"));
+		btn.style.setProperty("--ca-btn-disabled-border-color", css(on, "border-top-color"));
+		btn.style.setProperty("--ca-btn-disabled-border-width", "2px");
+		btn.style.setProperty("--ca-btn-disabled-opacity", "0.5");
+		// The button transitions colour, border and opacity (150 ms): read the end state, not the first frame.
+		await settled();
+		expect(css(btn, "color")).toBe(css(on, "color"));
+		expect(css(btn, "border-top-color")).toBe(css(on, "border-top-color"));
+		expect(css(btn, "border-top-width")).toBe("2px");
+		expect(css(btn, "opacity")).toBe("0.5");
+	});
+});

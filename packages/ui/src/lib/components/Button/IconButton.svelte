@@ -185,7 +185,8 @@
     /* Disabled look (not while loading): after the variants so it wins at equal specificity. */
     .ca-icon-btn:disabled:not(.ca-icon-btn--loading),
     .ca-icon-btn[aria-disabled='true']:not(.ca-icon-btn--loading) {
-      color: var(--ca-text-disabled);
+      color: var(--ca-icon-btn-disabled-color, var(--ca-text-disabled));
+      opacity: var(--ca-icon-btn-disabled-opacity, 1);
       box-shadow: none;
     }
     .ca-icon-btn--glass:disabled:not(.ca-icon-btn--loading),
@@ -193,12 +194,12 @@
     .ca-icon-btn--filled:disabled:not(.ca-icon-btn--loading),
     .ca-icon-btn--filled[aria-disabled='true']:not(.ca-icon-btn--loading) {
       background: var(--ca-action-disabled-bg);
-      border: var(--ca-border-width) solid var(--ca-outline-default);
+      border: var(--ca-icon-btn-disabled-border-width, var(--ca-border-width)) solid var(--ca-icon-btn-disabled-border-color, var(--ca-outline-default));
     }
     .ca-icon-btn--outlined:disabled:not(.ca-icon-btn--loading),
     .ca-icon-btn--outlined[aria-disabled='true']:not(.ca-icon-btn--loading) {
       background: transparent;
-      border-color: var(--ca-outline-default);
+      border: var(--ca-icon-btn-disabled-border-width, var(--ca-border-width)) solid var(--ca-icon-btn-disabled-border-color, var(--ca-outline-default));
     }
     .ca-icon-btn--text:disabled:not(.ca-icon-btn--loading),
     .ca-icon-btn--text[aria-disabled='true']:not(.ca-icon-btn--loading) {

@@ -54,6 +54,8 @@ Weight, tracking, line-height, gap, padding and size are component tokens: set t
 - Every size: `--ca-btn-font-weight` (500), `--ca-btn-letter-spacing` (`--ca-label-tracking`), `--ca-btn-line-height` (inherited), `--ca-btn-gap` (`--ca-space-1-5`).
 - One size, `--ca-btn-{sm,md,lg}-`: `height`, `padding-x`, `font-size`, `font-weight`, `letter-spacing`.
 - `--ca-btn-ghost-border-width`: `0px` makes a ghost button as wide as a text one. `--ca-btn-disabled-bg`: e.g. `var(--ca-brand-fill)`.
+
+**Dimmed disabled look (opt-in).** The default disabled look is drawn from colours, never from opacity, so the label keeps about 3:1 (`--ca-text-disabled`). A product that must keep the enabled colours and dim the whole control sets four tokens on the button or any ancestor, with no selector against `.ca-btn*`: `--ca-btn-disabled-color` and `--ca-btn-disabled-border-color` (the variant's enabled colours), `--ca-btn-disabled-border-width` and `--ca-btn-disabled-opacity` (default `1`, the AA look), e.g. `--ca-btn-disabled-opacity: 0.5`. **Trade-off:** dimming a control with opacity halves the contrast of its label and border, so a disabled button then falls below the 3:1 floor the default holds on every surface; use it only to match an existing design system. `IconButton` has the same four as `--ca-icon-btn-disabled-*`.
 - `--ca-btn-touch-height`, `--ca-icon-btn-touch-size`: the `pointer: coarse` minimum, 44px unless you set it.
 - `IconButton`: `--ca-icon-btn-size-{sm,md,lg}` (32/40/48px), `--ca-icon-btn-font-weight` and `--ca-icon-btn-letter-spacing` (inherited by default).
 
