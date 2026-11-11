@@ -45,6 +45,20 @@ map.fitBounds(bounds, { padding: stageInsets.current });
 
 Without JavaScript, read `--ca-stage-inset-top`, `-right`, `-bottom` and `-left` on `<html>`. Never copy the panel widths or the 45% sheet height into the app: they are tokens of the frame.
 
+## Spacing and material
+
+Padding of the header, toolbar, body and footer, and their separators, are tokens:
+
+```css
+.app .ca-page-frame {
+  --ca-frame-pad-x: 16px;       /* default 20px */
+  --ca-frame-pad-y: 12px;       /* default: header 16/12, toolbar 8, body 8/20, footer 12 */
+  --ca-frame-border-width: 1px; /* header and footer separators */
+}
+```
+
+The separators are inset shadows and take no space. The panel's fill follows `data-style`: opaque under `solid` and `flat`, translucent under glass.
+
 ## Bottom sheet
 
 With `sheet`, `mode="map"` below 900px is a bottom sheet, not a `Sheet`: it is **not modal** (no backdrop, no focus trap, no scroll lock, no `inert`), so the stage above it still takes taps and pans. Its height snaps to a `detent`: `peek` (header only), `half` (45%, the default) or `full`. Drag the handle, or focus it and press Arrow Up and Arrow Down (Home and End jump to the ends). `bind:detent` follows the user.

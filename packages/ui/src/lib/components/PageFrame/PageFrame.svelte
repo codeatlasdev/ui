@@ -317,17 +317,17 @@
 
     .ca-page-frame__header {
       flex-shrink: 0;
-      padding: var(--ca-space-4) var(--ca-space-5) var(--ca-space-3);
+      padding: var(--ca-frame-pad-y, var(--ca-space-4)) var(--ca-frame-pad-x, var(--ca-space-5)) var(--ca-frame-pad-y, var(--ca-space-3));
     }
     .ca-page-frame__header[data-bordered] {
-      box-shadow: inset 0 calc(-1 * var(--ca-border-width)) 0 var(--ca-outline-subtle);
+      box-shadow: inset 0 calc(-1 * var(--ca-frame-border-width, var(--ca-border-width))) 0 var(--ca-outline-subtle);
     }
     .ca-page-frame__toolbar {
       flex-shrink: 0;
       display: flex;
       align-items: center;
       gap: var(--ca-space-2);
-      padding: var(--ca-space-2) var(--ca-space-5);
+      padding: var(--ca-frame-pad-y, var(--ca-space-2)) var(--ca-frame-pad-x, var(--ca-space-5));
     }
 
     .ca-page-frame__body {
@@ -338,7 +338,7 @@
       padding: 0;
     }
     .ca-page-frame__body[data-padded] {
-      padding: var(--ca-space-2) var(--ca-space-5) var(--ca-space-5);
+      padding: var(--ca-frame-pad-y, var(--ca-space-2)) var(--ca-frame-pad-x, var(--ca-space-5)) var(--ca-frame-pad-y, var(--ca-space-5));
     }
 
     .ca-page-frame__footer {
@@ -346,8 +346,8 @@
       display: flex;
       justify-content: flex-end;
       gap: var(--ca-space-2);
-      padding: var(--ca-space-3) var(--ca-space-5);
-      box-shadow: inset 0 var(--ca-border-width) 0 var(--ca-outline-subtle);
+      padding: var(--ca-frame-pad-y, var(--ca-space-3)) var(--ca-frame-pad-x, var(--ca-space-5));
+      box-shadow: inset 0 var(--ca-frame-border-width, var(--ca-border-width)) 0 var(--ca-outline-subtle);
     }
 
     .ca-page-frame__handle {

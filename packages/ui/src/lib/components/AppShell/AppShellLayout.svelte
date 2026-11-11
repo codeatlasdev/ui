@@ -4,7 +4,7 @@
   import { Spring } from 'svelte/motion';
   import { reducedMotion } from '../../stores/reduced-motion.svelte.js';
   import type { NavExtras, NavModule, NavMoreSheetProps } from './types.js';
-  import { clampPanelWidth, findActiveItem, firstModulePath, isNavSection, matchModuleIndex, PANEL_WIDTH, RAIL_WIDTH } from './types.js';
+  import { clampPanelWidth, findActiveItem, firstModulePath, isNavSection, matchModuleIndex, PANEL_WIDTH } from './types.js';
   import { readShellState, shellScript, writeShellState } from './shell-state.js';
   import ShellBrand from './ShellBrand.svelte';
   import { warnSmallBrand } from '../../utils/warn-small-brand.js';
@@ -92,6 +92,24 @@
     /** Shows each module's label as a caption under its rail icon. */
     railLabels?:    boolean;
     /**
+     * Width of the rail in px (default 52). Sets `--ca-rail-width` on the shell; the content offset,
+     * `--ca-shell-inset-left` and the stage inset all follow it. Setting `--ca-rail-width` in CSS
+     * (on `:root` or an ancestor) does the same, with no prop.
+     */
+    railWidth?:     number;
+    /**
+     * Draws the hairlines under the brand and above `railBottom`. `false` removes them, for a rail
+     * whose design separates the groups by spacing alone.
+     */
+    railSeparators?: boolean;
+    /**
+     * Renders the header (brand, page title, `mobileHeaderActions`) below 900px. `false` renders
+     * none and sets `--ca-shell-inset-top: 0`: for a design that puts the page title inside the
+     * page itself. Without a header the brand and `mobileHeaderActions` are not shown on mobile,
+     * so keep an account entry point elsewhere (`bottomNavOverflow`).
+     */
+    mobileHeader?:  boolean;
+    /**
      * Most tabs on the mobile bottom navigation. With more modules the first `bottomNavPrimary - 1`
      * stay and the last tab is "More", a dialog with the rest. Default 5.
      */
@@ -151,6 +169,9 @@
     railBottom,
     railTop,
     railLabels = false,
+    railWidth,
+    railSeparators = true,
+    mobileHeader = true,
     bottomNavPrimary,
     moreSheet,
     bottomNavOverflow,
@@ -263,7 +284,9 @@
 
   // What the shell chrome covers, for anything laid out over or behind the content (a map's padding,
   // a floating panel): rail + panel on desktop; 0 below 900px, where the CSS takes over top/bottom.
-  let insetLeft = $derived(RAIL_WIDTH + panelW.current);
+  // The rail part is the CSS token, not a JS number, so it follows `railWidth` and any override of
+  // `--ca-rail-width` (also one set after mount) without a measurement.
+  let insetLeft = $derived(`calc(var(--ca-rail-width) + ${panelW.current}px)`);
 
   // A page outside the component (PageFrame mode="page") can hide the stage through <html>.
   let htmlHidden = $state(false);
@@ -310,7 +333,12 @@
 {#if skipLink}
   <SkipLink href="#{mainId ?? 'main'}" />
 {/if}
-<div class="ca-shell" class:ca-shell--stage={!!stage} style="--ca-shell-inset-left: {insetLeft}px">
+<div
+  class="ca-shell"
+  class:ca-shell--stage={!!stage}
+  class:ca-shell--no-mobile-header={!mobileHeader}
+  style="--ca-shell-inset-left: {insetLeft}{railWidth !== undefined ? `; --ca-rail-width: ${railWidth}px` : ''}"
+>
   <!-- Desktop only sidebar -->
   <div class="ca-sidebar">
     <Rail
@@ -319,6 +347,7 @@
       brand={linkedBrand}
       top={railTop}
       labels={railLabels}
+      separators={railSeparators}
       bottom={railBottom}
       onSelect={(i) => {
         if (i !== selectedIndex) {
@@ -347,7 +376,7 @@
   <!-- Main area -->
   <div
     class="ca-main"
-    style="--ca-main-ml: calc({RAIL_WIDTH}px + {panelW.current}px)"
+    style="--ca-main-ml: calc(var(--ca-rail-width) + {panelW.current}px)"
   >
     <!-- Desktop header, only rendered when header snippet is provided -->
     {#if header}
@@ -356,9 +385,11 @@
       </div>
     {/if}
     <!-- Mobile header -->
-    <div class="ca-shell__mobile-header">
-      <MobileHeader leading={linkedBrand} title={pageTitle} titleSlot={mobileTitle} trailing={mobileHeaderActions} />
-    </div>
+    {#if mobileHeader}
+      <div class="ca-shell__mobile-header">
+        <MobileHeader leading={linkedBrand} title={pageTitle} titleSlot={mobileTitle} trailing={mobileHeaderActions} />
+      </div>
+    {/if}
     <div class="ca-shell__body">
     {#if stage}
       <!-- Rendered once: it sits outside the content block, so a route change never remounts it.
@@ -513,6 +544,10 @@
         --ca-shell-inset-left: 0px !important;
         --ca-shell-inset-top: calc(var(--ca-space-12) + var(--ca-safe-top));
         --ca-shell-inset-bottom: calc(var(--ca-bottom-nav-h) + var(--ca-safe-bottom));
+      }
+
+      .ca-shell--no-mobile-header {
+        --ca-shell-inset-top: 0px;
       }
 
       .ca-sidebar {

@@ -64,6 +64,9 @@ The rail magnifies the module icon under the pointer, like a dock. Only the glyp
   { name: "itemMenu", type: "Component", description: "Pass the exported `NavItemMenu` to render `NavItem.actions` as a \"…\" menu. Opt-in so the dropdown menu is only bundled by apps that use it." },
   { name: "filterModules", type: "(module: NavModule) => boolean", description: "Hides modules the user may not see (role, plan, flag). Rail, panel, bottom navigation and the active-module logic all use the filtered list, so a hidden module never shifts the indexes. Return `true` to keep one." },
   { name: "railLabels", type: "boolean", default: "false", description: "Shows each module's label as a caption under its rail icon. The button's accessible name is the same with or without it." },
+  { name: "railWidth", type: "number", default: "52", description: "Rail width in px: sets `--ca-rail-width`, which the content offset and the insets follow." },
+  { name: "railSeparators", type: "boolean", default: "true", description: "`false` removes the rail hairlines." },
+  { name: "mobileHeader", type: "boolean", default: "true", description: "`false` renders no header below 900px and sets `--ca-shell-inset-top` to 0." },
   { name: "railTop", type: "Snippet", description: "Control between the brand and the modules in the rail, such as a search or ⌘K trigger that opens a `CommandPalette`." },
   { name: "bottomNavPrimary", type: "number", default: "5", description: "Most tabs on the mobile bottom navigation. With more modules, the first `bottomNavPrimary - 1` stay and the last tab is More, a dialog with the rest, so no module is ever unreachable. The More tab is current when the active module is inside it." },
   { name: "moreSheet", type: "Component", description: "Replaces the built-in More dialog. Pass the exported `NavMoreSheet` for a full `Sheet` with swipe to dismiss and an exit animation. Opt-in because `Sheet` adds about 10 kB gzip to the shell; the built-in dialog costs about 1 kB." },
@@ -93,6 +96,7 @@ A module can carry a marker on its rail icon and tab:
 | Field | What it does |
 |---|---|
 | `badge` | A number (capped at `99+`) or `'dot'`. `0` and unset draw nothing. |
+| `badgeTone` | `'brand'` (default) for something pending, `'error'` for something overdue. Colour is not the only signal: say it in `badgeLabel` (`"3 overdue"`). |
 | `badgeLabel` | The text a screen reader gets. The button is named `"<label>, <badgeLabel>"`. Without it a number reads `"Inbox, 12 unread"` and a dot reads `"Inbox, New"`. Set it for anything that is not "unread" (`"3 tasks pending"`) and translate it yourself. |
 
 The marker itself is decorative; the count is never announced separately from the button. When any module inside the More sheet has a badge, the More tab shows a dot.
@@ -100,6 +104,29 @@ The marker itself is decorative; the count is never announced separately from th
 `filterModules` is for role-based navigation: keep one module list and filter it. Because the shell resolves the active module, the panel and the bottom navigation against the filtered list, hiding an earlier module cannot make the wrong rail icon active. When the URL belongs to a hidden module, the first visible module is selected.
 
 <Demo title="Labels, search slot, badges and More" description="railLabels, railTop, module badges, bottomNavOverflow and filterModules. Narrow the viewport below 900px to see the More sheet." src={RailLabelsSrc} stage><RailLabels client:visible /></Demo>
+
+## Fitting the shell to your design
+
+The rail width, its item metrics and the mobile header are props or tokens: no selector against `.ca-rail*`, `.ca-main` or `.ca-shell*`.
+
+```svelte
+<AppShellLayout {modules} {pathname} railWidth={80} railSeparators={false} mobileHeader={false}>
+  …
+</AppShellLayout>
+```
+
+```css
+.app {
+  --ca-rail-item-h: 56px; /* default 40px */
+  --ca-rail-icon: 24px;   /* default 18px */
+  --ca-rail-pip-w: 4px;   /* active pip, default 4px by 16px */
+  --ca-rail-pip-h: 24px;
+}
+```
+
+`railWidth` and `--ca-rail-width` are the same knob: the content offset, `--ca-shell-inset-left` and the stage inset read the token, so a value set in CSS, also after mount, moves them. `mobileHeader={false}` drops the 48px header (and its safe-area top) and sets `--ca-shell-inset-top` to 0: keep the title in the page and the account entry in `bottomNavOverflow`.
+
+With `data-style="solid"` (the default) or `"flat"` the rail, the panel and `PageFrame` are opaque from the style alone: never re-declare `--ca-glass-bg`, `--ca-glass-tint-thick` or `--ca-mat-thick-fill`.
 
 ## A stage behind the pages
 

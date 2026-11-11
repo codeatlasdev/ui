@@ -352,6 +352,8 @@
   --ca-glass-tint:            var(--ca-surface-raised);
   --ca-glass-tint-thick:      var(--ca-surface-overlay);
   --ca-glass-tint-chrome:     var(--ca-surface-overlay);
+  /* The rail, the nav panel and the header read this one: a preset sets it translucent. */
+  --ca-glass-bg:              var(--ca-surface-overlay);
 }
 
 /* ── Flat — no blur, no elevation, border-based separation ── */
@@ -372,6 +374,7 @@
   --ca-glass-tint:            var(--ca-surface-raised);
   --ca-glass-tint-thick:      var(--ca-surface-raised);
   --ca-glass-tint-chrome:     var(--ca-surface-raised);
+  --ca-glass-bg:              var(--ca-surface-raised);
 
   /* shadows → off */
   --ca-shadow-xs: none;

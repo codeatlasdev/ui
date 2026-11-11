@@ -19,10 +19,12 @@
     bottom?:     Snippet;
     /** Shows the module label under each icon (small caption). The button's name is the same either way. */
     labels?:     boolean;
+    /** The hairline under the brand and the one above the bottom slot. */
+    separators?: boolean;
     class?:      string;
   }
 
-  let { modules, activeIndex, onSelect, brand, top, bottom, labels = false, class: className = '' }: Props = $props();
+  let { modules, activeIndex, onSelect, brand, top, bottom, labels = false, separators = true, class: className = '' }: Props = $props();
 
   // Dock magnification: track mouseY, scale the glyph near the cursor. The button keeps its
   // box (a scaled button would cover the active neighbour), and the amount follows
@@ -57,7 +59,7 @@
     </div>
   {/if}
 
-  <div class="ca-rail__sep" aria-hidden="true"></div>
+  {#if separators}<div class="ca-rail__sep" aria-hidden="true"></div>{/if}
 
   <!-- Top slot: search / ⌘K trigger -->
   {#if top}
@@ -96,7 +98,7 @@
   <!-- Bottom slot: avatar, notifications, logout… -->
   {#if bottom}
     <div class="ca-rail__bottom">
-      <div class="ca-rail__bottom-sep" aria-hidden="true"></div>
+      {#if separators}<div class="ca-rail__bottom-sep" aria-hidden="true"></div>{/if}
       {@render bottom()}
     </div>
   {/if}
@@ -163,7 +165,7 @@
     .ca-rail__icon {
       position: relative;
       width: 100%;
-      height: var(--ca-space-10);
+      height: var(--ca-rail-item-h, var(--ca-space-10));
       border-radius: var(--ca-radius-md);
       border: none;
       background: transparent;
@@ -178,6 +180,9 @@
     }
 
     .ca-rail__icon > :global(svg) {
+      /* --ca-rail-icon resizes the glyph; the 18px is the size attribute the markup carries. */
+      width: var(--ca-rail-icon, 18px);
+      height: var(--ca-rail-icon, 18px);
       transform-origin: center;
       /* --rail-scale runs 1..1.35; the motion scale scales the extra part, 0 keeps 1 */
       transform: scale(calc(1 + (var(--rail-scale, 1) - 1) * min(1, var(--ca-motion-scale, 1))));
@@ -201,7 +206,7 @@
     /* Labeled rail: glyph with a caption under it. The name never depends on the caption. */
     .ca-rail__icon--labeled {
       height: auto;
-      min-height: var(--ca-space-10);
+      min-height: var(--ca-rail-item-h, var(--ca-space-10));
       flex-direction: column;
       gap: var(--ca-space-0-5);
       padding: var(--ca-space-1-5) 0;
@@ -233,8 +238,8 @@
       left: var(--ca-border-width);
       top: 50%;
       transform: translateY(-50%);
-      width: var(--ca-space-1);
-      height: var(--ca-space-4);
+      width: var(--ca-rail-pip-w, var(--ca-space-1));
+      height: var(--ca-rail-pip-h, var(--ca-space-4));
       border-radius: var(--ca-radius-round);
       background: var(--ca-brand-main);
       box-shadow: 0 0 var(--ca-space-2) var(--ca-glow-primary-strong);
