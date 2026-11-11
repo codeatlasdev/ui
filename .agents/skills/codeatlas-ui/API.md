@@ -3255,16 +3255,17 @@ Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-spli
 | `scroll?` | `'x' \| 'none'` | `'x'` | `x` (default): the root is a focusable, horizontally scrolling region. `none`: the root is `overflow: visible` and the caller owns scrolling, so the sticky header sticks to the page or panel that scrolls vertically. |
 | `stickyColumns?` | `number` | `0` | Pins the first N columns to the left while the table scrolls horizontally (checkbox + primary column). Needs `scroll="none"` inside a scroller you own, or the default `x`. |
 | `headerCase?` | `'upper' \| 'sentence'` | `'upper'` | `upper` (default): micro uppercase labels. `sentence`: regular-size labels in their own case. |
+| `hover?` | `boolean` | `true` | `true` (default): body rows tint on hover and show a pointer. `false`: no tint and no pointer on a plain row (an interactive `TableRow onactivate` keeps its pointer and focus ring). |
 
 Snippets: `children`
 
-Parts: `ca-table` `ca-table--bare` `ca-table--cards` `ca-table--compact` `ca-table--pinned` `ca-table--sentence` `ca-table-root` `ca-table-root--static`
+Parts: `ca-table` `ca-table--bare` `ca-table--cards` `ca-table--compact` `ca-table--no-hover` `ca-table--pinned` `ca-table--sentence` `ca-table-root` `ca-table-root--static`
 
-Variables: `--ca-pin-1` `--ca-pin-2` `--ca-pin-3` `--ca-pin-4` `--ca-pin-5` `--ca-pin-6` `--ca-table-cell-py` `--ca-table-group-accent` `--ca-table-row-bg` `--ca-table-row-h`
+Variables: `--ca-pin-1` `--ca-pin-2` `--ca-pin-3` `--ca-pin-4` `--ca-pin-5` `--ca-pin-6` `--ca-table-cell-color` `--ca-table-cell-px` `--ca-table-cell-py` `--ca-table-group-accent` `--ca-table-head-bg` `--ca-table-head-font-size` `--ca-table-head-h` `--ca-table-head-py` `--ca-table-head-weight` `--ca-table-row-bg` `--ca-table-row-h`
 
 Data attributes: `data-accent`, `data-label`, `data-pin` (`1` `2` `3` `4` `5` `6`)
 
-Tokens: `--ca-table-cell-py` `--ca-table-row-h`
+Tokens: `--ca-table-cell-color` `--ca-table-cell-px` `--ca-table-cell-py` `--ca-table-head-bg` `--ca-table-head-font-size` `--ca-table-head-h` `--ca-table-head-py` `--ca-table-head-weight` `--ca-table-row-h`
 
 ## SiteHeader
 
