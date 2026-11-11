@@ -106,6 +106,8 @@ export interface SchemeColors {
 	borderSubtle?: ColorValue;
 	border?: ColorValue;
 	borderStrong?: ColorValue;
+	/** Edge of a field or control (--ca-outline-control: neutral outlined Button, TextField, Select, Checkbox box). Measured at 3:1 on every surface after compositing alpha (WCAG 1.4.11). Defaults to a value generated from the brand hue. */
+	borderControl?: ColorValue;
 	success?: ColorValue;
 	warning?: ColorValue;
 	info?: ColorValue;
@@ -131,6 +133,7 @@ export const ROLE_TOKENS: Record<Exclude<keyof SchemeColors, "brand">, string> =
 	borderSubtle: "--ca-outline-subtle",
 	border: "--ca-outline-default",
 	borderStrong: "--ca-outline-strong",
+	borderControl: "--ca-outline-control",
 	success: "--ca-semantic-success",
 	warning: "--ca-semantic-warning",
 	info: "--ca-semantic-info",
