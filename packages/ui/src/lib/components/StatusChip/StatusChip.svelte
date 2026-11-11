@@ -27,23 +27,23 @@
     }
 
     .ca-status-chip--success {
-      color: var(--ca-semantic-success);
-      background: color-mix(in oklab, var(--ca-semantic-success) 8%, transparent);
+      color: var(--ca-semantic-success-fg, var(--ca-semantic-success));
+      background: var(--ca-semantic-success-muted, color-mix(in oklab, var(--ca-semantic-success) 8%, transparent));
     }
 
     .ca-status-chip--warning {
-      color: var(--ca-semantic-warning);
-      background: color-mix(in oklab, var(--ca-semantic-warning) 8%, transparent);
+      color: var(--ca-semantic-warning-fg, var(--ca-semantic-warning));
+      background: var(--ca-semantic-warning-muted, color-mix(in oklab, var(--ca-semantic-warning) 8%, transparent));
     }
 
     .ca-status-chip--error {
-      color: var(--ca-semantic-error);
-      background: color-mix(in oklab, var(--ca-semantic-error) 8%, transparent);
+      color: var(--ca-semantic-error-fg, var(--ca-semantic-error));
+      background: var(--ca-semantic-error-muted, color-mix(in oklab, var(--ca-semantic-error) 8%, transparent));
     }
 
     .ca-status-chip--info {
-      color: var(--ca-semantic-info);
-      background: color-mix(in oklab, var(--ca-semantic-info) 8%, transparent);
+      color: var(--ca-semantic-info-fg, var(--ca-semantic-info));
+      background: var(--ca-semantic-info-muted, color-mix(in oklab, var(--ca-semantic-info) 8%, transparent));
     }
 
     .ca-status-chip--neutral {

@@ -128,36 +128,36 @@
 
     /* Success */
     .ca-alert--success {
-      background: color-mix(in oklab, var(--ca-semantic-success) 8%, var(--ca-alert-surface));
+      background: var(--ca-semantic-success-muted, color-mix(in oklab, var(--ca-semantic-success) 8%, var(--ca-alert-surface)));
       border-color: color-mix(in oklab, var(--ca-semantic-success) 20%, transparent);
-      color: var(--ca-text-primary);
+      color: var(--ca-semantic-success-fg, var(--ca-text-primary));
     }
     .ca-alert--success .ca-alert__bar { background: var(--ca-semantic-success); }
     .ca-alert--success .ca-alert__icon { color: var(--ca-semantic-success); }
 
     /* Warning */
     .ca-alert--warning {
-      background: color-mix(in oklab, var(--ca-semantic-warning) 8%, var(--ca-alert-surface));
+      background: var(--ca-semantic-warning-muted, color-mix(in oklab, var(--ca-semantic-warning) 8%, var(--ca-alert-surface)));
       border-color: color-mix(in oklab, var(--ca-semantic-warning) 20%, transparent);
-      color: var(--ca-text-primary);
+      color: var(--ca-semantic-warning-fg, var(--ca-text-primary));
     }
     .ca-alert--warning .ca-alert__bar { background: var(--ca-semantic-warning); }
     .ca-alert--warning .ca-alert__icon { color: var(--ca-semantic-warning); }
 
     /* Error */
     .ca-alert--error {
-      background: color-mix(in oklab, var(--ca-semantic-error) 8%, var(--ca-alert-surface));
+      background: var(--ca-semantic-error-muted, color-mix(in oklab, var(--ca-semantic-error) 8%, var(--ca-alert-surface)));
       border-color: color-mix(in oklab, var(--ca-semantic-error) 20%, transparent);
-      color: var(--ca-text-primary);
+      color: var(--ca-semantic-error-fg, var(--ca-text-primary));
     }
     .ca-alert--error .ca-alert__bar { background: var(--ca-semantic-error); }
     .ca-alert--error .ca-alert__icon { color: var(--ca-semantic-error); }
 
     /* Info */
     .ca-alert--info {
-      background: color-mix(in oklab, var(--ca-semantic-info) 8%, var(--ca-alert-surface));
+      background: var(--ca-semantic-info-muted, color-mix(in oklab, var(--ca-semantic-info) 8%, var(--ca-alert-surface)));
       border-color: color-mix(in oklab, var(--ca-semantic-info) 20%, transparent);
-      color: var(--ca-text-primary);
+      color: var(--ca-semantic-info-fg, var(--ca-text-primary));
     }
     .ca-alert--info .ca-alert__bar { background: var(--ca-semantic-info); }
     .ca-alert--info .ca-alert__icon { color: var(--ca-semantic-info); }

@@ -138,27 +138,25 @@
       height: calc(var(--ca-space-6));
       font-size: var(--ca-font-size-body2);
     }
-    .ca-badge--inline.ca-badge--brand { --ca-badge-tone: var(--ca-brand-text); --ca-badge-fill: var(--ca-brand-fill); --ca-badge-on: var(--ca-brand-contrast); }
-    .ca-badge--inline.ca-badge--success { --ca-badge-tone: var(--ca-semantic-success); --ca-badge-fill: var(--ca-semantic-success-fill, var(--ca-semantic-success)); --ca-badge-on: var(--ca-semantic-success-contrast); }
-    .ca-badge--inline.ca-badge--danger { --ca-badge-tone: var(--ca-semantic-error); --ca-badge-fill: var(--ca-semantic-error-fill); --ca-badge-on: var(--ca-semantic-error-contrast); }
-    .ca-badge--inline.ca-badge--warning { --ca-badge-tone: var(--ca-semantic-warning); --ca-badge-fill: var(--ca-semantic-warning-fill, var(--ca-semantic-warning)); --ca-badge-on: var(--ca-semantic-warning-contrast); }
-    .ca-badge--inline.ca-badge--info { --ca-badge-tone: var(--ca-semantic-info); --ca-badge-fill: var(--ca-semantic-info-fill, var(--ca-semantic-info)); --ca-badge-on: var(--ca-semantic-info-contrast); }
-    .ca-badge--inline.ca-badge--neutral { --ca-badge-tone: var(--ca-text-secondary); --ca-badge-fill: var(--ca-text-secondary); --ca-badge-on: var(--ca-surface-base); }
+    .ca-badge--inline.ca-badge--brand { --ca-badge-tone: var(--ca-brand-text); --ca-badge-muted: color-mix(in oklab, var(--ca-badge-tone) 14%, transparent); --ca-badge-fg: color-mix(in oklab, var(--ca-badge-tone) 65%, var(--ca-text-primary)); --ca-badge-fill: var(--ca-brand-fill); --ca-badge-on: var(--ca-brand-contrast); }
+    .ca-badge--inline.ca-badge--success { --ca-badge-tone: var(--ca-semantic-success); --ca-badge-muted: var(--ca-semantic-success-muted, color-mix(in oklab, var(--ca-semantic-success) 14%, transparent)); --ca-badge-fg: var(--ca-semantic-success-fg, color-mix(in oklab, var(--ca-semantic-success) 65%, var(--ca-text-primary))); --ca-badge-fill: var(--ca-semantic-success-fill, var(--ca-semantic-success)); --ca-badge-on: var(--ca-semantic-success-contrast); }
+    .ca-badge--inline.ca-badge--danger { --ca-badge-tone: var(--ca-semantic-error); --ca-badge-muted: var(--ca-semantic-error-muted, color-mix(in oklab, var(--ca-semantic-error) 14%, transparent)); --ca-badge-fg: var(--ca-semantic-error-fg, color-mix(in oklab, var(--ca-semantic-error) 65%, var(--ca-text-primary))); --ca-badge-fill: var(--ca-semantic-error-fill); --ca-badge-on: var(--ca-semantic-error-contrast); }
+    .ca-badge--inline.ca-badge--warning { --ca-badge-tone: var(--ca-semantic-warning); --ca-badge-muted: var(--ca-semantic-warning-muted, color-mix(in oklab, var(--ca-semantic-warning) 14%, transparent)); --ca-badge-fg: var(--ca-semantic-warning-fg, color-mix(in oklab, var(--ca-semantic-warning) 65%, var(--ca-text-primary))); --ca-badge-fill: var(--ca-semantic-warning-fill, var(--ca-semantic-warning)); --ca-badge-on: var(--ca-semantic-warning-contrast); }
+    .ca-badge--inline.ca-badge--info { --ca-badge-tone: var(--ca-semantic-info); --ca-badge-muted: var(--ca-semantic-info-muted, color-mix(in oklab, var(--ca-semantic-info) 14%, transparent)); --ca-badge-fg: var(--ca-semantic-info-fg, color-mix(in oklab, var(--ca-semantic-info) 65%, var(--ca-text-primary))); --ca-badge-fill: var(--ca-semantic-info-fill, var(--ca-semantic-info)); --ca-badge-on: var(--ca-semantic-info-contrast); }
+    .ca-badge--inline.ca-badge--neutral { --ca-badge-tone: var(--ca-text-secondary); --ca-badge-muted: var(--ca-semantic-neutral-muted, var(--ca-action-hover)); --ca-badge-fg: var(--ca-semantic-neutral-fg, color-mix(in oklab, var(--ca-text-secondary) 65%, var(--ca-text-primary))); --ca-badge-fill: var(--ca-text-secondary); --ca-badge-on: var(--ca-surface-base); }
     .ca-badge--inline {
       background: var(--ca-badge-fill);
       color: var(--ca-badge-on);
     }
     .ca-badge--inline.ca-badge--subtle {
-      background: color-mix(in oklab, var(--ca-badge-tone) 14%, transparent);
-      /* The label is pulled toward the primary text colour so it clears 4.5:1 on its own tint in
-         light and dark (the raw semantic hue does not for error and warning); the dot keeps the hue. */
-      color: color-mix(in oklab, var(--ca-badge-tone) 65%, var(--ca-text-primary));
+      /* Per tone: --ca-semantic-<tone>-muted / -fg when a theme sets the pair, else the hue at 14% and
+         the hue pulled toward the primary text colour so it clears 4.5:1 on its own tint in light and
+         dark (the raw semantic hue does not for error and warning); the dot keeps the hue. */
+      background: var(--ca-badge-muted);
+      color: var(--ca-badge-fg);
     }
     .ca-badge--subtle .ca-badge__dot {
       background: var(--ca-badge-tone);
-    }
-    .ca-badge--inline.ca-badge--neutral.ca-badge--subtle {
-      background: var(--ca-action-hover);
     }
     .ca-badge__dot {
       flex: none;

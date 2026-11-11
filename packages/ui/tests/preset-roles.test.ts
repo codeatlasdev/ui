@@ -313,3 +313,64 @@ describe("brandText, focusRing, hover, selected and floating are preset roles (#
 		);
 	});
 });
+
+// #675: every status has an optional muted background and on-muted text of its own
+// (--ca-semantic-<tone>-muted / -fg) for subtle Badge, Alert, Chip and Callout. Unset keeps the
+// derivation from the solid hue, so nothing changes for a theme that does not set them.
+describe("status muted / fg are preset roles (#675)", () => {
+	const dark = {
+		successMuted: "oklch(0.3 0.06 150)",
+		successFg: "oklch(0.9 0.12 150)",
+		warningMuted: "oklch(0.32 0.07 88)",
+		warningFg: "oklch(0.92 0.13 88)",
+		infoMuted: "oklch(0.3 0.06 235)",
+		infoFg: "oklch(0.9 0.1 235)",
+		errorMuted: "oklch(0.3 0.08 22)",
+		errorFg: "oklch(0.92 0.09 22)",
+		neutralMuted: "oklch(0.3 0.01 255)",
+		neutralFg: "oklch(0.9 0.01 255)",
+	};
+
+	it("emits each pair for the scheme that sets it, and nothing for the other", () => {
+		const t = presetTokens({ id: "x", color: "#f27636", colors: { dark } });
+		for (const tone of ["success", "warning", "info", "error", "neutral"] as const) {
+			const cap = tone[0]?.toUpperCase() + tone.slice(1);
+			expect(t.dark[`--ca-semantic-${tone}-muted`]).toBe(dark[`${tone}Muted` as keyof typeof dark]);
+			expect(t.dark[`--ca-semantic-${tone}-fg`]).toBe(dark[`${tone}Fg` as keyof typeof dark]);
+			expect(t.light[`--ca-semantic-${tone}-muted`], cap).toBeUndefined();
+			expect(t.light[`--ca-semantic-${tone}-fg`], cap).toBeUndefined();
+		}
+	});
+
+	it("a theme that sets none emits none (the components keep their derivation)", () => {
+		const css = themeCSS(preset({}));
+		expect(css).not.toMatch(/--ca-semantic-\w+-(muted|fg):/);
+		const tokens = readFileSync(new URL("../src/lib/styles/tokens.css", import.meta.url), "utf8");
+		expect(tokens).not.toMatch(/--ca-semantic-\w+-(muted|fg):/);
+	});
+
+	it("reaches themeCSS in the dark selectors", () => {
+		const css = themeCSS(preset({ colors: { dark } }));
+		expect(selectorOf(css, "--ca-semantic-success-muted: oklch(0.3 0.06 150)")).toContain(".dark");
+	});
+
+	it("presetContrastIssues reports an on-muted text under 4.5:1 on its muted background", () => {
+		const issues = presetContrastIssues(
+			preset({
+				colors: { dark: { warningMuted: "oklch(0.32 0.07 88)", warningFg: "oklch(0.5 0.1 88)" } },
+			})
+		);
+		expect(issues).toHaveLength(1);
+		expect(issues[0]?.scheme).toBe("dark");
+		expect(issues[0]?.message).toContain("warningFg");
+		expect(presetContrastIssues(preset({ colors: { dark } }))).toEqual([]);
+	});
+
+	it("a lone muted background is measured against the derived text of the stylesheet", () => {
+		const lone = presetContrastIssues(
+			preset({ colors: { dark: { successMuted: "oklch(0.9 0.1 150)" } } })
+		);
+		expect(lone).toHaveLength(1);
+		expect(lone[0]?.message).toContain("successMuted");
+	});
+});

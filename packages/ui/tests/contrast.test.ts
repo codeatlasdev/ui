@@ -254,6 +254,72 @@ describe("solid semantic fill/contrast pairs (#749)", () => {
 	});
 });
 
+// #675: a theme with a verified muted/on-muted pair per status gets it on subtle Badge, Alert, Chip
+// and StatusChip (Callout is an Alert) with no selector override; unset keeps the derivation.
+describe("status muted / fg pairs (#675)", () => {
+	const pair = (tone: string) => ({
+		muted: `--ca-semantic-${tone}-muted`,
+		fg: `--ca-semantic-${tone}-fg`,
+	});
+	const sample = {
+		light: {
+			successMuted: "oklch(0.94 0.05 150)",
+			successFg: "oklch(0.35 0.1 150)",
+			warningMuted: "oklch(0.95 0.06 88)",
+			warningFg: "oklch(0.38 0.08 88)",
+			infoMuted: "oklch(0.94 0.04 235)",
+			infoFg: "oklch(0.36 0.1 235)",
+			errorMuted: "oklch(0.94 0.04 22)",
+			errorFg: "oklch(0.4 0.15 22)",
+			neutralMuted: "oklch(0.94 0.005 255)",
+			neutralFg: "oklch(0.35 0.01 255)",
+		},
+		dark: {
+			successMuted: "oklch(0.3 0.06 150)",
+			successFg: "oklch(0.9 0.12 150)",
+			warningMuted: "oklch(0.32 0.07 88)",
+			warningFg: "oklch(0.92 0.13 88)",
+			infoMuted: "oklch(0.3 0.06 235)",
+			infoFg: "oklch(0.9 0.1 235)",
+			errorMuted: "oklch(0.3 0.08 22)",
+			errorFg: "oklch(0.92 0.09 22)",
+			neutralMuted: "oklch(0.3 0.01 255)",
+			neutralFg: "oklch(0.9 0.01 255)",
+		},
+	};
+	const t = (scheme: "light" | "dark") =>
+		resolved({ id: "ported", color: "#0f766e", colors: sample } as never, scheme);
+
+	for (const scheme of ["light", "dark"] as const)
+		for (const tone of ["success", "warning", "info", "error", "neutral"])
+			it(`${scheme}: the ${tone} sample pair is emitted and holds >= 4.5:1`, () => {
+				const tokens = t(scheme);
+				const { muted, fg } = pair(tone);
+				const bg = rgb(oklchToHex(resolve(tokens, muted)));
+				expect(ratio(rgb(oklchToHex(resolve(tokens, fg))), bg)).toBeGreaterThanOrEqual(4.5);
+			});
+
+	it("Badge subtle, Alert, Chip and StatusChip read the pair before their derivation", () => {
+		const read = (file: string) => readFileSync(new URL(`components/${file}`, LIB), "utf8");
+		const files = [
+			"Badge/Badge.svelte",
+			"Alert/Alert.svelte",
+			"Chip/Chip.svelte",
+			"StatusChip/StatusChip.svelte",
+		];
+		for (const file of files) {
+			const src = read(file);
+			for (const tone of ["success", "warning", "info", "error"]) {
+				const { muted, fg } = pair(tone);
+				expect(src, `${file} ${muted}`).toContain(`var(${muted},`);
+				expect(src, `${file} ${fg}`).toContain(`var(${fg},`);
+			}
+		}
+		expect(read("Badge/Badge.svelte")).toContain("var(--ca-semantic-neutral-muted,");
+		expect(read("Badge/Badge.svelte")).toContain("var(--ca-semantic-neutral-fg,");
+	});
+});
+
 describe("overlay surfaces (#23)", () => {
 	const overlayBg = declsOf(materialsCss, /^:root$/)["--ca-overlay-bg"];
 	for (const src of sources)
