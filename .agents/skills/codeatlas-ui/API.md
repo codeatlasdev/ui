@@ -1581,9 +1581,9 @@ Snippets: `actions`; `children`
 
 Parts: `ca-empty` `ca-empty--bare` `ca-empty--fill` `ca-empty--hero` `ca-empty__actions` `ca-empty__description` `ca-empty__icon` `ca-empty__title` `ca-empty__title--display`
 
-Variables: `--ca-empty-padding` `--ca-empty-title-size` `--ca-empty-title-weight`
+Variables: `--ca-empty-actions-margin` `--ca-empty-description-leading` `--ca-empty-description-max-width` `--ca-empty-description-size` `--ca-empty-icon-bg` `--ca-empty-icon-border` `--ca-empty-icon-radius` `--ca-empty-padding` `--ca-empty-title-gap` `--ca-empty-title-leading` `--ca-empty-title-size` `--ca-empty-title-tracking` `--ca-empty-title-weight`
 
-Tokens: `--ca-empty-padding` `--ca-empty-title-size` `--ca-empty-title-weight`
+Tokens: `--ca-empty-actions-margin` `--ca-empty-description-leading` `--ca-empty-description-max-width` `--ca-empty-description-size` `--ca-empty-icon-bg` `--ca-empty-icon-border` `--ca-empty-icon-radius` `--ca-empty-padding` `--ca-empty-title-gap` `--ca-empty-title-leading` `--ca-empty-title-size` `--ca-empty-title-tracking` `--ca-empty-title-weight`
 
 ## ErrorPage
 
@@ -5251,7 +5251,7 @@ Types:
 | `ElementTag` | `type ElementTag = keyof SvelteHTMLElements;` | Tags `as` can render: the HTML and SVG elements Svelte knows (`svelte:element`). |
 | `ElevationLevel` | `type ElevationLevel = keyof typeof elevation;` |  |
 | `ElevationModel` | `type ElevationModel = "soft" \| "none" \| "hard" \| "glow";` | Shadow model: how elevation is drawn. |
-| `EmptyStateTokens` | `interface EmptyStateTokens { padding?: CssValue; titleSize?: CssValue; titleWeight?: CssValue; }` |  |
+| `EmptyStateTokens` | `interface EmptyStateTokens { padding?: CssValue; titleSize?: CssValue; titleWeight?: CssValue; iconBg?: CssValue; iconBorder?: CssValue; iconRadius?: CssValue; titleGap?: CssValue; titleLeading?: CssValue; titleTracking?: CssValue; descriptionSize?: CssValue; descriptionLeading?: CssValue; descriptionMaxWidth?: CssValue; actionsMargin?: CssValue; }` |  |
 | `ExportColumn` | `interface ExportColumn<T extends object = Record<string, unknown>> { key: keyof T & string; header?: string; value?: (row: T) => unknown; }` |  |
 | `FieldState` | `interface FieldState { value: string; error: string \| undefined; touched: boolean; }` |  |
 | `FieldTokens` | `interface FieldTokens { gap?: CssValue; labelLeading?: CssValue; labelTracking?: CssValue; hintLeading?: CssValue; hintTracking?: CssValue; letterSpacing?: CssValue; lineHeight?: CssValue; }` |  |
@@ -5561,6 +5561,16 @@ Types:
 | `padding?` | `CssValue` | `--ca-empty-padding`: a padding shorthand. @default `--ca-space-12 --ca-space-6` |
 | `titleSize?` | `CssValue` | `--ca-empty-title-size`. @default `--ca-font-size-body1` (`--ca-font-size-h6` for `hero`) |
 | `titleWeight?` | `CssValue` | `--ca-empty-title-weight`. @default semibold (heading weight for `hero`) |
+| `iconBg?` | `CssValue` | `--ca-empty-icon-bg`: fill of the icon tile. @default `--ca-action-hover` |
+| `iconBorder?` | `CssValue` | `--ca-empty-icon-border`: a border shorthand for the icon tile. @default none |
+| `iconRadius?` | `CssValue` | `--ca-empty-icon-radius`. @default `--ca-radius-lg` |
+| `titleGap?` | `CssValue` | `--ca-empty-title-gap`: space between the title and the description only. @default `--ca-space-3` |
+| `titleLeading?` | `CssValue` | `--ca-empty-title-leading`. @default inherited |
+| `titleTracking?` | `CssValue` | `--ca-empty-title-tracking`. @default `--ca-heading-tracking` |
+| `descriptionSize?` | `CssValue` | `--ca-empty-description-size`. @default `--ca-font-size-body2` |
+| `descriptionLeading?` | `CssValue` | `--ca-empty-description-leading`. @default `--ca-line-height-body` |
+| `descriptionMaxWidth?` | `CssValue` | `--ca-empty-description-max-width`; `none` lets it fill the width. @default 340px |
+| `actionsMargin?` | `CssValue` | `--ca-empty-actions-margin`: extra space above the actions, on top of the row gap. @default `--ca-space-1` |
 
 #### ExportColumn
 
