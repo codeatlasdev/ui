@@ -392,4 +392,6 @@ id	group	page	title	names	tags	summary
 5001	inputs	toolbar	Filter bar		toolbar,filter-bar,text-field,select,number-field,width,wrap,role-toolbar	A filter Toolbar: a search TextField, a Select, a compact NumberField without steppers, a spacer and an Export button, all in one wrapping row.
 5002	layout	master-detail	Inbox		master-detail,inbox,conversation,list,responsive,split	A MasterDetail inbox: a conversation list and the selected thread side by side, with an empty state until a row is picked.
 5003	layout	centered-page	Invite and consent		centered-page,invite,oauth-consent,notice,landmark,safe-area	A full-page CenteredPage with a brand mark above one narrow card, switchable between an organisation invite and an OAuth consent screen.
+5004	layout	page-shell	Icon tile, count and title extra		page-shell,icon,count,badge,title,header,layout	A PageShell header with an icon tile before the title, a count badge after it, a titleExtra badge and an action button.
+5005	layout	kpi-card	Icon tile		kpi-card,icon,tile,tone,metrics,dashboard	Four KPI cards with the icon in a tinted tile above the label: brand, success, warning and error tones, large numbers and trends.
 5006	inputs	toggle	Icon-only, ghost, small and disabled		toggle,pressed,aria-pressed,button,icon-only,ghost	Standalone Toggle buttons: icon-only, ghost with a label, small and disabled.
