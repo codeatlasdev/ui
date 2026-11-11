@@ -87,12 +87,12 @@ export const m = {
   import { MoreHorizontal, Pencil } from "@lucide/svelte";
 
   type Contact = { id: number; name: string; role: string; seen: string };
-  let { data }: { data: { company: { name: string; owner: string; plan: string; since: string }; contacts: Contact[] } } = $props();
+  let { data }: { data: { company: { id: string; name: string; owner: string; plan: string; since: string }; contacts: Contact[] } } = $props();
 </script>
 
 <PageShell title={data.company.name} description={m.company.description(data.company.since)} backHref="/companies" backLabel={m.company.back} asideLabel={m.company.aside}>
   {#snippet actions()}
-    <Button variant="outlined" size="sm" href="./edit">
+    <Button variant="outlined" size="sm" href={`/companies/${data.company.id}/edit`}>
       {#snippet leading()}<Pencil size={14} />{/snippet}
       {m.company.edit}
     </Button>

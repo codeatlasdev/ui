@@ -51,6 +51,7 @@ export const m = {
     description: "Pipeline stages and notifications.",
     save: "Save changes",
     saved: "Settings saved",
+    failed: "Could not save the settings",
     tabs: { pipeline: "Pipeline", notifications: "Notifications" },
     stages: {
       title: "Stages",
@@ -105,8 +106,13 @@ export const m = {
   async function save() {
     saving = true;
     try {
-      await fetch("/api/settings", { method: "PUT", body: JSON.stringify({ stages, emailNewDeal, emailDigest }) });
-      toast.success(m.settings.saved);
+      const res = await fetch("/api/settings", {
+        method: "PUT",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ stages, emailNewDeal, emailDigest }),
+      });
+      if (res.ok) toast.success(m.settings.saved);
+      else toast.error(m.settings.failed);
     } finally {
       saving = false;
     }

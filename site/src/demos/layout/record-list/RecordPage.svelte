@@ -1,6 +1,6 @@
 <script lang="ts">
   import {
-    Avatar, Button, Card, DropdownMenu, DropdownMenuItem, IconButton, PageShell, RecordCell, RecordList, RecordRow, StatusChip,
+    Avatar, Button, Card, DropdownMenu, DropdownMenuItem, IconButton, PageShell, RecordCell, RecordList, RecordRow,
   } from '@codeatlasdev/ui';
   import { MoreHorizontal, Pencil } from '@lucide/svelte';
 
@@ -19,14 +19,14 @@
 
   const company = { owner: 'Ana Lima', plan: 'Business', since: 'Mar 14, 2026' };
   const contacts = [
-    { id: 1, name: 'Maria Souza', role: 'Finance lead', seen: 'Today', active: true },
-    { id: 2, name: 'João Lima', role: 'Developer', seen: 'Yesterday', active: true },
-    { id: 3, name: 'Ana Costa', role: 'Procurement', seen: 'Oct 28', active: false },
+    { id: 1, name: 'Maria Souza', role: 'Finance lead', seen: 'Today' },
+    { id: 2, name: 'João Lima', role: 'Developer', seen: 'Yesterday' },
+    { id: 3, name: 'Ana Costa', role: 'Procurement', seen: 'Oct 28' },
   ];
 </script>
 
 <div class="record-stage">
-  <PageShell title={m.title} description={m.description} backHref="/companies" backLabel={m.back} asideLabel={m.aside}>
+  <PageShell title={m.title} description={m.description} backHref="#companies" backLabel={m.back} asideLabel={m.aside}>
     {#snippet actions()}
       <Button variant="outlined" size="sm">
         {#snippet leading()}<Pencil size={14} />{/snippet}
