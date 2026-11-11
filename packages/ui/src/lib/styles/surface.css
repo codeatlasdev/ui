@@ -246,17 +246,31 @@
   -webkit-backdrop-filter: var(--ca-blur-role);
   backdrop-filter: var(--ca-blur-role);
 }
-[data-ca-blur="ultra-thin"] { --ca-blur-role: var(--ca-blur-ultra-thin); }
-[data-ca-blur="thin"] { --ca-blur-role: var(--ca-blur-thin); }
-[data-ca-blur="thick"] { --ca-blur-role: var(--ca-blur-thick); }
-[data-ca-blur="chrome"] { --ca-blur-role: var(--ca-blur-chrome); }
-[data-ca-blur="mat-thin"] { --ca-blur-role: var(--ca-mat-thin-filter); }
-[data-ca-blur="mat-regular"] { --ca-blur-role: var(--ca-mat-regular-filter); }
+[data-ca-blur-layer] {
+  --ca-blur-role: none;
+}
+[data-ca-blur-layer]::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  -webkit-backdrop-filter: var(--ca-blur-role);
+  backdrop-filter: var(--ca-blur-role);
+}
+[data-ca-blur="ultra-thin"], [data-ca-blur-layer="ultra-thin"] { --ca-blur-role: var(--ca-blur-ultra-thin); }
+[data-ca-blur="thin"], [data-ca-blur-layer="thin"] { --ca-blur-role: var(--ca-blur-thin); }
+[data-ca-blur="thick"], [data-ca-blur-layer="thick"] { --ca-blur-role: var(--ca-blur-thick); }
+[data-ca-blur="chrome"], [data-ca-blur-layer="chrome"] { --ca-blur-role: var(--ca-blur-chrome); }
+[data-ca-blur="mat-thin"], [data-ca-blur-layer="mat-thin"] { --ca-blur-role: var(--ca-mat-thin-filter); }
+[data-ca-blur="mat-regular"], [data-ca-blur-layer="mat-regular"] { --ca-blur-role: var(--ca-mat-regular-filter); }
 [data-ca-blur="overlay"] { --ca-blur-role: var(--ca-overlay-blur); }
-[data-ca-blur="chrome-layer"] { --ca-blur-role: var(--ca-chrome-blur); }
+[data-ca-blur="chrome-layer"], [data-ca-blur-layer="chrome-layer"] { --ca-blur-role: var(--ca-chrome-blur); }
 [data-ca-blur="tooltip"] { --ca-blur-role: var(--ca-tooltip-blur); }
 /* The glass variant of Button and IconButton is the `regular` role, keyed on the class they already carry. */
 [data-ca-blur="regular"],
+[data-ca-blur-layer="regular"],
 .ca-btn--glass,
 .ca-icon-btn--glass { --ca-blur-role: var(--ca-blur-regular); }
 /* The modal scrim (the ::backdrop of every `dialog.ca-overlay`: Dialog, AlertDialog, Sheet, Drawer, CommandPalette,
@@ -279,27 +293,6 @@ dialog.ca-overlay::backdrop {
  * inherits the radius). It must be `position: relative|sticky|fixed|absolute` and must not use
  * `isolation` or `z-index: auto` tricks of its own: the layer sits at `z-index: -1` in the element's stacking
  * context, which a `z-index` on the element (every header sets one) creates. */
-[data-ca-blur-layer] {
-  --ca-blur-role: none;
-}
-[data-ca-blur-layer]::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  pointer-events: none;
-  -webkit-backdrop-filter: var(--ca-blur-role);
-  backdrop-filter: var(--ca-blur-role);
-}
-[data-ca-blur-layer="ultra-thin"] { --ca-blur-role: var(--ca-blur-ultra-thin); }
-[data-ca-blur-layer="thin"] { --ca-blur-role: var(--ca-blur-thin); }
-[data-ca-blur-layer="regular"] { --ca-blur-role: var(--ca-blur-regular); }
-[data-ca-blur-layer="thick"] { --ca-blur-role: var(--ca-blur-thick); }
-[data-ca-blur-layer="chrome"] { --ca-blur-role: var(--ca-blur-chrome); }
-[data-ca-blur-layer="mat-thin"] { --ca-blur-role: var(--ca-mat-thin-filter); }
-[data-ca-blur-layer="mat-regular"] { --ca-blur-role: var(--ca-mat-regular-filter); }
-[data-ca-blur-layer="chrome-layer"] { --ca-blur-role: var(--ca-chrome-blur); }
 /* A disabled glass button is unavailable, not busy: a loading one keeps its blur. */
 :is(.ca-btn--glass:not(.ca-btn--loading), .ca-icon-btn--glass:not(.ca-icon-btn--loading)):is(:disabled, [aria-disabled="true"]) { --ca-blur-role: none; }
 
@@ -312,9 +305,7 @@ dialog.ca-overlay::backdrop {
     --ca-surface-filter: none;
     --ca-surface-fill: var(--ca-glass-tint-solid);
   }
-  /* A blur layer has no blur without transparency; GlassAppBar's fill goes opaque like the `.glass-*` classes. */
   [data-ca-blur-layer] { --ca-blur-role: none; }
-  .ca-app-bar[data-ca-blur-layer] { background-color: var(--ca-glass-tint-solid); }
 }
 
 /* ── Forced colors: no blur, no shadow, a real border ─────────────────────────── */
@@ -331,5 +322,4 @@ dialog.ca-overlay::backdrop {
   .ca-surface[data-variant="ghost"] { border-color: transparent; }
   .ca-surface[data-interactive]:focus-visible { outline-color: Highlight; }
   [data-ca-blur-layer] { --ca-blur-role: none; }
-  .ca-app-bar[data-ca-blur-layer] { background-color: Canvas; box-shadow: none; }
 }

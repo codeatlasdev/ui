@@ -44,6 +44,14 @@
         inset 0 -0.5px 0 var(--ca-glass-border);
     }
 
+    /* No transparency asked: an opaque fill (the blur layer is already off); forced colours: the system canvas. */
+    @media (prefers-reduced-transparency: reduce) {
+      .ca-app-bar { background-color: var(--ca-glass-tint-solid); }
+    }
+    @media (forced-colors: active) {
+      .ca-app-bar { background-color: Canvas; box-shadow: none; }
+    }
+
     .ca-app-bar__leading,
     .ca-app-bar__trailing {
       display: flex;
