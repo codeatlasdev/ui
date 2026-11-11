@@ -7,6 +7,12 @@
 		{ value: "c", label: "Gamma", disabled: true },
 		{ value: "d", label: "Delta" },
 	];
+
+	const grouped = [
+		{ value: "n", label: "Name", group: "Contact" },
+		{ value: "e", label: "Email", group: "Contact" },
+		{ value: "c", label: "Company", group: "Account" },
+	];
 </script>
 
 <div
@@ -20,6 +26,7 @@
 	<Select label="Error" error="Invalid selection" {options} />
 	<Select label="Required" required {options} placeholder="Choose an option" />
 	<Select label="Disabled" disabled {options} value="a" />
+	<Select label="Grouped" options={grouped} value="c" />
 	<Select
 		label="Long label"
 		options={[{ value: "x", label: "An option with an extremely long label to test truncation" }]}

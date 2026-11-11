@@ -133,7 +133,7 @@ Contrast state is exposed as `[data-pass]` and `[data-level]` on `.ca-color-fiel
 
 ## Combobox
 
-`.ca-combobox--error` `.ca-combobox--multiple` `.ca-combobox--sm` `.ca-combobox__chevron` `.ca-combobox__chip` `.ca-combobox__chips` `.ca-combobox__content` `.ca-combobox__empty` `.ca-combobox__hint--error` `.ca-combobox__hint` `.ca-combobox__input` `.ca-combobox__item--create` `.ca-combobox__item-check` `.ca-combobox__item-label` `.ca-combobox__item` `.ca-combobox__label` `.ca-combobox__req` `.ca-combobox__search-wrap` `.ca-combobox__trigger-count` `.ca-combobox__trigger-label` `.ca-combobox__trigger` `.ca-combobox__viewport` `.ca-combobox`
+`.ca-combobox--error` `.ca-combobox--multiple` `.ca-combobox--sm` `.ca-combobox__chevron` `.ca-combobox__chip` `.ca-combobox__chips` `.ca-combobox__content` `.ca-combobox__empty` `.ca-combobox__group` `.ca-combobox__group-label` `.ca-combobox__hint--error` `.ca-combobox__hint` `.ca-combobox__input` `.ca-combobox__item--create` `.ca-combobox__item-check` `.ca-combobox__item-label` `.ca-combobox__item` `.ca-combobox__label` `.ca-combobox__req` `.ca-combobox__search-wrap` `.ca-combobox__trigger-count` `.ca-combobox__trigger-label` `.ca-combobox__trigger` `.ca-combobox__viewport` `.ca-combobox`
 
 ## CommandPalette
 
@@ -337,7 +337,7 @@ State attributes on `.ca-motion-stage`: `data-playing`, `data-taken`, `data-redu
 
 ## NumberField
 
-`.ca-nf` `.ca-nf--disabled` `.ca-nf--error` `.ca-nf--sm` `.ca-nf__btn` `.ca-nf__hint` `.ca-nf__hint--error` `.ca-nf__input` `.ca-nf__label` `.ca-nf__req` `.ca-nf__wrap` `.ca-nf__wrap--error` `.ca-nf__wrap--focused`
+`.ca-nf` `.ca-nf--disabled` `.ca-nf--error` `.ca-nf--sm` `.ca-nf__btn` `.ca-nf__hint` `.ca-nf__hint--error` `.ca-nf__input` `.ca-nf__label` `.ca-nf__req` `.ca-nf__row` `.ca-nf__suffix` `.ca-nf__wrap` `.ca-nf__wrap--error` `.ca-nf__wrap--focused`
 
 ## PageFrame
 
@@ -414,7 +414,7 @@ Re-flow: the list is a size container (`container-type: inline-size`), rows stac
 
 ## Select
 
-`.ca-sel` `.ca-sel--disabled` `.ca-sel--error` `.ca-sel--sm` `.ca-sel__check` `.ca-sel__content` `.ca-sel__hint` `.ca-sel__hint--error` `.ca-sel__icon` `.ca-sel__item` `.ca-sel__item-label` `.ca-sel__label` `.ca-sel__req` `.ca-sel__trigger` `.ca-sel__value` `.ca-sel__value--placeholder`
+`.ca-sel` `.ca-sel--disabled` `.ca-sel--error` `.ca-sel--sm` `.ca-sel__check` `.ca-sel__content` `.ca-sel__group` `.ca-sel__group-label` `.ca-sel__hint` `.ca-sel__hint--error` `.ca-sel__icon` `.ca-sel__item` `.ca-sel__item-label` `.ca-sel__label` `.ca-sel__req` `.ca-sel__trigger` `.ca-sel__value` `.ca-sel__value--placeholder`
 
 ## SettingItem
 
@@ -542,7 +542,7 @@ The role classes are also an opt-in stylesheet (`@codeatlasdev/ui/styles/type-ro
 
 ## Timeline
 
-`.ca-timeline` `.ca-timeline__connector` `.ca-timeline__content` `.ca-timeline__date` `.ca-timeline__desc` `.ca-timeline__dot` `.ca-timeline__dot--default` `.ca-timeline__dot--error` `.ca-timeline__dot--info` `.ca-timeline__dot--success` `.ca-timeline__dot--warning` `.ca-timeline__header` `.ca-timeline__item` `.ca-timeline__label` `.ca-timeline__track`
+`.ca-timeline` `.ca-timeline__connector` `.ca-timeline__content` `.ca-timeline__chevron` `.ca-timeline__date` `.ca-timeline__desc` `.ca-timeline__detail` `.ca-timeline__dot` `.ca-timeline__dot--default` `.ca-timeline__dot--error` `.ca-timeline__dot--info` `.ca-timeline__dot--success` `.ca-timeline__dot--warning` `.ca-timeline__header` `.ca-timeline__icon` `.ca-timeline__icon--default` `.ca-timeline__icon--error` `.ca-timeline__icon--info` `.ca-timeline__icon--success` `.ca-timeline__icon--warning` `.ca-timeline__item` `.ca-timeline__label` `.ca-timeline__meta` `.ca-timeline__toggle` `.ca-timeline__track`
 
 ## Toast
 

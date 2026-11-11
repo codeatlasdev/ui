@@ -2,6 +2,7 @@
   import { useMessages } from '../../i18n/state.svelte.js';
   import { numberField } from '../../i18n/groups/numberField.js';
   import { Minus, Plus } from '@lucide/svelte';
+  import type { Snippet } from 'svelte';
   import { uid } from '../../utils/index.js';
   import { fieldWidth, type FieldWidth } from '../../utils/field-width.js';
   import type { FieldVariant } from '../../theme/components.js';
@@ -29,6 +30,8 @@
     size?:        'sm' | 'md';
     /** How the field is drawn: `outlined` (the style's own), `filled` or `underline`. Default follows the theme (`components.field.variant`). */
     variant?:        FieldVariant;
+    /** A companion control after the number, usually its unit (a `Select` of units). Rendered in the same row; the field becomes a `role="group"` named by `label`, so the pair reads as one control. Give the companion its own accessible name (`hideLabel` + `label`). */
+    suffix?:      Snippet;
     onchange?:    (value: number) => void;
   }
 
@@ -49,6 +52,7 @@
     name,
     size     = 'md',
     variant,
+    suffix,
     onchange,
   }: Props = $props();
 
@@ -86,13 +90,16 @@
   class:ca-nf--disabled={disabled}
   style:--ca-field-width={fieldWidth(width)}
   data-ca-field={variant}
+  role={suffix ? 'group' : undefined}
+  aria-labelledby={suffix && label ? `${inputId}-label` : undefined}
 >
   {#if label}
-    <label for={inputId} class="ca-nf__label" class:ca-sr-only={hideLabel}>
+    <label id={suffix ? `${inputId}-label` : undefined} for={inputId} class="ca-nf__label" class:ca-sr-only={hideLabel}>
       {label}{#if required}<span class="ca-nf__req" aria-hidden="true"> *</span>{/if}
     </label>
   {/if}
 
+  {#snippet control()}
   <div class="ca-nf__wrap" class:ca-nf__wrap--focused={focused} class:ca-nf__wrap--error={!!error}>
     {#if steppers}
       <button
@@ -134,6 +141,16 @@
       </button>
     {/if}
   </div>
+  {/snippet}
+
+  {#if suffix}
+    <div class="ca-nf__row">
+      {@render control()}
+      <div class="ca-nf__suffix">{@render suffix()}</div>
+    </div>
+  {:else}
+    {@render control()}
+  {/if}
 
   {#if error}
     <p id="{inputId}-err" class="ca-nf__hint ca-nf__hint--error" role="alert">{error}</p>
@@ -198,6 +215,24 @@
       border-color: var(--ca-outline-default);
       color: var(--ca-text-disabled);
       pointer-events: none;
+    }
+
+    /* ── Suffix: the unit companion shares the control row ─────── */
+    .ca-nf__row {
+      display: flex;
+      align-items: stretch;
+      gap: var(--ca-space-2);
+    }
+
+    .ca-nf__row > .ca-nf__wrap {
+      flex: 1 1 auto;
+      min-width: 0;
+    }
+
+    .ca-nf__suffix {
+      display: flex;
+      align-items: stretch;
+      flex: 0 0 auto;
     }
 
     /* ── Buttons ───────────────────────────────────────────────── */

@@ -207,3 +207,74 @@ describe("Select option triggerLabel (#714)", () => {
 		expect(screen.container.querySelector(".ca-sel__value")?.textContent?.trim()).toBe("My queue");
 	});
 });
+
+describe("Select option groups (#811)", () => {
+	const grouped = [
+		{ value: "n", label: "Name", group: "Contact" },
+		{ value: "e", label: "Email", group: "Contact", disabled: true },
+		{ value: "p", label: "Phone", group: "Contact" },
+		{ value: "c", label: "Company", group: "Account" },
+		{ value: "x", label: "Other" },
+	];
+
+	it("renders each group as a labelled role=group with a header and its options", async () => {
+		const screen = await render(SelectHarness, { label: "Field", options: grouped });
+		await screen.getByRole("button", { name: "Field" }).click();
+		const contact = screen.getByRole("group", { name: "Contact" });
+		await expect.element(contact).toBeVisible();
+		const g = contact.element();
+		expect([...g.querySelectorAll('[role="option"]')].map((o) => o.textContent?.trim())).toEqual([
+			"Name",
+			"Email",
+			"Phone",
+		]);
+		const header = document.getElementById(
+			g.getAttribute("aria-labelledby") as string
+		) as HTMLElement;
+		expect(header.textContent).toBe("Contact");
+		expect(header.getAttribute("role")).toBeNull();
+		expect(screen.getByRole("listbox").element().querySelectorAll('[role="option"]')).toHaveLength(
+			5
+		);
+		await settled();
+		expect(await checkA11y(document.body, PORTAL_RULES)).toHaveNoViolations();
+	});
+
+	it("arrow keys step over headers and disabled options", async () => {
+		const screen = await render(SelectHarness, { label: "Field", options: grouped });
+		screen.getByRole("button", { name: "Field" }).element().focus();
+		await userEvent.keyboard("{Enter}");
+		await userEvent.keyboard("{ArrowDown}{ArrowDown}{Enter}");
+		await expect.element(screen.getByTestId("bound")).toHaveTextContent("[c]");
+	});
+
+	it("typeahead matches options, never a group header", async () => {
+		const screen = await render(SelectHarness, { label: "Field", options: grouped });
+		screen.getByRole("button", { name: "Field" }).element().focus();
+		await userEvent.keyboard("{Enter}");
+		await expect.element(screen.getByRole("listbox")).toBeVisible();
+		// "Acc" is the start of the header "Account"; only the option "Company" may be reached by "com".
+		const lit = () => document.querySelector("[data-highlighted]")?.textContent?.trim();
+		const before = lit();
+		await userEvent.keyboard("acc");
+		expect(lit()).toBe(before);
+		await userEvent.keyboard("{Escape}");
+		await screen.unmount();
+		const again = await render(SelectHarness, { label: "Field", options: grouped });
+		again.getByRole("button", { name: "Field" }).element().focus();
+		await userEvent.keyboard("{Enter}");
+		await expect.element(again.getByRole("listbox")).toBeVisible();
+		await userEvent.keyboard("com");
+		await expect
+			.element(again.getByRole("option", { name: "Company" }))
+			.toHaveAttribute("data-highlighted");
+		await userEvent.keyboard("{Enter}");
+		await expect.element(again.getByTestId("bound")).toHaveTextContent("[c]");
+	});
+
+	it("options without a group render with no group wrapper", async () => {
+		const screen = await render(SelectHarness, { label: "Letter" });
+		await screen.getByRole("button", { name: "Letter" }).click();
+		expect(document.querySelector('[role="group"]')).toBeNull();
+	});
+});

@@ -23,6 +23,16 @@ The plus and minus buttons stop at `min` and `max`. Typing a value does not clam
 
 Spacing, label and hint typography and the typed text come from the shared field tokens (`--ca-field-gap`, `--ca-field-label-leading`, `--ca-field-label-tracking`, `--ca-field-hint-leading`, `--ca-field-hint-tracking`, `--ca-input-letter-spacing`, `--ca-input-line-height`); `--ca-nf-*` (and `components.numberField`) set this component only and win. See [Field tokens](/docs/getting-started/theming/#field-tokens).
 
+A `suffix` snippet renders a companion control, typically a unit `Select`, inside the field group. The root becomes `role="group"` labelled by the field label:
+
+```svelte
+<NumberField label="Wait" bind:value={amount}>
+  {#snippet suffix()}
+    <Select hideLabel label="Unit" bind:value={unit} options={units} />
+  {/snippet}
+</NumberField>
+```
+
 <Demo title="Basic" description="Integer and decimal steps with bounds." src={BasicSrc}><Basic client:visible /></Demo>
 <Demo title="States" description="Helper text, error, disabled and the small size." src={StatesSrc}><States client:visible /></Demo>
 
@@ -43,5 +53,6 @@ Spacing, label and hint typography and the typed text come from the shared field
   { name: "name", type: "string", description: "Native name, for form submission." },
   { name: "size", type: "'sm' | 'md'", default: "'md'", description: "Field height." },
   { name: "class", type: "string", description: "Extra classes on the root." },
+  { name: "suffix", type: "Snippet", description: "A companion control after the number, usually its unit (a `Select` of units). It sits in the same row and the field becomes a `role=\"group\"` named by `label`, so the pair reads as one control. Give the companion its own accessible name (`hideLabel` + `label`)." },
   { name: "onchange", type: "(value: number) => void", description: "Called on every change, from the buttons or from typing a valid number." },
 ]} />

@@ -22,7 +22,24 @@ import SimpleSrc from "~/demos/display/timeline/Simple.svelte?raw";
 <Demo title="With variants" description={"Markers take the color of the item `variant`."} src={VariantsSrc}><Variants /></Demo>
 <Demo title="Simple" description={"Only a label and a date."} src={SimpleSrc}><Simple /></Demo>
 
+## Icon, meta and collapsible detail
+
+Every field below is optional on `TimelineItem` and nothing changes for an item that omits it: `icon` (`IconComponent`), `meta` (`string`), `children` (`Snippet`), `open` (`boolean`, default `false`). An item can carry a leading `icon` (a Lucide component; it replaces the dot in the track, takes the `variant` color and is decorative, so the label still carries the meaning), a short `meta` text badge next to the label (a duration, an outcome) and a `children` snippet with the detail. With `children` the label becomes the button of a real disclosure: `aria-expanded` on the button, `aria-controls` pointing at the detail region, which is `hidden` while closed; Enter and Space toggle it. `open: true` starts it expanded. Items without these fields render as before.
+
+```svelte
+<script>
+  import { Timeline } from "@codeatlasdev/ui";
+  import { Wrench } from "@lucide/svelte";
+  const items = [
+    { label: "Tool call", icon: Wrench, meta: "120 ms", variant: "success", children: payload },
+  ];
+</script>
+
+{#snippet payload()}<pre>{"{ \"id\": 42 }"}</pre>{/snippet}
+<Timeline {items} />
+```
+
 <Props rows={[
-  { name: "items", type: "TimelineItem[]", description: "Events: `{ label, description?, date?, variant? }`. `variant` is `'default' | 'success' | 'error' | 'warning' | 'info'`. Required." },
+  { name: "items", type: "TimelineItem[]", description: "Events: `{ label, description?, date?, variant?, icon?, meta?, children?, open? }`. `variant` is `'default' | 'success' | 'error' | 'warning' | 'info'`. Required." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />

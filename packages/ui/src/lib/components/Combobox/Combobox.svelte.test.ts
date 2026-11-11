@@ -339,3 +339,64 @@ describe("Combobox multiple trigger (#735)", () => {
 			.toHaveTextContent("2 selected");
 	});
 });
+
+describe("Combobox option groups (#811)", () => {
+	const grouped = [
+		{ value: "n", label: "Name", group: "Contact" },
+		{ value: "p", label: "Phone", group: "Contact" },
+		{ value: "c", label: "Company", group: "Account" },
+		{ value: "x", label: "Other" },
+	];
+
+	it("renders labelled role=group sections and keeps ungrouped options outside", async () => {
+		const screen = await render(ComboboxHarness, { label: "Field", options: grouped });
+		await screen.getByRole("button", { name: "Field" }).click();
+		const contact = screen.getByRole("group", { name: "Contact" });
+		await expect.element(contact).toBeVisible();
+		expect(contact.element().querySelectorAll('[role="option"]')).toHaveLength(2);
+		const header = document.getElementById(
+			contact.element().getAttribute("aria-labelledby") as string
+		) as HTMLElement;
+		expect(header.textContent).toBe("Contact");
+		const other = screen.getByRole("option", { name: "Other" }).element();
+		expect(other.closest('[role="group"]')).toBeNull();
+		await settled();
+		expect(await checkA11y(document.body, PORTAL_RULES)).toHaveNoViolations();
+	});
+
+	it("filtering hides a group with no match, including its header", async () => {
+		const screen = await render(ComboboxHarness, { label: "Field", options: grouped });
+		await screen.getByRole("button", { name: "Field" }).click();
+		await screen.getByRole("combobox", { name: "Search…" }).fill("comp");
+		await expect.element(screen.getByRole("option", { name: "Company" })).toBeVisible();
+		await expect.element(screen.getByRole("group", { name: "Contact" })).not.toBeInTheDocument();
+		expect(screen.getByRole("group", { name: "Account" }).element()).toBeTruthy();
+		expect(document.body.textContent).not.toContain("Contact");
+	});
+
+	it("arrow keys walk options in order, headers are never highlighted", async () => {
+		const screen = await render(ComboboxHarness, { label: "Field", options: grouped });
+		screen.getByRole("button", { name: "Field" }).element().focus();
+		await userEvent.keyboard("{Enter}");
+		await userEvent.keyboard("{ArrowDown}{ArrowDown}{Enter}");
+		await expect.element(screen.getByTestId("bound")).toHaveTextContent("c");
+	});
+
+	it("a group stays one section when ranking interleaves it, and keys follow the screen order", async () => {
+		const options = [
+			{ value: "1", label: "Xa one", group: "A" },
+			{ value: "2", label: "a two", group: "B" },
+			{ value: "3", label: "Xa three", group: "A" },
+		];
+		const screen = await render(ComboboxHarness, { label: "Field", options });
+		await screen.getByRole("button", { name: "Field" }).click();
+		await screen.getByRole("combobox", { name: "Search…" }).fill("a");
+		expect(document.querySelectorAll('[role="group"]')).toHaveLength(2);
+		const order = [...document.querySelectorAll('[role="option"]')].map((o) =>
+			o.textContent?.trim()
+		);
+		expect(order).toEqual(["a two", "Xa one", "Xa three"]);
+		await userEvent.keyboard("{ArrowDown}{ArrowDown}{Enter}");
+		await expect.element(screen.getByTestId("bound")).toHaveTextContent("3");
+	});
+});

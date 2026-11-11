@@ -6,9 +6,10 @@
 	label="Open"
 	value="b"
 	options={[
-		{ value: "a", label: "Alpha" },
-		{ value: "b", label: "Beta" },
-		{ value: "c", label: "Gamma", disabled: true },
-		{ value: "d", label: "Delta" },
+		{ value: "a", label: "Alpha", group: "Greek" },
+		{ value: "b", label: "Beta", group: "Greek" },
+		{ value: "c", label: "Gamma", disabled: true, group: "Greek" },
+		{ value: "d", label: "Delta", group: "More" },
+		{ value: "e", label: "Ungrouped" },
 	]}
 />

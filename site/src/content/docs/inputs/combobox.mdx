@@ -45,7 +45,7 @@ Add `creatable` to offer a `Create "text"` row when the query matches no option 
   { name: "showCount", type: "boolean", default: "false", description: "With `multiple`, shows \"N selected\" in the trigger instead of the placeholder. The chips already list the selection, so it is off by default." },
   { name: "creatable", type: "boolean", default: "false", description: "Offers a `Create \"query\"` row when the query matches no option label exactly." },
   { name: "oncreate", type: "(value: string) => void", description: "Called with the new text when the create row is chosen." },
-  { name: "options", type: "ComboboxOption[]", description: "Options: { value, label, disabled? }." },
+  { name: "options", type: "ComboboxOption[]", description: "Options: { value, label, disabled?, group? }. `group` renders section headers (see Grouped options)." },
   { name: "label", type: "string", description: "Visible label above the trigger." },
   { name: "hideLabel", type: "boolean", default: "false", description: "Renders the label with `.ca-sr-only`: read by screen readers, not shown. For a field in a toolbar, table or grid that already shows its name." },
   { name: "width", type: "'full' | 'auto' | 'fit' | string", default: "'full'", description: "`auto` and `fit` size to the content, a CSS length sets the width (`--ca-field-width`). A `Toolbar` sets `auto` for every field inside." },
@@ -62,3 +62,14 @@ Add `creatable` to offer a `Create "text"` row when the query matches no option 
   { name: "class", type: "string", description: "Extra classes on the root." },
   { name: "onchange", type: "(value: string | string[]) => void", description: "Called when the selection changes. Receives the array when `multiple`." },
 ]} />
+
+## Grouped options
+
+Give options a `group` to render section headers. Options sharing a `group` are gathered under one `role="group"` labelled by its header (placed where the group first appears), the header is never highlighted or reached by the arrow keys, and filtering hides a group that has no match, header included. Options without a `group` render as before.
+
+```svelte
+<Combobox label="Field" bind:value options={[
+  { value: "name", label: "Name", group: "Contact" },
+  { value: "company", label: "Company", group: "Account" },
+]} />
+```

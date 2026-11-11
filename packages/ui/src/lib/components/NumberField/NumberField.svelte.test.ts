@@ -3,6 +3,7 @@ import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import NumberField from "./NumberField.svelte";
+import Suffix from "./NumberFieldSuffix.test.svelte";
 
 describe("NumberField", () => {
 	it("associates the label with the spinbutton", async () => {
@@ -83,5 +84,34 @@ describe("NumberField", () => {
 	it("description is the accessible description", async () => {
 		const screen = await render(NumberField, { label: "Qty", description: "In units" });
 		await expect.element(screen.getByRole("spinbutton")).toHaveAccessibleDescription("In units");
+	});
+});
+
+describe("NumberField suffix (#811)", () => {
+	it("groups the number and its unit control under the field label", async () => {
+		const screen = await render(Suffix, {});
+		const group = screen.getByRole("group", { name: "Wait" });
+		await expect.element(group).toBeVisible();
+		const root = group.element();
+		expect(root.contains(screen.getByRole("spinbutton").element())).toBe(true);
+		expect(root.contains(screen.getByRole("button", { name: /Unit/ }).element())).toBe(true);
+		await expect.element(screen.getByRole("spinbutton", { name: "Wait" })).toHaveValue(5);
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it("without a suffix the field is not a group", async () => {
+		const screen = await render(NumberField, { label: "Qty" });
+		expect(screen.container.querySelector('[role="group"]')).toBeNull();
+	});
+
+	it("the suffix shares the control row with the input and matches its height", async () => {
+		const screen = await render(Suffix, {});
+		const wrap = screen.container.querySelector(".ca-nf__wrap") as HTMLElement;
+		const suffix = screen.container.querySelector(".ca-nf__suffix") as HTMLElement;
+		const a = wrap.getBoundingClientRect();
+		const b = suffix.getBoundingClientRect();
+		expect(Math.abs(a.top - b.top)).toBeLessThan(1);
+		expect(b.left).toBeGreaterThanOrEqual(a.right);
+		expect(Math.round(b.height)).toBe(Math.round(a.height));
 	});
 });
