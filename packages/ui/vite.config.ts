@@ -46,7 +46,16 @@ export default defineConfig({
 	server: { fs: { allow: [searchForWorkspaceRoot(process.cwd()), ...fontDirs] } },
 	// Pre-bundle lazily imported deps so the first browser run doesn't trigger an optimizer reload.
 	optimizeDeps: {
-		include: ["echarts", "@tanstack/svelte-table", "shiki", "axe-core", "@deck.gl/maplibre"],
+		// Every dependency a test reaches: one Vite discovers mid-run is re-optimised and the page reloads, which
+		// fails the dynamic imports in flight (axe-core in checkA11y, 2026-11-11, #740).
+		include: [
+			"echarts",
+			"@tanstack/svelte-table",
+			"shiki",
+			"axe-core",
+			"@deck.gl/maplibre",
+			"@internationalized/date",
+		],
 	},
 	test: {
 		expect: { requireAssertions: true },
