@@ -8,6 +8,11 @@
   import { warnNoMain } from '../../utils/warn-no-main.js';
   import type { IconComponent } from '../../types.js';
   import Badge from '../Badge/Badge.svelte';
+  import { Ellipsis } from '@lucide/svelte';
+  import { measureOverflow, observeOverflow } from '../../utils/overflow.js';
+  import IconButton from '../Button/IconButton.svelte';
+  import DropdownMenu from '../DropdownMenu/DropdownMenu.svelte';
+  import DropdownMenuItem from '../DropdownMenu/DropdownMenuItem.svelte';
   const t = useMessages(pageShell);
 
   interface Props {
@@ -67,6 +72,68 @@
   const rootStyle = $derived(
     [maxWidth ? `--ps-max:${maxWidth}` : '', gap !== undefined ? `--ps-gap:${gap}px` : ''].filter(Boolean).join(';') || undefined,
   );
+
+  // Actions: a `data-priority="primary"` child never leaves the row; the others move into a More menu
+  // when the row is too narrow (same mechanics as `Toolbar overflow="menu"`). With no primary
+  // action nothing is prioritised, so nothing collapses and the actions wrap as before.
+  interface Moved {
+    el: HTMLElement;
+    label: string;
+    disabled: boolean;
+  }
+  let actionsEl = $state<HTMLElement | null>(null);
+  let collapses = $state(false);
+  let moved = $state.raw<Moved[]>([]);
+
+  const isPrimary = (el: HTMLElement) => el.dataset.priority === 'primary' || el.querySelector('[data-priority="primary"]') !== null;
+  const labelOf = (el: HTMLElement) => el.dataset.overflow || el.getAttribute('aria-label') || el.textContent?.trim() || '';
+  /** The row's own children, never the More wrapper. */
+  const movable = (row: HTMLElement) =>
+    Array.from(row.children).filter((el): el is HTMLElement => el instanceof HTMLElement && !el.classList.contains('ca-page-shell__more'));
+
+  /** Un-hides everything, measures, then hides what does not fit: one synchronous pass, so no flash. */
+  function layout(row: HTMLElement) {
+    const items = movable(row);
+    for (const el of items) el.removeAttribute('data-overflowed');
+    const trigger = row.querySelector<HTMLElement>(':scope > .ca-page-shell__more');
+    trigger?.removeAttribute('data-shown');
+    trigger?.setAttribute('data-measuring', '');
+    const reserve = trigger?.getBoundingClientRect().width || 32;
+    trigger?.removeAttribute('data-measuring');
+    const out = measureOverflow({ items, container: row, reserve, gap: parseFloat(getComputedStyle(row).columnGap) || 0, pinned: isPrimary });
+    items.forEach((el, i) => {
+      if (out.has(i)) el.setAttribute('data-overflowed', '');
+    });
+    if (out.size) trigger?.setAttribute('data-shown', '');
+    const next = items
+      .filter((_, i) => out.has(i))
+      .map((el) => ({ el, label: labelOf(el), disabled: el.hasAttribute('disabled') || el.getAttribute('aria-disabled') === 'true' }));
+    const same = next.length === moved.length && next.every((m, i) => m.el === moved[i].el && m.label === moved[i].label && m.disabled === moved[i].disabled);
+    if (!same) moved = next;
+  }
+
+  // Whether the actions hold a primary one is read from the DOM, since the snippet is opaque.
+  $effect(() => {
+    const row = actionsEl;
+    if (!row) return;
+    const sync = () => {
+      collapses = movable(row).some(isPrimary);
+    };
+    sync();
+    const mo = new MutationObserver(sync);
+    mo.observe(row, { childList: true, subtree: true, attributes: true, attributeFilter: ['data-priority'] });
+    return () => mo.disconnect();
+  });
+
+  $effect(() => {
+    const row = actionsEl;
+    if (!collapses || !row) {
+      moved = [];
+      return;
+    }
+    layout(row);
+    return observeOverflow(row, () => movable(row), () => layout(row));
+  });
 </script>
 
 <!-- The shell is the page's scroll container, named by its title. Focusable in the server
@@ -106,8 +173,22 @@
         {/if}
       </div>
       {#if actions}
-        <div class="ca-page-shell__actions">
+        <div bind:this={actionsEl} class="ca-page-shell__actions" data-collapse={collapses ? '' : undefined}>
           {@render actions()}
+          {#if collapses}
+            <span class="ca-page-shell__more">
+              <DropdownMenu align="end">
+                {#snippet triggerChild(props)}
+                  <IconButton {...props} variant="text" size="sm" aria-label={t().pageShell.more}>
+                    <Ellipsis size={16} />
+                  </IconButton>
+                {/snippet}
+                {#each moved as item (item.el)}
+                  <DropdownMenuItem disabled={item.disabled} onclick={() => item.el.click()}>{item.label}</DropdownMenuItem>
+                {/each}
+              </DropdownMenu>
+            </span>
+          {/if}
         </div>
       {/if}
     </div>
@@ -159,7 +240,8 @@
 
     .ca-page-shell__leading { flex-shrink: 0; }
 
-    .ca-page-shell__meta { flex: 1; min-width: 0; }
+    /* Row layout (900px and up): the title column never gets narrower than 12rem; the actions give way. */
+    .ca-page-shell__meta { flex: 1; min-width: min(12rem, 100%); }
 
     /* Decorative tile before the title; centred on the first line of text, not on the description. */
     .ca-page-shell__icon {
@@ -212,11 +294,32 @@
       line-height: var(--ca-line-height-relaxed);
     }
 
+    /* The actions never take a width that squeezes the title: they shrink and wrap, and the title
+       column keeps at least 12rem before the actions wrap onto their own row. */
     .ca-page-shell__actions {
       display: flex;
       align-items: center;
       gap: var(--ca-space-2);
-      flex-shrink: 0;
+      flex: 0 1 auto;
+      min-width: 0;
+    }
+    /* `data-priority="primary"` in the actions: one line; what does not fit is hidden here and listed in More. */
+    .ca-page-shell__actions[data-collapse] {
+      flex-wrap: nowrap;
+    }
+    .ca-page-shell__actions[data-collapse] > :global(*) {
+      flex: none;
+    }
+    .ca-page-shell__actions[data-collapse] > :global([data-overflowed]) {
+      display: none;
+    }
+    .ca-page-shell__more {
+      display: none;
+      flex: none;
+    }
+    .ca-page-shell__more:global([data-shown]),
+    .ca-page-shell__more:global([data-measuring]) {
+      display: inline-flex;
     }
 
     .ca-page-shell__body {
