@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { untrack } from 'svelte';
+  import { tick, untrack } from 'svelte';
   import { rovingFocus } from '../../primitives/index.js';
   import { reducedMotion } from '../../stores/reduced-motion.svelte.js';
   import type { ToggleGroupItem } from './ToggleGroup.svelte';
@@ -10,6 +10,8 @@
     size?: 'sm' | 'md';
     disabled?: boolean;
     fullWidth?: boolean;
+    /** `equal`: one shared column width. `content`: each segment is as wide as its label. */
+    sizing?: 'equal' | 'content';
     class?: string;
     'aria-label'?: string;
     onchange?: (value: string) => void;
@@ -21,6 +23,7 @@
     size = 'md',
     disabled = false,
     fullWidth = false,
+    sizing = 'equal',
     class: className = '',
     'aria-label': ariaLabel,
     onchange,
@@ -40,6 +43,57 @@
   function roving(node: HTMLElement) {
     return rovingFocus(node, { selector: '.ca-seg__item', orientation: 'horizontal' });
   }
+
+  // Content sizing: segments have different widths, so the thumb is placed from the active
+  // segment's measured offset and width (layout coordinates: unaffected by the scroll position).
+  let root = $state<HTMLElement>();
+  let thumbLeft = $state(0);
+  let thumbWidth = $state(0);
+
+  function measure() {
+    const el = root?.querySelectorAll<HTMLElement>('.ca-seg__item')[index];
+    if (!el) return;
+    thumbLeft = el.offsetLeft;
+    thumbWidth = el.offsetWidth;
+  }
+
+  // Re-measure on selection, label/item changes, any size change of the track or a segment
+  // (container resize, locale change that lengthens labels) and once web fonts have loaded.
+  $effect(() => {
+    if (sizing !== 'content' || !root) return;
+    void index;
+    void items;
+    const node = root;
+    measure();
+    tick().then(measure);
+    const ro = new ResizeObserver(measure);
+    ro.observe(node);
+    for (const item of node.querySelectorAll('.ca-seg__item')) ro.observe(item);
+    let live = true;
+    document.fonts?.ready.then(() => live && measure());
+    return () => {
+      live = false;
+      ro.disconnect();
+    };
+  });
+
+  // Overflowing content track: shift + wheel scrolls it sideways; a plain vertical wheel is left
+  // alone so the page keeps scrolling. A horizontal wheel/trackpad delta scrolls natively.
+  function wheel(node: HTMLElement) {
+    if (sizing !== 'content') return;
+    const onwheel = (e: WheelEvent) => {
+      if (node.scrollWidth <= node.clientWidth) return;
+      if (e.shiftKey && e.deltaX === 0 && e.deltaY !== 0) {
+        e.preventDefault();
+        node.scrollLeft += e.deltaY;
+      } else if (e.deltaX !== 0 && !e.defaultPrevented && Math.abs(e.deltaX) > Math.abs(e.deltaY)) {
+        // Synthetic and some pointer-device events do not scroll by themselves.
+        node.scrollLeft += e.deltaX;
+      }
+    };
+    node.addEventListener('wheel', onwheel, { passive: false });
+    return () => node.removeEventListener('wheel', onwheel);
+  }
 </script>
 
 <div
@@ -49,9 +103,14 @@
   data-disabled={disabled ? '' : undefined}
   class="ca-seg ca-seg--{size} {className}"
   data-no-motion={reducedMotion.value ? '' : undefined}
-  style="--seg-count:{items.length};--seg-index:{Math.max(index, 0)}"
+  style="--seg-count:{items.length};--seg-index:{Math.max(index, 0)}{sizing === 'content'
+    ? `;--seg-left:${thumbLeft}px;--seg-width:${thumbWidth}px`
+    : ''}"
   data-fullwidth={fullWidth ? '' : undefined}
+  data-sizing={sizing === 'content' ? 'content' : undefined}
+  bind:this={root}
   {@attach roving}
+  {@attach wheel}
 >
   {#if index >= 0}<span class="ca-seg__thumb" aria-hidden="true"></span>{/if}
   {#each items as item (item.value)}
@@ -89,6 +148,7 @@
       /* Equal columns that may shrink: in a narrow slot labels truncate instead of the
          control pushing past its container. */
       grid-auto-columns: minmax(0, 1fr);
+      column-gap: var(--ca-seg-gap, 0px);
       max-width: 100%;
       padding: var(--seg-pad);
       border-radius: var(--ca-radius-control);
@@ -103,30 +163,61 @@
       width: 100%;
     }
 
-    /* Thumb: one column wide, moved by whole-column steps (100% of its own width per index). */
+    /* Content sizing: each segment is as wide as its label (never shrunk, so no truncation). A
+       track wider than its container scrolls sideways with a hidden scrollbar; the vertical
+       gesture still scrolls the page. */
+    :global(.ca-seg[data-sizing='content']) {
+      grid-auto-columns: max-content;
+      overflow-x: auto;
+      overscroll-behavior-x: contain;
+      scrollbar-width: none;
+    }
+
+    :global(.ca-seg[data-sizing='content']::-webkit-scrollbar) {
+      display: none;
+    }
+
+    :global(.ca-seg[data-sizing='content'] .ca-seg__item) {
+      overflow: visible;
+    }
+
+    /* Thumb: one column wide, moved by whole-column steps (100% of its own width per index).
+       With a gap the step is one column plus one gap. */
     :global(.ca-seg__thumb) {
       position: absolute;
       z-index: 0;
       top: var(--seg-pad);
       bottom: var(--seg-pad);
       left: var(--seg-pad);
-      width: calc((100% - 2 * var(--seg-pad)) / var(--seg-count));
+      width: calc((100% - 2 * var(--seg-pad) - (var(--seg-count) - 1) * var(--ca-seg-gap, 0px)) / var(--seg-count));
       border-radius: calc(var(--ca-radius-control) - var(--ca-space-0-5));
       background: var(--ca-surface-overlay);
       box-shadow:
         var(--ca-shadow-sm),
         0 0 0 var(--ca-border-width) var(--ca-state-indicator);
-      transform: translateX(calc(var(--seg-index) * 100%));
+      transform: translateX(calc(var(--seg-index) * (100% + var(--ca-seg-gap, 0px))));
       transition: transform var(--ca-duration-base) var(--ca-ease-spring);
       pointer-events: none;
     }
 
-    :global(.ca-seg[data-no-motion] .ca-seg__thumb) {
+    /* Content sizing: the thumb sits on the measured segment (offset and width, set by script). */
+    :global(.ca-seg[data-sizing='content'] .ca-seg__thumb) {
+      left: 0;
+      width: var(--seg-width);
+      transform: translateX(var(--seg-left));
+      transition:
+        transform var(--ca-duration-base) var(--ca-ease-spring),
+        width var(--ca-duration-base) var(--ca-ease-spring);
+    }
+
+    :global(.ca-seg[data-no-motion] .ca-seg__thumb),
+    :global(.ca-seg[data-no-motion][data-sizing='content'] .ca-seg__thumb) {
       transition: none;
     }
 
     @media (prefers-reduced-motion: reduce) {
-      :global(.ca-seg__thumb) {
+      :global(.ca-seg__thumb),
+      :global(.ca-seg[data-sizing='content'] .ca-seg__thumb) {
         transition: none;
       }
     }
