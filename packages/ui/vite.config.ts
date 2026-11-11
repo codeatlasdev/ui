@@ -41,9 +41,24 @@ const browserBase = (channel?: "chromium") => ({
 	trace: "retain-on-failure" as const,
 });
 
+const browserWarmup = [
+	"./tests/setup.browser.ts",
+	"./tests/setup.vrt.ts",
+	"./tests/a11y.ts",
+	"./src/lib/testing/index.ts",
+	"./src/lib/styles/global.css",
+];
+
 export default defineConfig({
 	plugins: [svelte()],
-	server: { fs: { allow: [searchForWorkspaceRoot(process.cwd()), ...fontDirs] } },
+	server: {
+		fs: { allow: [searchForWorkspaceRoot(process.cwd()), ...fontDirs] },
+		// Every browser page imports these first, all pages at once, against a server that has transformed
+		// nothing yet. Under load that first burst took 1.5 to 7 s and sometimes failed the import ("Failed
+		// to fetch dynamically imported module", #640): transform them when the server starts instead.
+		// tests/vitest-warmup.test.ts fails when a setup file is missing here.
+		warmup: { clientFiles: browserWarmup },
+	},
 	// Pre-bundle lazily imported deps so the first browser run doesn't trigger an optimizer reload.
 	optimizeDeps: {
 		// Every dependency a test reaches: one Vite discovers mid-run is re-optimised and the page reloads, which
