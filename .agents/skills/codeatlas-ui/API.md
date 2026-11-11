@@ -3743,9 +3743,16 @@ Variables: `--ca-semantic-error-fg` `--ca-semantic-error-muted` `--ca-semantic-i
 |---|---|---|---|
 | `steps` | `StepItem[]` |  |  |
 | `current?` | `number` | `0` | `bind:` |
+| `orientation?` | `'horizontal' \| 'vertical' \| 'auto'` | `'auto'` | `horizontal`: steps in a row, text under each number. `vertical`: a list, number then text. `auto` (default): vertical when the stepper is narrower than 40rem (container query), horizontal above. |
 | `class?` | `string` | `''` |  |
 
-Parts: `ca-stepper` `ca-stepper__bubble` `ca-stepper__desc` `ca-stepper__label` `ca-stepper__line` `ca-stepper__line--done` `ca-stepper__step` `ca-stepper__step--active` `ca-stepper__step--done` `ca-stepper__text`
+Parts: `ca-stepper` `ca-stepper__bubble` `ca-stepper__desc` `ca-stepper__label` `ca-stepper__line` `ca-stepper__line--done` `ca-stepper__list` `ca-stepper__step` `ca-stepper__step--active` `ca-stepper__step--done` `ca-stepper__text`
+
+Variables: `--ca-stepper-text-max`
+
+Data attributes: `data-orientation` (`auto` `vertical`)
+
+Tokens: `--ca-stepper-text-max`
 
 ## Steps
 

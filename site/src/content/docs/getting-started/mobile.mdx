@@ -158,7 +158,6 @@ The shared scale is `sm` 600, `md` 900, `lg` 1200, `xl` 1536 (min-width). Each c
 Do not branch layout on `responsive.width` or `responsive.down("md")`: it is `undefined` on the server and on the first client render, where those helpers answer as desktop, so a phone paints the desktop layout first. Switch layout in CSS (`@media`, `@container`, the layout primitives' responsive props) and keep the store for behaviour that runs after mount.
 
 {/* breakpoints:start (generated: bun packages/ui/scripts/breakpoints.ts --write) */}
-
 | Component | Viewport width | Its own width |
 |---|---|---|
 | `Alert` | 600px |  |
@@ -193,10 +192,10 @@ Do not branch layout on `responsive.width` or `responsive.down("md")`: it is `un
 | `RecordRow` |  | 35.99rem |
 | `Sheet` | 900px |  |
 | `SiteHeader` | 600px |  |
+| `Stepper` |  | 40rem |
 | `StickyActions` | 900px |  |
 | `Table` |  | 600px |
 | `Toaster` | 900px |  |
-
 {/* breakpoints:end */}
 
 ## Layout components

@@ -506,7 +506,7 @@ State attribute on a row: `data-dragging`. Each row carries `data-dnd-item="<id>
 
 ## Stepper
 
-`.ca-stepper` `.ca-stepper__bubble` `.ca-stepper__desc` `.ca-stepper__label` `.ca-stepper__line` `.ca-stepper__line--done` `.ca-stepper__step` `.ca-stepper__step--active` `.ca-stepper__step--done` `.ca-stepper__text`
+`.ca-stepper` `.ca-stepper__bubble` `.ca-stepper__desc` `.ca-stepper__label` `.ca-stepper__line` (vertical layout only) `.ca-stepper__line--done` `.ca-stepper__step` `.ca-stepper__step--active` `.ca-stepper__step--done` `.ca-stepper__text` `.ca-stepper__list` (`data-orientation`). Scoped variable: `--ca-stepper-text-max` (default `40ch`). The horizontal connector is the step's `::after`.
 
 ## StickyActions
 

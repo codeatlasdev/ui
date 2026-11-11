@@ -12,17 +12,23 @@
   interface Props {
     steps: StepItem[];
     current?: number; // 0-indexed, bindable
+    /**
+     * `horizontal`: steps in a row, text under each number. `vertical`: a list, number then text.
+     * `auto` (default): vertical when the stepper is narrower than 40rem (container query), horizontal above.
+     */
+    orientation?: 'horizontal' | 'vertical' | 'auto';
     class?: string;
   }
 
-  let { steps, current = $bindable(0), class: className = '' }: Props = $props();
+  let { steps, current = $bindable(0), orientation = 'auto', class: className = '' }: Props = $props();
 </script>
 
 <nav aria-label={t().stepper.label} class="ca-stepper {className}">
+  <ol class="ca-stepper__list" data-orientation={orientation}>
   {#each steps as step, i}
     {@const done = i < current}
     {@const active = i === current}
-    <div class="ca-stepper__step" class:ca-stepper__step--done={done} class:ca-stepper__step--active={active}>
+    <li class="ca-stepper__step" class:ca-stepper__step--done={done} class:ca-stepper__step--active={active}>
       <button
         type="button"
         class="ca-stepper__bubble"
@@ -43,30 +49,53 @@
           <span class="ca-stepper__desc">{step.description}</span>
         {/if}
       </div>
-    </div>
+    </li>
     {#if i < steps.length - 1}
-      <div class="ca-stepper__line" class:ca-stepper__line--done={done} aria-hidden="true"></div>
+      <li class="ca-stepper__line" class:ca-stepper__line--done={done} aria-hidden="true"></li>
     {/if}
   {/each}
+  </ol>
 </nav>
 
 <style>
 @layer ca.reset, ca.tokens, ca.themes, ca.base, ca.materials, ca.utilities, ca.components;
 @layer ca.components {
+    /* The nav is the container; the list inside reads its width (#988). */
     .ca-stepper {
-      display: flex;
-      align-items: flex-start;
-      gap: 0;
+      container: ca-stepper / inline-size;
       width: 100%;
     }
 
+    .ca-stepper__list {
+      display: flex;
+      align-items: flex-start;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    /* Horizontal: equal columns, so the text gets the room (#988). The connector is drawn from this
+       number to the next one across the column gap, not a flex item that eats the row. */
     .ca-stepper__step {
+      position: relative;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: var(--ca-space-2);
-      flex-shrink: 0;
+      flex: 1 1 0;
+      min-width: 0;
     }
+    .ca-stepper__step:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      top: calc(var(--ca-space-4) - var(--ca-border-width-strong) / 2);
+      left: calc(50% + var(--ca-space-4) + var(--ca-space-2));
+      right: calc(-50% + var(--ca-space-4) + var(--ca-space-2));
+      height: var(--ca-border-width-strong);
+      background: var(--ca-outline-subtle);
+      transition: background var(--ca-duration-base) var(--ca-ease-standard);
+    }
+    .ca-stepper__step--done:not(:last-child)::after { background: var(--ca-brand-main); }
 
     .ca-stepper__bubble {
       width: var(--ca-space-8);
@@ -105,14 +134,15 @@
       align-items: center;
       gap: var(--ca-space-0-5);
       text-align: center;
-      max-width: var(--ca-space-20);
+      max-width: var(--ca-stepper-text-max, 40ch);
+      min-width: 0;
     }
 
     .ca-stepper__label {
       font-size: var(--ca-font-size-caption);
       font-weight: var(--ca-font-weight-medium);
       color: var(--ca-text-secondary);
-      white-space: nowrap;
+      overflow-wrap: anywhere;
     }
 
     .ca-stepper__step--active .ca-stepper__label,
@@ -125,8 +155,9 @@
       color: var(--ca-text-hint);
     }
 
+    /* The rail item only shows in the vertical list. */
     .ca-stepper__line {
-      flex: 1;
+      display: none;
       height: var(--ca-border-width-strong);
       background: var(--ca-outline-subtle);
       margin-top: calc(var(--ca-space-4) - var(--ca-border-width-strong) / 2); /* align with bubble center */
@@ -135,6 +166,66 @@
 
     .ca-stepper__line--done {
       background: var(--ca-brand-main);
+    }
+
+    /* Vertical (explicit, or auto in a narrow container): number then text, a short rail between steps. */
+    .ca-stepper__list[data-orientation='vertical'] {
+      flex-direction: column;
+      align-items: stretch;
+
+      & .ca-stepper__step {
+        position: static;
+        flex: none;
+        flex-direction: row;
+        align-items: flex-start;
+        gap: var(--ca-space-3);
+      }
+      & .ca-stepper__bubble { flex: none; }
+      & .ca-stepper__step::after { content: none; }
+      & .ca-stepper__text {
+        align-items: flex-start;
+        text-align: start;
+        max-width: none;
+        padding-top: var(--ca-space-1-5);
+      }
+      & .ca-stepper__line {
+        display: block;
+        flex: none;
+        width: var(--ca-border-width-strong);
+        height: var(--ca-space-3);
+        margin: var(--ca-space-1) 0;
+        margin-inline-start: calc(var(--ca-space-4) - var(--ca-border-width-strong) / 2);
+      }
+    }
+    @container ca-stepper (max-width: 40rem) {
+      .ca-stepper__list[data-orientation='auto'] {
+        flex-direction: column;
+        align-items: stretch;
+
+        & .ca-stepper__step {
+          position: static;
+          flex: none;
+          flex-direction: row;
+          align-items: flex-start;
+          gap: var(--ca-space-3);
+        }
+        & .ca-stepper__bubble { flex: none; }
+        & .ca-stepper__step::after { content: none; }
+        & .ca-stepper__text {
+          align-items: flex-start;
+          text-align: start;
+          max-width: none;
+          padding-top: var(--ca-space-1-5);
+        }
+        & .ca-stepper__line {
+          display: block;
+          flex: none;
+          width: var(--ca-border-width-strong);
+          height: var(--ca-space-3);
+          margin: var(--ca-space-1) 0;
+          margin-inline-start: calc(var(--ca-space-4) - var(--ca-border-width-strong) / 2);
+        }
+      }
     }
 }
 </style>
