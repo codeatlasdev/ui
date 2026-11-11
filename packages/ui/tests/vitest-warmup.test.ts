@@ -77,4 +77,24 @@ describe("the browser Vite server pre-bundles every runtime dependency (#959)", 
 		for (const s of specifiers)
 			expect(include.has(s), `${s} is not in optimizeDeps.include`).toBe(true);
 	});
+
+	// A package only the tests import (a devDependency) was discovered mid-run too: @deck.gl/layers,
+	// imported by MapStageDeck's test, reloaded every page of a land gate (#1030).
+	it("includes every installed package the browser tests import", () => {
+		const dev = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8")).devDependencies ?? {};
+		const runner =
+			/^(vitest|@vitest\/|vitest-browser-|svelte$|svelte\/|@sveltejs\/|playwright|@playwright\/)/;
+		const used = new Set<string>();
+		for (const file of new Bun.Glob("src/lib/**/*.{svelte.test.ts,test.svelte}").scanSync(ROOT))
+			for (const m of readFileSync(join(ROOT, file), "utf8").matchAll(
+				/from\s+["']([^"'.][^"']*)["']/g
+			)) {
+				const name = m[1].startsWith("@")
+					? m[1].split("/").slice(0, 2).join("/")
+					: m[1].split("/")[0];
+				if (name in dev && !runner.test(m[1]) && !m[1].includes("?")) used.add(m[1]);
+			}
+		expect(used.has("@deck.gl/layers")).toBe(true);
+		for (const s of used) expect(include.has(s), `${s} is not in optimizeDeps.include`).toBe(true);
+	});
 });

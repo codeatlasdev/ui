@@ -1,4 +1,5 @@
 import { existsSync, globSync, readFileSync, realpathSync } from "node:fs";
+import { join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
 import { svelte } from "@sveltejs/vite-plugin-svelte";
 import { playwright } from "@vitest/browser-playwright";
@@ -47,14 +48,37 @@ function browserDeps(): string[] {
 	);
 	// Vite pre-bundles each imported subpath as its own entry (`echarts/core`), so list them too (#1007).
 	const subpaths = new Set<string>();
-	for (const file of globSync("src/lib/**/*.{ts,svelte}", { cwd: here })) {
+	for (const file of globSync("src/lib/**/*.{ts,svelte}", { cwd: here, withFileTypes: true })
+		.filter((d) => d.isFile())
+		.map((d) => relative(here, join(d.parentPath, d.name)))) {
 		if (/\.test\.(ts|svelte)$/.test(file)) continue;
 		for (const m of readFileSync(`${here}${file}`, "utf8").matchAll(
 			/from\s+["']([^"'.][^"']*)["']/g
 		))
 			if (deps.some((d) => m[1].startsWith(`${d}/`))) subpaths.add(m[1]);
 	}
-	return [...deps, ...subpaths];
+	// Packages only the browser tests import (devDependencies: @deck.gl/layers) are discovered
+	// mid-run otherwise, and the reload breaks every open page (#1030). Test runner and Svelte excluded.
+	const dev = Object.keys(pkg.devDependencies ?? {});
+	const runner =
+		/^(vitest|@vitest\/|vitest-browser-|svelte$|svelte\/|@sveltejs\/|playwright|@playwright\/)/;
+	const tested = new Set<string>();
+	// Vitest leaves directories named after test files (__traces__/X.svelte.test.ts/): files only.
+	for (const file of globSync("src/lib/**/*.{svelte.test.ts,test.svelte}", {
+		cwd: here,
+		withFileTypes: true,
+	})
+		.filter((d) => d.isFile())
+		.map((d) => relative(here, join(d.parentPath, d.name))))
+		for (const m of readFileSync(`${here}${file}`, "utf8").matchAll(
+			/from\s+["']([^"'.][^"']*)["']/g
+		)) {
+			const name = m[1].startsWith("@")
+				? m[1].split("/").slice(0, 2).join("/")
+				: m[1].split("/")[0];
+			if (dev.includes(name) && !runner.test(m[1]) && !m[1].includes("?")) tested.add(m[1]);
+		}
+	return [...new Set([...deps, ...subpaths, ...tested])];
 }
 
 const browserPattern = "src/**/*.svelte.test.ts";
