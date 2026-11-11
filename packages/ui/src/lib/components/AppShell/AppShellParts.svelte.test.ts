@@ -311,8 +311,8 @@ describe("BottomNav count badge (#896)", () => {
 	it("a tab with a count keeps its visible text inside its accessible name", async () => {
 		await page.viewport(390, 844);
 		const mods = [
-			{ id: "home", label: "Home", icon: Home, path: "/", badge: 3 },
-			{ id: "team", label: "Team", icon: Users, path: "/team", badge: 120 },
+			{ id: "home", label: "Home", icon: Home, basePath: "/", items: [], badge: 3 },
+			{ id: "team", label: "Team", icon: Users, basePath: "/team", items: [], badge: 120 },
 		];
 		const screen = await render(BottomNav, { modules: mods, activeIndex: 0, onSelect: vi.fn() });
 		await expect
