@@ -1,11 +1,11 @@
 <script lang="ts">
   import { Ellipsis } from '@lucide/svelte';
-  import type { Snippet } from 'svelte';
+  import { untrack, type Snippet } from 'svelte';
   import type { HTMLAttributes } from 'svelte/elements';
   import { toolbar } from '../../i18n/groups/toolbar.js';
   import { useMessages } from '../../i18n/state.svelte.js';
   import { devWarn } from '../../utils/dev-warn.js';
-  import { measureOverflow, observeOverflow } from '../../utils/overflow.js';
+  import { layoutOverflow, observeOverflow, overflowItems, type MovedItem } from '../../utils/overflow.js';
   import IconButton from '../Button/IconButton.svelte';
   import DropdownMenu from '../DropdownMenu/DropdownMenu.svelte';
   import DropdownMenuItem from '../DropdownMenu/DropdownMenuItem.svelte';
@@ -19,8 +19,9 @@
     /**
      * What happens when the items do not fit. `'wrap'` (default) breaks onto more lines. `'scroll'`
      * keeps one line and scrolls sideways, with no visible scrollbar. `'menu'` keeps one line and moves
-     * the items that do not fit into a "More" menu at the end; an item with `data-priority="primary"`
-     * never moves, and `data-overflow="Label"` names its menu entry (default: its `aria-label`, then its text).
+     * the items that do not fit into a "More" menu at the end. A direct child moves when it is a `button`
+     * or `a[href]`, or carries `data-overflow` and holds one; a `ButtonGroup`, a field or a `data-priority="primary"`
+     * item never moves. `data-overflow="Label"` names the menu entry (default: its `aria-label`, then its text).
      */
     overflow?: 'wrap' | 'scroll' | 'menu';
     /** Accessible name of the "More" button of `overflow="menu"`. Default: the localized "More". */
@@ -36,54 +37,8 @@
       devWarn('toolbar-label', '<Toolbar> has no accessible name. Pass aria-label (or aria-labelledby).');
   });
 
-  interface Moved {
-    el: HTMLElement;
-    label: string;
-    disabled: boolean;
-  }
-
   let root = $state<HTMLElement | null>(null);
-  let moved = $state.raw<Moved[]>([]);
-
-  const labelOf = (el: HTMLElement) =>
-    el.dataset.overflow || el.getAttribute('aria-label') || el.textContent?.trim() || '';
-  /** The row's own children, never the More wrapper. A spacer stays in the list: it takes a gap slot. */
-  const movable = (bar: HTMLElement) =>
-    Array.from(bar.children).filter(
-      (el): el is HTMLElement => el instanceof HTMLElement && !el.classList.contains('ca-toolbar__more')
-    );
-
-  /** Un-hides everything, measures, then hides what does not fit: one synchronous pass, so no flash. */
-  function layout(bar: HTMLElement) {
-    const items = movable(bar);
-    for (const el of items) el.removeAttribute('data-overflowed');
-    const trigger = bar.querySelector<HTMLElement>(':scope > .ca-toolbar__more');
-    trigger?.removeAttribute('data-shown');
-    // Reserve the trigger's real width: show it for the measurement, it is hidden again below.
-    trigger?.setAttribute('data-measuring', '');
-    const reserve = trigger?.getBoundingClientRect().width || 32;
-    trigger?.removeAttribute('data-measuring');
-    const gap = parseFloat(getComputedStyle(bar).columnGap) || 0;
-    const out = measureOverflow({
-      items,
-      container: bar,
-      reserve,
-      gap,
-      pinned: (el) =>
-        el.classList.contains('ca-toolbar-spacer') ||
-        el.dataset.priority === 'primary' ||
-        el.querySelector('[data-priority="primary"]') !== null,
-    });
-    items.forEach((el, i) => {
-      if (out.has(i)) el.setAttribute('data-overflowed', '');
-    });
-    if (out.size) trigger?.setAttribute('data-shown', '');
-    const next = items
-      .filter((_, i) => out.has(i))
-      .map((el) => ({ el, label: labelOf(el), disabled: el.hasAttribute('disabled') || el.getAttribute('aria-disabled') === 'true' }));
-    const same = next.length === moved.length && next.every((m, i) => m.el === moved[i].el && m.label === moved[i].label && m.disabled === moved[i].disabled);
-    if (!same) moved = next;
-  }
+  let moved = $state.raw<MovedItem[]>([]);
 
   $effect(() => {
     if (overflow !== 'menu' || !root) {
@@ -91,12 +46,15 @@
       return;
     }
     const bar = root;
-    layout(bar);
-    return observeOverflow(
-      bar,
-      () => movable(bar),
-      () => layout(bar)
-    );
+    const layout = () => {
+      const next = layoutOverflow(bar, {
+        trigger: bar.querySelector<HTMLElement>(':scope > .ca-toolbar__more'),
+        previous: untrack(() => moved),
+      });
+      if (next) moved = next;
+    };
+    layout();
+    return observeOverflow(bar, () => overflowItems(bar), layout);
   });
 </script>
 
@@ -111,7 +69,7 @@
           </IconButton>
         {/snippet}
         {#each moved as item (item.el)}
-          <DropdownMenuItem disabled={item.disabled} onclick={() => item.el.click()}>{item.label}</DropdownMenuItem>
+          <DropdownMenuItem disabled={item.disabled} onclick={item.activate}>{item.label}</DropdownMenuItem>
         {/each}
       </DropdownMenu>
     </span>
@@ -141,8 +99,15 @@
     .ca-toolbar[data-overflow='scroll']::-webkit-scrollbar {
       display: none;
     }
-    .ca-toolbar[data-overflow='scroll'] > :global(*) {
+    .ca-toolbar[data-overflow='scroll'] > :global(*:not(.ca-toolbar-spacer)) {
       flex: none;
+    }
+    /* Scrolling clips at the padding box, so the items' focus rings need room in it; the negative
+       margin takes it back so the row keeps its layout size. */
+    .ca-toolbar[data-overflow='scroll'] {
+      --ca-toolbar-ring: calc(var(--ca-border-width-focus) + var(--ca-focus-ring-offset));
+      padding: var(--ca-toolbar-ring);
+      margin: calc(var(--ca-toolbar-ring) * -1);
     }
 
     /* `menu`: one line; what does not fit is hidden here and listed in the More menu. */

@@ -39,7 +39,31 @@ describe("Toolbar overflow (#914)", () => {
 		const cs = getComputedStyle(b);
 		expect(cs.overflowX).toBe("auto");
 		expect(cs.scrollbarWidth).toBe("none");
-		for (const el of b.children) expect(getComputedStyle(el).flexShrink).toBe("0");
+		for (const el of b.children)
+			if (!el.classList.contains("ca-toolbar-spacer"))
+				expect(getComputedStyle(el).flexShrink).toBe("0");
+		// The spacer keeps its flex-grow behaviour (it is not forced to `flex: none`).
+		const spacer = b.querySelector(".ca-toolbar-spacer") as HTMLElement;
+		expect(getComputedStyle(spacer).flexGrow).not.toBe("0");
+	});
+
+	it("scroll leaves room for the items' focus rings inside the scroll container", async () => {
+		const screen = await render(Harness, { overflow: "scroll", width: 160 });
+		const b = bar(screen.container);
+		const first = b.querySelector("button") as HTMLElement;
+		await userEvent.keyboard("{Tab}");
+		first.focus();
+		const cs = getComputedStyle(first);
+		const ring = parseFloat(cs.outlineWidth) + parseFloat(cs.outlineOffset);
+		const box = b.getBoundingClientRect();
+		const r = first.getBoundingClientRect();
+		const pad = getComputedStyle(b);
+		// The ring (outline width + offset) must fit between the item and the scroller's padding-box edge.
+		expect(r.top - ring).toBeGreaterThanOrEqual(box.top + parseFloat(pad.borderTopWidth) - 0.5);
+		expect(r.bottom + ring).toBeLessThanOrEqual(
+			box.bottom - parseFloat(pad.borderBottomWidth) + 0.5
+		);
+		expect(r.left - ring).toBeGreaterThanOrEqual(box.left + parseFloat(pad.borderLeftWidth) - 0.5);
 	});
 
 	it("menu keeps one line and the primary item visible at a narrow width", async () => {
@@ -109,7 +133,13 @@ describe("Toolbar overflow (#914)", () => {
 		const screen = await render(Harness, { overflow: "menu", width: 200 });
 		const more = screen.getByRole("button", { name: "More" });
 		await expect.element(more).toBeVisible();
-		(more.element() as HTMLElement).focus();
+		// Real Tab presses from the first inline item until the trigger has focus.
+		(
+			screen.container.querySelector(".ca-toolbar button:not([data-overflowed])") as HTMLElement
+		).focus();
+		for (let i = 0; i < 12 && document.activeElement !== more.element(); i++)
+			await userEvent.keyboard("{Tab}");
+		await expect.element(more).toHaveFocus();
 		await userEvent.keyboard("{Enter}");
 		await expect.element(page.getByRole("menuitem").first()).toHaveFocus();
 		const count = page.getByRole("menuitem").elements().length;
@@ -118,6 +148,101 @@ describe("Toolbar overflow (#914)", () => {
 		await expect.element(page.getByRole("menuitem").nth(1)).toHaveFocus();
 		await userEvent.keyboard("{Escape}");
 		await expect.element(more).toHaveFocus();
+	});
+
+	it("Tab never lands on a hidden (moved) item", async () => {
+		const screen = await render(Harness, { overflow: "menu", width: 200 });
+		await expect.element(screen.getByRole("button", { name: "More" })).toBeVisible();
+		const stops: string[] = [];
+		(
+			screen.container.querySelector(".ca-toolbar button:not([data-overflowed])") as HTMLElement
+		).focus();
+		for (let i = 0; i < 10; i++) {
+			stops.push(
+				document.activeElement?.getAttribute("aria-label") ??
+					document.activeElement?.textContent?.trim() ??
+					""
+			);
+			await userEvent.keyboard("{Tab}");
+		}
+		for (const el of bar(screen.container).querySelectorAll("[data-overflowed]"))
+			expect(stops).not.toContain(el.getAttribute("aria-label"));
+		expect(stops).toContain("More");
+	});
+
+	it("a moved ButtonGroup, TextField or wrapped Button is never a dead menu entry", async () => {
+		const sent: string[] = [];
+		const screen = await render(Harness, { overflow: "menu", width: 200, mixed: true, sent });
+		await expect.element(screen.getByRole("button", { name: "More" })).toBeVisible();
+		const b = bar(screen.container);
+		// A group and a field cannot be clicked from a menu: they stay in the row.
+		expect(b.querySelector(".ca-btn-group")?.hasAttribute("data-overflowed")).toBe(false);
+		expect(
+			b.querySelector(".ca-tf")?.closest(".ca-toolbar > *")?.hasAttribute("data-overflowed")
+		).toBe(false);
+		// The span-wrapped Button is marked, so it may move, and its entry clicks the inner button.
+		await screen.getByRole("button", { name: "More" }).click();
+		const wrapped = page.getByRole("menuitem", { name: "Wrapped" });
+		await expect.element(wrapped).toBeVisible();
+		await wrapped.click();
+		expect(sent).toContain("wrapped");
+		// Every menu entry does something: every entry's item holds a clickable target.
+		for (const el of b.querySelectorAll("[data-overflowed]"))
+			expect(el.matches("button, a[href]") || el.querySelector("button, a[href]") !== null).toBe(
+				true
+			);
+	});
+
+	it("data-overflow names the menu entry and a disabled item is a disabled entry", async () => {
+		const sent: string[] = [];
+		const screen = await render(Harness, { overflow: "menu", width: 140, extras: true, sent });
+		await screen.getByRole("button", { name: "More" }).click();
+		const entry = page.getByRole("menuitem", { name: "Disabled tool" });
+		await expect.element(entry).toBeVisible();
+		expect(
+			entry.element().getAttribute("aria-disabled") === "true" ||
+				entry.element().hasAttribute("disabled") ||
+				entry.element().hasAttribute("data-disabled")
+		).toBe(true);
+		expect(page.getByRole("menuitem", { name: "Off" }).elements()).toHaveLength(0);
+		await entry.click({ force: true }).catch(() => {});
+		expect(sent).not.toContain("off");
+	});
+
+	it("a child added after mount makes the row re-measure, and a removed one leaves no entry", async () => {
+		// Exactly full: the bar's width is the sum of the items, so one more item overflows
+		// without the bar itself resizing (no ResizeObserver tick on the container).
+		const screen = await render(Harness, { overflow: "menu", width: 900 });
+		await settled();
+		const b = bar(screen.container);
+		const host = screen.container.querySelector('[data-testid="host"]') as HTMLElement;
+		// The spacer grows to fill, so it counts as 0; the hidden More wrapper is not an item.
+		const items = [...b.children].filter(
+			(el) =>
+				!el.classList.contains("ca-toolbar-spacer") && !el.classList.contains("ca-toolbar__more")
+		);
+		const natural = items.reduce((w, el) => w + el.getBoundingClientRect().width, 0);
+		const gap = parseFloat(getComputedStyle(b).columnGap) || 0;
+		// Items plus the spacer's own gap slot, +2px: full, but nothing overflows yet.
+		host.style.width = `${Math.ceil(natural + items.length * gap) + 2}px`;
+		await settled();
+		expect(screen.getByRole("button", { name: "More" }).elements()).toHaveLength(0);
+		const added = document.createElement("button");
+		added.setAttribute("aria-label", "Late");
+		added.style.width = "120px";
+		b.insertBefore(added, b.querySelector(".ca-toolbar-spacer"));
+		await expect.poll(() => added.hasAttribute("data-overflowed")).toBe(true);
+		expect(b.scrollWidth).toBeLessThanOrEqual(b.clientWidth + 1);
+		await screen.getByRole("button", { name: "More" }).click();
+		await expect.element(page.getByRole("menuitem", { name: "Late" })).toBeVisible();
+		await userEvent.keyboard("{Escape}");
+		added.remove();
+		await expect.poll(() => bar(screen.container).querySelector("[data-overflowed]")).toBeNull();
+		await screen
+			.getByRole("button", { name: "More" })
+			.click()
+			.catch(() => {});
+		expect(page.getByRole("menuitem", { name: "Late" }).elements()).toHaveLength(0);
 	});
 
 	it("passes axe closed and open", async () => {

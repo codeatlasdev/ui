@@ -46,13 +46,13 @@ By default the row wraps, so on a phone a composer bar takes two or three lines 
 - `"scroll"`: one line, scrolls sideways, no scrollbar drawn, items keep their size. Use it when every option must stay reachable, such as a strip of quick filters.
 - `"menu"`: one line. The items that do not fit move, in order, into a `DropdownMenu` behind a More `IconButton` at the end (`aria-label` is the localized "More", `moreLabel` overrides it). The row is measured with a `ResizeObserver` and again on resize and when fonts load, so items come back when there is room. The items stay in the DOM: picking a menu entry clicks the real item, so its handler runs. The trailing items move first; the leading ones stay.
 
-In `menu` mode, put `data-priority="primary"` on the action that must never leave the row (the send button), and `data-overflow="Label"` on an item whose menu entry needs a different name than its `aria-label` or text. A `ca-toolbar-spacer` keeps pushing what follows to the end.
+In `menu` mode a direct child moves only when a menu entry can act for it: a `button` or `a[href]` (an `IconButton`, a `Button`), or any child you mark with `data-overflow="Label"` that holds one (a `<span data-overflow="Export"><Button>…</Button></span>`; the entry clicks the button inside). Everything else stays in the row so no control becomes unreachable: a `ButtonGroup`, a `TextField` or `Select`, a spacer. Put `data-priority="primary"` on the action that must never leave the row (the send button); `data-overflow="Label"` also names the entry when it needs a different name than the item's `aria-label` or text. A disabled item becomes a disabled entry. Items added or removed after mount are measured too. A `ca-toolbar-spacer` keeps pushing what follows to the end.
 
 <Demo title="Composer bar, overflow menu" description="Resize the window: the icon buttons move into More, Send stays." src={ComposerSrc}><Composer client:visible /></Demo>
 
 <Demo title="Filter strip, overflow scroll" description="Eight filters on one line; the row scrolls sideways." src={ScrollingSrc}><Scrolling client:visible /></Demo>
 
-A `ButtonGroup` inside a toolbar can shrink (`min-width: 0`); it does not take the `overflow` prop, so a group in a `menu` toolbar moves as one item.
+A `ButtonGroup` inside a toolbar can shrink (`min-width: 0`). It takes no `overflow` prop on purpose: its members are joined by one shared seam and radius, so splitting them across the row and a menu would break the group; in a `menu` toolbar it stays in the row. In `scroll` mode the row keeps a focus-ring margin around the items, so rings are not clipped.
 
 ## Field width
 
