@@ -153,7 +153,7 @@ describe("issue-land.sh", () => {
 	// and `set -e` skips `issue.ts done` (#103).
 	it("merges without gh's local branch cleanup (#103)", () => {
 		const sh = readFileSync(join(import.meta.dir, "../../../scripts/issue-land.sh"), "utf8");
-		const merges = sh.split("\n").filter((l) => /^\s*gh pr merge\b/.test(l));
+		const merges = sh.split("\n").filter((l) => /^\s*(?:if\s+)?gh pr merge\b/.test(l));
 		expect(merges).toHaveLength(1);
 		expect(merges[0]).not.toContain("--delete-branch");
 	});
