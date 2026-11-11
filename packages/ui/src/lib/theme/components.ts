@@ -200,6 +200,17 @@ export interface EmptyStateTokens {
 	actionsMargin?: CssValue;
 }
 
+export interface PasswordStrengthTokens {
+	/** `--ca-pwstrength-gap`: space between the bar and the label. @default `--ca-space-1-5` stacked, `--ca-space-3` inline */
+	gap?: CssValue;
+	/** `--ca-pwstrength-empty-bg`: an unfilled segment. @default `--ca-outline-default` */
+	emptyBg?: CssValue;
+	/** `--ca-pwstrength-label-leading`: label line height. @default inherited */
+	labelLeading?: CssValue;
+	/** `--ca-pwstrength-label-tracking`: label letter spacing. @default inherited */
+	labelTracking?: CssValue;
+}
+
 /** `ThemeOptions.components`: component tokens, emitted on `:root`. */
 export interface ComponentTokens {
 	button?: ButtonTokens;
@@ -217,6 +228,7 @@ export interface ComponentTokens {
 	card?: CardTokens;
 	segmented?: SegmentedTokens;
 	emptyState?: EmptyStateTokens;
+	passwordStrength?: PasswordStrengthTokens;
 }
 
 const SIZES = ["sm", "md", "lg"] as const;
@@ -341,6 +353,13 @@ export function componentTokens(c: ComponentTokens | undefined): Record<string, 
 		put(out, "--ca-empty-description-leading", e.descriptionLeading);
 		put(out, "--ca-empty-description-max-width", e.descriptionMaxWidth);
 		put(out, "--ca-empty-actions-margin", e.actionsMargin);
+	}
+	const pw = c.passwordStrength;
+	if (pw) {
+		put(out, "--ca-pwstrength-gap", pw.gap);
+		put(out, "--ca-pwstrength-empty-bg", pw.emptyBg);
+		put(out, "--ca-pwstrength-label-leading", pw.labelLeading);
+		put(out, "--ca-pwstrength-label-tracking", pw.labelTracking);
 	}
 	return out;
 }

@@ -351,7 +351,7 @@ State attributes on `.ca-motion-stage`: `data-playing`, `data-taken`, `data-redu
 
 `.ca-pwstrength` `.ca-pwstrength__bar` `.ca-pwstrength__label` `.ca-pwstrength__seg` `.ca-pwstrength__text`
 
-`data-score="0|1|2|3"` on `.ca-pwstrength`; `data-on` on a filled `.ca-pwstrength__seg`.
+`data-score="0|1|2|3"` and `data-layout="stacked|inline"` on `.ca-pwstrength` (`data-empty` while `hideWhenEmpty` hides a score-0 meter: the box collapses, the live label stays in the accessibility tree); `data-on` on a filled `.ca-pwstrength__seg`. Tokens: `--ca-pwstrength-gap` `--ca-pwstrength-empty-bg` `--ca-pwstrength-label-leading` `--ca-pwstrength-label-tracking` (theme key `components.passwordStrength`).
 
 ## PinInput
 
@@ -611,6 +611,7 @@ A component token is a custom property a component reads before its default: `--
 - **Progress** `--ca-progress-track` `--ca-progress-bar` (theme key `components.progress`)
 - **Card** `--ca-card-bg` `--ca-card-radius` `--ca-card-border` `--ca-card-shadow` (`--ca-card-padding` and `--ca-card-gap` already existed)
 - **SegmentedControl** `--ca-seg-item-{padding-x,font-size,line-height}` `--ca-seg-{sm,md}-item-{padding-x,font-size,line-height}`
+- **PasswordStrength** `--ca-pwstrength-{gap,empty-bg,label-leading,label-tracking}` (theme key `components.passwordStrength`; props `layout`, `hideWhenEmpty`)
 - **EmptyState** `--ca-empty-padding` `--ca-empty-title-size` `--ca-empty-title-weight` `--ca-empty-title-leading` `--ca-empty-title-tracking` `--ca-empty-title-gap` `--ca-empty-icon-{bg,border,radius}` `--ca-empty-description-{size,leading,max-width}` `--ca-empty-actions-margin`; modifiers `.ca-empty--bare` (prop `bare`) and `.ca-empty--fill` (prop `actionsFill`)
 - **SegmentedControl** `--ca-seg-item-{padding-x,font-size,line-height}` `--ca-seg-{sm,md}-item-{padding-x,font-size,line-height}` `--ca-seg-gap` (space between segments, default `0`); prop `sizing="content"` (`data-sizing="content"` on `.ca-seg`: segments as wide as their label, thumb placed from the measured segment, track scrolls on x when wider than its container)
 - **EmptyState** `--ca-empty-padding` `--ca-empty-title-size` `--ca-empty-title-weight`; modifiers `.ca-empty--bare` (prop `bare`) and `.ca-empty--fill` (prop `actionsFill`)
