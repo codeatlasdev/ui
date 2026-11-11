@@ -4,6 +4,7 @@ import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
 import { touchTarget } from "../../../../tests/touch-target";
 import { reducedMotion } from "../../stores/reduced-motion.svelte";
+import SegmentedControlContent from "./SegmentedControlContent.test.svelte";
 import SegmentedControlHarness from "./SegmentedControlHarness.test.svelte";
 import SegmentedControlNarrow from "./SegmentedControlNarrow.test.svelte";
 
@@ -90,5 +91,160 @@ describe("SegmentedControl", () => {
 		} finally {
 			await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: false });
 		}
+	});
+
+	describe("sizing", () => {
+		const rect = (el: Element) => el.getBoundingClientRect();
+		const thumbOf = (root: Element) => root.querySelector(".ca-seg__thumb") as HTMLElement;
+		const itemsOf = (root: Element) => [...root.querySelectorAll<HTMLElement>(".ca-seg__item")];
+		const padOf = (root: Element) => {
+			const cs = getComputedStyle(root);
+			return {
+				x: Number.parseFloat(cs.paddingLeft) + Number.parseFloat(cs.paddingRight),
+				border: Number.parseFloat(cs.borderLeftWidth) + Number.parseFloat(cs.borderRightWidth),
+			};
+		};
+
+		it("equal (default) keeps one shared column width and no measured thumb", async () => {
+			const screen = await render(SegmentedControlContent, { "aria-label": "N", long: true });
+			const root = screen.getByRole("group", { name: "N" }).element();
+			const widths = itemsOf(root).map((i) => Math.round(rect(i).width));
+			expect(new Set(widths).size).toBe(1);
+			expect(root.hasAttribute("data-sizing")).toBe(false);
+			expect(segIndex(root)).toBe("0");
+		});
+
+		it("content: control width = sum of segment widths + padding + gaps, items differ", async () => {
+			const screen = await render(SegmentedControlContent, {
+				"aria-label": "N",
+				sizing: "content",
+				long: true,
+				gap: "2px",
+			});
+			const root = screen.getByRole("group", { name: "N" }).element();
+			const items = itemsOf(root);
+			const widths = items.map((i) => rect(i).width);
+			expect(widths[1]).toBeGreaterThan(widths[0] + 40);
+			const { x, border } = padOf(root);
+			const sum = widths.reduce((a, b) => a + b, 0) + 2 * (items.length - 1) + x + border;
+			expect(rect(root).width).toBeCloseTo(sum, 0);
+			for (const i of items) expect(i.scrollWidth).toBeLessThanOrEqual(i.clientWidth);
+		});
+
+		it("content: --ca-seg-gap separates segments and the thumb ignores the gap", async () => {
+			const screen = await render(SegmentedControlContent, {
+				"aria-label": "N",
+				sizing: "content",
+				gap: "2px",
+				initial: "c",
+			});
+			const root = screen.getByRole("group", { name: "N" }).element();
+			const items = itemsOf(root);
+			expect(rect(items[1]).left - rect(items[0]).right).toBeCloseTo(2, 1);
+			expect(rect(items[2]).left - rect(items[1]).right).toBeCloseTo(2, 1);
+			await expect.poll(() => rect(thumbOf(root)).left).toBeCloseTo(rect(items[2]).left, 0);
+			await expect.poll(() => rect(thumbOf(root)).width).toBeCloseTo(rect(items[2]).width, 0);
+		});
+
+		it("content: thumb follows the active segment for different label widths", async () => {
+			const screen = await render(SegmentedControlContent, {
+				"aria-label": "N",
+				sizing: "content",
+				long: true,
+			});
+			const root = screen.getByRole("group", { name: "N" }).element();
+			const items = itemsOf(root);
+			for (const [n, name] of [
+				[0, "10"],
+				[1, "Twenty results per search"],
+				[2, "100"],
+			] as const) {
+				await screen.getByRole("radio", { name }).click();
+				await expect.poll(() => rect(thumbOf(root)).left).toBeCloseTo(rect(items[n]).left, 0);
+				await expect.poll(() => rect(thumbOf(root)).width).toBeCloseTo(rect(items[n]).width, 0);
+			}
+		});
+
+		it("content: thumb re-measures when labels change width (locale change)", async () => {
+			const screen = await render(SegmentedControlContent, {
+				"aria-label": "N",
+				sizing: "content",
+				initial: "c",
+			});
+			const root = screen.getByRole("group", { name: "N" }).element();
+			const items = itemsOf(root);
+			await expect.poll(() => rect(thumbOf(root)).left).toBeCloseTo(rect(items[2]).left, 0);
+			await screen.rerender({ long: true });
+			await expect.poll(() => rect(thumbOf(root)).left).toBeCloseTo(rect(items[2]).left, 0);
+			await expect.poll(() => rect(thumbOf(root)).width).toBeCloseTo(rect(items[2]).width, 0);
+		});
+
+		it("content: no thumb transition under reduced motion", async () => {
+			await cdp().send("Emulation.setEmulatedMedia", {
+				features: [{ name: "prefers-reduced-motion", value: "reduce" }],
+			});
+			try {
+				reducedMotion.init();
+				const screen = await render(SegmentedControlContent, {
+					"aria-label": "N",
+					sizing: "content",
+				});
+				const root = screen.getByRole("group", { name: "N" }).element();
+				expect(getComputedStyle(thumbOf(root)).transitionDuration).toBe("0s");
+			} finally {
+				await cdp().send("Emulation.setEmulatedMedia", {
+					features: [{ name: "prefers-reduced-motion", value: "no-preference" }],
+				});
+			}
+		});
+
+		it("content: coarse pointer gives every segment a 44px target", async () => {
+			await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
+			try {
+				const screen = await render(SegmentedControlContent, {
+					"aria-label": "N",
+					sizing: "content",
+					size: "sm",
+				});
+				for (const item of screen.container.querySelectorAll(".ca-seg__item")) {
+					const r = item.getBoundingClientRect();
+					expect(r.width).toBeGreaterThanOrEqual(touchTarget());
+					expect(r.height).toBeGreaterThanOrEqual(touchTarget());
+				}
+			} finally {
+				await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: false });
+			}
+		});
+
+		it("content: wider than its container scrolls on x; horizontal wheel moves scrollLeft, vertical does not", async () => {
+			const screen = await render(SegmentedControlContent, {
+				"aria-label": "N",
+				sizing: "content",
+				long: true,
+				width: "140px",
+			});
+			const root = screen.getByRole("group", { name: "N" }).element() as HTMLElement;
+			expect(getComputedStyle(root).overflowX).toBe("auto");
+			expect(root.scrollWidth).toBeGreaterThan(root.clientWidth);
+			expect(rect(root).width).toBeLessThanOrEqual(140.5);
+			root.dispatchEvent(new WheelEvent("wheel", { deltaX: 60, bubbles: true, cancelable: true }));
+			await expect.poll(() => root.scrollLeft).toBeGreaterThan(0);
+			const before = root.scrollLeft;
+			const v = new WheelEvent("wheel", { deltaY: 60, bubbles: true, cancelable: true });
+			root.dispatchEvent(v);
+			expect(v.defaultPrevented).toBe(false);
+			expect(root.scrollLeft).toBe(before);
+		});
+
+		it("content: axe passes in every state", async () => {
+			const screen = await render(SegmentedControlContent, {
+				"aria-label": "N",
+				sizing: "content",
+				long: true,
+			});
+			expect(await checkA11y(screen.container)).toHaveNoViolations();
+			await screen.getByRole("radio", { name: "100" }).click();
+			expect(await checkA11y(screen.container)).toHaveNoViolations();
+		});
 	});
 });

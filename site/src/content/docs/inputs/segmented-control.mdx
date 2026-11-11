@@ -30,12 +30,15 @@ Unlike [ToggleGroup](/docs/inputs/toggle-group/), exactly one item is always sel
 
 ## Tokens
 
-`size="sm" | "md"` picks the preset; `--ca-seg-item-{padding-x,font-size,line-height}` tune both, and `--ca-seg-{sm,md}-item-*` one size (it wins). No rule against `.ca-seg__item`.
+`size="sm" | "md"` picks the preset; `--ca-seg-item-{padding-x,font-size,line-height}` tune both, and `--ca-seg-{sm,md}-item-*` one size (it wins). `--ca-seg-gap` sets the space between segments (default `0`). No rule against `.ca-seg__item`.
+
+`sizing="content"` makes each segment as wide as its label plus the item padding instead of sharing the widest column, so a control with short labels stays compact. The thumb follows the measured active segment (re-measured on resize, font load and label change). On a coarse pointer each segment keeps a 44px target. When the control is wider than its container it scrolls on the x axis (hidden scrollbar): a horizontal wheel or trackpad gesture, or shift + wheel, scrolls it, and a plain vertical wheel keeps scrolling the page.
 
 <Props rows={[
   { name: "value", type: "string", default: "first enabled item", description: "Bindable selected value." },
   { name: "items", type: "ToggleGroupItem[]", description: "{ value, label?, icon?, disabled?, 'aria-label'? }." },
   { name: "size", type: "'sm' | 'md'", default: "'md'", description: "Item height." },
+  { name: "sizing", type: "'equal' | 'content'", default: "'equal'", description: "`equal`: one shared column width. `content`: each segment is as wide as its content." },
   { name: "fullWidth", type: "boolean", default: "false", description: "Stretches the control to the container width." },
   { name: "disabled", type: "boolean", default: "false", description: "Disables the whole control." },
   { name: "aria-label", type: "string", description: "Accessible name of the control." },
