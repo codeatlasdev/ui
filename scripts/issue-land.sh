@@ -58,7 +58,7 @@ bun run validate
 # A test that passed only on its retry is listed after the run (#863): each one needs an issue and a fix.
 RUNLOG=$(mktemp)
 # `tee` would hide the run's exit code from `set -e`: keep it beside the log.
-{ set +e; sh scripts/test-changed.sh --retry=1 2>&1; echo $? > "$RUNLOG.code"; } | tee "$RUNLOG"
+{ set +e; CA_TEST_BUDGET=landShared sh scripts/test-changed.sh --retry=1 2>&1; echo $? > "$RUNLOG.code"; } | tee "$RUNLOG"
 CODE=$(cat "$RUNLOG.code")
 FLAKY=$(grep -E '\(retry x[0-9]+\)' "$RUNLOG" | grep -v ' × ' | sed 's/^ *//' | sort -u)
 if [ -n "$FLAKY" ]; then
