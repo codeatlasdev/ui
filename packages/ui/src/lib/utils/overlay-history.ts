@@ -58,17 +58,39 @@ export function bridgeOverlaysToHistory(
 		return Object.assign(() => {}, { entries: () => 0, unwind: async () => {} });
 	let open = 0;
 	let entries = 0;
-	/** `history.go` calls of ours whose `popstate` has not arrived yet. */
+	/** `history.go` calls of ours whose `popstate` has not arrived yet (no Navigation API, or the stale step-out). */
 	let ownPops = 0;
 	let waitPop: (() => void) | undefined;
 	let running = false;
 	let stopped = false;
+	// Navigation API: `keys[0]` is the page's own entry, `keys[k]` the entry after the k-th push. A close
+	// traverses to an absolute key, so a user Back racing it can never make it overshoot (#858).
+	const nav = window.navigation;
+	const keys: string[] = [];
+	const currentKey = () => nav?.currentEntry?.key ?? "";
+	/** Overlay entries between the page's own entry and where the browser is now; undefined when off our stack. */
+	const depthNow = () => {
+		const at = keys.indexOf(currentKey());
+		return at < 0 ? undefined : at;
+	};
 
 	// A reload (or a restored tab) can leave an overlay entry under the current page with no layer
 	// open: it must not reopen anything, and Back must not need two presses. Step out of it once.
 	if (adapter.isStaleEntry()) {
 		ownPops++;
 		history.back();
+	}
+
+	/** Brings the browser to `target` and `entries` in line with where it ended up; a no-op when the user's Back already got there. */
+	async function traverseTo(target: string) {
+		if (currentKey() !== target) {
+			try {
+				await nav.traverseTo(target).finished;
+			} catch {
+				// Superseded (the user's Back, a link): where the browser is now is read below.
+			}
+		}
+		entries = Math.min(depthNow() ?? open, entries);
 	}
 
 	async function step() {
@@ -79,17 +101,13 @@ export function bridgeOverlaysToHistory(
 				const action = overlayStep(open, entries);
 				if (action === "idle" || stopped) break;
 				if (action === "push") {
+					if (nav && entries === 0) keys[0] = currentKey();
 					entries++;
 					await adapter.push(entries);
+					if (nav) keys[entries] = currentKey();
+				} else if (nav && keys[open] !== undefined) {
+					await traverseTo(keys[open]);
 				} else {
-					// A user Back pressed in the same task as this close is already queued ahead of our
-					// `go`. Let it land first: it consumes the entry this close was giving back (`onPop`
-					// lowers `entries`), so there is nothing left to traverse and the page stays put (#858).
-					const hold = Promise.withResolvers<void>();
-					setTimeout(hold.resolve, 0);
-					await hold.promise;
-					if (stopped) break;
-					if (overlayStep(open, entries) !== "pop") continue;
 					const back = entries - open;
 					entries = open;
 					ownPops++;
@@ -122,14 +140,17 @@ export function bridgeOverlaysToHistory(
 			resolve?.();
 			return;
 		}
+		// Navigation API: where the browser is now says how many entries remain, whoever moved it, so our
+		// own traversal and a racing user Back both land on the same count.
+		const depth = depthNow();
 		// The user pressed Back. When a layer was already closed and its entry not yet given back
 		// (`entries > open`), this Back is that close's traversal: it consumes the entry and the page
 		// stays (#858). Otherwise it consumed the entry of a layer that is still open: close it.
 		if (entries > open) {
-			entries--;
+			entries = depth ?? entries - 1;
 			return;
 		}
-		if (entries > 0) entries--;
+		entries = depth ?? Math.max(entries - 1, 0);
 		dismissTopLayer();
 	};
 
