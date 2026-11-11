@@ -233,6 +233,20 @@ describe("charts", () => {
 		await expect.element(screen.getByText("Orders")).toBeInTheDocument();
 	});
 
+	it("PieChart center value has tabular digits: a changing count keeps its width (#997)", async () => {
+		const screen = await render(PieChart, {
+			data: [{ name: "A", value: 1 }],
+			donut: true,
+			centerLabel: { value: "111", label: "Orders" },
+		});
+		const value = screen.container.querySelector(".ca-pie-center__value") as HTMLElement;
+		expect(getComputedStyle(value).fontVariantNumeric).toBe("tabular-nums");
+		const ones = value.getBoundingClientRect().width;
+		await screen.rerender({ centerLabel: { value: "888", label: "Orders" } });
+		await expect.element(screen.getByText("888")).toBeInTheDocument();
+		expect(value.getBoundingClientRect().width).toBeCloseTo(ones, 1);
+	});
+
 	it("repaints with new data without remounting the canvas", async () => {
 		const screen = await render(LineChart, { series, categories });
 		const canvas = await mountedCanvas(screen.container);
