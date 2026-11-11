@@ -3902,7 +3902,11 @@ Parts: `ca-timeline` `ca-timeline__connector` `ca-timeline__content` `ca-timelin
 |---|---|---|---|
 | `inline?` | `boolean` | `false` | Stack inside the nearest positioned ancestor (`position: absolute`) instead of the viewport, so it follows a `data-preset` island. Default false. |
 
-Parts: `ca-toaster` `ca-toaster--inline`
+Parts: `ca-bottom-nav` `ca-toaster` `ca-toaster--inline`
+
+Variables: `--ca-toaster-bottom`
+
+Tokens: `--ca-toaster-bottom`
 
 ## ToggleGroup
 
