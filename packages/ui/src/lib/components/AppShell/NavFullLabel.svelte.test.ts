@@ -60,9 +60,7 @@ describe("NavModule.fullLabel (#715)", () => {
 		await expect
 			.element(screen.getByRole("button", { name: "Home, 3 unread", exact: true }))
 			.toBeVisible();
-		expect(
-			await checkA11y(screen.getByRole("button", { name: "CRM", exact: true }).element())
-		).toHaveNoViolations();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 
 	it("the More sheet cards use the same name", async () => {
