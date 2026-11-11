@@ -394,10 +394,16 @@ Parts: `ca-box`
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `items` | `BreadcrumbItem[]` |  |  |
-| `separator?` | `string` | `'/'` |  |
+| `separator?` | `string \| Snippet` | `'/'` | A text separator, or a snippet (an icon); drawn `aria-hidden` either way. |
 | `class?` | `string` | `''` |  |
 
+Snippets: `link` (`Snippet<[BreadcrumbItem]>`): Renders the anchor of every non-current item with an `href`, so a client router link can be used.
+
 Parts: `ca-breadcrumb__current` `ca-breadcrumb__item` `ca-breadcrumb__link` `ca-breadcrumb__list` `ca-breadcrumb__sep`
+
+Variables: `--ca-breadcrumb-line-height` `--ca-breadcrumb-link-radius` `--ca-breadcrumb-size` `--ca-breadcrumb-tracking`
+
+Tokens: `--ca-breadcrumb-line-height` `--ca-breadcrumb-link-radius` `--ca-breadcrumb-size` `--ca-breadcrumb-tracking`
 
 ## Button
 
@@ -2308,16 +2314,19 @@ Data attributes: `data-disabled`, `data-state` (`open`)
 | `direction?` | `'in' \| 'out'` | `'in'` | `in` aligns to the start (received), `out` to the end (sent). |
 | `grouped?` | `'single' \| 'first' \| 'middle' \| 'last'` | `'single'` | Position inside a run from one sender; drives the tail, spacing, sender name and avatar. |
 | `sender?` | `string` |  | Sender name above the text. Incoming bubbles at the start of a run only. |
+| `onquoteclick?` | `() => void` |  | Makes the quote a button that jumps to the quoted message. Needs `quote`. |
+| `quoteLabel?` | `string` |  | Accessible name of the quote button. Without it the name is a localized "Go to the quoted message. " followed by the quote text. |
 | `reactions?` | `Reaction[]` |  | Reaction chips overlapping the bottom edge of the bubble. |
 | `time?` | `string` |  | Footer time text, for example `14:32`. |
-| `status?` | `'pending' \| 'sent' \| 'delivered' \| 'read'` |  | Delivery state, shown as ticks. Outgoing bubbles only. |
+| `status?` | `'pending' \| 'sent' \| 'delivered' \| 'read' \| 'failed'` |  | Delivery state, shown as ticks (`failed`: a warning chip). Outgoing bubbles only. |
+| `onretry?` | `() => void` |  | Retry button after a `failed` status. Without it (and without `retry`) no button is shown. |
 | `class?` | `string` | `''` | Extra class on the row. |
 
-Snippets: `avatar`: Avatar beside incoming bubbles. Shown on `single` and `last`; other positions reserve its width.; `quote`: Reply preview rendered at the top of the bubble in a tinted block.; `children`: Message body. Whitespace is preserved and long words wrap.; `footer`: Extra footer content rendered before the time.
+Snippets: `avatar`: Avatar beside incoming bubbles. Shown on `single` and `last`; other positions reserve its width.; `quote`: Reply preview rendered at the top of the bubble in a tinted block.; `retry`: Content of the retry button. Defaults to a localized "Retry".; `children`: Message body. Whitespace is preserved and long words wrap.; `footer`: Extra footer content rendered before the time.
 
 Also accepts: `Omit<HTMLAttributes<HTMLDivElement>, 'class' \| 'children'>`
 
-Parts: `ca-bubble` `ca-bubble--in` `ca-bubble--out` `ca-bubble-row` `ca-bubble-row--in` `ca-bubble-row--out` `ca-bubble-row--reacted` `ca-bubble-row__avatar` `ca-bubble__body` `ca-bubble__meta` `ca-bubble__quote` `ca-bubble__reaction` `ca-bubble__reaction--mine` `ca-bubble__reactions` `ca-bubble__sender` `ca-bubble__status` `ca-bubble__status--read`
+Parts: `ca-bubble` `ca-bubble--in` `ca-bubble--out` `ca-bubble-row` `ca-bubble-row--in` `ca-bubble-row--out` `ca-bubble-row--reacted` `ca-bubble-row__avatar` `ca-bubble__body` `ca-bubble__meta` `ca-bubble__quote` `ca-bubble__quote--button` `ca-bubble__reaction` `ca-bubble__reaction--mine` `ca-bubble__reactions` `ca-bubble__retry` `ca-bubble__sender` `ca-bubble__status` `ca-bubble__status--failed` `ca-bubble__status--read`
 
 Variables: `--ca-bubble-avatar` `--ca-bubble-radius` `--ca-bubble-tail`
 
@@ -2676,12 +2685,18 @@ Variables: `--ca-nav-color`
 | `value?` | `string` | `''` | The password being typed. It is only read to compute the score and never stored or sent. |
 | `score?` | `(value: string) => PasswordScore` | `passwordScore` | Replaces the built-in `passwordScore`. Return 0 (empty) to 3 (strong). |
 | `labels?` | `Partial<Record<'empty' \| 'weak' \| 'fair' \| 'strong', string>>` |  | Per-instance label text; unset keys use the i18n catalog. |
+| `layout?` | `'stacked' \| 'inline'` | `'stacked'` | `inline`: the bar fills the row and the label sits to its right. Default `stacked` (bar above label). |
+| `hideWhenEmpty?` | `boolean` | `false` | Shows nothing while the score is 0. The live region stays mounted (visually collapsed, still in the accessibility tree), so the first strength after typing starts is announced. |
 | `id?` | `string` |  | Set it to point a field's `aria-describedby` at the meter. |
 | `class?` | `string` | `''` |  |
 
 Parts: `ca-pwstrength` `ca-pwstrength__bar` `ca-pwstrength__label` `ca-pwstrength__seg`
 
-Data attributes: `data-on`, `data-score` (`1` `2` `3`)
+Variables: `--ca-pwstrength-empty-bg` `--ca-pwstrength-gap` `--ca-pwstrength-label-leading` `--ca-pwstrength-label-tracking`
+
+Data attributes: `data-layout` (`inline`), `data-on`, `data-score` (`1` `2` `3`)
+
+Tokens: `--ca-pwstrength-empty-bg` `--ca-pwstrength-gap` `--ca-pwstrength-label-leading` `--ca-pwstrength-label-tracking`
 
 ## PhoneField
 
@@ -2756,14 +2771,19 @@ Data attributes: `data-active`
 | `align?` | `'start' \| 'center' \| 'end'` | `'center'` |  |
 | `sideOffset?` | `number` | `8` |  |
 | `inline?` | `boolean` | `false` | Render inside its container (absolute, no top layer, no outside-press dismissal) so it follows a `data-preset` island. Escape closes it from inside. Default false. |
+| `density?` | `'default' \| 'compact'` | `'default'` | `compact` sets 8px padding for menu-like content (`--ca-popover-padding` still wins). Default `default`. |
 
 Snippets: `trigger`: Non-interactive trigger content (text, icon). Wrapped in the popover's own button.; `triggerChild` (`Snippet<[Record<string, unknown>]>`): Interactive trigger (a Button/IconButton): receives the trigger `props` to spread onto it.; `children` (`Snippet<[{ close: () => void }]>`): Popover content. Receives `close`, which closes the popover and returns focus to the trigger.
 
-Parts: `ca-popover-content` `ca-popover__trigger`
+Parts: `ca-popover-content` `ca-popover-content--compact` `ca-popover__trigger`
 
 Internal (may change in any release): `ca-popover-in` `ca-popover-out`
 
+Variables: `--ca-popover-bg` `--ca-popover-max-width` `--ca-popover-padding` `--ca-popover-radius`
+
 Data attributes: `data-state` (`closed`)
+
+Tokens: `--ca-popover-bg` `--ca-popover-max-width` `--ca-popover-padding` `--ca-popover-radius`
 
 ## PreviewStage
 
@@ -3235,16 +3255,17 @@ Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-spli
 | `scroll?` | `'x' \| 'none'` | `'x'` | `x` (default): the root is a focusable, horizontally scrolling region. `none`: the root is `overflow: visible` and the caller owns scrolling, so the sticky header sticks to the page or panel that scrolls vertically. |
 | `stickyColumns?` | `number` | `0` | Pins the first N columns to the left while the table scrolls horizontally (checkbox + primary column). Needs `scroll="none"` inside a scroller you own, or the default `x`. |
 | `headerCase?` | `'upper' \| 'sentence'` | `'upper'` | `upper` (default): micro uppercase labels. `sentence`: regular-size labels in their own case. |
+| `hover?` | `boolean` | `true` | `true` (default): body rows tint on hover and show a pointer. `false`: no tint and no pointer on a plain row (an interactive `TableRow onactivate` keeps its pointer and focus ring). |
 
 Snippets: `children`
 
-Parts: `ca-table` `ca-table--bare` `ca-table--cards` `ca-table--compact` `ca-table--pinned` `ca-table--sentence` `ca-table-root` `ca-table-root--static`
+Parts: `ca-table` `ca-table--bare` `ca-table--cards` `ca-table--compact` `ca-table--no-hover` `ca-table--pinned` `ca-table--sentence` `ca-table-root` `ca-table-root--static`
 
-Variables: `--ca-pin-1` `--ca-pin-2` `--ca-pin-3` `--ca-pin-4` `--ca-pin-5` `--ca-pin-6` `--ca-table-cell-py` `--ca-table-group-accent` `--ca-table-row-bg` `--ca-table-row-h`
+Variables: `--ca-pin-1` `--ca-pin-2` `--ca-pin-3` `--ca-pin-4` `--ca-pin-5` `--ca-pin-6` `--ca-table-cell-color` `--ca-table-cell-px` `--ca-table-cell-py` `--ca-table-group-accent` `--ca-table-head-bg` `--ca-table-head-font-size` `--ca-table-head-h` `--ca-table-head-py` `--ca-table-head-weight` `--ca-table-row-bg` `--ca-table-row-h`
 
 Data attributes: `data-accent`, `data-label`, `data-pin` (`1` `2` `3` `4` `5` `6`)
 
-Tokens: `--ca-table-cell-py` `--ca-table-row-h`
+Tokens: `--ca-table-cell-color` `--ca-table-cell-px` `--ca-table-cell-py` `--ca-table-head-bg` `--ca-table-head-font-size` `--ca-table-head-h` `--ca-table-head-py` `--ca-table-head-weight` `--ca-table-row-h`
 
 ## SiteHeader
 
@@ -5249,7 +5270,7 @@ Types:
 | `ColorScheme` | `type ColorScheme = "light" \| "dark" \| "system";` |  |
 | `ColorValue` | `type ColorValue = string \| { color: string; alpha: number };` | One color: any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `color-mix(…)`, `rgb(…)`) or an explicit alpha form that keeps the color and the opacity apart. |
 | `Columns` | `type Columns = (typeof COLUMNS)[number] \| `${(typeof COLUMNS)[number]}`;` |  |
-| `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldThemeTokens; textField?: TextFieldTokens; textArea?: TextAreaTokens; select?: FieldTokens; combobox?: FieldTokens; numberField?: FieldTokens; progress?: ProgressTokens; card?: CardTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; switch?: SwitchTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
+| `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldThemeTokens; textField?: TextFieldTokens; textArea?: TextAreaTokens; select?: FieldTokens; combobox?: FieldTokens; numberField?: FieldTokens; progress?: ProgressTokens; card?: CardTokens; popover?: PopoverTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; passwordStrength?: PasswordStrengthTokens; switch?: SwitchTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
 | `CueName` | `type CueName = \| "press" \| "release" \| "tap" \| "toggle-on" \| "toggle-off" \| "select" \| "check" \| "success" \| "error" \| "warning" \| "notify" \| "open" \| "close" \| "forward" \| "back" \| "tab" \| "tick" \| "hover";` | Semantic cue names. Actions, not components: `press` is any button, `tab` any tab change. |
 | `DateRange` | `interface DateRange { start: DateValue \| undefined; end: DateValue \| undefined; }` | Value of RangeCalendar / DateRangePicker. Both ends are undefined until picked. |
 | `DeepPartial` | `type DeepPartial<T> = T extends (...args: never[]) => unknown ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;` |  |
@@ -5437,8 +5458,10 @@ Types:
 | `numberField?` | `FieldTokens` |  |
 | `progress?` | `ProgressTokens` |  |
 | `card?` | `CardTokens` |  |
+| `popover?` | `PopoverTokens` |  |
 | `segmented?` | `SegmentedTokens` |  |
 | `emptyState?` | `EmptyStateTokens` |  |
+| `passwordStrength?` | `PasswordStrengthTokens` |  |
 | `switch?` | `SwitchTokens` |  |
 
 #### DateRange
