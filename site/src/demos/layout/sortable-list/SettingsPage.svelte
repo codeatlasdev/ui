@@ -53,7 +53,7 @@
               <EditableRow label={stage.name}>
                 {#snippet summary()}<strong>{stage.name}</strong>{/snippet}
                 <TextField label={m.stages.name} bind:value={stage.name} />
-                <Button variant="text" size="sm" onclick={() => (stages = stages.filter((s) => s.id !== stage.id))}>
+                <Button variant="ghost" size="sm" onclick={() => (stages = stages.filter((s) => s.id !== stage.id))}>
                   {#snippet leading()}<Trash2 size={14} />{/snippet}
                   {m.remove(stage.name)}
                 </Button>
