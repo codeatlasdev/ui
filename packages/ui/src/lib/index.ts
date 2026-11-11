@@ -186,6 +186,7 @@ export { default as LiquidGlass } from "./components/LiquidGlass/LiquidGlass.sve
 export { default as LiveList } from "./components/LiveList/LiveList.svelte";
 export { default as LoadingBoundary } from "./components/LoadingBoundary/LoadingBoundary.svelte";
 export { default as LocaleSwitcher } from "./components/LocaleSwitcher/LocaleSwitcher.svelte";
+export { default as MasterDetail } from "./components/MasterDetail/MasterDetail.svelte";
 export type { MediaGridItem } from "./components/MediaGrid/MediaGrid.svelte";
 export { default as MediaGrid } from "./components/MediaGrid/MediaGrid.svelte";
 export { default as Menubar } from "./components/Menubar/Menubar.svelte";

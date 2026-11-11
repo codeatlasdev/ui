@@ -390,3 +390,4 @@ id	group	page	title	names	tags	summary
 999	inputs	copy-field	Masked		copy-field,clipboard,copy,secret,api-key,read-only	A masked CopyField: dots with a reveal toggle; copy always copies the real value.
 5000	inputs	copy-field	Show once		copy-field,clipboard,copy,secret,api-key,read-only	Show-a-secret-once recipe: AlertDialog + masked CopyField, Confirm disabled until copied.
 5001	inputs	toolbar	Filter bar		toolbar,filter-bar,text-field,select,number-field,width,wrap,role-toolbar	A filter Toolbar: a search TextField, a Select, a compact NumberField without steppers, a spacer and an Export button, all in one wrapping row.
+5002	layout	master-detail	Inbox		master-detail,inbox,conversation,list,responsive,split	A MasterDetail inbox: a conversation list and the selected thread side by side, with an empty state until a row is picked.
