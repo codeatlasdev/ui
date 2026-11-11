@@ -152,6 +152,9 @@ function status() {
 }
 
 const lockDir = process.env.CA_TEST_LOCK_DIR ?? join(tmpdir(), "ca-test-lock");
+/** The machine-wide lock: only its holder may evict the machine's caches (#946). A run with a lock of its own
+ * (the runner's tests) is not the one browser run on this machine, so it must not touch $TMPDIR's stores. */
+const machineLock = process.env.CA_TEST_LOCK_DIR === undefined;
 const holderFile = join(lockDir, "holder.json");
 
 interface Holder {
@@ -318,7 +321,7 @@ async function run(cmd: string[], budget?: BudgetName): Promise<number> {
 	// store never outgrows its cap between two cleanups, and drop the reports, traces and attachments of the previous
 	// run. Only the run that took the lock: a nested run keeps its parent's, and a run without the lock (`validate`,
 	// CA_TEST_LOCK=0) would delete the files of the browser run that holds it (#873).
-	if (locked) evictAll(false, true);
+	if (locked && machineLock) evictAll(false, true);
 	if (/vitest|playwright|test-changed|test-full/.test(cmd.join(" "))) ensureBrowsers();
 
 	const startLoad = loadavg()[0];
