@@ -149,3 +149,50 @@ describe("IconButton configurable disabled look (#708)", () => {
 		expect(css(btn, "border-top-width")).toBe("3px");
 	});
 });
+
+describe("IconButton link form (#686)", () => {
+	const phone = createRawSnippet(() => ({ render: () => "<svg aria-hidden='true'></svg>" }));
+
+	it("href renders a real link with the icon button look", async () => {
+		const screen = await render(IconButton, {
+			"aria-label": "Call Ana",
+			href: "tel:+5511999990000",
+			children: phone,
+		});
+		const link = screen.getByRole("link", { name: "Call Ana" });
+		await expect.element(link).toHaveAttribute("href", "tel:+5511999990000");
+		expect(link.element().classList).toContain("ca-icon-btn");
+		expect(screen.container.querySelector("button")).toBeNull();
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
+	});
+
+	it('target="_blank" adds noopener noreferrer', async () => {
+		const screen = await render(IconButton, {
+			"aria-label": "Open in maps",
+			href: "https://maps.example.com/?q=1",
+			target: "_blank",
+			children: phone,
+		});
+		const rel = screen.getByRole("link").element().getAttribute("rel") ?? "";
+		expect(rel).toContain("noopener");
+		expect(rel).toContain("noreferrer");
+	});
+
+	it("a disabled link is out of the tab order and does not navigate", async () => {
+		const onclick = vi.fn();
+		const screen = await render(IconButton, {
+			"aria-label": "Call",
+			href: "tel:1",
+			disabled: true,
+			onclick,
+			children: phone,
+		});
+		const link = screen.container.querySelector("a") as HTMLAnchorElement;
+		expect(link.getAttribute("aria-disabled")).toBe("true");
+		expect(link.tabIndex).toBe(-1);
+		const event = new MouseEvent("click", { bubbles: true, cancelable: true });
+		link.dispatchEvent(event);
+		expect(event.defaultPrevented).toBe(true);
+		expect(onclick).not.toHaveBeenCalled();
+	});
+});
