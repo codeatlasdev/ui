@@ -259,10 +259,11 @@ export const AUDIT = {
 	seeds: { first: 569, holdout: 1031 },
 	/**
 	 * Distinct entries a person read: `first` = 66 random + 64 immersive/expressive (their errors were fixed, then rules
-	 * were applied to all entries), `holdout` = 73 random entries not in `first`. `catalog` is the total; the rest,
-	 * `catalog - read`, were never re-read.
+	 * were applied to all entries), `holdout` = 73 random entries not in `first`. Every other entry of the catalog
+	 * (`CATALOG.length - total`) was never re-read. The catalog size is not stored here: a hand-kept copy made every
+	 * pair of PRs that add a demo conflict on this line (#980).
 	 */
-	read: { first: 130, holdout: 73, total: 203, catalog: 399, unread: 196 },
+	read: { first: 130, holdout: 73, total: 203 },
 	fields: {
 		industry: { wrong: 5, checked: 73, review: "pending" as Review },
 		style: { wrong: 0, checked: 73, review: "published" as Review },
