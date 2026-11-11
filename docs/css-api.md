@@ -660,3 +660,7 @@ A component token is a custom property a component reads before its default: `--
 ## InputGroup
 
 `.ca-input-group`: joins a field (TextField, Select, NumberField) and Button / IconButton members into one row; inner corners squared, a one-border seam.
+
+## Field, Fieldset, Label
+
+`.ca-field` `.ca-field__description` `.ca-field__error` `.ca-fieldset` `.ca-fieldset__legend` `.ca-fieldset__description` `.ca-fieldset__body` `.ca-fieldset__error` `.ca-label` `.ca-label__req`; `data-invalid` on `.ca-field`. Reads the shared field tokens `--ca-field-gap`, `--ca-field-label-leading`, `--ca-field-label-tracking`, `--ca-field-hint-leading`, `--ca-field-hint-color`, `--ca-field-required-color`.

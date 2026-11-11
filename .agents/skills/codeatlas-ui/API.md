@@ -1709,6 +1709,44 @@ Also accepts: `Omit<HTMLAnchorAttributes, 'class' \| 'children' \| 'target' \| '
 
 Parts: `ca-external-link`
 
+## Field
+
+`import { Field } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `label` | `string` |  | Visible label, tied to the control by `for`/`id`. |
+| `hideLabel?` | `boolean` | `false` | Keeps the label for assistive tech only. |
+| `description?` | `string` |  | Help text under the control, read after the label. |
+| `error?` | `string` |  | Error under the control: `role="alert"`, and the control gets `aria-invalid`. |
+| `required?` | `boolean` | `false` |  |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children` (`Snippet<[FieldControlProps]>`): The control. Spread the props it receives onto the element that takes the value.
+
+Parts: `ca-field` `ca-field__description` `ca-field__error`
+
+Variables: `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading`
+
+Tokens: `--ca-field-gap` `--ca-field-hint-color` `--ca-field-hint-leading`
+
+## Fieldset
+
+`import { Fieldset } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `legend` | `string` |  | The group's name: a `<legend>`. |
+| `hideLegend?` | `boolean` | `false` |  |
+| `description?` | `string` |  |  |
+| `error?` | `string` |  | Group-level error: `role="alert"`, and the group gets `aria-invalid`. |
+| `disabled?` | `boolean` | `false` |  |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Parts: `ca-fieldset` `ca-fieldset__body` `ca-fieldset__description` `ca-fieldset__error` `ca-fieldset__legend`
+
 ## FileUpload
 
 `import { FileUpload } from "@codeatlasdev/ui"`
@@ -2145,6 +2183,24 @@ KpiGrid: a row of KpiCards (or any equal-weight tiles) that never ends on a part
 Snippets: `children`
 
 Parts: `ca-kpi-grid` `ca-kpi-grid__grid`
+
+## Label
+
+`import { Label } from "@codeatlasdev/ui"`
+
+| Prop | Type | Default | Notes |
+|---|---|---|---|
+| `required?` | `boolean` | `false` | Adds the required marker (decorative: the control carries `required` / `aria-required`). |
+| `hidden?` | `boolean` | `false` | Keeps the label for assistive tech only. |
+| `class?` | `string` | `''` |  |
+
+Snippets: `children`
+
+Also accepts: `Omit<HTMLLabelAttributes, 'class' \| 'children' \| 'hidden'>`
+
+Parts: `ca-label` `ca-label__req`
+
+Variables: `--ca-field-label-leading` `--ca-field-label-tracking` `--ca-field-required-color`
 
 ## Lightbox
 
@@ -4336,8 +4392,8 @@ const BUILTIN_PRESETS: {
   toSorted: (compareFn?: ((a: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; reado…;
   toSpliced: { (start: number, deleteCount: number, ...items: ({ readonly id: "amber"; readonly label: "Amber"; …;
   with: (index: number, value: { readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; …;
-  __@iterator@292: () => ArrayIterator<{ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
-  readonly __@unscopables@294: { readonly [x: number]: boolean | undefined; readonly length?: boolean | undefined; toString?: bool…;
+  __@iterator@293: () => ArrayIterator<{ readonly id: "amber"; readonly label: "Amber"; readonly color: "#c47a15"; rea…;
+  readonly __@unscopables@295: { readonly [x: number]: boolean | undefined; readonly length?: boolean | undefined; toString?: bool…;
 }
 ```
 
