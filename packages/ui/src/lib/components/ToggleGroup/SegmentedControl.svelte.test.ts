@@ -146,6 +146,37 @@ describe("SegmentedControl", () => {
 			await expect.poll(() => rect(thumbOf(root)).width).toBeCloseTo(rect(items[2]).width, 0);
 		});
 
+		it("content: the thumb matches fractional segment widths (#1013)", async () => {
+			// Linux fonts give 47.5px segments; offsetWidth rounded the thumb to 48. Force fractions here.
+			const frac = document.createElement("style");
+			frac.textContent = ".ca-seg__item { padding-inline: 10.25px !important; }";
+			document.head.append(frac);
+			try {
+				const screen = await render(SegmentedControlContent, {
+					"aria-label": "F",
+					sizing: "content",
+					long: true,
+				});
+				const root = screen.getByRole("group", { name: "F" }).element();
+				const items = itemsOf(root);
+				expect(rect(items[1]).width % 1).not.toBe(0);
+				for (const [n, name] of [
+					[1, "Twenty results per search"],
+					[2, "100"],
+				] as const) {
+					await screen.getByRole("radio", { name }).click();
+					await expect
+						.poll(() => Math.abs(rect(thumbOf(root)).width - rect(items[n]).width))
+						.toBeLessThan(0.1);
+					await expect
+						.poll(() => Math.abs(rect(thumbOf(root)).left - rect(items[n]).left))
+						.toBeLessThan(0.1);
+				}
+			} finally {
+				frac.remove();
+			}
+		});
+
 		it("content: thumb follows the active segment for different label widths", async () => {
 			const screen = await render(SegmentedControlContent, {
 				"aria-label": "N",
