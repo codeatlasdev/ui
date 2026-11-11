@@ -23,6 +23,7 @@ import { chat } from "./groups/chat.js";
 import { chip } from "./groups/chip.js";
 import { codeSnippet } from "./groups/codeSnippet.js";
 import { colorField } from "./groups/colorField.js";
+import { colorPicker } from "./groups/colorPicker.js";
 import { combobox } from "./groups/combobox.js";
 import { commandPalette } from "./groups/commandPalette.js";
 import { common } from "./groups/common.js";
@@ -94,6 +95,7 @@ export const groups = {
 	chip,
 	codeSnippet,
 	colorField,
+	colorPicker,
 	combobox,
 	commandPalette,
 	copyButton,

@@ -23,7 +23,9 @@ The swatch shows the color, the chip at the end opens the native picker, and the
 
 With `against` the field shows the WCAG contrast ratio and says in words whether it passes (`Passes AA`, `Below 4.5:1`), so the verdict never rests on color alone. Use `role="text"` (default) to measure the color as text on `against`, or `role="fill"` to measure `against` as the label on the color. Translucent colors are composited over the background before measuring, and the verdict follows the real ratio, not the rounded one shown.
 
-The color helpers behind it are public: `parseColorInput`, `contrast`, `wcagLevel`, `toHex`, `toOklch`, `formatOklch`, and `extractPalette` with `pickBrand` for deriving a brand from the pixels of a logo.
+Pass `picker` to open a [`ColorPicker`](/docs/inputs/color-picker/) (OKLCH area, hue, opacity with `alpha`, `swatches`) in a popover from the chip instead of the native picker; it writes in `format`, and the contrast readout still follows the value.
+
+The color helpers behind it are public: `parseColorInput`, `contrast`, `wcagLevel`, `toHex`, `toOklch`, `formatOklch`, `formatColor`, `maxChroma` (the sRGB chroma limit at a lightness and hue), and `extractPalette` with `pickBrand` for deriving a brand from the pixels of a logo.
 
 <Demo title="Brand color" description="Contrast of white on the color, as a UI part (3:1)." src={BrandSrc}><Brand client:visible /></Demo>
 <Demo title="Text color" description="Text on a white page, oklch output from the picker, 4.5:1." src={TextContrastSrc}><TextContrast client:visible /></Demo>
@@ -34,6 +36,9 @@ The color helpers behind it are public: `parseColorInput`, `contrast`, `wcagLeve
   { name: "variant", type: "'outlined' | 'filled' | 'underline'", default: "theme", description: "How the field is drawn (`data-ca-field`). Default follows `components.field.variant`, else the surface style." },
   { name: "value", type: "string", default: "'#000000'", description: "Bindable committed color, as typed." },
   { name: "format", type: "'hex' | 'oklch'", default: "'hex'", description: "What the native picker writes back." },
+  { name: "picker", type: "boolean", default: "false", description: "The chip opens a `ColorPicker` in a popover instead of the native picker." },
+  { name: "alpha", type: "boolean", default: "false", description: "With `picker`: adds the opacity slider." },
+  { name: "swatches", type: "string[]", description: "With `picker`: colors to pick from." },
   { name: "against", type: "string", description: "Background to measure contrast against (any CSS color). Omit to hide the readout." },
   { name: "role", type: "'text' | 'fill'", default: "'text'", description: "`text`: value on `against`. `fill`: `against` on value." },
   { name: "minRatio", type: "number", default: "4.5", description: "Ratio that counts as passing. 3 for UI parts." },

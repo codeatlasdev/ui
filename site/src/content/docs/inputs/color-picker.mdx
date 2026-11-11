@@ -1,0 +1,71 @@
+---
+title: ColorPicker
+description: An OKLCH color area, a hue slider, an optional opacity slider and swatches, bound to a CSS color string. Every part works with the keyboard.
+group: Inputs
+---
+import Props from "~/components/docs/Props.astro";
+
+```svelte
+<script>
+  import { ColorPicker } from "@codeatlasdev/ui";
+  let brand = $state("oklch(0.6 0.15 250)");
+</script>
+
+<ColorPicker label="Brand" bind:value={brand} />
+```
+
+The area is lightness (up) by chroma (right) at the current hue. The slice is drawn only where the color fits sRGB, so it never offers a color the screen would clip; its right edge is the most chromatic color of the current hue, so the area is filled at every hue. `value` is a CSS color string: `oklch(L C H)` by default, `#rrggbb` with `format="hex"`. A value that is not a color is ignored, and the hue of a gray survives edits because an `oklch()` value is read exactly instead of through hex.
+
+## Opacity and swatches
+
+```svelte
+<ColorPicker label="Overlay" bind:value={overlay} alpha swatches={["#ef4444", "#22c55e", "oklch(0.6 0.15 250)"]} />
+```
+
+`alpha` adds the opacity slider and writes `/ alpha` into `value` (`oklch(0.6 0.15 250 / 0.5)`, or `#rrggbbaa` in hex). `swatches` takes any CSS color; the swatch equal to the value shows as checked.
+
+## Hex
+
+```svelte
+<ColorPicker label="Brand" bind:value={brand} format="hex" alpha />
+```
+
+Hex is gamut-clipped to 8 bits per channel, so a pick made in OKLCH can land a step away from where the thumb is. Keep the default `oklch` when the value is stored and shown in OKLCH.
+
+## In a ColorField
+
+```svelte
+<ColorField label="Brand" bind:value={brand} picker alpha against="#ffffff" role="fill" minRatio={3} />
+```
+
+`picker` turns the chip into a button that opens the picker in a `Popover`; the text field, the typed notation and the contrast readout stay the field's. Without `picker` the chip is still the native color input.
+
+## Keyboard and screen readers
+
+The area is one `role="slider"` named "Brand color". Its value is the lightness, and `aria-valuetext` says both axes in words (`Lightness 60%, chroma 40%, colorful`). Hue and opacity are sliders too (`250 degrees, blue`, `50 percent opaque`).
+
+| Key | Area | Hue and opacity |
+|---|---|---|
+| Up, Down | Lightness ±1% | ±1 degree, ±1% |
+| Left, Right | Chroma ±0.005 (mirrored in RTL) | ±1 degree, ±1% |
+| Shift + arrow | Ten times as far | Ten times as far |
+| Page Up, Page Down | Lightness ±10% | ±10 |
+| Home | No chroma | First value |
+| End | Gamut edge at this lightness | Last value |
+
+Under a coarse pointer every thumb is at least the touch target. Texts are in English and Brazilian Portuguese.
+
+## Styling
+
+Classes: `.ca-color-picker` (`data-disabled`), `__area`, `__slice`, `__track`, `__hue`, `__alpha`, `__thumb`. Tokens, all optional: `--ca-color-picker-width`, `--ca-color-picker-gap`, `--ca-color-picker-radius`, `--ca-color-picker-ratio` (area aspect ratio, default `4 / 3`), `--ca-color-picker-track-height`, `--ca-color-picker-thumb-size`.
+
+<Props for="ColorPicker" rows={[
+  { name: "label", type: "string", description: "Names the group and the area (`Brand color`)." },
+  { name: "value", type: "string", default: "'oklch(0.6 0.15 250)'", description: "Bindable CSS color. Anything that is not a color is ignored." },
+  { name: "format", type: "'oklch' | 'hex'", default: "'oklch'", description: "What `value` is written as." },
+  { name: "alpha", type: "boolean", default: "false", description: "Adds the opacity slider; `value` then carries alpha." },
+  { name: "swatches", type: "string[]", description: "Colors to pick from, any CSS color." },
+  { name: "disabled", type: "boolean", default: "false", description: "Blocks keyboard and pointer." },
+  { name: "class", type: "string", description: "Extra classes on the root." },
+  { name: "onchange", type: "(value: string) => void", description: "Called with the string written to `value`." },
+]} />

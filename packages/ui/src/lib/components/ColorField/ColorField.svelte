@@ -1,5 +1,7 @@
 <script lang="ts">
   import TextField from '../TextField/TextField.svelte';
+  import Popover from '../Popover/Popover.svelte';
+  import ColorPicker from '../ColorPicker/ColorPicker.svelte';
   import { uid } from '../../utils/index.js';
   import { fieldWidth, type FieldWidth } from '../../utils/field-width.js';
   import type { FieldVariant } from '../../theme/components.js';
@@ -18,6 +20,8 @@
    * stays `oklch()`; `format` only decides what the swatch picker writes back. With `against` the
    * field shows the WCAG contrast of the color on that background, with the level it reaches
    * (pass `foreground` to measure the color as text on it, or leave it to measure it as the fill).
+   * With `picker` the chip opens a `ColorPicker` in a Popover (OKLCH area, hue, opacity with
+   * `alpha`, `swatches`) instead of the native picker; the contrast readout stays here.
    */
   interface Props {
     label: string;
@@ -31,6 +35,12 @@
     role?: 'text' | 'fill';
     /** Minimum ratio that counts as passing. 4.5 for text, 3 for UI parts. @default 4.5 */
     minRatio?: number;
+    /** Open a `ColorPicker` in a Popover from the chip instead of the native picker. Writes in `format`. @default false */
+    picker?: boolean;
+    /** With `picker`: adds the opacity slider, so `value` can carry alpha. @default false */
+    alpha?: boolean;
+    /** With `picker`: colors to pick from. */
+    swatches?: string[];
     description?: string;
     /** `full`, `auto`, `fit` or a CSS length (`--ca-field-width`). Default: the width its content needs. */
     width?: FieldWidth;
@@ -48,6 +58,9 @@
     against,
     role = 'text',
     minRatio = 4.5,
+    picker = false,
+    alpha = false,
+    swatches,
     description,
     width,
     variant,
@@ -126,6 +139,23 @@
       <span class="ca-color-field__swatch" style="--ca-color-field-fill:{parsed?.css ?? value}"></span>
     {/snippet}
     {#snippet trailing()}
+      {#if picker}
+        <Popover side="bottom" align="end" class="ca-color-field__popover">
+          {#snippet triggerChild(props)}
+            <button type="button" class="ca-color-field__pick" {disabled} {...props}>
+              <span class="ca-sr-only">{t().colorField.pick(label)}</span>
+            </button>
+          {/snippet}
+          <ColorPicker
+            {label}
+            {format}
+            {alpha}
+            {swatches}
+            value={parsed ? value : pickerHex}
+            onchange={commit}
+          />
+        </Popover>
+      {:else}
       <label class="ca-color-field__pick" for="{id}-native">
         <span class="ca-sr-only">{t().colorField.pick(label)}</span>
         <input
@@ -137,6 +167,7 @@
           oninput={pick}
         />
       </label>
+      {/if}
     {/snippet}
   </TextField>
   {#if ratio !== null && level}
@@ -171,6 +202,8 @@
 
     :global(.ca-color-field__pick) {
       position: relative;
+      padding: 0;
+      border: 0;
       display: inline-grid;
       place-items: center;
       inline-size: var(--ca-space-6);
@@ -202,6 +235,7 @@
       opacity: 0;
       cursor: pointer;
     }
+    :global(.ca-color-field__pick:focus-visible),
     :global(.ca-color-field__pick:has(.ca-color-field__native:focus-visible)) {
       outline: var(--ca-border-width-focus) solid var(--ca-focus-ring);
       outline-offset: var(--ca-space-0-5);
@@ -209,6 +243,11 @@
     :global(.ca-color-field[data-disabled] .ca-color-field__pick) {
       cursor: not-allowed;
       filter: grayscale(1);
+    }
+
+    :global(.ca-color-field__popover) {
+      inline-size: var(--ca-color-field-popover-width, calc(var(--ca-space-16) * 4));
+      max-inline-size: calc(100vw - var(--ca-space-4));
     }
 
     :global(.ca-color-field__contrast) {
