@@ -3239,9 +3239,11 @@ Snippets: `children`
 
 Parts: `ca-table` `ca-table--bare` `ca-table--cards` `ca-table--compact` `ca-table--pinned` `ca-table--sentence` `ca-table-root` `ca-table-root--static`
 
-Variables: `--ca-pin-1` `--ca-pin-2` `--ca-pin-3` `--ca-pin-4` `--ca-pin-5` `--ca-pin-6` `--ca-table-row-bg`
+Variables: `--ca-pin-1` `--ca-pin-2` `--ca-pin-3` `--ca-pin-4` `--ca-pin-5` `--ca-pin-6` `--ca-table-cell-py` `--ca-table-group-accent` `--ca-table-row-bg` `--ca-table-row-h`
 
-Data attributes: `data-label`, `data-pin` (`1` `2` `3` `4` `5` `6`)
+Data attributes: `data-accent`, `data-label`, `data-pin` (`1` `2` `3` `4` `5` `6`)
+
+Tokens: `--ca-table-cell-py` `--ca-table-row-h`
 
 ## SiteHeader
 
@@ -3622,6 +3624,7 @@ Parts: `ca-table` `ca-table-container` `ca-table-root`
 | `colspan` | `number` |  | Number of columns to span (the table's column count). |
 | `collapsible?` | `boolean` | `false` | Renders the label as a toggle button with `aria-expanded`. Without it the row is a static section label. |
 | `open?` | `boolean` | `true` | `bind:` Expanded state, bindable. The rows below the group row are the caller's `{#if open}`. |
+| `accent?` | `string` |  | Colour of a rail at the start of the row (a stage or status colour, e.g. `var(--ca-semantic-success)`). |
 | `class?` | `string` | `''` |  |
 
 Snippets: `label`: Group title and count.
@@ -3661,6 +3664,7 @@ Also accepts: `Omit<HTMLAttributes<HTMLTableRowElement>, 'children' \| 'onclick'
 | `sort?` | `'none' \| 'asc' \| 'desc'` | `'none'` | Current sort direction of this column. `none` renders the idle icon and no `aria-sort`. |
 | `onsort?` | `() => void` |  | Called when the header button is pressed; the caller owns the sort state and the next direction. |
 | `idleIcon?` | `boolean` | `true` | `false` draws no arrow while the column is unsorted: only the sorted column shows one (a quiet, mostly-read table). |
+| `align?` | `'start' \| 'end'` | `'start'` | `end` aligns the label (and its arrow) at the end of the cell, for numeric columns. |
 | `class?` | `string` | `''` |  |
 
 Snippets: `children`: Column label.
