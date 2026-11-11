@@ -52,4 +52,28 @@ describe("Heading", () => {
 			parseFloat(getComputedStyle(q(small.container, "h1")).fontSize)
 		);
 	});
+	it("display-3 follows a fluid --ca-font-size-display-3 from the theme, with tracking and leading (#691)", async () => {
+		const tokens = {
+			"--ca-font-size-display-3": "clamp(36px, 22.4px + 3.6vw, 56px)",
+			"--ca-display-tracking": "-0.035em",
+			"--ca-display-leading": "1",
+		};
+		for (const [k, v] of Object.entries(tokens)) root.style.setProperty(k, v);
+		try {
+			const screen = await render(Heading, { level: 1, size: "display-3", children: text("Hi") });
+			const h = q(screen.container, "h1");
+			const size = () => parseFloat(getComputedStyle(h).fontSize);
+			const fluid = (vw: number) => Math.min(56, Math.max(36, 22.4 + 0.036 * vw));
+			// The fluid step is evaluated against the real viewport; assert the formula at it,
+			// and that it sits inside the configured clamp bounds.
+			expect(size()).toBeCloseTo(fluid(document.documentElement.clientWidth), 1);
+			expect(size()).toBeGreaterThanOrEqual(36);
+			expect(size()).toBeLessThanOrEqual(56);
+			const cs = getComputedStyle(h);
+			expect(parseFloat(cs.letterSpacing) / size()).toBeCloseTo(-0.035, 3);
+			expect(parseFloat(cs.lineHeight) / size()).toBeCloseTo(1, 3);
+		} finally {
+			for (const k of Object.keys(tokens)) root.style.removeProperty(k);
+		}
+	});
 });

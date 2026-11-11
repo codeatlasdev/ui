@@ -343,6 +343,8 @@ export type {
 	ResolvedTheme,
 	SchemeColors,
 	SegmentedTokens,
+	SwitchSizeTokens,
+	SwitchTokens,
 	TextAreaTokens,
 	ThemeDefinition,
 	TypeRole,

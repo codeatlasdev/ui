@@ -23,7 +23,38 @@ import SettingsListSrc from "~/demos/inputs/switch/SettingsList.svelte?raw";
 <Switch label="Notifications" bind:checked={enabled} />
 ```
 
-Without a visible `label`, always pass `aria-label` (or `aria-labelledby`) so the switch has an accessible name. The track is 44px wide, so it is comfortable to hit on touch screens.
+Without a visible `label`, always pass `aria-label` (or `aria-labelledby`) so the switch has an accessible name. The track is 44px wide, so it is comfortable to hit on touch screens. `size="sm"` is the compact 32 x 20 track (14px thumb) for a dense row.
+
+## Geometry and colours from the theme
+
+Set the look once in the theme, no selector against `.ca-switch*` needed. The thumb travels `track-width - thumb - 2 * (padding + border)`, so it stays flush at both ends in both states for any size:
+
+```ts
+defineTheme({
+  components: {
+    switch: {
+      trackWidth: "40px", trackHeight: "24px", padding: "2px", borderWidth: "1px", thumbSize: "18px",
+      thumbBackground: "var(--ca-brand-contrast)", thumbShadow: "none", onBackground: "var(--ca-brand-fill)",
+      sm: { trackWidth: "32px", trackHeight: "20px", thumbSize: "14px" },
+    },
+  },
+});
+```
+
+| Token (theme key) | Default |
+|---|---|
+| `--ca-switch-track-width` (`trackWidth`) | `44px` |
+| `--ca-switch-track-height` (`trackHeight`) | `24px` |
+| `--ca-switch-padding` (`padding`) | `--ca-space-0-5` |
+| `--ca-switch-border-width` (`borderWidth`) | `0px` (`1px` for `size="sm"`) |
+| `--ca-switch-border-color` | transparent |
+| `--ca-switch-thumb-size` (`thumbSize`) | track height minus twice padding and border |
+| `--ca-switch-thumb-bg` (`thumbBackground`) | white |
+| `--ca-switch-thumb-shadow` (`thumbShadow`) | `--ca-shadow-sm` |
+| `--ca-switch-on-bg` (`onBackground`) | `--ca-state-indicator` |
+| `--ca-switch-sm-{track-width,track-height,padding,thumb-size}` (`sm`) | `32px`, `20px`, `--ca-space-0-5`, `14px` |
+
+Keep the contrast of the thumb against both track colours at 3:1 or more when you change them.
 
 <Demo title="Basic" description="Default off and on states." src={BasicSrc}><Basic client:visible /></Demo>
 <Demo title="Disabled" src={DisabledSrc}><Disabled client:visible /></Demo>
@@ -33,6 +64,7 @@ Without a visible `label`, always pass `aria-label` (or `aria-labelledby`) so th
 <Props rows={[
   { name: "checked", type: "boolean", default: "false", description: "Bindable on/off state." },
   { name: "disabled", type: "boolean", default: "false", description: "Disables interaction." },
+  { name: "size", type: "'sm' | 'md'", default: "'md'", description: "`sm` is the compact 32 x 20 track with a 14px thumb. Geometry follows the `--ca-switch-*` tokens." },
   { name: "name", type: "string", description: "Native name, so the switch is in FormData on a plain form submit (value `on` when checked, absent when not)." },
   { name: "label", type: "string", description: "Visible label rendered beside the switch." },
   { name: "hideLabel", type: "boolean", default: "false", description: "Renders the label with `.ca-sr-only`: read by screen readers, not shown. For a field in a toolbar, table or grid that already shows its name." },
