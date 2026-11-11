@@ -3714,7 +3714,7 @@ Also accepts: `Omit<HTMLTextareaAttributes, 'value' \| 'class' \| 'children' \| 
 
 Parts: `ca-ta` `ca-ta--disabled` `ca-ta__hint` `ca-ta__hint--error` `ca-ta__input` `ca-ta__label` `ca-ta__req` `ca-ta__wrap` `ca-ta__wrap--error` `ca-ta__wrap--focused`
 
-Variables: `--ca-field-gap` `--ca-field-label-leading` `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
+Variables: `--ca-field-gap` `--ca-field-label-leading` `--ca-radius-control-multiline` `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
 
 Tokens: `--ca-ta-gap` `--ca-ta-label-line-height` `--ca-ta-min-height`
 
