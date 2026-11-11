@@ -89,7 +89,7 @@
   >
     <!-- Module header -->
     <div class="ca-panel__header">
-      <span class="ca-panel__title">{activeModule?.label ?? ''}</span>
+      <span class="ca-panel__title">{activeModule?.fullLabel ?? activeModule?.label ?? ''}</span>
     </div>
 
     <!-- Nav items with top/bottom fade mask -->

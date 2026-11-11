@@ -225,7 +225,16 @@ describe("non-component exports (#57)", () => {
 		const nav = exp("NavModule", "@codeatlasdev/ui");
 		const badge = nav?.members?.find((m) => m.name === "badge");
 		expect(nav?.members?.map((m) => m.name)).toEqual(
-			expect.arrayContaining(["id", "label", "icon", "basePath", "items", "badge", "badgeLabel"])
+			expect.arrayContaining([
+				"id",
+				"label",
+				"icon",
+				"basePath",
+				"items",
+				"badge",
+				"badgeLabel",
+				"fullLabel",
+			])
 		);
 		expect(badge).toMatchObject({ type: 'number | "dot"', optional: true });
 		expect(badge?.description).toContain("rail icon");

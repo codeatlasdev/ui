@@ -69,6 +69,13 @@ export interface NavSection {
 export interface NavModule {
 	id: string;
 	label: string;
+	/**
+	 * Full name when the visible `label` is an abbreviation ("CRM" for "Customer relationships").
+	 * It is the rail tooltip, the panel and mobile header title, and part of the accessible name.
+	 * The name always starts with the visible `label` (WCAG 2.5.3, label in name): "CRM (Customer
+	 * relationships)", then the badge. Defaults to `label`.
+	 */
+	fullLabel?: string;
 	icon: IconComponent;
 	basePath: string;
 	/** Extra URL prefixes that also activate this module in the Rail */
@@ -241,15 +248,27 @@ export function moduleBadgeText(mod: NavModule): string {
 }
 
 /**
- * Accessible name of a module button: the label, plus the badge as text. `badgeLabel` wins; without
- * it a count reads "N unread" and a dot reads "New" (`unread` and `fresh` come from the i18n group).
+ * Accessible name of a module button: the full label, plus the badge as text. `badgeLabel` wins;
+ * without it a count reads "N unread" and a dot reads "New" (`unread` and `fresh` come from the
+ * i18n group). The visible `label` is always part of the name (WCAG 2.5.3).
  */
 export function moduleName(
 	mod: NavModule,
 	text: { unread: (count: number) => string; fresh: string }
 ): string {
-	if (!hasModuleBadge(mod)) return mod.label;
+	const base = moduleFullName(mod);
+	if (!hasModuleBadge(mod)) return base;
 	const extra =
 		mod.badgeLabel ?? (mod.badge === "dot" ? text.fresh : text.unread(mod.badge as number));
-	return `${mod.label}, ${extra}`;
+	return `${base}, ${extra}`;
+}
+
+/**
+ * "label (fullLabel)", or `label` without a different `fullLabel`. The visible label comes first and
+ * unbroken so the name starts with the text on screen, badge count included (axe
+ * `label-content-name-mismatch`, WCAG 2.5.3).
+ */
+function moduleFullName(mod: NavModule): string {
+	const full = mod.fullLabel;
+	return full && full !== mod.label ? `${mod.label} (${full})` : mod.label;
 }

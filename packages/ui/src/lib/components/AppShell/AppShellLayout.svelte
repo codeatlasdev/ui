@@ -202,7 +202,7 @@
   let pageTitle = $derived.by(() => {
     const mod = modules[activeModuleIndex];
     if (!mod) return '';
-    return findActiveItem(mod.items, pathname)?.label ?? mod.label;
+    return findActiveItem(mod.items, pathname)?.label ?? mod.fullLabel ?? mod.label;
   });
 
   function setPanelOpen(v: boolean) {
