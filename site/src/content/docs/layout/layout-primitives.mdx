@@ -34,12 +34,16 @@ Every primitive renders any element (`as`) and forwards `class` and other attrib
 | `Flex` | `display: flex` | `gap`, `p`, `px`, `py`, `align`, `justify`, `direction`, `wrap` |
 | `Stack` | a Flex column | `gap`, `p`, `px`, `py`, `align`, `justify` |
 | `Grid` | `display: grid`, equal tracks | `columns`, `gap`, `p`, `px`, `py`, `align` |
-| `Container` | centered, width-capped, fluid gutter | `size` (`sm` `md` `lg` `xl`), `px`, `py` |
+| `Container` | centered, width-capped, fluid gutter | `size` (`sm` `md` `default` `wide` `full`; `lg` and `xl` are aliases of `default` and `wide`), `px`, `py` |
 | `Section` | a `<section>` with the page rhythm | `size` (`1` `2` `3`), `px`, `py` |
 
 Spacing values are steps of the spacing scale as strings (`"4"` is `--ca-space-4`, 16px at the default density; `"0.5"` is 2px). The scale is `0 0.5 1 1.5 2 2.5 3 3.5 4 4.5 5 6 7 8 10 11 12 16 20 24`. A value off the scale logs a `[ca-ui]` warning in development and renders unstyled: for a one-off value add a class.
 
 `align` is `start | center | end | stretch | baseline`, `justify` is `start | center | end | between | around | evenly`, `direction` is `row | column | row-reverse | column-reverse`, and `columns` is 1 to 12 equal tracks. For a template like `2fr 1fr` or `repeat(auto-fill, minmax(200px, 1fr))` write `grid-template-columns` in a class.
+
+## Page width
+
+`Container`, `PageShell` and the `App*` pages read the same two tokens: `--ca-content-max` for the content width and `--ca-page-px` for the gutter. `Container` sizes: `default` is `--ca-content-max` (76rem), `wide` is `--ca-content-max-wide` (90rem) and `full` fills the viewport up to `--ca-content-max-full` (120rem), so on a 1920px screen `default` and `wide` centre with different caps and `full` no longer stretches without limit. Override the tokens in your CSS to change a cap app-wide.
 
 ## Responsive values
 

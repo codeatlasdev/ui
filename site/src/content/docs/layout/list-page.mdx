@@ -41,6 +41,7 @@ These layouts fill the content area of the [app shell](/docs/layout/app-shell/) 
   { name: "empty", type: "Snippet<[ListCtx]> | Snippet", description: "Shown when filtered rows are zero." },
   { name: "footer", type: "Snippet", description: "Manual footer, used only without data." },
   { name: "maxWidth", type: "string", description: "Maximum width of the content." },
+  { name: "embedded", type: "boolean", default: "false", description: "Use inside a page that already has a gutter and header (a `PageShell`): no header of its own and no page padding, so the content aligns with the shell." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />
 
@@ -52,6 +53,17 @@ These layouts fill the content area of the [app shell](/docs/layout/app-shell/) 
   { name: "activeTab", type: "string", description: "Bindable active tab for external control." },
   { name: "onTabChange", type: "(value: string) => void", description: "Called when the tab changes." },
   { name: "actions", type: "Snippet", description: "Top-right slot for save and cancel buttons." },
+  { name: "embedded", type: "boolean", default: "false", description: "Use inside a page that already has a gutter and header (a `PageShell`): no header of its own and no page padding, so the content aligns with the shell." },
   { name: "children", type: "Snippet<[string]>", description: "Content. Receives the active tab value." },
   { name: "class", type: "string", default: "''", description: "Extra class names." },
 ]} />
+
+## Inside a PageShell
+
+`AppList`, `AppForm` and `AppSettings` are full pages: each draws its own header and applies `--ca-page-px`. Put one inside a `PageShell` and the gutter and the header would double, so pass `embedded`: the header is not rendered (the shell's title stays the page `<h1>`) and the page padding is zero, which aligns the content to the shell's left edge. Standalone use is unchanged.
+
+```svelte
+<PageShell title="Settings">
+  <AppSettings embedded {tabs}>…</AppSettings>
+</PageShell>
+```

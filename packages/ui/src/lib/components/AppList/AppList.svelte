@@ -82,6 +82,11 @@
     footer?:      Snippet;
 
     maxWidth?:    string;
+    /**
+     * Inside a page that already has its own gutter and header (a `PageShell`): no header of its
+     * own and no horizontal or top page padding, so the list aligns with the shell's content.
+     */
+    embedded?:    boolean;
     class?:       string;
   }
 
@@ -101,6 +106,7 @@
     footer,
     children,
     maxWidth,
+    embedded = false,
     class: className = '',
   }: Props = $props();
 
@@ -117,10 +123,10 @@
   );
 </script>
 
-<div class="ca-app-list {className}" style={maxWidth ? `--al-max:${maxWidth}` : undefined}>
+<div class="ca-app-list {className}" class:ca-app-list--embedded={embedded} style={maxWidth ? `--al-max:${maxWidth}` : undefined}>
 
   <!-- Header -->
-  {#if title || desc || actions}
+  {#if !embedded && (title || desc || actions)}
     <div class="ca-app-list__header">
       <div class="ca-app-list__meta">
         {#if title}<h1 class="ca-app-list__title ca-sr-only--shell">{title}</h1>{/if}
@@ -226,6 +232,8 @@
       max-width: var(--al-max, none);
       margin: 0 auto;
     }
+    /* Embedded: the host page owns the gutter; every padding below reads these tokens. */
+    .ca-app-list--embedded { --ca-page-px: 0px; --ca-page-px-sm: 0px; --ca-page-pt: 0px; }
 
     .ca-app-list__header {
       display: flex;

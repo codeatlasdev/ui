@@ -53,6 +53,11 @@
     trailing?:    Snippet;
     /** Sticky bottom bar: cancel / save / delete */
     footer?:      Snippet;
+    /**
+     * Inside a page that already has its own gutter and header (a `PageShell`): no header of its
+     * own and no horizontal or top page padding, so the form aligns with the shell's content.
+     */
+    embedded?:    boolean;
     class?:       string;
     children?:    Snippet;
   }
@@ -69,17 +74,18 @@
     leading,
     trailing,
     footer,
+    embedded = false,
     class: className = '',
     children,
   }: Props = $props();
 
   /** True when the header row should be rendered */
   const showHeader = $derived(
-    !!(title || description || leading || trailing || backHref),
+    !embedded && !!(title || description || leading || trailing || backHref),
   );
 </script>
 
-<div class="ca-app-form {className}">
+<div class="ca-app-form {className}" class:ca-app-form--embedded={embedded}>
 
   <!-- Header: full-width bg, content centered by --af-max -->
   {#if showHeader}
@@ -133,6 +139,8 @@
       overflow: hidden;
       width: 100%;
     }
+    /* Embedded: the host page owns the gutter; every padding below reads these tokens. */
+    .ca-app-form--embedded { --ca-page-px: 0px; --ca-page-px-sm: 0px; --ca-page-pt: 0px; }
 
     /* ── Header ─────────────────────────────────────────────────────
        Full-width border-bottom. Content centered by --af-max.
