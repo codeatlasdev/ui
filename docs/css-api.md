@@ -343,7 +343,7 @@ State attributes on `.ca-motion-stage`: `data-playing`, `data-taken`, `data-redu
 
 ## NotificationBell
 
-`.ca-notif-action` `.ca-notif-actions` `.ca-notif-bell` `.ca-notif-empty` `.ca-notif-header` `.ca-notif-item` `.ca-notif-item--unread` `.ca-notif-item__body` `.ca-notif-item__btn` `.ca-notif-item__dot` `.ca-notif-item__dot--default` `.ca-notif-item__dot--error` `.ca-notif-item__dot--info` `.ca-notif-item__dot--success` `.ca-notif-item__dot--warning` `.ca-notif-item__text` `.ca-notif-item__time` `.ca-notif-item__title` `.ca-notif-list` `.ca-notif-panel` `.ca-notif-title` `.ca-notif-trigger`
+`.ca-notif-action` `.ca-notif-actions` `.ca-notif-bell` `.ca-notif-empty` `.ca-notif-error` `.ca-notif-header` `.ca-notif-item` `.ca-notif-item--unread` `.ca-notif-item__body` `.ca-notif-item__btn` `.ca-notif-item__dot` `.ca-notif-item__dot--default` `.ca-notif-item__dot--error` `.ca-notif-item__dot--info` `.ca-notif-item__dot--success` `.ca-notif-item__dot--warning` `.ca-notif-item__icon` `.ca-notif-item__read` `.ca-notif-item__text` `.ca-notif-item__time` `.ca-notif-item__title` `.ca-notif-list` `.ca-notif-panel` `.ca-notif-title` `.ca-notif-trigger`
 
 ## NumberField
 
@@ -638,6 +638,7 @@ A component token is a custom property a component reads before its default: `--
 - **TextField** `--ca-tf-addon-bg` `--ca-tf-reveal-size` `--ca-tf-reveal-radius` `--ca-tf-reveal-icon-size` `--ca-tf-error-ring` (`none` keeps the border colour only); `--ca-ta-min-height` on TextArea (the visible box, border included); `--ca-radius-control-multiline` (TextArea corner, default the control radius capped at `--ca-radius-lg`, so `controlRadius: pill` never makes it a stadium)
 - **Switch** `--ca-switch-track-width` (44px) `--ca-switch-track-height` (24px) `--ca-switch-padding` `--ca-switch-border-width` (0px, `sm` 1px) `--ca-switch-border-color` (transparent) `--ca-switch-thumb-size` `--ca-switch-thumb-bg` `--ca-switch-thumb-shadow` `--ca-switch-on-bg`; `--ca-switch-sm-{track-width,track-height,padding,thumb-size}` for `size="sm"` (`data-size="sm"` on `.ca-switch`, default 32 x 20, 14px thumb); the thumb travels `track - thumb - 2 * (padding + border)`; theme key `components.switch`. Typography: `typography.displaySizes` writes `--ca-font-size-display-1/2/3`
 - **Progress** `--ca-progress-track` `--ca-progress-bar` (theme key `components.progress`)
+- **NotificationBell** `--ca-notif-width` (default 340px, capped at the viewport; the `width` prop sets it) `--ca-notif-body-lines` (default 4: lines of a row's body before it is cut)
 - **Popover** `--ca-popover-padding` (default `--ca-space-4`; `--ca-space-2` with `density="compact"`, which adds the class `ca-popover-content--compact`) `--ca-popover-radius` (default `--ca-radius-lg`) `--ca-popover-max-width` (default 320px) `--ca-popover-bg` (default `--ca-overlay-bg`); theme key `components.popover` (`padding`, `radius`, `maxWidth`, `bg`)
 - **Card** `--ca-card-bg` `--ca-card-radius` `--ca-card-border` `--ca-card-shadow` (`--ca-card-padding` and `--ca-card-gap` already existed)
 - **SegmentedControl** `--ca-seg-item-{padding-x,font-size,line-height}` `--ca-seg-{sm,md}-item-{padding-x,font-size,line-height}`

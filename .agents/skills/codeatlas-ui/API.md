@@ -354,6 +354,7 @@ Tokens: `--ca-avatar-group-overlap` `--ca-avatar-group-ring`
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `count?` | `number` |  |  |
+| `max?` | `number` | `99` | Anchored badge: counts above `max` show as `max+` (the label keeps the real count). Default 99. |
 | `dot?` | `boolean` | `false` | Anchored: a plain status dot on the corner. With `tone`: a leading dot inside the pill. |
 | `color?` | `'brand' \| 'success' \| 'error' \| 'warning' \| (string & {})` | `'brand'` | Anchored badge colour (`error` is the same hue as `tone="danger"`). Ignored when `tone` is set, except with `tone="custom"`, where it is any CSS colour (`'#7c3aed'`, `'var(--ca-token-status-won)'`) the pill derives its fill, label and subtle tint from. |
 | `tone?` | `'brand' \| 'success' \| 'danger' \| 'warning' \| 'info' \| 'neutral' \| 'custom'` |  | Renders an inline pill (in text flow, children are its label) instead of a corner indicator: `<Badge tone="danger" subtle dot>Overdue</Badge>`. `'custom'` colours the pill from `color`. |
@@ -2595,15 +2596,23 @@ Parts: `ca-bottom-nav__more` `ca-bottom-nav__more-btn` `ca-bottom-nav__more-btn-
 | `onOpenChange?` | `(open: boolean) => void` |  | Called when the user opens or closes the panel, not when the parent sets open. |
 | `count?` | `number` |  | Unread total. Defaults to the unread notifications in the list. |
 | `loading?` | `boolean` | `false` | Shows loading text while keeping loaded notifications visible. |
+| `error?` | `{ onRetry?: () => void; message?: string }` |  | Load failure: shows the message and a retry button (when `onRetry` is set) above any loaded notifications. `loading` wins while it is true. |
+| `side?` | `Side` | `'bottom'` | Panel side of the bell. Default `bottom`; flips when it does not fit. |
+| `align?` | `Align` | `'end'` | Panel alignment on that side. Default `end`. |
+| `sideOffset?` | `number` | `8` | Gap between bell and panel in px. Default 8. |
+| `width?` | `string` |  | Panel width, any CSS length (`420px`, `30rem`). Default 340px; never wider than the viewport. |
+| `max?` | `number` | `99` | The badge shows `max+` above this count. Default 99. The accessible name keeps the real count. |
 | `onRead?` | `(id: string) => void` |  |  |
 | `onReadAll?` | `() => void` |  |  |
 | `onClear?` | `() => void` |  |  |
 | `class?` | `string` | `''` |  |
-| `labels?` | `{ title?: string; markAll?: string; clear?: string; empty?: string; loading?: string; }` | `{}` | Label overrides for i18n. Defaults to English strings. |
+| `labels?` | `{ title?: string; markAll?: string; clear?: string; empty?: string; loading?: string; error?: string; retry?: string; /** `(title) => string`: name of the per-row mark-as-read button. */ markRead?: (title: string) => string; }` | `{}` | Label overrides for i18n. Defaults to English strings. |
 
-Snippets: `children`
+Snippets: `emptyContent`: Replaces the `empty` string when there are no notifications.; `item` (`Snippet<[NotificationItem, NotificationItemControls]>`): Owns one row: `(notification, { close, markRead })`. Replaces the default row, `href` and `icon` included.; `children`
 
-Parts: `ca-notif-action` `ca-notif-actions` `ca-notif-bell` `ca-notif-empty` `ca-notif-header` `ca-notif-item` `ca-notif-item--unread` `ca-notif-item__body` `ca-notif-item__btn` `ca-notif-item__dot` `ca-notif-item__dot--default` `ca-notif-item__dot--error` `ca-notif-item__dot--info` `ca-notif-item__dot--success` `ca-notif-item__dot--warning` `ca-notif-item__text` `ca-notif-item__time` `ca-notif-item__title` `ca-notif-list` `ca-notif-panel` `ca-notif-title` `ca-notif-trigger`
+Parts: `ca-notif-actions` `ca-notif-bell` `ca-notif-empty` `ca-notif-error` `ca-notif-header` `ca-notif-item` `ca-notif-item--unread` `ca-notif-item__body` `ca-notif-item__btn` `ca-notif-item__dot` `ca-notif-item__dot--default` `ca-notif-item__dot--error` `ca-notif-item__dot--info` `ca-notif-item__dot--success` `ca-notif-item__dot--warning` `ca-notif-item__icon` `ca-notif-item__read` `ca-notif-item__text` `ca-notif-item__time` `ca-notif-item__title` `ca-notif-list` `ca-notif-panel` `ca-notif-title` `ca-notif-trigger`
+
+Variables: `--ca-available-height` `--ca-notif-body-lines` `--ca-notif-width` `--ca-semantic-error-text`
 
 ## NumberField
 
