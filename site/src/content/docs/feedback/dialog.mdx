@@ -73,6 +73,7 @@ The dialog renders a native modal `<dialog>` opened with `showModal()`: the page
   { name: "splitSize", type: "{ width?: string; height?: string }", description: "size=\"split\" panel box, any CSS length. Default 1100 by 720 capped to the viewport. Sets --ca-dialog-split-width and --ca-dialog-split-height." },
   { name: "splitColumns", type: "string", default: "'1fr 1fr'", description: "size=\"split\" body grid-template-columns from 900px, for example '2fr 3fr'. Sets --ca-dialog-split-columns." },
   { name: "fullscreenBelow", type: "'sm' | 'md'", description: "Any size: below 600px (sm) or 900px (md) the dialog is exactly the viewport, square corners, safe-area padding kept. Focus trap and Escape unchanged." },
+  { name: "placement", type: "'center' | 'top'", default: "'center'", description: "`top` anchors the panel `--ca-dialog-top-offset` (default `--ca-space-24`) below the top edge, so a palette or quick switcher keeps its place as its results change. `fullscreenBelow` still wins under its breakpoint." },
   { name: "inline", type: "boolean", default: "false", description: "Render inside its container instead of the top layer: position: absolute over the nearest positioned ancestor, no scrim over the page, no scroll lock, no focus trap, no inert page; Escape closes it only from inside. Takes the tokens of its container, so it follows a data-preset or data-theme-scope island." },
   { name: "history", type: "boolean", default: "true", description: "Give the layer a browser-history entry under the overlay-history bridge, so Back closes it. Nothing changes until the app mounts the bridge (see Back button on mobile)." },
   { name: "chromeless", type: "boolean", default: "false", description: "Omits header, description and actions; the body has no padding. title and description stay available to screen readers." },
@@ -81,6 +82,17 @@ The dialog renders a native modal `<dialog>` opened with `showModal()`: the page
   { name: "onOpenChange", type: "(open: boolean) => void", description: "Called whenever the open state changes." },
   { name: "class", type: "string", default: "''", description: "Extra classes on the panel." },
 ]} />
+
+## Palette dialogs
+
+A command palette or quick switcher sits near the top and keeps its place while results change: `placement="top"`, plus two tokens on the panel for its width and corner radius, with no selector against `.ca-dialog`.
+
+```svelte
+<Dialog bind:open title="Go to" placement="top" class="palette">…</Dialog>
+<style>
+  :global(.palette) { --ca-dialog-width: 36rem; --ca-dialog-radius: var(--ca-radius-lg); }
+</style>
+```
 
 ## Closing
 

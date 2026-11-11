@@ -90,11 +90,11 @@ Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__action
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out`
 
-Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Variables: `--ca-dialog-radius` `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-dialog-top-offset` `--ca-dialog-width`
 
-Data attributes: `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
+Data attributes: `data-fullscreen-below` (`md` `sm`), `data-placement` (`top`), `data-state` (`closed` `open`)
 
-Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Tokens: `--ca-dialog-radius` `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-dialog-top-offset` `--ca-dialog-width`
 
 ## AppForm
 
@@ -868,11 +868,11 @@ Parts: `ca-cmd-dialog` `ca-cmd-empty` `ca-cmd-error` `ca-cmd-group__label` `ca-c
 
 Internal (may change in any release): `ca-cmd-slide-in` `ca-cmd-slide-out` `ca-cmd-spin` `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out`
 
-Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Variables: `--ca-dialog-radius` `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-dialog-top-offset` `--ca-dialog-width`
 
-Data attributes: `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
+Data attributes: `data-fullscreen-below` (`md` `sm`), `data-placement` (`top`), `data-state` (`closed` `open`)
 
-Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Tokens: `--ca-dialog-radius` `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-dialog-top-offset` `--ca-dialog-width`
 
 ## Container
 
@@ -1238,6 +1238,7 @@ Dialog: second-layer modal.
 | `splitColumns?` | `string` |  | Column template of the `size="split"` body (CSS `grid-template-columns`), e.g. `'2fr 3fr'`. Default `'1fr 1fr'`. Sets `--ca-dialog-split-columns`. |
 | `splitSize?` | `{ width?: string; height?: string }` |  | Panel box of `size="split"`, any CSS length: `{ width: 'min(66vw, 80rem)', height: 'min(88svh, 56rem)' }`. Default 1100×720, capped to the viewport. Sets `--ca-dialog-split-width` / `--ca-dialog-split-height`. |
 | `fullscreenBelow?` | `'sm' \| 'md'` |  | Full screen below this breakpoint (`'sm'` = 600px, `'md'` = 900px), any `size`: exactly the viewport (`--ca-vh`), square corners, safe-area padding kept. Focus trap and Escape are unchanged. |
+| `placement?` | `'center' \| 'top'` | `'center'` | `'top'` anchors the panel `--ca-dialog-top-offset` (default `--ca-space-24`) below the top edge, for a palette or quick switcher whose results change height. |
 | `inline?` | `boolean` | `false` | Render inside its container instead of the top layer: `position: absolute` over the nearest positioned ancestor, no scrim over the page, no scroll lock, no focus trap, and Escape closes it only from inside. It takes the tokens of its container, so it follows a `data-preset` or `data-theme-scope` island (a preview frame, an embedded editor). Default false. |
 | `history?` | `boolean` | `true` | Give the layer a browser-history entry under the overlay-history bridge, so Back closes it. Default true. |
 | `class?` | `string` | `''` |  |
@@ -1250,11 +1251,11 @@ Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__action
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out`
 
-Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Variables: `--ca-dialog-radius` `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-dialog-top-offset` `--ca-dialog-width`
 
-Data attributes: `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
+Data attributes: `data-fullscreen-below` (`md` `sm`), `data-placement` (`top`), `data-state` (`closed` `open`)
 
-Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Tokens: `--ca-dialog-radius` `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-dialog-top-offset` `--ca-dialog-width`
 
 ## Divider
 
@@ -1330,11 +1331,11 @@ Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__action
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-docs-search-in` `ca-docs-search-out` `ca-docs-search-pop-in` `ca-docs-search-pop-out` `ca-overlay-in` `ca-overlay-out`
 
-Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Variables: `--ca-dialog-radius` `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-dialog-top-offset` `--ca-dialog-width`
 
-Data attributes: `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
+Data attributes: `data-fullscreen-below` (`md` `sm`), `data-placement` (`top`), `data-state` (`closed` `open`)
 
-Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Tokens: `--ca-dialog-radius` `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-dialog-top-offset` `--ca-dialog-width`
 
 ## DocsShell
 
@@ -1393,11 +1394,11 @@ Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__action
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-drawer-bottom-in` `ca-drawer-bottom-out` `ca-drawer-left-in` `ca-drawer-left-out` `ca-drawer-right-in` `ca-drawer-right-out` `ca-overlay-in` `ca-overlay-out`
 
-Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Variables: `--ca-dialog-radius` `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-dialog-top-offset` `--ca-dialog-width`
 
-Data attributes: `data-chromeless`, `data-full-bleed` (`lg` `md` `sm`), `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
+Data attributes: `data-chromeless`, `data-full-bleed` (`lg` `md` `sm`), `data-fullscreen-below` (`md` `sm`), `data-placement` (`top`), `data-state` (`closed` `open`)
 
-Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Tokens: `--ca-dialog-radius` `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-dialog-top-offset` `--ca-dialog-width`
 
 ## DropdownMenu
 
@@ -3252,11 +3253,11 @@ Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__action
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out` `ca-sheet-fade-in` `ca-sheet-fade-out` `ca-sheet-in` `ca-sheet-out`
 
-Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Variables: `--ca-dialog-radius` `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-dialog-top-offset` `--ca-dialog-width`
 
-Data attributes: `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
+Data attributes: `data-fullscreen-below` (`md` `sm`), `data-placement` (`top`), `data-state` (`closed` `open`)
 
-Tokens: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
+Tokens: `--ca-dialog-radius` `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-dialog-top-offset` `--ca-dialog-width`
 
 ## SimpleTable
 

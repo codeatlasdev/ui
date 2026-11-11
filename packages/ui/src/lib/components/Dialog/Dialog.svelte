@@ -53,6 +53,8 @@
      * viewport (`--ca-vh`), square corners, safe-area padding kept. Focus trap and Escape are unchanged.
      */
     fullscreenBelow?: 'sm' | 'md';
+    /** `'top'` anchors the panel `--ca-dialog-top-offset` (default `--ca-space-24`) below the top edge, for a palette or quick switcher whose results change height. @default 'center' */
+    placement?: 'center' | 'top';
     /**
      * Render inside its container instead of the top layer: `position: absolute` over the nearest
      * positioned ancestor, no scrim over the page, no scroll lock, no focus trap, and Escape closes it
@@ -79,6 +81,7 @@
     splitColumns,
     splitSize,
     fullscreenBelow,
+    placement = 'center',
     inline      = false,
     history     = true,
     class: className = '',
@@ -129,6 +132,7 @@
     aria-describedby={description ? ids.part('description') : undefined}
     data-state={open ? 'open' : 'closed'}
     data-fullscreen-below={fullscreenBelow}
+    data-placement={placement === 'top' ? 'top' : undefined}
     data-inline={inline ? '' : undefined}
     style:--dialog-max-w={maxW[size]}
     style:--ca-dialog-split-columns={splitColumns}
