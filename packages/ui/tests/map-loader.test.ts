@@ -16,13 +16,13 @@ describe("map engine loader", () => {
 	it("loads the engine module the app imported (a bundler-visible import)", async () => {
 		class FakeMap {}
 		const gl = await loadEngine("mapbox", async () => ({ default: { Map: FakeMap } }) as never);
-		expect(gl.Map).toBe(FakeMap);
+		expect(gl.Map as unknown).toBe(FakeMap);
 	});
 
 	it("takes a namespace module without a default export", async () => {
 		class FakeMap {}
 		const gl = await loadEngine("mapbox", async () => ({ Map: FakeMap }) as never);
-		expect(gl.Map).toBe(FakeMap);
+		expect(gl.Map as unknown).toBe(FakeMap);
 	});
 
 	it("a loader that fails still names the peer to install", async () => {
