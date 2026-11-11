@@ -5196,7 +5196,7 @@ Types:
 | `ResolvedTheme` | `interface ResolvedTheme extends ThemeDefinition { known: string[]; themeColor: Record<string, { light: string; dark: string }>; }` |  |
 | `Responsive` | `type Responsive<T> = T \| ({ base?: T } & { [B in Breakpoint]?: T });` | A value, or one value per breakpoint: `{ base: "2", md: "6" }`. A breakpoint applies from its width up. |
 | `Rgba` | `type Rgba = [number, number, number, number];` | `[r, g, b, a]`: r, g, b in 0-255, a in 0-1 (what `@deck.gl/core` `Color` expects, alpha scaled by the caller). |
-| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: ColorValue; brandFillHover?: ColorValue; brandContrast?: ColorValue; background?: ColorValue; sunken?: ColorValue; surface?: ColorValue; overlay?: ColorValue; text?: ColorValue; textSecondary?: ColorValue; textHint?: ColorValue; textDisabled?: ColorValue; borderSubtle?: ColorValue; border?: ColorValue; borderStrong?: ColorValue; success?: ColorValue; warning?: ColorValue; info?: ColorValue; error?: ColorValue; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it, and the build measures text roles after compositing it (see `presetContrastIssues`). |
+| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: ColorValue; brandFillHover?: ColorValue; brandContrast?: ColorValue; background?: ColorValue; sunken?: ColorValue; surface?: ColorValue; overlay?: ColorValue; text?: ColorValue; textSecondary?: ColorValue; textHint?: ColorValue; textDisabled?: ColorValue; borderSubtle?: ColorValue; border?: ColorValue; borderStrong?: ColorValue; success?: ColorValue; warning?: ColorValue; info?: ColorValue; error?: ColorValue; errorFill?: ColorValue; errorContrast?: ColorValue; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it, and the build measures text roles after compositing it (see `presetContrastIssues`). |
 | `SegmentedTokens` | `interface SegmentedTokens extends SegmentedItemTokens { sm?: SegmentedItemTokens; md?: SegmentedItemTokens; }` |  |
 | `SemanticColors` | `interface SemanticColors { secondary: string; success: string; warning: string; info: string; error: string; }` |  |
 | `ShadowLevel` | `type ShadowLevel = keyof typeof shadows;` |  |
@@ -5777,6 +5777,8 @@ Types:
 | `warning?` | `ColorValue` |  |
 | `info?` | `ColorValue` |  |
 | `error?` | `ColorValue` |  |
+| `errorFill?` | `ColorValue` | Solid destructive fill (--ca-semantic-error-fill: `Button variant="destructive"`, error badges). `error` stays the feedback colour for text and borders; a light red there cannot also be the fill. Defaults to `error` when that is an opaque `oklch()`, else the stylesheet fill. |
+| `errorContrast?` | `ColorValue` | Label on `errorFill` (--ca-semantic-error-contrast). Unset: white or ink, whichever reads better on the fill. The build warns when the pair is under 4.5:1. |
 
 #### SegmentedTokens
 
@@ -6122,7 +6124,7 @@ Types:
 | `Paper` | `type Paper = "mesh" \| "plain" \| "grid" \| "dots" \| "lines";` | Page background pattern. mesh = brand glow gradients (drawn by the glass and frosted materials); the rest are flat paper. |
 | `PresetDefinition` | `interface PresetDefinition { id: string; color: `#${string}`; label?: string; colors?: { light?: SchemeColors; dark?: SchemeColors }; tokens?: PresetTokenGroups; sizes?: PresetSizes; }` | A preset generated from one sRGB hex color (e.g. the logo color). |
 | `PresetSizes` | `interface PresetSizes { inputFontSize?: string; }` |  |
-| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: ColorValue; brandFillHover?: ColorValue; brandContrast?: ColorValue; background?: ColorValue; sunken?: ColorValue; surface?: ColorValue; overlay?: ColorValue; text?: ColorValue; textSecondary?: ColorValue; textHint?: ColorValue; textDisabled?: ColorValue; borderSubtle?: ColorValue; border?: ColorValue; borderStrong?: ColorValue; success?: ColorValue; warning?: ColorValue; info?: ColorValue; error?: ColorValue; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it, and the build measures text roles after compositing it (see `presetContrastIssues`). |
+| `SchemeColors` | `interface SchemeColors { brand?: `#${string}`; brandFill?: ColorValue; brandFillHover?: ColorValue; brandContrast?: ColorValue; background?: ColorValue; sunken?: ColorValue; surface?: ColorValue; overlay?: ColorValue; text?: ColorValue; textSecondary?: ColorValue; textHint?: ColorValue; textDisabled?: ColorValue; borderSubtle?: ColorValue; border?: ColorValue; borderStrong?: ColorValue; success?: ColorValue; warning?: ColorValue; info?: ColorValue; error?: ColorValue; errorFill?: ColorValue; errorContrast?: ColorValue; }` | Hand-picked colors for one scheme of a preset, by role. Every role is optional: unset roles keep the generated value. Use it to port an existing palette (a terminal or editor theme) without touching raw `--ca-*` tokens. A role is any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `rgb()`, `color-mix()`) or `{ color, alpha }`; a translucent role follows the surface behind it, and the build measures text roles after compositing it (see `presetContrastIssues`). |
 | `ThemeOptions` | `type ThemeOptions = Partial<ThemeDefinition>;` | Options for themeHead / caThemeHandle / caThemePlugin. |
 
 #### CaUIAstroOptions
@@ -6171,6 +6173,8 @@ Types:
 | `warning?` | `ColorValue` |  |
 | `info?` | `ColorValue` |  |
 | `error?` | `ColorValue` |  |
+| `errorFill?` | `ColorValue` | Solid destructive fill (--ca-semantic-error-fill: `Button variant="destructive"`, error badges). `error` stays the feedback colour for text and borders; a light red there cannot also be the fill. Defaults to `error` when that is an opaque `oklch()`, else the stylesheet fill. |
+| `errorContrast?` | `ColorValue` | Label on `errorFill` (--ca-semantic-error-contrast). Unset: white or ink, whichever reads better on the fill. The build warns when the pair is under 4.5:1. |
 
 ## @codeatlasdev/ui/charts
 

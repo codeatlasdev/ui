@@ -110,6 +110,10 @@ export interface SchemeColors {
 	warning?: ColorValue;
 	info?: ColorValue;
 	error?: ColorValue;
+	/** Solid destructive fill (--ca-semantic-error-fill: `Button variant="destructive"`, error badges). `error` stays the feedback colour for text and borders; a light red there cannot also be the fill. Defaults to `error` when that is an opaque `oklch()`, else the stylesheet fill. */
+	errorFill?: ColorValue;
+	/** Label on `errorFill` (--ca-semantic-error-contrast). Unset: white or ink, whichever reads better on the fill. The build warns when the pair is under 4.5:1. */
+	errorContrast?: ColorValue;
 }
 
 export const ROLE_TOKENS: Record<Exclude<keyof SchemeColors, "brand">, string> = {
@@ -131,6 +135,8 @@ export const ROLE_TOKENS: Record<Exclude<keyof SchemeColors, "brand">, string> =
 	warning: "--ca-semantic-warning",
 	info: "--ca-semantic-info",
 	error: "--ca-semantic-error",
+	errorFill: "--ca-semantic-error-fill",
+	errorContrast: "--ca-semantic-error-contrast",
 };
 
 /** A preset generated from one sRGB hex color (e.g. the logo color). */
@@ -331,9 +337,10 @@ function withSemanticContrast<T extends Record<string, string>>(vars?: T): T {
 		const k = `--ca-semantic-${t}`;
 		const c = out[`${k}-fill`] ?? out[k] ?? "";
 		const m = c.match(/^oklch\(\s*([\d.]+)\s+([\d.]+)\s+([\d.]+)\s*\)/);
-		if (m) {
+		const lch = m ? [+m[1], +m[2], +m[3]] : HEX.test(c) ? Object.values(hexToOklch(c)) : null;
+		if (lch) {
 			out[`${k}-fill`] = c;
-			out[`${k}-contrast`] ??= onFill(+m[1], +m[2], +m[3]);
+			out[`${k}-contrast`] ??= onFill(lch[0], lch[1], lch[2]);
 		}
 	}
 	return out as T;

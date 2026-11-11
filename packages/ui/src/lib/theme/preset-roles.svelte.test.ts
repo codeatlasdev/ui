@@ -18,7 +18,15 @@ style.textContent = themeCSS(
 				id: "night",
 				color: "#f27636",
 				colors: {
-					dark: { brandFill: "#f27636", brandFillHover: "#f5934f", brandContrast: "#1a1208" },
+					dark: {
+						brandFill: "#f27636",
+						brandFillHover: "#f5934f",
+						brandContrast: "#1a1208",
+						// #706: light error text, darker solid fill with a near-white label.
+						error: "oklch(0.72 0.16 25)",
+						errorFill: "oklch(0.5 0.19 25)",
+						errorContrast: "oklch(0.985 0.005 25)",
+					},
 				},
 				sizes: { inputFontSize: "0.875rem" },
 			},
@@ -60,5 +68,27 @@ describe("preset button and field roles (#354)", () => {
 		expect(await checkA11y(screen.container)).toHaveNoViolations();
 		await page.viewport(...VIEWPORTS.mobile);
 		expect(getComputedStyle(input).fontSize).toBe("16px");
+	});
+});
+
+// #706: the solid destructive fill is its own role; `error` stays the light feedback colour.
+describe("preset errorFill and errorContrast (#706)", () => {
+	it("a destructive Button uses them, not the error text colour", async () => {
+		const screen = await render(Button, { variant: "destructive", "aria-label": "Delete" });
+		inNight(screen.container);
+		await settled();
+		const btn = screen.container.querySelector(".ca-btn") as HTMLElement;
+		const probe = (c: string) => {
+			const el = document.createElement("i");
+			el.style.color = c;
+			document.body.append(el);
+			const out = getComputedStyle(el).color;
+			el.remove();
+			return out;
+		};
+		const cs = getComputedStyle(btn);
+		expect(cs.backgroundColor).toBe(probe("oklch(0.5 0.19 25)"));
+		expect(cs.color).toBe(probe("oklch(0.985 0.005 25)"));
+		expect(cs.backgroundColor).not.toBe(probe("oklch(0.72 0.16 25)"));
 	});
 });

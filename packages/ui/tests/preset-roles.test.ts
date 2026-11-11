@@ -159,3 +159,72 @@ describe("colors.<scheme>.brand regenerates the ramp for its own scheme (#687)",
 		expect(lightPinned.dark).toEqual(free.dark);
 	});
 });
+
+// #706: the solid destructive fill and its label are presets roles of their own: `error` stays the
+// light feedback colour (text, borders) in dark, so one value cannot serve both.
+describe("errorFill / errorContrast are preset roles (#706)", () => {
+	const dark = { errorFill: "oklch(0.6 0.19 25)", errorContrast: "oklch(0.985 0.005 25)" };
+
+	it("emits the pair for the scheme that sets it, next to a lighter error text colour", () => {
+		const t = presetTokens({
+			id: "x",
+			color: "#f27636",
+			colors: { dark: { error: "oklch(0.72 0.16 25)", ...dark } },
+		});
+		expect(t.dark["--ca-semantic-error-fill"]).toBe(dark.errorFill);
+		expect(t.dark["--ca-semantic-error-contrast"]).toBe(dark.errorContrast);
+		expect(t.dark["--ca-semantic-error"]).toBe("oklch(0.72 0.16 25)");
+		expect(t.light["--ca-semantic-error-fill"]).toBeUndefined();
+	});
+
+	it("errorFill alone derives the label from it; errorContrast alone keeps the fill", () => {
+		const fillOnly = presetTokens({
+			id: "x",
+			color: "#f27636",
+			colors: { dark: { errorFill: dark.errorFill } },
+		});
+		expect(fillOnly.dark["--ca-semantic-error-fill"]).toBe(dark.errorFill);
+		expect(fillOnly.dark["--ca-semantic-error-contrast"]).toMatch(/^oklch\(/);
+		const labelOnly = presetTokens({
+			id: "x",
+			color: "#f27636",
+			colors: { dark: { errorContrast: "#ffffff" } },
+		});
+		expect(labelOnly.dark["--ca-semantic-error-fill"]).toBeUndefined();
+		expect(labelOnly.dark["--ca-semantic-error-contrast"]).toBe("#ffffff");
+	});
+
+	it("reaches themeCSS in the dark rule, so a portaled Dialog inherits it", () => {
+		const css = themeCSS(preset({ colors: { dark: dark } }));
+		expect(selectorOf(css, "--ca-semantic-error-fill: oklch(0.6 0.19 25)")).toContain(".dark");
+		expect(css).toContain("--ca-semantic-error-contrast: oklch(0.985 0.005 25)");
+	});
+
+	it("presetContrastIssues reports a label under 4.5:1 on the fill", () => {
+		const issues = presetContrastIssues(
+			preset({
+				colors: { dark: { errorFill: "oklch(0.6 0.19 25)", errorContrast: "oklch(0.7 0.1 25)" } },
+			})
+		);
+		expect(issues).toHaveLength(1);
+		expect(issues[0]?.scheme).toBe("dark");
+		expect(issues[0]?.message).toContain("errorContrast");
+		// The issue's own pair is 4.13:1: reported, not corrected.
+		expect(presetContrastIssues(preset({ colors: { dark } }))).toHaveLength(1);
+		expect(
+			presetContrastIssues(
+				preset({
+					colors: {
+						dark: { errorFill: "oklch(0.5 0.19 25)", errorContrast: "oklch(0.985 0.005 25)" },
+					},
+				})
+			)
+		).toEqual([]);
+	});
+
+	it("a lone errorContrast is measured against the generated fill", () => {
+		const lone = (c: string) =>
+			presetContrastIssues(preset({ colors: { dark: { errorContrast: c } } }));
+		expect(lone("#ffffff").length + lone("#000000").length).toBe(1);
+	});
+});
