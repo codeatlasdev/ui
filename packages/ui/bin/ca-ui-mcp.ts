@@ -6,7 +6,7 @@
  *   claude mcp add codeatlas-ui -- npx -y -p @codeatlasdev/ui ca-ui-mcp
  *
  * Tools: get_recipe, list_components, get_component, get_export, get_equivalent, list_parts, search_tokens, list_surfaces, get_guide,
- * list_concepts, get_concept (the Concepts pages with their claims, limits and sources), search_terms, get_term, get_reference (the design atlas and its verified sources), search_demos, get_demo, get_style (a design style: traits, pitfalls with sources, the designStyle recipe), get_release (a release as a post: highlights, numbers with their conditions, behaviour changes, every change linked to its PR), search_ui, list_facets, get_related, report_issue (drafts a sanitized GitHub issue from a library problem; it never posts anything).
+ * list_concepts, get_concept (the Concepts pages with their claims, limits and sources), search_terms, get_term, get_reference (the design atlas and its verified sources), search_demos, get_demo, get_style (a design style: traits, pitfalls with sources, the designStyle recipe), get_release (a release as a post: highlights, numbers with their conditions, behaviour changes, every change linked to its PR), search_ui, list_facets, get_related, search_issues (open issues that match a query, so a filed gap gets a comment, not a duplicate), report_issue (drafts a sanitized GitHub issue from a library problem; it never posts anything).
  */
 import { existsSync, readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -37,6 +37,7 @@ import {
 import type { StyleFile } from "../scripts/styles-markdown.ts";
 import { API_DIR, API_PATHS } from "../src/cli/agent-guide.ts";
 import { type Equivalent, findEquivalent } from "../src/cli/equivalents.ts";
+import { searchIssues } from "../src/cli/issues-search.ts";
 import { type MigrationFile, migrationMarkdown } from "../src/cli/migrations.ts";
 import { buildReport } from "../src/cli/report.ts";
 
@@ -650,6 +651,16 @@ server.registerTool(
 			? text(hit)
 			: fail(`No release "${version}". Releases: ${releases.versions.join(", ")}.`);
 	}
+);
+
+server.registerTool(
+	"search_issues",
+	{
+		description:
+			"Open issues of codeatlasdev/ui that match `query` (a component, prop or symptom: `Combobox async`, `TreeView`): number, title, labels and link. Call it before report_issue and before writing a workaround: when the gap is already filed, comment on that issue and cite it in your `// ca-ui-workaround(#<n>)` marker. The only tool that needs the network; offline or rate-limited, it returns the GitHub search link instead.",
+		inputSchema: { query: z.string().min(1) },
+	},
+	async ({ query }) => text(await searchIssues(query))
 );
 
 server.registerTool(
