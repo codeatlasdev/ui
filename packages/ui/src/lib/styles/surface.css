@@ -268,6 +268,7 @@
 [data-ca-blur="overlay"] { --ca-blur-role: var(--ca-overlay-blur); }
 [data-ca-blur="chrome-layer"], [data-ca-blur-layer="chrome-layer"] { --ca-blur-role: var(--ca-chrome-blur); }
 [data-ca-blur="tooltip"] { --ca-blur-role: var(--ca-tooltip-blur); }
+[data-ca-blur="sheet"] { --ca-blur-role: var(--ca-sheet-blur); }
 /* The glass variant of Button and IconButton is the `regular` role, keyed on the class they already carry. */
 [data-ca-blur="regular"],
 [data-ca-blur-layer="regular"],
@@ -305,7 +306,9 @@ dialog.ca-overlay::backdrop {
     --ca-surface-filter: none;
     --ca-surface-fill: var(--ca-glass-tint-solid);
   }
-  [data-ca-blur-layer] { --ca-blur-role: none; }
+  /* A sheet (Dialog, AlertDialog, Drawer) goes opaque: no blur, the solid tint under any --ca-sheet-bg. */
+  [data-ca-blur="sheet"] { --ca-sheet-bg: var(--ca-glass-tint-solid); }
+  [data-ca-blur-layer], [data-ca-blur="sheet"] { --ca-blur-role: none; }
 }
 
 /* ── Forced colors: no blur, no shadow, a real border ─────────────────────────── */
@@ -321,5 +324,5 @@ dialog.ca-overlay::backdrop {
   }
   .ca-surface[data-variant="ghost"] { border-color: transparent; }
   .ca-surface[data-interactive]:focus-visible { outline-color: Highlight; }
-  [data-ca-blur-layer] { --ca-blur-role: none; }
+  [data-ca-blur-layer], [data-ca-blur="sheet"] { --ca-blur-role: none; }
 }

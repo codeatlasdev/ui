@@ -124,6 +124,7 @@
   <dialog
     class="ca-overlay ca-dialog ca-dialog--{size} {chromeless ? 'ca-dialog--chromeless' : ''} {inline ? 'ca-overlay--inline' : ''} {className}"
     role="dialog"
+    data-ca-blur="sheet"
     aria-labelledby={title ? ids.part('title') : undefined}
     aria-describedby={description ? ids.part('description') : undefined}
     data-state={open ? 'open' : 'closed'}

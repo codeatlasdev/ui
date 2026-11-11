@@ -420,6 +420,20 @@ dialog.ca-overlay::backdrop { background: rgb(0 0 0 / .3); }
 
 `--ca-scrim-color` is set per preset and scheme; `--ca-scrim-blur: none` drops the blur on every modal at once. Search your app CSS for `.ca-overlay` when upgrading from 1.x and move each rule to `::backdrop` (scrim) or to the panel class (`.ca-dialog`, `.ca-drawer`) if it was meant for the surface.
 
+### Sheet role: Dialog, AlertDialog, Drawer
+
+Like the `overlay`, `panel` and `chrome` roles, they read `--ca-sheet-bg` (`--ca-surface-floating`), `--ca-sheet-blur` (`none`), `--ca-sheet-border` (`--ca-outline-subtle`) and `--ca-sheet-shadow` (`--ca-shadow-xl`). On `:root` they turn all three glass, no selector:
+
+```css
+:root {
+  --ca-sheet-bg: color-mix(in oklab, var(--ca-surface-overlay) 70%, transparent);
+  --ca-sheet-blur: blur(24px) saturate(180%);
+  --ca-sheet-border: transparent;
+}
+```
+
+`prefers-reduced-transparency` drops the blur and fills with `--ca-glass-tint-solid`.
+
 ## Glass and frosted styles: blur rules
 
 Only the `glass` and `frosted` styles (and `material="glass" | "frosted" | "liquid"` surfaces) blur. When you do blur, two CSS properties silently kill `backdrop-filter`:

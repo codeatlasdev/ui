@@ -92,6 +92,7 @@
     {...rest}
     class="ca-overlay ca-overlay--drawer ca-drawer ca-drawer--{side} {inline ? 'ca-overlay--inline' : ''} {className}"
     role="dialog"
+    data-ca-blur="sheet"
     aria-labelledby={labelledby}
     data-state={open ? 'open' : 'closed'}
     data-chromeless={chromeless ? '' : undefined}
@@ -138,12 +139,12 @@
       position: fixed;
       inset: auto;
       margin: 0;
-      background: var(--ca-surface-overlay);
-      border: var(--ca-border-width) solid var(--ca-outline-subtle);
+      background: var(--ca-sheet-bg);
+      border: var(--ca-border-width) solid var(--ca-sheet-border);
       display: flex;
       flex-direction: column;
       overflow: hidden;
-      box-shadow: var(--ca-shadow-xl);
+      box-shadow: var(--ca-sheet-shadow);
       outline: none;
     }
     :global(dialog.ca-drawer:not([open])) {

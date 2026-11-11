@@ -116,7 +116,7 @@ export function lintSource(file: string, source: string): Violation[] {
 					line: lineOf(src, r.offset + (m.index ?? 0) + m[1].length),
 					rule: "backdrop-owner",
 					message:
-						'backdrop-filter belongs to styles/surface.css: set data-ca-blur="<role>" on the element (tiers: ultra-thin, thin, regular, thick, chrome, mat-thin, mat-regular, overlay, chrome-layer, tooltip) or use .ca-surface',
+						'backdrop-filter belongs to styles/surface.css: set data-ca-blur="<role>" on the element (tiers: ultra-thin, thin, regular, thick, chrome, mat-thin, mat-regular, overlay, chrome-layer, tooltip, sheet) or use .ca-surface',
 				});
 
 	// A width in a `matchMedia("(max-width: …)")` string is the same viewport scale as one in a stylesheet.

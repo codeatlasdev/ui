@@ -299,15 +299,15 @@ describe("brandText, focusRing, hover, selected and floating are preset roles (#
 	});
 
 	it("Popover, Select, Combobox and Dialog read the floating surface, falling back to overlay", () => {
-		for (const f of [
-			"components/Select/Select.svelte",
-			"components/Combobox/Combobox.svelte",
-			"components/Dialog/dialog.css",
-		])
+		for (const f of ["components/Select/Select.svelte", "components/Combobox/Combobox.svelte"])
 			expect(readFileSync(new URL(`../src/lib/${f}`, import.meta.url), "utf8")).toContain(
 				"var(--ca-surface-floating, var(--ca-surface-overlay))"
 			);
 		const mat = readFileSync(new URL("../src/lib/styles/materials.css", import.meta.url), "utf8");
+		// Dialog reads it through the sheet role (--ca-sheet-bg), whose default is the floating surface.
+		expect(mat).toMatch(
+			/--ca-sheet-bg:\s*var\(--ca-surface-floating, var\(--ca-surface-overlay\)\)/
+		);
 		expect(mat).toMatch(
 			/--ca-overlay-bg:\s*color-mix\(in oklab, var\(--ca-surface-floating, var\(--ca-surface-overlay\)\)/
 		);
