@@ -1,12 +1,12 @@
 {
 	"version": "4.6.0",
-	"count": 399,
+	"count": 400,
 	"groups": [
 		{
 			"slug": "inputs",
 			"first": "001",
-			"last": "5006",
-			"count": 91
+			"last": "5018",
+			"count": 92
 		},
 		{
 			"slug": "surfaces",
@@ -35543,6 +35543,86 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/layout/form-page#form-with-a-preview-and-help-aside",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5018",
+			"group": "inputs",
+			"page": "rating",
+			"variant": "Default",
+			"slug": "rating",
+			"title": "Rating",
+			"description": "Editable whole and half steps, and a read-only average.",
+			"summary": "Star ratings: an editable whole-star rating, a half-step rating and a small read-only average.",
+			"use": "Collecting or showing a score out of five, such as service or product reviews.",
+			"spec": [
+				"A `Rating` labelled `Service` bound to 4",
+				"A `Rating` labelled `Food` with `step={0.5}` bound to 3.5",
+				"A `readonly` `size=\"sm\"` `Rating` labelled `Average` showing 4.5"
+			],
+			"tags": [
+				"rating",
+				"stars",
+				"review",
+				"score",
+				"radiogroup",
+				"half steps"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "input",
+				"industry": [
+					"general"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"press",
+					"keyboard"
+				],
+				"layout": "stack",
+				"colorMode": "both",
+				"density": "regular",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"Rating"
+				],
+				"aliases": [
+					"star rating",
+					"review stars",
+					"score input"
+				],
+				"related": [
+					"5006"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-11-11",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"Rating"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"Rating"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/rating#rating",
 			"needs": "@codeatlasdev/ui@4.6.0"
 		}
 	]
