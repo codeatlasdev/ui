@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { DEV } from 'esm-env';
+  import { BROWSER, DEV } from 'esm-env';
+  import { untrack } from 'svelte';
+  import { noteSeoRendered } from './ssr-note.js';
   import { type SeoProps, seoMeta, seoTags } from './tags.js';
 
   // Own members (not `extends SeoProps`) so the manifest and the docs tables list each prop;
@@ -30,6 +32,9 @@
   let props: Props = $props();
 
   let seo = $derived(seoTags(props));
+
+  // Server render in dev: tell the Astro middleware this page asked for a head (#752).
+  if (DEV && !BROWSER) untrack(() => noteSeoRendered(seo.title));
   let indexable = $derived(seo.indexable);
 
   $effect(() => {

@@ -179,7 +179,7 @@ Every numbered demo (`site/src/demos/<group>/<page>/<Variant>.svelte`, id in `si
 
 11. **Theme**: a single `ThemeOptions` in `src/lib/theme.ts` (plain object, `import type` only: `vite.config`/`astro.config` load the file in Node, where the package root does not evaluate `.svelte`), passed to `caThemeHandle` + `caThemePlugin` (SvelteKit) or `caUI` (Astro). `defaultStyle` (the surface material, `solid` by default) is one field of it, not a separate setup. Override a token by declaring `--ca-*` on `:root` in the app, without `!important`. Local islands: `data-theme-scope="dark|light"`. Automatic setup: `bunx @codeatlasdev/ui init`.
 
-12. **SEO**: a public page uses `<Seo>` from `@codeatlasdev/ui/seo` with a required `canonical`; a private page passes `noindex`. In an `.astro` page `<Seo>` renders nothing (`<svelte:head>` is dropped): inject `seoHead({ ...same props })` with `<Fragment set:html>` inside `<head>`.
+12. **SEO**: a public page uses `<Seo>` from `@codeatlasdev/ui/seo` with a required `canonical`; a private page passes `noindex`. In an `.astro` page `<Seo>` renders nothing (`<svelte:head>` is dropped): inject `seoHead({ ...same props })` with `<Fragment set:html>` inside `<head>`; `caUI` warns (`[ca-ui] <Seo> "…" rendered in an Astro page`) when a `<Seo>` is rendered there anyway.
 
     **A11y tests**: test every state (open, error, empty, light, dark) with `await expectNoA11yViolations(container)` from `@codeatlasdev/ui/testing` (needs the optional peer `axe-core`). Inside this repo `packages/ui/tests/a11y.ts` re-exports the same `checkA11y`; never fork the axe options.
 
