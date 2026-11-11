@@ -49,6 +49,68 @@ describe("PageShell header: action priority (#918)", () => {
 		expect(rect(meta).width).toBeGreaterThanOrEqual(12 * rem - 0.5);
 	});
 
+	it("1000px, many plain actions: all inside the header", async () => {
+		await page.viewport(1000, 780);
+		const screen = await render(Host, { primary: false, manyActions: true });
+		await settled();
+		const header = rect(q(screen.container, ".ca-page-shell__header"));
+		const buttons = [...q(screen.container, ".ca-page-shell__actions").querySelectorAll("button")];
+		expect(buttons.length).toBeGreaterThan(5);
+		for (const b of buttons) expect(rect(b).right).toBeLessThanOrEqual(header.right + 0.5);
+	});
+
+	it("360px: primary shows, the rest are in More", async () => {
+		await page.viewport(360, 780);
+		const screen = await render(Host, { manyActions: true, width: "360px" });
+		await settled();
+		const shownNow = shown(screen.container);
+		expect(shownNow).toContain("Novo");
+		expect(shownNow.length).toBeLessThan(7);
+		await expect.element(screen.getByRole("button", { name: "More" })).toBeVisible();
+		// What left the row is exactly what the menu lists.
+		await screen.getByRole("button", { name: "More" }).click();
+		const listed = page
+			.getByRole("menuitem")
+			.elements()
+			.map((el) => el.textContent?.trim());
+		expect([...shownNow, ...listed].sort()).toEqual(
+			[
+				"Exportar",
+				"Importar",
+				"Novo",
+				"Duplicar fila",
+				"Arquivar fila",
+				"Compartilhar fila",
+				"Configurar fila",
+			].sort()
+		);
+	});
+
+	it("1280px: a hidden action returns when the header widens", async () => {
+		await page.viewport(1280, 780);
+		// 900px: the row is content-sized, so widening the header leaves its own size untouched.
+		const screen = await render(Host, { manyActions: true, width: "900px" });
+		await settled();
+		await document.fonts.ready;
+		const host = screen.container.querySelector('[data-testid="host"]') as HTMLElement;
+		const row = q(host, ".ca-page-shell__actions");
+		const hidden = () => host.querySelectorAll(".ca-page-shell__actions [data-overflowed]").length;
+		// The initial font/size re-layouts are done once the row stops changing.
+		let last = -1;
+		await expect
+			.poll(() => {
+				const w = rect(row).width;
+				const stable = w === last;
+				last = w;
+				return stable;
+			})
+			.toBe(true);
+		const before = hidden();
+		expect(before).toBeGreaterThan(0);
+		host.style.width = "1100px";
+		await expect.poll(hidden, { timeout: 1500 }).toBeLessThan(before);
+	});
+
 	it("360px: the primary action stays, the others move into a More menu", async () => {
 		await page.viewport(360, 780);
 		const screen = await render(Host, { width: "200px" });

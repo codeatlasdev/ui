@@ -1,6 +1,6 @@
 <script lang="ts">
   import PageBack from './PageBack.svelte';
-  import type { Snippet } from 'svelte';
+  import { untrack, type Snippet } from 'svelte';
   import { scrollFocusable } from '../../actions/scroll-focusable.js';
   import { useMessages } from '../../i18n/state.svelte.js';
   import { pageShell } from '../../i18n/groups/pageShell.js';
@@ -9,7 +9,7 @@
   import type { IconComponent } from '../../types.js';
   import Badge from '../Badge/Badge.svelte';
   import { Ellipsis } from '@lucide/svelte';
-  import { measureOverflow, observeOverflow } from '../../utils/overflow.js';
+  import { layoutOverflow, observeOverflow, overflowItems, type MovedItem } from '../../utils/overflow.js';
   import IconButton from '../Button/IconButton.svelte';
   import DropdownMenu from '../DropdownMenu/DropdownMenu.svelte';
   import DropdownMenuItem from '../DropdownMenu/DropdownMenuItem.svelte';
@@ -75,49 +75,19 @@
 
   // Actions: a `data-priority="primary"` child never leaves the row; the others move into a More menu
   // when the row is too narrow (same mechanics as `Toolbar overflow="menu"`). With no primary
-  // action nothing is prioritised, so nothing collapses and the actions wrap as before.
-  interface Moved {
-    el: HTMLElement;
-    label: string;
-    disabled: boolean;
-  }
+  // action nothing is prioritised: nothing collapses and the actions wrap onto more lines.
   let actionsEl = $state<HTMLElement | null>(null);
   let collapses = $state(false);
-  let moved = $state.raw<Moved[]>([]);
+  let moved = $state.raw<MovedItem[]>([]);
 
   const isPrimary = (el: HTMLElement) => el.dataset.priority === 'primary' || el.querySelector('[data-priority="primary"]') !== null;
-  const labelOf = (el: HTMLElement) => el.dataset.overflow || el.getAttribute('aria-label') || el.textContent?.trim() || '';
-  /** The row's own children, never the More wrapper. */
-  const movable = (row: HTMLElement) =>
-    Array.from(row.children).filter((el): el is HTMLElement => el instanceof HTMLElement && !el.classList.contains('ca-page-shell__more'));
-
-  /** Un-hides everything, measures, then hides what does not fit: one synchronous pass, so no flash. */
-  function layout(row: HTMLElement) {
-    const items = movable(row);
-    for (const el of items) el.removeAttribute('data-overflowed');
-    const trigger = row.querySelector<HTMLElement>(':scope > .ca-page-shell__more');
-    trigger?.removeAttribute('data-shown');
-    trigger?.setAttribute('data-measuring', '');
-    const reserve = trigger?.getBoundingClientRect().width || 32;
-    trigger?.removeAttribute('data-measuring');
-    const out = measureOverflow({ items, container: row, reserve, gap: parseFloat(getComputedStyle(row).columnGap) || 0, pinned: isPrimary });
-    items.forEach((el, i) => {
-      if (out.has(i)) el.setAttribute('data-overflowed', '');
-    });
-    if (out.size) trigger?.setAttribute('data-shown', '');
-    const next = items
-      .filter((_, i) => out.has(i))
-      .map((el) => ({ el, label: labelOf(el), disabled: el.hasAttribute('disabled') || el.getAttribute('aria-disabled') === 'true' }));
-    const same = next.length === moved.length && next.every((m, i) => m.el === moved[i].el && m.label === moved[i].label && m.disabled === moved[i].disabled);
-    if (!same) moved = next;
-  }
 
   // Whether the actions hold a primary one is read from the DOM, since the snippet is opaque.
   $effect(() => {
     const row = actionsEl;
     if (!row) return;
     const sync = () => {
-      collapses = movable(row).some(isPrimary);
+      collapses = overflowItems(row).some(isPrimary);
     };
     sync();
     const mo = new MutationObserver(sync);
@@ -131,8 +101,23 @@
       moved = [];
       return;
     }
-    layout(row);
-    return observeOverflow(row, () => movable(row), () => layout(row));
+    const layout = () => {
+      const next = layoutOverflow(row, {
+        trigger: row.querySelector<HTMLElement>(':scope > .ca-page-shell__more'),
+        previous: untrack(() => moved),
+      });
+      if (next) moved = next;
+    };
+    layout();
+    // The row is content-sized, so it does not resize when the header gains room: watch the header too.
+    const stopRow = observeOverflow(row, () => overflowItems(row), layout);
+    const header = row.parentElement;
+    const ro = new ResizeObserver(layout);
+    if (header) ro.observe(header);
+    return () => {
+      stopRow();
+      ro.disconnect();
+    };
   });
 </script>
 
@@ -184,7 +169,7 @@
                   </IconButton>
                 {/snippet}
                 {#each moved as item (item.el)}
-                  <DropdownMenuItem disabled={item.disabled} onclick={() => item.el.click()}>{item.label}</DropdownMenuItem>
+                  <DropdownMenuItem disabled={item.disabled} onclick={item.activate}>{item.label}</DropdownMenuItem>
                 {/each}
               </DropdownMenu>
             </span>
@@ -294,10 +279,12 @@
       line-height: var(--ca-line-height-relaxed);
     }
 
-    /* The actions never take a width that squeezes the title: they shrink and wrap, and the title
-       column keeps at least 12rem before the actions wrap onto their own row. */
+    /* The actions never take a width that squeezes the title: they shrink and wrap onto more lines,
+       right-aligned, and the title column keeps at least 12rem. */
     .ca-page-shell__actions {
       display: flex;
+      flex-wrap: wrap;
+      justify-content: flex-end;
       align-items: center;
       gap: var(--ca-space-2);
       flex: 0 1 auto;

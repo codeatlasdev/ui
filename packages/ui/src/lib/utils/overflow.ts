@@ -77,11 +77,13 @@ const targetOf = (el: HTMLElement) =>
 const labelOf = (el: HTMLElement) =>
 	el.dataset.overflow || el.getAttribute("aria-label") || el.textContent?.trim() || "";
 
-/** The row's own children, never the trigger wrapper. A spacer stays in the list: it takes a gap slot. */
+/** The row's own children, never the trigger wrapper (`ca-toolbar__more`, `ca-page-shell__more`). A spacer stays in the list: it takes a gap slot. */
 export function overflowItems(row: HTMLElement): HTMLElement[] {
 	return Array.from(row.children).filter(
 		(el): el is HTMLElement =>
-			el instanceof HTMLElement && !el.classList.contains("ca-toolbar__more")
+			el instanceof HTMLElement &&
+			!el.classList.contains("ca-toolbar__more") &&
+			!el.classList.contains("ca-page-shell__more")
 	);
 }
 

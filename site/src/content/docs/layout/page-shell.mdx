@@ -51,7 +51,7 @@ The shell renders `title` as the page `<h1>`; below 900px inside an `AppShellLay
 
 The title column never gets narrower than 12rem: the `actions` block shrinks and gives way instead of taking its content width. Below 900px the title and description take the whole row and the actions sit on a row of their own, as before.
 
-Put `data-priority="primary"` on the action that must always be reachable and the header keeps the actions on one line: the ones that do not fit move, in order, into a `DropdownMenu` behind a More `IconButton` at the end of the row (localized "More"/"Mais"). The row is measured with a `ResizeObserver`, so they come back when there is room. The actions stay in the DOM: picking a menu entry clicks the real button, so its handler runs. A menu entry is named by `data-overflow="Label"`, then the action's `aria-label`, then its text. Without a `data-priority="primary"` action nothing collapses and the actions wrap as they always did.
+Put `data-priority="primary"` on the action that must always be reachable and the header keeps the actions on one line: the ones that do not fit move, in order, into a `DropdownMenu` behind a More `IconButton` at the end of the row (localized "More"/"Mais"). The row is measured with a `ResizeObserver`, so they come back when there is room. The actions stay in the DOM: picking a menu entry clicks the real button, so its handler runs. A menu entry is named by `data-overflow="Label"`, then the action's `aria-label`, then its text. Without a `data-priority="primary"` action nothing collapses: the actions wrap onto more lines, right-aligned, and never take the title's 12rem.
 
 ```svelte
 <PageShell title="Atendimento ao cliente">
