@@ -107,6 +107,33 @@ describe("design knobs → tokens", () => {
 		expect(css).not.toContain("--ca-font-size-display-2");
 	});
 
+	it("components.localeSwitcher emits the --ca-locale-* tokens (#690)", () => {
+		const css = themeCSS(
+			defineTheme({
+				components: {
+					localeSwitcher: {
+						height: "36px",
+						weight: 400,
+						iconSize: "14px",
+						chevronSize: "16px",
+						paddingX: "8px",
+						gap: "6px",
+					},
+				},
+			})
+		);
+		for (const decl of [
+			"--ca-locale-height: 36px;",
+			"--ca-locale-font-weight: 400;",
+			"--ca-locale-icon-size: 14px;",
+			"--ca-locale-chevron-size: 16px;",
+			"--ca-locale-padding-x: 8px;",
+			"--ca-locale-gap: 6px;",
+		])
+			expect(css).toContain(decl);
+		expect(themeCSS(defineTheme({ components: { localeSwitcher: {} } }))).toBe("");
+	});
+
 	it("components.emptyState emits the icon, title, description and actions tokens (#707)", () => {
 		const css = themeCSS(
 			defineTheme({

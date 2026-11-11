@@ -1,10 +1,12 @@
 import { describe, expect, it, vi } from "vitest";
-import { page, userEvent } from "vitest/browser";
+import { cdp, page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { touchTarget } from "../../../../tests/touch-target";
 import LocaleSwitcher from "./LocaleSwitcher.svelte";
 import Bound from "./LocaleSwitcherBound.test.svelte";
 import Header from "./LocaleSwitcherHeader.test.svelte";
+import Tokens from "./LocaleSwitcherTokens.test.svelte";
 
 const options = [
 	{ value: "pt-BR", label: "Português", short: "PT" },
@@ -133,5 +135,119 @@ describe("LocaleSwitcher", () => {
 			expect(await checkA11y(screen.container)).toHaveNoViolations();
 			screen.unmount();
 		}
+	});
+
+	describe("size, icon and tokens (#690)", () => {
+		const trigger = () => document.querySelector(".ca-locale") as HTMLElement;
+		const box = () => trigger().getBoundingClientRect();
+		const svgs = () => [...trigger().querySelectorAll("svg")];
+		const cs = (el: Element) => getComputedStyle(el);
+
+		it("unset: 36px control height, weight 500, 16px globe, 14px chevron", async () => {
+			await page.viewport(1280, 800);
+			await render(Tokens, {});
+			const [icon, chevron] = svgs();
+			expect(box().height).toBe(36);
+			expect(cs(trigger()).fontWeight).toBe("500");
+			expect(icon.getBoundingClientRect().width).toBe(16);
+			expect(chevron.getBoundingClientRect().width).toBe(14);
+		});
+
+		it("size sm follows --ca-control-height-sm and the caption scale", async () => {
+			await page.viewport(1280, 800);
+			await render(Tokens, { size: "sm" });
+			const sm = parseFloat(
+				getComputedStyle(document.documentElement).getPropertyValue("--ca-control-height-sm")
+			);
+			expect(box().height).toBe(sm);
+			const probe = document.body.appendChild(document.createElement("i"));
+			probe.style.fontSize = "var(--ca-font-size-caption)";
+			expect(cs(trigger()).fontSize).toBe(cs(probe).fontSize);
+			probe.remove();
+		});
+
+		it("tokens alone set height, weight, icon sizes, padding and gap, no .ca-locale selector", async () => {
+			await page.viewport(1280, 800);
+			await render(Tokens, {
+				tokens: {
+					"--ca-locale-height": "32px",
+					"--ca-locale-font-weight": "400",
+					"--ca-locale-icon-size": "20px",
+					"--ca-locale-chevron-size": "18px",
+					"--ca-locale-padding-x": "12px",
+					"--ca-locale-gap": "10px",
+				},
+			});
+			const [icon, chevron] = svgs();
+			expect(box().height).toBe(32);
+			expect(cs(trigger()).fontWeight).toBe("400");
+			expect(icon.getBoundingClientRect().width).toBe(20);
+			expect(icon.getBoundingClientRect().height).toBe(20);
+			expect(chevron.getBoundingClientRect().width).toBe(18);
+			expect(cs(trigger()).paddingLeft).toBe("12px");
+			expect(cs(trigger()).columnGap).toBe("10px");
+		});
+
+		it("the compact header tokens: 36px tall, width = 8 + 14 + 6 + text + 6 + 16 + 8", async () => {
+			await page.viewport(1280, 800);
+			const { Languages } = await import("@lucide/svelte");
+			await render(Tokens, {
+				icon: Languages,
+				tokens: {
+					"--ca-locale-height": "36px",
+					"--ca-locale-font-weight": "400",
+					"--ca-locale-icon-size": "14px",
+					"--ca-locale-chevron-size": "16px",
+					"--ca-locale-padding-x": "8px",
+					"--ca-locale-gap": "6px",
+					"--ca-font-size-body2": "14px",
+				},
+			});
+			const text = (
+				trigger().querySelector(".ca-locale__name") as HTMLElement
+			).getBoundingClientRect().width;
+			expect(cs(trigger()).fontSize).toBe("14px");
+			expect(box().height).toBe(36);
+			expect(box().width).toBeCloseTo(8 + 14 + 6 + text + 6 + 16 + 8, 1);
+		});
+
+		it("a token beats the size default", async () => {
+			await page.viewport(1280, 800);
+			await render(Tokens, { size: "sm", tokens: { "--ca-locale-height": "40px" } });
+			expect(box().height).toBe(40);
+		});
+
+		it("icon replaces the leading globe", async () => {
+			await page.viewport(1280, 800);
+			const { Languages } = await import("@lucide/svelte");
+			await render(Tokens, { icon: Languages });
+			expect(trigger().querySelector(".lucide-languages")).not.toBeNull();
+			expect(trigger().querySelector(".lucide-globe")).toBeNull();
+		});
+
+		it("coarse pointer: hit area stays at the touch target", async () => {
+			await page.viewport(390, 844);
+			await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 5 });
+			try {
+				await render(Tokens, { size: "sm", tokens: { "--ca-locale-height": "32px" } });
+				expect(matchMedia("(pointer: coarse)").matches).toBe(true);
+				const min = touchTarget();
+				const r = box();
+				const cx = r.left + r.width / 2;
+				const cy = r.top + r.height / 2;
+				expect(r.height).toBe(32);
+				// 32px visual box, 44px hit area: a point 5px below the box still hits the trigger.
+				const el = document.elementFromPoint(cx, r.bottom + (min - r.height) / 2 - 1);
+				expect(el?.closest(".ca-locale")).toBe(trigger());
+			} finally {
+				await cdp().send("Emulation.setTouchEmulationEnabled", { enabled: false });
+			}
+		});
+
+		it("is axe-clean with size sm and a custom icon", async () => {
+			const { Languages } = await import("@lucide/svelte");
+			const screen = await render(Tokens, { size: "sm", icon: Languages });
+			expect(await checkA11y(screen.container)).toHaveNoViolations();
+		});
 	});
 });
