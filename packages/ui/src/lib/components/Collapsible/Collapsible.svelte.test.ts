@@ -2,8 +2,10 @@ import { describe, expect, it } from "vitest";
 import { userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { q } from "../../../../tests/dom";
 import { touchTarget } from "../../../../tests/touch-target";
 import CollapsibleHarness from "./CollapsibleHarness.test.svelte";
+import Nested from "./CollapsibleNested.test.svelte";
 
 describe("Collapsible", () => {
 	it("starts closed with aria-expanded=false", async () => {
@@ -96,6 +98,37 @@ describe("Collapsible", () => {
 			);
 			expect(trigger.getBoundingClientRect().height).toBeGreaterThanOrEqual(touchTarget());
 			expect(await checkA11y(screen.container)).toHaveNoViolations();
+		});
+
+		it("a boxed Collapsible or Accordion nested in a flush one keeps its box", async () => {
+			const screen = await render(Nested, {});
+			const inner = [
+				q(screen.container, ".ca-collapsible .ca-collapsible .ca-collapsible__trigger"),
+				q(screen.container, ".ca-accordion .ca-accordion .ca-accordion-item"),
+			];
+			for (const el of inner) {
+				expect(Number.parseFloat(css(el).borderTopWidth), el.className).toBeGreaterThan(0);
+				expect(Number.parseFloat(css(el).borderTopLeftRadius), el.className).toBeGreaterThan(0);
+			}
+			const innerTrigger = q(
+				screen.container,
+				".ca-accordion .ca-accordion .ca-accordion-item__trigger"
+			);
+			expect(Number.parseFloat(css(innerTrigger).paddingLeft)).toBeGreaterThan(0);
+		});
+
+		it("flush draws no backdrop blur, also under the glass style", async () => {
+			document.documentElement.dataset.style = "glass";
+			try {
+				const screen = await render(Nested, {});
+				const outer = [
+					q(screen.container, ".ca-collapsible[data-variant='flush'] > .ca-collapsible__trigger"),
+					q(screen.container, ".ca-accordion[data-variant='flush'] > .ca-accordion-item"),
+				];
+				for (const el of outer) expect(css(el).backdropFilter, el.className).toBe("none");
+			} finally {
+				delete document.documentElement.dataset.style;
+			}
 		});
 
 		it("divided draws a subtle top border only on flush", async () => {

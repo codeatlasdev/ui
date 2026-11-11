@@ -162,7 +162,8 @@
     }
 
     /* flush: no box. Padding-inline is 0 so the title, chevron and body sit on the parent's gutter. */
-    :global(.ca-collapsible[data-variant='flush'] .ca-collapsible__trigger) {
+    :global(.ca-collapsible[data-variant='flush'] > .ca-collapsible__trigger) {
+      --ca-blur-role: none;
       min-height: var(--ca-touch-target);
       padding-inline: 0;
       background: transparent;
@@ -170,7 +171,7 @@
       border-radius: 0;
     }
 
-    :global(.ca-collapsible[data-variant='flush'] .ca-collapsible__body) {
+    :global(.ca-collapsible[data-variant='flush'] > .ca-collapsible__content > .ca-collapsible__body) {
       padding-inline: 0;
       border: none;
       border-radius: 0;

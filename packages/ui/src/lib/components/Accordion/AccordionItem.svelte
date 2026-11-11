@@ -79,14 +79,15 @@
     }
 
     /* flush: no box. Padding-inline is 0 so the title, chevron and body sit on the parent's gutter. */
-    :global(.ca-accordion[data-variant='flush'] .ca-accordion-item) {
+    :global(.ca-accordion[data-variant='flush'] > .ca-accordion-item) {
+      --ca-blur-role: none;
       background: transparent;
       border: none;
       border-radius: 0;
       overflow: visible;
     }
 
-    :global(.ca-accordion[data-variant='flush'][data-divided] .ca-accordion-item + .ca-accordion-item) {
+    :global(.ca-accordion[data-variant='flush'][data-divided] > .ca-accordion-item + .ca-accordion-item) {
       border-top: var(--ca-border-width) solid var(--ca-outline-subtle);
     }
 
@@ -114,7 +115,7 @@
       transition: background var(--ca-duration-fast) var(--ca-ease-standard);
     }
 
-    :global(.ca-accordion[data-variant='flush'] .ca-accordion-item__trigger) {
+    :global(.ca-accordion[data-variant='flush'] > .ca-accordion-item > .ca-accordion-item__header > .ca-accordion-item__trigger) {
       height: auto;
       min-height: var(--ca-touch-target);
       padding-inline: 0;
@@ -168,7 +169,7 @@
       line-height: var(--ca-line-height-prose);
     }
 
-    :global(.ca-accordion[data-variant='flush'] .ca-accordion-item__body) {
+    :global(.ca-accordion[data-variant='flush'] > .ca-accordion-item > .ca-accordion-item__content > .ca-accordion-item__body) {
       padding-inline: 0;
     }
 
