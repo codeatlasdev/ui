@@ -586,3 +586,28 @@ describe("default theme", () => {
 		expect(themeCSS(defineTheme(designStyle("liquid")))).not.toBe("");
 	});
 });
+
+describe('density "auto" (#999)', () => {
+	it("compact under a fine pointer moves spacing, control heights and text together", () => {
+		const css = themeCSS(defineTheme({ density: "auto" }));
+		const fine = css.slice(css.indexOf("@media (pointer: fine)"));
+		expect(css).toContain("@media (pointer: fine)");
+		for (const decl of [
+			"--ca-density: 0.75;",
+			"--ca-control-height: 32px;",
+			"--ca-control-height-sm: 26px;",
+			"--ca-font-size-body1: calc(0.875rem * var(--ca-font-scale));",
+		])
+			expect(fine).toContain(decl);
+	});
+
+	it("a coarse pointer keeps the comfortable defaults (and the 44px touch targets)", () => {
+		const css = themeCSS(defineTheme({ density: "auto" }));
+		expect(css).not.toContain("pointer: coarse");
+		expect(css.slice(0, css.indexOf("@media (pointer: fine)"))).not.toContain("--ca-density");
+	});
+
+	it("a named density does not add the media query", () => {
+		expect(themeCSS(defineTheme({ density: "compact" }))).not.toContain("pointer: fine");
+	});
+});
