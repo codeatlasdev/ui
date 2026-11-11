@@ -90,7 +90,7 @@ Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__action
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out`
 
-Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-surface-floating`
+Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
 
 Data attributes: `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
 
@@ -868,7 +868,7 @@ Parts: `ca-cmd-dialog` `ca-cmd-empty` `ca-cmd-error` `ca-cmd-group__label` `ca-c
 
 Internal (may change in any release): `ca-cmd-slide-in` `ca-cmd-slide-out` `ca-cmd-spin` `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out`
 
-Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-surface-floating`
+Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
 
 Data attributes: `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
 
@@ -1250,7 +1250,7 @@ Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__action
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out`
 
-Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-surface-floating`
+Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
 
 Data attributes: `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
 
@@ -1330,7 +1330,7 @@ Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__action
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-docs-search-in` `ca-docs-search-out` `ca-docs-search-pop-in` `ca-docs-search-pop-out` `ca-overlay-in` `ca-overlay-out`
 
-Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-surface-floating`
+Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
 
 Data attributes: `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
 
@@ -1388,7 +1388,7 @@ Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__action
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-drawer-bottom-in` `ca-drawer-bottom-out` `ca-drawer-left-in` `ca-drawer-left-out` `ca-drawer-right-in` `ca-drawer-right-out` `ca-overlay-in` `ca-overlay-out`
 
-Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-surface-floating`
+Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
 
 Data attributes: `data-chromeless`, `data-full-bleed` (`lg` `md` `sm`), `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
 
@@ -3235,7 +3235,7 @@ Parts: `ca-dialog` `ca-dialog--chromeless` `ca-dialog--split` `ca-dialog__action
 
 Internal (may change in any release): `ca-dialog-in` `ca-dialog-out` `ca-overlay-in` `ca-overlay-out` `ca-sheet-fade-in` `ca-sheet-fade-out` `ca-sheet-in` `ca-sheet-out`
 
-Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width` `--ca-surface-floating`
+Variables: `--ca-dialog-split-columns` `--ca-dialog-split-height` `--ca-dialog-split-width`
 
 Data attributes: `data-fullscreen-below` (`md` `sm`), `data-state` (`closed` `open`)
 
