@@ -394,10 +394,16 @@ Parts: `ca-box`
 | Prop | Type | Default | Notes |
 |---|---|---|---|
 | `items` | `BreadcrumbItem[]` |  |  |
-| `separator?` | `string` | `'/'` |  |
+| `separator?` | `string \| Snippet` | `'/'` | A text separator, or a snippet (an icon); drawn `aria-hidden` either way. |
 | `class?` | `string` | `''` |  |
 
+Snippets: `link` (`Snippet<[BreadcrumbItem]>`): Renders the anchor of every non-current item with an `href`, so a client router link can be used.
+
 Parts: `ca-breadcrumb__current` `ca-breadcrumb__item` `ca-breadcrumb__link` `ca-breadcrumb__list` `ca-breadcrumb__sep`
+
+Variables: `--ca-breadcrumb-line-height` `--ca-breadcrumb-link-radius` `--ca-breadcrumb-size` `--ca-breadcrumb-tracking`
+
+Tokens: `--ca-breadcrumb-line-height` `--ca-breadcrumb-link-radius` `--ca-breadcrumb-size` `--ca-breadcrumb-tracking`
 
 ## Button
 

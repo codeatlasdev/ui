@@ -24,8 +24,37 @@ Rendered as a `nav` landmark with an ordered list. The last item is the current 
 <Demo title="Levels" description="Two, three and five levels, and a single root item." src={LevelsSrc}><Levels /></Demo>
 <Demo title="Custom separator" description="Using › instead of /." src={SeparatorSrc}><Separator /></Demo>
 
+## Icon separator and router links
+
+`separator` also takes a snippet, drawn inside the same `aria-hidden` span. `link` renders the anchor of every non-current item that has an `href`, so a client router link replaces the plain `<a>`; the last item stays the `aria-current="page"` text.
+
+```svelte
+<script>
+  import { Breadcrumb } from "@codeatlasdev/ui";
+  import { ChevronRight } from "lucide-svelte";
+  import { Link } from "my-router";
+</script>
+
+{#snippet chevron()}<ChevronRight size={14} />{/snippet}
+{#snippet routerLink(item)}<Link to={item.href}>{item.label}</Link>{/snippet}
+
+<Breadcrumb items={[{ label: "Projects", href: "/projects" }, { label: "Atlas" }]} separator={chevron} link={routerLink} />
+```
+
+The type and the link focus radius are tokens on the `nav` or any ancestor, so no selector against `.ca-breadcrumb__*` is needed:
+
+```css
+.detail-header {
+  --ca-breadcrumb-size: 12px;
+  --ca-breadcrumb-line-height: 16.8px;
+  --ca-breadcrumb-tracking: 0.02em;
+  --ca-breadcrumb-link-radius: 4px;
+}
+```
+
 <Props for="Breadcrumb" rows={[
   { name: "items", type: "BreadcrumbItem[]", description: "Array of { label, href? }. The last item is always rendered as the current page, without a link." },
-  { name: "separator", type: "string", default: "'/'", description: "Character rendered between crumbs." },
+  { name: "separator", type: "string | Snippet", default: "'/'", description: "Character or snippet (an icon) rendered between crumbs, always aria-hidden." },
+  { name: "link", type: "Snippet<[BreadcrumbItem]>", description: "Renders the anchor of every non-current item with an href, for a client router link." },
   { name: "class", type: "string", default: "''", description: "Extra CSS classes." },
 ]} />
