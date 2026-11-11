@@ -1,12 +1,12 @@
 {
 	"version": "4.6.0",
-	"count": 400,
+	"count": 401,
 	"groups": [
 		{
 			"slug": "inputs",
 			"first": "001",
-			"last": "5018",
-			"count": 92
+			"last": "5019",
+			"count": 93
 		},
 		{
 			"slug": "surfaces",
@@ -35623,6 +35623,89 @@
 			],
 			"interactive": true,
 			"demo": "https://ui.codeatlas.com.br/docs/inputs/rating#rating",
+			"needs": "@codeatlasdev/ui@4.6.0"
+		},
+		{
+			"id": "5019",
+			"group": "inputs",
+			"page": "chip-group",
+			"variant": "MultipleSmall",
+			"slug": "multiple-small",
+			"title": "Multiple, small",
+			"description": "Combinable shortcuts: toggle any chip on or off; compact pills that keep a 44px touch target.",
+			"summary": "Multi-select shortcut chips: compact 28px pills that wrap, each toggling on or off with a check icon.",
+			"use": "Combinable one-tap shortcuts in a search form (niches, tags, categories) where the user picks several and unpicks any of them.",
+			"spec": [
+				"`<ChipGroup multiple size=\"sm\" label=\"Most searched\" items={niches} bind:value={picked} />`",
+				"`niches` has 7 items: dentists, lawyers, doctors, architects, accountants, vets and a disabled `gyms`",
+				"`bind:value={picked}` is a `string[]` with initial `['dentists', 'lawyers']`; selected chips show a check icon"
+			],
+			"tags": [
+				"chip-group",
+				"chips",
+				"multiple",
+				"multi-select",
+				"toggle",
+				"tags",
+				"small",
+				"filter"
+			],
+			"shape": "wide",
+			"index": {
+				"kind": "component",
+				"subtype": "input",
+				"industry": [
+					"saas"
+				],
+				"style": [
+					"default"
+				],
+				"motion": "subtle",
+				"interaction": [
+					"press",
+					"keyboard"
+				],
+				"layout": "stack",
+				"colorMode": "both",
+				"density": "compact",
+				"tech": [
+					"css"
+				],
+				"cost": "css",
+				"components": [
+					"ChipGroup"
+				],
+				"aliases": [
+					"toggle chips",
+					"tag picker",
+					"filter chips"
+				],
+				"related": [
+					"720",
+					"721"
+				],
+				"a11y": {
+					"reducedMotion": true,
+					"keyboard": true
+				},
+				"added": "2026-11-11",
+				"review": {
+					"industry": "pending"
+				}
+			},
+			"components": [
+				"ChipGroup"
+			],
+			"imports": [
+				{
+					"from": "@codeatlasdev/ui",
+					"names": [
+						"ChipGroup"
+					]
+				}
+			],
+			"interactive": true,
+			"demo": "https://ui.codeatlas.com.br/docs/inputs/chip-group#multiple-small",
 			"needs": "@codeatlasdev/ui@4.6.0"
 		}
 	]

@@ -1,15 +1,15 @@
-<script lang="ts">
-  import { Check } from '@lucide/svelte';
-
+<script lang="ts" module>
   export interface ChipGroupItem {
     value: string;
     label: string;
     disabled?: boolean;
   }
+</script>
 
-  interface Props {
-    /** Selected value. `''` means nothing selected. */
-    value?: string;
+<script lang="ts" generics="M extends boolean = false">
+  import { Check } from '@lucide/svelte';
+
+  interface Common {
     items: ChipGroupItem[];
     /** Visible title of the group; it is also the group's accessible name. */
     label?: string;
@@ -20,17 +20,28 @@
     error?: string;
     /** Native `name` of the radios, so the value is part of `FormData` on a plain form submit. */
     name?: string;
-    /** Native `required`: a plain form blocks submit until a chip is picked. */
+    /** Native `required`: a plain form blocks submit until a chip is picked (with `multiple`, until at least one is). */
     required?: boolean;
+    /** `sm`: a 28px pill with caption text, for dense rows; the touch hit area stays 44px on coarse pointers. */
+    size?: 'md' | 'sm';
     disabled?: boolean;
     class?: string;
     /** Accessible name when there is no visible `label`. */
     'aria-label'?: string;
-    onchange?: (value: string) => void;
+  }
+  /** `string` for one chip, `string[]` with `multiple`. */
+  type Value = M extends true ? string[] : string;
+  interface Props extends Common {
+    /** Any number of chips can be on: checkboxes in a `role="group"`; `value` and `onchange` are `string[]`. */
+    multiple?: M;
+    /** Selected value: a string (`''` = none), or `string[]` with `multiple`. */
+    value?: Value;
+    onchange?: (value: Value) => void;
   }
 
   let {
-    value = $bindable(''),
+    value = $bindable('' as Value),
+    multiple = false as M,
     items,
     label,
     hideLabel = false,
@@ -38,6 +49,7 @@
     error,
     name,
     required = false,
+    size = 'md',
     disabled = false,
     class: className = '',
     'aria-label': ariaLabel,
@@ -50,10 +62,16 @@
   const groupName = $derived(name ?? uid);
   const describedBy = $derived(error ? `${uid}-err` : description ? `${uid}-hint` : undefined);
 
+  const picked = $derived<string[]>(Array.isArray(value) ? value : value ? [value as string] : []);
   function select(v: string) {
     if (v === value) return;
-    value = v;
-    onchange?.(v);
+    value = v as Value;
+    onchange?.(v as Value);
+  }
+  function toggle(v: string) {
+    const next = picked.includes(v) ? picked.filter((x) => x !== v) : [...picked, v];
+    value = next as Value;
+    onchange?.(next as Value);
   }
 
   // Native radios already move focus + selection on the arrows, select on Space and make Tab land
@@ -82,7 +100,7 @@
   }
 </script>
 
-<div class="ca-chip-group {className}" data-disabled={disabled ? '' : undefined} data-invalid={error ? '' : undefined}>
+<div class="ca-chip-group {className}" data-size={size === 'sm' ? 'sm' : undefined} data-disabled={disabled ? '' : undefined} data-invalid={error ? '' : undefined}>
   {#if label}
     <span id="{uid}-label" class="ca-chip-group__label" class:ca-sr-only={hideLabel}>
       {label}{#if required}<span class="ca-chip-group__req" aria-hidden="true"> *</span>{/if}
@@ -90,18 +108,18 @@
   {/if}
 
   <div
-    role="radiogroup"
+    role={multiple ? 'group' : 'radiogroup'}
     class="ca-chip-group__list"
     aria-labelledby={label ? `${uid}-label` : undefined}
     aria-label={label ? undefined : ariaLabel}
     aria-describedby={describedBy}
     aria-invalid={error ? 'true' : undefined}
-    aria-required={required ? 'true' : undefined}
+    aria-required={required && !multiple ? 'true' : undefined}
     aria-disabled={disabled ? 'true' : undefined}
     {@attach keys}
   >
     {#each items as item (item.value)}
-      {@const checked = value === item.value}
+      {@const checked = multiple ? picked.includes(item.value) : value === item.value}
       {@const off = disabled || !!item.disabled}
       <label
         class="ca-chip-group__chip"
@@ -109,14 +127,14 @@
         data-disabled={off ? '' : undefined}
       >
         <input
-          type="radio"
+          type={multiple ? 'checkbox' : 'radio'}
           class="ca-chip-group__input"
-          name={groupName}
+          name={multiple ? name : groupName}
           value={item.value}
           {checked}
-          {required}
+          required={multiple ? required && picked.length === 0 : required}
           disabled={off}
-          onchange={() => select(item.value)}
+          onchange={() => (multiple ? toggle(item.value) : select(item.value))}
         />
         {#if checked}
           <Check class="ca-chip-group__check" size={16} stroke-width={2.5} aria-hidden="true" />
@@ -197,6 +215,14 @@
         background var(--ca-duration-fast) var(--ca-ease-standard);
     }
 
+    /* Compact: a 28px pill. Not --ca-control-height-sm, which is 44px on coarse pointers. */
+    :global(.ca-chip-group[data-size='sm'] .ca-chip-group__chip) {
+      min-height: var(--ca-space-7);
+      padding-inline: var(--ca-space-3);
+      border-radius: var(--ca-radius-pill);
+      font-size: var(--ca-font-size-caption);
+    }
+
     :global(.ca-chip-group__chip:hover:not([data-disabled])) {
       border-color: var(--ca-outline-default);
     }
@@ -226,6 +252,18 @@
       margin: 0;
       opacity: 0;
       cursor: inherit;
+    }
+
+    /* Touch: the hit area grows to the touch target around a compact chip, the row keeps its height. */
+    @media (pointer: coarse) {
+      :global(.ca-chip-group[data-size='sm'] .ca-chip-group__input) {
+        inset: auto;
+        top: 50%;
+        left: 50%;
+        width: max(100%, var(--ca-touch-target));
+        height: max(100%, var(--ca-touch-target));
+        translate: -50% -50%;
+      }
     }
 
     :global(.ca-chip-group__chip:has(.ca-chip-group__input:focus-visible)) {

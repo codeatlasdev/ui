@@ -746,26 +746,28 @@ Data attributes: `data-theme-scope` (`dark` `light`)
 
 ## ChipGroup
 
-`import { ChipGroup } from "@codeatlasdev/ui"`
+`import { ChipGroup } from "@codeatlasdev/ui"` (generic: `M extends boolean = false`)
 
 | Prop | Type | Default | Notes |
 |---|---|---|---|
-| `value?` | `string` | `''` | `bind:` Selected value. `''` means nothing selected. |
 | `items` | `ChipGroupItem[]` |  |  |
 | `label?` | `string` |  | Visible title of the group; it is also the group's accessible name. |
 | `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`). |
 | `description?` | `string` |  |  |
 | `error?` | `string` |  | Field-level error: shown with `role="alert"`, sets `aria-invalid` and `aria-describedby` on the group. |
 | `name?` | `string` |  | Native `name` of the radios, so the value is part of `FormData` on a plain form submit. |
-| `required?` | `boolean` | `false` | Native `required`: a plain form blocks submit until a chip is picked. |
+| `required?` | `boolean` | `false` | Native `required`: a plain form blocks submit until a chip is picked (with `multiple`, until at least one is). |
+| `size?` | `'md' \| 'sm'` | `'md'` | `sm`: a 28px pill with caption text, for dense rows; the touch hit area stays 44px on coarse pointers. |
 | `disabled?` | `boolean` | `false` |  |
 | `class?` | `string` | `''` |  |
 | `aria-label?` | `string` |  | Accessible name when there is no visible `label`. |
-| `onchange?` | `(value: string) => void` |  |  |
+| `multiple?` | `M` | `false as M` | Any number of chips can be on: checkboxes in a `role="group"`; `value` and `onchange` are `string[]`. |
+| `value?` | `Value` | `'' as Value` | `bind:` Selected value: a string (`''` = none), or `string[]` with `multiple`. |
+| `onchange?` | `(value: Value) => void` |  |  |
 
 Parts: `ca-chip-group` `ca-chip-group__check` `ca-chip-group__chip` `ca-chip-group__hint` `ca-chip-group__hint--error` `ca-chip-group__input` `ca-chip-group__label` `ca-chip-group__list` `ca-chip-group__req` `ca-chip-group__text`
 
-Data attributes: `data-disabled`, `data-invalid`, `data-state` (`checked`)
+Data attributes: `data-disabled`, `data-invalid`, `data-size` (`sm`), `data-state` (`checked`)
 
 ## ChipRow
 

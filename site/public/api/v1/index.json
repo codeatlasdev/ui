@@ -1,6 +1,6 @@
 {
 	"version": "4.6.0",
-	"count": 400,
+	"count": 401,
 	"urls": {
 		"page": "https://ui.codeatlas.com.br/gallery/{id}/",
 		"markdown": "https://ui.codeatlas.com.br/gallery/{id}.md",
@@ -8,7 +8,7 @@
 	},
 	"facets": {
 		"kind": {
-			"component": 361,
+			"component": 362,
 			"motion": 39
 		},
 		"subtype": {
@@ -16,7 +16,7 @@
 			"component/display": 72,
 			"component/feedback": 38,
 			"component/foundation": 19,
-			"component/input": 92,
+			"component/input": 93,
 			"component/layout": 53,
 			"component/map": 1,
 			"component/navigation": 39,
@@ -31,7 +31,7 @@
 		"style": {
 			"aurora": 5,
 			"bento": 10,
-			"default": 383,
+			"default": 384,
 			"editorial": 5,
 			"glassmorphism": 14,
 			"liquid": 1,
@@ -42,15 +42,15 @@
 			"expressive": 51,
 			"immersive": 9,
 			"none": 105,
-			"subtle": 235
+			"subtle": 236
 		},
 		"interaction": {
 			"cursor": 12,
 			"drag": 33,
 			"hover": 79,
-			"keyboard": 276,
+			"keyboard": 277,
 			"none": 82,
-			"press": 235,
+			"press": 236,
 			"scroll": 22
 		},
 		"layout": {
@@ -60,26 +60,26 @@
 			"overlay": 50,
 			"single-column": 134,
 			"split": 15,
-			"stack": 147,
+			"stack": 148,
 			"sticky": 7
 		},
 		"colorMode": {
-			"both": 398,
+			"both": 399,
 			"light": 2
 		},
 		"density": {
 			"airy": 13,
-			"compact": 51,
+			"compact": 52,
 			"regular": 336
 		},
 		"tech": {
 			"canvas2d": 1,
-			"css": 400,
+			"css": 401,
 			"svelte-motion": 39,
 			"view-transitions": 1
 		},
 		"cost": {
-			"css": 360,
+			"css": 361,
 			"js-light": 40
 		},
 		"component": {
@@ -113,7 +113,7 @@
 			"CepField": 1,
 			"Checkbox": 6,
 			"Chip": 10,
-			"ChipGroup": 2,
+			"ChipGroup": 3,
 			"ChipRow": 1,
 			"CodeSnippet": 1,
 			"CodeTab": 1,
@@ -669,6 +669,7 @@
 		{"kind":"component","subtype":"display","style":["default"],"motion":"none","interaction":["none"],"layout":"single-column","colorMode":"both","density":"compact","tech":["css"],"cost":"css","components":["AvatarGroup"],"aliases":["avatar group","overlapping avatars","facepile","team members","plus n overflow"],"related":["111","107","110"],"a11y":{"reducedMotion":true,"keyboard":false},"added":"2026-11-11","review":{"industry":"pending"},"id":"5007","path":"display/avatar/Group","title":"Avatar group","summary":"A labelled group of six overlapping avatars: three photos and three initials, capped at four with an overflow chip counting the other two.","use":"Showing who is on a review, task or document when only the first few fit: the chip says how many more, in the page language.","tags":["avatar","avatar-group","overlap","overflow","max","collaborators"],"names":[]},
 		{"kind":"component","subtype":"display","style":["default"],"motion":"none","interaction":["none"],"layout":"single-column","colorMode":"both","density":"compact","tech":["css"],"cost":"css","components":["AvatarGroup"],"aliases":["avatar group sizes","facepile sizes"],"related":["5007","110"],"a11y":{"reducedMotion":true,"keyboard":false},"added":"2026-11-11","review":{"industry":"pending"},"id":"5008","path":"display/avatar/GroupSizes","title":"Group sizes","summary":"Five avatar groups at sizes `xs` to `xl` and a rounded one, each capped at three with a `+2` chip.","use":"Choosing the group size that matches the Avatar size used elsewhere on the page; the overlap scales with it.","tags":["avatar","avatar-group","sizes","rounded","overflow"],"names":[]},
 		{"kind":"component","subtype":"layout","style":["default"],"motion":"subtle","interaction":["keyboard","press"],"layout":"split","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["AppForm","Button","Card","FormSection","Select","Stat","Stepper","TextField"],"aliases":["form with preview","side panel form","settings with help column"],"related":["173","174","5006"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5017","path":"layout/form-page/WithAside","title":"Form with a preview and help aside","summary":"A workspace form with a side column: a live preview, the plan's seat count and a completion checklist beside the fields.","use":"Settings and edit pages on wide screens that should fill the width with context (preview, help, status) instead of stretching the fields.","tags":["app-form","aside","side-column","preview","stat","stepper","card","settings"],"names":[]},
-		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Rating"],"aliases":["star rating","review stars","score input"],"related":["5006"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5018","path":"inputs/rating/Default","title":"Rating","summary":"Star ratings: an editable whole-star rating, a half-step rating and a small read-only average.","use":"Collecting or showing a score out of five, such as service or product reviews.","tags":["rating","stars","review","score","radiogroup","half steps"],"names":[]}
+		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"stack","colorMode":"both","density":"regular","tech":["css"],"cost":"css","components":["Rating"],"aliases":["star rating","review stars","score input"],"related":["5006"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5018","path":"inputs/rating/Default","title":"Rating","summary":"Star ratings: an editable whole-star rating, a half-step rating and a small read-only average.","use":"Collecting or showing a score out of five, such as service or product reviews.","tags":["rating","stars","review","score","radiogroup","half steps"],"names":[]},
+		{"kind":"component","subtype":"input","style":["default"],"motion":"subtle","interaction":["press","keyboard"],"layout":"stack","colorMode":"both","density":"compact","tech":["css"],"cost":"css","components":["ChipGroup"],"aliases":["toggle chips","tag picker","filter chips"],"related":["720","721"],"a11y":{"reducedMotion":true,"keyboard":true},"added":"2026-11-11","review":{"industry":"pending"},"id":"5019","path":"inputs/chip-group/MultipleSmall","title":"Multiple, small","summary":"Multi-select shortcut chips: compact 28px pills that wrap, each toggling on or off with a check icon.","use":"Combinable one-tap shortcuts in a search form (niches, tags, categories) where the user picks several and unpicks any of them.","tags":["chip-group","chips","multiple","multi-select","toggle","tags","small","filter"],"names":[]}
 	]
 }
