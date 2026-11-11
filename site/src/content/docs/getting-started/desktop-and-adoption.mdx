@@ -1,0 +1,27 @@
+---
+title: Desktop apps and gradual adoption
+description: Run the kit in a Vite SPA inside Tauri or Electron, and adopt it one component at a time in an app that already has its own design tokens.
+group: Getting started
+order: 19
+---
+
+## A plain Vite SPA in a desktop shell
+
+The kit does not need SvelteKit: [Installation](/docs/getting-started/installation/#plain-vite) covers a plain Vite + Svelte 5 app (`caThemePlugin(theme)` injects the theme before the first paint). Inside Tauri or Electron the same build runs in a WebView (WKWebView, WebView2, WebKitGTK):
+
+- **Opaque surfaces.** Keep the default `solid` style. Blur over a desktop window costs GPU time and some WebViews draw it poorly; `glass` and `frosted` are opt-in.
+- **Heights.** Use `var(--ca-vh)`, never `100vh` or `dvh`: the kit keeps `--ca-vh` at the visible height in every engine.
+- **Scroll containers.** Let one region scroll (`AppList`, `AppForm`, `PageShell`, or `ScrollArea` for a panel). A window that scrolls as a whole fights the title bar.
+- **Drag regions.** Put the shell's drag attribute (`data-tauri-drag-region` in Tauri, `-webkit-app-region: drag` in Electron) on your own title-bar element, never on a control: buttons inside it need `no-drag`.
+- **Pointer and keyboard.** Under a fine pointer controls stay compact; touch targets grow to `--ca-touch-target` only on `(pointer: coarse)`, so the same build fits a tablet.
+
+## Adopting the kit in an app with its own tokens
+
+A big-bang theme switch is rarely possible. Adopt one component at a time:
+
+1. **Map your palette once.** `bunx @codeatlasdev/ui tokens import src/tokens.css --out src/lib/theme.ts` turns your colour tokens into a preset and reports every pair under the contrast floors ([Theming](/docs/getting-started/theming/#importing-an-existing-design-system)).
+2. **Alias in one direction.** While both systems coexist, point your old names at the kit's (`--app-accent: var(--ca-brand-main)`), so a later theme change reaches both. Pointing the kit at your names also works, but then the kit's contrast guarantees depend on your values.
+3. **Migrate by leaf components first.** Buttons, fields, switches, tooltips and badges carry no layout; then overlays (Dialog, Popover, Toaster); then page layouts (`AppList`, `AppForm`, `PageShell`) last, one screen at a time.
+4. **Delete the alias layer** when the last old component is gone.
+
+`bunx @codeatlasdev/ui lint src` shows what is left: raw colours, raw sizes and selectors against the kit's classes.
