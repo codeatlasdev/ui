@@ -586,6 +586,12 @@ Surface and layout CSS variables (`--ca-surface-*`, `--ca-elevation-*`, `--ca-bl
 
 ---
 
+## Text utilities
+
+`.ca-truncate` (one line, ellipsis, `min-width: 0`) and `.ca-clamp` (`--ca-clamp` lines, default 2), in `ca.utilities` (#724).
+
+---
+
 ## Component tokens
 
 A component token is a custom property a component reads before its default: `--ca-<component>-<property>` for the component, `--ca-<component>-<size|part>-<property>` for one size or part (it wins over the first). Declare it on `:root`, on a wrapper or through `ThemeOptions.components`. Unset, the component draws what it always drew. Renaming or removing a token below is a breaking change, like a class.

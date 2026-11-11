@@ -77,3 +77,12 @@ bunx @codeatlasdev/ui migrate --write src
 | `<Grid cols="2fr 1fr" gap={20}>` | `<Grid cols="2fr 1fr" gap="5">` and a class with `grid-template-columns: 2fr 1fr` (`cols` is reported, the gap is still converted) |
 
 What the codemod cannot map is left as it was and listed at the end with file, line, reason and recipe, for example `src/T.svelte:5 Grid: cols is a template string (write grid-template-columns in a class)` or `src/T.svelte:6 Stack: dynamic gap (use a step string: px / 4, e.g. gap={16} is gap="4")`. A `gap={gap}` left untouched is not harmless: it is now a step, so `16` means 64px. Add `--strict` to exit with code 1 when anything was left (CI, scripts).
+
+## Truncate and clamp
+
+`.ca-truncate` puts text on one line with an ellipsis and includes the `min-width: 0` a flex or grid child needs to shrink, so a long name never pushes a phone page sideways. `.ca-clamp` cuts after `--ca-clamp` lines (default 2); text that fits shows whole.
+
+```svelte
+<span class="ca-truncate">{conversation.title}</span>
+<p class="ca-clamp" style="--ca-clamp: 3">{message.preview}</p>
+```
