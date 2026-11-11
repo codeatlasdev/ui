@@ -11,6 +11,8 @@
   const t = useMessages(pageShell);
 
   interface Props {
+    /** `false`: the page does not scroll itself (the window or an outer shell does): no nested scroller, no tab stop, and the bottom clears `--ca-shell-inset-bottom`. @default true */
+    scroll?: boolean;
     title?: string;
     /**
      * Icon in a decorative tile before the title. Size and tint: `--ca-page-icon-size` and
@@ -53,7 +55,7 @@
     children?: Snippet;
   }
 
-  let { title, icon: Icon, count, titleExtra, display = false, description, gap, maxWidth, width = 'wide', actions, backHref, backLabel, onback, aside, asideLabel, class: className = '', children }: Props = $props();
+  let { scroll = true, title, icon: Icon, count, titleExtra, display = false, description, gap, maxWidth, width = 'wide', actions, backHref, backLabel, onback, aside, asideLabel, class: className = '', children }: Props = $props();
   const titleId = $props.id();
   // The page <h1> is rendered above; titles inside the shell default to <h2>.
   provideSectionHeadingLevel();
@@ -75,9 +77,10 @@
   bind:this={root}
   class="ca-page-shell {className}"
   style={rootStyle}
-  role="region"
+  role={scroll || title ? 'region' : undefined}
   aria-labelledby={title ? titleId : undefined}
-  tabindex="0"
+  tabindex={scroll ? 0 : undefined}
+  class:ca-page-shell--flow={!scroll}
   use:scrollFocusable
 >
   {#if title || description || actions || backHref || Icon || count !== undefined}
@@ -131,11 +134,18 @@
       min-height: 0;
       overflow-y: auto;
       overflow-x: hidden;
-      max-width: var(--ps-max, calc(var(--ca-space-unit) * 320));
+      max-width: var(--ps-max, var(--ca-page-max, calc(var(--ca-space-unit) * 320)));
       width: 100%;
       margin: 0 auto;
       padding: var(--ca-page-pt) var(--ca-page-px) var(--ca-space-12);
       box-sizing: border-box;
+    }
+
+    /* scroll={false}: the window (or an outer shell) scrolls; clear what the shell pins at the bottom (#935). */
+    .ca-page-shell--flow {
+      flex: none;
+      overflow: visible;
+      padding-bottom: calc(var(--ca-space-12) + var(--ca-shell-inset-bottom, 0px));
     }
 
     .ca-page-shell__header {
