@@ -411,10 +411,10 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "5021", path: "inputs/toolbar/Scrolling" },
 	{ id: "5022", path: "surfaces/collapsible/Flush" },
 	{ id: "5023", path: "surfaces/accordion/Flush" },
-	{ id: "5009", path: "display/kanban/DealsPage" },
-	{ id: "5010", path: "layout/master-detail/InboxPage" },
-	{ id: "5011", path: "layout/sortable-list/SettingsPage" },
-	{ id: "5012", path: "layout/record-list/RecordPage" },
+	{ id: "5024", path: "display/kanban/DealsPage" },
+	{ id: "5025", path: "layout/master-detail/InboxPage" },
+	{ id: "5026", path: "layout/sortable-list/SettingsPage" },
+	{ id: "5027", path: "layout/record-list/RecordPage" },
 ];
 
 /**
