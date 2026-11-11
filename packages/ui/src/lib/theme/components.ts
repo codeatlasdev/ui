@@ -222,6 +222,38 @@ export interface PasswordStrengthTokens {
 	labelTracking?: CssValue;
 }
 
+export interface SwitchSizeTokens {
+	/** `--ca-switch-<size>-track-width`. */
+	trackWidth?: CssValue;
+	/** `--ca-switch-<size>-track-height`. */
+	trackHeight?: CssValue;
+	/** `--ca-switch-<size>-padding`: between the track edge (inside the border) and the thumb. */
+	padding?: CssValue;
+	/** `--ca-switch-<size>-thumb-size`. */
+	thumbSize?: CssValue;
+}
+
+export interface SwitchTokens extends SwitchSizeTokens {
+	/** `--ca-switch-track-width`. @default 44px (`--ca-space-10` + `--ca-space-1`) */
+	trackWidth?: CssValue;
+	/** `--ca-switch-track-height`. @default 24px (`--ca-space-6`) */
+	trackHeight?: CssValue;
+	/** `--ca-switch-padding`. @default `--ca-space-0-5` */
+	padding?: CssValue;
+	/** `--ca-switch-border-width`: border of the track; the thumb travel and size keep it inside. @default 0px */
+	borderWidth?: CssValue;
+	/** `--ca-switch-thumb-size`. @default track height minus twice the padding and the border */
+	thumbSize?: CssValue;
+	/** `--ca-switch-thumb-bg`. @default white */
+	thumbBackground?: CssValue;
+	/** `--ca-switch-thumb-shadow`: a `box-shadow`, `none` for flat. @default `--ca-shadow-sm` */
+	thumbShadow?: CssValue;
+	/** `--ca-switch-on-bg`: the checked track. @default `--ca-state-indicator` */
+	onBackground?: CssValue;
+	/** The compact step (`size="sm"`): its own geometry, same colours. Defaults 32x20, 2px padding, 14px thumb, 1px border. */
+	sm?: SwitchSizeTokens;
+}
+
 /** `ThemeOptions.components`: component tokens, emitted on `:root`. */
 export interface ComponentTokens {
 	button?: ButtonTokens;
@@ -241,6 +273,7 @@ export interface ComponentTokens {
 	segmented?: SegmentedTokens;
 	emptyState?: EmptyStateTokens;
 	passwordStrength?: PasswordStrengthTokens;
+	switch?: SwitchTokens;
 }
 
 const SIZES = ["sm", "md", "lg"] as const;
@@ -356,6 +389,22 @@ export function componentTokens(c: ComponentTokens | undefined): Record<string, 
 		segmentedItem(out, "--ca-seg-item", seg);
 		for (const s of ["sm", "md"] as const)
 			if (seg[s]) segmentedItem(out, `--ca-seg-${s}-item`, seg[s]);
+	}
+	const sw = c.switch;
+	if (sw) {
+		for (const [prefix, t] of [
+			["--ca-switch", sw],
+			["--ca-switch-sm", sw.sm],
+		] as const) {
+			put(out, `${prefix}-track-width`, t?.trackWidth);
+			put(out, `${prefix}-track-height`, t?.trackHeight);
+			put(out, `${prefix}-padding`, t?.padding);
+			put(out, `${prefix}-thumb-size`, t?.thumbSize);
+		}
+		put(out, "--ca-switch-border-width", sw.borderWidth);
+		put(out, "--ca-switch-thumb-bg", sw.thumbBackground);
+		put(out, "--ca-switch-thumb-shadow", sw.thumbShadow);
+		put(out, "--ca-switch-on-bg", sw.onBackground);
 	}
 	const e = c.emptyState;
 	if (e) {

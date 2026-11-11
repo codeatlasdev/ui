@@ -70,7 +70,7 @@ The library follows. The size tokens components already read (`--ca-font-size-la
 
 ## Display text role
 
-Editorial and marketing headlines use the display role: `--ca-font-display` (the body font until `fonts.display` is set), `--ca-display-tracking` (defaults to `--ca-heading-tracking`), `--ca-display-leading` (`1.05`) and the fluid sizes `--ca-font-size-display-1`, `-2` and `-3`. Render it with [`<Heading size="display">`](/docs/display/heading/), or the `display` prop of `AuthCard`, `PageShell`, `EmptyState` and `SiteHeader`. Set it in the theme with `typography.displayTracking` and `typography.displayLeading`.
+Editorial and marketing headlines use the display role: `--ca-font-display` (the body font until `fonts.display` is set), `--ca-display-tracking` (defaults to `--ca-heading-tracking`), `--ca-display-leading` (`1.05`) and the fluid sizes `--ca-font-size-display-1`, `-2` and `-3`. Render it with [`<Heading size="display">`](/docs/display/heading/), or the `display` prop of `AuthCard`, `PageShell`, `EmptyState` and `SiteHeader`. Set it in the theme with `typography.displayTracking`, `typography.displayLeading` and `typography.displaySizes` (`{ 3: "clamp(36px, 22.4px + 3.6vw, 56px)" }`, any CSS length per step).
 
 `fonts.body`, `fonts.mono` and `fonts.display` set `--ca-font-sans`, `--ca-font-mono` and `--ca-font-display`. See [Theming](/docs/getting-started/theming/).
 

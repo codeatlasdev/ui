@@ -34,6 +34,8 @@ export type {
 	IconButtonTokens,
 	KbdTokens,
 	SegmentedTokens,
+	SwitchSizeTokens,
+	SwitchTokens,
 	TextAreaTokens,
 } from "./components.js";
 
@@ -292,6 +294,8 @@ export interface TypographyOptions {
 	displayTracking?: string;
 	/** Display text role line-height (unitless), e.g. 0.84. @default 1.05 */
 	displayLeading?: number;
+	/** Fluid size of each display step (`Heading size="display" | "display-2" | "display-3"`): any CSS length, `clamp()` allowed. Writes `--ca-font-size-display-1/2/3`. @default the built-in ramps */
+	displaySizes?: { 1?: string; 2?: string; 3?: string };
 	labelTracking?: string;
 	labelCase?: "none" | "uppercase";
 	/** Body line-height. @default 1.55 */
@@ -787,6 +791,8 @@ export function designTokens(
 	if (ty.headingCase) root["--ca-heading-case"] = ty.headingCase;
 	if (ty.displayTracking) root["--ca-display-tracking"] = ty.displayTracking;
 	if (ty.displayLeading !== undefined) root["--ca-display-leading"] = String(ty.displayLeading);
+	for (const n of [1, 2, 3] as const)
+		if (ty.displaySizes?.[n]) root[`--ca-font-size-display-${n}`] = ty.displaySizes[n];
 	if (ty.labelTracking) root["--ca-label-tracking"] = ty.labelTracking;
 	if (ty.labelCase) root["--ca-label-case"] = ty.labelCase;
 	if (ty.lineHeight !== undefined) {

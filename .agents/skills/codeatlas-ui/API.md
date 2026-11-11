@@ -3617,6 +3617,7 @@ Tokens: `--ca-swatch-color`
 | `label?` | `string` |  |  |
 | `hideLabel?` | `boolean` | `false` | Keeps `label` for assistive tech only (`.ca-sr-only`), for a field in a toolbar, table or grid that already shows its name. |
 | `name?` | `string` |  | Native `name`, so the switch is part of `FormData` on a plain form submit (value `on` when checked). |
+| `size?` | `'sm' \| 'md'` | `'md'` | `md` is today's 44 x 24 track; `sm` the compact 32 x 20 one for a dense row. Geometry comes from the `--ca-switch-*` tokens (`components.switch`). |
 | `aria-label?` | `string` |  | Accessible name when no visible `label` is rendered. |
 | `aria-labelledby?` | `string` |  |  |
 | `class?` | `string` | `''` |  |
@@ -3625,7 +3626,11 @@ Tokens: `--ca-swatch-color`
 
 Parts: `ca-switch` `ca-switch-wrapper` `ca-switch__input` `ca-switch__label` `ca-switch__label--disabled` `ca-switch__thumb`
 
-Data attributes: `data-disabled`, `data-state` (`checked`)
+Variables: `--ca-switch-border-color` `--ca-switch-border-width` `--ca-switch-on-bg` `--ca-switch-padding` `--ca-switch-sm-padding` `--ca-switch-sm-thumb-size` `--ca-switch-sm-track-height` `--ca-switch-sm-track-width` `--ca-switch-thumb-bg` `--ca-switch-thumb-shadow` `--ca-switch-thumb-size` `--ca-switch-track-height` `--ca-switch-track-width`
+
+Data attributes: `data-disabled`, `data-size` (`sm`), `data-state` (`checked`)
+
+Tokens: `--ca-switch-border-color` `--ca-switch-border-width` `--ca-switch-on-bg` `--ca-switch-padding` `--ca-switch-sm-padding` `--ca-switch-sm-thumb-size` `--ca-switch-sm-track-height` `--ca-switch-sm-track-width` `--ca-switch-thumb-bg` `--ca-switch-thumb-shadow` `--ca-switch-thumb-size` `--ca-switch-track-height` `--ca-switch-track-width`
 
 ## Table
 
@@ -5265,7 +5270,7 @@ Types:
 | `ColorScheme` | `type ColorScheme = "light" \| "dark" \| "system";` |  |
 | `ColorValue` | `type ColorValue = string \| { color: string; alpha: number };` | One color: any CSS color (`#rrggbb`, `oklch(1 0 0 / 0.62)`, `color-mix(…)`, `rgb(…)`) or an explicit alpha form that keeps the color and the opacity apart. |
 | `Columns` | `type Columns = (typeof COLUMNS)[number] \| `${(typeof COLUMNS)[number]}`;` |  |
-| `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldThemeTokens; textField?: TextFieldTokens; textArea?: TextAreaTokens; select?: FieldTokens; combobox?: FieldTokens; numberField?: FieldTokens; progress?: ProgressTokens; card?: CardTokens; popover?: PopoverTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; passwordStrength?: PasswordStrengthTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
+| `ComponentTokens` | `interface ComponentTokens { button?: ButtonTokens; iconButton?: IconButtonTokens; kbd?: KbdTokens; avatar?: AvatarTokens; field?: FieldThemeTokens; textField?: TextFieldTokens; textArea?: TextAreaTokens; select?: FieldTokens; combobox?: FieldTokens; numberField?: FieldTokens; progress?: ProgressTokens; card?: CardTokens; popover?: PopoverTokens; segmented?: SegmentedTokens; emptyState?: EmptyStateTokens; passwordStrength?: PasswordStrengthTokens; switch?: SwitchTokens; }` | `ThemeOptions.components`: component tokens, emitted on `:root`. |
 | `CueName` | `type CueName = \| "press" \| "release" \| "tap" \| "toggle-on" \| "toggle-off" \| "select" \| "check" \| "success" \| "error" \| "warning" \| "notify" \| "open" \| "close" \| "forward" \| "back" \| "tab" \| "tick" \| "hover";` | Semantic cue names. Actions, not components: `press` is any button, `tab` any tab change. |
 | `DateRange` | `interface DateRange { start: DateValue \| undefined; end: DateValue \| undefined; }` | Value of RangeCalendar / DateRangePicker. Both ends are undefined until picked. |
 | `DeepPartial` | `type DeepPartial<T> = T extends (...args: never[]) => unknown ? T : T extends object ? { [K in keyof T]?: DeepPartial<T[K]> } : T;` |  |
@@ -5350,6 +5355,8 @@ Types:
 | `StageInsets` | `interface StageInsets { top: number; right: number; bottom: number; left: number; }` |  |
 | `SurfaceColors` | `interface SurfaceColors { sunken: string; base: string; raised: string; overlay: string; }` |  |
 | `SurfaceStyle` | `type SurfaceStyle = \| "glass" \| "frosted" \| "solid" \| "flat" \| "outlined" \| "neumorphic" \| "clay" \| "tonal" \| "chrome";` | Surface material, the `defaultStyle` knob of the theme (default `solid`). glass/frosted blur the backdrop and are opt-in; the rest are opaque. |
+| `SwitchSizeTokens` | `interface SwitchSizeTokens { trackWidth?: CssValue; trackHeight?: CssValue; padding?: CssValue; thumbSize?: CssValue; }` |  |
+| `SwitchTokens` | `interface SwitchTokens extends SwitchSizeTokens { trackWidth?: CssValue; trackHeight?: CssValue; padding?: CssValue; borderWidth?: CssValue; thumbSize?: CssValue; thumbBackground?: CssValue; thumbShadow?: CssValue; onBackground?: CssValue; sm?: SwitchSizeTokens; }` |  |
 | `TextAreaTokens` | `interface TextAreaTokens extends FieldTokens { minHeight?: CssValue; }` |  |
 | `TextColors` | `interface TextColors { primary: string; secondary: string; disabled: string; }` |  |
 | `ThemeDefinition` | `interface ThemeDefinition { presets: PresetDefinition[]; defaultPreset: string; defaultScheme: ColorScheme; defaultStyle: SurfaceStyle; fonts: { display?: FontSpec; body?: FontSpec; mono?: FontSpec }; radius: number; controlRadius: "xs" \| "sm" \| "md" \| "lg" \| "xl" \| "pill"; density: Density; border: { width?: number; strong?: number }; typography: TypographyOptions; type: TypeScale; elevation: ElevationModel; motion: MotionOptions; iconStroke: number; noise: number; paper: Paper; components: ComponentTokens; overrides: { light?: TokenMap; dark?: TokenMap }; }` |  |
@@ -5364,7 +5371,7 @@ Types:
 | `TypeRole` | `type TypeRole = (typeof TYPE_ROLES)[number];` |  |
 | `TypeRoleSpec` | `interface TypeRoleSpec { size?: string; leading?: number \| string; tracking?: string; weight?: number; }` | One type role. Every part is optional: unset parts keep the default of the role. |
 | `TypeScale` | `type TypeScale = Partial<Record<TypeRole, TypeRoleSpec>>;` | The type scale by role: `title`, `heading`, `body`, `label`, `caption` and `num` (counts and times, with tabular digits). Library components that read `--ca-font-size-label`, `-body1` and `-caption` or `--ca-label-tracking` follow, so one entry restyles the app. |
-| `TypographyOptions` | `interface TypographyOptions { scale?: number; weights?: Partial<Record<"regular" \| "medium" \| "semibold" \| "bold" \| "heading", number>>; headingTracking?: string; headingCase?: "none" \| "uppercase"; displayTracking?: string; displayLeading?: number; labelTracking?: string; labelCase?: "none" \| "uppercase"; lineHeight?: number; measure?: string; }` |  |
+| `TypographyOptions` | `interface TypographyOptions { scale?: number; weights?: Partial<Record<"regular" \| "medium" \| "semibold" \| "bold" \| "heading", number>>; headingTracking?: string; headingCase?: "none" \| "uppercase"; displayTracking?: string; displayLeading?: number; displaySizes?: { 1?: string; 2?: string; 3?: string }; labelTracking?: string; labelCase?: "none" \| "uppercase"; lineHeight?: number; measure?: string; }` |  |
 | `UseDndOptions` | `interface UseDndOptions { messages?: Partial<DndMessages>; threshold?: number; holdMs?: number; edge?: number; id?: string; }` |  |
 | `UseListStateOptions` | `interface UseListStateOptions<T extends object> { data: T[]; perPage?: number; searchKeys?: (keyof T)[]; idKey?: keyof T; ofLabel?: string; }` | useListState — eliminates boilerplate state management in list/CRUD pages. |
 | `UseListStateReturn` | `interface UseListStateReturn<T> { get search(): string; set search(v: string); readonly filters: Record<string, string>; setFilter(key: string, value: string \| undefined): void; clearFilters(): void; readonly hasFilters: boolean; readonly filtered: T[]; readonly count: string; readonly rows: T[]; get page(): number; set page(v: number); readonly pageCount: number; readonly pageInfo: string; readonly selected: Set<T[keyof T]>; readonly allPageSelected: boolean; toggleAll(): void; toggleRow(id: T[keyof T]): void; clearSelection(): void; }` |  |
@@ -5455,6 +5462,7 @@ Types:
 | `segmented?` | `SegmentedTokens` |  |
 | `emptyState?` | `EmptyStateTokens` |  |
 | `passwordStrength?` | `PasswordStrengthTokens` |  |
+| `switch?` | `SwitchTokens` |  |
 
 #### DateRange
 
@@ -6007,6 +6015,29 @@ Types:
 | `raised` | `string` |  |
 | `overlay` | `string` |  |
 
+#### SwitchSizeTokens
+
+| Field | Type | Notes |
+|---|---|---|
+| `trackWidth?` | `CssValue` | `--ca-switch-<size>-track-width`. |
+| `trackHeight?` | `CssValue` | `--ca-switch-<size>-track-height`. |
+| `padding?` | `CssValue` | `--ca-switch-<size>-padding`: between the track edge (inside the border) and the thumb. |
+| `thumbSize?` | `CssValue` | `--ca-switch-<size>-thumb-size`. |
+
+#### SwitchTokens
+
+| Field | Type | Notes |
+|---|---|---|
+| `trackWidth?` | `CssValue` | `--ca-switch-track-width`. @default 44px (`--ca-space-10` + `--ca-space-1`) |
+| `trackHeight?` | `CssValue` | `--ca-switch-track-height`. @default 24px (`--ca-space-6`) |
+| `padding?` | `CssValue` | `--ca-switch-padding`. @default `--ca-space-0-5` |
+| `borderWidth?` | `CssValue` | `--ca-switch-border-width`: border of the track; the thumb travel and size keep it inside. @default 0px |
+| `thumbSize?` | `CssValue` | `--ca-switch-thumb-size`. @default track height minus twice the padding and the border |
+| `thumbBackground?` | `CssValue` | `--ca-switch-thumb-bg`. @default white |
+| `thumbShadow?` | `CssValue` | `--ca-switch-thumb-shadow`: a `box-shadow`, `none` for flat. @default `--ca-shadow-sm` |
+| `onBackground?` | `CssValue` | `--ca-switch-on-bg`: the checked track. @default `--ca-state-indicator` |
+| `sm?` | `SwitchSizeTokens` | The compact step (`size="sm"`): its own geometry, same colours. Defaults 32x20, 2px padding, 14px thumb, 1px border. |
+
 #### TextAreaTokens
 
 | Field | Type | Notes |
@@ -6101,6 +6132,7 @@ Types:
 | `headingCase?` | `"none" \| "uppercase"` |  |
 | `displayTracking?` | `string` | Display text role (`Heading size="display"`) letter-spacing, e.g. "-0.055em". @default the heading tracking |
 | `displayLeading?` | `number` | Display text role line-height (unitless), e.g. 0.84. @default 1.05 |
+| `displaySizes?` | `{ 1?: string; 2?: string; 3?: string }` | Fluid size of each display step (`Heading size="display" \| "display-2" \| "display-3"`): any CSS length, `clamp()` allowed. Writes `--ca-font-size-display-1/2/3`. @default the built-in ramps |
 | `labelTracking?` | `string` |  |
 | `labelCase?` | `"none" \| "uppercase"` |  |
 | `lineHeight?` | `number` | Body line-height. @default 1.55 |

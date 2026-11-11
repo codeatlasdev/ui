@@ -62,6 +62,51 @@ describe("design knobs → tokens", () => {
 		expect(css).toContain("--ca-btn-sm-gap: 6px;");
 	});
 
+	it("components.switch emits the --ca-switch-* geometry and colour tokens (#691)", () => {
+		const css = themeCSS(
+			defineTheme({
+				components: {
+					switch: {
+						trackWidth: "40px",
+						trackHeight: "24px",
+						padding: "2px",
+						borderWidth: "1px",
+						thumbSize: "18px",
+						thumbBackground: "var(--ca-brand-contrast)",
+						thumbShadow: "none",
+						onBackground: "var(--ca-brand-fill)",
+						sm: { trackWidth: "32px", trackHeight: "20px", thumbSize: "14px" },
+					},
+				},
+			})
+		);
+		for (const decl of [
+			"--ca-switch-track-width: 40px;",
+			"--ca-switch-track-height: 24px;",
+			"--ca-switch-padding: 2px;",
+			"--ca-switch-border-width: 1px;",
+			"--ca-switch-thumb-size: 18px;",
+			"--ca-switch-thumb-bg: var(--ca-brand-contrast);",
+			"--ca-switch-thumb-shadow: none;",
+			"--ca-switch-on-bg: var(--ca-brand-fill);",
+			"--ca-switch-sm-track-width: 32px;",
+			"--ca-switch-sm-track-height: 20px;",
+			"--ca-switch-sm-thumb-size: 14px;",
+		])
+			expect(css).toContain(decl);
+	});
+
+	it("typography.displaySizes emits --ca-font-size-display-1/2/3 (#691)", () => {
+		const css = themeCSS(
+			defineTheme({
+				typography: { displaySizes: { 3: "clamp(36px, 22.4px + 3.6vw, 56px)", 1: "4rem" } },
+			})
+		);
+		expect(css).toContain("--ca-font-size-display-3: clamp(36px, 22.4px + 3.6vw, 56px);");
+		expect(css).toContain("--ca-font-size-display-1: 4rem;");
+		expect(css).not.toContain("--ca-font-size-display-2");
+	});
+
 	it("components.emptyState emits the icon, title, description and actions tokens (#707)", () => {
 		const css = themeCSS(
 			defineTheme({

@@ -21,7 +21,7 @@ import DisplaySrc from "~/demos/display/heading/Display.svelte?raw";
 
 `Heading` has no `id` prop (it takes `level`, `size`, `class` and its children only), so it cannot be the target of an `aria-labelledby`. A section title that names its `<section>` is a plain `<h2 id="pricing-title">` with `aria-labelledby="pricing-title"` on the `Section`; use `Heading` for the headline whose look matters (the hero `display`), and `aria-label` on the section when the headline is the only name it needs.
 
-`size="display"` is the display text role. It reads `--ca-font-display` (the body font until the theme sets `fonts.display`), `--ca-display-tracking`, `--ca-display-leading` and the fluid `--ca-font-size-display-1`. `display-2` and `display-3` are the smaller steps of the same role. Set the knobs once in the theme: `defineTheme({ fonts: { display: "Fraunces, serif" }, typography: { displayTracking: "-0.055em", displayLeading: 0.84 } })`.
+`size="display"` is the display text role. It reads `--ca-font-display` (the body font until the theme sets `fonts.display`), `--ca-display-tracking`, `--ca-display-leading` and the fluid `--ca-font-size-display-1`. `display-2` and `display-3` are the smaller steps of the same role. Set the knobs once in the theme: `defineTheme({ fonts: { display: "Fraunces, serif" }, typography: { displayTracking: "-0.055em", displayLeading: 0.84, displaySizes: { 3: "clamp(36px, 22.4px + 3.6vw, 56px)" } } })`. `displaySizes` sets `--ca-font-size-display-1/2/3` (any CSS length, `clamp()` allowed).
 
 Title-bearing components take the same role with a `display` prop: `AuthCard`, `PageShell`, `EmptyState` (title at `--ca-font-size-display-3`) and `SiteHeader` (the current crumb). Without it their titles keep the compact heading look.
 

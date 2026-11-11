@@ -9,6 +9,8 @@
     hideLabel?: boolean;
     /** Native `name`, so the switch is part of `FormData` on a plain form submit (value `on` when checked). */
     name?: string;
+    /** `md` is today's 44 x 24 track; `sm` the compact 32 x 20 one for a dense row. Geometry comes from the `--ca-switch-*` tokens (`components.switch`). */
+    size?: 'sm' | 'md';
     /** Accessible name when no visible `label` is rendered. */
     'aria-label'?: string;
     'aria-labelledby'?: string;
@@ -24,6 +26,7 @@
     label,
     hideLabel = false,
     name,
+    size = 'md',
     'aria-label': ariaLabel,
     'aria-labelledby': ariaLabelledby,
     class: className = '',
@@ -37,7 +40,7 @@
 <div class="ca-switch-wrapper {className}">
   <!-- Native checkbox with role="switch" is the control (keyboard, form, label association);
        the track and thumb around it only paint. -->
-  <span class="ca-switch" data-state={checked ? 'checked' : 'unchecked'} data-disabled={disabled ? '' : undefined}>
+  <span class="ca-switch" data-size={size === 'sm' ? 'sm' : undefined} data-state={checked ? 'checked' : 'unchecked'} data-disabled={disabled ? '' : undefined}>
     <input
       id={switchId}
       {name}
@@ -82,18 +85,22 @@
     }
 
     :global(.ca-switch) {
-      /* Geometry from the spacing scale; thumb travel is derived so it stays flush at any density. */
-      --_track-w: calc(var(--ca-space-10) + var(--ca-space-1));
-      --_track-h: var(--ca-space-6);
-      --_pad: var(--ca-space-0-5);
-      --_thumb: calc(var(--_track-h) - 2 * var(--_pad));
+      /* Geometry comes from --ca-switch-* tokens (theme: components.switch). The thumb sits in the
+         content box (inside border and padding) and travels the free width, so it is flush at both
+         ends for any size. */
+      --_track-w: var(--ca-switch-track-width, calc(var(--ca-space-10) + var(--ca-space-1)));
+      --_track-h: var(--ca-switch-track-height, var(--ca-space-6));
+      --_pad: var(--ca-switch-padding, var(--ca-space-0-5));
+      --_bw: var(--ca-switch-border-width, 0px);
+      --_thumb: var(--ca-switch-thumb-size, calc(var(--_track-h) - 2 * (var(--_pad) + var(--_bw))));
+      box-sizing: border-box;
       display: inline-flex;
       align-items: center;
       width: var(--_track-w);
       height: var(--_track-h);
       border-radius: var(--ca-radius-pill);
       background: var(--ca-outline-default);
-      border: none;
+      border: var(--_bw) solid var(--ca-switch-border-color, transparent);
       cursor: pointer;
       padding: var(--_pad);
       flex-shrink: 0;
@@ -101,8 +108,17 @@
       position: relative;
     }
 
+    /* Compact step: its own tokens, defaults 32 x 20, 2px padding, 1px border, 14px thumb. */
+    :global(.ca-switch[data-size='sm']) {
+      --_track-w: var(--ca-switch-sm-track-width, var(--ca-space-8));
+      --_track-h: var(--ca-switch-sm-track-height, var(--ca-space-5));
+      --_pad: var(--ca-switch-sm-padding, var(--ca-space-0-5));
+      --_bw: var(--ca-switch-border-width, 1px);
+      --_thumb: var(--ca-switch-sm-thumb-size, calc(var(--_track-h) - 2 * (var(--_pad) + var(--_bw))));
+    }
+
     :global(.ca-switch[data-state='checked']) {
-      background: var(--ca-state-indicator);
+      background: var(--ca-switch-on-bg, var(--ca-state-indicator));
     }
 
     /* Disabled from tokens, not opacity: track and thumb keep a defined contrast. */
@@ -148,8 +164,8 @@
       width: var(--_thumb);
       height: var(--_thumb);
       border-radius: 50%;
-      background: oklch(1 0 0);
-      box-shadow: var(--ca-shadow-sm);
+      background: var(--ca-switch-thumb-bg, oklch(1 0 0));
+      box-shadow: var(--ca-switch-thumb-shadow, var(--ca-shadow-sm));
       transition: transform var(--ca-duration-fast) var(--ca-ease-spring);
       transform: translateX(0);
       flex-shrink: 0;
@@ -157,7 +173,7 @@
     }
 
     :global(.ca-switch[data-state='checked'] .ca-switch__thumb) {
-      transform: translateX(calc(var(--_track-w) - var(--_track-h)));
+      transform: translateX(calc(var(--_track-w) - var(--_thumb) - 2 * (var(--_pad) + var(--_bw))));
     }
 
     .ca-switch__label {
