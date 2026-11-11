@@ -104,6 +104,31 @@ Pick the subset your content uses (`latin` above) and preload only the faces vis
 
 `.ca-prose` is tuned for documentation: tables, code and callouts. For marketing Markdown (lead paragraphs, larger headings, lists of benefits), write your own prose class in the app, built from the type and spacing tokens, rather than overriding `.ca-prose`.
 
+## Mobile head
+
+Next to `seoHead` and the theme markup `caUI` injects, a public site usually wants:
+
+```astro
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="format-detection" content="telephone=no" />
+<meta name="apple-mobile-web-app-title" content="Acme" />
+```
+
+- Leave `theme-color` to the theme (see above). Pad fixed bars with the `--ca-safe-*` tokens.
+- Size a hero with `svh`, not `dvh`: `dvh` changes as the browser bar shows and hides, so the hero jumps while scrolling.
+- `-webkit-text-size-adjust: 100%` keeps iOS from enlarging text on rotation.
+
+## Inline scripts
+
+A script that must run before the first paint (restoring state, setting a class) goes inline. An expression child is the trap: `<script is:inline>{code}</script>` can reach the page as literal text with its braces, and nothing runs. Pass the code with `set:html`:
+
+```astro
+---
+const restore = `document.documentElement.classList.add("is-loading")`;
+---
+<script is:inline set:html={restore} />
+```
+
 ## Lint and tests
 
 `bunx @codeatlasdev/ui lint src` checks `.svelte`, `.astro` and `.css` files for hex colours, raw px values, inline styles and `:global(.ca-*)`; the literal-text rule runs on `.svelte` templates only. A site that reproduces an existing brand will trip the colour and px rules in its brand sheet by design: keep those values in one file and lint the other paths (`lint src/components src/layouts src/pages`), or mark a single line with `ca-ui-workaround(#<issue>)`.
