@@ -36,6 +36,7 @@
           class:ca-bottom-nav__more-btn--active={i === activeIndex}
           type="button"
           aria-label={name(mod)}
+          title={mod.fullLabel && mod.fullLabel !== mod.label ? mod.fullLabel : undefined}
           aria-current={i === activeIndex ? 'page' : undefined}
           onclick={() => onPick(i)}
         >

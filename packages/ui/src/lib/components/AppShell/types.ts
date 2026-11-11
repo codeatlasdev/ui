@@ -69,6 +69,13 @@ export interface NavSection {
 export interface NavModule {
 	id: string;
 	label: string;
+	/**
+	 * Full name when the visible `label` is an abbreviation ("CRM" for "Customer relationships").
+	 * It is the rail tooltip, the panel and mobile header title, and part of the accessible name.
+	 * The accessible name stays the visible `label` (WCAG 2.5.3, label in name); the full label is the
+	 * control's description (its `title`), read after the name. Defaults to `label`.
+	 */
+	fullLabel?: string;
 	icon: IconComponent;
 	basePath: string;
 	/** Extra URL prefixes that also activate this module in the Rail */
@@ -241,8 +248,9 @@ export function moduleBadgeText(mod: NavModule): string {
 }
 
 /**
- * Accessible name of a module button: the label, plus the badge as text. `badgeLabel` wins; without
- * it a count reads "N unread" and a dot reads "New" (`unread` and `fresh` come from the i18n group).
+ * Accessible name of a module button: the full label, plus the badge as text. `badgeLabel` wins;
+ * without it a count reads "N unread" and a dot reads "New" (`unread` and `fresh` come from the
+ * i18n group). The visible `label` is always part of the name (WCAG 2.5.3).
  */
 export function moduleName(
 	mod: NavModule,

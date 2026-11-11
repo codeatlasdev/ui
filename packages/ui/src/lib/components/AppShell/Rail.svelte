@@ -76,7 +76,7 @@
           class:ca-rail__icon--labeled={labels}
           aria-label={moduleName(mod, { unread: t().appShell.unread, fresh: t().appShell.new })}
           aria-current={active ? 'page' : undefined}
-          title={mod.label}
+          title={mod.fullLabel ?? mod.label}
           type="button"
           bind:this={iconEls[i]}
           style="--rail-scale:{scaleFor(i)}"
