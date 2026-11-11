@@ -9,9 +9,11 @@
     onsort?: () => void;
     /** Column label. */
     children?: Snippet;
+    /** `false` draws no arrow while the column is unsorted: only the sorted column shows one (a quiet, mostly-read table). @default true */
+    idleIcon?: boolean;
     class?: string;
   }
-  let { sort = 'none', onsort, children, class: className = '' }: Props = $props();
+  let { sort = 'none', onsort, children, idleIcon = true, class: className = '' }: Props = $props();
 </script>
 
 <th
@@ -25,7 +27,7 @@
       <ArrowUp size={12} stroke-width={2.5} class="ca-table-sort__icon" aria-hidden="true" />
     {:else if sort === 'desc'}
       <ArrowDown size={12} stroke-width={2.5} class="ca-table-sort__icon" aria-hidden="true" />
-    {:else}
+    {:else if idleIcon}
       <ArrowUpDown size={12} stroke-width={1.8} class="ca-table-sort__icon" aria-hidden="true" />
     {/if}
   </button>
