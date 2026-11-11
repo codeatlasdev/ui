@@ -2,6 +2,7 @@ import { afterAll, afterEach, beforeAll, describe, expect, it, vi } from "vitest
 import { page, userEvent } from "vitest/browser";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import { touchTarget } from "../../../../tests/touch-target";
 import { VIEWPORTS } from "../../../../tests/viewports";
 import { setLocale } from "../../i18n/index.js";
 import DocsHarness from "./DocsHarness.test.svelte";
@@ -243,5 +244,91 @@ describe("DocsShell page surface (#743)", () => {
 		await render(DocsHarness, { kind: "shell", surface: "inherit" });
 		expect(html.hasAttribute("data-ca-reading")).toBe(false);
 		expect(meshOf()).not.toBe("none");
+	});
+});
+
+describe("DocsShell main padding (#737)", () => {
+	const main = () => document.querySelector("main.ca-docs-main") as HTMLElement;
+	const pad = () => {
+		const s = getComputedStyle(main());
+		return [s.paddingTop, s.paddingRight, s.paddingBottom, s.paddingLeft].map(Number.parseFloat);
+	};
+	const pager = { next: { href: "/n", title: "Next" } };
+
+	it("keeps today's gutter by default; tokens on an ancestor change it", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		await render(DocsHarness, { kind: "bleed" });
+		const [pt, pr, pb, pl] = pad();
+		expect(pt).toBe(32);
+		expect(pb).toBe(64);
+		expect(pr).toBeGreaterThan(0);
+		expect(pl).toBe(pr);
+		const root = document.documentElement.style;
+		root.setProperty("--ca-docs-main-pt", "4px");
+		root.setProperty("--ca-docs-main-pb", "6px");
+		root.setProperty("--ca-docs-main-px", "10px");
+		try {
+			expect(pad()).toEqual([4, 10, 6, 10]);
+		} finally {
+			for (const t of ["pt", "pb", "px"]) root.removeProperty(`--ca-docs-main-${t}`);
+		}
+	});
+
+	it.each(Object.keys(VIEWPORTS) as (keyof typeof VIEWPORTS)[])(
+		'padding="none" is 0 at %s',
+		async (name: keyof typeof VIEWPORTS) => {
+			const [w, h] = VIEWPORTS[name];
+			await page.viewport(w, h);
+			const screen = await render(DocsHarness, { kind: "bleed", padding: "none" });
+			expect(pad()).toEqual([0, 0, 0, 0]);
+			expect(main().id).toBe("main");
+			expect(document.querySelectorAll("main")).toHaveLength(1);
+			await expect
+				.element(screen.getByRole("link", { name: "Ir para o conteúdo" }))
+				.toHaveAttribute("href", "#main");
+		}
+	);
+
+	it('padding="x" and "y" remove one axis only', async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		const x = await render(DocsHarness, { kind: "bleed", padding: "x" });
+		const [pt, pr, pb, pl] = pad();
+		expect([pt, pb]).toEqual([32, 64]);
+		expect([pr, pl]).toEqual([0, 0]);
+		x.unmount();
+		await render(DocsHarness, { kind: "bleed", padding: "y" });
+		const [t2, r2, b2, l2] = pad();
+		expect([t2, b2]).toEqual([0, 0]);
+		expect(r2).toBeGreaterThan(0);
+		expect(l2).toBe(r2);
+	});
+
+	it("a data-ca-bleed child spans the main box edge to edge, with no negative margin", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		const screen = await render(DocsHarness, { kind: "bleed" });
+		const hero = screen.getByTestId("hero").element() as HTMLElement;
+		const m = main().getBoundingClientRect();
+		const h = hero.getBoundingClientRect();
+		expect(h.left).toBeCloseTo(m.left, 1);
+		expect(h.right).toBeCloseTo(m.right, 1);
+		expect(document.documentElement.scrollWidth).toBeLessThanOrEqual(window.innerWidth);
+	});
+
+	it("padding=none keeps the pager clearance on narrow screens", async () => {
+		await page.viewport(...VIEWPORTS.mobile);
+		const screen = await render(DocsHarness, { kind: "bleed", padding: "none", pager });
+		const [, , pb] = pad();
+		expect(pb).toBeGreaterThanOrEqual(touchTarget());
+		const bar = document.querySelector(".ca-docs-pager") as HTMLElement;
+		const last = screen.getByTestId("last").element() as HTMLElement;
+		expect(last.getBoundingClientRect().bottom).toBeLessThanOrEqual(
+			bar.getBoundingClientRect().top
+		);
+	});
+
+	it("passes axe with padding=none", async () => {
+		await page.viewport(...VIEWPORTS.desktop);
+		const screen = await render(DocsHarness, { kind: "bleed", padding: "none" });
+		expect(await checkA11y(screen.container)).toHaveNoViolations();
 	});
 });

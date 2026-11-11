@@ -69,6 +69,7 @@ Tables in `.ca-prose` (a bare `<table>`, or one inside `.ca-table-wrap`) size th
   { name: "menuFooter", type: "Snippet", description: "Content below the sidebar tree in the mobile Sheet, such as external links." },
   { name: "pager", type: "{ prev?: DocsPagerLink; next?: DocsPagerLink }", description: "Previous and next pages, as { href, title }. Cards at the end of the article on wide screens, a fixed bottom action bar on narrow ones." },
   { name: "surface", type: "'flat' | 'inherit'", default: "'flat'", description: "Page surface behind the shell. The header is opaque, so a glass or frosted page mesh would show as a hard-edged band under it: `flat` sets `data-ca-reading` on `<html>` while mounted and drops the mesh. `inherit` keeps the theme's mesh." },
+  { name: "padding", type: "'default' | 'none' | 'x' | 'y'", default: "'default'", description: "Gutter of the content area. `none` lets a full-bleed landing meet the header, the footer and the screen edges; `x` / `y` drop one axis. The clearance above the fixed mobile pager stays. Tokens `--ca-docs-main-pt`, `-pb`, `-px` change the gutter, and a `data-ca-bleed` child of a padded page spans it edge to edge." },
   { name: "children", type: "Snippet", description: "Required. Page content." },
 ]} />
 
