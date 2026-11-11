@@ -1,6 +1,8 @@
+import { createRawSnippet } from "svelte";
 import { describe, expect, it } from "vitest";
 import { render } from "vitest-browser-svelte";
 import { checkA11y } from "../../../../tests/a11y";
+import MessageBubble from "./MessageBubble.svelte";
 import Harness from "./MessageBubble.test.svelte";
 
 const bubble = (c: Element) => c.querySelector(".ca-bubble") as HTMLElement;
@@ -241,5 +243,18 @@ describe("MessageBubble", () => {
 			expect(r.left).toBeGreaterThanOrEqual(b.left - 0.5);
 			expect(r.right).toBeLessThanOrEqual(b.right + 0.5);
 		}
+	});
+});
+
+describe("MessageBubble rest attributes (#723)", () => {
+	it("forwards data-* and id to the row", async () => {
+		const screen = await render(MessageBubble, {
+			children: createRawSnippet(() => ({ render: () => "<span>hi</span>" })),
+			id: "m1",
+			"data-msg": "m1",
+		} as never);
+		const row = screen.container.querySelector(".ca-bubble-row") as HTMLElement;
+		expect(row.id).toBe("m1");
+		expect(row.dataset.msg).toBe("m1");
 	});
 });

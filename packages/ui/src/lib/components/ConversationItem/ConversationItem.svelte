@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { Snippet } from 'svelte';
+  import type { HTMLAttributes } from 'svelte/elements';
   import { BellOff, Pin } from '@lucide/svelte';
   import { useMessages } from '../../i18n/state.svelte.js';
   import { chat } from '../../i18n/groups/chat.js';
@@ -57,6 +58,7 @@
     href,
     onclick,
     class: className = '',
+    ...rest
   }: Props = $props();
 
   let hasUnread = $derived(!!unread && unread > 0);
@@ -96,6 +98,7 @@
 
 {#if href}
   <a
+    {...rest}
     {href}
     class="ca-conversation {className}"
     class:ca-conversation--unread={hasUnread}
@@ -105,6 +108,7 @@
   >{@render content()}</a>
 {:else}
   <button
+    {...rest}
     type="button"
     class="ca-conversation {className}"
     class:ca-conversation--unread={hasUnread}
