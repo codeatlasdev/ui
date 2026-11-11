@@ -20,10 +20,16 @@ function runCli(args: string[], project: Record<string, string> = {}) {
 	// `doctor` and `tokens import` read the i18n catalog and the palette math; the bundle inlines them.
 	cpSync(join(pkgRoot, "src/lib/i18n"), join(cli, "src/lib/i18n"), { recursive: true });
 	cpSync(join(pkgRoot, "src/lib/utils"), join(cli, "src/lib/utils"), { recursive: true });
+	// `lint` reads the breakpoint scale from the same file the components do.
+	mkdirSync(join(cli, "src/lib/components/Layout"), { recursive: true });
+	cpSync(
+		join(pkgRoot, "src/lib/components/Layout/layout.ts"),
+		join(cli, "src/lib/components/Layout/layout.ts")
+	);
 	cpSync(join(pkgRoot, "bin/codeatlas-ui.ts"), join(cli, "bin/codeatlas-ui.ts"));
 	// The published bundle inlines magic-string and keeps svelte as a peer: only typescript is absent.
 	mkdirSync(join(cli, "node_modules"), { recursive: true });
-	for (const dep of ["magic-string", "svelte"])
+	for (const dep of ["magic-string", "svelte", "esm-env"])
 		symlinkSync(realpathSync(join(pkgRoot, "node_modules", dep)), join(cli, "node_modules", dep));
 	const app = join(root, "app");
 	for (const [path, content] of Object.entries(project)) {

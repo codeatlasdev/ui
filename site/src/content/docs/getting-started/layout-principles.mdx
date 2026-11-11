@@ -1,0 +1,51 @@
+---
+title: Layout principles
+description: The layout rules every screen built with the library follows, the checklist before shipping a screen, and the codeatlas-ui lint rules that enforce them.
+group: Getting started
+order: 20
+---
+
+These are working rules, not findings about users: they keep screens built by different people (and agents) aligned, with the same rhythm and density, without anyone thinking about padding.
+
+## The rules
+
+1. **One gutter per level.** Page (`--ca-page-px`), panel (`--ca-space-4`), card (`--ca-card-padding`). A child never adds horizontal padding to its parent's: an `AppList`, `AppForm` or `AppSettings` inside a `PageShell` takes `embedded`.
+2. **One frame per group.** Inside a surface, separate with a divider or spacing, not another box. A card inside a card takes a concentric radius, but prefer sections (`Collapsible variant="flush"`, `Divider`).
+3. **Vertical rhythm in three steps:** `--ca-space-2` inside an item, `--ca-space-4` between items, `--ca-space-6` between sections.
+4. **Every flex row says what shrinks.** The growing item gets `min-width: 0` and an ellipsis; the title wins over the actions.
+5. **Action bars stay on one line.** What does not fit goes into a menu (`Toolbar overflow="menu"`).
+6. **Check three widths: 360, 1280, 1920.** No sideways scroll, no one-character column, no empty area over a third of the screen.
+7. **Components answer their container, the page answers the viewport.** Use `@container` inside a component and only the 600 / 900 / 1200 / 1536 scale in `@media`: `min-width: 900px` from a step up, `max-width: 899.98px` below it, so the two sides never both match at exactly 900px. With a bundler that supports `@custom-media` (Lightning CSS `drafts.customMedia`, PostCSS preset-env), `@import "@codeatlasdev/ui/styles/breakpoints.css"` gives `@media (--ca-md)` and `@media (--ca-below-md)`; in TypeScript the same scale is `BREAKPOINTS`. [Where components switch](/docs/getting-started/mobile/#where-components-switch) lists the library's own widths.
+
+   | Step | From (`min-width`) | `@custom-media` | Below (`max-width`) | `@custom-media` |
+   |---|---|---|---|---|
+   | `sm` | 600px | `--ca-sm` | 599.98px | `--ca-below-sm` |
+   | `md` | 900px | `--ca-md` | 899.98px | `--ca-below-md` |
+   | `lg` | 1200px | `--ca-lg` | 1199.98px | `--ca-below-lg` |
+   | `xl` | 1536px | `--ca-xl` | 1535.98px | `--ca-below-xl` |
+8. **Flat by default.** Gradient, glow and glass are an exception with a reason.
+9. **`--ca-radius-control` is for one-line elements** (button, field, chip), never a container with several rows.
+
+## Before you ship a screen
+
+- `auditLayout({ mobile: true })` from `@codeatlasdev/ui/testing` is empty at 360px, and `auditLayout()` at 1280 and 1920.
+- `bunx @codeatlasdev/ui lint src` is clean.
+- Keyboard only: every action reachable, focus visible, Escape closes what opened.
+- Light and dark both read.
+
+## Lint rules
+
+`bunx @codeatlasdev/ui lint src` checks `.svelte`, `.astro` and `.css` files. `--rules breakpoint,vh-offset` runs only those; a bare `--rules` lists them. A `ca-ui-workaround(#<issue>)` comment on the line or the one above excuses a finding.
+
+| Rule | Flags | Fix |
+|---|---|---|
+| `hex` | a literal `#rrggbb` colour | a `--ca-*` colour token |
+| `px` | a raw px size (0 and 1px excepted) | a `--ca-space-*` or radius token |
+| `inline-style` | `style=""` setting anything but a custom property | a class with tokens |
+| `global-ca` | `:global(.ca-*)` outside `ui-guard.config.json`'s `allow` | a documented part, token or data attribute |
+| `i18n-literal` | visible text in a template | read it from your messages ([App copy](/docs/getting-started/app-copy/)) |
+| `layout-css` | `padding`, `margin` or `gap` (and their `-top`, `-inline` forms) in rem/em; custom properties and `scroll-margin` are not spacing | `--ca-space-*` |
+| `breakpoint` | any `min-width` / `max-width` condition of a `@media` query off 600 / 900 / 1200 / 1536 (`max-width` is the step minus 0.02px) | the scale, or `@container` for a component |
+| `vh-offset` | `calc(var(--ca-vh) - 17rem)` | the shell inset tokens (`--ca-shell-inset-*`) or a flex column |
+| `fixed-width-row` | a `flex: 1` item with `white-space: nowrap` and neither `min-width: 0` nor `overflow: hidden`/`auto`/`scroll` | `min-width: 0`, `overflow: hidden`, `text-overflow: ellipsis` |
+| `nested-surface` | a `Card` or `Surface` directly inside another | a divider or spacing inside one surface |
