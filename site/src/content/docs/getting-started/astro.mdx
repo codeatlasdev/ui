@@ -109,14 +109,15 @@ Pick the subset your content uses (`latin` above) and preload only the faces vis
 Next to `seoHead` and the theme markup `caUI` injects, a public site usually wants:
 
 ```astro
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content" />
 <meta name="format-detection" content="telephone=no" />
-<meta name="apple-mobile-web-app-title" content="Acme" />
 ```
 
-- Leave `theme-color` to the theme (see above). Pad fixed bars with the `--ca-safe-*` tokens.
+- Leave `theme-color` to the theme (see above): the init script rewrites it from the active preset, so a per-surface value (a dark one over a dark hero) is not possible today.
+- The home-screen title comes from `pwaHead({ title })` (see [PWA](/docs/getting-started/pwa/)); do not write `apple-mobile-web-app-title` by hand as well.
+- Pad fixed bars with the `--ca-safe-*` tokens.
 - Size a hero with `svh`, not `dvh`: `dvh` changes as the browser bar shows and hides, so the hero jumps while scrolling.
-- `-webkit-text-size-adjust: 100%` keeps iOS from enlarging text on rotation.
+- iOS text enlargement on rotation is already off: the stylesheet sets `text-size-adjust: 100%` on `html`.
 
 ## Inline scripts
 
@@ -124,7 +125,7 @@ A script that must run before the first paint (restoring state, setting a class)
 
 ```astro
 ---
-const restore = `document.documentElement.classList.add("is-loading")`;
+const restore = `document.documentElement.dataset.nav = sessionStorage.getItem("nav") ?? "closed"`;
 ---
 <script is:inline set:html={restore} />
 ```
