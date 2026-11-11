@@ -1,0 +1,30 @@
+<!-- @codeatlasdev/ui demo #5019 · MIT License (c) CodeAtlas · https://ui.codeatlas.com.br/docs/inputs/chip-group#multiple-small -->
+Element: #5019 Multiple, small (inputs/chip-group)
+What it shows: Multi-select shortcut chips: compact 28px pills that wrap, each toggling on or off with a check icon.
+When to use: Combinable one-tap shortcuts in a search form (niches, tags, categories) where the user picks several and unpicks any of them.
+Spec:
+- `<ChipGroup multiple size="sm" label="Most searched" items={niches} bind:value={picked} />`
+- `niches` has 7 items: dentists, lawyers, doctors, architects, accountants, vets and a disabled `gyms`
+- `bind:value={picked}` is a `string[]` with initial `['dentists', 'lawyers']`; selected chips show a check icon
+Tags: chip-group, chips, multiple, multi-select, toggle, tags, small, filter
+Needs: @codeatlasdev/ui@4.6.0
+Components: ChipGroup
+Live demo: https://ui.codeatlas.com.br/docs/inputs/chip-group#multiple-small
+
+<script lang="ts">
+  import { ChipGroup } from '@codeatlasdev/ui';
+
+  let picked = $state<string[]>(['dentists', 'lawyers']);
+
+  const niches = [
+    { value: 'dentists', label: 'Dentists' },
+    { value: 'lawyers', label: 'Lawyers' },
+    { value: 'doctors', label: 'Doctors' },
+    { value: 'architects', label: 'Architects' },
+    { value: 'accountants', label: 'Accountants' },
+    { value: 'vets', label: 'Veterinarians' },
+    { value: 'gyms', label: 'Gyms', disabled: true },
+  ];
+</script>
+
+<ChipGroup multiple size="sm" label="Most searched" items={niches} bind:value={picked} />

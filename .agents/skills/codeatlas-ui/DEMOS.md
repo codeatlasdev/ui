@@ -405,3 +405,4 @@ Every demo has a stable number. Fetch one with `get_demo` (MCP) or https://ui.co
 | 5008 | Group sizes | display/avatar | AvatarGroup |
 | 5017 | Form with a preview and help aside | layout/form-page | AppForm, Button, Card, FormSection, Select, Stat, Stepper, TextField |
 | 5018 | Rating | inputs/rating | Rating |
+| 5019 | Multiple, small | inputs/chip-group | ChipGroup |

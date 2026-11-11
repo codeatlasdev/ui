@@ -406,7 +406,7 @@ export const CATALOG: readonly DemoEntry[] = [
 	{ id: "5008", path: "display/avatar/GroupSizes" },
 	{ id: "5017", path: "layout/form-page/WithAside" },
 	{ id: "5018", path: "inputs/rating/Default" },
-	{ id: "5018", path: "inputs/chip-group/MultipleSmall" },
+	{ id: "5019", path: "inputs/chip-group/MultipleSmall" },
 ];
 
 /**

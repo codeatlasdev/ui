@@ -399,3 +399,4 @@ id	group	page	title	names	tags	summary
 5008	display	avatar	Group sizes		avatar,avatar-group,sizes,rounded,overflow	Five avatar groups at sizes `xs` to `xl` and a rounded one, each capped at three with a `+2` chip.
 5017	layout	form-page	Form with a preview and help aside		app-form,aside,side-column,preview,stat,stepper,card,settings	A workspace form with a side column: a live preview, the plan's seat count and a completion checklist beside the fields.
 5018	inputs	rating	Rating		rating,stars,review,score,radiogroup,half steps	Star ratings: an editable whole-star rating, a half-step rating and a small read-only average.
+5019	inputs	chip-group	Multiple, small		chip-group,chips,multiple,multi-select,toggle,tags,small,filter	Multi-select shortcut chips: compact 28px pills that wrap, each toggling on or off with a check icon.
